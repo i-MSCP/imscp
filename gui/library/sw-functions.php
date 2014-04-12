@@ -1655,7 +1655,7 @@ function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id
 				$tpl->parse('REQUIRE_INSTALLDB', '.require_installdb');
 			}
 
-			check_db_avail($tpl, $dmn_id, $dmn_sqld_limit);
+			generate_sqlDbUserLists($tpl, $dmn_id, $dmn_sqld_limit);
 		} else {
 			$tpl->assign(
 				array(
@@ -1822,141 +1822,101 @@ function gen_user_domain_list($tpl, $user_id)
 }
 
 /**
- * Must be documented.
+ * Create lists of database and their associated user.
  *
- * @param  iMSCP_pTemplate $tpl
- * @param $db_id
+ * Note: Any database which doesn't have any SQL user is skipped.
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param int $dmnId
+ * @param int $sqlDbLimit
  * @return int
  */
-function check_db_user_list($tpl, $db_id)
+function generate_sqlDbUserLists($tpl, $dmnId, $sqlDbLimit)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$count = 0;
-	$query = "
-		SELECT
-			sqlu_id, sqlu_name
-		FROM
-			sql_user
-		WHERE
-			sqld_id = ?
-		ORDER BY
-			sqlu_name
-	";
-	$rs = exec_query($query, $db_id);
+	$sqlUserFound = false;
 
-	if ($rs->rowCount() == 0) {
-		$tpl->assign(array(
-						  'STATUS_COLOR' => 'red',
-						  'SQLUSER_STATUS_MESSAGE' => tr('Database user list is empty!'),
-						  'INSTALLDBUSER_ITEM' => '',
-						  'SELECT_INSTALLDBUSER' => ''));
+	$stmt = exec_query('SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ? ORDER BY sqld_name', $dmnId);
+	$dbCount = $stmt->rowCount();
 
-		$tpl->parse('SOFTWAREDBUSER_MESSAGE', 'softwaredbuser_message');
-	} else {
-		$tpl->assign(array(
-						  'SELECT_INSTALLDBUSER' => '',
-						  'SOFTWAREDBUSER_MESSAGE' => ''));
+	if ($dbCount) {
+		while ($db = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$stmt1 = exec_query(
+				'SELECT sqlu_id, sqlu_name FROM sql_user WHERE sqld_id = ? ORDER BY sqlu_name', $db['sqld_id']
+			);
 
-		while (!$rs->EOF) {
-			if (isset($_POST['sql_user']) && $_POST['sql_user'] == $rs->fields['sqlu_name']) {
-				$selecteddbuser = $cfg->HTML_SELECTED;
-			} else {
-				$selecteddbuser = '';
+			if ($stmt1->rowCount()) {
+				$sqlUserFound = true;
+
+				$tpl->assign(
+					array(
+						'DB_NAME' => tohtml($db['sqld_name']),
+						'SELECTED_DB' => (
+								isset($_POST['selected_db']) && $_POST['selected_db'] == $db['sqld_name']
+							) ? $cfg->HTML_SELECTED : ''
+					)
+				);
+
+				$tpl->parse('INSTALLDB_ITEM', '.installdb_item');
+
+				while ($sqlUser = $stmt1->fetchRow(PDO::FETCH_ASSOC)) {
+					$tpl->assign(
+						array(
+							'SQLUSER_NAME' => tohtml($sqlUser['sqlu_name']),
+							'SELECTED_DBUSER' => (
+									isset($_POST['sql_user']) && $_POST['sql_user'] == $sqlUser['sqlu_name']
+								) ? $cfg->HTML_SELECTED : ''
+						)
+					);
+
+					$tpl->parse('INSTALLDBUSER_ITEM', '.installdbuser_item');
+				}
 			}
-			$count++;
-			$user_id = $rs->fields['sqlu_id'];
-			$user_mysql = $rs->fields['sqlu_name'];
-			$tpl->assign(array(
-							  'SQLUSER_NAME' => $user_mysql,
-							  'SELECTED_DBUSER' => $selecteddbuser));
-
-			$tpl->parse('INSTALLDBUSER_ITEM', '.installdbuser_item');
-			$rs->moveNext();
 		}
 
-		$tpl->parse('SELECT_INSTALLDBUSER', 'select_installdbuser');
-	}
-
-	return $count;
-}
-
-/**
- * Must be documented.
- *
- * @param  iMSCP_pTemplate $tpl
- * @param $dmn_id
- * @param $dmn_sqld_limit
- * @return int
- */
-function check_db_avail($tpl, $dmn_id, $dmn_sqld_limit)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$existdbuser = 0;
-	$check_db = "
-		SELECT
-			`sqld_id`, `sqld_name`
-		FROM
-			`sql_database`
-		WHERE
-			`domain_id` = ?
-		ORDER BY
-			`sqld_name` ASC
-	";
-	$rs = exec_query($check_db, $dmn_id);
-
-	if ($rs->recordCount() > 0) {
-		while (!$rs->EOF) {
-			if (isset($_POST['selected_db']) && $_POST['selected_db'] == $rs->fields['sqld_name']) {
-				$selecteddb = $cfg->HTML_SELECTED;
-			} else {
-				$selecteddb = '';
-			}
-
-			$tpl->assign(array(
-							  'DB_NAME' => $rs->fields['sqld_name'],
-							  'SELECTED_DB' => $selecteddb));
-
-			$tpl->parse('INSTALLDB_ITEM', '.installdb_item');
-			$existdbuser = check_db_user_list($tpl, $rs->fields['sqld_id']);
-			$existdbuser = +$existdbuser;
-			$rs->moveNext();
+		if (!$sqlUserFound) {
+			goto NO_DATABASE_WITH_SQL_USER;
+		} else {
+			$tpl->assign(
+				array(
+					'CREATE_MESSAGE_DB' => '',
+					'SOFTWAREDBUSER_MESSAGE' => ''
+				)
+			);
 		}
-
-		if ($existdbuser == 0) {
-			$tpl->assign('SOFTWARE_INSTALL', '');
-		}
-		$tpl->assign(array(
-						  'ADD_DATABASE_MESSAGE' => '',
-						  'CREATE_MESSAGE_DB' => ''));
-
-		$tpl->parse('SELECT_INSTALLDB', 'select_installdb');
 	} else {
-		$tpl->assign(array(
-						  'SELECT_INSTALLDBUSER' => '',
-						  'SOFTWAREDBUSER_MESSAGE' => '',
-						  'SELECT_INSTALLDB' => '',
-						  'ADD_DATABASE_MESSAGE' => tr('At first you must create a database!'),
-						  'SOFTWARE_INSTALL' => ''));
+		NO_DATABASE_WITH_SQL_USER:
+		$tpl->assign(
+			array(
+				'SELECT_INSTALLDB' => '',
+				'SELECT_INSTALLDBUSER' => '',
+				'ADD_DATABASE_MESSAGE' => tr('At first you must create a database which have at least one SQL user.'),
+				'SOFTWAREDBUSER_MESSAGE' => '',
+				'SOFTWARE_INSTALL' => ''
+			)
+		);
 
 		$tpl->parse('CREATE_MESSAGE_DB', '.create_message_db');
 	}
 
-	if ($rs->recordCount() < $dmn_sqld_limit OR $dmn_sqld_limit == 0) {
-		$tpl->assign(array(
-						  'ADD_DB_LINK' => 'sql_database_add.php',
-						  'BUTTON_ADD_DB' => tr('Add new database')));
+	if ($dbCount < $sqlDbLimit OR $sqlDbLimit == 0) {
+		$tpl->assign(
+			array(
+				'ADD_DB_LINK' => 'sql_database_add.php',
+				'BUTTON_ADD_DB' => tr('Add new database')
+			)
+		);
 
 		$tpl->parse('CREATE_DB', '.create_db');
 	} else {
-		$tpl->assign(array(
-						  'CREATE_MESSAGE_DB' => '',
-						  'ADD_DB_LINK' => '',
-						  'BUTTON_ADD_DB' => '',
-						  'CREATE_DB' => ''));
+		$tpl->assign(
+			array(
+				'CREATE_DB' => '',
+				'CREATE_MESSAGE_DB' => ''
+			)
+		);
 	}
 }
 
