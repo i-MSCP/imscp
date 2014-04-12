@@ -1,9 +1,12 @@
 
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
-	function openTree() {
+	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
+	var js_i18n_tr_close = '{TR_CLOSE}';
+
+	/*function openTree() {
 		libwindow = window.open("ftp_choose_dir.php", "Hello", "menubar=no,width=470,height=350,scrollbars=yes");
-	}
+	}*/
 
 	function setInstallPath() {
 		var inputvars = document.forms[0].elements['selected_domain'].value;
@@ -49,8 +52,8 @@
 		<tr>
 			<td><label for="path">{TR_PATH}</label></td>
 			<td>
-				<input type="text" name="other_dir" id="path" value="{VAL_OTHER_DIR}"/>
-				<a href="javascript:openTree();">{CHOOSE_DIR}</a>
+				<input type="text" id="ftp_directory" name="other_dir" value="{VAL_OTHER_DIR}"/>
+				<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{TR_CHOOSE_DIR}</a>
 				<input type="checkbox" name="createdir" id="createdir" value="1" {CHECKED_CREATEDIR}/>
 				<label for="createdir">{CREATEDIR_MESSAGE}</label>
 			</td>
