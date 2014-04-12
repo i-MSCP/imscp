@@ -52,10 +52,10 @@
 		<tr>
 			<td><label for="path">{TR_PATH}</label></td>
 			<td>
-				<input type="text" id="ftp_directory" name="other_dir" value="{VAL_OTHER_DIR}"/>
-				<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{TR_CHOOSE_DIR}</a>
-				<input type="checkbox" name="createdir" id="createdir" value="1" {CHECKED_CREATEDIR}/>
-				<label for="createdir">{CREATEDIR_MESSAGE}</label>
+				<label><input type="text" id="ftp_directory" name="other_dir" value="{VAL_OTHER_DIR}"/></label>
+				<a style="vertical-align: middle" href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{TR_CHOOSE_DIR}</a>
+				<input style="vertical-align: middle" type="checkbox" name="createdir" id="createdir" value="1" {CHECKED_CREATEDIR}/>
+				<label style="vertical-align: middle" for="createdir">{CREATEDIR_MESSAGE}</label>
 			</td>
 		</tr>
 		<!-- BDP: require_installdb -->
