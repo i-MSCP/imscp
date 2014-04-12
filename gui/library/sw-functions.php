@@ -1822,9 +1822,9 @@ function gen_user_domain_list($tpl, $user_id)
 }
 
 /**
- * Create lists of database and their associated user.
+ * Create lists of databases and their associated SQL users
  *
- * Note: Any database which doesn't have any SQL user is skipped.
+ * Note: Any database which doesn't have at least one SQL user is skipped.
  *
  * @param iMSCP_pTemplate $tpl
  * @param int $dmnId
