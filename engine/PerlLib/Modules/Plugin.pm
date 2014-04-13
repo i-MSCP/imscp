@@ -63,39 +63,6 @@ my %actionStatusToNextStatus = (
 
 =over 4
 
-=item loadData($pluginId)
-
- Load plugin data
-
- Param int Plugin unique identifier
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub loadData($$)
-{
-	my ($self, $pluginId) = @_;
-
-	my $rdata = iMSCP::Database->factory()->doQuery(
-		'plugin_id',
-		'SELECT plugin_id, plugin_name, plugin_info, plugin_status FROM plugin WHERE plugin_id = ?',
-		$pluginId
-	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	unless(exists $rdata->{$pluginId}) {
-		error("Plugin record with ID $pluginId has not been found in database");
-		return 1
-	}
-
-	%{$self} = (%{$self}, %{$rdata->{$pluginId}});
-
-	0;
-}
-
 =item process($pluginId)
 
  Process action according plugin status
@@ -109,7 +76,7 @@ sub process($$)
 {
 	my ($self, $pluginId) = @_;
 
-	my $rs = $self->loadData($pluginId);
+	my $rs = $self->_loadData($pluginId);
 	return $rs if $rs;
 
 	my $status = $self->{'plugin_status'};
@@ -146,7 +113,7 @@ sub process($$)
 		$rs ? (scalar getMessageByType('error') || 'unknown error') : $actionStatusToNextStatus{$status},
 		$pluginId
 	);
-	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
+	my $rdata = $self->{'_db'}->doQuery('dummy', @sql);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -174,8 +141,40 @@ sub _init
 	my $self = $_[0];
 
  	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+ 	$self->{'_db'} = iMSCP::Database->factory();
 
 	$self;
+}
+
+=item _loadData($pluginId)
+
+ Load plugin data
+
+ Param int Plugin unique identifier
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub _loadData($$)
+{
+	my ($self, $pluginId) = @_;
+
+	my $rdata = $self->{'_db'}->doQuery(
+		'plugin_id',
+		'SELECT plugin_id, plugin_name, plugin_info, plugin_status FROM plugin WHERE plugin_id = ?',
+		$pluginId
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	} elsif(! exists $rdata->{$pluginId}) {
+		error("Data for plugin with ID $pluginId were not found in database");
+		return 1
+	}
+
+	%{$self} = (%{$self}, %{$rdata->{$pluginId}});
+
+	0;
 }
 
 =item _install($pluginName)
@@ -292,7 +291,7 @@ sub _change($$)
 	if($info->{'__need_change__'}) {
 		$info->{'__need_change__'} = JSON::false;
 
-		$rs = iMSCP::Database->factory()->doQuery(
+		$rs = $self->{'_db'}->doQuery(
 			'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
 		);
 		unless(ref $rs eq 'HASH') {
@@ -335,7 +334,7 @@ sub _update($$)
 		$info->{'version'} = $info->{'__nversion__'};
 		$info->{'__need_change__'} = JSON::false;
 
-		$rs = iMSCP::Database->factory()->doQuery(
+		$rs = $self->{'_db'}->doQuery(
 			'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
 		);
 		unless(ref $rs eq 'HASH') {
