@@ -306,9 +306,9 @@ sub dumpdb($$$)
 	my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
 
 	my @cmd = (
-		'mysqldump', '--add-drop-database', '--add-drop-table', '--add-locks', '--allow-keywords', '--compress',
-		'--create-options', '--default-character-set=utf8', '--extended-insert', '--lock-tables', '--quote-names',
-		"-h $dbHost", "-P $dbPort", "-u $dbUser", "-p$dbPass", "$dbName > $filename"
+		$main::imscpConfig{'CMD_MYSQLDUMP'}, '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
+		'--compress', '--default-character-set=utf8', '--quote-names', "-h $dbHost", "-P $dbPort", "-u $dbUser",
+		"-p$dbPass", '--result-file=$filename', '$dbName'
 	);
 
 	my ($stdout, $stderr);
