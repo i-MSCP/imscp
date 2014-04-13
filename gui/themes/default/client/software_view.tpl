@@ -1,9 +1,11 @@
 
 <!-- BDP: software_item -->
 <table class="firstColFixed">
+	<thead>
 	<tr>
 		<th colspan="2">{TR_TITLE}</th>
 	</tr>
+	</thead>
 	<tr>
 		<td>{TR_NAME}</td>
 		<td>{SOFTWARE_NAME}</td>
