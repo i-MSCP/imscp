@@ -59,7 +59,7 @@ my $isSupported;
 BEGIN
 {
 	chomp(my $bitness = `getconf LONG_BIT`);
-	my $module = "iMSCP::Ext2Attributes::Ext2Fsm$bitness";
+	my $module = "iMSCP::Ext2Attributes::Ext2Fs$bitness";
 
 	eval "require $module";
 
