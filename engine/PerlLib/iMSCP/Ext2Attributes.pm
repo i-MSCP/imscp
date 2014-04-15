@@ -59,24 +59,29 @@ my $isSupported;
 BEGIN
 {
 	chomp(my $bitness = `getconf LONG_BIT`);
-	my $module = "iMSCP::Ext2Attributes::Ext2Fs$bitness";
+	my $module = "iMSCP::Ext2Attributes::Ext2Fsm$bitness";
 
 	eval "require $module";
 
 	unless($@) {
-		$module->import()
+		$module->import();
 	} else {
 		$isSupported = 0;
-		use constant EXT2_SECRM_FL => 'dummy';
-		use constant EXT2_UNRM_FL => 'dummy';
-		use constant EXT2_COMPR_FL => 'dummy';
-		use constant EXT2_SYNC_FL => 'dummy';
-		use constant EXT2_IMMUTABLE_FL => 'dummy';
-		use constant EXT2_APPEND_FL => 'dummy';
-		use constant EXT2_NODUMP_FL => 'dummy';
-		use constant EXT2_NOATIME_FL => 'dummy';
-		use constant EXT2_IOC_GETFLAGS => 'dummy';
-		use constant EXT2_IOC_SETFLAGS => 'dummy';
+
+		no strict 'refs';
+
+		my $dummy = sub { 'dummy' };
+
+		*{__PACKAGE__.'::EXT2_SECRM_FL'} = $dummy;
+		*{__PACKAGE__.'::EXT2_UNRM_FL'} = $dummy;
+		*{__PACKAGE__.'::EXT2_COMPR_FL'} = $dummy;
+		*{__PACKAGE__.'::EXT2_SYNC_FL'} = $dummy;
+		*{__PACKAGE__.'::EXT2_IMMUTABLE_FL'} = $dummy;
+		*{__PACKAGE__.'::EXT2_APPEND_FL'} = $dummy;
+		*{__PACKAGE__.'::EXT2_NODUMP_FL'} = $dummy;
+		*{__PACKAGE__.'::EXT2_NOATIME_FL'} = $dummy;
+		*{__PACKAGE__.'::EXT2_IOC_GETFLAGS'} = $dummy;
+		*{__PACKAGE__.'::EXT2_IOC_SETFLAGS'} = $dummy;
 	}
 }
 
