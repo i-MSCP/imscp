@@ -59,10 +59,10 @@ sub registerSetupHooks
 {
 	my ($self, $hooksManager) = @_;
 
-	my $rs = $hooksManager->trigger('beforeMtaRegisterSetupHooks', $hooksManager, 'mysql');
+	my $rs = $hooksManager->trigger('beforeSqldRegisterSetupHooks', $hooksManager, 'mysql');
 	return $rs if $rs;
 
-	$hooksManager->trigger('afterMtaRegisterSetupHooks', $hooksManager, 'mysql');
+	$hooksManager->trigger('afterSqldRegisterSetupHooks', $hooksManager, 'mysql');
 }
 
 =item install()
@@ -100,6 +100,26 @@ sub postinstall
 	$self->{'hooksManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
 
+=item postinstall()
+
+ Process postintall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeSqldPostinstall', 'mysql');
+	return $rs if $rs;
+
+	$self->{'restart'} = 'yes';
+
+	$self->{'hooksManager'}->trigger('afterSqldPostinstall', 'mysql');
+}
+
 =item uninstall()
 
  Process uninstall tasks
@@ -124,26 +144,6 @@ sub uninstall
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterSqldUninstall', 'mysql');
-}
-
-=item postinstall()
-
- Process postintall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub postinstall
-{
-	my $self = $_[0];
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPostinstall', 'mysql');
-	return $rs if $rs;
-
-	$self->{'restart'} = 'yes';
-
-	$self->{'hooksManager'}->trigger('afterMtaPostinstall', 'mysql');
 }
 
 =item setEnginePermissions()
@@ -195,7 +195,7 @@ sub restart
 
  Called by getInstance(). Initialize instance of this class.
 
- Return Servers::mta::postfix
+ Return Servers::sqld::mysql
 
 =cut
 
@@ -215,7 +215,7 @@ sub _init
 
 	$self->{'hooksManager'}->trigger(
 		'afterSqldInit', $self, 'mysql'
-	) and fatal('postfix - afterMtaInit hook has failed');
+	) and fatal('postfix - afterSqldInit hook has failed');
 
 	$self;
 }
