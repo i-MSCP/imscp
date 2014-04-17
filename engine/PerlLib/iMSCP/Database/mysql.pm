@@ -38,6 +38,7 @@ use warnings;
 use iMSCP::Debug;
 use DBI;
 use iMSCP::Execute;
+use File::HomeDir;
 use POSIX ':signal_h';
 use parent 'Common::SingletonClass';
 
@@ -305,11 +306,22 @@ sub dumpdb($$$)
 	my $dbUser = escapeShell($self->{'db'}->{'DATABASE_USER'});
 	my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
 
-	my @cmd = (
-		$main::imscpConfig{'CMD_MYSQLDUMP'}, '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
-		'--compress', '--default-character-set=utf8', '--quote-names', "-h $dbHost", "-P $dbPort", "-u $dbUser",
-		"-p$dbPass", '--result-file=$filename', '$dbName'
-	);
+	my $rootHomeDir = File::HomeDir->users_home($main::imscpConfig{'ROOT_USER'});
+
+	my @cmd;
+
+	if(defined $rootHomeDir && -f "$rootHomeDir/my.cnf") {
+		@cmd = (
+			$main::imscpConfig{'CMD_MYSQLDUMP'}, '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
+			'--compress', '--default-character-set=utf8', '--quote-names', "--result-file=$filename", $dbName
+		);
+	} else {
+		@cmd = (
+			$main::imscpConfig{'CMD_MYSQLDUMP'}, '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
+			'--compress', '--default-character-set=utf8', '--quote-names', "-h $dbHost", "-P $dbPort", "-u $dbUser",
+			"-p$dbPass", "--result-file=$filename", $dbName
+		);
+	}
 
 	my ($stdout, $stderr);
 	my $rs = execute("@cmd", \$stdout, \$stderr);

@@ -97,7 +97,7 @@ sub postinstall
 
 	$self->{'restart'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterFtpdPostInstall', 'mysql');
+	$self->{'hooksManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
 
 =item uninstall()
@@ -112,18 +112,18 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaUninstall', 'mysql');
+	my $rs = $self->{'hooksManager'}->trigger('beforeSqldUninstall', 'mysql');
 	return $rs if $rs;
 
-	require Servers::sqld::mysql::installer;
+	require Servers::sqld::mysql::uninstaller;
 
-	$rs = Servers::sqld::mysql::installer->getInstance()->uninstall();
+	$rs = Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
 	$rs = $self->restart();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaUninstall', 'mysql');
+	$self->{'hooksManager'}->trigger('afterSqldUninstall', 'mysql');
 }
 
 =item postinstall()

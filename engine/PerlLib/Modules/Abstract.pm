@@ -256,6 +256,54 @@ sub _runAllActions
 
 =over 4
 
+=item _getAddonsData()
+
+ Get addon data
+
+ This method should be implemented by any module which provides data for i-MSCP Addonss.
+ Resulting data must be stored in an anonymous hash accessible through the 'addons' attribute.
+
+ return int 0 on success, other on failure
+
+=cut
+
+sub _getAddonsData
+{
+	0;
+}
+
+=item _getCronData()
+
+ Get CRON data
+
+ This method should be implemented by any module which provides data for CRON service.
+ Resulting data must be stored in an anonymous hash accessible through the 'cron' attribute.
+
+ return int 0 on success, other on failure
+
+=cut
+
+sub _getCronData
+{
+	0;
+}
+
+=item _getFtpdData()
+
+ Get FTPD data
+
+ This method should be implemented by any module which provides data for FTPD service.
+ Resulting data must be stored in an anonymous hash accessible through the 'ftpd' attribute.
+
+ return int 0 on success, other on failure
+
+=cut
+
+sub _getFtpdData
+{
+	0;
+}
+
 =item _getHttpdData()
 
  Get Httpd data
@@ -288,22 +336,6 @@ sub _getMtaData
 	0;
 }
 
-=item _getPoData()
-
- Get PO data
-
- This method should be implemented by any module which provides data for PO service.
- Resulting data must be stored in an anonymous hash accessible through the 'po' attribute.
-
- return int 0 on success, other on failure
-
-=cut
-
-sub _getPoData
-{
-	0;
-}
-
 =item _getNamedData()
 
  Get named data.
@@ -320,50 +352,34 @@ sub _getNamedData
 	0;
 }
 
-=item _getFtpdData()
+=item _getPoData()
 
- Get FTPD data
+ Get PO data
 
- This method should be implemented by any module which provides data for FTPD service.
- Resulting data must be stored in an anonymous hash accessible through the 'ftpd' attribute.
+ This method should be implemented by any module which provides data for PO service.
+ Resulting data must be stored in an anonymous hash accessible through the 'po' attribute.
 
  return int 0 on success, other on failure
 
 =cut
 
-sub _getFtpdData
+sub _getPoData
 {
 	0;
 }
 
-=item _getCronData()
+=item _getSqldData()
 
- Get CRON data
+ Get SQL data
 
- This method should be implemented by any module which provides data for CRON service.
- Resulting data must be stored in an anonymous hash accessible through the 'cron' attribute.
-
- return int 0 on success, other on failure
-
-=cut
-
-sub _getCronData
-{
-	0;
-}
-
-=item _getAddonsData()
-
- Get addon data
-
- This method should be implemented by any module which provides data for i-MSCP Addonss.
- Resulting data must be stored in an anonymous hash accessible through the 'addons' attribute.
+ This method should be implemented by any module which provides data for SQL service.
+ Resulting data must be stored in an anonymous hash accessible through the 'sqld' attribute.
 
  return int 0 on success, other on failure
 
 =cut
 
-sub _getAddonsData
+sub _getSqldData
 {
 	0;
 }
