@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Servers::cron - i-MSCP Cron server implementation
+Servers::sqld - i-MSCP SQL server implementation
 
 =cut
 
@@ -29,7 +29,7 @@ Servers::cron - i-MSCP Cron server implementation
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Servers::cron;
+package Servers::sqld;
 
 use strict;
 use warnings;
@@ -46,17 +46,21 @@ use iMSCP::Debug;
 
 =item factory()
 
- Return an instance of cron server implementation
+ Return an instance of sql server implementation
 
- Return cron server implementation
+ Return SQL server implementation
 
 =cut
 
 sub factory
 {
 	my $self = $_[0];
-	my $server = $_[1] || 'cron';
-	my $package = ($server eq 'no') ? 'Servers::noserver' : "Servers::cron::$server";
+
+	(my $server = $_[1] || $main::imscpConfig{'SQL_SERVER'}) =~ s/(?:(.*?)_(\d+\.\d+)|('remote_server'))/$1/;
+
+	$server = 'mysql' if $server eq 'remote_server';
+
+	my $package = "Servers::sqld::$server";
 
 	eval "require $package";
 

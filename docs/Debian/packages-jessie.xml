@@ -120,6 +120,7 @@
         <package>libdigest-md5-perl</package>
         <package>libemail-valid-perl</package>
         <package>libfile-copy-recursive-perl</package>
+        <package>libfile-homedir-perl</package>
         <package>libfile-mimeinfo-perl</package>
         <package>libio-socket-inet6-perl</package>
         <package>libio-stringy-perl</package>

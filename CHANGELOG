@@ -6,11 +6,13 @@ Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIGS:
-	- Added: Support for Percona MySQL server (Debian squeeze, wheezy / Ubuntu lucid, precise, quantal, raring, saucy)
-	- Added support for MariaDB using official repositories (Debian Jessie / Ubuntu Trusty)
+	- Added: Support for Percona server (Debian squeeze, wheezy / Ubuntu lucid, precise, quantal, raring, saucy)
+	- Added support for MariaDB server using official repositories (Debian Jessie / Ubuntu Trusty)
 
 ENGINE:
+	- Added: MariaDB|MySQL|Percona server implementations
 	- Fixed: iMSCP::Ext2Attributes must not act on systems which do not support extended fs attributes
+	- Fixed: SQL root password must not be shown through processus's viewer (mysqldump)
 
 GUI:
 	- Added iMSCP_Events_Aggregator
@@ -34,6 +36,7 @@ Tickets:
 	- Fixed #1056: Bug - Incorrect value '_no_' in SQL query on create default email-accounts
 	- Fixed #1065: Bug - Unable to unsuspend customer account from admin UI
 	- Fixed #1066: Bug - Customer's domains remain reachable through HTTPS when they are deactivated
+	- Fixed #1075: Bug - mysqldump: Can't create/write to file
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.5
