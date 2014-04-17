@@ -57,7 +57,7 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub install
+sub uninstall
 {
 	my $self = $_[0];
 
