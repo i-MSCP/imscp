@@ -52,24 +52,6 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
-
- Register setup hooks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub registerSetupHooks
-{
-	my ($self, $hooksManager) = @_;
-
-	my $rs = $hooksManager->trigger('beforeMtaRegisterSetupHooks', $hooksManager, 'postfix');
-	return $rs if $rs;
-
-	$hooksManager->trigger('afterMtaRegisterSetupHooks', $hooksManager, 'postfix');
-}
-
 =item preinstall()
 
  Process preinstall tasks

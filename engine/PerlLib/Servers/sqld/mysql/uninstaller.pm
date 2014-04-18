@@ -59,9 +59,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = $_[0];
-
-	$self->_removeOptionsFile();
+	$_[0]->_removeOptionsFile();
 }
 
 =back
@@ -103,9 +101,7 @@ sub _removeOptionsFile
 {
 	my $self = $_[0];
 
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $homeDir = File::HomeDir->users_home($rootUName);
+	my $homeDir = File::HomeDir->users_home($main::imscpConfig{'ROOT_USER'});
 
 	if(defined $homeDir) {
 		if(-f "$homeDir/.my.cnf") {

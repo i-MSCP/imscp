@@ -47,24 +47,6 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
-
- Register setup hooks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub registerSetupHooks
-{
-	my ($self, $hooksManager) = @_;
-
-	my $rs = $hooksManager->trigger('beforeSqldRegisterSetupHooks', $hooksManager, 'mysql');
-	return $rs if $rs;
-
-	$hooksManager->trigger('afterSqldRegisterSetupHooks', $hooksManager, 'mysql');
-}
-
 =item install()
 
  Process install tasks

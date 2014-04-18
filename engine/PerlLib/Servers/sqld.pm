@@ -46,7 +46,7 @@ use iMSCP::Debug;
 
 =item factory()
 
- Return an instance of sql server implementation
+ Return an instance of the SQL server implementation
 
  Return SQL server implementation
 
@@ -56,7 +56,7 @@ sub factory
 {
 	my $self = $_[0];
 
-	(my $server = $_[1] || $main::imscpConfig{'SQL_SERVER'}) =~ s/(?:(.*?)_(\d+\.\d+)|('remote_server'))/$1/;
+	(my $server = $_[1] || $main::imscpConfig{'SQL_SERVER'}) =~ s/(?:(.*?)_\d+\.\d+|('remote_server'))/$1/;
 
 	$server = 'mysql' if $server eq 'remote_server';
 
