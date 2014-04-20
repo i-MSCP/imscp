@@ -11,8 +11,11 @@ CONFIGS:
 
 ENGINE:
 	- Added: MariaDB|MySQL|Percona server implementations
+	- Added: Options which allow to disable compression for backups
+	- Fixed: Even if a database backup fail, the backup must not stop. The backup script must jump to next database
 	- Fixed: iMSCP::Ext2Attributes must not act on systems which do not support extended fs attributes
 	- Fixed: SQL root password must not be shown through processus's viewer (mysqldump)
+	- Fixed: The backup script must set the immutable bit on the customer homedir only if it was previously set
 
 GUI:
 	- Added iMSCP_Events_Aggregator

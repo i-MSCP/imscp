@@ -27,6 +27,8 @@
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
@@ -34,8 +36,191 @@ use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Dir;
-use iMSCP::Ext2Attributes qw( setImmutable clearImmutable );
-use POSIX qw(strftime);
+use iMSCP::Ext2Attributes qw/setImmutable clearImmutable/;
+use POSIX qw/strftime/;
+
+sub run
+{
+	return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
+
+	my $command = {
+		'pbzip2' => { 'extension' => 'bz2', 'command' => 'CMD_PBZIP' },
+		'bzip2' => { 'extension' => 'bz2', 'command' => 'CMD_BZIP' },
+		'gzip' => { 'extension' => 'gz', 'command' => 'CMD_GZIP' },
+		'lzma' => { 'extension' => 'lzma', 'command' => 'CMD_LZMA' },
+		'xz' => { 'extension' => 'xz', 'command' => 'CMD_XZ' }
+	};
+
+	my $algorithm = lc($main::imscpConfig{'ZIP'});
+
+	unless ($algorithm ~~ ['bzip2', 'gzip', 'lzma', 'no', 'pbzip2', 'xz']) {
+		error("Backup algorithm not supported: $algorithm");
+		return 1;
+	}
+
+	my ($rs, $ret) = (0, 0);
+	my ($rdata, $stdout, $stderr);
+	my $db = iMSCP::Database->factory();
+	my $canDumpDatabases = $db->can('dumpdb');
+	my $cmdTar = $main::imscpConfig{'CMD_TAR'};
+
+	$rdata = $db->doQuery(
+		'domain_name',
+		"
+			SELECT
+				domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
+			FROM
+				domain
+			INNNER JOIN
+				admin ON (admin_id = domain_admin_id)
+			WHERE
+				domain_status = 'ok'
+			AND
+				allowbackup <> 'no'
+		"
+	);
+
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		$ret = 1;
+	} else {
+		for (keys %{$rdata}) {
+			$ret = 0;
+
+			if ($rdata->{$_}->{'allowbackup'} ne 'no') {
+				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
+				my $bkpDir = "$homeDir/backups";
+				my $userName = $rdata->{$_}->{'admin_sys_name'};
+				my $groupName = $rdata->{$_}->{'admin_sys_gname'};
+
+				if(! -d $homeDir) { # Skip backup if home directory doesn't exist
+					warning("Home directory $homeDir doesn't exist. Skipping backup...");
+					next;
+				} elsif(! -d $bkpDir) { # Create backups directory if doesn't already exists
+					my $isProtectedHomedir = 0;
+
+					# Unprotect parent directory if needed
+					if(isImmutable($homeDir)) {
+						$isProtectedHomedir = 1;
+						clearImmutable($homeDir);
+					}
+
+					$rs = iMSCP::Dir->new('dirname' => $bkpDir)->make(
+						{ 'user' => $userName, 'group' => $groupName, 'mode' => 0750 }
+					);
+
+					setImmutable($homeDir) if $isProtectedHomedir;
+
+					if($rs) {
+						$ret ||= $rs;
+						next;
+					}
+				}
+
+				# Remove any previous backup file
+				$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $bkpDir/*", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+
+				if($rs) {
+					$ret ||= $rs;
+					next;
+				}
+
+				my $ext = ($algorithm ne 'no') ? ('.' . $command->{$algorithm}->{'extension'}) : '';
+				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
+
+				if ($rdata->{$_}->{'allowbackup'} ~~ ['full', 'dmn']) {
+					my @cmd = (
+						$cmdTar,
+						"--create",										# Create new archive
+						"--directory=$homeDir",							# Change to directory
+						($algorithm ne 'no')
+							? "--use-compress-program=$algorithm"		# Compress archive with given program
+							: '',										# No compression
+						"--file=$bkpDir/$_-backup-$date.tar$ext",		# use archive file
+						'--exclude=logs',								# exclude logs directory from archive
+						'--exclude=phptmp',								# exclude phptmp directory from archive
+						'--exclude=backups',							# exclude backup from archive/-
+						'--exclude=domain_disable_page',				# exclude domain_disable_page from archive/-
+						'.'												# pathname
+					);
+
+					my $rs = execute("@cmd", \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+
+					# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+					if($rs > 1) {
+						error($stderr) if $stderr;
+						error("Unable to backup $homeDir") if ! $stderr;
+						$ret |= $rs;
+					}
+
+					my $file = iMSCP::File->new('filename' => "$bkpDir/$_-backup-$date.tar$ext");
+					$rs = $file->mode(0644);
+					$ret ||= $rs;
+
+					$rs = $file->owner($userName, $groupName);
+					$ret ||= $rs;
+				}
+
+				# Backup all customer databases
+				if ($canDumpDatabases && $rdata->{$_}->{'allowbackup'} ~~ ['full', 'sql']) {
+					my $dbData = $db->doQuery(
+						'sqld_name',
+						"SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?",
+						$rdata->{$_}->{'domain_id'}
+					);
+					unless (ref $dbData eq 'HASH') {
+						error($dbData);
+						$ret ||= 1;
+						next;
+					}
+
+					for (keys %{$dbData}) {
+						$rs = $db->dumpdb($_, "$bkpDir/$_.sql");
+
+						if($rs) {
+							$ret ||= $rs;
+							next;
+						}
+
+						my $file = iMSCP::File->new(filename => "$bkpDir/$_.sql");
+
+						$rs = $file->mode(0644);
+						$ret ||= $rs;
+
+						$rs = $file->owner($userName, $groupName);
+						$ret ||= $rs;
+
+						if($algorithm ne 'no') {
+							my @cmd = (
+								$main::imscpConfig{$command->{$algorithm}->{'command'}},
+								 '--force',
+								escapeShell("$bkpDir/$_.sql")
+							);
+
+							$rs = execute("@cmd", \$stdout, \$stderr);
+							debug($stdout) if $stdout;
+							error($stderr) if $stderr && $rs;
+							error("Unable to compress the $_ database dump file") if $rs && ! $stderr;
+							$ret ||= $rs;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	my @errorMessages = (getMessageByType('warn'), getMessageByType('error'));
+
+	if(@errorMessages) {
+		require iMSCP::Mail;
+		iMSCP::Mail->new()->errmsg("@errorMessages");
+	}
+
+	$ret;
+}
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -53,162 +238,6 @@ silent(1);
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-backup-all.lock', 'nowait');
 $bootstrapper->boot({ 'norequirements' => 'yes', 'nofail' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
-
-our $command = {
-	'pbzip2' => { 'extension' => 'bz2', 'command' => 'CMD_PBZIP' },
-	'bzip2' => { 'extension' => 'bz2', 'command' => 'CMD_BZIP' },
-	'gzip' => { 'extension' => 'gz', 'command' => 'CMD_GZIP' },
-	'lzma' => { 'extension' => 'lzma', 'command' => 'CMD_LZMA' },
-	'xz' => { 'extension' => 'xz', 'command' => 'CMD_XZ' }
-};
-
-sub run
-{
-	return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
-
-	unless ($main::imscpConfig{'ZIP'} =~ /^(pbzip2|bzip2|gzip|lzma|xz)$/i) {
-		error("Backup algorithm not supported: $main::imscpConfig{'ZIP'}");
-		return 1;
-	}
-
-	my $rs = 0;
-	my ($ret, $rdata, $stdout, $stderr);
-	my $database = iMSCP::Database->factory();
-	my $canDumpDatabases = $database->can('dumpdb');
-	my $cmdTar = $main::imscpConfig{'CMD_TAR'};
-	my $algorithm = lc($main::imscpConfig{'ZIP'});
-
-	my $sql = "
-		SELECT
-			`domain_id`, `domain_name`, `domain_admin_id`, `allowbackup`
-		FROM
-			`domain`
-		WHERE
-			`domain_status` = ?
-		AND
-			`allowbackup` <> ?
-	";
-	$rdata = $database->doQuery('domain_name', $sql, 'ok', 'no');
-
-	unless (ref $rdata eq 'HASH') {
-		error($rdata);
-		$rs = 1;
-	} else {
-		for (keys %$rdata) {
-			$ret = 0;
-
-			if ($rdata->{$_}->{'allowbackup'} ne 'no') {
-				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
-				my $bkpDir = "$homeDir/backups";
-				my $userName =
-				my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-					($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $rdata->{$_}->{'domain_admin_id'});
-
-				if(! -d $homeDir) { # Skip backup if home directory doesn't exist
-					warning("Home directory $homeDir doesn't exist. Skipping backup...");
-					next
-				} elsif(! -d $bkpDir) { # Create backups directory if doesn't already exists
-					# Unprotect customer home directory to be able to write in it
-					clearImmutable($homeDir);
-
-					$ret = iMSCP::Dir->new('dirname' => $bkpDir)->make(
-						{ 'user' => $userName, 'group' => $groupName, 'mode' => 0750 }
-					);
-
-					# Protect home directory
-					setImmutable($homeDir);
-
-					if($ret) {
-						$rs |= $ret;
-						goto NEXT;
-					}
-				}
-
-				# Remove any previous backup file
-				$rs |= execute("$main::imscpConfig{'CMD_RM'} -fR $bkpDir/*", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-
-				my $ext = $command->{$algorithm}->{'extension'};
-				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
-
-				if ($rdata->{$_}->{'allowbackup'} =~ /^full|dmn$/) {
-					my @cmd = (
-						$cmdTar,
-						"--create",										# Create new archive
-						"--directory=$homeDir",							# Change to directory
-						'--use-compress-program=' . lc($algorithm),		# Compress archive with given program
-						"--file=$bkpDir/$_-backup-$date.tar.$ext",		# use archive file
-						'--exclude=logs',								# exclude logs directory from archive
-						'--exclude=phptmp',								# exclude phptmp directory from archive
-						'--exclude=backups',							# exclude backup from archive/-
-						'--exclude=domain_disable_page',				# exclude domain_disable_page from archive/-
-						'.'												# pathname
-					);
-
-					my $trs = execute("@cmd", \$stdout, \$stderr);
-					debug($stdout) if $stdout;
-					# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
-					if($trs > 1) {
-						error($stderr) if $stderr;
-						error("Unable to backup $homeDir") if ! $stderr;
-						$rs |= $trs;
-					}
-
-					my $file = iMSCP::File->new('filename' => "$bkpDir/$_-backup-$date.tar.$ext");
-					$rs |= $file->mode(0644);
-					$rs |= $file->owner($userName, $groupName);
-				}
-
-				# Backup all customer databases
-				if ($canDumpDatabases && $rdata->{$_}->{'allowbackup'} =~ /^full|sql$/) {
-					my $dbData = $database->doQuery(
-						'sqld_name',
-						"SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?",
-						$rdata->{$_}->{'domain_id'}
-					);
-					unless (ref $dbData eq 'HASH') {
-						error($dbData);
-						$rs |= 1;
-						goto NEXT;
-					}
-
-					for (keys %$dbData) {
-						$ret = iMSCP::Database->factory()->dumpdb($_, "$bkpDir/$_.sql");
-
-						if($ret) {
-							$rs |= $ret;
-							goto NEXT;
-						}
-
-						my $file = iMSCP::File->new(filename => "$bkpDir/$_.sql");
-						$rs |= $file->mode(0644);
-						$rs |= $file->owner($userName, $groupName);
-
-						my $cmd = $main::imscpConfig{$command->{$algorithm}->{'command'}} . ' --force ' .
-							escapeShell("$bkpDir/$_.sql");
-
-						$rs = execute($cmd, \$stdout, \$stderr);
-						debug($stdout) if $stdout;
-						error($stderr) if $stderr && $rs;
-						error("Unable to dump the $_ database") if $rs && ! $stderr;
-					}
-				}
-			}
-
-			NEXT:
-		}
-	}
-
-	my @errorMessages = (getMessageByType('warn'), getMessageByType('error'));
-
-	if(@errorMessages) {
-		require iMSCP::Mail;
-		iMSCP::Mail->new()->errmsg("@errorMessages");
-	}
-
-	$rs;
-}
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-backup-all.lock');
