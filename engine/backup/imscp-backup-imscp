@@ -36,7 +36,7 @@ use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
-use iMSCP::Dialog;
+use POSIX qw/strftime/;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -69,15 +69,14 @@ sub run
 {
 	return 0 if $main::imscpConfig{'BACKUP_IMSCP'} ne 'yes';
 
-	unless(
-		exists $command->{$main::imscpConfig{'ZIP'}} && exists $command->{$main::imscpConfig{'ZIP'}}->{'extension'} &&
-		exists $command->{$main::imscpConfig{'ZIP'}}->{'command'}
-	) {
-		error("Backup algorithm not supported: $main::imscpConfig{'ZIP'}");
+	my $algorithm = lc($main::imscpConfig{'ZIP'});
+
+	unless(exists $command->{$algorithm}) {
+		error("Backup algorithm not supported: $algorithm");
 		return 1;
 	}
 
-	# Ensuring that backup directory exists
+	# Make sure that backup directory exists
 	my $rs = iMSCP::Dir->new('dirname' => $main::imscpConfig{'BACKUP_FILE_DIR'})->make(
 		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0750 }
 	);
@@ -88,7 +87,7 @@ sub run
 	return $rs if $rs;
 
 	# Backup configuration files
-	$rs = _backupConfig();
+	$rs |= _backupConfig();
 	return $rs if $rs;
 
 	# Remove any backup older than 7 days
@@ -116,33 +115,33 @@ sub run
 
 sub _backupDatabase
 {
-	my $database = iMSCP::Database->factory();
+	my $db = iMSCP::Database->factory();
 
 	# TODO check if database exists
 
-	if($database->can('dumpdb')) {
+	if($db->can('dumpdb')) {
 		my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 		my $sqlFName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/$main::imscpConfig{'DATABASE_NAME'}-$date.sql";
 
-		my $rs = $database->dumpdb($main::imscpConfig{'DATABASE_NAME'}, $sqlFName);
+		my $rs = $db->dumpdb($main::imscpConfig{'DATABASE_NAME'}, $sqlFName);
 		error("Unable to dump the $main::imscpConfig{'DATABASE_NAME'} database") if $rs;
 		return $rs if $rs;
 
-		my $file = iMSCP::File->new('filename' => $sqlFName);
+		my $algorithm = lc($main::imscpConfig{'ZIP'});
 
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		my $zip = lc($main::imscpConfig{'ZIP'});
-		my $compressCmd = "$main::imscpConfig{$command->{$zip}->{'command'}} --force " . escapeShell($sqlFName);
-
-		my ($stdout, $stderr);
-		$rs = execute($compressCmd, \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
-			error($stderr) if $stderr;
-			error("Unable to compress $sqlFName database dump file") if ! $stderr;
-			return $rs if $rs;
+		if($algorithm ne 'no') {
+			my ($stdout, $stderr);
+			$rs = execute(
+				"$main::imscpConfig{$command->{$algorithm}->{'command'}} --force " . escapeShell($sqlFName),
+				\$stdout,
+				\$stderr
+			);
+			debug($stdout) if $stdout;
+			if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+				error($stderr) if $stderr;
+				error("Unable to compress $sqlFName database dump file") if ! $stderr;
+				return $rs if $rs;
+			}
 		}
 	}
 
@@ -152,17 +151,24 @@ sub _backupDatabase
 sub _backupConfig
 {
 	my $date = strftime "%Y.%m.%d-%H-%M", localtime;
-	my $tarName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/config-backup-$date.tar";
-	my $fileName = "$tarName.$command->{$main::imscpConfig{'ZIP'}}->{'extension'}";
+	my $archiveName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/config-backup-$date.tar";
+
+	my $algorithm = lc($main::imscpConfig{'ZIP'});
+
+	if($algorithm ne 'no') {
+		$archiveName .= '.' . $command->{$main::imscpConfig{'ZIP'}}->{'extension'};
+	}
 
 	my @backupCommand = (
 		"$main::imscpConfig{'CMD_TAR'}",
 		'--create',															# Create new archive
 		"--directory=$main::imscpConfig{'CONF_DIR'}",						# Change to directory
-		'--use-compress-program=' . lc($main::imscpConfig{'ZIP'}),			# Compress archive with given program
+		($algorithm ne 'no')
+			? "--use-compress-program=$algorithm"							# Compress archive with given program
+			: '',
 		'--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]',	# Exclude backup files
 		'--preserve-permissions',											# Preserve permissions
-		"--file=$fileName",													# use archive file
+		"--file=$archiveName",												# use archive file
 		'.'																	# pathname
 	);
 
@@ -173,13 +179,8 @@ sub _backupConfig
 	error("Unable to create i-MSCP configuration backup") if $rs && ! $stderr;
 	return $rs if $rs;
 
-	my $file = iMSCP::File->new('filename' => $fileName);
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	0;
 }
-
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-backup-imscp.lock');
