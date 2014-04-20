@@ -71,7 +71,7 @@ sub run
 
 	my $algorithm = lc($main::imscpConfig{'ZIP'});
 
-	unless(exists $command->{$algorithm}) {
+	unless(exists $command->{$algorithm} || $algorithm eq 'no') {
 		error("Backup algorithm not supported: $algorithm");
 		return 1;
 	}
