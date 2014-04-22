@@ -57,15 +57,14 @@ use parent 'Common::SingletonClass';
 
  Register the given composer package for installation.
 
- Return int - 0
+ Return int 0
 
 =cut
 
 sub registerPackage($$;$)
 {
-	my $self = shift;
-	my $package = shift;
-	my $packageVersion = shift || 'dev-master';
+	my ($self, $package, $packageVersion) = @_;
+	$packageVersion ||= 'dev-master';
 
 	push @{$self->{'toInstall'}}, "\t\t\"$package\":\"$packageVersion\"";
 
@@ -88,7 +87,7 @@ sub registerPackage($$;$)
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Increase composer process timeout for slow connections
 	$ENV{'COMPOSER_PROCESS_TIMEOUT'} = 2000;
@@ -130,7 +129,7 @@ sub _init
 
 sub _installPackages
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_buildComposerFile();
 	return $rs if $rs;
@@ -168,7 +167,7 @@ Please wait, depending of your connection, this may take few minutes.
 
 sub _buildComposerFile
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	iMSCP::Dialog->factory()->infobox("\nBuilding composer.json file for addon packages...");
 
@@ -192,7 +191,7 @@ sub _buildComposerFile
 
 sub _getComposer
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdout, $stderr);
 	my $curDir = getcwd();
@@ -268,9 +267,6 @@ sub _getComposerFileTpl
 {
 	<<EOF;
 {
-	"name":"imscp/addons",
-	"description":"i-MSCP addons composer file",
-	"license":"GPL-2.0+",
 	"require":{
 {PACKAGES}
 	},
@@ -289,7 +285,7 @@ EOF
 
 sub _cleanCacheDir
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 
