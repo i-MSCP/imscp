@@ -657,6 +657,15 @@ sub _buildFastCgiConfFiles
 	$rs = $self->{'httpd'}->enableMod("@toEnableModules");
 	return $rs if $rs;
 
+	# Quick fix (Ubuntu PHP mcrypt module not enabled after fresh installation)
+	if(-x '/usr/sbin/php5enmod') {
+		my($stdout, $stderr);
+		$rs = execute('/usr/sbin/php5enmod mcrypt', \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
+
 	$self->{'hooksManager'}->trigger('afterHttpdBuildFastCgiConfFiles');
 }
 

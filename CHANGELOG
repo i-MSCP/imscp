@@ -17,6 +17,11 @@ ENGINE:
 	- Fixed: SQL root password must not be shown through processus's viewer (mysqldump)
 	- Fixed: The backup script must set the immutable bit on the customer homedir only if it was previously set
 
+INSTALLER:
+	 Added: Support for Percona MySQL server
+	 Fixed: apache_php_fpm uninstaller is broken
+	 Fixed: PHP mcrypt module not enabled after fresh install (Ubuntu Trusty Thar)
+
 GUI:
 	- Added iMSCP_Events_Aggregator
 	- Changed: EventManager is no longer static (shared). The getInstance() method is now deprecated. It now return an
@@ -30,10 +35,6 @@ PLUGINS:
 	- Fixed: Plugin manager must have its own event manager
 	- Fixed: Plugin event listeners are registered twice in some contexts
 	- Updated: Plugin API to version 0.2.9 (changes are backward compatible)
-
-INSTALLER:
-	 Added: Support for Percona MySQL server
-	 Fixed: apache_php_fpm uninstaller is broken
 
 Tickets:
 	- Fixed #1056: Bug - Incorrect value '_no_' in SQL query on create default email-accounts
