@@ -463,25 +463,32 @@ sub _setupSqlUser
 		return 1;
 	}
 
-	$rs = $db->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbUserHost);
+	# Check for mysql.host table existence (as for MySQL >= 5.6.7, the mysql.host table is no longer provided)
+	$rs = $db->doQuery('1', "SHOW tables FROM mysql LIKE 'host'");
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privilege: $rs");
+		error($rs);
 		return 1;
-	}
+	} elsif(%{$rs}) {
+		$rs = $db->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbUserHost);
+		unless(ref $rs eq 'HASH') {
+			error("Unable to add privilege: $rs");
+			return 1;
+		}
 
-	$rs = $db->doQuery(
-		'dummy',
-		'
-			GRANT SELECT (`Host`, `Db`, `User`, `Table_name`, `Table_priv`, `Column_priv`)
-			ON `mysql`.`tables_priv`
-			TO?@?
-		',
-		$dbUser,
-		$dbUserHost
-	);
-	unless(ref $rs eq 'HASH') {
-		error("Unable to add privilege: $rs");
-		return 1;
+		$rs = $db->doQuery(
+			'dummy',
+			'
+				GRANT SELECT (`Host`, `Db`, `User`, `Table_name`, `Table_priv`, `Column_priv`)
+				ON `mysql`.`tables_priv`
+				TO?@?
+			',
+			$dbUser,
+			$dbUserHost
+		);
+		unless(ref $rs eq 'HASH') {
+			error("Unable to add privilege: $rs");
+			return 1;
+		}
 	}
 
 	$rs = $db->doQuery('dummy', "GRANT ALL PRIVILEGES ON `$phpmyadminDbName`.* TO ?@?;",  $dbUser, $dbUserHost);
