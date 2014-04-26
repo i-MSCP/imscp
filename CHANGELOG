@@ -14,6 +14,7 @@ ENGINE:
 	- Added: Options which allow to disable compression for backups
 	- Fixed: Even if a database backup fail, the backup must not stop. The backup script must jump to the next database
 	- Fixed: iMSCP::Ext2Attributes must not act on systems which do not support extended fs attributes
+	- Fixed: Reload signal not implemented in upstart < 1.10.0
 	- Fixed: SQL root password must not be shown through processus's viewer (mysqldump)
 	- Fixed: The backup script must set the immutable bit on the customer homedir only if it was previously set
 

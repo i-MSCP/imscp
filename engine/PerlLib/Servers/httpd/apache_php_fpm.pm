@@ -1585,7 +1585,7 @@ sub restartApache
 	$rs = execute(
 		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} " .
 			($self->{'forceRestart'} ? 'restart' : 'reload') . ' 2>/dev/null',
-		\$stdout,
+		\$stdout
 	);
 	debug($stdout) if $stdout;
 	error('Unable to restart/reload Apache2') if $rs > 1;

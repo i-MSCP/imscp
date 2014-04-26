@@ -270,6 +270,26 @@ sub _restorePhpfpmConfig
 	) if -f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled";
 	return $rs if $rs;
 
+	# Restore init script
+	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}") {
+		my $file = iMSCP::File->new(
+			'filename' => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}"
+		);
+
+		my $fileContent = $file->get();
+		unless(defined $fileContent) {
+			error("Unable to read file $file->{'filename'}");
+		}
+
+		$fileContent =~ s/# upstart disabled by i-MSCP installer\n#(.*\n)#(.*\n)#(.*\n)/$1$2$3/g;
+
+		$rs = $file->set($fileContent);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+	}
+
 	$rs;
 }
 
