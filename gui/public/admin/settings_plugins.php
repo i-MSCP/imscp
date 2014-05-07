@@ -603,7 +603,7 @@ check_login('admin');
 $pluginManager = iMSCP_Registry::get('pluginManager');
 
 // Dispatches the request
-if (!empty($_REQUEST) || !empty($_FILES)) {
+if (!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
 	if (isset($_GET['update_plugin_list'])) {
 		admin_pluginManagerUpdatePluginList($pluginManager);
 	} elseif (isset($_GET['install'])) {
