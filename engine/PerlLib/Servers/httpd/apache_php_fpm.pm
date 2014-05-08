@@ -320,7 +320,7 @@ sub disableDmn($$)
 		return $rs if $rs;
 
 		$rs = $self->buildConfFile(
-			"$self->{'tplDir'}/domain_disabled$_.tpl",
+			"$self->{'apacheTplDir'}/domain_disabled$_.tpl",
 			$data,
 			{ 'destination' => "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}$_.conf" }
 		);
