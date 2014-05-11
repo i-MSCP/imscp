@@ -416,8 +416,8 @@ function admin_pluginManagerCheckAction($pluginManager, $pluginName, $action)
 				}
 			}
 			break;
-        case 'protect':
-            break;
+		case 'protect':
+			break;
 		default:
 			showBadRequestErrorPage();
 	}
