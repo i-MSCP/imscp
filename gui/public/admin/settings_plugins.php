@@ -416,6 +416,8 @@ function admin_pluginManagerCheckAction($pluginManager, $pluginName, $action)
 				}
 			}
 			break;
+        case 'protect':
+            break;
 		default:
 			showBadRequestErrorPage();
 	}
@@ -436,7 +438,6 @@ function admin_pluginManagerDoAction($pluginManager, $pluginName, $action)
 	if ($pluginManager->isPluginKnown($pluginName)) {
 		if (admin_pluginManagerCheckAction($pluginManager, $pluginName, $action)) {
 			$ret = $pluginManager->{"plugin{$action}"}($pluginName);
-
 			if ($ret == iMSCP_Plugin_Manager::ACTION_FAILURE || $ret == iMSCP_Plugin_Manager::ACTION_STOPPED) {
 				$msg = ($ret == iMSCP_Plugin_Manager::ACTION_FAILURE)
 					? tr('Action has failed.') : tr('Action has been stopped.');
