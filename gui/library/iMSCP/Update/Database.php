@@ -2785,7 +2785,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Fix Sql user hosts
 	 *
-	 * @return string SQL statetement to be executed
+	 * @return array SQL statement to be executed
 	 */
 	protected function _databaseUpdate_177()
 	{
@@ -2843,5 +2843,55 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		return $sqlUdp;
+	}
+
+	/**
+	 * Decrypt any SSL private key
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	public function _databaseUpdate_178()
+	{
+		$sqlUdp = array();
+
+		$stmt = execute_query('SELECT cert_id, password, `key` FROM ssl_certs');
+
+		if ($stmt->rowCount()) {
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+
+					$certId = quoteValue($row['cert_id'], PDO::PARAM_INT);
+					$privateKey = new Crypt_RSA();
+
+					if($row['password'] != '') {
+						$privateKey->setPassword($row['password']);
+					}
+
+					if (!$privateKey->loadKey($row['key'], CRYPT_RSA_PRIVATE_FORMAT_PKCS1)) {
+						$sqlUdp[] = "DELETE FROM ssl_certs WHERE cert_id = $certId";
+						continue;
+					}
+
+					// Clear out passphrase
+					$privateKey->setPassword();
+
+					// Get unencrypted private key
+					$privateKey = $privateKey->getPrivateKey();
+
+					$privateKey = quoteValue($privateKey, PDO::PARAM_STR);
+					$sqlUdp[] = "UPDATE ssl_certs SET `key` = $privateKey WHERE cert_id = $certId";
+				}
+		}
+
+		return $sqlUdp;
+	}
+
+	/**
+	 * Remove password column from the ssl_certs table
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	public function _databaseUpdate_179()
+	{
+		return $this->_dropColumn('ssl_certs', 'password');
 	}
 }

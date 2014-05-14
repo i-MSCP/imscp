@@ -71,7 +71,16 @@ define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
 // Set include path
 set_include_path(
-	implode(PATH_SEPARATOR, array_unique(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor', DEFAULT_INCLUDE_PATH)))
+	implode(
+        PATH_SEPARATOR,
+        array_unique(
+            array(
+                LIBRARY_PATH, LIBRARY_PATH . '/vendor',
+                LIBRARY_PATH, LIBRARY_PATH . '/vendor/phpseclib',
+                DEFAULT_INCLUDE_PATH
+            )
+        )
+    )
 );
 
 // Autoloader
@@ -83,7 +92,8 @@ iMSCP\Loader\AutoloaderFactory::factory(
             'prefixes' => array(
                 'iMSCP' => __DIR__, // Setup namespace for iMSCP classes using PHP5.3 namespaces
                 'Zend_' => __DIR__ . '/vendor', // Setup prefix for Zend class using Pear naming convention
-            )
+            ),
+            'useIncludePath' => true
         )
     )
 );

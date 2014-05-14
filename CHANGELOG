@@ -17,6 +17,7 @@ ENGINE:
 	- Fixed: Reload signal not implemented in upstart < 1.10.0
 	- Fixed: SQL root password must not be shown through processus's viewer (mysqldump)
 	- Fixed: The backup script must set the immutable bit on the customer homedir only if it was previously set
+	- Fixed: The full certificate chain must be imported in the final container
 	- Fixed: Unable to suspend domain - Undefined key 'TplDir' (apache_php_fpm server implementation)
 
 INSTALLER:
@@ -31,6 +32,8 @@ GUI:
 	- Deprecated: iMSCP_Events_Manager::getInstance() (will be removed in next minor version)
 	- Fixed: Directory chooser is broken (software installer)
 	- Fixed: Empty SQL user list if at least one database doesn't have any SQL user (software installer)
+	- Fixed: Private key passphrase must not be stored in database (SSL feature)
+	- Fixed: The full certificate chain must be checked (SSL feature)
 
 PLUGINS:
 	- Changed: Implementation of the register() method is no longer mandatory in action plugins

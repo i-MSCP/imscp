@@ -67,9 +67,6 @@ function get_domain_running_sub_cnt($domain_id)
  */
 function get_domain_running_als_cnt($domain_id)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$stmt = exec_query(
 		'SELECT COUNT(alias_id) AS cnt FROM domain_aliasses WHERE domain_id = ? AND alias_status != ?',
 		array($domain_id, 'ordered')
@@ -316,7 +313,8 @@ function customerHasFeature($featureNames, $forceReload = false)
 			'protected_areas' => true,
 			'custom_error_pages' => true,
 			'aps' => ($dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1')
-					? true : false
+					? true : false,
+            'ssl' => ($cfg['ENABLE_SSL']) ? true : false
 		);
 
 		if (($cfg->IMSCP_SUPPORT_SYSTEM)) {

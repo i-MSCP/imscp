@@ -63,10 +63,10 @@ function client_generateDomainsList($tpl, $userId)
 	";
 	$stmt = exec_query($query, (int)$userId);
 
-	while (!$stmt->EOF) {
-		$domainName = decode_idna($stmt->fields['domain_name']);
+	while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		$domainName = decode_idna($row['domain_name']);
 
-		if ($stmt->fields['domain_status'] == 'ok') {
+		if ($row['domain_status'] == 'ok') {
 			$tpl->assign(
 				array(
 					'DOMAIN_NAME' => tohtml($domainName),
@@ -89,17 +89,17 @@ function client_generateDomainsList($tpl, $userId)
 		$tpl->assign(
 			array(
 				'DOMAIN_NAME' => tohtml($domainName),
-				'DOMAIN_CREATE_DATE' => tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_created'])),
-				'DOMAIN_EXPIRE_DATE' => ($stmt->fields['domain_expires'] != 0)
-					? tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_expires'])) : tr('Never'),
-				'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status']),
-				'CERT_SCRIPT' => tohtml('cert_view.php?id=' . $stmt->fields['domain_id'] . '&type=dmn'),
-				'VIEW_CERT' => tr('View certificates')
+				'DOMAIN_CREATE_DATE' => tohtml(date($cfg['DATE_FORMAT'], $row['domain_created'])),
+				'DOMAIN_EXPIRE_DATE' => ($row['domain_expires'] != 0)
+					? tohtml(date($cfg['DATE_FORMAT'], $row['domain_expires'])) : tr('Never'),
+				'DOMAIN_STATUS' => translate_dmn_status($row['domain_status']),
+				'CERT_SCRIPT' => tohtml('cert_view.php?id=' . $row['domain_id'] . '&type=dmn'),
+				'VIEW_CERT' => tr('Show certificate')
 			)
 		);
 
+
 		$tpl->parse('DOMAIN_ITEM', '.domain_item');
-		$stmt->moveNext();
 	}
 }
 
@@ -135,12 +135,12 @@ function client_generateDomainAliasesList($tpl, $userId)
 				)
 			);
 		} else {
-			while (!$stmt->EOF) {
-				$alsId = $stmt->fields['alias_id'];
-				$alsName = $stmt->fields['alias_name'];
-				$alsStatus = $stmt->fields['alias_status'];
-				$alsForwardUrl = $stmt->fields['url_forward'];
-				$alsMountPoint = $stmt->fields['alias_mount'];
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$alsId = $row['alias_id'];
+				$alsName = $row['alias_name'];
+				$alsStatus = $row['alias_status'];
+				$alsForwardUrl = $row['url_forward'];
+				$alsMountPoint = $row['alias_mount'];
 
 				list(
 					$action, $actionScript, $isStatusOk, $certText, $certScript
@@ -193,7 +193,6 @@ function client_generateDomainAliasesList($tpl, $userId)
 				);
 
 				$tpl->parse('ALS_ITEM', '.als_item');
-				$stmt->moveNext();
 			}
 
 			$tpl->assign('ALS_MESSAGE', '');
@@ -213,9 +212,6 @@ function client_generateDomainAliasesList($tpl, $userId)
  */
 function _client_generateDomainAliasAction($id, $status)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if ($status == 'ok') {
 		return array(
 			tr('Delete'),
@@ -242,9 +238,6 @@ function _client_generateDomainAliasAction($id, $status)
  */
 function _client_generateDomainAliasRedirect($id, $status, $redirectUrl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if ($redirectUrl == 'no') {
 		if ($status == 'ok') {
 			return array('-', tohtml("alias_edit.php?id=$id"), tr('Edit'));
@@ -316,13 +309,13 @@ function client_generateSubdomainsList($tpl, $userId)
 				)
 			);
 		} else {
-			while (!$stmt1->EOF) {
-				$domainName = $stmt1->fields['domain_name'];
-				$subId = $stmt1->fields['subdomain_id'];
-				$subName = $stmt1->fields['subdomain_name'];
-				$subStatus = $stmt1->fields['subdomain_status'];
-				$subUrlForward = $stmt1->fields['subdomain_url_forward'];
-				$subMountPoint = $stmt1->fields['subdomain_mount'];
+			while ($row = $stmt1->fetchRow(PDO::FETCH_ASSOC)) {
+				$domainName = $row['domain_name'];
+				$subId = $row['subdomain_id'];
+				$subName = $row['subdomain_name'];
+				$subStatus = $row['subdomain_status'];
+				$subUrlForward = $row['subdomain_url_forward'];
+				$subMountPoint = $row['subdomain_mount'];
 
 				list(
 					$action, $actionScript, $isStatusOk, $certText, $certScript
@@ -377,17 +370,15 @@ function client_generateSubdomainsList($tpl, $userId)
 				);
 
 				$tpl->parse('SUB_ITEM', '.sub_item');
-				$stmt1->moveNext();
 			}
 
-			while (!$stmt2->EOF) {
-
-				$alsName = $stmt2->fields['alias_name'];
-				$alssubId = $stmt2->fields['subdomain_alias_id'];
-				$alssubName = $stmt2->fields['subdomain_alias_name'];
-				$alssubStatus = $stmt2->fields['subdomain_alias_status'];
-				$alssubMountPoint = $stmt2->fields['subdomain_alias_mount'];
-				$alssubUrlForward = $stmt2->fields['subdomain_alias_url_forward'];
+			while ($row = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
+				$alsName = $row['alias_name'];
+				$alssubId = $row['subdomain_alias_id'];
+				$alssubName = $row['subdomain_alias_name'];
+				$alssubStatus = $row['subdomain_alias_status'];
+				$alssubMountPoint = $row['subdomain_alias_mount'];
+				$alssubUrlForward = $row['subdomain_alias_url_forward'];
 
 				list(
 					$action, $actionScript, $isStatusOk, $certText, $certScript
@@ -442,7 +433,6 @@ function client_generateSubdomainsList($tpl, $userId)
 				);
 
 				$tpl->parse('SUB_ITEM', '.sub_item');
-				$stmt2->moveNext();
 			}
 
 			$tpl->assign('SUB_MESSAGE', '');
@@ -560,40 +550,38 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 				)
 			);
 		} else {
-			while (!$stmt->EOF) {
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				list(
 					$actionEdit,
 					$actionScriptEdit
 				) = _client_generateCustomDnsRecordAction(
 					'edit',
-					($stmt->fields['owned_by'] === 'custom_dns_feature')
-						? $stmt->fields['domain_dns_id']
+					($row['owned_by'] === 'custom_dns_feature')
+						? $row['domain_dns_id']
 						: (
-							($stmt->fields['owned_by'] === 'ext_mail_feature')
-								? $stmt->fields['domain_id'] . ';' . ($stmt->fields['alias_id'] ? 'alias' : 'normal')
+							($row['owned_by'] === 'ext_mail_feature')
+								? $row['domain_id'] . ';' . ($row['alias_id'] ? 'alias' : 'normal')
 								: null // FIXME Allow any component to provide it id for edit link
 						),
-					$stmt->fields['domain_status'],
-					$stmt->fields['owned_by']
+					$row['domain_status'],
+					$row['owned_by']
 				);
 
-				if($stmt->fields['owned_by'] !== 'custom_dns_feature') {
+				if($row['owned_by'] !== 'custom_dns_feature') {
 					$tpl->assign('DNS_DELETE_LINK', '');
 				} else {
 					list(
 						$actionDelete,
 						$actionScriptDelete
 					) = _client_generateCustomDnsRecordAction(
-						'Delete',
-						$stmt->fields['domain_dns_id'],
-						$stmt->fields['domain_status']
+						'Delete', $row['domain_dns_id'], $row['domain_status']
 					);
 
 					$tpl->assign(
 						array(
 							'DNS_ACTION_SCRIPT_DELETE' => tohtml($actionScriptDelete),
 							'DNS_ACTION_DELETE' => $actionDelete,
-							'DNS_TYPE_RECORD' => tr("%s record", $stmt->fields['domain_type'])
+							'DNS_TYPE_RECORD' => tr("%s record", $row['domain_type'])
 						)
 					);
 
@@ -602,14 +590,13 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 
 				$tpl->assign(
 					array(
-						'DNS_DOMAIN' => tohtml(decode_idna($stmt->fields['domain_name'])),
-						'DNS_NAME' => tohtml(decode_idna($stmt->fields['domain_dns'])),
-						'DNS_CLASS' => tohtml($stmt->fields['domain_class']),
-						'DNS_TYPE' => tohtml($stmt->fields['domain_type']),
-						'LONG_DNS_DATA' => tohtml(wordwrap(decode_idna($stmt->fields['domain_text']), 80, "\n", true)),
-						//'LONG_DNS_DATA' => tohtml(decode_idna($stmt->fields['domain_text'])),
-						'SHORT_DNS_DATA' => decode_idna((strlen($stmt->fields['domain_text']) > 20) ?
-							substr($stmt->fields['domain_text'],0 , 17) . '...' : $stmt->fields['domain_text']),
+						'DNS_DOMAIN' => tohtml(decode_idna($row['domain_name'])),
+						'DNS_NAME' => tohtml(decode_idna($row['domain_dns'])),
+						'DNS_CLASS' => tohtml($row['domain_class']),
+						'DNS_TYPE' => tohtml($row['domain_type']),
+						'LONG_DNS_DATA' => tohtml(wordwrap(decode_idna($row['domain_text']), 80, "\n", true)),
+						'SHORT_DNS_DATA' => decode_idna((strlen($row['domain_text']) > 20) ?
+							substr($row['domain_text'],0 , 17) . '...' : $row['domain_text']),
 						'DNS_ACTION_SCRIPT_EDIT' => tohtml($actionScriptEdit),
 						'DNS_ACTION_EDIT' => $actionEdit
 					)
@@ -617,7 +604,6 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 
 				$tpl->parse('DNS_ITEM', '.dns_item');
 				$tpl->assign('DNS_DELETE_LINK', '');
-				$stmt->moveNext();
 			}
 
 			$tpl->parse('DNS_LIST', 'dns_list');
@@ -668,9 +654,6 @@ check_login('user');
 
 // If the feature is disabled, redirects in silent way
 customerHasFeature('domain') or showBadRequestErrorPage();
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(

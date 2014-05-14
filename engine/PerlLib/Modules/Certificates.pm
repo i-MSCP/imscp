@@ -29,10 +29,10 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use File::Temp;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::OpenSSL;
+use File::Temp;
 use parent 'Modules::Abstract';
 
 sub _init
@@ -43,7 +43,7 @@ sub _init
 	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
 
 	my $rs = iMSCP::Dir->new('dirname' => $self->{'certsDir'})->make(
-		{ 'mode' => 0750, 'owner' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'} }
+		{ 'mode' => 0750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'} }
 	);
 	return $rs if $rs;
 
@@ -166,50 +166,58 @@ sub add
 
 	my $openSSL = iMSCP::OpenSSL->getInstance();
 
-	# Create temporary file for certificate
-	my $certFH = File::Temp->new();
-	# Write certificate from database into temporary file
-	print $certFH $self->{'cert'};
-	# Set certificate file path on openssl module
-	$openSSL->{'cert_path'} = $certFH;
-
-	# Create temporary file for private key
-	my $keyFH = File::Temp->new();
-	# Write private key from database into temporary file
-	print $keyFH $self->{'key'};
-	# Set key file path on openssl module
-	$openSSL->{'key_path'} = $keyFH;
-
-	my $caFH;
-
-	if($self->{'ca_cert'}) {
-		# Create temporary file for certificate authority
-		$caFH = File::Temp->new();
-		# Write certificate authority from database into temporary file
-		print $caFH $self->{'ca_cert'};
-		# Set certificate authority file path on openssl module
-		$openSSL->{'intermediate_cert_path'} = $caFH;
-	} else {
-		$openSSL->{'intermediate_cert_path'} = '';
-	}
-
-	# Set openssl binary path on openssl module
+	# Set OpenSSL binary path on OpenSSL module
 	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
 
-	# Set privata key password
-	$openSSL->{'key_pass'} = $self->{'password'};
+    # Set SSL certificate directory on OpenSSL module
+	$openSSL->{'certificate_chains_storage_dir'} = $self->{'certsDir'};
 
-	# Check certificate, private key and certificate authority
-	my $rs = $openSSL->ssl_check_all();
+	# Set certificate chain container name on OpenSSL module
+	$openSSL->{'certificate_chain_name'} = $self->{'name'};
+
+    ## Private key
+
+	# Create container for private key
+	my $privateKeyContainer = File::Temp->new();
+
+	# Write private key in container
+	print $privateKeyContainer $self->{'key'};
+
+	# Set private key container path on OpenSSL module
+	$openSSL->{'private_key_container_path'} = $privateKeyContainer;
+
+	# Certificate
+
+	# Create container for SSL certificate
+	my $certificateContainer = File::Temp->new();
+
+	# Write certificate in container
+	print $certificateContainer $self->{'cert'};
+
+	# Set certificate container path on OpenSSL module
+	$openSSL->{'certificate_container_path'} = $certificateContainer;
+
+	# CA Bundle (intermediate certificate(s))
+
+	if($self->{'ca_cert'}) {
+		# Create container for CA bundle
+		my $caBundleContainer = File::Temp->new();
+
+		# Write CA bundle in container
+		print $caBundleContainer $self->{'ca_cert'};
+
+		# Set CA bundle container path on OpenSSL module
+		$openSSL->{'ca_bundle_container_path'} = $caBundleContainer;
+	} else {
+		$openSSL->{'ca_bundle_container_path'} = '';
+	}
+
+	# Check certificate chain
+	my $rs = $openSSL->validateCertificateChain();
 	return $rs if $rs;
 
-	$openSSL->{'new_cert_path'} = $self->{'certsDir'};
-	$openSSL->{'new_cert_name'} = $self->{'name'};
-	$openSSL->{'cert_selfsigned'} = 0;
-
-	$openSSL->ssl_export_all();
-
-	0;
+	# Create certificate chain (private key, certificate and CA bundle)
+	$openSSL->createCertificateChain();
 }
 
 sub delete
@@ -217,12 +225,12 @@ sub delete
 	my $self = $_[0];
 
 	my $certFile = "$self->{'certsDir'}/$self->{'name'}.pem";
-	my $rs = 0;
 
-	$rs = iMSCP::File->new('filename' => $certFile)->delFile() if -f $certFile;
-	return $rs if $rs;
-
-	0;
+	if(-f $certFile) {
+	    iMSCP::File->new('filename' => $certFile)->delFile();
+    } else {
+	    0;
+    }
 }
 
 1;

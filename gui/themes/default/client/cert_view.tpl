@@ -16,12 +16,8 @@
 			<td>{STATUS}</td>
 		</tr>
 		<tr>
-			<td><label for="pass">{TR_PASSWORD}</label></td>
-			<td><input id="pass" type="password" name="pass" value="" autocomplete="off"/></td>
-		</tr>
-		<tr>
-			<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-			<td><input id="pass_rep" type="password" name="pass_rep" value="" autocomplete="off"/></td>
+			<td><label for="passphrase">{TR_PASSWORD}</label></td>
+			<td><input id="passphrase" type="password" name="passphrase" value="" autocomplete="off"/></td>
 		</tr>
 		<tr>
 			<td><label for="key_cert">{TR_CERTIFICATE_KEY}</label></td>
@@ -38,11 +34,11 @@
 		</tbody>
 	</table>
 
+    <!-- BDP: cert_enable -->
 	<div class="buttons">
-		<!-- BDP: cert_enable -->
 		<input name="send" type="submit" value="{TR_SAVE}"/>
-		<!-- EDP: cert_enable -->
 		<input name="delete" type="submit" value="{TR_DELETE}"/>
 		<a class="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
+    <!-- EDP: cert_enable -->
 </form>

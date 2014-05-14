@@ -960,8 +960,8 @@ sub setupAskSsl
 	my $hostname =  setupGetQuestion('SERVER_HOSTNAME');
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
 	my $selfSignedCertificate = setupGetQuestion('SELFSIGNED_CERTIFICATE', 'no');
-	my $certificatKeyPath = setupGetQuestion('CERTIFICATE_KEY_PATH', "/root/");
-	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
+	my $certificatKeyPath = setupGetQuestion('CERTIFICATE_KEY_PATH', '/root/');
+	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSPHRASE');
 	my $intermediateCertificatPath = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH', '/root/');
 	my $certificatPath = setupGetQuestion('CERTIFICATE_PATH', "/root/");
 	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
@@ -980,7 +980,7 @@ sub setupAskSsl
 		);
 
 		if($sslEnabled eq 'yes' && $rs != 30) {
-			# Ask for self-signed certificat
+			# Ask for self-signed certificate
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
 				"\nDo you have an SSL certificate?",
 				['yes', 'no'],
@@ -990,55 +990,55 @@ sub setupAskSsl
 			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
 
 			if($selfSignedCertificate eq 'no' && $rs != 30) {
-				# Ask for certificat key
+				# Ask for private key
 				my $msg = '';
 
 				do {
 					$dialog->msgbox("$msg\nPlease selects your private key in next dialog.");
 
-					# Ask for private key path
+					# Ask for private key container path
 					do {
 						($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
 					} while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
 
 					if($rs != 30) {
 						($rs, $certificatKeyPassword) = $dialog->passwordbox(
-							"\nPlease enter the password for your private key if any:", $certificatKeyPassword
+							"\nPlease enter the passphrase for your private key if any:", $certificatKeyPassword
 						);
 					}
 
 					if($rs != 30) {
-						$openSSL->{'key_path'} = $certificatKeyPath;
-						$openSSL->{'key_pass'} = $certificatKeyPassword;
+						$openSSL->{'private_key_container_path'} = $certificatKeyPath;
+						$openSSL->{'private_key_passphrase'} = $certificatKeyPassword;
 
-						if($openSSL->ssl_check_key()) {
-							$msg = "\n\\Z1Wrong private key or password. Please try again.\\Zn\n\n";
+						if($openSSL->validatePrivateKey()) {
+							$msg = "\n\\Z1Wrong private key or passphrase. Please try again.\\Zn\n\n";
 						} else {
 							$msg = '';
 						}
 					}
 				} while($rs != 30 && $msg);
 
-				# Ask for CA bundle
+				# Ask for the CA bundle
 				if($rs != 30) {
 					# The codes used for "Yes" and "No" match those used for "OK" and "Cancel", internally no
 					# distinction is made... Therefore, we override the Cancel value temporarly
 					$ENV{'DIALOG_CANCEL'} = 1;
-					$rs = $dialog->yesno("\nDo you have an intermediate certificate (CA Bundle)?");
+					$rs = $dialog->yesno("\nDo you have any SSL intermediate certificate(s) (CA Bundle)?");
 
 					if(! $rs) { # backup feature still available through ESC
 						do {
 							($rs, $intermediateCertificatPath) = $dialog->fselect($intermediateCertificatPath);
 						} while($rs != 30 && ! ($intermediateCertificatPath && -f $intermediateCertificatPath));
 
-						$openSSL->{'intermediate_cert_path'} = $intermediateCertificatPath if $rs != 30;
+						$openSSL->{'ca_bundle_container_path'} = $intermediateCertificatPath if $rs != 30;
 					}
 
 					$ENV{'DIALOG_CANCEL'} = 30;
 				}
 
 				if($rs != 30) {
-					$dialog->msgbox("\nPlease selects your own certificate in next dialog.");
+					$dialog->msgbox("\nPlease selects your own SSL certificate in next dialog.");
 
 					$rs = 1;
 
@@ -1049,8 +1049,8 @@ sub setupAskSsl
 							($rs, $certificatPath) = $dialog->fselect($certificatPath);
 						} while($rs != 30 && ! ($certificatPath && -f $certificatPath));
 
-						$openSSL->{'cert_path'} = $certificatPath if $rs != 30;
-					} while($rs != 30 && $openSSL->ssl_check_cert());
+						$openSSL->{'certificate_container_path'} = $certificatPath if $rs != 30;
+					} while($rs != 30 && $openSSL->validateCertificate());
 				}
 			}
 
@@ -1065,11 +1065,11 @@ sub setupAskSsl
 			}
 		}
 	} elsif($sslEnabled eq 'yes' && ! iMSCP::Getopt->preseed) {
-		$openSSL->{'key_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
-		$openSSL->{'intermediate_cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
-		$openSSL->{'cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
+		$openSSL->{'private_key_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
+		$openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
+		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
 
-		if($openSSL->ssl_check_all()){
+		if($openSSL->validateCertificateChain()){
 			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate is missing or invalid.");
 			goto SSL_DIALOG;
 		}
@@ -1082,7 +1082,7 @@ sub setupAskSsl
 		setupSetQuestion('SSL_ENABLED', $sslEnabled);
 		setupSetQuestion('SELFSIGNED_CERTIFICATE', $selfSignedCertificate);
 		setupSetQuestion('CERTIFICATE_KEY_PATH', $certificatKeyPath);
-		setupSetQuestion('CERTIFICATE_KEY_PASSWORD', $certificatKeyPassword);
+		setupSetQuestion('CERTIFICATE_KEY_PASSPHRASE', $certificatKeyPassword);
 		setupSetQuestion('INTERMEDIATE_CERTIFICATE_PATH', $intermediateCertificatPath);
 		setupSetQuestion('CERTIFICATE_PATH', $certificatPath);
 		setupSetQuestion('BASE_SERVER_VHOST_PREFIX', ($sslEnabled eq 'yes') ? $baseServerVhostPrefix : 'http://');
@@ -1225,7 +1225,7 @@ sub setupCreateSystemDirectories
 	return $rs if $rs;
 
 	for (@systemDirectories) {
-		$rs = iMSCP::Dir->new('dirname' => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]});
+		$rs = iMSCP::Dir->new('dirname' => $_->[0])->make({ 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3]});
 		return $rs if $rs;
 	}
 
@@ -1720,42 +1720,45 @@ sub setupDefaultAdmin
 sub setupSsl
 {
 	my $hostname =  setupGetQuestion('SERVER_HOSTNAME');
-	my $selfSignedCertificate = setupGetQuestion('SELFSIGNED_CERTIFICATE');
+	my $selfSignedCertificate = (setupGetQuestion('SELFSIGNED_CERTIFICATE') eq 'yes') ? 1 : 0;
 	my $certificatKeyPath = setupGetQuestion('CERTIFICATE_KEY_PATH');
-	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
+	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSPHRASE');
 	my $intermediateCertificatPath = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH');
 	my $certificatPath = setupGetQuestion('CERTIFICATE_PATH');
 	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
 
+	# FIXME
+	#
+	# 1. Self-signed certificate
+	#
+	# - One for the panel, with the common name matching the domain name from which the panel will be reachable
+	# - One for the services managed by i-MSCP (MTA, FTPD) with common name matching the server hostname
+	#
+	# 2. User certificate
+	# - In case the panel domain name doesn't match the server hostname, we must ask the admin for both, the panel
+	#
+	# In both case, the wildcard SSL option should be discarded
 	if($sslEnabled eq 'yes' && setupGetQuestion('SETUP_SSL', 'yes') ne 'no') {
 		my $openSSL = iMSCP::OpenSSL->getInstance();
 		$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
 
-		# Setup library for new certificat
-		$openSSL->{'key_path'} = $certificatKeyPath;
-		$openSSL->{'key_pass'} = $certificatKeyPassword;
-		$openSSL->{'intermediate_cert_path'} = $intermediateCertificatPath;
-		$openSSL->{'new_cert_name'} = $hostname;
-		$openSSL->{'cert_path'} = $certificatPath;
-		$openSSL->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
-		$openSSL->{'common_name'} = $hostname;
-		$openSSL->{'cert_selfsigned'} = $selfSignedCertificate;
+		# Setup library for new certificate
+		$openSSL->{'certificate_chains_storage_dir'} = $main::imscpConfig{'GUI_CERT_DIR'};
+		$openSSL->{'certificate_chain_name'} = $hostname;
 
-		# FIXME
-		#
-		# 1. Self-signed certificate
-		#
-		# - One for the panel, with the common name matching the domain name from which the panel will be reachable
-		# - One for the services managed by i-MSCP (MTA, FTPD) with common name matching the server hostname
-		#
-		# 2. User certificate
-		# - In case the panel domain name doesn't match the server hostname, we must ask the admin for both, the panel
-		#
-		# In both case, the wildcard SSL option should be discarded
+		if($selfSignedCertificate) {
+			my $rs = $openSSL->createSelfSignedCertificate($hostname);
+			return $rs if $rs;
+		} else {
+			$openSSL->{'private_key_container_path'} = $certificatKeyPath;
+			$openSSL->{'private_key_passphrase'} = $certificatKeyPassword;
+			$openSSL->{'certificate_container_path'} = $certificatPath;
+			$openSSL->{'ca_bundle_container_path'} = $intermediateCertificatPath;
 
-		my $rs = $openSSL->ssl_export_all();
-		return $rs if $rs;
+			my $rs = $openSSL->createCertificateChain();
+			return $rs if $rs;
+		}
 	}
 
 	0;

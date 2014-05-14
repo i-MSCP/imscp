@@ -366,7 +366,7 @@ sub _getHttpdData
 		return 1;
 	}
 
-	my $haveCert = exists $certData->{$self->{'domain_id'}} && ! $self->testCert($self->{'domain_name'});
+	my $haveCert = exists $certData->{$self->{'domain_id'}} && ! $self->isValidCertificate($self->{'domain_name'});
 
 	$self->{'httpd'} = {
 		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
@@ -548,7 +548,7 @@ sub _getAddonsData
 	0;
 }
 
-sub testCert
+sub isValidCertificate
 {
 	my ($self, $domainName) = @_;
 
@@ -556,11 +556,11 @@ sub testCert
 	my $openSSL = iMSCP::OpenSSL->getInstance();
 
 	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
-	$openSSL->{'cert_path'} = $certFile;
-	$openSSL->{'intermediate_cert_path'} = $certFile;
-	$openSSL->{'key_path'} = $certFile;
+	$openSSL->{'private_key_container_path'} = $certFile;
+	$openSSL->{'certificate_container_path'} = $certFile;
+	$openSSL->{'ca_bundle_container_path'} = $certFile;
 
-	$openSSL->ssl_check_all();
+	! $openSSL->validateCertificateChain();
 }
 
 1;

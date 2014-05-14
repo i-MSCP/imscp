@@ -188,7 +188,7 @@ sub _getHttpdData
 		return 1;
 	}
 
-	my $haveCert = exists $certData->{$self->{'alias_id'}} && !$self->testCert($self->{'alias_name'});
+	my $haveCert = exists $certData->{$self->{'alias_id'}} && $self->validateCertificateChain($self->{'alias_name'});
 
 	$self->{'httpd'} = {
 		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},

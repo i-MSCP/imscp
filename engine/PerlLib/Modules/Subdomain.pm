@@ -190,7 +190,7 @@ sub _getHttpdData
 
 	my $haveCert =
 		exists $certData->{$self->{'subdomain_id'}} &&
-		! $self->testCert($self->{'subdomain_name'} . '.' . $self->{'user_home'});
+		$self->isValidCertificate($self->{'subdomain_name'} . '.' . $self->{'user_home'});
 
 	$self->{'httpd'} = {
 		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
@@ -363,7 +363,7 @@ sub _getAddonsData
 	0;
 }
 
-sub testCert
+sub isValidCertificate
 {
 	my ($self, $subdomainName) = @_;
 
@@ -371,11 +371,11 @@ sub testCert
 	my $openSSL = iMSCP::OpenSSL->getInstance();
 
 	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
-	$openSSL->{'cert_path'} = $certFile;
-	$openSSL->{'intermediate_cert_path'} = $certFile;
-	$openSSL->{'key_path'} = $certFile;
+	$openSSL->{'private_key_container_path'} = $certFile;
+	$openSSL->{'certificate_container_path'} = $certFile;
+	$openSSL->{'ca_bundle_container_path'} = $certFile;
 
-	$openSSL->ssl_check_all();
+	! $openSSL->validateCertificateChain();
 }
 
 sub _getSharedMountPoints
