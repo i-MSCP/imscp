@@ -189,9 +189,12 @@ function client_generatePage($tpl, $id, $type)
 							if (preg_match("/^$certificatPattern$/s", trim(clean_input($_POST['cert_cert'])), $match)) {
 								$certificate = $match[0];
 
-								if (!$x509->loadCA($certificate) || ! $x509->validateSignature()) {
-									set_page_message(tr('Certificate is not valid'), 'error');
+								// Check certificate
+								if (!$x509->loadX509($certificate) || ! $x509->validateSignature()) {
+									set_page_message(tr('your certificate is not valid.'), 'error');
 								}
+
+								// TODO check for CN
 
 								if (!openssl_x509_check_private_key($certificate, $privateKey)) {
 									set_page_message(tr("Certificate doesn't corresponds to the private key."), 'error');
