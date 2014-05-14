@@ -17,7 +17,7 @@ ENGINE:
 	- Fixed: Reload signal not implemented in upstart < 1.10.0
 	- Fixed: SQL root password must not be shown through processus's viewer (mysqldump)
 	- Fixed: The backup script must set the immutable bit on the customer homedir only if it was previously set
-	- Fixed: The full certificate chain must be imported in the final container
+	- Fixed: The full certificate chain must be imported in the final container (OpenSSL library)
 	- Fixed: Unable to suspend domain - Undefined key 'TplDir' (apache_php_fpm server implementation)
 
 INSTALLER:
