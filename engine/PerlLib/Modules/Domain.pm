@@ -58,24 +58,24 @@ sub loadData
 
 	my $sql = "
 		SELECT
-			`domain`.*, `ips`.`ip_number`, `mail_count`.`mail_on_domain`
+			domain.*, ip_number, IFNULL(mail_on_domain, 0) AS mail_on_domain
 		FROM
-			`domain` AS `domain`
+			domain
 		INNER JOIN
-			`server_ips` AS `ips` ON (`domain`.`domain_ip_id` = `ips`.`ip_id`)
+			server_ips ON (domain_ip_id = ip_id)
 		LEFT JOIN
 			(
 				SELECT
-					`domain_id` AS `id`, COUNT( `domain_id` ) AS `mail_on_domain`
+					domain_id, COUNT(domain_id) AS mail_on_domain
 				FROM
-					`mail_users` WHERE `sub_id` = 0
+					mail_users WHERE sub_id = 0
 				GROUP BY
-					`domain_id`
-			) AS `mail_count`
-		ON
-			(`domain`.`domain_id` = `mail_count`.`id`)
+					domain_id
+			) AS mail_count
+		USING
+			(domain_id)
 		WHERE
-			`domain_id` = ?
+			domain_id = ?
 	";
 	my $rdata = iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{'dmnId'});
 	unless(ref $rdata eq 'HASH') {
@@ -103,11 +103,11 @@ sub process
 
 	my @sql;
 
-	if($self->{'domain_status'} =~ /^toadd|tochange|toenable$/) {
+	if($self->{'domain_status'} ~~ ['toadd', 'tochange', 'toenable']) {
 		$rs = $self->add();
 
 		@sql = (
-			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
+			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'domain_id'}
 		);
@@ -116,18 +116,18 @@ sub process
 
 		if($rs) {
 			@sql = (
-				"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
+				'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
 				scalar getMessageByType('error'),
 				$self->{'domain_id'}
 			);
 		} else {
-			@sql = ("DELETE FROM `domain` WHERE `domain_id` = ?", $self->{'domain_id'});
+			@sql = ('DELETE FROM domain WHERE domain_id = ?', $self->{'domain_id'});
 		}
 	} elsif($self->{'domain_status'} eq 'todisable') {
 		$rs = $self->disable();
 
 		@sql = (
-			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
+			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
 			($rs ? scalar getMessageByType('error') : 'disabled'),
 			$self->{'domain_id'}
 		);
@@ -135,7 +135,7 @@ sub process
 		$rs = $self->restore();
 
 		@sql = (
-			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
+			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'domain_id'}
 		);
@@ -157,65 +157,65 @@ sub restore
 	$self->{'action'} = 'restore';
 
 	my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-	my $dmnBkpdir = "$dmnDir/backups";
+	my $bkpDir = "$dmnDir/backups";
 	my ($cmd, $rdata, $stdout, $stderr);
 	my $rs = 0;
 
-	my @bkpFiles = iMSCP::Dir->new('dirname' => $dmnBkpdir)->getFiles();
+	my @bkpFiles = iMSCP::Dir->new('dirname' => $bkpDir)->getFiles();
 
 	return 0 unless @bkpFiles;
 
 	for (@bkpFiles) {
-		unless(-l "$dmnBkpdir/$_") { # Doesn't follow any symlink (See #990)
-			if(/^(.+?)\.sql\.(bz2|gz|lzma|xz)$/) { # Restore SQL database
-				my $sql = "
-					SELECT
-						*
-					FROM
-						`sql_database`, `sql_user`
-					WHERE
-						`sql_database`.`domain_id` = ?
-					AND
-						`sql_user`.`sqld_id` = `sql_database`.`sqld_id`
-					AND
-						`sql_database`.`sqld_name` = ?
-				";
-				$rdata = iMSCP::Database->factory()->doQuery('sqld_name', $sql, $self->{'domain_id'}, $1);
+		unless(-l "$bkpDir/$_") { # Doesn't follow any symlink (See #990)
+			if(/^(.+?)\.sql(?:\.(bz2|gz|lzma|xz))?$/) { # Restore SQL database
+				$rdata = iMSCP::Database->factory()->doQuery(
+					'sqld_name',
+					'
+						SELECT
+							*
+						FROM
+							sql_database
+						INNER JOIN
+							sql_user USING(sqld_id)
+						WHERE
+							domain_id = ?
+						AND
+							sqld_name = ?
+						LIMIT 1
+					',
+					$self->{'domain_id'},
+					$1
+				);
 				unless(ref $rdata eq 'HASH') {
 					error($rdata);
 					return 1;
 				}
 
-				unless(exists $rdata->{$1}) {
+				unless(%{$rdata}) {
 					$rdata = iMSCP::Database->factory()->doQuery(
 						'dummy',
-						"
-							INSERT INTO `log` (
-								`log_message`
-							) VALUES (
-								'
-									Unable to restore the <strong>$1</strong> SQL database of domain $self->{'domain_name'}:
-									Unknown database.
-								'
-							)
-						"
+						'INSERT INTO log (log_message) VALUES (?)',
+						sprintf(
+							'Unable to restore the <strong>%s</strong> SQL database which belong to the ' .
+							'%s account: Unknown database.', $1, $self->{'domain_name'}
+                        )
 					);
 					unless(ref $rdata eq 'HASH') {
 						error($rdata);
 						return 1;
 					}
 
-					warning("orphaned database found ($1). skipping...");
+					warning("Orphaned database ($1) or missing SQL user for this database. skipping...");
 					next;
 				}
 
-				if(scalar keys %{$rdata}) {
-					my $dbHostname = escapeShell($main::imscpConfig{'DATABASE_HOST'});
-					my $dbPort = escapeShell($main::imscpConfig{'DATABASE_PORT'});
-					my $sqlUsername = escapeShell($rdata->{$1}->{'sqlu_name'});
-					my $sqlUserpass = escapeShell($rdata->{$1}->{'sqlu_pass'});
-					my $dbName = escapeShell($rdata->{$1}->{'sqld_name'});
+				my $dbHostname = escapeShell($main::imscpConfig{'DATABASE_HOST'});
+				my $dbPort = escapeShell($main::imscpConfig{'DATABASE_PORT'});
+				my $sqlUsername = escapeShell($rdata->{$1}->{'sqlu_name'});
+				my $sqlUserpass = escapeShell($rdata->{$1}->{'sqlu_pass'});
+				my $dbName = escapeShell($rdata->{$1}->{'sqld_name'});
 
+                if(defined $2) {
 					if($2 eq 'bz2') {
 						$cmd = "$main::imscpConfig{'CMD_BZCAT'} -d ";
 					} elsif($2 eq 'gz') {
@@ -225,23 +225,23 @@ sub restore
 					} elsif($2 eq 'xz') {
 						$cmd = "$main::imscpConfig{'CMD_XZ'} -dc ";
 					}
-
-					$cmd .= (
-						"$dmnBkpdir/$_ | $main::imscpConfig{'CMD_MYSQL'}",
-						"-h $dbHostname",
-						"-P $dbPort",
-						"-u $sqlUsername",
-						"-p$sqlUserpass",
-						$dbName
-					);
-
-					$rs = execute("$cmd", \$stdout, \$stderr);
-					debug($stdout) if $stdout;
-					error($stderr) if $stderr && $rs;
-					return $rs if $rs;
+				} else {
+					$cmd = "$main::imscpConfig{'CMD_CAT'} ";
 				}
-			} elsif(/^.+?\.tar\.(bz2|gz|lzma|xz)$/) { # Restore domain files
-				# Since we are now using extended attribute to protect some folders, we must in order do the following
+
+				$cmd .=
+					escapeShell("$bkpDir/$_") . " | $main::imscpConfig{'CMD_MYSQL'} " .
+					"-h $dbHostname " .
+					"-P $dbPort " .
+					"-u $sqlUsername " .
+					"-p$sqlUserpass " .
+					$dbName;
+
+				$rs = execute($cmd, \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				warning(sprintf('Unable to restore SQL database: %s', $stderr)) if $stderr && $rs;
+			} elsif(/^.+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) { # Restore domain files
+				# Since we are now using immutable bit to protect some folders, we must in order do the following
 				# to restore a backup archive:
 				#
 				# - Update status of sub, als and alssub, entities linked to the parent domain to 'torestore'
@@ -254,12 +254,16 @@ sub restore
 				#
 				# Note: This is a bunch of works but this will be fixed when the backup feature will be rewritten
 
-				my $type = $1;
+				my $typeOption = '';
 
-				if($type eq 'bz2') {
-					$type = 'bzip2';
-				} elsif($type eq 'gz') {
-					$type = 'gzip';
+				if(defined $1) {
+					$typeOption = $1;
+
+					if($typeOption eq 'bz2') {
+					    $typeOption = 'bzip2';
+				    } elsif($typeOption eq 'gz') {
+					    $typeOption = 'gzip';
+				    }
 				}
 
 				# TODO: Should we also update status of htuser, htgroup and htaccess entities?
@@ -268,7 +272,7 @@ sub restore
 				# Update status of any sub to 'torestore'
 				$rdata = $database->doQuery(
 					'dummy',
-					"UPDATE `subdomain` SET `subdomain_status` = 'torestore' WHERE `domain_id` = ?",
+					"UPDATE subdomain SET subdomain_status = 'torestore' WHERE domain_id = ?",
 					$self->{'domain_id'}
 				);
 				unless(ref $rdata eq 'HASH') {
@@ -279,7 +283,7 @@ sub restore
 				# Update status of any als to 'torestore'
 				$rdata = $database->doQuery(
 					'dummy',
-					"UPDATE `domain_aliasses` SET `alias_status` = 'torestore' WHERE `domain_id` = ?",
+					"UPDATE domain_aliasses SET alias_status = 'torestore' WHERE domain_id = ?",
 					$self->{'domain_id'}
 				);
 				unless(ref $rdata eq 'HASH') {
@@ -292,11 +296,11 @@ sub restore
 					'dummy',
 					"
 						UPDATE
-							`subdomain_alias`
+							subdomain_alias
 						SET
-							`subdomain_alias_status` = 'torestore'
+							subdomain_alias_status = 'torestore'
 						WHERE
-							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+							alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
 					",
 					$self->{'domain_id'}
 				);
@@ -308,7 +312,16 @@ sub restore
 				# Un-protect folders recursively
 				clearImmutable($dmnDir, 1);
 
-				$cmd = "$main::imscpConfig{'CMD_TAR'} -x -p --$type -C '$dmnDir' -f '$dmnBkpdir/$_'";
+				if($typeOption ne '') {
+					$cmd = "$main::imscpConfig{'CMD_TAR'} -x -p --$typeOption" .
+					' -C ' . escapeShell($dmnDir) .
+					' -f ' . escapeShell("$bkpDir/$_");
+				} else {
+					$cmd = "$main::imscpConfig{'CMD_TAR'} -x -p" .
+					 	' -C ' . escapeShell($dmnDir) .
+						' -f ' . escapeShell("$bkpDir/$_");
+				}
+
 				$rs = execute($cmd, \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;

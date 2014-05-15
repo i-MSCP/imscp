@@ -18,6 +18,8 @@ ENGINE:
 	- Fixed: SQL root password must not be shown through processus's viewer (mysqldump)
 	- Fixed: The backup script must set the immutable bit on the customer homedir only if it was previously set
 	- Fixed: The full certificate chain must be imported in the final container (OpenSSL library)
+	- Fixed: Unable to restore an uncompressed backup (missing implementation)
+	- Fixed: Unable to restore SQL database (bad command syntax)
 	- Fixed: Unable to suspend domain - Undefined key 'TplDir' (apache_php_fpm server implementation)
 
 INSTALLER:
