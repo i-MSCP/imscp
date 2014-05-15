@@ -313,11 +313,13 @@ sub restore
 				clearImmutable($dmnDir, 1);
 
 				if($typeOption ne '') {
-					$cmd = "$main::imscpConfig{'CMD_TAR'} -x -p --$typeOption" .
-					' -C ' . escapeShell($dmnDir) .
-					' -f ' . escapeShell("$bkpDir/$_");
+					$cmd =
+						"$main::imscpConfig{'CMD_TAR'} -x -p --$typeOption" .
+						' -C ' . escapeShell($dmnDir) .
+						' -f ' . escapeShell("$bkpDir/$_");
 				} else {
-					$cmd = "$main::imscpConfig{'CMD_TAR'} -x -p" .
+					$cmd =
+						"$main::imscpConfig{'CMD_TAR'} -x -p" .
 					 	' -C ' . escapeShell($dmnDir) .
 						' -f ' . escapeShell("$bkpDir/$_");
 				}
