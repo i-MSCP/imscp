@@ -22,11 +22,6 @@ ENGINE:
 	- Fixed: Unable to restore SQL database (bad command syntax)
 	- Fixed: Unable to suspend domain - Undefined key 'TplDir' (apache_php_fpm server implementation)
 
-INSTALLER:
-	 Added: Support for Percona MySQL server
-	 Fixed: apache_php_fpm uninstaller is broken
-	 Fixed: PHP mcrypt module not enabled after fresh install (Ubuntu Trusty Thar)
-
 GUI:
 	- Added iMSCP_Events_Aggregator
 	- Changed: EventManager is no longer static (shared). The getInstance() method is now deprecated. It now return an
@@ -36,6 +31,11 @@ GUI:
 	- Fixed: Empty SQL user list if at least one database doesn't have any SQL user (software installer)
 	- Fixed: Private key passphrase must not be stored in database (SSL feature)
 	- Fixed: The full certificate chain must be checked (SSL feature)
+
+INSTALLER:
+	 Added: Support for Percona MySQL server
+	 Fixed: apache_php_fpm uninstaller is broken
+	 Fixed: PHP mcrypt module not enabled after fresh install (Ubuntu Trusty Thar)
 
 PLUGINS:
 	- Changed: Implementation of the register() method is no longer mandatory in action plugins

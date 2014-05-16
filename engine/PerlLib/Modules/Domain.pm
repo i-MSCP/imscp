@@ -215,7 +215,7 @@ sub restore
 				my $sqlUserpass = escapeShell($rdata->{$1}->{'sqlu_pass'});
 				my $dbName = escapeShell($rdata->{$1}->{'sqld_name'});
 
-                if(defined $2) {
+				if(defined $2) {
 					if($2 eq 'bz2') {
 						$cmd = "$main::imscpConfig{'CMD_BZCAT'} -d ";
 					} elsif($2 eq 'gz') {
@@ -381,7 +381,7 @@ sub _getHttpdData
 		return 1;
 	}
 
-	my $haveCert = exists $certData->{$self->{'domain_id'}} && ! $self->isValidCertificate($self->{'domain_name'});
+	my $haveCert = exists $certData->{$self->{'domain_id'}} && $self->isValidCertificate($self->{'domain_name'});
 
 	$self->{'httpd'} = {
 		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
