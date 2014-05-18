@@ -27,35 +27,47 @@
  */
 
 /**
- * Base class for update.
+ * Base class for update
  *
  * @category    iMSCP
  * @package     iMSCP_Update
  * @author      Daniel Andreca <sci2tech@gmail.com>
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
  */
 abstract class iMSCP_Update
 {
     /**
-     * Last error message.
+     * Last error message
      *
-     * @var string
+     * @var string|null
      */
-    protected $_lastError = '';
+    protected $lastError;
+
+	/**
+	 * Set error
+	 *
+	 * @param string $error
+	 * @return self
+	 */
+	protected function setError($error)
+	{
+		$this->lastError = $error;
+
+		return $this;
+	}
 
     /**
-     * Returns last error that occurred.
+     * Returns last error that occurred
      *
      * @return string Last error
      */
     public function getError()
     {
-        return $this->_lastError;
+        return $this->lastError;
     }
 
     /**
-     * Apply all available update.
+     * Apply all available update
      *
      * @abstract
      * @return bool TRUE on success, FALSE othewise
@@ -63,7 +75,7 @@ abstract class iMSCP_Update
     abstract public function applyUpdates();
 
     /**
-     * Checks for available update.
+     * Checks for available update
      *
      * @abstract
      * @return bool TRUE if an update available, FALSE otherwise
@@ -71,18 +83,18 @@ abstract class iMSCP_Update
     abstract public function isAvailableUpdate();
 
     /**
-     * Returns last applied update.
+     * Returns last applied update
      *
      * @abstract
-     * @return int
+     * @return mixed
      */
-    abstract protected function _getLastAppliedUpdate();
+    abstract protected function getLastAppliedUpdate();
 
     /**
-     * Return next update.
+     * Return next update
      *
      * @abstract
-     * @return int
+     * @return mixed next update info
      */
-    abstract protected function _getNextUpdate();
+    abstract protected function getNextUpdate();
 }

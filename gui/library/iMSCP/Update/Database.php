@@ -46,14 +46,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var iMSCP_Update
 	 */
-	protected static $_instance;
+	protected static $instance;
 
 	/**
-	 * Database name being updated.
+	 * Database name being updated
 	 *
 	 * @var string
 	 */
-	protected $_databaseName;
+	protected $databaseName;
 
 	/**
 	 * Tells whether or not a request must be send to the i-MSCP daemon after that
@@ -64,19 +64,24 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected $_daemonRequest = false;
 
 	/**
-	 * Singleton - Make new unavailable.
+	 * @var int Last database update revision
+	 */
+	protected $lastUpdate = 179;
+
+	/**
+	 * Singleton - Make new unavailable
 	 */
 	protected function __construct()
 	{
 		if (isset(iMSCP_Registry::get('config')->DATABASE_NAME)) {
-			$this->_databaseName = iMSCP_Registry::get('config')->DATABASE_NAME;
+			$this->databaseName = iMSCP_Registry::get('config')->DATABASE_NAME;
 		} else {
 			throw new iMSCP_Update_Exception('Database name not found.');
 		}
 	}
 
 	/**
-	 * Singleton - Make clone unavailable.
+	 * Singleton - Make clone unavailable
 	 *
 	 * @return void
 	 */
@@ -86,27 +91,27 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Implements Singleton design pattern.
+	 * Implements Singleton design pattern
 	 *
 	 * @return iMSCP_Update_Database
 	 */
 	public static function getInstance()
 	{
-		if (null === self::$_instance) {
-			self::$_instance = new self();
+		if (null === self::$instance) {
+			self::$instance = new self();
 		}
 
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	/**
-	 * Checks for available database update.
+	 * Checks for available database update
 	 *
 	 * @return bool TRUE if a database update is available, FALSE otherwise
 	 */
 	public function isAvailableUpdate()
 	{
-		if ($this->_getLastAppliedUpdate() < $this->_getNextUpdate()) {
+		if ($this->getLastAppliedUpdate() < $this->getNextUpdate()) {
 			return true;
 		}
 
@@ -114,7 +119,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Apply all available database updates.
+	 * Apply all available database updates
 	 *
 	 * @return bool TRUE on success, FALSE otherwise
 	 */
@@ -127,7 +132,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$pdo = iMSCP_Database::getRawInstance();
 
 		while ($this->isAvailableUpdate()) {
-			$databaseUpdateRevision = $this->_getNextUpdate();
+			$databaseUpdateRevision = $this->getNextUpdate();
 
 			// Get the database update method name
 			$databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
@@ -175,7 +180,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 							array("\n", '', ''), $errorMessage);
 					}
 
-					$this->_lastError = $errorMessage;
+					$this->setError($errorMessage);
 
 					return false;
 				}
@@ -193,44 +198,44 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Returns database update(s) details.
+	 * Returns database update(s) details
 	 *
 	 * @return array
 	 */
 	public function getDatabaseUpdatesDetails()
 	{
-		$reflectionStart = $this->_getNextUpdate();
-
-		$reflection = new ReflectionClass(__CLASS__);
 		$databaseUpdatesDetails = array();
 
-		/** @var $method ReflectionMethod */
-		foreach ($reflection->getMethods() as $method) {
-			$methodName = $method->name;
+		$reflection = new ReflectionClass(__CLASS__);
 
-			if (strpos($methodName, '_databaseUpdate_') !== false) {
-				$revision = (int)substr($methodName, strrpos($methodName, '_') + 1);
+		foreach(range($this->getNextUpdate(), $this->getLastUpdate()) as $revision) {
+			$methodName = "_databaseUpdate_$revision";
 
-				if ($revision >= $reflectionStart) {
-					$details = explode("\n", $method->getDocComment());
+			if($reflection->hasMethod($methodName)) {
+				$method = $reflection->getMethod($methodName);
+				$details = explode("\n", $method->getDocComment());
+				$normalizedDetails = '';
+				array_shift($details);
 
-					$normalizedDetails = '';
-					array_shift($details);
-
-					foreach ($details as $detail) {
-						if (preg_match('/^(?: |\t)*\*(?: |\t)+([^@]*)$/', $detail, $matches)) {
-							if (empty($normalizedDetails)) {
-								$normalizedDetails = $matches[1];
-							} else {
-								$normalizedDetails .= '<br />' . $matches[1];
-							}
+				foreach ($details as $detail) {
+					if (preg_match('/^(?: |\t)*\*(?: |\t)+([^@]*)$/', $detail, $matches)) {
+						if (empty($normalizedDetails)) {
+							$normalizedDetails = $matches[1];
 						} else {
-							break;
+							$normalizedDetails .= '<br />' . $matches[1];
 						}
+					} else {
+						break;
 					}
-
-					$databaseUpdatesDetails[$revision] = $normalizedDetails;
 				}
+
+				$databaseUpdatesDetails[$revision] = $normalizedDetails;
+			} else {
+				throw new iMSCP_Exception(
+					sprintf(
+						"Unable to find database update details: Method %s::%s() doesn't exists", __CLASS__, $methodName
+					)
+				);
 			}
 		}
 
@@ -238,14 +243,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Return next database update revision.
+	 * Return next database update revision
 	 *
 	 * @return int 0 if no update is available
 	 */
-	protected function _getNextUpdate()
+	protected function getNextUpdate()
 	{
 		$lastAvailableUpdateRevision = $this->_getLastAvailableUpdateRevision();
-		$nextUpdateRevision = $this->_getLastAppliedUpdate();
+		$nextUpdateRevision = $this->getLastAppliedUpdate();
 
 		if ($nextUpdateRevision < $lastAvailableUpdateRevision) {
 			return $nextUpdateRevision + 1;
@@ -255,14 +260,23 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Returns last database update revision number.
+	 * Return last database update revision
 	 *
-	 * Note: For performances reasons, the revision is retrieved once per process.
+	 * @return int
+	 */
+	public function getLastUpdate()
+	{
+		return $this->lastUpdate;
+	}
+
+	/**
+	 * Returns last database update revision number
 	 *
 	 * @return int Last database update revision number
 	 */
 	protected function _getLastAvailableUpdateRevision()
 	{
+		/*
 		static $lastAvailableUpdateRevision = null;
 
 		if (null === $lastAvailableUpdateRevision) {
@@ -282,14 +296,17 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		return $lastAvailableUpdateRevision;
+		*/
+
+		return $this->getLastUpdate();
 	}
 
 	/**
-	 * Returns the revision number of the last applied database update.
+	 * Returns the revision number of the last applied database update
 	 *
 	 * @return int Revision number of the last applied database update
 	 */
-	protected function _getLastAppliedUpdate()
+	protected function getLastAppliedUpdate()
 	{
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -302,7 +319,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Checks if a column exists in a database table and if not, return query to add it.
+	 * Checks if a column exists in a database table and if not, return query to add it
 	 *
 	 * @param string $table Database table name to operate on
 	 * @param string $column Column to be added in the database table
@@ -324,7 +341,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			AND
 				`TABLE_SCHEMA` = ?
 		";
-		$stmt = exec_query($query, array($column, $table, $this->_databaseName));
+		$stmt = exec_query($query, array($column, $table, $this->databaseName));
 
 		if (!$stmt->rowCount()) {
 			return "ALTER TABLE `$table` ADD `$column` $columnDefinition;";
@@ -334,7 +351,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Checks if a column exists in a database table and if yes, return a query to drop it.
+	 * Checks if a column exists in a database table and if yes, return a query to drop it
 	 *
 	 * @param string $table Database table from where the column must be dropped
 	 * @param string $column Column to be dropped from $table
@@ -354,7 +371,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			AND
 				`TABLE_SCHEMA` = ?
 		";
-		$stmt = exec_query($query, array($column, $table, $this->_databaseName));
+		$stmt = exec_query($query, array($column, $table, $this->databaseName));
 
 		if ($stmt->rowCount()) {
 			return "ALTER TABLE `$table` DROP COLUMN `$column`";
@@ -364,7 +381,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Checks if a database table have an index and if yes, return a query to drop it.
+	 * Checks if a database table have an index and if yes, return a query to drop it
 	 *
 	 * @param string $table Database table from where the column must be dropped
 	 * @param string $indexName Index name
@@ -379,7 +396,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		$query = "
 			SHOW INDEX FROM
-				`$this->_databaseName`.`$table`
+				`$this->databaseName`.`$table`
 			WHERE
 				`KEY_NAME` = ?
 			AND
@@ -388,14 +405,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = exec_query($query, array($indexName, $columnName));
 
 		if ($stmt->rowCount()) {
-			return "ALTER IGNORE TABLE `$this->_databaseName`.`$table` DROP INDEX `$indexName`";
+			return "ALTER IGNORE TABLE `$this->databaseName`.`$table` DROP INDEX `$indexName`";
 		} else {
 			return '';
 		}
 	}
 
 	/**
-	 * Checks if a database table have an index and if no, return a query to add it.
+	 * Checks if a database table have an index and if no, return a query to add it
 	 *
 	 * @param string $table Database table from where the column must be dropped
 	 * @param string $columnName Column to which index belong to
@@ -411,7 +428,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		$query = "
 			SHOW INDEX FROM
-				`$this->_databaseName`.`$table`
+				`$this->databaseName`.`$table`
 			WHERE
 				`KEY_NAME` = ?
 			AND
@@ -424,7 +441,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		} else {
 			return "
 				ALTER IGNORE TABLE
-					`$this->_databaseName`.`$table`
+					`$this->databaseName`.`$table`
 				ADD
 					$indexType " . ($indexType == 'PRIMARY KEY' ? '' : $indexName) . " (`$columnName`)
 			";
@@ -432,7 +449,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Catch any database updates that were removed.
+	 * Catch any database updates that were removed
 	 *
 	 * @throws iMSCP_Update_Exception
 	 * @param  string $updateMethod Database update method name
@@ -447,7 +464,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Please, add all the database update methods below.
+	 * Please, add all the database update methods below. Don't forget to update the lastUpdate field.
 	 */
 
 	/**
@@ -920,7 +937,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			AND
 				`TABLE_SCHEMA` = ?
 		';
-		$stmt = exec_query($query, array('user_gui_props', 'user_id', $this->_databaseName));
+		$stmt = exec_query($query, array('user_gui_props', 'user_id', $this->databaseName));
 
 		if ($stmt->rowCount()) {
 			$sqlUpd[] = 'ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`';

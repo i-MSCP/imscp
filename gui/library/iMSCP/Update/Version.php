@@ -21,9 +21,7 @@
  * @package     iMSCP_Update
  * @subpackage  Version
  * @copyright   2010-2014 by i-MSCP team
- * @author      Daniel Andreca <sci2tech@gmail.com>
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
@@ -32,123 +30,186 @@
 require_once 'iMSCP/Update.php';
 
 /**
- * Update version class.
+ * Update version class
  *
  * @category    iMSCP
  * @package     iMSCP_Update
  * @subpackage  Version
- * @author      Daniel Andreca <sci2tech@gmail.com>
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
  */
 class iMSCP_Update_Version extends iMSCP_Update
 {
-    /**
-     * @var iMSCP_Update
-     */
-    protected static $_instance;
+	/**
+	 * @var iMSCP_Update
+	 */
+	protected static $instance;
 
-    /**
-     * Singleton - Make new unavailable.
-     */
-    protected function __construct()
-    {
+	/**
+	 * @var array|null Update info
+	 */
+	protected $updateInfo;
 
-    }
+	/**
+	 * Singleton - Make new unavailable
+	 */
+	protected function __construct()
+	{
 
-    /**
-     * Singleton - Make clone unavailable.
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
+	}
 
-    }
+	/**
+	 * Singleton - Make clone unavailable
+	 *
+	 * @return void
+	 */
+	protected function __clone()
+	{
 
-    /**
-     * Implements Singleton design pattern.
-     *
-     * @return iMSCP_Update
-     */
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
+	}
 
-        return self::$_instance;
-    }
+	/**
+	 * Implements Singleton design pattern
+	 *
+	 * @return iMSCP_Update
+	 */
+	public static function getInstance()
+	{
+		if (null === self::$instance) {
+			self::$instance = new self();
+		}
 
-    /**
-     * Return build number for the last available i-MSCP version.
-     *
-     * @return int 0 if not update or server not reachable.
-     */
-    protected function _getNextUpdate()
-    {
-        ini_set('user_agent', 'Mozilla/5.0');
+		return self::$instance;
+	}
 
-        $timeout = ini_set('default_socket_timeout', 3);
-        $fh = @fopen('https://raw.githubusercontent.com/i-MSCP/imscp/stable/latest.txt', 'r');
+	/**
+	 * Check for available update
+	 *
+	 * @return bool TRUE if an update is available, FALSE otherwise
+	 */
+	public function isAvailableUpdate()
+	{
+		if (version_compare($this->getNextUpdate(), $this->getLastAppliedUpdate(), '>')) {
+			return true;
+		}
 
-        // Restore previous timeout
-        ini_set('default_socket_timeout', $timeout);
+		return false;
+	}
 
-        if (!is_resource($fh)) {
-            $this->_lastError = tr("Couldn't check for updates. Website not reachable.");
+	/**
+	 * Apply all available update
+	 *
+	 * @return bool TRUE on success, FALSE othewise
+	 */
+	public function applyUpdates()
+	{
+		$this->setError('i-MSCP version update can be initiated through the i-MSCP installer only.');
 
-            return 0;
-        }
+		return false;
+	}
 
-        $lastVersion = (int)fread($fh, 8);
-        fclose($fh);
+	/**
+	 * Get update info from GitHub (using the GitHub API)
+	 *
+	 * @param bool $forceReload Whether data must be reloaded from Github
+	 * @return array|bool An array containing update info on success, false on failure
+	 */
+	public function getUpdateInfo($forceReload = false)
+	{
+		$cacheFile = CACHE_PATH . '/imscp_version_info.php';
 
-        return $lastVersion;
-    }
+		if (null === $this->updateInfo) {
+			if ($forceReload || !file_exists($cacheFile) || strtotime('+1 day', filemtime($cacheFile)) < time()) {
+				clearstatcache();
 
-    /**
-     * Check for available update.
-     *
-     * @return bool TRUE if an update is available, FALSE otherwise.
-     */
-    public function isAvailableUpdate()
-    {
-        if ($this->_getLastAppliedUpdate() < $this->_getNextUpdate()) {
-            return true;
-        }
+				$context = stream_context_create(
+					array(
+						'http' => array(
+							'method' => 'GET',
+							'protocol_version' => '1.1',
+							'header' => array(
+								'Accept: application/vnd.github.v3+json',
+								'User-Agent: i-MSCP',
+								'Connection: close'
+							)
+						)
+					)
+				);
 
-        return false;
-    }
+				if (!stream_context_set_option($context, 'ssl', 'verify_peer', false)) {
+					$this->setError(tr('Unable to set sslverifypeer option'));
+					return false;
+				}
 
-    /**
-     * Returns last applied update.
-     *
-     * @throws iMSCP_Update_Exception When unable to retrieve last applied update
-     * @return int
-     */
-    protected function _getLastAppliedUpdate()
-    {
-        /** @var $cfg iMSCP_Config_Handler_File */
-        $cfg = iMSCP_Registry::get('config');
+				if (!stream_context_set_option($context, 'ssl', 'allow_self_signed', true)) {
+					$this->setError(tr('Unable to set sslallowselfsigned option'));
+					return false;
+				}
 
-        if (isset($cfg->BuildDate)) {
-            return (int)$cfg->BuildDate;
-        } else {
-            require_once 'iMSCP/Update/Exception.php';
-            throw new iMSCP_Update_Exception('Unable to retrieve last applied update.');
-        }
-    }
+				if ($info = file_get_contents('https://api.github.com/repos/i-MSCP/imscp/releases', false, $context)) {
+					$info = json_decode($info, true);
+				} else {
+					$this->setError(tr('Unable to get update info from Github'));
+					return false;
+				}
 
-    /**
-     * Apply all available update.
-     *
-     * @throws iMSCP_Update_Exception Since this method is not implemented
-     * @return void
-     */
-    public function applyUpdates()
-    {
-        require_once 'iMSCP/Update/Exception.php';
-        throw new iMSCP_Update_Exception('Method not implemented.');
-    }
+				if (count($info)) {
+					$this->updateInfo = array_shift($info);
+				} else {
+					$this->setError(tr('No update info available'));
+					return false;
+				}
+
+				$lastUpdate = 'Last update: ' . date('Y-m-d H:i:s', time());
+				$content = "<?php\n/**\n * i-MSCP version info\n * Auto-generated by i-MSCP\n";
+				$content .= " * $lastUpdate\n */\n\n";
+				$content .= 'return ' . var_export($this->updateInfo, true) . ';';
+
+				@unlink($cacheFile);
+
+				if (@file_put_contents($cacheFile, "$content\n", LOCK_EX) === false) {
+					write_log(sprintf('Unable to create/update i-MSCP version info cache file.'));
+				} else {
+					write_log(sprintf('i-MSCP version info cache file has been created/updated.'));
+				}
+			} else {
+				$this->updateInfo = include($cacheFile);
+			}
+		}
+
+		return $this->updateInfo;
+	}
+
+	/**
+	 * Return build number for the last available i-MSCP version
+	 *
+	 * @return string
+	 */
+	protected function getNextUpdate()
+	{
+		$updateInfo = $this->getUpdateInfo();
+
+		if (is_array($updateInfo) && isset($updateInfo['tag_name'])) {
+			return $updateInfo['tag_name'];
+		}
+
+		return $this->getLastAppliedUpdate(); // We are safe here
+	}
+
+	/**
+	 * Returns last applied update
+	 *
+	 * @throws iMSCP_Update_Exception When unable to retrieve last applied update
+	 * @return string
+	 */
+	protected function getLastAppliedUpdate()
+	{
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+
+		if (isset($cfg['Version']) && stripos($cfg['Version'], 'git') === false) {
+			return $cfg['Version'];
+		}
+
+		return '99'; // Case where the version in use has not been officialy released (eg. git branch).
+	}
 }

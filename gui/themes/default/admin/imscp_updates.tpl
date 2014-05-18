@@ -1,26 +1,33 @@
 
-<!-- BDP: props_list -->
+<!-- BDP: update_info -->
 <table class="firstColFixed">
 	<thead>
-	<!-- BDP: table_header -->
 	<tr>
-		<th colspan="2">{TR_AVAILABLE_UPDATES}</th>
+		<th colspan="2">{TR_UPDATE_INFO}</th>
 	</tr>
 	</thead>
 	<tbody>
-	<!-- EDP: table_header -->
-	<!-- BDP: update_message -->
 	<tr>
-		<td>{UPDATE}</td>
-		<td>{TR_MESSAGE}</td>
+		<td><strong>{TR_RELEASE_VERSION}</strong></td>
+		<td>{RELEASE_VERSION}</td>
 	</tr>
-	<!-- EDP: update_message -->
-	<!-- BDP: update_infos -->
 	<tr>
-		<td>{UPDATE}</td>
-		<td>{INFOS}</td>
+		<td><strong>{TR_RELEASE_DESCRIPTION}</strong></td>
+		<td>{RELEASE_DESCRIPTION}</td>
 	</tr>
-	<!-- EDP: update_infos -->
+	<tr>
+		<td><strong>{TR_RELEASE_DATE}</strong></td>
+		<td>{RELEASE_DATE}</td>
+	</tr>
+	<tr>
+		<td><strong>{TR_DOWNLOAD_LINKS}</strong></td>
+		<td>
+			<ul>
+				<li><a href="{TARBALL_URL}">{TR_DOWNLOAD_TAR}</a></li>
+				<li><a href="{ZIPBALL_URL}">{TR_DOWNLOAD_ZIP}</a></li>
+			</ul>
+		</td>
+	</tr>
 	</tbody>
 </table>
-<!-- EDP: props_list -->
+<!-- EDP: update_info -->

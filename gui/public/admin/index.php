@@ -85,17 +85,19 @@ function admin_generateUpdateMessages()
 
 	if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
 		set_page_message(
-			'<a href="database_update.php" class="link">' . tr('Database update is available') . '</a>', 'info'
+			'<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>', 'info'
 		);
 	}
 
-	if ($cfg->CHECK_FOR_UPDATES) {
-		if (iMSCP_Update_Version::getInstance()->isAvailableUpdate()) {
+	if (isset($cfg['CHECK_FOR_UPDATES']) && $cfg['CHECK_FOR_UPDATES']) {
+		$updateVersion = iMSCP_Update_Version::getInstance();
+
+		if ($updateVersion->isAvailableUpdate()) {
 			set_page_message(
-				'<a href="imscp_updates.php" class="link">' . tr('New i-MSCP update is available') . '</a>', 'info'
+				'<a href="imscp_updates.php" class="link">' . tr('A new i-MSCP version is available') . '</a>', 'info'
 			);
-		} elseif (iMSCP_Update_Version::getInstance()->getError() != '') {
-			set_page_message(iMSCP_Update_Version::getInstance()->getError(), 'error');
+		} elseif (($error = $updateVersion->getError())) {
+			set_page_message($error, 'error');
 		}
 	}
 }

@@ -36,7 +36,7 @@
  */
 
 /***********************************************************************************************************************
- * Script functions
+ * Functions
  */
 
 /**
@@ -48,39 +48,48 @@ function get_update_infos($tpl)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if (!$cfg->CHECK_FOR_UPDATES) {
-		$tpl->assign(
-			array(
-				'UPDATE_MESSAGE' => '',
-				'UPDATE' => tr('Update checking is disabled.'),
-				'INFOS' => tr('Enable update in the settings page.')
-			)
-		);
+	if (!isset($cfg['CHECK_FOR_UPDATES']) || !$cfg['CHECK_FOR_UPDATES']) {
+		set_page_message(tr('i-MSCP version update checking is disabled'), 'warning');
+	} else {
+		/** @var iMSCP_Update_Version $updateVersion */
+		$updateVersion = iMSCP_Update_Version::getInstance();
 
-		$tpl->parse('UPDATE_INFOS', 'update_infos');
-		return;
+		if ($updateVersion->isAvailableUpdate()) {
+			if (($updateInfo = $updateVersion->getUpdateInfo())) {
+				$date = new DateTime($updateInfo['created_at']);
+
+				$tpl->assign(
+					array(
+						'TR_UPDATE_INFO' => tr('Update info'),
+						'TR_RELEASE_VERSION' => tr('Release version'),
+						'RELEASE_VERSION' => tohtml($updateInfo['tag_name']),
+						'TR_RELEASE_DATE' => tr('Release date'),
+						'RELEASE_DATE' => tohtml($date->format($cfg['DATE_FORMAT'])),
+						'TR_RELEASE_DESCRIPTION' => tr('Release description'),
+						'RELEASE_DESCRIPTION' => tohtml($updateInfo['body']),
+						'TR_DOWNLOAD_LINKS' => tr('Download links'),
+						'TR_DOWNLOAD_ZIP' => tr('Download ZIP'),
+						'TR_DOWNLOAD_TAR' => tr('Download TAR'),
+						'TARBALL_URL' => tohtml($updateInfo['tarball_url']),
+						'ZIPBALL_URL' => tohtml($updateInfo['zipball_url'])
+					)
+				);
+				return;
+			} else {
+				set_page_message($updateVersion->getError(), 'error');
+			}
+		} elseif ($updateVersion->getError()) {
+			set_page_message($updateVersion, 'error');
+		} else {
+			set_page_message(tr('No update available'), 'info');
+		}
 	}
 
-	if (iMSCP_Update_Version::getInstance()->isAvailableUpdate()) {
-		$tpl->assign(
-			array(
-				'UPDATE_INFOS' => '',
-				'UPDATE' => tr('New i-MSCP update is available'),
-				'TR_MESSAGE' => tr('Get it on') . " <a href=\"https://github.com/i-MSCP/imscp/releases/latest\" class=\"link\" target=\"_blank\">GitHub</a>"
-			)
-		);
-
-		$tpl->parse('UPDATE_MESSAGE', 'update_message');
-	} elseif (iMSCP_Update_Version::getInstance()->getError() != '') {
-		$tpl->assign('TR_MESSAGE', iMSCP_Update_Version::getInstance()->getError());
-	}
-
-	$tpl->assign('UPDATE_INFOS', '');
+	$tpl->assign('UPDATE_INFO', '');
 }
 
-
 /***********************************************************************************************************************
- * Main script
+ * Main
  */
 
 // Include core library
@@ -99,24 +108,16 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/imscp_updates.tpl',
 		'page_message' => 'layout',
-		'update_message' => 'page',
-		'update_infos' => 'page',
-		'table_header' => 'page'
+		'update_info' => 'page'
 	)
 );
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / System Tools / Updates'),
-		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_UPDATES_TITLE' => tr('i-MSCP updates'),
-		'TR_AVAILABLE_UPDATES' => tr('Available i-MSCP updates'),
-		'TR_MESSAGE' => tr('No new i-MSCP updates available'),
-		'TR_UPDATE' => tr('Update'),
-		'UPDATE' => tr('Update details')
+		'TR_PAGE_TITLE' => tr('Admin / System Tools / i-MSCP Updates'),
+		'ISP_LOGO' => layout_getUserLogo()
 	)
 );
-
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
