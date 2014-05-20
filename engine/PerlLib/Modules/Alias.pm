@@ -45,32 +45,31 @@ sub loadData
 
 	my $sql = "
 		SELECT
-			`alias`.*, `domain_name` AS `user_home`, `domain_admin_id`, `domain_php`, `domain_cgi`,
-			`domain_traffic_limit`, `domain_mailacc_limit`, `domain_dns`, `web_folder_protection`, `ips`.`ip_number`,
-			`mail_count`.`mail_on_domain`
+			alias.*, domain_name AS user_home, domain_admin_id, domain_php, domain_cgi, domain_traffic_limit,
+			domain_mailacc_limit, domain_dns, web_folder_protection, ips.ip_number, mail_count.mail_on_domain
 		FROM
-			`domain_aliasses` AS `alias`
+			domain_aliasses AS alias
 		INNER JOIN
-			`domain` ON (`alias`.`domain_id` = `domain`.`domain_id`)
+			domain ON (alias.domain_id = domain.domain_id)
 		INNER JOIN
-			`server_ips` AS `ips` ON (`alias`.`alias_ip_id` = `ips`.`ip_id`)
+			server_ips AS ips ON (alias.alias_ip_id = ips.ip_id)
 		LEFT JOIN
 			(
 				SELECT
-					`sub_id` AS `id`, COUNT( `sub_id` ) AS `mail_on_domain`
+					sub_id AS id, COUNT( sub_id ) AS mail_on_domain
 				FROM
-					`mail_users`
+					mail_users
 				WHERE
-					`sub_id`= ?
+					sub_id= ?
 				AND
-					`mail_type` IN ('alias_forward', 'alias_mail', 'alias_mail,alias_forward', 'alias_catchall')
+					mail_type IN ('alias_forward', 'alias_mail', 'alias_mail,alias_forward', 'alias_catchall')
 				GROUP BY
-					`sub_id`
-			) AS `mail_count`
+					sub_id
+			) AS mail_count
 		ON
-			(`alias`.`alias_id` = `mail_count`.`id`)
+			(alias.alias_id = mail_count.id)
 		WHERE
-			`alias`.`alias_id` = ?
+			alias.alias_id = ?
 	";
 	my $rdata = iMSCP::Database->factory()->doQuery('alias_id', $sql, $self->{'alsId'}, $self->{'alsId'});
 	unless(ref $rdata eq 'HASH') {
@@ -79,7 +78,7 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'alsId'}}) {
-		error("Domain with ID '$self->{'alsId'}' has not been found or is in an inconsistent state");
+		error("Domain with ID $self->{'alsId'} has not been found or is in an inconsistent state");
 		return 1;
 	}
 
@@ -98,11 +97,11 @@ sub process
 
 	my @sql;
 
-	if($self->{'alias_status'} =~ /^toadd|tochange|toenable$/) {
+	if($self->{'alias_status'} ~~ ['toadd', 'tochange', 'toenable']) {
 		$rs = $self->add();
 
 		@sql = (
-			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
+			"UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'alias_id'}
 		);
@@ -111,18 +110,18 @@ sub process
 
 		if($rs) {
 			@sql = (
-				"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
+				"UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
 				scalar getMessageByType('error'),
 				$self->{'alias_id'}
 			);
 		} else {
-			@sql = ("DELETE FROM `domain_aliasses` WHERE `alias_id` = ?", $self->{'alias_id'});
+			@sql = ("DELETE FROM domain_aliasses WHERE alias_id = ?", $self->{'alias_id'});
 		}
 	} elsif($self->{'alias_status'} eq 'todisable') {
 		$rs = $self->disable();
 
 		@sql = (
-			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
+			"UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'),
 			$self->{'alias_id'}
 		);
@@ -130,7 +129,7 @@ sub process
 		$rs = $self->restore();
 
 		@sql = (
-			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
+			"UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'alias_id'}
 		);
@@ -167,22 +166,25 @@ sub _getHttpdData
 
 	my $db = iMSCP::Database->factory();
 
-	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
-	my $rdata = $db->doQuery('name', $sql);
+	my $rdata = $db->doQuery('name', 'SELECT * FROM config WHERE name LIKE ?', 'PHPINI%');
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
-	$sql = "SELECT * FROM `php_ini` WHERE `domain_id` = ?";
-	my $phpiniData = $db->doQuery('domain_id', $sql, $self->{'domain_id'});
+	my $phpiniData = $db->doQuery('domain_id', 'SELECT * FROM php_ini WHERE domain_id = ?', $self->{'domain_id'});
 	unless (ref $phpiniData eq 'HASH') {
 		error($phpiniData);
 		return 1;
 	}
 
-	$sql = "SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?";
-	my $certData = $db->doQuery('id', $sql, $self->{'alias_id'}, 'als', 'ok');
+	my $certData = $db->doQuery(
+		'domain_id',
+		'SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ? AND status = ?',
+		$self->{'alias_id'},
+		'als',
+		'ok'
+	);
 	unless (ref $certData eq 'HASH') {
 		error($certData);
 		return 1;
@@ -299,7 +301,7 @@ sub _getNamedData
 
 		my $rdata = $db->doQuery(
 			'domain_dns_id',
-			'SELECT * FROM `domain_dns` WHERE `domain_dns`.`domain_id` = ? AND `domain_dns`.`alias_id` = ?',
+			'SELECT * FROM domain_dns WHERE domain_id = ? AND alias_id = ?',
 			$self->{'domain_id'},
 			$self->{'alias_id'}
 		);
@@ -345,13 +347,13 @@ sub _getNamedData
 			'update',
 			'
 				UPDATE
-					`subdomain_alias`
+					subdomain_alias
 				SET
-					`subdomain_alias_status` = ?
+					subdomain_alias_status = ?
 				WHERE
-					`subdomain_alias_status` = ?
+					subdomain_alias_status = ?
 				AND
-					`alias_id` = ?
+					alias_id = ?
 			',
 			'tochange', 'ok', $self->{'alias_id'}
 		);
@@ -402,39 +404,39 @@ sub _getSharedMountPoints
 	my @sql = (
 		"
 			SELECT
-				`alias_mount` AS `mount_point`
+				alias_mount AS mount_point
 			FROM
-				`domain_aliasses`
+				domain_aliasses
 			WHERE
-				`alias_id` <> ?
+				alias_id <> ?
 			AND
-				`domain_id` = ?
+				domain_id = ?
 			AND
-				`alias_status` NOT IN ('todelete', 'ordered')
+				alias_status NOT IN ('todelete', 'ordered')
 			AND
-				`alias_mount` RLIKE ?
+				alias_mount RLIKE ?
 			UNION
 			SELECT
-				`subdomain_mount` AS `mount_point`
+				subdomain_mount AS mount_point
 			FROM
-				`subdomain`
+				subdomain
 			WHERE
-				`domain_id` = ?
+				domain_id = ?
 			AND
-				`subdomain_status` != 'todelete'
+				subdomain_status != 'todelete'
 			AND
-				`subdomain_mount` RLIKE ?
+				subdomain_mount RLIKE ?
 			UNION
 			SELECT
-				`subdomain_alias_mount` AS `mount_point`
+				subdomain_alias_mount AS mount_point
 			FROM
-				`subdomain_alias`
+				subdomain_alias
 			WHERE
-				`subdomain_alias_status` != 'todelete'
+				subdomain_alias_status != 'todelete'
 			AND
-				`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+				alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
 			AND
-				`subdomain_alias_mount` RLIKE ?
+				subdomain_alias_mount RLIKE ?
 		",
 		$self->{'alias_id'},
 		$self->{'domain_id'},

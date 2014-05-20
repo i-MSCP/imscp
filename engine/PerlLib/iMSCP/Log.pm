@@ -109,7 +109,7 @@ sub store
 		'tag' => { 'default' => 'none' }
 	};
 
-	if( @_ == 1 ) {
+	if(@_ == 1) {
 		$hash{message} = shift;
 	} else {
 		%hash = @_;

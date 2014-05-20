@@ -1,5 +1,5 @@
 
-<form name="cert_edit" method="post" action="cert_view.php?id={ID}&type={TYPE}">
+<form name="cert_edit" method="post" action="cert_view.php?domain_id={ID}&domain_type={TYPE}">
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -20,16 +20,16 @@
 			<td><input id="passphrase" type="password" name="passphrase" value="" autocomplete="off"/></td>
 		</tr>
 		<tr>
-			<td><label for="key_cert">{TR_CERTIFICATE_KEY}</label></td>
-			<td><textarea name="key_cert" id="key_cert">{KEY_CERT}</textarea></td>
+			<td><label for="orivate_key">{TR_PRIVATE_KEY}</label></td>
+			<td><textarea name="private_key" id="private_key">{KEY_CERT}</textarea></td>
 		</tr>
 		<tr>
-			<td><label for="cert_cert">{TR_CERTIFICATE}</label></td>
-			<td><textarea name="cert_cert" id="cert_cert">{CERT}</textarea></td>
+			<td><label for="certificate">{TR_CERTIFICATE}</label></td>
+			<td><textarea name="certificate" id="certificate">{CERTIFICATE}</textarea></td>
 		</tr>
 		<tr>
-			<td><label for="ca_cert">{TR_INTERM_CERTIFICATE}</label></td>
-			<td><textarea name="ca_cert" id="ca_cert">{CA_CERT}</textarea></td>
+			<td><label for="ca_bundle">{TR_CA_BUNDLE}</label></td>
+			<td><textarea name="ca_bundle" id="ca_bundle">{CA_BUNDLE}</textarea></td>
 		</tr>
 		</tbody>
 	</table>

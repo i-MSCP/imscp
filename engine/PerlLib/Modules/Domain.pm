@@ -84,7 +84,7 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'dmnId'}}) {
-		error("Domain with ID '$self->{'dmnId'}' has not been found or is in an inconsistent state");
+		error("Domain with ID $self->{'dmnId'} has not been found or is in an inconsistent state");
 		return 1;
 	}
 
@@ -272,7 +272,8 @@ sub restore
 				# Update status of any sub to 'torestore'
 				$rdata = $database->doQuery(
 					'dummy',
-					"UPDATE subdomain SET subdomain_status = 'torestore' WHERE domain_id = ?",
+					'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?',
+					'torestore',
 					$self->{'domain_id'}
 				);
 				unless(ref $rdata eq 'HASH') {
@@ -283,7 +284,8 @@ sub restore
 				# Update status of any als to 'torestore'
 				$rdata = $database->doQuery(
 					'dummy',
-					"UPDATE domain_aliasses SET alias_status = 'torestore' WHERE domain_id = ?",
+					'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?',
+					'torestore',
 					$self->{'domain_id'}
 				);
 				unless(ref $rdata eq 'HASH') {
@@ -358,21 +360,22 @@ sub _getHttpdData
 
 	my $db = iMSCP::Database->factory();
 
-	my $rdata = $db->doQuery('name', "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'");
+	my $rdata = $db->doQuery('name', 'SELECT * FROM config WHERE name LIKE ?', 'PHPINI%');
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
-	my $phpiniData = $db->doQuery('domain_id', "SELECT * FROM `php_ini` WHERE `domain_id` = ?", $self->{'domain_id'});
+	my $phpiniData = $db->doQuery('domain_id', "SELECT * FROM php_ini WHERE domain_id = ?", $self->{'domain_id'});
 	unless(ref $phpiniData eq 'HASH') {
 		error($phpiniData);
 		return 1;
 	}
 
 	my $certData = $db->doQuery(
-		'id',
-		"SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?", $self->{'domain_id'},
+		'domain_id',
+		'SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ? AND status = ?',
+		$self->{'domain_id'},
 		'dmn',
 		'ok'
 	);
@@ -482,8 +485,9 @@ sub _getNamedData
 
 		my $rdata = $db->doQuery(
 			'domain_dns_id',
-			'SELECT * FROM `domain_dns` WHERE `domain_dns`.`domain_id` = ? AND `domain_dns`.`alias_id` = ?',
-			$self->{'domain_id'}, 0
+			'SELECT * FROM domain_dns WHERE domain_id = ? AND alias_id = ?',
+			$self->{'domain_id'},
+			0
 		);
 		unless(ref $rdata eq 'HASH') {
 			error($rdata);
@@ -525,8 +529,10 @@ sub _getNamedData
 		# We must trigger the module 'subdomain' whatever the number of entries - See #503
 		$rdata = $db->doQuery(
 			'dummy',
-			'UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_status` = ? AND`domain_id` = ?',
-			'tochange', 'ok', $self->{'domain_id'}
+			'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_status = ? AND domain_id = ?',
+			'tochange',
+			'ok',
+			$self->{'domain_id'}
 		);
 		unless(ref $rdata eq 'HASH') {
 			error($rdata);

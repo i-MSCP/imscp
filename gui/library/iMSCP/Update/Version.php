@@ -169,7 +169,7 @@ class iMSCP_Update_Version extends iMSCP_Update
 				if (@file_put_contents($cacheFile, "$content\n", LOCK_EX) === false) {
 					write_log(sprintf('Unable to create/update i-MSCP version info cache file.'));
 				} else {
-					write_log(sprintf('i-MSCP version info cache file has been created/updated.'));
+					write_log(sprintf('i-MSCP version info cache file has been created or updated.'));
 				}
 			} else {
 				$this->updateInfo = include($cacheFile);

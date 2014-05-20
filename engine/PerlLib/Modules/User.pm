@@ -29,6 +29,8 @@ package Modules::User;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Execute;
@@ -61,10 +63,9 @@ sub loadData
 		'admin_id',
 		'
 			SELECT
-				`admin_id`, `admin_name`, `admin_sys_name`, `admin_sys_uid`, `admin_sys_gname`, `admin_sys_gid`,
-				`admin_status`
+				admin_id, admin_name, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid, admin_status
 			FROM
-				`admin`
+				admin
 			WHERE
 				admin_id = ?
 		',
@@ -76,7 +77,7 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'userId'}}) {
-		error("User record with ID '$self->{'userId'}' has not been found in database");
+		error("User record with ID $self->{'userId'} has not been found in database");
 		return 1
 	}
 
@@ -96,11 +97,11 @@ sub process
 
 	my @sql;
 
-	if($self->{'admin_status'} =~ /^(toadd|tochange)$/) {
+	if($self->{'admin_status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
 
 		@sql = (
-			"UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?",
+			'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
 			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'userId'}
 		);
 	} elsif($self->{'admin_status'} eq 'todelete') {
@@ -108,11 +109,11 @@ sub process
 
 		if($rs) {
 			@sql = (
-				"UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?",
+				'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
 				scalar getMessageByType('error'), $self->{'userId'}
 			)
 		} else {
-			@sql = ('DELETE FROM `admin` WHERE `admin_id` = ?', $self->{'userId'});
+			@sql = ('DELETE FROM admin WHERE admin_id = ?', $self->{'userId'});
 		}
 	}
 
@@ -197,11 +198,11 @@ sub add
 	my @sql = (
 		'
 			UPDATE
-				`admin`
+				admin
 			SET
-				`admin_sys_name` = ?, `admin_sys_uid` = ?, `admin_sys_gname` = ?, `admin_sys_gid` = ?
+				admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
 			WHERE
-				`admin_id` = ?
+				admin_id = ?
 		',
 		$userName, $userUid, $groupName, $userGid, $self->{'userId'}
 	);

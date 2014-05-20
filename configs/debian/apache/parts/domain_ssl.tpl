@@ -85,8 +85,8 @@
     # SECTION addons END.
 
     SSLEngine On
-    SSLCertificateFile {CERT}
-    SSLCertificateChainFile {CERT}
+    SSLCertificateFile {CERTIFICATE}
+    SSLCertificateChainFile {CERTIFICATE}
 
     Include {APACHE_CUSTOM_SITES_CONFIG_DIR}/{DOMAIN_NAME}.conf
 </VirtualHost>

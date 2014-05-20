@@ -28,6 +28,8 @@ package Modules::Mail;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use parent 'Modules::Abstract';
 
@@ -46,21 +48,21 @@ sub loadData
 
 	my $sql = '
 		SELECT
-			if(ISNULL(`t2`.`mail_addr`), "no", "yes") AS `hasCatchAll`,
-			if(COUNT(`t3`.`mail_addr`) <> 0, "yes", "no") AS `hasAutoResponder`,
-			`t1`.*
+			if(ISNULL(t2.mail_addr), "no", "yes") AS hasCatchAll,
+			if(COUNT(t3.mail_addr) <> 0, "yes", "no") AS hasAutoResponder,
+			t1.*
 		FROM
-			`mail_users` AS `t1`
+			mail_users AS t1
 		LEFT JOIN
-			(SELECT `mail_addr` FROM `mail_users` WHERE `mail_addr` LIKE "@%") AS `t2`
+			(SELECT mail_addr FROM mail_users WHERE mail_addr LIKE "@%") AS t2
 		ON
-			substr(`t1`.`mail_addr`, locate("@", `t1`.`mail_addr`)) = `t2`.`mail_addr`
+			substr(t1.mail_addr, locate("@", t1.mail_addr)) = t2.mail_addr
 		LEFT JOIN
-			(SELECT `mail_addr` FROM `mail_users` WHERE `mail_auto_respond` = 1) AS `t3`
+			(SELECT mail_addr FROM mail_users WHERE mail_auto_respond = 1) AS t3
 		ON
-			`t3`.`mail_addr` LIKE concat("%", substr(`t1`.`mail_addr`, locate("@", `t1`.`mail_addr`)))
+			t3.mail_addr LIKE concat("%", substr(t1.mail_addr, locate("@", t1.mail_addr)))
 		WHERE
-			`t1`.`mail_id` = ?
+			t1.mail_id = ?
 	';
 	my $rdata = iMSCP::Database->factory()->doQuery('mail_id', $sql, $self->{'mailId'});
 	unless(ref $rdata eq 'HASH') {
@@ -69,7 +71,7 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'mailId'}}) {
-		error("Mail record with ID '$self->{'mailId'}' has not been found in database");
+		error("Mail record with ID $self->{'mailId'} has not been found in database");
 		return 1;
 	}
 
@@ -89,11 +91,11 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange|toenable$/) {
+	if($self->{'status'} ~~ ['toadd', 'tochange', 'toenable']) {
 		$rs = $self->add();
 
 		@sql = (
-			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
+			'UPDATE mail_users SET status = ? WHERE mail_id = ?',
 			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'mail_id'}
 		);
 	} elsif($self->{'status'} eq 'todelete') {
@@ -101,17 +103,17 @@ sub process
 
 		if($rs){
 			@sql = (
-				"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
+				'UPDATE mail_users SET status = ? WHERE mail_id = ?',
 				scalar getMessageByType('error'), $self->{'mail_id'}
 			);
 		} else {
-			@sql = ("DELETE FROM `mail_users` WHERE `mail_id` = ?", $self->{'mail_id'});
+			@sql = ('DELETE FROM mail_users WHERE mail_id = ?', $self->{'mail_id'});
 		}
 	} elsif($self->{'status'} eq 'todisable') {
 		$rs = $self->disable();
 
 		@sql = (
-			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
+			'UPDATE mail_users SET status = ? WHERE mail_id = ?',
 			($rs ? scalar getMessageByType('error') : 'disabled'), $self->{'mail_id'}
 		);
 	}
@@ -151,17 +153,17 @@ sub _getMtaData
 	if($self->{'hasCatchAll'} eq 'yes') {
 		my $sql = "
 			SELECT
-				`mail_addr`
+				mail_addr
 			FROM
-				`mail_users`
+				mail_users
 			WHERE
-				`mail_addr`
+				mail_addr
 			LIKE
 				'\%$self->{'mail_addr'}'
 			AND
-				`mail_type` LIKE '\%mail'
+				mail_type LIKE '\%mail'
 			AND
-				`mail_auto_respond` = 0
+				mail_auto_respond = 0
 		";
 		my $rdata = iMSCP::Database->factory()->doQuery('mail_addr', $sql);
 		unless(ref $rdata eq 'HASH') {

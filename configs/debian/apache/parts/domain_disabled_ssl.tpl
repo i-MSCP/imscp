@@ -15,6 +15,6 @@
     </Directory>
 
     SSLEngine On
-    SSLCertificateFile {CERT}
-    SSLCertificateChainFile {CERT}
+    SSLCertificateFile {CERTIFICATE}
+    SSLCertificateChainFile {CERTIFICATE}
 </VirtualHost>

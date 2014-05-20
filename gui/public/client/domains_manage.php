@@ -53,13 +53,13 @@ function client_generateDomainsList($tpl, $userId)
 
 	$query = "
 		SELECT
-			`domain_id`, `domain_name`, `domain_created`, `domain_expires`, `domain_status`
+			domain_id, domain_name, domain_created, domain_expires, domain_status
 		FROM
-			`domain`
+			domain
 		WHERE
-			`domain_admin_id` = ?
+			domain_admin_id = ?
 		ORDER BY
-			`domain_name`
+			domain_name
 	";
 	$stmt = exec_query($query, (int)$userId);
 
@@ -93,7 +93,7 @@ function client_generateDomainsList($tpl, $userId)
 				'DOMAIN_EXPIRE_DATE' => ($row['domain_expires'] != 0)
 					? tohtml(date($cfg['DATE_FORMAT'], $row['domain_expires'])) : tr('Never'),
 				'DOMAIN_STATUS' => translate_dmn_status($row['domain_status']),
-				'CERT_SCRIPT' => tohtml('cert_view.php?id=' . $row['domain_id'] . '&type=dmn'),
+				'CERT_SCRIPT' => tohtml('cert_view.php?domain_id=' . $row['domain_id'] . '&domain_type=dmn'),
 				'VIEW_CERT' => tr('Show certificate')
 			)
 		);
@@ -115,17 +115,19 @@ function client_generateDomainAliasesList($tpl, $userId)
 	if (customerHasFeature('domain_aliases')) {
 		$domainId = get_user_domain_id($userId);
 
-		$query = "
-			SELECT
-				`alias_id`, `alias_name`, `alias_status`, `alias_mount`, `alias_ip_id`, `url_forward`
-			FROM
-				`domain_aliasses`
-			WHERE
-				`domain_id` = ?
-			ORDER BY
-				`alias_mount`, `alias_name`
-		";
-		$stmt = exec_query($query, $domainId);
+		$stmt = exec_query(
+			'
+				SELECT
+					alias_id, alias_name, alias_status, alias_mount, alias_ip_id, url_forward
+				FROM
+					domain_aliasses
+				WHERE
+					domain_id = ?
+				ORDER BY
+					alias_mount, alias_name
+			',
+			$domainId
+		);
 
 		if (!$stmt->rowCount()) {
 			$tpl->assign(
@@ -217,8 +219,8 @@ function _client_generateDomainAliasAction($id, $status)
 			tr('Delete'),
 			tohtml("alias_delete.php?id=$id"),
 			true,
-			tr('View certificates'),
-			tohtml("cert_view.php?id=$id&type=als")
+			tr('Show certificate'),
+			tohtml("cert_view.php?domain_id=$id&domain_type=als")
 		);
 	} elseif ($status == 'ordered') {
 		return array(tr('Delete order'), tohtml("alias_order_delete.php?del_id=$id"), false, '-', '#');
@@ -270,36 +272,39 @@ function client_generateSubdomainsList($tpl, $userId)
 		$domainId = get_user_domain_id($userId);
 
 		// Subdomains
-		$query = "
-			SELECT
-				`subdomain_id`, `subdomain_name`, `subdomain_mount`, `subdomain_status`, `subdomain_url_forward`,
-				`domain_name`
-			FROM
-				`subdomain`
-			JOIN
-				`domain` ON (`subdomain`.`domain_id` = `domain`.`domain_id`)
-			WHERE
-				`subdomain`.`domain_id` = ?
-			ORDER BY
-				`subdomain_name`
-		";
-		$stmt1 = exec_query($query, $domainId);
+		$stmt1 = exec_query(
+			'
+				SELECT
+					subdomain_id, subdomain_name, subdomain_mount, subdomain_status, subdomain_url_forward, domain_name
+				FROM
+					subdomain
+				JOIN
+					domain ON (subdomain.domain_id = domain.domain_id)
+				WHERE
+					subdomain.domain_id = ?
+				ORDER BY
+					subdomain_name
+			',
+			$domainId
+		);
 
 		// Domain aliases subdomains
-		$query = "
-			SELECT
-				`subdomain_alias_id`, `subdomain_alias_name`, `subdomain_alias_mount`, `subdomain_alias_url_forward`,
-				`subdomain_alias_status`, `alias_name`
-			FROM
-				`subdomain_alias`
-			JOIN
-				`domain_aliasses` ON `subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
-			WHERE
-				`domain_id` = ?
-			ORDER BY
-				`subdomain_alias_name`
-		";
-		$stmt2 = exec_query($query, $domainId);
+		$stmt2 = exec_query(
+			'
+				SELECT
+					subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_url_forward,
+					subdomain_alias_status, alias_name
+				FROM
+					subdomain_alias
+				JOIN
+					domain_aliasses ON subdomain_alias.alias_id = domain_aliasses.alias_id
+				WHERE
+					domain_id = ?
+				ORDER BY
+					subdomain_alias_name
+			',
+			$domainId
+		);
 
 		if (!($stmt1->rowCount() || $stmt2->rowCount())) {
 			$tpl->assign(
@@ -481,8 +486,8 @@ function _client_generateSubdomainAction($id, $status)
 		return array(
 			tr('Delete'), tohtml("subdomain_delete.php?id=$id"),
 			true,
-			tr('View certificates'),
-			tohtml("cert_view.php?id=$id&type=sub"),
+			tr('Show certificate'),
+			tohtml("cert_view.php?domain_id=$id&domain_type=sub"),
 		);
 	} else {
 		return array(tr('N/A'), '#', false, tr('N/A'), '#');
@@ -504,8 +509,8 @@ function _client_generateSubdomainAliasAction($id, $status)
 			tr('Delete'),
 			tohtml("alssub_delete.php?id=$id"),
 			true,
-			tr('View certificates'),
-			tohtml("cert_view.php?id=$id&type=alssub"),
+			tr('Show certificate'),
+			tohtml("cert_view.php?domain_id=$id&domain_type=alssub"),
 		);
 	} else {
 		return array(tr('N/A'), '#', false, tr('N/A'), '#');
@@ -524,23 +529,25 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 	if (customerHasFeature('custom_dns_records')) {
 		$domainId = get_user_domain_id($userId);
 
-		$query = "
-			SELECT
-				`t1`.*,
-				IFNULL(`t3`.`alias_name`, `t2`.`domain_name`) `domain_name`,
-				IFNULL(`t3`.`alias_status`, `t2`.`domain_status`) `domain_status`
-			FROM
-				`domain_dns` AS `t1`
-			LEFT JOIN
-				`domain` AS `t2` ON (`t2`.`domain_id` = `t1`.`domain_id`)
-			LEFT JOIN
-				`domain_aliasses` AS `t3` ON (`t3`.`alias_id` = `t1`.`alias_id`)
-			WHERE
-				`t1`.`domain_id` = ?
-			ORDER BY
-				`t1`.`domain_id`, `t1`.`alias_id`, `t1`.`domain_dns`, `t1`.`domain_type`
-		";
-		$stmt = exec_query($query, $domainId);
+		$stmt = exec_query(
+			'
+				SELECT
+					t1.*,
+					IFNULL(t3.alias_name, t2.domain_name) domain_name,
+					IFNULL(t3.alias_status, t2.domain_status) domain_status
+				FROM
+					domain_dns AS t1
+				LEFT JOIN
+					domain AS t2 ON (t2.domain_id = t1.domain_id)
+				LEFT JOIN
+					domain_aliasses AS t3 ON (t3.alias_id = t1.alias_id)
+				WHERE
+					t1.domain_id = ?
+				ORDER BY
+					t1.domain_id, t1.alias_id, t1.domain_dns, t1.domain_type
+			',
+			$domainId
+		);
 
 		if (!$stmt->rowCount()) {
 			$tpl->assign(
@@ -704,7 +711,7 @@ $tpl->assign(
 		'TR_MOUNT' => tr('Mount point'),
 		'TR_REDIRECT' => tr('Redirect'),
 		'TR_STATUS' => tr('Status'),
-		'TR_CERT' => tr('SSL certificates'),
+		'TR_CERT' => tr('SSL certificate'),
 		'TR_ACTIONS' => tr('Actions'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 

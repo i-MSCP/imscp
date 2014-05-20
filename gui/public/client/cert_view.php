@@ -33,13 +33,13 @@
 /**
  * Get full name and owner id for the given domain entity
  *
- * @param string $type Domain entity type to update (dmn, als,sub, alssub)
- * @param int $id Domain entity unique identifier
+ * @param int $domainId Domain entity unique identifier
+ * @param string $domainType Domain entity type to update (dmn, als,sub, alssub)
  * @return array
  */
-function client_getFullName($type, $id)
+function client_getFullName($domainId, $domainType)
 {
-	switch ($type) {
+	switch ($domainType) {
 		case 'dmn':
 			$query = 'SELECT domain_name AS name, domain_admin_id FROM domain WHERE domain_id = ?';
 			break;
@@ -81,7 +81,7 @@ function client_getFullName($type, $id)
 			break;
 	}
 
-	$stmt = exec_query($query, array($id));
+	$stmt = exec_query($query, array($domainId));
 
 	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
@@ -117,12 +117,12 @@ function client_updateEntityStatus($type, $id)
  * Generate page
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $id Domain entity unique identifier
- * @param string $type Domain entity type
+ * @param int $domainId Domain entity unique identifier
+ * @param string $domainType Domain entity type
  */
-function client_generatePage($tpl, $id, $type)
+function client_generatePage($tpl, $domainId, $domainType)
 {
-	list($name, $owner) = client_getFullName($type, $id);
+	list($name, $owner) = client_getFullName($domainId, $domainType);
 
 	if ($owner == $_SESSION['user_id']) {
 		if (customerHasFeature('ssl')) {
@@ -130,12 +130,12 @@ function client_generatePage($tpl, $id, $type)
 				// Validate private key
 				$privateKey = new Crypt_RSA();
 
-				if (!empty($_POST['key_cert'])) {
-					if (!empty($_POST['key_cert'])) {
+				if (!empty($_POST['private_key'])) {
+					if (!empty($_POST['private_key'])) {
 						$privateKey->setPassword(clean_input($_POST['passphrase']));
 					}
 
-					if (!$privateKey->loadKey(clean_input($_POST['key_cert']))) {
+					if (!$privateKey->loadKey(clean_input($_POST['private_key']))) {
 						set_page_message(tr('Invalid private key or passphrase'), 'error');
 					}
 
@@ -158,8 +158,8 @@ function client_generatePage($tpl, $id, $type)
 					$intermediateCertificates = array();
 
 					$caBundle = '';
-					if (!empty($_POST['ca_cert'])) {
-						$caBundle = trim(clean_input($_POST['ca_cert']));
+					if (!empty($_POST['ca_bundle'])) {
+						$caBundle = trim(clean_input($_POST['ca_bundle']));
 
 						if (
 							preg_match("/^$certificatPattern$/s", $caBundle) &&
@@ -174,7 +174,9 @@ function client_generatePage($tpl, $id, $type)
 									$x509->loadCA($certificate); // Add certificate in CA chain
 									$unallowSelfSigned = true;
 								} else {
-									set_page_message(tr('A certificate in your CA bundle is not valid.'), 'error');
+									set_page_message(
+										tr('A certificate in your CA bundle is missing or invalid.'), 'error'
+									);
 									break;
 								}
 							}
@@ -185,19 +187,21 @@ function client_generatePage($tpl, $id, $type)
 
 					if (!Zend_Session::namespaceIsset('pageMessages')) {
 						$certificate = '';
-						if (!empty($_POST['cert_cert'])) {
-							if (preg_match("/^$certificatPattern$/s", trim(clean_input($_POST['cert_cert'])), $match)) {
+						if (!empty($_POST['certificate'])) {
+							if (preg_match("/^$certificatPattern$/s", trim(clean_input($_POST['certificate'])), $match)) {
 								$certificate = $match[0];
 
 								// Check certificate
 								if (!$x509->loadX509($certificate) || ! $x509->validateSignature()) {
-									set_page_message(tr('your certificate is not valid.'), 'error');
+									set_page_message(
+										tr('Your certificate is not valid or do not match with the CA bundle.'), 'error'
+									);
 								}
 
 								// TODO check for CN
 
 								if (!openssl_x509_check_private_key($certificate, $privateKey)) {
-									set_page_message(tr("Certificate doesn't corresponds to the private key."), 'error');
+									set_page_message(tr("The certificate doesn't match with the private key."), 'error');
 								}
 							} else {
 								set_page_message(tr('Your certificate is not valid.'), 'error');
@@ -208,27 +212,31 @@ function client_generatePage($tpl, $id, $type)
 
 						if (!Zend_Session::namespaceIsset('pageMessages')) {
 							// Data normalization
+							$privateKey = str_replace("\r\n", "\n", $privateKey) . PHP_EOL;
 							$certificate = str_replace("\r\n", "\n", $certificate) . PHP_EOL;
-							$caBundle = str_replace("\r\n", "\n", $caBundle);
+							$caBundle = str_replace("\r\n", "\n", $caBundle) . PHP_EOL;
 
 							$db = iMSCP_Database::getInstance();
 
 							try {
 								$db->beginTransaction();
 
-								exec_query('DELETE FROM ssl_certs WHERE type = ? AND id = ?', array($type, $id));
+								exec_query(
+									'DELETE FROM ssl_certs WHERE domain_id = ? AND domain_type = ? ',
+									array($domainId, $domainType)
+								);
 
 								exec_query(
 									'
 									  INSERT INTO ssl_certs (
-										id, type, `key`, cert, ca_cert, status
+										domain_id, domain_type, private_key, certificate, ca_bundle, status
 									  ) VALUES (
 										?, ?, ?, ?, ?, ?
 									  )
-									', array($id, $type, $privateKey, $certificate, $caBundle, 'toadd')
+									', array($domainId, $domainType, $privateKey, $certificate, $caBundle, 'toadd')
 								);
 
-								client_updateEntityStatus($type, $id);
+								client_updateEntityStatus($domainType, $domainId);
 
 								$db->commit();
 
@@ -237,11 +245,13 @@ function client_generatePage($tpl, $id, $type)
 									tr('SSL Certificate successfully scheduled for addition or update.'), 'success'
 								);
 								write_log(
-									sprintf('%s addded/updated SSL certificate (%s)', $_SESSION['user_logged'], $name),
+									sprintf(
+										'%s added or updated an SSL certificate (%s)', $_SESSION['user_logged'], $name
+									),
 									E_USER_NOTICE
 								);
 
-								redirectTo("cert_view.php?id=$id&type=$type");
+								redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
 							} catch (iMSCP_Exception_Database $e) {
 								$db->rollBack();
 								throw new iMSCP_Exception_Database(
@@ -258,18 +268,20 @@ function client_generatePage($tpl, $id, $type)
 					$db->beginTransaction();
 
 					exec_query(
-						'UPDATE ssl_certs SET status = ? WHERE type = ? AND id = ? ',
-						array('todelete', $type, $id)
+						'UPDATE ssl_certs SET status = ? WHERE domain_id = ? AND domain_type = ? ',
+						array('todelete', $domainId, $domainType)
 					);
 
-					client_updateEntityStatus($type, $id);
+					client_updateEntityStatus($domainType, $domainId);
 
 					$db->commit();
 
 					send_request();
 
 					set_page_message(tr('Certificate successfully scheduled for deletion.'), 'success');
-					write_log(sprintf('%s deleted SSL certificate (%s)', $_SESSION['user_logged'], $name), E_USER_NOTICE);
+					write_log(
+						sprintf('%s deleted SSL certificate (%s)', $_SESSION['user_logged'], $name), E_USER_NOTICE
+					);
 
 					redirectTo('domains_manage.php');
 				} catch (iMSCP_Exception_Database $e) {
@@ -281,7 +293,9 @@ function client_generatePage($tpl, $id, $type)
 			}
 		}
 
-		$stmt = exec_query('SELECT * FROM ssl_certs WHERE type = ? AND id = ?', array($type, $id));
+		$stmt = exec_query(
+			'SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ?', array($domainId, $domainType)
+		);
 
 		if ($stmt->rowCount()) {
 			if (customerHasFeature('ssl')) {
@@ -293,15 +307,15 @@ function client_generatePage($tpl, $id, $type)
 			}
 
 			if (customerHasFeature('ssl') && !empty($_POST)) {
-				$privateKey = tohtml($_POST['key_cert']);
-				$certificate = tohtml($_POST['cert_cert']);
-				$caBundle = tohtml($_POST['ca_cert']);
+				$privateKey = tohtml($_POST['private_key']);
+				$certificate = tohtml($_POST['certificate']);
+				$caBundle = tohtml($_POST['ca_bundle']);
 				$status = tr('N/A');
 			} else {
 				$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-				$privateKey = tohtml($row['key']);
-				$certificate = tohtml($row['cert']);
-				$caBundle = tohtml($row['ca_cert']);
+				$privateKey = tohtml($row['private_key']);
+				$certificate = tohtml($row['certificate']);
+				$caBundle = tohtml($row['ca_bundle']);
 
 				if (in_array($row['status'], array('ok', 'todelete', 'toadd', 'tochange'))) {
 					$status = translate_dmn_status($row['status']);
@@ -319,9 +333,9 @@ function client_generatePage($tpl, $id, $type)
 			}
 
 			if (customerHasFeature('ssl') && !empty($_POST)) {
-				$privateKey = tohtml($_POST['key_cert']);
-				$certificate = tohtml($_POST['cert_cert']);
-				$caBundle = tohtml($_POST['ca_cert']);
+				$privateKey = tohtml($_POST['private_key']);
+				$certificate = tohtml($_POST['certificate']);
+				$caBundle = tohtml($_POST['ca_bundle']);
 			} else {
 				$privateKey = '';
 				$certificate = '';
@@ -334,8 +348,8 @@ function client_generatePage($tpl, $id, $type)
 				array(
 					'DOMAIN_NAME' => $name,
 					'KEY_CERT' => tohtml(trim($privateKey)),
-					'CERT' => tohtml(trim($certificate)),
-					'CA_CERT' => tohtml(trim($caBundle)),
+					'CERTIFICATE' => tohtml(trim($certificate)),
+					'CA_BUNDLE' => tohtml(trim($caBundle)),
 					'STATUS' => tohtml($status)
 				)
 			);
@@ -368,35 +382,38 @@ $tpl->define_dynamic(
 	)
 );
 
-if (!isset($_GET['id']) || !isset($_GET['type']) || !in_array($_GET['type'], array('dmn', 'als', 'sub', 'alssub'))) {
+if (
+	!isset($_GET['domain_id']) || !isset($_GET['domain_type']) ||
+	!in_array($_GET['domain_type'], array('dmn', 'als', 'sub', 'alssub'))
+) {
 	showBadRequestErrorPage();
 	exit;
 } else {
-	$id = intval($_GET['id']);
-	$type = $_GET['type'];
+	$domainId = intval($_GET['domain_id']);
+	$domainType = clean_input($_GET['domain_type']);
 }
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Domains / SSL Certificates'),
 		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_PAGE_TITLE' => tr('Client / Domains / SSL Certificate'),
 		'TR_CERTIFICATE_DATA' => tr('Certificate data'),
 		'TR_CERT_FOR' => tr('Common name'),
 		'TR_STATUS' => tr('Status'),
 		'TR_PASSWORD' => tr('Private key passphrase if any'),
-		'TR_CERTIFICATE_KEY' => tr('Private key'),
+		'TR_PRIVATE_KEY' => tr('Private key'),
 		'TR_CERTIFICATE' => tr('Certificate'),
-		'TR_INTERM_CERTIFICATE' => tr('CA bundle'),
+		'TR_CA_BUNDLE' => tr('CA bundle'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_SAVE' => tr('Save'),
 		'TR_CANCEL' => tr('Cancel'),
-		'ID' => tohtml($id),
-		'TYPE' => tohtml($type)
+		'ID' => tohtml($domainId),
+		'TYPE' => tohtml($domainType)
 	)
 );
 
 generateNavigation($tpl);
-client_generatePage($tpl, $id, $type);
+client_generatePage($tpl, $domainId, $domainType);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

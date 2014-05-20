@@ -28,6 +28,8 @@ package Modules::Htusers;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use parent 'Modules::Abstract';
 
@@ -46,14 +48,13 @@ sub loadData
 
 	my $sql = "
 		SELECT
-			`t1`.`uname`, `t1`.`upass`, `t1`.`status`, `t1`.`id`, `t2`.`domain_name`, `t2`.`domain_admin_id`,
-			`t2`.`web_folder_protection`
+			t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id, t2.web_folder_protection
 		FROM
-			`htaccess_users` AS `t1`
+			htaccess_users AS t1
 		INNER JOIN
-			`domain` AS `t2` ON (`t1`.`dmn_id` = `t2`.`domain_id`)
+			domain AS t2 ON (t1.dmn_id = t2.domain_id)
 		WHERE
-			`t1`.`id` = ?
+			t1.id = ?
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql, $self->{'htuserId'});
@@ -63,7 +64,7 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'htuserId'}}) {
-		error("Htuser record with ID '$self->{'htuserId'}' has not been found in database");
+		error("Htuser record with ID $self->{'htuserId'} has not been found in database");
 		return 1;
 	}
 
@@ -75,7 +76,7 @@ sub loadData
 		error('Orphan entry: ' . Dumper($rdata->{$self->{'htuserId'}}));
 
 		my @sql = (
-			"UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ?",
+			'UPDATE htaccess_users SET status = ? WHERE id = ?',
 			'Orphan entry: ' . Dumper($rdata->{$self->{'htuserId'}}),
 			$self->{'htuserId'}
 		);
@@ -100,11 +101,11 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange$/) {
+	if($self->{'status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
 
 		@sql = (
-			"UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ?",
+			'UPDATE htaccess_users SET status = ? WHERE id = ?',
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'id'}
 		);
@@ -113,12 +114,12 @@ sub process
 
 		if($rs) {
 			@sql = (
-				"UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ?",
+				'UPDATE htaccess_users SET status = ? WHERE id = ?',
 				scalar getMessageByType('error'),
 				$self->{'id'}
 			);
 		} else {
-			@sql = ("DELETE FROM `htaccess_users` WHERE `id` = ?", $self->{'id'});
+			@sql = ('DELETE FROM htaccess_users WHERE id = ?', $self->{'id'});
 		}
 	}
 

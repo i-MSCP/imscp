@@ -33,6 +33,7 @@ GUI:
 	- Fixed: iMSCP version info must be cached for performance reasons (info are fetched once per day)
 	- Fixed: Private key passphrase must not be stored in database (SSL feature)
 	- Fixed: The full certificate chain must be checked (SSL feature)
+	- Fixed: The method iMSCP_Update_Database::_addIndex() doesn't allow compound keys
 
 INSTALLER:
 	 Added: Support for Percona MySQL server

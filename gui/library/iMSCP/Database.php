@@ -351,18 +351,19 @@ class iMSCP_Database
 	/**
 	 * Returns the list of the permanent tables from the database
 	 *
-	 * @return array An array that represents a list of the permanent tables
+	 * @param $string|null $like
+	 * @return array An array which hold list of database tables
 	 */
-	public function metaTables()
+	public function getTables($like = null)
 	{
-		$tables = array();
-		$result = $this->_db->query('SHOW TABLES');
-
-		while ($result instanceof PDOStatement && ($row = $result->fetch(PDO::FETCH_NUM))) {
-			$tables[] = $row[0];
+		if($like) {
+			$stmt = $this->_db->prepare('SHOW TABLES LIKE ?');
+			$stmt->execute(array($like));
+		} else {
+			$stmt = $this->_db->query('SHOW TABLES');
 		}
 
-		return $tables;
+		return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 	}
 
 	/**

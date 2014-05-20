@@ -66,7 +66,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 179;
+	protected $lastUpdate = 187;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -132,10 +132,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$pdo = iMSCP_Database::getRawInstance();
 
 		while ($this->isAvailableUpdate()) {
-			$databaseUpdateRevision = $this->getNextUpdate();
+			$revision = $this->getNextUpdate();
 
 			// Get the database update method name
-			$databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
+			$databaseUpdateMethod = 'r' . $revision;
 
 			// Gets the queries from the database update method.
 			// A database update method can return void, an array (stack of SQL
@@ -156,17 +156,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 						}
 					}
 
-					$dbConfig['DATABASE_REVISION'] = $databaseUpdateRevision;
+					$dbConfig['DATABASE_REVISION'] = $revision;
 
 					$pdo->commit();
-
 				} catch (Exception $e) {
-
 					$pdo->rollBack();
 
 					// Prepare error message
 					$errorMessage = sprintf(
-						'Database update %s failed.', $databaseUpdateRevision);
+						'Database update %s failed.', $revision);
 
 					// Extended error message
 					$errorMessage .=
@@ -185,7 +183,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					return false;
 				}
 			} else {
-				$dbConfig['DATABASE_REVISION'] = $databaseUpdateRevision;
+				$dbConfig['DATABASE_REVISION'] = $revision;
 			}
 		}
 
@@ -208,10 +206,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		$reflection = new ReflectionClass(__CLASS__);
 
-		foreach(range($this->getNextUpdate(), $this->getLastUpdate()) as $revision) {
-			$methodName = "_databaseUpdate_$revision";
+		foreach (range($this->getNextUpdate(), $this->getLastUpdate()) as $revision) {
+			$methodName = "r$revision";
 
-			if($reflection->hasMethod($methodName)) {
+			if ($reflection->hasMethod($methodName)) {
 				$method = $reflection->getMethod($methodName);
 				$details = explode("\n", $method->getDocComment());
 				$normalizedDetails = '';
@@ -230,12 +228,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 				}
 
 				$databaseUpdatesDetails[$revision] = $normalizedDetails;
-			} else {
-				throw new iMSCP_Exception(
-					sprintf(
-						"Unable to find database update details: Method %s::%s() doesn't exists", __CLASS__, $methodName
-					)
-				);
 			}
 		}
 
@@ -249,7 +241,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function getNextUpdate()
 	{
-		$lastAvailableUpdateRevision = $this->_getLastAvailableUpdateRevision();
+		$lastAvailableUpdateRevision = $this->getLastAvailableUpdateRevision();
 		$nextUpdateRevision = $this->getLastAppliedUpdate();
 
 		if ($nextUpdateRevision < $lastAvailableUpdateRevision) {
@@ -274,30 +266,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return int Last database update revision number
 	 */
-	protected function _getLastAvailableUpdateRevision()
+	protected function getLastAvailableUpdateRevision()
 	{
-		/*
-		static $lastAvailableUpdateRevision = null;
-
-		if (null === $lastAvailableUpdateRevision) {
-			$reflection = new ReflectionClass(__CLASS__);
-			$databaseUpdateMethods = array();
-
-			foreach ($reflection->getMethods() as $method) {
-				if (strpos($method->name, '_databaseUpdate_') !== false) {
-					$databaseUpdateMethods[] = $method->name;
-				}
-			}
-
-			$databaseUpdateMethod = (string)end($databaseUpdateMethods);
-			$lastAvailableUpdateRevision = (int)substr(
-				$databaseUpdateMethod, strrpos($databaseUpdateMethod, '_') + 1
-			);
-		}
-
-		return $lastAvailableUpdateRevision;
-		*/
-
 		return $this->getLastUpdate();
 	}
 
@@ -319,133 +289,187 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Checks if a column exists in a database table and if not, return query to add it
+	 * Rename table
 	 *
-	 * @param string $table Database table name to operate on
-	 * @param string $column Column to be added in the database table
-	 * @param string $columnDefinition Column definition including the optional (but recommended) positional statement
-	 *                                 ([FIRST|AFTER col_name]
-	 * @return string Query to be executed
+	 * @param string $table Table name
+	 * @return string SQL statement to be executed
 	 */
-	protected function _addColumn($table, $column, $columnDefinition)
+	protected function renameTable($table, $newTableName)
 	{
-		$query = "
-			SELECT
-				COLUMN_NAME
-			FROM
-				`information_schema`.`COLUMNS`
-			WHERE
-				COLUMN_NAME = ?
-			AND
-				TABLE_NAME = ?
-			AND
-				`TABLE_SCHEMA` = ?
-		";
-		$stmt = exec_query($query, array($column, $table, $this->databaseName));
+		try {
+			$table = quoteIdentifier($table);
+			$stmt = exec_query("SHOW TABLES LIKE ?", $table);
 
-		if (!$stmt->rowCount()) {
-			return "ALTER TABLE `$table` ADD `$column` $columnDefinition;";
-		} else {
-			return '';
-		}
+			if ($stmt->rowCount()) {
+				return sprintf('ALTER IGNORE TABLE %s RENAME TO %s', $table, quoteIdentifier($newTableName));
+			}
+		} catch(iMSCP_Exception_Database $e) { }
+
+		return '';
 	}
 
 	/**
-	 * Checks if a column exists in a database table and if yes, return a query to drop it
+	 * Drop table
 	 *
-	 * @param string $table Database table from where the column must be dropped
-	 * @param string $column Column to be dropped from $table
-	 * @return string Query to be executed
+	 * @param string $table Table name
 	 */
-	protected function _dropColumn($table, $column)
+	public function dropTable($table)
 	{
-		$query = "
-			SELECT
-				`COLUMN_NAME`
-			FROM
-				`information_schema`.`COLUMNS`
-			WHERE
-				`COLUMN_NAME` = ?
-			AND
-				`TABLE_NAME` = ?
-			AND
-				`TABLE_SCHEMA` = ?
-		";
-		$stmt = exec_query($query, array($column, $table, $this->databaseName));
-
-		if ($stmt->rowCount()) {
-			return "ALTER TABLE `$table` DROP COLUMN `$column`";
-		} else {
-			return '';
-		}
+		return sprintf('DROP TABLE %s IF EXISTS', quoteIdentifier($table));
 	}
 
 	/**
-	 * Checks if a database table have an index and if yes, return a query to drop it
+	 * Add column
 	 *
-	 * @param string $table Database table from where the column must be dropped
+	 * @param string $table Table name
+	 * @param string $column Column name
+	 * @param string $columnDefinition Column definition
+	 * @return string SQL statement to be executed
+	 */
+	protected function addColumn($table, $column, $columnDefinition)
+	{
+		try {
+			$table = quoteIdentifier($table);
+			$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
+
+			if (!$stmt->rowCount()) {
+				return sprintf('ALTER IGNORE TABLE %s ADD %s %s', $table, quoteIdentifier($column), $columnDefinition);
+			}
+		} catch (iMSCP_Exception_Database $e) { }
+
+		return '';
+	}
+
+	/**
+	 * Change column
+	 *
+	 * @param string $table Table name
+	 * @param string $column Column name
+	 * @param string $columnDefinition Column definition
+	 * @return string SQL statement to be executed
+	 */
+	protected function changeColumn($table, $column, $columnDefinition)
+	{
+		try {
+			$table = quoteIdentifier($table);
+			$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
+
+			if ($stmt->rowCount()) {
+				return sprintf(
+					'ALTER IGNORE TABLE %s CHANGE %s %s', $table, quoteIdentifier($column), $columnDefinition
+				);
+			}
+		} catch (iMSCP_Exception_Database $e) { }
+
+		return '';
+	}
+
+	/**
+	 * Drop column
+	 *
+	 * @param string $table Table name
+	 * @param string $column Column name
+	 * @return string SQL statement to be executed
+	 */
+	protected function dropColumn($table, $column)
+	{
+		try {
+			$table = quoteIdentifier($table);
+			$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
+
+			if ($stmt->rowCount()) {
+				return sprintf('ALTER IGNORE TABLE %s DROP %s', quoteIdentifier($table), quoteIdentifier($column));
+			}
+		} catch (iMSCP_Exception_Database $e) { }
+
+		return '';
+	}
+
+	/**
+	 * Add index
+	 *
+	 * @param string $table Database table name
+	 * @param array|string $columns Column name(s)
+	 * @param string $indexType Index type (PRIMARY KEY (default), INDEX|KEY, UNIQUE)
+	 * @param string $indexName Index name (default is autogenerated)
+	 * @return string SQL statement to be executed
+	 */
+	protected function addIndex($table, $columns, $indexType = 'PRIMARY KEY', $indexName = '')
+	{
+		// $this->addIndex('ssl_certs', array('domain_id', 'domain_type'), 'unique', 'domain_id_domain_type');
+		$indexType = strtoupper($indexType);
+
+		try {
+			$table = quoteIdentifier($table);
+			$indexType = strtoupper($indexType);
+			$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", ($indexName));
+
+			if (!$stmt->rowCount()) {
+				if (is_array($columns)) {
+					$columns = implode(',', array_map('quoteIdentifier', $columns));
+				} else {
+					$columns = quoteIdentifier($columns);
+				}
+
+				return sprintf(
+					'ALTER IGNORE TABLE %s ADD %s %s (%s)',
+					$table,
+					$indexType,
+					($indexType == 'PRIMARY KEY') ? '' : quoteIdentifier($indexName),
+					$columns
+				);
+			}
+		} catch(iMSCP_Exception_Database $e) { }
+
+		return '';
+	}
+
+	/**
+	 * Drop any index which belong to the given column in the given table
+	 *
+	 * @param string $table Table name
+	 * @param string $column Column name
+	 * @return array SQL statement to be executed
+	 */
+	protected function dropIndexByColumn($table, $column)
+	{
+		$sqlUpd = array();
+
+		try {
+			$table = quoteIdentifier($table);
+
+
+			$stmt = exec_query("SHOW INDEX FROM $table WHERE COLUMN_NAME = ?", $column);
+
+			if ($stmt->rowCount()) {
+				while ($row = $stmt->rowCount(PDO::FETCH_ASSOC)) {
+					$sqlUpd[] = sprintf('ALTER IGNORE TABLE %s DROP INDEX', $table, $row['KEY_NAME']);
+				}
+			}
+		} catch(iMSCP_Exception_Database $e) { }
+
+		return $sqlUpd;
+	}
+
+	/**
+	 * Drop the given index from the given table
+	 *
+	 * @param string $table Table name
 	 * @param string $indexName Index name
-	 * @param string $columnName Column to which index belong to
-	 * @return string Query to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _dropIndex($table, $indexName = 'PRIMARY', $columnName = null)
+	protected function dropIndexByName($table, $indexName = 'PRIMARY')
 	{
-		if (is_null($columnName)) {
-			$columnName = $indexName;
-		}
+		try {
+			$table = quoteIdentifier($table);
+			$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
 
-		$query = "
-			SHOW INDEX FROM
-				`$this->databaseName`.`$table`
-			WHERE
-				`KEY_NAME` = ?
-			AND
-				`COLUMN_NAME` = ?
-		";
-		$stmt = exec_query($query, array($indexName, $columnName));
+			if ($stmt->rowCount()) {
+				return sprintf('ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($indexName));
+			}
+		} catch(iMSCP_Exception_Database $e) { }
 
-		if ($stmt->rowCount()) {
-			return "ALTER IGNORE TABLE `$this->databaseName`.`$table` DROP INDEX `$indexName`";
-		} else {
-			return '';
-		}
-	}
-
-	/**
-	 * Checks if a database table have an index and if no, return a query to add it
-	 *
-	 * @param string $table Database table from where the column must be dropped
-	 * @param string $columnName Column to which index belong to
-	 * @param string $indexType Index type (Primary Unique)
-	 * @param string $indexName Index name
-	 * @return string Query to be executed
-	 */
-	protected function _addIndex($table, $columnName, $indexType = 'PRIMARY KEY', $indexName = null)
-	{
-		if (is_null($indexName)) {
-			$indexName = $indexType == 'PRIMARY KEY' ? 'PRIMARY' : $columnName;
-		}
-
-		$query = "
-			SHOW INDEX FROM
-				`$this->databaseName`.`$table`
-			WHERE
-				`KEY_NAME` = ?
-			AND
-				`COLUMN_NAME` = ?
-		";
-		$stmt = exec_query($query, array($indexName, $columnName));
-
-		if ($stmt->rowCount()) {
-			return '';
-		} else {
-			return "
-				ALTER IGNORE TABLE
-					`$this->databaseName`.`$table`
-				ADD
-					$indexType " . ($indexType == 'PRIMARY KEY' ? '' : $indexName) . " (`$columnName`)
-			";
-		}
+		return '';
 	}
 
 	/**
@@ -470,103 +494,104 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Fixes some CSRF issues in admin log
 	 *
-	 * @return array SQL Statement
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_46()
+	protected function r46()
 	{
-		return 'TRUNCATE TABLE `log`;';
+		return 'TRUNCATE TABLE log';
 	}
 
 	/**
 	 * Removes useless 'suexec_props' table
 	 *
-	 * @return array SQL Statement
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_47()
+	protected function r47()
 	{
-		return 'DROP TABLE IF EXISTS `suexec_props`';
+		return $this->dropTable('suexec_props');
 	}
 
 	/**
 	 * #14: Adds table for software installer
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_48()
+	protected function r48()
 	{
 		$sqlUpd = array(
 			"
-	 			CREATE TABLE IF NOT EXISTS `web_software` (
-					`software_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-					`software_master_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					`reseller_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					`software_name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_version` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_language` VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_db` TINYINT(1) NOT NULL,
-					`software_archive` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_installfile` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_prefix` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_link` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_desc` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_active` INT(1) NOT NULL,
-					`software_status` VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`rights_add_by` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					`software_depot` VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
-	  				PRIMARY KEY  (`software_id`)
+	 			CREATE TABLE IF NOT EXISTS web_software (
+					software_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+					software_master_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
+					reseller_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
+					software_name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_version VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_language VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_type VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_db TINYINT(1) NOT NULL,
+					software_archive VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_installfile VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_prefix VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_link VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_desc MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_active INT(1) NOT NULL,
+					software_status VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					rights_add_by INT(10) UNSIGNED NOT NULL DEFAULT '0',
+					software_depot VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
+	  				PRIMARY KEY  (software_id)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 			",
 			"
-				CREATE TABLE IF NOT EXISTS `web_software_inst` (
-					`domain_id` INT(10) UNSIGNED NOT NULL,
-					`alias_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					`subdomain_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					`subdomain_alias_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					`software_id` INT(10) NOT NULL,
-					`software_master_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					`software_res_del` INT(1) NOT NULL DEFAULT '0',
-					`software_name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_version` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_language` VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`path` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					`software_prefix` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					`db` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					`database_user` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					`database_tmp_pwd` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					`install_username` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					`install_password` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					`install_email` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					`software_status` VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`software_depot` VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
-  					KEY `software_id` (`software_id`)
+				CREATE TABLE IF NOT EXISTS web_software_inst (
+					domain_id INT(10) UNSIGNED NOT NULL,
+					alias_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
+					subdomain_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
+					subdomain_alias_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
+					software_id INT(10) NOT NULL,
+					software_master_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
+					software_res_del INT(1) NOT NULL DEFAULT '0',
+					software_name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_version VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_language VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					path VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+					software_prefix VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+					db VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+					database_user VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+					database_tmp_pwd VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+					install_username VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+					install_password VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+					install_email VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+					software_status VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					software_depot VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
+  					KEY software_id (software_id)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 			",
-			$this->_addColumn(
+			$this->addColumn(
 				'domain',
 				'domain_software_allowed',
-				"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER `domain_dns`"
+				"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER domain_dns"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'software_allowed',
-				"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER `reseller_ips`"
+				"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER reseller_ips"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'softwaredepot_allowed',
-				"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes' AFTER `software_allowed`"
+				"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes' AFTER software_allowed"
 			)
 		);
 
-		$stmt = exec_query("SELECT `id`, `props` FROM hosting_plans");
+		$stmt = exec_query('SELECT id, props FROM hosting_plans');
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$props = explode(';', $row['props']);
+				$id = quoteValue($row['id'], PDO::PARAM_INT);
 
 				if (sizeof($props) == 12) {
-					$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_') WHERE id = {$data['id']}";
+					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props,';_no_') WHERE id = $id";
 				}
 			}
 		}
@@ -579,7 +604,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return void
 	 */
-	protected function _databaseUpdate_50()
+	protected function r50()
 	{
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -589,64 +614,62 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds required field for on-click-logon from the ftp-user site.
 	 *
-	 * @return string SQL Statement
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_51()
+	protected function r51()
 	{
-		return $this->_addColumn(
-			'ftp_users',
-			'rawpasswd',
-			"varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL AFTER `passwd`"
+		return $this->addColumn(
+			'ftp_users', 'rawpasswd', "varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL AFTER passwd"
 		);
 	}
 
 	/**
 	 * Adds new options for applications installer
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_52()
+	protected function r52()
 	{
 		$sqlUpd = array(
+			'
+				CREATE TABLE IF NOT EXISTS web_software_depot (
+					package_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+					package_install_type VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
+					package_title VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
+					package_version VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL,
+					package_language VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
+					package_type VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL,
+					package_description MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+					package_vendor_hp VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
+					package_download_link VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
+					package_signature_link VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
+					PRIMARY KEY (package_id)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+			',
 			"
-				CREATE TABLE IF NOT EXISTS `web_software_depot` (
-					`package_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-					`package_install_type` VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
-					`package_title` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-					`package_version` VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL,
-					`package_language` VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
-					`package_type` VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL,
-					`package_description` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					`package_vendor_hp` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-					`package_download_link` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-					`package_signature_link` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-					PRIMARY KEY (`package_id`)
+				CREATE TABLE IF NOT EXISTS web_software_options (
+					use_webdepot TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+					webdepot_xml_url VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+					webdepot_last_update DATETIME NOT NULL
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 			",
 			"
-				CREATE TABLE IF NOT EXISTS `web_software_options` (
-					`use_webdepot` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
-					`webdepot_xml_url` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
-					`webdepot_last_update` DATETIME NOT NULL
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-			",
-			"
-				REPLACE INTO `web_software_options` (
-					`use_webdepot`, `webdepot_xml_url`, `webdepot_last_update`
+				REPLACE INTO web_software_options (
+					use_webdepot, webdepot_xml_url, webdepot_last_update
 				) VALUES (
 					'1', 'http://app-pkg.i-mscp.net/imscp_webdepot_list.xml', '0000-00-00 00:00:00'
 				)
 			",
-			$this->_addColumn(
+			$this->addColumn(
 				'web_software',
 				'software_installtype',
-				"VARCHAR(15) COLLATE utf8_unicode_ci DEFAULT NULL AFTER `reseller_id`"
+				'VARCHAR(15) COLLATE utf8_unicode_ci DEFAULT NULL AFTER reseller_id'
 			),
-			"UPDATE `web_software` SET `software_installtype` = 'install'",
-			$this->_addColumn(
+			"UPDATE web_software SET software_installtype = 'install'",
+			$this->addColumn(
 				'reseller_props',
 				'websoftwaredepot_allowed',
-				"VARCHAR(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes' AFTER `softwaredepot_allowed`"
+				"VARCHAR(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes' AFTER softwaredepot_allowed"
 			)
 		);
 
@@ -656,73 +679,55 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Decrypts email, ftp and SQL users passwords in database
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_53()
+	protected function r53()
 	{
 		$sqlUpd = array();
 
-		$status = 'tochange';
-
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
-
 		// Decrypt all mail passwords
 
-		$query = "
-			SELECT
-				`mail_id`, `mail_pass`
-			FROM
-				`mail_users`
-			WHERE
-				`mail_type` RLIKE '^(normal_mail|alias_mail|subdom_mail|alssub_mail)'
-		";
-		$stmt = execute_query($query);
+		$stmt = execute_query(
+			"
+				SELECT
+					mail_id, mail_pass
+				FROM
+					mail_users
+				WHERE
+					mail_type RLIKE '^(normal_mail|alias_mail|subdom_mail|alssub_mail)'
+			"
+		);
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$sqlUpd[] = "
-					UPDATE
-						`mail_users`
-					SET
-						`mail_pass`= " . $db->quote(decryptBlowfishCbcPassword($data['mail_pass'])) . ", `status` = '$status'
-					WHERE
-						`mail_id` = '{$data['mail_id']}'
-				";
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$password = quoteValue($row['mail_pass']);
+				$status = quoteValue('tochange');
+				$mailId = quoteValue($row['mail_id'], PDO::PARAM_INT);
+				$sqlUpd[] = "UPDATE mail_users SET mail_pass = $password, status = $status WHERE mail_id = $mailId";
 			}
 		}
 
 		// Decrypt all SQL users passwords
 
-		$stmt = exec_query("SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`");
+		$stmt = exec_query("SELECT sqlu_id, sqlu_pass FROM sql_user");
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$sqlUpd[] = "
-					UPDATE
-						`sql_user`
-					SET
-						`sqlu_pass` = " . $db->quote(decryptBlowfishCbcPassword($data['sqlu_pass'])) . "
-					WHERE
-						`sqlu_id` = '{$data['sqlu_id']}'
-				";
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$password = quoteValue($row['sqlu_pass']);
+				$id = quoteValue($row['sqlu_id'], PDO::PARAM_INT);
+				$sqlUpd[] = "UPDATE sql_user SET sqlu_pass = $password WHERE sqlu_id = $id";
 			}
 		}
 
 		// Decrypt all Ftp users passwords
 
-		$stmt = exec_query("SELECT `userid`, `passwd` FROM `ftp_users`");
+		$stmt = exec_query("SELECT userid, passwd FROM ftp_users");
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$sqlUpd[] = "
-					UPDATE
-						`ftp_users`
-					SET
-						`rawpasswd` = " . $db->quote(decryptBlowfishCbcPassword($data['passwd'])) . "
-					WHERE
-						`userid` = '{$data['userid']}'
-				";
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$password = quoteValue($row['passwd']);
+				$userId = quoteValue($row['userid']);
+				$sqlUpd[] = "UPDATE ftp_users SET rawpasswd = $password WHERE userid = $userId";
 			}
 		}
 
@@ -732,32 +737,21 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Converts all tables to InnoDB engine
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_54()
+	protected function r60()
 	{
 		$sqlUpd = array();
 
 		/** @var $db iMSCP_Database */
 		$db = iMSCP_Registry::get('db');
 
-		$tables = $db->metaTables();
-
-		foreach ($tables as $table) {
-			$sqlUpd[] = "ALTER TABLE `$table` ENGINE=InnoDB";
+		foreach ($db->getTables() as $table) {
+			$table = quoteIdentifier($table);
+			$sqlUpd[] = "ALTER TABLE $table ENGINE=InnoDB";
 		}
 
 		return $sqlUpd;
-	}
-
-	/**
-	 * Converts the autoreplies_log table to InnoDB engine
-	 *
-	 * @return string SQL Statement to be executed
-	 */
-	protected function _databaseUpdate_60()
-	{
-		return 'ALTER TABLE `autoreplies_log` ENGINE=InnoDB';
 	}
 
 	/**
@@ -765,7 +759,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return void
 	 */
-	protected function _databaseUpdate_66()
+	protected function r66()
 	{
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -778,9 +772,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #124: Enhancement - Switch to gettext (Machine Object Files)
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_67()
+	protected function r67()
 	{
 		$sqlUpd = array();
 
@@ -798,10 +792,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		/** @var $db iMSCP_Database */
 		$db = iMSCP_Registry::get('db');
 
-		foreach ($db->metaTables() as $tableName) {
-			if (strpos($tableName, 'lang_') !== false) {
-				$sqlUpd[] = "DROP TABLE `$tableName`";
-			}
+		foreach ($db->getTables('lang_%') as $tableName) {
+			$sqlUpd[] = $this->dropTable($tableName);
 		}
 
 		// Third step: Update users language property
@@ -823,14 +815,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// Updates language property of each users by using new naming convention
 		foreach ($languagesMap as $language => $locale) {
-			$sqlUpd[] = "
-				UPDATE
-					`user_gui_props`
-				SET
-					`lang` = '$locale'
-				WHERE
-					`lang` = 'lang_{$language}'
-			";
+			$locale = quoteValue($locale);
+			$language = quoteValue("lang_$language");
+
+			$sqlUpd[] = "UPDATE user_gui_props SET lang = $locale WHERE lang = $language";
 		}
 
 		return $sqlUpd;
@@ -839,29 +827,21 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #119: Defect - Error when adding IP's
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_68()
+	protected function r68()
 	{
 		$sqlUpd = array();
 
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
-
-		$stmt = exec_query("SELECT `ip_id`, `ip_card` FROM `server_ips`");
+		$stmt = exec_query("SELECT ip_id, ip_card FROM server_ips");
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$cardname = explode(':', $data['ip_card']);
-				$cardname = $cardname[0];
-				$sqlUpd[] = "
-					UPDATE
-						`server_ips`
-					SET
-						`ip_card` = " . $db->quote($cardname) . "
-					WHERE
-						`ip_id` = '{$data['ip_id']}'
-				";
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$cardname = explode(':', $row['ip_card']);
+				$cardname = quoteValue($cardname[0]);
+				$ipId = quoteValue($row['ip_id']);
+
+				$sqlUpd[] = "UPDATE server_ips SET ip_card = $cardname WHERE ip_id = $ipId";
 			}
 		}
 
@@ -871,25 +851,28 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Some fixes for the user_gui_props table
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_69()
+	protected function r69()
 	{
 		return array(
-			'ALTER TABLE `user_gui_props` CHANGE `user_id` `user_id` INT(10) UNSIGNED NOT NULL',
-			'
-				ALTER TABLE `user_gui_props` CHANGE `layout` `layout`
-				VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
-			',
-			"
-				ALTER TABLE `user_gui_props` CHANGE `logo` `logo`
-				VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
-			",
-			'
-				ALTER TABLE `user_gui_props` CHANGE `lang` `lang`
-				VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
-			',
-			"UPDATE `user_gui_props` SET `logo` = '' WHERE `logo` = '0'"
+			$this->changeColumn('user_gui_props', 'user_id', 'user_id INT(10) UNSIGNED NOT NULL'),
+			$this->changeColumn(
+				'user_gui_props',
+				'layout',
+				'layout VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+			),
+			$this->changeColumn(
+				'user_gui_props',
+				'logo',
+				"logo VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
+			),
+			$this->changeColumn(
+				'user_gui_props',
+				'lang',
+				'lang VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+			),
+			"UPDATE user_gui_props SET logo = '' WHERE logo = '0'"
 		);
 	}
 
@@ -898,12 +881,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_71()
+	protected function r71()
 	{
-		return '
-			ALTER TABLE `log` CHANGE `log_message` `log_message`
-			TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
-		';
+		return $this->changeColumn(
+			'log', 'log_message', 'log_message TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+		);
 	}
 
 	/**
@@ -911,130 +893,109 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_72()
+	protected function r72()
 	{
-		return 'ALTER IGNORE TABLE `web_software_options` ADD UNIQUE (`use_webdepot`)';
+		return $this->addIndex('web_software_options', 'use_webdepot', 'unique', 'use_webdepot');
 	}
 
 	/**
 	 * Adds unique index on user_gui_props.user_id column
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_76()
+	protected function r76()
 	{
-		$sqlUpd = array();
+		$sqlUdp = $this->dropIndexByColumn('user_gui_props', 'user_id');
+		array_push($sqlUdp, $this->addIndex('user_gui_props', 'user_id', 'unique', 'user_id'));
 
-		$query = '
-			SELECT
-				`CONSTRAINT_NAME`
-			FROM
-				`information_schema`.`KEY_COLUMN_USAGE`
-			WHERE
-				`TABLE_NAME` = ?
-			AND
-				`CONSTRAINT_NAME` = ?
-			AND
-				`TABLE_SCHEMA` = ?
-		';
-		$stmt = exec_query($query, array('user_gui_props', 'user_id', $this->databaseName));
-
-		if ($stmt->rowCount()) {
-			$sqlUpd[] = 'ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`';
-		}
-
-		$sqlUpd[] = 'ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)';
-
-		return $sqlUpd;
+		return $sqlUdp;
 	}
 
 	/**
 	 * Drops useless user_gui_props.id column
 	 *
-	 * @return string SQL Statement to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_77()
+	protected function r77()
 	{
-		return $this->_dropColumn('user_gui_props', 'id');
+		return $this->dropColumn('user_gui_props', 'id');
 	}
 
 	/**
 	 * #175: Fix for mail_addr saved in mail_type_forward too
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_78()
+	protected function r78()
 	{
 		return array(
 			"
-				REPLACE INTO `mail_users` (
-					`mail_id`, `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
-					`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`
+				REPLACE INTO mail_users (
+					mail_id, mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, mail_auto_respond,
+					mail_auto_respond_text, quota, mail_addr
 				) SELECT
-					`mail_id`, `mail_acc`, `mail_pass`, `mail_forward`, `t1`.`domain_id`, `mail_type`, `sub_id`,
-					`status`, `mail_auto_respond`, `mail_auto_respond_text`, `quota`,
-					CONCAT(`mail_acc`, '@', `domain_name`) AS `mail_addr`
+					mail_id, mail_acc, mail_pass, mail_forward, t1.domain_id, mail_type, sub_id, status,
+					mail_auto_respond, mail_auto_respond_text, quota, CONCAT(mail_acc, '@', domain_name) AS mail_addr
 				FROM
-					`mail_users` AS `t1`
+					mail_users AS t1
 				LEFT JOIN
-					`domain` AS `t2` ON (`t1`.`domain_id` = `t2`.`domain_id`)
+					domain AS t2 ON (t1.domain_id = t2.domain_id)
 				WHERE
-					`t1`.`mail_type` = 'normal_forward'
+					t1.mail_type = 'normal_forward'
 				AND
-					`t1`.`mail_addr` = ''
+					t1.mail_addr = ''
 			",
 			"
-				REPLACE INTO `mail_users`(
-					`mail_id`, `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
-					`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`
+				REPLACE INTO mail_users(
+					mail_id, mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, mail_auto_respond,
+					mail_auto_respond_text, quota, mail_addr
 				) SELECT
-					`mail_id`, `mail_acc`, `mail_pass`, `mail_forward`, `t1`.`domain_id`, `mail_type`, `sub_id`,
-					`status`, `mail_auto_respond`, `mail_auto_respond_text`, `quota`,
-					CONCAT(`mail_acc`, '@', `alias_name`) AS `mail_addr`
+					mail_id, mail_acc, mail_pass, mail_forward, t1.domain_id, mail_type, sub_id, status,
+					mail_auto_respond, mail_auto_respond_text, quota, CONCAT(mail_acc, '@', alias_name) AS mail_addr
 				FROM
-					`mail_users` AS `t1`
+					mail_users AS t1
 				LEFT JOIN
-					`domain_aliasses` AS `t2` ON (`t1`.`sub_id` = `t2`.`alias_id`)
+					domain_aliasses AS t2 ON (t1.sub_id = t2.alias_id)
 				WHERE
-					`t1`.`mail_type` = 'alias_forward'
+					t1.mail_type = 'alias_forward'
 				AND
-					`t1`.`mail_addr` = ''
+					t1.mail_addr = ''
 			",
 			"
-				REPLACE INTO `mail_users` (
-					`mail_id`, `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
-					`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`
+				REPLACE INTO mail_users (
+					mail_id, mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, mail_auto_respond,
+					mail_auto_respond_text, quota, mail_addr
 				) SELECT
-					`mail_id`, `mail_acc`, `mail_pass`, `mail_forward`, `t1`.`domain_id`, `mail_type`, `sub_id`, `status`,
-					`mail_auto_respond`, `mail_auto_respond_text`, `quota`,
-					CONCAT(`mail_acc`, '@', `subdomain_alias_name`, '.', `alias_name`) AS `mail_addr`
+					mail_id, mail_acc, mail_pass, mail_forward, t1.domain_id, mail_type, sub_id, status,
+					mail_auto_respond, mail_auto_respond_text, quota,
+					CONCAT(mail_acc, '@', subdomain_alias_name, '.', alias_name) AS mail_addr
 				FROM
-					`mail_users` AS `t1`
+					mail_users AS t1
 				LEFT JOIN
-					`subdomain_alias` AS `t2` ON (`t1`.`sub_id` = `t2`.`subdomain_alias_id`)
+					subdomain_alias AS t2 ON (t1.sub_id = t2.subdomain_alias_id)
 				LEFT JOIN
-					`domain_aliasses` AS `t3` ON (`t2`.`alias_id` = `t3`.`alias_id`)
+					domain_aliasses AS t3 ON (t2.alias_id = t3.alias_id)
 				WHERE
-					`t1`.`mail_type` = 'alssub_forward'
+					t1.mail_type = 'alssub_forward'
 				AND
-					`t1`.`mail_addr` = ''
+					t1.mail_addr = ''
 			",
 			"
-				REPLACE INTO `mail_users`(
-					`mail_id`, `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
-					`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`
+				REPLACE INTO mail_users(
+					mail_id, mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, mail_auto_respond,
+					mail_auto_respond_text, quota, mail_addr
 				) SELECT
-					`mail_id`, `mail_acc`, `mail_pass`, `mail_forward`, `t1`.`domain_id`, `mail_type`, `sub_id`, `status`,
-					`mail_auto_respond`, `mail_auto_respond_text`, `quota`,
-					CONCAT(`mail_acc`, '@', `subdomain_name`, '.', `domain_name`) AS `mail_addr`
+					mail_id, mail_acc, mail_pass, mail_forward, t1.domain_id, mail_type, sub_id, status,
+					mail_auto_respond, mail_auto_respond_text, quota,
+					CONCAT(mail_acc, '@', subdomain_name, '.', domain_name) AS mail_addr
 				FROM
-					`mail_users` AS `t1`
+					mail_users AS t1
 				LEFT JOIN
-					`subdomain` AS `t2` ON (`t1`.`sub_id` = `t2`.`subdomain_id`)
+					subdomain AS t2 ON (t1.sub_id = t2.subdomain_id)
 				LEFT JOIN
-					`domain` AS `t3` ON (`t2`.`domain_id` = `t3`.`domain_id`)
+					domain AS t3 ON (t2.domain_id = t3.domain_id)
 				WHERE
-					`t1`.`mail_type` = 'subdom_forward' AND `t1`.`mail_addr` = ''
+					t1.mail_type = 'subdom_forward' AND t1.mail_addr = ''
 			"
 		);
 	}
@@ -1044,7 +1005,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return void
 	 */
-	protected function _databaseUpdate_84()
+	protected function r84()
 	{
 		/** @var iMSCP_Config_Handler_Db $dbConfig */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -1065,90 +1026,90 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * #15: Feature - PHP Editor - Add columns for PHP directives
 	 * #202: Bug - Unknown column php_ini_al_disable_functions in reseller_props table
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_85()
+	protected function r85()
 	{
 		return array(
 			// Reseller permissions columns for PHP directives
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_system',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `websoftwaredepot_allowed`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER websoftwaredepot_allowed"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_al_disable_functions',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `php_ini_system`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER php_ini_system"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_al_allow_url_fopen',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `php_ini_al_disable_functions`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER php_ini_al_disable_functions"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_al_register_globals',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `php_ini_al_allow_url_fopen`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER php_ini_al_allow_url_fopen"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_al_display_errors',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `php_ini_al_register_globals`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER php_ini_al_register_globals"
 			),
 
 			// Reseller max. allowed values columns for PHP directives
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_max_post_max_size',
-				"int(11) NOT NULL DEFAULT '8' AFTER `php_ini_al_display_errors`"
+				"int(11) NOT NULL DEFAULT '8' AFTER php_ini_al_display_errors"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_max_upload_max_filesize',
-				"int(11) NOT NULL DEFAULT '2' AFTER `php_ini_max_post_max_size`"
+				"int(11) NOT NULL DEFAULT '2' AFTER php_ini_max_post_max_size"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_max_max_execution_time',
-				"int(11) NOT NULL DEFAULT '30' AFTER `php_ini_max_upload_max_filesize`"
+				"int(11) NOT NULL DEFAULT '30' AFTER php_ini_max_upload_max_filesize"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_max_max_input_time',
-				"int(11) NOT NULL DEFAULT '60' AFTER `php_ini_max_max_execution_time`"
+				"int(11) NOT NULL DEFAULT '60' AFTER php_ini_max_max_execution_time"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'reseller_props',
 				'php_ini_max_memory_limit',
-				"int(11) NOT NULL DEFAULT '128' AFTER `php_ini_max_max_input_time`"
+				"int(11) NOT NULL DEFAULT '128' AFTER php_ini_max_max_input_time"
 			),
 
 			// Domain permissions columns for PHP directives
-			$this->_addColumn(
+			$this->addColumn(
 				'domain',
 				'phpini_perm_system',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `domain_software_allowed`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER domain_software_allowed"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'domain',
 				'phpini_perm_register_globals',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `phpini_perm_system`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER phpini_perm_system"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'domain',
 				'phpini_perm_allow_url_fopen',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `phpini_perm_register_globals`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER phpini_perm_register_globals"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'domain',
 				'phpini_perm_display_errors',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `phpini_perm_allow_url_fopen`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER phpini_perm_allow_url_fopen"
 			),
-			$this->_addColumn(
+			$this->addColumn(
 				'domain',
 				'phpini_perm_disable_functions',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `phpini_perm_allow_url_fopen`"
+				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER phpini_perm_allow_url_fopen"
 			)
 		);
 	}
@@ -1156,27 +1117,27 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #15: Feature - PHP directives editor: Add php_ini table
 	 *
-	 * @return string SQL Statement
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_86()
+	protected function r86()
 	{
 		return
 			// php_ini table for custom PHP directives (per domain)
-			"CREATE TABLE IF NOT EXISTS `php_ini` (
-				`id` INT(11) NOT NULL AUTO_INCREMENT,
-				`domain_id` INT(10) NOT NULL,
-				`status` VARCHAR(55) COLLATE utf8_unicode_ci NOT NULL,
-				`disable_functions` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink',
-				`allow_url_fopen` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-				`register_globals` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-				`display_errors` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-				`error_reporting` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_NOTICE',
-				`post_max_size` INT(11) NOT NULL DEFAULT '8',
-				`upload_max_filesize` INT(11) NOT NULL DEFAULT '2',
-				`max_execution_time` INT(11) NOT NULL DEFAULT '30',
-				`max_input_time` INT(11) NOT NULL DEFAULT '60',
-				`memory_limit` INT(11) NOT NULL DEFAULT '128',
-				PRIMARY KEY (`ID`)
+			"CREATE TABLE IF NOT EXISTS php_ini (
+				id INT(11) NOT NULL AUTO_INCREMENT,
+				domain_id INT(10) NOT NULL,
+				status VARCHAR(55) COLLATE utf8_unicode_ci NOT NULL,
+				disable_functions VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink',
+				allow_url_fopen VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				register_globals VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				display_errors VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				error_reporting VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_NOTICE',
+				post_max_size INT(11) NOT NULL DEFAULT '8',
+				upload_max_filesize INT(11) NOT NULL DEFAULT '2',
+				max_execution_time INT(11) NOT NULL DEFAULT '30',
+				max_input_time INT(11) NOT NULL DEFAULT '60',
+				memory_limit INT(11) NOT NULL DEFAULT '128',
+				PRIMARY KEY (ID)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 	}
@@ -1184,13 +1145,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add hosting plan properties for PHP editor
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_87()
+	protected function r87()
 	{
 		$sqlUpd = array();
 
-		$stmt = execute_query("SELECT `id`, `props` FROM `hosting_plans`");
+		$stmt = execute_query("SELECT id, props FROM hosting_plans");
 
 		if ($stmt->rowCount()) {
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -1199,11 +1160,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 				if (sizeof($props) == 13) {
 					$sqlUpd[] = "
 						UPDATE
-							`hosting_plans`
+							hosting_plans
 						SET
-							`props` = ';no;no;no;no;no;8;2;30;60;128'
+							props = ';no;no;no;no;no;8;2;30;60;128'
 						WHERE
-							`id` = {$data['id']}
+							id = {$data['id']}
 					";
 				}
 			}
@@ -1219,7 +1180,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_88()
+	protected function r88()
 	{
 		$sqlUpd = array();
 
@@ -1230,7 +1191,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'php_ini_al_register_globals', 'php_ini_al_display_errors'
 			) as $permission
 		) {
-			$sqlUpd[] = "UPDATE `reseller_props` SET `$permission` = 'no'";
+			$sqlUpd[] = "UPDATE reseller_props SET $permission = 'no'";
 		}
 
 		// Reset reseller default values for PHP directives (To default system wide value)
@@ -1243,20 +1204,20 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'memory_limit' => '128'
 			) as $directive => $defaultValue
 		) {
-			$sqlUpd[] = "UPDATE `reseller_props` SET `php_ini_max_{$directive}` = '$defaultValue'";
+			$sqlUpd[] = "UPDATE reseller_props SET php_ini_max_{$directive} = '$defaultValue'";
 		}
 
 		return $sqlUpd;
 	}
 
 	/**
-	 * Truncate the php_ini table (related to _databaseUpdate_88)
+	 * Truncate the php_ini table (related to r88)
 	 *
-	 * @return string SQL Statement to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_89()
+	protected function r89()
 	{
-		$sqlupd = 'TRUNCATE TABLE `php_ini`';
+		$sqlupd = 'TRUNCATE TABLE php_ini';
 
 		// Schedule backend process in case user do update from frontend
 		$this->_daemonRequest = true;
@@ -1267,84 +1228,84 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop unused table auto_num
 	 *
-	 * @return string SQL Statement to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_91()
+	protected function r91()
 	{
-		return 'DROP TABLE IF EXISTS `auto_num`';
+		return $this->dropTable('auto_num');
 	}
 
 	/**
 	 * #238: Delete orphan php_ini entries in the php.ini table
 	 *
-	 * @return string SQL Statement to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_92()
+	protected function r92()
 	{
-		return 'DELETE FROM `php_ini` WHERE `domain_id` NOT IN (SELECT `domain_id` FROM `domain`)';
+		return 'DELETE FROM php_ini WHERE domain_id NOT IN (SELECT domain_id FROM domain)';
 	}
 
 	/**
 	 * Rename php_ini.ID column to php_ini.id
 	 *
-	 * @return string SQL Statement to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_93()
+	protected function r93()
 	{
-		return 'ALTER TABLE `php_ini` CHANGE `ID` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT';
+		return $this->changeColumn('php_ini', 'ID', 'id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT');
 	}
 
 	/**
 	 * Database schema update (UNIQUE KEY to PRIMARY KEY for some fields)
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_95()
+	protected function r95()
 	{
 		return array(
-			$this->_addIndex('domain', 'domain_id'),
-			$this->_dropIndex('domain', 'domain_id'),
+			$this->addIndex('domain', 'domain_id'),
+			$this->dropIndexByName('domain', 'domain_id'),
 
-			$this->_addIndex('email_tpls', 'id'),
-			$this->_dropIndex('email_tpls', 'id'),
+			$this->addIndex('email_tpls', 'id'),
+			$this->dropIndexByName('email_tpls', 'id'),
 
-			$this->_addIndex('hosting_plans', 'id'),
-			$this->_dropIndex('hosting_plans', 'id'),
+			$this->addIndex('hosting_plans', 'id'),
+			$this->dropIndexByName('hosting_plans', 'id'),
 
-			$this->_addIndex('htaccess', 'id'),
-			$this->_dropIndex('htaccess', 'id'),
+			$this->addIndex('htaccess', 'id'),
+			$this->dropIndexByName('htaccess', 'id'),
 
-			$this->_addIndex('htaccess_groups', 'id'),
-			$this->_dropIndex('htaccess_groups', 'id'),
+			$this->addIndex('htaccess_groups', 'id'),
+			$this->dropIndexByName('htaccess_groups', 'id'),
 
-			$this->_addIndex('htaccess_users', 'id'),
-			$this->_dropIndex('htaccess_users', 'id'),
+			$this->addIndex('htaccess_users', 'id'),
+			$this->dropIndexByName('htaccess_users', 'id'),
 
-			$this->_addIndex('reseller_props', 'id'),
-			$this->_dropIndex('reseller_props', 'id'),
+			$this->addIndex('reseller_props', 'id'),
+			$this->dropIndexByName('reseller_props', 'id'),
 
-			$this->_addIndex('server_ips', 'ip_id'),
-			$this->_dropIndex('server_ips', 'ip_id'),
+			$this->addIndex('server_ips', 'ip_id'),
+			$this->dropIndexByName('server_ips', 'ip_id'),
 
-			$this->_addIndex('sql_database', 'sqld_id'),
-			$this->_dropIndex('sql_database', 'sqld_id'),
+			$this->addIndex('sql_database', 'sqld_id'),
+			$this->dropIndexByName('sql_database', 'sqld_id'),
 
-			$this->_addIndex('sql_user', 'sqlu_id'),
-			$this->_dropIndex('sql_user', 'sqlu_id')
+			$this->addIndex('sql_user', 'sqlu_id'),
+			$this->dropIndexByName('sql_user', 'sqlu_id')
 		);
 	}
 
 	/**
 	 * #292: Feature - Layout color chooser
 	 *
-	 * @return string SQL Statement to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_96()
+	protected function r96()
 	{
-		return $this->_addColumn(
+		return $this->addColumn(
 			'user_gui_props',
 			'layout_color',
-			"VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `layout`"
+			"VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER layout"
 		);
 	}
 
@@ -1353,7 +1314,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return void
 	 */
-	protected function _databaseUpdate_97()
+	protected function r97()
 	{
 		/** @var iMSCP_Config_Handler_Db $dbConfig */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -1366,37 +1327,37 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update level propertie for custom menus
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statement to be executed
 	 */
-	protected function _databaseUpdate_98()
+	protected function r98()
 	{
 		return array(
-			"UPDATE `custom_menus` SET `menu_level` = 'A' WHERE `menu_level` = 'admin'",
-			"UPDATE `custom_menus` SET `menu_level` = 'R' WHERE `menu_level` = 'reseller'",
-			"UPDATE `custom_menus` SET `menu_level` = 'C' WHERE `menu_level` = 'user'",
-			"UPDATE `custom_menus` SET `menu_level` = 'RC' WHERE `menu_level` = 'all'"
+			"UPDATE custom_menus SET menu_level = 'A' WHERE menu_level = 'admin'",
+			"UPDATE custom_menus SET menu_level = 'R' WHERE menu_level = 'reseller'",
+			"UPDATE custom_menus SET menu_level = 'C' WHERE menu_level = 'user'",
+			"UPDATE custom_menus SET menu_level = 'RC' WHERE menu_level = 'all'"
 		);
 	}
 
 	/**
 	 * #228: Enhancement - Multiple HTTPS domains on same IP + wildcard SSL
 	 *
-	 * @return string SQL Statement
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_100()
+	protected function r100()
 	{
 		return
-			"CREATE TABLE IF NOT EXISTS `ssl_certs` (
-				`cert_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-				`id` INT(10) NOT NULL,
+			"CREATE TABLE IF NOT EXISTS ssl_certs (
+				cert_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+				id INT(10) NOT NULL,
 				`type` ENUM('dmn','als','sub','alssub') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn',
-				`password` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+				password VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
 				`key` TEXT COLLATE utf8_unicode_ci NOT NULL,
-				`cert` TEXT COLLATE utf8_unicode_ci NOT NULL,
-				`ca_cert` TEXT COLLATE utf8_unicode_ci,
-				`status` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
-				PRIMARY KEY (`cert_id`),
-				KEY `id` (`id`)
+				cert TEXT COLLATE utf8_unicode_ci NOT NULL,
+				ca_cert TEXT COLLATE utf8_unicode_ci,
+				status VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+				PRIMARY KEY (cert_id),
+				KEY id (id)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 	}
@@ -1404,12 +1365,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add order option for custom menus
 	 *
-	 * @return string SQL Statement to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_101()
+	protected function r101()
 	{
-		return $this->_addColumn(
-			'custom_menus', 'menu_order', 'INT UNSIGNED NULL AFTER `menu_level`, ADD INDEX (`menu_order`)'
+		return $this->addColumn(
+			'custom_menus', 'menu_order', 'INT UNSIGNED NULL AFTER menu_level, ADD INDEX (menu_order)'
 		);
 	}
 
@@ -1418,46 +1379,46 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Note: Not used at this moment.
 	 *
-	 * @return string SQL Statement to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_103()
+	protected function r103()
 	{
 		return "
-			CREATE TABLE IF NOT EXISTS `plugin` (
-				`plugin_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-				`plugin_name` VARCHAR(50) COLLATE utf8_unicode_ci NOT NULL,
-				`plugin_type` VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL,
-				`plugin_info` TEXT COLLATE utf8_unicode_ci NOT NULL,
-				`plugin_config` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
-				`plugin_status` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'disabled',
-				PRIMARY KEY (`plugin_id`),
-				UNIQUE KEY `name` (`plugin_name`)
+			CREATE TABLE IF NOT EXISTS plugin (
+				plugin_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+				plugin_name VARCHAR(50) COLLATE utf8_unicode_ci NOT NULL,
+				plugin_type VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL,
+				plugin_info TEXT COLLATE utf8_unicode_ci NOT NULL,
+				plugin_config TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
+				plugin_status VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'disabled',
+				PRIMARY KEY (plugin_id),
+				UNIQUE KEY name (plugin_name)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 	}
 
 	/**
-	 * Update for the `mail_users` table structure
+	 * Update for the mail_users table structure
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_104()
+	protected function r104()
 	{
 		return array(
 			// change to allows forward mail list
 			'
 				ALTER IGNORE TABLE
-					`mail_users`
+					mail_users
 				CHANGE
-					`mail_acc` `mail_acc`
+					mail_acc mail_acc
 				TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
 			',
 			// change to fix with RFC
 			'
 				ALTER IGNORE TABLE
-					`mail_users`
+					mail_users
 				CHANGE
-					`mail_addr` `mail_addr`
+					mail_addr mail_addr
 				VARCHAR(254) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
 			'
 		);
@@ -1468,7 +1429,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return void
 	 */
-	protected function _databaseUpdate_105()
+	protected function r105()
 	{
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -1481,28 +1442,28 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Database schema update (KEY for some fields)
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_106()
+	protected function r106()
 	{
 		return array(
-			$this->_addIndex('admin', 'created_by', '', 'INDEX'),
-			$this->_addIndex('domain_aliasses', 'domain_id', '', 'INDEX'),
-			$this->_addIndex('mail_users', 'domain_id', '', 'INDEX'),
-			$this->_addIndex('reseller_props', 'reseller_id', '', 'INDEX'),
-			$this->_addIndex('sql_database', 'domain_id', '', 'INDEX'),
-			$this->_addIndex('sql_user', 'sqld_id', '', 'INDEX'),
-			$this->_addIndex('subdomain', 'domain_id', '', 'INDEX'),
-			$this->_addIndex('subdomain_alias', 'alias_id', '', 'INDEX')
+			$this->addIndex('admin', 'created_by', 'index', 'created_by'),
+			$this->addIndex('domain_aliasses', 'domain_id', 'index', 'domain_id'),
+			$this->addIndex('mail_users', 'domain_id', 'index', 'domain_id'),
+			$this->addIndex('reseller_props', 'reseller_id', 'index', 'reseller_id'),
+			$this->addIndex('sql_database', 'domain_id', 'index', 'domain_id'),
+			$this->addIndex('sql_user', 'sqld_id', 'index', 'sqld_id'),
+			$this->addIndex('subdomain', 'domain_id', 'index', 'domain_id'),
+			$this->addIndex('subdomain_alias', 'alias_id', 'index', 'alias_id')
 		);
 	}
 
 	/**
 	 * #366: Enhancement - Move menu label show/disable option at user profile level
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_107()
+	protected function r107()
 	{
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -1511,25 +1472,25 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig->del('MAIN_MENU_SHOW_LABELS');
 		}
 
-		return array($this->_addColumn('user_gui_props', 'show_main_menu_labels', "tinyint(1) NOT NULL DEFAULT '1'"));
+		return $this->addColumn('user_gui_props', 'show_main_menu_labels', "tinyint(1) NOT NULL DEFAULT '1'");
 	}
 
 	/**
 	 * #157: Enhancement - External Mail server feature
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_109()
+	protected function r109()
 	{
 		$sqlUpd = array(
-			$this->_addColumn('domain', 'domain_external_mail', "VARCHAR(15) NOT NULL DEFAULT 'no'"),
-			$this->_addColumn('domain', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
-			$this->_addColumn('domain', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL"),
-			$this->_addColumn('domain_aliasses', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
-			$this->_addColumn('domain_aliasses', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL")
+			$this->addColumn('domain', 'domain_external_mail', "VARCHAR(15) NOT NULL DEFAULT 'no'"),
+			$this->addColumn('domain', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
+			$this->addColumn('domain', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL"),
+			$this->addColumn('domain_aliasses', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
+			$this->addColumn('domain_aliasses', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL")
 		);
 
-		$stmt = execute_query("SELECT `id`, `props` FROM `hosting_plans`");
+		$stmt = execute_query("SELECT id, props FROM hosting_plans");
 
 		if ($stmt->rowCount()) {
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -1538,11 +1499,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 				if (sizeof($props) == 23) {
 					$sqlUpd[] = "
 						UPDATE
-							`hosting_plans`
+							hosting_plans
 						SET
-							`props` = CONCAT(`props`, ';_no_')
+							props = CONCAT(props, ';_no_')
 						WHERE
-							`id` = {$data['id']}
+							id = {$data['id']}
 					";
 				}
 			}
@@ -1554,36 +1515,36 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #157: Enhancement - Relaying Domains
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_110()
+	protected function r110()
 	{
 		return array(
-			$this->_dropColumn('domain', 'external_mail_status'),
-			$this->_dropColumn('domain_aliasses', 'external_mail_status'),
+			$this->dropColumn('domain', 'external_mail_status'),
+			$this->dropColumn('domain_aliasses', 'external_mail_status'),
 		);
 	}
 
 	/**
-	 * Update for the `quotalimits` and `quotatallies` table structure
+	 * Update for the quotalimits and quotatallies table structure
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_112()
+	protected function r112()
 	{
 		return array(
 			"
 				ALTER TABLE
-					`quotalimits`
+					quotalimits
 				CHANGE
-					`name` `name`
+					name name
 				VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 			",
 			"
 				ALTER TABLE
-					`quotatallies`
+					quotatallies
 				CHANGE
-					`name` `name`
+					name name
 				VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 			"
 		);
@@ -1592,9 +1553,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #433: Defect - register_globals does not exist in php 5.4.0 and above
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_113()
+	protected function r113()
 	{
 		/** @var iMSCP_Config_Handler_Db $dbConfig */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -1604,12 +1565,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		$sqlUpd = array(
-			$this->_dropColumn('domain', 'phpini_perm_register_globals'),
-			$this->_dropColumn('reseller_props', 'php_ini_al_register_globals'),
-			$this->_dropColumn('php_ini', 'register_globals')
+			$this->dropColumn('domain', 'phpini_perm_register_globals'),
+			$this->dropColumn('reseller_props', 'php_ini_al_register_globals'),
+			$this->dropColumn('php_ini', 'register_globals')
 		);
 
-		$stmt = execute_query("SELECT `id`, `props` FROM `hosting_plans`");
+		$stmt = execute_query("SELECT id, props FROM hosting_plans");
 
 		if ($stmt->rowCount()) {
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -1620,11 +1581,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 					$sqlUpd[] = "
 						UPDATE
-							`hosting_plans`
+							hosting_plans
 						SET
-							`props` = '" . implode(';', $props) . "'
+							props = '" . implode(';', $props) . "'
 						WHERE
-							`id` = ''
+							id = ''
 						{$data['id']}
 					";
 				}
@@ -1635,130 +1596,130 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #447: External mail server feature is broken
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_114()
+	protected function r114()
 	{
 		return array(
 			// domain_dns.domain_id field should never be set to zero
 			"
 				UPDATE
-					`domain_dns` AS `t1`
+					domain_dns AS t1
 				SET
-					`t1`.`domain_id` = (
-						SELECT `t2`.`domain_id` FROM `domain_aliasses` AS `t2` WHERE `t1`.`alias_id` = `t2`.`alias_id`
+					t1.domain_id = (
+						SELECT t2.domain_id FROM domain_aliasses AS t2 WHERE t1.alias_id = t2.alias_id
 					)
 				WHERE
-					`t1`.`domain_id` = 0
+					t1.domain_id = 0
 			",
 			// domain_dns.domain_dns field should not be empty (domain related entries)
 			"
 				UPDATE
-					`domain_dns` AS `t1`
+					domain_dns AS t1
 				SET
-					`t1`.`domain_dns` = CONCAT(
-						(SELECT `t2`.`domain_name` FROM `domain` AS `t2` WHERE `t1`.`domain_id` = `t2`.`domain_id`), '.'
+					t1.domain_dns = CONCAT(
+						(SELECT t2.domain_name FROM domain AS t2 WHERE t1.domain_id = t2.domain_id), '.'
 					)
 				WHERE
-					`t1`.`domain_dns` = ''
+					t1.domain_dns = ''
 				AND
-					`t1`.`protected` = 'yes'
+					t1.protected = 'yes'
 			",
 			// domain_dns.domain_dns field should not be empty (domain aliases related entries)
 			"
 				UPDATE
-					`domain_dns` AS `t1`
+					domain_dns AS t1
 				SET
-					`t1`.`domain_dns` = CONCAT(
-						(SELECT `t2`.`alias_name` FROM `domain_aliasses` AS `t2` WHERE `t1`.`alias_id` = `t2`.`alias_id`),
+					t1.domain_dns = CONCAT(
+						(SELECT t2.alias_name FROM domain_aliasses AS t2 WHERE t1.alias_id = t2.alias_id),
 						'.'
 					)
 				WHERE
-					`t1`.`domain_dns` = ''
+					t1.domain_dns = ''
 				AND
-					`t1`.`protected` = 'yes'
+					t1.protected = 'yes'
 			",
 			// domain_dns.domain_dns with value * must be completed with the domain name (domain related entries)
 			"
 				UPDATE
-					`domain_dns` AS `t1`
+					domain_dns AS t1
 				SET
-					`t1`.`domain_dns` = CONCAT(
+					t1.domain_dns = CONCAT(
 						'*.',
-						(SELECT `t2`.`domain_name` FROM `domain` AS `t2` WHERE `t1`.`domain_id` = `t2`.`domain_id`),
+						(SELECT t2.domain_name FROM domain AS t2 WHERE t1.domain_id = t2.domain_id),
 						'.'
 					)
 				WHERE
-					`t1`.`alias_id` = 0
+					t1.alias_id = 0
 				AND
-					`t1`.`domain_dns` = '*'
+					t1.domain_dns = '*'
 				AND
-					`t1`.`protected` = 'yes'
+					t1.protected = 'yes'
 			",
 			// domain_dns.domain_dns with value * must be completed with the domain name (domain aliases related entries)
 			"
 				UPDATE
-					`domain_dns` AS `t1`
+					domain_dns AS t1
 				SET
-					`t1`.`domain_dns` = CONCAT(
+					t1.domain_dns = CONCAT(
 						'*.',
-						(SELECT `t2`.`alias_name` FROM `domain_aliasses` AS `t2` WHERE `t1`.`alias_id` = `t2`.`alias_id`),
+						(SELECT t2.alias_name FROM domain_aliasses AS t2 WHERE t1.alias_id = t2.alias_id),
 						'.'
 					)
 				WHERE
-					`t1`.`alias_id` <> 0
+					t1.alias_id <> 0
 				AND
-					`t1`.`domain_dns` = '*'
+					t1.domain_dns = '*'
 				AND
-					`t1`.`protected` = 'yes'
+					t1.protected = 'yes'
 			",
 			// If a domain has only wildcard MX entries for external servers, update the domain.external_mail field to 'wildcard'
 			"
 				UPDATE
-					`domain` AS `t1`
+					domain AS t1
 				SET
-					`t1`.`external_mail` = 'wildcard'
+					t1.external_mail = 'wildcard'
 				WHERE
 					0 = (
 						SELECT
-							COUNT(`t2`.`domain_dns_id`)
+							COUNT(t2.domain_dns_id)
 						FROM
-							`domain_dns` AS `t2`
+							domain_dns AS t2
 						WHERE
-							`t2`.`domain_id` = `t1`.`domain_id`
+							t2.domain_id = t1.domain_id
 						AND
-							`t2`.`alias_id` = 0
+							t2.alias_id = 0
 						AND
-							`t2`.`domain_dns` NOT LIKE '*.%'
+							t2.domain_dns NOT LIKE '*.%'
 					)
 				AND
-					`t1`.external_mail = 'on'
+					t1.external_mail = 'on'
 			",
 			// If a domain alias has only wildcard MX entries for external servers, update the domain.external_mail field to 'wildcard'
 			"
 				UPDATE
-					`domain_aliasses` AS `t1`
+					domain_aliasses AS t1
 				SET
-					`t1`.`external_mail` = 'wildcard'
+					t1.external_mail = 'wildcard'
 				WHERE
-					`t1`.`alias_id` <> 0
+					t1.alias_id <> 0
 				AND
 					0 = (
 						SELECT COUNT(
-							`t2`.`domain_dns_id`)
+							t2.domain_dns_id)
 						FROM
-							`domain_dns` AS `t2`
+							domain_dns AS t2
 						WHERE
-							`t2`.`alias_id` = `t1`.`alias_id`
+							t2.alias_id = t1.alias_id
 						AND
-							`t2`.`domain_dns` NOT LIKE '*.%'
+							t2.domain_dns NOT LIKE '*.%'
 					)
 				AND
-					`t1`.`external_mail` = 'on'
+					t1.external_mail = 'on'
 				",
 			// Custom DNS CNAME record set via external mail feature are no longer allowed (User will have to re-add them)
 			// via the custom DNS interface (easy update way)
-			"DELETE FROM `domain_dns` WHERE `domain_type` = 'CNAME' AND `protected` = 'yes'"
+			"DELETE FROM domain_dns WHERE domain_type = 'CNAME' AND protected = 'yes'"
 		);
 	}
 
@@ -1767,9 +1728,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Moved from database update 70 due to duplicate key in foreign keys map.
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_115()
+	protected function r115()
 	{
 		$sqlUpd = array();
 
@@ -1782,16 +1743,16 @@ class iMSCP_Update_Database extends iMSCP_Update
 			'web_software' => 'reseller_id'
 		);
 
-		$stmt = execute_query('SELECT `admin_id` FROM `admin`');
+		$stmt = execute_query('SELECT admin_id FROM admin');
 		$usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
 
 		foreach ($tablesToForeignKey as $table => $foreignKey) {
 			if (is_array($foreignKey)) {
 				foreach ($foreignKey as $key) {
-					$sqlUpd[] = "DELETE FROM `$table` WHERE `$key` NOT IN ($usersIds)";
+					$sqlUpd[] = "DELETE FROM $table WHERE $key NOT IN ($usersIds)";
 				}
 			} else {
-				$sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
+				$sqlUpd[] = "DELETE FROM $table WHERE $foreignKey NOT IN ($usersIds)";
 			}
 		}
 
@@ -1801,51 +1762,56 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Disk detail integration
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_116()
+	protected function r116()
 	{
 		return array(
-			$this->_addColumn('domain', 'domain_disk_file', 'bigint(20) unsigned default NULL AFTER `domain_disk_usage`'),
-			$this->_addColumn('domain', 'domain_disk_mail', 'bigint(20) unsigned default NULL AFTER `domain_disk_file`'),
-			$this->_addColumn('domain', 'domain_disk_sql', 'bigint(20) unsigned default NULL AFTER `domain_disk_mail`')
+			$this->addColumn('domain', 'domain_disk_file', 'bigint(20) unsigned default NULL AFTER domain_disk_usage'),
+			$this->addColumn('domain', 'domain_disk_mail', 'bigint(20) unsigned default NULL AFTER domain_disk_file'),
+			$this->addColumn('domain', 'domain_disk_sql', 'bigint(20) unsigned default NULL AFTER domain_disk_mail')
 		);
 	}
 
 	/**
 	 * Deletion of useless tables
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_117()
+	protected function r117()
 	{
 		return array(
-			'DROP TABLE IF EXISTS
-				`roundcube_session`, `roundcube_searches`, `roundcube_identities`, `roundcube_dictionary`,
-				`roundcube_contactgroupmembers`, `roundcube_contacts`, `roundcube_contactgroups`,
-				`roundcube_cache_thread`, `roundcube_cache_messages`, `roundcube_cache_index`, `roundcube_cache`,
-				`roundcube_users`
-			'
+			$this->dropTable('roundcube_session'),
+			$this->dropTable('roundcube_searches'),
+			$this->dropTable('roundcube_identities'),
+			$this->dropTable('roundcube_dictionary'),
+			$this->dropTable('roundcube_contactgroupmembers'),
+			$this->dropTable('roundcube_contacts'),
+			$this->dropTable('roundcube_contactgroups'),
+			$this->dropTable('roundcube_cache_thread'),
+			$this->dropTable('roundcube_cache_messages'),
+			$this->dropTable('roundcube_cache_index'),
+			$this->dropTable('roundcube_cache'),
+			$this->dropTable('roundcube_users'),
 		);
 	}
 
 	/**
 	 * Fix Arabic locale name
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_118()
+	protected function r118()
 	{
-		return "UPDATE `user_gui_props` SET `lang` = 'ar' WHERE `lang` = 'ar_AE'";
+		return "UPDATE user_gui_props SET lang = 'ar' WHERE lang = 'ar_AE'";
 	}
 
 	/**
 	 * Lowercase PHP INI boolean
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_119()
+	protected function r119()
 	{
 		/** @var iMSCP_Config_Handler_Db $dbConfig */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -1854,19 +1820,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$dbConfig['PHPINI_DISPLAY_ERRORS'] = 'off';
 
 		return array(
-			"UPDATE `php_ini` SET `allow_url_fopen` = 'on' WHERE `allow_url_fopen` = 'On'",
-			"UPDATE `php_ini` SET `allow_url_fopen` = 'off' WHERE `allow_url_fopen` = 'Off'",
-			"UPDATE `php_ini` SET `display_errors` = 'on' WHERE `display_errors` = 'On'",
-			"UPDATE `php_ini` SET `display_errors` = 'off' WHERE `display_errors` = 'Off'"
+			"UPDATE php_ini SET allow_url_fopen = 'on' WHERE allow_url_fopen = 'On'",
+			"UPDATE php_ini SET allow_url_fopen = 'off' WHERE allow_url_fopen = 'Off'",
+			"UPDATE php_ini SET display_errors = 'on' WHERE display_errors = 'On'",
+			"UPDATE php_ini SET display_errors = 'off' WHERE display_errors = 'Off'"
 		);
 	}
 
 	/**
 	 * #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_120()
+	protected function r120()
 	{
 		$sqlUpd = array();
 
@@ -1878,8 +1844,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 
 		foreach ($constantToInteger as $c => $i) {
-			$sqlUpd[] = "UPDATE `config` SET `value` = '$i' WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` ='$c'";
-			$sqlUpd[] = "UPDATE `php_ini` SET `error_reporting` = '$i' WHERE `error_reporting` = '$c'";
+			$sqlUpd[] = "UPDATE config SET `value` = '$i' WHERE name = 'PHPINI_ERROR_REPORTING' AND `value` ='$c'";
+			$sqlUpd[] = "UPDATE php_ini SET error_reporting = '$i' WHERE error_reporting = '$c'";
 		}
 
 		/** @var iMSCP_Config_Handler_Db $dbConfig */
@@ -1892,17 +1858,48 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update for url forward fields
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_122()
+	protected function r122()
 	{
 		return array(
-			"ALTER TABLE `domain_aliasses` CHANGE `url_forward` `url_forward` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'",
-			"ALTER TABLE `subdomain` CHANGE `subdomain_url_forward` `subdomain_url_forward` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'",
-			"ALTER TABLE `subdomain_alias` CHANGE `subdomain_alias_url_forward` `subdomain_alias_url_forward` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'",
-			"UPDATE `domain_aliasses` SET `url_forward` = 'no' WHERE `url_forward` IS NULL OR `url_forward` = ''",
-			"UPDATE `subdomain` SET `subdomain_url_forward` = 'no' WHERE `subdomain_url_forward` IS NULL OR `subdomain_url_forward` = ''",
-			"UPDATE `subdomain_alias` SET `subdomain_alias_url_forward` = 'no' WHERE `subdomain_alias_url_forward` IS NULL OR `subdomain_alias_url_forward` = ''"
+			"
+				ALTER TABLE
+					domain_aliasses CHANGE url_forward url_forward
+				VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'
+			",
+			"
+				ALTER TABLE
+					subdomain CHANGE subdomain_url_forward subdomain_url_forward
+				VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'
+			",
+			"
+				ALTER TABLE
+					subdomain_alias CHANGE subdomain_alias_url_forward subdomain_alias_url_forward
+				VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'
+			",
+			"
+				UPDATE domain_aliasses SET url_forward = 'no' WHERE url_forward IS NULL OR url_forward = ''",
+			"
+				UPDATE
+					subdomain
+				SET
+					subdomain_url_forward = 'no'
+				WHERE
+					subdomain_url_forward IS NULL
+				OR
+					subdomain_url_forward = ''
+			",
+			"
+				UPDATE
+					subdomain_alias
+				SET
+					subdomain_alias_url_forward = 'no'
+				WHERE
+					subdomain_alias_url_forward IS NULL
+				OR
+					subdomain_alias_url_forward = ''
+			"
 		);
 	}
 
@@ -1911,48 +1908,48 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_123()
+	protected function r123()
 	{
-		return $this->_addColumn(
+		return $this->addColumn(
 			'admin',
 			'admin_status',
-			"VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'ok' AFTER `uniqkey_time`"
+			"VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'ok' AFTER uniqkey_time"
 		);
 	}
 
 	/**
 	 * Adds admin.admin_sys_uid and admin.admin_sys_gid columns
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_124()
+	protected function r124()
 	{
 		return array(
-			$this->_addColumn('admin', 'admin_sys_uid', "INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `admin_type`"),
-			$this->_addColumn('admin', 'admin_sys_gid', "INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `admin_sys_uid`")
+			$this->addColumn('admin', 'admin_sys_uid', "INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER admin_type"),
+			$this->addColumn('admin', 'admin_sys_gid', "INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER admin_sys_uid")
 		);
 	}
 
 	/**
 	 * Update admin.admin_sys_uid and admin.admin_sys_gid columns with data from domain table
 	 *
-	 * @return string SQL statements to be executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_125()
+	protected function r125()
 	{
 		$sqlUpdt = '';
 
-		$stmt = exec_query("SHOW COLUMNS FROM `domain` LIKE 'domain_uid'");
+		$stmt = exec_query("SHOW COLUMNS FROM domain LIKE 'domain_uid'");
 
 		if ($stmt->rowCount()) {
 			$sqlUpdt = "
 				UPDATE
-					`admin` AS `t1`
+					admin AS t1
 				JOIN
-					`domain` AS `t2` ON(`t2`.`domain_admin_id` = `t1`.`admin_id`)
+					domain AS t2 ON(t2.domain_admin_id = t1.admin_id)
 				SET
-					`t1`.`admin_sys_uid` = `t2`.`domain_uid`,
-					`t1`.`admin_sys_gid` = `t2`.`domain_gid`
+					t1.admin_sys_uid = t2.domain_uid,
+					t1.admin_sys_gid = t2.domain_gid
 			";
 		}
 
@@ -1962,13 +1959,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop domain.domain_uid and domain.domain_gid columns
 	 *
-	 * @return array SQL statetments to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_126()
+	protected function r126()
 	{
 		return array(
-			$this->_dropColumn('domain', 'domain_uid'),
-			$this->_dropColumn('domain', 'domain_gid')
+			$this->dropColumn('domain', 'domain_uid'),
+			$this->dropColumn('domain', 'domain_gid')
 		);
 	}
 
@@ -1977,12 +1974,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_127()
+	protected function r127()
 	{
-		return $this->_addColumn(
-			'ftp_users',
-			'admin_id',
-			"INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `userid`, ADD INDEX (`admin_id`)"
+		return $this->addColumn(
+			'ftp_users', 'admin_id', "INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER userid, ADD INDEX (admin_id)"
 		);
 	}
 
@@ -1991,15 +1986,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_128()
+	protected function r128()
 	{
 		return "
 			UPDATE
-				`ftp_users` AS `t1`
+				ftp_users AS t1
 			JOIN
-				`admin` AS `t2` ON (`t2`.`admin_sys_uid` = `t1`.`uid`)
+				admin AS t2 ON (t2.admin_sys_uid = t1.uid)
 			SET
-				`t1`.`admin_id` = `t2`.`admin_id`
+				t1.admin_id = t2.admin_id
 		";
 	}
 
@@ -2008,12 +2003,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_129()
+	protected function r129()
 	{
-		return $this->_addColumn(
+		return $this->addColumn(
 			'domain',
 			'web_folder_protection',
-			"VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes' AFTER `external_mail_dns_ids`"
+			"VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes' AFTER external_mail_dns_ids"
 		);
 	}
 
@@ -2022,45 +2017,47 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_130()
+	protected function r130()
 	{
-		return "UPDATE `domain` SET `web_folder_protection` = 'no'";
+		return "UPDATE domain SET web_folder_protection = 'no'";
 	}
 
 	/**
 	 * Drop orders and orders_settings tables
 	 *
-	 * @return string SQL statement to be e executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_131()
+	protected function r131()
 	{
-		return "DROP TABLES IF EXISTS `orders`, `orders_settings`";
+		return array(
+			$this->dropTable('orders'),
+			$this->dropTable('orders_settings')
+		);
 	}
 
 	/**
 	 * Drop useless columns in hosting_plan table
 	 *
-	 * @return array SQL statetments to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_133()
+	protected function r133()
 	{
 		return array(
-			$this->_dropColumn('hosting_plans', 'price'),
-			$this->_dropColumn('hosting_plans', 'setup_fee'),
-			$this->_dropColumn('hosting_plans', 'value'),
-			$this->_dropColumn('hosting_plans', 'vat'),
-			$this->_dropColumn('hosting_plans', 'payment'),
-			$this->_dropColumn('hosting_plans', 'tos')
+			$this->dropColumn('hosting_plans', 'price'),
+			$this->dropColumn('hosting_plans', 'setup_fee'),
+			$this->dropColumn('hosting_plans', 'value'),
+			$this->dropColumn('hosting_plans', 'vat'),
+			$this->dropColumn('hosting_plans', 'payment'),
+			$this->dropColumn('hosting_plans', 'tos')
 		);
 	}
 
 	/**
 	 * Delete order component related parameters
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return void
 	 */
-	protected function _databaseUpdate_134()
+	protected function r134()
 	{
 		/** @var iMSCP_Config_Handler_Db $dbConfig */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -2077,35 +2074,35 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop straff_settings table
 	 *
-	 * @return string SQL statement to be e executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_135()
+	protected function r135()
 	{
-		return "DROP TABLES IF EXISTS `straff_settings`";
+		return $this->dropTable('straff_settings');
 	}
 
 	/**
 	 * Drop useless php_ini.status column
 	 *
-	 * @return string SQL statement to be e executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_136()
+	protected function r136()
 	{
-		return $this->_dropColumn('php_ini', 'status');
+		return $this->dropColumn('php_ini', 'status');
 	}
 
 	/**
 	 * Update plugin.plugin_status column
 	 *
-	 * @return string SQL statement to be e executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_138()
+	protected function r137()
 	{
 		return '
 			ALTER TABLE
-				`plugin`
+				plugin
 			CHANGE
-				`plugin_status` `plugin_status` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
+				plugin_status plugin_status TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
 		';
 	}
 
@@ -2114,9 +2111,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_139()
+	protected function r138()
 	{
-		return $this->_addColumn(
+		return $this->addColumn(
 			'plugin',
 			'plugin_backend',
 			"VARCHAR(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"
@@ -2126,9 +2123,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update objects status
 	 *
-	 * @return array SQL statements to be e executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_140()
+	protected function r140()
 	{
 		$map = array(
 			'ssl_certs' => 'status',
@@ -2149,8 +2146,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$todelete = 'todelete';
 
 		foreach ($map as $table => $field) {
-			$sqlUpd[] = "UPDATE `$table` SET `$field` = '$tochange' WHERE `$field` IN('change', 'dnschange')";
-			$sqlUpd[] = "UPDATE `$table` SET `$field` = '$todelete' WHERE `$field` = 'delete'";
+			$sqlUpd[] = "UPDATE $table SET $field = '$tochange' WHERE $field IN('change', 'dnschange')";
+			$sqlUpd[] = "UPDATE $table SET $field = '$todelete' WHERE $field = 'delete'";
 		}
 
 		return $sqlUpd;
@@ -2159,17 +2156,17 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add plugin_plugin_error columns
 	 *
-	 * @return array SQL statements to be e executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_141()
+	protected function r141()
 	{
 		$sqlUdp = array();
 
 		if (
-			($q = $this->_addColumn(
+			($q = $this->addColumn(
 				'plugin',
 				'plugin_error',
-				"TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `plugin_status`"
+				"TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER plugin_status"
 			)) != ''
 		) {
 			$sqlUdp[] = $q;
@@ -2188,14 +2185,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 			$sqlUdp[] = "
 				UPDATE
-					`plugin` AS `t1`
+					plugin AS t1
 				JOIN
-					`plugin` AS `t2` ON (`t2`.`plugin_id` = `t1`.`plugin_id`)
+					plugin AS t2 ON (t2.plugin_id = t1.plugin_id)
 				SET
-					`t1`.`plugin_status` = '$toinstall',
-					`t1`.`plugin_error` = `t2`.`plugin_status`
+					t1.plugin_status = '$toinstall',
+					t1.plugin_error = t2.plugin_status
 				WHERE
-					`t1`.`plugin_status` NOT IN(
+					t1.plugin_status NOT IN(
 						'$enabled', '$disabled', '$uninstalled', '$toinstall', '$toupdate', '$touninstall', '$toenable',
 						'$todisable', '$todelete'
 					)
@@ -2203,9 +2200,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 			$sqlUdp[] = "
 				ALTER TABLE
-					`plugin`
+					plugin
 				CHANGE
-					 `plugin_status` `plugin_status` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci
+					 plugin_status plugin_status VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci
 					 NOT NULL DEFAULT 'uninstalled';
 			";
 		}
@@ -2218,7 +2215,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return void
 	 */
-	protected function _databaseUpdate_142()
+	protected function r142()
 	{
 		/** @var iMSCP_Config_Handler_Db $dbConfig */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -2235,22 +2232,20 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add Web folders protection option propertie to hosting plans
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_143()
+	protected function r143()
 	{
 		$sqlUpd = array();
 
-		$stmt = execute_query('SELECT `id`, `props` FROM `hosting_plans`');
+		$stmt = execute_query('SELECT id, props FROM hosting_plans');
 
 		if ($stmt->rowCount()) {
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$props = explode(';', $data['props']);
 
 				if (sizeof($props) == 23) {
-					$sqlUpd[] = "
-						UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_') WHERE `id` = {$data['id']}
-					";
+					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props,';_no_') WHERE id = {$data['id']}";
 				}
 			}
 		}
@@ -2261,28 +2256,28 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update sql_user.sqlu_name column
 	 *
-	 * @return string SQL statement to be e executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_144()
+	protected function r144()
 	{
 		return "
 			ALTER TABLE
-				`sql_user`
+				sql_user
 			CHANGE
-				`sqlu_name` `sqlu_name` VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'n/a'
+				sqlu_name sqlu_name VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'n/a'
 		";
 	}
 
 	/**
 	 * Store plugins info and config as json data instead of serialized data
 	 *
-	 * @return array Sql statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_145()
+	protected function r145()
 	{
 		$sqlUdp = array();
 
-		$stmt = execute_query('SELECT `plugin_id`, `plugin_info`, `plugin_config` FROM `plugin`');
+		$stmt = execute_query('SELECT plugin_id, plugin_info, plugin_config FROM plugin');
 
 		if ($stmt->rowCount()) {
 			$db = iMSCP_Database::getRawInstance();
@@ -2302,11 +2297,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 				$sqlUdp[] = "
 					UPDATE
-						`plugin`
+						plugin
 					SET
-						`plugin_info` = $pluginInfo, `plugin_config` = $pluginConfig
+						plugin_info = $pluginInfo, plugin_config = $pluginConfig
 					WHERE
-						`plugin_id` = {$row['plugin_id']}
+						plugin_id = {$row['plugin_id']}
 				";
 			}
 		}
@@ -2317,59 +2312,59 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add unique key for server_ips columns
 	 *
-	 * @return string SQL statement to be e executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_148()
+	protected function r148()
 	{
-		return $this->_addIndex('server_ips', 'ip_number', 'UNIQUE', 'ip_number');
+		return $this->addIndex('server_ips', 'ip_number', 'unique', 'ip_number');
 	}
 
 	/**
 	 * Adds unique index for sqld_name columns
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_149()
+	protected function r149()
 	{
-		return array(
-			$this->_addIndex('sql_database', 'sqld_name', 'UNIQUE', 'sqld_name'),
-			// Remove index added in old db update, which has been removed because a user can be shared
-			$this->_dropIndex('sql_user', 'sqlu_name', 'sqlu_name')
-		);
+		$sqlUdp = $this->dropIndexByColumn('sql_user', 'sqlu_name');
+
+		array_unshift($sqlUdp, $this->addIndex('sql_database', 'sqld_name', 'unique', 'sqld_name'));
+
+		return $sqlUdp;
 	}
 
 	/**
 	 * Update domain_dns.domain_text column to 255 characters
 	 *
-	 * @return string SQL statement to be e executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_150()
+	protected function r150()
 	{
 		return '
 			ALTER TABLE
-				`domain_dns`
+				domain_dns
 			CHANGE
-				`domain_text` `domain_text` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+				domain_text domain_text VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 		';
 	}
 
 	/**
 	 * Update domain_dns table to allow sharing between several components (core, plugins..)
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_151()
+	protected function r151()
 	{
 		$sqlUpd = array();
 
-		$stmt = exec_query("SHOW COLUMNS FROM `domain_dns` LIKE 'protected'");
+		$stmt = exec_query("SHOW COLUMNS FROM domain_dns LIKE 'protected'");
 
 		if ($stmt->rowCount()) {
 			$sqlUpd[] = "
 				ALTER TABLE
-					`domain_dns`
+					domain_dns
 				CHANGE
-					`protected` `owned_by` VARCHAR(255)
+					protected owned_by VARCHAR(255)
 				CHARACTER SET
 					utf8 COLLATE utf8_unicode_ci
 				NOT NULL DEFAULT
@@ -2377,8 +2372,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 			";
 		};
 
-		$sqlUpd[] = "UPDATE `domain_dns` SET `owned_by` = 'custom_dns_feature' WHERE `owned_by` = 'no'";
-		$sqlUpd[] = "UPDATE `domain_dns` SET `owned_by` = 'ext_mail_feature' WHERE `domain_type` = 'MX' AND `owned_by` = 'yes'";
+		$sqlUpd[] = "UPDATE domain_dns SET owned_by = 'custom_dns_feature' WHERE owned_by = 'no'";
+		$sqlUpd[] = "UPDATE domain_dns SET owned_by = 'ext_mail_feature' WHERE domain_type = 'MX' AND owned_by = 'yes'";
 
 		return $sqlUpd;
 	}
@@ -2386,38 +2381,38 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update domain_dns.domain_dns column to 255 characters
 	 *
-	 * @return string SQL statement to be e executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_152()
+	protected function r152()
 	{
 		return '
 			ALTER TABLE
-				`domain_dns`
+				domain_dns
 			CHANGE
-				`domain_dns` `domain_dns` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+				domain_dns domain_dns VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 		';
 	}
 
 	/**
 	 * Add domain.mail_quota column
 	 *
-	 * @return string SQL statement to be e executed
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_155()
+	protected function r155()
 	{
-		return $this->_addColumn('domain', 'mail_quota', 'BIGINT(20) UNSIGNED NOT NULL');
+		return $this->addColumn('domain', 'mail_quota', 'BIGINT(20) UNSIGNED NOT NULL');
 	}
 
 	/**
 	 * Synchronize mail quota values
 	 *
-	 * @return array Stack of SQL statements to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_156()
+	protected function r156()
 	{
 		$sqlUpd = array();
 
-		$stmt = execute_query('SELECT `id`, `props` FROM `hosting_plans`');
+		$stmt = execute_query('SELECT id, props FROM hosting_plans');
 
 		if ($stmt->rowCount()) {
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -2429,11 +2424,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 					$sqlUpd[] = "
 						UPDATE
-							`hosting_plans`
+							hosting_plans
 						SET
-							`props` = CONCAT(`props`, ';$diskspace')
+							props = CONCAT(props, ';$diskspace')
 						WHERE
-							`id` = {$data['id']}
+							id = {$data['id']}
 					";
 				}
 			}
@@ -2445,27 +2440,25 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Fix possible inconsistencies in hosting plan properties
 	 *
-	 * @return array SQL statements to be e executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_157()
+	protected function r157()
 	{
 		$sqlUpd = array();
 
 		$stmt = execute_query(
 			"
 			SELECT
-				`t1`.`id`,
-				`t1`.`reseller_id`,
-				`t1`.`props`,
-				IFNULL(`t2`.`php_ini_max_post_max_size`, '99999999') AS `post_max_size`,
-				IFNULL(`t2`.`php_ini_max_upload_max_filesize`, '99999999') AS `upload_max_filesize`,
-				IFNULL(`t2`.`php_ini_max_max_execution_time`, '99999999') AS `max_execution_time`,
-				IFNULL(`t2`.`php_ini_max_max_input_time`, '99999999') AS `max_input_time`,
-				IFNULL(`t2`.`php_ini_max_memory_limit`, '99999999') AS `memory_limit`
+				t1.id, t1.reseller_id, t1.props,
+				IFNULL(t2.php_ini_max_post_max_size, '99999999') AS post_max_size,
+				IFNULL(t2.php_ini_max_upload_max_filesize, '99999999') AS upload_max_filesize,
+				IFNULL(t2.php_ini_max_max_execution_time, '99999999') AS max_execution_time,
+				IFNULL(t2.php_ini_max_max_input_time, '99999999') AS max_input_time,
+				IFNULL(t2.php_ini_max_memory_limit, '99999999') AS memory_limit
 			FROM
-				`hosting_plans` AS `t1`
+				hosting_plans AS t1
 			LEFT JOIN
-				`reseller_props` AS `t2` ON(`t2`.`reseller_id` = `t1`.`reseller_id`)
+				reseller_props AS t2 ON(t2.reseller_id = t1.reseller_id)
 			"
 		);
 
@@ -2529,27 +2522,27 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update mail_users.quota columns
 	 *
-	 * @return string
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_159()
+	protected function r159()
 	{
-		return "ALTER TABLE `mail_users` CHANGE `quota` `quota` BIGINT(20) UNSIGNED NULL DEFAULT NULL";
+		return "ALTER TABLE mail_users CHANGE quota quota BIGINT(20) UNSIGNED NULL DEFAULT NULL";
 	}
 
 	/**
 	 * Update mail_users.quota columns - Set quota field to NULL for forward only and catchall accounts
 	 *
-	 * @return string
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_163()
+	protected function r163()
 	{
 		return "
 			UPDATE
-				`mail_users`
+				mail_users
 			SET
-				`quota` = NULL
+				quota = NULL
 			WHERE
-				`mail_type` NOT RLIKE '^(normal_mail|alias_mail|subdom_mail|alssub_mail)'
+				mail_type NOT RLIKE '^(normal_mail|alias_mail|subdom_mail|alssub_mail)'
 		";
 	}
 
@@ -2559,44 +2552,44 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_165()
+	protected function r165()
 	{
 		return array(
 			'
 				UPDATE
-					`domain` AS `t1`
+					domain AS t1
 				JOIN (
 					SELECT
-						COUNT(`mail_id`) AS `nb_mailboxes`, `domain_id`
+						COUNT(mail_id) AS nb_mailboxes, domain_id
 					FROM
-						`mail_users`
+						mail_users
 					WHERE
-						`quota` IS NOT NULL
-				) AS `t2` USING(`domain_id`)
+						quota IS NOT NULL
+				) AS t2 USING(domain_id)
 				SET
-					`t1`.`domain_disk_limit` = `t2`.`nb_mailboxes`
+					t1.domain_disk_limit = t2.nb_mailboxes
 				WHERE
-					`t1`.`domain_disk_limit` <> 0
+					t1.domain_disk_limit <> 0
 				AND
-					`t1`.`domain_disk_limit` < `t2`.`nb_mailboxes`
+					t1.domain_disk_limit < t2.nb_mailboxes
 			',
 			'
 				UPDATE
-					`domain` AS `t1`
+					domain AS t1
 				JOIN (
 					SELECT
-						COUNT(`mail_id`) AS `nb_mailboxes`, `domain_id`
+						COUNT(mail_id) AS nb_mailboxes, domain_id
 					FROM
-						`mail_users`
+						mail_users
 					WHERE
-						`quota` IS NOT NULL
-				) AS `t2` USING(`domain_id`)
+						quota IS NOT NULL
+				) AS t2 USING(domain_id)
 				SET
-					`t1`.`mail_quota` = `t2`.`nb_mailboxes`
+					t1.mail_quota = t2.nb_mailboxes
 				WHERE
-					`t1`.`mail_quota` <> 0
+					t1.mail_quota <> 0
 				AND
-					`t1`.`mail_quota` < `t2`.`nb_mailboxes`
+					t1.mail_quota < t2.nb_mailboxes
 			'
 		);
 	}
@@ -2606,11 +2599,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return void
 	 */
-	protected function _databaseUpdate_166()
+	protected function r166()
 	{
-		$stmt = exec_query('SELECT `domain_id`, `mail_quota` FROM `domain`');
+		$stmt = exec_query('SELECT domain_id, mail_quota FROM domain');
 
-		while($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			sync_mailboxes_quota($data['domain_id'], $data['mail_quota']);
 		}
 	}
@@ -2620,9 +2613,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_167()
+	protected function r167()
 	{
-		return 'DROP TABLE IF EXISTS `quota_dovecot`';
+		return $this->dropTable('quota_dovecot');
 	}
 
 	/**
@@ -2630,7 +2623,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return void
 	 */
-	protected function _databaseUpdate_168()
+	protected function r168()
 	{
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -2657,20 +2650,20 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return void
 	 */
-	protected function _databaseUpdate_169()
+	protected function r169()
 	{
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 		$services = array_filter(
 			array_keys($dbConfig->toArray()),
-			function($name) {
+			function ($name) {
 				return (strlen($name) > 5 && substr($name, 0, 5) == 'PORT_');
 			}
 		);
 
-		foreach($services as $name) {
+		foreach ($services as $name) {
 			$values = explode(';', $dbConfig[$name]);
 
-			if($values[5] == '') {
+			if ($values[5] == '') {
 				$values[5] = '0.0.0.0';
 			}
 
@@ -2685,11 +2678,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_170()
+	protected function r170()
 	{
 		return array(
-			"UPDATE `domain` SET `external_mail` = 'domain' WHERE `external_mail` = 'on'",
-			"UPDATE `domain_aliasses` SET `external_mail` = 'domain' WHERE `external_mail` = 'on'"
+			"UPDATE domain SET external_mail = 'domain' WHERE external_mail = 'on'",
+			"UPDATE domain_aliasses SET external_mail = 'domain' WHERE external_mail = 'on'"
 		);
 	}
 
@@ -2698,9 +2691,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_171()
+	protected function r171()
 	{
-		return $this->_dropColumn('plugin', 'plugin_previous_status');
+		return $this->dropColumn('plugin', 'plugin_previous_status');
 	}
 
 	/**
@@ -2708,22 +2701,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array SQL statements to be executed
 	 */
-	protected function  _databaseUpdate_172()
+	protected function  r172()
 	{
-		if(getmyuid() === 0) {
+		if (getmyuid() === 0) {
 			$sqlUdp = array(
-				$this->_addColumn(
+				$this->addColumn(
 					'admin', 'admin_sys_name', 'varchar(16) collate utf8_unicode_ci DEFAULT NULL AFTER admin_type'
 				),
-				$this->_addColumn(
+				$this->addColumn(
 					'admin', 'admin_sys_gname', 'varchar(32) collate utf8_unicode_ci DEFAULT NULL AFTER admin_sys_uid'
 				)
 			);
 
 			$stmt = exec_query("SELECT admin_id, admin_sys_uid FROM admin WHERE admin_type in('admin', 'user')");
 
-			while($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				if($data['admin_sys_uid']) {
+			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				if ($data['admin_sys_uid']) {
 					$adminSysPwUid = posix_getpwuid($data['admin_sys_uid']);
 					$adminSysGrUid = posix_getgrgid($adminSysPwUid['gid']);
 
@@ -2754,23 +2747,23 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_173()
+	protected function r173()
 	{
 		return array(
-			$this->_dropColumn('server_ips', 'ip_domain'),
-			$this->_dropColumn('server_ips', 'ip_alias'),
-			$this->_dropColumn('server_ips', 'ip_ssl_domain_id')
+			$this->dropColumn('server_ips', 'ip_domain'),
+			$this->dropColumn('server_ips', 'ip_alias'),
+			$this->dropColumn('server_ips', 'ip_ssl_domain_id')
 		);
 	}
 
 	/**
 	 * Remove domain.domain_created_id column
 	 *
-	 * @return string
+	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_174()
+	protected function r174()
 	{
-		return $this->_dropColumn('domain', 'domain_created_id');
+		return $this->dropColumn('domain', 'domain_created_id');
 	}
 
 	/**
@@ -2778,39 +2771,44 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_176()
+	protected function r176()
 	{
 		return array(
 			// sql_database table update
-			'ALTER TABLE sql_database CHANGE domain_id domain_id INT(10) UNSIGNED NOT NULL',
-			'ALTER TABLE sql_database CHANGE sqld_name sqld_name VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL',
-
+			$this->changeColumn('sql_database', 'domain_id', 'domain_id INT(10) UNSIGNED NOT NULL'),
+			$this->changeColumn(
+				'sql_database', 'sqld_name', 'VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL'
+			),
 			// sql_user table update
-			'ALTER TABLE sql_user CHANGE sqld_id sqld_id INT(10) UNSIGNED NOT NULL',
-			'ALTER TABLE sql_user CHANGE sqlu_name sqlu_name VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL',
-			'ALTER TABLE sql_user CHANGE sqlu_pass sqlu_pass VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL',
-			$this->_addColumn(
+			$this->changeColumn('sql_user', 'sqld_id', 'sqld_id INT(10) UNSIGNED NOT NULL'),
+			$this->changeColumn(
+				'sql_user', 'sqlu_name', 'sqlu_name VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL'
+			),
+			$this->changeColumn(
+				'sql_user', 'sqlu_pass', 'sqlu_pass VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL'
+			),
+			$this->addColumn(
 				'sql_user',
 				'sqlu_host',
 				'VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER sqlu_name'
 			),
-			$this->_addIndex('sql_user', 'sqlu_name', 'INDEX', 'sqlu_name'),
-			$this->_addIndex('sql_user', 'sqlu_host', 'INDEX', 'sqlu_host')
+			$this->addIndex('sql_user', 'sqlu_name', 'index', 'sqlu_name'),
+			$this->addIndex('sql_user', 'sqlu_host', 'index', 'sqlu_host')
 		);
 	}
 
 	/**
 	 * Fix Sql user hosts
 	 *
-	 * @return array SQL statement to be executed
+	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_177()
+	protected function r177()
 	{
 		$sqlUdp = array();
 
 		$sqlUserHost = iMSCP_Registry::get('config')->DATABASE_USER_HOST;
 
-		if($sqlUserHost == '127.0.0.1') {
+		if ($sqlUserHost == '127.0.0.1') {
 			$sqlUserHost = 'localhost';
 		}
 
@@ -2818,8 +2816,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		$stmt = exec_query('SELECT DISTINCT sqlu_name FROM sql_user');
 
-		if($stmt->rowCount()) {
-			while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		if ($stmt->rowCount()) {
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$sqlUser = quoteValue($row['sqlu_name']);
 
 				$sqlUdp[] = "
@@ -2867,7 +2865,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array SQL statements to be executed
 	 */
-	public function _databaseUpdate_178()
+	public function r178()
 	{
 		$sqlUdp = array();
 
@@ -2876,27 +2874,27 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 
-					$certId = quoteValue($row['cert_id'], PDO::PARAM_INT);
-					$privateKey = new Crypt_RSA();
+				$certId = quoteValue($row['cert_id'], PDO::PARAM_INT);
+				$privateKey = new Crypt_RSA();
 
-					if($row['password'] != '') {
-						$privateKey->setPassword($row['password']);
-					}
-
-					if (!$privateKey->loadKey($row['key'], CRYPT_RSA_PRIVATE_FORMAT_PKCS1)) {
-						$sqlUdp[] = "DELETE FROM ssl_certs WHERE cert_id = $certId";
-						continue;
-					}
-
-					// Clear out passphrase
-					$privateKey->setPassword();
-
-					// Get unencrypted private key
-					$privateKey = $privateKey->getPrivateKey();
-
-					$privateKey = quoteValue($privateKey, PDO::PARAM_STR);
-					$sqlUdp[] = "UPDATE ssl_certs SET `key` = $privateKey WHERE cert_id = $certId";
+				if ($row['password'] != '') {
+					$privateKey->setPassword($row['password']);
 				}
+
+				if (!$privateKey->loadKey($row['key'], CRYPT_RSA_PRIVATE_FORMAT_PKCS1)) {
+					$sqlUdp[] = "DELETE FROM ssl_certs WHERE cert_id = $certId";
+					continue;
+				}
+
+				// Clear out passphrase
+				$privateKey->setPassword();
+
+				// Get unencrypted private key
+				$privateKey = $privateKey->getPrivateKey();
+
+				$privateKey = quoteValue($privateKey);
+				$sqlUdp[] = "UPDATE ssl_certs SET `key` = $privateKey WHERE cert_id = $certId";
+			}
 		}
 
 		return $sqlUdp;
@@ -2905,10 +2903,124 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Remove password column from the ssl_certs table
 	 *
+	 * @return string SQL statements to be executed
+	 */
+	public function r179()
+	{
+		return $this->dropColumn('ssl_certs', 'password');
+	}
+
+	/**
+	 * Rename ssl_certs.id column to ssl_certs.domain_id
+	 *
 	 * @return string SQL statement to be executed
 	 */
-	public function _databaseUpdate_179()
+	protected function r180()
 	{
-		return $this->_dropColumn('ssl_certs', 'password');
+		return $this->changeColumn('ssl_certs', 'id', 'domain_id INT(10) NOT NULL');
+	}
+
+	/**
+	 * Rename ssl_certs.type column to ssl_certs.domain_type
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r181()
+	{
+		return $this->changeColumn(
+			'ssl_certs',
+			'type',
+			"domain_type ENUM('dmn','als','sub','alssub') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn'"
+		);
+	}
+
+	/**
+	 * Rename ssl_certs.key column to ssl_certs.private_key
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r182()
+	{
+		return $this->changeColumn(
+			'ssl_certs', 'key', 'private_key TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL'
+		);
+	}
+
+	/**
+	 * Rename ssl_certs.cert column to ssl_certs.certificate
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r183()
+	{
+		return $this->changeColumn(
+			'ssl_certs', 'cert', 'certificate TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL'
+		);
+	}
+
+	/**
+	 * Rename ssl_certs.ca_cert column to ssl_certs.ca_bundle
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r184()
+	{
+		return $this->changeColumn(
+			'ssl_certs', 'ca_cert', 'ca_bundle TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+		);
+	}
+
+	/**
+	 * Drop index id from ssl_certs table
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r185()
+	{
+		return $this->dropIndexByName('ssl_certs', 'id');
+	}
+
+	/**
+	 * Add domain_id_domain_type index in ssl_certs table
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r186()
+	{
+		return $this->addIndex('ssl_certs', array('domain_id', 'domain_type'), 'unique', 'domain_id_domain_type');
+	}
+
+	/**
+	 * SSL certificates normalization
+	 *
+	 * @return array
+	 */
+	protected function r187()
+	{
+		$sqlUdp = array();
+
+		$stmt = execute_query('SELECT cert_id, private_key, certificate, ca_bundle FROM ssl_certs');
+
+		if ($stmt->rowCount()) {
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$certificateId = quoteValue($row['cert_id'], PDO::PARAM_INT);
+
+				// Data normalization
+				$privateKey = quoteValue(str_replace("\r\n", "\n", trim($row['private_key'])) . PHP_EOL);
+				$certificate = quoteValue(str_replace("\r\n", "\n", trim($row['certificate'])) . PHP_EOL);
+				$caBundle = quoteValue(str_replace("\r\n", "\n", trim($row['ca_bundle'])) . PHP_EOL);
+
+				$sqlUdp[] = "
+					UPDATE
+						ssl_certs
+					SET
+						private_key = $privateKey, certificate = $certificate, ca_bundle = $caBundle
+					WHERE
+						cert_id = $certificateId
+				";
+			}
+		}
+
+		return $sqlUdp;
 	}
 }

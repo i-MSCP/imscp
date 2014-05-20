@@ -152,10 +152,10 @@ sub run
 
 	# Process toadd|tochange SSL certificates tasks
 	$rs ||= _process(
-		'Certificates',
+		'SSLcertificate',
 		"
 			SELECT
-				cert_id AS id, type AS name, status AS status
+				cert_id AS id, domain_type AS name, status AS status
 			FROM
 				ssl_certs
 			WHERE

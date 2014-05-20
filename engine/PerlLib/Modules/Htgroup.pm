@@ -28,6 +28,8 @@ package Modules::Htgroup;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use parent 'Modules::Abstract';
 
@@ -50,32 +52,32 @@ sub loadData
 
 	my $sql = "
 		SELECT
-			`t2`.`id`, `t2`.`ugroup`, `t2`.`status`, `t2`.`users`, `t3`.`domain_name`, `t3`.`domain_admin_id`,
-			`t3`.`web_folder_protection`
+			t2.id, t2.ugroup, t2.status, t2.users, t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
 		FROM
 			(
-				SELECT * from `htaccess_groups`,
+				SELECT * from htaccess_groups,
 				(
 					SELECT IFNULL(
 					(
 						SELECT
-							group_concat(`uname` SEPARATOR ' ')
+							group_concat(uname SEPARATOR ' ')
 						FROM
-							`htaccess_users`
+							htaccess_users
 						WHERE
-							`id` regexp (
+							id regexp (
 								CONCAT(
-									'^(', (SELECT REPLACE((SELECT `members` FROM `htaccess_groups` WHERE `id` = ?), ',', '|')), ')\$'
+									'^(', (SELECT REPLACE((SELECT members FROM htaccess_groups WHERE id = ?), ',', '|')), ')\$'
 								)
-							) GROUP BY
-								`dmn_id`
-					), '') AS `users`
-				) AS `t1`
-			) AS `t2`
+							)
+						GROUP BY
+							dmn_id
+					), '') AS users
+				) AS t1
+			) AS t2
 		INNER JOIN
-			`domain` AS `t3` ON (`t2`.`dmn_id` = `t3`.`domain_id`)
+			domain AS t3 ON (t2.dmn_id = t3.domain_id)
 		WHERE
-			`id` = ?
+			id = ?
 	";
 
 	my $rdata = $db->doQuery('id', $sql, $self->{'htgroupId'}, $self->{'htgroupId'});
@@ -85,7 +87,7 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'htgroupId'}}) {
-		error("Htgroup record with ID '$self->{'htgroupId'}' has not been found in database");
+		error("Htgroup record with ID $self->{'htgroupId'} has not been found in database");
 		return 1;
 	}
 
@@ -96,7 +98,7 @@ sub loadData
 		error('Orphan entry: ' . Dumper($rdata->{$self->{'htgroupId'}}));
 
 		my @sql = (
-			"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",
+			'UPDATE htaccess_groups SET status = ? WHERE id = ?',
 			'Orphan entry: ' . Dumper($rdata->{$self->{'htgroupId'}}),
 			$self->{'htgroupId'}
 		);
@@ -121,11 +123,11 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange$/) {
+	if($self->{'status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
 
 		@sql = (
-			"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",
+			"UPDATE htaccess_groups SET status = ? WHERE id = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'id'}
 		);
@@ -134,12 +136,12 @@ sub process
 
 		if($rs) {
 			@sql = (
-				"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",
+				'UPDATE htaccess_groups SET status = ? WHERE id = ?',
 				scalar getMessageByType('error'),
 				$self->{'id'}
 			);
 		} else {
-			@sql = ("DELETE FROM `htaccess_groups` WHERE `id` = ?", $self->{'id'});
+			@sql = ('DELETE FROM htaccess_groups WHERE id = ?', $self->{'id'});
 		}
 	}
 

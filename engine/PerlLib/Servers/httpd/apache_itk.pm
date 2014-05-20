@@ -298,7 +298,7 @@ sub disableDmn($$)
 	my @configTpl = ('');
 
 	if($data->{'SSL_SUPPORT'}) {
-		$self->setData({ CERT => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
+		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 		push @configTpl, '_ssl';
 	}
 
@@ -1575,7 +1575,7 @@ sub _addCfg($$)
 			'redirect' => 'domain_redirect_ssl.tpl', 'normal' => 'domain_ssl.tpl'
 		};
 
-		$self->setData({ CERT => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
+		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
 	my $apache24 = (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'));

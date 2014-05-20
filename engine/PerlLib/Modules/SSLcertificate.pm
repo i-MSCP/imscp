@@ -23,10 +23,12 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Modules::Certificates;
+package Modules::SSLcertificate;
 
 use strict;
 use warnings;
+
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
 use iMSCP::File;
@@ -35,87 +37,72 @@ use iMSCP::OpenSSL;
 use File::Temp;
 use parent 'Modules::Abstract';
 
-sub _init
-{
-	my $self = $_[0];
-
-	$self->{'type'} = 'Certificates';
-	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
-
-	my $rs = iMSCP::Dir->new('dirname' => $self->{'certsDir'})->make(
-		{ 'mode' => 0750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'} }
-	);
-	return $rs if $rs;
-
-	$self;
-}
-
 sub loadData
 {
 	my $self = $_[0];
 
-	my $sql = "SELECT * FROM `ssl_certs` WHERE `cert_id` = ?";
-
-	my $certData = iMSCP::Database->factory()->doQuery('cert_id', $sql, $self->{'cert_id'});
+	my $certData = iMSCP::Database->factory()->doQuery(
+		'cert_id', 'SELECT * FROM ssl_certs WHERE cert_id = ?', $self->{'cert_id'}
+	);
 	unless(ref $certData eq 'HASH') {
 		error($certData);
 		return 1;
 	}
 
 	unless(exists $certData->{$self->{'cert_id'}}) {
-		error("SSL certificate record with ID '$self->{'cert_id'}' has not been found in database");
+		error("SSL certificate record with ID $self->{'cert_id'} has not been found in database");
 		return 1;
 	}
 
 	%{$self} = (%{$self}, %{$certData->{$self->{'cert_id'}}});
 
-	if($self->{'type'} eq 'dmn') {
-		$sql = 'SELECT `domain_name` AS `name`, `domain_id` AS `id` FROM `domain` WHERE `domain_id` = ?';
-	} elsif($self->{'type'} eq 'als') {
-		$sql = 'SELECT `alias_name` AS `name`, `alias_id` AS `id` FROM `domain_aliasses` WHERE `alias_id` = ?';
-	} elsif($self->{'type'} eq 'sub') {
+	my $sql;
+
+	if($self->{'domain_type'} eq 'dmn') {
+		$sql = 'SELECT domain_name, domain_id FROM domain WHERE domain_id = ?';
+	} elsif($self->{'domain_type'} eq 'als') {
+		$sql = 'SELECT alias_name AS domain_name, alias_id AS domain_id FROM domain_aliasses WHERE alias_id = ?';
+	} elsif($self->{'domain_type'} eq 'sub') {
 		$sql = "
 			SELECT
-				CONCAT(`subdomain_name`, '.', `domain_name`) AS `name`, `subdomain_id` AS `id`
+				CONCAT(subdomain_name, '.', domain_name) AS domain_name, subdomain_id AS domain_id
 			FROM
-				`subdomain`
+				subdomain
 			INNER JOIN
-				`domain` USING(`domain_id`)
+				domain USING(domain_id)
 			WHERE
-				`subdomain_id` = ?
+				subdomain_id = ?
 		";
 	} else {
 		$sql = "
 			SELECT
-				CONCAT(`subdomain_alias_name`, '.', `alias_name`) AS `name`, `subdomain_alias_id` AS `id`
+				CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name, subdomain_alias_id AS domain_id
 			FROM
-				`subdomain_alias`
+				subdomain_alias
 			INNER JOIN
-				`domain_aliasses` USING(`alias_id`)
+				domain_aliasses USING(alias_id)
 			WHERE
 				`subdomain_alias_id` = ?
 		";
 	}
 
-	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql, $self->{'id'});
+	my $rdata = iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{'domain_id'});
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
-	unless(exists $rdata->{$self->{'id'}}) {
-		error("Domain record of type '$self->{'type'}' with ID '$self->{'id'}' has not been found in database");
-		error("SSL certificate record with ID '$self->{'cert_id'}' is orphaned in database.");
+	unless(exists $rdata->{$self->{'domain_id'}}) {
+		# Delete orphaned SSL certificate
+		#my $rdata = iMSCP::Database->factory()->doQuery(
+		#	'dummy', 'DELETE FROM ssl_certs WHERE cert_id = ?', $self->{'cert_id'}
+		#);
 
-		# Update the status of the SSL certificate which is orphaned. If the installer is run again, it will be skipped
-		my $rdata = iMSCP::Database->factory()->doQuery(
-			'dummy', 'UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?', 'Error: Orphaned entry'
-		);
-
-		return 1;
+		warning("SSL certificate record with ID $self->{'cert_id'} is orphaned and therefore, has been removed.");
+		return 5;
 	}
 
-	$self->{'name'} = $rdata->{$self->{'id'}}->{'name'};
+	$self->{'domain_name'} = $rdata->{$self->{'domain_id'}}->{'domain_name'};
 
 	0;
 }
@@ -127,15 +114,16 @@ sub process
 	$self->{'cert_id'} = $_[1];
 
 	my $rs = $self->loadData();
+	return 0 if $rs == 5; # Orphaned SSL certificate has been removed
 	return $rs if $rs;
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange$/) {
+	if($self->{'status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
 
 		@sql = (
-			"UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?",
+			'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
 			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'cert_id'}
 		);
 	} elsif($self->{'status'} eq 'todelete') {
@@ -143,11 +131,11 @@ sub process
 
 		if($rs) {
 			@sql = (
-				"UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?",
+				'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
 				scalar getMessageByType('error'), $self->{'cert_id'}
 			);
 		} else {
-			@sql = ("DELETE FROM `ssl_certs` WHERE `cert_id` = ?", $self->{'cert_id'});
+			@sql = ('DELETE FROM ssl_certs WHERE cert_id = ?', $self->{'cert_id'});
 		}
 	}
 
@@ -173,15 +161,15 @@ sub add
 	$openSSL->{'certificate_chains_storage_dir'} = $self->{'certsDir'};
 
 	# Set certificate chain container name on OpenSSL module
-	$openSSL->{'certificate_chain_name'} = $self->{'name'};
+	$openSSL->{'certificate_chain_name'} = $self->{'domain_name'};
 
-    ## Private key
+	## Private key
 
 	# Create container for private key
 	my $privateKeyContainer = File::Temp->new();
 
 	# Write private key in container
-	print $privateKeyContainer $self->{'key'};
+	print $privateKeyContainer $self->{'private_key'};
 
 	# Set private key container path on OpenSSL module
 	$openSSL->{'private_key_container_path'} = $privateKeyContainer;
@@ -192,19 +180,19 @@ sub add
 	my $certificateContainer = File::Temp->new();
 
 	# Write certificate in container
-	print $certificateContainer $self->{'cert'};
+	print $certificateContainer $self->{'certificate'};
 
 	# Set certificate container path on OpenSSL module
 	$openSSL->{'certificate_container_path'} = $certificateContainer;
 
 	# CA Bundle (intermediate certificate(s))
 
-	if($self->{'ca_cert'}) {
+	if($self->{'ca_bundle'}) {
 		# Create container for CA bundle
 		my $caBundleContainer = File::Temp->new();
 
 		# Write CA bundle in container
-		print $caBundleContainer $self->{'ca_cert'};
+		print $caBundleContainer $self->{'ca_bundle'};
 
 		# Set CA bundle container path on OpenSSL module
 		$openSSL->{'ca_bundle_container_path'} = $caBundleContainer;
@@ -224,13 +212,28 @@ sub delete
 {
 	my $self = $_[0];
 
-	my $certFile = "$self->{'certsDir'}/$self->{'name'}.pem";
+	my $certFile = "$self->{'certsDir'}/$self->{'domain_name'}.pem";
 
 	if(-f $certFile) {
 	    iMSCP::File->new('filename' => $certFile)->delFile();
     } else {
 	    0;
     }
+}
+
+sub _init
+{
+	my $self = $_[0];
+
+	$self->{'type'} = 'SSLcertificate';
+	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
+
+	my $rs = iMSCP::Dir->new('dirname' => $self->{'certsDir'})->make(
+		{ 'mode' => 0750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'} }
+	);
+	return $rs if $rs;
+
+	$self;
 }
 
 1;

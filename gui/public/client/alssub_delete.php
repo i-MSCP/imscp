@@ -110,10 +110,10 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 			try {
 				$db->beginTransaction();
 
-				$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?";
+				$query = "UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?";
 				$stmt = exec_query($query, array('todelete', $alssubId));
 
-				$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `id` = ? AND `type` = ?";
+				$query = "UPDATE ssl_certs SET status = ? WHERE domain_id = ? AND domain_type = ?";
 				$stmt = exec_query($query, array('todelete', $alssubId, 'alssub'));
 
 				$db->commit();

@@ -116,11 +116,11 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 				$db->beginTransaction();
 
 				# Schedule deletion of any SSL certificat, which have domain alias as parent
-				$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `id` = ? AND `type` = ?";
+				$query = "UPDATE ssl_certs SET status = ? WHERE domain_id = ? AND domain_type = ?";
 				exec_query($query, array('todelete', $alsId, 'als'));
 
 				# Schedule deletion of domain alias
-				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
+				$query = "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?";
 				exec_query($query, array('todelete', $alsId));
 
 				$db->commit();

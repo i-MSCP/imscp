@@ -903,38 +903,39 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
 		// Schedule SSL certificates deletion
 		exec_query(
-			"UPDATE ssl_certs SET status = ? WHERE type = 'dmn' AND id = ?", array($deleteStatus, $mainDomainId)
+			"UPDATE ssl_certs SET status = ? WHERE domain_type = 'dmn' AND domain_id = ?",
+			array($deleteStatus, $mainDomainId)
 		);
 		exec_query(
 			"
 				UPDATE
-					ssl_certs SET status = ?
+					ssl_certs
+				SET
+					status = ?
 				WHERE
-					type = ?
+					domain_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
 				AND
-					id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+					domain_type = ?
 			",
-			array($deleteStatus, 'als', $mainDomainId)
+			array($deleteStatus, $mainDomainId, 'als')
 		);
 		exec_query(
 			"
 				UPDATE
 					ssl_certs SET status = ?
 				WHERE
-					type = ?
+					domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?)
 				AND
-					id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?)
+					domain_type = ?
 			",
-			array($deleteStatus, 'sub', $mainDomainId)
+			array($deleteStatus, $mainDomainId, 'sub')
 		);
 		exec_query(
 			"
 				UPDATE
 					ssl_certs SET status = ?
 				WHERE
-					type = ?
-				AND
-					id IN (
+					domain_id IN (
 						SELECT
 							subdomain_alias_id
 						FROM
@@ -942,11 +943,13 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 						WHERE
 							alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
 					)
+				AND
+					domain_type = ?
 			",
-			array($deleteStatus, 'alssub', $mainDomainId)
+			array($deleteStatus, $mainDomainId, 'alssub')
 		);
 
-		// Delegated tasks to the engine - end
+		// Delegated tasks - end
 
 		// Updates resellers properties
 		update_reseller_c_props($resellerId);

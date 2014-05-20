@@ -47,22 +47,22 @@ sub process
 
 	my $sql = "
 		SELECT
-			`domain_ip_id` AS `ip_id`, `ip_number`
+			domain_ip_id AS ip_id, ip_number
 		FROM
-			`domain`
+			domain
 		INNER JOIN
-			`server_ips` ON (`domain`.`domain_ip_id` = `server_ips`.`ip_id`)
+			server_ips ON (domain.domain_ip_id = server_ips.ip_id)
 		WHERE
-			`domain_status` != 'todelete'
+			domain_status != 'todelete'
 		UNION
 		SELECT
-			`alias_ip_id` AS `ip_id`, `ip_number`
+			alias_ip_id AS ip_id, ip_number
 		FROM
-			`domain_aliasses`
+			domain_aliasses
 		INNER JOIN
-			`server_ips` ON (`domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`)
+			server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
 		WHERE
-			`alias_status` NOT IN ('todelete', 'ordered')
+			alias_status NOT IN ('todelete', 'ordered')
 	";
 	my $rdata = iMSCP::Database->factory()->doQuery('ip_number', $sql);
 	unless(ref $rdata eq 'HASH') {
@@ -74,52 +74,52 @@ sub process
 
 	$sql = "
 		SELECT
-			`ip_number`
+			ip_number
 		FROM
-			`ssl_certs`
+			ssl_certs
 		LEFT JOIN
-			`domain` ON (`ssl_certs`.`id` = `domain`.`domain_id`)
+			domain ON (ssl_certs.domain_id = domain.domain_id)
 		LEFT JOIN
-			`server_ips` ON (`domain`.`domain_ip_id` = `server_ips`.`ip_id`)
+			server_ips ON (domain.domain_ip_id = server_ips.ip_id)
 		WHERE
-			`ssl_certs`.`type` = 'dmn'
+			ssl_certs.domain_type = 'dmn'
 		UNION
 		SELECT
-			`ip_number`
+			ip_number
 		FROM
-			`ssl_certs`
+			ssl_certs
 		LEFT JOIN
-			`domain_aliasses` ON (`ssl_certs`.`id` = `domain_aliasses`.`alias_id`)
+			domain_aliasses ON (ssl_certs.domain_id = domain_aliasses.alias_id)
 		LEFT JOIN
-			`server_ips` ON (`domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`)
+			server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
 		WHERE
-			`type` = 'als'
+			ssl_certs.domain_type = 'als'
 		UNION
 		SELECT
-			`ip_number`
+			ip_number
 		FROM
-			`ssl_certs`
+			ssl_certs
 		LEFT JOIN
-			`subdomain_alias` ON (`ssl_certs`.`id` = `subdomain_alias`.`subdomain_alias_id`)
+			subdomain_alias ON (ssl_certs.domain_id = subdomain_alias.subdomain_alias_id)
 		LEFT JOIN
-			`domain_aliasses` ON (`subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`)
+			domain_aliasses ON (subdomain_alias.alias_id = domain_aliasses.alias_id)
 		LEFT JOIN
-			`server_ips` ON (`domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`)
+			server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
 		WHERE
-			`type` = 'alssub'
+			ssl_certs.domain_type = 'alssub'
 		UNION
 		SELECT
-			`ip_number`
+			ip_number
 		FROM
-			`ssl_certs`
+			ssl_certs
 		LEFT JOIN
-			`subdomain` ON (`ssl_certs`.`id` = `subdomain`.`subdomain_id`)
+			subdomain ON (ssl_certs.domain_id = subdomain.subdomain_id)
 		LEFT JOIN
-			`domain` ON (`subdomain`.`domain_id` = `domain`.`domain_id`)
+			domain ON (subdomain.domain_id = domain.domain_id)
 		LEFT JOIN
-			`server_ips` ON (`domain`.`domain_ip_id` = `server_ips`.`ip_id`)
+			server_ips ON (domain.domain_ip_id = server_ips.ip_id)
 		WHERE
-			`type` = 'sub'
+			ssl_certs.domain_type = 'sub'
 	";
 	$rdata = iMSCP::Database->factory()->doQuery('ip_number', $sql);
 	unless(ref $rdata eq 'HASH') {

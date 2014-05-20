@@ -28,6 +28,8 @@ package Modules::Htaccess;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use parent 'Modules::Abstract';
 
@@ -50,40 +52,50 @@ sub loadData
 
 	my $sql = "
 		SELECT
-			`t3`.`id`, `t3`.`auth_type`, `t3`.`auth_name`, `t3`.`path`, `t3`.`status`,
-			`t3`.`users`, `t3`.`groups`, `t4`.`domain_name`, `t4`.`domain_admin_id`
+			t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups, t4.domain_name,
+			t4.domain_admin_id
 		FROM
 			(
-				SELECT * from `htaccess`,
+				SELECT * FROM htaccess,
 				(
 					SELECT IFNULL(
 					(
-						SELECT group_concat(`uname` SEPARATOR ' ')
-						FROM `htaccess_users`
-						WHERE `id` regexp (
-							CONCAT(
-								'^(', (SELECT REPLACE((SELECT `user_id` FROM `htaccess` WHERE `id` = ?), ',', '|')), ')\$'
+						SELECT
+							group_concat(uname SEPARATOR ' ')
+						FROM
+							htaccess_users
+						WHERE
+							id regexp (
+								CONCAT(
+									'^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$'
+								)
 							)
-						) GROUP BY `dmn_id`
-					), '') AS `users`
-				) AS `t1`,
+						GROUP BY
+							dmn_id
+					), '') AS users
+				) AS t1,
 				(
 					SELECT IFNULL(
 					(
-						SELECT group_concat(`ugroup` SEPARATOR ' ')
-						FROM `htaccess_groups`
-						WHERE `id` regexp (
-							CONCAT(
-								'^(', (SELECT REPLACE((SELECT `group_id` FROM `htaccess` WHERE `id` = ?), ',', '|')), ')\$'
+						SELECT
+							group_concat(ugroup SEPARATOR ' ')
+						FROM
+							htaccess_groups
+						WHERE
+							id regexp (
+								CONCAT(
+									'^(', (SELECT REPLACE((SELECT group_id FROM htaccess WHERE id = ?), ',', '|')), ')\$'
+								)
 							)
-						) GROUP BY `dmn_id`
-					), '') AS `groups`
-				) AS `t2`
-			) AS `t3`
+						GROUP BY
+							dmn_id
+					), '') AS groups
+				) AS t2
+			) AS t3
 		INNER JOIN
-			`domain` AS `t4` ON (`t3`.`dmn_id` = `t4`.`domain_id`)
+			domain AS t4 ON (t3.dmn_id = t4.domain_id)
 		WHERE
-			`t3`.`id` = ?
+			t3.id = ?
 	";
 
 	my $rdata = $db->doQuery('id', $sql, $self->{'htaccessId'}, $self->{'htaccessId'}, $self->{'htaccessId'});
@@ -93,7 +105,7 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'htaccessId'}}) {
-		error("Htaccess record with ID '$self->{'htaccessId'}' has not been found in database");
+		error("Htaccess record with ID $self->{'htaccessId'} has not been found in database");
 		return 1;
 	}
 
@@ -104,7 +116,7 @@ sub loadData
 		error("Orphan entry: " . Dumper($rdata->{$self->{'htaccessId'}}));
 
 		my @sql = (
-			"UPDATE `htaccess` SET `status` = ? WHERE `id` = ?",
+			'UPDATE htaccess SET status = ? WHERE id = ?',
 			'Orphan entry: ' . Dumper($rdata->{$self->{'htaccessId'}}),
 			$self->{'htaccessId'}
 		);
@@ -128,11 +140,11 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange$/) {
+	if($self->{'status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
 
 		@sql = (
-			"UPDATE `htaccess` SET `status` = ? WHERE `id` = ?",
+			'UPDATE htaccess SET status = ? WHERE id = ?',
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'id'}
 		);
@@ -141,12 +153,12 @@ sub process
 
 		if($rs) {
 			@sql = (
-				"UPDATE `htaccess` SET `status` = ? WHERE `id` = ?",
+				'UPDATE htaccess SET status = ? WHERE id = ?',
 				scalar getMessageByType('error'),
 				$self->{'id'}
 			);
 		} else {
-			@sql = ("DELETE FROM `htaccess` WHERE `id` = ?", $self->{'id'});
+			@sql = ('DELETE FROM htaccess WHERE id = ?', $self->{'id'});
 		}
 	}
 
