@@ -495,7 +495,7 @@ sub _buildConf
 		"$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf", # Destpath
 			$main::imscpConfig{'ROOT_USER'}, # owner
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
-			0644 # Permissions
+			0640 # Permissions
 		],
 		((qv("v$self->{'version'}") < qv('v2.0.0')) ? 'quota-warning.1' : 'quota-warning.2') => [
 			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh", # Destpath
