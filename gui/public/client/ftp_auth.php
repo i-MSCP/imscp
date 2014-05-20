@@ -101,10 +101,19 @@ function _ajaxplorerAuth($userId)
 		return false;
 	}
 
+	$contextOptions = array();
+
 	// Prepares Pydio (AjaXplorer) absolute Uri to use
 	if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) {
 		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$ajaxplorerUri = "https://{$_SERVER['SERVER_NAME']}$port/ftp/";
+
+		$contextOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'allow_self_signed' => true
+			)
+		);
 	} else {
 		$port = ($_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$ajaxplorerUri = "http://{$_SERVER['SERVER_NAME']}$port/ftp/";
@@ -126,20 +135,22 @@ function _ajaxplorerAuth($userId)
 		)
 	);
 
-	stream_context_set_default(
-		array(
-			'http' => array(
-				'method' => 'POST',
-				'header' => "Host: {$_SERVER['SERVER_NAME']}\r\n" .
-					"Connection: close\r\n" .
-					"Content-Type: application/x-www-form-urlencoded\r\n" .
-					"X-Requested-With: XMLHttpRequest\r\n" .
-					'Content-Length: ' . strlen($data) . "\r\n",
-				'content' => $data,
-				'user_agent' => $_SERVER["HTTP_USER_AGENT"]
-			)
+	$contextOptions = array_merge($contextOptions, array(
+		'http' => array(
+			'method' => 'POST',
+			'header' => array(
+				'Host: ' . $_SERVER['SERVER_NAME'],
+				'Connection: close',
+				'Content-Type: application/x-www-form-urlencoded',
+				'X-Requested-With: XMLHttpRequest' .
+				'Content-Length: ' . strlen($data),
+			),
+			'content' => $data,
+			'user_agent' => 'i-MSCP'
 		)
-	);
+	));
+
+	stream_context_set_default($contextOptions);
 
 	$headers = get_headers("{$ajaxplorerUri}?secure_token={$secureToken}", true);
 

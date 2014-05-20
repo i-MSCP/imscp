@@ -745,7 +745,6 @@ sub _buildMasterVhostFiles
 			OTHER_ROOTKIT_LOG => ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '')
 				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
-			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all'
 		}
@@ -799,7 +798,7 @@ sub _buildMasterVhostFiles
 	$rs = $self->{'httpd'}->enableSite('00_master.conf');
 	return $rs if $rs;
 
-	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
+	if($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
 		# Build 00_master_ssl.conf file
 
 		$rs = $self->{'httpd'}->buildConfFile('00_master_ssl.conf', { CGI_SUPPORT => 'no', PHP_SUPPORT => 'yes' });

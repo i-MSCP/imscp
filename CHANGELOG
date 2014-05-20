@@ -12,6 +12,7 @@ CONFIGS:
 ENGINE:
 	- Added: MariaDB|MySQL|Percona server implementations
 	- Added: Options which allow to disable compression for backups
+	- Fixed: Control panel must have it own SSL certificate
 	- Fixed: Even if a database backup fail, the backup must not stop. The backup script must jump to the next database
 	- Fixed: iMSCP::Ext2Attributes must not act on systems which do not support extended fs attributes
 	- Fixed: Reload signal not implemented in upstart < 1.10.0
@@ -36,9 +37,10 @@ GUI:
 	- Fixed: The method iMSCP_Update_Database::_addIndex() doesn't allow compound keys
 
 INSTALLER:
-	 Added: Support for Percona MySQL server
-	 Fixed: apache_php_fpm uninstaller is broken
-	 Fixed: PHP mcrypt module not enabled after fresh install (Ubuntu Trusty Thar)
+	- Added: Support for Percona MySQL server
+	- Fixed: apache_php_fpm uninstaller is broken
+	- Fixed: Control panel must have it own SSL certificate
+	- Fixed: PHP mcrypt module not enabled after fresh install (Ubuntu Trusty Thar)
 
 PLUGINS:
 	- Changed: Implementation of the register() method is no longer mandatory in action plugins

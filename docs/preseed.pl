@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2014.03.06
+# Last update: 2014.05.20
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -106,27 +106,45 @@ $main::questions{'DEFAULT_ADMIN_ADDRESS'} = 'user@domain.tld'; # Default admin e
 # PHP Timzone
 $main::questions{'PHP_TIMEZONE'} = 'Europe/London'; # A valid PHP timezone (see http://php.net/manual/en/timezones.php)
 
-# SSL for i-MSCP services
-$main::questions{'SSL_ENABLED'} = 'no'; # 'yes' or 'no'
+# SSL for i-MSCP control panel
+$main::questions{'PANEL_SSL_ENABLED'} = 'no'; # 'yes' or 'no'
 
-# Only relevant if SSL_ENABLED is set to 'yes'
-$main::questions{'SELFSIGNED_CERTIFICATE'} = 'no'; # 'yes' for selfsigned, 'no' for own certificate
+# Only relevant if PANEL_SSL_ENABLED is set to 'yes'
+$main::questions{'PANEL_SSL_SELFSIGNED_CERTIFICATE'} = 'no'; # 'yes' for selfsigned, 'no' for own certificate
 
-# Only relevant if SSL_ENABLED is set to 'yes' and  SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'CERTIFICATE_KEY_PATH'} = ''; # Path to certificate key
+# Only relevant if PANEL_SSL_ENABLED is set to 'yes' and  PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
+$main::questions{'PANEL_SSL_PRIVATE_KEY_PATH'} = ''; # Path to certificate key
 
-# Only relevant if SSL_ENABLED is set to 'yes' and SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'CERTIFICATE_KEY_PASSWORD'} = ''; # Leave blank if your certificate key is not protected by a passphrase
+# Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
+$main::questions{'PANEL_SSL_PASSPHRASE'} = ''; # Leave blank if your certificate key is not protected by a passphrase
 
-# Only relevant if SSL_ENABLED is set to 'yes' and SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'INTERMEDIATE_CERTIFICATE_PATH'} = ''; # Leave blank if you do not have intermediate certificate
+# Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
+$main::questions{'PANEL_SSL_CA_BUNDLE_PATH'} = ''; # Leave blank if you do not have intermediate certificate
 
-# Only relevant if SSL_ENABLED is set to 'yes' and SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'CERTIFICATE_PATH'} = ''; # Path to SSL certificat
+# Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
+$main::questions{'PANEL_SSL_CERTIFICATE_PATH'} = ''; # Path to SSL certificat
 
-# Only relevant if SSL_ENABLED is set to 'yes' ;
-# Let's value set to 'http://' if you set SSL_ENABLED to 'no'
+# Only relevant if PANEL_SSL_ENABLED is set to 'yes' ;
+# Let's value set to 'http://' if you set PANEL_SSL_ENABLED to 'no'
 $main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://'; # Default panel access mode 'http://' or 'https://'
+
+# SSL for i-MSCP services (proftpd, courier, dovecot...)
+$main::questions{'SERVICES_SSL_ENABLED'} = 'no'; # 'yes' or 'no'
+
+# Only relevant if SERVICES_SSL_ENABLED is set to 'yes'
+$main::questions{'SERVICES_SSL_SELFSIGNED_CERTIFICATE'} = 'no'; # 'yes' for selfsigned, 'no' for own certificate
+
+# Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and  SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
+$main::questions{'SERVICES_SSL_PRIVATE_KEY_PATH'} = ''; # Path to certificate key
+
+# Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
+$main::questions{'SERVICES_SSL_PASSPHRASE'} = ''; # Leave blank if your certificate key is not protected by a passphrase
+
+# Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
+$main::questions{'SERVICES_SSL_CA_BUNDLE_PATH'} = ''; # Leave blank if you do not have intermediate certificate
+
+# Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
+$main::questions{'SERVICES_SSL_CERTIFICATE_PATH'} = ''; # Path to SSL certificat
 
 # iMSCP backup feature (database and configuration files)
 $main::questions{'BACKUP_IMSCP'} = 'yes'; # 'yes' or 'no' - It's recommended to set this question to 'yes'

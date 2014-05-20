@@ -258,7 +258,7 @@ sub ImportCaBundle
 	0;
 }
 
-=items createSelfSignedCertificate($commonName, $wildcardSSL = TRUE)
+=items createSelfSignedCertificate($commonName, $wildcardSSL = false)
 
  Generate a self-signed SSL certificate
 
@@ -272,7 +272,7 @@ sub createSelfSignedCertificate
 {
 	my ($self, $commonName, $wildcardSSL) = @_;
 
-	my $commonName = (!$wildcardSSL) ? '*.' .  $commonName : $commonName;
+	my $commonName = ($wildcardSSL) ? '*.' . $commonName : $commonName;
 
 	my @cmd = (
 		"$self->{'openssl_path'} req -x509 -nodes -days 365 ",

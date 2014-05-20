@@ -352,7 +352,7 @@ sub _buildConfigFile
 	# Define data
 
 	my $data = {
-		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
+		HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
@@ -361,7 +361,8 @@ sub _buildConfigFile
 		FTPD_MIN_UID => $self->{'config'}->{'MIN_UID'},
 		FTPD_MIN_GID => $self->{'config'}->{'MIN_GID'},
 		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
-		SSL => main::setupGetQuestion('SSL_ENABLED') eq 'yes' ? '' : '#'
+		SSL => (main::setupGetQuestion('SERVICES_SSL_ENABLED') eq 'yes') ? '' : '#',
+		CERTIFICATE => 'imscp_services'
 	};
 
 	# Load template

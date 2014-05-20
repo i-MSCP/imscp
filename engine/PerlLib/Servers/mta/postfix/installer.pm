@@ -569,7 +569,8 @@ sub _buildMainCfFile
 		MTA_MAILBOX_GID => $gid,
 		PORT_POSTGREY => $main::imscpConfig{'PORT_POSTGREY'},
 		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
-		SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
+		SSL => ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') ? '' : '#',
+		CERTIFICATE => 'imscp_services'
 	};
 
 	# Load template

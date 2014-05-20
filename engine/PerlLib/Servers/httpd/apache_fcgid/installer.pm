@@ -962,7 +962,6 @@ sub _buildMasterVhostFiles
 			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
 			PEAR_DIR => $main::imscpConfig{'PEAD_DIR'},
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
-			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
 			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all'
@@ -1017,7 +1016,7 @@ sub _buildMasterVhostFiles
 	$rs = $self->{'httpd'}->enableSite('00_master.conf');
 	return $rs if $rs;
 
-	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
+	if($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
 		# Build 00_master_ssl.conf file
 
 		$rs = $self->{'httpd'}->buildConfFile('00_master_ssl.conf', { CGI_SUPPORT => 'no', PHP_SUPPORT => 'yes' });

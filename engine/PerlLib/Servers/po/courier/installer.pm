@@ -640,7 +640,7 @@ sub _buildSslConfFiles
 {
 	my $self = $_[0];
 
-	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
+	if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
 		for ($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
 			# Load template
 
@@ -662,9 +662,9 @@ sub _buildSslConfFiles
 			return $rs if $rs;
 
 			if($cfgTpl =~ m/^TLS_CERTFILE=/msg) {
-				$cfgTpl =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem!gm;
+				$cfgTpl =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem!gm;
 			} else {
-				$cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
+				$cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
 			}
 
 			$rs = $self->{'hooksManager'}->trigger('afterPoBuildSslConfFile', \$cfgTpl, $_);

@@ -126,7 +126,10 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_REQUEST['admin'])) {
 		)
 	);
 
-	if ($cfg->exists('SSL_ENABLED') && $cfg['SSL_ENABLED'] == 'yes' && $cfg['BASE_SERVER_VHOST_PREFIX'] != 'https://') {
+	if (
+		$cfg->exists('PANEL_SSL_ENABLED') && $cfg['PANEL_SSL_ENABLED'] == 'yes' &&
+		$cfg['BASE_SERVER_VHOST_PREFIX'] != 'https://'
+	) {
 		$tpl->assign(
 			array(
 				'SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://' . tohtml($_SERVER['HTTP_HOST']) : 'https://' . tohtml($_SERVER['HTTP_HOST']),
