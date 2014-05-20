@@ -40,10 +40,12 @@
  */
 
 /**
+ * Generate page
+ *
  * @param  iMSCP_pTemplate $tpl
  * @return void
  */
-function get_update_infos($tpl)
+function admin_generatePage($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -120,8 +122,8 @@ $tpl->assign(
 );
 
 generateNavigation($tpl);
+admin_generatePage($tpl);
 generatePageMessage($tpl);
-get_update_infos($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
