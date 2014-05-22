@@ -128,7 +128,7 @@ function _ajaxplorerAuth($userId)
 				'protocol_version' => '1.1',
 				'header' => array(
 					'Host: ' . $_SERVER['SERVER_NAME'] . $port,
-					'user_agent' => 'i-MSCP',
+					'User-Agent: i-MSCP',
 					'Connection: close'
 				)
 			)
