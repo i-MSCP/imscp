@@ -156,10 +156,10 @@ function _ajaxplorerAuth($userId)
 			'header' => array(
 				'Host: ' . $_SERVER['SERVER_NAME'] . $port,
 				'Content-Type: application/x-www-form-urlencoded',
-				'X-Requested-With: XMLHttpRequest' .
+				'X-Requested-With: XMLHttpRequest',
 				'Content-Length: ' . strlen($postData),
 				'User-Agent: i-MSCP',
-				'Connection: close',
+				'Connection: close'
 			),
 			'content' => $postData
 		)
