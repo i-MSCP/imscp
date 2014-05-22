@@ -121,10 +121,24 @@ function _ajaxplorerAuth($userId)
 
 	// Pydio (AjaXplorer) authentication
 
-	# Getting secure token
-	$secureToken = file_get_contents("$ajaxplorerUri/index.php?action=get_secure_token");
+	$context = stream_context_create(
+		array_merge($contextOptions, array(
+			'http' => array(
+				'method' => 'GET',
+				'protocol_version' => '1.1',
+				'header' => array(
+					'Host: ' . $_SERVER['SERVER_NAME'] . $port,
+					'user_agent' => 'i-MSCP',
+					'Connection: close'
+				)
+			)
+		))
+	);
 
-	$data = http_build_query(
+	# Getting secure token
+	$secureToken = file_get_contents("$ajaxplorerUri/index.php?action=get_secure_token", false, $context);
+
+	$postData = http_build_query(
 		array(
 			'get_action' => 'login',
 			'userid' => $credentials[0],
@@ -138,15 +152,16 @@ function _ajaxplorerAuth($userId)
 	$contextOptions = array_merge($contextOptions, array(
 		'http' => array(
 			'method' => 'POST',
+			'protocol_version' => '1.1',
 			'header' => array(
-				'Host: ' . $_SERVER['SERVER_NAME'],
-				'Connection: close',
+				'Host: ' . $_SERVER['SERVER_NAME'] . $port,
 				'Content-Type: application/x-www-form-urlencoded',
 				'X-Requested-With: XMLHttpRequest' .
-				'Content-Length: ' . strlen($data),
+				'Content-Length: ' . strlen($postData),
+				'User-Agent: i-MSCP',
+				'Connection: close',
 			),
-			'content' => $data,
-			'user_agent' => 'i-MSCP'
+			'content' => $postData
 		)
 	));
 

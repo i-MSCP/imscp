@@ -192,17 +192,19 @@ function client_generatePage($tpl, $domainId, $domainType)
 								$certificate = $match[0];
 
 								// Check certificate
-								if (!$x509->loadX509($certificate) || ! $x509->validateSignature()) {
+								if (!$x509->loadX509($certificate)) {
+									set_page_message(tr('Your certificate is not valid.'), 'error');
+								} elseif(! $x509->validateSignature()) {
 									set_page_message(
-										tr('Your certificate is not valid or do not match with the CA bundle.'), 'error'
+										tr('Your certificate is not valid or the CA bundle is missing.'), 'error'
 									);
+								} elseif(!$x509->validateDate()) {
+									set_page_message(tr('Your certificate is expired'), 'error');
+								} elseif (!openssl_x509_check_private_key($certificate, $privateKey)) {
+									set_page_message(tr("The certificate doesn't match with the private key."), 'error');
 								}
 
 								// TODO check for CN
-
-								if (!openssl_x509_check_private_key($certificate, $privateKey)) {
-									set_page_message(tr("The certificate doesn't match with the private key."), 'error');
-								}
 							} else {
 								set_page_message(tr('Your certificate is not valid.'), 'error');
 							}
@@ -301,7 +303,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 			if (customerHasFeature('ssl')) {
 				$tpl->assign('TR_DYNAMIC_TITLE', tr('Edit SSL certificate'));
 			} else {
-				$tpl->assign('TR_DYNAMIC_TITLE', tr('View SSL certificate'));
+				$tpl->assign('TR_DYNAMIC_TITLE', tr('Show SSL certificate'));
 				$tpl->assign('CERT_ENABLE', '');
 				set_page_message(tr('SSL feature is not available. You can only view your certificate'), 'warning');
 			}

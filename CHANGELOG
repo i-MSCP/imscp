@@ -50,6 +50,7 @@ PLUGINS:
 
 Tickets:
 	- Fixed #1056: Bug - Incorrect value '_no_' in SQL query on create default email-accounts
+	- Fixed #1061: Defect - i-MSCP is Unable to connect to https when using PHP from dotdeb
 	- Fixed #1065: Bug - Unable to unsuspend customer account from admin UI
 	- Fixed #1066: Bug - Customer's domains remain reachable through HTTPS when they are deactivated
 	- Fixed #1075: Bug - mysqldump: Can't create/write to file

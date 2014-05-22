@@ -81,7 +81,7 @@ protocol pop3 {
 protocol lda {
 	auth_socket_path = {DOVECOT_AUTH_SOCKET_PATH}
 	mail_plugins = $mail_plugins
-	postmaster_address = postmaster@{HOST_NAME}
+	postmaster_address = postmaster@{HOSTNAME}
 }
 
 # SSL

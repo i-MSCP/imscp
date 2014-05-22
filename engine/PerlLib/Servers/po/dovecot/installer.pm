@@ -460,7 +460,7 @@ sub _buildConf
 		DATABASE_PASSWORD => $self->{'config'}->{'DATABASE_PASSWORD'},
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
 		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
-		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
+		HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 		DOVECOT_SSL => ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') ? 'yes' : 'no',
 		COMMENT_SSL => ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') ? '' : '#',
 		CERTIFICATE => 'imscp_services',

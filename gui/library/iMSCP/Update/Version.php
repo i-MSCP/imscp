@@ -127,6 +127,7 @@ class iMSCP_Update_Version extends iMSCP_Update
 							'method' => 'GET',
 							'protocol_version' => '1.1',
 							'header' => array(
+								'Host: api.github.com',
 								'Accept: application/vnd.github.v3+json',
 								'User-Agent: i-MSCP',
 								'Connection: close'

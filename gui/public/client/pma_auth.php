@@ -115,7 +115,7 @@ function client_pmaAuth($dbUserId)
 	$credentials = _client_pmaGetLoginCredentials($dbUserId);
 
 	if ($credentials) {
-		$httpQuery = http_build_query(
+		$postData = http_build_query(
 			array(
 				'pma_username' => $credentials[0],
 				'pma_password' => stripcslashes($credentials[1])));
@@ -124,26 +124,41 @@ function client_pmaAuth($dbUserId)
 		return false;
 	}
 
+	$contextOptions = array();
+
 	// Prepares PhpMyadmin absolute Uri to use
 	if (!empty($_SERVER['HTTPS'])) {
 		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$pmaUri = "https://{$_SERVER['SERVER_NAME']}$port/pma/";
+
+		$contextOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'allow_self_signed' => true
+			)
+		);
 	} else {
 		$port = ($_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$pmaUri = "http://{$_SERVER['SERVER_NAME']}$port/pma/";
 	}
 
-	// Set stream context (http) options
-	stream_context_set_default(
-		array(
-			'http' => array(
-				'method' => 'POST',
-				'header' => "Host: {$_SERVER['SERVER_NAME']}$port\r\n" .
-					"Content-Type: application/x-www-form-urlencoded\r\n" .
-					'Content-Length: ' . strlen($httpQuery) . "\r\n" .
-					"Connection: close\r\n\r\n",
-				'content' => $httpQuery,
-				'max_redirects' => 1)));
+	$contextOptions = array_merge($contextOptions, array(
+		'http' => array(
+			'method' => 'POST',
+			'protocol_version' => '1.1',
+			'header' => array(
+				'Host: ' . $_SERVER['SERVER_NAME'] . $port,
+				'Content-Type: application/x-www-form-urlencoded',
+				'Content-Length: ' . strlen($postData),
+				'User-Agent: i-MSCP',
+				'Connection: close',
+			),
+			'content' => $postData,
+			'max_redirects' => 1
+		)
+	));
+
+	stream_context_set_default($contextOptions);
 
 	// Gets the headers from PhpMyAdmin
 	$headers = get_headers($pmaUri, true);
