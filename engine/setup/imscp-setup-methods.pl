@@ -1865,7 +1865,7 @@ sub setupPanelSsl
 
 		# Setup library for new certificate
 		$openSSL->{'certificate_chains_storage_dir'} = $main::imscpConfig{'GUI_CERT_DIR'};
-		$openSSL->{'certificate_chain_name'} = 'imscp_panel';
+		$openSSL->{'certificate_chain_name'} = $domainName;
 
 		if($selfSignedCertificate) {
 			my $rs = $openSSL->createSelfSignedCertificate($domainName);
