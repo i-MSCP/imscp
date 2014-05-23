@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-23 18:59+0200\n"
-"PO-Revision-Date: 2014-05-23 17:02+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2014-05-23 20:55+0200\n"
+"PO-Revision-Date: 2014-05-23 17:44+0000\n"
+"Last-Translator: Ádám Radovits <adamradovits12@hotmail.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -529,13 +529,13 @@ msgid "A certificate in your CA bundle is missing or invalid."
 msgstr ""
 
 msgid "A database update is available"
-msgstr ""
+msgstr "Adatbázis frissítés érhető el"
 
 msgid "A hosting plan with same name already exists."
 msgstr "Hasonló nevű tárhelycsomag már létezik."
 
 msgid "A new i-MSCP version is available"
-msgstr ""
+msgstr "Új i-MSCP verzió érhető el"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Webes statisztika."
@@ -816,7 +816,7 @@ msgid "Admin / System Tools / System Information"
 msgstr "Adminisztrátor / Rendszereszközök / Rendszerinformációk"
 
 msgid "Admin / System Tools / i-MSCP Updates"
-msgstr ""
+msgstr "Adminisztrátor / Rendszereszközök / i-MSCP frissítések"
 
 msgid "Admin / User / Overview / Domain Edit"
 msgstr "Adminisztrátor / Felhasználó / Áttekintés / Domain szerkesztése"
@@ -1131,7 +1131,7 @@ msgid "Assign group"
 msgstr "Csoport hozzárendelése"
 
 msgid "At first you must create a database which have at least one SQL user."
-msgstr ""
+msgstr "Először is készítened kell egy adatbázist, ami legalább egy SQL felhasználót tartalmaz."
 
 msgid "Auto email template data updated!"
 msgstr "Automatikus email sablon módosítva"
@@ -1392,7 +1392,7 @@ msgid "Client / Domains / PHP Settings"
 msgstr "Ügyfél / Domainek / PHP beállítások"
 
 msgid "Client / Domains / SSL Certificate"
-msgstr ""
+msgstr "Ügyfél / Domainek / SSL tanúsítvány"
 
 msgid "Client / Email / Add Email Account"
 msgstr "Ügyfél / Levelezés / Postafiók létrehozása"
@@ -2106,13 +2106,13 @@ msgid "Download"
 msgstr "Letöltés"
 
 msgid "Download TAR"
-msgstr ""
+msgstr "Letöltés TAR-ban"
 
 msgid "Download ZIP"
-msgstr ""
+msgstr "Letöltés ZIP-ben"
 
 msgid "Download links"
-msgstr ""
+msgstr "Letöltési hivatkozások"
 
 msgid "Download the archives stored in this directory"
 msgstr "A könyvtárban található archívumok letöltése"
@@ -2868,7 +2868,7 @@ msgid "Invalid name."
 msgstr "Érvénytelen név"
 
 msgid "Invalid private key or passphrase"
-msgstr ""
+msgstr "Érvénytelen személyes kulcs vagy jelszó"
 
 msgid "Invalid target."
 msgstr "Érvénytelen cél"
@@ -3244,7 +3244,7 @@ msgid "No available"
 msgstr "Nem elérhető"
 
 msgid "No certificate found"
-msgstr ""
+msgstr "Nem található tanúsítvány"
 
 msgid "No custom menu found."
 msgstr "Nem található egyéni menü"
@@ -3322,10 +3322,10 @@ msgid "No unassigned users were found in the database."
 msgstr "Nem azonosított felhasználók nem találhatók az adatbázisban."
 
 msgid "No update available"
-msgstr ""
+msgstr "Nincs elérhető frissítés"
 
 msgid "No update info available"
-msgstr ""
+msgstr "Frissítési információ nem érhető el"
 
 msgid "No user found."
 msgstr "Nem található felhasználó"
@@ -3704,43 +3704,43 @@ msgstr "Bővítmény"
 
 #, php-format
 msgid "Plugin %s activated."
-msgstr ""
+msgstr "%s bővítmény aktiválva."
 
 #, php-format
 msgid "Plugin %s cannot be changed."
-msgstr ""
+msgstr "%s bővítményt nem lehet megváltoztatni."
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr ""
+msgstr "%s bővítményt nem lehet törölni."
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
-msgstr ""
+msgstr "%s bővítményt nem lehet letiltani."
 
 #, php-format
 msgid "Plugin %s cannot be enabled."
-msgstr ""
+msgstr "%s bővítményt nem lehet engedélyezni."
 
 #, php-format
 msgid "Plugin %s cannot be updated."
-msgstr ""
+msgstr "%s bővítményt nem lehet frissíteni."
 
 #, php-format
 msgid "Plugin %s changed."
-msgstr ""
+msgstr "%s bővítmény megváltozott."
 
 #, php-format
 msgid "Plugin %s deactivated."
-msgstr ""
+msgstr "%s bővítmény deaktiválva."
 
 #, php-format
 msgid "Plugin %s deleted."
-msgstr ""
+msgstr "%s bővítmény törölve."
 
 #, php-format
 msgid "Plugin %s installed."
-msgstr ""
+msgstr "%s bővítmény telepítve."
 
 #, php-format
 msgid "Plugin %s is already activated."
@@ -3760,11 +3760,11 @@ msgstr "%s bővítmény már eltávolítva."
 
 #, php-format
 msgid "Plugin %s is not installable."
-msgstr ""
+msgstr "%s bővítmény nem telepíthető."
 
 #, php-format
 msgid "Plugin %s is not uninstallable."
-msgstr ""
+msgstr "%s bővítmény nem eltávolítható."
 
 #, php-format
 msgid "Plugin %s is protected."
@@ -3772,39 +3772,39 @@ msgstr "%s bővítmény védve."
 
 #, php-format
 msgid "Plugin %s protected."
-msgstr ""
+msgstr "%s bővítmény védett."
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
-msgstr ""
+msgstr "%s bővítmény beütemezve aktiválásra."
 
 #, php-format
 msgid "Plugin %s scheduled for change."
-msgstr ""
+msgstr "%s bővítmény beütemezve megváltoztatásra."
 
 #, php-format
 msgid "Plugin %s scheduled for deactivation."
-msgstr ""
+msgstr "%s bővítmény beütemezve deaktiválásra."
 
 #, php-format
 msgid "Plugin %s scheduled for installation."
-msgstr ""
+msgstr "%s bővítmény beütemezve telepítésre."
 
 #, php-format
 msgid "Plugin %s scheduled for uninstallation."
-msgstr ""
+msgstr "%s bővítmény beütemezve eltávolításra."
 
 #, php-format
 msgid "Plugin %s scheduled for update."
-msgstr ""
+msgstr "%s bővítmény beütemezve frissítésre."
 
 #, php-format
 msgid "Plugin %s uninstalled."
-msgstr ""
+msgstr "%s bővítmény eltávolítva."
 
 #, php-format
 msgid "Plugin %s updated."
-msgstr ""
+msgstr "%s bővítmény frissítve."
 
 #, php-format
 msgid ""
@@ -3852,13 +3852,13 @@ msgid "Plugin list is empty."
 msgstr "Bővítmény lista üres."
 
 msgid "Plugin list updated."
-msgstr ""
+msgstr "Bővítménylista frissítve."
 
 msgid "Plugin management"
 msgstr "Bővítménykezelő"
 
 msgid "Plugin uploaded."
-msgstr ""
+msgstr "Bővítmény feltöltve."
 
 msgid "Plugins Upload"
 msgstr "Bővítmény feltöltése"
@@ -3900,7 +3900,7 @@ msgid "Priority: %s\n"
 msgstr "Prioritás: %s\n"
 
 msgid "Private key"
-msgstr ""
+msgstr "Személyes kulcs"
 
 msgid "Private key field cannot be empty"
 msgstr ""
@@ -4308,7 +4308,7 @@ msgid "SSL Certificate successfully scheduled for addition or update."
 msgstr ""
 
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL tanúsítvány"
 
 msgid "SSL feature is not available."
 msgstr ""
@@ -5064,7 +5064,7 @@ msgstr "Kezelőfelület webcíme"
 
 #, php-format
 msgid "Unable to activate the %s plugin: %s"
-msgstr ""
+msgstr "%s bővítményt nem lehet aktiválni: %s"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5072,7 +5072,7 @@ msgstr "Nem sikerült a(z) %s bővítmény könyvtáráról biztonsági mentést
 
 #, php-format
 msgid "Unable to change the %s plugin: %s"
-msgstr ""
+msgstr "%s bővítményt nem lehet megváltoztatni: %s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5087,11 +5087,11 @@ msgstr "Nem hozható létre a 'LC_MESSAGES' könyvtár a nyelvi fájl számára"
 
 #, php-format
 msgid "Unable to deactivate the %s plugin: %s"
-msgstr ""
+msgstr "%s bővítményt nem lehet deaktiválni: %s"
 
 #, php-format
 msgid "Unable to delete the %s plugin: %s"
-msgstr ""
+msgstr "%s bővítményt nem lehet  törölni: %s"
 
 msgid "Unable to extract plugin archive."
 msgstr "Nem sikerült kibontani a bővítmény archívumát."
@@ -5118,7 +5118,7 @@ msgstr ""
 
 #, php-format
 msgid "Unable to install the %s plugin: %s"
-msgstr ""
+msgstr "%s bővítményt nem lehet telepíteni: %s"
 
 msgid "Unable to move file."
 msgstr "Nem lehet áthelyezni a fájlt"
@@ -5128,7 +5128,7 @@ msgstr "Nem sikerült megnyitni az archívumot."
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
-msgstr ""
+msgstr "%s bővítményt nem lehet védeni: %s"
 
 msgid "Unable to read Web software repository index file."
 msgstr "Nem olvasható a webes alkalmazásokhoz tartozó index fájl."
@@ -5170,11 +5170,11 @@ msgstr ""
 
 #, php-format
 msgid "Unable to uninstall the %s plugin: %s"
-msgstr ""
+msgstr "%s bővítményt nem lehet eltávolítani: %s"
 
 #, php-format
 msgid "Unable to update the %s plugin: %s"
-msgstr ""
+msgstr "%s bővítményt nem lehet frissíteni: %s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5270,7 +5270,7 @@ msgid "Update in progress..."
 msgstr "Frissítés folyamatban..."
 
 msgid "Update info"
-msgstr ""
+msgstr "Frissítési információ"
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5846,7 +5846,7 @@ msgstr "Az Ön hozzáférése (fiókja) lejárt. Meghosszabbításához kérjük
 msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
-msgstr ""
+msgstr "A fiókod jelenleg karbantartás alatt áll vagy le van tiltva. Kérjük, vedd fel a kapcsolatot a viszonteladóval!"
 
 msgid "Your certificate is expired"
 msgstr ""
@@ -6021,7 +6021,7 @@ msgid "i-MSCP updates"
 msgstr "i-MSCP frissítések"
 
 msgid "i-MSCP version update checking is disabled"
-msgstr ""
+msgstr "i-MSCP verzió frissítésének keresése kikapcsolva"
 
 msgid "installed"
 msgstr "telepített"
