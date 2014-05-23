@@ -66,7 +66,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 187;
+	protected $lastUpdate = 188;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -2995,7 +2995,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array
 	 */
-	protected function r187()
+	protected function r188()
 	{
 		$sqlUdp = array();
 
@@ -3008,7 +3008,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				// Data normalization
 				$privateKey = quoteValue(str_replace("\r\n", "\n", trim($row['private_key'])) . PHP_EOL);
 				$certificate = quoteValue(str_replace("\r\n", "\n", trim($row['certificate'])) . PHP_EOL);
-				$caBundle = quoteValue(str_replace("\r\n", "\n", trim($row['ca_bundle'])) . PHP_EOL);
+				$caBundle = quoteValue(str_replace("\r\n", "\n", trim($row['ca_bundle'])));
 
 				$sqlUdp[] = "
 					UPDATE

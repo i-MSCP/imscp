@@ -216,7 +216,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 							// Data normalization
 							$privateKey = str_replace("\r\n", "\n", $privateKey) . PHP_EOL;
 							$certificate = str_replace("\r\n", "\n", $certificate) . PHP_EOL;
-							$caBundle = str_replace("\r\n", "\n", $caBundle) . PHP_EOL;
+							$caBundle = str_replace("\r\n", "\n", $caBundle);
 
 							$db = iMSCP_Database::getInstance();
 
