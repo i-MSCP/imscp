@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-27 02:06+0100\n"
-"PO-Revision-Date: 2014-03-27 01:08+0000\n"
+"POT-Creation-Date: 2014-05-23 18:59+0200\n"
+"PO-Revision-Date: 2014-05-23 17:02+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -314,7 +314,7 @@ msgstr "%s er ikke en gyldig i-MSCP sprogfil."
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
+msgstr "%s er ikke tilladt som subdomæne label."
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -524,8 +524,17 @@ msgstr "<b>%s</b> har IP-adresse, der ikke kan styres fra destinations forhandle
 msgid "A PHP extension stopped the file upload."
 msgstr "En PHP extension stoppede fil upload."
 
+msgid "A certificate in your CA bundle is missing or invalid."
+msgstr ""
+
+msgid "A database update is available"
+msgstr ""
+
 msgid "A hosting plan with same name already exists."
 msgstr "En hosting plan med samme navn findes allerede."
+
+msgid "A new i-MSCP version is available"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Få adgang til dine domæne statistik via web interface."
@@ -805,8 +814,8 @@ msgstr "Admin / Systemværktøjer / Administrations Indstillinger"
 msgid "Admin / System Tools / System Information"
 msgstr "Admin / Systemværktøjer / System Information"
 
-msgid "Admin / System Tools / Updates"
-msgstr "Admin / Systemværktøjer / Opdateringer"
+msgid "Admin / System Tools / i-MSCP Updates"
+msgstr ""
 
 msgid "Admin / User / Overview / Domain Edit"
 msgstr "Admin / Bruger / Oversigt / Domæne Redigering"
@@ -1120,8 +1129,8 @@ msgstr "Tildel eksisterende SQL bruger"
 msgid "Assign group"
 msgstr "Tildel gruppe"
 
-msgid "At first you must create a database!"
-msgstr "Først skal du oprette en database!"
+msgid "At first you must create a database which have at least one SQL user."
+msgstr ""
 
 msgid "Auto email template data updated!"
 msgstr "Auto Email skabelon, data er opdateret"
@@ -1143,9 +1152,6 @@ msgstr "Auto-responder planlagt til opdatering."
 
 msgid "Available"
 msgstr "Tilgængelig"
-
-msgid "Available i-MSCP updates"
-msgstr "Tilgænglige i-MSCP opdateringer"
 
 msgid "Available software"
 msgstr "Tilgængelig software"
@@ -1214,6 +1220,9 @@ msgstr "Bulk-handlinger"
 msgid "By"
 msgstr "Af"
 
+msgid "CA bundle"
+msgstr ""
+
 msgid "CGI"
 msgstr "CGI"
 
@@ -1264,18 +1273,6 @@ msgstr "Certifikat"
 
 msgid "Certificate data"
 msgstr "Certifikat data"
-
-msgid "Certificate doesn't match key."
-msgstr "Certifikat passer ikke til nøgle."
-
-msgid "Certificate for"
-msgstr "Certifikat for"
-
-msgid "Certificate key"
-msgstr "Certifikat nøgle"
-
-msgid "Certificate successfully scheduled for addition or modification."
-msgstr "Certifikat planlagt til tilføjelse eller ændring."
 
 msgid "Certificate successfully scheduled for deletion."
 msgstr "Certifikat planlagt til sletning."
@@ -1393,8 +1390,8 @@ msgstr "Klient / Domæner / Rediger subdomæne"
 msgid "Client / Domains / PHP Settings"
 msgstr "Klient / Domæner / PHP Indstillinger"
 
-msgid "Client / Domains / SSL Certificates"
-msgstr "Klient / Domæner / SSL Certifikater"
+msgid "Client / Domains / SSL Certificate"
+msgstr ""
 
 msgid "Client / Email / Add Email Account"
 msgstr "Klient / E-mail / Tilføj E-mail Konto"
@@ -1526,6 +1523,9 @@ msgstr "Luk ticket"
 msgid "Closed tickets"
 msgstr "Lukkede Support sager"
 
+msgid "Common name"
+msgstr ""
+
 msgid "Company"
 msgstr "Firma"
 
@@ -1558,9 +1558,6 @@ msgstr "Kunne ikke uploade filen. Fil ikke fundet."
 msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "Kunne ikke uploade filen. Max. upload filstørrelse (%1$d MB) er nået."
-
-msgid "Couldn't check for updates. Website not reachable."
-msgstr "Kunne ikke tjekke for opdateringer. Website ikke tilgængelig"
 
 msgid "Count default email addresses"
 msgstr "Tæl standard e-mail adresser"
@@ -1731,7 +1728,7 @@ msgid "Database name is too long."
 msgstr "Database navn er for langt."
 
 msgid "Database name is unavailable."
-msgstr ""
+msgstr "Database navn er ikke tilgængelig."
 
 msgid "Database prefix"
 msgstr "Database prefix"
@@ -1745,14 +1742,8 @@ msgstr "Database kræves"
 msgid "Database update"
 msgstr "Database opdatering"
 
-msgid "Database update is available"
-msgstr "Database opdatering er tilgængelig"
-
 msgid "Database usage"
 msgstr "Database forbrug"
-
-msgid "Database user list is empty!"
-msgstr "Database bruger liste er tom!"
 
 msgid "Database users"
 msgstr "Databasebrugere"
@@ -1951,7 +1942,7 @@ msgstr "Domæne"
 
 #, php-format
 msgid "Domain %s is unavailable."
-msgstr ""
+msgstr "Domæne %s er ikke tilgængelig."
 
 msgid "Domain IP"
 msgstr "Domæne IP Adresse"
@@ -2047,7 +2038,7 @@ msgid "Domain name"
 msgstr "Domæne navn"
 
 msgid "Domain name (ASCII form) cannot be greater than 255 characters."
-msgstr ""
+msgstr "Domænenavn (ASCII form) kan ikke være længere end 255 karakterer."
 
 msgid "Domain name cannot be empty."
 msgstr "Domænenavn kan ikke være tomt."
@@ -2064,7 +2055,7 @@ msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr "Domænenavn label '%s' indeholder et ugyldigt tegn: %s"
 
 msgid "Domain name labels cannot be greater than 63 characters."
-msgstr ""
+msgstr "Domænenavn labels kan ikke være længere end 63 karakterer."
 
 msgid "Domain name labels cannot start nor end with hyphen."
 msgstr "Domænenavn labels kan ikke starte eller slutte med bindestreg."
@@ -2112,6 +2103,15 @@ msgstr "Færdig"
 
 msgid "Download"
 msgstr "Download"
+
+msgid "Download TAR"
+msgstr ""
+
+msgid "Download ZIP"
+msgstr ""
+
+msgid "Download links"
+msgstr ""
 
 msgid "Download the archives stored in this directory"
 msgstr "Download arkivfilerne gemt i denne mappe"
@@ -2273,9 +2273,6 @@ msgstr "Aktivere SSL"
 
 msgid "Enable auto responder"
 msgstr "Aktiver auto responder"
-
-msgid "Enable update in the settings page."
-msgstr "Aktiver opdaterer på indstillings siden."
 
 msgid "Enabled"
 msgstr "Aktiveret"
@@ -2527,9 +2524,6 @@ msgstr "Lav adgangskode"
 msgid "Get a new image"
 msgstr "Anskaf et nyt billede"
 
-msgid "Get it on"
-msgstr "Komme igang"
-
 msgid "GiB"
 msgstr "GiB"
 
@@ -2764,7 +2758,7 @@ msgid "Incorrect username length or syntax."
 msgstr "Forkert brugernavn længde eller syntaks."
 
 msgid "Info Unavailable"
-msgstr ""
+msgstr "Info Ikke Tilgængelig"
 
 msgid "Install"
 msgstr "Installér"
@@ -2811,14 +2805,14 @@ msgstr "Installation af uploadet pakke. Opdater venligst denne side."
 msgid "Instructions to download today's backup"
 msgstr "Instruktion om download af dagen's backup"
 
-msgid "Intermediate certificate"
-msgstr "Foreløbig certifikat"
-
 msgid "Internal Server Error"
 msgstr "Intern Serverfejl"
 
 msgid "Internationalization"
 msgstr "Internationalisering"
+
+msgid "Invalid CA Bundle."
+msgstr ""
 
 msgid "Invalid CNAME"
 msgstr "Ugyldig CNAME"
@@ -2843,16 +2837,13 @@ msgstr "Ugyldig NAVN."
 
 #, php-format
 msgid "Invalid SQL user host: %s"
-msgstr ""
+msgstr "Ugyldig SQL bruger host: %s"
 
 msgid "Invalid TXT data"
 msgstr "Ugyldig TXT data"
 
 msgid "Invalid URL."
 msgstr "Ugyldig URL."
-
-msgid "Invalid certificate."
-msgstr "Ugyldig certifikat"
 
 msgid "Invalid domain name."
 msgstr "Ugyldig domæne navn."
@@ -2869,17 +2860,14 @@ msgstr "Ugyldig home bibliotek"
 msgid "Invalid htaccess group name."
 msgstr "Ugyldigt htaccess gruppenavn."
 
-msgid "Invalid intermediate certificate."
-msgstr "Ugyldigt foreløbig certifikat."
-
-msgid "Invalid key or password."
-msgstr "Ugyldig nøgle eller password."
-
 msgid "Invalid menu order."
 msgstr "Ugyldig menu rækkefølge."
 
 msgid "Invalid name."
 msgstr "Ugyldig navn."
+
+msgid "Invalid private key or passphrase"
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Ugyldig mål."
@@ -3224,9 +3212,6 @@ msgstr "Ny SQL bruger data"
 msgid "New alias order for {CUSTOMER}"
 msgstr "Ny alias ordrer for {CUSTOMER}"
 
-msgid "New i-MSCP update is available"
-msgstr "Nye i-MSCP opdatering er tilgængelig"
-
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Ny adgangskode er ikke blevet sendt. Spørg din administrator."
 
@@ -3257,8 +3242,8 @@ msgstr "Ingen anti-rootkits logs"
 msgid "No available"
 msgstr "Ikke tilgængelig"
 
-msgid "No certificate found."
-msgstr "Ingen certifikat fundet."
+msgid "No certificate found"
+msgstr ""
 
 msgid "No custom menu found."
 msgstr "Ingen brugerdefineret menu fundet."
@@ -3295,9 +3280,6 @@ msgstr "Ingen sprog fundet."
 
 msgid "No logs found."
 msgstr "Ingen logs fundet."
-
-msgid "No new i-MSCP updates available"
-msgstr "Ingen nye i-MSCP opdateringer tilgængelig"
 
 msgid "No records found matching the search criteria."
 msgstr "Har ikke fundet records, der matcher søgekriterierne."
@@ -3337,6 +3319,12 @@ msgstr "Ingen statistikker fundet for den givne periode. Prøv en anden periode.
 
 msgid "No unassigned users were found in the database."
 msgstr "Ingen tildelte brugere blev fundet i databasen."
+
+msgid "No update available"
+msgstr ""
+
+msgid "No update info available"
+msgstr ""
 
 msgid "No user found."
 msgstr "Ingen brugere fundet."
@@ -3588,7 +3576,7 @@ msgid "Password is shorter than %s characters."
 msgstr "Password er kortere end %s tegn."
 
 msgid "Password is too long."
-msgstr ""
+msgstr "Password er for langt."
 
 msgid "Password length"
 msgstr "Adgangskode længde"
@@ -3660,7 +3648,7 @@ msgid ""
 msgstr "Kontakt venligst administratoren!<br />Spørg ham om tilladelser til at bruge denne pakke.<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
 
 msgid "Please don't use special chars such as '@, $, %...' in password."
-msgstr ""
+msgstr "Bruge ikke specielle tegn som \"@, $, %...\" i password."
 
 msgid "Please enter a name for the protected area."
 msgstr "Indtast et navn for det beskyttede område."
@@ -3669,10 +3657,10 @@ msgid "Please enter a password."
 msgstr "Angiv et password."
 
 msgid "Please enter an SQL user host."
-msgstr ""
+msgstr "Indtast en SQL bruger host."
 
 msgid "Please enter an username."
-msgstr ""
+msgstr "Indtast venligst et brugernavn."
 
 msgid "Please enter protected area path"
 msgstr "Indtast sti til beskyttet område"
@@ -3714,6 +3702,46 @@ msgid "Plugin"
 msgstr "Plugin"
 
 #, php-format
+msgid "Plugin %s activated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be changed."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be deleted."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be disabled."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be enabled."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be updated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s changed."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s deactivated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s deleted."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s installed."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s is already activated."
 msgstr "Plugin %s er allerede aktiveret."
 
@@ -3730,64 +3758,52 @@ msgid "Plugin %s is already uninstalled."
 msgstr "Plugin %s er allerede afinstalleret."
 
 #, php-format
+msgid "Plugin %s is not installable."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s is not uninstallable."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s is protected."
 msgstr "Plugin %s er beskyttet."
 
 #, php-format
-msgid "Plugin %s successfully activated."
-msgstr "Plugin %s succesfuldt aktiveret."
+msgid "Plugin %s protected."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully changed."
-msgstr "Plugin %s succesfuldt ændret."
+msgid "Plugin %s scheduled for activation."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully deactivated."
-msgstr "Plugin %s succesfuldt deaktiveret."
+msgid "Plugin %s scheduled for change."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully deleted."
-msgstr "Plugin %s succesfuldt slettet."
+msgid "Plugin %s scheduled for deactivation."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully installed."
-msgstr "Plugin %s succesfuldt installeret."
+msgid "Plugin %s scheduled for installation."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully protected."
-msgstr "Plugin %s succesfuldt beskyttet."
+msgid "Plugin %s scheduled for uninstallation."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully scheduled for activation."
-msgstr "Plugin %s succesfuldt planlagt til aktivering."
+msgid "Plugin %s scheduled for update."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully scheduled for change."
-msgstr "Plugin %s succesfuldt planlagt til ændring."
+msgid "Plugin %s uninstalled."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully scheduled for deactivation."
-msgstr "Plugin %s succesfuldt planlagt til deaktivering."
-
-#, php-format
-msgid "Plugin %s successfully scheduled for installation."
-msgstr "Plugin %s succesfuldt planlagt til installation."
-
-#, php-format
-msgid "Plugin %s successfully scheduled for uninstallation."
-msgstr "Plugin %s succesfuldt planlagt til afinstallering."
-
-#, php-format
-msgid "Plugin %s successfully scheduled for update."
-msgstr "Plugin %s succesfuldt planlagt til opdatering."
-
-#, php-format
-msgid "Plugin %s successfully uninstalled."
-msgstr "Plugin %s succesfuldt afinstalleret."
-
-#, php-format
-msgid "Plugin %s successfully updated."
-msgstr "Plugin %s succesfuldt opdateret."
+msgid "Plugin %s updated."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -3796,16 +3812,8 @@ msgid ""
 msgstr "Plugin Manager: Nedgradering af plugin er ikke understøttet. Du skal opdatere %s plugin."
 
 #, php-format
-msgid "Plugin Manager: Unable to activate the %s plugin: %s"
-msgstr "Plugin Manager: Kunne ikke aktivere %s plugin: %s"
-
-#, php-format
 msgid "Plugin Manager: Unable to change the %s plugin: %s"
 msgstr "Plugin Manager: Kan ikke ændre %s plugin: %s"
-
-#, php-format
-msgid "Plugin Manager: Unable to deactivate the %s plugin: %s"
-msgstr "Plugin Manager: Kan ikke deaktivere %s plugin: %s"
 
 #, php-format
 msgid ""
@@ -3814,24 +3822,8 @@ msgid ""
 msgstr "Plugin Manager: Kunne ikke slette %s plugin filer. Venligst fjern dem manuelt."
 
 #, php-format
-msgid "Plugin Manager: Unable to delete the %s plugin: %s"
-msgstr "Plugin Manager: Kunne ikke slette %s plugin: %s"
-
-#, php-format
-msgid "Plugin Manager: Unable to install the %s plugin: %s"
-msgstr "Plugin Manager: Kan ikke installere %s plugin: %s"
-
-#, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
 msgstr "Plugin Manager: Er ikke i stand til at indlæse plugin %s"
-
-#, php-format
-msgid "Plugin Manager: Unable to protect the %s plugin: %s"
-msgstr "Plugin Manager: Ikke i stand til at beskytte %s plugin: %s"
-
-#, php-format
-msgid "Plugin Manager: Unable to uninstall the %s plugin: %s"
-msgstr "Plugin Manager: Kan ikke afinstallere %s plugin: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -3858,14 +3850,14 @@ msgstr "Plugin element fejl"
 msgid "Plugin list is empty."
 msgstr "Plugin listen er tom."
 
-msgid "Plugin list successfully updated."
-msgstr "Plugin listen succesfuldt opdateret."
+msgid "Plugin list updated."
+msgstr ""
 
 msgid "Plugin management"
 msgstr "Plugin administration"
 
-msgid "Plugin successfully uploaded."
-msgstr "Plugin succesfuldt uploaded."
+msgid "Plugin uploaded."
+msgstr ""
 
 msgid "Plugins Upload"
 msgstr "Plugins Upload"
@@ -3905,6 +3897,15 @@ msgstr "Priotet skal være et tal."
 #, php-format
 msgid "Priority: %s\n"
 msgstr "Prioritet: %s\n"
+
+msgid "Private key"
+msgstr ""
+
+msgid "Private key field cannot be empty"
+msgstr ""
+
+msgid "Private key passphrase if any"
+msgstr ""
 
 msgid "Process update"
 msgstr "Process opdatering"
@@ -3991,6 +3992,15 @@ msgstr "Relativ vægt"
 
 msgid "Relative weight must be a number."
 msgstr "Relativ vægt skal være et tal."
+
+msgid "Release date"
+msgstr ""
+
+msgid "Release description"
+msgstr ""
+
+msgid "Release version"
+msgstr ""
 
 msgid "Remote Web software repository"
 msgstr "Ekstern Web softwarearkiv"
@@ -4261,10 +4271,10 @@ msgstr "SQL bruger"
 
 #, php-format
 msgid "SQL user %s already exits."
-msgstr ""
+msgstr "SQL bruger %s er allerede i brug."
 
 msgid "SQL user host"
-msgstr ""
+msgstr "SQL brugere host"
 
 msgid "SQL user limit"
 msgstr "SQL bruger grænse"
@@ -4293,11 +4303,17 @@ msgstr "SQL bruger tilføjet."
 msgid "SQL users"
 msgstr "SQL brugere"
 
-msgid "SSL certificates"
-msgstr "SSL certifikater"
+msgid "SSL Certificate successfully scheduled for addition or update."
+msgstr ""
 
-msgid "SSL feature is disabled. You cannot add / change certificates"
-msgstr "SSL funktion er deaktiveret. Du kan ikke tilføje / ændre certifikat"
+msgid "SSL certificate"
+msgstr ""
+
+msgid "SSL feature is not available."
+msgstr ""
+
+msgid "SSL feature is not available. You can only view your certificate"
+msgstr ""
 
 msgid "Save"
 msgstr "Gem"
@@ -4446,6 +4462,9 @@ msgstr "Vis %s poster pr side"
 msgid "Show HTML output compression size comment"
 msgstr "Vis HTML output komprimeringsstørrelse kommentar"
 
+msgid "Show SSL certificate"
+msgstr ""
+
 msgid ""
 "Show all errors, except for notices and coding standards warnings (Default)"
 msgstr "Vis alle fejl, undtagen for bekendtgørelser og kodestandard advarslerne (Standard)"
@@ -4454,6 +4473,9 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Vis alle fejl, advarsler og meddelelser, herunder kodestandarder (Udvikling)"
+
+msgid "Show certificate"
+msgstr ""
 
 msgid "Show detailed statistics for this domain"
 msgstr "Vis detaljeret statistik for dette domæne"
@@ -4573,7 +4595,7 @@ msgid ""
 msgstr "Spam Filter: Setup en DNS MX-record til relay mail af hele dit domæne, herunder underdomæner, men bevarer vores server som endelig mailhost."
 
 msgid "Sql user successfully deleted."
-msgstr ""
+msgstr "SQL bruger blev slettet med succes."
 
 msgid "Start installation"
 msgstr "Start installation"
@@ -4792,6 +4814,12 @@ msgstr "Den IP-adresse, du forsøger at fjerne er tildelt en forhandler."
 
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "`Enter` tasten er deaktiveret på grund af ydeevnen."
+
+msgid "The certificate doesn't match with the private key."
+msgstr ""
+
+msgid "The certificate field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
@@ -5034,8 +5062,16 @@ msgid "URL to this admin panel"
 msgstr "URL til dette admin panel"
 
 #, php-format
+msgid "Unable to activate the %s plugin: %s"
+msgstr ""
+
+#, php-format
 msgid "Unable to backup %s plugin directory."
 msgstr "Kan ikke sikkerhedskopiere %s plugin mappe."
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5047,6 +5083,14 @@ msgstr "Kunne ikke oprette '%s' mappe for sprog-fil."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Kan ikke skabe 'LC_MESSAGES' mappe for sprog-fil."
+
+#, php-format
+msgid "Unable to deactivate the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to delete the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to extract plugin archive."
 msgstr "Kan ikke udpakke plugin arkiv."
@@ -5068,11 +5112,22 @@ msgstr "Kan ikke få statistik for filen %s."
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "Kan ikke hente IP adresse listen. Venligst løs dette problem."
 
+msgid "Unable to get update info from Github"
+msgstr ""
+
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to move file."
 msgstr "Kan ikke flytte fil."
 
 msgid "Unable to open archive."
 msgstr "Kan ikke åbne arkivet."
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "Kan ikke læse web softwarearkiv index-fil."
@@ -5105,6 +5160,20 @@ msgid ""
 "Unable to schedule deletion of the customer account. Please consult admin "
 "logs or your mail for more information."
 msgstr "Kan ikke planlægge sletning af kundens konto. Venligst konsultere admin logs eller din e-mail for mere information."
+
+msgid "Unable to set sslallowselfsigned option"
+msgstr ""
+
+msgid "Unable to set sslverifypeer option"
+msgstr ""
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5184,14 +5253,8 @@ msgstr "Opdater Plugins"
 msgid "Update SQL user password"
 msgstr "Opdater SQL bruger password"
 
-msgid "Update checking is disabled."
-msgstr "Opdaterings kontrol er deaktiveret."
-
 msgid "Update data"
 msgstr "Opdater data"
-
-msgid "Update details"
-msgstr "Opdater detaljer"
 
 msgid "Update from Web software repository"
 msgstr "Opdater fra Web softwarearkiv"
@@ -5205,13 +5268,16 @@ msgstr "Opdater hosting plan"
 msgid "Update in progress..."
 msgstr "Opdatering i gang..."
 
+msgid "Update info"
+msgstr ""
+
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
 msgstr "Opdatering af Web softwarearkiv indeks er blevet afbrudt. Manglende eller tomme felter."
 
 msgid "Update password"
-msgstr ""
+msgstr "Opdater password"
 
 msgid "Updates"
 msgstr "Opdateringer"
@@ -5320,7 +5386,7 @@ msgid "Username and password for application login"
 msgstr "Brugernavn og adgangskode for program login"
 
 msgid "Username is too long."
-msgstr ""
+msgstr "Brugernavn er for langt."
 
 msgid "Users"
 msgstr "Brugere"
@@ -5357,17 +5423,11 @@ msgstr "Meget høj"
 msgid "View"
 msgstr "Se"
 
-msgid "View SSL certificate"
-msgstr "Se SSL certifikat"
-
 msgid "View Support Ticket"
 msgstr "Se Support Ticket"
 
 msgid "View aliases"
 msgstr "Vis aliaser"
-
-msgid "View certificates"
-msgstr "Se certifikater"
 
 msgid "View hosting plan"
 msgstr "Vis hosting plan"
@@ -5445,11 +5505,11 @@ msgstr "Wildcard: Setup en DNS MX-record til at videresende post til ikke-eksist
 
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed in username."
-msgstr ""
+msgstr "Jokertegn såsom %% og ? er ikke tilladt i brugernavn."
 
 #, php-format
 msgid "Wildcards such as %% and are not allowed."
-msgstr ""
+msgstr "Jokertegn såsom %% og ? er ikke tilladt."
 
 msgid "Wrong IP address."
 msgstr "Forkert IP-adresse."
@@ -5783,9 +5843,18 @@ msgid "Your account has expired. Please renew your subscription."
 msgstr "Din konto er udløbet. Venligst forny dit abonnement."
 
 msgid ""
-"Your account is currently in maintenance or disabled. Please, contact your "
-"reseller."
-msgstr "Din konto er i øjeblikket under vedligeholdelse eller deaktiveret. Kontakt venligst din forhandler."
+"Your account is currently under maintenance or disabled. Please, contact "
+"your reseller."
+msgstr ""
+
+msgid "Your certificate is expired"
+msgstr ""
+
+msgid "Your certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "Your certificate is not valid."
+msgstr ""
 
 msgid "Your consumption"
 msgstr "Dit forbrug"
@@ -5949,6 +6018,9 @@ msgstr "I-MSCP plugin opbevaring"
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP opdateringer"
+
+msgid "i-MSCP version update checking is disabled"
+msgstr ""
 
 msgid "installed"
 msgstr "installeret"

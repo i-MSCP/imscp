@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-27 02:06+0100\n"
-"PO-Revision-Date: 2014-03-27 01:08+0000\n"
+"POT-Creation-Date: 2014-05-23 18:59+0200\n"
+"PO-Revision-Date: 2014-05-23 17:02+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -525,8 +525,17 @@ msgstr "<b>%s</b> ma adres IP, który nie może być zarządzany przez doceloweg
 msgid "A PHP extension stopped the file upload."
 msgstr "Rozszerzenie PHP zaprzestało przesyłania pliku."
 
+msgid "A certificate in your CA bundle is missing or invalid."
+msgstr ""
+
+msgid "A database update is available"
+msgstr ""
+
 msgid "A hosting plan with same name already exists."
 msgstr "Plan hostingowy o podanej nazwie już istnieje."
+
+msgid "A new i-MSCP version is available"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Dostęp do statysty Twojej domeny przez interfejs webowy."
@@ -806,8 +815,8 @@ msgstr "Admin / Narzędzia Systemowe / Ustawienia konserwacji"
 msgid "Admin / System Tools / System Information"
 msgstr "Admin / Narzędzia Systemowe / Informacje o Systemie"
 
-msgid "Admin / System Tools / Updates"
-msgstr "Admin / Narzędzia Systemowe / Aktualizacje"
+msgid "Admin / System Tools / i-MSCP Updates"
+msgstr ""
 
 msgid "Admin / User / Overview / Domain Edit"
 msgstr "Admin / Użytkownik / Przegląd / Edycja Domeny"
@@ -1121,8 +1130,8 @@ msgstr "Przypisz isniejącego użytkownika SQL"
 msgid "Assign group"
 msgstr "Przypisz grupę"
 
-msgid "At first you must create a database!"
-msgstr "Najpierw należy utworzyć bazę danych!"
+msgid "At first you must create a database which have at least one SQL user."
+msgstr ""
 
 msgid "Auto email template data updated!"
 msgstr "Szablon automatycznej poczty zaktualizowany!"
@@ -1144,9 +1153,6 @@ msgstr "Auto-responder został zaplanowany do aktualizacji."
 
 msgid "Available"
 msgstr "Dostępne"
-
-msgid "Available i-MSCP updates"
-msgstr "Dostępne aktualizacje i-MSCP"
 
 msgid "Available software"
 msgstr "Dostępne oprogramowanie"
@@ -1215,6 +1221,9 @@ msgstr "Akcje hurtowe"
 msgid "By"
 msgstr "Przez"
 
+msgid "CA bundle"
+msgstr ""
+
 msgid "CGI"
 msgstr "CGI"
 
@@ -1265,18 +1274,6 @@ msgstr "Certyfikat"
 
 msgid "Certificate data"
 msgstr "Dane certyfikatu"
-
-msgid "Certificate doesn't match key."
-msgstr "Certyfikat nie zgadza się z kluczem."
-
-msgid "Certificate for"
-msgstr "Certyfikat dla"
-
-msgid "Certificate key"
-msgstr "Klucz certyfikatu"
-
-msgid "Certificate successfully scheduled for addition or modification."
-msgstr "Certyfikat poprawnie zakolejkowany do dodania lub modyfikacji."
 
 msgid "Certificate successfully scheduled for deletion."
 msgstr ""
@@ -1394,8 +1391,8 @@ msgstr "Klient/ Domeny / Edytuj  Subdomenę"
 msgid "Client / Domains / PHP Settings"
 msgstr "Client / Domeny / Ustawienia PHP"
 
-msgid "Client / Domains / SSL Certificates"
-msgstr "Klient / Domeny / Certyfikaty SSL"
+msgid "Client / Domains / SSL Certificate"
+msgstr ""
 
 msgid "Client / Email / Add Email Account"
 msgstr "Klient / Email / Dodaj konto email"
@@ -1527,6 +1524,9 @@ msgstr "Zamknij zgłoszenie"
 msgid "Closed tickets"
 msgstr "Zamknięte zgłoszenia"
 
+msgid "Common name"
+msgstr ""
+
 msgid "Company"
 msgstr "Firma"
 
@@ -1559,9 +1559,6 @@ msgstr "Nie można wysłać pliku. Nie znaleziono pliku."
 msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr ""
-
-msgid "Couldn't check for updates. Website not reachable."
-msgstr "Nie można sprawdzić aktualizacji. Strona nie dostępna."
 
 msgid "Count default email addresses"
 msgstr "Licz domyślne adresy email"
@@ -1746,14 +1743,8 @@ msgstr "Wymagana baza danych."
 msgid "Database update"
 msgstr "Aktualizacja Bazy Danych"
 
-msgid "Database update is available"
-msgstr "Jest dostępna aktualizacja bazy danych"
-
 msgid "Database usage"
 msgstr "Użycie bazy danych."
-
-msgid "Database user list is empty!"
-msgstr "Lista użytkowników jest pusta!"
 
 msgid "Database users"
 msgstr "Użytkownicy baz danych"
@@ -2114,6 +2105,15 @@ msgstr "Zakończono"
 msgid "Download"
 msgstr "Pobierz"
 
+msgid "Download TAR"
+msgstr ""
+
+msgid "Download ZIP"
+msgstr ""
+
+msgid "Download links"
+msgstr ""
+
 msgid "Download the archives stored in this directory"
 msgstr ""
 
@@ -2274,9 +2274,6 @@ msgstr "Włącz SSL"
 
 msgid "Enable auto responder"
 msgstr "Włącz autoresponder"
-
-msgid "Enable update in the settings page."
-msgstr "Włączanie aktualizacji na stronie ustawień."
 
 msgid "Enabled"
 msgstr "Włączone"
@@ -2527,9 +2524,6 @@ msgstr "Generuj hasło"
 
 msgid "Get a new image"
 msgstr "Pobierz nowy obrazek"
-
-msgid "Get it on"
-msgstr ""
 
 msgid "GiB"
 msgstr "GiB"
@@ -2812,14 +2806,14 @@ msgstr ""
 msgid "Instructions to download today's backup"
 msgstr "Instrukcja pobrania dzisiejszej kopii bezpieczeństwa"
 
-msgid "Intermediate certificate"
-msgstr ""
-
 msgid "Internal Server Error"
 msgstr "Wewnętrzny bład serwera"
 
 msgid "Internationalization"
 msgstr "Tłumaczenie"
+
+msgid "Invalid CA Bundle."
+msgstr ""
 
 msgid "Invalid CNAME"
 msgstr ""
@@ -2852,9 +2846,6 @@ msgstr ""
 msgid "Invalid URL."
 msgstr "Niepoprawny URL."
 
-msgid "Invalid certificate."
-msgstr "Niepoprawny certyfikat."
-
 msgid "Invalid domain name."
 msgstr "Niepoprawna nazwa domeny."
 
@@ -2870,17 +2861,14 @@ msgstr "Nieprawidłowy katalog główny."
 msgid "Invalid htaccess group name."
 msgstr "Niepoprawna grupa htaccess"
 
-msgid "Invalid intermediate certificate."
-msgstr "Nieprawidłowy certyfikat pośredni."
-
-msgid "Invalid key or password."
-msgstr "Niepoprawny klucz lub hasło."
-
 msgid "Invalid menu order."
 msgstr "Niepoprawna kolejność menu"
 
 msgid "Invalid name."
 msgstr "Niepoprawna nazwa"
+
+msgid "Invalid private key or passphrase"
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Niepoprawny cel"
@@ -3225,9 +3213,6 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}"
 msgstr "Nowe zamówienie aliasu dla  {CUSTOMER}"
 
-msgid "New i-MSCP update is available"
-msgstr "Aktualizacja  i-MSCP jest dostępna"
-
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Niestety nowe hasło nie zostało wysłane. Skontaktuj się z administratorem."
 
@@ -3258,8 +3243,8 @@ msgstr ""
 msgid "No available"
 msgstr ""
 
-msgid "No certificate found."
-msgstr "Nie znależiono certyfikatu."
+msgid "No certificate found"
+msgstr ""
 
 msgid "No custom menu found."
 msgstr "Nie znaleziono niestandardowego menu."
@@ -3296,9 +3281,6 @@ msgstr "Nie znaleziono żadnych języków."
 
 msgid "No logs found."
 msgstr "Nie znaleziono logów."
-
-msgid "No new i-MSCP updates available"
-msgstr "Brak aktualizacji i-MSCP"
 
 msgid "No records found matching the search criteria."
 msgstr ""
@@ -3337,6 +3319,12 @@ msgid "No statistics found for the given period. Try another period."
 msgstr "Brak statystyk w podanym przedziale czasowym. Wybierz inny okres."
 
 msgid "No unassigned users were found in the database."
+msgstr ""
+
+msgid "No update available"
+msgstr ""
+
+msgid "No update info available"
 msgstr ""
 
 msgid "No user found."
@@ -3715,6 +3703,46 @@ msgid "Plugin"
 msgstr "Rozszerzenie"
 
 #, php-format
+msgid "Plugin %s activated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be changed."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be deleted."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be disabled."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be enabled."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be updated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s changed."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s deactivated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s deleted."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s installed."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s is already activated."
 msgstr "Rozszerzenie %s jest aktywne."
 
@@ -3731,63 +3759,51 @@ msgid "Plugin %s is already uninstalled."
 msgstr ""
 
 #, php-format
+msgid "Plugin %s is not installable."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s is not uninstallable."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s is protected."
 msgstr "Rozszerzenie %s jest zabezpieczone."
 
 #, php-format
-msgid "Plugin %s successfully activated."
+msgid "Plugin %s protected."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully changed."
+msgid "Plugin %s scheduled for activation."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully deactivated."
+msgid "Plugin %s scheduled for change."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully deleted."
+msgid "Plugin %s scheduled for deactivation."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully installed."
+msgid "Plugin %s scheduled for installation."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully protected."
+msgid "Plugin %s scheduled for uninstallation."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully scheduled for activation."
+msgid "Plugin %s scheduled for update."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully scheduled for change."
+msgid "Plugin %s uninstalled."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully scheduled for deactivation."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s successfully scheduled for installation."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s successfully scheduled for uninstallation."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s successfully scheduled for update."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s successfully uninstalled."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s successfully updated."
+msgid "Plugin %s updated."
 msgstr ""
 
 #, php-format
@@ -3797,15 +3813,7 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Unable to activate the %s plugin: %s"
-msgstr ""
-
-#, php-format
 msgid "Plugin Manager: Unable to change the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Plugin Manager: Unable to deactivate the %s plugin: %s"
 msgstr ""
 
 #, php-format
@@ -3815,23 +3823,7 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Unable to delete the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Plugin Manager: Unable to install the %s plugin: %s"
-msgstr ""
-
-#, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
-msgstr ""
-
-#, php-format
-msgid "Plugin Manager: Unable to protect the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Plugin Manager: Unable to uninstall the %s plugin: %s"
 msgstr ""
 
 #, php-format
@@ -3859,14 +3851,14 @@ msgstr ""
 msgid "Plugin list is empty."
 msgstr "Lista rozszerzeń jest pusta."
 
-msgid "Plugin list successfully updated."
-msgstr "Lista rozszerzeń została zaktualizowana."
+msgid "Plugin list updated."
+msgstr ""
 
 msgid "Plugin management"
 msgstr ""
 
-msgid "Plugin successfully uploaded."
-msgstr "Rozszerzenie zostało załadowane."
+msgid "Plugin uploaded."
+msgstr ""
 
 msgid "Plugins Upload"
 msgstr "Przesyłanie Rozszerzeń"
@@ -3906,6 +3898,15 @@ msgstr "Priorytet musi być liczbą."
 #, php-format
 msgid "Priority: %s\n"
 msgstr "Priorytet: %s\n"
+
+msgid "Private key"
+msgstr ""
+
+msgid "Private key field cannot be empty"
+msgstr ""
+
+msgid "Private key passphrase if any"
+msgstr ""
 
 msgid "Process update"
 msgstr "Proces aktualizacji"
@@ -3992,6 +3993,15 @@ msgstr "Względna waga"
 
 msgid "Relative weight must be a number."
 msgstr "Względna waga musi być liczbą."
+
+msgid "Release date"
+msgstr ""
+
+msgid "Release description"
+msgstr ""
+
+msgid "Release version"
+msgstr ""
 
 msgid "Remote Web software repository"
 msgstr "Zdalne repozytorium oprogramowania"
@@ -4294,10 +4304,16 @@ msgstr "Użytkownik SQL poprawnie dodany."
 msgid "SQL users"
 msgstr "Użytkownicy SQL"
 
-msgid "SSL certificates"
-msgstr "Certyfikaty SSL"
+msgid "SSL Certificate successfully scheduled for addition or update."
+msgstr ""
 
-msgid "SSL feature is disabled. You cannot add / change certificates"
+msgid "SSL certificate"
+msgstr ""
+
+msgid "SSL feature is not available."
+msgstr ""
+
+msgid "SSL feature is not available. You can only view your certificate"
 msgstr ""
 
 msgid "Save"
@@ -4447,6 +4463,9 @@ msgstr "Wyświetl %s wpisów na stronę"
 msgid "Show HTML output compression size comment"
 msgstr "Pokaż komentarze skompresowanego pliku HTML"
 
+msgid "Show SSL certificate"
+msgstr ""
+
 msgid ""
 "Show all errors, except for notices and coding standards warnings (Default)"
 msgstr "Wyświetl wszystkie błędy, pomijając informacje i ostrzeżenia odnośnie kodowania (Domyślnie)"
@@ -4455,6 +4474,9 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Wyświetl wszystkie błędy, ostrzeżenia i informacje, a także ostrzeżenia odnośnie kodowania (Developer)"
+
+msgid "Show certificate"
+msgstr ""
 
 msgid "Show detailed statistics for this domain"
 msgstr "Pokaż szczegółowe statystyki dla tej domeny"
@@ -4794,6 +4816,12 @@ msgstr "IP, który próbujesz usunąć jest przypisany do resellera."
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "Klawisz Enter jest wyłączony."
 
+msgid "The certificate doesn't match with the private key."
+msgstr ""
+
+msgid "The certificate field cannot be empty."
+msgstr ""
+
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
 msgstr "Folder %s nie istnieje. Najpierw go utwórz."
@@ -5035,8 +5063,16 @@ msgid "URL to this admin panel"
 msgstr "URL do tego panelu administratora"
 
 #, php-format
+msgid "Unable to activate the %s plugin: %s"
+msgstr ""
+
+#, php-format
 msgid "Unable to backup %s plugin directory."
 msgstr "Nie można wykonać kopii katalogu rozszerzenia %s."
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5048,6 +5084,14 @@ msgstr "Nie udało się stworzyć katalogu '%s' dla pliku."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Nie udało się stworzyć katalogu  'LC_MESSAGES' dla pliku z tłumaczeniem."
+
+#, php-format
+msgid "Unable to deactivate the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to delete the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to extract plugin archive."
 msgstr "Nie można rozpakować archiwum rozszerzenia."
@@ -5069,11 +5113,22 @@ msgstr "Nie udało się pobrać statystyk dla %s. "
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr ""
 
+msgid "Unable to get update info from Github"
+msgstr ""
+
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to move file."
 msgstr "Nie udało się przenieść pliku."
 
 msgid "Unable to open archive."
 msgstr "Nie można otworzyć archiwum."
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr ""
@@ -5105,6 +5160,20 @@ msgstr ""
 msgid ""
 "Unable to schedule deletion of the customer account. Please consult admin "
 "logs or your mail for more information."
+msgstr ""
+
+msgid "Unable to set sslallowselfsigned option"
+msgstr ""
+
+msgid "Unable to set sslverifypeer option"
+msgstr ""
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
 msgstr ""
 
 #, php-format
@@ -5185,14 +5254,8 @@ msgstr "Aktualizuj rozszerzenia"
 msgid "Update SQL user password"
 msgstr "Zmień hasło użytkownika bazy SQL"
 
-msgid "Update checking is disabled."
-msgstr "Sprawdzanie aktualizacji jest wyłączone."
-
 msgid "Update data"
 msgstr "Aktualizuj dane"
-
-msgid "Update details"
-msgstr "Szczegóły aktualizacji"
 
 msgid "Update from Web software repository"
 msgstr "Zaktualizuj z repozytorium oprogramowania"
@@ -5205,6 +5268,9 @@ msgstr "Aktualizuj plan hostingowy"
 
 msgid "Update in progress..."
 msgstr "Aktualizacja w toku..."
+
+msgid "Update info"
+msgstr ""
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5358,17 +5424,11 @@ msgstr "Bardzo wysoki"
 msgid "View"
 msgstr "Przeglądaj"
 
-msgid "View SSL certificate"
-msgstr "Zobacz certyfikat SSL"
-
 msgid "View Support Ticket"
 msgstr "Zobacz zgłoszenie"
 
 msgid "View aliases"
 msgstr "Przeglądaj aliasy"
-
-msgid "View certificates"
-msgstr "Zobacz certyfikaty"
 
 msgid "View hosting plan"
 msgstr "Pokaż plan hostingowy"
@@ -5784,8 +5844,17 @@ msgid "Your account has expired. Please renew your subscription."
 msgstr "Twoje konto wygasło. Odnów je."
 
 msgid ""
-"Your account is currently in maintenance or disabled. Please, contact your "
-"reseller."
+"Your account is currently under maintenance or disabled. Please, contact "
+"your reseller."
+msgstr ""
+
+msgid "Your certificate is expired"
+msgstr ""
+
+msgid "Your certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "Your certificate is not valid."
 msgstr ""
 
 msgid "Your consumption"
@@ -5950,6 +6019,9 @@ msgstr "i-MSCP dodatki i rozszerzenia"
 
 msgid "i-MSCP updates"
 msgstr "Aktualizacje i-MSCP"
+
+msgid "i-MSCP version update checking is disabled"
+msgstr ""
 
 msgid "installed"
 msgstr "zainstalowany"
