@@ -378,7 +378,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
 
 			if ($stmt->rowCount()) {
-				return sprintf('ALTER IGNORE TABLE %s DROP %s', quoteIdentifier($table), quoteIdentifier($column));
+				return sprintf('ALTER IGNORE TABLE %s DROP %s', $table, quoteIdentifier($column));
 			}
 		} catch (iMSCP_Exception_Database $e) { }
 
@@ -402,7 +402,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		try {
 			$table = quoteIdentifier($table);
 			$indexType = strtoupper($indexType);
-			$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", ($indexName));
+			$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
 
 			if (!$stmt->rowCount()) {
 				if (is_array($columns)) {
@@ -437,13 +437,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		try {
 			$table = quoteIdentifier($table);
-
-
 			$stmt = exec_query("SHOW INDEX FROM $table WHERE COLUMN_NAME = ?", $column);
 
 			if ($stmt->rowCount()) {
 				while ($row = $stmt->rowCount(PDO::FETCH_ASSOC)) {
-					$sqlUpd[] = sprintf('ALTER IGNORE TABLE %s DROP INDEX', $table, $row['KEY_NAME']);
+					$sqlUpd[] = sprintf(
+						'ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($row['KEY_NAME'])
+					);
 				}
 			}
 		} catch(iMSCP_Exception_Database $e) { }
