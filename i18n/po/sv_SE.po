@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-23 20:55+0200\n"
-"PO-Revision-Date: 2014-05-23 17:02+0000\n"
+"POT-Creation-Date: 2014-05-24 05:09+0200\n"
+"PO-Revision-Date: 2014-05-24 03:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -523,16 +523,16 @@ msgid "A PHP extension stopped the file upload."
 msgstr "A PHP extension stopped the file upload."
 
 msgid "A certificate in your CA bundle is missing or invalid."
-msgstr ""
+msgstr "Ett certifikat från ditt CA bundle saknas eller är ogiltig."
 
 msgid "A database update is available"
-msgstr ""
+msgstr "Databas uppdatering finns tillgänglig."
 
 msgid "A hosting plan with same name already exists."
 msgstr "Ett webbhotell-plan med samma namn finns redan"
 
 msgid "A new i-MSCP version is available"
-msgstr ""
+msgstr "En ny i-MSCP version är tillgänglig"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Tillgång till din domän statistik via webbgränssnittet."
@@ -813,7 +813,7 @@ msgid "Admin / System Tools / System Information"
 msgstr "Admin / System Tools / System Information"
 
 msgid "Admin / System Tools / i-MSCP Updates"
-msgstr ""
+msgstr "Admin / System Tools / i-MSCP Updates"
 
 msgid "Admin / User / Overview / Domain Edit"
 msgstr "Admin / User / Overview / Domain Edit"
@@ -1128,7 +1128,7 @@ msgid "Assign group"
 msgstr "Tilldela grupp"
 
 msgid "At first you must create a database which have at least one SQL user."
-msgstr ""
+msgstr "Först måste du skapa en databas som har minst en SQL-användare."
 
 msgid "Auto email template data updated!"
 msgstr "Automatisk e-postmall uppdaterad!"
@@ -1219,7 +1219,7 @@ msgid "By"
 msgstr "By"
 
 msgid "CA bundle"
-msgstr ""
+msgstr "CA bundle"
 
 msgid "CGI"
 msgstr "CGI"
@@ -1389,7 +1389,7 @@ msgid "Client / Domains / PHP Settings"
 msgstr "Kund / Domainer / PHP inställningar"
 
 msgid "Client / Domains / SSL Certificate"
-msgstr ""
+msgstr "Client / Domains / SSL Certificate"
 
 msgid "Client / Email / Add Email Account"
 msgstr "Kund / Mail / Lägg till mail-konto"
@@ -1522,7 +1522,7 @@ msgid "Closed tickets"
 msgstr "Stängda supportärenden"
 
 msgid "Common name"
-msgstr ""
+msgstr "Nätverksnamn"
 
 msgid "Company"
 msgstr "Företag"
@@ -2103,13 +2103,13 @@ msgid "Download"
 msgstr "Ladda ner"
 
 msgid "Download TAR"
-msgstr ""
+msgstr "Ladda ner TAR"
 
 msgid "Download ZIP"
-msgstr ""
+msgstr "Ladda ner ZIP"
 
 msgid "Download links"
-msgstr ""
+msgstr "Download links"
 
 msgid "Download the archives stored in this directory"
 msgstr "Hämta de filer som finns i den här katalogen"
@@ -2810,7 +2810,7 @@ msgid "Internationalization"
 msgstr "Internationalisering"
 
 msgid "Invalid CA Bundle."
-msgstr ""
+msgstr "Invalid CA Bundle."
 
 msgid "Invalid CNAME"
 msgstr "Ogiltig CNAME"
@@ -2865,7 +2865,7 @@ msgid "Invalid name."
 msgstr "Invalid name."
 
 msgid "Invalid private key or passphrase"
-msgstr ""
+msgstr "Invalid private key or passphrase"
 
 msgid "Invalid target."
 msgstr "Invalid target."
@@ -3241,7 +3241,7 @@ msgid "No available"
 msgstr "Inte tillgänglig"
 
 msgid "No certificate found"
-msgstr ""
+msgstr "No certificate found"
 
 msgid "No custom menu found."
 msgstr "Inget eget meny hittades."
@@ -3319,10 +3319,10 @@ msgid "No unassigned users were found in the database."
 msgstr "No unassigned users were found in the database."
 
 msgid "No update available"
-msgstr ""
+msgstr "Inga uppdateringar tillgängliga."
 
 msgid "No update info available"
-msgstr ""
+msgstr "Inget info om uppdateringar tillgängliga."
 
 msgid "No user found."
 msgstr "Ingen användare hittades."
@@ -3701,43 +3701,43 @@ msgstr "Plugin"
 
 #, php-format
 msgid "Plugin %s activated."
-msgstr ""
+msgstr "Plugin %s activated."
 
 #, php-format
 msgid "Plugin %s cannot be changed."
-msgstr ""
+msgstr "Plugin %s cannot be changed."
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr ""
+msgstr "Plugin %s cannot be deleted."
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
-msgstr ""
+msgstr "Plugin %s cannot be disabled."
 
 #, php-format
 msgid "Plugin %s cannot be enabled."
-msgstr ""
+msgstr "Plugin %s cannot be enabled."
 
 #, php-format
 msgid "Plugin %s cannot be updated."
-msgstr ""
+msgstr "Plugin %s cannot be updated."
 
 #, php-format
 msgid "Plugin %s changed."
-msgstr ""
+msgstr "Plugin %s changed."
 
 #, php-format
 msgid "Plugin %s deactivated."
-msgstr ""
+msgstr "Plugin %s deactivated."
 
 #, php-format
 msgid "Plugin %s deleted."
-msgstr ""
+msgstr "Plugin %s deleted."
 
 #, php-format
 msgid "Plugin %s installed."
-msgstr ""
+msgstr "Plugin %s installed."
 
 #, php-format
 msgid "Plugin %s is already activated."
@@ -3757,11 +3757,11 @@ msgstr "Plugin %s is already uninstalled."
 
 #, php-format
 msgid "Plugin %s is not installable."
-msgstr ""
+msgstr "Plugin %s is not installable."
 
 #, php-format
 msgid "Plugin %s is not uninstallable."
-msgstr ""
+msgstr "Plugin %s is not uninstallable."
 
 #, php-format
 msgid "Plugin %s is protected."
@@ -3769,39 +3769,39 @@ msgstr "Plugin %s is protected."
 
 #, php-format
 msgid "Plugin %s protected."
-msgstr ""
+msgstr "Plugin %s protected."
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
-msgstr ""
+msgstr "Plugin %s scheduled for activation."
 
 #, php-format
 msgid "Plugin %s scheduled for change."
-msgstr ""
+msgstr "Plugin %s scheduled for change."
 
 #, php-format
 msgid "Plugin %s scheduled for deactivation."
-msgstr ""
+msgstr "Plugin %s scheduled for deactivation."
 
 #, php-format
 msgid "Plugin %s scheduled for installation."
-msgstr ""
+msgstr "Plugin %s scheduled for installation."
 
 #, php-format
 msgid "Plugin %s scheduled for uninstallation."
-msgstr ""
+msgstr "Plugin %s scheduled for uninstallation."
 
 #, php-format
 msgid "Plugin %s scheduled for update."
-msgstr ""
+msgstr "Plugin %s scheduled for update."
 
 #, php-format
 msgid "Plugin %s uninstalled."
-msgstr ""
+msgstr "Plugin %s uninstalled."
 
 #, php-format
 msgid "Plugin %s updated."
-msgstr ""
+msgstr "Plugin %s updated."
 
 #, php-format
 msgid ""
@@ -3849,13 +3849,13 @@ msgid "Plugin list is empty."
 msgstr "Plugin list is empty."
 
 msgid "Plugin list updated."
-msgstr ""
+msgstr "Plugin list updated."
 
 msgid "Plugin management"
 msgstr "Plugin management"
 
 msgid "Plugin uploaded."
-msgstr ""
+msgstr "Plugin uploaded."
 
 msgid "Plugins Upload"
 msgstr "Plugins Upload"
@@ -3897,13 +3897,13 @@ msgid "Priority: %s\n"
 msgstr "Priority: %s\n"
 
 msgid "Private key"
-msgstr ""
+msgstr "Private key"
 
 msgid "Private key field cannot be empty"
-msgstr ""
+msgstr "Private key field cannot be empty"
 
 msgid "Private key passphrase if any"
-msgstr ""
+msgstr "Private key passphrase if any"
 
 msgid "Process update"
 msgstr "Process update"
@@ -3992,13 +3992,13 @@ msgid "Relative weight must be a number."
 msgstr "Relativ vikt måste vara ett nummer!"
 
 msgid "Release date"
-msgstr ""
+msgstr "Release date"
 
 msgid "Release description"
-msgstr ""
+msgstr "Release description"
 
 msgid "Release version"
-msgstr ""
+msgstr "Release version"
 
 msgid "Remote Web software repository"
 msgstr "Remote Web software repository"
@@ -4302,15 +4302,15 @@ msgid "SQL users"
 msgstr "SQL-användare"
 
 msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr ""
+msgstr "SSL Certificate successfully scheduled for addition or update."
 
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL certificate"
 
 msgid "SSL feature is not available."
-msgstr ""
+msgstr "SSL feature is not available."
 
-msgid "SSL feature is not available. You can only view your certificate"
+msgid "SSL feature is not available. You can only view your certificate."
 msgstr ""
 
 msgid "Save"
@@ -4461,7 +4461,7 @@ msgid "Show HTML output compression size comment"
 msgstr "Visa HTML-utdata komprimering storlek kommentar"
 
 msgid "Show SSL certificate"
-msgstr ""
+msgstr "Show SSL certificate"
 
 msgid ""
 "Show all errors, except for notices and coding standards warnings (Default)"
@@ -4473,7 +4473,7 @@ msgid ""
 msgstr "Visa alla fel, varningar och meddelanden, inklusive kodning (Utveckling)"
 
 msgid "Show certificate"
-msgstr ""
+msgstr "Show certificate"
 
 msgid "Show detailed statistics for this domain"
 msgstr "Visa detalj statistik för denna domain."
@@ -4814,10 +4814,10 @@ msgid "The `Enter` key is disabled for performance reasons."
 msgstr "The `Enter` key is disabled for performance reasons."
 
 msgid "The certificate doesn't match with the private key."
-msgstr ""
+msgstr "The certificate doesn't match with the private key."
 
 msgid "The certificate field cannot be empty."
-msgstr ""
+msgstr "The certificate field cannot be empty."
 
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
@@ -5061,7 +5061,7 @@ msgstr "URL till denna administratörspanel"
 
 #, php-format
 msgid "Unable to activate the %s plugin: %s"
-msgstr ""
+msgstr "Unable to activate the %s plugin: %s"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5069,7 +5069,7 @@ msgstr "Unable to backup %s plugin directory."
 
 #, php-format
 msgid "Unable to change the %s plugin: %s"
-msgstr ""
+msgstr "Unable to change the %s plugin: %s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5084,11 +5084,11 @@ msgstr "Det går inte att skapa 'LC_MESSAGES' katalog för språk-fil."
 
 #, php-format
 msgid "Unable to deactivate the %s plugin: %s"
-msgstr ""
+msgstr "Unable to deactivate the %s plugin: %s"
 
 #, php-format
 msgid "Unable to delete the %s plugin: %s"
-msgstr ""
+msgstr "Unable to delete the %s plugin: %s"
 
 msgid "Unable to extract plugin archive."
 msgstr "Unable to extract plugin archive."
@@ -5111,11 +5111,11 @@ msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "Unable to get the IP address list. Please fix this problem."
 
 msgid "Unable to get update info from Github"
-msgstr ""
+msgstr "Unable to get update info from Github"
 
 #, php-format
 msgid "Unable to install the %s plugin: %s"
-msgstr ""
+msgstr "Unable to install the %s plugin: %s"
 
 msgid "Unable to move file."
 msgstr "Det gick inte att flytta filen."
@@ -5125,7 +5125,7 @@ msgstr "Unable to open archive."
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
-msgstr ""
+msgstr "Unable to protect the %s plugin: %s"
 
 msgid "Unable to read Web software repository index file."
 msgstr "Det går inte att läsa index-fil för Web mjukvaran."
@@ -5160,18 +5160,18 @@ msgid ""
 msgstr "Unable to schedule deletion of the customer account. Please consult admin logs or your mail for more information."
 
 msgid "Unable to set sslallowselfsigned option"
-msgstr ""
+msgstr "Unable to set sslallowselfsigned option"
 
 msgid "Unable to set sslverifypeer option"
-msgstr ""
+msgstr "Unable to set sslverifypeer option"
 
 #, php-format
 msgid "Unable to uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Unable to uninstall the %s plugin: %s"
 
 #, php-format
 msgid "Unable to update the %s plugin: %s"
-msgstr ""
+msgstr "Unable to update the %s plugin: %s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5267,7 +5267,7 @@ msgid "Update in progress..."
 msgstr "Update in progress..."
 
 msgid "Update info"
-msgstr ""
+msgstr "Update info"
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5843,16 +5843,16 @@ msgstr "Ditt konto har gått ut. Vänligen förnya prenumerationen."
 msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
-msgstr ""
+msgstr "Your account is currently under maintenance or disabled. Please, contact your reseller."
 
 msgid "Your certificate is expired"
-msgstr ""
+msgstr "Your certificate is expired"
 
 msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr ""
+msgstr "Your certificate is not valid or the CA bundle is missing."
 
 msgid "Your certificate is not valid."
-msgstr ""
+msgstr "Your certificate is not valid."
 
 msgid "Your consumption"
 msgstr "Your consumption"
@@ -6018,7 +6018,7 @@ msgid "i-MSCP updates"
 msgstr "i-MSCP-uppdateringar"
 
 msgid "i-MSCP version update checking is disabled"
-msgstr ""
+msgstr "Uppdateringskontroll är inaktiverad"
 
 msgid "installed"
 msgstr "installed"

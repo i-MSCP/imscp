@@ -24,6 +24,7 @@
 # mrpink, 2014
 # mrpink, 2014
 # design <schlanki_26@web.de>, 2011
+# Speddy20537 <speddy20537@gmx.de>, 2014
 # kreilinger <strauss3@gmx.at>, 2011
 # Tango <tango-net@freenet.de>, 2011
 # bomas <thomasbjoh@gmx.de>, 2013
@@ -35,8 +36,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-23 20:55+0200\n"
-"PO-Revision-Date: 2014-05-23 17:02+0000\n"
+"POT-Creation-Date: 2014-05-24 05:09+0200\n"
+"PO-Revision-Date: 2014-05-24 03:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -552,13 +553,13 @@ msgid "A certificate in your CA bundle is missing or invalid."
 msgstr ""
 
 msgid "A database update is available"
-msgstr ""
+msgstr "Datenbank-Update ist verfügbar"
 
 msgid "A hosting plan with same name already exists."
 msgstr "Ein Tarif mit gleichem Namen existiert bereits."
 
 msgid "A new i-MSCP version is available"
-msgstr ""
+msgstr "Es ist eine neue I-Mscp Version verfügbar."
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Greifen Sie auf Ihre Domain-Statistiken über das Webinterface zu."
@@ -4336,7 +4337,7 @@ msgstr ""
 msgid "SSL feature is not available."
 msgstr ""
 
-msgid "SSL feature is not available. You can only view your certificate"
+msgid "SSL feature is not available. You can only view your certificate."
 msgstr ""
 
 msgid "Save"
