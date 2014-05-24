@@ -81,7 +81,7 @@ function client_getFullName($domainId, $domainType)
 			break;
 	}
 
-	$stmt = exec_query($query, array($domainId));
+	$stmt = exec_query($query, $domainId);
 
 	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
@@ -91,12 +91,12 @@ function client_getFullName($domainId, $domainType)
 /**
  * Update status for the given domain entity
  *
- * @param string $type Domain entity type to update (dmn, als,sub, alssub)
- * @param int $id Domain entity unique identifier
+ * @param string $domainType Domain entity type to update (dmn, als,sub, alssub)
+ * @param int $domainId Domain entity unique identifier
  */
-function client_updateEntityStatus($type, $id)
+function client_updateEntityStatus($domainType, $domainId)
 {
-	switch ($type) {
+	switch ($domainType) {
 		case 'dmn':
 			$query = 'UPDATE domain SET domain_status = ? WHERE domain_id = ?';
 			break;
@@ -110,7 +110,7 @@ function client_updateEntityStatus($type, $id)
 			$query = 'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?';
 	}
 
-	exec_query($query, array('tochange', $id));
+	exec_query($query, array('tochange', $domainId));
 }
 
 /**
@@ -235,7 +235,8 @@ function client_generatePage($tpl, $domainId, $domainType)
 									  ) VALUES (
 										?, ?, ?, ?, ?, ?
 									  )
-									', array($domainId, $domainType, $privateKey, $certificate, $caBundle, 'toadd')
+									',
+									array($domainId, $domainType, $privateKey, $certificate, $caBundle, 'toadd')
 								);
 
 								client_updateEntityStatus($domainType, $domainId);
@@ -305,7 +306,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 			} else {
 				$tpl->assign('TR_DYNAMIC_TITLE', tr('Show SSL certificate'));
 				$tpl->assign('CERT_ENABLE', '');
-				set_page_message(tr('SSL feature is not available. You can only view your certificate'), 'warning');
+				set_page_message(tr('SSL feature is not available. You can only view your certificate.'), 'warning');
 			}
 
 			if (customerHasFeature('ssl') && !empty($_POST)) {

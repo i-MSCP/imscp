@@ -5,6 +5,9 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIGS:
+	- Fixed: Wrong placeholder variables in proftpd configuration template file (Ubuntu)
+
 GUI:
 	- Fixed: Unable to add SSL certificate without CA bundle (unexpected line feed in ca_bundle field)
 
