@@ -11,6 +11,9 @@ DATABASE:
 ENGINE:
 	- Fixed: Can't locate object method "validateCertificateChain"
 
+GUI:
+	- Fixed: Unable to add self-signed certificate without CA bundle
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.8
 ------------------------------------------------------------------------------------------------------------------------

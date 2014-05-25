@@ -194,7 +194,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 								// Check certificate
 								if (!$x509->loadX509($certificate)) {
 									set_page_message(tr('Your certificate is not valid.'), 'error');
-								} elseif(! $x509->validateSignature()) {
+								} elseif(! $x509->validateSignature(false)) {
 									set_page_message(
 										tr('Your certificate is not valid or the CA bundle is missing.'), 'error'
 									);
