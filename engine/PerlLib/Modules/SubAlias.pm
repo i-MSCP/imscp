@@ -188,7 +188,7 @@ sub _getHttpdData
 	}
 
 	my $haveCert = exists $certData->{$self->{'subdomain_alias_id'}} &&
-		$self->validateCertificateChain($self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'});
+		$self->isValidCertificate($self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'});
 
 	$self->{'httpd'} = {
 		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},

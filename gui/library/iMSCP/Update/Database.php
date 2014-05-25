@@ -31,15 +31,11 @@
 require_once 'iMSCP/Update.php';
 
 /**
- * Update Database class.
- *
- * Class to handled database updates for i-MSCP.
+ * Update Database class
  *
  * @category    iMSCP
  * @package     iMSCP_Update
  * @subpackage  Database
- * @author      Daniel Andreca <sci2tech@gmail.com>
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Update_Database extends iMSCP_Update
 {
@@ -66,7 +62,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 188;
+	protected $lastUpdate = 189;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -119,9 +115,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Apply all available database updates
+	 * Apply database updates
 	 *
-	 * @return bool TRUE on success, FALSE otherwise
+	 * @return bool TRUE on success, FALSE on failure
 	 */
 	public function applyUpdates()
 	{
@@ -133,53 +129,24 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		while ($this->isAvailableUpdate()) {
 			$revision = $this->getNextUpdate();
+			$updateMethod = 'r' . $revision;
+			$queries = (array)$this->$updateMethod();
 
-			// Get the database update method name
-			$databaseUpdateMethod = 'r' . $revision;
-
-			// Gets the queries from the database update method.
-			// A database update method can return void, an array (stack of SQL
-			// statements) or a string (SQL statement)
-			$queryStack = $this->$databaseUpdateMethod();
-
-			if (!empty($queryStack)) {
+			if (!empty($queries)) {
 				try {
-					// One transaction per database update
-					// If a query from a database update fail, all queries from it
-					// are canceled. It's only valid for database updates that are
-					// free of any statements causing an implicit commit
 					$pdo->beginTransaction();
 
-					foreach ((array)$queryStack as $query) {
+					foreach ($queries as $query) {
 						if (!empty($query)) {
 							$pdo->query($query);
 						}
 					}
 
 					$dbConfig['DATABASE_REVISION'] = $revision;
-
 					$pdo->commit();
 				} catch (Exception $e) {
 					$pdo->rollBack();
-
-					// Prepare error message
-					$errorMessage = sprintf(
-						'Database update %s failed.', $revision);
-
-					// Extended error message
-					$errorMessage .=
-						'<br /><br /><strong>Exception message was:</strong><br />' .
-						$e->getMessage() . (isset($query)
-							? "<br /><strong>Query was:</strong><br />$query" : '');
-
-					if (PHP_SAPI == 'cli') {
-						$errorMessage = str_replace(
-							array('<br />', '<strong>', '</strong>'),
-							array("\n", '', ''), $errorMessage);
-					}
-
-					$this->setError($errorMessage);
-
+					$this->setError(sprintf('Database update %s failed.', $revision));
 					return false;
 				}
 			} else {
@@ -187,7 +154,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		// We must never run the backend scripts from the CLI update script
 		if (PHP_SAPI != 'cli' && $this->_daemonRequest) {
 			send_request();
 		}
@@ -202,7 +168,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	public function getDatabaseUpdatesDetails()
 	{
-		$databaseUpdatesDetails = array();
+		$updatesDetails = array();
 
 		$reflection = new ReflectionClass(__CLASS__);
 
@@ -227,11 +193,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 					}
 				}
 
-				$databaseUpdatesDetails[$revision] = $normalizedDetails;
+				$updatesDetails[$revision] = $normalizedDetails;
 			}
 		}
 
-		return $databaseUpdatesDetails;
+		return $updatesDetails;
 	}
 
 	/**
@@ -285,27 +251,28 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig['DATABASE_REVISION'] = 1;
 		}
 
-		return (int)$dbConfig['DATABASE_REVISION'];
+		return $dbConfig['DATABASE_REVISION'];
 	}
 
 	/**
 	 * Rename table
 	 *
 	 * @param string $table Table name
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function renameTable($table, $newTableName)
 	{
 		try {
 			$table = quoteIdentifier($table);
-			$stmt = exec_query("SHOW TABLES LIKE ?", $table);
+			$stmt = exec_query('SHOW TABLES LIKE ?', $table);
 
 			if ($stmt->rowCount()) {
 				return sprintf('ALTER IGNORE TABLE %s RENAME TO %s', $table, quoteIdentifier($newTableName));
 			}
-		} catch(iMSCP_Exception_Database $e) { }
+		} catch (iMSCP_Exception_Database $e) {
+		}
 
-		return '';
+		return null;
 	}
 
 	/**
@@ -324,7 +291,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param string $table Table name
 	 * @param string $column Column name
 	 * @param string $columnDefinition Column definition
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function addColumn($table, $column, $columnDefinition)
 	{
@@ -335,9 +302,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 			if (!$stmt->rowCount()) {
 				return sprintf('ALTER IGNORE TABLE %s ADD %s %s', $table, quoteIdentifier($column), $columnDefinition);
 			}
-		} catch (iMSCP_Exception_Database $e) { }
+		} catch (iMSCP_Exception_Database $e) {
+		}
 
-		return '';
+		return null;
 	}
 
 	/**
@@ -346,7 +314,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param string $table Table name
 	 * @param string $column Column name
 	 * @param string $columnDefinition Column definition
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function changeColumn($table, $column, $columnDefinition)
 	{
@@ -359,9 +327,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 					'ALTER IGNORE TABLE %s CHANGE %s %s', $table, quoteIdentifier($column), $columnDefinition
 				);
 			}
-		} catch (iMSCP_Exception_Database $e) { }
+		} catch (iMSCP_Exception_Database $e) {
+		}
 
-		return '';
+		return null;
 	}
 
 	/**
@@ -369,7 +338,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @param string $table Table name
 	 * @param string $column Column name
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function dropColumn($table, $column)
 	{
@@ -380,9 +349,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 			if ($stmt->rowCount()) {
 				return sprintf('ALTER IGNORE TABLE %s DROP %s', $table, quoteIdentifier($column));
 			}
-		} catch (iMSCP_Exception_Database $e) { }
+		} catch (iMSCP_Exception_Database $e) {
+		}
 
-		return '';
+		return null;
 	}
 
 	/**
@@ -392,11 +362,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param array|string $columns Column name(s)
 	 * @param string $indexType Index type (PRIMARY KEY (default), INDEX|KEY, UNIQUE)
 	 * @param string $indexName Index name (default is autogenerated)
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function addIndex($table, $columns, $indexType = 'PRIMARY KEY', $indexName = '')
 	{
-		// $this->addIndex('ssl_certs', array('domain_id', 'domain_type'), 'unique', 'domain_id_domain_type');
 		$indexType = strtoupper($indexType);
 
 		try {
@@ -419,9 +388,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 					$columns
 				);
 			}
-		} catch(iMSCP_Exception_Database $e) { }
+		} catch (iMSCP_Exception_Database $e) {
+		}
 
-		return '';
+		return null;
 	}
 
 	/**
@@ -429,7 +399,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @param string $table Table name
 	 * @param string $column Column name
-	 * @return array SQL statement to be executed
+	 * @return array SQL statements to be executed
 	 */
 	protected function dropIndexByColumn($table, $column)
 	{
@@ -446,7 +416,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 					);
 				}
 			}
-		} catch(iMSCP_Exception_Database $e) { }
+		} catch (iMSCP_Exception_Database $e) {
+		}
 
 		return $sqlUpd;
 	}
@@ -456,7 +427,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @param string $table Table name
 	 * @param string $indexName Index name
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function dropIndexByName($table, $indexName = 'PRIMARY')
 	{
@@ -467,24 +438,28 @@ class iMSCP_Update_Database extends iMSCP_Update
 			if ($stmt->rowCount()) {
 				return sprintf('ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($indexName));
 			}
-		} catch(iMSCP_Exception_Database $e) { }
+		} catch (iMSCP_Exception_Database $e) {
+		}
 
-		return '';
+		return null;
 	}
 
 	/**
 	 * Catch any database updates that were removed
 	 *
+	 *
 	 * @throws iMSCP_Update_Exception
 	 * @param  string $updateMethod Database update method name
-	 * @param  array $param
-	 * @return void
+	 * @param array $params Params
+	 * @return null
 	 */
-	public function __call($updateMethod, $param)
+	public function __call($updateMethod, $params)
 	{
-		if (strpos($updateMethod, '_databaseUpdate') === false) {
+		if (!preg_match('/^r[0-9]+$/', $updateMethod)) {
 			throw new iMSCP_Update_Exception(sprintf('%s is not a valid database update method', $updateMethod));
 		}
+
+		return null;
 	}
 
 	/**
@@ -504,7 +479,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Removes useless 'suexec_props' table
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r47()
 	{
@@ -602,19 +577,21 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds i-MSCP daemon service properties in config table
 	 *
-	 * @return void
+	 * @return null
 	 */
 	protected function r50()
 	{
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 		$dbConfig['PORT_IMSCP_DAEMON'] = '9876;tcp;i-MSCP-Daemon;1;0;127.0.0.1';
+
+		return null;
 	}
 
 	/**
 	 * Adds required field for on-click-logon from the ftp-user site.
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r51()
 	{
@@ -757,7 +734,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Deletes old DUMP_GUI_DEBUG parameter from the config table
 	 *
-	 * @return void
+	 * @return null
 	 */
 	protected function r66()
 	{
@@ -767,6 +744,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if (isset($dbConfig->DUMP_GUI_DEBUG)) {
 			$dbConfig->del('DUMP_GUI_DEBUG');
 		}
+
+		return null;
 	}
 
 	/**
@@ -879,7 +858,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Changes the log table schema to allow storage of large messages
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r71()
 	{
@@ -891,7 +870,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds unique index on the web_software_options.use_webdepot column
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r72()
 	{
@@ -914,7 +893,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drops useless user_gui_props.id column
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r77()
 	{
@@ -1003,7 +982,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #15: Feature - PHP Editor -  Add/Update system wide values
 	 *
-	 * @return void
+	 * @return null
 	 */
 	protected function r84()
 	{
@@ -1020,6 +999,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$dbConfig['PHPINI_MAX_EXECUTION_TIME'] = '30';
 		$dbConfig['PHPINI_ERROR_REPORTING'] = 'E_ALL & ~E_NOTICE';
 		$dbConfig['PHPINI_DISABLE_FUNCTIONS'] = 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink';
+
+		return null;
 	}
 
 	/**
@@ -1228,7 +1209,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop unused table auto_num
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r91()
 	{
@@ -1238,7 +1219,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #238: Delete orphan php_ini entries in the php.ini table
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r92()
 	{
@@ -1248,7 +1229,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Rename php_ini.ID column to php_ini.id
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r93()
 	{
@@ -1298,7 +1279,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #292: Feature - Layout color chooser
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r96()
 	{
@@ -1312,7 +1293,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Allow to change SSH port number
 	 *
-	 * @return void
+	 * @return null
 	 */
 	protected function r97()
 	{
@@ -1322,6 +1303,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if (isset($dbConfig['PORT_SSH'])) {
 			$dbConfig['PORT_SSH'] = '22;tcp;SSH;1;1;';
 		}
+
+		return null;
 	}
 
 	/**
@@ -1365,7 +1348,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add order option for custom menus
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r101()
 	{
@@ -1427,7 +1410,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Added parameter to allow the admin to append some paths to the default PHP open_basedir directive of customers
 	 *
-	 * @return void
+	 * @return null
 	 */
 	protected function r105()
 	{
@@ -1437,6 +1420,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if (!isset($dbConfig['PHPINI_OPEN_BASEDIR'])) {
 			$dbConfig['PHPINI_OPEN_BASEDIR'] = '';
 		}
+
+		return null;
 	}
 
 	/**
@@ -1461,7 +1446,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #366: Enhancement - Move menu label show/disable option at user profile level
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r107()
 	{
@@ -1906,7 +1891,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds admin.admin_status column
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r123()
 	{
@@ -1972,7 +1957,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add ftp_users.admin_id column (foreign key)
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r127()
 	{
@@ -2001,7 +1986,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add web_folder_protection column in domain table
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r129()
 	{
@@ -2055,7 +2040,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Delete order component related parameters
 	 *
-	 * @return void
+	 * @return null
 	 */
 	protected function r134()
 	{
@@ -2069,6 +2054,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if (isset($dbConfig['ORDERS_EXPIRE_TIME'])) {
 			$dbConfig->del('ORDERS_EXPIRE_TIME');
 		}
+
+		return null;
 	}
 
 	/**
@@ -2109,7 +2096,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add plugin_backend column in plugin table
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r138()
 	{
@@ -2213,7 +2200,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Removes ports entries for unsupported services
 	 *
-	 * @return void
+	 * @return null|string
 	 */
 	protected function r142()
 	{
@@ -2227,6 +2214,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if (isset($dbConfig['PORT_SPAMASSASSIN'])) {
 			$dbConfig->del('PORT_SPAMASSASSIN');
 		}
+
+		return null;
 	}
 
 	/**
@@ -2312,7 +2301,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add unique key for server_ips columns
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r148()
 	{
@@ -2597,7 +2586,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Synchronize mailboxes quota
 	 *
-	 * @return void
+	 * @return null
 	 */
 	protected function r166()
 	{
@@ -2606,12 +2595,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			sync_mailboxes_quota($data['domain_id'], $data['mail_quota']);
 		}
+
+		return null;
 	}
 
 	/**
 	 * #908: Review - Dovecot - Quota - Switch to maildir quota backend
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r167()
 	{
@@ -2621,7 +2612,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Remove deprecated Domain name parameters
 	 *
-	 * @return void
+	 * @return null
 	 */
 	protected function r168()
 	{
@@ -2643,12 +2634,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if (isset($dbConfig['MAX_SUBDNAMES_LABELS'])) {
 			unset($dbConfig['MAX_SUBDNAMES_LABELS']);
 		}
+
+		return null;
 	}
 
 	/**
 	 * Update service ports
 	 *
-	 * @return void
+	 * @return null
 	 */
 	protected function r169()
 	{
@@ -2671,6 +2664,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 			$dbConfig[$name] = implode(';', $values);
 		}
+
+		return null;
 	}
 
 	/**
@@ -2689,7 +2684,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Delete deprecated plugin.plugin_previous_status field
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r171()
 	{
@@ -2759,7 +2754,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Remove domain.domain_created_id column
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r174()
 	{
@@ -2903,7 +2898,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Remove password column from the ssl_certs table
 	 *
-	 * @return string SQL statements to be executed
+	 * @return null|string SQL statements to be executed
 	 */
 	public function r179()
 	{
@@ -2913,7 +2908,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Rename ssl_certs.id column to ssl_certs.domain_id
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r180()
 	{
@@ -2923,7 +2918,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Rename ssl_certs.type column to ssl_certs.domain_type
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r181()
 	{
@@ -2937,7 +2932,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Rename ssl_certs.key column to ssl_certs.private_key
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r182()
 	{
@@ -2949,7 +2944,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Rename ssl_certs.cert column to ssl_certs.certificate
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r183()
 	{
@@ -2961,7 +2956,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Rename ssl_certs.ca_cert column to ssl_certs.ca_bundle
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r184()
 	{
@@ -2973,7 +2968,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop index id from ssl_certs table
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r185()
 	{
@@ -2983,7 +2978,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add domain_id_domain_type index in ssl_certs table
 	 *
-	 * @return string SQL statement to be executed
+	 * @return null|string SQL statement to be executed
 	 */
 	protected function r186()
 	{
@@ -2995,7 +2990,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array
 	 */
-	protected function r188()
+	protected function r189()
 	{
 		$sqlUdp = array();
 

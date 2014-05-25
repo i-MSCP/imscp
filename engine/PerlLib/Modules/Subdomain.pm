@@ -371,21 +371,6 @@ sub _getAddonsData
 	0;
 }
 
-sub isValidCertificate
-{
-	my ($self, $subdomainName) = @_;
-
-	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$subdomainName.pem";
-	my $openSSL = iMSCP::OpenSSL->getInstance();
-
-	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
-	$openSSL->{'private_key_container_path'} = $certFile;
-	$openSSL->{'certificate_container_path'} = $certFile;
-	$openSSL->{'ca_bundle_container_path'} = $certFile;
-
-	! $openSSL->validateCertificateChain();
-}
-
 sub _getSharedMountPoints
 {
 	my $self = $_[0];
@@ -445,6 +430,21 @@ sub _getSharedMountPoints
 	}
 
 	$rdata;
+}
+
+sub isValidCertificate
+{
+	my ($self, $subdomainName) = @_;
+
+	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$subdomainName.pem";
+	my $openSSL = iMSCP::OpenSSL->getInstance();
+
+	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
+	$openSSL->{'private_key_container_path'} = $certFile;
+	$openSSL->{'certificate_container_path'} = $certFile;
+	$openSSL->{'ca_bundle_container_path'} = $certFile;
+
+	! $openSSL->validateCertificateChain();
 }
 
 1;
