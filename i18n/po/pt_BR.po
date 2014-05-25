@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-24 05:09+0200\n"
-"PO-Revision-Date: 2014-05-24 03:11+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2014-05-25 16:59+0200\n"
+"PO-Revision-Date: 2014-05-24 15:01+0000\n"
+"Last-Translator: rudiremontti <rudiremontti@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -526,19 +526,19 @@ msgid ""
 msgstr ""
 
 msgid "A PHP extension stopped the file upload."
-msgstr ""
+msgstr "A extensão do PHP parou o upload do arquivo."
 
 msgid "A certificate in your CA bundle is missing or invalid."
-msgstr ""
+msgstr "CA está ausente ou inválido em seu pacote."
 
 msgid "A database update is available"
-msgstr ""
+msgstr "A atualização do banco de dados está disponível"
 
 msgid "A hosting plan with same name already exists."
-msgstr ""
+msgstr "Já existe um plano de hospedagem com o mesmo nome."
 
 msgid "A new i-MSCP version is available"
-msgstr ""
+msgstr "Uma nova versão do i-MSCP está disponível!"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Acesse suas estatísticas de domínio através da interface web."
@@ -571,10 +571,10 @@ msgid "Action"
 msgstr "Ação"
 
 msgid "Action has been stopped."
-msgstr ""
+msgstr "Ação parada."
 
 msgid "Action has failed."
-msgstr ""
+msgstr "Ação falhou."
 
 msgid "Actions"
 msgstr "Ações"
@@ -583,7 +583,7 @@ msgid "Activate"
 msgstr "Ativar"
 
 msgid "Activate this plugin"
-msgstr ""
+msgstr "Ative este plugin"
 
 msgid "Activated"
 msgstr "Ativado"
@@ -595,7 +595,7 @@ msgid "Activation email"
 msgstr "E-mail de ativação"
 
 msgid "Activation in progress..."
-msgstr ""
+msgstr "Ativação em progresso..."
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr "Link de ativação expirar em: <small>(minutos)</small>"
@@ -625,7 +625,7 @@ msgid "Add SSL certificate"
 msgstr "Adicionar certificado SSL"
 
 msgid "Add a new entry"
-msgstr ""
+msgstr "Adicione uma nova entrada"
 
 msgid "Add admin"
 msgstr "Adicionar administrador"
@@ -649,13 +649,13 @@ msgid "Add domain alias"
 msgstr "Adicionar alias de domínio"
 
 msgid "Add email account"
-msgstr "Adicionar conta de email"
+msgstr "Adicionar E-mail"
 
 msgid "Add email user"
-msgstr ""
+msgstr "Adicionar usuário de e-mail"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Adicionar servidor de correio externo para {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Adicionar grupo"
@@ -670,7 +670,7 @@ msgid "Add new database"
 msgstr "Incluir novo banco de dados"
 
 msgid "Add new entry"
-msgstr ""
+msgstr "Adicionar nova entrada"
 
 msgid "Add new protected area"
 msgstr "Adicionar nova área protegida"
@@ -709,156 +709,156 @@ msgid "Admin"
 msgstr "Admin"
 
 msgid "Admin / General / Admin Log"
-msgstr ""
+msgstr "Administrador / Geral / Logs de administração"
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Administrador / Geral / Visão Geral"
 
 msgid "Admin / General / Services Status"
-msgstr ""
+msgstr "Administrador / Geral / Estado dos serviços"
 
 msgid "Admin / Hosting Plans / Add Hosting Plan"
-msgstr ""
+msgstr "Administrador / Planos de Hospedagem / Adicionar Plano "
 
 msgid "Admin / Hosting Plans / Overview"
-msgstr ""
+msgstr "Administrador / Planos de Hospedagem / Geral"
 
 msgid "Admin / Hosting Plans / Overview / Edit Hosting Plan"
-msgstr ""
+msgstr "Administrador / Planos de Hospedagem / Geral / Editar Plano"
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Administrador / Perfil / Resumo da conta"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Administrador / Perfil / Idioma"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Administrador / Perfil / Layoute"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Administrador / Perfil / Senha"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Administrador / Perfil / Dados Pessoais"
 
 msgid "Admin / Settings"
-msgstr ""
+msgstr "Administrador / Configurações"
 
 msgid "Admin / Settings / IP Addresses Management"
-msgstr ""
+msgstr "Administrador / Configurações / Gerencia de IP"
 
 msgid "Admin / Settings / Languages"
-msgstr ""
+msgstr "Administrador / Configurações / Idioma"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr ""
+msgstr "Administrador / Configurações / Esqueceu a senha E-mail"
 
 msgid "Admin / Settings / Plugin Management"
-msgstr ""
+msgstr "Administrador / Configurações / Gerenciamento de Plugins"
 
 msgid "Admin / Settings / Server Traffic"
-msgstr ""
+msgstr "Administrador / Configurações / Tráfego do servidor"
 
 msgid "Admin / Settings / Service Ports"
-msgstr ""
+msgstr "Administrador / Configurações / Portas de serviço"
 
 msgid "Admin / Settings / Software Management"
-msgstr ""
+msgstr "Administrador / Configurações / Gerenciar Sofware "
 
 msgid "Admin / Settings / Software Options"
-msgstr ""
+msgstr "Administrador / Configurações / Opções de Sofware "
 
 msgid "Admin / Settings / Welcome Email"
-msgstr ""
+msgstr "Administrador / Configurações / E-mail de Boas-Vindas"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Administrador / Configurações / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr ""
+msgstr "Administrador / Gerenciar Sofware / Revenda Software"
 
 msgid "Admin / Statistics / IP Usage"
-msgstr ""
+msgstr "Administrador / Estatísticas / Uso IP"
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr ""
+msgstr "Administrador / Estatísticas / Estatística de Revenda "
 
 msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr ""
+msgstr "Administrador / Estatísticas / Estatística de Revenda / Estatísticas do Cliente"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
 "Statistics"
-msgstr ""
+msgstr "Administrador / Estatísticas / Estatística de Revenda / Estatísticas do Cliente / Estatísticas  do Domínio"
 
 msgid "Admin / Statistics / Server Statistics"
-msgstr ""
+msgstr "Administrador / Estatísticas / Estatística do Servidor"
 
 msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr ""
+msgstr "Administrador / Estatísticas / Estatística do Servidor / Dia"
 
 msgid "Admin / Support / Closed Tickets"
-msgstr ""
+msgstr "Administrador / Suporte / Tickets Fechados"
 
 msgid "Admin / Support / View Ticket"
-msgstr ""
+msgstr "Administrador / Suporte / Ver Tickets "
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
-msgstr ""
+msgstr "Administrador / Ferramentas do Sistema / Logs Anti-Rootkits "
 
 msgid "Admin / System Tools / Database Update"
-msgstr ""
+msgstr "Administrador / Ferramentas do Sistema / Atualizar Banco de Dados"
 
 msgid "Admin / System Tools / Debugger"
-msgstr ""
+msgstr "Administrador / Ferramentas do Sistema /  Debugger"
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
+msgstr "Administrador / Ferramentas do Sistema /  Manutenção"
 
 msgid "Admin / System Tools / System Information"
-msgstr ""
+msgstr "Administrador / Ferramentas do Sistema / Informações sobre o sistema"
 
 msgid "Admin / System Tools / i-MSCP Updates"
-msgstr ""
+msgstr "Administrador / Ferramentas do Sistema / Atualizações i-MSCP"
 
 msgid "Admin / User / Overview / Domain Edit"
-msgstr ""
+msgstr "Administrador / Usuário / Geral /  Editar Domínio"
 
 msgid "Admin / Users / Add Admin"
-msgstr ""
+msgstr "Administrador / Usuários / Adicionar administrador"
 
 msgid "Admin / Users / Add Reseller"
-msgstr ""
+msgstr "Administrador / Usuários / Adicionar revendedor"
 
 msgid "Admin / Users / Circular"
-msgstr ""
+msgstr "Administrador / Usuários /  E-mails  de Aviso"
 
 msgid "Admin / Users / Customers Assignment"
-msgstr ""
+msgstr "Administrador / Usuários /  Atribuição Clientes "
 
 msgid "Admin / Users / Edit Reseller"
-msgstr ""
+msgstr "Administrador / Usuários / Editar Revendedor"
 
 msgid "Admin / Users / Overview"
-msgstr ""
+msgstr "Administrador / Usuários / Geral "
 
 msgid "Admin / Users / Overview / Delete Customer"
-msgstr ""
+msgstr "Administrador / Usuários / Geral / Deletar Cliente"
 
 msgid "Admin / Users / Overview / Domain Details"
-msgstr ""
+msgstr "Administrador / Usuários / Geral / Detalhes do Domínio"
 
 msgid "Admin / Users / Overview / Edit Admin"
-msgstr ""
+msgstr "Administrador / Usuários / Geral / Editar Administrador"
 
 msgid "Admin / Users / Resellers Assignment"
-msgstr ""
+msgstr "Administrador / Usuários / Atribuição dos Revendedores"
 
 msgid "Admin / Users / Sessions"
-msgstr ""
+msgstr "Administrador / Usuários / Sessões"
 
 msgid "Admin Log"
-msgstr "Log Administrativo"
+msgstr "Log de administração"
 
 msgid "Admin account successfully created."
 msgstr "Conta de Administrador criada com sucesso."
@@ -1225,7 +1225,7 @@ msgid "By"
 msgstr "por"
 
 msgid "CA bundle"
-msgstr ""
+msgstr "Pacote CA"
 
 msgid "CGI"
 msgstr "CGI"
@@ -1264,13 +1264,13 @@ msgid "Catch all"
 msgstr "Selecionar todas"
 
 msgid "Catch all successfully scheduled for addition."
-msgstr "Pegua tudo agendado com sucesso para adição."
+msgstr "Pega tudo agendado com sucesso para adição."
 
 msgid "Catch all successfully scheduled for deletion."
-msgstr "Pegua tudo agendado com sucesso para exclusão."
+msgstr "Pega tudo agendado com sucesso para exclusão."
 
 msgid "Catchall"
-msgstr "Pegua tudo"
+msgstr "E-mail Pega Tudo"
 
 msgid "Certificate"
 msgstr "Certificado"
@@ -1334,10 +1334,10 @@ msgid "Choose your language"
 msgstr "Escolha seu idioma"
 
 msgid "Circular"
-msgstr "Circular"
+msgstr "E-mail de Aviso"
 
 msgid "Circular successfully sent."
-msgstr "Circular enviada com sucesso."
+msgstr "Aviso enviado com sucesso."
 
 msgid "City"
 msgstr "Cidade"
@@ -1371,77 +1371,77 @@ msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr ""
 
 msgid "Client / Domain / Edit Custom DNS record"
-msgstr ""
+msgstr "Cliente / Domínio /Editar registro DNS "
 
 msgid "Client / Domains"
-msgstr ""
+msgstr "Cliente / Domínios"
 
 msgid "Client / Domains / Add Custom DNS record"
-msgstr ""
+msgstr "Cliente / Domínios / Adicionar Registro DNS Personalizado"
 
 msgid "Client / Domains / Add Domain Alias"
-msgstr ""
+msgstr "Cliente / Domínios / Adicionar alias de domínio"
 
 msgid "Client / Domains / Add Subdomain"
-msgstr ""
+msgstr "Cliente / Domínios / Adicionar subdomínio"
 
 msgid "Client / Domains / Edit Domain Alias"
-msgstr ""
+msgstr "Cliente / Domínios / Editar Alias"
 
 msgid "Client / Domains / Edit Subdomain"
-msgstr ""
+msgstr "Cliente / Domínios / Editar Subdomínio"
 
 msgid "Client / Domains / PHP Settings"
-msgstr ""
+msgstr "Cliente / Domínios / Configurações do PHP"
 
 msgid "Client / Domains / SSL Certificate"
-msgstr ""
+msgstr "Cliente / Domínios / Certificado SSL"
 
 msgid "Client / Email / Add Email Account"
-msgstr ""
+msgstr "Cliente / E-mail / Adicionar E-mail"
 
 msgid "Client / Email / Catchall"
-msgstr "Cliente / E-mail / Pegua tudo"
+msgstr "Cliente / E-mail / Pega tudo"
 
 msgid "Client / Email / Catchall / Add Catchall"
-msgstr "Cliente / E-mail / Pegua tudo/ Adicionar"
+msgstr "Cliente / E-mail / Pega tudo/ Adicionar"
 
 msgid "Client / Email / Edit Email Account"
-msgstr ""
+msgstr "Cliente / E-mail / Editar E-mail"
 
 msgid "Client / Email / External Mail Server"
-msgstr ""
+msgstr "Cliente / E-mail / Servidores de e-mail Externo"
 
 msgid ""
 "Client / Email / External Mail Server / Add External Mail Server for "
 "{DOMAIN_UTF8}"
-msgstr ""
+msgstr "Cliente / E-mail / Servidores de e-mail Externo / Adicionar servidor externo para  {DOMAIN_UTF8}"
 
 msgid ""
 "Client / Email / External Mail Server / Edit External Mail Server for "
 "{DOMAIN_UTF8}"
-msgstr ""
+msgstr "Cliente / E-mail / Servidores de e-mail Externo / Editar servidor externo para  {DOMAIN_UTF8}"
 
 msgid "Client / Email / Overview"
-msgstr ""
+msgstr "Cliente / E-mail / Geral"
 
 msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr ""
+msgstr "Cliente / E-mail / Geral / Editar Auto Resposta"
 
 msgid "Client / Email / Overview / Enable Auto Responder"
-msgstr ""
+msgstr "Cliente / E-mail / Geral / Ativa Auto Resposta"
 
 msgid "Client / FTP / Add FTP Account"
-msgstr ""
+msgstr "Cliente / FTP / Geral"
 
 msgid "Client / FTP / Overview"
-msgstr ""
+msgstr "Cliente / FTP / Geral"
 
 msgid "Client / FTP / Overview / Edit FTP Account"
-msgstr ""
+msgstr "Cliente / FTP / Geral / Editar Conta FTP"
 
 msgid "Client / General / Overview"
-msgstr ""
+msgstr "Cliente /  Visão Geral "
 
 msgid "Client / Profile / Account Summary"
 msgstr ""
@@ -1528,7 +1528,7 @@ msgid "Closed tickets"
 msgstr "Tickets fechados"
 
 msgid "Common name"
-msgstr ""
+msgstr "Nome comum"
 
 msgid "Company"
 msgstr "Empresa"
@@ -1699,7 +1699,7 @@ msgid "DNS server unavailable. Please contact your reseller."
 msgstr "Servidor DNS indisponível. Por favor, contate o seu suporter."
 
 msgid "DOWN"
-msgstr "Para baixo"
+msgstr "Off"
 
 msgid "Daemon request failed."
 msgstr "Solicitação de processo falhou."
@@ -2109,13 +2109,13 @@ msgid "Download"
 msgstr "Baixar"
 
 msgid "Download TAR"
-msgstr ""
+msgstr "Download TAR"
 
 msgid "Download ZIP"
-msgstr ""
+msgstr "Download ZIP"
 
 msgid "Download links"
-msgstr ""
+msgstr "Download links"
 
 msgid "Download the archives stored in this directory"
 msgstr "Faça o download dos arquivos armazenados neste diretório"
@@ -2293,7 +2293,7 @@ msgstr "Habilitado para dados de domínio e bancos de dados"
 msgid ""
 "Entries associated to your external mail servers were not found. A "
 "Resynchronization has been scheduled."
-msgstr "Entradas associadas a seus servidores de email externo não foram encontrados. A ressincronização foi agendada. "
+msgstr "Entradas associadas a seus servidores de e-mail externo não foram encontrados. A ressincronização foi agendada. "
 
 msgid "Error"
 msgstr "Erro"
@@ -2347,7 +2347,7 @@ msgid "External mail server successfully scheduled for update."
 msgstr "Servidor de e-mail externo programado com sucesso para atualização."
 
 msgid "External mail servers"
-msgstr "Servidores de email externo"
+msgstr "Servidores de E-mail Externo"
 
 msgid "FTP Users"
 msgstr "Usuários de FTP"
@@ -2871,7 +2871,7 @@ msgid "Invalid name."
 msgstr "Nome inválido."
 
 msgid "Invalid private key or passphrase"
-msgstr ""
+msgstr "Chave  ou senha privada inválida."
 
 msgid "Invalid target."
 msgstr "Destino inválido."
@@ -3034,10 +3034,10 @@ msgid "Mail account type"
 msgstr "Tipo da conta de e-mail"
 
 msgid "Mail accounts list is empty."
-msgstr ""
+msgstr "Lista de e-mails está vazia."
 
 msgid "Mail feature is disabled."
-msgstr ""
+msgstr "Recurso e-mail está desativado."
 
 msgid "Mail usage"
 msgstr "Usado em emails"
@@ -3244,10 +3244,10 @@ msgid "No anti-rootkits logs"
 msgstr ""
 
 msgid "No available"
-msgstr ""
+msgstr "não disponível"
 
 msgid "No certificate found"
-msgstr ""
+msgstr "Nenhum certificado encontrado"
 
 msgid "No custom menu found."
 msgstr "Nenhum menu personalizado encontrado."
@@ -4052,7 +4052,7 @@ msgid "Reseller / Customers / Add Customer - Next Step"
 msgstr ""
 
 msgid "Reseller / Customers / Circular"
-msgstr ""
+msgstr "Revendedor / Clientes / E-mail de Aviso"
 
 msgid "Reseller / Customers / Domain Aliases"
 msgstr ""
@@ -4358,7 +4358,7 @@ msgid "Send"
 msgstr "Enviar"
 
 msgid "Send circular"
-msgstr ""
+msgstr "Enviar mensagem"
 
 msgid "Send message"
 msgstr "Mensagem"
@@ -4546,7 +4546,7 @@ msgid "Software installer requires PHP support."
 msgstr ""
 
 msgid "Software management"
-msgstr "Gerenciamento de Software"
+msgstr "Gerenciar Software"
 
 msgid "Software name"
 msgstr "Nome do software"
@@ -5054,7 +5054,7 @@ msgid "Type"
 msgstr "Tipo"
 
 msgid "UP"
-msgstr "Para cima"
+msgstr "On"
 
 msgid "URL forwarding"
 msgstr "URL redirecionada"
@@ -5979,7 +5979,7 @@ msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP  - Gerenciamento de Aplicativos (Permissões)"
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr "i-MSCP  - Cliente / E-mail  Pegua tudo"
+msgstr "i-MSCP  - Cliente / E-mail  Pega tudo"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr "i-MSCP  - Multi Server Control Panel / Login"
