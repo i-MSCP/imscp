@@ -262,14 +262,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function renameTable($table, $newTableName)
 	{
-		try {
-			$table = quoteIdentifier($table);
-			$stmt = exec_query('SHOW TABLES LIKE ?', $table);
+		$table = quoteIdentifier($table);
+		$stmt = exec_query('SHOW TABLES LIKE ?', $table);
 
-			if ($stmt->rowCount()) {
-				return sprintf('ALTER IGNORE TABLE %s RENAME TO %s', $table, quoteIdentifier($newTableName));
-			}
-		} catch (iMSCP_Exception_Database $e) {
+		if ($stmt->rowCount()) {
+			return sprintf('ALTER IGNORE TABLE %s RENAME TO %s', $table, quoteIdentifier($newTableName));
 		}
 
 		return null;
@@ -295,14 +292,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function addColumn($table, $column, $columnDefinition)
 	{
-		try {
-			$table = quoteIdentifier($table);
-			$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
+		$table = quoteIdentifier($table);
+		$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
 
-			if (!$stmt->rowCount()) {
-				return sprintf('ALTER IGNORE TABLE %s ADD %s %s', $table, quoteIdentifier($column), $columnDefinition);
-			}
-		} catch (iMSCP_Exception_Database $e) {
+		if (!$stmt->rowCount()) {
+			return sprintf('ALTER IGNORE TABLE %s ADD %s %s', $table, quoteIdentifier($column), $columnDefinition);
 		}
 
 		return null;
@@ -318,16 +312,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function changeColumn($table, $column, $columnDefinition)
 	{
-		try {
-			$table = quoteIdentifier($table);
-			$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
+		$table = quoteIdentifier($table);
+		$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
 
-			if ($stmt->rowCount()) {
-				return sprintf(
-					'ALTER IGNORE TABLE %s CHANGE %s %s', $table, quoteIdentifier($column), $columnDefinition
-				);
-			}
-		} catch (iMSCP_Exception_Database $e) {
+		if ($stmt->rowCount()) {
+			return sprintf('ALTER IGNORE TABLE %s CHANGE %s %s', $table, quoteIdentifier($column), $columnDefinition);
 		}
 
 		return null;
@@ -342,14 +331,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function dropColumn($table, $column)
 	{
-		try {
-			$table = quoteIdentifier($table);
-			$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
+		$table = quoteIdentifier($table);
+		$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
 
-			if ($stmt->rowCount()) {
-				return sprintf('ALTER IGNORE TABLE %s DROP %s', $table, quoteIdentifier($column));
-			}
-		} catch (iMSCP_Exception_Database $e) {
+		if ($stmt->rowCount()) {
+			return sprintf('ALTER IGNORE TABLE %s DROP %s', $table, quoteIdentifier($column));
 		}
 
 		return null;
@@ -368,27 +354,24 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		$indexType = strtoupper($indexType);
 
-		try {
-			$table = quoteIdentifier($table);
-			$indexType = strtoupper($indexType);
-			$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
+		$table = quoteIdentifier($table);
+		$indexType = strtoupper($indexType);
+		$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
 
-			if (!$stmt->rowCount()) {
-				if (is_array($columns)) {
-					$columns = implode(',', array_map('quoteIdentifier', $columns));
-				} else {
-					$columns = quoteIdentifier($columns);
-				}
-
-				return sprintf(
-					'ALTER IGNORE TABLE %s ADD %s %s (%s)',
-					$table,
-					$indexType,
-					($indexType == 'PRIMARY KEY') ? '' : quoteIdentifier($indexName),
-					$columns
-				);
+		if (!$stmt->rowCount()) {
+			if (is_array($columns)) {
+				$columns = implode(',', array_map('quoteIdentifier', $columns));
+			} else {
+				$columns = quoteIdentifier($columns);
 			}
-		} catch (iMSCP_Exception_Database $e) {
+
+			return sprintf(
+				'ALTER IGNORE TABLE %s ADD %s %s (%s)',
+				$table,
+				$indexType,
+				($indexType == 'PRIMARY KEY') ? '' : quoteIdentifier($indexName),
+				$columns
+			);
 		}
 
 		return null;
@@ -405,18 +388,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		$sqlUpd = array();
 
-		try {
-			$table = quoteIdentifier($table);
-			$stmt = exec_query("SHOW INDEX FROM $table WHERE COLUMN_NAME = ?", $column);
+		$table = quoteIdentifier($table);
+		$stmt = exec_query("SHOW INDEX FROM $table WHERE COLUMN_NAME = ?", $column);
 
-			if ($stmt->rowCount()) {
-				while ($row = $stmt->rowCount(PDO::FETCH_ASSOC)) {
-					$sqlUpd[] = sprintf(
-						'ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($row['KEY_NAME'])
-					);
-				}
+		if ($stmt->rowCount()) {
+			while ($row = $stmt->rowCount(PDO::FETCH_ASSOC)) {
+				$sqlUpd[] = sprintf(
+					'ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($row['KEY_NAME'])
+				);
 			}
-		} catch (iMSCP_Exception_Database $e) {
 		}
 
 		return $sqlUpd;
@@ -431,14 +411,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function dropIndexByName($table, $indexName = 'PRIMARY')
 	{
-		try {
-			$table = quoteIdentifier($table);
-			$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
+		$table = quoteIdentifier($table);
+		$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
 
-			if ($stmt->rowCount()) {
-				return sprintf('ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($indexName));
-			}
-		} catch (iMSCP_Exception_Database $e) {
+		if ($stmt->rowCount()) {
+			return sprintf('ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($indexName));
 		}
 
 		return null;
@@ -2772,7 +2749,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			// sql_database table update
 			$this->changeColumn('sql_database', 'domain_id', 'domain_id INT(10) UNSIGNED NOT NULL'),
 			$this->changeColumn(
-				'sql_database', 'sqld_name', 'VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL'
+				'sql_database', 'sqld_name', 'sqld_name VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL'
 			),
 			// sql_user table update
 			$this->changeColumn('sql_user', 'sqld_id', 'sqld_id INT(10) UNSIGNED NOT NULL'),
