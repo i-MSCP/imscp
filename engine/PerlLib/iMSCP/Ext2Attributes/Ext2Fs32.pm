@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- iMSCP::Ext2Attributes::Ext2Fs32 - i-Package providing Ioctl command values (32-bit constants) and Inode flags values
+ iMSCP::Ext2Attributes::Ext2Fs32 - Package providing Ioctl command values (32-bit constants) and Inode flags values
 
 =cut
 

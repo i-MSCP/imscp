@@ -8,6 +8,9 @@ Git stable
 DATABASE:
 	Fixed: Wrong column definition in update r176
 
+Tickets:
+	Fixed: #1091: Defect - OpenVZ - simfs (proxy-filesystem) - Immutable flags - No support detection
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.9
 ------------------------------------------------------------------------------------------------------------------------

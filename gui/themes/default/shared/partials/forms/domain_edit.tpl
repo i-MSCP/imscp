@@ -415,7 +415,6 @@
 	</td>
 </tr>
 <!-- EDP: backup_block -->
-<!-- BDP: web_folder_protection_block -->
 <tr>
 	<td>
 		<label for="web_folder_protection">{TR_WEB_FOLDER_PROTECTION}</label>
@@ -433,7 +432,6 @@
 		</div>
 	</td>
 </tr>
-<!-- EDP: web_folder_protection_block -->
 </tbody>
 </table>
 <div class="buttons">

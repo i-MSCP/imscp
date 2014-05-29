@@ -224,9 +224,6 @@ $config->set('SERVER_TRAFFIC_WARN', 0);
 // Paths appended to the default PHP open_basedir directive of customers
 $config->set('PHPINI_OPEN_BASEDIR', '');
 
-// Web folder protection
-$config->set('WEB_FOLDER_PROTECTION', 0);
-
 // Initialize the application
 iMSCP_Initializer::run($config);
 

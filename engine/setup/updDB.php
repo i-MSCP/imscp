@@ -52,20 +52,6 @@ try {
 		fwrite(STDERR, "[ERROR] Database update failed: " . $databaseUpdate->getError() . "\n");
 		exit(1);
 	}
-
-	// Check if the file system is supporting the immutable flag. In case the immutable flag is not supported
-	// We must disable the Web folder protection
-	if(isImmutableFlagAvailable()) {
-		$webFolderProtection = 1;
-	} else {
-		execute_query("UPDATE `domain` SET `web_folder_protection` = 'no'");
-		$webFolderProtection = 0;
-	}
-
-	/** @var iMSCP_Config_Handler_Db $dbConfig */
-	$dbConfig = iMSCP_Registry::get('dbConfig');
-	$dbConfig->set('WEB_FOLDER_PROTECTION', $webFolderProtection);
-
 } catch(Exception $e) {
 	fwrite(STDERR, "[ERROR] " . $e->getMessage() . "\n\nStackTrace:\n" . $e->getTraceAsString() . "\n");
 	exit(1);

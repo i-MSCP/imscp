@@ -213,10 +213,6 @@ function admin_generatePage($tpl, $id, $phpini)
 		$tpl->assign('BACKUP_FEATURE', '');
 	}
 
-	if(!$cfg->WEB_FOLDER_PROTECTION) {
-		$tpl->assign('WEB_FOLDER_PROTECTION_FEATURE', '');
-	}
-
 	_admin_generatePhpBlock($tpl, $phpini);
 }
 
@@ -284,10 +280,6 @@ function admin_generateErrorPage($tpl, $phpini)
 		$tpl->assign('BACKUP_FEATURE', '');
 	}
 
-	if(!$cfg->WEB_FOLDER_PROTECTION) {
-		$tpl->assign('WEB_FOLDER_PROTECTION_FEATURE', '');
-	}
-
 	_admin_generatePhpBlock($tpl, $phpini);
 }
 
@@ -325,11 +317,8 @@ function admin_checkData($phpini)
 	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$hpExtMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
 
-	if($cfg->WEB_FOLDER_PROTECTION) {
-		$hpProtectedWebFolders = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
-	} else {
-		$hpProtectedWebFolders = '_no_';
-	}
+	$hpProtectedWebFolders = isset($_POST['hp_external_mail'])
+		? clean_input($_POST['hp_external_mail']) : '_no_';
 
 	$status = isset($_POST['hp_status']) ? clean_input($_POST['hp_status']) : '0';
 
@@ -523,7 +512,6 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			'page_message' => 'layout',
 			'php_editor_disable_functions_block' => 'php_editor_feature',
 			'custom_dns_records_feature' => 'page',
-			'web_folder_protection_feature' => 'page',
 			'backup_feature' => 'page'
 		)
 	);
@@ -580,7 +568,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 				'TR_SOFTWARE_SUPP' => tr('Software installer'),
 				'TR_EXTMAIL' => tr('External mail server'),
 				'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),
-				'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes)."),
+				'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (only if supported by the file system)."),
 
 				'TR_AVAILABILITY' => tr('Hosting plan availability'),
 				'TR_STATUS' => tr('Available'),

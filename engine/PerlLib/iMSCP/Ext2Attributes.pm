@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- iMSCP::Ext2Attributes - Package providing access to Linux file system extended attributes
+ iMSCP::Ext2Attributes - Package providing access to Linux ext2 file system attributes
 
 =cut
 
@@ -29,7 +29,7 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-# TODO check compatibility with BSD* systems (should normally be)
+# TODO check compatibility with BSD* systems
 # http://fxr.watson.org/fxr/source/fs/ext2/ioctl.c?v=linux-2.6
 
 package iMSCP::Ext2Attributes;
@@ -40,6 +40,8 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use File::Find qw( finddepth );
+no warnings 'File::Find';
+use Fcntl qw/O_RDONLY O_NONBLOCK O_LARGEFILE/;
 use parent qw( Exporter );
 use vars qw( @EXPORT_OK );
 
@@ -54,7 +56,7 @@ use vars qw( @EXPORT_OK );
 	setNoAtime clearNoAtime isNoAtime
 );
 
-my $isSupported;
+my $isSupported = undef;
 
 BEGIN
 {
@@ -87,7 +89,7 @@ BEGIN
 
 =head1 DESCRIPTION
 
- This package provides access to the Ext2, Ext3, Ext4 and reiserfs filesystem extended attributes.
+ This library allow to handle ext2 file system attributes.
 
 =cut
 
@@ -106,206 +108,266 @@ my %constants = (
 
 =over 4
 
-=item setSecureDeletion($filename, [$recursive])
+=item setSecureDeletion($name, [$recursive])
 
  This function takes a filename and attempts to set its secure deletion flag.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearSecureDeletion($filename, [$recursive])
+=item clearSecureDeletion($name, [$recursive])
 
  This function takes a filename and removes the secure deletion flag if it is present.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isSecureDeletion($filename)
+=item isSecureDeletion($name)
 
 This function takes a filename and returns true if the secure deletion flag is set and false if it isn't.
 
-=item setUndelete($filename, [$recursive])
+=item setUndelete($name, [$recursive])
 
  This function takes a filename and attempts to set its undelete flag.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearUndelete($filename, [$recursive])
+=item clearUndelete($name, [$recursive])
 
  This function takes a filename and removes the undelete flag if it is present.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
 =item isUndelete
 
 This function takes a filename and returns true if the undelete flag is set and false if it isn't.
 
-=item setCompress($filename, [$recursive])
+=item setCompress($name, [$recursive])
 
  This function takes a filename and attempts to set its compress flag.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearCompress($filename, [$recursive])
+=item clearCompress($name, [$recursive])
 
  This function takes a filename and removes the compress flag if it is present.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isCompress($filename)
+=item isCompress($name)
 
 This function takes a filename and returns true if the compress flag is set and false if it isn't.
 
-=item setSynchronousUpdate($filename, [$recursive])
+=item setSynchronousUpdate($name, [$recursive])
 
  This function takes a filename and attempts to set its synchronous updates flag.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearSynchronousUpdate($filename, [$recursive])
+=item clearSynchronousUpdate($name, [$recursive])
 
  This function takes a filename and removes the synchronous updates flag if it is present.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isSynchronousUpdate($filename)
+=item isSynchronousUpdate($name)
 
 This function takes a filename and returns true if the synchronous updates flag is set and false if it isn't.
 
-=item setImmutable($filename, [$recursive])
+=item setImmutable($name, [$recursive])
 
  This function takes a filename and attempts to set its immutable flag.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearImmutable($filename, [$recursive])
+=item clearImmutable($name, [$recursive])
 
  This function takes a filename and removes the immutable flag if it is present.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
 =item isImmutable
 
 This function takes a filename and returns true if the immutable flag is set and false if it isn't.
 
-=item setAppendOnly($filename, [$recursive])
+=item setAppendOnly($name, [$recursive])
 
  This function takes a filename and attempts to set its appendable flag.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearAppendOnly($filename, [$recursive])
+=item clearAppendOnly($name, [$recursive])
 
  This function takes a filename and removes the appendable flag if it is present.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isAppendOnly($filename)
+=item isAppendOnly($name)
 
  This function takes a filename and returns true if the append only flag is set and false if it isn't.
 
-=item setNoAtime($filename)
+=item setNoAtime($name)
 
  This function takes a filename and attempts to set its noatime flag.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isNoAtime($filename)
+=item isNoAtime($name)
 
  This function takes a filename and returns true if the noatime flag is set and false if it isn't.
 
-=item clearNoAtime($filename, [$recursive])
+=item clearNoAtime($name, [$recursive])
 
  This function takes a filename and removes the only noatime flag if it is present.
- If a second arguement is passed with true value, and $filename is a directory, this function will operate recursively.
+ If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
 =cut
 
-for my $functName (keys %constants) {
+for my $fname (keys %constants) {
 	my $set = sub {
-		my ($filename, $recursive) = @_;
+		my ($name, $recursive) = @_;
 
 		return 0 unless _isSupported();
 
-		debug("Setting '$functName' extended attribute on $filename" . ($recursive ? ' recursively' : ''));
-
 		if($recursive) {
+			debug(sprintf('Adding %s flag on %s recursively', $fname, $name));
+
 			File::Find::finddepth(
 				sub {
-					my $flags = _getAttributes($_);
-					_setAttributes($_, $flags | $constants{$functName}) if defined $flags;
+					my $flags;
+
+					if(_getAttributes($_, \$flags) == -1) {
+						error(sprintf('An error occured while reading flags on %s: %s', $name, $!));
+					}
+
+					_setAttributes($_, $flags | $constants{$fname}) if defined $flags;
 				},
-				$filename
+				$name
 			);
 		} else {
-			my $flags = _getAttributes($filename);
-			_setAttributes($filename, $flags | $constants{$functName}) if defined $flags;
+			debug(sprintf('Adding %s flag on %s', $fname, $name));
+
+			my $flags;
+
+			if(_getAttributes($name, \$flags) == -1) {
+				error(sprintf('An error occured while reading flags on %s: %s', $name, $!));
+			}
+
+			_setAttributes($name, $flags | $constants{$fname}) if defined $flags;
 		}
 
 		0;
 	};
 
 	my $clear = sub {
-		my ($filename, $recursive) = @_;
+		my ($name, $recursive) = @_;
 
 		return 0 unless _isSupported();
 
-		debug("Clearing '$functName' extended attribute on $filename" . ($recursive ? ' recursively' : ''));
-
 		if($recursive) {
+			debug(sprintf('Removing %s flag on %s recursively', $fname, $name));
+
 			File::Find::finddepth(
 				sub {
-					my $flags = _getAttributes($_);
-					_setAttributes($_, $flags & ~$constants{$functName});
+					my $flags;
+
+					if(_getAttributes($_, \$flags) == -1) {
+						error(sprintf('An error occured while reading flags on %s:', $name, $!));
+					}
+
+					_setAttributes($_, $flags & ~$constants{$fname}) if defined $flags;
 				},
-				$filename
+				$name
 			);
 		} else {
-			my $flags = _getAttributes($filename);
-			_setAttributes($filename, $flags & ~$constants{$functName}) if defined $flags;
+			debug(sprintf('Removing %s flag on %s', $fname, $name));
+
+			my $flags;
+
+			if(_getAttributes($name, \$flags) == -1) {
+				error(sprintf('An error occured while reading flags on %s: %s', $name, $!));
+			}
+
+			_setAttributes($name, $flags & ~$constants{$fname}) if defined $flags;
 		}
 
 		0;
 	};
 
 	my $is = sub {
-		my $filename = $_[0];
+		my $name = $_[0];
 
 		return 0 unless _isSupported();
 
-		my $flags = _getAttributes($filename);
+		my $flags;
 
-		(defined $flags && $flags & $constants{$functName}) ? 1 : 0;
+		if(_getAttributes($name, \$flags) == -1) {
+			error(sprintf('An error occured while reading flags on %s: %s', $name, $!));
+		}
+
+		(defined $flags && $flags & $constants{$fname});
 	};
 
 	no strict 'refs';
 
-	*{__PACKAGE__ . '::set' . $functName } = $set;
-	*{__PACKAGE__ . '::clear' . $functName } = $clear;
-	*{__PACKAGE__ . '::is' . $functName } = $is;
+	*{__PACKAGE__ . '::set' . $fname } = $set;
+	*{__PACKAGE__ . '::clear' . $fname } = $clear;
+	*{__PACKAGE__ . '::is' . $fname } = $is;
 }
+
+=item _getAttributes($name, \$flags)
+
+ Get file attributes
+
+ Param string $name Filename
+ Param scalar_ref $flags Flags
+ Return int -1 on failure, other on success
+
+=cut
 
 sub _getAttributes
 {
-	my $filename = $_[0];
+	my ($name, $flags) = @_;
 
-	open my $fh, $filename or fatal("Unable to open $filename: $!");
-	my $ret = pack 'i', 0;
-	ioctl($fh, EXT2_IOC_GETFLAGS, $ret) or fatal("Unable to get extended attributes: $!");
-	close $fh;
-	unpack 'i', $ret;
+	my ($fd, $r, $f, $errno) = (undef, 0, pack('i', 0), 0);
+
+	return -1 unless sysopen($fd, $name, O_RDONLY|O_NONBLOCK|O_LARGEFILE);
+
+	$r = sprintf '%d', ioctl($fd, EXT2_IOC_GETFLAGS, $f) || -1;
+
+	$errno = $! if $r == -1;
+
+	$$flags = unpack 'i', $f;
+
+	close $fd;
+
+	$! = $errno if $errno;
+
+	$r;
 }
+
+=item _setAttributes($name, $flags)
+
+ Set file attributes
+
+ Param string $name Filename
+ Param scalar $flags Flags
+ Return int -1 on failure, other on success
+
+=cut
 
 sub _setAttributes
 {
-	my ($filename, $flags) = @_;
+	my ($name, $flags) = @_;
 
-	open my $fh, $filename or fatal("Unable to open $filename: $!");
-	my $flag = pack 'i', $flags;
-	ioctl($fh, EXT2_IOC_SETFLAGS, $flag) or fatal("Unable to set extended attribute: $!");
-	close $fh;
+	my ($fd, $r, $f, $errno) = (undef, 0, pack('i', $flags), 0);
+
+	return -1 unless sysopen($fd, $name, O_RDONLY|O_NONBLOCK|O_LARGEFILE);
+
+	$r = sprintf '%d', ioctl($fd, EXT2_IOC_SETFLAGS, $f) || -1;
+
+	$errno = $! if $r == -1;
+
+	close $fd;
+
+	$! = $errno if $errno;
+
+	$r;
 }
+
+=item _isSupported()
+
+=cut
 
 sub _isSupported
 {
 	unless(defined $isSupported) {
-		my ($stdout, $stderr);
-		my $rs = execute(
-			"$main::imscpConfig{'CMD_DF'} -TP " . escapeShell($main::imscpConfig{'USER_WEB_DIR'}), \$stdout, \$stderr
-		);
-		fatal($stderr) if $stderr && $rs;
-
-		my %filePartitionInfo;
-		@filePartitionInfo{
-			('mount', 'fstype', 'size', 'used', 'free', 'percent', 'disk')
-		} = split /\s+/, (split "\n", $stdout)[1];
-
-		if($filePartitionInfo{'fstype'} =~ /^(?:ext[2-4]|reiserfs)$/) {
+		unless(_getAttributes($main::imscpConfig{'USER_WEB_DIR'}) == -1) {
 			$isSupported = 1;
 		} else {
 			$isSupported = 0;

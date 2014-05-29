@@ -362,7 +362,6 @@
 	</td>
 </tr>
 <!-- EDP: backup_feature -->
-<!-- BDP: web_folder_protection_feature -->
 <tr>
 	<td>
 		<label for="web_folder_protection">{TR_WEB_FOLDER_PROTECTION}</label>
@@ -380,7 +379,6 @@
 		</div>
 	</td>
 </tr>
-<!-- EDP: web_folder_protection_feature -->
 </tbody>
 
 </table>

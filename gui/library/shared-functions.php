@@ -2933,21 +2933,6 @@ function showNotFoundErrorPage()
 }
 
 /**
- * Whether or not the file system on which Web folders are hosted is supporting the immutable flag
- *
- * @return bool TRUE if the immutable flag is supported, FALSE otherwise
- */
-function isImmutableFlagAvailable()
-{
-	/** @var iMSCP_Config_Handler_File $cfg */
-	$cfg = iMSCP_Registry::get('config');
-
-	$filePartitionInfo = iMSCP_SystemInfo::getFilePartitionInfo($cfg->USER_WEB_DIR);
-
-	return (bool) preg_match('/^(?:ext[2-4]|reiserfs)$/', $filePartitionInfo['fstype']);
-}
-
-/**
  * @param  $crnt
  * @param  $max
  * @param  $bars_max

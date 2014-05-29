@@ -62,7 +62,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 189;
+	protected $lastUpdate = 190;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -2994,5 +2994,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		return $sqlUdp;
+	}
+
+	/**
+	 * Delete deprecated Web folder protection parameter
+	 *
+	 * @return null
+	 */
+	protected function r190()
+	{
+		/** @var iMSCP_Config_Handler_Db $dbConfig */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		if($dbConfig->exists('WEB_FOLDER_PROTECTION')) {
+			$dbConfig->del('WEB_FOLDER_PROTECTION');
+		}
+
+		return null;
 	}
 }

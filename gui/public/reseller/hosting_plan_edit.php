@@ -255,10 +255,6 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 		$tpl->assign('BACKUP_FEATURE', '');
 	}
 
-	if(!$cfg->WEB_FOLDER_PROTECTION) {
-		$tpl->assign('WEB_FOLDER_PROTECTION_FEATURE', '');
-	}
-
 	_reseller_generatePhpBlock($tpl, $phpini);
 }
 
@@ -322,10 +318,6 @@ function reseller_generateErrorPage($tpl, $phpini)
 		$tpl->assign('BACKUP_FEATURE', '');
 	}
 
-	if(!$cfg->WEB_FOLDER_PROTECTION) {
-		$tpl->assign('WEB_FOLDER_PROTECTION_FEATURE', '');
-	}
-
 	_reseller_generatePhpBlock($tpl, $phpini);
 }
 
@@ -339,9 +331,6 @@ function reseller_checkData($phpini)
 {
 	global $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php,
 		   $cgi, $dns, $backup, $aps, $hpExtMail, $hpWebFolderProtection, $status;
-
-	/** @var iMSCP_Config_Handler_File $cfg */
-	$cfg = iMSCP_Registry::get('config');
 
 	$name = isset($_POST['hp_name']) ? clean_input($_POST['hp_name']) : '';
 	$description = isset($_POST['hp_description']) ? clean_input($_POST['hp_description']) : '';
@@ -363,11 +352,8 @@ function reseller_checkData($phpini)
 	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$hpExtMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
 
-	if($cfg->WEB_FOLDER_PROTECTION) {
-		$hpWebFolderProtection = isset($_POST['hp_protected_webfolders']) ? clean_input($_POST['hp_protected_webfolders']) : '_no_';
-	} else {
-		$hpWebFolderProtection = '_no_';
-	}
+	$hpWebFolderProtection = isset($_POST['hp_protected_webfolders'])
+		? clean_input($_POST['hp_protected_webfolders']) : '_no_';
 
 	$status = isset($_POST['hp_status']) ? clean_input($_POST['hp_status']) : '0';
 
@@ -577,7 +563,6 @@ $tpl->define_dynamic(
 		'custom_dns_feature' => 'page',
 		'aps_feature' => 'page',
 		'backup_feature' => 'page',
-		'web_folder_protection_feature' => 'page',
 		'submit_button' => 'page'
 	)
 );
@@ -636,7 +621,7 @@ if (isset($_GET['id'])) {
 			'TR_SOFTWARE_SUPP' => tr('Software installer'),
 			'TR_EXTMAIL' => tr('External mail server'),
 			'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),
-			'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes)."),
+			'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (only if supported by the file system)."),
 			'TR_BACKUP' => tr('Backup'),
 			'TR_BACKUP_DOMAIN' => tr('Domain'),
 			'TR_BACKUP_SQL' => tr('SQL'),
@@ -667,7 +652,6 @@ if (isset($_GET['id'])) {
 	if (!resellerHasFeature('aps')) $tpl->assign('APS_FEATURE', '');
 	if (!resellerHasFeature('external_mail')) $tpl->assign('EXT_MAIL_FEATURE', '');
 	if (!resellerHasFeature('backup')) $tpl->assign('BACKUP_FEATURE', '');
-	if (!resellerHasFeature('web_folder_protection')) $tpl->assign('WEB_FOLDER_PROTECTION_FEATURE', '');
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 

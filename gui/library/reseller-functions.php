@@ -788,8 +788,7 @@ function resellerHasFeature($featureName, $forceReload = false)
 			'aps' => ($resellerProps['software_allowed'] != 'no') ? true : false, // aps feature check must be revisted
 			'external_mail' => true,
 			'backup' => ($cfg['BACKUP_DOMAINS'] != 'no') ? true : false,
-			'support' => ($cfg['IMSCP_SUPPORT_SYSTEM'] && $resellerProps['support_system'] == 'yes') ? true : false,
-			'web_folder_protection' => ($cfg['WEB_FOLDER_PROTECTION']) ? true : false
+			'support' => ($cfg['IMSCP_SUPPORT_SYSTEM'] && $resellerProps['support_system'] == 'yes') ? true : false
 		);
 	}
 
