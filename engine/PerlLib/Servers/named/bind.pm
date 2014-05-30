@@ -184,7 +184,7 @@ sub postaddDmn($$)
 				CTM_ALS_ENTRY_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
-					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
+					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
 					DATA => $data->{'DOMAIN_IP'}
 				}
 			}
@@ -453,7 +453,7 @@ sub postaddSub($$)
 				CTM_ALS_ENTRY_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
-					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
+					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
 					DATA => $data->{'DOMAIN_IP'}
 				}
 			}

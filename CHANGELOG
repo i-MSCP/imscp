@@ -17,6 +17,7 @@ INSTALLER:
 	Fixed: Length of SQL user names is not checked (courier, dovecot, profptd, phpmyadmin)
 
 Tickets:
+	Fixed: #0549: Bug - Apache - IPv6 addresses must be enclosed in square brackets
 	Fixed: #1091: Defect - OpenVZ - simfs (proxy-filesystem) - Immutable flags - No support detection
 	Fixed: #1092: Defect - Dovecot - SQL - The value of the connect parameter must be within double-quote
 

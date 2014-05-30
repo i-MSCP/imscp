@@ -45,6 +45,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Rights;
+use iMSCP::Net;
 use File::Temp;
 use File::Basename;
 
@@ -296,11 +297,16 @@ sub disableDmn($$)
 	return $rs if $rs;
 
 	$self->setData($data);
+
+	my $ipMngr = iMSCP::Net->getInstance();
+
 	$self->setData(
 		{
 			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all',
-			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'}
+			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'},
+			DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
+				? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
 		}
 	);
 
@@ -916,8 +922,24 @@ sub addIps($$)
 
 	unless(qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0')) {
 		$content =~ s/NameVirtualHost[^\n]+\n//gi;
-		$content.= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
-		$content.= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};
+
+		my $ipMngr = iMSCP::Net->getInstance();
+
+		for(@{$data->{'SSLIPS'}}) {
+			if($ipMngr->getAddrVersion($_) eq 'ipv4') {
+				$content .= "NameVirtualHost $_:443\n";
+			} else {
+				$content .= "NameVirtualHost [$_]:443\n";
+			}
+		}
+
+		for(@{$data->{'IPS'}}) {
+			if($ipMngr->getAddrVersion($_) eq 'ipv4') {
+				$content .= "NameVirtualHost $_:443\n";
+			} else {
+				$content .= "NameVirtualHost [$_]:443\n";
+			}
+		}
 	} else {
 		$content =~ s/\n# NameVirtualHost\n//;
 	}
@@ -1785,12 +1807,16 @@ sub _addCfg($$)
 
 	my $apache24 = (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'));
 
+	my $ipMngr = iMSCP::Net->getInstance();
+
 	$self->setData(
 		{
 			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'},
 			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
 			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
-			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all'
+			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
+			DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
+				? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
 		}
 	);
 
