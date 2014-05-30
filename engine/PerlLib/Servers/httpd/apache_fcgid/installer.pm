@@ -1105,8 +1105,10 @@ sub _setupVlogger
 	my $dbUser = 'vlogger_user';
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	$dbUserHost = ($dbUserHost eq '127.0.0.1') ? 'localhost' : $dbUserHost;
+
+	my @allowedChr = map { chr } (0x21..0x7e);
 	my $dbPassword = '';
-	$dbPassword .= ('A'..'Z', 'a'..'z', '0'..'9', '_')[rand(62)] for 1..16;
+	$dbPassword .= $allowedChr[rand @allowedChr] for 1..16;
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect($dbName);

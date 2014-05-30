@@ -196,7 +196,7 @@ function checkPasswordSyntax($password, $unallowedChars = '', $noErrorMsg = fals
 
 	if (!empty($unallowedChars) && preg_match($unallowedChars, $password)) {
 		if(!$noErrorMsg) {
-			set_page_message(tr('Password contains not permitted characters.', $cfg->PASSWD_CHARS), 'error');
+			set_page_message(tr('Password contains unallowed characters.'), 'error');
 		}
 
 		$ret = false;

@@ -610,11 +610,6 @@ sub setupAskSqlDsn
 						"\nPlease, enter an SQL username. This user must exists and have full privileges on SQL server:$msg",
 						$dbUser
 					);
-
-					if(length $dbUser > 16) {
-						$msg = "\n\n\\Z1MySQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
-						$dbUser = '';
-					}
 				} while($rs != 30 && ! $dbUser);
 			}
 

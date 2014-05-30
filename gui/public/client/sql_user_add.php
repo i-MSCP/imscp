@@ -247,12 +247,13 @@ function client_addSqlUser($customerId, $databaseId)
 				return;
 			}
 
-			if (!preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])) {
-				set_page_message(tr("Please don't use special chars such as '@, $, %...' in password."), 'error');
-				return;
-			}
-
-			if (!checkPasswordSyntax($_POST['pass'])) {
+			if (!checkPasswordSyntax($_POST['pass'], '/[^\x21-\x7e]/')) {
+				set_page_message(
+					tr(
+						'Only printable characters from the ASCII table (not extended), excepted the space, are allowed.'
+					),
+					'error'
+				);
 				return;
 			}
 

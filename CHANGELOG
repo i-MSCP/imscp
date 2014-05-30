@@ -8,8 +8,17 @@ Git stable
 DATABASE:
 	Fixed: Wrong column definition in update r176
 
+GUI:
+	Changed: SQL passwords - Restrict allowed characters to printable characters from the ASCII table (not extended)
+
+INSTALLER:
+	Fixed: Allowed character range is not checked for SQL passwords (courier, dovecot, proftpd, phpmyadmin)
+	Fixed: All printable characters from the ASCII table, excepted the space, must be allowed in SQL passwords
+	Fixed: Length of SQL user names is not checked (courier, dovecot, profptd, phpmyadmin)
+
 Tickets:
 	Fixed: #1091: Defect - OpenVZ - simfs (proxy-filesystem) - Immutable flags - No support detection
+	Fixed: #1092: Defect - Dovecot - SQL - The value of the connect parameter must be within double-quote
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.9

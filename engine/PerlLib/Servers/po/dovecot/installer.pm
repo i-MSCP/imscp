@@ -124,6 +124,12 @@ sub askDovecot($$)
 			if($dbUser eq main::setupGetQuestion('DATABASE_USER')) {
 				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
+			} elsif(length $dbUser > 16) {
+				$msg = "\n\n\\Z1SQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
+				$dbUser = '';
+			} elsif($dbUser !~ /^[\x21-\x7e]+$/) {
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease, try again:";
+				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
 
@@ -135,13 +141,11 @@ sub askDovecot($$)
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
-
+					my @allowedChr = map { chr } (0x21..0x7e);
 					$dbPass = '';
-					$dbPass .= $allowedChars[rand @allowedChars] for 1..16;
+					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
 
-				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
 				$dialog->msgbox("\nPassword for the restricted dovecot SQL user set to: $dbPass");
 				$dialog->set('cancel-label');
 			}
