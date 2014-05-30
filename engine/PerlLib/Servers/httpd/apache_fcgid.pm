@@ -935,9 +935,9 @@ sub addIps($$)
 
 		for(@{$data->{'IPS'}}) {
 			if($ipMngr->getAddrVersion($_) eq 'ipv4') {
-				$content .= "NameVirtualHost $_:443\n";
+				$content .= "NameVirtualHost $_:80\n";
 			} else {
-				$content .= "NameVirtualHost [$_]:443\n";
+				$content .= "NameVirtualHost [$_]:80\n";
 			}
 		}
 	} else {
