@@ -331,7 +331,7 @@ function reseller_addDomainAlias()
 			iMSCP_Events::onBeforeAddDomainAlias,
 			array(
 				'domainId' => $domainId,
-				'domainAliasName' => $domainAliasName
+				'domainAliasName' => $domainAliasNameAscii
 			)
 		);
 

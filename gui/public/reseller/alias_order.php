@@ -80,8 +80,13 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 
 			try {
 				iMSCP_Events_Aggregator::getInstance()->dispatch(
-					iMSCP_Events::onBeforeAddDomainAlias, array('domainId' => $mainDmnId, 'domainAliasName' => $alsName));
-				
+					iMSCP_Events::onBeforeAddDomainAlias,
+					array(
+						'domainId' => $mainDmnId,
+						'domainAliasName' => $alsName
+					)
+				);
+
 				$db->beginTransaction();
 
 				$stmt = exec_query(

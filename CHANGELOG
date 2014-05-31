@@ -10,6 +10,7 @@ DATABASE:
 
 GUI:
 	Changed: SQL passwords - Restrict allowed characters to printable characters from the ASCII table (not extended)
+	Fixed: Domain alias name passed to the onBeforeAddDomainAlias|onAfterAddDomainAlias events should be in ASCII form
 
 INSTALLER:
 	Fixed: Allowed character range is not checked for SQL passwords (courier, dovecot, proftpd, phpmyadmin)
