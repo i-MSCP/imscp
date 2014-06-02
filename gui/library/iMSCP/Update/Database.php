@@ -279,7 +279,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	public function dropTable($table)
 	{
-		return sprintf('DROP TABLE %s IF EXISTS', quoteIdentifier($table));
+		return sprintf('DROP TABLE IF EXISTS %s', quoteIdentifier($table));
 	}
 
 	/**

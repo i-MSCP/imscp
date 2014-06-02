@@ -111,7 +111,7 @@ function set_page_message($message, $level = 'info')
 	if (!is_string($message)) {
 		throw new iMSCP_Exception('set_page_message() expects a string for $message');
 	} elseif (!in_array($level, array('info', 'warning', 'error', 'success'))) {
-		throw new iMSCP_Exception('Wrong level for page message.');
+		throw new iMSCP_Exception(sprintf('Wrong level %s for page message.', $level));
 	}
 
 	static $namespace = null;
