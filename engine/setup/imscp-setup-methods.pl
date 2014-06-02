@@ -665,7 +665,7 @@ sub setupAskSqlUserHost
 
 	my $rs = 0;
 
-	if(setupGetQuestion('DATABASE_HOST' ne 'localhost') ) { # Remote MySQL server
+	if(setupGetQuestion('DATABASE_HOST') ne 'localhost') { # Remote MySQL server
 		if($main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] || ! $host) {
 			do {
 				($rs, $host) = $dialog->inputbox(
