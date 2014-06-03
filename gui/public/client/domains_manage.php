@@ -526,98 +526,104 @@ function _client_generateSubdomainAliasAction($id, $status)
  */
 function client_generateCustomDnsRecordsList($tpl, $userId)
 {
+	$filterCond = '';
+
 	if (customerHasFeature('custom_dns_records')) {
-		$domainId = get_user_domain_id($userId);
+		$filterCond = "AND owned_by <> 'custom_dns_feature'";
+	}
 
-		$stmt = exec_query(
-			'
-				SELECT
-					t1.*,
-					IFNULL(t3.alias_name, t2.domain_name) domain_name,
-					IFNULL(t3.alias_status, t2.domain_status) domain_status
-				FROM
-					domain_dns AS t1
-				LEFT JOIN
-					domain AS t2 ON (t2.domain_id = t1.domain_id)
-				LEFT JOIN
-					domain_aliasses AS t3 ON (t3.alias_id = t1.alias_id)
-				WHERE
-					t1.domain_id = ?
-				ORDER BY
-					t1.domain_id, t1.alias_id, t1.domain_dns, t1.domain_type
-			',
-			$domainId
-		);
+	$stmt = exec_query(
+		"
+			SELECT
+				t1.*,
+				IFNULL(t3.alias_name, t2.domain_name) domain_name,
+				IFNULL(t3.alias_status, t2.domain_status) domain_status
+			FROM
+				domain_dns AS t1
+			LEFT JOIN
+				domain AS t2 USING (domain_id)
+			LEFT JOIN
+				domain_aliasses AS t3 USING (alias_id)
+			WHERE
+				t1.domain_id = ?
+			$filterCond
+			ORDER BY
+				t1.domain_id, t1.alias_id, t1.domain_dns, t1.domain_type
+		",
+		get_user_domain_id($userId)
+	);
 
-		if (!$stmt->rowCount()) {
+	if ($stmt->rowCount()) {
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			list(
+				$actionEdit,
+				$actionScriptEdit
+				) = _client_generateCustomDnsRecordAction(
+				'edit',
+				($row['owned_by'] === 'custom_dns_feature')
+					? $row['domain_dns_id']
+					: (
+				($row['owned_by'] === 'ext_mail_feature')
+					? $row['domain_id'] . ';' . ($row['alias_id'] ? 'alias' : 'normal')
+					: null // FIXME Allow any component to provide it id for edit link
+				),
+				$row['domain_status'],
+				$row['owned_by']
+			);
+
+			if ($row['owned_by'] !== 'custom_dns_feature') {
+				$tpl->assign('DNS_DELETE_LINK', '');
+			} else {
+				list(
+					$actionDelete,
+					$actionScriptDelete
+					) = _client_generateCustomDnsRecordAction(
+					'Delete', $row['domain_dns_id'], $row['domain_status']
+				);
+
+				$tpl->assign(
+					array(
+						'DNS_ACTION_SCRIPT_DELETE' => tohtml($actionScriptDelete),
+						'DNS_ACTION_DELETE' => $actionDelete,
+						'DNS_TYPE_RECORD' => tr("%s record", $row['domain_type'])
+					)
+				);
+
+				$tpl->parse('DNS_DELETE_LINK', '.dns_delete_link');
+			}
+
 			$tpl->assign(
 				array(
-					'DNS_MSG' => tr('You do not have custom DNS records.'),
+					'DNS_DOMAIN' => tohtml(decode_idna($row['domain_name'])),
+					'DNS_NAME' => tohtml(decode_idna($row['domain_dns'])),
+					'DNS_CLASS' => tohtml($row['domain_class']),
+					'DNS_TYPE' => tohtml($row['domain_type']),
+					'LONG_DNS_DATA' => tohtml(wordwrap(decode_idna($row['domain_text']), 80, "\n", true)),
+					'SHORT_DNS_DATA' => decode_idna((strlen($row['domain_text']) > 20) ?
+						substr($row['domain_text'], 0, 17) . '...' : $row['domain_text']),
+					'DNS_ACTION_SCRIPT_EDIT' => tohtml($actionScriptEdit),
+					'DNS_ACTION_EDIT' => $actionEdit
+				)
+			);
+
+			$tpl->parse('DNS_ITEM', '.dns_item');
+			$tpl->assign('DNS_DELETE_LINK', '');
+		}
+
+		$tpl->parse('DNS_LIST', 'dns_list');
+		$tpl->assign('DNS_MESSAGE', '');
+	} else {
+		if (customerHasFeature('custom_dns_record')) {
+			$tpl->assign(
+				array(
+					'DNS_MSG' => tr('You do not have DNS resource records.'),
 					'DNS_LIST' => ''
 				)
 			);
 		} else {
-			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				list(
-					$actionEdit,
-					$actionScriptEdit
-				) = _client_generateCustomDnsRecordAction(
-					'edit',
-					($row['owned_by'] === 'custom_dns_feature')
-						? $row['domain_dns_id']
-						: (
-							($row['owned_by'] === 'ext_mail_feature')
-								? $row['domain_id'] . ';' . ($row['alias_id'] ? 'alias' : 'normal')
-								: null // FIXME Allow any component to provide it id for edit link
-						),
-					$row['domain_status'],
-					$row['owned_by']
-				);
-
-				if($row['owned_by'] !== 'custom_dns_feature') {
-					$tpl->assign('DNS_DELETE_LINK', '');
-				} else {
-					list(
-						$actionDelete,
-						$actionScriptDelete
-					) = _client_generateCustomDnsRecordAction(
-						'Delete', $row['domain_dns_id'], $row['domain_status']
-					);
-
-					$tpl->assign(
-						array(
-							'DNS_ACTION_SCRIPT_DELETE' => tohtml($actionScriptDelete),
-							'DNS_ACTION_DELETE' => $actionDelete,
-							'DNS_TYPE_RECORD' => tr("%s record", $row['domain_type'])
-						)
-					);
-
-					$tpl->parse('DNS_DELETE_LINK', '.dns_delete_link');
-				}
-
-				$tpl->assign(
-					array(
-						'DNS_DOMAIN' => tohtml(decode_idna($row['domain_name'])),
-						'DNS_NAME' => tohtml(decode_idna($row['domain_dns'])),
-						'DNS_CLASS' => tohtml($row['domain_class']),
-						'DNS_TYPE' => tohtml($row['domain_type']),
-						'LONG_DNS_DATA' => tohtml(wordwrap(decode_idna($row['domain_text']), 80, "\n", true)),
-						'SHORT_DNS_DATA' => decode_idna((strlen($row['domain_text']) > 20) ?
-							substr($row['domain_text'],0 , 17) . '...' : $row['domain_text']),
-						'DNS_ACTION_SCRIPT_EDIT' => tohtml($actionScriptEdit),
-						'DNS_ACTION_EDIT' => $actionEdit
-					)
-				);
-
-				$tpl->parse('DNS_ITEM', '.dns_item');
-				$tpl->assign('DNS_DELETE_LINK', '');
-			}
-
-			$tpl->parse('DNS_LIST', 'dns_list');
-			$tpl->assign('DNS_MESSAGE', '');
+			$tpl->assign('CUSTOM_DNS_RECORDS_BLOCK', '');
 		}
-	} else {
-		$tpl->assign('CUSTOM_DNS_RECORDS_BLOCK', '');
+
 	}
 }
 
@@ -715,7 +721,7 @@ $tpl->assign(
 		'TR_ACTIONS' => tr('Actions'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 
-		'TR_DNS' => tr('Custom DNS records'),
+		'TR_DNS' => tr('DNS resource records'),
 		'TR_DNS_NAME' => tr('Name'),
 		'TR_DNS_CLASS' => tr('Class'),
 		'TR_DNS_TYPE' => tr('Type'),
