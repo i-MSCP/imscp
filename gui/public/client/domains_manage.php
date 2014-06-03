@@ -528,7 +528,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 {
 	$filterCond = '';
 
-	if (customerHasFeature('custom_dns_records')) {
+	if (!customerHasFeature('custom_dns_records')) {
 		$filterCond = "AND owned_by <> 'custom_dns_feature'";
 	}
 
