@@ -8,6 +8,9 @@ Git stable
 DATABASE:
 	Fixed: Wrong column definition in update r176
 
+Distro:
+	Fixed: PHP5-FPM instance is lost in some contexts which causes errors 500 - Ubuntu Trusty Thar
+
 GUI:
 	Changed: SQL passwords - Restrict allowed characters to printable characters from the ASCII table (not extended)
 	Fixed: DNS resource records which are not owned by the custom DNS records feature must always be displayed

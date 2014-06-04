@@ -219,7 +219,8 @@ sub installPackages
 
 	$rs = execute(
 		"$command -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-		 "install @{$self->{'packagesToInstall'}} --auto-remove --purge",
+		 "-o Dpkg::Options::='--force-confask' --reinstall install @{$self->{'packagesToInstall'}} " .
+		 "--auto-remove --purge",
 		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;

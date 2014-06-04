@@ -694,25 +694,6 @@ sub _buildPhpConfFiles
 	);
 	return $rs if $rs;
 
-	# Don't use upstart to manage PHP5-FPM processes as the reload signal is not implemented in all versions
-	# This is a quick fix for https://bugs.launchpad.net/ubuntu/+source/php5/+bug/1242376
-	my $file = iMSCP::File->new(
-		'filename' => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}"
-	);
-
-	my $fileContent = $file->get();
-	unless(defined $fileContent) {
-		error("Unable to read file $file->{'filename'}");
-	}
-
-	$fileContent =~ s/(if\s+init_is_upstart;.*\n)(.*\n)(fi\n)/# upstart disabled by i-MSCP installer\n#$1#$2#$3/g;
-
-	$rs = $file->set($fileContent);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
 	$self->{'hooksManager'}->trigger('afterHttpdBuildPhpConfFiles');
 }
 
