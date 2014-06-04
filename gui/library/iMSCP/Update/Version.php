@@ -130,7 +130,8 @@ class iMSCP_Update_Version extends iMSCP_Update
 								'Host: api.github.com',
 								'Accept: application/vnd.github.v3+json',
 								'User-Agent: i-MSCP',
-								'Connection: close'
+								'Connection: close',
+								'timeout' => 3
 							)
 						)
 					)
@@ -146,7 +147,7 @@ class iMSCP_Update_Version extends iMSCP_Update
 					return false;
 				}
 
-				if ($info = file_get_contents('https://api.github.com/repos/i-MSCP/imscp/releases', false, $context)) {
+				if ($info = @file_get_contents('https://api.github.com/repos/i-MSCP/imscp/releases', false, $context)) {
 					$info = json_decode($info, true);
 				} else {
 					$this->setError(tr('Unable to get update info from Github'));

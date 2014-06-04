@@ -604,7 +604,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 			$tpl->assign(
 				array(
 					'DNS_DOMAIN' => tohtml(decode_idna($row['domain_name'])),
-					'DNS_NAME' => tohtml(sprintf("% 10s", decode_idna($dnsName))),
+					'DNS_NAME' => tohtml(decode_idna($dnsName)),
 					'DNS_CLASS' => tohtml($row['domain_class']),
 					'DNS_TYPE' => tohtml($row['domain_type']),
 					'LONG_DNS_DATA' => tohtml(wordwrap(decode_idna($row['domain_text']), 80, "\n", true)),
