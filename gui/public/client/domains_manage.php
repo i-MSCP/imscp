@@ -592,10 +592,19 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 				$tpl->parse('DNS_DELETE_LINK', '.dns_delete_link');
 			}
 
+			// Remove TTL part if any
+			# FIXME TTL must be in dedicated column
+			if(strpos($row['domain_dns'], ' ') !== false) {
+				$dnsName = explode(' ', $row['domain_dns']);
+				$dnsName = $dnsName[0];
+			} else {
+				$dnsName = $row['domain_dns'];
+			}
+
 			$tpl->assign(
 				array(
 					'DNS_DOMAIN' => tohtml(decode_idna($row['domain_name'])),
-					'DNS_NAME' => tohtml(decode_idna($row['domain_dns'])),
+					'DNS_NAME' => tohtml(sprintf("% 10s", decode_idna($dnsName))),
 					'DNS_CLASS' => tohtml($row['domain_class']),
 					'DNS_TYPE' => tohtml($row['domain_type']),
 					'LONG_DNS_DATA' => tohtml(wordwrap(decode_idna($row['domain_text']), 80, "\n", true)),
