@@ -958,7 +958,7 @@ sub setupAskPanelSsl
 	my $sslEnabled = setupGetQuestion('PANEL_SSL_ENABLED');
 	my $selfSignedCertificate = setupGetQuestion('PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no');
 	my $privateKeyPath = setupGetQuestion('PANEL_SSL_PRIVATE_KEY_PATH', '/root/');
-	my $passphrase = setupGetQuestion('PANEL_SSL_PASSPHRASE');
+	my $passphrase = setupGetQuestion('PANEL_SSL_PRIVATE_KEY_PASSPHRASE');
 	my $certificatPath = setupGetQuestion('PANEL_SSL_CERTIFICATE_PATH', "/root/");
 	my $caBundlePath = setupGetQuestion('PANEL_SSL_CA_BUNDLE_PATH', '/root/');
 	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
@@ -1097,7 +1097,7 @@ sub setupAskServicesSsl
 	my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED');
 	my $selfSignedCertificate = setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', 'no');
 	my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', '/root/');
-	my $passphrase = setupGetQuestion('SERVICES_SSL_PASSPHRASE');
+	my $passphrase = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE');
 	my $certificatPath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH', "/root/");
 	my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', '/root/');
 
@@ -1848,7 +1848,7 @@ sub setupPanelSsl
 	my $domainName = setupGetQuestion('BASE_SERVER_VHOST');
 	my $selfSignedCertificate = (setupGetQuestion('PANEL_SSL_SELFSIGNED_CERTIFICATE') eq 'yes') ? 1 : 0;
 	my $privateKeyPath = setupGetQuestion('PANEL_SSL_PRIVATE_KEY_PATH');
-	my $passphrase = setupGetQuestion('PANEL_SSL_PASSPHRASE');
+	my $passphrase = setupGetQuestion('PANEL_SSL_PRIVATE_KEY_PASSPHRASE');
 	my $certificatePath = setupGetQuestion('PANEL_SSL_CERTIFICATE_PATH');
 	my $caBundlePath = setupGetQuestion('PANEL_SSL_CA_BUNDLE_PATH');
 	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
@@ -1885,7 +1885,7 @@ sub setupServiceSsl
 	my $domainName = setupGetQuestion('SERVER_HOSTNAME');
 	my $selfSignedCertificate = (setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE') eq 'yes') ? 1 : 0;
 	my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH');
-	my $passphrase = setupGetQuestion('SERVICES_SSL_PASSPHRASE');
+	my $passphrase = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE');
 	my $certificatePath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH');
 	my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH');
 	my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED');

@@ -21,6 +21,7 @@ INSTALLER:
 	Fixed: All printable characters from the ASCII table, excepted the space, must be allowed in SQL passwords
 	Fixed: Length of SQL user names is not checked (courier, dovecot, profptd, phpmyadmin)
 	Fixed: Unable to set DATABASE_USER_HOST (setup dialog is never displayed)
+	Fixed: Unbale to add an SSL certificate with private key which is protected by a passphrase
 
 Tickets:
 	Fixed: #0549: Bug - Apache - IPv6 addresses must be enclosed in square brackets
