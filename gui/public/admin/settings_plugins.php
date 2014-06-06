@@ -606,9 +606,6 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 
 check_login('admin');
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 /** @var iMSCP_Plugin_Manager $pluginManager */
 $pluginManager = iMSCP_Registry::get('pluginManager');
 
