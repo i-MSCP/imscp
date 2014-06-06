@@ -9,7 +9,7 @@
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
-$main::questions{'HTTPD_SERVER'} = 'apache_fcgid';
+$main::questions{'HTTPD_SERVER'} = 'apache_php_fpm';
 
 # apache_fcgid - Only relevant if the server for the http service is set to 'apache_fgcid'
 $main::questions{'INI_LEVEL'} = 'per_user'; # 'per_user' or 'per_domain' or 'per_vhost'
@@ -49,6 +49,7 @@ $main::questions{'DNSBL_CHECKS_ONLY'} = 'no'; # 'yes' or 'no'
 $main::questions{'NAMED_SERVER'} = 'bind';
 
 # Mode in which the DNS server should acts
+# Only relevant if you set NAMED_SERVER to 'bind'
 $main::questions{'BIND_MODE'} = 'master'; # 'master' or 'slave'
 
 # Allow to indicate IP addresses of your primary DNS servers
@@ -60,9 +61,11 @@ $main::questions{'PRIMARY_DNS'} = 'no'; # 'no' or list of IP addresses, each sep
 $main::questions{'SECONDARY_DNS'} = 'no'; # 'no' or list of IP addresses, each separated by semicolon or space
 
 # IPv6 support for DNS server
+# Only relevant if you set NAMED_SERVER to 'bind'
 $main::questions{'BIND_IPV6'} = 'no'; # 'yes' or 'no'
 
 # Local DNS resolver
+# Only relevant if you set NAMED_SERVER to 'bind'
 $main::questions{'LOCAL_DNS_RESOLVER'} = 'yes'; # 'yes' or 'no'
 
 # Server to use for the SQL service
