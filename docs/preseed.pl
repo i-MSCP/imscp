@@ -135,7 +135,7 @@ $main::questions{'SERVICES_SSL_ENABLED'} = 'no'; # 'yes' or 'no'
 $main::questions{'SERVICES_SSL_SELFSIGNED_CERTIFICATE'} = 'no'; # 'yes' for selfsigned, 'no' for own certificate
 
 # Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and  SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'SERVICES_SSL_PRIVATE_KEY_PATH'} = ''; # Path to certificate key
+$main::questions{'SERVICES_SSL_PRIVATE_KEY_PATH'} = ''; # Path to private key
 
 # Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
 $main::questions{'SERVICES_SSL_PRIVATE_KEY_PASSPHRASE'} = ''; # Leave blank if your private key is not protected by a passphrase
