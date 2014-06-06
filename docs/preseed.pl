@@ -65,8 +65,12 @@ $main::questions{'BIND_IPV6'} = 'no'; # 'yes' or 'no'
 # Local DNS resolver
 $main::questions{'LOCAL_DNS_RESOLVER'} = 'yes'; # 'yes' or 'no'
 
-# Server to use for the Sql service
-# Depending of your distro 'mysql_5.1' or 'mysql_5.5' or 'mariadb_5.3' or 'mariadb_5.5' or 'mariadb_10.0' or 'remote_server'
+# Server to use for the SQL service
+# Depending of your distro:
+#  - mysql_5.1 or mysql_5.5
+#  - mariadb_5.3 or mariadb_5.5 or mariadb_10.0
+#  - percona_5.5 or percona_5.6
+#  - remote_server
 $main::questions{'SQL_SERVER'} = 'mysql_5.5';
 
 # Server hostname
