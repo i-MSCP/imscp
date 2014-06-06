@@ -5,32 +5,37 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+PLUGINS
+	Fixed: Plugin db updates are not applied when a new plugin version is uploaded through the plugin UI
+	Fixed: Unable to delete plugins which are uninstalled
+	Updated: Plugin API to version 0.2.10
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.10
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-06-06: Laurent Declercq
-	- RELEASE i-MSCP 1.1.10
+	RELEASE i-MSCP 1.1.10
 
-DATABASE:
+DATABASE
 	Fixed: Wrong column definition in update r176
 
-Distro:
+Distro
 	Fixed: PHP5-FPM instance is lost in some contexts which causes errors 500 - Ubuntu Trusty Thar
 
-GUI:
+GUI
 	Changed: SQL passwords - Restrict allowed characters to printable characters from the ASCII table (not extended)
 	Fixed: DNS resource records which are not owned by the custom DNS records feature must always be displayed
 	Fixed: Domain alias name passed to the onBeforeAddDomainAlias|onAfterAddDomainAlias events should be in ASCII form
 
-INSTALLER:
+INSTALLER
 	Fixed: Allowed character range is not checked for SQL passwords (courier, dovecot, proftpd, phpmyadmin)
 	Fixed: All printable characters from the ASCII table, excepted the space, must be allowed in SQL passwords
 	Fixed: Length of SQL user names is not checked (courier, dovecot, profptd, phpmyadmin)
 	Fixed: Unbale to add an SSL certificate with a private key which is protected by a passphrase
 	Fixed: Unable to set DATABASE_USER_HOST (setup dialog is never displayed)
 
-Tickets:
+TICKETS
 	Fixed: #0549: Bug - Apache - IPv6 addresses must be enclosed in square brackets
 	Fixed: #1091: Defect - OpenVZ - simfs (proxy-filesystem) - Immutable flags - No support detection
 	Fixed: #1092: Defect - Dovecot - SQL - The value of the connect parameter must be within double-quote
@@ -40,728 +45,727 @@ Tickets:
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-05-25: Laurent Declercq
-	- RELEASE i-MSCP 1.1.9
+	RELEASE i-MSCP 1.1.9
 
-DATABASE:
-	- Fixed: r187 is not a valid database update method
+DATABASE
+	Fixed: r187 is not a valid database update method
 
-ENGINE:
-	- Fixed: Can't locate object method "validateCertificateChain"
+ENGINE
+	Fixed: Can't locate object method "validateCertificateChain"
 
-GUI:
-	- Fixed: Unable to add self-signed certificate without CA bundle
+GUI
+	Fixed: Unable to add self-signed certificate without CA bundle
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.8
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-05-24: Laurent Declercq
-	- RELEASE i-MSCP 1.1.8
+	RELEASE i-MSCP 1.1.8
 
-CONFIGS:
-	- Fixed: Wrong placeholder variables in proftpd configuration template file (Ubuntu)
+CONFIGS
+	Fixed: Wrong placeholder variables in proftpd configuration template file (Ubuntu)
 
-GUI:
-	- Fixed: Unable to add SSL certificate without CA bundle (unexpected line feed in ca_bundle field)
+GUI
+	Fixed: Unable to add SSL certificate without CA bundle (unexpected line feed in ca_bundle field)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.7
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-05-23: Laurent Declercq
-	- RELEASE i-MSCP 1.1.7
+	RELEASE i-MSCP 1.1.7
 
-Tickets:
-	- Fixed: #1090: Bug - Unable to update to 1.1.6 version - Wrong update query
+TICKETS
+	Fixed: #1090: Bug - Unable to update to 1.1.6 version - Wrong update query
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.6
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-05-23: Laurent Declercq
-	- RELEASE i-MSCP 1.1.6
+	RELEASE i-MSCP 1.1.6
 
-CONFIGS:
-	- Added: Support for Percona server (Debian squeeze, wheezy / Ubuntu lucid, precise, quantal, raring, saucy)
-	- Added support for MariaDB server using official repositories (Debian Jessie / Ubuntu Trusty)
+CONFIGS
+	Added: Support for Percona server (Debian squeeze, wheezy / Ubuntu lucid, precise, quantal, raring, saucy)
+	Added support for MariaDB server using official repositories (Debian Jessie / Ubuntu Trusty)
 
-ENGINE:
-	- Added: MariaDB|MySQL|Percona server implementations
-	- Added: Options which allow to disable compression for backups
-	- Fixed: Control panel must have it own SSL certificate
-	- Fixed: Even if a database backup fail, the backup must not stop. The backup script must jump to the next database
-	- Fixed: iMSCP::Ext2Attributes must not act on systems which do not support extended fs attributes
-	- Fixed: Reload signal not implemented in upstart < 1.10.0
-	- Fixed: SQL root password must not be shown through processus's viewer (mysqldump)
-	- Fixed: The backup script must set the immutable bit on the customer homedir only if it was previously set
-	- Fixed: The full certificate chain must be imported in the final container (OpenSSL library)
-	- Fixed: Unable to restore an uncompressed backup (missing implementation)
-	- Fixed: Unable to restore SQL database (bad command syntax)
-	- Fixed: Unable to suspend domain - Undefined key 'TplDir' (apache_php_fpm server implementation)
+ENGINE
+	Added: MariaDB|MySQL|Percona server implementations
+	Added: Options which allow to disable compression for backups
+	Fixed: Control panel must have it own SSL certificate
+	Fixed: Even if a database backup fail, the backup must not stop. The backup script must jump to the next database
+	Fixed: iMSCP::Ext2Attributes must not act on systems which do not support extended fs attributes
+	Fixed: Reload signal not implemented in upstart < 1.10.0
+	Fixed: SQL root password must not be shown through processus's viewer (mysqldump)
+	Fixed: The backup script must set the immutable bit on the customer homedir only if it was previously set
+	Fixed: The full certificate chain must be imported in the final container (OpenSSL library)
+	Fixed: Unable to restore an uncompressed backup (missing implementation)
+	Fixed: Unable to restore SQL database (bad command syntax)
+	Fixed: Unable to suspend domain - Undefined key 'TplDir' (apache_php_fpm server implementation)
 
-GUI:
-	- Added iMSCP_Events_Aggregator
-	- Changed: EventManager is no longer static (shared). The getInstance() method is now deprecated. It now return an
+GUI
+	Added iMSCP_Events_Aggregator
+	Changed: EventManager is no longer static (shared). The getInstance() method is now deprecated. It now return an
 		iMSCP_Events_Aggregator instance to ensure backward compatibility with plugins which are already released
-	- Changed: i-MSCP version info are now pulled using GitHub API
-	- Deprecated: iMSCP_Events_Manager::getInstance() (will be removed in next minor version)
-	- Fixed: Directory chooser is broken (software installer)
-	- Fixed: Empty SQL user list if at least one database doesn't have any SQL user (software installer)
-	- Fixed: iMSCP version info must be cached for performance reasons (info are fetched once per day)
-	- Fixed: Private key passphrase must not be stored in database (SSL feature)
-	- Fixed: The full certificate chain must be checked (SSL feature)
-	- Fixed: The method iMSCP_Update_Database::_addIndex() doesn't allow compound keys
+	Changed: i-MSCP version info are now pulled using GitHub API
+	Deprecated: iMSCP_Events_Manager::getInstance() (will be removed in next minor version)
+	Fixed: Directory chooser is broken (software installer)
+	Fixed: Empty SQL user list if at least one database doesn't have any SQL user (software installer)
+	Fixed: iMSCP version info must be cached for performance reasons (info are fetched once per day)
+	Fixed: Private key passphrase must not be stored in database (SSL feature)
+	Fixed: The full certificate chain must be checked (SSL feature)
+	Fixed: The method iMSCP_Update_DATABASE:_addIndex() doesn't allow compound keys
 
-INSTALLER:
-	- Added: Support for Percona MySQL server
-	- Fixed: apache_php_fpm uninstaller is broken
-	- Fixed: Control panel must have it own SSL certificate
-	- Fixed: PHP mcrypt module not enabled after fresh install (Ubuntu Trusty Thar)
+INSTALLER
+	Added: Support for Percona MySQL server
+	Fixed: apache_php_fpm uninstaller is broken
+	Fixed: Control panel must have it own SSL certificate
+	Fixed: PHP mcrypt module not enabled after fresh install (Ubuntu Trusty Thar)
 
-PLUGINS:
-	- Changed: Implementation of the register() method is no longer mandatory in action plugins
-	- Fixed: Plugin manager must have its own event manager
-	- Fixed: Plugin event listeners are registered twice in some contexts
-	- Updated: Plugin API to version 0.2.9 (changes are backward compatible)
+PLUGINS
+	Changed: Implementation of the register() method is no longer mandatory in action plugins
+	Fixed: Plugin manager must have its own event manager
+	Fixed: Plugin event listeners are registered twice in some contexts
+	Updated: Plugin API to version 0.2.9 (changes are backward compatible)
 
-Tickets:
-	- Fixed #1056: Bug - Incorrect value '_no_' in SQL query on create default email-accounts
-	- Fixed #1061: Defect - i-MSCP is Unable to connect to https when using PHP from dotdeb
-	- Fixed #1065: Bug - Unable to unsuspend customer account from admin UI
-	- Fixed #1066: Bug - Customer's domains remain reachable through HTTPS when they are deactivated
-	- Fixed #1075: Bug - mysqldump: Can't create/write to file
-	- Fixed #1078: Defect - Defect - Table 'mysql.host' is not longer provided with MySQL >= 5.6.7
+TICKETS
+	Fixed #1056: Bug - Incorrect value '_no_' in SQL query on create default email-accounts
+	Fixed #1061: Defect - i-MSCP is Unable to connect to https when using PHP from dotdeb
+	Fixed #1065: Bug - Unable to unsuspend customer account from admin UI
+	Fixed #1066: Bug - Customer's domains remain reachable through HTTPS when they are deactivated
+	Fixed #1075: Bug - mysqldump: Can't create/write to file
+	Fixed #1078: Defect - Defect - Table 'mysql.host' is not longer provided with MySQL >= 5.6.7
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.5
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-03-27: Laurent Declercq
-	- RELEASE i-MSCP 1.1.5
+	RELEASE i-MSCP 1.1.5
 
-CONFIGS:
-	- Fixed: Missing Fileinfo option in domain_ssl.tpl (Apache)
-	- Fixed: Missing Indexes option in domain.tpl (Apache)
+CONFIGS
+	Fixed: Missing Fileinfo option in domain_ssl.tpl (Apache)
+	Fixed: Missing Indexes option in domain.tpl (Apache)
 
-ENGINE:
-	- Fixed: SQL server hostname and port must be specified when restoring database (needed for remote MySQL server)
-	- Rewritten: iMSCP::Servers and iMSCP::Addons packages to avoid subsitutions
+ENGINE
+	Fixed: SQL server hostname and port must be specified when restoring database (needed for remote MySQL server)
+	Rewritten: iMSCP::Servers and iMSCP::Addons packages to avoid subsitutions
 
-GUI:
-	- Added: Check for www label which is reserved and which cause DNS errors (subdomain)
-	- Added: Prefix for subdomains mount points which match with default directories
-	- Added: Run-time check for php5-imap module availability
-	- Added: SQL user host field to allow customers to set host from which SQL users can connect to the MySQL server
-	- Fixed: 127.0.0.1 must be mapped to localhost for consistency (SQL user host)
-	- Fixed: Missing check on admin_id (get_domain_default_props()) which is causing data inconsistencies
-	- Fixed: Wrong url for latest.txt file
+GUI
+	Added: Check for www label which is reserved and which cause DNS errors (subdomain)
+	Added: Prefix for subdomains mount points which match with default directories
+	Added: Run-time check for php5-imap module availability
+	Added: SQL user host field to allow customers to set host from which SQL users can connect to the MySQL server
+	Fixed: 127.0.0.1 must be mapped to localhost for consistency (SQL user host)
+	Fixed: Missing check on admin_id (get_domain_default_props()) which is causing data inconsistencies
+	Fixed: Wrong url for latest.txt file
 
-INSTALLER:
-	- Fixed: 127.0.0.1 is now mapped to localhost for consistency (SQL user host)
+INSTALLER
+	Fixed: 127.0.0.1 is now mapped to localhost for consistency (SQL user host)
 
-Tickets:
-	- Fixed #1050: Bug - Customers can order domains which already exists through domain aliases interface
-	- Fixed #1051: Bug - Trying to get property of non-object - Integrity constraint violation: 1062 Duplicate entry
+TICKETS
+	Fixed #1050: Bug - Customers can order domains which already exists through domain aliases interface
+	Fixed #1051: Bug - Trying to get property of non-object - Integrity constraint violation: 1062 Duplicate entry
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.4
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-03-23: Laurent Declercq
-	- RELEASE i-MSCP 1.1.4
-ADDONS:
-	- Fixed: Awstats addon uninstaller fails in case the cache directory contain a directory
+	RELEASE i-MSCP 1.1.4
+ADDONS
+	Fixed: Awstats addon uninstaller fails in case the cache directory contain a directory
 
-CONFIGS:
-	- Allow usage of mod_rewrite even when PHP is disabled
+CONFIGS
+	Allow usage of mod_rewrite even when PHP is disabled
 
-ENGINE:
-	- Fixed: DNS records (subdomains) are not deleted from zone files (bind9 server impl.)
-	- Fixed: SOA Serial is not updated in zone files (bind9 server impl.)
+ENGINE
+	Fixed: DNS records (subdomains) are not deleted from zone files (bind9 server impl.)
+	Fixed: SOA Serial is not updated in zone files (bind9 server impl.)
 
-GUI:
-	- Added: Counter to allow nested transactions
-	- Fixed: Stop propagation of the onAuthentication event on first successful authentication attempt
+GUI
+	Added: Counter to allow nested transactions
+	Fixed: Stop propagation of the onAuthentication event on first successful authentication attempt
 
-PLUGINS:
-	- Updated: Plugin API to version 0.2.8 (changes are backward compatible)
+PLUGINS
+	Updated: Plugin API to version 0.2.8 (changes are backward compatible)
 
-Tickets:
-	- Fixed #0879: Security Issue - SQL user hostname - Remove wildcard
-	- Fixed #1042: Bug - Serial and DNS records in zone files aren't updated/deleted
-	- Fixed #1045: Bug - All customer alias DNS records are removed when a subdomain is being deleted
-	- Fixed #1048: Bug - Bad Request - Breadcrumb - Customer statistics
+TICKETS
+	Fixed #0879: Security Issue - SQL user hostname - Remove wildcard
+	Fixed #1042: Bug - Serial and DNS records in zone files aren't updated/deleted
+	Fixed #1045: Bug - All customer alias DNS records are removed when a subdomain is being deleted
+	Fixed #1048: Bug - Bad Request - Breadcrumb - Customer statistics
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.3
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-03-11: Laurent Declercq
-	- RELEASE i-MSCP 1.1.3
+	RELEASE i-MSCP 1.1.3
 
-ADDONS:
-	- Added: onLoadTemplate events
-	- Removed: PasswordChanger install part (Roundcube). This plugin will be part of the RoundcubePlugins plugin
-	- Updated: Net2ftp installer
+ADDONS
+	Added: onLoadTemplate events
+	Removed: PasswordChanger install part (Roundcube). This plugin will be part of the RoundcubePlugins plugin
+	Updated: Net2ftp installer
 
-ENGINE:
-	- Added: Missing onLoadTemplate events
+ENGINE
+	Added: Missing onLoadTemplate events
 
-GUI:
-	- Added: Disable custom DNS records feature in case of external DNS server usage
+GUI
+	Added: Disable custom DNS records feature in case of external DNS server usage
 
-INSTALLER:
-	- Added: External server option for DNS server
-	- Fixed: Local resolver must be disabled in case of external DNS server usage
-	- Fixed: When switching to external DNS server, uninstallation of current DNS server must be triggered
+INSTALLER
+	Added: External server option for DNS server
+	Fixed: Local resolver must be disabled in case of external DNS server usage
+	Fixed: When switching to external DNS server, uninstallation of current DNS server must be triggered
 
-PLUGINS:
-	- Added: iMSCP_Plugin::migrateDb() method which allow to migrate plugin database schema
-	- Fixed: Plugin info not updated when the plugin is deactivated which prevent update to be triggered when needed
-	- Readded: Automatic triggering of the updatePluginList action after plugin upload
-	- Updated: Plugin API to version 0.2.7 (changes are backward compatible)
+PLUGINS
+	Added: iMSCP_Plugin::migrateDb() method which allow to migrate plugin database schema
+	Fixed: Plugin info not updated when the plugin is deactivated which prevent update to be triggered when needed
+	Readded: Automatic triggering of the updatePluginList action after plugin upload
+	Updated: Plugin API to version 0.2.7 (changes are backward compatible)
 
-Tickets:
-	- Fixed #0993: Bug - Inconsistent data in database for created_by field from customers
-	- Fixed #1032: Bug - Use of undefined constant SORT_NATURAL (PHP < 5.4)
-	- Fixed #1034: Defect - Policyd-Weight Addon - Configuration mismatch
+TICKETS
+	Fixed #0993: Bug - Inconsistent data in database for created_by field from customers
+	Fixed #1032: Bug - Use of undefined constant SORT_NATURAL (PHP < 5.4)
+	Fixed #1034: Defect - Policyd-Weight Addon - Configuration mismatch
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.2
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-02-27: Laurent Declercq
-	- RELEASE i-MSCP 1.1.2
+	RELEASE i-MSCP 1.1.2
 
-CONFIGS:
-	- Replaced: apache2-suexec/apache2-suexec-pristine packages by apache2-suexec-custom package
+CONFIGS
+	Replaced: apache2-suexec/apache2-suexec-pristine packages by apache2-suexec-custom package
 
-ENGINE:
-	- Fixed: Old passwords are still working even when they are updated (courier-authdaemon)
+ENGINE
+	Fixed: Old passwords are still working even when they are updated (courier-authdaemon)
 
-PLUGINS:
-	- Added: __need_change__ field which ensure plugin change on plugin reactivation
-	- Changed: The updatePluginList action is no longer automatically triggered when a plugin is uploaded
-	- Fixed: db_schema_version info field which is used by some plugin must be persistent
-	- Fixed: Plugin info are partially updated
-	- Updated: Plugin API to version 0.2.6 (changes are backward compatible)
+PLUGINS
+	Added: __need_change__ field which ensure plugin change on plugin reactivation
+	Changed: The updatePluginList action is no longer automatically triggered when a plugin is uploaded
+	Fixed: db_schema_version info field which is used by some plugin must be persistent
+	Fixed: Plugin info are partially updated
+	Updated: Plugin API to version 0.2.6 (changes are backward compatible)
 
-Tickets:
-	- Fixed #1021: Bug - Some htusers are not added into the htgroup file
+TICKETS
+	Fixed #1021: Bug - Some htusers are not added into the htgroup file
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.1
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-02-16: Laurent Declercq
-	- RELEASE i-MSCP 1.1.1
+	RELEASE i-MSCP 1.1.1
 
-ADDONS:
-	- Fixed: Awstats - Cron task is not running (dynamic mode)
+ADDONS
+	Fixed: Awstats - Cron task is not running (dynamic mode)
 
-CONFIGS:
-	- Added: bash-completion package
-	- Disabled: Opcache support (PHP5.5)
+CONFIGS
+	Added: bash-completion package
+	Disabled: Opcache support (PHP5.5)
 
-ENGINE:
-	- Added: onLoadTemplate event in all server implementations
-	- Fixed: DNS sub templates must be passed-in to event listeners
-	- Fixed: Domain owner unique identifier must be passed-in to related servers and addons
-	- Fixed: Missing CLEAR method in iMSCP::Config handler
+ENGINE
+	Added: onLoadTemplate event in all server implementations
+	Fixed: DNS sub templates must be passed-in to event listeners
+	Fixed: Domain owner unique identifier must be passed-in to related servers and addons
+	Fixed: Missing CLEAR method in iMSCP::Config handler
 
-GUI:
-	- Fixed: jQuery library included twice in simple layout
-	- Fixed: Ticket notification won't be delivered (Support ticket feature)
-	- Fixed: Wrong download link for new release
-	- Fixed: Wrong events triggered in client/profile.php
-	- Updated: Datatable translations
+GUI
+	Fixed: jQuery library included twice in simple layout
+	Fixed: Ticket notification won't be delivered (Support ticket feature)
+	Fixed: Wrong download link for new release
+	Fixed: Wrong events triggered in client/profile.php
+	Updated: Datatable translations
 
-PLUGINS:
-	- Changed: iMSCP_Plugin_Manager::updatePluginInfo() method is now public
-	- Fixed: Plugin Store link
-	- Updated: Plugin API to version 0.2.5 (changes are backward compatible)
+PLUGINS
+	Changed: iMSCP_Plugin_Manager::updatePluginInfo() method is now public
+	Fixed: Plugin Store link
+	Updated: Plugin API to version 0.2.5 (changes are backward compatible)
 
-SETUP:
-	- Changed: imscp group is now allowed to read all files from i-MSCP configuration directory
+SETUP
+	Changed: imscp group is now allowed to read all files from i-MSCP configuration directory
 
-VENDOR:
-	- Updated: DataTables to version 1.9.4
+VENDOR
+	Updated: DataTables to version 1.9.4
 
-Tickets:
-	- Fixed #1014: Bug - Link for "cancel" in Reseller - edit Domain is wrong
-	- Fixed #1019: Bug - Unable to create customer with SQL feature set to disabled
-	- Fixed #1020: Bug - Wrong SQL query - Search feature
-	- Fixed #1022: Defect - standard email aliases not created while adding domain alias
-	- Fixed #1024: Bug - Apache2 ITK server implementation - Error on update
-	- Fixed #1025: Bug - Notice: Undefined index: _: Localised language
-
+TICKETS
+	Fixed #1014: Bug - Link for "cancel" in Reseller - edit Domain is wrong
+	Fixed #1019: Bug - Unable to create customer with SQL feature set to disabled
+	Fixed #1020: Bug - Wrong SQL query - Search feature
+	Fixed #1022: Defect - standard email aliases not created while adding domain alias
+	Fixed #1024: Bug - Apache2 ITK server implementation - Error on update
+	Fixed #1025: Bug - Notice: Undefined index: _: Localised language
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0
 ------------------------------------------------------------------------------------------------------------------------
 
 2014-02-03: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0
+	RELEASE i-MSCP 1.1.0
 
-ADDONS:
-	- Added: Awstats - logresolvemerge.pl script for last rotated log processing
-	- Fixed: Awstats - _addAwstatsSection() event listener is registered too many times
-	- Fixed: Awstats - Avoid concurrent processes of the awstats_updateall.pl script
-	- Fixed: Awstats - Error: Couldn't open server log file... (missing files are now ignored silently)
-	- Fixed: Awstats - Traffic data are lost when logs are rotated
-	- Fixed: Roundcube|PhpMyAdmin installers - Ensure that database tables exist (recovery case)
-	- Fixed: Roundcube - Wrong SQL server host when using remote server
-	- Fixed: PhpMyAdmin 4.1.0 is only compatible with MySQL Server version 5.5 and newer
-	- Removed: Awstats - logrotate entry (no longer needed)
+ADDONS
+	Added: Awstats - logresolvemerge.pl script for last rotated log processing
+	Fixed: Awstats - _addAwstatsSection() event listener is registered too many times
+	Fixed: Awstats - Avoid concurrent processes of the awstats_updateall.pl script
+	Fixed: Awstats - Error: Couldn't open server log file... (missing files are now ignored silently)
+	Fixed: Awstats - Traffic data are lost when logs are rotated
+	Fixed: Roundcube|PhpMyAdmin installers - Ensure that database tables exist (recovery case)
+	Fixed: Roundcube - Wrong SQL server host when using remote server
+	Fixed: PhpMyAdmin 4.1.0 is only compatible with MySQL Server version 5.5 and newer
+	Removed: Awstats - logrotate entry (no longer needed)
 
-CONFIG:
-	- Changed: Tools access is now provided only through the panel domain
-	- Disabled: PHP opcache module for master (needed for some tools which are not compatible with this module)
-	- Removed: Useless wget-hack prevention which doesn't prevent nothing in reality
-	- Removed: mod_fastcgi support (FastCGI is now provided through mod_fcgid only)
-	- Removed: Useless logs directory from both subdomain and alias Web folder skeletons
-	- Updated: Apache2 logrotate configuration file (logs are now rotated daily)
-	- Updated: Fcgid/PHP-FPM config to fit with servers which have at least 4GiB ram
+CONFIGS
+	Changed: Tools access is now provided only through the panel domain
+	Disabled: PHP opcache module for master (needed for some tools which are not compatible with this module)
+	Removed: Useless wget-hack prevention which doesn't prevent nothing in reality
+	Removed: mod_fastcgi support (FastCGI is now provided through mod_fcgid only)
+	Removed: Useless logs directory from both subdomain and alias Web folder skeletons
+	Updated: Apache2 logrotate configuration file (logs are now rotated daily)
+	Updated: Fcgid/PHP-FPM config to fit with servers which have at least 4GiB ram
 
-DISTRO:
-	- Added: Packages file for Ubuntu Saucy Slamander and Ubuntu Trusty Tahr (experimental)
-	- Removed: Courier from Jessie packages list (See https://release.debian.org/migration/testing.pl?package=courier)
+DISTROS
+	Added: Packages file for Ubuntu Saucy Slamander and Ubuntu Trusty Tahr (experimental)
+	Removed: Courier from Jessie packages list (See https://release.debian.org/migration/testing.pl?package=courier)
 
-ENGINE:
-	- Added: System (UNIX) user/group names are now stored in database
-	- Added: IMSCP_CLEAR_SCREEN environment variable which allows to not clear the terminal screen at end of script
-	- Added: SPF records for subdomains and external mail servers
-	- Changed: Event listeners are now persistent. This allow to avoid self-registering
-	- Changed: iMSCP::Templator renamed to iMSCP::TemplateParser
-	- Changed: IP source for outbound mails is now set to the base server IP (Postfix - Temporary fix)
-	- Changed: Inet protocol is now set according the base server IP type (Postfix - Temporary fix)
-	- Fixed: Do not compute traffic data for disabled domains
-	- Fixed: External command died with signal 9 (without core dump)
-	- Fixed: iMSCP::Rights - Any target referenced by a symlink must not be affected by owner/group modification
-	- Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID parameters
-	- Fixed: Missing customer logs directories cannot be re-created (permissions denied)
-	- Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events
-	- Fixed: Proftpd server is down after update
-	- Fixed: Removed useless file tests on directory deletion
-	- Fixed: Traffic data must not be lost in case where the imscp-vrl-traff script dies for any reason
-	- Fixed: Upstart/SysV init - Interoperability
-	- Fixed: Usage of dynamic resolv.conf (See resolvconf(8))
-	- Fixed: Wrong DNS record type for subdomain with IPv6 (A instead of AAAA)
-	- Removed: Useless bind9 templates
-	- Removed: Useless backup and users log directories (Httpd server impl.)
-	- Renamed: iMSCP::Boot to iMSCP::Bootstrapper
-	- Replaced: iMSCP::IP library by IMSCP::Net library (full rewrite using iproute tools instead of net-tools)
-	- Replaced: imscp-apache-logger by vlogger (i-MSCP specific version)
-	- Rewritten: getTraffic() methods from server implementations
-	- Rewritten: iMSCP::Database class
-	- Rewritten: imscp-srv-traff and imscp-vrl-traff scripts
+ENGINE
+	Added: System (UNIX) user/group names are now stored in database
+	Added: IMSCP_CLEAR_SCREEN environment variable which allows to not clear the terminal screen at end of script
+	Added: SPF records for subdomains and external mail servers
+	Changed: Event listeners are now persistent. This allow to avoid self-registering
+	Changed: iMSCP::Templator renamed to iMSCP::TemplateParser
+	Changed: IP source for outbound mails is now set to the base server IP (Postfix - Temporary fix)
+	Changed: Inet protocol is now set according the base server IP type (Postfix - Temporary fix)
+	Fixed: Do not compute traffic data for disabled domains
+	Fixed: External command died with signal 9 (without core dump)
+	Fixed: iMSCP::Rights - Any target referenced by a symlink must not be affected by owner/group modification
+	Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID parameters
+	Fixed: Missing customer logs directories cannot be re-created (permissions denied)
+	Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events
+	Fixed: Proftpd server is down after update
+	Fixed: Removed useless file tests on directory deletion
+	Fixed: Traffic data must not be lost in case where the imscp-vrl-traff script dies for any reason
+	Fixed: Upstart/SysV init - Interoperability
+	Fixed: Usage of dynamic resolv.conf (See resolvconf(8))
+	Fixed: Wrong DNS record type for subdomain with IPv6 (A instead of AAAA)
+	Removed: Useless bind9 templates
+	Removed: Useless backup and users log directories (Httpd server impl.)
+	Renamed: iMSCP::Boot to iMSCP::Bootstrapper
+	Replaced: iMSCP::IP library by IMSCP::Net library (full rewrite using iproute tools instead of net-tools)
+	Replaced: imscp-apache-logger by vlogger (i-MSCP specific version)
+	Rewritten: getTraffic() methods from server implementations
+	Rewritten: iMSCP::Database class
+	Rewritten: imscp-srv-traff and imscp-vrl-traff scripts
 
-GUI:
-	- Added: proc_open and popen in PHP editor
-	- Added: quoteValue() function, which allow to quote string for use in SQL statements
-	- Removed: IP domain name and IP alias name
-	- Removed: Useless ip_ssl_domain_id field form server_ips database table
+GUI
+	Added: proc_open and popen in PHP editor
+	Added: quoteValue() function, which allow to quote string for use in SQL statements
+	Removed: IP domain name and IP alias name
+	Removed: Useless ip_ssl_domain_id field form server_ips database table
 
-PLUGINS:
-	- Added: Support for local plugin configuration files (See data/persistent/plugins/README.md)
-	- Fixed: Plugin interface must always show the last plugin available version
-	- Fixed: Bulk action must not be a valid option (Plugin interface)
-	- Fixed: When a new plugin version is available, the plugin must be updated and not only enabled
-	- Updated: Plugin API to version 0.2.4
+PLUGINS
+	Added: Support for local plugin configuration files (See data/persistent/plugins/README.md)
+	Fixed: Plugin interface must always show the last plugin available version
+	Fixed: Bulk action must not be a valid option (Plugin interface)
+	Fixed: When a new plugin version is available, the plugin must be updated and not only enabled
+	Updated: Plugin API to version 0.2.4
 
-SETUP:
-	- Fixed: Auto installer must check for any i-MSCP running process
-	- Fixed: Composer process timeout must be increased for slow connections
-	- Fixed: Unable to add external repository (Lucid...)
+SETUP
+	Fixed: Auto installer must check for any i-MSCP running process
+	Fixed: Composer process timeout must be increased for slow connections
+	Fixed: Unable to add external repository (Lucid...)
 
-VENDOR:
-	- Updated: Net_DNS2 to version 1.3.2
+VENDOR
+	Updated: Net_DNS2 to version 1.3.2
 
-Tickets:
-	- Fixed #0528: Bug - The resolv.conf file shouldn't be edited manually
-	- Fixed #0969: Defect - IPv6 addresses are not removed properly through interface
-	- Fixed #0972: Bug - Adding second External Mailserver gives an error (Edit mode)
-	- Fixed #0974: Bug - Customers assignment doesn't work if the first reseller hasn't any client
-	- Fixed #0975: Bug - Customers assignment - disk limitation check doesn't work correctly
-	- Fixed #0976: Bug - Wrong syntax for the mail quota value
-	- Fixed #0978: Defect - SPF records for subdomains and external mail server
-	- Fixed #0980: Bug - PHP-Editor - Values not saved while adding new customer
-	- Fixed #0982: Defect - No access to /var/www from localhost
-	- Fixed #0987: Bug - Backup - iMSCP::Database::mysql::mysql::dumpdb: mysqldump: Couldn't find table...
-	- Fixed #0989: Security Issue - Any user on a server can read others files
-	- Fixed #0990: Security issue - Any user can obtain mysql root password
-	- Fixed #0992: Bug - Hungarian welcome e-mail UTF-8 problem
-	- Fixed #0995: Defect - Missing scrollbar in Ftp directory chooser dialog
-	- Fixed #1000: Bug - When a domain is being disabled, apache won't restart
-	- Fixed #1002: Defect - Plugin Version does not change on update
-	- Fixed #1003: Defect: Admin/Reseller statistic shows only the current year
-	- Fixed #1004: Defect - Unable to find any network interface. You cannot add new IP address
-	- Fixed #1005: Defect - pma_tracker table not locked while importing database
-	- Fixed #1006: Defect - Options Indexes not working if PHP is disabled
-	- Fixed #1011: Defect: Unable to add domain such as: 1291.com
-	- Fixed #1012: Bug - Error when reconfiguring IP through installer (ips option)
+TICKETS
+	Fixed #0528: Bug - The resolv.conf file shouldn't be edited manually
+	Fixed #0969: Defect - IPv6 addresses are not removed properly through interface
+	Fixed #0972: Bug - Adding second External Mailserver gives an error (Edit mode)
+	Fixed #0974: Bug - Customers assignment doesn't work if the first reseller hasn't any client
+	Fixed #0975: Bug - Customers assignment - disk limitation check doesn't work correctly
+	Fixed #0976: Bug - Wrong syntax for the mail quota value
+	Fixed #0978: Defect - SPF records for subdomains and external mail server
+	Fixed #0980: Bug - PHP-Editor - Values not saved while adding new customer
+	Fixed #0982: Defect - No access to /var/www from localhost
+	Fixed #0987: Bug - Backup - iMSCP::DATABASE:mysql::mysql::dumpdb: mysqldump: Couldn't find table...
+	Fixed #0989: Security Issue - Any user on a server can read others files
+	Fixed #0990: Security issue - Any user can obtain mysql root password
+	Fixed #0992: Bug - Hungarian welcome e-mail UTF-8 problem
+	Fixed #0995: Defect - Missing scrollbar in Ftp directory chooser dialog
+	Fixed #1000: Bug - When a domain is being disabled, apache won't restart
+	Fixed #1002: Defect - Plugin Version does not change on update
+	Fixed #1003: Defect: Admin/Reseller statistic shows only the current year
+	Fixed #1004: Defect - Unable to find any network interface. You cannot add new IP address
+	Fixed #1005: Defect - pma_tracker table not locked while importing database
+	Fixed #1006: Defect - Options Indexes not working if PHP is disabled
+	Fixed #1011: Defect: Unable to add domain such as: 1291.com
+	Fixed #1012: Bug - Error when reconfiguring IP through installer (ips option)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-11-21: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc4.7
+	RELEASE i-MSCP 1.1.0-rc4.7
 
-CONFIG:
-	- Added: Vagrantfile allowing to setup a virtual machine using Vagrant
-	- Removed: DATABASE_UTF8 parameter
+CONFIGS
+	Added: Vagrantfile allowing to setup a virtual machine using Vagrant
+	Removed: DATABASE_UTF8 parameter
 
-DOCS:
-	- Fixed: Updated preseed template file
+DOCS
+	Fixed: Updated preseed template file
 
-ENGINE:
-	- Fixed: imscp-del-tmp script is broken (Undefined subroutine floor...)
-	- Fixed: Plugin (backend part) must be re-installed if missing
-	- Fixed: Plugin (backend part) must be removed on compile time error
-	- Fixed: Plugin (backend part) must be removed when a plugin is being deactivated
-	- Fixed: Quota script is broken (A critical error has been encountered while executing function main::quotaSql...)
-	- Removed: iMSCP::Database::mysql::Result
+ENGINE
+	Fixed: imscp-del-tmp script is broken (Undefined subroutine floor...)
+	Fixed: Plugin (backend part) must be re-installed if missing
+	Fixed: Plugin (backend part) must be removed on compile time error
+	Fixed: Plugin (backend part) must be removed when a plugin is being deactivated
+	Fixed: Quota script is broken (A critical error has been encountered while executing function main::quotaSql...)
+	Removed: iMSCP::DATABASE:mysql::Result
 
-GUI:
-	- Added: onBeforeSendCircular and onAfterSendCircular events
-	- Added: Spam Filter option which allow to keep postfix configuration (external mail server interface)
-	- Changed: EventsManager - listener stack become a priority queue (Performance issues)
-	- Fixed: Configuration variable `/var/log/rkhunter.log` is missing
-	- Fixed: Set internal encoding to UTF-8
-	- Fixed: Use mb_encode_mimeheader() to encode MIME header when available
-	- Fixed: Identity garbage on session timeout
-	- Rewritten: Circular interface (admin and reseller levels)
-	- Updated: plugin API (version 0.2.0)
+GUI
+	Added: onBeforeSendCircular and onAfterSendCircular events
+	Added: Spam Filter option which allow to keep postfix configuration (external mail server interface)
+	Changed: EventsManager - listener stack become a priority queue (Performance issues)
+	Fixed: Configuration variable `/var/log/rkhunter.log` is missing
+	Fixed: Set internal encoding to UTF-8
+	Fixed: Use mb_encode_mimeheader() to encode MIME header when available
+	Fixed: Identity garbage on session timeout
+	Rewritten: Circular interface (admin and reseller levels)
+	Updated: plugin API (version 0.2.0)
 
-SETUP:
-	- Fixed: ispCP migration script must not delete Web data while deleting unix users
+SETUP
+	Fixed: ispCP migration script must not delete Web data while deleting unix users
 
-Tickets:
-	- Fixed #935: Enhancement - Add option to keep the postfix configuration even when using external mail server
-	- Fixed #952: Bug - Backup script - several issues
-	- Fixed #954: Bug - Mass mail is not working (admin and reseller interfaces)
-	- Fixed #956: Bug - Infinite loop (Reseller UI)
+TICKETS
+	Fixed #935: Enhancement - Add option to keep the postfix configuration even when using external mail server
+	Fixed #952: Bug - Backup script - several issues
+	Fixed #954: Bug - Mass mail is not working (admin and reseller interfaces)
+	Fixed #956: Bug - Infinite loop (Reseller UI)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.6
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-10-28: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc4.6
+	RELEASE i-MSCP 1.1.0-rc4.6
 
-ENGINE:
-	- Removed: Apache cband module configuration (Should be provided as plugin)
-	- Fixed: Several 'Can't use an undefined value as a HASH reference...' errors
+ENGINE
+	Removed: Apache cband module configuration (Should be provided as plugin)
+	Fixed: Several 'Can't use an undefined value as a HASH reference...' errors
 
-GUI:
-	- Added: IPv6 service status support
-	- Changed: Any service port become editable
-	- Fixed: Service ports interface is broken
-	- Fixed: Unable to change admin settings
+GUI
+	Added: IPv6 service status support
+	Changed: Any service port become editable
+	Fixed: Service ports interface is broken
+	Fixed: Unable to change admin settings
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.5
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-10-26: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc4.5
+	RELEASE i-MSCP 1.1.0-rc4.5
 
-ENGINE:
-	- Added: beforeDispatchRequest and afterDispatchRequest events
-	- Fixed: Engine - End transaction on error
+ENGINE
+	Added: beforeDispatchRequest and afterDispatchRequest events
+	Fixed: Engine - End transaction on error
 
-SETUP:
-	- Fixed: Base server vhost prefix not updated when disabling SSL (panel)
-	- Fixed: Unable to setup SSL without CA bundle (panel)
+GUI
+	Added: Event Manager - Method allowing to unregister any listener which listen to a particular event
+	Fixed: Plugin items with errors must be shown in debugger and the admin must be able to change their status
+	Removed: Domain name related parameters
+	Updated: Function generateRandomSalt() - Allow to restrict salt character ranges (i.e for unix passwords)
 
-GUI:
-	- Added: Event Manager - Method allowing to unregister any listener which listen to a particular event
-	- Fixed: Plugin items with errors must be shown in debugger and the admin must be able to change their status
-	- Removed: Domain name related parameters
-	- Updated: Function generateRandomSalt() - Allow to restrict salt character ranges (i.e for unix passwords)
+SETUP
+	Fixed: Base server vhost prefix not updated when disabling SSL (panel)
+	Fixed: Unable to setup SSL without CA bundle (panel)
 
-Tickets:
-	- Fixed #447: Defect - External mail server feature is broken, when mail account limit is set to -1 (reopened)
-	- Fixed #945: Bug - impossible to create top-level-domains .рф (russian federation zone)
+TICKETS
+	Fixed #447: Defect - External mail server feature is broken, when mail account limit is set to -1 (reopened)
+	Fixed #945: Bug - impossible to create top-level-domains .рф (russian federation zone)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.4
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-10-22: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc4.4
+	RELEASE i-MSCP 1.1.0-rc4.4
 
-ENGINE:
-	- Fixed: Can't use an undefined value as a HASH reference...
+ENGINE
+	Fixed: Can't use an undefined value as a HASH reference...
 
-GUI:
-	- Added: Option allowing to set Email quota synchronization mode
-	- Added: Per plugin router support
-	- Fixed: Do not show any quota information for mailboxes which have the quota limit set to 0 (unlimited)
-	- Fixed: Unable to edit domain (admin level)
+GUI
+	Added: Option allowing to set Email quota synchronization mode
+	Added: Per plugin router support
+	Fixed: Do not show any quota information for mailboxes which have the quota limit set to 0 (unlimited)
+	Fixed: Unable to edit domain (admin level)
 
-Tickets:
-	- Fixed #938: Bug - Ftp - Login as link is missing
-	- Fixed #942: Bug - Mailboxes quota synchronization is broken
+TICKETS
+	Fixed #938: Bug - Ftp - Login as link is missing
+	Fixed #942: Bug - Mailboxes quota synchronization is broken
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.3
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-10-17: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-rc4.3
+	RELEASE i-MSCP 1.1.0-rc4.3
 
-ADDONS:
-	- Fixed: Net2ftp addon installer is broken
+ADDONS
+	Fixed: Net2ftp addon installer is broken
 
-DOCS:
-	- Fixed: Preseed template file is broken (compile time error)
+DOCS
+	Fixed: Preseed template file is broken (compile time error)
 
-ENGINE:
-	- Removed: Backtrace routines, which cause segfault on Debian Jessie (issues with Carp package)
+ENGINE
+	Removed: Backtrace routines, which cause segfault on Debian Jessie (issues with Carp package)
 
-SETUP:
-	- Fixed: ispCP migration script is broken (many compile time errors)
-	- Fixed: Uninstaller - Several compile time errors + missing tasks
+SETUP
+	Fixed: ispCP migration script is broken (many compile time errors)
+	Fixed: Uninstaller - Several compile time errors + missing tasks
 
-GUI:
-	- Fixed: Unable to view ticket (reseller level)
+GUI
+	Fixed: Unable to view ticket (reseller level)
 
-Tickets:
-	- Fixed #936: Bug - Awstats addon - Failed to open directory /var/cache/awstats
+TICKETS
+	Fixed #936: Bug - Awstats addon - Failed to open directory /var/cache/awstats
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.2
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-10-10: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc4.2
+	RELEASE i-MSCP 1.1.0-rc4.2
 
-CONFIG:
-	- Changed: MASTER_GROUP parameter become IMSCP_GROUP
-	- Fixed: Packages file for Debian Jessie (testing)
-	- Fixed: Package dovecot-mysql is not available for Ubuntu Lucid
-	- Fixed: Dovecot - Wrong path for delivery agent
-	- Removed: Cron templates
-	- Removed: Packages awstats, chkrootkit and rkhunter from global packages file
+CONFIGS
+	Changed: MASTER_GROUP parameter become IMSCP_GROUP
+	Fixed: Packages file for Debian Jessie (testing)
+	Fixed: Package dovecot-mysql is not available for Ubuntu Lucid
+	Fixed: Dovecot - Wrong path for delivery agent
+	Removed: Cron templates
+	Removed: Packages awstats, chkrootkit and rkhunter from global packages file
 
-DOCS:
-	- Updated: Preseed template file
+DOCS
+	Updated: Preseed template file
 
-ENGINE:
-	- Changed: Both Chkrootkit and Rkhunter anti-rootkits as now provided as addons
-	- Changed: skill command to pkill command (portability issues)
-	- Fixed: Apache logrotate conffile shouldn't know about awstats addon
-	- Fixed: Bind server impl. - Unable to handle subdomains when DNS server mode is set to 'slave'
-	- Fixed: Bind uninstall fail
-	- Fixed: iMSCP::Debug library - output() function called with wrong parameters
-	- Fixed: iMSCP::SystemUser::delSystemUser() - Added 'keepHome' option allowing to kept user home directory
-	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
-	- Updated: ispCP migration script
+ENGINE
+	Changed: Both Chkrootkit and Rkhunter anti-rootkits as now provided as addons
+	Changed: skill command to pkill command (portability issues)
+	Fixed: Apache logrotate conffile shouldn't know about awstats addon
+	Fixed: Bind server impl. - Unable to handle subdomains when DNS server mode is set to 'slave'
+	Fixed: Bind uninstall fail
+	Fixed: iMSCP::Debug library - output() function called with wrong parameters
+	Fixed: iMSCP::SystemUser::delSystemUser() - Added 'keepHome' option allowing to kept user home directory
+	Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
+	Updated: ispCP migration script
 
-Tickets:
-	- Fixed #636: Bug - Rkhunter - Unreadable log file
-	- Fixed #810: Bug - https default access redirect mode not working for base server url
-	- Fixed #902: Bug - User UID/GID mismatch after updating the SYSTEM_USER_PREFIX and/or SYSTEM_USER_MIN_UID parameters
-	- Fixed #918: Bug - Courier - Unlimited quota doesn't works
-	- Fixed #919: Bug - Preseed feature is broken - A template has not been found
-	- Fixed #924: Defect - After Update from RC3 to RC4.1 pop3-ssl and imap-ssl don't work (dovecot 1.2.15)
-	- Fixed #926: Security Issue - apache_php_fpm - suexec must be enabled
-	- Fixed #928: Defect - Courier/Maildrop - Wrong permissions after reboot
-	- Fixed #929: Malfunction - User limits not changeable if Reseller's Email account limit is set to -1
-	- Fixed #932: Bug - Unable to switch from a redirected subdomain to normal subdomain
+TICKETS
+	Fixed #636: Bug - Rkhunter - Unreadable log file
+	Fixed #810: Bug - https default access redirect mode not working for base server url
+	Fixed #902: Bug - User UID/GID mismatch after updating the SYSTEM_USER_PREFIX and/or SYSTEM_USER_MIN_UID parameters
+	Fixed #918: Bug - Courier - Unlimited quota doesn't works
+	Fixed #919: Bug - Preseed feature is broken - A template has not been found
+	Fixed #924: Defect - After Update from RC3 to RC4.1 pop3-ssl and imap-ssl don't work (dovecot 1.2.15)
+	Fixed #926: Security Issue - apache_php_fpm - suexec must be enabled
+	Fixed #928: Defect - Courier/Maildrop - Wrong permissions after reboot
+	Fixed #929: Malfunction - User limits not changeable if Reseller's Email account limit is set to -1
+	Fixed #932: Bug - Unable to switch from a redirected subdomain to normal subdomain
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.1
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-09-29: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-rc4.1
+	RELEASE i-MSCP 1.1.0-rc4.1
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-09-29: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-rc4
+	RELEASE i-MSCP 1.1.0-rc4
 
-CONFIG:
-	- Added: Specific quota warning script for Dovecot 2.x.x branch
-	- Added: Packages file for Debian Jessie (testing)
-	- Added: SPF Resource Record Type in bind template
-	- Added: php5-imap package (required by i-MSCP frontEnd)
-	- Changed: php5-mysql package to php5-mysqlnd (native driver) when available
-	- Removed: php5-adodb package
-	- Removed: Dovecot sieve plugin configuration (Such parameter must be provided as plugin)
-	- Updated: Apache templates to support 2.4.x branch
-	- Updated: Dovecot configuration files
+CONFIGS
+	Added: Specific quota warning script for Dovecot 2.x.x branch
+	Added: Packages file for Debian Jessie (testing)
+	Added: SPF Resource Record Type in bind template
+	Added: php5-imap package (required by i-MSCP frontEnd)
+	Changed: php5-mysql package to php5-mysqlnd (native driver) when available
+	Removed: php5-adodb package
+	Removed: Dovecot sieve plugin configuration (Such parameter must be provided as plugin)
+	Updated: Apache templates to support 2.4.x branch
+	Updated: Dovecot configuration files
 
-ENGINE:
-	- Added: Support for Apache 2.4.x branch
-	- Added: Database connection timeout (3 seconds)
-	- Added: MySQL transaction routines
-	- Added: Webstats support for subodmains
-	- Fixed: Both, the domain_disable_page directory and statistics directory must be excluded from disk quota accounting
-	- Fixed: Diskspace not counted for subdomain Maildirs (Disk quota script)
-	- Fixed: Error 500 (Apache) after creation of any protected area
-	- Fixed: MySQL server has gone away
-	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
-	- Fixed: Plugin update must be triggered when plugin configuration is updated
-	- Fixed: Set MySQL client connection charset to utf8
+ENGINE
+	Added: Support for Apache 2.4.x branch
+	Added: Database connection timeout (3 seconds)
+	Added: MySQL transaction routines
+	Added: Webstats support for subodmains
+	Fixed: Both, the domain_disable_page directory and statistics directory must be excluded from disk quota accounting
+	Fixed: Diskspace not counted for subdomain Maildirs (Disk quota script)
+	Fixed: Error 500 (Apache) after creation of any protected area
+	Fixed: MySQL server has gone away
+	Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
+	Fixed: Plugin update must be triggered when plugin configuration is updated
+	Fixed: Set MySQL client connection charset to utf8
 
-GUI:
-	- Added: Assets cache busting
-	- Added: info.php file for i-MSCP default theme (file which contain theme metadata)
-	- Added: onBeforeDomainChangeStatus and onAfterDomainChangeStatus events
-	- Added: Option allowing a domain alias to share the mount point of another domain
-	- Added: Option allowing a subdomain to share the mount point of another domain
-	- Changed: Both header and footer backgrounds for tables and location bar are now provided by the jQuery UI theme
-	- Changed: Customers can no longer set an arbitrary mount point for their subdomains
-	- Changed: Default Email accounts cannot longer be hidden
-	- Enhancement: Allow both administrators and resellers to set mail quota for customers
-	- Enhancement: Email accounts are now filterable
-	- Enhancement: Custom DNS feature - IDN support
-	- Fixed: Allow plugins to provide their own assets throught the path /<plugin>/themes/<theme>/assets path
-	- Fixed: Allow to share domain_dns table between several components (core, plugins..)
-	- Fixed: Plugins must be able to short-circuit execution of an event
-	- Fixed: Plugin update must be triggered when plugin configuration is updated
-	- Fixed: Show DNS record data as tooltip when their length is too big
-	- Fixed: Unable to delete plugin in some contexts
-	- Fixed: Wrong placeholders in admin/imscp_debugger.php
-	- Readded: idna_convert class (more flexible because can operate on arbitrary strings)
-	- Removed: IE6 support
-	- Removed: mail_quota action script
-	- Removed: Tool links from login page
-	- Rewritten: Domain aliases interface (add|edit)
-	- Rewritten: Mail interface
-	- Updated: Assets are now reachable through the /themes/<theme>/assets path
-	- Updated: Plugin API
+GUI
+	Added: Assets cache busting
+	Added: info.php file for i-MSCP default theme (file which contain theme metadata)
+	Added: onBeforeDomainChangeStatus and onAfterDomainChangeStatus events
+	Added: Option allowing a domain alias to share the mount point of another domain
+	Added: Option allowing a subdomain to share the mount point of another domain
+	Changed: Both header and footer backgrounds for tables and location bar are now provided by the jQuery UI theme
+	Changed: Customers can no longer set an arbitrary mount point for their subdomains
+	Changed: Default Email accounts cannot longer be hidden
+	Enhancement: Allow both administrators and resellers to set mail quota for customers
+	Enhancement: Email accounts are now filterable
+	Enhancement: Custom DNS feature - IDN support
+	Fixed: Allow plugins to provide their own assets throught the path /<plugin>/themes/<theme>/assets path
+	Fixed: Allow to share domain_dns table between several components (core, plugins..)
+	Fixed: Plugins must be able to short-circuit execution of an event
+	Fixed: Plugin update must be triggered when plugin configuration is updated
+	Fixed: Show DNS record data as tooltip when their length is too big
+	Fixed: Unable to delete plugin in some contexts
+	Fixed: Wrong placeholders in admin/imscp_debugger.php
+	Readded: idna_convert class (more flexible because can operate on arbitrary strings)
+	Removed: IE6 support
+	Removed: mail_quota action script
+	Removed: Tool links from login page
+	Rewritten: Domain aliases interface (add|edit)
+	Rewritten: Mail interface
+	Updated: Assets are now reachable through the /themes/<theme>/assets path
+	Updated: Plugin API
 
-SETUP:
-	- Changed: i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
-	- Fixed: Disable dummy php5_cgi Apache module if any
-	- Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
-	- Fixed: Plugins which provide a backend end with unknown error after update
-	- Fixed: Pre-fill Debconf database (Avoid postfix, proftpd and courier questions during installation)
+SETUP
+	Changed: i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
+	Fixed: Disable dummy php5_cgi Apache module if any
+	Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
+	Fixed: Plugins which provide a backend end with unknown error after update
+	Fixed: Pre-fill Debconf database (Avoid postfix, proftpd and courier questions during installation)
 
-Tickets:
-	- Fixed #460: Nice To Have - Admin/Reseller should be able to set mail quota for customers
-	- Fixed #469: Defect - Quota field in mail_users table should accept big values
-	- Fixed #579: Review - i18n issues
-	- Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
-	- Fixed #779: Defect - When migrating from ispCP the reseller and admin logos are lost
-	- Fixed #791: Defect - Unable to change customer IP
-	- Fixed #834: Cosmetics - Ticket system menu names
-	- Fixed #835: Task - Migration script - ispCP - Remove old php5-fcgi-starter
-	- Fixed #838: Bug - Installer skips PHP INI Level dialog for apache fcgi
-	- Fixed #846: Defect - Any customer can set his own mail quota
-	- Fixed #852: Bug - Software installer - Unable to install any software
-	- Fixed #854: Bug - Gui - Mail accounts - Mass deletion feature is broken
-	- Fixed #858: Task - Remove php5-adodb package
-	- Fixed #861: Bug - SQLSTATE[42000]: Syntax error or access violation
-	- Fixed #867: Security issue - SSL - When exporting a private key, the password must not be visible from system utilities
-	- Fixed #870: Bug - Error indicator for new tickets
-	- Fixed #876: Review - Installer - Wildcard should be allowed as part of SQL user hostname
-	- Fixed #880: Defect - Dovecot - IMAP traffic not counted
-	- Fixed #883: Defect - Web folders protection option must be automatically disabled and hidden when the immutable flag is not available
-	- Fixed #886: Enhancement - Add SPF Resource Record Type in bind
-	- Fixed #891: Bug - Error when migrating from ispCP
-	- Fixed #893: Defect - Webstats for subdomains are not available
-	- Fixed #896: Bug - Variable {USERNAME} is not parsed in password email
-	- Fixed #903: Bug - Domain restore feature is broken
-	- Fixed #908: Review - Dovecot - Quota - Switch to maildir quota backend
-	- Fixed #909: Enhancement - Courier - Quotas support using maildrop MDA
-	- Fixed #913: Bug - Traffic on admin panel not counted
-	- Fixed #914: Bug - Unable to add/edit Custom DNS record (depending of domain type)
-	- Fixed #917: Defect - Unable to switch from Dovecot to Courier
+TICKETS
+	Fixed #460: Nice To Have - Admin/Reseller should be able to set mail quota for customers
+	Fixed #469: Defect - Quota field in mail_users table should accept big values
+	Fixed #579: Review - i18n issues
+	Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
+	Fixed #779: Defect - When migrating from ispCP the reseller and admin logos are lost
+	Fixed #791: Defect - Unable to change customer IP
+	Fixed #834: Cosmetics - Ticket system menu names
+	Fixed #835: Task - Migration script - ispCP - Remove old php5-fcgi-starter
+	Fixed #838: Bug - Installer skips PHP INI Level dialog for apache fcgi
+	Fixed #846: Defect - Any customer can set his own mail quota
+	Fixed #852: Bug - Software installer - Unable to install any software
+	Fixed #854: Bug - Gui - Mail accounts - Mass deletion feature is broken
+	Fixed #858: Task - Remove php5-adodb package
+	Fixed #861: Bug - SQLSTATE[42000]: Syntax error or access violation
+	Fixed #867: Security issue - SSL - When exporting a private key, the password must not be visible from system utilities
+	Fixed #870: Bug - Error indicator for new TICKETS
+	Fixed #876: Review - Installer - Wildcard should be allowed as part of SQL user hostname
+	Fixed #880: Defect - Dovecot - IMAP traffic not counted
+	Fixed #883: Defect - Web folders protection option must be automatically disabled and hidden when the immutable flag is not available
+	Fixed #886: Enhancement - Add SPF Resource Record Type in bind
+	Fixed #891: Bug - Error when migrating from ispCP
+	Fixed #893: Defect - Webstats for subdomains are not available
+	Fixed #896: Bug - Variable {USERNAME} is not parsed in password email
+	Fixed #903: Bug - Domain restore feature is broken
+	Fixed #908: Review - Dovecot - Quota - Switch to maildir quota backend
+	Fixed #909: Enhancement - Courier - Quotas support using maildrop MDA
+	Fixed #913: Bug - Traffic on admin panel not counted
+	Fixed #914: Bug - Unable to add/edit Custom DNS record (depending of domain type)
+	Fixed #917: Defect - Unable to switch from Dovecot to Courier
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-07-23: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-rc3
+	RELEASE i-MSCP 1.1.0-rc3
 
-CONFIGS:
-	- Removed Amavis, ClamAV and SpamAssassin configuration (Such service must be provided as plugin)
+CONFIGS
+	Removed Amavis, ClamAV and SpamAssassin configuration (Such service must be provided as plugin)
 
-ENGINE:
-	- Added: Config_readonly option in bootstrap
-	- Added: Cron job for deactivation of entities belonging to an expired account
-	- Fixed: Allow to get raw db connection
-	- Fixed: Access to i-MSCP server/addon parameters must be standardized
-	- Fixed: unable to remove htgroup
-	- Fixed: TERM environment variable not set (IMSCP::Debug library)
-	- Removed: 'dnschange' status
-	- Updated: 'change' status to 'tochange' and 'delete' status to 'todelete'
+ENGINE
+	Added: Config_readonly option in bootstrap
+	Added: Cron job for deactivation of entities belonging to an expired account
+	Fixed: Allow to get raw db connection
+	Fixed: Access to i-MSCP server/addon parameters must be standardized
+	Fixed: unable to remove htgroup
+	Fixed: TERM environment variable not set (IMSCP::Debug library)
+	Removed: 'dnschange' status
+	Updated: 'change' status to 'tochange' and 'delete' status to 'todelete'
 
-GUI:
-	- Added: Plugin archive upload feature (tar.gz, tar.bz2 and zip)
-	- Added: Protected Web folders option to hosting plans
-	- Removed: 'dnschange' status
-	- Updated: Plugin API (Several BC breaks expected)
-	- Updated: status 'change' to 'tochange' and status 'delete' to 'todelete'
+GUI
+	Added: Plugin archive upload feature (tar.gz, tar.bz2 and zip)
+	Added: Protected Web folders option to hosting plans
+	Removed: 'dnschange' status
+	Updated: Plugin API (Several BC breaks expected)
+	Updated: status 'change' to 'tochange' and status 'delete' to 'todelete'
 
-SETUP:
-	- Changed: Items with status other than 'ok' and similar are not longer rebuilded on update
+SETUP
+	Changed: Items with status other than 'ok' and similar are not longer rebuilded on update
 
-TOOLS:
-	- Fixed: Awstats - Forbidden access (Ubuntu Lucid)
+TOOLS
+	Fixed: Awstats - Forbidden access (Ubuntu Lucid)
 
-Tickets:
-	- Fixed #782: Bug - Notice: A non well formed numeric value encountered...
-	- Fixed #786: Bug - Httpd Server impl. - apache_php_fpm. - No input file specified
-	- Fixed #790: Defect - Postfix 2.10.x - Relay access - SASL authentication
-	- Fixed #793: Bug - Autoinstaller/Setup - Admin user is getting new id in database
-	- Fixed #808: Enhancement - Possibility to Upload i-MSCP Plugins via GUI
-	- Fixed #809: Bug - Autoinstaller - Preseed feature - Error while executing query: Duplicate entry 'admin'
-	- Fixed #816: Bug - Unable to uninstall i-MSCP
-	- Fixed #819: Tasks - Clean up PHP Settings
-	- Fixed #822: Bug - Auto responder feature broken
-	- Fixed #831: Bug - imscp_daemon: send_line(): socket write error
-	- Fixed #841: Bug - Autoinstaller - Preseed feature - some errors
-	- Fixed #848: Bug - Backend - Wrong after hook in function _buildMasterPhpFpmPoolFile
+TICKETS
+	Fixed #782: Bug - Notice: A non well formed numeric value encountered...
+	Fixed #786: Bug - Httpd Server impl. - apache_php_fpm. - No input file specified
+	Fixed #790: Defect - Postfix 2.10.x - Relay access - SASL authentication
+	Fixed #793: Bug - Autoinstaller/Setup - Admin user is getting new id in database
+	Fixed #808: Enhancement - Possibility to Upload i-MSCP Plugins via GUI
+	Fixed #809: Bug - Autoinstaller - Preseed feature - Error while executing query: Duplicate entry 'admin'
+	Fixed #816: Bug - Unable to uninstall i-MSCP
+	Fixed #819: Tasks - Clean up PHP Settings
+	Fixed #822: Bug - Auto responder feature broken
+	Fixed #831: Bug - imscp_daemon: send_line(): socket write error
+	Fixed #841: Bug - Autoinstaller - Preseed feature - some errors
+	Fixed #848: Bug - Backend - Wrong after hook in function _buildMasterPhpFpmPoolFile
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc2.3
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-06-08: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-rc2.3
+	RELEASE i-MSCP 1.1.0-rc2.3
 
-ENGINE:
-	- Fixed: Error on backup: Unable to change mode for...
+ENGINE
+	Fixed: Error on backup: Unable to change mode for...
 
-GUI:
-	- Fixed: Unable to add hosting plan (reseller level)
-	- Fixed: Possible missing properties (hosting_plans)
+GUI
+	Fixed: Unable to add hosting plan (reseller level)
+	Fixed: Possible missing properties (hosting_plans)
 
-SETUP:
-	- Fixed: Pressed feature is broken
+SETUP
+	Fixed: Pressed feature is broken
 
-Tickets:
-	- Fixed #647: Bug - Setup - Unable to reconfigure IP addresses
-	- Fixed #776: Bug - Hosting plans attribs aren't updated with the migration
-	- Fixed #777: Bug - Autoinstaller - Two entries for imscp-autoinstall option -h
-	- Fixed #778: Bug - Autoinstaller - Exit code 5 in non-interactive mode --nopromt
-	- Fixed #781: Bug - Network card not found
-	- Fixed #812: Review - i-MSCP should show true system memory values
+TICKETS
+	Fixed #647: Bug - Setup - Unable to reconfigure IP addresses
+	Fixed #776: Bug - Hosting plans attribs aren't updated with the migration
+	Fixed #777: Bug - Autoinstaller - Two entries for imscp-autoinstall option -h
+	Fixed #778: Bug - Autoinstaller - Exit code 5 in non-interactive mode --nopromt
+	Fixed #781: Bug - Network card not found
+	Fixed #812: Review - i-MSCP should show true system memory values
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc2.2
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-06-04: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc2.2
+	RELEASE i-MSCP 1.1.0-rc2.2
 
-GUI:
-	- Fixed: Custom DNS feature not working due to missing files
+GUI
+	Fixed: Custom DNS feature not working due to missing files
 
-VENDOR:
-	- Updated: jQuery to v1.10.1
-	- Updated: jQuery UI to v1.10.3
+VENDOR
+	Updated: jQuery to v1.10.1
+	Updated: jQuery UI to v1.10.3
 
-Tickets:
+TICKETS
 	Fixed #640: Bug - AliasSubdomain won't work when Alias is a redirect
 	Fixed #767: Update -jQuery 1.10.1 released
 	Fixed #769: Review - Language issue in imscp GUI
@@ -771,327 +775,324 @@ i-MSCP 1.1.0-rc2.1
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-06-02: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-rc2.1
+	RELEASE i-MSCP 1.1.0-rc2.1
 
-CONFIGS:
-	- Added: MariaDb support
-	- Added: named.conf.local and named.conf.options files
-	- Added: Web folder skeletons (Httpd server impls.)
-	- Fixed: Useless section must be removed in generated Apache configuration files
-	- Fixed: diff package isn't available for Ubuntu > 12.04 (replaced by diffutils)
-	- Removed: packages file for Ubuntu Oneiric Ocelot (EOL 20130509)
-	- Updated: php.ini files
+CONFIGS
+	Added: MariaDb support
+	Added: named.conf.local and named.conf.options files
+	Added: Web folder skeletons (Httpd server impls.)
+	Fixed: Useless section must be removed in generated Apache configuration files
+	Fixed: diff package isn't available for Ubuntu > 12.04 (replaced by diffutils)
+	Removed: packages file for Ubuntu Oneiric Ocelot (EOL 20130509)
+	Updated: php.ini files
 
-ENGINE:
-	- Added: Hooks for user module
-	- Added: Hooks.d directory for storage of engine hook files
-	- Added: Support for Apache + PHP FPM
-	- Added: option allowing to disable/enable IPv6 support (Bind9)
-	- Fixed: Admin must be able to add custom data in named configuration files (Bind9)
-	- Fixed: DNS server must answer to queries only for zones for which it's authoritative (excepted for localhost)
-	- Fixed: DNS server must be protected against common attacks
-	- Fixed: DNS zone files must be checked and cleaned before installation in production directory
-	- Fixed: DNS zones must be added in named.conf.local instead of named.conf (Bind9 - Debian/Ubuntu)
-	- Fixed: i-MSCP network init script must start/stop MySQL server only if installed
-	- Fixed: Domain module shouldn't be responsible to add i-MSCP unix user
-	- Fixed: Permissions as set by Debian must be keep (bind9)
-	- Fixed: Slave DNS zone files should be put in dedicated directory (Bind9)
-	- Fixed: SPF record syntax
+ENGINE
+	Added: Hooks for user module
+	Added: Hooks.d directory for storage of engine hook files
+	Added: Support for Apache + PHP FPM
+	Added: option allowing to disable/enable IPv6 support (Bind9)
+	Fixed: Admin must be able to add custom data in named configuration files (Bind9)
+	Fixed: DNS server must answer to queries only for zones for which it's authoritative (excepted for localhost)
+	Fixed: DNS server must be protected against common attacks
+	Fixed: DNS zone files must be checked and cleaned before installation in production directory
+	Fixed: DNS zones must be added in named.conf.local instead of named.conf (Bind9 - Debian/Ubuntu)
+	Fixed: i-MSCP network init script must start/stop MySQL server only if installed
+	Fixed: Domain module shouldn't be responsible to add i-MSCP unix user
+	Fixed: Permissions as set by Debian must be keep (bind9)
+	Fixed: Slave DNS zone files should be put in dedicated directory (Bind9)
+	Fixed: SPF record syntax
 
-GUI:
-	- Added: Option allowing to disconnect an user without removing its session
-	- Added: Option allowing to protect/unprotect Web folders
-	- Fixed: Allow idn for domain part of Ftp account username
-	- Fixed: Allow to trigger more than one privilege callback functions for navigation
-	- Fixed: External mail server option not implemented in admin/domain_edit.page
-	- Fixed: i18n issues in reseller_add.php and reseller_edit.php pages
-	- Fixed: Hide menus referring to unplayable features
-	- Fixed: Sessions not killed (admin/session_manage.php)
-	- Fixed: Unable to display the domain_edit.php/reseller_edit.php pages in some context (SQL queries too big)
-	- Removed both order panel and billing interfaces
-	- Rewritten: Ftp account add page
-	- Updated: admin/settings.php layout
-	- Updated iMSCP jQuery tooltip plugin according jQuery library changes
+GUI
+	Added: Option allowing to disconnect an user without removing its session
+	Added: Option allowing to protect/unprotect Web folders
+	Fixed: Allow idn for domain part of Ftp account username
+	Fixed: Allow to trigger more than one privilege callback functions for navigation
+	Fixed: External mail server option not implemented in admin/domain_edit.page
+	Fixed: i18n issues in reseller_add.php and reseller_edit.php pages
+	Fixed: Hide menus referring to unplayable features
+	Fixed: Sessions not killed (admin/session_manage.php)
+	Fixed: Unable to display the domain_edit.php/reseller_edit.php pages in some context (SQL queries too big)
+	Removed both order panel and billing interfaces
+	Rewritten: Ftp account add page
+	Updated: admin/settings.php layout
+	Updated iMSCP jQuery tooltip plugin according jQuery library changes
 
-SETUP:
-	- Added: Support for external repositories (Debian/Ubuntu)
-	- Added: hooks.d directory for storage of installer hook files
-	- Fixed: add-apt-repository - unknown -y option (Ubuntu Lucid Lynx)
-	- Fixed: APT packages manager must be configured before any package installation
-	- Fixed: All MySQL secure installation tasks are now done by the i-MSCP installer
-	- Fixed: i-MSCP must allow usage of remote SQL server
-	- Fixed: Both imscp-autoinstall and imscp-setup scripts must allow per item reconfiguration
-	- Fixed: Duplicate entries in sources.list file (Ubuntu)
-	- Fixed: Do not show any dialog when --noprompt option is used
-	- Fixed: Make error messages free of any ANSI color and end of line codes in dialog
-	- Fixed: Uninstall unneeded packages when switching to another server implementation
+SETUP
+	Added: Support for external repositories (Debian/Ubuntu)
+	Added: hooks.d directory for storage of installer hook files
+	Fixed: add-apt-repository - unknown -y option (Ubuntu Lucid Lynx)
+	Fixed: APT packages manager must be configured before any package installation
+	Fixed: All MySQL secure installation tasks are now done by the i-MSCP installer
+	Fixed: i-MSCP must allow usage of remote SQL server
+	Fixed: Both imscp-autoinstall and imscp-setup scripts must allow per item reconfiguration
+	Fixed: Duplicate entries in sources.list file (Ubuntu)
+	Fixed: Do not show any dialog when --noprompt option is used
+	Fixed: Make error messages free of any ANSI color and end of line codes in dialog
+	Fixed: Uninstall unneeded packages when switching to another server implementation
 
-VENDOR:
-	- Updated: jQuery to v1.9.1
-	- Updated: jQuery UI to v1.10.0
-	- Updated: Net_DNS to Net_DNS2 (version 1.3.0)
-	- Updated: Zend Framework to 1.12.3
+VENDOR
+	Updated: jQuery to v1.9.1
+	Updated: jQuery UI to v1.10.0
+	Updated: Net_DNS to Net_DNS2 (version 1.3.0)
+	Updated: Zend Framework to 1.12.3
 
-Tickets:
-	- Fixed #064: Nice to have - PHP FPM
-	- Fixed #191: Defect - proftpd slow login
-	- Fixed #377: Defect - Some issues with shared mount point
-	- Fixed #458: Update - NET_DNS to NET_DNS2
-	- Fixed #463: Bug - Fake duplicate sources in sources.list file (ubuntu)
-	- Fixed #543: Bug - Dovecot not stopped when switching to courier
-	- Fixed #544: Bug - An exception have been thrown - magicfile
-	- Fixed #557: Bug - External mail server - Removing last entry (edit mode) doesn't remove DNS MX record
-	- Fixed #558: Defect - Unable to edit custom MX DNS records
-	- Fixed #564: Security Failure - Passwords can be compromised
-	- Fixed #566: Cosmetics - i18n issues
-	- Fixed #567: Bug - Shared mount point get deleted even if used by other entity
-	- Fixed #568: Bug - Unable to delete domain aliases when using shared mount point and HTTP redirection
-	- Fixed #571: Bug - Proftpd - Unable to restart - Directive collision
-	- Fixed #572: Defect - Shared mount point - Entity Deletion
-	- Fixed #581: Task - Add support for MariaDB
-	- Fixed #583: Bug - Disabling PHP will not prevent user to use it
-	- Fixed #586: defect - PHP FPM still running when switching to another server
-	- Fixed #591: Bug - PHP FPM - SSL connection for the panel is not working
-	- Fixed #593: Bug - Setup (update) is not working
-	- Fixed #594: Defect - Awstats addon - cron task is not working
-	- Fixed #595: Enhancement - Allow per item reconfiguration
-	- Fixed #596: Bug - GUI - External mail server feature not implemented
-	- Fixed #599: Bug - Ubuntu auto-installer adapter is broken
-	- Fixed #600: Defect - Custom DNS CNAME to CNAME - Trailing period
-	- Fixed #601: Bug - Apache + php-fpm - Cannot install specific software
-	- Fixed #603: Bug - Awstats Addon - cron task is sending messages to stdout
-	- Fixed #604: Bug - insserv - Script imscp_network is broken: incomplete LSB comment
-	- Fixed #607: Bug - History of customer stats is limited to 3 years
-	- Fixed #609: Bug - PHP FPM - Internal Server Error after deleting any domain
-	- Fixed #610: Cosmetics - i18n issue - Typo
-	- Fixed #618: Defect - IMAP - Subscribed folders are not re-added to the subscription file
-	- Fixed #619: Bug - HTTP Redirection - Null field - Update errors
-	- Fixed #623: Bug - Error on update - Unable to delete etc/apt/preferences.d/imscp file
-	- Fixed #624: Bug - Setup/Update imscp-autoinstall is broken
-	- Fixed #625: Defect - Missing file themes/default/images/black/login/stripe.png
-	- Fixed #629: Unable to change PHP editor settings when editing reseller
-	- Fixed #631: Defect - Proftpd - Heavy 100% load on login / directorychange
-	- Fixed #632: Bug - dovecot - Wrong conffile permission after update
-	- Fixed #634: Bug - i-MSCP update from git master - Error in bind9 server implementation
-	- Fixed #639: Defect - Setup - Package 'debconf-utils' has no installation candidate
-	- Fixed #643: Bug - Unable to switch from php-fpm to fastcgi
-	- Fixed #644: Task - Show specific dialog message when installer cannot run due to backup process
-	- Fixed #646: Defect - Remote SQL server - The host part of SQL users as created by i-MSCP should be settable
-	- Fixed #649: Bug - imscp-uninstall syntax error
-	- Fixed #650: Bug - Error when assigning an existing SQL User to a new database
-	- Fixed #740: Enhancement - Engine Hook for post domain user creation
-	- Fixed #742: Bug - Welcome email don't show the correct information
-	- Fixed #743: Update - Roundcube update available (version 0.9.0)
-	- Fixed #751: Bug - Installer - Ubuntu 13.04 - php5-suhosin is not available
-	- Fixed #753: Bug - Backup Restore - Use of uninitialized value $dbname
-	- Fixed #754: Bug - errors while rebuilding cusomers files (ssl cert)
-	- Fixed #757: Bug - setup - Problem with SSL certificat
-	- Fixed #758: Bug - typo in Database.php (line 729)
-	- Fixed #759: Bug - new account setup with partly wrong vu**** id
-	- Fixed #760: Bug - No logs or not updated logs in user space since may 22 00:00
-	- Fixed #763: Bug - Errors in imscp-autoinstall when database is different from 'imscp'
+TICKETS
+	Fixed #064: Nice to have - PHP FPM
+	Fixed #191: Defect - proftpd slow login
+	Fixed #377: Defect - Some issues with shared mount point
+	Fixed #458: Update - NET_DNS to NET_DNS2
+	Fixed #463: Bug - Fake duplicate sources in sources.list file (ubuntu)
+	Fixed #543: Bug - Dovecot not stopped when switching to courier
+	Fixed #544: Bug - An exception have been thrown - magicfile
+	Fixed #557: Bug - External mail server - Removing last entry (edit mode) doesn't remove DNS MX record
+	Fixed #558: Defect - Unable to edit custom MX DNS records
+	Fixed #564: Security Failure - Passwords can be compromised
+	Fixed #566: Cosmetics - i18n issues
+	Fixed #567: Bug - Shared mount point get deleted even if used by other entity
+	Fixed #568: Bug - Unable to delete domain aliases when using shared mount point and HTTP redirection
+	Fixed #571: Bug - Proftpd - Unable to restart - Directive collision
+	Fixed #572: Defect - Shared mount point - Entity Deletion
+	Fixed #581: Task - Add support for MariaDB
+	Fixed #583: Bug - Disabling PHP will not prevent user to use it
+	Fixed #586: defect - PHP FPM still running when switching to another server
+	Fixed #591: Bug - PHP FPM - SSL connection for the panel is not working
+	Fixed #593: Bug - Setup (update) is not working
+	Fixed #594: Defect - Awstats addon - cron task is not working
+	Fixed #595: Enhancement - Allow per item reconfiguration
+	Fixed #596: Bug - GUI - External mail server feature not implemented
+	Fixed #599: Bug - Ubuntu auto-installer adapter is broken
+	Fixed #600: Defect - Custom DNS CNAME to CNAME - Trailing period
+	Fixed #601: Bug - Apache + php-fpm - Cannot install specific software
+	Fixed #603: Bug - Awstats Addon - cron task is sending messages to stdout
+	Fixed #604: Bug - insserv - Script imscp_network is broken: incomplete LSB comment
+	Fixed #607: Bug - History of customer stats is limited to 3 years
+	Fixed #609: Bug - PHP FPM - Internal Server Error after deleting any domain
+	Fixed #610: Cosmetics - i18n issue - Typo
+	Fixed #618: Defect - IMAP - Subscribed folders are not re-added to the subscription file
+	Fixed #619: Bug - HTTP Redirection - Null field - Update errors
+	Fixed #623: Bug - Error on update - Unable to delete etc/apt/preferences.d/imscp file
+	Fixed #624: Bug - Setup/Update imscp-autoinstall is broken
+	Fixed #625: Defect - Missing file themes/default/images/black/login/stripe.png
+	Fixed #629: Unable to change PHP editor settings when editing reseller
+	Fixed #631: Defect - Proftpd - Heavy 100% load on login / directorychange
+	Fixed #632: Bug - dovecot - Wrong conffile permission after update
+	Fixed #634: Bug - i-MSCP update from git master - Error in bind9 server implementation
+	Fixed #639: Defect - Setup - Package 'debconf-utils' has no installation candidate
+	Fixed #643: Bug - Unable to switch from php-fpm to fastcgi
+	Fixed #644: Task - Show specific dialog message when installer cannot run due to backup process
+	Fixed #646: Defect - Remote SQL server - The host part of SQL users as created by i-MSCP should be settable
+	Fixed #649: Bug - imscp-uninstall syntax error
+	Fixed #650: Bug - Error when assigning an existing SQL User to a new database
+	Fixed #740: Enhancement - Engine Hook for post domain user creation
+	Fixed #742: Bug - Welcome email don't show the correct information
+	Fixed #743: Update - Roundcube update available (version 0.9.0)
+	Fixed #751: Bug - Installer - Ubuntu 13.04 - php5-suhosin is not available
+	Fixed #753: Bug - Backup Restore - Use of uninitialized value $dbname
+	Fixed #754: Bug - errors while rebuilding cusomers files (ssl cert)
+	Fixed #757: Bug - setup - Problem with SSL certificat
+	Fixed #758: Bug - typo in Database.php (line 729)
+	Fixed #759: Bug - new account setup with partly wrong vu**** id
+	Fixed #760: Bug - No logs or not updated logs in user space since may 22 00:00
+	Fixed #763: Bug - Errors in imscp-autoinstall when database is different from 'imscp'
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-01-07: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc1.4
+	RELEASE i-MSCP 1.1.0-rc1.4
 
-DISTROS:
-	- Added: Package files for Ubuntu Quantal Quetzal and Ubuntu Raring Ringtail
+CONFIGS
+	Updated: Fcgid configuration files for high-load sites
 
-CONFIGS:
-	- Updated: Fcgid configuration files for high-load sites
+DISTROS
+	Added: Package files for Ubuntu Quantal Quetzal and Ubuntu Raring Ringtail
 
-Tickets:
-	- Fixed #274: (reopened): Defect - Proftpd limits doesn't work
-	- Fixed #548: Bug - Missing comment character in configs/debian/fcgi/parts/php5-fcgid-starter.tpl
-	- Fixed #550: Boolean PHP Values should be set with php_flag and not php_value
-	- Fixed #551: Bug - Preseed feature is broken
-	- Fixed #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
-	- Fixed #555: Cosmetics - Missing translation at reseller level
-	- Fixed #560: Review - Backup filenames are not windows-friendly
-	- Fixed #562: Bug - Error in apache_fcgid installer
-	- Fixed #563: Defect - protected_plugins.php file not in gui/cache
-	- Fixed #565: Bug - Ftp limits not applied - Proftpd not restarted
+TICKETS
+	Fixed #274: (reopened): Defect - Proftpd limits doesn't work
+	Fixed #548: Bug - Missing comment character in configs/debian/fcgi/parts/php5-fcgid-starter.tpl
+	Fixed #550: Boolean PHP Values should be set with php_flag and not php_value
+	Fixed #551: Bug - Preseed feature is broken
+	Fixed #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
+	Fixed #555: Cosmetics - Missing translation at reseller level
+	Fixed #560: Review - Backup filenames are not windows-friendly
+	Fixed #562: Bug - Error in apache_fcgid installer
+	Fixed #563: Defect - protected_plugins.php file not in gui/cache
+	Fixed #565: Bug - Ftp limits not applied - Proftpd not restarted
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.3
 ------------------------------------------------------------------------------------------------------------------------
 
 2012-12-27: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc1.3
+	RELEASE i-MSCP 1.1.0-rc1.3
 
-SETUP:
-	- Fixed: Any hook function should return 1 on failure
-	- Fixed: Do not install suexec module when using ITK
-	- Fixed: Make fcgid as default FastCGI module
-	- Fixed: Self-signed SSL certificate for i-MSCP must be a wildcard SSL certificate
-	- Fixed: Self-signed SSL certificate for i-MSCP must use 2048-bit RSA Keys (Minimum recommended)
-	- Fixed: Suppress warning for self-signed certificate generation (still in log file)
-	- Fixed: Use of uninitialized value in bitwise or (|) errors
+SETUP
+	Fixed: Any hook function should return 1 on failure
+	Fixed: Do not install suexec module when using ITK
+	Fixed: Make fcgid as default FastCGI module
+	Fixed: Self-signed SSL certificate for i-MSCP must be a wildcard SSL certificate
+	Fixed: Self-signed SSL certificate for i-MSCP must use 2048-bit RSA Keys (Minimum recommended)
+	Fixed: Suppress warning for self-signed certificate generation (still in log file)
+	Fixed: Use of uninitialized value in bitwise or (|) errors
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.2
 ------------------------------------------------------------------------------------------------------------------------
 
 2012-12-25: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc1.2
+	RELEASE i-MSCP 1.1.0-rc1.2
 
-Tickets:
-	- Fixed #546: Bug - SQL error on first install due to empty reseller list
+TICKETS
+	Fixed #546: Bug - SQL error on first install due to empty reseller list
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1-1
 ------------------------------------------------------------------------------------------------------------------------
 
 2012-12-25: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc1.1
+	RELEASE i-MSCP 1.1.0-rc1.1
 
-Tickets:
-	- Fixed #540: Bug - C-style symbols intead of graphic lines in the autoinstall console
-	- Fixed #542: Bug - Unable to install addon packages - git is missing
+TICKETS
+	Fixed #540: Bug - C-style symbols intead of graphic lines in the autoinstall console
+	Fixed #542: Bug - Unable to install addon packages - git is missing
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1
 ------------------------------------------------------------------------------------------------------------------------
 
 2012-12-24: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc1
+	RELEASE i-MSCP 1.1.0-rc1
 
-SETUP:
-	- Added: Backup feature for setup dialog (allow user to step back)
-	- Added: Base class for autoinstall adapters
-	- Added: 'buildonly' and 'skippackages' command line options for autoinstall script
-	- Added: Composer installer for i-MSCP addons
-	- Added: 'reconfigure', 'preseed', hook-file and 'debug' command line options for both autoinstall and setup scripts
-	- Fixed: Allow IDN for hostname and base server vhost hostname
-	- Fixed: Allow to set ip as MySQL server hostname
-	- Fixed: Do not remove user defined variables in imscp.conf
-	- Fixed: Do not ask for MySQL server port when using 'localhost'
-	- Fixed: Do no ask for server to use if only one is available
-	- Fixed: iMSCP::Dialog::Dialog - Wrong synstax for the 'timeout' option
-	- Fixed: iMSCP::Dialog::Dialog - Allow both single and double quotes in dialog text boxes
-	- Fixed: iMSCP::Dialog::Dialog - Allow to set default choice for both radiolist and checklist dialog boxes
+ADDONS
+		Moved: Ajaxplorer to packagist.org (composer package)
+		Moved: PhpMyAdmin to packagist.org (composer package)
+		Moved: Roundcube to packagist.org (composer package)
 
-ENGINE:
-	- Added: i-MSCP own implementation of lsb_release command
-	- Added: 'nocreate' and 'readonly' options for the iMSCP::Config package
-	- Added: pbzip2 (parallel bzip2 file compressor) for bzip2 compression algorithm
-	- Added: progress bar for Debian packages installation
-	- Added: engine hooks manager
-	- Added: several hooks in both addons and servers packages (still a lot to add...)
-	- Fixed: iMSCP::IP - Ips stack not flushed on reset
-	- Fixed: iMSCP::Bootstrapper - Do not create the imscp.conf file if do not exists, raise error instead
+ENGINE
+	Added: i-MSCP own implementation of lsb_release command
+	Added: 'nocreate' and 'readonly' options for the iMSCP::Config package
+	Added: pbzip2 (parallel bzip2 file compressor) for bzip2 compression algorithm
+	Added: progress bar for Debian packages installation
+	Added: engine hooks manager
+	Added: several hooks in both addons and servers packages (still a lot to add...)
+	Fixed: iMSCP::IP - Ips stack not flushed on reset
+	Fixed: iMSCP::Bootstrapper - Do not create the imscp.conf file if do not exists, raise error instead
 
-GUI:
-	Core:
-		- Rewritten external mail interface
+GUI
+	Rewritten external mail interface
 
-	Tools:
-		- Moved: Ajaxplorer to packagist.org (composer package)
-		- Moved: PhpMyAdmin to packagist.org (composer package)
-		- Moved: Roundcube to packagist.org (composer package)
+SETUP
+	Added: Backup feature for setup dialog (allow user to step back)
+	Added: Base class for autoinstall adapters
+	Added: 'buildonly' and 'skippackages' command line options for autoinstall script
+	Added: Composer installer for i-MSCP addons
+	Added: 'reconfigure', 'preseed', hook-file and 'debug' command line options for both autoinstall and setup scripts
+	Fixed: Allow IDN for hostname and base server vhost hostname
+	Fixed: Allow to set ip as MySQL server hostname
+	Fixed: Do not remove user defined variables in imscp.conf
+	Fixed: Do not ask for MySQL server port when using 'localhost'
+	Fixed: Do no ask for server to use if only one is available
+	Fixed: iMSCP::Dialog::Dialog - Wrong synstax for the 'timeout' option
+	Fixed: iMSCP::Dialog::Dialog - Allow both single and double quotes in dialog text boxes
+	Fixed: iMSCP::Dialog::Dialog - Allow to set default choice for both radiolist and checklist dialog boxes
 
-Tickets:
-	- Fixed #350: Defect - Setup - cancel doesn't work for some dialogs
-	- Fixed #437: Enhancement - Roundcube should use its own database
-	- Fixed #438: Enhancement - Add defaults switch to autoinstaller
-	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
-	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail server(s)) should be deleted
-	- Fixed #500: Mail quota edit link has wrong id for alias, subdomain and aliassubs mails.
-	- Fixed #501: Slow query and wrong traffic count in "Edit Domain"
-	- Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
-	- Fixed #504: Roundcube 0.8.2
-	- Fixed #507: Cosmetics - External mail servers features status not show
-	- Fixed #508: German Umlaut in Custom DNS were shown wrong
-	- Fixed #509: Tools: PHPMyAdmin 3.5.3 released
-	- Fixed #511: Enhancement - Show disk usage detail (web, mail, sql) on client side
-	- Fixed #512: autoresponder: lines in transport file not correct
-	- Fixed #514: Email forward from domain A to domain B not working
-	- Fixed #518: Bug - Setup broken
-	- Fixed #520: Defect - migrateMailboxes: Use of uninitialized value
-	- Fixed #522: Bug - Subdomain redirects with "https" or "ftp" don't work
-	- Fixed #524: Update - AjaxPlorer 4.2.3 released
-	- Fixed #525: Update - phpMyAdmin 3.5.5 released
-	- Fixed #527: Update - Roundcube 0.8.4 released
-	- Fixed #532: Review - Database update 53 - ftp password
-	- Fixed #535: Defect - Roundcube does not work with courier
-	- Fixed #539: Enhancement - i-MSCP tools - Composer support
-	- Fixed #541: Task - Move PhpMyAdmin to packagist and make it as addon
+TICKETS
+	Fixed #350: Defect - Setup - cancel doesn't work for some dialogs
+	Fixed #437: Enhancement - Roundcube should use its own database
+	Fixed #438: Enhancement - Add defaults switch to autoinstaller
+	Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
+	Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail server(s)) should be deleted
+	Fixed #500: Mail quota edit link has wrong id for alias, subdomain and aliassubs mails.
+	Fixed #501: Slow query and wrong traffic count in "Edit Domain"
+	Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
+	Fixed #504: Roundcube 0.8.2
+	Fixed #507: Cosmetics - External mail servers features status not show
+	Fixed #508: German Umlaut in Custom DNS were shown wrong
+	Fixed #509: Tools: PHPMyAdmin 3.5.3 released
+	Fixed #511: Enhancement - Show disk usage detail (web, mail, sql) on client side
+	Fixed #512: autoresponder: lines in transport file not correct
+	Fixed #514: Email forward from domain A to domain B not working
+	Fixed #518: Bug - Setup broken
+	Fixed #520: Defect - migrateMailboxes: Use of uninitialized value
+	Fixed #522: Bug - Subdomain redirects with "https" or "ftp" don't work
+	Fixed #524: Update - AjaxPlorer 4.2.3 released
+	Fixed #525: Update - phpMyAdmin 3.5.5 released
+	Fixed #527: Update - Roundcube 0.8.4 released
+	Fixed #532: Review - Database update 53 - ftp password
+	Fixed #535: Defect - Roundcube does not work with courier
+	Fixed #539: Enhancement - i-MSCP tools - Composer support
+	Fixed #541: Task - Move PhpMyAdmin to packagist and make it as addon
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta2
 ------------------------------------------------------------------------------------------------------------------------
 
 2012-09-14: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-beta2
+	RELEASE i-MSCP 1.1.0-beta2
 
-GUI:
-	Vendor:
-		- Updated: Zend Framework to 1.11.12
+ADDONS
+	Updated: PhpMyAdmin to version 3.5.3
+	Updated: Roundcube to 0.8.2
 
-	Tools:
-		- Updated: PhpMyAdmin to version 3.5.3
-		- Updated: Roundcube to 0.8.2
+VENDOR
+	Updated: Zend Framework to 1.11.12
 
-Tickets:
-	- Fixed #433: PHP directive editor: register_globals does not exist in php 5.4.0 and above
-	- Fixed #453: Wrong Support Ticket System Mailer template
-	- Fixed #475: Some field-lengths are too short for their content
-	- Fixed #479: WARNING 00_master_ssl.conf do not exists
-	- Fixed #481: Fatal Error in create/edit custom DNS entry
-	- Fixed #483: Autoresponder: Problems displaying umlauts
-	- Fixed #484: Autoresponder: Table autoreplies_log is not updated after deactivation
-	- Fixed #486: Malfunction: ProFTP LIMIT directive problem
-	- Fixed #487: External Mailserver add/edit CNAMES
-	- Fixed #490: Roundcube missing default folders
-	- Fixed #491: Security-Update: Roundcube 0.8.1
-	- Fixed #492: Hosting plans in admin level not complete
+TICKETS
+	Fixed #433: PHP directive editor: register_globals does not exist in php 5.4.0 and above
+	Fixed #453: Wrong Support Ticket System Mailer template
+	Fixed #475: Some field-lengths are too short for their content
+	Fixed #479: WARNING 00_master_ssl.conf do not exists
+	Fixed #481: Fatal Error in create/edit custom DNS entry
+	Fixed #483: Autoresponder: Problems displaying umlauts
+	Fixed #484: Autoresponder: Table autoreplies_log is not updated after deactivation
+	Fixed #486: Malfunction: ProFTP LIMIT directive problem
+	Fixed #487: External Mailserver add/edit CNAMES
+	Fixed #490: Roundcube missing default folders
+	Fixed #491: Security-Update: Roundcube 0.8.1
+	Fixed #492: Hosting plans in admin level not complete
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1
 ------------------------------------------------------------------------------------------------------------------------
 
 2012-07-01: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-beta1
+	RELEASE i-MSCP 1.1.0-beta1
 
-GUI:
-	Tools:
-		- Updated: PhpMyAdmin to version 3.5.2
-		- Updated: AjaxPlorer to 4.2.2
-		- Updated: Roundcube to 0.7.2
+VENDOR
+		Updated: PhpMyAdmin to version 3.5.2
+		Updated: AjaxPlorer to 4.2.2
+		Updated: Roundcube to 0.7.2
 
-Tickets:
-	- Fixed #017: Feature - Send mail if quota reached
-	- Fixed #157: Enhancement - Relaying Domains
-	- Fixed #163: Enhancement - Add Support for Roundcube Mail (or switch from Squirrel)
-	- Fixed #213: Enhancement - Bruteforce component - login attemps
-	- Fixed #313: Enhancement - Some improvements on postfix's master.cf
-	- Fixed #322: Enhancement - Add possibility to delete more then only one eMail Adress
-	- Fixed #337: Enhancement - Add possibility to edit per user mail quotas
-	- Fixed #368: Enhancement - Add custom TXT DNS resource records
-	- Fixed #387: Enhancement - php.ini modifications to allow the usage of roundcube
-	- Fixed #402: Task - Ajaxplorer - Not Compatible with php 5.4
-	- Fixed #403: Defect - Hosting Plan Secure Code doesn't work
-	- Fixed #404: Defect - Missing translations
-	- Fixed #405: Bug - Custom message for maintenance mode is always overridden
-	- Fixed #408: Defect: warning: master.cf: unused parameter: smtpd_override_options=no_address_mappings
-	- Fixed #413: Defect: dovecot quota config inconsistent
-	- Fixed #415: Defect - mailbox catchall catching everything.. not what it should..
-	- Fixed #421: Defect: Adding email account not IDN compatible
-	- Fixed #423: Malfunction: Ticket-Summary at Reseller-Overview
-	- Fixed #424: BUG: After deleting alias domain the ftp accounts of this domain still exist
-	- Fixed #427: Malfunction: DNS Servernames not IDN compatible stored in database
-	- Fixed #429: Enhancement - TXT entries should allow * as a valid character
-	- Fixed #432: Awstats static configuration generated when awstats dynamic is enabled
-	- Fixed #440: Broken installer after External email servers commit
-	- Fixed #445: Disabling domain and panel's backups does not work
-	- Fixed #447: External mailserver relay_domains
-	- Fixed #452: View Support Ticket
-	- Fixed #456: Wrong welcome message usertype when create client
-	- Fixed #457: Domain specific apache2 configuration gets deleted in imscp-setup (tx Jadawin)
-	- Fixed #467: FTP Account, Datamanager-> no autologin in ajax explorer
-	- Fixed #468: SSL for Customers does not Work since upgrade to beta
-	- Fixed #470: Default mail_quota is still 10485760 bytes
+TICKETS
+	Fixed #017: Feature - Send mail if quota reached
+	Fixed #157: Enhancement - Relaying Domains
+	Fixed #163: Enhancement - Add Support for Roundcube Mail (or switch from Squirrel)
+	Fixed #213: Enhancement - Bruteforce component - login attemps
+	Fixed #313: Enhancement - Some improvements on postfix's master.cf
+	Fixed #322: Enhancement - Add possibility to delete more then only one eMail Adress
+	Fixed #337: Enhancement - Add possibility to edit per user mail quotas
+	Fixed #368: Enhancement - Add custom TXT DNS resource records
+	Fixed #387: Enhancement - php.ini modifications to allow the usage of roundcube
+	Fixed #402: Task - Ajaxplorer - Not Compatible with php 5.4
+	Fixed #403: Defect - Hosting Plan Secure Code doesn't work
+	Fixed #404: Defect - Missing translations
+	Fixed #405: Bug - Custom message for maintenance mode is always overridden
+	Fixed #408: Defect: warning: master.cf: unused parameter: smtpd_override_options=no_address_mappings
+	Fixed #413: Defect: dovecot quota config inconsistent
+	Fixed #415: Defect - mailbox catchall catching everything.. not what it should..
+	Fixed #421: Defect: Adding email account not IDN compatible
+	Fixed #423: Malfunction: Ticket-Summary at Reseller-Overview
+	Fixed #424: BUG: After deleting alias domain the ftp accounts of this domain still exist
+	Fixed #427: Malfunction: DNS Servernames not IDN compatible stored in database
+	Fixed #429: Enhancement - TXT entries should allow * as a valid character
+	Fixed #432: Awstats static configuration generated when awstats dynamic is enabled
+	Fixed #440: Broken installer after External email servers commit
+	Fixed #445: Disabling domain and panel's backups does not work
+	Fixed #447: External mailserver relay_domains
+	Fixed #452: View Support Ticket
+	Fixed #456: Wrong welcome message usertype when create client
+	Fixed #457: Domain specific apache2 configuration gets deleted in imscp-setup (tx Jadawin)
+	Fixed #467: FTP Account, Datamanager-> no autologin in ajax explorer
+	Fixed #468: SSL for Customers does not Work since upgrade to beta
+	Fixed #470: Default mail_quota is still 10485760 bytes

@@ -396,7 +396,7 @@ sub _exec($$$;$$)
 
 	# When the plugin gets installed, updated or enabled, we install the plugin into the backend plugin directory.
 	INSTALL_PLUGIN_BACKEND: {
-		if($forceBackendInstall || $pluginMethod ~~ ['install', 'update', 'enable']) {
+		if($forceBackendInstall || $pluginMethod ~~ ['install', 'update', 'enable', 'disable', 'uninstall']) {
 			my $guiPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$pluginName/backend/$pluginName.pm";
 
 			if(-f $guiPluginFile) {

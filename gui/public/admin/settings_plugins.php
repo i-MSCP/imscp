@@ -404,15 +404,21 @@ function admin_pluginManagerCheckAction($pluginManager, $pluginName, $action)
 			break;
 		case 'delete':
 			if ($pluginStatus != 'todelete') {
-				if (
-					(
-						$pluginManager->isPluginUninstallable($pluginName) &&
-						!$pluginManager->isPluginUninstalled($pluginName)
-					) ||
-					!$pluginManager->isPluginDisabled($pluginName)
-				) {
-					set_page_message(tr('Plugin %s cannot be deleted.', "<strong>$pluginName</strong>"), 'warning');
+
+				if($pluginManager->isPluginInstallable($pluginName) && $pluginManager->isPluginInstalled($pluginName)) {
+					set_page_message(
+						tr('Plugin %s cannot be deleted. You must uninstall it first.', "<strong>$pluginName</strong>"),
+						'warning'
+					);
 					$ret = false;
+				} else {
+					if($pluginManager->isPluginEnabled($pluginName)) {
+						set_page_message(
+							tr('Plugin %s cannot be deleted. You must deactivate it first.', "<strong>$pluginName</strong>"),
+							'warning'
+						);
+						$ret = false;
+					}
 				}
 			}
 			break;
@@ -577,9 +583,8 @@ function admin_pluginManagerUpdatePluginList($pluginManager)
 		$eventManager->dispatch(iMSCP_Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager));
 
 		set_page_message(
-			tr('Plugin list updated.') . '<br />' .
 			tr(
-				'%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s plugin(s) deleted.',
+				'Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s plugin(s) deleted.',
 				"<strong>{$updateInfo['new']}</strong>",
 				"<strong>{$updateInfo['updated']}</strong>",
 				"<strong>{$updateInfo['changed']}</strong>",
@@ -600,6 +605,9 @@ require 'imscp-lib.php';
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 /** @var iMSCP_Plugin_Manager $pluginManager */
 $pluginManager = iMSCP_Registry::get('pluginManager');
@@ -660,8 +668,8 @@ if (!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
 		admin_pluginManagerDoBulkAction($pluginManager);
 	} elseif (!empty($_FILES)) {
 		if (admin_pluginManagerUploadPlugin($pluginManager)) {
-			set_page_message(tr('Plugin uploaded.'), 'success');
-			admin_pluginManagerUpdatePluginList($pluginManager);
+			set_page_message(tr('Plugin has been uploaded.'), 'success');
+			redirectTo('settings_plugins.php?update_plugin_list=all');
 		}
 	}
 
