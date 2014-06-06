@@ -1119,7 +1119,7 @@ sub setupAskServicesSsl
 		if($sslEnabled eq 'yes' && $rs != 30) {
 			# Ask for self-signed certificate
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
-				"\nDo you have a wildcard SSL certificate (*.$domainName)?",
+				"\nDo you have an SSL certificate for the $domainName domain?",
 				['yes', 'no'],
 				($selfSignedCertificate ~~ ['yes', 'no']) ? (($selfSignedCertificate eq 'yes') ? 'no' : 'yes') : 'no'
 			);
@@ -1192,9 +1192,9 @@ sub setupAskServicesSsl
 			}
 		}
 	} elsif($sslEnabled eq 'yes' && ! iMSCP::Getopt->preseed) {
-		$openSSL->{'private_key_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$domainName.pem";
-		$openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$domainName.pem";
-		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$domainName.pem";
+		$openSSL->{'private_key_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
+		$openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
+		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
 
 		if($openSSL->validateCertificateChain()){
 			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate is missing or invalid.");
@@ -1854,7 +1854,7 @@ sub setupPanelSsl
 	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
 	my $sslEnabled = setupGetQuestion('PANEL_SSL_ENABLED');
 
-	if($sslEnabled eq 'yes' && setupGetQuestion('PANEL_SSL_SETUP', 'yes') ne 'no') {
+	if($sslEnabled eq 'yes' && setupGetQuestion('PANEL_SSL_SETUP', 'yes') eq 'yes') {
 		my $openSSL = iMSCP::OpenSSL->getInstance();
 		$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
 
@@ -1890,7 +1890,7 @@ sub setupServiceSsl
 	my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH');
 	my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED');
 
-	if($sslEnabled eq 'yes' && setupGetQuestion('SERVICES_SSL_SETUP', 'yes') ne 'no') {
+	if($sslEnabled eq 'yes' && setupGetQuestion('SERVICES_SSL_SETUP', 'yes') eq 'yes') {
 		my $openSSL = iMSCP::OpenSSL->getInstance();
 		$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
 

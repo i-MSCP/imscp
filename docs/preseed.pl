@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2014.05.20
+# Last update: 2014.06.06
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -113,16 +113,16 @@ $main::questions{'PANEL_SSL_ENABLED'} = 'no'; # 'yes' or 'no'
 $main::questions{'PANEL_SSL_SELFSIGNED_CERTIFICATE'} = 'no'; # 'yes' for selfsigned, 'no' for own certificate
 
 # Only relevant if PANEL_SSL_ENABLED is set to 'yes' and  PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'PANEL_SSL_PRIVATE_KEY_PATH'} = ''; # Path to certificate key
+$main::questions{'PANEL_SSL_PRIVATE_KEY_PATH'} = ''; # Path to private key
 
 # Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'PANEL_SSL_PASSPHRASE'} = ''; # Leave blank if your certificate key is not protected by a passphrase
+$main::questions{'PANEL_SSL_PRIVATE_KEY_PASSPHRASE'} = ''; # Leave blank if your private key is not protected by a passphrase
 
 # Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'PANEL_SSL_CA_BUNDLE_PATH'} = ''; # Leave blank if you do not have intermediate certificate
+$main::questions{'PANEL_SSL_CA_BUNDLE_PATH'} = ''; # Leave blank if you do not have CA bundle
 
 # Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'PANEL_SSL_CERTIFICATE_PATH'} = ''; # Path to SSL certificat
+$main::questions{'PANEL_SSL_CERTIFICATE_PATH'} = ''; # Path to SSL certificate
 
 # Only relevant if PANEL_SSL_ENABLED is set to 'yes' ;
 # Let's value set to 'http://' if you set PANEL_SSL_ENABLED to 'no'
@@ -138,13 +138,13 @@ $main::questions{'SERVICES_SSL_SELFSIGNED_CERTIFICATE'} = 'no'; # 'yes' for self
 $main::questions{'SERVICES_SSL_PRIVATE_KEY_PATH'} = ''; # Path to certificate key
 
 # Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'SERVICES_SSL_PASSPHRASE'} = ''; # Leave blank if your certificate key is not protected by a passphrase
+$main::questions{'SERVICES_SSL_PRIVATE_KEY_PASSPHRASE'} = ''; # Leave blank if your private key is not protected by a passphrase
 
 # Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'SERVICES_SSL_CA_BUNDLE_PATH'} = ''; # Leave blank if you do not have intermediate certificate
+$main::questions{'SERVICES_SSL_CA_BUNDLE_PATH'} = ''; # Leave blank if you do not have CA bundle
 
 # Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-$main::questions{'SERVICES_SSL_CERTIFICATE_PATH'} = ''; # Path to SSL certificat
+$main::questions{'SERVICES_SSL_CERTIFICATE_PATH'} = ''; # Path to SSL certificate
 
 # iMSCP backup feature (database and configuration files)
 $main::questions{'BACKUP_IMSCP'} = 'yes'; # 'yes' or 'no' - It's recommended to set this question to 'yes'
