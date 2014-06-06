@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.1.1\n"
+"Project-Id-Version: i-MSCP 1.1.10\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-25 16:59+0200\n"
+"POT-Creation-Date: 2014-06-06 12:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1686,6 +1686,9 @@ msgstr ""
 msgid "DNS record already exist."
 msgstr ""
 
+msgid "DNS resource records"
+msgstr ""
+
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr ""
 
@@ -2662,7 +2665,8 @@ msgstr ""
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
-"against deletion using the immutable flag (Extended attributes)."
+"against deletion using the immutable flag (only if supported by the file "
+"system)."
 msgstr ""
 
 msgid ""
@@ -3408,6 +3412,11 @@ msgstr ""
 msgid "Only positive numbers are allowed."
 msgstr ""
 
+msgid ""
+"Only printable characters from the ASCII table (not extended), excepted the "
+"space, are allowed."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
@@ -3554,7 +3563,7 @@ msgstr ""
 msgid "Password confirmation"
 msgstr ""
 
-msgid "Password contains not permitted characters."
+msgid "Password contains unallowed characters."
 msgstr ""
 
 msgid "Password data"
@@ -5639,6 +5648,9 @@ msgstr ""
 msgid "You cannot unassign an IP address already in use."
 msgstr ""
 
+msgid "You do not have DNS resource records."
+msgstr ""
+
 msgid "You do not have FTP accounts."
 msgstr ""
 
@@ -5646,9 +5658,6 @@ msgid "You do not have any orders for domain aliases."
 msgstr ""
 
 msgid "You do not have any software uploaded yet"
-msgstr ""
-
-msgid "You do not have custom DNS records."
 msgstr ""
 
 msgid "You do not have customers."

@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# jkwebdesign <info@jkwebdesign.fi>, 2013
-# jkwebdesign <info@jkwebdesign.fi>, 2013
+# Jari <info@jkwebdesign.fi>, 2013
+# Jari <info@jkwebdesign.fi>, 2013
 # Laurent Declercq <l.declercq@nuxwin.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-25 16:59+0200\n"
-"PO-Revision-Date: 2014-05-24 03:11+0000\n"
+"POT-Creation-Date: 2014-06-06 12:36+0200\n"
+"PO-Revision-Date: 2014-06-06 10:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -1690,6 +1690,9 @@ msgstr ""
 msgid "DNS record already exist."
 msgstr "DNS merkintä on jo olemassa."
 
+msgid "DNS resource records"
+msgstr ""
+
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr ""
 
@@ -2666,7 +2669,8 @@ msgstr ""
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
-"against deletion using the immutable flag (Extended attributes)."
+"against deletion using the immutable flag (only if supported by the file "
+"system)."
 msgstr ""
 
 msgid ""
@@ -3412,6 +3416,11 @@ msgstr ""
 msgid "Only positive numbers are allowed."
 msgstr "Vain positiiviset numerot ovat sallittuja"
 
+msgid ""
+"Only printable characters from the ASCII table (not extended), excepted the "
+"space, are allowed."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
@@ -3558,7 +3567,7 @@ msgstr ""
 msgid "Password confirmation"
 msgstr ""
 
-msgid "Password contains not permitted characters."
+msgid "Password contains unallowed characters."
 msgstr ""
 
 msgid "Password data"
@@ -5646,6 +5655,9 @@ msgstr ""
 msgid "You cannot unassign an IP address already in use."
 msgstr ""
 
+msgid "You do not have DNS resource records."
+msgstr ""
+
 msgid "You do not have FTP accounts."
 msgstr ""
 
@@ -5654,9 +5666,6 @@ msgstr ""
 
 msgid "You do not have any software uploaded yet"
 msgstr ""
-
-msgid "You do not have custom DNS records."
-msgstr "Sinulla ei ole itse määriteltyjä DNS merkintöjä"
 
 msgid "You do not have customers."
 msgstr "Sinulla ei ole asiakkaita."

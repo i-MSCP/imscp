@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-25 16:59+0200\n"
-"PO-Revision-Date: 2014-05-24 03:11+0000\n"
+"POT-Creation-Date: 2014-06-06 12:36+0200\n"
+"PO-Revision-Date: 2014-06-06 10:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -1689,6 +1689,9 @@ msgstr "Anpassa fel sidor för din domän."
 msgid "DNS record already exist."
 msgstr "DNS-posten finns redan."
 
+msgid "DNS resource records"
+msgstr ""
+
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr "Fel på DNS-server, vänligen kontakta din återförsäljare."
 
@@ -2665,8 +2668,9 @@ msgstr "IPv6 address fältet är tomt eller ogiltig."
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
-"against deletion using the immutable flag (Extended attributes)."
-msgstr "If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes)."
+"against deletion using the immutable flag (only if supported by the file "
+"system)."
+msgstr ""
 
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
@@ -3411,6 +3415,11 @@ msgstr "Endast siffror i intervallet 0 till 65535 är tillåtna."
 msgid "Only positive numbers are allowed."
 msgstr "Endast positiva tal är tillåtna."
 
+msgid ""
+"Only printable characters from the ASCII table (not extended), excepted the "
+"space, are allowed."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Endast tar.gz, tar.bz2 och zip arkiv accepteras"
 
@@ -3557,8 +3566,8 @@ msgstr "Lösenord får inte vara längre än 30 teken"
 msgid "Password confirmation"
 msgstr "Lösenord bekräftelse"
 
-msgid "Password contains not permitted characters."
-msgstr "Lösenordet innehåller inte tillåtna tecken."
+msgid "Password contains unallowed characters."
+msgstr ""
 
 msgid "Password data"
 msgstr "Lösenordsdata"
@@ -4311,7 +4320,7 @@ msgid "SSL feature is not available."
 msgstr "SSL feature is not available."
 
 msgid "SSL feature is not available. You can only view your certificate."
-msgstr ""
+msgstr "SSL-funktionen är inte tillgänglig. Du kan bara visa ditt certifikat."
 
 msgid "Save"
 msgstr "Spara"
@@ -5645,6 +5654,9 @@ msgstr "You cannot set expire date in past."
 msgid "You cannot unassign an IP address already in use."
 msgstr "You cannot unassign an IP address already in use."
 
+msgid "You do not have DNS resource records."
+msgstr ""
+
 msgid "You do not have FTP accounts."
 msgstr "Du har inga FTP-konton."
 
@@ -5653,9 +5665,6 @@ msgstr "You do not have any orders for domain aliases."
 
 msgid "You do not have any software uploaded yet"
 msgstr "You do not have any software uploaded yet"
-
-msgid "You do not have custom DNS records."
-msgstr "Du har inga anpassade DNS-poster."
 
 msgid "You do not have customers."
 msgstr "Du har inga kunder."

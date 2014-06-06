@@ -5,15 +5,15 @@
 # Translators:
 # 9 Beliy <9beliy@gmail.com>, 2012
 # Oleg Olegov <>, 2012
-# plastilin <alexey.blinkov@gmail.com>, 2013
+# Plastilin <alexey.blinkov@gmail.com>, 2013
 # hosterdev <rwer353453534@mail.ru>, 2011
-# DragonZX <DragonZX@yandex.ru>, 2013
+# Vitaliy Zhukov <DragonZX@yandex.ru>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-25 16:59+0200\n"
-"PO-Revision-Date: 2014-05-24 03:11+0000\n"
+"POT-Creation-Date: 2014-06-06 12:36+0200\n"
+"PO-Revision-Date: 2014-06-06 10:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -1692,6 +1692,9 @@ msgstr "Выберите страницы ошибок для Вашего до�
 msgid "DNS record already exist."
 msgstr "DNS запись уже существует."
 
+msgid "DNS resource records"
+msgstr ""
+
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr ""
 
@@ -2668,7 +2671,8 @@ msgstr ""
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
-"against deletion using the immutable flag (Extended attributes)."
+"against deletion using the immutable flag (only if supported by the file "
+"system)."
 msgstr ""
 
 msgid ""
@@ -3414,6 +3418,11 @@ msgstr ""
 msgid "Only positive numbers are allowed."
 msgstr "Разрешены только положительные числа"
 
+msgid ""
+"Only printable characters from the ASCII table (not extended), excepted the "
+"space, are allowed."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
@@ -3560,7 +3569,7 @@ msgstr ""
 msgid "Password confirmation"
 msgstr "Подтверждение пароля"
 
-msgid "Password contains not permitted characters."
+msgid "Password contains unallowed characters."
 msgstr ""
 
 msgid "Password data"
@@ -5648,6 +5657,9 @@ msgstr "Дата истечения не может быть в прошлом."
 msgid "You cannot unassign an IP address already in use."
 msgstr "Вы не можете открепить IP адрес, который уже используется."
 
+msgid "You do not have DNS resource records."
+msgstr ""
+
 msgid "You do not have FTP accounts."
 msgstr ""
 
@@ -5656,9 +5668,6 @@ msgstr ""
 
 msgid "You do not have any software uploaded yet"
 msgstr "У вас еще нет загруженного программного обеспечения"
-
-msgid "You do not have custom DNS records."
-msgstr "У Вас нет DNS записей."
 
 msgid "You do not have customers."
 msgstr "У Вас нет клиентов."

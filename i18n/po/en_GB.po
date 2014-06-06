@@ -4,21 +4,21 @@
 # 
 # Translators:
 # Cool <barni@telia.com>, 2012-2013
-# DragonZX <DragonZX@yandex.ru>, 2013
+# Vitaliy Zhukov <DragonZX@yandex.ru>, 2013
 # FlorianJ <flo_jung@web.de>, 2012
 # FlorianJ <flo_jung@web.de>, 2012
 # Laurent Declercq <l.declercq@nuxwin.com>, 2011
-# MuhKuh <peter@obanax.ch>, 2013
+# Peter Wyss <peter@obanax.ch>, 2013
 # Torsten Widmann <info@goover.de>, 2012
 # Torsten Widmann <info@goover.de>, 2011, 2012
 # Torsten Widmann <info@goover.de>, 2011-2012
-# DragonZX <DragonZX@yandex.ru>, 2013
+# Vitaliy Zhukov <DragonZX@yandex.ru>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-25 16:59+0200\n"
-"PO-Revision-Date: 2014-05-24 03:11+0000\n"
+"POT-Creation-Date: 2014-06-06 12:36+0200\n"
+"PO-Revision-Date: 2014-06-06 10:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -1697,6 +1697,9 @@ msgstr "Customize error pages for your domain."
 msgid "DNS record already exist."
 msgstr "DNS record already exist."
 
+msgid "DNS resource records"
+msgstr ""
+
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr "DNS server unavailable. Please contact your reseller."
 
@@ -2673,8 +2676,9 @@ msgstr ""
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
-"against deletion using the immutable flag (Extended attributes)."
-msgstr "If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes)."
+"against deletion using the immutable flag (only if supported by the file "
+"system)."
+msgstr ""
 
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
@@ -3419,6 +3423,11 @@ msgstr ""
 msgid "Only positive numbers are allowed."
 msgstr "Only positive numbers are allowed."
 
+msgid ""
+"Only printable characters from the ASCII table (not extended), excepted the "
+"space, are allowed."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
@@ -3565,8 +3574,8 @@ msgstr "Password cannot be longer than 30 characters."
 msgid "Password confirmation"
 msgstr "Password confirmation"
 
-msgid "Password contains not permitted characters."
-msgstr "Password contains not permitted characters."
+msgid "Password contains unallowed characters."
+msgstr ""
 
 msgid "Password data"
 msgstr "Password data"
@@ -5653,6 +5662,9 @@ msgstr "You cannot set expire date in past."
 msgid "You cannot unassign an IP address already in use."
 msgstr "You cannot unassign an IP address already in use."
 
+msgid "You do not have DNS resource records."
+msgstr ""
+
 msgid "You do not have FTP accounts."
 msgstr "You do not have FTP accounts."
 
@@ -5661,9 +5673,6 @@ msgstr "You do not have any orders for domain aliases."
 
 msgid "You do not have any software uploaded yet"
 msgstr "You do not have any software uploaded yet"
-
-msgid "You do not have custom DNS records."
-msgstr "You do not have custom DNS records."
 
 msgid "You do not have customers."
 msgstr "You do not have customers."

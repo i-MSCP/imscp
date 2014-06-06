@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# indjov <al@indjov.info>, 2014
+# Al Indjov <al@indjov.info>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-25 16:59+0200\n"
-"PO-Revision-Date: 2014-05-24 03:11+0000\n"
+"POT-Creation-Date: 2014-06-06 12:36+0200\n"
+"PO-Revision-Date: 2014-06-06 10:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -1688,6 +1688,9 @@ msgstr "Персонализиране на страници с грешки з�
 msgid "DNS record already exist."
 msgstr "DNS записа вече съществува."
 
+msgid "DNS resource records"
+msgstr ""
+
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr ""
 
@@ -2664,7 +2667,8 @@ msgstr ""
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
-"against deletion using the immutable flag (Extended attributes)."
+"against deletion using the immutable flag (only if supported by the file "
+"system)."
 msgstr ""
 
 msgid ""
@@ -3410,6 +3414,11 @@ msgstr ""
 msgid "Only positive numbers are allowed."
 msgstr "Само положителни числа са разрешени."
 
+msgid ""
+"Only printable characters from the ASCII table (not extended), excepted the "
+"space, are allowed."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
@@ -3556,7 +3565,7 @@ msgstr ""
 msgid "Password confirmation"
 msgstr "Паролата е потвърдена"
 
-msgid "Password contains not permitted characters."
+msgid "Password contains unallowed characters."
 msgstr ""
 
 msgid "Password data"
@@ -5644,6 +5653,9 @@ msgstr ""
 msgid "You cannot unassign an IP address already in use."
 msgstr ""
 
+msgid "You do not have DNS resource records."
+msgstr ""
+
 msgid "You do not have FTP accounts."
 msgstr ""
 
@@ -5652,9 +5664,6 @@ msgstr ""
 
 msgid "You do not have any software uploaded yet"
 msgstr ""
-
-msgid "You do not have custom DNS records."
-msgstr "Вие нямате DNS записи."
 
 msgid "You do not have customers."
 msgstr "Вие нямате клиенти"

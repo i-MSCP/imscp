@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-05-25 16:59+0200\n"
-"PO-Revision-Date: 2014-05-24 03:11+0000\n"
+"POT-Creation-Date: 2014-06-06 12:36+0200\n"
+"PO-Revision-Date: 2014-06-06 10:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -524,16 +524,16 @@ msgid "A PHP extension stopped the file upload."
 msgstr "PHP拡張モジュールは、ファイルのアップロードを停止しました。"
 
 msgid "A certificate in your CA bundle is missing or invalid."
-msgstr ""
+msgstr "CAバンドル内の証明書が無いか、無効です。"
 
 msgid "A database update is available"
-msgstr ""
+msgstr "データベースの更新が提供されています"
 
 msgid "A hosting plan with same name already exists."
 msgstr "同じ名前のホスティングプランは既に存在します。"
 
 msgid "A new i-MSCP version is available"
-msgstr ""
+msgstr "新しいi-MSCPのバージョンが提供されています"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Webインターフェイスを介してドメインの統計情報にアクセスします。"
@@ -814,7 +814,7 @@ msgid "Admin / System Tools / System Information"
 msgstr "管理者 / システムツール / システム情報"
 
 msgid "Admin / System Tools / i-MSCP Updates"
-msgstr ""
+msgstr "管理 / システムツール / i-MSCP更新"
 
 msgid "Admin / User / Overview / Domain Edit"
 msgstr "管理者 / ユーザー / 概要 / ドメイン編集"
@@ -1129,7 +1129,7 @@ msgid "Assign group"
 msgstr "グループを割り当てる"
 
 msgid "At first you must create a database which have at least one SQL user."
-msgstr ""
+msgstr "最初に、少なくとも1つのSQLユーザを持つデータベースを作成する必要があります。"
 
 msgid "Auto email template data updated!"
 msgstr "自動送信Eメールのテンプレート情報が更新されました！"
@@ -1220,7 +1220,7 @@ msgid "By"
 msgstr "から"
 
 msgid "CA bundle"
-msgstr ""
+msgstr "CAバンドル"
 
 msgid "CGI"
 msgstr "CGI"
@@ -1390,7 +1390,7 @@ msgid "Client / Domains / PHP Settings"
 msgstr "クライアント / ドメイン / PHP設定"
 
 msgid "Client / Domains / SSL Certificate"
-msgstr ""
+msgstr "クライアント / ドメイン / SSL証明書"
 
 msgid "Client / Email / Add Email Account"
 msgstr "クライアント / Eメール / Eメールアカウント追加"
@@ -1523,7 +1523,7 @@ msgid "Closed tickets"
 msgstr "解決したチケット"
 
 msgid "Common name"
-msgstr ""
+msgstr "コモンネーム"
 
 msgid "Company"
 msgstr "会社"
@@ -1689,6 +1689,9 @@ msgstr "ドメインのエラーページをカスタマイズする。"
 
 msgid "DNS record already exist."
 msgstr "DNSレコードは既に存在しています。"
+
+msgid "DNS resource records"
+msgstr ""
 
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr "DNSサーバーが使用できません。代理店にお問い合わせください。"
@@ -2104,13 +2107,13 @@ msgid "Download"
 msgstr "ダウンロード"
 
 msgid "Download TAR"
-msgstr ""
+msgstr "TARをダウンロード"
 
 msgid "Download ZIP"
-msgstr ""
+msgstr "ZIPをダウンロード"
 
 msgid "Download links"
-msgstr ""
+msgstr "リンクをダウンロード"
 
 msgid "Download the archives stored in this directory"
 msgstr "ディレクトリに保存されているアーカイブをダウンロード"
@@ -2666,8 +2669,9 @@ msgstr "IPv6アドレスフィールドが空または無効です。"
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
-"against deletion using the immutable flag (Extended attributes)."
-msgstr "i-MSCPによってプロビジョニングとしてWebフォルダ、\"はい\"に設定した場合、不変フラグ（拡張属性）を使用して削除から保護されます。"
+"against deletion using the immutable flag (only if supported by the file "
+"system)."
+msgstr ""
 
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
@@ -2811,7 +2815,7 @@ msgid "Internationalization"
 msgstr "国際化"
 
 msgid "Invalid CA Bundle."
-msgstr ""
+msgstr "無効なCAバンドル。"
 
 msgid "Invalid CNAME"
 msgstr "無効なCNAMEです"
@@ -2866,7 +2870,7 @@ msgid "Invalid name."
 msgstr "名前が無効です。"
 
 msgid "Invalid private key or passphrase"
-msgstr ""
+msgstr "無効な秘密鍵又はパスフレーズ"
 
 msgid "Invalid target."
 msgstr "ターゲットが無効です。"
@@ -3242,7 +3246,7 @@ msgid "No available"
 msgstr "使用不可"
 
 msgid "No certificate found"
-msgstr ""
+msgstr "証明書が見つかりません"
 
 msgid "No custom menu found."
 msgstr "カスタムメニューが見つかりません。"
@@ -3320,10 +3324,10 @@ msgid "No unassigned users were found in the database."
 msgstr "割当てられていないユーザーがデータベース内に見つかりませんでした。"
 
 msgid "No update available"
-msgstr ""
+msgstr "利用可能なアップデートがありません"
 
 msgid "No update info available"
-msgstr ""
+msgstr "利用可能なアップデート情報がありません"
 
 msgid "No user found."
 msgstr "ユーザーが見つかりませんでした。"
@@ -3411,6 +3415,11 @@ msgstr "0〜65535の範囲の数値だけが許可されます。"
 
 msgid "Only positive numbers are allowed."
 msgstr "正の数値のみが許可されます。"
+
+msgid ""
+"Only printable characters from the ASCII table (not extended), excepted the "
+"space, are allowed."
+msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "tar.gz、tar.bz2、そしてzipアーカイブのみが受け入れられます。"
@@ -3558,8 +3567,8 @@ msgstr "パスワードは30文字より長くすることはできません。"
 msgid "Password confirmation"
 msgstr "パスワードの確認"
 
-msgid "Password contains not permitted characters."
-msgstr "パスワードは許可されていない文字が含まれています。"
+msgid "Password contains unallowed characters."
+msgstr ""
 
 msgid "Password data"
 msgstr "パスワードデータ"
@@ -3702,43 +3711,43 @@ msgstr "プラグイン"
 
 #, php-format
 msgid "Plugin %s activated."
-msgstr ""
+msgstr "プラグイン%sを有効化しました。"
 
 #, php-format
 msgid "Plugin %s cannot be changed."
-msgstr ""
+msgstr "プラグイン%sは変更することはできません。"
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr ""
+msgstr "プラグイン%sは削除することはできません。"
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
-msgstr ""
+msgstr "プラグイン%sは無効化することはできません。"
 
 #, php-format
 msgid "Plugin %s cannot be enabled."
-msgstr ""
+msgstr "プラグイン%sは有効化することはできません。"
 
 #, php-format
 msgid "Plugin %s cannot be updated."
-msgstr ""
+msgstr "プラグイン%sは更新することはできません。"
 
 #, php-format
 msgid "Plugin %s changed."
-msgstr ""
+msgstr "プラグイン%sは変更されました。"
 
 #, php-format
 msgid "Plugin %s deactivated."
-msgstr ""
+msgstr "プラグイン%sは無効化されました。"
 
 #, php-format
 msgid "Plugin %s deleted."
-msgstr ""
+msgstr "プラグイン%sは削除されました。"
 
 #, php-format
 msgid "Plugin %s installed."
-msgstr ""
+msgstr "プラグイン%sはインストールされています。"
 
 #, php-format
 msgid "Plugin %s is already activated."
@@ -3758,11 +3767,11 @@ msgstr "プラグイン%sは既にアンインストールされています。"
 
 #, php-format
 msgid "Plugin %s is not installable."
-msgstr ""
+msgstr "%sプラグインは、インストールできません。"
 
 #, php-format
 msgid "Plugin %s is not uninstallable."
-msgstr ""
+msgstr "%sプラグインは、インストールできません。"
 
 #, php-format
 msgid "Plugin %s is protected."
@@ -3770,39 +3779,39 @@ msgstr "%sプラグインは、保護されています。"
 
 #, php-format
 msgid "Plugin %s protected."
-msgstr ""
+msgstr "プラグイン%sは保護されています。"
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
-msgstr ""
+msgstr "プラグイン%sが予定通り有効化されました。"
 
 #, php-format
 msgid "Plugin %s scheduled for change."
-msgstr ""
+msgstr "プラグイン%sが予定通り変更されました。"
 
 #, php-format
 msgid "Plugin %s scheduled for deactivation."
-msgstr ""
+msgstr "プラグイン%sが予定通り無効化されました。"
 
 #, php-format
 msgid "Plugin %s scheduled for installation."
-msgstr ""
+msgstr "プラグイン%sが予定通りインストールされました。"
 
 #, php-format
 msgid "Plugin %s scheduled for uninstallation."
-msgstr ""
+msgstr "プラグイン%sが予定通りアンインストールされました。"
 
 #, php-format
 msgid "Plugin %s scheduled for update."
-msgstr ""
+msgstr "プラグイン%sが予定通り更新されました。"
 
 #, php-format
 msgid "Plugin %s uninstalled."
-msgstr ""
+msgstr "プラグイン%sをアンインストールしました。"
 
 #, php-format
 msgid "Plugin %s updated."
-msgstr ""
+msgstr "プラグイン%sを更新しました。"
 
 #, php-format
 msgid ""
@@ -3850,13 +3859,13 @@ msgid "Plugin list is empty."
 msgstr "プラグインリストは空です。"
 
 msgid "Plugin list updated."
-msgstr ""
+msgstr "プラグインリストを更新しました。"
 
 msgid "Plugin management"
 msgstr "プラグイン管理"
 
 msgid "Plugin uploaded."
-msgstr ""
+msgstr "プラグインをアップロードしました。"
 
 msgid "Plugins Upload"
 msgstr "プラグインアップロード"
@@ -3898,13 +3907,13 @@ msgid "Priority: %s\n"
 msgstr "優先度： %s\n"
 
 msgid "Private key"
-msgstr ""
+msgstr "秘密鍵"
 
 msgid "Private key field cannot be empty"
-msgstr ""
+msgstr "秘密鍵フィールドは空にすることはできません"
 
 msgid "Private key passphrase if any"
-msgstr ""
+msgstr "もしあれば、秘密鍵のパスフレーズ"
 
 msgid "Process update"
 msgstr "プロセス更新"
@@ -3993,13 +4002,13 @@ msgid "Relative weight must be a number."
 msgstr "相対的な重みは、数値でなければなりません。"
 
 msgid "Release date"
-msgstr ""
+msgstr "公開日"
 
 msgid "Release description"
-msgstr ""
+msgstr "リリース説明"
 
 msgid "Release version"
-msgstr ""
+msgstr "公開バージョン"
 
 msgid "Remote Web software repository"
 msgstr "リモートのWebソフトウェアリポジトリ"
@@ -4303,16 +4312,16 @@ msgid "SQL users"
 msgstr "SQLユーザー"
 
 msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr ""
+msgstr "SSL証明書の追加又は更新が予定されました。"
 
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL証明書"
 
 msgid "SSL feature is not available."
-msgstr ""
+msgstr "SSL機能は使用できません。"
 
 msgid "SSL feature is not available. You can only view your certificate."
-msgstr ""
+msgstr "SSL機能は使用できません。あなたは証明書を表示することができます。"
 
 msgid "Save"
 msgstr "保存"
@@ -4462,7 +4471,7 @@ msgid "Show HTML output compression size comment"
 msgstr "表示HTML出力の圧縮サイズコメント"
 
 msgid "Show SSL certificate"
-msgstr ""
+msgstr "SSL証明書を表示"
 
 msgid ""
 "Show all errors, except for notices and coding standards warnings (Default)"
@@ -4474,7 +4483,7 @@ msgid ""
 msgstr "コーディング標準を含む、全ての誤り、警告、および通知を表示する(開発)"
 
 msgid "Show certificate"
-msgstr ""
+msgstr "証明書を表示"
 
 msgid "Show detailed statistics for this domain"
 msgstr "このドメインの詳細な統計情報を表示する"
@@ -4815,10 +4824,10 @@ msgid "The `Enter` key is disabled for performance reasons."
 msgstr "`Enter`キーは、パフォーマンス理由のために無効です。"
 
 msgid "The certificate doesn't match with the private key."
-msgstr ""
+msgstr "証明書が秘密鍵と一致しません。"
 
 msgid "The certificate field cannot be empty."
-msgstr ""
+msgstr "証明書フィールドを空にすることはできません。"
 
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
@@ -4939,7 +4948,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the % character to allow this SQL user to connect from any"
 " host."
-msgstr ""
+msgstr "このSQLユーザーがSQLサーバに接続しなければならないホストです。 このSQLユーザーがどんなホストからでも接続するのを許すために、% c文字を入力してください。"
 
 msgid "This package already exists in the administrator software repository."
 msgstr "パッケージには、管理者のソフトウェアリポジトリに既に存在しています。"
@@ -5062,7 +5071,7 @@ msgstr "管理パネルへのURL"
 
 #, php-format
 msgid "Unable to activate the %s plugin: %s"
-msgstr ""
+msgstr "%sプラグインを有効にすることができません：%s"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5070,7 +5079,7 @@ msgstr "%sプラグインディレクトリをバックアップすることが�
 
 #, php-format
 msgid "Unable to change the %s plugin: %s"
-msgstr ""
+msgstr "%sプラグインを変更することができません：%s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5085,11 +5094,11 @@ msgstr "言語ファイルのための\"LC_MESSAGES\"ディレクトリを作成
 
 #, php-format
 msgid "Unable to deactivate the %s plugin: %s"
-msgstr ""
+msgstr "%sプラグインを無効にすることができません：%s"
 
 #, php-format
 msgid "Unable to delete the %s plugin: %s"
-msgstr ""
+msgstr "%sプラグインを削除することができません：%s"
 
 msgid "Unable to extract plugin archive."
 msgstr "プラグインのアーカイブを解凍することができません。"
@@ -5112,11 +5121,11 @@ msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "IPアドレスリストを取得できません。この問題を修正してください。"
 
 msgid "Unable to get update info from Github"
-msgstr ""
+msgstr "GitHubからの更新情報を取得できません"
 
 #, php-format
 msgid "Unable to install the %s plugin: %s"
-msgstr ""
+msgstr "%sプラグインをインストールすることができません：%s"
 
 msgid "Unable to move file."
 msgstr "ファイルを移動することができません。"
@@ -5126,7 +5135,7 @@ msgstr "アーカイブを開くことができません。"
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
-msgstr ""
+msgstr "%sプラグインを保護することができません：%s"
 
 msgid "Unable to read Web software repository index file."
 msgstr "Webソフトウェアリポジトリのインデックスファイルを読み込むことができません。"
@@ -5161,18 +5170,18 @@ msgid ""
 msgstr "顧客アカウントの削除を予定することができません。詳細については、管理者ログやメールでご相談ください。"
 
 msgid "Unable to set sslallowselfsigned option"
-msgstr ""
+msgstr "自己署名オプションを許可するSSLを設定できません"
 
 msgid "Unable to set sslverifypeer option"
-msgstr ""
+msgstr "SSL verifypeerオプションを設定することができません"
 
 #, php-format
 msgid "Unable to uninstall the %s plugin: %s"
-msgstr ""
+msgstr "%sプラグインをアンインストールすることができません：%s"
 
 #, php-format
 msgid "Unable to update the %s plugin: %s"
-msgstr ""
+msgstr "%sプラグインを更新することができません：%s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5268,7 +5277,7 @@ msgid "Update in progress..."
 msgstr "更新処理中..."
 
 msgid "Update info"
-msgstr ""
+msgstr "最新版情報"
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5646,6 +5655,9 @@ msgstr "過去に有効期限を設定することはできません。"
 msgid "You cannot unassign an IP address already in use."
 msgstr "既に使用中のIPアドレスの割り当てを解除することはできません。"
 
+msgid "You do not have DNS resource records."
+msgstr ""
+
 msgid "You do not have FTP accounts."
 msgstr "FTPアカウントを持っていません。"
 
@@ -5654,9 +5666,6 @@ msgstr "ドメインエイリアス用の任意の命令を持っていません
 
 msgid "You do not have any software uploaded yet"
 msgstr "任意のソフトウェアがまだアップロードされていません"
-
-msgid "You do not have custom DNS records."
-msgstr "カスタムDNSレコードを持っていません。"
 
 msgid "You do not have customers."
 msgstr "あなたは顧客を持っていません。"
@@ -5844,16 +5853,16 @@ msgstr "アカウントの有効期限が切れています。契約を更新し
 msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
-msgstr ""
+msgstr "アカウントがメンテナンス中か無効です。代理店にお問い合わせください。"
 
 msgid "Your certificate is expired"
-msgstr ""
+msgstr "証明書の有効期限が切れています"
 
 msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr ""
+msgstr "証明書が無効であるか、CAバンドルが欠落しています。"
 
 msgid "Your certificate is not valid."
-msgstr ""
+msgstr "証明書が有効ではありません。"
 
 msgid "Your consumption"
 msgstr "あなたの消費量"
@@ -6019,7 +6028,7 @@ msgid "i-MSCP updates"
 msgstr "i-MSCPアップデート"
 
 msgid "i-MSCP version update checking is disabled"
-msgstr ""
+msgstr "i-MSCPバージョンの更新チェックが無効になっています"
 
 msgid "installed"
 msgstr "インストールされました"
