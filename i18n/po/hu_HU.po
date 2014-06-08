@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-06 12:36+0200\n"
-"PO-Revision-Date: 2014-06-06 10:38+0000\n"
+"POT-Creation-Date: 2014-06-09 00:43+0200\n"
+"PO-Revision-Date: 2014-06-08 22:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -320,12 +320,6 @@ msgstr "%s nem egy engedélyezett aldomain címke."
 #, php-format
 msgid "%s is not part of domain %s."
 msgstr "%s nem része a(z) %s domainnak."
-
-#, php-format
-msgid ""
-"%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
-"plugin(s) deleted."
-msgstr "%s új bővítmény található, %s bővítmény frissítve, %s bővítmény megváltozott és %s bővítmény törölve."
 
 #, php-format
 msgid "%s of %s"
@@ -3720,8 +3714,12 @@ msgid "Plugin %s cannot be changed."
 msgstr "%s bővítményt nem lehet megváltoztatni."
 
 #, php-format
-msgid "Plugin %s cannot be deleted."
-msgstr "%s bővítményt nem lehet törölni."
+msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be deleted. You must uninstall it first."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3854,20 +3852,17 @@ msgstr "A bővítmény archívuma meghaladja a feltöltési méret korlátot (%s
 msgid "Plugin errors"
 msgstr "Bővítmény hibák"
 
+msgid "Plugin has been uploaded."
+msgstr ""
+
 msgid "Plugin item errors"
 msgstr "Bővítményelem hibái"
 
 msgid "Plugin list is empty."
 msgstr "Bővítmény lista üres."
 
-msgid "Plugin list updated."
-msgstr "Bővítménylista frissítve."
-
 msgid "Plugin management"
 msgstr "Bővítménykezelő"
-
-msgid "Plugin uploaded."
-msgstr "Bővítmény feltöltve."
 
 msgid "Plugins Upload"
 msgstr "Bővítmény feltöltése"
@@ -3879,6 +3874,12 @@ msgid ""
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
 msgstr "A bővítmények beépülnek az i-MSCP rendszerébe és kibővítik annak funkcióit. A bővítményeket a világ minden tájáról több ezer fejlesztő fejleszti, függetlenül az i-MSCP főfejlesztőitől. Új, telepíthető bővítményekért látogass el ide: %s."
+
+#, php-format
+msgid ""
+"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
+" %s plugin(s) changed, and %s plugin(s) deleted."
+msgstr ""
 
 msgid "Port"
 msgstr "Port"

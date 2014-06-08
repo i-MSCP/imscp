@@ -11,14 +11,15 @@
 # Rudimar Remontti <rudiremontti@gmail>, 2014
 # Rudimar Remontti <rudiremontti@gmail.com>, 2014
 # Rudimar Remontti <rudiremontti@gmail.com>, 2014
+# Rudimar Remontti <rudiremontti@gmail.com>, 2014
 # Samantha R. Albano da Rosa <samantha.albano@gmail.com>, 2013
 # Samantha R. Albano da Rosa <samantha.albano@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-06 12:36+0200\n"
-"PO-Revision-Date: 2014-06-06 10:38+0000\n"
+"POT-Creation-Date: 2014-06-09 00:43+0200\n"
+"PO-Revision-Date: 2014-06-08 22:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -325,12 +326,6 @@ msgstr "%s não é permitido como rótulo subdomínio."
 #, php-format
 msgid "%s is not part of domain %s."
 msgstr "%s não faz parte do domínio %s."
-
-#, php-format
-msgid ""
-"%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
-"plugin(s) deleted."
-msgstr "%s novo plugin(s) encontrados, %s plugin(s) atualizado, %s plugin(s) mudaram, e %s plugin(s) excluído."
 
 #, php-format
 msgid "%s of %s"
@@ -1698,7 +1693,7 @@ msgid "DNS record already exist."
 msgstr "Registro de DNS já existe."
 
 msgid "DNS resource records"
-msgstr ""
+msgstr "Registros de recursos DNS"
 
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr "Servidor DNS indisponível. Por favor, contate o seu suporter."
@@ -2678,7 +2673,7 @@ msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
 "against deletion using the immutable flag (only if supported by the file "
 "system)."
-msgstr ""
+msgstr "Se definido como \"sim\", as pastas da Web como provisionados por i-MSCP serão protegidos contra exclusão usando o sinalizador imutável (apenas se suportado pelo sistema de arquivos)."
 
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
@@ -3426,7 +3421,7 @@ msgstr "Apenas números positivos são permitidos."
 msgid ""
 "Only printable characters from the ASCII table (not extended), excepted the "
 "space, are allowed."
-msgstr ""
+msgstr "Somente caracteres imprimíveis da tabela ASCII (não estendida), exceto o espaço, são permitidos."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Só tar.gz, tar.bz2 e zip são arquivos aceitos"
@@ -3575,7 +3570,7 @@ msgid "Password confirmation"
 msgstr "Confirmação de senha"
 
 msgid "Password contains unallowed characters."
-msgstr ""
+msgstr "Senha contém caracteres não permitidas."
 
 msgid "Password data"
 msgstr "Dados de senha"
@@ -3725,8 +3720,12 @@ msgid "Plugin %s cannot be changed."
 msgstr "Plugin %s não pode ser alterado."
 
 #, php-format
-msgid "Plugin %s cannot be deleted."
-msgstr "Plugin %s não pode ser excluído."
+msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be deleted. You must uninstall it first."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3859,20 +3858,17 @@ msgstr "Arquivo do Plugin excede o tamanho máximo de upload (%s). Tamanho máx
 msgid "Plugin errors"
 msgstr "Plugin erros "
 
+msgid "Plugin has been uploaded."
+msgstr ""
+
 msgid "Plugin item errors"
 msgstr "Plugin Erros de itens "
 
 msgid "Plugin list is empty."
 msgstr "Plugin lista está vazia."
 
-msgid "Plugin list updated."
-msgstr "Plugin lista atualizada."
-
 msgid "Plugin management"
 msgstr "Gerenciamento de Plugins"
-
-msgid "Plugin uploaded."
-msgstr "Plugin carregado."
 
 msgid "Plugins Upload"
 msgstr "Envia Plugins"
@@ -3884,6 +3880,12 @@ msgid ""
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
 msgstr "Plugins para estender sua funcionalidade no i-MSCP com funções personalizadas. Plugins são desenvolvidos de forma independente a partir do núcleo aplicativo i-MSCP por milhares de desenvolvedores em todo o mundo. Você pode encontrar novos plugins para instalar por navegar na %s."
+
+#, php-format
+msgid ""
+"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
+" %s plugin(s) changed, and %s plugin(s) deleted."
+msgstr ""
 
 msgid "Port"
 msgstr "Porta"
@@ -5663,7 +5665,7 @@ msgid "You cannot unassign an IP address already in use."
 msgstr "Você não pode atribuir um endereço de IP que está em uso."
 
 msgid "You do not have DNS resource records."
-msgstr ""
+msgstr "Você não tem registros de recursos DNS."
 
 msgid "You do not have FTP accounts."
 msgstr "Você não tem contas FTP."

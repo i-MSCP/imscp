@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-06 12:36+0200\n"
-"PO-Revision-Date: 2014-06-06 10:38+0000\n"
+"POT-Creation-Date: 2014-06-09 00:43+0200\n"
+"PO-Revision-Date: 2014-06-08 22:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -318,12 +318,6 @@ msgstr "%sは、サブドメインラベルとして許可されていません�
 #, php-format
 msgid "%s is not part of domain %s."
 msgstr "%sは、ドメイン%sの一部ではありません。"
-
-#, php-format
-msgid ""
-"%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
-"plugin(s) deleted."
-msgstr "%sの新しいプラグインを発見、%sのプラグインを更新、%sのプラグインを変更、そして、%sのプラグインを削除。"
 
 #, php-format
 msgid "%s of %s"
@@ -3718,8 +3712,12 @@ msgid "Plugin %s cannot be changed."
 msgstr "プラグイン%sは変更することはできません。"
 
 #, php-format
-msgid "Plugin %s cannot be deleted."
-msgstr "プラグイン%sは削除することはできません。"
+msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be deleted. You must uninstall it first."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3852,20 +3850,17 @@ msgstr "プラグインのアーカイブは、最大アップロードサイズ
 msgid "Plugin errors"
 msgstr "プラグインエラー"
 
+msgid "Plugin has been uploaded."
+msgstr ""
+
 msgid "Plugin item errors"
 msgstr "プラグイン項目エラー"
 
 msgid "Plugin list is empty."
 msgstr "プラグインリストは空です。"
 
-msgid "Plugin list updated."
-msgstr "プラグインリストを更新しました。"
-
 msgid "Plugin management"
 msgstr "プラグイン管理"
-
-msgid "Plugin uploaded."
-msgstr "プラグインをアップロードしました。"
 
 msgid "Plugins Upload"
 msgstr "プラグインアップロード"
@@ -3877,6 +3872,12 @@ msgid ""
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
 msgstr "プラグインは、カスタム機能によりi-MSCPの機能を拡張します。\nプラグインは、世界中の何千もの開発者のにより、i-MSCPアプリケーションのコアから独立して開発されています。\nあなたは、%sをブラウズして、インストールする新しいプラグインを見つけることができます"
+
+#, php-format
+msgid ""
+"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
+" %s plugin(s) changed, and %s plugin(s) deleted."
+msgstr ""
 
 msgid "Port"
 msgstr "ポート番号"

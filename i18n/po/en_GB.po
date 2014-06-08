@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-06 12:36+0200\n"
-"PO-Revision-Date: 2014-06-06 10:38+0000\n"
+"POT-Creation-Date: 2014-06-09 00:43+0200\n"
+"PO-Revision-Date: 2014-06-08 22:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -324,12 +324,6 @@ msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
-msgstr ""
-
-#, php-format
-msgid ""
-"%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
-"plugin(s) deleted."
 msgstr ""
 
 #, php-format
@@ -3725,7 +3719,11 @@ msgid "Plugin %s cannot be changed."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be deleted."
+msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be deleted. You must uninstall it first."
 msgstr ""
 
 #, php-format
@@ -3859,20 +3857,17 @@ msgstr "Plugin archive exceeds the maximum upload size (%s). Max upload size is:
 msgid "Plugin errors"
 msgstr "Plugin errors"
 
+msgid "Plugin has been uploaded."
+msgstr ""
+
 msgid "Plugin item errors"
 msgstr ""
 
 msgid "Plugin list is empty."
 msgstr "Plugin list is empty."
 
-msgid "Plugin list updated."
-msgstr ""
-
 msgid "Plugin management"
 msgstr "Plugin management"
-
-msgid "Plugin uploaded."
-msgstr ""
 
 msgid "Plugins Upload"
 msgstr "Plugins Upload"
@@ -3884,6 +3879,12 @@ msgid ""
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
 msgstr "Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s."
+
+#, php-format
+msgid ""
+"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
+" %s plugin(s) changed, and %s plugin(s) deleted."
+msgstr ""
 
 msgid "Port"
 msgstr "Port"

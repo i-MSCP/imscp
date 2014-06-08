@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-06 12:36+0200\n"
-"PO-Revision-Date: 2014-06-06 10:38+0000\n"
+"POT-Creation-Date: 2014-06-09 00:43+0200\n"
+"PO-Revision-Date: 2014-06-08 22:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -338,12 +338,6 @@ msgstr "%s n'est pas autorisé en tant que label de sous-domaine."
 #, php-format
 msgid "%s is not part of domain %s."
 msgstr "%s ne fait pas parti du domaine %s."
-
-#, php-format
-msgid ""
-"%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
-"plugin(s) deleted."
-msgstr "%s nouveau plugin(s) trouvé(s), %s plugin(s) mis à jour, %s plugin(s) modifié(s) et %s plugin(s) supprimé(s)."
 
 #, php-format
 msgid "%s of %s"
@@ -3738,7 +3732,11 @@ msgid "Plugin %s cannot be changed."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be deleted."
+msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be deleted. You must uninstall it first."
 msgstr ""
 
 #, php-format
@@ -3872,20 +3870,17 @@ msgstr "L'archive du plugin excède la taille maximum d'envoi de données sur le
 msgid "Plugin errors"
 msgstr "Erreurs liées aux plugins"
 
+msgid "Plugin has been uploaded."
+msgstr ""
+
 msgid "Plugin item errors"
 msgstr "Erreurs sur l'objet du plugin"
 
 msgid "Plugin list is empty."
 msgstr "La liste des plugins est vide."
 
-msgid "Plugin list updated."
-msgstr ""
-
 msgid "Plugin management"
 msgstr "Gestion des plugins"
-
-msgid "Plugin uploaded."
-msgstr ""
 
 msgid "Plugins Upload"
 msgstr "Téléverser plugins"
@@ -3897,6 +3892,12 @@ msgid ""
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
 msgstr "Les plugins permettent d'étendre les fonctionnalitées d'i-MSCP. Les plugins sont développés indépendament du cœur d'i-MSCP  par de nombreux développeurs à travers le monde. Vous pouvez trouver de nouveaux plugins à installer en parcourant %s."
+
+#, php-format
+msgid ""
+"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
+" %s plugin(s) changed, and %s plugin(s) deleted."
+msgstr ""
 
 msgid "Port"
 msgstr "Port"

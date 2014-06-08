@@ -2,8 +2,11 @@
 ~~~~~~~~~~~~~~~~
 
 ------------------------------------------------------------------------------------------------------------------------
-Git stable
+1.1.11
 ------------------------------------------------------------------------------------------------------------------------
+
+2014-06-08: Laurent Declercq
+	RELEASE i-MSCP 1.1.11
 
 PLUGINS
 	Changed: plugin's backend scripts are now loaded from main plugin directory to avoid too many IO operations

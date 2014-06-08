@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-06 12:36+0200\n"
-"PO-Revision-Date: 2014-06-06 10:38+0000\n"
+"POT-Creation-Date: 2014-06-09 00:43+0200\n"
+"PO-Revision-Date: 2014-06-08 22:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -317,12 +317,6 @@ msgstr "%s Är inte tillåtna som subdomain etikett."
 #, php-format
 msgid "%s is not part of domain %s."
 msgstr "%s är inte en del av domänen %s."
-
-#, php-format
-msgid ""
-"%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
-"plugin(s) deleted."
-msgstr "%S nya plugin(s) found, %s plugin(s) uppdaterade, %s plugin(s) förändrats, och %s plugin(s) tas bort."
 
 #, php-format
 msgid "%s of %s"
@@ -1690,7 +1684,7 @@ msgid "DNS record already exist."
 msgstr "DNS-posten finns redan."
 
 msgid "DNS resource records"
-msgstr ""
+msgstr "DNS-urkunder för resursen"
 
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr "Fel på DNS-server, vänligen kontakta din återförsäljare."
@@ -2670,7 +2664,7 @@ msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
 "against deletion using the immutable flag (only if supported by the file "
 "system)."
-msgstr ""
+msgstr "Om 'ja', Web-mappar som tillhandahålls av I-MSCP kommer att skyddas mot radering med hjälp av oföränderliga flagg (endast om funktionen stöds av filsystem)."
 
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
@@ -3418,7 +3412,7 @@ msgstr "Endast positiva tal är tillåtna."
 msgid ""
 "Only printable characters from the ASCII table (not extended), excepted the "
 "space, are allowed."
-msgstr ""
+msgstr "Only printable characters from the ASCII table (not extended), excepted the space, are allowed."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Endast tar.gz, tar.bz2 och zip arkiv accepteras"
@@ -3567,7 +3561,7 @@ msgid "Password confirmation"
 msgstr "Lösenord bekräftelse"
 
 msgid "Password contains unallowed characters."
-msgstr ""
+msgstr "Lösenordet innehåller otillåtna tecken."
 
 msgid "Password data"
 msgstr "Lösenordsdata"
@@ -3717,8 +3711,12 @@ msgid "Plugin %s cannot be changed."
 msgstr "Plugin %s cannot be changed."
 
 #, php-format
-msgid "Plugin %s cannot be deleted."
-msgstr "Plugin %s cannot be deleted."
+msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be deleted. You must uninstall it first."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3851,20 +3849,17 @@ msgstr "Plugin archive exceeds the maximum upload size (%s). Max upload size is:
 msgid "Plugin errors"
 msgstr "Plugin errors"
 
+msgid "Plugin has been uploaded."
+msgstr ""
+
 msgid "Plugin item errors"
 msgstr "Plugin item errors"
 
 msgid "Plugin list is empty."
 msgstr "Plugin list is empty."
 
-msgid "Plugin list updated."
-msgstr "Plugin list updated."
-
 msgid "Plugin management"
 msgstr "Plugin management"
-
-msgid "Plugin uploaded."
-msgstr "Plugin uploaded."
 
 msgid "Plugins Upload"
 msgstr "Plugins Upload"
@@ -3876,6 +3871,12 @@ msgid ""
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
 msgstr "Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s."
+
+#, php-format
+msgid ""
+"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
+" %s plugin(s) changed, and %s plugin(s) deleted."
+msgstr ""
 
 msgid "Port"
 msgstr "Port"
@@ -5655,7 +5656,7 @@ msgid "You cannot unassign an IP address already in use."
 msgstr "You cannot unassign an IP address already in use."
 
 msgid "You do not have DNS resource records."
-msgstr ""
+msgstr "Du har inte DNS-urkunder för resursen."
 
 msgid "You do not have FTP accounts."
 msgstr "Du har inga FTP-konton."

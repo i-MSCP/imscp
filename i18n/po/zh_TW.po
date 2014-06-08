@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Cloudeasy <a9100a9957@gmail.com>, 2014
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-06 12:36+0200\n"
-"PO-Revision-Date: 2014-06-06 10:38+0000\n"
+"POT-Creation-Date: 2014-06-09 00:43+0200\n"
+"PO-Revision-Date: 2014-06-08 22:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -318,12 +319,6 @@ msgid "%s is not part of domain %s."
 msgstr ""
 
 #, php-format
-msgid ""
-"%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
-"plugin(s) deleted."
-msgstr ""
-
-#, php-format
 msgid "%s of %s"
 msgstr ""
 
@@ -558,7 +553,7 @@ msgid "Account summary"
 msgstr ""
 
 msgid "Account type"
-msgstr ""
+msgstr "帳戶類型"
 
 msgid "Action"
 msgstr "動作"
@@ -1197,7 +1192,7 @@ msgid "Blocktime <small>(in minutes)</small>"
 msgstr ""
 
 msgid "Body"
-msgstr ""
+msgstr "內文"
 
 msgid "Body is missing."
 msgstr ""
@@ -1230,7 +1225,7 @@ msgid "CPU Information"
 msgstr ""
 
 msgid "Cache"
-msgstr ""
+msgstr "快取記憶體"
 
 #, php-format
 msgid "Can edit the PHP %s directive"
@@ -1327,7 +1322,7 @@ msgid "Choose your language"
 msgstr ""
 
 msgid "Circular"
-msgstr "迴圈"
+msgstr "發送訊息"
 
 msgid "Circular successfully sent."
 msgstr ""
@@ -1506,7 +1501,7 @@ msgid "Client / Webtools / Software / View"
 msgstr ""
 
 msgid "Clock speed (MHz)"
-msgstr ""
+msgstr "時脈頻率 (MHz)"
 
 msgid "Close"
 msgstr ""
@@ -1543,7 +1538,7 @@ msgid "Core data"
 msgstr "核心資料"
 
 msgid "Cores"
-msgstr ""
+msgstr "核心數量"
 
 msgid "Could not upload file."
 msgstr ""
@@ -1677,10 +1672,10 @@ msgid "Customer(s) successfully moved."
 msgstr ""
 
 msgid "Customers"
-msgstr ""
+msgstr "使用者"
 
 msgid "Customers assignment"
-msgstr ""
+msgstr "使用者分配"
 
 msgid "Customize error pages for your domain."
 msgstr ""
@@ -1740,7 +1735,7 @@ msgid "Database required"
 msgstr ""
 
 msgid "Database update"
-msgstr ""
+msgstr "資料庫更新"
 
 msgid "Database usage"
 msgstr ""
@@ -1761,7 +1756,7 @@ msgid "Day statistics"
 msgstr ""
 
 msgid "Days"
-msgstr ""
+msgstr "日"
 
 msgid "Deactivate"
 msgstr ""
@@ -2251,7 +2246,7 @@ msgid "Email quota must be a number."
 msgstr ""
 
 msgid "Email settings"
-msgstr ""
+msgstr "Email 設定"
 
 msgid "Email setup"
 msgstr "郵件設定"
@@ -2507,7 +2502,7 @@ msgid "Gender"
 msgstr "性別"
 
 msgid "General"
-msgstr ""
+msgstr "一般"
 
 msgid "General information"
 msgstr "概要訊息"
@@ -2598,7 +2593,7 @@ msgid "Hour"
 msgstr "小時"
 
 msgid "Hours"
-msgstr ""
+msgstr "小時"
 
 msgid "Htaccess errors"
 msgstr ""
@@ -2654,7 +2649,7 @@ msgid "IP addresses under control of i-MSCP"
 msgstr ""
 
 msgid "IP management"
-msgstr ""
+msgstr "IP 管理"
 
 msgid "IP usage"
 msgstr ""
@@ -2674,7 +2669,7 @@ msgstr ""
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
 "plugin management interface."
-msgstr ""
+msgstr "插件管理"
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
@@ -2906,7 +2901,7 @@ msgid "Language successfully updated."
 msgstr ""
 
 msgid "Languages"
-msgstr ""
+msgstr "語言"
 
 msgid "Languages index was successfully re-built."
 msgstr ""
@@ -3003,7 +2998,7 @@ msgid "Lost password"
 msgstr "找回密碼"
 
 msgid "Lost password email"
-msgstr ""
+msgstr "忘記密碼信件"
 
 msgid "Lost password link"
 msgstr "找回密碼鏈結"
@@ -3063,7 +3058,7 @@ msgid ""
 msgstr ""
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "維護設定"
 
 msgid "Male"
 msgstr "男"
@@ -3124,7 +3119,7 @@ msgid "Member of group"
 msgstr ""
 
 msgid "Memory information"
-msgstr ""
+msgstr "記憶體資訊"
 
 msgid "Message"
 msgstr "訊息"
@@ -3482,7 +3477,7 @@ msgid "PHP Settings"
 msgstr ""
 
 msgid "PHP Settings (system default)"
-msgstr ""
+msgstr "PHP 設定 (系統預設)"
 
 msgid "PHP configuration scheduled for update."
 msgstr ""
@@ -3563,10 +3558,10 @@ msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
 msgid "Password confirmation"
-msgstr ""
+msgstr "確認密碼"
 
 msgid "Password contains unallowed characters."
-msgstr ""
+msgstr "密碼包含不允許的字元"
 
 msgid "Password data"
 msgstr "密碼資料"
@@ -3582,7 +3577,7 @@ msgid "Password is shorter than %s characters."
 msgstr ""
 
 msgid "Password is too long."
-msgstr ""
+msgstr "密碼長度過長"
 
 msgid "Password length"
 msgstr "密碼長度"
@@ -3666,7 +3661,7 @@ msgid "Please enter an SQL user host."
 msgstr ""
 
 msgid "Please enter an username."
-msgstr ""
+msgstr "請輸入一個使用者名稱"
 
 msgid "Please enter protected area path"
 msgstr ""
@@ -3716,7 +3711,11 @@ msgid "Plugin %s cannot be changed."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be deleted."
+msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be deleted. You must uninstall it first."
 msgstr ""
 
 #, php-format
@@ -3850,19 +3849,16 @@ msgstr ""
 msgid "Plugin errors"
 msgstr ""
 
+msgid "Plugin has been uploaded."
+msgstr ""
+
 msgid "Plugin item errors"
 msgstr ""
 
 msgid "Plugin list is empty."
 msgstr ""
 
-msgid "Plugin list updated."
-msgstr ""
-
 msgid "Plugin management"
-msgstr ""
-
-msgid "Plugin uploaded."
 msgstr ""
 
 msgid "Plugins Upload"
@@ -3874,6 +3870,12 @@ msgid ""
 "Plugins are developed independently from the core i-MSCP application by "
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
+" %s plugin(s) changed, and %s plugin(s) deleted."
 msgstr ""
 
 msgid "Port"
@@ -3920,10 +3922,10 @@ msgid "Processing..."
 msgstr ""
 
 msgid "Processor data"
-msgstr ""
+msgstr "處理器資料"
 
 msgid "Profile"
-msgstr ""
+msgstr "個人"
 
 msgid "Properties"
 msgstr ""
@@ -3991,7 +3993,7 @@ msgid "Redistribute unused quota across existing mailboxes"
 msgstr ""
 
 msgid "Registration date"
-msgstr ""
+msgstr "註冊日期"
 
 msgid "Relative weight"
 msgstr ""
@@ -4277,7 +4279,7 @@ msgstr ""
 
 #, php-format
 msgid "SQL user %s already exits."
-msgstr ""
+msgstr "SQL 使用者 %s 已經存在"
 
 msgid "SQL user host"
 msgstr ""
@@ -4378,16 +4380,16 @@ msgid "Send reply"
 msgstr "發送回覆"
 
 msgid "Send to"
-msgstr ""
+msgstr "傳送至"
 
 msgid "Sender email"
-msgstr ""
+msgstr "寄件者Email"
 
 msgid "Sender email is missing."
 msgstr ""
 
 msgid "Sender name"
-msgstr ""
+msgstr "寄件者"
 
 msgid "Sender name is missing."
 msgstr ""
@@ -4441,7 +4443,7 @@ msgid "Service protocol"
 msgstr ""
 
 msgid "Services status"
-msgstr ""
+msgstr "伺服器狀態"
 
 msgid "Sessions"
 msgstr ""
@@ -4539,7 +4541,7 @@ msgid "Software installer"
 msgstr ""
 
 msgid "Software installer options"
-msgstr ""
+msgstr "軟體設定"
 
 msgid "Software installer options successfully updated."
 msgstr ""
@@ -4548,7 +4550,7 @@ msgid "Software installer requires PHP support."
 msgstr ""
 
 msgid "Software management"
-msgstr ""
+msgstr "軟體管理"
 
 msgid "Software name"
 msgstr ""
@@ -4703,7 +4705,7 @@ msgid "Submit changes"
 msgstr "提交更改"
 
 msgid "Support"
-msgstr ""
+msgstr "支援"
 
 msgid "Support system"
 msgstr "系統支援"
@@ -4727,13 +4729,13 @@ msgid "System"
 msgstr "系統"
 
 msgid "System data"
-msgstr ""
+msgstr "系統資料"
 
 msgid "System error - custom error page was not updated."
 msgstr ""
 
 msgid "System information"
-msgstr ""
+msgstr "系統資訊"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
@@ -5286,7 +5288,7 @@ msgid "Update password"
 msgstr ""
 
 msgid "Updates"
-msgstr ""
+msgstr "升級"
 
 msgid "Upload"
 msgstr "上傳"
@@ -5430,7 +5432,7 @@ msgid "View"
 msgstr "查閱"
 
 msgid "View Support Ticket"
-msgstr ""
+msgstr "檢視服務單"
 
 msgid "View aliases"
 msgstr "查看別名"
@@ -5495,7 +5497,7 @@ msgid "Webtools"
 msgstr "Web工具"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "歡迎郵件"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
@@ -5666,7 +5668,7 @@ msgid "You do not have any software uploaded yet"
 msgstr ""
 
 msgid "You do not have customers."
-msgstr ""
+msgstr "你沒有使用者！"
 
 msgid "You do not have databases."
 msgstr ""
@@ -5914,7 +5916,7 @@ msgid "[Ticket]"
 msgstr ""
 
 msgid "_: Localised language"
-msgstr "中國的 (台灣) - Chinese (Taiwan)"
+msgstr "繁體中文 - Chinese Traditional"
 
 msgid "activated"
 msgstr ""
@@ -6020,13 +6022,13 @@ msgid "i-MSCP Web software repository"
 msgstr ""
 
 msgid "i-MSCP plugin store"
-msgstr ""
+msgstr "i-MSCP 插件商店"
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP 更新"
 
 msgid "i-MSCP version update checking is disabled"
-msgstr ""
+msgstr "i-MSCP 版本檢查已停用"
 
 msgid "installed"
 msgstr ""
