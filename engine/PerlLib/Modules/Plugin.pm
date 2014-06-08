@@ -390,40 +390,13 @@ sub _exec($$$;$$)
 {
 	my ($self, $pluginName, $pluginMethod, $fromVersion, $toVersion) = @_;
 
-	my $backendPluginFile = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins/$pluginName.pm";
-	my $forceBackendInstall = 0;
 	my $rs = 0;
-
-	# When the plugin gets installed, updated or enabled, we install the plugin into the backend plugin directory.
-	INSTALL_PLUGIN_BACKEND: {
-		if($forceBackendInstall || $pluginMethod ~~ ['install', 'update', 'enable', 'disable', 'uninstall']) {
-			my $guiPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$pluginName/backend/$pluginName.pm";
-
-			if(-f $guiPluginFile) {
-				debug("Installing $pluginName.pm in backend plugin repository");
-				my $file = iMSCP::File->new('filename' => $guiPluginFile);
-
-				$rs = $file->copyFile($backendPluginFile, { 'preserve' => 'no' });
-				return $rs if $rs;
-			} else {
-				error("Unable to install backend plugin: File $guiPluginFile not found");
-				return 1;
-			}
-		}
-	}
+	my $backendPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$pluginName/backend/$pluginName.pm";
 
 	# We trap any compile time error(s)
 	eval { require $backendPluginFile; };
 
 	if($@) { # We got an error due to a compile time error or missing file
-		if(-f $backendPluginFile) {
-			# Compile time error, we remove the file to force re-installation on next run
-			iMSCP::File->new('filename' => $backendPluginFile)->delFile();
-		} else {
-			$forceBackendInstall = 1;
-			goto INSTALL_PLUGIN_BACKEND; # File not found, we try to re-install it from the plugin package
-		}
-
 		error($@);
 		return 1;
 	}
@@ -455,14 +428,6 @@ sub _exec($$$;$$)
 			return $rs if $rs;
 		} else {
 			$rs = 0;
-		}
-	}
-
-	# In case the plugin has been disabled or uninstalled, we remove it.
-	if($pluginMethod ~~ ['disable', 'uninstall']) {
-		unless($pluginMethod eq 'disable' && $pluginInstance->can('uninstall')) {
-			debug("Deleting $pluginName.pm from backend plugin repository");
-			$rs = iMSCP::File->new('filename' => $backendPluginFile)->delFile();
 		}
 	}
 

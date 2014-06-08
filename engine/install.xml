@@ -12,5 +12,4 @@
     <copy>${SYSTEM_ENGINE_ROOT}/imscp*</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/PerlLib</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/PerlVendor</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/Plugins</copy>
 </install>

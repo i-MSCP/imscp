@@ -6,9 +6,13 @@ Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
 PLUGINS
+	Changed: plugin's backend scripts are now loaded from main plugin directory to avoid too many IO operations
 	Fixed: Plugin db updates are not applied when a new plugin version is uploaded through the plugin UI
 	Fixed: Unable to delete plugins which are uninstalled
 	Updated: Plugin API to version 0.2.10
+
+ENGINE
+	Removed: Plugins directory (backend side of plugins are now loaded from main plugin directory)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.10
@@ -299,6 +303,7 @@ TICKETS
 	Fixed #1022: Defect - standard email aliases not created while adding domain alias
 	Fixed #1024: Bug - Apache2 ITK server implementation - Error on update
 	Fixed #1025: Bug - Notice: Undefined index: _: Localised language
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0
 ------------------------------------------------------------------------------------------------------------------------
