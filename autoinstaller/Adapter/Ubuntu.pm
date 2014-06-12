@@ -65,7 +65,7 @@ sub _init
 
 	$self->{'repositorySections'} = ['main', 'universe', 'multiverse'];
 	$self->{'preRequiredPackages'} = [
-		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'
+		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget', 'resolvconf'
 	];
 
 	if(iMSCP::LsbRelease->getInstance()->getRelease(1) < 12.10) {

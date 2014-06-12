@@ -21,7 +21,16 @@
         </alternative>
     </httpd>
     <po>
-        <alternative default="dovecot">
+        <alternative default="courier">
+            <courier>
+                <package>courier-authlib-mysql</package>
+                <package>courier-imap</package>
+                <package>courier-imap-ssl</package>
+                <package>courier-pop</package>
+                <package>courier-pop-ssl</package>
+                <package>libgamin0</package>
+                <package>maildrop</package>
+            </courier>
             <dovecot>
                 <package>dovecot-core</package>
                 <package>dovecot-imapd</package>
@@ -170,7 +179,6 @@
         <package>policyd-weight</package>
         <package>postgrey</package>
         <package>procmail</package>
-        <package>resolvconf</package>
         <package>sasl2-bin</package>
         <package>ssh</package>
         <package>tar</package>

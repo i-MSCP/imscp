@@ -5,6 +5,13 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+DISTROS
+	Re-added: Courier as IMAP/POP3 server alternative (Debian Jessie)
+
+INSTALLER
+	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)
+	Fixed: Installer hangs while packages installation (Debian Jessie)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.11
 ------------------------------------------------------------------------------------------------------------------------

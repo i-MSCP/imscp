@@ -26,7 +26,6 @@
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
-# @author      Daniel Andreca <sci2tech@gmail.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -36,17 +35,15 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use IPC::Open3;
-use IO::Select;
-use Scalar::Util qw(openhandle);
+use Capture::Tiny ':all';
+
 use parent 'Exporter';
 
 our @EXPORT = qw/execute escapeShell getExitCode/;
 
 =head1 DESCRIPTION
 
- This class provides set of functions allowing to execute external commands. It's also possible to capture STDOUT and
- and/or STDERR.
+ This package provides a set of functions allowing to execute external commands.
 
 =head1 FUNCTIONS
 
@@ -72,50 +69,20 @@ sub execute($;$$)
 
 	debug("Executing command: $command");
 
-	my $sel = IO::Select->new();
-	my $pid;
-
 	if($stdout && $stderr) {
-		eval { $pid = open3(*IN, *OUT, *ERR, $command); };
-		fatal("Unable to execute command: $@") if $@;
-		$sel->add(*OUT, *ERR);
-	} elsif($stdout) {
-		eval { $pid = open3(*IN, *OUT, ">&STDERR", $command); };
-		fatal("Unable to execute command: $@") if $@;
-		$sel->add(*OUT);
+		($$stdout, $$stderr) = capture { system($command); };
+		chomp($$stdout);
+		chomp($$stderr);
+	} elsif ($stdout) {
+		$$stdout = capture_stdout { system($command); };
+		chomp($$stdout);
 	} elsif($stderr) {
-		eval { $pid = open3(*IN, ">&STDOUT", *ERR, $command); };
-		fatal("Unable to execute command: $@") if $@;
-		$sel->add(*ERR);
+		$$stderr = capture_stderr { system($command); };
+		chomp($stderr);
 	} else {
 		fatal("Unable to execute command: $!") if system($command) == -1;
 		return getExitCode($?);
 	}
-
-	close IN;
-
-	$$stdout = '';
-	$$stderr = '';
-
-	while (my @ready = $sel->can_read()) {
-		foreach my $fh (@ready) {
-			if (openhandle(*ERR) && fileno($fh) == fileno(ERR)) {
-				$$stderr .= scalar <ERR>;
- 			} else {
- 				$$stdout .= scalar <OUT>;
- 			}
-
-			$sel->remove($fh) if eof($fh);
-		}
-	}
-
-	close OUT;
-	close ERR;
-
-	waitpid($pid, 0) if $pid > 0;
-
-	chomp($$stdout);
-	chomp($$stderr);
 
 	getExitCode();
 }
@@ -173,7 +140,6 @@ sub getExitCode(;$)
 =head1 AUTHORS
 
  Laurent Declercq <l.declercq@nuxwin.com>
- Daniel Andreca <sci2tech@gmail.com>
 
 =cut
 

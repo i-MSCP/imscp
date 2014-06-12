@@ -218,9 +218,8 @@ sub installPackages
 	}
 
 	$rs = execute(
-		"$command -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-		 "-o Dpkg::Options::='--force-confask' --reinstall install @{$self->{'packagesToInstall'}} " .
-		 "--auto-remove --purge",
+		"$command -y -o DPkg::Options::='--force-confnew' -o Dpkg::Options::='--force-confask' " .
+			"--reinstall install @{$self->{'packagesToInstall'}} --auto-remove --purge",
 		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
@@ -271,7 +270,7 @@ sub _init
 
 	$self->{'repositorySections'} = ['main', 'non-free'];
 	$self->{'preRequiredPackages'} = [
-		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'
+		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget', 'resolvconf'
 	];
 	$self->{'externalRepositoriesToRemove'} = {};
 	$self->{'externalRepositoriesToAdd'} = {};
