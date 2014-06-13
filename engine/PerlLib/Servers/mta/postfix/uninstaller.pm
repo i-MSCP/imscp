@@ -122,6 +122,11 @@ sub _restoreConfFile
 		}
 	}
 
+	if(-f "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf") {
+		$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf")->delFile();
+		return $rs if $rs;
+	}
+
 	0;
 }
 
