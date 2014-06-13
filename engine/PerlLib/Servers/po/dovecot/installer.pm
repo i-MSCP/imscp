@@ -226,15 +226,6 @@ sub buildPostfixConf($$$)
 	my ($self, $fileContent, $fileName) = @_;
 
 	if($fileName eq 'main.cf') {
-# We are now using Cyrus SASL framework in all cases (since 1.1.12)
-#		# SASL part
-#		my $configSnippet = <<EOF;
-#smtpd_sasl_type = dovecot
-#smtpd_sasl_path = private/auth
-#EOF
-#
-#	$$fileContent =~ s/(# SASL parameters\n)/$1$configSnippet/;
-
 	# LDA part
 	$$fileContent .= <<EOF
 
@@ -474,12 +465,9 @@ sub _buildConf
 		MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
 		MTA_MAILBOX_UID => scalar getpwnam($self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'}),
 		MTA_MAILBOX_GID => scalar getgrnam($self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}),
-		POSTFIX_USER => $self->{'mta'}->{'config'}->{'POSTFIX_USER'},
-		POSTFIX_GROUP => $self->{'mta'}->{'config'}->{'POSTFIX_GROUP'},
 		POSTFIX_SENDMAIL_PATH => $self->{'mta'}->{'config'}->{'POSTFIX_SENDMAIL_PATH'},
 		DOVECOT_CONF_DIR => $self->{'config'}->{'DOVECOT_CONF_DIR'},
 		DOVECOT_DELIVER_PATH => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
-		DOVECOT_SASL_SOCKET_PATH => $self->{'config'}->{'DOVECOT_SASL_SOCKET_PATH'},
 		DOVECOT_AUTH_SOCKET_PATH => $self->{'config'}->{'DOVECOT_AUTH_SOCKET_PATH'},
 		ENGINE_ROOT_DIR => $main::imscpConfig{'ENGINE_ROOT_DIR'}
 	};

@@ -45,14 +45,6 @@ service auth {
 		mode = 0600
 		user = {MTA_MAILBOX_UID_NAME}
 	}
-
-# Dovecot SASL implementation is not longer used (since 1.1.12)
-#	# Client authentication socket for SASL
-#	unix_listener {DOVECOT_SASL_SOCKET_PATH} {
-#		mode = 0660
-#		user = {POSTFIX_USER}
-#		group = {POSTFIX_GROUP}
-#	}
 }
 
 # Quota Warning service

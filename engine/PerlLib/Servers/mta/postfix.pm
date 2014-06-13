@@ -451,15 +451,9 @@ sub addMail($$)
 	}
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-		#$rs = $self->_addSaslData($data);
-		#return $rs if $rs;
-
 		$rs = $self->_addMailBox($data);
 		return $rs if $rs;
 	} else {
-		#$rs = $self->_deleteSaslData($data);
-		#return $rs if $rs;
-
 		$rs = $self->_deleteMailBox($data);
 		return $rs if $rs;
 	}
@@ -520,9 +514,6 @@ sub deleteMail($$)
 		}
 	}
 
-	#$rs = $self->_deleteSaslData($data);
-	#return $rs if $rs;
-
 	$rs = $self->_deleteMailBox($data);
 	return $rs if $rs;
 
@@ -566,9 +557,6 @@ sub disableMail($$)
 			return $rs if $rs;
 		}
 	}
-
-	#$rs = $self->_deleteSaslData($data);
-	#return $rs if $rs;
 
 	$rs = $self->_disableMailBox($data);
 	return $rs if $rs;
@@ -897,147 +885,6 @@ sub _addToDomainsHash($$)
 
 	$self->{'hooksManager'}->trigger('afterMtaAddToDomainsHash', $data);
 }
-
-# Deprecated since 1.1.12
-#=item _addSaslData(\%data)
-#
-# Add SASL data
-#
-# Return int 0 on success, other on failure
-#
-#=cut
-#
-#sub _addSaslData($$)
-#{
-#	my ($self, $data) = @_;
-#
-#	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddSaslData', $data);
-#	return $rs if $rs;
-#
-#	my $file = iMSCP::File->new('filename' => $self->{'config'}->{'ETC_SASLDB_FILE'});
-#
-#	$rs = $file->save() unless -f $self->{'config'}->{'ETC_SASLDB_FILE'};
-#	return $rs if $rs;
-#
-#	$rs = $file->mode(0660);
-#	return $rs if $rs;
-#
-#	$rs = $file->owner($self->{'config'}->{'SASLDB_USER'}, $self->{'config'}->{'SASLDB_GROUP'});
-#	return $rs if $rs;
-#
-#	my ($stdout, $stderr);
-#	$rs = execute(
-#		"$self->{'config'}->{'CMD_SASLDB_LISTUSERS2'} -f $self->{'config'}->{'ETC_SASLDB_FILE'}", \$stdout, \$stderr
-#	);
-#	debug($stdout) if $stdout;
-#	error($stderr) if $stderr && $rs;
-#	return $rs if $rs;
-#
-#	my $mailboxEntry = quotemeta($data->{'MAIL_ADDR'});
-#
-#	if($stdout =~ /^$mailboxEntry:/gim) {
-#		$rs = execute(
-#			"$self->{'config'}->{'CMD_SASLDB_PASSWD2'} -d -f $self->{'config'}->{'ETC_SASLDB_FILE'} " .
-#			"-u $data->{'DOMAIN_NAME'} $data->{'MAIL_ACC'}",
-#			\$stdout,
-#			\$stderr
-#		);
-#		debug($stdout) if $stdout;
-#		error($stderr) if $stderr && $rs;
-#		return $rs if $rs;
-#	}
-#
-#	my $password = escapeShell($data->{'MAIL_PASS'});
-#
-#	$rs = execute(
-#		"$main::imscpConfig{'CMD_ECHO'} $password | $self->{'config'}->{'CMD_SASLDB_PASSWD2'} -p -c " .
-#		"-f $self->{'config'}->{'ETC_SASLDB_FILE'} -u $data->{'DOMAIN_NAME'} $data->{'MAIL_ACC'}",
-#		\$stdout,
-#		\$stderr
-#	);
-#	debug($stdout) if $stdout;
-#	error($stderr) if $stderr && $rs;
-#	return $rs if $rs;
-#
-#	if($self->{'config'}->{'ETC_SASLDB_FILE'} ne $self->{'config'}->{'MTA_SASLDB_FILE'}) {
-#		$rs = execute(
-#			"$main::imscpConfig{'CMD_CP'} -fp $self->{'config'}->{'ETC_SASLDB_FILE'} " .
-#			"$self->{'config'}->{'MTA_SASLDB_FILE'}",
-#			\$stdout,
-#			\$stderr
-#		);
-#		debug($stdout) if $stdout;
-#		error($stderr) if $stderr && $rs;
-#		return $rs if $rs;
-#	}
-#
-#	$self->{'hooksManager'}->trigger('afterMtaAddSaslData', $data);
-#}
-
-# Deprecated since 1.1.12
-#=item _deleteSaslData(\%data)
-#
-# Delete SASL data
-#
-# Return int 0 on success, other on failure
-#
-#=cut
-#
-#sub _deleteSaslData($$)
-#{
-#	my ($self, $data) = @_;
-#
-#	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelSaslData', $data);
-#	return $rs if $rs;
-#
-#	my ($stdout, $stderr);
-#
-#	my $mailboxEntry = quotemeta($data->{'MAIL_ADDR'});
-#
-#	my $file = iMSCP::File->new('filename' => $self->{'config'}->{'ETC_SASLDB_FILE'});
-#
-#	$rs = $file->save() unless -f $self->{'config'}->{'ETC_SASLDB_FILE'};
-#	return $rs if $rs;
-#
-#	$rs = $file->mode(0660);
-#	return $rs if $rs;
-#
-#	$rs = $file->owner($self->{'config'}->{'SASLDB_USER'}, $self->{'config'}->{'SASLDB_GROUP'});
-#	return $rs if $rs;
-#
-#	$rs = execute(
-#		"$self->{'config'}->{'CMD_SASLDB_LISTUSERS2'} -f $self->{'config'}->{'ETC_SASLDB_FILE'}", \$stdout, \$stderr
-#	);
-#	debug($stdout) if $stdout;
-#	error($stderr) if $stderr && $rs;
-#	return $rs if $rs;
-#
-#	if($stdout =~ /^$mailboxEntry:/gim) {
-#		$rs = execute(
-#			"$self->{'config'}->{'CMD_SASLDB_PASSWD2'} -d -f $self->{'config'}->{'ETC_SASLDB_FILE'} " .
-#			"-u $data->{'DOMAIN_NAME'} $data->{'MAIL_ACC'}",
-#			\$stdout,
-#			\$stderr
-#		);
-#		debug($stdout) if $stdout;
-#		error($stderr) if $stderr && $rs;
-#		return $rs if $rs;
-#
-#		if($self->{'config'}->{'ETC_SASLDB_FILE'} ne $self->{'config'}->{'MTA_SASLDB_FILE'}) {
-#			$rs = execute(
-#				"$main::imscpConfig{'CMD_CP'} -fp $self->{'config'}->{'ETC_SASLDB_FILE'} " .
-#				"$self->{'config'}->{'MTA_SASLDB_FILE'}",
-#				\$stdout,
-#				\$stderr
-#			);
-#			debug($stdout) if $stdout;
-#			error($stderr) if $stderr && $rs;
-#			return $rs if $rs;
-#		}
-#	}
-#
-#	$self->{'hooksManager'}->trigger('afterMtaDelSaslData', $data);
-#}
 
 =item _addMailBox(\%data)
 

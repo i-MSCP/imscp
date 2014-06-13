@@ -354,13 +354,6 @@ sub _addUsersAndGroups
 	);
 
 	my @userToGroups = ();
-	# Deprecated (since 1.1.12)
-	#my @userToGroups = (
-	#	[
-	#		$self->{'config'}->{'POSTFIX_USER'}, # User to add into group
-	#		[$self->{'config'}->{'SASLDB_GROUP'}] # Group(s) to which add user
-	#	]
-	#);
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups);
 	return $rs if $rs;
@@ -957,7 +950,15 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaOldEngineCompatibility');
 	return $rs if $rs;
 
-	# TODO free up /etc/sasldb2
+	if(-f '/etc/sasldb2') {
+		$rs = iMSCP::File->new('filename' => '/etc/sasldb2')->delFile();
+		return $rs if $rs;
+	}
+
+	if(-f '/var/spool/postfix/etc/sasldb2') {
+		$rs = iMSCP::File->new('filename' => '/var/spool/postfix/etc/sasldb2')->delFile();
+		return $rs if $rs;
+	}
 
 	$self->{'hooksManager'}->trigger('afterMtadOldEngineCompatibility');
 }
