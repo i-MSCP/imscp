@@ -863,7 +863,7 @@ sub _buildMasterCfFile
 	$file->copyFile($self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'});
 }
 
-=item _buildMasterCfFile()
+=item _buildSaslConfFile()
 
  Build SASL configuration file
 
