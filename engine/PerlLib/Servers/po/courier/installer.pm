@@ -117,7 +117,7 @@ sub askCourier($$)
 		# Ask for the authdaemon restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter a username for the restricted authdaemon SQL user:", $dbUser
+				"\nPlease enter an username for the restricted authdaemon SQL user:", $dbUser
 			);
 
 			# i-MSCP SQL user cannot be reused

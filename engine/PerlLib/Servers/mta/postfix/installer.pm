@@ -58,6 +58,95 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
+=item registerSetupHooks($hooksManager)
+
+ Register setup hooks.
+
+ Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Return int 0 on success, other on failure
+
+=cut
+
+sub registerSetupHooks($$)
+{
+	my ($self, $hooksManager) = @_;
+
+	my $rs = $hooksManager->trigger('beforeMtaRegisterSetupHooks', $hooksManager, 'postfix');
+	return $rs if $rs;
+
+	$rs = $hooksManager->register(
+		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askPostfix(@_) }); 0; }
+	);
+	return $rs if $rs;
+
+	$hooksManager->trigger('afterMtaRegisterSetupHooks', $hooksManager, 'postfix');
+}
+
+=item askPostfix($dialog)
+
+ Ask user for SASL restricted SQL user.
+
+ Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Return int 0 on success, other on failure
+
+=cut
+
+sub askPostfix($$)
+{
+	my ($self, $dialog) = @_;
+
+	my $dbUser = main::setupGetQuestion('SASL_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'sasl_user';
+	my $dbPass = main::setupGetQuestion('SASL_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
+
+	my ($rs, $msg) = (0, '');
+
+	if($main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass)) {
+		# Ask for the SASL restricted SQL username
+		do{
+			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
+				"\nPlease enter an username for the restricted SASL SQL user:", $dbUser
+			);
+
+			# i-MSCP SQL user cannot be reused
+			if($dbUser eq main::setupGetQuestion('DATABASE_USER')) {
+				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
+				$dbUser = '';
+			} elsif(length $dbUser > 16) {
+				$msg = "\n\n\\Z1SQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
+				$dbUser = '';
+			} elsif($dbUser !~ /^[\x21-\x7e]+$/) {
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease, try again:";
+				$dbUser = '';
+			}
+		} while ($rs != 30 && ! $dbUser);
+
+		if($rs != 30) {
+			# Ask for the SASL restricted SQL user password
+			($rs, $dbPass) = $dialog->passwordbox(
+				'\nPlease, enter a password for the restricted SASL SQL user (blank for autogenerate):', $dbPass
+			);
+
+			if($rs != 30) {
+				if(! $dbPass) {
+					my @allowedChr = map { chr } (0x21..0x7e);
+					$dbPass = '';
+					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
+				}
+
+				$dialog->msgbox("\nPassword for the restricted SASL SQL user set to: $dbPass");
+				$dialog->set('cancel-label');
+			}
+		}
+	}
+
+	if($rs != 30) {
+		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+		$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+	}
+
+	$rs;
+}
+
 =item preinstall()
 
  Process preinstall tasks
@@ -96,6 +185,9 @@ sub install
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaInstall', 'postfix');
 	return $rs if $rs;
 
+	$rs = $self->_setupSqlUser();
+	return $rs if $rs;
+
 	$rs = $self->_buildConf();
 	return $rs if $rs;
 
@@ -131,38 +223,41 @@ sub setEnginePermissions
 	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
 	my $mtaUName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
 	my $mtaGName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
-	my $mtaCfg = $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'};
-	my $mtaFolder = $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
-	my $imscpRootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $logDir = $main::imscpConfig{'LOG_DIR'};
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaSetEnginePermissions');
 	return $rs if $rs;
 
 	# eg. /etc/postfix/imscp
 	$rs = setRights(
-		$mtaCfg,
+		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
 		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0755', 'filemode' => '0644', 'recursive' => 1 }
+	);
+	return $rs if $rs;
+
+	# eg. /etc/postfix/sasl (since 1.1.12)
+	$rs = setRights(
+		$self->{'config'}->{'MTA_SASL_CONF_DIR'},
+		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0755', 'filemode' => '0640', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
 	# eg. /var/www/imscp/engine/messenger
 	$rs = setRights(
-		"$imscpRootDir/engine/messenger",
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger",
 		{ 'user' => $rootUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0750', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
 	# eg. /var/log/imscp/imscp-arpl-msgr
 	$rs = setRights(
-		"$logDir/imscp-arpl-msgr",
+		"$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
 		{ 'user' => $mtaUName, 'group' => $mtaGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
 	# eg. /var/mail/virtual
 	$rs = setRights(
-		$mtaFolder,
+		$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
 		{ 'user' => $mtaUName, 'group' => $mtaGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
 	return $rs if $rs;
@@ -258,12 +353,14 @@ sub _addUsersAndGroups
 		]
 	);
 
-	my @userToGroups = (
-		[
-			$self->{'config'}->{'POSTFIX_USER'}, # User to add into group
-			[$self->{'config'}->{'SASLDB_GROUP'}] # Group(s) to which add user
-		]
-	);
+	my @userToGroups = ();
+	# Deprecated (since 1.1.12)
+	#my @userToGroups = (
+	#	[
+	#		$self->{'config'}->{'POSTFIX_USER'}, # User to add into group
+	#		[$self->{'config'}->{'SASLDB_GROUP'}] # Group(s) to which add user
+	#	]
+	#);
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups);
 	return $rs if $rs;
@@ -329,6 +426,13 @@ sub _makeDirs
 			$main::imscpConfig{'ROOT_GROUP'},
 			0755
 		],
+		# Since 1.1.12
+		[
+			$self->{'config'}->{'MTA_SASL_CONF_DIR'}, # eg. /etc/postfix/sasl
+			$main::imscpConfig{'ROOT_USER'},
+			$main::imscpConfig{'ROOT_GROUP'},
+			0755
+		],
 		[
 			$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # eg. /var/mail/virtual
 			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
@@ -358,6 +462,66 @@ sub _makeDirs
 	$self->{'hooksManager'}->trigger('afterMtaMakeDirs');
 }
 
+=item _setupSqlUser()
+
+ Setup SASL SQL user.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setupSqlUser()
+{
+	my $self = $_[0];
+
+	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
+
+	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
+
+	# Postfix is chrooted so we cannot access MySQL through unix socket. Here we force usage of TCP
+	$dbUserHost = '127.0.0.1' if $dbUserHost eq 'localhost';
+
+	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
+	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeMtaSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
+	return $rs if $rs;
+
+	# Removing any old SQL user (including privileges)
+	for my $sqlUser ($dbOldUser, $dbUser) {
+		next if ! $sqlUser;
+
+		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+			next if ! $_;
+
+			if(main::setupDeleteSqlUser($sqlUser, $_)) {
+				error("Unable to remove SQL user or one of its privileges");
+				return 1;
+			}
+		}
+	}
+
+	# Getting SQL connection with full privileges
+	my ($db, $errStr) = main::setupGetSqlConnect();
+	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+
+	# Adding new SQL user with needed privileges
+
+	$rs = $db->doQuery(
+		'dummy',
+		"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` TO ?@? IDENTIFIED BY ?",
+		$dbUser,
+		$dbUserHost,
+		$dbPass
+	);
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privileges: $rs");
+		return 1;
+	}
+
+	$self->{'hooksManager'}->trigger('afterMtaSetupDb');
+}
+
 =item _buildConf()
 
  Build configuration file
@@ -377,6 +541,9 @@ sub _buildConf
 	return $rs if $rs;
 
 	$rs = $self->_buildMasterCfFile();
+	return $rs if $rs;
+
+	$rs = $self->_buildSaslConfFile();
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaBuildConf');
@@ -703,6 +870,78 @@ sub _buildMasterCfFile
 	$file->copyFile($self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'});
 }
 
+=item _buildMasterCfFile()
+
+ Build SASL configuration file
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _buildSaslConfFile()
+{
+	my $self = $_[0];
+
+	# Backup file
+
+	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf");
+	return $rs if $rs;
+
+	# Define data
+
+	my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
+
+	my $data = {
+		DATABASE_HOST => ($dbHost eq 'localhost') ? '127.0.0.1' : $dbHost, # Force TCP connection
+		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
+		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
+		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
+		DATABASE_PASSWORD => $self->{'config'}->{'DATABASE_PASSWORD'}
+	};
+
+	# Load template
+
+	my $cfgTpl;
+	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'smtpd.conf', \$cfgTpl, $data);
+	return $rs if $rs;
+
+	unless(defined $cfgTpl) {
+		$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/sasl/smtpd.conf")->get();
+		unless(defined $cfgTpl) {
+			error("Unable to read $self->{'cfgDir'}/sasl/smtpd.conf");
+			return 1;
+		}
+	}
+
+	# Build file
+
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildSaslConfFile', \$cfgTpl, 'smtpd.conf');
+	return $rs if $rs;
+
+	$cfgTpl = process($data, $cfgTpl);
+
+	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildaslConfFil', \$cfgTpl, 'smtpd.conf');
+	return $rs if $rs;
+
+	# Store file
+
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/smtpd.conf");
+
+	$rs = $file->set($cfgTpl);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$file->copyFile("$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf");
+}
+
 =item _oldEngineCompatibility()
 
  Remove old files
@@ -717,6 +956,8 @@ sub _oldEngineCompatibility
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaOldEngineCompatibility');
 	return $rs if $rs;
+
+	# TODO free up /etc/sasldb2
 
 	$self->{'hooksManager'}->trigger('afterMtadOldEngineCompatibility');
 }

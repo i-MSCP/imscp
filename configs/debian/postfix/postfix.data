@@ -32,19 +32,9 @@ MTA_MAILBOX_UID_NAME = vmail
 
 MTA_MAILBOX_GID_NAME = mail
 
-MTA_SASLDB_FILE = /var/spool/postfix/etc/sasldb2
-
-ETC_SASLDB_FILE = /etc/sasldb2
-
-CMD_SASLDB_LISTUSERS2 = /usr/sbin/sasldblistusers2
-
-CMD_SASLDB_PASSWD2 = /usr/sbin/saslpasswd2
+MTA_SASL_CONF_DIR = /etc/postfix/sasl
 
 CMD_PFLOGSUM = /usr/sbin/maillogconvert.pl
-
-SASLDB_USER = root
-
-SASLDB_GROUP = sasl
 
 POSTFIX_USER = postfix
 
@@ -71,3 +61,15 @@ CMD_NEWALIASES = /usr/bin/newaliases
 # the server hostname
 # (Not implemented yet)
 #SMTP_BIND_ADDRESS6 =
+
+# SASL SQL user (since 1.1.12)
+DATABASE_USER =
+DATABASE_PASSWORD =
+
+# Deprecated (will be removed in near future)
+MTA_SASLDB_FILE = /var/spool/postfix/etc/sasldb2
+ETC_SASLDB_FILE = /etc/sasldb2
+CMD_SASLDB_LISTUSERS2 = /usr/sbin/sasldblistusers2
+CMD_SASLDB_PASSWD2 = /usr/sbin/saslpasswd2
+SASLDB_USER = root
+SASLDB_GROUP = sasl

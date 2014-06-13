@@ -6,7 +6,11 @@ Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
 DISTROS
-	Re-added: Courier as IMAP/POP3 server alternative (Debian Jessie)
+	Re-added: Courier as alternative IMAP/POP3 servers (Debian Jessie)
+
+ENGINE:
+	Changed: Dovecot SASL implementation is no longer used in Postfix (Replaced by Cyrus SASL)
+	Changed: SASL authentication is now made against database directly (Postfix)
 
 INSTALLER
 	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)

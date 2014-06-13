@@ -37,18 +37,19 @@ auth default {
 	socket listen {
 		# Master authentication socket for LDA
 		master {
-    		path = {DOVECOT_AUTH_SOCKET_PATH}
-    		mode = 0600
-    		user = {MTA_MAILBOX_UID_NAME}
-    	}
-
-		# Client authentication socket for SASL
-		client {
-			path = {DOVECOT_SASL_SOCKET_PATH}
-			mode = 0660
-			user = {POSTFIX_USER}
-			group = {POSTFIX_GROUP}
+			path = {DOVECOT_AUTH_SOCKET_PATH}
+			mode = 0600
+			user = {MTA_MAILBOX_UID_NAME}
 		}
+
+# Dovecot SASL implementation is not longer used (since 1.1.12)
+#		# Client authentication socket for SASL
+#		client {
+#			path = {DOVECOT_SASL_SOCKET_PATH}
+#			mode = 0660
+#			user = {POSTFIX_USER}
+#			group = {POSTFIX_GROUP}
+#		}
 	}
 }
 

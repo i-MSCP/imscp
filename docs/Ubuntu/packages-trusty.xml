@@ -43,6 +43,9 @@
         <alternative default="postfix">
             <postfix>
                 <package>postfix</package>
+                <package>libsasl2-modules</package>
+                <package>libsasl2-modules-sql</package>
+                <package>sasl2-bin</package>
             </postfix>
         </alternative>
     </mta>
@@ -169,7 +172,6 @@
         <package>libc6-dev</package>
         <package>libexpat1</package>
         <package>libexpat1-dev</package>
-        <package>libsasl2-modules</package>
         <package>libmcrypt4</package>
         <package>locales</package>
         <package>lynx</package>
@@ -181,7 +183,6 @@
         <package>policyd-weight</package>
         <package>postgrey</package>
         <package>procmail</package>
-        <package>sasl2-bin</package>
         <package>ssh</package>
         <package>tar</package>
         <package>wget</package>

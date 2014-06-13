@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
 
@@ -56,23 +56,23 @@ sub _init
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	my $rs = $self->restoreConfFile();
+	my $rs = $self->_restoreConfFile();
 	return $rs if $rs;
 
-	$rs = $self->buildAliasses();
+	$rs = $self->_buildAliasses();
 	return $rs if $rs;
 
-	$rs = $self->removeUsers();
+	$rs = $self->_removeUsers();
 	return $rs if $rs;
 
-	$self->removeDirs();
+	$self->_removeDirs();
 }
 
-sub removeDirs
+sub _removeDirs
 {
-	my $self = shift;
+	my $self = $_[0];
 	my $rs = 0;
 
 	for ($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
@@ -83,16 +83,16 @@ sub removeDirs
 	0;
 }
 
-sub removeUsers
+sub _removeUsers
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	iMSCP::SystemUser->new('force' => 'yes')->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 }
 
-sub buildAliasses
+sub _buildAliasses
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Rebuilding the database for the mail aliases file - Begin
 	my ($stdout, $stderr);
@@ -104,9 +104,9 @@ sub buildAliasses
 	$rs;
 }
 
-sub restoreConfFile
+sub _restoreConfFile
 {
-	my $self = shift;
+	my $self = $_[0];
 	my $rs = 0;
 
 	for ($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {

@@ -117,7 +117,7 @@ sub askDovecot($$)
 		# Ask for the dovecot restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter a username for the restricted dovecot SQL user:", $dbUser
+				"\nPlease enter an username for the restricted dovecot SQL user:", $dbUser
 			);
 
 			# i-MSCP SQL user cannot be reused
@@ -226,13 +226,14 @@ sub buildPostfixConf($$$)
 	my ($self, $fileContent, $fileName) = @_;
 
 	if($fileName eq 'main.cf') {
-		# SASL part
-		my $configSnippet = <<EOF;
-smtpd_sasl_type = dovecot
-smtpd_sasl_path = private/auth
-EOF
-
-	$$fileContent =~ s/(# SASL parameters\n)/$1$configSnippet/;
+# We are now using Cyrus SASL framework in all cases (since 1.1.12)
+#		# SASL part
+#		my $configSnippet = <<EOF;
+#smtpd_sasl_type = dovecot
+#smtpd_sasl_path = private/auth
+#EOF
+#
+#	$$fileContent =~ s/(# SASL parameters\n)/$1$configSnippet/;
 
 	# LDA part
 	$$fileContent .= <<EOF
