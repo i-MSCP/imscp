@@ -57,7 +57,7 @@ sub quotaFiles
 	my $database = iMSCP::Database->factory();
 
 	my $mainDomains = $database->doQuery(
-		'domain_id', "SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_status` = 'ok'"
+		'domain_id', "SELECT domain_id, domain_name FROM domain WHERE domain_status = 'ok'"
 	);
 
 	unless (ref $mainDomains eq 'HASH'){
@@ -73,11 +73,11 @@ sub quotaFiles
 			my $domainId = $_;
 			my $domainName = $mainDomains->{$domainId}->{'domain_name'};
 			my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
-			my $cmd;
+			my @cmd = ();
 
 			if ($bsdSystem) { # BSD specific
-				$cmd = [
-					[
+				push @cmd, {
+					'webdir' => [
 						$main::imscpConfig{'CMD_DU'},
 						'-I backups/*',
 						'-I domain_disable_page/*',
@@ -85,30 +85,32 @@ sub quotaFiles
 						'-I statistics/*',
 						'-d 0',
 						escapeShell("$main::imscpConfig{'USER_WEB_DIR'}/$domainName")
-					],
-					[
-						$main::imscpConfig{'CMD_DU'},
-						'-d 0',
-						escapeShell("$virtualMailDir/$domainName")
 					]
-				];
+				};
+				
+				if(-d "$virtualMailDir/$domainName") {
+					push @cmd, {
+						'maildir' => [$main::imscpConfig{'CMD_DU'}, '-d 0', escapeShell("$virtualMailDir/$domainName")]
+					};
+				}
 			} else {
-				$cmd = [
-					[
+				push @cmd, {
+					'webdir' => [
 						$main::imscpConfig{'CMD_DU'},
 						'--exclude=backups/*',
 						'--exclude=domain_disable_page/*',
 						'--exclude=logs/*.log',
 						'--exclude=statistics/*',
 						'-s -B1',
-						escapeShell("$main::imscpConfig{'USER_WEB_DIR'}/$domainName"),
-					],
-					[
-						$main::imscpConfig{'CMD_DU'},
-						'-s -B1',
-						escapeShell("$virtualMailDir/$domainName")
+						escapeShell("$main::imscpConfig{'USER_WEB_DIR'}/$domainName")
 					]
-				];
+				};
+
+				if(-d "$virtualMailDir/$domainName") {
+					push @cmd, {
+						'maildir' => [$main::imscpConfig{'CMD_DU'}, '-s -B1', escapeShell("$virtualMailDir/$domainName")]
+					};
+				}
 			}
 
 			# Getting list of all child domains (sub|als|alssub)
@@ -116,35 +118,35 @@ sub quotaFiles
 				'domain_name',
 				"
 					SELECT
-						`alias_name` AS `domain_name`
+						alias_name AS domain_name
 					FROM
-						`domain_aliasses`
+						domain_aliasses
 					WHERE
-						`domain_id` = ?
+						domain_id = ?
 					AND
-						`alias_status` = 'ok'
+						alias_status = 'ok'
 					UNION
 					SELECT
-						CONCAT(`subdomain_name`, '.', `domain_name`) AS `domain_name`
+						CONCAT(subdomain_name, '.', domain_name) AS domain_name
 					FROM
-						`subdomain`
+						subdomain
 					INNER JOIN
-						`domain` USING(`domain_id`)
+						domain USING(domain_id)
 					WHERE
-						`domain_id` = ?
+						domain_id = ?
 					AND
-						`subdomain_status` = 'ok'
+						subdomain_status = 'ok'
 					UNION
 					SELECT
-						CONCAT(`subdomain_alias_name`, '.',  `alias_name`) AS `domain_name`
+						CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name
 					FROM
-						`subdomain_alias`
+						subdomain_alias
 					INNER JOIN
-						`domain_aliasses` USING(`alias_id`)
+						domain_aliasses USING(alias_id)
 					WHERE
-						`domain_id` = ?
+						domain_id = ?
 					AND
-						`subdomain_alias_status` = 'ok'
+						subdomain_alias_status = 'ok'
 				",
 				$domainId, $domainId, $domainId
 			);
@@ -158,24 +160,30 @@ sub quotaFiles
 
 					if (-d $domainMailDir) {
 						if ($bsdSystem) { # BSD specific
-							push(@{$cmd}, ["$main::imscpConfig{'CMD_DU'} -d 0 " . escapeShell($domainMailDir)]);
+							push @cmd, {
+								'maildir' => ["$main::imscpConfig{'CMD_DU'} -d 0 " . escapeShell($domainMailDir)]
+							};
 						} else {
-							push(@{$cmd}, ["$main::imscpConfig{'CMD_DU'} -s -B1 " . escapeShell($domainMailDir)]);
+							push @cmd, {
+								'maildir' => ["$main::imscpConfig{'CMD_DU'} -s -B1 " . escapeShell($domainMailDir)]
+							};
 						}
 					}
 				}
 			}
 
-			for(@{$cmd}) {
+			for(@cmd) {
+				my ($dirType, $quotaCmd) = each %{$_};
+
 				my ($stdout, $stderr);
-				$rs = execute("@{$_}", \$stdout, \$stderr);
+				$rs = execute("@{$quotaCmd}", \$stdout, \$stderr);
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
 
 				if(defined $stdout) {
 					debug($stdout);
 
-					if("@{$_}" =~ /$main::imscpConfig{'USER_WEB_DIR'}/) {
+					if($dirType eq 'webdir') {
 						$stdout =~ /^(\d+)/;
 						$webDiskUsage = ($bsdSystem)
 							? $1 * 1024 # BSD specific
@@ -192,14 +200,14 @@ sub quotaFiles
 			$totalDiskUsage = $webDiskUsage + $mailDiskUsage;
 
 			if ($totalDiskUsage > 0) {
-				my $sql = "
+				my $sql = '
 					UPDATE
-						`domain`
+						domain
 					SET
-						`domain_disk_usage` = ?, `domain_disk_file` = ?, `domain_disk_mail` = ?
+						domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?
 					WHERE
-						`domain_id` = ?
-				";
+						domain_id = ?
+				';
 				my $rdata = $database->doQuery(
 					'update', $sql, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $domainId
 				);
@@ -210,10 +218,7 @@ sub quotaFiles
 				}
 
 				$rdata = $database->doQuery(
-					'cnt',
-					'UPDATE `quotatallies` SET `bytes_in_used` = ? WHERE `name` = ?',
-					$totalDiskUsage,
-					$domainName
+					'update', 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', $totalDiskUsage, $domainName
 				);
 				unless (ref $rdata eq 'HASH') {
 					error($rdata);
@@ -240,7 +245,7 @@ sub quotaSql
 	}
 
 	my $rdata = $database->doQuery(
-		'domain_id', "SELECT `domain_id`, `domain_name`, `domain_disk_usage` FROM `domain` WHERE `domain_status` = 'ok'"
+		'domain_id', 'SELECT domain_id, domain_name, domain_disk_usage FROM domain WHERE domain_status = ?', 'ok'
 	);
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
@@ -255,7 +260,7 @@ sub quotaSql
 			my $sqlSize = 0;
 
 			my $imscpDatabases = $database->doQuery(
-				'sqld_name', 'SELECT `sqld_name` FROM `sql_database` WHERE `domain_id` = ?', $domainId
+				'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $domainId
 			);
 
 			unless (ref $imscpDatabases eq 'HASH') {
@@ -268,7 +273,7 @@ sub quotaSql
 				my $sqlDbName = $_;
 
 				if(grep{$_ eq $sqlDbName} keys %{$databases}) {
-					my $sqlDbTables = $database->doQuery('1', "SHOW TABLE STATUS FROM `$sqlDbName`");
+					my $sqlDbTables = $database->doQuery('1', "SHOW TABLE STATUS FROM $sqlDbName");
 					unless (ref $sqlDbTables eq 'HASH') {
 						error($sqlDbTables);
 						iMSCP::Mail->new()->errmsg($sqlDbTables);
@@ -281,7 +286,7 @@ sub quotaSql
 						}
 					}
 				} else {
-					error("Database '$sqlDbName' exists only in table 'sql_database'");
+					warning("Database '$sqlDbName' exists only in table 'sql_database'");
 					iMSCP::Mail->new()->errmsg("Database '$sqlDbName' exists only in table 'sql_database'");
 				}
 			}
@@ -292,7 +297,7 @@ sub quotaSql
 
 				my $quota = $database->doQuery(
 					'update ',
-					'UPDATE `domain` SET `domain_disk_usage` = ?, `domain_disk_sql` = ? WHERE `domain_id` = ?',
+					'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?',
 					$size,
 					$sqlSize,
 					$domainId
@@ -304,7 +309,7 @@ sub quotaSql
 				}
 
 				$quota = $database->doQuery(
-					'update', 'UPDATE `quotatallies` SET `bytes_in_used` = ? WHERE `name` = ?', $size, $domainName
+					'update', 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', $size, $domainName
 				);
 				unless (ref $quota eq 'HASH') {
 					error($quota);
@@ -319,6 +324,6 @@ sub quotaSql
 }
 
 my $rs = quotaFiles();
-$rs ||= quotaSql();
+$rs |= quotaSql();
 $bootstrapper->unlock('/tmp/imscp-dsk-quota.lock');
 exit $rs;

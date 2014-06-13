@@ -11,6 +11,7 @@ DISTROS
 ENGINE:
 	Changed: Dovecot SASL implementation is no longer used in Postfix (Replaced by Cyrus SASL)
 	Changed: SASL authentication is now made against database directly (Postfix)
+	Fixed: Quota script must ignore maildir which doesn't exist + small fixes
 
 INSTALLER
 	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)
