@@ -177,7 +177,7 @@ sub quotaFiles
 			}
 
 			for(@cmd) {
-				my ($dirType, $quotaCmd) = each %{$_};
+				my ($dirType, $quotaCmd) = %{$_};
 
 				my ($stdout, $stderr);
 				$rs = execute("@{$quotaCmd}", \$stdout, \$stderr);
