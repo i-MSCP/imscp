@@ -34,13 +34,14 @@ package iMSCP::Execute;
 use strict;
 use warnings;
 
+use iMSCP::Debug;
+
 use File::Basename ();
 use Cwd ();
-use iMSCP::Debug;
 
 my $vendorLibDir;
 
-BEGIN { $vendorLibDir = Cwd::realpath( File::Basename::dirname(__FILE__) . '/../../PerlVendor'); }
+BEGIN { $vendorLibDir = Cwd::realpath(File::Basename::dirname(__FILE__) . '/../../PerlVendor'); }
 
 use lib $vendorLibDir;
 
