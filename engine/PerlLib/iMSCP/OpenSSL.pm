@@ -65,30 +65,32 @@ sub validatePrivateKey
 		return 1;
 	} elsif(! -f $self->{'private_key_container_path'}) {
 		error("SSL private key container $self->{'private_key_container_path'} doesn't exists");
-		return -1;
+		return 1;
 	}
 
-	# Create temporary file for private key passphrase
-	my $passphraseFile = File::Temp->new();
+	my $passphraseFile;
 
-	# Write SSL private key passphrase into temporary file, which is only readable by root
-	print $passphraseFile $self->{'private_key_passphrase'};
+	if($self->{'private_key_passphrase'} ne '') {
+		# Create temporary file for private key passphrase
+		$passphraseFile = File::Temp->new();
+
+		# Write SSL private key passphrase into temporary file, which is only readable by root
+		print $passphraseFile $self->{'private_key_passphrase'};
+	}
 
 	my @cmd = (
 		"$self->{'openssl_path'} rsa",
 		'-in', escapeShell($self->{'private_key_container_path'}),
 		'-noout',
-		'-passin', escapeShell("file:$passphraseFile")
+		'-passin', ($passphraseFile)  ? escapeShell("file:$passphraseFile") : 'pass:dummypass'
 	);
 
 	my ($stdout, $stderr);
 	my $rs = execute("@cmd", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
-	error("Invalid private key or passphrase") if $rs;
-	return $rs if $rs;
+	debug($stderr) if $stderr;
 
-	0;
+	$rs;
 }
 
 =item validateCertificate()
@@ -133,11 +135,11 @@ sub validateCertificate
 	my ($stdout, $stderr);
 	my $rs = execute("@cmd", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr;
+	debug($stderr) if $stderr;
 	return 1 if $rs || $stderr;
 
 	if ($stdout !~ /$self->{'certificate_container_path'}:.*OK/ms ){
-		error("SSL certificate $self->{'certificate_container_path'} is not valid");
+		debug("SSL certificate $self->{'certificate_container_path'} is not valid");
 		return 1;
 	}
 
@@ -174,7 +176,7 @@ sub importPrivateKey
 
 	my $passphraseFile;
 
-	if($self->{'private_key_passphrase'} ne 'dummy') {
+	if($self->{'private_key_passphrase'} ne '') {
 		# Create temporary file for private key passphrase
 		$passphraseFile = File::Temp->new();
 
@@ -186,7 +188,7 @@ sub importPrivateKey
 		"$self->{'openssl_path'} rsa",
 		'-in', escapeShell($self->{'private_key_container_path'}),
 		'-out', escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem"),
-		(defined $passphraseFile) ? ('-passin', escapeShell("file:$passphraseFile")) : ''
+		'-passin', ($passphraseFile)  ? escapeShell("file:$passphraseFile") : 'pass:dummypass'
 	);
 
 	my ($stdout, $stderr);
@@ -367,7 +369,7 @@ sub _init
 	$self->{'private_key_container_path'} = '' unless defined $self->{'private_key_container_path'};
 
 	# Private key passphrase if any
-	$self->{'private_key_passphrase'} = 'dummy' unless defined $self->{'private_key_passphrase'};
+	$self->{'private_key_passphrase'} = '' unless defined $self->{'private_key_passphrase'};
 
 	# Full path to the SSL certificate container
 	$self->{'certificate_container_path'} = '' unless defined $self->{'certificate_container_path'};;
