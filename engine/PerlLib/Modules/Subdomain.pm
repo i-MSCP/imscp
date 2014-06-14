@@ -439,7 +439,7 @@ sub isValidCertificate
 	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$subdomainName.pem";
 
 	my $openSSL = iMSCP::OpenSSL->new(
-		'openssl_path' = $main::imscpConfig{'CMD_OPENSSL'},
+		'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
 		'private_key_container_path' => $certFile,
 		'certificate_container_path' => $certFile,
 		'ca_bundle_container_path' => $certFile
