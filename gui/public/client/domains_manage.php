@@ -622,7 +622,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 		$tpl->parse('DNS_LIST', 'dns_list');
 		$tpl->assign('DNS_MESSAGE', '');
 	} else {
-		if (customerHasFeature('custom_dns_record')) {
+		if (customerHasFeature('custom_dns_records')) {
 			$tpl->assign(
 				array(
 					'DNS_MSG' => tr('You do not have DNS resource records.'),

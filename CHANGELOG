@@ -8,12 +8,15 @@ Git stable
 DISTROS
 	Re-added: Courier as alternative IMAP/POP3 servers (Debian Jessie)
 
-ENGINE:
+ENGINE
 	Changed: Dovecot SASL implementation is no longer used in Postfix (Replaced by Cyrus SASL)
 	Changed: SASL authentication is now made against database directly (Postfix)
 	Fixed: In case the passphrase is missing, user must not be prompted to enter it (iMSCP::OpenSSL)
 	Fixed: Missing EOL in SSL certificate containers (iMSCP::OpenSSL)
 	Fixed: Quota script must ignore maildir which doesn't exist
+
+GUI
+	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function
 
 INSTALLER
 	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)
