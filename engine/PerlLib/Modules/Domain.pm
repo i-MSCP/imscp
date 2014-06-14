@@ -574,12 +574,13 @@ sub isValidCertificate
 	my ($self, $domainName) = @_;
 
 	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainName.pem";
-	my $openSSL = iMSCP::OpenSSL->getInstance();
 
-	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
-	$openSSL->{'private_key_container_path'} = $certFile;
-	$openSSL->{'certificate_container_path'} = $certFile;
-	$openSSL->{'ca_bundle_container_path'} = $certFile;
+	my $openSSL = iMSCP::OpenSSL->new(
+		'openssl_path' = $main::imscpConfig{'CMD_OPENSSL'},
+		'private_key_container_path' => $certFile,
+		'certificate_container_path' => $certFile,
+		'ca_bundle_container_path' => $certFile
+	);
 
 	! $openSSL->validateCertificateChain();
 }
