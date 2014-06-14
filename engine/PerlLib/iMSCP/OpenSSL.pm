@@ -68,9 +68,8 @@ sub validatePrivateKey
 		return -1;
 	}
 
-    my $passphraseFile = File::Temp->new();
 	# Create temporary file for private key passphrase
-	$passphraseFile = File::Temp->new();
+	my $passphraseFile = File::Temp->new();
 
 	# Write SSL private key passphrase into temporary file, which is only readable by root
 	print $passphraseFile $self->{'private_key_passphrase'};
