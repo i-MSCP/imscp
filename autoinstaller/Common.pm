@@ -23,12 +23,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2014 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package autoinstaller::Common;
 
@@ -69,7 +69,7 @@ our @EXPORT = qw(
 together in the %main::imscpConfig variable. The old imscp.conf file is tied to the %main::imscpOldConfig variable
 and set as readonly.
 
- Return int - 0
+ Return int 0
 
 =cut
 
@@ -115,7 +115,7 @@ sub loadConfig
 
  Trigger pre-required package installation from distro autoinstaller adapter.
 
- Return int - 0 on success, other otherwise
+ Return int 0 on success, other otherwise
 
 =cut
 
@@ -128,7 +128,7 @@ sub installPreRequiredPackages
 
  Check distribution.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -202,7 +202,7 @@ Thanks for using i-MSCP.
 
  Trigger pre-build tasks from distro autoinstaller adapter.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -215,7 +215,7 @@ sub preBuild
 
  Trigger packages uninstallation from distro autoinstaller adapter.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -241,7 +241,7 @@ sub installPackages
 
  Test for i-MSCP requirements.
 
- Return int 0 - On error, a fatal error is raised
+ Return int 0 on error, a fatal error is raised
 
 =cut
 
@@ -269,7 +269,7 @@ sub processDistroLayoutFile()
 
  Process distribution install.xml files.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -314,7 +314,7 @@ sub processDistroInstallFiles
 
  Build i-MSCP daemon
 
- Return int - 0 on success, other on failure.
+ Return int 0 on success, other on failure.
 
 =cut
 
@@ -358,7 +358,7 @@ sub buildImscpDaemon
 
  Install engine files in build directory.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -395,7 +395,7 @@ sub installEngine
 
  Install GUI files in build directory.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 sub installGui
@@ -414,7 +414,7 @@ sub installGui
 
  Trigger post-build tasks from distro autoinstaller adapter and save i-MSCP main configuration file.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -464,7 +464,7 @@ sub postBuild
 
  Backup current i-MSCP installation (database and conffiles) if any.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -499,7 +499,7 @@ Do you want to continue?
 
  Save persistent data in build directory.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -602,7 +602,7 @@ sub savePersistentData
 
  Install files from build directory on file system.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -647,7 +647,7 @@ sub installTmp
 
  Delete build directory.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -669,7 +669,7 @@ sub removeTmp
 
  Check availability of the given command.
 
- Return int - 0 if the given command is available, 1 othewise
+ Return int 0 if the given command is available, 1 othewise
 
 =cut
 
@@ -695,7 +695,7 @@ sub checkCommandAvailability($)
 
  Process an install.xml file or distribution layout.xml file.
 
- Return int - 0 on success, other on failure ; A fatal error is raised in case a variable cannot be exported
+ Return int 0 on success, other on failure ; A fatal error is raised in case a variable cannot be exported
 
 =cut
 
@@ -806,7 +806,7 @@ sub _expandVars
 
  Process the xml 'folder' node by creating the described directory.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -838,7 +838,7 @@ sub _processFolder
 
  Process a 'copy_config' node from an install.xml file.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -893,7 +893,7 @@ sub _copyConfig
 
  Process the 'copy' node from an install.xml file.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -933,7 +933,7 @@ sub _copy
 
  Create a file.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -948,7 +948,7 @@ sub _createFile
 
  Change file/directory owner and/or group recursively.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -974,7 +974,7 @@ sub _chownFile
 
  Process chmod_file from an install.xml file.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 

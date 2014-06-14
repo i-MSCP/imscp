@@ -42,7 +42,7 @@ use iMSCP::HooksManager;
 use iMSCP::File;
 use version;
 use JSON;
-use parent 'Common::SimpleClass';
+use parent 'Common::Object';
 
 # Map action status to next status
 my %actionStatusToNextStatus = (
@@ -113,7 +113,7 @@ sub process($$)
 		$rs ? (scalar getMessageByType('error') || 'unknown error') : $actionStatusToNextStatus{$status},
 		$pluginId
 	);
-	my $rdata = $self->{'_db'}->doQuery('dummy', @sql);
+	my $rdata = $self->{'db'}->doQuery('dummy', @sql);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -141,7 +141,7 @@ sub _init
 	my $self = $_[0];
 
  	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
- 	$self->{'_db'} = iMSCP::Database->factory();
+ 	$self->{'db'} = iMSCP::Database->factory();
 
 	$self;
 }
@@ -159,7 +159,7 @@ sub _loadData($$)
 {
 	my ($self, $pluginId) = @_;
 
-	my $rdata = $self->{'_db'}->doQuery(
+	my $rdata = $self->{'db'}->doQuery(
 		'plugin_id',
 		'SELECT plugin_id, plugin_name, plugin_info, plugin_status FROM plugin WHERE plugin_id = ?',
 		$pluginId
@@ -291,7 +291,7 @@ sub _change($$)
 	if($info->{'__need_change__'}) {
 		$info->{'__need_change__'} = JSON::false;
 
-		$rs = $self->{'_db'}->doQuery(
+		$rs = $self->{'db'}->doQuery(
 			'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
 		);
 		unless(ref $rs eq 'HASH') {
@@ -334,7 +334,7 @@ sub _update($$)
 		$info->{'version'} = $info->{'__nversion__'};
 		$info->{'__need_change__'} = JSON::false;
 
-		$rs = $self->{'_db'}->doQuery(
+		$rs = $self->{'db'}->doQuery(
 			'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
 		);
 		unless(ref $rs eq 'HASH') {

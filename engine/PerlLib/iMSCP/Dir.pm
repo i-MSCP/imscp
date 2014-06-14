@@ -32,17 +32,8 @@ use iMSCP::Debug;
 use iMSCP::File;
 use File::Path qw/mkpath remove_tree/;
 use File::Copy;
-use parent 'Common::SimpleClass';
+use parent 'Common::Object';
 use vars qw/$AUTOLOAD/;
-
-sub _init
-{
-	my $self = $_[0];
-
-	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
-
-	$self;
-}
 
 sub getFiles
 {

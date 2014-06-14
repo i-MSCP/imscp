@@ -38,7 +38,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Servers;
 use iMSCP::Addons;
-use parent 'Common::SimpleClass';
+use parent 'Common::Object';
 
 =head1 DESCRIPTION
 

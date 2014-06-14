@@ -39,7 +39,7 @@ use iMSCP::Debug;
 use FileHandle;
 use File::Copy;
 use File::Basename;
-use parent 'Common::SimpleClass';
+use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
@@ -355,23 +355,6 @@ sub moveFile
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item _init()
-
- Initialize instance
-
- Return iMSCP:File
-
-=cut
-
-sub _init
-{
-	my $self = $_[0];
-
-	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
-
-	$self;
-}
 
 =item DESTROY()
 

@@ -152,53 +152,29 @@ sub add
 {
 	my $self = $_[0];
 
-	my $openSSL = iMSCP::OpenSSL->getInstance();
-
-	# Set OpenSSL binary path on OpenSSL module
-	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
-
-    # Set SSL certificate directory on OpenSSL module
-	$openSSL->{'certificate_chains_storage_dir'} = $self->{'certsDir'};
-
-	# Set certificate chain container name on OpenSSL module
-	$openSSL->{'certificate_chain_name'} = $self->{'domain_name'};
-
-	## Private key
-
-	# Create container for private key
+	# Private key
 	my $privateKeyContainer = File::Temp->new();
-
-	# Write private key in container
 	print $privateKeyContainer $self->{'private_key'};
 
-	# Set private key container path on OpenSSL module
-	$openSSL->{'private_key_container_path'} = $privateKeyContainer;
-
 	# Certificate
-
-	# Create container for SSL certificate
 	my $certificateContainer = File::Temp->new();
-
-	# Write certificate in container
 	print $certificateContainer $self->{'certificate'};
 
-	# Set certificate container path on OpenSSL module
-	$openSSL->{'certificate_container_path'} = $certificateContainer;
-
 	# CA Bundle (intermediate certificate(s))
-
 	if($self->{'ca_bundle'}) {
-		# Create container for CA bundle
 		my $caBundleContainer = File::Temp->new();
-
-		# Write CA bundle in container
 		print $caBundleContainer $self->{'ca_bundle'};
-
-		# Set CA bundle container path on OpenSSL module
-		$openSSL->{'ca_bundle_container_path'} = $caBundleContainer;
-	} else {
-		$openSSL->{'ca_bundle_container_path'} = '';
 	}
+
+	# Create OpenSSL object
+	my $openSSL = iMSCP::OpenSSL->new(
+		'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
+		'certificate_chains_storage_dir' => $self->{'certsDir'},
+		'certificate_chain_name' => $self->{'domain_name'},
+		'private_key_container_path' => $privateKeyContainer,
+		'certificate_container_path' => $certificateContainer,
+		'ca_bundle_container_path' => (defined $caBundleContainer) ? $caBundleContainer : ''
+	);
 
 	# Check certificate chain
 	my $rs = $openSSL->validateCertificateChain();

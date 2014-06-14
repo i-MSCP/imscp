@@ -37,7 +37,7 @@ use warnings;
 use Tie::File;
 use iMSCP::Debug;
 use Fcntl 'O_RDWR', 'O_CREAT', 'O_RDONLY';
-use parent 'Common::SimpleClass';
+use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
@@ -84,8 +84,8 @@ sub _init
 	$self->{'configValues'} = {};
 	$self->{'lineMap'} = {};
 
-	if(defined $self->{'args'}->{'fileName'}) {
-		$self->{'confFileName'} = $self->{'args'}->{'fileName'};
+	if(defined $self->{'fileName'}) {
+		$self->{'confFileName'} = $self->{'fileName'};
 	} else {
 		fatal('fileName attribut is not defined');
 	}
@@ -114,20 +114,20 @@ sub _loadConfig
 
 	debug("Loading $self->{'confFileName'}");
 
-	if($self->{'args'}->{'nocreate'}) {
-		if($self->{'args'}->{'readonly'}) {
+	if($self->{'nocreate'}) {
+		if($self->{'readonly'}) {
 			$mode = O_RDONLY;
 		} else {
 			$mode = O_RDWR;
 		}
-	} elsif($self->{'args'}->{'readonly'}) {
+	} elsif($self->{'readonly'}) {
 		$mode = O_RDONLY;
 	} else {
 		$mode = O_RDWR | O_CREAT;
 	}
 
 	if(! tie @{$self->{'confFile'}}, 'Tie::File', $self->{'confFileName'}, 'mode' => $mode) {
-		if($self->{'args'}->{'nofail'}) {
+		if($self->{'nofail'}) {
 			require Tie::Array;
 			tie @{$self->{'confFile'}}, 'Tie::StdArray';
 		} else {
@@ -177,7 +177,7 @@ sub FETCH
 {
 	my ($self, $config) = @_;
 
-	if (! exists $self->{'configValues'}->{$config} && ! $self->{'args'}->{'noerrors'}) {
+	if (! exists $self->{'configValues'}->{$config} && ! $self->{'noerrors'}) {
 		error(sprintf('Accessing non existing config value %s', $config));
 	}
 
@@ -196,7 +196,7 @@ sub STORE
 {
 	my ($self, $config, $value) = @_;
 
-	if(! $self->{'args'}->{'readonly'}) {
+	if(! $self->{'readonly'}) {
 		if(! exists $self->{'configValues'}->{$config}) {
 			$self->_insertConfig($config, $value);
 		} else {

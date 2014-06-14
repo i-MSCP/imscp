@@ -61,7 +61,7 @@ sub factory($$)
 {
 	my $adapterName = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
 
-	unless($adapterInstances{$adapterName}) {
+	unless(defined $adapterInstances{$adapterName}) {
 		my $adapter = "iMSCP::Database::${adapterName}";
 		eval "require $adapter" or fatal("Unable to load database adapter $adapter: $@");
 		$adapterInstances{$adapterName} = $adapter->getInstance();

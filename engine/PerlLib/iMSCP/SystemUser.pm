@@ -31,17 +31,7 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Execute;
-use parent 'Common::SimpleClass';
-
-# Initialize instance
-sub _init
-{
-	my $self = $_[0];
-
-	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
-
-	$self;
-}
+use parent 'Common::Object';
 
 # Add the given unix user
 sub addSystemUser

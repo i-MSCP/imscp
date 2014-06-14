@@ -963,8 +963,7 @@ sub setupAskPanelSsl
 	my $caBundlePath = setupGetQuestion('PANEL_SSL_CA_BUNDLE_PATH', '/root/');
 	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
 
-	my $openSSL = iMSCP::OpenSSL->getInstance();
-	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
+	my $openSSL = iMSCP::OpenSSL->new('openssl_path' => $main::imscpConfig{'CMD_OPENSSL'});
 
 	my $rs = 0;
 
@@ -1029,13 +1028,15 @@ sub setupAskPanelSsl
 						} while($rs != 30 && ! ($caBundlePath && -f $caBundlePath));
 
 						$openSSL->{'ca_bundle_container_path'} = $caBundlePath if $rs != 30;
+					} else {
+						$openSSL->{'ca_bundle_container_path'} = '';
 					}
 
 					$ENV{'DIALOG_CANCEL'} = 30;
 				}
 
 				if($rs != 30) {
-					$dialog->msgbox("\nPlease selects your own SSL certificate in next dialog.");
+					$dialog->msgbox("\nPlease selects your SSL certificate in next dialog.");
 
 					$rs = 1;
 
@@ -1066,8 +1067,8 @@ sub setupAskPanelSsl
 		$openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$domainName.pem";
 		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$domainName.pem";
 
-		if($openSSL->validateCertificateChain()){
-			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate is missing or invalid.");
+		if($openSSL->validateCertificateChain()) {
+			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate for the control panel is missing or invalid.");
 			goto SSL_DIALOG;
 		}
 
@@ -1101,8 +1102,7 @@ sub setupAskServicesSsl
 	my $certificatPath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH', "/root/");
 	my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', '/root/');
 
-	my $openSSL = iMSCP::OpenSSL->getInstance();
-	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
+	my $openSSL = iMSCP::OpenSSL->new('openssl_path' => $main::imscpConfig{'CMD_OPENSSL'});
 
 	my $rs = 0;
 
@@ -1169,13 +1169,15 @@ sub setupAskServicesSsl
 						} while($rs != 30 && ! ($caBundlePath && -f $caBundlePath));
 
 						$openSSL->{'ca_bundle_container_path'} = $caBundlePath if $rs != 30;
+					}else {
+						$openSSL->{'ca_bundle_container_path'} = '';
 					}
 
 					$ENV{'DIALOG_CANCEL'} = 30;
 				}
 
 				if($rs != 30) {
-					$dialog->msgbox("\nPlease selects your own SSL certificate in next dialog.");
+					$dialog->msgbox("\nPlease selects your SSL certificate in next dialog.");
 
 					$rs = 1;
 
@@ -1196,8 +1198,8 @@ sub setupAskServicesSsl
 		$openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
 		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
 
-		if($openSSL->validateCertificateChain()){
-			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate is missing or invalid.");
+		if($openSSL->validateCertificateChain()) {
+			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate for the services is missing or invalid.");
 			goto SSL_DIALOG;
 		}
 
@@ -1855,23 +1857,23 @@ sub setupPanelSsl
 	my $sslEnabled = setupGetQuestion('PANEL_SSL_ENABLED');
 
 	if($sslEnabled eq 'yes' && setupGetQuestion('PANEL_SSL_SETUP', 'yes') eq 'yes') {
-		my $openSSL = iMSCP::OpenSSL->getInstance();
-		$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
-
-		# Setup library for new certificate
-		$openSSL->{'certificate_chains_storage_dir'} = $main::imscpConfig{'GUI_CERT_DIR'};
-		$openSSL->{'certificate_chain_name'} = $domainName;
-
 		if($selfSignedCertificate) {
-			my $rs = $openSSL->createSelfSignedCertificate($domainName);
+			my $rs = iMSCP::OpenSSL->new(
+				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
+				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
+				'certificate_chain_name' => $domainName
+			)->createSelfSignedCertificate($domainName);
 			return $rs if $rs;
 		} else {
-			$openSSL->{'private_key_container_path'} = $privateKeyPath;
-			$openSSL->{'private_key_passphrase'} = $passphrase;
-			$openSSL->{'certificate_container_path'} = $certificatePath;
-			$openSSL->{'ca_bundle_container_path'} = $caBundlePath;
-
-			my $rs = $openSSL->createCertificateChain();
+			my $rs = iMSCP::OpenSSL->new(
+				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
+				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
+				'certificate_chain_name' => $domainName,
+				'private_key_container_path' => $privateKeyPath,
+				'private_key_passphrase' => $passphrase,
+				'certificate_container_path' => $certificatePath,
+				'ca_bundle_container_path' => $caBundlePath
+			)->createCertificateChain();
 			return $rs if $rs;
 		}
 	}
@@ -1891,23 +1893,23 @@ sub setupServiceSsl
 	my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED');
 
 	if($sslEnabled eq 'yes' && setupGetQuestion('SERVICES_SSL_SETUP', 'yes') eq 'yes') {
-		my $openSSL = iMSCP::OpenSSL->getInstance();
-		$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
-
-		# Setup library for new certificate
-		$openSSL->{'certificate_chains_storage_dir'} = $main::imscpConfig{'GUI_CERT_DIR'};
-		$openSSL->{'certificate_chain_name'} = 'imscp_services';
-
 		if($selfSignedCertificate) {
-			my $rs = $openSSL->createSelfSignedCertificate($domainName, 1);
+			my $rs = iMSCP::OpenSSL->new(
+				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
+				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
+				'certificate_chain_name' => $domainName
+			)->createSelfSignedCertificate($domainName);
 			return $rs if $rs;
 		} else {
-			$openSSL->{'private_key_container_path'} = $privateKeyPath;
-			$openSSL->{'private_key_passphrase'} = $passphrase;
-			$openSSL->{'certificate_container_path'} = $certificatePath;
-			$openSSL->{'ca_bundle_container_path'} = $caBundlePath;
-
-			my $rs = $openSSL->createCertificateChain();
+			my $rs = iMSCP::OpenSSL->new(
+				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
+				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
+				'certificate_chain_name' => $domainName,
+				'private_key_container_path' => $privateKeyPath,
+				'private_key_passphrase' => $passphrase,
+				'certificate_container_path' => $certificatePath,
+				'ca_bundle_container_path' => $caBundlePath
+			)->createCertificateChain();
 			return $rs if $rs;
 		}
 	}

@@ -37,7 +37,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use version;
-use parent 'Common::SimpleClass';
+use parent 'Common::Object';
 
 # Initializer.
 #

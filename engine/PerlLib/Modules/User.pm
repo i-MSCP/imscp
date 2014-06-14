@@ -46,8 +46,6 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
-
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
 	$self->{'type'} = 'User';

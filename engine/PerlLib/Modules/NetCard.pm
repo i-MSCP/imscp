@@ -30,7 +30,7 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Execute;
-use parent 'Common::SimpleClass';
+use parent 'Common::Object';
 
 sub process
 {

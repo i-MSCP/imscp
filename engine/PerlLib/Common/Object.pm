@@ -17,35 +17,70 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2014 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Common::SimpleClass;
+package Common::Object;
 
 use strict;
 use warnings;
 
+=head1 DESCRIPTION
+
+ Object base class.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item new([%args])
+
+ Constructor
+
+ Param hash|hash_ref OPTIONAL hash representing class attributes
+ Return Common::Object
+
+=cut
+
 sub new
 {
-	my $proto = shift;
-	my $class = ref $proto || $proto;
-	my $self = {
-		'errors' => [],
-		'args' => {@_} || {}
-	};
+ 	my $class = shift;
 
-	bless($self, $class);
+	my $self = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $class;
+
 	$self->_init();
 
 	$self;
 }
 
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize instance
+
+ Return Common::Object
+
+=cut
+
 sub _init
 {
 	$_[0];
 }
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

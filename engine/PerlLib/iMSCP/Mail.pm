@@ -38,7 +38,7 @@ use parent 'Exporter';
 $Text::Wrap::columns = 75;
 $Text::Wrap::break = qr/[\s\n\|]/;
 
-use parent 'Common::SimpleClass';
+use parent 'Common::Object';
 
 sub errmsg
 {
