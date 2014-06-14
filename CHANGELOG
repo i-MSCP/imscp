@@ -19,6 +19,9 @@ INSTALLER
 	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)
 	Fixed: Installer hangs while packages installation (Debian Jessie)
 
+TICKETS
+	Fixed #1095: Bug - IP usage interface is broken
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.11
 ------------------------------------------------------------------------------------------------------------------------
@@ -61,9 +64,9 @@ INSTALLER
 	Fixed: Unable to set DATABASE_USER_HOST (setup dialog is never displayed)
 
 TICKETS
-	Fixed: #0549: Bug - Apache - IPv6 addresses must be enclosed in square brackets
-	Fixed: #1091: Defect - OpenVZ - simfs (proxy-filesystem) - Immutable flags - No support detection
-	Fixed: #1092: Defect - Dovecot - SQL - The value of the connect parameter must be within double-quote
+	Fixed #0549: Bug - Apache - IPv6 addresses must be enclosed in square brackets
+	Fixed #1091: Defect - OpenVZ - simfs (proxy-filesystem) - Immutable flags - No support detection
+	Fixed #1092: Defect - Dovecot - SQL - The value of the connect parameter must be within double-quote
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.9
@@ -102,7 +105,7 @@ GUI
 	RELEASE i-MSCP 1.1.7
 
 TICKETS
-	Fixed: #1090: Bug - Unable to update to 1.1.6 version - Wrong update query
+	Fixed #1090: Bug - Unable to update to 1.1.6 version - Wrong update query
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.6

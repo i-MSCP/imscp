@@ -52,28 +52,10 @@ function listIPDomains($tpl)
 				INNER JOIN
 					admin as t3 ON(t3.admin_id = t2.created_by)
 				WHERE
-					t1.domain_ip_id = ?
-			',
-			$ip['ip_id']
-		);
-
-		$domainsCount = $stmt2->rowCount();
-
-		while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
-			$tpl->assign(
-				array(
-					'DOMAIN_NAME' => idn_to_utf8(tohtml($data['domain_name'])),
-					'RESELLER_NAME' => tohtml($data['admin_name'])
-				)
-			);
-
-			$tpl->parse('DOMAIN_ROW', '.domain_row');
-		}
-
-		$stmt3 = exec_query(
-			'
+					t1.domain_ip_id = :ip_id
+				UNION
 				SELECT
-					t1.alias_name, t4.admin_name
+					t1.alias_name AS domain_name, t4.admin_name
 				FROM
 					domain_aliasses AS t1
 				INNER JOIN
@@ -83,34 +65,37 @@ function listIPDomains($tpl)
 				INNER JOIN
 					admin AS t4 ON(t4.admin_id = t3.created_by)
 				WHERE
-					alias_ip_id = ?
+					alias_ip_id = :ip_id
 			',
-			$ip['ip_id']
+			array('ip_id' => $ip['ip_id'])
 		);
 
-		$aliasesCount = $stmt3->rowCount();
-
-		if ($aliasesCount) {
-			while ($data = $stmt3->fetchRow(PDO::FETCH_ASSOC)) {
-				$tpl->assign(
-					array(
-						'DOMAIN_NAME' => tohtml(idn_to_utf8($data['alias_name'])),
-						'RESELLER_NAME' => tohtml($data['admin_name'])
-					)
-				);
-
-				$tpl->parse('DOMAIN_ROW', '.domain_row');
-			}
-		}
+		$domainsCount = $stmt2->rowCount();
 
 		$tpl->assign(
 			array(
 				'IP' => tohtml($ip['ip_number']),
-				'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount + $aliasesCount)
+				'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount)
 			)
 		);
 
+		if ($domainsCount) {
+			while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
+				$tpl->assign(
+					array(
+						'DOMAIN_NAME' => tohtml(idn_to_utf8($data['domain_name'])),
+						'RESELLER_NAME' => tohtml($data['admin_name'])
+					)
+				);
+				$tpl->parse('DOMAIN_ROW', '.domain_row');
+			}
+		} else {
+			$tpl->assign('DOMAIN_NAME', tr('No used yet'));
+			$tpl->parse('DOMAIN_ROW', 'domain_row');
+		}
+
 		$tpl->parse('IP_ROW', '.ip_row');
+		$tpl->assign('DOMAIN_ROW', '');
 	}
 }
 
@@ -125,41 +110,40 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 
 check_login('admin');
 
-if (!systemHasCustomers()) {
+if (systemHasCustomers()) {
+	$tpl = new iMSCP_pTemplate();
+
+	$tpl->define_dynamic(
+		array(
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'admin/ip_usage.tpl',
+			'ip_row' => 'page',
+			'domain_row' => 'ip_row'
+		)
+	);
+
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('Admin / Statistics / IP Usage'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_SERVER_STATISTICS' => tr('Server statistics'),
+			'TR_IP_ADMIN_USAGE_STATISTICS' => tr('Admin/IP usage statistics'),
+			'TR_DOMAIN_NAME' => tr('Domain Name'),
+			'TR_RESELLER_NAME' => tr('Reseller Name')
+		)
+	);
+
+	generateNavigation($tpl);
+	listIPDomains($tpl);
+	generatePageMessage($tpl);
+
+	$tpl->parse('LAYOUT_CONTENT', 'page');
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+
+	$tpl->prnt();
+
+	unsetMessages();
+} else {
 	showBadRequestErrorPage();
 }
-
-$tpl = new iMSCP_pTemplate();
-
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/ip_usage.tpl',
-		'ip_usage_statistics' => 'page',
-		'ip_row' => 'ip_usage_statistics',
-		'domain_row' => 'ip_row'
-	)
-);
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Statistics / IP Usage'),
-		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_SERVER_STATISTICS' => tr('Server statistics'),
-		'TR_IP_ADMIN_USAGE_STATISTICS' => tr('Admin/IP usage statistics'),
-		'TR_DOMAIN_NAME' => tr('Domain Name'),
-		'TR_RESELLER_NAME' => tr('Reseller Name')
-	)
-);
-
-generateNavigation($tpl);
-listIPDomains($tpl);
-generatePageMessage($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();
-
-unsetMessages();

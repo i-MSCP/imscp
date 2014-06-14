@@ -55,24 +55,12 @@ function listIPDomains($tpl)
 				INNER JOIN
 					admin ON(admin_id = domain_admin_id)
 				WHERE
-					domain_ip_id = ?
+					domain_ip_id = :ip_id
 				AND
-					created_by = ?
-			',
-			array($ip['ip_id'], $resellerId)
-		);
-
-		$domainsCount = $stmt2->rowCount();
-
-		while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
-			$tpl->assign('DOMAIN_NAME', idn_to_utf8(tohtml($data['domain_name'])));
-			$tpl->parse('DOMAIN_ROW', '.domain_row');
-		}
-
-		$stmt3 = exec_query(
-			'
+					created_by = :reseller_id
+				UNION
 				SELECT
-					alias_name
+					alias_name AS domain_name
 				FROM
 					domain_aliasses
 				INNER JOIN
@@ -80,33 +68,35 @@ function listIPDomains($tpl)
 				INNER JOIN
 					admin ON(admin_id = domain_admin_id)
 				WHERE
-					alias_ip_id = ?
+					alias_ip_id = :ip_id
 				AND
-					created_by = ?
+					created_by = :reseller_id
 			',
-			array($ip['ip_id'], $resellerId)
+			array('ip_id' => $ip['ip_id'], 'reseller_id' => $resellerId)
 		);
 
-		$aliasesCount = $stmt3->rowCount();
-
-		if ($aliasesCount) {
-			while ($data = $stmt3->fetchRow(PDO::FETCH_ASSOC)) {
-				$tpl->assign('DOMAIN_NAME', tohtml(idn_to_utf8($data['alias_name'])));
-				$tpl->parse('DOMAIN_ROW', '.domain_row');
-			}
-		}
+		$domainsCount = $stmt2->rowCount();
 
 		$tpl->assign(
 			array(
 				'IP' => tohtml($ip['ip_number']),
-				'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount + $aliasesCount)
+				'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount)
 			)
 		);
 
+		if ($domainsCount) {
+			while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
+				$tpl->assign('DOMAIN_NAME', tohtml(idn_to_utf8($data['domain_name'])));
+				$tpl->parse('DOMAIN_ROW', '.domain_row');
+			}
+		} else {
+			$tpl->assign('DOMAIN_NAME', tr('No used yet'));
+			$tpl->parse('DOMAIN_ROW', 'domain_row');
+		}
+
 		$tpl->parse('IP_ROW', '.ip_row');
+		$tpl->assign('DOMAIN_ROW', '');
 	}
-
-
 }
 
 /***********************************************************************************************************************
@@ -120,48 +110,48 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 
 check_login('reseller');
 
-if (!resellerHasCustomers()) {
+if (resellerHasCustomers()) {
+
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	/** @var $tpl iMSCP_pTemplate */
+	$tpl = new iMSCP_pTemplate();
+
+	$tpl->define_dynamic(
+		array(
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'reseller/ip_usage.tpl',
+			'page_message' => 'layout',
+			'ip_row' => 'page',
+			'domain_row' => 'ip_row'
+		)
+	);
+
+	$reseller_id = $_SESSION['user_id'];
+
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('Reseller / Statistics / IP Usage'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
+			'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
+			'TR_DOMAIN_NAME' => tr('Domain Name'),
+			'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+		)
+	);
+
+	generateNavigation($tpl);
+	generatePageMessage($tpl);
+	listIPDomains($tpl);
+
+	$tpl->parse('LAYOUT_CONTENT', 'page');
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+
+	$tpl->prnt();
+
+	unsetMessages();
+} else {
 	showBadRequestErrorPage();
 }
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-/** @var $tpl iMSCP_pTemplate */
-$tpl = new iMSCP_pTemplate();
-
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/ip_usage.tpl',
-		'page_message' => 'layout',
-		'ip_usage_statistics' => 'page',
-		'ip_row' => 'ip_usage_statistics',
-		'domain_row' => 'ip_row'
-	)
-);
-
-$reseller_id = $_SESSION['user_id'];
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Statistics / IP Usage'),
-		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
-		'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
-		'TR_DOMAIN_NAME' => tr('Domain Name'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
-	)
-);
-
-generateNavigation($tpl);
-generatePageMessage($tpl);
-listIPDomains($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();
-
-unsetMessages();

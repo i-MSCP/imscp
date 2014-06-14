@@ -1,5 +1,4 @@
 
-<!-- BDP: ip_usage_statistics -->
 <!-- BDP: ip_row -->
 <table>
 	<thead>
@@ -21,4 +20,3 @@
 	</tbody>
 </table>
 <!-- EDP: ip_row -->
-<!-- EDP: ip_usage_statistics -->
