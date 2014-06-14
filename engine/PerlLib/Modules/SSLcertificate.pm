@@ -161,8 +161,9 @@ sub add
 	print $certificateContainer $self->{'certificate'};
 
 	# CA Bundle (intermediate certificate(s))
+	my $caBundleContainer;
 	if($self->{'ca_bundle'}) {
-		my $caBundleContainer = File::Temp->new();
+		$caBundleContainer = File::Temp->new();
 		print $caBundleContainer $self->{'ca_bundle'};
 	}
 
