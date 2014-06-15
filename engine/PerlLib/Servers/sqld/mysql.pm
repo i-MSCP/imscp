@@ -82,26 +82,6 @@ sub postinstall
 	$self->{'hooksManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
 
-=item postinstall()
-
- Process postintall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub postinstall
-{
-	my $self = $_[0];
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeSqldPostinstall', 'mysql');
-	return $rs if $rs;
-
-	$self->{'restart'} = 'yes';
-
-	$self->{'hooksManager'}->trigger('afterSqldPostinstall', 'mysql');
-}
-
 =item uninstall()
 
  Process uninstall tasks
