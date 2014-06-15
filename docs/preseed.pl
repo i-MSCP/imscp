@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2014.06.06
+# Last update: 2014.06.15
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -24,6 +24,10 @@ $main::questions{'PO_SERVER'} = 'courier';
 # Authdaemon restricted SQL user -only relevant if you set PO_SERVER to 'courier'
 $main::questions{'AUTHDAEMON_SQL_USER'} = 'authdaemon_user';
 $main::questions{'AUTHDAEMON_SQL_PASSWORD'} = '<password>'; # Password must not be empty
+
+# SASL restricted SQL user
+$main::questions{'SASL_SQL_USER'} = 'sasl_user';
+$main::questions{'SASL_SQL_PASSWORD'} = '<password>'; # Password must not be empty
 
 # Dovecot restricted SQL user - only relevant if you set PO_SERVER to 'dovecot'
 $main::questions{'DOVECOT_SQL_USER'} = 'dovecot_user';
