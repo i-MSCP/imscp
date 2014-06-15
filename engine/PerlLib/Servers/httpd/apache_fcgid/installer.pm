@@ -956,12 +956,9 @@ sub _buildMasterVhostFiles
 			BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DEFAULT_ADMIN_ADDRESS => $adminEmailAddress,
-			HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
 			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
-			PEAR_DIR => $main::imscpConfig{'PEAD_DIR'},
-			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
 			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all'
