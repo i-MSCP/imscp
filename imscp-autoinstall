@@ -315,7 +315,7 @@ EOF
 if ($main::buildonly && (-f '/etc/ispcp/ispcp.conf' || -f '/usr/local/etc/ispcp/ispcp.conf')) {
 	$msg .= <<EOF
 
-	# cp -fR /tmp/imscp/* /
+	# cp -fR $main::{'INST_PREF'}/* /
 	# cd $main::imscpConfig{'ROOT_DIR'}/engine/setup
 	# perl imscp-migrate-from-ispcp
 	# perl imscp-setup
@@ -324,8 +324,8 @@ EOF
 	$msg .= <<EOF;
 
 	# rm -fR $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
-	# cp -fR $main::{'INST_PREF'}/imscp/* /
-	# rm -fR $main::{'INST_PREF'}/imscp
+	# cp -fR $main::{'INST_PREF'}/* /
+	# rm -fR $main::{'INST_PREF'}
 	# perl $main::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-setup --debug
 EOF
 }
