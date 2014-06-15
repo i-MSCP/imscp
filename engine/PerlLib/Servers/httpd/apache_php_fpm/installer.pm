@@ -900,7 +900,7 @@ sub _buildMasterVhostFiles
 			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
 			PEAR_DIR => $main::imscpConfig{'PEAD_DIR'},
-			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
+			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all'
 		}

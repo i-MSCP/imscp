@@ -666,9 +666,9 @@ sub _buildSslConfFiles
 			return $rs if $rs;
 
 			if($cfgTpl =~ m/^TLS_CERTFILE=/msg) {
-				$cfgTpl =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem!gm;
+				$cfgTpl =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem!gm;
 			} else {
-				$cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
+				$cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
 			}
 
 			$rs = $self->{'hooksManager'}->trigger('afterPoBuildSslConfFile', \$cfgTpl, $_);

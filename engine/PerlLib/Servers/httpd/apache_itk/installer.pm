@@ -744,7 +744,7 @@ sub _buildMasterVhostFiles
 			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 			OTHER_ROOTKIT_LOG => ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '')
 				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
-			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
+			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all'
 		}

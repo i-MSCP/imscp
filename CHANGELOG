@@ -5,6 +5,9 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIG:
+	Removed: GUI_CERT_DIR variable (replaced by CONF_DIR variable)
+
 DISTROS
 	Re-added: Courier as alternative IMAP/POP3 servers (Debian Jessie)
 

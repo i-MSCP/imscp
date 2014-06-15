@@ -728,7 +728,7 @@ sub _buildMainCfFile
 		MTA_MAILBOX_UID => $uid,
 		MTA_MAILBOX_GID => $gid,
 		PORT_POSTGREY => $main::imscpConfig{'PORT_POSTGREY'},
-		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
+		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 		SSL => ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') ? '' : '#',
 		CERTIFICATE => 'imscp_services'
 	};

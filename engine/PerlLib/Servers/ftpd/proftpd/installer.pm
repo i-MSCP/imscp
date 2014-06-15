@@ -361,7 +361,7 @@ sub _buildConfigFile
 		DATABASE_PASS => $self->{'config'}->{'DATABASE_PASSWORD'},
 		FTPD_MIN_UID => $self->{'config'}->{'MIN_UID'},
 		FTPD_MIN_GID => $self->{'config'}->{'MIN_GID'},
-		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
+		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 		SSL => (main::setupGetQuestion('SERVICES_SSL_ENABLED') eq 'yes') ? '' : '#',
 		CERTIFICATE => 'imscp_services'
 	};

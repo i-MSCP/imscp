@@ -961,7 +961,7 @@ sub _buildMasterVhostFiles
 			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
 			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
 			PEAR_DIR => $main::imscpConfig{'PEAD_DIR'},
-			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
+			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
 			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all'

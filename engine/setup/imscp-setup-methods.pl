@@ -1063,9 +1063,9 @@ sub setupAskPanelSsl
 			}
 		}
 	} elsif($sslEnabled eq 'yes' && ! iMSCP::Getopt->preseed) {
-		$openSSL->{'private_key_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$domainName.pem";
-		$openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$domainName.pem";
-		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$domainName.pem";
+		$openSSL->{'private_key_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
+		$openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
+		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
 
 		if($openSSL->validateCertificateChain()) {
 			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate for the control panel is missing or invalid.");
@@ -1194,9 +1194,9 @@ sub setupAskServicesSsl
 			}
 		}
 	} elsif($sslEnabled eq 'yes' && ! iMSCP::Getopt->preseed) {
-		$openSSL->{'private_key_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
-		$openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
-		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/imscp_services.pem";
+		$openSSL->{'private_key_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
+		$openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
+		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
 
 		if($openSSL->validateCertificateChain()) {
 			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate for the services is missing or invalid.");
@@ -1860,14 +1860,14 @@ sub setupPanelSsl
 		if($selfSignedCertificate) {
 			my $rs = iMSCP::OpenSSL->new(
 				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
-				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
+				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 				'certificate_chain_name' => $domainName
 			)->createSelfSignedCertificate($domainName);
 			return $rs if $rs;
 		} else {
 			my $rs = iMSCP::OpenSSL->new(
 				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
-				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
+				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 				'certificate_chain_name' => $domainName,
 				'private_key_container_path' => $privateKeyPath,
 				'private_key_passphrase' => $passphrase,
@@ -1896,14 +1896,14 @@ sub setupServiceSsl
 		if($selfSignedCertificate) {
 			my $rs = iMSCP::OpenSSL->new(
 				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
-				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
+				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 				'certificate_chain_name' => 'imscp_services'
 			)->createSelfSignedCertificate($domainName);
 			return $rs if $rs;
 		} else {
 			my $rs = iMSCP::OpenSSL->new(
 				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
-				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
+				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 				'certificate_chain_name' => 'imscp_services',
 				'private_key_container_path' => $privateKeyPath,
 				'private_key_passphrase' => $passphrase,
