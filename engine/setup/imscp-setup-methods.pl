@@ -1897,14 +1897,14 @@ sub setupServiceSsl
 			my $rs = iMSCP::OpenSSL->new(
 				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
 				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
-				'certificate_chain_name' => $domainName
+				'certificate_chain_name' => 'imscp_services'
 			)->createSelfSignedCertificate($domainName);
 			return $rs if $rs;
 		} else {
 			my $rs = iMSCP::OpenSSL->new(
 				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
 				'certificate_chains_storage_dir' =>  $main::imscpConfig{'GUI_CERT_DIR'},
-				'certificate_chain_name' => $domainName,
+				'certificate_chain_name' => 'imscp_services',
 				'private_key_container_path' => $privateKeyPath,
 				'private_key_passphrase' => $passphrase,
 				'certificate_container_path' => $certificatePath,
