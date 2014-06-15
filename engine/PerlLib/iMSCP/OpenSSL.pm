@@ -302,7 +302,7 @@ sub createSelfSignedCertificate
 {
 	my ($self, $commonName, $wildcardSSL) = @_;
 
-	my $commonName = ($wildcardSSL) ? '*.' . $commonName : $commonName;
+	$commonName = ($wildcardSSL) ? '*.' . $commonName : $commonName;
 
 	my @cmd = (
 		"$self->{'openssl_path'} req -x509 -nodes -days 365 ",
