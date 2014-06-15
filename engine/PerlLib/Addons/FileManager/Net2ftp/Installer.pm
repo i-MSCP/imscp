@@ -140,7 +140,6 @@ sub _installFiles
 
 	if(-d "$repoDir/vendor/imscp/net2ftp") {
 		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-		my ($stdout, $stderr);
 
 		my ($stdout, $stderr);
 		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $guiPublicDir/tools/filemanager", \$stdout, \$stderr);
