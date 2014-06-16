@@ -657,10 +657,12 @@ function sql_delete_user($domainId, $sqlUserId, $flushPrivileges = true)
 			array($sqlUserName, $sqlUserHost)
 		);
 
-		if ($stmt->fields['cnt'] == 1) {
+		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+		if ($row['cnt'] == '1') {
 			// SQL user is assigned to one database only. We can remove it completely
 			exec_query('DELETE FROM mysql.user WHERE User = ? AND Host = ?', array($sqlUserName, $sqlUserHost));
-			exec_query('DELETE FROM mysql.db WHERE Host = ? AND User = ?', array($sqlUserName, $sqlUserHost));
+			exec_query('DELETE FROM mysql.db WHERE Host = ? AND User = ?', array($sqlUserHost, $sqlUserName));
 		} else {
 			// SQL user is assigned to many databases. We remove its privileges for the involved database only
 			exec_query(
@@ -731,7 +733,7 @@ function delete_sql_database($domainId, $databaseId)
 					AND
 						domain_id = ?
 				',
-				array($databaseId, $domainId,)
+				array($databaseId, $domainId)
 			);
 
 			if ($stmt->rowCount()) {
