@@ -990,7 +990,7 @@ sub setupAskPanelSsl
 				my $msg = '';
 
 				do {
-					$dialog->msgbox("$msg\nPlease selects your private key in next dialog.");
+					$dialog->msgbox("$msg\nPlease select your private key in next dialog.");
 
 					# Ask for private key container path
 					do {
@@ -1036,7 +1036,7 @@ sub setupAskPanelSsl
 				}
 
 				if($rs != 30) {
-					$dialog->msgbox("\nPlease selects your SSL certificate in next dialog.");
+					$dialog->msgbox("\nPlease select your SSL certificate in next dialog.");
 
 					$rs = 1;
 
@@ -1131,7 +1131,7 @@ sub setupAskServicesSsl
 				my $msg = '';
 
 				do {
-					$dialog->msgbox("$msg\nPlease selects your private key in next dialog.");
+					$dialog->msgbox("$msg\nPlease select your private key in next dialog.");
 
 					# Ask for private key container path
 					do {
@@ -1177,7 +1177,7 @@ sub setupAskServicesSsl
 				}
 
 				if($rs != 30) {
-					$dialog->msgbox("\nPlease selects your SSL certificate in next dialog.");
+					$dialog->msgbox("\nPlease select your SSL certificate in next dialog.");
 
 					$rs = 1;
 
