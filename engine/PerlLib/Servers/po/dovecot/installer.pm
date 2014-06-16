@@ -445,6 +445,9 @@ sub _buildConf
 
 	# Define data
 
+	my $dbPassword = $self->{'config'}->{'DATABASE_PASSWORD'};
+	$dbPassword =~ s/\\/\\\\/g;
+
 	my $data = {
 		DATABASE_TYPE => $main::imscpConfig{'DATABASE_TYPE'},
 		DATABASE_HOST =>
@@ -453,7 +456,7 @@ sub _buildConf
 				: $main::imscpConfig{'DATABASE_HOST'}
 		,
 		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
-		DATABASE_PASSWORD => $self->{'config'}->{'DATABASE_PASSWORD'},
+		DATABASE_PASSWORD => $dbPassword,
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
 		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 		HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},

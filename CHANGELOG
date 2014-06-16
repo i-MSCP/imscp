@@ -14,6 +14,7 @@ DISTROS
 ENGINE
 	Changed: Dovecot SASL implementation is no longer used in Postfix (Replaced by Cyrus SASL)
 	Changed: SASL authentication is now made against database directly (Postfix)
+	Fixed: Backslash must be escaped in dovecot-sql.conf file (Dovecot SQL password)
 	Fixed: In case the passphrase is missing, user must not be prompted to enter it (iMSCP::OpenSSL)
 	Fixed: Missing EOL in SSL certificate containers (iMSCP::OpenSSL)
 	Fixed: Quota script must ignore maildir which doesn't exist
