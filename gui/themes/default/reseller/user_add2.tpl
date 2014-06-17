@@ -63,7 +63,7 @@
 
 				if (!r.test(nv) || parseInt(nv) > parseInt(v)) {
 					$(this).addClass('ui-state-error');
-					_updateErrorMesssages(k, sprintf('{TR_VALUE_ERROR}', k, 0, v));
+					_updateErrorMesssages(k, sprintf("{TR_VALUE_ERROR}", k, 0, v));
 				} else {
 					$(this).removeClass('ui-state-error');
 					_updateErrorMesssages(k);
