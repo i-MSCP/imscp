@@ -113,11 +113,14 @@ sub askCourier($$)
 
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass)) {
+	if(
+		$main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] ||
+		$dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+	) {
 		# Ask for the authdaemon restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted authdaemon SQL user:", $dbUser
+				"\nPlease enter an username for the restricted authdaemon SQL user:$msg", $dbUser
 			);
 
 			# i-MSCP SQL user cannot be reused
@@ -127,21 +130,32 @@ sub askCourier($$)
 			} elsif(length $dbUser > 16) {
 				$msg = "\n\n\\Z1SQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
-			} elsif($dbUser !~ /^[\x21-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease, try again:";
+			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
 
 		if($rs != 30) {
-			# Ask for the authdaemon restricted SQL user password
-			($rs, $dbPass) = $dialog->passwordbox(
-				'\nPlease, enter a password for the restricted authdaemon SQL user (blank for autogenerate):', $dbPass
-			);
+			$msg = '';
+
+			do {
+				# Ask for the authdaemon restricted SQL user password
+				($rs, $dbPass) = $dialog->passwordbox(
+					"\nPlease, enter a password for the restricted authdaemon SQL user (blank for autogenerate):$msg", $dbPass
+				);
+
+				if($dbPass ne '' && $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+					$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
+					$dbPass = '';
+				} else {
+					$msg = '';
+				}
+			} while($rs != 30 && $msg);
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					my @allowedChr = map { chr } (0x21..0x7e);
+					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
@@ -488,6 +502,8 @@ sub _buildConf
 
 	$rs = $self->_buildSslConfFiles();
 	return $rs if $rs;
+
+	# Define data
 
 	my $data = {
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},

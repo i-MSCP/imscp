@@ -100,11 +100,14 @@ sub showDialog($$)
 
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure ~~ ['sqlmanager', 'all', 'forced'] || ! ($dbUser && $dbPass)) {
+	if(
+		$main::reconfigure ~~ ['sqlmanager', 'all', 'forced'] ||
+		$dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+	) {
 		# Ask for the PhpMyAdmin restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted PhpMyAdmin SQL user:$msg", $dbUser
+				"\nPlease enter an username for the restricted phpmyadmin SQL user:$msg", $dbUser
 			);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
@@ -113,26 +116,37 @@ sub showDialog($$)
 			} elsif(length $dbUser > 16) {
 				$msg = "\n\n\\Z1SQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
-			} elsif($dbUser !~ /^[\x21-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease, try again:";
+			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
 
 		if($rs != 30) {
-			# Ask for the PhpMyAdmin restricted SQL user password
-			($rs, $dbPass) = $dialog->passwordbox(
-				'\nPlease, enter a password for the restricted PhpMyAdmin SQL user (blank for autogenerate):', $dbPass
-			);
+			$msg = '';
+
+			do {
+				# Ask for the PhpMyAdmin restricted SQL user password
+				($rs, $dbPass) = $dialog->passwordbox(
+					"\nPlease, enter a password for the restricted phpmyadmin SQL user (blank for autogenerate):$msg", $dbPass
+				);
+
+				if($dbPass ne '' && $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+					$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
+					$dbPass = '';
+				} else {
+					$msg = '';
+				}
+			} while($rs != 30 && $msg);
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					my @allowedChr = map { chr } (0x21..0x7e);
+					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
 
-				$dialog->msgbox("\nPassword for the restricted PhpMyAdmin SQL user set to: $dbPass");
+				$dialog->msgbox("\nPassword for the restricted phpmyadmin SQL user set to: $dbPass");
 				$dialog->set('cancel-label');
 			}
 		}
@@ -645,7 +659,7 @@ sub _buildConfig
 	# Define data
 
 	my $pmaPassword = $self->{'config'}->{'DATABASE_PASSWORD'};
-	$pmaPassword =~ s/\\/\\\\/g;
+	$pmaPassword =~ s%(')%\\$1%g;
 
 	my $data = {
 		PMA_DATABASE => $main::imscpConfig{'DATABASE_NAME'} . '_pma',

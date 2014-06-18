@@ -19,13 +19,13 @@ DISTROS
 	Re-added: Courier as alternative IMAP/POP3 servers (Debian Jessie)
 
 ENGINE
+	Changed: Backslashes are no longer allowed in SQL user names and  passwords
 	Changed: SASL authentication is now made against database directly (Postfix)
-	Fixed: Backslash must be escaped in dovecot-sql.conf file (Dovecot SQL password)
-	Fixed: Backslash must be escaped in PhpMyAdmin configuration file (control user password)
-	Fixed: In case the passphrase is missing, user must not be prompted to enter it (iMSCP::OpenSSL)
+	Fixed: In case the passphrase is missing, user must not be prompted (iMSCP::OpenSSL)
 	Fixed: Missing EOL in SSL certificate containers (iMSCP::OpenSSL)
 	Fixed: Quota script must ignore maildir which doesn't exist
-	Removed: Dovecot SASL implementation is no longer used in Postfix (Replaced by Cyrus SASL)
+	Fixed: Quotation marks must be escaped in some configuration file (PhpMyAdmin, Roundcube)
+	Replaced: Dovecot SASL replaced by Cyrus SASL (Postfix)
 
 GUI
 	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function

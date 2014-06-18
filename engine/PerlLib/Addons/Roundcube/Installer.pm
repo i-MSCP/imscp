@@ -100,12 +100,15 @@ sub showDialog($$)
 
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure ~~ ['webmail', 'all', 'forced'] || ! ($dbUser && $dbPass)) {
+	if(
+		$main::reconfigure ~~ ['webmail', 'all', 'forced'] ||
+		$dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+	) {
 		# Ask for the roundcube restricted SQL username
 		do{
 
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted Roundcube SQL user:$msg", $dbUser
+				"\nPlease enter an username for the restricted roundcube SQL user:$msg", $dbUser
 			);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
@@ -114,22 +117,36 @@ sub showDialog($$)
 			} elsif(length $dbUser > 16) {
 				$msg = "\n\n\\Z1MySQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
+			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
+				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
 
 		if($rs != 30) {
-			# Ask for the roundcube restricted SQL user password
-			($rs, $dbPass) = $dialog->passwordbox(
-				'\nPlease, enter a password for the restricted roundcube SQL user (blank for autogenerate):', $dbPass
-			);
+			$msg = '';
+
+			do {
+				# Ask for the Roundcube restricted SQL user password
+				($rs, $dbPass) = $dialog->passwordbox(
+					"\nPlease, enter a password for the restricted roundcube SQL user (blank for autogenerate):$msg", $dbPass
+				);
+
+				if($dbPass ne '' && $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+					$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
+					$dbPass = '';
+				} else {
+					$msg = '';
+				}
+			} while($rs != 30 && $msg);
 
 			if($rs != 30) {
 				if(! $dbPass) {
+					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
 					$dbPass = '';
-					$dbPass .= ('A'..'Z', 'a'..'z', '0'..'9', '_')[rand(62)] for 1..16;
+					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
 
-				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
 				$dialog->msgbox("\nPassword for the restricted roundcube SQL user set to: $dbPass");
 				$dialog->set('cancel-label');
 			}
@@ -464,7 +481,10 @@ sub _buildConfig
 	my $roundcubeDbName =  $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
+
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
+	$dbPass =~ s%(')%\\$1%g;
+
 	my $rs = 0;
 
 	# Define data
