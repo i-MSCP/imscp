@@ -659,7 +659,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$password = quoteValue($row['mail_pass']);
+				$password = quoteValue(decryptBlowfishCbcPassword($row['mail_pass']));
 				$status = quoteValue('tochange');
 				$mailId = quoteValue($row['mail_id'], PDO::PARAM_INT);
 				$sqlUpd[] = "UPDATE mail_users SET mail_pass = $password, status = $status WHERE mail_id = $mailId";
@@ -668,11 +668,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// Decrypt all SQL users passwords
 
-		$stmt = exec_query("SELECT sqlu_id, sqlu_pass FROM sql_user");
+		$stmt = exec_query('SELECT sqlu_id, sqlu_pass FROM sql_user');
 
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$password = quoteValue($row['sqlu_pass']);
+				$password = quoteValue(decryptBlowfishCbcPassword($row['sqlu_pass']));
 				$id = quoteValue($row['sqlu_id'], PDO::PARAM_INT);
 				$sqlUpd[] = "UPDATE sql_user SET sqlu_pass = $password WHERE sqlu_id = $id";
 			}
@@ -684,7 +684,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$password = quoteValue($row['passwd']);
+				$password = quoteValue(decryptBlowfishCbcPassword($row['passwd']));
 				$userId = quoteValue($row['userid']);
 				$sqlUpd[] = "UPDATE ftp_users SET rawpasswd = $password WHERE userid = $userId";
 			}

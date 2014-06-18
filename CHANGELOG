@@ -10,6 +10,7 @@ CONFIG:
 
 DATABASE:
 	Fixed: Error messages from database updates are not detailled
+	Fixed: Ftp, Mail and SQL passwords are not decrypted during database update r53
 	Fixed: Infinite loop in iMSCP_Update_Database::dropIndexByColumn()
 	Fixed: Undefined key KEY_NAME in iMSCP_Update_Database::dropIndexByColumn()
 	Fixed: Undefined offset in database update r169

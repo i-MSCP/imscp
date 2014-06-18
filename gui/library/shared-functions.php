@@ -2462,37 +2462,6 @@ function send_request()
  */
 
 /**
- * Decrypte the given password using the iMSCP secret key and vector.
- *
- * @throws iMSCP_Exception
- * @param  string $password Blowfish (CBC) encrypted password
- * @return string Decrypted password
- */
-function decryptBlowfishCbcPassword($password)
-{
-	if ($password == '') return '';
-
-	if (extension_loaded('mcrypt')) {
-		$text = @base64_decode($password . "\n");
-		$td = @mcrypt_module_open('blowfish', '', 'cbc', '');
-		$key = iMSCP_Registry::get('MCRYPT_KEY');
-		$iv = iMSCP_Registry::get('MCRYPT_IV');
-
-		// Initialize encryption
-		@mcrypt_generic_init($td, $key, $iv);
-
-		// Decrypt encrypted string
-		$decrypted = @mdecrypt_generic($td, $text);
-		@mcrypt_module_close($td);
-
-		// Show string
-		return trim($decrypted);
-	} else {
-		throw new iMSCP_Exception("PHP extension 'mcrypt' not loaded!");
-	}
-}
-
-/**
  * Executes a SQL statement.
  *
  * Note: You may pass additional parameters. They will be treated as though you
@@ -3222,6 +3191,37 @@ function passgen()
 	}
 
 	return $password;
+}
+
+/**
+ * Decrypte the given password using the iMSCP secret key and vector.
+ *
+ * @throws iMSCP_Exception
+ * @param  string $password Blowfish (CBC) encrypted password
+ * @return string Decrypted password
+ */
+function decryptBlowfishCbcPassword($password)
+{
+	if ($password == '') return '';
+
+	if (extension_loaded('mcrypt')) {
+		$text = @base64_decode($password . "\n");
+		$td = @mcrypt_module_open('blowfish', '', 'cbc', '');
+		$key = iMSCP_Registry::get('MCRYPT_KEY');
+		$iv = iMSCP_Registry::get('MCRYPT_IV');
+
+		// Initialize encryption
+		@mcrypt_generic_init($td, $key, $iv);
+
+		// Decrypt encrypted string
+		$decrypted = @mdecrypt_generic($td, $text);
+		@mcrypt_module_close($td);
+
+		// Show string
+		return trim($decrypted);
+	} else {
+		throw new iMSCP_Exception("PHP extension 'mcrypt' not loaded!");
+	}
 }
 
 /**
