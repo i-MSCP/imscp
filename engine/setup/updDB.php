@@ -35,7 +35,7 @@
 $guiRootDir = '{GUI_ROOT_DIR}';
 
 if(strpos($guiRootDir, 'GUI_ROOT_DIR') !== false) {
-	fwrite(STDERR, '[ERROR] gui root directory is not defined at ' . __FILE__ . ' line ' . __LINE__ . "\n");
+	fwrite(STDERR, sprintf("[ERROR] The GUI root directory is not defined at %s line %s", __FILE__,  __LINE__));
 	exit(1);
 }
 
@@ -49,13 +49,14 @@ try {
 	$databaseUpdate = iMSCP_Update_Database::getInstance();
 
 	if(!$databaseUpdate->applyUpdates()) {
-		fwrite(STDERR, "[ERROR] Database update failed: " . $databaseUpdate->getError() . "\n");
+		fwrite(STDERR, sprintf("[ERROR] %s\n", $databaseUpdate->getError()));
 		exit(1);
 	}
 } catch(Exception $e) {
-	fwrite(STDERR, "[ERROR] " . $e->getMessage() . "\n\nStackTrace:\n" . $e->getTraceAsString() . "\n");
+	fwrite(STDERR, sprintf("[ERROR] %s \n\nStack trace:\n\n%s\n", $e->getMessage(), $e->getTraceAsString()));
 	exit(1);
 }
 
-fwrite(STDOUT, "[INFO] i-MSCP database has been successfully updated\n");
+fwrite(STDOUT, "[NOTICE] i-MSCP database has been successfully updated\n");
+
 exit;

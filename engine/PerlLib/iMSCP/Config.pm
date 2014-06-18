@@ -178,7 +178,15 @@ sub FETCH
 	my ($self, $config) = @_;
 
 	if (! exists $self->{'configValues'}->{$config} && ! $self->{'noerrors'}) {
-		error(sprintf('Accessing non existing config value %s', $config));
+		my (undef, $file, $line) = caller;
+
+		error sprintf(
+			'Accessing non existing config value %s from the %s file (see file %s at line %s)',
+			$config,
+			$self->{'fileName'},
+			$file,
+			$line
+		);
 	}
 
 	$self->{'configValues'}->{$config};

@@ -96,7 +96,7 @@ sub setEnginePermissions
 
 	if(defined $homeDir) {
 		# eg. /root/.my.cnf
-		$rs = setRights("$homeDir/.my.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'filemode' => '0600' });
+		$rs = setRights("$homeDir/.my.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0600' });
 		return $rs if $rs;
 	} else {
 		error('Unable to find root user homedir');

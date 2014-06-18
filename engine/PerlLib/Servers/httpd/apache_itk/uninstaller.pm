@@ -61,7 +61,7 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'httpd'} = Servers::httpd::apache_fcgi->getInstance();
+	$self->{'httpd'} = Servers::httpd::apache_itk->getInstance();
 
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";

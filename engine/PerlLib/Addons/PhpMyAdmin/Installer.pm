@@ -644,10 +644,13 @@ sub _buildConfig
 
 	# Define data
 
+	my $pmaPassword = $self->{'config'}->{'DATABASE_PASSWORD'};
+	$pmaPassword =~ s/\\/\\\\/g;
+
 	my $data = {
 		PMA_DATABASE => $main::imscpConfig{'DATABASE_NAME'} . '_pma',
 		PMA_USER => $self->{'config'}->{'DATABASE_USER'},
-		PMA_PASS => $self->{'config'}->{'DATABASE_PASSWORD'},
+		PMA_PASS => $pmaPassword,
 		HOSTNAME => $main::imscpConfig{'DATABASE_HOST'},
 		PORT => $main::imscpConfig{'DATABASE_PORT'},
 		UPLOADS_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",

@@ -146,7 +146,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					$pdo->commit();
 				} catch (Exception $e) {
 					$pdo->rollBack();
-					$this->setError(sprintf('Database update %s failed.', $revision));
+					$this->setError(sprintf('Database update %s failed: %s', $revision, $e->getMessage()));
 					return false;
 				}
 			} else {
@@ -352,10 +352,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function addIndex($table, $columns, $indexType = 'PRIMARY KEY', $indexName = '')
 	{
-		$indexType = strtoupper($indexType);
-
 		$table = quoteIdentifier($table);
 		$indexType = strtoupper($indexType);
+
+		$indexName = ($indexType == 'PRIMARY KEY')
+			? 'PRIMARY'
+			: (($indexName == '') ? ((is_array($columns)) ? $columns[0] : $columns) : $indexName);
+
 		$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
 
 		if (!$stmt->rowCount()) {
@@ -369,7 +372,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'ALTER IGNORE TABLE %s ADD %s %s (%s)',
 				$table,
 				$indexType,
-				($indexType == 'PRIMARY KEY') ? '' : quoteIdentifier($indexName),
+				($indexName == 'PRIMARY') ? '' : quoteIdentifier($indexName),
 				$columns
 			);
 		}
@@ -392,7 +395,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = exec_query("SHOW INDEX FROM $table WHERE COLUMN_NAME = ?", $column);
 
 		if ($stmt->rowCount()) {
-			while ($row = $stmt->rowCount(PDO::FETCH_ASSOC)) {
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$row = array_change_key_case($row, CASE_UPPER);
+
 				$sqlUpd[] = sprintf(
 					'ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($row['KEY_NAME'])
 				);
@@ -542,7 +547,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				$props = explode(';', $row['props']);
 				$id = quoteValue($row['id'], PDO::PARAM_INT);
 
-				if (sizeof($props) == 12) {
+				if (count($props) == 12) {
 					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props,';_no_') WHERE id = $id";
 				}
 			}
@@ -675,7 +680,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// Decrypt all Ftp users passwords
 
-		$stmt = exec_query("SELECT userid, passwd FROM ftp_users");
+		$stmt = exec_query('SELECT userid, passwd FROM ftp_users');
 
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -851,7 +856,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r72()
 	{
-		return $this->addIndex('web_software_options', 'use_webdepot', 'unique', 'use_webdepot');
+		return $this->addIndex('web_software_options', 'use_webdepot', 'unique');
 	}
 
 	/**
@@ -861,10 +866,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r76()
 	{
-		$sqlUdp = $this->dropIndexByColumn('user_gui_props', 'user_id');
-		array_push($sqlUdp, $this->addIndex('user_gui_props', 'user_id', 'unique', 'user_id'));
+		$sqlUpd = $this->dropIndexByColumn('user_gui_props', 'user_id');
+		array_push($sqlUpd, $this->addIndex('user_gui_props', 'user_id', 'unique'));
 
-		return $sqlUdp;
+		return $sqlUpd;
 	}
 
 	/**
@@ -1115,7 +1120,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$props = explode(';', $data['props']);
 
-				if (sizeof($props) == 13) {
+				if (count($props) == 13) {
 					$sqlUpd[] = "
 						UPDATE
 							hosting_plans
@@ -1221,35 +1226,35 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r95()
 	{
 		return array(
-			$this->addIndex('domain', 'domain_id'),
-			$this->dropIndexByName('domain', 'domain_id'),
+			$this->addIndex('domain', 'domain_id'), // Add primary key
+			$this->dropIndexByName('domain', 'domain_id'), // Remove unique index
 
-			$this->addIndex('email_tpls', 'id'),
-			$this->dropIndexByName('email_tpls', 'id'),
+			$this->addIndex('email_tpls', 'id'), // Add primary key
+			$this->dropIndexByName('email_tpls', 'id'), // Remove unique index
 
-			$this->addIndex('hosting_plans', 'id'),
-			$this->dropIndexByName('hosting_plans', 'id'),
+			$this->addIndex('hosting_plans', 'id'), // Add primary key
+			$this->dropIndexByName('hosting_plans', 'id'), // Remove unique index
 
-			$this->addIndex('htaccess', 'id'),
-			$this->dropIndexByName('htaccess', 'id'),
+			$this->addIndex('htaccess', 'id'), // Add primary key
+			$this->dropIndexByName('htaccess', 'id'), // Remove unique index
 
-			$this->addIndex('htaccess_groups', 'id'),
-			$this->dropIndexByName('htaccess_groups', 'id'),
+			$this->addIndex('htaccess_groups', 'id'), // Add primary key
+			$this->dropIndexByName('htaccess_groups', 'id'), // Remove unique index
 
-			$this->addIndex('htaccess_users', 'id'),
-			$this->dropIndexByName('htaccess_users', 'id'),
+			$this->addIndex('htaccess_users', 'id'), // Add primary key
+			$this->dropIndexByName('htaccess_users', 'id'), // Remove unique index
 
-			$this->addIndex('reseller_props', 'id'),
-			$this->dropIndexByName('reseller_props', 'id'),
+			$this->addIndex('reseller_props', 'id'), // Add primary key
+			$this->dropIndexByName('reseller_props', 'id'), // Remove unique index
 
-			$this->addIndex('server_ips', 'ip_id'),
-			$this->dropIndexByName('server_ips', 'ip_id'),
+			$this->addIndex('server_ips', 'ip_id'), // Add primary key
+			$this->dropIndexByName('server_ips', 'ip_id'), // Remove unique index
 
-			$this->addIndex('sql_database', 'sqld_id'),
-			$this->dropIndexByName('sql_database', 'sqld_id'),
+			$this->addIndex('sql_database', 'sqld_id'), // Add primary key
+			$this->dropIndexByName('sql_database', 'sqld_id'), // Remove unique index
 
-			$this->addIndex('sql_user', 'sqlu_id'),
-			$this->dropIndexByName('sql_user', 'sqlu_id')
+			$this->addIndex('sql_user', 'sqlu_id'), // Add primary key
+			$this->dropIndexByName('sql_user', 'sqlu_id') // Remove unique index
 		);
 	}
 
@@ -1409,14 +1414,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r106()
 	{
 		return array(
-			$this->addIndex('admin', 'created_by', 'index', 'created_by'),
-			$this->addIndex('domain_aliasses', 'domain_id', 'index', 'domain_id'),
-			$this->addIndex('mail_users', 'domain_id', 'index', 'domain_id'),
-			$this->addIndex('reseller_props', 'reseller_id', 'index', 'reseller_id'),
-			$this->addIndex('sql_database', 'domain_id', 'index', 'domain_id'),
-			$this->addIndex('sql_user', 'sqld_id', 'index', 'sqld_id'),
-			$this->addIndex('subdomain', 'domain_id', 'index', 'domain_id'),
-			$this->addIndex('subdomain_alias', 'alias_id', 'index', 'alias_id')
+			$this->addIndex('admin', 'created_by', 'index'),
+			$this->addIndex('domain_aliasses', 'domain_id', 'index'),
+			$this->addIndex('mail_users', 'domain_id', 'index'),
+			$this->addIndex('reseller_props', 'reseller_id', 'index'),
+			$this->addIndex('sql_database', 'domain_id', 'index'),
+			$this->addIndex('sql_user', 'sqld_id', 'index'),
+			$this->addIndex('subdomain', 'domain_id', 'index'),
+			$this->addIndex('subdomain_alias', 'alias_id', 'index')
 		);
 	}
 
@@ -1458,7 +1463,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$props = explode(';', $data['props']);
 
-				if (sizeof($props) == 23) {
+				if (count($props) == 23) {
 					$sqlUpd[] = "
 						UPDATE
 							hosting_plans
@@ -1538,7 +1543,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$props = explode(';', $data['props']);
 
-				if (sizeof($props) == 24) {
+				if (count($props) == 24) {
 					unset($props[15]); // Remove register global properties
 
 					$sqlUpd[] = "
@@ -2210,7 +2215,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$props = explode(';', $data['props']);
 
-				if (sizeof($props) == 23) {
+				if (count($props) == 23) {
 					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props,';_no_') WHERE id = {$data['id']}";
 				}
 			}
@@ -2282,7 +2287,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r148()
 	{
-		return $this->addIndex('server_ips', 'ip_number', 'unique', 'ip_number');
+		return $this->addIndex('server_ips', 'ip_number', 'unique');
 	}
 
 	/**
@@ -2294,7 +2299,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		$sqlUdp = $this->dropIndexByColumn('sql_user', 'sqlu_name');
 
-		array_unshift($sqlUdp, $this->addIndex('sql_database', 'sqld_name', 'unique', 'sqld_name'));
+		array_unshift($sqlUdp, $this->addIndex('sql_database', 'sqld_name', 'unique'));
 
 		return $sqlUdp;
 	}
@@ -2384,7 +2389,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$props = explode(';', $data['props']);
 
-				if (sizeof($props) == 24) {
+				if (count($props) == 24) {
 					list(, , , , , , , , , $diskspace) = $props;
 					$diskspace = $diskspace * 1048576; // MiB to bytes
 
@@ -2623,6 +2628,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r169()
 	{
 		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		# Retrieve service ports
 		$services = array_filter(
 			array_keys($dbConfig->toArray()),
 			function ($name) {
@@ -2633,13 +2640,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 		foreach ($services as $name) {
 			$values = explode(';', $dbConfig[$name]);
 
-			if ($values[5] == '') {
-				$values[5] = '0.0.0.0';
+			if(count($values) > 5) { // Handle case where the update is run many time
+				if ($values[5] == '') {
+					$values[5] = '0.0.0.0';
+				}
+
+				unset($values[4]); // All port are now editable - We remove custom port field
+
+				$dbConfig[$name] = implode(';', $values);
 			}
-
-			unset($values[4]); // All port are now editable - We remove custom port field
-
-			$dbConfig[$name] = implode(';', $values);
 		}
 
 		return null;
@@ -2764,8 +2773,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'sqlu_host',
 				'VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER sqlu_name'
 			),
-			$this->addIndex('sql_user', 'sqlu_name', 'index', 'sqlu_name'),
-			$this->addIndex('sql_user', 'sqlu_host', 'index', 'sqlu_host')
+			$this->addIndex('sql_user', 'sqlu_name', 'index'),
+			$this->addIndex('sql_user', 'sqlu_host', 'index')
 		);
 	}
 

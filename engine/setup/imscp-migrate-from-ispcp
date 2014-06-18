@@ -72,7 +72,7 @@ sub _reencryptPassword($$$$$)
 	$crypt->set('iv', $main::imscpDBiv);
 
 	# Encrypt password using i-MSCP database key
-	my $password = $crypt->encrypt_db_password($password);
+	$password = $crypt->encrypt_db_password($password);
 
 	my $database = iMSCP::Database->factory();
 
