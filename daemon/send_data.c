@@ -18,5 +18,5 @@ int sendData(int fd, char *src, size_t n)
 		}
 	}
 
-	return (i);
+	return i;
 }

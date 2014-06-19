@@ -23,7 +23,7 @@ char client_ip[MAX_MSG_SIZE];
 struct timeval *tv_rcv;
 struct timeval *tv_snd;
 
-extern void daemonInit(const char *pname, int facility);
+extern int daemonInit(const char *pname, int facility);
 extern char *message(int message_number);
 extern void say(char *format, char *message);
 extern void sigChild (int signo);

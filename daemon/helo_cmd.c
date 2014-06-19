@@ -10,14 +10,14 @@ int heloCommand(int fd)
 
 		if (receiveLine(fd, buffer, MAX_MSG_SIZE - 1) <= 0) {
 			free(buffer);
-			return (-1);
+			return -1;
 		}
 
 		res = heloSyntax(fd, buffer);
 
 		if (res == -1) {
 			free(buffer);
-			return (-1);
+			return -1;
 		} else if (res == 1) {
 			continue;
 		} else {
@@ -27,5 +27,5 @@ int heloCommand(int fd)
 
 	free(buffer);
 
-	return (NO_ERROR);
+	return 0;
 }

@@ -13,8 +13,6 @@ void sigChild (int signo)
 
 	free(nmb);
 	signal(SIGCHLD, sigChild);
-
-	return;
 }
 
 void sigPipe(int signo)

@@ -8,6 +8,10 @@ Git stable
 CONFIG:
 	Removed: GUI_CERT_DIR variable (replaced by CONF_DIR variable)
 
+DAEMON:
+	Removed useless daemon logs + small fixes
+	Updated: version to 1.2.1
+
 DATABASE:
 	Fixed: Error messages from database updates are not detailled
 	Fixed: Ftp, Mail and SQL passwords are not decrypted during database update r53

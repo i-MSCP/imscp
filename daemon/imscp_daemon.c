@@ -3,10 +3,10 @@
 int main(int argc, char *argv[])
 {
 	int listenfd, c;
-	struct sockaddr_in  servaddr;
+	struct sockaddr_in servaddr;
 
 	int connfd;
-	struct sockaddr_in  cliaddr;
+	struct sockaddr_in cliaddr;
 
 	char *pidfile_path;
 	int given_pid;
@@ -20,13 +20,15 @@ int main(int argc, char *argv[])
 	while ((c = getopt(argc, argv, "p:")) != EOF) {
 		switch(c) {
 			case 'p':
-			    pidfile_path = optarg;
-			    given_pid = 1;
-			    break;
+				pidfile_path = optarg;
+				given_pid = 1;
+				break;
 		}
 	}
 
-	daemonInit(message(MSG_DAEMON_NAME), SYSLOG_FACILITY);
+	if(daemonInit(message(MSG_DAEMON_NAME), SYSLOG_FACILITY) != 0) {
+		exit(1);
+	}
 
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -112,5 +114,5 @@ int main(int argc, char *argv[])
 
 	closelog();
 
-	return (NO_ERROR);
+	return 0;
 }

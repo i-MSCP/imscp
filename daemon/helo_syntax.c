@@ -17,10 +17,10 @@ int heloSyntax(int fd, char *buffer)
 	if (sendLine(fd, helo_ans, strlen(helo_ans)) < 0) {
 		free(helo_ans);
 
-		return (-1);
+		return -1;
 	}
 
 	free(helo_ans);
 
-	return (NO_ERROR);
+	return 0;
 }

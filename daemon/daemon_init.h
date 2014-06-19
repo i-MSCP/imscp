@@ -9,6 +9,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-void daemonInit(const char *pname, int facility);
+int daemonInit(const char *pname, int facility);
 
 #endif

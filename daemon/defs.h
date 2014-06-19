@@ -2,11 +2,6 @@
 
 #define _DEFS_H
 
-/* Logs parameters */
-#define LOG_DIR "/var/log/imscp"
-#define STDOUT_LOG "imscp_daemon-stdout.log"
-#define STDERR_LOG "imscp_daemon-stderr.log"
-
 /* Syslog daemon options */
 #define SYSLOG_OPTIONS          LOG_PID
 #define SYSLOG_FACILITY         LOG_DAEMON
@@ -25,7 +20,7 @@
 #define MSG_WELCOME             10001
 #define MSG_WELCOME_TXT	            "250 OK i-MSCP Daemon v1.2.0 Welcomes You\n"
 #define MSG_DAEMON_VER          10002
-#define MSG_DAEMON_VER_TXT          "i-MSCP daemon v1.2.0 started."
+#define MSG_DAEMON_VER_TXT          "i-MSCP daemon v1.2.1 started."
 #define MSG_DAEMON_NAME         10003
 #define MSG_DAEMON_NAME_TXT         "imscp_daemon"
 #define MSG_ERROR_LISTEN        10004
@@ -64,8 +59,5 @@
 #define MSG_MISSING_REG_DATA_TXT    "i-MSCP data cannot be found in the config file!"
 #define MSG_ERROR_BIND          10021
 #define MSG_ERROR_BIND_TXT          "bind() error: %s! Please check for an other running daemon!"
-
-/* Other */
-#define NO_ERROR                0
 
 #endif

@@ -17,7 +17,7 @@ int receiveData(int fd, char *dest, size_t n)
 			}
 		} else if (res == 0) { /* EOF, arrived ! */
 			if (i == 1) { /* no data read. */
-				return (0);
+				return 0;
 			} else { /* some data was read. */
 				break;
 			}
@@ -26,11 +26,11 @@ int receiveData(int fd, char *dest, size_t n)
 				goto try_again;
 			}
 
-			return (-1);
+			return -1;
 		}
 	}
 
 	*p = 0;
 
-	return (i);
+	return i;
 }
