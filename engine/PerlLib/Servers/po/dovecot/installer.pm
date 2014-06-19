@@ -115,7 +115,7 @@ sub askDovecot($$)
 
 	if(
 		$main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] ||
-		$dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+		$dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
 	) {
 		# Ask for the dovecot restricted SQL username
 		do{
