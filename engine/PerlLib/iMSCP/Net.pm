@@ -177,7 +177,7 @@ sub getAddrVersion($$)
  Get type of the given IP (public, private, reserved...)
 
  Param string $addr IP address
- Return string|undef IP version or undef in case the given IP is invalid
+ Return string|undef IP type or undef in case the given IP is invalid
 
 =item
 
