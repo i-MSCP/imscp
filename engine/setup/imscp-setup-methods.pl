@@ -339,6 +339,7 @@ sub setupAskServerIps
 	my $dialog = $_[0];
 
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
+	my $baseServerPublicIp = setupGetQuestion('BASE_SERVER_PUBLIC_IP');
 	my $manualIp = 0;
 	my $serverIps = '';
 
@@ -358,13 +359,14 @@ sub setupAskServerIps
 
 	my $currentServerIps = {};
 	my $database = '';
+	my $msg = '';
 
 	if(setupGetQuestion('DATABASE_NAME')) {
 		# We do not raise error in case we cannot get SQL connection since it's expected in some contexts
 		$database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 
 		if($database) {
-			$currentServerIps = $database->doQuery('ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips`');
+			$currentServerIps = $database->doQuery('ip_number', 'SELECT ip_id, ip_number FROM server_ips');
 
 			unless(ref $currentServerIps eq 'HASH') {
 				error("Unable to retrieve server IPs: $currentServerIps");
@@ -377,30 +379,60 @@ sub setupAskServerIps
 
 	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @{$serverIpsToAdd} } };
 
-	if($main::reconfigure ~~ ['ips', 'all', 'forced'] || ! ($baseServerIp ~~ @serverIps)) {
+	if(
+		$main::reconfigure ~~ ['ips', 'all', 'forced'] || ! ($baseServerIp ~~ @serverIps) ||
+		! ($net->isValidAddr($baseServerIp) && $net->isValidAddr($baseServerPublicIp))
+	) {
 		do {
 			# Ask user for the server base IP
 			($rs, $baseServerIp) = $dialog->radiolist(
-"
-Please, select the base server IP for i-MSCP:
-
-Important:
-
-Because this IP is used as IP source for outbound mails, a reverse DNS lookup on this IP should match the server hostname.
-
-In case you do not fit with this requirement, several mails sent by your server will be probably considered as spams.
-",
+				"\nPlease, select the base server IP for i-MSCP:",
 				[@serverIps, 'Add new ip'],
 				$baseServerIp ? $baseServerIp : $serverIps[0]
 			);
 		} while($rs != 30 && ! $baseServerIp);
 
+		# Server inside private LAN?
+		if($net->getAddrType($baseServerIp) ne 'PUBLIC') {
+			$baseServerPublicIp = '' unless $net->getAddrType($baseServerPublicIp) eq 'PUBLIC';
+			$msg = '';
+
+			do {
+				($rs, $baseServerPublicIp) = $dialog->inputbox(
+"
+The system has detected that your server is inside a private LAN.
+
+Please enter your public IP:$msg
+
+\\ZbNote:\\Zn Leave blank to force usage of the $baseServerIp IP address.
+",
+				$baseServerPublicIp
+				);
+
+				if($baseServerPublicIp) {
+					if(!$net->isValidAddr($baseServerPublicIp)) {
+						$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
+					} elsif($net->getAddrType($baseServerPublicIp) ne 'PUBLIC') {
+						$msg = "\n\n\\Z1Unallowed IP address. The IP address must be public.\\Zn\n\nPlease, try again:";
+					} else {
+						$msg = '';
+					}
+				} else {
+					$baseServerPublicIp = $baseServerIp;
+					$msg = ''
+				}
+			} while($rs != 30 && $msg);
+		} else {
+			$baseServerPublicIp = $baseServerIp
+		}
+
 		# Handle server IP addresses addition
 		if($rs != 30 && $baseServerIp eq 'Add new ip') {
 			$baseServerIp = '';
-			my $msg = '';
+			$msg = '';
+
 			do {
-				($rs, $baseServerIp) = $dialog->inputbox("\nPlease, enter an IP address: $msg", $baseServerIp);
+				($rs, $baseServerIp) = $dialog->inputbox("\nPlease, enter an IP address:$msg", $baseServerIp);
 				$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
 			} while(
 				$rs != 30 &&
@@ -454,7 +486,7 @@ In case you do not fit with this requirement, several mails sent by your server 
 				# Retrieve IP to which the user is currently connected (SSH)
 				my $sshConnectIp = defined ($ENV{'SSH_CONNECTION'}) ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
 
-				my $msg = '';
+				$msg = '';
 
 				do {
 					($rs, $serverIps) = $dialog->checkbox(
@@ -488,7 +520,7 @@ In case you do not fit with this requirement, several mails sent by your server 
 						}
 
 						# Check for server IP addresses already in use and ask for replacement
-						my $resellerIps = $database->doQuery('reseller_ips', 'SELECT `reseller_ips` FROM `reseller_props`');
+						my $resellerIps = $database->doQuery('reseller_ips', 'SELECT reseller_ips FROM reseller_props');
 
 						if(ref $resellerIps ne 'HASH') {
 							error("Cannot retrieve resellers's addresses IP: $resellerIps");
@@ -530,6 +562,7 @@ The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP 
 
 	if($rs != 30) {
 		setupSetQuestion('BASE_SERVER_IP', $baseServerIp);
+		setupSetQuestion('BASE_SERVER_PUBLIC_IP', $baseServerPublicIp);
 		setupSetQuestion('SERVER_IPS', $serverIpsToAdd);
 		setupSetQuestion('SERVER_IPS_TO_REPLACE', {%serverIpsReplMap});
 		setupSetQuestion('SERVER_IPS_TO_DELETE', [values %serverIpsToDelete]);

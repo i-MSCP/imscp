@@ -172,9 +172,13 @@ sub postaddDmn($$)
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostAddDmn', $data);
 	return $rs if $rs;
 
-	my $ipMngr = iMSCP::Net->getInstance();
-
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
+		my $ipMngr = iMSCP::Net->getInstance();
+
+		my $domainIp = ($ipMngr->getAddrType($data->{'DOMAIN_IP'}) eq 'PUBLIC')
+			? $data->{'DOMAIN_IP'}
+			: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+
 		# Add DNS entry for domain alternative URL in master zone file
 		$rs = $self->addDmn(
 			{
@@ -184,8 +188,8 @@ sub postaddDmn($$)
 				CTM_ALS_ENTRY_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
-					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
-					DATA => $data->{'DOMAIN_IP'}
+					TYPE => ($ipMngr->getAddrVersion($domainIp) eq 'ipv4') ? 'A' : 'AAAA',
+					DATA => $domainIp
 				}
 			}
 		);
@@ -357,12 +361,16 @@ sub addSub($$)
 
 			my $ipMngr = iMSCP::Net->getInstance();
 
+			my $domainIp = ($ipMngr->getAddrType($data->{'DOMAIN_IP'}) eq 'PUBLIC')
+				? $data->{'DOMAIN_IP'}
+				: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+
 			# Process other entries
 			$subEntry = process(
 				{
 					SUBDOMAIN_NAME => $data->{'DOMAIN_NAME'},
-					IP_TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
-					DOMAIN_IP => $data->{'DOMAIN_IP'}
+					IP_TYPE => ($ipMngr->getAddrVersion($domainIp) eq 'ipv4') ? 'A' : 'AAAA',
+					DOMAIN_IP => $domainIp
 				},
 				$subEntry
 			);
@@ -444,6 +452,10 @@ sub postaddSub($$)
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
 		my $ipMngr = iMSCP::Net->getInstance();
 
+		my $domainIp = ($ipMngr->getAddrType($data->{'DOMAIN_IP'}) eq 'PUBLIC')
+			? $data->{'DOMAIN_IP'}
+			: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+
 		# Adding DNS entry for subdomain alternative URL in master zone file
 		$rs = $self->addDmn(
 			{
@@ -453,8 +465,8 @@ sub postaddSub($$)
 				CTM_ALS_ENTRY_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
-					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
-					DATA => $data->{'DOMAIN_IP'}
+					TYPE => ($ipMngr->getAddrVersion($domainIp) eq 'ipv4') ? 'A' : 'AAAA',
+					DATA => $domainIp
 				}
 			}
 		);
@@ -916,12 +928,17 @@ sub _addDmnDb($$)
 	my $dmnNsEntry = getBloc("; dmn NS entry BEGIN\n", "; dmn NS entry ENDING\n", $tplDbFileContent);
 	my $dmnNsAEntry = getBloc("; dmn NS A entry BEGIN\n", "; dmn NS A entry ENDING\n", $tplDbFileContent);
 
+	my $ipMngr = iMSCP::Net->getInstance();
+
+	my $domainIp = ($ipMngr->getAddrType($data->{'DOMAIN_IP'}) eq 'PUBLIC')
+		? $data->{'DOMAIN_IP'}
+		: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+
 	my @nsIPs = (
-		$data->{'DOMAIN_IP'},
+		$domainIp,
 		($self->{'config'}->{'SECONDARY_DNS'} eq 'no') ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'}
 	);
 
-	my $ipMngr = iMSCP::Net->getInstance();
 	my ($dmnNsEntries, $dmnNsAentries, $nsNumber) = (undef, undef, 1);
 
 	for(@nsIPs) {
@@ -951,11 +968,15 @@ sub _addDmnDb($$)
 	my $dmnMailEntry = '';
 
 	if($data->{'MAIL_ENABLED'}) {
+		my $baseServerIp = ($ipMngr->getAddrType($main::imscpConfig{'BASE_SERVER_IP'}) eq 'PUBLIC')
+			? $main::imscpConfig{'BASE_SERVER_IP'}
+			: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+
 		$dmnMailEntry = process(
 			{
-				BASE_SERVER_IP_TYPE => ($ipMngr->getAddrVersion($main::imscpConfig{'BASE_SERVER_IP'}) eq 'ipv4')
+				BASE_SERVER_IP_TYPE => ($ipMngr->getAddrVersion($baseServerIp) eq 'ipv4')
 					? 'A' : 'AAAA',
-				BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'}
+				BASE_SERVER_IP => $baseServerIp
 			},
 			getBloc("; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $tplDbFileContent)
 		)
@@ -1032,8 +1053,8 @@ sub _addDmnDb($$)
 	$tplDbFileContent = process(
 		{
 			DOMAIN_NAME => $data->{'DOMAIN_NAME'},
-			IP_TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
-			DOMAIN_IP => $data->{'DOMAIN_IP'}
+			IP_TYPE => ($ipMngr->getAddrVersion($domainIp) eq 'ipv4') ? 'A' : 'AAAA',
+			DOMAIN_IP => $domainIp
 		},
 		$tplDbFileContent
 	);

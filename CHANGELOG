@@ -36,6 +36,7 @@ GUI
 	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function
 
 INSTALLER
+	Added: Dialog box allowing to setup the public IP for servers which are inside a private LAN
 	Added: Option allowing to force reinstallation of distro packages
 	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)
 	Fixed: Installer hangs while packages installation (Debian Jessie)
