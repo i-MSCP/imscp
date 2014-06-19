@@ -64,12 +64,17 @@ $main::buildonly = 0;
 # Initialize the skippackages option
 $main::skippackages = 0;
 
+# Initialize the forcereinstall option
+$main::forcereinstall = 0;
+
 # Add autoinstaller specific command line options
 iMSCP::Getopt->parse(
 	qq{Usage: perl imscp-autoinstall [options]
  -b,    --build-only           Process only build step.
+ -f,    --force-reinstall      Force reinstallation of distro packages.
  -s,    --skip-packages        Do not install/update distro packages.},
   'build-only|b' => \$main::buildonly,
+  'force-reinstall|f' => \$main::forcereinstall,
   'skip-packages|s' => \$main::skippackages
 );
 
@@ -148,7 +153,6 @@ installPreRequiredPackages() and exit 1 if ! $main::skippackages;
 iMSCP::HooksManager->getInstance()->trigger('afterInstallPreRequiredPackages') if ! $main::skippackages;
 
 if(! $main::buildonly && ! $main::noprompt && $main::reconfigure eq 'none') {
-
 	$ENV{'DIALOGOPTS'} = "--ok-label Ok --yes-label Yes --no-label No --cancel-label Back";
 
 	# Display the i-MSCP README file
@@ -172,8 +176,6 @@ Please, choose an option:
   \\Z4Build:\\Zn Choose this option if you want install i-MSCP manually or if you
          want migrate from ispCP (>= 1.0.7).
 EOF
-
-
 
 	exit if $rs == 1 || $rs == 255; # (CANCEL, ESC)
 	$main::buildonly = $main::buildonly eq 'build' ? 1 : 0;

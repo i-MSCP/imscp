@@ -83,7 +83,7 @@ sub loadConfig
 
 	%main::imscpConfig = %imscpNewConfig;
 
-	# Load current i-MSCP conffile as readonly if it exists
+	# Load old i-MSCP conffile as readonly if it exists
 	if (-f "$imscpNewConfig{'CONF_DIR'}/imscp.conf") {
 		tie
 			%main::imscpOldConfig,
@@ -91,7 +91,7 @@ sub loadConfig
 			'fileName' => "$imscpNewConfig{'CONF_DIR'}/imscp.conf",
 			'readonly' => 1;
 
-		# Merge current config with the new but do not write anything yet. This is done at postBuild step
+		# Merge old config with the new but do not write anything yet. This is done at postBuild step
 		for(keys %main::imscpOldConfig) {
 			if(exists $main::imscpConfig{$_}) {
 				$main::imscpConfig{$_} = $main::imscpOldConfig{$_};
@@ -450,12 +450,12 @@ sub postBuild
 	}
 
 	# Cleanup build tree directory (remove any .gitignore|empty-file)
-    find(
-    	sub {
-    		unlink or fatal("Unable to remove $File::Find::name: $!") if  $_ eq '.gitignore' || $_ eq 'empty-file';
-    	},
-    	$main::{'INST_PREF'}
-    );
+	find(
+		sub {
+			unlink or fatal("Unable to remove $File::Find::name: $!") if  $_ eq '.gitignore' || $_ eq 'empty-file';
+		},
+		$main::{'INST_PREF'}
+	);
 
 	iMSCP::HooksManager->getInstance()->trigger('afterPostBuild');
 }

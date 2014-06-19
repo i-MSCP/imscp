@@ -207,21 +207,28 @@ sub installPackages
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
 	iMSCP::Dialog->factory()->endGauge();
 
+	my @command;
+
 	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
-		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+		push @command, 'debconf-apt-progress --logstderr --';
 	}
 
-	$rs = execute(
-		"$command -y -o DPkg::Options::='--force-confnew' -o Dpkg::Options::='--force-confask' " .
-			"--reinstall install @{$self->{'packagesToInstall'}} --auto-remove --purge",
-		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
-	);
+	if($main::forcereinstall) {
+		unshift @command, ('UCF_FORCE_CONFFMISS=1 '); # Force installation of missing conffile which are managed by UCF
+
+		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o Dpkg::Options::='--force-confask' " .
+			"--reinstall install @{$self->{'packagesToInstall'}} --auto-remove --purge";
+	} else {
+		print "god god god\n";
+		push @command, "apt-get -y install @{$self->{'packagesToInstall'}} --auto-remove --purge";
+	}
+
+	my ($stdout, $stderr);
+	$rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to install packages') if $rs && ! $stderr;

@@ -9,8 +9,8 @@ CONFIG:
 	Removed: GUI_CERT_DIR variable (replaced by CONF_DIR variable)
 
 DAEMON:
-	Removed useless daemon logs + small fixes
-	Updated: version to 1.2.1
+	Removed: Useless daemon logs + small fixes
+	Updated: Version to 1.2.1
 
 DATABASE:
 	Fixed: Error messages from database updates are not detailled
@@ -35,6 +35,7 @@ GUI
 	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function
 
 INSTALLER
+	Added: Option allowing to force reinstallation of distro packages
 	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)
 	Fixed: Installer hangs while packages installation (Debian Jessie)
 	Fixed: Unable to migrate from ispCP (linked to the infinite loop in iMSCP_Update_Database::dropIndexByColumn())
