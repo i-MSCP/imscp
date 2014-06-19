@@ -46,11 +46,11 @@ our @EXPORT = qw/
 BEGIN
 {
 	# Handler which trap uncaught exceptions
-	#$SIG{__DIE__} = sub {
-	#	if(defined $^S && !$^S) {
-	#		fatal(@_) if (((caller(1))[3] || 'main') ne 'iMSCP::Debug::fatal');
-	#	}
-	#};
+	$SIG{__DIE__} = sub {
+		if(defined $^S && !$^S) {
+			fatal(@_) if (((caller(1))[3] || 'main') ne 'iMSCP::Debug::fatal');
+		}
+	};
 
 	# Handler which trap warns
 	#$SIG{__WARN__} = sub {

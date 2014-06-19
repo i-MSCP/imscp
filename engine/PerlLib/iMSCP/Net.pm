@@ -172,6 +172,29 @@ sub getAddrVersion($$)
 	}
 }
 
+=item getAddrType($addr)
+
+ Get type of the given IP (public, private, reserved...)
+
+ Param string $addr IP address
+ Return string|undef IP version or undef in case the given IP is invalid
+
+=item
+
+sub getAddrType($$)
+{
+	my ($self, $addr) = @_;
+
+	my $version = ip_get_version($addr);
+
+	if($version) {
+		ip_iptype(ip_iptobin($addr, $version), $version);
+	} else {
+		error("Invalid IP: $addr");
+		undef;
+	}
+}
+
 =item getAddrDevice($addr)
 
  Return the network device name to which the given IP belong to
