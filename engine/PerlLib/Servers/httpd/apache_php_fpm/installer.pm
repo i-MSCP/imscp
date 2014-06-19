@@ -1066,7 +1066,7 @@ sub _setupVlogger
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	$dbUserHost = ($dbUserHost eq '127.0.0.1') ? 'localhost' : $dbUserHost;
 
-	my @allowedChr = map { chr } (0x21..0x7e);
+	my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);;
 	my $dbPassword = '';
 	$dbPassword .= $allowedChr[rand @allowedChr] for 1..16;
 
