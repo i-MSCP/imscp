@@ -223,7 +223,6 @@ sub installPackages
 		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o Dpkg::Options::='--force-confask' " .
 			"--reinstall install @{$self->{'packagesToInstall'}} --auto-remove --purge";
 	} else {
-		print "god god god\n";
 		push @command, "apt-get -y install @{$self->{'packagesToInstall'}} --auto-remove --purge";
 	}
 
