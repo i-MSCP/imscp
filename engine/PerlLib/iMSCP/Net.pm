@@ -179,7 +179,7 @@ sub getAddrVersion($$)
  Param string $addr IP address
  Return string|undef IP type or undef in case the given IP is invalid
 
-=item
+=cut
 
 sub getAddrType($$)
 {
