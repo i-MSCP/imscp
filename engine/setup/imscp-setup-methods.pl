@@ -394,7 +394,10 @@ sub setupAskServerIps
 
 		# Server inside private LAN?
 		if($net->getAddrType($baseServerIp) ne 'PUBLIC') {
-			$baseServerPublicIp = '' unless $net->getAddrType($baseServerPublicIp) eq 'PUBLIC';
+			if (! $net->isValidAddr($baseServerPublicIp) || $net->getAddrType($baseServerPublicIp) eq 'PUBLIC') {
+				$baseServerPublicIp = '';
+			}
+
 			$msg = '';
 
 			do {
