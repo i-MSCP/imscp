@@ -30,14 +30,14 @@ ENGINE
 	Fixed: Missing EOL in SSL certificate containers (iMSCP::OpenSSL)
 	Fixed: Quota script must ignore maildir which doesn't exist
 	Fixed: Quotation marks must be escaped in some configuration file (PhpMyAdmin, Roundcube)
-	Replaced: Dovecot SASL replaced by Cyrus SASL (Postfix)
+	Replaced: Dovecot SASL by Cyrus SASL (Postfix)
 
 GUI
 	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function
 
 INSTALLER
 	Added: Dialog box allowing to setup the public IP for servers which are inside a private LAN
-	Added: Option allowing to force reinstallation of distro packages
+	Added: Option allowing to force reinstallation/reconfiguration of distro packages
 	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)
 	Fixed: Installer hangs while packages installation (Debian Jessie)
 	Fixed: Unable to migrate from ispCP (linked to the infinite loop in iMSCP_Update_Database::dropIndexByColumn())
@@ -55,7 +55,7 @@ TICKETS
 	RELEASE i-MSCP 1.1.11
 
 PLUGINS
-	Changed: plugin's backend scripts are now loaded from main plugin directory to avoid too many IO operations
+	Changed: Plugin's backend scripts are now loaded from main plugin directory to avoid too many IO operations
 	Fixed: Plugin db updates are not applied when a new plugin version is uploaded through the plugin UI
 	Fixed: Unable to delete plugins which are uninstalled
 	Updated: Plugin API to version 0.2.10
