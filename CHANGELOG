@@ -41,6 +41,7 @@ INSTALLER
 	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)
 	Fixed: Installer hangs while packages installation (Debian Jessie)
 	Fixed: Unable to migrate from ispCP (linked to the infinite loop in iMSCP_Update_Database::dropIndexByColumn())
+	Updated: Preseed template file according new parameters
 
 TICKETS
 	Fixed #1095: Bug - IP usage interface is broken

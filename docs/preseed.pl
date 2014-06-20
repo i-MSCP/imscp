@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2014.06.15
+# Last update: 2014.06.20
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -86,9 +86,13 @@ $main::questions{'SERVER_HOSTNAME'} = 'host.domain.tld'; # Fully qualified hostn
 # Domain name from which the i-MSCP frontEnd should be reachable
 $main::questions{'BASE_SERVER_VHOST'} = 'panel.domain.tld'; # Fully qualified domain name
 
-# Base server IP (primary external IP) - Accept both IPv4 and IPv6
+# Base server IP - Accept both IPv4 and IPv6
 # IP must be already configured (see ifconfig)
 $main::questions{'BASE_SERVER_IP'} = '192.168.5.110';
+
+# Base server public IP
+# Only relevant if the Base server IP is in private range
+$main::questions{'BASE_SERVER_PUBLIC_IP'} = '';
 
 # IPs to add in the i-MSCP database - Accept both IPv4 and IPv6
 # Any unconfigured IPs will be added as alias to the first network card found (eg: eth0, p2p1 ...)
