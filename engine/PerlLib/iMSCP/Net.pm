@@ -306,7 +306,7 @@ sub isKnownDevice($$)
 
 =item upDevice($dev)
 
- Bring the the given network device up
+ Bring the given network device up
 
  Param string $dev Network device name
  Return int 0 on success, other on failure
