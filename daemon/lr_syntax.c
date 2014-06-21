@@ -14,7 +14,7 @@ int lrSyntax(int fd, char *buffer)
 		if (fork() == 0) {
 			close(fd);
 
-			#if !defined(__OpenBSD__) && defined(__FreeBSD__)
+			#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 
 			execl("/var/www/imscp/engine/imscp-rqst-mngr", "imscp-rqst-mngr", (char*)NULL);
 
