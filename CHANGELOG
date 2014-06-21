@@ -45,7 +45,9 @@ INSTALLER
 	Updated: Preseed template file according new parameters
 
 TICKETS
+	Fixed #1072: Bug - Uninstaller error - iMSCP::File::delFile: Unable to delete file imscp_network...
 	Fixed #1095: Bug - IP usage interface is broken
+	Fixed #1097: Enhancement - Allow to set public IP for server which are inside a private LAN
 	Fixed #1099: Bug - SQL users which belong to an account which is being deleted are not removed from mysql table
 
 ------------------------------------------------------------------------------------------------------------------------

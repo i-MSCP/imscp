@@ -281,6 +281,11 @@ sub _uninstallDaemons
 
 	for ($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'}) {
 		if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_") {
+			$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $_ stop", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+    		return $rs if $rs;
+
 			if($main::imscpConfig{'SERVICE_INSTALLER'} ne 'no') {
 				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $_ remove", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
@@ -288,7 +293,7 @@ sub _uninstallDaemons
 				return $rs if $rs;
 			}
 
-			$rs = iMSCP::File->new('filename' => $_)->delFile();
+			$rs = iMSCP::File->new('filename' => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_")->delFile();
 			return $rs if $rs;
 		}
 	}
