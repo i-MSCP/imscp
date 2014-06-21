@@ -116,7 +116,7 @@ remove_rules() {
 }
 
 add_local_dns_resolver() {
-	${ENGINETOOLSPATH}/${LOCALDNSRESOLVER} start >${LOGDIR}/${LOCALDNSRESOLVER}.log 2>&1
+	${ENGINETOOLSPATH}/${LOCALDNSRESOLVER} start >>${LOGDIR}/${LOCALDNSRESOLVER}.log 2>&1
 }
 
 delete_local_dns_resolver() {
@@ -124,7 +124,7 @@ delete_local_dns_resolver() {
 }
 
 add_interfaces() {
-	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} start >${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
+	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} start >>${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
 }
 
 remove_interfaces() {
