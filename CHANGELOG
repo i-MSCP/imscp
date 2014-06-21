@@ -5,15 +5,15 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
-CONFIG:
+CONFIGS
 	Removed: GUI_CERT_DIR variable (replaced by CONF_DIR variable)
 	Cleanup: Package files, config files
 
-DAEMON:
+DAEMON
 	Removed: Useless daemon logs + small fixes
 	Updated: Version to 1.2.1
 
-DATABASE:
+DATABASE
 	Fixed: Error messages from database updates are not detailled
 	Fixed: Ftp, Mail and SQL passwords are not decrypted during database update r53
 	Fixed: Infinite loop in iMSCP_Update_Database::dropIndexByColumn()
