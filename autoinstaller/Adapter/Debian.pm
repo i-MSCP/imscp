@@ -82,7 +82,7 @@ sub installPreRequiredPackages
 
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$command -y install @{$self->{'preRequiredPackages'}}",
+		"$command -y install @{$self->{'preRequiredPackages'}} --no-install-recommends",
 		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
@@ -180,7 +180,7 @@ sub uninstallPackages
 		}
 
 		my $rs = execute(
-			"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove --purge",
+			"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove --purge --no-install-recommends",
 			($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 		);
 		debug($stdout) if $stdout;

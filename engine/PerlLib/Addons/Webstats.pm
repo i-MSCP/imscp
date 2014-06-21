@@ -490,7 +490,8 @@ sub _installPackages($$)
 
 	my ($stdout, $stderr);
 	my $rs = execute(
-		"$command -y -o DPkg::Options::='--force-confdef' install @{$packages} --auto-remove --purge",
+		"$command -y -o DPkg::Options::='--force-confdef' install @{$packages} --auto-remove --purge " .
+			"--no-install-recommends",,
 		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;

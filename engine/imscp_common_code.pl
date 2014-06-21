@@ -35,21 +35,14 @@
 
 BEGIN {
 	my %needed 	= (
-		'strict' => '',
-		'warnings' => '',
-		'IO::Socket'=> '',
 		'DBI'=> '',
 		DBD::mysql => '',
 		MIME::Entity => '',
-		MIME::Parser => '',
 		Crypt::CBC => '',
-		Crypt::Blowfish => '',
 		Crypt::PasswdMD5 => '',
 		MIME::Base64 => '',
-		Term::ReadPassword => '',
 		File::Basename => '',
 		File::Path => '',
-		HTML::Entities=> '',
 		File::Temp => 'qw(tempdir)',
 		File::Copy::Recursive => 'qw(rcopy)',
 		Net::LibIDN => 'qw/idn_to_ascii idn_to_unicode/'

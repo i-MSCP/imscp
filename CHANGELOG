@@ -7,6 +7,7 @@ Git stable
 
 CONFIG:
 	Removed: GUI_CERT_DIR variable (replaced by CONF_DIR variable)
+	Cleanup: Package files, config files
 
 DAEMON:
 	Removed: Useless daemon logs + small fixes

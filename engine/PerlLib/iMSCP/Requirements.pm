@@ -48,44 +48,35 @@ sub _init
 {
 	my $self = $_[0];
 
-	# Initialize the 'needed' attribute that is a hash where each pair is a Perl
-	# module name and the value, an script that contains the method(s)/subroutine(s)
-	# that must be available.
-	$self->{'needed'} = {
-		#'IO::Socket' => '',
-		'DBI' => '',
-		#'DBD::mysql' => '',
-		'MIME::Entity' => '',
-		#'MIME::Parser' => '',
-		'Email::Simple' => '',
+	# Required perl modules
+	$self->{'perl_modules'} = {
+		'Crypt::Blowfish' => '',
 		'Crypt::CBC' => '',
-		#'Crypt::Blowfish' => '',
 		'Crypt::PasswdMD5' => '',
-		'MIME::Base64' => '',
-		'Term::ReadKey' => '',
-		#'Term::ReadPassword' => '',
-		'File::Basename' => '',
-		'File::Path' => '',
-		#'HTML::Entities' => '',
-		#'File::Temp' => 'qw(tempdir)',
-		#'File::Copy::Recursive' => 'qw(rcopy)',
-		'Net::LibIDN' => 'qw/idn_to_ascii idn_to_unicode/',
-		'XML::Simple' => '',
+		'DBI' => '',
+		'DBD::mysql' => '',
 		'DateTime' => '',
 		'Data::Validate::Domain' => 'qw(is_domain)',
-		'Data::Validate::IP' => 'qw(is_ipv4 is_ipv6)',
+		'Email::Simple' => '',
 		'Email::Valid' => '',
+		'File::Basename' => '',
+		'File::Path' => '',
+		'MIME::Base64' => '',
+		'MIME::Entity' => '',
+		'Net::LibIDN' => 'qw/idn_to_ascii idn_to_unicode/',
+		'XML::Simple' => ''
 	};
 
+	# Required programs
 	$self->{'programs'} = {
 		'PHP' => {
 			'version_command' => "$main::imscpConfig{'CMD_PHP'} -v",
-			'version_regexp' => 'PHP\s([\d.]+)',
+			'version_regexp' => qr/PHP\s([\d.]+)/,
 			'minimum_version' => '5.3.2'
 		},
 		'Perl' => {
 			'version_command' => "$main::imscpConfig{'CMD_PERL'} -v",
-			'version_regexp' => 'v([\d.]+)',
+			'version_regexp' => qr/v([\d.]+)/,
 			'minimum_version' => '5.10.1'
 		}
 	};
@@ -143,9 +134,9 @@ sub _modules
 
 	my @mod_missing = ();
 
-	for my $mod (keys %{$self->{'needed'}}) {
+	for my $mod (keys %{$self->{'perl_modules'}}) {
 		if (eval "require $mod") {
-			eval "use $mod $self->{'needed'}->{$mod}";
+			eval "use $mod $self->{'perl_modules'}->{$mod}";
 		} else {
 			push(@mod_missing, $mod);
 		}

@@ -40,6 +40,8 @@
                 <package>libsasl2-modules</package>
                 <package>libsasl2-modules-sql</package>
                 <package>sasl2-bin</package>
+                <package>policyd-weight</package>
+                <package>postgrey</package>
             </postfix>
         </alternative>
     </mta>
@@ -166,37 +168,22 @@
     </php>
     <perl>
         <package>perl</package>
-        <package>perl-base</package>
         <package>libperl5.10</package>
-        <package>libberkeleydb-perl</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
         <package>libcrypt-passwdmd5-perl</package>
         <package>libdata-validate-domain-perl</package>
-        <package>libdata-validate-ip-perl</package>
-        <package>libdate-calc-perl</package>
-        <package>libdate-manip-perl</package>
         <package>libdatetime-perl</package>
         <package>libdbd-mysql-perl</package>
         <package>libdbi-perl</package>
-        <package>libdigest-md5-perl</package>
         <package>libemail-valid-perl</package>
         <package>libfile-copy-recursive-perl</package>
         <package>libfile-homedir-perl</package>
-        <package>libfile-mimeinfo-perl</package>
-        <package>libio-socket-inet6-perl</package>
-        <package>libio-stringy-perl</package>
-        <package>libmail-sendmail-perl</package>
         <package>libmailtools-perl</package>
-        <package>libmime-perl</package>
+        <package>libmime-tools-perl</package>
+        <package>libnet-ip-perl</package>
         <package>libnet-dns-perl</package>
         <package>libnet-libidn-perl</package>
-        <package>libnet-netmask-perl</package>
-        <package>libnet-smtp-server-perl</package>
-        <package>libsnmp-session-perl</package>
-        <package>libterm-readkey-perl</package>
-        <package>libterm-readpassword-perl</package>
-        <package>libhtml-parser-perl</package>
         <package>libtimedate-perl</package>
         <package>libxml-parser-perl</package>
         <package>libxml-simple-perl</package>
@@ -207,34 +194,22 @@
         <package>at</package>
         <package>bash</package>
         <package>bash-completion</package>
-        <package>pbzip2</package>
         <package>bzip2</package>
-        <package>dialog</package>
-        <package>diffutils</package>
+        <package>ca-certificates</package>
+        <package>curl</package>
         <package>dnsutils</package>
         <package>gcc</package>
+        <package>git-core</package>
         <package>gzip</package>
         <package>iptables</package>
         <package>iproute</package>
         <package>ispell</package>
-        <package>libc6-dev</package>
-        <package>libexpat1</package>
-        <package>libexpat1-dev</package>
-        <package>libmcrypt4</package>
         <package>locales</package>
-        <package>lynx</package>
         <package>lzma</package>
         <package>make</package>
         <package>openssl</package>
-        <package>original-awk</package>
-        <package>patch</package>
-        <package>policyd-weight</package>
-        <package>postgrey</package>
-        <package>procmail</package>
+        <package>pbzip2</package>
         <package>ssh</package>
         <package>tar</package>
-        <package>wget</package>
-        <package>curl</package>
-        <package>git-core</package>
     </other>
 </packages>

@@ -31,6 +31,7 @@ use warnings;
 use iMSCP::Debug;
 use Crypt::CBC;
 use MIME::Base64;
+use Crypt::PasswdMD5;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -89,7 +90,7 @@ sub encrypt_db_password
 	error('KEY or IV has invalid length')
 		if (length($self->{'cipher'}->{'key'}) != $self->{'cipher'}->{'keysize'} || length($self->{'cipher'}->{'iv'}) != 8);
 
-	my $cipher = Crypt::CBC -> new($self->{'cipher'});
+	my $cipher = Crypt::CBC->new($self->{'cipher'});
 	my $encoded	= encode_base64($cipher->encrypt($pass));
 	chop($encoded);
 
@@ -109,7 +110,7 @@ sub decrypt_db_password
 		return undef;
 	}
 
-	my $cipher = Crypt::CBC -> new($self->{'cipher'});
+	my $cipher = Crypt::CBC->new($self->{'cipher'});
 	my $plaintext = $cipher->decrypt(decode_base64("$pass\n"));
 
 	$plaintext;
@@ -131,8 +132,6 @@ sub crypt_md5_data
 	}
 
 	debug("Crypting |$data|!");
-
-	use Crypt::PasswdMD5;
 
 	$data = unix_md5_crypt($data, $self->randomString(8));
 
