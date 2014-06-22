@@ -28,6 +28,7 @@ ENGINE
 	Changed: Backslashes are no longer allowed in SQL user names and  passwords
 	Changed: SASL authentication is now made against database directly (Postfix)
 	Fixed: Any error occurring from the imscp_network script must go into the imscp_network.log file
+	Fixed: German special characters are not displayed properly in auto-reply messages
 	Fixed: In case the passphrase is missing, user must not be prompted (iMSCP::OpenSSL)
 	Fixed: Missing EOL in SSL certificate containers (iMSCP::OpenSSL)
 	Fixed: Quota script must ignore maildir which doesn't exist

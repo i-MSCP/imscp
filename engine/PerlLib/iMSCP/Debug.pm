@@ -272,7 +272,7 @@ sub writeLogs
 	# Make error message free of any ANSI color and end of line codes
 	$logs =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 
-	if(open(FH, '>', $logFile)) {
+	if(open(FH, '>utf8', $logFile)) {
 		print FH $logs;
 		close FH;
 	} else {
