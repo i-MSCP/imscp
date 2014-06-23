@@ -383,6 +383,8 @@ sub setupAskServerIps
 		$main::reconfigure ~~ ['ips', 'all', 'forced'] || ! ($baseServerIp ~~ @serverIps) ||
 		! ($net->isValidAddr($baseServerIp) && $net->isValidAddr($baseServerPublicIp))
 	) {
+		BASE_SERVER_IP_QUESTION:
+
 		do {
 			# Ask user for the server base IP
 			($rs, $baseServerIp) = $dialog->radiolist(
@@ -391,43 +393,6 @@ sub setupAskServerIps
 				$baseServerIp ? $baseServerIp : $serverIps[0]
 			);
 		} while($rs != 30 && ! $baseServerIp);
-
-		# Server inside private LAN?
-		if($net->getAddrType($baseServerIp) ne 'PUBLIC') {
-			if (! $net->isValidAddr($baseServerPublicIp) || $net->getAddrType($baseServerPublicIp) eq 'PUBLIC') {
-				$baseServerPublicIp = '';
-			}
-
-			$msg = '';
-
-			do {
-				($rs, $baseServerPublicIp) = $dialog->inputbox(
-"
-The system has detected that your server is inside a private LAN.
-
-Please enter your public IP:$msg
-
-\\ZbNote:\\Zn Leave blank to force usage of the $baseServerIp IP address.
-",
-				$baseServerPublicIp
-				);
-
-				if($baseServerPublicIp) {
-					if(!$net->isValidAddr($baseServerPublicIp)) {
-						$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
-					} elsif($net->getAddrType($baseServerPublicIp) ne 'PUBLIC') {
-						$msg = "\n\n\\Z1Unallowed IP address. The IP address must be public.\\Zn\n\nPlease, try again:";
-					} else {
-						$msg = '';
-					}
-				} else {
-					$baseServerPublicIp = $baseServerIp;
-					$msg = ''
-				}
-			} while($rs != 30 && $msg);
-		} else {
-			$baseServerPublicIp = $baseServerIp
-		}
 
 		# Handle server IP addresses addition
 		if($rs != 30 && $baseServerIp eq 'Add new ip') {
@@ -465,6 +430,47 @@ Please enter your public IP:$msg
 			}
 		}
 
+		if($rs != 30) {
+			# Server inside private LAN?
+			if($net->getAddrType($baseServerIp) ne 'PUBLIC') {
+				if (! $net->isValidAddr($baseServerPublicIp) || $net->getAddrType($baseServerPublicIp) ne 'PUBLIC') {
+					$baseServerPublicIp = '';
+				}
+
+				$msg = '';
+
+				do {
+					($rs, $baseServerPublicIp) = $dialog->inputbox(
+"
+The system has detected that your server is inside a private LAN.
+
+Please enter your public IP:$msg
+
+\\ZbNote:\\Zn Leave blank to force usage of the $baseServerIp IP address.
+",
+						$baseServerPublicIp
+					);
+
+					if($baseServerPublicIp) {
+						if(!$net->isValidAddr($baseServerPublicIp)) {
+							$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
+						} elsif($net->getAddrType($baseServerPublicIp) ne 'PUBLIC') {
+							$msg = "\n\n\\Z1Unallowed IP address. The IP address must be public.\\Zn\n\nPlease, try again:";
+						} else {
+							$msg = '';
+						}
+					} else {
+						$baseServerPublicIp = $baseServerIp;
+						$msg = ''
+					}
+				} while($rs != 30 && $msg);
+			} else {
+				$baseServerPublicIp = $baseServerIp
+			}
+		} else {
+			goto BASE_SERVER_IP_QUESTION;
+		}
+
 		# Handle IP deletion in case the user stepped back
 		my $manualBaseServerIp = setupGetQuestion('MANUAL_BASE_SERVER_IP');
 
@@ -481,7 +487,7 @@ Please enter your public IP:$msg
 		if($rs != 30) {
 			$dialog->set('defaultno', '');
 
-			if(@serverIps > 1 && ! $dialog->yesno("\nDo you want add or remove IP addresses?")) {
+			if(@serverIps > 1 && ! $dialog->yesno("\nDo you want add or remove an IP address?")) {
 				$dialog->set('defaultno', undef);
 
 				@serverIps = grep $_ ne $baseServerIp, @serverIps; # Remove the base server IP from the list
