@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- autoinstaller::Adapter::Debian - Debian autoinstaller adapter class
+ autoinstaller::Adapter::DebianAdapter - Debian autoinstaller adapter class
 
 =cut
 
@@ -30,7 +30,7 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package autoinstaller::Adapter::Debian;
+package autoinstaller::Adapter::DebianAdapter;
 
 use strict;
 use warnings;
@@ -44,8 +44,8 @@ use iMSCP::File;
 use iMSCP::Stepper;
 use iMSCP::Getopt;
 use File::Temp;
-use autoinstaller::Common 'checkCommandAvailability';
-use parent 'autoinstaller::Adapter::Abstract';
+use autoinstaller::Functions 'checkCommandAvailability';
+use parent 'autoinstaller::Adapter::AbstractAdapter';
 
 =head1 DESCRIPTION
 
@@ -57,7 +57,7 @@ use parent 'autoinstaller::Adapter::Abstract';
 
 =item installPreRequiredPackages()
 
- Install pre-required packages.
+ Install pre-required packages
 
  Return int 0 on success, other on failure
 
@@ -65,7 +65,7 @@ use parent 'autoinstaller::Adapter::Abstract';
 
 sub installPreRequiredPackages
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
@@ -94,7 +94,7 @@ sub installPreRequiredPackages
 
 =item preBuild()
 
- Process preBuild tasks.
+ Process preBuild tasks
 
  Return int 0 on success, other on failure
 
@@ -102,7 +102,7 @@ sub installPreRequiredPackages
 
 sub preBuild
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforePreBuild');
 	return $rs if $rs;
@@ -155,7 +155,7 @@ sub preBuild
 
 =item uninstallPackages()
 
- Uninstall Debian packages not longer needed by i-MSCP.
+ Uninstall Debian packages not longer needed by i-MSCP
 
  Return int 0 on success, other on failure
 
@@ -163,7 +163,7 @@ sub preBuild
 
 sub uninstallPackages
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeUninstallPackages', $self->{'packagesToUninstall'});
 	return $rs if $rs;
@@ -194,7 +194,7 @@ sub uninstallPackages
 
 =item installPackages()
 
- Install Debian packages for i-MSCP.
+ Install Debian packages for i-MSCP
 
  Return int 0 on success, other on failure
 
@@ -202,7 +202,7 @@ sub uninstallPackages
 
 sub installPackages
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
 	return $rs if $rs;
@@ -238,7 +238,7 @@ sub installPackages
 
 =item postBuild()
 
- Process postBuild tasks.
+ Process postBuild tasks
 
  Return int 0 on success, other on failure
 
@@ -246,7 +246,7 @@ sub installPackages
 
 sub postBuild
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Add user servers selection in imscp.conf file by creating/updating server variables
 	$main::imscpConfig{uc($_) . '_SERVER'} = lc($self->{'userSelection'}->{$_}) for keys %{$self->{'userSelection'}};
@@ -262,15 +262,15 @@ sub postBuild
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
- Return autoinstaller::Adapter::Debian
+ Return autoinstaller::Adapter::DebianAdapter
 
 =cut
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	delete $ENV{'DEBCONF_FORCE_DIALOG'};
 
@@ -291,7 +291,7 @@ sub _init
 
 =item _preparePackagesList()
 
- Prepare lists of Debian packages to be uninstalled and installed.
+ Prepare lists of Debian packages to be uninstalled and installed
 
  Return int 0 on success, other on failure
 
@@ -299,7 +299,7 @@ sub _init
 
 sub _preparePackagesList
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $lsbRelease = iMSCP::LsbRelease->getInstance();
 	my $distribution = lc($lsbRelease->getId(1));
@@ -342,7 +342,7 @@ sub _preparePackagesList
 			# Only ask for server to use if not already defined or not found in list of available servers
 			# or if user asked for reconfiguration
 			 if($main::reconfigure ~~ [$service, 'servers', 'all'] || ! $newServer) {
-				if(@alternative > 1) { # Do no ask for server if only one is available
+				if(@alternative > 1) { # Only ask for server if more than one is available
 
 					my @humanAlternative = @alternative;
 					s/_/ /g for @humanAlternative; # Humanize
@@ -489,7 +489,7 @@ Do you agree?
 
 =item _updateAptSourceList()
 
- Add required repository sections to repositories that support them.
+ Add required repository sections to repositories that support them
 
  Return int 0 on success, other on failure
 
@@ -497,7 +497,7 @@ Do you agree?
 
 sub _updateAptSourceList
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sourceListFile = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
@@ -563,15 +563,15 @@ sub _updateAptSourceList
 
 =item _processExternalRepositories()
 
- Process external repositories.
+ Process external repositories
 
- Return int 0 on success, other on failure.
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _processExternalRepositories
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if(%{$self->{'externalRepositoriesToRemove'}} || %{$self->{'externalRepositoriesToAdd'}}) {
 
@@ -664,7 +664,7 @@ sub _processExternalRepositories
 
 =item _processAptPreferencesFile()
 
- Process apt preferences file.
+ Process apt preferences file
 
  Return 0 on success, other on failure
 
@@ -672,7 +672,8 @@ sub _processExternalRepositories
 
 sub _processAptPreferencesFile
 {
-	my $self = shift;
+	my $self = $_[0];
+
 	my $fileContent = '';
 	my $rs = 0;
 
@@ -708,7 +709,7 @@ sub _processAptPreferencesFile
 
 =item _updatePackagesIndex()
 
- Update Debian packages index.
+ Update Debian packages index
 
  Return int 0 on success, other on failure
 
@@ -716,7 +717,7 @@ sub _processAptPreferencesFile
 
 sub _updatePackagesIndex
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $command = 'apt-get';
 	my ($stdout, $stderr);
@@ -744,7 +745,7 @@ sub _updatePackagesIndex
 
 sub _debconfSetSelections
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sqlServer = $main::questions{'SQL_SERVER'} || undef;
 	my $poServer = $main::questions{'PO_SERVER'} || undef;
@@ -822,7 +823,7 @@ EOF
 
 =item _parseHash(\%hash, $target)
 
- Parse the given hash and put result in the target array.
+ Parse the given hash and put result in the target array
 
  Param hash_ref $hash Reference to a hash
  Param string Target array name (packagesToUninstall|packagesToInstall)
@@ -830,11 +831,11 @@ EOF
 
 =cut
 
-sub _parseHash
+sub _parseHash($$$)
 {
-	my $self = shift;
-	my $hash = shift;
-	my $target = shift || 'packagesToInstall';
+	my ($self, $hash, $target) = @_;
+
+	$target ||= 'packagesToInstall';
 
 	for(values %{$hash}) {
 		if(ref $_  eq 'HASH') {
@@ -851,18 +852,18 @@ sub _parseHash
 
 =item _parseArray(\@array, $target)
 
- Parse the given array and put the result in the target array.
+ Parse the given array and put the result in the target array
 
  Param array_ref $array Reference to an array
  Param string Target array (packagesToUninstall|packagesToInstall)
  Return undef
+
 =cut
 
 sub _parseArray
 {
-	my $self = shift;
-	my $array = shift;
-	my $target = shift || 'packagesToInstall';
+	my ($self, $array, $target) = @_;
+	$target ||= 'packagesToInstall';
 
 	for(@{$array}) {
 		if(ref $_ eq 'HASH') {

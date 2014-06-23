@@ -45,7 +45,7 @@ use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Bootstrapper;
-use autoinstaller::Common;
+use autoinstaller::Functions;
 
 newDebug('imscp-build.log');
 
@@ -191,7 +191,7 @@ my @steps = (
 	[\&uninstallPackages,           "Uninstalling $distribution packages not longer needed by i-MSCP"],
 	[\&installPackages,             "Installing all $distribution packages for i-MSCP"],
 	[\&testRequirements,            'Testing i-MSCP requirements'],
-	[\&processDistroLayoutFile,     "Processing $distribution layout file"],
+	[\&processDistroLayoutFile,     "Processing $distribution layout"],
 	[\&processDistroInstallFiles,   "Processing $distribution install files"],
 	[\&buildImscpDaemon,            'Building i-MSCP daemon'],
 	[\&installEngine,               'Installing engine files in temporary directory'],
@@ -243,25 +243,19 @@ unless($main::buildonly) {
 		'awstats_updateall.pl', 'imscp'
 	);
 
-	my @runningProcesses = ();
+	my $runningProcess = 0;
 	my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 
 	for(@locks) {
-		if(! $bootstrapper->getInstance()->lock("/tmp/$_.lock", 'nowait')) {
-			 push @runningProcesses, ($_ eq 'imscp') ? 'i-MSCP backend' : $_;
+		if(! $bootstrapper->lock("/tmp/$_.lock", 'nowait')) {
+			 $runningProcess = 1;
 		}
 	}
 
-	if(@runningProcesses) {
-		my $runningProcesses = join "\n", @runningProcesses;
-
+	if($runningProcess) {
 		iMSCP::Dialog->factory()->msgbox(<<EOF);
 
-The following i-MSCP processes are already running on your system:
-
-$runningProcesses
-
-You must wait until the end of the i-MSCP processes and re-run the installer.
+An i-MSCP or related process is currently running on your system. You must wait until the end of the processes and re-run the installer.
 EOF
 
 		exit 0;

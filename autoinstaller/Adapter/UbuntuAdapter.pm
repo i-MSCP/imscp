@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- autoinstaller::Adapter::Ubuntu - Ubuntu autoinstaller adapter class
+ autoinstaller::Adapter::UbuntuAdapter - Ubuntu autoinstaller adapter class
 
 =cut
 
@@ -29,7 +29,7 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package autoinstaller::Adapter::Ubuntu;
+package autoinstaller::Adapter::UbuntuAdapter;
 
 use strict;
 use warnings;
@@ -37,7 +37,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::LsbRelease;
 use iMSCP::Execute;
-use parent 'autoinstaller::Adapter::Debian';
+use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =head1 DESCRIPTION
 
@@ -51,15 +51,15 @@ use parent 'autoinstaller::Adapter::Debian';
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
- Return autoinstaller::Adapter::Ubuntu
+ Return autoinstaller::Adapter::UbuntuAdapter
 
 =cut
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	delete $ENV{'DEBCONF_FORCE_DIALOG'};
 
@@ -87,15 +87,15 @@ sub _init
 
 =item _processExternalRepositories()
 
- Process external repositories.
+ Process external repositories
 
- Return int 0 on success, other on failure.
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _processExternalRepositories
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if(%{$self->{'externalRepositoriesToRemove'}} || %{$self->{'externalRepositoriesToAdd'}}) {
 

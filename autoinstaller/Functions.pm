@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- autoinstaller::Common - Common functions for the i-MSCP autoinstaller
+ autoinstaller::Functions - Common functions for the i-MSCP autoinstaller
 
 =cut
 
@@ -30,7 +30,7 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package autoinstaller::Common;
+package autoinstaller::Functions;
 
 use strict;
 use warnings;
@@ -53,9 +53,11 @@ our @EXPORT = qw(
 	postBuild doImscpBackup savePersistentData installTmp removeTmp checkCommandAvailability
 );
 
+my $autoinstallerAdapterInstance;
+
 =head1 DESCRIPTION
 
- Common functions for autoinstaller.
+ Common functions for the i-MSCP installer
 
 =head1 EXPORTED FUNCTIONS
 
@@ -63,7 +65,7 @@ our @EXPORT = qw(
 
 =item loadConfig()
 
- Load main i-MSCP configuration.
+ Load main i-MSCP configuration
 
  Load both the new imscp.conf file (upstread conffile) and the current imscp.conf file (old conffile) and merge them
 together in the %main::imscpConfig variable. The old imscp.conf file is tied to the %main::imscpOldConfig variable
@@ -113,7 +115,7 @@ sub loadConfig
 
 =item installPreRequiredPackages
 
- Trigger pre-required package installation from distro autoinstaller adapter.
+ Trigger pre-required package installation from distro autoinstaller adapter
 
  Return int 0 on success, other otherwise
 
@@ -126,7 +128,7 @@ sub installPreRequiredPackages
 
 =item checkDistribution()
 
- Check distribution.
+ Check distribution
 
  Return int 0 on success, 1 on failure
 
@@ -134,8 +136,6 @@ sub installPreRequiredPackages
 
 sub checkDistribution()
 {
-	my $self = shift;
-
 	iMSCP::Dialog->factory()->infobox("\nDetecting target distribution...");
 
 	my $lsbRelease = iMSCP::LsbRelease->getInstance();
@@ -200,7 +200,7 @@ Thanks for using i-MSCP.
 
 =item preBuild()
 
- Trigger pre-build tasks from distro autoinstaller adapter.
+ Trigger pre-build tasks from distro autoinstaller adapter
 
  Return int 0 on success, other on failure
 
@@ -213,7 +213,7 @@ sub preBuild
 
 =item uninstallPackages()
 
- Trigger packages uninstallation from distro autoinstaller adapter.
+ Trigger packages uninstallation from distro autoinstaller adapter
 
  Return int 0 on success, other on failure
 
@@ -226,7 +226,7 @@ sub uninstallPackages
 
 =item installPackages()
 
- Trigger packages installation from distro autoinstaller adapter.
+ Trigger packages installation from distro autoinstaller adapter
 
  Return int - 0 on success, other on failure
 
@@ -260,14 +260,17 @@ sub testRequirements
 
 sub processDistroLayoutFile()
 {
-	_processXmlFile(
-		"$FindBin::Bin/autoinstaller/Adapter/" . iMSCP::LsbRelease->getInstance()->getId(1) . '/layout.xml'
-	);
+	# Possible layout paths
+	my $distroLayout = "$FindBin::Bin/autoinstaller/Layout/" . iMSCP::LsbRelease->getInstance()->getId(1) . '.xml';
+	my $defaultLayout = "$FindBin::Bin/autoinstaller/Layout/Debian.xml";
+
+	# Process layout
+	_processXmlFile((-f $distroLayout) ? $distroLayout : $defaultLayout);
 }
 
 =item processDistroInstallFiles()
 
- Process distribution install.xml files.
+ Process distribution install.xml files
 
  Return int 0 on success, other on failure
 
@@ -275,33 +278,41 @@ sub processDistroLayoutFile()
 
 sub processDistroInstallFiles
 {
-	my $specificPath = "$FindBin::Bin/configs/" . lc(iMSCP::LsbRelease->getInstance()->getId(1));
-	my $commonPath = "$FindBin::Bin/configs/debian";
-	my $path = -d $specificPath ? $specificPath : $commonPath;
+	# Possible config directory paths
+	my $distroConfigDir = "$FindBin::Bin/configs/" . lc(iMSCP::LsbRelease->getInstance()->getId(1));
+	my $defaultConfigDir = "$FindBin::Bin/configs/debian";
 
-	unless(chdir($path)) {
-		error("Unable to change path to $path: $!");
+	# Determine config directory to use
+	my $confDir = (-d $distroConfigDir) ? $distroConfigDir : $defaultConfigDir;
+
+	unless(chdir($confDir)) {
+		error("Unable to change directory to $confDir: $!");
 		return 1;
 	}
 
-	my $file = -f "$specificPath/install.xml" ? "$specificPath/install.xml" : "$commonPath/install.xml";
+	# Determine install.xml file to process
+	my $file = (-f "$distroConfigDir/install.xml") ? "$distroConfigDir/install.xml" : "$defaultConfigDir/install.xml";
 
 	my $rs = _processXmlFile($file);
 	return $rs if $rs;
 
-	# eg. /configs/debian
-	my $dir = iMSCP::Dir->new('dirname' => $commonPath);
-	my @configs = $dir->getDirs();
+	#################
 
-	for(@configs) {
-		$path = -d "$specificPath/$_" ? "$specificPath/$_" : "$commonPath/$_";
+	# Get list of sub config dir from default config directory (debian)
+	my $dirDH = iMSCP::Dir->new('dirname' => $defaultConfigDir);
+	my @configDirs = $dirDH->getDirs();
 
-		unless(chdir($path)) {
-			error("Cannot change path to $path: $!");
+	for(@configDirs) {
+		# Override sub config dir path if it is available in selected distro, else set it to default path
+		$confDir = (-d "$distroConfigDir/$_") ? "$distroConfigDir/$_" : "$defaultConfigDir/$_";
+
+		unless(chdir($confDir)) {
+			error("Cannot change directory to $confDir: $!");
 			return 1;
 		}
 
-		$file = -f "$specificPath/$_/install.xml" ? "$specificPath/$_/install.xml" : "$commonPath/$_/install.xml";
+		$file = -f ("$distroConfigDir/$_/install.xml")
+			? "$distroConfigDir/$_/install.xml" : "$defaultConfigDir/$_/install.xml";
 
 		$rs = _processXmlFile($file);
 		return $rs if $rs;
@@ -314,13 +325,10 @@ sub processDistroInstallFiles
 
  Build i-MSCP daemon
 
- Return int 0 on success, other on failure.
+ Return int 0 on success, other on failure
 
 =cut
 
-# Build the i-MSCP daemon by running make.
-#
-# @return 0 on success
 sub buildImscpDaemon
 {
 	unless(chdir "$FindBin::Bin/daemon") {
@@ -349,14 +357,13 @@ sub buildImscpDaemon
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Cannot clean i-MSCP daemon artifacts') if $rs;
-	return $rs if $rs;
 
-	0;
+	$rs;
 }
 
 =item installEngine()
 
- Install engine files in build directory.
+ Install engine files in build directory
 
  Return int 0 on success, other on failure
 
@@ -393,11 +400,12 @@ sub installEngine
 
 =item installGui()
 
- Install GUI files in build directory.
+ Install GUI files in build directory
 
  Return int 0 on success, other on failure
 
 =cut
+
 sub installGui
 {
 	my ($stdout, $stderr);
@@ -410,7 +418,7 @@ sub installGui
 
 =item postBuild()
 
- Process post-build tasks.
+ Process post-build tasks
 
  Trigger post-build tasks from distro autoinstaller adapter and save i-MSCP main configuration file.
 
@@ -462,7 +470,7 @@ sub postBuild
 
 =item doImscpBackup
 
- Backup current i-MSCP installation (database and conffiles) if any.
+ Backup current i-MSCP installation (database and conffiles) if any
 
  Return int 0 on success, other on failure
 
@@ -497,7 +505,7 @@ Do you want to continue?
 
 =item savPersistentData()
 
- Save persistent data in build directory.
+ Save persistent data in build directory
 
  Return int 0 on success, other on failure
 
@@ -600,7 +608,7 @@ sub savePersistentData
 
 =item installTmp()
 
- Install files from build directory on file system.
+ Install files from build directory on file system
 
  Return int 0 on success, other on failure
 
@@ -628,7 +636,8 @@ sub installTmp
 		"$main::imscpConfig{'ROOT_DIR'}/daemon " .
 		"$main::imscpConfig{'ROOT_DIR'}/engine " .
 		"$main::imscpConfig{'ROOT_DIR'}/gui ",
-		\$stdout, \$stderr
+		\$stdout,
+		\$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -638,14 +647,13 @@ sub installTmp
 	$rs = execute("$main::imscpConfig{'CMD_CP'} -fR $tmpDir/* /", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
 
-	0;
+	$rs;
 }
 
 =item
 
- Delete build directory.
+ Delete build directory
 
  Return int 0 on success, other on failure
 
@@ -667,7 +675,7 @@ sub removeTmp
 
 =item checkCommandAvailability()
 
- Check availability of the given command.
+ Check availability of the given command
 
  Return int 0 if the given command is available, 1 othewise
 
@@ -675,10 +683,8 @@ sub removeTmp
 
 sub checkCommandAvailability($)
 {
-	my $command = shift;
 	my ($stdout, $stderr);
-
-	my $rs = execute("$main::imscpConfig{'CMD_WHICH'} $command", \$stdout, \$stderr);
+	my $rs = execute("$main::imscpConfig{'CMD_WHICH'} $_[0]", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 
@@ -693,7 +699,7 @@ sub checkCommandAvailability($)
 
 =item _processXmlFile()
 
- Process an install.xml file or distribution layout.xml file.
+ Process an install.xml file or distribution layout.xml file
 
  Return int 0 on success, other on failure ; A fatal error is raised in case a variable cannot be exported
 
@@ -701,7 +707,7 @@ sub checkCommandAvailability($)
 
 sub _processXmlFile($)
 {
-	my $file = shift;
+	my $file = $_[0];
 
 	unless(-f $file) {
 		error("$file doesn't exist");
@@ -773,7 +779,7 @@ sub _processXmlFile($)
 
 =item _expandVars()
 
- Expand variables in the given string.
+ Expand variables in the given string
 
  Return string
 
@@ -781,7 +787,7 @@ sub _processXmlFile($)
 
 sub _expandVars
 {
-	my $string = shift || '';
+	my $string = $_[0] || '';
 
 	debug("Input: $string");
 
@@ -802,9 +808,9 @@ sub _expandVars
 
 =item _processFolder()
 
- Process a 'folder' node from an install.xml file.
+ Process a folder node from an install.xml file
 
- Process the xml 'folder' node by creating the described directory.
+ Process the xml folder node by creating the described directory.
 
  Return int 0 on success, other on failure
 
@@ -813,7 +819,7 @@ sub _expandVars
 
 sub _processFolder
 {
-	my $data = shift;
+	my $data = $_[0];
 
 	my $dir = iMSCP::Dir->new('dirname' => $data->{'content'});
 
@@ -836,7 +842,7 @@ sub _processFolder
 
 =item
 
- Process a 'copy_config' node from an install.xml file.
+ Process a copy_config node from an install.xml file
 
  Return int 0 on success, other on failure
 
@@ -844,7 +850,7 @@ sub _processFolder
 
 sub _copyConfig
 {
-	my $data = shift;
+	my $data = $_[0];
 
 	my @parts = split '/', $data->{'content'};
 	my $name = pop(@parts);
@@ -891,7 +897,7 @@ sub _copyConfig
 
 =item
 
- Process the 'copy' node from an install.xml file.
+ Process the copy node from an install.xml file
 
  Return int 0 on success, other on failure
 
@@ -899,7 +905,8 @@ sub _copyConfig
 
 sub _copy
 {
-	my $data = shift;
+	my $data = $_[0];
+
 	my @parts = split '/', $data->{'content'};
 	my $name = pop(@parts);
 	my $path = join '/', @parts;
@@ -931,7 +938,7 @@ sub _copy
 
 =item _createFile()
 
- Create a file.
+ Create a file
 
  Return int 0 on success, other on failure
 
@@ -939,14 +946,12 @@ sub _copy
 
 sub _createFile
 {
-	my $data = shift;
-
-	iMSCP::File->new('filename' => $data->{'content'})->save();
+	iMSCP::File->new('filename' => $_[0]->{'content'})->save();
 }
 
 =item _chownFile()
 
- Change file/directory owner and/or group recursively.
+ Change file/directory owner and/or group recursively
 
  Return int 0 on success, other on failure
 
@@ -954,7 +959,7 @@ sub _createFile
 
 sub _chownFile
 {
-	my $data = shift;
+	my $data = $_[0];
 
 	if($data->{'owner'} && $data->{'group'}) {
 		my ($stdout, $stderr);
@@ -972,7 +977,7 @@ sub _chownFile
 
 =item _chmodFile()
 
- Process chmod_file from an install.xml file.
+ Process chmod_file from an install.xml file
 
  Return int 0 on success, other on failure
 
@@ -980,9 +985,7 @@ sub _chownFile
 
 sub _chmodFile
 {
-	debug('Starting...');
-
-	my $data = shift;
+	my $data = $_[0];
 
 	if(exists $data->{'mode'}) {
 		my ($stdout, $stderr);
@@ -992,14 +995,12 @@ sub _chmodFile
 		return $rs if $rs;
 	}
 
-	debug('Ending...');
-
 	0;
 }
 
 =item _getDistroAdapter()
 
- Return distro autoinstaller adapter instance.
+ Return distro autoinstaller adapter instance
 
  Return autoinstaller::Adapter::Abstract
  TODO check that adapter is an instance of autoinstaller::Adapter::Abstract
@@ -1008,20 +1009,21 @@ sub _chmodFile
 
 sub _getDistroAdapter
 {
-	if(! defined $main::autoinstallerAdapter) {
+	unless(defined $autoinstallerAdapterInstance) {
 		my $distribution = iMSCP::LsbRelease->getInstance()->getId(1);
-		my $file = "$FindBin::Bin/autoinstaller/Adapter/$distribution.pm";
-		my $adapterClass = "autoinstaller::Adapter::$distribution";
 
-		if(-f $file) {
+		eval {
+			my $file = "$FindBin::Bin/autoinstaller/Adapter/${distribution}Adapter.pm";
+			my $adapterClass = "autoinstaller::Adapter::${distribution}Adapter";
+
 			require $file;
-			$main::autoinstallerAdapter = $adapterClass->getInstance();
-		} else {
-			fatal('Distro autoinstaller adapter not found');
-		}
+			$autoinstallerAdapterInstance = $adapterClass->getInstance()
+		};
+
+		fatal("Unable to instantiate $distribution autoinstaller adapter: $@") if $@;
 	}
 
-	$main::autoinstallerAdapter;
+	$autoinstallerAdapterInstance;
 }
 
 =back

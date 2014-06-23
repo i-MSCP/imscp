@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-autoinstaller::Adapter::Abstract - Abstract class for Autoinstaller distro adapters
+autoinstaller::Adapter::AbstractAdapter - Abstract class for autoinstaller distro adapters
 
 =cut
 
@@ -29,7 +29,7 @@ autoinstaller::Adapter::Abstract - Abstract class for Autoinstaller distro adapt
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package autoinstaller::Adapter::Abstract;
+package autoinstaller::Adapter::AbstractAdapter;
 
 use strict;
 use warnings;
@@ -50,7 +50,7 @@ this class.
 
  Install pre-required packages.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -63,7 +63,7 @@ sub installPreRequiredPackages
 
  Process preBuild tasks.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -74,39 +74,35 @@ sub preBuild
 
 =item uninstallPackages()
 
- Uninstall distribution packages.
+ Uninstall distribution packages
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
 sub uninstallPackages
 {
-	my $self = shift;
-
-	fatal(ref($self) . ' adapter must implement the uninstallPackages() method');
+	fatal(ref($_[0]) . ' adapter must implement the uninstallPackages() method');
 }
 
 =item installPackages()
 
- Install distribution packages.
+ Install distribution packages
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
 sub installPackages
 {
-	my $self = shift;
-
-	fatal(ref($self) . ' adapter must implement the installPackages() method');
+	fatal(ref($_[0]) . ' adapter must implement the installPackages() method');
 }
 
 =item postBuild()
 
- Process postBuild tasks.
+ Process postBuild tasks
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
