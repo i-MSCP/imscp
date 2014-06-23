@@ -330,7 +330,7 @@ $msg .= <<EOF;
 
 If you get no error, all went good; if you get one, look at http://forum.i-mscp.net to solve the problem.
 
-Thank you for using i-MSCP.
+Thank you for choosing i-MSCP.
 EOF
 
 	iMSCP::Dialog->factory()->msgbox($msg);

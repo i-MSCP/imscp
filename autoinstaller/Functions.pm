@@ -77,11 +77,11 @@ and set as readonly.
 
 sub loadConfig
 {
+	my $distroConffile = "$FindBin::Bin/configs/" . lc(iMSCP::LsbRelease->getInstance()->getId(1)) . '/imscp.conf';
+	my $defaultConffile = "$FindBin::Bin/configs/debian/imscp.conf";
+
 	# Load news imscp.conf conffile from i-MSCP upstream source
-	tie
-		my %imscpNewConfig,
-		'iMSCP::Config',
-		'fileName' => "$FindBin::Bin/configs/" . lc(iMSCP::LsbRelease->getInstance()->getId(1)) . '/imscp.conf';
+	tie my %imscpNewConfig, 'iMSCP::Config', 'fileName' => (-f $distroConffile) ? $distroConffile : $defaultConffile;
 
 	%main::imscpConfig = %imscpNewConfig;
 
@@ -104,7 +104,6 @@ sub loadConfig
 		$main::imscpConfig{'BuildDate'} = $imscpNewConfig{'BuildDate'};
 		$main::imscpConfig{'Version'} = $imscpNewConfig{'Version'};
 		$main::imscpConfig{'CodeName'} = $imscpNewConfig{'CodeName'};
-		$main::imscpConfig{'DistName'} = $imscpNewConfig{'DistName'};
 		$main::imscpConfig{'THEME_ASSETS_VERSION'} = $imscpNewConfig{'THEME_ASSETS_VERSION'};
 	} else { # No conffile found, assumption is made that it's a new install
 		%main::imscpOldConfig = ();

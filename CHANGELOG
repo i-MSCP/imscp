@@ -8,6 +8,8 @@ Git stable
 CONFIGS
 	Removed: GUI_CERT_DIR variable (replaced by CONF_DIR variable)
 	Cleanup: Package files, config files
+	Removed: Ubuntu imscp.conf file (Debian conffile is now used when no conffile is available for the selected distro)
+	Removed: Ubuntu layout file (Debian layout is now used when no layout is available for the selected distro)
 
 DAEMON
 	Removed: Useless daemon logs + small fixes
