@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <install>
+    <folders>${ROOT_CONF}/init</folders>
     <folders>${SYSTEM_CONF}/php-fpm</folders>
     <folders>${SYSTEM_CONF}/php-fpm/backup</folders>
     <folders>${SYSTEM_CONF}/php-fpm/working</folders>
     <copy_config>${SYSTEM_CONF}/php-fpm/parts</copy_config>
+    <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init/php5-fpm.override</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/logrotate.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/php-fpm.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/php_fpm_imscp.conf</copy_config>

@@ -269,6 +269,10 @@ sub _restorePhpfpmConfig
 		"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
 	) if -f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled";
 
+	$rs = iMSCP::File->new(
+		'filename' => "/etc/init/php5-fpm.override"
+	)->delFile() if -f "/etc/init/php5-fpm.override";
+
 	$rs;
 }
 

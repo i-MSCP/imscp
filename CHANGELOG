@@ -51,6 +51,7 @@ TICKETS
 	Fixed #1095: Bug - IP usage interface is broken
 	Fixed #1097: Enhancement - Allow to set public IP for server which are inside a private LAN
 	Fixed #1099: Bug - SQL users which belong to an account which is being deleted are not removed from mysql table
+	Fixed #1106: Defect - PHP5-FPM server implementation - Reload failure under Ubuntu Trusty Thar
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.11
