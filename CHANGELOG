@@ -5,6 +5,10 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+ADDONS:
+	Fixed: Quotation marks must be escaped in PhpMyAdmin configuration file
+	Fixed: Quotation marks must be escaped in Roundcube configuration file
+
 CONFIGS
 	Removed: GUI_CERT_DIR variable (replaced by CONF_DIR variable)
 	Cleanup: Package files, config files
@@ -34,7 +38,6 @@ ENGINE
 	Fixed: In case the passphrase is missing, user must not be prompted (iMSCP::OpenSSL)
 	Fixed: Missing EOL in SSL certificate containers (iMSCP::OpenSSL)
 	Fixed: Quota script must ignore maildir which doesn't exist
-	Fixed: Quotation marks must be escaped in some configuration files (PhpMyAdmin, Roundcube)
 	Replaced: Dovecot SASL by Cyrus SASL (Postfix)
 
 GUI
