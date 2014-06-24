@@ -85,12 +85,12 @@ function _admin_generateDomainStatisticsEntry($tpl, $domainId)
 {
 	list(
 		$domain_name, $domainId, $web, $ftp, $smtp, $pop3, $trafficUsageBytes, $diskspaceUsageBytes
-	) = generate_user_traffic($domainId);
+	) = shared_getCustomerStats($domainId);
 
 	list(
 		$usub_current, $usub_max, $uals_current, $uals_max, $umail_current, $umail_max, $uftp_current, $uftp_max,
 		$usql_db_current, $usql_db_max, $usql_user_current, $usql_user_max, $trafficMaxMebimytes, $diskspaceMaxMebibytes
-	) = generate_user_props($domainId);
+	) = shared_getCustomerProps($domainId);
 
 
 	$trafficLimitBytes = $trafficMaxMebimytes * 1048576;

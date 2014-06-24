@@ -27,11 +27,11 @@ DATABASE
 	Fixed: Undefined offset in database update r169
 
 DISTROS
-	Re-added: Courier as alternative IMAP/POP3 servers (Debian Jessie)
+	Re-added: Courier as alternative for IMAP/POP3 servers (Debian Jessie)
 
 ENGINE
 	Added: iMSCP::Net::getAddrType() method
-	Changed: Backslashes are no longer allowed in SQL user names and  passwords
+	Changed: Backslashes are no longer allowed in SQL user names and passwords
 	Changed: SASL authentication is now made against database directly (Postfix)
 	Fixed: Any error occurring from the imscp_network script must go into the imscp_network.log file
 	Fixed: German special characters are not displayed properly in auto-reply messages

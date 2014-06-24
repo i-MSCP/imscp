@@ -81,7 +81,7 @@ function generate_reseller_user_props($resellerId)
 			$sql_user_max, $traff_max, $disk_max
 		) = get_user_props($user_id);
 
-		list(, , , , , , $traff_current, $disk_current) = generate_user_traffic($user_id);
+		list(, , , , , , $traff_current, $disk_current) = shared_getCustomerStats($user_id);
 		$rdmn_current += 1;
 
 		if ($sub_max != -1) {

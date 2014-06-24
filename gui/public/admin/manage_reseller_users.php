@@ -240,7 +240,7 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 		list(
 			$subdomainsLimit, , $domainAliasesLimit, , $mailAccountsLimit, , $ftpAccountsLimit, , $sqlDatabasesLimit, ,
 			$sqlUsersLimit, , $trafficLimit, $diskspaceLimit
-			) = generate_user_props($domainId);
+			) = shared_getCustomerProps($domainId);
 
 		calculate_reseller_dvals(
 			$toResellerProperties['current_dmn_cnt'], $toResellerProperties['max_dmn_cnt'], $src_dmn_current,

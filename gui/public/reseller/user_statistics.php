@@ -24,18 +24,18 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2014 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/***********************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
@@ -50,13 +50,14 @@
 function _reseller_generateDomainStatisticsEntry($tpl, $domainId)
 {
 	list(
-		$domainName, $domainId, $web, $ftp, $smtp, $pop3, $trafficUsageBytes, $diskspaceUsageBytes
-		) = generate_user_traffic($domainId);
+		$domainName, $domainId, $webTraffic, $ftpTraffic, $smtpTraffic, $popImapTraffic, $trafficUsageBytes,
+		$diskspaceUsageBytes
+	) = shared_getCustomerStats($domainId);
 
 	list(
-		$usub_current, $usub_max, $uals_current, $uals_max, $umail_current, $umail_max, $uftp_current, $uftp_max,
-		$usql_db_current, $usql_db_max, $usql_user_current, $usql_user_max, $trafficLimit, $diskspaceLimit
-		) = generate_user_props($domainId);
+		$subCount, $subMax, $alsCount, $alsMax, $mailCount, $mailMax, $ftpUserCount, $FtpUserMax, $sqlDbCount,
+		$sqlDbMax, $sqlUserCount, $sqlUserMax, $trafficLimit, $diskspaceLimit
+	) = shared_getCustomerProps($domainId);
 
 	$trafficLimitBytes = $trafficLimit * 1048576;
 	$diskspaceLimitBytes = $diskspaceLimit * 1048576;
@@ -69,8 +70,6 @@ function _reseller_generateDomainStatisticsEntry($tpl, $domainId)
 			'DOMAIN_NAME' => tohtml(decode_idna($domainName)),
 			'DOMAIN_ID' => $domainId,
 			'TRAFF_PERCENT' => $trafficPercent,
-			'MONTH' => date('m'),
-			'YEAR' => date('y'),
 			'TRAFF_MSG' => ($trafficLimitBytes)
 				? tr('%1$s / %2$s', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes))
 				: tr('%s / unlimited', bytesHuman($trafficUsageBytes)),
@@ -78,32 +77,34 @@ function _reseller_generateDomainStatisticsEntry($tpl, $domainId)
 			'DISK_MSG' => ($diskspaceLimitBytes)
 				? tr('%1$s / %2$s', bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes))
 				: tr('%s / unlimited', bytesHuman($diskspaceUsageBytes)),
-			'WEB' => bytesHuman($web),
-			'FTP' => bytesHuman($ftp),
-			'SMTP' => bytesHuman($smtp),
-			'POP3' => bytesHuman($pop3),
-			'SUB_MSG' => ($usub_max)
-				? (($usub_max > 0) ? tr('%1$d / %2$d', $usub_current, $usub_max)
-					: tr('disabled')) : tr('%d / unlimited', $usub_current),
-			'ALS_MSG' => ($uals_max)
-				? (($uals_max > 0) ? tr('%1$d / %2$d', $uals_current, $uals_max) : tr('disabled'))
-				: tr('%d / unlimited', $uals_current),
-			'MAIL_MSG' => ($umail_max)
-				? (($umail_max > 0) ? tr('%1$d / %2$d', $umail_current, $umail_max) : tr('disabled'))
-				: tr('%d / unlimited', $umail_current),
-			'FTP_MSG' => ($uftp_max)
-				? (($uftp_max > 0) ? tr('%1$d / %2$d', $uftp_current, $uftp_max) : tr('disabled'))
-				: tr('%d / unlimited', $uftp_current),
-			'SQL_DB_MSG' => ($usql_db_max)
-				? (($usql_db_max > 0) ? tr('%1$d / %2$d', $usql_db_current, $usql_db_max) : tr('disabled'))
-				: tr('%d / unlimited', $usql_db_current),
-			'SQL_USER_MSG' => ($usql_user_max)
-				? (($usql_user_max > 0) ? tr('%1$d / %2$d', $usql_user_current, $usql_user_max) : tr('disabled'))
-				: tr('%d / unlimited', $usql_user_current)));
+			'WEB' => bytesHuman($webTraffic),
+			'FTP' => bytesHuman($ftpTraffic),
+			'SMTP' => bytesHuman($smtpTraffic),
+			'POP3' => bytesHuman($popImapTraffic),
+			'SUB_MSG' => ($subMax)
+				? (($subMax > 0) ? tr('%1$d / %2$d', $subCount, $subMax)
+					: tr('disabled')) : tr('%d / unlimited', $subCount),
+			'ALS_MSG' => ($alsMax)
+				? (($alsMax > 0) ? tr('%1$d / %2$d', $alsCount, $alsMax) : tr('disabled'))
+				: tr('%d / unlimited', $alsCount),
+			'MAIL_MSG' => ($mailMax)
+				? (($mailMax > 0) ? tr('%1$d / %2$d', $mailCount, $mailMax) : tr('disabled'))
+				: tr('%d / unlimited', $mailCount),
+			'FTP_MSG' => ($FtpUserMax)
+				? (($FtpUserMax > 0) ? tr('%1$d / %2$d', $ftpUserCount, $FtpUserMax) : tr('disabled'))
+				: tr('%d / unlimited', $ftpUserCount),
+			'SQL_DB_MSG' => ($sqlDbMax)
+				? (($sqlDbMax > 0) ? tr('%1$d / %2$d', $sqlDbCount, $sqlDbMax) : tr('disabled'))
+				: tr('%d / unlimited', $sqlDbCount),
+			'SQL_USER_MSG' => ($sqlUserMax)
+				? (($sqlUserMax > 0) ? tr('%1$d / %2$d', $sqlUserCount, $sqlUserMax) : tr('disabled'))
+				: tr('%d / unlimited', $sqlUserCount)
+		)
+	);
 }
 
 /**
- * Generate page.
+ * Generate page
  *
  * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
@@ -124,7 +125,7 @@ function reseller_generatePage($tpl)
 	}
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -142,7 +143,7 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/reseller_user_statistics.tpl',
+		'page' => 'reseller/user_statistics.tpl',
 		'page_message' => 'layout',
 		'domain_statistics_entries_block' => 'page',
 		'domain_statistics_entry_block' => 'domain_statistics_entries_block'
@@ -169,7 +170,9 @@ $tpl->assign(
 		'VALUE_NAME' => tohtml($_SESSION['user_logged']),
 		'VALUE_RID' => $_SESSION['user_id'],
 		'TR_DOMAIN_TOOLTIP' => tr('Show detailed statistics for this domain'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()));
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+	)
+);
 
 generateNavigation($tpl);
 reseller_generatePage($tpl);

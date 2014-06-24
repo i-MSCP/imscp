@@ -82,9 +82,9 @@ function generate_reseller_users_props($resellerId)
 		list(
 			$subConsumed, $subAssigned, $alsConsumed, $alsAssigned, $mailConsumed, $mailAssigned, $ftpConsumed,
 			$ftpAssigned, $sqlDbConsumed, $sqlDbAssigned, $sqlUserConsumed, $sqlUserAssigned, $traffAssigned, $diskAssigned
-			) = generate_user_props($userId);
+			) = shared_getCustomerProps($userId);
 
-		list(, , , , , , $traffConsumed, $diskConsumed) = generate_user_traffic($userId);
+		list(, , , , , , $traffConsumed, $diskConsumed) = shared_getCustomerStats($userId);
 
 		$rdmnConsumed += 1;
 

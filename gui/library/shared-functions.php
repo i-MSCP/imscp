@@ -247,14 +247,13 @@ function get_user_domain_id($customeId)
  *
  * @param  int $domainId Domain unique identifier
  * @return array
- * @todo rename this function
  */
-function generate_user_props($domainId)
+function shared_getCustomerProps($domainId)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$rs = exec_query("SELECT * FROM `domain` WHERE `domain_id` = ?", $domainId);
+	$rs = exec_query("SELECT * FROM domain WHERE domain_id = ?", $domainId);
 
 	if (!$rs->recordCount()) {
 		return array_fill(0, 14, 0);
@@ -1751,12 +1750,12 @@ function make_usage_vals($amount, $total)
 }
 
 /**
- * Generates user traffic
+ * Generates customer statistiques
  *
- * @param  int $domainId Domain unique identifier
+ * @param int $domainId Domain unique identifier
  * @return array An array that contains traffic usage information
  */
-function generate_user_traffic($domainId)
+function shared_getCustomerStats($domainId)
 {
 	$curMonth = date('m');
 	$curYear = date('Y');
@@ -1772,9 +1771,10 @@ function generate_user_traffic($domainId)
 	$stmt = exec_query(
 		'
 			SELECT
-				domain_id, IFNULL(domain_disk_usage, 0) AS domain_disk_usage,
-				IFNULL(domain_traffic_limit, 0) AS domain_traffic_limit,
-				IFNULL(domain_disk_limit, 0) AS domain_disk_limit, domain_name
+				domain_id, IFNULL(domain_disk_usage, 0) AS diskspace_usage,
+				IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit,
+				IFNULL(domain_disk_limit, 0) AS diskspace_limit,
+				domain_name
 			FROM
 				domain
 			WHERE
@@ -1789,22 +1789,22 @@ function generate_user_traffic($domainId)
 		showBadRequestErrorPage();
 		exit;
 	} else {
-		$domainData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+		$data = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-		$domainDiskUsage = $domainData['domain_disk_usage'];
-		$domainTraffLimit = $domainData['domain_traffic_limit'];
-		$domainDiskLimit = $domainData['domain_disk_limit'];
-		$domainName = $domainData['domain_name'];
+		$diskspaceUsage = $data['diskspace_usage'];
+		$monthlyTrafficLimit = $data['monthly_traffic_limit'];
+		$diskspaceLimit = $data['diskspace_limit'];
+		$domainName = $data['domain_name'];
 
 		$stmt = exec_query(
 			'
 				SELECT
-					IFNULL(SUM(dtraff_web), 0) AS web,
-					IFNULL(SUM(dtraff_ftp), 0) AS ftp,
-					IFNULL(SUM(dtraff_mail), 0) AS smtp,
-					IFNULL(SUM(dtraff_pop), 0) AS pop,
+					IFNULL(SUM(dtraff_web), 0) AS webTraffic,
+					IFNULL(SUM(dtraff_ftp), 0) AS ftpTraffic,
+					IFNULL(SUM(dtraff_mail), 0) AS smtpTraffic,
+					IFNULL(SUM(dtraff_pop), 0) AS popTraffic,
 					IFNULL(SUM(dtraff_web), 0) + IFNULL(SUM(dtraff_ftp), 0) +
-					IFNULL(SUM(dtraff_mail), 0) + IFNULL(SUM(dtraff_pop), 0) AS total
+					IFNULL(SUM(dtraff_mail), 0) + IFNULL(SUM(dtraff_pop), 0) AS totalTraffic
 				FROM
 					domain_traffic
 				WHERE
@@ -1817,9 +1817,11 @@ function generate_user_traffic($domainId)
 			array($domainId, $fromTimestamp, $toTImestamp)
 		);
 
+		$data = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
 		return array(
-			$domainName, $domainId, $stmt->fields['web'], $stmt->fields['ftp'], $stmt->fields['smtp'],
-			$stmt->fields['pop'], $stmt->fields['total'], $domainDiskUsage, $domainTraffLimit, $domainDiskLimit
+			$domainName, $domainId, $data['webTraffic'], $data['ftpTraffic'], $data['smtpTraffic'], $data['popTraffic'],
+			$data['totalTraffic'], $diskspaceUsage, $monthlyTrafficLimit, $diskspaceLimit
 		);
 	}
 }

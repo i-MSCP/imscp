@@ -1,6 +1,5 @@
 
 <script type="text/javascript">
-	/*<![CDATA[*/
 	$(document).ready(function () {
 		$('.datatable').dataTable(
 			{
@@ -9,7 +8,6 @@
 			}
 		);
 	});
-	/*]]>*/
 </script>
 <!-- BDP: domain_statistics_entries_block -->
 <table class="datatable" style="text-align: center">
