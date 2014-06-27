@@ -51,12 +51,16 @@ INSTALLER
 	Fixed: Unable to migrate from ispCP (linked to the infinite loop in iMSCP_Update_Database::dropIndexByColumn())
 	Updated: Preseed template file according new parameters
 
+VENDOR:
+	Added: Net::Domain::TLD version 1.72 from CPAN (This allow to have last available TLDs list for this module)
+
 TICKETS
 	Fixed #1072: Bug - Uninstaller error - iMSCP::File::delFile: Unable to delete file imscp_network...
 	Fixed #1095: Bug - IP usage interface is broken
 	Fixed #1097: Enhancement - Allow to set public IP for server which are inside a private LAN
 	Fixed #1099: Bug - SQL users which belong to an account which is being deleted are not removed from mysql table
 	Fixed #1106: Defect - PHP5-FPM server implementation - Reload failure under Ubuntu Trusty Thar
+	Fixed #1109: Defect - .technology is not recognized as a valid top level domain
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.11

@@ -233,14 +233,10 @@ sub setupAskServerHostname
 	my $dialog = $_[0];
 
 	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
-		? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
+	my %options = (domain_private_tld => qr /^(?:bogus|test|lan)$/);
 	my ($rs, @labels) = (0, $hostname ? split(/\./, $hostname) : ());
 
-	if(
-		$main::reconfigure ~~ ['hostname', 'all', 'forced'] ||
-		! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($hostname))
-	) {
+	if($main::reconfigure ~~ ['hostname', 'all', 'forced'] || ! (@labels >= 3 && is_domain($hostname, \%options))) {
 		if(! $hostname) {
 			my $err = undef;
 
@@ -262,7 +258,7 @@ sub setupAskServerHostname
 			$hostname = idn_to_ascii($hostname, 'utf-8');
 			@labels = split(/\./, $hostname);
 
-		} while($rs != 30 && ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($hostname)));
+		} while($rs != 30 && ! (@labels >= 3 && is_domain($hostname, \%options)));
 
 		#$dialog->set('no-cancel', undef);
 	}
@@ -278,15 +274,11 @@ sub setupAskImscpVhost
 	my $dialog = $_[0];
 
 	my $vhost = setupGetQuestion('BASE_SERVER_VHOST');
-	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
-		? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
+	my %options =  (domain_private_tld => qr /^(?:bogus|test|lan)$/);
 
 	my ($rs, @labels) = (0, $vhost ? split(/\./, $vhost) : ());
 
-	if(
-		$main::reconfigure ~~ ['hostname', 'all', 'forced'] ||
-		! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($vhost))
-	) {
+	if($main::reconfigure ~~ ['hostname', 'all', 'forced'] || ! (@labels >= 3 && is_domain($vhost, \%options))) {
 
 		$vhost = 'admin.' . setupGetQuestion('SERVER_HOSTNAME') if ! $vhost;
 
@@ -300,7 +292,7 @@ sub setupAskImscpVhost
 			$msg = "\n\n\\Z1'$vhost' is not a fully-qualified domain name (FQDN).\\Zn\n\nPlease, try again:";
 			$vhost = idn_to_ascii($vhost, 'utf-8');
 			@labels = split(/\./, $vhost);
-		} while($rs != 30 && ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($vhost)));
+		} while($rs != 30 && ! (@labels >= 3 && is_domain($vhost, \%options)));
 	}
 
 	setupSetQuestion('BASE_SERVER_VHOST', $vhost) if $rs != 30;
@@ -601,8 +593,7 @@ sub setupAskSqlDsn
 
 	my $rs = 0;
 
-	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
-		? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
+	my %options = (domain_private_tld => qr /^(?:bogus|test)$/);
 
 	if(
 		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
@@ -624,7 +615,7 @@ sub setupAskSqlDsn
 			} while (
 				$rs != 30 &&
 				! (
-					$dbHost eq 'localhost' || Data::Validate::Domain->new(%options)->is_domain($dbHost) ||
+					$dbHost eq 'localhost' || is_domain($dbHost, \%options) ||
 					iMSCP::Net->getInstance()->isValidAddr($dbHost)
 				)
 			);
