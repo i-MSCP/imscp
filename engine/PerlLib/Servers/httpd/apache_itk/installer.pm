@@ -570,13 +570,25 @@ sub _buildPhpConfFiles
 	$rs = $self->{'httpd'}->enableMod("@toEnableModules");
 	return $rs if $rs;
 
-	# Quick fix (Ubuntu PHP mcrypt module not enabled after fresh installation)
-	if(-x '/usr/sbin/php5enmod') {
-		my($stdout, $stderr);
-		$rs = execute('/usr/sbin/php5enmod mcrypt', \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+	# Quick fix (Ubuntu PHP modules not enabled after fresh installation)
+	if(-x '/usr/sbin/php5enmod' && -d '/etc/php5/mods-available') {
+		for('imap', 'mcrypt') {
+			if(! -s "/etc/php5/conf.d/20-$_.ini" && -f "/etc/php5/conf.d/$_.ini") {
+				my($stdout, $stderr);
+				$rs = execute("$main::imscpConfig{'CMD_MV'} /etc/php5/conf.d/$_.ini /etc/php5/mods-available/$_.ini");
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+			}
+
+			if(-f "/etc/php5/mods-available/$_.ini") {
+				my($stdout, $stderr);
+				$rs = execute("/usr/sbin/php5enmod $_", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+			}
+		}
 	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdBuildPhpConfFiles');

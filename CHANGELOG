@@ -61,6 +61,7 @@ TICKETS
 	Fixed #1099: Bug - SQL users which belong to an account which is being deleted are not removed from mysql table
 	Fixed #1106: Defect - PHP5-FPM server implementation - Reload failure under Ubuntu Trusty Thar
 	Fixed #1109: Defect - .technology is not recognized as a valid top level domain
+	Fixed #1110: Defect - /etc/php5/mods-available/mcrypt.ini does not exist (Ubuntu Quantal)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.11
