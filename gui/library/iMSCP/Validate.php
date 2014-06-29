@@ -157,8 +157,8 @@ class iMSCP_Validate
             $options['domain'] = false;
             $email .= '@dummy';
         } else {
-        	$options['hostname'] = new Zend_Validate_Hostname(array('tld' => false));
-		}
+            $options['hostname'] = new Zend_Validate_Hostname(array('tld' => false));
+        }
 
         return $this->_processValidation('EmailAddress', $email, $options);
     }

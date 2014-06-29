@@ -249,6 +249,7 @@ function validates_username($username, $min_char = 2, $max_char = 30)
  * Check syntax of the given email
  *
  * @param string $email Email addresse to check
+ * @param bool $localPartOnly If true, check only the local part
  * @return bool
  */
 function chk_email($email, $localPartOnly = false)
