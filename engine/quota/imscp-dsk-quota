@@ -263,21 +263,23 @@ sub quotaSql
 			my $size = 0;
 			my $sqlSize = 0;
 
-			my $imscpDatabases = $database->doQuery(
+			my $customerDatabases = $database->doQuery(
 				'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $domainId
 			);
 
-			unless (ref $imscpDatabases eq 'HASH') {
-				error($imscpDatabases);
-				iMSCP::Mail->new()->errmsg($imscpDatabases);
+			unless (ref $customerDatabases eq 'HASH') {
+				error($customerDatabases);
+				iMSCP::Mail->new()->errmsg($customerDatabases);
 				$rs = 1;
 			}
 
-			for (keys %{$imscpDatabases}) {
+			for (keys %{$customerDatabases}) {
 				my $sqlDbName = $_;
 
-				if(grep{$_ eq $sqlDbName} keys %{$databases}) {
-					my $sqlDbTables = $database->doQuery('1', "SHOW TABLE STATUS FROM $sqlDbName");
+				if(grep{$_ eq $sqlDbName} keys %{$databases}) { # Does the database exists?
+					my $quotedDbName = $database->quoteIdentifier($sqlDbName);
+
+					my $sqlDbTables = $database->doQuery('1', "SHOW TABLE STATUS FROM $quotedDbName");
 					unless (ref $sqlDbTables eq 'HASH') {
 						error($sqlDbTables);
 						iMSCP::Mail->new()->errmsg($sqlDbTables);
