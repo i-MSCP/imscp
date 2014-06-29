@@ -124,7 +124,7 @@ function client_addMailAccount()
 		// Check for username
 		$username = strtolower(clean_input($_POST['username']));
 
-		if ($_POST['username'] == '' || !imscp_check_local_part($username)) {
+		if ($_POST['username'] == '' || ! chk_email($username, true)) {
 			set_page_message(tr('Invalid Email username.'), 'error');
 			return false;
 		}

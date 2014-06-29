@@ -156,7 +156,9 @@ class iMSCP_Validate
             // we disable it and we provides dummy value for global pass check
             $options['domain'] = false;
             $email .= '@dummy';
-        }
+        } else {
+        	$options['hostname'] = new Zend_Validate_Hostname(array('tld' => false));
+		}
 
         return $this->_processValidation('EmailAddress', $email, $options);
     }

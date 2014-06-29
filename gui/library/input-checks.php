@@ -249,60 +249,17 @@ function validates_username($username, $min_char = 2, $max_char = 30)
  * Check syntax of the given email
  *
  * @param string $email Email addresse to check
- * @param int $num Max
  * @return bool
  */
-function chk_email($email, $num = 50)
+function chk_email($email, $localPartOnly = false)
 {
-	if (strlen($email) > $num) {
-		return false;
+	$options = array();
+
+	if($localPartOnly) {
+		$options['onlyLocalPart'] = true;
 	}
-	// RegEx begin
-	$nonascii = "\x80-\xff"; // non ASCII chars are not allowed
 
-	$nqtext = "[^\\\\$nonascii\015\012\"]"; // all not quotable chars
-	$qchar = "\\\\[^$nonascii]"; // matched quoted chars
-
-	$normuser = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
-	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
-	$user_part = "(?:$normuser|$quotedstring)";
-
-	$dom_mainpart = '[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]\\.';
-	$dom_subpart = '(?:[a-zA-Z0-9][a-zA-Z0-9.-]*\\.)*';
-	$dom_tldpart = '[a-zA-Z]{2,5}';
-	$domain_part = "$dom_subpart$dom_mainpart$dom_tldpart";
-
-	$regex = "$user_part\@$domain_part";
-
-	// RegEx end
-	return (bool)preg_match("/^$regex$/", $email);
-}
-
-/**
- * Check local part of an email address
- *
- * @param string $email
- * @param int $num
- * @return bool
- */
-function imscp_check_local_part($email, $num = 50)
-{
-	if (strlen($email) > $num) {
-		return false;
-	}
-	// RegEx begin
-	$nonascii = "\x80-\xff"; // non ASCII chars are not allowed
-
-	$nqtext = "[^\\\\$nonascii\015\012\"]";
-	$qchar = "\\\\[^$nonascii]";
-
-	$normuser = "[a-zA-Z0-9][a-zA-Z0-9_.-]*";
-	$quotedstring = "\"(?:$nqtext|$qchar)+\"";
-	$user_part = "(?:$normuser|$quotedstring)";
-
-	$regex = $user_part;
-
-	return (bool)preg_match("/^$regex$/", $email);
+	return iMSCP_Validate::getInstance()->email($email, $options);
 }
 
 /**
