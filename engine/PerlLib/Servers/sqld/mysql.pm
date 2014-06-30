@@ -194,8 +194,8 @@ END
 	my $self = Servers::sqld::mysql->getInstance();
 	my $rs = 0;
 
-	if($self->{'restart'} && $self->{'restart'} eq 'yes') {
-		$rs |= $self->restart();
+	if($self->{'restart'} && $self->{'restart'} eq 'yes' && $main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
+		$rs = $self->restart();
 	}
 
 	$? = $exitCode || $rs;

@@ -37,6 +37,7 @@ ENGINE
 	Fixed: German special characters are not displayed properly in auto-reply messages
 	Fixed: In case the passphrase is missing, user must not be prompted (iMSCP::OpenSSL)
 	Fixed: Missing EOL in SSL certificate containers (iMSCP::OpenSSL)
+	Fixed: The backend must not try to start service which are not used (MySQL, Bind9)
 	Fixed: Quota script must ignore maildir which doesn't exist
 	Replaced: Dovecot SASL by Cyrus SASL (Postfix)
 
