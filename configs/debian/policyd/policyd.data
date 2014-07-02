@@ -1,9 +1,5 @@
-POLICYD_CONF_FILE = /etc/policyd-weight.conf
-
-POLICYD_BIN_FILE = /usr/sbin/policyd-weight
-
 POLICYD_USER = polw
-
 POLICYD_GROUP = polw
-
+POLICYD_CONF_FILE = /etc/policyd-weight.conf
+POLICYD_BIN_FILE = /usr/sbin/policyd-weight
 DNSBL_CHECKS_ONLY =

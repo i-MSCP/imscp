@@ -1,49 +1,29 @@
+POSTFIX_USER = postfix
+POSTFIX_GROUP = postfix
+
 POSTFIX_CONF_DIR = /etc/postfix
-
 POSTFIX_CONF_FILE = /etc/postfix/main.cf
-
 POSTFIX_MASTER_CONF_FILE = /etc/postfix/master.cf
-
 POSTFIX_SENDMAIL_PATH = /usr/sbin/sendmail
 
 MTA_VIRTUAL_CONF_DIR = /etc/postfix/imscp
-
 MTA_SNAME = postfix
-
 MTA_LOCAL_MAIL_DIR = /var/mail
-
 MTA_VIRTUAL_MAIL_DIR = /var/mail/virtual
-
 MTA_LOCAL_ALIAS_HASH = /etc/aliases
-
 MTA_VIRTUAL_ALIAS_HASH = /etc/postfix/imscp/aliases
-
 MTA_VIRTUAL_DMN_HASH = /etc/postfix/imscp/domains
-
 MTA_VIRTUAL_MAILBOX_HASH = /etc/postfix/imscp/mailboxes
-
 MTA_TRANSPORT_HASH = /etc/postfix/imscp/transport
-
 MTA_RELAY_HASH = /etc/postfix/imscp/relay_domains
-
 MTA_SENDER_ACCESS_HASH = /etc/postfix/imscp/sender-access
-
 MTA_MAILBOX_UID_NAME = vmail
-
 MTA_MAILBOX_GID_NAME = mail
-
 MTA_SASL_CONF_DIR = /etc/postfix/sasl
 
 CMD_PFLOGSUM = /usr/sbin/maillogconvert.pl
-
-POSTFIX_USER = postfix
-
-POSTFIX_GROUP = postfix
-
 CMD_POSTCONF = /usr/sbin/postconf
-
 CMD_POSTMAP = /usr/sbin/postmap
-
 CMD_NEWALIASES = /usr/bin/newaliases
 
 # Possible value: yes or no

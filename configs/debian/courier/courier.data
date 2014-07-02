@@ -1,35 +1,30 @@
-AUTHLIB_CONF_DIR = /etc/courier
-
-AUTHLIB_SOCKET_DIR = /var/run/courier/authdaemon
-
+## Authdaemon
 AUTHDAEMON_USER = daemon
-
 AUTHDAEMON_GROUP = daemon
-
-COURIER_IMAP_SSL = imapd-ssl
-
-COURIER_POP_SSL = pop3d-ssl
-
+AUTHLIB_CONF_DIR = /etc/courier
+AUTHLIB_SOCKET_DIR = /var/run/courier/authdaemon
 AUTHDAEMON_SNAME = courier-authdaemon
 
+DATABASE_USER =
+DATABASE_PASSWORD =
+
+## Courier IMAP/POP3
+
+COURIER_IMAP_SSL = imapd-ssl
+COURIER_POP_SSL = pop3d-ssl
 IMAPD_SNAME = courier-imap
-
 IMAPD_SSL_SNAME = courier-imap-ssl
-
+POPD_SNAME = courier-pop
+POPD_SSL_SNAME = courier-pop-ssl
 CMD_MAILDIRMAKE = /usr/bin/maildirmake
+
+# Maildrop
+
+MAILDROP_MDA_PATH = /usr/bin/maildrop
+QUOTA_WARN_MSG_PATH = /etc/quotawarnmsg
+
+## Deprecated
 
 # Only used for transition
 # We are now using the authmysql module
 CMD_MAKEUSERDB = /usr/sbin/makeuserdb
-
-POPD_SNAME = courier-pop
-
-POPD_SSL_SNAME = courier-pop-ssl
-
-DATABASE_USER =
-
-DATABASE_PASSWORD =
-
-MAILDROP_MDA_PATH = /usr/bin/maildrop
-
-QUOTA_WARN_MSG_PATH = /etc/quotawarnmsg

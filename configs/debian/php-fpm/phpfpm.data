@@ -1,7 +1,5 @@
 PHP_FPM_CONF_DIR = /etc/php5/fpm
-
 PHP_FPM_POOLS_CONF_DIR = /etc/php5/fpm/pool.d
-
 PHP_FPM_SNAME = php5-fpm
 
 ###### LEVEL FOR PHP FPM POOLS

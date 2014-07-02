@@ -1,13 +1,9 @@
 FTPD_SNAME = proftpd
-
 FTPD_CONF_FILE = /etc/proftpd/proftpd.conf
-
 FTP_TRAFF_LOG_PATH = proftpd/ftp_traff.log
 
 MIN_UID = 1001
-
 MIN_GID = 1001
 
 DATABASE_USER =
-
 DATABASE_PASSWORD =

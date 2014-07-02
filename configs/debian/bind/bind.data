@@ -1,21 +1,14 @@
-BIND_CONF_DIR = /etc/bind
-
-BIND_CONF_DEFAULT_FILE = /etc/default/bind9
-
-BIND_CONF_FILE = /etc/bind/named.conf
-
-BIND_LOCAL_CONF_FILE = /etc/bind/named.conf.local
-
-BIND_OPTIONS_CONF_FILE = /etc/bind/named.conf.options
-
-BIND_DB_DIR = /var/cache/bind
-
 BIND_USER = bind
-
 BIND_GROUP = bind
 
-NAMED_SNAME = bind9
+BIND_CONF_DIR = /etc/bind
+BIND_CONF_DEFAULT_FILE = /etc/default/bind9
+BIND_CONF_FILE = /etc/bind/named.conf
+BIND_LOCAL_CONF_FILE = /etc/bind/named.conf.local
+BIND_OPTIONS_CONF_FILE = /etc/bind/named.conf.options
+BIND_DB_DIR = /var/cache/bind
 
+NAMED_SNAME = bind9
 CMD_NAMED_COMPILEZONE = /usr/sbin/named-compilezone
 
 # Mode in which the server should acts (master|slave)
