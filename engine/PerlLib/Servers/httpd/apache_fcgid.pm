@@ -356,7 +356,7 @@ sub deleteDmn($$)
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->10_{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'apacheWrkDir'}/$data->10_{'DOMAIN_NAME'}.conf",
-		"$self->{'apacheWrkDir'}/$data->10_{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'apacheWrkDir'}/$data->10_{'DOMAIN_NAME'}_ssl.conf"
 	) {
 		$rs = iMSCP::File->new('filename' => $_)->delFile() if -f $_;
 		return $rs if $rs;
@@ -1605,7 +1605,12 @@ sub _addCfg($$)
 	$self->setData($data);
 
 	# Disable and backup Apache sites if any
-	for("$data->10_{'DOMAIN_NAME'}.conf", "$data->10_{'DOMAIN_NAME'}_ssl.conf") {
+	for(
+		"$data->{'DOMAIN_NAME'}.conf",
+		"$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$data->10_{'DOMAIN_NAME'}.conf",
+		"$data->10_{'DOMAIN_NAME'}_ssl.conf"
+	) {
 		$rs = $self->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 
@@ -1619,8 +1624,12 @@ sub _addCfg($$)
 
 	# Remove previous Apache sites if any
 	for(
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->10_{'DOMAIN_NAME'}.conf",
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->10_{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'apacheWrkDir'}/$data->10_{'DOMAIN_NAME'}.conf",
 		"$self->{'apacheWrkDir'}/$data->10_{'DOMAIN_NAME'}_ssl.conf"
 	) {
