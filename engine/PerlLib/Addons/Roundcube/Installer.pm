@@ -48,7 +48,7 @@ use File::Basename;
 use JSON;
 use parent 'Common::SingletonClass';
 
-our $VERSION = '0.4.0';
+our $VERSION = '0.5.0';
 
 =head1 DESCRIPTION
 
@@ -106,7 +106,6 @@ sub showDialog($$)
 	) {
 		# Ask for the roundcube restricted SQL username
 		do{
-
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
 				"\nPlease enter an username for the restricted roundcube SQL user:$msg", $dbUser
 			);
@@ -191,8 +190,7 @@ sub install
 	# Backup current configuration files if they exists (only relevant when running imscp-setup)
 	for (
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}/db.inc.php",
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}/main.inc.php",
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}/main.inc.php"
 	) {
 		$rs = $self->_backupConfigFile($_);
 		return $rs if $rs;
@@ -496,8 +494,7 @@ sub _buildConfig
 		DB_USER => $dbUser,
 		DB_PASS => $dbPass,
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-		DES_KEY => $self->_generateDESKey(),
-		PLUGINS => $self->{'config'}->{'PLUGINS'}
+		DES_KEY => $self->_generateDESKey()
 	};
 
 	my $cfgFiles = {

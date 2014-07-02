@@ -8,6 +8,7 @@ Git stable
 ADDONS:
 	Fixed: Quotation marks must be escaped in PhpMyAdmin configuration file
 	Fixed: Quotation marks must be escaped in Roundcube configuration file
+	Updated: Required Roundcube addon package version is now 0.5.0.*@dev
 
 CONFIGS
 	Removed: GUI_CERT_DIR variable (replaced by CONF_DIR variable)
@@ -50,6 +51,7 @@ INSTALLER
 	Fixed: Bind9 cannot start if the resolvconf package is not configured yet (Debian Squeeze)
 	Fixed: Installer hangs while packages installation (Debian Jessie)
 	Fixed: Unable to migrate from ispCP (linked to the infinite loop in iMSCP_Update_Database::dropIndexByColumn())
+	Removed: Option which allow to skip addons update (requirements are now automatically detected)
 	Updated: Preseed template file according new parameters
 
 VENDOR:

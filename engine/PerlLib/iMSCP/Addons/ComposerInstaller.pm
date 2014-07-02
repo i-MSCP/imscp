@@ -98,23 +98,25 @@ sub _init
 		' -d memory_limit=512M -d allow_url_fopen=1' .
 		' -d suhosin.executor.include.whitelist=phar';
 
-	if(! iMSCP::Getopt->skipAddonsUpdate || ! -d $self->{'cacheDir'}) {
-		iMSCP::Dir->new(
-			'dirname' => $self->{'cacheDir'}
-		)->make() and fatal('Unable to create addon cache directory');
+	iMSCP::HooksManager->getInstance()->register(
+		'afterSetupPreInstallAddons', sub {
+			iMSCP::Dialog->factory()->endGauge();
 
-		# Override default composer home directory
-		$ENV{'COMPOSER_HOME'} = "$self->{'cacheDir'}/.composer";
+			my $rs = iMSCP::Dir->new('dirname' => $self->{'cacheDir'})->make();
+			return $rs if $rs;
 
-		# Cleanup addon packages cache directory if asked by user - This will cause all addon packages to be fetched
-		# again
-		$self->_cleanCacheDir() if iMSCP::Getopt->cleanAddons;
+			# Cleanup addon packages cache directory if asked by user
+			$rs = $self->_cleanCacheDir() if iMSCP::Getopt->cleanAddons;
+			return $rs if $rs;
 
-		# Schedule package installation (done after addons preinstallation)
-		iMSCP::HooksManager->getInstance()->register(
-			'afterSetupPreInstallAddons', sub { iMSCP::Dialog->factory()->endGauge(); $self->_installPackages() }
-		);
-	}
+			$rs = $self->_getComposer();
+			return $rs if $rs;
+
+			$rs = $self->_installPackages() if $self->_checkRequirements();
+
+			$rs;
+		}
+	);
 
 	$self;
 }
@@ -134,21 +136,20 @@ sub _installPackages
 	my $rs = $self->_buildComposerFile();
 	return $rs if $rs;
 
-	$rs = $self->_getComposer();
-	return $rs if $rs;
-
 	iMSCP::Dialog->factory()->infobox(
 '
 Fetching i-MSCP addon packages from GitHub.
 
-Please wait, depending of your connection, this may take few minutes.
+Please wait, depending on your connection, this may take few minutes.
 '
 	);
 
 	# The update option is used here but composer will automatically fallback to install mode when needed
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar -d=$self->{'cacheDir'} update", \$stdout, \$stderr
+		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar --no-ansi -d=$self->{'cacheDir'} update",
+		\$stdout,
+		\$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -207,7 +208,7 @@ sub _getComposer
 "
 Fetching composer installer from http://getcomposer.org.
 
-Please wait, depending of your connection, this may take few seconds...
+Please wait, depending on your connection, this may take few seconds...
 "
 		);
 
@@ -240,7 +241,9 @@ Please wait, depending of your connection, this may take few seconds...
 		);
 
 		$rs = execute(
-			"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar -d=$self->{'cacheDir'} self-update", \$stdout, \$stderr
+			"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar --no-ansi -d=$self->{'cacheDir'} self-update",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -295,6 +298,43 @@ sub _cleanCacheDir
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error('Unable to clean addon cache directory') if $rs && ! $stderr;
+	}
+
+	$rs;
+}
+
+=item _checkRequirements()
+
+ Check package version requirements.
+
+ Return int 0 if all requirements are meet, 1 otherwise
+
+=cut
+
+sub _checkRequirements
+{
+	my $self = $_[0];
+
+	return 1 unless -d $self->{'cacheDir'};
+
+	my $rs = 0;
+
+	for(@{$self->{'toInstall'}}) {
+		my ($package, $version) = $_ =~ /"(.*)":"(.*)"/;
+
+		my @cmd = (
+			$self->{'phpCmd'},
+			"$self->{'cacheDir'}/composer.phar",
+			'--no-ansi',
+			"-d=$self->{'cacheDir'}",
+			'show', '--installed', escapeShell($package), escapeShell($version)
+		);
+
+		my ($stdout, $stderr);
+		$rs = execute("@cmd", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		debug(sprintf("Required version (%s) of package %s not found in cache directory.", $package, $version)) if $rs;
+		last if $rs;
 	}
 
 	$rs;
