@@ -112,7 +112,10 @@ sub _init
 			$rs = $self->_getComposer();
 			return $rs if $rs;
 
-			$rs = $self->_installPackages() if $self->_checkRequirements();
+			# Skip the addons update if asked by user but only if all requirement for package versions are meets
+			if( ! iMSCP::Getopt->skipAddonsUpdate || $self->_checkRequirements()) {
+				$rs = $self->_installPackages() if $self->_checkRequirements();
+			}
 
 			$rs;
 		}

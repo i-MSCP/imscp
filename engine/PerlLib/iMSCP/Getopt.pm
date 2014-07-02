@@ -38,7 +38,7 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::HooksManager;
 use iMSCP::Debug qw /error debugRegisterCallBack output /;
-use fields qw / reconfigure noprompt preseed hookFile cleanAddons debug /;
+use fields qw / reconfigure noprompt preseed hookFile cleanAddons skipAddonsUpdate debug /;
 our $options = fields::new('iMSCP::Getopt');
 
 our $optionHelp = '';
@@ -79,6 +79,7 @@ $usage
  -p,    --preseed      <file>  Path to preseed file.
  -h,    --hook-file    <file>  Path to hook file.
  -c     --clean-addons         Cleanup local addon packages repository.
+ -a     --skip-addons-update   Skip addons update
  -d,    --debug                Force debug mode.
  -?,    --help                 Show this help.
 
@@ -108,6 +109,7 @@ EOF
 			'preseed|p=s', sub { $class->preseed($_[1]) },
 			'hook-file|h=s', sub { $class->hookFile($_[1]) },
 			'clean-addons|c', sub { $options->{'cleanAddons'} = 1 },
+			'skip-addons-update|a', sub { $options->{'skipAddonsUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
 			'help|?', sub { $showUsage->() },
 			@_,
