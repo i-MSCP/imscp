@@ -32,7 +32,6 @@
 /**
  * Get PhpMyadmin login credentials
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @param  int $dbUserId Database user unique identifier
  * @return mixed Array that contains login credentials, FALSE otherwise
@@ -63,7 +62,6 @@ function _client_pmaGetLoginCredentials($dbUserId)
 /**
  * Creates all cookies for PhpMyAdmin
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @param  array|string $cookies Array or string which contains cookies definitions for PhpMyadmin
  * @return void
