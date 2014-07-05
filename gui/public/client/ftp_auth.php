@@ -52,11 +52,7 @@ function _getLoginCredentials($userId)
 	";
 	$stmt = exec_query($query, array($userId, $_SESSION['user_id']));
 
-	if ($stmt->rowCount()) {
-		return $stmt->fetchRow(PDO::FETCH_NUM);
-	} else {
-		return false;
-	}
+	return $stmt->fetchRow(PDO::FETCH_NUM);
 }
 
 /**
@@ -68,7 +64,7 @@ function _getLoginCredentials($userId)
  */
 function _ajaxplorerCreateCookies($cookies)
 {
-	foreach ((array) $cookies as $cookie) {
+	foreach ((array)$cookies as $cookie) {
 		header("Set-Cookie: $cookie", false);
 	}
 }
@@ -81,12 +77,14 @@ function _ajaxplorerCreateCookies($cookies)
  */
 function _ajaxplorerAuth($userId)
 {
-	if(file_exists(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log')) {
+	if (file_exists(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log')) {
 		@unlink(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log');
 	}
 
-	if(! ($credentials = _getLoginCredentials($userId))) {
-		set_page_message(tr('Unknown FTP user id.'), 'error');
+	$credentials = _getLoginCredentials($userId);
+
+	if (!$credentials) {
+		set_page_message(tr('Unknown FTP user.'), 'error');
 		return false;
 	}
 
@@ -162,6 +160,7 @@ function _ajaxplorerAuth($userId)
 	_ajaxplorerCreateCookies($headers['Set-Cookie']);
 
 	redirectTo($ajaxplorerUri);
+
 	exit;
 }
 
@@ -179,7 +178,7 @@ check_login('user');
 /** @var $cg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if(!customerHasFeature('ftp') || !(isset($cfg['FILEMANAGER_ADDON']) && $cfg['FILEMANAGER_ADDON'] == 'AjaXplorer')) {
+if (!customerHasFeature('ftp') || !(isset($cfg['FILEMANAGER_ADDON']) && $cfg['FILEMANAGER_ADDON'] == 'AjaXplorer')) {
 	showBadRequestErrorPage();
 }
 

@@ -68,7 +68,7 @@ function _client_pmaGetLoginCredentials($dbUserId)
  */
 function _client_pmaCreateCookies($cookies)
 {
-	foreach ((array) $cookies as $cookie) {
+	foreach ((array)$cookies as $cookie) {
 		header("Set-Cookie: $cookie", false);
 	}
 }
@@ -107,9 +107,11 @@ function client_pmaAuth($dbUserId)
 		$postData = http_build_query(
 			array(
 				'pma_username' => $credentials[0],
-				'pma_password' => stripcslashes($credentials[1])));
+				'pma_password' => stripcslashes($credentials[1])
+			)
+		);
 	} else {
-		set_page_message(tr('Wrong SQL user identifier.'), 'error');
+		set_page_message(tr('Unknown SQL user'), 'error');
 		return false;
 	}
 
@@ -175,6 +177,6 @@ check_login('user');
 
 if (!customerHasFeature('sql') || !isset($_GET['id'])) {
 	showBadRequestErrorPage();
-} elseif(!client_pmaAuth((int)$_GET['id'])) {
+} elseif (!client_pmaAuth((int)$_GET['id'])) {
 	redirectTo('sql_manage.php');
 }
