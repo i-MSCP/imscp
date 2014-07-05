@@ -43,7 +43,7 @@ ENGINE
 	Replaced: Dovecot SASL by Cyrus SASL (Postfix)
 
 GUI
-	Fixed: AjaxPlorer (Pydio) Autologon feature is broken
+	Fixed: AjaXplorer (Pydio) Autologon feature is broken
 	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function
 
 INSTALLER
