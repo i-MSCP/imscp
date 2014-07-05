@@ -54,6 +54,9 @@ INSTALLER
 	Fixed: Unable to migrate from ispCP (linked to the infinite loop in iMSCP_Update_Database::dropIndexByColumn())
 	Updated: Preseed template file according new parameters
 
+PLUGINS
+	Fixed: Loading of plugins must not fail silently
+
 VENDOR:
 	Added: Net::Domain::TLD version 1.72 from CPAN (This allow to have last available TLDs list for this module)
 
@@ -92,7 +95,7 @@ ENGINE
 DATABASE
 	Fixed: Wrong column definition in update r176
 
-Distro
+DISTROS
 	Fixed: PHP5-FPM instance is lost in some contexts which causes errors 500 - Ubuntu Trusty Thar
 
 GUI

@@ -255,7 +255,7 @@ class iMSCP_Plugin_Manager
 	 * Loads the given plugin
 	 *
 	 * @param string $pluginName Name of the plugin to load
-	 * @return null|iMSCP_Plugin|iMSCP_Plugin_Action
+	 * @return false|iMSCP_Plugin|iMSCP_Plugin_Action Plugin instance, FALSE if plugin class is not found
 	 */
 	public function loadPlugin($pluginName)
 	{
@@ -269,7 +269,7 @@ class iMSCP_Plugin_Manager
 					E_USER_ERROR
 				);
 
-				return null;
+				return false;
 			}
 
 			$this->loadedPlugins[$pluginName] = new $className();

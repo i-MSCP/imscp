@@ -533,6 +533,7 @@ class iMSCP_Initializer
 	/**
 	 * Initialize action plugins.
 	 *
+	 * @throws iMSCP_Exception When a plugin cannot be loaded
 	 * @return void
 	 */
 	protected function _initializePlugins()
@@ -541,7 +542,9 @@ class iMSCP_Initializer
 		$pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager(PLUGINS_PATH));
 
 		foreach ($pluginManager->getPluginList() as $pluginName) {
-			$pluginManager->loadPlugin($pluginName);
+			if(! $pluginManager->loadPlugin($pluginName)) {
+				throw new iMSCP_Exception(sprintf('Unable to load plugin: %s', $pluginName));
+			}
 		}
 	}
 
