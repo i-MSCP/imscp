@@ -469,7 +469,7 @@ function client_generatePage($tpl, $dnsRecordId)
 			'DNS_ADDRESS' => tohtml(client_getPost('dns_A_address', $address)),
 			'DNS_ADDRESS_V6' => tohtml(client_getPost('dns_AAAA_address', $addressv6)),
 			'SELECT_DNS_SRV_PROTOCOL' => client_create_options(
-				array('tcp', 'udp'), client_getPost('srv_proto', $srvProto)
+				array('tcp', 'udp', 'tls'), client_getPost('srv_proto', $srvProto)
 			),
 			'DNS_SRV_NAME' => tohtml(client_getPost('dns_srv_name', decode_idna($srvName))),
 			'DNS_SRV_TTL' => tohtml(client_getPost('dns_srv_ttl', $srvTTL)),
