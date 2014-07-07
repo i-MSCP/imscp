@@ -94,7 +94,7 @@ function client_generateDomainsList($tpl, $userId)
 					? tohtml(date($cfg['DATE_FORMAT'], $row['domain_expires'])) : tr('Never'),
 				'DOMAIN_STATUS' => translate_dmn_status($row['domain_status']),
 				'CERT_SCRIPT' => tohtml('cert_view.php?domain_id=' . $row['domain_id'] . '&domain_type=dmn'),
-				'VIEW_CERT' => tr('Show certificate')
+				'VIEW_CERT' => tr('Add / Edit SSL certificate')
 			)
 		);
 
@@ -219,7 +219,7 @@ function _client_generateDomainAliasAction($id, $status)
 			tr('Delete'),
 			tohtml("alias_delete.php?id=$id"),
 			true,
-			tr('Show certificate'),
+			tr('Add / Edit SSL certificate'),
 			tohtml("cert_view.php?domain_id=$id&domain_type=als")
 		);
 	} elseif ($status == 'ordered') {
@@ -486,7 +486,7 @@ function _client_generateSubdomainAction($id, $status)
 		return array(
 			tr('Delete'), tohtml("subdomain_delete.php?id=$id"),
 			true,
-			tr('Show certificate'),
+			tr('Add / Edit SSL certificate'),
 			tohtml("cert_view.php?domain_id=$id&domain_type=sub"),
 		);
 	} else {
@@ -509,7 +509,7 @@ function _client_generateSubdomainAliasAction($id, $status)
 			tr('Delete'),
 			tohtml("alssub_delete.php?id=$id"),
 			true,
-			tr('Show certificate'),
+			tr('Add / Edit SSL certificate'),
 			tohtml("cert_view.php?domain_id=$id&domain_type=alssub"),
 		);
 	} else {

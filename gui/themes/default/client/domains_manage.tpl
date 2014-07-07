@@ -37,7 +37,7 @@
 		<td>{DOMAIN_CREATE_DATE}</td>
 		<td>{DOMAIN_EXPIRE_DATE}</td>
 		<td>{DOMAIN_STATUS}</td>
-		<td><a href="{CERT_SCRIPT}">{VIEW_CERT}</a></td>
+		<td><a href="{CERT_SCRIPT}" class="icon i_edit" title="{VIEW_CERT}">{VIEW_CERT}</a></td>
 	</tr>
 	<!-- EDP: domain_item -->
 	</tbody>
@@ -77,7 +77,7 @@
 		<td>{ALS_MOUNT}</td>
 		<td>{ALS_REDIRECT}</td>
 		<td>{ALS_STATUS}</td>
-		<td><a href="{CERT_SCRIPT}">{VIEW_CERT}</a></td>
+		<td><a href="{CERT_SCRIPT}" class="icon i_edit" title="{VIEW_CERT}">{VIEW_CERT}</a></td>
 		<td>
 			<a class="icon i_edit" href="{ALS_EDIT_LINK}" title="{ALS_EDIT}">{ALS_EDIT}</a>
 			<a class="icon i_delete" href="{ALS_ACTION_SCRIPT}"
@@ -125,7 +125,7 @@
 		<td>{SUB_MOUNT}</td>
 		<td>{SUB_REDIRECT}</td>
 		<td>{SUB_STATUS}</td>
-		<td><a href="{CERT_SCRIPT}">{VIEW_CERT}</a></td>
+		<td><a href="{CERT_SCRIPT}" class="icon i_edit" title="{VIEW_CERT}">{VIEW_CERT}</a></td>
 		<td>
 			<a class="icon i_edit" href="{SUB_EDIT_LINK}" title="{SUB_EDIT}">{SUB_EDIT}</a>
 			<a class="icon i_delete" href="{SUB_ACTION_SCRIPT}"
