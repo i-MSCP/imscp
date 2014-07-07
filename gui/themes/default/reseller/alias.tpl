@@ -25,7 +25,7 @@
 
 <script>
 	$(document).ready(function() {
-		$(".datatable").dataTable({
+		var oTable = $(".datatable").dataTable({
 			oLanguage: {DATATABLE_TRANSLATIONS},
 			iDisplayLength: 5,
 			bProcessing: true,
@@ -39,7 +39,19 @@
 			aoColumns: [
 				{ mData: "alias_name" }, { mData: "alias_mount" }, { mData: "url_forward" }, { mData: "admin_name" },
 				{ mData: "alias_status" }, { mData: "actions" }
-			]
+			],
+			fnServerData: function (sSource, aoData, fnCallback) {
+				$.ajax( {
+					dataType: "json",
+					type: "GET",
+					url: sSource,
+					data: aoData,
+					success: fnCallback,
+					timeout: 5000
+				}).done(function() {
+					oTable.find("a").imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
+				});
+			}
 		});
 	});
 
