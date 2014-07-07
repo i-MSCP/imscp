@@ -1,37 +1,27 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2014 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    i-MSCP
  * @package     iMSCP_Core
  * @subpackage  Reseller
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://i-mscp.net
  */
 
@@ -40,307 +30,177 @@
  */
 
 /**
- * Generates domain aliases list.
+ * Get table data
  *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @param  int $resellerId Reseller unique identifier
- * @return void
+ * @return array
  */
-function reseller_generateAlsList($tpl, $resellerId)
+function reseller_getDatatable()
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	$columns = array('alias_name', 'alias_mount', 'url_forward', 'admin_name', 'alias_status');
+	$nbColumns = count($columns);
 
-	$resellerProps = imscp_getResellerProperties($resellerId);
+	/* Paging */
+	$limit = '';
 
-	if ($resellerProps['max_als_cnt'] != 0) {
-		list(, , , , , , $customersAlsCount) = generate_reseller_user_props($resellerId);
+	if (isset($_GET['iDisplayStart']) && isset($_GET['iDisplayLength']) && $_GET['iDisplayLength'] != '-1') {
+		$limit = 'LIMIT ' . intval($_GET['iDisplayStart']) . ', ' . intval($_GET['iDisplayLength']);
+	}
 
-		if(
-			$customersAlsCount >= $resellerProps['max_als_cnt'] ||
-			$resellerProps['current_als_cnt'] >= $resellerProps['max_als_cnt']
+	/* Ordering */
+	$order = '';
+
+	if (isset($_GET['iSortCol_0'])) {
+		$order = 'ORDER BY ';
+
+		if (isset($_GET['iSortingCols'])) {
+			$iSortingCols = intval($_GET['iSortingCols']);
+
+			for ($i = 0; $i < $iSortingCols; $i++) {
+				if (
+					isset($_GET['iSortCol_' . $i]) &&
+					isset($_GET['bSortable_' . intval($_GET['iSortCol_' . $i])]) &&
+					$_GET['bSortable_' . intval($_GET['iSortCol_' . $i])] == 'true' &&
+					isset($_GET['sSortDir_' . $i])
+				) {
+					$order .= $columns[intval($_GET['iSortCol_' . $i])] . ' ' . $_GET['sSortDir_' . $i] . ', ';
+				}
+			}
+		}
+
+		$order = substr_replace($order, '', -2);
+
+		if ($order == 'ORDER BY') {
+			$order = '';
+		}
+	}
+
+	/* Filtering */
+	$where = 'WHERE created_by = ' . quoteValue($_SESSION['user_id'], PDO::PARAM_INT);
+
+	if (isset($_GET['sSearch']) && $_GET['sSearch'] != '') {
+		$where .= ' AND (';
+
+		for ($i = 0; $i < $nbColumns; $i++) {
+			$where .= "{$columns[$i]} LIKE " . quoteValue("%{$_GET['sSearch']}%") . ' OR ';
+		}
+
+		$where = substr_replace($where, '', -3);
+		$where .= ')';
+	}
+
+	/* Individual column filtering */
+	for ($i = 0; $i < $nbColumns; $i++) {
+		if (
+			isset($_GET["bSearchable_$i"]) && $_GET["bSearchable_$i"] == 'true' && isset($_GET["sSearch_$i"]) &&
+			$_GET["sSearch_$i"] != ''
 		) {
-			$tpl->assign('ALS_ADD_BUTTON', '');
+			$where .= "AND {$columns[$i]} LIKE " . quoteValue("%{$_GET["sSearch_$i"]}%");
 		}
 	}
 
-	$startIndex = 0;
-	$rowsPerPage = $cfg->DOMAIN_ROWS_PER_PAGE;
-	$currentPsi = 0;
-	$_SESSION['search_for'] = '';
-	$searchCommon = '';
-	$searchFor = '';
-
-	if (isset($_GET['psi'])) {
-		$startIndex = $_GET['psi'];
-		$currentPsi = $_GET['psi'];
-	}
-
-	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
-		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
-		$_SESSION['search_common'] = $_POST['search_common'];
-		$searchFor = $_SESSION['search_for'];
-		$searchCommon = $_SESSION['search_common'];
-	} elseif (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-		unset($_SESSION['search_for']);
-		unset($_SESSION['search_common']);
-	}
-
-	$tpl->assign(
-		array(
-			'PSI' => $currentPsi,
-			'SEARCH_FOR' => tohtml($searchFor),
-			'TR_SEARCH' => tr('Search'),
-			'M_ALIAS_NAME' => tr('Alias name'),
-			'M_ACCOUNT_NAME' => tr('Account name')
-		)
-	);
-
-	if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
-		if (isset($searchCommon) && $searchCommon == 'alias_name') {
-
-			$query = "
-				SELECT
-					t1.*, t2.domain_id, t2.domain_name
-				FROM
-					domain_aliasses AS t1
-				INNER JOIN
-					domain AS t2 USING(domain_id)
-				INNER JOIN
-					admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
-				WHERE
-					t3.created_by = ?
-				ORDER BY
-					t1.alias_name
-				LIMIT
-					$startIndex, $rowsPerPage
-			";
-
-			// count query
-			$count_query = "
-				SELECT
-					COUNT(alias_id) AS cnt
-				FROM
-					domain_aliasses
-				INNER JOIN
-					domain USING(domain_id)
-				INNER JOIN
-					admin ON(admin_id = domain_admin_id)
-				WHERE
-					created_by = ?
-				AND
-					alias_name RLIKE '$searchFor'
-			";
-		} else {
-			$query = "
-				SELECT
-					t1.*, t2.domain_id, t2.domain_name
-				FROM
-					domain_aliasses AS t1
-				INNER JOIN
-					domain AS t2 USING(domain_id)
-				INNER JOIN
-					admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
-				WHERE
-					t3.created_by = ?
-				AND
-					t2.domain_name RLIKE '$searchFor'
-				ORDER BY
-					t1.alias_name ASC
-				LIMIT
-					$startIndex, $rowsPerPage
-			";
-
-			// count query
-			$count_query = "
-				SELECT
-					COUNT(alias_id) AS cnt
-				FROM
-					domain_aliasses
-				INNER JOIN
-					domain USING(domain_id)
-				INNER JOIN
-					admin ON(admin_id = domain_admin_id)
-				WHERE
-					created_by = ?
-				AND
-					domain_name RLIKE '$searchFor'
-			";
-		}
-	} else {
-		$query = "
+	/* Get data to display */
+	$rResult = execute_query(
+		"
 			SELECT
-				t1.*, t2.domain_id, t2.domain_name
-			FROM
-				domain_aliasses AS t1
-			INNER JOIN
-				domain AS t2 USING(domain_id)
-			INNER JOIN
-				admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
-			WHERE
-				t3.created_by = ?
-			ORDER BY
-				t1.alias_name ASC
-			LIMIT
-				$startIndex, $rowsPerPage
-		";
-
-		// count query
-		$count_query = "
-			SELECT
-				COUNT(alias_id) AS cnt
+				SQL_CALC_FOUND_ROWS alias_id, " . implode(', ', $columns) . "
 			FROM
 				domain_aliasses
 			INNER JOIN
 				domain USING(domain_id)
 			INNER JOIN
 				admin ON(admin_id = domain_admin_id)
-			AND
+			$where
+			$order
+			$limit
+		"
+	);
+
+	/* Total records after filtering (without limit) */
+	$stmt = execute_query('SELECT FOUND_ROWS()');
+	$iTotalDisplayRecords = $stmt->fetchRow(PDO::FETCH_NUM);
+	$iTotalDisplayRecords = $iTotalDisplayRecords[0];
+
+	/* Total record before any filtering */
+	$stmt = exec_query(
+		"
+			SELECT
+				COUNT(alias_id)
+			FROM
+				domain_aliasses
+			INNER JOIN
+				domain USING(domain_id)
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
+			WHERE
 				created_by = ?
-		";
+		",
+		$_SESSION['user_id']
+	);
+	$iTotalRecords = $stmt->fetchRow(PDO::FETCH_NUM);
+	$iTotalRecords = $iTotalRecords[0];
+
+	/* Output */
+	$output = array(
+		'sEcho' => intval($_GET['sEcho']),
+		'iTotalDisplayRecords' => $iTotalDisplayRecords,
+		'iTotalRecords' => $iTotalRecords,
+		'aaData' => array()
+	);
+
+	$trDelete = tr('Delete');
+	$trEdit = tr('Edit');
+	$trActivate = tr('Activate');
+
+	while ($data = $rResult->fetchRow(PDO::FETCH_ASSOC)) {
+		$row = array();
+
+		for ($i = 0; $i < $nbColumns; $i++) {
+			if ($columns[$i] == 'alias_name') {
+				if ($data['alias_status'] == 'ok') {
+					$row[$columns[$i]] = '<a href="http://www.{NAME}/" target="_blank" class="icon i_domain_icon">' .
+						decode_idna($data[$columns[$i]]) . '</a>';
+				} else {
+					$row[$columns[$i]] = '<span class="icon i_domain_icon">' . decode_idna($data[$columns[$i]]) .
+						'</span>';
+				}
+			} elseif ($columns[$i] == 'admin_name') {
+				$row[$columns[$i]] = tohtml(decode_idna($data[$columns[$i]]));
+			} elseif ($columns[$i] == 'alias_status') {
+				$row[$columns[$i]] = translate_dmn_status($data[$columns[$i]]);
+			} else {
+				$row[$columns[$i]] = tohtml($data[$columns[$i]]);
+			}
+		}
+
+		$aliasId = $data['alias_id'];
+		$aliasName = $data['alias_name'];
+
+		switch ($data['alias_status']) {
+			case 'ok':
+				$actions = "<a href=\"alias_edit.php?id=$aliasId\" class=\"icon i_edit\" " .
+					"title=\"$trEdit\">$trEdit</a>";
+
+				$actions .= "\n<a href=\"alias_delete.php?id=$aliasId\" onclick=\"return delete_alias('$aliasName')\" " .
+					"class=\"icon i_close\" title=\"$trDelete\">$trDelete</a>";
+				break;
+			case 'ordered':
+				$actions = "<a href=\"alias_order.php?action=activate&act_id=$aliasId\" class=\"icon i_open\" " .
+					"title=\"$trActivate\">$trActivate</a>";
+
+				$actions .= "\n<a href=\"alias_order.php?action=delete&del_id=$aliasId\" " .
+					"onclick=\"return delete_alias_order('$aliasName')\" class=\"icon i_close\" " .
+					"title=\"$trDelete\">$trDelete</a>";
+				break;
+			default;
+				$actions = tr('n\a');
+		}
+
+		$row['actions'] = $actions;
+
+		$output['aaData'][] = $row;
 	}
 
-	// let's count
-	$stmt = exec_query($count_query, $resellerId);
-	$recordCount = $stmt->fields['cnt'];
-
-	// Get all alias records
-	$stmt = exec_query($query, $resellerId);
-
-	if (!$recordCount) {
-		if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
-			$tpl->assign(
-				array(
-					'ALIAS_JS' => '',
-					'ALIAS_LIST' => '',
-					'SCROLL_PREV' => '',
-					'SCROLL_NEXT' => '',
-					'M_DOMAIN_NAME_SELECTED' => '',
-					'M_ACCOUN_NAME_SELECTED' => ''
-				)
-			);
-		} else {
-			$tpl->assign(
-				array(
-					'ALIAS_JS' => '',
-					'SEARCH_FORM' => '',
-					'ALIAS_LIST' => '',
-					'SCROLL_PREV' => '',
-					'SCROLL_PREV_GRAY' => '',
-					'SCROLL_NEXT' => '',
-					'SCROLL_NEXT_GRAY' => ''
-				)
-			);
-		}
-
-		if (isset($_SESSION['search_for'])) {
-			set_page_message(tr('No records found matching the search criteria.', 'info'));
-		} else {
-			set_page_message(tr('You do not have any orders for domain aliases.'), 'info');
-		}
-		return;
-	} else {
-		$prevSi = $startIndex - $rowsPerPage;
-
-		if ($startIndex == 0) {
-			$tpl->assign('SCROLL_PREV', '');
-		} else {
-			$tpl->assign(
-				array(
-					'SCROLL_PREV_GRAY' => '',
-					'PREV_PSI' => $prevSi
-				)
-			);
-		}
-
-		$nextSi = $startIndex + $rowsPerPage;
-
-		if ($nextSi + 1 > $recordCount) {
-			$tpl->assign('SCROLL_NEXT', '');
-		} else {
-			$tpl->assign(
-				array(
-					'SCROLL_NEXT_GRAY' => '',
-					'NEXT_PSI' => $nextSi
-				)
-			);
-		}
-	}
-
-	while (!$stmt->EOF) {
-		$alsId = $stmt->fields['alias_id'];
-		$alsName = $stmt->fields['alias_name'];
-		$alsMountPoint = ($stmt->fields['alias_mount'] != '') ? $stmt->fields['alias_mount'] : '/';
-		$alsStatus = $stmt->fields['alias_status'];
-		$alsForward = $stmt->fields['url_forward'];
-		$showAlsForward = ($alsForward == 'no') ? '-' : $alsForward;
-		$dmnName = decode_idna($stmt->fields['domain_name']);
-
-
-		if ($alsStatus === 'ok') {
-			$deleteLink = "alias_delete.php?id=" . $alsId;
-			$editLink = "alias_edit.php?id=" . $alsId;
-			$actionText = tr('Delete');
-			$editText = tr('Edit');
-			$statusBool = true;
-		} elseif ($alsStatus == 'ordered') {
-			$deleteLink = 'alias_order.php?action=delete&del_id=' . $alsId;
-			$editLink = 'alias_order.php?action=activate&act_id=' . $alsId;
-			$actionText = tr('Delete order');
-			$editText = tr('Activate');
-			$statusBool = false;
-		} else {
-			$deleteLink = '#';
-			$editLink = '#';
-			$actionText = tr('N/A');
-			$editText = tr('N/A');
-			$statusBool = false;
-		}
-
-		$alsStatus = translate_dmn_status($alsStatus);
-		$alsName = decode_idna($alsName);
-		$showAlsForward = decode_idna($showAlsForward);
-
-		if (isset($_SESSION['search_common'])
-			&& $_SESSION['search_common'] == 'account_name'
-		) {
-			$dmnNameSelected = '';
-			$accountNameSelected = $cfg->HTML_SELECTED;
-		} else {
-			$dmnNameSelected = $cfg->HTML_SELECTED;
-			$accountNameSelected = '';
-		}
-
-		if ($statusBool == false) {
-			$tpl->assign('STATUS_RELOAD_TRUE', '');
-			$tpl->assign('NAME', tohtml($alsName));
-			$tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
-		} else {
-			$tpl->assign('STATUS_RELOAD_FALSE', '');
-			$tpl->assign('NAME', tohtml($alsName));
-			$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
-		}
-
-		$tpl->assign(
-			array(
-				'NAME' => tohtml($alsName),
-				'OWNER' => tohtml($dmnName),
-				'MOUNT_POINT' => tohtml($alsMountPoint),
-				'FORWARD' => tohtml($showAlsForward),
-				'STATUS' => $alsStatus,
-				'ID' => $alsId,
-				'DELETE' => $actionText,
-				'DELETE_LINK' => $deleteLink,
-				'EDIT_LINK' => $editLink,
-				'EDIT' => $editText,
-				'M_DOMAIN_NAME_SELECTED' => $dmnNameSelected,
-				'M_ACCOUN_NAME_SELECTED' => $accountNameSelected
-			)
-		);
-
-		$tpl->parse('ALIAS_ITEM', '.alias_item');
-		$stmt->moveNext();
-	}
+	return $output;
 }
 
 /***********************************************************************************************************************
@@ -356,6 +216,15 @@ check_login('reseller');
 
 resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
+if (is_xhr()) {
+	header('Cache-Control: no-cache, must-revalidate');
+	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header('Content-type: application/json');
+	header('Status: 200 OK');
+	echo json_encode(reseller_getDatatable());
+	exit;
+}
+
 /** @var $tpl iMSCP_pTemplate */
 $tpl = new iMSCP_pTemplate();
 
@@ -364,15 +233,7 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/alias.tpl',
 		'page_message' => 'layout',
-		'alias_js' => 'page',
-		'alias_list' => 'page',
-		'alias_item' => 'alias_list',
-		'status_reload_true' => 'alias_item',
-		'status_reload_false' => 'alias_item',
-		'scroll_prev' => 'alias_list',
-		'scroll_next_gray' => 'alias_list',
-		'scroll_next' => 'alias_list',
-		'als_add_button' => 'alias_list'
+		'als_add_button' => 'page'
 	)
 );
 
@@ -380,21 +241,34 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_NAME' => tr('Name'),
+		'TR_ALIAS_NAME' => tr('Domain alias name'),
 		'TR_MOUNT_POINT' => tr('Mount point'),
-		'TR_FORWARD' => tr('Forward URL'),
+		'TR_FORWARD_URL' => tr('Forward URL'),
 		'TR_STATUS' => tr('Status'),
-		'TR_OWNER' => tr('Owner'),
-		'TR_ACTION' => tr('Actions'),
+		'TR_CUSTOMER' => tr('Customer'),
+		'TR_ACTIONS' => tr('Actions'),
 		'TR_ADD_DOMAIN_ALIAS' => tr('Add domain alias'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
-		'TR_PREVIOUS' => tr('Previous'),
-		'TR_NEXT' => tr('Next')
+		'TR_MESSAGE_DELETE_ALIAS' => tr('Are you sure you want to delete the %s domain alias?', true, '%s'),
+		'TR_MESSAGE_DELETE_ALIAS_ORDER' => tr('Are you sure you want to delete the %s domain alias order?', true, '%s'),
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
+		'TR_PROCESSING_DATA' => tr('Processing...')
 	)
 );
 
+$resellerProps = imscp_getResellerProperties($resellerId);
+
+if ($resellerProps['max_als_cnt'] != 0) {
+	list(, , , , , , $customersAlsCount) = generate_reseller_user_props($resellerId);
+
+	if (
+		$customersAlsCount >= $resellerProps['max_als_cnt'] ||
+		$resellerProps['current_als_cnt'] >= $resellerProps['max_als_cnt']
+	) {
+		$tpl->assign('ALS_ADD_BUTTON', '');
+	}
+}
+
 generateNavigation($tpl);
-reseller_generateAlsList($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

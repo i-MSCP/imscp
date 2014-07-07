@@ -45,6 +45,7 @@ ENGINE
 GUI
 	Fixed: AjaXplorer (Pydio) Autologon feature is broken
 	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function
+	Fixed: Unable to list domain aliases by name (search feature / reseller level)
 
 INSTALLER
 	Added: Dialog box allowing to setup the public IP for servers which are inside a private LAN
