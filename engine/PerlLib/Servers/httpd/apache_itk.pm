@@ -351,18 +351,18 @@ sub deleteDmn($$)
 	return $rs if $rs;
 
 	# Disable apache site files
-	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {
+	for("10_$data->{'DOMAIN_NAME'}.conf", "10_$data->{'DOMAIN_NAME'}_ssl.conf") {
 		$rs = $self->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 	}
 
 	# Remove apache site files
 	for(
-		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/10_$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/10_$data->{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'apacheWrkDir'}/10_$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'apacheWrkDir'}/10_$data->{'DOMAIN_NAME'}_ssl.conf"
 	) {
 		$rs = iMSCP::File->new('filename' => $_)->delFile() if -f $_;
 		return $rs if $rs;
@@ -1564,7 +1564,12 @@ sub _addCfg($$)
 	$self->setData($data);
 
 	# Disable and backup Apache sites if any
-	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {
+	for(
+		"$data->{'DOMAIN_NAME'}.conf",
+		"$data->{'DOMAIN_NAME'}_ssl.conf",
+		"10_$data->{'DOMAIN_NAME'}.conf",
+		"10_$data->{'DOMAIN_NAME'}_ssl.conf"
+	) {
 		$rs = $self->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 
@@ -1580,8 +1585,12 @@ sub _addCfg($$)
 	for(
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/10_$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/10_$data->{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf"
+		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'apacheWrkDir'}/10_$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'apacheWrkDir'}/10_$data->{'DOMAIN_NAME'}_ssl.conf"
 	) {
 		$rs = iMSCP::File->new('filename' => $_)->delFile() if -f $_;
 		return $rs if $rs;
@@ -1590,10 +1599,10 @@ sub _addCfg($$)
 	# Build Apache sites - Begin
 
 	my %configs;
-	$configs{"$data->{'DOMAIN_NAME'}.conf"} = { 'redirect' => 'domain_redirect.tpl', 'normal' => 'domain.tpl' };
+	$configs{"10_$data->{'DOMAIN_NAME'}.conf"} = { 'redirect' => 'domain_redirect.tpl', 'normal' => 'domain.tpl' };
 
 	if($data->{'SSL_SUPPORT'}) {
-		$configs{"$data->{'DOMAIN_NAME'}_ssl.conf"} = {
+		$configs{"10_$data->{'DOMAIN_NAME'}_ssl.conf"} = {
 			'redirect' => 'domain_redirect_ssl.tpl', 'normal' => 'domain_ssl.tpl'
 		};
 
