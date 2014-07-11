@@ -44,6 +44,7 @@ ENGINE
 
 GUI
 	Fixed: AjaXplorer (Pydio) Autologon feature is broken
+	Fixed: Disk usage (percent value) is wrong (admin level / Customer statistics)
 	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function
 	Fixed: Unable to list domain aliases by name (search feature / reseller level)
 
