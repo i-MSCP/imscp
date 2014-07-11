@@ -1,15 +1,13 @@
 
 <script type="text/javascript">
-	/*<![CDATA[*/
 	$(document).ready(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"bStateSave": true
+				oLanguage: {DATATABLE_TRANSLATIONS},
+				bStateSave: true
 			}
 		);
 	});
-	/*]]>*/
 </script>
 
 <!-- BDP: domain_statistics_entries_block -->
@@ -65,7 +63,7 @@
 		<td>
 			<div class="graph">
 				<span style="width: {DISK_PERCENT}%"></span>
-				<strong>{TRAFF_PERCENT} %</strong>
+				<strong>{DISK_PERCENT} %</strong>
 			</div>
 			{DISK_MSG}
 		</td>
