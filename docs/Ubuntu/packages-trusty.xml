@@ -156,6 +156,7 @@
         <package>iptables</package>
         <package>iproute</package>
         <package>ispell</package>
+        <package>libc6-dev</package>
         <package>locales</package>
         <package>lzma</package>
         <package>make</package>
