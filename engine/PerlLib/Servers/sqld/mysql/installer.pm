@@ -69,7 +69,10 @@ sub install
 	my $rs = $self->{'hooksManager'}->trigger('beforeSqldInstall', 'mysql');
 	return $rs if $rs;
 
-	$rs = $self->_createOptionsFile();
+	$rs = $self->_createGlobalConfFile();
+	return $rs if $rs;
+
+	$rs = $self->_createRootUserConfFile();
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterSqldInstall', 'mysql');
@@ -93,14 +96,21 @@ sub setEnginePermissions
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 	my $homeDir = File::HomeDir->users_home($rootUName);
+	my $confDir = '/etc/mysql/conf.d';
 
 	if(defined $homeDir) {
-		# eg. /root/.my.cnf
-		$rs = setRights("$homeDir/.my.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0600' });
-		return $rs if $rs;
+		if(-f "$homeDir/.my.cnf") {
+			$rs = setRights("$homeDir/.my.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0600' });
+			return $rs if $rs;
+		}
 	} else {
 		error('Unable to find root user homedir');
 		return 1;
+	}
+
+	if(-f "$confDir/imscp.cnf") {
+		$rs = setRights("$confDir/imscp.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0644' });
+		return $rs if $rs;
 	}
 
 	$self->{'hooksManager'}->trigger('afterSqldSetEnginePermissions');
@@ -143,19 +153,87 @@ sub _init
 	$self;
 }
 
-=item _createOptionsFile()
+=item _createGlobalConfFile()
 
- Create options file (root user .my.cnf file)
+ Create global configuration file
 
  Return in 0 on success, other on failure
 
 =cut
 
-sub _createOptionsFile
+sub _createGlobalConfFile
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMysqlCreateOptionsFile');
+	my $rs = $self->{'hooksManager'}->trigger('beforeMysqlCreateGlobalConfFile');
+	return $rs if $rs;
+
+	my $rootUName = $main::imscpConfig{'ROOT_USER'};
+	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+	my $confDir = '/etc/mysql/conf.d';
+
+	if(-d $confDir) {
+		# Load template
+		my $cfgTpl;
+		$rs = $self->{'hooksManager'}->trigger(
+			'onLoadTemplate',
+			'mysql',
+			'imscp.conf',
+			\$cfgTpl,
+			{ 'USER' => $rootUName, 'GROUP' => $rootGName, 'CONFDIR' => $confDir }
+		);
+		return $rs if $rs;
+
+		unless(defined $cfgTpl) {
+			$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/imscp.cnf")->get();
+			unless(defined $cfgTpl) {
+				error("Unable to read $self->{'cfgDir'}/imscp.cnf");
+				return 1;
+			}
+		}
+
+		# Build file
+
+		$cfgTpl = process(
+			{
+				INNODB_USE_NATIVE_AIO => ($self->_isMysqldInsideCt()) ? 0 : 1
+			},
+			$cfgTpl
+		);
+
+		# Store file
+
+		my $file = iMSCP::File->new('filename' => "$confDir/imscp.cnf");
+
+		$rs = $file->set($cfgTpl);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0644);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
+	}
+
+	$self->{'hooksManager'}->trigger('afterMysqlCreateGlobalConfFile');
+}
+
+=item _createRootUserConfFile()
+
+ Create root user configuration file
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _createRootUserConfFile
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeMysqlCreateRootUserConfFile');
 	return $rs if $rs;
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
@@ -177,24 +255,21 @@ sub _createOptionsFile
 		unless(defined $cfgTpl) {
 			$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/.my.cnf")->get();
 			unless(defined $cfgTpl) {
-				error("Unable to read $self->{'cfgDir'}/my.cnf");
+				error("Unable to read $self->{'cfgDir'}/.my.cnf");
 				return 1;
 			}
 		}
 
 		# Build file
 
-		$rs = $self->{'hooksManager'}->trigger('beforeMysqlBuildMyCnf', \$cfgTpl, '.my.cnf');
-		return $rs if $rs;
-
 		$cfgTpl = process(
 			{
-				'DATABASE_HOST' => $main::imscpConfig{'DATABASE_HOST'},
-				'DATABASE_PORT' => $main::imscpConfig{'DATABASE_PORT'},
-				'DATABASE_PASSWORD' => escapeShell(
+				DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
+				DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
+				DATABASE_PASSWORD => escapeShell(
 					iMSCP::Crypt->getInstance()->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'})
 				),
-				'DATABASE_USER' => $main::imscpConfig{'DATABASE_USER'},
+				DATABASE_USER => $main::imscpConfig{'DATABASE_USER'},
 			}
 			,
 			$cfgTpl
@@ -220,7 +295,38 @@ sub _createOptionsFile
 		return 1;
 	}
 
-	$self->{'hooksManager'}->trigger('afterMysqlCreateOptionsFile');
+	$self->{'hooksManager'}->trigger('afterMysqlCreateRootUserConfFile');
+}
+
+=item _isMysqldInsideCt()
+
+ Does the Mysql server is run inside an unprivileged VE (OpenVZ container)
+
+ Return int 1 if the Mysql server is run inside an OpenVZ container, 0 otherwise
+
+=cut
+
+sub _isMysqldInsideCt
+{
+	my $rs = 0;
+
+	if(-f '/proc/user_beancounters') {
+		my ($stdout, $stderr);
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CAT'} /proc/1/status | $main::imscpConfig{'CMD_GREP'} --color=never envID",
+			\$stdout,
+			\$stderr
+		);
+		debug($stdout) if $stdout;
+		warning($stderr) if $rs && $stderr;
+		return $rs if $rs;
+
+		if($stdout =~ /envID:\s+(\d+)/) {
+			$rs = ($1 > 0) ? 1 : 0;
+		}
+	}
+
+	$rs;
 }
 
 =back

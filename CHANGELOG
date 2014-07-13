@@ -43,6 +43,7 @@ ENGINE
 	Fixed: The backend must not try to start services which are not used (MySQL, Bind9)
 	Fixed: Usage of the fastcgi Apache extension module is no longer recommended with Apache 2.4.x (Debian Jessie)
 	Fixed: Quota script must ignore maildir which doesn't exist
+	Fixed: When running inside an OpenVZ container, the native asynchronous I/O subsystem must be disabled (Mysqld)
 	Replaced: Dovecot SASL by Cyrus SASL (Postfix)
 
 GUI
