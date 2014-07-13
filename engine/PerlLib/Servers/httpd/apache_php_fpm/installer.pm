@@ -557,33 +557,35 @@ sub _buildHttpdModules
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildModules');
 	return $rs if $rs;
 
-	my $prevDir = getcwd();
-	my $buildDir = File::Temp->newdir();
+	if(qv("v$self->{'config'}->{'APACHE_VERSION'}") == qv('v2.4.9')) {
+		my $prevDir = getcwd();
+		my $buildDir = File::Temp->newdir();
 
-	unless(chdir $buildDir) {
-		error("Unable to change dir to $buildDir");
-		return 1;
+		unless(chdir $buildDir) {
+			error("Unable to change dir to $buildDir");
+			return 1;
+		}
+
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'apacheCfgDir'}/modules/proxy_handler/mod_proxy_handler.c"
+		)->copyFile(
+			$buildDir
+		);
+
+		unless($rs) {
+			my($stdout, $stderr);
+			$rs = execute("$self->{'config'}->{'CMD_APXS2'} -i -a -c mod_proxy_handler.c", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+		}
+
+		unless(chdir $prevDir) {
+			error("Unable to change dir to $prevDir");
+			$rs |= 1;
+		}
+
+		return $rs if $rs;
 	}
-
-	$rs = iMSCP::File->new(
-		'filename' => "$self->{'apacheCfgDir'}/modules/proxy_handler/mod_proxy_handler.c"
-	)->copyFile(
-		$buildDir
-	);
-
-	unless($rs) {
-		my($stdout, $stderr);
-		$rs = execute("$self->{'config'}->{'CMD_APXS2'} -i -a -c mod_proxy_handler.c", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-	}
-
-	unless(chdir $prevDir) {
-		error("Unable to change dir to $prevDir");
-		$rs |= 1;
-	}
-
-	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdBuildModules');
 }
