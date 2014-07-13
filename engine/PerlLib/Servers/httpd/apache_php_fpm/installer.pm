@@ -657,7 +657,6 @@ sub _buildFastCgiConfFiles
 	);
 	my @toEnableModules = ('actions', 'suexec');
 
-
 	if(qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0')) {
 		push @toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork');
 		push @toEnableModules, ('mpm_worker', 'authz_groupfile');
