@@ -6,6 +6,7 @@ CMD_A2ENSITE = /usr/sbin/a2ensite
 CMD_A2DISSITE = /usr/sbin/a2dissite
 CMD_A2ENMOD = /usr/sbin/a2enmod
 CMD_A2DISMOD = /usr/sbin/a2dismod
+CMD_APXS2 = /usr/bin/apxs2
 CMD_VLOGGER = /usr/local/sbin/vlogger
 
 HTTPD_SNAME = apache2

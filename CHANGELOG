@@ -31,6 +31,7 @@ DISTROS
 	Re-added: Courier as alternative for IMAP/POP3 servers (Debian Jessie)
 
 ENGINE
+	Added: Apache proxy_handler module (backported from a patch for Apache 2.4.10) (Debian Jessie)
 	Added: iMSCP::Net::getAddrType() method
 	Changed: Backslashes are no longer allowed in SQL user names and passwords
 	Changed: SASL authentication is now made against database directly (Postfix)
@@ -38,7 +39,9 @@ ENGINE
 	Fixed: German special characters are not displayed properly in auto-reply messages
 	Fixed: In case the passphrase is missing, user must not be prompted (iMSCP::OpenSSL)
 	Fixed: Missing EOL in SSL certificate containers (iMSCP::OpenSSL)
+	Fixed: PHP5-FPM (5.6.0~rc2+dfsg-1) doesn't work with Apache fastcgi module (Debian Jessie)
 	Fixed: The backend must not try to start services which are not used (MySQL, Bind9)
+	Fixed: Usage of the fastcgi Apache extension module is no longer recommended with Apache 2.4.x (Debian Jessie)
 	Fixed: Quota script must ignore maildir which doesn't exist
 	Replaced: Dovecot SASL by Cyrus SASL (Postfix)
 

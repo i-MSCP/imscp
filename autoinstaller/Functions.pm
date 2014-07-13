@@ -331,7 +331,7 @@ sub processDistroInstallFiles
 sub buildImscpDaemon
 {
 	unless(chdir "$FindBin::Bin/daemon") {
-		error("Unable to change path to $FindBin::Bin/daemon");
+		error("Unable to change dir to $FindBin::Bin/daemon");
 		return 1;
 	}
 
@@ -371,7 +371,7 @@ sub buildImscpDaemon
 sub installEngine
 {
 	unless(chdir "$FindBin::Bin/engine") {
-		error("Unable to change path to $FindBin::Bin/engine");
+		error("Unable to change dir to $FindBin::Bin/engine");
 		return 1;
 	}
 
@@ -385,7 +385,7 @@ sub installEngine
 	for(@configs) {
 		if (-f "$FindBin::Bin/engine/$_/install.xml") {
 			unless(chdir "$FindBin::Bin/engine/$_") {
-				error("Unable to change path to $FindBin::Bin/engine/$_");
+				error("Unable to change dir to $FindBin::Bin/engine/$_");
 				return 1;
 			}
 

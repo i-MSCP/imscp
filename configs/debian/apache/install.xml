@@ -7,6 +7,7 @@
     <folders>${SYSTEM_CONF}/apache</folders>
     <folders>${SYSTEM_CONF}/apache/backup</folders>
     <folders>${SYSTEM_CONF}/apache/working</folders>
+    <copy_config>${SYSTEM_CONF}/apache/modules</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/skel</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>

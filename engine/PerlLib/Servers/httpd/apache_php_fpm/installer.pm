@@ -48,7 +48,9 @@ use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use Servers::httpd::apache_php_fpm;
 use Net::LibIDN qw/idn_to_ascii/;
+use Cwd;
 use File::Basename;
+use File::Temp;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -160,6 +162,9 @@ sub install
 	return $rs if $rs;
 
 	$rs = $self->_makeDirs();
+	return $rs if $rs;
+
+	$rs = $self->_buildHttpdModules();
 	return $rs if $rs;
 
 	$rs = $self->_buildFastCgiConfFiles();
@@ -537,6 +542,52 @@ sub _makeDirs
 	$self->{'hooksManager'}->trigger('afterHttpdMakeDirs');
 }
 
+=item _buildHttpdModules()
+
+ Build modules for Apache
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildHttpdModules
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildModules');
+	return $rs if $rs;
+
+	my $prevDir = getcwd();
+	my $buildDir = File::Temp->newdir();
+
+	unless(chdir $buildDir) {
+		error("Unable to change dir to $buildDir");
+		return 1;
+	}
+
+	$rs = iMSCP::File->new(
+		'filename' => "$self->{'apacheCfgDir'}/modules/proxy_handler/mod_proxy_handler.c"
+	)->copyFile(
+		$buildDir
+	);
+
+	unless($rs) {
+		my($stdout, $stderr);
+		$rs = execute("$self->{'config'}->{'CMD_APXS2'} -i -a -c mod_proxy_handler.c", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+	}
+
+	unless(chdir $prevDir) {
+		error("Unable to change dir to $prevDir");
+		$rs |= 1;
+	}
+
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterHttpdBuildModules');
+}
+
 =item _buildFastCgiConfFiles()
 
  Build FastCGI configuration files
@@ -585,7 +636,7 @@ sub _buildFastCgiConfFiles
 
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/php_fpm_imscp.load",
-		{},
+		{ },
 		{ 'destination' => "$self->{'phpfpmWrkDir'}/php_fpm_imscp.load" }
 	);
 	return $rs if $rs;
@@ -602,11 +653,20 @@ sub _buildFastCgiConfFiles
 	my @toDisableModules = (
 		'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter'
 	);
-	my @toEnableModules = ('actions', 'php_fpm_imscp', 'suexec');
+	my @toEnableModules = ('actions', 'suexec');
+
 
 	if(qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0')) {
-		push (@toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork'));
-		push (@toEnableModules, 'mpm_worker', 'authz_groupfile');
+		push @toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork');
+		push @toEnableModules, ('mpm_worker', 'authz_groupfile');
+	}
+
+	if(qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.9')) {
+		push @toDisableModules, ('php_fpm_imscp');
+		push @toEnableModules, ('setenvif', 'proxy_fcgi', 'proxy_handler');
+	} else {
+		push @toDisableModules, ('proxy_fcgi', 'proxy_handler');
+		push @toEnableModules, 'php_fpm_imscp';
 	}
 
 	for(@toDisableModules) {

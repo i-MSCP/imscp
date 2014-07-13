@@ -19,12 +19,23 @@
 
     # SECTION php_enabled BEGIN.
     # SECTION php_fpm BEGIN.
-    Alias /php5-fcgi /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME}
+    <IfVersion < 2.4.9>
+        Alias /php5-fcgi /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME}
 
-    FastCGIExternalServer /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME} \
-      -socket /var/run/php5-fpm-{POOL_NAME}.socket \
-      -idle-timeout 300 \
-      -pass-header Authorization
+        FastCGIExternalServer /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME} \
+            -socket /var/run/php5-fpm-{POOL_NAME}.socket \
+            -idle-timeout 300 \
+            -pass-header Authorization
+    </IfVersion>
+    <IfVersion >= 2.4.9>
+        SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+        <Proxy "unix:/var/run/php5-fpm-{POOL_NAME}.socket|fcgi://php5-fpm">
+            ProxySet disablereuse=off
+        </Proxy>
+        <FilesMatch \.php$>
+            SetHandler proxy:fcgi://php5-fpm
+        </FilesMatch>
+    </IfVersion>
     # SECTION php_fpm END.
     # SECTION php_enabled END.
 
