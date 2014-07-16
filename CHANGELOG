@@ -5,7 +5,7 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
-ADDONS:
+ADDONS
 	Fixed: Quotation marks must be escaped in PhpMyAdmin configuration file
 	Fixed: Quotation marks must be escaped in Roundcube configuration file
 	Updated: Required Roundcube addon package version is now 0.5.0.*@dev

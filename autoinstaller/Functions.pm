@@ -295,8 +295,6 @@ sub processDistroInstallFiles
 	my $rs = _processXmlFile($file);
 	return $rs if $rs;
 
-	#################
-
 	# Get list of sub config dir from default config directory (debian)
 	my $dirDH = iMSCP::Dir->new('dirname' => $defaultConfigDir);
 	my @configDirs = $dirDH->getDirs();
