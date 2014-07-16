@@ -63,7 +63,7 @@ INSTALLER
 PLUGINS
 	Fixed: Loading of plugins must not fail silently
 
-VENDOR:
+VENDOR
 	Added: Net::Domain::TLD version 1.72 from CPAN (This allow to have last available TLDs list for this module)
 
 TICKETS
