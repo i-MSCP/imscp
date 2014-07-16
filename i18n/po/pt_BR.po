@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -144,7 +144,7 @@ msgid ""
 msgstr "\nOlá {NAME},\n\nUma nova conta foi criada para você.\n\nSuas informações de conta:\n\nUsuário tipo: {USERTYPE}\nUsuário: {USERNAME}\nSenha: {PASSWORD}\n\nLembre-se de alterar a senha com freqüência e na primeira vez que iniciar sessão.\n\nVocê pode fazer o login agora em  {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nObrigado.\n\nEquipe i-MSCP \n\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr " Admin / Suporte / Abrir Tickets"
+msgstr " Admin / Suporte / Abrir Chamados"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 msgstr " Cliente / Webtools / Páginas de Erros personalizada/ Editar Página de Erros"
@@ -600,6 +600,9 @@ msgstr "Link de ativação expirar em: <small>(minutos)</small>"
 msgid "Add"
 msgstr "Adicionar"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Adicionar conta de FTP "
 
@@ -795,10 +798,10 @@ msgid "Admin / Statistics / Server Statistics / Day Statistics"
 msgstr "Administrador / Estatísticas / Estatística do Servidor / Dia"
 
 msgid "Admin / Support / Closed Tickets"
-msgstr "Administrador / Suporte / Tickets Fechados"
+msgstr "Administrador / Suporte / Chamados Fechados"
 
 msgid "Admin / Support / View Ticket"
-msgstr "Administrador / Suporte / Ver Tickets "
+msgstr "Administrador / Suporte / Ver Chamados"
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
 msgstr "Administrador / Ferramentas do Sistema / Logs Anti-Rootkits "
@@ -913,9 +916,6 @@ msgstr "Alias encaminhamento"
 msgid "Alias mail"
 msgstr "Alias e-mail"
 
-msgid "Alias name"
-msgstr "Nome do alias"
-
 msgid "Alias subdomain forward"
 msgstr "Alias de subdomínio encaminhamento"
 
@@ -929,7 +929,7 @@ msgid "All"
 msgstr "Todos"
 
 msgid "All closed tickets were successfully deleted."
-msgstr "Todos os tickets fechados foram excluídos com sucesso"
+msgstr "Todos os chamados fechados foram excluídos com sucesso"
 
 msgid "All fields are required."
 msgstr "Todos os campos são obrigatórios."
@@ -944,7 +944,7 @@ msgid "All levels"
 msgstr "Todos no níveis"
 
 msgid "All open tickets were successfully deleted."
-msgstr "Todos os tickets abertos foram excluídos com sucesso."
+msgstr "Todos os chamados abertos foram excluídos com sucesso."
 
 msgid "All out"
 msgstr "Todo tráfego de saída"
@@ -1067,13 +1067,13 @@ msgid "Are you sure you want to delete %s?"
 msgstr "Tem certeza que deseja apagar %s?"
 
 msgid "Are you sure you want to delete all closed tickets?"
-msgstr "Tem certeza que deseja excluir todos os tickets fechados?"
+msgstr "Tem certeza que deseja excluir todos os chamados fechados?"
 
 msgid "Are you sure you want to delete all selected items?"
 msgstr "Tem certeza de que deseja excluir todos os itens selecionados?"
 
 msgid "Are you sure you want to delete all tickets?"
-msgstr "Tem certeza que você deseja excluir todos os tickets?"
+msgstr "Tem certeza que você deseja excluir todos os chamados?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
@@ -1082,6 +1082,14 @@ msgstr "Tem certeza que deseja excluir o usuário de FTP %s?"
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Tem certeza de que deseja excluir %s Pega tudo?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1093,7 +1101,7 @@ msgstr "Tem certeza que você deseja apagar o menu %s?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
-msgstr "Tem certeza que você deseja excluir o ticket '%s' ?"
+msgstr "Tem certeza que você deseja excluir o chamado '%s' ?"
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
@@ -1241,7 +1249,7 @@ msgid "Can edit the PHP %s directive"
 msgstr "Pode editar PHP %s "
 
 msgid "Cancel"
-msgstr "Cancela"
+msgstr "Cancelar"
 
 #, php-format
 msgid "Cannot validate %s record: %s"
@@ -1459,16 +1467,16 @@ msgid "Client / Statistics"
 msgstr "Cliente / Estatística"
 
 msgid "Client / Support / Closed Tickets"
-msgstr "Cliente / Suporte / Tickets fechados"
+msgstr "Cliente / Suporte / Chamados fechados"
 
 msgid "Client / Support / New Ticket"
-msgstr "Cliente / Suporte / Novo Tickets "
+msgstr "Cliente / Suporte / Novo Chamado"
 
 msgid "Client / Support / Open Tickets"
-msgstr "Cliente / Suporte / Tickets abertos"
+msgstr "Cliente / Suporte / Chamados abertos"
 
 msgid "Client / Support / View Ticket"
-msgstr "Cliente / Suporte / Ver Tickets "
+msgstr "Cliente / Suporte / Ver Chamados"
 
 msgid "Client / Webtools / Custom Error Pages"
 msgstr "Cliente / Ferramentas Web / Páginas de erro personalizadas"
@@ -1516,13 +1524,13 @@ msgid "Close"
 msgstr "Fechar"
 
 msgid "Close the ticket"
-msgstr "Tickets fechados"
+msgstr "Chamados fechados"
 
 msgid "Close ticket"
-msgstr "Fechar ticket"
+msgstr "Fechar chamado"
 
 msgid "Closed tickets"
-msgstr "Tickets fechados"
+msgstr "Chamados fechados"
 
 msgid "Common name"
 msgstr "Nome comum"
@@ -1787,14 +1795,14 @@ msgid ""
 "Dear %s,\n"
 "\n"
 "You have a new ticket:\n"
-msgstr "Caro %s,\n\nVocê tem um novo ticket:\n"
+msgstr "Caro %s,\n\nVocê tem um novo chamado:\n"
 
 #, php-format
 msgid ""
 "Dear %s,\n"
 "\n"
 "You have an answer for this ticket:\n"
-msgstr "Caro %s,\n\nVocê tem uma resposta para este ticket:\n"
+msgstr "Caro %s,\n\nVocê tem uma resposta para este o chamado:\n"
 
 msgid ""
 "Dear {ADMIN},\n"
@@ -1852,7 +1860,7 @@ msgid "Delete CatchAll"
 msgstr "Exclui selecionados"
 
 msgid "Delete all tickets"
-msgstr "Excluir todos os tickets"
+msgstr "Excluir todos os chamados"
 
 msgid "Delete customer"
 msgstr "Remover cliente"
@@ -1876,7 +1884,7 @@ msgid "Delete this plugin"
 msgstr "Excluir este plugin"
 
 msgid "Delete ticket"
-msgstr "Apagar ticket"
+msgstr "Apagar chamado"
 
 msgid "Deletion in progress"
 msgstr "Exclusão em progresso"
@@ -3224,7 +3232,7 @@ msgid "New password is"
 msgstr "A nova senha é"
 
 msgid "New ticket"
-msgstr "Novo ticket"
+msgstr "Novo Chamado"
 
 msgid "Next"
 msgstr "Próximo"
@@ -3331,6 +3339,9 @@ msgstr "Nenhuma atualização disponível"
 msgid "No update info available"
 msgstr "Nenhuma informação de atualização disponível"
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr "Nenhum usuário encontrado."
 
@@ -3338,7 +3349,7 @@ msgid "No users found for this reseller."
 msgstr "Nenhum usuário encotrado para este revendedor."
 
 msgid "No."
-msgstr "Nro."
+msgstr "Nº"
 
 msgid "None"
 msgstr "Nada"
@@ -3427,10 +3438,10 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Só tar.gz, tar.bz2 e zip são arquivos aceitos"
 
 msgid "Open ticket"
-msgstr "Ticket Aberto"
+msgstr "Chamado Aberto"
 
 msgid "Open tickets"
-msgstr "Tickets abertos"
+msgstr "Chamados abertos"
 
 #, php-format
 msgid "Operation canceled: %s"
@@ -3721,11 +3732,11 @@ msgstr "Plugin %s não pode ser alterado."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must deactivate it first."
-msgstr ""
+msgstr "Plugin %s não pode ser excluído. Você deve desativá-lo primeiro."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must uninstall it first."
-msgstr ""
+msgstr "Plugin %s não pode ser excluído. Você deve desinstalá-lo primeiro."
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3859,7 +3870,7 @@ msgid "Plugin errors"
 msgstr "Plugin erros "
 
 msgid "Plugin has been uploaded."
-msgstr ""
+msgstr "Plugin foi carregado."
 
 msgid "Plugin item errors"
 msgstr "Plugin Erros de itens "
@@ -3885,7 +3896,7 @@ msgstr "Plugins para estender sua funcionalidade no i-MSCP com funções persona
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) changed, and %s plugin(s) deleted."
-msgstr ""
+msgstr "Lista de Plugins foi atualizada: novo plugin(s) %s encontrado, %s plugin(s) atualizado, %s plugin(s) mudaram, e %s plug-in(s)  excluído."
 
 msgid "Port"
 msgstr "Porta"
@@ -3987,7 +3998,7 @@ msgid "RAM"
 msgstr "RAM"
 
 msgid "Read ticket"
-msgstr "Ler ticket"
+msgstr "Ler chamado"
 
 msgid "Rebuild languages index"
 msgstr "Reconstruir índice de idiomas "
@@ -4041,7 +4052,7 @@ msgid "Reopen"
 msgstr "Reabrir"
 
 msgid "Reopen ticket"
-msgstr "Reabrir ticket"
+msgstr "Reabrir chamado"
 
 msgid "Repeat password"
 msgstr "Repetir senha"
@@ -4134,16 +4145,16 @@ msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
 msgstr "Revendedor / Estatísticas / Resumo / Domínio - {DOMAIN_NAME}"
 
 msgid "Reseller / Support / Closed Tickets"
-msgstr "Revendedor / Suporte / Ticket fechados"
+msgstr "Revendedor / Suporte / Chamados fechados"
 
 msgid "Reseller / Support / New Ticket"
-msgstr "Revendedor / Suporte / Novo Ticket"
+msgstr "Revendedor / Suporte / Novo Chamado"
 
 msgid "Reseller / Support / Open Tickets"
-msgstr "Revendedor / Suporte / Tickets Aberto"
+msgstr "Revendedor / Suporte / Chamados Abertos"
 
 msgid "Reseller / Support / View Ticket"
-msgstr "Revendedor / Suporte / Ver Ticket"
+msgstr "Revendedor / Suporte / Ver Chamado"
 
 msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
 msgstr "Revendedor / Planos de Hospedagem / {TR_DYNAMIC_TITLE}"
@@ -4490,9 +4501,6 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Mostrar todos os erros, avisos e notificações, incluindo padrões de codificação (Desenvolvimento)"
-
-msgid "Show certificate"
-msgstr "Mostrar certificado"
 
 msgid "Show detailed statistics for this domain"
 msgstr "Mostrar estatísticas detalhadas para este domínio"
@@ -4995,26 +5003,26 @@ msgid "TiB"
 msgstr "TB"
 
 msgid "Ticket Information"
-msgstr "Informações do ticket"
+msgstr "Informações do chamado"
 
 msgid "Ticket information"
-msgstr "Informação do ticket"
+msgstr "Informação do chamado"
 
 msgid "Ticket not found."
-msgstr "Ticket não encontrado."
+msgstr "Chamado não encontrado."
 
 msgid "Ticket successfully closed."
-msgstr "Ticket fechado com sucesso."
+msgstr "Chamado fechado com sucesso."
 
 msgid "Ticket successfully deleted."
-msgstr "Ticket excluído com sucesso."
+msgstr "Chamado excluído com sucesso."
 
 msgid "Ticket successfully reopened."
-msgstr "Ticket reaberto com sucesso."
+msgstr "Chamado reaberto com sucesso."
 
 #, php-format
 msgid "Ticket with Id '%d' was not found."
-msgstr "Ticket com ID '%d' não foi encontrado."
+msgstr "Chamado com ID '%d' não foi encontrado."
 
 msgid "To Admin"
 msgstr "Para o administrador"
@@ -5092,7 +5100,7 @@ msgstr "Não é possível alterar o plugin %s: %s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
-msgstr "Não é possível fechar o ticket com ID '%s'."
+msgstr "Não é possível fechar o chamado com ID '%s'."
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5154,7 +5162,7 @@ msgstr "Incapaz de ler o arquivo xml para o software web."
 
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
-msgstr "Impossível reabrir ticket com ID '%s'."
+msgstr "Impossível reabrir chamados com ID '%s'."
 
 #, php-format
 msgid "Unable to restore %s plugin directory"
@@ -5220,8 +5228,11 @@ msgstr "Desconhecido"
 msgid "Unknown Error"
 msgstr "Erro desconhecido"
 
-msgid "Unknown FTP user id."
-msgstr "Id de usuário FTP desconhecido."
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "Ação desconhecida requisitada."
@@ -5441,7 +5452,7 @@ msgid "View"
 msgstr "Ver"
 
 msgid "View Support Ticket"
-msgstr "Ver Ticket de Suporte"
+msgstr "Ver chamados de suporte"
 
 msgid "View aliases"
 msgstr "Ver aliases"
@@ -5450,7 +5461,7 @@ msgid "View hosting plan"
 msgstr "Ver plano de hospedagem"
 
 msgid "View ticket"
-msgstr "Ver ticket"
+msgstr "Ver chamado"
 
 msgid "Visit plugin site"
 msgstr "Visite o site do plugin"
@@ -5530,9 +5541,6 @@ msgstr "Wildcards como %% e não são permitidos."
 
 msgid "Wrong IP address."
 msgstr "Endereço de IP incorreto."
-
-msgid "Wrong SQL user identifier."
-msgstr "Identificador de usuário SQL incorreto."
 
 msgid "Wrong mail syntax in forward list."
 msgstr "Sintaxe errada em lista de encaminhamento de e-mail."
@@ -5670,9 +5678,6 @@ msgstr "Você não tem registros de recursos DNS."
 msgid "You do not have FTP accounts."
 msgstr "Você não tem contas FTP."
 
-msgid "You do not have any orders for domain aliases."
-msgstr "Você não tem quaisquer ordens aliases de domínio."
-
 msgid "You do not have any software uploaded yet"
 msgstr "Você não tem nenhum software carregado ainda"
 
@@ -5756,13 +5761,13 @@ msgid ""
 msgstr "Você tem bases de dados SQL com deficiência para este usuário. <br /> Você não pode ter usuários SQL aqui."
 
 msgid "You have no closed tickets."
-msgstr "Você não tem tickets fechadas."
+msgstr "Você não tem chamados fechados."
 
 msgid "You have no groups."
 msgstr "Você não tem grupos."
 
 msgid "You have no open tickets."
-msgstr "Você não tem tickets aberto."
+msgstr "Você não tem chamados em aberto."
 
 msgid "You have not service ports defined."
 msgstr "Portas de serviços não definida."
@@ -5787,7 +5792,7 @@ msgstr "Você atingiu seu limite de domínios. <br /> Você não pode adicionar 
 
 #, php-format
 msgid "You have received %s new support ticket(s)."
-msgstr "Você recebeu %s novo ticket de suporte"
+msgstr "Você recebeu %s novo chamado de suporte"
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "Você tem que escolher entre: file-upload ou wget-function."
@@ -5922,7 +5927,7 @@ msgid "[Re]"
 msgstr "[Re]"
 
 msgid "[Ticket]"
-msgstr "[Ticket]"
+msgstr "[Chamado]"
 
 msgid "_: Localised language"
 msgstr "Português (Brasil)"
@@ -6062,6 +6067,9 @@ msgstr "alias faltando"
 
 msgid "missing domain"
 msgstr "domínio faltando"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "não"

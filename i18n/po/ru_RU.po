@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -594,6 +594,9 @@ msgstr "Время истечения ссылки активации <small>(В
 msgid "Add"
 msgstr "Добавить"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Добавить учётную запись FTP"
 
@@ -907,9 +910,6 @@ msgstr "Перенаправление алиаса"
 msgid "Alias mail"
 msgstr "алиас почты"
 
-msgid "Alias name"
-msgstr "Имя алиаса"
-
 msgid "Alias subdomain forward"
 msgstr "Перенаправление поддомена алиаса"
 
@@ -1076,6 +1076,14 @@ msgstr "Вы уверены, что хотите удалить пользова
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Вы уверены, что хотите удалить переадресацию %s ?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -3325,6 +3333,9 @@ msgstr "Обновлений нет"
 msgid "No update info available"
 msgstr "Нет информации об обновлениях"
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr "Не найдено пользователей"
 
@@ -3715,11 +3726,11 @@ msgstr "Плагин %s не может быть изменен."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must deactivate it first."
-msgstr ""
+msgstr "Плагин %s не может быть удален. Вы должны сначала деактивировать его."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must uninstall it first."
-msgstr ""
+msgstr "Плагин %s не может быть удален. Вы должны сначала деинсталлировать его."
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3853,7 +3864,7 @@ msgid "Plugin errors"
 msgstr "Ошибки плагинов"
 
 msgid "Plugin has been uploaded."
-msgstr ""
+msgstr "Плагин был загружен."
 
 msgid "Plugin item errors"
 msgstr "Ошибки плагинов"
@@ -3879,7 +3890,7 @@ msgstr "Плагины подключаются в i-MSCP для расшире�
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) changed, and %s plugin(s) deleted."
-msgstr ""
+msgstr "Список плагинов успешно обновлен: %s новый(х) плагин(ов) найден(о), %s плагин(ов) обновлен(о), %s плагин(ов) изменен(о) и %s плагин(ов) удалено."
 
 msgid "Port"
 msgstr "Порт"
@@ -4484,9 +4495,6 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Показывать все ошибки, предупреждения и замечания, включая стандарты кодирования (Разработчику)"
-
-msgid "Show certificate"
-msgstr "Показать сертификат"
 
 msgid "Show detailed statistics for this domain"
 msgstr "Показать детальную статистику для этого домена"
@@ -5214,8 +5222,11 @@ msgstr "Неизвестно"
 msgid "Unknown Error"
 msgstr "Неизвестная ошибка"
 
-msgid "Unknown FTP user id."
-msgstr "Неверный ID пользователя FTP."
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "Запрошено неизвестное действие."
@@ -5525,9 +5536,6 @@ msgstr "Групповые символы, такие как %% и ? не раз
 msgid "Wrong IP address."
 msgstr "Неверный IP адрес."
 
-msgid "Wrong SQL user identifier."
-msgstr "Неверный ID пользователя SQL"
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Неверный почтовый синтаксис списка перенаправления."
 
@@ -5663,9 +5671,6 @@ msgstr "У Вас нет записей ресурсов DNS."
 
 msgid "You do not have FTP accounts."
 msgstr "У Вас нет пользователей FTP."
-
-msgid "You do not have any orders for domain aliases."
-msgstr "У Вас нет заказов на алиасы доменов."
 
 msgid "You do not have any software uploaded yet"
 msgstr "У вас еще нет загруженного программного обеспечения"
@@ -6056,6 +6061,9 @@ msgstr "отсутствующий алиас"
 
 msgid "missing domain"
 msgstr "отсутствующий домен"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "нет"

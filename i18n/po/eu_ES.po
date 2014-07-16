@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Basque (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/eu_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -591,6 +591,9 @@ msgstr ""
 msgid "Add"
 msgstr "Gehitu"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr ""
 
@@ -904,9 +907,6 @@ msgstr ""
 msgid "Alias mail"
 msgstr ""
 
-msgid "Alias name"
-msgstr "Ezizena"
-
 msgid "Alias subdomain forward"
 msgstr ""
 
@@ -1072,6 +1072,14 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
 msgstr ""
 
 #, php-format
@@ -3322,6 +3330,9 @@ msgstr ""
 msgid "No update info available"
 msgstr ""
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr ""
 
@@ -4482,9 +4493,6 @@ msgid ""
 "(Development)"
 msgstr ""
 
-msgid "Show certificate"
-msgstr ""
-
 msgid "Show detailed statistics for this domain"
 msgstr ""
 
@@ -5211,7 +5219,10 @@ msgstr "Ezezaguna"
 msgid "Unknown Error"
 msgstr "Akats ezezaguna"
 
-msgid "Unknown FTP user id."
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
 msgstr ""
 
 msgid "Unknown action requested."
@@ -5522,9 +5533,6 @@ msgstr ""
 msgid "Wrong IP address."
 msgstr ""
 
-msgid "Wrong SQL user identifier."
-msgstr ""
-
 msgid "Wrong mail syntax in forward list."
 msgstr ""
 
@@ -5659,9 +5667,6 @@ msgid "You do not have DNS resource records."
 msgstr ""
 
 msgid "You do not have FTP accounts."
-msgstr ""
-
-msgid "You do not have any orders for domain aliases."
 msgstr ""
 
 msgid "You do not have any software uploaded yet"
@@ -6053,6 +6058,9 @@ msgstr "izen-goiti galdua"
 
 msgid "missing domain"
 msgstr "domeinu galdua"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "ez"

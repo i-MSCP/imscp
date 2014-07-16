@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -594,6 +594,9 @@ msgstr "Ważność linku aktywacyjnego <small>(In minutes)</small>"
 msgid "Add"
 msgstr "Dodaj"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Dodaj konto FTP"
 
@@ -907,9 +910,6 @@ msgstr "Alias przekierowania"
 msgid "Alias mail"
 msgstr "Alias pocztowy"
 
-msgid "Alias name"
-msgstr "Nazwa aliasu"
-
 msgid "Alias subdomain forward"
 msgstr "Alias przekierowania subdomeny"
 
@@ -1076,6 +1076,14 @@ msgstr "Jesteś pewien, że chcesz usunąć użytkownika FTP %s ? "
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Czy jesteś pewien, że chcesz usunąć %s catch all?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -3325,6 +3333,9 @@ msgstr ""
 msgid "No update info available"
 msgstr ""
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr "Nie znaleziono użytkownika."
 
@@ -4485,9 +4496,6 @@ msgid ""
 "(Development)"
 msgstr "Wyświetl wszystkie błędy, ostrzeżenia i informacje, a także ostrzeżenia odnośnie kodowania (Developer)"
 
-msgid "Show certificate"
-msgstr ""
-
 msgid "Show detailed statistics for this domain"
 msgstr "Pokaż szczegółowe statystyki dla tej domeny"
 
@@ -5214,8 +5222,11 @@ msgstr "Nieznany"
 msgid "Unknown Error"
 msgstr "Nieznany błąd"
 
-msgid "Unknown FTP user id."
-msgstr "Nieznane id użytkonika FTP"
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "Nastąpiła nieokreślona akcja."
@@ -5525,9 +5536,6 @@ msgstr ""
 msgid "Wrong IP address."
 msgstr "Zły adres IP."
 
-msgid "Wrong SQL user identifier."
-msgstr "Niepoprawny identyfikator SQL."
-
 msgid "Wrong mail syntax in forward list."
 msgstr ""
 
@@ -5663,9 +5671,6 @@ msgstr ""
 
 msgid "You do not have FTP accounts."
 msgstr "Nie posiadasz kont FTP."
-
-msgid "You do not have any orders for domain aliases."
-msgstr ""
 
 msgid "You do not have any software uploaded yet"
 msgstr "Nie posiadasz jeszcze żadnego oprogramowania"
@@ -6056,6 +6061,9 @@ msgstr "brakuje aliasu"
 
 msgid "missing domain"
 msgstr "brakuje domeny"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "nie"

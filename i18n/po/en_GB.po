@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -599,6 +599,9 @@ msgstr "Activation link expire time <small>(In minutes)</small>"
 msgid "Add"
 msgstr "Add"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Add FTP account"
 
@@ -912,9 +915,6 @@ msgstr "Alias forward"
 msgid "Alias mail"
 msgstr "Alias mail"
 
-msgid "Alias name"
-msgstr "Alias name"
-
 msgid "Alias subdomain forward"
 msgstr "Alias subdomain forward"
 
@@ -1081,6 +1081,14 @@ msgstr "Are you sure you want to delete the %s FTP user?"
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Are you sure you want to delete the %s catch all?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -3330,6 +3338,9 @@ msgstr ""
 msgid "No update info available"
 msgstr ""
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr "No user found."
 
@@ -4490,9 +4501,6 @@ msgid ""
 "(Development)"
 msgstr "Show all errors, warnings and notices including coding standards (Development)"
 
-msgid "Show certificate"
-msgstr ""
-
 msgid "Show detailed statistics for this domain"
 msgstr "Show detailed statistics for this domain"
 
@@ -5219,8 +5227,11 @@ msgstr "Unknown"
 msgid "Unknown Error"
 msgstr "Unknown Error"
 
-msgid "Unknown FTP user id."
-msgstr "Unknown FTP user id."
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "Unknown action requested."
@@ -5530,9 +5541,6 @@ msgstr ""
 msgid "Wrong IP address."
 msgstr "Wrong IP address."
 
-msgid "Wrong SQL user identifier."
-msgstr "Wrong SQL user identifier."
-
 msgid "Wrong mail syntax in forward list."
 msgstr ""
 
@@ -5668,9 +5676,6 @@ msgstr ""
 
 msgid "You do not have FTP accounts."
 msgstr "You do not have FTP accounts."
-
-msgid "You do not have any orders for domain aliases."
-msgstr "You do not have any orders for domain aliases."
 
 msgid "You do not have any software uploaded yet"
 msgstr "You do not have any software uploaded yet"
@@ -6061,6 +6066,9 @@ msgstr "missing alias"
 
 msgid "missing domain"
 msgstr "missing domain"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "no"

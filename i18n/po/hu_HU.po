@@ -6,14 +6,15 @@
 # Adam Radovits <adamradovits12@hotmail.com>, 2013-2014
 # Zoltán Balázs <balazsz@citromail.hu>, 2011-2012
 # knorbi555 <k.norbi555@gmail.com>, 2012
+# starring94 <kovinor123@gmail.com>, 2014
 # Zoltán Balázs <balazsz@citromail.hu>, 2012-2013
 # Zsolt Jónás <jonas.zsolt@naxonet.hu>, 2011,2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -520,7 +521,7 @@ msgid "A PHP extension stopped the file upload."
 msgstr "PHP kiterjesztés megállította a fájlfeltöltést"
 
 msgid "A certificate in your CA bundle is missing or invalid."
-msgstr ""
+msgstr "A tanúsítványodban a „CA bundle” hiányzik vagy érvénytelen."
 
 msgid "A database update is available"
 msgstr "Adatbázis frissítés érhető el"
@@ -593,6 +594,9 @@ msgstr "Aktiválási hivatkozás elévülési ideje <small>(percben)</small>"
 
 msgid "Add"
 msgstr "Létrehozás"
+
+msgid "Add / Edit SSL certificate"
+msgstr ""
 
 msgid "Add FTP account"
 msgstr "FTP-felhasználó hozzáadása"
@@ -907,9 +911,6 @@ msgstr "Továbbított alternatív email cím"
 msgid "Alias mail"
 msgstr "Alternatív email cím"
 
-msgid "Alias name"
-msgstr "Domain álnév"
-
 msgid "Alias subdomain forward"
 msgstr "Továbbított alternatív aldomain email cím"
 
@@ -1078,6 +1079,14 @@ msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Biztosan szeretné törölni a %s begyűjtő címet?"
 
 #, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
+
+#, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
 msgstr "Biztosan szeretné törölni a %s tárhely csomagot?"
 
@@ -1216,7 +1225,7 @@ msgid "By"
 msgstr "által"
 
 msgid "CA bundle"
-msgstr ""
+msgstr "CA csomag"
 
 msgid "CGI"
 msgstr "CGI használata"
@@ -1519,7 +1528,7 @@ msgid "Closed tickets"
 msgstr "Lezárt hibajegyek"
 
 msgid "Common name"
-msgstr ""
+msgstr "Közös név"
 
 msgid "Company"
 msgstr "Cég"
@@ -1687,7 +1696,7 @@ msgid "DNS record already exist."
 msgstr "DNS rekord már létezik"
 
 msgid "DNS resource records"
-msgstr ""
+msgstr "DNS forrás rekordok"
 
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr "DNS szerver nem elérhető. Kérjük, lépj kapcsolatba viszonteladóddal!"
@@ -2667,7 +2676,7 @@ msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
 "against deletion using the immutable flag (only if supported by the file "
 "system)."
-msgstr ""
+msgstr "Ha 'igen'-t választasz, akkor a Web könyvtárakat az i-MSCP megváltozhatatlan jelöléssel megvédi az esetleges törléstől (csak ha támogatja a fájlrendszer)."
 
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
@@ -2811,7 +2820,7 @@ msgid "Internationalization"
 msgstr "Nyelvi beállítások"
 
 msgid "Invalid CA Bundle."
-msgstr ""
+msgstr "Érvénytelen „CA Bundle”."
 
 msgid "Invalid CNAME"
 msgstr "Érvénytelen CNAME"
@@ -3325,6 +3334,9 @@ msgstr "Nincs elérhető frissítés"
 msgid "No update info available"
 msgstr "Frissítési információ nem érhető el"
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr "Nem található felhasználó"
 
@@ -3415,7 +3427,7 @@ msgstr "Csak pozitív szám adható meg"
 msgid ""
 "Only printable characters from the ASCII table (not extended), excepted the "
 "space, are allowed."
-msgstr ""
+msgstr "Csak a (nem kiterjesztett) ASCII táblából a nyomtatható - beleértve a szóközt - karakterek az engedélyezettek."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Csak a tar.gz, tar.bz2 és a zip archívumok az elfogadottak."
@@ -3564,7 +3576,7 @@ msgid "Password confirmation"
 msgstr "Jelszó megerősítése"
 
 msgid "Password contains unallowed characters."
-msgstr ""
+msgstr "A jelszó nem engedélyezett karaktereket tartalmaz!"
 
 msgid "Password data"
 msgstr "Jelszó adatai"
@@ -3715,11 +3727,11 @@ msgstr "%s bővítményt nem lehet megváltoztatni."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must deactivate it first."
-msgstr ""
+msgstr "%s bővítmény nem törölhető. Előbb deaktiválnod kell!"
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must uninstall it first."
-msgstr ""
+msgstr "%s bővítmény nem törölhető. Előbb el kell távolítanod!"
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3853,7 +3865,7 @@ msgid "Plugin errors"
 msgstr "Bővítmény hibák"
 
 msgid "Plugin has been uploaded."
-msgstr ""
+msgstr "Bővítmény feltöltve!"
 
 msgid "Plugin item errors"
 msgstr "Bővítményelem hibái"
@@ -3879,7 +3891,7 @@ msgstr "A bővítmények beépülnek az i-MSCP rendszerébe és kibővítik anna
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) changed, and %s plugin(s) deleted."
-msgstr ""
+msgstr "Bővítménylista frissítve: %s új bővítmény található, %s bővítmény frissítve, %s bővítmény megváltozott és %s bővítmény törölve."
 
 msgid "Port"
 msgstr "Port"
@@ -3916,7 +3928,7 @@ msgid "Private key field cannot be empty"
 msgstr "Privát kulcs mező nem lehet üres"
 
 msgid "Private key passphrase if any"
-msgstr ""
+msgstr "Privát kulcs vagy jelszó, ha van ilyen"
 
 msgid "Process update"
 msgstr "Frissítés folyamata"
@@ -4484,9 +4496,6 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Minden hiba, figyelmeztetés és közlemény megjelenítése, beleértve a kódolási szabványokat is (Fejlesztéshez)"
-
-msgid "Show certificate"
-msgstr "Tanúsítvány megjelenítése"
 
 msgid "Show detailed statistics for this domain"
 msgstr "Domain név részletes statisztikájának megjelenítése"
@@ -5214,8 +5223,11 @@ msgstr "Ismeretlen"
 msgid "Unknown Error"
 msgstr "Ismeretlen hiba"
 
-msgid "Unknown FTP user id."
-msgstr "Ismeretlen FTP felhasználó azonosító"
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "Ismeretlen művelet."
@@ -5525,9 +5537,6 @@ msgstr "A %% és ? helyettesítő karakterek nem engedélyezettek."
 msgid "Wrong IP address."
 msgstr "Hibás IP-cím"
 
-msgid "Wrong SQL user identifier."
-msgstr "Hibás SQL felhasználó meghatározás"
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Hibás levelező szintaktika a továbbítási listában."
 
@@ -5659,13 +5668,10 @@ msgid "You cannot unassign an IP address already in use."
 msgstr "Nem lehet visszavonni a már használatban lévő IP-címet"
 
 msgid "You do not have DNS resource records."
-msgstr ""
+msgstr "Nincs DNS forrás rekordod."
 
 msgid "You do not have FTP accounts."
 msgstr "Nincsenek FTP-felhasználók."
-
-msgid "You do not have any orders for domain aliases."
-msgstr "Nincs domain álnév megrendelésed."
 
 msgid "You do not have any software uploaded yet"
 msgstr "Nem található feltöltött program"
@@ -6056,6 +6062,9 @@ msgstr "hiányzó domain álnév"
 
 msgid "missing domain"
 msgstr "hiányzó domain"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "nem"

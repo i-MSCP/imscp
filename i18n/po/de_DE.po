@@ -24,7 +24,7 @@
 # Rene Schuster, 2014
 # Rene Schuster, 2014
 # design <schlanki_26@web.de>, 2011
-# Speddy20537 <speddy20537@gmx.de>, 2014
+# Patrick <speddy20537@gmx.de>, 2014
 # kreilinger <strauss3@gmx.at>, 2011
 # Tango <tango-net@freenet.de>, 2011
 # Thomas <thomasbjoh@gmx.de>, 2013
@@ -36,8 +36,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -618,6 +618,9 @@ msgstr "Gültigkeit des Aktivierungslinks <small>(in Minuten)</small>"
 msgid "Add"
 msgstr "Anlegen"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "FTP Account hinzufügen"
 
@@ -931,9 +934,6 @@ msgstr "Alias-Weiterleitung"
 msgid "Alias mail"
 msgstr "Alias-E-Mail"
 
-msgid "Alias name"
-msgstr "Aliasname"
-
 msgid "Alias subdomain forward"
 msgstr "Alias-Subdomain-Weiterleitung"
 
@@ -1100,6 +1100,14 @@ msgstr "Wollen Sie den FTP-Benutzer %s wirklich löschen?"
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Wollen Sie wirklich den %s Catch-All löschen?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -3349,6 +3357,9 @@ msgstr "Kein Update verfügbar"
 msgid "No update info available"
 msgstr "Keine Update-Informationen verfügbar"
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr "Kein Benutzer gefunden."
 
@@ -3739,11 +3750,11 @@ msgstr "Plugin %s kann nicht verändert werden."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must deactivate it first."
-msgstr ""
+msgstr "Plugin %s kann nicht gelöscht werden. Sie müssen es erst deaktivieren."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must uninstall it first."
-msgstr ""
+msgstr "Plugin %s kann nicht gelöscht werden. Sie müssen es erst deinstallieren."
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3877,7 +3888,7 @@ msgid "Plugin errors"
 msgstr "Plugin Fehler"
 
 msgid "Plugin has been uploaded."
-msgstr ""
+msgstr "Plugin wurde hochgeladen."
 
 msgid "Plugin item errors"
 msgstr "Plugin Fehler"
@@ -3903,7 +3914,7 @@ msgstr "Plugins haken sich in i-MSCP ein, um die Funktionalität mit benutzerdef
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) changed, and %s plugin(s) deleted."
-msgstr ""
+msgstr "Plugin Liste wurde aktualisiert: %s neue Plugin(s) gefunden, %s Plugin(s) aktualisiert, %s Plugin(s) geändert und %s  Plugin(s) gelöscht."
 
 msgid "Port"
 msgstr "Port"
@@ -4508,9 +4519,6 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Zeige alle Fehlermeldungen, Warnungen und Hinweise an (Entwickler)"
-
-msgid "Show certificate"
-msgstr "Zeige Zertifikat"
 
 msgid "Show detailed statistics for this domain"
 msgstr "Zeige detailierte Statistiken für diese Domain."
@@ -5238,8 +5246,11 @@ msgstr "Unbekannt"
 msgid "Unknown Error"
 msgstr "Unbekannter Fehler"
 
-msgid "Unknown FTP user id."
-msgstr "Unbekannte FTP-Benutzer-ID."
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "Unbekannte Aktion angefordert."
@@ -5549,9 +5560,6 @@ msgstr "Platzhalter wie %% und ? sind nicht erlaubt."
 msgid "Wrong IP address."
 msgstr "Falsche IP-Adresse."
 
-msgid "Wrong SQL user identifier."
-msgstr "Falsche SQL-Benutzer-ID."
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Falsche Mail-Syntax in der Weiterleitungsliste."
 
@@ -5687,9 +5695,6 @@ msgstr "Sie haben keine DNS Ressourceneinträge."
 
 msgid "You do not have FTP accounts."
 msgstr "Sie haben keine FTP-Accounts."
-
-msgid "You do not have any orders for domain aliases."
-msgstr "Sie haben keine Domain Alias Bestellungen."
 
 msgid "You do not have any software uploaded yet"
 msgstr "Sie haben noch keine Software hochgeladen "
@@ -6080,6 +6085,9 @@ msgstr "Fehlender Alias"
 
 msgid "missing domain"
 msgstr "Fehlende Domain"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "Nein"

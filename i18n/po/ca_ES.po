@@ -10,7 +10,7 @@
 # Joan Juvanteny <aseques@gmail.com>, 2008-2011,2013
 # Joan Juvanteny <jjuvan@grn.cat>, 2008, 2009, 2010, 2011
 # kilburn <shadow+transifex@la3.org>, 2011-2012
-# aseques <sacoo2@hotmail.com>, 2013
+# aseques <sacoo2@hotmail.com>, 2013-2014
 # aseques <sacoo2@hotmail.com>, 2013
 # Sagi Roca <sagi@canbasis.com>, 2012
 # Sagi Roca <sagi@canbasis.com>, 2012
@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -601,6 +601,9 @@ msgstr "Temps d'expiració de l'enllaç d'activació <small>(In minutes)</small>
 msgid "Add"
 msgstr "Afegir"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Afegir un compte FTP"
 
@@ -914,9 +917,6 @@ msgstr "Reenviament d'àlies"
 msgid "Alias mail"
 msgstr "Mail d'àlies"
 
-msgid "Alias name"
-msgstr "Nom de l'àlies"
-
 msgid "Alias subdomain forward"
 msgstr "Reenviament d'àlies de subdomini"
 
@@ -1083,6 +1083,14 @@ msgstr "Esteu segurs que voleu eliminar l'usuari FTP <b>%s</b>?"
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Estas segur de voler esborrar el %s catch-all?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1922,7 +1930,7 @@ msgid "Disk space"
 msgstr "Espai de disc"
 
 msgid "Disk space limit [MiB]"
-msgstr ""
+msgstr "Límit d'espai de disc [MiB]"
 
 msgid "Disk usage"
 msgstr "Ús de disc"
@@ -1978,7 +1986,7 @@ msgid "Domain alias errors"
 msgstr ""
 
 msgid "Domain alias limit"
-msgstr ""
+msgstr "Límit d'àlies de domini."
 
 msgid "Domain alias name"
 msgstr "Nom de l'àlies de domini"
@@ -2034,7 +2042,7 @@ msgid "Domain expiration date must be filled."
 msgstr "Has d'introduïr la data d'expiració del domini."
 
 msgid "Domain limit"
-msgstr ""
+msgstr "Límit de dominis"
 
 msgid "Domain mail"
 msgstr "Mail de domini"
@@ -2203,7 +2211,7 @@ msgid "Email account errors"
 msgstr ""
 
 msgid "Email account limit"
-msgstr ""
+msgstr "Límit de comptes de correu."
 
 msgid "Email account limit is reached."
 msgstr ""
@@ -2357,10 +2365,10 @@ msgid "FTP account"
 msgstr "Compte FTP"
 
 msgid "FTP account limit"
-msgstr ""
+msgstr "Límits del comptes FTP"
 
 msgid "FTP account limit reached."
-msgstr ""
+msgstr "S'ha assolit el límit de comptes FTP."
 
 msgid "FTP account successfully added."
 msgstr ""
@@ -2576,7 +2584,7 @@ msgid "Hosting plan has been successfully deleted."
 msgstr ""
 
 msgid "Hosting plan limits exceed reseller limits."
-msgstr ""
+msgstr "Els límits del pla de hosting excedeixen els del distribuïdor."
 
 msgid "Hosting plan successfully added."
 msgstr ""
@@ -2591,7 +2599,7 @@ msgid "Hosting plan values exceed reseller maximum values."
 msgstr "Els límits del domini sobrepassen el màxim disponible per aquest distribuïdor."
 
 msgid "Hosting plan values exceed your own limits."
-msgstr ""
+msgstr "Els valors del pla de hosting excedeixen els vostres límits."
 
 msgid "Hosting plans"
 msgstr "Plans de hosting"
@@ -2721,25 +2729,25 @@ msgid "Incorrect Email quota."
 msgstr ""
 
 msgid "Incorrect FTP account limit."
-msgstr ""
+msgstr "Límit de comptes FTP incorrecte."
 
 msgid "Incorrect SQL database limit."
-msgstr ""
+msgstr "Límit de base de dades SQL incorrecte."
 
 msgid "Incorrect SQL user limit."
-msgstr ""
+msgstr "Límit d'usuaris SQL incorrecte."
 
 msgid "Incorrect alias limit."
-msgstr ""
+msgstr "Límit d'àlies incorrecte."
 
 msgid "Incorrect disk space limit."
-msgstr ""
+msgstr "Límit d'espai en disc incorrecte."
 
 msgid "Incorrect domain alias limit."
-msgstr ""
+msgstr "Límit d'àlies de domini incorrecte."
 
 msgid "Incorrect email account limit."
-msgstr ""
+msgstr "Límit de comptes de correu incorrecte."
 
 msgid "Incorrect email length or syntax."
 msgstr "La sintaxi o longitud del correu no són valides."
@@ -2749,13 +2757,13 @@ msgid "Incorrect limit for %s."
 msgstr "Límit incorrecte per a %s."
 
 msgid "Incorrect monthly traffic limit."
-msgstr ""
+msgstr "Límit de transit mensual incorrecte."
 
 msgid "Incorrect post code length or syntax!"
 msgstr ""
 
 msgid "Incorrect subdomain limit."
-msgstr ""
+msgstr "Límit de subdominis incorrecte."
 
 msgid "Incorrect syntax for email address."
 msgstr "L'adreça de correu no és vàlida."
@@ -3168,13 +3176,13 @@ msgid "Month"
 msgstr "Mes"
 
 msgid "Monthly traffic limit [MiB]"
-msgstr ""
+msgstr "Límit de transit mensual [MiB]"
 
 msgid "Monthly traffic limit must be a number."
-msgstr ""
+msgstr "El límit de trànsit ha de ser un número."
 
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
-msgstr ""
+msgstr "El valor d'alerta de trànsit no pot ser superior al valor del límit màxim."
 
 msgid "Monthly traffic warning must be a number."
 msgstr ""
@@ -3330,6 +3338,9 @@ msgid "No update available"
 msgstr ""
 
 msgid "No update info available"
+msgstr ""
+
+msgid "No used yet"
 msgstr ""
 
 msgid "No user found."
@@ -4258,7 +4269,7 @@ msgid "SQL database"
 msgstr ""
 
 msgid "SQL database limit"
-msgstr ""
+msgstr "Límit de bases de dades SQL."
 
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr ""
@@ -4491,9 +4502,6 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Mostrar tots els errors, advertències i avisos incloent les d'estil (Desenvolupament)"
-
-msgid "Show certificate"
-msgstr ""
 
 msgid "Show detailed statistics for this domain"
 msgstr "Mostrar estadístiques detallades per aquest domini"
@@ -5221,8 +5229,11 @@ msgstr "Desconegut"
 msgid "Unknown Error"
 msgstr "Error desconegut"
 
-msgid "Unknown FTP user id."
-msgstr "Identificador de l'usuari FTP desconegut."
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "No s'ha trobat l'acció sol·licitada."
@@ -5532,9 +5543,6 @@ msgstr ""
 msgid "Wrong IP address."
 msgstr "Adreça IP errònia."
 
-msgid "Wrong SQL user identifier."
-msgstr "Identificador d'usuari SQL erroni."
-
 msgid "Wrong mail syntax in forward list."
 msgstr ""
 
@@ -5592,7 +5600,7 @@ msgid "YiB"
 msgstr "YiB"
 
 msgid "You are exceeding the monthly server traffic limit."
-msgstr ""
+msgstr "Esteu excedint el vostre límit de transit mensual."
 
 msgid "You are exceeding you domain alias limit."
 msgstr ""
@@ -5613,7 +5621,7 @@ msgid "You are exceeding your email account limit."
 msgstr ""
 
 msgid "You are exceeding your monthly traffic limit."
-msgstr ""
+msgstr "Esteu excedint el vostre límit de transit mensual."
 
 msgid "You are exceeding your subdomain limit."
 msgstr ""
@@ -5669,9 +5677,6 @@ msgid "You do not have DNS resource records."
 msgstr ""
 
 msgid "You do not have FTP accounts."
-msgstr ""
-
-msgid "You do not have any orders for domain aliases."
 msgstr ""
 
 msgid "You do not have any software uploaded yet"
@@ -6063,6 +6068,9 @@ msgstr "falta l'àlies"
 
 msgid "missing domain"
 msgstr "falta el domini"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "no"

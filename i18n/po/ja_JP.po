@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -592,6 +592,9 @@ msgstr "アクティベーションリンクは有効期限 <small>(分)</small>
 msgid "Add"
 msgstr "追加"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "FTPアカウント追加"
 
@@ -905,9 +908,6 @@ msgstr "エイリアス転送"
 msgid "Alias mail"
 msgstr "エイリアスメール"
 
-msgid "Alias name"
-msgstr "エイリアスネーム"
-
 msgid "Alias subdomain forward"
 msgstr "サブドメインエイリアス転送"
 
@@ -1074,6 +1074,14 @@ msgstr "%s のFTPユーザーを削除してもよろしいですか？"
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "%sの全てを捕らえて削除してもよろしいですか？"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1685,7 +1693,7 @@ msgid "DNS record already exist."
 msgstr "DNSレコードは既に存在しています。"
 
 msgid "DNS resource records"
-msgstr ""
+msgstr "DNSリソースレコード"
 
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr "DNSサーバーが使用できません。代理店にお問い合わせください。"
@@ -2665,7 +2673,7 @@ msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
 "against deletion using the immutable flag (only if supported by the file "
 "system)."
-msgstr ""
+msgstr "’YES’にセットされるならば、i-MSCPによってプロビジョニングされるWebフォルダは不変フラグ(ファイルシステムによってサポートされる場合だけ)を使って削除から保護されています。"
 
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
@@ -3323,6 +3331,9 @@ msgstr "利用可能なアップデートがありません"
 msgid "No update info available"
 msgstr "利用可能なアップデート情報がありません"
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr "ユーザーが見つかりませんでした。"
 
@@ -3413,7 +3424,7 @@ msgstr "正の数値のみが許可されます。"
 msgid ""
 "Only printable characters from the ASCII table (not extended), excepted the "
 "space, are allowed."
-msgstr ""
+msgstr "印刷可能な文字は、スペースを除く、ASCIIテーブル(拡張なし)のみ許可されています。"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "tar.gz、tar.bz2、そしてzipアーカイブのみが受け入れられます。"
@@ -3562,7 +3573,7 @@ msgid "Password confirmation"
 msgstr "パスワードの確認"
 
 msgid "Password contains unallowed characters."
-msgstr ""
+msgstr "パスワードに許可されていない文字が含まれています。"
 
 msgid "Password data"
 msgstr "パスワードデータ"
@@ -3713,11 +3724,11 @@ msgstr "プラグイン%sは変更することはできません。"
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must deactivate it first."
-msgstr ""
+msgstr "プラグイン%sは削除できません。最初に無効にする必要があります。"
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must uninstall it first."
-msgstr ""
+msgstr "プラグイン%sは削除できません。最初にアンインストールする必要があります。"
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3851,7 +3862,7 @@ msgid "Plugin errors"
 msgstr "プラグインエラー"
 
 msgid "Plugin has been uploaded."
-msgstr ""
+msgstr "プラグインがアップロードされた。"
 
 msgid "Plugin item errors"
 msgstr "プラグイン項目エラー"
@@ -3877,7 +3888,7 @@ msgstr "プラグインは、カスタム機能によりi-MSCPの機能を拡張
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) changed, and %s plugin(s) deleted."
-msgstr ""
+msgstr "プラグインのリストが更新されました：%sの新しいプラグインが見つかりました、%sのプラグイン更新済み、%sのプラグインを変更、%sのプラグインを削除。"
 
 msgid "Port"
 msgstr "ポート番号"
@@ -4482,9 +4493,6 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "コーディング標準を含む、全ての誤り、警告、および通知を表示する(開発)"
-
-msgid "Show certificate"
-msgstr "証明書を表示"
 
 msgid "Show detailed statistics for this domain"
 msgstr "このドメインの詳細な統計情報を表示する"
@@ -5212,8 +5220,11 @@ msgstr "不明"
 msgid "Unknown Error"
 msgstr "不明なエラー"
 
-msgid "Unknown FTP user id."
-msgstr "FTPユーザーIDがありません。"
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "不明のアクションが要求された。"
@@ -5523,9 +5534,6 @@ msgstr "%%などのワイルドカードは使用できません。"
 msgid "Wrong IP address."
 msgstr "IPアドレスに誤りがあります"
 
-msgid "Wrong SQL user identifier."
-msgstr "SQLユーザー識別子に誤りがあります。"
-
 msgid "Wrong mail syntax in forward list."
 msgstr "転送リストに間違ったメール構文があります。"
 
@@ -5657,13 +5665,10 @@ msgid "You cannot unassign an IP address already in use."
 msgstr "既に使用中のIPアドレスの割り当てを解除することはできません。"
 
 msgid "You do not have DNS resource records."
-msgstr ""
+msgstr "DNSリソースレコードを持っていません。"
 
 msgid "You do not have FTP accounts."
 msgstr "FTPアカウントを持っていません。"
-
-msgid "You do not have any orders for domain aliases."
-msgstr "ドメインエイリアス用の任意の命令を持っていません。"
 
 msgid "You do not have any software uploaded yet"
 msgstr "任意のソフトウェアがまだアップロードされていません"
@@ -6054,6 +6059,9 @@ msgstr "エイリアスが見つからない"
 
 msgid "missing domain"
 msgstr "ドメインが見つからない"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "いいえ"

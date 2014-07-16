@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -591,6 +591,9 @@ msgstr "Aktiveringslänken löper ut <small>(i minuter)</small>"
 msgid "Add"
 msgstr "Lägg till"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Lägg till ett ftp konto"
 
@@ -904,9 +907,6 @@ msgstr "Alias forward"
 msgid "Alias mail"
 msgstr "Alias mail"
 
-msgid "Alias name"
-msgstr "Aliasnamn"
-
 msgid "Alias subdomain forward"
 msgstr "Alias subdomain forward"
 
@@ -1073,6 +1073,14 @@ msgstr "Är du säker på att du vill ta bort%s FTP-användare?"
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Är du säker på att du vill ta bort%s fånga alla?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -2302,7 +2310,7 @@ msgid "Error reporting"
 msgstr "Felrapportering"
 
 msgid "Error while trying to obtain list of network cards."
-msgstr "Fel när man försöker få fram listan över nätverkskort."
+msgstr "Fel vid försök att få listan med nätverkskort."
 
 msgid "Error: Remote File not found!"
 msgstr "Fel: Remote File not found!"
@@ -3322,6 +3330,9 @@ msgstr "Inga uppdateringar tillgängliga."
 msgid "No update info available"
 msgstr "Inget info om uppdateringar tillgängliga."
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr "Ingen användare hittades."
 
@@ -3712,11 +3723,11 @@ msgstr "Plugin %s cannot be changed."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must deactivate it first."
-msgstr ""
+msgstr "Plugin %s kan inte tas bort. Du måste avaktivera det först."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must uninstall it first."
-msgstr ""
+msgstr "Plugin %s kan inte tas bort. Du måste avinstallera den först."
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3850,7 +3861,7 @@ msgid "Plugin errors"
 msgstr "Plugin errors"
 
 msgid "Plugin has been uploaded."
-msgstr ""
+msgstr "Insticksprogrammet har överförts."
 
 msgid "Plugin item errors"
 msgstr "Plugin item errors"
@@ -3876,7 +3887,7 @@ msgstr "Plugins hook into i-MSCP to extend its functionality with custom feature
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) changed, and %s plugin(s) deleted."
-msgstr ""
+msgstr "Plugins listan har uppdaterats: %s nya plugin(s) hittades, %s plugin(s) uppdaterade, %s plugin(s) förändrats, och %s plugin(s) tas bort."
 
 msgid "Port"
 msgstr "Port"
@@ -4481,9 +4492,6 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Visa alla fel, varningar och meddelanden, inklusive kodning (Utveckling)"
-
-msgid "Show certificate"
-msgstr "Show certificate"
 
 msgid "Show detailed statistics for this domain"
 msgstr "Visa detalj statistik för denna domain."
@@ -5211,8 +5219,11 @@ msgstr "Okänd"
 msgid "Unknown Error"
 msgstr "Okänt fel"
 
-msgid "Unknown FTP user id."
-msgstr "Okänd FTP-användar-ID."
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "Okänd åtgärd begärt."
@@ -5522,9 +5533,6 @@ msgstr "Jokertecken som%% och? är inte tillåtna."
 msgid "Wrong IP address."
 msgstr "Fel IP adr."
 
-msgid "Wrong SQL user identifier."
-msgstr "Fel SQL användar indentifiering"
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Fel syntax i framåt-lista."
 
@@ -5660,9 +5668,6 @@ msgstr "Du har inte DNS-urkunder för resursen."
 
 msgid "You do not have FTP accounts."
 msgstr "Du har inga FTP-konton."
-
-msgid "You do not have any orders for domain aliases."
-msgstr "You do not have any orders for domain aliases."
 
 msgid "You do not have any software uploaded yet"
 msgstr "You do not have any software uploaded yet"
@@ -6053,6 +6058,9 @@ msgstr "saknas alias"
 
 msgid "missing domain"
 msgstr "saknas domän"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "nej"

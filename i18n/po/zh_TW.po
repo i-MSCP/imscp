@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -232,7 +232,7 @@ msgstr ""
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / 無限制"
 
 #, php-format
 msgid "%d Service(s) port successfully updateds"
@@ -252,7 +252,7 @@ msgstr ""
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
+msgstr "%d 條字串已經翻譯"
 
 #, php-format
 msgid "%s / %s of %s"
@@ -260,7 +260,7 @@ msgstr ""
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / 無限制"
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -308,7 +308,7 @@ msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
-msgstr ""
+msgstr "%s 不是正確的 i-MSCP 語言檔"
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
@@ -328,11 +328,11 @@ msgstr ""
 
 #, php-format
 msgid "%s page"
-msgstr ""
+msgstr "%s 頁"
 
 #, php-format
 msgid "%s record"
-msgstr ""
+msgstr "%s 筆記錄"
 
 #, php-format
 msgid ""
@@ -526,19 +526,19 @@ msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "A new i-MSCP version is available"
-msgstr ""
+msgstr "i-MSCP 目前已經有最新版本"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr ""
 
 msgid "Access your files through the web interface."
-msgstr ""
+msgstr "經由網頁介面連線至您的 FTP"
 
 msgid "Access your mail through the web interface."
-msgstr ""
+msgstr "透過 Web Mail 介面使用您的 Email"
 
 msgid "Account data"
-msgstr ""
+msgstr "帳號資料"
 
 msgid "Account limits"
 msgstr ""
@@ -547,10 +547,10 @@ msgid "Account name"
 msgstr "帳號名"
 
 msgid "Account overview"
-msgstr ""
+msgstr "帳號概觀"
 
 msgid "Account summary"
-msgstr ""
+msgstr "帳戶概觀"
 
 msgid "Account type"
 msgstr "帳戶類型"
@@ -580,28 +580,31 @@ msgid "Activated software"
 msgstr ""
 
 msgid "Activation email"
-msgstr ""
+msgstr "帳戶啟用信"
 
 msgid "Activation in progress..."
 msgstr ""
 
 msgid "Activation link expire time <small>(In minutes)</small>"
-msgstr ""
+msgstr "驗證連結到期時間 <small>(分鐘)</small>"
 
 msgid "Add"
 msgstr "增加"
 
-msgid "Add FTP account"
+msgid "Add / Edit SSL certificate"
 msgstr ""
+
+msgid "Add FTP account"
+msgstr "新增 FTP 帳號"
 
 msgid "Add FTP user"
 msgstr "增加 FTP 使用者"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "新增 Htaccess 群組"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "新增 Htaccess 使用者"
 
 msgid "Add SQL database"
 msgstr "增加 SQL 資料庫"
@@ -610,7 +613,7 @@ msgid "Add SQL user"
 msgstr "增加 SQL 使用者"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "新增 SSL 證書"
 
 msgid "Add a new entry"
 msgstr ""
@@ -622,40 +625,40 @@ msgid "Add catchall"
 msgstr ""
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "新增自訂DNS紀錄"
 
 msgid "Add custom menu"
-msgstr ""
+msgstr "新增自訂選單"
 
 msgid "Add customer"
-msgstr ""
+msgstr "新增客戶"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "新增客戶 - 下一步"
 
 msgid "Add domain alias"
 msgstr "增加網域別名"
 
 msgid "Add email account"
-msgstr ""
+msgstr "新增 Email 帳號"
 
 msgid "Add email user"
-msgstr ""
+msgstr "新增Email使用者"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Add group"
-msgstr "增加組"
+msgstr "增加群組"
 
 msgid "Add hosting plan"
-msgstr "增加託管計劃"
+msgstr "增加代管方案"
 
 msgid "Add new IP address"
-msgstr ""
+msgstr "新增 IP 位址"
 
 msgid "Add new database"
-msgstr ""
+msgstr "新增資料庫"
 
 msgid "Add new entry"
 msgstr ""
@@ -849,7 +852,7 @@ msgid "Admin Log"
 msgstr "管理員日誌"
 
 msgid "Admin account successfully created."
-msgstr ""
+msgstr "管理員帳號已經成功建立"
 
 msgid "Admin log"
 msgstr "管理員日誌"
@@ -870,13 +873,13 @@ msgid "Administrator and Reseller levels"
 msgstr ""
 
 msgid "Administrator and customer"
-msgstr ""
+msgstr "管理者 與 客戶"
 
 msgid "Administrator and customer levels"
 msgstr ""
 
 msgid "Administrator and reseller"
-msgstr ""
+msgstr "管理者 與 代理商"
 
 msgid "Administrator level"
 msgstr "管理員級別"
@@ -904,9 +907,6 @@ msgstr ""
 msgid "Alias mail"
 msgstr ""
 
-msgid "Alias name"
-msgstr "別名名稱"
-
 msgid "Alias subdomain forward"
 msgstr ""
 
@@ -914,7 +914,7 @@ msgid "Alias subdomain mail"
 msgstr ""
 
 msgid "Aliases"
-msgstr "別名"
+msgstr "網域別名"
 
 msgid "All"
 msgstr "所有"
@@ -923,7 +923,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr ""
 
 msgid "All fields are required."
-msgstr ""
+msgstr "所有欄位皆必填．"
 
 msgid "All fields seem to be valid."
 msgstr ""
@@ -947,7 +947,7 @@ msgid "All traffic"
 msgstr "所有流量"
 
 msgid "All users"
-msgstr ""
+msgstr "所有使用者"
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -976,7 +976,7 @@ msgid "Allows to share the mount point of another domain."
 msgstr ""
 
 msgid "Already in use"
-msgstr ""
+msgstr "已經被使用"
 
 msgid "Alternative URL to reach your website"
 msgstr ""
@@ -1008,13 +1008,13 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Anti-Rootkits 日誌"
 
 msgid "Application installer"
 msgstr ""
 
 msgid "Apply"
-msgstr ""
+msgstr "套用"
 
 msgid "Apply changes"
 msgstr "應用更改"
@@ -1037,7 +1037,7 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to change the status of %s domain account?"
-msgstr ""
+msgstr "您確定要變更 %s 網域帳號的狀態?"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s?"
@@ -1064,14 +1064,22 @@ msgid "Are you sure you want to delete all selected items?"
 msgstr ""
 
 msgid "Are you sure you want to delete all tickets?"
-msgstr ""
+msgstr "您確定要刪除所有服務單?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
-msgstr ""
+msgstr "您確定要刪除 %s FTP使用者?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
 msgstr ""
 
 #, php-format
@@ -1084,7 +1092,7 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
-msgstr ""
+msgstr "您確定要刪除 '%s' 服務單?"
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
@@ -1110,16 +1118,16 @@ msgid "Are you sure you want to restore the backup?"
 msgstr "你確定想恢復備份？"
 
 msgid "Area name"
-msgstr "區域名"
+msgstr "區域名稱"
 
 msgid "Assign"
 msgstr "指派"
 
 msgid "Assign existing SQL user"
-msgstr ""
+msgstr "分配已存在的的 SQL 使用者"
 
 msgid "Assign group"
-msgstr ""
+msgstr "指派群組"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
@@ -1143,7 +1151,7 @@ msgid "Auto-responder successfully scheduled for update."
 msgstr ""
 
 msgid "Available"
-msgstr ""
+msgstr "啟用"
 
 msgid "Available software"
 msgstr ""
@@ -1164,7 +1172,7 @@ msgid "Backup"
 msgstr "備份"
 
 msgid "Backup and restore settings."
-msgstr ""
+msgstr "備份與還原設定"
 
 msgid "Backup has been successfully scheduled for restoration."
 msgstr ""
@@ -1216,13 +1224,13 @@ msgid "CA bundle"
 msgstr ""
 
 msgid "CGI"
-msgstr ""
+msgstr "CGI"
 
 msgid "CNAME field is empty or invalid."
 msgstr ""
 
 msgid "CPU Information"
-msgstr ""
+msgstr "CPU 資訊"
 
 msgid "Cache"
 msgstr "快取記憶體"
@@ -1310,16 +1318,16 @@ msgstr "選擇目錄"
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
-msgstr ""
+msgstr "選擇檔案 (Max: %1$d MiB)"
 
 msgid "Choose hosting plan"
-msgstr "選擇託管計劃"
+msgstr "選擇代管方案"
 
 msgid "Choose layout color"
-msgstr ""
+msgstr "選擇版面顏色"
 
 msgid "Choose your language"
-msgstr ""
+msgstr "選擇您的語言"
 
 msgid "Circular"
 msgstr "發送訊息"
@@ -1507,7 +1515,7 @@ msgid "Close"
 msgstr ""
 
 msgid "Close the ticket"
-msgstr ""
+msgstr "關閉這個服務單"
 
 msgid "Close ticket"
 msgstr ""
@@ -1541,7 +1549,7 @@ msgid "Cores"
 msgstr "核心數量"
 
 msgid "Could not upload file."
-msgstr ""
+msgstr "無法上傳檔案"
 
 msgid "Could not upload file. File not found."
 msgstr ""
@@ -1564,7 +1572,7 @@ msgid "Create catch all"
 msgstr "建立 CatchAll"
 
 msgid "Create default email addresses"
-msgstr ""
+msgstr "建立預設 Email 地址"
 
 msgid "Create directory, if not existing!"
 msgstr ""
@@ -1594,34 +1602,34 @@ msgid "Custom DNS record successfully scheduled for update."
 msgstr ""
 
 msgid "Custom DNS records"
-msgstr ""
+msgstr "自訂 DNS 紀錄"
 
 msgid "Custom error page updated."
-msgstr ""
+msgstr "自訂錯誤頁面已經更新"
 
 msgid "Custom error pages"
-msgstr "自定義錯誤頁"
+msgstr "自訂錯誤頁面"
 
 msgid "Custom menu name and link"
-msgstr ""
+msgstr "自訂選單及超連結"
 
 msgid "Custom menu properties"
-msgstr ""
+msgstr "自訂功能表設定"
 
 msgid "Custom menu successfully added."
-msgstr ""
+msgstr "自訂選單已經成功新增"
 
 msgid "Custom menu successfully deleted."
-msgstr ""
+msgstr "自訂選單已經成功刪除"
 
 msgid "Custom menu successfully updated."
-msgstr ""
+msgstr "自訂選單已經成功更新"
 
 msgid "Custom menus"
-msgstr "自定義功能表"
+msgstr "自訂選單"
 
 msgid "Customer"
-msgstr ""
+msgstr "客戶"
 
 msgid "Customer ID"
 msgstr "客戶 ID"
@@ -1630,7 +1638,7 @@ msgid "Customer ID cannot have more than 200 characters"
 msgstr ""
 
 msgid "Customer account"
-msgstr ""
+msgstr "客戶帳號"
 
 msgid "Customer account successfully scheduled for activation."
 msgstr ""
@@ -1678,10 +1686,10 @@ msgid "Customers assignment"
 msgstr "使用者分配"
 
 msgid "Customize error pages for your domain."
-msgstr ""
+msgstr "為您的網域自訂錯誤訊息頁面"
 
 msgid "DNS record already exist."
-msgstr ""
+msgstr "DNS 紀錄已經存在．"
 
 msgid "DNS resource records"
 msgstr ""
@@ -1705,7 +1713,7 @@ msgid "Data were been altered. Please try again."
 msgstr ""
 
 msgid "Database"
-msgstr ""
+msgstr "資料庫"
 
 msgid "Database Name and Users"
 msgstr "資料庫名和使用者"
@@ -1720,19 +1728,19 @@ msgid "Database name"
 msgstr "資料庫名"
 
 msgid "Database name is too long."
-msgstr ""
+msgstr "資料庫名稱太長！"
 
 msgid "Database name is unavailable."
 msgstr ""
 
 msgid "Database prefix"
-msgstr ""
+msgstr "資料庫前置字串"
 
 msgid "Database prefix/suffix"
 msgstr ""
 
 msgid "Database required"
-msgstr ""
+msgstr "需要資料庫"
 
 msgid "Database update"
 msgstr "資料庫更新"
@@ -1744,7 +1752,7 @@ msgid "Database users"
 msgstr "資料庫使用者"
 
 msgid "Databases"
-msgstr ""
+msgstr "資料庫"
 
 msgid "Date"
 msgstr "日期"
@@ -1826,10 +1834,10 @@ msgid "Debugger"
 msgstr ""
 
 msgid "Default language"
-msgstr ""
+msgstr "預設語言"
 
 msgid "Default language successfully updated."
-msgstr ""
+msgstr "預設語言已成功更新"
 
 msgid ""
 "Defines whether or not customers can add/change SSL certificates for their "
@@ -1843,10 +1851,10 @@ msgid "Delete CatchAll"
 msgstr "刪除 CatchAll"
 
 msgid "Delete all tickets"
-msgstr ""
+msgstr "刪除所有服務單"
 
 msgid "Delete customer"
-msgstr ""
+msgstr "刪除客戶"
 
 msgid "Delete customer - {DOMAIN_NAME}"
 msgstr ""
@@ -1858,7 +1866,7 @@ msgid "Delete order"
 msgstr "刪除訂單"
 
 msgid "Delete reseller software"
-msgstr ""
+msgstr "刪除代理商軟體"
 
 msgid "Delete selected items"
 msgstr ""
@@ -1912,7 +1920,7 @@ msgid "Disk space"
 msgstr ""
 
 msgid "Disk space limit [MiB]"
-msgstr ""
+msgstr "網頁空間容量限制 [MiB]"
 
 msgid "Disk usage"
 msgstr "磁片使用量"
@@ -1921,7 +1929,7 @@ msgid "Disk usage detail"
 msgstr ""
 
 msgid "Display errors"
-msgstr ""
+msgstr "顯示錯誤訊息"
 
 msgid "Do not show any error"
 msgstr ""
@@ -1943,19 +1951,19 @@ msgid "Domain IP"
 msgstr "網域 IP"
 
 msgid "Domain Limit"
-msgstr ""
+msgstr "網域限制"
 
 msgid "Domain Name"
-msgstr ""
+msgstr "網域名稱"
 
 msgid "Domain account"
 msgstr "網域帳戶"
 
 msgid "Domain account expired."
-msgstr ""
+msgstr "網域帳號已經到期"
 
 msgid "Domain accounts"
-msgstr ""
+msgstr "網域帳號"
 
 msgid "Domain alias"
 msgstr "網域別名"
@@ -1965,13 +1973,13 @@ msgid "Domain alias %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Domain alias errors"
-msgstr ""
+msgstr "網域別名錯誤"
 
 msgid "Domain alias limit"
-msgstr ""
+msgstr "網域別名限制"
 
 msgid "Domain alias name"
-msgstr ""
+msgstr "網域別名"
 
 msgid "Domain alias successfully ordered."
 msgstr ""
@@ -2006,7 +2014,7 @@ msgid "Domain aliases"
 msgstr "網域別名"
 
 msgid "Domain and SQL databases"
-msgstr ""
+msgstr "網域 及 SQL資料庫"
 
 msgid "Domain data were been altered. Please try again."
 msgstr ""
@@ -2015,16 +2023,16 @@ msgid "Domain details"
 msgstr "網域詳細資料"
 
 msgid "Domain errors"
-msgstr ""
+msgstr "網域錯誤"
 
 msgid "Domain expiration date"
-msgstr ""
+msgstr "網域到期日"
 
 msgid "Domain expiration date must be filled."
-msgstr ""
+msgstr "網域到期日必須填寫"
 
 msgid "Domain limit"
-msgstr ""
+msgstr "網域限制"
 
 msgid "Domain mail"
 msgstr ""
@@ -2036,7 +2044,7 @@ msgid "Domain name (ASCII form) cannot be greater than 255 characters."
 msgstr ""
 
 msgid "Domain name cannot be empty."
-msgstr ""
+msgstr "網域名稱不能為空"
 
 msgid "Domain name cannot start nor end with dot."
 msgstr ""
@@ -2056,13 +2064,13 @@ msgid "Domain name labels cannot start nor end with hyphen."
 msgstr ""
 
 msgid "Domain new expiration date"
-msgstr ""
+msgstr "網域新的到期日"
 
 msgid "Domain not found."
-msgstr ""
+msgstr "找不到網域"
 
 msgid "Domain overview"
-msgstr ""
+msgstr "網域概觀"
 
 msgid "Domain scheduled for update."
 msgstr ""
@@ -2080,7 +2088,7 @@ msgid "Domain successfully updated."
 msgstr ""
 
 msgid "Domain type"
-msgstr ""
+msgstr "網域類型"
 
 msgid ""
 "Domain: Setup a DNS MX record to relay mail of your entire domain, including"
@@ -2097,7 +2105,7 @@ msgid "Done"
 msgstr "完成"
 
 msgid "Download"
-msgstr ""
+msgstr "下載"
 
 msgid "Download TAR"
 msgstr ""
@@ -2106,7 +2114,7 @@ msgid "Download ZIP"
 msgstr ""
 
 msgid "Download links"
-msgstr ""
+msgstr "下載連結"
 
 msgid "Download the archives stored in this directory"
 msgstr ""
@@ -2118,10 +2126,10 @@ msgid "Edit"
 msgstr "編輯"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "編輯 FTP 帳號"
 
 msgid "Edit SSL certificate"
-msgstr ""
+msgstr "編輯 SSL 證書"
 
 msgid "Edit admin"
 msgstr ""
@@ -2130,16 +2138,16 @@ msgid "Edit auto responder"
 msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "編輯自訂DNS紀錄"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "編輯自訂錯誤頁面"
 
 msgid "Edit custom menu"
-msgstr ""
+msgstr "編輯自訂選單"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "編輯客戶"
 
 msgid "Edit domain"
 msgstr "編輯網域"
@@ -2154,13 +2162,13 @@ msgid "Edit external mail server for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Edit hosting plan"
-msgstr "編輯託管計劃"
+msgstr "編輯代管方案"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "編輯 htaccess 使用者"
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "編輯郵件帳號"
 
 msgid "Edit mail quota"
 msgstr ""
@@ -2172,7 +2180,7 @@ msgid "Edit reseller"
 msgstr "編輯代理商"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "編輯子網域"
 
 msgid "Edit user"
 msgstr "編輯使用者"
@@ -2184,16 +2192,16 @@ msgid "Email"
 msgstr "電子郵件"
 
 msgid "Email account already exists."
-msgstr ""
+msgstr "Email 帳號已經存在"
 
 msgid "Email account data"
 msgstr ""
 
 msgid "Email account errors"
-msgstr ""
+msgstr "Email 帳戶錯誤"
 
 msgid "Email account limit"
-msgstr ""
+msgstr "Email 帳號限制"
 
 msgid "Email account limit is reached."
 msgstr ""
@@ -2208,16 +2216,16 @@ msgid "Email account successfully scheduled for update."
 msgstr ""
 
 msgid "Email accounts"
-msgstr ""
+msgstr "Email 帳號"
 
 msgid "Email accounts are hard suspended"
 msgstr ""
 
 msgid "Email address"
-msgstr ""
+msgstr "Email 地址"
 
 msgid "Email forward"
-msgstr ""
+msgstr "郵件轉寄"
 
 msgid "Email quota"
 msgstr ""
@@ -2240,7 +2248,7 @@ msgstr ""
 
 #, php-format
 msgid "Email quota cannot be unlimited. Max value is %d MiB."
-msgstr ""
+msgstr "Email 空間容量不能是無限制. 最大值為 %d MiB."
 
 msgid "Email quota must be a number."
 msgstr ""
@@ -2264,7 +2272,7 @@ msgid "Enable"
 msgstr "有效"
 
 msgid "Enable SSL"
-msgstr ""
+msgstr "啟用 SSL"
 
 msgid "Enable auto responder"
 msgstr ""
@@ -2279,7 +2287,7 @@ msgid "Enabled for domain data"
 msgstr ""
 
 msgid "Enabled for domain data and databases"
-msgstr ""
+msgstr "啟用 SQL 資料庫"
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2293,7 +2301,7 @@ msgid "Error details"
 msgstr ""
 
 msgid "Error in php.ini values."
-msgstr ""
+msgstr "php.ini 中含有錯誤的值"
 
 msgid "Error pages"
 msgstr "錯誤頁面"
@@ -2305,7 +2313,7 @@ msgid "Error while trying to obtain list of network cards."
 msgstr ""
 
 msgid "Error: Remote File not found!"
-msgstr ""
+msgstr "Error: 遠端檔案不存在"
 
 msgid "Errors"
 msgstr "錯誤"
@@ -2317,7 +2325,7 @@ msgid "Execute requests"
 msgstr "執行請求"
 
 msgid "Expire date"
-msgstr ""
+msgstr "到期日"
 
 msgid "Ext. mail server"
 msgstr ""
@@ -2341,22 +2349,22 @@ msgid "External mail servers"
 msgstr ""
 
 msgid "FTP Users"
-msgstr ""
+msgstr "FTP 使用者"
 
 msgid "FTP account"
 msgstr "FTP 帳號"
 
 msgid "FTP account limit"
-msgstr ""
+msgstr "FTP 帳號限制"
 
 msgid "FTP account limit reached."
 msgstr ""
 
 msgid "FTP account successfully added."
-msgstr ""
+msgstr "FTP 帳號已經成功新增"
 
 msgid "FTP account successfully deleted."
-msgstr ""
+msgstr "FTP 帳號已經成功刪除"
 
 msgid "FTP account successfully updated."
 msgstr ""
@@ -2414,10 +2422,10 @@ msgid "File is not readable."
 msgstr ""
 
 msgid "File needs to be a 'tar.gz' archive."
-msgstr ""
+msgstr "檔案必須為 'tar.gz' 格式的壓縮檔"
 
 msgid "File successfully uploaded."
-msgstr ""
+msgstr "檔案已經成功上傳"
 
 msgid "File usage"
 msgstr ""
@@ -2478,10 +2486,10 @@ msgid "From reseller"
 msgstr "來自代理商"
 
 msgid "Ftp"
-msgstr ""
+msgstr "Ftp"
 
 msgid "Ftp account"
-msgstr ""
+msgstr "Ftp 帳號"
 
 msgid "Ftp account data"
 msgstr ""
@@ -2490,7 +2498,7 @@ msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
-msgstr ""
+msgstr "FTP 帳號"
 
 msgid "Full"
 msgstr "全部"
@@ -2511,7 +2519,7 @@ msgid "General settings"
 msgstr "一般設定"
 
 msgid "Generate"
-msgstr ""
+msgstr "產生"
 
 msgid "Generate password"
 msgstr "產生密碼"
@@ -2523,22 +2531,22 @@ msgid "GiB"
 msgstr ""
 
 msgid "Group"
-msgstr "組"
+msgstr "群組"
 
 msgid "Group auth"
-msgstr "組認證"
+msgstr "群組認證"
 
 msgid "Group members"
-msgstr "組成員"
+msgstr "群組成員"
 
 msgid "Group name"
-msgstr "組名"
+msgstr "群組名稱"
 
 msgid "Groups"
 msgstr "組"
 
 msgid "HTTP traffic"
-msgstr ""
+msgstr "HTTP 流量"
 
 msgid "Hide aliases"
 msgstr ""
@@ -2547,17 +2555,17 @@ msgid "High"
 msgstr "高"
 
 msgid "Home directory"
-msgstr ""
+msgstr "家目錄"
 
 #, php-format
 msgid "Home directory '%s' doesn't exist"
 msgstr ""
 
 msgid "Homepage"
-msgstr ""
+msgstr "首頁"
 
 msgid "Hosting plan"
-msgstr "託管計劃"
+msgstr "代管方案"
 
 msgid "Hosting plan availability"
 msgstr ""
@@ -2584,10 +2592,10 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "託管計劃"
+msgstr "代管方案"
 
 msgid "Hosting plans available for"
-msgstr "可用的託管計劃用於"
+msgstr "可用的代管方案用於"
 
 msgid "Hour"
 msgstr "小時"
@@ -2596,10 +2604,10 @@ msgid "Hours"
 msgstr "小時"
 
 msgid "Htaccess errors"
-msgstr ""
+msgstr "Htaccess 錯誤"
 
 msgid "Htaccess group"
-msgstr ""
+msgstr "Htaccess 群組"
 
 msgid "Htaccess group successfully scheduled for addition."
 msgstr ""
@@ -2608,27 +2616,27 @@ msgid "Htaccess group successfully scheduled for deletion."
 msgstr ""
 
 msgid "Htaccess user"
-msgstr ""
+msgstr "Htaccess 使用者"
 
 #, php-format
 msgid "Htaccess user successfully assigned to the %s htaccess group"
-msgstr ""
+msgstr "Htaccess 使用者已經成功指派到 %s htaccess 群組"
 
 #, php-format
 msgid "Htaccess user successfully deleted from the %s htaccess group "
-msgstr ""
+msgstr "Htaccess 使用者已經成功從 %s htaccess 群組中刪除"
 
 msgid "Htaccess user successfully scheduled for addition."
 msgstr ""
 
 msgid "Http traffic"
-msgstr ""
+msgstr "HTTP 流量"
 
 msgid "IP Address"
-msgstr ""
+msgstr "IP 地址"
 
 msgid "IP address"
-msgstr ""
+msgstr "IP 位址"
 
 msgid "IP address already under the control of i-MSCP."
 msgstr ""
@@ -2652,10 +2660,10 @@ msgid "IP management"
 msgstr "IP 管理"
 
 msgid "IP usage"
-msgstr ""
+msgstr "IP 使用清單"
 
 msgid "IPv6 address"
-msgstr ""
+msgstr "IPv6 位址"
 
 msgid "IPv6 address field is empty or invalid."
 msgstr ""
@@ -2675,10 +2683,10 @@ msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
 
 msgid "Images have to be smaller than 500 x 90 pixels."
-msgstr ""
+msgstr "圖片必須小於 500 x 90 像素"
 
 msgid "Import"
-msgstr ""
+msgstr "匯入"
 
 msgid "Import in local repository"
 msgstr ""
@@ -2692,7 +2700,7 @@ msgid "In front"
 msgstr ""
 
 msgid "In maintenance mode, only administrators can login."
-msgstr ""
+msgstr "維護模式啟用時僅允許管理員登入"
 
 msgid ""
 "In this page, you can configure some of the aspects of PHP's behavior. You "
@@ -2711,13 +2719,13 @@ msgid "Incorrect Email quota."
 msgstr ""
 
 msgid "Incorrect FTP account limit."
-msgstr ""
+msgstr "不正確的 FTP帳號限制"
 
 msgid "Incorrect SQL database limit."
-msgstr ""
+msgstr "不正確的 SQL 資料庫限制"
 
 msgid "Incorrect SQL user limit."
-msgstr ""
+msgstr "不正確的 SQL 使用者限制"
 
 msgid "Incorrect alias limit."
 msgstr ""
@@ -2726,13 +2734,13 @@ msgid "Incorrect disk space limit."
 msgstr ""
 
 msgid "Incorrect domain alias limit."
-msgstr ""
+msgstr "不正確的網域別名限制"
 
 msgid "Incorrect email account limit."
-msgstr ""
+msgstr "不正確的 Email 帳號限制"
 
 msgid "Incorrect email length or syntax."
-msgstr ""
+msgstr "不正確的Email長度 或 格式"
 
 #, php-format
 msgid "Incorrect limit for %s."
@@ -2745,7 +2753,7 @@ msgid "Incorrect post code length or syntax!"
 msgstr ""
 
 msgid "Incorrect subdomain limit."
-msgstr ""
+msgstr "不正確的子網域限制"
 
 msgid "Incorrect syntax for email address."
 msgstr ""
@@ -2760,16 +2768,16 @@ msgid "Install"
 msgstr "安裝"
 
 msgid "Install Software"
-msgstr ""
+msgstr "安裝軟體"
 
 msgid "Install in progress"
 msgstr ""
 
 msgid "Install path"
-msgstr ""
+msgstr "安裝路徑"
 
 msgid "Install this plugin"
-msgstr ""
+msgstr "安裝這個插件"
 
 msgid "Install various Web applications with a few clicks."
 msgstr ""
@@ -2781,7 +2789,7 @@ msgid "Installation in progress..."
 msgstr ""
 
 msgid "Installation path"
-msgstr ""
+msgstr "安裝路徑"
 
 msgid "Installed Package which was deleted by your reseller."
 msgstr ""
@@ -2839,28 +2847,28 @@ msgid "Invalid TXT data"
 msgstr ""
 
 msgid "Invalid URL."
-msgstr ""
+msgstr "不正確的 URL"
 
 msgid "Invalid domain name."
 msgstr ""
 
 msgid "Invalid expiration date."
-msgstr ""
+msgstr "不正確的到期日"
 
 msgid "Invalid group name!"
-msgstr "不完整的組名！"
+msgstr "不完整的群組名稱！"
 
 msgid "Invalid home directory."
-msgstr ""
+msgstr "不正確的家目錄"
 
 msgid "Invalid htaccess group name."
-msgstr ""
+msgstr "不正確的 htaccess 群組名稱"
 
 msgid "Invalid menu order."
 msgstr ""
 
 msgid "Invalid name."
-msgstr ""
+msgstr "不正確的名稱"
 
 msgid "Invalid private key or passphrase"
 msgstr ""
@@ -2880,34 +2888,34 @@ msgid "Ip %s is waiting %s seconds."
 msgstr ""
 
 msgid "Kernel Version"
-msgstr ""
+msgstr "核心版本"
 
 msgid "Kill session"
-msgstr "終止會話層"
+msgstr "終止工作階段"
 
 msgid "Label"
 msgstr "標籤"
 
 msgid "Language"
-msgstr "語言"
+msgstr "多國語言"
 
 msgid "Language file"
 msgstr "語言檔"
 
 msgid "Language file successfully installed."
-msgstr ""
+msgstr "語言檔已經成功安裝"
 
 msgid "Language successfully updated."
-msgstr ""
+msgstr "語言已經成功更新"
 
 msgid "Languages"
-msgstr "語言"
+msgstr "多國語言"
 
 msgid "Languages index was successfully re-built."
-msgstr ""
+msgstr "多國語言索引已經成功重建"
 
 msgid "Last Web software repository update"
-msgstr ""
+msgstr "最後軟體庫更新"
 
 msgid "Last access"
 msgstr "最後訪問"
@@ -2919,16 +2927,16 @@ msgid "Last name cannot have more than 200 characters."
 msgstr ""
 
 msgid "Last reply date"
-msgstr ""
+msgstr "最後回應日期"
 
 msgid "Last translator"
-msgstr ""
+msgstr "修訂翻譯者"
 
 msgid "Layout"
-msgstr "版面"
+msgstr "版面設定"
 
 msgid "Layout color"
-msgstr ""
+msgstr "版面顏色"
 
 msgid "Layout color successfully updated."
 msgstr ""
@@ -2946,13 +2954,13 @@ msgid "Limits"
 msgstr ""
 
 msgid "Link"
-msgstr ""
+msgstr "超連結"
 
 msgid "Link to authors homepage"
 msgstr ""
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr ""
+msgstr "CPU 負載 (1 Min, 5 Min, 15 Min)"
 
 msgid "Log entries successfully deleted."
 msgstr ""
@@ -2968,7 +2976,7 @@ msgstr ""
 
 #, php-format
 msgid "Login data successfully sent to %s."
-msgstr ""
+msgstr "登入資料已經成功寄送至 %s."
 
 msgid "Login into phpMyAdmin"
 msgstr ""
@@ -2983,13 +2991,13 @@ msgid "Login with your FTP account"
 msgstr "以你的 FTP 帳號登入"
 
 msgid "Logo file"
-msgstr "圖示檔"
+msgstr "Logo 檔案"
 
 msgid "Logo successfully removed."
-msgstr ""
+msgstr "Logo 成功移除"
 
 msgid "Logo successfully updated."
-msgstr ""
+msgstr "Logo 成功更新"
 
 msgid "Logout"
 msgstr "登出"
@@ -3016,7 +3024,7 @@ msgid "Mail"
 msgstr "郵件"
 
 msgid "Mail Log Level"
-msgstr ""
+msgstr "Mail 日誌等級"
 
 #, php-format
 msgid "Mail account %s successfully scheduled for deletion."
@@ -3048,7 +3056,7 @@ msgid "Main menu labels visibility successfully updated."
 msgstr ""
 
 msgid "Maintenance message"
-msgstr ""
+msgstr "維修訊息"
 
 msgid "Maintenance mode"
 msgstr "維護模式"
@@ -3067,7 +3075,7 @@ msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr ""
+msgstr "網域管理"
 
 msgid "Manage SQL"
 msgstr "管理 SQL"
@@ -3082,7 +3090,7 @@ msgid "Manage users and groups"
 msgstr "管理使用者和組"
 
 msgid "Manage your protected areas, users and groups."
-msgstr ""
+msgstr "管理您的保護區域、使用者、群組"
 
 msgid "Mark"
 msgstr "標記"
@@ -3091,7 +3099,7 @@ msgid "Max number of login attempts"
 msgstr "最多嘗試登入次數"
 
 msgid "Max traffic"
-msgstr ""
+msgstr "最大流量"
 
 #, php-format
 msgid "Max value for the %s PHP directive"
@@ -3116,7 +3124,7 @@ msgid "Medium"
 msgstr "中"
 
 msgid "Member of group"
-msgstr ""
+msgstr "群組成員"
 
 msgid "Memory information"
 msgstr "記憶體資訊"
@@ -3140,16 +3148,16 @@ msgid "MiB"
 msgstr ""
 
 msgid "Minute"
-msgstr ""
+msgstr "分"
 
 msgid "Minutes"
-msgstr ""
+msgstr "分"
 
 msgid "Missing domain"
 msgstr ""
 
 msgid "Model"
-msgstr ""
+msgstr "型號"
 
 msgid "Modification in progress"
 msgstr ""
@@ -3158,7 +3166,7 @@ msgid "Month"
 msgstr "月"
 
 msgid "Monthly traffic limit [MiB]"
-msgstr ""
+msgstr "月流量上限限制"
 
 msgid "Monthly traffic limit must be a number."
 msgstr ""
@@ -3197,7 +3205,7 @@ msgid "Name cannot be empty."
 msgstr ""
 
 msgid "Network interface"
-msgstr ""
+msgstr "網路介面"
 
 msgid "Never"
 msgstr ""
@@ -3209,10 +3217,10 @@ msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New password has not been sent. Ask your administrator."
-msgstr ""
+msgstr "新密碼並未發送，請詢問管理員．"
 
 msgid "New password is"
-msgstr ""
+msgstr "新的密碼是"
 
 msgid "New ticket"
 msgstr "新客戶疑問"
@@ -3242,13 +3250,13 @@ msgid "No certificate found"
 msgstr ""
 
 msgid "No custom menu found."
-msgstr ""
+msgstr "目前沒有自訂功能選單"
 
 msgid "No customer accounts found."
 msgstr ""
 
 msgid "No database update available."
-msgstr ""
+msgstr "沒有可用的資料庫更新"
 
 msgid "No domain statistics to display for this reseller."
 msgstr ""
@@ -3257,7 +3265,7 @@ msgid "No domain statistics to display."
 msgstr ""
 
 msgid "No errors"
-msgstr ""
+msgstr "沒有發現任何錯誤"
 
 msgid "No file was uploaded."
 msgstr ""
@@ -3266,13 +3274,13 @@ msgid "No group found."
 msgstr ""
 
 msgid "No hosting plan available."
-msgstr ""
+msgstr "沒有任何可用的代管方案"
 
 msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
 
 msgid "No languages found."
-msgstr ""
+msgstr "找不到任何語言"
 
 msgid "No logs found."
 msgstr ""
@@ -3322,6 +3330,9 @@ msgstr ""
 msgid "No update info available"
 msgstr ""
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr ""
 
@@ -3329,7 +3340,7 @@ msgid "No users found for this reseller."
 msgstr ""
 
 msgid "No."
-msgstr "否."
+msgstr "編號"
 
 msgid "None"
 msgstr "空"
@@ -3418,7 +3429,7 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Open ticket"
-msgstr ""
+msgstr "開啟服務單"
 
 msgid "Open tickets"
 msgstr "未解答疑問"
@@ -3471,10 +3482,10 @@ msgid "PHP Editor Settings"
 msgstr ""
 
 msgid "PHP GD extension not loaded."
-msgstr ""
+msgstr "PHP GD Extension 並未載入."
 
 msgid "PHP Settings"
-msgstr ""
+msgstr "PHP 設定"
 
 msgid "PHP Settings (system default)"
 msgstr "PHP 設定 (系統預設)"
@@ -3489,13 +3500,13 @@ msgid "PHP exec() function"
 msgstr ""
 
 msgid "PHP settings"
-msgstr ""
+msgstr "PHP 設定"
 
 msgid "POP3/IMAP in"
-msgstr ""
+msgstr "POP3/IMAP 接收"
 
 msgid "POP3/IMAP out"
-msgstr ""
+msgstr "POP3/IMAP 發送"
 
 msgid "POP3/IMAP traffic"
 msgstr "POP3/IMAP 流量"
@@ -3516,7 +3527,7 @@ msgid "Package already exists in your software repository!"
 msgstr ""
 
 msgid "Package install type"
-msgstr ""
+msgstr "Package 安裝類型"
 
 msgid "Package installed successfully!"
 msgstr ""
@@ -3525,28 +3536,28 @@ msgid "Package installed successfully... Awaiting release from admin!"
 msgstr ""
 
 msgid "Package language"
-msgstr ""
+msgstr "Package 語言"
 
 msgid "Package name"
-msgstr ""
+msgstr "Package 名稱"
 
 msgid "Package title"
-msgstr ""
+msgstr "Package 標題"
 
 msgid "Package type"
-msgstr ""
+msgstr "Package 類型"
 
 msgid "Package vendor HP"
 msgstr ""
 
 msgid "Package version"
-msgstr ""
+msgstr "Package 版本"
 
 msgid "Panel default language"
-msgstr ""
+msgstr "控制台預設語言"
 
 msgid "Parent directory"
-msgstr ""
+msgstr "上層資料夾"
 
 msgid "Partition"
 msgstr "分區"
@@ -3567,7 +3578,7 @@ msgid "Password data"
 msgstr "密碼資料"
 
 msgid "Password email"
-msgstr ""
+msgstr "忘記密碼信件"
 
 msgid "Password is missing."
 msgstr ""
@@ -3592,13 +3603,13 @@ msgid "Password settings"
 msgstr "密碼設定"
 
 msgid "Password successfully updated."
-msgstr ""
+msgstr "密碼已經成功更新"
 
 msgid "Passwords do not match"
-msgstr ""
+msgstr "密碼不正確！"
 
 msgid "Passwords do not match."
-msgstr ""
+msgstr "密碼不正確！"
 
 msgid "Path"
 msgstr "路徑"
@@ -3640,7 +3651,7 @@ msgid "Please check the PHP editor settings."
 msgstr ""
 
 msgid "Please choose htaccess user or htaccess group."
-msgstr ""
+msgstr "請選擇 htaccess 使用者或htaccess 群組."
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
@@ -3655,7 +3666,7 @@ msgid "Please enter a name for the protected area."
 msgstr ""
 
 msgid "Please enter a password."
-msgstr ""
+msgstr "請輸入一個密碼"
 
 msgid "Please enter an SQL user host."
 msgstr ""
@@ -3688,19 +3699,19 @@ msgid ""
 msgstr ""
 
 msgid "Please specify a message content."
-msgstr ""
+msgstr "請輸入一個訊息內容"
 
 msgid "Please specify a message subject."
-msgstr ""
+msgstr "請輸入一個訊息主旨"
 
 msgid "Please type database name."
-msgstr ""
+msgstr "請輸入資料庫名稱"
 
 msgid "Please type your message."
-msgstr ""
+msgstr "請輸入您的訊息"
 
 msgid "Plugin"
-msgstr ""
+msgstr "插件"
 
 #, php-format
 msgid "Plugin %s activated."
@@ -3839,7 +3850,7 @@ msgid "Plugin Manager: Unable to write the %s file for protected plugins."
 msgstr ""
 
 msgid "Plugin archive"
-msgstr ""
+msgstr "插件解壓縮"
 
 #, php-format
 msgid ""
@@ -3859,10 +3870,10 @@ msgid "Plugin list is empty."
 msgstr ""
 
 msgid "Plugin management"
-msgstr ""
+msgstr "插件管理"
 
 msgid "Plugins Upload"
-msgstr ""
+msgstr "插件上傳"
 
 #, php-format
 msgid ""
@@ -3882,16 +3893,16 @@ msgid "Port"
 msgstr "連接埠"
 
 msgid "Port must be a number."
-msgstr ""
+msgstr "Port 必須是一個數字"
 
 msgid "Prevent external login for admins"
-msgstr ""
+msgstr "防止從外部登入管理帳號"
 
 msgid "Prevent external login for clients"
-msgstr ""
+msgstr "防止從外部登入客戶帳號"
 
 msgid "Prevent external login for resellers"
-msgstr ""
+msgstr "防止從外部登入代理商帳號"
 
 msgid "Previous"
 msgstr ""
@@ -3907,7 +3918,7 @@ msgid "Priority: %s\n"
 msgstr ""
 
 msgid "Private key"
-msgstr ""
+msgstr "私密金鑰"
 
 msgid "Private key field cannot be empty"
 msgstr ""
@@ -3981,7 +3992,7 @@ msgid "Read ticket"
 msgstr ""
 
 msgid "Rebuild languages index"
-msgstr ""
+msgstr "重建語言索引"
 
 msgid "Record data"
 msgstr ""
@@ -4002,16 +4013,16 @@ msgid "Relative weight must be a number."
 msgstr ""
 
 msgid "Release date"
-msgstr ""
+msgstr "發布日期"
 
 msgid "Release description"
-msgstr ""
+msgstr "發布描述"
 
 msgid "Release version"
-msgstr ""
+msgstr "發布版本"
 
 msgid "Remote Web software repository"
-msgstr ""
+msgstr "遠端軟體庫"
 
 msgid "Remote file not found."
 msgstr ""
@@ -4140,7 +4151,7 @@ msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
 msgstr ""
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "代理商名稱"
 
 msgid "Reseller account successfully created."
 msgstr ""
@@ -4149,7 +4160,7 @@ msgid "Reseller account successfully updated."
 msgstr ""
 
 msgid "Reseller and customer"
-msgstr ""
+msgstr "代理商 與 客戶"
 
 msgid "Reseller and customer levels"
 msgstr ""
@@ -4167,25 +4178,25 @@ msgid "Reseller level"
 msgstr "代理商級別"
 
 msgid "Reseller list"
-msgstr ""
+msgstr "代理商列表"
 
 msgid "Reseller list is empty."
-msgstr ""
+msgstr "代理商清單是空的"
 
 msgid "Reseller name"
 msgstr "代理商名稱"
 
 msgid "Reseller software list"
-msgstr ""
+msgstr "代理商軟體列表"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "代理商統計"
 
 msgid "Reseller successfully added."
 msgstr ""
 
 msgid "Reseller total"
-msgstr ""
+msgstr "代理商數量總計"
 
 msgid "Reseller users"
 msgstr "代理商使用者"
@@ -4221,7 +4232,7 @@ msgid "Restore backup"
 msgstr "恢復備份"
 
 msgid "Revision date"
-msgstr ""
+msgstr "修訂日期"
 
 msgid "Rights"
 msgstr ""
@@ -4233,10 +4244,10 @@ msgid "Rights successfully removed."
 msgstr ""
 
 msgid "SMTP in"
-msgstr ""
+msgstr "SMTP 接收"
 
 msgid "SMTP out"
-msgstr ""
+msgstr "SMTP 發送"
 
 msgid "SMTP traffic"
 msgstr "SMTP 流量"
@@ -4245,10 +4256,10 @@ msgid "SQL"
 msgstr "SQL"
 
 msgid "SQL database"
-msgstr ""
+msgstr "SQL 資料庫"
 
 msgid "SQL database limit"
-msgstr ""
+msgstr "SQL 資料庫限制"
 
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr ""
@@ -4263,10 +4274,10 @@ msgid "SQL database limit reached."
 msgstr ""
 
 msgid "SQL database successfully added."
-msgstr ""
+msgstr "SQL 資料庫已經成功新增"
 
 msgid "SQL database successfully deleted."
-msgstr ""
+msgstr "SQL 資料庫已經成功刪除"
 
 msgid "SQL databases"
 msgstr "SQL 資料庫"
@@ -4275,7 +4286,7 @@ msgid "SQL databases only"
 msgstr ""
 
 msgid "SQL user"
-msgstr ""
+msgstr "SQL 使用者"
 
 #, php-format
 msgid "SQL user %s already exits."
@@ -4285,7 +4296,7 @@ msgid "SQL user host"
 msgstr ""
 
 msgid "SQL user limit"
-msgstr ""
+msgstr "SQL 使用者限制"
 
 msgid "SQL user limit is <i>disabled</i>."
 msgstr ""
@@ -4300,13 +4311,13 @@ msgid "SQL user name"
 msgstr "SQL 使用者名稱"
 
 msgid "SQL user password successfully updated."
-msgstr ""
+msgstr "SQL 使用者密碼已經成功更新"
 
 msgid "SQL user prefix/suffix"
 msgstr ""
 
 msgid "SQL user successfully added."
-msgstr ""
+msgstr "SQL 使用者已經成功新增"
 
 msgid "SQL users"
 msgstr "SQL 使用者"
@@ -4333,22 +4344,22 @@ msgid "Sec."
 msgstr ""
 
 msgid "Secure connection"
-msgstr ""
+msgstr "加密連線"
 
 msgid "Security code"
 msgstr "驗證碼"
 
 msgid "Select Domain"
-msgstr ""
+msgstr "選擇網域"
 
 msgid "Select all entries for deletion."
 msgstr ""
 
 msgid "Select database"
-msgstr ""
+msgstr "選擇資料庫"
 
 msgid "Select group"
-msgstr ""
+msgstr "選擇群組"
 
 msgid "Select this entry for deletion."
 msgstr ""
@@ -4359,7 +4370,7 @@ msgid ""
 msgstr ""
 
 msgid "Send"
-msgstr ""
+msgstr "送出"
 
 msgid "Send circular"
 msgstr ""
@@ -4419,16 +4430,16 @@ msgid "Server traffic settings successfully updated."
 msgstr ""
 
 msgid "Service Name"
-msgstr ""
+msgstr "服務名稱"
 
 msgid "Service Unavailable"
 msgstr ""
 
 msgid "Service name"
-msgstr ""
+msgstr "服務名稱"
 
 msgid "Service name already exists."
-msgstr ""
+msgstr "服務名稱已經存在"
 
 msgid "Service port successfully addeds"
 msgstr ""
@@ -4437,7 +4448,7 @@ msgid "Service port successfully removed."
 msgstr ""
 
 msgid "Service ports"
-msgstr ""
+msgstr "服務端口"
 
 msgid "Service protocol"
 msgstr ""
@@ -4446,7 +4457,7 @@ msgid "Services status"
 msgstr "伺服器狀態"
 
 msgid "Sessions"
-msgstr ""
+msgstr "工作階段"
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4471,7 +4482,7 @@ msgid "Show HTML output compression size comment"
 msgstr ""
 
 msgid "Show SSL certificate"
-msgstr ""
+msgstr "顯示 SSL 證書"
 
 msgid ""
 "Show all errors, except for notices and coding standards warnings (Default)"
@@ -4482,11 +4493,8 @@ msgid ""
 "(Development)"
 msgstr ""
 
-msgid "Show certificate"
-msgstr ""
-
 msgid "Show detailed statistics for this domain"
-msgstr ""
+msgstr "顯示此網域的詳細統計"
 
 msgid "Show detailed statistics for this reseller"
 msgstr ""
@@ -4508,16 +4516,16 @@ msgid "Size"
 msgstr "總共空間"
 
 msgid "Software"
-msgstr ""
+msgstr "軟體"
 
 msgid "Software Description"
-msgstr ""
+msgstr "軟體描述"
 
 msgid "Software available"
 msgstr ""
 
 msgid "Software deleted."
-msgstr ""
+msgstr "軟體已經刪除．"
 
 msgid "Software depot upload"
 msgstr ""
@@ -4535,13 +4543,13 @@ msgid "Software in repository"
 msgstr ""
 
 msgid "Software installation"
-msgstr ""
+msgstr "軟體安裝"
 
 msgid "Software installer"
 msgstr ""
 
 msgid "Software installer options"
-msgstr "軟體設定"
+msgstr "軟體安裝設定"
 
 msgid "Software installer options successfully updated."
 msgstr ""
@@ -4553,13 +4561,13 @@ msgid "Software management"
 msgstr "軟體管理"
 
 msgid "Software name"
-msgstr ""
+msgstr "軟體名稱"
 
 msgid "Software not found!"
 msgstr ""
 
 msgid "Software options"
-msgstr ""
+msgstr "軟體設定"
 
 msgid "Software permissions"
 msgstr ""
@@ -4571,25 +4579,25 @@ msgid "Software scheduled for deletion."
 msgstr ""
 
 msgid "Software status"
-msgstr ""
+msgstr "軟體狀態"
 
 msgid "Software total"
-msgstr ""
+msgstr "軟體數量總計"
 
 msgid "Software upload"
-msgstr ""
+msgstr "軟體上傳"
 
 msgid "Software was activated."
-msgstr ""
+msgstr "軟體已經啟用"
 
 msgid "Software was deleted."
-msgstr ""
+msgstr "軟體已經移除"
 
 msgid "Software-Synonym"
 msgstr ""
 
 msgid "Software-Version"
-msgstr ""
+msgstr "軟體版本"
 
 msgid "Softwaredepot"
 msgstr ""
@@ -4606,13 +4614,13 @@ msgid "Sql user successfully deleted."
 msgstr ""
 
 msgid "Start installation"
-msgstr ""
+msgstr "開始安裝"
 
 msgid "State"
-msgstr ""
+msgstr "狀態"
 
 msgid "State/Province"
-msgstr ""
+msgstr "省/洲"
 
 msgid "Statistics"
 msgstr "資料統計"
@@ -4647,7 +4655,7 @@ msgid "Subdomain alias"
 msgstr "子網域別名"
 
 msgid "Subdomain alias errors"
-msgstr ""
+msgstr "子網域別名錯誤"
 
 msgid "Subdomain alias successfully scheduled for deletion."
 msgstr ""
@@ -4658,13 +4666,13 @@ msgid ""
 msgstr ""
 
 msgid "Subdomain errors"
-msgstr ""
+msgstr "子網域錯誤"
 
 msgid "Subdomain forward"
 msgstr ""
 
 msgid "Subdomain limit"
-msgstr ""
+msgstr "子網域限制"
 
 msgid "Subdomain mail"
 msgstr ""
@@ -4745,7 +4753,7 @@ msgid "System tools"
 msgstr "系統工具"
 
 msgid "System under maintenance"
-msgstr ""
+msgstr "系統維護中"
 
 msgid "TB"
 msgstr ""
@@ -4754,7 +4762,7 @@ msgid "TTL"
 msgstr ""
 
 msgid "TTL must be a number."
-msgstr ""
+msgstr "TTL 必須是一個數字"
 
 msgid "TXT data"
 msgstr ""
@@ -4763,13 +4771,13 @@ msgid "TXT field is empty or invalid."
 msgstr ""
 
 msgid "Target"
-msgstr ""
+msgstr "目標"
 
 msgid "Target host"
-msgstr ""
+msgstr "目標主機"
 
 msgid "Target port"
-msgstr ""
+msgstr "目標Port"
 
 msgid "Template for Auto email successfully updated."
 msgstr ""
@@ -4912,7 +4920,7 @@ msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
-msgstr ""
+msgstr "這個 IP (%s) 並沒有被指派到任何的網卡"
 
 #, php-format
 msgid ""
@@ -4929,10 +4937,10 @@ msgid ""
 msgstr ""
 
 msgid "This htaccess group already exists."
-msgstr ""
+msgstr "這個 htaccess 群組已經存在"
 
 msgid "This htaccess user already exist."
-msgstr ""
+msgstr "這個 htaccess 使用者已經存在"
 
 msgid ""
 "This interface allow to add or remove IP addresses. IP addresses listed "
@@ -4980,7 +4988,7 @@ msgid ""
 msgstr ""
 
 msgid "This user name already exist."
-msgstr ""
+msgstr "這個使用者名稱已經存在．"
 
 msgid "TiB"
 msgstr ""
@@ -4992,13 +5000,13 @@ msgid "Ticket information"
 msgstr ""
 
 msgid "Ticket not found."
-msgstr ""
+msgstr "未找到服務單"
 
 msgid "Ticket successfully closed."
 msgstr ""
 
 msgid "Ticket successfully deleted."
-msgstr ""
+msgstr "服務單已成功刪除．"
 
 msgid "Ticket successfully reopened."
 msgstr ""
@@ -5021,7 +5029,7 @@ msgid "Total"
 msgstr "總計"
 
 msgid "Total Domains"
-msgstr ""
+msgstr "總計網域數量"
 
 msgid "Total Software"
 msgstr ""
@@ -5040,7 +5048,7 @@ msgid "Total packages in Web software repository"
 msgstr ""
 
 msgid "Total reseller"
-msgstr ""
+msgstr "代理商數量總計"
 
 msgid "Total software"
 msgstr ""
@@ -5052,7 +5060,7 @@ msgid "Traffic usage"
 msgstr "流量使用量"
 
 msgid "Translated strings"
-msgstr ""
+msgstr "已翻譯字串"
 
 msgid "Type"
 msgstr "類型"
@@ -5128,7 +5136,7 @@ msgid "Unable to install the %s plugin: %s"
 msgstr ""
 
 msgid "Unable to move file."
-msgstr ""
+msgstr "無法移動檔案"
 
 msgid "Unable to open archive."
 msgstr ""
@@ -5194,7 +5202,7 @@ msgid "Unavailable"
 msgstr ""
 
 msgid "Uninstall"
-msgstr ""
+msgstr "移除"
 
 msgid "Uninstall this plugin"
 msgstr ""
@@ -5211,7 +5219,10 @@ msgstr "保密"
 msgid "Unknown Error"
 msgstr "未知錯誤"
 
-msgid "Unknown FTP user id."
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
 msgstr ""
 
 msgid "Unknown action requested."
@@ -5222,20 +5233,20 @@ msgid "Unknown action: %s"
 msgstr ""
 
 msgid "Unknown error"
-msgstr ""
+msgstr "未知的錯誤"
 
 msgid "Unknown language name."
-msgstr ""
+msgstr "未知的語言名稱"
 
 msgid "Unknown layout color."
-msgstr ""
+msgstr "未知的版面顏色"
 
 msgid "Unknown reason."
 msgstr ""
 
 #, php-format
 msgid "Unknown service name '%s'."
-msgstr ""
+msgstr "未知的服務名稱 '%s'."
 
 msgid "Unknown status"
 msgstr ""
@@ -5244,10 +5255,10 @@ msgid "Unknown type."
 msgstr ""
 
 msgid "Unknown username."
-msgstr ""
+msgstr "未知的使用者名稱"
 
 msgid "Unlimited"
-msgstr ""
+msgstr "無限制"
 
 msgid "Unprotect it"
 msgstr "解除保護"
@@ -5268,7 +5279,7 @@ msgid "Update from Web software repository"
 msgstr ""
 
 msgid "Update from web depot"
-msgstr ""
+msgstr "從軟體庫更新"
 
 msgid "Update hosting plan"
 msgstr ""
@@ -5294,13 +5305,13 @@ msgid "Upload"
 msgstr "上傳"
 
 msgid "Upload logo"
-msgstr "上傳圖示"
+msgstr "上傳Logo"
 
 msgid "Upload now"
-msgstr ""
+msgstr "立即上傳"
 
 msgid "Uptime"
-msgstr ""
+msgstr "運作時間"
 
 msgid "Usage of dot in domain name labels is prohibited."
 msgstr ""
@@ -5309,10 +5320,10 @@ msgid "Usage status"
 msgstr ""
 
 msgid "Use normal connection (No SSL)"
-msgstr ""
+msgstr "使用一般連線 (No SSL)"
 
 msgid "Use secure connection (SSL)"
-msgstr ""
+msgstr "使用加密連線 (SSL)"
 
 msgid "Use strong Passwords"
 msgstr "使用較強密碼"
@@ -5345,14 +5356,14 @@ msgid "User data were not updated."
 msgstr ""
 
 msgid "User data were successfully updated."
-msgstr ""
+msgstr "使用者資料已經成功更新"
 
 msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr ""
 
 msgid "User errors"
-msgstr ""
+msgstr "使用者錯誤"
 
 msgid "User has not been deleted."
 msgstr ""
@@ -5423,7 +5434,7 @@ msgid "Vendor hompage"
 msgstr ""
 
 msgid "Version"
-msgstr ""
+msgstr "版本"
 
 msgid "Very high"
 msgstr "非常高"
@@ -5444,10 +5455,10 @@ msgid "View ticket"
 msgstr ""
 
 msgid "Visit plugin site"
-msgstr ""
+msgstr "瀏覽插件網站"
 
 msgid "Warning traffic"
-msgstr ""
+msgstr "警示流量"
 
 msgid "Warnings and Errors"
 msgstr "警告和錯誤"
@@ -5473,7 +5484,7 @@ msgid "Web out"
 msgstr "Web 發送"
 
 msgid "Web software depot packages total"
-msgstr ""
+msgstr "軟體庫Package總計"
 
 msgid "Web software repository"
 msgstr ""
@@ -5520,25 +5531,22 @@ msgid "Wildcards such as %% and are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
-msgstr ""
-
-msgid "Wrong SQL user identifier."
-msgstr ""
+msgstr "錯誤的 IP地址"
 
 msgid "Wrong mail syntax in forward list."
 msgstr ""
 
 msgid "Wrong request."
-msgstr ""
+msgstr "錯誤的請求"
 
 msgid "Wrong reseller id."
-msgstr ""
+msgstr "錯誤的代理商ID"
 
 msgid "Wrong security code"
-msgstr ""
+msgstr "錯誤的驗證碼"
 
 msgid "Wrong software id."
-msgstr ""
+msgstr "錯誤的軟體ID"
 
 msgid "Wrong syntax for new expire date."
 msgstr ""
@@ -5554,13 +5562,13 @@ msgid "Wrong user level provided."
 msgstr ""
 
 msgid "Wrong username."
-msgstr ""
+msgstr "錯誤的使用者名稱"
 
 msgid "Wrong value for the PHP open_basedir directive."
 msgstr ""
 
 msgid "XML file URL for the Web software repository"
-msgstr ""
+msgstr "軟體庫 XML 檔案超連結"
 
 msgid "YB"
 msgstr ""
@@ -5576,7 +5584,7 @@ msgid ""
 msgstr ""
 
 msgid "Yes, delete this account."
-msgstr ""
+msgstr "是的，我要刪除這個帳號"
 
 msgid "YiB"
 msgstr ""
@@ -5615,7 +5623,7 @@ msgid "You are not allowed to update a protected plugin."
 msgstr ""
 
 msgid "You can only upload images."
-msgstr ""
+msgstr "您僅能上傳圖片"
 
 msgid "You can't install the software outside the htdocs directory."
 msgstr ""
@@ -5624,7 +5632,7 @@ msgid "You cannot delete a reseller that has customer accounts."
 msgstr ""
 
 msgid "You cannot delete the last active IP address."
-msgstr ""
+msgstr "您不能刪除最後一個可用的 IP位址"
 
 #, php-format
 msgid "You cannot forward %s on itself."
@@ -5644,13 +5652,13 @@ msgstr ""
 
 #, php-format
 msgid "You cannot remove the %s IP address."
-msgstr ""
+msgstr "您不能移除 %s 這個 IP 位址"
 
 msgid "You cannot remove this entry."
 msgstr ""
 
 msgid "You cannot set expire date in past."
-msgstr ""
+msgstr "您不能將到期日設為過去"
 
 msgid "You cannot unassign an IP address already in use."
 msgstr ""
@@ -5659,9 +5667,6 @@ msgid "You do not have DNS resource records."
 msgstr ""
 
 msgid "You do not have FTP accounts."
-msgstr ""
-
-msgid "You do not have any orders for domain aliases."
 msgstr ""
 
 msgid "You do not have any software uploaded yet"
@@ -5674,7 +5679,7 @@ msgid "You do not have databases."
 msgstr ""
 
 msgid "You do not have domain aliases."
-msgstr ""
+msgstr "您沒有網域別名"
 
 msgid "You do not have permission to install software yet"
 msgstr ""
@@ -5686,7 +5691,7 @@ msgid "You do not have protected areas."
 msgstr ""
 
 msgid "You do not have subdomains."
-msgstr ""
+msgstr "您沒有任何子網域"
 
 msgid "You do not have sufficient permissions to perform this operation."
 msgstr ""
@@ -5736,7 +5741,7 @@ msgid ""
 msgstr ""
 
 msgid "You have been successfully logged out."
-msgstr ""
+msgstr "您已經成功登出系統"
 
 msgid "You have chosen a directory which doesn't match the domain directory."
 msgstr ""
@@ -5784,7 +5789,7 @@ msgid "You have to choose between file-upload and wget-function."
 msgstr ""
 
 msgid "You must assign at least one IP per reseller."
-msgstr ""
+msgstr "您必須指派至少一個 IP位址給每一個代理商"
 
 msgid "You must choose between local and remote upload."
 msgstr ""
@@ -5802,7 +5807,7 @@ msgid "You must enter a subdomain name."
 msgstr ""
 
 msgid "You must first generate a password"
-msgstr ""
+msgstr "您必須先產生一個密碼"
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr ""
@@ -5832,10 +5837,10 @@ msgid "You must select a plugin."
 msgstr ""
 
 msgid "You must specify a message."
-msgstr ""
+msgstr "您必須輸入一個訊息"
 
 msgid "You must specify a subject."
-msgstr ""
+msgstr "您必須輸入一個主旨"
 
 msgid "You need a Database for this software"
 msgstr ""
@@ -5845,7 +5850,7 @@ msgid "You received %d new answer(s) to your support questions."
 msgstr ""
 
 msgid "Your account has expired."
-msgstr ""
+msgstr "您的帳號已經到期"
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr ""
@@ -5916,7 +5921,7 @@ msgid "[Ticket]"
 msgstr ""
 
 msgid "_: Localised language"
-msgstr "繁體中文 - Chinese Traditional"
+msgstr "正體中文 - Traditional Chinese"
 
 msgid "activated"
 msgstr ""
@@ -5928,40 +5933,40 @@ msgid "and"
 msgstr ""
 
 msgid "day"
-msgstr ""
+msgstr "日"
 
 msgid "days"
-msgstr ""
+msgstr "日"
 
 msgid "deleting"
-msgstr ""
+msgstr "刪除中"
 
 msgid "disabled"
-msgstr ""
+msgstr "停用"
 
 msgid "disk space"
-msgstr ""
+msgstr "空間容量"
 
 msgid "domain"
 msgstr ""
 
 msgid "domain alias"
-msgstr ""
+msgstr "網域別名"
 
 msgid "domain aliases"
-msgstr ""
+msgstr "網域別名"
 
 msgid "domains"
 msgstr ""
 
 msgid "email account"
-msgstr ""
+msgstr "Email 帳號"
 
 msgid "email accounts"
-msgstr ""
+msgstr "Email 帳號"
 
 msgid "enabled"
-msgstr ""
+msgstr "啟用"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -6031,10 +6036,10 @@ msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP 版本檢查已停用"
 
 msgid "installed"
-msgstr ""
+msgstr "已安裝"
 
 msgid "installing"
-msgstr ""
+msgstr "安裝中"
 
 msgid "internet Multi Server Control Panel"
 msgstr ""
@@ -6054,11 +6059,14 @@ msgstr ""
 msgid "missing domain"
 msgstr ""
 
+msgid "n\\a"
+msgstr ""
+
 msgid "no"
 msgstr "否"
 
 msgid "not available"
-msgstr ""
+msgstr "未啟用"
 
 msgid "not required"
 msgstr ""
@@ -6080,7 +6088,7 @@ msgstr "六個月前"
 
 #, php-format
 msgid "or remote file (Max: %s)"
-msgstr ""
+msgstr "或遠端檔案 (Max: %s)"
 
 msgid "order"
 msgstr ""
@@ -6098,16 +6106,16 @@ msgid "required"
 msgstr ""
 
 msgid "subdomain"
-msgstr ""
+msgstr "子網域"
 
 msgid "subdomains"
-msgstr ""
+msgstr "子網域"
 
 msgid "tcp"
 msgstr "tcp"
 
 msgid "traffic"
-msgstr ""
+msgstr "流量"
 
 msgid "udp"
 msgstr "udp"
@@ -6116,7 +6124,7 @@ msgid "unlimited"
 msgstr "無限制"
 
 msgid "view aliases"
-msgstr "查看別名"
+msgstr "檢視網域別名"
 
 msgid "waiting for activation"
 msgstr ""

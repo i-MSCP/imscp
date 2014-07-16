@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-06-09 00:43+0200\n"
-"PO-Revision-Date: 2014-06-08 22:45+0000\n"
+"POT-Creation-Date: 2014-07-17 01:21+0200\n"
+"PO-Revision-Date: 2014-07-16 23:24+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -590,6 +590,9 @@ msgstr ""
 msgid "Add"
 msgstr "Добавяне"
 
+msgid "Add / Edit SSL certificate"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr ""
 
@@ -903,9 +906,6 @@ msgstr ""
 msgid "Alias mail"
 msgstr ""
 
-msgid "Alias name"
-msgstr "Име на псевдонима"
-
 msgid "Alias subdomain forward"
 msgstr ""
 
@@ -1072,6 +1072,14 @@ msgstr "Сигурни ли сте, че искате да изтриете то
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Сигурни ли сте, че искате да изтриете %s catch all?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -3321,6 +3329,9 @@ msgstr ""
 msgid "No update info available"
 msgstr ""
 
+msgid "No used yet"
+msgstr ""
+
 msgid "No user found."
 msgstr ""
 
@@ -4481,9 +4492,6 @@ msgid ""
 "(Development)"
 msgstr "Покажи всички грешки, предупреждения и уведомления, включително стандарти за кодиране (Development)"
 
-msgid "Show certificate"
-msgstr ""
-
 msgid "Show detailed statistics for this domain"
 msgstr ""
 
@@ -5210,8 +5218,11 @@ msgstr "Неизвестен"
 msgid "Unknown Error"
 msgstr "Неизвестна Грешка"
 
-msgid "Unknown FTP user id."
-msgstr "Неизвестно FTP потребителското име."
+msgid "Unknown FTP user."
+msgstr ""
+
+msgid "Unknown SQL user"
+msgstr ""
 
 msgid "Unknown action requested."
 msgstr "Заявено е неизвестно действие."
@@ -5521,9 +5532,6 @@ msgstr ""
 msgid "Wrong IP address."
 msgstr ""
 
-msgid "Wrong SQL user identifier."
-msgstr ""
-
 msgid "Wrong mail syntax in forward list."
 msgstr ""
 
@@ -5658,9 +5666,6 @@ msgid "You do not have DNS resource records."
 msgstr ""
 
 msgid "You do not have FTP accounts."
-msgstr ""
-
-msgid "You do not have any orders for domain aliases."
 msgstr ""
 
 msgid "You do not have any software uploaded yet"
@@ -6052,6 +6057,9 @@ msgstr "Липсва Алиас"
 
 msgid "missing domain"
 msgstr "Липсва Домейн"
+
+msgid "n\\a"
+msgstr ""
 
 msgid "no"
 msgstr "не"
