@@ -67,7 +67,7 @@ if (!empty($_POST)) { // Post request
 			$phpini->setData('phpiniErrorReporting', clean_input($_POST['error_reporting']));
 		}
 
-		if (PHP_SAPI != 'apache2handler') {
+		if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
 			// Customer can disable/enable all functions
 			if ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') {
 				$disabledFunctions = array();
@@ -191,7 +191,7 @@ if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 }
 
 // disable_functions directive
-if (PHP_SAPI ==  'apache2handler' || $phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
+if ($cfg['HTTPD_SERVER'] == 'apache_itk' || $phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
 	$tplVars['DISABLE_FUNCTIONS_BLOCK'] = '';
 	$tplVars['PHP_EDITOR_SECOND_BLOCK'] = '';
 } elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {

@@ -35,4 +35,4 @@
  * @link        http://i-mscp.net
  */
 
-require_once ('./dns_edit.php');
+require_once('./dns_edit.php');

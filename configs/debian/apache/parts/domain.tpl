@@ -6,7 +6,7 @@
     DocumentRoot {WEB_DIR}/htdocs
 
     LogLevel error
-    ErrorLog {APACHE_LOG_DIR}/{DOMAIN_NAME}/error.log
+    ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
     Alias /errors {HOME_DIR}/errors/
 
@@ -95,5 +95,5 @@
     # SECTION addons BEGIN.
     # SECTION addons END.
 
-    Include {APACHE_CUSTOM_SITES_CONFIG_DIR}/{DOMAIN_NAME}.conf
+    Include {HTTPD_CUSTOM_SITES_DIR}/{DOMAIN_NAME}.conf
 </VirtualHost>

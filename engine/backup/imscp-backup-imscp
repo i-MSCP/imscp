@@ -62,6 +62,7 @@ our $command = {
 	'pbzip2' => { 'extension' => 'bz2', 'command' => 'CMD_PBZIP'},
 	'bzip2' => { 'extension' => 'bz2', 'command' => 'CMD_BZIP'},
 	'gzip' => { 'extension' => 'gz', 'command' => 'CMD_GZIP'},
+	'pigz' => { 'extension' => 'gz', 'command' => 'CMD_PIGZ' },
 	'lzma' => { 'extension' => 'lzma', 'command' => 'CMD_LZMA'},
 	'xz' => { 'extension' => 'xz', 'command' => 'CMD_XZ' }
 };

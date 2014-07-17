@@ -1,0 +1,17 @@
+#!/bin/sh
+
+umask 027
+
+export PHPRC={PHP_STARTER_DIR}/{DOMAIN_NAME}/php5/
+export PHP_FCGI_MAX_REQUESTS={PHP_FCGI_MAX_REQUESTS}
+export TMPDIR={WEB_DIR}/data/tmp
+
+SOCKET=/var/run/imscp_panel.sock
+PIDFILE=/var/run/imscp_panel.pid
+
+CHILDREN={PHP_FCGI_CHILDREN}
+USER={PANEL_USER}
+GROUP={PANEL_GROUP}
+
+{SPAWN_FCGI_BIN} -s $SOCKET -M 0660 -P $PIDFILE -C $CHILDREN -u $USER -g $GROUP -- {PHP_CGI_BIN} "$@"
+

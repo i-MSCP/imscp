@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <install>
     <folders>${SYSTEM_CONF}/hooks.d</folders>
     <copy_config>${SYSTEM_CONF}/hooks.d/README</copy_config>

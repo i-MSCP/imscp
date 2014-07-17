@@ -1,11 +1,18 @@
 <packages>
+    <frontend>
+        <alternative default="nginx">
+            <nginx>
+                <package>nginx</package>
+                <package>spawn-fcgi</package>
+            </nginx>
+        </alternative>
+    </frontend>
     <httpd>
         <alternative default="apache_php_fpm">
             <apache_fcgid>
                 <package>apache2</package>
                 <package>apache2-suexec-custom</package>
                 <package>libapache2-mod-fcgid</package>
-                <package>php5-cgi</package>
             </apache_fcgid>
             <apache_itk>
                 <package>apache2</package>
@@ -107,6 +114,7 @@
     </sql>
     <php>
         <package>php5</package>
+        <package>php5-cgi</package>
         <package>php5-cli</package>
         <package>php-pear</package>
         <package>php5-gd</package>
@@ -162,6 +170,7 @@
         <package>make</package>
         <package>openssl</package>
         <package>pbzip2</package>
+        <package>pigz</package>
         <package>ssh</package>
         <package>tar</package>
     </other>

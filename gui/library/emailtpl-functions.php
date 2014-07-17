@@ -130,7 +130,7 @@ function get_welcome_email($userId, $userType = 'user')
 
 	// No custom template for welcome mail - return the default
 	if ($data['message'] == '') {
-		if ($userType == 'user' && $cfg->WEBSTATS_ADDONS != 'No') {
+		if ($userType == 'user' && $cfg->WEBSTATS_PACKAGES != 'No') {
 			$data['message'] = tr('
 Dear {NAME},
 

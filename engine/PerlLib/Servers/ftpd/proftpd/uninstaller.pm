@@ -60,7 +60,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->restoreConfFile();
 	return $rs if $rs;
@@ -81,7 +81,7 @@ sub uninstall
 
 sub removeDirs
 {
-	my $self = shift;
+	my $self = $_[0];
 	my $rs = 0;
 
 	# TODO: if this is directory referenced in the restored conf file, it must not be removed. Otherwise proftpd WILL fail. For the time beeing, this is disabled
@@ -103,7 +103,7 @@ sub removeDirs
 
 sub removeDB
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $db = iMSCP::Database->factory();
 
@@ -123,7 +123,7 @@ sub removeDB
 
 sub restoreConfFile
 {
-	my $self = shift;
+	my $self = $_[0];
 	my $rs = 0;
 
 	for ($self->{'config'}->{'FTPD_CONF_FILE'}) {
@@ -146,7 +146,7 @@ sub restoreConfFile
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Servers::ftpd::proftpd::uninstaller
 
@@ -154,7 +154,7 @@ sub restoreConfFile
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
 

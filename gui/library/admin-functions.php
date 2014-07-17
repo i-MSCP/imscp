@@ -383,8 +383,8 @@ function systemHasAntiRootkits()
 
 	if (
 		(
-			isset($config['ANTI_ROOTKITS_ADDONS']) && $config['ANTI_ROOTKITS_ADDONS'] != 'No' &&
-			$config['ANTI_ROOTKITS_ADDONS'] != '' &&
+			isset($config['ANTI_ROOTKITS_PACKAGES']) && $config['ANTI_ROOTKITS_PACKAGES'] != 'No' &&
+			$config['ANTI_ROOTKITS_PACKAGES'] != '' &&
 			(
 				(isset($config['CHKROOTKIT_LOG']) && $config['CHKROOTKIT_LOG'] != '') ||
 				(isset($config['RKHUNTER_LOG']) && $config['RKHUNTER_LOG'] != '')

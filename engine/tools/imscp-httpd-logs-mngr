@@ -101,7 +101,7 @@ sub run
 		$rs = 1;
 	} else {
 		require Servers::httpd;
-		my $logSrcDir = Servers::httpd->factory()->{'config'}->{'APACHE_LOG_DIR'};
+		my $logSrcDir = Servers::httpd->factory()->{'config'}->{'HTTPD_LOG_DIR'};
 		my $ret = 0;
 
 		for(keys %{$rdata}) {

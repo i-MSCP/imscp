@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install>
+    <folders export="ROOT_NGINX_CONF" mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/nginx</folders>
+    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_NGINX_CONF}/conf.d</folders>
+    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_NGINX_CONF}/sites-available</folders>
+    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_NGINX_CONF}/sites-enabled</folders>
+    <folders>${SYSTEM_CONF}/nginx</folders>
+    <folders>${SYSTEM_CONF}/nginx/backup</folders>
+    <folders>${SYSTEM_CONF}/nginx/working</folders>
+    <copy_config>${SYSTEM_CONF}/nginx/parts</copy_config>
+    <copy_config>${SYSTEM_CONF}/nginx/00_master.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/nginx/00_master_ssl.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/nginx/imscp_fastcgi.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/nginx/imscp_php.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/nginx/nginx.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/nginx/nginx.data</copy_config>
+</install>

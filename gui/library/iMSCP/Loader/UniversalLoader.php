@@ -42,10 +42,8 @@ require_once __DIR__ . '/ISplAutoloader.php';
  *
  * * The PEAR naming convention for classes (http://pear.php.net/).
  *
- * @package     iMSCP_Loader
- * @copyright   2010-2014 by i-MSCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @package    iMSCP_Loader
+ * @author     Laurent Declercq <l.declercq@nuxwin.com>
  */
 class UniversalLoader implements ISplAutoloader
 {
@@ -88,7 +86,6 @@ class UniversalLoader implements ISplAutoloader
      */
     public function setOptions(array $options)
     {
-
         foreach ($options as $option => $value) {
             switch ($option) {
                 case 'prefixes':

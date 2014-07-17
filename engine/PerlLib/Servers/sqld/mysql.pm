@@ -37,6 +37,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Execute;
+use iMSCP::Service;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -77,7 +78,9 @@ sub postinstall
 	my $rs = $self->{'hooksManager'}->trigger('beforeSqldPostInstall', 'mysql');
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'hooksManager'}->register(
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ]; 0; }
+	) if $main::imscpConfig{'SQL_SERVER'} ne 'remote_server';
 
 	$self->{'hooksManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
@@ -138,11 +141,9 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforeSqldRestart');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} mysql restart 2>/dev/null", \$stdout);
-	debug($stdout) if $stdout;
-	error('Unable to restart MySQL server') if $rs > 1;
-	return $rs if $rs > 1;
+	$rs = iMSCP::Service->getInstance()->restart('mysql', 'mysqld');
+	error("Unable to restart mysql service") if $rs;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterSqldRestart');
 }
@@ -164,6 +165,8 @@ sub restart
 sub _init
 {
 	my $self = $_[0];
+
+	$self->{'restart'} = 0;
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -190,15 +193,17 @@ sub _init
 
 END
 {
-	my $exitCode = $?;
-	my $self = Servers::sqld::mysql->getInstance();
-	my $rs = 0;
+	unless($main::execmode && $main::execmode eq 'setup' || $main::imscpConfig{'SQL_SERVER'} eq 'remote_server') {
+		my $exitCode = $?;
+		my $self = Servers::sqld::mysql->getInstance();
+		my $rs = 0;
 
-	if($self->{'restart'} && $self->{'restart'} eq 'yes' && $main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
-		$rs = $self->restart();
+		if($self->{'restart'}) {
+			$rs |= $self->restart();
+		}
+
+		$? = $exitCode || $rs;
 	}
-
-	$? = $exitCode || $rs;
 }
 
 =back

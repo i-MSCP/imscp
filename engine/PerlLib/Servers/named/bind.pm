@@ -36,13 +36,15 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Config;
 use iMSCP::HooksManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::TemplateParser;
 use iMSCP::Net;
+use iMSCP::Service;
 use File::Basename;
-use iMSCP::Config;
+
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -99,7 +101,9 @@ sub postinstall
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostInstall');
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'hooksManager'}->register(
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'DNS' ]; 0; }
+	) if $main::imscpConfig{'NAMED_SERVER'} ne 'external_server';
 
 	$self->{'hooksManager'}->trigger('afterNamedPostInstall');
 }
@@ -199,7 +203,7 @@ sub postaddDmn($$)
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostAddDmn', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	0;
 }
@@ -273,7 +277,7 @@ sub postdeleteDmn($$)
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostDelDmn', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	0;
 }
@@ -476,7 +480,7 @@ sub postaddSub($$)
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostAddSub', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	0;
 }
@@ -605,7 +609,7 @@ sub postdeleteSub($$)
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostDelSub', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	0;
 }
@@ -625,11 +629,9 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedRestart');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'NAMED_SNAME'} restart 2>/dev/null", \$stdout);
-	debug($stdout) if $stdout;
-	error('Unable to restart Bind9') if $rs > 1;
-	return $rs if $rs > 1;
+	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'NAMED_SNAME'}, 'named');
+	error("Unable to restart $self->{'config'}->{'NAMED_SNAME'} service") if $rs;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedRestart');
 }
@@ -651,6 +653,8 @@ sub restart
 sub _init
 {
 	my $self = $_[0];
+
+	$self->{'restart'} = 0;
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -1142,18 +1146,17 @@ sub _generateSoalSerialNumber($$;$)
 
 END
 {
-	my $exitCode = $?;
-	my $self = Servers::named::bind->getInstance();
-	my $rs = 0;
+	unless($main::execmode && $main::execmode eq 'setup' || $main::imscpConfig{'NAMED_SERVER'} eq 'external_server') {
+		my $exitCode = $?;
+		my $self = Servers::named::bind->getInstance();
+		my $rs = 0;
 
-	if (
-		defined $self->{'restart'} && $self->{'restart'} eq 'yes' &&
-		$main::imscpConfig{'NAMED_SERVER'} ne 'external_server'
-	) {
-		$rs = $self->restart();
+		if($self->{'restart'} && $main::imscpConfig{'NAMED_SERVER'} ne 'external_server') {
+			$rs = $self->restart();
+		}
+
+		$? = $exitCode || $rs;
 	}
-
-	$? = $exitCode || $rs;
 }
 
 =back

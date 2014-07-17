@@ -196,14 +196,14 @@ sub _getPoData
 	0;
 }
 
-sub _getAddonsData
+sub _getPackagesData
 {
 	my $self = $_[0];
 
 	my $mail = $self->{'mail_addr'};
 	$mail =~ s/^\s+//;
 
-	$self->{'addons'} = {
+	$self->{'packages'} = {
 		DOMAIN_NAME => (split('@', $mail))[1],
 		MAIL_ACC => (split('@', $mail))[0],
 		MAIL_ADDR => $mail,

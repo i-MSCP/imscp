@@ -92,7 +92,7 @@ function _reseller_generatePhpBlock($tpl, $phpini)
 			$permissionsBlock = true;
 		}
 
-		if (PHP_SAPI == 'apache2handler' || !$phpini->checkRePerm('phpiniDisableFunctions')) {
+		if ($cfg['HTTPD_SERVER'] == 'apache_itk' || !$phpini->checkRePerm('phpiniDisableFunctions')) {
 			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 		} else {
 			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');
@@ -295,6 +295,9 @@ function reseller_checkData($phpini)
 	global $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi,
 		   $dns, $backup, $aps, $extMail, $webFolderProtection, $status;
 
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
 	$name = isset($_POST['hp_name']) ? clean_input($_POST['hp_name']) : '';
 	$description = isset($_POST['hp_description']) ? clean_input($_POST['hp_description']) : '';
 
@@ -403,7 +406,7 @@ function reseller_checkData($phpini)
 			$phpini->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_perm_display_errors']));
 		}
 
-		if (PHP_SAPI != 'apache2handler' && $phpini->checkRePerm('phpiniDisableFunctions') &&
+		if ($cfg['HTTPD_SERVER'] != 'apache_itk' && $phpini->checkRePerm('phpiniDisableFunctions') &&
 			isset($_POST['phpini_perm_disable_functions'])
 		) {
 			$phpini->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));

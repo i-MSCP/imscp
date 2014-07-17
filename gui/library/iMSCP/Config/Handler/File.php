@@ -32,7 +32,7 @@
  */
 
 /** @see iMSCP_Config_Handler */
-require_once  'iMSCP/Config/Handler.php';
+require_once 'iMSCP/Config/Handler.php';
 
 /**
  * Class to handle configuration parameters from a flat file.
@@ -131,7 +131,7 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string WEBSTATS_RPATH Web statistics path
  * @property string WEBSTATS_TARGET Web statistics target window
  * @property string BACKUP_DOMAINS (yes|no)
- * @property string WEBSTATS_ADDONS (No|<webstats_addon_name>)
+ * @property string WEBSTATS_PACKAGES (No|<webstats_package_name>)
  * @property string CONF_DIR i-MSCP configuration directory (eg. /etc/imscp)
  * @property string USER_WEB_DIR Directory which holds i-MSCP customer user Web directories
  * @property int THEME_ASSETS_VERSION unique string used for assets cache busting

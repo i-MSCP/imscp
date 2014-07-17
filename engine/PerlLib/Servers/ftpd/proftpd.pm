@@ -39,6 +39,7 @@ use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Service;
 use File::Basename;
 use parent 'Common::SingletonClass';
 
@@ -53,7 +54,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks($hooksManager)
 
- Register setup hooks.
+ Register setup hooks
 
  Param iMSCP::HooksManager $hooksManager Hooks manager instance
  Return int 0 on success, other on failure
@@ -118,7 +119,9 @@ sub postinstall
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdPostInstall', 'proftpd');
 	return $rs if $rs;
 
-	$self->{'start'} = 'yes';
+	$self->{'hooksManager'}->register(
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'FTP' ]; 0; }
+	);
 
 	$self->{'hooksManager'}->trigger('afterFtpdPostInstall', 'proftpd');
 }
@@ -145,14 +148,14 @@ sub uninstall
 	$rs = $self->{'hooksManager'}->trigger('afterFtpdUninstall', 'proftpd');
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	0;
 }
 
 =item addUser(\%data)
 
- Process addUser tasks.
+ Process addUser tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by User module
  Return int 0 on success, other on failure
@@ -196,7 +199,7 @@ sub addUser
 	$self->{'hooksManager'}->trigger('AfterFtpdAddUser', $data);
 }
 
-=item Start()
+=item start()
 
  Start Proftpd
 
@@ -211,11 +214,9 @@ sub start
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStart');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} start 2>/dev/null", \$stdout);
-	debug($stdout) if $stdout;
-	error('Unable to start Proftpd') if $rs > 1;
-	return $rs if $rs > 1;
+	$rs =  iMSCP::Service->getInstance()->start($self->{'config'}->{'FTPD_SNAME'});
+	error("Unable to start $self->{'config'}->{'FTPD_SNAME'} service") if $rs;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterFtpdStart');
 }
@@ -235,11 +236,9 @@ sub stop
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStop');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} stop 2>/dev/null", \$stdout);
-	debug($stdout) if $stdout;
-	error('Unable to stop Proftpd') if $rs > 1;
-	return $rs if $rs > 1;
+	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'FTPD_SNAME'});
+	error("Unable to stop $self->{'config'}->{'FTPD_SNAME'} service") if $rs;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterFtpdStop');
 }
@@ -259,11 +258,9 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdRestart');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} restart 2>/dev/null", \$stdout);
-	debug($stdout) if $stdout;
-	error('Unable to restart Proftpd') if $rs > 1;
-	return $rs if $rs > 1;
+	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'FTPD_SNAME'});
+	error("Unable to restart $self->{'config'}->{'FTPD_SNAME'} service") if $rs;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterFtpdRestart');
 }
@@ -327,7 +324,7 @@ sub getTraffic
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Servers::ftpd::proftpd
 
@@ -336,6 +333,9 @@ sub getTraffic
 sub _init
 {
 	my $self = $_[0];
+
+	$self->{'start'} = 0;
+	$self->{'restart'} = 0;
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -360,7 +360,7 @@ sub _init
 
 =item END
 
- Code triggered at the very end of script execution.
+ Code triggered at the very end of script execution
 
  - Start or restart proftpd if needed
  - Remove old traffic logs file if exists
@@ -371,17 +371,19 @@ sub _init
 
 END
 {
-	my $exitCode = $?;
-	my $self = Servers::ftpd::proftpd->getInstance();
-	my $rs = 0;
+	unless($main::execmode && $main::execmode eq 'setup') {
+		my $exitCode = $?;
+		my $self = Servers::ftpd::proftpd->getInstance();
+		my $rs = 0;
 
-	if($self->{'start'} && $self->{'start'} eq 'yes') {
-		$rs = $self->start();
-	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
-		$rs = $self->restart();
+		if($self->{'start'}) {
+			$rs = $self->start();
+		} elsif($self->{'restart'}) {
+			$rs = $self->restart();
+		}
+
+		$? = $exitCode || $rs;
 	}
-
-	$? = $exitCode || $rs;
 }
 
 =back

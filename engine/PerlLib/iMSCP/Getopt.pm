@@ -38,7 +38,7 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::HooksManager;
 use iMSCP::Debug qw /error debugRegisterCallBack output /;
-use fields qw / reconfigure noprompt preseed hookFile cleanAddons skipAddonsUpdate debug /;
+use fields qw / reconfigure noprompt preseed hookFile cleanPackagesCache skipPackagesUpdate debug /;
 our $options = fields::new('iMSCP::Getopt');
 
 our $optionHelp = '';
@@ -78,8 +78,8 @@ $usage
  -n,    --noprompt             Switch to non-interactive mode.
  -p,    --preseed      <file>  Path to preseed file.
  -h,    --hook-file    <file>  Path to hook file.
- -c     --clean-addons         Cleanup local addon packages repository.
- -a     --skip-addons-update   Skip addons update
+ -c     --clean-packages-cache Cleanup i-MSCP packages cache.
+ -a     --skip-packages-update Skip i-MSCP packages update
  -d,    --debug                Force debug mode.
  -?,    --help                 Show this help.
 
@@ -108,8 +108,8 @@ EOF
 			'noprompt|n', sub { $options->{'noprompt'} = 1 },
 			'preseed|p=s', sub { $class->preseed($_[1]) },
 			'hook-file|h=s', sub { $class->hookFile($_[1]) },
-			'clean-addons|c', sub { $options->{'cleanAddons'} = 1 },
-			'skip-addons-update|a', sub { $options->{'skipAddonsUpdate'} = 1 },
+			'clean-packages-cache|c', sub { $options->{'cleanPackagesCache'} = 1 },
+			'skip-packages-update|a', sub { $options->{'skipPackagesUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
 			'help|?', sub { $showUsage->() },
 			@_,

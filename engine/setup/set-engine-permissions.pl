@@ -19,7 +19,6 @@
 #
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -34,7 +33,7 @@ use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Rights;
 use iMSCP::Servers;
-use iMSCP::Addons;
+use iMSCP::Packages;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -58,6 +57,47 @@ iMSCP::Bootstrapper->getInstance()->boot(
 
 sub run
 {
+	my $rs = 0;
+
+	my @toProcess = ();
+
+	for(iMSCP::Servers->getInstance()->get()) {
+		next if $_ eq 'noserver';
+
+		my $package = "Servers::$_";
+
+		eval "require $package";
+
+		unless($@) {
+			my $instance = $package->factory();
+			push @toProcess, [$_, $instance] if $instance->can('setEnginePermissions');
+		} else {
+			error($@);
+			$rs = 1;
+		}
+	}
+
+	for(iMSCP::Packages->getInstance()->get()) {
+		my $package = "Package::$_";
+
+		eval "require $package";
+
+		unless($@) {
+			my $instance = $package->getInstance();
+			push @toProcess, [$_, $instance] if $instance->can('setEnginePermissions');
+		} else {
+			error($@);
+			$rs = 1;
+		}
+	}
+
+	my $totalItems = @toProcess + 1;
+	my $counter = 1;
+
+	# Set base permissions - begin
+	debug('Setting backend base permissions');
+	print "Setting backend base permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
+
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
@@ -65,17 +105,8 @@ sub run
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 	my $logDir = $main::imscpConfig{'LOG_DIR'};
 
-	my @servers = iMSCP::Servers->getInstance()->get();
-	my @addons = iMSCP::Addons->getInstance()->get();
-	my $totalItems = @servers + @addons + 1;
-	my $counter = 1;
-
-	# Set base permissions - begin
-	debug('Setting backend base permissions');
-	print "Setting backend base permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
-
 	# eg. /etc/imscp/*
-	my $rs = setRights(
+	$rs = setRights(
 		$confDir,
 		{ 'user' => $rootUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
@@ -102,57 +133,16 @@ sub run
 
 	# Set base permissions - ending
 
-	# Trigger the setEnginePermissions() method on all i-MSCP server packages implementing it
+	for(@toProcess) {
+		my ($package, $instance) = @{$_};
 
-	for(@servers) {
-		next if $_ eq 'noserver';
+		debug("Setting $package server backend permissions");
 
-		my $package = "Servers::$_";
-
-		eval "require $package";
-
-		unless($@) {
-			my $instance = $package->factory();
-
-			if($instance->can('setEnginePermissions')) {
-				debug("Setting $_ server backend permissions");
-
-				if ($main::execmode eq 'setup') {
-					print "Setting backend permissions for the $_ server\t$totalItems\t$counter\n";
-				}
-
-				$rs |= $instance->setEnginePermissions();
-			}
-		} else {
-			error($@);
-			$rs = 1;
+		if ($main::execmode eq 'setup') {
+			print "Setting backend permissions for the $package package\t$totalItems\t$counter\n";
 		}
 
-		$counter++;
-	}
-
-	# Trigger the setEnginePermissions() method on all i-MSCP addon packages implementing it
-	for(@addons) {
-		my $package = "Addons::$_";
-
-		eval "require $package";
-
-		unless($@) {
-			my $instance = $package->getInstance();
-
-			if($instance->can('setEnginePermissions')) {
-				debug("Setting $_ addon backend permissions");
-
-				if ($main::execmode eq 'setup') {
-					print "Setting backend permissions for the $_ addon\t$totalItems\t$counter\n";
-				}
-
-				$rs |= $instance->setEnginePermissions();
-			}
-		} else {
-			error($@);
-			$rs = 1;
-		}
+		$rs |= $instance->setEnginePermissions();
 
 		$counter++;
 	}

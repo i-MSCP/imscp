@@ -1,0 +1,28 @@
+HTTPD_NAME = Nginx
+HTTPD_VERSION =
+
+HTTPD_WORKER_PROCESSES = auto
+HTTPD_WORKER_CONNECTIONS = 2048
+HTTPD_RLIMIT_NOFILE = 65000
+
+HTTPD_USER = www-data
+HTTPD_GROUP = www-data
+
+HTTPD_SNAME = nginx
+HTTPD_CONF_DIR = /etc/nginx
+HTTPD_SITES_AVAILABLE_DIR = /etc/nginx/sites-available
+HTTPD_SITES_ENABLED_DIR = /etc/nginx/sites-enabled
+HTTPD_ROOT_DIR = /var/www
+HTTPD_LOG_DIR = /var/log/nginx
+
+HTTPD_PID_FILE = /var/run/nginx.pid
+
+CMD_NGINX = /usr/sbin/nginx
+
+# PHP / FASTCGI variables
+
+PHP_STARTER_DIR = /var/www/fcgi
+PHP_CGI_BIN = /usr/bin/php5-cgi
+PHP_FCGI_CHILDREN = 5
+PHP_FCGI_MAX_REQUESTS = 1000
+SPAWN_FCGI_BIN = /usr/bin/spawn-fcgi

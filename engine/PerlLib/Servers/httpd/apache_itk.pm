@@ -129,7 +129,9 @@ sub postinstall
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPostInstall', 'apache_itk');
 	return $rs if $rs;
 
-	$self->{'start'} = 'yes';
+	$self->{'hooksManager'}->register(
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'HTTPD' ]; 0; }
+	);
 
 	$self->{'hooksManager'}->trigger('afterHttpdPostInstall', 'apache_itk');
 }
@@ -184,7 +186,7 @@ sub addUser($$)
 	$rs = iMSCP::SystemUser->new('username' => $self->getRunningUser())->addToGroup($data->{'GROUP'});
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdAddUser', $data);
 }
@@ -209,7 +211,7 @@ sub deleteUser($$)
 	$rs = iMSCP::SystemUser->new('username' => $self->getRunningUser())->removeFromGroup($data->{'GROUP'});
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdDelUser', $data);
 }
@@ -238,7 +240,7 @@ sub addDmn($$)
 	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	$self->flushData();
 
@@ -293,9 +295,9 @@ sub disableDmn($$)
 
 	$self->setData(
 		{
-			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
+			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all',
-			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'},
+			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
 			DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
 				? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
 		}
@@ -327,7 +329,7 @@ sub disableDmn($$)
 		return $rs if $rs;
 	}
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	$self->flushData();
 
@@ -352,15 +354,15 @@ sub deleteDmn($$)
 
 	# Disable apache site files
 	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {
-		$rs = $self->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
+		$rs = $self->disableSites($_) if -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
 		return $rs if $rs;
 	}
 
 	# Remove apache site files
 	for(
-		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
-		"$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 	) {
@@ -397,11 +399,11 @@ sub deleteDmn($$)
 				my $skelDir;
 
 				if($data->{'DOMAIN_TYPE'} eq 'dmn') {
-					$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
+					$skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/domain";
 				} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
-					$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
+					$skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/alias";
 				} else {
-					$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
+					$skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/subdomain";
 				}
 
 				for(iMSCP::Dir->new('dirname' => $skelDir)->getAll()) {
@@ -457,7 +459,7 @@ sub deleteDmn($$)
 		return 1;
 	}
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdDelDmn', $data);
 }
@@ -486,7 +488,7 @@ sub addSub($$)
 	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	$self->flushData();
 
@@ -578,7 +580,7 @@ sub addHtuser($$)
 	my ($self, $data) = @_;
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILENAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -629,7 +631,7 @@ sub deleteHtuser($$)
 	my ($self, $data) = @_;
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILENAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -679,7 +681,7 @@ sub addHtgroup($$)
 	my ($self, $data) = @_;
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILENAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -730,7 +732,7 @@ sub deleteHtgroup($$)
 	my ($self, $data) = @_;
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILENAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -782,8 +784,8 @@ sub addHtaccess($$)
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
-		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILENAME'}";
+		my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILENAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
@@ -840,8 +842,8 @@ sub deleteHtaccess($$)
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
-		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILENAME'}";
+		my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILENAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
@@ -914,7 +916,7 @@ sub addIps($$)
 	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddIps', \$content, $data);
 	return $rs if $rs;
 
-	unless(qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0')) {
+	unless(qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0')) {
 		$content =~ s/NameVirtualHost[^\n]+\n//gi;
 
 		my $ipMngr = iMSCP::Net->getInstance();
@@ -950,28 +952,14 @@ sub addIps($$)
 	$rs = $self->installConfFile('00_nameserver.conf');
 	return $rs if $rs;
 
-	$rs = $self->enableSite('00_nameserver.conf');
+	$rs = $self->enableSites('00_nameserver.conf');
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
 	delete $self->{'data'};
 
 	0;
-}
-
-=item setGuiPermissions()
-
- Set gui permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-	require Servers::httpd::apache_itk::installer;
-	Servers::httpd::apache_itk::installer->getInstance()->setGuiPermissions();
 }
 
 =item setEnginePermissions()
@@ -1122,7 +1110,7 @@ sub installConfFile($$;$)
 	return $rs if $rs;
 
 	$rs = $fileHandler->copyFile(
-		$options->{'destination'} ? $options->{'destination'} : "$self->{'config'}->{'APACHE_SITES_DIR'}/$name$suffix"
+		$options->{'destination'} ? $options->{'destination'} : "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$name$suffix"
 	);
 	return $rs if $rs;
 
@@ -1275,7 +1263,7 @@ sub deleteTmp
 
 sub getRunningUser
 {
-	$_[0]->{'config'}->{'APACHE_USER'};
+	$_[0]->{'config'}->{'HTTPD_USER'};
 }
 
 =item getRunningGroup()
@@ -1288,78 +1276,78 @@ sub getRunningUser
 
 sub getRunningGroup
 {
-	$_[0]->{'config'}->{'APACHE_GROUP'};
+	$_[0]->{'config'}->{'HTTPD_GROUP'};
 }
 
-=item enableSite($sites)
+=item enableSites($sites)
 
- Enable the given Apache sites
+ Enable the given sites
 
- Param string $site Names of Apache sites to enable, each separated by a space
+ Param string $sites Names of sites to enable, each separated by a space
  Return int 0 on sucess, other on failure
 
 =cut
 
-sub enableSite($$)
+sub enableSites($$)
 {
 	my ($self, $sites) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableSite', \$sites);
+	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableSites', \$sites);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
 
 	for(split(' ', $sites)){
-		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
+		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
 			$rs = execute("$self->{'config'}->{'CMD_A2ENSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 
-			$self->{'restart'} = 'yes';
+			$self->{'restart'} = 1;
 		} else {
 			warning("Site $_ doesn't exist");
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdEnableSite', $sites);
+	$self->{'hooksManager'}->trigger('afterHttpdEnableSites', $sites);
 }
 
-=item disableSite($sites)
+=item disableSites($sites)
 
- Disable the given Apache sites
+ Disable the given sites
 
- Param string $sitse Names of Apache sites to disable, each separated by a space
+ Param string $sites Names of sites to disable, each separated by a space
  Return int 0 on sucess, other on failure
 
 =cut
 
-sub disableSite($$)
+sub disableSites($$)
 {
 	my ($self, $sites) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableSite', \$sites);
+	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableSites', \$sites);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
 
 	for(split(' ', $sites)) {
-		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
+		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
 			$rs = execute("$self->{'config'}->{'CMD_A2DISSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 
-			$self->{'restart'} = 'yes';
+			$self->{'restart'} = 1;
 		} else {
 			warning("Site $_ doesn't exist");
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdDisableSite', $sites);
+	$self->{'hooksManager'}->trigger('afterHttpdDisableSites', $sites);
 }
 
-=item enableMod($modules)
+=item enableModules($modules)
 
  Enable the given Apache modules
 
@@ -1368,11 +1356,11 @@ sub disableSite($$)
 
 =cut
 
-sub enableMod($$)
+sub enableModules($$)
 {
 	my ($self, $modules) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableMod', \$modules);
+	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableModules', \$modules);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -1381,12 +1369,12 @@ sub enableMod($$)
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
-	$self->{'hooksManager'}->trigger('afterHttpdEnableMod', $modules);
+	$self->{'hooksManager'}->trigger('afterHttpdEnableModules', $modules);
 }
 
-=item disableMod($modules)
+=item disableModules($modules)
 
  Disable the given Apache modules
 
@@ -1395,11 +1383,11 @@ sub enableMod($$)
 
 =cut
 
-sub disableMod($$)
+sub disableModules($$)
 {
 	my ($self, $modules) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableMod', \$modules);
+	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableModules', \$modules);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -1408,9 +1396,9 @@ sub disableMod($$)
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restart'} = 1;
 
-	$self->{'hooksManager'}->trigger('afterHttpdDisableMod', $modules);
+	$self->{'hooksManager'}->trigger('afterHttpdDisableModules', $modules);
 }
 
 =item forceRestartApache()
@@ -1423,7 +1411,7 @@ sub disableMod($$)
 
 sub forceRestart
 {
-	$_[0]->{'forceRestart'} = 'yes';
+	$_[0]->{'forceRestart'} = 1;
 
 	0;
 }
@@ -1432,7 +1420,7 @@ sub forceRestart
 
  Start Apache
 
- Return int 0, other on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -1443,11 +1431,9 @@ sub start
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} start 2>/dev/null", \$stdout);
-	debug($stdout) if $stdout;
-	error('Unable to start Apache2') if $rs > 1;
-	return $rs if $rs > 1;
+	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'});
+	error("Unable to start $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStart');
 }
@@ -1456,7 +1442,7 @@ sub start
 
  Stop Apache
 
- Return int 0, other on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -1467,11 +1453,9 @@ sub stop
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStop');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} stop 2>/dev/null", \$stdout);
-	debug($stdout) if $stdout;
-	error('Unable to stop Apache2') if $rs > 1;
-	return $rs if $rs > 1;
+	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'HTTPD_SNAME'});
+	error("Unable to stop $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStop');
 }
@@ -1480,7 +1464,7 @@ sub stop
 
  Restart or Reload Apache
 
- Return int 0, other on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -1491,15 +1475,15 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestart');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute(
-		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} " .
-			($self->{'forceRestart'} ? 'restart' : 'reload') . ' 2>/dev/null',
-		\$stdout,
-	);
-	debug($stdout) if $stdout;
-	error('Unable to restart/reload Apache2') if $rs > 1;
-	return $rs if $rs > 1;
+	if($self->{'forceRestart'}) {
+		$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'HTTPD_SNAME'});
+		error("Unable to restart $self->{'config'}->{'HTTPD_SNAME'}") if $rs;
+		return $rs if $rs;
+	} else {
+		$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'});
+		error("Unable to reload $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
+		return $rs if $rs;
+	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdRestart');
 }
@@ -1521,6 +1505,9 @@ sub restart
 sub _init
 {
 	my $self = $_[0];
+
+	$self->{'start'} = 0;
+	$self->{'restart'} = 0;
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -1565,21 +1552,21 @@ sub _addCfg($$)
 
 	# Disable and backup Apache sites if any
 	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {
-		$rs = $self->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
+		$rs = $self->disableSites($_) if -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
 		return $rs if $rs;
 
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_"
+			'filename' => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_"
 		)->copyFile(
 			"$self->{'apacheBkpDir'}/$_." . time
-		) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
+		) if -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
 		return $rs if $rs;
 	}
 
 	# Remove previous Apache sites if any
 	for(
-		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf"
 	) {
@@ -1600,14 +1587,14 @@ sub _addCfg($$)
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
-	my $apache24 = (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'));
+	my $apache24 = (qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'));
 
 	my $ipMngr = iMSCP::Net->getInstance();
 
 	$self->setData(
 		{
-			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'},
-			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
+			HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
 			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
 			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
 			DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
@@ -1635,12 +1622,12 @@ sub _addCfg($$)
 	$rs =	$self->buildConfFile(
 		"$self->{'tplDir'}/custom.conf.tpl",
 		$data,
-		{ 'destination' => "$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
-	) unless (-f "$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf");
+		{ 'destination' => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
+	) unless (-f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf");
 	return $rs if $rs;
 
 	# Enable all Apache sites
-	$rs = $self->enableSite($_) for keys %configs;
+	$rs = $self->enableSites($_) for keys %configs;
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdAddCfg');
@@ -1664,7 +1651,7 @@ sub _dmnFolders($$)
 	$self->{'hooksManager'}->trigger('beforeHttpdDmnFolders', \@folders);
 
 	push(@folders, [
-		"$self->{'config'}->{'APACHE_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
+		"$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
 		$main::imscpConfig{'ROOT_USER'},
 		$main::imscpConfig{'ROOT_GROUP'},
 		0750
@@ -1705,16 +1692,16 @@ sub _addFiles($$)
 	if($data->{'FORWARD'} eq 'no') {
 		my $webDir = $data->{'WEB_DIR'};
 
-		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - BEGIN
+		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/skel) - BEGIN
 
 		my $skelDir;
 
 		if($data->{'DOMAIN_TYPE'} eq 'dmn') {
-			$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
+			$skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/domain";
 		} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
-			$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
+			$skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/alias";
 		} else {
-			$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
+			$skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/subdomain";
 		}
 
 		my ($tmpDir, $stdout, $stderr);
@@ -1763,7 +1750,7 @@ sub _addFiles($$)
 			}
 		}
 
-		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - END
+		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/skel) - END
 
 		my $protectedParentDir = dirname($webDir);
 		$protectedParentDir = dirname($protectedParentDir) while(! -d $protectedParentDir);
@@ -1899,17 +1886,19 @@ sub _cleanTemplate($$$)
 
 END
 {
-	my $exitCode = $?;
-	my $self = Servers::httpd::apache_itk->getInstance();
-	my $rs = 0;
+	unless($main::execmode && $main::execmode eq 'setup') {
+		my $exitCode = $?;
+		my $self = Servers::httpd::apache_itk->getInstance();
+		my $rs = 0;
 
-	if($self->{'start'} && $self->{'start'} eq 'yes') {
-		$rs = $self->start();
-	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
-		$rs = $self->restart();
+		if($self->{'start'}) {
+			$rs = $self->start();
+		} elsif($self->{'restart'}) {
+			$rs = $self->restart();
+		}
+
+		$? = $exitCode || $rs;
 	}
-
-	$? = $exitCode || $rs;
 }
 
 =back

@@ -178,7 +178,7 @@ check_login('user');
 /** @var $cg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (!customerHasFeature('ftp') || !(isset($cfg['FILEMANAGER_ADDON']) && $cfg['FILEMANAGER_ADDON'] == 'AjaXplorer')) {
+if (!customerHasFeature('ftp') || !(isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'AjaXplorer')) {
 	showBadRequestErrorPage();
 }
 

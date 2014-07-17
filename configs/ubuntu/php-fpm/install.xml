@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <install>
     <folders>${ROOT_CONF}/init</folders>
     <folders>${SYSTEM_CONF}/php-fpm</folders>

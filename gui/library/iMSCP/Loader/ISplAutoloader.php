@@ -31,9 +31,7 @@ namespace iMSCP\Loader;
  * ISplAutoloader interface
  *
  * @package     iMSCP_Loader
- * @copyright   2010-2014 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
  */
 interface ISplAutoloader
 {

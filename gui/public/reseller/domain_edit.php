@@ -509,7 +509,7 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 			$permissionsBlock = true;
 		}
 
-		if (PHP_SAPI == 'apache2handler' || !$phpEditor->checkRePerm('phpiniDisableFunctions')) {
+		if ($cfg['HTTPD_SERVER'] == 'apache_itk' || !$phpEditor->checkRePerm('phpiniDisableFunctions')) {
 			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 		} else {
 			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');
@@ -621,6 +621,9 @@ function _reseller_generateFeaturesForm($tpl, &$data)
  */
 function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Database::getInstance();
 
@@ -810,7 +813,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 					$phpEditor->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_perm_display_errors']));
 				}
 
-				if(PHP_SAPI != 'apache2handler') {
+				if($cfg['HTTPD_SERVER'] != 'apache_itk') {
 					if ($phpEditor->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_perm_disable_functions'])) {
 						if($phpEditor->getClPerm('phpiniDisableFunctions') != $_POST['phpini_perm_disable_functions']) {
 							$phpEditor->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));

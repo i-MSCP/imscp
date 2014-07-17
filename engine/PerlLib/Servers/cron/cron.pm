@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =item addTask(\%data)
 
- Add a new cron task.
+ Add a new cron task
 
  Param hash_ref $data A reference to a hash describing the cron task
   - TASKID Arbitrary string used as unique identifier by i-MSCP for the cron task
@@ -154,7 +154,7 @@ sub addTask($$)
 
 =item deleteTask(\%data)
 
- Delete a cron task.
+ Delete a cron task
 
  Param array_ref A reference to a hash containing the TASKID key, which represent the unique identifier of the cron task
 
@@ -225,7 +225,7 @@ sub deleteTask($$)
 
 =item setEnginePermissions()
 
- Set engine permissions.
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -258,7 +258,7 @@ sub setEnginePermissions
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Servers::cron::cron
 

@@ -4,6 +4,19 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIGS
+	Fixed: The time at which the backup script must be run is no configurable
+
+ENGINE
+	Added: iMSCP::Service package for unified management of services (start, stop, restart, reload, status)
+	Added: pigz (Parallel Implementation of GZip) algorithm for backups compression
+	Changed: i-MSCP is now run through a dedicated httpd instance ny using the nginx Web server
+	Changed: The quota accounting script is now run every 30 minutes
+	Fixed: Backend logs which are older than 7 days are never removed
+
+GUI
+	Changed: i-MSCP is now accessible through dedicated http ports (default is 8080 for http and 4443 for https)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.12
 ------------------------------------------------------------------------------------------------------------------------
@@ -11,7 +24,7 @@ Git stable
 2014-07-16: Laurent Declercq
 	RELEASE i-MSCP 1.1.12
 
-ADDONS
+PACKAGES
 	Fixed: Quotation marks must be escaped in PhpMyAdmin configuration file
 	Fixed: Quotation marks must be escaped in Roundcube configuration file
 	Updated: Required Roundcube addon package version is now 0.5.0.*@dev

@@ -44,16 +44,17 @@ sub run
 	return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
 	my $command = {
+	    'bzip2' => { 'extension' => 'bz2', 'command' => 'CMD_BZIP' },
 		'pbzip2' => { 'extension' => 'bz2', 'command' => 'CMD_PBZIP' },
-		'bzip2' => { 'extension' => 'bz2', 'command' => 'CMD_BZIP' },
 		'gzip' => { 'extension' => 'gz', 'command' => 'CMD_GZIP' },
+		'pigz' => { 'extension' => 'gz', 'command' => 'CMD_PIGZ' },
 		'lzma' => { 'extension' => 'lzma', 'command' => 'CMD_LZMA' },
 		'xz' => { 'extension' => 'xz', 'command' => 'CMD_XZ' }
 	};
 
 	my $algorithm = lc($main::imscpConfig{'ZIP'});
 
-	unless ($algorithm ~~ ['bzip2', 'gzip', 'lzma', 'no', 'pbzip2', 'xz']) {
+	unless(exists $command->{$algorithm} || $algorithm eq 'no') {
 		error("Backup algorithm not supported: $algorithm");
 		return 1;
 	}

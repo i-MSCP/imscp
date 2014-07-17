@@ -85,10 +85,10 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
-		if(isset($cfg->FILEMANAGER_ADDON) && $cfg->FILEMANAGER_ADDON == 'AjaXplorer') {
+		if(isset($cfg->FILEMANAGER_PACKAGE) && $cfg->FILEMANAGER_PACKAGE == 'AjaXplorer') {
 			// Quick fix to delete Ftp preferences directory as created by AjaXplorer (Pydio)
 			// FIXME: Move this statement at engine level
-			$userPrefDir = $cfg->GUI_PUBLIC_DIR . '/tools/filemanager/data/plugins/auth.serial/' . $ftpUserId;
+			$userPrefDir = $cfg->GUI_PUBLIC_DIR . '/tools/ftp/data/plugins/auth.serial/' . $ftpUserId;
 			if(is_dir($userPrefDir)) {
 				utils_removeDir($userPrefDir);
 			}

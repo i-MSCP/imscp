@@ -355,7 +355,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		)
 	);
 
-	if (PHP_SAPI != 'apache2handler') {
+	if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
 		$tpl->assign(
 			array(
 				'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>'),
@@ -634,7 +634,7 @@ function admin_checkAndUpdateData($resellerId)
 			// Check for permissions - We are safe here (If a value is not accepted, we use previous value)
 			$phpEditor->setRePerm('phpiniSystem', 'yes');
 
-			if (PHP_SAPI != 'apache2handler') {
+			if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
 				if (!$phpEditor->setRePerm('phpiniDisableFunctions', $data['php_ini_al_disable_functions'])) {
 					$phpEditor->setRePerm('phpiniDisableFunctions', $data['fallback_php_ini_al_disable_functions']);
 				}

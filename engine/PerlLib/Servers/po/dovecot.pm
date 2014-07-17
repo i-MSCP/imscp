@@ -41,6 +41,7 @@ use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
+use iMSCP::Service;
 use Tie::File;
 use parent 'Common::SingletonClass';
 
@@ -98,7 +99,9 @@ sub postinstall
 	my $rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'dovecot');
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'hooksManager'}->register(
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'IMAP/POP3' ]; 0; }
+	);
 
 	$self->{'hooksManager'}->trigger('afterPoPostinstall', 'dovecot');
 }
@@ -226,13 +229,9 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute(
-		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'DOVECOT_SNAME'} restart 2>/dev/null", \$stdout
-	);
-	debug($stdout) if $stdout;
-	error('Unable to restart Dovecot') if $rs > 1;
-	return $rs if $rs > 1;
+	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'DOVECOT_SNAME'});
+	error("Unable to restart $self->{'config'}->{'DOVECOT_SNAME'} service") if $rs;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterPoRestart');
 }
@@ -354,6 +353,8 @@ sub _init
 {
 	my $self = $_[0];
 
+	$self->{'restart'} = 0;
+
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
 	$self->{'hooksManager'}->trigger(
@@ -386,13 +387,15 @@ sub _init
 
 END
 {
-	my $exitCode = $?;
-	my $self = Servers::po::dovecot->getInstance();
-	my $rs = 0;
+	unless($main::execmode && $main::execmode eq 'setup') {
+		my $exitCode = $?;
+		my $self = Servers::po::dovecot->getInstance();
+		my $rs = 0;
 
-	$rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
+		$rs = $self->restart() if $self->{'restart'};
 
-	$? = $exitCode || $rs;
+		$? = $exitCode || $rs;
+	}
 }
 
 =back

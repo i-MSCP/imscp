@@ -23,14 +23,18 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-# This script disables entities (dmn, als, sub, alssub and mail) of expired accounts ; It is run once per day
+# This cron task disables the entities (dmn, als, sub, alssub and mail) of any account which is expired or which has
+# reached it monthly traffic limit ; It is run once per day.
+#
+# Because this script is run once per day, the monthly traffic limit must be seen as a soft limit which can be 
+# temporarily exceeded by the user
 # See /etc/cron.d/imscp
 
 use strict;
 use warnings;
 
 use FindBin;
-use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
@@ -49,19 +53,16 @@ newDebug('imscp-disable-accounts.log');
 
 silent(1);
 
-sub startUp
-{
-	iMSCP::Bootstrapper->getInstance()->boot(
-		{ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' }
-	);
-}
+iMSCP::Bootstrapper->getInstance()->boot(
+	{ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' }
+);
 
-sub process
+sub run
 {
 	my $db = iMSCP::Database->factory();
 
 	# Get needed configuration parameter value
-	my $rdata = $db->doQuery('name', "SELECT * FROM `config` WHERE `name` = 'HARD_MAIL_SUSPENSION'");
+	my $rdata = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -74,15 +75,15 @@ sub process
 		'domain_id',
 		"
 			SELECT
-				`domain_id`, `domain_admin_id`
+				domain_id, domain_admin_id
 			FROM
-				`domain`
+				domain
 			WHERE
-				`domain_expires` <> '0'
+				domain_expires <> '0'
 			AND
-				`domain_expires` <  UNIX_TIMESTAMP()
+				domain_expires <  UNIX_TIMESTAMP()
 			AND
-				`domain_status` <> 'disabled'
+				domain_status <> 'disabled'
 		"
 	);
 	unless(ref $accounts eq 'HASH') {
@@ -99,9 +100,7 @@ sub process
 
 			eval {
 				my $mails = $db->doQuery(
-		 			'mail_id',
-		 			'SELECT `mail_id`, `mail_pass`, `mail_type` FROM `mail_users` WHERE `domain_id` = ?',
-		 			$dmnId
+		 			'mail_id', 'SELECT mail_id, mail_pass, mail_type FROM mail_users WHERE domain_id = ?', $dmnId
 				);
 
 				# Schedule mail accounts deactivation
@@ -124,34 +123,33 @@ sub process
 						}
 
 						$rawDb->do(
-							'UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?',
-							undef, $mailPassword, $newMailStatus, $mailId
+							'UPDATE mail_users SET mail_pass = ?, status = ? WHERE mail_id = ?',
+							undef,
+							$mailPassword,
+							$newMailStatus,
+							$mailId
 						);
 					}
 				}
 
 				# Schedule domain deactivation
-				$rawDb->do('UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?', undef, 'todisable', $dmnId);
+				$rawDb->do('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $dmnId);
 
 				# Schedule subdomains deactivation
-				$rawDb->do(
-					'UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?', undef, 'todisable', $dmnId
-				);
+				$rawDb->do('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'todisable', $dmnId);
 
 				# Schedule domain aliases deactivation
-				$rawDb->do(
-					'UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?', undef, 'todisable', $dmnId
-				);
+				$rawDb->do('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'todisable', $dmnId);
 
 				# Schedule domain aliases's subdomains deactivation
 				$rawDb->do(
 					'
 						UPDATE
-							`subdomain_alias`
+							subdomain_alias
 						SET
-							`subdomain_alias_status` = ?
+							subdomain_alias_status = ?
 						WHERE
-							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+							alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
 					',
 					undef, 'todisable', $dmnId
 				);
@@ -186,5 +184,4 @@ sub process
 	$rs;
 }
 
-startUp();
-exit process();
+exit run();

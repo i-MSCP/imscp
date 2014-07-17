@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <install>
     <folders>${ROOT_CONF}/init.d</folders>
     <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_daemon</copy_config>
     <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_network</copy_config>
+    <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_panel</copy_config>
 </install>

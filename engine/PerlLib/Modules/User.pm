@@ -220,7 +220,7 @@ sub add
 		$skeletonPath, $shell, $userUid, $userGid
 	);
 
-	# Run the preaddUser(), addUser() and postaddUser() methods on servers/addons that implement them
+	# Run the preaddUser(), addUser() and postaddUser() methods on servers/packages that implement them
 	$self->SUPER::add();
 }
 
@@ -235,7 +235,7 @@ sub delete
 	my $rs = $self->{'hooksManager'}->trigger('onBeforeDeleteImscpUnixUser', $userName);
 	return $rs if $rs;
 
-	# Run the predeleteUser(), deleteUser() and postdeleteUser() methods on servers/addons that implement them
+	# Run the predeleteUser(), deleteUser() and postdeleteUser() methods on servers/packages that implement them
 	$rs = $self->SUPER::delete();
 	return $rs if $rs;
 

@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::Servers - Package which allow to retrieve i-MSCP server list
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #

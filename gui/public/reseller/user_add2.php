@@ -155,7 +155,7 @@ function get_init_au2_page($tpl, $phpini)
 			$permissionsBlock = true;
 		}
 
-		if (PHP_SAPI == 'apache2handler' || !$phpini->checkRePerm('phpiniDisableFunctions')) {
+		if ($cfg['HTTPD_SERVER'] == 'apache_itk' || !$phpini->checkRePerm('phpiniDisableFunctions')) {
 			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 		} else {
 			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');
@@ -268,6 +268,9 @@ function check_user_data($phpini)
 {
 	global $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
 		$dns, $aps, $extMailServer, $webFolderProtection;
+
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
 	// Subdomains limit
 
@@ -396,7 +399,7 @@ function check_user_data($phpini)
 			$phpini->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_perm_display_errors']));
 		}
 
-		if (PHP_SAPI != 'apache2handler' && $phpini->checkRePerm('phpiniDisableFunctions') &&
+		if ($cfg['HTTPD_SERVER'] != 'apache_itk' && $phpini->checkRePerm('phpiniDisableFunctions') &&
 			isset($_POST['phpini_perm_disable_functions'])
 		) {
 			$phpini->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));

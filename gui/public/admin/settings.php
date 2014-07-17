@@ -94,7 +94,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$phpini_open_basedir = isset($_POST['phpini_open_basedir'])
 		? clean_input($_POST['phpini_open_basedir']) : $cfg->PHPINI_OPEN_BASEDIR;
 
-	if (PHP_SAPI != 'apache2handler') {
+	if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
 		$disabledFunctions = array();
 
 		foreach (

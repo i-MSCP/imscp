@@ -54,9 +54,9 @@ sub quotaFiles
 {
 	my $rs = 0;
 
-	my $database = iMSCP::Database->factory();
+	my $db = iMSCP::Database->factory();
 
-	my $mainDomains = $database->doQuery(
+	my $mainDomains = $db->doQuery(
 		'domain_id', "SELECT domain_id, domain_name FROM domain WHERE domain_status = 'ok'"
 	);
 
@@ -118,7 +118,7 @@ sub quotaFiles
 			}
 
 			# Getting list of all child domains (sub|als|alssub)
-			my $childDomains = $database->doQuery(
+			my $childDomains = $db->doQuery(
 				'domain_name',
 				"
 					SELECT
@@ -212,7 +212,7 @@ sub quotaFiles
 					WHERE
 						domain_id = ?
 				';
-				my $rdata = $database->doQuery(
+				my $rdata = $db->doQuery(
 					'update', $sql, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $domainId
 				);
 				unless (ref $rdata eq 'HASH') {
@@ -221,7 +221,7 @@ sub quotaFiles
 					$rs = 1;
 				}
 
-				$rdata = $database->doQuery(
+				$rdata = $db->doQuery(
 					'update', 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', $totalDiskUsage, $domainName
 				);
 				unless (ref $rdata eq 'HASH') {
@@ -239,16 +239,16 @@ sub quotaFiles
 sub quotaSql
 {
 	my $rs = 0;
-	my $database = iMSCP::Database->factory();
+	my $db = iMSCP::Database->factory();
 
-	my $databases = $database->doQuery('Database', 'SHOW DATABASES');
+	my $databases = $db->doQuery('Database', 'SHOW DATABASES');
 	unless (ref $databases eq 'HASH'){
 		error($databases);
 		iMSCP::Mail->new()->errmsg($databases);
 		return 1;
 	}
 
-	my $rdata = $database->doQuery(
+	my $rdata = $db->doQuery(
 		'domain_id', 'SELECT domain_id, domain_name, domain_disk_usage FROM domain WHERE domain_status = ?', 'ok'
 	);
 	unless (ref $rdata eq 'HASH') {
@@ -263,8 +263,8 @@ sub quotaSql
 			my $size = 0;
 			my $sqlSize = 0;
 
-			my $customerDatabases = $database->doQuery(
-				'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $domainId
+			my $customerDatabases = $db->doQuery(
+			    'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $domainId
 			);
 
 			unless (ref $customerDatabases eq 'HASH') {
@@ -277,9 +277,9 @@ sub quotaSql
 				my $sqlDbName = $_;
 
 				if(grep{$_ eq $sqlDbName} keys %{$databases}) { # Does the database exists?
-					my $quotedDbName = $database->quoteIdentifier($sqlDbName);
+					my $quotedDbName = $db->quoteIdentifier($sqlDbName);
 
-					my $sqlDbTables = $database->doQuery('1', "SHOW TABLE STATUS FROM $quotedDbName");
+					my $sqlDbTables = $db->doQuery('1', "SHOW TABLE STATUS FROM $quotedDbName");
 					unless (ref $sqlDbTables eq 'HASH') {
 						error($sqlDbTables);
 						iMSCP::Mail->new()->errmsg($sqlDbTables);
@@ -301,7 +301,7 @@ sub quotaSql
 				$sqlSize += $size;
 				$size += $diskUsage;
 
-				my $quota = $database->doQuery(
+				my $quota = $db->doQuery(
 					'update ',
 					'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?',
 					$size,
@@ -314,7 +314,7 @@ sub quotaSql
 					$rs = 1;
 				}
 
-				$quota = $database->doQuery(
+				$quota = $db->doQuery(
 					'update', 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', $size, $domainName
 				);
 				unless (ref $quota eq 'HASH') {

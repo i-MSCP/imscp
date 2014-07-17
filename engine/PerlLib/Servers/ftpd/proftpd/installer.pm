@@ -439,9 +439,7 @@ sub _createTrafficLogFile
 	return $rs if $rs;
 
 	# Creating proftpd traffic log directory if it doesn't already exists
-	if (! -d "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
-		debug("Creating $main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd directory");
-
+	unless (-d "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
 		$rs = iMSCP::Dir->new(
 			'dirname' => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"
 		)->make(
@@ -450,7 +448,7 @@ sub _createTrafficLogFile
 		return $rs if $rs;
 	}
 
-	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}") {
+	unless(-f "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}") {
 		my $file = iMSCP::File->new(
 			'filename' => "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}"
 		);

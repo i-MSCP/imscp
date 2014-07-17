@@ -50,6 +50,7 @@ function _admin_generatePhpBlock($tpl, $phpini)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
+
 	$checked = $cfg->HTML_CHECKED;
 
 	$tplVars = array();
@@ -77,7 +78,7 @@ function _admin_generatePhpBlock($tpl, $phpini)
 	$tplVars['DISPLAY_ERRORS_YES'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $checked : '';
 	$tplVars['DISPLAY_ERRORS_NO'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') ? $checked : '';
 
-	if (PHP_SAPI == 'apache2handler') {
+	if ($cfg['HTTPD_SERVER'] == 'apache_itk') {
 		$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 	} else {
 		$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');

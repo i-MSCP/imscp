@@ -130,12 +130,22 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_REQUEST['admin'])) {
 		$cfg->exists('PANEL_SSL_ENABLED') && $cfg['PANEL_SSL_ENABLED'] == 'yes' &&
 		$cfg['BASE_SERVER_VHOST_PREFIX'] != 'https://'
 	) {
+
+		$uri = array(
+			'scheme' => (!empty($_SERVER['HTTPS'])) ? 'http://' : 'https://',
+			'host' => $_SERVER['SERVER_NAME'],
+			'port' => (!empty($_SERVER['HTTPS']))
+				? (($cfg['BASE_SERVER_VHOST_HTTP_PORT'] == 80 ) ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTP_PORT'])
+				: (($cfg['BASE_SERVER_VHOST_HTTPS_PORT'] == 443 ) ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTPS_PORT'])
+		);
+
 		$tpl->assign(
 			array(
-				'SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://' . tohtml($_SERVER['HTTP_HOST']) : 'https://' . tohtml($_SERVER['HTTP_HOST']),
-				'SSL_IMAGE_CLASS' => isset($_SERVER['HTTPS']) ? 'i_unlock' : 'i_lock',
-				'TR_SSL' => !isset($_SERVER['HTTPS']) ? tr('Secure connection') : tr('Normal connection'),
-				'TR_SSL_DESCRIPTION' => !isset($_SERVER['HTTPS']) ? tr('Use secure connection (SSL)') : tr('Use normal connection (No SSL)')
+				'SSL_LINK' => tohtml($uri['scheme'] . $uri['host']. $uri['port']),
+				'SSL_IMAGE_CLASS' => (!empty($_SERVER['HTTPS'])) ? 'i_unlock' : 'i_lock',
+				'TR_SSL' => (empty($_SERVER['HTTPS'])) ? tr('Secure connection') : tr('Normal connection'),
+				'TR_SSL_DESCRIPTION' => (! isset($_SERVER['HTTPS']))
+					? tr('Use secure connection (SSL)') : tr('Use normal connection (No SSL)')
 			)
 		);
 	} else {

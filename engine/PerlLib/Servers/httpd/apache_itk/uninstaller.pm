@@ -29,23 +29,18 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::SystemUser;
-use iMSCP::SystemGroup;
 use iMSCP::File;
 use iMSCP::Dir;
+use iMSCP::Database;
 use File::Basename;
 use Servers::httpd::apache_itk;
 use parent 'Common::SingletonClass';
-
 
 sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->_removeUsers();
-	return $rs if $rs;
-
-	$rs = $self->_removeVloggerSqlUser();
+	my $rs = $self->_removeVloggerSqlUser();
 	return $rs if $rs;
 
 	$rs = $self->_removeDirs();
@@ -72,22 +67,6 @@ sub _init
 	$self;
 }
 
-sub _removeUsers
-{
-	my $self = $_[0];
-
-	# Panel user
-	my $rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-	);
-	return $rs if $rs;
-
-	# Panel group
-	iMSCP::SystemGroup->getInstance()->delSystemGroup(
-		'groupname' => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-	);
-}
-
 sub _removeVloggerSqlUser
 {
 	my $self = $_[0];
@@ -104,48 +83,42 @@ sub _removeDirs
 {
 	my $self = $_[0];
 
-	iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
-}
-
-sub _restoreConf
-{
-	my $self = $_[0];
-
-	my $rs = 0;
-
-	for ("$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
-		my $filename = fileparse($_);
-
-		$rs	= iMSCP::File->new(
-			'filename' => "$self->{bkpDir}/$filename.system"
-		)->copyFile($_) if -f "$self->{bkpDir}/$filename.system";
-		return $rs if $rs;
-	}
-
-	$rs;
+	iMSCP::Dir->new('dirname' => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
 }
 
 sub _vHostConf
 {
 	my $self = $_[0];
 
-	my $rs = 0;
+	my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
+	return $rs if $rs;
 
-	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf') {
-		$rs = $self->{'httpd'}->disableSite($_);
+	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
+		)->delFile();
 		return $rs if $rs;
-
-		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
-			$rs = iMSCP::File->new(
-				'filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_"
-			)->delFile();
-			return $rs if $rs;
-		}
 	}
 
 	for('000-default', 'default') {
-		$rs = $self->{'httpd'}->enableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
+		$rs = $self->{'httpd'}->enableSites($_) if -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
 		return $rs if $rs;
+	}
+
+	0;
+}
+
+sub _restoreConf
+{
+	my $self = $_[0];
+
+	for ("$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
+		my $filename = fileparse($_);
+
+		if (-f "$self->{bkpDir}/$filename.system") {
+			my $rs	= iMSCP::File->new('filename' => "$self->{bkpDir}/$filename.system")->copyFile($_)
+			return $rs if $rs;
+		}
 	}
 
 	0;

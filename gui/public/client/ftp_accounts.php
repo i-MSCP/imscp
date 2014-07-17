@@ -48,7 +48,7 @@ function ftp_generatePageData($tpl)
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
-		if(!(isset($cfg->FILEMANAGER_ADDON) && $cfg->FILEMANAGER_ADDON == 'AjaXplorer')) {
+		if(!(isset($cfg->FILEMANAGER_PACKAGE) && $cfg->FILEMANAGER_PACKAGE == 'AjaXplorer')) {
 			$tpl->assign('FTP_EASY_LOGIN', '');
 		}
 

@@ -65,8 +65,8 @@ $tpl->assign(
 
 $antiRootkits = array();
 
-if (isset($config['ANTI_ROOTKITS_ADDONS'])) {
-	$antiRootkits = explode(',', $config['ANTI_ROOTKITS_ADDONS']);
+if (isset($config['ANTI_ROOTKITS_PACKAGES'])) {
+	$antiRootkits = explode(',', $config['ANTI_ROOTKITS_PACKAGES']);
 }
 
 $antiRootkits[] = 'Other';

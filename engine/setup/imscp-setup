@@ -45,13 +45,15 @@ newDebug('imscp-setup.log');
 
 silent(1);
 
+$main::execmode = 'setup' unless $main::execmode;
+
 iMSCP::Getopt->parse('Usage: perl imscp-setup [options]');
 
 # Get reconfigure option
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
 # Global variable that holds questions
-%main::questions = () if ! %main::questions;
+%main::questions = () unless %main::questions;
 
 # Handle preseed option
 my $preseedFile = iMSCP::Getopt->preseed;
@@ -101,7 +103,7 @@ sub setupStart
 		require $hookFile;
 	}
 
-	# Allow any server/addon to register their setup hook functions
+	# Allow any server/package to register their setup hook functions
 	setupRegisterHooks();
 }
 

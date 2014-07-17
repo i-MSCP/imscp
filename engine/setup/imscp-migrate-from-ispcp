@@ -117,14 +117,14 @@ sub removeIspcpFiles
 
 	# Deleting ispCP Apache module files
 	for (qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
-		if(-f "$main::ispcpConfig{'APACHE_MODS_DIR'}/$_") {
-			unlink "$main::ispcpConfig{'APACHE_MODS_DIR'}/$_" or push
-				@errors, "Unable to delete $main::ispcpConfig{'APACHE_MODS_DIR'}/$_ file: $!";
+		if(-f "$main::ispcpConfig{'HTTPD_MODS_AVAILABLE_DIR'}/$_") {
+			unlink "$main::ispcpConfig{'HTTPD_MODS_AVAILABLE_DIR'}/$_" or push
+				@errors, "Unable to delete $main::ispcpConfig{'HTTPD_MODS_AVAILABLE_DIR'}/$_ file: $!";
 		}
 	}
 
 	# Disabling ispcp.conf Apache configuration file
-	if(-f "$main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf") {
+	if(-f "$main::ispcpConfig{'HTTPD_SITES_AVAILABLE_DIR'}/ispcp.conf") {
 		if(-x '/usr/sbin/a2dissite') {
 			$rs = execute("/usr/sbin/a2dissite ispcp.conf", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
@@ -132,8 +132,8 @@ sub removeIspcpFiles
 		}
 
 		# Deleting ispcp.conf Apache configuration file
-		unlink "$main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf" or push
-			@errors, "Unable to delete $main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf file: $!";
+		unlink "$main::ispcpConfig{'HTTPD_SITES_AVAILABLE_DIR'}/ispcp.conf" or push
+			@errors, "Unable to delete $main::ispcpConfig{'HTTPD_SITES_AVAILABLE_DIR'}/ispcp.conf file: $!";
 	}
 
 	# Remove ispCP daemons
@@ -176,7 +176,7 @@ sub removeIspcpFiles
 		$main::ispcpConfig{'CONF_DIR'}, # eg. /etc/ispcp
 		$main::ispcpConfig{'LOG_DIR'}, # eg. /var/log/ispcp
 		$main::ispcpConfig{'ROOT_DIR'}, # eg. /var/www/ispcp
-		$main::ispcpConfig{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, # eg. /etc/apache2/ispcp
+		$main::ispcpConfig{'HTTPD_CUSTOM_SITES_DIR'}, # eg. /etc/apache2/ispcp
 		$main::ispcpConfig{'MTA_VIRTUAL_CONF_DIR'} # eg. /etc/postfix/ispcp
 	) {
 		if(-d) {

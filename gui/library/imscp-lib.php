@@ -35,11 +35,6 @@
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-/**
- * This is the primarly file that should be included in all the i-MSCP's user
- * levels scripts such as all scripts that live under gui/{admin,reseller,client}
- */
-
 // Set default error reporting level
 error_reporting(E_ALL | E_STRICT);
 
@@ -75,9 +70,9 @@ set_include_path(
         PATH_SEPARATOR,
         array_unique(
             array(
+                DEFAULT_INCLUDE_PATH,
                 LIBRARY_PATH, LIBRARY_PATH . '/vendor',
                 LIBRARY_PATH, LIBRARY_PATH . '/vendor/phpseclib',
-                DEFAULT_INCLUDE_PATH
             )
         )
     )
@@ -86,6 +81,7 @@ set_include_path(
 // Autoloader
 // TODO generate a classmap on first load and cache it for better performances
 require_once 'iMSCP/Loader/AutoloaderFactory.php';
+
 iMSCP\Loader\AutoloaderFactory::factory(
     array(
         'iMSCP\Loader\UniversalLoader' => array(

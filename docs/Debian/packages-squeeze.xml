@@ -1,4 +1,19 @@
 <packages>
+    <frontend>
+        <alternative default="nginx">
+            <nginx
+                    pinning_package="nginx"
+                    pinning_pin="origin nginx.org"
+                    pinning_pin_priority="1001"
+                    repository="deb http://nginx.org/packages/debian squeeze nginx"
+                    repository_origin="nginx"
+                    repository_key_uri="http://nginx.org/keys/nginx_signing.key"
+                    >
+                <package>nginx</package>
+                <package>spawn-fcgi</package>
+            </nginx>
+        </alternative>
+    </frontend>
     <httpd>
         <alternative default="apache_fcgid">
             <apache_fcgid>
@@ -6,7 +21,6 @@
                 <package>apache2-mpm-worker</package>
                 <package>apache2-suexec-custom</package>
                 <package>libapache2-mod-fcgid</package>
-                <package>php5-cgi</package>
             </apache_fcgid>
             <apache_itk>
                 <package>apache2</package>
@@ -14,7 +28,7 @@
                 <package>libapache2-mod-php5</package>
             </apache_itk>
             <apache_php_fpm
-                    repository="deb http://packages.dotdeb.org squeeze all"
+                    repository="deb http://packages.dotdeb.org squeeze-php54 all"
                     repository_origin="packages.dotdeb.org"
                     repository_key_uri="http://www.dotdeb.org/dotdeb.gpg"
                     >
@@ -167,6 +181,7 @@
     </sql>
     <php>
         <package>php5</package>
+        <package>php5-cgi</package>
         <package>php5-cli</package>
         <package>php-pear</package>
         <package>php5-gd</package>
@@ -175,7 +190,6 @@
         <package>php5-intl</package>
         <package>php5-mcrypt</package>
         <package>php5-mysql</package>
-        <package>php5-suhosin</package>
     </php>
     <perl>
         <package>perl</package>
@@ -221,6 +235,7 @@
         <package>make</package>
         <package>openssl</package>
         <package>pbzip2</package>
+        <package>pigz</package>
         <package>ssh</package>
         <package>tar</package>
     </other>

@@ -52,6 +52,8 @@ newDebug('imscp-build.log');
 # Entering in silent mode
 silent(1);
 
+$main::execmode = 'setup' unless $main::execmode;
+
 # Load config
 loadConfig() and fatal('Unable to load main configuration file');
 
@@ -84,7 +86,7 @@ verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
 # Global variable that holds questions
-%main::questions = () if ! %main::questions;
+%main::questions = () unless %main::questions;
 
 # Handle the preseed option
 my $preseedFile = iMSCP::Getopt->preseed;
@@ -137,8 +139,8 @@ if ($main::noprompt) {
 
 if($main::skippackages && ! iMSCP::Getopt->preseed) {
 	unless(
-		$main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'PO_SERVER'} &&
-		$main::imscpConfig{'MTA_SERVER'} && $main::imscpConfig{'FTPD_SERVER'} &&
+		$main::imscpConfig{'FRONTEND_SERVER'} && $main::imscpConfig{'HTTPD_SERVER'} &&
+		$main::imscpConfig{'PO_SERVER'} && $main::imscpConfig{'MTA_SERVER'} && $main::imscpConfig{'FTPD_SERVER'} &&
 		$main::imscpConfig{'NAMED_SERVER'} && $main::imscpConfig{'SQL_SERVER'}
 	) {
 		$main::noprompt = 0;
@@ -269,7 +271,7 @@ EOF
 		[\&doImscpBackup,       'Backup existing i-MSCP installation if any'],
 		[\&installTmp,          'Installing i-MSCP files on file system'],
 		[\&setupBoot,           'Setup bootstrapping'],
-		[\&setupRegisterHooks,  'Registering servers/addons setup hooks'],
+		[\&setupRegisterHooks,  'Registering servers/packages setup hooks'],
 		[\&setupDialog,         'Processing i-MSCP setup dialog if any'],
 		[\&setupTasks,          'Processing i-MSCP setup tasks'],
 		[\&removeTmp,           'Removing temporary files']
@@ -290,13 +292,17 @@ EOF
 
 	iMSCP::HooksManager->getInstance()->trigger('afterInstall') and exit 1;
 
+	my $port = ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://')
+		? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
+		: $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+
 	iMSCP::Dialog->factory()->msgbox(<<EOF);
 
 \\Z1Congratulations\\Zn
 
 i-MSCP has been successfully installed/updated.
 
-Please connect to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} and login with your administrator account.
+Please connect to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'}:$port and login with your administrator account.
 
 Thank you for choosing i-MSCP.
 EOF

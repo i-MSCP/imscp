@@ -137,7 +137,9 @@ sub postinstall
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPostinstall', 'postfix');
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'hooksManager'}->register(
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'SMTP' ]; 0; }
+	);
 
 	$self->{'hooksManager'}->trigger('afterMtaPostinstall', 'postfix');
 }
@@ -171,16 +173,14 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaRestart');
 	return $rs if $rs;
 
-	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'MTA_SNAME'} restart 2>/dev/null", \$stdout);
-	debug($stdout) if $stdout;
-	error('Unable to restart Postfix') if $rs > 1;
-	return $rs if $rs > 1;
+	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'MTA_SNAME'}, '-f postfix/master');
+	error("Unable to restart $self->{'config'}->{'MTA_SNAME'} service") if $rs;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaRestart');
 }
 
-=item postmap($filename, [$filetype = hash])
+=item postmap($filename, [$filetype = 'hash'])
 
  Postmap the file
 
@@ -684,6 +684,8 @@ sub getTraffic
 sub _init
 {
 	my $self = $_[0];
+
+	$self->{'restart'} = 0;
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -1407,8 +1409,10 @@ END
 		$rs |= $self->postmap($_);
 	}
 
-	if($self->{'restart'} && $self->{'restart'} eq 'yes') {
-		$rs |= $self->restart();
+	unless($main::execmode && $main::execmode eq 'setup') {
+		if($self->{'restart'}) {
+			$rs |= $self->restart();
+		}
 	}
 
 	$? = $exitCode || $rs;

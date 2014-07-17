@@ -43,6 +43,7 @@
 function reseller_getMailData($domainId, $mailQuota)
 {
 	static $mailData = null;
+
 	if(null === $mailData) {
 		$stmt = exec_query(
 			'
@@ -611,6 +612,9 @@ function _admin_generateFeaturesForm($tpl, &$data)
  */
 function admin_checkAndUpdateData($domainId)
 {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Database::getInstance();
 
@@ -800,7 +804,7 @@ function admin_checkAndUpdateData($domainId)
 					$phpEditor->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_perm_display_errors']));
 				}
 
-				if (PHP_SAPI != 'apache2handler') {
+				if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
 					if($phpEditor->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_perm_disable_functions'])) {
 						if($phpEditor->getClPerm('phpiniDisableFunctions') != $_POST['phpini_perm_disable_functions']) {
 							$phpEditor->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));

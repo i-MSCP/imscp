@@ -292,7 +292,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'TR_MIB' => tr('MiB'),
 			'TR_SEC' => tr('Sec.')));
 
-		if(PHP_SAPI != 'apache2handler') {
+		if($cfg['HTTPD_SERVER'] != 'apache_itk') {
 			$tpl->assign(
 				array(
 					'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>'),
@@ -521,7 +521,7 @@ function admin_checkAndCreateResellerAccount()
 
 			$phpEditor->setRePerm('phpiniSystem', 'yes');
 
-			if(PHP_SAPI != 'apache2handler') {
+			if($cfg['HTTPD_SERVER'] != 'apache_itk') {
 				$phpEditor->setRePerm('phpiniDisableFunctions', $data['php_ini_al_disable_functions']);
 			} else {
 				$phpEditor->setRePerm('phpiniDisableFunctions', 'no');

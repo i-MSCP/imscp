@@ -338,7 +338,7 @@ sub _getNamedData
 	0;
 }
 
-sub _getAddonsData
+sub _getPackagesData
 {
 	my $self = $_[0];
 
@@ -353,7 +353,7 @@ sub _getAddonsData
 	$webDir =~ s~/+~/~g;
 	$webDir =~ s~/$~~g;
 
-	$self->{'addons'} = {
+	$self->{'packages'} = {
 		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		ALIAS => $userName,
 		DOMAIN_NAME => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},

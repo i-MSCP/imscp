@@ -4,7 +4,7 @@
     ServerAlias www.{DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
     LogLevel error
-    ErrorLog {APACHE_LOG_DIR}/{DOMAIN_NAME}/error.log
+    ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
     DocumentRoot {WEB_DIR}/htdocs
 
@@ -98,5 +98,5 @@
     SSLCertificateFile {CERTIFICATE}
     SSLCertificateChainFile {CERTIFICATE}
 
-    Include {APACHE_CUSTOM_SITES_CONFIG_DIR}/{DOMAIN_NAME}.conf
+    Include {HTTPD_CUSTOM_SITES_DIR}/{DOMAIN_NAME}.conf
 </VirtualHost>

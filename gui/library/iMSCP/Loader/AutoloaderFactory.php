@@ -34,16 +34,14 @@ namespace iMSCP\Loader;
  * also acts as an autoloader registry.
  *
  * @package     iMSCP_Loader
- * @copyright   2010-2014 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
  */
 class AutoloaderFactory
 {
     /**
      * @const string Default loader
      */
-    const DEFAULT_LOADER = 'iMSCP\Loader\UniversalLoader';
+    const DEFAULT_LOADER = 'iMSCP\\Loader\\UniversalLoader';
 
     /**
      * @var ISplAutoloader[] All loaders registered using the factory
@@ -97,7 +95,11 @@ class AutoloaderFactory
 
                         if (!$loader instanceof ISplAutoloader) {
                             throw new \InvalidArgumentException(
-                                sprintf('%s(): autoloader class %s must implement the iMSCP\Loader\ISplAutoloader interface', __METHOD__, $class)
+                                sprintf(
+                                    '%s(): autoloader class %s must implement the iMSCP\Loader\ISplAutoloader interface',
+                                    __METHOD__,
+                                    $class
+                                )
                             );
                         }
                     }
@@ -139,13 +141,15 @@ class AutoloaderFactory
     protected static function getDefaultLoader()
     {
         if (null === static::$defaultLoader) {
-            if (!class_exists(static::DEFAULT_LOADER)) {
+           $className = static::DEFAULT_LOADER;
+
+            if (!class_exists($className)) {
                 // Retrieves filename from the classname
-                $defaultLoader = substr(strrchr(static::DEFAULT_LOADER, '\\'), 1);
-                require_once __DIR__ . "/$defaultLoader.php";
+                $fileName = substr(strrchr($className, '\\'), 1);
+                require_once __DIR__ . "/$fileName.php";
             }
 
-            static::$defaultLoader = new UniversalLoader();
+            static::$defaultLoader = new $className();
         }
 
         return static::$defaultLoader;

@@ -43,6 +43,7 @@ use iMSCP::HooksManager;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::File;
+use iMSCP::Service;
 use File::Find;
 use Cwd;
 
@@ -112,7 +113,7 @@ sub loadConfig
 	0;
 }
 
-=item installPreRequiredPackages
+=item installPreRequiredPackages()
 
  Trigger pre-required package installation from distro autoinstaller adapter
 
@@ -308,17 +309,19 @@ sub processDistroInstallFiles
 			return 1;
 		}
 
-		$file = -f ("$distroConfigDir/$_/install.xml")
+		$file = (-f "$distroConfigDir/$_/install.xml")
 			? "$distroConfigDir/$_/install.xml" : "$defaultConfigDir/$_/install.xml";
 
-		$rs = _processXmlFile($file);
-		return $rs if $rs;
+		if(-f $file) {
+			$rs = _processXmlFile($file);
+			return $rs if $rs;
+		}
 	}
 
 	0;
 }
 
-=item
+=item buildImscpDaemon()
 
  Build i-MSCP daemon
 
@@ -378,9 +381,9 @@ sub installEngine
 
 	my $dir = iMSCP::Dir->new('dirname' => "$FindBin::Bin/engine");
 
-	my @configs = $dir->getDirs();
+	my @configDirs = $dir->getDirs();
 
-	for(@configs) {
+	for(@configDirs) {
 		if (-f "$FindBin::Bin/engine/$_/install.xml") {
 			unless(chdir "$FindBin::Bin/engine/$_") {
 				error("Unable to change dir to $FindBin::Bin/engine/$_");
@@ -465,7 +468,7 @@ sub postBuild
 	iMSCP::HooksManager->getInstance()->trigger('afterPostBuild');
 }
 
-=item doImscpBackup
+=item doImscpBackup()
 
  Backup current i-MSCP installation (database and conffiles) if any
 
@@ -514,30 +517,40 @@ sub savePersistentData
 	my ($stdout, $stderr);
 	my $destdir = $main::{'INST_PREF'};
 
-	#
-	## i-MSCP version prior 1.0.4
-	#
-
 	# Save ISP logos
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos") {
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos " .
-			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", \$stdout, \$stderr
+				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 	}
 
-	#
-	## i-MSCP version >= 1.0.4
-	#
-
 	# Save Web directories skeletons
+
+	# Move old skel directory to new location
 	if(-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'CONF_DIR'}/apache/skel " .
-			"$destdir$main::imscpConfig{'CONF_DIR'}/apache/skel", \$stdout, \$stderr
+			"$main::imscpConfig{'CMD_MV'} $main::imscpConfig{'CONF_DIR'}/apache/skel " .
+				"$main::imscpConfig{'CONF_DIR'}/skel",
+			\$stdout,
+			\$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
+
+	if(-d "$main::imscpConfig{'CONF_DIR'}/skel") {
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'CONF_DIR'}/skel " .
+				"$destdir$main::imscpConfig{'CONF_DIR'}/skel",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -548,7 +561,9 @@ sub savePersistentData
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs") {
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/logs " .
-			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs", \$stdout, \$stderr
+				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -559,7 +574,9 @@ sub savePersistentData
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent") {
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/persistent " .
-			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent", \$stdout, \$stderr
+				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -570,7 +587,9 @@ sub savePersistentData
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos") {
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos " .
-			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", \$stdout, \$stderr
+				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -581,7 +600,9 @@ sub savePersistentData
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares") {
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/softwares " .
-			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares", \$stdout, \$stderr
+				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -592,8 +613,22 @@ sub savePersistentData
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/plugins") {
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/plugins " .
-			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/plugins",
-			\$stdout, \$stderr
+				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/plugins",
+			\$stdout,
+			\$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
+
+	# Move old package cache directory to new location
+	if(-d  "$main::imscpConfig{'CACHE_DATA_DIR'}/addons") {
+		$rs = execute(
+			"$main::imscpConfig{'CMD_MV'} $main::imscpConfig{'CACHE_DATA_DIR'}/addons " .
+				"$main::imscpConfig{'CACHE_DATA_DIR'}/packages",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -613,22 +648,18 @@ sub savePersistentData
 
 sub installTmp
 {
-	my $rs = 0;
-	my ($stdout, $stderr);
 	my $tmpDir = $main::{'INST_PREF'};
 
 	# i-MSCP daemon must be stopped before changing any file on the files system
 	if(-x "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}") {
-		$rs = execute(
-			"$main::imscpConfig{'SERVICE_MNGR'} $main::imscpConfig{'IMSCP_DAEMON_SNAME'} stop 2>/dev/null", \$stdout
-		);
-		debug($stdout) if $stdout;
-		error('Unable to stop i-MSCP Daemon') if $rs > 1;
-		return $rs if $rs > 1;
+		my $rs = iMSCP::Service->getInstance()->stop($main::imscpConfig{'IMSCP_DAEMON_SNAME'});
+		error("Unable to stop $main::imscpConfig{'IMSCP_DAEMON_SNAME'} service") if $rs;
+		return $rs if $rs ;
 	}
 
 	# Process cleanup to avoid any security risks and conflicts
-	$rs = execute(
+	my ($stdout, $stderr);
+	my $rs = execute(
 		"$main::imscpConfig{'CMD_RM'} -fR " .
 		"$main::imscpConfig{'ROOT_DIR'}/daemon " .
 		"$main::imscpConfig{'ROOT_DIR'}/engine " .
@@ -648,7 +679,7 @@ sub installTmp
 	$rs;
 }
 
-=item
+=item removeTmp()
 
  Delete build directory
 
@@ -694,10 +725,11 @@ sub checkCommandAvailability($)
 
 =over 4
 
-=item _processXmlFile()
+=item _processXmlFile($file)
 
  Process an install.xml file or distribution layout.xml file
 
+ Param string $file xml file path
  Return int 0 on success, other on failure ; A fatal error is raised in case a variable cannot be exported
 
 =cut
@@ -713,7 +745,7 @@ sub _processXmlFile($)
 
 	# Loading XML::Simple package
 	eval "use XML::Simple; 1";
-	fatal('Unable to load the XML::Simple perl module') if $@;
+	fatal("Unable to load the XML::Simple perl module: $@") if $@;
 
 	# Creating XML object
 	my $xml = XML::Simple->new('ForceArray' => 1, 'ForceContent' => 1);
@@ -730,54 +762,67 @@ sub _processXmlFile($)
 
 	# Process xml 'folders' nodes if any
 	for(@{$data->{'folders'}}) {
-		$_->{'content'} = _expandVars($_->{'content'}) if exists $_->{'content'};
-		$main::{$_->{'export'}} = $_->{'content'} if $_->{'export'};
-		$rs = _processFolder($_) if exists $_->{'content'};
-		return $rs if $rs;
+		if (exists $_->{'content'}) {
+			$_->{'content'} = _expandVars($_->{'content'});
+			$main::{$_->{'export'}} = $_->{'content'} if exists $_->{'export'};
+			$rs = _processFolder($_);
+			return $rs if $rs;
+		}
 	}
 
 	# Process xml 'copy_config' nodes if any
 	for(@{$data->{'copy_config'}}) {
-		$_->{'content'} = _expandVars($_->{'content'}) if exists $_->{'content'};
-		$rs = _copyConfig($_) if exists $_->{'content'};
-		return $rs if $rs;
+		if(exists $_->{'content'}) {
+			$_->{'content'} = _expandVars($_->{'content'});
+			$rs = _copyConfig($_);
+			return $rs if $rs;
+		}
 	}
 
 	# Process xml 'copy' nodes if any
 	for(@{$data->{'copy'}}) {
-		$_->{'content'} = _expandVars($_->{'content'}) if exists $_->{'content'};
-		$rs = _copy($_) if exists $_->{'content'};
-		return $rs if $rs;
+		if(exists $_->{'content'}) {
+			$_->{'content'} = _expandVars($_->{'content'});
+			$rs = _copy($_);
+			return $rs if $rs;
+		}
 	}
 
 	# Process xml 'create_file' nodes if any
 	for(@{$data->{'create_file'}}) {
-		$_->{'content'} = _expandVars($_->{'content'}) if exists $_->{'content'};
-		$rs = _createFile($_) if exists $_->{'content'};
-		return $rs if $rs;
+		if(exists $_->{'content'}) {
+			$_->{'content'} = _expandVars($_->{'content'});
+			$rs = _createFile($_);
+			return $rs if $rs;
+		}
 	}
 
 	# Process xml 'chmod_file' nodes if any
 	for(@{$data->{'chmod_file'}}) {
-		$_->{'content'} = _expandVars($_->{'content'}) if exists $_->{'content'};
-		$rs = _chmodFile($_) if $_->{'content'};
-		return $rs if $rs;
+		if(exists $_->{'content'}) {
+			$_->{'content'} = _expandVars($_->{'content'});
+			$rs = _chmodFile($_);
+			return $rs if $rs;
+		}
 	}
 
 	# Process xml 'chmod_file' nodes if any
 	for(@{$data->{'chown_file'}}) {
-		$_->{'content'} = _expandVars($_->{'content'}) if exists $_->{'content'};
-		$rs = _chownFile($_) if exists $_->{'content'};
-		return $rs if $rs;
+		if(exists $_->{'content'}) {
+			$_->{'content'} = _expandVars($_->{'content'});
+			$rs = _chownFile($_);
+			return $rs if $rs;
+		}
 	}
 
 	0;
 }
 
-=item _expandVars()
+=item _expandVars($string)
 
  Expand variables in the given string
 
+ Param string $string string containing variables to expands
  Return string
 
 =cut
@@ -786,24 +831,20 @@ sub _expandVars
 {
 	my $string = $_[0] || '';
 
-	debug("Input: $string");
-
 	for($string =~ /\$\{([^\}]+)\}/g) {
 		if(exists $main::{$_}) {
 			$string =~ s/\$\{$_\}/$main::{$_}/g;
 		} elsif(exists $main::imscpConfig{$_}) {
 			$string =~ s/\$\{$_\}/$main::imscpConfig{$_}/g;
 		} else {
-			fatal("Unable to expand variable \${$_}. Variable not found.");
+			fatal("Unable to expand variable \${$_}.");
 		}
 	}
-
-	debug("Output: $string");
 
 	$string;
 }
 
-=item _processFolder()
+=item _processFolder(\%$data)
 
  Process a folder node from an install.xml file
 
@@ -814,14 +855,14 @@ sub _expandVars
 =cut
 
 
-sub _processFolder
+sub _processFolder($)
 {
 	my $data = $_[0];
 
 	my $dir = iMSCP::Dir->new('dirname' => $data->{'content'});
 
 	# Needed to be sure to not keep any file from a previous build that has failed
-	if(defined $main::{'INST_PREF'} && $main::{'INST_PREF'} eq $data->{'content'} && -d $data->{'content'}) {
+	if(defined $main::{'INST_PREF'} && $main::{'INST_PREF'} eq $data->{'content'}) {
 		my $rs = $dir->remove();
 		return $rs if $rs;
 	}
@@ -837,7 +878,7 @@ sub _processFolder
 	$dir->make($options);
 }
 
-=item
+=item _copyConfig(\%$data)
 
  Process a copy_config node from an install.xml file
 
@@ -845,7 +886,7 @@ sub _processFolder
 
 =cut
 
-sub _copyConfig
+sub _copyConfig($)
 {
 	my $data = $_[0];
 
@@ -892,7 +933,7 @@ sub _copyConfig
 	0;
 }
 
-=item
+=item _copy(\%$data)
 
  Process the copy node from an install.xml file
 
@@ -900,7 +941,7 @@ sub _copyConfig
 
 =cut
 
-sub _copy
+sub _copy($)
 {
 	my $data = $_[0];
 
@@ -933,7 +974,7 @@ sub _copy
 	0;
 }
 
-=item _createFile()
+=item _createFile(\%$data)
 
  Create a file
 
@@ -941,12 +982,12 @@ sub _copy
 
 =cut
 
-sub _createFile
+sub _createFile($)
 {
 	iMSCP::File->new('filename' => $_[0]->{'content'})->save();
 }
 
-=item _chownFile()
+=item _chownFile(\%$data)
 
  Change file/directory owner and/or group recursively
 
@@ -954,7 +995,7 @@ sub _createFile
 
 =cut
 
-sub _chownFile
+sub _chownFile($)
 {
 	my $data = $_[0];
 
@@ -972,7 +1013,7 @@ sub _chownFile
 	0;
 }
 
-=item _chmodFile()
+=item _chmodFile(\%$data)
 
  Process chmod_file from an install.xml file
 
@@ -980,7 +1021,7 @@ sub _chownFile
 
 =cut
 
-sub _chmodFile
+sub _chmodFile($)
 {
 	my $data = $_[0];
 

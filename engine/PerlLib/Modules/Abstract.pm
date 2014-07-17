@@ -37,7 +37,7 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Servers;
-use iMSCP::Addons;
+use iMSCP::Packages;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -177,7 +177,7 @@ sub _init
 
 =item _runAction($action, \@items, $itemType)
 
- Run the given action on each server/addon that implement it
+ Run the given action on each server/package that implement it
 
  return int 0 on success, other on failure
 
@@ -188,7 +188,7 @@ sub _runAction ($$$$)
 	my ($self, $action, $items, $itemType) = @_;
 
 	for (@{$items}) {
-		my $paramName = ($itemType eq 'Addons') ? 'addons' : $_;
+		my $paramName = ($itemType eq 'Packages') ? 'Package' : $_;
 
 		# Does this module provide data for the current item
 		if(exists $self->{$paramName}) {
@@ -197,7 +197,7 @@ sub _runAction ($$$$)
 			eval "require $package";
 
 			unless($@) {
-				my $instance = ($itemType eq 'Addons') ? $package->getInstance() : $package->factory();
+				my $instance = ($itemType eq 'Packages') ? $package->getInstance() : $package->factory();
 
 				if ($instance->can($action)) {
 					debug("Calling action $action on $package");
@@ -216,7 +216,7 @@ sub _runAction ($$$$)
 
 =item _runAllActions()
 
- Trigger actions (pre<Action>, <Action>, post<Action>) on each i-MSCP servers and addons.
+ Trigger actions (pre<Action>, <Action>, post<Action>) on each i-MSCP servers and packages.
 
  return int 0 on success, other on failure
 
@@ -227,10 +227,10 @@ sub _runAllActions
 	my $self = $_[0];
 
 	my @servers = iMSCP::Servers->getInstance()->get();
-	my @addons = iMSCP::Addons->getInstance()->get();
+	my @packages = iMSCP::Packages->getInstance()->get();
 
-	# Build service/addon data if provided by the module
-	for(@servers, 'Addons') {
+	# Build service/package data if provided by the module
+	for(@servers, 'Packages') {
 		next if $_ eq 'noserver';
 
 		my $methodName = '_get' . ucfirst($_) . 'Data';
@@ -243,7 +243,7 @@ sub _runAllActions
 		my $rs = $self->_runAction("$_$self->{'action'}$self->{'type'}", \@servers, 'Servers');
 		return $rs if $rs;
 
-		$rs = $self->_runAction("$_$self->{'action'}$self->{'type'}", \@addons, 'Addons');
+		$rs = $self->_runAction("$_$self->{'action'}$self->{'type'}", \@packages, 'Packages');
 		return $rs if $rs;
 	}
 
@@ -256,18 +256,18 @@ sub _runAllActions
 
 =over 4
 
-=item _getAddonsData()
+=item _getPackagesData()
 
- Get addon data
+ Get package data
 
- This method should be implemented by any module which provides data for i-MSCP Addonss.
- Resulting data must be stored in an anonymous hash accessible through the 'addons' attribute.
+ This method should be implemented by any module which provides data for i-MSCP packages.
+ Resulting data must be stored in an anonymous hash accessible through the 'packages' attribute.
 
  return int 0 on success, other on failure
 
 =cut
 
-sub _getAddonsData
+sub _getPackagesData
 {
 	0;
 }

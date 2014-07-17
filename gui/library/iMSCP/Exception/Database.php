@@ -34,7 +34,7 @@
 /**
  * @see iMSCP_Exception
  */
-require_once  'iMSCP/Exception.php';
+require_once 'iMSCP/Exception.php';
 
 /**
  * Exception used on production by iMSCP_Exception_Handler

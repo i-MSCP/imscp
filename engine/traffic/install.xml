@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <install>
     <folders export="MAIL_LOG_CONVERT_PATH">${INST_PREF}/usr/sbin</folders>
     <copy>${MAIL_LOG_CONVERT_PATH}/maillogconvert.pl</copy>

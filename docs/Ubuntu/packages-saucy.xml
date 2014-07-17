@@ -1,11 +1,25 @@
 <packages>
+    <frontend>
+        <alternative default="nginx">
+            <nginx
+                    pinning_package="nginx"
+                    pinning_pin="origin nginx.org"
+                    pinning_pin_priority="1001"
+                    repository="deb http://nginx.org/packages/ubuntu saucy nginx"
+                    repository_origin="nginx"
+                    repository_key_uri="http://nginx.org/keys/nginx_signing.key"
+                    >
+                <package>nginx</package>
+                <package>spawn-fcgi</package>
+            </nginx>
+        </alternative>
+    </frontend>
     <httpd>
         <alternative default="apache_php_fpm">
             <apache_fcgid>
                 <package>apache2</package>
                 <package>apache2-suexec-custom</package>
                 <package>libapache2-mod-fcgid</package>
-                <package>php5-cgi</package>
             </apache_fcgid>
             <apache_itk>
                 <package>apache2</package>
@@ -137,6 +151,7 @@
     </sql>
     <php>
         <package>php5</package>
+        <package>php5-cgi</package>
         <package>php5-cli</package>
         <package>php-pear</package>
         <package>php5</package>
@@ -192,6 +207,7 @@
         <package>make</package>
         <package>openssl</package>
         <package>pbzip2</package>
+        <package>pigz</package>
         <package>ssh</package>
         <package>tar</package>
     </other>

@@ -180,7 +180,7 @@ sub uninstallPackages
 		}
 
 		my $rs = execute(
-			"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove --purge --no-install-recommends",
+			"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove --purge",
 			($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 		);
 		debug($stdout) if $stdout;
@@ -221,9 +221,10 @@ sub installPackages
 		unshift @command, ('UCF_FORCE_CONFFMISS=1 '); # Force installation of missing conffile which are managed by UCF
 
 		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o Dpkg::Options::='--force-confask' " .
-			"--reinstall install @{$self->{'packagesToInstall'}} --auto-remove --purge";
+			"--reinstall install @{$self->{'packagesToInstall'}} --auto-remove --purge --no-install-recommends";
 	} else {
-		push @command, "apt-get -y install @{$self->{'packagesToInstall'}} --auto-remove --purge";
+		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
+			"install @{$self->{'packagesToInstall'}} --no-install-recommends --auto-remove --purge";
 	}
 
 	my ($stdout, $stderr);
@@ -317,7 +318,7 @@ sub _preparePackagesList
 
 	for(sort keys %{$data}) {
 		if($data->{$_}->{'alternative'}) {
-			my $service  = $_;
+			my $service = $_;
 
 			my $default = $data->{$service}->{'alternative'}->{'default'} || '';
 			delete $data->{$service}->{'alternative'}->{'default'};
@@ -328,12 +329,12 @@ sub _preparePackagesList
 			my $currentServer = exists $main::imscpConfig{$serviceName} ? $main::imscpConfig{$serviceName} : '';
 
 			my $newServer = (exists $main::questions{$serviceName})
-					? $main::questions{$serviceName}
-					: (
-						(exists $main::imscpConfig{$serviceName} && $main::imscpConfig{$serviceName} ne '')
-							? $main::imscpConfig{$serviceName}
-                            : $currentServer
-					);
+				? $main::questions{$serviceName}
+				: (
+					(exists $main::imscpConfig{$serviceName} && $main::imscpConfig{$serviceName} ne '')
+						? $main::imscpConfig{$serviceName}
+						: $currentServer
+				);
 
 			$newServer = '' if not $newServer ~~ @alternative;
 
@@ -386,17 +387,14 @@ Do you agree?
 					} while (! $server);
 
 					iMSCP::Dialog->factory->set('no-cancel', undef);
-
 				} else {
-					$server = pop(@alternative);
+					$server = $alternative[0];
 				}
 			} else {
 				$server = $newServer;
 			}
 
-			#$self->{'userSelection'}->{$service} = $server eq 'Not used' ? 'no' : $server;
 			$self->{'userSelection'}->{$service} = $server;
-			#$main::questions{uc($service) . '_SERVER'} = $server eq 'Not used' ? 'no' : $server;
 			$main::questions{uc($service) . '_SERVER'} = $server;
 
 			for(@alternative) {
@@ -405,7 +403,6 @@ Do you agree?
 					if(ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
 						exists $data->{$service}->{'alternative'}->{$_}->{'repository'}
 					) {
-
 						$self->{'externalRepositoriesToRemove'}->{$data->{$service}->{'alternative'}->{$_}->{'repository'}} = {
 							'repository' => $data->{$service}->{'alternative'}->{$_}->{'repository'},
 							'repository_origin' => $data->{$service}->{'alternative'}->{$_}->{'repository_origin'}
@@ -431,10 +428,10 @@ Do you agree?
                    	exists $data->{$service}->{'alternative'}->{$_}->{'repository'}
 				) {
 					$self->{'externalRepositoriesToAdd'}->{$data->{$service}->{'alternative'}->{$_}->{'repository'}} = {
-							'repository' => $data->{$service}->{'alternative'}->{$_}->{'repository'},
-							'repository_key_uri' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_uri'} || undef,
-							'repository_key_id' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_id'} || undef,
-							'repository_key_srv' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_srv'} || undef
+						'repository' => $data->{$service}->{'alternative'}->{$_}->{'repository'},
+						'repository_key_uri' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_uri'} || undef,
+						'repository_key_id' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_id'} || undef,
+						'repository_key_srv' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_srv'} || undef
 					}
 				}
 

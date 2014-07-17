@@ -42,8 +42,9 @@ use iMSCP::Database;
 use iMSCP::SystemGroup;
 use iMSCP::Execute;
 use iMSCP::Servers;
-use iMSCP::Addons;
+use iMSCP::Packages;
 use File::Basename;
+use iMSCP::Service;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -68,7 +69,7 @@ sub process
 
 	my @steps = (
 		[\&_removeCustomers, 'Removing i-MSCP customers'],
-		[\&_uninstallAddons, 'Uninstalling i-MSCP addons'],
+		[\&_uninstallPackages, 'Uninstalling i-MSCP packages'],
 		[\&_uninstallServers, 'Uninstalling i-MSCP servers'],
 		[\&_uninstallDaemons, 'Uninstalling i-MSCP daemons'],
 		[\&_removeCrontabFile, 'Removing i-MSCP crontab file'],
@@ -190,28 +191,28 @@ sub _removeCustomers
 	0;
 }
 
-sub _uninstallAddons
+sub _uninstallPackages
 {
 	my $rs = 0;
 
 	startDetail();
 
-	my @addons = iMSCP::Addons->getInstance()->get();
-	my $nbAddons = scalar @addons;
+	my @packages = iMSCP::Packages->getInstance()->get();
+	my $nbPackages = scalar @packages;
 	my $step = 1;
 
-	for(@addons) {
-		my $package = "Addons::$_";
+	for(@packages) {
+		my $package = "Package::$_";
 
 		eval "require $package";
 
 		unless($@) {
-			my $addon = $package->getInstance();
+			my $package = $package->getInstance();
 
-			if($addon->can('uninstall')) {
+			if($package->can('uninstall')) {
 				$rs = step(
-					sub { $addon->uninstall }, sprintf("Running %s uninstall tasks...", ref $addon),
-					$nbAddons,
+					sub { $package->uninstall }, sprintf("Running %s uninstall tasks...", ref $package),
+					$nbPackages,
 					$step
             	);
 
@@ -277,25 +278,37 @@ sub _uninstallServers
 
 sub _uninstallDaemons
 {
-	my ($rs, $stdout, $stderr);
 
-	for ($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'}) {
-		if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_") {
-			$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $_ stop", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-    		return $rs if $rs;
+	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}") {
+		my $rs = iMSCP::Service->getInstance()->stop($main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'imscp_daemon');
+		error("Unable to stop $main::imscpConfig{'IMSCP_DAEMON_SNAME'} service") if $rs;
+		return $rs if $rs;
 
-			if($main::imscpConfig{'SERVICE_INSTALLER'} ne 'no') {
-				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $_ remove", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
-			}
+		my ($stdout, $stderr);
+		$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $_ remove", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-			$rs = iMSCP::File->new('filename' => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_")->delFile();
-			return $rs if $rs;
-		}
+	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_NETWORK_SNAME'}") {
+		my ($stdout, $stderr);
+		my $rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $main::imscpConfig{'IMSCP_NETWORK_SNAME'} stop",
+			\$stdout,
+			\$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+    	return $rs if $rs;
+
+		$rs = execute(
+			"$main::imscpConfig{'SERVICE_INSTALLER'} -f $main::imscpConfig{'IMSCP_NETWORK_SNAME'} remove",
+			\$stdout,
+			\$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 	}
 
 	0;

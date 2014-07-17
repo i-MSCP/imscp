@@ -35,10 +35,9 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::SystemUser;
-use iMSCP::SystemGroup;
 use iMSCP::File;
 use iMSCP::Dir;
+use iMSCP::Database;
 use File::Basename;
 use Servers::httpd::apache_php_fpm;
 
@@ -61,9 +60,6 @@ use parent 'Common::SingletonClass';
 sub uninstall
 {
 	my $self = $_[0];
-
-	my $rs = $self->_removeUserAndGroup();
-	return $rs if $rs;
 
 	$rs = $self->_removeVloggerSqlUser();
 	return $rs if $rs;
@@ -112,30 +108,6 @@ sub _init
 	$self;
 }
 
-=item _removeUserAndGroup()
-
- Remove Panel user and group
-
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub _removeUserAndGroup
-{
-	my $self = $_[0];
-
-	# Panel user
-	my $rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-	);
-	return $rs if $rs;
-
-	# Remove panel group
-	iMSCP::SystemGroup->getInstance()->delSystemGroup(
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-	);
-}
-
 =item _removeVloggerSqlUser()
 
  Remove vlogger SQL user
@@ -168,7 +140,7 @@ sub _removeDirs
 {
 	my $self = $_[0];
 
-	iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
+	iMSCP::Dir->new('dirname' => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
 }
 
 =item _restoreApacheConfig()
@@ -183,42 +155,42 @@ sub _restoreApacheConfig
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'httpd'}->disableMod('php_fpm_imscp')
-		if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/php_fpm_imscp.load";
-	return $rs if $rs;
-
-	for ('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
-		$rs = iMSCP::File->new(
-			'filename' => "$self->{'config'}->{'APACHE_MODS_DIR'}/$_"
-		)->delFile() if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_";
+	if (-f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/php_fpm_imscp.load") {
+		my $rs = $self->{'httpd'}->disableModules('php_fpm_imscp')
 		return $rs if $rs;
 	}
 
-	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf') {
-		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
-			$rs = $self->{'httpd'}->disableSite($_);
-			return $rs if $rs;
+	for ('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
+		my $rs = iMSCP::File->new(
+			'filename' => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_"
+		)->delFile() if -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
+		return $rs if $rs;
+	}
 
-			$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_")->delFile();
+	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
+		my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
+		return $rs if $rs;
+
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
+		)->delFile();
+		return $rs if $rs;
+	}
+
+	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
+		my $filename = fileparse($_);
+
+		if (-f "$self->{'apacheBkpDir'}/$filename.system") {
+			my $rs = iMSCP::File->new('filename' => "$self->{'apacheBkpDir'}/$filename.system")->copyFile($_)
 			return $rs if $rs;
 		}
 	}
 
-	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
-		my $filename = fileparse($_);
-
-		$rs = iMSCP::File->new(
-			'filename' => "$self->{'apacheBkpDir'}/$filename.system"
-		)->copyFile($_) if -f "$self->{'apacheBkpDir'}/$filename.system";
-		return $rs if $rs;
-	}
-
-
-	$rs = iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
+	my $rs = iMSCP::Dir->new('dirname' => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
 	return $rs if $rs;
 
 	for('000-default', 'default') {
-		$rs = $self->{'httpd'}->enableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
+		$rs = $self->{'httpd'}->enableSites($_) if -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
 		return $rs if $rs;
 	}
 
@@ -227,7 +199,7 @@ sub _restoreApacheConfig
 
 =item restorePhpfpmConfig()
 
- Restore PHP FPM configuration
+ Restore PHP-FPM configuration
 
  Return int 0 on success, 1 on failure
 
@@ -237,15 +209,10 @@ sub _restorePhpfpmConfig
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::File->new(
-		'filename' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/master.conf"
-	)->delFile() if -f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/master.conf";
-	return $rs if $rs;
-
 	my $filename = fileparse("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm");
 
 	if(-f "$self->{'phpfpmBkpDir'}/logrotate.$filename.system") {
-		$rs = iMSCP::File->new(
+		my $rs = iMSCP::File->new(
 			'filename' => "$self->{'phpfpmBkpDir'}/logrotate.$filename.system"
 		)->copyFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/$filename");
 		return $rs if $rs;
@@ -257,23 +224,27 @@ sub _restorePhpfpmConfig
 	) {
 		$filename = fileparse($_);
 
-		$rs = iMSCP::File->new(
+		my $rs = iMSCP::File->new(
 			'filename' => "$self->{'phpfpmBkpDir'}/$filename.system"
 		)->copyFile($_) if -f "$self->{'phpfpmBkpDir'}/$filename.system";
 		return $rs if $rs;
 	}
 
-	$rs = iMSCP::File->new(
-		'filename' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled"
-	)->moveFile(
-		"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
-	) if -f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled";
+	if (-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled") {
+		my $rs = iMSCP::File->new(
+			'filename' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled"
+		)->moveFile(
+			"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
+		)
+		return $rs if $rs;
+	}
 
-	$rs = iMSCP::File->new(
-		'filename' => "/etc/init/php5-fpm.override"
-	)->delFile() if -f "/etc/init/php5-fpm.override";
+	if(-f "/etc/init/php5-fpm.override") {
+		my $rs = iMSCP::File->new('filename' => "/etc/init/php5-fpm.override")->delFile();
+		return$rs if $rs;
+	}
 
-	$rs;
+	0;
 }
 
 =back

@@ -32,7 +32,7 @@
  */
 
 /** @see iMSCP_Exception_Writer */
-require_once  'iMSCP/Exception/Writer.php';
+require_once 'iMSCP/Exception/Writer.php';
 
 /**
  * Browser writer class

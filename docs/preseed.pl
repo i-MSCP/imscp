@@ -45,7 +45,7 @@ $main::questions{'FTPD_SQL_PASSWORD'} = '<password>'; # Password must not empty
 # (postfix)
 $main::questions{'MTA_SERVER'} = 'postfix';
 
-# Policyd Weight addon
+# Policyd Weight package
 $main::questions{'DNSBL_CHECKS_ONLY'} = 'no'; # 'yes' or 'no'
 
 # Server to use for the Dns service
@@ -167,24 +167,24 @@ $main::questions{'BACKUP_IMSCP'} = 'yes'; # 'yes' or 'no' - It's recommended to 
 # Customers backup feature - Allows resellers to enable/disable backup feature for their customers
 $main::questions{'BACKUP_DOMAINS'} = 'yes'; # 'yes' or 'no'
 
-# Webstats addon
-$main::questions{'WEBSTATS_ADDONS'} = 'Awstats'; # 'Awstats' or 'No'
+# Webstats packages
+$main::questions{'WEBSTATS_PACKAGES'} = 'Awstats'; # 'Awstats' or 'No'
 
-# Only relevant if WEBSTATS_ADDONS is set to 'Awstats'
-$main::questions{'AWSTATS_MODE'} = '0'; # Empty value if WEBSTATS_ADDONS is set to 'No', 0 for dynamic or 1 for static
+# Only relevant if WEBSTATS_PACKAGES is set to 'Awstats'
+$main::questions{'AWSTATS_MODE'} = '0'; # Empty value if WEBSTATS_PACKAGES is set to 'No', 0 for dynamic or 1 for static
 
 # Ftp Web file manager
-$main::questions{'FILEMANAGER_ADDON'} = 'AjaXplorer'; # AjaXplorer or Net2ftp
+$main::questions{'FILEMANAGER_PACKAGE'} = 'AjaXplorer'; # AjaXplorer or Net2ftp
 
-# Phpmyadmin addon restricted SQL user
+# Phpmyadmin package restricted SQL user
 $main::questions{'PHPMYADMIN_SQL_USER'} = 'pma';
 $main::questions{'PHPMYADMIN_SQL_PASSWORD'} = '<password>'; # Password must not be empty
 
-# Roundcube addon restricted SQL user
+# Roundcube package restricted SQL user
 $main::questions{'ROUNDCUBE_SQL_USER'} = 'roundcube_user';
 $main::questions{'ROUNDCUBE_SQL_PASSWORD'} = '<password>'; # Password must not be empty
 
-# Anti-Rootkits addons
-$main::questions{'ANTI_ROOTKITS_ADDONS'} = 'Chkrootkit,Rkhunter'; # 'Chkrootkit' and/or 'Rkhunter' or 'No', each value comma separated
+# Anti-Rootkits packages
+$main::questions{'ANTI_ROOTKITS_PACKAGES'} = 'Chkrootkit,Rkhunter'; # 'Chkrootkit' and/or 'Rkhunter' or 'No', each value comma separated
 
 1;
