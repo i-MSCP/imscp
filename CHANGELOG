@@ -10,7 +10,7 @@ CONFIGS
 ENGINE
 	Added: iMSCP::Service package for unified management of services (start, stop, restart, reload, status)
 	Added: pigz (Parallel Implementation of GZip) algorithm for backups compression
-	Changed: i-MSCP is now run through a dedicated httpd instance ny using the nginx Web server
+	Changed: i-MSCP is now run through a dedicated httpd instance by using the nginx Web server
 	Changed: The quota accounting script is now run every 30 minutes
 	Fixed: Backend logs which are older than 7 days are never removed
 
