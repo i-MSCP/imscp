@@ -511,7 +511,7 @@ sub _buildFastCgiConfFiles
 	my @toDisableModules = (
 		'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter'
 	);
-	my @toEnableModules = ('actions', 'suexec');
+	my @toEnableModules = ('actions', 'suexec', 'version');
 
 	if(qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0')) {
 		push @toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork');

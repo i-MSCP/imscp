@@ -58,23 +58,29 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 Make sure you as logged as root
 
-1.  Untar or unzip the distribution files to a secure directory
+1. Install the required packages
+
+	# apt-get update
+	# apt-get install tasksel
+	# tasksel install standard
+
+2.  Untar or unzip the distribution files to a secure directory
 
 	# cd /usr/local/src
 	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
 	# tar xzf imscp-<version>.tar.gz
 
-2. Change to the newly created directory
+3. Change to the newly created directory
 
 	# cd ./imscp-<version>
 
-3.  (optional) Check the imscp.conf and adapt it to your requirements.
+4.  (optional) Check the imscp.conf and adapt it to your requirements.
 
-4.  Install by running the imscp-autoinstall script
+5.  Install by running the imscp-autoinstall script
 
 	# sudo perl imscp-autoinstall -d
 
-5.  Install i-MSCP step-by-step
+6.  Install i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://i-mscp.net to solve the problem.

@@ -7,6 +7,9 @@ Git stable
 CONFIGS
 	Fixed: The time at which the backup script must be run is no configurable
 
+DOCS
+	Updated: INSTALL files
+
 ENGINE
 	Added: iMSCP::Service package for unified management of services (start, stop, restart, reload, status)
 	Added: pigz (Parallel Implementation of GZip) algorithm for backups compression
@@ -16,6 +19,10 @@ ENGINE
 
 GUI
 	Changed: i-MSCP is now accessible through dedicated http ports (default is 8080 for http and 4443 for https)
+
+SERVICES
+	Fixed: Apache mod_version module is not always static
+	Fixed: The parameter innodb_use_native_aio is not available in MySQL < 5.5
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.12

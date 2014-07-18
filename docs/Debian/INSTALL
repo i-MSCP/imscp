@@ -57,9 +57,11 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 Make sure you are logged in as root:
 
-1. Install required packages
+1. Install the required packages
 
-	# aptitude install perl perl-modules
+	# apt-get update
+	# apt-get install tasksel
+	# tasksel install standard
 
 2.  Untar or unzip the distribution files to a secure directory
 
