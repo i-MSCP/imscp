@@ -675,9 +675,10 @@ sub _buildFastCgiConfFiles
 		return $rs if $rs;
 	}
 
-	# Enable needed Apache modules
-	$rs = $self->{'httpd'}->enableMod("@toEnableModules");
-	return $rs if $rs;
+	for(@toEnableModules) {
+		$rs = $self->{'httpd'}->enableMod($_) if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_.load";
+		return $rs if $rs;
+	}
 
 	# Quick fix (Ubuntu PHP modules not enabled after fresh installation)
 	if(-x '/usr/sbin/php5enmod' && -d '/etc/php5/mods-available') {
