@@ -43,6 +43,7 @@ use iMSCP::Rights;
 use iMSCP::Crypt;
 use File::HomeDir;
 use Servers::sqld::mysql;
+use version;
 
 use parent 'Common::SingletonClass';
 
@@ -173,49 +174,60 @@ sub _createGlobalConfFile
 	my $confDir = '/etc/mysql/conf.d';
 
 	if(-d $confDir) {
-		# Load template
-		my $cfgTpl;
-		$rs = $self->{'hooksManager'}->trigger(
-			'onLoadTemplate',
-			'mysql',
-			'imscp.conf',
-			\$cfgTpl,
-			{ 'USER' => $rootUName, 'GROUP' => $rootGName, 'CONFDIR' => $confDir }
-		);
-		return $rs if $rs;
+		if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
+			# Load template
+			my $cfgTpl;
+			$rs = $self->{'hooksManager'}->trigger(
+				'onLoadTemplate',
+				'mysql',
+				'imscp.conf',
+				\$cfgTpl,
+				{ 'USER' => $rootUName, 'GROUP' => $rootGName, 'CONFDIR' => $confDir }
+			);
+			return $rs if $rs;
 
-		unless(defined $cfgTpl) {
-			$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/imscp.cnf")->get();
 			unless(defined $cfgTpl) {
-				error("Unable to read $self->{'cfgDir'}/imscp.cnf");
-				return 1;
+				$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/imscp.cnf")->get();
+				unless(defined $cfgTpl) {
+					error("Unable to read $self->{'cfgDir'}/imscp.cnf");
+					return 1;
+				}
 			}
+
+			# Build file
+
+			my $variables = { };
+
+			my $version = $1 if($main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/);
+
+			if(qv("v$version") >= qv('v5.5')) {
+				$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
+			} else {
+				# The innodb_use_native_aio parameter is not available in MySQL < 5.5
+				$cfgTpl =~ s/^innodb_use_native_aio.*\n//m;
+			}
+
+			$cfgTpl = process($variables, $cfgTpl);
+
+			# Store file
+
+			my $file = iMSCP::File->new('filename' => "$confDir/imscp.cnf");
+
+			$rs = $file->set($cfgTpl);
+			return $rs if $rs;
+
+			$rs = $file->save();
+			return $rs if $rs;
+
+			$rs = $file->mode(0644);
+			return $rs if $rs;
+
+			$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+			return $rs if $rs;
+		} elsif(-f "$confDir/imscp.cnf") {
+			$rs = iMSCP::File->new('filename' => "$confDir/imscp.cnf")->defFile;
+			return $rs if $rs;
 		}
-
-		# Build file
-
-		$cfgTpl = process(
-			{
-				INNODB_USE_NATIVE_AIO => ($self->_isMysqldInsideCt()) ? 0 : 1
-			},
-			$cfgTpl
-		);
-
-		# Store file
-
-		my $file = iMSCP::File->new('filename' => "$confDir/imscp.cnf");
-
-		$rs = $file->set($cfgTpl);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
 	}
 
 	$self->{'hooksManager'}->trigger('afterMysqlCreateGlobalConfFile');
