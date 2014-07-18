@@ -375,8 +375,10 @@ sub _buildPhpConfFiles
 		return $rs if $rs;
 	}
 
-	$rs = $self->{'httpd'}->enableModules("@toEnableModules");
-	return $rs if $rs;
+	for(@toEnableModules) {
+		$rs = $self->{'httpd'}->enableModules($_) if -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_.load";
+		return $rs if $rs;
+	}
 
 	# Quick fix (Ubuntu PHP modules not enabled after fresh installation)
 	if(-x '/usr/sbin/php5enmod' && -d '/etc/php5/mods-available') {
