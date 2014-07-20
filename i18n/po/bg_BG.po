@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Al Indjov <al@indjov.info>, 2014
+# dinkonin <k.ninev@nabaco.bg>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-17 01:21+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2014-07-21 00:30+0200\n"
+"PO-Revision-Date: 2014-07-19 22:25+0000\n"
+"Last-Translator: dinkonin <k.ninev@nabaco.bg>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -591,7 +592,7 @@ msgid "Add"
 msgstr "Добавяне"
 
 msgid "Add / Edit SSL certificate"
-msgstr ""
+msgstr "Добави / Редактирай SSL сертификат."
 
 msgid "Add FTP account"
 msgstr ""
@@ -630,7 +631,7 @@ msgid "Add custom menu"
 msgstr ""
 
 msgid "Add customer"
-msgstr ""
+msgstr "Добави клиент"
 
 msgid "Add customer - Next step"
 msgstr ""
@@ -654,7 +655,7 @@ msgid "Add hosting plan"
 msgstr "Добави хостинг-план"
 
 msgid "Add new IP address"
-msgstr ""
+msgstr "Добави нов IP адрес"
 
 msgid "Add new database"
 msgstr ""
@@ -5219,10 +5220,10 @@ msgid "Unknown Error"
 msgstr "Неизвестна Грешка"
 
 msgid "Unknown FTP user."
-msgstr ""
+msgstr "Непознат FTP потребител."
 
 msgid "Unknown SQL user"
-msgstr ""
+msgstr "Непознат SQL потребител."
 
 msgid "Unknown action requested."
 msgstr "Заявено е неизвестно действие."
@@ -5530,7 +5531,7 @@ msgid "Wildcards such as %% and are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
-msgstr ""
+msgstr "Грешен IP адрес."
 
 msgid "Wrong mail syntax in forward list."
 msgstr ""
@@ -5866,7 +5867,7 @@ msgid "Your certificate is not valid or the CA bundle is missing."
 msgstr ""
 
 msgid "Your certificate is not valid."
-msgstr ""
+msgstr "Вашият сертификат не е валиден."
 
 msgid "Your consumption"
 msgstr ""
