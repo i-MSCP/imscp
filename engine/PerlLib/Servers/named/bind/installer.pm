@@ -274,9 +274,6 @@ sub install
 	$rs = $self->_buildConf();
 	return $rs if $rs;
 
-	$rs = $self->_addMasterZone();
-	return $rs if $rs;
-
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
@@ -525,33 +522,6 @@ sub _buildConf
 	}
 
 	0;
-}
-
-=item _addMasterZone()
-
- Add master zone file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _addMasterZone
-{
-	my $self = $_[0];
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddMasterZone');
-	return $rs if $rs;
-
-	$rs = Servers::named::bind->getInstance()->addDmn(
-		{
-			DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
-			DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
-			MAIL_ENABLED => 1
-		}
-	);
-	return $rs if $rs;
-
-	$self->{'hooksManager'}->trigger('afterNamedAddMasterZone');
 }
 
 =item _saveConf()

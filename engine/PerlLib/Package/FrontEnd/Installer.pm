@@ -46,6 +46,7 @@ use iMSCP::TemplateParser;
 use iMSCP::SystemUser;
 use iMSCP::OpenSSL;
 use Package::FrontEnd;
+use Servers::named;
 use Data::Validate::Domain qw/is_domain/;
 use File::Basename;
 use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
@@ -279,7 +280,10 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->_setHttpdVersion();
+	my $rs = $self->_setupSsl();
+	return $rs if $rs;
+
+	$rs = $self->_setHttpdVersion();
 	return $rs if $rs;
 
 	$rs = $self->_addMasterWebUser();
@@ -295,6 +299,9 @@ sub install
 	return $rs if $rs;
 
 	$rs = $self->_buildInitDefaultFile();
+	return $rs if $rs;
+
+	$rs = $self->_addDnsZone();
 	return $rs if $rs;
 
 	$self->_saveConfig();
@@ -1075,6 +1082,33 @@ sub _buildInitDefaultFile
 	}
 
 	$self->{'hooksManager'}->trigger('afterFrontEndBuildInitDefaultFile');
+}
+
+=item _addDnsZone()
+
+ Add DNS zone
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _addDnsZone
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddMasterZone');
+	return $rs if $rs;
+
+	$rs = Servers::named->factory()->addDmn(
+		{
+			DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
+			DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
+			MAIL_ENABLED => 1
+		}
+	);
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterNamedAddMasterZone');
 }
 
 =item _saveConfig()
