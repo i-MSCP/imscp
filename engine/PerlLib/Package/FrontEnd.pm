@@ -512,10 +512,10 @@ END
 
 		if($self->{'start'}) {
 			$rs = $self->start();
-		} elsif($self->{'reload'}) {
-			$rs = $self->reload();
 		} elsif($self->{'restart'}) {
 			$rs = $self->restart();
+		} elsif($self->{'reload'}) {
+			$rs = $self->reload();
 		}
 
 		$? = $exitCode || $rs;
