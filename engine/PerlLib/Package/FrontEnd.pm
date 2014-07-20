@@ -49,6 +49,25 @@ use parent 'Common::SingletonClass';
 
 =head1 PUBLIC METHODS
 
+=over 4
+
+=item registerSetupHooks(\%hooksManager)
+
+ Register setup hook functions
+
+ Param iMSCP::HooksManager instance
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub registerSetupHooks($$)
+{
+	my ($self, $hooksManager) = @_;
+
+	require Package::FrontEnd::Installer;
+	Package::FrontEnd::Installer->getInstance()->registerSetupHooks($hooksManager);
+}
+
 =item preinstall()
 
  Process preinstall tasks

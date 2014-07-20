@@ -169,9 +169,10 @@ EOF
 	undef;
 }
 
-our $reconfigureItems = [
-	'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostname', 'resolver', 'ips',
-	'admin', 'php', 'ssl', 'backup', 'webstats', 'sqlmanager', 'webmail', 'filemanager', 'antirootkits'
+our $reconfigurationItems = [
+	'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostnames', 'system_hostname',
+	'panel_hostname', 'resolver', 'ips', 'admin', 'php', 'panel_ssl', 'services_ssl', 'ssl', 'backup', 'webstats',
+	'sqlmanager', 'webmail', 'filemanager', 'antirootkits'
 ];
 
 =item reconfigure()
@@ -191,13 +192,15 @@ sub reconfigure($;$)
 			$optionHelp .= "Without any argument, the --reconfigure option allows to reconfigure all items.";
 			$optionHelp .= " You can reconfigure a specific item by pasing it name as argument.\n\n";
 			$optionHelp .= " Available items are:\n\n";
-			$optionHelp .=  ' ' . (join '|', @{$reconfigureItems});
+			$optionHelp .=  ' ' . (join '|', @{$reconfigurationItems});
 			die();
 		} elsif($value eq '') {
 			$value = 'all';
 		}
 
-		$value ~~ $reconfigureItems or die("Error: '$value' is not a valid argument for the --reconfigure option.");
+		$value ~~ $reconfigurationItems or die(
+			"Error: '$value' is not a valid argument for the --reconfigure option."
+		);
 
 		$options->{'reconfigure'} = $value;
 	}
