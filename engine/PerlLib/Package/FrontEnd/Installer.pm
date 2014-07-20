@@ -79,12 +79,15 @@ sub install
 	$rs = $self->_buildHttpdConfig();
 	return $rs if $rs;
 
-	$rs = $self->_saveConfig();
+	$rs = $self->_buildInitDefaultFile();
+	return $rs if $rs;
+
+	$self->_saveConfig();
 }
 
 =item setGuiPermissions()
 
- Set frontEnd (GUI) permissions
+ Set gui file permissions
 
 Return int 0 on success, other on failure
 
@@ -94,14 +97,11 @@ sub setGuiPermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndSetGuiPermissions');
-	return $rs if $rs;
-
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $guiRootDir = $main::imscpConfig{'GUI_ROOT_DIR'};
 
-	$rs = setRights(
+	my $rs = setRights(
 		$guiRootDir,
 		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
 	);
@@ -138,14 +138,13 @@ sub setGuiPermissions
 		"$guiRootDir/plugins",
 		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
-	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndSetGuiPermissions');
+	$rs;
 }
 
 =item setEnginePermissions()
 
- Set frontEnd (engine) permissions
+ Set engine file permissions
 
  Return int 0 on success, other on failure
 
@@ -155,15 +154,14 @@ sub setEnginePermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndSetEnginePermissions');
-	return $rs if $rs;
-
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+	my $httpdUser = $self->{'config'}->{'HTTPD_USER'};
+	my $httpdGroup = $self->{'config'}->{'HTTPD_GROUP'};
 
-	$rs = setRights(
+	my $rs = setRights(
 		$self->{'config'}->{'HTTPD_CONF_DIR'},
 		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0755', 'filemode' => '0644', 'recursive' => 1 }
 	);
@@ -171,7 +169,7 @@ sub setEnginePermissions
 
 	$rs = setRights(
 		$self->{'config'}->{'HTTPD_LOG_DIR'},
-			{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0755', 'filemode' => '0640', 'recursive' => 1 }
+		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0755', 'filemode' => '0640', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
@@ -181,8 +179,44 @@ sub setEnginePermissions
 	);
 	return $rs if $rs;
 
+	$rs = setRights(
+		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5-fcgi-starter",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'mode' => '550' }
+	);
+	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndSetEnginePermissions');
+	$rs = setRights(
+		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5-fcgi-starter",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'mode' => '550' }
+	);
+
+	$rs = setRights(
+		$self->{'config'}->{'HTTPD_TMP_ROOT_DIR'}, { 'user' => $rootUName, 'group' => $rootGName }
+	);
+
+	for('body', 'fastcgi', 'proxy', 'scgi', 'uwsgi') {
+		if(-d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR'}/$_") {
+			$rs = setRights(
+				"$self->{'config'}->{'HTTPD_TMP_ROOT_DIR'}/$_",
+				{
+					'user' => $httpdUser,
+					'group' => $httpdGroup,
+					'dirnmode' => '0700',
+					'filemode' => '0640',
+					'recursive' => 1
+				}
+			);
+			return $rs if $rs;
+
+			$rs = setRights(
+				"$self->{'config'}->{'HTTPD_TMP_ROOT_DIR'}/$_",
+				{ 'user' => $httpdUser, 'group' => $rootGName, 'mode' => '0700' }
+			);
+			return $rs if $rs;
+		}
+	}
+
+	0;
 }
 
 =back
@@ -558,6 +592,7 @@ sub _buildHttpdConfig
 		unless($rs) {
 			chomp($stdout);
 			$nbCPUcores = $stdout;
+			$nbCPUcores = 4 if $nbCPUcores > 4; # Limit number of workers
 		} else {
 			$nbCPUcores = 2;
 		}
@@ -567,15 +602,15 @@ sub _buildHttpdConfig
 	$rs = $self->{'frontend'}->buildConfFile(
 		"$self->{'cfgDir'}/nginx.conf",
 		{
-			HTTPD_USER => $self->{'config'}->{'HTTPD_USER'},
-			HTTPD_WORKER_PROCESSES => $nbCPUcores,
-			HTTPD_WORKER_CONNECTIONS => $self->{'config'}->{'HTTPD_WORKER_CONNECTIONS'},
-			HTTPD_RLIMIT_NOFILE => $self->{'config'}->{'HTTPD_RLIMIT_NOFILE'},
-			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
-			HTTPD_PID_FILE => $self->{'config'}->{'HTTPD_PID_FILE'},
-			HTTPD_CONF_DIR => $self->{'config'}->{'HTTPD_CONF_DIR'},
-			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
-			HTTPD_SITES_ENABLED_DIR => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
+			'HTTPD_USER' => $self->{'config'}->{'HTTPD_USER'},
+			'HTTPD_WORKER_PROCESSES' => $nbCPUcores,
+			'HTTPD_WORKER_CONNECTIONS' => $self->{'config'}->{'HTTPD_WORKER_CONNECTIONS'},
+			'HTTPD_RLIMIT_NOFILE' => $self->{'config'}->{'HTTPD_RLIMIT_NOFILE'},
+			'HTTPD_LOG_DIR' => $self->{'config'}->{'HTTPD_LOG_DIR'},
+			'HTTPD_PID_FILE' => $self->{'config'}->{'HTTPD_PID_FILE'},
+			'HTTPD_CONF_DIR' => $self->{'config'}->{'HTTPD_CONF_DIR'},
+			'HTTPD_LOG_DIR' => $self->{'config'}->{'HTTPD_LOG_DIR'},
+			'HTTPD_SITES_ENABLED_DIR' => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
 		}
 	);
 	return $rs if $rs;
@@ -631,12 +666,12 @@ sub _buildHttpdConfig
 
 	# Set needed data
 	my $tplVars = {
-		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-		BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'},
-		BASE_SERVER_VHOST_HTTP_PORT => $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'},
-		BASE_SERVER_VHOST_HTTPS_PORT => $httpsPort,
-		WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
-		CONF_DIR => $main::imscpConfig{'CONF_DIR'}
+		'BASE_SERVER_VHOST' => $main::imscpConfig{'BASE_SERVER_VHOST'},
+		'BASE_SERVER_IP' => $main::imscpConfig{'BASE_SERVER_IP'},
+		'BASE_SERVER_VHOST_HTTP_PORT' => $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'},
+		'BASE_SERVER_VHOST_HTTPS_PORT' => $httpsPort,
+		'WEB_DIR' => $main::imscpConfig{'GUI_ROOT_DIR'},
+		'CONF_DIR' => $main::imscpConfig{'CONF_DIR'}
 	};
 
 	# Build http vhost file
@@ -732,6 +767,55 @@ sub _buildHttpdConfig
 	}
 
 	$self->{'hooksManager'}->trigger('afterFrontEndBuildHttpdVhosts');
+}
+
+=item _buildInitDefaultFile()
+
+ Build imscp_panel default init file
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildInitDefaultFile
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndBuildInitDefaultFile');
+	return $rs if $rs;
+
+	my $imscpInitdConfDir = "$main::imscpConfig{'CONF_DIR'}/init.d";
+
+	if(-f "$imscpInitdConfDir/imscp_panel.default") {
+		# Backup, build, store and install the imscp_panel default file
+
+		# Backup file
+		if(-f "$imscpInitdConfDir/working/imscp_panel") {
+			$rs = iMSCP::File->new(
+				'filename' => "$imscpInitdConfDir/working/imscp_panel"
+			)->copyFile("$imscpInitdConfDir/backup/imscp_panel." . time);
+			return $rs if $rs;
+		}
+
+		# Build file
+		$rs = $self->{'frontend'}->buildConfFile(
+			"$imscpInitdConfDir/imscp_panel.default",
+			{
+				'MASTER_WEB_USER' => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+			},
+			{
+				'destination' =>  "$imscpInitdConfDir/working/imscp_panel"
+			}
+		);
+		return $rs if $rs;
+
+		# Install file
+		my $file = iMSCP::File->new('filename' => "$imscpInitdConfDir/working/imscp_panel");
+		$rs = $file->copyFile('/etc/default');
+		return $rs if $rs;
+	}
+
+	$self->{'hooksManager'}->trigger('afterFrontEndBuildInitDefaultFile');
 }
 
 =item _saveConfig()

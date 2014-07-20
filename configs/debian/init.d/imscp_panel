@@ -19,12 +19,16 @@ DAEMON=/usr/bin/php5-cgi
 PIDFILE=/var/run/$NAME.pid
 TIMEOUT=30
 SCRIPTNAME=/etc/init.d/$NAME
+MASTER_WEB_USER=vu2000
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
 
 # Read configuration variable file if it is present
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+# Check for Master Web user existence
+[ -n "`grep ^$MASTER_WEB_USER: /etc/passwd`" ] || exit 0
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
@@ -61,7 +65,8 @@ do_stop()
         #   1 if daemon was already stopped
         #   2 if daemon could not be stopped
         #   other if a failure occurred
-        start-stop-daemon --stop --quiet --retry=QUIT/$TIMEOUT/TERM/5/KILL/5 --pidfile $PIDFILE --exec $DAEMON
+        start-stop-daemon --stop --quiet --retry=QUIT/$TIMEOUT/TERM/5/KILL/5 --pidfile $PIDFILE \
+            --user $MASTER_WEB_USER --exec $DAEMON
         RETVAL="$?"
         [ "$RETVAL" = 2 ] && return 2
         # Wait for children to finish too if this is a daemon that forks
@@ -70,7 +75,7 @@ do_stop()
         # that waits for the process to drop all resources that could be
         # needed by services started subsequently.  A last resort is to
         # sleep for some time.
-        start-stop-daemon --stop --quiet --oknodo --retry=0/30/TERM/5/KILL/5 --exec $DAEMON
+        start-stop-daemon --stop --quiet --oknodo --retry=0/30/TERM/5/KILL/5 --user $MASTER_WEB_USER --exec $DAEMON
         [ "$?" = 2 ] && return 2
         # Many daemons don't delete their pidfiles when they exit.
         rm -f $PIDFILE

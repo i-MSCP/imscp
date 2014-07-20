@@ -138,7 +138,7 @@ sub uninstall
 
 =item setGuiPermissions()
 
- Set file permissions
+ Set GUI file permissions
 
  Return int 0 on success, other on failure
 
@@ -148,14 +148,36 @@ sub setGuiPermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndSetPermissions');
+	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndSetGuiPermissions');
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
 	$rs = Package::FrontEnd::Installer->getInstance()->setGuiPermissions();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndSetPermissions');
+	$self->{'hooksManager'}->trigger('afterFrontEndSetGuiPermissions');
+}
+
+=item setEnginePermissions()
+
+ Set engine file permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndSetEnginePermissions');
+	return $rs if $rs;
+
+	require Package::FrontEnd::Installer;
+	$rs = Package::FrontEnd::Installer->getInstance()->setEnginePermissions();
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterFrontEndSetEnginePermissions');
 }
 
 =item enableSites($sites)
@@ -179,7 +201,6 @@ sub enableSites($$)
 	for(split(' ', $sites)){
 		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
 			my $siteName = basename($_, '.conf');
-			# TODO make relative symlink
 			$rs = execute(
 				"$main::imscpConfig{'CMD_LN'} -fs $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_ " .
 					"$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName",
