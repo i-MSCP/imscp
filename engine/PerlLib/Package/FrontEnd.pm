@@ -315,6 +315,28 @@ sub stop
 	$self->{'hooksManager'}->trigger('afterFrontEndStop');
 }
 
+=item reload()
+
+ Reload frontEnd
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub reload
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndReload');
+	return $rs if $rs;
+
+	$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'});
+	error("Unable to reload $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterFrontEndReload');
+}
+
 =item restart()
 
  Restart frontEnd
@@ -432,6 +454,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'start'} = 0;
+	$self->{'reload'} = 0;
 	$self->{'restart'} = 0;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/nginx";
@@ -489,6 +512,8 @@ END
 
 		if($self->{'start'}) {
 			$rs = $self->start();
+		} elsif($self->{'reload'}) {
+			$rs = $self->reload();
 		} elsif($self->{'restart'}) {
 			$rs = $self->restart();
 		}
