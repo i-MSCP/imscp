@@ -280,31 +280,17 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->_setupSsl();
-	return $rs if $rs;
+	my $rs ||= $self->_setupSsl();
+	$rs ||= $self->_setHttpdVersion();
+	$rs ||= $self->_addMasterWebUser();
+	$rs ||= $self->_makeDirs();
+	$rs ||= $self->_buildPhpConfig();
+	$rs ||= $self->_buildHttpdConfig();
+	$rs ||= $self->_buildInitDefaultFile();
+	$rs ||= $self->_addDnsZone();
+	$rs ||= $self->_saveConfig();
 
-	$rs = $self->_setHttpdVersion();
-	return $rs if $rs;
-
-	$rs = $self->_addMasterWebUser();
-	return $rs if $rs;
-
-	$rs = $self->_makeDirs();
-	return $rs if $rs;
-
-	$rs = $self->_buildPhpConfig();
-	return $rs if $rs;
-
-	$rs = $self->_buildHttpdConfig();
-	return $rs if $rs;
-
-	$rs = $self->_buildInitDefaultFile();
-	return $rs if $rs;
-
-	$rs = $self->_addDnsZone();
-	return $rs if $rs;
-
-	$self->_saveConfig();
+	$rs;
 }
 
 =item setGuiPermissions()
@@ -527,7 +513,7 @@ sub _setupSsl
 	0;
 }
 
-=item _setNginxVersion()
+=item _setHttpdVersion()
 
  Set httpd version
 
