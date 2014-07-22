@@ -12,7 +12,7 @@ DOCS
 	Updated: INSTALL files
 
 ENGINE
-	Added: iMSCP::Service package for unified management of services (start, stop, restart, reload, status)
+	Added: Added new library (iMSCP::Service) for service management (start, stop, restart, reload, status)
 	Added: pigz (Parallel Implementation of GZip) algorithm for backups compression
 	Changed: i-MSCP is now run through a dedicated httpd instance by using the nginx Web server
 	Changed: The quota accounting script is now run every 30 minutes
