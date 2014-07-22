@@ -26,10 +26,6 @@ INSTALLER:
 GUI
 	Changed: i-MSCP is now accessible through dedicated http ports (default is 8080 for http and 4443 for https)
 
-SERVICES
-	Fixed: Apache mod_version module is not always static
-	Fixed: The parameter innodb_use_native_aio is not available in MySQL < 5.5
-
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
 ------------------------------------------------------------------------------------------------------------------------
