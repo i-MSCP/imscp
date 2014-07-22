@@ -398,29 +398,61 @@ sub setEnginePermissions
 		{ 'user' => $panelUName, 'group' => $panelGName, 'mode' => '550' }
 	);
 
-	$rs = setRights(
-		$self->{'config'}->{'HTTPD_TMP_ROOT_DIR'}, { 'user' => $rootUName, 'group' => $rootGName }
-	);
+	# Temporary directories as provided by nginx package (from Debian Team)
+	if(-d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'}") {
+		$rs = setRights(
+			$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'}, { 'user' => $rootUName, 'group' => $rootGName }
+		);
 
-	for('body', 'fastcgi', 'proxy', 'scgi', 'uwsgi') {
-		if(-d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR'}/$_") {
-			$rs = setRights(
-				"$self->{'config'}->{'HTTPD_TMP_ROOT_DIR'}/$_",
-				{
-					'user' => $httpdUser,
-					'group' => $httpdGroup,
-					'dirnmode' => '0700',
-					'filemode' => '0640',
-					'recursive' => 1
-				}
-			);
-			return $rs if $rs;
+		for('body', 'fastcgi', 'proxy', 'scgi', 'uwsgi') {
+			if(-d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'}/$_") {
+				$rs = setRights(
+					"$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'}/$_",
+					{
+						'user' => $httpdUser,
+						'group' => $httpdGroup,
+						'dirnmode' => '0700',
+						'filemode' => '0640',
+						'recursive' => 1
+					}
+				);
+				return $rs if $rs;
 
-			$rs = setRights(
-				"$self->{'config'}->{'HTTPD_TMP_ROOT_DIR'}/$_",
-				{ 'user' => $httpdUser, 'group' => $rootGName, 'mode' => '0700' }
-			);
-			return $rs if $rs;
+				$rs = setRights(
+					"$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'}/$_",
+					{ 'user' => $httpdUser, 'group' => $rootGName, 'mode' => '0700' }
+				);
+				return $rs if $rs;
+			}
+		}
+	}
+
+	# Temporary directories as provided by nginx package (from nginx Team)
+	if(-d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}") {
+		$rs = setRights(
+			$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}, { 'user' => $rootUName, 'group' => $rootGName }
+		);
+
+		for('client_temp', 'fastcgi_temp', 'proxy_temp', 'scgi_temp', 'uwsgi_temp') {
+			if(-d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}/$_") {
+				$rs = setRights(
+					"$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}/$_",
+					{
+						'user' => $httpdUser,
+						'group' => $httpdGroup,
+						'dirnmode' => '0700',
+						'filemode' => '0640',
+						'recursive' => 1
+					}
+				);
+				return $rs if $rs;
+
+				$rs = setRights(
+					"$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}/$_",
+					{ 'user' => $httpdUser, 'group' => $rootGName, 'mode' => '0700' }
+				);
+				return $rs if $rs;
+			}
 		}
 	}
 

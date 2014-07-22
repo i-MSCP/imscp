@@ -1871,10 +1871,10 @@ function write_log($msg, $logLevel = E_USER_WARNING)
 	$to = isset($cfg->DEFAULT_ADMIN_ADDRESS) ? $cfg->DEFAULT_ADMIN_ADDRESS : '';
 
 	if ($to != '' && $logLevel <= $cfg->LOG_LEVEL) {
-		$hostname = isset($cfg->SERVER_HOSTNAME) ? $cfg->SERVER_HOSTNAME : '';
-		$baseServerIp = isset($cfg->BASE_SERVER_IP) ? $cfg->BASE_SERVER_IP : '';
+		$hostname = isset($cfg->SERVER_HOSTNAME) ? $cfg->SERVER_HOSTNAME : 'unknown';
+		$baseServerIp = isset($cfg->BASE_SERVER_IP) ? $cfg->BASE_SERVER_IP : 'unknown';
 		$version = isset($cfg->Version) ? $cfg->Version : 'unknown';
-		$buildDate = isset($cfg->BuildDate) ? $cfg->BuildDate : 'unknown';
+		$buildDate = !empty($cfg->BuildDate) ? $cfg->BuildDate : 'unavailable';
 		$subject = "i-MSCP $version on $hostname ($baseServerIp)";
 
 		if ($logLevel == E_USER_NOTICE) {
@@ -1891,8 +1891,9 @@ function write_log($msg, $logLevel = E_USER_WARNING)
 
 i-MSCP Log
 
-Server: $hostname ($baseServerIp)
-Version: i-MSCP $version ($buildDate)
+Server : $hostname ($baseServerIp)
+Version: $version
+Build  : $buildDate
 Message severity: $severity
 
 Message: ----------------[BEGIN]--------------------------

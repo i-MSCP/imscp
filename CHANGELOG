@@ -6,6 +6,7 @@ Git stable
 
 CONFIGS
 	Fixed: The time at which the backup script must be run is no configurable
+	Changed: The BuildDate variable is no longer set for development time
 
 DOCS
 	Updated: INSTALL files

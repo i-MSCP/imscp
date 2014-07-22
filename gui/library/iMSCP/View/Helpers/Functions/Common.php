@@ -428,7 +428,7 @@ function generateNavigation($tpl)
 		array(
 			'TR_MENU_LOGOUT' => 'Logout',
 			'VERSION' => $cfg->Version,
-			'BUILDDATE' => $cfg->BuildDate,
+			'BUILDDATE' => !empty($cfg->BuildDate) ? $cfg->BuildDate : tr('Unavailable'),
 			'CODENAME' => $cfg->CodeName
 		)
 	);
