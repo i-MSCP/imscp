@@ -43,8 +43,8 @@ use iMSCP::Dialog;
 use iMSCP::File;
 use iMSCP::Stepper;
 use iMSCP::Getopt;
+use iMSCP::ProgramFinder;
 use File::Temp;
-use autoinstaller::Functions 'checkCommandAvailability';
 use parent 'autoinstaller::Adapter::AbstractAdapter';
 
 =head1 DESCRIPTION
@@ -70,13 +70,15 @@ sub installPreRequiredPackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	fatal('Not a Debian like system') if checkCommandAvailability($command);
+	unless(iMSCP::ProgramFinder::find($command)) {
+		fatal('Not a Debian like system');
+	}
 
 	# Ensure packages index is up to date
 	my $rs = $self->_updatePackagesIndex();
 	return $rs if $rs;
 
-	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+	if(! $preseed && ! $main::noprompt && iMSCP::ProgramFinder::find('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
@@ -131,6 +133,8 @@ sub preBuild
 			$step++;
 		}
 
+		iMSCP::Dialog->factory()->endGauge();
+
 		# Small workaround to ensure DNS resolution when switching to external DNS server (local resolver get removed)
 		# - Remove local resolver
 		# - Add google free DNS as temporary local resolver
@@ -175,7 +179,7 @@ sub uninstallPackages
 
 		iMSCP::Dialog->factory()->endGauge();
 
-		if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+		if(! $preseed && ! $main::noprompt && iMSCP::ProgramFinder::find('debconf-apt-progress')) {
 			$command = 'debconf-apt-progress --logstderr -- ' . $command;
 		}
 
@@ -213,7 +217,7 @@ sub installPackages
 
 	my @command;
 
-	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+	if(! $preseed && ! $main::noprompt && iMSCP::ProgramFinder::find('debconf-apt-progress')) {
 		push @command, 'debconf-apt-progress --logstderr --';
 	}
 
@@ -720,7 +724,7 @@ sub _updatePackagesIndex
 	my ($stdout, $stderr);
 	my $preseed = iMSCP::Getopt->preseed;
 
-	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+	if(! $preseed && ! $main::noprompt && iMSCP::ProgramFinder::find('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 

@@ -219,8 +219,6 @@ for (@steps) {
 
 iMSCP::HooksManager->getInstance()->trigger('afterBuildSteps') and exit 1;
 
-iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
-
 my @warnings = getMessageByType('warn');
 my @errors = getMessageByType('error');
 
@@ -287,8 +285,6 @@ EOF
 		exit $rs if $rs;
 		$step++;
 	}
-
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 
 	iMSCP::HooksManager->getInstance()->trigger('afterInstall') and exit 1;
 

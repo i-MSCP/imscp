@@ -43,6 +43,7 @@ use iMSCP::HooksManager;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::File;
+use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use File::Find;
 use Cwd;
@@ -51,7 +52,7 @@ use parent 'Exporter';
 our @EXPORT = qw(
 	loadConfig installPreRequiredPackages checkDistribution preBuild uninstallPackages installPackages
 	testRequirements processDistroLayoutFile processDistroInstallFiles buildImscpDaemon installEngine installGui
-	postBuild doImscpBackup savePersistentData installTmp removeTmp checkCommandAvailability
+	postBuild doImscpBackup savePersistentData installTmp removeTmp
 );
 
 my $autoinstallerAdapterInstance;
@@ -699,24 +700,6 @@ sub removeTmp
 	}
 
 	0;
-}
-
-=item checkCommandAvailability()
-
- Check availability of the given command
-
- Return int 0 if the given command is available, 1 othewise
-
-=cut
-
-sub checkCommandAvailability($)
-{
-	my ($stdout, $stderr);
-	my $rs = execute("$main::imscpConfig{'CMD_WHICH'} $_[0]", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-
-	$rs;
 }
 
 =back

@@ -26,6 +26,7 @@
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -36,6 +37,7 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Execute;
+use iMSCP::ProgramFinder;
 use FileHandle;
 use parent 'Common::SingletonClass';
 
@@ -49,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =item resetLabels()
 
- Reset labels to their default values.
+ Reset labels to their default values
 
  Return INT 0
 
@@ -57,19 +59,17 @@ use parent 'Common::SingletonClass';
 
 sub resetLabels
 {
-	my $self = $_[0];
-
-	$self->{'_opts'}->{"$_-label"} = undef for (qw/ok yes no cancel extra help/);
+	$_[0]->{'_opts'}->{"$_-label"} = undef for qw/ok yes no cancel extra help/;
 
 	0;
 }
 
 =item fselect($file)
 
- Show file selection dialog box.
+ Show file selection dialog
 
- Param STRING $file File path
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Param string $file File path
+ Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
@@ -91,12 +91,12 @@ sub fselect
 
 =item radiolist($text, \$choices, $default = '')
 
- Show radio list dialog box.
+ Show radio list dialog
 
- Param STRING $text - Text to show
- Param ARRAY REFERENCE \$choices Reference to an array containing list of choices
- Param STRING $default OPTIONAL Default choice
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Param string $text Text to show
+ Param array \$choices Reference to an array containing list of choices
+ Param string $default OPTIONAL Default choice
+ Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
@@ -108,6 +108,7 @@ sub radiolist
 	my $default = shift || '';
 
 	my @init = ();
+
 	push @init, (escapeShell($_), "''", $default eq $_ ? 'on' : 'off') for @choices;
 
 	$self->_textbox($text, 'radiolist', @choices . " @init");
@@ -115,11 +116,11 @@ sub radiolist
 
 =item checkbox($text, \$choices, $defaults = ())
 
- Show check list dialog box.
+ Show check list dialog
 
- Param STRING $text - Text to show
- Param ARRAY REFERENCE \$choices Reference to an array containing list of choices
- Param STRING $default OPTIONAL Default choices
+ Param string $text Text to show
+ Param array \$choices Reference to an array containing list of choices
+ Param string $default OPTIONAL Default choices
  Return array_ref Reference to an array of choices or array containing both dialog exit code and array of choices
 
 =cut
@@ -145,43 +146,37 @@ sub checkbox
 
 =item tailbox($file)
 
- Show tail dialog box.
+ Show tail dialog
 
- Param SCALAR $file - File path
- Return INT Dialog exit code
+ Param string $file File path
+ Return int Dialog exit code
 
 =cut
 
 sub tailbox
 {
-	my $self = $_[0];
-
-	my ($exitCode) = $self->_execute($_[1], undef, 'tailbox');
-
-	$exitCode;
+	$_[0]->_execute($_[1], undef, 'tailbox');
 }
 
 =item editbox($file)
 
- Show edit dialog box.
+ Show edit dialog
 
- Param STRING $file - File path
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Param string $file File path
+ Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
 sub editbox
 {
-	my $self = $_[0];
-
-	$self->_execute($_[1], undef, 'editbox');
+	$_[0]->_execute($_[1], undef, 'editbox');
 }
 
 =item dselect($dir)
 
- Show directory select dialog box.
+ Show directory select dialog box
 
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
@@ -190,7 +185,9 @@ sub dselect
 	my $self = $_[0];
 
 	$self->{'lines'} = $self->{'lines'} - 8;
+
 	my ($exitCode, $output) = $self->_execute($_[1], undef, 'dselect');
+
 	$self->{'lines'} = $self->{'lines'} + 8;
 
 	wantarray ? ($exitCode, $output) : $output;
@@ -198,72 +195,66 @@ sub dselect
 
 =item msgbox($text)
 
- Show message dialog box.
+ Show message dialog
 
- Param STRING $text Text to show in message dialog box
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Param string $text Text to show in message dialog box
+ Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
 sub msgbox
 {
-	my $self = $_[0];
-
-	$self->_textbox($_[1], 'msgbox');
+	$_[0]->_textbox($_[1], 'msgbox');
 }
 
 =item yesno($text)
 
- Show boolean dialog box.
+ Show boolean dialog box
 
- Param STRING $text Text to show
- Return INT - Dialog exit code
+ Param string $text Text to show
+ Return int Dialog exit code
 
 =cut
 
 sub yesno
 {
-	my $self = $_[0];
-
-	my ($exitCode) = $self->_textbox($_[1], 'yesno');
-
-	$exitCode;
+	$_[0]->_textbox($_[1], 'yesno');
 }
 
 =item inputbox($text, $init = '')
 
- Show string input dialog box.
+ Show input dialog
 
- Param STRING $text Text to show
- Param STRING $init OPTIONAL Default string value
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Param string $text Text to show
+ Param string $init OPTIONAL Default string value
+ Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
 sub inputbox
 {
-	my $self = shift;
-	my $text = shift;
-	my $init = shift || '';
+	my ($self, $text, $init) = @_;
+
+	$init ||= '';
 
 	$self->_textbox($text, 'inputbox', escapeShell($init));
 }
 
 =item passwordbox($text, $init = '')
 
- Show password dialog box.
+ Show password dialog
 
- Param STRING $text Text to show
- Param STRING $init OPTIONAL Default password value
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Param string $text Text to show
+ Param string $init OPTIONAL Default password value
+ Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
 sub passwordbox
 {
-	my $self = shift;
-	my $text = shift;
-	my $init = shift || '';
+	my ($self, $text, $init) = @_;
+
+	$init ||= '';
 
 	$self->{'_opts'}->{'insecure'} = '';
 
@@ -272,10 +263,10 @@ sub passwordbox
 
 =item infobox($text)
 
- Show info dialog box.
+ Show info dialog
 
- Param STRING $text Text to show
- Return INT - Dialog exit code
+ Param string $text Text to show
+ Return int Dialog exit code
 
 =cut
 
@@ -294,9 +285,9 @@ sub infobox
 
 =item startGauge($text, $percent = 0)
 
- Start gauge dialog box.
+ Start a gauge
 
- Param STRING $text Text to show
+ Param string $text Text to show
  Param INT $percent OPTIONAL Initial percentage show in the meter
  Return INT Dialog exit code
 
@@ -306,17 +297,17 @@ sub startGauge
 {
 	return 0 if $main::noprompt;
 
-	my $self = shift;
-	my $text = escapeShell(shift);
-	my $percent = shift || 0;
+	my ($self, $text, $percent) = @_;
 
-	$self->{'gauge'} ||= {};
-	return 0 if defined $self->{'gauge'}->{'FH'};
+	$text = escapeShell($text);
+	$percent ||= 0;
+
+	return 0 if $self->{'gauge'};
 
 	$percent = $percent ? " $percent" : 0;
 
-	my $height = $self->{'autosize'} ? 0 : ($self->{'lines'});
-	my $width = $self->{'autosize'} ? 0 : ($self->{'columns'});
+	my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
+	my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
 
 	my $begin = $self->{'_opts'}->{'begin'};
 	$self->{'_opts'}->{'begin'} = undef;
@@ -327,41 +318,24 @@ sub startGauge
 
 	$self->{'_opts'}->{'begin'} = $begin;
 
-	debug($self->_stripFormats($command));
+	$self->{'gauge'} = new FileHandle;
+	$self->{'gauge'}->autoflush(1);
+	$self->{'gauge'}->open("| $command") || fatal("Unable to start gauge");
 
-	$self->{'gauge'}->{'FH'} = new FileHandle;
-	$self->{'gauge'}->{'FH'}->open("| $command") || error("Unable to start gauge");
 	debugRegisterCallBack(\&endGauge);
+
 	$SIG{'PIPE'} = \&endGauge;
-	$self->{'gauge'}->{'FH'}->autoflush(1);
 
 	getExitCode($?);
-}
-
-=item hasGauge()
-
- Determine if gauge has been already started testing file handle existence.
-
- Return int 1 if gauge has been already started, 0 otherwise
-
-=cut
-
-sub hasGauge
-{
-	return 0 if $main::noprompt;
-
-	my $self = $_[0];
-
-	(exists $self->{'gauge'}->{'FH'}) ? 1 : 0;
 }
 
 =item setGauge($value, $text = '')
 
  Set new percentage and optionaly new text to show
 
- Param INT $percent New percentage to show in gauge dialog box
- Param STRING $text OPTIONAL New text to show in gauge dialog box
- Return INT 0 on success, 1 on failure (when SIGPIPE  has been received for any reason)
+ Param int $percent New percentage to show in gauge dialog box
+ Param string $text OPTIONAL New text to show in gauge dialog box
+ Return in 0 on success, 1 on failure (eg. when SIGPIPE has been received for any reason)
 
 =cut
 
@@ -369,27 +343,22 @@ sub setGauge
 {
 	return 0 if $main::noprompt;
 
-	my $self = shift;
-	my $percent = shift;
-	my $text = shift || '';
+	my ($self, $percent, $text) = @_;
 
-	return 0 unless $self->{'gauge'}->{'FH'};
+	$text ||= '';
 
-	$text = $text ? "XXX\n$percent\n$text\nXXX\n" : "$percent\n";
+	return 0 unless $self->{'gauge'};
 
-	debug($self->_stripFormats($text));
+	print {$self->{'gauge'}} $text ? sprintf("XXX\n%d\n%s\nXXX\n", $percent, $text, $text): $percent . "\n";
 
-	print {$self->{'gauge'}->{'FH'}} $text;
-	$SIG{'PIPE'} = \&endGauge;
-
-	defined $self->{'gauge'}->{'FH'} ? 1 : 0;
+	($self->{'gauge'}) ? 1 : 0;
 }
 
 =item endGauge()
 
- Terminate gauge dialog box.
+ Terminate gauge dialog box
 
- Return INT 0
+ Return int 0
 
 =cut
 
@@ -399,32 +368,47 @@ sub endGauge
 
 	my $self = iMSCP::Dialog->factory();
 
-	return 0 unless ref $self->{'gauge'}->{'FH'};
+	return 0 unless $self->{'gauge'};
 
-	$self->{'gauge'}->{'FH'}->close();
-	delete($self->{'gauge'});
+	$self->{'gauge'}->close();
+
+	undef $self->{'gauge'};
 
 	0;
 }
 
+=item hasGauge()
+
+ Does a gauge is currently running?
+
+ Return int 1 if gauge is running 0 otherwise
+
+=cut
+
+sub hasGauge
+{
+	return 0 if $main::noprompt;
+
+	($_[0]->{'gauge'}) ? 1 : 0;
+}
+
 =item set($option, $value)
 
- Set dialog option.
+ Set dialog option
 
- Param STRING $param Option name
- Param STRING $value Option value
- Return STRING|undef Old option value if exists, undef otherwise
+ Param string $param Option name
+ Param string $value Option value
+ Return string|undef Old option value if exists, undef otherwise
 
 =cut
 
 sub set
 {
-	my $self = shift;
-	my $option = shift;
-	my $value = shift;
+	my($self, $option, $value) = @_;
+
 	my $return = undef;
 
-	if($option && exists $self->{'_opts'}->{$option}) {
+	if($option && $self->{'_opts'}->{$option}) {
 		$return = $self->{'_opts'}->{$option};
 		$self->{'_opts'}->{$option} = $value;
 	}
@@ -458,29 +442,29 @@ sub _init
 	$self->{'lines'} = undef;
 	$self->{'columns'} = undef;
 
-	$self->{'_opts'}->{'title'} = $self->{'args'}->{'title'} || undef;
-	$self->{'_opts'}->{'backtitle'} = $self->{'args'}->{'backtitle'} || undef;
+	$self->{'_opts'}->{'title'} = $self->{'title'} || undef;
+	$self->{'_opts'}->{'backtitle'} = $self->{'backtitle'} || undef;
 
-	$self->{'_opts'}->{'colors'} = '';
+	$self->{'_opts'}->{'colors'} = undef;
 	$self->{'_opts'}->{'begin'} = [1, 0];
 
-	$self->{'_opts'}->{'exit-label'} = $self->{'args'}->{'exit-label'} || undef;
-	$self->{'_opts'}->{'no-label'} = $self->{'args'}->{'no-label'} || undef;
-	$self->{'_opts'}->{'ok-label'} = $self->{'args'}->{'ok-label'} || undef;
-	$self->{'_opts'}->{'cancel-label'} = $self->{'args'}->{'cancel-label'} || undef;
-	$self->{'_opts'}->{'help-label'} = $self->{'args'}->{'help-label'} || undef;
-	$self->{'_opts'}->{'extra-label'} = $self->{'args'}->{'extra-label'} || undef;
-	$self->{'_opts'}->{'yes-label'} = $self->{'args'}->{'yes-label'} || undef;
+	$self->{'_opts'}->{'exit-label'} = $self->{'exit-label'} || undef;
+	$self->{'_opts'}->{'no-label'} = $self->{'no-label'} || undef;
+	$self->{'_opts'}->{'ok-label'} = $self->{'ok-label'} || undef;
+	$self->{'_opts'}->{'cancel-label'} = $self->{'cancel-label'} || undef;
+	$self->{'_opts'}->{'help-label'} = $self->{'help-label'} || undef;
+	$self->{'_opts'}->{'extra-label'} = $self->{'extra-label'} || undef;
+	$self->{'_opts'}->{'yes-label'} = $self->{'yes-label'} || undef;
 
-	$self->{'_opts'}->{'extra-button'} = $self->{'args'}->{'extra-button'} || undef;
-	$self->{'_opts'}->{'help-button'} = $self->{'args'}->{'help-button'} || undef;
+	$self->{'_opts'}->{'extra-button'} = $self->{'extra-button'} || undef;
+	$self->{'_opts'}->{'help-button'} = $self->{'help-button'} || undef;
 
-	$self->{'_opts'}->{'defaultno'} = $self->{'args'}->{'defaultno'} || undef;
-	$self->{'_opts'}->{'default-item'} = $self->{'args'}->{'default-item'} || undef;
+	$self->{'_opts'}->{'defaultno'} = $self->{'defaultno'} || undef;
+	$self->{'_opts'}->{'default-item'} = $self->{'default-item'} || undef;
 
-	$self->{'_opts'}->{'no-cancel'} = $self->{'args'}->{'no-cancel'} || undef;
-	$self->{'_opts'}->{'no-ok'} = $self->{'args'}->{'no-ok'} || undef;
-	$self->{'_opts'}->{'clear'} = $self->{'args'}->{'clear'} || undef;
+	$self->{'_opts'}->{'no-cancel'} = $self->{'no-cancel'} || undef;
+	$self->{'_opts'}->{'no-ok'} = $self->{'no-ok'} || undef;
+	$self->{'_opts'}->{'clear'} = $self->{'clear'} || undef;
 
 	$self->{'_opts'}->{'column-separator'} = undef;
 
@@ -526,9 +510,9 @@ sub _determineDialogVariant
 	my $str = `$self->{'bin'} --help 2>&1`;
 
 	if ($str =~ /cdialog\s\(ComeOn\sDialog\!\)\sversion\s\d+\.\d+\-(.{4})/ && $1 >= 2003) {
+		$self->{'_opts'}->{'colors'} = '';
 		debug('Dialog color support enabled');
 	} else {
-		delete $self->{'_opts'}->{'colors'};
 		debug('Dialog color support disabled (not supported)');
 
 		if ($str =~ /version\s0\.[34]/m) {
@@ -542,7 +526,7 @@ sub _determineDialogVariant
 
 =item _determineConsoleSize()
 
- Determine console size.
+ Determine console size
 
  Return iMSCP::Dialog::Dialog
 
@@ -566,7 +550,7 @@ sub _determineConsoleSize
 
 =item _findBin($variant)
 
- Find dialog variant (dialog|cdialog).
+ Find dialog variant (dialog|cdialog)
 
  Return iMSCP::Dialog::Dialog
 
@@ -576,23 +560,21 @@ sub _findBin
 {
 	my ($self, $variant) = @_;
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute("which $variant", \$stdout, \$stderr);
-	debug("Found $stdout") if $stdout;
-	fatal("Can't find $variant binary: $stderr") if $stderr;
+	my $bindPath = iMSCP::ProgramFinder::find($variant);
 
-	$self->{'bin'} = $stdout if $stdout;
-	fatal("Can`t find dialog binary: $variant") unless ($self->{'bin'} && -x $self->{'bin'});
+	fatal("Unable to find dialog program: $variant") unless $bindPath;
+
+	$self->{'bin'} = $bindPath;
 
 	$self;
 }
 
 =item _stripFormats($string)
 
- Strip out any format characters (\Z sequences) from the given string.
+ Strip out any format characters (\Z sequences) from the given string
 
- Param STRING $string String from which any format character must be stripped
- Return STRING String stripped out of any format character
+ Param string $string String from which any format character must be stripped
+ Return string String stripped out of any format character
 
 =cut
 
@@ -607,9 +589,9 @@ sub _stripFormats
 
 =item _buildCommandOptions()
 
- Build dialog command options.
+ Build dialog command options
 
- Return STRING Dialog command
+ Return string Dialog command
 
 =cut
 
@@ -619,11 +601,11 @@ sub _buildCommandOptions
 
 	my $commandOptions = '';
 
-	for(keys %{$self->{'_opts'}}){
+	for(keys %{$self->{'_opts'}}) {
 		if(defined $self->{'_opts'}->{$_}) {
 			$commandOptions .= " --$_ ";
 
-			if (ref $self->{'_opts'}->{$_} eq 'ARRAY') {
+			if (ref $self->{'_opts'}->{$_} eq 'array') {
 				for(@{$self->{'_opts'}->{$_}}) {
 					$commandOptions .=  escapeShell($_) . ' ';
 				}
@@ -640,7 +622,7 @@ sub _buildCommandOptions
 
 =item _restoreDefaults()
 
- Restore default options.
+ Restore default options
 
  Return iMSCP::Dialog::Dialog
 
@@ -651,7 +633,7 @@ sub _restoreDefaults
 	my $self = $_[0];
 
 	for my $prop (keys %{$self->{'_opts'}}) {
-		$self->{'_opts'}->{$prop} = undef if ! grep $_ eq $prop, qw/title backtitle colors begin/;
+		$self->{'_opts'}->{$prop} = undef unless grep $_ eq $prop, qw/title backtitle colors begin/;
 	}
 
 	$self->{'_opts'}->{'begin'} = [1, 0];
@@ -661,13 +643,13 @@ sub _restoreDefaults
 
 =item _execute($text, $init, $type, [$background])
 
- Wrap execution of dialog commands (except gauge dialog commands).
+ Wrap execution of dialog commands (except gauge dialog commands)
 
- Param STRING $text Dialog text
- Param STRING $init Default value
- Param STRING $type Dialog box type
+ Param string $text Dialog text
+ Param string $init Default value
+ Param string $type Dialog box type
 
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
@@ -675,28 +657,26 @@ sub _execute
 {
 	my ($self, $text, $init, $type) = @_;
 
+	$self->endGauge(); # Ensure that no gauge is currently running...
+
 	if($main::noprompt) {
 		exit 5 if $type ne 'infobox' && $type ne 'msgbox';
 		return 0;
 	}
 
-	$self->endGauge();
-
-	$text = $self->_stripFormats($text) unless( exists $self->{'_opts'}->{'colors'} );
+	$text = $self->_stripFormats($text) unless $self->{'_opts'}->{'colors'};
 
 	my $command = $self->_buildCommandOptions();
 
 	$text = escapeShell($text);
 	$init = $init ? $init : '';
 
-	my $height = defined $self->{'autosize'} ? 0 : $self->{'lines'};
-	my $width = defined $self->{'autosize'} ? 0 : $self->{'columns'};
+	my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
+	my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
 
 	my ($output, $exitCode);
 
 	$exitCode = execute("$self->{'bin'} $command --$type $text $height $width $init", undef, \$output);
-
-	debug('Returned text: ' . $output) if $output;
 
 	$self->_init() if $self->{'autoreset'};
 
@@ -705,21 +685,21 @@ sub _execute
 
 =item _textbox($text, $type, $init = 0)
 
- Wrap execution of several dialog box.
+ Wrap execution of several dialog box
 
- Param STRING $text Text to show
- Param STRING $mode Text dialog box type (radiolist|checklist|msgbox|yesno|inputbox|passwordbox|infobox)
- Param STRING $init Default value
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Param string $text Text to show
+ Param string $mode Text dialog box type (radiolist|checklist|msgbox|yesno|inputbox|passwordbox|infobox)
+ Param string $init Default value
+ Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
 sub _textbox
 {
-	my $self = shift;
-	my $text = shift;
-	my $type = shift;
-	my $init = shift || 0;
+	my($self, $text, $type, $init) = @_;
+
+	$init ||=0;
+
 	my $autosize = $self->{'autosize'};
 
 	$self->{'autosize'} = undef;

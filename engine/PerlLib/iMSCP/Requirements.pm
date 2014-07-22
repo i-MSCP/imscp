@@ -36,6 +36,7 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Execute;
+use iMSCP::ProgramFinder;
 use version;
 use parent 'Common::Object';
 
@@ -155,19 +156,12 @@ sub _externalProgram
 {
 	my $self = $_[0];
 
-	my ($stdout, $stderr);
-	my $rs = execute('which which', \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	debug($stderr) if $rs && $stderr;
-	fatal("Unable to find the 'which' program.") if $rs;
-
 	for my $program (keys %{$self->{'programs'}}) {
 		my $lcProgram = lc($program);
 
-		$rs = execute("which $lcProgram", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		debug($stderr) if $stderr && $rs;
-		fatal("Unable to find the $program command.") if $rs;
+		unless(iMSCP::ProgramFinder::find($lcProgram)) {
+			fatal("Unable to find the $program command in current executable path");
+		}
 
 		if(exists $self->{'programs'}->{$program}->{'version_command'}) {
 			my $result = $self->_programVersions(

@@ -20,6 +20,7 @@
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -65,11 +66,11 @@ sub endDetail
 	0;
 }
 
-sub step($ $ $ $)
+sub step($$$$)
 {
 	my $self = iMSCP::Stepper->getInstance();
 
-	my ($code, $text, $steps, $index) = (@_);
+	my ($code, $text, $steps, $index) = @_;
 
 	$self->{'last'} = sprintf($self->{'title'}, $index, $steps, $text);
 
@@ -77,7 +78,8 @@ sub step($ $ $ $)
 	$msg = join("\n", @{$self->{'all'}}) . "\n" if @{$self->{'all'}};
 	$msg .= $self->{'last'};
 
-	iMSCP::Dialog->factory()->startGauge($msg, int($index * 100 / $steps)) if ! iMSCP::Dialog->factory()->hasGauge();
+	iMSCP::Dialog->factory()->endGauge(); # Temporary fix for Unbuntu lucid
+	iMSCP::Dialog->factory()->startGauge($msg, int($index * 100 / $steps));
 	iMSCP::Dialog->factory()->setGauge(int($index * 100 / $steps), $msg);
 
 	my $rs = &{$code}() if ref $code eq 'CODE';
@@ -89,7 +91,7 @@ sub step($ $ $ $)
 		$errorMessage =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 		$errorMessage = 'An unexpected error occurred...' unless $errorMessage;
 
-		iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
+		iMSCP::Dialog->factory()->endGauge();
 		iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1[ERROR]\\Zn
