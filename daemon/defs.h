@@ -18,7 +18,7 @@
 #define MSG_MAX_COUNT           21
 
 #define MSG_WELCOME             10001
-#define MSG_WELCOME_TXT	            "250 OK i-MSCP Daemon v1.2.0 Welcomes You\n"
+#define MSG_WELCOME_TXT	            "250 OK i-MSCP Daemon v1.2.1 Welcomes You\n"
 #define MSG_DAEMON_VER          10002
 #define MSG_DAEMON_VER_TXT          "i-MSCP daemon v1.2.1 started."
 #define MSG_DAEMON_NAME         10003
