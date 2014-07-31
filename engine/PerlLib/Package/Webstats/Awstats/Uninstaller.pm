@@ -60,7 +60,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = $[0];
+	my $self = $_[0];
 
 	my $rs = $self->_deleteFiles();
 	return $rs if $rs;
