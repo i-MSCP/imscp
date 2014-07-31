@@ -10,14 +10,15 @@
 # Kevin Morssink, 2013
 # Steve Kuijpers <s.kuijpers@freakez.eu>, 2012
 # Steve Kuijpers <s.kuijpers@freakez.eu>, 2012
+# theemstra <thom@heemstra.us>, 2014
 # yves claeys <claeysy@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-17 01:21+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2014-07-21 00:30+0200\n"
+"PO-Revision-Date: 2014-07-18 11:16+0000\n"
+"Last-Translator: theemstra <thom@heemstra.us>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -706,13 +707,13 @@ msgid "Admin"
 msgstr "Beheerder"
 
 msgid "Admin / General / Admin Log"
-msgstr ""
+msgstr "Admin / Algemeen / Admin log"
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Admin / Algemeen / Overzicht"
 
 msgid "Admin / General / Services Status"
-msgstr ""
+msgstr "Admin / Algemeen / Server status"
 
 msgid "Admin / Hosting Plans / Add Hosting Plan"
 msgstr ""
@@ -724,19 +725,19 @@ msgid "Admin / Hosting Plans / Overview / Edit Hosting Plan"
 msgstr ""
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Admin / Profiel / Account samenvatting"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Admin / Profiel / Taal"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Admin / Profiel / Lay-out"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Admin / Profiel / Wachtwoord"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Admin / Profiel / Persoonlijke informatie"
 
 msgid "Admin / Settings"
 msgstr ""
@@ -1336,7 +1337,7 @@ msgid "Choose your language"
 msgstr "Kies uw Taal"
 
 msgid "Circular"
-msgstr "E-mail marketing"
+msgstr "Emailmarketing"
 
 msgid "Circular successfully sent."
 msgstr ""
@@ -1443,22 +1444,22 @@ msgid "Client / FTP / Overview / Edit FTP Account"
 msgstr ""
 
 msgid "Client / General / Overview"
-msgstr ""
+msgstr "Klant / Algemeen / Overzicht"
 
 msgid "Client / Profile / Account Summary"
-msgstr ""
+msgstr "Klant / Profiel / Account samenvatting"
 
 msgid "Client / Profile / Language"
-msgstr ""
+msgstr "Klant / Profiel / Taal"
 
 msgid "Client / Profile / Layout"
-msgstr ""
+msgstr "Klant / Profiel / Lay-out"
 
 msgid "Client / Profile / Password"
-msgstr ""
+msgstr "Klant / Profiel / Wachtwoord"
 
 msgid "Client / Profile / Personal Data"
-msgstr ""
+msgstr "Klant / Profiel / Persoonlijke informatie"
 
 msgid "Client / Statistics"
 msgstr ""
@@ -1872,7 +1873,7 @@ msgid "Delete order"
 msgstr "Verwijder bestelling"
 
 msgid "Delete reseller software"
-msgstr ""
+msgstr "Verwijder reseller software"
 
 msgid "Delete selected items"
 msgstr ""
@@ -2416,7 +2417,7 @@ msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr ""
+msgstr "Bestand bestaat niet. %1$s.tar.gz"
 
 msgid "File exceeds the size limit."
 msgstr ""
@@ -2516,7 +2517,7 @@ msgid "Gender"
 msgstr "Geslacht"
 
 msgid "General"
-msgstr ""
+msgstr "Algemeen"
 
 msgid "General information"
 msgstr "Algemene informatie"
@@ -3145,7 +3146,7 @@ msgid "Message template info"
 msgstr "Bericht template info"
 
 msgid "Message to reseller before deleting the software"
-msgstr ""
+msgstr "Stuur een bericht aan de reseller voor het verwijderen van de software"
 
 msgid "Messages"
 msgstr "Berichten"
@@ -3942,7 +3943,7 @@ msgid "Processor data"
 msgstr ""
 
 msgid "Profile"
-msgstr ""
+msgstr "Profiel"
 
 msgid "Properties"
 msgstr ""
@@ -4106,10 +4107,10 @@ msgid "Reseller / Domains / Edit Domain Alias"
 msgstr ""
 
 msgid "Reseller / General / Overview"
-msgstr ""
+msgstr "Reseller / Algemeen / Overzicht"
 
 msgid "Reseller / General / Software Upload"
-msgstr ""
+msgstr "Reseller / Algemeen / Software uploaden"
 
 msgid "Reseller / Hosting Plans / Add Hosting Plan"
 msgstr ""
@@ -4118,19 +4119,19 @@ msgid "Reseller / Hosting Plans / Overview"
 msgstr ""
 
 msgid "Reseller / Profile / Account Summary"
-msgstr ""
+msgstr "Reseller / Profiel / Account samenvatting"
 
 msgid "Reseller / Profile / Language"
-msgstr ""
+msgstr "Reseller / Profiel / Taal"
 
 msgid "Reseller / Profile / Layout"
-msgstr ""
+msgstr "Reseller / Profiel / Lay-out"
 
 msgid "Reseller / Profile / Password"
-msgstr ""
+msgstr "Reseller / Profiel / Wachtwoord"
 
 msgid "Reseller / Profile / Personal Data"
-msgstr ""
+msgstr "Reseller / Profiel / Persoonlijke informatie"
 
 msgid "Reseller / Statistics / IP Usage"
 msgstr ""
@@ -4178,7 +4179,7 @@ msgid "Reseller consumption"
 msgstr ""
 
 msgid "Reseller data"
-msgstr ""
+msgstr "Reseller data"
 
 msgid "Reseller level"
 msgstr "Reseller niveau"

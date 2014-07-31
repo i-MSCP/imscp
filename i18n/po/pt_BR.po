@@ -18,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-17 01:21+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2014-07-21 00:30+0200\n"
+"PO-Revision-Date: 2014-07-17 12:53+0000\n"
+"Last-Translator: Rudimar Remontti <rudiremontti@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -601,7 +601,7 @@ msgid "Add"
 msgstr "Adicionar"
 
 msgid "Add / Edit SSL certificate"
-msgstr ""
+msgstr "Adicionar / Editar certificado SSL"
 
 msgid "Add FTP account"
 msgstr "Adicionar conta de FTP "
@@ -1085,11 +1085,11 @@ msgstr "Tem certeza de que deseja excluir %s Pega tudo?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
-msgstr ""
+msgstr "Tem certeza de que deseja excluir alias do domínio %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias?"
-msgstr ""
+msgstr "Tem certeza de que deseja apagar o alias do domínio %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -3340,7 +3340,7 @@ msgid "No update info available"
 msgstr "Nenhuma informação de atualização disponível"
 
 msgid "No used yet"
-msgstr ""
+msgstr "Ainda não utilizado"
 
 msgid "No user found."
 msgstr "Nenhum usuário encontrado."
@@ -5229,10 +5229,10 @@ msgid "Unknown Error"
 msgstr "Erro desconhecido"
 
 msgid "Unknown FTP user."
-msgstr ""
+msgstr "Usuário FTP desconhecido."
 
 msgid "Unknown SQL user"
-msgstr ""
+msgstr "Usuário SQL desconhecido."
 
 msgid "Unknown action requested."
 msgstr "Ação desconhecida requisitada."
@@ -6069,7 +6069,7 @@ msgid "missing domain"
 msgstr "domínio faltando"
 
 msgid "n\\a"
-msgstr ""
+msgstr "n\\a"
 
 msgid "no"
 msgstr "não"
