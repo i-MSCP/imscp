@@ -7,6 +7,9 @@ Git 1.1.x
 DAEMON
 	Fixed: Wrong version in 'helo' answer string
 
+GUI:
+	Fixed: Unable to add custom CNAME DNS resource record using the arobase symbol which is substitued by the zone root
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.13
 ------------------------------------------------------------------------------------------------------------------------
