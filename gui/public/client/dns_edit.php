@@ -123,11 +123,11 @@ function client_validate_CNAME($cname, $domainName, &$errorString)
 		$cnameRecord = $cname;
 	}
 
-	if (strpos($cnameRecord, '.') === false) {
+	if (strpos($cnameRecord, '.') === false && $cnameRecord != '@') {
 		$cnameRecord .= $domainName;
 	}
 
-	if (!isValidDomainName($cnameRecord)) {
+	if ($cnameRecord != '@' && !isValidDomainName($cnameRecord)) {
 		$errorString .= tr('Invalid CNAME');
 		return false;
 	}
@@ -584,7 +584,13 @@ function client_saveDnsRecord($dnsRecordId)
 				}
 
 				$dnsRecordName = encode_idna(client_getPost('dns_name'));
-				$dnsRecordData = encode_idna($cname);
+
+				if($cname != '@') {
+					$dnsRecordData = encode_idna($cname);
+				} else {
+					$dnsRecordData = $cname;
+				}
+
 				break;
 			case 'A':
 				$ip = client_getPost('dns_A_address');
