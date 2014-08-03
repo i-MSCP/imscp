@@ -251,8 +251,6 @@ function client_addDomainAlias()
 		)
 	);
 
-	$status = 'ordered';
-
 	exec_query(
 		'
 			INSERT INTO `domain_aliasses` (
@@ -261,7 +259,7 @@ function client_addDomainAlias()
 				?, ?, ?, ?, ?, ?
 			)
 		',
-		array($domainId, $domainAliasNameAscii, $mountPoint, $status, $mainDmnProps['domain_ip_id'], $forwardUrl)
+		array($domainId, $domainAliasNameAscii, $mountPoint, 'ordered', $mainDmnProps['domain_ip_id'], $forwardUrl)
 	);
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
@@ -273,15 +271,9 @@ function client_addDomainAlias()
 		)
 	);
 
-	if ($status == 'ordered') {
-		send_alias_order_email($domainAliasName); // // Notify the reseller
-		write_log("{$_SESSION['user_logged']}: ordered new domain alias: $domainAliasName.", E_USER_NOTICE);
-		set_page_message(tr('Domain alias successfully ordered.'), 'success');
-	} else {
-		send_request();
-		write_log("{$_SESSION['user_logged']}: scheduled addition of domain alias: $domainAliasName.", E_USER_NOTICE);
-		set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
-	}
+	send_alias_order_email($domainAliasName); // // Notify the reseller
+	write_log("{$_SESSION['user_logged']}: ordered new domain alias: $domainAliasName.", E_USER_NOTICE);
+	set_page_message(tr('Domain alias successfully ordered.'), 'success');
 
 	return true;
 }
