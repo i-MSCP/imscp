@@ -355,11 +355,6 @@ sub _installFiles
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
-
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -R $guiPublicDir/tools/pma/.git", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
 	} else {
 		error("Couldn't find the imscp/phpmyadmin package into the local repository");
 		$rs = 1;

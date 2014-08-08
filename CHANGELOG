@@ -10,6 +10,9 @@ DAEMON
 GUI:
 	Fixed: Unable to add custom CNAME DNS resource record using the arobase symbol which is substitued by the zone root
 
+INSTALLER:
+	Fixed: Download zip archives instead of cloning sources which include useless VCS information (composer packages)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.13
 ------------------------------------------------------------------------------------------------------------------------
