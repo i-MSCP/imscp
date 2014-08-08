@@ -136,11 +136,6 @@ sub _installFiles
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
-
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $guiPublicDir/tools/ftp/.git", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
 	} else {
 		error("Couldn't find the imscp/ajaxplorer package into the packages cache directory");
 		$rs = 1;

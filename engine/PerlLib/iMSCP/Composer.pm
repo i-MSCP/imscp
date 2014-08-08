@@ -154,7 +154,7 @@ Please wait, depending on your connection, this may take few minutes.
 	# The update option is used here but composer will automatically fallback to install mode when needed
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar --no-ansi -d=$self->{'cacheDir'} update",
+		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar --no-ansi -d=$self->{'cacheDir'} update --prefer-dist",
 		\$stdout,
 		\$stderr
 	);
