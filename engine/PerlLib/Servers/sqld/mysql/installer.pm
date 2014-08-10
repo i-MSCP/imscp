@@ -180,7 +180,7 @@ sub _createGlobalConfFile
 			$rs = $self->{'hooksManager'}->trigger(
 				'onLoadTemplate',
 				'mysql',
-				'imscp.conf',
+				'imscp.cnf',
 				\$cfgTpl,
 				{ 'USER' => $rootUName, 'GROUP' => $rootGName, 'CONFDIR' => $confDir }
 			);

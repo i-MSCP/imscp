@@ -12,6 +12,7 @@ GUI:
 
 INSTALLER:
 	Fixed: Download zip archives instead of cloning sources which include useless VCS information (composer packages)
+	Fixed: Fixed: Wrong template name passed to the onLoadTemplate event (MySQL server implementation)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.13
