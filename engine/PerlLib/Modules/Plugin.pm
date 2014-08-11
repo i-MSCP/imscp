@@ -39,7 +39,6 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::HooksManager;
-use iMSCP::File;
 use version;
 use JSON;
 use parent 'Common::Object';
