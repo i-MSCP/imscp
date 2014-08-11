@@ -411,7 +411,6 @@ sub _exec($$$;$$)
 	};
 
 	if($@) {
-		iMSCP::File->new('filename' => $backendPluginFile)->delFile();
 		error("An unexpected error occured: $@");
 		return 1;
 	}
