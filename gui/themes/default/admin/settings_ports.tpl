@@ -25,7 +25,8 @@
 				"oLanguage": {DATATABLE_TRANSLATIONS},
 				"iDisplayLength": 5,
 				"bStateSave": true,
-				"bFilter": false
+				"bFilter": false,
+				"pagingType": "simple"
 			}
 		);
 

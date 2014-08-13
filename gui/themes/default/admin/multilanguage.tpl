@@ -5,7 +5,8 @@
 		$('.datatable').dataTable(
 			{
 				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"bStateSave": true
+				"bStateSave": true,
+				"pagingType": "simple"
 			}
 		);
 		$('.dataTables_paginate div').imscpTooltip();

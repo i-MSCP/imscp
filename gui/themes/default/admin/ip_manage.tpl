@@ -9,7 +9,8 @@
 		$('.datatable').dataTable(
 				{
 					"oLanguage": {DATATABLE_TRANSLATIONS},
-					"bStateSave": true
+					"bStateSave": true,
+					"pagingType": "simple"
 				}
 		);
 

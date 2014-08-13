@@ -105,7 +105,8 @@
 		$('#reseller_ips_table').dataTable(
 			{
 				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"bStateSave": true
+				"bStateSave": true,
+				"pagingType": "simple"
 			}
 		);
 	});

@@ -1106,8 +1106,8 @@ table .icon {
 }
 
 /* Pagination nested */
-.paginate_disabled_previous, .paginate_enabled_previous,
-.paginate_disabled_next, .paginate_enabled_next {
+.paginate_button.previous.disabled, .paginate_button.previous,
+.paginate_button.next.disabled, .paginate_button.next {
     float: left;
     cursor: pointer;
     *cursor: hand;
@@ -1126,19 +1126,19 @@ table .icon {
     margin-bottom: 1.5em;
 }
 
-.paginate_disabled_previous {
+.paginate_button.previous.disabled {
     background: url('../images/icons/prev_gray.png') no-repeat top left;
 }
 
-.paginate_enabled_previous {
+.paginate_button.previous {
     background: url('../images/icons/prev.png') no-repeat top left;
 }
 
-.paginate_disabled_next {
+.paginate_button.next.disabled {
     background: url('../images/icons/next_gray.png') no-repeat top right;
 }
 
-.paginate_enabled_next {
+.paginate_button.next {
     background: url('../images/icons/next.png') no-repeat top right;
 }
 

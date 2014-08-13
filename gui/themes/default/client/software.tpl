@@ -6,7 +6,8 @@
 			{
 				"oLanguage": {DATATABLE_TRANSLATIONS},
 				"iDisplayLength": 5,
-				"bStateSave": true
+				"bStateSave": true,
+				"pagingType": "simple"
 			}
 		);
 	});

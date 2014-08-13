@@ -7,15 +7,18 @@ Git 1.1.x
 DAEMON
 	Fixed: Wrong version in 'helo' answer string
 
-GUI:
+GUI
 	Fixed: Unable to add custom CNAME DNS resource record using the arobase symbol which is substitued by the zone root
 
 INSTALLER:
 	Fixed: Download zip archives instead of cloning sources which include useless VCS information (composer packages)
 	Fixed: Fixed: Wrong template name passed to the onLoadTemplate event (MySQL server implementation)
 
-PLUGIN:
+PLUGIN
 	Fixed: Plugin backend files must no longer be removed on error
+
+VENDOR
+	Updated: jQuery DataTables plugin to version 1.10.2
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.13

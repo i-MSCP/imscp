@@ -6,7 +6,8 @@ $(document).ready(function () {
 		{
 			"oLanguage": {DATATABLE_TRANSLATIONS},
 			"iDisplayLength": 5,
-			"bStateSave": true
+			"bStateSave": true,
+			"pagingType": "simple"
 		}
 	);
 	$(".dataTables_paginate").click(function () {
