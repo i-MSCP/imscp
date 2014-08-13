@@ -44,10 +44,6 @@ $ENV{'LC_MESSAGES'} = 'C';
 # Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
-# Mode in which the script is triggered
-# For now, this variable is only used by i-MSCP installer/setup scripts
-$main::execmode = shift || '';
-
 umask(027);
 
 newDebug('imscp-backup-imscp.log');
