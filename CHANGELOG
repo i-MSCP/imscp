@@ -9,6 +9,7 @@ DAEMON
 
 GUI
 	Fixed: Unable to add custom CNAME DNS resource record using the arobase symbol which is substitued by the zone root
+	Updated: Layout according changes from vendor libraries
 
 INSTALLER:
 	Fixed: Download zip archives instead of cloning sources which include useless VCS information (composer packages)
@@ -18,6 +19,8 @@ PLUGIN
 	Fixed: Plugin backend files must no longer be removed on error
 
 VENDOR
+	Updated; jQuery library to version 1.1.11
+	Updated; jQuery UI library to version 1.1.11
 	Updated: jQuery DataTables plugin to version 1.10.2
 
 ------------------------------------------------------------------------------------------------------------------------
