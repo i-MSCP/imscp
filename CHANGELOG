@@ -19,13 +19,13 @@ ENGINE
 	Changed: The quota accounting script is now run every 30 minutes
 	Fixed: Backend logs which are older than 7 days are never removed
 
-INSTALLER:
+GUI
+	Changed: i-MSCP is now accessible through dedicated http ports (default is 8080 for http and 4443 for https)
+
+INSTALLER
 	Added: panel_hostname, system_hostname, panel_ssl and services_ssl reconfiguration items
 	Changed: 'hostname' configuration item to 'hostnames'
 	Moved: Control panel hostname and SSL dialogs into FrontEnd installer
-
-GUI
-	Changed: i-MSCP is now accessible through dedicated http ports (default is 8080 for http and 4443 for https)
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
