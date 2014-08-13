@@ -13,8 +13,8 @@
 <link href="{THEME_ASSETS_PATH}/css/ui.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
 <link href="{THEME_ASSETS_PATH}/css/{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
 <link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.js?v={THEME_ASSETS_VERSION}"></script>
-<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.ui.js?v={THEME_ASSETS_VERSION}"></script>
+<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.min.js?v={THEME_ASSETS_VERSION}"></script>
+<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery-ui.min.js?v={THEME_ASSETS_VERSION}"></script>
 <script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.dataTables.min.js?v={THEME_ASSETS_VERSION}"></script>
 <script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.imscpTooltip-min.js?v={THEME_ASSETS_VERSION}"></script>
 <script type="text/javascript" src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
@@ -33,6 +33,13 @@ $(document).ready(function () {
 		$(this).find('th').parent().removeClass("even odd");
 	});
 	$("tbody").trigger('updateTable');
+
+	// Dirty fix for http://bugs.jqueryui.com/ticket/7856
+	$('[type=checkbox]').on('change', function() {
+		if(!$(this).is(':checked')) {
+			$(this).blur();
+		}
+	});
 });
 /*]]>*/
 </script>
