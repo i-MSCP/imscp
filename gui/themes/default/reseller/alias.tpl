@@ -32,6 +32,7 @@
 			bServerSide: true,
 			sAjaxSource: "/reseller/alias.php?action=get_table",
 			bStateSave: true,
+			"pagingType": "simple",
 			aoColumnDefs: [
 				{ bSortable: false, bSearchable: false, aTargets: [ 4 ] },
 				{ bSortable: false, bSearchable: false, aTargets: [ 5 ] }
