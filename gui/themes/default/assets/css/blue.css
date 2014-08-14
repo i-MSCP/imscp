@@ -81,7 +81,7 @@ span.clickable:hover {
 
 /* Location */
 .location {
-    background: #151e72 url(../images/blue/background/ui-bg_glass_40_151e72_1x400.png) 50% 50% repeat-x;
+    background: #151e72 url(../images/blue/jquery-ui/ui-bg_glass_40_151e72_1x400.png) 50% 50% repeat-x;
 }
 
 /* Section */
@@ -122,7 +122,7 @@ h3 span {
 thead,
 tfoot {
     border-color: #151e72;
-    background: #151e72 url(../images/blue/background/ui-bg_glass_40_151e72_1x400.png) 50% 50% repeat-x;
+    background: #151e72 url(../images/blue/jquery-ui/ui-bg_glass_40_151e72_1x400.png) 50% 50% repeat-x;
     color: #ffffff;
 }
 
