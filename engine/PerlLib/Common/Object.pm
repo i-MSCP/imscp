@@ -47,7 +47,7 @@ use warnings;
 
 sub new
 {
- 	my $class = shift;
+	my $class = shift;
 
 	my $self = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $class;
 
