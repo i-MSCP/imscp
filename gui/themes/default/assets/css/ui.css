@@ -1120,6 +1120,11 @@ table .icon {
     padding-left: 23px;
 }
 
+.paginate_button.previous.disabled, .paginate_button.next.disabled {
+    cursor: default;
+    *cursor: default;
+}
+
 .dataTables_info,
 .dataTables_paginate {
     margin-top: 0.5em;
