@@ -18,7 +18,7 @@ INSTALLER
 	Fixed: Download zip archives instead of cloning sources which include useless VCS information (composer packages)
 	Fixed: Wrong template name passed to the onLoadTemplate event (MySQL server implementation)
 
-PLUGIN
+PLUGINS
 	Fixed: Plugin backend files must no longer be removed on error
 	Updated: Plugin API to version 0.2.11
 
