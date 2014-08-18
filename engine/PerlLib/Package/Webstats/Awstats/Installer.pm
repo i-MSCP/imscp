@@ -60,12 +60,12 @@ use parent 'Common::SingletonClass';
 
  Show AWStats installer questions
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail \%dialog
  Return int 0 or 30
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my (undef, $dialog) =  @_;
 
@@ -100,13 +100,14 @@ sub install
 	my $rs = $self->_disableDefaultConfig();
 	return $rs if $rs;
 
-	$rs = $self->_makeCacheDir();
+	$rs = $self->_createCacheDir();
 	return $rs if $rs;
 
 	$rs = $self->_createGlobalAwstatsVhost();
 	return $rs if $rs;
 
 	if(main::setupGetQuestion('AWSTATS_MODE') eq '0') {
+		# Add cron task for dynamic mode
 		$rs = $self->_addAwstatsCronTask();
 	}
 
@@ -181,7 +182,7 @@ sub _init
 	$self;
 }
 
-=item _makeCacheDir()
+=item _createCacheDir()
 
  Create cache directory for AWStats
 
@@ -189,7 +190,7 @@ sub _init
 
 =cut
 
-sub _makeCacheDir
+sub _createCacheDir
 {
 	my $self = $_[0];
 
@@ -225,7 +226,7 @@ sub _createGlobalAwstatsVhost
 	);
 
 	my $rs = $self->{'httpd'}->buildConfFile(
-		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf", {}
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf", { }
 	);
 	return $rs if $rs;
 
@@ -271,7 +272,7 @@ sub _disableDefaultConfig
 
  Add AWStats cron task for dynamic mode
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -281,7 +282,7 @@ sub _addAwstatsCronTask
 
 	Servers::cron->factory()->addTask(
 		{
-			TASKID => "Package::Webstats::Awstats",
+			TASKID => 'Package::Webstats::Awstats',
 			MINUTE => '15',
 			HOUR => '3-21/6',
 			DAY => '*',

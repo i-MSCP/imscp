@@ -41,6 +41,7 @@ use iMSCP::TemplateParser;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
+use Servers::cron;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -62,12 +63,12 @@ robots, broken links and more.
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail \%dialog
  Return int 0 or 30
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -134,12 +135,12 @@ sub getDistroPackages
 
  Add AWStats configuration file and cron task
 
- Param HASH reference - A reference to a hash containing domain data
+ Param hash \%data Domain data
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub addDmn($$)
+sub addDmn
 {
 	my ($self, $data) = @_;
 
@@ -178,6 +179,7 @@ sub addDmn($$)
 			return $rs if $rs;
 		}
 
+		# Add cron task for static mode
 		$rs = $self->_addAwstatsCronTask($data);
 		return $rs if $rs;
 
@@ -214,12 +216,12 @@ sub addDmn($$)
 
  Delete AWStats configuration
 
- Param HASH reference - A reference to a hash containing domain data
+ Param hash \%data Domain data
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub deleteDmn($$)
+sub deleteDmn
 {
 	my ($self, $data) = @_;
 
@@ -279,27 +281,11 @@ sub deleteDmn($$)
 	$self->_deleteAwstatsCronTask($data);
 }
 
-=item preaddSub(\%data)
-
- Schedule addition of Apache configuration snipped for AWStats
-
- Param HASH reference - A reference to a hash containing domain data
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub preaddSub
-{
-	my ($self, $data) = @_;
-
-	$self->preaddDmn($data);
-}
-
 =item addSub(\%data)
 
  Add AWStats configuration file and cron task
 
- Param HASH reference - A reference to a hash containing domain data
+ Param hash \%data Domain data
  Return int 0 on success, 1 on failure
 
 =cut
@@ -315,12 +301,12 @@ sub addSub
 
  Delete AWStats configuration
 
- Param HASH reference - A reference to a hash containing domain data
+ Param hash \%data Domain data
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub deleteSub($$)
+sub deleteSub
 {
 	my ($self, $data) = @_;
 
@@ -335,7 +321,7 @@ sub deleteSub($$)
 
 =item _init()
 
- Called by getInstance() - Initialize instance
+ Initialize instance
 
  Return Package::Awstats
 
@@ -356,25 +342,25 @@ sub _init
 	$self;
 }
 
-=item _addAwstatsSection(\$cfgTpl, $filename)
+=item _addAwstatsSection(\$cfgTpl, $filename, \%data)
 
  Add Apache configuration snippet for AWStats in the given domain vhost template file
 
  Listener responsible to build and insert Apache configuration snipped for AWStats in the given domain vhost file. The
 type of configuration snippet inserted depends on the AWStats mode (dynamic or static).
 
- Param string $cfgTpl Reference to template file content
- Param string Template filename
- Param hash Domain data
+ Param string \$cfgTpl Template file content
+ Param string $filename Template filename
+ Param hash \%data Domain data
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub _addAwstatsSection($$$$)
+sub _addAwstatsSection
 {
 	my ($self, $cfgTpl, $tplName, $data) = @_;
 
-	if($tplName =~ /^domain(?:_ssl)?\.tpl$/) {
+	if($tplName =~ /^domain(?:_ssl)?\.tpl$/ && $data->{'FORWARD'} eq 'no') {
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
 
@@ -461,11 +447,11 @@ EOF
 	}
 }
 
-=item _addAwstatsConfig(\$data)
+=item _addAwstatsConfig(\%data)
 
  Add awstats configuration file for the given domain
 
- Param HASH reference - A reference to a hash containing domain data
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
@@ -524,16 +510,15 @@ sub _addAwstatsConfig
 
  Add Awstats cron task
 
- Param HASH reference - A reference to a hash containing domain data
+ Param hash \%data Domain data
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub _addAwstatsCronTask($$)
+sub _addAwstatsCronTask
 {
 	my ($self, $data) = @_;
 
-	require Servers::cron;
 	Servers::cron->factory()->addTask(
 		{
 			TASKID => "Package::Webstats::Awstats ($data->{'DOMAIN_NAME'})",
@@ -557,17 +542,16 @@ sub _addAwstatsCronTask($$)
 
  Remove AWStats cron task
 
- Param HASH reference - A reference to a hash containing domain data
+ Param hash \%data Domain data
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub _deleteAwstatsCronTask($$)
+sub _deleteAwstatsCronTask
 {
 	my ($self, $data) = @_;
 
-	require Servers::cron;
-	Servers::cron->factory()->deleteTask({ 'TASKID' => "Package::Webstats::Awstats ($data->{'DOMAIN_NAME'})" });
+	Servers::cron->factory()->deleteTask({ 'TASKID' => "Addons::Webstats::Awstats ($data->{'DOMAIN_NAME'})" });
 }
 
 =back

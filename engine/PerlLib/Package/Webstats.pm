@@ -55,7 +55,7 @@ use parent 'Common::SingletonClass';
 
  Register setup hook functions
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::HooksManager \%hooksManager
  Return int 0 on success, 1 on failure
 
 =cut
@@ -73,12 +73,12 @@ sub registerSetupHooks($$)
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail \%dialog
  Return int 0 or 30
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog, $rs) = (@_, 0);
 
@@ -103,7 +103,7 @@ sub showDialog($$)
 				my $package = "Package::Webstats::${_}::${_}";
 				eval "require $package";
 
-				if(! $@) {
+				unless($@) {
 					$package = $package->getInstance();
 					$rs = $package->showDialog($dialog) if $package->can('showDialog');
 					last if $rs;
@@ -144,7 +144,7 @@ sub preinstall
 			my $package = "Package::Webstats::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				$rs = $package->uninstall(); # Mandatory method
 				return $rs if $rs;
@@ -168,7 +168,7 @@ sub preinstall
 			my $package = "Package::Webstats::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				$rs = $package->preinstall() if $package->can('preinstall');
 				return $rs if $rs;
@@ -204,7 +204,7 @@ sub install
 			my $package = "Package::Webstats::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				my $rs = $package->install() if $package->can('install');
 				return $rs if $rs;
@@ -240,7 +240,7 @@ sub uninstall
 			my $package = "Package::Webstats::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				$rs = $package->uninstall(); # Mandatory method;
 				return $rs if $rs;
@@ -277,7 +277,7 @@ sub setEnginePermissions
 			my $package = "Package::Webstats::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				my $rs = $package->setEnginePermissions() if $package->can('setEnginePermissions');
 				return $rs if $rs;
@@ -295,12 +295,12 @@ sub setEnginePermissions
 
  Process preAddDmn tasks
 
- Param hash_ref $data A reference to a hash containing domain data
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub preaddDmn($$)
+sub preaddDmn
 {
 	my ($self, $data) = @_;
 
@@ -312,7 +312,7 @@ sub preaddDmn($$)
 				my $package = "Package::Webstats::${_}::${_}";
 				eval "require $package";
 
-				if(! $@) {
+				unless($@) {
 					$package = $package->getInstance();
 					my $rs = $package->preaddDmn($data) if $package->can('preaddDmn');
 					return $rs if $rs;
@@ -331,11 +331,12 @@ sub preaddDmn($$)
 
  Process addDmn tasks
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addDmn($$)
+sub addDmn
 {
 	my ($self, $data) = @_;
 
@@ -347,7 +348,7 @@ sub addDmn($$)
 				my $package = "Package::Webstats::${_}::${_}";
 				eval "require $package";
 
-				if(! $@) {
+				unless($@) {
 					$package = $package->getInstance();
 					my $rs = $package->addDmn($data) if $package->can('addDmn');
 					return $rs if $rs;
@@ -366,11 +367,12 @@ sub addDmn($$)
 
  Process deleteDmn tasks
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteDmn($$)
+sub deleteDmn
 {
 	my ($self, $data) = @_;
 
@@ -382,7 +384,7 @@ sub deleteDmn($$)
 				my $package = "Package::Webstats::${_}::${_}";
 				eval "require $package";
 
-				if(! $@) {
+				unless($@) {
 					$package = $package->getInstance();
 					my $rs = $package->deleteDmn($data) if $package->can('deleteDmn');
 					return $rs if $rs;
@@ -401,11 +403,12 @@ sub deleteDmn($$)
 
  Process preaddSub tasks
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub preaddSub($$)
+sub preaddSub
 {
 	my ($self, $data) = @_;
 
@@ -416,11 +419,12 @@ sub preaddSub($$)
 
  Process addSub tasks
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSub($$)
+sub addSub
 {
 	my ($self, $data) = @_;
 
@@ -431,11 +435,12 @@ sub addSub($$)
 
  Process deleteSub tasks
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteSub($$)
+sub deleteSub
 {
 	my ($self, $data) = @_;
 
@@ -456,7 +461,7 @@ sub deleteSub($$)
 
 =cut
 
-sub _init()
+sub _init
 {
 	my $self = $_[0];
 
@@ -472,12 +477,12 @@ sub _init()
 
  Install packages
 
- Param array_ref $packages List of packages to install
+ Param array \@packages Packages to install
  Return int 0 on success, other on failure
 
 =cut
 
-sub _installPackages($$)
+sub _installPackages
 {
 	my ($self, $packages) = @_;
 
@@ -505,12 +510,12 @@ sub _installPackages($$)
 
  Remove packages
 
- Param array_ref $packages List of packages to remove
+ Param array \@packages Packages to remove
  Return int 0 on success, other on failure
 
 =cut
 
-sub _removePackages($$)
+sub _removePackages
 {
 	my ($self, $packages) = @_;
 

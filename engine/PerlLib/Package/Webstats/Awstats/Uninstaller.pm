@@ -87,7 +87,7 @@ sub uninstall
 
 sub _deleteFiles
 {
-	my ($rs, $stdout, $stderr);
+	my $rs = 0;
 
 	if(-d $main::imscpConfig{'USER_WEB_DIR'}) {
 		my @homeDirs = iMSCP::Dir->new('dirname' => $main::imscpConfig{'USER_WEB_DIR'})->getDirs();
@@ -110,6 +110,7 @@ sub _deleteFiles
 
 	# Remove cache directory content
 	if(-d $main::imscpConfig{'AWSTATS_CACHE_DIR'}) {
+		my ($stdout, $stderr);
 		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*",  \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -118,6 +119,7 @@ sub _deleteFiles
 
 	# Remove configuration files created by i-MSCP
 	if(-d $main::imscpConfig{'AWSTATS_CONFIG_DIR'}) {
+		my ($stdout, $stderr);
 		$rs = execute(
 			"$main::imscpConfig{'CMD_RM'} -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf",
 			\$stdout,
