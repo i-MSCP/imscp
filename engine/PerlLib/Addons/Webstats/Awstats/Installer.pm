@@ -60,12 +60,12 @@ use parent 'Common::SingletonClass';
 
  Show AWStats installer questions
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail \%dialog
  Return int 0 or 30
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my (undef, $dialog) =  @_;
 
@@ -85,23 +85,6 @@ sub showDialog($$)
 	$rs;
 }
 
-#=item preinstall()
-#
-# Process preinstall tasks
-#
-# Return int 0 on success, other on failure
-#
-#=cut
-#
-#sub preinstall
-#{
-#	my $self = shift;
-#
-#	# No longer needed since we are now logresolvemerge.pl which always parse also last rotated log file
-#	#iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->_installLogrotate(@_); });
-#
-#}
-
 =item install()
 
  Process install tasks
@@ -117,13 +100,14 @@ sub install
 	my $rs = $self->_disableDefaultConfig();
 	return $rs if $rs;
 
-	$rs = $self->_makeCacheDir();
+	$rs = $self->_createCacheDir();
 	return $rs if $rs;
 
 	$rs = $self->_createGlobalAwstatsVhost();
 	return $rs if $rs;
 
 	if(main::setupGetQuestion('AWSTATS_MODE') eq '0') {
+		# Add cron task for dynamic mode
 		$rs = $self->_addAwstatsCronTask();
 	}
 
@@ -198,39 +182,7 @@ sub _init
 	$self;
 }
 
-# No longer needed since we are now logresolvemerge.pl which always parse also last rotated log file
-#=item _installLogrotate(\$content, $filename)
-#
-# Event listener responsible to add or remove the AWStats logrotate configuration snippet in the Apache logrotate file
-#
-# Param SCALAR reference - A reference to a scalar containing file content
-# Param Param SCALAR Filename
-# Return int 0 on success, other on failure
-#
-#=cut
-#
-#sub _installLogrotate($$$)
-#{
-#	my ($self, $content, $filename) = @_;
-#
-#	if ($filename eq 'logrotate.conf') {
-#		$$content = replaceBloc(
-#			"# SECTION custom BEGIN.\n",
-#			"# SECTION custom END.\n",
-#			"  prerotate\n" .
-#			"    IMSCP_APACHE_LOG_DIR=$self->{'httpd'}->{'config'}->{'APACHE_LOG_DIR'} " .
-#			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
-#			"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n" .
-#			"  endscript\n",
-#			$$content,
-#			'preserve'
-#		);
-#	}
-#
-#	0;
-#}
-
-=item _makeCacheDir()
+=item _createCacheDir()
 
  Create cache directory for AWStats
 
@@ -238,7 +190,7 @@ sub _init
 
 =cut
 
-sub _makeCacheDir
+sub _createCacheDir
 {
 	my $self = $_[0];
 
@@ -274,7 +226,7 @@ sub _createGlobalAwstatsVhost
 	);
 
 	my $rs = $self->{'httpd'}->buildConfFile(
-		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/01_awstats.conf", {}
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/01_awstats.conf", { }
 	);
 	return $rs if $rs;
 
@@ -320,7 +272,7 @@ sub _disableDefaultConfig
 
  Add AWStats cron task for dynamic mode
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -330,7 +282,7 @@ sub _addAwstatsCronTask
 
 	Servers::cron->factory()->addTask(
 		{
-			TASKID => "Addons::Webstats::Awstats",
+			TASKID => 'Addons::Webstats::Awstats',
 			MINUTE => '15',
 			HOUR => '3-21/6',
 			DAY => '*',
