@@ -120,7 +120,7 @@ sub _init
 			return $rs if $rs;
 
 			# Clear local repository if asked by user
-			$rs = $self->_cleanCacheDir() if iMSCP::Getopt->cleanAddons;
+			$rs = $self->_clearLocalRepository() if iMSCP::Getopt->cleanAddons;
 			return $rs if $rs;
 
 			$rs = $self->_getComposer();
@@ -254,7 +254,7 @@ EOF
 
 Updating composer.phar from http://getcomposer.org.
 
-Please wait, depending of your connection, this may take few seconds...
+Please wait, depending on your connection, this may take few seconds...
 EOF
 
 		my ($stdout, $stderr);
