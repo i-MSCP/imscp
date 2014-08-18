@@ -20,6 +20,7 @@ INSTALLER
 
 PLUGIN
 	Fixed: Plugin backend files must no longer be removed on error
+	Updated: Plugin API to version 0.2.11
 
 VENDOR
 	Updated: jQuery library to version 1.1.11

@@ -113,12 +113,12 @@ sub _restoreConf
 
 	my $rs = 0;
 
-	for ("$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
+	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
 		my $filename = fileparse($_);
 
 		$rs	= iMSCP::File->new(
-			'filename' => "$self->{bkpDir}/$filename.system"
-		)->copyFile($_) if -f "$self->{bkpDir}/$filename.system";
+			'filename' => "$self->{'bkpDir'}/$filename.system"
+		)->copyFile($_) if -f "$self->{'bkpDir'}/$filename.system";
 		return $rs if $rs;
 	}
 
