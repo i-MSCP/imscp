@@ -16,6 +16,7 @@ GUI
 	Updated: Layout according changes from vendor libraries
 
 INSTALLER
+	Fixed: Composer home directory has been reset back to /root/.composer by mistake
 	Fixed: Download zip archives instead of cloning sources which include useless VCS information (composer packages)
 	Fixed: Wrong template name passed to the onLoadTemplate event (MySQL server implementation)
 
