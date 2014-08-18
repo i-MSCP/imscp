@@ -96,7 +96,7 @@ sub _init
 	$self->{'wrkDir'} = "$main::imscpConfig{'CACHE_DATA_DIR'}/addons";
 
 	# Override default composer home directory
-    $ENV{'COMPOSER_HOME'} = "$self->{'wrkDir'}/.composer";
+	$ENV{'COMPOSER_HOME'} = "$self->{'wrkDir'}/.composer";
 
 	# Increase composer process timeout for slow connections
 	$ENV{'COMPOSER_PROCESS_TIMEOUT'} = 2000;
@@ -125,7 +125,7 @@ sub _init
 			$rs = $self->_getComposer();
 			return $rs if $rs;
 
-			# Skip package update if asked by user but only if all requirements for package versions are meets
+			# Skip packages update if asked by user but only if all requirements for package versions are meets
 			if( ! iMSCP::Getopt->skipAddonsUpdate || $self->_checkRequirements()) {
 				$rs = $self->_installPackages();
 			}
