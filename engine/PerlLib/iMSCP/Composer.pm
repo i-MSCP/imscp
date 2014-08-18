@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- iMSCP::Composer - i-MSCP Composer package installer
+ iMSCP::Composer - i-MSCP Composer packages installer
 
 =cut
 
@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Composer package installer for iMSCP. Allows to install composer packages from packagist.org (GitHub).
+ Composer packages installer for iMSCP.
 
 =head1 PUBLIC METHODS
 
@@ -57,11 +57,13 @@ use parent 'Common::SingletonClass';
 
  Register the given composer package for installation
 
+ Param string $package Package name
+ Param string $packageVersion OPTIONAL Package version
  Return int 0
 
 =cut
 
-sub registerPackage($$;$)
+sub registerPackage
 {
 	my ($self, $package, $packageVersion) = @_;
 
@@ -80,7 +82,7 @@ sub registerPackage($$;$)
 
 =item _init()
 
- Called by getInstance(). Initialize instance of this class
+ Initialize instance
 
  Return iMSCP::Composer
 
@@ -91,33 +93,41 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'toInstall'} = [];
-	$self->{'cacheDir'} = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages";
-	$self->{'phpCmd'} = $main::imscpConfig{'CMD_PHP'} .
-		' -d memory_limit=512M -d allow_url_fopen=1' .
-		' -d suhosin.executor.include.whitelist=phar';
+
+	$self->{'wrkDir'} = "$main::imscpConfig{'CACHE_DATA_DIR'}/addons";
+
+	# Override default composer home directory
+	$ENV{'COMPOSER_HOME'} = "$self->{'wrkDir'}/.composer";
 
 	# Increase composer process timeout for slow connections
 	$ENV{'COMPOSER_PROCESS_TIMEOUT'} = 2000;
 
-	# Override default composer home directory
-	$ENV{'COMPOSER_HOME'} = "$self->{'cacheDir'}/.composer";
+	# We do not want any user interaction
+	$ENV{'COMPOSER_NO_INTERACTION'} = '1';
+
+	# We discard any change made in vendor
+	$ENV{'COMPOSER_DISCARD_CHANGES'} = 'true';
+
+	$self->{'phpCmd'} = $main::imscpConfig{'CMD_PHP'} .
+		' -d allow_url_fopen=1' .
+		' -d suhosin.executor.include.whitelist=phar';
 
 	iMSCP::HooksManager->getInstance()->register(
 		'afterSetupPreInstallPackages', sub {
 			iMSCP::Dialog->factory()->endGauge();
 
-			my $rs = iMSCP::Dir->new('dirname' => $self->{'cacheDir'})->make();
+			my $rs = iMSCP::Dir->new('dirname' => $self->{'wrkDir'})->make();
 			return $rs if $rs;
 
-			# Cleanup i-MSCP packages cache directory if asked by user
-			$rs = $self->_cleanCacheDir() if iMSCP::Getopt->cleanPackagesCache;
+			# Clear local repository if asked by user
+			$rs = $self->_cleanCacheDir() if iMSCP::Getopt->cleanAddons;
 			return $rs if $rs;
 
 			$rs = $self->_getComposer();
 			return $rs if $rs;
 
-			# Skip the packages update if asked by user but only if all requirement for package versions are meets
-			if(! iMSCP::Getopt->skipPackagesUpdate || $self->_checkRequirements()) {
+			# Skip packages update if asked by user but only if all requirements for package versions are meets
+			if( ! iMSCP::Getopt->skipAddonsUpdate || $self->_checkRequirements()) {
 				$rs = $self->_installPackages();
 			}
 
@@ -130,7 +140,7 @@ sub _init
 
 =item _installPackages()
 
- Install or update packages in package cache repository
+ Install or update packages
 
  Return 0 on success, other on failure
 
@@ -143,24 +153,23 @@ sub _installPackages
 	my $rs = $self->_buildComposerFile();
 	return $rs if $rs;
 
-	iMSCP::Dialog->factory()->infobox(
-'
-Fetching i-MSCP packages from GitHub.
+	iMSCP::Dialog->factory()->infobox(<<EOF);
+
+Fetching i-MSCP composer packages from GitHub.
 
 Please wait, depending on your connection, this may take few minutes.
-'
-	);
+EOF
 
 	# The update option is used here but composer will automatically fallback to install mode when needed
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar --no-ansi -d=$self->{'cacheDir'} update --prefer-dist",
+		"$self->{'phpCmd'} $self->{'wrkDir'}/composer.phar --no-ansi -d=$self->{'wrkDir'} update --prefer-dist",
 		\$stdout,
 		\$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Unable to get i-MSCP packages from GitHub') if $rs && ! $stderr;
+	error('Unable to fetch i-MSCP composer packages from GitHub') if $rs && ! $stderr;
 
 	$rs;
 }
@@ -177,13 +186,16 @@ sub _buildComposerFile
 {
 	my $self = $_[0];
 
-	iMSCP::Dialog->factory()->infobox("\nBuilding composer.json file for i-MSCP packages...");
+	iMSCP::Dialog->factory()->infobox(<<EOF);
 
-	my $composerJsonFile = process({ 'PACKAGES' => join ",\n", @{$self->{'toInstall'}} }, $self->_getComposerFileTpl());
+Building composer.json file for composer packages...
+EOF
 
-	my $file = iMSCP::File->new('filename' => "$self->{'cacheDir'}/composer.json");
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/composer.json");
 
-	my $rs = $file->set($composerJsonFile);
+	my $rs = $file->set(
+		process({ 'PACKAGES' => join ",\n", @{$self->{'toInstall'}} }, $self->_getComposerFileTpl())
+	);
 	return $rs if $rs;
 
 	$file->save();
@@ -201,24 +213,23 @@ sub _getComposer
 {
 	my $self = $_[0];
 
-	my ($stdout, $stderr);
 	my $curDir = getcwd();
 	my $rs = 0;
 
-	if (! -f "$self->{'cacheDir'}/composer.phar") {
-		unless(chdir($self->{'cacheDir'})) {
-			error("Unable to change working directory to $self->{'cacheDir'}: $!");
+	unless (-f "$self->{'wrkDir'}/composer.phar") {
+		unless(chdir($self->{'wrkDir'})) {
+			error("Unable to change working directory to $self->{'wrkDir'}: $!");
 			return 1;
 		}
 
-		iMSCP::Dialog->factory()->infobox(
-"
-Fetching composer installer from http://getcomposer.org.
+		iMSCP::Dialog->factory()->infobox(<<EOF);
+
+Fetching composer.phar from http://getcomposer.org.
 
 Please wait, depending on your connection, this may take few seconds...
-"
-		);
+EOF
 
+		my ($stdout, $stderr);
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CURL'} -s http://getcomposer.org/installer | $self->{'phpCmd'}",
 			\$stdout,
@@ -230,25 +241,25 @@ Please wait, depending on your connection, this may take few seconds...
 		error('Unable to get composer installer from http://getcomposer.org') if $rs && ! $stdout && ! $stderr;
 
 		unless(chdir($curDir)) {
-		error("Unable to change working directory to $curDir: $!");
-		return 1;
+			error("Unable to change working directory to $curDir: $!");
+			return 1;
 		}
 	} else {
-		unless(chdir($self->{'cacheDir'})) {
-			error("Unable to change working directory to $self->{'cacheDir'}: $!");
+		unless(chdir($self->{'wrkDir'})) {
+			error("Unable to change working directory to $self->{'wrkDir'}: $!");
 			return 1;
 		}
 
-		iMSCP::Dialog->factory()->infobox(
-"
-Updating composer installer from http://getcomposer.org.
+		iMSCP::Dialog->factory()->infobox(<<EOF);
 
-Please wait, depending on your connection, this may take few seconds...
-"
-		);
+Updating composer.phar from http://getcomposer.org.
 
+Please wait, depending of your connection, this may take few seconds...
+EOF
+
+		my ($stdout, $stderr);
 		$rs = execute(
-			"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar --no-ansi -d=$self->{'cacheDir'} self-update",
+			"$self->{'phpCmd'} $self->{'wrkDir'}/composer.phar --no-ansi -d=$self->{'wrkDir'} self-update",
 			\$stdout,
 			\$stderr
 		);
@@ -269,7 +280,7 @@ Please wait, depending on your connection, this may take few seconds...
 
  Get composer.json template
 
- Return string composer.json template file content
+ Return string
 
 =cut
 
@@ -277,7 +288,7 @@ sub _getComposerFileTpl
 {
 	<<EOF;
 {
-	"require":{
+	"require": {
 {PACKAGES}
 	},
 	"minimum-stability":"dev"
@@ -285,26 +296,26 @@ sub _getComposerFileTpl
 EOF
 }
 
-=item _cleanCacheDir()
+=item _clearLocalRepository()
 
- Clean i-MSCP packages cache
+ clear local repository
 
  Return 0 on success, other on failure
 
 =cut
 
-sub _cleanCacheDir
+sub _clearLocalRepository
 {
 	my $self = $_[0];
 
 	my $rs = 0;
 
-	if(-d $self->{'cacheDir'}) {
+	if(-d $self->{'wrkDir'}) {
 		my ($stdout, $stderr);
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $self->{'cacheDir'}/*", \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $self->{'wrkDir'}/*", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		error('Unable to clean packages cache directory') if $rs && ! $stderr;
+		error('Unable to clear local repository') if $rs && ! $stderr;
 	}
 
 	$rs;
@@ -322,7 +333,7 @@ sub _checkRequirements
 {
 	my $self = $_[0];
 
-	return 1 unless -d $self->{'cacheDir'};
+	return 1 unless -d $self->{'wrkDir'};
 
 	my $rs = 0;
 
@@ -331,17 +342,23 @@ sub _checkRequirements
 
 		my @cmd = (
 			$self->{'phpCmd'},
-			"$self->{'cacheDir'}/composer.phar",
+			"$self->{'wrkDir'}/composer.phar",
 			'--no-ansi',
-			"-d=$self->{'cacheDir'}",
-			'show', '--installed', escapeShell($package), escapeShell($version)
+			"-d=$self->{'wrkDir'}",
+			'show',
+			'--installed',
+			escapeShell($package),
+			escapeShell($version)
 		);
 
 		my ($stdout, $stderr);
 		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		debug(sprintf("Required version (%s) of package %s not found in cache directory.", $package, $version)) if $rs;
-		last if $rs;
+
+		if($rs) {
+			debug(sprintf("Required version (%s) of package %s not found in local repository.", $package, $version));
+			last;
+		}
 	}
 
 	$rs;
