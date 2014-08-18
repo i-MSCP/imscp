@@ -1026,14 +1026,14 @@ sub buildConfFile($$$;$)
 {
 	my ($self, $file, $data, $options) = @_;
 
-	$options ||= {};
+	$options ||= { };
 
-	my ($name, $path, $suffix) = fileparse($file);
+	my ($filename, $path) = fileparse($file);
 
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'apache_fcgid', $name, \$cfgTpl, $data);
+	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'apache_fcgid', $filename, \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -1048,21 +1048,21 @@ sub buildConfFile($$$;$)
 
 	# Build file
 
-	$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options);
 	return $rs if $rs;
 
-	$cfgTpl = $self->buildConf($cfgTpl, "$name$suffix", $data);
+	$cfgTpl = $self->buildConf($cfgTpl, $filename, $data);
 	return 1 unless defined $cfgTpl;
 
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
+	$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options);
 	return $rs if $rs;
 
 	# Store file
 
 	my $fileHandler = iMSCP::File->new(
-		'filename' => ($options->{'destination'} ? $options->{'destination'} : "$self->{'apacheWrkDir'}/$name$suffix")
+		'filename' => ($options->{'destination'} ? $options->{'destination'} : "$self->{'apacheWrkDir'}/$filename")
 	);
 
 	$rs = $fileHandler->set($cfgTpl);
@@ -1094,11 +1094,11 @@ sub installConfFile($$;$)
 {
 	my ($self, $file, $options) = @_;
 
-	$options ||= {};
+	$options ||= { };
 
-	my ($name, $path, $suffix) = fileparse($file);
+	my ($filename, $path) = fileparse($file);
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallConfFile', "$name$suffix", $options);
+	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallConfFile', $filename, $options);
 	return $rs if $rs;
 
 	$file = "$self->{'apacheWrkDir'}/$file" unless -d $path && $path ne './';
@@ -1116,11 +1116,11 @@ sub installConfFile($$;$)
 
 	$rs = $fileHandler->copyFile(
 		$options->{'destination'}
-			? $options->{'destination'} : "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$name$suffix"
+			? $options->{'destination'} : "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename"
 	);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdInstallConfFile', "$name$suffix", $options);
+	$self->{'hooksManager'}->trigger('afterHttpdInstallConfFile', $filename, $options);
 }
 
 =item setData(\%data)

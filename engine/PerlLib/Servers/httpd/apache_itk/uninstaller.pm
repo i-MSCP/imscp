@@ -112,7 +112,7 @@ sub _restoreConf
 {
 	my $self = $_[0];
 
-	for ("$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
+	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
 		my $filename = fileparse($_);
 
 		if (-f "$self->{bkpDir}/$filename.system") {

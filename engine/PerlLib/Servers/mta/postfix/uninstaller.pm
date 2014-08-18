@@ -110,11 +110,11 @@ sub _restoreConfFile
 	my $rs = 0;
 
 	for ($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
-		my ($filename, $directories, $suffix) = fileparse($_);
+		my $filename = fileparse($_);
 
-		if(-f "$self->{bkpDir}/$filename$suffix.system"){
+		if(-f "$self->{'bkpDir'}/$filename.system"){
 			$rs = iMSCP::File->new(
-				'filename' => "$self->{bkpDir}/$filename$suffix.system"
+				'filename' => "$self->{'bkpDir'}/$filename.system"
 			)->copyFile(
 				$_
 			);

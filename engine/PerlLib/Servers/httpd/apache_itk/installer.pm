@@ -225,13 +225,13 @@ sub _bkpConfFile($$)
 
 	if(-f $cfgFile) {
 		my $file = iMSCP::File->new('filename' => $cfgFile );
-		my ($filename, $directories, $suffix) = fileparse($cfgFile);
+		my $filename = fileparse($cfgFile);
 
-		if(! -f "$self->{'apacheBkpDir'}/$filename$suffix.system") {
-			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename$suffix.system");
+		if(! -f "$self->{'apacheBkpDir'}/$filename.system") {
+			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename.system");
 			return $rs if $rs;
 		} else {
-			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename$suffix.$timestamp");
+			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename.$timestamp");
 			return $rs if $rs;
 		}
 	}
