@@ -38,7 +38,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::Net;
 use iMSCP::File;
@@ -57,36 +57,23 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hooks
+ Register setup event listeners
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
- Return int 0 on success, other on failure
+ Param iMSCP::EventManager
+ Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	my $rs = $hooksManager->trigger('beforeNamedRegisterSetupHooks', $hooksManager, 'bind');
-	return $rs if $rs;
-
-	# Adding bind installer dialog in setup dialog stack
-	$rs = $hooksManager->register(
+	$eventManager->register(
 		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDnsServerMode(@_) }); 0; }
+		sub { push @{$_[0]}, sub { $self->askDnsServerMode(@_) }, sub { $self->askIPv6Support(@_) }; 0; }
 	);
-	return $rs if $rs;
-
-	$rs = $hooksManager->register(
-		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askIPv6Support(@_) }); 0; }
-    );
-    return $rs if $rs;
-
-	$hooksManager->trigger('afterNamedRegisterSetupHooks', $hooksManager, 'bind');
 }
 
 =item askDnsServerMode($dialog)
@@ -257,7 +244,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedInstall', 'bind');
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedInstall', 'bind');
 	return $rs if $rs;
 
 	for('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
@@ -280,7 +267,7 @@ sub install
 	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterNamedInstall', 'bind');
+	$self->{'eventManager'}->trigger('afterNamedInstall', 'bind');
 }
 
 =back
@@ -301,13 +288,13 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'named'} = Servers::named::bind->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeNamedInitInstaller', $self, 'bind'
-	) and fatal('bind - beforeNamedInitInstaller hook has failed');
+	) and fatal('bind - beforeNamedInitInstaller has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -327,9 +314,9 @@ sub _init
 		}
 	}
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterNamedInitInstaller', $self, 'bind'
-	) and fatal('bind - afterNamedInitInstaller hook has failed');
+	) and fatal('bind - afterNamedInitInstaller has failed');
 
 	$self;
 }
@@ -347,7 +334,7 @@ sub _bkpConfFile($$)
 {
 	my ($self, $cfgFile) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedBkpConfFile', $cfgFile);
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
 	if(-f $cfgFile) {
@@ -363,7 +350,7 @@ sub _bkpConfFile($$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterNamedBkpConfFile', $cfgFile);
+	$self->{'eventManager'}->trigger('afterNamedBkpConfFile', $cfgFile);
 }
 
 =item _switchTasks($cfgFile)
@@ -428,7 +415,7 @@ sub _buildConf
 		# Load template
 
 		my $cfgTpl;
-		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', $filename, \$cfgTpl, {});
+		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \$cfgTpl, {});
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -441,7 +428,7 @@ sub _buildConf
 
 		# Build file
 
-		$rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
+		$rs = $self->{'eventManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
 		return $rs if $rs;
 
 		if($_ eq 'BIND_CONF_FILE' && ! -f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
@@ -455,7 +442,7 @@ sub _buildConf
 				# Load template
 
 				my $fileContent;
-				my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', $filename, \$fileContent, {});
+				my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \$fileContent, {});
 				return $rs if $rs;
 
 				unless(defined $fileContent) {
@@ -468,13 +455,13 @@ sub _buildConf
 
 				# Build file
 
-				$rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$fileContent, $filename);
+				$rs = $self->{'eventManager'}->trigger('beforeNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
 
 				$fileContent =~ s/OPTIONS="(.*?)(?:[^\w]-4|-4\s)(.*)"/OPTIONS="$1$2"/;
 				$fileContent =~ s/OPTIONS="/OPTIONS="-4 / unless $self->{'config'}->{'BIND_IPV6'} eq 'yes';
 
-				$rs = $self->{'hooksManager'}->trigger('afterNamedBuildConf', \$fileContent, $filename);
+				$rs = $self->{'eventManager'}->trigger('afterNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
 
 				# Store file
@@ -498,7 +485,7 @@ sub _buildConf
 			}
 		}
 
-		$rs = $self->{'hooksManager'}->trigger('afterNamedBuildConf', \$cfgTpl, $filename);
+		$rs = $self->{'eventManager'}->trigger('afterNamedBuildConf', \$cfgTpl, $filename);
 		return $rs if $rs;
 
 		# Store file
@@ -550,7 +537,7 @@ sub _saveConf
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedSaveConf', \$cfg, 'bind.old.data');
+	$rs = $self->{'eventManager'}->trigger('beforeNamedSaveConf', \$cfg, 'bind.old.data');
 	return $rs if $rs;
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/bind.old.data");
@@ -567,7 +554,7 @@ sub _saveConf
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterNamedSaveConf', 'bind.old.data');
+	$self->{'eventManager'}->trigger('afterNamedSaveConf', 'bind.old.data');
 }
 
 =item _checkIps(\@ips)
@@ -604,10 +591,10 @@ sub _oldEngineCompatibility
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedOldEngineCompatibility');
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedOldEngineCompatibility');
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterNameddOldEngineCompatibility');
+	$self->{'eventManager'}->trigger('afterNameddOldEngineCompatibility');
 }
 
 =back

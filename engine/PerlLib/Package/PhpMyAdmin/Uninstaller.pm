@@ -58,7 +58,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_removeSqlUser();
 	return $rs if $rs;
@@ -77,7 +77,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Package::PhpMyAdmin::Uninstaller
 
@@ -108,7 +108,7 @@ sub _init
 
 sub _removeSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $db = iMSCP::Database->factory();
 
@@ -128,7 +128,7 @@ sub _removeSqlUser
 
 sub _removeSqlDatabase
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $database = iMSCP::Database->factory();
 
@@ -149,7 +149,7 @@ sub _removeSqlDatabase
 
 sub _removeFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdout, $stderr);
 

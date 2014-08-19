@@ -53,7 +53,7 @@ use parent 'Common::SingletonClass';
 
  Process uninstall tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -81,7 +81,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::httpd::apache_php_fpm::uninstaller
 
@@ -132,7 +132,7 @@ sub _removeVloggerSqlUser
 
  Remove Apache directories
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -147,7 +147,7 @@ sub _removeDirs
 
  Restore Apache configuration
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -201,7 +201,7 @@ sub _restoreApacheConfig
 
  Restore PHP-FPM configuration
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

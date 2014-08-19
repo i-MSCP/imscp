@@ -52,22 +52,20 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	$hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
-	);
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
 =item askAntiRootkits(\%dialog)
@@ -79,7 +77,7 @@ sub registerSetupHooks($$)
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog, $rs) = (@_, 0);
 
@@ -326,7 +324,7 @@ sub _init()
 
 =cut
 
-sub _installPackages($$)
+sub _installPackages
 {
 	my ($self, $packages) = @_;
 
@@ -359,7 +357,7 @@ sub _installPackages($$)
 
 =cut
 
-sub _removePackages($$)
+sub _removePackages
 {
 	my ($self, $packages) = @_;
 

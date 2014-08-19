@@ -38,7 +38,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::Rights;
 use iMSCP::File;
@@ -58,35 +58,29 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hooks.
+ Register setup event listeners
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
- Return int 0 on success, other on failure
+ Param iMSCP::EventManager
+ Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
-		my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier');
-		return $rs if $rs;
-
-		$rs = $hooksManager->register(
-			'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askCourier(@_) }); 0; }
+		my $rs = $eventManager->register(
+			'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askCourier(@_) }; 0; }
 		);
 		return $rs if $rs;
 
-		$rs = $hooksManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
+		$rs = $eventManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
 		return $rs if $rs;
 
-		$rs = $hooksManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
-		return $rs if $rs;
-
-		$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
+		$eventManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
 	} else {
 		$main::imscpConfig{'PO_SERVER'} = 'no';
 		warning('i-MSCP Courier PO server require the Postfix MTA. Installation skipped...');
@@ -186,7 +180,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
+	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'courier');
 	return $rs if $rs;
 
 	for(
@@ -221,7 +215,7 @@ sub install
 	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoInstall', 'courier');
+	$self->{'eventManager'}->trigger('afterPoInstall', 'courier');
 }
 
 =item setEnginePermissions()
@@ -236,7 +230,7 @@ sub setEnginePermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoSetEnginePermissions');
+	my $rs = $self->{'eventManager'}->trigger('beforePoSetEnginePermissions');
 	return $rs if $rs;
 
 	$rs = setRights(
@@ -249,10 +243,10 @@ sub setEnginePermissions
 	);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoSetEnginePermissions');
+	$self->{'eventManager'}->trigger('afterPoSetEnginePermissions');
 }
 
-=head1 HOOK FUNCTIONS
+=head1 EVENT LISTENERS
 
 =over 4
 
@@ -260,11 +254,11 @@ sub setEnginePermissions
 
  Add maildrop MDA in Postfix configuration files.
 
- Filter hook function acting on the following hooks
+ Listener which listen on the following events
   - beforeMtaBuildMainCfFile
   - beforeMtaBuildMasterCfFile
 
- This filter hook function is reponsible to add the maildrop deliver in Postfix configuration files.
+ This listener is reponsible to add the maildrop deliver in Postfix configuration files.
 
  Param string $fileContent Configuration file content
  Param string $fileName Configuration file name
@@ -323,14 +317,14 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'po'} = Servers::po::courier->getInstance();
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforePodInitInstaller', $self, 'courier'
-	) and fatal('courier - beforePoInitInstaller hook has failed');
+	) and fatal('courier - beforePoInitInstaller has failed');
 
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -350,9 +344,9 @@ sub _init
 		}
 	}
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterPodInitInstaller', $self, 'courier'
-	) and fatal('courier - afterPoInitInstaller hook has failed');
+	) and fatal('courier - afterPoInitInstaller has failed');
 
 	$self;
 }
@@ -370,7 +364,7 @@ sub _bkpConfFile($$)
 {
 	my ($self, $filePath) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $filePath);
+	my $rs = $self->{'eventManager'}->trigger('beforePoBkpConfFile', $filePath);
 	return $rs if $rs;
 
 	if(-f $filePath) {
@@ -387,7 +381,7 @@ sub _bkpConfFile($$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterPoBkpConfFile', $filePath);
+	$self->{'eventManager'}->trigger('afterPoBkpConfFile', $filePath);
 }
 
 =item _setupSqlUser()
@@ -407,7 +401,7 @@ sub _setupSqlUser
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
+	my $rs = $self->{'eventManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
 	# Removing any old SQL user (including privileges)
@@ -442,7 +436,7 @@ sub _setupSqlUser
 		return 1;
 	}
 
-	$self->{'hooksManager'}->trigger('afterPoSetupDb');
+	$self->{'eventManager'}->trigger('afterPoSetupDb');
 }
 
 =item _overrideAuthdaemonInitScript()
@@ -536,7 +530,7 @@ sub _buildConf
 		# Loat template
 
 		my $cfgTpl;
-		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'courier', $_, \$cfgTpl, $data);
+		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', $_, \$cfgTpl, $data);
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -549,12 +543,12 @@ sub _buildConf
 
 		# Build file
 
-		$rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
+		$rs = $self->{'eventManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
 		$cfgTpl = process($data, $cfgTpl);
 
-		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
+		$rs = $self->{'eventManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
 		# Store file
@@ -595,7 +589,7 @@ sub _buildAuthdaemonrcFile
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, {});
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, {});
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -608,12 +602,12 @@ sub _buildAuthdaemonrcFile
 
 	# Build file
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc');
+	$rs = $self->{'eventManager'}->trigger('beforePoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc');
 	return $rs if $rs;
 
 	$cfgTpl =~ s/authmodulelist=".*"/authmodulelist="authmysql authpam"/;
 
-	$rs = $self->{'hooksManager'}->trigger('afterPoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc');
+	$rs = $self->{'eventManager'}->trigger('afterPoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc');
 	return $rs if $rs;
 
 	# Store file
@@ -665,7 +659,7 @@ sub _buildSslConfFiles
 			# Load template
 
 			my $cfgTpl;
-			my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, {});
+			my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, {});
 			return $rs if $rs;
 
 			unless(defined $cfgTpl) {
@@ -678,7 +672,7 @@ sub _buildSslConfFiles
 
 			# Build file
 
-			$rs = $self->{'hooksManager'}->trigger('beforePoBuildSslConfFile', \$cfgTpl, $_);
+			$rs = $self->{'eventManager'}->trigger('beforePoBuildSslConfFile', \$cfgTpl, $_);
 			return $rs if $rs;
 
 			if($cfgTpl =~ m/^TLS_CERTFILE=/msg) {
@@ -687,7 +681,7 @@ sub _buildSslConfFiles
 				$cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
 			}
 
-			$rs = $self->{'hooksManager'}->trigger('afterPoBuildSslConfFile', \$cfgTpl, $_);
+			$rs = $self->{'eventManager'}->trigger('afterPoBuildSslConfFile', \$cfgTpl, $_);
 			return $rs if $rs;
 
 			# Store file
@@ -740,7 +734,7 @@ sub _saveConf
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoSaveConf', \$cfg, 'courier.old.data');
+	$rs = $self->{'eventManager'}->trigger('beforePoSaveConf', \$cfg, 'courier.old.data');
 	return $rs if $rs;
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/courier.old.data");
@@ -757,7 +751,7 @@ sub _saveConf
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoSaveConf', 'courier.old.data');
+	$self->{'eventManager'}->trigger('afterPoSaveConf', 'courier.old.data');
 }
 
 =item _migrateFromDovecot()
@@ -772,7 +766,7 @@ sub _migrateFromDovecot
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromDovecot');
+	my $rs = $self->{'eventManager'}->trigger('beforePoMigrateFromDovecot');
 	return $rs if $rs;
 
 	my $binPath = "$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
@@ -830,7 +824,7 @@ sub _migrateFromDovecot
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterPoMigrateFromDovecot');
+	$self->{'eventManager'}->trigger('afterPoMigrateFromDovecot');
 }
 
 =item _oldEngineCompatibility()
@@ -845,7 +839,7 @@ sub _oldEngineCompatibility
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoOldEngineCompatibility');
+	my $rs = $self->{'eventManager'}->trigger('beforePoOldEngineCompatibility');
 	return $rs if $rs;
 
 	# authuserdb module is no longer used. We ensure that the userdb file is free of any old entry.
@@ -872,7 +866,7 @@ sub _oldEngineCompatibility
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterPodOldEngineCompatibility');
+	$self->{'eventManager'}->trigger('afterPodOldEngineCompatibility');
 }
 
 =back

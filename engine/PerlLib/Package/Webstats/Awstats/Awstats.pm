@@ -35,7 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::TemplateParser;
 use iMSCP::Dir;
@@ -337,7 +337,7 @@ sub _init
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
 	# Register event listener which is responsible to add Awstats configuration snippet in Apache vhost file
-	iMSCP::HooksManager->getInstance()->register('afterHttpdBuildConf', sub { $self->_addAwstatsSection(@_); });
+	iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', sub { $self->_addAwstatsSection(@_); });
 
 	$self;
 }

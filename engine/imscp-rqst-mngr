@@ -34,7 +34,7 @@ use lib "$FindBin::Bin", "$FindBin::Bin/PerlLib", "$FindBin::Bin/PerlVendor";
 
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use MIME::Base64;
 
@@ -131,7 +131,7 @@ sub _process
 sub run
 {
 	# Process plugins
-	# Should always be processed first to allow plugins to register their listeners on the hooks manager
+	# Should always be processed first to allow plugins to register their listeners on the event manager
 	my $rs = _process(
 		'Plugin',
 		"
@@ -148,7 +148,7 @@ sub run
 		"
 	);
 
-	$rs ||= iMSCP::HooksManager->getInstance()->trigger('beforeDispatchRequest');
+	$rs ||= iMSCP::EventManager->getInstance()->trigger('beforeDispatchRequest');
 
 	# Process toadd|tochange SSL certificates tasks
 	$rs ||= _process(
@@ -527,7 +527,7 @@ sub run
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterDispatchRequest', $rs);
+	iMSCP::EventManager->getInstance()->trigger('afterDispatchRequest', $rs);
 
 	$rs;
 }

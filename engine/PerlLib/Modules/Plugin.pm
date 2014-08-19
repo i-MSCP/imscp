@@ -38,7 +38,7 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
 use iMSCP::Database;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use version;
 use JSON;
 use parent 'Common::Object';
@@ -139,7 +139,7 @@ sub _init
 {
 	my $self = $_[0];
 
- 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+ 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
  	$self->{'db'} = iMSCP::Database->factory();
 
 	$self;
@@ -189,11 +189,11 @@ sub _install($$)
 {
 	my ($self, $pluginName) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('onBeforeInstallPlugin', $pluginName);
+	my $rs = $self->{'eventManager'}->trigger('onBeforeInstallPlugin', $pluginName);
 
 	$rs ||= $self->_exec($pluginName, 'install');
 
-	$rs ||= $self->{'hooksManager'}->trigger('onAfterInstallPlugin', $pluginName);
+	$rs ||= $self->{'eventManager'}->trigger('onAfterInstallPlugin', $pluginName);
 
 	$rs ||= $self->_enable($pluginName);
 
@@ -213,11 +213,11 @@ sub _uninstall($$)
 {
 	my ($self, $pluginName) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('onBeforeUninstallPlugin', $pluginName);
+	my $rs = $self->{'eventManager'}->trigger('onBeforeUninstallPlugin', $pluginName);
 
 	$rs ||= $self->_exec($pluginName, 'uninstall');
 
-	$rs ||= $self->{'hooksManager'}->trigger('onAfterUninstallPlugin', $pluginName);
+	$rs ||= $self->{'eventManager'}->trigger('onAfterUninstallPlugin', $pluginName);
 
 	$rs;
 }
@@ -235,11 +235,11 @@ sub _enable($$)
 {
 	my ($self, $pluginName) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('onBeforeEnablePlugin', $pluginName);
+	my $rs = $self->{'eventManager'}->trigger('onBeforeEnablePlugin', $pluginName);
 
 	$rs ||= $self->_exec($pluginName, 'enable');
 
-	$rs ||= $self->{'hooksManager'}->trigger('onAfterEnablePlugin', $pluginName);
+	$rs ||= $self->{'eventManager'}->trigger('onAfterEnablePlugin', $pluginName);
 
 	$rs;
 }
@@ -257,11 +257,11 @@ sub _disable($$)
 {
 	my ($self, $pluginName) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('onBeforeDisablePlugin', $pluginName);
+	my $rs = $self->{'eventManager'}->trigger('onBeforeDisablePlugin', $pluginName);
 
 	$rs ||= $self->_exec($pluginName, 'disable');
 
-	$rs ||= $self->{'hooksManager'}->trigger('onAfterDisablePlugin', $pluginName);
+	$rs ||= $self->{'eventManager'}->trigger('onAfterDisablePlugin', $pluginName);
 
 	$rs;
 }
@@ -281,7 +281,7 @@ sub _change($$)
 
 	my $rs = $self->_disable($pluginName);
 
-	$rs ||= $self->{'hooksManager'}->trigger('onBeforeChangePlugin', $pluginName);
+	$rs ||= $self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
 
 	$rs ||= $self->_exec($pluginName, 'change');
 
@@ -301,7 +301,7 @@ sub _change($$)
 		}
 	}
 
-	$rs ||= $self->{'hooksManager'}->trigger('onAfterChangePlugin', $pluginName);
+	$rs ||= $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
 
 	$rs ||= $self->_enable($pluginName);
 
@@ -323,7 +323,7 @@ sub _update($$)
 
 	my $rs = $self->_disable($pluginName);
 
-	$rs ||= $self->{'hooksManager'}->trigger('onBeforeUpdatePlugin', $pluginName);
+	$rs ||= $self->{'eventManager'}->trigger('onBeforeUpdatePlugin', $pluginName);
 
 	my $info = decode_json($self->{'plugin_info'});
 
@@ -344,7 +344,7 @@ sub _update($$)
 		}
 	}
 
-	$rs ||= $self->{'hooksManager'}->trigger('onAfterUpdatePlugin', $pluginName);
+	$rs ||= $self->{'eventManager'}->trigger('onAfterUpdatePlugin', $pluginName);
 
 	$rs ||= $self->_enable($pluginName);
 
@@ -364,11 +364,11 @@ sub _run($$)
 {
 	my ($self, $pluginName) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('onBeforeRunPlugin', $pluginName);
+	my $rs = $self->{'eventManager'}->trigger('onBeforeRunPlugin', $pluginName);
 
 	$rs ||= $self->_exec($pluginName, 'run');
 
-	$rs ||= $self->{'hooksManager'}->trigger('onAfterRunPlugin', $pluginName);
+	$rs ||= $self->{'eventManager'}->trigger('onAfterRunPlugin', $pluginName);
 
 	$rs;
 }
@@ -405,7 +405,7 @@ sub _exec($$$;$$)
 
 	eval {
 		$pluginInstance = $pluginClass->getInstance(
-			'hooksManager' => $self->{'hooksManager'}, 'action' => $self->{'action'}
+			'eventManager' => $self->{'eventManager'}, 'action' => $self->{'action'}
 		);
 	};
 

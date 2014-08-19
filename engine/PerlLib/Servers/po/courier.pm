@@ -38,7 +38,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -54,21 +54,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hooks.
+ Register setup event listeners
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
- Return int 0 on success, other on failure
+ Param iMSCP::EventManager
+ Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Servers::po::courier::installer;
-	Servers::po::courier::installer->getInstance()->registerSetupHooks($hooksManager);
+	Servers::po::courier::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item preinstall()
@@ -83,13 +83,13 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoPreinstall', 'courier');
+	my $rs = $self->{'eventManager'}->trigger('beforePoPreinstall', 'courier');
 	return $rs if $rs;
 
 	$rs = $self->stop();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoPreinstall', 'courier');
+	$self->{'eventManager'}->trigger('afterPoPreinstall', 'courier');
 }
 
 =item install()
@@ -118,14 +118,14 @@ sub postinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'courier');
+	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'courier');
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'IMAP/POP3' ]; 0; }
 	);
 
-	$self->{'hooksManager'}->trigger('afterPoPostinstall', 'courier');
+	$self->{'eventManager'}->trigger('afterPoPostinstall', 'courier');
 }
 
 =item uninstall()
@@ -140,7 +140,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'courier');
+	my $rs = $self->{'eventManager'}->trigger('beforePoUninstall', 'courier');
 	return $rs if $rs;
 
 	require Servers::po::courier::uninstaller;
@@ -151,7 +151,7 @@ sub uninstall
 	$rs = $self->restart();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoUninstall', 'courier');
+	$self->{'eventManager'}->trigger('afterPoUninstall', 'courier');
 }
 
 =item setEnginePermissions()
@@ -277,7 +277,7 @@ sub start
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoStart');
+	my $rs = $self->{'eventManager'}->trigger('beforePoStart');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'AUTHDAEMON_SNAME'}, 'authdaemon');
@@ -300,7 +300,7 @@ sub start
 	error("Unable to start $self->{'config'}->{'IMAPD_SSL_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoStart');
+	$self->{'eventManager'}->trigger('afterPoStart');
 }
 
 =item stop()
@@ -315,7 +315,7 @@ sub stop
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoStop');
+	my $rs = $self->{'eventManager'}->trigger('beforePoStop');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'AUTHDAEMON_SNAME'}, 'authdaemon');
@@ -338,7 +338,7 @@ sub stop
 	error("Unable to stop $self->{'config'}->{'IMAPD_SSL_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoStop');
+	$self->{'eventManager'}->trigger('afterPoStop');
 }
 
 =item restart()
@@ -353,7 +353,7 @@ sub restart
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoRestart');
+	my $rs = $self->{'eventManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'AUTHDAEMON_SNAME'}, 'authdaemon');
@@ -376,7 +376,7 @@ sub restart
 	error("Unable to restart $self->{'config'}->{'IMAPD_SSL_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoRestart');
+	$self->{'eventManager'}->trigger('afterPoRestart');
 }
 
 =item getTraffic()
@@ -474,7 +474,7 @@ sub getTraffic
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed (put in database) are zeroed by the
 	# traffic processor script.
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'afterVrlTraffic',
 		sub {
 			if(-f "$variableDataDir/po_traffic.db") {
@@ -508,11 +508,11 @@ sub _init
 
 	$self->{'restart'} = 0;
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforePoInit', $self, 'courier'
-	) and fatal('courier - beforePoInit hook has failed');
+	) and fatal('courier - beforePoInit has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -520,9 +520,9 @@ sub _init
 
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/courier.data";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterPoInit', $self, 'courier'
-	) and fatal('courier - afterPoInit hook has failed');
+	) and fatal('courier - afterPoInit has failed');
 
 	$self;
 }

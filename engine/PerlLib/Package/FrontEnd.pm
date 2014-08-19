@@ -37,7 +37,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Execute;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
 use File::Basename;
@@ -51,21 +51,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Package::FrontEnd::Installer;
-	Package::FrontEnd::Installer->getInstance()->registerSetupHooks($hooksManager);
+	Package::FrontEnd::Installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item preinstall()
@@ -80,13 +80,13 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndPreInstall');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndPreInstall');
 	return $rs if $rs;
 
 	$rs = $self->stop();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndPreInstall');
+	$self->{'eventManager'}->trigger('afterFrontEndPreInstall');
 }
 
 =item install()
@@ -101,14 +101,14 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndInstall');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndInstall');
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
 	$rs = Package::FrontEnd::Installer->getInstance()->install();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndInstall');
+	$self->{'eventManager'}->trigger('afterFrontEndInstall');
 }
 
 =item postinstall()
@@ -123,14 +123,14 @@ sub postinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndPostInstall');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndPostInstall');
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'FRONTEND' ]; 0; }
 	);
 
-	$self->{'hooksManager'}->trigger('afterFrontEndPostInstall');
+	$self->{'eventManager'}->trigger('afterFrontEndPostInstall');
 }
 
 =item uninstall()
@@ -145,14 +145,14 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndUninstall');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndUninstall');
 	return $rs if $rs;
 
 	require Package::FrontEnd::Uninstaller;
 	$rs = Package::FrontEnd::Uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndUninstall');
+	$self->{'eventManager'}->trigger('afterFrontEndUninstall');
 }
 
 =item setGuiPermissions()
@@ -167,14 +167,14 @@ sub setGuiPermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndSetGuiPermissions');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndSetGuiPermissions');
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
 	$rs = Package::FrontEnd::Installer->getInstance()->setGuiPermissions();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndSetGuiPermissions');
+	$self->{'eventManager'}->trigger('afterFrontEndSetGuiPermissions');
 }
 
 =item setEnginePermissions()
@@ -189,14 +189,14 @@ sub setEnginePermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndSetEnginePermissions');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndSetEnginePermissions');
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
 	$rs = Package::FrontEnd::Installer->getInstance()->setEnginePermissions();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndSetEnginePermissions');
+	$self->{'eventManager'}->trigger('afterFrontEndSetEnginePermissions');
 }
 
 =item enableSites($sites)
@@ -208,11 +208,11 @@ sub setEnginePermissions
 
 =cut
 
-sub enableSites($$)
+sub enableSites
 {
 	my ($self, $sites) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeEnableFrontEndSites', \$sites);
+	my $rs = $self->{'eventManager'}->trigger('beforeEnableFrontEndSites', \$sites);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -237,7 +237,7 @@ sub enableSites($$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterEnableFrontEndSites', $sites);
+	$self->{'eventManager'}->trigger('afterEnableFrontEndSites', $sites);
 }
 
 =item disableSites($sites)
@@ -249,11 +249,11 @@ sub enableSites($$)
 
 =cut
 
-sub disableSites($$)
+sub disableSites
 {
 	my ($self, $sites) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeDisableFrontEndSites', \$sites);
+	my $rs = $self->{'eventManager'}->trigger('beforeDisableFrontEndSites', \$sites);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -275,7 +275,7 @@ sub disableSites($$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterDisableFrontEndSites', $sites);
+	$self->{'eventManager'}->trigger('afterDisableFrontEndSites', $sites);
 }
 
 =item start()
@@ -290,7 +290,7 @@ sub start
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndStart');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndStart');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'});
@@ -303,7 +303,7 @@ sub start
 	error("Unable to start imscp_panel (FCGI manager) service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndStart');
+	$self->{'eventManager'}->trigger('afterFrontEndStart');
 }
 
 =item stop()
@@ -318,7 +318,7 @@ sub stop
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndStop');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndStop');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->stop("$self->{'config'}->{'HTTPD_SNAME'}");
@@ -331,7 +331,7 @@ sub stop
 	error("Unable to stop imscp_panel (FCGI manager) service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndStop');
+	$self->{'eventManager'}->trigger('afterFrontEndStop');
 }
 
 =item reload()
@@ -346,14 +346,14 @@ sub reload
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndReload');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndReload');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'});
 	error("Unable to reload $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndReload');
+	$self->{'eventManager'}->trigger('afterFrontEndReload');
 }
 
 =item restart()
@@ -368,7 +368,7 @@ sub restart
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndRestart');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndRestart');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'HTTPD_SNAME'});
@@ -381,7 +381,7 @@ sub restart
 	error("Unable to restart imscp_panel (FCGI manager) service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndRestart');
+	$self->{'eventManager'}->trigger('afterFrontEndRestart');
 }
 
 =item buildConfFile($file, [\%data], [\%options])
@@ -395,7 +395,7 @@ sub restart
 
 =cut
 
-sub buildConfFile($$;$$)
+sub buildConfFile
 {
 	my ($self, $file, $tplVars, $options) = @_;
 
@@ -407,7 +407,7 @@ sub buildConfFile($$;$$)
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'frontend', $name, \$cfgTpl, $tplVars);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'frontend', $name, \$cfgTpl, $tplVars);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -422,7 +422,7 @@ sub buildConfFile($$;$$)
 
 	# Build file
 
-	$rs = $self->{'hooksManager'}->trigger('beforeFrontEndBuildConfFile', \$cfgTpl, "$name$suffix", $tplVars, $options);
+	$rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildConfFile', \$cfgTpl, "$name$suffix", $tplVars, $options);
 	return $rs if $rs;
 
 	$cfgTpl = $self->_buildConf($cfgTpl, "$name$suffix", $tplVars);
@@ -430,7 +430,7 @@ sub buildConfFile($$;$$)
 
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
-	$rs = $self->{'hooksManager'}->trigger('afterFrontEndBuildConfFile', \$cfgTpl, "$name$suffix", $tplVars, $options);
+	$rs = $self->{'eventManager'}->trigger('afterFrontEndBuildConfFile', \$cfgTpl, "$name$suffix", $tplVars, $options);
 	return $rs if $rs;
 
 	# Store file
@@ -482,7 +482,7 @@ sub _init
 
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/nginx.data";
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self;
 }
@@ -498,16 +498,16 @@ sub _init
 
 =cut
 
-sub _buildConf($$$$)
+sub _buildConf
 {
 	my ($self, $cfgTpl, $filename, $tplVars) = @_;
 
-	$self->{'hooksManager'}->trigger('beforeFrontEndBuildConf', \$cfgTpl, $filename, $tplVars);
+	$self->{'eventManager'}->trigger('beforeFrontEndBuildConf', \$cfgTpl, $filename, $tplVars);
 
 	$cfgTpl = process($tplVars, $cfgTpl);
 	return undef if ! $cfgTpl;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndBuildConf', \$cfgTpl, $filename, $tplVars);
+	$self->{'eventManager'}->trigger('afterFrontEndBuildConf', \$cfgTpl, $filename, $tplVars);
 
 	$cfgTpl;
 }

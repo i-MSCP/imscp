@@ -36,7 +36,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Service;
@@ -52,21 +52,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hooks
+ Register setup event listeners
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Param iMSCP::EventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Servers::ftpd::proftpd::installer;
-	Servers::ftpd::proftpd::installer->getInstance()->registerSetupHooks($hooksManager);
+	Servers::ftpd::proftpd::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item preinstall()
@@ -81,13 +81,13 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdPreinstall');
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdPreinstall');
 	return $rs if $rs;
 
 	$rs = $self->stop();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFtpdPreinstall');
+	$self->{'eventManager'}->trigger('afterFtpdPreinstall');
 }
 
 =item install()
@@ -116,14 +116,14 @@ sub postinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdPostInstall', 'proftpd');
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdPostInstall', 'proftpd');
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'FTP' ]; 0; }
 	);
 
-	$self->{'hooksManager'}->trigger('afterFtpdPostInstall', 'proftpd');
+	$self->{'eventManager'}->trigger('afterFtpdPostInstall', 'proftpd');
 }
 
 =item uninstall()
@@ -138,14 +138,14 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdUninstall', 'proftpd');
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdUninstall', 'proftpd');
 	return $rs if $rs;
 
 	require Servers::ftpd::proftpd::uninstaller;
 	$rs = Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
-	$rs = $self->{'hooksManager'}->trigger('afterFtpdUninstall', 'proftpd');
+	$rs = $self->{'eventManager'}->trigger('afterFtpdUninstall', 'proftpd');
 	return $rs if $rs;
 
 	$self->{'restart'} = 1;
@@ -157,7 +157,7 @@ sub uninstall
 
  Process addUser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by User module
+ Param hash \%data Data as provided by User module
  Return int 0 on success, other on failure
 
 =cut
@@ -166,7 +166,7 @@ sub addUser
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdAddUser', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdAddUser', $data);
 	return $rs if $rs;
 
 	my $db = iMSCP::Database->factory();
@@ -196,7 +196,7 @@ sub addUser
 		return 1;
 	}
 
-	$self->{'hooksManager'}->trigger('AfterFtpdAddUser', $data);
+	$self->{'eventManager'}->trigger('AfterFtpdAddUser', $data);
 }
 
 =item start()
@@ -211,14 +211,14 @@ sub start
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStart');
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdStart');
 	return $rs if $rs;
 
 	$rs =  iMSCP::Service->getInstance()->start($self->{'config'}->{'FTPD_SNAME'});
 	error("Unable to start $self->{'config'}->{'FTPD_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFtpdStart');
+	$self->{'eventManager'}->trigger('afterFtpdStart');
 }
 
 =item stop()
@@ -233,14 +233,14 @@ sub stop
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStop');
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdStop');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'FTPD_SNAME'});
 	error("Unable to stop $self->{'config'}->{'FTPD_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFtpdStop');
+	$self->{'eventManager'}->trigger('afterFtpdStop');
 }
 
 =item restart()
@@ -255,14 +255,14 @@ sub restart
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdRestart');
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdRestart');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'FTPD_SNAME'});
 	error("Unable to restart $self->{'config'}->{'FTPD_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFtpdRestart');
+	$self->{'eventManager'}->trigger('afterFtpdRestart');
 }
 
 =item getTraffic()
@@ -302,7 +302,7 @@ sub getTraffic
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed (put in database) are zeroed by the
 	# traffic processor script.
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'afterVrlTraffic',
 		sub {
 			if(-f $trafficDbPath) {
@@ -324,7 +324,7 @@ sub getTraffic
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::ftpd::proftpd
 
@@ -337,11 +337,11 @@ sub _init
 	$self->{'start'} = 0;
 	$self->{'restart'} = 0;
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - beforeFtpdInit hook has failed');
+	) and fatal('proftpd - beforeFtpdInit has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -351,9 +351,9 @@ sub _init
 
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/proftpd.data";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - afterFtpdInit hook has failed');
+	) and fatal('proftpd - afterFtpdInit has failed');
 
 	$self;
 }

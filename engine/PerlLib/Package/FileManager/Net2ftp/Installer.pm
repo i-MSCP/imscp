@@ -35,6 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Composer;
@@ -69,7 +70,7 @@ sub preinstall
 
  Process install tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -120,7 +121,7 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self;
 }
@@ -167,7 +168,7 @@ sub _installFiles
 
  Generate MD5 salt string
 
- Return int 0
+ Return string
 
 =cut
 
@@ -183,7 +184,7 @@ sub _generateMd5SaltString
 
  Build Net2ftp configuration file
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -205,7 +206,7 @@ sub _buildConfig
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'net2ftp', 'settings.inc.php', \$cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'net2ftp', 'settings.inc.php', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {

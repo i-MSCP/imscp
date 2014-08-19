@@ -36,7 +36,7 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -55,21 +55,21 @@ filters.
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Package::Roundcube::Installer;
-	Package::Roundcube::Installer->getInstance()->registerSetupHooks($hooksManager);
+	Package::Roundcube::Installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item preinstall()
@@ -137,7 +137,7 @@ sub setPermissionsListener
 
 =cut
 
-sub deleteMail($$)
+sub deleteMail
 {
 	my ($self, $data) = @_;
 
@@ -196,7 +196,7 @@ sub _init
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
 
 	# Roundcube permissions must be set after FrontEnd base permissions
-	iMSCP::HooksManager->getInstance()->register(
+	iMSCP::EventManager->getInstance()->register(
 		'afterFrontEndSetGuiPermissions', sub { $self->setPermissionsListener(@_) }
 	);
 

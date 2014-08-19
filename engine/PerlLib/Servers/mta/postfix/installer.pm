@@ -38,7 +38,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::Dir;
@@ -60,28 +60,20 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hooks.
+ Register setup event listeners
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
- Return int 0 on success, other on failure
+ Param iMSCP::EventManager
+ Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	my $rs = $hooksManager->trigger('beforeMtaRegisterSetupHooks', $hooksManager, 'postfix');
-	return $rs if $rs;
-
-	$rs = $hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askPostfix(@_) }); 0; }
-	);
-	return $rs if $rs;
-
-	$hooksManager->trigger('afterMtaRegisterSetupHooks', $hooksManager, 'postfix');
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askPostfix(@_) }; 0; });
 }
 
 =item askPostfix($dialog)
@@ -175,7 +167,7 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPreInstall', 'postfix');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaPreInstall', 'postfix');
 
 	$rs = $self->_addUsersAndGroups();
 	return $rs if $rs;
@@ -183,7 +175,7 @@ sub preinstall
 	$rs = $self->_makeDirs();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaPreInstall', 'postfix');
+	$self->{'eventManager'}->trigger('afterMtaPreInstall', 'postfix');
 }
 
 =item install()
@@ -198,7 +190,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaInstall', 'postfix');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaInstall', 'postfix');
 	return $rs if $rs;
 
 	$rs = $self->_setupSqlUser();
@@ -219,7 +211,7 @@ sub install
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaInstall', 'postfix');
+	$self->{'eventManager'}->trigger('afterMtaInstall', 'postfix');
 }
 
 =item setEnginePermissions()
@@ -240,7 +232,7 @@ sub setEnginePermissions
 	my $mtaUName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
 	my $mtaGName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaSetEnginePermissions');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaSetEnginePermissions');
 	return $rs if $rs;
 
 	# eg. /etc/postfix/imscp
@@ -284,7 +276,7 @@ sub setEnginePermissions
 	);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaSetEnginePermissions');
+	$self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
 }
 
 =back
@@ -305,13 +297,13 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeMtaInitInstaller', $self, 'postfix'
-	) and fatal('postfix - beforeMtaInitInstaller hook has failed');
+	) and fatal('postfix - beforeMtaInitInstaller has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -332,9 +324,9 @@ sub _init
 		}
 	}
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterMtaInitInstaller', $self, 'postfix'
-	) and fatal('postfix - afterMtaInitInstaller hook has failed');
+	) and fatal('postfix - afterMtaInitInstaller has failed');
 
 	$self;
 }
@@ -371,7 +363,7 @@ sub _addUsersAndGroups
 
 	my @userToGroups = ();
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups);
 	return $rs if $rs;
 
 	# Create groups
@@ -413,7 +405,7 @@ sub _addUsersAndGroups
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaAddUsersAndGroups');
+	$self->{'eventManager'}->trigger('afterMtaAddUsersAndGroups');
 }
 
 =item _makeDirs()
@@ -456,7 +448,7 @@ sub _makeDirs
 		]
 	);
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaMakeDirs', \@directories);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaMakeDirs', \@directories);
 	return $rs if $rs;
 
 	for(@directories) {
@@ -468,7 +460,7 @@ sub _makeDirs
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaMakeDirs');
+	$self->{'eventManager'}->trigger('afterMtaMakeDirs');
 }
 
 =item _setupSqlUser()
@@ -493,7 +485,7 @@ sub _setupSqlUser()
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
 	# Removing any old SQL user (including privileges)
@@ -528,7 +520,7 @@ sub _setupSqlUser()
 		return 1;
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaSetupDb');
+	$self->{'eventManager'}->trigger('afterMtaSetupDb');
 }
 
 =item _buildConf()
@@ -543,7 +535,7 @@ sub _buildConf
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildConf');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaBuildConf');
 	return $rs if $rs;
 
 	$rs = $self->_buildMainCfFile();
@@ -555,7 +547,7 @@ sub _buildConf
 	$rs = $self->_buildSaslConfFile();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaBuildConf');
+	$self->{'eventManager'}->trigger('afterMtaBuildConf');
 }
 
 =item _buildLookupTables()
@@ -573,7 +565,7 @@ sub _buildLookupTables
 	my $dir = iMSCP::Dir->new('dirname' => $self->{'lkptsDir'});
 	my @lookupTables = $dir->getFiles();
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildLookupTables', \@lookupTables);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaBuildLookupTables', \@lookupTables);
 	return $rs if $rs;
 
 	for(@lookupTables) {
@@ -595,7 +587,7 @@ sub _buildLookupTables
 		$self->{'mta'}->{'postmap'}->{"$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$_"} = 'installer';
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaBuildLookupTables', \@lookupTables);
+	$self->{'eventManager'}->trigger('afterMtaBuildLookupTables', \@lookupTables);
 }
 
 =item _buildAliasesDb()
@@ -610,7 +602,7 @@ sub _buildAliasesDb
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildAliases');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaBuildAliases');
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -620,7 +612,7 @@ sub _buildAliasesDb
 	error("Error while executing $self->{'config'}->{'CMD_NEWALIASES'}") if ! $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaBuildAliases');
+	$self->{'eventManager'}->trigger('afterMtaBuildAliases');
 }
 
 =item _saveConf()
@@ -649,7 +641,7 @@ sub _saveConf
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaSaveConf', \$content, 'postfix.old.data');
+	$rs = $self->{'eventManager'}->trigger('beforeMtaSaveConf', \$content, 'postfix.old.data');
 	return $rs if $rs;
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/postfix.old.data");
@@ -666,7 +658,7 @@ sub _saveConf
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaSaveConf', 'postfix.old.data');
+	$self->{'eventManager'}->trigger('afterMtaSaveConf', 'postfix.old.data');
 }
 
 =item _bkpConfFile($cfgFile)
@@ -681,7 +673,7 @@ sub _bkpConfFile($$)
 {
 	my ($self, $cfgFile) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBkpConfFile', $cfgFile);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
 	if(-f $cfgFile) {
@@ -698,7 +690,7 @@ sub _bkpConfFile($$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaBkpConfFile', $cfgFile);
+	$self->{'eventManager'}->trigger('afterMtaBkpConfFile', $cfgFile);
 }
 
 =item _buildMainCfFile()
@@ -752,7 +744,7 @@ sub _buildMainCfFile
 	# Load template
 
 	my $cfgTpl;
-	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'main.cf', \$cfgTpl, $data);
+	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'main.cf', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -765,7 +757,7 @@ sub _buildMainCfFile
 
 	# Build file
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
+	$rs = $self->{'eventManager'}->trigger('beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 	return $rs if $rs;
 
 	$cfgTpl = process($data, $cfgTpl);
@@ -789,7 +781,7 @@ sub _buildMainCfFile
 		$cfgTpl =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
+	$rs = $self->{'eventManager'}->trigger('afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 	return $rs if $rs;
 
 	# Store file
@@ -839,7 +831,7 @@ sub _buildMasterCfFile
 	# Load template
 
 	my $cfgTpl;
-	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'master.cf', \$cfgTpl, $data);
+	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'master.cf', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -852,12 +844,12 @@ sub _buildMasterCfFile
 
 	# Build file
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
+	$rs = $self->{'eventManager'}->trigger('beforeMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
 	return $rs if $rs;
 
 	$cfgTpl = process($data, $cfgTpl);
 
-	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
+	$rs = $self->{'eventManager'}->trigger('afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
 	return $rs if $rs;
 
 	# Store file
@@ -911,7 +903,7 @@ sub _buildSaslConfFile()
 	# Load template
 
 	my $cfgTpl;
-	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'smtpd.conf', \$cfgTpl, $data);
+	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'smtpd.conf', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -924,12 +916,12 @@ sub _buildSaslConfFile()
 
 	# Build file
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildSaslConfFile', \$cfgTpl, 'smtpd.conf');
+	$rs = $self->{'eventManager'}->trigger('beforeMtaBuildSaslConfFile', \$cfgTpl, 'smtpd.conf');
 	return $rs if $rs;
 
 	$cfgTpl = process($data, $cfgTpl);
 
-	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildaslConfFil', \$cfgTpl, 'smtpd.conf');
+	$rs = $self->{'eventManager'}->trigger('afterMtaBuildaslConfFil', \$cfgTpl, 'smtpd.conf');
 	return $rs if $rs;
 
 	# Store file
@@ -963,7 +955,7 @@ sub _oldEngineCompatibility
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaOldEngineCompatibility');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaOldEngineCompatibility');
 	return $rs if $rs;
 
 	if(-f '/etc/sasldb2') {
@@ -976,7 +968,7 @@ sub _oldEngineCompatibility
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtadOldEngineCompatibility');
+	$self->{'eventManager'}->trigger('afterMtadOldEngineCompatibility');
 }
 
 =back

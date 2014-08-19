@@ -54,22 +54,20 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	$hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
-	);
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
 =item showDialog(\%dialog)
@@ -81,7 +79,7 @@ sub registerSetupHooks($$)
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog, $rs) = (shift, shift, 0);
 	my $dnsblCheckOnly = main::setupGetQuestion('DNSBL_CHECKS_ONLY') || $self->{'config'}->{'DNSBL_CHECKS_ONLY'} ||  '';
@@ -174,12 +172,12 @@ sub _init
 
  Backup configuration file
 
- Param SCALAR Path of file to backup
+ Param string $cfgFile Path of file to backup
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 

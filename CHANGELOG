@@ -7,6 +7,7 @@ Git stable
 CONFIGS
 	Fixed: The time at which the backup script must be run is no configurable
 	Changed: The BuildDate variable is no longer set for development time
+	Renamed: hooks.d directory to listeners.d
 
 DOCS
 	Updated: INSTALL files
@@ -26,6 +27,7 @@ INSTALLER
 	Added: panel_hostname, system_hostname, panel_ssl and services_ssl reconfiguration items
 	Changed: 'hostname' configuration item to 'hostnames'
 	Moved: Control panel hostname and SSL dialogs into FrontEnd installer
+	Renamed: hook-file option to listener-file
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

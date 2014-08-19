@@ -218,7 +218,7 @@ sub msgbox
 
 sub yesno
 {
-	$_[0]->_textbox($_[1], 'yesno');
+	($_[0]->_textbox($_[1], 'yesno'))[0];
 }
 
 =item inputbox($text, $init = '')
@@ -408,7 +408,7 @@ sub set
 
 	my $return = undef;
 
-	if($option && $self->{'_opts'}->{$option}) {
+	if($option && exists $self->{'_opts'}->{$option}) {
 		$return = $self->{'_opts'}->{$option};
 		$self->{'_opts'}->{$option} = $value;
 	}

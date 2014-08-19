@@ -38,7 +38,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -58,35 +58,29 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hooks.
+ Register setup event listeners
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
- Return int 0 on success, other on failure
+ Param iMSCP::EventManager
+ Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
-		my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot');
-    	return $rs if $rs;
-
-		$rs = $hooksManager->register(
-			'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDovecot(@_) }); 0; }
+		my $rs = $eventManager->register(
+			'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askDovecot(@_) }; 0; }
 		);
 		return $rs if $rs;
 
-		$rs = $hooksManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
+		$rs = $eventManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
 		return $rs if $rs;
 
-		$rs = $hooksManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
-		return $rs if $rs;
-
-		$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
+		$eventManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
 	} else {
 		$main::imscpConfig{'PO_SERVER'} = 'no';
 		warning('i-MSCP Dovecot PO server require the Postfix MTA. Installation skipped...');
@@ -186,7 +180,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'dovecot');
+	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'dovecot');
 	return $rs if $rs;
 
 	$rs = $self->_bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
@@ -210,12 +204,12 @@ sub install
 	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoInstall', 'dovecot');
+	$self->{'eventManager'}->trigger('afterPoInstall', 'dovecot');
 }
 
 =back
 
-=head1 HOOK FUNCTIONS
+=head1 EVENT LISTENERS
 
 =over 4
 
@@ -223,11 +217,11 @@ sub install
 
  Add Dovecot SASL and LDA parameters for Postfix.
 
- Filter hook function acting on the following hooks
+ Listener which listen on the following events
   - beforeMtaBuildMainCfFile
   - beforeMtaBuildMasterCfFile
 
- This filter hook function is reponsible to add Dovecot SASL and LDA parameters in Postfix configuration files.
+ This listener is reponsible to add Dovecot SASL and LDA parameters in Postfix configuration files.
 
  Param string $fileContent Configuration file content
  Param string $fileName Configuration file name
@@ -287,14 +281,14 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'po'} = Servers::po::dovecot->getInstance();
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforePodInitInstaller', $self, 'dovecot'
-	) and fatal('dovecot - beforePoInitInstaller hook has failed');
+	) and fatal('dovecot - beforePoInitInstaller has failed');
 
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -316,9 +310,9 @@ sub _init
 
 	$self->_getVersion() and fatal('Unable to get Dovecot version');
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterPodInitInstaller', $self, 'dovecot'
-	) and fatal('dovecot - afterPoInitInstaller hook has failed');
+	) and fatal('dovecot - afterPoInitInstaller has failed');
 
 	$self;
 }
@@ -335,7 +329,7 @@ sub _getVersion
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoGetVersion');
+	my $rs = $self->{'eventManager'}->trigger('beforePoGetVersion');
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -355,7 +349,7 @@ sub _getVersion
 		return 1;
 	}
 
-	$self->{'hooksManager'}->trigger('afterPoGetVersion');
+	$self->{'eventManager'}->trigger('afterPoGetVersion');
 }
 
 =item _bkpConfFile($cfgFile)
@@ -371,7 +365,7 @@ sub _bkpConfFile($$)
 {
 	my ($self, $cfgFile) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
+	my $rs = $self->{'eventManager'}->trigger('beforePoBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
 	if(-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile") {
@@ -387,7 +381,7 @@ sub _bkpConfFile($$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterPoBkpConfFile', $cfgFile);
+	$self->{'eventManager'}->trigger('afterPoBkpConfFile', $cfgFile);
 }
 
 =item _setupSqlUser()
@@ -407,7 +401,7 @@ sub _setupSqlUser
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
+	my $rs = $self->{'eventManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
 	# Removing any SQL user (including privileges)
@@ -442,7 +436,7 @@ sub _setupSqlUser
 		return 1;
 	}
 
-	$self->{'hooksManager'}->trigger('afterPoSetupDb');
+	$self->{'eventManager'}->trigger('afterPoSetupDb');
 }
 
 =item _buildConf()
@@ -516,7 +510,7 @@ sub _buildConf
 		# Load template
 
 		my $cfgTpl;
-		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'dovecot', $_, \$cfgTpl, $data);
+		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'dovecot', $_, \$cfgTpl, $data);
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -529,12 +523,12 @@ sub _buildConf
 
 		# Build file
 
-		$rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
+		$rs = $self->{'eventManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
 		$cfgTpl = process($data, $cfgTpl);
 
-		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
+		$rs = $self->{'eventManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
 		# Store file
@@ -586,7 +580,7 @@ sub _saveConf
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoSaveConf', \$cfg, 'dovecot.old.data');
+	$rs = $self->{'eventManager'}->trigger('beforePoSaveConf', \$cfg, 'dovecot.old.data');
 	return $rs if $rs;
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/dovecot.old.data");
@@ -603,7 +597,7 @@ sub _saveConf
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoSaveConf', 'dovecot.old.data');
+	$self->{'eventManager'}->trigger('afterPoSaveConf', 'dovecot.old.data');
 }
 
 =item _migrateFromCourier()
@@ -618,7 +612,7 @@ sub _migrateFromCourier
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromCourier');
+	my $rs = $self->{'eventManager'}->trigger('beforePoMigrateFromCourier');
 	return $rs if $rs;
 
 	my $binPath = "$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
@@ -676,7 +670,7 @@ sub _migrateFromCourier
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterPoMigrateFromCourier');
+	$self->{'eventManager'}->trigger('afterPoMigrateFromCourier');
 }
 
 =item _oldEngineCompatibility()
@@ -691,10 +685,10 @@ sub _oldEngineCompatibility
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoOldEngineCompatibility');
+	my $rs = $self->{'eventManager'}->trigger('beforePoOldEngineCompatibility');
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPodOldEngineCompatibility');
+	$self->{'eventManager'}->trigger('afterPodOldEngineCompatibility');
 }
 
 =back

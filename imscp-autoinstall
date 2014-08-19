@@ -39,7 +39,7 @@ use iMSCP::Debug;
 use iMSCP::Requirements;
 use iMSCP::Dialog;
 use iMSCP::LsbRelease;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Stepper;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -72,9 +72,9 @@ $main::forcereinstall = 0;
 # Add autoinstaller specific command line options
 iMSCP::Getopt->parse(
 	qq{Usage: perl imscp-autoinstall [options]
- -b,    --build-only           Process build steps only.
- -f,    --force-reinstall      Force reinstallation of distro packages.
- -s,    --skip-packages        Do not install/update distro packages.},
+ -b,    --build-only            Process build steps only.
+ -f,    --force-reinstall       Force reinstallation of distro packages.
+ -s,    --skip-packages         Do not install/update distro packages.},
   'build-only|b' => \$main::buildonly,
   'force-reinstall|f' => \$main::forcereinstall,
   'skip-packages|s' => \$main::skippackages
@@ -98,11 +98,11 @@ if($preseedFile) {
 	undef $preseedFile;
 }
 
-# Handle the hook-file option
-my $hookFile = iMSCP::Getopt->hookFile;
-if($hookFile) {
-	require $hookFile;
-	undef $hookFile;
+# Handle the listener-file option
+my $listenerFile = iMSCP::Getopt->listenerFile;
+if($listenerFile) {
+	require $listenerFile;
+	undef $listenerFile;
 }
 
 # Handle the noprompt option
@@ -148,11 +148,11 @@ if($main::skippackages && ! iMSCP::Getopt->preseed) {
 	}
 }
 
-iMSCP::HooksManager->getInstance()->trigger('beforeInstallPreRequiredPackages') and exit 1 if ! $main::skippackages;
+iMSCP::EventManager->getInstance()->trigger('beforeInstallPreRequiredPackages') and exit 1 if ! $main::skippackages;
 
 installPreRequiredPackages() and exit 1 if ! $main::skippackages;
 
-iMSCP::HooksManager->getInstance()->trigger('afterInstallPreRequiredPackages') if ! $main::skippackages;
+iMSCP::EventManager->getInstance()->trigger('afterInstallPreRequiredPackages') if ! $main::skippackages;
 
 if(! $main::buildonly && ! $main::noprompt && $main::reconfigure eq 'none') {
 	$ENV{'DIALOGOPTS'} = "--ok-label Ok --yes-label Yes --no-label No --cancel-label Back";
@@ -167,8 +167,8 @@ if(! $main::buildonly && ! $main::noprompt && $main::reconfigure eq 'none') {
 	checkDistribution() and exit 0;
 
 	iMSCP::Dialog->factory()->set('cancel-label', 'Abort');
-	my $rs;
-	($rs, $main::buildonly) = iMSCP::Dialog->factory()->radiolist(<<EOF, ['install', 'build'], 'install');
+
+	(my $rs, $main::buildonly) = iMSCP::Dialog->factory()->radiolist(<<EOF, ['install', 'build'], 'install');
 
 \\Z4\\Zb\\ZuInstaller Options\\Zn
 
@@ -180,7 +180,7 @@ Please, choose an option:
 EOF
 
 	exit if $rs == 1 || $rs == 255; # (CANCEL, ESC)
-	$main::buildonly = $main::buildonly eq 'build' ? 1 : 0;
+	$main::buildonly = ($main::buildonly eq 'build') ? 1 : 0;
 }
 
 ## Build steps
@@ -205,7 +205,7 @@ my @steps = (
 # Remove the uninstall/install packages steps in case the --skippackages option is set to true
 splice(@steps, 1, 2,) if $main::skippackages;
 
-iMSCP::HooksManager->getInstance()->trigger('beforeBuildSteps', \@steps) and exit 1;
+iMSCP::EventManager->getInstance()->trigger('beforeBuildSteps', \@steps) and exit 1;
 
 my $rs = 0;
 my $step = 1;
@@ -217,7 +217,7 @@ for (@steps) {
 	$step++;
 }
 
-iMSCP::HooksManager->getInstance()->trigger('afterBuildSteps') and exit 1;
+iMSCP::EventManager->getInstance()->trigger('afterBuildSteps') and exit 1;
 
 my @warnings = getMessageByType('warn');
 my @errors = getMessageByType('error');
@@ -266,16 +266,16 @@ EOF
 	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
 
 	@steps = (
-		[\&doImscpBackup,       'Backup existing i-MSCP installation if any'],
-		[\&installTmp,          'Installing i-MSCP files on file system'],
-		[\&setupBoot,           'Setup bootstrapping'],
-		[\&setupRegisterHooks,  'Registering servers/packages setup hooks'],
-		[\&setupDialog,         'Processing i-MSCP setup dialog if any'],
-		[\&setupTasks,          'Processing i-MSCP setup tasks'],
-		[\&removeTmp,           'Removing temporary files']
+		[\&doImscpBackup,           'Backup existing i-MSCP installation if any'],
+		[\&installTmp,              'Installing i-MSCP files on file system'],
+		[\&setupBoot,               'Setup bootstrapping'],
+		[\&setupRegisterListeners,  'Registering servers/packages setup event listeners'],
+		[\&setupDialog,             'Processing i-MSCP setup dialog if any'],
+		[\&setupTasks,              'Processing i-MSCP setup tasks'],
+		[\&removeTmp,               'Removing temporary files']
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeInstall', \@steps) and exit 1;
+	iMSCP::EventManager->getInstance()->trigger('beforeInstall', \@steps) and exit 1;
 
 	$step = 1;
 	$nbSteps = scalar @steps;
@@ -286,7 +286,7 @@ EOF
 		$step++;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterInstall') and exit 1;
+	iMSCP::EventManager->getInstance()->trigger('afterInstall') and exit 1;
 
 	my $port = ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://')
 		? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}

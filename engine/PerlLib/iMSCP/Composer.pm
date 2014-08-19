@@ -39,7 +39,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::TemplateParser;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Dialog;
 use Cwd;
@@ -94,7 +94,7 @@ sub _init
 
 	$self->{'toInstall'} = [];
 
-	$self->{'wrkDir'} = "$main::imscpConfig{'CACHE_DATA_DIR'}/addons";
+	$self->{'wrkDir'} = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages";
 
 	# Override default composer home directory
 	$ENV{'COMPOSER_HOME'} = "$self->{'wrkDir'}/.composer";
@@ -112,7 +112,7 @@ sub _init
 		' -d allow_url_fopen=1' .
 		' -d suhosin.executor.include.whitelist=phar';
 
-	iMSCP::HooksManager->getInstance()->register(
+	iMSCP::EventManager->getInstance()->register(
 		'afterSetupPreInstallPackages', sub {
 			iMSCP::Dialog->factory()->endGauge();
 
@@ -120,14 +120,14 @@ sub _init
 			return $rs if $rs;
 
 			# Clear local repository if asked by user
-			$rs = $self->_clearLocalRepository() if iMSCP::Getopt->cleanAddons;
+			$rs = $self->_clearLocalRepository() if iMSCP::Getopt->cleanPackagesCache;
 			return $rs if $rs;
 
 			$rs = $self->_getComposer();
 			return $rs if $rs;
 
 			# Skip packages update if asked by user but only if all requirements for package versions are meets
-			if( ! iMSCP::Getopt->skipAddonsUpdate || $self->_checkRequirements()) {
+			if( ! iMSCP::Getopt->skipPackagesUpdate || $self->_checkRequirements()) {
 				$rs = $self->_installPackages();
 			}
 

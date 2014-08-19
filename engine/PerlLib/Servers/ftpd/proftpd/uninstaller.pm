@@ -146,7 +146,7 @@ sub restoreConfFile
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::ftpd::proftpd::uninstaller
 

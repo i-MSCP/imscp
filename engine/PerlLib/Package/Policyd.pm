@@ -53,29 +53,30 @@ improved blocking of spam and virus mails. policyd-weight caches the most freque
 
 =head1 PUBLIC METHODS
 
+=over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Package::Policyd::Installer;
-    Package::Policyd::Installer->getInstance()->registerSetupHooks($hooksManager);
+    Package::Policyd::Installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item install()
 
  Process install tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

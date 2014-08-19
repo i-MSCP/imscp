@@ -35,7 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Service;
 use parent 'Common::SingletonClass';
@@ -75,14 +75,14 @@ sub postinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeSqldPostInstall', 'mysql');
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ]; 0; }
 	) if $main::imscpConfig{'SQL_SERVER'} ne 'remote_server';
 
-	$self->{'hooksManager'}->trigger('afterSqldPostInstall', 'mysql');
+	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
 
 =item uninstall()
@@ -97,7 +97,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeSqldUninstall', 'mysql');
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldUninstall', 'mysql');
 	return $rs if $rs;
 
 	require Servers::sqld::mysql::uninstaller;
@@ -108,7 +108,7 @@ sub uninstall
 	$rs = $self->restart();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterSqldUninstall', 'mysql');
+	$self->{'eventManager'}->trigger('afterSqldUninstall', 'mysql');
 }
 
 =item setEnginePermissions()
@@ -138,14 +138,14 @@ sub restart
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeSqldRestart');
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldRestart');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->restart('mysql', 'mysqld');
 	error("Unable to restart mysql service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterSqldRestart');
+	$self->{'eventManager'}->trigger('afterSqldRestart');
 }
 
 =back
@@ -168,19 +168,19 @@ sub _init
 
 	$self->{'restart'} = 0;
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeSqldInit', $self, 'mysql'
-	) and fatal('mysql - beforeSqldInit hook has failed');
+	) and fatal('mysql - beforeSqldInit has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterSqldInit', $self, 'mysql'
-	) and fatal('postfix - afterSqldInit hook has failed');
+	) and fatal('postfix - afterSqldInit has failed');
 
 	$self;
 }

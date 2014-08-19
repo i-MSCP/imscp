@@ -38,7 +38,7 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Composer;
 use iMSCP::Execute;
@@ -61,22 +61,20 @@ our $VERSION = '0.5.0';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register Roundcube setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	$hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
-	);
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
 =item showDialog(\%dialog)
@@ -88,7 +86,7 @@ sub registerSetupHooks($$)
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -266,7 +264,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'roundcube'} = Package::Roundcube->getInstance();
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'cfgDir'} = $self->{'roundcube'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -299,7 +297,7 @@ sub _init
 
 =cut
 
-sub _backupConfigFile($$)
+sub _backupConfigFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -502,7 +500,7 @@ sub _buildConfig
 		# Load template
 
 		my $cfgTpl;
-		$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'roundcube', $_, \$cfgTpl, $data);
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'roundcube', $_, \$cfgTpl, $data);
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {

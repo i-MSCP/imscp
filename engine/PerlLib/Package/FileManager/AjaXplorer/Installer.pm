@@ -63,9 +63,9 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

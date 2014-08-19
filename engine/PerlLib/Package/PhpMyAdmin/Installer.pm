@@ -39,7 +39,7 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Config;
 use Package::PhpMyAdmin;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Composer;
 use iMSCP::Execute;
@@ -59,21 +59,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register PhpMyAdmin setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	$hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
+	$eventManager->register(
+		'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; }
 	);
 }
 
@@ -81,14 +81,14 @@ sub registerSetupHooks($$)
 
  Show PhpMyAdmin questions
 
- Hook function responsible to show PhpMyAdmin installer questions.
+ Listener which is responsible to show PhpMyAdmin installer questions.
 
  Param iMSCP::Dialog
  Return int 0 or 30
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -199,7 +199,7 @@ sub preinstall
 
  Process PhpMyAdmin package install tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -269,7 +269,7 @@ sub setGuiPermissions
 
 =item _init()
 
- Called by getInstance(). Initialize PhpMyAdmin package installer instance
+ Initialize instance
 
  Return Package::PhpMyAdmin::Installer
 
@@ -280,7 +280,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance();
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'cfgDir'} = $self->{'phpmyadmin'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -368,7 +368,7 @@ sub _installFiles
 
  Save PhpMyAdmin configuration
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -411,7 +411,7 @@ sub _saveConfig
 
  Setup PhpMyAdmin restricted SQL user
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -595,7 +595,7 @@ sub _setupDatabase
 
  Set phpMyAdmin version
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -640,7 +640,7 @@ sub _generateBlowfishSecret
 
  Build PhpMyAdmin configuration file
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -671,7 +671,7 @@ sub _buildConfig
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \$cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {

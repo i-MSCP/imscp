@@ -37,7 +37,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -49,22 +49,20 @@ directory.
 
 =over 4
 
-=item registerSetupHooks(\%$hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager instance
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	$hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
-	);
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
 =item showDialog(\%dialog)
@@ -76,7 +74,7 @@ sub registerSetupHooks($$)
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog, $rs) = (@_, 0);
 
@@ -126,7 +124,7 @@ sub preinstall
 	$package = "Package::FileManager::${package}::${package}";
 	eval "require $package";
 
-	if(! $@) {
+	unless($@) {
 		$package = $package->getInstance();
 		my $rs = $package->preinstall() if $package->can('preinstall');
 		return $rs if $rs;
@@ -220,7 +218,7 @@ sub _init()
 	)->getDirs();
 
 	# Filemanager permissions must be set after FrontEnd base permissions
-	iMSCP::HooksManager->getInstance()->register(
+	iMSCP::EventManager->getInstance()->register(
 		'afterFrontEndSetGuiPermissions', sub { $self->setPermissionsListener(@_) }
 	);
 

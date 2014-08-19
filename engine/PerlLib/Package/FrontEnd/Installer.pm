@@ -60,20 +60,20 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register FrontEnd setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager instance
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	my $rs = $hooksManager->register(
+	my $rs = $eventManager->register(
 		'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askHostname(@_) }, sub { $self->askSsl(@_) }; 0; }
 	);
 }
@@ -87,7 +87,7 @@ sub registerSetupHooks($$)
 
 =cut
 
-sub askHostname($$)
+sub askHostname
 {
 	my ($self, $dialog) = @_;
 
@@ -129,7 +129,7 @@ sub askHostname($$)
 
 =cut
 
-sub askSsl($$)
+sub askSsl
 {
 	my ($self, $dialog) = @_;
 
@@ -478,7 +478,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
-	$self->{'hooksManager'} = $self->{'frontend'}->{'hooksManager'};
+	$self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
 
 	$self->{'cfgDir'} = $self->{'frontend'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -587,7 +587,7 @@ sub _addMasterWebUser
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndAddUser');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndAddUser');
 	return $rs if $rs;
 
 	my $userName =
@@ -700,7 +700,7 @@ sub _addMasterWebUser
 	$rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'HTTPD_USER'})->addToGroup($groupName);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdAddUser');
+	$self->{'eventManager'}->trigger('afterHttpdAddUser');
 }
 
 =item _makeDirs()
@@ -715,7 +715,7 @@ sub _makeDirs
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndMakeDirs');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndMakeDirs');
 	return $rs if $rs;
 
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -737,7 +737,7 @@ sub _makeDirs
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterFrontEndMakeDirs');
+	$self->{'eventManager'}->trigger('afterFrontEndMakeDirs');
 }
 
 =item _buildPhpConfig()
@@ -752,7 +752,7 @@ sub _buildPhpConfig
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEnddBuildPhpConfig');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEnddBuildPhpConfig');
 	return $rs if $rs;
 
 	my ($cfgTpl, $file);
@@ -835,7 +835,7 @@ sub _buildPhpConfig
 	);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndBuildPhpConfig');
+	$self->{'eventManager'}->trigger('afterFrontEndBuildPhpConfig');
 }
 
 =item _buildHttpdConfig()
@@ -850,7 +850,7 @@ sub _buildHttpdConfig
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndBuildHttpdConfig');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildHttpdConfig');
 	return $rs if $rs;
 
 	# Backup, build, store and install the nginx.conf file
@@ -941,9 +941,9 @@ sub _buildHttpdConfig
 	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d");
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFrontEndBuildHttpdConfig');
+	$self->{'eventManager'}->trigger('afterFrontEndBuildHttpdConfig');
 
-	$rs = $self->{'hooksManager'}->trigger('beforeFrontEndBuildHttpdVhosts');
+	$rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildHttpdVhosts');
 	return $rs if $rs;
 
 	my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
@@ -962,7 +962,7 @@ sub _buildHttpdConfig
 
 	# Force HTTPS if needed
 	if($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
-		$rs = $self->{'hooksManager'}->register(
+		$rs = $self->{'eventManager'}->register(
 			'afterFrontEndBuildConf',
 			sub {
 				my ($cfgTpl, $tplName) = @_;
@@ -1050,7 +1050,7 @@ sub _buildHttpdConfig
 	} else {
 	}
 
-	$self->{'hooksManager'}->trigger('afterFrontEndBuildHttpdVhosts');
+	$self->{'eventManager'}->trigger('afterFrontEndBuildHttpdVhosts');
 }
 
 =item _buildInitDefaultFile()
@@ -1065,7 +1065,7 @@ sub _buildInitDefaultFile
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFrontEndBuildInitDefaultFile');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildInitDefaultFile');
 	return $rs if $rs;
 
 	my $imscpInitdConfDir = "$main::imscpConfig{'CONF_DIR'}/init.d";
@@ -1099,7 +1099,7 @@ sub _buildInitDefaultFile
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterFrontEndBuildInitDefaultFile');
+	$self->{'eventManager'}->trigger('afterFrontEndBuildInitDefaultFile');
 }
 
 =item _addDnsZone()
@@ -1114,7 +1114,7 @@ sub _addDnsZone
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddMasterZone');
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedAddMasterZone');
 	return $rs if $rs;
 
 	$rs = Servers::named->factory()->addDmn(
@@ -1126,7 +1126,7 @@ sub _addDnsZone
 	);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterNamedAddMasterZone');
+	$self->{'eventManager'}->trigger('afterNamedAddMasterZone');
 }
 
 =item _saveConfig()

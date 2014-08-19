@@ -38,7 +38,7 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Dir;
@@ -62,34 +62,27 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks()
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Param iMSCP::EventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupListeners
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	my $rs = $hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_php_fpm');
-	return $rs if $rs;
-	
 	# Add installer dialog in setup dialog stack
-	$rs = $hooksManager->register(
-		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askForPhpFpmPoolsLevel(@_) }); 0; }
+	my $rs = $eventManager->register(
+		'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askForPhpFpmPoolsLevel(@_) }; 0; }
 	);
 	return $rs if $rs;
 
 	# Fix error_reporting values into the database
-	$rs = $hooksManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
-	return $rs if $rs;
-	
-	$hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_php_fpm');
+	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 }
 
 =item askForPhpFpmPoolsLevel($dialog)
@@ -152,7 +145,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
+	my $rs = $self->{'eventManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
 	return $rs if $rs;
 
 	$rs = $self->_setApacheVersion();
@@ -185,68 +178,7 @@ sub install
 	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
-}
-
-=item setGuiPermissions
-
- Set gui permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-	my $self = $_[0];
-
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $guiRootDir = $main::imscpConfig{'GUI_ROOT_DIR'};
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdSetGuiPermissions');
-	return $rs if $rs;
-
-	$rs = setRights(
-		$guiRootDir,
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
-	);
-	return $rs if $rs;
-
-	$rs = setRights(
-		"$guiRootDir/themes",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
-	);
-	return $rs if $rs;
-
-	$rs = setRights(
-		"$guiRootDir/data",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 1 }
-	);
-	return $rs if $rs;
-
-	$rs = setRights(
-		"$guiRootDir/data/persistent",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
-	);
-	return $rs if $rs;
-
-	$rs = setRights("$guiRootDir/data", { 'user' => $panelUName, 'group' => $panelGName, 'mode' => '0550' });
-	return $rs if $rs;
-
-	$rs = setRights(
-		"$guiRootDir/i18n",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 1 }
-	);
-	return $rs if $rs;
-
-	$rs = setRights(
-		"$guiRootDir/plugins",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
-	);
-	return $rs if $rs;
-
-	$self->{'hooksManager'}->trigger('afterHttpdSetGuiPermissions');
+	$self->{'eventManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
 }
 
 =item setEnginePermissions
@@ -257,20 +189,20 @@ sub setGuiPermissions
 
 =cut
 
-sub setEnginePermissions()
+sub setEnginePermissions
 {
 	my $self = $_[0];
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdSetEnginePermissions');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdSetEnginePermissions');
 	return $rs if $rs;
 
 	$rs = setRights('/usr/local/sbin/vlogger', { 'user' => $rootUName, 'group' => $rootGName, mode => '0750' });
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdSetEnginePermissions');
+	$self->{'eventManager'}->trigger('afterHttpdSetEnginePermissions');
 }
 
 =back
@@ -291,13 +223,13 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeHttpdInitInstaller', $self, 'apache_php_fpm'
-	) and fatal('apache_php_fpm - beforeHttpdInitInstaller hook has failed');
+	) and fatal('apache_php_fpm - beforeHttpdInitInstaller has failed');
 
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
@@ -335,9 +267,9 @@ sub _init
 		}
 	}
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterHttpdInitInstaller', $self, 'apache_php_fpm'
-	) and fatal('apache_php_fpm - afterHttpdInitInstaller hook has failed');
+	) and fatal('apache_php_fpm - afterHttpdInitInstaller has failed');
 
 	$self;
 }
@@ -350,7 +282,7 @@ sub _init
 
 =cut
 
-sub _setApacheVersion()
+sub _setApacheVersion
 {
 	my $self = $_[0];
 
@@ -384,7 +316,7 @@ sub _makeDirs
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdMakeDirs');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdMakeDirs');
 	return $rs if $rs;
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
@@ -395,7 +327,7 @@ sub _makeDirs
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdMakeDirs');
+	$self->{'eventManager'}->trigger('afterHttpdMakeDirs');
 }
 
 =item _buildHttpdModules()
@@ -410,7 +342,7 @@ sub _buildHttpdModules
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildModules');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildModules');
 	return $rs if $rs;
 
 	if(qv("v$self->{'config'}->{'HTTPD_VERSION'}") == qv('v2.4.9')) {
@@ -443,7 +375,7 @@ sub _buildHttpdModules
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdBuildModules');
+	$self->{'eventManager'}->trigger('afterHttpdBuildModules');
 }
 
 =item _buildFastCgiConfFiles()
@@ -458,7 +390,7 @@ sub _buildFastCgiConfFiles
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildFastCgiConfFiles');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildFastCgiConfFiles');
 	return $rs if $rs;
 
 	# Backup, build, store and install the php_fpm_imscp.conf file
@@ -557,7 +489,7 @@ sub _buildFastCgiConfFiles
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdBuildFastCgiConfFiles');
+	$self->{'eventManager'}->trigger('afterHttpdBuildFastCgiConfFiles');
 }
 
 =item _buildPhpConfFiles()
@@ -572,7 +504,7 @@ sub _buildPhpConfFiles
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildPhpConfFiles');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildPhpConfFiles');
 	return $rs if $rs;
 
 	# Backup, build, store and install php.ini file
@@ -631,7 +563,7 @@ sub _buildPhpConfFiles
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdBuildPhpConfFiles');
+	$self->{'eventManager'}->trigger('afterHttpdBuildPhpConfFiles');
 }
 
 =item _buildApacheConfFiles
@@ -646,14 +578,14 @@ sub _buildApacheConfFiles
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildApacheConfFiles');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildApacheConfFiles');
 	return $rs if $rs;
 
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
 		# Load template
 
 		my $cfgTpl;
-		$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'apache_php_fpm', 'ports.conf', \$cfgTpl, {});
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_php_fpm', 'ports.conf', \$cfgTpl, {});
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -666,12 +598,12 @@ sub _buildApacheConfFiles
 
 		# Build file
 
-		$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, 'ports.conf');
+		$rs = $self->{'eventManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, 'ports.conf');
 		return $rs if $rs;
 
 		$cfgTpl =~ s/^(NameVirtualHost\s+\*:80)/#$1/gmi;
 
-		$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, 'ports.conf');
+		$rs = $self->{'eventManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, 'ports.conf');
 		return $rs if $rs;
 
 		# Store file
@@ -755,7 +687,7 @@ sub _buildApacheConfFiles
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdBuildApacheConfFiles');
+	$self->{'eventManager'}->trigger('afterHttpdBuildApacheConfFiles');
 }
 
 =item _installLogrotate()
@@ -772,7 +704,7 @@ sub _installLogrotate
 
 	# Apache logrotate file
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->apacheBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", '', 1);
@@ -786,12 +718,12 @@ sub _installLogrotate
 	);
 	return $rs if $rs;
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdInstallLogrotate', 'apache2');
+	$rs = $self->{'eventManager'}->trigger('afterHttpdInstallLogrotate', 'apache2');
 	return $rs if $rs;
 
 	# PHP-FPM logrotate file
 
-	$rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallLogrotate', 'php5-fpm');
+	$rs = $self->{'eventManager'}->trigger('beforeHttpdInstallLogrotate', 'php5-fpm');
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->phpfpmBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm", 'logrotate.', 1);
@@ -808,7 +740,7 @@ sub _installLogrotate
 	);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdInstallLogrotate', 'php5-fpm');
+	$self->{'eventManager'}->trigger('afterHttpdInstallLogrotate', 'php5-fpm');
 }
 
 =item _setupVlogger()
@@ -900,7 +832,7 @@ sub _setupVlogger
 
  Save both i-MSCP apache.data and i-MSCP php-fpm.data configuration files
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -927,7 +859,7 @@ sub _saveConf
 			return 1;
 		}
 
-		$rs = $self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', \$cfg, "$filesToDir{$_}/$_.data");
+		$rs = $self->{'eventManager'}->trigger('beforeHttpdBkpConfFile', \$cfg, "$filesToDir{$_}/$_.data");
 		return $rs if $rs;
 
 		$file = iMSCP::File->new('filename' => "$filesToDir{$_}/$_.old.data");
@@ -944,7 +876,7 @@ sub _saveConf
 		$rs = $file->mode(0640);
 		return $rs if $rs;
 
-		$rs = $self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', "$filesToDir{$_}/$_.data");
+		$rs = $self->{'eventManager'}->trigger('afterHttpdBkpConfFile', "$filesToDir{$_}/$_.data");
 		return $rs if $rs;
 	}
 
@@ -963,7 +895,7 @@ sub _oldEngineCompatibility()
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdOldEngineCompatibility');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdOldEngineCompatibility');
 	return $rs if $rs;
 
 	for('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf') {
@@ -991,7 +923,7 @@ sub _oldEngineCompatibility()
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdOldEngineCompatibility');
+	$self->{'eventManager'}->trigger('afterHttpdOldEngineCompatibility');
 }
 
 =item _fixPhpErrorReportingValues()
@@ -1001,9 +933,9 @@ sub _oldEngineCompatibility()
  This rustine fix the error_reporting integer values in the iMSCP databse according the PHP version installed on the
 system.
 
- This is an hook function acting on the 'afterSetupCreateDatabase' hook.
+ Listener which listen on the 'afterSetupCreateDatabase' event.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

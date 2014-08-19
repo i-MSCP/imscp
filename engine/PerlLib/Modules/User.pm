@@ -32,7 +32,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Database;
 use iMSCP::SystemGroup;
@@ -46,7 +46,7 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'type'} = 'User';
 
@@ -141,7 +141,7 @@ sub add
 
 	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($self->{'admin_sys_uid'});
 
-	my $rs = $self->{'hooksManager'}->trigger(
+	my $rs = $self->{'eventManager'}->trigger(
         'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$homedir,
 		\$skeletonPath, \$shell, $userUid, $userGid
 	);
@@ -215,7 +215,7 @@ sub add
 	$self->{'admin_sys_gname'} = $groupName;
 	$self->{'admin_sys_gid'} = $userGid;
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'onAfterAddImscpUnixUser', $self->{'admin_id'}, $userName, $password, $groupName, $comment, $homedir,
 		$skeletonPath, $shell, $userUid, $userGid
 	);
@@ -232,7 +232,7 @@ sub delete
 	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
-	my $rs = $self->{'hooksManager'}->trigger('onBeforeDeleteImscpUnixUser', $userName);
+	my $rs = $self->{'eventManager'}->trigger('onBeforeDeleteImscpUnixUser', $userName);
 	return $rs if $rs;
 
 	# Run the predeleteUser(), deleteUser() and postdeleteUser() methods on servers/packages that implement them
@@ -246,7 +246,7 @@ sub delete
 	$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($groupName);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('onAfterDeleteImscpUnixUser', $userName);
+	$self->{'eventManager'}->trigger('onAfterDeleteImscpUnixUser', $userName);
 }
 
 

@@ -37,7 +37,7 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::TemplateParser;
@@ -55,21 +55,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupListeners(\%$eventManager)
 
- Register setup hooks
+ Register setup event listeners
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
- Return int 0 on success, other on failure
+ Param iMSCP::EventManager
+ Return int 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Servers::named::bind::installer;
-	Servers::named::bind::installer->getInstance()->registerSetupHooks($hooksManager);
+	Servers::named::bind::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item install()
@@ -98,14 +98,14 @@ sub postinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostInstall');
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostInstall');
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'DNS' ]; 0; }
 	) if $main::imscpConfig{'NAMED_SERVER'} ne 'external_server';
 
-	$self->{'hooksManager'}->trigger('afterNamedPostInstall');
+	$self->{'eventManager'}->trigger('afterNamedPostInstall');
 }
 
 =item uninstall()
@@ -120,7 +120,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedUninstall', 'bind');
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedUninstall', 'bind');
 	return $rs if $rs;
 
 	require Servers::named::bind::uninstaller;
@@ -130,7 +130,7 @@ sub uninstall
 	$rs = $self->restart();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterNamedUninstall', 'bind');
+	$self->{'eventManager'}->trigger('afterNamedUninstall', 'bind');
 }
 
 =item addDmn(\%data)
@@ -146,7 +146,7 @@ sub addDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedAddDmn', $data);
 	return $rs if $rs;
 
 	$rs = $self->_addDmnConfig($data);
@@ -157,7 +157,7 @@ sub addDmn($$)
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterNamedAddDmn', $data);
+	$self->{'eventManager'}->trigger('afterNamedAddDmn', $data);
 }
 
 =item postaddDmn(\%data)
@@ -173,7 +173,7 @@ sub postaddDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostAddDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostAddDmn', $data);
 	return $rs if $rs;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
@@ -200,7 +200,7 @@ sub postaddDmn($$)
 		return $rs if $rs;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterNamedPostAddDmn', $data);
+	$rs = $self->{'eventManager'}->trigger('afterNamedPostAddDmn', $data);
 	return $rs if $rs;
 
 	$self->{'restart'} = 1;
@@ -221,7 +221,7 @@ sub deleteDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedDelDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedDelDmn', $data);
 	return $rs if $rs;
 
 	# Removing zone from named configuration file
@@ -242,7 +242,7 @@ sub deleteDmn($$)
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterNamedDelDmn', $data);
+	$self->{'eventManager'}->trigger('afterNamedDelDmn', $data);
 }
 
 =item postdeleteDmn(\%data)
@@ -258,7 +258,7 @@ sub postdeleteDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostDelDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDelDmn', $data);
 	return $rs if $rs;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
@@ -274,7 +274,7 @@ sub postdeleteDmn($$)
 		return $rs if $rs;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterNamedPostDelDmn', $data);
+	$rs = $self->{'eventManager'}->trigger('afterNamedPostDelDmn', $data);
 	return $rs if $rs;
 
 	$self->{'restart'} = 1;
@@ -314,7 +314,7 @@ sub addSub($$)
 
 			# Loading subdomain entry template
 			my $subEntry;
-			$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', 'db_sub.tpl', \$subEntry, $data);
+			$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', 'db_sub.tpl', \$subEntry, $data);
 			return $rs if $rs;
 
 			unless(defined $subEntry) {
@@ -325,7 +325,7 @@ sub addSub($$)
 				}
 			}
 
-			$rs = $self->{'hooksManager'}->trigger('beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data);
+			$rs = $self->{'eventManager'}->trigger('beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data);
 			return $rs if $rs;
 
 			# Updating timestamp entry
@@ -396,7 +396,7 @@ sub addSub($$)
 				'preserve'
 			);
 
-			$rs = $self->{'hooksManager'}->trigger('afterNamedAddSub', \$wrkDbFileContent, $data);
+			$rs = $self->{'eventManager'}->trigger('afterNamedAddSub', \$wrkDbFileContent, $data);
 			return $rs if $rs;
 
 			# Updating working file content
@@ -450,7 +450,7 @@ sub postaddSub($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostAddSub', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostAddSub', $data);
 	return $rs if $rs;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
@@ -477,7 +477,7 @@ sub postaddSub($$)
 		return $rs if $rs;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterNamedPostAddSub', $data);
+	$rs = $self->{'eventManager'}->trigger('afterNamedPostAddSub', $data);
 	return $rs if $rs;
 
 	$self->{'restart'} = 1;
@@ -516,7 +516,7 @@ sub deleteSub($$)
 				return 1;
 			}
 
-			$rs = $self->{'hooksManager'}->trigger('beforeNamedDelSub', \$wrkDbFileContent, $data);
+			$rs = $self->{'eventManager'}->trigger('beforeNamedDelSub', \$wrkDbFileContent, $data);
 			return $rs if $rs;
 
 			# Udapting timestamp entry
@@ -534,7 +534,7 @@ sub deleteSub($$)
 				$wrkDbFileContent
 			);
 
-			$rs = $self->{'hooksManager'}->trigger('afterNamedDelSub', \$wrkDbFileContent, $data);
+			$rs = $self->{'eventManager'}->trigger('afterNamedDelSub', \$wrkDbFileContent, $data);
 			return $rs if $rs;
 
 			# Saving working file
@@ -590,7 +590,7 @@ sub postdeleteSub($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostDelSub', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDelSub', $data);
 	return $rs if $rs;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
@@ -606,7 +606,7 @@ sub postdeleteSub($$)
 		return $rs if $rs;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterNamedPostDelSub', $data);
+	$rs = $self->{'eventManager'}->trigger('afterNamedPostDelSub', $data);
 	return $rs if $rs;
 
 	$self->{'restart'} = 1;
@@ -626,14 +626,14 @@ sub restart
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedRestart');
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedRestart');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'NAMED_SNAME'}, 'named');
 	error("Unable to restart $self->{'config'}->{'NAMED_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterNamedRestart');
+	$self->{'eventManager'}->trigger('afterNamedRestart');
 }
 
 =back
@@ -656,11 +656,11 @@ sub _init
 
 	$self->{'restart'} = 0;
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeNamedInit', $self, 'bind'
-	) and fatal('bind - beforeNamedInit hook has failed');
+	) and fatal('bind - beforeNamedInit has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -669,9 +669,9 @@ sub _init
 
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterNamedInit', $self, 'bind'
-	) and fatal('bind - afterNamedInit hook has failed');
+	) and fatal('bind - afterNamedInit has failed');
 
 	$self;
 }
@@ -710,7 +710,7 @@ sub _addDmnConfig($$)
 		if(defined $self->{'config'}->{'BIND_MODE'} && $self->{'config'}->{'BIND_MODE'} ne '') {
 			# Load template
 			my $tplCfgEntryContent;
-			$rs = $self->{'hooksManager'}->trigger(
+			$rs = $self->{'eventManager'}->trigger(
 				'onLoadTemplate', 'bind', "cfg_$self->{'config'}->{'BIND_MODE'}.tpl", \$tplCfgEntryContent, $data
 			);
 			return $rs if $rs;
@@ -725,7 +725,7 @@ sub _addDmnConfig($$)
 				}
 			}
 
-			$rs = $self->{'hooksManager'}->trigger(
+			$rs = $self->{'eventManager'}->trigger(
 				'beforeNamedAddDmnConfig', \$cfgWrkFileContent, \$tplCfgEntryContent, $data
 			);
 			return $rs if $rs;
@@ -769,7 +769,7 @@ sub _addDmnConfig($$)
 				'preserve'
 			);
 
-			$rs = $self->{'hooksManager'}->trigger('afterNamedAddDmnConfig', \$cfgWrkFileContent, $data);
+			$rs = $self->{'eventManager'}->trigger('afterNamedAddDmnConfig', \$cfgWrkFileContent, $data);
 			return $rs if $rs;
 
 			# Updating working file
@@ -832,7 +832,7 @@ sub _deleteDmnConfig($$)
 			return 1;
 		}
 
-		$rs = $self->{'hooksManager'}->trigger('beforeNamedDelDmnConfig', \$cfgWrkFileContent, $data);
+		$rs = $self->{'eventManager'}->trigger('beforeNamedDelDmnConfig', \$cfgWrkFileContent, $data);
 		return $rs if $rs;
 
 		# Deleting entry
@@ -843,7 +843,7 @@ sub _deleteDmnConfig($$)
 			$cfgWrkFileContent
 		);
 
-		$rs = $self->{'hooksManager'}->trigger('afterNamedDelDmnConfig', \$cfgWrkFileContent, $data);
+		$rs = $self->{'eventManager'}->trigger('afterNamedDelDmnConfig', \$cfgWrkFileContent, $data);
 		return $rs if $rs;
 
 		# Updating working file
@@ -904,7 +904,7 @@ sub _addDmnDb($$)
 	# Load template
 
 	my $tplDbFileContent;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', 'db.tpl', \$tplDbFileContent, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', 'db.tpl', \$tplDbFileContent, $data);
 	return $rs if $rs;
 
 	unless(defined $tplDbFileContent) {
@@ -915,7 +915,7 @@ sub _addDmnDb($$)
 		}
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmnDb', \$tplDbFileContent, $data);
+	$rs = $self->{'eventManager'}->trigger('beforeNamedAddDmnDb', \$tplDbFileContent, $data);
 	return $rs if $rs;
 
 	# Process timestamp entry
@@ -1063,7 +1063,7 @@ sub _addDmnDb($$)
 		$tplDbFileContent
 	);
 
-	$rs = $self->{'hooksManager'}->trigger('afterNamedAddDmnDb', \$tplDbFileContent, $data);
+	$rs = $self->{'eventManager'}->trigger('afterNamedAddDmnDb', \$tplDbFileContent, $data);
 	return $rs if $rs;
 
 	# Storing new file in working directory
