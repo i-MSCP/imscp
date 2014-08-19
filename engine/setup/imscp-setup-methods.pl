@@ -215,7 +215,7 @@ sub setupTasks
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
+	iMSCP::Dialog->factory()->endGauge();
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupTasks');
 }
@@ -1520,6 +1520,8 @@ sub setupImportSqlSchema
 		$step++;
 	}
 
+	iMSCP::Dialog->factory()->endGauge();
+
 	endDetail();
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupImportSqlSchema');
@@ -1878,6 +1880,8 @@ sub setupSetPermissions
 			step(undef, $1, $2, $3) if /^(.*)\t(.*)\t(.*)$/;
 		}
 
+		iMSCP::Dialog->factory()->endGauge();
+
 		my $stderr = do { local $/; <FHERR> };
 
 		close FHOUT;
@@ -2005,6 +2009,8 @@ sub setupRebuildCustomerFiles
 		step(undef, "Processing $1 ($2) tasks: $3 (ID $4)", $5, $6) if /^(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)$/;
 	}
 
+	iMSCP::Dialog->factory()->endGauge();
+
 	my $stderr = do { local $/; <FHERR> };
 
 	close FHOUT;
@@ -2067,6 +2073,8 @@ sub setupPreInstallServers
 		$step++;
 	}
 
+	iMSCP::Dialog->factory()->endGauge();
+
 	endDetail();
 
 	return $rs if $rs;
@@ -2112,6 +2120,8 @@ sub setupPreInstallPackages
 
 		$step++;
 	}
+
+	iMSCP::Dialog->factory()->endGauge();
 
 	endDetail();
 
@@ -2161,6 +2171,8 @@ sub setupInstallServers
 		$step++;
 	}
 
+	iMSCP::Dialog->factory()->endGauge();
+
 	endDetail();
 
 	return $rs if $rs;
@@ -2206,6 +2218,8 @@ sub setupInstallPackages
 
 		$step++;
 	}
+
+	iMSCP::Dialog->factory()->endGauge();
 
 	endDetail();
 
@@ -2255,6 +2269,8 @@ sub setupPostInstallServers
 		$step++;
 	}
 
+	iMSCP::Dialog->factory()->endGauge();
+
 	endDetail();
 
 	return $rs if $rs;
@@ -2300,6 +2316,8 @@ sub setupPostInstallPackages
 
 		$step++;
 	}
+
+	iMSCP::Dialog->factory()->endGauge();
 
 	endDetail();
 
@@ -2364,6 +2382,8 @@ sub setupRestartServices
 
 		$counter++;
 	}
+
+	iMSCP::Dialog->factory()->endGauge();
 
 	endDetail();
 

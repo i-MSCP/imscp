@@ -88,7 +88,7 @@ sub process
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
+	iMSCP::Dialog->factory()->endGauge();
 
 	0;
 }
@@ -227,6 +227,8 @@ sub _uninstallPackages
 		$step++;
 	}
 
+	iMSCP::Dialog->factory()->endGauge();
+
 	endDetail();
 
 	$rs;
@@ -270,6 +272,8 @@ sub _uninstallServers
 
 		$step++;
 	}
+
+	iMSCP::Dialog->factory()->endGauge();
 
 	endDetail();
 

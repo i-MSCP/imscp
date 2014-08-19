@@ -41,6 +41,8 @@ sub _init
 {
 	my $self = $_[0];
 
+	$self->{'dialog'} = iMSCP::Dialog->factory();
+
 	$self->{'title'} = "\n\\ZbPerforming step %s from total of %s\\Zn\n\n%s";
 	$self->{'all'} = [];
 	$self->{'last'} = '';
@@ -66,7 +68,7 @@ sub endDetail
 	0;
 }
 
-sub step($$$$)
+sub step
 {
 	my $self = iMSCP::Stepper->getInstance();
 
@@ -78,9 +80,9 @@ sub step($$$$)
 	$msg = join("\n", @{$self->{'all'}}) . "\n" if @{$self->{'all'}};
 	$msg .= $self->{'last'};
 
-	iMSCP::Dialog->factory()->endGauge(); # Temporary fix for Unbuntu lucid
-	iMSCP::Dialog->factory()->startGauge($msg, int($index * 100 / $steps));
-	iMSCP::Dialog->factory()->setGauge(int($index * 100 / $steps), $msg);
+	#$self->{'dialog'}->endGauge(); # Temporary fix for Unbuntu lucid
+	$self->{'dialog'}->startGauge($msg, int($index * 100 / $steps));
+	$self->{'dialog'}->setGauge(int($index * 100 / $steps), $msg);
 
 	my $rs = &{$code}() if ref $code eq 'CODE';
 
@@ -91,9 +93,9 @@ sub step($$$$)
 		$errorMessage =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 		$errorMessage = 'An unexpected error occurred...' unless $errorMessage;
 
-		iMSCP::Dialog->factory()->endGauge();
-		iMSCP::Dialog->factory()->msgbox(
-"
+		$self->{'dialog'}->endGauge();
+		$self->{'dialog'}->msgbox(<<EOF);
+
 \\Z1[ERROR]\\Zn
 
 Error while performing step:
@@ -105,8 +107,7 @@ Error was:
 \\Z1$errorMessage \\Zn
 
 Please, post on http://i-mscp.net/forum to get any help.
-"
-		);
+EOF
 
 		return $rs;
 	}

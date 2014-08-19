@@ -374,8 +374,8 @@ Please, choose the server you want use for the $_ service:
 							ref $data->{$service}->{'alternative'}->{$server} eq 'HASH' &&
 							exists $data->{$service}->{'alternative'}->{$server}->{'repository'}
 						) {
-							$rs = iMSCP::Dialog->factory()->yesno(
-"
+							$rs = iMSCP::Dialog->factory()->yesno(<<EOF);
+
 \\Z4\\ZuExternal repository\\Zn
 
 The $service service requires usage of an external repository:
@@ -383,8 +383,8 @@ The $service service requires usage of an external repository:
 $data->{$service}->{'alternative'}->{$server}->{'repository'}
 
 Do you agree?
-"
-							);
+EOF
+
 						}
 
 						$server = '' if $rs;

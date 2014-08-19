@@ -777,8 +777,7 @@ Only migration from ispCP 1.0.7 or a newest is supported.
 
 By pressing the 'continue' button you can ignore this warning. Be warned that if you continue, your data might be corrupted.
 EOF
-			error('Only migration from ispCP version 1.0.7 or newer is supported');
-			return 1;
+				return 1;
 			}
 		}
 	} else {
@@ -859,7 +858,7 @@ sub processMigration
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
+	iMSCP::Dialog->factory()->endGauge();
 
 	iMSCP::Dialog->factory()->msgbox(<<EOF);
 

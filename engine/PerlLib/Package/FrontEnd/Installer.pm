@@ -201,7 +201,7 @@ sub askSsl
 					$ENV{'DIALOG_CANCEL'} = 1;
 					$rs = $dialog->yesno("\nDo you have any SSL intermediate certificate(s) (CA Bundle)?");
 
-					if(! $rs) { # backup feature still available through ESC
+					unless($rs) { # backup feature still available through ESC
 						do {
 							($rs, $caBundlePath) = $dialog->fselect($caBundlePath);
 						} while($rs != 30 && ! ($caBundlePath && -f $caBundlePath));

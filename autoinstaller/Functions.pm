@@ -489,15 +489,15 @@ sub doImscpBackup
 		warning($stderr) if $stderr && $rs;
 		warning('Unable to backup previous i-MSCP installation') if $rs;
 
-		$rs = iMSCP::Dialog->factory()->yesno(
-"
+		$rs = iMSCP::Dialog->factory()->yesno(<<EOF) if $rs;
+
 \\Z1Unable to create backups\\Zn
 
 This is not a fatal error, setup may continue, but you will not have a backup (unless you have previously builded one).
 
 Do you want to continue?
-"
-		) if $rs;
+EOF
+
 	}
 
 	$rs;

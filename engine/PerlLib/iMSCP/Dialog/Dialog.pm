@@ -53,7 +53,7 @@ use parent 'Common::SingletonClass';
 
  Reset labels to their default values
 
- Return INT 0
+ Return int 0
 
 =cut
 
@@ -121,7 +121,7 @@ sub radiolist
  Param string $text Text to show
  Param array \$choices Reference to an array containing list of choices
  Param string $default OPTIONAL Default choices
- Return array_ref Reference to an array of choices or array containing both dialog exit code and array of choices
+ Return array Reference to an array of choices or array containing both dialog exit code and array of choices
 
 =cut
 
@@ -155,7 +155,7 @@ sub checkbox
 
 sub tailbox
 {
-	$_[0]->_execute($_[1], undef, 'tailbox');
+	($_[0]->_execute($_[1], undef, 'tailbox'))[0];
 }
 
 =item editbox($file)
@@ -278,7 +278,8 @@ sub infobox
 	$self->{'_opts'}->{'clear'} = undef;
 
 	my ($exitCode) = $self->_textbox($_[1], 'infobox');
-	$self->{'_opts'}->{'clear'}	= $clear;
+
+	$self->{'_opts'}->{'clear'} = $clear;
 
 	$exitCode;
 }
@@ -288,21 +289,21 @@ sub infobox
  Start a gauge
 
  Param string $text Text to show
- Param INT $percent OPTIONAL Initial percentage show in the meter
- Return INT Dialog exit code
+ Param int $percent OPTIONAL Initial percentage show in the meter
+ Return int Dialog exit code
 
 =cut
 
 sub startGauge
 {
-	return 0 if $main::noprompt;
+	my $self = shift;
 
-	my ($self, $text, $percent) = @_;
+	return 0 if $main::noprompt || $self->{'gauge'};
+
+	my ($text, $percent) = @_;
 
 	$text = escapeShell($text);
 	$percent ||= 0;
-
-	return 0 if $self->{'gauge'};
 
 	$percent = $percent ? " $percent" : 0;
 
@@ -322,9 +323,9 @@ sub startGauge
 	$self->{'gauge'}->autoflush(1);
 	$self->{'gauge'}->open("| $command") || fatal("Unable to start gauge");
 
-	debugRegisterCallBack(\&endGauge);
+	debugRegisterCallBack(sub { $self->endGauge(); });
 
-	$SIG{'PIPE'} = \&endGauge;
+	$SIG{'PIPE'} = sub { $self->endGauge(); };
 
 	getExitCode($?);
 }
@@ -341,13 +342,13 @@ sub startGauge
 
 sub setGauge
 {
-	return 0 if $main::noprompt;
+	my $self = shift;
 
-	my ($self, $percent, $text) = @_;
+	return 0 if $main::noprompt || ! $self->{'gauge'};
+
+	my ($percent, $text) = @_;
 
 	$text ||= '';
-
-	return 0 unless $self->{'gauge'};
 
 	print {$self->{'gauge'}} $text ? sprintf("XXX\n%d\n%s\nXXX\n", $percent, $text, $text): $percent . "\n";
 
@@ -364,11 +365,9 @@ sub setGauge
 
 sub endGauge
 {
-	return 0 if $main::noprompt;
+	my $self = shift;
 
-	my $self = iMSCP::Dialog->factory();
-
-	return 0 unless $self->{'gauge'};
+	return 0 if $main::noprompt || ! $self->{'gauge'};
 
 	$self->{'gauge'}->close();
 
@@ -424,7 +423,7 @@ sub set
 
 =item _init()
 
- Called by new(). Initialize instance.
+ Initialize instance
 
  Return iMSCP::Dialog::Dialog
 
@@ -698,7 +697,7 @@ sub _textbox
 {
 	my($self, $text, $type, $init) = @_;
 
-	$init ||=0;
+	$init ||= 0;
 
 	my $autosize = $self->{'autosize'};
 

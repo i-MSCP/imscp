@@ -217,6 +217,8 @@ for (@steps) {
 	$step++;
 }
 
+iMSCP::Dialog->factory()->endGauge();
+
 iMSCP::EventManager->getInstance()->trigger('afterBuildSteps') and exit 1;
 
 my @warnings = getMessageByType('warn');
@@ -285,6 +287,8 @@ EOF
 		exit $rs if $rs;
 		$step++;
 	}
+
+	iMSCP::Dialog->factory()->endGauge();
 
 	iMSCP::EventManager->getInstance()->trigger('afterInstall') and exit 1;
 
