@@ -70,21 +70,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupHooks(\%eventManager)
 
  Register setup hook functions
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager instance
  Return int 0 on success, 1 on failure
 
 =cut
 
 sub registerSetupHooks($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Addons::PhpMyAdmin::Installer;
-	Addons::PhpMyAdmin::Installer->getInstance()->registerSetupHooks($hooksManager);
+	Addons::PhpMyAdmin::Installer->getInstance()->registerSetupHooks($eventManager);
 }
 
 =item preinstall()

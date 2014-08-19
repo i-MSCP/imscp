@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- iMSCP::HooksManager - i-MSCP Hooks Manager
+ iMSCP::EventManager - i-MSCP event Manager
 
 =cut
 
@@ -29,92 +29,92 @@
 # @link         http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::HooksManager;
+package iMSCP::EventManager;
 
-use strict;
+use strict qw/vars subs/;
 use warnings;
+
+# Alias package to ensure backward compatibility (transitional)
+*{'iMSCP::HooksManager::'} = \*{'iMSCP::EventManager::'};
+$INC{'iMSCP/HooksManager.pm'} = $INC{'iMSCP/EventManager.pm'};
 
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- The i-MSCP Hooks Manager is the central point of the i-MSCP's engine hooks system.
+ The i-MSCP event manager is the central point of the engine event system.
 
- The hook functions are registered on the manager and hooks are triggered through the manager.
-
- The hook functions are references to subroutines that hooks into the i-MSCP engine hooks. They can receive parameters
-which, in most cases, are passed by reference to the hook function to allow it to act as filter.
+ Event listeners are registered on the manager and events are triggered through the manager. The listeners are
+references to subroutines that listen to specific events.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item register($hook, $hookFunction)
+=item register($event, $callback)
 
- Register the given hook function on the manager for the given hook.
+ Register a listener for the given event
 
- Param string $hook Hook name
- Param code_ref $hookFunction function
- Return int - 0 on success, 1 on failure
+ Param string $event Name of event that the listener listen
+ Param code $callback Callback which represent the event listener
+ Return int 0 on success, 1 on failure
 
 =cut
 
-sub register($$$)
+sub register
 {
-	my ($self, $hook, $hookFunction) = @_;
+	my ($self, $event, $callback) = @_;
 
-	if (ref $hookFunction eq 'CODE') {
-		debug("Registering listener on the '$hook' hook from " . ((caller(1))[3] || 'main'));
-		push(@{$self->{'hooks'}{$hook}}, $hookFunction);
+	if (ref $callback eq 'CODE') {
+		debug("Registering listener on the '$event' event from " . ((caller(1))[3] || 'main'));
+		push(@{$self->{'events'}{$event}}, $callback);
 	} else {
-		error("Invalid hook function provided for the '$hook' hook");
+		error("Invalid listener provided for the '$event' event");
 		return 1;
 	}
 
 	0;
 }
 
-=item register($hook)
+=item unregister($event)
 
- Unregister hook functions for the given hook.
+ Unregister any listener which listen to the given event
 
- Param string Hook name
- Return int - 0
+ Param string $event Event name
+ Return int 0
 
 =cut
 
-sub unregisterHook($$)
+sub unregister
 {
-	my ($self, $hook) = @_;
+	my ($self, $event) = @_;
 
-	delete $self->{'hooks'}->{$hook};
+	delete $self->{'events'}->{$event};
 
 	0;
 }
 
-=item trigger($hook, [$params][...])
+=item trigger($event, [$params], [$paramsN])
 
- Trigger the given hook.
+ Trigger the given event
 
- Param string Hook name
- Param mixed OPTIONAL parameters which are passed to the hook function
- Return int - 0 on success, other on failure
+ Param string $event Event name
+ Param mixed OPTIONAL parameters to pass to the listeners
+ Return int 0 on success, other on failure
 
 =cut
 
-sub trigger($$)
+sub trigger
 {
-	my ($self, $hook, @params) = @_;
+	my ($self, $event, @params) = @_;
 
     my $rs = 0;
 
-	if(exists $self->{'hooks'}->{$hook}) {
-		debug("Trigger $hook hook");
+	if(exists $self->{'event'}->{$event}) {
+		debug("Triggering $event event");
 
-		my @hookFunctions = @{$self->{'hooks'}->{$hook}};
-
-		for(@hookFunctions) {
+		for(@{$self->{'events'}->{$event}}) {
 			if($rs = $_->(@params)) {
 				my $caller = (caller(1))[3] || 'main';
 				require Data::Dumper;
@@ -122,8 +122,8 @@ sub trigger($$)
 				local $Data::Dumper::Terse = 1;
 				local $Data::Dumper::Deparse = 1;
 				error(
-					"A hook function registered on the '$hook' hook and triggered in $caller has failed.\n\n" .
-					"Hook function code was:\n\n" . Dumper($_)
+					"A listener registered on the '$event' event and triggered in $caller has failed.\n\n" .
+					"Listener code was:\n\n" . Dumper($_)
 				);
 				last;
 			}
@@ -141,9 +141,9 @@ sub trigger($$)
 
 =item _init()
 
- This is called by getInstance(). Initialize instance.
+ Initialize instance
 
- Return iMSCP::HooksManager
+ Return iMSCP::EventManager
 
 =cut
 
@@ -151,7 +151,7 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooks'} = {};
+	$self->{'events'} = { };
 
 	# Load any user hook files
 	my $hooksDir = "$main::imscpConfig{'CONF_DIR'}/hooks.d";
@@ -167,8 +167,7 @@ sub _init
 
 =head1 TODO
 
- - Add priorities support
- - Allow to get list of registered hooks
+ Priorities support
 
 =cut
 

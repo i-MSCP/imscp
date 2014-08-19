@@ -35,7 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Execute;
 use iMSCP::TemplateParser;
@@ -67,7 +67,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeSqldInstall', 'mysql');
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldInstall', 'mysql');
 	return $rs if $rs;
 
 	$rs = $self->_createGlobalConfFile();
@@ -76,7 +76,7 @@ sub install
 	$rs = $self->_createRootUserConfFile();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterSqldInstall', 'mysql');
+	$self->{'eventManager'}->trigger('afterSqldInstall', 'mysql');
 }
 
 =item setEnginePermissions()
@@ -91,7 +91,7 @@ sub setEnginePermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeSqldSetEnginePermissions');
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldSetEnginePermissions');
 	return $rs if $rs;
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
@@ -114,7 +114,7 @@ sub setEnginePermissions
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterSqldSetEnginePermissions');
+	$self->{'eventManager'}->trigger('afterSqldSetEnginePermissions');
 }
 
 =back
@@ -135,11 +135,11 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'sqld'} = Servers::sqld::mysql->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeSqldInitInstaller', $self, 'mysql'
 	) and fatal('postfix - beforeSqldInitInstaller hook has failed');
 
@@ -147,7 +147,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterSqldInitInstaller', $self, 'mysql'
 	) and fatal('postfix - afterSqldInitInstaller hook has failed');
 
@@ -166,7 +166,7 @@ sub _createGlobalConfFile
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMysqlCreateGlobalConfFile');
+	my $rs = $self->{'eventManager'}->trigger('beforeMysqlCreateGlobalConfFile');
 	return $rs if $rs;
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
@@ -177,7 +177,7 @@ sub _createGlobalConfFile
 		if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
 			# Load template
 			my $cfgTpl;
-			$rs = $self->{'hooksManager'}->trigger(
+			$rs = $self->{'eventManager'}->trigger(
 				'onLoadTemplate',
 				'mysql',
 				'imscp.cnf',
@@ -230,7 +230,7 @@ sub _createGlobalConfFile
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterMysqlCreateGlobalConfFile');
+	$self->{'eventManager'}->trigger('afterMysqlCreateGlobalConfFile');
 }
 
 =item _createRootUserConfFile()
@@ -245,7 +245,7 @@ sub _createRootUserConfFile
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMysqlCreateRootUserConfFile');
+	my $rs = $self->{'eventManager'}->trigger('beforeMysqlCreateRootUserConfFile');
 	return $rs if $rs;
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
@@ -255,7 +255,7 @@ sub _createRootUserConfFile
 	if(defined $homeDir) {
 		# Load template
 		my $cfgTpl;
-		$rs = $self->{'hooksManager'}->trigger(
+		$rs = $self->{'eventManager'}->trigger(
 			'onLoadTemplate',
 			'mysql',
 			'.my.cnf',
@@ -307,7 +307,7 @@ sub _createRootUserConfFile
 		return 1;
 	}
 
-	$self->{'hooksManager'}->trigger('afterMysqlCreateRootUserConfFile');
+	$self->{'eventManager'}->trigger('afterMysqlCreateRootUserConfFile');
 }
 
 =item _isMysqldInsideCt()

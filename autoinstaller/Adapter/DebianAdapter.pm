@@ -38,6 +38,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Dialog;
 use iMSCP::File;
@@ -104,7 +105,7 @@ sub preBuild
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforePreBuild');
+	my $rs = iMSCP::EventManager->getInstance()->trigger('beforePreBuild');
 	return $rs if $rs;
 
 	unless($main::skippackages) {
@@ -150,7 +151,7 @@ sub preBuild
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPreBuild');
+	iMSCP::EventManager->getInstance()->trigger('afterPreBuild');
 }
 
 =item uninstallPackages()
@@ -165,7 +166,7 @@ sub uninstallPackages
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeUninstallPackages', $self->{'packagesToUninstall'});
+	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeUninstallPackages', $self->{'packagesToUninstall'});
 	return $rs if $rs;
 
 	if(@{$self->{'packagesToUninstall'}}) {
@@ -189,7 +190,7 @@ sub uninstallPackages
 		return $rs if $rs;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterUninstallPackages');
+	iMSCP::EventManager->getInstance()->trigger('afterUninstallPackages');
 }
 
 =item installPackages()
@@ -204,7 +205,7 @@ sub installPackages
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
+	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
 	return $rs if $rs;
 
 	my $preseed = iMSCP::Getopt->preseed;
@@ -233,7 +234,7 @@ sub installPackages
 	error('Unable to install packages') if $rs && ! $stderr;
 	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterInstallPackages');
+	iMSCP::EventManager->getInstance()->trigger('afterInstallPackages');
 }
 
 =item postBuild()

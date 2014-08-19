@@ -53,21 +53,21 @@ improved blocking of spam and virus mails. policyd-weight caches the most freque
 =head1 PUBLIC METHODS
 
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupHooks(\%eventManager)
 
  Register setup hook functions
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager instance
  Return int 0 on success, 1 on failure
 
 =cut
 
 sub registerSetupHooks($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Addons::Policyd::Installer;
-    Addons::Policyd::Installer->getInstance()->registerSetupHooks($hooksManager);
+    Addons::Policyd::Installer->getInstance()->registerSetupHooks($eventManager);
 }
 
 =item install()

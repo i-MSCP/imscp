@@ -43,7 +43,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::TemplateParser;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use File::Basename;
 use Servers::ftpd::proftpd;
 use parent 'Common::SingletonClass';
@@ -56,29 +56,29 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%$hooksManager)
+=item registerSetupHooks(\%$eventManager)
 
  Register setup hook functions
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Param iMSCP::EventManager $eventManager Hooks manager instance
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupHooks
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	my $rs = $hooksManager->trigger('beforeFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
+	my $rs = $eventManager->trigger('beforeFtpdRegisterSetupHooks', $eventManager, 'proftpd');
 	return $rs if $rs;
 
 	# Add proftpd installer dialog in setup dialog stack
-	$rs = $hooksManager->register(
+	$rs = $eventManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askProftpd(@_) }); 0; }
 	);
 	return $rs if $rs;
 
-	$hooksManager->trigger('afterFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
+	$eventManager->trigger('afterFtpdRegisterSetupHooks', $eventManager, 'proftpd');
 }
 
 =item askProftpd(\%dialog)
@@ -176,7 +176,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdInstall', 'proftpd');
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdInstall', 'proftpd');
 	return $rs if $rs;
 
 	$rs = $self->_bkpConfFile($self->{'config'}->{'FTPD_CONF_FILE'});
@@ -197,7 +197,7 @@ sub install
 	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFtpdInstall', 'proftpd');
+	$self->{'eventManager'}->trigger('afterFtpdInstall', 'proftpd');
 }
 
 =back
@@ -218,11 +218,11 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeFtpdInitInstaller', $self, 'proftpd'
 	) and fatal('proftpd - beforeFtpdInitInstaller hook has failed');
 
@@ -244,7 +244,7 @@ sub _init
 		}
 	}
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterFtpdInitInstaller', $self, 'proftpd'
 	) and fatal('proftpd - afterFtpdInitInstaller hook has failed');
 
@@ -263,7 +263,7 @@ sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdBkpConfFile', $cfgFile);
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
 	if(-f $cfgFile){
@@ -279,7 +279,7 @@ sub _bkpConfFile
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
+	$self->{'eventManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
 }
 
 =item _setupDatabase()
@@ -299,7 +299,7 @@ sub _setupDatabase
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
 	return $rs if $rs;
 
 	# Removing any old SQL user (including privileges)
@@ -349,7 +349,7 @@ sub _setupDatabase
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterFtpSetupDb', $dbUser, $dbPass);
+	$self->{'eventManager'}->trigger('afterFtpSetupDb', $dbUser, $dbPass);
 }
 
 =item _buildConfigFile()
@@ -383,7 +383,7 @@ sub _buildConfigFile
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'proftpd', 'proftpd.conf', \$cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'proftpd', 'proftpd.conf', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -396,12 +396,12 @@ sub _buildConfigFile
 
 	# Build file
 
-	$rs = $self->{'hooksManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
+	$rs = $self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	return $rs if $rs;
 
 	$cfgTpl = process($data, $cfgTpl);
 
-	$rs = $self->{'hooksManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
+	$rs = $self->{'eventManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	return $rs if $rs;
 
 	# Store file
@@ -435,7 +435,7 @@ sub _createTrafficLogFile
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdCreateTrafficLogFile');
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdCreateTrafficLogFile');
 	return $rs if $rs;
 
 	# Creating proftpd traffic log directory if it doesn't already exists
@@ -465,7 +465,7 @@ sub _createTrafficLogFile
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterFtpdCreateTrafficLogFile');
+	$self->{'eventManager'}->trigger('afterFtpdCreateTrafficLogFile');
 }
 
 =item _saveConf()
@@ -497,7 +497,7 @@ sub _saveConf
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeFtpdSaveConf', \$cfg, 'proftpd.old.data');
+	$rs = $self->{'eventManager'}->trigger('beforeFtpdSaveConf', \$cfg, 'proftpd.old.data');
 	return $rs if $rs;
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.old.data");
@@ -514,7 +514,7 @@ sub _saveConf
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterFtpdSaveConf', 'proftpd.old.data');
+	$self->{'eventManager'}->trigger('afterFtpdSaveConf', 'proftpd.old.data');
 }
 
 =item _oldEngineCompatibility()
@@ -529,10 +529,10 @@ sub _oldEngineCompatibility
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedOldEngineCompatibility');
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedOldEngineCompatibility');
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterNameddOldEngineCompatibility');
+	$self->{'eventManager'}->trigger('afterNameddOldEngineCompatibility');
 }
 
 =back

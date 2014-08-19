@@ -8,7 +8,9 @@ DAEMON
 	Fixed: Wrong version in 'helo' answer string
 
 ENGINE
+	Deprecated: iMSCP::HooksManager is now deprecated and will be removed in later version
 	Fixed: autoinstaller::Functions::doImscpBackup: Name "main::execmode" used only once...
+	Renamed: iMSCP::HooksManager to iMSCP::EventManager (iMSCP::HooksManager is now an alias of iMSCP::EventManager)
 
 GUI
 	Fixed: Malformed href attribute in ticket_system.tpl (admin/reseller levels)

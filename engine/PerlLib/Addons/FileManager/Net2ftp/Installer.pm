@@ -35,6 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Addons::ComposerInstaller;
@@ -120,7 +121,7 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self;
 }
@@ -205,7 +206,7 @@ sub _buildConfig
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'net2ftp', 'settings.inc.php', \$cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'net2ftp', 'settings.inc.php', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {

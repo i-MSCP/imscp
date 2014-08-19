@@ -39,7 +39,7 @@ use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Config;
 use iMSCP::LsbRelease;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -425,7 +425,7 @@ sub installGui
 
 sub postBuild
 {
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforePostBuild');
+	my $rs = iMSCP::EventManager->getInstance()->trigger('beforePostBuild');
 	return $rs if $rs;
 
 	$rs = _getDistroAdapter()->postBuild();
@@ -462,7 +462,7 @@ sub postBuild
 		$main::{'INST_PREF'}
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPostBuild');
+	iMSCP::EventManager->getInstance()->trigger('afterPostBuild');
 }
 
 =item doImscpBackup

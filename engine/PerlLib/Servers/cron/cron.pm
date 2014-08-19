@@ -36,7 +36,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser;
 use parent 'Common::SingletonClass';
@@ -101,7 +101,7 @@ sub addTask($$)
 			return 1;
 		}
 
-		$rs = $self->{'hooksManager'}->trigger('beforeCronAddTask', \$wrkFileContent, $data);
+		$rs = $self->{'eventManager'}->trigger('beforeCronAddTask', \$wrkFileContent, $data);
 		return $rs if $rs;
 
 		my $cronEntryBegin = "# imscp [$data->{'TASKID'}] entry BEGIN\n";
@@ -127,7 +127,7 @@ sub addTask($$)
 			'preserve'
 		);
 
-		$self->{'hooksManager'}->trigger('afterCronAddTask', \$wrkFileContent, $data);
+		$self->{'eventManager'}->trigger('afterCronAddTask', \$wrkFileContent, $data);
 
 		# Store file in working directory
 		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
@@ -187,7 +187,7 @@ sub deleteTask($$)
 			return 1;
 		}
 
-		$rs = $self->{'hooksManager'}->trigger('beforeCronDelTask', \$wrkFileContent, $data);
+		$rs = $self->{'eventManager'}->trigger('beforeCronDelTask', \$wrkFileContent, $data);
 		return $rs if $rs;
 
 		$wrkFileContent = replaceBloc(
@@ -197,7 +197,7 @@ sub deleteTask($$)
 			$wrkFileContent
 		);
 
-		$rs = $self->{'hooksManager'}->trigger('afterCronDelTask', \$wrkFileContent, $data);
+		$rs = $self->{'eventManager'}->trigger('afterCronDelTask', \$wrkFileContent, $data);
 		return $rs if $rs;
 
 		# Store file in working directory
@@ -268,9 +268,9 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeCronInit', $self, 'cron'
 	) and fatal('cron - beforeCronInit hook has failed');
 
@@ -279,7 +279,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterCronInit', $self, 'cron'
 	) and fatal('cron - afterCronInit hook has failed');
 

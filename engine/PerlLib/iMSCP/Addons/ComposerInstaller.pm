@@ -39,7 +39,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::TemplateParser;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Dialog;
 use Cwd;
@@ -111,7 +111,7 @@ sub _init
 		' -d allow_url_fopen=1' .
 		' -d suhosin.executor.include.whitelist=phar';
 
-	iMSCP::HooksManager->getInstance()->register(
+	iMSCP::EventManager->getInstance()->register(
 		'afterSetupPreInstallAddons', sub {
 			iMSCP::Dialog->factory()->endGauge();
 

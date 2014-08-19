@@ -39,7 +39,7 @@ use iMSCP::Debug;
 use iMSCP::Requirements;
 use iMSCP::Dialog;
 use iMSCP::LsbRelease;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Stepper;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -146,11 +146,11 @@ if($main::skippackages && ! iMSCP::Getopt->preseed) {
 	}
 }
 
-iMSCP::HooksManager->getInstance()->trigger('beforeInstallPreRequiredPackages') and exit 1 if ! $main::skippackages;
+iMSCP::EventManager->getInstance()->trigger('beforeInstallPreRequiredPackages') and exit 1 if ! $main::skippackages;
 
 installPreRequiredPackages() and exit 1 if ! $main::skippackages;
 
-iMSCP::HooksManager->getInstance()->trigger('afterInstallPreRequiredPackages') if ! $main::skippackages;
+iMSCP::EventManager->getInstance()->trigger('afterInstallPreRequiredPackages') if ! $main::skippackages;
 
 if(! $main::buildonly && ! $main::noprompt && $main::reconfigure eq 'none') {
 	$ENV{'DIALOGOPTS'} = "--ok-label Ok --yes-label Yes --no-label No --cancel-label Back";
@@ -203,7 +203,7 @@ my @steps = (
 # Remove the uninstall/install packages steps in case the --skippackages option is set to true
 splice(@steps, 1, 2,) if $main::skippackages;
 
-iMSCP::HooksManager->getInstance()->trigger('beforeBuildSteps', \@steps) and exit 1;
+iMSCP::EventManager->getInstance()->trigger('beforeBuildSteps', \@steps) and exit 1;
 
 my $rs = 0;
 my $step = 1;
@@ -215,7 +215,7 @@ for (@steps) {
 	$step++;
 }
 
-iMSCP::HooksManager->getInstance()->trigger('afterBuildSteps') and exit 1;
+iMSCP::EventManager->getInstance()->trigger('afterBuildSteps') and exit 1;
 
 iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 
@@ -275,7 +275,7 @@ EOF
 		[\&removeTmp,           'Removing temporary files']
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeInstall', \@steps) and exit 1;
+	iMSCP::EventManager->getInstance()->trigger('beforeInstall', \@steps) and exit 1;
 
 	$step = 1;
 	$nbSteps = scalar @steps;
@@ -288,7 +288,7 @@ EOF
 
 	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterInstall') and exit 1;
+	iMSCP::EventManager->getInstance()->trigger('afterInstall') and exit 1;
 
 	iMSCP::Dialog->factory()->msgbox(<<EOF);
 

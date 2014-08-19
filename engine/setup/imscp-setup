@@ -35,7 +35,7 @@ umask(027);
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Getopt;
 
 # Turn off localisation features to force any command output to be in english
@@ -108,7 +108,7 @@ sub setupStart
 # Process both setup dialog and tasks
 sub setupProcess
 {
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetup');
+	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetup');
 
 	if(! $main::noprompt) {
 		my $distribution = ucfirst(lc(iMSCP::LsbRelease->getInstance()->getId(1)));
@@ -144,7 +144,7 @@ EOF
 	$rs = setupTasks();
 	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetup');
+	iMSCP::EventManager->getInstance()->trigger('afterSetup');
 }
 
 sub setupShutDown

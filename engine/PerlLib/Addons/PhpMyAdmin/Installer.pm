@@ -38,7 +38,7 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
 use Addons::PhpMyAdmin;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Addons::ComposerInstaller;
 use iMSCP::Execute;
@@ -58,20 +58,20 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupHooks(\%eventManager)
 
  Register PhpMyAdmin setup hook functions
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager instance
  Return int 0 on success, 1 on failure
 
 =cut
 
 sub registerSetupHooks($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
-	$hooksManager->register(
+	$eventManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
 	);
 }
@@ -279,7 +279,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'phpmyadmin'} = Addons::PhpMyAdmin->getInstance();
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'cfgDir'} = $self->{'phpmyadmin'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -670,7 +670,7 @@ sub _buildConfig
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \$cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {

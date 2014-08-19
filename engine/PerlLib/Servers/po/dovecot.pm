@@ -36,7 +36,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -52,21 +52,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupHooks($eventManager)
 
  Register setup hooks.
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Param iMSCP::EventManager $eventManager Hooks manager instance
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupHooks($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Servers::po::dovecot::installer;
-	Servers::po::dovecot::installer->getInstance()->registerSetupHooks($hooksManager);
+	Servers::po::dovecot::installer->getInstance()->registerSetupHooks($eventManager);
 }
 
 =item install()
@@ -95,12 +95,12 @@ sub postinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'dovecot');
+	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'dovecot');
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterPoPostinstall', 'dovecot');
+	$self->{'eventManager'}->trigger('afterPoPostinstall', 'dovecot');
 }
 
 =item postaddMail()
@@ -197,7 +197,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'dovecot');
+	my $rs = $self->{'eventManager'}->trigger('beforePoUninstall', 'dovecot');
 	return $rs if $rs;
 
 	require Servers::po::dovecot::uninstaller;
@@ -208,7 +208,7 @@ sub uninstall
 	$rs = $self->restart();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterPoUninstall', 'dovecot');
+	$self->{'eventManager'}->trigger('afterPoUninstall', 'dovecot');
 }
 
 =item restart()
@@ -223,7 +223,7 @@ sub restart
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforePoRestart');
+	my $rs = $self->{'eventManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
 
 	my $stdout;
@@ -234,7 +234,7 @@ sub restart
 	error('Unable to restart Dovecot') if $rs > 1;
 	return $rs if $rs > 1;
 
-	$self->{'hooksManager'}->trigger('afterPoRestart');
+	$self->{'eventManager'}->trigger('afterPoRestart');
 }
 
 =item getTraffic()
@@ -322,7 +322,7 @@ sub getTraffic($$)
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed (put in database) are zeroed by the
 	# traffic processor script.
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'afterVrlTraffic',
 		sub {
 			if(-f "$variableDataDir/po_traffic.db") {
@@ -354,9 +354,9 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforePoInit', $self, 'dovecot'
 	) and fatal('dovecot - beforePoInit hook has failed');
 
@@ -366,7 +366,7 @@ sub _init
 
 	tie %{$self->{'config'}}, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/dovecot.data";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterPoInit', $self, 'dovecot'
 	) and fatal('dovecot - afterPoInit hook has failed');
 

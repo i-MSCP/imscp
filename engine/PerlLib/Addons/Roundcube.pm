@@ -53,21 +53,21 @@ filters.
 
 =over 4
 
-=item registerSetupHooks(\%hooksManager)
+=item registerSetupHooks(\%eventManager)
 
  Register setup hook functions
 
- Param iMSCP::HooksManager instance
+ Param iMSCP::EventManager instance
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupHooks($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Addons::Roundcube::Installer;
-	Addons::Roundcube::Installer->getInstance()->registerSetupHooks($hooksManager);
+	Addons::Roundcube::Installer->getInstance()->registerSetupHooks($eventManager);
 }
 
 =item preinstall()

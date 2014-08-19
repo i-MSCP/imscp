@@ -36,7 +36,6 @@ use warnings;
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-use iMSCP::HooksManager;
 use iMSCP::Debug qw /error debugRegisterCallBack output /;
 use fields qw / reconfigure noprompt preseed hookFile cleanAddons skipAddonsUpdate debug /;
 our $options = fields::new('iMSCP::Getopt');

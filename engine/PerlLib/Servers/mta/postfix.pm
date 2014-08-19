@@ -36,7 +36,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -52,21 +52,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupHooks($eventManager)
 
  Register setup hooks.
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Param iMSCP::EventManager $eventManager Hooks manager instance
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupHooks($$)
 {
-	my ($self, $hooksManager) = @_;
+	my ($self, $eventManager) = @_;
 
 	require Servers::mta::postfix::installer;
-	Servers::mta::postfix::installer->getInstance()->registerSetupHooks($hooksManager);
+	Servers::mta::postfix::installer->getInstance()->registerSetupHooks($eventManager);
 }
 
 =item preinstall()
@@ -109,7 +109,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaUninstall', 'postfix');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaUninstall', 'postfix');
 	return $rs if $rs;
 
 	require Servers::mta::postfix::uninstaller;
@@ -119,7 +119,7 @@ sub uninstall
 	$rs = $self->restart();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaUninstall', 'postfix');
+	$self->{'eventManager'}->trigger('afterMtaUninstall', 'postfix');
 }
 
 =item postinstall()
@@ -134,12 +134,12 @@ sub postinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPostinstall', 'postfix');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaPostinstall', 'postfix');
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterMtaPostinstall', 'postfix');
+	$self->{'eventManager'}->trigger('afterMtaPostinstall', 'postfix');
 }
 
 =item setEnginePermissions()
@@ -168,7 +168,7 @@ sub restart
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaRestart');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaRestart');
 	return $rs if $rs;
 
 	my $stdout;
@@ -177,7 +177,7 @@ sub restart
 	error('Unable to restart Postfix') if $rs > 1;
 	return $rs if $rs > 1;
 
-	$self->{'hooksManager'}->trigger('afterMtaRestart');
+	$self->{'eventManager'}->trigger('afterMtaRestart');
 }
 
 =item postmap($filename, [$filetype = hash])
@@ -194,7 +194,7 @@ sub postmap($$;$)
 
 	$filetype ||= 'hash';
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPostmap', \$filename, \$filetype);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaPostmap', \$filename, \$filetype);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -203,7 +203,7 @@ sub postmap($$;$)
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaPostmap', $filename, $filetype);
+	$self->{'eventManager'}->trigger('afterMtaPostmap', $filename, $filetype);
 }
 
 =item addDmn(\%data)
@@ -218,7 +218,7 @@ sub addDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddDmn', $data);
 	return $rs if $rs;
 
 	if($data->{'EXTERNAL_MAIL'} eq 'domain') { # Mail for both domain and subdomains is managed by external server
@@ -271,7 +271,7 @@ sub addDmn($$)
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaAddDmn', $data);
+	$self->{'eventManager'}->trigger('afterMtaAddDmn', $data);
 }
 
 =item disableDmn(\%data)
@@ -286,7 +286,7 @@ sub disableDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDisableDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDisableDmn', $data);
 	return $rs if $rs;
 
 	my $domainsHashFile = fileparse($self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'});
@@ -331,7 +331,7 @@ sub disableDmn($$)
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaDisableDmn', $data);
+	$self->{'eventManager'}->trigger('afterMtaDisableDmn', $data);
 }
 
 =item deleteDmn(\%data)
@@ -346,7 +346,7 @@ sub deleteDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelDmn', $data);
 	return $rs if $rs;
 
 	$rs = $self->disableDmn($data);
@@ -355,7 +355,7 @@ sub deleteDmn($$)
 	$rs = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}")->remove();
 	return $rs if $rs;
 
-	$rs = $self->{'hooksManager'}->trigger('afterMtaDelDmn', $data);
+	$rs = $self->{'eventManager'}->trigger('afterMtaDelDmn', $data);
 }
 
 =item addSub(\%data)
@@ -370,13 +370,13 @@ sub addSub($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddSub', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddSub', $data);
 	return $rs if $rs;
 
 	$rs = $self->addDmn($data);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaAddSub', $data);
+	$self->{'eventManager'}->trigger('afterMtaAddSub', $data);
 }
 
 =item disableSub(\%data)
@@ -391,13 +391,13 @@ sub disableSub($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDisableSub', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDisableSub', $data);
 	return $rs if $rs;
 
 	$rs = $self->disableDmn($data);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaDisableSub', $data);
+	$self->{'eventManager'}->trigger('afterMtaDisableSub', $data);
 }
 
 =item deleteSub(\%data)
@@ -412,13 +412,13 @@ sub deleteSub($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelSub', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelSub', $data);
 	return $rs if $rs;
 
 	$rs = $self->deleteDmn($data);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaDelSub', $data);
+	$self->{'eventManager'}->trigger('afterMtaDelSub', $data);
 }
 
 =item addMail(\%data)
@@ -433,7 +433,7 @@ sub addMail($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddMail', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddMail', $data);
 	return $rs if $rs;
 
 	for(
@@ -482,7 +482,7 @@ sub addMail($$)
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaAddMail', $data);
+	$self->{'eventManager'}->trigger('afterMtaAddMail', $data);
 }
 
 =item deleteMail(\%data)
@@ -497,7 +497,7 @@ sub deleteMail($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelMail', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelMail', $data);
 	return $rs if $rs;
 
 	for(
@@ -526,7 +526,7 @@ sub deleteMail($$)
 	$rs = $self->_deleteCatchAll($data);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaDelMail', $data);
+	$self->{'eventManager'}->trigger('afterMtaDelMail', $data);
 }
 
 =item disableMail(\%data)
@@ -541,7 +541,7 @@ sub disableMail($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDisableMail', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDisableMail', $data);
 	return $rs if $rs;
 
 	for(
@@ -570,7 +570,7 @@ sub disableMail($$)
 	$rs = $self->_deleteCatchAll($data);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaDisableMail', $data);
+	$self->{'eventManager'}->trigger('afterMtaDisableMail', $data);
 }
 
 =item getTraffic()
@@ -653,7 +653,7 @@ sub getTraffic
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed (put in database) are zeroed by the
 	# traffic processor script.
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'afterVrlTraffic',
 		sub {
 			if(-f "$variableDataDir/smtp_traffic.db") {
@@ -685,9 +685,9 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeMtaInit', $self, 'postfix'
 	) and fatal('postfix - beforeMtaInit hook has failed');
 
@@ -699,7 +699,7 @@ sub _init
 
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/postfix.data";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterMtaInit', $self, 'postfix'
 	) and fatal('postfix - afterMtaInit hook has failed');
 
@@ -718,7 +718,7 @@ sub _addToRelayHash($$)
 {
 	my ($self, $data) = @_;;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddToRelayHash', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddToRelayHash', $data);
 	return $rs if $rs;
 
 	my $relayHashFile = fileparse($self->{'config'}->{'MTA_RELAY_HASH'});
@@ -762,7 +762,7 @@ sub _addToRelayHash($$)
 
 	$self->{'postmap'}->{$prodRelayHashFile} = $data->{'DOMAIN_NAME'};
 
-	$self->{'hooksManager'}->trigger('afterMtaAddToRelayHash', $data);
+	$self->{'eventManager'}->trigger('afterMtaAddToRelayHash', $data);
 }
 
 =item _deleteFromRelayHash(\%data)
@@ -777,7 +777,7 @@ sub _deleteFromRelayHash($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelFromRelayHash', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelFromRelayHash', $data);
 	return $rs if $rs;
 
 	my $relayHashFile = fileparse($self->{'config'}->{'MTA_RELAY_HASH'});
@@ -817,7 +817,7 @@ sub _deleteFromRelayHash($$)
 
 	$self->{'postmap'}->{$prodRelayHashFile} = $data->{'DOMAIN_NAME'};
 
-	$self->{'hooksManager'}->trigger('afterMtaDelFromRelayHash', $data);
+	$self->{'eventManager'}->trigger('afterMtaDelFromRelayHash', $data);
 }
 
 =item _addToDomainsHash(\%data)
@@ -832,7 +832,7 @@ sub _addToDomainsHash($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddToDomainsHash', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddToDomainsHash', $data);
 	return $rs if $rs;
 
 	my $domainsHashFile = fileparse($self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'});
@@ -883,7 +883,7 @@ sub _addToDomainsHash($$)
 	);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaAddToDomainsHash', $data);
+	$self->{'eventManager'}->trigger('afterMtaAddToDomainsHash', $data);
 }
 
 =item _addMailBox(\%data)
@@ -898,7 +898,7 @@ sub _addMailBox($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddMailbox', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddMailbox', $data);
 	return $rs if $rs;
 
 	my $mailboxesFileHash = fileparse($self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'});
@@ -961,7 +961,7 @@ sub _addMailBox($$)
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaAddMailbox', $data);
+	$self->{'eventManager'}->trigger('afterMtaAddMailbox', $data);
 }
 
 =item _disableMailBox(\%data)
@@ -976,7 +976,7 @@ sub _disableMailBox($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDisableMailbox', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDisableMailbox', $data);
 	return $rs if $rs;
 
 	my $mailboxesFileHash = fileparse($self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'});
@@ -1012,7 +1012,7 @@ sub _disableMailBox($$)
 
 	$self->{'postmap'}->{$prodMailboxesFileHash} = $data->{'MAIL_ADDR'};
 
-	$self->{'hooksManager'}->trigger('afterMtaDisableMailbox', $data);
+	$self->{'eventManager'}->trigger('afterMtaDisableMailbox', $data);
 }
 
 =item _deleteMailBox(\%data)
@@ -1027,7 +1027,7 @@ sub _deleteMailBox($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelMailbox', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelMailbox', $data);
 	return $rs if $rs;
 
 	$rs = $self->_disableMailBox($data);
@@ -1040,7 +1040,7 @@ sub _deleteMailBox($$)
 	$rs = iMSCP::Dir->new('dirname' => $mailDir)->remove();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaDelMailbox', $data);
+	$self->{'eventManager'}->trigger('afterMtaDelMailbox', $data);
 }
 
 =item _addMailForward(\%data)
@@ -1055,7 +1055,7 @@ sub _addMailForward($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddMailForward', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddMailForward', $data);
 	return $rs if $rs;
 
 	my $aliasesFileHash = fileparse($self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'});
@@ -1104,7 +1104,7 @@ sub _addMailForward($$)
 
 	$self->{'postmap'}->{$prodAliasesFileHash} = $data->{'MAIL_ADDR'};
 
-	$self->{'hooksManager'}->trigger('afterMtaAddMailForward', $data);
+	$self->{'eventManager'}->trigger('afterMtaAddMailForward', $data);
 }
 
 =item _deleteMailForward(\%data)
@@ -1119,7 +1119,7 @@ sub _deleteMailForward($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelMailForward', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelMailForward', $data);
 	return $rs if $rs;
 
 	my $aliasesFileHash = fileparse($self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'});
@@ -1169,7 +1169,7 @@ sub _deleteMailForward($$)
 
 	$self->{'postmap'}->{$prodAliasesFileHash} = $data->{'MAIL_ADDR'};
 
-	$self->{'hooksManager'}->trigger('afterMtaDelMailForward', $data);
+	$self->{'eventManager'}->trigger('afterMtaDelMailForward', $data);
 }
 
 =item _addAutoRspnd(\%data)
@@ -1184,7 +1184,7 @@ sub _addAutoRspnd($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddAutoRspnd', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddAutoRspnd', $data);
 	return $rs if $rs;
 
 	my $transportFileHash = fileparse($self->{'config'}->{'MTA_TRANSPORT_HASH'});
@@ -1221,7 +1221,7 @@ sub _addAutoRspnd($$)
 
 	$self->{'postmap'}->{$prodTransportFileHash} = $data->{'MAIL_ADDR'};
 
-	$self->{'hooksManager'}->trigger('afterMtaAddAutoRspnd', $data);
+	$self->{'eventManager'}->trigger('afterMtaAddAutoRspnd', $data);
 }
 
 =item _deleteAutoRspnd(\%data)
@@ -1236,7 +1236,7 @@ sub _deleteAutoRspnd($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelAutoRspnd', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelAutoRspnd', $data);
 	return $rs if $rs;
 
 	my $transportFileHash = fileparse($self->{'config'}->{'MTA_TRANSPORT_HASH'});
@@ -1272,7 +1272,7 @@ sub _deleteAutoRspnd($$)
 
 	$self->{'postmap'}->{$prodTransportFileHash} = $data->{'MAIL_ADDR'};
 
-	$self->{'hooksManager'}->trigger('afterMtaDelAutoRspnd', $data);
+	$self->{'eventManager'}->trigger('afterMtaDelAutoRspnd', $data);
 }
 
 =item _addCatchAll(\%data)
@@ -1287,7 +1287,7 @@ sub _addCatchAll($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddCatchAll', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddCatchAll', $data);
 	return $rs if $rs;
 
 	my $aliasesFileHash = fileparse($self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'});
@@ -1331,7 +1331,7 @@ sub _addCatchAll($$)
 
 	$self->{'postmap'}->{$prodAliasesFileHash} = $data->{'MAIL_ADDR'};
 
-	$self->{'hooksManager'}->trigger('afterMtaAddCatchAll', $data);
+	$self->{'eventManager'}->trigger('afterMtaAddCatchAll', $data);
 }
 
 =item _deleteCatchAll(\%data)
@@ -1346,7 +1346,7 @@ sub _deleteCatchAll($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelCatchAll', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelCatchAll', $data);
 	return $rs if $rs;
 
 	my $aliasesFileHash = fileparse($self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'});
@@ -1387,7 +1387,7 @@ sub _deleteCatchAll($$)
 
 	$self->{'postmap'}->{$prodAliasesFileHash} = $data->{'MAIL_ADDR'};
 
-	$self->{'hooksManager'}->trigger('afterMtaDelCatchAll', $data);
+	$self->{'eventManager'}->trigger('afterMtaDelCatchAll', $data);
 }
 
 =item END

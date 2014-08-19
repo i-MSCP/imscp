@@ -37,7 +37,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::TemplateParser;
@@ -60,21 +60,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupHooks($eventManager)
 
  Register setup hooks
 
- Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Param iMSCP::EventManager $eventManager Hooks manager instance
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupHooks($$)
 {
-	my (undef, $hooksManager) = @_;
+	my (undef, $eventManager) = @_;
 
 	require Servers::httpd::apache_php_fpm::installer;
-	Servers::httpd::apache_php_fpm::installer->getInstance()->registerSetupHooks($hooksManager);
+	Servers::httpd::apache_php_fpm::installer->getInstance()->registerSetupHooks($eventManager);
 }
 
 =item preinstall()
@@ -89,7 +89,7 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPreInstall', 'apache_php_fpm');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdPreInstall', 'apache_php_fpm');
 	return $rs if $rs;
 
 	$rs = $self->stopApache();
@@ -98,7 +98,7 @@ sub preinstall
 	$rs = $self->stopPhpFpm();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdPreInstall', 'apache_php_fpm');
+	$self->{'eventManager'}->trigger('afterHttpdPreInstall', 'apache_php_fpm');
 }
 
 =item install()
@@ -127,12 +127,12 @@ sub postinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPostInstall', 'apache_php_fpm');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdPostInstall', 'apache_php_fpm');
 	return $rs if $rs;
 
 	$self->{'start'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterHttpdPostInstall', 'apache_php_fpm');
+	$self->{'eventManager'}->trigger('afterHttpdPostInstall', 'apache_php_fpm');
 }
 
 =item uninstall()
@@ -153,14 +153,14 @@ sub uninstall
 	$rs = $self->stopApache();
 	return $rs if $rs;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeHttpdUninstall', 'apache_php_fpm');
+	$rs = $self->{'eventManager'}->trigger('beforeHttpdUninstall', 'apache_php_fpm');
 	return $rs if $rs;
 
 	require Servers::httpd::apache_php_fpm::uninstaller;
 	$rs = Servers::httpd::apache_php_fpm::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdUninstall', 'apache_php_fpm');
+	$rs = $self->{'eventManager'}->trigger('afterHttpdUninstall', 'apache_php_fpm');
 	return $rs if $rs;
 
 	$rs = $self->startPhpFpm();
@@ -182,7 +182,7 @@ sub addUser($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddUser', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddUser', $data);
 	return $rs if $rs;
 
 	$self->setData($data);
@@ -195,7 +195,7 @@ sub addUser($$)
 
 	$self->flushData();
 
-	$self->{'hooksManager'}->trigger('afterHttpdAddUser', $data);
+	$self->{'eventManager'}->trigger('afterHttpdAddUser', $data);
 }
 
 =item deleteUser(\%data)
@@ -211,7 +211,7 @@ sub deleteUser($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelUser', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelUser', $data);
 	return $rs if $rs;
 
 	# Removing Apache user from i-MSCP virtual user group
@@ -220,7 +220,7 @@ sub deleteUser($$)
 
 	$self->{'restart'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterHttpdDelUser', $data);
+	$self->{'eventManager'}->trigger('afterHttpdDelUser', $data);
 }
 
 =item addDmn(\%data)
@@ -236,7 +236,7 @@ sub addDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddDmn', $data);
 	return $rs if $rs;
 
 	$self->setData($data);
@@ -251,7 +251,7 @@ sub addDmn($$)
 
 	$self->flushData();
 
-	$self->{'hooksManager'}->trigger('afterHttpdAddDmn', $data);
+	$self->{'eventManager'}->trigger('afterHttpdAddDmn', $data);
 }
 
 =item restoreDmn
@@ -267,7 +267,7 @@ sub restoreDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestoreDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdRestoreDmn', $data);
 	return $rs if $rs;
 
 	$self->setData($data);
@@ -277,7 +277,7 @@ sub restoreDmn($$)
 
 	$self->flushData();
 
-	$self->{'hooksManager'}->trigger('afterHttpdRestoreDmn', $data);
+	$self->{'eventManager'}->trigger('afterHttpdRestoreDmn', $data);
 }
 
 =item disableDmn(\%data)
@@ -293,7 +293,7 @@ sub disableDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDisableDmn', $data);
 	return $rs if $rs;
 
 	$self->setData($data);
@@ -340,7 +340,7 @@ sub disableDmn($$)
 
 	$self->flushData();
 
-	$self->{'hooksManager'}->trigger('afterHttpdDisableDmn', $data);
+	$self->{'eventManager'}->trigger('afterHttpdDisableDmn', $data);
 }
 
 =item deleteDmn(\%data)
@@ -356,7 +356,7 @@ sub deleteDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelDmn', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelDmn', $data);
 	return $rs if $rs;
 
 	# Disable apache site files
@@ -469,7 +469,7 @@ sub deleteDmn($$)
 
 	$self->{'restart'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterHttpdDelDmn', $data);
+	$self->{'eventManager'}->trigger('afterHttpdDelDmn', $data);
 }
 
 =item addSub(\%data)
@@ -485,7 +485,7 @@ sub addSub($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddSub', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddSub', $data);
 	return $rs if $rs;
 
 	$self->setData($data);
@@ -500,7 +500,7 @@ sub addSub($$)
 
 	$self->flushData();
 
-	$self->{'hooksManager'}->trigger('afterHttpdAddSub', $data);
+	$self->{'eventManager'}->trigger('afterHttpdAddSub', $data);
 }
 
 =item restoreSub($\data)
@@ -516,7 +516,7 @@ sub restoreSub($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestoreSub', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdRestoreSub', $data);
 	return $rs if $rs;
 
 	$self->setData($data);
@@ -526,7 +526,7 @@ sub restoreSub($$)
 
 	$self->flushData();
 
-	$self->{'hooksManager'}->trigger('afterHttpdRestoreSub', $data);
+	$self->{'eventManager'}->trigger('afterHttpdRestoreSub', $data);
 
 	0;
 }
@@ -544,13 +544,13 @@ sub disableSub($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableSub', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDisableSub', $data);
 	return $rs if $rs;
 
 	$rs = $self->disableDmn($data);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdDisableSub', $data);
+	$self->{'eventManager'}->trigger('afterHttpdDisableSub', $data);
 }
 
 =item deleteSub(\%data)
@@ -566,12 +566,12 @@ sub deleteSub($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelSub', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelSub', $data);
 
 	$rs = $self->deleteDmn($data);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdDelSub', $data);
+	$self->{'eventManager'}->trigger('afterHttpdDelSub', $data);
 }
 
 =item AddHtuser(\%data)
@@ -598,13 +598,13 @@ sub addHtuser($$)
 	my $fileContent = $file->get() if -f $filePath;
 	$fileContent = '' unless defined $fileContent;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddHtuser', \$fileContent, $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddHtuser', \$fileContent, $data);
 	return $rs if $rs;
 
 	$fileContent =~ s/^$data->{'HTUSER_NAME'}:[^\n]*\n//gim;
 	$fileContent .= "$data->{'HTUSER_NAME'}:$data->{'HTUSER_PASS'}\n";
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdAddHtuser', \$fileContent, $data);
+	$rs = $self->{'eventManager'}->trigger('afterHttpdAddHtuser', \$fileContent, $data);
 	return $rs if $rs;
 
 	$rs = $file->set($fileContent);
@@ -649,12 +649,12 @@ sub deleteHtuser($$)
 	my $fileContent = $file->get() if -f $filePath;
 	$fileContent = '' unless defined $fileContent;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelHtuser', \$fileContent, $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelHtuser', \$fileContent, $data);
 	return $rs if $rs;
 
 	$fileContent =~ s/^$data->{'HTUSER_NAME'}:[^\n]*\n//gim;
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdDelHtuser', \$fileContent, $data);
+	$rs = $self->{'eventManager'}->trigger('afterHttpdDelHtuser', \$fileContent, $data);
 	return $rs if $rs;
 
 	$rs = $file->set($fileContent);
@@ -699,13 +699,13 @@ sub addHtgroup($$)
 	my $fileContent = $file->get() if -f $filePath;
 	$fileContent = '' unless defined $fileContent;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddHtgroup', \$fileContent, $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddHtgroup', \$fileContent, $data);
 	return $rs if $rs;
 
 	$fileContent =~ s/^$data->{'HTGROUP_NAME'}:[^\n]*\n//gim;
 	$fileContent .= "$data->{'HTGROUP_NAME'}:$data->{'HTGROUP_USERS'}\n";
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdAddHtgroup', \$fileContent, $data);
+	$rs = $self->{'eventManager'}->trigger('afterHttpdAddHtgroup', \$fileContent, $data);
 	return $rs if $rs;
 
 	$rs = $file->set($fileContent);
@@ -750,7 +750,7 @@ sub deleteHtgroup
 	my $fileContent = $file->get() if -f $filePath;
 	$fileContent = '' unless defined $fileContent;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelHtgroup', \$fileContent, $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelHtgroup', \$fileContent, $data);
 	return $rs if $rs;
 
 	$fileContent =~ s/^$data->{'HTGROUP_NAME'}:[^\n]*\n//gim;
@@ -758,7 +758,7 @@ sub deleteHtgroup
 	$rs = $file->set($fileContent);
 	return $rs if $rs;
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdDelHtgroup', \$fileContent, $data);
+	$rs = $self->{'eventManager'}->trigger('afterHttpdDelHtgroup', \$fileContent, $data);
 	return $rs if $rs;
 
 	$rs = $file->save();
@@ -800,7 +800,7 @@ sub addHtaccess
 		my $fileContent = $file->get() if -f $filePath;
 		$fileContent = '' unless defined $fileContent;
 
-		my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddHtaccess', \$fileContent, $data);
+		my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddHtaccess', \$fileContent, $data);
 		return $rs if $rs;
 
 		my $bTag = "### START i-MSCP PROTECTION ###\n";
@@ -816,7 +816,7 @@ sub addHtaccess
 		$fileContent = replaceBloc($bTag, $eTag, '', $fileContent);
 		$fileContent = $bTag . $tagContent . $eTag . $fileContent;
 
-		$rs = $self->{'hooksManager'}->trigger('afterHttpdAddHtaccess', \$fileContent, $data);
+		$rs = $self->{'eventManager'}->trigger('afterHttpdAddHtaccess', \$fileContent, $data);
 		return $rs if $rs;
 
 		$rs = $file->set($fileContent);
@@ -858,7 +858,7 @@ sub deleteHtaccess($$)
 		my $fileContent = $file->get() if -f $filePath;
 		$fileContent = '' unless defined $fileContent;
 
-		my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelHtaccess', \$fileContent, $data);
+		my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelHtaccess', \$fileContent, $data);
 		return $rs if $rs;
 
 		my $bTag = "### START i-MSCP PROTECTION ###\n";
@@ -866,7 +866,7 @@ sub deleteHtaccess($$)
 
 		$fileContent = replaceBloc($bTag, $eTag, '', $fileContent);
 
-		$rs = $self->{'hooksManager'}->trigger('afterHttpdDelHtaccess', \$fileContent, $data);
+		$rs = $self->{'eventManager'}->trigger('afterHttpdDelHtaccess', \$fileContent, $data);
 		return $rs if $rs;
 
 		if($fileContent ne '') {
@@ -917,7 +917,7 @@ sub addIps($$)
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddIps', \$content, $data);
+	$rs = $self->{'eventManager'}->trigger('beforeHttpdAddIps', \$content, $data);
 	return $rs if $rs;
 
 	unless(qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0')) {
@@ -944,7 +944,7 @@ sub addIps($$)
 		$content =~ s/\n# NameVirtualHost\n//;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdAddIps', \$content, $data);
+	$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$content, $data);
 	return $rs if $rs;
 
 	$rs = $wrkFileH->set($content);
@@ -1014,12 +1014,12 @@ sub buildConf($$$$)
 		return undef;
 	}
 
-	$self->{'hooksManager'}->trigger('beforeHttpdBuildConf', \$cfgTpl, $filename, $data);
+	$self->{'eventManager'}->trigger('beforeHttpdBuildConf', \$cfgTpl, $filename, $data);
 
 	$cfgTpl = process($self->{'data'}, $cfgTpl);
 	return undef if ! $cfgTpl;
 
-	$self->{'hooksManager'}->trigger('afterHttpdBuildConf', \$cfgTpl, $filename, $data);
+	$self->{'eventManager'}->trigger('afterHttpdBuildConf', \$cfgTpl, $filename, $data);
 
 	$cfgTpl;
 }
@@ -1046,7 +1046,7 @@ sub buildConfFile($$$;$)
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'apache_php_fpm', $filename, \$cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_php_fpm', $filename, \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -1061,7 +1061,7 @@ sub buildConfFile($$$;$)
 
 	# Build file
 
-	$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options);
+	$rs = $self->{'eventManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options);
 	return $rs if $rs;
 
 	$cfgTpl = $self->buildConf($cfgTpl, $filename, $data);
@@ -1069,7 +1069,7 @@ sub buildConfFile($$$;$)
 
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options);
+	$rs = $self->{'eventManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options);
 	return $rs if $rs;
 
 	# Store file
@@ -1111,7 +1111,7 @@ sub installConfFile($$;$)
 
 	my ($filename, $path) = fileparse($file);
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallConfFile', $filename, $options);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstallConfFile', $filename, $options);
 	return $rs if $rs;
 
 	$file = "$self->{'apacheWrkDir'}/$file" unless -d $path && $path ne './';
@@ -1132,7 +1132,7 @@ sub installConfFile($$;$)
 	);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdInstallConfFile', $filename, $options);
+	$self->{'eventManager'}->trigger('afterHttpdInstallConfFile', $filename, $options);
 }
 
 =item setData(\%data)
@@ -1224,7 +1224,7 @@ sub getTraffic($$)
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is
 	# kept in place for later processing. In such case, data already processed (put in database) are zeroed by
 	# the traffic processor script.
-	$self->{'hooksManager'}->register(
+	$self->{'eventManager'}->register(
 		'afterVrlTraffic',
 		sub {
 			if(-f $trafficDbPath) {
@@ -1250,7 +1250,7 @@ sub deleteTmp
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelTmp');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelTmp');
 	return $rs if $rs;
 
 	# Get session.gc_maxlifetime value from global PHP FPM php.ini file
@@ -1294,7 +1294,7 @@ sub deleteTmp
 	error("Error while executing $cmd.\nReturned value is $rs") if ! $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdDelTmp');
+	$self->{'eventManager'}->trigger('afterHttpdDelTmp');
 }
 
 =item getRunningUser()
@@ -1336,7 +1336,7 @@ sub enableSite($$)
 {
 	my ($self, $sites) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableSite', \$sites);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdEnableSite', \$sites);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -1354,7 +1354,7 @@ sub enableSite($$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdEnableSite', $sites);
+	$self->{'eventManager'}->trigger('afterHttpdEnableSite', $sites);
 }
 
 =item disableSite($sites)
@@ -1370,7 +1370,7 @@ sub disableSite($$)
 {
 	my ($self, $sites) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableSite', \$sites);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDisableSite', \$sites);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -1388,7 +1388,7 @@ sub disableSite($$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdDisableSite', $sites);
+	$self->{'eventManager'}->trigger('afterHttpdDisableSite', $sites);
 }
 
 =item enableMod($modules)
@@ -1404,7 +1404,7 @@ sub enableMod($$)
 {
 	my ($self, $modules) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableMod', \$modules);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdEnableMod', \$modules);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -1415,7 +1415,7 @@ sub enableMod($$)
 
 	$self->{'restart'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterHttpdEnableMod', $modules);
+	$self->{'eventManager'}->trigger('afterHttpdEnableMod', $modules);
 }
 
 =item disableMod($modules)
@@ -1431,7 +1431,7 @@ sub disableMod($$)
 {
 	my ($self, $modules) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableMod', \$modules);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDisableMod', \$modules);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -1442,7 +1442,7 @@ sub disableMod($$)
 
 	$self->{'restart'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterHttpdDisableMod', $modules);
+	$self->{'eventManager'}->trigger('afterHttpdDisableMod', $modules);
 }
 
 =item startPhpFpm()
@@ -1457,7 +1457,7 @@ sub startPhpFpm
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStartPhpFpm');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStartPhpFpm');
 	return $rs if $rs;
 
 	my $stdout;
@@ -1468,7 +1468,7 @@ sub startPhpFpm
 	error('Unable to start PHP-FPM') if $rs > 1;
 	return $rs if $rs > 1;
 
-	$self->{'hooksManager'}->trigger('afterHttpdStartPhpFpm');
+	$self->{'eventManager'}->trigger('afterHttpdStartPhpFpm');
 }
 
 =item stopPhpFpm()
@@ -1483,7 +1483,7 @@ sub stopPhpFpm
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStopPhpFpm');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStopPhpFpm');
 	return $rs if $rs;
 
 	my $stdout;
@@ -1494,7 +1494,7 @@ sub stopPhpFpm
 	error('Unable to stop PHP-FPM') if $rs > 1;
 	return $rs if $rs > 1;
 
-	$self->{'hooksManager'}->trigger('afterHttpdStopPhpFpm');
+	$self->{'eventManager'}->trigger('afterHttpdStopPhpFpm');
 }
 
 =item restartPhpFpm()
@@ -1509,7 +1509,7 @@ sub restartPhpFpm
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestartPhpFpm');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdRestartPhpFpm');
 	return $rs if $rs;
 
 	my $stdout;
@@ -1521,7 +1521,7 @@ sub restartPhpFpm
 	error('Unable to restart/reload PHP-FPM') if $rs > 1;
 	return $rs if $rs > 1;
 
-	$self->{'hooksManager'}->trigger('afterHttpdRestartPhpFpm');
+	$self->{'eventManager'}->trigger('afterHttpdRestartPhpFpm');
 }
 
 =item forceRestart()
@@ -1551,7 +1551,7 @@ sub startApache
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStart');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
 
 	my $stdout;
@@ -1560,7 +1560,7 @@ sub startApache
 	error('Unable to start Apache2') if $rs > 1;
 	return $rs if $rs > 1;
 
-	$self->{'hooksManager'}->trigger('afterHttpdStart');
+	$self->{'eventManager'}->trigger('afterHttpdStart');
 }
 
 =item stopApache()
@@ -1575,7 +1575,7 @@ sub stopApache
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStop');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStop');
 	return $rs if $rs;
 
 	my $stdout;
@@ -1584,7 +1584,7 @@ sub stopApache
 	error('Unable to stop Apache2') if $rs > 1;
 	return $rs if $rs > 1;
 
-	$self->{'hooksManager'}->trigger('afterHttpdStop');
+	$self->{'eventManager'}->trigger('afterHttpdStop');
 }
 
 =item restartApache()
@@ -1599,7 +1599,7 @@ sub restartApache
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestart');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdRestart');
 	return $rs if $rs;
 
 	my $stdout;
@@ -1612,7 +1612,7 @@ sub restartApache
 	error('Unable to restart/reload Apache2') if $rs > 1;
 	return $rs if $rs > 1;
 
-	$self->{'hooksManager'}->trigger('afterHttpdRestart');
+	$self->{'eventManager'}->trigger('afterHttpdRestart');
 }
 
 =item apacheBkpConfFile($filepath, [$prefix = ''], [$system = 0])
@@ -1633,7 +1633,7 @@ sub apacheBkpConfFile($$;$$)
 	$prefix ||= '';
 	$system ||= 0;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', $filepath, $prefix, $system);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBkpConfFile', $filepath, $prefix, $system);
 	return $rs if $rs;
 
 	if(-f $filepath) {
@@ -1649,7 +1649,7 @@ sub apacheBkpConfFile($$;$$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', $filepath, $prefix, $system);
+	$self->{'eventManager'}->trigger('afterHttpdBkpConfFile', $filepath, $prefix, $system);
 }
 
 =item phpfpmBkpConfFile($filepath, [$prefix = ''], [$system = 0])
@@ -1670,7 +1670,7 @@ sub phpfpmBkpConfFile($$;$$)
 	$prefix ||= '';
 	$system ||= 0;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', $filepath, $prefix, $system);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBkpConfFile', $filepath, $prefix, $system);
 	return $rs if $rs;
 
 	if(-f $filepath) {
@@ -1686,7 +1686,7 @@ sub phpfpmBkpConfFile($$;$$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', $filepath, $prefix, $system);
+	$self->{'eventManager'}->trigger('afterHttpdBkpConfFile', $filepath, $prefix, $system);
 }
 
 =back
@@ -1707,9 +1707,9 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeHttpdInit', $self, 'apache_php_fpm'
 	) and fatal('apache_php_fpm - beforeHttpdInit hook has failed');
 
@@ -1727,12 +1727,12 @@ sub _init
 
 	tie %{$self->{'phpfpmConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'phpfpmCfgDir'}/phpfpm.data";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterHttpdInit', $self, 'apache_php_fpm'
 	) and fatal('apache_php_fpm - afterHttpdInit hook has failed');
 
 	# Register event listener which is responsible to clean vhost template files
-	$self->{'hooksManager'}->register('afterHttpdBuildConfFile', sub { $self->_cleanTemplate(@_)});
+	$self->{'eventManager'}->register('afterHttpdBuildConfFile', sub { $self->_cleanTemplate(@_)});
 
 	$self;
 }
@@ -1750,7 +1750,7 @@ sub _addCfg($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddCfg', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddCfg', $data);
 	return $rs if $rs;
 
 	$self->setData($data);
@@ -1891,7 +1891,7 @@ sub _addCfg($$)
 
 	# Build PHP FPM pool file - End
 
-	$self->{'hooksManager'}->trigger('afterHttpdAddCfg', $data);
+	$self->{'eventManager'}->trigger('afterHttpdAddCfg', $data);
 }
 
 =item _dmnFolders(\%data)
@@ -1909,7 +1909,7 @@ sub _dmnFolders($$)
 
 	my @folders;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdDmnFolders', \@folders);
+	$self->{'eventManager'}->trigger('beforeHttpdDmnFolders', \@folders);
 
 	push(@folders, [
 		"$self->{'config'}->{'APACHE_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
@@ -1918,7 +1918,7 @@ sub _dmnFolders($$)
 		0750
 	]);
 
-	$self->{'hooksManager'}->trigger('afterHttpdDmnFolders', \@folders);
+	$self->{'eventManager'}->trigger('afterHttpdDmnFolders', \@folders);
 
 	@folders;
 }
@@ -1936,7 +1936,7 @@ sub _addFiles($$)
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddFiles', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddFiles', $data);
 	return $rs if $rs;
 
 	# Create directories as returned by the dmnFolders() method
@@ -2097,7 +2097,7 @@ sub _addFiles($$)
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdAddFiles', $data);
+	$self->{'eventManager'}->trigger('afterHttpdAddFiles', $data);
 }
 
 =item _cleanTemplate($sectionName, \$cfgTpl)

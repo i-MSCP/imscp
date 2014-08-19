@@ -35,7 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
@@ -74,12 +74,12 @@ sub postinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeSqldPostInstall', 'mysql');
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterSqldPostInstall', 'mysql');
+	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
 
 =item uninstall()
@@ -94,7 +94,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeSqldUninstall', 'mysql');
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldUninstall', 'mysql');
 	return $rs if $rs;
 
 	require Servers::sqld::mysql::uninstaller;
@@ -105,7 +105,7 @@ sub uninstall
 	$rs = $self->restart();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterSqldUninstall', 'mysql');
+	$self->{'eventManager'}->trigger('afterSqldUninstall', 'mysql');
 }
 
 =item setEnginePermissions()
@@ -135,7 +135,7 @@ sub restart
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeSqldRestart');
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldRestart');
 	return $rs if $rs;
 
 	my $stdout;
@@ -144,7 +144,7 @@ sub restart
 	error('Unable to restart MySQL server') if $rs > 1;
 	return $rs if $rs > 1;
 
-	$self->{'hooksManager'}->trigger('afterSqldRestart');
+	$self->{'eventManager'}->trigger('afterSqldRestart');
 }
 
 =back
@@ -165,9 +165,9 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeSqldInit', $self, 'mysql'
 	) and fatal('mysql - beforeSqldInit hook has failed');
 
@@ -175,7 +175,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self->{'hooksManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'afterSqldInit', $self, 'mysql'
 	) and fatal('postfix - afterSqldInit hook has failed');
 
