@@ -56,52 +56,42 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Installer for the i-MSCP Apache2/PHP-FPM Server implementation
+ Installer for the i-MSCP Apache2/PHP-FPM Server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupHooks()
+=item registerSetupListeners(\%eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->trigger('beforeHttpdRegisterSetupHooks', $eventManager, 'apache_php_fpm');
-	return $rs if $rs;
-	
-	# Add installer dialog in setup dialog stack
-	$rs = $eventManager->register(
-		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askForPhpFpmPoolsLevel(@_) }); 0; }
-	);
+	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 	return $rs if $rs;
 
 	# Fix error_reporting values into the database
-	$rs = $eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
-	return $rs if $rs;
-	
-	$eventManager->trigger('afterHttpdRegisterSetupHooks', $eventManager, 'apache_php_fpm');
+	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 }
 
-=item askForPhpFpmPoolsLevel($dialog)
+=item showDialog($dialog)
 
- Ask user for PHP FPM pools level to use
+ Show dialog
 
  Param iMSCP::Dialog::Dialog $dialog Dialog instance
  Return int 0 on success, other on failure
 
 =cut
 
-sub askForPhpFpmPoolsLevel
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -266,7 +256,7 @@ sub setGuiPermissions
 
 =cut
 
-sub setEnginePermissions()
+sub setEnginePermissions
 {
 	my $self = $_[0];
 
@@ -290,7 +280,7 @@ sub setEnginePermissions()
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::httpd::apache_php_fpm::installer
 
@@ -306,7 +296,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeHttpdInitInstaller', $self, 'apache_php_fpm'
-	) and fatal('apache_php_fpm - beforeHttpdInitInstaller hook has failed');
+	) and fatal('apache_php_fpm - beforeHttpdInitInstaller has failed');
 
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
@@ -346,7 +336,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterHttpdInitInstaller', $self, 'apache_php_fpm'
-	) and fatal('apache_php_fpm - afterHttpdInitInstaller hook has failed');
+	) and fatal('apache_php_fpm - afterHttpdInitInstaller has failed');
 
 	$self;
 }
@@ -359,7 +349,7 @@ sub _init
 
 =cut
 
-sub _setApacheVersion()
+sub _setApacheVersion
 {
 	my $self = $_[0];
 
@@ -435,7 +425,7 @@ sub _addUser
 	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($adminSysUid);
 
 	if(! $oldUserName || $userUid == 0) {
-		# Creating i-MSCP Master Web user
+		# Create i-MSCP Master Web user
 		$rs = iMSCP::SystemUser->new(
 			'username' => $userName,
 			'comment' => 'i-MSCP Master Web User',
@@ -447,7 +437,7 @@ sub _addUser
 		$userUid = getpwnam($userName);
 		$userGid = getgrnam($groupName);
 	} else {
-		# Modifying existents i-MSCP Master Web user
+		# Modify existents i-MSCP Master Web user
 		my @cmd = (
 			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($oldUserName), ';',
 			"$main::imscpConfig{'CMD_USERMOD'}",
@@ -463,7 +453,7 @@ sub _addUser
 		debug($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
-		# Modifying existents i-MSCP Master Web group
+		# Modify existents i-MSCP Master Web group
 		@cmd = (
 			$main::imscpConfig{'CMD_GROUPMOD'},
 			'-n', escapeShell($groupName), # New group name
@@ -475,7 +465,7 @@ sub _addUser
 		return $rs if $rs;
 	}
 
-	# Updating admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
+	# Update admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
 	$rdata = $database->doQuery(
 		'dummy',
 		'
@@ -493,11 +483,11 @@ sub _addUser
 		return 1;
 	}
 
-	# Adding i-MSCP Master Web user into i-MSCP group
+	# Add i-MSCP Master Web user into i-MSCP group
 	$rs = iMSCP::SystemUser->new('username' => $userName)->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
 	return $rs if $rs;
 
-	# Adding Apache user in i-MSCP Master Web group
+	# Add Apache user in i-MSCP Master Web group
 	$rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'})->addToGroup($groupName);
 	return $rs if $rs;
 
@@ -506,7 +496,7 @@ sub _addUser
 
 =item _makeDirs()
 
- Create needed directories
+ Create directories
 
  Return int 0 on success, other on failure
 
@@ -807,7 +797,7 @@ sub _buildMasterPhpFpmPoolFile
 
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/parts/master/pool.conf",
-		{},
+		{ },
 		{ 'destination' => "$self->{'phpfpmWrkDir'}/master.conf" }
 	);
 	return $rs if $rs;
@@ -903,7 +893,7 @@ sub _buildApacheConfFiles
 	$rs = $self->{'httpd'}->apacheBkpConfFile("$self->{'apacheWrkDir'}/00_nameserver.conf");
 	return $rs if $rs;
 
-	# Using alternative syntax for piped logs scripts when possible
+	# Use alternative syntax for piped logs scripts when possible
 	# The alternative syntax does not involve the shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
 
@@ -932,11 +922,11 @@ sub _buildApacheConfFiles
 	$rs = $self->{'httpd'}->installConfFile('00_nameserver.conf');
 	return $rs if $rs;
 
-	# Enabling required apache modules
+	# Enable required apache modules
 	$rs = $self->{'httpd'}->enableMod('cgid rewrite proxy proxy_http ssl');
 	return $rs if $rs;
 
-	# Enabling 00_nameserver.conf file
+	# Enable 00_nameserver.conf file
 	$rs = $self->{'httpd'}->enableSite('00_nameserver.conf');
 	return $rs if $rs;
 
@@ -1082,12 +1072,11 @@ sub _installLogrotate
 	$rs = $self->{'httpd'}->apacheBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", '', 1);
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', {});
+	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', { });
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile(
-		'logrotate.conf',
-		{ 'destination' => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" }
+		'logrotate.conf', { 'destination' => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" }
 	);
 	return $rs if $rs;
 
@@ -1104,7 +1093,7 @@ sub _installLogrotate
 
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/logrotate.conf",
-		{},
+		{ },
 		{'destination' => "$self->{'phpfpmWrkDir'}/logrotate.conf" }
 	);
 	return $rs if $rs;
@@ -1144,11 +1133,11 @@ sub _setupVlogger
 	my $dbPassword = '';
 	$dbPassword .= $allowedChr[rand @allowedChr] for 1..16;
 
-	# Getting SQL connection with full privileges
+	# Get SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect($dbName);
 	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
 
-	# Creating database table
+	# Create database table
 	if(-f "$self->{'apacheCfgDir'}/vlogger.sql") {
 		my $rs = main::setupImportSqlSchema($db, "$self->{'apacheCfgDir'}/vlogger.sql");
 		return $rs if $rs;
@@ -1157,7 +1146,7 @@ sub _setupVlogger
 		return 1;
 	}
 
-	# Removing any old SQL user (including privileges)
+	# Remove any old SQL user (including privileges)
 	for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
 		next if ! $_;
 
@@ -1174,7 +1163,7 @@ sub _setupVlogger
 	}
 
 	for(@dbUserHosts) {
-		# Adding new SQL user with needed privileges
+		# Add new SQL user with needed privileges
 		my $rs = $db->doQuery(
 			'dummy',
 			"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$tableName` TO ?@? IDENTIFIED BY ?",
@@ -1188,7 +1177,7 @@ sub _setupVlogger
 		}
 	}
 
-	# Building configuration file
+	# Build configuration file
 	$self->{'httpd'}->setData(
 		{
 			DATABASE_NAME => $dbName,
@@ -1207,7 +1196,7 @@ sub _setupVlogger
 
  Save both i-MSCP apache.data and i-MSCP php-fpm.data configuration files
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -1266,7 +1255,7 @@ sub _saveConf
 
 =cut
 
-sub _oldEngineCompatibility()
+sub _oldEngineCompatibility
 {
 	my $self = $_[0];
 
@@ -1283,7 +1272,7 @@ sub _oldEngineCompatibility()
 		}
 	}
 
-	# Removing directories no longer needed (since 1.1.0)
+	# Remove directories no longer needed (since 1.1.0)
 	for(
 		$self->{'config'}->{'APACHE_BACKUP_LOG_DIR'}, $self->{'config'}->{'APACHE_USERS_LOG_DIR'},
 		$self->{'config'}->{'APACHE_SCOREBOARDS_DIR'}
@@ -1302,9 +1291,9 @@ sub _oldEngineCompatibility()
  This rustine fix the error_reporting integer values in the iMSCP databse according the PHP version installed on the
 system.
 
- This is an hook function acting on the 'afterSetupCreateDatabase' hook.
+ This is a listener which listen on the 'afterSetupCreateDatabase' event.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -1313,7 +1302,7 @@ sub _fixPhpErrorReportingValues
 	my $self = $_[0];
 
 	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
-	if(! $database) {
+	unless($database) {
 		error("Unable to connect to SQL Server: $errStr");
 		return 1;
 	}

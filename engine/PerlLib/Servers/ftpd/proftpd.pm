@@ -51,21 +51,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hooks.
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
 	require Servers::ftpd::proftpd::installer;
-	Servers::ftpd::proftpd::installer->getInstance()->registerSetupHooks($eventManager);
+	Servers::ftpd::proftpd::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item preinstall()
@@ -91,7 +91,7 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -152,9 +152,9 @@ sub uninstall
 
 =item addUser(\%data)
 
- Process addUser tasks.
+ Process addUser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by User module
+ Param hash \%data User data
  Return int 0 on success, other on failure
 
 =cut
@@ -196,11 +196,11 @@ sub addUser
 	$self->{'eventManager'}->trigger('AfterFtpdAddUser', $data);
 }
 
-=item Start()
+=item start()
 
  Start Proftpd
 
- Return int 0, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -224,7 +224,7 @@ sub start
 
  Stop Proftpd
 
- Return int 0, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -248,7 +248,7 @@ sub stop
 
  Restart Proftpd
 
- Return int 0, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -270,9 +270,9 @@ sub restart
 
 =item getTraffic()
 
- Get ftpd traffic data
+ Get ftp traffic data
 
- Return hash_ref Traffic data or die on failure
+ Return hash Traffic data or die on failure
 
 =cut
 
@@ -327,7 +327,7 @@ sub getTraffic
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Servers::ftpd::proftpd
 
@@ -341,7 +341,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - beforeFtpdInit hook has failed');
+	) and fatal('proftpd - beforeFtpdInit has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -353,7 +353,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - afterFtpdInit hook has failed');
+	) and fatal('proftpd - afterFtpdInit has failed');
 
 	$self;
 }

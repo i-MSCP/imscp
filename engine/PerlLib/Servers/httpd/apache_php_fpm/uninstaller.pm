@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Apache2/PHP-FPM Server uninstaller
+ i-MSCP Apache2/PHP-FPM Server uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -54,7 +54,7 @@ use parent 'Common::SingletonClass';
 
  Process uninstall tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -85,7 +85,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::httpd::apache_php_fpm::uninstaller
 
@@ -116,14 +116,12 @@ sub _init
 
  Remove Panel user and group
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _removeUserAndGroup
 {
-	my $self = $_[0];
-
 	# Panel user
 	my $rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
@@ -146,8 +144,6 @@ sub _removeUserAndGroup
 
 sub _removeVloggerSqlUser
 {
-	my $self = $_[0];
-
 	my $db = iMSCP::Database->factory();
 
 	$db->doQuery('dummy', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
@@ -160,22 +156,20 @@ sub _removeVloggerSqlUser
 
  Remove Apache directories
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _removeDirs
 {
-	my $self = $_[0];
-
-	iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
+	iMSCP::Dir->new('dirname' => $_[0]->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
 }
 
 =item _restoreApacheConfig()
 
  Restore Apache configuration
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -229,7 +223,7 @@ sub _restoreApacheConfig
 
  Restore PHP FPM configuration
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

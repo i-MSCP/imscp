@@ -102,7 +102,7 @@ sub setupStart
 	}
 
 	# Allow any server/addon to register their setup hook functions
-	setupRegisterHooks();
+	setupRegisterListeners();
 }
 
 # Process both setup dialog and tasks

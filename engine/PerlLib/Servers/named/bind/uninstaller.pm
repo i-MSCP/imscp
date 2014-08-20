@@ -52,7 +52,7 @@ use parent 'Common::SingletonClass';
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -76,7 +76,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Servers::named::bind::uninstaller
 
@@ -100,7 +100,7 @@ sub _init
 
 =item _restoreConfFiles()
 
- Restore system configuration files.
+ Restore system configuration files
 
  Return int 0 on success, other on failure
 
@@ -133,7 +133,7 @@ sub _restoreConfFiles
 
 =item _deleteDbFiles()
 
- Delete i-MSCP db files.
+ Delete i-MSCP db files
 
  Return int 0 on success, other on failure
 

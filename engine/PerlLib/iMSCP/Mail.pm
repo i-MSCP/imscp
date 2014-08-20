@@ -44,14 +44,14 @@ sub errmsg
 {
 	my ($self, $message) = @_;
 
-	my @parts = split('@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'});
+	my @parts = split '@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || '';
 	return 0 if @parts < 2;
 
 	my $domain = pop(@parts);
 	$domain = idn_to_ascii($domain, 'utf-8');
-	push(@parts, $domain);
+	push @parts, $domain;
 
-	my $adminEmail = join('@', @parts);
+	my $adminEmail = join '@', @parts;
 	my $date = strftime "%d.%m.%Y %H:%M:%S", localtime;
 	my $serverName = $main::imscpConfig{'SERVER_HOSTNAME'};
 	my $serverIP = $main::imscpConfig{'BASE_SERVER_IP'};
@@ -82,7 +82,7 @@ EOF
 		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Messenger"
 	);
 
-	unless(open MAIL, "| /usr/sbin/sendmail -t -oi") {
+	unless(open MAIL, '| /usr/sbin/sendmail -t -oi') {
 		error("Unable to send mail: $!");
 		return 1;
 	}
@@ -97,14 +97,14 @@ sub warnMsg
 {
 	my ($self, $message) = @_;
 
-	my @parts = split('@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'});
+	my @parts = split '@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || '';
 	return 0 if @parts < 2;
 
 	my $dmn = pop(@parts);
 	$dmn = idn_to_ascii($dmn, 'utf-8');
 	push(@parts, $dmn);
 
-	my $adminEmail = join('@', @parts);
+	my $adminEmail = join '@', @parts;
 	my $date =  strftime "%d.%m.%Y %H:%M:%S", localtime;
 	my $serverName = $main::imscpConfig{'SERVER_HOSTNAME'};
 	my $serverIP = $main::imscpConfig{'BASE_SERVER_IP'};

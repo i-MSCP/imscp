@@ -47,7 +47,7 @@ our $VERSION = '0.1.0';
 
 =head1 DESCRIPTION
 
- i-MSCP Net2ftp addon installer
+ i-MSCP Net2ftp addon installer.
 
 =head1 PUBLIC METHODS
 
@@ -70,7 +70,7 @@ sub preinstall
 
  Process install tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -86,7 +86,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set file permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -111,7 +111,7 @@ sub setGuiPermissions
 
 =item _init()
 
- Called by getInstance(). Initialize Net2ftp addon installer instance
+ Initialize instance
 
  Return Addons::FileManager::Net2ftp::Installer
 
@@ -128,7 +128,7 @@ sub _init
 
 =item _installFiles()
 
- Install Net2ftp files in production directory
+ Install files in production directory
 
  Return int 0 on success, other on failure
 
@@ -168,7 +168,7 @@ sub _installFiles
 
  Generate MD5 salt string
 
- Return int 0
+ Return string salt string
 
 =cut
 
@@ -182,9 +182,9 @@ sub _generateMd5SaltString
 
 =item _buildConfig()
 
- Build Net2ftp configuration file
+ Build configuration file
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

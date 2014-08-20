@@ -65,7 +65,7 @@ sub endDetail
 	0;
 }
 
-sub step($ $ $ $)
+sub step
 {
 	my $self = iMSCP::Stepper->getInstance();
 
@@ -77,7 +77,7 @@ sub step($ $ $ $)
 	$msg = join("\n", @{$self->{'all'}}) . "\n" if @{$self->{'all'}};
 	$msg .= $self->{'last'};
 
-	iMSCP::Dialog->factory()->startGauge($msg, int($index * 100 / $steps)) if ! iMSCP::Dialog->factory()->hasGauge();
+	iMSCP::Dialog->factory()->startGauge($msg, int($index * 100 / $steps)) unless iMSCP::Dialog->factory()->hasGauge();
 	iMSCP::Dialog->factory()->setGauge(int($index * 100 / $steps), $msg);
 
 	my $rs = &{$code}() if ref $code eq 'CODE';
@@ -90,8 +90,8 @@ sub step($ $ $ $)
 		$errorMessage = 'An unexpected error occurred...' unless $errorMessage;
 
 		iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
-		iMSCP::Dialog->factory()->msgbox(
-"
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1[ERROR]\\Zn
 
 Error while performing step:
@@ -103,8 +103,7 @@ Error was:
 \\Z1$errorMessage \\Zn
 
 Please, post on http://i-mscp.net/forum to get any help.
-"
-		);
+EOF
 
 		return $rs;
 	}

@@ -50,14 +50,14 @@ my %adapterInstances;
 
 =item factory($adapterName)
 
- Create and return a database adapter instance. Instance is created once.
+ Create and return a database adapter instance. Instance is created once
 
  Param string $adapterName Adapter name
  Return an instance of the specified database adapter
 
 =cut
 
-sub factory($$)
+sub factory
 {
 	my $adapterName = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
 

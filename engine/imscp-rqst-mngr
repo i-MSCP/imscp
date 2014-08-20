@@ -131,7 +131,7 @@ sub _process
 sub run
 {
 	# Process plugins
-	# Should always be processed first to allow plugins to register their listeners on the hooks manager
+	# Should always be processed first to allow plugins to register their listeners on the event manager
 	my $rs = _process(
 		'Plugin',
 		"

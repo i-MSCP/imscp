@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Rkhunter addon uninstaller
+ Rkhunter addon uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -55,7 +55,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->_restoreDebianConfig();
 }
@@ -68,9 +68,9 @@ sub uninstall
 
 =item _restoreDebianConfig()
 
- Restore default configuration as provided by the rkhunter Debian package
+ Restore default configuration
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

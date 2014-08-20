@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Roundcube addon uninstaller
+ i-MSCP Roundcube addon uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -58,7 +58,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_removeSqlUser();
 	return $rs if $rs;
@@ -77,7 +77,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Addons::Roundcube::Uninstaller
 
@@ -85,7 +85,7 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'roundcube'} = Addons::Roundcube->getInstance();
 
@@ -100,7 +100,7 @@ sub _init
 
 =item _removeSqlUser()
 
- Remove any Roundcube SQL user
+ Remove SQL user
 
  Return int 0
 
@@ -108,13 +108,13 @@ sub _init
 
 sub _removeSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $database = iMSCP::Database->factory();
 
 	# We do not catch any error here - It's expected
 	for($main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%') {
-		next if ! $_;
+		next unless $_;
 		$database->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $_);
 	}
 
@@ -125,7 +125,7 @@ sub _removeSqlUser
 
 =item _removeSqlDatabase()
 
- Remove Roundcube SQL database
+ Remove database
 
  Return int 0
 
@@ -133,7 +133,7 @@ sub _removeSqlUser
 
 sub _removeSqlDatabase
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $database = iMSCP::Database->factory();
 
@@ -146,7 +146,7 @@ sub _removeSqlDatabase
 
 =item _removeFiles()
 
- Remove Roundcube files
+ Remove files
 
  Return int 0
 
@@ -154,7 +154,7 @@ sub _removeSqlDatabase
 
 sub _removeFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdout, $stderr);
 

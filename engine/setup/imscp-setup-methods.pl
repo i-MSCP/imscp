@@ -76,8 +76,8 @@ sub setupBoot
 	0;
 }
 
-# Allow any server/addon to register its setup hook functions on the hooks manager before any other tasks
-sub setupRegisterHooks()
+# Allow any server/package to register its setup event listeners before any other task
+sub setupRegisterListeners
 {
 	my ($eventManager, $rs) = (iMSCP::EventManager->getInstance(), 0);
 
@@ -90,7 +90,7 @@ sub setupRegisterHooks()
 
 		unless($@) {
 			my $instance = $package->factory();
-			$rs = $instance->registerSetupHooks($eventManager) if $instance->can('registerSetupHooks');
+			$rs = $instance->registerSetupListeners($eventManager) if $instance->can('registerSetupListeners');
 		} else {
 			error($@);
         	$rs = 1;
@@ -106,7 +106,7 @@ sub setupRegisterHooks()
 
 		unless($@) {
 			my $instance = $package->getInstance();
-			$rs = $instance->registerSetupHooks($eventManager) if $instance->can('registerSetupHooks');
+			$rs = $instance->registerSetupListeners($eventManager) if $instance->can('registerSetupListeners');
 		} else {
 			error($@);
         	$rs = 1;

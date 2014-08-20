@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Net2ftp addon
+ i-MSCP Net2ftp addon.
 
  Net2ftp is a web-based FTP client written in PHP.
 
@@ -67,7 +67,7 @@ sub preinstall
 
  Process install tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -79,7 +79,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set file permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 

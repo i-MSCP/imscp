@@ -51,10 +51,10 @@ use parent 'Common::SingletonClass';
 
 =item addTask(\%data)
 
- Add a new cron task.
+ Add a new cron task
 
- Param hash_ref $data A reference to a hash describing the cron task
-  - TASKID Arbitrary string used as unique identifier by i-MSCP for the cron task
+ Param hash \%data Cron tasks data
+  - TASKID Cron task unique identifier
   - MINUTE Minute time field
   - HOUR Hour time field
   - DAY Day of month date field
@@ -69,11 +69,11 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub addTask($$)
+sub addTask
 {
 	my ($self, $data) = @_;
 
-	$data = {} unless ref $data eq 'HASH';
+	$data = { } unless ref $data eq 'HASH';
 
 	if(-f "$self->{'wrkDir'}/imscp") {
 		$data->{'MINUTE'} = 1 unless exists $data->{'MINUTE'};
@@ -154,19 +154,20 @@ sub addTask($$)
 
 =item deleteTask(\%data)
 
- Delete a cron task.
+ Delete a cron task
 
- Param array_ref A reference to a hash containing the TASKID key, which represent the unique identifier of the cron task
+ Param hash \%data Cront task data
+  - TASKID Cron task unique identifier
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteTask($$)
+sub deleteTask
 {
 	my ($self, $data) = @_;
 
-	$data = {} unless ref $data eq 'HASH';
+	$data = { } unless ref $data eq 'HASH';
 
 	if(-f "$self->{'wrkDir'}/imscp") {
 		unless(exists $data->{'TASKID'}) {
@@ -225,7 +226,7 @@ sub deleteTask($$)
 
 =item setEnginePermissions()
 
- Set engine permissions.
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -258,7 +259,7 @@ sub setEnginePermissions
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Servers::cron::cron
 
@@ -272,7 +273,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeCronInit', $self, 'cron'
-	) and fatal('cron - beforeCronInit hook has failed');
+	) and fatal('cron - beforeCronInit has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -281,7 +282,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterCronInit', $self, 'cron'
-	) and fatal('cron - afterCronInit hook has failed');
+	) and fatal('cron - afterCronInit has failed');
 
 	$self;
 }

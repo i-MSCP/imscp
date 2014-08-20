@@ -60,40 +60,32 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hooks.
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->trigger('beforeMtaRegisterSetupHooks', $eventManager, 'postfix');
-	return $rs if $rs;
-
-	$rs = $eventManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askPostfix(@_) }); 0; }
-	);
-	return $rs if $rs;
-
-	$eventManager->trigger('afterMtaRegisterSetupHooks', $eventManager, 'postfix');
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
-=item askPostfix($dialog)
+=item showDialog(\%dialog)
 
- Ask user for SASL restricted SQL user.
+ Show dialog
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialogg \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askPostfix($$)
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -295,7 +287,7 @@ sub setEnginePermissions
 
 =item _init()
 
- Called by getInstance(). Initialize instance of this class.
+ Initialize instance
 
  Return Servers::mta::postfix::installer
 
@@ -311,7 +303,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeMtaInitInstaller', $self, 'postfix'
-	) and fatal('postfix - beforeMtaInitInstaller hook has failed');
+	) and fatal('postfix - beforeMtaInitInstaller has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -334,7 +326,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterMtaInitInstaller', $self, 'postfix'
-	) and fatal('postfix - afterMtaInitInstaller hook has failed');
+	) and fatal('postfix - afterMtaInitInstaller has failed');
 
 	$self;
 }
@@ -473,7 +465,7 @@ sub _makeDirs
 
 =item _setupSqlUser()
 
- Setup SASL SQL user.
+ Setup SASL SQL user
 
  Return int 0 on success, other on failure
 
@@ -673,11 +665,12 @@ sub _saveConf
 
  Backup configuration file
 
+ Param string $cfgFile Configuration file path
  Return in 0 on success, other on failure
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -887,7 +880,7 @@ sub _buildMasterCfFile
 
 =cut
 
-sub _buildSaslConfFile()
+sub _buildSaslConfFile
 {
 	my $self = $_[0];
 

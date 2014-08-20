@@ -70,9 +70,9 @@ $main::forcereinstall = 0;
 # Add autoinstaller specific command line options
 iMSCP::Getopt->parse(
 	qq{Usage: perl imscp-autoinstall [options]
- -b,    --build-only           Process build steps only.
- -f,    --force-reinstall      Force reinstallation of distro packages.
- -s,    --skip-packages        Do not install/update distro packages.},
+ -b,    --build-only          Process build steps only.
+ -f,    --force-reinstall     Force reinstallation of distro packages.
+ -s,    --skip-packages       Do not install/update distro packages.},
   'build-only|b' => \$main::buildonly,
   'force-reinstall|f' => \$main::forcereinstall,
   'skip-packages|s' => \$main::skippackages
@@ -266,13 +266,13 @@ EOF
 	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
 
 	@steps = (
-		[\&doImscpBackup,       'Backup existing i-MSCP installation if any'],
-		[\&installTmp,          'Installing i-MSCP files on file system'],
-		[\&setupBoot,           'Setup bootstrapping'],
-		[\&setupRegisterHooks,  'Registering servers/addons setup hooks'],
-		[\&setupDialog,         'Processing i-MSCP setup dialog if any'],
-		[\&setupTasks,          'Processing i-MSCP setup tasks'],
-		[\&removeTmp,           'Removing temporary files']
+		[\&doImscpBackup,           'Backup existing i-MSCP installation if any'],
+		[\&installTmp,              'Installing i-MSCP files on file system'],
+		[\&setupBoot,               'Setup bootstrapping'],
+		[\&setupRegisterListeners,  'Registering servers/packages setup event listeners'],
+		[\&setupDialog,             'Processing i-MSCP setup dialog if any'],
+		[\&setupTasks,              'Processing i-MSCP setup tasks'],
+		[\&removeTmp,               'Removing temporary files']
 	);
 
 	iMSCP::EventManager->getInstance()->trigger('beforeInstall', \@steps) and exit 1;

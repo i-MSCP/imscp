@@ -52,21 +52,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hooks.
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
 	require Servers::mta::postfix::installer;
-	Servers::mta::postfix::installer->getInstance()->registerSetupHooks($eventManager);
+	Servers::mta::postfix::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item preinstall()
@@ -184,11 +184,13 @@ sub restart
 
  Postmap the file
 
+ Param string $filename File name
+ Param string $filetype OPTIONAL file type
  Return int 0 on success, other on failure
 
 =cut
 
-sub postmap($$;$)
+sub postmap
 {
 	my ($self, $filename, $filetype) = @_;
 
@@ -210,11 +212,12 @@ sub postmap($$;$)
 
  Process addDmn tasks
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addDmn($$)
+sub addDmn
 {
 	my ($self, $data) = @_;
 
@@ -278,11 +281,12 @@ sub addDmn($$)
 
  Process disableDmn tasks
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub disableDmn($$)
+sub disableDmn
 {
 	my ($self, $data) = @_;
 
@@ -338,11 +342,12 @@ sub disableDmn($$)
 
  Process deleteDmn tasks
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteDmn($$)
+sub deleteDmn
 {
 	my ($self, $data) = @_;
 
@@ -362,11 +367,12 @@ sub deleteDmn($$)
 
  Process addSub tasks
 
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSub($$)
+sub addSub
 {
 	my ($self, $data) = @_;
 
@@ -383,11 +389,12 @@ sub addSub($$)
 
  Process disableSub tasks
 
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub disableSub($$)
+sub disableSub
 {
 	my ($self, $data) = @_;
 
@@ -404,11 +411,12 @@ sub disableSub($$)
 
  Process deleteSub tasks
 
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteSub($$)
+sub deleteSub
 {
 	my ($self, $data) = @_;
 
@@ -425,11 +433,12 @@ sub deleteSub($$)
 
  Process addMail tasks
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addMail($$)
+sub addMail
 {
 	my ($self, $data) = @_;
 
@@ -489,11 +498,12 @@ sub addMail($$)
 
  Process deleteMail tasks
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteMail($$)
+sub deleteMail
 {
 	my ($self, $data) = @_;
 
@@ -533,11 +543,12 @@ sub deleteMail($$)
 
  Process disableMail tasks
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub disableMail($$)
+sub disableMail
 {
 	my ($self, $data) = @_;
 
@@ -577,7 +588,7 @@ sub disableMail($$)
 
  Get Smtp traffic data
 
- Return hash_ref Traffic data or die on failure
+ Return hash Traffic data or die on failure
 
 =cut
 
@@ -675,7 +686,7 @@ sub getTraffic
 
 =item _init()
 
- Called by getInstance(). Initialize instance of this class.
+ Initialize instance
 
  Return Servers::mta::postfix
 
@@ -689,7 +700,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeMtaInit', $self, 'postfix'
-	) and fatal('postfix - beforeMtaInit hook has failed');
+	) and fatal('postfix - beforeMtaInit has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -701,7 +712,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterMtaInit', $self, 'postfix'
-	) and fatal('postfix - afterMtaInit hook has failed');
+	) and fatal('postfix - afterMtaInit has failed');
 
 	$self;
 }
@@ -710,11 +721,12 @@ sub _init
 
  Add entry to relay hash file
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addToRelayHash($$)
+sub _addToRelayHash
 {
 	my ($self, $data) = @_;;
 
@@ -769,11 +781,12 @@ sub _addToRelayHash($$)
 
  Delete entry from relay hash file
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _deleteFromRelayHash($$)
+sub _deleteFromRelayHash
 {
 	my ($self, $data) = @_;
 
@@ -824,11 +837,12 @@ sub _deleteFromRelayHash($$)
 
  Add entry to domains hash file
 
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addToDomainsHash($$)
+sub _addToDomainsHash
 {
 	my ($self, $data) = @_;
 
@@ -890,11 +904,12 @@ sub _addToDomainsHash($$)
 
  Add mailbox
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addMailBox($$)
+sub _addMailBox
 {
 	my ($self, $data) = @_;
 
@@ -968,11 +983,12 @@ sub _addMailBox($$)
 
  Disable mailbox
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _disableMailBox($$)
+sub _disableMailBox
 {
 	my ($self, $data) = @_;
 
@@ -1019,11 +1035,12 @@ sub _disableMailBox($$)
 
  Delete mailbox
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _deleteMailBox($$)
+sub _deleteMailBox
 {
 	my ($self, $data) = @_;
 
@@ -1047,11 +1064,12 @@ sub _deleteMailBox($$)
 
  Add forward mail
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addMailForward($$)
+sub _addMailForward
 {
 	my ($self, $data) = @_;
 
@@ -1111,11 +1129,12 @@ sub _addMailForward($$)
 
  Delete forward mail
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _deleteMailForward($$)
+sub _deleteMailForward
 {
 	my ($self, $data) = @_;
 
@@ -1176,11 +1195,12 @@ sub _deleteMailForward($$)
 
  Add auto-responder
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addAutoRspnd($$)
+sub _addAutoRspnd
 {
 	my ($self, $data) = @_;
 
@@ -1228,11 +1248,12 @@ sub _addAutoRspnd($$)
 
  Delete auto-responder
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _deleteAutoRspnd($$)
+sub _deleteAutoRspnd
 {
 	my ($self, $data) = @_;
 
@@ -1279,11 +1300,12 @@ sub _deleteAutoRspnd($$)
 
  Add catchall
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addCatchAll($$)
+sub _addCatchAll
 {
 	my ($self, $data) = @_;
 
@@ -1338,11 +1360,12 @@ sub _addCatchAll($$)
 
  Delete catchall
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _deleteCatchAll($$)
+sub _deleteCatchAll
 {
 	my ($self, $data) = @_;
 

@@ -53,21 +53,21 @@ filters.
 
 =over 4
 
-=item registerSetupHooks(\%eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::EventManager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
 	require Addons::Roundcube::Installer;
-	Addons::Roundcube::Installer->getInstance()->registerSetupHooks($eventManager);
+	Addons::Roundcube::Installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item preinstall()
@@ -114,7 +114,7 @@ sub uninstall
 
 =item setGuiPermissions()
 
- Set file permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -130,12 +130,12 @@ sub setGuiPermissions
 
  Process deleteMail tasks
 
- Param hash_ref $data A reference to a hash containing mail data
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteMail($$)
+sub deleteMail
 {
 	my ($self, $data) = @_;
 

@@ -54,7 +54,7 @@ use parent 'Common::SingletonClass';
 
 =item boot()
 
- Boot i-MSCP.
+ Boot i-MSCP
 
  Return iMSCP::Bootstrapper
 
@@ -108,7 +108,7 @@ sub boot
 
 =item lock([$lockFile, [$nowait]])
 
- Lock the given file or the engine lock file.
+ Lock the given file or the engine lock file
 
  Return int 1 on success, other on failure
 
@@ -135,7 +135,7 @@ sub lock
 
 =item unlock([$lockFile])
 
- Unlock the given lock file or the engine lock file.
+ Unlock the given lock file or the engine lock file
 
  Return iMSCP::Bootstrapper
 
@@ -165,7 +165,7 @@ sub unlock
 
 =item _genKeys()
 
- Generates encryption key and vector.
+ Generates encryption key and vector
 
  Return undef
 

@@ -145,9 +145,9 @@ sub checkDistribution()
 	my $packagesFile = "$FindBin::Bin/docs/$distribution/packages-$codename.xml";
 
 	if($distribution ne "n/a" && (lc($distribution) eq 'debian' || lc($distribution) eq 'ubuntu') && $codename ne "n/a") {
-		if(! -f $packagesFile) {
-			iMSCP::Dialog->factory()->msgbox(
-"
+		unless(-f $packagesFile) {
+			iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1$distribution $release ($codename) not supported yet\\Zn
 
 We are sorry but the version of your distribution is not supported yet.
@@ -156,16 +156,18 @@ You can try to provide your own packages file by putting it into the
 \\Z4docs/$distribution\\Zn directory and try again, or ask the i-MSCP team to add it for you.
 
 Thanks for using i-MSCP.
-"
-			);
+EOF
 
 			return 1;
 		}
 
-		my $rs = iMSCP::Dialog->factory()->yesno("\n$distribution $release ($codename) has been detected. Is this ok?");
+		my $rs = iMSCP::Dialog->factory()->yesno(<<EOF);
 
-		iMSCP::Dialog->factory()->msgbox(
-"
+$distribution $release ($codename) has been detected. Is this ok?
+EOF
+
+		iMSCP::Dialog->factory()->msgbox(<<EOF) if $rs;
+
 \\Z1Distribution not supported\\Zn
 
 We are sorry but the installer has failed to detect your distribution, or
@@ -174,13 +176,12 @@ process has been aborted by user.
 Only \\ZuDebian-like\\Zn operating systems are supported.
 
 Thanks for using i-MSCP.
-"
-		) if $rs;
+EOF
 
 		return 1 if $rs;
 	} else {
-		iMSCP::Dialog->factory()->msgbox(
-"
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1Distribution not supported\\Zn
 
 We are sorry but your distribution is not supported yet.
@@ -188,8 +189,7 @@ We are sorry but your distribution is not supported yet.
 Only \\ZuDebian-like\\Zn operating systems are supported.
 
 Thanks for using i-MSCP.
-"
-		);
+EOF
 
 		return 1;
 	}

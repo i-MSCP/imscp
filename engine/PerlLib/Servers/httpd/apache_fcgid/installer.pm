@@ -61,47 +61,36 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks()
+=item registerSetupListeners(\%eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->trigger('beforeHttpdRegisterSetupHooks', $eventManager, 'apache_fcgid');
-	return $rs if $rs;
-
-	# Add installer dialog in setup dialog stack
-
-	$rs = $eventManager->register(
-		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askForPhpIniLevel(@_) }); 0; }
-	);
+	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 	return $rs if $rs;
 
 	# Fix error_reporting value into the database
-	$rs = $eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
-	return $rs if $rs;
-
-	$eventManager->trigger('afterHttpdRegisterSetupHooks', $eventManager, 'apache_fcgid');
+	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 }
 
-=item askForPhpIniLevel($dialog)
+=item showDialog(\%dialog)
 
- Ask user for PHP INI level to use
+ Show dialog
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askForPhpIniLevel($$)
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -264,7 +253,7 @@ sub setGuiPermissions
 
 =cut
 
-sub setEnginePermissions()
+sub setEnginePermissions
 {
 	my $self = $_[0];
 
@@ -292,7 +281,7 @@ sub setEnginePermissions()
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::httpd::apache_fcgid::installer
 
@@ -308,7 +297,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeHttpdInitInstaller', $self, 'apache_fcgid'
-	) and fatal('apache_fcgid - beforeHttpdInitInstaller hook has failed');
+	) and fatal('apache_fcgid - beforeHttpdInitInstaller has failed');
 
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
@@ -330,7 +319,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterHttpdInitInstaller', $self, 'apache_fcgid'
-	) and fatal('apache_fcgid - afterHttpdInitInstaller hook has failed');
+	) and fatal('apache_fcgid - afterHttpdInitInstaller has failed');
 
 	$self;
 }
@@ -344,7 +333,7 @@ sub _init
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -357,7 +346,7 @@ sub _bkpConfFile($$)
 		my $file = iMSCP::File->new('filename' => $cfgFile );
 		my $filename = fileparse($cfgFile);
 
-		if(! -f "$self->{'apacheBkpDir'}/$filename.system") {
+		unless(-f "$self->{'apacheBkpDir'}/$filename.system") {
 			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename.system");
 			return $rs if $rs;
 		} else {
@@ -377,7 +366,7 @@ sub _bkpConfFile($$)
 
 =cut
 
-sub _setApacheVersion()
+sub _setApacheVersion
 {
 	my $self = $_[0];
 
@@ -418,7 +407,7 @@ sub _addUser
 	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
 	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
-	if(! $database) {
+	unless($database) {
 		error("Unable to connect to SQL server: $errStr");
 		return 1;
 	}
@@ -524,7 +513,7 @@ sub _addUser
 
 =item _makeDirs()
 
- Create needed directories
+ Create directories
 
  Return int 0 on success, other on failure
 
@@ -783,7 +772,7 @@ sub _buildPhpConfFiles
 	# Build file using template from fcgi/parts/master/php5
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$cfgDir/parts/master/php5/php.ini",
-		{},
+		{ },
 		{ 'destination' => "$wrkDir/master.php.ini", 'mode' => 0440, 'user' => $panelUname, 'group' => $panelGName }
 	);
 	return $rs if $rs;
@@ -945,7 +934,7 @@ sub _buildApacheConfFiles
 
 =item _buildMasterVhostFiles()
 
- Build Master vhost files.
+ Build Master vhost files
 
  Return int 0 on success, other on failure
 
@@ -1276,7 +1265,7 @@ sub _fixPhpErrorReportingValues
 	my $self = $_[0];
 
 	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
-	if(! $database) {
+	unless($database) {
 		error("Unable to connect to SQL Server: $errStr");
 		return 1;
 	}

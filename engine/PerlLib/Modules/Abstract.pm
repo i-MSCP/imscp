@@ -183,7 +183,7 @@ sub _init
 
 =cut
 
-sub _runAction ($$$$)
+sub _runAction
 {
 	my ($self, $action, $items, $itemType) = @_;
 
@@ -216,7 +216,7 @@ sub _runAction ($$$$)
 
 =item _runAllActions()
 
- Trigger actions (pre<Action>, <Action>, post<Action>) on each i-MSCP servers and addons.
+ Trigger actions (pre<Action>, <Action>, post<Action>) on each i-MSCP servers and addons
 
  return int 0 on success, other on failure
 
@@ -338,7 +338,7 @@ sub _getMtaData
 
 =item _getNamedData()
 
- Get named data.
+ Get named data
 
  This method should be implemented by any module which provides data for NAMED service.
  Resulting data must be stored in an anonymous hash accessible through the 'named' attribute.

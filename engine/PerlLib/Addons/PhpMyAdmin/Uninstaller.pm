@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP PhpMyAdmin addon uninstaller
+ i-MSCP PhpMyAdmin addon uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -58,7 +58,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_removeSqlUser();
 	return $rs if $rs;
@@ -77,7 +77,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Addons::PhpMyAdmin::Uninstaller
 
@@ -85,7 +85,7 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'phpmyadmin'} = Addons::PhpMyAdmin->getInstance();
 
@@ -100,7 +100,7 @@ sub _init
 
 =item _removeSqlUser()
 
- Remove any PhpMyAdmin SQL user
+ Remove SQL user
 
  Return int 0
 
@@ -108,7 +108,7 @@ sub _init
 
 sub _removeSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $db = iMSCP::Database->factory();
 
@@ -120,7 +120,7 @@ sub _removeSqlUser
 
 =item _removeSqlDatabase()
 
- Remove PhpMyAdmin SQL database
+ Remove database
 
  Return int 0
 
@@ -128,7 +128,7 @@ sub _removeSqlUser
 
 sub _removeSqlDatabase
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $database = iMSCP::Database->factory();
 
@@ -141,15 +141,15 @@ sub _removeSqlDatabase
 
 =item _removeFiles()
 
- Remove PhpMyAdmin files
+ Remove files
 
- Return int 0
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _removeFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdout, $stderr);
 

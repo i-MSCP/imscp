@@ -155,7 +155,7 @@ sub restart
 
 =item _init()
 
- Called by getInstance(). Initialize instance of this class.
+ Initialize instance
 
  Return Servers::sqld::mysql
 
@@ -169,7 +169,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeSqldInit', $self, 'mysql'
-	) and fatal('mysql - beforeSqldInit hook has failed');
+	) and fatal('mysql - beforeSqldInit has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -177,7 +177,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterSqldInit', $self, 'mysql'
-	) and fatal('postfix - afterSqldInit hook has failed');
+	) and fatal('postfix - afterSqldInit has failed');
 
 	$self;
 }

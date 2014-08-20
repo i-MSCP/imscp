@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- AWStats addon installer
+ AWStats addon installer.
 
  See Addons::Webstats::Awstats::Awstats for more information.
 
@@ -57,9 +57,9 @@ use parent 'Common::SingletonClass';
 
 =item showDialog(\%dialog)
 
- Show AWStats installer questions
+ Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail \%dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -115,7 +115,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set files permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -183,7 +183,7 @@ sub _init
 
 =item _createCacheDir()
 
- Create cache directory for AWStats
+ Create cache directory
 
  Return int 0 on success, other on failure
 
@@ -202,7 +202,7 @@ sub _createCacheDir
 
 =item _createGlobalAwstatsVhost()
 
- Create and install global awstats Apache vhost file
+ Create global vhost file
 
  Return int 0 on success, other on failure
 
@@ -237,7 +237,7 @@ sub _createGlobalAwstatsVhost
 
 =item _disableDefaultConfig()
 
- Disable default AWStats cron task and configuration file
+ Disable default cron task and configuration file
 
  Return int 0 on success, other on failure
 
@@ -269,9 +269,9 @@ sub _disableDefaultConfig
 
 =item _addAwstatsCronTask()
 
- Add AWStats cron task for dynamic mode
+ Add cron task for dynamic mode
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

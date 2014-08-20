@@ -59,27 +59,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks()
+=item registerSetupListeners(\%eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->trigger('beforeHttpdRegisterSetupHooks', $eventManager, 'apache_itk');
-	return $rs if $rs;
-
 	# Fix error_reporting value into the database
-	$rs = $eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
-	return $rs if $rs;
-
-	$eventManager->trigger('afterHttpdRegisterSetupHooks', $eventManager, 'apache_itk');
+	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 }
 
 =item install()
@@ -205,7 +199,7 @@ sub setGuiPermissions
 
 =cut
 
-sub setEnginePermissions()
+sub setEnginePermissions
 {
 	my $self = $_[0];
 
@@ -229,7 +223,7 @@ sub setEnginePermissions()
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::httpd::apache_itk::installer
 
@@ -245,7 +239,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeHttpdInitInstaller', $self, 'apache_itk'
-	) and fatal('apache_itk - beforeHttpdInitInstaller hook has failed');
+	) and fatal('apache_itk - beforeHttpdInitInstaller has failed');
 
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
@@ -267,7 +261,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterHttpdInitInstaller', $self, 'apache_itk'
-	) and fatal('apache_itk - afterHttpdInitInstaller hook has failed');
+	) and fatal('apache_itk - afterHttpdInitInstaller has failed');
 
 	$self;
 }
@@ -281,7 +275,7 @@ sub _init
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -314,7 +308,7 @@ sub _bkpConfFile($$)
 
 =cut
 
-sub _setApacheVersion()
+sub _setApacheVersion
 {
 	my $self = $_[0];
 
@@ -461,7 +455,7 @@ sub _addUser
 
 =item _makeDirs()
 
- Create needed directories
+ Create directories
 
  Return int 0 on success, other on failure
 
@@ -724,7 +718,7 @@ sub _buildApacheConfFiles
 
 =item _buildMasterVhostFiles()
 
- Build Master vhost files
+ Build master vhost files
 
  Return int 0 on success, other on failure
 
@@ -856,7 +850,7 @@ sub _buildMasterVhostFiles
 
 =item _installLogrotate()
 
- Build and install Apache logrotate file
+ Install Apache logrotate file
 
  Return int 0 on success, other on failure
 
@@ -869,7 +863,7 @@ sub _installLogrotate
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', {});
+	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', { });
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile(
@@ -921,7 +915,7 @@ sub _setupVlogger
 
 	# Removing any old SQL user (including privileges)
 	for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
-		next if ! $_;
+		next unless $_;
 
 		if(main::setupDeleteSqlUser($dbUser, $_)) {
 			error("Unable to remove SQL user or one of its privileges");
@@ -1061,7 +1055,7 @@ sub _fixPhpErrorReportingValues
 	my $self = $_[0];
 
 	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
-	if(! $database) {
+	unless($database) {
 		error("Unable to connect to SQL Server: $errStr");
 		return 1;
 	}

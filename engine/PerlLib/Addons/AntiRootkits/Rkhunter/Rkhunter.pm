@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Rkhunter addon installer
+ Rkhunter addon installer.
 
 =head1 PUBLIC METHODS
 
@@ -88,7 +88,7 @@ sub uninstall
 
 =item setEnginePermissions()
 
- Set files permissions.
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -102,9 +102,9 @@ sub setEnginePermissions
 
 =item getPackages()
 
- Get list of Debian packages to which this addon depends
+ Get list of debian packages
 
- Return array_ref An array containing list of packages
+ Return array List of packages
 
 =cut
 

@@ -57,48 +57,37 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hooks
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->trigger('beforeNamedRegisterSetupHooks', $eventManager, 'bind');
-	return $rs if $rs;
-
-	# Adding bind installer dialog in setup dialog stack
-	$rs = $eventManager->register(
+	$eventManager->register(
 		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDnsServerMode(@_) }); 0; }
+		sub {
+			push @{$_[0]}, sub { $self->askDnsServerMode(@_) }, sub { $self->askIPv6Support(@_) }; 0;
+		}
 	);
-	return $rs if $rs;
-
-	$rs = $eventManager->register(
-		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askIPv6Support(@_) }); 0; }
-    );
-    return $rs if $rs;
-
-	$eventManager->trigger('afterNamedRegisterSetupHooks', $eventManager, 'bind');
 }
 
-=item askDnsServerMode($dialog)
+=item askDnsServerMode(\%dialog)
 
  Ask user for DNS server mode
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askDnsServerMode($$)
+sub askDnsServerMode
 {
 	my ($self, $dialog) = @_;
 
@@ -120,16 +109,16 @@ sub askDnsServerMode($$)
 	$rs;
 }
 
-=item askDnsServerMode($dialog)
+=item askDnsServerIps(\%dialog)
 
  Ask user for DNS server IPs
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askDnsServerIps($$)
+sub askDnsServerIps
 {
 	my ($self, $dialog) = @_;
 
@@ -216,16 +205,16 @@ sub askDnsServerIps($$)
 	$rs;
 }
 
-=item askIPv6Support($dialog)
+=item askIPv6Support(\%dialog)
 
  Ask user for DNS server IPv6 support
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askIPv6Support($$)
+sub askIPv6Support
 {
 	my ($self, $dialog) = @_;
 
@@ -294,7 +283,7 @@ sub install
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::named::bind::installer
 
@@ -310,7 +299,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeNamedInitInstaller', $self, 'bind'
-	) and fatal('bind - beforeNamedInitInstaller hook has failed');
+	) and fatal('bind - beforeNamedInitInstaller has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -332,7 +321,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterNamedInitInstaller', $self, 'bind'
-	) and fatal('bind - afterNamedInitInstaller hook has failed');
+	) and fatal('bind - afterNamedInitInstaller has failed');
 
 	$self;
 }
@@ -346,7 +335,7 @@ sub _init
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -369,7 +358,7 @@ sub _bkpConfFile($$)
 	$self->{'eventManager'}->trigger('afterNamedBkpConfFile', $cfgFile);
 }
 
-=item _switchTasks($cfgFile)
+=item _switchTasks
 
  Process switch tasks
 
@@ -604,12 +593,12 @@ sub _saveConf
 
  Check IP addresses
 
- Param array_ref $ips Reference to an array containing IP addresses to check
+ Param array \@ips IP addresses to check
  Return int 1 if all IPs are valid, 0 otherwise
 
 =cut
 
-sub _checkIps($$)
+sub _checkIps
 {
 	my ($self, $ips) = @_;
 

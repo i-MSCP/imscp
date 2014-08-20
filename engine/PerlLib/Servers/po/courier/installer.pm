@@ -58,35 +58,29 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hooks.
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
-		my $rs = $eventManager->trigger('beforePoRegisterSetupHooks', $eventManager, 'courier');
-		return $rs if $rs;
-
-		$rs = $eventManager->register(
-			'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askCourier(@_) }); 0; }
+		my $rs = $eventManager->register(
+			'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; }
 		);
 		return $rs if $rs;
 
 		$rs = $eventManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
 		return $rs if $rs;
 
-		$rs = $eventManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
-		return $rs if $rs;
-
-		$eventManager->trigger('afterPoRegisterSetupHooks', $eventManager, 'courier');
+		$eventManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
 	} else {
 		$main::imscpConfig{'PO_SERVER'} = 'no';
 		warning('i-MSCP Courier PO server require the Postfix MTA. Installation skipped...');
@@ -95,16 +89,16 @@ sub registerSetupHooks($$)
 	}
 }
 
-=item askCourier($dialog)
+=item showDialog(\%dialog)
 
- Ask user for authdaemon restricted SQL user.
+ Show dialog
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askCourier($$)
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -176,7 +170,7 @@ sub askCourier($$)
 
 =item install()
 
- Process installation.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -226,7 +220,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set permissions.
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -252,27 +246,27 @@ sub setEnginePermissions
 	$self->{'eventManager'}->trigger('afterPoSetEnginePermissions');
 }
 
-=head1 HOOK FUNCTIONS
+=head1 EVENT LISTENERS
 
 =over 4
 
-=item buildPostfixConf($fileContent, $fileName)
+=item buildPostfixConf(\$fileContent, $fileName)
 
- Add maildrop MDA in Postfix configuration files.
+ Add maildrop MDA in Postfix configuration files
 
- Filter hook function acting on the following hooks
+ Listener which listen on the following events:
   - beforeMtaBuildMainCfFile
   - beforeMtaBuildMasterCfFile
 
- This filter hook function is reponsible to add the maildrop deliver in Postfix configuration files.
+ This listener is reponsible to add the maildrop deliver in Postfix configuration files.
 
- Param string $fileContent Configuration file content
+ Param string \$fileContent Configuration file content
  Param string $fileName Configuration file name
  Return int 0 on success, other on failure
 
 =cut
 
-sub buildPostfixConf($$$)
+sub buildPostfixConf
 {
 	my ($self, $fileContent, $fileName) = @_;
 
@@ -313,7 +307,7 @@ EOF
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Servers::po::courier::installer
 
@@ -330,7 +324,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforePodInitInstaller', $self, 'courier'
-	) and fatal('courier - beforePoInitInstaller hook has failed');
+	) and fatal('courier - beforePoInitInstaller has failed');
 
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -352,21 +346,21 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterPodInitInstaller', $self, 'courier'
-	) and fatal('courier - afterPoInitInstaller hook has failed');
+	) and fatal('courier - afterPoInitInstaller has failed');
 
 	$self;
 }
 
 =item _bkpConfFile($filePath)
 
- Backup the given file.
+ Backup the given file
 
  Param string $filePath File path
  Return int 0 on success, other on failure
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $filePath) = @_;
 
@@ -377,7 +371,7 @@ sub _bkpConfFile($$)
 		my $fileName = fileparse($filePath);
 		my $file = iMSCP::File->new('filename' => $filePath);
 
-		if(! -f "$self->{'bkpDir'}/$fileName.system") {
+		unless(-f "$self->{'bkpDir'}/$fileName.system") {
 			$rs = $file->copyFile("$self->{'bkpDir'}/$fileName.system");
 			return $rs if $rs;
 		} else {
@@ -392,7 +386,7 @@ sub _bkpConfFile($$)
 
 =item _setupSqlUser()
 
- Setup SQL user.
+ Setup SQL user
 
  Return int 0 on success, other on failure
 
@@ -412,10 +406,10 @@ sub _setupSqlUser
 
 	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser;
+		next unless $sqlUser;
 
 		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
-			next if ! $_;
+			next unless $_;
 
 			if(main::setupDeleteSqlUser($sqlUser, $_)) {
 				error("Unable to remove SQL user or one of its privileges");
@@ -487,7 +481,7 @@ sub _overrideAuthdaemonInitScript
 
 =item _buildConf()
 
- Build courier configuration files.
+ Build courier configuration files
 
  Return int 0 on success, other on failure
 
@@ -582,7 +576,7 @@ sub _buildConf
 
 =item _buildAuthdaemonrcFile()
 
- Build the authdaemonrc file.
+ Build the authdaemonrc file
 
  Return int 0 on success, other on failure
 
@@ -637,7 +631,7 @@ sub _buildAuthdaemonrcFile
 
 =item buildAuthmysqlrcFile()
 
- Build the authmysqlrc file.
+ Build the authmysqlrc file
 
  Return int 0 on success, other on failure
 
@@ -650,7 +644,7 @@ sub buildAuthmysqlrcFile
 
 =item _buildSslConfFiles()
 
- Build ssl configuration file.
+ Build ssl configuration file
 
  Return int 0 on success, other on failure
 
@@ -716,7 +710,7 @@ sub _buildSslConfFiles
 
 =item _saveConf()
 
- Save Courier configuration.
+ Save Courier configuration
 
  Return int 0 on success, other on failure
 
@@ -762,7 +756,7 @@ sub _saveConf
 
 =item _migrateFromDovecot()
 
- Migrate mailboxes from Dovecot.
+ Migrate mailboxes from Dovecot
 
  Return int 0 on success, other on failure
 

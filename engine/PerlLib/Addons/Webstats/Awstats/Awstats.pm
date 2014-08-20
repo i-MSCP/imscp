@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- AWStats addon for i-MSCP
+ AWStats addon for i-MSCP.
 
  Advanced Web Statistics (AWStats) is a powerful Web server logfile analyzer written in perl that shows you all your Web
 statistics including visits, unique visitors, pages, hits, rush hours, search engines, keywords used to find your site,
@@ -63,7 +63,7 @@ robots, broken links and more.
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail \%dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -120,9 +120,9 @@ sub setEnginePermissions
 
 =item getPackages()
 
- Get list of Debian packages to which this addon depends
+ Get list of debian packages
 
- Return array_ref An array containing list of packages
+ Return array An array containing a list of packages
 
 =cut
 
@@ -133,10 +133,10 @@ sub getPackages
 
 =item addDmn(\%data)
 
- Add AWStats configuration file and cron task
+ Process addDmn tasks
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -214,10 +214,10 @@ sub addDmn
 
 =item deleteDmn(\%data)
 
- Delete AWStats configuration
+ Process deleteDmn tasks
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -283,10 +283,10 @@ sub deleteDmn
 
 =item addSub(\%data)
 
- Add AWStats configuration file and cron task
+ Process addSub tasks
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -299,10 +299,10 @@ sub addSub
 
 =item deleteSub(\%data)
 
- Delete AWStats configuration
+ Process deleteSub tasks
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -344,7 +344,7 @@ sub _init
 
 =item _addAwstatsSection(\$cfgTpl, $filename, \%data)
 
- Add Apache configuration snippet for AWStats in the given domain vhost template file
+ Add configuration snippet for AWStats in the given domain vhost template file
 
  Listener responsible to build and insert Apache configuration snipped for AWStats in the given domain vhost file. The
 type of configuration snippet inserted depends on the AWStats mode (dynamic or static).
@@ -352,7 +352,7 @@ type of configuration snippet inserted depends on the AWStats mode (dynamic or s
  Param string \$cfgTpl Template file content
  Param string $filename Template filename
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -401,7 +401,7 @@ sub _addAwstatsSection
 
 =item _getApacheConfSnippet()
 
- Get apache configuration snippet
+ Get configuration snippet
 
  Return string
 
@@ -449,7 +449,7 @@ EOF
 
 =item _addAwstatsConfig(\%data)
 
- Add awstats configuration file for the given domain
+ Add configuration file
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
@@ -508,10 +508,10 @@ sub _addAwstatsConfig
 
 =item _addAwstatsCronTask(\%data)
 
- Add Awstats cron task
+ Add cron task
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -540,10 +540,10 @@ sub _addAwstatsCronTask
 
 =item _deleteAwstatsCronTask(\%data)
 
- Remove AWStats cron task
+ Remove cron task
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

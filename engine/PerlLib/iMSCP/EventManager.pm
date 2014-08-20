@@ -111,7 +111,7 @@ sub trigger
 
     my $rs = 0;
 
-	if(exists $self->{'event'}->{$event}) {
+	if(exists $self->{'events'}->{$event}) {
 		debug("Triggering $event event");
 
 		for(@{$self->{'events'}->{$event}}) {

@@ -56,36 +56,27 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->trigger('beforeFtpdRegisterSetupHooks', $eventManager, 'proftpd');
-	return $rs if $rs;
-
-	# Add proftpd installer dialog in setup dialog stack
-	$rs = $eventManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askProftpd(@_) }); 0; }
-	);
-	return $rs if $rs;
-
-	$eventManager->trigger('afterFtpdRegisterSetupHooks', $eventManager, 'proftpd');
+	 $eventManager->register('beforeSetupDialog', sub {push@{$_[0]}, sub { $self->askProftpd(@_) }; 0; });
 }
 
 =item askProftpd(\%dialog)
 
  Setup questions
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
@@ -208,7 +199,7 @@ sub install
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::ftpd::proftpd::installer
 
@@ -224,7 +215,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeFtpdInitInstaller', $self, 'proftpd'
-	) and fatal('proftpd - beforeFtpdInitInstaller hook has failed');
+	) and fatal('proftpd - beforeFtpdInitInstaller has failed');
 
 	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -246,7 +237,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterFtpdInitInstaller', $self, 'proftpd'
-	) and fatal('proftpd - afterFtpdInitInstaller hook has failed');
+	) and fatal('proftpd - afterFtpdInitInstaller has failed');
 
 	$self;
 }

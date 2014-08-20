@@ -60,12 +60,12 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	my $rs = $self->restoreConfFile();
+	my $rs = $self->restoreDefaultConffile();
 	return $rs if $rs;
 
-	$rs = $self->removeDB();
+	$rs = $self->removeDatabase();
 	return $rs if $rs;
 
 	$self->removeDirs();
@@ -84,7 +84,8 @@ sub removeDirs
 	my $self = shift;
 	my $rs = 0;
 
-	# TODO: if this is directory referenced in the restored conf file, it must not be removed. Otherwise proftpd WILL fail. For the time beeing, this is disabled
+	# TODO: if this is directory referenced in the restored conf file, it must not be removed. Otherwise proftpd WILL
+	# fail. For the time beeing, this is disabled
 	#for("$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"){
 	#	$rs = iMSCP::Dir->new('dirname' => $_)->remove();
 	#	return $rs if $rs;
@@ -93,7 +94,7 @@ sub removeDirs
 	0;
 }
 
-=item removeDB()
+=item removeDatabase()
 
  Remove Database data
 
@@ -101,29 +102,28 @@ sub removeDirs
 
 =cut
 
-sub removeDB
+sub removeDatabase
 {
-	my $self = shift;
-
 	my $db = iMSCP::Database->factory();
 
-	$db->doQuery('dummy', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
+	$db->doQuery('dummy', 'DROP USER ?@?', $_[0]->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
 	$db->doQuery('dummy', 'FLUSH PRIVILEGES');
 
 	0;
 }
 
-=item restoreConfFile()
+=item restoreDefaultConffile()
 
- Restore system configuration file
+ Restore default configuration file
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub restoreConfFile
+sub restoreDefaultConffile
 {
-	my $self = shift;
+	my $self = $_[0];
+
 	my $rs = 0;
 
 	for ($self->{'config'}->{'FTPD_CONF_FILE'}) {
@@ -146,7 +146,7 @@ sub restoreConfFile
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Servers::ftpd::proftpd::uninstaller
 
@@ -154,7 +154,7 @@ sub restoreConfFile
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
 

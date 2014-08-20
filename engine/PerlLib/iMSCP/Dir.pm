@@ -39,7 +39,7 @@ sub getFiles
 {
 	my $self = $_[0];
 
-	if(! $self->{'files'}) {
+	unless($self->{'files'}) {
 		$self->{'files'} = [];
 		$self->_get();
 		$self->{'fileType'} = '' unless $self->{'fileType'};
@@ -237,7 +237,6 @@ sub remove
 	}
 
 	if (-d $self->{'dirname'}) {
-
 		debug("Removing directory $self->{'dirname'}");
 
 		my $err;

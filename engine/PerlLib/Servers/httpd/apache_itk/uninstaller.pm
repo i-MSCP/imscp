@@ -37,12 +37,11 @@ use File::Basename;
 use Servers::httpd::apache_itk;
 use parent 'Common::SingletonClass';
 
-
 sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->_removeUsers();
+	my $rs = $self->_removeUser();
 	return $rs if $rs;
 
 	$rs = $self->_removeVloggerSqlUser();
@@ -72,10 +71,8 @@ sub _init
 	$self;
 }
 
-sub _removeUsers
+sub _removeUser
 {
-	my $self = $_[0];
-
 	# Panel user
 	my $rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
@@ -90,8 +87,6 @@ sub _removeUsers
 
 sub _removeVloggerSqlUser
 {
-	my $self = $_[0];
-
 	my $db = iMSCP::Database->factory();
 
 	$db->doQuery('dummy', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
@@ -102,9 +97,7 @@ sub _removeVloggerSqlUser
 
 sub _removeDirs
 {
-	my $self = $_[0];
-
-	iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
+	iMSCP::Dir->new('dirname' => $_[0]->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
 }
 
 sub _restoreConf

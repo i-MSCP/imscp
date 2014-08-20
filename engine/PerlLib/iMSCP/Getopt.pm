@@ -64,7 +64,7 @@ additional options.
 
 =cut
 
-sub parse($$)
+sub parse
 {
 	my $class = shift;
 	my $usage = shift;
@@ -73,14 +73,14 @@ sub parse($$)
 		my $exitCode = shift || 0;
 		print STDERR output(<<EOF);
 $usage
- -r,    --reconfigure  [item]  Type --reconfigure help for more information.
- -n,    --noprompt             Switch to non-interactive mode.
- -p,    --preseed      <file>  Path to preseed file.
- -h,    --hook-file    <file>  Path to hook file.
- -c     --clean-addons         Cleanup local addon packages repository.
- -a     --skip-addons-update   Skip addons update
- -d,    --debug                Force debug mode.
- -?,    --help                 Show this help.
+ -r,    --reconfigure [item]  Type --reconfigure help for more information.
+ -n,    --noprompt            Switch to non-interactive mode.
+ -p,    --preseed <file>      Path to preseed file.
+ -h,    --hook-file <file>    Path to hook file.
+ -c     --clean-addons        Cleanup local addon packages repository.
+ -a     --skip-addons-update  Skip addons update
+ -d,    --debug               Force debug mode.
+ -?,    --help                Show this help.
 
  $optionHelp
 EOF
@@ -129,7 +129,7 @@ to GetOptions.
 
 =cut
 
-sub parseNoDefault($$)
+sub parseNoDefault
 {
 	my $class = shift;
 	my $usage = shift;
@@ -181,7 +181,7 @@ our $reconfigureItems = [
 
 =cut
 
-sub reconfigure($;$)
+sub reconfigure
 {
 	my ($class, $value) = @_;
 
@@ -204,7 +204,7 @@ sub reconfigure($;$)
 	$options->{'reconfigure'} ? $options->{'reconfigure'} : 'none';
 }
 
-=item noprompt($;$)
+=item noprompt
 
  noprompt option
 
@@ -228,7 +228,7 @@ sub noprompt
 
 =cut
 
-sub preseed($;$)
+sub preseed
 {
 	my ($class, $value) = @_;
 
@@ -251,7 +251,7 @@ sub preseed($;$)
 
 =cut
 
-sub hookFile($;$)
+sub hookFile
 {
 	my ($class, $value) = @_;
 

@@ -37,7 +37,6 @@ use File::Basename;
 use Servers::httpd::apache_fcgid;
 use parent 'Common::SingletonClass';
 
-
 sub uninstall
 {
 	my $self = $_[0];

@@ -54,27 +54,27 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Apache2/FastCGI Server implementation
+ i-MSCP Apache2/FastCGI Server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupHooks($eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hooks
+ Register setup event listeners
 
- Param iMSCP::EventManager $eventManager Hooks manager instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my (undef, $eventManager) = @_;
 
 	require Servers::httpd::apache_fcgid::installer;
-	Servers::httpd::apache_fcgid::installer->getInstance()->registerSetupHooks($eventManager);
+	Servers::httpd::apache_fcgid::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
 =item preinstall()
@@ -164,12 +164,12 @@ sub uninstall
 
  Process addUser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by User module
+ Param hash \%data User data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addUser($$)
+sub addUser
 {
 	my ($self, $data) = @_;
 
@@ -193,12 +193,12 @@ sub addUser($$)
 
  Process deleteUser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by User module
+ Param hash \%data User data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteUser($$)
+sub deleteUser
 {
 	my ($self, $data) = @_;
 
@@ -218,12 +218,12 @@ sub deleteUser($$)
 
  Process addDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addDmn($$)
+sub addDmn
 {
 	my ($self, $data) = @_;
 
@@ -245,16 +245,16 @@ sub addDmn($$)
 	$self->{'eventManager'}->trigger('afterHttpdAddDmn', $data);
 }
 
-=item restoreDmn
+=item restoreDmn(\%data)
 
  Process restoreDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub restoreDmn($$)
+sub restoreDmn
 {
 	my ($self, $data) = @_;
 
@@ -275,12 +275,12 @@ sub restoreDmn($$)
 
  Process disableDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub disableDmn($$)
+sub disableDmn
 {
 	my ($self, $data) = @_;
 
@@ -338,12 +338,12 @@ sub disableDmn($$)
 
  Process deleteDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteDmn($$)
+sub deleteDmn
 {
 	my ($self, $data) = @_;
 
@@ -472,12 +472,12 @@ sub deleteDmn($$)
 
  Process addSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSub($$)
+sub addSub
 {
 	my ($self, $data) = @_;
 
@@ -503,12 +503,12 @@ sub addSub($$)
 
  Process restoreSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub restoreSub($$)
+sub restoreSub
 {
 	my ($self, $data) = @_;
 
@@ -531,12 +531,12 @@ sub restoreSub($$)
 
  Process disableSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub disableSub($$)
+sub disableSub
 {
 	my ($self, $data) = @_;
 
@@ -553,12 +553,12 @@ sub disableSub($$)
 
  Process deleteSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the module Subdomain|SubAlias
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteSub($$)
+sub deleteSub
 {
 	my ($self, $data) = @_;
 
@@ -574,12 +574,12 @@ sub deleteSub($$)
 
  Process AddHtuser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htuser module
+ Param hash \%data Htuser data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addHtuser($$)
+sub addHtuser
 {
 	my ($self, $data) = @_;
 
@@ -625,12 +625,12 @@ sub addHtuser($$)
 
  Process deleteHtuser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htuser module
+ Param hash \%data Htuser data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteHtuser($$)
+sub deleteHtuser
 {
 	my ($self, $data) = @_;
 
@@ -675,12 +675,12 @@ sub deleteHtuser($$)
 
  Process addHtgroup tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htgroup module
+ Param hash \%data Htgroup data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addHtgroup($$)
+sub addHtgroup
 {
 	my ($self, $data) = @_;
 
@@ -726,12 +726,12 @@ sub addHtgroup($$)
 
  Process deleteHtgroup tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htgroup module
+ Param hash \%data Htgroup data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteHtgroup($$)
+sub deleteHtgroup
 {
 	my ($self, $data) = @_;;
 
@@ -776,12 +776,12 @@ sub deleteHtgroup($$)
 
  Process addHtaccess tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htaccess module
+ Param hash \%data Htaccess data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addHtaccess($$)
+sub addHtaccess
 {
 	my ($self, $data) = @_;
 
@@ -834,12 +834,12 @@ sub addHtaccess($$)
 
  Process deleteHtaccess tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htaccess module
+ Param hash \%data Htaccess data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteHtaccess($$)
+sub deleteHtaccess
 {
 	my ($self, $data) = @_;
 
@@ -890,12 +890,12 @@ sub deleteHtaccess($$)
 
  Process addIps tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Ips module
+ Param hash \%data Ips data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addIps($$)
+sub addIps
 {
 	my ($self, $data) = @_;
 
@@ -996,14 +996,14 @@ sub setEnginePermissions
 
  Build the given configuration template
 
- Param string $cfgTpl String representing content of the configuration template
- Param string $filename Configuration template name
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param string $cfgTpl Template content
+ Param string $filename Template filename
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return string String representing content of configuration template or undef
 
 =cut
 
-sub buildConf($$$$)
+sub buildConf
 {
 	my ($self, $cfgTpl, $filename, $data) = @_;
 
@@ -1015,25 +1015,25 @@ sub buildConf($$$$)
 	$self->{'eventManager'}->trigger('beforeHttpdBuildConf', \$cfgTpl, $filename, $data);
 
 	$cfgTpl = process($self->{'data'}, $cfgTpl);
-	return undef if ! $cfgTpl;
+	return undef unless $cfgTpl;
 
 	$self->{'eventManager'}->trigger('afterHttpdBuildConf', \$cfgTpl, $filename, $data);
 
 	$cfgTpl;
 }
 
-=item buildConfFile($file, \%data, [\%options = {}])
+=item buildConfFile($file, \%data, [\%options = { }])
 
  Build the given configuration file
 
  Param string $file Absolute path to config file or config filename relative to the $self->{'apacheCfgDir'} directory
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
- Param hash_ref $options Reference to a hash containing options such as destination, mode, user and group for final file
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%options OPTIONAL Options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
 
 =cut
 
-sub buildConfFile($$$;$)
+sub buildConfFile
 {
 	my ($self, $file, $data, $options) = @_;
 
@@ -1091,17 +1091,17 @@ sub buildConfFile($$$;$)
 	);
 }
 
-=item installConfFile($file, [\%options = {}])
+=item installConfFile($file, [\%options = { }])
 
  Install the given configuration file
 
  Param string $file Absolute path to config file or config filename relative to the $self->{'apacheWrkDir'} directory
- Param hash_ref $options Reference to a hash containing options such as destination, mode, user and group for final file
+ Param hash \%options OPTIONAL Options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
 
 =cut
 
-sub installConfFile($$;$)
+sub installConfFile
 {
 	my ($self, $file, $options) = @_;
 
@@ -1137,12 +1137,12 @@ sub installConfFile($$;$)
 
  Make the given data available for this server
 
- Param hash_ref $data Reference to a hash containing data to make available for this server
+ Param hash \%data Server data
  Return int 0
 
 =cut
 
-sub setData($$)
+sub setData
 {
 	my ($self, $data) = @_;
 
@@ -1159,7 +1159,7 @@ sub setData($$)
 
 =cut
 
-sub flushData()
+sub flushData
 {
 	delete $_[0]->{'data'};
 
@@ -1171,11 +1171,11 @@ sub flushData()
  Get httpd traffic data
 
  Param string $timestamp Timestamp
- Return hash_ref Traffic data or die on failure
+ Return hash Traffic data or die on failure
 
 =cut
 
-sub getTraffic($$)
+sub getTraffic
 {
 	my ($self, $timestamp) = @_;
 
@@ -1344,7 +1344,7 @@ sub getRunningUser
 
  Get group name under which the Apache server is running
 
- Return string Group name under which the apache server is running.
+ Return string Group name under which the apache server is running
 
 =cut
 
@@ -1357,12 +1357,12 @@ sub getRunningGroup
 
  Enable the given Apache sites
 
- Param string $site Names of Apache sites to enable, each separated by a space
+ Param string $site Names of Apache sites to enable, each space separated
  Return int 0 on sucess, other on failure
 
 =cut
 
-sub enableSite($$)
+sub enableSite
 {
 	my ($self, $sites) = @_;
 
@@ -1391,12 +1391,12 @@ sub enableSite($$)
 
  Disable the given Apache sites
 
- Param string $sitse Names of Apache sites to disable, each separated by a space
+ Param string $sitse Names of Apache sites to disable, each space separated
  Return int 0 on sucess, other on failure
 
 =cut
 
-sub disableSite($$)
+sub disableSite
 {
 	my ($self, $sites) = @_;
 
@@ -1425,12 +1425,12 @@ sub disableSite($$)
 
  Enable the given Apache modules
 
- Param string $modules Names of Apache modules to enable, each separated by a space
+ Param string $modules Names of Apache modules to enable, each space separated
  Return int 0 on sucess, other on failure
 
 =cut
 
-sub enableMod($$)
+sub enableMod
 {
 	my ($self, $modules) = @_;
 
@@ -1452,12 +1452,12 @@ sub enableMod($$)
 
  Disable the given Apache modules
 
- Param string $modules Names of Apache modules to disable, each separated by a space
+ Param string $modules Names of Apache modules to disable, each space separated
  Return int 0 on sucess, other on failure
 
 =cut
 
-sub disableMod($$)
+sub disableMod
 {
 	my ($self, $modules) = @_;
 
@@ -1477,7 +1477,7 @@ sub disableMod($$)
 
 =item forceRestart()
 
- Force Apache to be restarted instead of simply reloaded
+ Force Apache to be restarted
 
  Return int 0
 
@@ -1494,7 +1494,7 @@ sub forceRestart
 
  Start Apache
 
- Return int 0, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -1518,7 +1518,7 @@ sub start
 
  Stop Apache
 
- Return int 0, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -1540,9 +1540,9 @@ sub stop
 
 =item restart()
 
- Restart or Reload Apache
+ Restart or reload Apache
 
- Return int 0, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -1574,7 +1574,7 @@ sub restart
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::httpd::apache_fcgid
 
@@ -1588,7 +1588,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'beforeHttpdInit', $self, 'apache_fcgid'
-	) and fatal('apache_fcgid - beforeHttpdInit hook has failed');
+	) and fatal('apache_fcgid - beforeHttpdInit has failed');
 
 	$self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
@@ -1599,7 +1599,7 @@ sub _init
 
 	$self->{'eventManager'}->trigger(
 		'afterHttpdInit', $self, 'apache_fcgid'
-	) and fatal('apache_fcgid - afterHttpdInit hook has failed');
+	) and fatal('apache_fcgid - afterHttpdInit has failed');
 
 	# Register event listener which is responsible to clean vhost template files
 	$self->{'eventManager'}->register('afterHttpdBuildConfFile', sub { $self->_cleanTemplate(@_)});
@@ -1611,12 +1611,12 @@ sub _init
 
  Add configuration files for the given domain or subdomain
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addCfg($$)
+sub _addCfg
 {
 	my ($self, $data) = @_;
 
@@ -1729,12 +1729,12 @@ sub _addCfg($$)
 
  Get Web folders list to create for the given domain or subdomain
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
- Return list List of Web folders to create
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Return array List of Web folders to create
 
 =cut
 
-sub _dmnFolders($$)
+sub _dmnFolders
 {
 	my ($self, $data) = @_;;
 
@@ -1777,12 +1777,12 @@ sub _dmnFolders($$)
 
  Add default directories and files for the given domain or subdomain
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on sucess, other on failure
 
 =cut
 
-sub _addFiles($$)
+sub _addFiles
 {
 	my ($self, $data) = @_;
 
@@ -1968,12 +1968,12 @@ sub _addFiles($$)
 
  Build FCGI and PHP configuration files
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on sucess, other on failure
 
 =cut
 
-sub _buildPHPini($$)
+sub _buildPHPini
 {
 	my ($self, $data) = @_;
 
@@ -2020,14 +2020,14 @@ sub _buildPHPini($$)
 
  Event listener which is responsible to remove useless configuration snippets in vhost template files
 
- Param string_ref $cfgTpl Reference to template file content
+ Param string \$cfgTpl Template file content
  Param string $filename Template filename
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash $data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0
 
 =cut
 
-sub _cleanTemplate($$$)
+sub _cleanTemplate
 {
 	my ($self, $cfgTpl, $filename, $data) = @_;
 

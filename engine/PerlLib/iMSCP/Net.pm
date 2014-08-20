@@ -57,7 +57,7 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub getAddresses()
+sub getAddresses
 {
 	my $self = $_[0];
 
@@ -74,7 +74,7 @@ sub getAddresses()
 
 =cut
 
-sub addAddr($$$)
+sub addAddr
 {
 	my ($self, $addr, $dev) = @_;
 
@@ -120,7 +120,7 @@ sub addAddr($$$)
 
 =cut
 
-sub delAddr($$)
+sub delAddr
 {
 	my ($self, $addr) = @_;
 
@@ -158,7 +158,7 @@ sub delAddr($$)
 
 =cut
 
-sub getAddrVersion($$)
+sub getAddrVersion
 {
 	my ($self, $addr) = @_;
 
@@ -181,7 +181,7 @@ sub getAddrVersion($$)
 
 =cut
 
-sub getAddrType($$)
+sub getAddrType
 {
 	my ($self, $addr) = @_;
 
@@ -204,7 +204,7 @@ sub getAddrType($$)
 
 =cut
 
-sub getAddrDevice($$)
+sub getAddrDevice
 {
 	my ($self, $addr) = @_;
 
@@ -230,7 +230,7 @@ sub getAddrDevice($$)
 
 =cut
 
-sub isKnownAddr($$)
+sub isKnownAddr
 {
 	my ($self, $addr) = @_;
 
@@ -246,7 +246,7 @@ sub isKnownAddr($$)
 
 =cut
 
-sub isValidAddr($$)
+sub isValidAddr
 {
 	my ($self, $addr) = @_;
 
@@ -262,7 +262,7 @@ sub isValidAddr($$)
 
 =cut
 
-sub normalizeAddr($$)
+sub normalizeAddr
 {
 	my ($self, $addr) = @_;
 
@@ -281,7 +281,7 @@ sub normalizeAddr($$)
 
 =cut
 
-sub getDevices()
+sub getDevices
 {
 	my $self = $_[0];
 
@@ -297,7 +297,7 @@ sub getDevices()
 
 =cut
 
-sub isKnownDevice($$)
+sub isKnownDevice
 {
 	my ($self, $dev) = @_;
 
@@ -313,7 +313,7 @@ sub isKnownDevice($$)
 
 =cut
 
-sub upDevice($$)
+sub upDevice
 {
 	my ($self, $dev) = @_;
 
@@ -342,7 +342,7 @@ sub upDevice($$)
 
 =cut
 
-sub downDevice($$)
+sub downDevice
 {
 	my ($self, $dev) = @_;
 
@@ -371,7 +371,7 @@ sub downDevice($$)
 
 =cut
 
-sub isDeviceUp($$)
+sub isDeviceUp
 {
 	my ($self, $dev) = @_;
 
@@ -387,7 +387,7 @@ sub isDeviceUp($$)
 
 =cut
 
-sub isDeviceDown($$)
+sub isDeviceDown
 {
 	my ($self, $dev) = @_;
 
@@ -426,7 +426,7 @@ sub _init
 
 =cut
 
-sub _extractDevices()
+sub _extractDevices
 {
 	my $self = $_[0];
 
@@ -436,7 +436,7 @@ sub _extractDevices()
 	error($stderr) if $stderr && $rs;
 	fatal('Unable to get network devices data') if $rs;
 
-	my $devices = {};
+	my $devices = { };
 
 	$devices->{$1}->{'flags'} = $2 while($stdout =~ /^[^\s]+\s+(.*?):\s+<(.*)>/gm);
 
@@ -451,7 +451,7 @@ sub _extractDevices()
 
 =cut
 
-sub _extractAddresses()
+sub _extractAddresses
 {
 	my $self = $_[0];
 
@@ -461,7 +461,7 @@ sub _extractAddresses()
 	error($stderr) if $stderr && $rs;
 	fatal('Unable to get network devices data') if $rs;
 
-	my $addresses = {};
+	my $addresses = { };
 
 	while($stdout =~ m%^[^\s]+\s+([^\s]+)\s+([^\s]+)\s+([^/\s]+).*?/(\d+)%gm) {
 		$addresses->{$self->normalizeAddr($3)} = {

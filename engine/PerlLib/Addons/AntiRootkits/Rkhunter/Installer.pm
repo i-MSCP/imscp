@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Rkhunter addon installer
+ Rkhunter addon installer.
 
 =head1 PUBLIC METHODS
 
@@ -82,7 +82,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set file permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -124,9 +124,9 @@ sub setEnginePermissions
 
 =item _disableDebianConfig()
 
- Disable default configuration as provided by the rkhunter Debian package
+ Disable default configuration
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -183,7 +183,7 @@ sub _disableDebianConfig
 
  Add cron task
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

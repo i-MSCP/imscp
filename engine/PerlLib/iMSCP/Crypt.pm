@@ -105,6 +105,7 @@ sub decrypt_db_password
 		error('Undefined input data...') ;
 		return undef;
 	}
+
 	if (length($self->{'cipher'}->{'key'}) != $self->{'cipher'}->{'keysize'} || length($self->{'cipher'}->{'iv'}) != 8) {
 		error('KEY or IV has invalid length');
 		return undef;
@@ -126,7 +127,7 @@ sub crypt_md5_data
 		$self = iMSCP::Crypt->getInstance();
 	}
 
-	if (! $data) {
+	unless ($data) {
 		debug('Undefined input data');
 		return undef;
 	}

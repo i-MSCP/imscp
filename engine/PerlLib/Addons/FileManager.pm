@@ -48,34 +48,32 @@ directory.
 
 =over 4
 
-=item registerSetupHooks(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hook functions
+ Register setup event listeners
 
- Param iMSCP::EventManager instance
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	$eventManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
-	);
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
 =item showDialog(\%dialog)
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog, $rs) = (@_, 0);
 
@@ -166,7 +164,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set file permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -209,7 +207,7 @@ sub setGuiPermissions
 
 =cut
 
-sub _init()
+sub _init
 {
 	my $self = $_[0];
 

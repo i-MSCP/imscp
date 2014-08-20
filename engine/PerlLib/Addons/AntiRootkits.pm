@@ -51,34 +51,32 @@ directory.
 
 =over 4
 
-=item registerSetupHooks(\%eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register setup hook functions
+ Register setup event listeners.
 
- Param iMSCP::EventManager instance
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	$eventManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
-	);
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
 =item askAntiRootkits(\%dialog)
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog, $rs) = (@_, 0);
 
@@ -122,7 +120,7 @@ sub showDialog($$)
 
  Process preinstall tasks
 
- Note: This method also trigger uninstallation of unselected Anti-Rootkits addons.
+ /!\ This method also trigger uninstallation of unselected Anti-Rootkits addons.
 
  Return int 0 on success, other on failure
 
@@ -259,7 +257,7 @@ sub uninstall
 
 =item setEnginePermissions()
 
- Set file permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -320,12 +318,12 @@ sub _init()
 
  Install packages
 
- Param array_ref $packages List of packages to install
+ Param array \@packages List of packages to install
  Return int 0 on success, other on failure
 
 =cut
 
-sub _installPackages($$)
+sub _installPackages
 {
 	my ($self, $packages) = @_;
 
@@ -353,12 +351,12 @@ sub _installPackages($$)
 
  Remove packages
 
- Param array_ref $packages List of packages to remove
+ Param array \@packages List of packages to remove
  Return int 0 on success, other on failure
 
 =cut
 
-sub _removePackages($$)
+sub _removePackages
 {
 	my ($self, $packages) = @_;
 

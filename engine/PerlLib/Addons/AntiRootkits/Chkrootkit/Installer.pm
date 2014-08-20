@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Chkrootkit addon installer
+ Chkrootkit addon installer.
 
 =head1 PUBLIC METHODS
 
@@ -88,7 +88,7 @@ sub install
 
 =cut
 
-sub setEnginePermissions()
+sub setEnginePermissions
 {
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
@@ -104,9 +104,9 @@ sub setEnginePermissions()
 
 =item _disableDebianConfig()
 
- Disable default configuration as provided by the chkrootkit Debian package
+ Disable default configuration
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -128,7 +128,7 @@ sub _disableDebianConfig
 
  Add cron task
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

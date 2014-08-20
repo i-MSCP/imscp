@@ -58,36 +58,32 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks(\%eventManager)
+=item registerSetupListeners(\%eventManager)
 
- Register PhpMyAdmin setup hook functions
+ Register setup event listeners
 
- Param iMSCP::EventManager instance
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupHooks($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	$eventManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
-	);
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
 =item showDialog(\%dialog)
 
- Show PhpMyAdmin questions
+ Show dialog
 
- Hook function responsible to show PhpMyAdmin installer questions.
-
- Param iMSCP::Dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
 
-sub showDialog($$)
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -162,9 +158,9 @@ sub showDialog($$)
 
 =item preinstall()
 
- Register PhpMyAdmin composer package for installation
+ Process preinstall tasks
 
- Return int 0
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -196,9 +192,9 @@ sub preinstall
 
 =item install()
 
- Process PhpMyAdmin addon install tasks
+ Process install tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -242,7 +238,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set PhpMyAdmin files permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -268,7 +264,7 @@ sub setGuiPermissions
 
 =item _init()
 
- Called by getInstance(). Initialize PhpMyAdmin addon installer instance
+ Initialize instance
 
  Return Addons::PhpMyAdmin::Installer
 
@@ -303,13 +299,13 @@ sub _init
 
 =item _backupConfigFile()
 
- Backup the given PhpMyAdmin configuration file
+ Backup the given configuration file
 
  Return int 0
 
 =cut
 
-sub _backupConfigFile($$)
+sub _backupConfigFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -327,7 +323,7 @@ sub _backupConfigFile($$)
 
 =item _installFiles()
 
- Install PhpMyAdmin files in production directory
+ Install files in production directory
 
  Return int 0 on success, other on failure
 
@@ -365,9 +361,9 @@ sub _installFiles
 
 =item _saveConfig()
 
- Save PhpMyAdmin configuration
+ Save configuration
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -408,9 +404,9 @@ sub _saveConfig
 
 =item _setupSqlUser()
 
- Setup PhpMyAdmin restricted SQL user
+ Setup restricted SQL user
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -513,7 +509,7 @@ sub _setupSqlUser
 
 =item _setupDatabase()
 
- Setup phpMyAdmin database
+ Setup database
 
  Return int 0 on success, other on failure
 
@@ -592,9 +588,9 @@ sub _setupDatabase
 
 =item _setVersion()
 
- Set phpMyAdmin version
+ Set version
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -619,7 +615,7 @@ sub _setVersion
 
 =item _generateBlowfishSecret()
 
- Generate blowfish secret for PhpMyAdmin
+ Generate blowfish secret
 
  Return int 0
 
@@ -637,9 +633,9 @@ sub _generateBlowfishSecret
 
 =item _buildConfig()
 
- Build PhpMyAdmin configuration file
+ Build configuration file
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
