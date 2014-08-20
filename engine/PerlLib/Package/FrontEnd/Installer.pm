@@ -54,17 +54,17 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP FrontEnd package installer
+ i-MSCP FrontEnd package installer.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -82,7 +82,7 @@ sub registerSetupListeners
 
  Show hostname dialog
 
- Param iMSCP::Dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -124,7 +124,7 @@ sub askHostname
 
  Show SSL dialog
 
- Param iMSCP::Dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -270,9 +270,9 @@ sub askSsl
 
 =item install()
 
-Process install tasks
+ Process install tasks
 
-Return int 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -295,9 +295,9 @@ sub install
 
 =item setGuiPermissions()
 
- Set gui file permissions
+ Set gui permissions
 
-Return int 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -352,7 +352,7 @@ sub setGuiPermissions
 
 =item setEnginePermissions()
 
- Set engine file permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -505,7 +505,7 @@ sub _init
 
  Setup SSL
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -549,7 +549,7 @@ sub _setupSsl
 
  Set httpd version
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -607,7 +607,9 @@ sub _addMasterWebUser
 			FROM
 				admin
 			WHERE
-				admin_type = ? AND created_by = ?
+				admin_type = ?
+			AND
+				created_by = ?
 			LIMIT
 				1
 		',
@@ -1119,9 +1121,9 @@ sub _addDnsZone
 
 	$rs = Servers::named->factory()->addDmn(
 		{
-			DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
-			DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
-			MAIL_ENABLED => 1
+			'DOMAIN_NAME' => $main::imscpConfig{'BASE_SERVER_VHOST'},
+			'DOMAIN_IP' => $main::imscpConfig{'BASE_SERVER_IP'},
+			'MAIL_ENABLED' => 1
 		}
 	);
 	return $rs if $rs;

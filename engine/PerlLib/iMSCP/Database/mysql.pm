@@ -213,7 +213,7 @@ sub doQuery($$$;@)
 
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@bindValues);
 
-	($self->{'sth'}->{'NUM_OF_FIELDS'}) ? $self->{'sth'}->fetchall_hashref($key) : {};
+	($self->{'sth'}->{'NUM_OF_FIELDS'}) ? $self->{'sth'}->fetchall_hashref($key) : { };
 }
 
 =item getDBTables()

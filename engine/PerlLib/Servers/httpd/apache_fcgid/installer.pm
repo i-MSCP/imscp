@@ -61,11 +61,11 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -73,8 +73,6 @@ use parent 'Common::SingletonClass';
 sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
-
-	# Add installer dialog in setup dialog stack
 
 	my $rs = $eventManager->register(
 		'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askForPhpIniLevel(@_) }; 0; }
@@ -85,11 +83,11 @@ sub registerSetupListeners
 	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 }
 
-=item askForPhpIniLevel($dialog)
+=item askForPhpIniLevel(\%dialog)
 
  Ask user for PHP INI level to use
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
@@ -324,7 +322,7 @@ sub _setApacheVersion
 
 =item _makeDirs()
 
- Create needed directories
+ Create directories
 
  Return int 0 on success, other on failure
 
@@ -388,7 +386,7 @@ sub _buildFastCgiConfFiles
 
 	# fcgid_imscp.conf
 
-	$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/fcgid_imscp.conf", {});
+	$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/fcgid_imscp.conf", { });
 	return $rs if $rs;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/fcgid_imscp.conf");
@@ -494,7 +492,7 @@ sub _buildApacheConfFiles
 		# Load template
 
 		my $cfgTpl;
-		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_fcgid', 'ports.conf', \$cfgTpl, {});
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_fcgid', 'ports.conf', \$cfgTpl, { });
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -580,7 +578,7 @@ sub _buildApacheConfFiles
 	# Build new file
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'apacheCfgDir'}/00_nameserver.conf",
-		{},
+		{ },
 		{ 'destination' => "$self->{'apacheWrkDir'}/00_nameserver.conf" }
 	);
 	return $rs if $rs;
@@ -612,7 +610,7 @@ sub _buildApacheConfFiles
 
 =item _installLogrotate()
 
- Build and install Apache logrotate file
+ Install Apache logrotate file
 
  Return int 0 on success, other on failure
 
@@ -625,7 +623,7 @@ sub _installLogrotate
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', {});
+	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', { });
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile(
@@ -717,7 +715,7 @@ sub _setupVlogger
 		}
 	);
 	$self->{'httpd'}->buildConfFile(
-		"$self->{'apacheCfgDir'}/vlogger.conf.tpl", {}, { 'destination' => "$self->{'apacheWrkDir'}/vlogger.conf" }
+		"$self->{'apacheCfgDir'}/vlogger.conf.tpl", { }, { 'destination' => "$self->{'apacheWrkDir'}/vlogger.conf" }
 	);
 }
 
@@ -817,7 +815,7 @@ sub _fixPhpErrorReportingValues
 	my $self = $_[0];
 
 	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
-	if(! $database) {
+	unless($database) {
 		error("Unable to connect to SQL Server: $errStr");
 		return 1;
 	}

@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP PhpMyAdmin package uninstaller
+ i-MSCP PhpMyAdmin package uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -85,7 +85,7 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance();
 
@@ -100,7 +100,7 @@ sub _init
 
 =item _removeSqlUser()
 
- Remove any PhpMyAdmin SQL user
+ Remove SQL user
 
  Return int 0
 
@@ -120,7 +120,7 @@ sub _removeSqlUser
 
 =item _removeSqlDatabase()
 
- Remove PhpMyAdmin SQL database
+ Remove database
 
  Return int 0
 
@@ -141,7 +141,7 @@ sub _removeSqlDatabase
 
 =item _removeFiles()
 
- Remove PhpMyAdmin files
+ Remove files
 
  Return int 0
 

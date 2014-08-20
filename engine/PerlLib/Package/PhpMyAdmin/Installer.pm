@@ -53,18 +53,18 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP PhpMyAdmin package installer
+ i-MSCP PhpMyAdmin package installer.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -81,9 +81,7 @@ sub registerSetupListeners
 
  Show PhpMyAdmin questions
 
- Listener which is responsible to show PhpMyAdmin installer questions.
-
- Param iMSCP::Dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -141,7 +139,7 @@ sub showDialog
 			} while($rs != 30 && $msg);
 
 			if($rs != 30) {
-				if(! $dbPass) {
+				unless($dbPass) {
 					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
@@ -163,9 +161,9 @@ sub showDialog
 
 =item preinstall()
 
- Register PhpMyAdmin composer package for installation
+ Process preinstall tasks
 
- Return int 0
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -197,7 +195,7 @@ sub preinstall
 
 =item install()
 
- Process PhpMyAdmin package install tasks
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -243,7 +241,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set PhpMyAdmin files permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -304,7 +302,7 @@ sub _init
 
 =item _backupConfigFile()
 
- Backup the given PhpMyAdmin configuration file
+ Backup the given configuration file
 
  Return int 0
 
@@ -328,7 +326,7 @@ sub _backupConfigFile($$)
 
 =item _installFiles()
 
- Install PhpMyAdmin files in production directory
+ Install files in production directory
 
  Return int 0 on success, other on failure
 
@@ -366,7 +364,7 @@ sub _installFiles
 
 =item _saveConfig()
 
- Save PhpMyAdmin configuration
+ Save configuration
 
  Return int 0 on success, other on failure
 
@@ -409,7 +407,7 @@ sub _saveConfig
 
 =item _setupSqlUser()
 
- Setup PhpMyAdmin restricted SQL user
+ Setup restricted SQL user
 
  Return int 0 on success, other on failure
 
@@ -514,7 +512,7 @@ sub _setupSqlUser
 
 =item _setupDatabase()
 
- Setup phpMyAdmin database
+ Setup database
 
  Return int 0 on success, other on failure
 
@@ -593,7 +591,7 @@ sub _setupDatabase
 
 =item _setVersion()
 
- Set phpMyAdmin version
+ Set version
 
  Return int 0 on success, other on failure
 
@@ -620,7 +618,7 @@ sub _setVersion
 
 =item _generateBlowfishSecret()
 
- Generate blowfish secret for PhpMyAdmin
+ Generate blowfish secret
 
  Return int 0
 
@@ -638,7 +636,7 @@ sub _generateBlowfishSecret
 
 =item _buildConfig()
 
- Build PhpMyAdmin configuration file
+ Build configuration file
 
  Return int 0 on success, other on failure
 

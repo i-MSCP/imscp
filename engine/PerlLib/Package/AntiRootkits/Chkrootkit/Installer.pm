@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Chkrootkit package installer
+ Chkrootkit package installer.
 
 =head1 PUBLIC METHODS
 
@@ -106,7 +106,7 @@ sub setEnginePermissions()
 
  Disable default configuration as provided by the chkrootkit Debian package
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -128,7 +128,7 @@ sub _disableDebianConfig
 
  Add cron task
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

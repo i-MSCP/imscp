@@ -81,20 +81,20 @@ sub fselect
 	$self->{'_opts'}->{'begin'} = undef;
 	$self->{'lines'} = $self->{'lines'} - 8;
 
-	my ($exitCode, $output) = $self->_execute($_[1], undef, 'fselect');
+	my ($ret, $output) = $self->_execute($_[1], undef, 'fselect');
 
 	$self->{'_opts'}->{'begin'} = $begin;
 	$self->{'lines'} = $self->{'lines'} + 8;
 
-	wantarray ? ($exitCode, $output) : $output;
+	wantarray ? ($ret, $output) : $output;
 }
 
-=item radiolist($text, \$choices, $default = '')
+=item radiolist($text, \@choices, $default = '')
 
  Show radio list dialog
 
  Param string $text Text to show
- Param array \$choices Reference to an array containing list of choices
+ Param array \@choices List of choices
  Param string $default OPTIONAL Default choice
  Return string|array Dialog output or array containing both dialog exit code and dialog output
 
@@ -102,46 +102,42 @@ sub fselect
 
 sub radiolist
 {
-	my $self = shift;
-	my $text = shift;
-	my @choices = @{(shift)};
-	my $default = shift || '';
+	my ($self, $text, $choices, $default) = @_;
+
+	$default ||= '';
 
 	my @init = ();
 
-	push @init, (escapeShell($_), "''", $default eq $_ ? 'on' : 'off') for @choices;
+	push @init, (escapeShell($_), "''", $default eq $_ ? 'on' : 'off') for @{$choices};
 
-	$self->_textbox($text, 'radiolist', @choices . " @init");
+	$self->_textbox($text, 'radiolist', @{$choices} . " @init");
 }
 
-=item checkbox($text, \$choices, $defaults = ())
+=item checkbox($text, \$choices, @defaults = ())
 
  Show check list dialog
 
  Param string $text Text to show
- Param array \$choices Reference to an array containing list of choices
- Param string $default OPTIONAL Default choices
- Return array Reference to an array of choices or array containing both dialog exit code and array of choices
+ Param array \@choices Reference to an array containing list of choices
+ Param array @default OPTIONAL Default choices
+ Return array An array of choices or array containing both dialog exit code and array of choices
 
 =cut
 
 sub checkbox
 {
-	my $self = shift;
-	my $text = shift;
-	my @choices = @{(shift)};
-	my @defaults = (@_);
+	my ($self, $text, $choices, @defaults) = @_;
 
 	my %values = map { $_ => 1 } @defaults;
 	my @init = ();
 
-	push @init, (escapeShell($_), "''", $values{$_} ? 'on' : 'off') for @choices;
+	push @init, (escapeShell($_), "''", $values{$_} ? 'on' : 'off') for @{$choices};
 
-	my ($exitCode, $choices) = $self->_textbox($text, 'checklist', @choices . " @init");
-	$choices =~ s/"//g;
-	@choices = split ' ', $choices;
+	my ($ret, $output) = $self->_textbox($text, 'checklist', @{$choices} . " @init");
 
-	wantarray ? ($exitCode, \@choices) : \@choices;
+	@{$choices} = split /\n/, $output;
+
+	wantarray ? ($ret, $choices) : $choices;
 }
 
 =item tailbox($file)
@@ -186,11 +182,11 @@ sub dselect
 
 	$self->{'lines'} = $self->{'lines'} - 8;
 
-	my ($exitCode, $output) = $self->_execute($_[1], undef, 'dselect');
+	my ($ret, $output) = $self->_execute($_[1], undef, 'dselect');
 
 	$self->{'lines'} = $self->{'lines'} + 8;
 
-	wantarray ? ($exitCode, $output) : $output;
+	wantarray ? ($ret, $output) : $output;
 }
 
 =item msgbox($text)
@@ -277,11 +273,11 @@ sub infobox
 	my $clear = $self->{'_opts'}->{'clear'};
 	$self->{'_opts'}->{'clear'} = undef;
 
-	my ($exitCode) = $self->_textbox($_[1], 'infobox');
+	my ($ret) = $self->_textbox($_[1], 'infobox');
 
 	$self->{'_opts'}->{'clear'} = $clear;
 
-	$exitCode;
+	$ret;
 }
 
 =item startGauge($text, $percent = 0)
@@ -444,7 +440,7 @@ sub _init
 	$self->{'_opts'}->{'title'} = $self->{'title'} || undef;
 	$self->{'_opts'}->{'backtitle'} = $self->{'backtitle'} || undef;
 
-	$self->{'_opts'}->{'colors'} = undef;
+	$self->{'_opts'}->{'colors'} = '';
 	$self->{'_opts'}->{'begin'} = [1, 0];
 
 	$self->{'_opts'}->{'exit-label'} = $self->{'exit-label'} || undef;
@@ -487,41 +483,37 @@ sub _init
 	$self->{'_opts'}->{'width'} = undef;
 	$self->{'_opts'}->{'aspect'} = undef;
 
+	$self->{'_opts'}->{'separate-output'} = undef;
+
 	$self->_findBin($^O =~ /bsd$/ ? 'cdialog' : 'dialog');
-	$self->_determineDialogVariant();
+	#$self->_determineDialogVariant();
 	$self->_determineConsoleSize();
 
 	$self;
 }
 
-=item _determineDialogVariant()
-
- Determine dialog variant.
-
- Return iMSCP::Dialog::Dialog
-
-=cut
-
-sub _determineDialogVariant
-{
-	my $self = $_[0];
-
-	my $str = `$self->{'bin'} --help 2>&1`;
-
-	if ($str =~ /cdialog\s\(ComeOn\sDialog\!\)\sversion\s\d+\.\d+\-(.{4})/ && $1 >= 2003) {
-		$self->{'_opts'}->{'colors'} = '';
-		debug('Dialog color support enabled');
-	} else {
-		debug('Dialog color support disabled (not supported)');
-
-		if ($str =~ /version\s0\.[34]/m) {
-			$self->{'_opts'}->{'force-no-separate-output'} = '';
-			debug('No separate output!');
-		}
-	}
-
-	$self;
-}
+#=item _determineDialogVariant()
+#
+# Determine dialog variant.
+#
+# Return iMSCP::Dialog::Dialog
+#
+#=cut
+#
+#sub _determineDialogVariant
+#{
+#	my $self = $_[0];
+#
+#	my $str = `$self->{'bin'} --help 2>&1`;
+#
+#	if ($str =~ /cdialog\s\(ComeOn\sDialog\!\)\sversion\s\d+\.\d+\-(\d{4})/ && $1 >= 2003) {
+#		$self->{'_opts'}->{'colors'} = '';
+#	} elsif ($str =~ /version\s0\.[34]/m) {
+#		$self->{'_opts'}->{'force-no-separate-output'} = '';
+#	}
+#
+#	$self;
+#}
 
 =item _determineConsoleSize()
 
@@ -663,7 +655,9 @@ sub _execute
 		return 0;
 	}
 
-	$text = $self->_stripFormats($text) unless $self->{'_opts'}->{'colors'};
+	$text = $self->_stripFormats($text) unless defined $self->{'_opts'}->{'colors'};
+
+	$self->{'_opts'}->{'separate-output'} = '' if $type eq 'checklist';
 
 	my $command = $self->_buildCommandOptions();
 
@@ -673,13 +667,15 @@ sub _execute
 	my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
 	my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
 
-	my ($output, $exitCode);
+	my ($ret, $output);
 
-	$exitCode = execute("$self->{'bin'} $command --$type $text $height $width $init", undef, \$output);
+	$ret = execute("$self->{'bin'} $command --$type $text $height $width $init", undef, \$output);
+
+	$self->{'_opts'}->{'separate-output'} = undef;
 
 	$self->_init() if $self->{'autoreset'};
 
-	wantarray ? ($exitCode, $output) : $output;
+	wantarray ? ($ret, $output) : $output;
 }
 
 =item _textbox($text, $type, $init = 0)
@@ -705,12 +701,12 @@ sub _textbox
 	my $begin = $self->{'_opts'}->{'begin'};
 	$self->{'_opts'}->{'begin'} = undef;
 
-	my ($exitCode, $output) = $self->_execute($text, $init, $type);
+	my ($ret, $output) = $self->_execute($text, $init, $type);
 
 	$self->{'_opts'}->{'begin'} = $begin;
 	$self->{'autosize'} = $autosize;
 
-	wantarray ? ($exitCode, $output) : $output;
+	wantarray ? ($ret, $output) : $output;
 }
 
 =back

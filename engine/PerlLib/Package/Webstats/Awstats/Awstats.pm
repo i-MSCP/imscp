@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- AWStats package for i-MSCP
+ AWStats package for i-MSCP.
 
  Advanced Web Statistics (AWStats) is a powerful Web server logfile analyzer written in perl that shows you all your Web
 statistics including visits, unique visitors, pages, hits, rush hours, search engines, keywords used to find your site,
@@ -63,7 +63,7 @@ robots, broken links and more.
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail \%dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -106,7 +106,7 @@ sub uninstall
 
 =item setEnginePermissions()
 
- Set files permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -120,9 +120,9 @@ sub setEnginePermissions
 
 =item getDistroPackages()
 
- Get list of Debian packages to which this package depends
+ Get list of Debian packages
 
- Return array_ref An array containing list of packages
+ Return array List of packages
 
 =cut
 
@@ -133,10 +133,10 @@ sub getDistroPackages
 
 =item addDmn(\%data)
 
- Add AWStats configuration file and cron task
+ Process addDmn tasks
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -214,10 +214,10 @@ sub addDmn
 
 =item deleteDmn(\%data)
 
- Delete AWStats configuration
+ Process deleteDmn tasks
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -283,10 +283,10 @@ sub deleteDmn
 
 =item addSub(\%data)
 
- Add AWStats configuration file and cron task
+ Process addSub tasks
 
- Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Param hash \%data Subdomain data
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -299,10 +299,10 @@ sub addSub
 
 =item deleteSub(\%data)
 
- Delete AWStats configuration
+ Process deleteSub tasks
 
- Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Param hash \%data Subdomain data
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -511,7 +511,7 @@ sub _addAwstatsConfig
  Add Awstats cron task
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -543,7 +543,7 @@ sub _addAwstatsCronTask
  Remove AWStats cron task
 
  Param hash \%data Domain data
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

@@ -56,11 +56,11 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -69,20 +69,19 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	# Add proftpd installer dialog in setup dialog stack
-	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askProftpd(@_) }; 0; });
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
-=item askProftpd(\%dialog)
+=item showDialog(\%dialog)
 
- Setup questions
+ Show dialog
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askProftpd
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 

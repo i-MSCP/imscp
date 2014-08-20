@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Rkhunter package installer
+ Rkhunter package installer.
 
 =head1 PUBLIC METHODS
 
@@ -102,9 +102,9 @@ sub setEnginePermissions
 
 =item getDistroPackages()
 
- Get list of Debian packages to which this package depends
+ Get list of Debian packages
 
- Return array_ref An array containing list of packages
+ Return array List of packages
 
 =cut
 
@@ -112,5 +112,13 @@ sub getDistroPackages
 {
 	['rkhunter'];
 }
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

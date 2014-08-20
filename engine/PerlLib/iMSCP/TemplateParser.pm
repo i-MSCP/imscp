@@ -65,7 +65,7 @@ my $self = __PACKAGE__->getInstance();
 sub process
 {
 	my ($data, $tplContent) = @_;
-	$data = {} if ref $data ne 'HASH';
+	$data = { } if ref $data ne 'HASH';
 
 	for (keys %{$data}) {
 		next unless defined $data->{$_};

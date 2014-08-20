@@ -59,7 +59,6 @@ use parent 'Common::SingletonClass';
 sub install
 {
 	require Servers::sqld::mysql::installer;
-
 	Servers::sqld::mysql::installer->getInstance()->install();
 }
 
@@ -156,7 +155,7 @@ sub restart
 
 =item _init()
 
- Called by getInstance(). Initialize instance of this class.
+ Initialize instance
 
  Return Servers::sqld::mysql
 

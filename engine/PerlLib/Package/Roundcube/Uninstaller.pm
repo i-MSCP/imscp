@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Roundcube package uninstaller
+ i-MSCP Roundcube package uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -100,7 +100,7 @@ sub _init
 
 =item _removeSqlUser()
 
- Remove any Roundcube SQL user
+ Remove SQL user
 
  Return int 0
 
@@ -125,7 +125,7 @@ sub _removeSqlUser
 
 =item _removeSqlDatabase()
 
- Remove Roundcube SQL database
+ Remove database
 
  Return int 0
 
@@ -146,7 +146,7 @@ sub _removeSqlDatabase
 
 =item _removeFiles()
 
- Remove Roundcube files
+ Remove files
 
  Return int 0
 

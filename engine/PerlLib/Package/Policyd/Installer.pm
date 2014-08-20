@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- This is the installer for the Policyd Weight configurator package
+ This is the installer for the Policyd Weight configurator package.
 
  See Package::Policyd for more information.
 
@@ -54,12 +54,12 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -72,9 +72,9 @@ sub registerSetupListeners
 
 =item showDialog(\%dialog)
 
- Ask user about RBL
+ Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30;
 
 =cut
@@ -108,7 +108,7 @@ Do you want to disable additional checks for MTA, HELO and domain?\n
 
 =item install()
 
- Process Policyd package install tasks
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -173,7 +173,7 @@ sub _init
  Backup configuration file
 
  Param string $cfgFile Path of file to backup
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

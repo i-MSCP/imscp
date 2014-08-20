@@ -235,7 +235,7 @@ sub getMessageByType
 {
 	my ($mode, $opts) = @_;
 
-	$opts = {} unless ref $opts eq 'HASH';
+	$opts = { } unless ref $opts eq 'HASH';
 
 	$mode = 'error' unless defined $mode && $mode ~~ ['debug', 'warn', 'error', 'fatal'];
 

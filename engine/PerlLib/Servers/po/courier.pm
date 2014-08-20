@@ -54,16 +54,16 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupListeners($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
@@ -73,7 +73,7 @@ sub registerSetupListeners($$)
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -94,7 +94,7 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -108,7 +108,7 @@ sub install
 
 =item postinstall()
 
- Process postinstall tasks.
+ Process postinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -130,7 +130,7 @@ sub postinstall
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -156,7 +156,7 @@ sub uninstall
 
 =item setEnginePermissions()
 
- Set permissions.
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -168,15 +168,16 @@ sub setEnginePermissions
 	Servers::po::courier::installer->getInstance()->setEnginePermissions();
 }
 
-=item postaddMail()
+=item postaddMail(\%data)
 
- Create maildir folders, subscription and maildirsize files.
+ Process postaddMail tasks
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postaddMail($$)
+sub postaddMail
 {
 	my ($self, $data) = @_;
 
@@ -190,7 +191,6 @@ sub postaddMail($$)
 		my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
 		for ("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-
 			# Creating maildir directory or only set its permissions if already exists
 			my $rs = iMSCP::Dir->new('dirname' => $_)->make(
 				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0750 }
@@ -214,7 +214,7 @@ sub postaddMail($$)
 		if(-f "$mailDir/courierimapsubscribed") {
 			my $courierimapsubscribedFileContent = $courierimapsubscribedFile->get();
 
-			if(! defined $courierimapsubscribedFileContent) {
+			unless(defined $courierimapsubscribedFileContent) {
 				error('Unable to read courier courierimapsubscribed file');
 				return 1;
 			}
@@ -267,7 +267,7 @@ sub postaddMail($$)
 
 =item start()
 
- Start courier servers.
+ Start courier servers
 
  Return int 0 on success, other on failure
 
@@ -305,7 +305,7 @@ sub start
 
 =item stop()
 
- Stop courier servers.
+ Stop courier servers
 
  Return int 0 on success, other on failure
 
@@ -343,7 +343,7 @@ sub stop
 
 =item restart()
 
- Restart courier servers.
+ Restart courier servers
 
  Return int 0 on success, other on failure
 
@@ -383,7 +383,7 @@ sub restart
 
  Get IMAP/POP traffic data
 
- Return hash_ref Traffic data or die on failure
+ Return hash Traffic data or die on failure
 
 =cut
 
@@ -496,7 +496,7 @@ sub getTraffic
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Servers::po::courier
 
@@ -529,7 +529,7 @@ sub _init
 
 =item END
 
- Code triggered at the very end of script execution.
+ Code triggered at the very end of script execution
 
  - Start or restart server if needed
  - Remove old traffic logs file if exists

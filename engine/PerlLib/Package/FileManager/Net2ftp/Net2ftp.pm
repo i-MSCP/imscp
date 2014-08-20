@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Net2ftp package
+ i-MSCP Net2ftp package.
 
  Net2ftp is a web-based FTP client written in PHP.
 

@@ -60,32 +60,32 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub registerSetupListeners($$)
-{
-	my ($self, $eventManager) = @_;
-
-	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askPostfix(@_) }; 0; });
-}
-
-=item askPostfix($dialog)
-
- Ask user for SASL restricted SQL user.
-
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
-sub askPostfix($$)
+sub registerSetupListeners
+{
+	my ($self, $eventManager) = @_;
+
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
+}
+
+=item showDialog(\%dialog)
+
+ Show dialog
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 on success, other on failure
+
+=cut
+
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -287,7 +287,7 @@ sub setEnginePermissions
 
 =item _init()
 
- Called by getInstance(). Initialize instance of this class.
+ Initialize instance
 
  Return Servers::mta::postfix::installer
 
@@ -465,13 +465,13 @@ sub _makeDirs
 
 =item _setupSqlUser()
 
- Setup SASL SQL user.
+ Setup SASL SQL user
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _setupSqlUser()
+sub _setupSqlUser
 {
 	my $self = $_[0];
 
@@ -665,11 +665,12 @@ sub _saveConf
 
  Backup configuration file
 
+ Param string $cfgFile Configuration file path
  Return in 0 on success, other on failure
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -879,7 +880,7 @@ sub _buildMasterCfFile
 
 =cut
 
-sub _buildSaslConfFile()
+sub _buildSaslConfFile
 {
 	my $self = $_[0];
 

@@ -142,7 +142,7 @@ sub startGauge{
 	my $text = shift;
 	my $init = shift || 0; #initial value
 
-	$self->{'gauge'} ||= {};
+	$self->{'gauge'} ||= { };
 	return(0) if (defined $self->{'gauge'}->{'FH'});
 
 	$text = $self->_clean($text);

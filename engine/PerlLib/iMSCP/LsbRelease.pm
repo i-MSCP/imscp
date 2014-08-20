@@ -99,7 +99,7 @@ sub getDescription
 
 =cut
 
-sub getRelease()
+sub getRelease
 {
 	my ($self, $short) = @_;
 

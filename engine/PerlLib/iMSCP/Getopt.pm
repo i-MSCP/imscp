@@ -64,10 +64,9 @@ additional options.
 
 =cut
 
-sub parse($$)
+sub parse
 {
-	my $class = shift;
-	my $usage = shift;
+	my ($class, $usage) = (shift, shift);
 
 	my $showUsage = sub {
 		my $exitCode = shift || 0;
@@ -129,10 +128,9 @@ to GetOptions.
 
 =cut
 
-sub parseNoDefault($$)
+sub parseNoDefault
 {
-	my $class = shift;
-	my $usage = shift;
+	my ($class, $usage) = (shift, shift);
 
 	my $showUsage = sub {
 		my $exitCode = shift || 0;
@@ -174,15 +172,16 @@ our $reconfigurationItems = [
 	'sqlmanager', 'webmail', 'filemanager', 'antirootkits'
 ];
 
-=item reconfigure()
+=item reconfigure($value = 'none')
 
  reconfigure option
 
+ Param string $value OPTIONAL Option value
  Return string Name of item to reconfigure or none
 
 =cut
 
-sub reconfigure($;$)
+sub reconfigure
 {
 	my ($class, $value) = @_;
 
@@ -207,10 +206,11 @@ sub reconfigure($;$)
 	$options->{'reconfigure'} ? $options->{'reconfigure'} : 'none';
 }
 
-=item noprompt($;$)
+=item noprompt($value = 0)
 
  noprompt option
 
+ Param string $value OPTIONAL Option value
  Return int 0 or 1
 
 =cut
@@ -223,15 +223,16 @@ sub noprompt
 	$options->{'noprompt'} // 0;
 }
 
-=item
+=item preseed($value = '')
 
  preseed option
 
+ Param string $value OPTIONAL Option value
  Return string Path to preseed file or empty string
 
 =cut
 
-sub preseed($;$)
+sub preseed
 {
 	my ($class, $value) = @_;
 
@@ -246,15 +247,16 @@ sub preseed($;$)
 	$options->{'preseed'} // '';
 }
 
-=item
+=item listenerFile($value = '')
 
  listener-file option
 
+ Param string $value OPTIONAL Option value
  Return string Path to listener file or empty string
 
 =cut
 
-sub listenerFile($;$)
+sub listenerFile
 {
 	my ($class, $value) = @_;
 

@@ -41,7 +41,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- This is the Policyd Weight configurator package for i-MSCP
+ This is the Policyd Weight configurator package for i-MSCP.
 
  Perl policy daemon for the Postfix MTA Its intended to eliminate forged envelope senders and HELOs
 (i.e. in bogus mails). It allows you to score DNSBLs (RBL/RHSBL), HELO, MAIL FROM and client IP addresses
@@ -55,12 +55,12 @@ improved blocking of spam and virus mails. policyd-weight caches the most freque
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -117,8 +117,8 @@ sub _init
 
 =head1 AUTHORS
 
- - Daniel Andreca <sci2tech@gmail.com>
- - Laurent Declercq <l.declercq@nuxwin.com>
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

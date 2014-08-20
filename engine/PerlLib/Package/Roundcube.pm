@@ -41,7 +41,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Roundcube package for i-MSCP
+ Roundcube package for i-MSCP.
 
  RoundCube Webmail is a browser-based multilingual IMAP client with an application-like user interface. It provides full
 functionality expected from an email client, including MIME support, address book, folder manipulation and message
@@ -55,11 +55,11 @@ filters.
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -132,7 +132,7 @@ sub setPermissionsListener
 
  Process deleteMail tasks
 
- Param hash_ref $data A reference to a hash containing mail data
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
@@ -149,7 +149,7 @@ sub deleteMail
 		$database->set('DATABASE_NAME', $roundcubeDbName);
 		$rs = $database->connect();
 
-		if(!$rs) {
+		unless($rs) {
 			my $rdata = $database->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
 			unless(ref $rdata eq 'HASH') {
 				error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from roundcube database: $rdata");
@@ -163,9 +163,7 @@ sub deleteMail
 		# Restore connection to i-MSCP database
 		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
 
-		if($database->connect()) {
-			fatal("Unable to restore connection to i-MSCP database: $rs");
-		}
+		fatal("Unable to restore connection to i-MSCP database: $rs") if $database->connect();
 	}
 
 	$rs;
@@ -197,7 +195,7 @@ sub _init
 
 	# Roundcube permissions must be set after FrontEnd base permissions
 	iMSCP::EventManager->getInstance()->register(
-		'afterFrontEndSetGuiPermissions', sub { $self->setPermissionsListener(@_) }
+		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_); }
 	);
 
 	$self;

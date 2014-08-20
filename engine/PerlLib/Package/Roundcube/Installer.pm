@@ -53,7 +53,7 @@ our $VERSION = '0.5.0';
 
 =head1 DESCRIPTION
 
- This is the installer for the i-MSCP Roundcube package
+ This is the installer for the i-MSCP Roundcube package.
 
  See Package::Roundcube for more information.
 
@@ -61,11 +61,11 @@ our $VERSION = '0.5.0';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -79,9 +79,9 @@ sub registerSetupListeners
 
 =item showDialog(\%dialog)
 
- Show Roundcube installer questions
+ Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -161,7 +161,7 @@ sub showDialog
 
 =item preinstall()
 
- Register Roundcube package for installation
+ Process preinstall tasks
 
  Return int 0
 
@@ -174,7 +174,7 @@ sub preinstall
 
 =item install()
 
- Process Roundcube package install tasks
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -221,7 +221,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set Roundcube files permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -290,7 +290,7 @@ sub _init
 
 =item _backupConfigFile($cfgFile)
 
- Backup the given Roundcube configuration file
+ Backup the given configuration file
 
  Param string $cfgFile Path of file to backup
  Return int 0, other on failure
@@ -314,7 +314,7 @@ sub _backupConfigFile
 
 =item _installFiles()
 
- Install Roundcube files in production directory
+ Install files in production directory
 
  Return int 0 on success, other on failure
 
@@ -352,7 +352,7 @@ sub _installFiles
 
 =item _setupDatabase()
 
- Setup Roundcube database
+ Setup database
 
  Return int 0 on success, other on failure
 
@@ -441,7 +441,7 @@ sub _setupDatabase
 
 =item _generateDESKey()
 
- Generate DES key for Roundcube
+ Generate DES key
 
  Return string DES key
 
@@ -457,7 +457,7 @@ sub _generateDESKey
 
 =item _buildConfig()
 
- Process Roundcube package install tasks
+ Build configuration
 
  Return int 0 on success, other on failure
 
@@ -543,7 +543,7 @@ sub _buildConfig
 
 =item _updateDatabase()
 
- Update Roundcube database
+ Update database
 
  Return int 0 on success other on failure
 
@@ -624,9 +624,9 @@ sub _updateDatabase
 
 =item _setVersion()
 
- Set Roundcube version
+ Set version
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -651,7 +651,7 @@ sub _setVersion
 
 =item _saveConfig()
 
- Save Roundcube configuration
+ Save configuration
 
  Return int 0 on success, other on failure
 

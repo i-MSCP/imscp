@@ -53,16 +53,16 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupListeners($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
@@ -72,7 +72,7 @@ sub registerSetupListeners($$)
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -86,7 +86,7 @@ sub install
 
 =item postinstall()
 
- Process postinstall tasks.
+ Process postinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -106,22 +106,22 @@ sub postinstall
 	$self->{'eventManager'}->trigger('afterPoPostinstall', 'dovecot');
 }
 
-=item postaddMail()
+=item postaddMail(\%data)
 
- Create maildir folders and subscription file.
+ Process postaddMail tasks
 
+ Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postaddMail($$)
+sub postaddMail
 {
 	my ($self, $data) = @_;
 
 	my $rs = 0;
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-
 		# Getting i-MSCP MTA server implementation instance
 		require Servers::mta;
 		my $mta = Servers::mta->factory();
@@ -131,7 +131,6 @@ sub postaddMail($$)
 		my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
 		for ("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-
 			# Creating maildir directory or only set its permissions if already exists
 			$rs = iMSCP::Dir->new('dirname' => $_)->make(
 				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0750 }
@@ -155,7 +154,7 @@ sub postaddMail($$)
 		if(-f "$mailDir/subscriptions") {
 			my $subscriptionsFileContent = $subscriptionsFile->get();
 
-			if(! defined $subscriptionsFileContent) {
+			unless(defined $subscriptionsFileContent) {
 				error('Unable to read dovecot subscriptions file');
 				return 1;
 			}
@@ -216,9 +215,9 @@ sub uninstall
 
 =item restart()
 
- Restart the server.
+ Restart dovecot
 
- Return int 0, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -240,11 +239,11 @@ sub restart
 
  Get IMAP/POP traffic data
 
- Return hash_ref Traffic data or die on failure
+ Return hash Traffic data or die on failure
 
 =cut
 
-sub getTraffic($$)
+sub getTraffic
 {
 	my $self = $_[0];
 
@@ -343,7 +342,7 @@ sub getTraffic($$)
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Servers::po::dovecot
 
@@ -376,7 +375,7 @@ sub _init
 
 =item END
 
- Code triggered at the very end of script execution.
+ Code triggered at the very end of script execution
 
 -  Restart server if needed
  - Remove old traffic logs file if exists

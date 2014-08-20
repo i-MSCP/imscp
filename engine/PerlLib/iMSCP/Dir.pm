@@ -163,10 +163,10 @@ sub owner
 sub make
 {
 	my $self = shift;
-	my $options = shift || {};
+	my $options = shift || { };
 	my $rs = 0;
 
-	$options = {} if ref $options ne 'HASH';
+	$options = { } if ref $options ne 'HASH';
 
 	unless(defined $self->{'dirname'}) {
 		error("Attribut 'dirname' is not set");
@@ -266,7 +266,7 @@ sub rcopy
 
 	my $rs = 0;
 
-	$options = {} if ref $options ne 'HASH';
+	$options = { } if ref $options ne 'HASH';
 
 	unless(defined $self->{'dirname'}) {
 		error("Attribut 'dirname' is not set");
@@ -287,7 +287,7 @@ sub rcopy
 
 		if (-d $source) {
 			next if $options->{'excludeDir'} && $source =~ /$options->{'excludeDir'}/;
-			my $opts = {};
+			my $opts = { };
 
 			if(! $options->{'preserve'} || lc($options->{'preserve'}) ne 'no') {
 				my $mode = (stat($source))[2] & 00777;

@@ -49,22 +49,22 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Bind9 Server implementation
+ i-MSCP Bind9 Server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupListeners($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
@@ -137,12 +137,12 @@ sub uninstall
 
  Process addDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the Domain|Alias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addDmn($$)
+sub addDmn
 {
 	my ($self, $data) = @_;
 
@@ -164,12 +164,12 @@ sub addDmn($$)
 
  Process postaddDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the Domain|Alias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postaddDmn($$)
+sub postaddDmn
 {
 	my ($self, $data) = @_;
 
@@ -212,12 +212,12 @@ sub postaddDmn($$)
 
  Process deleteDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the Domain|Alias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteDmn($$)
+sub deleteDmn
 {
 	my ($self, $data) = @_;
 
@@ -249,12 +249,12 @@ sub deleteDmn($$)
 
  Process postdeleteDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the Domain|Alias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postdeleteDmn($$)
+sub postdeleteDmn
 {
 	my ($self, $data) = @_;
 
@@ -286,12 +286,12 @@ sub postdeleteDmn($$)
 
  Process addSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSub($$)
+sub addSub
 {
 	my ($self, $data) = @_;
 
@@ -441,12 +441,12 @@ sub addSub($$)
 
  Process postaddSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postaddSub($$)
+sub postaddSub
 {
 	my ($self, $data) = @_;
 
@@ -489,12 +489,12 @@ sub postaddSub($$)
 
  Process deleteSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteSub($$)
+sub deleteSub
 {
 	my ($self, $data) = @_;
 
@@ -581,12 +581,12 @@ sub deleteSub($$)
 
  Process postdeleteSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postdeleteSub($$)
+sub postdeleteSub
 {
 	my ($self, $data) = @_;
 
@@ -618,7 +618,7 @@ sub postdeleteSub($$)
 
  Restart Bind9
 
- Return int 0 other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -644,7 +644,7 @@ sub restart
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::named::bind
 
@@ -680,12 +680,12 @@ sub _init
 
  Add domain DNS configuration
 
- Param hash_ref $data Reference to a hash containing data as provided by the Domain|SubAlias modules
+ Param hash \%data Data as provided by the Domain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addDmnConfig($$)
+sub _addDmnConfig
 {
 	my ($self, $data) = @_;
 
@@ -805,12 +805,12 @@ sub _addDmnConfig($$)
 
  Delete domain DNS configuration
 
- Param hash_ref $data Reference to a hash containing data as provided by the Domain|Alias modules
+ Param hash \%data Data as provided by the Domain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub _deleteDmnConfig($$)
+sub _deleteDmnConfig
 {
 	my ($self, $data) = @_;
 
@@ -872,12 +872,12 @@ sub _deleteDmnConfig($$)
 
  Add domain DNS zone file
 
- Param hash_ref $data Reference to a hash containing data as provided by the Domain|Alias modules
+ Param hash \%data Data as provided by the Domain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addDmnDb($$)
+sub _addDmnDb
 {
 	my ($self, $data) = @_;
 
@@ -1105,7 +1105,7 @@ sub _addDmnDb($$)
 
 =cut
 
-sub _generateSoalSerialNumber($$;$)
+sub _generateSoalSerialNumber
 {
 	my ($self, $newDbFile, $oldDbFile) = @_;
 

@@ -53,7 +53,7 @@ use parent 'Common::SingletonClass';
 
  Add a new cron task
 
- Param hash \%data Cron tasks data
+ Param hash \%data Cron tasks data:
   - TASKID Cron task unique identifier
   - MINUTE Minute time field
   - HOUR Hour time field
@@ -156,7 +156,7 @@ sub addTask
 
  Delete a cron task
 
- Param hash \%data Cront task data
+ Param hash \%data Cront task data:
   - TASKID Cron task unique identifier
 
  Return int 0 on success, other on failure

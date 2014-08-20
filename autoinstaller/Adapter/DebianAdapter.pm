@@ -284,8 +284,8 @@ sub _init
 	$self->{'preRequiredPackages'} = [
 		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget', 'resolvconf'
 	];
-	$self->{'externalRepositoriesToRemove'} = {};
-	$self->{'externalRepositoriesToAdd'} = {};
+	$self->{'externalRepositoriesToRemove'} = { };
+	$self->{'externalRepositoriesToAdd'} = { };
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
 	$self->{'packagesToUninstall'} = [];

@@ -68,7 +68,7 @@ sub register
 
 	if (ref $callback eq 'CODE') {
 		debug("Registering listener on the '$event' event from " . ((caller(1))[3] || 'main'));
-		push(@{$self->{'events'}{$event}}, $callback);
+		push @{ $self->{'events'}->{$event} }, $callback;
 	} else {
 		error("Invalid listener provided for the '$event' event");
 		return 1;

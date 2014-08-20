@@ -45,7 +45,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Apache2/PHP-FPM Server uninstaller
+ i-MSCP Apache2/PHP-FPM Server uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -138,9 +138,7 @@ sub _removeVloggerSqlUser
 
 sub _removeDirs
 {
-	my $self = $_[0];
-
-	iMSCP::Dir->new('dirname' => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
+	iMSCP::Dir->new('dirname' => $_[0]->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
 }
 
 =item _restoreApacheConfig()

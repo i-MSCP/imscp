@@ -58,23 +58,21 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupListeners($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
-		my $rs = $eventManager->register(
-			'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askDovecot(@_) }; 0; }
-		);
+		my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 		return $rs if $rs;
 
 		$rs = $eventManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
@@ -89,16 +87,16 @@ sub registerSetupListeners($$)
 	}
 }
 
-=item askDovecot($dialog)
+=item showDialog(\%dialog)
 
- Ask user for Dovecot restricted SQL user.
+ Ask user for Dovecot restricted SQL user
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askDovecot($$)
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -170,7 +168,7 @@ sub askDovecot($$)
 
 =item install()
 
- Process installation.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -215,21 +213,21 @@ sub install
 
 =item buildPostfixConf($fileContent, $fileName)
 
- Add Dovecot SASL and LDA parameters for Postfix.
+ Add Dovecot SASL and LDA parameters for Postfix
 
- Listener which listen on the following events
+ Listener which listen on the following events:
   - beforeMtaBuildMainCfFile
   - beforeMtaBuildMasterCfFile
 
  This listener is reponsible to add Dovecot SASL and LDA parameters in Postfix configuration files.
 
- Param string $fileContent Configuration file content
+ Param string \$fileContent Configuration file content
  Param string $fileName Configuration file name
  Return int 0 on success, other on failure
 
 =cut
 
-sub buildPostfixConf($$$)
+sub buildPostfixConf
 {
 	my ($self, $fileContent, $fileName) = @_;
 
@@ -271,7 +269,7 @@ EOF
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Servers::po::dovecot::installer
 
@@ -319,7 +317,7 @@ sub _init
 
 =item _getVersion()
 
- Get Dovecot version.
+ Get Dovecot version
 
  Return int 0 on success, other on failure
 
@@ -354,14 +352,14 @@ sub _getVersion
 
 =item _bkpConfFile($cfgFile)
 
- Backup the given file.
+ Backup the given file
 
  Param string $cfgFile Configuration file name
  Return int 0 on success, other on failure
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -386,7 +384,7 @@ sub _bkpConfFile($$)
 
 =item _setupSqlUser()
 
- Setup SQL user.
+ Setup SQL user
 
  Return int 0 on success, other on failure
 
@@ -441,7 +439,7 @@ sub _setupSqlUser
 
 =item _buildConf()
 
- Build dovecot configuration files.
+ Build dovecot configuration files
 
  Return int 0 on success, other on failure
 
@@ -556,7 +554,7 @@ sub _buildConf
 
 =item _saveConf()
 
- Save Dovecot configuration.
+ Save Dovecot configuration
 
  Return int 0 on success, other on failure
 
@@ -602,7 +600,7 @@ sub _saveConf
 
 =item _migrateFromCourier()
 
- Migrate mailboxes from Courier.
+ Migrate mailboxes from Courier
 
  Return int 0 on success, other on failure
 

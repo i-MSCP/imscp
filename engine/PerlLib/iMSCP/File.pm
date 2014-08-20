@@ -284,7 +284,7 @@ sub copyFile
 {
 	my ($self, $dest, $options) = @_;
 
-	$options = {} unless ref $options eq 'HASH';
+	$options = { } unless ref $options eq 'HASH';
 
 	unless(defined $self->{'filename'}) {
 		error("Attribut 'filename' is not set");

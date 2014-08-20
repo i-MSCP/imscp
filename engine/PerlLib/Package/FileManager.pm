@@ -49,11 +49,11 @@ directory.
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -69,7 +69,7 @@ sub registerSetupListeners
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -96,7 +96,7 @@ sub showDialog
 		$package = "Package::FileManager::${package}::${package}";
 		eval "require $package";
 
-		if(! $@) {
+		unless($@) {
 			$package = $package->getInstance();
 			$rs = $package->showDialog($dialog) if $package->can('showDialog');
 			last if $rs;
@@ -151,7 +151,7 @@ sub install
 	$package = "Package::FileManager::${package}::${package}";
 	eval "require $package";
 
-	if(! $@) {
+	unless($@) {
 		$package = $package->getInstance();
 		my $rs = $package->install() if $package->can('install');
 		return $rs if $rs;
@@ -165,7 +165,7 @@ sub install
 
 =item setPermissionsListener()
 
- Set file permissions
+ Set permissions
 
  Return int 0 on success, other on failure
 
@@ -181,7 +181,7 @@ sub setPermissionsListener
 		my $package = "Package::FileManager::${package}::${package}";
 		eval "require $package";
 
-		if(! $@) {
+		unless($@) {
 			$package = $package->getInstance();
 			my $rs = $package->setGuiPermissions() if $package->can('setGuiPermissions');
 			return $rs if $rs;
@@ -219,7 +219,7 @@ sub _init()
 
 	# Filemanager permissions must be set after FrontEnd base permissions
 	iMSCP::EventManager->getInstance()->register(
-		'afterFrontEndSetGuiPermissions', sub { $self->setPermissionsListener(@_) }
+		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_) }
 	);
 
 	$self;

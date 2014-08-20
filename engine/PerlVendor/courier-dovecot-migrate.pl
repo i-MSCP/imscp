@@ -164,7 +164,7 @@ sub read_courier_pop3 {
     my ( $dir ) = @_;
 
     my ( $pop3_uidv, $pop3_nextuid ) = ( -1, 0 );
-    my $filename_map = {};
+    my $filename_map = { };
 
     my $f;
     my $pop3_fname = "$dir/$courier_pop3_uidfile";

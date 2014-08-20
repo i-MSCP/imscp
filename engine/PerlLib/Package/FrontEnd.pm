@@ -45,18 +45,18 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP FrontEnd package
+ i-MSCP FrontEnd package.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -157,7 +157,7 @@ sub uninstall
 
 =item setGuiPermissions()
 
- Set GUI file permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -167,19 +167,19 @@ sub setGuiPermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndSetGuiPermissions');
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontendSetGuiPermissions');
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
 	$rs = Package::FrontEnd::Installer->getInstance()->setGuiPermissions();
 	return $rs if $rs;
 
-	$self->{'eventManager'}->trigger('afterFrontEndSetGuiPermissions');
+	$self->{'eventManager'}->trigger('afterFrontendSetGuiPermissions');
 }
 
 =item setEnginePermissions()
 
- Set engine file permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -203,7 +203,7 @@ sub setEnginePermissions
 
  Enable the given sites
 
- Param string $sites Names of sites to enable, each separated by a space
+ Param string $sites Names of sites to enable, each space separated
  Return int 0 on sucess, other on failure
 
 =cut
@@ -244,7 +244,7 @@ sub enableSites
 
  Disable the given sites
 
- Param string $siteS Names of sites to disable, each separated by a space
+ Param string $siteS Names of sites to disable, each space separated
  Return int 0 on success, other on failure
 
 =cut
@@ -384,13 +384,13 @@ sub restart
 	$self->{'eventManager'}->trigger('afterFrontEndRestart');
 }
 
-=item buildConfFile($file, [\%data], [\%options])
+=item buildConfFile($file, [\%tplVars], [\%options])
 
  Build the given configuration file
 
- Param string $file Absolute path to config file or config filename relative to the $self->{'cfgDir'} directory
- Param hash $tplVars Reference to a hash containing template variables
- Param hash_ref $options Reference to a hash containing options such as destination, mode, user and group for final file
+ Param string $file Absolute config file path or config filename relative to the nginx configuration directory
+ Param hash \%tplVars OPTIONAL Template variables
+ Param hash \%options OPTIONAL Options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
 
 =cut
@@ -402,12 +402,12 @@ sub buildConfFile
 	$tplVars ||= { };
 	$options ||= { };
 
-	my ($name, $path, $suffix) = fileparse($file);
+	my ($filename, $path) = fileparse($file);
 
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'frontend', $name, \$cfgTpl, $tplVars);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'frontend', $filename, \$cfgTpl, $tplVars);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -422,21 +422,21 @@ sub buildConfFile
 
 	# Build file
 
-	$rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildConfFile', \$cfgTpl, "$name$suffix", $tplVars, $options);
+	$rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildConfFile', \$cfgTpl, $filename, $tplVars, $options);
 	return $rs if $rs;
 
-	$cfgTpl = $self->_buildConf($cfgTpl, "$name$suffix", $tplVars);
+	$cfgTpl = $self->_buildConf($cfgTpl, $filename, $tplVars);
 	return 1 unless defined $cfgTpl;
 
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
-	$rs = $self->{'eventManager'}->trigger('afterFrontEndBuildConfFile', \$cfgTpl, "$name$suffix", $tplVars, $options);
+	$rs = $self->{'eventManager'}->trigger('afterFrontEndBuildConfFile', \$cfgTpl, $filename, $tplVars, $options);
 	return $rs if $rs;
 
 	# Store file
 
 	my $fileHandler = iMSCP::File->new(
-		'filename' => ($options->{'destination'} ? $options->{'destination'} : "$self->{'wrkDir'}/$name$suffix")
+		'filename' => ($options->{'destination'}) ? $options->{'destination'} : "$self->{'wrkDir'}/$filename"
 	);
 
 	$rs = $fileHandler->set($cfgTpl);
@@ -449,8 +449,8 @@ sub buildConfFile
 	return $rs if $rs;
 
 	$fileHandler->owner(
-		$options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
-		$options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
+		($options->{'user'}) ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
+		($options->{'group'}) ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
 	);
 }
 
@@ -491,10 +491,10 @@ sub _init
 
  Build the given configuration template
 
- Param string $cfgTpl String representing content of the configuration template
- Param string $filename Configuration template name
- Param hash $tplVars Reference to a hash containing template variables
- Return string String representing content of configuration template or undef
+ Param string $cfgTpl Temmplate content
+ Param string $filename Template filename
+ Param hash \%tplVars Template variables
+ Return string Template content
 
 =cut
 
@@ -505,7 +505,7 @@ sub _buildConf
 	$self->{'eventManager'}->trigger('beforeFrontEndBuildConf', \$cfgTpl, $filename, $tplVars);
 
 	$cfgTpl = process($tplVars, $cfgTpl);
-	return undef if ! $cfgTpl;
+	return undef unless $cfgTpl;
 
 	$self->{'eventManager'}->trigger('afterFrontEndBuildConf', \$cfgTpl, $filename, $tplVars);
 

@@ -39,7 +39,7 @@ sub setRights
 {
 	my ($file, $options) = @_;
 
-	$options = {} if ref $options ne 'HASH';
+	$options = { } if ref $options ne 'HASH';
 
 	my $rs = 0;
 

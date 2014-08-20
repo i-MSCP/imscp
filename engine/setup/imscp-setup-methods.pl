@@ -317,7 +317,7 @@ sub setupAskServerIps
 		return 1;
 	}
 
-	my $currentServerIps = {};
+	my $currentServerIps = { };
 	my $database = '';
 	my $msg = '';
 
@@ -1298,10 +1298,10 @@ sub setupServerHostname
 sub setupServerIps
 {
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
-	my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE') || {};
+	my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE') || { };
 	my $serverIpsToDelete = setupGetQuestion('SERVER_IPS_TO_DELETE') || [];
 	my $serverHostname = setupGetQuestion('SERVER_HOSTNAME');
-	my $oldIptoIdMap = {};
+	my $oldIptoIdMap = { };
 
 	my @serverIps = (
 		$baseServerIp,

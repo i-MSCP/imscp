@@ -58,22 +58,22 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupListeners($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
 		my $rs = $eventManager->register(
-			'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askCourier(@_) }; 0; }
+			'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; }
 		);
 		return $rs if $rs;
 
@@ -89,16 +89,16 @@ sub registerSetupListeners($$)
 	}
 }
 
-=item askCourier($dialog)
+=item showDialog(\%dialog)
 
- Ask user for authdaemon restricted SQL user.
+ Show dialog
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askCourier($$)
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -170,7 +170,7 @@ sub askCourier($$)
 
 =item install()
 
- Process installation.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -220,7 +220,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set permissions.
+ Set engigne permissions
 
  Return int 0 on success, other on failure
 
@@ -250,23 +250,23 @@ sub setEnginePermissions
 
 =over 4
 
-=item buildPostfixConf($fileContent, $fileName)
+=item buildPostfixConf(\$fileContent, $fileName)
 
  Add maildrop MDA in Postfix configuration files.
 
- Listener which listen on the following events
+ Listener which listen on the following events:
   - beforeMtaBuildMainCfFile
   - beforeMtaBuildMasterCfFile
 
  This listener is reponsible to add the maildrop deliver in Postfix configuration files.
 
- Param string $fileContent Configuration file content
- Param string $fileName Configuration file name
+ Param string \$fileContent Configuration file content
+ Param string $fileName Configuration filename
  Return int 0 on success, other on failure
 
 =cut
 
-sub buildPostfixConf($$$)
+sub buildPostfixConf
 {
 	my ($self, $fileContent, $fileName) = @_;
 
@@ -307,7 +307,7 @@ EOF
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Servers::po::courier::installer
 
@@ -353,14 +353,14 @@ sub _init
 
 =item _bkpConfFile($filePath)
 
- Backup the given file.
+ Backup the given file
 
  Param string $filePath File path
  Return int 0 on success, other on failure
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $filePath) = @_;
 
@@ -386,7 +386,7 @@ sub _bkpConfFile($$)
 
 =item _setupSqlUser()
 
- Setup SQL user.
+ Setup SQL user
 
  Return int 0 on success, other on failure
 
@@ -481,7 +481,7 @@ sub _overrideAuthdaemonInitScript
 
 =item _buildConf()
 
- Build courier configuration files.
+ Build courier configuration files
 
  Return int 0 on success, other on failure
 
@@ -527,7 +527,7 @@ sub _buildConf
 	);
 
 	for (keys %cfgFiles) {
-		# Loat template
+		# Load template
 
 		my $cfgTpl;
 		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', $_, \$cfgTpl, $data);
@@ -576,7 +576,7 @@ sub _buildConf
 
 =item _buildAuthdaemonrcFile()
 
- Build the authdaemonrc file.
+ Build the authdaemonrc file
 
  Return int 0 on success, other on failure
 
@@ -589,7 +589,7 @@ sub _buildAuthdaemonrcFile
 	# Load template
 
 	my $cfgTpl;
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, {});
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, { });
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -629,22 +629,9 @@ sub _buildAuthdaemonrcFile
 	$file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
 }
 
-=item buildAuthmysqlrcFile()
-
- Build the authmysqlrc file.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub buildAuthmysqlrcFile
-{
-	0;
-}
-
 =item _buildSslConfFiles()
 
- Build ssl configuration file.
+ Build ssl configuration file
 
  Return int 0 on success, other on failure
 
@@ -659,7 +646,7 @@ sub _buildSslConfFiles
 			# Load template
 
 			my $cfgTpl;
-			my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, {});
+			my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', $_, \$cfgTpl, { });
 			return $rs if $rs;
 
 			unless(defined $cfgTpl) {
@@ -710,7 +697,7 @@ sub _buildSslConfFiles
 
 =item _saveConf()
 
- Save Courier configuration.
+ Save Courier configuration
 
  Return int 0 on success, other on failure
 
@@ -756,7 +743,7 @@ sub _saveConf
 
 =item _migrateFromDovecot()
 
- Migrate mailboxes from Dovecot.
+ Migrate mailboxes from Dovecot
 
  Return int 0 on success, other on failure
 

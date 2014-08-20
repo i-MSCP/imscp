@@ -55,17 +55,17 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Apache2/FastCGI Server implementation
+ i-MSCP Apache2/FastCGI Server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -167,7 +167,7 @@ sub uninstall
 
  Process addUser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by User module
+ Param hash \%data User data
  Return int 0 on success, other on failure
 
 =cut
@@ -196,7 +196,7 @@ sub addUser
 
  Process deleteUser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by User module
+ Param hash \%data User data
  Return int 0 on success, other on failure
 
 =cut
@@ -221,7 +221,7 @@ sub deleteUser
 
  Process addDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
@@ -252,7 +252,7 @@ sub addDmn
 
  Process restoreDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
@@ -278,7 +278,7 @@ sub restoreDmn
 
  Process disableDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
@@ -341,7 +341,7 @@ sub disableDmn
 
  Process deleteDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
@@ -475,7 +475,7 @@ sub deleteDmn
 
  Process addSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
@@ -506,7 +506,7 @@ sub addSub
 
  Process restoreSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
@@ -534,7 +534,7 @@ sub restoreSub
 
  Process disableSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Subdomain|SubAlias modules
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
@@ -556,7 +556,7 @@ sub disableSub
 
  Process deleteSub tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by the module Subdomain|SubAlias
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
@@ -577,7 +577,7 @@ sub deleteSub
 
  Process AddHtuser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htuser module
+ Param hash \%data Htuser data
  Return int 0 on success, other on failure
 
 =cut
@@ -628,7 +628,7 @@ sub addHtuser
 
  Process deleteHtuser tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htuser module
+ Param hash \%data Htuser data
  Return int 0 on success, other on failure
 
 =cut
@@ -678,7 +678,7 @@ sub deleteHtuser
 
  Process addHtgroup tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htgroup module
+ Param hash \%data Htgroup data
  Return int 0 on success, other on failure
 
 =cut
@@ -729,7 +729,7 @@ sub addHtgroup
 
  Process deleteHtgroup tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htgroup module
+ Param hash \%data Htgroup data
  Return int 0 on success, other on failure
 
 =cut
@@ -779,7 +779,7 @@ sub deleteHtgroup
 
  Process addHtaccess tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htaccess module
+ Param hash \%data Htaccess data
  Return int 0 on success, other on failure
 
 =cut
@@ -837,7 +837,7 @@ sub addHtaccess
 
  Process deleteHtaccess tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Htaccess module
+ Param hash \%data Htaccess data
  Return int 0 on success, other on failure
 
 =cut
@@ -893,7 +893,7 @@ sub deleteHtaccess
 
  Process addIps tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Ips module
+ Param hash \%data Ips data
  Return int 0 on success, other on failure
 
 =cut
@@ -985,10 +985,10 @@ sub setEnginePermissions
 
  Build the given configuration template
 
- Param string $cfgTpl String representing content of the configuration template
- Param string $filename Configuration template name
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
- Return string String representing content of configuration template or undef
+ Param string $cfgTpl Template content
+ Param string $filename template filename
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Return string Template content or undef on failure
 
 =cut
 
@@ -1011,13 +1011,13 @@ sub buildConf
 	$cfgTpl;
 }
 
-=item buildConfFile($file, \%data, [\%options = {}])
+=item buildConfFile($file, \%data, [\%options = { }])
 
  Build the given configuration file
 
- Param string $file Absolute path to config file or config filename relative to the $self->{'apacheCfgDir'} directory
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
- Param hash_ref $options Reference to a hash containing options such as destination, mode, user and group for final file
+ Param string $file Absolute path to config file or config filename relative to the i-MSCP apache configuration directory
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%options OPTIONAL Options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
 
 =cut
@@ -1080,12 +1080,12 @@ sub buildConfFile
 	);
 }
 
-=item installConfFile($file, [\%options = {}])
+=item installConfFile($file, [\%options = { }])
 
  Install the given configuration file
 
- Param string $file Absolute path to config file or config filename relative to the $self->{'apacheWrkDir'} directory
- Param hash_ref $options Reference to a hash containing options such as destination, mode, user and group for final file
+ Param string $file Absolute path to config file or config filename relative to the i-MSCP apache working directory
+ Param hash \%options OPTIONAL Options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
 
 =cut
@@ -1127,7 +1127,7 @@ sub installConfFile
 
  Make the given data available for this server
 
- Param hash_ref $data Reference to a hash containing data to make available for this server
+ Param hash \%data Server data
  Return int 0
 
 =cut
@@ -1161,7 +1161,7 @@ sub flushData
  Get httpd traffic data
 
  Param string $timestamp Timestamp
- Return hash_ref Traffic data or die on failure
+ Return hash Traffic data or die on failure
 
 =cut
 
@@ -1334,7 +1334,7 @@ sub getRunningUser
 
  Get group name under which the Apache server is running
 
- Return string Group name under which the apache server is running.
+ Return string Group name under which the apache server is running
 
 =cut
 
@@ -1347,7 +1347,7 @@ sub getRunningGroup
 
  Enable the given sites
 
- Param string $sites Names of sites to enable, each separated by a space
+ Param string $sites Names of sites to enable, each space separated
  Return int 0 on sucess, other on failure
 
 =cut
@@ -1381,7 +1381,7 @@ sub enableSites
 
  Disable the given sites
 
- Param string $sites Names of sites to disable, each separated by a space
+ Param string $sites Names of sites to disable, each space separated
  Return int 0 on sucess, other on failure
 
 =cut
@@ -1415,7 +1415,7 @@ sub disableSites
 
  Enable the given Apache modules
 
- Param string $modules Names of Apache modules to enable, each separated by a space
+ Param string $modules Names of Apache modules to enable, each space separated
  Return int 0 on sucess, other on failure
 
 =cut
@@ -1442,7 +1442,7 @@ sub enableModules
 
  Disable the given Apache modules
 
- Param string $modules Names of Apache modules to disable, each separated by a space
+ Param string $modules Names of Apache modules to disable, each space separated
  Return int 0 on sucess, other on failure
 
 =cut
@@ -1511,7 +1511,7 @@ sub stop
 
 =item forceRestart()
 
- Force Apache to be restarted instead of simply reloaded
+ Force Apache to be restarted
 
  Return int 0
 
@@ -1526,7 +1526,7 @@ sub forceRestart
 
 =item restart()
 
- Restart or Reload Apache
+ Restart or reload Apache
 
  Return int 0 on success, other on failure
 
@@ -1600,7 +1600,7 @@ sub _init
 
  Add configuration files for the given domain or subdomain
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
@@ -1718,8 +1718,8 @@ sub _addCfg
 
  Get Web folders list to create for the given domain or subdomain
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
- Return list List of Web folders to create
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Return array List of Web folders to create
 
 =cut
 
@@ -1766,7 +1766,7 @@ sub _dmnFolders
 
  Add default directories and files for the given domain or subdomain
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on sucess, other on failure
 
 =cut
@@ -1957,7 +1957,7 @@ sub _addFiles
 
  Build FCGI and PHP configuration files
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on sucess, other on failure
 
 =cut
@@ -2005,13 +2005,13 @@ sub _buildPHPini
 	$self->{'eventManager'}->trigger('afterHttpdBuildPhpIni', $data);
 }
 
-=item _cleanTemplate($sectionName, \$cfgTpl, \%data)
+=item _cleanTemplate(\$cfgTpl, $filename, \%data)
 
  Event listener which is responsible to remove useless configuration snippets in vhost template files
 
- Param string_ref $cfgTpl Reference to template file content
+ Param string \$cfgTpl Template content
  Param string $filename Template filename
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0
 
 =cut

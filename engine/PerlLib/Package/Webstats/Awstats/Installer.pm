@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- AWStats package installer
+ AWStats package installer.
 
  See Package::Webstats::Awstats::Awstats for more information.
 
@@ -57,9 +57,9 @@ use parent 'Common::SingletonClass';
 
 =item showDialog(\%dialog)
 
- Show AWStats installer questions
+ Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail \%dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -115,7 +115,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set files permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -183,7 +183,7 @@ sub _init
 
 =item _createCacheDir()
 
- Create cache directory for AWStats
+ Create cache directory
 
  Return int 0 on success, other on failure
 
@@ -191,18 +191,16 @@ sub _init
 
 sub _createCacheDir
 {
-	my $self = $_[0];
-
 	iMSCP::Dir->new(
 		'dirname' => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
 	)->make(
-		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $self->{'httpd'}->getRunningGroup(), 'mode' => 02750 }
+		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $_[0]->{'httpd'}->getRunningGroup(), 'mode' => 02750 }
 	);
 }
 
 =item _createGlobalAwstatsVhost()
 
- Create and install global awstats Apache vhost file
+ Create global vhost file
 
  Return int 0 on success, other on failure
 
@@ -237,7 +235,7 @@ sub _createGlobalAwstatsVhost
 
 =item _disableDefaultConfig()
 
- Disable default AWStats cron task and configuration file
+ Disable default configuration
 
  Return int 0 on success, other on failure
 
@@ -271,14 +269,12 @@ sub _disableDefaultConfig
 
  Add AWStats cron task for dynamic mode
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _addAwstatsCronTask
 {
-	my $self = $_[0];
-
 	Servers::cron->factory()->addTask(
 		{
 			TASKID => 'Package::Webstats::Awstats',

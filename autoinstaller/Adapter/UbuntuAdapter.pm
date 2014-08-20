@@ -74,8 +74,8 @@ sub _init
 		push @{$self->{'preRequiredPackages'}}, 'software-properties-common';
 	}
 
-	$self->{'externalRepositoriesToRemove'} = {};
-	$self->{'externalRepositoriesToAdd'} = {};
+	$self->{'externalRepositoriesToRemove'} = { };
+	$self->{'externalRepositoriesToAdd'} = { };
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
 	$self->{'packagesToUninstall'} = [];

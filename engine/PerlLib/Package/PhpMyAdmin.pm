@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- PhpMyAdmin package for i-MSCP
+ PhpMyAdmin package for i-MSCP.
 
  PhpMyAdmin allows administering of MySQL with a web interface.
 
@@ -72,12 +72,12 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -105,7 +105,7 @@ sub preinstall
 
  Process install tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -131,7 +131,7 @@ sub uninstall
 
 =item setPermissionsListener()
 
- Set file permissions
+ Set permissions
 
  Return int 0 on success, other on failure
 
@@ -169,7 +169,7 @@ sub _init
 
 	# PhpMyAdmin permissions must be set after FrontEnd base permissions
 	iMSCP::EventManager->getInstance()->register(
-		'afterFrontEndSetGuiPermissions', sub { $self->setPermissionsListener(@_) }
+		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_); }
 	);
 
 	$self;

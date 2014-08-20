@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Chkrootkit package uninstaller
+ Chkrootkit package uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -55,9 +55,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
-
-	$self->_restoreDebianConfig();
+	$_[0]->_restoreDebianConfig();
 }
 
 =back
@@ -66,11 +64,11 @@ sub uninstall
 
 =over 4
 
-=item _disableDebianConfig()
+=item _restoreDebianConfig()
 
- Restore default configuration as provided by the chkrootkit Debian package
+ Restore default configuration
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

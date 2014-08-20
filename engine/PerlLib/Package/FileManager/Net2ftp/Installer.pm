@@ -47,7 +47,7 @@ our $VERSION = '0.1.0';
 
 =head1 DESCRIPTION
 
- i-MSCP Net2ftp package installer
+ i-MSCP Net2ftp package installer.
 
 =head1 PUBLIC METHODS
 
@@ -86,7 +86,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set file permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -111,7 +111,7 @@ sub setGuiPermissions
 
 =item _init()
 
- Called by getInstance(). Initialize Net2ftp package installer instance
+ Initialize instance
 
  Return Package::FileManager::Net2ftp::Installer
 
@@ -168,7 +168,7 @@ sub _installFiles
 
  Generate MD5 salt string
 
- Return string
+ Return string Salt string
 
 =cut
 
@@ -182,7 +182,7 @@ sub _generateMd5SaltString
 
 =item _buildConfig()
 
- Build Net2ftp configuration file
+ Build configuration file
 
  Return int 0 on success, other on failure
 

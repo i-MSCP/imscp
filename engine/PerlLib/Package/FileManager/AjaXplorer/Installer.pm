@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP AjaXplorer package installer
+ i-MSCP AjaXplorer package installer.
 
 =head1 PUBLIC METHODS
 
@@ -76,7 +76,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set file permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -108,7 +108,7 @@ sub setGuiPermissions
 
 =item _installFiles()
 
- Install AjaXplorer files in production directory
+ Install files in production directory
 
  Return int 0 on success, other on failure
 

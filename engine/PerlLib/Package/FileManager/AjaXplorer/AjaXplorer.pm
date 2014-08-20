@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP AjaXplorer package
+ i-MSCP AjaXplorer package.
 
  AjaXplorer is a software that can turn any web server into a powerfull file management system and an alternative to
 mainstream cloud storage providers.
@@ -68,7 +68,7 @@ sub preinstall
 
  Process install tasks
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 

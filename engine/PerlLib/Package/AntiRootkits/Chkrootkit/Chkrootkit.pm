@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Chkrootkit package
+ i-MSCP Chkrootkit package.
 
  The chkrootkit security scanner searches the local system for signs that it is infected with a 'rootkit'. Rootkits are
 set of programs and hacks designed to take control of a target machine by using known security flaws.
@@ -105,9 +105,9 @@ sub setEnginePermissions
 
 =item getDistroPackages()
 
- Get list of Debian packages to which this package depends.
+ Get list of Debian packages
 
- Return array_ref An array containing list of packages
+ Return array List of packages
 
 =cut
 
@@ -115,5 +115,13 @@ sub getDistroPackages
 {
 	['chkrootkit'];
 }
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

@@ -57,7 +57,7 @@ use parent 'Common::SingletonClass';
  Register setup event listeners
 
  Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -72,7 +72,7 @@ sub registerSetupListeners
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -121,7 +121,7 @@ sub showDialog
 
  Process preinstall tasks
 
- Note: This method also trigger uninstallation of unselected Anti-Rootkits packages.
+ /!\ This method also trigger uninstallation of unselected Anti-Rootkits packages.
 
  Return int 0 on success, other on failure
 
@@ -258,7 +258,7 @@ sub uninstall
 
 =item setEnginePermissions()
 
- Set file permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -319,7 +319,7 @@ sub _init()
 
  Install packages
 
- Param array_ref $packages List of packages to install
+ Param array \@packages List of packages to install
  Return int 0 on success, other on failure
 
 =cut
@@ -352,7 +352,7 @@ sub _installPackages
 
  Remove packages
 
- Param array_ref $packages List of packages to remove
+ Param array \@packages List of packages to remove
  Return int 0 on success, other on failure
 
 =cut

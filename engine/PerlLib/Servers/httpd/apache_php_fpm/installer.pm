@@ -56,17 +56,17 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Installer for the i-MSCP Apache2/PHP5-FPM Server implementation
+ Installer for the i-MSCP Apache2/PHP5-FPM Server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -75,26 +75,23 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	# Add installer dialog in setup dialog stack
-	my $rs = $eventManager->register(
-		'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askForPhpFpmPoolsLevel(@_) }; 0; }
-	);
+	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 	return $rs if $rs;
 
 	# Fix error_reporting values into the database
 	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 }
 
-=item askForPhpFpmPoolsLevel($dialog)
+=item showDialog(\%dialog)
 
- Ask user for PHP FPM pools level to use
+ Show dialog
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askForPhpFpmPoolsLevel
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 
@@ -213,7 +210,7 @@ sub setEnginePermissions
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::httpd::apache_php_fpm::installer
 
@@ -306,7 +303,7 @@ sub _setApacheVersion
 
 =item _makeDirs()
 
- Create needed directories
+ Create directories
 
  Return int 0 on success, other on failure
 
@@ -585,7 +582,7 @@ sub _buildApacheConfFiles
 		# Load template
 
 		my $cfgTpl;
-		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_php_fpm', 'ports.conf', \$cfgTpl, {});
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_php_fpm', 'ports.conf', \$cfgTpl, { });
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -664,7 +661,7 @@ sub _buildApacheConfFiles
 		}
 	);
 
-	$rs = $self->{'httpd'}->buildConfFile('00_nameserver.conf', {});
+	$rs = $self->{'httpd'}->buildConfFile('00_nameserver.conf', { });
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile('00_nameserver.conf');
@@ -692,7 +689,7 @@ sub _buildApacheConfFiles
 
 =item _installLogrotate()
 
- Build and install both Apache and PHP-FPM logrotate files
+ Install logrotate files
 
  Return int 0 on success, other on failure
 
@@ -824,13 +821,13 @@ sub _setupVlogger
 		}
 	);
 	$self->{'httpd'}->buildConfFile(
-		"$self->{'apacheCfgDir'}/vlogger.conf.tpl", {}, { 'destination' => "$self->{'apacheWrkDir'}/vlogger.conf" }
+		"$self->{'apacheCfgDir'}/vlogger.conf.tpl", { }, { 'destination' => "$self->{'apacheWrkDir'}/vlogger.conf" }
 	);
 }
 
 =item _saveConf()
 
- Save both i-MSCP apache.data and i-MSCP php-fpm.data configuration files
+ Save configuration
 
  Return int 0 on success, other on failure
 

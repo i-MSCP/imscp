@@ -57,16 +57,16 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
- Return int 0 on success, 1 on failure
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupListeners($$)
+sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
@@ -76,16 +76,16 @@ sub registerSetupListeners($$)
 	);
 }
 
-=item askDnsServerMode($dialog)
+=item askDnsServerMode(\%dialog)
 
  Ask user for DNS server mode
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askDnsServerMode($$)
+sub askDnsServerMode
 {
 	my ($self, $dialog) = @_;
 
@@ -107,16 +107,16 @@ sub askDnsServerMode($$)
 	$rs;
 }
 
-=item askDnsServerMode($dialog)
+=item askDnsServerMode(\%dialog)
 
  Ask user for DNS server IPs
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askDnsServerIps($$)
+sub askDnsServerIps
 {
 	my ($self, $dialog) = @_;
 
@@ -203,16 +203,16 @@ sub askDnsServerIps($$)
 	$rs;
 }
 
-=item askIPv6Support($dialog)
+=item askIPv6Support(\%dialog)
 
  Ask user for DNS server IPv6 support
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askIPv6Support($$)
+sub askIPv6Support
 {
 	my ($self, $dialog) = @_;
 
@@ -278,7 +278,7 @@ sub install
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return Servers::named::bind::installer
 
@@ -330,7 +330,7 @@ sub _init
 
 =cut
 
-sub _bkpConfFile($$)
+sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -353,7 +353,7 @@ sub _bkpConfFile($$)
 	$self->{'eventManager'}->trigger('afterNamedBkpConfFile', $cfgFile);
 }
 
-=item _switchTasks($cfgFile)
+=item _switchTasks()
 
  Process switch tasks
 
@@ -415,7 +415,7 @@ sub _buildConf
 		# Load template
 
 		my $cfgTpl;
-		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \$cfgTpl, {});
+		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \$cfgTpl, { });
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -442,7 +442,7 @@ sub _buildConf
 				# Load template
 
 				my $fileContent;
-				my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \$fileContent, {});
+				my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \$fileContent, { });
 				return $rs if $rs;
 
 				unless(defined $fileContent) {
@@ -561,12 +561,12 @@ sub _saveConf
 
  Check IP addresses
 
- Param array_ref $ips Reference to an array containing IP addresses to check
+ Param array \@ips IP addresses to check
  Return int 1 if all IPs are valid, 0 otherwise
 
 =cut
 
-sub _checkIps($$)
+sub _checkIps
 {
 	my ($self, $ips) = @_;
 

@@ -1,8 +1,0 @@
-i-MSCP listener files
-=====================
-
-This directory contains the listener files which are responsible to register your own listeners on the i-MSCP event
-manager. Any listener file found in this directory is loaded automatically by i-MSCP at runtime.
-
-A listener file is a simple perl script which define one or many event listener and register them on the i-MSCP event
-manager. When the events on which the listeners are listening are triggered, the listeners are automatically run.

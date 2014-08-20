@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP FrontEnd package uninstaller
+ i-MSCP FrontEnd package uninstaller.
 
 =head1 PUBLIC METHODS
 

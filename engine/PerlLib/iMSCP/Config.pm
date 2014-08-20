@@ -81,8 +81,8 @@ sub _init
 	my $self = $_[0];
 
 	@{$self->{'confFile'}} = ();
-	$self->{'configValues'} = {};
-	$self->{'lineMap'} = {};
+	$self->{'configValues'} = { };
+	$self->{'lineMap'} = { };
 
 	if(defined $self->{'fileName'}) {
 		$self->{'confFileName'} = $self->{'fileName'};
@@ -275,8 +275,8 @@ sub CLEAR
 	my $self = $_[0];
 
 	@{$self->{'confFile'}} = ();
-	$self->{'configValues'} = {};
-	$self->{'lineMap'} = {};
+	$self->{'configValues'} = { };
+	$self->{'lineMap'} = { };
 
 	$self;
 }

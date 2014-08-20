@@ -557,8 +557,6 @@ sub savePersistentData
 		return $rs if $rs;
 	}
 
-	# Save listener files
-
 	# Move old listener files to new location
 	if(-d "$main::imscpConfig{'CONF_DIR'}/hooks.d") {
 		$rs = execute(
@@ -572,10 +570,10 @@ sub savePersistentData
 		return $rs if $rs;
 	}
 
-	if(-d "$main::imscpConfig{'CONF_DIR'}/listeners.d") {
+	# Remove old README file
+	if(-f "$main::imscpConfig{'CONF_DIR'}/listeners.d/README") {
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} $main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl " .
-				"$destdir$main::imscpConfig{'CONF_DIR'}/listeners.d/",
+			"$main::imscpConfig{'CMD_RM'} -f $main::imscpConfig{'CONF_DIR'}/listeners.d/README",
 			\$stdout,
 			\$stderr
 		);
@@ -583,6 +581,18 @@ sub savePersistentData
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 	}
+
+	#if(-d "$main::imscpConfig{'CONF_DIR'}/listeners.d") {
+	#	$rs = execute(
+	#		"$main::imscpConfig{'CMD_CP'} -fRTn $main::imscpConfig{'CONF_DIR'}/listeners.d " .
+	#			"$destdir$main::imscpConfig{'CONF_DIR'}/listeners.d",
+	#		\$stdout,
+	#		\$stderr
+	#	);
+	#	debug($stdout) if $stdout;
+	#	error($stderr) if $stderr && $rs;
+	#	return $rs if $rs;
+	#}
 
 	# Save GUI logs
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs") {
@@ -636,7 +646,7 @@ sub savePersistentData
 		return $rs if $rs;
 	}
 
-	# Save GUI plugins
+	# Save plugins
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/plugins") {
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/plugins " .
@@ -878,7 +888,7 @@ sub _processFolder($)
 
 	debug("Creating $dir->{'dirname'} directory");
 
-	my $options = {};
+	my $options = { };
 
 	$options->{'mode'} = oct($data->{'mode'}) if exists $data->{'mode'};
 	$options->{'user'} = _expandVars($data->{'owner'}) if exists $data->{'owner'};

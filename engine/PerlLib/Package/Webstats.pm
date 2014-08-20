@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Webstats package for i-MSCP
+ Webstats package for i-MSCP.
 
  i-MSCP Webstats package. This is a wrapper that handle all available Webstats packages found in the Webstats directory.
 
@@ -51,11 +51,11 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -71,7 +71,7 @@ sub registerSetupListeners
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail \%dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
@@ -120,7 +120,7 @@ sub showDialog
 
  Process preinstall tasks
 
- Note: This method also trigger uninstallation of unselected Webstats packages.
+ /!\ This method also trigger uninstallation of unselected Webstats packages.
 
  Return int 0 on success, other on failure
 
@@ -162,7 +162,6 @@ sub preinstall
 		my $packages = [];
 
 		for(@{$packagesToInstall}) {
-
 			my $package = "Package::Webstats::${_}::${_}";
 			eval "require $package";
 
@@ -258,7 +257,7 @@ sub uninstall
 
 =item setEnginePermissions()
 
- Set file permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -401,7 +400,7 @@ sub deleteDmn
 
  Process preaddSub tasks
 
- Param hash \%data Domain data
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
@@ -417,7 +416,7 @@ sub preaddSub
 
  Process addSub tasks
 
- Param hash \%data Domain data
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
@@ -433,7 +432,7 @@ sub addSub
 
  Process deleteSub tasks
 
- Param hash \%data Domain data
+ Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut

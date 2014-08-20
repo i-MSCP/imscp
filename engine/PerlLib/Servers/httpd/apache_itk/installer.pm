@@ -59,11 +59,11 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -265,7 +265,7 @@ sub _setApacheVersion
 
 =item _makeDirs()
 
- Create needed directories
+ Create directories
 
  Return int 0 on success, other on failure
 
@@ -417,7 +417,7 @@ sub _buildApacheConfFiles
 		# Load template
 
 		my $cfgTpl;
-		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_itk', 'ports.conf', \$cfgTpl, {});
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_itk', 'ports.conf', \$cfgTpl, { });
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -503,7 +503,7 @@ sub _buildApacheConfFiles
 	# Build new file
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'apacheCfgDir'}/00_nameserver.conf",
-		{},
+		{ },
 		{ 'destination' => "$self->{'apacheWrkDir'}/00_nameserver.conf" }
 	);
 	return $rs if $rs;
@@ -535,7 +535,7 @@ sub _buildApacheConfFiles
 
 =item _installLogrotate()
 
- Build and install Apache logrotate file
+ Install Apache logrotate file
 
  Return int 0 on success, other on failure
 
@@ -548,7 +548,7 @@ sub _installLogrotate
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', {});
+	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', { });
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile(
@@ -640,7 +640,7 @@ sub _setupVlogger
 		}
 	);
 	$self->{'httpd'}->buildConfFile(
-		"$self->{'apacheCfgDir'}/vlogger.conf.tpl", {}, { 'destination' => "$self->{'apacheWrkDir'}/vlogger.conf" }
+		"$self->{'apacheCfgDir'}/vlogger.conf.tpl", { }, { 'destination' => "$self->{'apacheWrkDir'}/vlogger.conf" }
 	);
 }
 

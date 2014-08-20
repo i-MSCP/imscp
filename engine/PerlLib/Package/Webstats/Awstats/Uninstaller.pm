@@ -44,7 +44,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- This is the uninstaller for the i-MSCP Awstats package
+ This is the uninstaller for the i-MSCP Awstats package.
 
 =head1 PUBLIC METHODS
 
@@ -79,7 +79,7 @@ sub uninstall
 
 =item _deleteFiles()
 
- Delete any AWStats file created by this package
+ Delete files
 
  Return int 0 on success other on failure
 
@@ -134,7 +134,7 @@ sub _deleteFiles
 
 =item _removeVhost()
 
- Disable and remove global Apache vhost file for AWStats
+ Remove global vhost file
 
  Return int 0 on success, other on failure
 
@@ -162,7 +162,7 @@ sub _removeVhost
 
 =item _restoreDebianConfig()
 
- Restore default configuration as provided by the awstats Debian package
+ Restore default configuration
 
  Return int 0 on success, other on failure
 

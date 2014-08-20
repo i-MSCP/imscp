@@ -52,11 +52,11 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%$eventManager)
+=item registerSetupListeners(\%eventManager)
 
  Register setup event listeners
 
- Param iMSCP::EventManager
+ Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
@@ -92,7 +92,7 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -157,7 +157,7 @@ sub uninstall
 
  Process addUser tasks
 
- Param hash \%data Data as provided by User module
+ Param hash \%data User data
  Return int 0 on success, other on failure
 
 =cut
@@ -269,7 +269,7 @@ sub restart
 
  Get ftpd traffic data
 
- Return hash_ref Traffic data or die on failure
+ Return hash Traffic data or die on failure
 
 =cut
 
