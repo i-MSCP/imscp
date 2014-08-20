@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_restoreConfFile();
 	return $rs if $rs;
@@ -49,7 +49,7 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'po'} = Servers::po::dovecot->getInstance();
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
@@ -65,7 +65,7 @@ sub _init
 
 sub _restoreConfFile
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 
@@ -88,7 +88,7 @@ sub _restoreConfFile
 
 sub _dropSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if($self->{'config'}->{'DATABASE_USER'}) {
 		my $database = iMSCP::Database->factory();

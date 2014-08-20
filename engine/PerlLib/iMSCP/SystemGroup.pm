@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
 
 =item addSystemGroup($groupname, [$systemGroup = 0])
 
- Add group.
+ Add group
 
  Param string $groupname Group name
  Param int $systemGroup Whether or not a system group must be created
@@ -57,13 +57,13 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub addSystemGroup($$;$)
+sub addSystemGroup
 {
 	my $self = shift;
 	my $groupName = shift;
 	my $systemGroup = shift || 0;
 
-	if(! getgrnam($groupName)) {
+	unless(getgrnam($groupName)) {
 		$systemGroup = ($systemGroup) ? '-r' : '';
 
 		my  @cmd = (
@@ -84,14 +84,14 @@ sub addSystemGroup($$;$)
 
 =item delSystemGroup($groupname)
 
- Delete group.
+ Delete group
 
  Param string $groupname Group name
  Return int 0 on success, other on failure
 
 =cut
 
-sub delSystemGroup($$)
+sub delSystemGroup
 {
 	my ($self, $groupName) = @_;
 

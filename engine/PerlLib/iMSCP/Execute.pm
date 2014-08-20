@@ -61,16 +61,16 @@ our @EXPORT = qw/execute escapeShell getExitCode/;
 
 =item execute($command, [\$stdout = undef], [\$stderr = undef])
 
- Execute the given external command.
+ Execute the given external command
 
- Param string String representing external command to execute
- Param scalar_ref $stdout OPTIONAL Scalar reference referring to command stdout
- Param scalar_ref $stderr OPTIONAL Scalar reference referring to command stderr
+ Param string $command Ccommand to execute
+ Param string \$stdout OPTIONAL Command stdout
+ Param string \$stderr OPTIONAL Command stderr
  Return int External command exit code
 
 =cut
 
-sub execute($;$$)
+sub execute
 {
 	my ($command, $stdout, $stderr) = @_;
 
@@ -99,14 +99,14 @@ sub execute($;$$)
 
 =item escapeShell($string)
 
- Escape the given string.
+ Escape the given string
 
  Param string $string String to escape
  Return string Escaped string
 
 =cut
 
-sub escapeShell($)
+sub escapeShell
 {
 	return $_[0] if $_[0] eq '' || $_[0] =~ /^[a-zA-Z0-9_\-]+\z/;
 	my $s = $_[0];
@@ -124,7 +124,7 @@ sub escapeShell($)
 
 =cut
 
-sub getExitCode(;$)
+sub getExitCode
 {
 	my $exitValue = $_[0] // $?;
 

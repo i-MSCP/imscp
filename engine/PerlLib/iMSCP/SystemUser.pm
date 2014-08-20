@@ -60,7 +60,7 @@ sub addSystemUser
 
 	my @cmd;
 
-	if(! getpwnam($userName)) { # Creating new user
+	unless(getpwnam($userName)) { # Creating new user
 		@cmd = (
 			$main::imscpConfig{'CMD_USERADD'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
@@ -105,7 +105,7 @@ sub delSystemUser
 	my $self = shift;
 	my $userName = shift || $self->{'username'};
 
-	if(! $userName) {
+	unless($userName) {
 		error('Username is missing');
 		return 1;
 	}
@@ -140,12 +140,12 @@ sub addToGroup
 	my $groupName = shift || $self->{'groupname'};
 	my $userName = shift || $self->{'username'};
 
-	if(! $groupName) {
+	unless($groupName) {
 		error('Group name is missing');
 		return 1;
 	}
 
-	if(! $userName) {
+	unless($userName) {
 		error('Username is missing');
 		return 1;
 	}
@@ -192,12 +192,12 @@ sub removeFromGroup
 	my $groupName = shift || $self->{'groupname'} || undef;
 	my $userName = shift || $self->{'username'} || undef;
 
-	if(! $groupName){
+	unless($groupName){
 		error('Group name is missing');
 		return 1;
 	}
 
-	if(! $userName){
+	unless($userName){
 		error('Username is missing');
 		return 1;
 	}
@@ -241,7 +241,7 @@ sub getUserGroups
 	my $self = shift;
 	my $userName = shift || $self->{'username'} || undef;
 
-	if(! $userName) {
+	unless($userName) {
 		error('Username is missing');
 		return 1;
 	}

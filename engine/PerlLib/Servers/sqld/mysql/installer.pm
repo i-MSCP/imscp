@@ -59,7 +59,7 @@ use parent 'Common::SingletonClass';
 
  Process install tasks
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -83,7 +83,7 @@ sub install
 
  Set engine permissions
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -125,7 +125,7 @@ sub setEnginePermissions
 
 =item _init()
 
- Called by getInstance(). Initialize instance of this class.
+ Initialize instance
 
  Return Servers::sqld::mysql:installer
 
@@ -158,7 +158,7 @@ sub _init
 
  Create global configuration file
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -237,7 +237,7 @@ sub _createGlobalConfFile
 
  Create root user configuration file
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 

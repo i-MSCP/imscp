@@ -53,7 +53,7 @@ use parent 'Common::SingletonClass';
 
  Process uninstall tasks
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -70,7 +70,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance of this class.
+ Initialize instance
 
  Return Servers::sqld::mysql:uninstaller
 
@@ -93,7 +93,7 @@ sub _init
 
  Remove options file (root user .my.cnf file)
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 

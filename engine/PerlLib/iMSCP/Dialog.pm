@@ -69,7 +69,7 @@ sub reset
 {
 	my $self = iMSCP::Dialog->getInstance();
 
-	$self->{'instance'} = undef;
+	undef $self->{'instance'};
 
 	0;
 }

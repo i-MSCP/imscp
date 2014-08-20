@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'po'} = Servers::po::courier->getInstance();
 
@@ -53,7 +53,7 @@ sub _init
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_removeSqlUser();
 	return $rs if $rs;
@@ -69,7 +69,7 @@ sub uninstall
 
 =item _removeSqlUser()
 
- Remove any authdaemon SQL user.
+ Remove any authdaemon SQL user
 
  Return int 0
 
@@ -77,7 +77,7 @@ sub uninstall
 
 sub _removeSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $database = iMSCP::Database->factory();
 
@@ -94,7 +94,7 @@ sub _removeSqlUser
 
 sub _restoreConfFile
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if(-f "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system") {
 		my $file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system");
@@ -125,7 +125,7 @@ sub _restoreConfFile
 
 sub _authDaemon
 {
-	my $self= shift;
+	my $self= $_[0];
 
 	my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authdaemonrc");
 
@@ -137,7 +137,7 @@ sub _authDaemon
 
 sub _deleteQuotaWarning
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if(-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
 		iMSCP::File->new('filename' => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'})->delFile();

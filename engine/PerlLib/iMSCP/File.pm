@@ -275,7 +275,7 @@ sub owner
  Copy file to the given destination
 
  Param string $dest Destination path
- Param hash_ref $options Options
+ Param hash $options Options
  Return int 0 on success, 1 on failure
 
 =cut
@@ -326,6 +326,7 @@ sub copyFile
 =item moveFile($dest)
 
  Move file to the given destination
+
  Param string $dest Destination path
  Return int 0 on success, 1 on failure
 

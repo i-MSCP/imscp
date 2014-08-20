@@ -46,7 +46,7 @@ my $self = __PACKAGE__->getInstance();
 =head1 DESCRIPTION
 
  The template parser allow to parse pseudo-variables within i-MSCP engine template files. It can parse simple variables
- or variable tag pairs.
+ or variable tag pairs
 
 =head1 PUBLIC METHODS
 
@@ -62,7 +62,7 @@ my $self = __PACKAGE__->getInstance();
 
 =cut
 
-sub process($$)
+sub process
 {
 	my ($data, $tplContent) = @_;
 	$data = {} if ref $data ne 'HASH';
@@ -89,7 +89,7 @@ sub process($$)
 
 =cut
 
-sub getBloc($$$;$)
+sub getBloc
 {
 	my ($beginTag, $endingTag, $tplContent, $includeTags) = @_;
 	my $regexp = '[\t ]*' . quotemeta($beginTag) . '(.*?)[\t ]*' . quotemeta($endingTag);
@@ -117,7 +117,7 @@ sub getBloc($$$;$)
 
 =cut
 
-sub replaceBloc($$$$;$)
+sub replaceBloc
 {
 	my ($beginTag, $endingTag, $replacement, $tplContent, $preserveTags) = @_;
 	my $regexp = '([\t ]*' . quotemeta($beginTag) . '.*?' . quotemeta($endingTag) . ')';

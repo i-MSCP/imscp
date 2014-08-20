@@ -288,7 +288,7 @@ sub ImportCaBundle
 	0;
 }
 
-=items createSelfSignedCertificate($commonName, $wildcardSSL = false)
+=items createSelfSignedCertificate($commonName, [$wildcardSSL = false])
 
  Generate a self-signed SSL certificate
 

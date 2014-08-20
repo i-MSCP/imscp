@@ -50,7 +50,7 @@ use parent 'Common::Object';
 
 =item
 
- Constructor. Called by the tie command.
+ Constructor. Called by the tie command
 
  The required arguments for the tie command are:
   - fileName: Filename of the configuration file (including path)
@@ -70,9 +70,9 @@ sub TIEHASH
 
 =item
 
- Initialize tied hash variable.
+ Initialize tied hash variable
 
- Return self
+ Return iMSCP::Config
 
 =cut
 
@@ -100,7 +100,7 @@ sub _init
 
 =item
 
- Load i-MSCP configuration file.
+ Load i-MSCP configuration file
 
  Return undef
 
@@ -140,7 +140,7 @@ sub _loadConfig
 
 =item
 
- Parse configuration file.
+ Parse configuration file
 
  Return undef
 
@@ -168,9 +168,10 @@ sub _parseConfig
 
 =item
 
- Return value of the given configuration parameter.
+ Return value of the given configuration parameter
 
  Return scalar|undef - Configuration parameter value or undef if config parameter is not defined
+
 =cut
 
 sub FETCH
@@ -194,9 +195,9 @@ sub FETCH
 
 =item
 
- Store the given configuration parameters.
+ Store the given configuration parameters
 
- Return stored value;
+ Return stored value
 
 =cut
 
@@ -219,9 +220,9 @@ sub STORE
 
 =item
 
- Return the first configuration parameter.
+ Return the first configuration parameter
 
- Return scalar
+ Return string
 
 =cut
 
@@ -236,9 +237,9 @@ sub FIRSTKEY
 
 =item
 
- Return the next configuration parameters.
+ Return the next configuration parameters
 
- Return scalar
+ Return string
 
 =cut
 
@@ -265,7 +266,7 @@ sub EXISTS
 
 =item
 
- Clear all configuration parameters.
+ Clear all configuration parameters
 
 =cut
 
@@ -284,9 +285,9 @@ sub CLEAR
 
  Replace the given configuration parameter value
 
- Param scalar $config - Configuration parameter name
- Param scalar $config - Configuration parameter value
- Return scalar - Configuration parameter value
+ Param string $config Configuration parameter name
+ Param string $config Configuration parameter value
+ Return string Configuration parameter value
 
 =cut
 
@@ -304,9 +305,9 @@ sub _replaceConfig
 
  Insert the given configuration parameter.
 
- Param scalar $config - Configuration parameter name
- Param scalar $config - Configuration parameter value
- Return scalar - Configuration parameter value
+ Param string $config Configuration parameter name
+ Param string $config Configuration parameter value
+ Return string Configuration parameter value
 
 =cut
 

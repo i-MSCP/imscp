@@ -47,9 +47,9 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item getId($short = false)
+=item getId([$short = false])
 
- Return distributor ID.
+ Return distributor ID
 
  You can get short value by passing a true value as parameter.
 
@@ -68,9 +68,9 @@ sub getId
 	}
 }
 
-=item getDescription($short = false)
+=item getDescription([$short = false])
 
- Returns description of the distribution.
+ Returns description of the distribution
 
  You can get short value by passing a true value as parameter.
 
@@ -89,9 +89,9 @@ sub getDescription
 	}
 }
 
-=item getRelease($short = false)
+=item getRelease([$short = false])
 
- Return release number of the distribution.
+ Return release number of the distribution
 
  You can get short value by passing a true value as parameter.
 
@@ -110,9 +110,9 @@ sub getRelease()
 	}
 }
 
-=item getCodename($short = false)
+=item getCodename([$short = false])
 
- Return code name of the distribution.
+ Return code name of the distribution
 
  You can get short value by passing a true value as parameter.
 
@@ -131,9 +131,9 @@ sub getCodename
 	}
 }
 
-=item getAll($short = false)
+=item getAll([$short = false])
 
- Return all distribution-specific information.
+ Return all distribution-specific information
 
  You can get short values by passing a true value as parameter.
 
@@ -165,7 +165,7 @@ sub getAll
 		'CODENAME' => 'squeeze'
 	}
 
- Return HASH reference - A reference to a hash containing pairs of fieldname/fieldvalue
+ Return hash Pairs of fieldname/fieldvalue
 
 =cut
 
@@ -173,25 +173,25 @@ sub getDistroInformation
 {
 	my $self = $_[0];
 
-	if(! $self->{'lsbInfo'}) {
+	unless($self->{'lsbInfo'}) {
 		# Try to retrieve information from /etc/lsb-release first
 		$self->{'lsbInfo'} = $self->_getLsbInformation();
 
-    	for (qw/ID RELEASE CODENAME DESCRIPTION/) {
-    		if(! $self->{'lsbInfo'}->{$_}) {
-    			my $distinfo = $self->_guessDebianRelease();
-    			%{$self->{'lsbInfo'}} = (%$distinfo, %{$self->{'lsbInfo'}});
-    			last;
-    		}
-    	}
-    }
+		for (qw/ID RELEASE CODENAME DESCRIPTION/) {
+			unless($self->{'lsbInfo'}->{$_}) {
+				my $distinfo = $self->_guessDebianRelease();
+				%{$self->{'lsbInfo'}} = (%$distinfo, %{$self->{'lsbInfo'}});
+				last;
+			}
+		}
+	}
 
-    $self->{'lsbInfo'};
+	$self->{'lsbInfo'};
 }
 
 =item reset()
 
- Force reload of distribution-specific information.
+ Force reload of distribution-specific information
 
  Return iMSCP::LsbRelease
 
@@ -214,7 +214,7 @@ sub reset
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return iMSCP::LsbRelease
 
@@ -224,16 +224,16 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'lsbInfo'} = $self->getDistroInformation() if ! $self->{'lsbInfo'};
+	$self->{'lsbInfo'} = $self->getDistroInformation() unless $self->{'lsbInfo'};
 
 	$self;
 }
 
-=item _lookupCodename($release, $unknown = undef)
+=item _lookupCodename($release, [$unknown = undef])
 
- Lookup distribution codename.
+ Lookup distribution codename
 
- Return string - Distribution codename if found or $unknown value
+ Return string Distribution codename if found or $unknown value
 
 =cut
 
@@ -256,7 +256,7 @@ my $RELEASE_CODENAME_LOOKUP = {
 	'8' => 'jessie'
 };
 
-sub _lookupCodename($$)
+sub _lookupCodename
 {
 	my ($self, $release, $unknown) = @_;
 
@@ -276,20 +276,20 @@ sub _lookupCodename($$)
 =item _parsePolicyLine($data)
 
  Parse a line from the apt-cache policy command output to retrieve distribution version, origin, suite, component and
-label field value.
+label field value
 
- Return HASH reference - A reference to a hash containing pairs of fieldname/fieldvalue
+ Return hash Pairs of fieldname/fieldvalue
 
 =cut
 
 # map short field names to long field names
 my $longnames = {'v' => 'version', 'o' => 'origin', 'a' => 'suite', 'c'  => 'component', 'l' => 'label'};
 
-sub _parsePolicyLine($$)
+sub _parsePolicyLine
 {
 	my ($self, $data) = @_;
 
-	my ($retval, @bits) = ({}, split ',', $data);
+	my ($retval, @bits) = ({ }, split ',', $data);
 
 	for(@bits) {
 		my @kv = split('=', $_, 2);
@@ -305,9 +305,9 @@ sub _parsePolicyLine($$)
 
 =item _parseAptPolicy()
 
- Parse output from apt-cache policy command.
+ Parse output from apt-cache policy command
 
- Return ARRAY reference.
+ Return array
 
 =cut
 
@@ -340,9 +340,9 @@ sub _parseAptPolicy
 
 =item _guessReleaseFromApt($origin = 'Debian', $component = 'main', $label = 'Debian')
 
- Retrieve distribution information by parsing output from the apt-cache policy command.
+ Retrieve distribution information by parsing output from the apt-cache policy command
 
- Return HASH reference - A reference to a hash containing pairs of fieldname/fieldvalue
+ Return hash Pairs of fieldname/fieldvalue
 
 =cut
 
@@ -356,7 +356,7 @@ sub _guessReleaseFromApt
 
 	my $releases = $self->_parseAptPolicy();
 
-	return undef if ! scalar @$releases;
+	return undef unless scalar @$releases;
 
 	# We only care about the specified origin, component, and label
 	@$releases = grep {
@@ -366,7 +366,7 @@ sub _guessReleaseFromApt
 	} @$releases;
 
  	# Check again to make sure we didn't wipe out all of the releases
-	return undef if ! scalar @$releases;
+	return undef unless scalar @$releases;
 
 	@$releases = reverse sort @$releases;
 
@@ -377,9 +377,9 @@ sub _guessReleaseFromApt
 
 =item _guessDebianRelease()
 
- Return Debian distribution-specific information.
+ Return Debian distribution-specific information
 
- Return HASH reference - A reference to a hash containing pairs of fieldname/fieldvalue
+ Return hash Pairs of fieldname/fieldvalue
 
 =cut
 
@@ -389,7 +389,7 @@ sub _guessDebianRelease
 {
 	my $self = $_[0];
 
-	my $distinfo = {'ID' => 'Debian'};
+	my $distinfo = { 'ID' => 'Debian' };
 	my ($rs, $stdout, $stderr, $release, $codename);
 
 	$rs = execute('/bin/uname', \$stdout, \$stderr); # We are safe here
@@ -412,7 +412,7 @@ sub _guessDebianRelease
 		$release = iMSCP::File->new('filename' => '/etc/debian_version')->get();
 
 		unless(defined $release) {
-			error('Unable to open /etc/debian_version');
+			error('Unable to read /etc/debian_version');
 			$release = 'unknown';
 		}
 
@@ -463,17 +463,17 @@ sub _guessDebianRelease
 		}
 	}
 
-	$$distinfo{'DESCRIPTION'} .= " $$distinfo{RELEASE}" if $$distinfo{'RELEASE'};
-	$$distinfo{'DESCRIPTION'} .= " ($$distinfo{CODENAME})" if $$distinfo{'CODENAME'};
+	$$distinfo{'DESCRIPTION'} .= " $$distinfo{'RELEASE'}" if $$distinfo{'RELEASE'};
+	$$distinfo{'DESCRIPTION'} .= " ($$distinfo{'CODENAME'})" if $$distinfo{'CODENAME'};
 
 	$distinfo;
 }
 
 =item _getLsbInformation()
 
- Return lsb information from the lsb-release file if any.
+ Return lsb information from the lsb-release file if any
 
- Return HASH reference - A reference to a hash containing pairs of fieldname/fielvalue.
+ Return hash Pairs of fieldname/fielvalue.
 
 =cut
 
@@ -481,13 +481,13 @@ sub _getLsbInformation
 {
 	my $self = $_[0];
 
-	my $distinfo = {};
+	my $distinfo = { };
 
 	if(-f '/etc/lsb-release') {
 		my $lsbReleaseFile = iMSCP::File->new('filename' => '/etc/lsb-release')->get();
 
 		unless(defined $lsbReleaseFile) {
-			error('Unable to open /etc/lsb-release')
+			error('Unable to read /etc/lsb-release')
 		} else {
 			debug("\n$lsbReleaseFile");
 
@@ -499,7 +499,7 @@ sub _getLsbInformation
 
 				if($var =~ /^DISTRIB_/) {
 					$var = substr($var, 8);
-					$arg = substr($arg, 1, -1) if(substr($arg, 0, 1) eq '"'); # Remove quotes
+					$arg = substr($arg, 1, -1) if substr($arg, 0, 1) eq '"'; # Remove quotes
 					$$distinfo{$var} = $arg if length $arg; # Ignore empty arguments
 				}
 			}
@@ -513,11 +513,13 @@ sub _getLsbInformation
 
 =head1 NOTE
 
- This is a re-implementation for i-MSCP of the lsb_release command as provided by the lsb-release Debian package.
+ This is a re-implementation for i-MSCP of the lsb_release command as provided by the lsb-release Debian package
 
  Detection of systems using a mix of packages from various distributions or releases is something of a black art; the
 current heuristic tends to assume that the installation is of the earliest distribution which is still being used by apt
 but that heuristic is subject to error.
+
+=back
 
 =head1 AUTHOR
 

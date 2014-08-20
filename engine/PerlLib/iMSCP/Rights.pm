@@ -35,7 +35,7 @@ use parent 'Common::SingletonClass', 'Exporter';
 use vars qw/@EXPORT/;
 @EXPORT = qw/setRights/;
 
-sub setRights($$)
+sub setRights
 {
 	my ($file, $options) = @_;
 
