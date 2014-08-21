@@ -74,25 +74,23 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->register(
-		'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askForPhpIniLevel(@_) }; 0; }
-	);
+	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 	return $rs if $rs;
 
 	# Fix error_reporting value into the database
 	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 }
 
-=item askForPhpIniLevel(\%dialog)
+=item showDialog(\%dialog)
 
- Ask user for PHP INI level to use
+ Show dialog
 
  Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub askForPhpIniLevel
+sub showDialog
 {
 	my ($self, $dialog) = @_;
 

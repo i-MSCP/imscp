@@ -157,7 +157,7 @@ sub setupDialog
 
 	# Implements a simple state machine (backup capability)
 	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
-	my ($state, $nbDialog) = (0, scalar @$dialogStack);
+	my ($state, $nbDialog) = (0, scalar @{$dialogStack});
 
 	while($state != $nbDialog) {
 		$rs = $$dialogStack[$state]->($dialog);

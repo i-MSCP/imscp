@@ -95,7 +95,7 @@ sub unregister
 	0;
 }
 
-=item trigger($event, [$params], [$paramsN])
+=item trigger($event, [$param], [$paramN])
 
  Trigger the given event
 
@@ -107,15 +107,15 @@ sub unregister
 
 sub trigger
 {
-	my ($self, $event, @params) = @_;
+	my ($self, $event) = (shift, shift);
 
-    my $rs = 0;
+	my $rs = 0;
 
 	if(exists $self->{'events'}->{$event}) {
 		debug("Triggering $event event");
 
 		for(@{$self->{'events'}->{$event}}) {
-			if($rs = $_->(@params)) {
+			if($rs = $_->(@_)) {
 				my $caller = (caller(1))[3] || 'main';
 				require Data::Dumper;
 				Data::Dumper->import();
@@ -153,10 +153,19 @@ sub _init
 
 	$self->{'events'} = { };
 
-	# Load any user listener files
-	my $listenersDir = "$main::imscpConfig{'CONF_DIR'}/listeners.d";
+	# Load listener files
+	#
+	# We try to load listeners from the hooks.d directory first (old location) to be sure that listener are loaded even
+	# on upgrade
+	my $listenersDir;
 
-	if(-d $listenersDir) {
+	if(-d "$main::imscpConfig{'CONF_DIR'}/hooks.d") {
+		$listenersDir = "$main::imscpConfig{'CONF_DIR'}/hooks.d";
+	} elsif(-d "$main::imscpConfig{'CONF_DIR'}/listeners.d") {
+		$listenersDir = "$main::imscpConfig{'CONF_DIR'}/listeners.d";
+	}
+
+	if($listenersDir) {
 		require $_ for glob "$listenersDir/*.pl";
 	}
 
@@ -167,7 +176,7 @@ sub _init
 
 =head1 TODO
 
- Priorities support
+ Listener priorities support
 
 =cut
 
