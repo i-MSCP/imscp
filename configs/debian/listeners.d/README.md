@@ -47,6 +47,6 @@ Listener sample ( 00_sample.pl ):
         exit 0;
     }
 
-    iMSCP::EventManager->getInstance('beforeInstall', \&sample);
+    iMSCP::EventManager->getInstance()->register('beforeInstall', \&sample);
 
     1;
