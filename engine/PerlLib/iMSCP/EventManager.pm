@@ -155,8 +155,8 @@ sub _init
 
 	# Load listener files
 	#
-	# We try to load listeners from the hooks.d directory first (old location) to be sure that listener are loaded even
-	# on upgrade
+	# We try to load listeners from the hooks.d directory first (old location) to be sure that the listeners are loaded
+	# even on upgrade
 	my $listenersDir;
 
 	if(-d "$main::imscpConfig{'CONF_DIR'}/hooks.d") {
