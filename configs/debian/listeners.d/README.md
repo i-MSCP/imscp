@@ -25,8 +25,8 @@ Each listener file must be named using the following naming convention:
 
 where
 
-  **nn** is a number which gives the listener file priority
-  **namespace** is the lowercase namespace, stripped of the prefix and where any double colon is replaced by an underscore
+  * **nn** is a number which gives the listener file priority
+  * **namespace** is the lowercase namespace, stripped of the prefix and where any double colon is replaced by an underscore
 
 In the example above, the filename would be 00_postfix_smarthost.pl
 
