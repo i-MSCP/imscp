@@ -34,19 +34,21 @@ In the example above, the filename would be 00_postfix_smarthost.pl
 
 Listener sample ( 00_sample.pl ):
 
-    # /usr/bin/perl
+```perl
+# /usr/bin/perl
 
-    Package Listener::Sample;
+Package Listener::Sample;
 
-    use iMSCP::Debug;
-    use iMSCP::EventManager;
+use iMSCP::Debug;
+use iMSCP::EventManager;
 
-    sub sample
-    {
-        warning("Installation has been canceled by an event listener.");
-        exit 0;
-    }
+sub sample
+{
+    warning("Installation has been canceled by an event listener.");
+    exit 0;
+}
 
-    iMSCP::EventManager->getInstance()->register('beforeInstall', \&sample);
+iMSCP::EventManager->getInstance()->register('beforeInstall', \&sample);
 
-    1;
+1;
+```
