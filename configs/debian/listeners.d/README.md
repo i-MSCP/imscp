@@ -32,7 +32,7 @@ In the example above, the filename would be 00_postfix_smarthost.pl
 
 ### Listener sample
 
-Listener sample ( 00_sample_helloworld.pl ):
+Listener sample ( 00_sample.pl ):
 
     # /usr/bin/perl
 
