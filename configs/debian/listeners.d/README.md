@@ -35,7 +35,7 @@ In the example above, the filename would be **00_postfix_smarthost.pl**
 Listener sample ( 00_sample.pl ):
 
 ```perl
-# /usr/bin/perl
+#!/usr/bin/perl
 
 Package Listener::Sample;
 
