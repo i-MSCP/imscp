@@ -9,13 +9,13 @@ manager. Any listener file found in this directory is loaded automatically by i-
 A listener file is a simple perl script which defines one or many event listeners and register them on the i-MSCP event
 manager. When the events on which the listeners are listening are triggered, the listeners are automatically run.
 
-### Listener namespaces
+### Listener file namespaces
 
 Each listener file must declare its own namespace such as:
 
     Listener::Postfix::Smarthost
 
-This allow to not pollute the symbol table of the main package.
+This allow to not pollute other symbol tables.
 
 ### Listener file naming convention
 
@@ -42,6 +42,7 @@ Package Listener::Sample;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 
+# Listener which simply cancel installation
 sub sample
 {
     warning("Installation has been canceled by an event listener.");
