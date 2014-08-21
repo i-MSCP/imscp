@@ -48,7 +48,7 @@ this class.
 
 =item installPreRequiredPackages()
 
- Install pre-required packages.
+ Install pre-required packages
 
  Return int 0 on success, other on failure
 
@@ -61,7 +61,7 @@ sub installPreRequiredPackages
 
 =item preBuild()
 
- Process preBuild tasks.
+ Process preBuild tasks
 
  Return int 0 on success, other on failure
 

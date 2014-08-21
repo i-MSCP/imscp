@@ -744,21 +744,21 @@ sub removeTmp
 
 =over 4
 
-=item _processXmlFile($file)
+=item _processXmlFile($filepath)
 
  Process an install.xml file or distribution layout.xml file
 
- Param string $file xml file path
+ Param string $filepath xml file path
  Return int 0 on success, other on failure ; A fatal error is raised in case a variable cannot be exported
 
 =cut
 
-sub _processXmlFile($)
+sub _processXmlFile
 {
-	my $file = $_[0];
+	my $filepath = $_[0];
 
-	unless(-f $file) {
-		error("$file doesn't exist");
+	unless(-f $filepath) {
+		error("Unable to read $filepath");
 		return 1;
 	}
 
@@ -770,7 +770,7 @@ sub _processXmlFile($)
 	my $xml = XML::Simple->new('ForceArray' => 1, 'ForceContent' => 1);
 
 	# Reading XML file
-	my $data = eval { $xml->XMLin($file, 'VarAttr' => 'export') };
+	my $data = eval { $xml->XMLin($filepath, 'VarAttr' => 'export') };
 
 	if ($@) {
 		error($@);
@@ -863,7 +863,7 @@ sub _expandVars
 	$string;
 }
 
-=item _processFolder(\%$data)
+=item _processFolder(\%data)
 
  Process a folder node from an install.xml file
 
@@ -874,7 +874,7 @@ sub _expandVars
 =cut
 
 
-sub _processFolder($)
+sub _processFolder
 {
 	my $data = $_[0];
 
@@ -897,7 +897,7 @@ sub _processFolder($)
 	$dir->make($options);
 }
 
-=item _copyConfig(\%$data)
+=item _copyConfig(\%data)
 
  Process a copy_config node from an install.xml file
 
@@ -905,7 +905,7 @@ sub _processFolder($)
 
 =cut
 
-sub _copyConfig($)
+sub _copyConfig
 {
 	my $data = $_[0];
 
@@ -952,7 +952,7 @@ sub _copyConfig($)
 	0;
 }
 
-=item _copy(\%$data)
+=item _copy(\%data)
 
  Process the copy node from an install.xml file
 
@@ -960,7 +960,7 @@ sub _copyConfig($)
 
 =cut
 
-sub _copy($)
+sub _copy
 {
 	my $data = $_[0];
 
@@ -1001,12 +1001,12 @@ sub _copy($)
 
 =cut
 
-sub _createFile($)
+sub _createFile
 {
 	iMSCP::File->new('filename' => $_[0]->{'content'})->save();
 }
 
-=item _chownFile(\%$data)
+=item _chownFile(\%data)
 
  Change file/directory owner and/or group recursively
 
@@ -1014,7 +1014,7 @@ sub _createFile($)
 
 =cut
 
-sub _chownFile($)
+sub _chownFile
 {
 	my $data = $_[0];
 
@@ -1032,7 +1032,7 @@ sub _chownFile($)
 	0;
 }
 
-=item _chmodFile(\%$data)
+=item _chmodFile(\%data)
 
  Process chmod_file from an install.xml file
 
@@ -1040,7 +1040,7 @@ sub _chownFile($)
 
 =cut
 
-sub _chmodFile($)
+sub _chmodFile
 {
 	my $data = $_[0];
 

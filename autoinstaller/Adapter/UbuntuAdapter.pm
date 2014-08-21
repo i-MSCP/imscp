@@ -51,7 +51,7 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return autoinstaller::Adapter::UbuntuAdapter
 

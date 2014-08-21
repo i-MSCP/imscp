@@ -268,7 +268,7 @@ sub postBuild
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return autoinstaller::Adapter::DebianAdapter
 
@@ -297,7 +297,7 @@ sub _init
 
 =item _preparePackagesList()
 
- Prepare lists of Debian packages to be uninstalled and installed
+ Prepare list of Debian packages to be uninstalled and installed
 
  Return int 0 on success, other on failure
 
@@ -668,7 +668,7 @@ sub _processExternalRepositories
 
  Process apt preferences file
 
- Return 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -833,7 +833,7 @@ EOF
 
 =cut
 
-sub _parseHash($$$)
+sub _parseHash
 {
 	my ($self, $hash, $target) = @_;
 
@@ -856,7 +856,7 @@ sub _parseHash($$$)
 
  Parse the given array and put the result in the target array
 
- Param array_ref $array Reference to an array
+ Param array \@array Reference to an array
  Param string Target array (packagesToUninstall|packagesToInstall)
  Return undef
 
