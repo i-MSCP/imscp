@@ -104,7 +104,7 @@ sub setupStart
 	}
 
 	# Allow any server/package to register its setup event listeners
-	setupRegisterlisteners();
+	setupRegisterListeners();
 }
 
 # Process both setup dialog and tasks
