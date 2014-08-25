@@ -113,7 +113,7 @@ sub _init
 
 	iMSCP::EventManager->getInstance()->register(
 		'afterSetupPreInstallAddons', sub {
-			iMSCP::Dialog->factory()->endGauge();
+			iMSCP::Dialog->getInstance()->endGauge();
 
 			my $rs = iMSCP::Dir->new('dirname' => $self->{'wrkDir'})->make();
 			return $rs if $rs;
@@ -152,7 +152,7 @@ sub _installPackages
 	my $rs = $self->_buildComposerFile();
 	return $rs if $rs;
 
-	iMSCP::Dialog->factory()->infobox(<<EOF);
+	iMSCP::Dialog->getInstance()->infobox(<<EOF);
 
 Fetching i-MSCP composer packages from GitHub.
 
@@ -185,7 +185,7 @@ sub _buildComposerFile
 {
 	my $self = $_[0];
 
-	iMSCP::Dialog->factory()->infobox(<<EOF);
+	iMSCP::Dialog->getInstance()->infobox(<<EOF);
 
 Building composer.json file for composer packages...
 EOF
@@ -221,7 +221,7 @@ sub _getComposer
 			return 1;
 		}
 
-		iMSCP::Dialog->factory()->infobox(<<EOF);
+		iMSCP::Dialog->getInstance()->infobox(<<EOF);
 
 Fetching composer.phar from http://getcomposer.org.
 
@@ -249,7 +249,7 @@ EOF
 			return 1;
 		}
 
-		iMSCP::Dialog->factory()->infobox(<<EOF);
+		iMSCP::Dialog->getInstance()->infobox(<<EOF);
 
 Updating composer.phar from http://getcomposer.org.
 

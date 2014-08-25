@@ -196,12 +196,14 @@ sub reconfigure
 			$value = 'all';
 		}
 
-		$value ~~ $reconfigureItems or die("Error: '$value' is not a valid argument for the --reconfigure option.");
+		$value eq 'none' || $value ~~ $reconfigureItems or die(
+			"Error: '$value' is not a valid argument for the --reconfigure option."
+		);
 
 		$options->{'reconfigure'} = $value;
 	}
 
-	$options->{'reconfigure'} ? $options->{'reconfigure'} : 'none';
+	$options->{'reconfigure'} ||= 'none';
 }
 
 =item noprompt

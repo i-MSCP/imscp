@@ -100,7 +100,7 @@ sub showDialog
 	) {
 		# Ask for the SASL restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
+			($rs, $dbUser) = iMSCP::Dialog->getInstance()->inputbox(
 				"\nPlease enter an username for the restricted sasl SQL user:$msg", $dbUser
 			);
 

@@ -104,7 +104,7 @@ sub showDialog
 	) {
 		# Ask for the roundcube restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
+			($rs, $dbUser) = iMSCP::Dialog->getInstance()->inputbox(
 				"\nPlease enter an username for the restricted roundcube SQL user:$msg", $dbUser
 			);
 

@@ -87,7 +87,7 @@ sub process
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
+	iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Dialog->getInstance()->hasGauge();
 
 	0;
 }
@@ -95,7 +95,7 @@ sub process
 sub shutDown
 {
 
-	iMSCP::Dialog->factory()->msgbox(
+	iMSCP::Dialog->getInstance()->msgbox(
 "
 \\Z1Congratulations\\Zn
 
@@ -110,11 +110,11 @@ You can find uninstallation logs at /tmp/imscp-uninstall.log
 
 sub _userDialog
 {
-	iMSCP::Dialog->factory()->set('yes-label','Continue');
-	iMSCP::Dialog->factory()->set('no-label','Exit');
-	iMSCP::Dialog->factory()->set('defaultno', '');
+	iMSCP::Dialog->getInstance()->set('yes-label','Continue');
+	iMSCP::Dialog->getInstance()->set('no-label','Exit');
+	iMSCP::Dialog->getInstance()->set('defaultno', '');
 
-	if (iMSCP::Dialog->factory()->yesno(<<EOF)) {
+	if (iMSCP::Dialog->getInstance()->yesno(<<EOF)) {
 
 Welcome to the \\Z4i-MSCP $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
 
@@ -131,7 +131,7 @@ During the uninstallation process some or all services might require to be shut 
 To continue select \\Z4Continue\\Z0
 EOF
 
-	iMSCP::Dialog->factory()->msgbox(<<EOF);
+	iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 Uninstallation process has been aborted...
 EOF

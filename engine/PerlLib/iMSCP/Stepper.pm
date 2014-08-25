@@ -77,20 +77,22 @@ sub step
 	$msg = join("\n", @{$self->{'all'}}) . "\n" if @{$self->{'all'}};
 	$msg .= $self->{'last'};
 
-	iMSCP::Dialog->factory()->startGauge($msg, int($index * 100 / $steps)) unless iMSCP::Dialog->factory()->hasGauge();
-	iMSCP::Dialog->factory()->setGauge(int($index * 100 / $steps), $msg);
+	iMSCP::Dialog->getInstance()->startGauge($msg, int($index * 100 / $steps)) unless iMSCP::Dialog->getInstance()->hasGauge();
+	iMSCP::Dialog->getInstance()->setGauge(int($index * 100 / $steps), $msg);
 
 	my $rs = &{$code}() if ref $code eq 'CODE';
 
 	if($rs) {
+		return $rs if $rs == 50; # 50 is returned when ESC is preseed (dialog)
+
 		my $errorMessage = $rs =~ /^-?\d+$/ ? getLastError() : $rs;
 
 		# Make error message free of any ANSI color and end of line codes
 		$errorMessage =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 		$errorMessage = 'An unexpected error occurred...' unless $errorMessage;
 
-		iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Dialog->getInstance()->hasGauge();
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1[ERROR]\\Zn
 

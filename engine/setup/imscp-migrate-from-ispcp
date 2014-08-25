@@ -207,7 +207,7 @@ sub removeIspcpFiles
 	if (@errors) {
 		my $errors = join "\n", @errors;
 
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1\\ZuErrors were detected\\Zn
 
@@ -255,7 +255,7 @@ sub saveIspLogo
 	if (@errors) {
 		my $errors = join "\n", @errors;
 
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1\\ZuErrors were detected\\Zn
 
@@ -304,7 +304,7 @@ sub dbUpgrade
 	if (@errors) {
 		my $errors = join "\n", @errors;
 
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1\\ZuErrors were detected\\Zn
 
@@ -394,7 +394,7 @@ sub saveIspcpConfigFiles
 	if (@errors) {
 		my $errors = join "\n", @errors;
 
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1\\ZuErrors while saving system files\\Zn
 
@@ -452,7 +452,7 @@ sub deleteIspCPunixUsers
 	if (@errors) {
 		my $errors = join "\n", @errors;
 
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1\\ZuUnable to delete ispCP unix user/group\\Zn
 
@@ -672,7 +672,7 @@ sub databaseIntegrityTests
 	if (@errors) {
 		my $errors = join "\n", @errors;
 
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1\\ZuispCP database is corrupted\\Zn
 
@@ -730,7 +730,7 @@ sub checkDbPassword
 	if(@existentKeyFiles) {
 		my $keyFiles = join "\n", @existentKeyFiles;
 
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1\\ZuAll ispCP database key files are corrupted\\Zn
 
@@ -743,7 +743,7 @@ EOF
 	} else {
 		my $keyFiles = join "\n", @keyFilePaths;
 
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1\\ZuAll Unable to find any ispCP database key file\\Zn
 
@@ -765,9 +765,9 @@ sub checkIspcpVersion
 {
 	if($main::ispcpConfig{'Version'} =~ /([\d.]+)/) {
 		if(qv("v$1") < qv('v1.0.7')) {
-			iMSCP::Dialog->factory()->set('defaultno', '');
+			iMSCP::Dialog->getInstance()->set('defaultno', '');
 
-			if(iMSCP::Dialog->factory()->yesno(<<EOF)) {
+			if(iMSCP::Dialog->getInstance()->yesno(<<EOF)) {
 
 \\Z1\\ZuMigration from ispCP version $1 is not supported\\Zn
 
@@ -782,7 +782,7 @@ EOF
 			}
 		}
 	} else {
-		iMSCP::Dialog->factory()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1\\ZuUnable to retrieve i-MSCP version\\Zn
 
@@ -799,7 +799,7 @@ EOF
 # Show migration script welcome message
 sub welcomeMessage
 {
-	my $dialog = iMSCP::Dialog->factory();
+	my $dialog = iMSCP::Dialog->getInstance();
 	$dialog->set('title', "i-MSCP $main::imscpConfig{'Version'} migration dialog");
 	$dialog->set('backtitle', 'i-MSCP - internet Multi Server Control Panel');
 
@@ -859,9 +859,9 @@ sub processMigration
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
+	iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Dialog->getInstance()->hasGauge();
 
-	iMSCP::Dialog->factory()->msgbox(<<EOF);
+	iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1Migration successful\\Zn
 

@@ -93,7 +93,7 @@ sub registerSetupListeners
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog \%dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
@@ -113,7 +113,7 @@ sub showDialog
 	) {
 		# Ask for the authdaemon restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
+			($rs, $dbUser) = iMSCP::Dialog->getInstance()->inputbox(
 				"\nPlease enter an username for the restricted authdaemon SQL user:$msg", $dbUser
 			);
 

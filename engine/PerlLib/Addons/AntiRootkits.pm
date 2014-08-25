@@ -101,7 +101,7 @@ sub showDialog
 				my $addon = "Addons::AntiRootkits::${_}::${_}";
 				eval "require $addon";
 
-				if(! $@) {
+				unless($@) {
 					$addon = $addon->getInstance();
 					$rs = $addon->showDialog($dialog) if $addon->can('showDialog');
 					last if $rs;
@@ -142,7 +142,7 @@ sub preinstall
 			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
-			if(! $@) {
+			unless($@) {
 				$addon = $addon->getInstance();
 				$rs = $addon->uninstall(); # Mandatory method
 				return $rs if $rs;
@@ -165,7 +165,7 @@ sub preinstall
 			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
-			if(! $@) {
+			unless($@) {
 				$addon = $addon->getInstance();
 				$rs = $addon->preinstall() if $addon->can('preinstall');
 				return $rs if $rs;
@@ -201,7 +201,7 @@ sub install
 			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
-			if(! $@) {
+			unless($@) {
 				$addon = $addon->getInstance();
 				my $rs = $addon->install() if $addon->can('install');
 				return $rs if $rs;
@@ -237,7 +237,7 @@ sub uninstall
 			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
-			if(! $@) {
+			unless($@) {
 				$addon = $addon->getInstance();
 				$rs = $addon->uninstall(); # Mandatory method;
 				return $rs if $rs;
@@ -274,7 +274,7 @@ sub setEnginePermissions
 			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
-			if(! $@) {
+			unless($@) {
 				$addon = $addon->getInstance();
 				my $rs = $addon->setEnginePermissions() if $addon->can('setEnginePermissions');
 				return $rs if $rs;
@@ -330,7 +330,7 @@ sub _installPackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	iMSCP::Dialog->factory()->endGauge();
+	iMSCP::Dialog->getInstance()->endGauge();
 
 	$command = 'debconf-apt-progress --logstderr -- ' . $command if ! $preseed && ! $main::noprompt;
 
@@ -363,7 +363,7 @@ sub _removePackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	iMSCP::Dialog->factory()->endGauge();
+	iMSCP::Dialog->getInstance()->endGauge();
 
 	$command = 'debconf-apt-progress --logstderr -- ' . $command if ! $preseed && ! $main::noprompt;
 

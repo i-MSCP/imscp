@@ -86,7 +86,7 @@ sub registerSetupListeners
 
  Show dialog
 
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Param iMSCP::Dialog $dialog Dialog instance
  Return int 0 on success, other on failure
 
 =cut

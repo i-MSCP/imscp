@@ -91,7 +91,7 @@ sub registerSetupListeners
 
  Ask user for Dovecot restricted SQL user
 
- Param iMSCP::Dialog::Dialog \%dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
@@ -111,7 +111,7 @@ sub showDialog
 	) {
 		# Ask for the dovecot restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
+			($rs, $dbUser) = iMSCP::Dialog->getInstance()->inputbox(
 				"\nPlease enter an username for the restricted dovecot SQL user:$msg", $dbUser
 			);
 

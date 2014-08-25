@@ -95,7 +95,7 @@ sub showDialog
 		$addon = "Addons::FileManager::${addon}::${addon}";
 		eval "require $addon";
 
-		if(! $@) {
+		unless($@) {
 			$addon = $addon->getInstance();
 			$rs = $addon->showDialog($dialog) if $addon->can('showDialog');
 			last if $rs;
@@ -123,7 +123,7 @@ sub preinstall
 	$addon = "Addons::FileManager::${addon}::${addon}";
 	eval "require $addon";
 
-	if(! $@) {
+	unless($@) {
 		$addon = $addon->getInstance();
 		my $rs = $addon->preinstall() if $addon->can('preinstall');
 		return $rs if $rs;
@@ -150,7 +150,7 @@ sub install
 	$addon = "Addons::FileManager::${addon}::${addon}";
 	eval "require $addon";
 
-	if(! $@) {
+	unless($@) {
 		$addon = $addon->getInstance();
 		my $rs = $addon->install() if $addon->can('install');
 		return $rs if $rs;
@@ -180,7 +180,7 @@ sub setGuiPermissions
 		my $addon = "Addons::FileManager::${addon}::${addon}";
 		eval "require $addon";
 
-		if(! $@) {
+		unless($@) {
 			$addon = $addon->getInstance();
 			my $rs = $addon->setGuiPermissions() if $addon->can('setGuiPermissions');
 			return $rs if $rs;

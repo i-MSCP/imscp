@@ -154,11 +154,13 @@ function reseller_getDatatable()
 	while ($data = $rResult->fetchRow(PDO::FETCH_ASSOC)) {
 		$row = array();
 
+		$aliasName = decode_idna($data['alias_name']);
+
 		for ($i = 0; $i < $nbColumns; $i++) {
 			if ($columns[$i] == 'alias_name') {
 				if ($data['alias_status'] == 'ok') {
-					$row[$columns[$i]] = '<a href="http://www.{NAME}/" target="_blank" class="icon i_domain_icon">' .
-						decode_idna($data[$columns[$i]]) . '</a>';
+					$row[$columns[$i]] = "<a href=\"http://www.$aliasName\" target=\"_blank\" class=\"icon i_domain_icon\">" .
+						$aliasName . '</a>';
 				} else {
 					$row[$columns[$i]] = '<span class="icon i_domain_icon">' . decode_idna($data[$columns[$i]]) .
 						'</span>';
@@ -173,7 +175,6 @@ function reseller_getDatatable()
 		}
 
 		$aliasId = $data['alias_id'];
-		$aliasName = $data['alias_name'];
 
 		switch ($data['alias_status']) {
 			case 'ok':

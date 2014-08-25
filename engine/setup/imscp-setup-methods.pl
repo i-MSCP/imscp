@@ -147,14 +147,12 @@ sub setupDialog
 		)
 	);
 
-	my $dialog = iMSCP::Dialog->factory();
+	my $dialog = iMSCP::Dialog->getInstance();
 
-	$dialog->resetLabels();
-	$ENV{'DIALOGOPTS'} = "--ok-label Ok --yes-label Yes --no-label No --cancel-label Back";
-
-	# We want get 30 as exit code for both ESC and CANCEL events (ESC will be handled in different way later)
-	$ENV{'DIALOG_CANCEL'} = 30;
-	$ENV{'DIALOG_ESC'} = 30;
+	$dialog->set('--ok-label', 'Ok');
+	$dialog->set('--yes-label', 'Yes');
+	$dialog->set('--no-label', 'No');
+	$dialog->set('--cancel-label', 'Back');
 
 	# Implements a simple state machine (backup capability)
 	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
@@ -173,6 +171,8 @@ sub setupDialog
 			$state++;
 		}
 	}
+
+	$dialog->resetLabels();
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupDialog');
 }
@@ -217,7 +217,7 @@ sub setupTasks
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
+	iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Dialog->getInstance()->hasGauge();
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupTasks');
 }
@@ -1100,7 +1100,7 @@ sub setupAskPanelSsl
 		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
 
 		if($openSSL->validateCertificateChain()) {
-			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate for the control panel is missing or invalid.");
+			iMSCP::Dialog->getInstance()->msgbox("\nYour SSL certificate for the control panel is missing or invalid.");
 			goto SSL_DIALOG;
 		}
 
@@ -1231,7 +1231,7 @@ sub setupAskServicesSsl
 		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
 
 		if($openSSL->validateCertificateChain()) {
-			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate for the services is missing or invalid.");
+			iMSCP::Dialog->getInstance()->msgbox("\nYour SSL certificate for the services is missing or invalid.");
 			goto SSL_DIALOG;
 		}
 

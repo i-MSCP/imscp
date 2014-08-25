@@ -1,141 +1,138 @@
 <packages>
-    <httpd>
-        <alternative default="apache_php_fpm">
-            <apache_fcgid>
-                <package>apache2</package>
-                <package>apache2-mpm-worker</package>
-                <package>apache2-suexec-custom</package>
-                <package>libapache2-mod-fcgid</package>
-                <package>php5-cgi</package>
-            </apache_fcgid>
-            <apache_itk>
-                <package>apache2</package>
-                <package>apache2-mpm-itk</package>
-                <package>libapache2-mod-php5</package>
-            </apache_itk>
-            <apache_php_fpm>
-                <package>apache2</package>
-                <package>apache2-suexec-custom</package>
-                <package>apache2-mpm-worker</package>
-                <package>libapache2-mod-fastcgi</package>
-                <package>php5-fpm</package>
-            </apache_php_fpm>
-        </alternative>
+    <httpd default="apache_php_fpm">
+        <apache_fcgid>
+            <package>apache2</package>
+            <package>apache2-mpm-worker</package>
+            <package>apache2-suexec-custom</package>
+            <package>libapache2-mod-fcgid</package>
+            <package>php5-cgi</package>
+        </apache_fcgid>
+        <apache_itk>
+            <package>apache2</package>
+            <package>apache2-mpm-itk</package>
+            <package>libapache2-mod-php5</package>
+        </apache_itk>
+        <apache_php_fpm>
+            <package>apache2</package>
+            <package>apache2-suexec-custom</package>
+            <package>apache2-mpm-worker</package>
+            <package>libapache2-mod-fastcgi</package>
+            <package>php5-fpm</package>
+        </apache_php_fpm>
     </httpd>
-    <po>
-        <alternative default="courier">
-            <courier>
-                <package>courier-authlib-mysql</package>
-                <package>courier-imap</package>
-                <package>courier-imap-ssl</package>
-                <package>courier-pop</package>
-                <package>courier-pop-ssl</package>
-                <package>libgamin0</package>
-                <package>maildrop</package>
-            </courier>
-            <dovecot>
-                <package>dovecot-core</package>
-                <package>dovecot-imapd</package>
-                <package>dovecot-pop3d</package>
-                <package>dovecot-mysql</package>
-            </dovecot>
-        </alternative>
+    <po default="courier">
+        <courier>
+            <package>courier-authlib-mysql</package>
+            <package>courier-imap</package>
+            <package>courier-imap-ssl</package>
+            <package>courier-pop</package>
+            <package>courier-pop-ssl</package>
+            <package>libgamin0</package>
+            <package>maildrop</package>
+        </courier>
+        <dovecot>
+            <package>dovecot-core</package>
+            <package>dovecot-imapd</package>
+            <package>dovecot-pop3d</package>
+            <package>dovecot-mysql</package>
+        </dovecot>
     </po>
-    <mta>
-        <alternative default="postfix">
-            <postfix>
-                <package>postfix</package>
-                <package>libsasl2-modules</package>
-                <package>libsasl2-modules-sql</package>
-                <package>sasl2-bin</package>
-                <package>policyd-weight</package>
-                <package>postgrey</package>
-            </postfix>
-        </alternative>
+    <mta default="postfix">
+        <postfix>
+            <package>postfix</package>
+            <package>libsasl2-modules</package>
+            <package>libsasl2-modules-sql</package>
+            <package>sasl2-bin</package>
+            <package>policyd-weight</package>
+            <package>postgrey</package>
+        </postfix>
     </mta>
-    <ftpd>
-        <alternative default="proftpd">
-            <proftpd>
-                <package>proftpd-basic</package>
-                <package>proftpd-mod-mysql</package>
-            </proftpd>
-        </alternative>
+    <ftpd default="proftpd">
+        <proftpd>
+            <package>proftpd-basic</package>
+            <package>proftpd-mod-mysql</package>
+        </proftpd>
     </ftpd>
-    <named>
-        <alternative default="bind">
-            <bind>
-                <package>bind9</package>
-            </bind>
-            <external_server/>
-        </alternative>
+    <named default="bind">
+        <bind>
+            <package>bind9</package>
+        </bind>
+        <external_server/>
     </named>
-    <sql>
-        <alternative default="mysql_5.5">
-            <mysql_5.5
-                    pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
-                    pinning_pin="release o=Debian,n=wheezy"
-                    pinning_pin_priority="1001"
-                    >
-                <package>mysql-server-5.5</package>
-                <package>mysql-client-5.5</package>
-                <package>libmysqlclient18</package>
-            </mysql_5.5>
-            <mariadb_5.5
-                    pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common libmysqlclient18"
-                    pinning_pin="origin mirror.netcologne.de"
-                    pinning_pin_priority="1001"
-                    repository="deb http://mirror.netcologne.de/mariadb/repo/5.5/debian wheezy main"
-                    repository_origin="MariaDB"
-                    repository_key_srv="keyserver.ubuntu.com"
-                    repository_key_id="0xcbcb082a1bb943db"
-                    >
-                <package>mariadb-client-5.5</package>
-                <package>mariadb-server-5.5</package>
-                <package>libmysqlclient18</package>
-            </mariadb_5.5>
-            <mariadb_10.0
-                    pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common libmysqlclient18"
-                    pinning_pin="origin mirror.netcologne.de"
-                    pinning_pin_priority="1001"
-                    repository="deb http://mirror.netcologne.de/mariadb/repo/10.0/debian wheezy main"
-                    repository_origin="MariaDB"
-                    repository_key_srv="keyserver.ubuntu.com"
-                    repository_key_id="0xcbcb082a1bb943db"
-                    >
-                <package>mariadb-client-10.0</package>
-                <package>mariadb-server-10.0</package>
-                <package>libmysqlclient18</package>
-            </mariadb_10.0>
-            <percona_5.5
-                    pinning_package="percona-client-5.5 percona-server-5.5 percona-server-common libmysqlclient18"
-                    pinning_pin="origin repo.percona.com"
-                    pinning_pin_priority="1001"
-                    repository="deb http://repo.percona.com/apt wheezy main"
-                    repository_origin="Percona"
-                    repository_key_srv="keys.gnupg.net"
-                    repository_key_id="1C4CBDCDCD2EFD2A"
-                    >
-                <package>percona-server-client-5.5</package>
-                <package>percona-server-server-5.5</package>
-                <package>libmysqlclient18</package>
-            </percona_5.5>
-            <percona_5.6
-                    pinning_package="percona-client-5.6 percona-server-5.6 percona-server-common libmysqlclient18.1"
-                    pinning_pin="origin repo.percona.com"
-                    pinning_pin_priority="1001"
-                    repository="deb http://repo.percona.com/apt wheezy main"
-                    repository_origin="Percona"
-                    repository_key_srv="keys.gnupg.net"
-                    repository_key_id="1C4CBDCDCD2EFD2A"
-                    >
-                <package>percona-server-client-5.6</package>
-                <package>percona-server-server-5.6</package>
-                <package>libmysqlclient18.1</package>
-            </percona_5.6>
-            <remote_server>
-                <package>mysql-client</package>
-            </remote_server>
-        </alternative>
+    <sql default="mysql_5.5">
+        <mysql_5.5
+                pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
+                pinning_pin="release o=Debian,n=wheezy"
+                pinning_pin_priority="1001"
+                >
+            <package>mysql-server-5.5</package>
+            <package>mysql-client-5.5</package>
+            <package>mysql-common</package>
+            <package>libmysqlclient18</package>
+        </mysql_5.5>
+        <mariadb_5.5
+                pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common mysql-common libmysqlclient18"
+                pinning_pin="origin mirror.netcologne.de"
+                pinning_pin_priority="1001"
+                repository="deb http://mirror.netcologne.de/mariadb/repo/5.5/debian wheezy main"
+                repository_origin="MariaDB"
+                repository_key_srv="keyserver.ubuntu.com"
+                repository_key_id="0xcbcb082a1bb943db"
+                >
+            <package>mariadb-client-5.5</package>
+            <package>mariadb-server-5.5</package>
+            <package>mariadb-common</package>
+            <package>mysql-common</package>
+            <package>libmysqlclient18</package>
+        </mariadb_5.5>
+        <mariadb_10.0
+                pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common mysql-common libmysqlclient18"
+                pinning_pin="origin mirror.netcologne.de"
+                pinning_pin_priority="1001"
+                repository="deb http://mirror.netcologne.de/mariadb/repo/10.0/debian wheezy main"
+                repository_origin="MariaDB"
+                repository_key_srv="keyserver.ubuntu.com"
+                repository_key_id="0xcbcb082a1bb943db"
+                allow_switch_to="percona_5.6,remote_server"
+                >
+            <package>mariadb-client-10.0</package>
+            <package>mariadb-server-10.0</package>
+            <package>mariadb-common</package>
+            <package>mysql-common</package>
+            <package>libmysqlclient18</package>
+        </mariadb_10.0>
+        <percona_5.5
+                pinning_package="percona-client-5.5 percona-server-5.5 libmysqlclient18"
+                pinning_pin="origin repo.percona.com"
+                pinning_pin_priority="1001"
+                repository="deb http://repo.percona.com/apt wheezy main"
+                repository_origin="Percona"
+                repository_key_srv="keys.gnupg.net"
+                repository_key_id="1C4CBDCDCD2EFD2A"
+                >
+            <package>percona-server-client-5.5</package>
+            <package>percona-server-server-5.5</package>
+            <package>libmysqlclient18</package>
+        </percona_5.5>
+        <percona_5.6
+                pinning_package="percona-server-client-5.6 percona-server-server-5.6 libmysqlclient18 libmysqlclient18.1"
+                pinning_pin="origin repo.percona.com"
+                pinning_pin_priority="1001"
+                repository="deb http://repo.percona.com/apt wheezy main"
+                repository_origin="Percona"
+                repository_key_srv="keys.gnupg.net"
+                repository_key_id="1C4CBDCDCD2EFD2A"
+                allow_switch_to="mariadb_10.0,remote_server"
+                >
+            <package>percona-server-client-5.6</package>
+            <package>percona-server-server-5.6</package>
+            <package>libmysqlclient18</package>
+            <package>libmysqlclient18.1</package>
+        </percona_5.6>
+        <remote_server>
+            <package>mysql-client-5.5</package>
+            <package>mysql-common</package>
+        </remote_server>
     </sql>
     <php>
         <package>php5</package>

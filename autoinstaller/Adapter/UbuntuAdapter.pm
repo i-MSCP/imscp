@@ -41,7 +41,7 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =head1 DESCRIPTION
 
- i-MSCP distro autoinstaller adapter implementation for Ubuntu.
+ i-MSCP autoinstaller adapter implementation for Ubuntu.
 
  See the autoinstaller::Adapter::Debian autoinstaller adapter for more information.
 
@@ -51,7 +51,7 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return autoinstaller::Adapter::UbuntuAdapter
 
@@ -74,51 +74,50 @@ sub _init
 		push @{$self->{'preRequiredPackages'}}, 'software-properties-common';
 	}
 
-	$self->{'externalRepositoriesToRemove'} = {};
-	$self->{'externalRepositoriesToAdd'} = {};
+	$self->{'aptRepositoriesToRemove'} = { };
+	$self->{'aptRepositoriesToAdd'} = { };
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
 	$self->{'packagesToUninstall'} = [];
 
-	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') if ! $main::skippackages;
+	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') unless $main::skippackages;
 
 	$self;
 }
 
-=item _processExternalRepositories()
+=item _processAptRepositories()
 
- Process external repositories
+ Process APT repositories
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _processExternalRepositories
+sub _processAptRepositories
 {
 	my $self = $_[0];
 
-	if(%{$self->{'externalRepositoriesToRemove'}} || %{$self->{'externalRepositoriesToAdd'}}) {
+	if(%{$self->{'aptRepositoriesToRemove'}} || %{$self->{'aptRepositoriesToAdd'}}) {
+		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
-		my $sourceListFile = iMSCP::File->new('filename' => '/etc/apt/sources.list');
-
-		my $rs = $sourceListFile->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+		my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 		return $rs if $rs;
 
-		my $sourceListFileContent = $sourceListFile->get();
+		my $fileContent = $file->get();
 
-		unless (defined $sourceListFileContent) {
+		unless (defined $fileContent) {
 			error('Unable to read /etc/apt/sources.list file');
 			return 1;
 		}
 
-		delete $self->{'externalRepositoriesToRemove'}->{$_} for keys %{$self->{'externalRepositoriesToAdd'}};
+		delete $self->{'aptRepositoriesToRemove'}->{$_} for keys %{$self->{'aptRepositoriesToAdd'}};
 
 		my $distroRelease = iMSCP::LsbRelease->getInstance()->getRelease(1);
 		my (@cmd, $stdout, $stderr);
 
-		for(keys %{$self->{'externalRepositoriesToRemove'}}) {
-			if(/^ppa:/ || $sourceListFileContent =~ /^$_/m) {
-				my $repository = $self->{'externalRepositoriesToRemove'}->{$_};
+		for(keys %{$self->{'aptRepositoriesToRemove'}}) {
+			if(/^ppa:/ || $fileContent =~ /^$_/m) {
+				my $repository = $self->{'aptRepositoriesToRemove'}->{$_};
 
 				my @cmd = (
 					'aptitude search', escapeShell("?installed?origin($repository->{'repository_origin'})"),
@@ -131,7 +130,7 @@ sub _processExternalRepositories
 				return $rs if $rs;
 
 				# Schedule packages for deletion
-				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
+				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split /\n/, $stdout) if $stdout;
 
 				if($distroRelease > 10.04) {
 					@cmd = ('add-apt-repository -y -r', escapeShell($_));
@@ -151,29 +150,23 @@ sub _processExternalRepositories
 						}
 					} else { # Normal repository
 						# Remove the repository from the sources.list file
-						$sourceListFileContent = $sourceListFile->get();
-						$sourceListFileContent =~ s/\n?$_\n?//gm;
+						$fileContent = $file->get();
+						$fileContent =~ s/\n?$_\n?//gm;
 
-						$rs = $sourceListFile->set($sourceListFileContent);
+						$rs = $file->set($fileContent);
 						return $rs if $rs;
 
-						$rs = $sourceListFile->save();
+						$rs = $file->save();
 						return $rs if $rs;
 					}
 				}
 			}
 		}
 
-		eval "use List::MoreUtils qw(uniq); 1";
-		fatal('Unable to load the List::MoreUtils perl module') if $@;
-
-		# Remove any duplicate entries
-		@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
-
 		# Add needed external repositories
-		for(keys %{$self->{'externalRepositoriesToAdd'}}) {
+		for(keys %{$self->{'aptRepositoriesToAdd'}}) {
 			if(/^ppa:/ || $sourceListFileContent !~ /^$_/m) {
-				my $repository = $self->{'externalRepositoriesToAdd'}->{$_};
+				my $repository = $self->{'aptRepositoriesToAdd'}->{$_};
 
 				if(/^ppa:/) { # PPA repository
 					if($distroRelease > 10.4) {

@@ -25,7 +25,6 @@
 #
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -45,12 +44,13 @@ use iMSCP::File;
 use iMSCP::Stepper;
 use iMSCP::Getopt;
 use File::Temp;
-use autoinstaller::Functions 'checkCommandAvailability';
+use version;
+use autoinstaller::Functions 'chkCommand';
 use parent 'autoinstaller::Adapter::AbstractAdapter';
 
 =head1 DESCRIPTION
 
- i-MSCP distro autoinstaller adapter implementation for Debian.
+ i-MSCP autoinstaller adapter implementation for Debian.
 
 =head1 PUBLIC METHODS
 
@@ -68,16 +68,18 @@ sub installPreRequiredPackages
 {
 	my $self = $_[0];
 
+	$self->{'eventManager'}->trigger('beforeInstallPreRequiredPackages', $self->{'preRequiredPackages'});
+
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	fatal('Not a Debian like system') if checkCommandAvailability($command);
+	fatal('Not a Debian-like system') if chkCommand($command);
 
 	# Ensure packages index is up to date
 	my $rs = $self->_updatePackagesIndex();
 	return $rs if $rs;
 
-	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+	unless($preseed || $main::noprompt || chkCommand('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
@@ -89,8 +91,9 @@ sub installPreRequiredPackages
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to install pre-required packages') if $rs && ! $stderr;
+	return $rs if $rs;
 
-	$rs;
+	$self->{'eventManager'}->trigger('afterInstallPreRequiredPackages');
 }
 
 =item preBuild()
@@ -105,22 +108,22 @@ sub preBuild
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::EventManager->getInstance()->trigger('beforePreBuild');
+	my $rs = $self->{'eventManager'}->trigger('beforePreBuild');
 	return $rs if $rs;
 
 	unless($main::skippackages) {
-		iMSCP::Dialog->factory()->endGauge();
+		iMSCP::Dialog->getInstance()->endGauge();
 
 		if($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && not $main::reconfigure ~~ ['sql', 'servers', 'all']) {
 			$ENV{'DEBIAN_PRIORITY'} = 'critical';
 		}
 
 		my @steps = (
-			[sub { $self->_preparePackagesList() }, 'Generating list of packages to uninstall and install'],
-			[sub { $self->_debconfSetSelections() }, 'Pre-fill Debconf database'],
-			[sub { $self->_processExternalRepositories() }, 'Process external repositories if any'],
-			[sub { $self->_processAptPreferencesFile() }, 'Process APT preferences file if any'],
-			[sub { $self->_updatePackagesIndex() }, 'Updating packages index files']
+			[sub { $self->_buildPackageList(); },       'Building list of packages to install/uninstall'],
+			[sub { $self->_prefillDebconfDatabase(); }, 'Pre-fill Debconf database'],
+			[sub { $self->_processAptRepositories(); }, 'Processing APT repositories if any'],
+			[sub { $self->_processAptPreferences(); },  'Processing APT preferences if any'],
+			[sub { $self->_updatePackagesIndex(); },    'Updating packages index']
 		);
 
 		my $step = 1;
@@ -151,12 +154,56 @@ sub preBuild
 		}
 	}
 
-	iMSCP::EventManager->getInstance()->trigger('afterPreBuild');
+	$self->{'eventManager'}->trigger('afterPreBuild');
+}
+
+=item installPackages()
+
+ Install Debian packages
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub installPackages
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
+	return $rs if $rs;
+
+	my $preseed = iMSCP::Getopt->preseed;
+
+	iMSCP::Dialog->getInstance()->endGauge();
+
+	my @command;
+
+	unless($preseed || $main::noprompt || chkCommand('debconf-apt-progress')) {
+		push @command, 'debconf-apt-progress --logstderr --';
+	}
+
+	if($main::forcereinstall) {
+		unshift @command, 'UCF_FORCE_CONFFMISS=1 '; # Force installation of missing conffiles which are managed by UCF
+
+		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o Dpkg::Options::='--force-confask' " .
+			"--reinstall install @{$self->{'packagesToInstall'}} --auto-remove --purge --force-yes";
+	} else {
+		push @command, "apt-get -y install @{$self->{'packagesToInstall'}} --auto-remove --purge --force-yes";
+	}
+
+	my ($stdout, $stderr);
+	$rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to install packages') if $rs && ! $stderr;
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterInstallPackages');
 }
 
 =item uninstallPackages()
 
- Uninstall Debian packages not longer needed by i-MSCP
+ Uninstall Debian packages not longer needed
 
  Return int 0 on success, other on failure
 
@@ -166,7 +213,28 @@ sub uninstallPackages
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeUninstallPackages', $self->{'packagesToUninstall'});
+	eval "use List::MoreUtils qw(uniq); 1";
+	fatal($@) if $@;
+
+	# Remove any duplicate entry
+	# Do not try to remove any packages which were scheduled for installation
+	@{$self->{'packagesToUninstall'}} = grep {
+		not $_ ~~ @{$self->{'packagesToInstall'}}
+	} uniq(@{$self->{'packagesToUninstall'}});
+
+	# Do not try to remove packages which is no longer available on the system or not installed
+	if(@{$self->{'packagesToUninstall'}}) {
+		my ($stdout, $stderr);
+		my $rs = execute(
+			"dpkg-query -W -f='\${Package}/\${Status}\n' @{$self->{'packagesToUninstall'}}", \$stdout, \$stderr
+		);
+		error($stderr) if $stderr && $rs > 1;
+		return $rs if $rs > 1;
+
+		@{$self->{'packagesToUninstall'}} = grep { m%^(.*?)/install% && ($_ =  $1) } split /\n/, $stdout;
+	}
+
+	my $rs = $self->{'eventManager'}->trigger('beforeUninstallPackages', $self->{'packagesToUninstall'});
 	return $rs if $rs;
 
 	if(@{$self->{'packagesToUninstall'}}) {
@@ -174,9 +242,9 @@ sub uninstallPackages
 		my $command = 'apt-get';
 		my $preseed = iMSCP::Getopt->preseed;
 
-		iMSCP::Dialog->factory()->endGauge();
+		iMSCP::Dialog->getInstance()->endGauge();
 
-		if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+		unless($preseed || $main::noprompt || chkCommand('debconf-apt-progress')) {
 			$command = 'debconf-apt-progress --logstderr -- ' . $command;
 		}
 
@@ -190,69 +258,7 @@ sub uninstallPackages
 		return $rs if $rs;
 	}
 
-	iMSCP::EventManager->getInstance()->trigger('afterUninstallPackages');
-}
-
-=item installPackages()
-
- Install Debian packages for i-MSCP
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub installPackages
-{
-	my $self = $_[0];
-
-	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
-	return $rs if $rs;
-
-	my $preseed = iMSCP::Getopt->preseed;
-
-	iMSCP::Dialog->factory()->endGauge();
-
-	my @command;
-
-	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
-		push @command, 'debconf-apt-progress --logstderr --';
-	}
-
-	if($main::forcereinstall) {
-		unshift @command, ('UCF_FORCE_CONFFMISS=1 '); # Force installation of missing conffile which are managed by UCF
-
-		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o Dpkg::Options::='--force-confask' " .
-			"--reinstall install @{$self->{'packagesToInstall'}} --auto-remove --purge";
-	} else {
-		push @command, "apt-get -y install @{$self->{'packagesToInstall'}} --auto-remove --purge";
-	}
-
-	my ($stdout, $stderr);
-	$rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error('Unable to install packages') if $rs && ! $stderr;
-	return $rs if $rs;
-
-	iMSCP::EventManager->getInstance()->trigger('afterInstallPackages');
-}
-
-=item postBuild()
-
- Process postBuild tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub postBuild
-{
-	my $self = $_[0];
-
-	# Add user servers selection in imscp.conf file by creating/updating server variables
-	$main::imscpConfig{uc($_) . '_SERVER'} = lc($self->{'userSelection'}->{$_}) for keys %{$self->{'userSelection'}};
-
-	0;
+	$self->{'eventManager'}->trigger('afterUninstallPackages');
 }
 
 =back
@@ -263,7 +269,7 @@ sub postBuild
 
 =item _init()
 
- Called by getInstance(). Initialize instance
+ Initialize instance
 
  Return autoinstaller::Adapter::DebianAdapter
 
@@ -273,217 +279,150 @@ sub _init
 {
 	my $self = $_[0];
 
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
+
 	delete $ENV{'DEBCONF_FORCE_DIALOG'};
 
 	$self->{'repositorySections'} = ['main', 'non-free'];
 	$self->{'preRequiredPackages'} = [
 		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget', 'resolvconf'
 	];
-	$self->{'externalRepositoriesToRemove'} = {};
-	$self->{'externalRepositoriesToAdd'} = {};
+	$self->{'aptRepositoriesToRemove'} = { };
+	$self->{'aptRepositoriesToAdd'} = { };
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
 	$self->{'packagesToUninstall'} = [];
 
-	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') if ! $main::skippackages;
+	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') unless $main::skippackages;
 
 	$self;
 }
 
-=item _preparePackagesList()
+=item _buildPackageList()
 
- Prepare lists of Debian packages to be uninstalled and installed
+ Build lists of Debian packages to uninstalle and install
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _preparePackagesList
+sub _buildPackageList
 {
 	my $self = $_[0];
 
 	my $lsbRelease = iMSCP::LsbRelease->getInstance();
-	my $distribution = lc($lsbRelease->getId(1));
+	my $dist = lc($lsbRelease->getId(1));
 	my $codename = lc($lsbRelease->getCodename(1));
-	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . "/packages-$codename.xml";
-	my $rs = 0;
+	my $pkgFile = "$FindBin::Bin/docs/" . ucfirst($dist) . "/packages-$codename.xml";
 
 	eval "use XML::Simple; 1";
-	fatal("Unable to load the XML::Simple perl module: $@") if $@;
+	fatal($@) if $@;
 
 	my $xml = XML::Simple->new(NoEscape => 1);
-	my $data = eval { $xml->XMLin($packagesFile, KeyAttr => 'name') };
+	my $pkgList = eval { $xml->XMLin($pkgFile, ForceArray => [ 'package']) };
 
-	fatal("Unable to parse $packagesFile: $@") if $@;
+	unless($@) {
+		# For each package section find in package list
+		for (sort keys %{$pkgList}) {
+			if(exists $pkgList->{$_}->{'package'}) { # Simple list of packages to install
+				push @{$self->{'packagesToInstall'}}, @{$pkgList->{$_}->{'package'}};
+			} else { # List of alternative package (software) available for installation
+				my $defaultAlt = delete $pkgList->{$_}->{'default'};
+				my $selectedAlt = $main::questions{ uc($_) . '_SERVER' } || $main::imscpConfig{ uc($_) . '_SERVER' };
+				my $forceDialog = ($selectedAlt) ? 0 : 1;
+				$selectedAlt = $defaultAlt if $forceDialog;
 
-	for(sort keys %{$data}) {
-		if($data->{$_}->{'alternative'}) {
-			my $service  = $_;
+				my @alts = keys %{$pkgList->{$_}}; # List of alternative softwares
 
-			my $default = $data->{$service}->{'alternative'}->{'default'} || '';
-			delete $data->{$service}->{'alternative'}->{'default'};
+				if(not $selectedAlt ~~ @alts) { # Handle wrong or deprecated entry case
+					$selectedAlt = $defaultAlt;
+					$forceDialog = 1;
+				}
 
-			my @alternative = sort keys %{$data->{$service}->{'alternative'}};
-			my $serviceName = uc($service) . '_SERVER';
+				if(exists $pkgList->{$_}->{$selectedAlt}->{'allow_switch_to'}) {
+					if($pkgList->{$_}->{$selectedAlt}->{'allow_switch_to'} ne '') {
+						my @allowedAlts = (split(',', $pkgList->{$_}->{$selectedAlt}->{'allow_switch_to'}), $selectedAlt);
+						@alts = grep { $_ ~~ @allowedAlts } @alts;
+					} else {
+						@alts = ($selectedAlt);
+					}
+				}
 
-			my $currentServer = exists $main::imscpConfig{$serviceName} ? $main::imscpConfig{$serviceName} : '';
+				@alts = sort @alts;
 
-			my $newServer = (exists $main::questions{$serviceName})
-					? $main::questions{$serviceName}
-					: (
-						(exists $main::imscpConfig{$serviceName} && $main::imscpConfig{$serviceName} ne '')
-							? $main::imscpConfig{$serviceName}
-                            : $currentServer
-					);
+				# Ask user for alternative software to install if needed
+				if(@alts > 1 && ($forceDialog || $main::reconfigure ~~ [$_, 'servers', 'all'])) {
+					iMSCP::Dialog->getInstance()->set('no-cancel', '');
+					(my $ret, $selectedAlt) = iMSCP::Dialog->getInstance()->radiolist(<<EOF, [@alts], $selectedAlt);
 
-			$newServer = '' if not $newServer ~~ @alternative;
+Please, choose the i-MSCP server implementation you want use for the $_ service:
+EOF
+					return $ret if $ret; # Handle ESC case
 
-			my $server = '';
+					iMSCP::Dialog->getInstance()->set('no-cancel');
+				}
 
-			# Only ask for server to use if not already defined or not found in list of available servers
-			# or if user asked for reconfiguration
-			 if($main::reconfigure ~~ [$service, 'servers', 'all'] || ! $newServer) {
-				if(@alternative > 1) { # Only ask for server if more than one is available
+				if($_ eq 'sql') {
+					my ($stdout, $stderr);
+					my $rs = execute("$main::imscpConfig{'CMD_RM'} -f /var/lib/mysql/debian-*.flag", \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+					error($stderr) if $rs && $stderr;
+					return $rs if $rs;
+				}
 
-					my @humanAlternative = @alternative;
-					s/_/ /g for @humanAlternative; # Humanize
-					$newServer =~ s/_/ /g; # Humanize
-					$default =~ s/_/ /g; # Humanize
-
-					iMSCP::Dialog->factory->set('no-cancel', '');
-
-					do {
-						$server = iMSCP::Dialog->factory()->radiolist(
-"
-\\Z4\\Zu" . uc($_) . " service\\Zn
-
-Please, choose the server you want use for the $_ service:
-",
-							[@humanAlternative],
-							$newServer || $default
-						);
-
-						$server =~ s/ /_/g; # Normalize
-
-						if(
-							ref $data->{$service}->{'alternative'}->{$server} eq 'HASH' &&
-							exists $data->{$service}->{'alternative'}->{$server}->{'repository'}
-						) {
-							$rs = iMSCP::Dialog->factory()->yesno(
-"
-\\Z4\\ZuExternal repository\\Zn
-
-The $service service requires usage of an external repository:
-
-$data->{$service}->{'alternative'}->{$server}->{'repository'}
-
-Do you agree?
-"
-							);
+				for my $alt(@alts) {
+					if($alt ne $selectedAlt) {
+						# APT repository to remove
+						if(exists $pkgList->{$_}->{$alt}->{'repository'}) {
+							$self->{'aptRepositoriesToRemove'}->{$pkgList->{$_}->{$alt}->{'repository'}} = {
+								'repository' => $pkgList->{$_}->{$alt}->{'repository'},
+								'repository_origin' => $pkgList->{$_}->{$alt}->{'repository_origin'}
+							};
 						}
 
-						$server = '' if $rs;
-						$rs = 0;
-					} while (! $server);
-
-					iMSCP::Dialog->factory->set('no-cancel', undef);
-
-				} else {
-					$server = pop(@alternative);
-				}
-			} else {
-				$server = $newServer;
-			}
-
-			#$self->{'userSelection'}->{$service} = $server eq 'Not used' ? 'no' : $server;
-			$self->{'userSelection'}->{$service} = $server;
-			#$main::questions{uc($service) . '_SERVER'} = $server eq 'Not used' ? 'no' : $server;
-			$main::questions{uc($service) . '_SERVER'} = $server;
-
-			for(@alternative) {
-				# Remove unselected server
-				if($server ne $_) {
-					if(ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
-						exists $data->{$service}->{'alternative'}->{$_}->{'repository'}
-					) {
-
-						$self->{'externalRepositoriesToRemove'}->{$data->{$service}->{'alternative'}->{$_}->{'repository'}} = {
-							'repository' => $data->{$service}->{'alternative'}->{$_}->{'repository'},
-							'repository_origin' => $data->{$service}->{'alternative'}->{$_}->{'repository_origin'}
-						};
-					}
-
-					for my $attr (keys %{$data->{$service}->{'alternative'}->{$_}}) {
-						delete $data->{$service}->{'alternative'}->{$_}->{$attr} if $attr ne 'package';
-					}
-
-					if($server ne $currentServer) {
-						$self->_parseHash($data->{$service}->{'alternative'}->{$_}, 'packagesToUninstall');
-					}
-
-					delete($data->{$service}->{'alternative'}->{$_});
-
-					next;
-				}
-
-				# Add external repositories if any
-				if(
-					ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
-                   	exists $data->{$service}->{'alternative'}->{$_}->{'repository'}
-				) {
-					$self->{'externalRepositoriesToAdd'}->{$data->{$service}->{'alternative'}->{$_}->{'repository'}} = {
-							'repository' => $data->{$service}->{'alternative'}->{$_}->{'repository'},
-							'repository_key_uri' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_uri'} || undef,
-							'repository_key_id' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_id'} || undef,
-							'repository_key_srv' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_srv'} || undef
-					}
-				}
-
-				# Add apt preferences if any
-				if(
-					ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
-                   	exists $data->{$service}->{'alternative'}->{$_}->{'pinning_package'}
-				) {
-					push(
-						@{$self->{'aptPreferences'}},
-						{
-							'pinning_package' => $data->{$service}->{'alternative'}->{$_}->{'pinning_package'},
-							'pinning_pin' => $data->{$service}->{'alternative'}->{$_}->{'pinning_pin'} || undef,
-							'pinning_pin_priority' => $data->{$service}->{'alternative'}->{$_}->{'pinning_pin_priority'} || undef,
+						# Packages to uninstall
+						if(exists $pkgList->{$_}->{$alt}->{'package'}) {
+							push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$_}->{$alt}->{'package'}};
 						}
-					);
+					}
 				}
 
-				# keep only packages
-				for my $attr (keys %{$data->{$service}->{'alternative'}->{$_}}) {
-					delete $data->{$service}->{'alternative'}->{$_}->{$attr} if $attr ne 'package';
+				# APT preferences to add
+				if(exists $pkgList->{$_}->{$selectedAlt}->{'pinning_package'}) {
+					push @{$self->{'aptPreferences'}}, {
+						'pinning_package' => $pkgList->{$_}->{$selectedAlt}->{'pinning_package'},
+						'pinning_pin' => $pkgList->{$_}->{$selectedAlt}->{'pinning_pin'} || undef,
+						'pinning_pin_priority' => $pkgList->{$_}->{$selectedAlt}->{'pinning_pin_priority'} || undef,
+					};
 				}
+
+				# APT repository to add
+				if(exists $pkgList->{$_}->{$selectedAlt}->{'repository'}) {
+					$self->{'aptRepositoriesToAdd'}->{$pkgList->{$_}->{$selectedAlt}->{'repository'}} = {
+						'repository' => $pkgList->{$_}->{$selectedAlt}->{'repository'},
+						'repository_key_uri' => $pkgList->{$_}->{$selectedAlt}->{'repository_key_uri'} || undef,
+						'repository_key_id' => $pkgList->{$_}->{$selectedAlt}->{'repository_key_id'} || undef,
+						'repository_key_srv' => $pkgList->{$_}->{$selectedAlt}->{'repository_key_srv'} || undef
+					};
+				}
+
+				# Packages to install
+				if(exists $pkgList->{$_}->{$selectedAlt}->{'package'}) {
+					push @{$self->{'packagesToInstall'}}, @{$pkgList->{$_}->{$selectedAlt}->{'package'}};
+				}
+
+				# Set server implementation to use
+				$main::questions{ uc($_) . '_SERVER' } = $selectedAlt;
 			}
 		}
-
-		$self->_parseHash($data->{$_});
+	} else {
+		error($@);
+		return 1;
 	}
 
-	# Build list of packages to uninstall
-
-	eval "use List::MoreUtils qw(uniq); 1";
-	fatal("Unable to load the List::MoreUtils perl module: $@") if $@;
-
-	@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
-
-	# This test is needed to be sure to not try to remove package no longer available
-	if(@{$self->{'packagesToUninstall'}}) {
-		my ($stdout, $stderr);
-		$rs = execute("dpkg-query -W -f='\${Package}/\${Status}\n' @{$self->{'packagesToUninstall'}}", \$stdout, \$stderr);
-		error($stderr) if $stderr && $rs > 1;
-		return $rs if $rs > 1;
-
-		$self->{'packagesToUninstall'} = [];
-
-		for(split "\n", $stdout) {
-			push @{$self->{'packagesToUninstall'}}, $1 if m%^(.*?)/install%;
-		}
-	}
+	#use Data::Dumper;
+	#print Dumper($self);
+	#exit;
 
 	0;
 }
@@ -562,39 +501,38 @@ sub _updateAptSourceList
 	0;
 }
 
-=item _processExternalRepositories()
+=item _processAptRepositories()
 
- Process external repositories
+ Process APT repositories
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _processExternalRepositories
+sub _processAptRepositories
 {
 	my $self = $_[0];
 
-	if(%{$self->{'externalRepositoriesToRemove'}} || %{$self->{'externalRepositoriesToAdd'}}) {
+	if(%{$self->{'aptRepositoriesToRemove'}} || %{$self->{'aptRepositoriesToAdd'}}) {
+		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
-		my $sourceListFile = iMSCP::File->new('filename' => '/etc/apt/sources.list');
-
-		my $rs = $sourceListFile->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+		my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 		return $rs if $rs;
 
-		my $sourceListFileContent = $sourceListFile->get();
+		my $fileContent = $file->get();
 
-		unless (defined $sourceListFileContent) {
+		unless (defined $fileContent) {
 			error('Unable to read /etc/apt/sources.list file');
 			return 1;
 		}
 
-		delete $self->{'externalRepositoriesToRemove'}->{$_} for keys %{$self->{'externalRepositoriesToAdd'}};
+		delete $self->{'aptRepositoriesToRemove'}->{$_} for keys %{$self->{'aptRepositoriesToAdd'}};
 
 		my (@cmd, $stdout, $stderr);
 
-		for(keys %{$self->{'externalRepositoriesToRemove'}}) {
-			if($sourceListFileContent =~ /^$_/m) {
-				my $repository = $self->{'externalRepositoriesToRemove'}->{$_};
+		for(keys %{$self->{'aptRepositoriesToRemove'}}) {
+			if($fileContent =~ /^$_/m) {
+				my $repository = $self->{'aptRepositoriesToRemove'}->{$_};
 
 				# Retrieve any packages installed from the repository to remove
 				my @cmd = (
@@ -607,26 +545,20 @@ sub _processExternalRepositories
 				return $rs if $rs;
 
 				# Schedule packages for deletion
-				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
+				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split /\n/, $stdout) if $stdout;
 
 				# Remove the repository from the sources.list file
 				(my $regexp = $_) =~ s/deb/(?:deb|deb-src)/; # Ensure backward compatibility (deb-src)
-				$sourceListFileContent =~ s/\n?$regexp?\n?//gm;
+				$fileContent =~ s/\n?$regexp?\n?//gm;
 			}
 		}
 
-		eval "use List::MoreUtils qw(uniq); 1";
-		fatal('Unable to load the List::MoreUtils perl module') if $@;
-
-		# Remove duplicate entries
-		@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
-
 		# Add needed external repositories
-		for(keys %{$self->{'externalRepositoriesToAdd'}}) {
-			if($sourceListFileContent !~ /^$_/m) {
-				my $repository = $self->{'externalRepositoriesToAdd'}->{$_};
+		for(keys %{$self->{'aptRepositoriesToAdd'}}) {
+			if($fileContent !~ /^$_/m) {
+				my $repository = $self->{'aptRepositoriesToAdd'}->{$_};
 
-				$sourceListFileContent .= "\n$_\n";
+				$fileContent .= "\n$_\n";
 
 				if($repository->{'repository_key_srv'}) { # Add the repository key from the given server, using key id
 					if($repository->{'repository_key_id'}) {
@@ -653,25 +585,25 @@ sub _processExternalRepositories
 			}
 		}
 
-		$rs = $sourceListFile->set($sourceListFileContent);
+		$rs = $file->set($fileContent);
 		return $rs if $rs;
 
-		$sourceListFile->save();
+		$file->save();
 		return $rs if $rs;
 	}
 
 	0;
 }
 
-=item _processAptPreferencesFile()
+=item _processAptPreferences()
 
- Process apt preferences file
+ Process apt preferences
 
  Return 0 on success, other on failure
 
 =cut
 
-sub _processAptPreferencesFile
+sub _processAptPreferences
 {
 	my $self = $_[0];
 
@@ -679,7 +611,7 @@ sub _processAptPreferencesFile
 	my $rs = 0;
 
 	for(@{$self->{'aptPreferences'}}) {
-		if(! exists $_->{'pinning_pin'} || ! exists $_->{'pinning_pin_priority'}) {
+		unless(exists $_->{'pinning_pin'} || exists $_->{'pinning_pin_priority'}) {
 			error('One of these attributes is missing: pinning_pin or pinning_pin_priority');
 			return 1;
 		}
@@ -724,7 +656,7 @@ sub _updatePackagesIndex
 	my ($stdout, $stderr);
 	my $preseed = iMSCP::Getopt->preseed;
 
-	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+	unless($preseed || $main::noprompt || chkCommand('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
@@ -736,7 +668,7 @@ sub _updatePackagesIndex
 	$rs
 }
 
-=item _debconfSetSelection()
+=item _prefillDebconfDatabase()
 
  Pre-fill debconf database
 
@@ -744,7 +676,7 @@ sub _updatePackagesIndex
 
 =cut
 
-sub _debconfSetSelections
+sub _prefillDebconfDatabase
 {
 	my $self = $_[0];
 
@@ -754,8 +686,7 @@ sub _debconfSetSelections
 
 	if(defined $sqlServer) {
 		if($sqlServer ne 'remote_server') {
-			if( $sqlServer =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/) {
-
+			if($sqlServer =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/) {
 				$sqlServerPackageName = "$1-server" . ($1 eq 'percona' ? '-server' : '') . "-$2";
 			} else {
 				error("Unknown SQL server package name: $sqlServer");
@@ -763,7 +694,7 @@ sub _debconfSetSelections
 			}
 		}
 	} else {
-		error('Unable to retrieve SQL server name in your preseed file');
+		error('Unable to retrieve SQL server name');
 		return 1;
 	}
 
@@ -779,9 +710,9 @@ sub _debconfSetSelections
 	# From postfix package postfix.config script
 	my $destinations;
 	if ($mailname eq $hostname) {
-		$destinations = join ", ", ($mailname, "localhost." . $domain, ", localhost");
+		$destinations = join ', ', ($mailname, 'localhost.' . $domain, ', localhost');
 	} else {
-		$destinations = join ", ", ($mailname, $hostname, "localhost." . $domain . ", localhost");
+		$destinations = join ', ', ($mailname, $hostname, 'localhost.' . $domain . ', localhost');
 	}
 
 	my $selectionsFileContent = <<EOF;
@@ -799,7 +730,7 @@ courier-ssl courier-ssl/certnotice note
 EOF
 		}
 	} else {
-		error('Unable to retrieve PO server name in your preseed file');
+		error('Unable to retrieve PO server name');
 		return 1;
 	}
 
@@ -817,73 +748,15 @@ EOF
 	my $rs = execute("debconf-set-selections $debconfSelectionsFile", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
-	error('Unable to insert entries in debconf database') if $rs && ! $stderr;
+	error('Unable to pre-fill debconf database') if $rs && ! $stderr;
 
 	$rs;
-}
-
-=item _parseHash(\%hash, $target)
-
- Parse the given hash and put result in the target array
-
- Param hash_ref $hash Reference to a hash
- Param string Target array name (packagesToUninstall|packagesToInstall)
- Return undef
-
-=cut
-
-sub _parseHash($$$)
-{
-	my ($self, $hash, $target) = @_;
-
-	$target ||= 'packagesToInstall';
-
-	for(values %{$hash}) {
-		if(ref $_  eq 'HASH') {
-			$self->_parseHash($_, $target);
-		} elsif(ref $_  eq 'ARRAY') {
-			$self->_parseArray($_, $target);
-		} else {
-			push @{$self->{$target}}, $_;
-		}
-	}
-
-	undef;
-}
-
-=item _parseArray(\@array, $target)
-
- Parse the given array and put the result in the target array
-
- Param array_ref $array Reference to an array
- Param string Target array (packagesToUninstall|packagesToInstall)
- Return undef
-
-=cut
-
-sub _parseArray
-{
-	my ($self, $array, $target) = @_;
-	$target ||= 'packagesToInstall';
-
-	for(@{$array}) {
-		if(ref $_ eq 'HASH') {
-			$self->_parseHash($_, $target);
-		} elsif(ref $_ eq 'ARRAY') {
-			$self->_parseArray($_, $target);
-		} else {
-			push @{$self->{$target}}, $_;
-		}
-	}
-
-	undef;
 }
 
 =back
 
 =head1 AUTHORS
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

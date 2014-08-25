@@ -486,7 +486,7 @@ sub _installPackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	iMSCP::Dialog->factory()->endGauge();
+	iMSCP::Dialog->getInstance()->endGauge();
 
 	$command = 'debconf-apt-progress --logstderr -- ' . $command if ! $preseed && ! $main::noprompt;
 
@@ -519,7 +519,7 @@ sub _removePackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	iMSCP::Dialog->factory()->endGauge();
+	iMSCP::Dialog->getInstance()->endGauge();
 
 	$command = 'debconf-apt-progress --logstderr -- ' . $command if ! $preseed && ! $main::noprompt;
 
