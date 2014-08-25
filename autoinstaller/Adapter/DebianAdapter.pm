@@ -420,10 +420,6 @@ EOF
 		return 1;
 	}
 
-	#use Data::Dumper;
-	#print Dumper($self);
-	#exit;
-
 	0;
 }
 

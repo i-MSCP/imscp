@@ -8,7 +8,8 @@
 				"oLanguage": {DATATABLE_TRANSLATIONS},
 				"iDisplayLength": 5,
 				"bStateSave": true,
-				"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 5 ] } ]
+				"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 5 ] } ],
+				"pagingType": "simple"
 			}
 		);
 
