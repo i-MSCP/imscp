@@ -101,7 +101,7 @@ sub showDialog
 	) {
 		# Ask for the proftpd restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
+			($rs, $dbUser) = $dialog->inputbox(
 				"\nPlease enter an username for the restricted proftpd SQL user:$msg", $dbUser
 			);
 

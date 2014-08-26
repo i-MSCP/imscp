@@ -113,7 +113,7 @@ sub showDialog
 	) {
 		# Ask for the authdaemon restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
+			($rs, $dbUser) = $dialog->inputbox(
 				"\nPlease enter an username for the restricted authdaemon SQL user:$msg", $dbUser
 			);
 

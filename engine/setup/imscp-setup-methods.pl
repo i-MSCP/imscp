@@ -146,14 +146,12 @@ sub setupDialog
 		)
 	);
 
-	my $dialog = iMSCP::Dialog->factory();
+	my $dialog = iMSCP::Dialog->getInstance();
 
-	$dialog->resetLabels();
-	$ENV{'DIALOGOPTS'} = "--ok-label Ok --yes-label Yes --no-label No --cancel-label Back";
-
-	# We want get 30 as exit code for both ESC and CANCEL events (ESC will be handled in different way later)
-	$ENV{'DIALOG_CANCEL'} = 30;
-	$ENV{'DIALOG_ESC'} = 30;
+	$dialog->set('--ok-label', 'Ok');
+	$dialog->set('--yes-label', 'Yes');
+	$dialog->set('--no-label', 'No');
+	$dialog->set('--cancel-label', 'Back');
 
 	# Implements a simple state machine (backup capability)
 	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
@@ -172,6 +170,8 @@ sub setupDialog
 			$state++;
 		}
 	}
+
+	$dialog->resetLabels();
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupDialog');
 }
@@ -212,10 +212,9 @@ sub setupTasks
 	for (@steps) {
 		$rs = step($_->[0], $_->[1], $nbSteps, $step);
 		return $rs if $rs;
+
 		$step++;
 	}
-
-	iMSCP::Dialog->factory()->endGauge();
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupTasks');
 }
@@ -1060,7 +1059,7 @@ sub setupAskServicesSsl
 		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
 
 		if($openSSL->validateCertificateChain()) {
-			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate for the services is missing or invalid.");
+			iMSCP::Dialog->getInstance()->msgbox("\nYour SSL certificate for the services is missing or invalid.");
 			goto SSL_DIALOG;
 		}
 
@@ -1520,8 +1519,6 @@ sub setupImportSqlSchema
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge();
-
 	endDetail();
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupImportSqlSchema');
@@ -1880,8 +1877,6 @@ sub setupSetPermissions
 			step(undef, $1, $2, $3) if /^(.*)\t(.*)\t(.*)$/;
 		}
 
-		iMSCP::Dialog->factory()->endGauge();
-
 		my $stderr = do { local $/; <FHERR> };
 
 		close FHOUT;
@@ -2009,8 +2004,6 @@ sub setupRebuildCustomerFiles
 		step(undef, "Processing $1 ($2) tasks: $3 (ID $4)", $5, $6) if /^(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)$/;
 	}
 
-	iMSCP::Dialog->factory()->endGauge();
-
 	my $stderr = do { local $/; <FHERR> };
 
 	close FHOUT;
@@ -2073,8 +2066,6 @@ sub setupPreInstallServers
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge();
-
 	endDetail();
 
 	return $rs if $rs;
@@ -2120,8 +2111,6 @@ sub setupPreInstallPackages
 
 		$step++;
 	}
-
-	iMSCP::Dialog->factory()->endGauge();
 
 	endDetail();
 
@@ -2171,8 +2160,6 @@ sub setupInstallServers
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge();
-
 	endDetail();
 
 	return $rs if $rs;
@@ -2218,8 +2205,6 @@ sub setupInstallPackages
 
 		$step++;
 	}
-
-	iMSCP::Dialog->factory()->endGauge();
 
 	endDetail();
 
@@ -2269,8 +2254,6 @@ sub setupPostInstallServers
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge();
-
 	endDetail();
 
 	return $rs if $rs;
@@ -2317,8 +2300,6 @@ sub setupPostInstallPackages
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge();
-
 	endDetail();
 
 	return $rs if $rs;
@@ -2326,7 +2307,7 @@ sub setupPostInstallPackages
 	iMSCP::EventManager->getInstance()->trigger('afterSetupPostInstallPackages');
 }
 
-# Restart all services needed by i-MSCP
+# Restart all services
 sub setupRestartServices
 {
 	my @services = ();
@@ -2336,54 +2317,34 @@ sub setupRestartServices
 
 	my $serviceMngr = iMSCP::Service->getInstance();
 
-	unshift @services, [
-		sub { $serviceMngr->restart($main::imscpConfig{'POSTGREY_SNAME'}, '-u postgrey -f postgrey'); }, 'POSTGREY'
-	];
+	unshift @services, (
+		[ sub { $serviceMngr->restart($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'retval'); }, 'i-MSCP Network' ],
+		[ sub { $serviceMngr->restart($main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'imscp_daemon'); }, 'i-MSCP Daemon' ],
+		[
+			sub {
+					# We process like this because policyd-weight refuses to restart if the pid file has gone away
+					# for any reason...
+					(
+						$serviceMngr->stop($main::imscpConfig{'POLICYD_WEIGHT_SNAME'}, '-f policyd-weight') ||
+						$serviceMngr->start($main::imscpConfig{'POLICYD_WEIGHT_SNAME'}, '-f policyd-weight')
+					);
+			},
+			'Policyd-Weight'
+		],
+		[ sub { $serviceMngr->restart($main::imscpConfig{'POSTGREY_SNAME'}, '-u postgrey -f postgrey'); }, 'Postgrey' ]
+	);
 
-	unshift @services, [
-		sub { $serviceMngr->restart($main::imscpConfig{'POLICYD_WEIGHT_SNAME'}, 'policyd-weight'); }, 'POLICYD WEIGHT'
-	];
-
-	unshift @services, [
-	 	sub { $serviceMngr->restart($main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'imscp_daemon'); }, 'i-MSCP DAEMON'
-	];
-
-	my $totalItems = @services + 1;
-	my $counter = 1;
+	my $nbSteps = @services;
+	my $step = 1;
 
 	startDetail();
 
-	$rs = step(
-		sub {
-			my ($stdout, $stderr);
-			my $rs = execute(
-				"$main::imscpConfig{'SERVICE_MNGR'} $main::imscpConfig{'IMSCP_NETWORK_SNAME'} restart",
-				\$stdout,
-				\$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-
-			$rs;
-		},
-		"Restarting i-MSCP NETWORK service...", $totalItems, $counter
-	);
-	error("Unable to restart $main::imscpConfig{'IMSCP_NETWORK_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$counter++;
-
 	for (@services) {
-		my ($sub, $sName) = @{$_};
-
-		$rs = step($sub, "Restarting $sName service...", $totalItems, $counter);
-		error("Unable to restart $sName service") if $rs;
+		$rs = step($_->[0], "Restarting $_->[1] service...", $nbSteps, $step);
+		error("Unable to restart $_->[1] service") if $rs;
 		return $rs if $rs;
-
-		$counter++;
+		$step++;
 	}
-
-	iMSCP::Dialog->factory()->endGauge();
 
 	endDetail();
 

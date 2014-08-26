@@ -116,7 +116,7 @@ sub uninstall
 
 =item setPermissionsListener()
 
- Set file permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 

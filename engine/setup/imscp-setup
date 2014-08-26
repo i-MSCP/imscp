@@ -19,7 +19,6 @@
 #
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -30,24 +29,29 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
-umask(027);
+umask(022);
 
 use iMSCP::Debug;
-use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
+use File::Basename;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-setup.log');
 
+# Setup backend mode
+{
+	no warnings qw/once/;
+	$main::execmode = 'setup';
+}
+
+# Entering in silent mode
 silent(1);
 
-$main::execmode = 'setup' unless $main::execmode;
-
-iMSCP::Getopt->parse('Usage: perl imscp-setup [options]');
+iMSCP::Getopt->parse(sprintf('Usage: perl %s [OPTION]...', basename($0)));
 
 # Get reconfigure option
 $main::reconfigure = iMSCP::Getopt->reconfigure;
@@ -59,62 +63,62 @@ $main::reconfigure = iMSCP::Getopt->reconfigure;
 my $preseedFile = iMSCP::Getopt->preseed;
 if($preseedFile) {
 	require $preseedFile;
-	# Values from preseed file always override those already set.
-	# The preseed option is not compatible with the reconfigure option.
+	# The preseed option supersede the reconfigure option
+	iMSCP::Getopt->reconfigure('none');
 	$main::reconfigure = 'none';
 	undef $preseedFile;
 }
 
+# Handle the listener option
+my $listenerFile = iMSCP::Getopt->listener;
+if($listenerFile) {
+	require $listenerFile;
+	undef $listenerFile;
+}
+
 # handle noprompt option
 $main::noprompt = iMSCP::Getopt->noprompt;
-debugRegisterCallBack(
-	sub {
-		if($?) { # We exit with status 5 from iMSCP::Dialog::Dialog in noninteractive mode
-			if($? == 5) {
-				if(iMSCP::Getopt->preseed) {
-					print STDERR output('Noninteractive mode: Missing or bad entry found in your preseed file.', 'fatal');
-				} else {
-					print STDERR output('Noninteractive mode: Missing or bad entry found in configuration file.', 'fatal');
+if($main::noprompt) {
+	debugRegisterCallBack(
+		sub {
+			if($?) { # We exit with status 5 from iMSCP::Dialog in noninteractive mode
+				if($? == 5) {
+					if(iMSCP::Getopt->preseed) {
+						print STDERR output('Missing or bad entry found in your preseed file.', 'fatal');
+					} else {
+						print STDERR output('Missing or bad entry found in configuration file.', 'fatal');
+					}
 				}
+			} else {
+				$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
+				print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok');
 			}
-			fatal(iMSCP::Debug::getLastError());
-			exit $?;
 		}
-		print STDOUT output("i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated", 'ok');
-		exit 0;
-	}
-) if $main::noprompt;
+	);
 
-print STDOUT output("Installation in progress... Please wait.") if $main::noprompt;
+	print STDOUT output("Installation in progress... Please wait.");
+}
 
-require "$FindBin::Bin/imscp-setup-methods.pl";
-
-# Start setup
-sub setupStart
+# Run setup
+sub run
 {
+	# Include needed library
+	require "$FindBin::Bin/imscp-setup-methods.pl";
+
 	# Bootstrap setup
 	my $rs = setupBoot();
 	return $rs if $rs;
 
-	# Handle the listener-file option
-	my $listenerFile = iMSCP::Getopt->listenerFile;
+	$rs = iMSCP::EventManager->getInstance()->trigger('beforeSetup');
+	return $rs if $rs;
 
-	if($listenerFile) {
-		require $listenerFile;
-	}
+	# Allow any server/addon to register their setup hook functions
+	$rs = setupRegisterListeners();
+	return $rs if $rs;
 
-	# Allow any server/package to register its setup event listeners
-	setupRegisterListeners();
-}
-
-# Process both setup dialog and tasks
-sub setupProcess
-{
-	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetup');
-
-	if(! $main::noprompt) {
+	unless($main::noprompt) {
 		my $distribution = ucfirst(lc(iMSCP::LsbRelease->getInstance()->getId(1)));
-		my $dialog = iMSCP::Dialog->factory();
+		my $dialog = iMSCP::Dialog->getInstance();
 
 		$dialog->set('yes-label', 'Continue');
 		$dialog->set('no-label', 'Abort');
@@ -133,7 +137,10 @@ This program will install/update i-MSCP on your system.
          '\\Zbno\\Zn' in your imscp.conf file will be processed by this program.
 EOF
 
-			$dialog->msgbox("\nSetup process has been aborted...");
+			$dialog->msgbox(<<EOF);
+
+Setup process has been aborted...
+EOF
 			exit 0;
 		}
 	}
@@ -146,14 +153,11 @@ EOF
 	$rs = setupTasks();
 	return $rs if $rs;
 
-	iMSCP::EventManager->getInstance()->trigger('afterSetup');
-}
+	$rs = iMSCP::EventManager->getInstance()->trigger('afterSetup');
+	return $rs if $rs;
 
-sub setupShutDown
-{
-	return 0 if $main::noprompt;
-
-	iMSCP::Dialog->factory()->msgbox(<<EOF);
+	unless($main::noprompt) {
+		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1Congratulation\\Zn
 
@@ -161,14 +165,9 @@ i-MSCP has been successfully updated.
 
 Thank you for choosing i-MSCP.
 EOF
+	}
 
 	0;
 }
 
-my $rs = 0;
-
-$rs = setupStart();
-$rs ||= setupProcess();
-$rs ||= setupShutDown();
-
-exit $rs;
+exit run();

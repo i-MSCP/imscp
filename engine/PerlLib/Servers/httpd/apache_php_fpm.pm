@@ -134,7 +134,8 @@ sub postinstall
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices',
 		sub {
-			push @{$_[0]}, [ sub { $self->startPhpFpm(); }, 'PHP5-FPM' ], [ sub { $self->startApache(); }, 'HTTPD' ]; 0;
+			push @{$_[0]},
+			[ sub { $self->startPhpFpm(); }, 'php5-fpm' ], [ sub { $self->startApache(); }, 'Httpd (Apache)' ]; 0;
 		}
 	);
 

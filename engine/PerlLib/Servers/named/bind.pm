@@ -102,7 +102,7 @@ sub postinstall
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'DNS' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Bind9' ]; 0; }
 	) if $main::imscpConfig{'NAMED_SERVER'} ne 'external_server';
 
 	$self->{'eventManager'}->trigger('afterNamedPostInstall');

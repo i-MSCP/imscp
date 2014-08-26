@@ -120,7 +120,7 @@ sub postinstall
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'FTP' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Proftpd' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterFtpdPostInstall', 'proftpd');

@@ -79,7 +79,7 @@ sub registerSetupListeners
 
 =item showDialog(\%dialog)
 
- Show PhpMyAdmin questions
+ Show dialog
 
  Param iMSCP::Dialog \%dialog
  Return int 0 or 30
@@ -105,7 +105,7 @@ sub showDialog
 	) {
 		# Ask for the PhpMyAdmin restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
+			($rs, $dbUser) = $dialog->inputbox(
 				"\nPlease enter an username for the restricted phpmyadmin SQL user:$msg", $dbUser
 			);
 
@@ -308,7 +308,7 @@ sub _init
 
 =cut
 
-sub _backupConfigFile($$)
+sub _backupConfigFile
 {
 	my ($self, $cfgFile) = @_;
 
@@ -426,7 +426,7 @@ sub _setupSqlUser
 
 	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser;
+		next unless $sqlUser;
 
 		for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 			next if ! $_;

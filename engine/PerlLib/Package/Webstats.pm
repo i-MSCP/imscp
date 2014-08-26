@@ -37,6 +37,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
+use iMSCP::Dialog;
 use iMSCP::Getopt;
 use iMSCP::Execute;
 use parent 'Common::SingletonClass';
@@ -486,9 +487,7 @@ sub _installPackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	iMSCP::Dialog->factory()->endGauge();
-
-	$command = 'debconf-apt-progress --logstderr -- ' . $command if ! $preseed && ! $main::noprompt;
+	$command = 'debconf-apt-progress --logstderr -- ' . $command unless $preseed || $main::noprompt;
 
 	my ($stdout, $stderr);
 	my $rs = execute(
@@ -519,9 +518,7 @@ sub _removePackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	iMSCP::Dialog->factory()->endGauge();
-
-	$command = 'debconf-apt-progress --logstderr -- ' . $command if ! $preseed && ! $main::noprompt;
+	$command = 'debconf-apt-progress --logstderr -- ' . $command unless $preseed || $main::noprompt;
 
 	my ($stdout, $stderr);
 	my $rs = execute(

@@ -37,6 +37,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
+use iMSCP::Dialog;
 use iMSCP::Getopt;
 use iMSCP::Execute;
 use iMSCP::Dir;
@@ -102,7 +103,7 @@ sub showDialog
 				my $package = "Package::AntiRootkits::${_}::${_}";
 				eval "require $package";
 
-				if(! $@) {
+				unless($@) {
 					$package = $package->getInstance();
 					$rs = $package->showDialog($dialog) if $package->can('showDialog');
 					last if $rs;
@@ -143,7 +144,7 @@ sub preinstall
 			my $package = "Package::AntiRootkits::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				$rs = $package->uninstall(); # Mandatory method
 				return $rs if $rs;
@@ -166,7 +167,7 @@ sub preinstall
 			my $package = "Package::AntiRootkits::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				$rs = $package->preinstall() if $package->can('preinstall');
 				return $rs if $rs;
@@ -202,7 +203,7 @@ sub install
 			my $package = "Package::AntiRootkits::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				my $rs = $package->install() if $package->can('install');
 				return $rs if $rs;
@@ -238,7 +239,7 @@ sub uninstall
 			my $package = "Package::AntiRootkits::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless(! $@) {
 				$package = $package->getInstance();
 				$rs = $package->uninstall(); # Mandatory method;
 				return $rs if $rs;
@@ -275,7 +276,7 @@ sub setEnginePermissions
 			my $package = "Package::AntiRootkits::${_}::${_}";
 			eval "require $package";
 
-			if(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				my $rs = $package->setEnginePermissions() if $package->can('setEnginePermissions');
 				return $rs if $rs;
@@ -331,9 +332,7 @@ sub _installPackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	iMSCP::Dialog->factory()->endGauge();
-
-	$command = 'debconf-apt-progress --logstderr -- ' . $command if ! $preseed && ! $main::noprompt;
+	$command = 'debconf-apt-progress --logstderr -- ' . $command unless $preseed || $main::noprompt;
 
 	my ($stdout, $stderr);
 	my $rs = execute(
@@ -364,9 +363,7 @@ sub _removePackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	iMSCP::Dialog->factory()->endGauge();
-
-	$command = 'debconf-apt-progress --logstderr -- ' . $command if ! $preseed && ! $main::noprompt;
+	$command = 'debconf-apt-progress --logstderr -- ' . $command unless $preseed || $main::noprompt;
 
 	my ($stdout, $stderr);
 	my $rs = execute(

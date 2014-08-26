@@ -46,152 +46,179 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item start($serviceName, [$processPattern = $serviceName])
+=item start($serviceName, [$pattern = $serviceName])
 
  Start the given service
 
  Param string $serviceName Service name
- Param string $processPattern Pattern as expected by the pgrep/pkill commands (default to service name)
- Return int 0 on succcess, 1 on failure
+ Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
+ Return int 0 on succcess, other on failure
 
 =cut
 
-sub start($$;$)
+sub start
 {
-	my ($self, $serviceName, $processPattern) = @_;
+	my ($self, $serviceName, $pattern) = @_;
 
-	$processPattern ||= $serviceName;
+	$pattern ||= $serviceName;
 
-	$self->_runCommand("$self->{'service_provider'} $serviceName start");
+	my $ret = $self->_runCommand("$self->{'service_provider'} $serviceName start");
 
-	my $loopCount = 0;
+	unless($pattern eq 'retval') {
+		my $loopCount = 0;
 
-	do {
-		return 0 unless $self->status($processPattern);
-		sleep 1;
-		$loopCount++;
-	} while ($loopCount < 5);
+		do {
+			return 0 unless $self->status($serviceName, $pattern);
+			sleep 1;
+			$loopCount++;
+		} while ($loopCount < 5);
 
-	$self->status($processPattern);
+		$self->status($serviceName, $pattern);
+	} else {
+		$ret;
+	}
 }
 
-=item stop($serviceName, [$processPattern = $serviceName])
+=item stop($serviceName, [$pattern = $serviceName])
 
  Stop the given service
 
  Param string $serviceName Service name
- Param string $processPattern Pattern as expected by the pgrep/pkill commands (default to service name)
- Return int 0 on succcess, 1 on failure
+ Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
+ Return int 0 on succcess, other on failure
 
 =cut
 
-sub stop($$;$)
+sub stop
 {
-	my ($self, $serviceName, $processPattern) = @_;
+	my ($self, $serviceName, $pattern) = @_;
 
-	$processPattern ||= $serviceName;
+	$pattern ||= $serviceName;
 
-	$self->_runCommand("$self->{'service_provider'} $serviceName stop");
+	my $ret = $self->_runCommand("$self->{'service_provider'} $serviceName stop");
 
-	my $loopCount = 0;
+	unless($pattern eq 'retval') {
+		my $loopCount = 0;
 
-	do {
-		return 0 if $self->status($processPattern);
-		sleep 1;
-		$loopCount++;
-	} while ($loopCount < 5);
+		do {
+			return 0 if $self->status($serviceName, $pattern);
+			sleep 1;
+			$loopCount++;
+		} while ($loopCount < 5);
 
-	# Try by sending TERM signal (soft way)
-	$self->_runCommand("$main::imscpConfig{'CMD_PKILL'} -TERM $processPattern");
+		# Try by sending TERM signal (soft way)
+		$self->_runCommand("$main::imscpConfig{'CMD_PKILL'} -TERM $pattern");
 
-	sleep 3;
+		sleep 3;
 
-	return 0 if $self->status($processPattern);
+		return 0 if $self->status($serviceName, $pattern);
 
-	# Try by sending KILL signal (hard way)
-	$self->_runCommand("$main::imscpConfig{'CMD_PKILL'} -KILL $processPattern");
+		# Try by sending KILL signal (hard way)
+		$self->_runCommand("$main::imscpConfig{'CMD_PKILL'} -KILL $pattern");
 
-	sleep 2;
+		sleep 2;
 
-	! $self->status($processPattern);
+		! $self->status($serviceName, $pattern);
+	} else {
+		$ret;
+	}
 }
 
-=item restart($serviceName, [$processPattern = $serviceName])
+=item restart($serviceName, [$pattern = $serviceName])
 
  Restart the given service
 
  Param string $serviceName Service name
- Param string $processPattern Pattern as expected by the pgrep/pkill commands (default to service name)
- Return int 0 on succcess, 1 on failure
+ Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
+ Return int 0 on succcess, other on failure
 
 =cut
 
-sub restart($$;$)
+sub restart
 {
-	my ($self, $serviceName, $processPattern) = @_;
+	my ($self, $serviceName, $pattern) = @_;
 
-	$processPattern ||= $serviceName;
+	$pattern ||= $serviceName;
 
-	$self->_runCommand("$self->{'service_provider'} $serviceName restart");
+	unless($pattern eq 'retval') {
+		if($self->status($pattern)) { # In case the service is not running, we start it
+			$self->_runCommand("$self->{'service_provider'} $serviceName start");
+		} else {
+			$self->_runCommand("$self->{'service_provider'} $serviceName restart");
+		}
 
-	my $loopCount = 0;
+		my $loopCount = 0;
 
-	do {
-		return 0 unless $self->status($processPattern);
-		sleep 1;
-		$loopCount++;
-	} while ($loopCount < 5);
+		do {
+			return 0 unless $self->status($serviceName, $pattern);
+			sleep 1;
+			$loopCount++;
+		} while ($loopCount < 5);
 
-	$self->status($processPattern);
+		$self->status($serviceName, $pattern);
+	} else {
+		$self->_runCommand("$self->{'service_provider'} $serviceName restart");
+	}
 }
 
-=item reload($serviceName, [$processPattern = $serviceName])
+=item reload($serviceName, [$pattern = $serviceName])
 
  Reload the given service
 
  Param string $serviceName Service name
- Param string $processPattern Pattern as expected by the pgrep/pkill commands (default to service name)
- Return int 0 on succcess, 1 on failure
+ Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
+ Return int 0 on succcess, other on failure
 
 =cut
 
-sub reload($$;$)
+sub reload
 {
-	my ($self, $serviceName, $processPattern) = @_;
+	my ($self, $serviceName, $pattern) = @_;
 
-	$processPattern ||= $serviceName;
+	$pattern ||= $serviceName;
 
-	if($self->status($processPattern)) { # In case the service is not running, we start it
-		$self->_runCommand("$self->{'service_provider'} $serviceName start");
+	unless($pattern eq 'retval') {
+		if($self->status($pattern)) { # In case the service is not running, we start it
+			$self->_runCommand("$self->{'service_provider'} $serviceName start");
+		} else {
+			$self->_runCommand("$self->{'service_provider'} $serviceName reload");
+		}
+
+		my $loopCount = 0;
+
+		do {
+			return 0 unless $self->status($serviceName, $pattern);
+			sleep 1;
+			$loopCount++;
+		} while ($loopCount < 5);
+
+		$self->status($serviceName, $pattern);
 	} else {
 		$self->_runCommand("$self->{'service_provider'} $serviceName reload");
 	}
-
-	my $loopCount = 0;
-
-	do {
-		return 0 unless $self->status($processPattern);
-		sleep 1;
-		$loopCount++;
-	} while ($loopCount < 10);
-
-	$self->status($processPattern);
 }
 
-=item status($processPattern)
+=item status($serviceName, [$pattern = $serviceName])
 
  Get status of the given service
 
- Param string $processPattern Pattern as expected by the pgrep/pkill commands (default to service name)
+ Param string $serviceName Service name
+ Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
  Return int 0 if the service is running, 1 if the service is not running
 
 =cut
 
-sub status($$)
+sub status
 {
-	my ($self, $processPattern) = @_;
+	my ($self, $serviceName, $pattern) = @_;
 
-	$self->_runCommand("$self->{'service_status_provider'} $processPattern");
+	$pattern ||= $serviceName;
+
+	unless($pattern eq 'retval') {
+		$self->_runCommand("$self->{'service_status_provider'} $pattern");
+	} else {
+		$self->_runCommand("$self->{'service_provider'} $serviceName status");
+	}
 }
 
 =back
@@ -222,20 +249,19 @@ sub _init
 
  Run the given command
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _runCommand($$)
+sub _runCommand
 {
 	my ($self, $command) = @_;
 
 	my ($stdout, $stderr);
 	my $rs = execute($command, \$stdout, \$stderr);
 	debug($stderr) if $stderr;
-	return 1 if $rs;
 
-	0;
+	$rs;
 }
 
 =back

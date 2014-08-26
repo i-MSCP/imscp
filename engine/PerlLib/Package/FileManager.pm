@@ -165,7 +165,7 @@ sub install
 
 =item setPermissionsListener()
 
- Set permissions
+ Set gui permissions
 
  Return int 0 on success, other on failure
 

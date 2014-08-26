@@ -78,7 +78,7 @@ sub postinstall
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Sql' ]; 0; }
 	) if $main::imscpConfig{'SQL_SERVER'} ne 'remote_server';
 
 	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');

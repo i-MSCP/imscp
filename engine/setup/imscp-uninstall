@@ -49,7 +49,7 @@ use iMSCP::Service;
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
 
-umask(027);
+umask(022);
 
 newDebug('imscp-uninstall.log');
 
@@ -88,15 +88,13 @@ sub process
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge();
-
 	0;
 }
 
 sub shutDown
 {
 
-	iMSCP::Dialog->factory()->msgbox(
+	iMSCP::Dialog->getInstance()->msgbox(
 "
 \\Z1Congratulations\\Zn
 
@@ -111,11 +109,11 @@ You can find uninstallation logs at /tmp/imscp-uninstall.log
 
 sub _userDialog
 {
-	iMSCP::Dialog->factory()->set('yes-label','Continue');
-	iMSCP::Dialog->factory()->set('no-label','Exit');
-	iMSCP::Dialog->factory()->set('defaultno', '');
+	iMSCP::Dialog->getInstance()->set('yes-label','Continue');
+	iMSCP::Dialog->getInstance()->set('no-label','Exit');
+	iMSCP::Dialog->getInstance()->set('defaultno', '');
 
-	if (iMSCP::Dialog->factory()->yesno(<<EOF)) {
+	if (iMSCP::Dialog->getInstance()->yesno(<<EOF)) {
 
 Welcome to the \\Z4i-MSCP $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
 
@@ -132,7 +130,7 @@ During the uninstallation process some or all services might require to be shut 
 To continue select \\Z4Continue\\Z0
 EOF
 
-	iMSCP::Dialog->factory()->msgbox(<<EOF);
+	iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 Uninstallation process has been aborted...
 EOF
@@ -227,8 +225,6 @@ sub _uninstallPackages
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge();
-
 	endDetail();
 
 	$rs;
@@ -273,8 +269,6 @@ sub _uninstallServers
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge();
-
 	endDetail();
 
 	$rs;
@@ -282,10 +276,11 @@ sub _uninstallServers
 
 sub _uninstallDaemons
 {
+	my $serviceMngr = iMSCP::Service->getInstance();
 
 	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}") {
-		my $rs = iMSCP::Service->getInstance()->stop($main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'imscp_daemon');
-		error("Unable to stop $main::imscpConfig{'IMSCP_DAEMON_SNAME'} service") if $rs;
+		my $rs = $serviceMngr->stop($main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'imscp_daemon');
+		error("Unable to stop i-MSCP Daemon service") if $rs;
 		return $rs if $rs;
 
 		my ($stdout, $stderr);
@@ -296,14 +291,9 @@ sub _uninstallDaemons
 	}
 
 	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_NETWORK_SNAME'}") {
-		my ($stdout, $stderr);
-		my $rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $main::imscpConfig{'IMSCP_NETWORK_SNAME'} stop",
-			\$stdout,
-			\$stderr
-		);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-    	return $rs if $rs;
+		my $rs = $serviceMngr->stop($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'retval');
+		error("Unable to stop i-MSCP Network service") if $rs;
+        return $rs if $rs;
 
 		$rs = execute(
 			"$main::imscpConfig{'SERVICE_INSTALLER'} -f $main::imscpConfig{'IMSCP_NETWORK_SNAME'} remove",

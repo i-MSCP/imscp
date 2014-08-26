@@ -34,7 +34,6 @@ package autoinstaller::Adapter::AbstractAdapter;
 use strict;
 use warnings;
 
-use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -72,19 +71,6 @@ sub preBuild
 	0;
 }
 
-=item uninstallPackages()
-
- Uninstall distribution packages
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub uninstallPackages
-{
-	fatal(ref($_[0]) . ' adapter must implement the uninstallPackages() method');
-}
-
 =item installPackages()
 
  Install distribution packages
@@ -95,7 +81,20 @@ sub uninstallPackages
 
 sub installPackages
 {
-	fatal(ref($_[0]) . ' adapter must implement the installPackages() method');
+	0;
+}
+
+=item uninstallPackages()
+
+ Uninstall distribution packages no longer needed
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstallPackages
+{
+	0;
 }
 
 =item postBuild()

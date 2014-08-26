@@ -247,7 +247,7 @@ sub askSsl
 		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
 
 		if($openSSL->validateCertificateChain()) {
-			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate for the control panel is missing or invalid.");
+			$dialog->msgbox("\nYour SSL certificate for the control panel is missing or invalid.");
 			goto SSL_DIALOG;
 		}
 

@@ -37,7 +37,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug qw /error debugRegisterCallBack output /;
-use fields qw / reconfigure noprompt preseed listenerFile cleanPackagesCache skipPackagesUpdate debug /;
+use fields qw / reconfigure noprompt preseed listener cleanPackagesCache skipPackagesUpdate debug /;
 our $options = fields::new('iMSCP::Getopt');
 
 our $optionHelp = '';
@@ -75,7 +75,7 @@ $usage
  -r,    --reconfigure [item]    Type --reconfigure help.
  -n,    --noprompt              Switch to non-interactive mode.
  -p,    --preseed <file>        Path to preseed file.
- -l,    --listener-file <file>  Path to listener file.
+ -l,    --listener <file>       Path to listener file.
  -c     --clean-packages-cache  Cleanup i-MSCP packages cache.
  -a     --skip-packages-update  Skip i-MSCP packages update
  -d,    --debug                 Force debug mode.
@@ -105,7 +105,7 @@ EOF
 			'reconfigure|r:s', sub { $class->reconfigure($_[1]) },
 			'noprompt|n', sub { $options->{'noprompt'} = 1 },
 			'preseed|p=s', sub { $class->preseed($_[1]) },
-			'listener-file|l=s', sub { $class->listenerFile($_[1]) },
+			'listener|l=s', sub { $class->listenerFile($_[1]) },
 			'clean-packages-cache|c', sub { $options->{'cleanPackagesCache'} = 1 },
 			'skip-packages-update|a', sub { $options->{'skipPackagesUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
@@ -196,14 +196,14 @@ sub reconfigure
 			$value = 'all';
 		}
 
-		$value ~~ $reconfigurationItems or die(
+		$value eq 'none' || $value ~~ $reconfigurationItems or die(
 			"Error: '$value' is not a valid argument for the --reconfigure option."
 		);
 
 		$options->{'reconfigure'} = $value;
 	}
 
-	$options->{'reconfigure'} ? $options->{'reconfigure'} : 'none';
+	$options->{'reconfigure'} ||= 'none';
 }
 
 =item noprompt($value = 0)
@@ -247,28 +247,28 @@ sub preseed
 	$options->{'preseed'} // '';
 }
 
-=item listenerFile($value = '')
+=item listener($value = '')
 
- listener-file option
+ listener option
 
  Param string $value OPTIONAL Option value
  Return string Path to listener file or empty string
 
 =cut
 
-sub listenerFile
+sub listener
 {
 	my ($class, $value) = @_;
 
 	if(defined $value) {
 		if( -f $value) {
-			$options->{'listenerFile'} = $value;
+			$options->{'listener'} = $value;
 		} else {
 			die("Listener file not found: $value")
 		}
 	}
 
-	$options->{'listenerFile'} // '';
+	$options->{'listener'} // '';
 }
 
 =back

@@ -360,10 +360,12 @@ END
 	&$_ for @{$self->{'debugCallBacks'}};
 
 	if(%{$self->{'logs'}}) {
-		if($exitCode && $exitCode != 255) {
-			error("Exit code: $exitCode");
-		} else {
-			debug("Exit code: $exitCode");
+		unless($exitCode == 50) { # 50 is returned when ESC is pressed (dialog)
+			if($exitCode && $exitCode != 255) {
+				error("Exit code: $exitCode");
+			} else {
+				debug("Exit code: $exitCode");
+			}
 		}
 
 		system('clear') if defined $ENV{'TERM'} && (! defined $ENV{'IMSCP_CLEAR_SCREEN'} || $ENV{'IMSCP_CLEAR_SCREEN'});

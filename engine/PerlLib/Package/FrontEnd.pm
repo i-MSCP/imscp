@@ -127,7 +127,7 @@ sub postinstall
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'FRONTEND' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Frontend (Nginx)' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterFrontEndPostInstall');
