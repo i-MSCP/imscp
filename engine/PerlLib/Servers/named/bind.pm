@@ -1144,21 +1144,6 @@ sub _generateSoalSerialNumber
 	$newDbFile;
 }
 
-END
-{
-	unless($main::execmode && $main::execmode eq 'setup' || $main::imscpConfig{'NAMED_SERVER'} eq 'external_server') {
-		my $exitCode = $?;
-		my $self = Servers::named::bind->getInstance();
-		my $rs = 0;
-
-		if($self->{'restart'} && $main::imscpConfig{'NAMED_SERVER'} ne 'external_server') {
-			$rs = $self->restart();
-		}
-
-		$? = $exitCode || $rs;
-	}
-}
-
 =back
 
 =head1 AUTHORS

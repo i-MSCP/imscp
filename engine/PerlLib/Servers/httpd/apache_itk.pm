@@ -1419,7 +1419,7 @@ sub forceRestart
 
 =item startApache()
 
- Start Apache
+ Start httpd service
 
  Return int 0 on success, other on failure
 
@@ -1441,7 +1441,7 @@ sub start
 
 =item stopApache()
 
- Stop Apache
+ Stop httpd service
 
  Return int 0 on success, other on failure
 
@@ -1463,7 +1463,7 @@ sub stop
 
 =item restartApache()
 
- Restart or reload Apache
+ Restart or reload httpd service
 
  Return int 0 on success, other on failure
 
@@ -1873,33 +1873,6 @@ sub _cleanTemplate
 	}
 
 	0;
-}
-
-=item END
-
- Code triggered at the very end of script execution
-
- - Start or restart apache if needed
-
- Return int Exit code
-
-=cut
-
-END
-{
-	unless($main::execmode && $main::execmode eq 'setup') {
-		my $exitCode = $?;
-		my $self = Servers::httpd::apache_itk->getInstance();
-		my $rs = 0;
-
-		if($self->{'start'}) {
-			$rs = $self->start();
-		} elsif($self->{'restart'}) {
-			$rs = $self->restart();
-		}
-
-		$? = $exitCode || $rs;
-	}
 }
 
 =back

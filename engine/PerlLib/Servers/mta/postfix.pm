@@ -190,7 +190,7 @@ sub restart
 
 =cut
 
-sub postmap($$;$)
+sub postmap
 {
 	my ($self, $filename, $filetype) = @_;
 
@@ -328,7 +328,7 @@ sub disableDmn
 	$rs = $file->copyFile($prodDomainsHashFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodDomainsHashFile} = $data->{'DOMAIN_NAME'};
+	$self->{'postmap'}->{$prodDomainsHashFile} = 1;
 
 	if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
 		$rs = $self->_deleteFromRelayHash($data);
@@ -774,7 +774,7 @@ sub _addToRelayHash
 	$rs = $file->copyFile($prodRelayHashFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodRelayHashFile} = $data->{'DOMAIN_NAME'};
+	$self->{'postmap'}->{$prodRelayHashFile} = 1;
 
 	$self->{'eventManager'}->trigger('afterMtaAddToRelayHash', $data);
 }
@@ -830,7 +830,7 @@ sub _deleteFromRelayHash
 	$rs = $file->copyFile($prodRelayHashFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodRelayHashFile} = $data->{'DOMAIN_NAME'};
+	$self->{'postmap'}->{$prodRelayHashFile} = 1;
 
 	$self->{'eventManager'}->trigger('afterMtaDelFromRelayHash', $data);
 }
@@ -886,7 +886,7 @@ sub _addToDomainsHash
 	$rs = $file->copyFile($prodDomainsHashFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodDomainsHashFile} = $data->{'DOMAIN_NAME'};
+	$self->{'postmap'}->{$prodDomainsHashFile} = 1;
 
 	$rs = iMSCP::Dir->new(
 		'dirname' => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}"
@@ -950,7 +950,7 @@ sub _addMailBox
 	$rs = $file->copyFile($prodMailboxesFileHash);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodMailboxesFileHash} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$prodMailboxesFileHash} = 1;
 
 	my $mailDir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 	my $mailUidName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
@@ -1028,7 +1028,7 @@ sub _disableMailBox
 	$rs = $file->copyFile($prodMailboxesFileHash);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodMailboxesFileHash} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$prodMailboxesFileHash} = 1;
 
 	$self->{'eventManager'}->trigger('afterMtaDisableMailbox', $data);
 }
@@ -1122,7 +1122,7 @@ sub _addMailForward
 	$rs = $file->copyFile($prodAliasesFileHash);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodAliasesFileHash} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$prodAliasesFileHash} = 1;
 
 	$self->{'eventManager'}->trigger('afterMtaAddMailForward', $data);
 }
@@ -1188,7 +1188,7 @@ sub _deleteMailForward
 	$rs = $file->copyFile($prodAliasesFileHash);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodAliasesFileHash} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$prodAliasesFileHash} = 1;
 
 	$self->{'eventManager'}->trigger('afterMtaDelMailForward', $data);
 }
@@ -1241,7 +1241,7 @@ sub _addAutoRspnd
 	$rs = $file->copyFile($prodTransportFileHash);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodTransportFileHash} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$prodTransportFileHash} = 1;
 
 	$self->{'eventManager'}->trigger('afterMtaAddAutoRspnd', $data);
 }
@@ -1293,7 +1293,7 @@ sub _deleteAutoRspnd
 	$rs = $file->copyFile($prodTransportFileHash);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodTransportFileHash} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$prodTransportFileHash} = 1;
 
 	$self->{'eventManager'}->trigger('afterMtaDelAutoRspnd', $data);
 }
@@ -1353,7 +1353,7 @@ sub _addCatchAll
 	$rs = $file->copyFile($prodAliasesFileHash);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodAliasesFileHash} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$prodAliasesFileHash} = 1;
 
 	$self->{'eventManager'}->trigger('afterMtaAddCatchAll', $data);
 }
@@ -1410,7 +1410,7 @@ sub _deleteCatchAll
 	$rs = $file->copyFile($prodAliasesFileHash);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$prodAliasesFileHash} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$prodAliasesFileHash} = 1;
 
 	$self->{'eventManager'}->trigger('afterMtaDelCatchAll', $data);
 }
@@ -1423,22 +1423,14 @@ sub _deleteCatchAll
 
 END
 {
-	my $exitCode = $?;
-	my $self = Servers::mta::postfix->getInstance();
+	my $self = __PACKAGE__->getInstance();
 	my $rs = 0;
 
-	# In any case we postmap if needed
 	for(keys %{$self->{'postmap'}}) {
 		$rs |= $self->postmap($_);
 	}
 
-	unless($main::execmode && $main::execmode eq 'setup') {
-		if($self->{'restart'}) {
-			$rs |= $self->restart();
-		}
-	}
-
-	$? = $exitCode || $rs;
+	$? ||= $rs;
 }
 
 =back

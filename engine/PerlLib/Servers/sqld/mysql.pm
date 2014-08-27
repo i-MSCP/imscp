@@ -184,27 +184,6 @@ sub _init
 	$self;
 }
 
-=item END
-
- Process end tasks
-
-=cut
-
-END
-{
-	unless($main::execmode && $main::execmode eq 'setup' || $main::imscpConfig{'SQL_SERVER'} eq 'remote_server') {
-		my $exitCode = $?;
-		my $self = Servers::sqld::mysql->getInstance();
-		my $rs = 0;
-
-		if($self->{'restart'}) {
-			$rs |= $self->restart();
-		}
-
-		$? = $exitCode || $rs;
-	}
-}
-
 =back
 
 =head1 AUTHOR

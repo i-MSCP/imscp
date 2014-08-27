@@ -527,30 +527,6 @@ sub _init
 	$self;
 }
 
-=item END
-
- Code triggered at the very end of script execution
-
- - Start or restart server if needed
- - Remove old traffic logs file if exists
-
- Return int Exit code
-
-=cut
-
-END
-{
-	unless($main::execmode && $main::execmode eq 'setup') {
-		my $exitCode = $?;
-		my $self = Servers::po::courier->getInstance();
-		my $rs = 0;
-
-		$rs = $self->restart() if $self->{'restart'};
-
-		$? = $exitCode || $rs;
-	}
-}
-
 =back
 
 =head1 AUTHORS

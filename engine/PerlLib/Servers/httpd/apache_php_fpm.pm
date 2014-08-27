@@ -93,10 +93,7 @@ sub preinstall
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdPreInstall', 'apache_php_fpm');
 	return $rs if $rs;
 
-	$rs = $self->stopApache();
-	return $rs if $rs;
-
-	$rs = $self->stopPhpFpm();
+	$rs = $self->stop();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterHttpdPreInstall', 'apache_php_fpm');
@@ -132,11 +129,7 @@ sub postinstall
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices',
-		sub {
-			push @{$_[0]},
-			[ sub { $self->startPhpFpm(); }, 'php5-fpm' ], [ sub { $self->startApache(); }, 'Httpd (Apache)' ]; 0;
-		}
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Httpd (Apache/php5-fpm)' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterHttpdPostInstall', 'apache_php_fpm');
@@ -154,10 +147,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->stopPhpFpm();
-	return $rs if $rs;
-
-	$rs = $self->stopApache();
+	my $rs = $self->stop();
 	return $rs if $rs;
 
 	$rs = $self->{'eventManager'}->trigger('beforeHttpdUninstall', 'apache_php_fpm');
@@ -170,10 +160,7 @@ sub uninstall
 	$rs = $self->{'eventManager'}->trigger('afterHttpdUninstall', 'apache_php_fpm');
 	return $rs if $rs;
 
-	$rs = $self->startPhpFpm();
-	return $rs if $rs;
-
-	$self->startApache();
+	$self->start();
 }
 
 =item addUser(\%data)
@@ -1439,19 +1426,22 @@ sub disableModules
 	$self->{'eventManager'}->trigger('afterHttpdDisableModules', $modules);
 }
 
-=item startPhpFpm()
 
- Start PHP FPM
+########################################################################################################################
+
+=item start()
+
+ Start httpd service
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub startPhpFpm
+sub start
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStartPhpFpm');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->start($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
@@ -1469,62 +1459,42 @@ sub startPhpFpm
 		}
 	}
 
-	$self->{'eventManager'}->trigger('afterHttpdStartPhpFpm');
+	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'});
+	error("Unable to start $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterHttpdStart');
 }
 
-=item stopPhpFpm()
+=item stop()
 
- Stop PHP FPM
+ Stop httpd service
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub stopPhpFpm
+sub stop
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStopPhpFpm');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStop');
 	return $rs if $rs;
 
 	$rs = iMSCP::Service->getInstance()->stop($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
 	error("Unable to stop $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	$self->{'eventManager'}->trigger('afterHttpdStopPhpFpm');
-}
-
-=item restartPhpFpm()
-
- Restart or reload PHP FPM
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub restartPhpFpm
-{
-	my $self = $_[0];
-
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdRestartPhpFpm');
+	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'HTTPD_SNAME'});
+	error("Unable to stop $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
 	return $rs if $rs;
 
-	if($self->{'forceRestart'}) {
-		$rs = iMSCP::Service->getInstance()->restart($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-		error("Unable to restart $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}") if $rs;
-		return $rs if $rs;
-	} else {
-		$rs = iMSCP::Service->getInstance()->reload($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-		error("Unable to reload $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} service") if $rs;
-		return $rs if $rs;
-	}
-
-	$self->{'eventManager'}->trigger('afterHttpdRestartPhpFpm');
+	$self->{'eventManager'}->trigger('afterHttpdStop');
 }
 
 =item forceRestart()
 
- Force Apache and/or PHP FPM to be restarted
+ Force httpd service to be restarted
 
  Return int 0
 
@@ -1537,59 +1507,15 @@ sub forceRestart
 	0;
 }
 
-=item startApache()
+=item restart()
 
- Start Apache
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub startApache
-{
-	my $self = $_[0];
-
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStart');
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'});
-	error("Unable to start $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdStart');
-}
-
-=item stopApache()
-
- Stop Apache
+ Restart or reload httpd service
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub stopApache
-{
-	my $self = $_[0];
-
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStop');
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'HTTPD_SNAME'});
-	error("Unable to stop $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdStop');
-}
-
-=item restartApache()
-
- Restart or Reload Apache
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub restartApache
+sub restart
 {
 	my $self = $_[0];
 
@@ -1597,10 +1523,18 @@ sub restartApache
 	return $rs if $rs;
 
 	if($self->{'forceRestart'}) {
+		$rs = iMSCP::Service->getInstance()->restart($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+		error("Unable to restart $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}") if $rs;
+		return $rs if $rs;
+
 		$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'HTTPD_SNAME'});
 		error("Unable to restart $self->{'config'}->{'HTTPD_SNAME'}") if $rs;
 		return $rs if $rs;
 	} else {
+		$rs = iMSCP::Service->getInstance()->reload($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+		error("Unable to reload $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} service") if $rs;
+		return $rs if $rs;
+
 		$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'});
 		error("Unable to reload $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
 		return $rs if $rs;
@@ -2129,36 +2063,6 @@ sub _cleanTemplate
 	}
 
 	0;
-}
-
-=item END
-
- Code triggered at the very end of script execution
-
- -  Start or restart PHP FPM if needed
- - Start or restart apache if needed
-
- Return int Exit code
-
-=cut
-
-END
-{
-	unless($main::execmode && $main::execmode eq 'setup') {
-		my $exitCode = $?;
-		my $self = Servers::httpd::apache_php_fpm->getInstance();
-		my $rs = 0;
-
-		if($self->{'start'}) {
-			$rs = $self->startPhpFpm();
-			$rs |= $self->startApache();
-		} elsif($self->{'restart'}) {
-			$rs = $self->restartPhpFpm();
-			$rs |= $self->restartApache();
-		}
-
-		$? = $exitCode || $rs;
-	}
 }
 
 =back

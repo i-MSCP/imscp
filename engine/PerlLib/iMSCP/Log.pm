@@ -258,7 +258,7 @@ sub final
 
 =cut
 
-sub flush()
+sub flush
 {
 	my $self = shift;
 

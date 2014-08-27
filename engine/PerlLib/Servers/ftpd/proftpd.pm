@@ -358,34 +358,6 @@ sub _init
 	$self;
 }
 
-=item END
-
- Code triggered at the very end of script execution
-
- - Start or restart proftpd if needed
- - Remove old traffic logs file if exists
-
- Return int Exit code
-
-=cut
-
-END
-{
-	unless($main::execmode && $main::execmode eq 'setup') {
-		my $exitCode = $?;
-		my $self = Servers::ftpd::proftpd->getInstance();
-		my $rs = 0;
-
-		if($self->{'start'}) {
-			$rs = $self->start();
-		} elsif($self->{'restart'}) {
-			$rs = $self->restart();
-		}
-
-		$? = $exitCode || $rs;
-	}
-}
-
 =back
 
 =head1 AUTHORS

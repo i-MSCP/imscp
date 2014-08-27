@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Servers::sqld - i-MSCP SQL server implementation
+ Servers::sqld - i-MSCP Sqld Server implementation
 
 =cut
 
@@ -38,29 +38,34 @@ use iMSCP::Debug;
 
 =head1 DESCRIPTION
 
- i-MSCP Cron server implementation.
+ i-MSCP Sqld server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item factory()
+=item factory([ $sName = $main::imscpConfig{'SQL_SERVER'} || 'mysql' ])
 
- Return an instance of the SQL server implementation
+ Create and return Sqld server instance
 
- Return SQL server implementation
+ Param string $sName OPTIONAL Name of Sqld server implementation to instantiate
+ Return Sqld server instance
 
 =cut
 
 sub factory
 {
-	my $self = $_[0];
+	my ($self, $sName) = @_;
 
-	(my $server = $_[1] || $main::imscpConfig{'SQL_SERVER'}) =~ s/(?:(.*?)_\d+\.\d+|('remote_server'))/$1/;
+	$sName ||= $main::imscpConfig{'SQL_SERVER'} || 'mysql';
 
-	$server = 'mysql' if $server eq 'remote_server';
+	if($sName eq 'remote_server') {
+		$sName = 'mysql';
+	} else {
+		$sName =~ s/_\d+\.\d+$//;
+	}
 
-	my $package = "Servers::sqld::$server";
+	my $package = "Servers::sqld::$sName";
 
 	eval "require $package";
 
@@ -69,9 +74,23 @@ sub factory
 	$package->getInstance();
 }
 
+END
+{
+	unless($main::imscpConfig{'SQL_SERVER'} eq 'remote_server' || $main::execmode && $main::execmode eq 'setup') {
+		my $sqld = __PACKAGE__->factory();
+		my $rs = 0;
+
+		if($sqld->{'restart'}) {
+			$rs = $sqld->restart();
+		}
+
+		$? ||= $rs;
+	}
+}
+
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

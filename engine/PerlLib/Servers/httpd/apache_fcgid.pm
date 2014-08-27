@@ -1467,7 +1467,7 @@ sub disableModules
 
 =item start()
 
- Start Apache
+ Start httpd service
 
  Return int 0 on success, other on failure
 
@@ -1489,7 +1489,7 @@ sub start
 
 =item stop()
 
- Stop Apache
+ Stop httpd service
 
  Return int 0 on success, other on failure
 
@@ -1511,7 +1511,7 @@ sub stop
 
 =item forceRestart()
 
- Force Apache to be restarted
+ Force httpd service to be restarted
 
  Return int 0
 
@@ -1526,7 +1526,7 @@ sub forceRestart
 
 =item restart()
 
- Restart or reload Apache
+ Restart or reload httpd service
 
  Return int 0 on success, other on failure
 
@@ -2036,33 +2036,6 @@ sub _cleanTemplate
 	}
 
 	0;
-}
-
-=item END
-
- Code triggered at the very end of script execution
-
- - Start or restart apache if needed
-
- Return int Exit code
-
-=cut
-
-END
-{
-	unless($main::execmode && $main::execmode eq 'setup') {
-		my $exitCode = $?;
-		my $self = Servers::httpd::apache_fcgid->getInstance();
-		my $rs = 0;
-
-		if($self->{'start'}) {
-			$rs = $self->start();
-		} elsif($self->{'restart'}) {
-			$rs = $self->restart();
-		}
-
-		$? = $exitCode || $rs;
-	}
 }
 
 =back
