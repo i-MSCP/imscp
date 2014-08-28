@@ -280,7 +280,7 @@ sub getMessageByType
 	my %options = (@_ && ref $_[0] eq 'HASH') ? %{$_[0]} : @_;
 
 	my @messages = map { $_->{'message'} } $self->{'target'}->retrieve(
-		'tag' => qr/^$type/i,
+		'tag' => (ref $type eq 'Regexp') ? $type : qr/^$type/i,
 		'amount' => $options{'amount'},
 		'chrono' => $options{'chrono'} // 1,
 		'remove' => $options{'remove'} // 0
@@ -407,7 +407,7 @@ END
 
 	endDebug() for @{$self->{'targets'}};
 
-	my @logs = $self->{'screen'}->retrieve(tag => 'warn|error|fatal');
+	my @logs = $self->{'screen'}->retrieve(tag => qr/'warn|error|fatal'/);
 
 	if(@logs) {
 		my @messages;
