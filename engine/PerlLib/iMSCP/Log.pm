@@ -59,10 +59,15 @@ local $Params::Check::VERBOSE = 1;
 sub new
 {
 	my $class = shift;
-	my %hash  = ();
+	my %hash = @_;
 
 	my $tmpl = {
-		'stack' => { default  => [] }
+		'id' => {
+			'default' => 'dummy',
+			'strict_type' => 1,
+			'required' => 1
+		},
+		'stack' => { 'default'  => [] }
 	};
 
 	my $args = check($tmpl, \%hash) or die(
@@ -70,6 +75,19 @@ sub new
 	);
 
 	bless $args, $class
+}
+
+=item getId()
+
+ Get identifier
+
+ Return string
+
+=cut
+
+sub getId
+{
+	$_[0]->{'id'};
 }
 
 =item store()
@@ -89,6 +107,10 @@ sub new
 
 The tag to add to this message. If not provided, default tag 'none' will be used.
 
+=item when
+
+ The time to add to this message. If not provided, value from localtime will be used
+
 =back
 
 Return true upon success and undef upon failure, as well as issue a warning as to why it failed.
@@ -101,6 +123,10 @@ sub store
     my %hash = ();
 
 	my $tmpl = {
+		'when' => {
+			'default' => scalar localtime,
+			'strict_type' => 1,
+		},
 		'message' => {
 			'default' => 'empty log',
 			'strict_type' => 1,
@@ -110,7 +136,7 @@ sub store
 	};
 
 	if(@_ == 1) {
-		$hash{message} = shift;
+		$hash{'message'} = shift;
 	} else {
 		%hash = @_;
 	}
@@ -121,15 +147,12 @@ sub store
 	);
 
 	my $item = {
-		'when' => scalar localtime,
-		'id' => scalar @{$self->{'stack'}},
+		'when' => $args->{'when'},
 		'message' => $args->{'message'},
 		'tag' => $args->{'tag'}
 	};
 
 	push @{$self->{'stack'}}, $item;
-
-	$self->_log($item);
 
 	1;
 }
@@ -145,10 +168,6 @@ sub store
 =item tag
 
  A regex to which the tag must adhere. For example C<qr/\w/>.
-
-=item level
-
- A regex to which the level must adhere.
 
 =item message
 
@@ -181,13 +200,13 @@ sub retrieve
 
 	my $tmpl = {
 		'tag' => { 'default' => qr/.*/ },
-		'level' => { 'default' => qr/.*/ },
 		'message' => { 'default' => qr/.*/ },
-		'amount' => { 'default' => '' },
+		'amount' => { 'default' => undef },
 		'remove' => { 'default' => 0 },
 		'chrono' => { 'default' => 1 }
 	};
 
+    # single arg means just the amount otherwise, they are named
 	if( @_ == 1 ) {
 		$hash{'amount'} = shift;
 	} else {
@@ -195,23 +214,23 @@ sub retrieve
 	}
 
 	my $args = check($tmpl, \%hash) or (
-		warn(sprintf('Could not parse input: %s', Params::Check->last_error)),
-		return
+		warn(sprintf('Could not parse input: %s', Params::Check->last_error)), return
 	);
 
-	my @list =
-		grep { $_->{'tag'} =~ /$args->{'tag'}/ ? 1 : 0 }
-		grep { $_->{'message'} =~ /$args->{'message'}/ ? 1 : 0 }
-		grep { defined }
-		$args->{'chrono'} ? @{$self->{'stack'}} : reverse @{$self->{'stack'}};
+	my @list = ();
+	for(@{$self->{'stack'}}) {
+		if($_->{'tag'} =~ /$args->{'tag'}/ && $_->{'message'} =~ /$args->{'message'}/) {
+			push @list, $_;
+			undef $_ if $args->{'remove'};
+		}
+	}
+
+	@{$self->{'stack'}} = grep defined, @{$self->{'stack'}} if $args->{'remove'};
 
 	my $amount = $args->{'amount'} || scalar @list;
+    @list = ($amount >= @list) ? @list : @list[0..$amount-1] if @list;
 
-    my @rv = map {
-		$args->{'remove'} ? splice(@{$self->{'stack'}}, $_->{'id'}, 1, undef) : $_
-    } scalar @list > $amount ? splice(@list, 0, $amount) : @list;
-
-	wantarray ? @rv : $rv[0];
+	wantarray ? ($args->{'chrono'}) ? @list : reverse(@list) : ($args->{'chrono'}) ? $list[0] : $list[$#list];
 }
 
 =item first()
@@ -260,38 +279,7 @@ sub final
 
 sub flush
 {
-	my $self = shift;
-
-	my @rv = grep { defined } @{$self->{'stack'}};
-	$self->{'stack'} = [];
-
-	@rv;
-}
-
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item
-
-=cut
-
-sub _clean
-{
-	map { s/\s*//; chomp; $_ } shift;
-}
-
-=item _log
-
- Will simply log the error on the stack, and do nothing special
-
-=cut
-
-sub _log
-{
-	1;
+	splice @{$_[0]->{'stack'}};
 }
 
 =back

@@ -44,10 +44,9 @@ $ENV{'LC_MESSAGES'} = 'C';
 # Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
-umask(027);
-
 newDebug('imscp-backup-imscp.log');
 
+# Entering in silent mode
 silent(1);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();

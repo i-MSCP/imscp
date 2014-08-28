@@ -45,10 +45,9 @@ $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 # For now, this variable is only used by i-MSCP installer/setup scripts
 $main::execmode = shift || '';
 
-umask(027);
-
 newDebug('imscp-set-engine-permissions.log');
 
+# Entering in silent mode
 silent(1);
 
 iMSCP::Bootstrapper->getInstance()->boot(

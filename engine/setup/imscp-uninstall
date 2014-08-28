@@ -49,10 +49,9 @@ use iMSCP::Service;
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
 
-umask(022);
-
 newDebug('imscp-uninstall.log');
 
+# Entering in silent mode
 silent(1);
 
 sub startUp

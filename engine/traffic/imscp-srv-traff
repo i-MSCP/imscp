@@ -42,9 +42,8 @@ $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-srv-traff.log');
 
+# Entering in silent mode
 silent(1);
-
-umask(027);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-srv-traff.lock', 'nowait');

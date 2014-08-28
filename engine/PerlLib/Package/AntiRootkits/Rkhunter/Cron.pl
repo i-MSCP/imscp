@@ -39,10 +39,9 @@ $ENV{'LC_MESSAGES'} = 'C';
 # Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
-umask(027);
-
 newDebug('imscp-rkhunter-package.log');
 
+# Entering in silent mode
 silent(1);
 
 iMSCP::Bootstrapper->getInstance()->boot(

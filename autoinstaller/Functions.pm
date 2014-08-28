@@ -818,6 +818,8 @@ sub _doImscpBackup
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 
+		iMSCP::Bootstrapper->getInstance()->lock('/tmp/imscp-backup-imscp.lock');
+
 		iMSCP::Dialog->getInstance()->yesno(<<EOF) if $rs;
 
 \\Z1Unable to create backups\\Zn

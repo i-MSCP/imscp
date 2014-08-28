@@ -584,7 +584,7 @@ sub _buildLookupTables
 		return $rs if $rs;
 
 		# Schedule lookup table postmap
-		$self->{'mta'}->{'postmap'}->{"$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$_"} = 'installer';
+		$self->{'mta'}->{'postmap'}->{"$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$_"} = 1;
 	}
 
 	$self->{'eventManager'}->trigger('afterMtaBuildLookupTables', \@lookupTables);

@@ -41,9 +41,8 @@ $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-local-dns-resolver.log');
 
+# Entering in silent mode
 silent(1);
-
-umask(027);
 
 iMSCP::Bootstrapper->getInstance()->boot(
 	{ 'norequirements' => 'yes', 'nodatabase' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' }

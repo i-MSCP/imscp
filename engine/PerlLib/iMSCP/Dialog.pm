@@ -323,8 +323,6 @@ sub startGauge
 
 	$command = "$self->{'bin'} $command --gauge $text $height $width $percent";
 
-	debug("Creating gauge: $command");
-
 	$self->{'_opts'}->{'begin'} = $begin;
 
 	$self->{'gauge'} = new FileHandle;
@@ -358,10 +356,8 @@ sub setGauge
 
 	$text ||= '';
 
-	my $command = (defined $text) ? sprintf("XXX\n%d\n%s\nXXX\n", $percent, $text) : sprintf("%d\n", $percent);
-
-	debug("Setting gauge with: $command");
-	print {$self->{'gauge'}} $command;
+	print {$self->{'gauge'}} (defined $text)
+		? sprintf("XXX\n%d\n%s\nXXX\n", $percent, $text) : sprintf("%d\n", $percent);
 
 	($self->{'gauge'}) ? 1 : 0;
 }

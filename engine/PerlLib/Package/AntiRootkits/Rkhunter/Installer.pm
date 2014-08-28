@@ -254,7 +254,7 @@ sub _scheduleCheck
 
 		my ($stdout, $stderr);
 		$rs = execute(
-			"umask 027; $main::imscpConfig{'CMD_ECHO'} '$main::imscpConfig{'CMD_PERL'} " .
+			"$main::imscpConfig{'CMD_ECHO'} '$main::imscpConfig{'CMD_PERL'} " .
 			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl >/dev/null 2>&1' " .
 			"| $main::imscpConfig{'CMD_BATCH'}",
 			\$stdout,

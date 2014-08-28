@@ -44,7 +44,8 @@ $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-dsk-quota.log');
 
-umask(027);
+# Entering in silent mode
+silent(1);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-dsk-quota.lock', 'nowait');

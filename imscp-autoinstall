@@ -29,11 +29,6 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin", "$FindBin::Bin/engine/PerlLib", "$FindBin::Bin/engine/PerlVendor";
 
-umask(022);
-
-# Turn off localisation features to force any command output to be in english
-$ENV{'LC_MESSAGES'} = 'C';
-
 use iMSCP::Debug;
 use iMSCP::Requirements;
 use iMSCP::Dialog;
@@ -42,16 +37,19 @@ use iMSCP::Getopt;
 use File::Basename;
 use autoinstaller::Functions qw/loadConfig build install/;
 
+# Turn off localisation features to force any command output to be in english
+$ENV{'LC_MESSAGES'} = 'C';
+
 newDebug('imscp-autoinstall.log');
+
+# Entering in silent mode
+silent(1);
 
 # Setup backend mode
 {
 	no warnings qw/once/;
 	$main::execmode = 'setup';
 }
-
-# Entering in silent mode
-silent(1);
 
 # Load config
 loadConfig();

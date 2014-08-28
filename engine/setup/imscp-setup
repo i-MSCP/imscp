@@ -29,8 +29,6 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
-umask(022);
-
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::EventManager;
@@ -42,14 +40,14 @@ $ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-setup.log');
 
+# Entering in silent mode
+silent(1);
+
 # Setup backend mode
 {
 	no warnings qw/once/;
 	$main::execmode = 'setup';
 }
-
-# Entering in silent mode
-silent(1);
 
 iMSCP::Getopt->parse(sprintf('Usage: perl %s [OPTION]...', basename($0)));
 

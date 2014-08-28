@@ -187,7 +187,7 @@ sub addDmn
 		unless(-f "$userStatisticsDir/awstats.$data->{'DOMAIN_NAME'}.html") {
 			my ($stdout, $stderr);
 			$rs = execute(
-				"umask 027; $main::imscpConfig{'CMD_ECHO'} " .
+				"$main::imscpConfig{'CMD_ECHO'} " .
 				"'$main::imscpConfig{'CMD_PERL'} " .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl " .
 				"-config=$data->{'DOMAIN_NAME'} " .
@@ -529,7 +529,7 @@ sub _addAwstatsCronTask
 			DWEEK => '*',
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND =>
-				"umask 027; $main::imscpConfig{'CMD_PERL'} " .
+				"$main::imscpConfig{'CMD_PERL'} " .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl " .
 				"-config=$data->{'DOMAIN_NAME'} -update " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl " .
