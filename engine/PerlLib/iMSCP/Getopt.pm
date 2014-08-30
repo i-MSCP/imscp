@@ -36,15 +36,16 @@ use warnings;
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-use iMSCP::Debug qw /error debugRegisterCallBack output /;
+use iMSCP::Debug;
 use fields qw / reconfigure noprompt preseed listener cleanPackagesCache skipPackagesUpdate debug /;
 our $options = fields::new('iMSCP::Getopt');
 
 our $optionHelp = '';
+my $showUsage;
 
 =head1 DESCRIPTION
 
-This class provide command line options for both imscp-autoinstall and imscp-setup scripts.
+ This class provide command line options for both imscp-autoinstall and imscp-setup scripts.
 
 =head1 CLASS METHODS
 
@@ -68,7 +69,7 @@ sub parse
 {
 	my ($class, $usage) = (shift, shift);
 
-	my $showUsage = sub {
+	$showUsage = sub {
 		my $exitCode = shift || 0;
 		print STDERR output(<<EOF);
 $usage
@@ -114,7 +115,7 @@ EOF
 		) || $showUsage->(1);
 	};
 
-	undef;
+	'';
 }
 
 =item parseNoDefault($usage)
@@ -132,11 +133,11 @@ sub parseNoDefault
 {
 	my ($class, $usage) = (shift, shift);
 
-	my $showUsage = sub {
+	$showUsage = sub {
 		my $exitCode = shift || 0;
 		print STDERR output(<<EOF);
 $usage
- -?, --help Show this help.
+ -?,    --help          Show this help.
 
 EOF
 		debugRegisterCallBack(sub { exit $exitCode; });
@@ -162,6 +163,30 @@ EOF
 			@_,
 		) || $showUsage->(1);
 	};
+
+	undef;
+}
+
+=item showUsage($exitCode)
+
+ Show usage
+
+ Param int $exitCode OPTIONAL Exit code
+ Return undef
+
+=cut
+
+sub showUsage
+{
+	my ($class, $exitCode) = @_;
+
+	$exitCode //= 1;
+
+	if(ref $showUsage eq 'CODE') {
+		$showUsage->($exitCode);
+	} else {
+		#die('ShowUsage() is not defined');
+	}
 
 	undef;
 }

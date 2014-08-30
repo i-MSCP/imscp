@@ -33,6 +33,7 @@ use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Database;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
+use iMSCP::Getopt;
 use File::Basename;
 
 # Turn off localisation features to force any command output to be in English
@@ -43,8 +44,15 @@ $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-httpd-logs-mngr.log');
 
-# Entering in silent mode
-silent(1);
+# Parse command line options
+iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+
+Script which generate customers's httpd logs.
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+ 'verbose|v' => sub { setVerbose(@_); }
+);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-httpd-logs-mngr.lock', 'nowait');

@@ -114,6 +114,8 @@ sub _init
 
 	iMSCP::EventManager->getInstance()->register(
 		'afterSetupPreInstallPackages', sub {
+			iMSCP::Dialog->getInstance()->endGauge();
+
 			my $rs = iMSCP::Dir->new('dirname' => $self->{'wrkDir'})->make();
 			return $rs if $rs;
 

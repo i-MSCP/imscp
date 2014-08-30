@@ -354,7 +354,7 @@ sub _askDistro()
 	my $description = $lsbRelease->getDescription(1);
 	my $packagesFile = "$FindBin::Bin/docs/$distribution/packages-$codename.xml";
 
-	if($distribution ne "n/a" && (lc($distribution) eq 'debian' || lc($distribution) eq 'ubuntu') && $codename ne "n/a") {
+	if($distribution ne 'n/a' && (lc($distribution) eq 'debian' || lc($distribution) eq 'ubuntu') && $codename ne 'n/a') {
 		unless(-f $packagesFile) {
 			iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 

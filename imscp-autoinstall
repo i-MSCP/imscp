@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::Debug - Debug library
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright 2010-2014 by internet Multi Server Control Panel
 #
@@ -42,9 +48,6 @@ $ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-autoinstall.log');
 
-# Entering in silent mode
-silent(1);
-
 # Setup backend mode
 {
 	no warnings qw/once/;
@@ -57,12 +60,12 @@ loadConfig();
 # Ensure that this script is run by root user
 iMSCP::Requirements->new()->user();
 
-# Initialize autoinstaller options
+# Initialize command line options
 $main::buildonly = 0;
 $main::forcereinstall = 0;
 $main::skippackages = 0;
 
-# Add autoinstaller options
+# Parse autoinstaller options
 iMSCP::Getopt->parse(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
  -b,    --build-only            Process build steps only.
  -f,    --force-reinstall       Force reinstallation of distro packages.
@@ -72,8 +75,8 @@ iMSCP::Getopt->parse(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
  'skip-distro-packages|s' => \$main::skippackages
 );
 
-# Set verbose mode
-verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'});
+# Set debug mode
+setDebug(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
 # Getting reconfigure option value
 $main::reconfigure = iMSCP::Getopt->reconfigure;
@@ -166,7 +169,7 @@ EOF
 
 		$msg .= <<EOF;
 
-If you get no error, all went good; if you get one, look at http://forum.i-mscp.net to solve the problem.
+For any problem, have a look at http://forum.i-mscp.net
 
 Thank you for choosing i-MSCP.
 EOF

@@ -109,7 +109,7 @@ Error was:
 
 \\Z1$errorMessage \\Zn
 
-Please, post on http://i-mscp.net/forum to get any help.
+Please have a look at http://i-mscp.net/forum if you need help.
 EOF
 
 		return $rs;

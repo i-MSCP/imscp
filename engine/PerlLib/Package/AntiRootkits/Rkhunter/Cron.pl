@@ -41,9 +41,6 @@ $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-rkhunter-package.log');
 
-# Entering in silent mode
-silent(1);
-
 iMSCP::Bootstrapper->getInstance()->boot(
 	{
 		'nolock' => 'yes', 'norequirements' => 'yes', 'nokeys' => 'yes', 'nodatabase' => 'yes',

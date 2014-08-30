@@ -67,6 +67,8 @@ sub installPreRequiredPackages
 {
 	my $self = $_[0];
 
+	iMSCP::Dialog->getInstance()->endGauge();
+
 	$self->{'eventManager'}->trigger('beforeInstallPreRequiredPackages', $self->{'preRequiredPackages'});
 
 	my $command = 'apt-get';
@@ -167,6 +169,8 @@ sub preBuild
 sub installPackages
 {
 	my $self = $_[0];
+
+	iMSCP::Dialog->getInstance()->endGauge();
 
 	eval "use List::MoreUtils qw(uniq); 1";
 	fatal($@) if $@;
@@ -648,6 +652,8 @@ sub _processAptPreferences
 sub _updatePackagesIndex
 {
 	my $self = $_[0];
+
+	iMSCP::Dialog->getInstance()->endGauge();
 
 	my $command = 'apt-get';
 	my ($stdout, $stderr);

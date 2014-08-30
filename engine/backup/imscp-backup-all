@@ -37,6 +37,8 @@ use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw/isImmutable setImmutable clearImmutable/;
+use iMSCP::Getopt;
+use File::Basename;
 use POSIX qw/strftime/;
 
 sub run
@@ -231,8 +233,15 @@ $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-backup-all.log');
 
-# Entering in silent mode
-silent(1);
+# Parse command line options
+iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+
+Script which backup i-MSCP customers's data (Web files an databases).
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+ 'verbose|v' => sub { setVerbose(@_); }
+);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-backup-all.lock', 'nowait');

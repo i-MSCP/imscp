@@ -51,9 +51,6 @@ $ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-uninstall.log');
 
-# Entering in silent mode
-silent(1);
-
 sub startUp
 {
 	iMSCP::Getopt->debug(1); # Enforce debug mode (logs)

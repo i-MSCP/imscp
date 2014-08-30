@@ -138,6 +138,7 @@ sub _modules
 	for my $mod (keys %{$self->{'perl_modules'}}) {
 		if (eval "require $mod") {
 			eval "use $mod $self->{'perl_modules'}->{$mod}";
+			push(@mod_missing, $mod) if(@$);
 		} else {
 			push(@mod_missing, $mod);
 		}

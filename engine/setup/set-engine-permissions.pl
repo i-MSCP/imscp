@@ -34,6 +34,8 @@ use iMSCP::Bootstrapper;
 use iMSCP::Rights;
 use iMSCP::Servers;
 use iMSCP::Packages;
+use iMSCP::Getopt;
+use File::Basename;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -41,14 +43,22 @@ $ENV{'LC_MESSAGES'} = 'C';
 # Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
-# Mode in which the script is triggered
-# For now, this variable is only used by i-MSCP installer/setup scripts
-$main::execmode = shift || '';
-
 newDebug('imscp-set-engine-permissions.log');
 
-# Entering in silent mode
-silent(1);
+# Initialize command line options
+$main::execmode = '';
+
+# Parse command line options
+iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+
+Script which set i-MSCP backend permissions.
+
+OPTIONS:
+ -s,    --setup         Setup mode.
+ -v,    --verbose       Enable verbose mode.},
+ 'setup|s' => sub { $main::execmode =  'setup'; },
+ 'verbose|v' => sub { setVerbose(@_); }
+);
 
 iMSCP::Bootstrapper->getInstance()->boot(
 	{ 'norequirements' => 'yes', 'nolock' => 'yes', 'nodatabase' => 'yes', 'nokeys' => 'yes' }
@@ -138,7 +148,7 @@ sub run
 		debug("Setting $package server backend permissions");
 
 		if ($main::execmode eq 'setup') {
-			print "Setting backend permissions for the $package package\t$totalItems\t$counter\n";
+			print "Setting $package backend permissions\t$totalItems\t$counter\n";
 		}
 
 		$rs |= $instance->setEnginePermissions();

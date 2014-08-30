@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::Debug - Debug library
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #
@@ -38,35 +44,76 @@ $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
 
 our @EXPORT = qw/
-	debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType silent verbose
+	debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType setVerbose setDebug
 	debugRegisterCallBack output
 /;
 
 BEGIN
 {
 	# Handler which trap uncaught exceptions
-	$SIG{__DIE__} = sub {
-		if(defined $^S && !$^S) {
-			fatal(@_) if (((caller(1))[3] || 'main') ne 'iMSCP::Debug::fatal');
-		}
-	};
+	$SIG{__DIE__} = sub { fatal(@_) if defined $^S && ! $^S };
 
 	# Handler which trap warns
-	#$SIG{__WARN__} = sub {
-	#	if(defined $^S && !$^S) {
-	#		error(@_);
-	#	}
-	#};
+	$SIG{__WARN__} = sub { warning(@_); };
 }
 
 my $self = {
-	'silent' => 0,
-	'verbose' => 1,
+	'debug' => 0,
+	'verbose' => 0,
 	'debugCallBacks' => [],
 	'targets' => [ iMSCP::Log->new('id' => 'screen') ]
 };
 
 $self->{'screen'} = $self->{'target'} = $self->{'targets'}->[0];
+
+=head1 DESCRIPTION
+
+ Debug library
+
+=head1 CLASS METHODS
+
+=over 4
+
+=item setDebug($debug)
+
+ Enable or disable debug mode
+
+ Param bool $debug Enable verbose mode if true, disable otherwise
+ Return undef
+
+=cut
+
+sub setDebug
+{
+	my $debug = shift;
+
+	if(shift) {
+		$self->{'debug'} = 1;
+	} else {
+		# Remove any debug message from the current target
+		getMessageByType('debug', { remove => 1 });
+		debug('Debug mode is disabled');
+		$self->{'debug'} = 0;
+	}
+
+	undef;
+}
+
+=item setVerbose()
+
+ Enable or disable verbose mode
+
+ Param bool $debug Enable debug mode if true, disable otherwise
+ Return undef
+
+=cut
+
+sub setVerbose
+{
+	$self->{'verbose'} = (shift) ? 1 : 0;
+
+	undef;
+}
 
 =item newDebug($logfile)
 
@@ -79,7 +126,9 @@ $self->{'screen'} = $self->{'target'} = $self->{'targets'}->[0];
 
 sub newDebug
 {
-	my $logfile = $_[0];
+	my $logfile = shift || '';
+
+	fatal("Name of logfile expected") if ref $logfile || $logfile eq '';
 
 	$self->{'target'} = iMSCP::Log->new('id' => $logfile);
 
@@ -105,15 +154,15 @@ sub endDebug
 		my @firstItems = (@{$self->{'targets'}} == 1) ? $self->{'screen'}->flush() : ();
 
 		# Retrieve any log which must be printed to screen and store them in the appropriate log object
-		for my $item($target->retrieve('tag' => qr/^warn|error|fatal/i), @firstItems) {
-			$self->{'screen'}->store(when => $item->{'when'}, message => $item->{'message'}, tag => $item->{'tag'});
+		for my $item($target->retrieve( tag => qr/^(?:warn|error|fatal)/i ), @firstItems) {
+			$self->{'screen'}->store( when => $item->{'when'}, message => $item->{'message'}, tag => $item->{'tag'} );
 		}
 
-		my $logDir = ($main::imscpConfig{'LOG_DIR'} && -d $main::imscpConfig{'LOG_DIR'})
-			? $main::imscpConfig{'LOG_DIR'} : '/tmp';
+		my $logDir =($main::imscpConfig{'LOG_DIR'} && -d $main::imscpConfig{'LOG_DIR'})
+			? $main::imscpConfig{'LOG_DIR'} : ('/var/log/imscp' && -d '/var/log/imscp') ? '/var/log/imscp' : '/tmp';
 
 		# Write logfile
-		writeLogfile($target, "$logDir/$targetId");
+		_writeLogfile($target, "$logDir/$targetId");
 
 		# Set previous log object as target for new messages
 		$self->{'target'} = @{$self->{'targets'}}[$#{$self->{'targets'}}];
@@ -123,45 +172,6 @@ sub endDebug
 	}
 
 	0;
-}
-
-=item silent()
-
- Enter in silent mode
-
- Return undef
-
-=cut
-
-sub silent
-{
-	$self->{'silent'} = $_[0];
-	debug("Entering in silent mode") if $self->{'silent'};
-
-	undef;
-}
-
-=item verbose()
-
- set verbose
-
- Return undef
-
-=cut
-
-sub verbose
-{
-	my $verbose = $_[0];
-
-	unless($verbose) {
-		# Remove any debug message from the current target
-		getMessageByType('debug', { remove => 1 });
-		debug('Debug mode off');
-	}
-
-	$self->{'verbose'} = $verbose;
-
-	undef;
 }
 
 =item debug($message)
@@ -175,13 +185,12 @@ sub verbose
 
 sub debug
 {
-	if($self->{'verbose'}) {
-		my $message = $_[0];
+	my $message = shift;
+	my $caller = (caller(1))[3] || 'main';
 
-		my $caller = (caller(1))[3] || 'main';
+	$self->{'target'}->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'};
 
-		$self->{'target'}->store( message => "$caller: $message", tag => 'debug' );
-	}
+	print STDOUT output("$caller: $message", 'debug') if $self->{'verbose'};
 
 	undef;
 }
@@ -197,13 +206,10 @@ sub debug
 
 sub warning
 {
-	my $message = $_[0];
-
+	my $message = shift;
 	my $caller = (caller(1))[3] || 'main';
 
 	$self->{'target'}->store( message => "$caller: $message", tag => 'warn' );
-
-	print STDERR output("$caller: $message", 'warn') unless $self->{'silent'};
 
 	undef;
 }
@@ -219,13 +225,10 @@ sub warning
 
 sub error
 {
-	my $message = $_[0];
-
+	my $message = shift;
 	my $caller = (caller(1))[3] || 'main';
 
 	$self->{'target'}->store( message => "$caller: $message", tag => 'error' );
-
-	print STDERR output("$caller: $message", 'error') unless $self->{'silent'};
 
 	0;
 }
@@ -241,13 +244,12 @@ sub error
 
 sub fatal
 {
-	my $message = $_[0];
-
+	my $message = shift;
 	my $caller = (caller(1))[3] || 'main';
 
 	$self->{'target'}->store( message => "$caller: $message", tag => 'fatal' );
 
-	exit $? || 1 ;
+	exit ($? ||= 255);
 }
 
 =item getLastError()
@@ -267,78 +269,26 @@ sub getLastError
 
  Get message by type
 
- Param string $type Matching type string
- Param hash %option Hash containing options (amount, chrono, remove)
+ Param string $type Type or regexp
+ Param hash %option|\%options Hash containing options (amount, chrono, remove)
  Return array|string Either an array containing messages or a string representing concatenation of messages
 
 =cut
 
 sub getMessageByType
 {
-	my $type = shift;
+	my $type = shift || '';
 
 	my %options = (@_ && ref $_[0] eq 'HASH') ? %{$_[0]} : @_;
 
 	my @messages = map { $_->{'message'} } $self->{'target'}->retrieve(
-		'tag' => (ref $type eq 'Regexp') ? $type : qr/^$type/i,
+		'tag' => (ref $type eq 'Regexp') ? $type : qr/^$type$/i,
 		'amount' => $options{'amount'},
 		'chrono' => $options{'chrono'} // 1,
 		'remove' => $options{'remove'} // 0
 	);
 
 	wantarray ? @messages : join "\n", @messages;
-}
-
-=item writeLogfile($logObject, $logfilePath)
-
- Write all messages for the given log
-
- Param iMSCP::Log $logObject iMSCP::Log object representing a logfile
- Param string $logfilePath Logfile path
-
- Return int 0
-
-=cut
-
-sub writeLogfile
-{
-	my ($logObject, $logfilePath) = @_;
-
-	my $messages = _getMessages($logObject);
-
-	# Make error message free of any ANSI color and end of line codes
-	$messages =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
-
-	if(open(FH, '>utf8', $logfilePath)) {
-		print FH $messages;
-		close FH;
-	} else {
-		print STDERR "Unable to open log file $logfilePath for writting: $!";
-	}
-
-	0;
-}
-
-=item _getMessages($logObject)
-
- Flush and return all messages for the given log object as a string
-
- Param iMSCP::Log $logObject iMSCP::Log object representing a logfile
- Return string String representing concatenation of all messages found in the given log object
-
-=cut
-
-sub _getMessages
-{
-	my $logObject = $_[0];
-
-	my $bf;
-
-	for($logObject->flush()) {
-		$bf .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
-	}
-
-	$bf;
 }
 
 =item output($text, $level)
@@ -389,25 +339,77 @@ sub debugRegisterCallBack
 	0;
 }
 
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _writeLogfile($logObject, $logfilePath)
+
+ Write all messages for the given log
+
+ Param iMSCP::Log $logObject iMSCP::Log object representing a logfile
+ Param string $logfilePath Logfile path
+
+ Return int 0
+
+=cut
+
+sub _writeLogfile
+{
+	my ($logObject, $logfilePath) = @_;
+
+	# Make error message free of any ANSI color and end of line codes
+	(my $messages = _getMessages($logObject)) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+
+	if(open(FH, '>utf8', $logfilePath)) {
+		print FH $messages;
+		close FH;
+	} else {
+		print STDERR "Unable to open log file $logfilePath for writting: $!";
+	}
+
+	0;
+}
+
+=item _getMessages($logObject)
+
+ Flush and return all messages for the given log object as a string
+
+ Param iMSCP::Log $logObject iMSCP::Log object representing a logfile
+ Return string String representing concatenation of all messages found in the given log object
+
+=cut
+
+sub _getMessages
+{
+	my $logObject = shift;
+
+	my $bf;
+
+	for($logObject->flush()) {
+		$bf .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
+	}
+
+	$bf;
+}
+
 END
 {
 	my $exitCode = $?;
 
 	&$_ for @{$self->{'debugCallBacks'}};
 
-	unless($exitCode == 50) { # 50 is returned when ESC is pressed (dialog)
-		if($exitCode && $exitCode != 255) {
-			$self->{'target'}->store( message => "Exit code: $exitCode", tag => 'fatal' );
-		} else {
-			debug("Exit code: $exitCode");
-		}
+	if($exitCode && $exitCode ne 50) { # 50 is returned when ESC is pressed (dialog)
+		$self->{'target'}->store( message => "Exit code: $exitCode", tag => 'fatal' );
 	}
 
-	system('clear') if defined $ENV{'TERM'} && (! defined $ENV{'IMSCP_CLEAR_SCREEN'} || $ENV{'IMSCP_CLEAR_SCREEN'});
+	#system('tput clear') if defined $ENV{'TERM'} && (!defined $ENV{'IMSCP_CLEAR_SCREEN'} || $ENV{'IMSCP_CLEAR_SCREEN'});
 
 	endDebug() for @{$self->{'targets'}};
 
-	my @logs = $self->{'screen'}->retrieve(tag => qr/'warn|error|fatal'/);
+	my @logs = $self->{'screen'}->retrieve( tag => qr/^(?:warn|error|fatal)$/ );
 
 	if(@logs) {
 		my @messages;
@@ -422,5 +424,13 @@ END
 
 	$? = $exitCode;
 }
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

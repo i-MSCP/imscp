@@ -1861,7 +1861,7 @@ sub setupSetPermissions
 				*FHIN,
 				*FHOUT,
 				*FHERR,
-				"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script setup"
+				"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script --setup"
 			);
 		};
 
@@ -1987,7 +1987,7 @@ sub setupRebuildCustomerFiles
 			*FHIN,
 			*FHOUT,
 			*FHERR,
-			"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr setup"
+			"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup"
 		);
 	};
 

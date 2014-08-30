@@ -33,14 +33,26 @@ use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Database;
 use iMSCP::Net;
+use iMSCP::Getopt;
+use File::Basename;
 
+# Turn off localisation features to force any command output to be in English
 $ENV{'LC_MESSAGES'} = 'C';
+
+# Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-net-interfaces-mngr.log');
 
-# Entering in silent mode
-silent(1);
+# Parse command line options
+iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]... start|restart|stop", basename($0)) . qq {
+
+Script which start/restart/stop i-MSCP network interfaces.
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+ 'verbose|v' => sub { setVerbose(@_); }
+);
 
 iMSCP::Bootstrapper->getInstance()->boot(
 	{ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' }
@@ -95,7 +107,7 @@ sub _removeAddresses
 
 sub run
 {
-	my $action = $ARGV[0] // 'unknown';
+	my $action = $ARGV[0] || '';
 	my $rs = 0;
 
 	if ($action eq 'start') {
@@ -106,8 +118,7 @@ sub run
 	} elsif ($action eq 'stop') {
 		$rs = _removeAddresses();
 	} else {
-		error("Must be called with 'start', 'restart' or 'stop' argument");
-		$rs = 1;
+		iMSCP::Getopt->showUsage();
 	}
 
 	my $db = iMSCP::Database->factory();

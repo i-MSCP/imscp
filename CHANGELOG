@@ -16,10 +16,12 @@ ENGINE
 	Added: Library (iMSCP::ProgramFinder) allowing to test whether programs are available on the executable search path
 	Added: Library (iMSCP::Service) for service management (start, stop, restart, reload, status)
 	Added: pigz (Parallel Implementation of GZip) algorithm for backups compression
+	Added: --verbose command line options for all scripts
 	Changed: i-MSCP is now run through a dedicated httpd instance by using the nginx Web server
 	Changed: Logfiles are now written as soon as possible (allows to mitigate memory consumption)
 	Changed: The quota accounting script is now run every 30 minutes
 	Fixed: Backend logs which are older than 7 days are never removed
+	Fixed: Releases are not sorted correctly (iMSCP::LsbRelease library)
 
 GUI
 	Changed: i-MSCP is now accessible through dedicated http ports (default is 8080 for http and 4443 for https)

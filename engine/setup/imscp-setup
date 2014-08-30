@@ -40,15 +40,13 @@ $ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-setup.log');
 
-# Entering in silent mode
-silent(1);
-
 # Setup backend mode
 {
 	no warnings qw/once/;
 	$main::execmode = 'setup';
 }
 
+# Parse command line options
 iMSCP::Getopt->parse(sprintf('Usage: perl %s [OPTION]...', basename($0)));
 
 # Get reconfigure option

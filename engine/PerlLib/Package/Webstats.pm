@@ -484,6 +484,8 @@ sub _installPackages
 {
 	my ($self, $packages) = @_;
 
+	iMSCP::Dialog->getInstance()->endGauge();
+
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
@@ -514,6 +516,8 @@ sub _installPackages
 sub _removePackages
 {
 	my ($self, $packages) = @_;
+
+	iMSCP::Dialog->getInstance()->endGauge();
 
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;

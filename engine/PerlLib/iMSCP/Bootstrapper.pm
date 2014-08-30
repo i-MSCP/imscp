@@ -76,8 +76,8 @@ sub boot
 		'nofail' => $options->{'nofail'} && $options->{'nofail'} eq 'yes' ? 1 : 0,
 		'readonly' => $options->{'config_readonly'} && $options->{'config_readonly'} eq 'yes' ? 1 : 0;
 
-	# Set verbose mode
-	verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
+	# Set debug mode
+	setDebug(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
 	iMSCP::Requirements->new()->test(
 		$mode eq 'setup' ? 'all' : 'user'

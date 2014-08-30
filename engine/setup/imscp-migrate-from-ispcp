@@ -879,9 +879,6 @@ $ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-migrate-from-ispcp.log');
 
-# Entering in silent mode
-silent(1);
-
 iMSCP::Bootstrapper->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
 
 exit processMigration();

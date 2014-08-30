@@ -33,6 +33,8 @@ use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Database;
+use iMSCP::Getopt;
+use File::Basename;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -42,8 +44,15 @@ $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-srv-traff.log');
 
-# Entering in silent mode
-silent(1);
+# Parse command line options
+iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+
+Script which collects i-MSCP server' traffic data.
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+ 'verbose|v' => sub { setVerbose(@_); }
+);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-srv-traff.lock', 'nowait');
