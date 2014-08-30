@@ -312,7 +312,7 @@ sub _parsePolicyLine
 	$retval;
 }
 
-=item _releaseIndex
+=item _releaseIndex()
 
  Get release index if any
 
@@ -415,8 +415,8 @@ sub _guessReleaseFromApt
 
 	@{$releases} = sort { $b->[0] cmp $a->[0] } @{$releases};
 
-    # We've sorted the list by descending priority, so the first entry should
-    # be the "main" release in use on the system
+	# We've sorted the list by descending priority, so the first entry should
+	# be the "main" release in use on the system
 
 	my $maxPriority = $releases->[0]->[0];
 	@{$releases} = grep { $_->[0] == $maxPriority; } @{$releases};

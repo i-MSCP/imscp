@@ -115,7 +115,7 @@ EOF
 		) || $showUsage->(1);
 	};
 
-	'';
+	undef;
 }
 
 =item parseNoDefault($usage)
