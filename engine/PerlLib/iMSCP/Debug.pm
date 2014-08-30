@@ -85,8 +85,6 @@ $self->{'screen'} = $self->{'target'} = $self->{'targets'}->[0];
 
 sub setDebug
 {
-	my $debug = shift;
-
 	if(shift) {
 		$self->{'debug'} = 1;
 	} else {
@@ -110,7 +108,7 @@ sub setDebug
 
 sub setVerbose
 {
-	$self->{'verbose'} = (shift) ? 1 : 0;
+	$self->{'verbose'} = shift // 0;
 
 	undef;
 }

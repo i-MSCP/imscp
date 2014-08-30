@@ -484,12 +484,14 @@ sub _installPackages
 {
 	my ($self, $packages) = @_;
 
-	iMSCP::Dialog->getInstance()->endGauge();
-
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	$command = 'debconf-apt-progress --logstderr -- ' . $command unless $preseed || $main::noprompt;
+	unless ($preseed || $main::noprompt) {
+		iMSCP::Dialog->getInstance()->endGauge();
+
+		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+	}
 
 	my ($stdout, $stderr);
 	my $rs = execute(
@@ -517,12 +519,14 @@ sub _removePackages
 {
 	my ($self, $packages) = @_;
 
-	iMSCP::Dialog->getInstance()->endGauge();
-
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	$command = 'debconf-apt-progress --logstderr -- ' . $command unless $preseed || $main::noprompt;
+	unless ($preseed || $main::noprompt) {
+		iMSCP::Dialog->getInstance()->endGauge();
+
+		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+	}
 
 	my ($stdout, $stderr);
 	my $rs = execute(

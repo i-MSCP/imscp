@@ -67,8 +67,6 @@ sub installPreRequiredPackages
 {
 	my $self = $_[0];
 
-	iMSCP::Dialog->getInstance()->endGauge();
-
 	$self->{'eventManager'}->trigger('beforeInstallPreRequiredPackages', $self->{'preRequiredPackages'});
 
 	my $command = 'apt-get';
@@ -186,6 +184,8 @@ sub installPackages
 	my @command;
 
 	unless($preseed || $main::noprompt || ! iMSCP::ProgramFinder::find('debconf-apt-progress')) {
+		iMSCP::Dialog->getInstance()->endGauge();
+
 		push @command, 'debconf-apt-progress --logstderr --';
 	}
 
@@ -250,6 +250,8 @@ sub uninstallPackages
 		my $preseed = iMSCP::Getopt->preseed;
 
 		unless($preseed || $main::noprompt || ! iMSCP::ProgramFinder::find('debconf-apt-progress')) {
+			iMSCP::Dialog->getInstance()->endGauge();
+
 			$command = 'debconf-apt-progress --logstderr -- ' . $command;
 		}
 
@@ -653,13 +655,13 @@ sub _updatePackagesIndex
 {
 	my $self = $_[0];
 
-	iMSCP::Dialog->getInstance()->endGauge();
-
 	my $command = 'apt-get';
 	my ($stdout, $stderr);
 	my $preseed = iMSCP::Getopt->preseed;
 
 	unless($preseed || $main::noprompt || ! iMSCP::ProgramFinder::find('debconf-apt-progress')) {
+		iMSCP::Dialog->getInstance()->endGauge() if iMSCP::ProgramFinder::find('dialog');
+
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 

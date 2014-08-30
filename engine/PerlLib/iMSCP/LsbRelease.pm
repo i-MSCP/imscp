@@ -210,7 +210,7 @@ sub getAll
 		'CODENAME' => 'squeeze'
 	}
 
- Return hash Pairs of fieldname/fieldvalue
+ Return hash
 
 =cut
 
@@ -287,7 +287,7 @@ sub _lookupCodename
  Parse a line from the apt-cache policy command output to retrieve distribution version, origin, suite, component and
 label field value
 
- Return hash Pairs of fieldname/fieldvalue
+ Return hash
 
 =cut
 
@@ -422,7 +422,7 @@ sub _guessReleaseFromApt
 	@{$releases} = grep { $_->[0] == $maxPriority; } @{$releases};
 	@{$releases} = sort { $self->_releaseIndex($a) cmp $self->_releaseIndex($b) } @{$releases};
 
-	@$releases[0]->[1];
+	$releases->[0]->[1];
 }
 
 =item _guessDebianRelease()
@@ -458,6 +458,8 @@ sub _guessDebianRelease
 					$distInfo->{'ID'} = $content;
 				}
 			}
+
+			close $fh;
 		} else {
 			 warn("Unable to open $etcDpkgOriginsDefauft: $!");
 		}
@@ -484,6 +486,9 @@ sub _guessDebianRelease
 
 		if(open my $fh, '<', $etcDebianVersion) {
 			$release = do { local $/; <$fh> };
+
+			close $fh;
+
 			$release =~ s/^\s+|\s+$//g;
 		} else {
 			warn("Unable to open $etcDebianVersion: $!");
@@ -553,7 +558,7 @@ sub _guessDebianRelease
 
  Get lsb information from lsb-release file
 
- Return hash Hash containing lsb information
+ Return hash
 
 =cut
 
