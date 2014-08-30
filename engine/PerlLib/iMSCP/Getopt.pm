@@ -36,7 +36,7 @@ use warnings;
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debugRegisterCallBack output /;
 use fields qw / reconfigure noprompt preseed listener cleanPackagesCache skipPackagesUpdate debug /;
 our $options = fields::new('iMSCP::Getopt');
 
@@ -185,7 +185,7 @@ sub showUsage
 	if(ref $showUsage eq 'CODE') {
 		$showUsage->($exitCode);
 	} else {
-		#die('ShowUsage() is not defined');
+		die('ShowUsage() is not defined');
 	}
 
 	undef;

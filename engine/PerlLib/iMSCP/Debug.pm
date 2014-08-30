@@ -126,7 +126,7 @@ sub newDebug
 {
 	my $logfile = shift || '';
 
-	fatal("Name of logfile expected") if ref $logfile || $logfile eq '';
+	fatal("logfile name expected") if ref $logfile || $logfile eq '';
 
 	$self->{'target'} = iMSCP::Log->new('id' => $logfile);
 
