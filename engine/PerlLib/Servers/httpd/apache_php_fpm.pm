@@ -1234,47 +1234,6 @@ sub deleteTmp
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelTmp');
 	return $rs if $rs;
 
-	# Get session.gc_maxlifetime value from global PHP FPM php.ini file
-	my $max = 1440;
-
-	unless(-f "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini") {
-		error("$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini doesn't exist");
-		return $rs if $rs;
-	} else {
-		my $file = iMSCP::File->new('filename' => "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini");
-		my $fileContent = $file->get();
-
-		unless(defined $fileContent) {
-			error("Unable to read $self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini");
-			return $rs if $rs;
-		} else {
-			$fileContent =~ m/^\s*session.gc_maxlifetime\s*=\s*([0-9]+).*$/gim;
-			my $cur = $1 || 0;
-			$max = $cur if $cur > $max;
-		}
-	}
-
-	$max = POSIX::floor($max/60);
-
-	my ($cmd, $stdout, $stderr);
-
-	# panel sessions gc (Only for security since Zend_Session normaly take care of this)
-	$cmd = "[ -d /var/www/imscp/gui/data/sessions ] && /usr/bin/find /var/www/imscp/gui/data/sessions/ -type f -cmin +$max -exec rm -v {} \\;";
-	$rs = execute($cmd, \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error("Error while executing $cmd.\nReturned value is $rs") if ! $stderr && $rs;
-	return $rs if $rs;
-
-	# customers sessions gc
-	# TODO should we check for any maxlifetime overriden in pools configuration file?
-	$cmd = "$main::imscpConfig{'CMD_NICE'} -n 19 /usr/bin/find $main::imscpConfig{'USER_WEB_DIR'} -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
-	$rs = execute($cmd, \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error("Error while executing $cmd.\nReturned value is $rs") if ! $stderr && $rs;
-	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterHttpdDelTmp');
 }
 

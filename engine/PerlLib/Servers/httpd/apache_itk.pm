@@ -1236,21 +1236,6 @@ sub deleteTmp
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelTmp');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-
-	# panel sessions gc (since we are not using default session path)
-
-	if(-d "/var/www/imscp/gui/data/sessions"){
-		my $cmd = '[ -x /usr/lib/php5/maxlifetime ] && [ -d /var/www/imscp/gui/data/sessions ] && find /var/www/imscp/gui/data/sessions/ -type f -cmin +$(/usr/lib/php5/maxlifetime) -delete';
-		$rs |= execute($cmd, \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		error("Error while executing $cmd.\nReturned value is $rs") if ! $stderr && $rs;
-		return $rs if $rs;
-	}
-
-	# Note: Customer session files are removed by distro cron task
-
 	$self->{'eventManager'}->trigger('afterHttpdDelTmp');
 }
 

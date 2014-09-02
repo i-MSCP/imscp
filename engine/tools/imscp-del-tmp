@@ -19,7 +19,6 @@
 #
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -48,7 +47,7 @@ newDebug('imscp-del-tmp.log');
 # Parse command line options
 iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
-Script which delete temporary files.
+Script which triggers temporary files deletion task on all servers/packages that implement it.
 
 OPTIONS:
  -v,    --verbose       Enable verbose mode.},
@@ -68,9 +67,7 @@ sub run
 
 	for(iMSCP::Servers->getInstance()->get()) {
 		next if $_ eq 'noserver';
-
 		my $package = "Servers::$_";
-
 		eval "require $package";
 
 		unless($@) {
@@ -84,7 +81,6 @@ sub run
 
 	for(iMSCP::Packages->getInstance()->get()) {
 		my $package = "Package::$_";
-
 		eval "require $package";
 
 		unless($@) {

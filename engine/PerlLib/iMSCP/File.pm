@@ -70,7 +70,7 @@ sub get
 		$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'r') or delete($self->{'fileHandle'});
 
 		unless(defined $self->{'fileHandle'}) {
-			error("Unable to open $self->{'filename'}: $!");
+			error(sprintf('Unable to open %s: %s', $self->{'filename'}, $!));
 			return undef;
 		}
 
@@ -101,7 +101,7 @@ sub getRFileHandle
 	$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'r') or delete($self->{'fileHandle'});
 
 	unless(defined $self->{'fileHandle'}) {
-		error("Unable to open $self->{filename}");
+		error(sprintf('Unable to open %s', $self->{'filename'}));
 		return undef;
 	}
 
@@ -129,7 +129,7 @@ sub getWFileHandle
 	$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'w') or delete($self->{'fileHandle'});
 
 	unless(defined $self->{'fileHandle'}) {
-		error("Unable to open $self->{'filename'}");
+		error(sprintf('Unable to open %s', $self->{'filename'}));
 		return undef;
 	}
 
@@ -147,7 +147,7 @@ sub getWFileHandle
 
 sub set
 {
-	my($self, $content) = @_;
+	my ($self, $content) = @_;
 
 	$self->{'fileContent'} = $content // '';
 
@@ -169,7 +169,7 @@ sub save
 	my $fh = $self->getWFileHandle();
 
 	if($fh) {
-		debug("Saving file $self->{'filename'}");
+		debug(sprintf('Saving file %s', $self->{'filename'}));
 
 		$self->{'fileContent'} //= '';
 
@@ -200,10 +200,10 @@ sub delFile
 		return 1;
 	}
 
-	debug("Deleting file $self->{'filename'}");
+	debug(sprintf('Deleting file %s', $self->{'filename'}));
 
 	unless(unlink($self->{'filename'})) {
-		error("Unable to delete file $self->{'filename'}: $!");
+		error(sprintf('Unable to delete file %s: %s', $self->{'filename'}, $!));
 		return 1;
 	}
 
@@ -228,10 +228,10 @@ sub mode
 		return 1;
 	}
 
-	debug(sprintf("Changing mode for $self->{'filename'} to %o", $mode));
+	debug(sprintf('Changing mode for %s to %o', $self->{'filename'}, $mode));
 
 	unless (chmod($mode, $self->{'filename'})) {
-		error("Unable to change mode for $self->{'filename'}: $!");
+		error(sprintf('Unable to change mode for %s: %s', $self->{'filename'}, $!));
 		return 1;
 	}
 
@@ -260,10 +260,10 @@ sub owner
 	my $uid = (($owner =~ /^\d+$/) ? $owner : getpwnam($owner)) // -1;
 	my $gid = (($group =~ /^\d+$/) ? $group : getgrnam($group)) // -1;
 
-	debug("Changing owner and group for $self->{'filename'} to $uid:$gid");
+	debug(sprintf('Changing owner and group for %s to %s:%s', $self->{'filename'}, $uid, $gid));
 
 	unless (chown($uid, $gid, $self->{'filename'})) {
-		error("Unable to change owner and group for $self->{'filename'}: $!");
+		error(sprintf('Unable to change owner and group for %s: %s', $self->{'filename'}, $!));
 		return 1;
 	}
 
@@ -291,31 +291,30 @@ sub copyFile
 		return 1;
 	}
 
-	debug("Copying file $self->{'filename'} to $dest");
+	debug(sprintf('Copying file %s to %s', $self->{'filename'}, $dest));
 
 	unless(copy($self->{'filename'}, $dest)) {
-		error("Unable to copy $self->{'filename'} to $dest: $!");
+		error(sprintf('Unable to copy %s to %s: %s', $self->{'filename'}, $dest, $!));
 		return 1;
 	}
 
 	$dest .= '/' . basename($self->{'filename'}) if -d $dest;
 
 	if(!defined $options->{'preserve'} || lc($options->{'preserve'}) ne 'no') {
-		my $mode = (stat($self->{'filename'}))[2] & 00777;
-		my $owner = (stat($self->{'filename'}))[4];
-		my $group = (stat($self->{'filename'}))[5];
+		my (undef, undef, $mode, undef, $uid, $gid) = lstat($self->{'filename'});
+		$mode = $mode & 07777;
 
-		debug(sprintf("Changing mode for $dest to %o", $mode));
+		debug(sprintf('Changing mode for %s to %o', $dest, $mode));
 
 		unless (chmod($mode, $dest)) {
-			error("Unable to change mode for $dest: $!");
+			error(sprintf('Unable to change mode for %s: %s', $dest, $!));
 			return 1;
 		}
 
-		debug(sprintf("Changing owner and group for $dest to %s:%s", $owner, $group));
+		debug(sprintf("Changing owner and group for %s to %s:%s", $dest, $uid, $gid));
 
-		unless (chown($owner, $group, $dest)) {
-			error("Unable to change owner and group for $dest: $!");
+		unless (chown($uid, $gid, $dest)) {
+			error(sprintf('Unable to change owner and group for %s: %s', $dest, $!));
 			return 1;
 		}
 	}
@@ -341,10 +340,10 @@ sub moveFile
 		return 1;
 	}
 
-	debug("Moving file $self->{'filename'} to $dest");
+	debug(sprintf('Moving file %s to %s', $self->{'filename'}, $dest));
 
 	unless(move($self->{'filename'}, $dest)) {
-		error("Unable to move $self->{'filename'} to $dest: $!");
+		error(sprintf('Unable to move %s to %s: %s', $self->{'filename'}, $dest, $!));
 		return 1;
 	}
 

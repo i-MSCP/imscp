@@ -32,6 +32,9 @@ INSTALLER
 	Moved: Control panel hostname and SSL dialogs into FrontEnd installer
 	Renamed: Option --hook-file to --listener
 
+TICKETS
+	Fixed #1123: Review - PHP session handling
+
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
 ------------------------------------------------------------------------------------------------------------------------

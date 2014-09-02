@@ -44,11 +44,13 @@ sub setRights
 	my $rs = 0;
 
 	my  @dchmod = (
-		"find $file -type d -print0 | xargs", $^O !~ /bsd$/ ? '-r' : '', "-0 chmod $options->{'dirmode'}"
+		"$main::imscpConfig{'CMD_FIND'} $file -type d -print0 | xargs",
+		($^O !~ /bsd$/) ? '-r' : '', "-0 chmod $options->{'dirmode'}"
 	) if $options->{'dirmode'};
 
 	my  @fchmod = (
-		"find $file -type f -print0 | xargs", $^O !~ /bsd$/ ? '-r' : '', "-0 chmod $options->{'filemode'}"
+		"$main::imscpConfig{'CMD_FIND'} $file -type f -print0 | xargs",
+		($^O !~ /bsd$/) ? '-r' : '', "-0 chmod $options->{'filemode'}"
 	) if $options->{'filemode'};
 
 	my  @chmod = (

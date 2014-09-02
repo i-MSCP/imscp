@@ -156,8 +156,19 @@ sub endDebug
 			$self->{'screen'}->store( when => $item->{'when'}, message => $item->{'message'}, tag => $item->{'tag'} );
 		}
 
-		my $logDir =($main::imscpConfig{'LOG_DIR'} && -d $main::imscpConfig{'LOG_DIR'})
-			? $main::imscpConfig{'LOG_DIR'} : ('/var/log/imscp' && -d '/var/log/imscp') ? '/var/log/imscp' : '/tmp';
+		my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
+
+		unless(-d $main::imscpConfig{'LOG_DIR'}) {
+			require iMSCP::Dir;
+			my $rs = iMSCP::Dir->new('dirname', $logDir)->make(
+				{
+					'user' => $main::imscpConfig{'ROOT_USER'},
+					'group' => $main::imscpConfig{'ROOT_GROUP'},
+					'mode' => 0750
+				}
+			);
+			$logDir = '/tmp' if $rs;
+		}
 
 		# Write logfile
 		_writeLogfile($target, "$logDir/$targetId");
@@ -313,7 +324,7 @@ sub output
 		} elsif ($level eq 'ok'){
 			$output = "\n[\033[0;32mOK\033[0m] $text\n";
 		} else {
-			$output = "\n$text\n\n";
+			$output = "$text\n";
 		}
 	} else {
 		$output = "\n$text\n\n";
@@ -322,17 +333,20 @@ sub output
 	wrap('', '', $output);
 }
 
-=item debugRegisterCallBack()
+=item debugRegisterCallBack($callback)
 
  Register the given callback, which will be triggered before log processing
 
+ Param callback Callback to register
  Return int 0;
 
 =cut
 
 sub debugRegisterCallBack
 {
-	push @{$self->{'debugCallBacks'}}, $_[0];
+	my $callback = shift;
+
+	push @{$self->{'debugCallBacks'}}, $callback;
 
 	0;
 }

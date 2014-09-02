@@ -1772,14 +1772,17 @@ sub setupCron
 	# Building the new file
 	$cfgTpl = process(
 		{
-			'LOG_DIR' => $main::imscpConfig{'LOG_DIR'},
-			'CONF_DIR' => $main::imscpConfig{'CONF_DIR'},
+			'CMD_NICE' => $main::imscpConfig{'CMD_NICE'},
+			'CMD_FIND' => $main::imscpConfig{'CMD_FIND'},
+			'CMD_RM' => $main::imscpConfig{'CMD_RM'},
 			'QUOTA_ROOT_DIR' => $main::imscpConfig{'QUOTA_ROOT_DIR'},
+			'LOG_DIR' => $main::imscpConfig{'LOG_DIR'},
 			'TRAFF_ROOT_DIR' => $main::imscpConfig{'TRAFF_ROOT_DIR'},
 			'TOOLS_ROOT_DIR' => $main::imscpConfig{'TOOLS_ROOT_DIR'},
-			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'},
 			'BACKUP_MINUTE' => $main::imscpConfig{'BACKUP_MINUTE'},
-			'BACKUP_HOUR' => $main::imscpConfig{'BACKUP_HOUR'}
+			'BACKUP_HOUR' => $main::imscpConfig{'BACKUP_HOUR'},
+			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'},
+			'CONF_DIR' => $main::imscpConfig{'CONF_DIR'}
 		},
 		$cfgTpl
 	);

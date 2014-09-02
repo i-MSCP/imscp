@@ -73,7 +73,7 @@ our $command = {
 
 sub run
 {
-	return 0 if $main::imscpConfig{'BACKUP_IMSCP'} ne 'yes';
+	return 0 unless $main::imscpConfig{'BACKUP_IMSCP'} eq 'yes';
 
 	my $algorithm = lc($main::imscpConfig{'ZIP'});
 
@@ -99,12 +99,12 @@ sub run
 	# Remove any backup older than 7 days
 	my ($stdout, $stderr);
 	$rs = execute(
-		"/usr/bin/find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r /bin/rm -v",
+		"$main::imscpConfig{'CMD_FIND'} $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 " .
+			"-print | xargs -r $main::imscpConfig{'CMD_RM'}",
 		\$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Unable to remove old i-MSCP backups') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	my @errorMessages = (getMessageByType('warn'), getMessageByType('error'));
@@ -145,7 +145,6 @@ sub _backupDatabase
 			debug($stdout) if $stdout;
 			if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
 				error($stderr) if $stderr;
-				error("Unable to compress $sqlFName database dump file") if ! $stderr;
 				return $rs if $rs;
 			}
 		}

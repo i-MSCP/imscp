@@ -27,7 +27,7 @@ use strict;
 use warnings;
 
 use FindBin;
-use "$FindBin::Bin/../PerlLib";
+use lib "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;

@@ -351,11 +351,13 @@ sub saveIspcpConfigFiles
 {
 	my ($stdout, $stderr, @errors);
 
-	my $rs = execute("find $main::ispcpConfig{'CONF_DIR'} -type f -name '*.system'", \$stdout, \$stderr);
+	my $rs = execute(
+		"$main::imscpConfig{'CMD_FIND'} $main::ispcpConfig{'CONF_DIR'} -type f -name '*.system'", \$stdout, \$stderr
+	);
 	debug($stdout) if $stdout;
 	push  @errors, $stderr if $stderr && $rs;
 
-	my @files = split "\n", $stdout;
+	my @files = split /\n/, $stdout;
 
 	for (@files){
 		my $fileName = fileparse($_);

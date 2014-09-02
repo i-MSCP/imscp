@@ -454,6 +454,24 @@ sub buildConfFile
 	);
 }
 
+=item deleteTmp()
+
+ Delete temporary files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub deleteTmp
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndDelTmp');
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterFrontEndDelTmp');
+}
+
 =back
 
 =head1 PRIVATE METHODS

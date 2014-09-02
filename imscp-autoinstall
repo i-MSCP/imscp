@@ -38,7 +38,6 @@ use lib "$FindBin::Bin", "$FindBin::Bin/engine/PerlLib", "$FindBin::Bin/engine/P
 use iMSCP::Debug;
 use iMSCP::Requirements;
 use iMSCP::Dialog;
-use iMSCP::Dir;
 use iMSCP::Getopt;
 use File::Basename;
 use autoinstaller::Functions qw/loadConfig build install/;
@@ -176,12 +175,6 @@ EOF
 
 		iMSCP::Dialog->getInstance()->msgbox($msg);
 	}
-}
-
-END
-{
-	my $logdir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
-	iMSCP::Dir->new('dirname' => $logdir)->make() unless -d $logdir;
 }
 
 exit $ret;
