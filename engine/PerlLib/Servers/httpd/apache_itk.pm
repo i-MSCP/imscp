@@ -1405,7 +1405,7 @@ sub enableConfs
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
 
-        		$self->{'restart'} = 1;
+				$self->{'restart'} = 1;
 			} else {
 				warning("Configuration file $_ doesn't exist");
 			}
@@ -1440,7 +1440,7 @@ sub disableConfs
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
 
-        		$self->{'restart'} = 1;
+				$self->{'restart'} = 1;
 			} else {
 				warning("Configuration file $_ doesn't exist");
 			}
