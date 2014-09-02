@@ -116,7 +116,7 @@ sub _process
 
 			if($rs) {
 				error("Error while processing $id, $name, $status.");
-				my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '';
+				my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '/tmp';
 				error("See $logDir/${moduleName}_module_$name.log for more details.");
 			}
 

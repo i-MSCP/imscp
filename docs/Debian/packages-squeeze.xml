@@ -178,8 +178,9 @@
             <package>libmysqlclient18.1</package>
         </percona_5.6>
         <remote_server>
-            <package>mysql-client-5.5</package>
+            <package>mysql-client-5.1</package>
             <package>mysql-common</package>
+            <package>libmysqlclient16</package>
         </remote_server>
     </sql>
     <php>

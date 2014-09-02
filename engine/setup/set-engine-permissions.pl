@@ -126,7 +126,7 @@ sub run
 	);
 
 	# eg. /var/log/imscp
-	$rs |= setRights($logDir, { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750'} );
+	$rs |= setRights($logDir, { 'user' => $rootUName, 'group' => $rootG, 'mode' => '0750'} );
 
 	# eg. /var/cache/imscp
 	$rs |= setRights(

@@ -146,6 +146,7 @@
         <remote_server>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
+            <package>libmysqlclient18</package>
         </remote_server>
     </sql>
     <php>

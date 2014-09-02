@@ -113,6 +113,19 @@ sub setVerbose
 	undef;
 }
 
+=item silent()
+
+ Method kept for backward compatibility (plugins)
+
+ Return undef
+
+=cut
+
+sub silent
+{
+
+}
+
 =item newDebug($logfile)
 
  Create a new log object for the given logfile and set it as current target for new messages
@@ -157,8 +170,7 @@ sub endDebug
 		}
 
 		my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
-
-		unless(-d $main::imscpConfig{'LOG_DIR'}) {
+		if($logDir ne '/tmp' && ! -d $logDir) {
 			require iMSCP::Dir;
 			my $rs = iMSCP::Dir->new('dirname', $logDir)->make(
 				{
