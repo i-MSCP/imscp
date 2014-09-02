@@ -26,6 +26,17 @@
             <package>apache2-mpm-itk</package>
             <package>libapache2-mod-php5</package>
         </apache_itk>
+        <apache_php_fpm
+                repository="deb http://packages.dotdeb.org squeeze all"
+                repository_origin="packages.dotdeb.org"
+                repository_key_uri="http://www.dotdeb.org/dotdeb.gpg"
+                >
+            <package>apache2</package>
+            <package>apache2-suexec-custom</package>
+            <package>apache2-mpm-worker</package>
+            <package>libapache2-mod-fastcgi</package>
+            <package>php5-fpm</package>
+        </apache_php_fpm>
     </httpd>
     <po default="courier">
         <courier>
@@ -76,6 +87,20 @@
             <package>mysql-common</package>
             <package>libmysqlclient16</package>
         </mysql_5.1>
+        <mysql_5.5
+                pinning_package="mysql-server-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
+                pinning_pin="origin packages.dotdeb.org"
+                pinning_pin_priority="1001"
+                repository="deb http://packages.dotdeb.org squeeze all"
+                repository_origin="packages.dotdeb.org"
+                repository_key_uri="http://www.dotdeb.org/dotdeb.gpg"
+                allow_switch_to="mariadb_5.5,mariadb_10.0,percona_5.5,percona_5.6,remote_server"
+                >
+            <package>mysql-server-5.5</package>
+            <package>mysql-client-5.5</package>
+            <package>mysql-common</package>
+            <package>libmysqlclient18</package>
+        </mysql_5.5>
         <mariadb_5.3
                 pinning_package="mariadb-client-5.3 mariadb-server-5.3 mariadb-common mysql-common libmysqlclient16"
                 pinning_pin="origin mirror2.hs-esslingen.de"
