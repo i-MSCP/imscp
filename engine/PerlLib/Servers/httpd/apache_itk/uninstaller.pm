@@ -90,18 +90,29 @@ sub _vHostConf
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
-	return $rs if $rs;
-
 	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
+		my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
+    	return $rs if $rs;
+
 		$rs = iMSCP::File->new(
 			'filename' => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
 		)->delFile();
 		return $rs if $rs;
 	}
 
+	my $confDir = (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
+		? $self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
+
+    if(-f "$confDir/00_imscp.conf") {
+		my $rs = $self->{'httpd'}->disableConfs('00_imscp.conf');
+		return $rs if $rs;
+
+		$rs = iMSCP::File->new('filename' => "$confDir/00_imscp.conf")->delFile();
+		return $rs if $rs;
+	}
+
 	for('000-default', 'default') {
-		$rs = $self->{'httpd'}->enableSites($_) if -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
+		my $rs = $self->{'httpd'}->enableSites($_) if -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
 		return $rs if $rs;
 	}
 

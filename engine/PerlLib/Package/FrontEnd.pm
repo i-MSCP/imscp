@@ -384,7 +384,7 @@ sub restart
 	$self->{'eventManager'}->trigger('afterFrontEndRestart');
 }
 
-=item buildConfFile($file, [\%tplVars], [\%options])
+=item buildConfFile($file, [\%tplVars = { }, [\%options = { }]])
 
  Build the given configuration file
 
@@ -426,7 +426,6 @@ sub buildConfFile
 	return $rs if $rs;
 
 	$cfgTpl = $self->_buildConf($cfgTpl, $filename, $tplVars);
-	return 1 unless defined $cfgTpl;
 
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
@@ -505,13 +504,13 @@ sub _init
 	$self;
 }
 
-=item _buildConf($cfgTpl, $filename, \%tplVars)
+=item _buildConf($cfgTpl, $filename, [\%tplVars])
 
  Build the given configuration template
 
  Param string $cfgTpl Temmplate content
  Param string $filename Template filename
- Param hash \%tplVars Template variables
+ Param hash OPTIONAL \%tplVars Template variables
  Return string Template content
 
 =cut
@@ -520,10 +519,11 @@ sub _buildConf
 {
 	my ($self, $cfgTpl, $filename, $tplVars) = @_;
 
+	$tplVars ||= { };
+
 	$self->{'eventManager'}->trigger('beforeFrontEndBuildConf', \$cfgTpl, $filename, $tplVars);
 
 	$cfgTpl = process($tplVars, $cfgTpl);
-	return undef unless $cfgTpl;
 
 	$self->{'eventManager'}->trigger('afterFrontEndBuildConf', \$cfgTpl, $filename, $tplVars);
 

@@ -223,7 +223,7 @@ sub _createGlobalAwstatsVhost
 	);
 
 	my $rs = $self->{'httpd'}->buildConfFile(
-		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf", { }
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf"
 	);
 	return $rs if $rs;
 

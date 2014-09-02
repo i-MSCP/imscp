@@ -175,6 +175,17 @@ sub _restoreApacheConfig
 		return $rs if $rs;
 	}
 
+	my $confDir = (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
+		? $self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
+
+    if(-f "$confDir/00_imscp.conf") {
+		my $rs = $self->{'httpd'}->disableConfs('00_imscp.conf');
+		return $rs if $rs;
+
+		$rs = iMSCP::File->new('filename' => "$confDir/00_imscp.conf")->delFile();
+		return $rs if $rs;
+	}
+
 	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
 		my $filename = fileparse($_);
 

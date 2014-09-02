@@ -974,13 +974,13 @@ sub setEnginePermissions
 	Servers::httpd::apache_php_fpm::installer->getInstance()->setEnginePermissions();
 }
 
-=item buildConf($cfgTpl, $filename, \%data)
+=item buildConf($cfgTpl, $filename, [\%data])
 
  Build the given configuration template
 
  Param string $cfgTpl Template content
  Param string $filename Template filename
- Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data OPTIONAL Data as provided by Alias|Domain|Subdomain|SubAlias modules or installer
  Return string Template content or undef on failure
 
 =cut
@@ -989,27 +989,23 @@ sub buildConf
 {
 	my ($self, $cfgTpl, $filename, $data) = @_;
 
-	unless(defined $cfgTpl) {
-		error('Empty configuration template...');
-		return undef;
-	}
+	$data ||= { };
 
 	$self->{'eventManager'}->trigger('beforeHttpdBuildConf', \$cfgTpl, $filename, $data);
 
 	$cfgTpl = process($self->{'data'}, $cfgTpl);
-	return undef if ! $cfgTpl;
 
 	$self->{'eventManager'}->trigger('afterHttpdBuildConf', \$cfgTpl, $filename, $data);
 
 	$cfgTpl;
 }
 
-=item buildConfFile($file, \%data, [\%options = { }])
+=item buildConfFile($file, [\%data = { }, [\%options = { }]])
 
  Build the given configuration file
 
  Param string $file Absolute path to config file or config filename relative to the i-MSCP apache config directory
- Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hash \%data OPTIONAL Data as provided by Alias|Domain|Subdomain|SubAlias modules or installer
  Param hash \%options OPTIONAL Options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
 
@@ -1019,6 +1015,7 @@ sub buildConfFile
 {
 	my ($self, $file, $data, $options) = @_;
 
+	$data ||= { };
 	$options ||= { };
 
 	my ($filename, $path) = fileparse($file);
@@ -1045,7 +1042,6 @@ sub buildConfFile
 	return $rs if $rs;
 
 	$cfgTpl = $self->buildConf($cfgTpl, $filename, $data);
-	return 1 unless defined $cfgTpl;
 
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
@@ -1385,8 +1381,75 @@ sub disableModules
 	$self->{'eventManager'}->trigger('afterHttpdDisableModules', $modules);
 }
 
+=item enableConfs($confs)
 
-########################################################################################################################
+ Enable the given configuration files
+
+ Param string $confs Names of configuration files to enable, each space separated
+ Return int 0 on sucess, other on failure
+
+=cut
+
+sub enableConfs
+{
+	my ($self, $confs) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdEnableConfs', \$confs);
+	return $rs if $rs;
+
+	if(-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
+		for(split(' ', $confs)) {
+			if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
+				my ($stdout, $stderr);
+				my $rs = execute("$self->{'config'}->{'CMD_A2ENCONF'} $_", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+
+        		$self->{'restart'} = 1;
+			} else {
+				warning("Configuration file $_ doesn't exist");
+			}
+		}
+	}
+
+	$self->{'eventManager'}->trigger('afterHttpdEnableConfs', $confs);
+}
+
+=item disableConfs($confs)
+
+ Disable the given configuration files
+
+ Param string $confs Names of configuration files to disable, each space separated
+ Return int 0 on sucess, other on failure
+
+=cut
+
+sub disableConfs
+{
+	my ($self, $confs) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDisableConfs', \$confs);
+	return $rs if $rs;
+
+	if(-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
+		for(split(' ', $confs)) {
+			if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
+				my ($stdout, $stderr);
+				my $rs = execute("$self->{'config'}->{'CMD_A2DISCONF'} $_", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+
+        		$self->{'restart'} = 1;
+			} else {
+				warning("Configuration file $_ doesn't exist");
+			}
+		}
+	}
+
+	$self->{'eventManager'}->trigger('afterHttpdDisableConfs', $confs);
+}
 
 =item start()
 

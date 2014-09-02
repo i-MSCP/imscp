@@ -2,12 +2,14 @@
 <install>
     <folders export="ROOT_APACHE_CONF" mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/apache2</folders>
     <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_APACHE_CONF}/imscp</folders>
+    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_APACHE_CONF}/imscp/before</folders>
     <folders>${INST_PREF}/var/log/apache2/backup</folders>
     <folders>${SYSTEM_CONF}/apache</folders>
     <folders>${SYSTEM_CONF}/apache/backup</folders>
     <folders>${SYSTEM_CONF}/apache/working</folders>
     <copy_config>${SYSTEM_CONF}/apache/modules</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/00_imscp.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/apache.data</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>

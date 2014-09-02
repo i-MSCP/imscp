@@ -15,7 +15,9 @@ DOCS
 ENGINE
 	Added: Library (iMSCP::ProgramFinder) allowing to test whether programs are available on the executable search path
 	Added: Library (iMSCP::Service) for service management (start, stop, restart, reload, status)
+	Added: Methods which allow to enable/disable apache conffiles from the conf-available directory (Apache 2.4.x)
 	Added: pigz (Parallel Implementation of GZip) algorithm for backups compression
+	Added: Standard directory which allow to load apache conffiles prior any other vhost file (Apache)
 	Added: --verbose command line options for all scripts
 	Changed: i-MSCP is now run through a dedicated httpd instance by using the nginx Web server
 	Changed: Logfiles are now written as soon as possible (allows to mitigate memory consumption)

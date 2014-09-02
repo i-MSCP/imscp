@@ -617,15 +617,18 @@ sub _buildApacheConfFiles
 		return $rs if $rs;
 	}
 
-	# Turn off default log
-	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/other-vhosts-access-log") {
+	# Turn off default access log provided by Debian package
+	if(-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
+		$rs = $self->{'httpd'}->disableConfs('other-vhosts-access-log.conf');
+		return $rs if $rs;
+	} elsif(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/other-vhosts-access-log") {
 		$rs = iMSCP::File->new(
 			'filename' => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/other-vhosts-access-log"
 		)->delFile();
 		return $rs if $rs;
 	}
 
-	# Remove default log
+	# Remove default access log file provided by Debian package
 	if(-f "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log") {
 		$rs = iMSCP::File->new(
 			'filename' => "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log"
@@ -661,18 +664,48 @@ sub _buildApacheConfFiles
 		}
 	);
 
-	$rs = $self->{'httpd'}->buildConfFile('00_nameserver.conf', { });
+	# Build file
+	$rs = $self->{'httpd'}->buildConfFile('00_nameserver.conf');
 	return $rs if $rs;
 
+	# Install file
 	$rs = $self->{'httpd'}->installConfFile('00_nameserver.conf');
 	return $rs if $rs;
 
-	# Enabling required apache modules
+	# Backup, build, store and install 00_imscp.conf file
+
+	if(-f "$self->{'apacheWrkDir'}/00_imscp.conf") {
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'apacheWrkDir'}/00_imscp.conf"
+		)->copyFile("$self->{'apacheBkpDir'}/00_imscp.conf." . time);
+		return $rs if $rs;
+	}
+
+	# Set needed data
+	$self->{'httpd'}->setData({ HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} });
+
+	# Build file
+	$rs = $self->{'httpd'}->buildConfFile('00_imscp.conf');
+	return $rs if $rs;
+
+	# Install file
+	$rs = $self->{'httpd'}->installConfFile('00_imscp.conf', {
+		destination => (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
+			? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
+			: "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d"
+	});
+	return $rs if $rs;
+
+	# Enable required apache modules
 	$rs = $self->{'httpd'}->enableModules('cgid rewrite proxy proxy_http ssl');
 	return $rs if $rs;
 
-	# Enabling 00_nameserver.conf file
+	# Enable 00_nameserver.conf file
 	$rs = $self->{'httpd'}->enableSites('00_nameserver.conf');
+	return $rs if $rs;
+
+	# Enbale 00_imscp.conf file
+	$rs = $self->{'httpd'}->enableConfs('00_imscp.conf');
 	return $rs if $rs;
 
 	# Disable defaults sites if any
@@ -707,7 +740,7 @@ sub _installLogrotate
 	$rs = $self->{'httpd'}->apacheBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", '', 1);
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', { });
+	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf');
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile(
