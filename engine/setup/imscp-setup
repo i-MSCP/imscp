@@ -40,10 +40,12 @@ $ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-setup.log');
 
-# Setup backend mode
+# Set backend mode
+# Init variable that holds questions
 {
 	no warnings qw/once/;
 	$main::execmode = 'setup';
+    %main::questions = ();
 }
 
 # Parse command line options
@@ -51,9 +53,6 @@ iMSCP::Getopt->parse(sprintf('Usage: perl %s [OPTION]...', basename($0)));
 
 # Get reconfigure option
 $main::reconfigure = iMSCP::Getopt->reconfigure;
-
-# Global variable that holds questions
-%main::questions = () unless %main::questions;
 
 # Handle preseed option
 my $preseedFile = iMSCP::Getopt->preseed;
@@ -138,6 +137,8 @@ EOF
 Setup process has been aborted...
 EOF
 			exit 0;
+		} else {
+			$dialog->resetLabels();
 		}
 	}
 

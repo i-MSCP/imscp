@@ -415,7 +415,9 @@ EOF
 
 sub _askInstallMode
 {
-	iMSCP::Dialog->getInstance()->set('cancel-label', 'Abort');
+	my $dialog = iMSCP::Dialog->getInstance();
+
+	$dialog->set('cancel-label', 'Abort');
 
 	my ($rs, $mode) = iMSCP::Dialog->getInstance()->radiolist(<<EOF, ['install', 'build'], 'install');
 
@@ -431,6 +433,8 @@ EOF
 	$main::buildonly = ($mode eq 'build') ? 1 : 0;
 
 	return 50 if $rs;
+
+	$dialog->resetLabels();
 
 	0;
 }

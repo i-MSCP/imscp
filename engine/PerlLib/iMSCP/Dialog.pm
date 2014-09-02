@@ -59,7 +59,12 @@ use parent 'Common::SingletonClass';
 
 sub resetLabels
 {
-	$_[0]->{'_opts'}->{"$_-label"} = undef for qw/ok yes no cancel extra help/;
+	my %defaultLabels = (
+		'exit' => 'Abort', 'ok' => 'Ok', 'yes' => 'Yes', 'no' => 'No', 'cancel' => 'Back', 'help' => 'Help',
+		'extra' => undef
+	);
+
+	$_[0]->{'_opts'}->{"$_-label"} = $defaultLabels{$_} for keys %defaultLabels;
 
 	0;
 }
@@ -455,18 +460,18 @@ sub _init
 	$self->{'columns'} = undef;
 
 	$self->{'_opts'}->{'backtitle'} ||= "i-MSCP - internet Multi Server Control Panel ($main::imscpConfig{'Version'})";
-	$self->{'_opts'}->{'title'} ||= 'Setup Dialog';
+	$self->{'_opts'}->{'title'} ||= 'i-MSCP Setup Dialog';
 
 	$self->{'_opts'}->{'colors'} = '';
 	$self->{'_opts'}->{'begin'} = [1, 0];
 
-	$self->{'_opts'}->{'exit-label'} ||= undef;
-	$self->{'_opts'}->{'no-label'} ||= undef;
-	$self->{'_opts'}->{'ok-label'} ||= undef;
-	$self->{'_opts'}->{'cancel-label'} ||= undef;
-	$self->{'_opts'}->{'help-label'} ||= undef;
+	$self->{'_opts'}->{'ok-label'} ||= 'Ok';
+	$self->{'_opts'}->{'yes-label'} ||= 'Yes';
+	$self->{'_opts'}->{'no-label'} ||= 'No';
+	$self->{'_opts'}->{'cancel-label'} ||= 'Back';
+	$self->{'_opts'}->{'exit-label'} ||= 'Abort';
+	$self->{'_opts'}->{'help-label'} ||= 'Help';
 	$self->{'_opts'}->{'extra-label'} ||= undef;
-	$self->{'_opts'}->{'yes-label'} ||= undef;
 
 	$self->{'_opts'}->{'extra-button'} //= undef;
 	$self->{'_opts'}->{'help-button'} //= undef;
@@ -607,25 +612,25 @@ sub _buildCommandOptions
 {
 	my $self = $_[0];
 
-	my $commandOptions = '';
+	my @options = ();
 
-	for(keys %{$self->{'_opts'}}) {
-		if(defined $self->{'_opts'}->{$_}) {
-			$commandOptions .= " --$_ ";
+	for my $option(keys %{$self->{'_opts'}}) {
+		if(defined $self->{'_opts'}->{$option}) {
+			# Add option
+			push @options, '--' . $option;
 
-			if (ref $self->{'_opts'}->{$_} eq 'array') {
-				for(@{$self->{'_opts'}->{$_}}) {
-					$commandOptions .=  escapeShell($_) . ' ';
+			# Add option arguments if any
+			if($self->{'_opts'}->{$option}) {
+				if(ref $self->{'_opts'}->{$option} ne 'array') { # Only one argument
+					push @options, escapeShell($self->{'_opts'}->{$option});
+				} else { # Many arguments
+					push @options, escapeShell($_) for @{$self->{'_opts'}->{$option}};
 				}
-			} elsif($self->{'_opts'}->{$_} !~ /^\d+$/ && $self->{'_opts'}->{$_}) {
-				$commandOptions .= escapeShell($self->{'_opts'}->{$_});
-			} elsif($self->{'_opts'}->{$_} =~ /^\d+$/){
-				$commandOptions .= $self->{'_opts'}->{$_};
 			}
 		}
 	}
 
-	$commandOptions;
+	"@options";
 }
 
 =item _restoreDefaults()

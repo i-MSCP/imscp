@@ -69,7 +69,7 @@ sub process
 		[\&_uninstallServers, 'Uninstalling i-MSCP servers'],
 		[\&_uninstallDaemons, 'Uninstalling i-MSCP daemons'],
 		[\&_removeCrontabFile, 'Removing i-MSCP crontab file'],
-		[\&_removeLogrotateFile, 'Removing i-MSCP logorate file'],
+		[\&_removeLogrotateFile, 'Removing i-MSCP logrotate file'],
 		[\&_removeSqlData, 'Removing i-MSCP SQL data'],
 		[\&_removeiMSCPSystemGroup, 'Removing i-MSCP system group'],
 		[\&_removeFiles, 'Removing i-MSCP files'],
@@ -90,26 +90,26 @@ sub process
 sub shutDown
 {
 
-	iMSCP::Dialog->getInstance()->msgbox(
-"
+	iMSCP::Dialog->getInstance()->msgbox(<<EOF);
+
 \\Z1Congratulations\\Zn
 
 iMSCP has been successfully uninstalled.
 
 You can find uninstallation logs at /tmp/imscp-uninstall.log
-"
-	);
+EOF
 
 	0;
 }
 
 sub _userDialog
 {
-	iMSCP::Dialog->getInstance()->set('yes-label','Continue');
-	iMSCP::Dialog->getInstance()->set('no-label','Exit');
-	iMSCP::Dialog->getInstance()->set('defaultno', '');
+	my $dialog = iMSCP::Dialog->getInstance();
 
-	if (iMSCP::Dialog->getInstance()->yesno(<<EOF)) {
+	$dialog->set('title', 'i-MSCP Uninstaller Dialog');
+	$dialog->set('defaultno', '');
+
+	if ($dialog->yesno(<<EOF)) {
 
 Welcome to the \\Z4i-MSCP $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
 
@@ -121,14 +121,9 @@ All i-MSCP data will be removed.
 
 \\Z4NOTE\\Zn
 
-During the uninstallation process some or all services might require to be shut down or restarted.
+During the uninstallation process some or all services might require to be shutdown or restarted.
 
-To continue select \\Z4Continue\\Z0
-EOF
-
-	iMSCP::Dialog->getInstance()->msgbox(<<EOF);
-
-Uninstallation process has been aborted...
+Do you want to continue?
 EOF
 
 		exit 0;

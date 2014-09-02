@@ -801,11 +801,7 @@ EOF
 sub welcomeMessage
 {
 	my $dialog = iMSCP::Dialog->getInstance();
-	$dialog->set('title', "i-MSCP $main::imscpConfig{'Version'} migration dialog");
-	$dialog->set('backtitle', 'i-MSCP - internet Multi Server Control Panel');
-
-	$dialog->set('yes-label','Continue');
-	$dialog->set('no-label','Abort');
+	$dialog->set('title', 'i-MSCP Migration Dialog');
 
 	exit 0 if $dialog->yesno(<<EOF);
 
@@ -815,11 +811,9 @@ This program will migrate your ispCP control panel to i-MSCP.
 
 \\ZuPlease make sure you have a backup of your data before continue.\\Zn
 
-\\Z4NOTE:\\Z0 During the migration process some or all services might require to be shut down or restarted.
+\\Z4NOTE:\\Z0 During the migration process some or all services might require to be shutdown or restarted.
 
-You can stop this process by pressing the \\Z4Abort\\Z0 button.
-
-To continue, press the \\Z4Continue\\Z0 button.
+Do you want to continue?
 EOF
 
 	0;

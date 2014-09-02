@@ -47,10 +47,13 @@ $ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-autoinstall.log');
 
-# Setup backend mode
+# Set backend mode
+# Init variable that holds questions
+  %main::questions = () unless %main::questions;
 {
 	no warnings qw/once/;
 	$main::execmode = 'setup';
+    %main::questions = ();
 }
 
 # Load config
@@ -79,9 +82,6 @@ setDebug(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
 # Getting reconfigure option value
 $main::reconfigure = iMSCP::Getopt->reconfigure;
-
-# Global variable that holds questions
-%main::questions = () unless %main::questions;
 
 # Handle preseed option
 my $preseedFile = iMSCP::Getopt->preseed;
