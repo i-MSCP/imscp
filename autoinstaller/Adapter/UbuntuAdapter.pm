@@ -35,6 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::LsbRelease;
 use iMSCP::Execute;
 use parent 'autoinstaller::Adapter::DebianAdapter';
@@ -60,6 +61,8 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 sub _init
 {
 	my $self = $_[0];
+
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	delete $ENV{'DEBCONF_FORCE_DIALOG'};
 
@@ -165,7 +168,7 @@ sub _processAptRepositories
 
 		# Add needed external repositories
 		for(keys %{$self->{'aptRepositoriesToAdd'}}) {
-			if(/^ppa:/ || $sourceListFileContent !~ /^$_/m) {
+			if(/^ppa:/ || $fileContent !~ /^$_/m) {
 				my $repository = $self->{'aptRepositoriesToAdd'}->{$_};
 
 				if(/^ppa:/) { # PPA repository
