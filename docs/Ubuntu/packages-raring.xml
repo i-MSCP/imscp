@@ -115,7 +115,7 @@
             <package>libmysqlclient18</package>
         </percona_5.5>
         <percona_5.6
-                pinning_package="percona-client-5.6 percona-server-5.6 percona-server-common libmysqlclient18.1"
+                pinning_package="percona-server-client-5.6 percona-server-server-5.6 libmysqlclient18 libmysqlclient18.1"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 repository="deb http://repo.percona.com/apt raring main"
@@ -126,6 +126,7 @@
                 >
             <package>percona-server-client-5.6</package>
             <package>percona-server-server-5.6</package>
+            <package>libmysqlclient18</package>
             <package>libmysqlclient18.1</package>
         </percona_5.6>
         <remote_server>
