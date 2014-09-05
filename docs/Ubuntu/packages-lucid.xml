@@ -124,7 +124,7 @@
             <package>libmysqlclient18</package>
         </mariadb_10.0>
         <percona_5.5
-                pinning_package="percona-client-5.5 percona-server-5.5 libmysqlclient18"
+                pinning_package="percona-server-client-5.5 percona-server-server-5.5 libmysqlclient18"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 repository="deb http://repo.percona.com/apt lucid main"
