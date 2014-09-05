@@ -542,7 +542,6 @@ sub dump_tracker
 				my $sth = $dbh->prepare('SELECT vhost FROM httpd_vlogger WHERE vhost = ? AND ldate = ?');
 				$sth->execute($vhost, $ts);
 
-				my @params;
 				if ($sth->rows) {
 					$sth = $dbh->prepare('UPDATE httpd_vlogger SET bytes = bytes + ? WHERE vhost = ? AND ldate = ?');
 					$sth->execute($tracker{$vhost}, $vhost, $ts);
