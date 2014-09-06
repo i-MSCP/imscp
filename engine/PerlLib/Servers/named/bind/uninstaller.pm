@@ -149,7 +149,7 @@ sub _deleteDbFiles
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	my $rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'wrkDir'}/*", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'wrkDir'}/*", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
