@@ -405,7 +405,9 @@ sub _exec($$$;$$)
 
 	eval {
 		$pluginInstance = $pluginClass->getInstance(
-			'eventManager' => $self->{'eventManager'}, 'action' => $self->{'action'}
+			'hooksManager' => $self->{'eventManager'}, # Only there to ensure backward compatibility
+			'eventManager' => $self->{'eventManager'},
+			'action' => $self->{'action'}
 		);
 	};
 
