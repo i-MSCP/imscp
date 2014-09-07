@@ -111,19 +111,21 @@ sub _restoreConfFiles
 	my $self = $_[0];
 
 	if(-d $self->{'config'}->{'BIND_CONF_DIR'}) {
-		for (
-			$self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}, $self->{'config'}->{'BIND_CONF_FILE'},
-			$self->{'config'}->{'BIND_LOCAL_CONF_FILE'}, $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
-		) {
-			next if ! defined $_;
-			my $filename = fileparse($_);
+		for ('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
+			if(defined $self->{'config'}->{$_}) {
+				my $filename = fileparse($self->{'config'}->{$_});
 
-			if(-f "$self->{'bkpDir'}/$filename.system"){
-				my $rs = iMSCP::File->new('filename' => "$self->{'bkpDir'}/$filename.system")->copyFile($_);
+				if(-f "$self->{'bkpDir'}/$filename.system") {
+					my $rs = iMSCP::File->new(
+						'filename' => "$self->{'bkpDir'}/$filename.system"
+					)->copyFile(
+						$self->{'config'}->{$_}
+					);
 
-				# Config file mode is incorrect after copy from backup, therefore set it right
-				$rs = iMSCP::File->new('filename' => $_)->mode(0644);
-				return $rs if $rs;
+					# Config file mode is incorrect after copy from backup, therefore set it right
+					$rs = iMSCP::File->new('filename' => $self->{'config'}->{$_})->mode(0644);
+					return $rs if $rs;
+				}
 			}
 		}
 	}

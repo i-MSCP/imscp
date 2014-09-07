@@ -27,7 +27,7 @@ use strict;
 use warnings;
 
 use FindBin;
-use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
@@ -49,29 +49,38 @@ iMSCP::Bootstrapper->getInstance()->boot(
 	{ 'norequirements' => 'yes', 'nodatabase' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' }
 );
 
-sub addLocalDnsResolver
+sub enableLocalResolver
 {
-	if(defined $main::imscpConfig{'LOCAL_DNS_RESOLVER'} && $main::imscpConfig{'LOCAL_DNS_RESOLVER'} eq 'yes') {
+	my $rs = 0;
+
+	if($main::imscpConfig{'LOCAL_DNS_RESOLVER'} eq 'yes') {
 		my ($stdout, $stderr);
-		my $rs = execute(
+		$rs = execute(
 			"$main::imscpConfig{'CMD_ECHO'} 'nameserver 127.0.0.1' | /sbin/resolvconf -a lo.imscp", \$stdout, \$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		return $rs;
+	} else {
+		$rs = disableLocalResolver();
 	}
 
-	0;
+	$rs;
 }
 
-sub deleteLocalDnsResolver
+sub disableLocalResolver
 {
 	my ($stdout, $stderr);
 	my $rs = execute('/sbin/resolvconf -d lo.imscp', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
-	$rs;
+	$rs = execute('/sbin/resolvconf -d lo.named', \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
+	0;
 }
 
 sub run
@@ -79,10 +88,10 @@ sub run
 	my ($action, $rs) = ($ARGV[0] // 'unknown', 0);
 
 	if ($action eq 'start') {
-		$rs = addLocalDnsResolver();
+		$rs = enableLocalResolver();
 		return $rs if $rs;
 	} elsif ($action eq 'stop') {
-		$rs = deleteLocalDnsResolver();
+		$rs = disableLocalResolver();
 		return $rs if $rs;
 	} else {
 		error("Usage: $0 {start|stop}.");

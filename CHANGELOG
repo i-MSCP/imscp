@@ -22,8 +22,9 @@ INSTALLER
 	Changed: Downgrade of SQL server is no longer allowed by installer
 	Changed: Package uninstallation task is now triggered after packages installation
 	Fixed: Composer home directory has been reset back to /root/.composer by mistake
-	Fixed: Package which are scheduled for installation must not be removed
 	Fixed: Download zip archives instead of cloning sources which include useless VCS information (composer packages)
+	Fixed: Local DNS resolver is never disabled whatever the configuration parameter value
+	Fixed: Package which are scheduled for installation must not be removed
 	Fixed: When switching to another SQL server debian version flag file must be removed
 	Fixed: Wrong template name passed to the onLoadTemplate event (MySQL server implementation)
 
