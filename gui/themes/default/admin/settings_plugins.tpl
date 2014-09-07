@@ -72,12 +72,9 @@
 	});
 	/*]]>*/
 </script>
-<!-- BDP: plugins_block -->
-
 <p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PLUGIN_HINT}</p>
-
 <br/>
-
+<!-- BDP: plugins_block -->
 <div id="dialog_box" title="{TR_PLUGIN_CONFIRMATION_TITLE}">
 	<p>{TR_PROTECT_CONFIRMATION}</p>
 </div>

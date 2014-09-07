@@ -276,7 +276,7 @@ sub setupAskLocalDnsResolver
 	my $rs = 0;
 
 	unless($main::imscpConfig{'NAMED_SERVER'} ~~ ['no', 'external_server']) {
-		if($main::reconfigure ~~ ['resolver', 'all', 'forced'] || $localDnsResolver !~ /^yes|no$/) {
+		if($main::reconfigure ~~ ['resolver', 'named', 'all', 'forced'] || $localDnsResolver !~ /^yes|no$/) {
 			($rs, $localDnsResolver) = $dialog->radiolist(
 				"\nDo you want allow the system resolver to use the local nameserver?",
 				['yes', 'no'],

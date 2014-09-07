@@ -39,15 +39,17 @@
  */
 abstract class iMSCP_Plugin
 {
-	/**
-	 * @var array Plugin configuration parameters
-	 */
-	protected $config = array();
+	/** @var array Plugin configuration parameters */
+	private $config = array();
 
-	/**
-	 * @var bool TRUE if plugin configuration is loaded, FALSE otherwise
-	 */
-	protected $isLoadedConfig = false;
+	/** @var bool TRUE if plugin configuration is loaded, FALSE otherwise */
+	private $isLoadedConfig = false;
+
+	/** @var string Plugin name */
+	private $pluginName;
+
+	/** @var string $Plungin name */
+	private $pluginType;
 
 	/**
 	 * Constructor
@@ -86,8 +88,7 @@ abstract class iMSCP_Plugin
 	 */
 	public function getInfo()
 	{
-		$parts = explode('_', get_class($this));
-		$infoFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $parts[2] . '/info.php';
+		$infoFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $this->getName() . '/info.php';
 
 		$info = array();
 
@@ -97,15 +98,17 @@ abstract class iMSCP_Plugin
 			if (!file_exists($infoFile)) {
 				set_page_message(
 					tr(
-						'getInfo() not implemented in %s and %s not found. <br /> This is a bug in the %s plugin and should be reported to the plugin author.',
+						'%s::getInfo() not implemented and %s not found. This is a bug in the %s plugin which must be reported to the author(s).',
 						get_class($this),
 						$infoFile,
-						$parts[2]
+						$this->getName()
 					),
 					'warning'
 				);
 			} else {
-				throw new iMSCP_Plugin_Exception("Unable to read the $infoFile file. Please, check file permissions");
+				throw new iMSCP_Plugin_Exception(
+					sprintf("Unable to read the $%s file. Please, check file permissions", $infoFile)
+				);
 			}
 		}
 
@@ -115,7 +118,7 @@ abstract class iMSCP_Plugin
 				'email' => '',
 				'version' => '0.0.0',
 				'date' => '0000-00-00',
-				'name' => $parts[2],
+				'name' => $this->getName(),
 				'desc' => tr('Not provided'),
 				'url' => ''
 			),
@@ -130,13 +133,11 @@ abstract class iMSCP_Plugin
 	 */
 	final public function getType()
 	{
-		static $type = null;
-
-		if (null === $type) {
-			list(, , $type) = explode('_', get_parent_class($this), 3);
+		if (null === $this->pluginType) {
+			list(, , $this->pluginType) = explode('_', get_parent_class($this), 3);
 		}
 
-		return $type;
+		return $this->pluginType;
 	}
 
 	/**
@@ -146,13 +147,11 @@ abstract class iMSCP_Plugin
 	 */
 	final public function getName()
 	{
-		static $name = null;
-
-		if (null === $name) {
-			list(, , $name) = explode('_', get_class($this), 3);
+		if (null === $this->pluginName) {
+			list(, , $this->pluginName) = explode('_', get_class($this), 3);
 		}
 
-		return $name;
+		return $this->pluginName;
 	}
 
 	/**
@@ -213,7 +212,7 @@ abstract class iMSCP_Plugin
 	 *
 	 * @param string $paramName Configuration parameter name
 	 * @param mixed $default Default value returned in case $paramName is not found
-	 * @return mixed Configuration parameter value or NULL if $paramName not found
+	 * @return mixed Configuration parameter value or $default if $paramName not found
 	 */
 	final public function getConfigParam($paramName, $default = null)
 	{

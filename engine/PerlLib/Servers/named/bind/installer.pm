@@ -458,8 +458,15 @@ sub _buildConf
 				$rs = $self->{'eventManager'}->trigger('beforeNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
 
-				$fileContent =~ s/OPTIONS="(.*?)(?:[^\w]-4|-4\s)(.*)"/OPTIONS="$1$2"/;
-				$fileContent =~ s/OPTIONS="/OPTIONS="-4 / unless $self->{'config'}->{'BIND_IPV6'} eq 'yes';
+				# Enable or disable local DNS resolver
+				$fileContent =~ s/RESOLVCONF=no/RESOLVCONF=$main::imscpConfig{'LOCAL_DNS_RESOLVER'}/;
+
+				# Enable or disable IPV6 support
+				if($fileContent =~/OPTIONS="(.*)"/) {
+					(my $options = $1) =~ s/\s*-[46]\s*//g;
+					$options = '-4 ' . $options unless $self->{'config'}->{'BIND_IPV6'} eq 'yes';
+					$fileContent =~ s/OPTIONS=".*"/OPTIONS="$options"/;
+				}
 
 				$rs = $self->{'eventManager'}->trigger('afterNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
