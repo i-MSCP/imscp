@@ -459,7 +459,7 @@ sub _buildConf
 				return $rs if $rs;
 
 				# Enable or disable local DNS resolver
-				$fileContent =~ s/RESOLVCONF=no/RESOLVCONF=$main::imscpConfig{'LOCAL_DNS_RESOLVER'}/;
+				$fileContent =~ s/RESOLVCONF=(?:no|yes)/RESOLVCONF=$main::imscpConfig{'LOCAL_DNS_RESOLVER'}/i;
 
 				# Enable or disable IPV6 support
 				if($fileContent =~/OPTIONS="(.*)"/) {

@@ -120,21 +120,6 @@ sub _processAptRepositories
 
 		for(keys %{$self->{'aptRepositoriesToRemove'}}) {
 			if(/^ppa:/ || $fileContent =~ /^$_/m) {
-				my $repository = $self->{'aptRepositoriesToRemove'}->{$_};
-
-				my @cmd = (
-					'aptitude search', escapeShell("?installed?origin($repository->{'repository_origin'})"),
-					"| cut -b 5- | cut -d ' ' -f 1",
-				);
-				# Retrieve any packages installed from the repository to remove
-				$rs = execute("@cmd", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
-
-				# Schedule packages for deletion
-				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split /\n/, $stdout) if $stdout;
-
 				if($distroRelease > 10.04) {
 					@cmd = ('add-apt-repository -y -r', escapeShell($_));
 					$rs = execute("@cmd", \$stdout, \$stderr);

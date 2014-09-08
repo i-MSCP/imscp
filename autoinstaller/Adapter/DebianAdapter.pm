@@ -119,7 +119,7 @@ sub preBuild
 
 		my @steps = (
 			[sub { $self->_buildPackageList(); },       'Building list of packages to install/uninstall'],
-			[sub { $self->_prefillDebconfDatabase(); }, 'Pre-fill Debconf database'],
+			[sub { $self->_prefillDebconfDatabase(); }, 'Pre-fill debconf database'],
 			[sub { $self->_processAptRepositories(); }, 'Processing APT repositories if any'],
 			[sub { $self->_processAptPreferences(); },  'Processing APT preferences if any'],
 			[sub { $self->_updatePackagesIndex(); },    'Updating packages index']
@@ -132,24 +132,6 @@ sub preBuild
 			$rs = step($_->[0], $_->[1], $nbSteps, $step);
 			return $rs if $rs;
 			$step++;
-		}
-
-		# Small workaround to ensure DNS resolution when switching to external DNS server (local resolver get removed)
-		# - Remove local resolver
-		# - Add google free DNS as temporary local resolver
-		if($main::imscpConfig{'LOCAL_DNS_RESOLVER'} eq 'yes' && -x '/sbin/resolvconf') {
-			my ($stdout, $stderr);
-			$rs = execute('/sbin/resolvconf -d lo.imscp', \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-
-			$rs = execute(
-				"$main::imscpConfig{'CMD_ECHO'} 'nameserver 8.8.8.8' | /sbin/resolvconf -a lo.imscp", \$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
 		}
 	}
 
@@ -535,21 +517,6 @@ sub _processAptRepositories
 
 		for(keys %{$self->{'aptRepositoriesToRemove'}}) {
 			if($fileContent =~ /^$_/m) {
-				my $repository = $self->{'aptRepositoriesToRemove'}->{$_};
-
-				# Retrieve any packages installed from the repository to remove
-				my @cmd = (
-					'aptitude search', escapeShell("?installed?origin($repository->{'repository_origin'})"),
-					"| cut -b 5- | cut -d ' ' -f 1",
-				);
-				$rs = execute("@cmd", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
-
-				# Schedule packages for deletion
-				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split /\n/, $stdout) if $stdout;
-
 				# Remove the repository from the sources.list file
 				(my $regexp = $_) =~ s/deb/(?:deb|deb-src)/; # Ensure backward compatibility (deb-src)
 				$fileContent =~ s/\n?$regexp?\n?//gm;

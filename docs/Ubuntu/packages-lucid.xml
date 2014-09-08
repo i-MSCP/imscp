@@ -74,10 +74,9 @@
             <package>mysql-server-5.1</package>
             <package>mysql-client-5.1</package>
             <package>mysql-common</package>
-            <package>libmysqlclient16</package>
         </mysql_5.1>
         <mariadb_5.3
-                pinning_package="mariadb-client-5.3 mariadb-server-5.3 mariadb-common mysql-common libmysqlclient16"
+                pinning_package="*"
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
                 repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/5.3/ubuntu lucid main"
@@ -89,10 +88,9 @@
             <package>mariadb-server-5.3</package>
             <package>mariadb-common</package>
             <package>mysql-common</package>
-            <package>libmysqlclient16</package>
         </mariadb_5.3>
         <mariadb_5.5
-                pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common mysql-common libmysqlclient18"
+                pinning_package="*"
                 pinning_pin="origin mirror.netcologne.de"
                 pinning_pin_priority="1001"
                 repository="deb http://mirror.netcologne.de/mariadb/repo/5.5/ubuntu lucid main"
@@ -105,10 +103,9 @@
             <package>mariadb-server-5.5</package>
             <package>mariadb-common</package>
             <package>mysql-common</package>
-            <package>libmysqlclient18</package>
         </mariadb_5.5>
         <mariadb_10.0
-                pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common mysql-common libmysqlclient18"
+                pinning_package="*"
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
                 repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu lucid main"
@@ -121,10 +118,9 @@
             <package>mariadb-server-10.0</package>
             <package>mariadb-common</package>
             <package>mysql-common</package>
-            <package>libmysqlclient18</package>
         </mariadb_10.0>
         <percona_5.5
-                pinning_package="percona-server-client-5.5 percona-server-server-5.5 libmysqlclient18"
+                pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 repository="deb http://repo.percona.com/apt lucid main"
@@ -135,10 +131,9 @@
                 >
             <package>percona-server-client-5.5</package>
             <package>percona-server-server-5.5</package>
-            <package>libmysqlclient18</package>
         </percona_5.5>
         <percona_5.6
-                pinning_package="percona-server-client-5.6 percona-server-server-5.6 libmysqlclient18 libmysqlclient18.1"
+                pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 repository="deb http://repo.percona.com/apt lucid main"
@@ -149,13 +144,14 @@
                 >
             <package>percona-server-client-5.6</package>
             <package>percona-server-server-5.6</package>
-            <package>libmysqlclient18</package>
-            <package>libmysqlclient18.1</package>
         </percona_5.6>
-        <remote_server>
+        <remote_server
+                pinning_package="mysql-client-5.1 mysql-server-5.1 mysql-common libmysqlclient16"
+                pinning_pin="release o=Ubuntu,n=lucid"
+                pinning_pin_priority="1001"
+                >
             <package>mysql-client-5.1</package>
             <package>mysql-common</package>
-            <package>libmysqlclient16</package>
         </remote_server>
     </sql>
     <php>
