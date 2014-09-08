@@ -2029,7 +2029,7 @@ sub setupInitScripts
 
 		my $initScriptPath = "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_";
 
-		if(! -f$initScriptPath) {
+		unless(-f $initScriptPath) {
 			error("File $initScriptPath is missing");
 			return 1;
 		}

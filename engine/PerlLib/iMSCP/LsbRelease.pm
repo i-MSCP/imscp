@@ -56,7 +56,7 @@ my %RELEASE_CODENAME_LOOKUP = (
 	'8' => 'jessie'
 );
 
-my @RELEASE_ORDER = (
+my @RELEASES_ORDER = (
 	(
 		map { $_->[1] } sort { $a->[0] <=> $b->[0] } (
 			map { [ $_, $RELEASE_CODENAME_LOOKUP{$_} ] } keys %RELEASE_CODENAME_LOOKUP
@@ -91,7 +91,8 @@ sub getInstance
 
 	unless(defined $$instance) {
 		$$instance = bless { }, $self;
-		$$instance->_init();
+
+		%{$$instance->{'lsbInfo'}} = $$instance->getDistroInformation();
 	}
 
 	$$instance;
@@ -242,23 +243,6 @@ sub getDistroInformation
 
 =over 4
 
-=item _init()
-
- Initialize instance
-
- Return iMSCP::LsbRelease
-
-=cut
-
-sub _init
-{
-	my $self = $_[0];
-
-	%{$self->{'lsbInfo'}} = $self->getDistroInformation() unless $self->{'lsbInfo'};
-
-	$self;
-}
-
 =item _lookupCodename($release, [$unknown = undef])
 
  Lookup distribution codename
@@ -317,8 +301,8 @@ sub _releaseIndex
 	my ($self, $suite) = ($_[0], $_[1]->{'suite'} || undef);
 
 	if($suite) {
-		if(grep $_ eq $suite, @RELEASE_ORDER) {
-			int(@RELEASE_ORDER - (grep { $RELEASE_ORDER[$_] eq $suite } 0..$#RELEASE_ORDER)[0]);
+		if(grep $_ eq $suite, @RELEASES_ORDER) {
+			int(@RELEASES_ORDER - (grep { $RELEASES_ORDER[$_] eq $suite } 0..$#RELEASES_ORDER)[0]);
 		} else {
 			$suite;
 		}
@@ -401,21 +385,22 @@ sub _guessReleaseFromApt
 			($_->[1]->{'component'} || '') eq $component and
 			($_->[1]->{'label'} || '') eq $label
 		) or (
-			 exists $alternateOlabels->{($_->[1]->{'origin'} || '')} and
-			 ($_->[1]->{'label'} || '') eq $alternateOlabels->{($_->[1]->{'origin'} || '')}
+			exists $alternateOlabels->{$_->[1]->{'origin'} || ''} and
+			($_->[1]->{'label'} || '') eq $alternateOlabels->{($_->[1]->{'origin'} || '')}
 		)
 	} @releases;
 
 	# Check again to make sure we didn't wipe out all of the releases
 	return undef unless @releases;
 
-	@releases = sort { $b->[0] cmp $a->[0] } @releases;
+	@releases = sort { $b->[0] <=> $a->[0] } @releases;
 
-	# We've sorted the list by descending priority, so the first entry should be the "main" release in use on the system
+	# We've sorted the list by descending priority, so the first entry should
+	# be the "main" release in use on the system
 
 	my $maxPriority = $releases[0]->[0];
 
-	@releases = grep { $_->[0] == $maxPriority; } @releases;
+	@releases = grep { $_->[0] == $maxPriority } @releases;
 	@releases = sort { $self->_releaseIndex($a->[1]) cmp $self->_releaseIndex($b->[1]) } @releases;
 
 	%{$releases[0]->[1]};
@@ -480,7 +465,7 @@ sub _guessDebianRelease
 
 		if(open my $fh, '<', $etcDebianVersion) {
 			$release = do { local $/; <$fh> };
-			$release =~ s/^\s+|\s+$//g;
+			$release =~ s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
 
 			close $fh;
 		} else {
@@ -499,12 +484,14 @@ sub _guessDebianRelease
 		}
 	}
 
-	# Only use apt information if we did not get the proper information from /etc/debian_version or if we don't have a
-	# codename (which will happen if /etc/debian_version does not contain a number but some text like 'testing/unstable'
-	# or 'lenny/sid')
+	# Only use apt information if we did not get the proper information
+	# from /etc/debian_version or if we don't have a codename
+	# (which will happen if /etc/debian_version does not contain a
+	# number but some text like 'testing/unstable' or 'lenny/sid')
 	#
-	# This is slightly faster and less error prone in case the user has an entry in his /etc/apt/sources.list but has
-	# not actually upgraded the system.
+	# This is slightly faster and less error prone in case the user
+	# has an entry in his /etc/apt/sources.list but has not actually
+	# upgraded the system.
 	unless(exists $distInfo{'CODENAME'}) {
 		my %rInfo = $self->_guessReleaseFromApt();
 
@@ -590,7 +577,7 @@ sub _getLsbInformation
 
 =head1 NOTE
 
- This is a re-implementation for i-MSCP of the lsb_release command as provided by the lsb-release Debian package
+ This is a rewrite for i-MSCP of the lsb_release command as provided by the lsb-release Debian package.
 
  Detection of systems using a mix of packages from various distributions or releases is something of a black art; the
 current heuristic tends to assume that the installation is of the earliest distribution which is still being used by apt
