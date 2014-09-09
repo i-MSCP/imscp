@@ -1,2 +1,3 @@
 #!/bin/sh
-apt-get install -y libdata-validate-ip-perl
+DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+DEBIAN_FRONTEND=noninteractive apt-get install -y libnet-ip-perl
