@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
 
-  # Drop the memory requirement to 256 for now.
+  # Drop the memory requirement to 512 for now.
   config.vm.provider :virtualbox do |vb, override|
     vb.customize ["modifyvm", :id, "--memory", "512"]
     override.vm.box = "wheezy32-05Dec2013"

@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2014.06.20
+# Last update: 2014.09.10
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -23,15 +23,15 @@ $main::questions{'PO_SERVER'} = 'courier';
 
 # Authdaemon restricted SQL user -only relevant if you set PO_SERVER to 'courier'
 $main::questions{'AUTHDAEMON_SQL_USER'} = 'authdaemon_user';
-$main::questions{'AUTHDAEMON_SQL_PASSWORD'} = '<password>'; # Password must not be empty
+$main::questions{'AUTHDAEMON_SQL_PASSWORD'} = 'password'; # Password must not be empty
 
 # SASL restricted SQL user
 $main::questions{'SASL_SQL_USER'} = 'sasl_user';
-$main::questions{'SASL_SQL_PASSWORD'} = '<password>'; # Password must not be empty
+$main::questions{'SASL_SQL_PASSWORD'} = 'password'; # Password must not be empty
 
 # Dovecot restricted SQL user - only relevant if you set PO_SERVER to 'dovecot'
 $main::questions{'DOVECOT_SQL_USER'} = 'dovecot_user';
-$main::questions{'DOVECOT_SQL_PASSWORD'} = '<password>'; # Password must not be empty
+$main::questions{'DOVECOT_SQL_PASSWORD'} = 'password'; # Password must not be empty
 
 # Server to use for the Ftp service
 # (proftpd)
@@ -39,7 +39,7 @@ $main::questions{'FTPD_SERVER'} = 'proftpd';
 
 # Proftpd restricted SQL user
 $main::questions{'FTPD_SQL_USER'} = 'vftp';
-$main::questions{'FTPD_SQL_PASSWORD'} = '<password>'; # Password must not empty
+$main::questions{'FTPD_SQL_PASSWORD'} = 'password'; # Password must not empty
 
 # Server to use for the Mail service
 # (postfix)
@@ -107,7 +107,7 @@ $main::questions{'DATABASE_NAME'} = 'imscp'; # Database name
 # i-MSCP SQL user
 $main::questions{'DATABASE_USER'} = 'root'; # SQL user  - User must exist and have full privileges on SQL server
 $main::questions{'DATABASE_USER_HOST'} = 'localhost'; # Host from which SQL users created by i-MSCP are allowed to connect to the MySQL server
-$main::questions{'DATABASE_PASSWORD'} = '<password>'; # Password must not empty
+$main::questions{'DATABASE_PASSWORD'} = 'password'; # Password must not empty
 
 # MySQL prefix/sufix
 $main::questions{'MYSQL_PREFIX'} = 'no'; # 'yes' or 'no'
@@ -115,7 +115,7 @@ $main::questions{'MYSQL_PREFIX_TYPE'} = 'none'; # 'none' if MYSQL_PREFIX questio
 
 # Default admin
 $main::questions{'ADMIN_LOGIN_NAME'} = 'admin'; # Default admin name
-$main::questions{'ADMIN_PASSWORD'} = '<password>'; # Default admin password (A least 6 characters long)
+$main::questions{'ADMIN_PASSWORD'} = 'password'; # Default admin password (A least 6 characters long)
 $main::questions{'DEFAULT_ADMIN_ADDRESS'} = 'user@domain.tld'; # Default admin email address (must be a valid email)
 
 # PHP Timzone
@@ -178,11 +178,11 @@ $main::questions{'FILEMANAGER_PACKAGE'} = 'AjaXplorer'; # AjaXplorer or Net2ftp
 
 # Phpmyadmin package restricted SQL user
 $main::questions{'PHPMYADMIN_SQL_USER'} = 'pma';
-$main::questions{'PHPMYADMIN_SQL_PASSWORD'} = '<password>'; # Password must not be empty
+$main::questions{'PHPMYADMIN_SQL_PASSWORD'} = 'password'; # Password must not be empty
 
 # Roundcube package restricted SQL user
 $main::questions{'ROUNDCUBE_SQL_USER'} = 'roundcube_user';
-$main::questions{'ROUNDCUBE_SQL_PASSWORD'} = '<password>'; # Password must not be empty
+$main::questions{'ROUNDCUBE_SQL_PASSWORD'} = 'password'; # Password must not be empty
 
 # Anti-Rootkits packages
 $main::questions{'ANTI_ROOTKITS_PACKAGES'} = 'Chkrootkit,Rkhunter'; # 'Chkrootkit' and/or 'Rkhunter' or 'No', each value comma separated
