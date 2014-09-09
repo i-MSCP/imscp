@@ -264,6 +264,7 @@ sub _init
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	delete $ENV{'DEBCONF_FORCE_DIALOG'};
+	$ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt;
 
 	$self->{'repositorySections'} = ['main', 'non-free'];
 	$self->{'preRequiredPackages'} = [

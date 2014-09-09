@@ -7,7 +7,7 @@ To get started, it is best to link the Vagrantfile to the base directory of your
 	cd ../..
 	ln -s docs/vagrant/Vagrantfile Vagrantfile
 
-You must also fill-up the docs/preseed.pl file according your need.
+You must also fill-up the docs/preseed.pl file according your needs.
 
 Then to start the VM and immediately start the i-MSCP install and get a root ssh login...
 

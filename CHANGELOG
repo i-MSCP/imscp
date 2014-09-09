@@ -26,6 +26,7 @@ INSTALLER
 	Fixed: Local DNS resolver is never disabled whatever the configuration parameter value
 	Fixed: Package which are scheduled for installation must not be removed
 	Fixed: Releases are not sorted correctly (iMSCP::LsbRelease library)
+	Fixed: When the preseed or noprompt options are set, debconf must be run in noninteractive mode
 	Fixed: When switching to another SQL server debian version flag file must be removed
 	Fixed: Wrong template name passed to the onLoadTemplate event (MySQL server implementation)
 
