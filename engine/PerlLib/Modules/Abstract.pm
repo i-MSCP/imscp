@@ -218,7 +218,7 @@ sub _runAction
 				}
 			}
 		} else {
-			error('Unknow item type');
+			error('Unknown items type');
 			return 1;
 		}
 	}
