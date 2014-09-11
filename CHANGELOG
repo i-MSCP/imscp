@@ -13,6 +13,7 @@ DOCS
 	Updated: INSTALL files
 
 ENGINE
+	Added: FETCH_MODE option in iMSCP::Database::mysql
 	Added: Library (iMSCP::ProgramFinder) allowing to test whether programs are available on the executable search path
 	Added: Library (iMSCP::Service) for service management (start, stop, restart, reload, status)
 	Added: Methods which allow to enable/disable apache conffiles from the conf-available directory (Apache 2.4.x)

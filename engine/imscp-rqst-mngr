@@ -65,6 +65,8 @@ OPTIONS:
 
 iMSCP::Bootstrapper->getInstance()->boot({ 'norequirements' => 'yes' });
 
+my $db = iMSCP::Database->factory();
+
 sub _process
 {
 	my ($moduleName, $sql, $ipModule) = @_;
@@ -76,20 +78,19 @@ sub _process
 		debug("Processing $moduleName items.");
 	}
 
-	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql);
-	unless(ref $rdata eq 'HASH') {
+	# Get arrayref instead of hashref
+	$db->set('FETCH_MODE', 'arrayref');
+	my $rdata = $db->doQuery({ }, $sql); # Get arrayref of hashref
+
+	unless(ref $rdata eq 'ARRAY') {
 		error($rdata);
 		return 1;
-	}
-
-	if(%{$rdata}) {
+	} elsif(@{$rdata}) {
 		my $i = 1;
-		my $totalItems = scalar keys %{$rdata};
+		my $totalItems = scalar @{$rdata};
 
-		for (keys %{$rdata}) {
-			my $id = $rdata->{$_}->{'id'};
-			my $name = $rdata->{$_}->{'name'};
-			my $status = $rdata->{$_}->{'status'};
+		for (@{$rdata}) {
+			my ($id, $name, $status) = ($_->{'id'}, $_->{'name'}, $_->{'status'});
 
 			$$ipModule++ if $moduleName ~~ ['Domain', 'Subdomain', 'Alias', 'SubAlias'];
 
@@ -116,8 +117,7 @@ sub _process
 
 			if($rs) {
 				error("Error while processing $id, $name, $status.");
-				my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '/tmp';
-				error("See $logDir/${moduleName}_module_$name.log for more details.");
+				error("See $main::imscpConfig{'LOG_DIR'}/${moduleName}_module_$name.log for more details.");
 			}
 
 			return $rs if $rs;
@@ -146,6 +146,8 @@ sub run
 				plugin_error IS NULL
 			AND
 				plugin_backend = 'yes'
+			ORDER BY
+				plugin_id ASC
 		"
 	);
 
@@ -161,6 +163,8 @@ sub run
 				ssl_certs
 			WHERE
 				status IN ('toadd', 'tochange', 'todelete')
+			ORDER BY
+				cert_id ASC
 		"
 	);
 
@@ -176,6 +180,8 @@ sub run
 				admin_type = 'user'
 			AND
 				admin_status IN ('toadd', 'tochange')
+			ORDER BY
+				admin_id ASC
 		"
 	);
 
@@ -191,6 +197,8 @@ sub run
 				domain
 			WHERE
 				domain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+			ORDER BY
+				domain_id ASC
 		",
 		\$ipsModule
 	);
@@ -205,6 +213,8 @@ sub run
 				subdomain
 			WHERE
 				subdomain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+			ORDER BY
+				subdomain_id ASC
 		",
 		\$ipsModule
 	);
@@ -219,6 +229,8 @@ sub run
 				domain_aliasses
 			WHERE
 				alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+			ORDER BY
+				alias_id ASC
 		 ",
 		 \$ipsModule
 	);
@@ -233,6 +245,8 @@ sub run
 				subdomain_alias
 			WHERE
 				subdomain_alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+			ORDER BY
+				subdomain_alias_id ASC
 		",
 		\$ipsModule
 	);
@@ -247,6 +261,8 @@ sub run
 				mail_users
 			WHERE
 				status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+			ORDER BY
+				mail_id ASC
 		"
 	);
 
@@ -260,6 +276,8 @@ sub run
 				htaccess_users
 			WHERE
 				status IN ('toadd', 'tochange', 'todelete')
+			ORDER BY
+				id ASC
 		"
 	);
 
@@ -268,11 +286,13 @@ sub run
 		'Htgroup',
 		"
 			SELECT
-				id AS id, CONCAT(ugroup, ':', id) AS name, status
+				id, CONCAT(ugroup, ':', id) AS name, status
 			FROM
 				htaccess_groups
 			WHERE
 				status IN ('toadd', 'tochange', 'todelete')
+			ORDER BY
+				id ASC
 		"
 	);
 
@@ -286,6 +306,8 @@ sub run
 				htaccess
 			WHERE
 				status IN ('toadd', 'tochange', 'todelete')
+			ORDER BY
+				id ASC
 		"
 	);
 
@@ -299,6 +321,8 @@ sub run
 				subdomain_alias
 			WHERE
 				subdomain_alias_status = 'todelete'
+			ORDER BY
+				subdomain_alias_id ASC
 		",
 		\$ipsModule
 	);
@@ -313,6 +337,8 @@ sub run
 				domain_aliasses
 			WHERE
 				alias_status = 'todelete'
+			ORDER BY
+				alias_id ASC
 		",
 		\$ipsModule
 	);
@@ -327,6 +353,8 @@ sub run
 				subdomain
 			WHERE
 				subdomain_status = 'todelete'
+			ORDER BY
+				subdomain_id ASC
 		",
 		\$ipsModule
 	);
@@ -341,6 +369,8 @@ sub run
 				domain
 			WHERE
 				domain_status = 'todelete'
+			ORDER BY
+				domain_id ASC
 		",
 		\$ipsModule
 	);
@@ -357,6 +387,8 @@ sub run
 				admin_type = 'user'
 			AND
 				admin_status = 'todelete'
+			ORDER BY
+				admin_id ASC
 		"
 	);
 
@@ -370,6 +402,8 @@ sub run
 				server_ips
 			WHERE
 				ip_status <> 'ok'
+			ORDER BY
+				ip_id ASC
 		"
 	);
 
@@ -406,7 +440,7 @@ sub run
 				WHERE
 					software_status IN ('toadd', 'todelete')
 				ORDER BY
-					domain_id
+					domain_id ASC
 			"
 		);
 		unless(ref $rdata eq 'HASH'){
@@ -475,7 +509,7 @@ sub run
 						WHERE
 							software_status = 'toadd'
 						ORDER BY
-							reseller_id
+							reseller_id ASC
 					"
 				);
 				unless(ref $rdata eq 'HASH'){

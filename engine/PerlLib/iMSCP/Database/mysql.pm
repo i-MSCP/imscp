@@ -69,7 +69,7 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub set($$$)
+sub set
 {
 	my ($self, $prop, $value) = @_;
 
@@ -80,7 +80,7 @@ sub set($$$)
 
  Connect to the MySQL server
 
- Return int - 0 on success, error string on failure
+ Return int 0 on success, error string on failure
 
 =cut
 
@@ -202,18 +202,23 @@ sub getRawDb
 
 =cut
 
-sub doQuery($$$;@)
+sub doQuery
 {
 	my ($self, $key, $query, @bindValues) = @_;
 
-	$query or error('No query provided');
+	$query or return 'No query provided';
 
-	$self->{'sth'} = $self->{'connection'}->prepare($query)
-		or return "Error while preparing query: $DBI::errstr $key|$query";
+	$self->{'sth'} = $self->{'connection'}->prepare($query) or return "Error while preparing statement: $DBI::errstr";
+	$self->{'sth'}->execute(@bindValues) or return "Error while executing statement: $DBI::errstr";
 
-	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@bindValues);
-
-	($self->{'sth'}->{'NUM_OF_FIELDS'}) ? $self->{'sth'}->fetchall_hashref($key) : { };
+	if($self->{'db'}->{'FETCH_MODE'} eq 'hashref') {
+		$self->{'sth'}->fetchall_hashref($key) || { };
+	} elsif($self->{'db'}->{'FETCH_MODE'} eq 'arrayref') {
+		$self->set('FETCH_MODE', 'hashref');
+		$self->{'sth'}->fetchall_arrayref($key) || [ ];
+	} else {
+		return sprintf('Unsupported fetch mode: %s', $self->{'db'}->{'FETCH_MODE'});
+	}
 }
 
 =item getDBTables()
@@ -256,7 +261,7 @@ sub getDBTables
 
 =cut
 
-sub getTableColumns($$)
+sub getTableColumns
 {
 	my ($self, $tableName) = @_;
 
@@ -292,7 +297,7 @@ sub getTableColumns($$)
 
 =cut
 
-sub dumpdb($$$)
+sub dumpdb
 {
 	my ($self, $dbName, $filename) = @_;
 
@@ -368,7 +373,7 @@ sub quote
 
 =item _init()
 
- Initialize instance.
+ Initialize instance
 
  Return iMSCP::Database::mysql
 
@@ -391,10 +396,15 @@ sub _init
 		'mysql_enable_utf8' => 1
 	};
 
+	# Default fetch mode
+	$self->{'db'}->{'FETCH_MODE'} = 'hashref';
+
 	# For internal use only
 	$self->{'_dsn'} = '';
 	$self->{'_currentUser'} = '';
 	$self->{'_currentPassword'} = '';
+
+	$self->{'_fetchMode'} = 'hashref';
 
 	$self;
 }
