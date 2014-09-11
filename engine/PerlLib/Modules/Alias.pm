@@ -367,7 +367,7 @@ sub _getNamedData
 			) ? 1 : 0
 		};
 
-		if($action eq 'add') {
+		if($action =~ /add/) {
 			# Get DNS resource records added by 3rd party components (custom DNS feature, mail feature, plugins...)
 			my $db = iMSCP::Database->factory();
 
@@ -413,7 +413,7 @@ sub _getNamedData
 				}
 			}
 
-			# We must trigger the module subalias whatever the number of entries - See #503
+			# We must trigger the SubAlias module whatever the number of entries - See #503
 			$rdata = $db->doQuery(
 				'update',
 				'
