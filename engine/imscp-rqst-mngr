@@ -373,7 +373,7 @@ sub run
 	);
 
 	# Process IP addresses tasks
-	unless($rs || ! $ipsModule) {
+	unless($rs || (! $ipsModule && $main::execmode ne 'setup')) {
 		newDebug("Ips_module.log");
 
 		eval { require Modules::Ips };
