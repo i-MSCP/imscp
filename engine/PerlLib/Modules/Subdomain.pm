@@ -514,7 +514,7 @@ sub _getSharedMountPoints
 		fatal($rdata);
 	}
 
-	(values %{$rdata};
+	(values %{$rdata});
 }
 
 =item isValidCertificate()
