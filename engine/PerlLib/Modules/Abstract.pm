@@ -153,44 +153,73 @@ sub _loadData
 	fatal(ref($_[0]) . ' module must implement the _loadData() method');
 }
 
-=item _runAction($action, \@items, $itemType)
+=item _runAction($action, \%items)
 
  Run the given action on all servers/packages which implement it
 
  Param string $action Action to run
- Param array \@items Server|Package name
- Param string $itemType Items type (Servers|Packages)
+ Param hash \%items Hash where the keys are the items type and the value, the items to process
  Return int 0 on success, other on failure
 
 =cut
 
 sub _runAction
 {
-	my ($self, $action, $items, $itemType) = @_;
+	my ($self, $action, $items) = @_;
 
-	for (@{$items}) {
-		next if $_ eq 'noserver';
+	for my $itemType (keys %{$items}) {
+		if($itemType eq 'servers') {
+			for my $item (@{$items->{$itemType}}) {
+				next if $item eq 'noserver';
 
-		my $dataProvider = '_get' .  (($itemType ne 'Packages') ? ucfirst($_) : 'Packages') . 'Data';
-		my %moduleData = $self->$dataProvider($action);
+				my $dataProvider = '_get' . ucfirst($item) . 'Data';
+				my %moduleData = $self->$dataProvider($action);
 
-		if(%moduleData) {
-			my $package = "${itemType}::$_";
+				if(%moduleData) {
+					my $package = "Servers::$item";
 
-			eval "require $package";
+					eval "require $package";
 
-			unless($@) {
-				my $instance = ($itemType eq 'Packages') ? $package->getInstance() : $package->factory();
+					unless($@) {
+						my $instance = $package->factory();
 
-				if ($instance->can($action)) {
-					debug("Calling action $action on $package");
-					my $rs = $instance->$action(\%moduleData);
-					return $rs if $rs;
+						if ($instance->can($action)) {
+							debug("Calling action $action on $package");
+							my $rs = $instance->$action(\%moduleData);
+							return $rs if $rs;
+						}
+					} else {
+						error($@);
+						return 1;
+					}
 				}
-			} else {
-				error($@);
-				return 1;
 			}
+		} elsif($itemType eq 'packages') {
+			for my $item (@{$items->{$itemType}}) {
+				my $dataProvider = '_getPackagesData';
+				my %moduleData = $self->$dataProvider($action);
+
+				if(%moduleData) {
+					my $package = "Package::$item";
+					eval "require $package";
+
+					unless($@) {
+						my $instance = $package->getInstance();
+
+						if ($instance->can($action)) {
+							debug("Calling action $action on $package");
+							my $rs = $instance->$action(\%moduleData);
+							return $rs if $rs;
+						}
+					} else {
+						error($@);
+						return 1;
+					}
+				}
+			}
+		} else {
+			error('Unknow item type');
+			return 1;
 		}
 	}
 
@@ -209,16 +238,18 @@ sub _runAllActions
 {
 	my ($self, $action) = @_;
 
-	my @servers = iMSCP::Servers->getInstance()->get();
-	my @packages = iMSCP::Packages->getInstance()->get();
+	my %items = (
+		'servers' => [iMSCP::Servers->getInstance()->get()],
+		'packages' => [iMSCP::Packages->getInstance()->get()]
+	);
 
 	my $moduleType = $self->getType();
 
 	for('pre', '', 'post') {
-		my $rs = $self->_runAction("$_$action$moduleType", \@servers, 'Servers');
+		my $rs = $self->_runAction("$_$action$moduleType", \%items);
 		return $rs if $rs;
 
-		$rs = $self->_runAction("$_$action$moduleType", \@packages, 'Packages');
+		$rs = $self->_runAction("$_$action$moduleType", \%items);
 		return $rs if $rs;
 	}
 
