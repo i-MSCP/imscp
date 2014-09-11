@@ -193,7 +193,7 @@ sub _loadData
 		return 1;
 	}
 
-	if($main::imscpConfig{'PANEL_SSL_ENABLED'} == 'yes') {
+	if($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
 		# The Base server IP must always be here because even if not used by any domain,
         # the panel use it
 		$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
