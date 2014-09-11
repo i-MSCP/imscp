@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Modules::NetCard - i-MSCP NetCard module
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #
@@ -32,13 +38,29 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use parent 'Common::Object';
 
+=head1 DESCRIPTION
+
+ i-MSCP NetCard module.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item process()
+
+ Process module
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub process
 {
 	my $self = $_[0];
 
 	my ($stdour, $stderr);
 	my $rs = execute(
-		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr stop",
+		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'TOOLS_ROOT_DIR'}/imscp-net-interfaces-mngr stop",
 		\$stdour,
 		\$stderr
 	);
@@ -47,7 +69,7 @@ sub process
 	return $rs if $rs;
 
 	$rs = execute(
-		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr start",
+		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'TOOLS_ROOT_DIR'}/imscp-net-interfaces-mngr start",
 		\$stdour,
 		\$stderr
 	);
@@ -57,5 +79,14 @@ sub process
 
 	0;
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

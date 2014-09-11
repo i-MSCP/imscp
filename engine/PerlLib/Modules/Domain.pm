@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Modules::Domain - i-MSCP Domain module
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #
@@ -43,62 +49,41 @@ use iMSCP::Ext2Attributes qw(clearImmutable);
 use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Abstract';
 
-sub _init
+=head1 DESCRIPTION
+
+ i-MSCP Domain module.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item getType()
+
+ Get module type
+
+ Return string Module type
+
+=cut
+
+sub getType
 {
-	my $self = $_[0];
-
-	$self->{'type'} = 'Dmn';
-
-	$self;
+	'Dmn';
 }
 
-sub loadData
-{
-	my $self = $_[0];
+=item process($domainId)
 
-	my $sql = "
-		SELECT
-			domain.*, ip_number, IFNULL(mail_on_domain, 0) AS mail_on_domain
-		FROM
-			domain
-		INNER JOIN
-			server_ips ON (domain_ip_id = ip_id)
-		LEFT JOIN
-			(
-				SELECT
-					domain_id, COUNT(domain_id) AS mail_on_domain
-				FROM
-					mail_users WHERE sub_id = 0
-				GROUP BY
-					domain_id
-			) AS mail_count
-		USING
-			(domain_id)
-		WHERE
-			domain_id = ?
-	";
-	my $rdata = iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{'dmnId'});
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+ Process module
 
-	unless(exists $rdata->{$self->{'dmnId'}}) {
-		error("Domain with ID $self->{'dmnId'} has not been found or is in an inconsistent state");
-		return 1;
-	}
+ Param int $domainId Domain unique identifier
+ Return int 0 on success, other on failure
 
-	%{$self} = (%{$self}, %{$rdata->{$self->{'dmnId'}}});
-
-	0;
-}
+=cut
 
 sub process
 {
-	my $self = $_[0];
-	$self->{'dmnId'} = $_[1];
+	my ($self, $domainId) = @_;
 
-	my $rs = $self->loadData();
+	my $rs = $self->_loadData($domainId);
 	return $rs if $rs;
 
 	my @sql;
@@ -109,7 +94,7 @@ sub process
 		@sql = (
 			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
 			($rs ? scalar getMessageByType('error') : 'ok'),
-			$self->{'domain_id'}
+			$domainId
 		);
 	} elsif($self->{'domain_status'} eq 'todelete') {
 		$rs = $self->delete();
@@ -118,10 +103,10 @@ sub process
 			@sql = (
 				'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
 				scalar getMessageByType('error'),
-				$self->{'domain_id'}
+				$domainId
 			);
 		} else {
-			@sql = ('DELETE FROM domain WHERE domain_id = ?', $self->{'domain_id'});
+			@sql = ('DELETE FROM domain WHERE domain_id = ?', $domainId);
 		}
 	} elsif($self->{'domain_status'} eq 'todisable') {
 		$rs = $self->disable();
@@ -129,7 +114,7 @@ sub process
 		@sql = (
 			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
 			($rs ? scalar getMessageByType('error') : 'disabled'),
-			$self->{'domain_id'}
+			$domainId
 		);
 	} elsif($self->{'domain_status'} eq 'torestore') {
 		$rs = $self->restore();
@@ -137,7 +122,7 @@ sub process
 		@sql = (
 			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
 			($rs ? scalar getMessageByType('error') : 'ok'),
-			$self->{'domain_id'}
+			$domainId
 		);
 	}
 
@@ -150,11 +135,17 @@ sub process
 	$rs;
 }
 
+=item restore()
+
+ Restore domain
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub restore
 {
 	my $self = $_[0];
-
-	$self->{'action'} = 'restore';
 
 	my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
 	my $bkpDir = "$dmnDir/backups";
@@ -347,228 +338,333 @@ sub restore
 	0;
 }
 
-sub _getHttpdData
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _loadData($domainId)
+
+ Load data
+
+ Param int $domainId Domain unique identifier
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _loadData
 {
-	my $self = $_[0];
+	my ($self, $domainId) = @_;
 
-	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-	my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-	$homeDir =~ s~/+~/~g;
-	$homeDir =~ s~/$~~g;
-
-	my $db = iMSCP::Database->factory();
-
-	my $rdata = $db->doQuery('name', 'SELECT * FROM config WHERE name LIKE ?', 'PHPINI%');
+	my $rdata = iMSCP::Database->factory()->doQuery(
+		'domain_id',
+		'
+			SELECT
+				domain.*, ip_number, IFNULL(mail_on_domain, 0) AS mail_on_domain
+			FROM
+				domain
+			INNER JOIN
+				server_ips ON (domain_ip_id = ip_id)
+			LEFT JOIN
+				(
+					SELECT
+						domain_id, COUNT(domain_id) AS mail_on_domain
+					FROM
+						mail_users WHERE sub_id = 0
+					GROUP BY
+						domain_id
+				) AS mail_count
+			USING
+				(domain_id)
+			WHERE
+				domain_id = ?
+		',
+		$domainId
+	);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
-	my $phpiniData = $db->doQuery('domain_id', "SELECT * FROM php_ini WHERE domain_id = ?", $self->{'domain_id'});
-	unless(ref $phpiniData eq 'HASH') {
-		error($phpiniData);
+	unless(exists $rdata->{$domainId}) {
+		error("Domain with ID $domainId has not been found or is in an inconsistent state");
 		return 1;
 	}
 
-	my $certData = $db->doQuery(
-		'domain_id',
-		'SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ? AND status = ?',
-		$self->{'domain_id'},
-		'dmn',
-		'ok'
-	);
-	unless(ref $certData eq 'HASH') {
-		error($certData);
-		return 1;
-	}
-
-	my $haveCert = exists $certData->{$self->{'domain_id'}} && $self->isValidCertificate($self->{'domain_name'});
-
-	$self->{'httpd'} = {
-		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-		DOMAIN_TYPE => 'dmn',
-		DOMAIN_NAME => $self->{'domain_name'},
-		DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'domain_name'}, 'UTF-8'),
-		PARENT_DOMAIN_NAME => $self->{'domain_name'},
-		ROOT_DOMAIN_NAME => $self->{'domain_name'},
-		DOMAIN_IP => $self->{'ip_number'},
-		WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
-		HOME_DIR => $homeDir,
-		WEB_DIR => $homeDir,
-		MOUNT_POINT => '/',
-		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
-		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
-		BASE_SERVER_VHOST_PREFIX => 'http://',
-		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-		BASE_SERVER_VHOST_PORT => $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'},
-		USER => $userName,
-		GROUP => $groupName,
-		PHP_SUPPORT => $self->{'domain_php'},
-		CGI_SUPPORT => $self->{'domain_cgi'},
-		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'},
-		SSL_SUPPORT => $haveCert,
-		BWLIMIT => $self->{'domain_traffic_limit'},
-		ALIAS => $userName,
-		FORWARD => 'no',
-		DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
-		 	? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
-		 	: $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
-		MAX_EXECUTION_TIME => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'max_execution_time'}
-			: $rdata->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
-		MAX_INPUT_TIME => (exists $phpiniData->{$self->{'domain_id'}})
-		 	? $phpiniData->{$self->{'domain_id'}}->{'max_input_time'}
-		 	: $rdata->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
-		MEMORY_LIMIT => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'memory_limit'}
-			: $rdata->{'PHPINI_MEMORY_LIMIT'}->{'value'},
-		ERROR_REPORTING => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'error_reporting'}
-			: $rdata->{'PHPINI_ERROR_REPORTING'}->{'value'},
-		DISPLAY_ERRORS => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'display_errors'}
-			: $rdata->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
-		POST_MAX_SIZE => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'post_max_size'}
-			: $rdata->{'PHPINI_POST_MAX_SIZE'}->{'value'},
-		UPLOAD_MAX_FILESIZE => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'upload_max_filesize'}
-			: $rdata->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
-		ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
-			: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{value},
-		PHPINI_OPEN_BASEDIR => ($rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'})
-			? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
-	};
+	%{$self} = (%{$self}, %{$rdata->{$domainId}});
 
 	0;
 }
+
+=item _getHttpdData($action)
+
+ Data provider method for Httpd servers
+
+ Param string $action Action
+ Return hash Hash containing module data
+
+=cut
+
+sub _getHttpdData
+{
+	my ($self, $action) = @_;
+
+	unless($self->{'httpd'}) {
+		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+
+		my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+		$homeDir =~ s~/+~/~g;
+		$homeDir =~ s~/$~~g;
+
+		my $db = iMSCP::Database->factory();
+
+		my $rdata = $db->doQuery('name', 'SELECT * FROM config WHERE name LIKE ?', 'PHPINI%');
+		unless(ref $rdata eq 'HASH') {
+			fatal($rdata);
+		}
+
+		my $phpiniData = $db->doQuery('domain_id', "SELECT * FROM php_ini WHERE domain_id = ?", $self->{'domain_id'});
+		unless(ref $phpiniData eq 'HASH') {
+			fatal($phpiniData);
+		}
+
+		my $certData = $db->doQuery(
+			'domain_id',
+			'SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ? AND status = ?',
+			$self->{'domain_id'},
+			'dmn',
+			'ok'
+		);
+		unless(ref $certData eq 'HASH') {
+			fatal($certData);
+		}
+
+		my $haveCert = exists $certData->{$self->{'domain_id'}} && $self->isValidCertificate($self->{'domain_name'});
+
+		$self->{'httpd'} = {
+			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+			DOMAIN_TYPE => 'dmn',
+			DOMAIN_NAME => $self->{'domain_name'},
+			DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'domain_name'}, 'UTF-8'),
+			PARENT_DOMAIN_NAME => $self->{'domain_name'},
+			ROOT_DOMAIN_NAME => $self->{'domain_name'},
+			DOMAIN_IP => $self->{'ip_number'},
+			WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
+			HOME_DIR => $homeDir,
+			WEB_DIR => $homeDir,
+			MOUNT_POINT => '/',
+			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
+			PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
+			BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
+			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
+			USER => $userName,
+			GROUP => $groupName,
+			PHP_SUPPORT => $self->{'domain_php'},
+			CGI_SUPPORT => $self->{'domain_cgi'},
+			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'},
+			SSL_SUPPORT => $haveCert,
+			BWLIMIT => $self->{'domain_traffic_limit'},
+			ALIAS => $userName,
+			FORWARD => 'no',
+			DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
+			 	? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
+			 	: $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
+			MAX_EXECUTION_TIME => (exists $phpiniData->{$self->{'domain_id'}})
+				? $phpiniData->{$self->{'domain_id'}}->{'max_execution_time'}
+				: $rdata->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
+			MAX_INPUT_TIME => (exists $phpiniData->{$self->{'domain_id'}})
+			 	? $phpiniData->{$self->{'domain_id'}}->{'max_input_time'}
+			 	: $rdata->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
+			MEMORY_LIMIT => (exists $phpiniData->{$self->{'domain_id'}})
+				? $phpiniData->{$self->{'domain_id'}}->{'memory_limit'}
+				: $rdata->{'PHPINI_MEMORY_LIMIT'}->{'value'},
+			ERROR_REPORTING => (exists $phpiniData->{$self->{'domain_id'}})
+				? $phpiniData->{$self->{'domain_id'}}->{'error_reporting'}
+				: $rdata->{'PHPINI_ERROR_REPORTING'}->{'value'},
+			DISPLAY_ERRORS => (exists $phpiniData->{$self->{'domain_id'}})
+				? $phpiniData->{$self->{'domain_id'}}->{'display_errors'}
+				: $rdata->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
+			POST_MAX_SIZE => (exists $phpiniData->{$self->{'domain_id'}})
+				? $phpiniData->{$self->{'domain_id'}}->{'post_max_size'}
+				: $rdata->{'PHPINI_POST_MAX_SIZE'}->{'value'},
+			UPLOAD_MAX_FILESIZE => (exists $phpiniData->{$self->{'domain_id'}})
+				? $phpiniData->{$self->{'domain_id'}}->{'upload_max_filesize'}
+				: $rdata->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
+			ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
+				? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
+				: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{value},
+			PHPINI_OPEN_BASEDIR => ($rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'})
+				? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
+		};
+	}
+
+	%{$self->{'httpd'}};
+}
+
+=item _getMtaData($action)
+
+ Data provider method for MTA servers
+
+ Param string $action Action
+ Return hash Hash containing module data
+
+=cut
 
 sub _getMtaData
 {
-	my $self = $_[0];
+	my ($self, $action) = @_;
 
-	$self->{'mta'} = {
-		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-		DOMAIN_NAME => $self->{'domain_name'},
-		DOMAIN_TYPE => $self->{'type'},
-		TYPE => 'vdmn_entry',
-		EXTERNAL_MAIL => $self->{'external_mail'},
-		MAIL_ENABLED => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
-	};
+	unless($self->{'mta'}) {
+		$self->{'mta'} = {
+			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+			DOMAIN_NAME => $self->{'domain_name'},
+			DOMAIN_TYPE => $self->getType(),
+			TYPE => 'vdmn_entry',
+			EXTERNAL_MAIL => $self->{'external_mail'},
+			MAIL_ENABLED => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
+		};
+	}
 
-	0;
+	%{$self->{'mta'}};
 }
+
+=item _getNamedData($action)
+
+ Data provider method for named servers
+
+ Param string $action Action
+ Return hash Hash containing module data
+
+=cut
 
 sub _getNamedData
 {
-	my $self = $_[0];
+	my ($self, $action) = @_;
 
-	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+	unless($self->{'named'}) {
+		my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	$self->{'named'} = {
-		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-		DOMAIN_NAME => $self->{'domain_name'},
-		DOMAIN_IP => $self->{'ip_number'},
-		USER_NAME => $userName,
-		MAIL_ENABLED => (
-			($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) &&
-			($self->{'external_mail'} ~~ ['wildcard', 'off'])
-		) ? 1 : 0
-	};
+		$self->{'named'} = {
+			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+			DOMAIN_NAME => $self->{'domain_name'},
+			DOMAIN_IP => $self->{'ip_number'},
+			USER_NAME => $userName,
+			MAIL_ENABLED => (
+				($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) &&
+				($self->{'external_mail'} ~~ ['wildcard', 'off'])
+			) ? 1 : 0
+		};
 
-	if($self->{'action'} eq 'add') {
-		# Get DNS resource record added by 3rd party components (custom dns feature, mail feature, plugins...)
-		my $db = iMSCP::Database->factory();
+		if($action eq 'add') {
+			# Get DNS resource records added by 3rd party components (custom DNS feature, mail feature, plugins...)
+			my $db = iMSCP::Database->factory();
 
-		my $rdata = $db->doQuery(
-			'domain_dns_id',
-			'SELECT * FROM domain_dns WHERE domain_id = ? AND alias_id = ?',
-			$self->{'domain_id'},
-			0
-		);
-		unless(ref $rdata eq 'HASH') {
-			error($rdata);
-			return 1;
-		}
-
-		$self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_} = $rdata->{$_} for keys %{$rdata};
-
-		# Add SPF records for external MX if needed
-		if($self->{'external_mail'} ~~ ['domain', 'filter', 'wildcard']) {
-			my $hosts = { 'domain' => [], 'wildcard' => [] };
-
-			for(keys %{$self->{'named'}->{'CUSTOM_DNS_RECORD'}}) {
-				if($self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'owned_by'} eq 'ext_mail_feature') {
-					(my $host = $self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_text'}) =~ s/\d+\s+(.*)\.$/$1/;
-
-					if(index($self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_dns'}, '*') != 0) {
-						push @{$hosts->{'domain'}}, "a:$host";
-					} else {
-						push @{$hosts->{'wildcard'}}, "a:$host";
-					}
-				}
+			my $rdata = $db->doQuery(
+				'domain_dns_id',
+				'SELECT * FROM domain_dns WHERE domain_id = ? AND alias_id = ?',
+				$self->{'domain_id'},
+				0
+			);
+			unless(ref $rdata eq 'HASH') {
+				fatal($rdata);
 			}
 
-			for my $type (keys %{$hosts}) {
-				if(@{$hosts->{$type}}) {
-					for('TXT', 'SPF') {
-						$self->{'named'}->{'CUSTOM_DNS_RECORD'}->{"$_$type"} = {
-							'domain_dns' => ($type eq 'domain') ? '@' : '*',
-							'domain_class' => 'IN',
-							'domain_type' => $_,
-							'domain_text' => "\"v=spf1 @{$hosts->{$type}} mx -all\""
+			$self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_} = $rdata->{$_} for keys %{$rdata};
+
+			# Add SPF records for external MX if needed
+			if($self->{'external_mail'} ~~ ['domain', 'filter', 'wildcard']) {
+				my $hosts = { 'domain' => [], 'wildcard' => [] };
+
+				for(keys %{$self->{'named'}->{'CUSTOM_DNS_RECORD'}}) {
+					if($self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'owned_by'} eq 'ext_mail_feature') {
+						(my $host = $self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_text'}) =~ s/\d+\s+(.*)\.$/$1/;
+
+						if(index($self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_dns'}, '*') != 0) {
+							push @{$hosts->{'domain'}}, "a:$host";
+						} else {
+							push @{$hosts->{'wildcard'}}, "a:$host";
+						}
+					}
+				}
+
+				for my $type (keys %{$hosts}) {
+					if(@{$hosts->{$type}}) {
+						for('TXT', 'SPF') {
+							$self->{'named'}->{'CUSTOM_DNS_RECORD'}->{"$_$type"} = {
+								'domain_dns' => ($type eq 'domain') ? '@' : '*',
+								'domain_class' => 'IN',
+								'domain_type' => $_,
+								'domain_text' => "\"v=spf1 @{$hosts->{$type}} mx -all\""
+							}
 						}
 					}
 				}
 			}
-		}
 
-		# We must trigger the module 'subdomain' whatever the number of entries - See #503
-		$rdata = $db->doQuery(
-			'dummy',
-			'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_status = ? AND domain_id = ?',
-			'tochange',
-			'ok',
-			$self->{'domain_id'}
-		);
-		unless(ref $rdata eq 'HASH') {
-			error($rdata);
-			return 1;
+			# We must trigger the module 'subdomain' whatever the number of entries - See #503
+			$rdata = $db->doQuery(
+				'dummy',
+				'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_status = ? AND domain_id = ?',
+				'tochange',
+				'ok',
+				$self->{'domain_id'}
+			);
+			unless(ref $rdata eq 'HASH') {
+				fatal($rdata);
+			}
 		}
 	}
 
-	0;
+	%{$self->{'named'}};
 }
+
+=item _getPackagesData($action)
+
+ Data provider method for i-MSCP packages
+
+ Param string $action Action
+ Return hash Hash containing module data
+
+=cut
 
 sub _getPackagesData
 {
-	my $self = $_[0];
+	my ($self, $action) = @_;
 
-	my $userName = my $groupName  = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+	unless($self->{'packages'}) {
+		my $userName = my $groupName  = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-	$homeDir =~ s~/+~/~g;
-	$homeDir =~ s~/$~~g;
+		my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+		$homeDir =~ s~/+~/~g;
+		$homeDir =~ s~/$~~g;
 
-	$self->{'packages'} = {
-		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-		ALIAS => $userName,
-		DOMAIN_NAME => $self->{'domain_name'},
-		USER => $userName,
-		GROUP => $groupName,
-		HOME_DIR => $homeDir,
-		WEB_DIR => $homeDir,
-		FORWARD => 'no',
-		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
-	};
+		$self->{'packages'} = {
+			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+			ALIAS => $userName,
+			DOMAIN_NAME => $self->{'domain_name'},
+			USER => $userName,
+			GROUP => $groupName,
+			HOME_DIR => $homeDir,
+			WEB_DIR => $homeDir,
+			FORWARD => 'no',
+			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
+		};
+	}
 
-	0;
+	%{$self->{'packages'}};
 }
+
+=item isValidCertificate()
+
+ Does the domain SSL certificate is valid?
+
+ Return bool TRUE if the domain SSL certificate is valid, FALSE otherwise
+
+=cut
 
 sub isValidCertificate
 {
@@ -585,5 +681,14 @@ sub isValidCertificate
 
 	! $openSSL->validateCertificateChain();
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

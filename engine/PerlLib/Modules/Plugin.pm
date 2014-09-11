@@ -71,7 +71,7 @@ my %actionStatusToNextStatus = (
 
 =cut
 
-sub process($$)
+sub process
 {
 	my ($self, $pluginId) = @_;
 
@@ -129,7 +129,7 @@ sub process($$)
 
 =item init()
 
- Called by getInstance(). Initialize instance of this class.
+ Initialize instance
 
  Return Modules::Plugin
 
@@ -154,7 +154,7 @@ sub _init
 
 =cut
 
-sub _loadData($$)
+sub _loadData
 {
 	my ($self, $pluginId) = @_;
 
@@ -185,7 +185,7 @@ sub _loadData($$)
 
 =cut
 
-sub _install($$)
+sub _install
 {
 	my ($self, $pluginName) = @_;
 
@@ -209,7 +209,7 @@ sub _install($$)
 
 =cut
 
-sub _uninstall($$)
+sub _uninstall
 {
 	my ($self, $pluginName) = @_;
 
@@ -231,7 +231,7 @@ sub _uninstall($$)
 
 =cut
 
-sub _enable($$)
+sub _enable
 {
 	my ($self, $pluginName) = @_;
 
@@ -253,7 +253,7 @@ sub _enable($$)
 
 =cut
 
-sub _disable($$)
+sub _disable
 {
 	my ($self, $pluginName) = @_;
 
@@ -275,7 +275,7 @@ sub _disable($$)
 
 =cut
 
-sub _change($$)
+sub _change
 {
 	my ($self, $pluginName) = @_;
 
@@ -317,7 +317,7 @@ sub _change($$)
 
 =cut
 
-sub _update($$)
+sub _update
 {
 	my ($self, $pluginName) = @_;
 
@@ -360,7 +360,7 @@ sub _update($$)
 
 =cut
 
-sub _run($$)
+sub _run
 {
 	my ($self, $pluginName) = @_;
 
@@ -385,7 +385,7 @@ sub _run($$)
 
 =cut
 
-sub _exec($$$;$$)
+sub _exec
 {
 	my ($self, $pluginName, $pluginMethod, $fromVersion, $toVersion) = @_;
 

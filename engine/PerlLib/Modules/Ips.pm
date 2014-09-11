@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Modules::Ips - i-MSCP Ips module
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #
@@ -29,119 +35,195 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::Execute;
+use iMSCP::Database;
 use parent 'Modules::Abstract';
 
-sub _init
+=head1 DESCRIPTION
+
+ i-MSCP IPs module.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item getType()
+
+ Get module type
+
+ Return string Module type
+
+=cut
+
+sub getType
 {
-	my $self = $_[0];
-
-	$self->{'type'} = 'Ips';
-
-	$self;
+	'Ips';
 }
+
+=item process()
+
+ Process module
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub process
 {
 	my $self = $_[0];
 
-	my $sql = "
-		SELECT
-			domain_ip_id AS ip_id, ip_number
-		FROM
-			domain
-		INNER JOIN
-			server_ips ON (domain.domain_ip_id = server_ips.ip_id)
-		WHERE
-			domain_status != 'todelete'
-		UNION
-		SELECT
-			alias_ip_id AS ip_id, ip_number
-		FROM
-			domain_aliasses
-		INNER JOIN
-			server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
-		WHERE
-			alias_status NOT IN ('todelete', 'ordered')
-	";
-	my $rdata = iMSCP::Database->factory()->doQuery('ip_number', $sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	@{$self->{'IPs'}} = keys %{$rdata};
-
-	$sql = "
-		SELECT
-			ip_number
-		FROM
-			ssl_certs
-		LEFT JOIN
-			domain ON (ssl_certs.domain_id = domain.domain_id)
-		LEFT JOIN
-			server_ips ON (domain.domain_ip_id = server_ips.ip_id)
-		WHERE
-			ssl_certs.domain_type = 'dmn'
-		UNION
-		SELECT
-			ip_number
-		FROM
-			ssl_certs
-		LEFT JOIN
-			domain_aliasses ON (ssl_certs.domain_id = domain_aliasses.alias_id)
-		LEFT JOIN
-			server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
-		WHERE
-			ssl_certs.domain_type = 'als'
-		UNION
-		SELECT
-			ip_number
-		FROM
-			ssl_certs
-		LEFT JOIN
-			subdomain_alias ON (ssl_certs.domain_id = subdomain_alias.subdomain_alias_id)
-		LEFT JOIN
-			domain_aliasses ON (subdomain_alias.alias_id = domain_aliasses.alias_id)
-		LEFT JOIN
-			server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
-		WHERE
-			ssl_certs.domain_type = 'alssub'
-		UNION
-		SELECT
-			ip_number
-		FROM
-			ssl_certs
-		LEFT JOIN
-			subdomain ON (ssl_certs.domain_id = subdomain.subdomain_id)
-		LEFT JOIN
-			domain ON (subdomain.domain_id = domain.domain_id)
-		LEFT JOIN
-			server_ips ON (domain.domain_ip_id = server_ips.ip_id)
-		WHERE
-			ssl_certs.domain_type = 'sub'
-	";
-	$rdata = iMSCP::Database->factory()->doQuery('ip_number', $sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	@{$self->{'sslIPs'}} = keys %{$rdata};
+	my $rs = $self->_loadData();
+    return $rs if $rs;
 
 	$self->add();
 }
 
-sub _getHttpdData
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _loadData()
+
+ Load data
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _loadData
 {
 	my $self = $_[0];
 
-	$self->{'httpd'} = {
-		IPS => $self->{'IPs'},
-		SSLIPS => $self->{'sslIPs'}
-	};
+	my $db = iMSCP::Database->factory();
+
+	my $rdata = $db->doQuery(
+		'ip_number',
+		"
+			SELECT
+				domain_ip_id AS ip_id, ip_number
+			FROM
+				domain
+			INNER JOIN
+				server_ips ON (domain.domain_ip_id = server_ips.ip_id)
+			WHERE
+				domain_status != 'todelete'
+			UNION
+			SELECT
+				alias_ip_id AS ip_id, ip_number
+			FROM
+				domain_aliasses
+			INNER JOIN
+				server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
+			WHERE
+				alias_status NOT IN ('todelete', 'ordered')
+		"
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	@{$self->{'ipaddrs'}} = keys %{$rdata};
+
+	$rdata = $db->doQuery(
+		'ip_number',
+		"
+			SELECT
+				ip_number
+			FROM
+				ssl_certs
+			INNER JOIN
+				domain ON (ssl_certs.domain_id = domain.domain_id)
+			INNER JOIN
+				server_ips ON (domain.domain_ip_id = server_ips.ip_id)
+			WHERE
+				ssl_certs.domain_type = 'dmn'
+
+			UNION
+
+			SELECT
+				ip_number
+			FROM
+				ssl_certs
+			INNER JOIN
+				domain_aliasses ON (ssl_certs.domain_id = domain_aliasses.alias_id)
+			INNER JOIN
+				server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
+			WHERE
+				ssl_certs.domain_type = 'als'
+
+			UNION
+
+			SELECT
+				ip_number
+			FROM
+				ssl_certs
+			INNER JOIN
+				subdomain_alias ON (ssl_certs.domain_id = subdomain_alias.subdomain_alias_id)
+			INNER JOIN
+				domain_aliasses ON (subdomain_alias.alias_id = domain_aliasses.alias_id)
+			INNER JOIN
+				server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
+			WHERE
+				ssl_certs.domain_type = 'alssub'
+
+			UNION
+
+			SELECT
+				ip_number
+			FROM
+				ssl_certs
+			INNER JOIN
+				subdomain ON (ssl_certs.domain_id = subdomain.subdomain_id)
+			INNER JOIN
+				domain ON (subdomain.domain_id = domain.domain_id)
+			INNER JOIN
+				server_ips ON (domain.domain_ip_id = server_ips.ip_id)
+			WHERE
+				ssl_certs.domain_type = 'sub'
+		"
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	@{$self->{'ssl_ipaddrs'}} = keys %{$rdata};
 
 	0;
 }
+
+=item _getHttpdData($action)
+
+ Data provider method for Httpd servers
+
+ Param string $action Action
+ Return hash Hash containing module data
+
+=cut
+
+sub _getHttpdData
+{
+	my ($self, $action) = @_;
+
+	unless($self->{'httpd'}) {
+		$self->{'httpd'} = {
+			IPS => $self->{'ipaddrs'},
+			SSL_IPS => $self->{'ssl_ipaddrs'}
+		};
+	}
+
+	%{$self->{'httpd'}};
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

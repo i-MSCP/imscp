@@ -48,106 +48,24 @@ use parent 'Common::Object';
 
 =over 4
 
-=item add()
+=item getType()
 
- Add item
+ Get module type
 
- Should be called for items with 'toadd|tochange|toenable' status.
-
- return int 0 on success, other on failure
+ Return string Module type
 
 =cut
 
-sub add
+sub getType
 {
-	my $self = $_[0];
-
-	$self->{'action'} = 'add';
-
-	$self->_runAllActions();
-}
-
-=item delete()
-
- Delete item
-
- Should be called for items with 'todelete' status.
-
- return int 0 on success, other on failure
-
-=cut
-
-sub delete
-{
-	my $self = $_[0];
-
-	$self->{'action'} = 'delete';
-
-	$self->_runAllActions();
-}
-
-=item
-
- Restore item
-
- Should be called for items with 'torestore' status.
-
- return int 0 on success, other on failure
-
-=cut restore()
-
-sub restore
-{
-	my $self = $_[0];
-
-	$self->{'action'} = 'restore';
-
-	$self->_runAllActions();
-}
-
-=item disable()
-
- Disable item
-
- Should be called for database items with 'todisable' status.
-
- return int 0 on success, other on failure
-
-=cut
-
-sub disable
-{
-	my $self = $_[0];
-
-	$self->{'action'} = 'disable';
-
-	$self->_runAllActions();
-}
-
-=back
-
-=head1 ABSTRACT METHODS
-
-=over 4
-
-=item loadData()
-
- Load data for current module
-
- return int 0 on success, other on failure
-
-=cut
-
-sub loadData
-{
-	fatal(ref($_[0]) . ' module must implement the loadData() method');
+	fatal(ref($_[0]) . ' module must implement the getType() method');
 }
 
 =item process()
 
  Process action (add|delete|restore|disable) according item status.
 
- return int 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -156,42 +74,107 @@ sub process
 	fatal(ref($_[0]) . ' module must implement the process() method');
 }
 
+=item add()
+
+ Add item
+
+ Should be called for items with 'toadd|tochange|toenable' status.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub add
+{
+	 $_[0]->_runAllActions('add');
+}
+
+=item delete()
+
+ Delete item
+
+ Should be called for items with 'todelete' status.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub delete
+{
+	$_[0]->_runAllActions('delete');
+}
+
+=item restore()
+
+ Restore item
+
+ Should be called for items with 'torestore' status.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub restore
+{
+	$_[0]->_runAllActions('restore');
+}
+
+=item disable()
+
+ Disable item
+
+ Should be called for items with 'todisable' status.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disable
+{
+	$_[0]->_runAllActions('disable');
+}
+
 =back
 
 =head1 PRIVATES METHODS
 
 =over 4
 
-=back
+=item _loadData()
 
-=item _init()
+ Load module data
 
- Initialize instance
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _init
+sub _loadData
 {
-	fatal(ref($_[0]) . ' module must implement the _init() method');
+	fatal(ref($_[0]) . ' module must implement the _loadData() method');
 }
 
 =item _runAction($action, \@items, $itemType)
 
- Run the given action on each server/package that implement it
+ Run the given action on all servers/packages which implement it
 
- return int 0 on success, other on failure
+ Param string $action Action to run
+ Param array \@items Server|Package name
+ Param string $itemType Items type (Servers|Packages)
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _runAction ($$$$)
+sub _runAction
 {
 	my ($self, $action, $items, $itemType) = @_;
 
 	for (@{$items}) {
-		my $paramName = ($itemType eq 'Packages') ? 'Package' : $_;
+		next if $_ eq 'noserver';
 
-		# Does this module provide data for the current item
-		if(exists $self->{$paramName}) {
+		my $dataProvider = '_get' .  (($itemType ne 'Packages') ? ucfirst($_) : 'Packages') . 'Data';
+		my %moduleData = $self->$dataProvider($action);
+
+		if(%moduleData) {
 			my $package = "${itemType}::$_";
 
 			eval "require $package";
@@ -201,7 +184,7 @@ sub _runAction ($$$$)
 
 				if ($instance->can($action)) {
 					debug("Calling action $action on $package");
-					my $rs = $instance->$action($self->{$paramName});
+					my $rs = $instance->$action(\%moduleData);
 					return $rs if $rs;
 				}
 			} else {
@@ -216,172 +199,158 @@ sub _runAction ($$$$)
 
 =item _runAllActions()
 
- Trigger actions (pre<Action>, <Action>, post<Action>) on each i-MSCP servers and packages.
+ Run actions (pre<Action>, <Action>, post<Action>) on each servers and packages
 
- return int 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _runAllActions
 {
-	my $self = $_[0];
+	my ($self, $action) = @_;
 
 	my @servers = iMSCP::Servers->getInstance()->get();
 	my @packages = iMSCP::Packages->getInstance()->get();
 
-	# Build service/package data if provided by the module
-	for(@servers, 'Packages') {
-		next if $_ eq 'noserver';
-
-		my $methodName = '_get' . ucfirst($_) . 'Data';
-
-		my $rs = $self->$methodName();
-		return $rs if $rs;
-	}
+	my $moduleType = $self->getType();
 
 	for('pre', '', 'post') {
-		my $rs = $self->_runAction("$_$self->{'action'}$self->{'type'}", \@servers, 'Servers');
+		my $rs = $self->_runAction("$_$action$moduleType", \@servers, 'Servers');
 		return $rs if $rs;
 
-		$rs = $self->_runAction("$_$self->{'action'}$self->{'type'}", \@packages, 'Packages');
+		$rs = $self->_runAction("$_$action$moduleType", \@packages, 'Packages');
 		return $rs if $rs;
 	}
 
 	0;
 }
 
-=back
+=item _getPackagesData($action)
 
-=head1 STUB METHODS
+ Data provider method for i-MSCP packages
 
-=over 4
+ This method must be implemented by any module which provides data for i-MSCP packages.
 
-=item _getPackagesData()
-
- Get package data
-
- This method should be implemented by any module which provides data for i-MSCP packages.
- Resulting data must be stored in an anonymous hash accessible through the 'packages' attribute.
-
- return int 0 on success, other on failure
+ Param string $action Action
+ Return hash Hash containing data
 
 =cut
 
 sub _getPackagesData
 {
-	0;
+	();
 }
 
-=item _getCronData()
+=item _getCronData($action)
 
- Get CRON data
+ Data provider method for cron servers
 
- This method should be implemented by any module which provides data for CRON service.
- Resulting data must be stored in an anonymous hash accessible through the 'cron' attribute.
+ This method must be implemented by any module which provides data for cron servers.
 
- return int 0 on success, other on failure
+ Param string $action Action
+ Return hash Hash containing data
 
 =cut
 
 sub _getCronData
 {
-	0;
+	();
 }
 
-=item _getFtpdData()
+=item _getFtpdData($action)
 
- Get FTPD data
+ Data provider method for Ftpd servers
 
- This method should be implemented by any module which provides data for FTPD service.
- Resulting data must be stored in an anonymous hash accessible through the 'ftpd' attribute.
+ This method must be implemented by any module which provides data for Ftpd servers.
 
- return int 0 on success, other on failure
+ Param string $action Action
+ Return hash Hash containing data
 
 =cut
 
 sub _getFtpdData
 {
-	0;
+	();
 }
 
-=item _getHttpdData()
+=item _getHttpdData($action)
 
- Get Httpd data
+ Data provider method for Httpd servers
 
- This method should be implemented by any module which provides data for HTTPD service.
- Resulting data must be stored in an anonymous hash accessible through the 'httpd' attribute.
+ This method must be implemented by any module which provides data for Httpd servers.
 
- return int 0 on success, other on failure
+ Param string $action Action
+ Return hash Hash containing data
 
 =cut
 
 sub _getHttpdData
 {
-	0;
+	();
 }
 
-=item _getMtaData()
+=item _getMtaData($action)
 
- Get MTA data
+ Data provider method for MTA servers
 
- This method should be implemented by any module which provides data for MTA service.
- Resulting data must be stored in an anonymous hash accessible through the 'mta' attribute.
+ This method must be implemented by any module which provides data for MTA servers.
 
- return int 0 on success, other on failure
+ Param string $action Action
+ Return hash Hash containing data
 
 =cut
 
 sub _getMtaData
 {
-	0;
+	();
 }
 
-=item _getNamedData()
+=item _getNamedData($action)
 
- Get named data.
+ Data provider method for named servers
 
- This method should be implemented by any module which provides data for NAMED service.
- Resulting data must be stored in an anonymous hash accessible through the 'named' attribute.
+ This method must be implemented by any module which provides data for named servers.
 
- return int 0 on success, other on failure
+ Param string $action Action
+ Return hash Hash containing data
 
 =cut
 
 sub _getNamedData
 {
-	0;
+	();
 }
 
-=item _getPoData()
+=item _getPoData($action)
 
- Get PO data
+ Data provider method for IMAP/POP3 servers
 
- This method should be implemented by any module which provides data for PO service.
- Resulting data must be stored in an anonymous hash accessible through the 'po' attribute.
+ This method should be implemented by any module which provides data for IMAP/POP3 servers.
 
- return int 0 on success, other on failure
+ Param string $action Action
+ Return hash Hash containing data
 
 =cut
 
 sub _getPoData
 {
-	0;
+	();
 }
 
-=item _getSqldData()
+=item _getSqldData($action)
 
- Get SQL data
+ Data provider method for SQL servers
 
- This method should be implemented by any module which provides data for SQL service.
- Resulting data must be stored in an anonymous hash accessible through the 'sqld' attribute.
+ This method should be implemented by any module which provides data for SQL servers.
 
- return int 0 on success, other on failure
+ Param string $action Action
+ Return hash Hash containing data
 
 =cut
 
 sub _getSqldData
 {
-	0;
+	();
 }
 
 =back

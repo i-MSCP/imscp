@@ -928,7 +928,7 @@ sub addIps
 
 		my $ipMngr = iMSCP::Net->getInstance();
 
-		for(@{$data->{'SSLIPS'}}) {
+		for(@{$data->{'SSL_IPS'}}) {
 			if($ipMngr->getAddrVersion($_) eq 'ipv4') {
 				$content .= "NameVirtualHost $_:443\n";
 			} else {
