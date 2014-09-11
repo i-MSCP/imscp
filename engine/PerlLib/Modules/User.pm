@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Modules::User - i-MSCP User module
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #
@@ -42,55 +48,41 @@ use iMSCP::File;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
 use parent 'Modules::Abstract';
 
-sub _init
+=head1 DESCRIPTION
+
+ i-MSCP User module.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item getType()
+
+ Get module type
+
+ Return string Module type
+
+=cut
+
+sub getType
 {
-	my $self = $_[0];
-
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
-	$self->{'type'} = 'User';
-
-	$self;
+	'User';
 }
 
-sub loadData
-{
-	my $self = $_[0];
+=item process($userId)
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
-		'admin_id',
-		'
-			SELECT
-				admin_id, admin_name, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid, admin_status
-			FROM
-				admin
-			WHERE
-				admin_id = ?
-		',
-		$self->{'userId'}
-	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+ Process module
 
-	unless(exists $rdata->{$self->{'userId'}}) {
-		error("User record with ID $self->{'userId'} has not been found in database");
-		return 1
-	}
+ Param int $userId User unique identifier
+ Return int 0 on success, other on failure
 
-	%{$self} = (%{$self}, %{$rdata->{$self->{'userId'}}});
-
-	0;
-}
+=cut
 
 sub process
 {
-	my $self = $_[0];
+	my ($self, $userId) = @_;
 
-	$self->{'userId'} = $_[1];
-
-	my $rs = $self->loadData();
+	my $rs = $self->_loadData($userId);
 	return $rs if $rs;
 
 	my @sql;
@@ -100,18 +92,17 @@ sub process
 
 		@sql = (
 			'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'userId'}
+			($rs ? scalar getMessageByType('error') : 'ok'), $userId
 		);
 	} elsif($self->{'admin_status'} eq 'todelete') {
 		$rs = $self->delete();
 
 		if($rs) {
 			@sql = (
-				'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
-				scalar getMessageByType('error'), $self->{'userId'}
+				'UPDATE admin SET admin_status = ? WHERE admin_id = ?', scalar getMessageByType('error'), $userId
 			)
 		} else {
-			@sql = ('DELETE FROM admin WHERE admin_id = ?', $self->{'userId'});
+			@sql = ('DELETE FROM admin WHERE admin_id = ?', $userId);
 		}
 	}
 
@@ -126,12 +117,19 @@ sub process
 	$rs;
 }
 
+=item add()
+
+ Add user
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub add
 {
 	my $self = $_[0];
 
-	my $userName =
-	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+	my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 	my $password = '';
 	my $comment = 'i-MSCP Web User';
@@ -202,7 +200,7 @@ sub add
 			WHERE
 				admin_id = ?
 		',
-		$userName, $userUid, $groupName, $userGid, $self->{'userId'}
+		$userName, $userUid, $groupName, $userGid, $self->{'admin_id'}
 	);
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 	unless(ref $rdata eq 'HASH') {
@@ -224,12 +222,19 @@ sub add
 	$self->SUPER::add();
 }
 
+=item delete()
+
+ Delete user
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub delete
 {
 	my $self = $_[0];
 
-	my $userName =
-	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+	my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeDeleteImscpUnixUser', $userName);
@@ -249,41 +254,133 @@ sub delete
 	$self->{'eventManager'}->trigger('onAfterDeleteImscpUnixUser', $userName);
 }
 
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize instance
+
+ Return Modules::User
+
+=cut
+
+sub _init
+{
+	my $self = $_[0];
+
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
+
+	$self;
+}
+
+=item _loadData($userId)
+
+ Load data
+
+ Param int $userId user unique identifier
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _loadData
+{
+	my ($self, $userId) = @_;
+
+	my $rdata = iMSCP::Database->factory()->doQuery(
+		'admin_id',
+		'
+			SELECT
+				admin_id, admin_name, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid, admin_status
+			FROM
+				admin
+			WHERE
+				admin_id = ?
+		',
+		$userId
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	unless(exists $rdata->{$userId}) {
+		error("User record with ID $userId has not been found in database");
+		return 1
+	}
+
+	%{$self} = (%{$self}, %{$rdata->{$userId}});
+
+	0;
+}
+
+=item _getHttpdData($action)
+
+ Data provider method for Httpd servers
+
+ Param string $action Action
+ Return hash Hash containing module data
+
+=cut
 
 sub _getHttpdData
 {
-	my $self = $_[0];
+	my ($self, $action) = @_;
 
-	my $groupName =
-	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+	unless($self->{'httpd'}) {
+		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
-	$self->{'httpd'} = {
-		USER => $userName,
-		GROUP => $groupName,
-	};
+		$self->{'httpd'} = {
+			USER => $userName,
+			GROUP => $groupName
+		};
+	}
 
-	0;
+	%{$self->{'httpd'}};
 }
+
+=item _getFtpdData($action)
+
+ Data provider method for Ftpd servers
+
+ Param string $action Action
+ Return hash Hash containing module data
+
+=cut
 
 sub _getFtpdData
 {
-	my $self = $_[0];
+	my ($self, $action) = @_;
 
-	my $groupName =
-	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+	unless($self->{'ftpd'}) {
+		my $groupName =
+		my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
-	$self->{'ftpd'} = {
-		USER_ID => $self->{'admin_id'},
-		USER_SYS_UID => $self->{'admin_sys_uid'},
-		USER_SYS_GID => $self->{'admin_sys_gid'},
-		USERNAME => $self->{'admin_name'},
-		USER => $userName,
-		GROUP => $groupName
-	};
+		$self->{'ftpd'} = {
+			USER_ID => $self->{'admin_id'},
+			USER_SYS_UID => $self->{'admin_sys_uid'},
+			USER_SYS_GID => $self->{'admin_sys_gid'},
+			USERNAME => $self->{'admin_name'},
+			USER => $userName,
+			GROUP => $groupName
+		};
+	}
 
-	0;
+	%{$self->{'ftpd'}};
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

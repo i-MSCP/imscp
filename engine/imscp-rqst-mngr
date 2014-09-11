@@ -97,12 +97,12 @@ sub _process
 
 			newDebug("${moduleName}_module_$name.log");
 
-			my $package = "Modules::$moduleName";
+			my $module = "Modules::$moduleName";
 
-			eval "require $package";
+			eval "require $module";
 
 			unless($@) {
-				$rs = $package->new()->process($id);
+				$rs = $module->new()->process($id);
 			} else {
 				error($@);
 				$rs = 1;

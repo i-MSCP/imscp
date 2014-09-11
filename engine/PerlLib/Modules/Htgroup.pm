@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Modules::Htgroup - i-MSCP Htgroup module
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #
@@ -31,94 +37,44 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
+use iMSCP::Database;
 use parent 'Modules::Abstract';
 
-sub _init
+=head1 DESCRIPTION
+
+ i-MSCP Htgroup module.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item getType()
+
+ Get module type
+
+ Return string Module type
+
+=cut
+
+sub getType
 {
-	my $self = $_[0];
-
-	$self->{'type'} = 'Htgroup';
-
-	$self;
+	'Htgroup';
 }
 
-sub loadData
-{
-	my $self = $_[0];
+=item process($htgroupId)
 
-	my $db = iMSCP::Database->factory();
+ Process module
 
-	$db->doQuery('dummy', 'SET SESSION group_concat_max_len = 8192');
+ Param int $htgroupId Htgroup unique identifier
+ Return int 0 on success, other on failure
 
-	my $sql = "
-		SELECT
-			t2.id, t2.ugroup, t2.status, t2.users, t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
-		FROM
-			(
-				SELECT * from htaccess_groups,
-				(
-					SELECT IFNULL(
-					(
-						SELECT
-							group_concat(uname SEPARATOR ' ')
-						FROM
-							htaccess_users
-						WHERE
-							id regexp (
-								CONCAT(
-									'^(', (SELECT REPLACE((SELECT members FROM htaccess_groups WHERE id = ?), ',', '|')), ')\$'
-								)
-							)
-						GROUP BY
-							dmn_id
-					), '') AS users
-				) AS t1
-			) AS t2
-		INNER JOIN
-			domain AS t3 ON (t2.dmn_id = t3.domain_id)
-		WHERE
-			id = ?
-	";
-
-	my $rdata = $db->doQuery('id', $sql, $self->{'htgroupId'}, $self->{'htgroupId'});
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	unless(exists $rdata->{$self->{'htgroupId'}}) {
-		error("Htgroup record with ID $self->{'htgroupId'} has not been found in database");
-		return 1;
-	}
-
-	unless(exists $rdata->{$self->{'htgroupId'}}->{'domain_name'}) {
-		require Data::Dumper;
-		Data::Dumper->import();
-		local $Data::Dumper::Terse = 1;
-		error('Orphan entry: ' . Dumper($rdata->{$self->{'htgroupId'}}));
-
-		my @sql = (
-			'UPDATE htaccess_groups SET status = ? WHERE id = ?',
-			'Orphan entry: ' . Dumper($rdata->{$self->{'htgroupId'}}),
-			$self->{'htgroupId'}
-		);
-
-		$db->doQuery('dummy', @sql);
-		return 1;
-	}
-
-	%{$self} = (%{$self}, %{$rdata->{$self->{'htgroupId'}}});
-
-	0;
-}
+=cut
 
 sub process
 {
-	my $self = $_[0];
+	my ($self, $htgroupId) = @_;
 
-	$self->{'htgroupId'} = $_[1];
-
-	my $rs = $self->loadData();
+	my $rs = $self->_loadData($htgroupId);
 	return $rs if $rs;
 
 	my @sql;
@@ -129,19 +85,17 @@ sub process
 		@sql = (
 			"UPDATE htaccess_groups SET status = ? WHERE id = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
-			$self->{'id'}
+			$htgroupId
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
 
 		if($rs) {
 			@sql = (
-				'UPDATE htaccess_groups SET status = ? WHERE id = ?',
-				scalar getMessageByType('error'),
-				$self->{'id'}
+				'UPDATE htaccess_groups SET status = ? WHERE id = ?', scalar getMessageByType('error'), $htgroupId
 			);
 		} else {
-			@sql = ('DELETE FROM htaccess_groups WHERE id = ?', $self->{'id'});
+			@sql = ('DELETE FROM htaccess_groups WHERE id = ?', $htgroupId);
 		}
 	}
 
@@ -154,26 +108,133 @@ sub process
 	$rs;
 }
 
-sub _getHttpdData
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _loadData($htgroupId)
+
+ Load data
+
+ Param int $htgroupId $Htgroup unique identifier
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _loadData
 {
-	my $self = $_[0];
+	my ($self, $htgroupId) = @_;
 
-	my $groupName =
-	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+	my $db = iMSCP::Database->factory();
 
-	$self->{'httpd'} = {
-		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-		USER => $userName,
-		GROUP => $groupName,
-		WEB_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
-		HTGROUP_NAME => $self->{'ugroup'},
-		HTGROUP_USERS => $self->{'users'},
-		HTGROUP_DMN => $self->{'domain_name'},
-		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
-	};
+	$db->doQuery('dummy', 'SET SESSION group_concat_max_len = 8192');
+
+	my $rdata = $db->doQuery(
+		'id',
+		"
+			SELECT
+				t2.id, t2.ugroup, t2.status, t2.users, t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
+			FROM
+				(
+					SELECT * from htaccess_groups,
+					(
+						SELECT IFNULL(
+						(
+							SELECT
+								group_concat(uname SEPARATOR ' ')
+							FROM
+								htaccess_users
+							WHERE
+								id regexp (
+									CONCAT(
+										'^(', (SELECT REPLACE((SELECT members FROM htaccess_groups WHERE id = ?), ',', '|')), ')\$'
+									)
+								)
+							GROUP BY
+								dmn_id
+						), '') AS users
+					) AS t1
+				) AS t2
+			INNER JOIN
+				domain AS t3 ON (t2.dmn_id = t3.domain_id)
+			WHERE
+				id = ?
+		",
+		$htgroupId,
+		$htgroupId
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	unless(exists $rdata->{$htgroupId}) {
+		error("Htgroup record with ID $htgroupId has not been found in database");
+		return 1;
+	}
+
+	unless(exists $rdata->{$htgroupId}->{'domain_name'}) {
+		require Data::Dumper;
+		Data::Dumper->import();
+		local $Data::Dumper::Terse = 1;
+		error('Orphan entry: ' . Dumper($rdata->{$htgroupId}));
+
+		my @sql = (
+			'UPDATE htaccess_groups SET status = ? WHERE id = ?',
+			'Orphan entry: ' . Dumper($rdata->{$htgroupId}),
+			$htgroupId
+		);
+
+		$db->doQuery('dummy', @sql);
+		return 1;
+	}
+
+	%{$self} = (%{$self}, %{$rdata->{$htgroupId}});
 
 	0;
 }
+
+=item _getHttpdData($action)
+
+ Data provider method for Httpd servers
+
+ Param string $action Action
+ Return hash Hash containing module data
+
+=cut
+
+sub _getHttpdData
+{
+	my ($self, $action) = @_;
+
+	unless($self->{'httpd'}) {
+		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+
+		$self->{'httpd'} = {
+			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+			USER => $userName,
+			GROUP => $groupName,
+			WEB_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
+			HTGROUP_NAME => $self->{'ugroup'},
+			HTGROUP_USERS => $self->{'users'},
+			HTGROUP_DMN => $self->{'domain_name'},
+			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
+		};
+	}
+
+	%{$self->{'httpd'}};
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;
