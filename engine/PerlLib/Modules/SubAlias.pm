@@ -297,6 +297,7 @@ sub _getHttpdData
 
 		if($self->{'subdomain_alias_status'} eq 'todelete') {
 			$self->{'httpd'}->{'SHARED_MOUNT_POINTS'} = [$self->_getSharedMountPoints()];
+		}
 	}
 
 	%{$self->{'httpd'}};
