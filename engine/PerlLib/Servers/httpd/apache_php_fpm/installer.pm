@@ -96,8 +96,7 @@ sub showDialog
 	my ($self, $dialog) = @_;
 
 	my $rs = 0;
-	my $poolsLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') ||
-		$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+	my $poolsLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') || $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 
 	if(
 		$main::reconfigure ~~ ['httpd', 'php', 'servers', 'all', 'forced'] ||
@@ -122,7 +121,7 @@ Note: PHP FPM use a global php.ini configuration file but you can override any s
 		);
 	}
 
-	($self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} = $poolsLevel) = s/ /_/ unless $rs == 30;
+	($self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} = $poolsLevel) =~ s/ /_/ unless $rs == 30;
 
 	$rs;
 }
