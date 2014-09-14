@@ -1,6 +1,5 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
+<script>
 	$(document).ready(function () {
 		errFieldsStack = {ERR_FIELDS_STACK};
 		$.each(errFieldsStack, function () {
@@ -68,6 +67,7 @@
 			}
 		});
 
+		$.ui.dialog.prototype._focusTabbable = function(){ };
 		$('#php_editor_dialog').dialog({
 			hide: 'blind',
 			show: 'slide',
@@ -125,7 +125,6 @@
 			}).trigger('keyup');
 		});
 	});
-	/*]]>*/
 </script>
 
 <div id="dialog_box"></div>

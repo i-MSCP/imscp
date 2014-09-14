@@ -1,13 +1,12 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
+<script>
 	$(document).ready(function () {
 		<!-- BDP: php_editor_js -->
 		// PHP Editor settings dialog
+		$.ui.dialog.prototype._focusTabbable = function(){ };
 		$('#php_editor_dialog').dialog({
 			hide: 'blind',
 			show: 'slide',
-			focus: false,
 			autoOpen: false,
 			width: 650,
 			modal: true,
@@ -30,6 +29,7 @@
 
 		php_editor_dialog_open.button({ icons:{ primary: "ui-icon-gear" } }).click(function (e) {
 			$('#php_editor_dialog').dialog('open');
+			$('.ui-widget-header').removeClass('ui-state-focus');
 		});
 
 		if ($('#phpiniSystemNo').is(':checked')){ php_editor_dialog_open.hide(); }
@@ -72,7 +72,6 @@
 		});
 		<!-- EDP: php_editor_js -->
 	});
-	/*]]>*/
 </script>
 
 <!-- BDP: add_user -->
