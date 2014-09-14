@@ -28,9 +28,6 @@
 
 /**
  * Plugin Manager class
- *
- * See http://forum.i-mscp.net/Thread-DEV-Plugin-API-documentation-Relation-between-plugin-status-and-actions for more
- * info about specification.
  */
 class iMSCP_Plugin_Manager
 {
