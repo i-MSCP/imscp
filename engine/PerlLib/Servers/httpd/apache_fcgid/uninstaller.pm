@@ -139,7 +139,7 @@ sub _fastcgiConf
 
 	my $rs = 0:
 
-	$rs = $self->{'httpd'}->disableMod($_) if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/fcgid_imscp.load";
+	$rs = $self->{'httpd'}->disableMod($_) if -l "$self->{'config'}->{'APACHE_MODS_ENABLED_DIR'}/fcgid_imscp.load";
 	return $rs if $rs;
 	
 	for ('fcgid_imscp.conf', 'fcgid_imscp.load') {

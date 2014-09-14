@@ -148,8 +148,8 @@ sub showDialog
 	}
 
 	if($rs != 30) {
-		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
-		$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+		main::setupSetQuestion('SASL_SQL_USER', $dbUser);
+		main::setupSetQuestion('SASL_SQL_PASSWORD', $dbPass);
 	}
 
 	$rs;
@@ -312,10 +312,10 @@ sub _init
 
 	$self->{'config'} = $self->{'mta'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
-
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
 		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
@@ -475,28 +475,28 @@ sub _setupSqlUser()
 {
 	my $self = $_[0];
 
-	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
-
+	my $dbUser = main::setupGetQuestion('SASL_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-
 	# Postfix is chrooted so we cannot access MySQL through unix socket. Here we force usage of TCP
-	$dbUserHost = '127.0.0.1' if $dbUserHost eq 'localhost';
-
-	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+    $dbUserHost = '127.0.0.1' if $dbUserHost eq 'localhost';
+	my $dbPass = main::setupGetQuestion('SASL_SQL_PASSWORD');
+	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
 	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser;
+		next unless $sqlUser;
 
-		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
-			next if ! $_;
+		for my $host(
+			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
+			$main::imscpOldConfig{'BASE_SERVER_IP'}
+		) {
+			next unless $host;
 
-			if(main::setupDeleteSqlUser($sqlUser, $_)) {
-				error("Unable to remove SQL user or one of its privileges");
+			if(main::setupDeleteSqlUser($sqlUser, $host)) {
+				error('Unable to remove SQL user or one of its privileges');
 				return 1;
 			}
 		}
@@ -504,7 +504,7 @@ sub _setupSqlUser()
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 	# Adding new SQL user with needed privileges
 
@@ -519,6 +519,10 @@ sub _setupSqlUser()
 		error("Unable to add privileges: $rs");
 		return 1;
 	}
+
+	# Store database user and password in config file
+	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
 	$self->{'eventManager'}->trigger('afterMtaSetupDb');
 }
@@ -627,38 +631,11 @@ sub _saveConf
 {
 	my $self = $_[0];
 
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/postfix.data");
-
-	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	my $content = $file->get();
-	unless(defined $content) {
-		error("Unable to read $file->{'filename'}");
-		return 1;
-	}
-
-	$rs = $self->{'eventManager'}->trigger('beforeMtaSaveConf', \$content, 'postfix.old.data');
-	return $rs if $rs;
-
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/postfix.old.data");
-
-	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save;
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaSaveConf', 'postfix.old.data');
+	iMSCP::File->new(
+		'filename' => "$self->{'cfgDir'}/postfix.data"
+	)->copyFile(
+		"$self->{'cfgDir'}/postfix.old.data"
+	);
 }
 
 =item _bkpConfFile($cfgFile)

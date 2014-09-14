@@ -146,7 +146,6 @@
     </php>
     <perl>
         <package>perl</package>
-        <package>libperl5.14</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
         <package>libcrypt-passwdmd5-perl</package>

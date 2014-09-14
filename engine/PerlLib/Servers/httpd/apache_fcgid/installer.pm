@@ -95,13 +95,13 @@ sub showDialog
 	my ($self, $dialog) = @_;
 
 	my $rs = 0;
-	my $phpiniLevel = main::setupGetQuestion('INI_LEVEL') || $self->{'config'}->{'INI_LEVEL'} || '';
+	my $phpiniLevel = main::setupGetQuestion('INI_LEVEL') || $self->{'config'}->{'INI_LEVEL'};
 
 	if(
 		$main::reconfigure ~~ ['httpd', 'php', 'servers', 'all', 'forced'] ||
 		not $phpiniLevel ~~ ['per_user', 'per_domain', 'per_site']
 	) {
-		$phpiniLevel =~ s/_/ /g;
+		$phpiniLevel =~ s/_/ /;
 
 		($rs, $phpiniLevel) = $dialog->radiolist(
 "
@@ -119,10 +119,7 @@ Please, choose the PHP INI level you want use for PHP. Available levels are:
 		);
 	}
 
-	if($rs != 30) {
-		$phpiniLevel =~ s/ /_/g;
-		$self->{'config'}->{'INI_LEVEL'} = $phpiniLevel;
-	}
+	($self->{'config'}->{'INI_LEVEL'} = $phpiniLevel) =~ s/ /_/ unless $rs == 30;
 
 	$rs;
 }
@@ -305,10 +302,10 @@ sub _init
 
 	$self->{'config'} = $self->{'httpd'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
-
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
 		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
@@ -639,7 +636,7 @@ sub _buildFastCgiConfFiles
 	}
 
 	for(@toDisableModules) {
-		$rs = $self->{'httpd'}->disableMod($_) if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_.load";
+		$rs = $self->{'httpd'}->disableMod($_) if -l "$self->{'config'}->{'APACHE_MODS_ENABLED_DIR'}/$_.load";
 		return $rs if $rs;
 	}
 
@@ -1112,7 +1109,7 @@ sub _setupVlogger
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect($dbName);
-	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 	# Creating database table
 	if(-f "$self->{'apacheCfgDir'}/vlogger.sql") {
@@ -1124,11 +1121,11 @@ sub _setupVlogger
 	}
 
 	# Removing any old SQL user (including privileges)
-	for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
-		next if ! $_;
+	for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
+		next unless $_;
 
-		if(main::setupDeleteSqlUser($dbUser, $_)) {
-			error("Unable to remove SQL user or one of its privileges");
+		if(main::setupDeleteSqlUser($dbUser, $host)) {
+			error('Unable to remove SQL user or one of its privileges');
 			return 1;
 		}
 	}
@@ -1181,38 +1178,11 @@ sub _saveConf
 {
 	my $self = $_[0];
 
-	my $file = iMSCP::File->new('filename' => "$self->{'apacheCfgDir'}/apache.data");
-
-	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	my $cfg = $file->get();
-	unless(defined $cfg) {
-		error("Unable to read $self->{'apacheCfgDir'}/apache.data");
-		return 1;
-	}
-
-	$rs = $self->{'eventManager'}->trigger('beforeHttpdBkpConfFile', \$cfg, "$self->{'apacheCfgDir'}/apache.data");
-	return $rs if $rs;
-
-	$file = iMSCP::File->new('filename' => "$self->{'apacheCfgDir'}/apache.old.data");
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdBkpConfFile', "$self->{'apacheCfgDir'}/apache.data");
+	iMSCP::File->new(
+		'filename' => "$self->{'apacheCfgDir'}/apache.data"
+	)->copyFile(
+		"$self->{'apacheCfgDir'}/apache.old.data"
+	);
 }
 
 =item _oldEngineCompatibility()
@@ -1266,7 +1236,7 @@ sub _fixPhpErrorReportingValues
 
 	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
 	unless($database) {
-		error("Unable to connect to SQL Server: $errStr");
+		error("Unable to connect to SQL server: $errStr");
 		return 1;
 	}
 

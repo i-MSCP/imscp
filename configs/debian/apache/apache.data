@@ -23,6 +23,8 @@ APACHE_USERS_LOG_DIR = /var/log/apache2/users
 
 APACHE_MODS_DIR = /etc/apache2/mods-available
 
+APACHE_MODS_ENABLED_DIR = /etc/apache2/mods-enabled
+
 APACHE_SITES_DIR = /etc/apache2/sites-available
 
 APACHE_CUSTOM_SITES_CONFIG_DIR = /etc/apache2/imscp

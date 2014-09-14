@@ -1178,7 +1178,7 @@ sub getTraffic($$)
 	my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/http_traffic.db";
 
 	# Load traffic database
-	tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'noerrors' => 1;
+	tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'nowarn' => 1;
 
 	my $db = iMSCP::Database->factory();
 

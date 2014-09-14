@@ -65,33 +65,7 @@ sub uninstall
 	my $rs = $self->restoreDefaultConffile();
 	return $rs if $rs;
 
-	$rs = $self->removeDatabase();
-	return $rs if $rs;
-
-	$self->removeDirs();
-}
-
-=item removeDirs()
-
- Remove directories
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub removeDirs
-{
-	my $self = shift;
-	my $rs = 0;
-
-	# TODO: if this is directory referenced in the restored conf file, it must not be removed. Otherwise proftpd WILL
-	# fail. For the time beeing, this is disabled
-	#for("$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"){
-	#	$rs = iMSCP::Dir->new('dirname' => $_)->remove();
-	#	return $rs if $rs;
-	#}
-
-	0;
+	$self->removeDatabase();
 }
 
 =item removeDatabase()

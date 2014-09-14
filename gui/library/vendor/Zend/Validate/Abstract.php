@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 25105 2012-11-07 20:33:22Z rob $
+ * @version    $Id$
  */
 
 /**
@@ -27,7 +27,7 @@ require_once 'Zend/Validate/Interface.php';
 /**
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
@@ -229,6 +229,8 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
             } else {
                 $value = $value->__toString();
             }
+        } elseif (is_array($value)) {
+            $value = $this->_implodeRecursive($value);
         } else {
             $value = implode((array) $value);
         }
@@ -252,6 +254,26 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
         }
 
         return $message;
+    }
+
+    /**
+     * Joins elements of a multidimensional array
+     *
+     * @param array $pieces
+     * @return string
+     */
+    protected function _implodeRecursive(array $pieces)
+    {
+        $values = '';
+        foreach ($pieces as $item) {
+            if (is_array($item)) {
+                $values[] = $this->_implodeRecursive($item);
+            } else {
+                $values[] = $item;
+            }
+        }
+
+        return implode(', ', $values);
     }
 
     /**

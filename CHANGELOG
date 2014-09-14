@@ -1,4 +1,4 @@
-i-MSCP ChangeLog
+﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
 Git 1.1.x
@@ -21,7 +21,10 @@ GUI
 INSTALLER
 	Changed: Downgrade of SQL server is no longer allowed by installer
 	Changed: Package uninstallation task is now triggered after packages installation
+	Fixed: Accessing non existing config value DATABASE_USER_HOST (upgrade issue)
 	Fixed: Composer home directory has been reset back to /root/.composer by mistake
+	Fixed: Dangling symlinks are not removed when switching from ITK to another httpd server implementation (Jessie)
+	Fixed: Dovecot/Courier migration - Files must be rewritten on each migration by adding the --overwrite option
 	Fixed: Download zip archives instead of cloning sources which include useless VCS information (composer packages)
 	Fixed: Local DNS resolver is never disabled whatever the configuration parameter value
 	Fixed: Package which are scheduled for installation must not be removed
@@ -38,6 +41,8 @@ VENDOR
 	Updated: jQuery library to version 1.1.11
 	Updated: jQuery UI library to version 1.1.11
 	Updated: jQuery DataTables plugin to version 1.10.2
+	Updated: PHP Secure Communications Library to version 0.3.8
+	Updated: Zend Framework components to version 1.12.9
 
 TICKETS
 	Fixed #1125: Defect - Modules::Ips - Returns only domain IPs

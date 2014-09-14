@@ -1,5 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * Pure-PHP arbitrary precision integer arithmetic library.
@@ -9,7 +8,7 @@
  *
  * PHP versions 4 and 5
  *
- * {@internal (all DocBlock comments regarding implementation - such as the one that follows - refer to the 
+ * {@internal (all DocBlock comments regarding implementation - such as the one that follows - refer to the
  * {@link MATH_BIGINTEGER_MODE_INTERNAL MATH_BIGINTEGER_MODE_INTERNAL} mode)
  *
  * Math_BigInteger uses base-2**26 to perform operations such as multiplication and division and
@@ -19,10 +18,6 @@
  * used.  As a consequence, bitwise operators such as >> and << cannot be used, nor can the modulo operator %,
  * which only supports integers.  Although this fact will slow this library down, the fact that such a high
  * base is being used should more than compensate.
- *
- * When PHP version 6 is officially released, we'll be able to use 64-bit integers.  This should, once again,
- * allow bitwise operators, and will increase the maximum possible base to 2**31 (or 2**62 for addition /
- * subtraction).
  *
  * Numbers are stored in {@link http://en.wikipedia.org/wiki/Endianness little endian} format.  ie.
  * (new Math_BigInteger(pow(2, 26)))->value = array(0, 1)
@@ -36,7 +31,7 @@
  * Here's an example of how to use this library:
  * <code>
  * <?php
- *    include('Math/BigInteger.php');
+ *    include 'Math/BigInteger.php';
  *
  *    $a = new Math_BigInteger(2);
  *    $b = new Math_BigInteger(3);
@@ -53,10 +48,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -65,12 +60,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @category   Math
- * @package    Math_BigInteger
- * @author     Jim Wigginton <terrafrost@php.net>
- * @copyright  MMVI Jim Wigginton
- * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- * @link       http://pear.php.net/package/Math_BigInteger
+ * @category  Math
+ * @package   Math_BigInteger
+ * @author    Jim Wigginton <terrafrost@php.net>
+ * @copyright MMVI Jim Wigginton
+ * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link      http://pear.php.net/package/Math_BigInteger
  */
 
 /**#@+
@@ -174,12 +169,12 @@ define('MATH_BIGINTEGER_KARATSUBA_CUTOFF', 25);
  * Pure-PHP arbitrary precision integer arithmetic library. Supports base-2, base-10, base-16, and base-256
  * numbers.
  *
- * @author  Jim Wigginton <terrafrost@php.net>
- * @version 1.0.0RC4
- * @access  public
  * @package Math_BigInteger
+ * @author  Jim Wigginton <terrafrost@php.net>
+ * @access  public
  */
-class Math_BigInteger {
+class Math_BigInteger
+{
     /**
      * Holds the BigInteger's value.
      *
@@ -223,7 +218,7 @@ class Math_BigInteger {
     /**
      * Mode independent value used for serialization.
      *
-     * If the bcmath or gmp extensions are installed $this->value will be a non-serializable resource, hence the need for 
+     * If the bcmath or gmp extensions are installed $this->value will be a non-serializable resource, hence the need for
      * a variable that'll be serializable regardless of whether or not extensions are being used.  Unlike $this->value,
      * however, $this->hex is only calculated when $this->__sleep() is called.
      *
@@ -242,13 +237,13 @@ class Math_BigInteger {
      *
      * Here's an example:
      * <code>
-     * &lt;?php
-     *    include('Math/BigInteger.php');
+     * <?php
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('0x32', 16); // 50 in base-16
      *
      *    echo $a->toString(); // outputs 50
-     * ?&gt;
+     * ?>
      * </code>
      *
      * @param optional $x base-10 number or base-$base number if $base set.
@@ -272,7 +267,31 @@ class Math_BigInteger {
         }
 
         if (function_exists('openssl_public_encrypt') && !defined('MATH_BIGINTEGER_OPENSSL_DISABLE') && !defined('MATH_BIGINTEGER_OPENSSL_ENABLED')) {
-            define('MATH_BIGINTEGER_OPENSSL_ENABLED', true);
+            // some versions of XAMPP have mismatched versions of OpenSSL which causes it not to work
+            ob_start();
+            @phpinfo();
+            $content = ob_get_contents();
+            ob_end_clean();
+
+            preg_match_all('#OpenSSL (Header|Library) Version(.*)#im', $content, $matches);
+
+            $versions = array();
+            if (!empty($matches[1])) {
+                for ($i = 0; $i < count($matches[1]); $i++) {
+                    $versions[$matches[1][$i]] = trim(str_replace('=>', '', strip_tags($matches[2][$i])));
+                }
+            }
+
+            // it doesn't appear that OpenSSL versions were reported upon until PHP 5.3+
+            switch (true) {
+                case !isset($versions['Header']):
+                case !isset($versions['Library']):
+                case $versions['Header'] == $versions['Library']:
+                    define('MATH_BIGINTEGER_OPENSSL_ENABLED', true);
+                    break;
+                default:
+                    define('MATH_BIGINTEGER_OPENSSL_DISABLE', true);
+            }
         }
 
         if (!defined('PHP_INT_SIZE')) {
@@ -438,7 +457,6 @@ class Math_BigInteger {
                         }
 
                         $x = str_pad($x, strlen($x) + ((MATH_BIGINTEGER_MAX10_LEN - 1) * strlen($x)) % MATH_BIGINTEGER_MAX10_LEN, 0, STR_PAD_LEFT);
-
                         while (strlen($x)) {
                             $temp = $temp->multiply($multiplier);
                             $temp = $temp->add(new Math_BigInteger($this->_int2bytes(substr($x, 0, MATH_BIGINTEGER_MAX10_LEN)), 256));
@@ -488,7 +506,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('65');
      *
@@ -585,7 +603,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('65');
      *
@@ -612,7 +630,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('65');
      *
@@ -650,7 +668,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('50');
      *
@@ -774,7 +792,7 @@ class Math_BigInteger {
             $vars[] = 'precision';
         }
         return $vars;
-        
+
     }
 
     /**
@@ -803,7 +821,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('10');
      *    $b = new Math_BigInteger('20');
@@ -902,7 +920,7 @@ class Math_BigInteger {
             $carry = $sum >= MATH_BIGINTEGER_MAX_DIGIT2; // eg. floor($sum / 2**52); only possible values (in any base) are 0 and 1
             $sum = $carry ? $sum - MATH_BIGINTEGER_MAX_DIGIT2 : $sum;
 
-            $temp = (int) ($sum / MATH_BIGINTEGER_BASE_FULL);
+            $temp = MATH_BIGINTEGER_BASE === 26 ? intval($sum / 0x4000000) : ($sum >> 31);
 
             $value[$i] = (int) ($sum - MATH_BIGINTEGER_BASE_FULL * $temp); // eg. a faster alternative to fmod($sum, 0x4000000)
             $value[$j] = $temp;
@@ -934,7 +952,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('10');
      *    $b = new Math_BigInteger('20');
@@ -1038,7 +1056,7 @@ class Math_BigInteger {
             $carry = $sum < 0; // eg. floor($sum / 2**52); only possible values (in any base) are 0 and 1
             $sum = $carry ? $sum + MATH_BIGINTEGER_MAX_DIGIT2 : $sum;
 
-            $temp = (int) ($sum / MATH_BIGINTEGER_BASE_FULL);
+            $temp = MATH_BIGINTEGER_BASE === 26 ? intval($sum / 0x4000000) : ($sum >> 31);
 
             $x_value[$i] = (int) ($sum - MATH_BIGINTEGER_BASE_FULL * $temp);
             $x_value[$j] = $temp;
@@ -1070,7 +1088,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('10');
      *    $b = new Math_BigInteger('20');
@@ -1186,7 +1204,7 @@ class Math_BigInteger {
 
         for ($j = 0; $j < $x_length; ++$j) { // ie. $i = 0
             $temp = $x_value[$j] * $y_value[0] + $carry; // $product_value[$k] == 0
-            $carry = (int) ($temp / MATH_BIGINTEGER_BASE_FULL);
+            $carry = MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31);
             $product_value[$j] = (int) ($temp - MATH_BIGINTEGER_BASE_FULL * $carry);
         }
 
@@ -1199,7 +1217,7 @@ class Math_BigInteger {
 
             for ($j = 0, $k = $i; $j < $x_length; ++$j, ++$k) {
                 $temp = $product_value[$k] + $x_value[$j] * $y_value[$i] + $carry;
-                $carry = (int) ($temp / MATH_BIGINTEGER_BASE_FULL);
+                $carry = MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31);
                 $product_value[$k] = (int) ($temp - MATH_BIGINTEGER_BASE_FULL * $carry);
             }
 
@@ -1287,13 +1305,13 @@ class Math_BigInteger {
             $i2 = $i << 1;
 
             $temp = $square_value[$i2] + $value[$i] * $value[$i];
-            $carry = (int) ($temp / MATH_BIGINTEGER_BASE_FULL);
+            $carry = MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31);
             $square_value[$i2] = (int) ($temp - MATH_BIGINTEGER_BASE_FULL * $carry);
 
             // note how we start from $i+1 instead of 0 as we do in multiplication.
             for ($j = $i + 1, $k = $i2 + 1; $j <= $max_index; ++$j, ++$k) {
                 $temp = $square_value[$k] + 2 * $value[$j] * $value[$i] + $carry;
-                $carry = (int) ($temp / MATH_BIGINTEGER_BASE_FULL);
+                $carry = MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31);
                 $square_value[$k] = (int) ($temp - MATH_BIGINTEGER_BASE_FULL * $carry);
             }
 
@@ -1354,7 +1372,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('10');
      *    $b = new Math_BigInteger('20');
@@ -1491,9 +1509,8 @@ class Math_BigInteger {
             if ($x_window[0] == $y_window[0]) {
                 $quotient_value[$q_index] = MATH_BIGINTEGER_MAX_DIGIT;
             } else {
-                $quotient_value[$q_index] = (int) (
-                    ($x_window[0] * MATH_BIGINTEGER_BASE_FULL + $x_window[1])
-                    /
+                $quotient_value[$q_index] = $this->_safe_divide(
+                    $x_window[0] * MATH_BIGINTEGER_BASE_FULL + $x_window[1],
                     $y_window[0]
                 );
             }
@@ -1561,7 +1578,7 @@ class Math_BigInteger {
 
         for ($i = count($dividend) - 1; $i >= 0; --$i) {
             $temp = MATH_BIGINTEGER_BASE_FULL * $carry + $dividend[$i];
-            $result[$i] = (int) ($temp / $divisor);
+            $result[$i] = $this->_safe_divide($temp, $divisor);
             $carry = (int) ($temp - $divisor * $result[$i]);
         }
 
@@ -1574,7 +1591,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger('10');
      *    $b = new Math_BigInteger('20');
@@ -1698,6 +1715,11 @@ class Math_BigInteger {
         }
 
         return $this->_normalize($this->_slidingWindow($e, $n, MATH_BIGINTEGER_BARRETT));
+
+        // the following code, although not callable, can be run independently of the above code
+        // although the above code performed better in my benchmarks the following could might
+        // perform better under different circumstances. in lieu of deleting it it's just been
+        // made uncallable
 
         // is the modulo odd?
         if ( $n->value[0] & 1 ) {
@@ -2173,7 +2195,7 @@ class Math_BigInteger {
 
         for ($j = 0; $j < $x_length; ++$j) { // ie. $i = 0, $k = $i
             $temp = $x_value[$j] * $y_value[0] + $carry; // $product_value[$k] == 0
-            $carry = (int) ($temp / MATH_BIGINTEGER_BASE_FULL);
+            $carry = MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31);
             $product_value[$j] = (int) ($temp - MATH_BIGINTEGER_BASE_FULL * $carry);
         }
 
@@ -2189,7 +2211,7 @@ class Math_BigInteger {
 
             for ($j = 0, $k = $i; $j < $x_length && $k < $stop; ++$j, ++$k) {
                 $temp = $product_value[$k] + $x_value[$j] * $y_value[$i] + $carry;
-                $carry = (int) ($temp / MATH_BIGINTEGER_BASE_FULL);
+                $carry = MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31);
                 $product_value[$k] = (int) ($temp - MATH_BIGINTEGER_BASE_FULL * $carry);
             }
 
@@ -2238,7 +2260,7 @@ class Math_BigInteger {
 
         for ($i = 0; $i < $k; ++$i) {
             $temp = $result[MATH_BIGINTEGER_VALUE][$i] * $cache[MATH_BIGINTEGER_DATA][$key];
-            $temp = (int) ($temp - MATH_BIGINTEGER_BASE_FULL * ((int) ($temp / MATH_BIGINTEGER_BASE_FULL)));
+            $temp = $temp - MATH_BIGINTEGER_BASE_FULL * (MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31));
             $temp = $this->_regularMultiply(array($temp), $n);
             $temp = array_merge($this->_array_repeat(0, $i), $temp);
             $result = $this->_add($result[MATH_BIGINTEGER_VALUE], false, $temp, false);
@@ -2256,7 +2278,7 @@ class Math_BigInteger {
     /**
      * Montgomery Multiply
      *
-     * Interleaves the montgomery reduction and long multiplication algorithms together as described in 
+     * Interleaves the montgomery reduction and long multiplication algorithms together as described in
      * {@link http://www.cacr.math.uwaterloo.ca/hac/about/chap14.pdf#page=13 HAC 14.36}
      *
      * @see _prepMontgomery()
@@ -2271,6 +2293,11 @@ class Math_BigInteger {
     {
         $temp = $this->_multiply($x, false, $y, false);
         return $this->_montgomery($temp[MATH_BIGINTEGER_VALUE], $m);
+
+        // the following code, although not callable, can be run independently of the above code
+        // although the above code performed better in my benchmarks the following could might
+        // perform better under different circumstances. in lieu of deleting it it's just been
+        // made uncallable
 
         static $cache = array(
             MATH_BIGINTEGER_VARIABLE => array(),
@@ -2290,9 +2317,9 @@ class Math_BigInteger {
         $a = array(MATH_BIGINTEGER_VALUE => $this->_array_repeat(0, $n + 1));
         for ($i = 0; $i < $n; ++$i) {
             $temp = $a[MATH_BIGINTEGER_VALUE][0] + $x[$i] * $y[0];
-            $temp = (int) ($temp - MATH_BIGINTEGER_BASE_FULL * ((int) ($temp / MATH_BIGINTEGER_BASE_FULL)));
+            $temp = $temp - MATH_BIGINTEGER_BASE_FULL * (MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31));
             $temp = $temp * $cache[MATH_BIGINTEGER_DATA][$key];
-            $temp = (int) ($temp - MATH_BIGINTEGER_BASE_FULL * ((int) ($temp / MATH_BIGINTEGER_BASE_FULL)));
+            $temp = $temp - MATH_BIGINTEGER_BASE_FULL * (MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31));
             $temp = $this->_add($this->_regularMultiply(array($x[$i]), $y), false, $this->_regularMultiply(array($temp), $m), false);
             $a = $this->_add($a[MATH_BIGINTEGER_VALUE], false, $temp[MATH_BIGINTEGER_VALUE], false);
             $a[MATH_BIGINTEGER_VALUE] = array_slice($a[MATH_BIGINTEGER_VALUE], 1);
@@ -2336,7 +2363,7 @@ class Math_BigInteger {
      * {@link http://groups.google.com/group/sci.crypt/msg/7a137205c1be7d85}
      *
      * As for why we do all the bitmasking...  strange things can happen when converting from floats to ints. For
-     * instance, on some computers, var_dump((int) -4294967297) yields int(-1) and on others, it yields 
+     * instance, on some computers, var_dump((int) -4294967297) yields int(-1) and on others, it yields
      * int(-2147483648).  To avoid problems stemming from this, we use bitmasks to guarantee that ints aren't
      * auto-converted to floats.  The outermost bitmask is present because without it, there's no guarantee that
      * the "residue" returned would be the so-called "common residue".  We use fmod, in the last step, because the
@@ -2369,7 +2396,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger(30);
      *    $b = new Math_BigInteger(17);
@@ -2437,7 +2464,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger(693);
      *    $b = new Math_BigInteger(609);
@@ -2572,7 +2599,7 @@ class Math_BigInteger {
      * Here's an example:
      * <code>
      * <?php
-     *    include('Math/BigInteger.php');
+     *    include 'Math/BigInteger.php';
      *
      *    $a = new Math_BigInteger(693);
      *    $b = new Math_BigInteger(609);
@@ -2877,7 +2904,7 @@ class Math_BigInteger {
         $leading_ones = chr((1 << ($new_bits & 0x7)) - 1) . str_repeat(chr(0xFF), $new_bits >> 3);
         $this->_base256_lshift($leading_ones, $current_bits);
 
-        $temp = str_pad($temp, ceil($this->bits / 8), chr(0), STR_PAD_LEFT);
+        $temp = str_pad($temp, strlen($leading_ones), chr(0), STR_PAD_LEFT);
 
         return $this->_normalize(new Math_BigInteger($leading_ones | $temp, 256));
     }
@@ -3029,40 +3056,17 @@ class Math_BigInteger {
     }
 
     /**
-     * Generate a random number
+     * Generates a random BigInteger
      *
-     * @param optional Integer $min
-     * @param optional Integer $max
+     * Byte length is equal to $length. Uses crypt_random if it's loaded and mt_rand if it's not.
+     *
+     * @param Integer $length
      * @return Math_BigInteger
-     * @access public
+     * @access private
      */
-    function random($min = false, $max = false)
+    function _random_number_helper($size)
     {
-        if ($min === false) {
-            $min = new Math_BigInteger(0);
-        }
-
-        if ($max === false) {
-            $max = new Math_BigInteger(0x7FFFFFFF);
-        }
-
-        $compare = $max->compare($min);
-
-        if (!$compare) {
-            return $this->_normalize($min);
-        } else if ($compare < 0) {
-            // if $min is bigger then $max, swap $min and $max
-            $temp = $max;
-            $max = $min;
-            $min = $temp;
-        }
-
-        $max = $max->subtract($min);
-        $max = ltrim($max->toBytes(), chr(0));
-        $size = strlen($max) - 1;
-
-        $crypt_random = function_exists('crypt_random_string') || (!class_exists('Crypt_Random') && function_exists('crypt_random_string'));
-        if ($crypt_random) {
+        if (function_exists('crypt_random_string')) {
             $random = crypt_random_string($size);
         } else {
             $random = '';
@@ -3078,25 +3082,89 @@ class Math_BigInteger {
             }
         }
 
-        $fragment = new Math_BigInteger($random, 256);
-        $leading = $fragment->compare(new Math_BigInteger(substr($max, 1), 256)) > 0 ?
-            ord($max[0]) - 1 : ord($max[0]);
+        return new Math_BigInteger($random, 256);
+    }
 
-        if (!$crypt_random) {
-            $msb = chr(mt_rand(0, $leading));
-        } else {
-            $cutoff = floor(0xFF / $leading) * $leading;
-            while (true) {
-                $msb = ord(crypt_random_string(1));
-                if ($msb <= $cutoff) {
-                    $msb%= $leading;
-                    break;
-                }
-            }
-            $msb = chr($msb);
+    /**
+     * Generate a random number
+     *
+     * Returns a random number between $min and $max where $min and $max
+     * can be defined using one of the two methods:
+     *
+     * $min->random($max)
+     * $max->random($min)
+     *
+     * @param Math_BigInteger $arg1
+     * @param optional Math_BigInteger $arg2
+     * @return Math_BigInteger
+     * @access public
+     * @internal The API for creating random numbers used to be $a->random($min, $max), where $a was a Math_BigInteger object.
+     *           That method is still supported for BC purposes.
+     */
+    function random($arg1, $arg2 = false)
+    {
+        if ($arg1 === false) {
+            return false;
         }
 
-        $random = new Math_BigInteger($msb . $random, 256);
+        if ($arg2 === false) {
+            $max = $arg1;
+            $min = $this;
+        } else {
+            $min = $arg1;
+            $max = $arg2;
+        }
+
+        $compare = $max->compare($min);
+
+        if (!$compare) {
+            return $this->_normalize($min);
+        } else if ($compare < 0) {
+            // if $min is bigger then $max, swap $min and $max
+            $temp = $max;
+            $max = $min;
+            $min = $temp;
+        }
+
+        static $one;
+        if (!isset($one)) {
+            $one = new Math_BigInteger(1);
+        }
+
+        $max = $max->subtract($min->subtract($one));
+        $size = strlen(ltrim($max->toBytes(), chr(0)));
+
+        /*
+            doing $random % $max doesn't work because some numbers will be more likely to occur than others.
+            eg. if $max is 140 and $random's max is 255 then that'd mean both $random = 5 and $random = 145
+            would produce 5 whereas the only value of random that could produce 139 would be 139. ie.
+            not all numbers would be equally likely. some would be more likely than others.
+
+            creating a whole new random number until you find one that is within the range doesn't work
+            because, for sufficiently small ranges, the likelihood that you'd get a number within that range
+            would be pretty small. eg. with $random's max being 255 and if your $max being 1 the probability
+            would be pretty high that $random would be greater than $max.
+
+            phpseclib works around this using the technique described here:
+
+            http://crypto.stackexchange.com/questions/5708/creating-a-small-number-from-a-cryptographically-secure-random-string
+        */
+        $random_max = new Math_BigInteger(chr(1) . str_repeat("\0", $size), 256);
+        $random = $this->_random_number_helper($size);
+
+        list($max_multiple) = $random_max->divide($max);
+        $max_multiple = $max_multiple->multiply($max);
+
+        while ($random->compare($max_multiple) >= 0) {
+            $random = $random->subtract($max_multiple);
+            $random_max = $random_max->subtract($max_multiple);
+            $random = $random->bitwise_leftShift(8);
+            $random = $random->add($this->_random_number_helper(1));
+            $random_max = $random_max->bitwise_leftShift(8);
+            list($max_multiple) = $random_max->divide($max);
+            $max_multiple = $max_multiple->multiply($max);
+        }
+        list(, $random) = $random->divide($max);
 
         return $this->_normalize($random->add($min));
     }
@@ -3107,21 +3175,25 @@ class Math_BigInteger {
      * If there's not a prime within the given range, false will be returned.  If more than $timeout seconds have elapsed,
      * give up and return false.
      *
-     * @param optional Integer $min
-     * @param optional Integer $max
+     * @param Math_BigInteger $arg1
+     * @param optional Math_BigInteger $arg2
      * @param optional Integer $timeout
-     * @return Math_BigInteger
+     * @return Mixed
      * @access public
      * @internal See {@link http://www.cacr.math.uwaterloo.ca/hac/about/chap4.pdf#page=15 HAC 4.44}.
      */
-    function randomPrime($min = false, $max = false, $timeout = false)
+    function randomPrime($arg1, $arg2 = false, $timeout = false)
     {
-        if ($min === false) {
-            $min = new Math_BigInteger(0);
+        if ($arg1 === false) {
+            return false;
         }
 
-        if ($max === false) {
-            $max = new Math_BigInteger(0x7FFFFFFF);
+        if ($arg2 === false) {
+            $max = $arg1;
+            $min = $this;
+        } else {
+            $min = $arg1;
+            $max = $arg2;
         }
 
         $compare = $max->compare($min);
@@ -3147,6 +3219,7 @@ class Math_BigInteger {
 
         // gmp_nextprime() requires PHP 5 >= 5.2.0 per <http://php.net/gmp-nextprime>.
         if ( MATH_BIGINTEGER_MODE == MATH_BIGINTEGER_MODE_GMP && function_exists('gmp_nextprime') ) {
+            $p = new Math_BigInteger();
             $p->value = gmp_nextprime($x->value);
 
             if ($p->compare($max) <= 0) {
@@ -3229,14 +3302,14 @@ class Math_BigInteger {
      * Checks a numer to see if it's prime
      *
      * Assuming the $t parameter is not set, this function has an error rate of 2**-80.  The main motivation for the
-     * $t parameter is distributability.  Math_BigInteger::randomPrime() can be distributed accross multiple pageloads
+     * $t parameter is distributability.  Math_BigInteger::randomPrime() can be distributed across multiple pageloads
      * on a website instead of just one.
      *
-     * @param optional Integer $t
+     * @param optional Math_BigInteger $t
      * @return Boolean
      * @access public
      * @internal Uses the
-     *     {@link http://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test Miller-Rabin primality test}.  See 
+     *     {@link http://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test Miller-Rabin primality test}.  See
      *     {@link http://www.cacr.math.uwaterloo.ca/hac/about/chap4.pdf#page=8 HAC 4.24}.
      */
     function isPrime($t = false)
@@ -3245,6 +3318,7 @@ class Math_BigInteger {
 
         if (!$t) {
             // see HAC 4.49 "Note (controlling the error probability)"
+            // @codingStandardsIgnoreStart
                  if ($length >= 163) { $t =  2; } // floor(1300 / 8)
             else if ($length >= 106) { $t =  3; } // floor( 850 / 8)
             else if ($length >= 81 ) { $t =  4; } // floor( 650 / 8)
@@ -3257,6 +3331,7 @@ class Math_BigInteger {
             else if ($length >= 25 ) { $t = 15; } // floor( 200 / 8)
             else if ($length >= 18 ) { $t = 18; } // floor( 150 / 8)
             else                     { $t = 27; }
+            // @codingStandardsIgnoreEnd
         }
 
         // ie. gmp_testbit($this, 0)
@@ -3285,16 +3360,16 @@ class Math_BigInteger {
 
         if (!isset($primes)) {
             $primes = array(
-                3,    5,    7,    11,   13,   17,   19,   23,   29,   31,   37,   41,   43,   47,   53,   59,   
-                61,   67,   71,   73,   79,   83,   89,   97,   101,  103,  107,  109,  113,  127,  131,  137,  
-                139,  149,  151,  157,  163,  167,  173,  179,  181,  191,  193,  197,  199,  211,  223,  227,  
-                229,  233,  239,  241,  251,  257,  263,  269,  271,  277,  281,  283,  293,  307,  311,  313,  
-                317,  331,  337,  347,  349,  353,  359,  367,  373,  379,  383,  389,  397,  401,  409,  419,  
-                421,  431,  433,  439,  443,  449,  457,  461,  463,  467,  479,  487,  491,  499,  503,  509,  
-                521,  523,  541,  547,  557,  563,  569,  571,  577,  587,  593,  599,  601,  607,  613,  617,  
-                619,  631,  641,  643,  647,  653,  659,  661,  673,  677,  683,  691,  701,  709,  719,  727,  
-                733,  739,  743,  751,  757,  761,  769,  773,  787,  797,  809,  811,  821,  823,  827,  829,  
-                839,  853,  857,  859,  863,  877,  881,  883,  887,  907,  911,  919,  929,  937,  941,  947,  
+                3,    5,    7,    11,   13,   17,   19,   23,   29,   31,   37,   41,   43,   47,   53,   59,
+                61,   67,   71,   73,   79,   83,   89,   97,   101,  103,  107,  109,  113,  127,  131,  137,
+                139,  149,  151,  157,  163,  167,  173,  179,  181,  191,  193,  197,  199,  211,  223,  227,
+                229,  233,  239,  241,  251,  257,  263,  269,  271,  277,  281,  283,  293,  307,  311,  313,
+                317,  331,  337,  347,  349,  353,  359,  367,  373,  379,  383,  389,  397,  401,  409,  419,
+                421,  431,  433,  439,  443,  449,  457,  461,  463,  467,  479,  487,  491,  499,  503,  509,
+                521,  523,  541,  547,  557,  563,  569,  571,  577,  587,  593,  599,  601,  607,  613,  617,
+                619,  631,  641,  643,  647,  653,  659,  661,  673,  677,  683,  691,  701,  709,  719,  727,
+                733,  739,  743,  751,  757,  761,  769,  773,  787,  797,  809,  811,  821,  823,  827,  829,
+                839,  853,  857,  859,  863,  877,  881,  883,  887,  907,  911,  919,  929,  937,  941,  947,
                 953,  967,  971,  977,  983,  991,  997
             );
 
@@ -3399,7 +3474,7 @@ class Math_BigInteger {
 
         for ($i = 0; $i < count($this->value); ++$i) {
             $temp = $this->value[$i] * $shift + $carry;
-            $carry = (int) ($temp / MATH_BIGINTEGER_BASE_FULL);
+            $carry = MATH_BIGINTEGER_BASE === 26 ? intval($temp / 0x4000000) : ($temp >> 31);
             $this->value[$i] = (int) ($temp - $carry * MATH_BIGINTEGER_BASE_FULL);
         }
 
@@ -3646,5 +3721,28 @@ class Math_BigInteger {
 
         $temp = ltrim(pack('N', $length), chr(0));
         return pack('Ca*', 0x80 | strlen($temp), $temp);
+    }
+
+    /**
+     * Single digit division
+     *
+     * Even if int64 is being used the division operator will return a float64 value
+     * if the dividend is not evenly divisible by the divisor. Since a float64 doesn't
+     * have the precision of int64 this is a problem so, when int64 is being used,
+     * we'll guarantee that the dividend is divisible by first subtracting the remainder.
+     *
+     * @access private
+     * @param Integer $x
+     * @param Integer $y
+     * @return Integer
+     */
+    function _safe_divide($x, $y)
+    {
+        if (MATH_BIGINTEGER_BASE === 26) {
+            return (int) ($x / $y);
+        }
+
+        // MATH_BIGINTEGER_BASE === 31
+        return ($x - ($x % $y)) / $y;
     }
 }

@@ -56,7 +56,7 @@ use parent 'Common::Object';
   - fileName: Filename of the configuration file (including path)
 
  Optional arguments for the tie command are:
-  - noerrors: Do not warn when trying to access to an inexistent configuration parameter
+  - nowarn: Do not warn when trying to access to an inexistent configuration parameter
   - nocreate: Do not create file if it doesn't already exist (throws a fatal error instead)
   - nofail: Do not throws fatal error in case configuration file doesn't exist
   - readonly: Sets a read-only access on the tied configuration file
@@ -178,19 +178,25 @@ sub FETCH
 {
 	my ($self, $config) = @_;
 
-	if (! exists $self->{'configValues'}->{$config} && ! $self->{'noerrors'}) {
-		my (undef, $file, $line) = caller;
+	unless (exists $self->{'configValues'}->{$config}) {
+		unless($self->{'nowarn'}) {
+			my (undef, $file, $line) = caller;
 
-		error sprintf(
-			'Accessing non existing config value %s from the %s file (see file %s at line %s)',
-			$config,
-			$self->{'fileName'},
-			$file,
-			$line
-		);
+			warning(
+				sprintf(
+					'Accessing non existing config value %s from the %s file (see file %s at line %s)',
+					$config,
+					$self->{'fileName'},
+					$file,
+					$line
+				)
+			);
+		}
+
+		undef;
+	} else {
+		$self->{'configValues'}->{$config};
 	}
-
-	$self->{'configValues'}->{$config};
 }
 
 =item
@@ -279,6 +285,13 @@ sub CLEAR
 	$self->{'lineMap'} = {};
 
 	$self;
+}
+
+sub UNTIE
+{
+    use Data::Dumper;
+    print Dumper(shift);
+	{'god' => 'ddd'};
 }
 
 =item _insertConfig($config, $value)

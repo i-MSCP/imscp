@@ -87,12 +87,8 @@ sub showDialog
 {
 	my ($self, $dialog) = @_;
 
-	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
-	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
-	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
-	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'pma';
-	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
 
 	my ($rs, $msg) = (0, '');
 
@@ -149,8 +145,8 @@ sub showDialog
 	}
 
 	if($rs != 30) {
-		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
-		$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+		main::setupSetQuestion('PHPMYADMIN_SQL_USER', $dbUser);
+		main::setupSetQuestion('PHPMYADMIN_SQL_PASSWORD', $dbPass);
 	}
 
 	$rs;
@@ -282,14 +278,14 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/phpmyadmin.old.data";
-
 	if(-f $oldConf) {
-		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
-		for(keys %{$self->{'oldConfig'}}) {
+		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $self->{'oldConfig'}->{$_};
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -371,35 +367,11 @@ sub _saveConfig
 {
 	my $self = $_[0];
 
-	my $rootUname = $main::imscpConfig{'ROOT_USER'};
-	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
-
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/phpmyadmin.data");
-
-	my $rs = $file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	my $cfg = $file->get();
-	unless(defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/phpmyadmin.data");
-		return 1;
-	}
-
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/phpmyadmin.old.data");
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
+	iMSCP::File->new(
+		'filename' => "$self->{'cfgDir'}/phpmyadmin.data"
+	)->copyFile(
+		"$self->{'cfgDir'}/phpmyadmin.old.data"
+	);
 }
 
 =item _setupSqlUser()
@@ -414,22 +386,26 @@ sub _setupSqlUser
 {
 	my $self = $_[0];
 
-	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
-	my $phpmyadminDbName = $imscpDbName . '_pma';
-	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
+	my $phpmyadminDbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
+
+	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD');
+
+	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser;
+		next unless $sqlUser;
 
-		for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
-			next if ! $_;
+		for my $host(
+			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
+			$main::imscpOldConfig{'BASE_SERVER_IP'}
+		) {
+			next unless $host;
 
-			if(main::setupDeleteSqlUser($sqlUser, $_)) {
-				error("Unable to remove SQL user or one of its privileges.");
+			if(main::setupDeleteSqlUser($sqlUser, $host)) {
+				error('Unable to remove SQL user or one of its privileges.');
 				return 1;
 			}
 		}
@@ -437,7 +413,7 @@ sub _setupSqlUser
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal('Unable to connect to SQL Server: $errStr') if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 	# Adding new SQL user with needed privileges
 
@@ -504,6 +480,10 @@ sub _setupSqlUser
 		return 1;
 	}
 
+	# Store database user and password in config file
+	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+
 	0;
 }
 
@@ -520,12 +500,11 @@ sub _setupDatabase
 	my $self = $_[0];
 
 	my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
-	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
-	my $phpmyadminDbName = $imscpDbName . '_pma';
+	my $phpmyadminDbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") if ! $db;
 
 	my $quotedDbName = $db->quoteIdentifier($phpmyadminDbName);
 
@@ -559,7 +538,7 @@ sub _setupDatabase
 
 	# Connecting to newly created database
 	($db, $errStr) = main::setupGetSqlConnect($phpmyadminDbName);
-	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") if ! $db;
 
 	# Import database schema
 	my $schemaFile = iMSCP::File->new('filename' => "$phpmyadminDir/examples/create_tables.sql")->get();
@@ -643,21 +622,24 @@ sub _buildConfig
 {
 	my $self = $_[0];
 
-	my $panelUName =
-	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelUName = my $panelGName =
+		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}";
+
+	my $dbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
+	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER');
+	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
+	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
+	(my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD')) =~ s%(')%\\$1%g;
 
 	# Define data
 
-	my $pmaPassword = $self->{'config'}->{'DATABASE_PASSWORD'};
-	$pmaPassword =~ s%(')%\\$1%g;
-
 	my $data = {
-		PMA_DATABASE => $main::imscpConfig{'DATABASE_NAME'} . '_pma',
-		PMA_USER => $self->{'config'}->{'DATABASE_USER'},
-		PMA_PASS => $pmaPassword,
-		HOSTNAME => $main::imscpConfig{'DATABASE_HOST'},
-		PORT => $main::imscpConfig{'DATABASE_PORT'},
+		PMA_DATABASE => $dbName,
+		PMA_USER => $dbUser,
+		PMA_PASS => $dbPass,
+		HOSTNAME => $dbHost,
+		PORT => $dbPort,
 		UPLOADS_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
 		TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 		BLOWFISH => $self->{'config'}->{'BLOWFISH_SECRET'}
