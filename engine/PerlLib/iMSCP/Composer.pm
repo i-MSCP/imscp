@@ -123,7 +123,7 @@ sub _init
 			$rs = $self->_clearLocalRepository() if iMSCP::Getopt->cleanPackagesCache;
 			return $rs if $rs;
 
-			if(! iMSCP::Getopt->skipAddonsUpdate || ! -x "$self->{'wrkDir'}/composer.phar") {
+			if(! iMSCP::Getopt->skipPackagesUpdate || ! -x "$self->{'wrkDir'}/composer.phar") {
 				$rs = $self->_getComposer();
 				return $rs if $rs;
 			}
