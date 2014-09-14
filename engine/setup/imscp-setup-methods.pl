@@ -2427,7 +2427,7 @@ sub setupIsImscpDb
 	my $dbName = $_[0];
 
 	my ($db, $errstr) = setupGetSqlConnect();
-	fatal("Unable to connect to SQL Server: $errstr") if ! $db;
+	fatal("Unable to connect to SQL server: $errstr") unless $db;
 
 	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
 	fatal("SQL query failed: $rs") if ref $rs ne 'HASH';
@@ -2435,7 +2435,7 @@ sub setupIsImscpDb
 	return 0 if ! %$rs;
 
 	($db, $errstr) = setupGetSqlConnect($dbName);
-	fatal("Unable to connect to SQL database: $errstr") if ! $db;
+	fatal("Unable to connect to SQL database: $errstr") unless $db;
 
 	$rs = $db->doQuery('1', 'SHOW TABLES');
 	fatal("SQL query failed: $rs") if ref $rs ne 'HASH';
@@ -2453,7 +2453,7 @@ sub setupIsSqlUser($)
 	my $sqlUser = $_[0];
 
 	my ($db, $errstr) = setupGetSqlConnect('mysql');
-	fatal("Unable to connect to the SQL Server: $errstr") if ! $db;
+	fatal("Unable to connect to the SQL Server: $errstr") unless $db;
 
 	my $rs = $db->doQuery('1', 'SELECT EXISTS(SELECT 1 FROM `user` WHERE `user` = ?)', $sqlUser);
 	fatal($rs) if ref $rs ne 'HASH';
@@ -2470,7 +2470,7 @@ sub setupDeleteSqlUser
 	$host ||= '%';
 
 	my ($db, $errstr) = setupGetSqlConnect('mysql');
-	fatal("Unable to connect to the mysql database: $errstr") if ! $db;
+	fatal("Unable to connect to the mysql database: $errstr") unless $db;
 
 	# Remove any columns privileges for the given user
 	$errstr = $db->doQuery('dummy', "DELETE FROM `columns_priv` WHERE `Host` = ? AND `User` = ?", $host, $user);

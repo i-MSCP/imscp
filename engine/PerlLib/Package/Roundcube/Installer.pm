@@ -90,12 +90,8 @@ sub showDialog
 {
 	my ($self, $dialog) = @_;
 
-	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
-	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
-	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
-
 	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'roundcube_user';
-	my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
 
 	my ($rs, $msg) = (0, '');
 
@@ -152,8 +148,8 @@ sub showDialog
 	}
 
 	if($rs != 30) {
-		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
-		$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+		main::setupSetQuestion('ROUNDCUBE_SQL_USER', $dbUser);
+		main::setupSetQuestion('ROUNDCUBE_SQL_PASSWORD', $dbPass);
 	}
 
 	$rs;
@@ -273,14 +269,14 @@ sub _init
 
 	$self->{'config'} = $self->{'roundcube'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/roundcube.old.data";
-
 	if(-f $oldConf) {
-		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
-		for(keys %{$self->{'oldConfig'}}) {
+		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $self->{'oldConfig'}->{$_};
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -363,17 +359,17 @@ sub _setupDatabase
 	my $self = $_[0];
 
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-	my $roundcubeDbName =  $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
+	my $roundcubeDbName =  main::setupGetQuestion('DATABASE_NAME') . '_roundcube';
 
-	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
+	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
+	my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD');
 
-	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 	my $quotedDbName = $db->quoteIdentifier($roundcubeDbName);
 
@@ -403,7 +399,7 @@ sub _setupDatabase
 
 		# Connecting to newly created database
 		my ($db, $errStr) = main::setupGetSqlConnect($roundcubeDbName);
-		fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+		fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 		# Importing database schema
 		$rs = main::setupImportSqlSchema($db, "$roundcubeDir/SQL/mysql.initial.sql");
@@ -414,13 +410,16 @@ sub _setupDatabase
 
 	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser;
+		next unless $sqlUser;
 
-		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
-			next if ! $_;
+		for my $host(
+			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
+			$main::imscpOldConfig{'BASE_SERVER_IP'}
+		) {
+			next unless $host;
 
-			if(main::setupDeleteSqlUser($sqlUser, $_)) {
-				error("Unable to remove SQL user or one of its privileges");
+			if(main::setupDeleteSqlUser($sqlUser, $host)) {
+				error('Unable to remove SQL user or one of its privileges');
 				return 1;
 			}
 		}
@@ -435,6 +434,10 @@ sub _setupDatabase
 		error("Unable to add privileges: $rs");
 		return 1;
 	}
+
+	# Store database user and password in config file
+	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
 	0;
 }
@@ -467,15 +470,15 @@ sub _buildConfig
 {
 	my $self = $_[0];
 
-	my $panelUName =
-	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelUName = my $panelGName =
+		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}";
-	my $roundcubeDbName =  $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
-	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
-	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 
-	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-	$dbPass =~ s%(')%\\$1%g;
+	my $dbName = main::setupGetQuestion('DATABASE_NAME') . '_roundcube';
+	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
+	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
+	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER');
+	(my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD')) =~ s%(')%\\$1%g;
 
 	my $rs = 0;
 
@@ -483,8 +486,9 @@ sub _buildConfig
 
 	my $data = {
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-		DB_NAME => $roundcubeDbName,
+		DB_NAME => $dbName,
 		DB_HOST => $dbHost,
+		DB_PORT => $dbPort,
 		DB_USER => $dbUser,
 		DB_PASS => $dbPass,
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
@@ -661,35 +665,11 @@ sub _saveConfig
 {
 	my $self = $_[0];
 
-	my $rootUname = $main::imscpConfig{'ROOT_USER'};
-	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
-
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.data");
-
-	my $rs = $file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	my $cfg = $file->get();
-	unless(defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/roundcube.data");
-		return 1;
-	}
-
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.old.data");
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
-	$file->mode(0640);
+	iMSCP::File->new(
+		'filename' => "$self->{'cfgDir'}/roundcube.data"
+	)->copyFile(
+		"$self->{'cfgDir'}/roundcube.old.data"
+	);
 }
 
 =back

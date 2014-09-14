@@ -302,10 +302,10 @@ sub _init
 
 	$self->{'config'} = $self->{'named'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/bind.old.data";
-
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
 		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
@@ -530,38 +530,11 @@ sub _saveConf
 {
 	my $self = $_[0];
 
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/bind.data");
-
-	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	my $cfg = $file->get();
-	unless(defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/bind.data");
-		return 1;
-	}
-
-	$rs = $self->{'eventManager'}->trigger('beforeNamedSaveConf', \$cfg, 'bind.old.data');
-	return $rs if $rs;
-
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/bind.old.data");
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterNamedSaveConf', 'bind.old.data');
+	iMSCP::File->new(
+		'filename' => "$self->{'cfgDir'}/bind.data"
+	)->copyFile(
+		"$self->{'cfgDir'}/bind.old.data"
+	);
 }
 
 =item _checkIps(\@ips)

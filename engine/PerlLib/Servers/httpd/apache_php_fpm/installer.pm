@@ -97,13 +97,13 @@ sub showDialog
 
 	my $rs = 0;
 	my $poolsLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') ||
-		$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} || '';
+		$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 
 	if(
 		$main::reconfigure ~~ ['httpd', 'php', 'servers', 'all', 'forced'] ||
 		not $poolsLevel ~~ ['per_user', 'per_domain', 'per_site']
 	) {
-		$poolsLevel =~ s/_/ /g;
+		$poolsLevel =~ s/_/ /;
 
 		($rs, $poolsLevel) = $dialog->radiolist(
 "
@@ -122,10 +122,7 @@ Note: PHP FPM use a global php.ini configuration file but you can override any s
 		);
 	}
 
-	if($rs != 30) {
-		$poolsLevel =~ s/ /_/g;
-		$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} = $poolsLevel;
-	}
+	($self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} = $poolsLevel) = s/ /_/ unless $rs == 30;
 
 	$rs;
 }
@@ -234,10 +231,10 @@ sub _init
 
 	$self->{'config'} = $self->{'httpd'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
-
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
 		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
@@ -252,14 +249,14 @@ sub _init
 
 	$self->{'phpfpmConfig'} = $self->{'httpd'}->{'phpfpmConfig'};
 
+	# Merge old config file with new config file
 	$oldConf = "$self->{'phpfpmCfgDir'}/phpfpm.old.data";
-
 	if(-f $oldConf) {
-		tie my %phpfpmOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
-		for(keys %phpfpmOldConfig) {
+		for(keys %oldConfig) {
 			if(exists $self->{'phpfpmConfig'}->{$_}) {
-				$self->{'phpfpmConfig'}->{$_} = $phpfpmOldConfig{$_};
+				$self->{'phpfpmConfig'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -456,7 +453,7 @@ sub _buildFastCgiConfFiles
 	}
 
 	for(@toDisableModules) {
-		$rs = $self->{'httpd'}->disableModules($_) if -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_.load";
+		$rs = $self->{'httpd'}->disableModules($_) if -l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/$_.load";
 		return $rs if $rs;
 	}
 
@@ -801,7 +798,7 @@ sub _setupVlogger
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect($dbName);
-	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 	# Creating database table
 	if(-f "$self->{'apacheCfgDir'}/vlogger.sql") {
@@ -812,12 +809,12 @@ sub _setupVlogger
 		return 1;
 	}
 
-	# Removing any old SQL user (including privileges)
-	for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
-		next if ! $_;
+	# Remove any old SQL user (including privileges)
+	for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
+		next unless $host;
 
-		if(main::setupDeleteSqlUser($dbUser, $_)) {
-			error("Unable to remove SQL user or one of its privileges");
+		if(main::setupDeleteSqlUser($dbUser, $host)) {
+			error('Unable to remove SQL user or one of its privileges');
 			return 1;
 		}
 	}
@@ -870,47 +867,18 @@ sub _saveConf
 {
 	my $self = $_[0];
 
+	my %filesToDir = ( 'apache' => $self->{'apacheCfgDir'}, 'phpfpm' => $self->{'phpfpmCfgDir'} );
 	my $rs = 0;
 
-	my %filesToDir = ( 'apache' => $self->{'apacheCfgDir'}, 'phpfpm' => $self->{'phpfpmCfgDir'} );
-
 	for(keys %filesToDir) {
-		my $file = iMSCP::File->new('filename' => "$filesToDir{$_}/$_.data");
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		$rs = $file->mode(0640);
-		return $rs if $rs;
-
-		my $cfg = $file->get();
-		unless(defined $cfg) {
-			error("Unable to read $filesToDir{$_}/$_.data");
-			return 1;
-		}
-
-		$rs = $self->{'eventManager'}->trigger('beforeHttpdBkpConfFile', \$cfg, "$filesToDir{$_}/$_.data");
-		return $rs if $rs;
-
-		$file = iMSCP::File->new('filename' => "$filesToDir{$_}/$_.old.data");
-
-		$rs = $file->set($cfg);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		$rs = $file->mode(0640);
-		return $rs if $rs;
-
-		$rs = $self->{'eventManager'}->trigger('afterHttpdBkpConfFile', "$filesToDir{$_}/$_.data");
-		return $rs if $rs;
+		$rs |= iMSCP::File->new(
+			'filename' => "$filesToDir{$_}/$_.data"
+		)->copyFile(
+			"$filesToDir{$_}/$_.old.data"
+		);
 	}
 
-	0;
+	$rs;
 }
 
 =item _oldEngineCompatibility()
@@ -974,8 +942,8 @@ sub _fixPhpErrorReportingValues
 	my $self = $_[0];
 
 	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
-	if(! $database) {
-		error("Unable to connect to SQL Server: $errStr");
+	unless($database) {
+		error("Unable to connect to SQL server: $errStr");
 		return 1;
 	}
 

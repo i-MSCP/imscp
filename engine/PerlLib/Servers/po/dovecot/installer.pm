@@ -101,7 +101,7 @@ sub showDialog
 	my ($self, $dialog) = @_;
 
 	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'dovecot_user';
-	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
 
 	my ($rs, $msg) = (0, '');
 
@@ -159,8 +159,8 @@ sub showDialog
 	}
 
 	if($rs != 30) {
-		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
-        $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+		main::setupSetQuestion('DOVECOT_SQL_USER', $dbUser);
+		main::setupSetQuestion('DOVECOT_SQL_PASSWORD' $dbPass);
 	}
 
 	$rs;
@@ -294,14 +294,14 @@ sub _init
 
 	$self->{'config'} = $self->{'po'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
-
 	if(-f $oldConf) {
-		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
-		for(keys %{$self->{'oldConfig'}}) {
+		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $self->{'oldConfig'}->{$_};
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -394,23 +394,24 @@ sub _setupSqlUser
 {
 	my $self = $_[0];
 
-	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
+	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD');
+
+	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
 	# Removing any SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser;
+		next unless $sqlUser;
 
-		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
-			next if ! $_;
+		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+			next unless $_;
 
-			if(main::setupDeleteSqlUser($sqlUser, $_)) {
-				error("Unable to remove SQL user or one of its privileges");
+			if(main::setupDeleteSqlUser($sqlUser, $host)) {
+				error('Unable to remove SQL user or one of its privileges');
 				return 1;
 			}
 		}
@@ -418,7 +419,7 @@ sub _setupSqlUser
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 	# Adding new SQL user with needed privileges
 
@@ -433,6 +434,10 @@ sub _setupSqlUser
 		error("Unable to add privileges: $rs");
 		return 1;
 	}
+
+	# Store database user and password in config file
+	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
 	$self->{'eventManager'}->trigger('afterPoSetupDb');
 }
@@ -456,8 +461,7 @@ sub _buildConf
 		DATABASE_HOST =>
 			($main::imscpConfig{'DATABASE_PORT'} && $main::imscpConfig{'DATABASE_PORT'} ne 'localhost')
 				? "$main::imscpConfig{'DATABASE_HOST'} port=$main::imscpConfig{'DATABASE_PORT'}"
-				: $main::imscpConfig{'DATABASE_HOST'}
-		,
+				: $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
 		DATABASE_PASSWORD => $self->{'config'}->{'DATABASE_PASSWORD'},
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
@@ -613,60 +617,27 @@ sub _migrateFromCourier
 	my $rs = $self->{'eventManager'}->trigger('beforePoMigrateFromCourier');
 	return $rs if $rs;
 
-	my $binPath = "$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
 	my $mailPath = "$self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}";
 
 	# Converting all mailboxes to dovecot format
 
+	my @cmd = (
+		$main::imscpConfig{'CMD_PERL'},
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl",
+		'--to-courier',
+		'--convert',
+		'--overwrite',
+		'--recursive',
+		$mailPath
+	);
+
 	my ($stdout, $stderr);
-	$rs = execute("$binPath --to-dovecot --convert --recursive $mailPath", \$stdout, \$stderr);
+	$rs = execute("@cmd", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while converting mailboxes to devecot format') if ! $stderr && $rs;
 	return $rs if $rs;
-
-	# Converting courier subscription files to dovecot format
-
-	my $domainDirs = iMSCP::Dir->new('dirname' => $mailPath);
-
-	for($domainDirs->getDirs()) {
-		my $mailboxesDirs = iMSCP::Dir->new('dirname' => "$mailPath/$_");
-
-		for my $mailDir($mailboxesDirs->getDirs()) {
-			if(-f "$mailPath/$_/$mailDir/courierimapsubscribed") {
-
-				my $courierimapsubscribedFile = iMSCP::File->new(
-					'filename' => "$mailPath/$_/$mailDir/courierimapsubscribed"
-				);
-
-				$rs = $courierimapsubscribedFile->copyFile("$mailPath/$_/$mailDir/subscriptions");
-				return $rs if $rs;
-
-				my $subscriptionsFile = iMSCP::File->new('filename' => "$mailPath/$_/$mailDir/subscriptions");
-				my $subscriptionsFileContent = $subscriptionsFile->get();
-
-				unless(defined $subscriptionsFileContent) {
-					error('Unable to read dovecot subscriptions file newly created');
-					return 1;
-				}
-
-				# Converting any subscription entry to dovecot format
-				$subscriptionsFileContent =~ s/^INBOX\.//gm;
-
-				# Writing new dovecot subscriptions file
-				$rs = $subscriptionsFile->set($subscriptionsFileContent);
-				return $rs if $rs;
-
-				$rs = $subscriptionsFile->save();
-				return $rs if $rs;
-
-				# Removing no longer needed file
-				$rs = $courierimapsubscribedFile->delFile();
-				return $rs if $rs;
-			}
-		}
-	}
 
 	$self->{'eventManager'}->trigger('afterPoMigrateFromCourier');
 }

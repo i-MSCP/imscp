@@ -103,7 +103,7 @@ sub showDialog
 	my ($self, $dialog) = @_;
 
 	my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'authdaemon_user';
-	my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
 
 	my ($rs, $msg) = (0, '');
 
@@ -161,8 +161,8 @@ sub showDialog
 	}
 
 	if($rs != 30) {
-		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
-		$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+		main::setupSetQuestion('AUTHDAEMON_SQL_USER', $dbUser);
+		main::setupSetQuestion('AUTHDAEMON_SQL_PASSWORD', $dbPass);
 	}
 
 	$rs;
@@ -332,10 +332,10 @@ sub _init
 
 	$self->{'config'}= $self->{'po'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/courier.old.data";
-
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
 		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
@@ -396,10 +396,11 @@ sub _setupSqlUser
 {
 	my $self = $_[0];
 
-	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
+	my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+	my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD');
+
+	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
@@ -420,7 +421,7 @@ sub _setupSqlUser
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 	# Adding new SQL user with needed privileges
 
@@ -435,6 +436,10 @@ sub _setupSqlUser
 		error("Unable to add privileges: $rs");
 		return 1;
 	}
+
+	# Store database user and password in config file
+	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
 	$self->{'eventManager'}->trigger('afterPoSetupDb');
 }
@@ -756,60 +761,27 @@ sub _migrateFromDovecot
 	my $rs = $self->{'eventManager'}->trigger('beforePoMigrateFromDovecot');
 	return $rs if $rs;
 
-	my $binPath = "$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
 	my $mailPath = "$self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}";
 
 	# Converting all mailboxes to courier format
 
+	my @cmd = (
+		$main::imscpConfig{'CMD_PERL'},
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl",
+		'--to-courier',
+		'--convert',
+		'--overwrite',
+		'--recursive',
+		$mailPath
+	);
+
 	my ($stdout, $stderr);
-	$rs = execute("$binPath --to-courier --convert --recursive $mailPath", \$stdout, \$stderr);
+	$rs = execute("@cmd", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while converting mails') if ! $stderr && $rs;
 	return $rs if $rs;
-
-	# Converting dovecot subscriptions files to courier format
-
-	my $domainDirs = iMSCP::Dir->new('dirname' => $mailPath);
-
-	for($domainDirs->getDirs()) {
-		my $mailboxesDirs = iMSCP::Dir->new('dirname' => "$mailPath/$_");
-
-		for my $mailDir($mailboxesDirs->getDirs()) {
-			if(-f "$mailPath/$_/$mailDir/subscriptions") {
-				my $subscriptionsFile = iMSCP::File->new('filename' => "$mailPath/$_/$mailDir/subscriptions");
-
-				$rs = $subscriptionsFile->copyFile("$mailPath/$_/$mailDir/courierimapsubscribed");
-				return $rs if $rs;
-
-				my $courierimapsubscribedFile = iMSCP::File->new(
-					'filename' => "$mailPath/$_/$mailDir/courierimapsubscribed"
-				);
-
-				my $courierimapsubscribedFileContent = $courierimapsubscribedFile->get();
-
-				unless(defined $courierimapsubscribedFileContent) {
-					error('Unable to read courier courierimapsubscribed file newly created');
-					return 1;
-				}
-
-				# Converting any subscription entry to courier format
-				$courierimapsubscribedFileContent =~ s/^(.*)/INBOX.$1/gm;
-
-				# Writing new courier courierimapsubscribed file
-				$rs = $courierimapsubscribedFile->set($courierimapsubscribedFileContent);
-				return $rs if $rs;
-
-				$rs = $courierimapsubscribedFile->save();
-				return $rs if $rs;
-
-				# Removing no longer needed file
-				$rs = $subscriptionsFile->delFile();
-				return $rs if $rs;
-			}
-		}
-	}
 
 	$self->{'eventManager'}->trigger('afterPoMigrateFromDovecot');
 }

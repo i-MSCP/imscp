@@ -153,14 +153,14 @@ sub _init
 
 	$self->{'config'} = $self->{'policyd'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/policyd.old.data";
-
 	if(-f $oldConf) {
-		tie %self::oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
-		for(keys %self::oldConfig) {
+		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $self::oldConfig{$_};
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -258,35 +258,11 @@ sub _saveConf
 {
 	my $self = $_[0];
 
-	my $rootUname = $main::imscpConfig{'ROOT_USER'};
-	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
-
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/policyd.data");
-
-	my $rs = $file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	my $cfg = $file->get();
-	unless(defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/policyd.data");
-		return 1;
-	}
-
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/policyd.old.data");
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
-	$file->mode(0640);
+	iMSCP::File->new(
+		'filename' => "$self->{'cfgDir'}/policyd.data"
+	)->copyFile(
+		"$self->{'cfgDir'}/policyd.old.data"
+	);
 }
 
 =back

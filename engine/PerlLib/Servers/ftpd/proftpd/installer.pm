@@ -85,13 +85,8 @@ sub showDialog
 {
 	my ($self, $dialog) = @_;
 
-	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
-	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
-	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
-	my $dbName = main::setupGetQuestion('DATABASE_NAME');
-
 	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'vftp';
-	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
 
 	my ($rs, $msg) = (0, '');
 
@@ -148,8 +143,8 @@ sub showDialog
 	}
 
 	if($rs != 30) {
-		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
-        $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+		main::setupSetQuestion('FTPD_SQL_USER', $dbUser);
+		main::setupSetQuestion('FTPD_SQL_PASSWORD', $dbPass);
 	}
 
 	$rs;
@@ -223,14 +218,14 @@ sub _init
 
 	$self->{'config'} = $self->{'ftpd'}->{'config'};
 
+	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
-
 	if(-f $oldConf) {
-		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
 
-		for(keys %{$self->{'oldConfig'}}) {
+		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $self->{'oldConfig'}->{$_};
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -285,23 +280,27 @@ sub _setupDatabase
 {
 	my $self = $_[0];
 
-	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
+	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD');
+
+	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
 	return $rs if $rs;
 
 	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser;
+		next unless $sqlUser;
 
-		for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
-			next if ! $_;
+		for my $host(
+			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
+			$main::imscpOldConfig{'BASE_SERVER_IP'}
+		) {
+			next unless $host;
 
-			if(main::setupDeleteSqlUser($sqlUser, $_)) {
-				error("Unable to remove SQL user or one of its privileges: $rs");
+			if(main::setupDeleteSqlUser($sqlUser, $host)) {
+				error('Unable to remove SQL user or one of its privileges');
 				return 1;
 			}
 		}
@@ -309,7 +308,7 @@ sub _setupDatabase
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 	# Adding new SQL user with needed privileges
 	for('ftp_users', 'ftp_group') {
@@ -339,6 +338,10 @@ sub _setupDatabase
 			return 1;
 		}
 	}
+
+	# Store database user and password in config file
+	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
 	$self->{'eventManager'}->trigger('afterFtpSetupDb', $dbUser, $dbPass);
 }
@@ -469,41 +472,11 @@ sub _saveConf
 {
 	my $self = $_[0];
 
-	my $rootUname = $main::imscpConfig{'ROOT_USER'};
-	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
-
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.data");
-
-	my $rs = $file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	my $cfg = $file->get();
-	unless(defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/proftpd.data");
-		return 1;
-	}
-
-	$rs = $self->{'eventManager'}->trigger('beforeFtpdSaveConf', \$cfg, 'proftpd.old.data');
-	return $rs if $rs;
-
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.old.data");
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterFtpdSaveConf', 'proftpd.old.data');
+	iMSCP::File->new(
+		'filename' => "$self->{'cfgDir'}/proftpd.data"
+	)->copyFile(
+		"$self->{'cfgDir'}/proftpd.old.data"
+	);
 }
 
 =item _oldEngineCompatibility()

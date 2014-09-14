@@ -91,8 +91,11 @@ sub loadConfig
 
 	# Load old i-MSCP conffile as readonly if it exists
 	if (-f "$imscpNewConfig{'CONF_DIR'}/imscp.conf") {
-		tie %main::imscpOldConfig, 'iMSCP::Config', 'fileName' => "$imscpNewConfig{'CONF_DIR'}/imscp.conf",
-			'readonly' => 1;
+		tie %main::imscpOldConfig,
+			'iMSCP::Config',
+			'fileName' => "$imscpNewConfig{'CONF_DIR'}/imscp.conf",
+			'readonly' => 1,
+			'nowarn' => 1;
 
 		# Merge old config with the new but do not write anything yet.
 		for(keys %main::imscpOldConfig) {

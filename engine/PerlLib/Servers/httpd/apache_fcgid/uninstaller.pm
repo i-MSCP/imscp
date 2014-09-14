@@ -114,7 +114,7 @@ sub _fastcgiConf
 {
 	my $self = $_[0];
 
-	if (-f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.load") {
+	if (-l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/fcgid_imscp.load") {
 		my $rs = $self->{'httpd'}->disableModules($_)
 		return $rs if $rs;
 	}
