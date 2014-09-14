@@ -42,7 +42,7 @@ VENDOR
 	Updated: jQuery UI library to version 1.1.11
 	Updated: jQuery DataTables plugin to version 1.10.2
 	Updated: PHP Secure Communications Library to version 0.3.8
-	Updated: Zend Framework components to version 1.12.9
+	Updated: Zend Framework components to version 1.12.8
 
 TICKETS
 	Fixed #1125: Defect - Modules::Ips - Returns only domain IPs
