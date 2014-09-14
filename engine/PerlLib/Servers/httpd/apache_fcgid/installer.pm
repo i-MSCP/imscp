@@ -435,7 +435,7 @@ sub _buildFastCgiConfFiles
 	}
 
 	for(@toDisableModules) {
-		$rs = $self->{'httpd'}->disableMod($_) if -l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/$_.load";
+		$rs = $self->{'httpd'}->disableModules($_) if -l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/$_.load";
 		return $rs if $rs;
 	}
 
