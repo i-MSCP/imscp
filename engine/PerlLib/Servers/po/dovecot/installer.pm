@@ -160,7 +160,7 @@ sub showDialog
 
 	if($rs != 30) {
 		main::setupSetQuestion('DOVECOT_SQL_USER', $dbUser);
-		main::setupSetQuestion('DOVECOT_SQL_PASSWORD' $dbPass);
+		main::setupSetQuestion('DOVECOT_SQL_PASSWORD', $dbPass);
 	}
 
 	$rs;
