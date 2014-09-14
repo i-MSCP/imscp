@@ -1,9 +1,9 @@
 
 <!-- BDP: php_editor_js -->
-<script type="text/javascript">
-	/*<![CDATA[*/
+<script>
 	$(document).ready(function () {
 		// PHP Editor settings dialog
+		$.ui.dialog.prototype._focusTabbable = function(){ };
 		$('#php_editor_dialog').dialog({
 			hide: 'blind',
 			show: 'slide',
@@ -70,7 +70,6 @@
 			}).trigger('keyup');
 		});
 	});
-	/*]]>*/
 </script>
 <!-- EDP: php_editor_js -->
 

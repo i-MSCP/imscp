@@ -1,6 +1,5 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
+<script>
 	$(document).ready(function () {
 		var errFieldsStack = {ERR_FIELDS_STACK};
 
@@ -16,6 +15,7 @@
 
 		<!-- BDP: php_editor_js -->
 		// PHP Editor settings dialog
+		$.ui.dialog.prototype._focusTabbable = function(){ };
 		$('#php_editor_dialog').dialog({
 			hide: 'blind',
 			show: 'slide',
@@ -84,7 +84,6 @@
 		});
 		<!-- EDP: php_editor_js -->
 	});
-	/*]]>*/
 </script>
 <form name="editFrm" id="editFrm" method="post" action="domain_edit.php?edit_id={EDIT_ID}" autocomplete="off">
 <table class="firstColFixed">
