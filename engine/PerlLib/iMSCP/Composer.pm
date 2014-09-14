@@ -123,8 +123,10 @@ sub _init
 			$rs = $self->_clearLocalRepository() if iMSCP::Getopt->cleanPackagesCache;
 			return $rs if $rs;
 
-			$rs = $self->_getComposer();
-			return $rs if $rs;
+			if(! iMSCP::Getopt->skipAddonsUpdate || ! -x "$self->{'wrkDir'}/composer.phar") {
+				$rs = $self->_getComposer();
+				return $rs if $rs;
+			}
 
 			# Skip packages update if asked by user but only if all requirements for package versions are meets
 			if( ! iMSCP::Getopt->skipPackagesUpdate || $self->_checkRequirements()) {
