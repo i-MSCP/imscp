@@ -1122,7 +1122,7 @@ sub _setupVlogger
 
 	# Removing any old SQL user (including privileges)
 	for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
-		next unless $_;
+		next unless $host;
 
 		if(main::setupDeleteSqlUser($dbUser, $host)) {
 			error('Unable to remove SQL user or one of its privileges');

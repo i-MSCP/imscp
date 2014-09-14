@@ -408,7 +408,7 @@ sub _setupSqlUser
 		next unless $sqlUser;
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
-			next unless $_;
+			next unless $host;
 
 			if(main::setupDeleteSqlUser($sqlUser, $host)) {
 				error('Unable to remove SQL user or one of its privileges');
