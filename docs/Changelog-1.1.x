@@ -1,6 +1,57 @@
 i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
+1.1.14
+------------------------------------------------------------------------------------------------------------------------
+
+2014-09-15: Laurent Declercq
+	RELEASE i-MSCP 1.1.14
+
+DAEMON
+	Fixed: Wrong version in 'helo' answer string
+
+ENGINE
+	Deprecated: Usage of iMSCP::HooksManager package is now deprecated and will be removed in later version
+	Fixed: autoinstaller::Functions::doImscpBackup: Name "main::execmode" used only once...
+	Fixed: Undefined value in tracker hash (vlogger)
+	Renamed: iMSCP::HooksManager to iMSCP::EventManager (iMSCP::HooksManager is now an alias of iMSCP::EventManager)
+
+GUI
+	Fixed: Malformed href attributes in alias.php (reseller level)
+	Fixed: Malformed href attribute in ticket_system.tpl (admin/reseller levels)
+	Fixed: Unable to add custom CNAME DNS resource record using the arobase symbol which is substitued by the zone root
+	Updated: Layout according changes from vendor libraries
+
+INSTALLER
+	Changed: Downgrade of SQL server is no longer allowed by installer
+	Changed: Package uninstallation task is now triggered after packages installation
+	Fixed: Accessing non existing config value DATABASE_USER_HOST (upgrade issue)
+	Fixed: Composer home directory has been reset back to /root/.composer by mistake
+	Fixed: Dangling symlinks are not removed when switching from ITK to another httpd server implementation (Jessie)
+	Fixed: Dovecot/Courier migration - Files must be rewritten on each migration by adding the --overwrite option
+	Fixed: Download zip archives instead of cloning sources which include useless VCS information (composer packages)
+	Fixed: Local DNS resolver is never disabled whatever the configuration parameter value
+	Fixed: Package which are scheduled for installation must not be removed
+	Fixed: Releases are not sorted correctly (iMSCP::LsbRelease library)
+	Fixed: When the preseed or noprompt options are set, debconf must be run in noninteractive mode
+	Fixed: When switching to another SQL server debian version flag file must be removed
+	Fixed: Wrong template name passed to the onLoadTemplate event (MySQL server implementation)
+
+PLUGINS
+	Fixed: Plugin backend files must no longer be removed on error
+	Updated: Plugin API to version 0.2.11
+
+VENDOR
+	Updated: jQuery library to version 1.1.11
+	Updated: jQuery UI library to version 1.1.11
+	Updated: jQuery DataTables plugin to version 1.10.2
+	Updated: PHP Secure Communications Library to version 0.3.8
+	Updated: Zend Framework components to version 1.12.8
+
+TICKETS
+	Fixed #1125: Defect - Modules::Ips - Returns only domain IPs
+
+------------------------------------------------------------------------------------------------------------------------
 1.1.13
 ------------------------------------------------------------------------------------------------------------------------
 
