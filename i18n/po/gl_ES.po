@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -359,6 +359,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr ""
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr ""
 
@@ -597,7 +603,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr "Engadir usuario FTP"
+msgstr ""
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -606,7 +612,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "Engadir banco de datos SQL"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "Engadir usuario SQL"
@@ -651,7 +657,7 @@ msgid "Add group"
 msgstr "Engadir grupo"
 
 msgid "Add hosting plan"
-msgstr "Engadir plano de hospedaxe"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
@@ -681,7 +687,7 @@ msgid "Add reseller"
 msgstr "Engadir revendedor"
 
 msgid "Add subdomain"
-msgstr "Engadir subdominio"
+msgstr ""
 
 msgid "Add user"
 msgstr "Engadir usuario"
@@ -854,7 +860,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "Rexistro (log) de administración"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -1625,7 +1631,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "Menús personalizados"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
@@ -2152,7 +2158,7 @@ msgid "Edit domain"
 msgstr "Editar dominio"
 
 msgid "Edit domain alias"
-msgstr "Editar alias de dominio"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "Editar páxina de erro"
@@ -2433,7 +2439,7 @@ msgid "FileManager"
 msgstr ""
 
 msgid "Filemanager"
-msgstr "Filemanager (xestor de arquivos)"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "Información do sistema de arquivos"
@@ -2515,7 +2521,7 @@ msgid "General information"
 msgstr "Información xeral"
 
 msgid "General settings"
-msgstr "Configuración xeral"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2591,7 +2597,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "Planos de hospedaxe"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "Planos de hospedaxe dispoñibles para"
@@ -2999,7 +3005,7 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr "Rematar sesión"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Contrasinal esquecido"
@@ -3459,7 +3465,7 @@ msgid "Other settings"
 msgstr "Outros axustes"
 
 msgid "Overview"
-msgstr "Resumo"
+msgstr ""
 
 msgid "Owner"
 msgstr "Propietario"
@@ -3638,7 +3644,7 @@ msgid "Phone"
 msgstr "Teléfono"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -4622,7 +4628,7 @@ msgid "State/Province"
 msgstr "Estado/Provincia"
 
 msgid "Statistics"
-msgstr "Estatísticas"
+msgstr ""
 
 msgid "Stats"
 msgstr "Estatísticas"
@@ -4749,7 +4755,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "Ferramentas do sistema"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr ""
@@ -5504,7 +5510,7 @@ msgid "Webmail"
 msgstr "Correo-web"
 
 msgid "Webtools"
-msgstr "Ferramentas Web"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5977,12 +5983,6 @@ msgstr "todo"
 msgid "from other browser"
 msgstr ""
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
@@ -6029,7 +6029,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "Actualizacións do i-MSCP"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

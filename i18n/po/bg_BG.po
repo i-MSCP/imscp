@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-19 22:25+0000\n"
-"Last-Translator: dinkonin <k.ninev@nabaco.bg>\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -135,20 +135,20 @@ msgid ""
 msgstr ""
 
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr "Администратор / Поддръжка / Отворени Бюлетини"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
-msgstr ""
+msgstr "Клиенти / Уеб Инструменти / Персонална страница с грешки / Редактиране на персоналните страници с грешки"
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr "Покажи всички грешки, с изключение на предупреждения за непрепоръчителен код (Production)"
 
 msgid " Wrong IP address."
-msgstr ""
+msgstr "Грешен IP адрес"
 
 msgid " was deleted by {ADMIN}!"
-msgstr ""
+msgstr "е изтрит от  {ADMIN}!"
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -200,7 +200,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr ""
+msgstr "%1$s / %2$s без Ограничение"
 
 #, php-format
 msgid "%1$s of %2$s"
@@ -208,7 +208,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr ""
+msgstr "%1$s of <b>Без Ограничение</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -232,11 +232,11 @@ msgstr "%d %s оставащо до изтичане на акаунта"
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / неограничен"
 
 #, php-format
 msgid "%d Service(s) port successfully updateds"
-msgstr ""
+msgstr "%d Service(s) port  е успешно актуализиран "
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -268,19 +268,19 @@ msgstr "%s Акаунтът е успешно изтрит."
 
 #, php-format
 msgid "%s deleted the admin log older than one month."
-msgstr ""
+msgstr "%s изтрити логове на админа по-стари от един месец."
 
 #, php-format
 msgid "%s deleted the admin log older than one year."
-msgstr ""
+msgstr "%s изтрити логове на админа по-стари от една година "
 
 #, php-format
 msgid "%s deleted the admin log older than six months."
-msgstr ""
+msgstr "%s изтрити логове на админа по-стари от шест месеца."
 
 #, php-format
 msgid "%s deleted the admin log older than three months."
-msgstr ""
+msgstr "%s изтрити логове на админа по-стари от три месеца."
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
@@ -288,7 +288,7 @@ msgstr "%s изтрий логовете на админа по-стари от 
 
 #, php-format
 msgid "%s deleted the full admin log."
-msgstr ""
+msgstr "%s изтриване на пълен админски лог."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -296,15 +296,15 @@ msgstr "%s не съществува"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s не съществува или е празен."
 
 #, php-format
 msgid "%s field is empty or invalid."
-msgstr ""
+msgstr "%s полето е празно или невалидна."
 
 #, php-format
 msgid "%s host field is empty or invalid."
-msgstr ""
+msgstr "%s хост полето е празно или невалидно."
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -312,11 +312,11 @@ msgstr "%s  не е валиден I-MSCP езиков файл."
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
+msgstr "%s не се допуска като етикет поддомейн."
 
 #, php-format
 msgid "%s is not part of domain %s."
-msgstr ""
+msgstr "%s не е част от домейн %s"
 
 #, php-format
 msgid "%s of %s"
@@ -324,7 +324,7 @@ msgstr ""
 
 #, php-format
 msgid "%s of unlimited"
-msgstr ""
+msgstr "%s Без Ограничение"
 
 #, php-format
 msgid "%s page"
@@ -338,30 +338,36 @@ msgstr "%s запис"
 msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
-msgstr ""
+msgstr "%s: Консумацията на клиенти (%s) за този търговец е по-голяма, отколкото на новата граница."
 
 #, php-format
 msgid ""
 "%s: The total of items (%s) already assigned by the reseller is greater than"
 " the new limit."
-msgstr ""
+msgstr "%s: Общата сума на позиции (%s), вече определен от търговеца е по-голяма, отколкото на новата граница."
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr ""
+msgstr "%s Този търговец има клиент (и) с неограничен елементи."
 
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers"
-msgstr ""
+msgstr "%s; Вие не можете да изключите дадена услуга която вече се консумират от клиенти."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr "%s: Вие не можете да изключите дадена услуга които вече са продадени на клиенти."
+
+#, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
 msgstr ""
 
 #, php-format
 msgid "%sfield is empty or invalid."
-msgstr ""
+msgstr "%s полето е празна или невалидно."
 
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
@@ -426,25 +432,25 @@ msgstr "'%value%' изглежда, че е име на домейн, но не 
 msgid ""
 "'%value%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%стойността%' изглежда, че е име на домейн, и съдържа невалидна позиция"
 
 msgid ""
 "'%value%' appears to be a domain name but the given punycode notation cannot"
 " be decoded"
-msgstr ""
+msgstr "'%стойността%' изглежда домейн но дадения Punycode означение не може да се декодира"
 
 msgid ""
 "'%value%' appears to be a local network name but local network names are not"
 " allowed"
-msgstr "'%value%' изглежда, че е име на локална мрежа, но местни имена на мрежа не са позволени"
+msgstr "'%стойността%' изглежда, че е име на локална мрежа, но местни имена на мрежа не са позволени"
 
 msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%стойността%' изглежда име на поддомейн но не може да се извлече част TLD"
 
 msgid ""
 "'%value%' appears to be a subdomain name but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%стойността%'изглежда, че е име на домейн, но не може да се сравнява TLD срещу познати списък"
 
 msgid ""
 "'%value%' appears to be a subdomain name but cannot match against subdomain "
@@ -571,19 +577,19 @@ msgid "Activate"
 msgstr "Активирай"
 
 msgid "Activate this plugin"
-msgstr ""
+msgstr "Активирайте този плъгин"
 
 msgid "Activated"
-msgstr ""
+msgstr "Активиран "
 
 msgid "Activated software"
-msgstr ""
+msgstr "Активиран софтуер"
 
 msgid "Activation email"
-msgstr ""
+msgstr "Активиране на Мейл "
 
 msgid "Activation in progress..."
-msgstr ""
+msgstr "Активирането е в ход ..."
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr ""
@@ -598,7 +604,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr "Добави FTP потребител"
+msgstr ""
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -607,7 +613,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "Добави SQL база данни"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "Добави SQL-потребител"
@@ -625,13 +631,13 @@ msgid "Add catchall"
 msgstr ""
 
 msgid "Add custom DNS record"
-msgstr "Добавяне на собствен DNS запис"
+msgstr ""
 
 msgid "Add custom menu"
 msgstr ""
 
 msgid "Add customer"
-msgstr "Добави клиент"
+msgstr ""
 
 msgid "Add customer - Next step"
 msgstr ""
@@ -652,7 +658,7 @@ msgid "Add group"
 msgstr "Добави група"
 
 msgid "Add hosting plan"
-msgstr "Добави хостинг-план"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr "Добави нов IP адрес"
@@ -682,7 +688,7 @@ msgid "Add reseller"
 msgstr "Добави риселър"
 
 msgid "Add subdomain"
-msgstr "Добави поддомейн"
+msgstr ""
 
 msgid "Add user"
 msgstr "Добави потребител"
@@ -855,7 +861,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "Админ Журнал"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -1626,7 +1632,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "Персонално меню"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
@@ -2138,7 +2144,7 @@ msgid "Edit auto responder"
 msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr "Промяна на потребителски DNS запис"
+msgstr ""
 
 msgid "Edit custom error page"
 msgstr ""
@@ -2153,7 +2159,7 @@ msgid "Edit domain"
 msgstr "Промяна на Домейн"
 
 msgid "Edit domain alias"
-msgstr "Редактиране  на псевдоним на домейн"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "Редактиране  на страницата с грешки"
@@ -2168,7 +2174,7 @@ msgid "Edit htaccess user"
 msgstr ""
 
 msgid "Edit mail account"
-msgstr "Промяна на пощата"
+msgstr ""
 
 msgid "Edit mail quota"
 msgstr ""
@@ -2180,7 +2186,7 @@ msgid "Edit reseller"
 msgstr "Редакция на риселър"
 
 msgid "Edit subdomain"
-msgstr "Промяна на събдомейн "
+msgstr ""
 
 msgid "Edit user"
 msgstr "Проняна на потребител"
@@ -2434,7 +2440,7 @@ msgid "FileManager"
 msgstr "Файлов Мениджър"
 
 msgid "Filemanager"
-msgstr "Файл Мениджър"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "Информация за файловата система"
@@ -2516,7 +2522,7 @@ msgid "General information"
 msgstr "Обща информация"
 
 msgid "General settings"
-msgstr "Общи настройки"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2592,7 +2598,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "Хостинг-планове"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "Хостинг планове на разположение са"
@@ -2660,7 +2666,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr "Използвани IP-та"
+msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6 Адрес"
@@ -3000,7 +3006,7 @@ msgid "Logo successfully updated."
 msgstr "Лога е успешно обновен."
 
 msgid "Logout"
-msgstr "Изход"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Забравена парола"
@@ -3075,7 +3081,7 @@ msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr "Управление на домейни"
+msgstr ""
 
 msgid "Manage SQL"
 msgstr "Управление SQL"
@@ -3460,7 +3466,7 @@ msgid "Other settings"
 msgstr "Други настройки"
 
 msgid "Overview"
-msgstr "Преглед"
+msgstr ""
 
 msgid "Owner"
 msgstr "Собственик"
@@ -4454,7 +4460,7 @@ msgid "Service protocol"
 msgstr "Протокол на услугата "
 
 msgid "Services status"
-msgstr "Статус на Услугите "
+msgstr ""
 
 msgid "Sessions"
 msgstr ""
@@ -4623,7 +4629,7 @@ msgid "State/Province"
 msgstr "Област/Провинция"
 
 msgid "Statistics"
-msgstr "Статистика"
+msgstr ""
 
 msgid "Stats"
 msgstr "Статистика"
@@ -4713,7 +4719,7 @@ msgid "Submit changes"
 msgstr "Приеми промените"
 
 msgid "Support"
-msgstr "Поддръжка"
+msgstr ""
 
 msgid "Support system"
 msgstr "Служба за поддръжка"
@@ -4750,7 +4756,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "Системни инструменти"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr ""
@@ -5282,7 +5288,7 @@ msgid "Update from web depot"
 msgstr "Актуализиране от уеб депо"
 
 msgid "Update hosting plan"
-msgstr "Обновяване на хостинг план"
+msgstr ""
 
 msgid "Update in progress..."
 msgstr ""
@@ -5505,7 +5511,7 @@ msgid "Webmail"
 msgstr "Имейли"
 
 msgid "Webtools"
-msgstr "Уеб-инструменти"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5978,12 +5984,6 @@ msgstr "всичко"
 msgid "from other browser"
 msgstr "От друг браузър"
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Заявление за управление (позволение)"
 
@@ -6030,7 +6030,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "Обновяване на i-MSCP"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

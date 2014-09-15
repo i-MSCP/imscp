@@ -80,7 +80,7 @@ ${GUI}/public/*/*.php \
 --language=Glade \
 --copyright-holder="iMSCP Team - All rights reserved" \
 --package-name="i-MSCP" \
---package-version="<version>" \
+--package-version="1.1.14" \
 --msgid-bugs-address="i18n@i-mscp.net" \
 --keyword="label" \
 --no-location \

@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -361,6 +361,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr "%s: 既に代理店の顧客への販売サービスを無効にすることはできません。"
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr "%s フィールドが空又は無効です。"
 
@@ -593,22 +599,22 @@ msgid "Add"
 msgstr "追加"
 
 msgid "Add / Edit SSL certificate"
-msgstr ""
+msgstr "追加 / 編集 SSL証明書"
 
 msgid "Add FTP account"
-msgstr "FTPアカウント追加"
+msgstr ""
 
 msgid "Add FTP user"
-msgstr "FTPユーザー追加"
+msgstr ""
 
 msgid "Add Htaccess group"
-msgstr "Htaccess グループ追加"
+msgstr ""
 
 msgid "Add Htaccess user"
-msgstr "Htaccessユーザー追加"
+msgstr ""
 
 msgid "Add SQL database"
-msgstr "SQLデータベース追加"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "SQLユーザー追加"
@@ -623,37 +629,37 @@ msgid "Add admin"
 msgstr "管理者追加"
 
 msgid "Add catchall"
-msgstr "ごみ箱の追加"
+msgstr ""
 
 msgid "Add custom DNS record"
-msgstr "カスタムDNSレコードを追加"
+msgstr ""
 
 msgid "Add custom menu"
 msgstr "カスタムメニュー追加"
 
 msgid "Add customer"
-msgstr "顧客追加"
+msgstr ""
 
 msgid "Add customer - Next step"
-msgstr "顧客追加 - 次のステップ"
+msgstr ""
 
 msgid "Add domain alias"
 msgstr "ドメインエイリアス追加"
 
 msgid "Add email account"
-msgstr "Eメールアカウント追加"
+msgstr ""
 
 msgid "Add email user"
-msgstr "Eメールユーザー追加"
+msgstr ""
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "{DOMAIN UTF8}の外部メールサーバー追加"
+msgstr ""
 
 msgid "Add group"
 msgstr "グループ追加"
 
 msgid "Add hosting plan"
-msgstr "ホスティングプラン追加"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr "新しいＩＰアドレス追加"
@@ -683,7 +689,7 @@ msgid "Add reseller"
 msgstr "代理店追加"
 
 msgid "Add subdomain"
-msgstr "サブドメイン追加"
+msgstr ""
 
 msgid "Add user"
 msgstr "ユーザー追加"
@@ -856,7 +862,7 @@ msgid "Admin account successfully created."
 msgstr "管理者アカウントの作成に成功しました。"
 
 msgid "Admin log"
-msgstr "管理者ログ"
+msgstr ""
 
 msgid "Admin not available"
 msgstr "管理者は使用できません"
@@ -1009,7 +1015,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "原因不明のエラーは、ファイルアップロードの間に発生しました： %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr "アンチルートキットログ"
+msgstr ""
 
 msgid "Application installer"
 msgstr "アプリケーションインストーラー"
@@ -1077,11 +1083,11 @@ msgstr "%sの全てを捕らえて削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
-msgstr ""
+msgstr "本当に%sドメインエイリアスのオーダーを削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias?"
-msgstr ""
+msgstr "本当に%sドメインエイリアスを削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1128,7 +1134,7 @@ msgid "Assign existing SQL user"
 msgstr "既存のSQLユーザーを割り当てます。"
 
 msgid "Assign group"
-msgstr "グループを割り当てる"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "最初に、少なくとも1つのSQLユーザを持つデータベースを作成する必要があります。"
@@ -1627,7 +1633,7 @@ msgid "Custom menu successfully updated."
 msgstr "カスタムメニューを更新しました。"
 
 msgid "Custom menus"
-msgstr "カスタムメニュー"
+msgstr ""
 
 msgid "Customer"
 msgstr "顧客"
@@ -1669,7 +1675,7 @@ msgid "Customer scheduled for addition."
 msgstr "顧客の追加が予定されました。"
 
 msgid "Customer statistics"
-msgstr "顧客の統計情報"
+msgstr ""
 
 msgid "Customer successfully scheduled for deletion."
 msgstr "顧客の削除が予定されました。"
@@ -1684,7 +1690,7 @@ msgid "Customers"
 msgstr "顧客"
 
 msgid "Customers assignment"
-msgstr "顧客の割り当て"
+msgstr ""
 
 msgid "Customize error pages for your domain."
 msgstr "ドメインのエラーページをカスタマイズする。"
@@ -1744,7 +1750,7 @@ msgid "Database required"
 msgstr "必要なデータベース"
 
 msgid "Database update"
-msgstr "データベース更新"
+msgstr ""
 
 msgid "Database usage"
 msgstr "データベースを使用"
@@ -1753,7 +1759,7 @@ msgid "Database users"
 msgstr "データベースユーザー"
 
 msgid "Databases"
-msgstr "データベース"
+msgstr ""
 
 msgid "Date"
 msgstr "日付"
@@ -1762,7 +1768,7 @@ msgid "Day"
 msgstr "日"
 
 msgid "Day statistics"
-msgstr "日毎の統計"
+msgstr ""
 
 msgid "Days"
 msgstr "日"
@@ -1832,7 +1838,7 @@ msgid ""
 msgstr "親愛なる {RESELLER} 様\n\t{ADMIN} によって、ソフトウェアパッケージがアップロードされ有効になった。\n\n\t詳細：\n\tパッケージ名： {SOFTWARE}\n\tパッケージID： {SOFTWARE_ID}\n\n\t詳細は、i-MSCPコントロールパネルにログインしてください。"
 
 msgid "Debugger"
-msgstr "デバッガー"
+msgstr ""
 
 msgid "Default language"
 msgstr "既定の言語"
@@ -1855,10 +1861,10 @@ msgid "Delete all tickets"
 msgstr "全てのチケットを削除"
 
 msgid "Delete customer"
-msgstr "顧客削除"
+msgstr ""
 
 msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "顧客削除 - {DOMAIN_NAME}"
+msgstr ""
 
 msgid "Delete from log:"
 msgstr "ログから削除："
@@ -1983,7 +1989,7 @@ msgid "Domain alias name"
 msgstr "ドメインエイリアス名"
 
 msgid "Domain alias successfully ordered."
-msgstr "ドメインエイリアスが注文されました。"
+msgstr "ドメインエイリアスがオーダーされました。"
 
 msgid "Domain alias successfully scheduled for addition."
 msgstr "ドメインエイリアスの追加が予定されました。"
@@ -2080,7 +2086,7 @@ msgid "Domain statistics"
 msgstr "ドメイン統計"
 
 msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "ドメイン統計 - {DOMAIN_NAME}"
+msgstr ""
 
 msgid "Domain status is not ok."
 msgstr "ドメイン状態がOKではありません。"
@@ -2127,52 +2133,52 @@ msgid "Edit"
 msgstr "編集"
 
 msgid "Edit FTP account"
-msgstr "FTPアカウント編集"
+msgstr ""
 
 msgid "Edit SSL certificate"
 msgstr "SSL証明書を編集"
 
 msgid "Edit admin"
-msgstr "管理者編集"
+msgstr ""
 
 msgid "Edit auto responder"
-msgstr "自動応答を編集"
+msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr "カスタムDNSレコード編集"
+msgstr ""
 
 msgid "Edit custom error page"
-msgstr "顧客エラーページの編集"
+msgstr ""
 
 msgid "Edit custom menu"
 msgstr "カスタムメニューの編集"
 
 msgid "Edit customer"
-msgstr "顧客編集"
+msgstr ""
 
 msgid "Edit domain"
 msgstr "ドメイン編集"
 
 msgid "Edit domain alias"
-msgstr "ドメインエイリアスの編集"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "エラーページの編集"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "{DOMAIN UTF8}の外部メールサーバー編集"
+msgstr ""
 
 msgid "Edit hosting plan"
 msgstr "ホスティングプランの編集"
 
 msgid "Edit htaccess user"
-msgstr "ｈtaccessユーザーの編集"
+msgstr ""
 
 msgid "Edit mail account"
-msgstr "メールアカウント編集"
+msgstr ""
 
 msgid "Edit mail quota"
-msgstr "Eメール容量の編集"
+msgstr ""
 
 msgid "Edit protected area"
 msgstr "アクセス制限領域を編集"
@@ -2181,7 +2187,7 @@ msgid "Edit reseller"
 msgstr "代理店変更"
 
 msgid "Edit subdomain"
-msgstr "サブドメイン編集"
+msgstr ""
 
 msgid "Edit user"
 msgstr "ユーザーの編集"
@@ -2276,7 +2282,7 @@ msgid "Enable SSL"
 msgstr "SSLを有効にする"
 
 msgid "Enable auto responder"
-msgstr "自動応答を有効"
+msgstr ""
 
 msgid "Enabled"
 msgstr "有効"
@@ -2435,7 +2441,7 @@ msgid "FileManager"
 msgstr "ファイルマネージャー"
 
 msgid "Filemanager"
-msgstr "ファイルマネージャー"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "ファイルシステム情報"
@@ -2511,13 +2517,13 @@ msgid "Gender"
 msgstr "性別"
 
 msgid "General"
-msgstr "一般"
+msgstr ""
 
 msgid "General information"
 msgstr "基本情報"
 
 msgid "General settings"
-msgstr "基本設定"
+msgstr ""
 
 msgid "Generate"
 msgstr "生成する"
@@ -2593,7 +2599,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr "ホスティングプランの値は、限界を超えています。"
 
 msgid "Hosting plans"
-msgstr "ホスティングプラン"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "ホスティングプランで利用できる"
@@ -2658,10 +2664,10 @@ msgid "IP addresses under control of i-MSCP"
 msgstr " i-MSCPの制御下にあるIPアドレス"
 
 msgid "IP management"
-msgstr "IP管理"
+msgstr ""
 
 msgid "IP usage"
-msgstr "IPアドレス使用"
+msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6アドレス"
@@ -2910,7 +2916,7 @@ msgid "Language successfully updated."
 msgstr "言語が更新されました。"
 
 msgid "Languages"
-msgstr "言語"
+msgstr ""
 
 msgid "Languages index was successfully re-built."
 msgstr "言語のインデックスが再構築されました。"
@@ -3001,7 +3007,7 @@ msgid "Logo successfully updated."
 msgstr "ロゴは更新されました。"
 
 msgid "Logout"
-msgstr "ログアウト"
+msgstr ""
 
 msgid "Lost password"
 msgstr "パスワードを忘れた"
@@ -3067,7 +3073,7 @@ msgid ""
 msgstr "メンテナンスモードが有効化されます。このモードでは、管理者のみがログインできます。"
 
 msgid "Maintenance settings"
-msgstr "メンテナンス設定"
+msgstr ""
 
 msgid "Male"
 msgstr "男性"
@@ -3076,13 +3082,13 @@ msgid "Malformed resolver SQL query"
 msgstr "不正な形式なリゾルバSQLクエリ"
 
 msgid "Manage Domains"
-msgstr "ドメイン管理"
+msgstr ""
 
 msgid "Manage SQL"
 msgstr "SQL管理"
 
 msgid "Manage htaccess users and groups"
-msgstr "htaccessユーザーとグループを管理"
+msgstr ""
 
 msgid "Manage users"
 msgstr "ユーザー管理"
@@ -3332,7 +3338,7 @@ msgid "No update info available"
 msgstr "利用可能なアップデート情報がありません"
 
 msgid "No used yet"
-msgstr ""
+msgstr "まだ使用されていません"
 
 msgid "No user found."
 msgstr "ユーザーが見つかりませんでした。"
@@ -3446,10 +3452,10 @@ msgid "Order"
 msgstr "オーダー"
 
 msgid "Order successfully deleted."
-msgstr "注文を削除"
+msgstr "オーダーを削除"
 
 msgid "Order successfully processed."
-msgstr "注文を処理"
+msgstr "オーダーを処理"
 
 msgid "Other in"
 msgstr "その他 in"
@@ -3461,7 +3467,7 @@ msgid "Other settings"
 msgstr "その他設定"
 
 msgid "Overview"
-msgstr "概要"
+msgstr ""
 
 msgid "Owner"
 msgstr "オーナー"
@@ -3501,7 +3507,7 @@ msgid "PHP exec() function"
 msgstr "PHPのexec（）関数"
 
 msgid "PHP settings"
-msgstr "PHPの設定"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP in"
@@ -3640,7 +3646,7 @@ msgid "Phone"
 msgstr "電話番号"
 
 msgid "PhpMyAdmin"
-msgstr "phpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr "PB"
@@ -3871,7 +3877,7 @@ msgid "Plugin list is empty."
 msgstr "プラグインリストは空です。"
 
 msgid "Plugin management"
-msgstr "プラグイン管理"
+msgstr ""
 
 msgid "Plugins Upload"
 msgstr "プラグインアップロード"
@@ -3937,7 +3943,7 @@ msgid "Processor data"
 msgstr "プロセッサデータ"
 
 msgid "Profile"
-msgstr "プロフィール"
+msgstr ""
 
 msgid "Properties"
 msgstr "プロパティ"
@@ -4191,7 +4197,7 @@ msgid "Reseller software list"
 msgstr "代理店ソフトウェアリスト"
 
 msgid "Reseller statistics"
-msgstr "代理店 統計"
+msgstr ""
 
 msgid "Reseller successfully added."
 msgstr "代理店は追加されました。"
@@ -4218,7 +4224,7 @@ msgid "Resellers and customers"
 msgstr "代理店や顧客"
 
 msgid "Resellers assignment"
-msgstr "代理店の割り当て"
+msgstr ""
 
 msgid "Reset"
 msgstr "リセット"
@@ -4449,16 +4455,16 @@ msgid "Service port successfully removed."
 msgstr "サービスポートを削除しました。"
 
 msgid "Service ports"
-msgstr "サービスポート"
+msgstr ""
 
 msgid "Service protocol"
 msgstr "サービスプロトコル"
 
 msgid "Services status"
-msgstr "サービスステータス"
+msgstr ""
 
 msgid "Sessions"
-msgstr "セッション"
+msgstr ""
 
 msgid "Set status to 'tochange'"
 msgstr "ステータス '変更' を設定します。"
@@ -4559,7 +4565,7 @@ msgid "Software installer requires PHP support."
 msgstr "ソフトウェアのインストーラは、PHPのサポートが必要です。"
 
 msgid "Software management"
-msgstr "ソフトウェア管理"
+msgstr ""
 
 msgid "Software name"
 msgstr "ソフトウェア名"
@@ -4568,7 +4574,7 @@ msgid "Software not found!"
 msgstr "ソフトウェアが見つかりません。"
 
 msgid "Software options"
-msgstr "ソフトウェアオプション"
+msgstr ""
 
 msgid "Software permissions"
 msgstr "ソフトウェアのアクセス権"
@@ -4624,7 +4630,7 @@ msgid "State/Province"
 msgstr "都道府県"
 
 msgid "Statistics"
-msgstr "統計情報"
+msgstr ""
 
 msgid "Stats"
 msgstr "統計"
@@ -4714,7 +4720,7 @@ msgid "Submit changes"
 msgstr "変更を送信"
 
 msgid "Support"
-msgstr "サポート"
+msgstr ""
 
 msgid "Support system"
 msgstr "サポート"
@@ -4744,14 +4750,14 @@ msgid "System error - custom error page was not updated."
 msgstr "システムエラー - カスタムエラーページが更新されませんでした。"
 
 msgid "System information"
-msgstr "システム情報"
+msgstr ""
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "システムは、 '%s' ユーザーロゴを削除することができません。"
 
 msgid "System tools"
-msgstr "システムツール"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr "保守対象のシステム"
@@ -5221,10 +5227,10 @@ msgid "Unknown Error"
 msgstr "不明なエラー"
 
 msgid "Unknown FTP user."
-msgstr ""
+msgstr "不明なFTPユーザー"
 
 msgid "Unknown SQL user"
-msgstr ""
+msgstr "不明なSQLユーザー"
 
 msgid "Unknown action requested."
 msgstr "不明のアクションが要求された。"
@@ -5271,7 +5277,7 @@ msgid "Update Plugins"
 msgstr "プラグイン更新"
 
 msgid "Update SQL user password"
-msgstr "SQLユーザーパスワードの更新"
+msgstr ""
 
 msgid "Update data"
 msgstr "データ更新"
@@ -5283,7 +5289,7 @@ msgid "Update from web depot"
 msgstr "Webデポットから更新します"
 
 msgid "Update hosting plan"
-msgstr "ホスティングプラン更新"
+msgstr ""
 
 msgid "Update in progress..."
 msgstr "更新処理中..."
@@ -5453,7 +5459,7 @@ msgid "View hosting plan"
 msgstr "ホスティングプラン表示"
 
 msgid "View ticket"
-msgstr "チケットを表示"
+msgstr ""
 
 msgid "Visit plugin site"
 msgstr "プラグインサイトの訪問"
@@ -5506,10 +5512,10 @@ msgid "Webmail"
 msgstr "Webメール"
 
 msgid "Webtools"
-msgstr "Webツール"
+msgstr ""
 
 msgid "Welcome email"
-msgstr "歓迎Eメール"
+msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "{USERNAME} さんi-MSCPへようこそ！"
@@ -5979,12 +5985,6 @@ msgstr "すべて"
 msgid "from other browser"
 msgstr "他のブラウザから"
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr "getInfo（）を %s に実装されていないと %s が見つかりませんでした。 <br /> このは %s プラグインのバグであり、プラグインの作者に報告する必要があります。"
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - アプリケーション管理（アクセス権）"
 
@@ -6031,7 +6031,7 @@ msgid "i-MSCP plugin store"
 msgstr "i-MSCP プラグインストア"
 
 msgid "i-MSCP updates"
-msgstr "i-MSCPアップデート"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCPバージョンの更新チェックが無効になっています"
@@ -6061,7 +6061,7 @@ msgid "missing domain"
 msgstr "ドメインが見つからない"
 
 msgid "n\\a"
-msgstr ""
+msgstr "n\\a"
 
 msgid "no"
 msgstr "いいえ"

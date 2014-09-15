@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-18 15:25+0000\n"
-"Last-Translator: Adam Radovits <adamradovits12@hotmail.com>\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -364,6 +364,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr "%s: Nem lehet letiltani ezt a szolgáltatást a viszonteladó ügyfeleinek értékesítése miatt"
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr "%sfield üres vagy érvénytelen."
 
@@ -599,19 +605,19 @@ msgid "Add / Edit SSL certificate"
 msgstr "SSL tanúsítvány hozzáadása / szerkesztése"
 
 msgid "Add FTP account"
-msgstr "FTP-felhasználó hozzáadása"
+msgstr ""
 
 msgid "Add FTP user"
-msgstr "FTP felhasználó hozzáadása"
+msgstr ""
 
 msgid "Add Htaccess group"
-msgstr "Védett csoport létrehozása"
+msgstr ""
 
 msgid "Add Htaccess user"
-msgstr "Védett felhasználó létrehozása"
+msgstr ""
 
 msgid "Add SQL database"
-msgstr "SQL adatbázis létrehozása"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "SQL felhasználó hozzáadása"
@@ -626,37 +632,37 @@ msgid "Add admin"
 msgstr "Adminisztrátor hozzáadása"
 
 msgid "Add catchall"
-msgstr "Gyüjtő email cím hozzáadása"
+msgstr ""
 
 msgid "Add custom DNS record"
-msgstr "Egyéni DNS zóna rekord hozzáadása"
+msgstr ""
 
 msgid "Add custom menu"
 msgstr "Egyéni menü hozzáadása"
 
 msgid "Add customer"
-msgstr "Ügyfél hozzáadása"
+msgstr ""
 
 msgid "Add customer - Next step"
-msgstr "Ügyfél hozzáadása - következő lépés"
+msgstr ""
 
 msgid "Add domain alias"
 msgstr "Domain álnév létrehozása"
 
 msgid "Add email account"
-msgstr "Postafiók hozzáadása"
+msgstr ""
 
 msgid "Add email user"
-msgstr "E-mail felhasználó hozzáadása"
+msgstr ""
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Külső levelező szerver hozzáadása a {DOMAIN_UTF8} -hez"
+msgstr ""
 
 msgid "Add group"
 msgstr "Csoport létrehozása"
 
 msgid "Add hosting plan"
-msgstr "Tárhely csomag létrehozása"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr "IP-cím hozzáadása"
@@ -686,7 +692,7 @@ msgid "Add reseller"
 msgstr "Viszonteladó hozzáadása"
 
 msgid "Add subdomain"
-msgstr "Aldomain létrehozása"
+msgstr ""
 
 msgid "Add user"
 msgstr "Felhasználó hozzáadása"
@@ -859,7 +865,7 @@ msgid "Admin account successfully created."
 msgstr "Adminisztrátor sikeresen létrehozva"
 
 msgid "Admin log"
-msgstr "Adminisztrációs napló"
+msgstr ""
 
 msgid "Admin not available"
 msgstr "Adminisztrátor nem elérhető"
@@ -1012,7 +1018,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "Ismeretlen hiba történt fájlfeltöltés közben: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr "Anti-Rootkits napló"
+msgstr ""
 
 msgid "Application installer"
 msgstr "Alkalmazás telepítő"
@@ -1131,7 +1137,7 @@ msgid "Assign existing SQL user"
 msgstr "Rendelje hozzá a meglévő SQL-felhasználót "
 
 msgid "Assign group"
-msgstr "Csoport hozzárendelése"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Először is készítened kell egy adatbázist, ami legalább egy SQL felhasználót tartalmaz."
@@ -1630,7 +1636,7 @@ msgid "Custom menu successfully updated."
 msgstr "Egyéni menü sikeresen frissítve"
 
 msgid "Custom menus"
-msgstr "Saját menük"
+msgstr ""
 
 msgid "Customer"
 msgstr "Ügyfél"
@@ -1672,7 +1678,7 @@ msgid "Customer scheduled for addition."
 msgstr "Ügyfél hozzáadása beütemezve"
 
 msgid "Customer statistics"
-msgstr "Ügyfél statisztika"
+msgstr ""
 
 msgid "Customer successfully scheduled for deletion."
 msgstr "Ügyfél törlése beütemezve."
@@ -1687,7 +1693,7 @@ msgid "Customers"
 msgstr "Ügyfelek"
 
 msgid "Customers assignment"
-msgstr "Ügyfelek átadása"
+msgstr ""
 
 msgid "Customize error pages for your domain."
 msgstr "Egyéni hibaoldalak testreszabása"
@@ -1747,7 +1753,7 @@ msgid "Database required"
 msgstr "Adatbázis szükséges"
 
 msgid "Database update"
-msgstr "Adatbázis frissítés"
+msgstr ""
 
 msgid "Database usage"
 msgstr "Adatbázisok tárhely foglaltsága"
@@ -1756,7 +1762,7 @@ msgid "Database users"
 msgstr "Adatbázis felhasználók"
 
 msgid "Databases"
-msgstr "Adatbázisok"
+msgstr ""
 
 msgid "Date"
 msgstr "Dátum"
@@ -1765,7 +1771,7 @@ msgid "Day"
 msgstr "nap"
 
 msgid "Day statistics"
-msgstr "Napi statisztika"
+msgstr ""
 
 msgid "Days"
 msgstr "nap"
@@ -1835,7 +1841,7 @@ msgid ""
 msgstr "Kedves {RESELLER}!\n\nFeltöltött programcsomagját a(z) {ADMIN} sikeresen aktiválta.\n\nRészletek:\nProgamcsomag neve: {SOFTWARE}\nProgramcsomag azonosítója: {SOFTWARE_ID}\n\nKérjük, a részletekért lépjen be az i-MSCP kezelőfelületére!"
 
 msgid "Debugger"
-msgstr "Hibakereső"
+msgstr ""
 
 msgid "Default language"
 msgstr "Alapértelmezett nyelv"
@@ -1858,10 +1864,10 @@ msgid "Delete all tickets"
 msgstr "Minden hibajegy törlése"
 
 msgid "Delete customer"
-msgstr "Ügyfél törlése"
+msgstr ""
 
 msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "{DOMAIN_NAME} - ügyfél törlése"
+msgstr ""
 
 msgid "Delete from log:"
 msgstr "Törlés a naplóból:"
@@ -2083,7 +2089,7 @@ msgid "Domain statistics"
 msgstr "Domain statisztikák"
 
 msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "{DOMAIN_NAME} - domain statisztika"
+msgstr ""
 
 msgid "Domain status is not ok."
 msgstr "Domain állapota nincs rendben"
@@ -2130,52 +2136,52 @@ msgid "Edit"
 msgstr "Módosítás"
 
 msgid "Edit FTP account"
-msgstr "FTP-felhasználó módosítása"
+msgstr ""
 
 msgid "Edit SSL certificate"
 msgstr "SSL tanúsítvány kezelése"
 
 msgid "Edit admin"
-msgstr "Adminisztrátor módosítása"
+msgstr ""
 
 msgid "Edit auto responder"
-msgstr "'Automatikus válasz' email módosítása"
+msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr "Egyéni DNS rekord szerkesztése"
+msgstr ""
 
 msgid "Edit custom error page"
-msgstr "Egyéni hiba oldal módosítása"
+msgstr ""
 
 msgid "Edit custom menu"
 msgstr "Egyéni menü módosítása"
 
 msgid "Edit customer"
-msgstr "Ügyféladatok szerkesztése"
+msgstr ""
 
 msgid "Edit domain"
 msgstr "Domain módosítása"
 
 msgid "Edit domain alias"
-msgstr "Domain álnév módosítása"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "Hibaoldal szerkesztése"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Külső levelező szerver módosítása a {DOMAIN_UTF8} -hez"
+msgstr ""
 
 msgid "Edit hosting plan"
 msgstr "Tárhely csomag módosítása"
 
 msgid "Edit htaccess user"
-msgstr "Htaccess felhasználó módosítása"
+msgstr ""
 
 msgid "Edit mail account"
-msgstr "Postafiók módosítása"
+msgstr ""
 
 msgid "Edit mail quota"
-msgstr "Postafiók kvóta módosítása"
+msgstr ""
 
 msgid "Edit protected area"
 msgstr "Védett terület szerkesztése"
@@ -2184,7 +2190,7 @@ msgid "Edit reseller"
 msgstr "Viszonteladó módosítása"
 
 msgid "Edit subdomain"
-msgstr "Aldomain módosítása"
+msgstr ""
 
 msgid "Edit user"
 msgstr "Felhasználó módosítása"
@@ -2279,7 +2285,7 @@ msgid "Enable SSL"
 msgstr "SSL tanúsítvány használata"
 
 msgid "Enable auto responder"
-msgstr "'Automatikus válasz' email engedélyezése"
+msgstr ""
 
 msgid "Enabled"
 msgstr "Engedélyezve"
@@ -2438,7 +2444,7 @@ msgid "FileManager"
 msgstr "Fájlkezelő"
 
 msgid "Filemanager"
-msgstr "Fájlkezelő"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "Fájlrendszer adatok"
@@ -2514,13 +2520,13 @@ msgid "Gender"
 msgstr "Nem"
 
 msgid "General"
-msgstr "Általános beállítások"
+msgstr ""
 
 msgid "General information"
 msgstr "Kezdőlap"
 
 msgid "General settings"
-msgstr "Általános beállítások"
+msgstr ""
 
 msgid "Generate"
 msgstr "Generálás"
@@ -2596,7 +2602,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr "Tárhely csomag értékek meghaladják a saját korlátait"
 
 msgid "Hosting plans"
-msgstr "Tárhely csomagok"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "Elérhető tárhely csomagok"
@@ -2661,10 +2667,10 @@ msgid "IP addresses under control of i-MSCP"
 msgstr "i-MSCP által kezelt IP-címek"
 
 msgid "IP management"
-msgstr "IP-cím kezelő"
+msgstr ""
 
 msgid "IP usage"
-msgstr "IP-cím használata"
+msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6-cím"
@@ -2913,7 +2919,7 @@ msgid "Language successfully updated."
 msgstr "Felület nyelve sikeresen módosítva"
 
 msgid "Languages"
-msgstr "Nyelvi beállítások"
+msgstr ""
 
 msgid "Languages index was successfully re-built."
 msgstr "Nyelvi fájl újraindexelése sikeresen befejeződött"
@@ -3004,7 +3010,7 @@ msgid "Logo successfully updated."
 msgstr "Logó sikeresen frissítve"
 
 msgid "Logout"
-msgstr "Kijelentkezés"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Elfelejtett jelszó"
@@ -3070,7 +3076,7 @@ msgid ""
 msgstr "Karbantartási mód aktív. Ebben a módban csak az adminisztrátorok léphetnek be!"
 
 msgid "Maintenance settings"
-msgstr "Karbantartási beállítások"
+msgstr ""
 
 msgid "Male"
 msgstr "Férfi"
@@ -3079,13 +3085,13 @@ msgid "Malformed resolver SQL query"
 msgstr "Hibás SQL lekérdezés megjavítása"
 
 msgid "Manage Domains"
-msgstr "Domainek kezelése"
+msgstr ""
 
 msgid "Manage SQL"
 msgstr "Adatbázisok kezelése"
 
 msgid "Manage htaccess users and groups"
-msgstr "Védett területek, felhasználók és csoportok kezelése"
+msgstr ""
 
 msgid "Manage users"
 msgstr "Felhasználók kezelése"
@@ -3464,7 +3470,7 @@ msgid "Other settings"
 msgstr "További beállítások"
 
 msgid "Overview"
-msgstr "Áttekintés"
+msgstr ""
 
 msgid "Owner"
 msgstr "Tulajdonos"
@@ -3504,7 +3510,7 @@ msgid "PHP exec() function"
 msgstr "PHP exec() függvény"
 
 msgid "PHP settings"
-msgstr "PHP beállítások"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP(bejövő)"
@@ -3643,7 +3649,7 @@ msgid "Phone"
 msgstr "Telefon"
 
 msgid "PhpMyAdmin"
-msgstr "phpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr "PB"
@@ -3874,7 +3880,7 @@ msgid "Plugin list is empty."
 msgstr "Bővítmény lista üres."
 
 msgid "Plugin management"
-msgstr "Bővítménykezelő"
+msgstr ""
 
 msgid "Plugins Upload"
 msgstr "Bővítmény feltöltése"
@@ -3940,7 +3946,7 @@ msgid "Processor data"
 msgstr "Processzor adatok"
 
 msgid "Profile"
-msgstr "Profil"
+msgstr ""
 
 msgid "Properties"
 msgstr "Tulajdonságok"
@@ -4194,7 +4200,7 @@ msgid "Reseller software list"
 msgstr "Viszonteladói programlista"
 
 msgid "Reseller statistics"
-msgstr "Viszonteladói statisztikák"
+msgstr ""
 
 msgid "Reseller successfully added."
 msgstr "Viszonteladó sikeresen hozzáadva"
@@ -4221,7 +4227,7 @@ msgid "Resellers and customers"
 msgstr "Viszonteladók és ügyfelek"
 
 msgid "Resellers assignment"
-msgstr "Viszonteladók átadása"
+msgstr ""
 
 msgid "Reset"
 msgstr "Visszaállítás"
@@ -4452,16 +4458,16 @@ msgid "Service port successfully removed."
 msgstr "Szolgáltatás port sikeresen törölve!"
 
 msgid "Service ports"
-msgstr "Szolgáltatások portjai"
+msgstr ""
 
 msgid "Service protocol"
 msgstr "Protokoll"
 
 msgid "Services status"
-msgstr "Szolgáltatások állapotai"
+msgstr ""
 
 msgid "Sessions"
-msgstr "Felhasználói munkafolyamatok"
+msgstr ""
 
 msgid "Set status to 'tochange'"
 msgstr "Állapot módosítása 'megváltotatás'-ra"
@@ -4562,7 +4568,7 @@ msgid "Software installer requires PHP support."
 msgstr "A szoftvertelepítőnek kell PHP támogatás!"
 
 msgid "Software management"
-msgstr "Szoftverek kezelése"
+msgstr ""
 
 msgid "Software name"
 msgstr "Program neve"
@@ -4571,7 +4577,7 @@ msgid "Software not found!"
 msgstr "Program nem található"
 
 msgid "Software options"
-msgstr "Webes programtároló beállítása"
+msgstr ""
 
 msgid "Software permissions"
 msgstr "Program jogosultságai"
@@ -4627,7 +4633,7 @@ msgid "State/Province"
 msgstr "Megye"
 
 msgid "Statistics"
-msgstr "Statisztika"
+msgstr ""
 
 msgid "Stats"
 msgstr "Statisztikák"
@@ -4717,7 +4723,7 @@ msgid "Submit changes"
 msgstr "Változások mentése"
 
 msgid "Support"
-msgstr "Ügyfélszolgálat"
+msgstr ""
 
 msgid "Support system"
 msgstr "Ügyfélszolgálat"
@@ -4747,14 +4753,14 @@ msgid "System error - custom error page was not updated."
 msgstr "Rendszerhiba - a saját hibaleírás NEM lett módosítva"
 
 msgid "System information"
-msgstr "Rendszerinformációk"
+msgstr ""
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "Rendszer nem tudja eltávolítani a '% s' felhasználó logóját"
 
 msgid "System tools"
-msgstr "Rendszereszközök"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr "Rendszer karbantartás alatt van"
@@ -5274,7 +5280,7 @@ msgid "Update Plugins"
 msgstr "Bővítmények frissítése"
 
 msgid "Update SQL user password"
-msgstr "SQL felhasználó jelszava frissítve"
+msgstr ""
 
 msgid "Update data"
 msgstr "Adatok módosítása"
@@ -5286,7 +5292,7 @@ msgid "Update from web depot"
 msgstr "Frissítés a webes programtárolóból"
 
 msgid "Update hosting plan"
-msgstr "Tárhely csomag frissítése"
+msgstr ""
 
 msgid "Update in progress..."
 msgstr "Frissítés folyamatban..."
@@ -5456,7 +5462,7 @@ msgid "View hosting plan"
 msgstr "Tárhely csomag megtekintése"
 
 msgid "View ticket"
-msgstr "Hibajegy megnézése"
+msgstr ""
 
 msgid "Visit plugin site"
 msgstr "Bővítmény weboldalának meglátogatása"
@@ -5509,10 +5515,10 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr "Webes eszközök"
+msgstr ""
 
 msgid "Welcome email"
-msgstr "Üdvözlő e-mail"
+msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Üdvözöljük {USERNAME} az i-MSCP rendszerben!"
@@ -5982,12 +5988,6 @@ msgstr "mindent"
 msgid "from other browser"
 msgstr "másik böngészőből"
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr "getInfo() nem hajtotta végre a %s és %s nem található. <br /> Ez egy hiba a %s bővítményben és jelenteni kell a bővítmény szerzőjének"
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Alkalmazáskezelő (Jogosultságkezelés)"
 
@@ -6034,7 +6034,7 @@ msgid "i-MSCP plugin store"
 msgstr "i-MSCP bővítménytár"
 
 msgid "i-MSCP updates"
-msgstr "i-MSCP frissítések"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP verzió frissítésének keresése kikapcsolva"

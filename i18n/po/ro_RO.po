@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/i-MSCP/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -361,6 +361,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr ""
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr ""
 
@@ -599,7 +605,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr "Adauga utilizator FTP"
+msgstr ""
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -608,7 +614,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "Adauga baza de date SQL"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "Adauga utilizator pentru SQL"
@@ -653,7 +659,7 @@ msgid "Add group"
 msgstr "Adauga grup"
 
 msgid "Add hosting plan"
-msgstr "Adauga plan gazduire"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
@@ -683,7 +689,7 @@ msgid "Add reseller"
 msgstr "Adauga reseller"
 
 msgid "Add subdomain"
-msgstr "Adauga subdomeniu"
+msgstr ""
 
 msgid "Add user"
 msgstr "Adauga utilizator"
@@ -856,7 +862,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "Log Administrator"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -1627,7 +1633,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "Meniuri personalizate"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
@@ -2154,7 +2160,7 @@ msgid "Edit domain"
 msgstr "Editare domeniu"
 
 msgid "Edit domain alias"
-msgstr "Editeaza alias-uri domeniu"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "Editeaza pagina de eroare"
@@ -2435,7 +2441,7 @@ msgid "FileManager"
 msgstr "Manager de Fisiere"
 
 msgid "Filemanager"
-msgstr "Manager fisiere"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "Informatii sistem fisiere"
@@ -2517,7 +2523,7 @@ msgid "General information"
 msgstr "Informatii Generale"
 
 msgid "General settings"
-msgstr "Setari Generale"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2593,7 +2599,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "Planuri gazduire"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "Planuri de gazduire disponibile pentru actualizare"
@@ -2661,7 +2667,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr "Utilizare IP"
+msgstr ""
 
 msgid "IPv6 address"
 msgstr "Adresa IPv6"
@@ -3001,7 +3007,7 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr "Iesire"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Parola Pierduta"
@@ -3461,7 +3467,7 @@ msgid "Other settings"
 msgstr "Alte setari"
 
 msgid "Overview"
-msgstr "Rezumat"
+msgstr ""
 
 msgid "Owner"
 msgstr "Proprietar"
@@ -3640,7 +3646,7 @@ msgid "Phone"
 msgstr "Telefon"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -4455,7 +4461,7 @@ msgid "Service protocol"
 msgstr "Protocol"
 
 msgid "Services status"
-msgstr "Status servicii"
+msgstr ""
 
 msgid "Sessions"
 msgstr ""
@@ -4624,7 +4630,7 @@ msgid "State/Province"
 msgstr "Stat / Provincie"
 
 msgid "Statistics"
-msgstr "Statistici"
+msgstr ""
 
 msgid "Stats"
 msgstr "Statistici"
@@ -4751,7 +4757,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "Instrumente sistem"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr ""
@@ -5506,7 +5512,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr "Instrumente Web"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5979,12 +5985,6 @@ msgstr "tot"
 msgid "from other browser"
 msgstr ""
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
@@ -6031,7 +6031,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "i-MSCP actualizari"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/i-MSCP/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
@@ -359,6 +359,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr ""
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr ""
 
@@ -597,7 +603,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr "Legg til FTP bruker"
+msgstr ""
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -606,7 +612,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "Legg til SQL database"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "Legg til SQL bruker"
@@ -651,7 +657,7 @@ msgid "Add group"
 msgstr "Legg til gruppe"
 
 msgid "Add hosting plan"
-msgstr "Legg til betalingsløsning"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
@@ -681,7 +687,7 @@ msgid "Add reseller"
 msgstr "Legg til forhandler"
 
 msgid "Add subdomain"
-msgstr "Legg til underdomene"
+msgstr ""
 
 msgid "Add user"
 msgstr "Legg til bruker"
@@ -854,7 +860,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "Admin logg"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -1625,7 +1631,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "Egendefinerte menyer"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
@@ -2152,7 +2158,7 @@ msgid "Edit domain"
 msgstr "Domene innstillinger"
 
 msgid "Edit domain alias"
-msgstr "Endre domene pekere"
+msgstr ""
 
 msgid "Edit error page"
 msgstr ""
@@ -2433,7 +2439,7 @@ msgid "FileManager"
 msgstr "Filbehandler"
 
 msgid "Filemanager"
-msgstr "Filbehandler"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "Filsystem informasjon"
@@ -2515,7 +2521,7 @@ msgid "General information"
 msgstr "Generell informasjon"
 
 msgid "General settings"
-msgstr "Generelle instillinger"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2591,7 +2597,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "Betalingsplaner"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "Betalingsløsninger tilgjengelig for"
@@ -2999,7 +3005,7 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr "Log ut"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Tapt passord"
@@ -3459,7 +3465,7 @@ msgid "Other settings"
 msgstr "Andre instillinger"
 
 msgid "Overview"
-msgstr "Oversikt"
+msgstr ""
 
 msgid "Owner"
 msgstr "Eier"
@@ -3638,7 +3644,7 @@ msgid "Phone"
 msgstr "Telefon"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -4622,7 +4628,7 @@ msgid "State/Province"
 msgstr "Stat/Provins"
 
 msgid "Statistics"
-msgstr "Statistikk"
+msgstr ""
 
 msgid "Stats"
 msgstr "Statestikk"
@@ -4749,7 +4755,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "Systemverktøy"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr ""
@@ -5504,7 +5510,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr "Webverktøy"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5977,12 +5983,6 @@ msgstr "alt"
 msgid "from other browser"
 msgstr ""
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
@@ -6029,7 +6029,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "i-MSCP oppdateringer"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

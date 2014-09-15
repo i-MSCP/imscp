@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -145,7 +145,7 @@ msgid ""
 msgstr ""
 
 msgid " Wrong IP address."
-msgstr ""
+msgstr "錯誤的 IP地址"
 
 msgid " was deleted by {ADMIN}!"
 msgstr ""
@@ -264,7 +264,7 @@ msgstr "%s / 無限制"
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr ""
+msgstr "%s 帳號已經成功地刪除"
 
 #, php-format
 msgid "%s deleted the admin log older than one month."
@@ -357,6 +357,12 @@ msgstr ""
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
 msgstr ""
 
 #, php-format
@@ -595,19 +601,19 @@ msgid "Add / Edit SSL certificate"
 msgstr ""
 
 msgid "Add FTP account"
-msgstr "新增 FTP 帳號"
+msgstr ""
 
 msgid "Add FTP user"
-msgstr "增加 FTP 使用者"
+msgstr ""
 
 msgid "Add Htaccess group"
-msgstr "新增 Htaccess 群組"
+msgstr ""
 
 msgid "Add Htaccess user"
-msgstr "新增 Htaccess 使用者"
+msgstr ""
 
 msgid "Add SQL database"
-msgstr "增加 SQL 資料庫"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "增加 SQL 使用者"
@@ -625,25 +631,25 @@ msgid "Add catchall"
 msgstr ""
 
 msgid "Add custom DNS record"
-msgstr "新增自訂DNS紀錄"
+msgstr ""
 
 msgid "Add custom menu"
 msgstr "新增自訂選單"
 
 msgid "Add customer"
-msgstr "新增客戶"
+msgstr ""
 
 msgid "Add customer - Next step"
-msgstr "新增客戶 - 下一步"
+msgstr ""
 
 msgid "Add domain alias"
 msgstr "增加網域別名"
 
 msgid "Add email account"
-msgstr "新增 Email 帳號"
+msgstr ""
 
 msgid "Add email user"
-msgstr "新增Email使用者"
+msgstr ""
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr ""
@@ -652,7 +658,7 @@ msgid "Add group"
 msgstr "增加群組"
 
 msgid "Add hosting plan"
-msgstr "增加代管方案"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr "新增 IP 位址"
@@ -682,7 +688,7 @@ msgid "Add reseller"
 msgstr "增加代理商"
 
 msgid "Add subdomain"
-msgstr "增加子網域"
+msgstr ""
 
 msgid "Add user"
 msgstr "增加使用者"
@@ -855,7 +861,7 @@ msgid "Admin account successfully created."
 msgstr "管理員帳號已經成功建立"
 
 msgid "Admin log"
-msgstr "管理員日誌"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -1008,7 +1014,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
 msgid "Anti-Rootkits Logs"
-msgstr "Anti-Rootkits 日誌"
+msgstr ""
 
 msgid "Application installer"
 msgstr ""
@@ -1127,7 +1133,7 @@ msgid "Assign existing SQL user"
 msgstr "分配已存在的的 SQL 使用者"
 
 msgid "Assign group"
-msgstr "指派群組"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
@@ -1626,7 +1632,7 @@ msgid "Custom menu successfully updated."
 msgstr "自訂選單已經成功更新"
 
 msgid "Custom menus"
-msgstr "自訂選單"
+msgstr ""
 
 msgid "Customer"
 msgstr "客戶"
@@ -1683,7 +1689,7 @@ msgid "Customers"
 msgstr "使用者"
 
 msgid "Customers assignment"
-msgstr "使用者分配"
+msgstr ""
 
 msgid "Customize error pages for your domain."
 msgstr "為您的網域自訂錯誤訊息頁面"
@@ -1743,7 +1749,7 @@ msgid "Database required"
 msgstr "需要資料庫"
 
 msgid "Database update"
-msgstr "資料庫更新"
+msgstr ""
 
 msgid "Database usage"
 msgstr ""
@@ -1752,7 +1758,7 @@ msgid "Database users"
 msgstr "資料庫使用者"
 
 msgid "Databases"
-msgstr "資料庫"
+msgstr ""
 
 msgid "Date"
 msgstr "日期"
@@ -1854,7 +1860,7 @@ msgid "Delete all tickets"
 msgstr "刪除所有服務單"
 
 msgid "Delete customer"
-msgstr "刪除客戶"
+msgstr ""
 
 msgid "Delete customer - {DOMAIN_NAME}"
 msgstr ""
@@ -2126,7 +2132,7 @@ msgid "Edit"
 msgstr "編輯"
 
 msgid "Edit FTP account"
-msgstr "編輯 FTP 帳號"
+msgstr ""
 
 msgid "Edit SSL certificate"
 msgstr "編輯 SSL 證書"
@@ -2138,22 +2144,22 @@ msgid "Edit auto responder"
 msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr "編輯自訂DNS紀錄"
+msgstr ""
 
 msgid "Edit custom error page"
-msgstr "編輯自訂錯誤頁面"
+msgstr ""
 
 msgid "Edit custom menu"
 msgstr "編輯自訂選單"
 
 msgid "Edit customer"
-msgstr "編輯客戶"
+msgstr ""
 
 msgid "Edit domain"
 msgstr "編輯網域"
 
 msgid "Edit domain alias"
-msgstr "編輯網域別名"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "編輯錯誤頁"
@@ -2165,10 +2171,10 @@ msgid "Edit hosting plan"
 msgstr "編輯代管方案"
 
 msgid "Edit htaccess user"
-msgstr "編輯 htaccess 使用者"
+msgstr ""
 
 msgid "Edit mail account"
-msgstr "編輯郵件帳號"
+msgstr ""
 
 msgid "Edit mail quota"
 msgstr ""
@@ -2180,7 +2186,7 @@ msgid "Edit reseller"
 msgstr "編輯代理商"
 
 msgid "Edit subdomain"
-msgstr "編輯子網域"
+msgstr ""
 
 msgid "Edit user"
 msgstr "編輯使用者"
@@ -2434,7 +2440,7 @@ msgid "FileManager"
 msgstr ""
 
 msgid "Filemanager"
-msgstr "文件管理器"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "檔案系統資訊"
@@ -2510,13 +2516,13 @@ msgid "Gender"
 msgstr "性別"
 
 msgid "General"
-msgstr "一般"
+msgstr ""
 
 msgid "General information"
 msgstr "概要訊息"
 
 msgid "General settings"
-msgstr "一般設定"
+msgstr ""
 
 msgid "Generate"
 msgstr "產生"
@@ -2543,7 +2549,7 @@ msgid "Group name"
 msgstr "群組名稱"
 
 msgid "Groups"
-msgstr "組"
+msgstr "群組"
 
 msgid "HTTP traffic"
 msgstr "HTTP 流量"
@@ -2592,7 +2598,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "代管方案"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "可用的代管方案用於"
@@ -2657,10 +2663,10 @@ msgid "IP addresses under control of i-MSCP"
 msgstr ""
 
 msgid "IP management"
-msgstr "IP 管理"
+msgstr ""
 
 msgid "IP usage"
-msgstr "IP 使用清單"
+msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6 位址"
@@ -2909,7 +2915,7 @@ msgid "Language successfully updated."
 msgstr "語言已經成功更新"
 
 msgid "Languages"
-msgstr "多國語言"
+msgstr ""
 
 msgid "Languages index was successfully re-built."
 msgstr "多國語言索引已經成功重建"
@@ -2988,7 +2994,7 @@ msgid "Login username"
 msgstr ""
 
 msgid "Login with your FTP account"
-msgstr "以你的 FTP 帳號登入"
+msgstr "使用您設定的 FTP 帳號透過檔案總管或者Filezilla進行登入"
 
 msgid "Logo file"
 msgstr "Logo 檔案"
@@ -3000,7 +3006,7 @@ msgid "Logo successfully updated."
 msgstr "Logo 成功更新"
 
 msgid "Logout"
-msgstr "登出"
+msgstr ""
 
 msgid "Lost password"
 msgstr "找回密碼"
@@ -3066,7 +3072,7 @@ msgid ""
 msgstr ""
 
 msgid "Maintenance settings"
-msgstr "維護設定"
+msgstr ""
 
 msgid "Male"
 msgstr "男"
@@ -3075,7 +3081,7 @@ msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr "網域管理"
+msgstr ""
 
 msgid "Manage SQL"
 msgstr "管理 SQL"
@@ -3087,7 +3093,7 @@ msgid "Manage users"
 msgstr "使用者管理"
 
 msgid "Manage users and groups"
-msgstr "管理使用者和組"
+msgstr "管理使用者和群組"
 
 msgid "Manage your protected areas, users and groups."
 msgstr "管理您的保護區域、使用者、群組"
@@ -3460,7 +3466,7 @@ msgid "Other settings"
 msgstr "其他設定"
 
 msgid "Overview"
-msgstr "概覽"
+msgstr ""
 
 msgid "Owner"
 msgstr "擁有人"
@@ -3500,7 +3506,7 @@ msgid "PHP exec() function"
 msgstr ""
 
 msgid "PHP settings"
-msgstr "PHP 設定"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP 接收"
@@ -3639,7 +3645,7 @@ msgid "Phone"
 msgstr "電話"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -3870,7 +3876,7 @@ msgid "Plugin list is empty."
 msgstr ""
 
 msgid "Plugin management"
-msgstr "插件管理"
+msgstr ""
 
 msgid "Plugins Upload"
 msgstr "插件上傳"
@@ -3936,7 +3942,7 @@ msgid "Processor data"
 msgstr "處理器資料"
 
 msgid "Profile"
-msgstr "個人"
+msgstr ""
 
 msgid "Properties"
 msgstr ""
@@ -4190,7 +4196,7 @@ msgid "Reseller software list"
 msgstr "代理商軟體列表"
 
 msgid "Reseller statistics"
-msgstr "代理商統計"
+msgstr ""
 
 msgid "Reseller successfully added."
 msgstr ""
@@ -4448,16 +4454,16 @@ msgid "Service port successfully removed."
 msgstr ""
 
 msgid "Service ports"
-msgstr "服務端口"
+msgstr ""
 
 msgid "Service protocol"
 msgstr ""
 
 msgid "Services status"
-msgstr "伺服器狀態"
+msgstr ""
 
 msgid "Sessions"
-msgstr "工作階段"
+msgstr ""
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4558,7 +4564,7 @@ msgid "Software installer requires PHP support."
 msgstr ""
 
 msgid "Software management"
-msgstr "軟體管理"
+msgstr ""
 
 msgid "Software name"
 msgstr "軟體名稱"
@@ -4567,7 +4573,7 @@ msgid "Software not found!"
 msgstr ""
 
 msgid "Software options"
-msgstr "軟體設定"
+msgstr ""
 
 msgid "Software permissions"
 msgstr ""
@@ -4623,7 +4629,7 @@ msgid "State/Province"
 msgstr "省/洲"
 
 msgid "Statistics"
-msgstr "資料統計"
+msgstr ""
 
 msgid "Stats"
 msgstr "統計"
@@ -4713,7 +4719,7 @@ msgid "Submit changes"
 msgstr "提交更改"
 
 msgid "Support"
-msgstr "支援"
+msgstr ""
 
 msgid "Support system"
 msgstr "系統支援"
@@ -4728,7 +4734,7 @@ msgid "Switch"
 msgstr "切換"
 
 msgid "Switch to the backups directory"
-msgstr ""
+msgstr "切換至 backups 資料夾"
 
 msgid "Switch to user interface"
 msgstr "切換使用者介面"
@@ -4743,14 +4749,14 @@ msgid "System error - custom error page was not updated."
 msgstr ""
 
 msgid "System information"
-msgstr "系統資訊"
+msgstr ""
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "系統工具"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr "系統維護中"
@@ -5405,13 +5411,13 @@ msgid "Username and password for application login"
 msgstr ""
 
 msgid "Username is too long."
-msgstr ""
+msgstr "使用者名稱過長"
 
 msgid "Users"
 msgstr "使用者"
 
 msgid "Users and groups"
-msgstr ""
+msgstr "使用者與群組"
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5505,10 +5511,10 @@ msgid "Webmail"
 msgstr "網頁郵件"
 
 msgid "Webtools"
-msgstr "Web工具"
+msgstr ""
 
 msgid "Welcome email"
-msgstr "歡迎郵件"
+msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
@@ -5798,13 +5804,13 @@ msgid "You must confirm customer account deletion."
 msgstr ""
 
 msgid "You must confirm your password."
-msgstr ""
+msgstr "您必須確認您的密碼"
 
 msgid "You must enter a domain alias name."
-msgstr ""
+msgstr "您必須輸入一個網域別稱"
 
 msgid "You must enter a subdomain name."
-msgstr ""
+msgstr "您必須輸入一個子網域名稱"
 
 msgid "You must first generate a password"
 msgstr "您必須先產生一個密碼"
@@ -5813,7 +5819,7 @@ msgid "You must omit 'www'. It will be added automatically."
 msgstr ""
 
 msgid "You must provide a password."
-msgstr ""
+msgstr "您必須提供一組密碼"
 
 msgid "You must select a file to upload."
 msgstr ""
@@ -5831,10 +5837,10 @@ msgid "You must select a least one mail account to delete."
 msgstr ""
 
 msgid "You must select a network interface."
-msgstr ""
+msgstr "您必須選擇一個網路介面"
 
 msgid "You must select a plugin."
-msgstr ""
+msgstr "您必須選擇一個插件"
 
 msgid "You must specify a message."
 msgstr "您必須輸入一個訊息"
@@ -5861,7 +5867,7 @@ msgid ""
 msgstr ""
 
 msgid "Your certificate is expired"
-msgstr ""
+msgstr "您的憑證已經到期"
 
 msgid "Your certificate is not valid or the CA bundle is missing."
 msgstr ""
@@ -5978,12 +5984,6 @@ msgstr "全部"
 msgid "from other browser"
 msgstr ""
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
@@ -6030,7 +6030,7 @@ msgid "i-MSCP plugin store"
 msgstr "i-MSCP 插件商店"
 
 msgid "i-MSCP updates"
-msgstr "i-MSCP 更新"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP 版本檢查已停用"
@@ -6042,7 +6042,7 @@ msgid "installing"
 msgstr "安裝中"
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "internet Multi Server Control Panel"
 
 msgid "kB"
 msgstr ""
@@ -6100,7 +6100,7 @@ msgid "orphan entry"
 msgstr ""
 
 msgid "phpMyAdmin"
-msgstr ""
+msgstr "phpMyAdmin"
 
 msgid "required"
 msgstr ""
@@ -6130,7 +6130,7 @@ msgid "waiting for activation"
 msgstr ""
 
 msgid "wildcard"
-msgstr ""
+msgstr "萬用字元"
 
 msgid "yes"
 msgstr "是"
