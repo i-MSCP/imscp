@@ -68,10 +68,10 @@
         </proftpd>
     </ftpd>
     <named default="bind">
-            <bind>
-                <package>bind9</package>
-            </bind>
-            <external_server/>
+        <bind>
+            <package>bind9</package>
+        </bind>
+        <external_server/>
     </named>
     <sql default="mysql_5.5">
         <mysql_5.5
