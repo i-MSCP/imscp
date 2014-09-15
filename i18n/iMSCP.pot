@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.1.12\n"
+"Project-Id-Version: i-MSCP 1.1.14\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -357,6 +357,12 @@ msgstr ""
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
 msgstr ""
 
 #, php-format
@@ -5970,12 +5976,6 @@ msgid "everything"
 msgstr ""
 
 msgid "from other browser"
-msgstr ""
-
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
 msgstr ""
 
 msgid "i-MSCP - Application Management (Permissions)"

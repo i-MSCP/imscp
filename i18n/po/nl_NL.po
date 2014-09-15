@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-18 11:16+0000\n"
-"Last-Translator: theemstra <thom@heemstra.us>\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -367,6 +367,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr ""
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr ""
 
@@ -605,7 +611,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr "FTP gebruiker toevoegen"
+msgstr ""
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -614,7 +620,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "MySQL databank toevoegen"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "MySQL gebruiker toevoegen"
@@ -659,7 +665,7 @@ msgid "Add group"
 msgstr "Groep toevoegen"
 
 msgid "Add hosting plan"
-msgstr "hostingpakket toevoegen"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
@@ -689,7 +695,7 @@ msgid "Add reseller"
 msgstr "Reseller toevoegen"
 
 msgid "Add subdomain"
-msgstr "Subdomein toevoegen"
+msgstr ""
 
 msgid "Add user"
 msgstr "Gebruiker toevoegen"
@@ -862,7 +868,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "Beheerders Log"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -1633,7 +1639,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "Standaard menus"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
@@ -2160,7 +2166,7 @@ msgid "Edit domain"
 msgstr "Wijzig domein"
 
 msgid "Edit domain alias"
-msgstr "Wijzig domeinalias"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "Wijzig error pagina"
@@ -2441,7 +2447,7 @@ msgid "FileManager"
 msgstr "Bestandsbeheer"
 
 msgid "Filemanager"
-msgstr "Bestandbeheerder"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "Filesysteem info"
@@ -2517,13 +2523,13 @@ msgid "Gender"
 msgstr "Geslacht"
 
 msgid "General"
-msgstr "Algemeen"
+msgstr ""
 
 msgid "General information"
 msgstr "Algemene informatie"
 
 msgid "General settings"
-msgstr "Algemene instellingen"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2599,7 +2605,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "hostingpakketten"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "Hosting pakketten  beschikbaar voor"
@@ -2667,7 +2673,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr "IP gebruik"
+msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6 address"
@@ -2916,7 +2922,7 @@ msgid "Language successfully updated."
 msgstr ""
 
 msgid "Languages"
-msgstr "Taal Instelling"
+msgstr ""
 
 msgid "Languages index was successfully re-built."
 msgstr ""
@@ -3007,7 +3013,7 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr "Log uit"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Wachtwoord Opvragen"
@@ -3073,7 +3079,7 @@ msgid ""
 msgstr "Onderhouds modus is geactiveerd alleen Administrators kunnen nog inloggen"
 
 msgid "Maintenance settings"
-msgstr "Server Onderhouds settings"
+msgstr ""
 
 msgid "Male"
 msgstr "Man"
@@ -3082,7 +3088,7 @@ msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr "Beheer domeinen"
+msgstr ""
 
 msgid "Manage SQL"
 msgstr "Beheer MySQL"
@@ -3467,7 +3473,7 @@ msgid "Other settings"
 msgstr "Andere instellingen"
 
 msgid "Overview"
-msgstr "Overzicht"
+msgstr ""
 
 msgid "Owner"
 msgstr "Eigenaar"
@@ -3646,7 +3652,7 @@ msgid "Phone"
 msgstr "Telefoon"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -3943,7 +3949,7 @@ msgid "Processor data"
 msgstr ""
 
 msgid "Profile"
-msgstr "Profiel"
+msgstr ""
 
 msgid "Properties"
 msgstr ""
@@ -4461,7 +4467,7 @@ msgid "Service protocol"
 msgstr "Dienst protocol"
 
 msgid "Services status"
-msgstr "Server status"
+msgstr ""
 
 msgid "Sessions"
 msgstr ""
@@ -4630,7 +4636,7 @@ msgid "State/Province"
 msgstr "Staat/Provincie"
 
 msgid "Statistics"
-msgstr "Statistieken"
+msgstr ""
 
 msgid "Stats"
 msgstr "Statistieken"
@@ -4750,14 +4756,14 @@ msgid "System error - custom error page was not updated."
 msgstr ""
 
 msgid "System information"
-msgstr "Systeem Informatie"
+msgstr ""
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "Systeem tools"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr "In onderhouds Modus"
@@ -5459,7 +5465,7 @@ msgid "View hosting plan"
 msgstr "Bekijk het hosting plan"
 
 msgid "View ticket"
-msgstr "Bekijk de ticket"
+msgstr ""
 
 msgid "Visit plugin site"
 msgstr "Bezoek de plugin site"
@@ -5512,7 +5518,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr "Webtools"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5985,12 +5991,6 @@ msgstr "alles"
 msgid "from other browser"
 msgstr ""
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
@@ -6037,7 +6037,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "i-MSCP Updates"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

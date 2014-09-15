@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Basque (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/eu_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -360,6 +360,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr ""
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr ""
 
@@ -598,7 +604,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr "Gehitu FTP erabiltzailea"
+msgstr ""
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -607,7 +613,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "Gehitu SQL datubasea"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "Gehitu SQL erabiltzailea"
@@ -652,7 +658,7 @@ msgid "Add group"
 msgstr "Gehitu taldea"
 
 msgid "Add hosting plan"
-msgstr "Gehitu hostatze plana"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
@@ -682,7 +688,7 @@ msgid "Add reseller"
 msgstr "Gehitu bersaltzailea"
 
 msgid "Add subdomain"
-msgstr "Gehitu azpidomeinua"
+msgstr ""
 
 msgid "Add user"
 msgstr "Gehitu erabiltzailea"
@@ -855,7 +861,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "Administrariaren log-a"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -1626,7 +1632,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "Menu pertsonalizatuak"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
@@ -2153,7 +2159,7 @@ msgid "Edit domain"
 msgstr "Aldatu Domeinua"
 
 msgid "Edit domain alias"
-msgstr "Aldatu domeinu ezizenak"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "Aldatu akats orria"
@@ -2180,7 +2186,7 @@ msgid "Edit reseller"
 msgstr "Aldatu bersaltzailea"
 
 msgid "Edit subdomain"
-msgstr "Aldatu azpidomeinua"
+msgstr ""
 
 msgid "Edit user"
 msgstr "Aldatu erabiltzailea"
@@ -2434,7 +2440,7 @@ msgid "FileManager"
 msgstr "Fitxategi arakatzailea"
 
 msgid "Filemanager"
-msgstr "Artxibo kudeaketa"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "Sistema fitxategiaren sistema informazioa"
@@ -2516,7 +2522,7 @@ msgid "General information"
 msgstr "Infomazio orokorra"
 
 msgid "General settings"
-msgstr "Ezarpen orokorrak"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2592,7 +2598,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "Hostatze planak"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "Hostatzen planak aukeran daude"
@@ -2660,7 +2666,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr "IP erabillera"
+msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6 helbideak"
@@ -3000,7 +3006,7 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr "Irten"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Ez dut pasahitza gogoratzen"
@@ -3460,7 +3466,7 @@ msgid "Other settings"
 msgstr "Beste aukerak"
 
 msgid "Overview"
-msgstr "Orokorra"
+msgstr ""
 
 msgid "Owner"
 msgstr "Jabea"
@@ -3639,7 +3645,7 @@ msgid "Phone"
 msgstr "Telefonoa"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin-a"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -4454,7 +4460,7 @@ msgid "Service protocol"
 msgstr "Zerbitzari protokoloa"
 
 msgid "Services status"
-msgstr "Zerbitzuaren egoera"
+msgstr ""
 
 msgid "Sessions"
 msgstr ""
@@ -4623,7 +4629,7 @@ msgid "State/Province"
 msgstr "Estatua/Probintzia"
 
 msgid "Statistics"
-msgstr "Estatistikak"
+msgstr ""
 
 msgid "Stats"
 msgstr "Estatistikak"
@@ -4750,7 +4756,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "Sistema tresnak"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr ""
@@ -5505,7 +5511,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr "Web tresnak"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5978,12 +5984,6 @@ msgstr "dena"
 msgid "from other browser"
 msgstr "beste nabigatzailetik"
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Aplikazio Kudeaketa (Baimenak)"
 
@@ -6030,7 +6030,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "ispCp eguneraketak"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

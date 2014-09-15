@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Hong Kong) (http://www.transifex.com/projects/p/i-MSCP/language/zh_HK/)\n"
 "MIME-Version: 1.0\n"
@@ -359,6 +359,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr ""
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr ""
 
@@ -597,7 +603,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr "增加 FTP 使用者"
+msgstr ""
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -606,7 +612,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "增加 SQL 資料庫"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "增加 SQL 使用者"
@@ -651,7 +657,7 @@ msgid "Add group"
 msgstr "增加組"
 
 msgid "Add hosting plan"
-msgstr "增加託管計劃"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
@@ -681,7 +687,7 @@ msgid "Add reseller"
 msgstr "增加代理商"
 
 msgid "Add subdomain"
-msgstr "增加子網域"
+msgstr ""
 
 msgid "Add user"
 msgstr "增加使用者"
@@ -854,7 +860,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "管理員日誌"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -1625,7 +1631,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "自定義功能表"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
@@ -2152,7 +2158,7 @@ msgid "Edit domain"
 msgstr "編輯網域"
 
 msgid "Edit domain alias"
-msgstr "編輯網域別名"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "編輯錯誤頁"
@@ -2433,7 +2439,7 @@ msgid "FileManager"
 msgstr ""
 
 msgid "Filemanager"
-msgstr "文件管理器"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "檔案系統資訊"
@@ -2515,7 +2521,7 @@ msgid "General information"
 msgstr "概要訊息"
 
 msgid "General settings"
-msgstr "一般設定"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2591,7 +2597,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "託管計劃"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "可用的託管計劃用於"
@@ -2999,7 +3005,7 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr "登出"
+msgstr ""
 
 msgid "Lost password"
 msgstr "找回密碼"
@@ -3459,7 +3465,7 @@ msgid "Other settings"
 msgstr "其他設定"
 
 msgid "Overview"
-msgstr "概覽"
+msgstr ""
 
 msgid "Owner"
 msgstr "擁有人"
@@ -3638,7 +3644,7 @@ msgid "Phone"
 msgstr "電話"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -4622,7 +4628,7 @@ msgid "State/Province"
 msgstr ""
 
 msgid "Statistics"
-msgstr "資料統計"
+msgstr ""
 
 msgid "Stats"
 msgstr "統計"
@@ -4749,7 +4755,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "系統工具"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr ""
@@ -5504,7 +5510,7 @@ msgid "Webmail"
 msgstr "網頁郵件"
 
 msgid "Webtools"
-msgstr "Web工具"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5977,12 +5983,6 @@ msgstr "全部"
 msgid "from other browser"
 msgstr ""
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
@@ -6029,7 +6029,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "i-MSCP 更新"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

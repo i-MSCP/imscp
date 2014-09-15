@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/i-MSCP/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -360,6 +360,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr ""
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr ""
 
@@ -598,7 +604,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr "اضافة مستخدم اف تى بى"
+msgstr ""
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -607,7 +613,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "أضف قاعدة بيانات SQL"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr ""
@@ -652,7 +658,7 @@ msgid "Add group"
 msgstr ""
 
 msgid "Add hosting plan"
-msgstr "أضف خطة إستضافة"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
@@ -682,7 +688,7 @@ msgid "Add reseller"
 msgstr "اضافة ريسيلر"
 
 msgid "Add subdomain"
-msgstr "اضافة نطاق فرعى"
+msgstr ""
 
 msgid "Add user"
 msgstr "اضافة اسم مستخدم"
@@ -855,7 +861,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "سجل المدير"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -1626,7 +1632,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "قوائم مخصصة"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
@@ -2434,7 +2440,7 @@ msgid "FileManager"
 msgstr "مدير الملفات"
 
 msgid "Filemanager"
-msgstr "مدير الملفات"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr ""
@@ -2516,7 +2522,7 @@ msgid "General information"
 msgstr "المعلومات العامة"
 
 msgid "General settings"
-msgstr "إعدادات عامة"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2592,7 +2598,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "خطط الاستضافة"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr ""
@@ -2660,7 +2666,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr "استخدام الأى بى"
+msgstr ""
 
 msgid "IPv6 address"
 msgstr ""
@@ -3000,7 +3006,7 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr "تسجيل الخروج"
+msgstr ""
 
 msgid "Lost password"
 msgstr "فقدت كلمة المرور"
@@ -3460,7 +3466,7 @@ msgid "Other settings"
 msgstr "إعدادات اخرى"
 
 msgid "Overview"
-msgstr "نظرة عامة"
+msgstr ""
 
 msgid "Owner"
 msgstr "المالك"
@@ -3639,7 +3645,7 @@ msgid "Phone"
 msgstr "رقم هاتف"
 
 msgid "PhpMyAdmin"
-msgstr "ادارة قواعد البيانات"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -4454,7 +4460,7 @@ msgid "Service protocol"
 msgstr ""
 
 msgid "Services status"
-msgstr "حالة الخدمات"
+msgstr ""
 
 msgid "Sessions"
 msgstr ""
@@ -4623,7 +4629,7 @@ msgid "State/Province"
 msgstr "الولاية"
 
 msgid "Statistics"
-msgstr "إحصائيات"
+msgstr ""
 
 msgid "Stats"
 msgstr "إحصائيات"
@@ -4750,7 +4756,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "أدوات النظام"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr ""
@@ -5505,7 +5511,7 @@ msgid "Webmail"
 msgstr "البريد الالكتروني"
 
 msgid "Webtools"
-msgstr "أدوات الويب"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5978,12 +5984,6 @@ msgstr "كل شئ"
 msgid "from other browser"
 msgstr ""
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
@@ -6030,7 +6030,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "تحديثات i-MSCP"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-07-21 00:30+0200\n"
-"PO-Revision-Date: 2014-07-16 23:24+0000\n"
+"POT-Creation-Date: 2014-09-15 03:48+0200\n"
+"PO-Revision-Date: 2014-09-15 01:50+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -361,6 +361,12 @@ msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr ""
 
 #, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
 msgid "%sfield is empty or invalid."
 msgstr ""
 
@@ -596,10 +602,10 @@ msgid "Add / Edit SSL certificate"
 msgstr ""
 
 msgid "Add FTP account"
-msgstr "Lisää FTP tili"
+msgstr ""
 
 msgid "Add FTP user"
-msgstr "Lisää FTP-käyttäjä"
+msgstr ""
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -608,7 +614,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "Lisää SQL-tietokanta"
+msgstr ""
 
 msgid "Add SQL user"
 msgstr "Lisää SQL-käyttäjä"
@@ -626,25 +632,25 @@ msgid "Add catchall"
 msgstr ""
 
 msgid "Add custom DNS record"
-msgstr "Lisää DNS tietue"
+msgstr ""
 
 msgid "Add custom menu"
 msgstr ""
 
 msgid "Add customer"
-msgstr "Lisää asiakas"
+msgstr ""
 
 msgid "Add customer - Next step"
-msgstr "Lisää asiakas - Seuraava askel"
+msgstr ""
 
 msgid "Add domain alias"
 msgstr "Lisää domain-alias"
 
 msgid "Add email account"
-msgstr "Lisää sähköpostitili"
+msgstr ""
 
 msgid "Add email user"
-msgstr "Lisää sähköpostiosoite"
+msgstr ""
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr ""
@@ -653,7 +659,7 @@ msgid "Add group"
 msgstr "Lisää ryhmä"
 
 msgid "Add hosting plan"
-msgstr "Lisää hosting-paketti"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr "Lisää uusi IP osoite"
@@ -683,7 +689,7 @@ msgid "Add reseller"
 msgstr "Lisää jälleenmyyjä"
 
 msgid "Add subdomain"
-msgstr "Lisää alidomain"
+msgstr ""
 
 msgid "Add user"
 msgstr "Lisää käyttäjä"
@@ -856,7 +862,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "Ylläpitologi"
+msgstr ""
 
 msgid "Admin not available"
 msgstr "Admin ei tavoitettavissa"
@@ -1128,7 +1134,7 @@ msgid "Assign existing SQL user"
 msgstr ""
 
 msgid "Assign group"
-msgstr "Aseta ryhmä"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
@@ -1627,7 +1633,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "Vaihtoehtoiset valikot"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
@@ -1753,7 +1759,7 @@ msgid "Database users"
 msgstr "Tietokantakäyttäjät"
 
 msgid "Databases"
-msgstr "Tietokannat"
+msgstr ""
 
 msgid "Date"
 msgstr "Aika"
@@ -1832,7 +1838,7 @@ msgid ""
 msgstr ""
 
 msgid "Debugger"
-msgstr "Debugger"
+msgstr ""
 
 msgid "Default language"
 msgstr "Oletuskieli"
@@ -1855,7 +1861,7 @@ msgid "Delete all tickets"
 msgstr "Poista kaikki tukipyynnöt"
 
 msgid "Delete customer"
-msgstr "Poista asiakas"
+msgstr ""
 
 msgid "Delete customer - {DOMAIN_NAME}"
 msgstr ""
@@ -2080,7 +2086,7 @@ msgid "Domain statistics"
 msgstr "Domain-statistiikka"
 
 msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "Domainin tilastot - {DOMAIN_NAME}"
+msgstr ""
 
 msgid "Domain status is not ok."
 msgstr "Domainin tila ei ole ok."
@@ -2139,7 +2145,7 @@ msgid "Edit auto responder"
 msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr "Muokkaa itse määriteltyä DNS merkintää"
+msgstr ""
 
 msgid "Edit custom error page"
 msgstr ""
@@ -2154,7 +2160,7 @@ msgid "Edit domain"
 msgstr "Muokkaa Domainia"
 
 msgid "Edit domain alias"
-msgstr "Muokkaa domain-aliasta"
+msgstr ""
 
 msgid "Edit error page"
 msgstr "Muokkaa virhesivua"
@@ -2181,7 +2187,7 @@ msgid "Edit reseller"
 msgstr "Muokkaa jälleenmyyjää"
 
 msgid "Edit subdomain"
-msgstr "Muokkaa alidomainia"
+msgstr ""
 
 msgid "Edit user"
 msgstr "Muokkaa käyttäjää"
@@ -2435,7 +2441,7 @@ msgid "FileManager"
 msgstr "Tiedostojenhallinta"
 
 msgid "Filemanager"
-msgstr "Tiedostonhallinta"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "Tiedostojärjestelmän tiedot"
@@ -2517,7 +2523,7 @@ msgid "General information"
 msgstr "Yleistiedot"
 
 msgid "General settings"
-msgstr "Yleiset asetukset"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2593,7 +2599,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "Hosting-paketit"
+msgstr ""
 
 msgid "Hosting plans available for"
 msgstr "Palvelupaketit ovat tarjolla"
@@ -2661,7 +2667,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr "IP käyttö"
+msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6 osoite"
@@ -3001,7 +3007,7 @@ msgid "Logo successfully updated."
 msgstr "Logo päivitetty onnistuneesti."
 
 msgid "Logout"
-msgstr "Uloskirjautuminen"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Salasana unohtunut?"
@@ -3076,7 +3082,7 @@ msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr "Hallitse domaineja"
+msgstr ""
 
 msgid "Manage SQL"
 msgstr "Hallitse tietokantoja"
@@ -3461,7 +3467,7 @@ msgid "Other settings"
 msgstr "Muut asetukset"
 
 msgid "Overview"
-msgstr "Etusivu"
+msgstr ""
 
 msgid "Owner"
 msgstr "Omistaja"
@@ -3640,7 +3646,7 @@ msgid "Phone"
 msgstr "Puhelin"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -4455,7 +4461,7 @@ msgid "Service protocol"
 msgstr "Palvelun protolla"
 
 msgid "Services status"
-msgstr "Palvelun tila"
+msgstr ""
 
 msgid "Sessions"
 msgstr ""
@@ -4624,7 +4630,7 @@ msgid "State/Province"
 msgstr "Osavaltio/lääni"
 
 msgid "Statistics"
-msgstr "Statistiikka"
+msgstr ""
 
 msgid "Stats"
 msgstr "Tilastot"
@@ -4714,7 +4720,7 @@ msgid "Submit changes"
 msgstr "Hyväksy muutokset"
 
 msgid "Support"
-msgstr "Tuki"
+msgstr ""
 
 msgid "Support system"
 msgstr "Tukijärjestelmä"
@@ -4751,7 +4757,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "Järjestelmätyökalut"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr ""
@@ -5283,7 +5289,7 @@ msgid "Update from web depot"
 msgstr "Päivitä internetlähteestä"
 
 msgid "Update hosting plan"
-msgstr "Päivitä webhotellipaketti"
+msgstr ""
 
 msgid "Update in progress..."
 msgstr ""
@@ -5506,7 +5512,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr "Web-työkalut"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5979,12 +5985,6 @@ msgstr "kaikki"
 msgid "from other browser"
 msgstr "Muut selaimesta"
 
-#, php-format
-msgid ""
-"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
-"the %s plugin and should be reported to the plugin author."
-msgstr ""
-
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Ohjelmistojen hallinta (Oikeudet)"
 
@@ -6031,7 +6031,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "i-MSCP-päivitykset"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
