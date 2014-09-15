@@ -54,7 +54,7 @@ Make sure you as logged as root
 	# apt-get update && apt-get install tasksel
 	# tasksel install standard
 
-2.  Untar the distribution files to a secure directory
+2.  Download and untar the distribution files to a secure directory
 
 	# cd /usr/local/src
 	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
