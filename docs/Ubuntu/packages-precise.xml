@@ -53,13 +53,11 @@
             <package>proftpd-mod-mysql</package>
         </proftpd>
     </ftpd>
-    <named>
-        <alternative default="bind">
+    <named default="bind">
             <bind>
                 <package>bind9</package>
             </bind>
             <external_server/>
-        </alternative>
     </named>
     <sql default="mysql_5.5">
         <mysql_5.5
