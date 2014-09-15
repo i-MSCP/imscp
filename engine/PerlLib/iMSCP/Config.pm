@@ -287,13 +287,6 @@ sub CLEAR
 	$self;
 }
 
-sub UNTIE
-{
-    use Data::Dumper;
-    print Dumper(shift);
-	{'god' => 'ddd'};
-}
-
 =item _insertConfig($config, $value)
 
  Replace the given configuration parameter value
