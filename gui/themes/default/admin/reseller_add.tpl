@@ -41,6 +41,7 @@
 			$('#dialog_box').dialog('open');
 		});
 
+		$.ui.dialog.prototype._focusTabbable = function(){ };
 		$('#php_editor_dialog').dialog({
 			hide: 'blind',
 			show: 'slide',
