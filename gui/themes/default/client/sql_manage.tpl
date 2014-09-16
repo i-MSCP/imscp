@@ -1,22 +1,4 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-	function action_delete(url, subject, object) {
-		if (object == 'database') {
-			msg = "{TR_DATABASE_MESSAGE_DELETE}"
-		} else {
-			msg = "{TR_USER_MESSAGE_DELETE}"
-		}
-
-		if (confirm(sprintf(msg, subject))) {
-			location = url;
-		}
-
-		return false;
-	}
-	/* ]]> */
-</script>
-
 <!-- BDP: sql_databases_users_list -->
 <table class="firstColFixed">
 	<thead>
@@ -41,7 +23,18 @@
 			<!-- BDP: sql_users_list -->
 			<table>
 				<tr>
-					<td>{DB_USER}</td>
+					<td>
+						<div>
+							<div style="float:left;clear:left;width: 100px;text-align: left;font-weight: bold">
+								{TR_DB_USER}:
+							</div>
+							<div style="display: inline-block;float: left">{DB_USER}</span></div>
+							<div style="float:left;clear: left;width: 100px;text-align: left;font-weight: bold">
+								{TR_DB_USER_HOST}<span style="" class="icon i_help" title="{TR_DB_USER_HOST_TOOLTIP}">&nbsp;</span>:
+							</div>
+							<div style="display: inline-block;float: left">{DB_USER_HOST}</div>
+						</div>
+					</td>
 					<td>
 						<a href="pma_auth.php?id={USER_ID}" class="icon i_pma" target="{PMA_TARGET}"
 						   title="{TR_LOGIN_PMA}">{TR_PHPMYADMIN}</a>
@@ -60,3 +53,19 @@
 	</tbody>
 </table>
 <!-- EDP: sql_databases_users_list -->
+
+<script>
+	function action_delete(url, subject, object) {
+		if (object == 'database') {
+			msg = "{TR_DATABASE_MESSAGE_DELETE}"
+		} else {
+			msg = "{TR_USER_MESSAGE_DELETE}"
+		}
+
+		if (confirm(sprintf(msg, subject))) {
+			location = url;
+		}
+
+		return false;
+	}
+</script>

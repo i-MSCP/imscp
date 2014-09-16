@@ -43,6 +43,7 @@
 
 	<div class="buttons">
 		<input name="Add_New" type="submit" id="Add_New" value="{TR_ADD}"/>
+		<a class="link_as_button" href="sql_manage.php">{TR_CANCEL}</a>
 	</div>
 	<input type="hidden" name="uaction" value="add_db"/>
 </form>
