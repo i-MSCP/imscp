@@ -96,10 +96,10 @@ sub run
 	my $action = $ARGV[0] || '';
 
 	if ($action eq 'start') {
-		$rs = enableLocalResolver();
+		my $rs = enableLocalResolver();
 		return $rs if $rs;
 	} elsif ($action eq 'stop') {
-		$rs = disableLocalResolver();
+		my $rs = disableLocalResolver();
 		return $rs if $rs;
 	} else {
 		iMSCP::Getopt->showUsage();
