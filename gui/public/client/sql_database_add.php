@@ -241,7 +241,8 @@ $tpl->assign(
 		'TR_USE_DMN_ID' => tr('Database prefix/suffix'),
 		'TR_START_ID_POS' => tr("In front"),
 		'TR_END_ID_POS' => tr("Behind"),
-		'TR_ADD' => tr('Add')
+		'TR_ADD' => tr('Add'),
+		'TR_CANCEL' => tr('Cancel')
 	)
 );
 

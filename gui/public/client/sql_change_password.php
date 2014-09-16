@@ -53,11 +53,9 @@ function client_generatePage($tpl, $sqlUserId)
 	if($stmt->rowCount()) {
 		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-		$sqlUserName = $row['sqlu_name'] . '@' . decode_idna($row['sqlu_host']);
-
 		$tpl->assign(
 			array(
-				'USER_NAME' => tohtml($sqlUserName),
+				'USER_NAME' => tohtml($row['sqlu_name']),
 				'ID' => $sqlUserId
 			)
 		);
@@ -80,35 +78,43 @@ function client_generatePage($tpl, $sqlUserId)
  */
 function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $oldSqlPassword)
 {
+
 	if (!isset($_POST['uaction'])) {
 		return;
 	}
 
-	if (empty($_POST['pass'])) {
+	if (empty($_POST['password'])) {
 		set_page_message(tr('Please enter a password.'), 'error');
 		return;
 	}
 
-	if (!isset($_POST['pass_rep']) || $_POST['pass'] !== $_POST['pass_rep']) {
+	if (empty($_POST['password_confirmation'])) {
+		set_page_message(tr('Please confirm the password.'), 'error');
+		return;
+	}
+
+	$password = clean_input($_POST['password']);
+	$passwordConfirmation = clean_input($_POST['password_confirmation']);
+
+	if($password === '') {
+		set_page_message(tr("Password cannot be empty."), 'error');
+		return;
+	}
+
+	if ($password !== $passwordConfirmation) {
 		set_page_message(tr("Passwords do not match."), 'error');
 		return;
 	}
 
-	if (strlen($_POST['pass']) > 32) {
-		set_page_message(tr('Password is too long.'), 'error');
+	if (!preg_match('/^[[:alnum:]:!*+#_.-]+$/', $password)) {
+		set_page_message(tr("Please don't use special character such as '@, $, %...' in password."), 'error');
 		return;
 	}
 
-	if (!preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])) {
-		set_page_message(tr("Please don't use special chars such as '@, $, %...' in password."), 'error');
+	if (!checkPasswordSyntax($password)) {
 		return;
 	}
 
-	if (!checkPasswordSyntax($_POST['pass'])) {
-		return;
-	}
-
-	$password = $_POST['pass'];
 	$passwordUpdated = false;
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $sqlUserId));
@@ -129,7 +135,7 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 
 		set_page_message(tr('SQL user password successfully updated.'), 'success');
 		write_log(
-			sprintf("%s updated password for the '%s' SQL user.", $_SESSION['user_logged'], tohtml($sqlUserName)),
+			sprintf("%s updated %s@%s SQL user password.", $_SESSION['user_logged'], $sqlUserName, $sqlUserHost),
 			E_USER_NOTICE
 		);
 	} catch (iMSCP_Exception_Database $e) {
@@ -184,10 +190,11 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Update SQL User Password'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_USER_NAME' => tr('User name'),
-		'TR_PASS' => tr('Password'),
-		'TR_PASS_REP' => tr('Repeat password'),
-		'TR_CHANGE' => tr('Update')
+		'TR_DB_USER' => tr('User'),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
+		'TR_CHANGE' => tr('Update'),
+		'TR_CANCEL' => tr('Cancel')
 	)
 );
 

@@ -68,11 +68,20 @@ function _client_generateDatabaseSqlUserList($tpl, $databaseId)
 	} else {
 		$tpl->assign('SQL_USERS_LIST', '');
 
+		$tpl->assign(
+			array(
+				'TR_DB_USER' => 'User',
+				'TR_DB_USER_HOST' => 'Host',
+				'TR_DB_USER_HOST_TOOLTIP' => tr('Host from which SQL user is allowed to connect to SQL server')
+			)
+		);
+
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			$sqlUserName = $row['sqlu_name'] . '@' . decode_idna($row['sqlu_host']);
+			$sqlUserName = $row['sqlu_name'];
 			$tpl->assign(
 				array(
 					'DB_USER' => tohtml($sqlUserName),
+					'DB_USER_HOST' => tohtml(decode_idna($row['sqlu_host'])),
 					'DB_USER_JS' => tojs($sqlUserName),
 					'USER_ID' => $row['sqlu_id']
 				)
@@ -170,8 +179,8 @@ $tpl->assign(
 		'TR_ADD_USER' => tr('Add SQL user'),
 		'TR_LOGIN_PMA' => tr('Login into phpMyAdmin'),
 		'TR_DATABASE_MESSAGE_DELETE' => tr("This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete the '%s' database?", true, '%s'),
-		'TR_USER_MESSAGE_DELETE' => tr("Are you sure you want delete the '%s' SQL user?", true, '%s'),
-		'PMA_TARGET' => $cfg->PMA_TARGET
+		'TR_USER_MESSAGE_DELETE' => tr("Are you sure you want delete the %s SQL user?", true, '%s'),
+		'PMA_TARGET' => $cfg['PMA_TARGET']
 	)
 );
 

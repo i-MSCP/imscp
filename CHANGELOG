@@ -4,6 +4,9 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+GUI
+	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
+
 INSTALLER
 	Fixed: Unable to upgrade to 1.1.14 (packages file is corrupted - Ubuntu Precise)
 
