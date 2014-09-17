@@ -4,6 +4,9 @@
 Git develop
 ------------------------------------------------------------------------------------------------------------------------
 
+DAEMON
+	Fixed: The server traffic must be collected before any stopping attempt (imscp_network)
+
 CONFIGS
 	Fixed: The time at which the backup script must be run is no configurable
 	Changed: The BuildDate variable is no longer set for development time
@@ -36,6 +39,7 @@ INSTALLER
 
 TICKETS
 	Fixed #1123: Review - PHP session handling
+	Fixed #1122: Defect - Network traffic passing through the loopback interface shouldn't be monitored
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

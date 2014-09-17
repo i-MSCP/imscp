@@ -27,7 +27,7 @@ use strict;
 use warnings;
 
 use FindBin;
-use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
@@ -60,30 +60,27 @@ $bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_read
 
 sub run
 {
-	if ($main::imscpConfig{'CMD_IPTABLES'} ne 'no') {
-		my ($inboundTraffic, $outboundTraffic, $stdout, $stderr);
+	my $cmdIptables = $main::imscpConfig{'CMD_IPTABLES'} || 'no';
 
-		# Getting inbound and outbound traffic data
+	unless ($cmdIptables eq 'no') {
+		my ($inputTraffic, $outputTraffic, $stdout, $stderr);
+		my %hash = ('IMSCP_INPUT' => \$inputTraffic, 'IMSCP_OUTPUT' => \$outputTraffic);
 
-		my $rs = execute("$main::imscpConfig{'CMD_IPTABLES'} -nvxL IMSCP_INPUT", \$inboundTraffic, \$stderr);
-		debug($inboundTraffic) if $inboundTraffic;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		# Getting input and output traffic data
+		while(my ($src, $target) = each %hash) {
+			my $rs = execute("$cmdIptables -nvxL $src", $target, \$stderr);
+			debug($$target) if $$target;
+  			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+		}
 
-		$rs = execute("$main::imscpConfig{'CMD_IPTABLES'} -nvxL IMSCP_OUTPUT", \$outboundTraffic, \$stderr);
-		debug($outboundTraffic) if $outboundTraffic;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		# Parse input traffic data
+		my ($smtpIn, $poIn, $httpIn, $allIn) = _parseTrafficData($inputTraffic);
 
-		# Getting inbound traffic per service
-		my ($smtpIn, $pop3ImapIn, $httpIn, $allIn) = (0, 0, 0, 0);
-		_parseTraffiData($inboundTraffic, \$smtpIn, \$pop3ImapIn, \$httpIn, \$allIn);
+		# Parse output traffic data
+		my ($smtpOut, $poOut, $httpOut, $allOut) = _parseTrafficData($outputTraffic);
 
-		# Getting outbound traffic per service
-		my ($smtpOut, $pop3ImapOut, $httpOut, $allOut) = (0, 0, 0, 0);
-		_parseTraffiData($outboundTraffic, \$smtpOut, \$pop3ImapOut, \$httpOut, \$allOut);
-
-		# Updating traffic data in database
+		# Update traffic data in database
 
 		# Floor down for the last half'n hour to make timestamps in server_traffic and domain_traffic identical
 		my $timestamp = time;
@@ -92,14 +89,14 @@ sub run
 		$rs = iMSCP::Database->factory()->doQuery(
 			'dummy',
 			'
-				INSERT INTO `server_traffic` (
+				INSERT INTO server_traffic (
 					traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
 					bytes_web_in, bytes_web_out
 				) VALUES (
 					?, ?, ?, ?, ?, ?, ?, ?, ?
 				)
 			',
-			$timestamp, $allIn, $allOut, $smtpIn, $smtpOut, $pop3ImapIn, $pop3ImapOut, $httpIn, $httpOut
+			$timestamp, $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
 		);
 		unless(ref $rs eq 'HASH') {
 			error($rs);
@@ -108,38 +105,39 @@ sub run
 
 		# Reset traffic data for next run
 
-		$rs = execute("$main::imscpConfig{'CMD_IPTABLES'} -Z IMSCP_INPUT", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-
-		$rs |= execute("$main::imscpConfig{'CMD_IPTABLES'} -Z IMSCP_OUTPUT", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-
-		$rs;
-	} else {
-		0;
-	}
-}
-
-sub _parseTraffiData($$$$$)
-{
-	my ($trafficData, $smtp, $pop3Imap, $http, $all) = @_;
-
-	while($trafficData =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm) {
-		my $bytes = $1;
-		my $port = $2 // 0;
-
-		if($port > 0) {
-			$$smtp += $bytes if $port == 587 || $port == 25 || $port == 465;
-			$$pop3Imap += $bytes if $port == 110 || $port == 995 || $port == 143 || $port == 993;
-			$$http += $bytes if $port == 80 || $port == 443;
-		} else {
-			$$all = $bytes;
+		for(keys %hash) {
+			$rs |= execute("$cmdIptables -Z $_", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
 		}
+
+		return $rs;
 	}
 
 	0;
+}
+
+sub _parseTrafficData($)
+{
+	my $data = shift;
+
+	($smtp, $po, $http, $all) = (0, 0, 0, 0);
+
+	if($data) {
+		while($data =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm) {
+			my ($bytes, $port)($1, $2 // 0);
+
+			if($port > 0) {
+				$smtp += $bytes if $port == 587 || $port == 25 || $port == 465;
+				$po += $bytes if $port == 110 || $port == 995 || $port == 143 || $port == 993;
+				$http += $bytes if $port == 80 || $port == 443;
+			} else {
+				$all = $bytes;
+			}
+		}
+	}
+
+	($smtp, $po, $http, $all);
 }
 
 my $rs = run();

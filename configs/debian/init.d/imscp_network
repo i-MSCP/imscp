@@ -16,119 +16,33 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DESC="i-MSCP Network Manager"
 NAME=imscp_network
 LFILE=/var/run/$NAME
-IPTABLES=/sbin/iptables
-ENGINEPATH="/var/www/imscp/engine"
-ENGINETOOLSPATH=${ENGINEPATH}"/tools"
-LOCALDNSRESOLVER="imscp-local-dns-resolver"
-NETWORKCARDMANAGER="imscp-net-interfaces-mngr"
-LOGDIR=/var/log/imscp
-LOGFILE=${LOGDIR}/${NAME}.log
-DIETIME=3
+TOOLSDIR="/var/www/imscp/engine/tools"
 
-START=1
-
-# To monitor more ports, edit SERVICES variable add your own ports
-# (ftp, proxy, http, etc.)
-#
-# HTTP(S): 80 443
-# POP3(S): 110 995
-# IMAP4(S)): 143 993
-# MAIL(S): 25 465 587
-SERVICES="80 443 110 143 25 465 587 995 993"
-# To monitor more outgoing ports, edit SERVICES_OUT variable add your own ports
-# (mail, etc.)
-#
-# MAIL(S): 25 465 587
-SERVICES_OUT="25 465 587"
-
-umask 027
-
-# Debian LSB extensions (will be used if init-functions doesn't override them):
-log_daemon_msg() {
-	if [ ! -z "${2:-}" ]; then
-		log_success_msg "${1:-}: ${2:-}"
-	else
-		log_success_msg "${1:-}"
-	fi
-}
-
-log_end_msg() {
-	local status="$1"
-}
-
-log_progress_msg () {
-	log_success_msg " $@"
-}
-
-# if not present (e.g. *BSD) make sure to provide compatible methods via /etc/default/$NAME
-if [ -f /lib/lsb/init-functions ]; then
-	. /lib/lsb/init-functions
-fi
+. /lib/lsb/init-functions
 
 # Read config file if present.
 if [ -r /etc/default/$NAME ]; then
 	. /etc/default/$NAME
 fi
 
-if [ $START -eq 0 ]; then
-	log_warning_msg "Not starting $DESC: edit /etc/default/$NAME"
-	exit 1
-fi
-
-add_rules() {
-	${IPTABLES} -N IMSCP_INPUT  2>> "$LOGFILE"
-	${IPTABLES} -N IMSCP_OUTPUT 2>> "$LOGFILE"
-
-	# All traffic should jump through IMSCP tables before anything else
-	${IPTABLES} -I INPUT  -j IMSCP_INPUT  2>> "$LOGFILE"
-	${IPTABLES} -I OUTPUT -j IMSCP_OUTPUT 2>> "$LOGFILE"
-
-	# Services from matrix basically receiving data
-	for PORT in $SERVICES; do
-		${IPTABLES} -I IMSCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
-		${IPTABLES} -I IMSCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
-	done
-
-	# Services from matrix basically sending data
-	for PORT in $SERVICES_OUT; do
-		${IPTABLES} -I IMSCP_INPUT  -p tcp --sport "$PORT" 2>> "$LOGFILE"
-		${IPTABLES} -I IMSCP_OUTPUT -p tcp --dport "$PORT" 2>> "$LOGFILE"
-	done
-
-	# Explicit return once done
-	${IPTABLES} -A IMSCP_INPUT  -j RETURN
-	${IPTABLES} -A IMSCP_OUTPUT -j RETURN
+do_start()
+{
+	${TOOLSDIR}/imscp-net-interfaces-mngr start 2>/dev/null
+	${TOOLSDIR}/imscp-net-traffic-logger start 2>/dev/null
+	${TOOLSDIR}/imscp-local-dns-resolver start 2>/dev/null
 
 	# Touch lock file
 	touch $LFILE
 }
 
-remove_rules() {
-	${IPTABLES} -D INPUT  -j IMSCP_INPUT  2>> "$LOGFILE"
-	${IPTABLES} -D OUTPUT -j IMSCP_OUTPUT 2>> "$LOGFILE"
-	${IPTABLES} -F IMSCP_INPUT  2>> "$LOGFILE"
-	${IPTABLES} -F IMSCP_OUTPUT 2>> "$LOGFILE"
-	${IPTABLES} -X IMSCP_INPUT  2>> "$LOGFILE"
-	${IPTABLES} -X IMSCP_OUTPUT 2>> "$LOGFILE"
+do_stop()
+{
+	${TOOLSDIR}/imscp-net-traffic-logger stop 2>/dev/null
+	${TOOLSDIR}/imscp-net-interfaces-mngr stop 2>/dev/null
+	${TOOLSDIR}/imscp-local-dns-resolver stop 2>/dev/null
 
 	# Remove lock file
-	rm $LFILE
-}
-
-add_local_dns_resolver() {
-	${ENGINETOOLSPATH}/${LOCALDNSRESOLVER} start 2>> "$LOGFILE"
-}
-
-delete_local_dns_resolver() {
-	${ENGINETOOLSPATH}/${LOCALDNSRESOLVER} stop 2>> "$LOGFILE"
-}
-
-add_interfaces() {
-	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} start 2>> "$LOGFILE"
-}
-
-remove_interfaces() {
-	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} stop 2>> "$LOGFILE"
+	rm -f $LFILE
 }
 
 case "$1" in
@@ -136,67 +50,48 @@ case "$1" in
 	log_daemon_msg "Starting $DESC" "$NAME"
 
 	if [ -e "$LFILE" ]; then
-		echo ""
-	   	log_warning_msg "${NAME} is already started" >&2
+		log_progress_msg "already started"
+		log_end_msg 0
 	else
-		add_local_dns_resolver
-		add_interfaces
-		add_rules
+		do_start
+		log_end_msg $?
 	fi
-
-	log_end_msg $?
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC" "$NAME"
 	if [ ! -e "$LFILE" ]; then
-		echo ""
-		log_warning_msg "${NAME} is already stopped" >&2
+		log_progress_msg "already stopped"
+		log_end_msg 0
 	else
-		remove_rules
-		remove_interfaces
-		delete_local_dns_resolver
+		do_stop
+		log_end_msg $?
 	fi
-
-	log_end_msg $?
 	;;
   restart|force-reload)
 	log_daemon_msg "Stopping $DESC" "$NAME"
 
 	if [ ! -e "$LFILE" ]; then
-		echo ""
-		log_warning_msg "${NAME} is already stopped" >&2
+		log_progress_msg "already stopped"
+		log_end_msg 0
 	else
-		remove_rules
-		remove_interfaces
-		delete_local_dns_resolver
+		do_stop
 		log_end_msg $?
-		[ -n "$DIETIME" ] && sleep "$DIETIME"
 	fi
 
 	log_daemon_msg "Starting $DESC" "$NAME"
-
-	add_local_dns_resolver
-	add_interfaces
-	add_rules
-
+	do_start
 	log_end_msg $?
-
 	;;
   status)
-	log_daemon_msg "Checking status of $DESC" "$NAME"
-
-	if [ ! -e "$LFILE" ]; then
-	   log_progress_msg "stopped"
+	if [ -e "$LFILE" ]; then
+		log_success_msg "$NAME is running"
 	else
-	   log_progress_msg "started"
+		log_failure_msg "$NAME is not running"
+		exit 3
 	fi
-
-	echo ""
 	;;
   *)
-	echo "Usage: /etc/init.d/$NAME {start|stop|restart|force-reload|status}" >&2
+	log_action_msg "Usage: /etc/init.d/$NAME {start|stop|restart|force-reload|status}"
 	exit 1
 	;;
 esac
-
-exit 0
