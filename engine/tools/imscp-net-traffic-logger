@@ -65,8 +65,8 @@ sub start
 			'-N IMSCP_INPUT',
 			'-N IMSCP_OUTPUT',
 			'-I INPUT ! -i lo -j IMSCP_INPUT',
-			'-I OUTPUT ! -o lo -j IMSCP_OUTPUT')
-		{
+			'-I OUTPUT ! -o lo -j IMSCP_OUTPUT'
+		) {
 			my ($stdout, $stderr);
 			my $rs = execute("$iptablesCmd $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
