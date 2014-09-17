@@ -129,8 +129,8 @@ sub stop
 
 		unless($rs) {
 			# Retrieve rules defined by i-MSCP on both INPUT and OUTPUT chains
-			my ($rules, %chains) = ($stdout, ());
-			$chains{$2} = $1 while($rules =~ /^.*?((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))$/gm);
+			my %chains = ();
+			$chains{$2} = $1 while($stdout =~ /^.*?((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))$/gm);
 
 			if(%chains) {
 				# Collect traffic data before any stopping attempt
