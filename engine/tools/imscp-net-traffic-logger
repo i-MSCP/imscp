@@ -128,7 +128,7 @@ sub stop
 		return $rs if $rs;
 
 		unless($rs) {
-			# Retrieve rule defined by i-MSCP on both INPUT and OUTPUT chains
+			# Retrieve rules defined by i-MSCP on both INPUT and OUTPUT chains
 			my ($rules, %chains) = ($stdout, ());
 			$chains{$2} = $1 while($rules =~ /^.*?((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))$/gm);
 
