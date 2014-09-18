@@ -36,6 +36,7 @@ use warnings;
 
 use IPC::Open3;
 use POSIX;
+use Symbol;
 
 # XXX: Update as needed
 # This should really be included in apt-cache policy output... it is already
@@ -323,17 +324,16 @@ sub _parseAptPolicy
 {
 	my $self = $_[0];
 
-	local(*IN, *OUT, *ERR);
+	my ($in, $out, $err) = (undef, undef, gensym());
+	my $pid = open3($in, $out, $err, 'LANG=C apt-cache policy');
 
-	my $pid = open3(*IN, *OUT, *ERR, 'LANG=C apt-cache policy');
+	close $in;
 
-	close IN;
+	my $stdout = do { local $/; <$out> };
+	my $stderr = do { local $/; <$err> };
 
-	my $stdout = do { local $/; <OUT> };
-	my $stderr = do { local $/; <ERR> };
-
-	close OUT;
-	close ERR;
+	close $out;
+	close $err;
 
 	waitpid($pid, 0) or die "$!\n";
 	die("Unable to parse APT policy: $stderr") if $stderr && $?;

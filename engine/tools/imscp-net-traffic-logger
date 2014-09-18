@@ -133,7 +133,7 @@ sub stop
 			$chains{$2} = $1 while($stdout =~ /^.*?((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))$/gm);
 
 			if(%chains) {
-				# Collect traffic data before any stopping attempt
+				# Collect traffic data
 				my $rs = execute(
 					"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'TRAFF_ROOT_DIR'}/imscp-srv-traff",
 					\$stdout,
@@ -142,7 +142,7 @@ sub stop
 				debug($stdout) if $stdout;
 				warning($stderr) if $stderr && $rs;
 
-				for my $chain( keys %chains) {
+				for my $chain(keys %chains) {
 					# Remove any rule from the chain and remove the chain
 					for my $cmd('-D', '-F', '-X') {
 						$rs = execute(
