@@ -59,7 +59,7 @@ our @EXPORT = qw/execute escapeShell getExitCode/;
 
 =over 4
 
-=item execute($command, [\$stdout = undef], [\$stderr = undef])
+=item execute($command [, \$stdout = undef [, \$stderr = undef]])
 
  Execute the given external command
 
@@ -70,12 +70,19 @@ our @EXPORT = qw/execute escapeShell getExitCode/;
 
 =cut
 
-sub execute
+sub execute($;$$)
 {
 	my ($command, $stdout, $stderr) = @_;
 
-	fatal('$stdout must be a scalar reference') if $stdout && ref $stdout ne 'SCALAR';
-	fatal('$stderr must be a scalar reference') if $stderr && ref $stderr ne 'SCALAR';
+	if($stdout) {
+		fatal('$stdout must be a scalar reference') unless ref $stdout eq 'SCALAR';
+		$$stdout = '';
+	}
+
+	if($stderr) {
+		fatal('$stderr must be a scalar reference') unless ref $stderr eq 'SCALAR';
+		$$stderr = '';
+	}
 
 	debug("Executing command: $command");
 
@@ -106,7 +113,7 @@ sub execute
 
 =cut
 
-sub escapeShell
+sub escapeShell($)
 {
 	return $_[0] if $_[0] eq '' || $_[0] =~ /^[a-zA-Z0-9_\-]+\z/;
 	my $s = $_[0];
@@ -124,7 +131,7 @@ sub escapeShell
 
 =cut
 
-sub getExitCode
+sub getExitCode(;$)
 {
 	my $exitValue = $_[0] // $?;
 
