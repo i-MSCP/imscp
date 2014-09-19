@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-15 03:48+0200\n"
-"PO-Revision-Date: 2014-09-15 01:50+0000\n"
+"POT-Creation-Date: 2014-09-19 05:23+0200\n"
+"PO-Revision-Date: 2014-09-19 03:26+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -366,135 +366,159 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "%sfield is empty or invalid."
-msgstr "%s полето е празна или невалидно."
-
 msgid ""
-"'%hostname%' does not appear to have a valid MX record for the email address"
-" '%value%'"
-msgstr "'%hostname%' не изглежда да има валиден запис MX за имейл адреса '%value%'"
-
-msgid "'%hostname%' is no valid hostname for email address '%value%'"
-msgstr "'%hostname%' не е валидно име на хост за имейл адрес '%value%'"
-
-msgid ""
-"'%hostname%' is not in a routable network segment. The email address "
-"'%value%' should not be resolved from public network"
-msgstr "'%hostname%' не е в маршрутизируем сегмент на мрежата. Имейл адресът '%value%' не трябва да бъде решен от обществена мрежа"
-
-#, php-format
-msgid "'%localPart%' can not be matched against dot-atom format"
-msgstr "'%localPart%' не може да се сравнява с дот-атом формат"
-
-#, php-format
-msgid "'%localPart%' can not be matched against quoted-string format"
-msgstr "'%localPart%'  не може да се сравнява с quoted-string формат"
-
-msgid "'%localPart%' is no valid local part for email address '%value%'"
-msgstr "'%localPart%' не е валидна местната част за имейл адрес  '%value%'"
-
-msgid "'%value%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr "'%value%' изглежда е DNS име на хост, но не може да се извлече TLD част"
-
-msgid ""
-"'%value%' appears to be a DNS hostname but cannot match TLD against known "
-"list"
-msgstr "'%value%' изглежда е DNS име на хост, но не може да се сравнява с TLD срещу известен списък"
-
-msgid ""
-"'%value%' appears to be a DNS hostname but cannot match against hostname "
-"schema for TLD '%tld%'"
-msgstr "'%value%' изглежда е DNS име на хост, но не може да се сравнява срещу хост схема за TLD '%ltd%'"
-
-msgid ""
-"'%value%' appears to be a DNS hostname but contains a dash in an invalid "
-"position"
-msgstr "'%value%' изглежда е DNS хост но съдържа тире в невалидна позиция"
-
-msgid ""
-"'%value%' appears to be a DNS hostname but the given punycode notation "
-"cannot be decoded"
-msgstr "'%value%' изглежда е DNS име на хост, но дадената Punycode нотация не могат да бъдат декодирани"
-
-msgid "'%value%' appears to be a domain name but cannot extract TLD part"
-msgstr "'%value%' изглежда, че е име на домейн, но не може да се извлече TLD част"
-
-msgid ""
-"'%value%' appears to be a domain name but cannot match TLD against known "
-"list"
-msgstr "'%value%' изглежда, че е име на домейн, но не може да се сравнява на TLD срещу известен списък"
-
-msgid ""
-"'%value%' appears to be a domain name but cannot match against domain name "
-"schema for TLD '%tld%'"
-msgstr "'%value%' изглежда, че е име на домейн, но не може да се сравнява с име на домейн схема за TLD '%tld%'"
-
-msgid ""
-"'%value%' appears to be a domain name but contains a dash in an invalid "
-"position"
-msgstr "'%стойността%' изглежда, че е име на домейн, и съдържа невалидна позиция"
-
-msgid ""
-"'%value%' appears to be a domain name but the given punycode notation cannot"
-" be decoded"
-msgstr "'%стойността%' изглежда домейн но дадения Punycode означение не може да се декодира"
-
-msgid ""
-"'%value%' appears to be a local network name but local network names are not"
-" allowed"
-msgstr "'%стойността%' изглежда, че е име на локална мрежа, но местни имена на мрежа не са позволени"
-
-msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
-msgstr "'%стойността%' изглежда име на поддомейн но не може да се извлече част TLD"
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match TLD against known "
-"list"
-msgstr "'%стойността%'изглежда, че е име на домейн, но не може да се сравнява TLD срещу познати списък"
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match against subdomain "
-"schema for TLD '%tld%'"
+"'%%hostname%%' does not appear to have a valid MX record for the email "
+"address '%%value%%'"
 msgstr ""
 
+#, php-format
+msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
+msgstr ""
+
+#, php-format
 msgid ""
-"'%value%' appears to be a subdomain name but contains a dash in an invalid "
+"'%%hostname%%' is not in a routable network segment. The email address "
+"'%%value%%' should not be resolved from public network"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against dot-atom format"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against quoted-string format"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
+"list"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
+"schema for TLD '%%tld%%'"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a subdomain name but the given punycode notation "
+"'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
 msgstr ""
 
-msgid ""
-"'%value%' appears to be an IP address, but IP addresses are not allowed"
-msgstr "'%value%' изглежда като IP адрес, но IP адреси не са позволени"
-
-msgid "'%value%' does not appear to be a valid IP address"
-msgstr "'%value%' не изглежда да е валиден IP адрес"
-
-msgid "'%value%' does not appear to be a valid URI hostname"
-msgstr "'%value%' не изглежда да е валиден URL име на хост"
-
-msgid "'%value%' does not appear to be a valid local network name"
-msgstr "'%value%' не изглежда да е валиден за наименование на мрежа"
-
-msgid "'%value%' does not match the expected structure for a DNS hostname"
-msgstr "'%value%' не съвпада с очакваната структура за DNS име на хост"
-
-msgid "'%value%' does not match the expected structure for a domain name"
+#, php-format
+msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
 msgstr ""
 
-msgid "'%value%' does not match the expected structure for a subdomain name"
+#, php-format
+msgid ""
+"'%%value%%' appears to be a domain name but cannot match TLD against known "
+"list"
 msgstr ""
 
-msgid "'%value%' exceeds the allowed length"
-msgstr "'%value%' превишава допустимата дължина "
+#, php-format
+msgid ""
+"'%%value%%' appears to be a domain name but cannot match against domain name"
+" schema for TLD '%%tld%%'"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a domain name but contains a dash in an invalid "
+"position"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a domain name but the given punycode notation "
+"cannot be decoded"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a local network name but local network names are "
+"not allowed"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match TLD against "
+"known list"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match against "
+"subdomain schema for TLD '%%tld%%'"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
+" position"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but the given punycode notation "
+"cannot be decoded"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid IP address"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid URI hostname"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid local network name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a DNS hostname"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a domain name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a subdomain name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' exceeds the allowed length"
+msgstr ""
 
 msgid ""
-"'%value%' is no valid email address in the basic format local-part@hostname"
-msgstr "'%value%' не е валиден имейл адрес в основния формат на име@хост"
+"'%%value%' is no valid email address in the basic format local-part@hostname"
+msgstr ""
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -604,7 +628,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr ""
+msgstr "Добави FTP потребител"
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -613,7 +637,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Добави SQL база данни"
 
 msgid "Add SQL user"
 msgstr "Добави SQL-потребител"
@@ -631,13 +655,13 @@ msgid "Add catchall"
 msgstr ""
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "Добавяне на собствен DNS запис"
 
 msgid "Add custom menu"
 msgstr ""
 
 msgid "Add customer"
-msgstr ""
+msgstr "Добави клиент"
 
 msgid "Add customer - Next step"
 msgstr ""
@@ -658,7 +682,7 @@ msgid "Add group"
 msgstr "Добави група"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Добави хостинг-план"
 
 msgid "Add new IP address"
 msgstr "Добави нов IP адрес"
@@ -688,7 +712,7 @@ msgid "Add reseller"
 msgstr "Добави риселър"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Добави поддомейн"
 
 msgid "Add user"
 msgstr "Добави потребител"
@@ -861,7 +885,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Админ Журнал"
 
 msgid "Admin not available"
 msgstr ""
@@ -953,7 +977,7 @@ msgid "All traffic"
 msgstr "Целия трафик"
 
 msgid "All users"
-msgstr ""
+msgstr "Всички потребителии"
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -982,7 +1006,7 @@ msgid "Allows to share the mount point of another domain."
 msgstr ""
 
 msgid "Already in use"
-msgstr ""
+msgstr "Ок"
 
 msgid "Alternative URL to reach your website"
 msgstr "Алтернативно URL до вашия уеб сайт"
@@ -1020,7 +1044,7 @@ msgid "Application installer"
 msgstr "Инсталиране на Апликации"
 
 msgid "Apply"
-msgstr ""
+msgstr "Ок"
 
 msgid "Apply changes"
 msgstr "Приеми промените"
@@ -1035,8 +1059,8 @@ msgid "Are you sure to remove the permissions ?"
 msgstr ""
 
 #, php-format
-msgid "Are you sure you want delete the '%s' SQL user?"
-msgstr "Сигурни ли сте , че искате да изтриете този '%s' SQL user?"
+msgid "Are you sure you want delete the %s SQL user?"
+msgstr ""
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Сигурен ли си , че искате да активирате този пакет?"
@@ -1572,7 +1596,7 @@ msgid "Country"
 msgstr "Страна"
 
 msgid "Create"
-msgstr ""
+msgstr "Ок"
 
 msgid "Create catch all"
 msgstr "Създай catch all"
@@ -1632,7 +1656,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Персонално меню"
 
 msgid "Customer"
 msgstr ""
@@ -1979,7 +2003,7 @@ msgid "Domain alias %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Domain alias errors"
-msgstr ""
+msgstr "Грешки псевдоними на домейна"
 
 msgid "Domain alias limit"
 msgstr ""
@@ -2029,7 +2053,7 @@ msgid "Domain details"
 msgstr "Информация за домейна"
 
 msgid "Domain errors"
-msgstr ""
+msgstr "Грешки домейни"
 
 msgid "Domain expiration date"
 msgstr ""
@@ -2144,7 +2168,7 @@ msgid "Edit auto responder"
 msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "Промяна на потребителски DNS запис"
 
 msgid "Edit custom error page"
 msgstr ""
@@ -2159,7 +2183,7 @@ msgid "Edit domain"
 msgstr "Промяна на Домейн"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Редактиране  на псевдоним на домейн"
 
 msgid "Edit error page"
 msgstr "Редактиране  на страницата с грешки"
@@ -2174,7 +2198,7 @@ msgid "Edit htaccess user"
 msgstr ""
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Промяна на пощата"
 
 msgid "Edit mail quota"
 msgstr ""
@@ -2186,7 +2210,7 @@ msgid "Edit reseller"
 msgstr "Редакция на риселър"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Промяна на събдомейн "
 
 msgid "Edit user"
 msgstr "Проняна на потребител"
@@ -2440,7 +2464,7 @@ msgid "FileManager"
 msgstr "Файлов Мениджър"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Файл Мениджър"
 
 msgid "Filesystem system Info"
 msgstr "Информация за файловата система"
@@ -2461,7 +2485,7 @@ msgid "Force retry"
 msgstr ""
 
 msgid "Forward"
-msgstr ""
+msgstr "Пренасочване"
 
 msgid "Forward URL"
 msgstr ""
@@ -2522,7 +2546,7 @@ msgid "General information"
 msgstr "Обща информация"
 
 msgid "General settings"
-msgstr ""
+msgstr "Общи настройки"
 
 msgid "Generate"
 msgstr ""
@@ -2570,6 +2594,9 @@ msgstr ""
 msgid "Homepage"
 msgstr "Начална страница"
 
+msgid "Host from which SQL user is allowed to connect to SQL server"
+msgstr ""
+
 msgid "Hosting plan"
 msgstr "Хостинг-план"
 
@@ -2598,7 +2625,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Хостинг-планове"
 
 msgid "Hosting plans available for"
 msgstr "Хостинг планове на разположение са"
@@ -2666,7 +2693,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Използвани IP-та"
 
 msgid "IPv6 address"
 msgstr "IPv6 Адрес"
@@ -3006,7 +3033,7 @@ msgid "Logo successfully updated."
 msgstr "Лога е успешно обновен."
 
 msgid "Logout"
-msgstr ""
+msgstr "Изход"
 
 msgid "Lost password"
 msgstr "Забравена парола"
@@ -3081,7 +3108,7 @@ msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr ""
+msgstr "Управление на домейни"
 
 msgid "Manage SQL"
 msgstr "Управление SQL"
@@ -3466,7 +3493,7 @@ msgid "Other settings"
 msgstr "Други настройки"
 
 msgid "Overview"
-msgstr ""
+msgstr "Преглед"
 
 msgid "Owner"
 msgstr "Собственик"
@@ -3571,6 +3598,9 @@ msgstr "Дял"
 msgid "Password"
 msgstr "Парола"
 
+msgid "Password cannot be empty."
+msgstr ""
+
 msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
@@ -3659,13 +3689,17 @@ msgstr ""
 msgid "Please choose htaccess user or htaccess group."
 msgstr ""
 
+msgid "Please confirm the password."
+msgstr ""
+
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "Please don't use special chars such as '@, $, %...' in password."
+#, php-format
+msgid "Please don't use special character such as '@, $, %% ...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -4241,7 +4275,7 @@ msgid "Revision date"
 msgstr ""
 
 msgid "Rights"
-msgstr ""
+msgstr "Привилегии "
 
 msgid "Rights successfully added."
 msgstr ""
@@ -4460,7 +4494,7 @@ msgid "Service protocol"
 msgstr "Протокол на услугата "
 
 msgid "Services status"
-msgstr ""
+msgstr "Статус на Услугите "
 
 msgid "Sessions"
 msgstr ""
@@ -4629,7 +4663,7 @@ msgid "State/Province"
 msgstr "Област/Провинция"
 
 msgid "Statistics"
-msgstr ""
+msgstr "Статистика"
 
 msgid "Stats"
 msgstr "Статистика"
@@ -4672,7 +4706,7 @@ msgid ""
 msgstr ""
 
 msgid "Subdomain errors"
-msgstr ""
+msgstr "Грешки поддомейни"
 
 msgid "Subdomain forward"
 msgstr ""
@@ -4719,7 +4753,7 @@ msgid "Submit changes"
 msgstr "Приеми промените"
 
 msgid "Support"
-msgstr ""
+msgstr "Поддръжка"
 
 msgid "Support system"
 msgstr "Служба за поддръжка"
@@ -4756,7 +4790,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Системни инструменти"
 
 msgid "System under maintenance"
 msgstr ""
@@ -4783,7 +4817,7 @@ msgid "Target host"
 msgstr ""
 
 msgid "Target port"
-msgstr ""
+msgstr "Порт"
 
 msgid "Template for Auto email successfully updated."
 msgstr "Шаблон за автоматично  разпращане на имейли е успешно актуализиран."
@@ -4960,8 +4994,8 @@ msgstr ""
 #, php-format
 msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
-"SQL server. Enter the % character to allow this SQL user to connect from any"
-" host."
+"SQL server. Enter the %% character to allow this SQL user to connect from "
+"any host."
 msgstr ""
 
 msgid "This package already exists in the administrator software repository."
@@ -5038,7 +5072,7 @@ msgid "Total Domains"
 msgstr "Всички Домейни"
 
 msgid "Total Software"
-msgstr ""
+msgstr "Всички Софуери"
 
 msgid "Total Web software repositories"
 msgstr ""
@@ -5057,7 +5091,7 @@ msgid "Total reseller"
 msgstr "Всички риселъри"
 
 msgid "Total software"
-msgstr ""
+msgstr "Всички Софуери"
 
 msgid "Traffic"
 msgstr "Трафик"
@@ -5288,7 +5322,7 @@ msgid "Update from web depot"
 msgstr "Актуализиране от уеб депо"
 
 msgid "Update hosting plan"
-msgstr ""
+msgstr "Обновяване на хостинг план"
 
 msgid "Update in progress..."
 msgstr ""
@@ -5377,9 +5411,6 @@ msgstr ""
 msgid "User login (system) name"
 msgstr "Системно име (логин) потребител"
 
-msgid "User name"
-msgstr "Потребителско име"
-
 msgid "User password"
 msgstr "Потребителска парола"
 
@@ -5455,7 +5486,7 @@ msgid "View aliases"
 msgstr "Преглед псевдоними"
 
 msgid "View hosting plan"
-msgstr ""
+msgstr "Преглед хостинг-план"
 
 msgid "View ticket"
 msgstr ""
@@ -5511,7 +5542,7 @@ msgid "Webmail"
 msgstr "Имейли"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Уеб-инструменти"
 
 msgid "Welcome email"
 msgstr ""
@@ -5963,7 +5994,7 @@ msgid "domain aliases"
 msgstr "псевдоними на домейни"
 
 msgid "domains"
-msgstr ""
+msgstr "Домейни"
 
 msgid "email account"
 msgstr ""
@@ -6030,7 +6061,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Обновяване на i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
@@ -6106,7 +6137,7 @@ msgid "required"
 msgstr ""
 
 msgid "subdomain"
-msgstr ""
+msgstr "Поддомейн"
 
 msgid "subdomains"
 msgstr "Поддомейнни"

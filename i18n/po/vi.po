@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-15 03:48+0200\n"
-"PO-Revision-Date: 2014-09-15 01:50+0000\n"
+"POT-Creation-Date: 2014-09-19 05:23+0200\n"
+"PO-Revision-Date: 2014-09-19 03:26+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/i-MSCP/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -366,134 +366,158 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "%sfield is empty or invalid."
-msgstr ""
-
 msgid ""
-"'%hostname%' does not appear to have a valid MX record for the email address"
-" '%value%'"
-msgstr ""
-
-msgid "'%hostname%' is no valid hostname for email address '%value%'"
-msgstr ""
-
-msgid ""
-"'%hostname%' is not in a routable network segment. The email address "
-"'%value%' should not be resolved from public network"
+"'%%hostname%%' does not appear to have a valid MX record for the email "
+"address '%%value%%'"
 msgstr ""
 
 #, php-format
-msgid "'%localPart%' can not be matched against dot-atom format"
+msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
 msgstr ""
 
 #, php-format
-msgid "'%localPart%' can not be matched against quoted-string format"
-msgstr ""
-
-msgid "'%localPart%' is no valid local part for email address '%value%'"
-msgstr ""
-
-msgid "'%value%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
-
 msgid ""
-"'%value%' appears to be a DNS hostname but cannot match TLD against known "
+"'%%hostname%%' is not in a routable network segment. The email address "
+"'%%value%%' should not be resolved from public network"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against dot-atom format"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against quoted-string format"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but cannot match against hostname "
-"schema for TLD '%tld%'"
+"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
+"schema for TLD '%%tld%%'"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but contains a dash in an invalid "
+"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but the given punycode notation "
+"'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
 msgstr ""
 
-msgid "'%value%' appears to be a domain name but cannot extract TLD part"
+#, php-format
+msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but cannot match TLD against known "
+"'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but cannot match against domain name "
-"schema for TLD '%tld%'"
+"'%%value%%' appears to be a domain name but cannot match against domain name"
+" schema for TLD '%%tld%%'"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but contains a dash in an invalid "
+"'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but the given punycode notation cannot"
-" be decoded"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a local network name but local network names are not"
-" allowed"
-msgstr ""
-
-msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match TLD against known "
-"list"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match against subdomain "
-"schema for TLD '%tld%'"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a subdomain name but contains a dash in an invalid "
-"position"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a subdomain name but the given punycode notation "
+"'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be an IP address, but IP addresses are not allowed"
+"'%%value%%' appears to be a local network name but local network names are "
+"not allowed"
 msgstr ""
 
-msgid "'%value%' does not appear to be a valid IP address"
+#, php-format
+msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
 msgstr ""
 
-msgid "'%value%' does not appear to be a valid URI hostname"
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match TLD against "
+"known list"
 msgstr ""
 
-msgid "'%value%' does not appear to be a valid local network name"
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match against "
+"subdomain schema for TLD '%%tld%%'"
 msgstr ""
 
-msgid "'%value%' does not match the expected structure for a DNS hostname"
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
+" position"
 msgstr ""
 
-msgid "'%value%' does not match the expected structure for a domain name"
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but the given punycode notation "
+"cannot be decoded"
 msgstr ""
 
-msgid "'%value%' does not match the expected structure for a subdomain name"
+#, php-format
+msgid ""
+"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
 msgstr ""
 
-msgid "'%value%' exceeds the allowed length"
+#, php-format
+msgid "'%%value%%' does not appear to be a valid IP address"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid URI hostname"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid local network name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a DNS hostname"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a domain name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a subdomain name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' exceeds the allowed length"
 msgstr ""
 
 msgid ""
-"'%value%' is no valid email address in the basic format local-part@hostname"
+"'%%value%' is no valid email address in the basic format local-part@hostname"
 msgstr ""
 
 #, php-format
@@ -604,7 +628,7 @@ msgid "Add FTP account"
 msgstr ""
 
 msgid "Add FTP user"
-msgstr ""
+msgstr "Thêm người dùng FTP"
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -613,7 +637,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Thêm cơ sở dữ liệu SQL"
 
 msgid "Add SQL user"
 msgstr ""
@@ -658,7 +682,7 @@ msgid "Add group"
 msgstr ""
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Thêm kết hoạch thuê hosting"
 
 msgid "Add new IP address"
 msgstr ""
@@ -688,7 +712,7 @@ msgid "Add reseller"
 msgstr "Thêm nhà phân phối"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Thêm tên miền con"
 
 msgid "Add user"
 msgstr "Thêm người dùng"
@@ -703,7 +727,7 @@ msgid "Additional data"
 msgstr "Dữ liệu bổ sung"
 
 msgid "Admin"
-msgstr ""
+msgstr "Quản trị viên"
 
 msgid "Admin / General / Admin Log"
 msgstr ""
@@ -861,7 +885,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Nhật trình quản trị"
 
 msgid "Admin not available"
 msgstr ""
@@ -982,7 +1006,7 @@ msgid "Allows to share the mount point of another domain."
 msgstr ""
 
 msgid "Already in use"
-msgstr ""
+msgstr "Đồng ý"
 
 msgid "Alternative URL to reach your website"
 msgstr ""
@@ -1020,7 +1044,7 @@ msgid "Application installer"
 msgstr ""
 
 msgid "Apply"
-msgstr ""
+msgstr "Đồng ý"
 
 msgid "Apply changes"
 msgstr ""
@@ -1035,7 +1059,7 @@ msgid "Are you sure to remove the permissions ?"
 msgstr ""
 
 #, php-format
-msgid "Are you sure you want delete the '%s' SQL user?"
+msgid "Are you sure you want delete the %s SQL user?"
 msgstr ""
 
 msgid "Are you sure you want to activate this package?"
@@ -1518,7 +1542,7 @@ msgid "Clock speed (MHz)"
 msgstr ""
 
 msgid "Close"
-msgstr ""
+msgstr "Đồng ý"
 
 msgid "Close the ticket"
 msgstr ""
@@ -1572,7 +1596,7 @@ msgid "Country"
 msgstr "Quốc gia"
 
 msgid "Create"
-msgstr ""
+msgstr "Đồng ý"
 
 msgid "Create catch all"
 msgstr ""
@@ -1632,7 +1656,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Menu tùy chọn"
 
 msgid "Customer"
 msgstr ""
@@ -2269,7 +2293,7 @@ msgid "Email updated."
 msgstr ""
 
 msgid "Emails"
-msgstr ""
+msgstr "Email"
 
 msgid "Empty data or wrong field."
 msgstr ""
@@ -2440,7 +2464,7 @@ msgid "FileManager"
 msgstr "Trình quản lý tập tin"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Trình quản lý tập tin"
 
 msgid "Filesystem system Info"
 msgstr ""
@@ -2522,7 +2546,7 @@ msgid "General information"
 msgstr "Thông tin tổng quan"
 
 msgid "General settings"
-msgstr ""
+msgstr "Thiết lập chung"
 
 msgid "Generate"
 msgstr ""
@@ -2570,6 +2594,9 @@ msgstr ""
 msgid "Homepage"
 msgstr ""
 
+msgid "Host from which SQL user is allowed to connect to SQL server"
+msgstr ""
+
 msgid "Hosting plan"
 msgstr ""
 
@@ -2598,7 +2625,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Kế hoạch thuê hosting"
 
 msgid "Hosting plans available for"
 msgstr ""
@@ -2666,7 +2693,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Cách dùng địa chỉ IP"
 
 msgid "IPv6 address"
 msgstr ""
@@ -3006,7 +3033,7 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr ""
+msgstr "Đăng xuất"
 
 msgid "Lost password"
 msgstr "Mất mật khẩu"
@@ -3466,7 +3493,7 @@ msgid "Other settings"
 msgstr ""
 
 msgid "Overview"
-msgstr ""
+msgstr "Sơ lược"
 
 msgid "Owner"
 msgstr "Người sở hữu"
@@ -3571,6 +3598,9 @@ msgstr ""
 msgid "Password"
 msgstr "Mật khẩu"
 
+msgid "Password cannot be empty."
+msgstr ""
+
 msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
@@ -3645,7 +3675,7 @@ msgid "Phone"
 msgstr "Điện thoại"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -3659,13 +3689,17 @@ msgstr ""
 msgid "Please choose htaccess user or htaccess group."
 msgstr ""
 
+msgid "Please confirm the password."
+msgstr ""
+
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "Please don't use special chars such as '@, $, %...' in password."
+#, php-format
+msgid "Please don't use special character such as '@, $, %% ...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -4460,7 +4494,7 @@ msgid "Service protocol"
 msgstr ""
 
 msgid "Services status"
-msgstr ""
+msgstr "Trạng thái dịch vụ"
 
 msgid "Sessions"
 msgstr ""
@@ -4629,7 +4663,7 @@ msgid "State/Province"
 msgstr "Bang/Tỉnh"
 
 msgid "Statistics"
-msgstr ""
+msgstr "Thống kê"
 
 msgid "Stats"
 msgstr ""
@@ -4756,7 +4790,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Công cụ hệ thống"
 
 msgid "System under maintenance"
 msgstr ""
@@ -4960,8 +4994,8 @@ msgstr ""
 #, php-format
 msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
-"SQL server. Enter the % character to allow this SQL user to connect from any"
-" host."
+"SQL server. Enter the %% character to allow this SQL user to connect from "
+"any host."
 msgstr ""
 
 msgid "This package already exists in the administrator software repository."
@@ -5377,9 +5411,6 @@ msgstr ""
 msgid "User login (system) name"
 msgstr ""
 
-msgid "User name"
-msgstr "Tên người dùng"
-
 msgid "User password"
 msgstr ""
 
@@ -5511,7 +5542,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Webtools"
 
 msgid "Welcome email"
 msgstr ""
@@ -5954,7 +5985,7 @@ msgid "disk space"
 msgstr ""
 
 msgid "domain"
-msgstr ""
+msgstr "Tên miền"
 
 msgid "domain alias"
 msgstr ""
@@ -5963,7 +5994,7 @@ msgid "domain aliases"
 msgstr ""
 
 msgid "domains"
-msgstr ""
+msgstr "Tên miền"
 
 msgid "email account"
 msgstr ""
@@ -6030,7 +6061,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Cập nhật i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
@@ -6060,7 +6091,7 @@ msgid "missing domain"
 msgstr "thiếu tên miền"
 
 msgid "n\\a"
-msgstr ""
+msgstr "N/A"
 
 msgid "no"
 msgstr "không"
@@ -6106,16 +6137,16 @@ msgid "required"
 msgstr ""
 
 msgid "subdomain"
-msgstr ""
+msgstr "Tên miền con"
 
 msgid "subdomains"
-msgstr ""
+msgstr "Tên miền con"
 
 msgid "tcp"
 msgstr ""
 
 msgid "traffic"
-msgstr ""
+msgstr "Băng thông"
 
 msgid "udp"
 msgstr ""
