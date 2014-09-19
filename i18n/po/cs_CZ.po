@@ -4,15 +4,13 @@
 # 
 # Translators:
 # Jiří Vírava <appukonrad@gmail.com>, 2012
-# Jiří Vírava <appukonrad@gmail.com>, 2012
 # Milan Kozák <hodza@hodza.net>, 2014
-# Petr Tůma <petrik.tumik@seznam.cz>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"POT-Creation-Date: 2014-09-19 18:09+0200\n"
+"PO-Revision-Date: 2014-09-19 16:12+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -629,9 +627,6 @@ msgstr ""
 msgid "Add FTP account"
 msgstr ""
 
-msgid "Add FTP user"
-msgstr "Přidat uživatele FTP"
-
 msgid "Add Htaccess group"
 msgstr ""
 
@@ -673,9 +668,6 @@ msgstr "Přidat alias domény"
 
 msgid "Add email account"
 msgstr "Přidat e-mailový účet"
-
-msgid "Add email user"
-msgstr "Přidat emailového uživatele"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Přidat externí mailserver pro {DOMAIN_UTF8}"
@@ -3034,9 +3026,6 @@ msgstr "Logo bylo odstraněno."
 msgid "Logo successfully updated."
 msgstr "Logo bylo úspěšně aktualizováno."
 
-msgid "Logout"
-msgstr "Odhlásit"
-
 msgid "Lost password"
 msgstr "Zapomenuté heslo"
 
@@ -3108,9 +3097,6 @@ msgstr "muž"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
-
-msgid "Manage Domains"
-msgstr "Správa domén"
 
 msgid "Manage SQL"
 msgstr "Správa SQL"
@@ -5322,9 +5308,6 @@ msgstr ""
 
 msgid "Update from web depot"
 msgstr ""
-
-msgid "Update hosting plan"
-msgstr "Aktualizace hostingového plánu"
 
 msgid "Update in progress..."
 msgstr ""

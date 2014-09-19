@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Medulio <medulio@ciberirmandade.org>, 2009, 2010
+# Medulio <medulio@ciberirmandade.org>, 2009-2010
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"POT-Creation-Date: 2014-09-19 18:09+0200\n"
+"PO-Revision-Date: 2014-09-19 16:12+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -626,9 +626,6 @@ msgstr ""
 msgid "Add FTP account"
 msgstr ""
 
-msgid "Add FTP user"
-msgstr "Engadir usuario FTP"
-
 msgid "Add Htaccess group"
 msgstr ""
 
@@ -669,9 +666,6 @@ msgid "Add domain alias"
 msgstr "Engadir alias de dominio"
 
 msgid "Add email account"
-msgstr ""
-
-msgid "Add email user"
 msgstr ""
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
@@ -3031,9 +3025,6 @@ msgstr ""
 msgid "Logo successfully updated."
 msgstr ""
 
-msgid "Logout"
-msgstr "Rematar sesión"
-
 msgid "Lost password"
 msgstr "Contrasinal esquecido"
 
@@ -3104,9 +3095,6 @@ msgid "Male"
 msgstr "Home"
 
 msgid "Malformed resolver SQL query"
-msgstr ""
-
-msgid "Manage Domains"
 msgstr ""
 
 msgid "Manage SQL"
@@ -5318,9 +5306,6 @@ msgid "Update from Web software repository"
 msgstr ""
 
 msgid "Update from web depot"
-msgstr ""
-
-msgid "Update hosting plan"
 msgstr ""
 
 msgid "Update in progress..."

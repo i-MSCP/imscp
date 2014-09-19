@@ -3,35 +3,24 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# LE BRECH Ludovic <ludofloria@aifesdespets.fr>, 2012-2013
-# Alexandre B. <0xfuture@gmail.com>, 2013
 # Alexandre B. <0xfuture@gmail.com>, 2013
 # coolternet <coolternet@live.ca>, 2012
-# coolternet <coolternet@live.ca>, 2012
-# Pierre Galaup <contact@pierre-galaup.fr>, 2013
-# kevinus60 <kevinus60@gmail.com>, 2013
 # kevinus60 <kevinus60@gmail.com>, 2013
 # krok <krok@totalynet.fr>, 2011-2013
-# krok <krok@totalynet.fr>, 2013
-# krok <krok@totalynet.fr>, 2011, 2012
-# Laurent Declercq <l.declercq@nuxwin.com>, 2011-2014
 # Laurent Declercq <l.declercq@nuxwin.com>, 2011
-# LE BRECH Ludovic <ludofloria@aifesdespets.fr>, 2013
-# LE BRECH Ludovic <ludofloria@aifesdespets.fr>, 2012
-# minicore <minicore@jypino.eu>, 2012
+# LE BRECH Ludovic <ludofloria@aifesdespets.fr>, 2012-2013
+# lkppo, 2012
 # minicore <minicore@jypino.eu>, 2012
 # Morgan Henreaux <morgan@henreaux.com>, 2012
-# Pierre Galaup <contact@pierre-galaup.fr>, 2013-2014
+# Pierre Galaup <contact@pierre-galaup.fr>, 2013
 # Sébastien M <athar@funstargate.com>, 2013
 # sebtiz13 <sebtiz13@gmail.com>, 2013
-# sebtiz13 <sebtiz13@gmail.com>, 2013
-# lkppo, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:28+0000\n"
+"POT-Creation-Date: 2014-09-19 18:09+0200\n"
+"PO-Revision-Date: 2014-09-19 16:12+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -648,9 +637,6 @@ msgstr "Ajouter / éditer un/le certificat SSL"
 msgid "Add FTP account"
 msgstr "Ajouter un compte FTP"
 
-msgid "Add FTP user"
-msgstr "Ajout d'un compte FTP"
-
 msgid "Add Htaccess group"
 msgstr "Ajouter un group Htaccess"
 
@@ -692,9 +678,6 @@ msgstr "Ajouter un alias de domaine"
 
 msgid "Add email account"
 msgstr "Ajouter un compte email"
-
-msgid "Add email user"
-msgstr "Ajouter un compte e-mail"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Ajouter un serveur e-mail externe pour {DOMAIN_UTF8}"
@@ -3053,9 +3036,6 @@ msgstr "Logo supprimer avec succès."
 msgid "Logo successfully updated."
 msgstr "Logo mis à jour avec succès."
 
-msgid "Logout"
-msgstr "Déconnexion"
-
 msgid "Lost password"
 msgstr "Mot de passe perdu"
 
@@ -3127,9 +3107,6 @@ msgstr "Masculin"
 
 msgid "Malformed resolver SQL query"
 msgstr "Requête SQL mal formée"
-
-msgid "Manage Domains"
-msgstr "Gestion des domaines"
 
 msgid "Manage SQL"
 msgstr "Databases"
@@ -5341,9 +5318,6 @@ msgstr "Mise à jour à partir du dépôt de logiciels"
 
 msgid "Update from web depot"
 msgstr "Mettre à jour à partir du dépôt Web"
-
-msgid "Update hosting plan"
-msgstr "Mise à jour du plan d'hébergement"
 
 msgid "Update in progress..."
 msgstr "Mise à jour en cours..."

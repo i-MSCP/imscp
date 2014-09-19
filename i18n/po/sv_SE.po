@@ -3,15 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Cool <barni@telia.com>, 2013-2014
-# Cool <barni@telia.com>, 2011-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 04:51+0000\n"
-"Last-Translator: Cool <barni@telia.com>\n"
+"POT-Creation-Date: 2014-09-19 18:09+0200\n"
+"PO-Revision-Date: 2014-09-19 16:12+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -627,9 +625,6 @@ msgstr "Lägg till / Ändra SSL cert."
 msgid "Add FTP account"
 msgstr "Lägg till ett ftp konto"
 
-msgid "Add FTP user"
-msgstr "Lägg till FTP-användare"
-
 msgid "Add Htaccess group"
 msgstr "Lägg till ett Htaccess grupp"
 
@@ -671,9 +666,6 @@ msgstr "Lägg till domänalias"
 
 msgid "Add email account"
 msgstr "Lägg till ett mail konto"
-
-msgid "Add email user"
-msgstr "Lägg till e-postanvändare"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Lägg till externt mail servrar för {DOMAIN_UTF8}"
@@ -3032,9 +3024,6 @@ msgstr "Logo tagits bort."
 msgid "Logo successfully updated."
 msgstr "Logo uppdaterats."
 
-msgid "Logout"
-msgstr "Logga ut"
-
 msgid "Lost password"
 msgstr "Glömt lösenord"
 
@@ -3106,9 +3095,6 @@ msgstr "Man"
 
 msgid "Malformed resolver SQL query"
 msgstr "Malformed resolver SQL query"
-
-msgid "Manage Domains"
-msgstr "Hantera domäner"
 
 msgid "Manage SQL"
 msgstr "Hantera SQL"
@@ -5320,9 +5306,6 @@ msgstr "Uppdatering från Web arkiv"
 
 msgid "Update from web depot"
 msgstr "Uppdatering från webben depå"
-
-msgid "Update hosting plan"
-msgstr "Uppdatera hosting plan"
 
 msgid "Update in progress..."
 msgstr "Update in progress..."

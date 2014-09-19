@@ -4,14 +4,13 @@
 # 
 # Translators:
 # Jari <info@jkwebdesign.fi>, 2013
-# Jari <info@jkwebdesign.fi>, 2013
 # Laurent Declercq <l.declercq@nuxwin.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"POT-Creation-Date: 2014-09-19 18:09+0200\n"
+"PO-Revision-Date: 2014-09-19 16:12+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -628,9 +627,6 @@ msgstr ""
 msgid "Add FTP account"
 msgstr "Lisää FTP tili"
 
-msgid "Add FTP user"
-msgstr "Lisää FTP-käyttäjä"
-
 msgid "Add Htaccess group"
 msgstr ""
 
@@ -672,9 +668,6 @@ msgstr "Lisää domain-alias"
 
 msgid "Add email account"
 msgstr "Lisää sähköpostitili"
-
-msgid "Add email user"
-msgstr "Lisää sähköpostiosoite"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr ""
@@ -3033,9 +3026,6 @@ msgstr "Logo poistettu onnistuneesti."
 msgid "Logo successfully updated."
 msgstr "Logo päivitetty onnistuneesti."
 
-msgid "Logout"
-msgstr "Uloskirjautuminen"
-
 msgid "Lost password"
 msgstr "Salasana unohtunut?"
 
@@ -3107,9 +3097,6 @@ msgstr "Mies"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
-
-msgid "Manage Domains"
-msgstr "Hallitse domaineja"
 
 msgid "Manage SQL"
 msgstr "Hallitse tietokantoja"
@@ -5321,9 +5308,6 @@ msgstr ""
 
 msgid "Update from web depot"
 msgstr "Päivitä internetlähteestä"
-
-msgid "Update hosting plan"
-msgstr "Päivitä webhotellipaketti"
 
 msgid "Update in progress..."
 msgstr ""

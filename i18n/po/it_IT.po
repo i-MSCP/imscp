@@ -3,22 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Stefano, 2011
 # DrPan <giuseppe.pannullo@gmail.com>, 2013
-# DrPan <giuseppe.pannullo@gmail.com>, 2013
+# Stefano, 2011,2013-2014
 # theprincy <powerpcweb@gmail.com>, 2014
-# Stefano, 2013
-# Stefano, 2011
-# Stefano, 2014
-# Stefano, 2011,2013
 # Tommaso, 2013
 # Zer0, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"POT-Creation-Date: 2014-09-19 18:09+0200\n"
+"PO-Revision-Date: 2014-09-19 16:12+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -635,9 +630,6 @@ msgstr ""
 msgid "Add FTP account"
 msgstr "Aggiungi account FTP"
 
-msgid "Add FTP user"
-msgstr "Aggiungi utente FTP"
-
 msgid "Add Htaccess group"
 msgstr "Aggiungi Htaccess group"
 
@@ -679,9 +671,6 @@ msgstr "Aggiungi alias di dominio"
 
 msgid "Add email account"
 msgstr "Aggiungi una casella di posta"
-
-msgid "Add email user"
-msgstr "Aggiungi utente email"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Aggiungi un mail server esterno per {DOMAIN_UTF8}"
@@ -3040,9 +3029,6 @@ msgstr "Il logo é stato eliminato correttamente."
 msgid "Logo successfully updated."
 msgstr "Il logo é stato aggiornato correttamente."
 
-msgid "Logout"
-msgstr "Logout"
-
 msgid "Lost password"
 msgstr "Password dimenticata"
 
@@ -3114,9 +3100,6 @@ msgstr "Maschile"
 
 msgid "Malformed resolver SQL query"
 msgstr "SQL query resolver non valido"
-
-msgid "Manage Domains"
-msgstr "Gestione domini"
 
 msgid "Manage SQL"
 msgstr "Gestione SQL"
@@ -5328,9 +5311,6 @@ msgstr "Aggiornamento dal repository software Web"
 
 msgid "Update from web depot"
 msgstr "Aggiorna da deposito Web"
-
-msgid "Update hosting plan"
-msgstr "Aggiorna piano di hosting"
 
 msgid "Update in progress..."
 msgstr "Aggiornamento in corso..."

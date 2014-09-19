@@ -4,16 +4,14 @@
 # 
 # Translators:
 # 9 Beliy <9beliy@gmail.com>, 2012
-# Vitaliy Zhukov <DragonZX@yandex.ru>, 2012-2013
-# Oleg Olegov <>, 2012
 # hosterdev <rwer353453534@mail.ru>, 2011
-# Vitaliy Zhukov <DragonZX@yandex.ru>, 2013-2014
+# Oleg Olegov <>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 15:23+0000\n"
+"POT-Creation-Date: 2014-09-19 18:09+0200\n"
+"PO-Revision-Date: 2014-09-19 16:12+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -630,9 +628,6 @@ msgstr "Добавить/Изменить SSL сертификат"
 msgid "Add FTP account"
 msgstr "Добавить учётную запись FTP"
 
-msgid "Add FTP user"
-msgstr "Добавить пользователя FTP"
-
 msgid "Add Htaccess group"
 msgstr "Добавить группу Htaccess"
 
@@ -673,9 +668,6 @@ msgid "Add domain alias"
 msgstr "Добавить алиас домена"
 
 msgid "Add email account"
-msgstr "Добавить почтовый ящик"
-
-msgid "Add email user"
 msgstr "Добавить почтовый ящик"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
@@ -3035,9 +3027,6 @@ msgstr "Логотип успешно удален."
 msgid "Logo successfully updated."
 msgstr "Логотип успешно обновлен."
 
-msgid "Logout"
-msgstr "Выйти"
-
 msgid "Lost password"
 msgstr "Восстановление пароля"
 
@@ -3109,9 +3098,6 @@ msgstr "Мужской"
 
 msgid "Malformed resolver SQL query"
 msgstr "Искаженный запрос SQL"
-
-msgid "Manage Domains"
-msgstr "Домены"
 
 msgid "Manage SQL"
 msgstr "Управление SQL"
@@ -5323,9 +5309,6 @@ msgstr "Обновить из Web-репозитория"
 
 msgid "Update from web depot"
 msgstr "Обновить из Web-репозитория"
-
-msgid "Update hosting plan"
-msgstr "Обновить хостинг-план"
 
 msgid "Update in progress..."
 msgstr "Производится отновление..."
