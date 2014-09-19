@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-15 03:48+0200\n"
-"PO-Revision-Date: 2014-09-15 01:50+0000\n"
+"POT-Creation-Date: 2014-09-19 05:23+0200\n"
+"PO-Revision-Date: 2014-09-19 03:26+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -372,135 +372,159 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "%sfield is empty or invalid."
-msgstr "%s campo esta vacio o es invalido."
-
 msgid ""
-"'%hostname%' does not appear to have a valid MX record for the email address"
-" '%value%'"
-msgstr "'%hostname%' no parece tener un registro MX válido para la dirección de email '%value%'"
-
-msgid "'%hostname%' is no valid hostname for email address '%value%'"
-msgstr "'%hostname%' no és un nombre de host válido para la dirección de email '%value%'"
-
-msgid ""
-"'%hostname%' is not in a routable network segment. The email address "
-"'%value%' should not be resolved from public network"
-msgstr "'%hostname%' no está en un segmento de red enrutable. La dirección de email '%value%' no va a poder resolverse desde la red pública."
+"'%%hostname%%' does not appear to have a valid MX record for the email "
+"address '%%value%%'"
+msgstr ""
 
 #, php-format
-msgid "'%localPart%' can not be matched against dot-atom format"
-msgstr "'%localPart%' no puede ser comparado con el formato dot-atom"
+msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
+msgstr ""
 
 #, php-format
-msgid "'%localPart%' can not be matched against quoted-string format"
-msgstr "'%localPart%' no puede ser comparado con el formato quoted-string"
-
-msgid "'%localPart%' is no valid local part for email address '%value%'"
-msgstr "'%localPart%' no es una parte local válida para la dirección de email '%value%'"
-
-msgid "'%value%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr "'%value%' parece ser un nombre de host DNS pero no se le puede extraer la parte de TLD"
-
 msgid ""
-"'%value%' appears to be a DNS hostname but cannot match TLD against known "
+"'%%hostname%%' is not in a routable network segment. The email address "
+"'%%value%%' should not be resolved from public network"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against dot-atom format"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against quoted-string format"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr "'%value%' parece ser un nombre de host DNS pero no coincide con la lista conocida de TLD"
+msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but cannot match against hostname "
-"schema for TLD '%tld%'"
-msgstr "'%value%' parece ser un nombre de host DNS, pero no encaja con el esquema de nombres de host de dominio de nivel superior '%tld%'"
+"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
+"schema for TLD '%%tld%%'"
+msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but contains a dash in an invalid "
+"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr "'%value%' parece ser un nombre de host DNS pero contiene un guión en una posición no válida."
+msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but the given punycode notation "
+"'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr "'%value%' parece ser un nombre de host DNS pero la notación punycode dada no puede ser decodificada."
+msgstr ""
 
-msgid "'%value%' appears to be a domain name but cannot extract TLD part"
-msgstr "'%value%' parece ser un nombre de dominio pero no se le puede extraer la parte TLD"
+#, php-format
+msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
+msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but cannot match TLD against known "
+"'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
-msgstr "'%value%'  parece ser un nombre de dominio pero no coincide con la lista conocida de TLD"
+msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but cannot match against domain name "
-"schema for TLD '%tld%'"
-msgstr "'%value%' parece ser un nombre de dominio pero no coincide con el esquema de nombre de dominio para el TLD '%tld%'"
+"'%%value%%' appears to be a domain name but cannot match against domain name"
+" schema for TLD '%%tld%%'"
+msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but contains a dash in an invalid "
+"'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr "'%value%' parece ser un nombre de dominio pero contiene un guión en una posición no valida"
+msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but the given punycode notation cannot"
-" be decoded"
-msgstr "'%value%' parece ser un nombre de dominio pero la notación punycode indicada no puede ser decodificada"
-
-msgid ""
-"'%value%' appears to be a local network name but local network names are not"
-" allowed"
-msgstr "'%value%' parece un nombre de red local pero los nombres de red local no estan permitidos"
-
-msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
-msgstr "'%value%' parece ser un subdominio pero no se le puede extraer la parte del TLD"
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match TLD against known "
-"list"
-msgstr "'%value%' parece ser un subdominio pero no coincide con la lista conocida de TLD"
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match against subdomain "
-"schema for TLD '%tld%'"
-msgstr "'%value%' parece ser un nombre de subdominio pero no coincide con el esquema de subdominio para el TLD '%tld%'"
-
-msgid ""
-"'%value%' appears to be a subdomain name but contains a dash in an invalid "
-"position"
-msgstr "'%value%' parece ser un subdominio pero contiene un guión en una posición no valida"
-
-msgid ""
-"'%value%' appears to be a subdomain name but the given punycode notation "
+"'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
-msgstr "'%value%' parece ser un subdominio pero la notación punycode indicada no puede ser decodificada"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a local network name but local network names are "
+"not allowed"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match TLD against "
+"known list"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match against "
+"subdomain schema for TLD '%%tld%%'"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
+" position"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but the given punycode notation "
+"cannot be decoded"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid IP address"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid URI hostname"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid local network name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a DNS hostname"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a domain name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a subdomain name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' exceeds the allowed length"
+msgstr ""
 
 msgid ""
-"'%value%' appears to be an IP address, but IP addresses are not allowed"
-msgstr "'%value%' parece ser una dirección IP, pero no estan permitidas las direcciones IP"
-
-msgid "'%value%' does not appear to be a valid IP address"
-msgstr "'%value%' no parece ser una dirección IP válida"
-
-msgid "'%value%' does not appear to be a valid URI hostname"
-msgstr "'%value%' no parece ser una URL válida de nombre de host"
-
-msgid "'%value%' does not appear to be a valid local network name"
-msgstr "'%value%' no parece ser un nombre válido de red local"
-
-msgid "'%value%' does not match the expected structure for a DNS hostname"
-msgstr "'%value%' no coincide con la estrucura esperada para el nombre de host DNS."
-
-msgid "'%value%' does not match the expected structure for a domain name"
-msgstr "'%value%' no encaja con la estrucura esperada para un nombre de dominio"
-
-msgid "'%value%' does not match the expected structure for a subdomain name"
-msgstr "'%value%' no encaja con la estrucura esperada para un nombre de subdominio"
-
-msgid "'%value%' exceeds the allowed length"
-msgstr "'%value%' excede la longitud permitida"
-
-msgid ""
-"'%value%' is no valid email address in the basic format local-part@hostname"
-msgstr "'%value%' no es una dirección de email válida en el formato básico parte-local@nombredehost"
+"'%%value%' is no valid email address in the basic format local-part@hostname"
+msgstr ""
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -607,19 +631,19 @@ msgid "Add / Edit SSL certificate"
 msgstr ""
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Agregar cuenta FTP"
 
 msgid "Add FTP user"
-msgstr ""
+msgstr "Añadir usuario FTP"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Añadir grupo Htaccess"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Añadir usuario Htaccess"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Añadir base de datos SQL"
 
 msgid "Add SQL user"
 msgstr "Añadir usuario SQL"
@@ -634,37 +658,37 @@ msgid "Add admin"
 msgstr "Añadir administrador"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Añadir CatchAll"
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "Añadir registros DNS personalizados"
 
 msgid "Add custom menu"
 msgstr "Añadir menú personalizado"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Añadir cliente"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Añadir cliente - Siguiente paso"
 
 msgid "Add domain alias"
 msgstr "Añadir alias de dominio"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Añadir cuenta de email"
 
 msgid "Add email user"
-msgstr ""
+msgstr "Añadir usuario de correo"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Añadir servidor de correo externo para {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Añadir grupo"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Añadir plan de hosting"
 
 msgid "Add new IP address"
 msgstr "Añadir nueva dirección IP"
@@ -694,7 +718,7 @@ msgid "Add reseller"
 msgstr "Añadir revendedor"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Añadir subdominio"
 
 msgid "Add user"
 msgstr "Añadir usuario"
@@ -867,7 +891,7 @@ msgid "Admin account successfully created."
 msgstr "La cuenta de Administrador se ha creado correctamente."
 
 msgid "Admin log"
-msgstr ""
+msgstr "Log de administración"
 
 msgid "Admin not available"
 msgstr "Administrador no disponible"
@@ -1020,7 +1044,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "Ha ocurrido un error desconocido mientras se subia el fichero: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Anti-Rootkits Logs"
 
 msgid "Application installer"
 msgstr "Instalador de aplicación"
@@ -1041,8 +1065,8 @@ msgid "Are you sure to remove the permissions ?"
 msgstr "¿Estas seguro de eliminar los permisos?"
 
 #, php-format
-msgid "Are you sure you want delete the '%s' SQL user?"
-msgstr "¿Estas seguro de que quieres eliminar el usuario SQL '%s' ?"
+msgid "Are you sure you want delete the %s SQL user?"
+msgstr ""
 
 msgid "Are you sure you want to activate this package?"
 msgstr "¿Estás seguro de que quieres activar este paquete?"
@@ -1139,7 +1163,7 @@ msgid "Assign existing SQL user"
 msgstr "Asignar un usuario SQL existente."
 
 msgid "Assign group"
-msgstr ""
+msgstr "Asignar grupo"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
@@ -1638,7 +1662,7 @@ msgid "Custom menu successfully updated."
 msgstr "El menú personalizado ha sido modificado correctamente."
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Menús personalizados"
 
 msgid "Customer"
 msgstr "Cliente"
@@ -1680,7 +1704,7 @@ msgid "Customer scheduled for addition."
 msgstr "Cliente programado para ser añadido."
 
 msgid "Customer statistics"
-msgstr ""
+msgstr "Estadisticas del cliente"
 
 msgid "Customer successfully scheduled for deletion."
 msgstr "Cliente programado correctamente para su eliminación."
@@ -1695,7 +1719,7 @@ msgid "Customers"
 msgstr "Clientes"
 
 msgid "Customers assignment"
-msgstr ""
+msgstr "Asignación de clientes"
 
 msgid "Customize error pages for your domain."
 msgstr "Personaliza las páginas de error para tu dominio."
@@ -1755,7 +1779,7 @@ msgid "Database required"
 msgstr "Base de Datos requerida"
 
 msgid "Database update"
-msgstr ""
+msgstr "Actualización de la Base de datos"
 
 msgid "Database usage"
 msgstr "Uso de Base de Datos"
@@ -1764,7 +1788,7 @@ msgid "Database users"
 msgstr "Usuarios de la base de datos"
 
 msgid "Databases"
-msgstr ""
+msgstr "Bases de Datos"
 
 msgid "Date"
 msgstr "Fecha"
@@ -1773,7 +1797,7 @@ msgid "Day"
 msgstr "Día"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Estadísticas del Día"
 
 msgid "Days"
 msgstr "Dias"
@@ -1843,7 +1867,7 @@ msgid ""
 msgstr "Estimado {RESELLER},\n\tEl paquete de software que has cargado ha sido activado por {ADMIN}.\n\n\tDetalles:\n\tNombre del Paquete: {SOFTWARE}\n\tPaquete ID: {SOFTWARE_ID}\n\n        Por favor, inicia sesión en tu panel de control  i-MSCP para mas detalles."
 
 msgid "Debugger"
-msgstr ""
+msgstr "Depurador"
 
 msgid "Default language"
 msgstr "Idioma por defecto"
@@ -1866,10 +1890,10 @@ msgid "Delete all tickets"
 msgstr "Eliminar todos los tickets"
 
 msgid "Delete customer"
-msgstr ""
+msgstr "Eliminar cliente"
 
 msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Eliminar cliente - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Eliminar del log:"
@@ -2091,7 +2115,7 @@ msgid "Domain statistics"
 msgstr "Estadísticas del dominio"
 
 msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Estadísticas del dominio - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "El estado del dominio no es ok."
@@ -2138,52 +2162,52 @@ msgid "Edit"
 msgstr "Editar"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "Editar cuenta FTP"
 
 msgid "Edit SSL certificate"
 msgstr "Editar certificado SSL"
 
 msgid "Edit admin"
-msgstr ""
+msgstr "Editar Administrador"
 
 msgid "Edit auto responder"
-msgstr ""
+msgstr "Editar auto respuesta"
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "Editar registro DNS personalizado"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "Editar página de error personalizada"
 
 msgid "Edit custom menu"
 msgstr "Editar menú personalizado"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "Editar Cliente"
 
 msgid "Edit domain"
 msgstr "Editar dominio"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Editar alias de dominio"
 
 msgid "Edit error page"
 msgstr "Editar pagina de error"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Editar servidor de correo externo para {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Editar plan de hosting"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "Editar usuario htaccess"
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Editar cuenta de correo"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "Editar cuota de correo"
 
 msgid "Edit protected area"
 msgstr "Editar área protegida"
@@ -2192,7 +2216,7 @@ msgid "Edit reseller"
 msgstr "Editar revendedor"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Editar subdominio"
 
 msgid "Edit user"
 msgstr "Editar usuario"
@@ -2287,7 +2311,7 @@ msgid "Enable SSL"
 msgstr "Activar SSL"
 
 msgid "Enable auto responder"
-msgstr ""
+msgstr "Activar auto respuesta"
 
 msgid "Enabled"
 msgstr "Habilitado"
@@ -2446,7 +2470,7 @@ msgid "FileManager"
 msgstr "Administrador de ficheros"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Administrador de Archivos"
 
 msgid "Filesystem system Info"
 msgstr "Información del sistema de archivos"
@@ -2522,13 +2546,13 @@ msgid "Gender"
 msgstr "Sexo"
 
 msgid "General"
-msgstr ""
+msgstr "General"
 
 msgid "General information"
 msgstr "Información general"
 
 msgid "General settings"
-msgstr ""
+msgstr "Configuración general"
 
 msgid "Generate"
 msgstr "Generar"
@@ -2576,6 +2600,9 @@ msgstr "El directorio de inicio '%s' no existe"
 msgid "Homepage"
 msgstr "Página de inicio"
 
+msgid "Host from which SQL user is allowed to connect to SQL server"
+msgstr ""
+
 msgid "Hosting plan"
 msgstr "Plan de hosting"
 
@@ -2604,7 +2631,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr "Los valores del plan de hosting exceden tus propios límites."
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Planes de hosting"
 
 msgid "Hosting plans available for"
 msgstr "Planes de Alojamiento disponibles"
@@ -2669,10 +2696,10 @@ msgid "IP addresses under control of i-MSCP"
 msgstr "Direcciones IP bajo el control de i-MSCP"
 
 msgid "IP management"
-msgstr ""
+msgstr "Administración de IP"
 
 msgid "IP usage"
-msgstr ""
+msgstr "Uso de IP"
 
 msgid "IPv6 address"
 msgstr "Dirección IPv6"
@@ -2921,7 +2948,7 @@ msgid "Language successfully updated."
 msgstr "Idioma actualizado correctamente."
 
 msgid "Languages"
-msgstr ""
+msgstr "Idiomas"
 
 msgid "Languages index was successfully re-built."
 msgstr "Se ha reconstruido el índice de idiomas correctamente."
@@ -3012,7 +3039,7 @@ msgid "Logo successfully updated."
 msgstr "Logo subido correctamente."
 
 msgid "Logout"
-msgstr ""
+msgstr "Cerrar sesión"
 
 msgid "Lost password"
 msgstr "Recuperar contraseña"
@@ -3078,7 +3105,7 @@ msgid ""
 msgstr "El modo mantenimiento está activado. En este modo, sólo los administradores pueden acceder."
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "Ajustes de Mantenimiento"
 
 msgid "Male"
 msgstr "Masculino"
@@ -3087,13 +3114,13 @@ msgid "Malformed resolver SQL query"
 msgstr "Solucionador de consultas SQL malformadas"
 
 msgid "Manage Domains"
-msgstr ""
+msgstr "Administrar Dominios"
 
 msgid "Manage SQL"
 msgstr "Administrar SQL"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Administrar usuarios y grupos htaccess"
 
 msgid "Manage users"
 msgstr "Administrar usuarios"
@@ -3438,7 +3465,7 @@ msgid ""
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Sólo tar.gz, tar.bz2 y archivos zip son aceptados."
 
 msgid "Open ticket"
 msgstr "Abrir tiquet"
@@ -3472,7 +3499,7 @@ msgid "Other settings"
 msgstr "Otras configuraciones"
 
 msgid "Overview"
-msgstr ""
+msgstr "Resumen"
 
 msgid "Owner"
 msgstr "Propietario"
@@ -3512,7 +3539,7 @@ msgid "PHP exec() function"
 msgstr "Función PHP exec()"
 
 msgid "PHP settings"
-msgstr ""
+msgstr "Configuración PHP"
 
 msgid "POP3/IMAP in"
 msgstr "POP3 / IMAP Entrante"
@@ -3576,6 +3603,9 @@ msgstr "Partición"
 
 msgid "Password"
 msgstr "Contraseña"
+
+msgid "Password cannot be empty."
+msgstr ""
 
 msgid "Password cannot be longer than 30 characters."
 msgstr "La contraseña no puede tener más de 30 caracteres."
@@ -3651,7 +3681,7 @@ msgid "Phone"
 msgstr "Teléfono"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3665,13 +3695,17 @@ msgstr "Por favor, comprueba la configuración del editor de PHP."
 msgid "Please choose htaccess user or htaccess group."
 msgstr "Por favor, elige usuario htaccess o grupo athaccess."
 
+msgid "Please confirm the password."
+msgstr ""
+
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr "¡Por favor, ponte en contacto con el administrador! <br /> Pregúntale por los permisos para utilizar este paquete. <br /> No estás autorizado a cargar este paquete dos veces. <br />¡ Actualiza tu sitio para ver el nuevo estado!"
 
-msgid "Please don't use special chars such as '@, $, %...' in password."
+#, php-format
+msgid "Please don't use special character such as '@, $, %% ...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -3684,7 +3718,7 @@ msgid "Please enter an SQL user host."
 msgstr ""
 
 msgid "Please enter an username."
-msgstr ""
+msgstr "Por favor, introduce un nombre de usuario."
 
 msgid "Please enter protected area path"
 msgstr "Por favor, introduce la ruta para el área protegida"
@@ -3882,7 +3916,7 @@ msgid "Plugin list is empty."
 msgstr "La Lista de Plugins esta vacia."
 
 msgid "Plugin management"
-msgstr ""
+msgstr "Administración de Plugins"
 
 msgid "Plugins Upload"
 msgstr "Subida de Plugins"
@@ -3948,7 +3982,7 @@ msgid "Processor data"
 msgstr "Datos del procesador"
 
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 msgid "Properties"
 msgstr "Propiedades"
@@ -4202,7 +4236,7 @@ msgid "Reseller software list"
 msgstr "Lista de software del Revendedor"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Estadísticas del Revendedor"
 
 msgid "Reseller successfully added."
 msgstr "Revendedor añadido correctamente."
@@ -4229,7 +4263,7 @@ msgid "Resellers and customers"
 msgstr "Revendedores y clientes"
 
 msgid "Resellers assignment"
-msgstr ""
+msgstr "Asignación de revendedores"
 
 msgid "Reset"
 msgstr "Reiniciar"
@@ -4460,16 +4494,16 @@ msgid "Service port successfully removed."
 msgstr "Puerto de servicio eliminado correctamente."
 
 msgid "Service ports"
-msgstr ""
+msgstr "Puertos de servicio"
 
 msgid "Service protocol"
 msgstr "Protocolo del servicio"
 
 msgid "Services status"
-msgstr ""
+msgstr "Estado de los servicios"
 
 msgid "Sessions"
-msgstr ""
+msgstr "Sesiones"
 
 msgid "Set status to 'tochange'"
 msgstr "Establecer el estado a 'tochange '"
@@ -4570,7 +4604,7 @@ msgid "Software installer requires PHP support."
 msgstr "El instalador de software requiere soportar PHP."
 
 msgid "Software management"
-msgstr ""
+msgstr "Administración de software"
 
 msgid "Software name"
 msgstr "Nombre del software"
@@ -4579,7 +4613,7 @@ msgid "Software not found!"
 msgstr "¡Software no encontrado!"
 
 msgid "Software options"
-msgstr ""
+msgstr "Opciones de software"
 
 msgid "Software permissions"
 msgstr "Permisos del software"
@@ -4635,7 +4669,7 @@ msgid "State/Province"
 msgstr "Estado/Provincia"
 
 msgid "Statistics"
-msgstr ""
+msgstr "Estadísticas"
 
 msgid "Stats"
 msgstr "Estadísticas"
@@ -4725,7 +4759,7 @@ msgid "Submit changes"
 msgstr "Enviar cambios"
 
 msgid "Support"
-msgstr ""
+msgstr "Soporte"
 
 msgid "Support system"
 msgstr "Sistema de soporte"
@@ -4755,14 +4789,14 @@ msgid "System error - custom error page was not updated."
 msgstr "Error de Sistema - la página de error personalizada no se ha actualizado."
 
 msgid "System information"
-msgstr ""
+msgstr "Información del Sistema"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "El sistema no puede eliminar el logo del usuario '%s'."
 
 msgid "System tools"
-msgstr ""
+msgstr "Herramientas del sistema"
 
 msgid "System under maintenance"
 msgstr "Sistema en mantenimiento"
@@ -4966,8 +5000,8 @@ msgstr "Esta interfaz permite añadir o eliminar direcciones IP. Las direcciones
 #, php-format
 msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
-"SQL server. Enter the % character to allow this SQL user to connect from any"
-" host."
+"SQL server. Enter the %% character to allow this SQL user to connect from "
+"any host."
 msgstr ""
 
 msgid "This package already exists in the administrator software repository."
@@ -5282,7 +5316,7 @@ msgid "Update Plugins"
 msgstr "Actualizar Plugins"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "Actualizar contraseña de usuario SQL"
 
 msgid "Update data"
 msgstr "Actualizar datos"
@@ -5294,7 +5328,7 @@ msgid "Update from web depot"
 msgstr "Actualización desde el repositorio web"
 
 msgid "Update hosting plan"
-msgstr ""
+msgstr "Actualizar el plan de hosting"
 
 msgid "Update in progress..."
 msgstr "Actualización en curso..."
@@ -5383,9 +5417,6 @@ msgstr "El usuario no se ha eliminado."
 msgid "User login (system) name"
 msgstr "Nombre de usuario del sistema"
 
-msgid "User name"
-msgstr "Nombre de usuario"
-
 msgid "User password"
 msgstr "Contraseña de usuario"
 
@@ -5464,7 +5495,7 @@ msgid "View hosting plan"
 msgstr "Ver el plan de Hosting"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Ver ticket"
 
 msgid "Visit plugin site"
 msgstr "Visitar el sito de plug-ins"
@@ -5517,10 +5548,10 @@ msgid "Webmail"
 msgstr "Correo Web"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Herramientas Web"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "Correo de bienvenida"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Bienvenido {USERNAME} a i-MSCP"
@@ -6036,7 +6067,7 @@ msgid "i-MSCP plugin store"
 msgstr "Tienda de plugins de i-MSCP"
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Actualizaciones de i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
@@ -6066,7 +6097,7 @@ msgid "missing domain"
 msgstr "falta el dominio"
 
 msgid "n\\a"
-msgstr ""
+msgstr "N/D"
 
 msgid "no"
 msgstr "no"

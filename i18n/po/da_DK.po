@@ -5,14 +5,15 @@
 # Translators:
 # HenrikS <henrik@schytte.net>, 2011
 # HenrikS <henrik@schytte.net>, 2011
+# Laurent Declercq <l.declercq@nuxwin.com>, 2014
 # Michael Jensen-Maar <maar@maargrafisk.dk>, 2013-2014
 # Michael Jensen-Maar <maar@maargrafisk.dk>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-15 03:48+0200\n"
-"PO-Revision-Date: 2014-09-15 01:50+0000\n"
+"POT-Creation-Date: 2014-09-19 05:23+0200\n"
+"PO-Revision-Date: 2014-09-19 15:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -368,135 +369,159 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "%sfield is empty or invalid."
-msgstr "%sfelt er tomt eller ugyldigt."
-
 msgid ""
-"'%hostname%' does not appear to have a valid MX record for the email address"
-" '%value%'"
-msgstr "'%hostname%' synes ikke at have en gyldig MX record til e-mail adressen '%value%'"
-
-msgid "'%hostname%' is no valid hostname for email address '%value%'"
-msgstr "'%hostname%' er ikke et gyldig hostname for email-adressen '%value%'"
-
-msgid ""
-"'%hostname%' is not in a routable network segment. The email address "
-"'%value%' should not be resolved from public network"
-msgstr "'%hostname%' kan ikke rutes i noget netværk segment. E-mail adressen '%value%' bør ikke resolves fra offentligt netværk"
+"'%%hostname%%' does not appear to have a valid MX record for the email "
+"address '%%value%%'"
+msgstr "'%%hostname%%' synes ikke at have en gyldig MX record til e-mail adressen '%%value%%'"
 
 #, php-format
-msgid "'%localPart%' can not be matched against dot-atom format"
-msgstr "'%localPart%' kan ikke matches mod dot-atom-format"
+msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
+msgstr "'%%hostname%%' er ikke et gyldig hostname for email-adressen '%%value%%'"
 
 #, php-format
-msgid "'%localPart%' can not be matched against quoted-string format"
-msgstr "'%localPart%' kan ikke matches mod quoted-string format"
-
-msgid "'%localPart%' is no valid local part for email address '%value%'"
-msgstr "'%localPart%' er ikke en valid part for e-mail adressen '%value%'"
-
-msgid "'%value%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr "'%value%' synes at være et DNS værtsnavn men kan ikke udtrække TLD delen"
-
 msgid ""
-"'%value%' appears to be a DNS hostname but cannot match TLD against known "
+"'%%hostname%%' is not in a routable network segment. The email address "
+"'%%value%%' should not be resolved from public network"
+msgstr "'%%hostname%%' kan ikke rutes i noget netværk segment. E-mail adressen '%%value%%' bør ikke resolves fra offentligt netværk"
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against dot-atom format"
+msgstr "'%%localPart%%' kan ikke matches mod dot-atom-format"
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against quoted-string format"
+msgstr "'%%localPart%%' kan ikke matches mod quoted-string format"
+
+#, php-format
+msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
+msgstr "'%%localPart%%' er ikke en valid part for e-mail adressen '%%value%%'"
+
+#, php-format
+msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
+msgstr "'%%value%%' synes at være et DNS værtsnavn men kan ikke udtrække TLD delen"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr "'%value%' synes at være et DNS værtsnavn men kan ikke matche TLD mod kendte lister"
+msgstr "'%%value%%' synes at være et DNS værtsnavn men kan ikke matche TLD mod kendte lister"
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but cannot match against hostname "
-"schema for TLD '%tld%'"
-msgstr "'%value%' synes at være et DNS værtsnavn men kan ikke matche mod værtsnavn schema for TLD '%tld%'"
+"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
+"schema for TLD '%%tld%%'"
+msgstr "'%%value%%' synes at være et DNS værtsnavn men kan ikke matche mod værtsnavn schema for TLD '%%tld%%'"
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but contains a dash in an invalid "
+"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr "'%value%' ser ud til at være et DNS-værtsnavn, men indeholder en bindestreg på en ugyldig position"
+msgstr "'%%value%%' ser ud til at være et DNS-værtsnavn, men indeholder en bindestreg på en ugyldig position"
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but the given punycode notation "
+"'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr "'%value%' synes at være et DNS værtsnavn men den givne punycode notation kan ikke afkodes"
+msgstr "'%%value%%' synes at være et DNS værtsnavn men den givne punycode notation kan ikke afkodes"
 
-msgid "'%value%' appears to be a domain name but cannot extract TLD part"
-msgstr "'%value%' synes at være et domænenavn, men kan ikke udtrække TLD delen"
+#, php-format
+msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
+msgstr "'%%value%%' synes at være et domænenavn, men kan ikke udtrække TLD delen"
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but cannot match TLD against known "
+"'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
-msgstr "'%value%' synes at være et domænenavn, men kan ikke matche TLD mod kendte lister"
+msgstr "'%%value%%' synes at være et domænenavn, men kan ikke matche TLD mod kendte lister"
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but cannot match against domain name "
-"schema for TLD '%tld%'"
-msgstr "'%value%' synes at være et domænenavn, men kan ikke matche mod domænenavn schema for TLD '%tld%'"
+"'%%value%%' appears to be a domain name but cannot match against domain name"
+" schema for TLD '%%tld%%'"
+msgstr "'%%value%%' synes at være et domænenavn, men kan ikke matche mod domænenavn schema for TLD '%%tld%%'"
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but contains a dash in an invalid "
+"'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr "'%value%' synes at være et domænenavn, men indeholder en bindestreg på en ugyldig position"
+msgstr "'%%value%%' synes at være et domænenavn, men indeholder en bindestreg på en ugyldig position"
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but the given punycode notation cannot"
-" be decoded"
-msgstr "'%value%' synes at være et domænenavn, men den givne punycode notation kan ikke afkodes"
-
-msgid ""
-"'%value%' appears to be a local network name but local network names are not"
-" allowed"
-msgstr "'%value%' synes at være et lokalt netværksnavn, men lokale netværksnavne er ikke tilladt"
-
-msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
-msgstr "'%value%' synes at være et underdomæne navn, men kan ikke udtrække TLD delen"
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match TLD against known "
-"list"
-msgstr "'%value%' synes at være et underdomæne navn, men kan ikke matche TLD mod kendte lister"
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match against subdomain "
-"schema for TLD '%tld%'"
-msgstr "'%value%' synes at være et underdomæne navn, men kan ikke matche mod underdomæne schema for TLD '%tld%'"
-
-msgid ""
-"'%value%' appears to be a subdomain name but contains a dash in an invalid "
-"position"
-msgstr "'%value%' synes at være et underdomæne navn, men indeholder en bindestreg på en ugyldig position"
-
-msgid ""
-"'%value%' appears to be a subdomain name but the given punycode notation "
+"'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
-msgstr "'%value%' synes at være en subdomænenavnet men den givne punycode notation kan ikke afkodes"
+msgstr "'%%value%%' synes at være et domænenavn, men den givne punycode notation kan ikke afkodes"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a local network name but local network names are "
+"not allowed"
+msgstr "'%%value%%' synes at være et lokalt netværksnavn, men lokale netværksnavne er ikke tilladt"
+
+#, php-format
+msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
+msgstr "'%%value%%' synes at være et underdomæne navn, men kan ikke udtrække TLD delen"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match TLD against "
+"known list"
+msgstr "'%%value%%' synes at være et underdomæne navn, men kan ikke matche TLD mod kendte lister"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match against "
+"subdomain schema for TLD '%%tld%%'"
+msgstr "'%%value%%' synes at være et underdomæne navn, men kan ikke matche mod underdomæne schema for TLD '%%tld%%'"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
+" position"
+msgstr "'%%value%%' synes at være et underdomæne navn, men indeholder en bindestreg på en ugyldig position"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but the given punycode notation "
+"cannot be decoded"
+msgstr "'%%value%%' synes at være en subdomænenavnet men den givne punycode notation kan ikke afkodes"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
+msgstr "'%%value%%' synes at være en IP-adresse, men IP-adresser er ikke tilladt"
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid IP address"
+msgstr "'%%value%%' synes ikke at være en gyldig IP-adresse"
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid URI hostname"
+msgstr "'%%value%%' synes ikke at være et gyldigt URI værtsnavn"
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid local network name"
+msgstr "'%%value%%' synes ikke at være et gyldigt lokalt netværksnavn"
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a DNS hostname"
+msgstr "'%%value%%' svarer ikke til den forventede struktur for et DNS-værtsnavn"
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a domain name"
+msgstr "'%%value%%' svarer ikke til den forventede struktur for et domænenavn"
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a subdomain name"
+msgstr "'%%value%%' svarer ikke til den forventede struktur for et underdomæne navn"
+
+#, php-format
+msgid "'%%value%%' exceeds the allowed length"
+msgstr "'%%value%%' overskrider den tilladte længde"
 
 msgid ""
-"'%value%' appears to be an IP address, but IP addresses are not allowed"
-msgstr "'%value%' synes at være en IP-adresse, men IP-adresser er ikke tilladt"
-
-msgid "'%value%' does not appear to be a valid IP address"
-msgstr "'%value%' synes ikke at være en gyldig IP-adresse"
-
-msgid "'%value%' does not appear to be a valid URI hostname"
-msgstr "'%value%' synes ikke at være et gyldigt URI værtsnavn"
-
-msgid "'%value%' does not appear to be a valid local network name"
-msgstr "'%value%' synes ikke at være et gyldigt lokalt netværksnavn"
-
-msgid "'%value%' does not match the expected structure for a DNS hostname"
-msgstr "'%value%' svarer ikke til den forventede struktur for et DNS-værtsnavn"
-
-msgid "'%value%' does not match the expected structure for a domain name"
-msgstr "'%value%' svarer ikke til den forventede struktur for et domænenavn"
-
-msgid "'%value%' does not match the expected structure for a subdomain name"
-msgstr "'%value%' svarer ikke til den forventede struktur for et underdomæne navn"
-
-msgid "'%value%' exceeds the allowed length"
-msgstr "'%value%' overskrider den tilladte længde"
-
-msgid ""
-"'%value%' is no valid email address in the basic format local-part@hostname"
-msgstr "'%value%' er ikke en gyldig e-mail-adresse i dens basale format lokale-del@hostname"
+"'%%value%' is no valid email address in the basic format local-part@hostname"
+msgstr "'%%value%%' er ikke en gyldig e-mail-adresse i dens basale format lokale-del@hostname"
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -600,22 +625,22 @@ msgid "Add"
 msgstr "Tilføj"
 
 msgid "Add / Edit SSL certificate"
-msgstr ""
+msgstr "Rediger SSL certifikat"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Tilføj FTP konto"
 
 msgid "Add FTP user"
-msgstr ""
+msgstr "Tilføj FTP bruger"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Tilføj Htaccess gruppe"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Tilføj Htaccess bruger"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Tilføj SQL database"
 
 msgid "Add SQL user"
 msgstr "Tilføj SQL bruger"
@@ -630,37 +655,37 @@ msgid "Add admin"
 msgstr "Tilføj admin"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Tilføj catchall"
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "Tilføj brugerdefineret DNS record"
 
 msgid "Add custom menu"
 msgstr "Tilføj brugerdefineret menu"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Tilføj kunde"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Tilføj kunde - Næste step"
 
 msgid "Add domain alias"
 msgstr "Tilføj domæne alias"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Tilføj e-mail konto"
 
 msgid "Add email user"
-msgstr ""
+msgstr "Tilføj e-mail bruger"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Tilføj ekstern mailserver for {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Tilføj gruppe"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Tilføj hosting plan"
 
 msgid "Add new IP address"
 msgstr "Tilføj ny IP adresse"
@@ -690,7 +715,7 @@ msgid "Add reseller"
 msgstr "Tilføj forhandlere"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Tilføj Subdomæne"
 
 msgid "Add user"
 msgstr "Tilføj bruger"
@@ -863,7 +888,7 @@ msgid "Admin account successfully created."
 msgstr "Admin konto oprettet."
 
 msgid "Admin log"
-msgstr ""
+msgstr "Admin log"
 
 msgid "Admin not available"
 msgstr "Admin not available"
@@ -1016,7 +1041,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "En ukendt fejl opstod under fil upload: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Anti-Rootkits Logs"
 
 msgid "Application installer"
 msgstr "Application installer"
@@ -1037,8 +1062,8 @@ msgid "Are you sure to remove the permissions ?"
 msgstr "Er du sikker på at du vil fjerne tilladelser?"
 
 #, php-format
-msgid "Are you sure you want delete the '%s' SQL user?"
-msgstr "Er du sikker på, du vil slette '%s' SQL bruger?"
+msgid "Are you sure you want delete the %s SQL user?"
+msgstr "Er du sikker på, du vil slette %s SQL bruger?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Er du sikker på, du vil aktivere denne pakke?"
@@ -1135,7 +1160,7 @@ msgid "Assign existing SQL user"
 msgstr "Tildel eksisterende SQL bruger"
 
 msgid "Assign group"
-msgstr ""
+msgstr "Tildel gruppe"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Først skal du oprette en database, der har mindst én SQL-bruger."
@@ -1634,7 +1659,7 @@ msgid "Custom menu successfully updated."
 msgstr "Brugerdefinerede menu er blevet opdateret."
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Kunde menuer"
 
 msgid "Customer"
 msgstr "Kunde"
@@ -1676,7 +1701,7 @@ msgid "Customer scheduled for addition."
 msgstr "Kunde planlagt til tilføjelse."
 
 msgid "Customer statistics"
-msgstr ""
+msgstr "Kunde statistik"
 
 msgid "Customer successfully scheduled for deletion."
 msgstr "Kunde succesfuldt planlagt til sletning."
@@ -1691,7 +1716,7 @@ msgid "Customers"
 msgstr "Kunder"
 
 msgid "Customers assignment"
-msgstr ""
+msgstr "Tildeling til kunder"
 
 msgid "Customize error pages for your domain."
 msgstr "Tilpas fejlsider for dit domæne."
@@ -1751,7 +1776,7 @@ msgid "Database required"
 msgstr "Database kræves"
 
 msgid "Database update"
-msgstr ""
+msgstr "Database opdatering"
 
 msgid "Database usage"
 msgstr "Database forbrug"
@@ -1760,7 +1785,7 @@ msgid "Database users"
 msgstr "Databasebrugere"
 
 msgid "Databases"
-msgstr ""
+msgstr "Databaser"
 
 msgid "Date"
 msgstr "Dato"
@@ -1769,7 +1794,7 @@ msgid "Day"
 msgstr "Dag"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Daglig statistik"
 
 msgid "Days"
 msgstr "Dage"
@@ -1839,7 +1864,7 @@ msgid ""
 msgstr "Kære {RESELLER},\n\tDin uploadede softwarepakke blev succesfuld aktiveret af {ADMIN}.\n\n\tDetaljer:\n\tPakkenavn: {SOFTWARE}\n\tPakke ID: {SOFTWARE_ID}\n\n\tVenligst log ind i dit I-MSCP kontrolpanel for flere detaljer."
 
 msgid "Debugger"
-msgstr ""
+msgstr "Debugger"
 
 msgid "Default language"
 msgstr "Standard sprog"
@@ -1862,10 +1887,10 @@ msgid "Delete all tickets"
 msgstr "Slet alle fejlrapports"
 
 msgid "Delete customer"
-msgstr ""
+msgstr "Slet kunde"
 
 msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Slet kunde - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Slet fra log:"
@@ -2087,7 +2112,7 @@ msgid "Domain statistics"
 msgstr "Domæne statistik"
 
 msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Domæne statistik - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "Domæne status er ikke ok."
@@ -2134,52 +2159,52 @@ msgid "Edit"
 msgstr "Rediger"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "Rediger FTP konto"
 
 msgid "Edit SSL certificate"
 msgstr "Rediger SSL certifikat"
 
 msgid "Edit admin"
-msgstr ""
+msgstr "Rediger Admin"
 
 msgid "Edit auto responder"
-msgstr ""
+msgstr "Rediger auto responder"
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "Rediger brugerdefineret DNS record"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "Rediger brugerdefineret fejlside"
 
 msgid "Edit custom menu"
 msgstr "Rediger brugerdefineret menu"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "Rediger kunde"
 
 msgid "Edit domain"
 msgstr "Rediger domæne"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Rediger domænealias"
 
 msgid "Edit error page"
 msgstr "Rediger fejlside"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Rediger ekatern mail server for {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Rediger hosting plan"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "Rediger htaccess bruger"
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Rediger mail-konto"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "Rediger mail kvote"
 
 msgid "Edit protected area"
 msgstr "Rediger beskyttet område"
@@ -2188,7 +2213,7 @@ msgid "Edit reseller"
 msgstr "Rediger forhandler"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Ret supdomæne"
 
 msgid "Edit user"
 msgstr "Rediger bruger"
@@ -2283,7 +2308,7 @@ msgid "Enable SSL"
 msgstr "Aktivere SSL"
 
 msgid "Enable auto responder"
-msgstr ""
+msgstr "Aktiver auto responder"
 
 msgid "Enabled"
 msgstr "Aktiveret"
@@ -2442,7 +2467,7 @@ msgid "FileManager"
 msgstr "Fil Håndtering"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Fil Håndtering"
 
 msgid "Filesystem system Info"
 msgstr "Filsystem info"
@@ -2518,13 +2543,13 @@ msgid "Gender"
 msgstr "Køn"
 
 msgid "General"
-msgstr ""
+msgstr "General"
 
 msgid "General information"
 msgstr "Generel information"
 
 msgid "General settings"
-msgstr ""
+msgstr "Generel indstillinger"
 
 msgid "Generate"
 msgstr "Generer"
@@ -2572,6 +2597,9 @@ msgstr "Home bibliotek '%s' findes ikke"
 msgid "Homepage"
 msgstr "Hjemmeside"
 
+msgid "Host from which SQL user is allowed to connect to SQL server"
+msgstr ""
+
 msgid "Hosting plan"
 msgstr "Hosting Plan"
 
@@ -2600,7 +2628,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr "Hosting plan værdier overskrider dine egne grænser."
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Hosting Planer"
 
 msgid "Hosting plans available for"
 msgstr "Hosting planer til rådighed for"
@@ -2665,10 +2693,10 @@ msgid "IP addresses under control of i-MSCP"
 msgstr "IP-adresser under kontrol af i-MSCP"
 
 msgid "IP management"
-msgstr ""
+msgstr "IP administration"
 
 msgid "IP usage"
-msgstr ""
+msgstr "IP brug"
 
 msgid "IPv6 address"
 msgstr "IPv6 adresse"
@@ -2917,7 +2945,7 @@ msgid "Language successfully updated."
 msgstr "Sprog korrekt opdateret."
 
 msgid "Languages"
-msgstr ""
+msgstr "Sprog"
 
 msgid "Languages index was successfully re-built."
 msgstr "Sprog-indekset blev succesfuldt genopbygget."
@@ -3008,7 +3036,7 @@ msgid "Logo successfully updated."
 msgstr "Logo succesfuldt opdateret."
 
 msgid "Logout"
-msgstr ""
+msgstr "Log ud"
 
 msgid "Lost password"
 msgstr "Glemt Adgangskode"
@@ -3074,7 +3102,7 @@ msgid ""
 msgstr "Vedligeholdelsestilstand er aktivt. Under denne tilstand kan kun administratorer logge ind."
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "Vedligeholdelses indstillinger"
 
 msgid "Male"
 msgstr "Mand"
@@ -3083,13 +3111,13 @@ msgid "Malformed resolver SQL query"
 msgstr "Forkert udformet resolver SQL query"
 
 msgid "Manage Domains"
-msgstr ""
+msgstr "Administrer domæner"
 
 msgid "Manage SQL"
 msgstr "Håndtér SQL"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Administrer htaccess brugere og grupper"
 
 msgid "Manage users"
 msgstr "Håndtér brugere"
@@ -3339,7 +3367,7 @@ msgid "No update info available"
 msgstr "Ingen opdaterings info tilgængelig"
 
 msgid "No used yet"
-msgstr ""
+msgstr "Ikke brugt"
 
 msgid "No user found."
 msgstr "Ingen brugere fundet."
@@ -3468,7 +3496,7 @@ msgid "Other settings"
 msgstr "Andre indstillinger"
 
 msgid "Overview"
-msgstr ""
+msgstr "Overblik"
 
 msgid "Owner"
 msgstr "Ejer"
@@ -3508,7 +3536,7 @@ msgid "PHP exec() function"
 msgstr "PHP exec() funktion"
 
 msgid "PHP settings"
-msgstr ""
+msgstr "PHP indstillinger"
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP ind."
@@ -3572,6 +3600,9 @@ msgstr "Partition"
 
 msgid "Password"
 msgstr "Adgangskode"
+
+msgid "Password cannot be empty."
+msgstr "Password feltet er tomt."
 
 msgid "Password cannot be longer than 30 characters."
 msgstr "Password kan ikke være større end 30 tegn."
@@ -3647,7 +3678,7 @@ msgid "Phone"
 msgstr "Telefon"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PHPMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3661,14 +3692,18 @@ msgstr "Venligst, tjek PHP Editor indstillinger."
 msgid "Please choose htaccess user or htaccess group."
 msgstr "Vælg venligst htaccess bruger eller htaccess gruppe."
 
+msgid "Please confirm the password."
+msgstr "Du skal bekræfte dit password."
+
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr "Kontakt venligst administratoren!<br />Spørg ham om tilladelser til at bruge denne pakke.<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
 
-msgid "Please don't use special chars such as '@, $, %...' in password."
-msgstr "Bruge ikke specielle tegn som \"@, $, %...\" i password."
+#, php-format
+msgid "Please don't use special character such as '@, $, %% ...' in password."
+msgstr "Bruge ikke specielle tegn som \"@, $, %% ...\" i password."
 
 msgid "Please enter a name for the protected area."
 msgstr "Indtast et navn for det beskyttede område."
@@ -3878,7 +3913,7 @@ msgid "Plugin list is empty."
 msgstr "Plugin listen er tom."
 
 msgid "Plugin management"
-msgstr ""
+msgstr "Plugin administration"
 
 msgid "Plugins Upload"
 msgstr "Plugins Upload"
@@ -3944,7 +3979,7 @@ msgid "Processor data"
 msgstr "Processor data"
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Properties"
 msgstr "Egenskaber"
@@ -4198,7 +4233,7 @@ msgid "Reseller software list"
 msgstr "Forhandler softwareliste"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Forhandler Statistikker"
 
 msgid "Reseller successfully added."
 msgstr "Forhandler tilføjet."
@@ -4225,7 +4260,7 @@ msgid "Resellers and customers"
 msgstr "Forhandlere og kunder"
 
 msgid "Resellers assignment"
-msgstr ""
+msgstr "Forhandler tildelinger"
 
 msgid "Reset"
 msgstr "Nulstille"
@@ -4456,16 +4491,16 @@ msgid "Service port successfully removed."
 msgstr "Service port blev succesfuldt fjernet."
 
 msgid "Service ports"
-msgstr ""
+msgstr "Service porte"
 
 msgid "Service protocol"
 msgstr "Service protokol"
 
 msgid "Services status"
-msgstr ""
+msgstr "Services status"
 
 msgid "Sessions"
-msgstr ""
+msgstr "Sessions"
 
 msgid "Set status to 'tochange'"
 msgstr "Sæt status til 'ændrer'"
@@ -4566,7 +4601,7 @@ msgid "Software installer requires PHP support."
 msgstr "Software installer kræver PHP support."
 
 msgid "Software management"
-msgstr ""
+msgstr "Software administration"
 
 msgid "Software name"
 msgstr "Software navn"
@@ -4575,7 +4610,7 @@ msgid "Software not found!"
 msgstr "Software ikke fundet!"
 
 msgid "Software options"
-msgstr ""
+msgstr "Software valgmuligheder"
 
 msgid "Software permissions"
 msgstr "Software tilladelser"
@@ -4631,7 +4666,7 @@ msgid "State/Province"
 msgstr "Kommune"
 
 msgid "Statistics"
-msgstr ""
+msgstr "Statistiker"
 
 msgid "Stats"
 msgstr "Statistik"
@@ -4721,7 +4756,7 @@ msgid "Submit changes"
 msgstr "Tilføj ændringer"
 
 msgid "Support"
-msgstr ""
+msgstr "Support"
 
 msgid "Support system"
 msgstr "Support system"
@@ -4751,14 +4786,14 @@ msgid "System error - custom error page was not updated."
 msgstr "Systemfejl - brugerdefineret fejl side blev ikke opdateret."
 
 msgid "System information"
-msgstr ""
+msgstr "System information"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "Systemet er ikke i stand til fjerne '%s' bruger logo."
 
 msgid "System tools"
-msgstr ""
+msgstr "System værktøjer"
 
 msgid "System under maintenance"
 msgstr "System under vedligeholdelse"
@@ -4962,9 +4997,9 @@ msgstr "Dette interface gør det muligt at tilføje eller fjerne IP-adresser. IP
 #, php-format
 msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
-"SQL server. Enter the % character to allow this SQL user to connect from any"
-" host."
-msgstr "Det er den host, hvorfra denne SQL bruger skal have lov til at forbinde til SQL server. Indtast % c karakter for at muliggøre denne SQL bruger til at oprette forbindelse fra enhver vært."
+"SQL server. Enter the %% character to allow this SQL user to connect from "
+"any host."
+msgstr ""
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Denne pakke findes allerede i administratorens softwarearkiv."
@@ -5228,7 +5263,7 @@ msgid "Unknown Error"
 msgstr "Ukendt Fejl"
 
 msgid "Unknown FTP user."
-msgstr ""
+msgstr "Ukendt FTP bruger-id."
 
 msgid "Unknown SQL user"
 msgstr ""
@@ -5278,7 +5313,7 @@ msgid "Update Plugins"
 msgstr "Opdater Plugins"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "Opdater SQL bruger password"
 
 msgid "Update data"
 msgstr "Opdater data"
@@ -5290,7 +5325,7 @@ msgid "Update from web depot"
 msgstr "Opdater fra web depot"
 
 msgid "Update hosting plan"
-msgstr ""
+msgstr "Opdater hosting plan"
 
 msgid "Update in progress..."
 msgstr "Opdatering i gang..."
@@ -5379,9 +5414,6 @@ msgstr "Bruger er ikke blevet slettet."
 msgid "User login (system) name"
 msgstr "Bruger login (system) navn"
 
-msgid "User name"
-msgstr "Bruger navn"
-
 msgid "User password"
 msgstr "Bruger adgangskode"
 
@@ -5460,7 +5492,7 @@ msgid "View hosting plan"
 msgstr "Vis hosting plan"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Se ticket"
 
 msgid "Visit plugin site"
 msgstr "Besøg plugin webstedet"
@@ -5513,10 +5545,10 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Webværktøjer"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "Velkomst e-mail"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Velkommen {USERNAME} til i-MSCP"
@@ -6032,7 +6064,7 @@ msgid "i-MSCP plugin store"
 msgstr "I-MSCP plugin opbevaring"
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP opdateringer"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP version opdaterings kontrol er deaktiveret"
@@ -6062,7 +6094,7 @@ msgid "missing domain"
 msgstr "manglende domæne"
 
 msgid "n\\a"
-msgstr ""
+msgstr "Ikke Tilgængelig"
 
 msgid "no"
 msgstr "nej"

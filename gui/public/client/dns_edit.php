@@ -215,7 +215,7 @@ function client_validate_SRV($record, &$errorString, &$dns, &$text)
 	}
 
 	if (empty($record['dns_srv_ttl'])) {
-		$errorString .= tr('%sfield is empty or invalid.', tr('TTL'));
+		$errorString .= tr('%s field is empty or invalid.', tr('TTL'));
 		return false;
 	} elseif (!is_number($record['dns_srv_ttl'])) {
 		$errorString .= tr('TTL must be a number.');
