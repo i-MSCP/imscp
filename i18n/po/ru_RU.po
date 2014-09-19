@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
 "POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"PO-Revision-Date: 2014-09-19 07:05+0000\n"
+"Last-Translator: Vitaliy Zhukov <DragonZX@yandex.ru>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -372,156 +372,156 @@ msgstr "%s::getInfo() не реализован и %s не найден. Это 
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' имеет неверную MX запись для электронного адреса '%%value%%'"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' - неверное имя хоста для электронного адреса '%%value%%'"
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr ""
+msgstr "'%%hostname%%' - немаршрутизируемый сегмент сети. Электронный адрес '%%value%%' не будет доступен из всемирной сети"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%%localPart%%' cне соответствует формату dot-atom"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%%localPart%%' не соответствует формату quoted-string"
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
+msgstr "'%%localPart%%' неверная локальная часть для электронного адреса '%%value%%'"
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' является DNS именем узла, но не может извлечь TLD часть"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%'  является DNS именем узла, но оно не дожно быть из TLD-списка"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%'  является DNS именем узла, но не совпадает со схемой имен узла для TLD '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%'  является DNS именем узла, но знак '-' находится в неправильном месте"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' является DNS именем узла, но данный punycode не может быть раскодирован"
 
 #, php-format
 msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' является доменным именем, но невозможно извлечь TLD часть"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%' является доменным именем, но оно не дожно быть из TLD-списка"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match against domain name"
 " schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' является доменным именем, но не совпадает со схемой имен узла для TLD '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' является доменным именем, но знак '-' находится в неправильном месте"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' является доменным именем, но данный punycode не может быть раскодирован"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a local network name but local network names are "
 "not allowed"
-msgstr ""
+msgstr "'%%value%%' является именем сети, но локальные сетевые имена не разрешены "
 
 #, php-format
 msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' является поддоменом, но не может извлечь TLD часть"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match TLD against "
 "known list"
-msgstr ""
+msgstr "'%%value%%' является поддоменом, но оно не дожно быть из TLD-списка"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match against "
 "subdomain schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' является поддоменом, но не совпадает со схемой имен узла для TLD '%%tld%%' "
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
 " position"
-msgstr ""
+msgstr "'%%value%%' является поддоменом, но знак '-' находится в неправильном месте"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' является поддоменом, но данный punycode не может быть раскодирован"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr ""
+msgstr "'%%value%%' является IP адресом, IP адреса запрещены."
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr ""
+msgstr "'%%value%%' является неверным IP адресом"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid URI hostname"
-msgstr ""
+msgstr "'%%value%%' не является верным URI именем хоста"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid local network name"
-msgstr ""
+msgstr "'%%value%%' не является верным локальным сетевым именем"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a DNS hostname"
-msgstr ""
+msgstr "'%%value%%' не соответствует ожидаемой структуре DNS-имени"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a domain name"
-msgstr ""
+msgstr "'%%value%%' не совпадает с ожидаемой структурой имени домена"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a subdomain name"
-msgstr ""
+msgstr "'%%value%%' не совпадает с ожидаемой структурой имени поддомена"
 
 #, php-format
 msgid "'%%value%%' exceeds the allowed length"
-msgstr ""
+msgstr "'%%value%%' превышает допустимую длину"
 
 msgid ""
 "'%%value%' is no valid email address in the basic format local-part@hostname"
-msgstr ""
+msgstr "'%%value%%' не является верным почтовым ящиком вида \"локальная-часть@имя-узла\""
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -1063,7 +1063,7 @@ msgstr "Вы уверены, что хотите удалить права?"
 
 #, php-format
 msgid "Are you sure you want delete the %s SQL user?"
-msgstr ""
+msgstr "Вы уверены что хотите удалить SQL пользователя '%s'?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Вы уверены, что хотите активировать этот пакет?"
@@ -2598,7 +2598,7 @@ msgid "Homepage"
 msgstr "Домашняя страница"
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
-msgstr ""
+msgstr "Хост, с которого каждому пользователю SQL позволено входить на SQL сервер"
 
 msgid "Hosting plan"
 msgstr "Хостинг-план"
@@ -3602,7 +3602,7 @@ msgid "Password"
 msgstr "Пароль"
 
 msgid "Password cannot be empty."
-msgstr ""
+msgstr "Поле пароля пусто."
 
 msgid "Password cannot be longer than 30 characters."
 msgstr "Пароль не может быть длиннее 30 символов."
@@ -3693,7 +3693,7 @@ msgid "Please choose htaccess user or htaccess group."
 msgstr "Пожалуйста, выберите htaccess пользователя или группу."
 
 msgid "Please confirm the password."
-msgstr ""
+msgstr "Пожалуйста, подтвердите пароль."
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
@@ -3703,7 +3703,7 @@ msgstr "Пожалуйста, свяжитесь с администраторо
 
 #, php-format
 msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
+msgstr "Пожалуйста, не используйте специальные символы, такие как '@, $, %%...' в пароле."
 
 msgid "Please enter a name for the protected area."
 msgstr "Пожалуйста, введите имя для защищенной зоны."
@@ -4999,7 +4999,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %% character to allow this SQL user to connect from "
 "any host."
-msgstr ""
+msgstr "Это хост, с которого данный пользователь SQL lДолжен иметь доступ на подключение. Введите символ %% для того, чтобы данный пользователь мог подключиться с любого хоста."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Этот пакет уже существует в репозитории администратора."
