@@ -6,12 +6,13 @@
 # kazuo <kazu.nito@gmail.com>, 2013-2014
 # kazuo <kazu.nito@gmail.com>, 2011-2013
 # kazuo <kazu.nito@gmail.com>, 2013
+# Laurent Declercq <l.declercq@nuxwin.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
 "POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"PO-Revision-Date: 2014-09-19 15:17+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -3141,11 +3142,11 @@ msgstr "%s のPHPディレクティブの最大値"
 
 #, php-format
 msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
-msgstr "最大リモートファイルサイズ（％s）に達します。あなたのリモートファイルは％sです"
+msgstr ""
 
 #, php-format
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
-msgstr "最大リモートファイルサイズ（％s）に達しました。あなたのリモートファイルは％sです"
+msgstr ""
 
 msgid "Maximum number of captcha validation attempts"
 msgstr "キャプチャのバリテーションの最大試行回数"
@@ -4848,7 +4849,7 @@ msgstr "この顧客のための %s 制限<strong>%d</strong>は、 %s が既に
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already <strong>%d</strong> %s."
-msgstr "彼が既に <strong>%d</strong> %sを持つので、この顧客のための %s 制限は'無効'に設定するこはできません。"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4919,7 +4920,7 @@ msgstr "パスワードの項目が空です。"
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
-msgstr "リモートファイルサイズ（％s）は1バイト未満です。URLを確認してください。"
+msgstr ""
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "編集しようとしている代理店アカウントが見つかりませんでした。"
@@ -5234,7 +5235,7 @@ msgstr "%sプラグインを更新することができません：%s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
-msgstr "ファイルをアップロードすることができません。最大アップロードファイルサイズ（％1 $ dのMB）に達しましたか？"
+msgstr ""
 
 msgid "Unauthorized"
 msgstr "許可されていない"
@@ -5927,7 +5928,7 @@ msgstr "パッケージが破損しています。修正してください！"
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
-msgstr "リモートファイルサイズ（％s）は1バイト未満です。URLを確認してください。"
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
