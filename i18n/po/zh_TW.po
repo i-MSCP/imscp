@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-15 03:48+0200\n"
-"PO-Revision-Date: 2014-09-15 01:50+0000\n"
+"POT-Creation-Date: 2014-09-19 05:23+0200\n"
+"PO-Revision-Date: 2014-09-19 03:26+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -366,134 +366,158 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "%sfield is empty or invalid."
-msgstr ""
-
 msgid ""
-"'%hostname%' does not appear to have a valid MX record for the email address"
-" '%value%'"
-msgstr ""
-
-msgid "'%hostname%' is no valid hostname for email address '%value%'"
-msgstr ""
-
-msgid ""
-"'%hostname%' is not in a routable network segment. The email address "
-"'%value%' should not be resolved from public network"
+"'%%hostname%%' does not appear to have a valid MX record for the email "
+"address '%%value%%'"
 msgstr ""
 
 #, php-format
-msgid "'%localPart%' can not be matched against dot-atom format"
+msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
 msgstr ""
 
 #, php-format
-msgid "'%localPart%' can not be matched against quoted-string format"
-msgstr ""
-
-msgid "'%localPart%' is no valid local part for email address '%value%'"
-msgstr ""
-
-msgid "'%value%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
-
 msgid ""
-"'%value%' appears to be a DNS hostname but cannot match TLD against known "
+"'%%hostname%%' is not in a routable network segment. The email address "
+"'%%value%%' should not be resolved from public network"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against dot-atom format"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against quoted-string format"
+msgstr ""
+
+#, php-format
+msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but cannot match against hostname "
-"schema for TLD '%tld%'"
+"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
+"schema for TLD '%%tld%%'"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but contains a dash in an invalid "
+"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a DNS hostname but the given punycode notation "
+"'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
 msgstr ""
 
-msgid "'%value%' appears to be a domain name but cannot extract TLD part"
+#, php-format
+msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but cannot match TLD against known "
+"'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but cannot match against domain name "
-"schema for TLD '%tld%'"
+"'%%value%%' appears to be a domain name but cannot match against domain name"
+" schema for TLD '%%tld%%'"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but contains a dash in an invalid "
+"'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be a domain name but the given punycode notation cannot"
-" be decoded"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a local network name but local network names are not"
-" allowed"
-msgstr ""
-
-msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match TLD against known "
-"list"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a subdomain name but cannot match against subdomain "
-"schema for TLD '%tld%'"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a subdomain name but contains a dash in an invalid "
-"position"
-msgstr ""
-
-msgid ""
-"'%value%' appears to be a subdomain name but the given punycode notation "
+"'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
 msgstr ""
 
+#, php-format
 msgid ""
-"'%value%' appears to be an IP address, but IP addresses are not allowed"
+"'%%value%%' appears to be a local network name but local network names are "
+"not allowed"
 msgstr ""
 
-msgid "'%value%' does not appear to be a valid IP address"
+#, php-format
+msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
 msgstr ""
 
-msgid "'%value%' does not appear to be a valid URI hostname"
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match TLD against "
+"known list"
 msgstr ""
 
-msgid "'%value%' does not appear to be a valid local network name"
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match against "
+"subdomain schema for TLD '%%tld%%'"
 msgstr ""
 
-msgid "'%value%' does not match the expected structure for a DNS hostname"
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
+" position"
 msgstr ""
 
-msgid "'%value%' does not match the expected structure for a domain name"
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but the given punycode notation "
+"cannot be decoded"
 msgstr ""
 
-msgid "'%value%' does not match the expected structure for a subdomain name"
+#, php-format
+msgid ""
+"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
 msgstr ""
 
-msgid "'%value%' exceeds the allowed length"
+#, php-format
+msgid "'%%value%%' does not appear to be a valid IP address"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid URI hostname"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid local network name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a DNS hostname"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a domain name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a subdomain name"
+msgstr ""
+
+#, php-format
+msgid "'%%value%%' exceeds the allowed length"
 msgstr ""
 
 msgid ""
-"'%value%' is no valid email address in the basic format local-part@hostname"
+"'%%value%' is no valid email address in the basic format local-part@hostname"
 msgstr ""
 
 #, php-format
@@ -601,19 +625,19 @@ msgid "Add / Edit SSL certificate"
 msgstr ""
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "新增 FTP 帳號"
 
 msgid "Add FTP user"
-msgstr ""
+msgstr "增加 FTP 使用者"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "新增 Htaccess 群組"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "新增 Htaccess 使用者"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "增加 SQL 資料庫"
 
 msgid "Add SQL user"
 msgstr "增加 SQL 使用者"
@@ -631,25 +655,25 @@ msgid "Add catchall"
 msgstr ""
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "新增自訂DNS紀錄"
 
 msgid "Add custom menu"
 msgstr "新增自訂選單"
 
 msgid "Add customer"
-msgstr ""
+msgstr "新增客戶"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "新增客戶 - 下一步"
 
 msgid "Add domain alias"
 msgstr "增加網域別名"
 
 msgid "Add email account"
-msgstr ""
+msgstr "新增 Email 帳號"
 
 msgid "Add email user"
-msgstr ""
+msgstr "新增Email使用者"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr ""
@@ -658,7 +682,7 @@ msgid "Add group"
 msgstr "增加群組"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "增加代管方案"
 
 msgid "Add new IP address"
 msgstr "新增 IP 位址"
@@ -688,7 +712,7 @@ msgid "Add reseller"
 msgstr "增加代理商"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "增加子網域"
 
 msgid "Add user"
 msgstr "增加使用者"
@@ -861,7 +885,7 @@ msgid "Admin account successfully created."
 msgstr "管理員帳號已經成功建立"
 
 msgid "Admin log"
-msgstr ""
+msgstr "管理員日誌"
 
 msgid "Admin not available"
 msgstr ""
@@ -1014,7 +1038,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Anti-Rootkits 日誌"
 
 msgid "Application installer"
 msgstr ""
@@ -1035,7 +1059,7 @@ msgid "Are you sure to remove the permissions ?"
 msgstr ""
 
 #, php-format
-msgid "Are you sure you want delete the '%s' SQL user?"
+msgid "Are you sure you want delete the %s SQL user?"
 msgstr ""
 
 msgid "Are you sure you want to activate this package?"
@@ -1133,7 +1157,7 @@ msgid "Assign existing SQL user"
 msgstr "分配已存在的的 SQL 使用者"
 
 msgid "Assign group"
-msgstr ""
+msgstr "指派群組"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
@@ -1518,7 +1542,7 @@ msgid "Clock speed (MHz)"
 msgstr "時脈頻率 (MHz)"
 
 msgid "Close"
-msgstr ""
+msgstr "OK"
 
 msgid "Close the ticket"
 msgstr "關閉這個服務單"
@@ -1572,7 +1596,7 @@ msgid "Country"
 msgstr "國家"
 
 msgid "Create"
-msgstr ""
+msgstr "OK"
 
 msgid "Create catch all"
 msgstr "建立 CatchAll"
@@ -1632,7 +1656,7 @@ msgid "Custom menu successfully updated."
 msgstr "自訂選單已經成功更新"
 
 msgid "Custom menus"
-msgstr ""
+msgstr "自訂選單"
 
 msgid "Customer"
 msgstr "客戶"
@@ -1689,7 +1713,7 @@ msgid "Customers"
 msgstr "使用者"
 
 msgid "Customers assignment"
-msgstr ""
+msgstr "使用者分配"
 
 msgid "Customize error pages for your domain."
 msgstr "為您的網域自訂錯誤訊息頁面"
@@ -1749,7 +1773,7 @@ msgid "Database required"
 msgstr "需要資料庫"
 
 msgid "Database update"
-msgstr ""
+msgstr "資料庫更新"
 
 msgid "Database usage"
 msgstr ""
@@ -1758,7 +1782,7 @@ msgid "Database users"
 msgstr "資料庫使用者"
 
 msgid "Databases"
-msgstr ""
+msgstr "資料庫"
 
 msgid "Date"
 msgstr "日期"
@@ -1860,7 +1884,7 @@ msgid "Delete all tickets"
 msgstr "刪除所有服務單"
 
 msgid "Delete customer"
-msgstr ""
+msgstr "刪除客戶"
 
 msgid "Delete customer - {DOMAIN_NAME}"
 msgstr ""
@@ -2132,7 +2156,7 @@ msgid "Edit"
 msgstr "編輯"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "編輯 FTP 帳號"
 
 msgid "Edit SSL certificate"
 msgstr "編輯 SSL 證書"
@@ -2144,22 +2168,22 @@ msgid "Edit auto responder"
 msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "編輯自訂DNS紀錄"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "編輯自訂錯誤頁面"
 
 msgid "Edit custom menu"
 msgstr "編輯自訂選單"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "編輯客戶"
 
 msgid "Edit domain"
 msgstr "編輯網域"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "編輯網域別名"
 
 msgid "Edit error page"
 msgstr "編輯錯誤頁"
@@ -2171,10 +2195,10 @@ msgid "Edit hosting plan"
 msgstr "編輯代管方案"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "編輯 htaccess 使用者"
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "編輯郵件帳號"
 
 msgid "Edit mail quota"
 msgstr ""
@@ -2186,7 +2210,7 @@ msgid "Edit reseller"
 msgstr "編輯代理商"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "編輯子網域"
 
 msgid "Edit user"
 msgstr "編輯使用者"
@@ -2440,7 +2464,7 @@ msgid "FileManager"
 msgstr ""
 
 msgid "Filemanager"
-msgstr ""
+msgstr "文件管理器"
 
 msgid "Filesystem system Info"
 msgstr "檔案系統資訊"
@@ -2461,7 +2485,7 @@ msgid "Force retry"
 msgstr ""
 
 msgid "Forward"
-msgstr ""
+msgstr "轉向"
 
 msgid "Forward URL"
 msgstr ""
@@ -2516,13 +2540,13 @@ msgid "Gender"
 msgstr "性別"
 
 msgid "General"
-msgstr ""
+msgstr "一般"
 
 msgid "General information"
 msgstr "概要訊息"
 
 msgid "General settings"
-msgstr ""
+msgstr "一般設定"
 
 msgid "Generate"
 msgstr "產生"
@@ -2570,6 +2594,9 @@ msgstr ""
 msgid "Homepage"
 msgstr "首頁"
 
+msgid "Host from which SQL user is allowed to connect to SQL server"
+msgstr ""
+
 msgid "Hosting plan"
 msgstr "代管方案"
 
@@ -2598,7 +2625,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "代管方案"
 
 msgid "Hosting plans available for"
 msgstr "可用的代管方案用於"
@@ -2663,10 +2690,10 @@ msgid "IP addresses under control of i-MSCP"
 msgstr ""
 
 msgid "IP management"
-msgstr ""
+msgstr "IP 管理"
 
 msgid "IP usage"
-msgstr ""
+msgstr "IP 使用清單"
 
 msgid "IPv6 address"
 msgstr "IPv6 位址"
@@ -2915,7 +2942,7 @@ msgid "Language successfully updated."
 msgstr "語言已經成功更新"
 
 msgid "Languages"
-msgstr ""
+msgstr "多國語言"
 
 msgid "Languages index was successfully re-built."
 msgstr "多國語言索引已經成功重建"
@@ -3006,7 +3033,7 @@ msgid "Logo successfully updated."
 msgstr "Logo 成功更新"
 
 msgid "Logout"
-msgstr ""
+msgstr "登出"
 
 msgid "Lost password"
 msgstr "找回密碼"
@@ -3072,7 +3099,7 @@ msgid ""
 msgstr ""
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "維護設定"
 
 msgid "Male"
 msgstr "男"
@@ -3081,7 +3108,7 @@ msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr ""
+msgstr "網域管理"
 
 msgid "Manage SQL"
 msgstr "管理 SQL"
@@ -3403,7 +3430,7 @@ msgid "OK"
 msgstr "OK"
 
 msgid "Ok"
-msgstr ""
+msgstr "OK"
 
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
@@ -3466,7 +3493,7 @@ msgid "Other settings"
 msgstr "其他設定"
 
 msgid "Overview"
-msgstr ""
+msgstr "概覽"
 
 msgid "Owner"
 msgstr "擁有人"
@@ -3506,7 +3533,7 @@ msgid "PHP exec() function"
 msgstr ""
 
 msgid "PHP settings"
-msgstr ""
+msgstr "PHP 設定"
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP 接收"
@@ -3518,7 +3545,7 @@ msgid "POP3/IMAP traffic"
 msgstr "POP3/IMAP 流量"
 
 msgid "Package actions"
-msgstr ""
+msgstr "動作"
 
 msgid "Package already exists in the reseller depot!"
 msgstr ""
@@ -3570,6 +3597,9 @@ msgstr "分區"
 
 msgid "Password"
 msgstr "密碼"
+
+msgid "Password cannot be empty."
+msgstr ""
 
 msgid "Password cannot be longer than 30 characters."
 msgstr ""
@@ -3645,7 +3675,7 @@ msgid "Phone"
 msgstr "電話"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -3659,13 +3689,17 @@ msgstr ""
 msgid "Please choose htaccess user or htaccess group."
 msgstr "請選擇 htaccess 使用者或htaccess 群組."
 
+msgid "Please confirm the password."
+msgstr ""
+
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "Please don't use special chars such as '@, $, %...' in password."
+#, php-format
+msgid "Please don't use special character such as '@, $, %% ...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -3876,7 +3910,7 @@ msgid "Plugin list is empty."
 msgstr ""
 
 msgid "Plugin management"
-msgstr ""
+msgstr "插件管理"
 
 msgid "Plugins Upload"
 msgstr "插件上傳"
@@ -3942,7 +3976,7 @@ msgid "Processor data"
 msgstr "處理器資料"
 
 msgid "Profile"
-msgstr ""
+msgstr "個人"
 
 msgid "Properties"
 msgstr ""
@@ -4196,7 +4230,7 @@ msgid "Reseller software list"
 msgstr "代理商軟體列表"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "代理商統計"
 
 msgid "Reseller successfully added."
 msgstr ""
@@ -4454,16 +4488,16 @@ msgid "Service port successfully removed."
 msgstr ""
 
 msgid "Service ports"
-msgstr ""
+msgstr "通訊埠口"
 
 msgid "Service protocol"
-msgstr ""
+msgstr "協議"
 
 msgid "Services status"
-msgstr ""
+msgstr "伺服器狀態"
 
 msgid "Sessions"
-msgstr ""
+msgstr "工作階段"
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4564,7 +4598,7 @@ msgid "Software installer requires PHP support."
 msgstr ""
 
 msgid "Software management"
-msgstr ""
+msgstr "軟體管理"
 
 msgid "Software name"
 msgstr "軟體名稱"
@@ -4573,7 +4607,7 @@ msgid "Software not found!"
 msgstr ""
 
 msgid "Software options"
-msgstr ""
+msgstr "軟體設定"
 
 msgid "Software permissions"
 msgstr ""
@@ -4629,7 +4663,7 @@ msgid "State/Province"
 msgstr "省/洲"
 
 msgid "Statistics"
-msgstr ""
+msgstr "資料統計"
 
 msgid "Stats"
 msgstr "統計"
@@ -4719,7 +4753,7 @@ msgid "Submit changes"
 msgstr "提交更改"
 
 msgid "Support"
-msgstr ""
+msgstr "支援"
 
 msgid "Support system"
 msgstr "系統支援"
@@ -4749,14 +4783,14 @@ msgid "System error - custom error page was not updated."
 msgstr ""
 
 msgid "System information"
-msgstr ""
+msgstr "系統資訊"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "系統工具"
 
 msgid "System under maintenance"
 msgstr "系統維護中"
@@ -4960,8 +4994,8 @@ msgstr ""
 #, php-format
 msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
-"SQL server. Enter the % character to allow this SQL user to connect from any"
-" host."
+"SQL server. Enter the %% character to allow this SQL user to connect from "
+"any host."
 msgstr ""
 
 msgid "This package already exists in the administrator software repository."
@@ -5038,7 +5072,7 @@ msgid "Total Domains"
 msgstr "總計網域數量"
 
 msgid "Total Software"
-msgstr ""
+msgstr "軟體數量總計"
 
 msgid "Total Web software repositories"
 msgstr ""
@@ -5057,7 +5091,7 @@ msgid "Total reseller"
 msgstr "代理商數量總計"
 
 msgid "Total software"
-msgstr ""
+msgstr "軟體數量總計"
 
 msgid "Traffic"
 msgstr "流量"
@@ -5377,9 +5411,6 @@ msgstr ""
 msgid "User login (system) name"
 msgstr "使用者登入 （系統）名稱"
 
-msgid "User name"
-msgstr "使用者名稱"
-
 msgid "User password"
 msgstr "使用者密碼"
 
@@ -5455,7 +5486,7 @@ msgid "View aliases"
 msgstr "查看別名"
 
 msgid "View hosting plan"
-msgstr ""
+msgstr "查看託管計劃"
 
 msgid "View ticket"
 msgstr ""
@@ -5511,10 +5542,10 @@ msgid "Webmail"
 msgstr "網頁郵件"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Web工具"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "歡迎郵件"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
@@ -5954,7 +5985,7 @@ msgid "disk space"
 msgstr "空間容量"
 
 msgid "domain"
-msgstr ""
+msgstr "網域"
 
 msgid "domain alias"
 msgstr "網域別名"
@@ -5963,7 +5994,7 @@ msgid "domain aliases"
 msgstr "網域別名"
 
 msgid "domains"
-msgstr ""
+msgstr "網域"
 
 msgid "email account"
 msgstr "Email 帳號"
@@ -6030,7 +6061,7 @@ msgid "i-MSCP plugin store"
 msgstr "i-MSCP 插件商店"
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP 更新"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP 版本檢查已停用"
@@ -6060,7 +6091,7 @@ msgid "missing domain"
 msgstr ""
 
 msgid "n\\a"
-msgstr ""
+msgstr "空"
 
 msgid "no"
 msgstr "否"

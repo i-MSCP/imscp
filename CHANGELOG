@@ -5,6 +5,7 @@ Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
 GUI
+	Fixed: Literal percent sign must be escaped with another percent sign in translation strings
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
 
 INSTALLER

@@ -470,7 +470,7 @@ $tpl->assign(
 		'TR_ADD_SQL_USER' => tr('Add SQL user'),
 		'TR_USER_NAME' => tr('SQL user name'),
 		'TR_USER_HOST' => tr('SQL user host'),
-		'TR_USER_HOST_TIP' => tr("This is the host from which this SQL user must be allowed to connect to the SQL server. Enter the % character to allow this SQL user to connect from any host."),
+		'TR_USER_HOST_TIP' => tr("This is the host from which this SQL user must be allowed to connect to the SQL server. Enter the %% character to allow this SQL user to connect from any host."),
 		'TR_USE_DMN_ID' => tr('SQL user prefix/suffix'),
 		'TR_START_ID_POS' => tr('In front'),
 		'TR_END_ID_POS' => tr('Behind'),
