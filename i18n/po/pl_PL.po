@@ -3,17 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Alex_Joe <voxar@voxar.pl>, 2013-2014
-# b13n1u <b13n1u@gmail.com>, 2013-2014
-# b13n1u <b13n1u@gmail.com>, 2012-2013
 # cgr <cobragr@tlen.pl>, 2013
 # Lukasz Nowak <qkash@o2.pl>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"POT-Creation-Date: 2014-09-19 18:09+0200\n"
+"PO-Revision-Date: 2014-09-19 16:12+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -630,9 +627,6 @@ msgstr ""
 msgid "Add FTP account"
 msgstr "Dodaj konto FTP"
 
-msgid "Add FTP user"
-msgstr "Dodaj użytkownika FTP"
-
 msgid "Add Htaccess group"
 msgstr "Dodaj grupę htaccess"
 
@@ -674,9 +668,6 @@ msgstr "Dodaj alias domeny"
 
 msgid "Add email account"
 msgstr "Dodaj konto email"
-
-msgid "Add email user"
-msgstr "Dodaj użytkownika poczty"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Dodaj zewnętrzny serwer pocztowy dla {DOMAIN_UTF8}"
@@ -3035,9 +3026,6 @@ msgstr "Logo zostało usunięte pomyślnie."
 msgid "Logo successfully updated."
 msgstr "Logo zostało zaktualizowane pomyślnie."
 
-msgid "Logout"
-msgstr "Wyloguj"
-
 msgid "Lost password"
 msgstr "Zapomniałeś hasło?"
 
@@ -3109,9 +3097,6 @@ msgstr "Mężczyzna"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
-
-msgid "Manage Domains"
-msgstr "Zarządzaj domenami"
 
 msgid "Manage SQL"
 msgstr "Zarządzaj bazami SQL"
@@ -5323,9 +5308,6 @@ msgstr "Zaktualizuj z repozytorium oprogramowania"
 
 msgid "Update from web depot"
 msgstr "Zaktualizuj z sieci."
-
-msgid "Update hosting plan"
-msgstr "Aktualizuj plan hostingowy"
 
 msgid "Update in progress..."
 msgstr "Aktualizacja w toku..."
