@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[i-MSCP.1_1_x]
+[i-MSCP.develop]
 file_filter = po/<lang>.po
 source_file = iMSCP.pot
 source_lang = en
