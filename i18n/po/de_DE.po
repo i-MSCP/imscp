@@ -5,7 +5,6 @@
 # Translators:
 # Alex H <paderwan@googlemail.com>, 2012
 # bastey <sebastian@34n.de>, 2011
-# BeNe <bene@deluxe-styles.de>, 2011-2012
 # Christian Hernmarck <joximu@web.de>, 2012
 # Cool <barni@telia.com>, 2011,2013
 # design <schlanki_26@web.de>, 2011
@@ -25,15 +24,14 @@
 # Rene Schuster, 2014
 # Tango <tango-net@freenet.de>, 2011
 # Thomas <thomasbjoh@gmx.de>, 2013
-# Torsten Widmann <info@goover.de>, 2011-2012
 # w3bster <mail@stefan-riegel.de>, 2011
 # Wachert <alexander@wachert.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 18:09+0200\n"
-"PO-Revision-Date: 2014-09-19 16:12+0000\n"
+"POT-Creation-Date: 2014-09-19 18:35+0200\n"
+"PO-Revision-Date: 2014-09-19 16:34+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"

@@ -7,13 +7,12 @@
 # alfauno <vh.rodriguez.a@gmail.com>, 2012
 # killerbender0temp <reachme@mailinator.com>, 2013
 # Sagi Roca <sagi@canbasis.com>, 2012
-# victor <victor53134@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 18:09+0200\n"
-"PO-Revision-Date: 2014-09-19 16:12+0000\n"
+"POT-Creation-Date: 2014-09-19 18:35+0200\n"
+"PO-Revision-Date: 2014-09-19 16:37+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"

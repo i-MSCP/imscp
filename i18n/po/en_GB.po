@@ -6,14 +6,13 @@
 # FlorianJ <flo_jung@web.de>, 2012
 # Laurent Declercq <l.declercq@nuxwin.com>, 2011
 # Peter Wyss <peter@obanax.ch>, 2013
-# Torsten Widmann <info@goover.de>, 2011-2012
 # Vitaliy Zhukov <DragonZX@yandex.ru>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 18:09+0200\n"
-"PO-Revision-Date: 2014-09-19 16:12+0000\n"
+"POT-Creation-Date: 2014-09-19 18:35+0200\n"
+"PO-Revision-Date: 2014-09-19 16:37+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"

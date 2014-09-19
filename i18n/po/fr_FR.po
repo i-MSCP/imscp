@@ -6,9 +6,7 @@
 # Alexandre B. <0xfuture@gmail.com>, 2013
 # coolternet <coolternet@live.ca>, 2012
 # kevinus60 <kevinus60@gmail.com>, 2013
-# krok <krok@totalynet.fr>, 2011-2013
 # Laurent Declercq <l.declercq@nuxwin.com>, 2011
-# LE BRECH Ludovic <ludofloria@aifesdespets.fr>, 2012-2013
 # lkppo, 2012
 # minicore <minicore@jypino.eu>, 2012
 # Morgan Henreaux <morgan@henreaux.com>, 2012
@@ -19,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 18:09+0200\n"
-"PO-Revision-Date: 2014-09-19 16:12+0000\n"
+"POT-Creation-Date: 2014-09-19 18:35+0200\n"
+"PO-Revision-Date: 2014-09-19 16:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
