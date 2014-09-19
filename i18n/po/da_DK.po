@@ -5,6 +5,7 @@
 # Translators:
 # HenrikS <henrik@schytte.net>, 2011
 # HenrikS <henrik@schytte.net>, 2011
+# Laurent Declercq <l.declercq@nuxwin.com>, 2014
 # Michael Jensen-Maar <maar@maargrafisk.dk>, 2013-2014
 # Michael Jensen-Maar <maar@maargrafisk.dk>, 2013
 msgid ""
@@ -12,7 +13,7 @@ msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
 "POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"PO-Revision-Date: 2014-09-19 15:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -371,156 +372,156 @@ msgstr ""
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' synes ikke at have en gyldig MX record til e-mail adressen '%%value%%'"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' er ikke et gyldig hostname for email-adressen '%%value%%'"
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr ""
+msgstr "'%%hostname%%' kan ikke rutes i noget netværk segment. E-mail adressen '%%value%%' bør ikke resolves fra offentligt netværk"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%%localPart%%' kan ikke matches mod dot-atom-format"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%%localPart%%' kan ikke matches mod quoted-string format"
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
+msgstr "'%%localPart%%' er ikke en valid part for e-mail adressen '%%value%%'"
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' synes at være et DNS værtsnavn men kan ikke udtrække TLD delen"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%' synes at være et DNS værtsnavn men kan ikke matche TLD mod kendte lister"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' synes at være et DNS værtsnavn men kan ikke matche mod værtsnavn schema for TLD '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' ser ud til at være et DNS-værtsnavn, men indeholder en bindestreg på en ugyldig position"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' synes at være et DNS værtsnavn men den givne punycode notation kan ikke afkodes"
 
 #, php-format
 msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' synes at være et domænenavn, men kan ikke udtrække TLD delen"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%' synes at være et domænenavn, men kan ikke matche TLD mod kendte lister"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match against domain name"
 " schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' synes at være et domænenavn, men kan ikke matche mod domænenavn schema for TLD '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' synes at være et domænenavn, men indeholder en bindestreg på en ugyldig position"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' synes at være et domænenavn, men den givne punycode notation kan ikke afkodes"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a local network name but local network names are "
 "not allowed"
-msgstr ""
+msgstr "'%%value%%' synes at være et lokalt netværksnavn, men lokale netværksnavne er ikke tilladt"
 
 #, php-format
 msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' synes at være et underdomæne navn, men kan ikke udtrække TLD delen"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match TLD against "
 "known list"
-msgstr ""
+msgstr "'%%value%%' synes at være et underdomæne navn, men kan ikke matche TLD mod kendte lister"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match against "
 "subdomain schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' synes at være et underdomæne navn, men kan ikke matche mod underdomæne schema for TLD '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
 " position"
-msgstr ""
+msgstr "'%%value%%' synes at være et underdomæne navn, men indeholder en bindestreg på en ugyldig position"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' synes at være en subdomænenavnet men den givne punycode notation kan ikke afkodes"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr ""
+msgstr "'%%value%%' synes at være en IP-adresse, men IP-adresser er ikke tilladt"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr ""
+msgstr "'%%value%%' synes ikke at være en gyldig IP-adresse"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid URI hostname"
-msgstr ""
+msgstr "'%%value%%' synes ikke at være et gyldigt URI værtsnavn"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid local network name"
-msgstr ""
+msgstr "'%%value%%' synes ikke at være et gyldigt lokalt netværksnavn"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a DNS hostname"
-msgstr ""
+msgstr "'%%value%%' svarer ikke til den forventede struktur for et DNS-værtsnavn"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a domain name"
-msgstr ""
+msgstr "'%%value%%' svarer ikke til den forventede struktur for et domænenavn"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a subdomain name"
-msgstr ""
+msgstr "'%%value%%' svarer ikke til den forventede struktur for et underdomæne navn"
 
 #, php-format
 msgid "'%%value%%' exceeds the allowed length"
-msgstr ""
+msgstr "'%%value%%' overskrider den tilladte længde"
 
 msgid ""
 "'%%value%' is no valid email address in the basic format local-part@hostname"
-msgstr ""
+msgstr "'%%value%%' er ikke en gyldig e-mail-adresse i dens basale format lokale-del@hostname"
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -624,7 +625,7 @@ msgid "Add"
 msgstr "Tilføj"
 
 msgid "Add / Edit SSL certificate"
-msgstr ""
+msgstr "Rediger SSL certifikat"
 
 msgid "Add FTP account"
 msgstr "Tilføj FTP konto"
@@ -1062,7 +1063,7 @@ msgstr "Er du sikker på at du vil fjerne tilladelser?"
 
 #, php-format
 msgid "Are you sure you want delete the %s SQL user?"
-msgstr ""
+msgstr "Er du sikker på, du vil slette %s SQL bruger?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Er du sikker på, du vil aktivere denne pakke?"
@@ -3366,7 +3367,7 @@ msgid "No update info available"
 msgstr "Ingen opdaterings info tilgængelig"
 
 msgid "No used yet"
-msgstr ""
+msgstr "Ikke brugt"
 
 msgid "No user found."
 msgstr "Ingen brugere fundet."
@@ -3601,7 +3602,7 @@ msgid "Password"
 msgstr "Adgangskode"
 
 msgid "Password cannot be empty."
-msgstr ""
+msgstr "Password feltet er tomt."
 
 msgid "Password cannot be longer than 30 characters."
 msgstr "Password kan ikke være større end 30 tegn."
@@ -3692,7 +3693,7 @@ msgid "Please choose htaccess user or htaccess group."
 msgstr "Vælg venligst htaccess bruger eller htaccess gruppe."
 
 msgid "Please confirm the password."
-msgstr ""
+msgstr "Du skal bekræfte dit password."
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
@@ -3702,7 +3703,7 @@ msgstr "Kontakt venligst administratoren!<br />Spørg ham om tilladelser til at 
 
 #, php-format
 msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
+msgstr "Bruge ikke specielle tegn som \"@, $, %% ...\" i password."
 
 msgid "Please enter a name for the protected area."
 msgstr "Indtast et navn for det beskyttede område."
@@ -5262,7 +5263,7 @@ msgid "Unknown Error"
 msgstr "Ukendt Fejl"
 
 msgid "Unknown FTP user."
-msgstr ""
+msgstr "Ukendt FTP bruger-id."
 
 msgid "Unknown SQL user"
 msgstr ""

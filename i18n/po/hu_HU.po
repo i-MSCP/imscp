@@ -7,6 +7,7 @@
 # Zoltán Balázs <balazsz@citromail.hu>, 2011-2012
 # knorbi555 <k.norbi555@gmail.com>, 2012
 # starring94 <kovinor123@gmail.com>, 2014
+# Laurent Declercq <l.declercq@nuxwin.com>, 2014
 # Zoltán Balázs <balazsz@citromail.hu>, 2012-2013
 # Zsolt Jónás <jonas.zsolt@naxonet.hu>, 2011,2013-2014
 msgid ""
@@ -14,7 +15,7 @@ msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
 "POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"PO-Revision-Date: 2014-09-19 15:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -373,11 +374,11 @@ msgstr "%s::getInfo() nem hajtotta végre és %s nem található. Ez egy hiba a(
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' kifejezés nem szerepel, hogy egy érvényes MX rekordot az e-mail cím '%%value%%'"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' nem érvényes gépnév az e-mail cím '%%value%%'"
 
 #, php-format
 msgid ""
@@ -387,7 +388,7 @@ msgstr ""
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%%localPart%%' can not be matched against dot-atom format"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
@@ -399,7 +400,7 @@ msgstr ""
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' úgy tűnik, hogy a DNS hostname but cannot extract TLD part"
 
 #, php-format
 msgid ""
