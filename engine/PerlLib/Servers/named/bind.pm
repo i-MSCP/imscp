@@ -177,11 +177,11 @@ sub postaddDmn
 	return $rs if $rs;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
-		my $ipMngr = iMSCP::Net->getInstance();
-
-		my $domainIp = ($ipMngr->getAddrType($data->{'DOMAIN_IP'}) eq 'PUBLIC')
+		my $domainIp = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
 			? $data->{'DOMAIN_IP'}
 			: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+
+		my $ipMngr = iMSCP::Net->getInstance();
 
 		# Add DNS entry for domain alternative URL in master zone file
 		$rs = $self->addDmn(
@@ -363,11 +363,11 @@ sub addSub
 				$subEntry = replaceBloc("; sub SPF entry BEGIN\n", "; sub SPF entry ENDING\n", '', $subEntry);
 			}
 
-			my $ipMngr = iMSCP::Net->getInstance();
-
-			my $domainIp = ($ipMngr->getAddrType($data->{'DOMAIN_IP'}) eq 'PUBLIC')
+			my $domainIp = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
 				? $data->{'DOMAIN_IP'}
 				: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+
+			my $ipMngr = iMSCP::Net->getInstance();
 
 			# Process other entries
 			$subEntry = process(
@@ -454,11 +454,11 @@ sub postaddSub
 	return $rs if $rs;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
-		my $ipMngr = iMSCP::Net->getInstance();
-
-		my $domainIp = ($ipMngr->getAddrType($data->{'DOMAIN_IP'}) eq 'PUBLIC')
+		my $domainIp = (($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}))
 			? $data->{'DOMAIN_IP'}
 			: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+
+		my $ipMngr = iMSCP::Net->getInstance();
 
 		# Adding DNS entry for subdomain alternative URL in master zone file
 		$rs = $self->addDmn(
@@ -932,9 +932,7 @@ sub _addDmnDb
 	my $dmnNsEntry = getBloc("; dmn NS entry BEGIN\n", "; dmn NS entry ENDING\n", $tplDbFileContent);
 	my $dmnNsAEntry = getBloc("; dmn NS A entry BEGIN\n", "; dmn NS A entry ENDING\n", $tplDbFileContent);
 
-	my $ipMngr = iMSCP::Net->getInstance();
-
-	my $domainIp = ($ipMngr->getAddrType($data->{'DOMAIN_IP'}) eq 'PUBLIC')
+	my $domainIp = (($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}))
 		? $data->{'DOMAIN_IP'}
 		: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
 
@@ -942,6 +940,8 @@ sub _addDmnDb
 		$domainIp,
 		($self->{'config'}->{'SECONDARY_DNS'} eq 'no') ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'}
 	);
+
+	my $ipMngr = iMSCP::Net->getInstance();
 
 	my ($dmnNsEntries, $dmnNsAentries, $nsNumber) = (undef, undef, 1);
 
@@ -972,9 +972,7 @@ sub _addDmnDb
 	my $dmnMailEntry = '';
 
 	if($data->{'MAIL_ENABLED'}) {
-		my $baseServerIp = ($ipMngr->getAddrType($main::imscpConfig{'BASE_SERVER_IP'}) eq 'PUBLIC')
-			? $main::imscpConfig{'BASE_SERVER_IP'}
-			: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+		my $baseServerIp = $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
 
 		$dmnMailEntry = process(
 			{
