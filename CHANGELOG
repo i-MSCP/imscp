@@ -4,6 +4,10 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+ENGINE
+	Fixed: Wrong IP added in DNS zone files when the BASE_SERVER_IP and BASE_SERVER_PUBLIC_IP parameters are referring
+		   to the same IP (private IP)
+
 GUI
 	Fixed: Literal percent sign must be escaped with another percent sign in translation strings
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
