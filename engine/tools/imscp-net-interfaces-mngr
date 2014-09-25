@@ -63,7 +63,7 @@ sub _addAddresses
 				my $dev = $rdata->{$addr}->{'ip_card'};
 
 				if($net->isKnownDevice($dev)) {
-					$rs |= $net->upDevice($dev) if ! $net->isDeviceUp($dev);
+					$rs |= $net->upDevice($dev) unless $net->isDeviceUp($dev);
 					$rs |= $net->addAddr($addr, $dev);
 				} else {
 					error("Network device $dev doesn't exist. Please rerun the setup script to fix this.");

@@ -9,6 +9,8 @@ GUI
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
 
 INSTALLER
+	Fixed: Error about unknown IP when attempting to add new IP
+	Fixed: lo must not be used as default device when adding new IP (installer)
 	Fixed: Unable to upgrade to 1.1.14 (packages file is corrupted - Ubuntu Precise)
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -30,7 +32,7 @@ ENGINE
 GUI
 	Fixed: Malformed href attributes in alias.php (reseller level)
 	Fixed: Malformed href attribute in ticket_system.tpl (admin/reseller levels)
-	Fixed: Unable to add custom CNAME DNS resource record using the arobase symbol which is substitued by the zone root
+	Fixed: Unable to add custom CNAME DNS resource record using the arobase symbol which is substituted by the zone root
 	Updated: Layout according changes from vendor libraries
 
 INSTALLER
