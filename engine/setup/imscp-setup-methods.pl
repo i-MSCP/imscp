@@ -1322,7 +1322,7 @@ sub setupServerIps
 	if(%{$serverIpsToReplace}) {
 		my $ipsToReplace = join q{,}, map $database->quote($_), keys %{$serverIpsToReplace};
 		$oldIptoIdMap = $database->doQuery(
-			'ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips` WHERE `ip_number` IN ('. $ipsToReplace .')'
+			'ip_number', 'SELECT ip_id, ip_number FROM server_ips WHERE ip_number IN ('. $ipsToReplace .')'
 		);
 		if(ref $oldIptoIdMap ne 'HASH') {
 			error("Unable to get IDs of server IPs to replace: $oldIptoIdMap");
@@ -1334,23 +1334,19 @@ sub setupServerIps
 
 	# Process server IPs addition
 
-	my ($defaultNetcard) = $net->getDevices();
+	my $defaultNetcard = (grep { $_ ne 'lo' } $net->getDevices())[0];
 
 	for (@serverIps) {
 		next if exists $serverIpsToReplace->{$_};
-		my $netCard = $net->getAddrDevice($_) || $defaultNetcard;
+		my $netCard = ($net->isKnownAddr($_)) ? $net->getAddrDevice($_) || $defaultNetcard : $defaultNetcard;
 
 		if($netCard) {
 			my $rs = $database->doQuery(
 				'dummy',
-				'
-					INSERT IGNORE INTO `server_ips` (
-						`ip_number`, `ip_card`, `ip_status`
-					) VALUES(
-						?, ?, ?
-					)
-				',
-				$_, $netCard, 'toadd'
+				'INSERT IGNORE INTO server_ips (ip_number, ip_card, ip_status) VALUES(?, ?, ?)',
+				$_,
+				$netCard,
+				'toadd'
 			);
 			if (ref $rs ne 'HASH') {
 				error("Unable to add/update server address IP '$_': $rs");
@@ -1373,7 +1369,7 @@ sub setupServerIps
 			# Get IP IDs of resellers to which the IP to replace is currently assigned
 			my $resellerIps = $database->doQuery(
 				'id',
-				'SELECT `id`, `reseller_ips` FROM `reseller_props` WHERE `reseller_ips` REGEXP ?',
+				'SELECT id, reseller_ips FROM reseller_props WHERE reseller_ips REGEXP ?',
 				"(^|[^0-9]$oldIpId;)"
 			);
 			unless(ref $resellerIps eq 'HASH') {
@@ -1383,7 +1379,7 @@ sub setupServerIps
 
 			# Get new IP ID
 			my $newIpId = $database->doQuery(
-				'ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips` WHERE `ip_number` = ?', $newIp
+				'ip_number', 'SELECT ip_id, ip_number FROM server_ips WHERE ip_number = ?', $newIp
 			);
 			unless(ref $newIpId eq 'HASH') {
 				error($newIpId);
@@ -1398,7 +1394,7 @@ sub setupServerIps
 				if($ips !~ /(?:^|[^0-9])$newIpId;/) {
 					$ips =~ s/((?:^|[^0-9]))$oldIpId;?/$1$newIpId;/;
 					$rs = $database->doQuery(
-						'dummy', 'UPDATE `reseller_props` SET `reseller_ips` = ? WHERE `id` = ?', $ips, $_
+						'dummy', 'UPDATE reseller_props SET reseller_ips = ? WHERE id = ?', $ips, $_
 					);
 					unless(ref $rs eq 'HASH') {
 						error($rs);
@@ -1409,7 +1405,7 @@ sub setupServerIps
 
 			# Update IP id of customer domains if needed
 			$rs = $database->doQuery(
-				'dummy', 'UPDATE `domain` SET `domain_ip_id` = ? WHERE `domain_ip_id` = ?', $newIpId, $oldIpId
+				'dummy', 'UPDATE domain SET domain_ip_id = ? WHERE domain_ip_id = ?', $newIpId, $oldIpId
 			);
 			unless(ref $rs eq 'HASH') {
 				error($rs);
@@ -1418,7 +1414,7 @@ sub setupServerIps
 			
 			# Update IP id of customer domain aliases if needed
 			$rs = $database->doQuery(
-				'dummy', 'UPDATE `domain_aliasses` SET `alias_ip_id` = ? WHERE `alias_ip_id` = ?', $newIpId, $oldIpId
+				'dummy', 'UPDATE domain_aliasses SET alias_ip_id = ? WHERE alias_ip_id = ?', $newIpId, $oldIpId
 			);
 			unless(ref $rs eq 'HASH') {
 				error($rs);
@@ -1432,7 +1428,7 @@ sub setupServerIps
 		my $serverIpsToDelete = join q{,}, map $database->quote($_), @{$serverIpsToDelete};
 		my $rs = $database->doQuery(
 			'dummy',
-			'UPDATE`server_ips` set `ip_status` = ?  WHERE `ip_number` IN(' . $serverIpsToDelete . ') AND `ip_number` <> ?',
+			'UPDATE server_ips set ip_status = ?  WHERE ip_number IN(' . $serverIpsToDelete . ') AND ip_number <> ?',
 			'todelete',
 			$baseServerIp
 		);

@@ -29,7 +29,7 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-# TODO: Handle input prefix lenght (CIDR)
+# TODO: Handle input prefix length (CIDR)
 
 package iMSCP::Net;
 

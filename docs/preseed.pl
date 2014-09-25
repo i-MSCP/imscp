@@ -5,17 +5,17 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2014.09.10
+# Last update: 2014.09.25
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
 $main::questions{'HTTPD_SERVER'} = 'apache_php_fpm';
 
 # apache_fcgid - Only relevant if the server for the http service is set to 'apache_fgcid'
-$main::questions{'INI_LEVEL'} = 'per_user'; # 'per_user' or 'per_domain' or 'per_vhost'
+$main::questions{'INI_LEVEL'} = 'per_user'; # 'per_user', 'per_domain' or 'per_vhost'
 
 # apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'
-$main::questions{'PHP_FPM_POOLS_LEVEL'} = 'per_user'; # 'per_user' or 'per_domain' or 'per_site'
+$main::questions{'PHP_FPM_POOLS_LEVEL'} = 'per_user'; # 'per_user', 'per_domain' or 'per_site'
 
 # Server to use for the Pop/Imap services
 # (courier|dovecot)
@@ -83,7 +83,7 @@ $main::questions{'SQL_SERVER'} = 'mysql_5.5';
 # Server hostname
 $main::questions{'SERVER_HOSTNAME'} = 'host.domain.tld'; # Fully qualified hostname name
 
-# Domain name from which the i-MSCP frontEnd should be reachable
+# Domain name from which the i-MSCP control panel must be reachable
 $main::questions{'BASE_SERVER_VHOST'} = 'panel.domain.tld'; # Fully qualified domain name
 
 # Base server IP - Accept both IPv4 and IPv6
@@ -92,10 +92,10 @@ $main::questions{'BASE_SERVER_IP'} = '192.168.5.110';
 
 # Base server public IP
 # Only relevant if the Base server IP is in private range
-$main::questions{'BASE_SERVER_PUBLIC_IP'} = '';
+$main::questions{'BASE_SERVER_PUBLIC_IP'} = '192.168.5.110';
 
 # IPs to add in the i-MSCP database - Accept both IPv4 and IPv6
-# Any unconfigured IPs will be added as alias to the first network card found (eg: eth0, p2p1 ...)
+# Any unconfigured IPs will be added to the first network device found (eg: eth0, p2p1 ...)
 $main::questions{'SERVER_IPS'} = []; # ['192.168.5.115', '192.168.5.120']
 
 # SQL DSN
@@ -105,9 +105,11 @@ $main::questions{'DATABASE_PORT'} = '3306'; # Only relevant for TCP (eg: when DA
 $main::questions{'DATABASE_NAME'} = 'imscp'; # Database name
 
 # i-MSCP SQL user
-$main::questions{'DATABASE_USER'} = 'root'; # SQL user  - User must exist and have full privileges on SQL server
-$main::questions{'DATABASE_USER_HOST'} = 'localhost'; # Host from which SQL users created by i-MSCP are allowed to connect to the MySQL server
+$main::questions{'DATABASE_USER'} = 'root'; # SQL user
 $main::questions{'DATABASE_PASSWORD'} = 'password'; # Password must not empty
+
+# Host from which SQL users created by i-MSCP are allowed to connect to the MySQL server
+$main::questions{'DATABASE_USER_HOST'} = 'localhost';
 
 # MySQL prefix/sufix
 $main::questions{'MYSQL_PREFIX'} = 'no'; # 'yes' or 'no'
