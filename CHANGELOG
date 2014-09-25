@@ -10,6 +10,7 @@ ENGINE
 
 GUI
 	Fixed: Literal percent sign must be escaped with another percent sign in translation strings
+	Fixed: PHP Notice - Undefined variable $resellerId in reseller/alias.php
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
 
 INSTALLER

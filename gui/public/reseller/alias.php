@@ -256,6 +256,8 @@ $tpl->assign(
 	)
 );
 
+$resellerId = $_SESSION['user_id'];
+
 $resellerProps = imscp_getResellerProperties($resellerId);
 
 if ($resellerProps['max_als_cnt'] != 0) {
