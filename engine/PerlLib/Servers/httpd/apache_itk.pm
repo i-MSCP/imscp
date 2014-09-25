@@ -1480,7 +1480,7 @@ sub start
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'});
+	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
 	error("Unable to start $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
 	return $rs if $rs;
 
@@ -1502,7 +1502,7 @@ sub stop
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStop');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'HTTPD_SNAME'});
+	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
 	error("Unable to stop $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
 	return $rs if $rs;
 
@@ -1525,11 +1525,11 @@ sub restart
 	return $rs if $rs;
 
 	if($self->{'forceRestart'}) {
-		$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'HTTPD_SNAME'});
+		$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
 		error("Unable to restart $self->{'config'}->{'HTTPD_SNAME'}") if $rs;
 		return $rs if $rs;
 	} else {
-		$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'});
+		$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
 		error("Unable to reload $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
 		return $rs if $rs;
 	}
