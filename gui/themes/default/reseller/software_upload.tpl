@@ -1,34 +1,4 @@
 
-<script language="JavaScript" type="text/JavaScript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
-		$('.datatable').dataTable(
-			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true,
-				"pagingType": "simple"
-			}
-		);
-	});
-
-	function action_delete() {
-		return confirm("{TR_MESSAGE_DELETE}");
-	}
-
-	function action_install(url) {
-		if (!confirm("{TR_MESSAGE_INSTALL}")) {
-			return false;
-		}
-
-		document.getElementById('sw_wget').value = url;
-		document.getElementById('sw_upload_form').submit();
-
-		return true;
-	}
-	/*]]>*/
-</script>
-
 <table>
 	<thead>
 	<tr>
@@ -152,3 +122,31 @@
 	</div>
 </form>
 <!-- EDP: webdepot_list -->
+
+<script>
+	$(document).ready(function () {
+		$('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"iDisplayLength": 5,
+				"bStateSave": true,
+				"pagingType": "simple"
+			}
+		);
+	});
+
+	function action_delete() {
+		return confirm("{TR_MESSAGE_DELETE}");
+	}
+
+	function action_install(url) {
+		if (!confirm("{TR_MESSAGE_INSTALL}")) {
+			return false;
+		}
+
+		document.getElementById('sw_wget').value = url;
+		document.getElementById('sw_upload_form').submit();
+
+		return true;
+	}
+</script>

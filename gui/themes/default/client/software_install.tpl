@@ -103,7 +103,7 @@
 	</table>
 
 	<div class="buttons">
-		<a class="link_as_button" href="software.php.php">{TR_BACK}</a>
+		<a class="link_as_button" href="software.php">{TR_CANCEL}</a>
 		<!-- BDP: software_install -->
 		<input name="submit" type="submit" value="{TR_INSTALL}"/>
 		<!-- EDP: software_install -->
