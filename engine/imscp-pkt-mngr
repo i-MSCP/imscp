@@ -38,15 +38,15 @@ require 'imscp_common_code.pl';
 use strict;
 use XML::Parser;
 use warnings;
+use JSON;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
 
 # Decoding data which pushed from another script
-my $decoded_pushstring = decode_base64($ARGV[0]);
 my (
 	$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_status, $sw_software_depot
-) = split(/,/, $decoded_pushstring);
+) = @{decode_json(decode_base64($ARGV[0]))};
 
 sub pkt_mngr_start_up
 {

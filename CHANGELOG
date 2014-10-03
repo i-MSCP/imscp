@@ -5,6 +5,7 @@ Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
 ENGINE
+	Fixed: main::run: Argument "yes" isn't numeric in addition (+) at /var/www/imscp/engine/imscp-sw-mngr line 111
 	Fixed: Wrong IP added in DNS zone files when the BASE_SERVER_IP and BASE_SERVER_PUBLIC_IP parameters are referring
 		   to the same IP (private IP)
 
@@ -12,6 +13,7 @@ GUI
 	Fixed: Literal percent sign must be escaped with another percent sign in translation strings
 	Fixed: PHP Notice - Undefined variable $resellerId in reseller/alias.php
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
+	Fixed: Security issue - Input data for software instances are not validated correctly (Software Installer)
 
 INSTALLER
 	Fixed: Error about unknown IP when attempting to add new IP

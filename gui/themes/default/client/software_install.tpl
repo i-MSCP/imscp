@@ -1,22 +1,4 @@
 
-<script language="JavaScript" type="text/JavaScript">
-	/*<![CDATA[*/
-	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
-	var js_i18n_tr_close = '{TR_CLOSE}';
-
-	/*function openTree() {
-		libwindow = window.open("ftp_choose_dir.php", "Hello", "menubar=no,width=470,height=350,scrollbars=yes");
-	}*/
-
-	function setInstallPath() {
-		var inputvars = document.forms[0].elements['selected_domain'].value;
-		inputvars = inputvars.toLowerCase();
-		var splitinputvars = inputvars.split(";");
-		document.forms[0].elements['other_dir'].value = splitinputvars[4];
-	}
-	/*]]>*/
-</script>
-
 <form method="post" action="{SOFTWARE_INSTALL_BUTTON}">
 	<table class="firstColFixed">
 		<thead>
@@ -54,8 +36,6 @@
 			<td>
 				<label><input type="text" id="ftp_directory" name="other_dir" value="{VAL_OTHER_DIR}"/></label>
 				<a style="vertical-align: middle" href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{TR_CHOOSE_DIR}</a>
-				<input style="vertical-align: middle" type="checkbox" name="createdir" id="createdir" value="1" {CHECKED_CREATEDIR}/>
-				<label style="vertical-align: middle" for="createdir">{CREATEDIR_MESSAGE}</label>
 			</td>
 		</tr>
 		<!-- BDP: require_installdb -->
@@ -129,3 +109,15 @@
 		<!-- EDP: software_install -->
 	</div>
 </form>
+
+<script>
+	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
+	var js_i18n_tr_close = '{TR_CLOSE}';
+
+	function setInstallPath() {
+		var inputvars = document.forms[0].elements['selected_domain'].value;
+		inputvars = inputvars.toLowerCase();
+		var splitinputvars = inputvars.split(";");
+		document.forms[0].elements['other_dir'].value = splitinputvars[4];
+	}
+</script>
