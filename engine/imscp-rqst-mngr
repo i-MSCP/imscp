@@ -39,6 +39,7 @@ use iMSCP::Execute;
 use MIME::Base64;
 use iMSCP::Getopt;
 use File::Basename;
+use JSON;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -469,13 +470,15 @@ sub run
 
 				# Encoding data to push to another script
 				my $imscp_sw_mngr_pushstring = encode_base64(
-					"$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user," .
-					"$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email," .
-					"$sw_software_status,$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id," .
-					"$sw_subdomain_id,$sw_aliassubdomain_id"
+					encode_json(
+						[
+							$sw_domain_id, $sw_software_id, $sw_path, $sw_software_prefix, $sw_database,
+							$sw_database_user, $sw_database_tmp_pwd, $sw_install_username, $sw_install_password,
+							$sw_install_email, $sw_software_status, $sw_software_depot, $sw_software_master_id,
+							$sw_aliasdomain_id, $sw_subdomain_id, $sw_aliassubdomain_id
+						]
+					)
 				);
-
-				debug("Processing encoded pushtring: $imscp_sw_mngr_pushstring.");
 
 				my ($stdout, $stderr);
 				$rs = execute(
@@ -532,7 +535,12 @@ sub run
 
 						# Encoding data to push to another script
 						my $pushstring = encode_base64(
-							"$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot"
+							encode_json(
+								[
+									$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status,
+									$sw_software_depot
+								]
+							)
 						);
 
 						my ($stdout, $stderr);
