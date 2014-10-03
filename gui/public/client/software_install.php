@@ -395,7 +395,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 			'TR_TYPE' => tr('Type'),
 			'TR_DB' => tr('Database required'),
 			'TR_SELECT_DOMAIN' => tr('Target domain'),
-			'TR_BACK' => tr('Back'),
+			'TR_CANCEL' => tr('Cancel'),
 			'TR_INSTALL' => tr('Install'),
 			'TR_PATH' => tr('Installation path'),
 			'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
