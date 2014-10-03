@@ -171,6 +171,27 @@ sub installPackages
 		push @command, 'debconf-apt-progress --logstderr --';
 	}
 
+	# Prevent the package manager to start services itself (excluding mysql) using the policy layer interface.
+	# Services are configured and started by i-MSCP installer.
+	# This prevents failures such as when nginx is installed after Apache2 which is already listening on port 80...
+	my $file = iMSCP::File->new('filename' => '/usr/sbin/policy-rc.d');
+	$rs = $file->set(<<EOF);
+#/bin/sh
+initscript=\$1
+action=\$2
+if [ "\$initscript" != "mysql" ] && [ "\$action" = "start" ] ; then
+        exit 101;
+fi
+exit 0
+EOF
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0755);
+	return $rs if $rs;
+
 	if($main::forcereinstall) {
 		unshift @command, 'UCF_FORCE_CONFFMISS=1 '; # Force installation of missing conffiles which are managed by UCF
 
@@ -185,6 +206,10 @@ sub installPackages
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to install packages') if $rs && ! $stderr;
+	return $rs if $rs;
+
+	# Delete '/usr/sbin/policy-rc.d file
+	$rs = $file->delFile();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterInstallPackages');
