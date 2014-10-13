@@ -23,6 +23,9 @@ INSTALLER
 	Fixed: lo must not be used as default device when adding new IP (installer)
 	Fixed: Unable to upgrade to 1.1.14 (packages file is corrupted - Ubuntu Precise)
 
+PLUGINS
+	Fixed: Errors not catched on change when the __need_change__ flag is set
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.14
 ------------------------------------------------------------------------------------------------------------------------
