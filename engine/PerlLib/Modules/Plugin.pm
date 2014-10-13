@@ -285,19 +285,21 @@ sub _change
 
 	$rs ||= $self->_exec($pluginName, 'change');
 
-	my $info = decode_json($self->{'plugin_info'});
+	unless($rs) {
+		my $info = decode_json($self->{'plugin_info'});
 
-	if($info->{'__need_change__'}) {
-		$info->{'__need_change__'} = JSON::false;
+		if($info->{'__need_change__'}) {
+			$info->{'__need_change__'} = JSON::false;
 
-		$rs = $self->{'db'}->doQuery(
-			'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
-		);
-		unless(ref $rs eq 'HASH') {
-			error($rs);
-			$rs = 1;
-		} else {
-			$rs = 0;
+			$rs = $self->{'db'}->doQuery(
+				'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
+			);
+			unless(ref $rs eq 'HASH') {
+				error($rs);
+				$rs = 1;
+			} else {
+				$rs = 0;
+			}
 		}
 	}
 
