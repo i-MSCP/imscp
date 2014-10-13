@@ -40,7 +40,7 @@
     # SECTION php_enabled END.
 
     <Directory {WEB_DIR}/htdocs>
-        Options +FollowSymlinks
+        Options +SymLinksIfOwnerMatch
         # SECTION php_disabled BEGIN.
         AllowOverride AuthConfig Indexes Limit Options=Indexes \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
