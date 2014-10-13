@@ -4,6 +4,9 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIGS
+	Fixed: Apache must not follow symlinks when the target file owner doesn't match with the symlink owner (security)
+
 ENGINE
 	Fixed: main::run: Argument "yes" isn't numeric in addition (+) at /var/www/imscp/engine/imscp-sw-mngr line 111
 	Fixed: Wrong IP added in DNS zone files when the BASE_SERVER_IP and BASE_SERVER_PUBLIC_IP parameters are referring
