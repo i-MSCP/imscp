@@ -291,14 +291,12 @@ sub _change
 		if($info->{'__need_change__'}) {
 			$info->{'__need_change__'} = JSON::false;
 
-			$rs = $self->{'db'}->doQuery(
+			my $qrs = $self->{'db'}->doQuery(
 				'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
 			);
-			unless(ref $rs eq 'HASH') {
-				error($rs);
-				$rs = 1;
-			} else {
-				$rs = 0;
+			unless(ref $qrs eq 'HASH') {
+				error($qrs);
+				$rs ||= $qrs;
 			}
 		}
 	}
@@ -331,18 +329,20 @@ sub _update
 
 	$rs ||= $self->_exec($pluginName, 'update', $info->{'version'}, $info->{'__nversion__'});
 
-	if(! $rs && ($info->{'__need_change__'} || qv("v$info->{'__nversion__'}") > qv("v$info->{'version'}"))) {
+	unless($rs) {
 		$info->{'version'} = $info->{'__nversion__'};
-		$info->{'__need_change__'} = JSON::false;
 
-		$rs = $self->{'db'}->doQuery(
+		if($info->{'__need_change__'}) {
+			$rs = $self->_exec($pluginName, 'change');
+			$info->{'__need_change__'} = JSON::false unless $rs;
+		}
+
+		my $qrs = $self->{'db'}->doQuery(
 			'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
 		);
-		unless(ref $rs eq 'HASH') {
-			error($rs);
-			$rs = 1;
-		} else {
-			$rs = 0;
+		unless(ref $qrs eq 'HASH') {
+			error($qrs);
+			$rs ||= $qrs;
 		}
 	}
 
@@ -406,6 +406,9 @@ sub _exec
 	my $pluginInstance;
 
 	eval {
+		# Turn any warning from plugin into exception
+		local $SIG{__WARN__} = sub { die shift };
+
 		$pluginInstance = $pluginClass->getInstance(
 			'hooksManager' => $self->{'eventManager'}, # Only there to ensure backward compatibility
 			'eventManager' => $self->{'eventManager'},
