@@ -357,7 +357,10 @@ function translate_dmn_status($status)
 		case 'ordered':
 			return tr('Awaiting approval');
 		default:
-			return tr('Unknown error');
+			return (isset($_SESSION['logged_from_type']) && $_SESSION['logged_from_type'] == 'admin')
+				?  tr('Unexpected error') . '<span class="icon i_help" title="' .
+					tr('Go to the debugger for more details') . '">&nbsp;</span>'
+				: tr('Unexpected error');
 	}
 }
 

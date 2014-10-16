@@ -24,6 +24,7 @@ INSTALLER
 	Fixed: Unable to upgrade to 1.1.14 (packages file is corrupted - Ubuntu Precise)
 
 PLUGINS
+	Fixed: Configuration change not processed when a plugin is being updated
 	Fixed: Errors not catched on change when the __need_change__ flag is set
 
 ------------------------------------------------------------------------------------------------------------------------

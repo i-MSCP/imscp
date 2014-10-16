@@ -1206,36 +1206,36 @@ class iMSCP_Plugin_Manager
 							$newestPluginInfo['db_schema_version'] = $pluginInfo['db_schema_version'];
 						}
 
+						// Does the plugin provide an install method
 						$r = new ReflectionMethod($pluginInstance, 'install');
 						$newestPluginInfo['__installable__'] = ('iMSCP_Plugin' !== $r->getDeclaringClass()->getName());
 
+						// Does the plugin provide an uninstall method
 						$r = new ReflectionMethod($pluginInstance, 'uninstall');
 						$newestPluginInfo['__uninstallable__'] = ('iMSCP_Plugin' !== $r->getDeclaringClass()->getName());
 
+						// Update plugin info
 						$pluginInfo = $newestPluginInfo;
 
-						if ($pluginStatus == 'enabled') { // Plugin update
-							// Does the plugin need to be updated?
-							if (version_compare($pluginInfo['version'], $pluginInfo['__nversion__'], '<')) {
-								$pluginConfig = $newestPluginConfig;
+						// Does the plugin need to be updated
+						$pluginNeedUpdate = version_compare($pluginInfo['version'], $pluginInfo['__nversion__'], '<');
+
+						// Does the plugin need to be changed (config update)
+						$pluginNeedChange = ($pluginConfig !== $newestPluginConfig);
+						$pluginInfo['__need_change__'] = $pluginNeedChange;
+
+						$pluginConfig = $newestPluginConfig;
+
+						if ($pluginStatus == 'enabled') {
+							if($pluginNeedUpdate) {
 								$toUpdatePlugins[] = $pluginName;
 								$returnInfo['updated']++;
-								// Does the plugin need to be reconfigured?
-							} elseif ($pluginConfig !== $newestPluginConfig) {
-								$pluginInfo['__need_change__'] = true;
-								$pluginConfig = $newestPluginConfig;
+							} elseif($pluginNeedChange) {
 								$toChangePlugins[] = $pluginName;
 								$returnInfo['changed']++;
-							} else {
-								continue; // No new version nor config change
 							}
-						} elseif ($pluginConfig !== $newestPluginConfig) {
-							// Does the plugin need to be scheduled for change on next activation?
-							$pluginInfo['__need_change__'] = true;
-							$pluginConfig = $newestPluginConfig;
-							$returnInfo['changed']++;
-						} elseif (version_compare($pluginInfo['version'], $pluginInfo['__nversion__'], '=')) {
-							continue; // No change.
+						} elseif(! $pluginNeedUpdate && ! $pluginNeedChange) {
+							continue;
 						}
 					}
 
@@ -1249,7 +1249,7 @@ class iMSCP_Plugin_Manager
 							'status' => $pluginStatus,
 							'backend' => (
 								file_exists($fileInfo->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no'
-								)
+							)
 						)
 					);
 				} else {
