@@ -5,6 +5,7 @@ Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIGS
+	Changed: Lowered log level for TLS (Postfix)
 	Fixed: Apache must not follow symlinks when the target file owner doesn't match with the symlink owner (security)
 
 ENGINE
