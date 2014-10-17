@@ -175,8 +175,8 @@ sub add
 		my($stdout, $stderr);
 		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		debug($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		error($stderr) if $stderr && $rs && $rs != 12;
+		return $rs if $rs && $rs != 12;
 
 		# Modifying existents i-MSCP unix group
 		@cmd = (
@@ -186,7 +186,7 @@ sub add
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		debug($stderr) if $stderr && $rs;
+		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 	}
 

@@ -9,6 +9,7 @@ CONFIGS
 	Fixed: Apache must not follow symlinks when the target file owner doesn't match with the symlink owner (security)
 
 ENGINE
+	Changed: Ignore errors regarding the move of home directory ( Modules::User )
 	Fixed: main::run: Argument "yes" isn't numeric in addition (+) at /var/www/imscp/engine/imscp-sw-mngr line 111
 	Fixed: Wrong IP added in DNS zone files when the BASE_SERVER_IP and BASE_SERVER_PUBLIC_IP parameters are referring
 		   to the same IP (private IP)
