@@ -18,6 +18,7 @@ ENGINE
 		   to the same IP (private IP)
 
 GUI
+	Fixed: Depending on event manager in use, some listeners will never be triggered (Events aggregator)
 	Fixed: Literal percent sign must be escaped with another percent sign in translation strings
 	Fixed: PHP Notice - Undefined variable $resellerId in reseller/alias.php
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
@@ -31,6 +32,7 @@ INSTALLER
 PLUGINS
 	Fixed: Configuration change not processed when a plugin is being updated
 	Fixed: Errors not catched on change when the __need_change__ flag is set
+	Updated: Plugin API to version 0.2.12
 
 TICKETS
 	Fixed #1143: Bug - Domain deactivation - Hard/Soft mail accounts suspension
