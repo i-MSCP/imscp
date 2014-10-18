@@ -5,8 +5,11 @@ Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIGS
+	Added: cram-md5 authentication mechanism (Dovecot)
 	Changed: Lowered log level for TLS (Postfix)
 	Fixed: Apache must not follow symlinks when the target file owner doesn't match with the symlink owner (security)
+	Fixed: SSLv2 and SSLv3 must be disabled to prevent POODLE attacks ( Dovecot )
+	Fixed: Virtual mail directory must not be hardcoded in dovecot configuration file
 
 ENGINE
 	Changed: Ignore errors regarding the move of home directory ( Modules::User )
@@ -28,6 +31,9 @@ INSTALLER
 PLUGINS
 	Fixed: Configuration change not processed when a plugin is being updated
 	Fixed: Errors not catched on change when the __need_change__ flag is set
+
+TICKETS
+	Fixed #1143: Bug - Domain deactivation - Hard/Soft mail accounts suspension
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.14

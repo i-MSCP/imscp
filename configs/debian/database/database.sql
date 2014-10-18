@@ -84,7 +84,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '190'),
+('DATABASE_REVISION', '193'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -387,12 +387,16 @@ CREATE TABLE IF NOT EXISTS `mail_users` (
   `mail_type` varchar(30) collate utf8_unicode_ci DEFAULT NULL,
   `sub_id` int(10) unsigned DEFAULT NULL,
   `status` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
+  `po_active` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   `mail_auto_respond` tinyint(1) NOT NULL DEFAULT '0',
   `mail_auto_respond_text` text collate utf8_unicode_ci,
   `quota` bigint(20) unsigned DEFAULT NULL,
   `mail_addr` varchar(254) collate utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`mail_id`),
-  KEY `domain_id` (`domain_id`)
+  KEY `domain_id` (`domain_id`),
+  INDEX `mail_addr` (`mail_addr`),
+  INDEX `status` (`status`),
+  INDEX `po_active` (`po_active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
