@@ -62,7 +62,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 190;
+	protected $lastUpdate = 193;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3020,5 +3020,50 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		return null;
+	}
+
+	/**
+	 * #1143: Add po_active column (mail_users table)
+	 *
+	 * @return null|string SQL statement to be executed
+	 */
+	protected function r191()
+	{
+		return $this->addColumn(
+			'mail_users', 'po_active', "VARCHAR(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes' AFTER status"
+		);
+	}
+
+	/**
+	 * #1143: Remove any mail_users.password prefix
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r192()
+	{
+		return "
+			UPDATE
+				mail_users
+			SET
+				mail_pass = SUBSTRING(mail_pass, 4), po_active = 'no'
+			WHERE
+				mail_pass <> '_no_'
+			AND
+				status = 'disabled'
+		";
+	}
+
+	/**
+	 * #1143: Add status and po_active columns index (mail_users table)
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function r193()
+	{
+		return array(
+			$this->addIndex('mail_users', 'mail_addr', 'index'),
+			$this->addIndex('mail_users', 'status', 'index'),
+			$this->addIndex('mail_users', 'po_active', 'index')
+		);
 	}
 }

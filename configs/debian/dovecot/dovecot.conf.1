@@ -1,13 +1,10 @@
-# Mailbox locations and namespaces
 mail_location = maildir:~/
 
 namespace private {
 	separator = .
-	inbox = yes
 	prefix = INBOX.
+	inbox = yes
 }
-
-# Plugins
 
 plugin {
 	quota = maildir:User quota
@@ -16,12 +13,10 @@ plugin {
 	quota_warning = storage=80%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota.sh 80
 }
 
-# Authentication
-
 disable_plaintext_auth = no
 
 auth default {
-	mechanisms = plain login digest-md5
+	mechanisms = plain login cram-md5 digest-md5
 
 	passdb sql {
 		args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
@@ -44,8 +39,6 @@ auth default {
 	}
 }
 
-# Protocols
-
 protocols = imap imaps pop3 pop3s
 
 protocol imap {
@@ -63,8 +56,9 @@ protocol lda {
 	postmaster_address = postmaster@{HOSTNAME}
 }
 
-# SSL
-
 ssl = {DOVECOT_SSL}
+# Prohibit usage of older and deprecated SSL protocols mostly due to the POODLE
+# vulnerability CVE-2014-3566
+{COMMENT_SSL}ssl_cipher_list = ALL:!LOW:!SSLv2:!EXP:!aNULL:!SSLv3
 {COMMENT_SSL}ssl_cert_file = {CONF_DIR}/{CERTIFICATE}.pem
 {COMMENT_SSL}ssl_key_file = {CONF_DIR}/{CERTIFICATE}.pem
