@@ -507,104 +507,103 @@ function change_domain_status($customerId, $action)
 		throw new iMSCP_Exception("Unknow action: $action");
 	}
 
-	$query = "SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_admin_id` = ?";
-	$stmt = exec_query($query, $customerId);
-
-	if(!$stmt->rowCount()) {
-		throw new iMSCP_Exception("Unable to found domain for user with ID $customerId");
-	}
-
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
+	$stmt = exec_query(
+		'
+			SELECT
+				domain_id, admin_name
+			FROM
+				domain
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
+			WHERE
+				domain_admin_id = ?
+		',
+		$customerId
 	);
 
-	$domainId = $stmt->fields['domain_id'];
-	$domainName = decode_idna($stmt->fields['domain_name']);
+	if($stmt->rowCount()) {
+		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+		$domainId = $row['domain_id'];
+		$adminName = decode_idna($row['domain_name']);
 
-	/** @var $db iMSCP_Database */
-	$db = iMSCP_Database::getInstance();
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Database::getInstance();
 
-	try {
-		$db->beginTransaction();
+		try {
+			$db->beginTransaction();
 
-		$query = "SELECT `mail_id`, `mail_pass`, `mail_type` FROM `mail_users` WHERE `domain_id` = ?";
-		$stmt = exec_query($query, $domainId);
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
+				iMSCP_Events::onBeforeChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
+			);
 
-		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			$mailId = $row['mail_id'];
-			$mailPassword = $row['mail_pass'];
-			$mailType = $row['mail_type'];
-
-			if ($cfg->HARD_MAIL_SUSPENSION) {
-				$mailStatus = $newStatus;
-			} else {
-				if ($action == 'deactivate') {
-					$timestamp = time();
-					$passwordPrefix = substr(md5($timestamp), 0, 4);
-
-					if (
-						preg_match('/^' . MT_NORMAL_MAIL . '/', $mailType) ||
-						preg_match('/^' . MT_ALIAS_MAIL . '/', $mailType) ||
-						preg_match('/^' . MT_SUBDOM_MAIL . '/', $mailType) ||
-						preg_match('/^' . MT_ALSSUB_MAIL . '/', $mailType)
-					) {
-						$mailPassword = $passwordPrefix . $mailPassword;
-					}
-				} elseif ($action == 'activate') {
-					if (
-						preg_match('/^' . MT_NORMAL_MAIL . '/', $mailType) ||
-						preg_match('/^' . MT_ALIAS_MAIL . '/', $mailType) ||
-						preg_match('/^' . MT_SUBDOM_MAIL . '/', $mailType) ||
-						preg_match('/^' . MT_ALSSUB_MAIL . '/', $mailType)
-					) {
-						$mailPassword = substr($mailPassword, 4, 50);
-					}
-				} else {
-					return;
+			if($action == 'deactivate') {
+				if($cfg['HARD_MAIL_SUSPENSION']) { # SMTP/IMAP/POP disabled
+					exec_query(
+						'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ? AND mail_pass <> ?',
+						array( 'todisable', 'no', $domainId, '_no_')
+					);
+				} else { # IMAP/POP disabled
+					exec_query(
+						'UPDATE mail_users SET po_active = ? WHERE domain_id = ? AND mail_pass <> ?',
+						array( 'no', $domainId, '_no_')
+					);
 				}
-
-				$mailStatus = 'tochange';
+			} else {
+				exec_query(
+					'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ? AND mail_pass <> ? AND status = ?',
+					array( 'toenable', 'yes', $domainId, '_no_', 'disabled')
+				);
+				exec_query(
+					'UPDATE mail_users SET po_active = ? WHERE domain_id = ? AND mail_pass <> ? AND status <> ?',
+					array('yes', $domainId, '_no_', 'disabled')
+				);
 			}
 
-			$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
-			exec_query($query, array($mailPassword, $mailStatus, $mailId));
+			# TODO implements customer deactivation
+			#exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($newStatus, $customerId));
+			exec_query("UPDATE domain SET domain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
+			exec_query("UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
+			exec_query("UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
+			exec_query(
+				'
+					UPDATE
+						subdomain_alias
+					SET
+						subdomain_alias_status = ?
+					WHERE
+						alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+				',
+				array($newStatus, $domainId)
+			);
+
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
+				iMSCP_Events::onAfterChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
+			);
+
+			$db->commit();
+		} catch (iMSCP_Exception $e) {
+			$db->rollBack();
+			throw $e;
 		}
 
-		# TODO implements customer deactivation
-		#exec_query('UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?', array($newStatus, $customerId));
-		exec_query("UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?", array($newStatus, $domainId));
-		exec_query("UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?", array($newStatus, $domainId));
-		exec_query("UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?", array($newStatus, $domainId));
+		// Send request to i-MSCP daemon
+		send_request();
 
-		$query = "
-			UPDATE
-				`subdomain_alias`
-			SET
-				`subdomain_alias_status` = ?
-			WHERE
-				`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-		";
-		exec_query($query, array($newStatus, $domainId));
-
-		$db->commit();
-	} catch(iMSCP_Exception_Database $e) {
-		$db->rollBack();
-		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
-	}
-
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onAfterChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
-	);
-
-	// Send request to i-MSCP daemon
-	send_request();
-
-	if($action == 'deactivate') {
-		write_log("{$_SESSION['user_logged']}: scheduled deactivation of customer account: $domainName", E_USER_NOTICE);
-		set_page_message(tr('Customer account successfully scheduled for deactivation.'), 'success');
+		if ($action == 'deactivate') {
+			write_log(
+				sprintf("%s: scheduled deactivation of customer account: %s", $_SESSION['user_logged'], $adminName),
+				E_USER_NOTICE
+			);
+			set_page_message(tr('Customer account successfully scheduled for deactivation.'), 'success');
+		} else {
+			write_log(
+				sprintf("%s: scheduled activation of customer account: %s",$_SESSION['user_logged'], $adminName),
+				E_USER_NOTICE
+			);
+			set_page_message(tr('Customer account successfully scheduled for activation.'), 'success');
+		}
 	} else {
-		write_log("{$_SESSION['user_logged']}: scheduled activation of customer account: $domainName", E_USER_NOTICE);
-		set_page_message(tr('Customer account successfully scheduled for activation.'), 'success');
+		throw new iMSCP_Exception(sprintf("Unable to found domain for user with ID %s", $customerId));
 	}
 }
 
@@ -1996,7 +1995,7 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 
 	$name = tohtml($name);
 	$fromName = tohtml($data['sender_name']);
-	
+
 	$logEntry = (!$fromName) ? $data['sender_email'] : "$fromName - {$data['sender_email']}";
 
 	write_log(

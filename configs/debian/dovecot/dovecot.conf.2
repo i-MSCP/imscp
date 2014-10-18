@@ -1,4 +1,3 @@
-# Mailbox locations and namespaces
 mail_location = maildir:~/
 
 namespace inbox {
@@ -7,8 +6,6 @@ namespace inbox {
 	inbox = yes
 	type = private
 }
-
-# Plugins
 
 mail_plugins = quota
 
@@ -19,9 +16,7 @@ plugin {
 	quota_warning2 = storage=80%% quota-warning 80 %u
 }
 
-# Authentication
-
-auth_mechanisms = plain login digest-md5
+auth_mechanisms = plain login cram-md5 digest-md5
 disable_plaintext_auth = no
 
 passdb {
@@ -33,7 +28,6 @@ userdb {
 	driver = prefetch
 }
 
-# userdb used only by LDA
 userdb {
 	args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
 	driver = sql
@@ -47,8 +41,6 @@ service auth {
 	}
 }
 
-# Quota Warning service
-
 service quota-warning {
 	executable = script {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota.sh
 	group = {IMSCP_GROUP}
@@ -59,10 +51,7 @@ service quota-warning {
 	}
 }
 
-# Protocols
-
 !include_try /usr/share/dovecot/protocols.d/*.protocol
-
 protocol imap {
 	mail_plugins = $mail_plugins imap_quota
 }
@@ -77,8 +66,9 @@ protocol lda {
 	postmaster_address = postmaster@{HOSTNAME}
 }
 
-# SSL
-
 ssl = {DOVECOT_SSL}
+# Prohibit usag older and deprecated SSL protocols mostly due to the POODLE
+# vulnerability CVE-2014-3566
+{COMMENT_SSL}ssl_protocols = !SSLv2 !SSLv3
 {COMMENT_SSL}ssl_cert = <{CONF_DIR}/{CERTIFICATE}.pem
 {COMMENT_SSL}ssl_key = <{CONF_DIR}/{CERTIFICATE}.pem
