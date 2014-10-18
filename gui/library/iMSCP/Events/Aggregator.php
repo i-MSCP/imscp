@@ -135,7 +135,11 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	 */
 	public function registerListener($event, $listener, $priority = 1)
 	{
-		if (($eventType = $this->getEventType($event))) {
+		if(is_array($event)) {
+			foreach($event as $e) {
+				$this->registerListener($e, $listener, $priority);
+			}
+		} elseif (($eventType = $this->getEventType($event))) {
 			$this->eventManagers[$eventType]->registerListener($event, $listener, $priority);
 		} else {
 			$this->addEvents('application', (array) $event);
