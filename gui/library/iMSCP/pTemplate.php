@@ -96,16 +96,6 @@ class iMSCP_pTemplate
 	protected $eventManager;
 
 	/**
-	 * @var array
-	 */
-	protected $events = array(
-		iMSCP_Events::onBeforeAssembleTemplateFiles,
-		iMSCP_Events::onAfterAssembleTemplateFiles,
-		iMSCP_Events::onBeforeLoadTemplateFile,
-		iMSCP_Events::onAfterLoadTemplateFile
-	);
-
-	/**
 	 * Templates root directory.
 	 *
 	 * @var string
@@ -173,7 +163,6 @@ class iMSCP_pTemplate
 	public function __construct()
 	{
 		$this->eventManager = iMSCP_Events_Aggregator::getInstance();
-		$this->eventManager->addEvents('pTemplate', $this->events);
 
 		$this->tpl_start_rexpr = '/';
 		$this->tpl_start_rexpr .= $this->tpl_start_tag;

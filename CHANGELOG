@@ -22,9 +22,11 @@ GUI
 	Fixed: Depending on event manager in use, some listeners will never be triggered (Events aggregator)
 	Fixed: Literal percent sign must be escaped with another percent sign in translation strings
 	Fixed: PHP Notice - Undefined variable $resellerId in reseller/alias.php
+	Fixed: pTemplate events must be triggered in main application context
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
 	Fixed: Security issue - Input data for software instances are not validated correctly (Software Installer)
 	Fixed: Wrong regexps (admin/admin_log.php)
+	Removed: iMSCP autoloader classes (usage of Zend loader in place)
 
 INSTALLER
 	Fixed: Error about unknown IP when attempting to add new IP
@@ -157,7 +159,6 @@ GUI
 	Fixed: Disk usage (percent value) is wrong (admin level / Customer statistics)
 	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function
 	Fixed: Unable to list domain aliases by name (search feature / reseller level)
-	Removed: iMSCP autoloader classes (usage of Zend loader in place)
 
 INSTALLER
 	Added: Dialog box allowing to setup the public IP for servers which are inside a private LAN
