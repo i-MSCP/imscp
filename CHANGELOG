@@ -41,6 +41,7 @@ INSTALLER
 TICKETS
 	Fixed #1123: Review - PHP session handling
 	Fixed #1122: Defect - Network traffic passing through the loopback interface shouldn't be monitored
+	Fixed #1146: Bug - Server statistics script is broken
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
