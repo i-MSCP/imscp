@@ -64,34 +64,24 @@ define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
 // Define persistent directory path
 define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
-// Set include path
+// Setup include path for vendor libraries
 set_include_path(
-	implode(
-        PATH_SEPARATOR,
-        array_unique(
-            array(
-                DEFAULT_INCLUDE_PATH,
-                LIBRARY_PATH, LIBRARY_PATH . '/vendor',
-                LIBRARY_PATH, LIBRARY_PATH . '/vendor/phpseclib',
-            )
-        )
-    )
+	get_include_path() . PATH_SEPARATOR .
+	LIBRARY_PATH . '/vendor' . PATH_SEPARATOR .
+	LIBRARY_PATH . '/vendor/phpseclib'
 );
 
-// Autoloader
-// TODO generate a classmap on first load and cache it for better performances
-require_once 'iMSCP/Loader/AutoloaderFactory.php';
-
-iMSCP\Loader\AutoloaderFactory::factory(
-    array(
-        'iMSCP\Loader\UniversalLoader' => array(
-            'prefixes' => array(
-                'iMSCP' => __DIR__, // Setup namespace for iMSCP classes using PHP5.3 namespaces
-                'Zend_' => __DIR__ . '/vendor', // Setup prefix for Zend class using Pear naming convention
-            ),
-            'useIncludePath' => true
-        )
-    )
+// Setup autoloader
+require_once 'Zend/Loader/AutoloaderFactory.php';
+Zend_Loader_AutoloaderFactory::factory(
+	array(
+		'Zend_Loader_StandardAutoloader' => array(
+			'prefixes' => array(
+				'iMSCP_' => LIBRARY_PATH . '/iMSCP',
+			),
+			'autoregister_zf' => true
+		)
+	)
 );
 
 /**
