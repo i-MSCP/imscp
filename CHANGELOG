@@ -157,6 +157,7 @@ GUI
 	Fixed: Disk usage (percent value) is wrong (admin level / Customer statistics)
 	Fixed: Feature custom_dns_record is not known by the customerHasFeature() function
 	Fixed: Unable to list domain aliases by name (search feature / reseller level)
+	Removed: iMSCP autoloader classes (usage of Zend loader in place)
 
 INSTALLER
 	Added: Dialog box allowing to setup the public IP for servers which are inside a private LAN
