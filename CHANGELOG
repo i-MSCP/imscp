@@ -23,6 +23,7 @@ GUI
 	Fixed: PHP Notice - Undefined variable $resellerId in reseller/alias.php
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
 	Fixed: Security issue - Input data for software instances are not validated correctly (Software Installer)
+	Fixed: Wrong regexps (admin/admin_log.php)
 
 INSTALLER
 	Fixed: Error about unknown IP when attempting to add new IP
