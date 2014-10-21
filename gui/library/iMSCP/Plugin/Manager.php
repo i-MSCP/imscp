@@ -158,9 +158,7 @@ class iMSCP_Plugin_Manager
 			list(, , $className) = explode('_', $className, 3);
 			$filePath = $this->pluginsDirectory . "/$className/$className.php";
 
-			if (@is_readable($filePath)) {
-				require_once $filePath;
-			}
+			@include $filePath;
 		}
 	}
 
@@ -257,7 +255,6 @@ class iMSCP_Plugin_Manager
 	public function loadPlugin($pluginName)
 	{
 		if (!isset($this->loadedPlugins[$pluginName])) {
-
 			$className = "iMSCP_Plugin_$pluginName";
 
 			if (!class_exists($className, true)) {
