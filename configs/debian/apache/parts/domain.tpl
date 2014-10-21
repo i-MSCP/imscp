@@ -21,10 +21,9 @@
     # SECTION php_fpm BEGIN.
     <IfVersion < 2.4.9>
         Alias /php5-fcgi /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME}
-
         FastCGIExternalServer /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME} \
             -socket /var/run/php5-fpm-{POOL_NAME}.socket \
-            -idle-timeout 300 \
+            -idle-timeout 900 \
             -pass-header Authorization
     </IfVersion>
     <IfVersion >= 2.4.9>
@@ -32,15 +31,19 @@
         <Proxy "unix:/var/run/php5-fpm-{POOL_NAME}.socket|fcgi://php5-fpm">
             ProxySet disablereuse=off
         </Proxy>
-        <FilesMatch \.php$>
+        <FilesMatch "\.php5?$">
             SetHandler proxy:fcgi://php5-fpm
         </FilesMatch>
     </IfVersion>
     # SECTION php_fpm END.
     # SECTION php_enabled END.
 
-    <Directory {WEB_DIR}/htdocs>
+    <Directory {WEB_DIR}>
         Options +SymLinksIfOwnerMatch
+        {AUTHZ_ALLOW_ALL}
+    </Directory>
+
+    <Directory {WEB_DIR}/htdocs>
         # SECTION php_disabled BEGIN.
         AllowOverride AuthConfig Indexes Limit Options=Indexes \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
@@ -68,7 +71,6 @@
         php_admin_flag allow_url_fopen {ALLOW_URL_FOPEN}
         # SECTION itk END.
         # SECTION php_enabled END.
-        {AUTHZ_ALLOW_ALL}
      </Directory>
 
     # SECTION cgi_support BEGIN.
@@ -76,7 +78,6 @@
 
     <Directory {WEB_DIR}/cgi-bin>
         AllowOverride AuthConfig Indexes Limit Options=Indexes
-        {AUTHZ_ALLOW_ALL}
     </Directory>
     # SECTION cgi_support END.
 

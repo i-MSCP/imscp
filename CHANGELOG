@@ -7,7 +7,8 @@ Git 1.1.x
 CONFIGS
 	Added: cram-md5 authentication mechanism (Dovecot)
 	Changed: Lowered log level for TLS (Postfix)
-	Fixed: Apache must not follow symlinks when the target file owner doesn't match with the symlink owner (security)
+	Fixed: Apache user (www-data) must not be able to access to the entire file system (security)
+	Fixed: Symlinks must be followed by Apache only if the owner match with the target owner (security)
 	Fixed: SSLv2 and SSLv3 must be disabled to prevent POODLE attacks ( Dovecot )
 	Fixed: Virtual mail directory must not be hardcoded in dovecot configuration file
 
