@@ -47,7 +47,7 @@ newDebug('imscp-srv-traff.log');
 # Parse command line options
 iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
-Script which collects i-MSCP server' traffic data.
+#Script which collects i-MSCP server' traffic data.
 
 OPTIONS:
  -v,    --verbose       Enable verbose mode.},
@@ -86,7 +86,7 @@ sub run
 		my $timestamp = time;
 		$timestamp -= ($timestamp % 1800);
 
-		$rs = iMSCP::Database->factory()->doQuery(
+		my $qrs = iMSCP::Database->factory()->doQuery(
 			'dummy',
 			'
 				INSERT INTO server_traffic (
@@ -98,20 +98,19 @@ sub run
 			',
 			$timestamp, $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
 		);
-		unless(ref $rs eq 'HASH') {
-			error($rs);
+		unless(ref $qrs eq 'HASH') {
+			error($qrs);
 			return 1;
 		}
 
 		# Reset traffic data for next run
 
 		for(keys %hash) {
-			$rs |= execute("$cmdIptables -Z $_", \$stdout, \$stderr);
+			my $rs = execute("$cmdIptables -Z $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
+			return $rs;
 		}
-
-		return $rs;
 	}
 
 	0;
@@ -121,11 +120,11 @@ sub _parseTrafficData($)
 {
 	my $data = shift;
 
-	($smtp, $po, $http, $all) = (0, 0, 0, 0);
+	my ($smtp, $po, $http, $all) = (0, 0, 0, 0);
 
 	if($data) {
 		while($data =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm) {
-			my ($bytes, $port)($1, $2 // 0);
+			my ($bytes, $port) = ($1, $2 // 0);
 
 			if($port > 0) {
 				$smtp += $bytes if $port == 587 || $port == 25 || $port == 465;
