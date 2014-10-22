@@ -1,19 +1,4 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
-		$('.datatable').dataTable(
-			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"bStateSave": true,
-				"pagingType": "simple"
-			}
-		);
-		$('.dataTables_paginate div').imscpTooltip();
-	});
-	/*]]>*/
-</script>
-
 <form name="i18nFrm" action="multilanguage.php" method="post" enctype="multipart/form-data">
 	<!-- BDP: languages_block -->
 	<table class="datatable firstColFixed">
@@ -26,16 +11,6 @@
 			<th>{TR_DEFAULT_LANGUAGE}</th>
 		</tr>
 		</thead>
-		<tfoot>
-		<tr>
-			<td class="buttons" colspan="5" style="height:auto;padding:0;margin: 0">
-				<button name="rebuildIndex" type="submit"
-						onclick="$('#uaction').val('rebuildIndex')">{TR_REBUILD_INDEX}</button>
-				<button name="changeLanguage" type="submit"
-						onclick="$('#uaction').val('changeLanguage')">{TR_SAVE}</button>
-			</td>
-		</tr>
-		</tfoot>
 		<tbody>
 		<!-- BDP: language_block -->
 		<tr>
@@ -50,9 +25,16 @@
 		</tr>
 		<!-- EDP: language_block -->
 		</tbody>
+		<tr>
+			<td class="buttons" colspan="5">
+				<button name="rebuildIndex" type="submit"
+						onclick="$('#uaction').val('rebuildIndex')">{TR_REBUILD_INDEX}</button>
+				<button name="changeLanguage" type="submit"
+						onclick="$('#uaction').val('changeLanguage')">{TR_SAVE}</button>
+			</td>
+		</tr>
 	</table>
 	<!-- EDP: languages_block -->
-
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -78,3 +60,15 @@
 		<a class="link_as_button" href="settings.php">{TR_CANCEL}</a>
 	</div>
 </form>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"bStateSave": true,
+				"pagingType": "simple"
+			}
+		);
+	});
+</script>

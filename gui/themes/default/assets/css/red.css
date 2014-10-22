@@ -149,6 +149,7 @@ tbody td {
 
 input[type="text"],
 input[type="password"],
+input[type="search"],
 select,
 textarea {
     background: #ffffff;
@@ -157,12 +158,13 @@ textarea {
 
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="search"]:focus,
 textarea:focus,
 select:focus {
     border: 1px solid #6e0e0f;
-    -webkit-box-shadow: 0 0 10px #6e0e0f;
-    -moz-box-shadow: 0 0 10px #6e0e0f;
-    box-shadow: 0 0 10px #6e0e0f;
+    -webkit-box-shadow: 0 0 5px #6e0e0f;
+    -moz-box-shadow: 0 0 5px #6e0e0f;
+    box-shadow: 0 0 5px #6e0e0f;
 }
 
 input[readonly="readonly"],
