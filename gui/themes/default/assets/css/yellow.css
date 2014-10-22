@@ -148,19 +148,23 @@ tbody td {
 /* Form elements */
 
 input[type="text"],
-input[type="password"], select, textarea {
+input[type="password"],
+input[type="search"],
+select,
+textarea {
     background: #ffffff;
     border-color: #cccccc;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="search"]:focus,
 textarea:focus,
 select:focus {
     border: 1px solid #918137;
-    -webkit-box-shadow: 0 0 10px #918137;
-    -moz-box-shadow: 0 0 10px #918137;
-    box-shadow: 0 0 10px #918137;
+    -webkit-box-shadow: 0 0 5px #918137;
+    -moz-box-shadow: 0 0 5px #918137;
+    box-shadow: 0 0 5px #918137;
 }
 
 input[readonly="readonly"],
