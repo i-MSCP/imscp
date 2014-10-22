@@ -456,7 +456,7 @@ a {
 .body {
     position: relative;
     margin-left: 197px;
-    padding: 0.5em 23px 20px 43px;
+    padding: 0.5em 43px 20px 43px;
     overflow: hidden;
 }
 
@@ -1059,6 +1059,11 @@ table .icon {
     overflow-x: auto;
 }
 
+.dataTables_wrapper table {
+    min-width: 100%;
+    width: 100%;
+}
+
 .dataTables_processing {
     position: absolute;
     top: 50%;
@@ -1157,7 +1162,9 @@ table.display {
 }
 
 /* Form elements */
-table input[type="text"], table input[type="password"] {
+table input[type="text"],
+table input[type="search"],
+table input[type="password"] {
     min-width: 200px;
 }
 
@@ -1165,7 +1172,13 @@ input, select, textarea {
     vertical-align: middle;
 }
 
+.dataTables_wrapper select,
+.dataTables_wrapper input[type="search"] {
+    margin-left: 5px;
+}
+
 input[type="text"],
+input[type="search"],
 input[type="password"],
 select,
 textarea {
