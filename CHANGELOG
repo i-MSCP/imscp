@@ -25,6 +25,7 @@ GUI
 	Fixed: pTemplate events must be triggered in main application context
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
 	Fixed: Security issue - Input data for software instances are not validated correctly (Software Installer)
+	Fixed: Unable to activate domain alias (Undefined $reselleId variable causing SQL invalid parameter number error)
 	Fixed: Wrong regexps (admin/admin_log.php)
 	Removed: iMSCP autoloader classes (usage of Zend loader in place)
 
