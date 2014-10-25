@@ -65,11 +65,7 @@ define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
 define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
 // Setup include path for vendor libraries
-set_include_path(
-	get_include_path() . PATH_SEPARATOR .
-	LIBRARY_PATH . '/vendor' . PATH_SEPARATOR .
-	LIBRARY_PATH . '/vendor/phpseclib'
-);
+set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARY_PATH . '/vendor');
 
 // Setup autoloader
 require_once 'Zend/Loader/AutoloaderFactory.php';
@@ -78,6 +74,9 @@ Zend_Loader_AutoloaderFactory::factory(
 		'Zend_Loader_StandardAutoloader' => array(
 			'prefixes' => array(
 				'iMSCP_' => LIBRARY_PATH . '/iMSCP',
+				'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
+				'File_' => LIBRARY_PATH . '/vendor/phpseclib/File',
+				'Math_' => LIBRARY_PATH . '/vendor/phpseclib/Math'
 			),
 			'autoregister_zf' => true
 		)
