@@ -39,6 +39,7 @@ use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser;
+use File::Basename;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -49,7 +50,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item addTask(\%data)
+=item addTask(\%data, $filepath)
 
  Add a new cron task
 
@@ -64,18 +65,20 @@ use parent 'Common::SingletonClass';
   - COMMAND Command
 
   See crontab(5) for more information about allowed values
-
+  Param string $file OPTIONAL Absolute path to cron file
   Return int 0 on success, other on failure
 
 =cut
 
 sub addTask
 {
-	my ($self, $data) = @_;
+	my ($self, $data, $file) = @_;
 
 	$data = { } unless ref $data eq 'HASH';
 
-	if(-f "$self->{'wrkDir'}/imscp") {
+	$file ||= "$main::imscpConfig{'CRON_D_DIR'}/imscp";
+
+	if(-f $file) {
 		$data->{'MINUTE'} = 1 unless exists $data->{'MINUTE'};
 		$data->{'HOUR'} = 1 unless exists $data->{'HOUR'};
 		$data->{'DAY'} = 1 unless exists $data->{'DAY'};
@@ -88,16 +91,18 @@ sub addTask
 			return 1;
 		}
 
-		my $wrkFile = iMSCP::File->new('filename' => "$main::imscpConfig{'CRON_D_DIR'}/imscp");
+		my $filename = fileparse($file);
 
-		# Backup current working file
-		my $rs = $wrkFile->copyFile("$self->{'bkpDir'}/imscp." . time);
+		my $wrkFile = iMSCP::File->new('filename' => $file);
+
+		# Backup current imscp file
+		my $rs = $wrkFile->copyFile("$self->{'bkpDir'}/$filename." . time);
 		return $rs if $rs;
 
 		# Getting current working file content
 		my $wrkFileContent = $wrkFile->get();
-		unless(defined $wrkFileContent){
-			error("Unable to read $wrkFile->{'filename'}");
+		unless(defined $wrkFileContent) {
+			error("Unable to read $file");
 			return 1;
 		}
 
@@ -130,7 +135,7 @@ sub addTask
 		$self->{'eventManager'}->trigger('afterCronAddTask', \$wrkFileContent, $data);
 
 		# Store file in working directory
-		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
+		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
 
 		$rs = $file->set($wrkFileContent);
 		return $rs if $rs;
@@ -138,53 +143,57 @@ sub addTask
 		$rs = $file->save();
 		return $rs if $rs;
 
-		$rs = $file->mode(0644);
+		$rs = $file->mode(0640);
 		return $rs if $rs;
 
 		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
 
 		# Install file in production directory
-		$file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
+		$file->copyFile($file);
 	} else {
-		error("File $self->{'wrkDir'}/imscp not found. Please rerun i-MSCP setup.");
+		error("Unable to add cron task: File $file not found.");
 		1;
 	}
 }
 
-=item deleteTask(\%data)
+=item deleteTask(\%data, $file)
 
  Delete a cron task
 
  Param hash \%data Cront task data:
   - TASKID Cron task unique identifier
-
+ Param string $file OPTIONAL Absolute path to cron file
  Return int 0 on success, other on failure
 
 =cut
 
 sub deleteTask
 {
-	my ($self, $data) = @_;
+	my ($self, $data, $file) = @_;
 
 	$data = { } unless ref $data eq 'HASH';
 
-	if(-f "$self->{'wrkDir'}/imscp") {
+	$file ||= "$main::imscpConfig{'CRON_D_DIR'}/imscp";
+
+	if(-f $file) {
 		unless(exists $data->{'TASKID'}) {
 			error('Missing task ID');
 			return 1;
 		}
 
-		my $wrkFile = iMSCP::File->new('filename' => "$main::imscpConfig{'CRON_D_DIR'}/imscp");
+		my $filename = fileparse($file);
+
+		my $wrkFile = iMSCP::File->new('filename' => $file);
 
 		# Backup current working file
-		my $rs = $wrkFile->copyFile("$self->{'bkpDir'}/imscp." . time);
+		my $rs = $wrkFile->copyFile("$self->{'bkpDir'}/$filename." . time);
 		return $rs if $rs;
 
 		# Getting current working file content
 		my $wrkFileContent = $wrkFile->get();
-		unless(defined $wrkFileContent){
-			error("Unable to read $wrkFile->{'filename'}");
+		unless(defined $wrkFileContent) {
+			error("Unable to read $file}");
 			return 1;
 		}
 
@@ -202,7 +211,7 @@ sub deleteTask
 		return $rs if $rs;
 
 		# Store file in working directory
-		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
+		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
 
 		$rs = $file->set($wrkFileContent);
 		return $rs if $rs;
@@ -210,16 +219,16 @@ sub deleteTask
 		$rs = $file->save();
 		return $rs if $rs;
 
-		$rs = $file->mode(0644);
+		$rs = $file->mode(0640);
 		return $rs if $rs;
 
 		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
 
 		# Install file in production directory
-		$file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
+		$file->copyFile($file);
 	} else {
-		error("File $self->{'wrkDir'}/imscp not found. Please rerun i-MSCP setup.");
+		error("Unable to remove cron task: File $file not found.");
 		1;
 	}
 }
@@ -243,7 +252,7 @@ sub setEnginePermissions
 			{
 				'user' => $main::imscpConfig{'ROOT_USER'},
 				'group' => $main::imscpConfig{'ROOT_GROUP'},
-				'mode' => '0644'
+				'mode' => '0640'
 			}
 		);
 	} else {

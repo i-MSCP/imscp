@@ -451,36 +451,50 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Initialize localization.
+	 * Initialize localization
 	 *
-	 * Note: We are using the PHP-gettext library as gettext wrapper to be able to use all locales same if they are not
-	 * installed on the server. In case the current locale is installed on the server, the navive gettext functions used.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return void
 	 */
 	protected function _initializeLocalization()
 	{
-		$locale = isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
-
-		$checkedLocale = setlocale(
-			LC_MESSAGES,
-			array($locale . '.utf8', $locale . '.utf-8', $locale . '.UTF8', $locale . '.UTF-8')
+		$locale = iMSCP_Registry::set(
+			'user_def_lang', isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : 'auto'
 		);
 
-		$checkedLocale = (empty($checkedLocale)) ? $locale . '.utf8' : $checkedLocale;
+		// Setup cache object for translations
+		$cache = Zend_Cache::factory(
+			'Core',
+			'File',
+			array(
+				'caching' => true,
+				'lifetime' => null, // Translation cache is never flushed automatically
+				'automatic_serialization' => true,
+				'automatic_cleaning_factor' => 20,
+				'ignore_user_abort' => true,
+				'cache_id_prefix' => 'iMSCP_Translate'
+			),
+			array(
+				'hashed_directory_level' => 0,
+				'cache_dir' => CACHE_PATH . '/translations'
+			)
+		);
 
-		T_setlocale(LC_MESSAGES, $checkedLocale);
+		Zend_Translate::setCache($cache);
 
-		if (locale_emulation()) {
-			$domain = $locale;
-		} else { // Small workaround related to #130
-			$domain = i18n_getDomain($locale);
-		}
-
-		T_bindtextdomain($domain, $this->_config->GUI_ROOT_DIR . '/i18n/locales');
-		T_bind_textdomain_codeset($domain, 'UTF-8');
-		T_textdomain($domain);
+		// Setup primary translator for iMSCP core translations
+		iMSCP_Registry::set(
+			'translator',
+			new Zend_Translate(
+				array(
+					'adapter' => 'gettext',
+					'content' => $this->_config->GUI_ROOT_DIR . '/i18n/locales',
+					'scan' => Zend_Translate::LOCALE_DIRECTORY,
+					'locale' => $locale,
+					'disableNotices' => true,
+					'tag' => 'iMSCP'
+				)
+			)
+		);
 	}
 
 	/**

@@ -46,9 +46,7 @@ sub getFiles
 		$self->{'fileType'} = '' unless $self->{'fileType'};
 
 		for (@{$self->{'dirContent'}}) {
-			if(-f "$self->{'dirname'}/$_" && ($self->{'fileType'} eq '' || /$self->{'fileType'}$/)) {
-				push @{$self->{'files'}}, $_;
-			}
+			push(@{$self->{'files'}}, $_) if -f "$self->{'dirname'}/$_" && /$self->{'fileType'}$/;
 		}
 	}
 

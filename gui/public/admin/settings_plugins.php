@@ -221,9 +221,9 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 			$tpl->assign(
 				array(
 					'PLUGIN_NAME' => tohtml($pluginName),
-					'PLUGIN_DESCRIPTION' => tohtml($pluginInfo['desc']),
+					'PLUGIN_DESCRIPTION' => tr($pluginInfo['desc']),
 					'PLUGIN_STATUS' => ($pluginManager->hasPluginError($pluginName))
-							? tohtml(tr('Unknown Error')) : tohtml(admin_pluginManagerTrStatus($pluginStatus)),
+							? tr('Unknown Error') : admin_pluginManagerTrStatus($pluginStatus),
 					'PLUGIN_VERSION' => tohtml($pluginInfo['__nversion__']),
 					'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
 					'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
@@ -721,7 +721,7 @@ $tpl->assign(
 		'TR_UPLOAD' => tr('Upload'),
 		'TR_PLUGIN_ARCHIVE' => tr('Plugin archive'),
 		'TR_PLUGIN_ARCHIVE_TOOLTIP' => tr('Only tar.gz, tar.bz2 and zip archives are accepted.'),
-		'TR_PLUGIN_HINT' => tr('Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s.', true, '<u><a href="http://i-mscp.net/filebase/index.php/Filebase/" target="_blank">' . tr('i-MSCP plugin store') . '</a></u>'),
+		'TR_PLUGIN_HINT' => tr('Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s.', true, '<a style="text-decoration: underline" href="http://i-mscp.net/filebase/index.php/Filebase/" target="_blank">' . tr('i-MSCP plugin store') . '</a></u>'),
 		'TR_CLICK_FOR_MORE_DETAILS' => tr('Click here for more details'),
 		'TR_ERROR_DETAILS' => tojs(tr('Error details', true)),
 		'TR_FORCE_RETRY' => tojs(tr('Force retry', true)),
