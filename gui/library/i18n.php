@@ -32,21 +32,24 @@
  * @author      i-MSCP Team
  */
 
-require_once 'php-gettext/gettext.inc';
-
 /**
- * Translates a given message into the selected language, if exists
+ * Translates the given message
  *
- * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
- * @author Raphael Geissert (2007)
- * @param string $msgid string to translate
+ * @param string|array $msgid tring|array  Translation string, or Array for plural translations
  * @param mixed $substitution,... If second parameter is bool (true), prevent the returned string from being replaced
  *                                with html entities. If not considere the parameter(s) as simple substitution value(s)
  * @return string Translated or original message
  */
 function tr($msgid, $substitution = false)
 {
-	$msgstr = T_($msgid);
+	static $translator = null;
+
+	if(null == $translator) {
+		/** @var Zend_Translate_Adapter $translator */
+		$translator = iMSCP_Registry::get('translator');
+	}
+
+	$msgstr = $translator->translate($msgid);
 
 	// Detect whether $substitution is really a substitution or just a value to
 	// be replaced in $msgstr
@@ -54,14 +57,7 @@ function tr($msgid, $substitution = false)
 		$substitution = false;
 	}
 
-	// Detect comments and strip them if $msgid == $msgstr
-	// e.g. tr('_: This is just a comment\nReal message to translate here')
-	if (substr($msgid, 0, 3) == '_: ' && $msgid == $msgstr && count($l = explode("\n", $msgid)) > 1) {
-		unset($l[0]);
-		$msgstr = implode("\n", $l);
-	}
-
-	// Replace values
+	// Process included parameter
 	if (func_num_args() > 1) {
 		$argv = func_get_args();
 		unset($argv[0]);
@@ -83,7 +79,6 @@ function tr($msgid, $substitution = false)
 /**
  * Replaces special encoded strings back to their original signs
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param string $string String to replace chars
  * @return String with replaced chars
  */
@@ -106,23 +101,18 @@ function replace_html($string)
 	return $string;
 }
 
-// Dirty hack to make gettext add this entry to the .pot file
-if (false) {
-	tr('_: Localised language');
-}
-
 /**
  * Build languages index from machine object files.
  *
- * Note: Only the files that are readable will be processed.
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @return void
  */
 function i18n_buildLanguageIndex()
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
+
+	// Flush translation cache
+	Zend_Translate::clearCache('iMSCP');
 
 	$iterator = new RecursiveIteratorIterator(
 		new RecursiveDirectoryIterator($cfg->GUI_ROOT_DIR . '/i18n/locales/', FilesystemIterator::SKIP_DOTS)
@@ -173,8 +163,8 @@ function i18n_buildLanguageIndex()
 
 	sort($availableLanguages);
 	$serializedData = serialize($availableLanguages);
-	$dbConfig->AVAILABLE_LANGUAGES = $serializedData;
-	$cfg->AVAILABLE_LANGUAGES = $serializedData;
+	$dbConfig['AVAILABLE_LANGUAGES'] = $serializedData;
+	$cfg['AVAILABLE_LANGUAGES'] = $serializedData;
 }
 
 /**
@@ -182,7 +172,6 @@ function i18n_buildLanguageIndex()
  *
  * Note: For safe reasons, only the files that are readable will be indexed.
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @return array Array that contains information about available languages
  */
 function i18n_getAvailableLanguages()
@@ -190,79 +179,16 @@ function i18n_getAvailableLanguages()
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if (!isset($cfg->AVAILABLE_LANGUAGES) || !isSerialized($cfg->AVAILABLE_LANGUAGES)) {
+	if (!isset($cfg['AVAILABLE_LANGUAGES']) || !isSerialized($cfg['AVAILABLE_LANGUAGES'])) {
 		i18n_buildLanguageIndex();
 	}
 
-	return unserialize($cfg->AVAILABLE_LANGUAGES);
-}
-
-/**
- * Returns name of domain being used
- *
- * Note: See #130 for further explaination.
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @throws iMSCP_Exception
- * @param string $upstreamDomain Upstream domain name
- * @return string Domain being used
- */
-function i18n_getDomain($upstreamDomain)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$domainDirectory = $cfg->GUI_ROOT_DIR . "/i18n/locales/$upstreamDomain/LC_MESSAGES";
-
-	if (file_exists($domainDirectory . "/$upstreamDomain.mo")) {
-		$upstreamFileModificationTime = filemtime($domainDirectory . "/$upstreamDomain.mo");
-		$domain = $upstreamDomain . '_' . $upstreamFileModificationTime;
-	} else {
-		return $upstreamDomain;
-	}
-
-	if (!file_exists($domainDirectory . "/$domain.mo")) {
-		if (!@copy($domainDirectory . "/$upstreamDomain.mo", $domainDirectory . "/$domain.mo")) {
-			write_log("i18n: Unable to create $domainDirectory/$domain.mo domain file for production", E_USER_ERROR);
-		} else {
-			write_log("i18n: Created new machine object file $domainDirectory/$domain.mo for production.", E_USER_NOTICE);
-			i18n_domainsGarbageCollector($domainDirectory, $domain . '.mo');
-		}
-	}
-
-	return $domain;
-}
-
-/**
- * Garbage collector for domains translation files
- *
- * Note: See #130 for further explanations.
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @param string $domainDirectory Current domain directory path
- * @param string $skipDomain Domain that must not be removed
- * @return void
- */
-function i18n_domainsGarbageCollector($domainDirectory, $skipDomain)
-{
-	$currentDomainFilepath = $domainDirectory . '/' . $skipDomain;
-	$domainsFiles = glob($domainDirectory . '/*_*_*.mo');
-
-	foreach ($domainsFiles as $file) {
-		if ($file != $currentDomainFilepath) {
-			if (@unlink($file)) {
-				write_log("i18n: Removed $file machine object production file.", E_USER_NOTICE);
-			} else {
-				write_log("i18n: Unable to remove $file machine object production file.", E_USER_ERROR);
-			}
-		}
-	}
+	return unserialize($cfg['AVAILABLE_LANGUAGES']);
 }
 
 /**
  * Import Machine object file in languages directory
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @return bool TRUE on success, FALSE otherwise
  */
 function i18n_importMachineObjectFile()
@@ -366,7 +292,7 @@ function i18n_changeDefaultLanguage()
 
 		// Ensures language change on next load for current user in case he has not yet his gui properties explicitly
 		// set (eg. for the first admin user when i-MSCP was just installed
-		$stmt = exec_query('SELECT `lang`  FROM `user_gui_props` WHERE `user_id` = ?', $_SESSION['user_id']);
+		$stmt = exec_query('SELECT lang FROM user_gui_props WHERE user_id = ?', $_SESSION['user_id']);
 
 		if ($stmt->fields['lang'] == null) {
 			unset($_SESSION['user_def_lang']);
@@ -376,4 +302,9 @@ function i18n_changeDefaultLanguage()
 	}
 
 	return true;
+}
+
+// Dirty hack to make gettext add this entry to the .pot file
+if (false) {
+	tr('_: Localised language');
 }
