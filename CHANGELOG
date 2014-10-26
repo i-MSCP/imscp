@@ -13,15 +13,17 @@ CONFIGS
 	Fixed: Virtual mail directory must not be hardcoded in dovecot configuration file
 
 ENGINE
+	Added: Support for alternative cron files ( Servers::cron::cron )
 	Changed: Ignore errors regarding the move of home directory ( Modules::User )
 	Fixed: main::run: Argument "yes" isn't numeric in addition (+) at /var/www/imscp/engine/imscp-sw-mngr line 111
 	Fixed: Wrong IP added in DNS zone files when the BASE_SERVER_IP and BASE_SERVER_PUBLIC_IP parameters are referring
 		   to the same IP (private IP)
 
 GUI
+	Added: Support for plural translations
+	Changed: Translation is now processed using Zend_Translate (which is thread-safe) and Zend_Cache
 	Fixed: Depending on event manager in use, some listeners will never be triggered (Events aggregator)
 	Fixed: Literal percent sign must be escaped with another percent sign in translation strings
-	Fixed: PHP Notice - Undefined variable $resellerId in reseller/alias.php
 	Fixed: pTemplate events must be triggered in main application context
 	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
 	Fixed: Security issue - Input data for software instances are not validated correctly (Software Installer)
@@ -37,10 +39,15 @@ INSTALLER
 PLUGINS
 	Fixed: Configuration change not processed when a plugin is being updated
 	Fixed: Errors not catched on change when the __need_change__ flag is set
+	Fixed: Plugins must be translatable using the tr() core translation function
 	Updated: Plugin API to version 0.2.12
+
+VENDOR
+	Removed php-gettext library
 
 TICKETS
 	Fixed #1143: Bug - Domain deactivation - Hard/Soft mail accounts suspension
+	Fixed #1151: Bug - Undefined variable $resellerId in reseller/alias.php
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.14
