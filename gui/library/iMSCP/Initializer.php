@@ -481,6 +481,10 @@ class iMSCP_Initializer
 
 		Zend_Translate::setCache($cache);
 
+		if($this->_config['DEBUG']) {
+			Zend_Translate::getCache()->clean(Zend_Cache::CLEANING_MODE_ALL);
+		}
+
 		// Setup primary translator for iMSCP core translations
 		iMSCP_Registry::set(
 			'translator',
