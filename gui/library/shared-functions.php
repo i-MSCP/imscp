@@ -335,27 +335,28 @@ function shared_getCustomerProps($domainId)
  * Returns translated item status
  *
  * @param string $status Item status to translate
+ * @param bool $escapeHtml OPTIONAL Does string must be HTML escaped (default: true)
  * @return string Translated status
  */
-function translate_dmn_status($status)
+function translate_dmn_status($status, $escapeHtml = true)
 {
 	switch ($status) {
 		case 'ok':
-			return tr('Ok');
+			return tr('Ok', $escapeHtml);
 		case 'toadd':
-			return tr('Addition in progress');
+			return tr('Addition in progress', $escapeHtml);
 		case 'tochange':
-			return tr('Modification in progress');
+			return tr('Modification in progress', $escapeHtml);
 		case 'todelete':
-			return tr('Deletion in progress');
+			return tr('Deletion in progress', $escapeHtml);
 		case 'disabled':
-			return tr('Suspended');
+			return tr('Suspended', $escapeHtml);
 		case 'toenable':
-			return tr('Being enabled');
+			return tr('Being enabled', $escapeHtml);
 		case 'todisable':
-			return tr('Being suspended');
+			return tr('Being suspended', $escapeHtml);
 		case 'ordered':
-			return tr('Awaiting approval');
+			return tr('Awaiting approval', $escapeHtml);
 		default:
 			return (isset($_SESSION['logged_from_type']) && $_SESSION['logged_from_type'] == 'admin')
 				?  tr('Unexpected error') . '<span class="icon i_help" title="' .
