@@ -304,6 +304,36 @@ function i18n_changeDefaultLanguage()
 	return true;
 }
 
+/**
+ * Add translations
+ *
+ * This method allow any plugin to add its translations
+ *
+ * @param string $dirpath Absolute path to the translations root directory
+ * @param string $type Translations type (array, Csv, Gettext, Ini, Qt, Tbx, Tmx, Xliff, XmlTm)
+ * @param string $identifier Unique identifier which is used for caching (eg. plugin name)
+ * @throws iMSCP_Exception
+ */
+function i18n_addTranslations($dirpath, $type = 'Array', $identifier = 'iMSCP')
+{
+	$locale = iMSCP_Registry::get('user_def_lang');
+
+	$translator = new Zend_Translate(
+		array(
+			'adapter' => $type,
+			'content' => $dirpath,
+			'scan' => Zend_Translate::LOCALE_DIRECTORY,
+			'locale' => $locale,
+			'disableNotices' => true,
+			'tag' => $identifier
+		)
+	);
+
+	if($translator->getAdapter()->isAvailable($locale)) {
+		iMSCP_Registry::get('translator')->addTranslation(array('content' => $translator));
+	}
+}
+
 // Dirty hack to make gettext add this entry to the .pot file
 if (false) {
 	tr('_: Localised language');
