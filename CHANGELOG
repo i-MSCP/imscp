@@ -20,7 +20,7 @@ ENGINE
 		   to the same IP (private IP)
 
 GUI
-	Added: i18n_addTranslations() core function to allow plugins to add their translations
+	Added: l10n_addTranslations() core function to allow plugins to add their translations
 	Added: New parameter in the translate_dmn_status() core function which allow to disable escaping
 	Added: Support for plural translations
 	Changed: Translation is now processed using Zend_Translate (which is thread-safe) and Zend_Cache
