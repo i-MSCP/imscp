@@ -407,7 +407,7 @@ class iMSCP_Initializer
 	 */
 	protected function _processConfiguration()
 	{
-		/** @var $pdo iMSCP_Database */
+		/** @var $pdo PDO */
 		$pdo = iMSCP_Database::getRawInstance();
 
 		// Creating new Db configuration handler.
