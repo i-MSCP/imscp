@@ -307,14 +307,14 @@ function i18n_changeDefaultLanguage()
 /**
  * Add translations
  *
- * This method allow any plugin to add its translations
+ * This function allow any plugin to add its translations.
  *
  * @param string $dirpath Absolute path to the translations root directory
  * @param string $type Translations type (array, Csv, Gettext, Ini, Qt, Tbx, Tmx, Xliff, XmlTm)
- * @param string $identifier Unique identifier which is used for caching (eg. plugin name)
- * @throws iMSCP_Exception
+ * @param string $tag Tag which is used for caching (eg. plugin name)
+ * @return void
  */
-function i18n_addTranslations($dirpath, $type = 'Array', $identifier = 'iMSCP')
+function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP')
 {
 	$locale = iMSCP_Registry::get('user_def_lang');
 
@@ -325,7 +325,7 @@ function i18n_addTranslations($dirpath, $type = 'Array', $identifier = 'iMSCP')
 			'scan' => Zend_Translate::LOCALE_DIRECTORY,
 			'locale' => $locale,
 			'disableNotices' => true,
-			'tag' => $identifier
+			'tag' => $tag
 		)
 	);
 
