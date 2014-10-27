@@ -312,9 +312,12 @@ function i18n_changeDefaultLanguage()
  * @param string $dirpath Absolute path to the translations root directory
  * @param string $type Translations type (array, Csv, Gettext, Ini, Qt, Tbx, Tmx, Xliff, XmlTm)
  * @param string $tag Tag which is used for caching (eg. plugin name)
+ * param string|null $scan If set to NULL, no scanning of the directory structure will be done. If set to
+ *                         Zend_Translate::LOCALE_DIRECTORY the locale will be detected within the directory.
+ *                         If set to Zend_Translate::LOCALE_FILENAME the locale will be detected within the filename.
  * @return void
  */
-function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP')
+function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan = Zend_Translate::LOCALE_FILENAME)
 {
 	$locale = iMSCP_Registry::get('user_def_lang');
 
@@ -322,7 +325,7 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP')
 		array(
 			'adapter' => $type,
 			'content' => $dirpath,
-			'scan' => Zend_Translate::LOCALE_DIRECTORY,
+			'scan' => $scan,
 			'locale' => $locale,
 			'disableNotices' => true,
 			'tag' => $tag
