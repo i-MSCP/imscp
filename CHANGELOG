@@ -45,7 +45,8 @@ PLUGINS
 	Updated: Plugin API to version 0.2.12
 
 VENDOR
-	Removed php-gettext library
+	Removed: php-gettext library
+	Updated: Zend Framework components to version 1.12.9
 
 TICKETS
 	Fixed #1143: Bug - Domain deactivation - Hard/Soft mail accounts suspension
