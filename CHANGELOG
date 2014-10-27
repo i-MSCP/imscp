@@ -6,6 +6,7 @@ Git 1.1.x
 
 CONFIGS
 	Added: cram-md5 authentication mechanism (Dovecot)
+	Added: PLUGINS_DIR configuration parameter in imscp.conf file
 	Changed: Lowered log level for TLS (Postfix)
 	Fixed: Apache user (www-data) must not be able to access to the entire file system (security)
 	Fixed: Symlinks must be followed by Apache only if the owner match with the target owner (security)

@@ -709,10 +709,9 @@ sub _savePersistentData
 	}
 
 	# Save GUI plugins
-	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/plugins") {
+	if(-d "$main::imscpConfig{'PLUGINS_DIR'}") {
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/plugins " .
-			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/plugins",
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'PLUGINS_DIR'} $destdir$main::imscpConfig{'PLUGINS_DIR'}",
 			\$stdout, \$stderr
 		);
 		debug($stdout) if $stdout;

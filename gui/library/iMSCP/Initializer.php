@@ -193,11 +193,14 @@ class iMSCP_Initializer
 	{
 		if ($this->_config->DEBUG) {
 			ini_set('display_errors', 1);
-			ini_set('log_errors', 1);
-			ini_set('error_log', $this->_config->GUI_ROOT_DIR . '/data/logs/errors.log');
 		} else {
 			ini_set('display_errors', 0);
 		}
+
+		// In any case, write error logs in data/logs/errors.log
+		// FIXME Disabled as long file is not rotated
+		//ini_set('log_errors', 1);
+		//ini_set('error_log', $this->_config->GUI_ROOT_DIR . '/data/logs/errors.log');
 	}
 
 	/**
