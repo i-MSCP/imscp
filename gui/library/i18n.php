@@ -111,8 +111,13 @@ function i18n_buildLanguageIndex()
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	// Flush translation cache
-	Zend_Translate::clearCache('iMSCP');
+	// Clear translation cache
+	/** @var Zend_Translate $translator */
+	$translator = iMSCP_Registry::get('translator');
+
+	if($translator->hasCache()) {
+		$translator->clearCache('iMSCP');
+	}
 
 	$iterator = new RecursiveIteratorIterator(
 		new RecursiveDirectoryIterator($cfg->GUI_ROOT_DIR . '/i18n/locales/', FilesystemIterator::SKIP_DOTS)
@@ -312,9 +317,10 @@ function i18n_changeDefaultLanguage()
  * @param string $dirpath Absolute path to the translations root directory
  * @param string $type Translations type (array, Csv, Gettext, Ini, Qt, Tbx, Tmx, Xliff, XmlTm)
  * @param string $tag Tag which is used for caching (eg. plugin name)
- * param string|null $scan If set to NULL, no scanning of the directory structure will be done. If set to
+ * @param string|null $scan If set to NULL, no scanning of the directory structure will be done. If set to
  *                         Zend_Translate::LOCALE_DIRECTORY the locale will be detected within the directory.
  *                         If set to Zend_Translate::LOCALE_FILENAME the locale will be detected within the filename.
+ * @throws iMSCP_Exception
  * @return void
  */
 function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan = Zend_Translate::LOCALE_FILENAME)
