@@ -1,6 +1,62 @@
 i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
+1.1.15
+------------------------------------------------------------------------------------------------------------------------
+
+2014-10-29: Laurent Declercq
+	RELEASE i-MSCP 1.1.15
+
+CONFIGS
+	Added: cram-md5 authentication mechanism (Dovecot)
+	Added: PLUGINS_DIR configuration parameter in imscp.conf file
+	Changed: Lowered log level for TLS (Postfix)
+	Fixed: Apache user (www-data) must not be able to access to the entire file system (security)
+	Fixed: Symlinks must be followed by Apache only if the owner match with the target owner (security)
+	Fixed: SSLv2 and SSLv3 must be disabled to prevent POODLE attacks ( Dovecot )
+	Fixed: Virtual mail directory must not be hardcoded in dovecot configuration file
+
+ENGINE
+	Added: Support for alternative cron files ( Servers::cron::cron )
+	Changed: Ignore errors regarding the move of home directory ( Modules::User )
+	Fixed: main::run: Argument "yes" isn't numeric in addition (+) at /var/www/imscp/engine/imscp-sw-mngr line 111
+	Fixed: Wrong IP added in DNS zone files when the BASE_SERVER_IP and BASE_SERVER_PUBLIC_IP parameters are referring
+		   to the same IP (private IP)
+
+GUI
+	Added: l10n_addTranslations() core function to allow plugins to add their translations
+	Added: New parameter in the translate_dmn_status() core function which allow to disable escaping
+	Added: Support for plural translations
+	Changed: Translation is now processed using Zend_Translate (which is thread-safe) and Zend_Cache
+	Fixed: Depending on event manager in use, some listeners will never be triggered (Events aggregator)
+	Fixed: Literal percent sign must be escaped with another percent sign in translation strings
+	Fixed: pTemplate events must be triggered in main application context
+	Fixed: SQL user hosts must be separated from SQL users to avoid any customer confusion
+	Fixed: Security issue - Input data for software instances are not validated correctly (Software Installer)
+	Fixed: Unable to activate domain alias (Undefined $reselleId variable causing SQL invalid parameter number error)
+	Fixed: Wrong regexps (admin/admin_log.php)
+	Removed: iMSCP autoloader classes (usage of Zend loader in place)
+
+INSTALLER
+	Fixed: Error about unknown IP when attempting to add new IP
+	Fixed: lo must not be used as default device when adding new IP (installer)
+	Fixed: Unable to upgrade to 1.1.14 (packages file is corrupted - Ubuntu Precise)
+
+PLUGINS
+	Fixed: Configuration change not processed when a plugin is being updated
+	Fixed: Errors not catched on change when the __need_change__ flag is set
+	Fixed: Plugins must be translatable using the tr() core translation function
+	Updated: Plugin API to version 0.2.12
+
+VENDOR
+	Removed: php-gettext library
+	Updated: Zend Framework components to version 1.12.9
+
+TICKETS
+	Fixed #1143: Bug - Domain deactivation - Hard/Soft mail accounts suspension
+	Fixed #1151: Bug - Undefined variable $resellerId in reseller/alias.php
+
+------------------------------------------------------------------------------------------------------------------------
 1.1.14
 ------------------------------------------------------------------------------------------------------------------------
 
