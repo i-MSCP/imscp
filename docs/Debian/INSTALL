@@ -15,10 +15,10 @@ Table of Content
 1)  Version Info
 ----------------
 
-i-MSCP Version:    <version>
-Maintainer:        i-MSCP Team
-Homepage:          http://www.i-mscp.net
- Distros:          Debian Squeeze, Wheezy (recommended), Jessie
+i-MSCP Version:  <version>
+Maintainer:      i-MSCP Team
+Homepage:        http://www.i-mscp.net
+Distros:         Debian Squeeze, Wheezy (recommended), Jessie
 
 2)  Requirements
 ----------------
