@@ -1215,24 +1215,6 @@ sub getTraffic
 	\%trafficDb;
 }
 
-=item deleteTmp()
-
- Delete temporary files
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub deleteTmp
-{
-	my $self = $_[0];
-
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDelTmp');
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdDelTmp');
-}
-
 =item getRunningUser()
 
  Get user name under which the Apache server is running

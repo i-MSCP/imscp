@@ -23,8 +23,5 @@
 # Disable expired accounts
 @daily root {CMD_NICE} -n 19 {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
 
-# Deletes temporary files (eg PHP sessions)
-#0,30 * * * * root {CMD_NICE} -n 19 {TOOLS_ROOT_DIR}/imscp-del-tmp >/dev/null 2>&1
-
 # imscp [{ENTRY_ID}] entry BEGIN
 # imscp [{ENTRY_ID}] entry ENDING
