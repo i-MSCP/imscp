@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item start($serviceName, [$pattern = $serviceName])
+=item start($serviceName [, $pattern = $serviceName ])
 
  Start the given service
 
@@ -79,7 +79,7 @@ sub start
 	}
 }
 
-=item stop($serviceName, [$pattern = $serviceName])
+=item stop($serviceName [, $pattern = $serviceName ])
 
  Stop the given service
 
@@ -124,7 +124,7 @@ sub stop
 	}
 }
 
-=item restart($serviceName, [$pattern = $serviceName])
+=item restart($serviceName [, $pattern = $serviceName ])
 
  Restart the given service
 
@@ -161,7 +161,7 @@ sub restart
 	}
 }
 
-=item reload($serviceName, [$pattern = $serviceName])
+=item reload($serviceName [, $pattern = $serviceName ])
 
  Reload the given service
 
@@ -198,7 +198,7 @@ sub reload
 	}
 }
 
-=item status($serviceName, [$pattern = $serviceName])
+=item status($serviceName [, $pattern = $serviceName ])
 
  Get status of the given service
 

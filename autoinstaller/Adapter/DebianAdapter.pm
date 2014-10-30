@@ -171,15 +171,14 @@ sub installPackages
 		push @command, 'debconf-apt-progress --logstderr --';
 	}
 
-	# Prevent the package manager to start services itself (excluding mysql) using the policy layer interface.
-	# Services are configured and started by i-MSCP installer.
+	# Prevent the package manager to start apache2 service itself (excluding mysql) using the policy layer interface.
 	# This prevents failures such as when nginx is installed after Apache2 which is already listening on port 80...
 	my $file = iMSCP::File->new('filename' => '/usr/sbin/policy-rc.d');
 	$rs = $file->set(<<EOF);
 #/bin/sh
 initscript=\$1
 action=\$2
-if [ "\$initscript" != "mysql" ] && [ "\$action" = "start" ] ; then
+if [ "\$initscript" = "apache2" ] && [ "\$action" = "start" ] ; then
         exit 101;
 fi
 exit 0
