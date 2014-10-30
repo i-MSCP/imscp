@@ -1,0 +1,6179 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR iMSCP Team - All rights reserved
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# HenrikS <henrik@schytte.net>, 2011
+# HenrikS <henrik@schytte.net>, 2011
+# Laurent Declercq <l.declercq@nuxwin.com>, 2014
+# Michael Jensen-Maar <maar@maargrafisk.dk>, 2013-2014
+# Michael Jensen-Maar <maar@maargrafisk.dk>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: i-MSCP\n"
+"Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
+"POT-Creation-Date: 2014-09-19 05:23+0200\n"
+"PO-Revision-Date: 2014-09-19 15:36+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: da_DK\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid ""
+"\n"
+"\n"
+"Dear {NAME},\n"
+"\n"
+"This is an automatic confirmation for the order of the domain:\n"
+"\n"
+"{DOMAIN}\n"
+"\n"
+"You have to click the following link to confirm your order.\n"
+"\n"
+"{ACTIVATION_LINK}\n"
+"\n"
+"If you do not confirm it before the {EXPIRE_DATE}, it will be\n"
+"automatically canceled.\n"
+"\n"
+"Thank you for using i-MSCP services.\n"
+"\n"
+"___________________________\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr "\n\nKære {NAME},\n\nDette er en automatisk bekræftelse for ordren af domænet:\n\n{DOMAIN}\n\nDu er nødt til at klikke på følgende link for at bekræfte din bestilling.\n\n{ACTIVATION_LINK}\n\nHvis du ikke bekræfter det før {EXPIRE_DATE}, vil ordren\nautomatisk blive annulleret.\n\nTak fordi du bruger i-MSCP tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
+
+msgid ""
+"\n"
+"\n"
+"Dear {NAME},\n"
+"\n"
+"Use this link to activate your new i-MSCP password:\n"
+"\n"
+"{LINK}\n"
+"\n"
+"Thank you for using i-MSCP services.\n"
+"\n"
+"___________________________\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr "\n\nKære {NAME},\n\nBrug dette link til at aktivere dit nye i-MSCP password:\n\n{LINK}\n\nTak fordi du bruger i-MSCP tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new domain alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"\n"
+"Thank you for using i-MSCP services.\n"
+"\n"
+"___________________________\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr "\n\nKære {RESELLER},\n\nDin kunde {CUSTOMER} afventer for godkendelse af sit nye alias:\n\n{ALIAS}\n\nNår du er logget ind, kan du aktivere det nye alias på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nTak fordi du bruger i-MSCP tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME},\n"
+"\n"
+"Your user name is: {USERNAME}\n"
+"Your password is: {PASSWORD}\n"
+"\n"
+"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
+"Thank you for using i-MSCP services.\n"
+"\n"
+"___________________________\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr "\n\nHej {NAME},\n\nDit brugernavn er: {USERNAME}\nDit password er: {PASSWORD}\n\nDu kan logge ind på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nTak fordi du bruger i-MSCP tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
+
+msgid ""
+"\n"
+"Dear {NAME},\n"
+"\n"
+"A new account has been created for you.\n"
+"\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
+"(Same username and password than above)\n"
+"\n"
+"Thank you for using our services.\n"
+msgstr "\nKære {NAME},\n\nEn ny konto er blevet oprettet for dig.\n\nDine kontooplysninger:\n\nBrugertype: {USERTYPE}\nBrugernavn: {USERNAME}\nPassword: {PASSWORD}\n\nHusk at ændre din adgangskode ofte og første gang du logger ind.\n\nDu kan logge ind lige nu på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatistik: http://{USERNAME}/{WEBSTATS_RPATH}\n(Samme brugernavn og password som ovenfor)\n\nTak fordi du bruger vores tjenester.\n"
+
+msgid ""
+"\n"
+"Dear {NAME},\n"
+"\n"
+"A new account has been created for you.\n"
+"\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
+"Thank you for using our services.\n"
+msgstr "\nKære {NAME},\n\nEn ny konto er blevet oprettet for dig.\n\nDine kontooplysninger:\n\nBrugertype: {USERTYPE}\nBrugernavn: {USERNAME}\nPassword: {PASSWORD}\n\nHusk at ændre din adgangskode ofte og første gang du logger ind.\n\nDu kan logge ind lige nu på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nTak fordi du bruger vores tjenester.\n"
+
+msgid " Admin / Support / Open Tickets"
+msgstr "Admin / Support / Åbne Tickets"
+
+msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
+msgstr "Kunde / Webværktøjer / brugerdefinerede fejlsider / Edit Brugerdefineret Fejlside"
+
+msgid ""
+" Show all errors, except for warnings about deprecated code (Production)"
+msgstr "Vis alle fejl, undtagen for advarsler omkring forældet kode (Production)"
+
+msgid " Wrong IP address."
+msgstr "Forkert IP adresse."
+
+msgid " was deleted by {ADMIN}!"
+msgstr " blev slettet af {ADMIN}!"
+
+#, php-format
+msgid "%1$d / %2$d"
+msgstr "%1$d / %2$d"
+
+#, php-format
+msgid "%1$d / %2$d of %3$d"
+msgstr "%1$d / %2$d af %3$d"
+
+#, php-format
+msgid "%1$d / %2$d of %3$d</b>"
+msgstr "%1$d / %2$d af %3$d</b>"
+
+#, php-format
+msgid "%1$d / %2$d of unlimited"
+msgstr "%1$d / %2$d af ubegrænset"
+
+#, php-format
+msgid "%1$d of %2$d"
+msgstr "%1$d af %2$d"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr "%1$d%% [%2$s af %3$s]"
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr "%1$d%% [%2$s af ubegrænset]"
+
+#, php-format
+msgid "%1$s (%2$s)"
+msgstr "%1$s (%2$s)"
+
+#, php-format
+msgid "%1$s - (Softwaredepot)"
+msgstr "%1$s - (Software depot)"
+
+#, php-format
+msgid "%1$s - (Version: %2$s, Language: %3$s)"
+msgstr "%1$s - (Version: %2$s, Sprog: %3$s)"
+
+#, php-format
+msgid "%1$s / %2$s"
+msgstr "%1$s / %2$s"
+
+#, php-format
+msgid "%1$s / %2$s of %3$s"
+msgstr "%1$s / %2$s af %3$s"
+
+#, php-format
+msgid "%1$s / %2$s of unlimited"
+msgstr "%1$s / %2$s af ubegrænset"
+
+#, php-format
+msgid "%1$s of %2$s"
+msgstr "%1$s af %2$s"
+
+#, php-format
+msgid "%1$s of <b>unlimited</b>"
+msgstr "%1$s af <b>ubegrænset</b> MB"
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr "%1$s du er nu logged som %2$s"
+
+#, php-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr "%1$s%% [%2$s af %3$s]"
+
+#, php-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr "%1$s%% [%2$s af ubegrænset]"
+
+#, php-format
+msgid "%1$s`s - Software"
+msgstr "%1$s`s - Software"
+
+#, php-format
+msgid "%d %s remaining until account expiration"
+msgstr "%d %s tilbage før kontoudløbsdato"
+
+#, php-format
+msgid "%d / unlimited"
+msgstr "%d / ubegrænset"
+
+#, php-format
+msgid "%d Service(s) port successfully updateds"
+msgstr "%d Service(s) port succesfuldt opdateret"
+
+#, php-format
+msgid "%d configuration parameter(s) have/has been created."
+msgstr "%d konfigurationsparametrer er blevet oprettet."
+
+#, php-format
+msgid "%d configuration parameter(s) have/has been updated."
+msgstr "%d konfigurationsparametrer er blevet opdateret."
+
+#, php-format
+msgid "%d of %s"
+msgstr "%d af %s"
+
+#, php-format
+msgid "%d strings translated"
+msgstr "%d strenge oversat"
+
+#, php-format
+msgid "%s / %s of %s"
+msgstr "%s / %s af %s"
+
+#, php-format
+msgid "%s / unlimited"
+msgstr "%s / ubegrænset"
+
+#, php-format
+msgid "%s account successfully deleted."
+msgstr "%s konto slettet."
+
+#, php-format
+msgid "%s deleted the admin log older than one month."
+msgstr "%s slettede admin logen ældre end en måned."
+
+#, php-format
+msgid "%s deleted the admin log older than one year."
+msgstr "%s slettede admin logen ældre end et år."
+
+#, php-format
+msgid "%s deleted the admin log older than six months."
+msgstr "%s slettede admin logen ældre end 6 måneder."
+
+#, php-format
+msgid "%s deleted the admin log older than three months."
+msgstr "%s slettede admin logen ældre end 3 måneder."
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr "%s sletted admin logen ældre end 2 uger!"
+
+#, php-format
+msgid "%s deleted the full admin log."
+msgstr "%s slettede den fulde admin log."
+
+#, php-format
+msgid "%s doesn't exist"
+msgstr "%s findes ikke"
+
+#, php-format
+msgid "%s doesn't exist or is empty."
+msgstr "%s findes ikke eller er tom."
+
+#, php-format
+msgid "%s field is empty or invalid."
+msgstr "%s felt er tomt eller ugyldigt."
+
+#, php-format
+msgid "%s host field is empty or invalid."
+msgstr "%s host felt er tomt eller ugyldigt."
+
+#, php-format
+msgid "%s is not a valid i-MSCP language file."
+msgstr "%s er ikke en gyldig i-MSCP sprogfil."
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
+msgstr "%s er ikke tilladt som subdomæne label."
+
+#, php-format
+msgid "%s is not part of domain %s."
+msgstr "%s er ikke en del af domæne %s."
+
+#, php-format
+msgid "%s of %s"
+msgstr "%s af %s"
+
+#, php-format
+msgid "%s of unlimited"
+msgstr "%s af ubegrænset"
+
+#, php-format
+msgid "%s page"
+msgstr "%s side"
+
+#, php-format
+msgid "%s record"
+msgstr "%s record"
+
+#, php-format
+msgid ""
+"%s: The clients consumption (%s) for this reseller is greater than the new "
+"limit."
+msgstr "%s: Klientens forbrug (%s) for denne forhandler er større end den nye grænse."
+
+#, php-format
+msgid ""
+"%s: The total of items (%s) already assigned by the reseller is greater than"
+" the new limit."
+msgstr "%s: Det totale antal elementer (%s) som allerede er tildelt af forhandler er større end den nye grænse."
+
+#, php-format
+msgid "%s: This reseller has customer(s) with unlimited items."
+msgstr "%s: Denne forhandler har kunde(r) med ubegrænsede elementer."
+
+#, php-format
+msgid ""
+"%s: You cannot disable a service already consumed by reseller's customers"
+msgstr "%s: Du kan ikke deaktivere en service allerede forbrugt af forhandler's kunder"
+
+#, php-format
+msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr "%s: Du kan ikke deaktivere en tjeneste allerede solgt til forhandler's kunder."
+
+#, php-format
+msgid ""
+"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
+"plugin which must be reported to the author(s)."
+msgstr ""
+
+#, php-format
+msgid ""
+"'%%hostname%%' does not appear to have a valid MX record for the email "
+"address '%%value%%'"
+msgstr "'%%hostname%%' synes ikke at have en gyldig MX record til e-mail adressen '%%value%%'"
+
+#, php-format
+msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
+msgstr "'%%hostname%%' er ikke et gyldig hostname for email-adressen '%%value%%'"
+
+#, php-format
+msgid ""
+"'%%hostname%%' is not in a routable network segment. The email address "
+"'%%value%%' should not be resolved from public network"
+msgstr "'%%hostname%%' kan ikke rutes i noget netværk segment. E-mail adressen '%%value%%' bør ikke resolves fra offentligt netværk"
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against dot-atom format"
+msgstr "'%%localPart%%' kan ikke matches mod dot-atom-format"
+
+#, php-format
+msgid "'%%localPart%%' can not be matched against quoted-string format"
+msgstr "'%%localPart%%' kan ikke matches mod quoted-string format"
+
+#, php-format
+msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
+msgstr "'%%localPart%%' er ikke en valid part for e-mail adressen '%%value%%'"
+
+#, php-format
+msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
+msgstr "'%%value%%' synes at være et DNS værtsnavn men kan ikke udtrække TLD delen"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
+"list"
+msgstr "'%%value%%' synes at være et DNS værtsnavn men kan ikke matche TLD mod kendte lister"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
+"schema for TLD '%%tld%%'"
+msgstr "'%%value%%' synes at være et DNS værtsnavn men kan ikke matche mod værtsnavn schema for TLD '%%tld%%'"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
+"position"
+msgstr "'%%value%%' ser ud til at være et DNS-værtsnavn, men indeholder en bindestreg på en ugyldig position"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a DNS hostname but the given punycode notation "
+"cannot be decoded"
+msgstr "'%%value%%' synes at være et DNS værtsnavn men den givne punycode notation kan ikke afkodes"
+
+#, php-format
+msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
+msgstr "'%%value%%' synes at være et domænenavn, men kan ikke udtrække TLD delen"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a domain name but cannot match TLD against known "
+"list"
+msgstr "'%%value%%' synes at være et domænenavn, men kan ikke matche TLD mod kendte lister"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a domain name but cannot match against domain name"
+" schema for TLD '%%tld%%'"
+msgstr "'%%value%%' synes at være et domænenavn, men kan ikke matche mod domænenavn schema for TLD '%%tld%%'"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a domain name but contains a dash in an invalid "
+"position"
+msgstr "'%%value%%' synes at være et domænenavn, men indeholder en bindestreg på en ugyldig position"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a domain name but the given punycode notation "
+"cannot be decoded"
+msgstr "'%%value%%' synes at være et domænenavn, men den givne punycode notation kan ikke afkodes"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a local network name but local network names are "
+"not allowed"
+msgstr "'%%value%%' synes at være et lokalt netværksnavn, men lokale netværksnavne er ikke tilladt"
+
+#, php-format
+msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
+msgstr "'%%value%%' synes at være et underdomæne navn, men kan ikke udtrække TLD delen"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match TLD against "
+"known list"
+msgstr "'%%value%%' synes at være et underdomæne navn, men kan ikke matche TLD mod kendte lister"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but cannot match against "
+"subdomain schema for TLD '%%tld%%'"
+msgstr "'%%value%%' synes at være et underdomæne navn, men kan ikke matche mod underdomæne schema for TLD '%%tld%%'"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
+" position"
+msgstr "'%%value%%' synes at være et underdomæne navn, men indeholder en bindestreg på en ugyldig position"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be a subdomain name but the given punycode notation "
+"cannot be decoded"
+msgstr "'%%value%%' synes at være en subdomænenavnet men den givne punycode notation kan ikke afkodes"
+
+#, php-format
+msgid ""
+"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
+msgstr "'%%value%%' synes at være en IP-adresse, men IP-adresser er ikke tilladt"
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid IP address"
+msgstr "'%%value%%' synes ikke at være en gyldig IP-adresse"
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid URI hostname"
+msgstr "'%%value%%' synes ikke at være et gyldigt URI værtsnavn"
+
+#, php-format
+msgid "'%%value%%' does not appear to be a valid local network name"
+msgstr "'%%value%%' synes ikke at være et gyldigt lokalt netværksnavn"
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a DNS hostname"
+msgstr "'%%value%%' svarer ikke til den forventede struktur for et DNS-værtsnavn"
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a domain name"
+msgstr "'%%value%%' svarer ikke til den forventede struktur for et domænenavn"
+
+#, php-format
+msgid "'%%value%%' does not match the expected structure for a subdomain name"
+msgstr "'%%value%%' svarer ikke til den forventede struktur for et underdomæne navn"
+
+#, php-format
+msgid "'%%value%%' exceeds the allowed length"
+msgstr "'%%value%%' overskrider den tilladte længde"
+
+msgid ""
+"'%%value%' is no valid email address in the basic format local-part@hostname"
+msgstr "'%%value%%' er ikke en gyldig e-mail-adresse i dens basale format lokale-del@hostname"
+
+#, php-format
+msgid "(filtered from %s total records)"
+msgstr "(filtreret fra %s samlede poster)"
+
+msgid "(usually named"
+msgstr "(normalt kaldet"
+
+#, php-format
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
+msgstr "<b>%1$s</b> har ubegrænsede rettigheder til en <b>%2$s</b> Service.<br />"
+
+#, php-format
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
+"destination reseller.<br />"
+msgstr "<b>%1$s</b> overskrider grænserne for en <b>%2$s</b><br />service for destinations forhandler.<br />"
+
+#, php-format
+msgid ""
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller!<br />This user cannot be moved!"
+msgstr "<b>%s</b> har IP-adresse, der ikke kan styres fra destinations forhandler!<br />Denne bruger kan ikke flyttes!"
+
+msgid "A PHP extension stopped the file upload."
+msgstr "En PHP extension stoppede fil upload."
+
+msgid "A certificate in your CA bundle is missing or invalid."
+msgstr "Et certifikat i dit CA bundle mangler eller er ugyldig."
+
+msgid "A database update is available"
+msgstr "En database opdatering er tilgængelig"
+
+msgid "A hosting plan with same name already exists."
+msgstr "En hosting plan med samme navn findes allerede."
+
+msgid "A new i-MSCP version is available"
+msgstr "En ny I-MSCP version er tilgængelig"
+
+msgid "Access your domain statistics through the Web interface."
+msgstr "Få adgang til dine domæne statistik via web interface."
+
+msgid "Access your files through the web interface."
+msgstr "Få adgang til dine filer via web interface."
+
+msgid "Access your mail through the web interface."
+msgstr "Få adgang til din mail via web interface."
+
+msgid "Account data"
+msgstr "Konto data"
+
+msgid "Account limits"
+msgstr "konto grænser"
+
+msgid "Account name"
+msgstr "Kontonavn"
+
+msgid "Account overview"
+msgstr "Kontooversigt"
+
+msgid "Account summary"
+msgstr "Kontooversigt"
+
+msgid "Account type"
+msgstr "Konto type"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Action has been stopped."
+msgstr "Handling er stoppet."
+
+msgid "Action has failed."
+msgstr "Handling er fejlet."
+
+msgid "Actions"
+msgstr "Handlinger"
+
+msgid "Activate"
+msgstr "Aktivere"
+
+msgid "Activate this plugin"
+msgstr "Aktiver dette plugin"
+
+msgid "Activated"
+msgstr "Aktiveret"
+
+msgid "Activated software"
+msgstr "Aktiveret software"
+
+msgid "Activation email"
+msgstr "Aktiverings e-mail"
+
+msgid "Activation in progress..."
+msgstr "Aktivering sat i gang..."
+
+msgid "Activation link expire time <small>(In minutes)</small>"
+msgstr "Aktiverings link udløbs tid <small>(I minutter)</small>"
+
+msgid "Add"
+msgstr "Tilføj"
+
+msgid "Add / Edit SSL certificate"
+msgstr "Rediger SSL certifikat"
+
+msgid "Add FTP account"
+msgstr "Tilføj FTP konto"
+
+msgid "Add FTP user"
+msgstr "Tilføj FTP bruger"
+
+msgid "Add Htaccess group"
+msgstr "Tilføj Htaccess gruppe"
+
+msgid "Add Htaccess user"
+msgstr "Tilføj Htaccess bruger"
+
+msgid "Add SQL database"
+msgstr "Tilføj SQL database"
+
+msgid "Add SQL user"
+msgstr "Tilføj SQL bruger"
+
+msgid "Add SSL certificate"
+msgstr "Tilføj SSL certifikat"
+
+msgid "Add a new entry"
+msgstr "Tilføj en ny post"
+
+msgid "Add admin"
+msgstr "Tilføj admin"
+
+msgid "Add catchall"
+msgstr "Tilføj catchall"
+
+msgid "Add custom DNS record"
+msgstr "Tilføj brugerdefineret DNS record"
+
+msgid "Add custom menu"
+msgstr "Tilføj brugerdefineret menu"
+
+msgid "Add customer"
+msgstr "Tilføj kunde"
+
+msgid "Add customer - Next step"
+msgstr "Tilføj kunde - Næste step"
+
+msgid "Add domain alias"
+msgstr "Tilføj domæne alias"
+
+msgid "Add email account"
+msgstr "Tilføj e-mail konto"
+
+msgid "Add email user"
+msgstr "Tilføj e-mail bruger"
+
+msgid "Add external mail server for {DOMAIN_UTF8}"
+msgstr "Tilføj ekstern mailserver for {DOMAIN_UTF8}"
+
+msgid "Add group"
+msgstr "Tilføj gruppe"
+
+msgid "Add hosting plan"
+msgstr "Tilføj hosting plan"
+
+msgid "Add new IP address"
+msgstr "Tilføj ny IP adresse"
+
+msgid "Add new database"
+msgstr "Tilføj ny database"
+
+msgid "Add new entry"
+msgstr "Tilføj ny post"
+
+msgid "Add new protected area"
+msgstr "Tilføj nyt beskyttet område"
+
+msgid "Add new service port"
+msgstr "Tilføj ny service port"
+
+msgid "Add permissions"
+msgstr "Tilføj tilladelse"
+
+msgid "Add permissions for reseller to software:"
+msgstr "Tilføj tilladelser for forhandler til software:"
+
+msgid "Add protected area"
+msgstr "Tilføj beskyttet område"
+
+msgid "Add reseller"
+msgstr "Tilføj forhandlere"
+
+msgid "Add subdomain"
+msgstr "Tilføj Subdomæne"
+
+msgid "Add user"
+msgstr "Tilføj bruger"
+
+msgid "Added by"
+msgstr "Tilføjet af"
+
+msgid "Addition in progress"
+msgstr "Tilføjelse sat i gang"
+
+msgid "Additional data"
+msgstr "Ekstra data"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Admin / General / Admin Log"
+msgstr "Admin / General / Admin Log"
+
+msgid "Admin / General / Overview"
+msgstr "Admin / General / Overblik"
+
+msgid "Admin / General / Services Status"
+msgstr "Admin / General / Services Status"
+
+msgid "Admin / Hosting Plans / Add Hosting Plan"
+msgstr "Admin / Hosting Planer / Tilføj hosting plan"
+
+msgid "Admin / Hosting Plans / Overview"
+msgstr "Admin / Hosting Planer / Oversigt"
+
+msgid "Admin / Hosting Plans / Overview / Edit Hosting Plan"
+msgstr "Admin / Hosting Planer / Oversigt / Rediger hosting plan"
+
+msgid "Admin / Profile / Account Summary"
+msgstr "Admin / Profil / Samlet Konto Oversigt"
+
+msgid "Admin / Profile / Language"
+msgstr "Admin / Profil / Sprog"
+
+msgid "Admin / Profile / Layout"
+msgstr "Admin / Profil / Layout"
+
+msgid "Admin / Profile / Password"
+msgstr "Admin / Profil / Kodeord"
+
+msgid "Admin / Profile / Personal Data"
+msgstr "Admin / Profil / Personlig Data"
+
+msgid "Admin / Settings"
+msgstr "Admin / Indstillinger"
+
+msgid "Admin / Settings / IP Addresses Management"
+msgstr "Admin / Indstillinger / IP Adresse Administration"
+
+msgid "Admin / Settings / Languages"
+msgstr "Admin / Indstillinger / Sprog"
+
+msgid "Admin / Settings / Lost Password Email"
+msgstr "Admin / Indstillinger / Glemt adgangskode e-mail"
+
+msgid "Admin / Settings / Plugin Management"
+msgstr "Admin / Indstillinger / Plugin administration"
+
+msgid "Admin / Settings / Server Traffic"
+msgstr "Admin / Indstillinger / Server Trafik"
+
+msgid "Admin / Settings / Service Ports"
+msgstr "Admin / Indstillinger / Service Porte"
+
+msgid "Admin / Settings / Software Management"
+msgstr "Admin / Indstillinger / Software administration"
+
+msgid "Admin / Settings / Software Options"
+msgstr "Admin / Indstillinger / Software Valgmuligheder"
+
+msgid "Admin / Settings / Welcome Email"
+msgstr "Admin / Indstillinger / Velkomst E-mail"
+
+msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
+msgstr "Admin / Indstillinger / {TR_DYNAMIC_TITLE}"
+
+msgid "Admin / Software Management / Reseller Software"
+msgstr "Admin / Software Administration / Forhandler Software"
+
+msgid "Admin / Statistics / IP Usage"
+msgstr "Admin / Statistik / IP Forbrug"
+
+msgid "Admin / Statistics / Reseller Statistics"
+msgstr "Admin / Statistik / Forhandler Statistik"
+
+msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
+msgstr "Admin / Statistik / Forhandler Statistik / Kunde Statistik"
+
+msgid ""
+"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
+"Statistics"
+msgstr "Admin / Statistik / Forhandler Statistik / Kunde Statistik / Domæne Statistik"
+
+msgid "Admin / Statistics / Server Statistics"
+msgstr "Admin / Statistik / Server Statistik"
+
+msgid "Admin / Statistics / Server Statistics / Day Statistics"
+msgstr "Admin / Statistik / Server Statistik / Server Daglistatistik"
+
+msgid "Admin / Support / Closed Tickets"
+msgstr "Admin / Support / Lukkede Tickets"
+
+msgid "Admin / Support / View Ticket"
+msgstr " Admin / Support / Vis Ticket"
+
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr "Admin / Systemværktøjer / Anti-Rootkits Log"
+
+msgid "Admin / System Tools / Database Update"
+msgstr "Admin / Systemværktøker / Database Opdatering"
+
+msgid "Admin / System Tools / Debugger"
+msgstr "Admin / Systemværktøjer / Debugger"
+
+msgid "Admin / System Tools / Maintenance Settings"
+msgstr "Admin / Systemværktøjer / Administrations Indstillinger"
+
+msgid "Admin / System Tools / System Information"
+msgstr "Admin / Systemværktøjer / System Information"
+
+msgid "Admin / System Tools / i-MSCP Updates"
+msgstr "Admin / Systemværktøjer / i-MSCP Opdateringer"
+
+msgid "Admin / User / Overview / Domain Edit"
+msgstr "Admin / Bruger / Oversigt / Domæne Redigering"
+
+msgid "Admin / Users / Add Admin"
+msgstr "Admin / Bruger / Tilføj Admin"
+
+msgid "Admin / Users / Add Reseller"
+msgstr "Admin / Brugere / Tilføj Forhandler"
+
+msgid "Admin / Users / Circular"
+msgstr "Admin / Brugere / Circular"
+
+msgid "Admin / Users / Customers Assignment"
+msgstr "Admin / Brugere / Kunde Tildeling"
+
+msgid "Admin / Users / Edit Reseller"
+msgstr "Admin / Brugere / Rediger Forhandler"
+
+msgid "Admin / Users / Overview"
+msgstr "Admin / Brugere / Oversigt"
+
+msgid "Admin / Users / Overview / Delete Customer"
+msgstr "Admin / Brugere / Oversigt / Slet Kunde"
+
+msgid "Admin / Users / Overview / Domain Details"
+msgstr "Admin / Brugere / Oversigt / Domæne Detaljer"
+
+msgid "Admin / Users / Overview / Edit Admin"
+msgstr "Admin / Brugere / Oversigt / Rediger Admin"
+
+msgid "Admin / Users / Resellers Assignment"
+msgstr "Admin / Brugere / Forhandler Tildeling"
+
+msgid "Admin / Users / Sessions"
+msgstr "Admin / Brugere / Sessioner"
+
+msgid "Admin Log"
+msgstr "Admin Log"
+
+msgid "Admin account successfully created."
+msgstr "Admin konto oprettet."
+
+msgid "Admin log"
+msgstr "Admin log"
+
+msgid "Admin not available"
+msgstr "Admin not available"
+
+msgid "Admin users"
+msgstr "Admin brugere"
+
+msgid "Admin/IP usage statistics"
+msgstr "Admin / IP anvendelsesstatistikker"
+
+msgid "Administrator"
+msgstr "Administrator"
+
+msgid "Administrator and Reseller levels"
+msgstr "Administrator og Forhandler niveauer"
+
+msgid "Administrator and customer"
+msgstr "Administrator og kunde"
+
+msgid "Administrator and customer levels"
+msgstr "Administrator og kundernes niveauer"
+
+msgid "Administrator and reseller"
+msgstr "Administrator og forhandler"
+
+msgid "Administrator level"
+msgstr "Administrator niveau"
+
+msgid "Administrator login"
+msgstr "Administrator logind"
+
+msgid "Administrators"
+msgstr "Administratorer"
+
+msgid "Administrators and customers"
+msgstr "Administratorer og kunder"
+
+msgid "Administrators and resellers"
+msgstr "Administratorer og forhandlere"
+
+msgid ""
+"After your upload the package it will be installed on your systems.<br "
+"/>Refresh your site to see the new status!"
+msgstr "Efter din pakke er uploade vil den blive installeret på dine systemer.<br />Opdater dit websted for at se den nye status!"
+
+msgid "Alias forward"
+msgstr "Alias forward"
+
+msgid "Alias mail"
+msgstr "Alias mail"
+
+msgid "Alias subdomain forward"
+msgstr "Alias underdomæne forward"
+
+msgid "Alias subdomain mail"
+msgstr "Alias underdomæne mail"
+
+msgid "Aliases"
+msgstr "Aliaser"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All closed tickets were successfully deleted."
+msgstr "Alle lukkede sager blev slettet."
+
+msgid "All fields are required."
+msgstr "Alle felter er påkrævet"
+
+msgid "All fields seem to be valid."
+msgstr "Alle felter synes at være gyldige."
+
+msgid "All in"
+msgstr "Alle ind"
+
+msgid "All levels"
+msgstr "Alle niveauer"
+
+msgid "All open tickets were successfully deleted."
+msgstr "Alle åbne sager blev slettet."
+
+msgid "All out"
+msgstr "Alle ud"
+
+msgid "All reseller"
+msgstr "Alle resellere"
+
+msgid "All traffic"
+msgstr "Alt trafik"
+
+msgid "All users"
+msgstr "Alle brugere"
+
+msgid "Allow URL fopen"
+msgstr "Tillad URL fopen"
+
+msgid ""
+"Allows to forward any request made to this domain alias to a specific URL."
+msgstr "Gør det muligt at videresende en anmodning til dette domæne alias til en bestemt webadresse."
+
+msgid ""
+"Allows to forward any request made to this domain alias to a specific URL. "
+"Be aware that when this option is in use, no Web folder is created for the "
+"domain alias."
+msgstr "Gør det muligt at videresende en anmodning til dette domæne alias til en bestemt webadresse. Vær opmærksom på, at når denne indstilling er i brug, vik ingen web mppe oprettes til dette domænealias."
+
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL."
+msgstr "Gør det muligt at videresende en anmodning til dette subdomæne til en bestemt webadresse."
+
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL. Be "
+"aware that when this option is in use, no Web folder is created for the "
+"subdomain."
+msgstr "Gør det muligt at videresende en anmodning til dette subdomæne til en bestemt webadresse. Vær opmærksom på, at når denne indstilling er i brug, er der ingen web mappe til underdomæne."
+
+msgid "Allows to share the mount point of another domain."
+msgstr "Gør det muligt at dele monterings punkt i et andet domæne."
+
+msgid "Already in use"
+msgstr "Allerede i brug"
+
+msgid "Alternative URL to reach your website"
+msgstr "Alternativ URL til at nå dit website"
+
+msgid "An entry is defined twice below."
+msgstr "En post er defineret to gange nedenfor."
+
+msgid "An error has been found in mail forward list."
+msgstr "En fejl er blevet fundet i mail forward listen."
+
+msgid "An error occurred during authentication."
+msgstr "Der opstod en fejl i forbindelse med godkendelse."
+
+msgid "An error occurred. Please contact your administrator."
+msgstr "Der opstod en fejl. Kontakt venligst din administrator."
+
+msgid "An unexpected error occured. Please contact your reseller."
+msgstr "En uventet fejl opstod. Kontakt din forhandler."
+
+msgid "An unexpected error occured. Please retry"
+msgstr "En uventet fejl opstod. Forsøg igen"
+
+#, php-format
+msgid "An unexpected error occurred: %s"
+msgstr "En uventet fejl opstod: %s"
+
+#, php-format
+msgid "An unknown error occurred during file upload: %s"
+msgstr "En ukendt fejl opstod under fil upload: %s"
+
+msgid "Anti-Rootkits Logs"
+msgstr "Anti-Rootkits Logs"
+
+msgid "Application installer"
+msgstr "Application installer"
+
+msgid "Apply"
+msgstr "Anvend"
+
+msgid "Apply changes"
+msgstr "Tilføj ændringer"
+
+msgid "Are you sure to install this package from the webdepot?"
+msgstr "Er du sikker på at installere denne pakke fra webdepot?"
+
+msgid "Are you sure to install this package?"
+msgstr "Er du sikker på at du vil installere denne pakke?"
+
+msgid "Are you sure to remove the permissions ?"
+msgstr "Er du sikker på at du vil fjerne tilladelser?"
+
+#, php-format
+msgid "Are you sure you want delete the %s SQL user?"
+msgstr "Er du sikker på, du vil slette %s SQL bruger?"
+
+msgid "Are you sure you want to activate this package?"
+msgstr "Er du sikker på, du vil aktivere denne pakke?"
+
+#, php-format
+msgid "Are you sure you want to change the status of %s domain account?"
+msgstr "Er du sikker på du vil ændre status for %s domæne-konto?"
+
+#, php-format
+msgid "Are you sure you want to change the status of %s?"
+msgstr "Er du sikker på du vil ændre status for %s?"
+
+#, php-format
+msgid ""
+"Are you sure you want to deactivate the external mail server(s) for the '%s'"
+" domain?"
+msgstr "Er du sikker på du vil deaktivere den/de eksterne mail-server(e) til '%s' domæne?"
+
+#, php-format
+msgid "Are you sure you want to delete %s service port ?"
+msgstr "Er du sikker på, at du vil slette %s service port ?"
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Er du sikker på du vil slette %s?"
+
+msgid "Are you sure you want to delete all closed tickets?"
+msgstr "Er du sikker på du vil slette alle lukkede support tikkets?"
+
+msgid "Are you sure you want to delete all selected items?"
+msgstr "Er du sikker på, at du vil slette alle markerede elementer?"
+
+msgid "Are you sure you want to delete all tickets?"
+msgstr "Er du sikker på du vil slette alle support tikkets?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s FTP user?"
+msgstr "Er du sikker på at du vil slette %s FTP-bruger?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s catch all?"
+msgstr "Er du sikker på at du vil slette %s catch all?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias order?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s domain alias?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s hosting plan?"
+msgstr "Er du sikker på at du vil slette %s hosting plan?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s menu?"
+msgstr "Er du sikker på at du vil slette %s menuen?"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' ticket?"
+msgstr "Er du sikker på du vil slette '%s' fejlrapporten?"
+
+#, php-format
+msgid "Are you sure you want to delete this IP: %s?"
+msgstr "Er du sikker på at du vil slette denne IP: %s?"
+
+msgid "Are you sure you want to delete this package?"
+msgstr "Er du sikker på du vil slette denne pakke?"
+
+msgid ""
+"Are you sure you want to import this package into the local software "
+"repository?"
+msgstr "Er du sikker på, du vil importere denne pakke i det lokale softwarearkiv?"
+
+msgid "Are you sure you want to import this package into the software depot?"
+msgstr "Er du sikker på, du vil importere denne pakke i software depot?"
+
+msgid ""
+"Are you sure you want to install this package from the Web software "
+"repository?"
+msgstr "Er du sikker på, du vil installere denne pakke fra web softwarearkivet?"
+
+msgid "Are you sure you want to restore the backup?"
+msgstr "Er du sikker på du vil gendanne denne backup?"
+
+msgid "Area name"
+msgstr "Område navn"
+
+msgid "Assign"
+msgstr "Tildel"
+
+msgid "Assign existing SQL user"
+msgstr "Tildel eksisterende SQL bruger"
+
+msgid "Assign group"
+msgstr "Tildel gruppe"
+
+msgid "At first you must create a database which have at least one SQL user."
+msgstr "Først skal du oprette en database, der har mindst én SQL-bruger."
+
+msgid "Auto email template data updated!"
+msgstr "Auto Email skabelon, data er opdateret"
+
+msgid "Auto responder"
+msgstr "Autosvar"
+
+msgid "Auto-responder message cannot be empty."
+msgstr "Auto-responder beskeden kan ikke være tom."
+
+msgid "Auto-responder successfully scheduled for activation."
+msgstr "Auto-responder planlagt til aktivering."
+
+msgid "Auto-responder successfully scheduled for deactivation."
+msgstr "Auto-responder planlagt til deaktivering."
+
+msgid "Auto-responder successfully scheduled for update."
+msgstr "Auto-responder planlagt til opdatering."
+
+msgid "Available"
+msgstr "Tilgængelig"
+
+msgid "Available software"
+msgstr "Tilgængelig software"
+
+msgid "Awaiting activation"
+msgstr "Afventer aktivering"
+
+msgid "Awaiting approval"
+msgstr "Afventer godkendelse"
+
+msgid "B"
+msgstr "B"
+
+msgid "Back"
+msgstr "Tilbage"
+
+msgid "Backup"
+msgstr "Backup"
+
+msgid "Backup and restore settings."
+msgstr "Backup og gendannelses indstillinger."
+
+msgid "Backup has been successfully scheduled for restoration."
+msgstr "Backup er succesfuldt blevet planlagt til gendannelse."
+
+msgid "Bad password."
+msgstr "Forkert password."
+
+msgid "Behind"
+msgstr "Bag"
+
+msgid "Being enabled"
+msgstr "Bliver aktiveret"
+
+msgid "Being suspended"
+msgstr "Bliver suspenderet"
+
+msgid ""
+"Blocking time between login/captcha attempts <small>(In seconds)</small>"
+msgstr "Blokerings tid mellem login/captcha forsøg <small>(i sekunder)</small>"
+
+msgid "Blocking time between logins and captcha attempts"
+msgstr "Blokerings tid mellem logins og captcha forsøg"
+
+msgid "Blocktime <small>(in minutes)</small>"
+msgstr "Blokeringstid <small>(i minutter)</small>"
+
+msgid "Body"
+msgstr "Body"
+
+msgid "Body is missing."
+msgstr "Body mangler."
+
+msgid "Bogomips"
+msgstr "BogoMIPS"
+
+msgid "Both source and destination are identical."
+msgstr "Både kilde og destination er identiske."
+
+msgid "Bruteforce detection"
+msgstr "Bruteforce detection"
+
+msgid "Bulk Actions"
+msgstr "Bulk-handlinger"
+
+msgid "By"
+msgstr "Af"
+
+msgid "CA bundle"
+msgstr "CA bundle"
+
+msgid "CGI"
+msgstr "CGI"
+
+msgid "CNAME field is empty or invalid."
+msgstr "CNAME felt er tomt eller ugyldigt."
+
+msgid "CPU Information"
+msgstr "CPU Information"
+
+msgid "Cache"
+msgstr "Cache"
+
+#, php-format
+msgid "Can edit the PHP %s directive"
+msgstr "Kan redigere PHP %s direktiv"
+
+msgid "Cancel"
+msgstr "Anullér"
+
+#, php-format
+msgid "Cannot validate %s record: %s"
+msgstr "Kan ikke validere %s rekord. Årsag: '%s'."
+
+#, php-format
+msgid "Cannot validate record: %s"
+msgstr "Kan ikke validere record: %s"
+
+msgid "Canonical name"
+msgstr "Canonical navn"
+
+msgid "Captcha fontfile not found."
+msgstr "Captcha fontfilen ikke fundet."
+
+msgid "Catch all"
+msgstr "FangAlle"
+
+msgid "Catch all successfully scheduled for addition."
+msgstr "Catch all succesfuldt planlagt til tilføjelse."
+
+msgid "Catch all successfully scheduled for deletion."
+msgstr "Catch all succesfuldt planlagt til sletning."
+
+msgid "Catchall"
+msgstr "Catchall"
+
+msgid "Certificate"
+msgstr "Certifikat"
+
+msgid "Certificate data"
+msgstr "Certifikat data"
+
+msgid "Certificate successfully scheduled for deletion."
+msgstr "Certifikat planlagt til sletning."
+
+msgid "Change"
+msgstr "Ændre"
+
+msgid "Change in progress..."
+msgstr "Ændring igangsat..."
+
+msgid "Change personal data"
+msgstr "Ændre personlig data"
+
+msgid "Check for update"
+msgstr "Check for opdatering"
+
+msgid ""
+"Check the reseller uploads!<br />It is not allowed to upload this package "
+"two times.<br />Refresh your site to see the new status!"
+msgstr "Kontroller forhandler uploads!<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
+
+msgid ""
+"Check your own uploads!<br />Ask the administrator if you don't find the "
+"package.<br />It is not allowed to upload this packages two times.<br "
+"/>Refresh your site to see the new status!"
+msgstr "Tjek dine egne uploads!<br />Spørg administratoren, hvis du ikke kan finde pakken.<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
+
+msgid ""
+"Check your package. There is an error inside!<br />Refresh your site to see "
+"the new status!"
+msgstr "Tjek din pakke. Der er en fejl i den!<br />Opdater dit websted for at se den nye status!"
+
+msgid ""
+"Check your software depot uploads!<br />It is not allowed to upload this "
+"package two times.<br />Refresh your site to see the new status!"
+msgstr "Tjek dit software depot uploads!<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
+
+msgid "Choose"
+msgstr "Vælg"
+
+msgid "Choose dir"
+msgstr "Vælg bibliotek"
+
+#, php-format
+msgid "Choose file (Max: %1$d MiB)"
+msgstr "Vælg fil (Maks: %1$d MB)"
+
+msgid "Choose hosting plan"
+msgstr "Vælg hosting plan"
+
+msgid "Choose layout color"
+msgstr "Vælg layout farve"
+
+msgid "Choose your language"
+msgstr "Vælg dit sprog"
+
+msgid "Circular"
+msgstr "Rundsend"
+
+msgid "Circular successfully sent."
+msgstr "Circular succesfuldt sendt."
+
+msgid "City"
+msgstr "By"
+
+msgid "Class"
+msgstr "Class"
+
+msgid "Clear log"
+msgstr "Slet log"
+
+msgid "Click here for more details"
+msgstr "Klik her for flere detaljer"
+
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
+msgstr "Klik på Gendan knappen og systemet vil gendanne den seneste daglige backup"
+
+msgid "Client / Choose Directory"
+msgstr "Klient / Vælg bibliotek"
+
+msgid "Client / Databases / Add SQL Database"
+msgstr "Klient / Databaser / Tilføj SQL Database"
+
+msgid "Client / Databases / Overview"
+msgstr "Klient / Databaser / Oversigt"
+
+msgid "Client / Databases / Overview / Add SQL User"
+msgstr "Klient / Databaser / Oversigt / Tilføj SQL Bruger"
+
+msgid "Client / Databases / Overview / Update SQL User Password"
+msgstr "Klient / Databaser / Oversigt / Opdater SQL Bruger Kodeord"
+
+msgid "Client / Domain / Edit Custom DNS record"
+msgstr "Klient / Domæne / Rediger brugerdefineret DNS record"
+
+msgid "Client / Domains"
+msgstr "Klient / Domæner"
+
+msgid "Client / Domains / Add Custom DNS record"
+msgstr "Klient / Domæner / Tilføj brugerdefineret DNS record"
+
+msgid "Client / Domains / Add Domain Alias"
+msgstr "Klient / Domæner / Tilføj Domæne Alias"
+
+msgid "Client / Domains / Add Subdomain"
+msgstr "Klient / Domæner / Tilføj subdomæne"
+
+msgid "Client / Domains / Edit Domain Alias"
+msgstr "Klient / Domæner / Rediger Domæne Alias"
+
+msgid "Client / Domains / Edit Subdomain"
+msgstr "Klient / Domæner / Rediger subdomæne"
+
+msgid "Client / Domains / PHP Settings"
+msgstr "Klient / Domæner / PHP Indstillinger"
+
+msgid "Client / Domains / SSL Certificate"
+msgstr "Klient / Domæner / SSL Certifikat"
+
+msgid "Client / Email / Add Email Account"
+msgstr "Klient / E-mail / Tilføj E-mail Konto"
+
+msgid "Client / Email / Catchall"
+msgstr "Klient / E-mail / Catchall"
+
+msgid "Client / Email / Catchall / Add Catchall"
+msgstr "Klient / E-mail / Catchall / Tilføj Catchall"
+
+msgid "Client / Email / Edit Email Account"
+msgstr "Klient / E-mail / Rediger E-mail Konto"
+
+msgid "Client / Email / External Mail Server"
+msgstr " Klient / E-mail / Ekstern Mail server"
+
+msgid ""
+"Client / Email / External Mail Server / Add External Mail Server for "
+"{DOMAIN_UTF8}"
+msgstr " Klient / E-mail / Ekstern Mail Server / Tilføj Ekstern Mail Server for {DOMAIN_UTF8}"
+
+msgid ""
+"Client / Email / External Mail Server / Edit External Mail Server for "
+"{DOMAIN_UTF8}"
+msgstr " Klient / E-mail / Ekstern Mail Server / Rediger Ekstern Mail Server for {DOMAIN_UTF8}"
+
+msgid "Client / Email / Overview"
+msgstr "Klient / E-mail / Oversigt"
+
+msgid "Client / Email / Overview / Edit Auto Responder"
+msgstr "Klient / E-mail / Oversigt / Rediger Autosvar"
+
+msgid "Client / Email / Overview / Enable Auto Responder"
+msgstr "Klient / E-mail / Oversigt / Aktiver Autosvar"
+
+msgid "Client / FTP / Add FTP Account"
+msgstr "Klient / FTP / Tilføj FTP Konto"
+
+msgid "Client / FTP / Overview"
+msgstr "Klient / FTP / Oversigt"
+
+msgid "Client / FTP / Overview / Edit FTP Account"
+msgstr "Klient / FTP / Oversigt / Rediger FTP Konto"
+
+msgid "Client / General / Overview"
+msgstr "Klient / General / Oversigt"
+
+msgid "Client / Profile / Account Summary"
+msgstr "Klient / Profil / Samlet Konto Oversigt"
+
+msgid "Client / Profile / Language"
+msgstr "Klient / Profil / Sprog"
+
+msgid "Client / Profile / Layout"
+msgstr "Klient / Profil / Layout"
+
+msgid "Client / Profile / Password"
+msgstr "Klient / Profil / Kodeord"
+
+msgid "Client / Profile / Personal Data"
+msgstr "Klient / Profil / Personlig Data"
+
+msgid "Client / Statistics"
+msgstr "Klient / Statistik"
+
+msgid "Client / Support / Closed Tickets"
+msgstr "Klient / Support / Lukkede Tickets"
+
+msgid "Client / Support / New Ticket"
+msgstr "Klient / Support / Ny Ticket"
+
+msgid "Client / Support / Open Tickets"
+msgstr "Klient / Support / Åbne Tickets"
+
+msgid "Client / Support / View Ticket"
+msgstr "Klient / Support / Vis Ticket"
+
+msgid "Client / Webtools / Custom Error Pages"
+msgstr "Klient /  Webværktøjer / brugerdefinerede fejlsider"
+
+msgid "Client / Webtools / Daily Backup"
+msgstr "Klient /  Webværktøjer / Daglig Backup"
+
+msgid "Client / Webtools / Overview"
+msgstr "Klient /  Webværktøjer / Oversigt"
+
+msgid "Client / Webtools / Protected Areas"
+msgstr "Klient /  Webværktøjer / Beskyttede områder"
+
+msgid "Client / Webtools / Protected Areas / Manage Users and Groups"
+msgstr "Klient /  Webværktøjer / Beskyttede Områder / Administrer Brugere og Grupper"
+
+msgid ""
+"Client / Webtools / Protected Areas / Manage Users and Groups / Add Group"
+msgstr "Klient /  Webværktøjer / Beskyttede Områder / Administrer Bbrugere og Grupper / Tilføj Gruppe"
+
+msgid ""
+"Client / Webtools / Protected Areas / Manage Users and Groups / Add User"
+msgstr "Klient /  Webværktøjer / Beskyttede Områder / Administrer Brugere og Grupper / Tilføj Bruger"
+
+msgid ""
+"Client / Webtools / Protected Areas / Manage Users and Groups / Edit User"
+msgstr "Klient /  Webværktøjer / Beskyttede Områder / Administrer Brugere og Grupper / Rediger Bruger"
+
+msgid "Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
+msgstr "Klient / Webværktøjer / Beskyttede Områder / {TR_DYNAMIC_TITLE}"
+
+msgid "Client / Webtools / Software"
+msgstr "Klient /  Webværktøjer / Software"
+
+msgid "Client / Webtools / Software / Install"
+msgstr "Klient /  Webværktøjer / Software / Installer"
+
+msgid "Client / Webtools / Software / View"
+msgstr "Klient /  Webværktøjer / Software / Vis"
+
+msgid "Clock speed (MHz)"
+msgstr "Clock speed (MHz)"
+
+msgid "Close"
+msgstr "Luk"
+
+msgid "Close the ticket"
+msgstr "Luk fejlrapporten"
+
+msgid "Close ticket"
+msgstr "Luk ticket"
+
+msgid "Closed tickets"
+msgstr "Lukkede Support sager"
+
+msgid "Common name"
+msgstr "Almindeligt navn"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "Compress HTML output"
+msgstr "Komprimere HTML-output"
+
+msgid "Confirmation for domain order {DOMAIN}"
+msgstr "Bekræftelse for domæne ordre {DOMAIN}"
+
+msgid "Confirmation for plugin protection"
+msgstr "Bekræftelse for plugin beskyttelse"
+
+#, php-format
+msgid "Conflict with an existent %s record."
+msgstr "Konflikt med en eksisterende %s record."
+
+msgid "Core data"
+msgstr "Hoved Data"
+
+msgid "Cores"
+msgstr "Cores"
+
+msgid "Could not upload file."
+msgstr "Kunne ikke uploade filen."
+
+msgid "Could not upload file. File not found."
+msgstr "Kunne ikke uploade filen. Fil ikke fundet."
+
+#, php-format
+msgid ""
+"Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
+msgstr "Kunne ikke uploade filen. Max. upload filstørrelse (%1$d MB) er nået."
+
+msgid "Count default email addresses"
+msgstr "Tæl standard e-mail adresser"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "Create"
+msgstr "Opret"
+
+msgid "Create catch all"
+msgstr "Opret FangAlle"
+
+msgid "Create default email addresses"
+msgstr "Opret standard e-mail adresser"
+
+msgid "Create directory, if not existing!"
+msgstr "Opret bibliotek, hvis det ikke findes!"
+
+msgid "Created by"
+msgstr "Oprettet af"
+
+msgid "Creation date"
+msgstr "Oprettelsesdato"
+
+msgid "Current password"
+msgstr "Nuværende adgangskode"
+
+msgid "Current password is invalid."
+msgstr "Nuværende adgangskode er ugyldig."
+
+msgid "Custom DNS record"
+msgstr "Brugerdefineret DNS record"
+
+msgid "Custom DNS record scheduled for deletion."
+msgstr "Brugerdefineret DNS record planlagt til sletning."
+
+msgid "Custom DNS record successfully scheduled for addition."
+msgstr "Brugerdefineret DNS record succesfuldt planlagt til tilføjelse."
+
+msgid "Custom DNS record successfully scheduled for update."
+msgstr "Brugerdefineret DNS record succesfuldt planlagt til opdatering."
+
+msgid "Custom DNS records"
+msgstr "Brugerdefineret DNS records"
+
+msgid "Custom error page updated."
+msgstr "Brugerdefineret fejlside opdateret."
+
+msgid "Custom error pages"
+msgstr "Egne Fejl-sider"
+
+msgid "Custom menu name and link"
+msgstr "Brugerdefineret menu navn og link"
+
+msgid "Custom menu properties"
+msgstr "Custom menu egenskaber"
+
+msgid "Custom menu successfully added."
+msgstr "Brugerdefineret menu tilføjet."
+
+msgid "Custom menu successfully deleted."
+msgstr "Brugerdefineret menu slettet."
+
+msgid "Custom menu successfully updated."
+msgstr "Brugerdefinerede menu er blevet opdateret."
+
+msgid "Custom menus"
+msgstr "Kunde menuer"
+
+msgid "Customer"
+msgstr "Kunde"
+
+msgid "Customer ID"
+msgstr "Kunde nummer (ID)"
+
+msgid "Customer ID cannot have more than 200 characters"
+msgstr "Kunde ID kan ikke have mere end 200 karakterer"
+
+msgid "Customer account"
+msgstr "Kundekonto"
+
+msgid "Customer account successfully scheduled for activation."
+msgstr "Kundekonto succesfuldt planlagt til aktivering."
+
+msgid "Customer account successfully scheduled for creation."
+msgstr "Kundekonto succesfuldt planlagt til oprettelse."
+
+msgid "Customer account successfully scheduled for deactivation."
+msgstr "Kundekonto succesfuldt planlagt til deaktivering."
+
+msgid "Customer account successfully scheduled for deletion."
+msgstr "Kundekonto succesfuldt planlagt til sletning."
+
+msgid "Customer account successfully updated."
+msgstr "Kundekonto blevet opdateret."
+
+msgid "Customer account summary"
+msgstr "Kundekonto oversigt"
+
+msgid "Customer consumption"
+msgstr "Kunde forbrug"
+
+msgid "Customer level"
+msgstr "kundeniveau"
+
+msgid "Customer scheduled for addition."
+msgstr "Kunde planlagt til tilføjelse."
+
+msgid "Customer statistics"
+msgstr "Kunde statistik"
+
+msgid "Customer successfully scheduled for deletion."
+msgstr "Kunde succesfuldt planlagt til sletning."
+
+msgid "Customer's layout color successfully updated."
+msgstr "Kundens layout farve blevet opdateret."
+
+msgid "Customer(s) successfully moved."
+msgstr "Kunde(r) flyttet."
+
+msgid "Customers"
+msgstr "Kunder"
+
+msgid "Customers assignment"
+msgstr "Tildeling til kunder"
+
+msgid "Customize error pages for your domain."
+msgstr "Tilpas fejlsider for dit domæne."
+
+msgid "DNS record already exist."
+msgstr "DNS record eksisterer allerede."
+
+msgid "DNS resource records"
+msgstr "DNS resource records"
+
+msgid "DNS server unavailable. Please contact your reseller."
+msgstr "DNS server ikke tilgængelig. Vær venlig at kontakte din forhandler."
+
+msgid "DOWN"
+msgstr "NEDE"
+
+msgid "Daemon request failed."
+msgstr "Daemon anmodning mislykkedes."
+
+msgid "Daemon request successful."
+msgstr "Daemon anmodning succesfuld."
+
+msgid "Daily backup"
+msgstr "Daglig backup"
+
+msgid "Data were been altered. Please try again."
+msgstr "Data blev ændret. Prøv igen."
+
+msgid "Database"
+msgstr "Database"
+
+msgid "Database Name and Users"
+msgstr "Database Navn og Brugere"
+
+msgid "Database Update Revision"
+msgstr "Revision af Database Opdatering"
+
+msgid "Database Update details"
+msgstr "Database Opdaterings Detaljer"
+
+msgid "Database name"
+msgstr "Database navn"
+
+msgid "Database name is too long."
+msgstr "Database navn er for langt."
+
+msgid "Database name is unavailable."
+msgstr "Database navn er ikke tilgængelig."
+
+msgid "Database prefix"
+msgstr "Database prefix"
+
+msgid "Database prefix/suffix"
+msgstr "Database præfiks/suffiks"
+
+msgid "Database required"
+msgstr "Database kræves"
+
+msgid "Database update"
+msgstr "Database opdatering"
+
+msgid "Database usage"
+msgstr "Database forbrug"
+
+msgid "Database users"
+msgstr "Databasebrugere"
+
+msgid "Databases"
+msgstr "Databaser"
+
+msgid "Date"
+msgstr "Dato"
+
+msgid "Day"
+msgstr "Dag"
+
+msgid "Day statistics"
+msgstr "Daglig statistik"
+
+msgid "Days"
+msgstr "Dage"
+
+msgid "Deactivate"
+msgstr "Deaktivér"
+
+msgid "Deactivate selected items"
+msgstr "Deaktivér valgte elementer"
+
+msgid "Deactivate this plugin"
+msgstr "Deaktivér dette plugin"
+
+msgid "Deactivated"
+msgstr "Deaktiveret"
+
+msgid "Deactivation in progress..."
+msgstr "Deaktivering i gang..."
+
+#, php-format
+msgid ""
+"Dear %s,\n"
+"\n"
+"You have a new ticket:\n"
+msgstr "Kære %s,\n\nDu har en ny support ticket:\n"
+
+#, php-format
+msgid ""
+"Dear %s,\n"
+"\n"
+"You have an answer for this ticket:\n"
+msgstr "Kære %s,\n\nDu har et svar på denne support ticket:\n"
+
+msgid ""
+"Dear {ADMIN},\n"
+"\t{RESELLER} has uploaded a new software package.\n"
+"\n"
+"\tDetails:\n"
+"\tReseller ID: {RESELLER_ID}\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr "Kære {ADMIN},\n\t{RESELLER} har uploadet en ny softwarepakke.\n\n\tDetaljer:\n\tForhandler ID: {RESELLER_ID}\n\tPakkenavn: {SOFTWARE}\n\tPakke ID: {SOFTWARE_ID}\n\n\tVenligst log ind i dit I-MSCP kontrolpanel for flere detaljer."
+
+msgid ""
+"Dear {RESELLER},\n"
+"\t\tYour uploaded software was deleted by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tMessage from {ADMIN}:\n"
+"\t"
+msgstr "Kære {RESELLER},\n\t\tDit uploadede software blev slettet af {ADMIN}.\n\n\tDetaljer\n\tPakkenavn: {SOFTWARE}\n\tPakke ID: {SOFTWARE_ID}\n\n\tMeddelelse fra {ADMIN}:\n\t"
+
+msgid ""
+"Dear {RESELLER},\n"
+"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr "Kære {RESELLER},\n\tDin uploadede softwarepakke blev succesfuld aktiveret af {ADMIN}.\n\n\tDetaljer:\n\tPakkenavn: {SOFTWARE}\n\tPakke ID: {SOFTWARE_ID}\n\n\tVenligst log ind i dit I-MSCP kontrolpanel for flere detaljer."
+
+msgid "Debugger"
+msgstr "Debugger"
+
+msgid "Default language"
+msgstr "Standard sprog"
+
+msgid "Default language successfully updated."
+msgstr "Standard sprog blevet opdateret."
+
+msgid ""
+"Defines whether or not customers can add/change SSL certificates for their "
+"domains."
+msgstr "Definerer hvorvidt kunderne kan tilføje/ændre SSL certifikater for deres domæner."
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Delete CatchAll"
+msgstr "Slet FangAlle"
+
+msgid "Delete all tickets"
+msgstr "Slet alle fejlrapports"
+
+msgid "Delete customer"
+msgstr "Slet kunde"
+
+msgid "Delete customer - {DOMAIN_NAME}"
+msgstr "Slet kunde - {DOMAIN_NAME}"
+
+msgid "Delete from log:"
+msgstr "Slet fra log:"
+
+msgid "Delete order"
+msgstr "Slet Ordre"
+
+msgid "Delete reseller software"
+msgstr "Slet forhandler software"
+
+msgid "Delete selected items"
+msgstr "Slet markerede elementer"
+
+msgid "Delete this plugin"
+msgstr "Slet dette plugin"
+
+msgid "Delete ticket"
+msgstr "Slet ticket"
+
+msgid "Deletion in progress"
+msgstr "Sletning i gang"
+
+msgid "Depot import"
+msgstr "Depot import"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Description cannot be empty."
+msgstr "Beskrivelse kan ikke være tom."
+
+msgid "Details"
+msgstr "Detaljer"
+
+msgid "Directive values"
+msgstr "Direktiv værdier"
+
+msgid "Directories"
+msgstr "Mapper"
+
+msgid "Directory tree"
+msgstr "Mappe træ"
+
+msgid "Disable"
+msgstr "Deaktiver"
+
+msgid "Disabled"
+msgstr "Deaktiveret"
+
+msgid "Disabled functions"
+msgstr "Deaktiver funktioner"
+
+msgid "Disconnect"
+msgstr "Afbryd"
+
+msgid "Disk"
+msgstr "Disk"
+
+msgid "Disk space"
+msgstr "Diskplads"
+
+msgid "Disk space limit [MiB]"
+msgstr "Diskplads grænse [MiB]"
+
+msgid "Disk usage"
+msgstr "Diskforbrug"
+
+msgid "Disk usage detail"
+msgstr "Diskforbrug detaljer"
+
+msgid "Display errors"
+msgstr "Vis fejl"
+
+msgid "Do not show any error"
+msgstr "Vis ikke nogen fejl"
+
+#, php-format
+msgid ""
+"Do you really want to delete the entire %s customer account? This operation "
+"cannot be undone."
+msgstr "Ønsker du virkelig at slette hele %s kundekontoen? Denne handling kan ikke fortrydes."
+
+msgid "Domain"
+msgstr "Domæne"
+
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr "Domæne %s er ikke tilgængelig."
+
+msgid "Domain IP"
+msgstr "Domæne IP Adresse"
+
+msgid "Domain Limit"
+msgstr "Domæne Grænse"
+
+msgid "Domain Name"
+msgstr "Domæne Navn"
+
+msgid "Domain account"
+msgstr "Domæne konto"
+
+msgid "Domain account expired."
+msgstr "Domæne-konto er udløbet."
+
+msgid "Domain accounts"
+msgstr "Domain konti"
+
+msgid "Domain alias"
+msgstr "Domænealias"
+
+#, php-format
+msgid "Domain alias %s cannot be forwarded on itself."
+msgstr "Domæne alias %s kan ikke viderestilles til sig selv."
+
+msgid "Domain alias errors"
+msgstr "Domæne alias fejl"
+
+msgid "Domain alias limit"
+msgstr "Domæne alias grænse"
+
+msgid "Domain alias name"
+msgstr "Domænealias navn"
+
+msgid "Domain alias successfully ordered."
+msgstr "Domæne alias ordre oprettet med succes."
+
+msgid "Domain alias successfully scheduled for addition."
+msgstr "Domæne alias planlagt til tilføjelse."
+
+msgid "Domain alias successfully scheduled for deletion."
+msgstr "Domæne alias planlagt for sletning."
+
+msgid "Domain alias successfully scheduled for update."
+msgstr "Domæne alias planlagt for opdatering."
+
+msgid ""
+"Domain alias you are trying to remove has Ftp accounts. Remove them first."
+msgstr "Domæne alias, du prøver at fjerne har FTP-konti. Slet dem først."
+
+msgid ""
+"Domain alias you are trying to remove has custom DNS records. Remove them "
+"first."
+msgstr "Domæne alias, du prøver at fjerne har brugerdefinerede DNS records. Slet dem først."
+
+msgid ""
+"Domain alias you are trying to remove has email accounts. Remove them first."
+msgstr "Domæne alias, du prøver at fjerne har email konti. Slet dem først."
+
+msgid ""
+"Domain alias you are trying to remove has subdomains. Remove them first."
+msgstr "Domæne aliaset du prøver at fjerne har subdomæner. Slet dem først."
+
+msgid "Domain aliases"
+msgstr "Domæne aliaser"
+
+msgid "Domain and SQL databases"
+msgstr "Domæne og SQL databaser"
+
+msgid "Domain data were been altered. Please try again."
+msgstr "Domæne data blev ændret. Prøv igen."
+
+msgid "Domain details"
+msgstr "Domæne detaljer"
+
+msgid "Domain errors"
+msgstr "Domæne fejl"
+
+msgid "Domain expiration date"
+msgstr "Domæne udløbsdato"
+
+msgid "Domain expiration date must be filled."
+msgstr "Domain udløbsdato skal udfyldes."
+
+msgid "Domain limit"
+msgstr "Domæne grænse"
+
+msgid "Domain mail"
+msgstr "Domæne mail"
+
+msgid "Domain name"
+msgstr "Domæne navn"
+
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
+msgstr "Domænenavn (ASCII form) kan ikke være længere end 255 karakterer."
+
+msgid "Domain name cannot be empty."
+msgstr "Domænenavn kan ikke være tomt."
+
+msgid "Domain name cannot start nor end with dot."
+msgstr "Domænenavnet kan ikke starte eller slutte med punktum."
+
+#, php-format
+msgid "Domain name contains an invalid character: %s"
+msgstr "Domænenavnet indeholder et ugyldigt tegn: %s"
+
+#, php-format
+msgid "Domain name label '%s' contain an invalid character: %s"
+msgstr "Domænenavn label '%s' indeholder et ugyldigt tegn: %s"
+
+msgid "Domain name labels cannot be greater than 63 characters."
+msgstr "Domænenavn labels kan ikke være længere end 63 karakterer."
+
+msgid "Domain name labels cannot start nor end with hyphen."
+msgstr "Domænenavn labels kan ikke starte eller slutte med bindestreg."
+
+msgid "Domain new expiration date"
+msgstr "Domæne ny udløbsdato"
+
+msgid "Domain not found."
+msgstr "Domæne ikke fundet."
+
+msgid "Domain overview"
+msgstr "Domæne oversigt"
+
+msgid "Domain scheduled for update."
+msgstr "Domæne planlagt til opdatering."
+
+msgid "Domain statistics"
+msgstr "Domæne statistik"
+
+msgid "Domain statistics - {DOMAIN_NAME}"
+msgstr "Domæne statistik - {DOMAIN_NAME}"
+
+msgid "Domain status is not ok."
+msgstr "Domæne status er ikke ok."
+
+msgid "Domain successfully updated."
+msgstr "Domæne blevet opdateret."
+
+msgid "Domain type"
+msgstr "Domæne type"
+
+msgid ""
+"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
+" subdomains."
+msgstr "Domæne: Opsætning af en MX-record til relay mail på hele domænet, herunder underdomæner."
+
+msgid "Domains"
+msgstr "Domæner"
+
+msgid "Domains per page"
+msgstr "Domæner pr side"
+
+msgid "Done"
+msgstr "Færdig"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Download TAR"
+msgstr "Download TAR"
+
+msgid "Download ZIP"
+msgstr "Download ZIP"
+
+msgid "Download links"
+msgstr "Download links"
+
+msgid "Download the archives stored in this directory"
+msgstr "Download arkivfilerne gemt i denne mappe"
+
+msgid "EB"
+msgstr "EB"
+
+msgid "Edit"
+msgstr "Rediger"
+
+msgid "Edit FTP account"
+msgstr "Rediger FTP konto"
+
+msgid "Edit SSL certificate"
+msgstr "Rediger SSL certifikat"
+
+msgid "Edit admin"
+msgstr "Rediger Admin"
+
+msgid "Edit auto responder"
+msgstr "Rediger auto responder"
+
+msgid "Edit custom DNS record"
+msgstr "Rediger brugerdefineret DNS record"
+
+msgid "Edit custom error page"
+msgstr "Rediger brugerdefineret fejlside"
+
+msgid "Edit custom menu"
+msgstr "Rediger brugerdefineret menu"
+
+msgid "Edit customer"
+msgstr "Rediger kunde"
+
+msgid "Edit domain"
+msgstr "Rediger domæne"
+
+msgid "Edit domain alias"
+msgstr "Rediger domænealias"
+
+msgid "Edit error page"
+msgstr "Rediger fejlside"
+
+msgid "Edit external mail server for {DOMAIN_UTF8}"
+msgstr "Rediger ekatern mail server for {DOMAIN_UTF8}"
+
+msgid "Edit hosting plan"
+msgstr "Rediger hosting plan"
+
+msgid "Edit htaccess user"
+msgstr "Rediger htaccess bruger"
+
+msgid "Edit mail account"
+msgstr "Rediger mail-konto"
+
+msgid "Edit mail quota"
+msgstr "Rediger mail kvote"
+
+msgid "Edit protected area"
+msgstr "Rediger beskyttet område"
+
+msgid "Edit reseller"
+msgstr "Rediger forhandler"
+
+msgid "Edit subdomain"
+msgstr "Ret supdomæne"
+
+msgid "Edit user"
+msgstr "Rediger bruger"
+
+msgid "EiB"
+msgstr "EiB"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Email account already exists."
+msgstr "E-mail konto eksisterer allerede."
+
+msgid "Email account data"
+msgstr "E-mail konto data"
+
+msgid "Email account errors"
+msgstr "E-mail konto fejl"
+
+msgid "Email account limit"
+msgstr "E-mail konti grænse"
+
+msgid "Email account limit is reached."
+msgstr "E-mail konto grænsen er nået."
+
+msgid "Email account list"
+msgstr "E-mail konti liste"
+
+msgid "Email account successfully scheduled for addition."
+msgstr "Mail-konto succesfuldt planlagt til tilføjelse."
+
+msgid "Email account successfully scheduled for update."
+msgstr "E-mail konto planlagt til opdatering."
+
+msgid "Email accounts"
+msgstr "E-mail konti"
+
+msgid "Email accounts are hard suspended"
+msgstr "E-mail konti er admin suspenderet"
+
+msgid "Email address"
+msgstr "E-mail-adresse"
+
+msgid "Email forward"
+msgstr "E-mail forward"
+
+msgid "Email quota"
+msgstr "E-mail kvote"
+
+msgid "Email quota [MiB]"
+msgstr "Email kvote [MiB]"
+
+#, php-format
+msgid "Email quota cannot be bigger than %s"
+msgstr "Email kvote kan ikke være større end %s"
+
+msgid "Email quota cannot be bigger than disk space limit."
+msgstr "Email kvote kan ikke være større end diskplads grænse."
+
+#, php-format
+msgid ""
+"Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
+"quota."
+msgstr "Email kvote kan ikke være lavere end %d. Hver postkasse skal have mindst 1 MiB kvote."
+
+#, php-format
+msgid "Email quota cannot be unlimited. Max value is %d MiB."
+msgstr "E-mail kvote kan ikke være ubegrænset. Max-værdien er %d MiB."
+
+msgid "Email quota must be a number."
+msgstr "E-mail kvote skal være et tal."
+
+msgid "Email settings"
+msgstr "E-mail indstillinger"
+
+msgid "Email setup"
+msgstr "Email opstilling"
+
+msgid "Email updated."
+msgstr "E-mail opdateret."
+
+msgid "Emails"
+msgstr "Emails"
+
+msgid "Empty data or wrong field."
+msgstr "Tomme data eller forkert felt."
+
+msgid "Enable"
+msgstr "Aktiver"
+
+msgid "Enable SSL"
+msgstr "Aktivere SSL"
+
+msgid "Enable auto responder"
+msgstr "Aktiver auto responder"
+
+msgid "Enabled"
+msgstr "Aktiveret"
+
+msgid "Enabled for SQL databases"
+msgstr "Aktiveret for SQL-databaser"
+
+msgid "Enabled for domain data"
+msgstr "Aktiveret for domæne data"
+
+msgid "Enabled for domain data and databases"
+msgstr "Aktiveret for domæne data og databaser"
+
+msgid ""
+"Entries associated to your external mail servers were not found. A "
+"Resynchronization has been scheduled."
+msgstr "Poster forbundet til din eksterne mail-servere blev ikke fundet. En resynkronisering er blevet planlagt."
+
+msgid "Error"
+msgstr "Fejl"
+
+msgid "Error details"
+msgstr "Fejl detaljer"
+
+msgid "Error in php.ini values."
+msgstr "Fejl i php.ini værdier."
+
+msgid "Error pages"
+msgstr "Fejlsider"
+
+msgid "Error reporting"
+msgstr "Rapportering af fejl"
+
+msgid "Error while trying to obtain list of network cards."
+msgstr "Fejl under forsøg på at hente listen over netværkskort"
+
+msgid "Error: Remote File not found!"
+msgstr "Fejl: Fjernfil ikke fundet!"
+
+msgid "Errors"
+msgstr "Fejl."
+
+msgid "Excl. default mails"
+msgstr "Ekskl. standard mails"
+
+msgid "Execute requests"
+msgstr "Kør forespørgsel"
+
+msgid "Expire date"
+msgstr "Udløbsdato"
+
+msgid "Ext. mail server"
+msgstr "Ekst. mail server"
+
+msgid "External Mail Host"
+msgstr "Ekstern Mail Host"
+
+msgid "External mail server"
+msgstr "Ekstern mail server"
+
+msgid "External mail server successfully scheduled for addition."
+msgstr "Eksterne mailserver succesfuldt planlagt til tilføjelse."
+
+msgid "External mail server successfully scheduled for deactivation."
+msgstr "Eksterne mailserver succesfuldt planlagt til deaktivering."
+
+msgid "External mail server successfully scheduled for update."
+msgstr "Ekstern mailserver succesfuldt planlagt til opdatering."
+
+msgid "External mail servers"
+msgstr "Eksterne mail servers"
+
+msgid "FTP Users"
+msgstr "FTP Bruger"
+
+msgid "FTP account"
+msgstr "FTP konto"
+
+msgid "FTP account limit"
+msgstr "FTP konti grænse"
+
+msgid "FTP account limit reached."
+msgstr "FTP konti grænsen er nået."
+
+msgid "FTP account successfully added."
+msgstr "FTP konto succesfuldt tilføjet."
+
+msgid "FTP account successfully deleted."
+msgstr "FTP konto succesfuldt slettet."
+
+msgid "FTP account successfully updated."
+msgstr "FTP konto er blevet opdateret."
+
+msgid "FTP accounts"
+msgstr "FTP konti"
+
+msgid "FTP traffic"
+msgstr "FTP trafik"
+
+msgid "FTPs total"
+msgstr "FTP'er total"
+
+msgid "Failed to write file to disk."
+msgstr "Fejl ved skrivning af fil til disken."
+
+msgid "Failure in the package. Deleting!"
+msgstr "Fejl i pakken. Sletter!"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Feature"
+msgstr "Mulighed"
+
+msgid "Features"
+msgstr "Features"
+
+msgid "Female"
+msgstr "Kvinde"
+
+#, php-format
+msgid "File %s doesn't exist or cannot be reached!"
+msgstr "Fil %s eksisterer ikke eller kan ikke nås!"
+
+#, php-format
+msgid "File %s has not been found in plugin directory."
+msgstr "Fil %s er ikke fundet i plugin mappe."
+
+#, php-format
+msgid "File %s is missing in plugin directory."
+msgstr "Fil %s mangler i plugin mappe."
+
+#, php-format
+msgid "File does not exist. %1$s.tar.gz"
+msgstr "Filen findes ikke. %1$s.tar.gz"
+
+msgid "File exceeds the size limit."
+msgstr "Fil overstiger størrelse grænsen."
+
+msgid "File has been successfully uploaded."
+msgstr "Fil er blevet uploadet."
+
+msgid "File is not readable."
+msgstr "Fil kan ikke læses."
+
+msgid "File needs to be a 'tar.gz' archive."
+msgstr "Fil skal være et \"tar.gz 'arkiv."
+
+msgid "File successfully uploaded."
+msgstr "Fil er uploadet."
+
+msgid "File usage"
+msgstr "Filanvendelse"
+
+msgid "FileManager"
+msgstr "Fil Håndtering"
+
+msgid "Filemanager"
+msgstr "Fil Håndtering"
+
+msgid "Filesystem system Info"
+msgstr "Filsystem info"
+
+msgid "Fill out a message text."
+msgstr "Udfyld en besked tekst."
+
+msgid "First name"
+msgstr "Fornavn"
+
+msgid "First name cannot have more than 200 characters."
+msgstr "Fornavn kan ikke have mere end 200 karakterer"
+
+msgid "Forbidden"
+msgstr "Forbudt"
+
+msgid "Force retry"
+msgstr "Tving forsøge igen"
+
+msgid "Forward"
+msgstr "Videresend"
+
+msgid "Forward URL"
+msgstr "Videresendelses URL"
+
+#, php-format
+msgid "Forward URL %s is not valid."
+msgstr "Forward URL %s er ikke gyldig"
+
+msgid "Forward list is empty."
+msgstr "Videresende liste er tom."
+
+msgid "Forward mail"
+msgstr "Videresend mail"
+
+msgid "Forward to"
+msgstr "Videresend til"
+
+msgid "Forward to URL"
+msgstr "Videresend til URL"
+
+msgid "Free"
+msgstr "Fri"
+
+msgid "From"
+msgstr "Fra"
+
+msgid "From reseller"
+msgstr "Fra forhandler"
+
+msgid "Ftp"
+msgstr "Ftp"
+
+msgid "Ftp account"
+msgstr "Ftp konto"
+
+msgid "Ftp account data"
+msgstr "Ftp konto data"
+
+msgid "Ftp account with same username already exists."
+msgstr "Ftp-konto med samme navn findes allerede."
+
+msgid "Ftp accounts"
+msgstr "Ftp konti"
+
+msgid "Full"
+msgstr "Fuld"
+
+msgid "GB"
+msgstr "GB"
+
+msgid "Gender"
+msgstr "Køn"
+
+msgid "General"
+msgstr "General"
+
+msgid "General information"
+msgstr "Generel information"
+
+msgid "General settings"
+msgstr "Generel indstillinger"
+
+msgid "Generate"
+msgstr "Generer"
+
+msgid "Generate password"
+msgstr "Lav adgangskode"
+
+msgid "Get a new image"
+msgstr "Anskaf et nyt billede"
+
+msgid "GiB"
+msgstr "GiB"
+
+msgid "Group"
+msgstr "Gruppe"
+
+msgid "Group auth"
+msgstr "Grupperettigeheder"
+
+msgid "Group members"
+msgstr "Gruppe medlemmer"
+
+msgid "Group name"
+msgstr "Gruppe navn"
+
+msgid "Groups"
+msgstr "Grupper"
+
+msgid "HTTP traffic"
+msgstr "HTTP trafik"
+
+msgid "Hide aliases"
+msgstr "Skjul aliases"
+
+msgid "High"
+msgstr "Høj"
+
+msgid "Home directory"
+msgstr "Home bibliotek"
+
+#, php-format
+msgid "Home directory '%s' doesn't exist"
+msgstr "Home bibliotek '%s' findes ikke"
+
+msgid "Homepage"
+msgstr "Hjemmeside"
+
+msgid "Host from which SQL user is allowed to connect to SQL server"
+msgstr ""
+
+msgid "Hosting plan"
+msgstr "Hosting Plan"
+
+msgid "Hosting plan availability"
+msgstr "Hosting plan tilgængelig"
+
+msgid "Hosting plan has been successfully deleted."
+msgstr "Hosting plan succesfuldt slettet."
+
+msgid "Hosting plan limits exceed reseller limits."
+msgstr "Hosting plan grænser overskrider forhandler grænser."
+
+msgid "Hosting plan successfully added."
+msgstr "Hosting plan succesfuldt oprettet."
+
+msgid "Hosting plan successfully created."
+msgstr "Hosting plan oprettet."
+
+msgid "Hosting plan successfully updated."
+msgstr "Hosting plan er blevet opdateret."
+
+msgid "Hosting plan values exceed reseller maximum values."
+msgstr "Hosting plan værdier overskrider forhandler maksimale værdier."
+
+msgid "Hosting plan values exceed your own limits."
+msgstr "Hosting plan værdier overskrider dine egne grænser."
+
+msgid "Hosting plans"
+msgstr "Hosting Planer"
+
+msgid "Hosting plans available for"
+msgstr "Hosting planer til rådighed for"
+
+msgid "Hour"
+msgstr "Time"
+
+msgid "Hours"
+msgstr "Timer"
+
+msgid "Htaccess errors"
+msgstr "Htaccess fejl"
+
+msgid "Htaccess group"
+msgstr "Htaccess gruppe"
+
+msgid "Htaccess group successfully scheduled for addition."
+msgstr "Htaccess gruppen planlagt til tilføjelse."
+
+msgid "Htaccess group successfully scheduled for deletion."
+msgstr "Htaccess gruppen planlagt til sletning."
+
+msgid "Htaccess user"
+msgstr "Htaccess bruger"
+
+#, php-format
+msgid "Htaccess user successfully assigned to the %s htaccess group"
+msgstr "Htaccess bruger tilknyttet %s htaccess gruppe"
+
+#, php-format
+msgid "Htaccess user successfully deleted from the %s htaccess group "
+msgstr "Htaccess bruger blev slettet fra %s htaccess gruppe"
+
+msgid "Htaccess user successfully scheduled for addition."
+msgstr "Htaccess bruger planlagt til tilføjelse."
+
+msgid "Http traffic"
+msgstr "Http trafik"
+
+msgid "IP Address"
+msgstr "IP Adresse"
+
+msgid "IP address"
+msgstr "IP adresse"
+
+msgid "IP address already under the control of i-MSCP."
+msgstr "IP-adresse allerede er under kontrol af I-MSCP."
+
+msgid "IP address data"
+msgstr "IP adresse data"
+
+msgid "IP address field is empty or invalid."
+msgstr "IP adresse felt er tomt eller ugyldigt."
+
+msgid "IP address successfully scheduled for addition."
+msgstr "IP-adresse succesfuldt planlagt til tilføjelse."
+
+msgid "IP address successfully scheduled for deletion."
+msgstr "IP-adresse succesfuldt planlagt til sletning."
+
+msgid "IP addresses under control of i-MSCP"
+msgstr "IP-adresser under kontrol af i-MSCP"
+
+msgid "IP management"
+msgstr "IP administration"
+
+msgid "IP usage"
+msgstr "IP brug"
+
+msgid "IPv6 address"
+msgstr "IPv6 adresse"
+
+msgid "IPv6 address field is empty or invalid."
+msgstr "IPv6 adresse felt er tomt eller ugyldigt."
+
+msgid ""
+"If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
+"against deletion using the immutable flag (only if supported by the file "
+"system)."
+msgstr "Hvis den sættes til »ja«, vil web-mapper, som klargjorte af i-MSCP være beskyttet mod sletnings ved brug af ej ændre flaget (kun hvis det understøttes af filsystem)."
+
+msgid ""
+"If you protect a plugin, you'll no longer be able to deactivate it from the "
+"plugin management interface."
+msgstr "Hvis du beskytter et plugin, vil du ikke længere være i stand til at deaktivere det fra plugin management interface."
+
+msgid "If you want to limit the reseller, you must first limit its customers."
+msgstr "Hvis du ønsker at begrænse forhandleren, skal du først begrænse forhandlerens kunder."
+
+msgid "Images have to be smaller than 500 x 90 pixels."
+msgstr "Billeder skal være mindre end 500 x 90 pixels."
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Import in local repository"
+msgstr "Import i lokal softwarearkiv"
+
+msgid ""
+"In case domain expiration date is 'N/A', the expiration date will be set "
+"from today."
+msgstr "I tilfælde af domæne udløbsdatoen er 'N/A', vil udløbsdatoen blive fastsat fra i dag."
+
+msgid "In front"
+msgstr "Foran"
+
+msgid "In maintenance mode, only administrators can login."
+msgstr "Under vedligeholdelse tilstand, kan kun administratorer logge ind."
+
+msgid ""
+"In this page, you can configure some of the aspects of PHP's behavior. You "
+"must note that for now, the directives defined here apply to your entire "
+"domain account (including subdomains and domain aliases). Of course some "
+"values can be modified through the PHP ini_set() function."
+msgstr "På denne side kan du konfigurere nogle af aspekterne af PHP adfærd. Du skal bemærke, at fra nu af, er de direktiver, der er defineret her, gældende for hele domæne kontoen (inklusive underdomæner og domænealiasser). Selvfølgelig kan nogle værdier ændres via PHP ini_set () funktion."
+
+msgid "Incl. default mails"
+msgstr "Inkl. standard mails"
+
+msgid "Incorrect Email quota"
+msgstr "Forkert E-mail kvote"
+
+msgid "Incorrect Email quota."
+msgstr "Forkert E-mail kvote."
+
+msgid "Incorrect FTP account limit."
+msgstr "Forkert FTP konti grænse."
+
+msgid "Incorrect SQL database limit."
+msgstr "Forkert SQL database grænse."
+
+msgid "Incorrect SQL user limit."
+msgstr "Forkert SQL bruger grænse."
+
+msgid "Incorrect alias limit."
+msgstr "Forkert alias grænse."
+
+msgid "Incorrect disk space limit."
+msgstr "Forkert diskplads grænse."
+
+msgid "Incorrect domain alias limit."
+msgstr "Forkert domæne alias grænse."
+
+msgid "Incorrect email account limit."
+msgstr "Forkert e-mail konti grænse."
+
+msgid "Incorrect email length or syntax."
+msgstr "Forkert email længde eller syntaks."
+
+#, php-format
+msgid "Incorrect limit for %s."
+msgstr "Forkert grænse for %s."
+
+msgid "Incorrect monthly traffic limit."
+msgstr "Forkert månedlige trafik grænse."
+
+msgid "Incorrect post code length or syntax!"
+msgstr "Forkert post kode længde eller syntaks!"
+
+msgid "Incorrect subdomain limit."
+msgstr "Forkert subdomæne grænse."
+
+msgid "Incorrect syntax for email address."
+msgstr "Forkert syntaks for e-mail adresse."
+
+msgid "Incorrect username length or syntax."
+msgstr "Forkert brugernavn længde eller syntaks."
+
+msgid "Info Unavailable"
+msgstr "Info Ikke Tilgængelig"
+
+msgid "Install"
+msgstr "Installér"
+
+msgid "Install Software"
+msgstr "Installer Software"
+
+msgid "Install in progress"
+msgstr "Installering i gang"
+
+msgid "Install path"
+msgstr "Installations sti"
+
+msgid "Install this plugin"
+msgstr "Installer dette plugin"
+
+msgid "Install various Web applications with a few clicks."
+msgstr "Installere forskellige web-applikationer med et par klik."
+
+msgid "Installation details"
+msgstr "Installations detaljer"
+
+msgid "Installation in progress..."
+msgstr "Installering i gang..."
+
+msgid "Installation path"
+msgstr "Installations sti"
+
+msgid "Installed Package which was deleted by your reseller."
+msgstr "Installeret pakke, som blev slettet af din forhandler."
+
+msgid "Installed in reseller repository"
+msgstr "Installeret i forhandler softwarearkiv"
+
+msgid "Installed in software repository"
+msgstr "Installeret i softwarearkiv"
+
+msgid "Installed on"
+msgstr "Installeret den"
+
+msgid "Installing your uploaded package. Please refresh this page."
+msgstr "Installation af uploadet pakke. Opdater venligst denne side."
+
+msgid "Instructions to download today's backup"
+msgstr "Instruktion om download af dagen's backup"
+
+msgid "Internal Server Error"
+msgstr "Intern Serverfejl"
+
+msgid "Internationalization"
+msgstr "Internationalisering"
+
+msgid "Invalid CA Bundle."
+msgstr "Ugyldig CA Bundle."
+
+msgid "Invalid CNAME"
+msgstr "Ugyldig CNAME"
+
+msgid "Invalid Email username."
+msgstr "Ugyldig e-mail brugernavn."
+
+msgid "Invalid IPv4 address."
+msgstr "Ugyldig IPv4 adresse."
+
+msgid "Invalid IPv6 address."
+msgstr "Ugyldig IPv6 adresse."
+
+msgid "Invalid MX priority."
+msgstr "Ugyldig MX prioritet."
+
+msgid "Invalid MX type."
+msgstr "Invalid MX type."
+
+msgid "Invalid NAME."
+msgstr "Ugyldig NAVN."
+
+#, php-format
+msgid "Invalid SQL user host: %s"
+msgstr "Ugyldig SQL bruger host: %s"
+
+msgid "Invalid TXT data"
+msgstr "Ugyldig TXT data"
+
+msgid "Invalid URL."
+msgstr "Ugyldig URL."
+
+msgid "Invalid domain name."
+msgstr "Ugyldig domæne navn."
+
+msgid "Invalid expiration date."
+msgstr "Ugyldig udløbsdato."
+
+msgid "Invalid group name!"
+msgstr "Ugyldigt gruppe navn!"
+
+msgid "Invalid home directory."
+msgstr "Ugyldig home bibliotek"
+
+msgid "Invalid htaccess group name."
+msgstr "Ugyldigt htaccess gruppenavn."
+
+msgid "Invalid menu order."
+msgstr "Ugyldig menu rækkefølge."
+
+msgid "Invalid name."
+msgstr "Ugyldig navn."
+
+msgid "Invalid private key or passphrase"
+msgstr "Ugyldig privat nøgle eller adgangssætning"
+
+msgid "Invalid target."
+msgstr "Ugyldig mål."
+
+msgid "Invalid type given. String expected"
+msgstr "Ugyldig type indtastet. Streng forventet"
+
+#, php-format
+msgid "Ip %s is blocked for %s minutes."
+msgstr "Ip %s er blokeret i %s minutter."
+
+#, php-format
+msgid "Ip %s is waiting %s seconds."
+msgstr "Ip %s venter i %s sekunder."
+
+msgid "Kernel Version"
+msgstr "Kernel Version"
+
+msgid "Kill session"
+msgstr "Afslut session"
+
+msgid "Label"
+msgstr "Afmærk"
+
+msgid "Language"
+msgstr "Sprog"
+
+msgid "Language file"
+msgstr "Sprogfil"
+
+msgid "Language file successfully installed."
+msgstr "Sprog fil installeret."
+
+msgid "Language successfully updated."
+msgstr "Sprog korrekt opdateret."
+
+msgid "Languages"
+msgstr "Sprog"
+
+msgid "Languages index was successfully re-built."
+msgstr "Sprog-indekset blev succesfuldt genopbygget."
+
+msgid "Last Web software repository update"
+msgstr "Sidste Web softwarearkiv opdatering"
+
+msgid "Last access"
+msgstr "Sidste adgang"
+
+msgid "Last name"
+msgstr "Efternavn"
+
+msgid "Last name cannot have more than 200 characters."
+msgstr "Efternavn kan ikke have mere end 200 karakterer"
+
+msgid "Last reply date"
+msgstr "Seneste svar dato"
+
+msgid "Last translator"
+msgstr "Sidste oversætter"
+
+msgid "Layout"
+msgstr "Layout"
+
+msgid "Layout color"
+msgstr "Layout farve"
+
+msgid "Layout color successfully updated."
+msgstr "Layout farve korrekt opdateret."
+
+msgid "Level"
+msgstr "Niveau"
+
+msgid "Limit"
+msgstr "Begrænsning"
+
+msgid "Limit value"
+msgstr "Grænseværdi"
+
+msgid "Limits"
+msgstr "Grænse"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "Link to authors homepage"
+msgstr "Link til udviklerens hjemmeside"
+
+msgid "Load (1 Min, 5 Min, 15 Min)"
+msgstr "Load (1 Min, 5 Min, 15 Min)"
+
+msgid "Log entries successfully deleted."
+msgstr "Log poster succesfuldt slettet."
+
+msgid "Log in to answer"
+msgstr "Log ind for svar"
+
+msgid "Login"
+msgstr "Log ind"
+
+msgid "Login As"
+msgstr "Login Som"
+
+#, php-format
+msgid "Login data successfully sent to %s."
+msgstr "Log ind data sendt til %s."
+
+msgid "Login into phpMyAdmin"
+msgstr "Log ind i phpMyAdmin"
+
+msgid "Login password"
+msgstr "Log ind password"
+
+msgid "Login username"
+msgstr "Log ind brugernavn"
+
+msgid "Login with your FTP account"
+msgstr "Login med din FTP konto"
+
+msgid "Logo file"
+msgstr "Logo fil"
+
+msgid "Logo successfully removed."
+msgstr "Logo succesfuldt fjernet."
+
+msgid "Logo successfully updated."
+msgstr "Logo succesfuldt opdateret."
+
+msgid "Logout"
+msgstr "Log ud"
+
+msgid "Lost password"
+msgstr "Glemt Adgangskode"
+
+msgid "Lost password email"
+msgstr "Mistet kodeord e-mail"
+
+msgid "Lost password link"
+msgstr "Glemt adgangskode, link"
+
+msgid "Lostpw link"
+msgstr "Glemt Adgangskode Aktiveringslink"
+
+msgid "Low"
+msgstr "Lav"
+
+msgid "MB"
+msgstr "MB"
+
+msgid "Mail"
+msgstr "Mail"
+
+msgid "Mail Log Level"
+msgstr "Mail Log Level"
+
+#, php-format
+msgid "Mail account %s successfully scheduled for deletion."
+msgstr "Mail-konto %s succesfuldt planlagt til sletning."
+
+msgid "Mail account type"
+msgstr "E-mail konto type"
+
+msgid "Mail accounts list is empty."
+msgstr "Mail-konti liste er tom."
+
+msgid "Mail feature is disabled."
+msgstr "Mail funktioner er deaktiveret."
+
+msgid "Mail usage"
+msgstr "Mail anvendelse"
+
+#, php-format
+msgid "Mailhost %s is not valid."
+msgstr "E-mailhost %s er ikke gyldig."
+
+msgid "Mailhost cannot be empty."
+msgstr "E-mailhost kan ikke være tom."
+
+msgid "Mailhost must not be equal to the domain name for which you add it."
+msgstr "E-mailhost skal ikke være lig med det domænenavn, som du tilføje det."
+
+msgid "Main menu labels visibility successfully updated."
+msgstr "Hovedmenu labels synlighed korrekt opdateret."
+
+msgid "Maintenance message"
+msgstr "Vedligeholdelses besked"
+
+msgid "Maintenance mode"
+msgstr "Vedligeholdelses mode"
+
+msgid ""
+"Maintenance mode is activated. In this mode, only administrators can login."
+msgstr "Vedligeholdelsestilstand er aktivt. Under denne tilstand kan kun administratorer logge ind."
+
+msgid "Maintenance settings"
+msgstr "Vedligeholdelses indstillinger"
+
+msgid "Male"
+msgstr "Mand"
+
+msgid "Malformed resolver SQL query"
+msgstr "Forkert udformet resolver SQL query"
+
+msgid "Manage Domains"
+msgstr "Administrer domæner"
+
+msgid "Manage SQL"
+msgstr "Håndtér SQL"
+
+msgid "Manage htaccess users and groups"
+msgstr "Administrer htaccess brugere og grupper"
+
+msgid "Manage users"
+msgstr "Håndtér brugere"
+
+msgid "Manage users and groups"
+msgstr "Håndtér brugere og grupper"
+
+msgid "Manage your protected areas, users and groups."
+msgstr "Administrere dine beskyttede områder, brugere og grupper."
+
+msgid "Mark"
+msgstr "Afmærk"
+
+msgid "Max number of login attempts"
+msgstr "Max antal af logind forsøg"
+
+msgid "Max traffic"
+msgstr "Max trafik"
+
+#, php-format
+msgid "Max value for the %s PHP directive"
+msgstr "Max værdi for %s PHP direktiv"
+
+#, php-format
+msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
+msgstr "Max. ekstern filstørrelse (%s) er blevet nået. Din eksterne fil er %s"
+
+#, php-format
+msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
+msgstr "Max. ekstern filstørrelse (%s) er nået. Din eksterne fil er %s"
+
+msgid "Maximum number of captcha validation attempts"
+msgstr "Maksimalt antal captcha validering forsøg"
+
+msgid ""
+"Maximum number of validation attempts before waiting restriction intervenes"
+msgstr "Maksimalt antal validerings forsøg, før ventetid restriktion griber ind"
+
+msgid "Medium"
+msgstr "Mellem"
+
+msgid "Member of group"
+msgstr "Medlem af gruppe"
+
+msgid "Memory information"
+msgstr "Hukommelses information"
+
+msgid "Message"
+msgstr "Meddelse"
+
+msgid "Message template"
+msgstr "Meddelses skabelon"
+
+msgid "Message template info"
+msgstr "Meddelseskabelon info"
+
+msgid "Message to reseller before deleting the software"
+msgstr "Besked til forhandler, før softwaren slettes"
+
+msgid "Messages"
+msgstr "Meddelser"
+
+msgid "MiB"
+msgstr "MiB"
+
+msgid "Minute"
+msgstr "Minut"
+
+msgid "Minutes"
+msgstr "Minutter"
+
+msgid "Missing domain"
+msgstr "Manglende domæne"
+
+msgid "Model"
+msgstr "Model"
+
+msgid "Modification in progress"
+msgstr "Ændring i gang"
+
+msgid "Month"
+msgstr "Måned"
+
+msgid "Monthly traffic limit [MiB]"
+msgstr "Månedlig trafik grænse [MiB]"
+
+msgid "Monthly traffic limit must be a number."
+msgstr "Månedlig trafik grænse skal være et tal."
+
+msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
+msgstr "Månedlig trafik advarsel kan ikke være større end månedlige trafik grænse."
+
+msgid "Monthly traffic warning must be a number."
+msgstr "Månedlig trafik advarsel skal være et tal."
+
+msgid "More Details"
+msgstr "Flere Detaljer"
+
+msgid "Mount"
+msgstr "Montering"
+
+msgid "Mount point"
+msgstr "Monterings punkt"
+
+msgid "Move"
+msgstr "Flyt"
+
+msgid "Moving aborted."
+msgstr "Flytning afbrudt."
+
+msgid "N/A"
+msgstr "Ikke Tilgængelig"
+
+msgid "NAME field is empty or invalid."
+msgstr "NAVN felt er tomt eller ugyldigt."
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Name cannot be empty."
+msgstr "Navn kan ikke være tomt."
+
+msgid "Network interface"
+msgstr "Netværks interface"
+
+msgid "Never"
+msgstr "Aldrig"
+
+msgid "New SQL user data"
+msgstr "Ny SQL bruger data"
+
+msgid "New alias order for {CUSTOMER}"
+msgstr "Ny alias ordrer for {CUSTOMER}"
+
+msgid "New password has not been sent. Ask your administrator."
+msgstr "Ny adgangskode er ikke blevet sendt. Spørg din administrator."
+
+msgid "New password is"
+msgstr "Ny password er"
+
+msgid "New ticket"
+msgstr "Ny Sag"
+
+msgid "Next"
+msgstr "Næste"
+
+msgid "Next step"
+msgstr "Næste trin"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "No IP address found."
+msgstr "Ingen IP adresse fundet."
+
+msgid "No administrator accounts found."
+msgstr "Ingen administrator konti fundet."
+
+msgid "No anti-rootkits logs"
+msgstr "Ingen anti-rootkits logs"
+
+msgid "No available"
+msgstr "Ikke tilgængelig"
+
+msgid "No certificate found"
+msgstr "Ingen certifikat fundet."
+
+msgid "No custom menu found."
+msgstr "Ingen brugerdefineret menu fundet."
+
+msgid "No customer accounts found."
+msgstr "Ingen kundekonti fundet."
+
+msgid "No database update available."
+msgstr "Ingen database opdateringer tilgængelige."
+
+msgid "No domain statistics to display for this reseller."
+msgstr "Ingen domæne statistik at vise for denne forhandler."
+
+msgid "No domain statistics to display."
+msgstr "Ingen domæne statistik at vise."
+
+msgid "No errors"
+msgstr "Ingen fejl"
+
+msgid "No file was uploaded."
+msgstr "Ingen fil blev uploadet."
+
+msgid "No group found."
+msgstr "Ingen gruppe fundet."
+
+msgid "No hosting plan available."
+msgstr "Ingen hosting plan til rådighed."
+
+msgid "No hosting plan available. Please contact your administrator."
+msgstr "Ingen hosting plan til rådighed. Kontakt venligst din systemadministrator."
+
+msgid "No languages found."
+msgstr "Ingen sprog fundet."
+
+msgid "No logs found."
+msgstr "Ingen logs fundet."
+
+msgid "No records found matching the search criteria."
+msgstr "Har ikke fundet records, der matcher søgekriterierne."
+
+msgid "No reseller accounts found."
+msgstr "Ingen forhandler konti fundet."
+
+msgid "No reseller available to add the permissions."
+msgstr "Ingen forhandler tilgængelig til at tilføje tilladelserne"
+
+msgid "No reseller statistics to display."
+msgstr "Ingen forhandler statistik at vise."
+
+msgid "No reseller with activated software installer found!"
+msgstr "Ingen forhandler med aktiveret software installer fundet!"
+
+msgid "No reseller with permissions for this software found."
+msgstr "Ingen forhandler med tilladelser til denne software fundet"
+
+msgid "No resellers found."
+msgstr "Ingen Forhandlere fundet."
+
+msgid "No software available"
+msgstr "Ingen software tilgængelig"
+
+msgid "No software in Web repository found!"
+msgstr "Ingen software i Web softwarearkiv fundet!"
+
+msgid "No software in software depot available!"
+msgstr "Ingen software i software depot til rådighed!"
+
+msgid "No software is waiting for activation"
+msgstr "Ingen software venter på aktivering"
+
+msgid "No statistics found for the given period. Try another period."
+msgstr "Ingen statistikker fundet for den givne periode. Prøv en anden periode."
+
+msgid "No unassigned users were found in the database."
+msgstr "Ingen tildelte brugere blev fundet i databasen."
+
+msgid "No update available"
+msgstr "Ingen opdatering til rådighed"
+
+msgid "No update info available"
+msgstr "Ingen opdaterings info tilgængelig"
+
+msgid "No used yet"
+msgstr "Ikke brugt"
+
+msgid "No user found."
+msgstr "Ingen brugere fundet."
+
+msgid "No users found for this reseller."
+msgstr "Ingen brugere fundet for denne forhandler."
+
+msgid "No."
+msgstr "Nr."
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Normal + Forward"
+msgstr "Normal + Forward"
+
+msgid "Normal connection"
+msgstr "Normal tilslutning"
+
+msgid "Normal users"
+msgstr "Normal brugere"
+
+msgid "Not Found"
+msgstr "Ikke fundet"
+
+msgid "Not Set"
+msgstr "Ikke indstillet"
+
+msgid "Not found."
+msgstr "Ikke fundet."
+
+msgid "Not provided"
+msgstr "Ikke opgivet"
+
+msgid "Not used"
+msgstr "Ikke brugt"
+
+msgid "Note: You cannot mix Spam filter and domain options"
+msgstr "Bemærk: Du kan ikke blande spamfilter og domæne valgmuligheder"
+
+msgid "Nothing found - sorry"
+msgstr "Intet fundet - undskyld"
+
+msgid "Nothing has been changed."
+msgstr "Intet er blevet ændret."
+
+msgid "Nothing has been deleted."
+msgstr "Intet er blevet slettet."
+
+msgid "Nothing has been scheduled for deactivation."
+msgstr "Intet er blevet planlagt til deaktivering."
+
+msgid "Nothing to do. Daemon request has been canceled."
+msgstr "Intet at gøre. Daemon anmodning er blevet annulleret."
+
+msgid "Notices, Warnings and Errors"
+msgstr "Meddelelser, advarsler og fejl"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Ok"
+msgstr "Ok"
+
+msgid "One or more database updates are now available. See the details below."
+msgstr "En eller flere database opdateringer er nu tilgængelige. Se detaljerne nedenfor."
+
+msgid "Only 'tar.gz' archives are accepted."
+msgstr "Kun 'tar.gz' arkiver accepteres."
+
+msgid "Only administrators can login when maintenance mode is activated."
+msgstr "Kun administratorer kan logge ind når vedligeholdelse er aktiveret."
+
+msgid "Only exec"
+msgstr "kun exec"
+
+msgid "Only gettext Machine Object files (MO files) are accepted."
+msgstr "Kun gettext Machine Object filer (MO-filer), accepteres."
+
+msgid "Only numbers in range from 0 to 65535 are allowed."
+msgstr "Kun tal i intervallet mellem 0 og 65535 er tilladt."
+
+msgid "Only positive numbers are allowed."
+msgstr "Kun positive tal er tilladt."
+
+msgid ""
+"Only printable characters from the ASCII table (not extended), excepted the "
+"space, are allowed."
+msgstr "Kun printbare tegn fra ASCII tabel (ikke udvidet), undtaget mellemrum, er tilladt."
+
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
+msgstr "Kun tar.gz, tar.bz2 og zip-arkiver accepteres."
+
+msgid "Open ticket"
+msgstr "Åben support ticket"
+
+msgid "Open tickets"
+msgstr "Åbne support tickets"
+
+#, php-format
+msgid "Operation canceled: %s"
+msgstr "Operation annulleret: %s"
+
+msgid "Optional"
+msgstr "Valgfri"
+
+msgid "Order"
+msgstr "Bestilling"
+
+msgid "Order successfully deleted."
+msgstr "Ordre succesfuldt slettet."
+
+msgid "Order successfully processed."
+msgstr "Ordre succesfuldt behandlet."
+
+msgid "Other in"
+msgstr "Andet ind"
+
+msgid "Other out"
+msgstr "Andet ud"
+
+msgid "Other settings"
+msgstr "Andre indstillinger"
+
+msgid "Overview"
+msgstr "Overblik"
+
+msgid "Owner"
+msgstr "Ejer"
+
+msgid "PB"
+msgstr "PB"
+
+msgid "PHP"
+msgstr "PHP"
+
+#, php-format
+msgid "PHP %s directive"
+msgstr "PHP %s direktiv"
+
+msgid "PHP Editor"
+msgstr "PHP Editor"
+
+msgid "PHP Editor Settings"
+msgstr "PHP Editor indstillinger"
+
+msgid "PHP GD extension not loaded."
+msgstr "PHP GD udvidelse ikke indlæst."
+
+msgid "PHP Settings"
+msgstr "PHP Indstillinger"
+
+msgid "PHP Settings (system default)"
+msgstr "PHP Indstillinger (system standardindstilling)"
+
+msgid "PHP configuration scheduled for update."
+msgstr "PHP konfigurationen planlagt til opdatering."
+
+msgid "PHP directives values"
+msgstr "PHP direktivernes værdier"
+
+msgid "PHP exec() function"
+msgstr "PHP exec() funktion"
+
+msgid "PHP settings"
+msgstr "PHP indstillinger"
+
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP ind."
+
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP ud."
+
+msgid "POP3/IMAP traffic"
+msgstr "POP3/IMAP<br>trafik"
+
+msgid "Package actions"
+msgstr "Pakke handlinger"
+
+msgid "Package already exists in the reseller depot!"
+msgstr "Pakke findes allerede i forhandler depot!"
+
+msgid "Package already exists in the software depot!"
+msgstr "Pakke findes allerede i software depot!"
+
+msgid "Package already exists in the software repository!"
+msgstr "Pakke findes allerede i softwarearkiv!"
+
+msgid "Package already exists in your software repository!"
+msgstr "Pakke findes allerede i dit softwarearkiv!"
+
+msgid "Package install type"
+msgstr "Pakkens installationstype"
+
+msgid "Package installed successfully!"
+msgstr "Pakken installeret!"
+
+msgid "Package installed successfully... Awaiting release from admin!"
+msgstr "Pakken installeret med succes... Afventer frigivelse fra admin!"
+
+msgid "Package language"
+msgstr "Pakkens sprog"
+
+msgid "Package name"
+msgstr "Pakke navn"
+
+msgid "Package title"
+msgstr "Pakkens titel"
+
+msgid "Package type"
+msgstr "Pakkens type"
+
+msgid "Package vendor HP"
+msgstr "Pakke leverandør HP"
+
+msgid "Package version"
+msgstr "Pakkens version"
+
+msgid "Panel default language"
+msgstr "Vælg standard sprog"
+
+msgid "Parent directory"
+msgstr "Overordnet mappe"
+
+msgid "Partition"
+msgstr "Partition"
+
+msgid "Password"
+msgstr "Adgangskode"
+
+msgid "Password cannot be empty."
+msgstr "Password feltet er tomt."
+
+msgid "Password cannot be longer than 30 characters."
+msgstr "Password kan ikke være større end 30 tegn."
+
+msgid "Password confirmation"
+msgstr "Password bekræftelse"
+
+msgid "Password contains unallowed characters."
+msgstr "Password indeholder Ikke tilladte karakterer."
+
+msgid "Password data"
+msgstr "Adgangskode data"
+
+msgid "Password email"
+msgstr "Password e-mail"
+
+msgid "Password is missing."
+msgstr "Password mangler."
+
+#, php-format
+msgid "Password is shorter than %s characters."
+msgstr "Password er kortere end %s tegn."
+
+msgid "Password is too long."
+msgstr "Password er for langt."
+
+msgid "Password length"
+msgstr "Adgangskode længde"
+
+#, php-format
+msgid ""
+"Password must be at least %s characters long and contain letters and numbers"
+" to be valid."
+msgstr "Password skal være mindst %s tegn langt og indeholde bogstaver og tal for at være gyldig."
+
+msgid "Password settings"
+msgstr "Adgangskode indstillinger"
+
+msgid "Password successfully updated."
+msgstr "Password opdateret."
+
+msgid "Passwords do not match"
+msgstr "Passwords matcher ikke"
+
+msgid "Passwords do not match."
+msgstr "Passwords matcher ikke."
+
+msgid "Path"
+msgstr "Sti"
+
+msgid ""
+"Paths are appended to the default PHP open_basedir directive of customers. "
+"Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
+"for more information."
+msgstr "Stier er føjet til standard PHP open_basedir direktiv for kunder. Hver af dem skal være adskilt af PATH_SEPARATOR. Se PHP dokumentationen for mere information."
+
+msgid "Percent"
+msgstr "Procent"
+
+msgid "Permissions"
+msgstr "Tilladelser"
+
+msgid "Personal data"
+msgstr "Personlig data!"
+
+msgid "Personal data successfully updated."
+msgstr "Personoplysninger opdateret."
+
+msgid "Personalise template"
+msgstr "Personligt tema"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "PhpMyAdmin"
+msgstr "PHPMyAdmin"
+
+msgid "PiB"
+msgstr "PiB"
+
+msgid "Please activate your new i-MSCP password"
+msgstr "Aktiver venligst dit nye i-MSCP password"
+
+msgid "Please check the PHP editor settings."
+msgstr "Venligst, tjek PHP Editor indstillinger."
+
+msgid "Please choose htaccess user or htaccess group."
+msgstr "Vælg venligst htaccess bruger eller htaccess gruppe."
+
+msgid "Please confirm the password."
+msgstr "Du skal bekræfte dit password."
+
+msgid ""
+"Please contact the administrator!<br />Ask him for the permissions to use "
+"this package.<br />It is not allowed to upload this packet two times.<br "
+"/>Refresh your site to see the new status!"
+msgstr "Kontakt venligst administratoren!<br />Spørg ham om tilladelser til at bruge denne pakke.<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
+
+#, php-format
+msgid "Please don't use special character such as '@, $, %% ...' in password."
+msgstr "Bruge ikke specielle tegn som \"@, $, %% ...\" i password."
+
+msgid "Please enter a name for the protected area."
+msgstr "Indtast et navn for det beskyttede område."
+
+msgid "Please enter a password."
+msgstr "Angiv et password."
+
+msgid "Please enter an SQL user host."
+msgstr "Indtast en SQL bruger host."
+
+msgid "Please enter an username."
+msgstr "Indtast venligst et brugernavn."
+
+msgid "Please enter protected area path"
+msgstr "Indtast sti til beskyttet område"
+
+msgid "Please enter your auto-responder message below"
+msgstr "Indtast venligst din autosvar besked nedenfor"
+
+msgid "Please fill up both data fields for password."
+msgstr "Udfyld venligst begge datafelter til password."
+
+msgid "Please select a valid SQL user for the database."
+msgstr "Vælg en gyldig SQL bruger til databasen."
+
+#, php-format
+msgid "Please select another directory. %s (%s) is installed there."
+msgstr "Vælg et andet bibliotek. %s (%s) er installeret der."
+
+msgid "Please select at least one user."
+msgstr "Vælg mindst én bruger."
+
+msgid ""
+"Please set now the username and password for the later login in the "
+"software. (Required fiels)"
+msgstr "Indstil brugernavn og password til senere at logge ind i softwaren. (Obligatorisk felt)"
+
+msgid "Please specify a message content."
+msgstr "Angiv indholdet af beskeden."
+
+msgid "Please specify a message subject."
+msgstr "Angiv besked emne."
+
+msgid "Please type database name."
+msgstr "Angiv database navn."
+
+msgid "Please type your message."
+msgstr "Indtast din meddelelse."
+
+msgid "Plugin"
+msgstr "Plugin"
+
+#, php-format
+msgid "Plugin %s activated."
+msgstr "Plugin %s  aktiveret."
+
+#, php-format
+msgid "Plugin %s cannot be changed."
+msgstr "Plugin %s kan ikke ændres."
+
+#, php-format
+msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgstr "Plugin %s kan ikke slettes. Du skal deaktivere det først."
+
+#, php-format
+msgid "Plugin %s cannot be deleted. You must uninstall it first."
+msgstr "Plugin %s kan ikke slettes. Du skal afinstallere det først."
+
+#, php-format
+msgid "Plugin %s cannot be disabled."
+msgstr "Plugin %s kan ikke  deaktiveres."
+
+#, php-format
+msgid "Plugin %s cannot be enabled."
+msgstr "Plugin %s kan ikke aktiveres."
+
+#, php-format
+msgid "Plugin %s cannot be updated."
+msgstr "Plugin %s kan ikke blive opdateret."
+
+#, php-format
+msgid "Plugin %s changed."
+msgstr "Plugin %s ændret."
+
+#, php-format
+msgid "Plugin %s deactivated."
+msgstr "Plugin %s deaktiveret."
+
+#, php-format
+msgid "Plugin %s deleted."
+msgstr "Plugin %s slettet."
+
+#, php-format
+msgid "Plugin %s installed."
+msgstr "Plugin %s installeret."
+
+#, php-format
+msgid "Plugin %s is already activated."
+msgstr "Plugin %s er allerede aktiveret."
+
+#, php-format
+msgid "Plugin %s is already deactivated."
+msgstr "Plugin %s er allerede deaktiveret."
+
+#, php-format
+msgid "Plugin %s is already installed."
+msgstr "Plugin %s er allerede installeret."
+
+#, php-format
+msgid "Plugin %s is already uninstalled."
+msgstr "Plugin %s er allerede afinstalleret."
+
+#, php-format
+msgid "Plugin %s is not installable."
+msgstr "Plugin %s er ikke installerbare."
+
+#, php-format
+msgid "Plugin %s is not uninstallable."
+msgstr "Plugin %s er ikke til afinstallering."
+
+#, php-format
+msgid "Plugin %s is protected."
+msgstr "Plugin %s er beskyttet."
+
+#, php-format
+msgid "Plugin %s protected."
+msgstr "Plugin %s beskyttet."
+
+#, php-format
+msgid "Plugin %s scheduled for activation."
+msgstr "Plugin %s planlagt til aktivering."
+
+#, php-format
+msgid "Plugin %s scheduled for change."
+msgstr "Plugin %s planlagt til ændring."
+
+#, php-format
+msgid "Plugin %s scheduled for deactivation."
+msgstr "Plugin %s planlagt til deaktivering."
+
+#, php-format
+msgid "Plugin %s scheduled for installation."
+msgstr "Plugin %s planlagt til installation."
+
+#, php-format
+msgid "Plugin %s scheduled for uninstallation."
+msgstr "Plugin %s planlagt til afinstallering."
+
+#, php-format
+msgid "Plugin %s scheduled for update."
+msgstr "Plugin %s planlagt til opdatering."
+
+#, php-format
+msgid "Plugin %s uninstalled."
+msgstr "Plugin %s afinstalleret."
+
+#, php-format
+msgid "Plugin %s updated."
+msgstr "Plugin %s opdateret."
+
+#, php-format
+msgid ""
+"Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
+" plugin."
+msgstr "Plugin Manager: Nedgradering af plugin er ikke understøttet. Du skal opdatere %s plugin."
+
+#, php-format
+msgid "Plugin Manager: Unable to change the %s plugin: %s"
+msgstr "Plugin Manager: Kan ikke ændre %s plugin: %s"
+
+#, php-format
+msgid ""
+"Plugin Manager: Unable to delete the %s plugin files. Please, remove them "
+"manually."
+msgstr "Plugin Manager: Kunne ikke slette %s plugin filer. Venligst fjern dem manuelt."
+
+#, php-format
+msgid "Plugin Manager: Unable to load plugin %s"
+msgstr "Plugin Manager: Er ikke i stand til at indlæse plugin %s"
+
+#, php-format
+msgid "Plugin Manager: Unable to update the %s plugin: %s"
+msgstr "Plugin Manager: Kan ikke opdatere %s plugin: %s"
+
+#, php-format
+msgid "Plugin Manager: Unable to write the %s file for protected plugins."
+msgstr "Plugin Manager: Er ikke i stand til at skrive %s filen for beskyttede plugins."
+
+msgid "Plugin archive"
+msgstr "Plugin arkiv"
+
+#, php-format
+msgid ""
+"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
+msgstr "Plugin arkiv overstiger den maksimale upload størrelse (%s). Max upload størrelse er: %s."
+
+msgid "Plugin errors"
+msgstr "Plugin fejl"
+
+msgid "Plugin has been uploaded."
+msgstr "Plugin er blevet uploadet."
+
+msgid "Plugin item errors"
+msgstr "Plugin element fejl"
+
+msgid "Plugin list is empty."
+msgstr "Plugin listen er tom."
+
+msgid "Plugin management"
+msgstr "Plugin administration"
+
+msgid "Plugins Upload"
+msgstr "Plugins Upload"
+
+#, php-format
+msgid ""
+"Plugins hook into i-MSCP to extend its functionality with custom features. "
+"Plugins are developed independently from the core i-MSCP application by "
+"thousands of developers all over the world. You can find new plugins to "
+"install by browsing the %s."
+msgstr "Plugins hooks ind i I-MSCP for at udvide dens funktionalitet med custom funktioner. Plugins er udviklet uafhængigt fra core i-MSCP applikationen, fra tusindvis af udviklere over hele verden. Du kan finde nye plugins til at installere ved at gennemse% s."
+
+#, php-format
+msgid ""
+"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
+" %s plugin(s) changed, and %s plugin(s) deleted."
+msgstr "Plugins liste er blevet opdateret: %s ny plugin(s) fundet, %s plugin(s) opdateret, %s plugin(s) ændret, og %s plugin(s) slettet."
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Port must be a number."
+msgstr "Port skal være et tal."
+
+msgid "Prevent external login for admins"
+msgstr "Forhindre ekstern adgang for admins"
+
+msgid "Prevent external login for clients"
+msgstr "Forhindre eksterne login for kunder"
+
+msgid "Prevent external login for resellers"
+msgstr "Forhindre eksterne login for forhandlere"
+
+msgid "Previous"
+msgstr "Forrige"
+
+msgid "Priority"
+msgstr "Prioritet"
+
+msgid "Priority must be a number."
+msgstr "Priotet skal være et tal."
+
+#, php-format
+msgid "Priority: %s\n"
+msgstr "Prioritet: %s\n"
+
+msgid "Private key"
+msgstr "Privat nøgle"
+
+msgid "Private key field cannot be empty"
+msgstr "Privat nøgle felt kan ikke være tomt"
+
+msgid "Private key passphrase if any"
+msgstr "Privat nøgle adgangssætning, hvis nogen"
+
+msgid "Process update"
+msgstr "Process opdatering"
+
+msgid "Processing..."
+msgstr "Behandler ..."
+
+msgid "Processor data"
+msgstr "Processor data"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Properties"
+msgstr "Egenskaber"
+
+#, php-format
+msgid "Properties for reseller with ID %d were not found in database."
+msgstr "Egenskaber til forhandler med ID %d blev ikke fundet i databasen."
+
+msgid "Protect"
+msgstr "Beskyt"
+
+msgid "Protect it"
+msgstr "Beskyt det"
+
+msgid "Protect this plugin"
+msgstr "Beskyt dette plugin"
+
+msgid "Protected"
+msgstr "Beskyttet"
+
+msgid "Protected area status should be 'OK' if you want to delete it."
+msgstr "Beskyttet område status skal være \"OK\", hvis du ønsker at slette det."
+
+msgid "Protected area successfully scheduled for addition."
+msgstr "Beskyttet område succesfuldt planlagt til tilføjelse."
+
+msgid "Protected area successfully scheduled for deletion."
+msgstr "Beskyttet område succesfuldt planlagt til sletning."
+
+msgid "Protected area successfully scheduled for update."
+msgstr "Beskyttet område succesfuldt planlagt til opdatering."
+
+msgid "Protected areas"
+msgstr "Beskyttet områder"
+
+msgid "Protocol"
+msgstr "Protokol"
+
+msgid "Quota"
+msgstr "Kvote"
+
+msgid "Quota in MiB (0 for unlimited)"
+msgstr "Kvote i MiB (0 for ubegrænset)"
+
+#, php-format
+msgid "Quota in MiB (Max: %s)"
+msgstr "Kvote i MiB (Maks: %s)"
+
+msgid "RAM"
+msgstr "RAM"
+
+msgid "Read ticket"
+msgstr "Læs ticket"
+
+msgid "Rebuild languages index"
+msgstr "Genopbyg sprog index"
+
+msgid "Record data"
+msgstr "Record Data"
+
+msgid "Redirect"
+msgstr "Omdiriger"
+
+msgid "Redistribute unused quota across existing mailboxes"
+msgstr "Omfordeling af uudnyttede kvoter på tværs af eksisterende postkasser"
+
+msgid "Registration date"
+msgstr "Registreringsdato"
+
+msgid "Relative weight"
+msgstr "Relativ vægt"
+
+msgid "Relative weight must be a number."
+msgstr "Relativ vægt skal være et tal."
+
+msgid "Release date"
+msgstr "Udgivelsesdato"
+
+msgid "Release description"
+msgstr "Udgivelses beskrivelse"
+
+msgid "Release version"
+msgstr "Udgivelses version"
+
+msgid "Remote Web software repository"
+msgstr "Ekstern Web softwarearkiv"
+
+msgid "Remote file not found."
+msgstr "Eksterne fil ikke fundet."
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid "Remove IP"
+msgstr "Fjern IP"
+
+msgid "Remove last entry"
+msgstr "Fjern sidste indtastning"
+
+msgid "Remove permissions"
+msgstr "Fjern tilladelser"
+
+msgid "Reopen"
+msgstr "Genåbn"
+
+msgid "Reopen ticket"
+msgstr "Genåbn ticket"
+
+msgid "Repeat password"
+msgstr "Gentag Adgangskoden"
+
+msgid "Reply"
+msgstr "Svar"
+
+msgid "Request from foreign host was blocked."
+msgstr "Anmodning fra udenlandske host blev blokeret."
+
+msgid "Requires Database?"
+msgstr "Kræves Database?"
+
+msgid "Reseller"
+msgstr "Forhandler"
+
+msgid "Reseller / Customers / Add Customer"
+msgstr "Forhandler / Kunder / Tilføj Kunde"
+
+msgid "Reseller / Customers / Add Customer - Next Step"
+msgstr "Forhandler / Kunder / Tilføj Kunde / Næste Step"
+
+msgid "Reseller / Customers / Circular"
+msgstr "Forhandler / Kunder / "
+
+msgid "Reseller / Customers / Domain Aliases"
+msgstr "Forhandler / Kunder / Domæne Aliases"
+
+msgid "Reseller / Customers / Lost Password Email"
+msgstr "Forhandler / Kunder / Glemt Kodeord E-mail"
+
+msgid "Reseller / Customers / Overview"
+msgstr "Forhandler / Kunder / Oversigt"
+
+msgid "Reseller / Customers / Overview / Delete Customer"
+msgstr "Forhandler / Kunder / Oversigt / Slet Kunde"
+
+msgid "Reseller / Customers / Overview / Domain Details"
+msgstr "Forhandler / Kunder / Oversigt / Domæne Detaljer"
+
+msgid "Reseller / Customers / Overview / Edit Customer"
+msgstr "Forhandler / Kunder / Oversigt / Rediger Kunde"
+
+msgid "Reseller / Customers / Overview / Edit Domain"
+msgstr "Forhandler / Kunder / Oversigt / Rediger Domæne"
+
+msgid "Reseller / Customers / Welcome Email"
+msgstr "Forhandler / Kunder / Velkomst e-mail"
+
+msgid "Reseller / Domains / Add Domain Alias"
+msgstr "Forhandler / Domæner / Tilføj Domæne Alias"
+
+msgid "Reseller / Domains / Edit Domain Alias"
+msgstr "Forhandler / Domæner / Rediger Domæne Alias"
+
+msgid "Reseller / General / Overview"
+msgstr "Forhandler / General / Oversigt"
+
+msgid "Reseller / General / Software Upload"
+msgstr "Forhandler / General / Software Upload"
+
+msgid "Reseller / Hosting Plans / Add Hosting Plan"
+msgstr "Forhandler / Hosting Plan / Tilføj Hosting Plan"
+
+msgid "Reseller / Hosting Plans / Overview"
+msgstr "Forhandler / Hosting Planer / Oversigt"
+
+msgid "Reseller / Profile / Account Summary"
+msgstr "Forhandler / Profil / Samlet Konto Oversigt"
+
+msgid "Reseller / Profile / Language"
+msgstr "Forhandler / Profil / Sprog"
+
+msgid "Reseller / Profile / Layout"
+msgstr "Forhandler / Profil / Layout"
+
+msgid "Reseller / Profile / Password"
+msgstr "Forhandler / Profil / Kodeord"
+
+msgid "Reseller / Profile / Personal Data"
+msgstr "Forhandler / Profil / Personlig Data"
+
+msgid "Reseller / Statistics / IP Usage"
+msgstr "Forhandler / Statistik / IP Forbrug"
+
+msgid "Reseller / Statistics / Overview"
+msgstr "Forhandler / Statistik / Overblik"
+
+msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
+msgstr "Forhandler / Statistik / Oversigt / Domæne Statistik - {DOMAIN_NAME}"
+
+msgid "Reseller / Support / Closed Tickets"
+msgstr "Forhandler / Support / Lukkede Tickets"
+
+msgid "Reseller / Support / New Ticket"
+msgstr "Forhandler / Support / Ny Ticket"
+
+msgid "Reseller / Support / Open Tickets"
+msgstr "Forhandler / Support / Åbne Tickets"
+
+msgid "Reseller / Support / View Ticket"
+msgstr "Forhandler / Support / Vis Ticket"
+
+msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
+msgstr "Forhandler / Hosting Planer / {TR_DYNAMIC_TITLE}"
+
+msgid "Reseller Name"
+msgstr "Forhandler Navn"
+
+msgid "Reseller account successfully created."
+msgstr "Reseller konto oprettet."
+
+msgid "Reseller account successfully updated."
+msgstr "Forhandler konto opdateret."
+
+msgid "Reseller and customer"
+msgstr "Forhandler og kunde"
+
+msgid "Reseller and customer levels"
+msgstr "Forhandler og kunde niveauer"
+
+msgid "Reseller assignment"
+msgstr "Forhandler tildeling"
+
+msgid "Reseller consumption"
+msgstr "Forhandler forbrug"
+
+msgid "Reseller data"
+msgstr "Forhandler data"
+
+msgid "Reseller level"
+msgstr "Forhandler niveau"
+
+msgid "Reseller list"
+msgstr "Forhandlerliste"
+
+msgid "Reseller list is empty."
+msgstr "Forhandler liste er tom."
+
+msgid "Reseller name"
+msgstr "Forhandler navn"
+
+msgid "Reseller software list"
+msgstr "Forhandler softwareliste"
+
+msgid "Reseller statistics"
+msgstr "Forhandler Statistikker"
+
+msgid "Reseller successfully added."
+msgstr "Forhandler tilføjet."
+
+msgid "Reseller total"
+msgstr "Forhandler total"
+
+msgid "Reseller users"
+msgstr "Forhandler brugere"
+
+msgid "Reseller with permissions total"
+msgstr "Total antal forhandlere med tilladelser"
+
+msgid "Reseller's layout color successfully updated."
+msgstr "Forhandler layout farve korrekt opdateret."
+
+msgid "Reseller/IP usage statistics"
+msgstr "Forhandler / IP Anvendelsesstatistik"
+
+msgid "Resellers"
+msgstr "Forhandlere"
+
+msgid "Resellers and customers"
+msgstr "Forhandlere og kunder"
+
+msgid "Resellers assignment"
+msgstr "Forhandler tildelinger"
+
+msgid "Reset"
+msgstr "Nulstille"
+
+msgid "Reset entries"
+msgstr "Reset indtastninger"
+
+msgid "Restore"
+msgstr "Gendan"
+
+msgid "Restore backup"
+msgstr "Gendan backup"
+
+msgid "Revision date"
+msgstr "Revisionsdato"
+
+msgid "Rights"
+msgstr "Rettigheder"
+
+msgid "Rights successfully added."
+msgstr "Rettigheder succesfuldt tilføjet."
+
+msgid "Rights successfully removed."
+msgstr "Rettigheder succesfuldt fjernet."
+
+msgid "SMTP in"
+msgstr "SMTP ind"
+
+msgid "SMTP out"
+msgstr "SMTP ud"
+
+msgid "SMTP traffic"
+msgstr "SMTP trafik"
+
+msgid "SQL"
+msgstr "SQL"
+
+msgid "SQL database"
+msgstr "SQL database"
+
+msgid "SQL database limit"
+msgstr "SQL database grænse"
+
+msgid "SQL database limit is disabled but SQL user limit is not."
+msgstr "SQL database grænse er deaktiveret, men SQL bruger grænse er det ikke."
+
+msgid "SQL database limit is disabled."
+msgstr "SQL database grænse er deaktiveret."
+
+msgid "SQL database limit is not <i>disabled</i>."
+msgstr "SQL database grænse er ikke <i>deaktiveret</i> "
+
+msgid "SQL database limit reached."
+msgstr "SQL database grænse nået."
+
+msgid "SQL database successfully added."
+msgstr "SQL database tilføjet."
+
+msgid "SQL database successfully deleted."
+msgstr "SQL database slettet."
+
+msgid "SQL databases"
+msgstr "SQL databaser"
+
+msgid "SQL databases only"
+msgstr "Kun SQL databaser"
+
+msgid "SQL user"
+msgstr "SQL bruger"
+
+#, php-format
+msgid "SQL user %s already exits."
+msgstr "SQL bruger %s er allerede i brug."
+
+msgid "SQL user host"
+msgstr "SQL brugere host"
+
+msgid "SQL user limit"
+msgstr "SQL bruger grænse"
+
+msgid "SQL user limit is <i>disabled</i>."
+msgstr "SQL bruger grænse er <i>deaktiveret</i>."
+
+msgid "SQL user limit is disabled but SQL database limit is not."
+msgstr "SQL bruger grænse er deaktiveret, men SQL database grænsen er det ikke."
+
+msgid "SQL user limit is disabled."
+msgstr "SQL bruger grænse er deaktiveret."
+
+msgid "SQL user name"
+msgstr "SQL Brugernavn"
+
+msgid "SQL user password successfully updated."
+msgstr "SQL bruger password korrekt opdateret."
+
+msgid "SQL user prefix/suffix"
+msgstr "SQL bruger præfiks/suffiks"
+
+msgid "SQL user successfully added."
+msgstr "SQL bruger tilføjet."
+
+msgid "SQL users"
+msgstr "SQL brugere"
+
+msgid "SSL Certificate successfully scheduled for addition or update."
+msgstr "SSL-certifikat er med succes planlagt til tilføjelse eller opdatering."
+
+msgid "SSL certificate"
+msgstr "SSL certifikat"
+
+msgid "SSL feature is not available."
+msgstr "SSL-funktionen er ikke tilgængelig."
+
+msgid "SSL feature is not available. You can only view your certificate."
+msgstr "SSL-funktionen er ikke tilgængelig. Du kan kun se dit certifikat."
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Search"
+msgstr "Søg"
+
+msgid "Sec."
+msgstr "Sek."
+
+msgid "Secure connection"
+msgstr "Sikker forbindelse"
+
+msgid "Security code"
+msgstr "Sikkerhedskode"
+
+msgid "Select Domain"
+msgstr "Vælg Domæne"
+
+msgid "Select all entries for deletion."
+msgstr "Vælg alle poster til sletning."
+
+msgid "Select database"
+msgstr "Vælg database"
+
+msgid "Select group"
+msgstr "Vælg gruppe"
+
+msgid "Select this entry for deletion."
+msgstr "Vælg denne post til sletning."
+
+msgid ""
+"Selecting all entries for deletion will cause deactivation of external mail "
+"server."
+msgstr "Valg af alle poster for sletning vil forårsage deaktivering af eksterne mailserver."
+
+msgid "Send"
+msgstr "Send"
+
+msgid "Send circular"
+msgstr "Send circular"
+
+msgid "Send message"
+msgstr "Send Meddelse"
+
+msgid "Send message to"
+msgstr "Send Meddelse til"
+
+msgid "Send new login data"
+msgstr "Send ny logind data"
+
+msgid "Send new reply"
+msgstr "Send nyt svar"
+
+msgid "Send reply"
+msgstr "Send svar"
+
+msgid "Send to"
+msgstr "Send til"
+
+msgid "Sender email"
+msgstr "Afsenders e-mail"
+
+msgid "Sender email is missing."
+msgstr "Afsenders e-mail mangler"
+
+msgid "Sender name"
+msgstr "Afsenders navn"
+
+msgid "Sender name is missing."
+msgstr "Afsenders navn mangler."
+
+msgid "Separate multiple email addresses by comma or a line-break."
+msgstr "Adskil flere e-mail adresser med et komma eller et linjeskift."
+
+msgid "Separate multiple email addresses with a line-break."
+msgstr "Adskild flere email adresser med et linie skift."
+
+msgid "Server ports"
+msgstr "Server porte"
+
+msgid "Server statistics"
+msgstr "Server statistiker"
+
+msgid "Server status"
+msgstr "Server status"
+
+msgid "Server traffic"
+msgstr "Server trafik"
+
+msgid "Server traffic settings"
+msgstr "Server trafik indstillinger"
+
+msgid "Server traffic settings successfully updated."
+msgstr "Server trafik indstillinger blev opdateret."
+
+msgid "Service Name"
+msgstr "Service Navn"
+
+msgid "Service Unavailable"
+msgstr "Service Ikke tilgængelig"
+
+msgid "Service name"
+msgstr "Service navn"
+
+msgid "Service name already exists."
+msgstr "Service navn eksisterer allerede."
+
+msgid "Service port successfully addeds"
+msgstr "Service port blev succesfuldt tilføjet"
+
+msgid "Service port successfully removed."
+msgstr "Service port blev succesfuldt fjernet."
+
+msgid "Service ports"
+msgstr "Service porte"
+
+msgid "Service protocol"
+msgstr "Service protokol"
+
+msgid "Services status"
+msgstr "Services status"
+
+msgid "Sessions"
+msgstr "Sessions"
+
+msgid "Set status to 'tochange'"
+msgstr "Sæt status til 'ændrer'"
+
+msgid "Settings"
+msgstr "Indstillinger"
+
+msgid "Settings saved."
+msgstr "Indstillinger gemt."
+
+msgid "Shared mount point"
+msgstr "Delt monterings punkt"
+
+msgid "Show"
+msgstr "Vis"
+
+#, php-format
+msgid "Show %s records per page"
+msgstr "Vis %s poster pr side"
+
+msgid "Show HTML output compression size comment"
+msgstr "Vis HTML output komprimeringsstørrelse kommentar"
+
+msgid "Show SSL certificate"
+msgstr "Vis SSL certifikat"
+
+msgid ""
+"Show all errors, except for notices and coding standards warnings (Default)"
+msgstr "Vis alle fejl, undtagen for bekendtgørelser og kodestandard advarslerne (Standard)"
+
+msgid ""
+"Show all errors, warnings and notices including coding standards "
+"(Development)"
+msgstr "Vis alle fejl, advarsler og meddelelser, herunder kodestandarder (Udvikling)"
+
+msgid "Show detailed statistics for this domain"
+msgstr "Vis detaljeret statistik for dette domæne"
+
+msgid "Show detailed statistics for this reseller"
+msgstr "Vis detaljerede statistik for denne forhandler"
+
+msgid "Show in"
+msgstr "Vis i"
+
+msgid "Show labels for main menu links"
+msgstr "Vis labels til hovedmenuens links"
+
+#, php-format
+msgid "Showing %s to %s of %s records"
+msgstr "Viser %s til %s af %s records"
+
+msgid "Showing 0 to 0 of 0 records"
+msgstr "Viser 0 til 0 af 0 poster"
+
+msgid "Size"
+msgstr "Størrelse"
+
+msgid "Software"
+msgstr "Software"
+
+msgid "Software Description"
+msgstr "Software Beskrivelse"
+
+msgid "Software available"
+msgstr "Software tilgængelig"
+
+msgid "Software deleted."
+msgstr "Software slettet."
+
+msgid "Software depot upload"
+msgstr "Software depot upload"
+
+msgid "Software details"
+msgstr "Software detaljer"
+
+msgid "Software has been deleted."
+msgstr "Software er blevet slettet."
+
+msgid "Software has been successfully imported."
+msgstr "Software er blevet importeret."
+
+msgid "Software in repository"
+msgstr "Software i softwarearkiv"
+
+msgid "Software installation"
+msgstr "Software installation"
+
+msgid "Software installer"
+msgstr "Software installer"
+
+msgid "Software installer options"
+msgstr "Software Installer valgmuligheder"
+
+msgid "Software installer options successfully updated."
+msgstr "Software Installer valgmuligheder blevet opdateret."
+
+msgid "Software installer requires PHP support."
+msgstr "Software installer kræver PHP support."
+
+msgid "Software management"
+msgstr "Software administration"
+
+msgid "Software name"
+msgstr "Software navn"
+
+msgid "Software not found!"
+msgstr "Software ikke fundet!"
+
+msgid "Software options"
+msgstr "Software valgmuligheder"
+
+msgid "Software permissions"
+msgstr "Software tilladelser"
+
+msgid "Software repository"
+msgstr "Softwarearkiv"
+
+msgid "Software scheduled for deletion."
+msgstr "Software planlagt til sletning."
+
+msgid "Software status"
+msgstr "Software status"
+
+msgid "Software total"
+msgstr "Software total"
+
+msgid "Software upload"
+msgstr "Software upload"
+
+msgid "Software was activated."
+msgstr "Software blev aktiveret."
+
+msgid "Software was deleted."
+msgstr "Software blev slettet."
+
+msgid "Software-Synonym"
+msgstr "Software-Synonym"
+
+msgid "Software-Version"
+msgstr "Software-Version"
+
+msgid "Softwaredepot"
+msgstr "Softwaredepot"
+
+msgid "Spam Filter"
+msgstr "Spam Filter"
+
+msgid ""
+"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
+"including subdomains, but retains our server as final mailhost."
+msgstr "Spam Filter: Setup en DNS MX-record til relay mail af hele dit domæne, herunder underdomæner, men bevarer vores server som endelig mailhost."
+
+msgid "Sql user successfully deleted."
+msgstr "SQL bruger blev slettet med succes."
+
+msgid "Start installation"
+msgstr "Start installation"
+
+msgid "State"
+msgstr "Kommune"
+
+msgid "State/Province"
+msgstr "Kommune"
+
+msgid "Statistics"
+msgstr "Statistiker"
+
+msgid "Stats"
+msgstr "Statistik"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Status for protected area must be 'OK' if you want to edit it."
+msgstr "Status for beskyttede område, skal være 'OK', hvis du ønsker at redigere den."
+
+msgid "Street 1"
+msgstr "Adresse 1"
+
+msgid "Street 2"
+msgstr "Adresse 2"
+
+msgid "Subdomain"
+msgstr "Subdomæne"
+
+#, php-format
+msgid "Subdomain %s already exist."
+msgstr "Subdomæne %s eksisterer allerede."
+
+#, php-format
+msgid "Subdomain %s cannot be forwarded on itself."
+msgstr "Subdomæne %s kan ikke viderestilles til sig selv."
+
+msgid "Subdomain alias"
+msgstr "Subdomæne alias"
+
+msgid "Subdomain alias errors"
+msgstr "Subdomæne alias fejl"
+
+msgid "Subdomain alias successfully scheduled for deletion."
+msgstr "Subdomæne alias succesfuldt planlagt til sletning."
+
+msgid ""
+"Subdomain alias you are trying to remove has Ftp accounts. Remove them "
+"first."
+msgstr "Domæne alias, du prøver at slette har Ftp konti. Slet dem først."
+
+msgid "Subdomain errors"
+msgstr "Subdomæne fejl"
+
+msgid "Subdomain forward"
+msgstr "Subdomæne forward"
+
+msgid "Subdomain limit"
+msgstr "Subdomæne grænse"
+
+msgid "Subdomain mail"
+msgstr "Subdomain mail"
+
+msgid "Subdomain name"
+msgstr "Subdomæne navn"
+
+msgid "Subdomain name is not valid."
+msgstr "Subdomæne navn er ikke gyldigt."
+
+msgid "Subdomain successfully scheduled for addition."
+msgstr "Subdomæne succesfuldt planlagt til tilføjelse."
+
+msgid "Subdomain successfully scheduled for deletion."
+msgstr "Subdomæne succesfuldt planlagt til sletning."
+
+msgid "Subdomain successfully scheduled for update"
+msgstr "Subdomæne succesfuldt planlagt til opdatering."
+
+msgid ""
+"Subdomain you are trying to remove has Ftp accounts. Remove them first."
+msgstr "Subdomæne, du forsøger at slette har Ftp konti. Slet dem først."
+
+msgid ""
+"Subdomain you are trying to remove has email accounts. Remove them first."
+msgstr "Subdomæne, du forsøger at slette har e-mail konti. Slet dem først."
+
+msgid "Subdomains"
+msgstr "Subdomæner"
+
+msgid "Subject"
+msgstr "Emne"
+
+msgid "Subject is missing."
+msgstr "Emne mangler."
+
+msgid "Submit changes"
+msgstr "Tilføj ændringer"
+
+msgid "Support"
+msgstr "Support"
+
+msgid "Support system"
+msgstr "Support system"
+
+msgid "Suspended"
+msgstr "Suspenderet"
+
+msgid "Swap"
+msgstr "Swap"
+
+msgid "Switch"
+msgstr "Skift"
+
+msgid "Switch to the backups directory"
+msgstr "Skift til backup biblioteket"
+
+msgid "Switch to user interface"
+msgstr "Skift til bruger interface"
+
+msgid "System"
+msgstr "System Information."
+
+msgid "System data"
+msgstr "System data"
+
+msgid "System error - custom error page was not updated."
+msgstr "Systemfejl - brugerdefineret fejl side blev ikke opdateret."
+
+msgid "System information"
+msgstr "System information"
+
+#, php-format
+msgid "System is unable to remove '%s' user logo."
+msgstr "Systemet er ikke i stand til fjerne '%s' bruger logo."
+
+msgid "System tools"
+msgstr "System værktøjer"
+
+msgid "System under maintenance"
+msgstr "System under vedligeholdelse"
+
+msgid "TB"
+msgstr "TB"
+
+msgid "TTL"
+msgstr "TTL"
+
+msgid "TTL must be a number."
+msgstr "TTL skal være et tal."
+
+msgid "TXT data"
+msgstr "TXT data"
+
+msgid "TXT field is empty or invalid."
+msgstr "TXT felt er tomt eller ugyldigt."
+
+msgid "Target"
+msgstr "Mål"
+
+msgid "Target host"
+msgstr "Hosting mål"
+
+msgid "Target port"
+msgstr "Mål port"
+
+msgid "Template for Auto email successfully updated."
+msgstr "Skabelon til Auto email blevet opdateret."
+
+msgid "Temporary folder not found."
+msgstr "Midlertidig mappe ikke fundet."
+
+#, php-format
+msgid ""
+"The %s limit for this customer cannot be greater than <strong>%d</strong>, "
+"the calculated limit for his reseller."
+msgstr "Grænsen %s for denne kunde kan ikke være større end <strong>%d</ strong>, den beregnede grænse for hans forhandler."
+
+#, php-format
+msgid ""
+"The %s limit for this customer cannot be greater than <strong>%d</strong>, "
+"your calculated limit."
+msgstr "Grænsen %s for denne kunde kan ikke være større end <strong>%d</ strong>, din beregnede grænse."
+
+#, php-format
+msgid ""
+"The %s limit for this customer cannot be lower than <strong>%d</strong>, the"
+" total of %s already used by him."
+msgstr "Grænsen %s for denne kunde kan ikke være lavere end <strong>%d</ strong>, den samlede %s bliver allerede anvendt af ham."
+
+#, php-format
+msgid ""
+"The %s limit for this customer cannot be set to 'disabled' because he has "
+"already <strong>%d</strong> %s."
+msgstr "Grænsen %s for denne kunde kan ikke sættes til 'slået fra', fordi han allerede har <strong>%d</ strong>%s."
+
+#, php-format
+msgid ""
+"The %s limit for this customer cannot be unlimited because his reseller is "
+"limited for this service."
+msgstr "Grænsen %s for denne kunde kan ikke være ubegrænset, fordi hans forhandler er begrænset i denne service."
+
+#, php-format
+msgid ""
+"The %s limit for this customer cannot be unlimited because your are limited "
+"for this service."
+msgstr "Grænsen %s for denne kunde kan ikke være ubegrænset, fordi din er begrænsede for denne service."
+
+#, php-format
+msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr "Den %s oversættelses fil er blevet ignoreret: Oversættelses tabellen er tom."
+
+msgid "The IP address you're trying to remove is assigned to a reseller."
+msgstr "Den IP-adresse, du forsøger at fjerne er tildelt en forhandler."
+
+msgid "The `Enter` key is disabled for performance reasons."
+msgstr "`Enter` tasten er deaktiveret på grund af ydeevnen."
+
+msgid "The certificate doesn't match with the private key."
+msgstr "Certifikatet passer ikke sammen med den private nøgle."
+
+msgid "The certificate field cannot be empty."
+msgstr "Feltet certifikat kan ikke være tom."
+
+#, php-format
+msgid "The directory %s doesn't exist. Please create it first."
+msgstr "Mappen %s findes ikke. Venligst oprette den først."
+
+#, php-format
+msgid "The directory %s was created."
+msgstr "Mappen %s blev oprettet."
+
+msgid ""
+"The domain is currently deactivated. The modification of some of its "
+"properties will result by a complete or partial reactivation of it."
+msgstr "Domænet er i øjeblikket deaktiveret. En ændring af nogle af dens egenskaber vil resultere i en fuldstændig eller delvis reaktivering af det."
+
+msgid ""
+"The domain is currently deactivated. The modification of some of its "
+"properties will result in a complete or partial reactivation of it."
+msgstr "Domænet er i øjeblikket deaktiveret. En ændring af nogle af dens egenskaber vil resultere i en fuldstændig eller delvis reaktivering af det."
+
+msgid ""
+"The domain or at least one of its entities has a different status than 'ok'."
+msgstr "Domænet eller mindst en af sine objekter har en anden status end 'ok'."
+
+msgid "The domain you are trying to edit doesn't exist."
+msgstr "Det domæne, du forsøger at redigere findes ikke."
+
+msgid "The menu you are trying to edit doesn't exist."
+msgstr "Den menu, du forsøger at redigere findes ikke."
+
+msgid "The package is corrupt. Please correct it."
+msgstr "Pakken er beskadiget. Ret det venligst."
+
+msgid ""
+"The package will be installed automaticly to your system after upload.<br "
+"/>Refresh your site to see the new status!"
+msgstr "Pakken vil blive installeret automatisk til dit system efter upload.<br />Opdater dit websted for at se den nye status!"
+
+msgid "The password field is empty."
+msgstr "Password feltet er tomt."
+
+#, php-format
+msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgstr "Den eksterne filstørrelse (%s) er lavere end 1 byte. Kontroller URL."
+
+msgid "The reseller account that you are trying to edit has not been found."
+msgstr "Den forhandler konto, som du forsøger at redigere er ikke blevet fundet."
+
+msgid ""
+"The reseller you want to remove has one or more customers accounts.<br "
+"/>Remove them first."
+msgstr "Denne forhandler har en eller flere kunders konti.<br /> For at fjerne denne forhandler, skal du først fjerne disse kunders konti."
+
+msgid "The software installer feature requires PHP."
+msgstr "Software installer kræver PHP."
+
+msgid "The software installer require the PHP support."
+msgstr "Installationsprogrammet kræver PHP support."
+
+msgid "The uploaded file was only partially uploaded."
+msgstr "Den uploadede fil blev kun delvist uploadet."
+
+#, php-format
+msgid "The username %s is not available."
+msgstr "Brugernavnet %s er ikke tilgængelig."
+
+msgid "The username field is empty."
+msgstr "Brugernavn feltet er tomt."
+
+msgid "The value has been found in the stack"
+msgstr "Værdien er fundet i stacken"
+
+msgid "The value has not been found in the stack"
+msgstr "Værdien er ikke fundet i stacken"
+
+msgid "The values must not be equal"
+msgstr "Værdierne skal ikke være ens"
+
+msgid ""
+"There is an Error inside your package. Please check it!<br />Refresh your "
+"site to see the new status!"
+msgstr "Der er en fejl i din pakke. Venligst tjek det!<br />Opdater dit websted for at se den nye status!"
+
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr "Denne IP (%s) er ikke tildelt noget netværkskort!"
+
+#, php-format
+msgid ""
+"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
+"this package!<br />Please delete the files and database for this package "
+"manually!"
+msgstr "Denne pakke (%s, V%s) blev slettet af din forhandler. Du kan kun afinstallere denne pakke!<br />Venligst slette filer og database til denne pakke manuelt!"
+
+#, php-format
+msgid ""
+"This database will be permanently deleted. This process cannot be recovered."
+" All users linked to this database will also be deleted if not linked to "
+"another database. Are you sure you want to delete the '%s' database?"
+msgstr "Denne database vil blive slettet permanent. Denne proces kan ikke gendannes. Alle brugere der er knyttet til denne database vil også blive slettet, hvis de ikke er knyttet til en anden database. Er du sikker på du vil slette '%s' database?"
+
+msgid "This htaccess group already exists."
+msgstr "Denne htaccess gruppe findes allerede."
+
+msgid "This htaccess user already exist."
+msgstr "Denne htaccess bruger eksisterer allerede."
+
+msgid ""
+"This interface allow to add or remove IP addresses. IP addresses listed "
+"below are already under the control of i-MSCP. IP addresses which are added "
+"through this interface will be automatically added into the i-MSCP database,"
+" and will be available for assignment to one or many of your resellers. If "
+"an IP address is not already configured on the system, it will be attached "
+"to the selected network interface."
+msgstr "Dette interface gør det muligt at tilføje eller fjerne IP-adresser. IP-adresser, der er anført nedenfor er allerede under kontrol af I-MSCP. IP-adresser, som tilføjes via dette interface vil automatisk blive tilføjet i i-MSCP databasen, og vil være tilgængelige for tildeling til en eller mange af dine forhandlere. Hvis en IP-adresse ikke allerede er konfigureret på systemet, vil det blive knyttet til det valgte netværks interface."
+
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the %% character to allow this SQL user to connect from "
+"any host."
+msgstr ""
+
+msgid "This package already exists in the administrator software repository."
+msgstr "Denne pakke findes allerede i administratorens softwarearkiv."
+
+#, php-format
+msgid "This package already exists in the depot of the reseller \"%1$s\"!"
+msgstr "Denne pakke findes allerede i depotet for forhandler \"%1$s\"!"
+
+msgid "This package already exists in the software depot!"
+msgstr "Denne pakke findes allerede i software depot!"
+
+msgid "This package already exists in your software repository."
+msgstr "Denne pakke findes allerede i dit softwarearkiv."
+
+msgid "This package is installed on following domain(s):"
+msgstr "Denne pakke er installeret på følgende domæne(r):"
+
+msgid "This package is not installed"
+msgstr "Denne pakke er ikke installeret"
+
+msgid "This package is not installed yet"
+msgstr "Denne pakke er ikke installeret endnu"
+
+msgid "This software is installed on following domain(s):"
+msgstr "Denne software er installeret på følgende domæne(r):"
+
+msgid ""
+"This user has domain record.<br/>First remove the domain from the system."
+msgstr "Denne bruger har domæne record.<br/>Fjern først domænet fra systemet."
+
+msgid "This user name already exist."
+msgstr "Dette brugernavn findes allerede."
+
+msgid "TiB"
+msgstr "TiB"
+
+msgid "Ticket Information"
+msgstr "Ticket Information"
+
+msgid "Ticket information"
+msgstr "Ticket information"
+
+msgid "Ticket not found."
+msgstr "Ticket ikke fundet."
+
+msgid "Ticket successfully closed."
+msgstr "Ticket lukket."
+
+msgid "Ticket successfully deleted."
+msgstr "Ticket slettet."
+
+msgid "Ticket successfully reopened."
+msgstr "Ticket genåbnet."
+
+#, php-format
+msgid "Ticket with Id '%d' was not found."
+msgstr "Ticket med Id '%d' blev ikke fundet."
+
+msgid "To Admin"
+msgstr "Til Administrator"
+
+msgid "To reseller"
+msgstr "Til Forhandler"
+
+#, php-format
+msgid "To unprotect this plugin, you must edit the %s file"
+msgstr "For at ophæve beskyttelsen af dette plugin, skal du redigere %s filen"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Total Domains"
+msgstr "Total antal Domæner"
+
+msgid "Total Software"
+msgstr "Total Software"
+
+msgid "Total Web software repositories"
+msgstr "Total Web softwarearkiver"
+
+msgid "Total installations"
+msgstr "Total antal installationer"
+
+#, php-format
+msgid "Total mails: %s / %s %s"
+msgstr "Total e-mails: %s / %s %s"
+
+msgid "Total packages in Web software repository"
+msgstr "Total antal pakker i Web softwarearkivet"
+
+msgid "Total reseller"
+msgstr "Total antal forhandlere"
+
+msgid "Total software"
+msgstr "Total software"
+
+msgid "Traffic"
+msgstr "Trafik"
+
+msgid "Traffic usage"
+msgstr "Trafik forbrug"
+
+msgid "Translated strings"
+msgstr "Oversatte strenge"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "UP"
+msgstr "OPPE"
+
+msgid "URL forwarding"
+msgstr "URL viderestilling"
+
+msgid "URL protocol"
+msgstr "URL protokol"
+
+msgid "URL to this admin panel"
+msgstr "URL til dette admin panel"
+
+#, php-format
+msgid "Unable to activate the %s plugin: %s"
+msgstr "Kan ikke aktivere %s plugin: %s"
+
+#, php-format
+msgid "Unable to backup %s plugin directory."
+msgstr "Kan ikke sikkerhedskopiere %s plugin mappe."
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr "Kan ikke ændre %s plugin: %s"
+
+#, php-format
+msgid "Unable to close the ticket with Id '%s'."
+msgstr "Kan ikke lukke ticket med Id '%s'."
+
+#, php-format
+msgid "Unable to create '%s' directory for language file."
+msgstr "Kunne ikke oprette '%s' mappe for sprog-fil."
+
+msgid "Unable to create 'LC_MESSAGES' directory for language file."
+msgstr "Kan ikke skabe 'LC_MESSAGES' mappe for sprog-fil."
+
+#, php-format
+msgid "Unable to deactivate the %s plugin: %s"
+msgstr "Kunne ikke deaktivere %s plugin: %s"
+
+#, php-format
+msgid "Unable to delete the %s plugin: %s"
+msgstr "Kan ikke slette %s plugin: %s"
+
+msgid "Unable to extract plugin archive."
+msgstr "Kan ikke udpakke plugin arkiv."
+
+#, php-format
+msgid "Unable to extract plugin archive: %s"
+msgstr "Kan ikke udpakke plugin arkiv: %s"
+
+msgid "Unable to find any network interface. You cannot add new IP address."
+msgstr "Kan ikke finde nogen netværks interface. Du kan ikke tilføje nye IP-adresse."
+
+msgid "Unable to find plugin root directory."
+msgstr "Kan ikke finde plugin root mappe."
+
+#, php-format
+msgid "Unable to get stats for file %s."
+msgstr "Kan ikke få statistik for filen %s."
+
+msgid "Unable to get the IP address list. Please fix this problem."
+msgstr "Kan ikke hente IP adresse listen. Venligst løs dette problem."
+
+msgid "Unable to get update info from Github"
+msgstr "Kunne ikke få update info fra Github"
+
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr "Kan ikke installere %s plugin: %s"
+
+msgid "Unable to move file."
+msgstr "Kan ikke flytte fil."
+
+msgid "Unable to open archive."
+msgstr "Kan ikke åbne arkivet."
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr "Ikke i stand til at beskytte %s plugin: %s"
+
+msgid "Unable to read Web software repository index file."
+msgstr "Kan ikke læse web softwarearkiv index-fil."
+
+msgid "Unable to read xml file for web software."
+msgstr "Kan ikke læse xml-fil for web software."
+
+#, php-format
+msgid "Unable to reopen ticket with Id '%s'."
+msgstr "Kan ikke genåbne ticket med Id '%s'."
+
+#, php-format
+msgid "Unable to restore %s plugin directory"
+msgstr "Kan ikke gendanne %s plugin mappen"
+
+msgid ""
+"Unable to retrieve directories list for your domain. Please contact your "
+"reseller."
+msgstr "Kan ikke hente mappe liste til dit domæne. Kontakt din forhandler."
+
+msgid "Unable to retrieve your password from the database."
+msgstr "Kan ikke hente dit password i databasen."
+
+msgid ""
+"Unable to schedule deletion of the customer account. A message has been sent"
+" to the administrator."
+msgstr "Kan ikke planlægge sletning af kundens konto. En meddelelse er sendt til administratoren."
+
+msgid ""
+"Unable to schedule deletion of the customer account. Please consult admin "
+"logs or your mail for more information."
+msgstr "Kan ikke planlægge sletning af kundens konto. Venligst konsultere admin logs eller din e-mail for mere information."
+
+msgid "Unable to set sslallowselfsigned option"
+msgstr "Kunne ikke indstille sslallowselfsigned option"
+
+msgid "Unable to set sslverifypeer option"
+msgstr "Kan ikke indstille sslverifypeer option"
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr "Kunne ikke afinstallere %s plugin: %s"
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
+msgstr "Kan ikke opdatere %s plugin: %s"
+
+#, php-format
+msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr "Kan ikke uploade filen. Max. upload filstørrelse (%1$d MB) nået?"
+
+msgid "Unauthorized"
+msgstr "Uautoriseret"
+
+msgid "Unavailable"
+msgstr "Ikke tilgængelig"
+
+msgid "Uninstall"
+msgstr "Afinstaller"
+
+msgid "Uninstall this plugin"
+msgstr "Afinstaller dette plugin"
+
+msgid "Uninstallation in progress..."
+msgstr "Afinstallering i gang..."
+
+msgid "Uninstalled"
+msgstr "Afinstalleret"
+
+msgid "Unknown"
+msgstr "Ukendt"
+
+msgid "Unknown Error"
+msgstr "Ukendt Fejl"
+
+msgid "Unknown FTP user."
+msgstr "Ukendt FTP bruger-id."
+
+msgid "Unknown SQL user"
+msgstr ""
+
+msgid "Unknown action requested."
+msgstr "Ukendt action anmodet."
+
+#, php-format
+msgid "Unknown action: %s"
+msgstr "Ukendt action: %s"
+
+msgid "Unknown error"
+msgstr "Ukendt fejl"
+
+msgid "Unknown language name."
+msgstr "Ukendt sprog navn."
+
+msgid "Unknown layout color."
+msgstr "Ukendt layout farve."
+
+msgid "Unknown reason."
+msgstr "Ukendt årsag."
+
+#, php-format
+msgid "Unknown service name '%s'."
+msgstr "Ukendt service navn '%s'."
+
+msgid "Unknown status"
+msgstr "Ukendt status"
+
+msgid "Unknown type."
+msgstr "Ukendt type."
+
+msgid "Unknown username."
+msgstr "Ukendt brugernavn."
+
+msgid "Unlimited"
+msgstr "Ubegrænset"
+
+msgid "Unprotect it"
+msgstr "Fjern beskyttelse"
+
+msgid "Update"
+msgstr "Opdater"
+
+msgid "Update Plugins"
+msgstr "Opdater Plugins"
+
+msgid "Update SQL user password"
+msgstr "Opdater SQL bruger password"
+
+msgid "Update data"
+msgstr "Opdater data"
+
+msgid "Update from Web software repository"
+msgstr "Opdater fra Web softwarearkiv"
+
+msgid "Update from web depot"
+msgstr "Opdater fra web depot"
+
+msgid "Update hosting plan"
+msgstr "Opdater hosting plan"
+
+msgid "Update in progress..."
+msgstr "Opdatering i gang..."
+
+msgid "Update info"
+msgstr "Opdaterings info"
+
+msgid ""
+"Update of Web software repository index has been aborted. Missing or empty "
+"fields."
+msgstr "Opdatering af Web softwarearkiv indeks er blevet afbrudt. Manglende eller tomme felter."
+
+msgid "Update password"
+msgstr "Opdater password"
+
+msgid "Updates"
+msgstr "Opdateringer"
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "Upload logo"
+msgstr "Opload logo"
+
+msgid "Upload now"
+msgstr "Upload nu"
+
+msgid "Uptime"
+msgstr "Oppetid"
+
+msgid "Usage of dot in domain name labels is prohibited."
+msgstr "Brug af punktum i domænenavn labels er forbudt."
+
+msgid "Usage status"
+msgstr "Anvendelsesstatus"
+
+msgid "Use normal connection (No SSL)"
+msgstr "Brug normal tilslutning (Ingen SSL)"
+
+msgid "Use secure connection (SSL)"
+msgstr "Brug sikker forbindelse (SSL)"
+
+msgid "Use strong Passwords"
+msgstr "Brug stærk adgangskode"
+
+msgid "Used"
+msgstr "Brugt"
+
+msgid "Used database"
+msgstr "Anvendt database"
+
+msgid "User"
+msgstr "Bruger"
+
+msgid "User (first and last) name"
+msgstr "Bruger (for og efter) navn"
+
+msgid "User assignment"
+msgstr "Bruger tildeling"
+
+msgid "User auth"
+msgstr "Brugerrettigheder"
+
+msgid "User data successfully updated"
+msgstr "Brugerdata blev succesfuldt opdateret."
+
+msgid "User data successfully updated."
+msgstr "Brugerdata blev succesfuldt opdateret."
+
+msgid "User data were not updated."
+msgstr "Brugerdata blev ikke opdateret."
+
+msgid "User data were successfully updated."
+msgstr "Brugerdata blev opdateret."
+
+msgid ""
+"User do not exist or you do not have permission to access this interface"
+msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
+
+msgid "User errors"
+msgstr "Bruger fejl"
+
+msgid "User has not been deleted."
+msgstr "Bruger er ikke blevet slettet."
+
+msgid "User login (system) name"
+msgstr "Bruger login (system) navn"
+
+msgid "User password"
+msgstr "Bruger adgangskode"
+
+msgid "User real (first and last) name"
+msgstr "Brugerens rigtige (for- og efter-) navn"
+
+msgid "User scheduled for deletion."
+msgstr "Bruger planlagt til sletning."
+
+msgid "User session successfully destroyed."
+msgstr "Brugersession succesfuldt tilendebragt."
+
+msgid "User session successfully killed for password change."
+msgstr "Bruger session succesfuldt afbrudt for ændring af password."
+
+msgid "User successfully disconnected."
+msgstr "Bruger succesfuldt afbrudt."
+
+msgid "User type"
+msgstr "Bruger type"
+
+msgid "User type (admin, reseller, user)"
+msgstr "Bruger type (admin, forhandler, bruger)"
+
+msgid "Username"
+msgstr "Brugernavn"
+
+msgid "Username and password for application login"
+msgstr "Brugernavn og adgangskode for program login"
+
+msgid "Username is too long."
+msgstr "Brugernavn er for langt."
+
+msgid "Users"
+msgstr "Brugere"
+
+msgid "Users and groups"
+msgstr "Brugere og grupper"
+
+#, php-format
+msgid "Value for the %s directive"
+msgstr "Værdi for %s direktiv"
+
+#, php-format
+msgid "Value for the PHP %s directive is out of range."
+msgstr "Value for PHP %s direktiv er uden for afgrænsning."
+
+#, php-format
+msgid ""
+"Value for the PHP <strong>%%s</strong> directive must be between %%d and "
+"%%d."
+msgstr "Værdi for PHP <strong>%%s</strong> direktiv skal være mellem %%d og %%d."
+
+msgid "Values"
+msgstr "Værdier"
+
+msgid "Vendor hompage"
+msgstr "Forhandler hjemmeside"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Very high"
+msgstr "Meget høj"
+
+msgid "View"
+msgstr "Se"
+
+msgid "View Support Ticket"
+msgstr "Se Support Ticket"
+
+msgid "View aliases"
+msgstr "Vis aliaser"
+
+msgid "View hosting plan"
+msgstr "Vis hosting plan"
+
+msgid "View ticket"
+msgstr "Se ticket"
+
+msgid "Visit plugin site"
+msgstr "Besøg plugin webstedet"
+
+msgid "Warning traffic"
+msgstr "Advarsel trafik"
+
+msgid "Warnings and Errors"
+msgstr "Advarsler og fejl"
+
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr "Vi beklager, men systemet er i øjeblikket under vedligeholdelse.\nPrøv venligst igen senere."
+
+msgid "Web Statistics"
+msgstr "Web Statistikker"
+
+msgid "Web files only"
+msgstr "Kun webfiler"
+
+msgid "Web folder protection"
+msgstr "Web mappe beskyttelse"
+
+msgid "Web in"
+msgstr "Web ind"
+
+msgid "Web out"
+msgstr "Web ud"
+
+msgid "Web software depot packages total"
+msgstr "Web software depot total antal pakker"
+
+msgid "Web software repository"
+msgstr "Web softwarearkiv"
+
+msgid "Web software repository index been successfully updated."
+msgstr "Web softwarearkiv indeks blevet opdateret."
+
+msgid "Web software repository index is already up to date."
+msgstr "Web software arkivindeks er allerede ajour."
+
+msgid "Web statistics"
+msgstr "Web statistiker"
+
+msgid "Web traffic"
+msgstr "Web trafik"
+
+msgid "Webmail"
+msgstr "Webmail"
+
+msgid "Webtools"
+msgstr "Webværktøjer"
+
+msgid "Welcome email"
+msgstr "Velkomst e-mail"
+
+msgid "Welcome {USERNAME} to i-MSCP"
+msgstr "Velkommen {USERNAME} til i-MSCP"
+
+msgid ""
+"When allowed, scripts can call the PHP exec() function. This function is "
+"needed by many applications but can cause some security issues"
+msgstr "Når tilladt, kan scripts kalde PHP exec() funktion. Denne funktion er nødvendig for mange programmer, men kan medføre nogle sikkerhedsproblemer"
+
+msgid ""
+"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
+msgstr "Wildcard: Setup en DNS MX-record til at videresende post til ikke-eksisterende underdomæner."
+
+#, php-format
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr "Jokertegn såsom %% og ? er ikke tilladt i brugernavn."
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
+msgstr "Jokertegn såsom %% og ? er ikke tilladt."
+
+msgid "Wrong IP address."
+msgstr "Forkert IP-adresse."
+
+msgid "Wrong mail syntax in forward list."
+msgstr "Forkert e-mail syntaks i forward liste."
+
+msgid "Wrong request."
+msgstr "Forkert anmodning."
+
+msgid "Wrong reseller id."
+msgstr "Forkert forhandler id."
+
+msgid "Wrong security code"
+msgstr "Forkert sikkerhedskode"
+
+msgid "Wrong software id."
+msgstr "Forkert software id."
+
+msgid "Wrong syntax for new expire date."
+msgstr "Forkert syntaks for ny udløbsdato."
+
+#, php-format
+msgid "Wrong syntax for the %s limit."
+msgstr "Forkert syntaks for %s grænsen."
+
+msgid "Wrong syntax for the mail quota value."
+msgstr "Forkert syntaks for Email kvote værdi."
+
+msgid "Wrong user level provided."
+msgstr "Forkert brugerniveau opgivet."
+
+msgid "Wrong username."
+msgstr "Forkert brugernavn."
+
+msgid "Wrong value for the PHP open_basedir directive."
+msgstr "Forkert værdi for PHP open_basedir direktivet."
+
+msgid "XML file URL for the Web software repository"
+msgstr "XML fil URL til Web softwarearkiv"
+
+msgid "YB"
+msgstr "YB"
+
+msgid "Year"
+msgstr "År"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid ""
+"Yes means that the reseller can allow his customers to edit this directive"
+msgstr "Ja betyder, at forhandleren kan give sine kunder ret til at redigere dette direktiv"
+
+msgid "Yes, delete this account."
+msgstr "Ja, slet denne konto."
+
+msgid "YiB"
+msgstr "YiB"
+
+msgid "You are exceeding the monthly server traffic limit."
+msgstr "Du overskrider den månedlige server trafik grænse."
+
+msgid "You are exceeding you domain alias limit."
+msgstr "Du overskrider dit domænes alias grænse."
+
+msgid "You are exceeding your FTP account limit."
+msgstr "Du overskrider din FTP konti grænse."
+
+msgid "You are exceeding your SQL database limit."
+msgstr "Du overskrider din SQL databaser grænse."
+
+msgid "You are exceeding your SQL user limit."
+msgstr "Du overskrider din SQL bruger grænse."
+
+msgid "You are exceeding your disk space limit."
+msgstr "Du overskrider din diskplads grænse."
+
+msgid "You are exceeding your email account limit."
+msgstr "Du overskrider din e-mail konti grænse."
+
+msgid "You are exceeding your monthly traffic limit."
+msgstr "Du overskrider din månedlige trafik grænse."
+
+msgid "You are exceeding your subdomain limit."
+msgstr "Du overskrider din subdomæne grænse."
+
+msgid "You are not allowed to act on your own session."
+msgstr "Du har ikke tilladelse til at indgribe i din egen session."
+
+msgid "You are not allowed to update a protected plugin."
+msgstr "Det er ikke tilladt at opdatere en beskyttet plugin."
+
+msgid "You can only upload images."
+msgstr "Du kan kun uploade billeder."
+
+msgid "You can't install the software outside the htdocs directory."
+msgstr "Du kan ikke installere softwaren uden for htdocs mappe."
+
+msgid "You cannot delete a reseller that has customer accounts."
+msgstr "Du kan ikke slette en forhandler, der har kundekonti."
+
+msgid "You cannot delete the last active IP address."
+msgstr "Du kan ikke slette den sidste aktive IP adresse."
+
+#, php-format
+msgid "You cannot forward %s on itself."
+msgstr "Du kan ikke viderestille %s til sig selv."
+
+#, php-format
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
+" for the <b>%2$s</b> service."
+msgstr "Du kan ikke flytte <b>%1$s</b> i en destinations forhandler,<br />som har grænser for <b>%2$s</b> service."
+
+msgid "You cannot protect an area without selected htaccess group(s)."
+msgstr "Du kan ikke beskytte et område uden udvalgte htaccess gruppe (r)."
+
+msgid "You cannot protect an area without selected htaccess user(s)."
+msgstr "Du kan ikke beskytte et område uden valgte htaccess bruger(e)."
+
+#, php-format
+msgid "You cannot remove the %s IP address."
+msgstr "Du kan ikke fjerne %s IP adressen."
+
+msgid "You cannot remove this entry."
+msgstr "Du kan ikke fjerne denne post."
+
+msgid "You cannot set expire date in past."
+msgstr "Du kan ikke indstille udløbsdato i fortiden."
+
+msgid "You cannot unassign an IP address already in use."
+msgstr "Du kan ikke fjerne tildelingen af en IP adresse der allerede er i brug."
+
+msgid "You do not have DNS resource records."
+msgstr "Du har ikke DNS ressource records."
+
+msgid "You do not have FTP accounts."
+msgstr "Du har ikke FTP konti."
+
+msgid "You do not have any software uploaded yet"
+msgstr "Du har ikke noget software uploadet endnu"
+
+msgid "You do not have customers."
+msgstr "Du har ingen kunder"
+
+msgid "You do not have databases."
+msgstr "Du har ingen database."
+
+msgid "You do not have domain aliases."
+msgstr "Du har ikke domæne aliaser."
+
+msgid "You do not have permission to install software yet"
+msgstr "Du har ikke tilladelse til at installere software endnu"
+
+msgid "You do not have permissions to upload software"
+msgstr "Du har ikke tilladelse til at uploade software"
+
+msgid "You do not have protected areas."
+msgstr "Du har ingen beskyttede områder."
+
+msgid "You do not have subdomains."
+msgstr "Du har ingen subdomæne."
+
+msgid "You do not have sufficient permissions to perform this operation."
+msgstr "Du har ikke tilstrækkelige rettigheder til at udføre denne operation."
+
+#, php-format
+msgid "You have %d new domain alias %s."
+msgstr "Du har %d nye domæne alias %s."
+
+msgid ""
+"You have a FTP account limit!<br />You cannot add a user with unlimited FTP "
+"accounts."
+msgstr "Du har en FTP-konti grænse!<br />Du kan ikke tilføje en bruger med ubegrænset FTP konti."
+
+msgid ""
+"You have a SQL database limit.<br />You cannot add a user with unlimited SQL"
+" databases."
+msgstr "Du har en SQL databaser grænse.<br />Du kan ikke tilføje en bruger med ubegrænset SQL databaser."
+
+msgid ""
+"You have a SQL user limit.<br />You cannot add a user with unlimited SQL "
+"users."
+msgstr "Du har en SQL bruger grænse.<br />Du kan ikke tilføje en bruger med ubegrænset SQL brugere."
+
+msgid ""
+"You have a disk space limit.<br />You cannot add a user with unlimited disk "
+"space."
+msgstr "Du har en diskplads grænse.<br />Du kan ikke tilføje en bruger med ubegrænset diskplads."
+
+msgid ""
+"You have a domain alias limit.<br />You cannot add a user with unlimited "
+"domain aliases."
+msgstr "Du har en domæne alias grænse.<br />Du kan ikke tilføje en bruger med ubegrænset domæne aliaser."
+
+msgid ""
+"You have a monthly traffic limit.<br />You cannot add a user with unlimited "
+"monthly traffic."
+msgstr "Du har en månedlig trafik grænse.<br />Du kan ikke tilføje en bruger med ubegrænset månedlige trafik."
+
+msgid ""
+"You have a subdomain limit.<br />You cannot add a user with unlimited "
+"subdomains."
+msgstr "Du har en subdomæne grænse.<br />Du kan ikke tilføje en bruger med ubegrænset subdomæne."
+
+msgid ""
+"You have an email account limit.<br />You cannot add a user with unlimited "
+"email accounts."
+msgstr "Du har en e-mail konti grænse.<br />Du kan ikke tilføje en bruger med ubegrænset e-mail konti."
+
+msgid "You have been successfully logged out."
+msgstr "Du er blevet logget ud."
+
+msgid "You have chosen a directory which doesn't match the domain directory."
+msgstr "Du har valgt en mappe, der ikke stemmer overens med domæne mappen."
+
+msgid ""
+"You have disabled SQL databases for this user.<br />You cannot have SQL "
+"users here."
+msgstr "Du har deaktiveret SQL databaser for denne bruger.<br />Du kan ikke have SQL brugere her."
+
+msgid "You have no closed tickets."
+msgstr "Du har ingen lukkede tickets."
+
+msgid "You have no groups."
+msgstr "Du har ingen grupper."
+
+msgid "You have no open tickets."
+msgstr "Du har ingen åbne tickets."
+
+msgid "You have not service ports defined."
+msgstr "Du har ingen service porte defineret."
+
+msgid ""
+"You have reached the maximum number of Email accounts allowed by your "
+"subscription."
+msgstr "Du har nået det maksimale antal e-mail konti, tilladt af dit abonnement."
+
+msgid ""
+"You have reached the maximum number of domain aliasses allowed by your "
+"subscription."
+msgstr "Du har nået det maksimale antal domæne aliasser tilladt af dit abonnement."
+
+msgid ""
+"You have reached the maximum number of subdomains allowed by your "
+"subscription."
+msgstr "Du har nået det maksimale antal subdomæner tilladt af dit abonnement."
+
+msgid "You have reached your domain limit.<br />You cannot add more domains."
+msgstr "Du har nået din domæne grænse.<br />Du kan ikke tilføje flere domæner."
+
+#, php-format
+msgid "You have received %s new support ticket(s)."
+msgstr "Du har modtaget %s nye support ticket(s)."
+
+msgid "You have to choose between file-upload and wget-function."
+msgstr "Du er nødt til at vælge mellem fil-upload og wget-funktion."
+
+msgid "You must assign at least one IP per reseller."
+msgstr "Du skal tildele mindst én IP per forhandler."
+
+msgid "You must choose between local and remote upload."
+msgstr "Du skal vælge mellem lokal og remote upload."
+
+msgid "You must confirm customer account deletion."
+msgstr "Du skal bekræfte kundekonto sletning."
+
+msgid "You must confirm your password."
+msgstr "Du skal bekræfte dit password."
+
+msgid "You must enter a domain alias name."
+msgstr "Du skal indtaste et domæne alias navn."
+
+msgid "You must enter a subdomain name."
+msgstr "Du skal indtaste et subdomæne navn."
+
+msgid "You must first generate a password"
+msgstr "Du skal først oprette et password"
+
+msgid "You must omit 'www'. It will be added automatically."
+msgstr "Du behøver ikke \"www\". i-MSCP vil tilføje det automatisk."
+
+msgid "You must provide a password."
+msgstr "Du skal angive et password."
+
+msgid "You must select a file to upload."
+msgstr "Du skal vælge en fil til upload."
+
+msgid "You must select a file to upload/download."
+msgstr "Du skal vælge en fil for upload/download."
+
+msgid "You must select a least one item to deactivate."
+msgstr "Du skal vælge mindst ét ​​element at deaktivere."
+
+msgid "You must select a least one item to delete"
+msgstr "Du skal vælge mindst ét ​​element der skal slettes."
+
+msgid "You must select a least one mail account to delete."
+msgstr "Du skal vælge mindst en email-konto der skal slettes."
+
+msgid "You must select a network interface."
+msgstr "Du skal vælge et netværks interface."
+
+msgid "You must select a plugin."
+msgstr "Du skal vælge en plugin."
+
+msgid "You must specify a message."
+msgstr "Du skal angive en besked."
+
+msgid "You must specify a subject."
+msgstr "Du skal angive et emne."
+
+msgid "You need a Database for this software"
+msgstr "Du har brug for en database til denne software"
+
+#, php-format
+msgid "You received %d new answer(s) to your support questions."
+msgstr "Du har modtaget %d nyt/nye svar til dit/dine support spørgsmål."
+
+msgid "Your account has expired."
+msgstr "Din konto er udløbet."
+
+msgid "Your account has expired. Please renew your subscription."
+msgstr "Din konto er udløbet. Venligst forny dit abonnement."
+
+msgid ""
+"Your account is currently under maintenance or disabled. Please, contact "
+"your reseller."
+msgstr "Din konto er i øjeblikket under vedligeholdelse eller deaktiveret. Kontakt venligst din forhandler."
+
+msgid "Your certificate is expired"
+msgstr "Dit certifikat er udløbet"
+
+msgid "Your certificate is not valid or the CA bundle is missing."
+msgstr "Dit certifikat er ikke gyldigt eller CA bundle mangler."
+
+msgid "Your certificate is not valid."
+msgstr "Dit certifikat er ikke gyldigt."
+
+msgid "Your consumption"
+msgstr "Dit forbrug"
+
+msgid "Your message"
+msgstr "Din Meddelse"
+
+msgid "Your message has been successfully sent."
+msgstr "Din besked er blevet sendt."
+
+msgid "Your new i-MSCP login"
+msgstr "Dit nye i-MSCP login"
+
+msgid "Your new password has been sent. Check your email."
+msgstr "Dit nye password er blevet sendt. Tjek din e-mail."
+
+msgid "Your package is corrupt. Please correct it!"
+msgstr "Din pakke er beskadiget. Ret venligst dette!"
+
+#, php-format
+msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgstr "Din eksterne filstørrelse (%s) er lavere end 1 byte. Kontroller URL."
+
+msgid ""
+"Your request for new password has been registered. You will receive an email"
+" with instructions to complete the process."
+msgstr "Deres anmodning om nyt password er blevet registreret. Du vil modtage en e-mail med instruktioner for at fuldføre processen."
+
+msgid "ZB"
+msgstr "ZB"
+
+msgid "ZiB"
+msgstr "ZiB"
+
+msgid "Zip"
+msgstr "Zip"
+
+msgid "Zip code"
+msgstr "Postnr"
+
+msgid "Zip/Postal code"
+msgstr "Postnummer"
+
+msgid "[New]"
+msgstr "[Ny]"
+
+msgid "[Re]"
+msgstr "[Re]"
+
+msgid "[Ticket]"
+msgstr "[Ticket]"
+
+msgid "_: Localised language"
+msgstr "Dansk (Danmark) - Danish (Denmark)"
+
+msgid "activated"
+msgstr "aktiveret"
+
+msgid "activated (Softwaredepot)"
+msgstr "aktiveret (Softwaredepot)"
+
+msgid "and"
+msgstr "og"
+
+msgid "day"
+msgstr "dag"
+
+msgid "days"
+msgstr "dage"
+
+msgid "deleting"
+msgstr "sletning"
+
+msgid "disabled"
+msgstr "deaktiveret"
+
+msgid "disk space"
+msgstr "diskplads"
+
+msgid "domain"
+msgstr "domæne"
+
+msgid "domain alias"
+msgstr "domæne alias"
+
+msgid "domain aliases"
+msgstr "domæne aliases"
+
+msgid "domains"
+msgstr "domæner"
+
+msgid "email account"
+msgstr "E-mail konto"
+
+msgid "email accounts"
+msgstr "E-mail konti"
+
+msgid "enabled"
+msgstr "aktiveret"
+
+#. Please ignore this entry
+msgid "encoding"
+msgstr "UTF-8"
+
+msgid "everything"
+msgstr "alt"
+
+msgid "from other browser"
+msgstr "fra anden browser"
+
+msgid "i-MSCP - Application Management (Permissions)"
+msgstr "i-MSCP - Programadministration (Tilladelser)"
+
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
+msgstr "i-MSCP - Bruger/Opret FangAlle Mail Konto"
+
+msgid "i-MSCP - Multi Server Control Panel / Login"
+msgstr "i-MSCP - Multi Server Kontrolpanel / Log ind"
+
+msgid "i-MSCP - Multi Server Control Panel / Lost Password"
+msgstr "i-MSCP - Multi Server Control Panel / Glemt Password"
+
+msgid "i-MSCP - Multi Server Control Panel / Maintenance"
+msgstr "i-MSCP - Multi Server Control Panel / Vedligeholdelse"
+
+msgid "i-MSCP - Software Installer / Management"
+msgstr "i-MSCP - Software Installer / Administration"
+
+msgid "i-MSCP - Software Management"
+msgstr "i-MSCP - Software Administration"
+
+msgid "i-MSCP - Software Management (Permissions)"
+msgstr "i-MSCP - Software Administration (Tilladelser)"
+
+msgid "i-MSCP - Sofware Management"
+msgstr "i-MSCP - Software Administration"
+
+msgid "i-MSCP / Software Installer / Management"
+msgstr "i-MSCP / Software Installer / Administration"
+
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP Daemon tools"
+
+msgid "i-MSCP Notice"
+msgstr "I-MSCP Meddelelse"
+
+msgid "i-MSCP Software installer / Web software repository"
+msgstr "I-MSCP Software installer / Web softwarearkiv"
+
+msgid "i-MSCP Web software repository"
+msgstr "I-MSCP Web softwarearkiv"
+
+msgid "i-MSCP plugin store"
+msgstr "I-MSCP plugin opbevaring"
+
+msgid "i-MSCP updates"
+msgstr "i-MSCP opdateringer"
+
+msgid "i-MSCP version update checking is disabled"
+msgstr "i-MSCP version opdaterings kontrol er deaktiveret"
+
+msgid "installed"
+msgstr "installeret"
+
+msgid "installing"
+msgstr "installation"
+
+msgid "internet Multi Server Control Panel"
+msgstr "internet Multi Server Kontrolpanel"
+
+msgid "kB"
+msgstr "kB"
+
+msgid "kiB"
+msgstr "kiB"
+
+msgid "mail"
+msgstr "mail"
+
+msgid "missing alias"
+msgstr "manglende alias"
+
+msgid "missing domain"
+msgstr "manglende domæne"
+
+msgid "n\\a"
+msgstr "Ikke Tilgængelig"
+
+msgid "no"
+msgstr "nej"
+
+msgid "not available"
+msgstr "ikke tilgængelig"
+
+msgid "not required"
+msgstr "ikke påkrævet"
+
+msgid "older than 1 month"
+msgstr "ældre end 1 måned"
+
+msgid "older than 12 months"
+msgstr "ældre end 2 måneder"
+
+msgid "older than 2 weeks"
+msgstr "ældre end 2 uger"
+
+msgid "older than 3 months"
+msgstr "ældre end 3 måneder"
+
+msgid "older than 6 months"
+msgstr "ældre end 6 måneder"
+
+#, php-format
+msgid "or remote file (Max: %s)"
+msgstr "eller ekstern fil (Maks: %s)"
+
+msgid "order"
+msgstr "ordre"
+
+msgid "orders"
+msgstr "ordrer"
+
+msgid "orphan entry"
+msgstr "orphan indtastning"
+
+msgid "phpMyAdmin"
+msgstr "phpMyAdmin"
+
+msgid "required"
+msgstr "kræves"
+
+msgid "subdomain"
+msgstr "subdomæne"
+
+msgid "subdomains"
+msgstr "subdomæner"
+
+msgid "tcp"
+msgstr "tcp"
+
+msgid "traffic"
+msgstr "trafik"
+
+msgid "udp"
+msgstr "udp"
+
+msgid "unlimited"
+msgstr "ubegrænset"
+
+msgid "view aliases"
+msgstr "Se Aliaser"
+
+msgid "waiting for activation"
+msgstr "venter på aktivering"
+
+msgid "wildcard"
+msgstr "wildcard"
+
+msgid "yes"
+msgstr "ja"
+
+msgid "{ADMIN} activated your software package"
+msgstr "{ADMIN} aktiverede din softwarepakke"
+
+msgid "{RESELLER} uploaded a new software package"
+msgstr "{FORHANDLER} uploadede en ny softwarepakke"
+
+msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
+msgstr "© 2010-2014 i-MSCP Team<br/>Alle rettigheder forbeholdes"
