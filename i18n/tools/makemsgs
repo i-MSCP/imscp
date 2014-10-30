@@ -87,7 +87,4 @@ ${GUI}/public/*/*.php \
 ${GUI}/themes/*/*/*.xml \
 -o ${I18N}/iMSCP.pot -j -s
 
-sed --in-place '/#. Please ignore this entry/d' ../iMSCP.pot
-sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ../iMSCP.pot
-
 exit 0

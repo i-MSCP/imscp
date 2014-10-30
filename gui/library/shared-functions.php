@@ -1866,7 +1866,7 @@ function write_log($msg, $logLevel = E_USER_WARNING)
 
 	$clientIp = (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
 
-	$msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>', ENT_COMPAT, tr('encoding'));
+	$msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>', ENT_COMPAT, 'UTF-8');
 
 	exec_query("INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)", $msg);
 

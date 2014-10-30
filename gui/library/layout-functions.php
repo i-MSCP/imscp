@@ -310,9 +310,7 @@ function layout_init($event)
 		$themesAssetsVersion = $cfg->THEME_ASSETS_VERSION;
 	}
 
-	$encoding = tr('encoding');
-
-	ini_set('default_charset', ($encoding != 'encoding') ? $encoding : 'UTF-8');
+	ini_set('default_charset', 'UTF-8');
 
 	if (isset($_SESSION['user_theme_color'])) {
 		$color = $_SESSION['user_theme_color'];
@@ -330,7 +328,7 @@ function layout_init($event)
 
 	$tpl->assign(
 		array(
-			'THEME_CHARSET' => ($encoding != 'encoding') ? $encoding : 'UTF-8',
+			'THEME_CHARSET' => 'UTF-8',
 			'THEME_ASSETS_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME . '/assets',
 			'THEME_ASSETS_VERSION' => $themesAssetsVersion,
 			'THEME_COLOR' => $color

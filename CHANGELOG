@@ -1,8 +1,15 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 
+Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
+
+GUI:
+	Fixed: PHP must search files in i-MSCP library directories prior any other directory (PHP include_path)
+	Removed: Useless encoding translation string ( Usage of UTF-8 only )
+
+INSTALLER
+	Fixed: The languages index must be rebuilt on each update to show the last available translation statistics
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.15
