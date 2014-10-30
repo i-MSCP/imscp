@@ -32,18 +32,17 @@
  */
 
 // GUI root directory absolute path
-$guiRootDir = '{GUI_ROOT_DIR}';
+$guiRootDir = rtrim('{GUI_ROOT_DIR}', '/');
 
 if(strpos($guiRootDir, 'GUI_ROOT_DIR') !== false) {
 	fwrite(STDERR, sprintf("[ERROR] The GUI root directory is not defined at %s line %s", __FILE__,  __LINE__));
 	exit(1);
 }
 
-// Sets include path
-set_include_path('.' . PATH_SEPARATOR . $guiRootDir . '/library');
-
 // Include core library
-require_once 'imscp-lib.php';
+require_once "$guiRootDir/library/imscp-lib.php";
+
+unset($guiRootDir);
 
 try {
 	$databaseUpdate = iMSCP_Update_Database::getInstance();
@@ -52,6 +51,9 @@ try {
 		fwrite(STDERR, sprintf("[ERROR] %s\n", $databaseUpdate->getError()));
 		exit(1);
 	}
+
+	// Rebuild languages index to get last translation stats
+	i18n_buildLanguageIndex();
 } catch(Exception $e) {
 	fwrite(STDERR, sprintf("[ERROR] %s \n\nStack trace:\n\n%s\n", $e->getMessage(), $e->getTraceAsString()));
 	exit(1);

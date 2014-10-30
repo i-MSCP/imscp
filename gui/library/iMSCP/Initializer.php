@@ -167,6 +167,7 @@ class iMSCP_Initializer
 	{
 		$this->_initializeDatabase();
 		$this->_processConfiguration();
+		$this->_initializeLocalization(); // Needed for rebuilt of languages index
 
 		self::$_initialized = true;
 	}
