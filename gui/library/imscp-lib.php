@@ -81,11 +81,11 @@ Zend_Loader_AutoloaderFactory::factory(
 		'Zend_Loader_StandardAutoloader' => array(
 			'prefixes' => array(
 				'iMSCP_' => LIBRARY_PATH . '/iMSCP',
+				'Zend_' => LIBRARY_PATH . '/vendor/Zend',
 				'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
 				'File_' => LIBRARY_PATH . '/vendor/phpseclib/File',
 				'Math_' => LIBRARY_PATH . '/vendor/phpseclib/Math'
-			),
-			'autoregister_zf' => true
+			)
 		)
 	)
 );
