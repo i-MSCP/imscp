@@ -19,6 +19,7 @@ INSTALLER
 
 TICKETS
 	Fixed #1172: Bug - Subdomains - DNS resource records - Conflicts with CNAME records
+	Fixed #1173: Bug - Possible race conditions in request manager
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.15

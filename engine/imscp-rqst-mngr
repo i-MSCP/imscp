@@ -132,7 +132,7 @@ sub _process
 sub run
 {
 	# Process plugins
-	# Should always be processed first to allow plugins to register their listeners on the event manager
+	# Must always be processed first to allow plugins to register their listeners on the event manager
 	my $rs = _process(
 		'Plugin',
 		"
@@ -182,6 +182,7 @@ sub run
 	my $ipsModule = 0;
 
 	# Process toadd|tochange|torestore|toenable|todisable domain tasks
+	# (for each entitty, process only if the parent entity is in a consistent state)
 	$rs ||= _process(
 		'Domain',
 		"
@@ -189,13 +190,18 @@ sub run
 				domain_id AS id, domain_name AS name, domain_status AS status
 			FROM
 				domain
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
 			WHERE
 				domain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+			AND
+				admin_status IN('ok', 'disabled')
 		",
 		\$ipsModule
 	);
 
 	# Process toadd|tochange|torestore|toenable|todisable subdomains tasks
+	# (for each entitty, process only if the parent entity is in a consistent state)
 	$rs ||= _process(
 		'Subdomain',
 		"
@@ -203,13 +209,18 @@ sub run
 				subdomain_id AS id, subdomain_name AS name, subdomain_status AS status
 			FROM
 				subdomain
+			INNER JOIN
+				domain USING(domain_id)
 			WHERE
 				subdomain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+			AND
+				domain_status IN('ok', 'disabled')
 		",
 		\$ipsModule
 	);
 
 	# Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
+	# (for each entitty, process only if the parent entity is in a consistent state)
 	$rs ||= _process(
 		'Alias',
 		 "
@@ -217,13 +228,18 @@ sub run
 				alias_id AS id, alias_name AS name, alias_status AS status
 			FROM
 				domain_aliasses
+			INNER JOIN
+				domain USING(domain_id)
 			WHERE
 				alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+			AND
+				domain_status IN('ok', 'disabled')
 		 ",
 		 \$ipsModule
 	);
 
 	# Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
+	# (for each entitty, process only if the parent entity is in a consistent state)
 	$rs ||= _process(
 		'SubAlias',
 		"
@@ -231,13 +247,18 @@ sub run
 				subdomain_alias_id AS id, subdomain_alias_name AS name, subdomain_alias_status AS status
 			FROM
 				subdomain_alias
+			INNER JOIN
+				domain_aliasses USING(alias_id)
 			WHERE
 				subdomain_alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+			AND
+				alias_status IN('ok', 'disabled')
 		",
 		\$ipsModule
 	);
 
 	# Process toadd|tochange|toenable|todisable|todelete mail tasks
+	# (for each entitty, process only if the parent entity is in a consistent state)
 	$rs ||= _process(
 		'Mail',
 		"
@@ -245,12 +266,17 @@ sub run
 				mail_id AS id, mail_addr AS name, status AS status
 			FROM
 				mail_users
+			INNER JOIN
+				domain USING(domain_id)
 			WHERE
 				status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+			AND
+				domain_status IN('ok', 'todelete', 'disabled')
 		"
 	);
 
 	# Process toadd|tochange|todelete Htusers tasks
+	# (for each entitty, process only if the parent entity is in a consistent state)
 	$rs ||= _process(
 		'Htusers',
 		"
@@ -258,12 +284,17 @@ sub run
 				id, uname AS name, status
 			FROM
 				htaccess_users
+			INNER JOIN
+				domain ON(domain_id = dmn_id)
 			WHERE
 				status IN ('toadd', 'tochange', 'todelete')
+			AND
+				domain_status = 'ok'
 		"
 	);
 
 	# Process toadd|tochange|todelete Htgroups tasks
+	# (for each entitty, process only if the parent entity is in a consistent state)
 	$rs ||= _process(
 		'Htgroup',
 		"
@@ -271,12 +302,17 @@ sub run
 				id AS id, CONCAT(ugroup, ':', id) AS name, status
 			FROM
 				htaccess_groups
+			INNER JOIN
+				domain ON(domain_id = dmn_id)
 			WHERE
 				status IN ('toadd', 'tochange', 'todelete')
+			AND
+				domain_status = 'ok'
 		"
 	);
 
 	# Process toadd|tochange|todelete Htaccess tasks
+	# (for each entitty, process only if the parent entity is in a consistent state)
 	$rs ||= _process(
 		'Htaccess',
 		"
@@ -284,8 +320,12 @@ sub run
 				id, auth_name AS name, status
 			FROM
 				htaccess
+			INNER JOIN
+				domain ON(domain_id = dmn_id)
 			WHERE
 				status IN ('toadd', 'tochange', 'todelete')
+			AND
+				domain_status = 'ok'
 		"
 	);
 
@@ -304,15 +344,20 @@ sub run
 	);
 
 	# Process todelete domain aliases tasks
+	# (For each entity, process only if the entity do not have any direct children)
 	$rs ||= _process(
 		'Alias',
 		"
-			SELECT
+			SELECT DISTINCT
 				alias_id AS id, alias_name AS name, alias_status AS status
 			FROM
 				domain_aliasses
+			LEFT JOIN
+				subdomain_alias USING(alias_id)
 			WHERE
 				alias_status = 'todelete'
+			AND
+				subdomain_alias_id IS NULL
 		",
 		\$ipsModule
 	);
@@ -332,20 +377,30 @@ sub run
 	);
 
 	# Process todelete domains tasks
+	# (For each entity, process only if the entity do not have any direct children)
 	$rs ||= _process(
 		'Domain',
 		"
-			SELECT
+			SELECT DISTINCT
 				domain_id AS id, domain_name AS name, domain_status AS status
 			FROM
 				domain
+			LEFT JOIN
+				domain_aliasses USING(domain_id)
+			LEFT JOIN
+				mail_users USING(domain_id)
 			WHERE
 				domain_status = 'todelete'
+			AND
+				alias_id IS NULL
+			AND
+				mail_id IS NULL
 		",
 		\$ipsModule
 	);
 
 	# Process todelete users tasks
+	# (For each entity, process only if the entity do not have any direct children)
 	$rs ||= _process(
 		'User',
 		"
@@ -353,10 +408,14 @@ sub run
 				admin_id AS id, admin_name AS name, admin_status AS status
 			FROM
 				admin
+			LEFT JOIN
+				domain ON(domain_id = admin_id)
 			WHERE
 				admin_type = 'user'
 			AND
 				admin_status = 'todelete'
+			AND
+				domain_id IS NULL
 		"
 	);
 
