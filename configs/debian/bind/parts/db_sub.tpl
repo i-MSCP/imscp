@@ -9,5 +9,5 @@ $ORIGIN {SUBDOMAIN_NAME}.
 ; sub SPF entry ENDING
 @	IN	{IP_TYPE}	{DOMAIN_IP}
 www	IN	CNAME	@
-ftp	IN	CNAME	@
+ftp	IN	A	{DOMAIN_IP}
 ; sub [{SUBDOMAIN_NAME}] entry ENDING

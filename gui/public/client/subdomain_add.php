@@ -191,7 +191,7 @@ function client_addSubdomain()
 
 	$subLabel = clean_input((strtolower($_POST['subdomain_name'])));
 
-	if($subLabel == 'www') {
+	if($subLabel == 'www' || strpos($subLabel, 'www.') !== false) {
 		set_page_message(tr('%s is not allowed as subdomain label.', "<strong>www</strong>"), 'error');
 		return false;
 	}
