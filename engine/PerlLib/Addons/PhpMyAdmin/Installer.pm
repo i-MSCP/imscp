@@ -139,7 +139,6 @@ sub showDialog
 				}
 
 				$dialog->msgbox("\nPassword for the restricted phpmyadmin SQL user set to: $dbPass");
-				$dialog->set('cancel-label');
 			}
 		}
 	}

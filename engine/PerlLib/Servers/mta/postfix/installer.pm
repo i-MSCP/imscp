@@ -142,7 +142,6 @@ sub showDialog
 				}
 
 				$dialog->msgbox("\nPassword for the restricted sasl SQL user set to: $dbPass");
-				$dialog->set('cancel-label');
 			}
 		}
 	}

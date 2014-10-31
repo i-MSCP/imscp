@@ -153,7 +153,6 @@ sub showDialog
 				}
 
 				$dialog->msgbox("\nPassword for the restricted dovecot SQL user set to: $dbPass");
-				$dialog->set('cancel-label');
 			}
 		}
 	}
