@@ -142,7 +142,6 @@ sub showDialog
 				}
 
 				$dialog->msgbox("\nPassword for the restricted roundcube SQL user set to: $dbPass");
-				$dialog->set('cancel-label');
 			}
 		}
 	}
