@@ -1782,13 +1782,14 @@ sub setupInitScripts
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 		} else {
-			error("Unable to setup the $initScript init script: File is missing.")
+			error("Unable to setup the $initScript init script: File is missing.");
+			return 1;
 		}
 	}
 
 	if(-x '/bin/systemctl') { # Make systemd aware of the changes above
 		my ($stdout, $stderr);
-		my $rs = execute("/bin/systemctl daemon-reload", \$stdout, \$stderr);
+		my $rs = execute('/bin/systemctl daemon-reload', \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
