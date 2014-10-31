@@ -173,6 +173,11 @@ function client_addDomainAlias()
 		return false;
 	}
 
+	// www is considered as an alias of the domain alias
+	while(strpos($domainAliasName, 'www.') !== false) {
+		$domainAliasName = substr($domainAliasName, 4);
+	}
+
 	// Check for domain alias existence
 
 	if(imscp_domain_exists($domainAliasName, $_SESSION['user_created_by'])) {
