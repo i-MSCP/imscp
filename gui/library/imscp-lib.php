@@ -64,8 +64,10 @@ define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
 // Define persistent directory path
 define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
-// Setup include path for vendor libraries
-set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARY_PATH . '/vendor');
+// Setup include path
+set_include_path(implode(PATH_SEPARATOR, array_unique(
+	array_merge(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor'), explode(PATH_SEPARATOR, get_include_path()))
+)));
 
 // Setup autoloader
 require_once 'Zend/Loader/AutoloaderFactory.php';
@@ -145,9 +147,4 @@ require_once 'environment.php';
 /**
  * View helpers functions
  */
-require_once 'iMSCP/View/Helpers/Functions/Common.php';
-
-if (isset($_SESSION['user_type']) && in_array($_SESSION['user_type'], array('admin', 'reseller'))) {
-	$helperFileName = ucfirst(strtolower($_SESSION['user_type']));
-	require_once 'iMSCP/View/Helpers/Functions/' . $helperFileName . '.php';
-}
+require_once 'iMSCP/View/Helpers/Functions.php';

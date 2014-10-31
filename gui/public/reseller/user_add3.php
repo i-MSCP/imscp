@@ -134,7 +134,7 @@ function reseller_generatePage($tpl)
 		)
 	);
 
-	generate_ip_list($tpl, $_SESSION['user_id']);
+	reseller_generate_ip_list($tpl, $_SESSION['user_id']);
 	$_SESSION['local_data'] = "$dmnName;$hpId";
 }
 

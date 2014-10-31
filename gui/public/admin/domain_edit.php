@@ -1190,7 +1190,7 @@ $tpl->assign(
 // set the domain IP ID as global to be used in generate_ip_list
 global $domainIp;
 $domainIp = $data['domain_ip_id'];
-generate_ip_list($tpl);
+admin_generate_ip_list($tpl);
 
 generateNavigation($tpl);
 admin_generateForm($tpl, $data);
