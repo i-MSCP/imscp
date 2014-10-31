@@ -378,7 +378,6 @@ sub setupAskServerIps
 			# Ask user for the server base IP
 			($rs, $baseServerIp) = $dialog->radiolist(
 				"\nPlease, select the base server IP for i-MSCP:",
-				#[@serverIps, 'Add_new_ip'],
 				[@serverIps],
 				($baseServerIp && $baseServerIp ~~ @serverIps) ? $baseServerIp : $serverIps[0]
 			);
@@ -1967,10 +1966,10 @@ sub setupInitScripts
 
 	my ($rdata, $service, $stdout, $stderr);
 
-	for ($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'}) {
+	for my $initScript($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'}) {
 		next if $_ eq 'no';
 
-		my $initScriptPath = "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_";
+		my $initScriptPath = "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript";
 
 		unless(-f $initScriptPath) {
 			error("File $initScriptPath is missing");
@@ -1986,16 +1985,24 @@ sub setupInitScripts
 		return $rs if $rs;
 
 		if($main::imscpConfig{'SERVICE_INSTALLER'} ne 'no') {
-			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $_ remove", \$stdout, \$stderr);
+			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $initScript remove", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 
-			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} $_ defaults", \$stdout, \$stderr);
+			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} $initScript defaults", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 		}
+	}
+
+	if(-x '/bin/systemctl') { # Make systemd aware of the changes above
+		my ($stdout, $stderr);
+		my $rs = execute("/bin/systemctl daemon-reload", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 	}
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupInitScripts');

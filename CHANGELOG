@@ -13,6 +13,7 @@ GUI:
 
 INSTALLER
 	Fixed: The languages index must be rebuilt on each update to show the last available translation statistics
+	Fixed: Unable to handle i-MSCP services (start/restart/stop...) on systems using systemd (e.g Jessie)
 	Fixed: Wrong labels ( iMSCP::Dialog )
 	Removed: Option allowing to add IP manually ( Tedious and error prone )
 
