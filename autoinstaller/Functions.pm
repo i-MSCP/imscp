@@ -135,13 +135,22 @@ sub build
 	my $rs = _installPreRequiredPackages() unless $main::skippackages;
 	return $rs if $rs;
 
-	$rs = _showReadmeFile() unless $main::noprompt || $main::reconfigure ne 'none';
-	return $rs if $rs;
+	my $dialog = iMSCP::Dialog->getInstance();
 
-	$rs = _askDistro() unless $main::noprompt || $main::reconfigure ne 'none';
-	return $rs if $rs;
+	$dialog->set('ok-label', 'Ok');
+	$dialog->set('yes-label', 'Yes');
+	$dialog->set('no-label', 'No');
+	$dialog->set('cancel-label', 'Back');
 
-	$rs = _askInstallMode() unless $main::noprompt || $main::buildonly || $main::reconfigure ne 'none';
+	unless($main::noprompt || $main::reconfigure ne 'none') {
+		$rs = _showReadmeFile($dialog);
+		return $rs if $rs;
+
+		$rs = _askDistro($dialog);
+		return $rs if $rs;
+	}
+
+	$rs = _askInstallMode($dialog) unless $main::noprompt || $main::buildonly || $main::reconfigure ne 'none';
 	return $rs if $rs;
 
 	newDebug('imscp-build.log');
@@ -314,36 +323,42 @@ sub _installPreRequiredPackages
 	_getDistroAdapter()->installPreRequiredPackages();
 }
 
-=item showReadmeFile()
+=item showReadmeFile(\%dialog)
 
  Show readme file
 
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other otherwise
 
 =cut
 
 sub _showReadmeFile
 {
+	my $dialog = $_[0];
+
 	my $file = iMSCP::File->new('filename' => $FindBin::Bin . '/README');
 	my $content = $file->get() or fatal("Unable to read $FindBin::Bin/README");
 
-	iMSCP::Dialog->getInstance()->msgbox(<<EOF);
+	$dialog->msgbox(<<EOF);
 
 $content
 EOF
 }
 
-=item _askDistro()
+=item _askDistro(\%dialog)
 
  Ask for distribution
 
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, 50 otherwise
 
 =cut
 
 sub _askDistro()
 {
-	iMSCP::Dialog->getInstance()->infobox("\nDetecting target distribution...");
+	my $dialog = $_[0];
+
+	$dialog->infobox("\nDetecting target distribution...");
 
 	my $lsbRelease = iMSCP::LsbRelease->getInstance();
 	my $distribution = $lsbRelease->getId(1);
@@ -368,7 +383,7 @@ EOF
 			return 50;
 		}
 
-		my $rs = iMSCP::Dialog->getInstance()->yesno(<<EOF);
+		my $rs = $dialog->yesno(<<EOF);
 
 $distribution $release ($codename) has been detected. Is this ok?
 EOF
@@ -386,7 +401,7 @@ EOF
 
 		return 50 if $rs;
 	} else {
-		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
+		$dialog->msgbox(<<EOF);
 
 \\Z1Distribution not supported\\Zn
 
@@ -403,19 +418,22 @@ EOF
 	0;
 }
 
-=item _askInstallMode()
+=item _askInstallMode(\%dialog)
 
  Asks for install mode
 
- return int 0 on success, 50 otherwise
+ Param iMSCP::Dialog \%dialog
+ Return int 0 on success, 50 otherwise
 
 =cut
 
 sub _askInstallMode
 {
-	iMSCP::Dialog->getInstance()->set('cancel-label', 'Abort');
+	my $dialog = $_[0];
 
-	my ($rs, $mode) = iMSCP::Dialog->getInstance()->radiolist(<<EOF, ['install', 'build'], 'install');
+	$dialog->set('cancel-label', 'Abort');
+
+	my ($rs, $mode) = $dialog->radiolist(<<EOF, ['Install', 'Build'], 'Install');
 
 \\Z4\\Zb\\ZuInstaller Options\\Zn
 
@@ -426,7 +444,9 @@ Please, choose an option:
          want migrate from ispCP (>= 1.0.7).
 EOF
 
-	$main::buildonly = ($mode eq 'build') ? 1 : 0;
+	$main::buildonly = ($mode eq 'Build') ? 1 : 0;
+
+	$dialog->set('cancel-label', 'Back');
 
 	return 50 if $rs;
 

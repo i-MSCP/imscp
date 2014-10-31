@@ -5,11 +5,13 @@ Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
 GUI:
-	Fixed: PHP must search files in i-MSCP library directories prior any other directory (PHP include_path)
+	Fixed: PHP must search files in i-MSCP library directories prior any other directory ( PHP include_path )
 	Removed: Useless encoding translation string ( Usage of UTF-8 only )
 
 INSTALLER
 	Fixed: The languages index must be rebuilt on each update to show the last available translation statistics
+	Fixed: Wrong labels ( iMSCP::Dialog )
+	Removed: Option allowing to add IP manually ( Tedious and error prone )
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.15
