@@ -1203,7 +1203,7 @@ $tpl->assign(
 // set the domain IP ID as global to be used in generate_ip_list
 global $domainIp;
 $domainIp = $data['domain_ip_id'];
-generate_ip_list($tpl, $_SESSION['user_id']);
+reseller_generate_ip_list($tpl, $_SESSION['user_id']);
 
 generateNavigation($tpl);
 reseller_generateForm($tpl, $data);
