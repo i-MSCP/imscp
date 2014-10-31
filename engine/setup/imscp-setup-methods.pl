@@ -1758,25 +1758,37 @@ sub setupInitScripts
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupInitScripts');
 	return $rs if $rs;
 
-	for (
+	for my $initScript(
 		$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'},
 		$main::imscpConfig{'IMSCP_PANEL_SNAME'}
 	) {
-		my $file = iMSCP::File->new('filename' => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_");
+		if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript") {
+			my $file = iMSCP::File->new('filename' => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript");
 
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
+			$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+			return $rs if $rs;
 
-		$rs = $file->mode(0755);
-		return $rs if $rs;
+			$rs = $file->mode(0755);
+			return $rs if $rs;
 
+			my ($stdout, $stderr);
+			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $initScript remove", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+
+			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} $initScript defaults", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+		} else {
+			error("Unable to setup the $initScript init script: File is missing.")
+		}
+	}
+
+	if(-x '/bin/systemctl') { # Make systemd aware of the changes above
 		my ($stdout, $stderr);
-		$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $_ remove", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} $_ defaults", \$stdout, \$stderr);
+		my $rs = execute("/bin/systemctl daemon-reload", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;

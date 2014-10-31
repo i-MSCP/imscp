@@ -17,11 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2014 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category     i-MSCP
+# @copyright    2010-2014 by i-MSCP | http://i-mscp.net
+# @author       Daniel Andreca <sci2tech@gmail.com>
+# @author       Laurent Declercq <l.declercq@nuxwin.com>
+# @link         http://i-mscp.net i-MSCP Home Site
+# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 # TODO: This script should be idempotent.
 
@@ -269,16 +270,21 @@ sub _uninstallDaemons
 {
 	my $serviceMngr = iMSCP::Service->getInstance();
 
-	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}") {
-		my $rs = $serviceMngr->stop($main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'imscp_daemon');
-		error("Unable to stop i-MSCP Daemon service") if $rs;
-		return $rs if $rs;
+	for my $initScript($main::imscpConfig{'IMSCP_PANEL_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'}) {
+		if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript") {
+			my $rs = $serviceMngr->stop($initScript, $initScript);
+			error("Unable to stop $initScript service") if $rs;
+			return $rs if $rs;
 
-		my ($stdout, $stderr);
-		$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $_ remove", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+			my ($stdout, $stderr);
+			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $initScript remove", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+
+			$rs = iMSCP::File->new( filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript" )->delFile();
+			return $rs if $rs;
+		}
 	}
 
 	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_NETWORK_SNAME'}") {
@@ -286,11 +292,25 @@ sub _uninstallDaemons
 		error("Unable to stop i-MSCP Network service") if $rs;
         return $rs if $rs;
 
+		my ($stdout, $stderr);
 		$rs = execute(
 			"$main::imscpConfig{'SERVICE_INSTALLER'} -f $main::imscpConfig{'IMSCP_NETWORK_SNAME'} remove",
 			\$stdout,
 			\$stderr
 		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+
+		$rs = iMSCP::File->new(
+		 	filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_NETWORK_SNAME'}"
+		 )->delFile();
+		return $rs if $rs;
+	}
+
+	if(-x '/bin/systemctl') { # Make systemd aware of the changes above
+		my ($stdout, $stderr);
+		$rs = execute("/bin/systemctl daemon-reload", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;

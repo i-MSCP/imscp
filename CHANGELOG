@@ -37,6 +37,7 @@ INSTALLER
 	Moved: Control panel hostname and SSL dialogs into FrontEnd installer
 	Renamed: Option --hook-file to --listener
 	Fixed: Prevent start of apache2 service by package manager using policy layer interface
+	Fixed: Unable to handle i-MSCP services (start/restart/stop...) on systems  using systemd (e.g Jessie)
 
 TICKETS
 	Fixed #1123: Review - PHP session handling
