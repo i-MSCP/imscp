@@ -171,8 +171,6 @@ sub setupDialog
 		}
 	}
 
-	$dialog->resetLabels();
-
 	iMSCP::EventManager->getInstance()->trigger('afterSetupDialog');
 }
 
