@@ -137,7 +137,6 @@ sub showDialog
 				}
 
 				$dialog->msgbox("\nPassword for the restricted proftpd SQL user set to: $dbPass");
-				$dialog->set('cancel-label');
 			}
 		}
 	}

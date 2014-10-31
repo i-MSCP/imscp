@@ -148,10 +148,10 @@ sub setupDialog
 
 	my $dialog = iMSCP::Dialog->getInstance();
 
-	$dialog->set('--ok-label', 'Ok');
-	$dialog->set('--yes-label', 'Yes');
-	$dialog->set('--no-label', 'No');
-	$dialog->set('--cancel-label', 'Back');
+	$dialog->set('ok-label', 'Ok');
+	$dialog->set('yes-label', 'Yes');
+	$dialog->set('no-label', 'No');
+	$dialog->set('cancel-label', 'Back');
 
 	# Implements a simple state machine (backup capability)
 	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
@@ -247,7 +247,8 @@ sub setupAskServerHostname
 		}
 
 		my $msg = '';
-		#$dialog->set('no-cancel', '');
+
+		$dialog->set('no-cancel', '');
 
 		do {
 			($rs, $hostname) = $dialog->inputbox(
@@ -259,7 +260,7 @@ sub setupAskServerHostname
 
 		} while($rs != 30 && ! (@labels >= 3 && is_domain($hostname, \%options)));
 
-		#$dialog->set('no-cancel', undef);
+		$dialog->set('no-cancel', undef);
 	}
 
 	setupSetQuestion('SERVER_HOSTNAME', $hostname) if $rs != 30;
@@ -299,7 +300,6 @@ sub setupAskServerIps
 
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
 	my $baseServerPublicIp = setupGetQuestion('BASE_SERVER_PUBLIC_IP');
-	my $manualIp = 0;
 	my $serverIps = '';
 
 	my $serverIpsToAdd = setupGetQuestion('SERVER_IPS', []);
@@ -342,52 +342,14 @@ sub setupAskServerIps
 		$main::reconfigure ~~ ['ips', 'all', 'forced'] || ! ($baseServerIp ~~ @serverIps) ||
 		! ($net->isValidAddr($baseServerIp) && $net->isValidAddr($baseServerPublicIp))
 	) {
-		BASE_SERVER_IP_QUESTION:
-
 		do {
 			# Ask user for the server base IP
 			($rs, $baseServerIp) = $dialog->radiolist(
 				"\nPlease, select the base server IP for i-MSCP:",
-				[@serverIps, 'Add new ip'],
-				$baseServerIp ? $baseServerIp : $serverIps[0]
+				[@serverIps],
+				($baseServerIp && $baseServerIp ~~ @serverIps) ? $baseServerIp : $serverIps[0]
 			);
 		} while($rs != 30 && ! $baseServerIp);
-
-		# Handle server IP addresses addition
-		if($rs != 30 && $baseServerIp eq 'Add new ip') {
-			$baseServerIp = '';
-			$msg = '';
-
-			do {
-				($rs, $baseServerIp) = $dialog->inputbox("\nPlease, enter an IP address:$msg", $baseServerIp);
-				$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
-			} while(
-				$rs != 30 &&
-				! (
-					$net->isValidAddr($baseServerIp) && $baseServerIp ne '127.0.0.1' &&
-					$net->normalizeAddr($baseServerIp) ne '::1'
-				)
-			);
-
-			if($rs != 30 && ! ($baseServerIp ~~ @serverIps)) {
-				my $networkCard = undef;
-				my @networkCardList = grep { $_ ne 'lo' } $net->getDevices();
-
-				if(@networkCardList > 1) { # Do not ask about network card if not more than one is available
-					($rs, $networkCard) = $dialog->radiolist(
-						"\nPlease, select the network card on which you want to add the IP address:", [@networkCardList]
-					);
-				} else {
-					$networkCard = pop(@networkCardList);
-				}
-
-				if($rs != 30) {
-					$rs = $net->addAddr($baseServerIp, $networkCard);
-					return $rs if $rs;
-					$manualIp = 1;
-				}
-			}
-		}
 
 		if($rs != 30) {
 			# Server inside private LAN?
@@ -426,27 +388,13 @@ Please enter your public IP:$msg
 			} else {
 				$baseServerPublicIp = $baseServerIp
 			}
-		} else {
-			goto BASE_SERVER_IP_QUESTION;
 		}
-
-		# Handle IP deletion in case the user stepped back
-		my $manualBaseServerIp = setupGetQuestion('MANUAL_BASE_SERVER_IP');
-
-		if($manualBaseServerIp && $manualBaseServerIp ne $baseServerIp) {
-			$rs = $net->delAddr($manualBaseServerIp);
-			return $rs if $rs;
-			@serverIps = grep $_ ne $manualBaseServerIp, @serverIps;
-			delete $main::questions{'MANUAL_BASE_SERVER_IP'};
-		}
-
-		setupSetQuestion('MANUAL_BASE_SERVER_IP', $baseServerIp) if $manualIp;
 
 		# Handle additional IP addition / deletion
 		if($rs != 30) {
 			$dialog->set('defaultno', '');
 
-			if(@serverIps > 1 && ! $dialog->yesno("\nDo you want add or remove an IP address?")) {
+			if(@serverIps > 1) {
 				$dialog->set('defaultno', undef);
 
 				@serverIps = grep $_ ne $baseServerIp, @serverIps; # Remove the base server IP from the list
@@ -458,7 +406,7 @@ Please enter your public IP:$msg
 
 				do {
 					($rs, $serverIps) = $dialog->checkbox(
-						"\nPlease, select the IP addresses to add into the database and deselect those to delete: $msg",
+						"\nPlease, select additional IP addresses to add into the database and deselect those to delete: $msg",
 						[@serverIps],
 						@{$serverIpsToAdd}
 					);
@@ -466,15 +414,12 @@ Please enter your public IP:$msg
 					$msg = '';
 
 					if(defined $sshConnectIp && $sshConnectIp ~~ @serverIps && not $sshConnectIp ~~ $serverIps) {
-						$msg = "\n\n\\Z1You cannot remove the IP '$sshConnectIp' to which you are currently connected " .
-						"(SSH).\\Zn\n\nPlease, try again:";
+						$msg = "\n\n\\Z1You cannot remove the $sshConnectIp IP to which you are currently connected " .
+						"through SSH.\\Zn\n\nPlease, try again:";
 					}
-
 				} while ($rs != 30 && $msg);
 
 				if($rs != 30) {
-					#$serverIps =~ s/"//g;
-					#@{$serverIpsToAdd} = split ' ', $serverIps; # Retrieve list of IP to add into database
 					@{$serverIpsToAdd} = @{$serverIps}; # Retrieve list of IP to add into database
 					push @{$serverIpsToAdd}, $baseServerIp; # Re-add base ip
 
@@ -483,8 +428,9 @@ Please enter your public IP:$msg
 						%serverIpsToDelete = ();
 
 						for(@serverIps) {
-							$serverIpsToDelete{$currentServerIps->{$_}->{'ip_id'}} = $_
-								if(exists $currentServerIps->{$_} && not $_ ~~ @{$serverIpsToAdd});
+							if(exists $currentServerIps->{$_} && not $_ ~~ @{$serverIpsToAdd}) {
+								$serverIpsToDelete{$currentServerIps->{$_}->{'ip_id'}} = $_;
+							}
 						}
 
 						# Check for server IP addresses already in use and ask for replacement
@@ -1304,7 +1250,7 @@ sub setupServerIps
 
 	my @serverIps = (
 		$baseServerIp,
-		$main::questions{'SERVER_IPS'} ? @{$main::questions{'SERVER_IPS'}} : ()
+		($main::questions{'SERVER_IPS'}) ? @{$main::questions{'SERVER_IPS'}} : ()
 	);
 
 	my $rs = iMSCP::EventManager->getInstance()->trigger(
@@ -1349,11 +1295,11 @@ sub setupServerIps
 				'toadd'
 			);
 			if (ref $rs ne 'HASH') {
-				error("Unable to add/update server address IP '$_': $rs");
+				error("Unable to add/update the $_ IP address: $rs");
 				return 1;
 			}
 		} else {
-			error("Unable to add the '$_' IP into database");
+			error("Unable to add the $_ IP address into database: Unknown network card");
 			return 1;
 		}
 	}
