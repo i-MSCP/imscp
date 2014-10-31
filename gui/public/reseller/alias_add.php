@@ -225,7 +225,10 @@ function reseller_generatePage($tpl)
 /**
  * Add new domain alias
  *
- * @return bool TRUE on success, FALSE on failure
+ * @return bool
+ * @throws Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_addDomainAlias()
 {
@@ -251,6 +254,11 @@ function reseller_addDomainAlias()
 	if (!isValidDomainName($domainAliasName)) {
 		set_page_message($dmnNameValidationErrMsg, 'error');
 		return false;
+	}
+
+	// www is considered as an alias of the domain alias
+	while(strpos($domainAliasName, 'www.') !== false) {
+		$domainAliasName = substr($domainAliasName, 4);
 	}
 
 	// Check for domain alias existence

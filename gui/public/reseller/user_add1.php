@@ -63,6 +63,11 @@ function reseller_checkData()
 		return;
 	}
 
+	// www is considered as an alias of the domain
+	while(strpos($dmnName, 'www.') !== false) {
+		$dmnName = substr($dmnName, 4);
+	}
+
 	$asciiDmnName = encode_idna($dmnName);
 
 	if (imscp_domain_exists($asciiDmnName, $_SESSION['user_id']) || $asciiDmnName == $cfg->BASE_SERVER_VHOST) {

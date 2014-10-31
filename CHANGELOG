@@ -4,10 +4,10 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
-CONFIGS:
+CONFIGS
 	Fixed: ssl_protocols parameter not available in versions older than < 2.1 ( Dovecot )
 
-GUI:
+GUI
 	Fixed: PHP must search files in i-MSCP library directories prior any other directory ( PHP include_path )
 	Removed: Useless encoding translation string ( Usage of UTF-8 only )
 
@@ -16,6 +16,9 @@ INSTALLER
 	Fixed: Unable to handle i-MSCP services (start/restart/stop...) on systems using systemd (e.g Jessie)
 	Fixed: Wrong labels ( iMSCP::Dialog )
 	Removed: Option allowing to add IP manually ( Tedious and error prone )
+
+TICKETS
+	Fixed #1172: Bug - Subdomains - DNS resource records - Conflicts with CNAME records
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.15
