@@ -473,7 +473,7 @@ class iMSCP_Initializer
 
 		$trFilePattern = $this->_config->GUI_ROOT_DIR . '/i18n/locales/%s/LC_MESSAGES/%s.mo';
 
-		if ($locale === 'auto') {
+		if ($locale == 'auto') {
 			$find = new Zend_Locale($locale);
 			$browser = $find->getEnvironment() + $find->getBrowser();
 			arsort($browser);
@@ -482,6 +482,10 @@ class iMSCP_Initializer
 					$locale = $language;
 					break;
 				}
+			}
+
+			if($locale == 'auto') {
+				$locale = 'en_GB';
 			}
 		}
 
