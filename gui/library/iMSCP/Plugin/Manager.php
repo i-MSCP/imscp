@@ -115,9 +115,10 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Constructor
 	 *
-	 * @throws iMSCP_Plugin_Exception In case $pluginDir is not valid
-	 * @param iMSCP_Events_Manager $eventManager
+	 *
 	 * @param string $pluginDir Plugin directory
+	 * @throws iMSCP_Plugin_Exception
+	 * @internal param iMSCP_Events_Manager $eventManager
 	 * @return iMSCP_Plugin_Manager
 	 */
 	public function __construct($pluginDir)
