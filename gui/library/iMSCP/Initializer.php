@@ -289,33 +289,6 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Load user's GUI properties in session.
-	 *
-	 * @return void
-	 * @todo quick fix that will be improved later (see #156 on i-MSCP)
-	 */
-	protected function _initializeUserGuiProperties()
-	{
-		if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-			$query = "SELECT `lang`, `layout` FROM `user_gui_props` WHERE `user_id` = ?";
-			$stmt = exec_query($query, $_SESSION['user_id']);
-
-			if (!$stmt->rowCount() || (empty($stmt->fields['lang']) && empty($stmt->fields['layout']))) {
-				$properties = array($this->_config->USER_INITIAL_LANG, $this->_config->USER_INITIAL_THEME);
-			} elseif (empty($stmt->fields['lang'])) {
-				$properties = array($this->_config->USER_INITIAL_LANG, $stmt->fields['layout']);
-			} elseif (empty($stmt->fields['layout'])) {
-				$properties = array($stmt->fields['lang'], $this->_config->USER_INITIAL_THEME);
-			} else {
-				$properties = array($stmt->fields['lang'], $stmt->fields['layout']);
-			}
-
-			$_SESSION['user_def_lang'] = $properties[0];
-			$_SESSION['user_theme'] = $properties[1];
-		}
-	}
-
-	/**
 	 * Establishes the connection to the database server.
 	 *
 	 * This methods establishes the default connection to the database server by using configuration parameters that
@@ -451,6 +424,39 @@ class iMSCP_Initializer
 
 			// Start the buffer and attach the filter to him
 			ob_start(array($filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME));
+		}
+	}
+
+	/**
+	 * Load user's GUI properties in session
+	 *
+	 * @return void
+	 */
+	protected function _initializeUserGuiProperties()
+	{
+		if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
+			if(!isset($_SESSION['user_def_lang']) && !isset($_SESSION['user_theme'])) {
+				$stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $_SESSION['user_id']);
+
+				if($stmt->rowCount()) {
+					$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+					if((empty($row['lang']) && empty($row['layout']))) {
+						list($lang, $theme) = array($this->_config['USER_INITIAL_LANG'], $this->_config['USER_INITIAL_THEME']);
+					} elseif(empty($row['lang'])) {
+						list($lang, $theme) = array($this->_config['USER_INITIAL_LANG'], $row['layout']);
+					} elseif(empty($row['layout'])) {
+						list($lang, $theme) = array($row['lang'], $this->_config['USER_INITIAL_THEME']);
+					} else {
+						list($lang, $theme) = array($row['lang'], $row['layout']);
+					}
+				} else {
+					list($lang, $theme) = array($this->_config['USER_INITIAL_LANG'], $this->_config['USER_INITIAL_THEME']);
+				}
+
+				$_SESSION['user_def_lang'] = $lang;
+				$_SESSION['user_theme'] = $theme;
+			}
 		}
 	}
 
