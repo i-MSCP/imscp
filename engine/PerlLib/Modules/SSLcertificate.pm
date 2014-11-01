@@ -170,10 +170,10 @@ sub delete
 	my $certFile = "$self->{'certsDir'}/$self->{'domain_name'}.pem";
 
 	if(-f $certFile) {
-	    iMSCP::File->new('filename' => $certFile)->delFile();
-    } else {
-	    0;
-    }
+		iMSCP::File->new('filename' => $certFile)->delFile();
+	} else {
+		0;
+	}
 }
 
 =item _init()
