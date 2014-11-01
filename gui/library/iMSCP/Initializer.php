@@ -435,7 +435,7 @@ class iMSCP_Initializer
 	protected function _initializeUserGuiProperties()
 	{
 		if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-			if(!isset($_SESSION['user_def_lang']) && !isset($_SESSION['user_theme'])) {
+			if(!isset($_SESSION['user_def_lang']) || !isset($_SESSION['user_theme'])) {
 				$stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $_SESSION['user_id']);
 
 				if($stmt->rowCount()) {
