@@ -47,9 +47,6 @@ if [ ! -d ${I18N}/po ]; then
 	exit 1
 fi
 
-# Purge any old language file
-rm -fR ${I18N}/po/*.po
-
 GUI=../../gui
 
 if [ ! -f ${GUI}/public/index.php ]; then
