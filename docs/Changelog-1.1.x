@@ -1,6 +1,37 @@
 i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
+1.1.16
+------------------------------------------------------------------------------------------------------------------------
+
+2014-11-02: Laurent Declercq
+	RELEASE i-MSCP 1.1.16
+
+CONFIGS
+	Fixed: ssl_protocols parameter not available in versions older than 2.1 ( Dovecot )
+	Fixed: Wrong HOST_NAME variable in quota-waring template files ( Dovecot )
+
+ENGINE
+	Fixed: Servers::cron::cron server is broken - Cron file are never installed
+	Fixed: i-MSCP create many garbage (file under /) ( related to Servers::cron::cron server is broken... )
+
+GUI
+	Fixed: PHP must search files in i-MSCP library directories prior any other directory ( PHP include_path )
+	Fixed: Mail suspension - Wrong SQL queries
+	Fixed: Mitigate memory consumption by loading only needed translation file ( i-MSCP translation files )
+	Removed: Useless encoding translation string ( Usage of UTF-8 only )
+
+INSTALLER
+	Fixed: The languages index must be rebuilt on each update to show the last available translation statistics
+	Fixed: Unable to handle i-MSCP services (start/restart/stop...) on systems using systemd (e.g Jessie)
+	Fixed: Wrong labels ( iMSCP::Dialog )
+	Removed: Option allowing to add IP manually ( Tedious and error prone )
+
+TICKETS
+	Fixed #1172: Bug - Subdomains - DNS resource records - Conflicts with CNAME records
+	Fixed #1173: Bug - Possible race conditions in request manager
+
+------------------------------------------------------------------------------------------------------------------------
 1.1.15
 ------------------------------------------------------------------------------------------------------------------------
 
