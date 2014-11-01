@@ -135,22 +135,22 @@ sub addTask
 		$self->{'eventManager'}->trigger('afterCronAddTask', \$wrkFileContent, $data);
 
 		# Store file in working directory
-		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+		my $fileH = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
 
-		$rs = $file->set($wrkFileContent);
+		$rs = $fileH->set($wrkFileContent);
 		return $rs if $rs;
 
-		$rs = $file->save();
+		$rs = $fileH->save();
 		return $rs if $rs;
 
-		$rs = $file->mode(0640);
+		$rs = $fileH->mode(0640);
 		return $rs if $rs;
 
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		$rs = $fileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
 
 		# Install file in production directory
-		$file->copyFile($file);
+		$fileH->copyFile($file);
 	} else {
 		error("Unable to add cron task: File $file not found.");
 		1;
