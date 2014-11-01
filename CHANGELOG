@@ -14,6 +14,7 @@ ENGINE
 GUI
 	Fixed: PHP must search files in i-MSCP library directories prior any other directory ( PHP include_path )
 	Fixed: Mail suspension - Wrong SQL queries
+	Fixed: Mitigate memory consumption by loading only needed translation file ( i-MSCP translation files )
 	Removed: Useless encoding translation string ( Usage of UTF-8 only )
 
 INSTALLER
@@ -38,7 +39,7 @@ CONFIGS
 	Added: PLUGINS_DIR configuration parameter in imscp.conf file
 	Changed: Lowered log level for TLS (Postfix)
 	Fixed: Apache user (www-data) must not be able to access to the entire file system (security)
-	Fixed: Symlinks must be followed by Apache only if the owner match with the target owner (security)
+	Fixed: A symlink must be followed by Apache only if the symlink owner match the symlink target owner (security)
 	Fixed: SSLv2 and SSLv3 must be disabled to prevent POODLE attacks ( Dovecot )
 	Fixed: Virtual mail directory must not be hardcoded in dovecot configuration file
 

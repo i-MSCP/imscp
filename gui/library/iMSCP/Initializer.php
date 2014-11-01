@@ -465,6 +465,20 @@ class iMSCP_Initializer
 			'user_def_lang', isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : 'auto'
 		);
 
+		$trFilePattern = $this->_config->GUI_ROOT_DIR . '/i18n/locales/%s/LC_MESSAGES/%s.mo';
+
+		if ($locale === 'auto') {
+			$find = new Zend_Locale($locale);
+			$browser = $find->getEnvironment() + $find->getBrowser();
+			arsort($browser);
+			foreach($browser as $language => $quality) {
+				if(file_exists(sprintf($trFilePattern, $language, $language))) {
+					$locale = $language;
+					break;
+				}
+			}
+		}
+
 		// Setup cache object for translations
 		$cache = Zend_Cache::factory(
 			'Core',
@@ -495,8 +509,9 @@ class iMSCP_Initializer
 			new Zend_Translate(
 				array(
 					'adapter' => 'gettext',
-					'content' => $this->_config->GUI_ROOT_DIR . '/i18n/locales',
-					'scan' => Zend_Translate::LOCALE_DIRECTORY,
+					//'content' => $this->_config->GUI_ROOT_DIR . '/i18n/locales',
+					'content' => sprintf($trFilePattern, $locale, $locale),
+					//'scan' => Zend_Translate::LOCALE_DIRECTORY,
 					'locale' => $locale,
 					'disableNotices' => true,
 					'tag' => 'iMSCP'
