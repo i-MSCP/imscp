@@ -6,6 +6,7 @@ Git 1.1.x
 
 CONFIGS
 	Fixed: ssl_protocols parameter not available in versions older than 2.1 ( Dovecot )
+	Fixed: Wrong HOST_NAME variable in quota-waring template files ( Dovecot )
 
 ENGINE
 	Fixed: Servers::cron::cron server is broken - Cron file are never installed
