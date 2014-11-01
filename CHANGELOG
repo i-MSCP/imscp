@@ -5,7 +5,7 @@ Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIGS
-	Fixed: ssl_protocols parameter not available in versions older than < 2.1 ( Dovecot )
+	Fixed: ssl_protocols parameter not available in versions older than 2.1 ( Dovecot )
 
 GUI
 	Fixed: PHP must search files in i-MSCP library directories prior any other directory ( PHP include_path )
