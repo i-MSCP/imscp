@@ -65,7 +65,7 @@ ${GUI}/library/iMSCP/*.php \
 ${GUI}/library/iMSCP/*/*.php \
 ${GUI}/library/iMSCP/*/*/*.php \
 ${GUI}/library/resources/i18n/zend.php \
-${GUI}/library/iMSCP/View/Helpers/Functions/*.php \
+${GUI}/library/iMSCP/View/Helpers/Functions.php \
 ${GUI}/public/*.php \
 ${GUI}/public/*/*.php \
 --from-code=utf-8 \
