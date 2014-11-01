@@ -9,6 +9,7 @@ CONFIGS
 
 GUI
 	Fixed: PHP must search files in i-MSCP library directories prior any other directory ( PHP include_path )
+	Fixed: Mail suspension - Wrong SQL queries
 	Removed: Useless encoding translation string ( Usage of UTF-8 only )
 
 INSTALLER

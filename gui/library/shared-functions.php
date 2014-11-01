@@ -540,23 +540,22 @@ function change_domain_status($customerId, $action)
 			if($action == 'deactivate') {
 				if($cfg['HARD_MAIL_SUSPENSION']) { # SMTP/IMAP/POP disabled
 					exec_query(
-						'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ? AND mail_pass <> ?',
-						array( 'todisable', 'no', $domainId, '_no_')
+						'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?',
+						array( 'todisable', 'no', $domainId)
 					);
 				} else { # IMAP/POP disabled
 					exec_query(
-						'UPDATE mail_users SET po_active = ? WHERE domain_id = ? AND mail_pass <> ?',
-						array( 'no', $domainId, '_no_')
+						'UPDATE mail_users SET po_active = ? WHERE domain_id = ?', array( 'no', $domainId)
 					);
 				}
 			} else {
 				exec_query(
-					'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ? AND mail_pass <> ? AND status = ?',
-					array( 'toenable', 'yes', $domainId, '_no_', 'disabled')
+					'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ? AND status = ?',
+					array( 'toenable', 'yes', $domainId, 'disabled')
 				);
 				exec_query(
-					'UPDATE mail_users SET po_active = ? WHERE domain_id = ? AND mail_pass <> ? AND status <> ?',
-					array('yes', $domainId, '_no_', 'disabled')
+					'UPDATE mail_users SET po_active = ? WHERE domain_id = ? AND status <> ?',
+					array('yes', $domainId, 'disabled')
 				);
 			}
 
