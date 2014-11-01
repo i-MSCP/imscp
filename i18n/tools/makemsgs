@@ -1,87 +1,45 @@
 #!/bin/sh
-
 # i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2014 by i-MSCP Team
 #
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010-2014 by internet Multi Server Control Panel - http://i-mscp.net
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-# The contents of this file are subject to the Mozilla Public License
-# Version 1.1 (the "License"); you may not use this file except in
-# compliance with the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# Software distributed under the License is distributed on an "AS IS"
-# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-# License for the specific language governing rights and limitations
-# under the License.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
-#
-# The Initial Developer of the Original Code is ispCP Team.
-# Portions created by Initial Developer are Copyright (C) 2006-2010 by
-# isp Control Panel. All Rights Reserved.
-#
-# Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
-# internet Multi Server Control Panel. All Rights Reserved.
-#
-# The i-MSCP Home Page is:
-#
-#    http://i-mscp.net
-#
-
-# description:
-#
-# creates the main imscp.pot file out of any found strings in the php files
-#
-# Warning: This script will remove any strings which aren't present in the GUI
-# php files, this means dynamic strings or strings out of the database will
-# ignored.
-#
+# @aythor    Laurent Declercq <l.declercq@nuxwin.com>
+# @link      http://www.i-mscp.net i-MSCP Home Site
+# @license   http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 set -e
 
-I18N=../
+i18N_DIR=$(readlink -f ../)
 
-if [ ! -d ${I18N}/po ]; then
+if [ ! -d ${i18N_DIR}/po ]; then
 	echo "You must run this script from the i18n/tools directory."
 	exit 1
 fi
 
-GUI=../../gui
-
-if [ ! -f ${GUI}/public/index.php ]; then
-	echo "${GUI} isn't a valid GUI location."
-	exit 1
-fi
+GUI_DIR=$(readlink -f ../../gui)
 
 # PHP files
-/usr/bin/xgettext \
---foreign-user \
---language=PHP \
---keyword="tr" \
---no-location \
-${GUI}/library/*.php \
-${GUI}/library/iMSCP/*.php \
-${GUI}/library/iMSCP/*/*.php \
-${GUI}/library/iMSCP/*/*/*.php \
-${GUI}/library/resources/i18n/zend.php \
-${GUI}/library/iMSCP/View/Helpers/Functions.php \
-${GUI}/public/*.php \
-${GUI}/public/*/*.php \
---from-code=utf-8 \
--o ${I18N}/iMSCP.pot
+find ${GUI_DIR} -type f -name '*.php' -print > php.lst
+/usr/bin/xgettext --copyright-holder='i-MSCP Team - All rights reserved' --package-name='i-MSCP' \
+--package-version="<version>" --msgid-bugs-address='i18n@i-mscp.net' --language=PHP --keyword='tr' --from-code=utf-8 \
+--files-from=php.lst --no-location --sort-output --output=${i18N_DIR}/iMSCP.pot
+rm -f php.lst
 
 # XML files
-/usr/bin/xgettext \
---foreign-user \
---language=Glade \
---copyright-holder="iMSCP Team - All rights reserved" \
---package-name="i-MSCP" \
---package-version="<version>" \
---msgid-bugs-address="i18n@i-mscp.net" \
---keyword="label" \
---no-location \
-${GUI}/themes/*/*/*.xml \
--o ${I18N}/iMSCP.pot -j -s
-
-exit 0
+find ${GUI_DIR} -type f -name '*.xml' -print > xml.lst
+/usr/bin/xgettext --language=Glade --omit-header --keyword='label' --files-from=xml.lst --no-location --sort-output \
+--join-existing --output=${i18N_DIR}/iMSCP.pot
+rm -f xml.lst
