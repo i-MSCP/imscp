@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -7,12 +7,13 @@
 # kazuo <kazu.nito@gmail.com>, 2011-2013
 # kazuo <kazu.nito@gmail.com>, 2013
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
+# marlboro5963 <hinyhiny@me.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 15:17+0000\n"
+"POT-Creation-Date: 2014-11-02 19:08+0100\n"
+"PO-Revision-Date: 2014-11-02 18:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -371,156 +372,156 @@ msgstr "%s::はgetInfo（）が実装されていないと%sが見つかりま�
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' 電子メールアドレス '%%value%%'の有効なMXレコードであるとは思われない"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' は、電子メールアドレス' '%%value%%'の有効なホスト名ではありません"
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr ""
+msgstr "'%%hostname%%'はルーティング可能なネットワークセグメントにありません。 電子メールアドレス '%%value%%' はパブリックネットワークから解決すべきではありません"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%%localPart%%' はドットアトム形式と照合することはできません"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%%localPart%%' は引用符で囲まれた文字列形式と照合することはできません"
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
+msgstr "'%%localPart%%' は、電子メールアドレス'%%value%%'のための有効なローカルパートではありません"
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' DNSホスト名であるように思われるが、TLDの一部を抽出することはできません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%' DNSホスト名であるように思われるが、既知のリストに対してTLDを一致させることはできません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' DNSホスト名であるように思われるが、TLD '%%tld%%'のホスト名スキーマに対して一致させることはできません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' DNSホスト名であるように思われるが、無効な位置にダッシュが含まれています"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' DNSホスト名であるように思われるが、与えられたプニコード表記は復号化できない"
 
 #, php-format
 msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' ドメイン名であるように思われるが、TLD部分を抽出することはできません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%' ドメイン名であるように思われるが、既知のリストに対してTLDを一致させることはできません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match against domain name"
 " schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%'  はドメイン名であるように見えますが、TLD '%%tld%%' のドメイン·ネーム·スキーマに対して一致させることはできません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' ドメイン名であるように思われるが、無効な位置にダッシュが含まれています"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' ドメイン名であるように思われるが、与えられたプニコード表記は復号化できない"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a local network name but local network names are "
 "not allowed"
-msgstr ""
+msgstr "'%%value%%'はローカルネットワーク名のように見えますが、ローカルネットワーク名は許可されていません"
 
 #, php-format
 msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' サブドメイン名であるように思われるが、TLDの一部を抽出することはできません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match TLD against "
 "known list"
-msgstr ""
+msgstr "'%%value%%' サブドメイン名であるように思われるが、既知のリストに対してTLDを一致させることはできません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match against "
 "subdomain schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' サブドメイン名であるように思われるが、TLD '%%tld%%'のサブドメインスキーマに対して一致させることはできません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
 " position"
-msgstr ""
+msgstr "'%%value%%' サブドメイン名であるように思われるが、無効な位置にダッシュが含まれています"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' サブドメイン名であるように思われるが、与えられたプニコード表記は復号化できません"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr ""
+msgstr "'%%value%%' IPアドレスであるように見えますが、IPアドレスが許可されていません"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr ""
+msgstr "'%%value%%' 有効なIPアドレスではないようです"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid URI hostname"
-msgstr ""
+msgstr "'%%value%%' 有効なURIのホスト名ではないようです"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid local network name"
-msgstr ""
+msgstr "'%%value%%' は有効なローカルネットワーク名ではないようです"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a DNS hostname"
-msgstr ""
+msgstr "'%%value%%' は、DNSホスト名の予想される構造と一致していません"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a domain name"
-msgstr ""
+msgstr "'%%value%%' はドメイン名の予想される構造と一致しない"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a subdomain name"
-msgstr ""
+msgstr "'%%value%%' はサブドメイン名の予想される構造と一致しない"
 
 #, php-format
 msgid "'%%value%%' exceeds the allowed length"
-msgstr ""
+msgstr "'%%value%%' は許可された長さを超えています"
 
 msgid ""
 "'%%value%' is no valid email address in the basic format local-part@hostname"
-msgstr ""
+msgstr "'%%value%'  はlocal-part@hostnameの基本的な形式で有効なEメールアドレスではありません"
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -582,7 +583,7 @@ msgid "Account overview"
 msgstr "アカウント概要"
 
 msgid "Account summary"
-msgstr "アカウント要約"
+msgstr "アカウントの一覧"
 
 msgid "Account type"
 msgstr "アカウント種別"
@@ -600,13 +601,13 @@ msgid "Actions"
 msgstr "アクション"
 
 msgid "Activate"
-msgstr "アクティブ"
+msgstr "有効化"
 
 msgid "Activate this plugin"
-msgstr "プラグインをアクティブにする"
+msgstr "プラグインを有効化"
 
 msgid "Activated"
-msgstr "有効化する"
+msgstr "有効化"
 
 msgid "Activated software"
 msgstr "ソフトウェアの有効化"
@@ -615,7 +616,7 @@ msgid "Activation email"
 msgstr "Eメールの有効化"
 
 msgid "Activation in progress..."
-msgstr "活性化処理中..."
+msgstr "有効化しています"
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr "アクティベーションリンクは有効期限 <small>(分)</small>"
@@ -628,9 +629,6 @@ msgstr "追加 / 編集 SSL証明書"
 
 msgid "Add FTP account"
 msgstr "FTPアカウント追加"
-
-msgid "Add FTP user"
-msgstr "FTPユーザー追加"
 
 msgid "Add Htaccess group"
 msgstr "Htaccess グループ追加"
@@ -673,9 +671,6 @@ msgstr "ドメインエイリアス追加"
 
 msgid "Add email account"
 msgstr "Eメールアカウント追加"
-
-msgid "Add email user"
-msgstr "Eメールユーザー追加"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "{DOMAIN UTF8}の外部メールサーバー追加"
@@ -1062,7 +1057,7 @@ msgstr "この権限を削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want delete the %s SQL user?"
-msgstr ""
+msgstr "%sのSQLユーザを削除してもよろしいですか？"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "このパッケージをアクティブにしてもよろしいですか？"
@@ -1534,8 +1529,8 @@ msgstr "クライアント / Webツール / 保護領域 / {TR_DYNAMIC_TITLE}"
 msgid "Client / Webtools / Software"
 msgstr "クライアント / Webツール / ソフトウェア"
 
-msgid "Client / Webtools / Software / Install"
-msgstr "クライアント / Webツール / ソフトウェア / インストール"
+msgid "Client / Webtools / Software / Software Installation"
+msgstr ""
 
 msgid "Client / Webtools / Software / View"
 msgstr "クライアント / Webツール / ソフトウェア / 表示"
@@ -1605,9 +1600,6 @@ msgstr "キャッチオール作成"
 
 msgid "Create default email addresses"
 msgstr "デフォルトEメールアドレスを作成"
-
-msgid "Create directory, if not existing!"
-msgstr "既存しない場合、ディレクトリを作成します！"
 
 msgid "Created by"
 msgstr "作成者"
@@ -1782,6 +1774,9 @@ msgstr "データベースを使用"
 
 msgid "Database users"
 msgstr "データベースユーザー"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr ""
 
 msgid "Databases"
 msgstr "データベース"
@@ -2256,6 +2251,9 @@ msgstr "Eメールアカウントは、一時停止されます"
 msgid "Email address"
 msgstr "Eメールアドレス"
 
+msgid "Email address with comma(s) are not accepted."
+msgstr ""
+
 msgid "Email forward"
 msgstr "Email forward"
 
@@ -2562,6 +2560,9 @@ msgstr "新しいイメージを取得"
 msgid "GiB"
 msgstr "GiB"
 
+msgid "Go to the debugger for more details"
+msgstr ""
+
 msgid "Group"
 msgstr "グループ"
 
@@ -2597,7 +2598,7 @@ msgid "Homepage"
 msgstr "ホームページ"
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
-msgstr ""
+msgstr "そのホストのSQLユーザは、SQLサーバーへの接続を許可されています"
 
 msgid "Hosting plan"
 msgstr "ホスティングプラン"
@@ -2802,14 +2803,8 @@ msgstr "情報がない"
 msgid "Install"
 msgstr "インストール"
 
-msgid "Install Software"
-msgstr "ソフトウェアのインストール"
-
 msgid "Install in progress"
 msgstr "進行中のインストール"
-
-msgid "Install path"
-msgstr "インストールのパス"
 
 msgid "Install this plugin"
 msgstr "プラグインをインストール"
@@ -2887,6 +2882,9 @@ msgstr "無効なURL。"
 msgid "Invalid domain name."
 msgstr "無効なドメイン名。"
 
+msgid "Invalid email address."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "無効な有効期限。"
 
@@ -2913,6 +2911,9 @@ msgstr "ターゲットが無効です。"
 
 msgid "Invalid type given. String expected"
 msgstr "無効な型の文字列が指定された。"
+
+msgid "Invalid username."
+msgstr ""
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3034,9 +3035,6 @@ msgstr "ロゴは削除されました。"
 msgid "Logo successfully updated."
 msgstr "ロゴは更新されました。"
 
-msgid "Logout"
-msgstr "ログアウト"
-
 msgid "Lost password"
 msgstr "パスワードを忘れた"
 
@@ -3109,9 +3107,6 @@ msgstr "男性"
 msgid "Malformed resolver SQL query"
 msgstr "不正な形式なリゾルバSQLクエリ"
 
-msgid "Manage Domains"
-msgstr "ドメイン管理"
-
 msgid "Manage SQL"
 msgstr "SQL管理"
 
@@ -3142,11 +3137,11 @@ msgstr "%s のPHPディレクティブの最大値"
 
 #, php-format
 msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
-msgstr ""
+msgstr "最大リモートファイルサイズ（％s）に達します。あなたのリモートファイルは％sです"
 
 #, php-format
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
-msgstr ""
+msgstr "最大リモートファイルサイズ（％s）に達しました。あなたのリモートファイルは％sです"
 
 msgid "Maximum number of captcha validation attempts"
 msgstr "キャプチャのバリテーションの最大試行回数"
@@ -3601,7 +3596,7 @@ msgid "Password"
 msgstr "パスワード"
 
 msgid "Password cannot be empty."
-msgstr ""
+msgstr "パスワードが空にすることはできません。"
 
 msgid "Password cannot be longer than 30 characters."
 msgstr "パスワードは30文字より長くすることはできません。"
@@ -3642,6 +3637,9 @@ msgstr "パスワード設定"
 
 msgid "Password successfully updated."
 msgstr "パスワードは更新されました。"
+
+msgid "Password with comma(s) are not accepted."
+msgstr ""
 
 msgid "Passwords do not match"
 msgstr "パスワードが一致しません"
@@ -3692,7 +3690,7 @@ msgid "Please choose htaccess user or htaccess group."
 msgstr "htaccessユーザーまたはhtaccessグループを選択してください。"
 
 msgid "Please confirm the password."
-msgstr ""
+msgstr "パスワードを確認してください。"
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
@@ -3702,7 +3700,7 @@ msgstr "管理者に連絡してください！<br />このパッケージを使
 
 #, php-format
 msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
+msgstr "'@、$、%%...'のように特殊文字をパスワードに使用しないでください。"
 
 msgid "Please enter a name for the protected area."
 msgstr "アクセス制限領域の名前を入力してください。"
@@ -3724,9 +3722,6 @@ msgstr "下記に自動応答メッセージを入力してください"
 
 msgid "Please fill up both data fields for password."
 msgstr "パスワードを両方のデータ項目を入力してください。"
-
-msgid "Please select a valid SQL user for the database."
-msgstr "データベースに有効なSQLユーザを選択してください。"
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -4361,6 +4356,9 @@ msgstr "SQLユーザプレフィックス/サフィックス"
 msgid "SQL user successfully added."
 msgstr "SQLユーザーを追加しました。"
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr ""
+
 msgid "SQL users"
 msgstr "SQLユーザー"
 
@@ -4391,14 +4389,8 @@ msgstr "安全な接続"
 msgid "Security code"
 msgstr "セキュリティーコード"
 
-msgid "Select Domain"
-msgstr "ドメインを選択"
-
 msgid "Select all entries for deletion."
 msgstr "削除のため、全てのエントリを選択します。"
-
-msgid "Select database"
-msgstr "データベースを選択"
 
 msgid "Select group"
 msgstr "グループを選択"
@@ -4598,6 +4590,9 @@ msgstr "ソフトウェアインストーラオプションを更新しました
 
 msgid "Software installer requires PHP support."
 msgstr "ソフトウェアのインストーラは、PHPのサポートが必要です。"
+
+msgid "Software instance has been scheduled for installation"
+msgstr ""
 
 msgid "Software management"
 msgstr "ソフトウェア管理"
@@ -4815,6 +4810,9 @@ msgstr "TXTフィールドが空または無効です。"
 msgid "Target"
 msgstr "ターゲット"
 
+msgid "Target domain"
+msgstr ""
+
 msgid "Target host"
 msgstr "ターゲットホスト"
 
@@ -4849,7 +4847,7 @@ msgstr "この顧客のための %s 制限<strong>%d</strong>は、 %s が既に
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already <strong>%d</strong> %s."
-msgstr ""
+msgstr "彼が既に <strong>%d</strong> %sを持つので、この顧客のための %s 制限は'無効'に設定するこはできません。"
 
 #, php-format
 msgid ""
@@ -4880,12 +4878,10 @@ msgid "The certificate field cannot be empty."
 msgstr "証明書フィールドを空にすることはできません。"
 
 #, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "ディレクトリ %s は存在しません。最初に作成してください。"
-
-#, php-format
-msgid "The directory %s was created."
-msgstr "ディレクトリ %s が作成されました。"
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -4920,7 +4916,7 @@ msgstr "パスワードの項目が空です。"
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
-msgstr ""
+msgstr "リモートファイルサイズ（％s）は1バイト未満です。URLを確認してください。"
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "編集しようとしている代理店アカウントが見つかりませんでした。"
@@ -4998,7 +4994,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %% character to allow this SQL user to connect from "
 "any host."
-msgstr ""
+msgstr "そのホストから、SQLユーザがSQLサーバへの接続が許可されている必要があります。 \nこのSQLユーザは任意のホストから接続できるように%%文字を入力してください。"
 
 msgid "This package already exists in the administrator software repository."
 msgstr "パッケージには、管理者のソフトウェアリポジトリに既に存在しています。"
@@ -5135,6 +5131,10 @@ msgstr "%sプラグインを変更することができません：%s"
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "ID '%s'のチケットをクローズできません。"
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr ""
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "言語ファイルのための'%s' ディレクトリを作成できません。"
@@ -5235,13 +5235,16 @@ msgstr "%sプラグインを更新することができません：%s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
-msgstr ""
+msgstr "ファイルをアップロードすることができません。最大アップロードファイルサイズ（％1 $ dのMB）に達しましたか？"
 
 msgid "Unauthorized"
 msgstr "許可されていない"
 
 msgid "Unavailable"
 msgstr "使用禁止"
+
+msgid "Unexpected error"
+msgstr ""
 
 msgid "Uninstall"
 msgstr "アンインストール"
@@ -5273,9 +5276,6 @@ msgstr "不明のアクションが要求された。"
 #, php-format
 msgid "Unknown action: %s"
 msgstr "不明のアクション： %s"
-
-msgid "Unknown error"
-msgstr "不明なエラー"
 
 msgid "Unknown language name."
 msgstr "不明な言語名が指定されました。"
@@ -5322,9 +5322,6 @@ msgstr "Webソフトウェアのリポジトリから更新する"
 
 msgid "Update from web depot"
 msgstr "Webデポットから更新します"
-
-msgid "Update hosting plan"
-msgstr "ホスティングプラン更新"
 
 msgid "Update in progress..."
 msgstr "更新処理中..."
@@ -5664,8 +5661,10 @@ msgstr "保護されたプラグインの更新が許可されていません。
 msgid "You can only upload images."
 msgstr "イメージをアップロードすることができるだけです。"
 
-msgid "You can't install the software outside the htdocs directory."
-msgstr "htdocsディレクトリ外にソフトウェアをインストールすることはできません。"
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
+msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "顧客アカウントを持っている代理店は削除できません。"
@@ -5781,9 +5780,6 @@ msgstr "Eメールアカウントの制限があります。<br/>無制限のメ
 
 msgid "You have been successfully logged out."
 msgstr "ログアウトしました。"
-
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr "ドメインディレクトリと一致していないディレクトリを選択しました。"
 
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
@@ -5928,7 +5924,7 @@ msgstr "パッケージが破損しています。修正してください！"
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
-msgstr ""
+msgstr "リモートファイルサイズ（％s）は1バイト未満です。URLを確認してください。"
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -6006,10 +6002,6 @@ msgstr "Eメールアカウント"
 
 msgid "enabled"
 msgstr "有効"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "すべて"

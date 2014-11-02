@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"POT-Creation-Date: 2014-11-02 19:08+0100\n"
+"PO-Revision-Date: 2014-11-02 18:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -637,9 +637,6 @@ msgstr ""
 msgid "Add FTP account"
 msgstr "Afegir un compte FTP"
 
-msgid "Add FTP user"
-msgstr "Afegir usuari FTP"
-
 msgid "Add Htaccess group"
 msgstr "Afegir grup Htaccess"
 
@@ -681,9 +678,6 @@ msgstr "Afegir àlies de domini"
 
 msgid "Add email account"
 msgstr "Afegir compte de correu"
-
-msgid "Add email user"
-msgstr "Afegir un usuari de correu"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Afegir un servidor de correu extenr per {DOMAIN_UTF8}"
@@ -1542,7 +1536,7 @@ msgstr ""
 msgid "Client / Webtools / Software"
 msgstr ""
 
-msgid "Client / Webtools / Software / Install"
+msgid "Client / Webtools / Software / Software Installation"
 msgstr ""
 
 msgid "Client / Webtools / Software / View"
@@ -1613,9 +1607,6 @@ msgstr "Crear catch all"
 
 msgid "Create default email addresses"
 msgstr "Crear les adreces per defecte"
-
-msgid "Create directory, if not existing!"
-msgstr "Crear directori si no existeix!"
 
 msgid "Created by"
 msgstr "Creat per"
@@ -1790,6 +1781,9 @@ msgstr "Ús de la base de dades"
 
 msgid "Database users"
 msgstr "Usuaris de base de dades"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr ""
 
 msgid "Databases"
 msgstr "Bases de dades"
@@ -2264,6 +2258,9 @@ msgstr ""
 msgid "Email address"
 msgstr "Adreça d'email"
 
+msgid "Email address with comma(s) are not accepted."
+msgstr ""
+
 msgid "Email forward"
 msgstr "Reenviament d'email"
 
@@ -2570,6 +2567,9 @@ msgstr "Obtenir una nova imatge"
 msgid "GiB"
 msgstr "GiB"
 
+msgid "Go to the debugger for more details"
+msgstr ""
+
 msgid "Group"
 msgstr "Grup"
 
@@ -2810,14 +2810,8 @@ msgstr ""
 msgid "Install"
 msgstr "Instal·lar"
 
-msgid "Install Software"
-msgstr "Instal·lar software"
-
 msgid "Install in progress"
 msgstr ""
-
-msgid "Install path"
-msgstr "Ruta d'instal·lació"
 
 msgid "Install this plugin"
 msgstr ""
@@ -2895,6 +2889,9 @@ msgstr "Adreça URL incorrecte."
 msgid "Invalid domain name."
 msgstr ""
 
+msgid "Invalid email address."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Data d'expiració invàlida."
 
@@ -2921,6 +2918,9 @@ msgstr "Destí incorrecte."
 
 msgid "Invalid type given. String expected"
 msgstr "Tipus invàlid. S'esperava una cadena"
+
+msgid "Invalid username."
+msgstr ""
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3042,9 +3042,6 @@ msgstr "Logotip eliminat correctament."
 msgid "Logo successfully updated."
 msgstr "Logotip actualitzat correctament."
 
-msgid "Logout"
-msgstr "Sortir"
-
 msgid "Lost password"
 msgstr "Contrasenya perduda"
 
@@ -3116,9 +3113,6 @@ msgstr "Home"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
-
-msgid "Manage Domains"
-msgstr "Administrar Dominis"
 
 msgid "Manage SQL"
 msgstr "Administrar SQL"
@@ -3651,6 +3645,9 @@ msgstr "Paràmetres de la contrasenya"
 msgid "Password successfully updated."
 msgstr "Contrasenya actualitzada."
 
+msgid "Password with comma(s) are not accepted."
+msgstr ""
+
 msgid "Passwords do not match"
 msgstr ""
 
@@ -3732,9 +3729,6 @@ msgstr ""
 
 msgid "Please fill up both data fields for password."
 msgstr "Si us plau ompliu els dos camps de la contrasenya."
-
-msgid "Please select a valid SQL user for the database."
-msgstr ""
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -4369,6 +4363,9 @@ msgstr ""
 msgid "SQL user successfully added."
 msgstr "Usuari SQL afegit correctament."
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr ""
+
 msgid "SQL users"
 msgstr "Usuaris SQL"
 
@@ -4399,14 +4396,8 @@ msgstr "Connexió segura"
 msgid "Security code"
 msgstr "Codi de seguretat"
 
-msgid "Select Domain"
-msgstr "Escull el domini"
-
 msgid "Select all entries for deletion."
 msgstr ""
-
-msgid "Select database"
-msgstr "Escull la base de dades"
 
 msgid "Select group"
 msgstr ""
@@ -4605,6 +4596,9 @@ msgid "Software installer options successfully updated."
 msgstr "Opcions de l'instal·lador de software actualitzades."
 
 msgid "Software installer requires PHP support."
+msgstr ""
+
+msgid "Software instance has been scheduled for installation"
 msgstr ""
 
 msgid "Software management"
@@ -4823,6 +4817,9 @@ msgstr ""
 msgid "Target"
 msgstr "Destí"
 
+msgid "Target domain"
+msgstr ""
+
 msgid "Target host"
 msgstr "Servidor destí"
 
@@ -4888,12 +4885,10 @@ msgid "The certificate field cannot be empty."
 msgstr ""
 
 #, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "El directori %s no existeix. Siusplau primer de tot cal crear-lo."
-
-#, php-format
-msgid "The directory %s was created."
-msgstr "El directori %s s'ha creat."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5143,6 +5138,10 @@ msgstr ""
 msgid "Unable to close the ticket with Id '%s'."
 msgstr ""
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr ""
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "No ha sigut possible crear el directori %s per el fitxer d'idioma."
@@ -5251,6 +5250,9 @@ msgstr ""
 msgid "Unavailable"
 msgstr ""
 
+msgid "Unexpected error"
+msgstr ""
+
 msgid "Uninstall"
 msgstr "Desinstal.lar"
 
@@ -5281,9 +5283,6 @@ msgstr "No s'ha trobat l'acció sol·licitada."
 #, php-format
 msgid "Unknown action: %s"
 msgstr "Acció desconeguda: %s"
-
-msgid "Unknown error"
-msgstr "Error desconegut"
 
 msgid "Unknown language name."
 msgstr "Nom de llenguatge desconegut."
@@ -5330,9 +5329,6 @@ msgstr "Actualitzar des del reposidori d'aplicacions"
 
 msgid "Update from web depot"
 msgstr "Actualitzar des del repositori d'aplicacions"
-
-msgid "Update hosting plan"
-msgstr "Actualitzar pla de hosting"
 
 msgid "Update in progress..."
 msgstr ""
@@ -5672,7 +5668,9 @@ msgstr ""
 msgid "You can only upload images."
 msgstr "Només pots carregar imatges,"
 
-msgid "You can't install the software outside the htdocs directory."
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
 msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
@@ -5789,9 +5787,6 @@ msgstr ""
 
 msgid "You have been successfully logged out."
 msgstr "La sessió ha estat tancada."
-
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr ""
 
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
@@ -6014,10 +6009,6 @@ msgstr ""
 
 msgid "enabled"
 msgstr "activat"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "tot"

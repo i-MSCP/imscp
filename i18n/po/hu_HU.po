@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 15:28+0000\n"
+"POT-Creation-Date: 2014-11-02 19:08+0100\n"
+"PO-Revision-Date: 2014-11-02 18:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -374,17 +374,17 @@ msgstr "%s::getInfo() nem hajtotta végre és %s nem található. Ez egy hiba a(
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr "'%%hostname%%' kifejezés nem szerepel, hogy egy érvényes MX rekordot az e-mail cím '%%value%%'"
+msgstr "„%%hostname%%” úgy tűnik, hogy nem rendelkezik érvényes MX rekorddal „%%value%%” e-mail cím számára"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr "'%%hostname%%' nem érvényes gépnév az e-mail cím '%%value%%'"
+msgstr "„%%hostname%%” érvénytelen kiszolgálónév „%%value%%” e-mail cím számára"
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr ""
+msgstr "„%%hostname%%” egy nem elérhető hálózati szegmens. „%%value%%” e-mail cím nem oldható fel a nyilvános hálózatról"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
@@ -392,138 +392,138 @@ msgstr "'%%localPart%%' can not be matched against dot-atom format"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "„%%localPart%%” nem egyezik az idézett-szöveg formátummal"
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
+msgstr "„%%localPart%%” érvénytelen helyi rész „%%value%%” e-mail cím számára"
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr "'%%value%%' úgy tűnik, hogy a DNS hostname but cannot extract TLD part"
+msgstr "„%%value%%” egy DNS kiszolgálónévnek tűnik, de nem lehet kibontani a TLD részt"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "„%%value%%” egy DNS kiszolgálónévnek tűnik, de nem egyezik TLD ismert listával"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "„%%value%%” egy DNS kiszolgálónévnek tűnik, de nem egyezik „%%tld%%” TLD domain sablonnal"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "„%%value%%” egy DNS kiszolgálónévnek tűnik, de rossz helyen tartalmaz egy kötőjelet"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "„%%value%%” egy DNS kiszolgálónévnek tűnik, de nem lehet a „punycode” jelöltést dekódolni"
 
 #, php-format
 msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
+msgstr "„%%value%%” egy domain névnek tűnik, de nem lehet kibontani a TLD részt"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "„%%value%%” egy domain névnek tűnik, de nem egyezik a TLD ismert listával"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match against domain name"
 " schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "„%%value%%” egy domain névnek tűnik, de nem egyezik „%%tld%%” TLD domain sablonnal"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "„%%value%%” egy domain névnek tűnik, de rossz helyen tartalmaz egy kötőjelet"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "„%%value%%” egy domain névnek tűnik, de a „punycode” jelölést nem lehet dekódolni"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a local network name but local network names are "
 "not allowed"
-msgstr ""
+msgstr "„%%value%%” egy helyi hálózati névnek tűnik, de a helyi hálózati nevek nem engedélyezettek"
 
 #, php-format
 msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
+msgstr "„%%value%%” egy aldomain névnek tűnik, de nem lehet kibontani a TLD részt"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match TLD against "
 "known list"
-msgstr ""
+msgstr "„%%value%%” egy aldomain névnek tűnik, de nem egyezik a TLD ismert listával"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match against "
 "subdomain schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "„%%value%%” egy aldomain névnek tűnik, de nem egyezik meg a(z) „%%tld%%” TLD aldomain sablonnak"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
 " position"
-msgstr ""
+msgstr "„%%value%%” egy aldomain névnek tűnik, de rossz helyen tartalmaz egy kötőjelet"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "„%%value%%”' egy aldomain névnek tűnik, de a megadott „punycode” jelölést nem lehet dekódolni"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr ""
+msgstr "„%%value%%” egy IP címnek tűnik, de ez az IP cím nem engedélyezett"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr ""
+msgstr "„%%value%%” nem tűnik érvényes IP-címnek"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid URI hostname"
-msgstr ""
+msgstr "„%%value%%” nem tűnik érvényes URI hosztnévnek"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid local network name"
-msgstr ""
+msgstr "„%%value%%”nem tűnik érvényes helyi hálózati névnek"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a DNS hostname"
-msgstr ""
+msgstr "„%%value%%”nem egyezik meg a DNS hosztnév várt szerkezetével"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a domain name"
-msgstr ""
+msgstr "„%%value%%” nem egyezik meg a domain név várt szerkezetével"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a subdomain name"
-msgstr ""
+msgstr "„%%value%%” nem egyezik meg a aldomain név várt szerkezetével"
 
 #, php-format
 msgid "'%%value%%' exceeds the allowed length"
-msgstr ""
+msgstr "„%%value%%” hossza túllépi a megengedettet"
 
 msgid ""
 "'%%value%' is no valid email address in the basic format local-part@hostname"
-msgstr ""
+msgstr "„%%value%” nem érvényes e-mail cím formátum (local-part@hostname)"
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -632,9 +632,6 @@ msgstr "SSL tanúsítvány hozzáadása / szerkesztése"
 msgid "Add FTP account"
 msgstr "FTP-felhasználó hozzáadása"
 
-msgid "Add FTP user"
-msgstr "FTP felhasználó hozzáadása"
-
 msgid "Add Htaccess group"
 msgstr "Védett csoport létrehozása"
 
@@ -676,9 +673,6 @@ msgstr "Domain álnév létrehozása"
 
 msgid "Add email account"
 msgstr "Postafiók hozzáadása"
-
-msgid "Add email user"
-msgstr "E-mail felhasználó hozzáadása"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Külső levelező szerver hozzáadása a {DOMAIN_UTF8} -hez"
@@ -1065,7 +1059,7 @@ msgstr "Biztosan szeretné törölni a hozzáférési jogokat?"
 
 #, php-format
 msgid "Are you sure you want delete the %s SQL user?"
-msgstr ""
+msgstr "Tényleg törölni szeretnéd a(z) %s SQL felhasználót?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Biztosan szeretné aktiválni ezt a programcsomagot?"
@@ -1537,8 +1531,8 @@ msgstr "Ügyfél / Webes eszközök / Védett területek / {TR_DYNAMIC_TITLE}"
 msgid "Client / Webtools / Software"
 msgstr "Ügyfél / Webes eszközök / Szoftverek"
 
-msgid "Client / Webtools / Software / Install"
-msgstr "Ügyfél / Webes eszközök / Szoftverek / Telepítés"
+msgid "Client / Webtools / Software / Software Installation"
+msgstr "Ügyfél / Webes eszközök / Szoftver / Szoftver telepítése "
 
 msgid "Client / Webtools / Software / View"
 msgstr "Ügyfél / Webes eszközök / Szoftverek / Megtekintés"
@@ -1608,9 +1602,6 @@ msgstr "Catch-all létrehozása"
 
 msgid "Create default email addresses"
 msgstr "Alapértelmezett postafiókok létrehozása"
-
-msgid "Create directory, if not existing!"
-msgstr "Könyvtár létrehozása, ha nem létezik."
 
 msgid "Created by"
 msgstr "Létrehozta"
@@ -1785,6 +1776,9 @@ msgstr "Adatbázisok tárhely foglaltsága"
 
 msgid "Database users"
 msgstr "Adatbázis felhasználók"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr "A vesszővel jelölt adatbázis neve nem elfogadható."
 
 msgid "Databases"
 msgstr "Adatbázisok"
@@ -2259,6 +2253,9 @@ msgstr "Postafiókok felfüggesztve"
 msgid "Email address"
 msgstr "Email címek"
 
+msgid "Email address with comma(s) are not accepted."
+msgstr "A vesszővel jelölt e-mail cím neve nem elfogadható."
+
 msgid "Email forward"
 msgstr "Továbbított email"
 
@@ -2565,6 +2562,9 @@ msgstr "Új kép"
 msgid "GiB"
 msgstr "GB"
 
+msgid "Go to the debugger for more details"
+msgstr "Menj a hibakeresőhöz bővebb részletért"
+
 msgid "Group"
 msgstr "Csoport"
 
@@ -2594,13 +2594,13 @@ msgstr "Home könyvtár"
 
 #, php-format
 msgid "Home directory '%s' doesn't exist"
-msgstr "'%s' home könyvtár nem létezik"
+msgstr "„%s” home könyvtár nem létezik"
 
 msgid "Homepage"
 msgstr "Honlap"
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
-msgstr ""
+msgstr "Az a kiszolgáló, ahonnan az SQL felhasználó csatlakozhat az SQL szerverre"
 
 msgid "Hosting plan"
 msgstr "Tárhely csomag"
@@ -2710,7 +2710,7 @@ msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
 "against deletion using the immutable flag (only if supported by the file "
 "system)."
-msgstr "Ha 'igen'-t választasz, akkor a Web könyvtárakat az i-MSCP megváltozhatatlan jelöléssel megvédi az esetleges törléstől (csak ha támogatja a fájlrendszer)."
+msgstr "Ha „igen”-t választasz, akkor a Web könyvtárakat az i-MSCP megváltozhatatlan jelöléssel megvédi az esetleges törléstől (csak ha támogatja a fájlrendszer)."
 
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
@@ -2732,7 +2732,7 @@ msgstr "Import a helyi raktárba"
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
 "from today."
-msgstr "Abban az esetben, ha a domain lejáratának dátuma 'N/A', akkor a lejáratának dátuma ma lesz"
+msgstr "Abban az esetben, ha a domain lejáratának dátuma „N/A”, akkor a lejáratának dátuma ma lesz."
 
 msgid "In front"
 msgstr "Elején"
@@ -2805,14 +2805,8 @@ msgstr "Nem érhető el információ"
 msgid "Install"
 msgstr "Telepítés"
 
-msgid "Install Software"
-msgstr "Alkalmazás telepítése"
-
 msgid "Install in progress"
 msgstr "Telepítés folyamatban"
-
-msgid "Install path"
-msgstr "Telepítés célkönyvtára"
 
 msgid "Install this plugin"
 msgstr "Bővítmény telepítése"
@@ -2890,6 +2884,9 @@ msgstr "Érvénytelen webcím"
 msgid "Invalid domain name."
 msgstr "Hibás domain név."
 
+msgid "Invalid email address."
+msgstr "Érvénytelen e-mail cím"
+
 msgid "Invalid expiration date."
 msgstr "Érvénytelen a lejárat dátuma"
 
@@ -2916,6 +2913,9 @@ msgstr "Érvénytelen cél"
 
 msgid "Invalid type given. String expected"
 msgstr "Érvénytelen a megadott típus"
+
+msgid "Invalid username."
+msgstr "Érvénytelen felhasználónév."
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3037,9 +3037,6 @@ msgstr "Logó sikeresen törlölve"
 msgid "Logo successfully updated."
 msgstr "Logó sikeresen frissítve"
 
-msgid "Logout"
-msgstr "Kijelentkezés"
-
 msgid "Lost password"
 msgstr "Elfelejtett jelszó"
 
@@ -3111,9 +3108,6 @@ msgstr "Férfi"
 
 msgid "Malformed resolver SQL query"
 msgstr "Hibás SQL lekérdezés megjavítása"
-
-msgid "Manage Domains"
-msgstr "Domainek kezelése"
 
 msgid "Manage SQL"
 msgstr "Adatbázisok kezelése"
@@ -3441,7 +3435,7 @@ msgid "One or more database updates are now available. See the details below."
 msgstr "Egy vagy több adatbázis frissítés már elérhető. Lásd a részleteket az alábbiakban"
 
 msgid "Only 'tar.gz' archives are accepted."
-msgstr "Csak a 'tar.gz' archívumok fogadunk el."
+msgstr "Csak a „tar.gz” archívumok fogadunk el."
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr "Csak az adminisztátorok tudnak belépni karbantartási módban"
@@ -3604,7 +3598,7 @@ msgid "Password"
 msgstr "Jelszó"
 
 msgid "Password cannot be empty."
-msgstr ""
+msgstr "A jelszó nem lehet üres!"
 
 msgid "Password cannot be longer than 30 characters."
 msgstr "A jelszó nem lehet hosszabb, mint 30 karakter!"
@@ -3645,6 +3639,9 @@ msgstr "Jelszavak beállításai"
 
 msgid "Password successfully updated."
 msgstr "A jelszó sikeresen frissítve"
+
+msgid "Password with comma(s) are not accepted."
+msgstr "A vesszővel jelölt jelszó nem elfogadható."
 
 msgid "Passwords do not match"
 msgstr "A jelszavak nem egyeznek."
@@ -3695,7 +3692,7 @@ msgid "Please choose htaccess user or htaccess group."
 msgstr "Kérem, válasszon védett felhasználót vagy védett csoportot!"
 
 msgid "Please confirm the password."
-msgstr ""
+msgstr "Kérjük, erősítsd meg a jelszót!"
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
@@ -3705,7 +3702,7 @@ msgstr "Kérjük, forduljon az adminisztrátorhoz! <br /> Kérdezze meg ennek a 
 
 #, php-format
 msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
+msgstr "Kérjük, ne használj speciális karaktereket (@, $, %%, stb) a jelszóban!"
 
 msgid "Please enter a name for the protected area."
 msgstr "Kérem a védett terület nevét"
@@ -3727,9 +3724,6 @@ msgstr "Kérjük, add meg az automatikus válasz üzenetét:"
 
 msgid "Please fill up both data fields for password."
 msgstr "Kérjük töltse ki mindkét jelszómezőt"
-
-msgid "Please select a valid SQL user for the database."
-msgstr "Kérjük válassz egy érvényes SQL felhasználót."
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -4003,7 +3997,7 @@ msgid "Protected"
 msgstr "Védett"
 
 msgid "Protected area status should be 'OK' if you want to delete it."
-msgstr "Védett terület csak akkor törölhető, ha a státusza OK"
+msgstr "Védett terület csak akkor törölhető, ha állapota „OK”."
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "Védett terület létrehozása sikeresen beütemezve"
@@ -4364,6 +4358,9 @@ msgstr "SQL felhasználó elő-/utótag"
 msgid "SQL user successfully added."
 msgstr "SQL felhasználó sikeresen hozzáadva"
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr "A vesszővel jelölt SQL felhasználó neve nem elfogadható."
+
 msgid "SQL users"
 msgstr "SQL felhasználók"
 
@@ -4394,14 +4391,8 @@ msgstr "Biztonságos kapcsolat"
 msgid "Security code"
 msgstr "Biztonsági kód"
 
-msgid "Select Domain"
-msgstr "Domain kiválasztása"
-
 msgid "Select all entries for deletion."
 msgstr "Összes bejegyzés kijelölése törlésre"
-
-msgid "Select database"
-msgstr "Adatbázis kiválasztása"
 
 msgid "Select group"
 msgstr "Csoport kiválasztása"
@@ -4505,7 +4496,7 @@ msgid "Sessions"
 msgstr "Felhasználói munkafolyamatok"
 
 msgid "Set status to 'tochange'"
-msgstr "Állapot módosítása 'megváltotatás'-ra"
+msgstr "Állapot módosítása „megváltoztatás”-ra"
 
 msgid "Settings"
 msgstr "Beállítások"
@@ -4602,6 +4593,9 @@ msgstr "Programtelepítő beállításai sikeresen frissültek"
 msgid "Software installer requires PHP support."
 msgstr "A szoftvertelepítőnek kell PHP támogatás!"
 
+msgid "Software instance has been scheduled for installation"
+msgstr "Kívánt szoftver telepítése beütemezve."
+
 msgid "Software management"
 msgstr "Szoftverek kezelése"
 
@@ -4677,7 +4671,7 @@ msgid "Status"
 msgstr "Állapot"
 
 msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr "Védett terület állapotának 'OK'-nak kell lennie, ha szerkeszteni kívánja"
+msgstr "Védett terület állapotának „OK”-nak kell lennie, ha szerkeszteni szeretnéd."
 
 msgid "Street 1"
 msgstr "Utca 1"
@@ -4792,7 +4786,7 @@ msgstr "Rendszerinformációk"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
-msgstr "Rendszer nem tudja eltávolítani a '% s' felhasználó logóját"
+msgstr "A rendszer nem tudja eltávolítani „%s” felhasználó logóját."
 
 msgid "System tools"
 msgstr "Rendszereszközök"
@@ -4817,6 +4811,9 @@ msgstr "TXT mező üres vagy hibás."
 
 msgid "Target"
 msgstr "Cél (target)"
+
+msgid "Target domain"
+msgstr "Cél domain"
 
 msgid "Target host"
 msgstr "Kiszolgáló (host)"
@@ -4852,7 +4849,7 @@ msgstr "Ügyfél %s korlátja nem lehet kissebb, mint <strong>%d</strong>, ami a
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already <strong>%d</strong> %s."
-msgstr "Ügyfél %s korlátja nem lehet 'letiltva', mert már <strong>%d</strong> %s"
+msgstr "Ügyfél %s korlátja nem lehet „letiltva”, mert már <strong>%d</strong> %s"
 
 #, php-format
 msgid ""
@@ -4883,12 +4880,10 @@ msgid "The certificate field cannot be empty."
 msgstr "A tanúsítvány mező nem lehet üres."
 
 #, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "A %s könyvtár nem létezik. Kérjük, hozzon létre először egyet"
-
-#, php-format
-msgid "The directory %s was created."
-msgstr "A könyvtár -%s- létrejött"
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr "%s könyvtár nem létezik. Kérjük, hozd létre ezt a könyvtárat a fájlkezelőddel."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -4902,7 +4897,7 @@ msgstr "A domain jelenleg inaktív. Néhány tulajdonságának módosítása ré
 
 msgid ""
 "The domain or at least one of its entities has a different status than 'ok'."
-msgstr "A domain vagy legalábbis annak egyik része más, mint az \"OK\"."
+msgstr "A domain vagy legalábbis annak egyik része más állapottal rendelkezik, mint az „OK”."
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt domain név nem létezik"
@@ -5001,7 +4996,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %% character to allow this SQL user to connect from "
 "any host."
-msgstr ""
+msgstr "Csak erről a kiszolgálóról csatlakozhat az SQL felhasználó az SQL szerverhez. Írj „%%” karaktert az összes kiszolgáló engedélyezéséhez."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Ez a csomag már létezik az adminisztrátor szoftverraktárában."
@@ -5058,7 +5053,7 @@ msgstr "Hibajegy sikeresen újra megynyitva"
 
 #, php-format
 msgid "Ticket with Id '%d' was not found."
-msgstr "Nem található '%d' azonosítójú hibajegy"
+msgstr "„%d” azonosítójú hibajegy nem található."
 
 msgid "To Admin"
 msgstr "Új tulajdonos (adminisztrátor):"
@@ -5136,14 +5131,18 @@ msgstr "%s bővítményt nem lehet megváltoztatni: %s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
-msgstr "Nem lehet lezárni '%s' azonosítójú hibajegyet"
+msgstr "„%s” azonosítójú hibajegyet nem lehet lezárni."
+
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr "Nem lehet csatlakozni a kiválasztott adatbázishoz a kiválasztott SQL felhasználóval."
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
-msgstr "Nem hozható létre a(z) '%s' könyvtár a nyelvi fájl számára"
+msgstr "Nem hozható létre a(z) „%s” könyvtár a nyelvi fájl számára."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
-msgstr "Nem hozható létre a 'LC_MESSAGES' könyvtár a nyelvi fájl számára"
+msgstr "Nem hozható létre a „LC_MESSAGES” könyvtár a nyelvi fájl számára."
 
 #, php-format
 msgid "Unable to deactivate the %s plugin: %s"
@@ -5198,7 +5197,7 @@ msgstr "Nem olvasható a webes alkalmazásokhoz tartozó xml fájl."
 
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
-msgstr "Nem lehet újranyitni '%s' azonosítójú hibajegyet"
+msgstr "„%s”azonosítójú hibajegyet nem lehet újranyitni."
 
 #, php-format
 msgid "Unable to restore %s plugin directory"
@@ -5246,6 +5245,9 @@ msgstr "Jogosulatlan"
 msgid "Unavailable"
 msgstr "Nem elérhető"
 
+msgid "Unexpected error"
+msgstr "Váratlan hiba"
+
 msgid "Uninstall"
 msgstr "Törlés"
 
@@ -5276,9 +5278,6 @@ msgstr "Ismeretlen művelet."
 #, php-format
 msgid "Unknown action: %s"
 msgstr "Ismeretlen művelet: %s"
-
-msgid "Unknown error"
-msgstr "Ismeretlen hiba"
 
 msgid "Unknown language name."
 msgstr "Ismeretlen nyelv"
@@ -5325,9 +5324,6 @@ msgstr "Frissítés a webes szoftverraktárból"
 
 msgid "Update from web depot"
 msgstr "Frissítés a webes programtárolóból"
-
-msgid "Update hosting plan"
-msgstr "Tárhely csomag frissítése"
 
 msgid "Update in progress..."
 msgstr "Frissítés folyamatban..."
@@ -5667,8 +5663,10 @@ msgstr "Nem frissítheted a védett bővítményt!"
 msgid "You can only upload images."
 msgstr "Csak képeket tud feltölteni"
 
-msgid "You can't install the software outside the htdocs directory."
-msgstr "Nem telepíthetsz alkalmazást a 'htdocs' könyvtáron kívül!"
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
+msgstr "Nem telepíthetsz alkalmazást a kiválasztott domain htdocs könyvtárán kívül."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Nem törölhetsz olyan viszonteladót akinek van ügyfélfiókja."
@@ -5785,9 +5783,6 @@ msgstr "Van postafiók korlátod!<br />Nem hozhatsz létre korlátlan postafiók
 msgid "You have been successfully logged out."
 msgstr "Sikeresen kijelentkezett"
 
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr "A kiválasztott könyvtár nem egyezik a domain könyvtárával."
-
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
 "users here."
@@ -5852,7 +5847,7 @@ msgid "You must first generate a password"
 msgstr "Először létre kell hozni egy jelszót"
 
 msgid "You must omit 'www'. It will be added automatically."
-msgstr "\"www\" címet nem szükséges létrehozni, mert a rendszer automatikusan hozzáadja"
+msgstr "A „www”-t hagyd ki, mert ezt a rendszer automatikusan hozzáadja."
 
 msgid "You must provide a password."
 msgstr "Először létre kell hozni egy jelszót"
@@ -6009,10 +6004,6 @@ msgstr "postafiókok"
 
 msgid "enabled"
 msgstr "engedélyezett"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "mindent"

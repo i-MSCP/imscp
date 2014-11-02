@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 04:51+0000\n"
-"Last-Translator: Cool <barni@telia.com>\n"
+"POT-Creation-Date: 2014-11-02 19:08+0100\n"
+"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -627,9 +627,6 @@ msgstr "Lägg till / Ändra SSL cert."
 msgid "Add FTP account"
 msgstr "Lägg till ett ftp konto"
 
-msgid "Add FTP user"
-msgstr "Lägg till FTP-användare"
-
 msgid "Add Htaccess group"
 msgstr "Lägg till ett Htaccess grupp"
 
@@ -671,9 +668,6 @@ msgstr "Lägg till domänalias"
 
 msgid "Add email account"
 msgstr "Lägg till ett mail konto"
-
-msgid "Add email user"
-msgstr "Lägg till e-postanvändare"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Lägg till externt mail servrar för {DOMAIN_UTF8}"
@@ -1532,8 +1526,8 @@ msgstr "Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
 msgid "Client / Webtools / Software"
 msgstr "Kund / Webtools / Softwares"
 
-msgid "Client / Webtools / Software / Install"
-msgstr "Kund / Webtools / Software / Install"
+msgid "Client / Webtools / Software / Software Installation"
+msgstr "Klient / WebTools / Mjukvara / Programinstallation"
 
 msgid "Client / Webtools / Software / View"
 msgstr "Kund / Webtools / Softwares / View"
@@ -1603,9 +1597,6 @@ msgstr "Skapa catch-all"
 
 msgid "Create default email addresses"
 msgstr "Skapa standard e-postadresser"
-
-msgid "Create directory, if not existing!"
-msgstr "Skapa katalogen om den inte finns!"
 
 msgid "Created by"
 msgstr "Skapad av"
@@ -1780,6 +1771,9 @@ msgstr "Database usage"
 
 msgid "Database users"
 msgstr "Databasanvändare"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr "Databas med kommatecken (er) i namn accepteras inte."
 
 msgid "Databases"
 msgstr "Databaser"
@@ -2254,6 +2248,9 @@ msgstr "E-postkonton är hårdavstängda"
 msgid "Email address"
 msgstr "E-mail adr."
 
+msgid "Email address with comma(s) are not accepted."
+msgstr "E-postadress med kommatecken (s) är inte tillåtna."
+
 msgid "Email forward"
 msgstr "Email forward"
 
@@ -2560,6 +2557,9 @@ msgstr "Tar fram ett nytt bild"
 msgid "GiB"
 msgstr "GiB"
 
+msgid "Go to the debugger for more details"
+msgstr "Gå till debugger för mer information"
+
 msgid "Group"
 msgstr "Grupp"
 
@@ -2800,14 +2800,8 @@ msgstr "Information ej tillgänglig"
 msgid "Install"
 msgstr "Intallera"
 
-msgid "Install Software"
-msgstr "Installera program"
-
 msgid "Install in progress"
 msgstr "Install in progress..."
-
-msgid "Install path"
-msgstr "Installations-väg"
 
 msgid "Install this plugin"
 msgstr "Install this plugin"
@@ -2885,6 +2879,9 @@ msgstr "Invalid URL."
 msgid "Invalid domain name."
 msgstr "Ogiltigt domännamn."
 
+msgid "Invalid email address."
+msgstr "Ogiltig e-postadress."
+
 msgid "Invalid expiration date."
 msgstr "Ogiltigt förfallodatum."
 
@@ -2911,6 +2908,9 @@ msgstr "Invalid target."
 
 msgid "Invalid type given. String expected"
 msgstr "Ogiltig typ. String förväntad"
+
+msgid "Invalid username."
+msgstr "Ogiltigt användarnamn."
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3032,9 +3032,6 @@ msgstr "Logo tagits bort."
 msgid "Logo successfully updated."
 msgstr "Logo uppdaterats."
 
-msgid "Logout"
-msgstr "Logga ut"
-
 msgid "Lost password"
 msgstr "Glömt lösenord"
 
@@ -3106,9 +3103,6 @@ msgstr "Man"
 
 msgid "Malformed resolver SQL query"
 msgstr "Malformed resolver SQL query"
-
-msgid "Manage Domains"
-msgstr "Hantera domäner"
 
 msgid "Manage SQL"
 msgstr "Hantera SQL"
@@ -3641,6 +3635,9 @@ msgstr "Lösenordsinställningar"
 msgid "Password successfully updated."
 msgstr "Lösenord uppdaterats."
 
+msgid "Password with comma(s) are not accepted."
+msgstr "Lösenord med kommatecken är inte tillåtna."
+
 msgid "Passwords do not match"
 msgstr "Lösenord matchar inte."
 
@@ -3722,9 +3719,6 @@ msgstr "Ange ditt auto-responder meddelande nedan"
 
 msgid "Please fill up both data fields for password."
 msgstr "Fyll upp båda datafält för lösenord."
-
-msgid "Please select a valid SQL user for the database."
-msgstr "Välj rätt användarnamn för databasen!"
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -4359,6 +4353,9 @@ msgstr "SQL-användare prefix/suffix"
 msgid "SQL user successfully added."
 msgstr "SQL användare skapades."
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr "SQL användare med kommatecken (er) i namn accepteras inte."
+
 msgid "SQL users"
 msgstr "SQL-användare"
 
@@ -4389,14 +4386,8 @@ msgstr "Säker anslutning"
 msgid "Security code"
 msgstr "Säkerhetskod"
 
-msgid "Select Domain"
-msgstr "Välj domän"
-
 msgid "Select all entries for deletion."
 msgstr "Välj alla poster för radering."
-
-msgid "Select database"
-msgstr "Välj databas"
 
 msgid "Select group"
 msgstr "Välj grupp:"
@@ -4596,6 +4587,9 @@ msgstr "Software installer options successfully updated."
 
 msgid "Software installer requires PHP support."
 msgstr "Installationsprogrammet kräver PHP-stöd."
+
+msgid "Software instance has been scheduled for installation"
+msgstr "Programvara instans har planerats för installation"
 
 msgid "Software management"
 msgstr "Software management"
@@ -4813,6 +4807,9 @@ msgstr "TXT-fältet är tomt eller ogiltig."
 msgid "Target"
 msgstr "Target"
 
+msgid "Target domain"
+msgstr "Måldomän"
+
 msgid "Target host"
 msgstr "Målvärd"
 
@@ -4878,12 +4875,10 @@ msgid "The certificate field cannot be empty."
 msgstr "The certificate field cannot be empty."
 
 #, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "The directory %s doesn't exist. Please create it first."
-
-#, php-format
-msgid "The directory %s was created."
-msgstr "The directory %s was created."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr "Katalogen %s existerar inte. Vänligen skapa katalogen med hjälp av filhanteraren."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5133,6 +5128,10 @@ msgstr "Unable to change the %s plugin: %s"
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "Det gick inte att stänga biljett med Id '%s'."
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr "Det går inte att ansluta till den valda databasen med det valda SQL användaren."
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "Kunde inte skapa%s katalog för språk-fil."
@@ -5241,6 +5240,9 @@ msgstr "Obehörig"
 msgid "Unavailable"
 msgstr "Unavailable"
 
+msgid "Unexpected error"
+msgstr "Oväntat fel"
+
 msgid "Uninstall"
 msgstr "Avinstallera"
 
@@ -5271,9 +5273,6 @@ msgstr "Okänd åtgärd begärt."
 #, php-format
 msgid "Unknown action: %s"
 msgstr "Okänd åtgärd:%s"
-
-msgid "Unknown error"
-msgstr "Okänt fel"
 
 msgid "Unknown language name."
 msgstr "Okänt språk namn."
@@ -5320,9 +5319,6 @@ msgstr "Uppdatering från Web arkiv"
 
 msgid "Update from web depot"
 msgstr "Uppdatering från webben depå"
-
-msgid "Update hosting plan"
-msgstr "Uppdatera hosting plan"
 
 msgid "Update in progress..."
 msgstr "Update in progress..."
@@ -5662,8 +5658,10 @@ msgstr "You are not allowed to update a protected plugin."
 msgid "You can only upload images."
 msgstr "Du kan bara ladda upp bilder."
 
-msgid "You can't install the software outside the htdocs directory."
-msgstr "You can't install the software outside the htdocs directory."
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
+msgstr "Det går inte att installera programvaran utanför htdocs katalogen för den valda domänen."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Du kan inte radera en återförsäljare som har kund konton."
@@ -5779,9 +5777,6 @@ msgstr "You have an email account limit.<br />You cannot add a user with unlimit
 
 msgid "You have been successfully logged out."
 msgstr "Du blev utloggad."
-
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr "You have chosen a directory which doesn't match the domain directory."
 
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
@@ -6004,10 +5999,6 @@ msgstr "email accounts"
 
 msgid "enabled"
 msgstr "enabled"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "kodning"
 
 msgid "everything"
 msgstr "allt"

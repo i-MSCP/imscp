@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"POT-Creation-Date: 2014-11-02 19:08+0100\n"
+"PO-Revision-Date: 2014-11-02 18:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -626,9 +626,6 @@ msgstr ""
 msgid "Add FTP account"
 msgstr ""
 
-msgid "Add FTP user"
-msgstr "Engadir usuario FTP"
-
 msgid "Add Htaccess group"
 msgstr ""
 
@@ -669,9 +666,6 @@ msgid "Add domain alias"
 msgstr "Engadir alias de dominio"
 
 msgid "Add email account"
-msgstr ""
-
-msgid "Add email user"
 msgstr ""
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
@@ -1531,7 +1525,7 @@ msgstr ""
 msgid "Client / Webtools / Software"
 msgstr ""
 
-msgid "Client / Webtools / Software / Install"
+msgid "Client / Webtools / Software / Software Installation"
 msgstr ""
 
 msgid "Client / Webtools / Software / View"
@@ -1601,9 +1595,6 @@ msgid "Create catch all"
 msgstr "Crear recolle-todo"
 
 msgid "Create default email addresses"
-msgstr ""
-
-msgid "Create directory, if not existing!"
 msgstr ""
 
 msgid "Created by"
@@ -1779,6 +1770,9 @@ msgstr ""
 
 msgid "Database users"
 msgstr "Usuarios de banco de datos"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr ""
 
 msgid "Databases"
 msgstr ""
@@ -2253,6 +2247,9 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
+msgid "Email address with comma(s) are not accepted."
+msgstr ""
+
 msgid "Email forward"
 msgstr ""
 
@@ -2559,6 +2556,9 @@ msgstr ""
 msgid "GiB"
 msgstr ""
 
+msgid "Go to the debugger for more details"
+msgstr ""
+
 msgid "Group"
 msgstr "Grupo"
 
@@ -2799,13 +2799,7 @@ msgstr ""
 msgid "Install"
 msgstr "Instalar"
 
-msgid "Install Software"
-msgstr ""
-
 msgid "Install in progress"
-msgstr ""
-
-msgid "Install path"
 msgstr ""
 
 msgid "Install this plugin"
@@ -2884,6 +2878,9 @@ msgstr ""
 msgid "Invalid domain name."
 msgstr ""
 
+msgid "Invalid email address."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr ""
 
@@ -2909,6 +2906,9 @@ msgid "Invalid target."
 msgstr ""
 
 msgid "Invalid type given. String expected"
+msgstr ""
+
+msgid "Invalid username."
 msgstr ""
 
 #, php-format
@@ -3031,9 +3031,6 @@ msgstr ""
 msgid "Logo successfully updated."
 msgstr ""
 
-msgid "Logout"
-msgstr "Rematar sesión"
-
 msgid "Lost password"
 msgstr "Contrasinal esquecido"
 
@@ -3104,9 +3101,6 @@ msgid "Male"
 msgstr "Home"
 
 msgid "Malformed resolver SQL query"
-msgstr ""
-
-msgid "Manage Domains"
 msgstr ""
 
 msgid "Manage SQL"
@@ -3640,6 +3634,9 @@ msgstr "Configuración de contrasinal"
 msgid "Password successfully updated."
 msgstr ""
 
+msgid "Password with comma(s) are not accepted."
+msgstr ""
+
 msgid "Passwords do not match"
 msgstr ""
 
@@ -3720,9 +3717,6 @@ msgid "Please enter your auto-responder message below"
 msgstr ""
 
 msgid "Please fill up both data fields for password."
-msgstr ""
-
-msgid "Please select a valid SQL user for the database."
 msgstr ""
 
 #, php-format
@@ -4358,6 +4352,9 @@ msgstr ""
 msgid "SQL user successfully added."
 msgstr ""
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr ""
+
 msgid "SQL users"
 msgstr "Usuarios SQL"
 
@@ -4388,13 +4385,7 @@ msgstr ""
 msgid "Security code"
 msgstr "Código de seguridade"
 
-msgid "Select Domain"
-msgstr ""
-
 msgid "Select all entries for deletion."
-msgstr ""
-
-msgid "Select database"
 msgstr ""
 
 msgid "Select group"
@@ -4493,7 +4484,7 @@ msgid "Service protocol"
 msgstr "Protocolo do servizo"
 
 msgid "Services status"
-msgstr ""
+msgstr "Estado do servidor"
 
 msgid "Sessions"
 msgstr ""
@@ -4594,6 +4585,9 @@ msgid "Software installer options successfully updated."
 msgstr ""
 
 msgid "Software installer requires PHP support."
+msgstr ""
+
+msgid "Software instance has been scheduled for installation"
 msgstr ""
 
 msgid "Software management"
@@ -4812,6 +4806,9 @@ msgstr ""
 msgid "Target"
 msgstr ""
 
+msgid "Target domain"
+msgstr ""
+
 msgid "Target host"
 msgstr "Host de destino"
 
@@ -4877,11 +4874,9 @@ msgid "The certificate field cannot be empty."
 msgstr ""
 
 #, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr ""
-
-#, php-format
-msgid "The directory %s was created."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
 msgstr ""
 
 msgid ""
@@ -5132,6 +5127,10 @@ msgstr ""
 msgid "Unable to close the ticket with Id '%s'."
 msgstr ""
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr ""
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr ""
@@ -5240,6 +5239,9 @@ msgstr ""
 msgid "Unavailable"
 msgstr ""
 
+msgid "Unexpected error"
+msgstr ""
+
 msgid "Uninstall"
 msgstr ""
 
@@ -5269,9 +5271,6 @@ msgstr ""
 
 #, php-format
 msgid "Unknown action: %s"
-msgstr ""
-
-msgid "Unknown error"
 msgstr ""
 
 msgid "Unknown language name."
@@ -5318,9 +5317,6 @@ msgid "Update from Web software repository"
 msgstr ""
 
 msgid "Update from web depot"
-msgstr ""
-
-msgid "Update hosting plan"
 msgstr ""
 
 msgid "Update in progress..."
@@ -5661,7 +5657,9 @@ msgstr ""
 msgid "You can only upload images."
 msgstr ""
 
-msgid "You can't install the software outside the htdocs directory."
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
 msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
@@ -5777,9 +5775,6 @@ msgid ""
 msgstr ""
 
 msgid "You have been successfully logged out."
-msgstr ""
-
-msgid "You have chosen a directory which doesn't match the domain directory."
 msgstr ""
 
 msgid ""
@@ -6003,10 +5998,6 @@ msgstr ""
 
 msgid "enabled"
 msgstr ""
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "todo"

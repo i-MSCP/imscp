@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 15:23+0000\n"
+"POT-Creation-Date: 2014-11-02 19:08+0100\n"
+"PO-Revision-Date: 2014-11-02 18:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -630,9 +630,6 @@ msgstr "Добавить/Изменить SSL сертификат"
 msgid "Add FTP account"
 msgstr "Добавить учётную запись FTP"
 
-msgid "Add FTP user"
-msgstr "Добавить пользователя FTP"
-
 msgid "Add Htaccess group"
 msgstr "Добавить группу Htaccess"
 
@@ -673,9 +670,6 @@ msgid "Add domain alias"
 msgstr "Добавить алиас домена"
 
 msgid "Add email account"
-msgstr "Добавить почтовый ящик"
-
-msgid "Add email user"
 msgstr "Добавить почтовый ящик"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
@@ -1535,7 +1529,7 @@ msgstr "Клиент / Инструменты / Защищенные зоны / 
 msgid "Client / Webtools / Software"
 msgstr "Клиент / Инструменты / Приложения"
 
-msgid "Client / Webtools / Software / Install"
+msgid "Client / Webtools / Software / Software Installation"
 msgstr "Клиент / Инструменты / Обзор / Приложения / Установка"
 
 msgid "Client / Webtools / Software / View"
@@ -1606,9 +1600,6 @@ msgstr "Создать Catch all"
 
 msgid "Create default email addresses"
 msgstr "Создать email адреса по умолчанию"
-
-msgid "Create directory, if not existing!"
-msgstr "Создать каталог, если не существует!"
 
 msgid "Created by"
 msgstr "Создал"
@@ -1783,6 +1774,9 @@ msgstr "Использование БД"
 
 msgid "Database users"
 msgstr "Пользователи базы данных"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr "Имя базы данных не должно содержать запятые."
 
 msgid "Databases"
 msgstr "База данных"
@@ -2257,6 +2251,9 @@ msgstr "Email аккаунты приостановлены"
 msgid "Email address"
 msgstr "Email алрес"
 
+msgid "Email address with comma(s) are not accepted."
+msgstr "Почтовый адрес не должен содержать запятые."
+
 msgid "Email forward"
 msgstr "Перенаправление почты"
 
@@ -2563,6 +2560,9 @@ msgstr "Взять новое изображение"
 msgid "GiB"
 msgstr "Гб"
 
+msgid "Go to the debugger for more details"
+msgstr "Перейдите в отладчик, чтобы получить подробности"
+
 msgid "Group"
 msgstr "Группа"
 
@@ -2803,14 +2803,8 @@ msgstr "Информация недоступна"
 msgid "Install"
 msgstr "Установить"
 
-msgid "Install Software"
-msgstr "Установить ПО"
-
 msgid "Install in progress"
 msgstr "Происходит установка"
-
-msgid "Install path"
-msgstr "Путь установки"
 
 msgid "Install this plugin"
 msgstr "Установить этот плагин"
@@ -2888,6 +2882,9 @@ msgstr "Неверный URL"
 msgid "Invalid domain name."
 msgstr "Неправильное имя домена."
 
+msgid "Invalid email address."
+msgstr "Неверный Email адрес"
+
 msgid "Invalid expiration date."
 msgstr "Неверная дата истечения."
 
@@ -2914,6 +2911,9 @@ msgstr "Неверная цель"
 
 msgid "Invalid type given. String expected"
 msgstr "Дан неверный тип. Ожидался строковый параметр"
+
+msgid "Invalid username."
+msgstr "Неверное имя пользователя"
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3035,9 +3035,6 @@ msgstr "Логотип успешно удален."
 msgid "Logo successfully updated."
 msgstr "Логотип успешно обновлен."
 
-msgid "Logout"
-msgstr "Выйти"
-
 msgid "Lost password"
 msgstr "Восстановление пароля"
 
@@ -3109,9 +3106,6 @@ msgstr "Мужской"
 
 msgid "Malformed resolver SQL query"
 msgstr "Искаженный запрос SQL"
-
-msgid "Manage Domains"
-msgstr "Домены"
 
 msgid "Manage SQL"
 msgstr "Управление SQL"
@@ -3644,6 +3638,9 @@ msgstr "Настройки пароля"
 msgid "Password successfully updated."
 msgstr "Пароль успешно обновлен."
 
+msgid "Password with comma(s) are not accepted."
+msgstr "Парль не должен содержать запятые"
+
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают."
 
@@ -3725,9 +3722,6 @@ msgstr "Пожалуйста, введите сообщение для авто�
 
 msgid "Please fill up both data fields for password."
 msgstr "Пожалуйста, заполните оба поля для пароля."
-
-msgid "Please select a valid SQL user for the database."
-msgstr "Пожалуйста, выберите корректного пользователя для базы данных"
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -4362,6 +4356,9 @@ msgstr "Префикс/суффикс пользователя SQL"
 msgid "SQL user successfully added."
 msgstr "Пользователь SQL успешно добавлен."
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr "Пользователь SQL не должен содержать запятые"
+
 msgid "SQL users"
 msgstr "Пользователи SQL"
 
@@ -4392,14 +4389,8 @@ msgstr "Шифрованное соединение"
 msgid "Security code"
 msgstr "Код безопасности"
 
-msgid "Select Domain"
-msgstr "Выбрать домен"
-
 msgid "Select all entries for deletion."
 msgstr "Выбрать все записи для удаления."
-
-msgid "Select database"
-msgstr "Выбрать базу данных"
 
 msgid "Select group"
 msgstr "Выберите группу"
@@ -4599,6 +4590,9 @@ msgstr "Настройки установщика програмного обе�
 
 msgid "Software installer requires PHP support."
 msgstr "Установщику ПО требуется поддержка PHP."
+
+msgid "Software instance has been scheduled for installation"
+msgstr "ПО не было помечено для установки."
 
 msgid "Software management"
 msgstr "Управление ПО"
@@ -4816,6 +4810,9 @@ msgstr "Поле TXT пустует или неверно."
 msgid "Target"
 msgstr "Цель"
 
+msgid "Target domain"
+msgstr "Целевой домен"
+
 msgid "Target host"
 msgstr "Хост назначения"
 
@@ -4881,12 +4878,10 @@ msgid "The certificate field cannot be empty."
 msgstr "Поле сертификата не может пустовать"
 
 #, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "Каталог %s не существует. Сначала создайте его."
-
-#, php-format
-msgid "The directory %s was created."
-msgstr "Каталог %s был создан."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr "Каталог %s не существует. Пожалуйста создайте его, используя Ваш файловый менеджер."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5136,6 +5131,10 @@ msgstr "Менеджер плагинов: Невозможно изменить
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "Невосможно закрыть тикет с ID '%s'."
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr "Невозможно подключиться к базе данных, используя выбранного пользователя SQL"
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "Невозможно создать каталог '%s' для языкового файла."
@@ -5244,6 +5243,9 @@ msgstr "Неавторизовано"
 msgid "Unavailable"
 msgstr "Недоступно"
 
+msgid "Unexpected error"
+msgstr "Произошла неожиданная ошибка: %s"
+
 msgid "Uninstall"
 msgstr "Удалить"
 
@@ -5274,9 +5276,6 @@ msgstr "Запрошено неизвестное действие."
 #, php-format
 msgid "Unknown action: %s"
 msgstr "Неизвестное действие: %s"
-
-msgid "Unknown error"
-msgstr "Неизвестная ошибка"
 
 msgid "Unknown language name."
 msgstr "Неизвестное имя языкового файла."
@@ -5323,9 +5322,6 @@ msgstr "Обновить из Web-репозитория"
 
 msgid "Update from web depot"
 msgstr "Обновить из Web-репозитория"
-
-msgid "Update hosting plan"
-msgstr "Обновить хостинг-план"
 
 msgid "Update in progress..."
 msgstr "Производится отновление..."
@@ -5665,8 +5661,10 @@ msgstr "Вам не разрешается обновлять защищенны
 msgid "You can only upload images."
 msgstr "Вы можете загружать только изображения."
 
-msgid "You can't install the software outside the htdocs directory."
-msgstr "Вы не можете устанавливать ПО вне каталога htdocs"
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
+msgstr "Вы не можете устанавливать ПО вне каталога htdocs в выбранном домене."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Вы не можете удалить реселлера, имеющего клиентов. Пожалуйста, сначала удалите их."
@@ -5782,9 +5780,6 @@ msgstr "У вас есть лимит почтовых ящиков.<br />Вы �
 
 msgid "You have been successfully logged out."
 msgstr "Вы успешно вышли из системы."
-
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr "Вы выбрали каталог, который не совпадает с каталогом домена."
 
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
@@ -6007,10 +6002,6 @@ msgstr "почтовые ящики"
 
 msgid "enabled"
 msgstr "Включено"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "все"

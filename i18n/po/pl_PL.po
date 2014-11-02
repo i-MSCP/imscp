@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"POT-Creation-Date: 2014-11-02 19:08+0100\n"
+"PO-Revision-Date: 2014-11-02 18:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -630,9 +630,6 @@ msgstr ""
 msgid "Add FTP account"
 msgstr "Dodaj konto FTP"
 
-msgid "Add FTP user"
-msgstr "Dodaj użytkownika FTP"
-
 msgid "Add Htaccess group"
 msgstr "Dodaj grupę htaccess"
 
@@ -674,9 +671,6 @@ msgstr "Dodaj alias domeny"
 
 msgid "Add email account"
 msgstr "Dodaj konto email"
-
-msgid "Add email user"
-msgstr "Dodaj użytkownika poczty"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Dodaj zewnętrzny serwer pocztowy dla {DOMAIN_UTF8}"
@@ -1535,8 +1529,8 @@ msgstr "Klient/ Narzędzia / Obszary chronione / {TR_DYNAMIC_TITLE}"
 msgid "Client / Webtools / Software"
 msgstr "Klient / Narzędzia / Oprogramowanie"
 
-msgid "Client / Webtools / Software / Install"
-msgstr "Klient / Narzędzia / Oprogramowanie / Instalacja"
+msgid "Client / Webtools / Software / Software Installation"
+msgstr ""
 
 msgid "Client / Webtools / Software / View"
 msgstr "Klient / Narzędzia / Oprogramowanie / Widok"
@@ -1606,9 +1600,6 @@ msgstr "Stwórz CatchAll"
 
 msgid "Create default email addresses"
 msgstr "Stwórz domyślne adresy email"
-
-msgid "Create directory, if not existing!"
-msgstr "Utwórz katalog, jeśli nie istnieje."
 
 msgid "Created by"
 msgstr "Utworzone przez"
@@ -1783,6 +1774,9 @@ msgstr "Użycie bazy danych."
 
 msgid "Database users"
 msgstr "Użytkownicy baz danych"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr ""
 
 msgid "Databases"
 msgstr "Bazy danych"
@@ -2257,6 +2251,9 @@ msgstr ""
 msgid "Email address"
 msgstr "Adres e-mail"
 
+msgid "Email address with comma(s) are not accepted."
+msgstr ""
+
 msgid "Email forward"
 msgstr "Przekierowanie emaila"
 
@@ -2563,6 +2560,9 @@ msgstr "Pobierz nowy obrazek"
 msgid "GiB"
 msgstr "GiB"
 
+msgid "Go to the debugger for more details"
+msgstr ""
+
 msgid "Group"
 msgstr "Grupa"
 
@@ -2803,14 +2803,8 @@ msgstr ""
 msgid "Install"
 msgstr "Instaluj"
 
-msgid "Install Software"
-msgstr "Instalacja oprogramowania"
-
 msgid "Install in progress"
 msgstr "Instalacja w toku"
-
-msgid "Install path"
-msgstr "Ścieżka instalacji"
 
 msgid "Install this plugin"
 msgstr "Instaluj plugin"
@@ -2888,6 +2882,9 @@ msgstr "Niepoprawny URL."
 msgid "Invalid domain name."
 msgstr "Niepoprawna nazwa domeny."
 
+msgid "Invalid email address."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Niepoprawna data ekspiracji."
 
@@ -2914,6 +2911,9 @@ msgstr "Niepoprawny cel"
 
 msgid "Invalid type given. String expected"
 msgstr "Podano niepoprawny typ. Oczekiwano tekstu"
+
+msgid "Invalid username."
+msgstr ""
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3035,9 +3035,6 @@ msgstr "Logo zostało usunięte pomyślnie."
 msgid "Logo successfully updated."
 msgstr "Logo zostało zaktualizowane pomyślnie."
 
-msgid "Logout"
-msgstr "Wyloguj"
-
 msgid "Lost password"
 msgstr "Zapomniałeś hasło?"
 
@@ -3109,9 +3106,6 @@ msgstr "Mężczyzna"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
-
-msgid "Manage Domains"
-msgstr "Zarządzaj domenami"
 
 msgid "Manage SQL"
 msgstr "Zarządzaj bazami SQL"
@@ -3644,6 +3638,9 @@ msgstr "Ustawienia haseł"
 msgid "Password successfully updated."
 msgstr "Hasło poprawnie zmienione."
 
+msgid "Password with comma(s) are not accepted."
+msgstr ""
+
 msgid "Passwords do not match"
 msgstr ""
 
@@ -3725,9 +3722,6 @@ msgstr ""
 
 msgid "Please fill up both data fields for password."
 msgstr "Proszę wypełnić oba pola hasłem."
-
-msgid "Please select a valid SQL user for the database."
-msgstr ""
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -4362,6 +4356,9 @@ msgstr ""
 msgid "SQL user successfully added."
 msgstr "Użytkownik SQL poprawnie dodany."
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr ""
+
 msgid "SQL users"
 msgstr "Użytkownicy SQL"
 
@@ -4392,14 +4389,8 @@ msgstr "Bezpieczne połaczenie"
 msgid "Security code"
 msgstr "Kod zabezpieczający"
 
-msgid "Select Domain"
-msgstr "Wybierz domenę"
-
 msgid "Select all entries for deletion."
 msgstr "Wybierz wszystkie wpisy do usunięcia."
-
-msgid "Select database"
-msgstr "Wybierz bazę danych"
 
 msgid "Select group"
 msgstr "Wybierz grupę"
@@ -4598,6 +4589,9 @@ msgid "Software installer options successfully updated."
 msgstr "Opcje instalatora oprogramowania zmienione pomyślnie"
 
 msgid "Software installer requires PHP support."
+msgstr ""
+
+msgid "Software instance has been scheduled for installation"
 msgstr ""
 
 msgid "Software management"
@@ -4816,6 +4810,9 @@ msgstr ""
 msgid "Target"
 msgstr "Cel"
 
+msgid "Target domain"
+msgstr ""
+
 msgid "Target host"
 msgstr "Host docelowy"
 
@@ -4881,12 +4878,10 @@ msgid "The certificate field cannot be empty."
 msgstr ""
 
 #, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "Folder %s nie istnieje. Najpierw go utwórz."
-
-#, php-format
-msgid "The directory %s was created."
-msgstr "Folder %s został stworzony."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5136,6 +5131,10 @@ msgstr ""
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "Nie można zamknąć zgłoszenia o ID  '%s'."
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr ""
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "Nie udało się stworzyć katalogu '%s' dla pliku."
@@ -5244,6 +5243,9 @@ msgstr ""
 msgid "Unavailable"
 msgstr "Niedostępne"
 
+msgid "Unexpected error"
+msgstr ""
+
 msgid "Uninstall"
 msgstr "Odinstaluj "
 
@@ -5274,9 +5276,6 @@ msgstr "Nastąpiła nieokreślona akcja."
 #, php-format
 msgid "Unknown action: %s"
 msgstr "Nieokreślona akcja: %s"
-
-msgid "Unknown error"
-msgstr "Nieznany błąd"
 
 msgid "Unknown language name."
 msgstr "Nieznany język,"
@@ -5323,9 +5322,6 @@ msgstr "Zaktualizuj z repozytorium oprogramowania"
 
 msgid "Update from web depot"
 msgstr "Zaktualizuj z sieci."
-
-msgid "Update hosting plan"
-msgstr "Aktualizuj plan hostingowy"
 
 msgid "Update in progress..."
 msgstr "Aktualizacja w toku..."
@@ -5665,7 +5661,9 @@ msgstr ""
 msgid "You can only upload images."
 msgstr "Możesz tylko ładować obrazki."
 
-msgid "You can't install the software outside the htdocs directory."
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
 msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
@@ -5782,9 +5780,6 @@ msgstr ""
 
 msgid "You have been successfully logged out."
 msgstr "Wylogowałeś się poprawnie."
-
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr ""
 
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
@@ -6007,10 +6002,6 @@ msgstr "konta email"
 
 msgid "enabled"
 msgstr "właczony"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "wszystko"

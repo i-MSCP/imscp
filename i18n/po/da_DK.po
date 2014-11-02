@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 15:36+0000\n"
+"POT-Creation-Date: 2014-11-02 19:08+0100\n"
+"PO-Revision-Date: 2014-11-02 18:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -366,7 +366,7 @@ msgstr "%s: Du kan ikke deaktivere en tjeneste allerede solgt til forhandler's k
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
-msgstr ""
+msgstr "%s::getInfo() ikke implementeret og %s ikke fundet. Dette er en fejl i %s plugin og bør indberettes til plugin udvikler(ne)."
 
 #, php-format
 msgid ""
@@ -630,9 +630,6 @@ msgstr "Rediger SSL certifikat"
 msgid "Add FTP account"
 msgstr "Tilføj FTP konto"
 
-msgid "Add FTP user"
-msgstr "Tilføj FTP bruger"
-
 msgid "Add Htaccess group"
 msgstr "Tilføj Htaccess gruppe"
 
@@ -674,9 +671,6 @@ msgstr "Tilføj domæne alias"
 
 msgid "Add email account"
 msgstr "Tilføj e-mail konto"
-
-msgid "Add email user"
-msgstr "Tilføj e-mail bruger"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Tilføj ekstern mailserver for {DOMAIN_UTF8}"
@@ -1109,11 +1103,11 @@ msgstr "Er du sikker på at du vil slette %s catch all?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
-msgstr ""
+msgstr "Er du sikker på du vil slette %s domain alias ordre?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias?"
-msgstr ""
+msgstr "Er du sikker på du vil slette %s domain alias?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1535,8 +1529,8 @@ msgstr "Klient / Webværktøjer / Beskyttede Områder / {TR_DYNAMIC_TITLE}"
 msgid "Client / Webtools / Software"
 msgstr "Klient /  Webværktøjer / Software"
 
-msgid "Client / Webtools / Software / Install"
-msgstr "Klient /  Webværktøjer / Software / Installer"
+msgid "Client / Webtools / Software / Software Installation"
+msgstr ""
 
 msgid "Client / Webtools / Software / View"
 msgstr "Klient /  Webværktøjer / Software / Vis"
@@ -1606,9 +1600,6 @@ msgstr "Opret FangAlle"
 
 msgid "Create default email addresses"
 msgstr "Opret standard e-mail adresser"
-
-msgid "Create directory, if not existing!"
-msgstr "Opret bibliotek, hvis det ikke findes!"
 
 msgid "Created by"
 msgstr "Oprettet af"
@@ -1783,6 +1774,9 @@ msgstr "Database forbrug"
 
 msgid "Database users"
 msgstr "Databasebrugere"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr ""
 
 msgid "Databases"
 msgstr "Databaser"
@@ -2257,6 +2251,9 @@ msgstr "E-mail konti er admin suspenderet"
 msgid "Email address"
 msgstr "E-mail-adresse"
 
+msgid "Email address with comma(s) are not accepted."
+msgstr ""
+
 msgid "Email forward"
 msgstr "E-mail forward"
 
@@ -2563,6 +2560,9 @@ msgstr "Anskaf et nyt billede"
 msgid "GiB"
 msgstr "GiB"
 
+msgid "Go to the debugger for more details"
+msgstr ""
+
 msgid "Group"
 msgstr "Gruppe"
 
@@ -2598,7 +2598,7 @@ msgid "Homepage"
 msgstr "Hjemmeside"
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
-msgstr ""
+msgstr "Vært, hvorfra SQL bruger har tilladelse til at oprette forbindelse til SQL Server"
 
 msgid "Hosting plan"
 msgstr "Hosting Plan"
@@ -2803,14 +2803,8 @@ msgstr "Info Ikke Tilgængelig"
 msgid "Install"
 msgstr "Installér"
 
-msgid "Install Software"
-msgstr "Installer Software"
-
 msgid "Install in progress"
 msgstr "Installering i gang"
-
-msgid "Install path"
-msgstr "Installations sti"
 
 msgid "Install this plugin"
 msgstr "Installer dette plugin"
@@ -2888,6 +2882,9 @@ msgstr "Ugyldig URL."
 msgid "Invalid domain name."
 msgstr "Ugyldig domæne navn."
 
+msgid "Invalid email address."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Ugyldig udløbsdato."
 
@@ -2914,6 +2911,9 @@ msgstr "Ugyldig mål."
 
 msgid "Invalid type given. String expected"
 msgstr "Ugyldig type indtastet. Streng forventet"
+
+msgid "Invalid username."
+msgstr ""
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3035,9 +3035,6 @@ msgstr "Logo succesfuldt fjernet."
 msgid "Logo successfully updated."
 msgstr "Logo succesfuldt opdateret."
 
-msgid "Logout"
-msgstr "Log ud"
-
 msgid "Lost password"
 msgstr "Glemt Adgangskode"
 
@@ -3109,9 +3106,6 @@ msgstr "Mand"
 
 msgid "Malformed resolver SQL query"
 msgstr "Forkert udformet resolver SQL query"
-
-msgid "Manage Domains"
-msgstr "Administrer domæner"
 
 msgid "Manage SQL"
 msgstr "Håndtér SQL"
@@ -3644,6 +3638,9 @@ msgstr "Adgangskode indstillinger"
 msgid "Password successfully updated."
 msgstr "Password opdateret."
 
+msgid "Password with comma(s) are not accepted."
+msgstr ""
+
 msgid "Passwords do not match"
 msgstr "Passwords matcher ikke"
 
@@ -3725,9 +3722,6 @@ msgstr "Indtast venligst din autosvar besked nedenfor"
 
 msgid "Please fill up both data fields for password."
 msgstr "Udfyld venligst begge datafelter til password."
-
-msgid "Please select a valid SQL user for the database."
-msgstr "Vælg en gyldig SQL bruger til databasen."
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -4362,6 +4356,9 @@ msgstr "SQL bruger præfiks/suffiks"
 msgid "SQL user successfully added."
 msgstr "SQL bruger tilføjet."
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr ""
+
 msgid "SQL users"
 msgstr "SQL brugere"
 
@@ -4392,14 +4389,8 @@ msgstr "Sikker forbindelse"
 msgid "Security code"
 msgstr "Sikkerhedskode"
 
-msgid "Select Domain"
-msgstr "Vælg Domæne"
-
 msgid "Select all entries for deletion."
 msgstr "Vælg alle poster til sletning."
-
-msgid "Select database"
-msgstr "Vælg database"
 
 msgid "Select group"
 msgstr "Vælg gruppe"
@@ -4599,6 +4590,9 @@ msgstr "Software Installer valgmuligheder blevet opdateret."
 
 msgid "Software installer requires PHP support."
 msgstr "Software installer kræver PHP support."
+
+msgid "Software instance has been scheduled for installation"
+msgstr ""
 
 msgid "Software management"
 msgstr "Software administration"
@@ -4816,6 +4810,9 @@ msgstr "TXT felt er tomt eller ugyldigt."
 msgid "Target"
 msgstr "Mål"
 
+msgid "Target domain"
+msgstr ""
+
 msgid "Target host"
 msgstr "Hosting mål"
 
@@ -4881,12 +4878,10 @@ msgid "The certificate field cannot be empty."
 msgstr "Feltet certifikat kan ikke være tom."
 
 #, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "Mappen %s findes ikke. Venligst oprette den først."
-
-#, php-format
-msgid "The directory %s was created."
-msgstr "Mappen %s blev oprettet."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -4999,7 +4994,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %% character to allow this SQL user to connect from "
 "any host."
-msgstr ""
+msgstr "Det er den host, hvorfra denne SQL bruger skal have lov til at forbinde til SQL server. Indtast %% karakter for at muliggøre denne SQL bruger til at oprette forbindelse fra enhver vært."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Denne pakke findes allerede i administratorens softwarearkiv."
@@ -5136,6 +5131,10 @@ msgstr "Kan ikke ændre %s plugin: %s"
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "Kan ikke lukke ticket med Id '%s'."
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr ""
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "Kunne ikke oprette '%s' mappe for sprog-fil."
@@ -5244,6 +5243,9 @@ msgstr "Uautoriseret"
 msgid "Unavailable"
 msgstr "Ikke tilgængelig"
 
+msgid "Unexpected error"
+msgstr ""
+
 msgid "Uninstall"
 msgstr "Afinstaller"
 
@@ -5266,7 +5268,7 @@ msgid "Unknown FTP user."
 msgstr "Ukendt FTP bruger-id."
 
 msgid "Unknown SQL user"
-msgstr ""
+msgstr "Ukendt SQL bruger"
 
 msgid "Unknown action requested."
 msgstr "Ukendt action anmodet."
@@ -5274,9 +5276,6 @@ msgstr "Ukendt action anmodet."
 #, php-format
 msgid "Unknown action: %s"
 msgstr "Ukendt action: %s"
-
-msgid "Unknown error"
-msgstr "Ukendt fejl"
 
 msgid "Unknown language name."
 msgstr "Ukendt sprog navn."
@@ -5323,9 +5322,6 @@ msgstr "Opdater fra Web softwarearkiv"
 
 msgid "Update from web depot"
 msgstr "Opdater fra web depot"
-
-msgid "Update hosting plan"
-msgstr "Opdater hosting plan"
 
 msgid "Update in progress..."
 msgstr "Opdatering i gang..."
@@ -5665,8 +5661,10 @@ msgstr "Det er ikke tilladt at opdatere en beskyttet plugin."
 msgid "You can only upload images."
 msgstr "Du kan kun uploade billeder."
 
-msgid "You can't install the software outside the htdocs directory."
-msgstr "Du kan ikke installere softwaren uden for htdocs mappe."
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
+msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Du kan ikke slette en forhandler, der har kundekonti."
@@ -5782,9 +5780,6 @@ msgstr "Du har en e-mail konti grænse.<br />Du kan ikke tilføje en bruger med 
 
 msgid "You have been successfully logged out."
 msgstr "Du er blevet logget ud."
-
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr "Du har valgt en mappe, der ikke stemmer overens med domæne mappen."
 
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
@@ -6007,10 +6002,6 @@ msgstr "E-mail konti"
 
 msgid "enabled"
 msgstr "aktiveret"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "alt"

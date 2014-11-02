@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 05:23+0200\n"
-"PO-Revision-Date: 2014-09-19 03:26+0000\n"
+"POT-Creation-Date: 2014-11-02 19:08+0100\n"
+"PO-Revision-Date: 2014-11-02 18:11+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -636,9 +636,6 @@ msgstr "Adicionar / Editar certificado SSL"
 msgid "Add FTP account"
 msgstr "Adicionar conta de FTP "
 
-msgid "Add FTP user"
-msgstr "Adicionar um usuário de FTP"
-
 msgid "Add Htaccess group"
 msgstr "Adicionar grupo Htaccess"
 
@@ -680,9 +677,6 @@ msgstr "Adicionar alias de domínio"
 
 msgid "Add email account"
 msgstr "Adicionar E-mail"
-
-msgid "Add email user"
-msgstr "Adicionar usuário de e-mail"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Adicionar servidor de correio externo para {DOMAIN_UTF8}"
@@ -1541,8 +1535,8 @@ msgstr "Cliente / Ferramentas Web / Áreas Protegidas / {TR_DYNAMIC_TITLE}"
 msgid "Client / Webtools / Software"
 msgstr "Cliente / Ferramentas Web / Software"
 
-msgid "Client / Webtools / Software / Install"
-msgstr "Cliente / Ferramentas Web / Software / Instalar"
+msgid "Client / Webtools / Software / Software Installation"
+msgstr ""
 
 msgid "Client / Webtools / Software / View"
 msgstr "Cliente / Ferramentas Web / Software / Ver"
@@ -1612,9 +1606,6 @@ msgstr "Criar todos os selecionados"
 
 msgid "Create default email addresses"
 msgstr "Criar endereços de e-mail padrões"
-
-msgid "Create directory, if not existing!"
-msgstr "Criar diretório, se não existente!"
 
 msgid "Created by"
 msgstr "Criado por"
@@ -1789,6 +1780,9 @@ msgstr "Usado no Banco de Dados"
 
 msgid "Database users"
 msgstr "Usuários de banco de dados"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr ""
 
 msgid "Databases"
 msgstr "Banco de Dados"
@@ -2263,6 +2257,9 @@ msgstr "Contas de e-mail são difíceis suspenso"
 msgid "Email address"
 msgstr "Endereço de e-mail"
 
+msgid "Email address with comma(s) are not accepted."
+msgstr ""
+
 msgid "Email forward"
 msgstr "E-mail redirecionado"
 
@@ -2569,6 +2566,9 @@ msgstr "Obter uma nova imagem"
 msgid "GiB"
 msgstr "GB"
 
+msgid "Go to the debugger for more details"
+msgstr ""
+
 msgid "Group"
 msgstr "Grupo"
 
@@ -2809,14 +2809,8 @@ msgstr "Informações Indisponível"
 msgid "Install"
 msgstr "Instalar"
 
-msgid "Install Software"
-msgstr "Instalar Software"
-
 msgid "Install in progress"
 msgstr "Instalção em processo"
-
-msgid "Install path"
-msgstr "Caminho da instalação"
 
 msgid "Install this plugin"
 msgstr "Instale este plugin"
@@ -2894,6 +2888,9 @@ msgstr "URL inválida"
 msgid "Invalid domain name."
 msgstr "Nome de domínio inválido."
 
+msgid "Invalid email address."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Data de expiração inválida."
 
@@ -2920,6 +2917,9 @@ msgstr "Destino inválido."
 
 msgid "Invalid type given. String expected"
 msgstr "Tipo de dado inválido. Aguardando string"
+
+msgid "Invalid username."
+msgstr ""
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3041,9 +3041,6 @@ msgstr "Logo removido com sucesso."
 msgid "Logo successfully updated."
 msgstr "Logo atualizado com sucesso."
 
-msgid "Logout"
-msgstr "Sair"
-
 msgid "Lost password"
 msgstr "Senha perdida"
 
@@ -3115,9 +3112,6 @@ msgstr "Masculino"
 
 msgid "Malformed resolver SQL query"
 msgstr "Resolver Consulta SQL malformada"
-
-msgid "Manage Domains"
-msgstr "Gerenciar Domínios"
 
 msgid "Manage SQL"
 msgstr "Gerenciar SQL"
@@ -3650,6 +3644,9 @@ msgstr "Configurações de senha"
 msgid "Password successfully updated."
 msgstr "Senha atualizada com sucesso."
 
+msgid "Password with comma(s) are not accepted."
+msgstr ""
+
 msgid "Passwords do not match"
 msgstr "Senhas não conferem"
 
@@ -3731,9 +3728,6 @@ msgstr "Por favor, digite a sua mensagem de resposta automática abaixo"
 
 msgid "Please fill up both data fields for password."
 msgstr "Por favor, preencha ambos os campos para senha."
-
-msgid "Please select a valid SQL user for the database."
-msgstr "Por favor, selecione um usuário válido para o banco de dados SQL."
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -4368,6 +4362,9 @@ msgstr "Prefixo/Sufixo usuário SQL "
 msgid "SQL user successfully added."
 msgstr "Usuário SQL adicionado com sucesso."
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr ""
+
 msgid "SQL users"
 msgstr "Usuários SQL"
 
@@ -4398,14 +4395,8 @@ msgstr "Conexão segura"
 msgid "Security code"
 msgstr "Código de segurança"
 
-msgid "Select Domain"
-msgstr "Selecionar Domínio"
-
 msgid "Select all entries for deletion."
 msgstr "Selecione todas as entradas para a eliminação."
-
-msgid "Select database"
-msgstr "Selecione banco de dados"
 
 msgid "Select group"
 msgstr "Selecione o grupo"
@@ -4605,6 +4596,9 @@ msgstr "Opções do instalador de software atualizadas com sucesso."
 
 msgid "Software installer requires PHP support."
 msgstr "Instalador do software requer suporte PHP."
+
+msgid "Software instance has been scheduled for installation"
+msgstr ""
 
 msgid "Software management"
 msgstr "Gerenciar Software"
@@ -4822,6 +4816,9 @@ msgstr "TXT está vazio ou é inválido."
 msgid "Target"
 msgstr "Destino"
 
+msgid "Target domain"
+msgstr ""
+
 msgid "Target host"
 msgstr "Host de destino"
 
@@ -4887,12 +4884,10 @@ msgid "The certificate field cannot be empty."
 msgstr "O campo de certificado não pode ser vazio."
 
 #, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "O diretório %s não existe. Por favor primeiramente crie o diretório."
-
-#, php-format
-msgid "The directory %s was created."
-msgstr "O diretório %s foi criado."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5142,6 +5137,10 @@ msgstr "Não é possível alterar o plugin %s: %s"
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "Não é possível fechar o chamado com ID '%s'."
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr ""
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "Não é possível criar diretório '%s' para o arquivo de idioma."
@@ -5250,6 +5249,9 @@ msgstr "Não autorizado"
 msgid "Unavailable"
 msgstr "Indisponível"
 
+msgid "Unexpected error"
+msgstr ""
+
 msgid "Uninstall"
 msgstr "Desinstalar"
 
@@ -5280,9 +5282,6 @@ msgstr "Ação desconhecida requisitada."
 #, php-format
 msgid "Unknown action: %s"
 msgstr "Ação desconhecida: %s"
-
-msgid "Unknown error"
-msgstr "Erro desconhecido"
 
 msgid "Unknown language name."
 msgstr "Idioma desconhecido."
@@ -5329,9 +5328,6 @@ msgstr "Atualize o repositório de software Web"
 
 msgid "Update from web depot"
 msgstr "Atualização do repositório web"
-
-msgid "Update hosting plan"
-msgstr "Atualizar plano de hospedagem"
 
 msgid "Update in progress..."
 msgstr "Atualização em andamento ..."
@@ -5671,8 +5667,10 @@ msgstr "Você não tem permissão para atualizar um plugin."
 msgid "You can only upload images."
 msgstr "Você só pode fazer upload de imagens."
 
-msgid "You can't install the software outside the htdocs directory."
-msgstr "Você não pode instalar o software fora do diretório htdocs."
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
+msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Você não pode excluir um revendedor que tem contas de clientes."
@@ -5788,9 +5786,6 @@ msgstr "Você tem um limite de conta de e-mail. <br /> Você não pode adicionar
 
 msgid "You have been successfully logged out."
 msgstr "Você foi desconectado com sucesso."
-
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr "Você escolheu um diretório que não corresponde ao diretório do domínio."
 
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
@@ -6013,10 +6008,6 @@ msgstr "contas de e-mail"
 
 msgid "enabled"
 msgstr "ativado"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "tudo"
