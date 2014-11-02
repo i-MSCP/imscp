@@ -1,39 +1,28 @@
 #!/bin/sh
-
 # i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2014 by i-MSCP Team
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-# for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# The Original Code is "i-MSCP internet Multi Server Control Panel".
-#
-# The Initial Developer of the Original Code is i-MSCP Team.
-# Portions created by Initial Developer are Copyright (C) 2010-2011 by
-# internet Multi Server Control Panel. All Rights Reserved.
-#
-# @category    i-MSCP
-# @package     i-MSCP_Tools
-# @subpackage  Tools_i18n
-# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Laurent Declercq <l.declercq@nuxwin.com>
-# @link        http://i-mscp.net i-MSCP Home Site
-# @license     http://www.gnu.org/licenses/ GPL v2
+# @aythor    Laurent Declercq <l.declercq@nuxwin.com>
+# @link      http://www.i-mscp.net i-MSCP Home Site
+# @license   http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 set -e
 
 cd ../..
-
-echo `pwd`
 
 if [ ! -f "gui/public/index.php" ]; then
 	echo "You must run this script from the i18n/tools directory!"
@@ -50,5 +39,3 @@ for i in `find i18n/po -name '*.po' | sed -r 's/.*\/(.*)/\1/'`; do
 	mkdir -p ${DESTDIR}
 	msgfmt --strict --no-hash -o ${DESTDIR}/${LOCALE}.mo i18n/po/${i}
 done
-
-exit
