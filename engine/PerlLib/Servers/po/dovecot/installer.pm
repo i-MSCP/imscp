@@ -488,7 +488,11 @@ sub _buildConf
 	}
 
 	my %cfgFiles = (
-		((qv("v$self->{'version'}") < qv('v2.0.0')) ? 'dovecot.conf.1' : 'dovecot.conf.2') => [
+		(
+			(qv("v$self->{'version'}") < qv('v2.0.0'))
+				? 'dovecot.conf.1.x'
+				: (qv("v$self->{'version'}") < qv('v2.1.0')) ? 'dovecot.conf.2.0' : 'dovecot.conf.2.1'
+		) => [
 			"$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf", # Destpath
 			$main::imscpConfig{'ROOT_USER'}, # Owner
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
