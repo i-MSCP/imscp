@@ -7,6 +7,7 @@ Git 1.1.x
 CONGIGS
 	Added: Dedicated configuration template file for Dovecot 2.1.x
 	Fixed: SSLv2 and SSLv3 must be disabled to prevent POODLE attacks ( Postfix, Dovecot >= 2.1, Proftpd )
+	Removed: The iterate_query parameter from the dovecot-sql.conf file ( Parameter not available in Dovecot 1.x )
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.16
