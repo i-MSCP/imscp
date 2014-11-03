@@ -57,8 +57,5 @@ protocol lda {
 }
 
 ssl = {DOVECOT_SSL}
-# Prohibit usage of older and deprecated SSL protocols mostly due to the POODLE
-# vulnerability CVE-2014-3566
-{COMMENT_SSL}ssl_cipher_list = ALL:!LOW:!SSLv2:!SSLv3:!EXP:!aNULL
 {COMMENT_SSL}ssl_cert_file = {CONF_DIR}/{CERTIFICATE}.pem
 {COMMENT_SSL}ssl_key_file = {CONF_DIR}/{CERTIFICATE}.pem

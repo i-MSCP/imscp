@@ -700,7 +700,7 @@ function client_saveDnsRecord($dnsRecordId)
 
 				write_log(
 					"{$_SESSION['user_logged']} scheduled ". ((!$dnsRecordId) ? 'addition' : 'update') .
-					' of custom DNS record'
+					' of custom DNS record', E_USER_NOTICE
 				);
 			} catch (iMSCP_Exception_Database $e) {
 				$db->rollBack();
