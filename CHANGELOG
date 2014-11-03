@@ -8,6 +8,7 @@ DAEMON
 	Fixed: The server traffic must be collected before any stopping attempt (imscp_network)
 
 CONFIGS
+	Fixed: SSLv3 must be disabled to prevent POODLE attacks ( Nginx )
 	Fixed: The time at which the backup script must be run is no configurable
 	Changed: The BuildDate variable is no longer set for development time
 	Renamed: hooks.d directory to listeners.d
