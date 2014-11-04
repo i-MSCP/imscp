@@ -12,6 +12,7 @@ CONFIGS
 	Fixed: The time at which the backup script must be run is no configurable
 	Changed: The BuildDate variable is no longer set for development time
 	Renamed: hooks.d directory to listeners.d
+	Removed: Roundcube configuration directory ( now shipped with the roundcube package )
 
 DOCS
 	Updated: INSTALL files
@@ -39,6 +40,12 @@ INSTALLER
 	Renamed: Option --hook-file to --listener
 	Fixed: Prevent start of apache2 service by package manager using policy layer interface
 	Fixed: Unable to handle i-MSCP services (start/restart/stop...) on systems  using systemd (e.g Jessie)
+
+PACKAGES:
+	Updated: Roundcube installer according new roundcube version ( 1.0.3 )
+
+UNINSTALLER:
+	Added: Backend exec mode ( uninstall )
 
 TICKETS
 	Fixed #1123: Review - PHP session handling

@@ -80,7 +80,7 @@ sub uninstall
 
  Initialize instance
 
- Return Package::FrontEnd::Installer
+ Return Package::FrontEnd::Uninstaller
 
 =cut
 
@@ -88,7 +88,7 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'frontend'} = Package::FrontEnd;
+	$self->{'frontend'} = Package::FrontEnd->getInstance();
 
 	$self->{'config'} = $self->{'frontend'}->{'config'};
 

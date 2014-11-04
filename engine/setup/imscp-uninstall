@@ -47,6 +47,12 @@ use iMSCP::Packages;
 use File::Basename;
 use iMSCP::Service;
 
+# Set backend mode
+{
+	no warnings qw/once/;
+	$main::execmode = 'uninstall';
+}
+
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
 

@@ -72,48 +72,6 @@ sub registerSetupListeners
 	Package::Roundcube::Installer->getInstance()->registerSetupListeners($eventManager);
 }
 
-=item preinstall()
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-	require Package::Roundcube::Installer;
-	Package::Roundcube::Installer->getInstance()->preinstall();
-}
-
-=item install()
-
- Process install tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub install
-{
-	require Package::Roundcube::Installer;
-	Package::Roundcube::Installer->getInstance()->install();
-}
-
-=item uninstall()
-
- Process uninstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub uninstall
-{
-	require Package::Roundcube::Uninstaller;
-	Package::Roundcube::Uninstaller->getInstance()->uninstall();
-}
-
 =item setPermissionsListener()
 
  Set gui permissions
@@ -187,11 +145,39 @@ sub _init
 {
 	my $self = $_[0];
 
+	$self->{'eventMager'} = iMSCP::EventManager->getInstance();
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
+	if(-f "$self->{'cfgDir'}/roundcube.data") {
+		tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
+	} else {
+		$self->{'config'} = { };
+	}
+
+	if(defined $main::execmode) {
+		if($main::execmode eq 'setup') {
+			# Roundcube pre-install tasks must be processed after frontEnd pre-nstall tasks
+			$self->{'eventMager'}->register('afterFrontEndPreInstall', sub {
+				require Package::Roundcube::Installer;
+				Package::Roundcube::Installer->getInstance()->preinstall();
+			});
+
+			# Roundcube install tasks must be processed after frontEnd install tasks
+			$self->{'eventMager'}->register('afterFrontEndInstall', sub {
+				require Package::Roundcube::Installer;
+				Package::Roundcube::Installer->getInstance()->install();
+			});
+		} elsif($main::execmode eq 'uninstall') {
+			# Roundcube uninstallation tasks must be processed after frontEnd uninstallation tasks
+			$self->{'eventMager'}->register('afterFrontEndUninstall', sub {
+				require Package::Roundcube::Uninstaller;
+				Package::Roundcube::Installer->getInstance()->uninstall();
+			});
+		}
+	}
 
 	# Roundcube permissions must be set after FrontEnd base permissions
 	iMSCP::EventManager->getInstance()->register(
