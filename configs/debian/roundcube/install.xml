@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<install>
-    <folders>${SYSTEM_CONF}/roundcube</folders>
-    <folders>${SYSTEM_CONF}/roundcube/backup</folders>
-    <folders>${SYSTEM_CONF}/roundcube/working</folders>
-    <copy_config>${SYSTEM_CONF}/roundcube/roundcube.data</copy_config>
-</install>
