@@ -368,82 +368,14 @@ sub deleteDmn
 		return $rs if $rs;
 	}
 
-	# Remove Web directory if needed
-
-	my $webDir = $data->{'WEB_DIR'};
-
-	if(-d $webDir) {
-		if($data->{'DOMAIN_TYPE'} eq 'dmn') {
+	# Remove Web folder directory ( only if it is not shared with another domain )
+	if(-d $data->{'WEB_DIR'}) {
+		if($data->{'DOMAIN_TYPE'} eq 'dmn' || ($data->{'MOUNT_POINT'} ne '/' && ! @{$data->{'SHARED_MOUNT_POINTS'}})) {
 			# Unprotect Web root directory
-			clearImmutable($webDir);
+			clearImmutable($data->{'WEB_DIR'}, 'recursive');
 
-			$rs = iMSCP::Dir->new('dirname' => $webDir)->remove();
+			$rs = iMSCP::Dir->new('dirname' => $data->{'WEB_DIR'})->remove();
 			return $rs if $rs;
-		} else {
-			my @sharedMountPoints = @{$data->{'SHARED_MOUNT_POINTS'}};
-
-			# Normalize all mount points to match against
-			s%(/.*?)/+$%$1% for @sharedMountPoints;
-
-			# Normalize mount point
-			(my $mountPoint = $data->{'MOUNT_POINT'}) =~ s%(/.*?)/+$%$1%;
-
-			# We process only if we doesn't have other entity sharing identical mount point
-			if($mountPoint ne '/' && not $mountPoint ~~ @sharedMountPoints) {
-
-				# Unprotect Web root directory
-				clearImmutable($webDir);
-
-				my $skelDir;
-
-				if($data->{'DOMAIN_TYPE'} eq 'dmn') {
-					$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
-				} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
-					$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
-				} else {
-					$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
-				}
-
-				for(iMSCP::Dir->new('dirname' => $skelDir)->getAll()) {
-					if(-d "$webDir/$_") {
-						$rs = iMSCP::Dir->new('dirname' => "$webDir/$_")->remove();
-						return $rs if $rs;
-					} elsif(-f _) {
-						$rs = iMSCP::File->new('filename' => "$webDir/$_")->delFile();
-						return $rs if $rs;
-					}
-				}
-
-				(my $mountPointRootDir = $mountPoint) =~ s%^(/[^/]+).*%$1%;
-				$mountPointRootDir = dirname("$data->{'HOME_DIR'}$mountPointRootDir");
-				my $dirToRemove = $webDir;
-				my $dirToRemoveParentDir;
-				my $isProtectedDirToRemoveParentDir = 0;
-				my $dirHandler = iMSCP::Dir->new();
-
-				# Here, we loop over all directories, which are part of the mount point of the Web folder to remove.
-				# In case a directory is not empty, we do not remove it since:
-				# - Unknown directories/files are never removed (responsability is left to user)
-				# - A directory can be the root directory of another mount point
-				while($dirToRemove ne $mountPointRootDir && $dirHandler->isEmpty($dirToRemove)) {
-
-					$dirToRemoveParentDir = dirname($dirToRemove);
-
-					if(isImmutable($dirToRemoveParentDir)) {
-						$isProtectedDirToRemoveParentDir = 1;
-						clearImmutable($dirToRemoveParentDir);
-					}
-
-					clearImmutable($dirToRemove);
-
-					$rs = $dirHandler->remove();
-					return $rs if $rs;
-
-					setImmutable($dirToRemoveParentDir) if $isProtectedDirToRemoveParentDir;
-
-					$dirToRemove = $dirToRemoveParentDir;
-				}
-			}
 		}
 	}
 
@@ -499,7 +431,7 @@ sub addSub
 	$self->{'eventManager'}->trigger('afterHttpdAddSub', $data);
 }
 
-=item restoreSub($\data)
+=item restoreSub(\%data)
 
  Process restoreSub tasks
 
@@ -527,7 +459,7 @@ sub restoreSub
 	0;
 }
 
-=item disableSub(\$data)
+=item disableSub(\%data)
 
  Process disableSub tasks
 
@@ -1022,7 +954,7 @@ sub buildConf
 	$cfgTpl;
 }
 
-=item buildConfFile($file, \%data, [\%options = { }])
+=item buildConfFile($file, \%data [, \%options = { } ])
 
  Build the given configuration file
 
@@ -1091,7 +1023,7 @@ sub buildConfFile
 	);
 }
 
-=item installConfFile($file, [\%options = { }])
+=item installConfFile($file [, \%options = { } ])
 
  Install the given configuration file
 
@@ -1964,7 +1896,7 @@ sub _addFiles
 	$self->{'eventManager'}->trigger('afterHttpdAddFiles', $data);
 }
 
-=item _buildPHPini(\$data)
+=item _buildPHPini(\%data)
 
  Build FCGI and PHP configuration files
 
