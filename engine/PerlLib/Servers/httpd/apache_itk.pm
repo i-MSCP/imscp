@@ -1087,7 +1087,7 @@ sub setData
 
 =cut
 
-sub flushData()
+sub flushData
 {
 	delete $_[0]->{'data'};
 
