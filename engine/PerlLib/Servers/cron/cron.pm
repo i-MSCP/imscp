@@ -330,7 +330,7 @@ sub _validateCronTask
 
 =item _validateAttribute()
 
- Validate the given cront ask attribute value
+ Validate the given cron task attribute value
 
  Return undef ( die on failure )
 
