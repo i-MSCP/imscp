@@ -316,7 +316,7 @@ sub _validateCronTask
 	if(
 		$data->{'MINUTE'} ~~ ['@reboot', '@yearly', '@annually', '@monthly', '@weekly', '@daily', '@midnight', '@hourly']
 	) {
-		$data->{'HOUR'} = $data->{'DAY'} = $data->{'DAY'} = $data->{'MONTH'} = $data->{'DWEEK'} = '';
+		$data->{'HOUR'} = $data->{'DAY'} = $data->{'MONTH'} = $data->{'MONTH'} = $data->{'DWEEK'} = '';
 	} else {
 		$self->_validateAttribute('minute', $data->{'MINUTE'});
 		$self->_validateAttribute('hour', $data->{'HOUR'});
