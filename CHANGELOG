@@ -9,6 +9,10 @@ CONGIGS
 	Fixed: SSLv2 and SSLv3 must be disabled to prevent POODLE attacks ( Postfix, Dovecot >= 2.1, Proftpd )
 	Removed: The iterate_query parameter from the dovecot-sql.conf file ( Parameter not available in Dovecot 1.x )
 
+ENGINE
+	Added: Cron task attributes validation routines ( Servers::cron::cron )
+	Fixed: Cron server is broken - Unable to remove cron task ( Servers::cron::cron )
+
 TICKETS
 	Fixed: #1175: Bug - Domains - Shared mount points are always deleted
 
