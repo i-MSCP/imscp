@@ -13,6 +13,9 @@ ENGINE
 	Added: Cron task attributes validation routines ( Servers::cron::cron )
 	Fixed: Cron server is broken - Unable to remove cron task ( Servers::cron::cron )
 
+GUI:
+	Fixed: When adding a SQL user to a database, some SQL users are not listed in the select box
+
 TICKETS
 	Fixed: #1175: Bug - Domains - Shared mount points are always deleted
 

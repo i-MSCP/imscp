@@ -12,20 +12,17 @@
 			<td>
 				<select name="sqluser_id" id="sqluser_id">
 					<!-- BDP: sqluser_list -->
-					<option value="{SQLUSER_ID}" {SQLUSER_SELECTED}>{SQLUSER_NAME}@{SQLUSER_HOST}</option>
+					<option value="{SQLUSER_ID}">{SQLUSER_NAME}@{SQLUSER_HOST}</option>
 					<!-- EDP: sqluser_list -->
 				</select>
 			</td>
 		</tr>
 		</tbody>
 	</table>
-
 	<div class="buttons">
 		<input name="Add_Exist" type="submit" id="Add_Exist" value="{TR_ADD_EXIST}" tabindex="1"/>
 	</div>
-
 	<br/>
-
 	<!-- EDP: show_sqluser_list -->
 	<!-- BDP: create_sqluser -->
 	<table class="firstColFixed">
@@ -80,7 +77,6 @@
 		</tr>
 		</tbody>
 	</table>
-
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="add_user"/>
 		<input type="hidden" name="id" value="{ID}"/>
