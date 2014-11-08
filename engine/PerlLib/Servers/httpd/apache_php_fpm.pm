@@ -1380,19 +1380,18 @@ sub start
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->start($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+	# In case no pool file is available we must no try to start the PHP-FPM service because it will fail
+	# TODO find a better way
+	my @poolFiles = iMSCP::Dir->new(
+		'dirname' => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}, 'fileType' => '.conf'
+	)->getFiles();
 
-	if($rs) {
-		# In case the service do not start, we must ensure that it's not because no conffile exists
-		# By default (on new installs), no pool configuration file is created and so, the service cannot start)
-		my @conffiles = iMSCP::Dir->new(
-			'dirname' => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}, 'fileType' => '.conf'
-		)->getFiles();
+	if(@poolFiles) {
+		undef @poolFiles;
 
-		if(@conffiles) {
-			error("Unable to start $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} service") if $rs;
-			return $rs if $rs;
-		}
+		$rs = iMSCP::Service->getInstance()->start($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+		error("Unable to start $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} service") if $rs;
+		return $rs if $rs;
 	}
 
 	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
@@ -1458,18 +1457,32 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdRestart');
 	return $rs if $rs;
 
+	# In case no pool file is available we must no try to reload the PHP-FPM service because it will fail
+	# TODO fin a better way
+	my @poolFiles = iMSCP::Dir->new(
+		'dirname' => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}, 'fileType' => '.conf'
+	)->getFiles();
+
 	if($self->{'forceRestart'}) {
-		$rs = iMSCP::Service->getInstance()->restart($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-		error("Unable to restart $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}") if $rs;
-		return $rs if $rs;
+		if(@poolFiles) {
+			undef @poolFiles;
+
+			$rs = iMSCP::Service->getInstance()->restart($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+			error("Unable to restart $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}") if $rs;
+			return $rs if $rs;
+		}
 
 		$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
 		error("Unable to restart $self->{'config'}->{'HTTPD_SNAME'}") if $rs;
 		return $rs if $rs;
 	} else {
-		$rs = iMSCP::Service->getInstance()->reload($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-		error("Unable to reload $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} service") if $rs;
-		return $rs if $rs;
+		if(@poolFiles) {
+			undef @poolFiles;
+
+			$rs = iMSCP::Service->getInstance()->reload($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+			error("Unable to reload $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} service") if $rs;
+			return $rs if $rs;
+		}
 
 		$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
 		error("Unable to reload $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
