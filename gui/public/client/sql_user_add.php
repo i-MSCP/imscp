@@ -78,83 +78,44 @@ function client_checkSqlUserPermissions($tpl, $databaseId)
 }
 
 /**
- * Get list of SQL user which belong to the given database
- *
- * @param int $databaseId Database unique identifier
- * @return array
- */
-function client_getSqlUserList($databaseId)
-{
-	$stmt = exec_query('SELECT sqlu_name FROM sql_user WHERE sqld_id = ?', $databaseId);
-
-	$userList = array();
-
-	while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-		$userList[] = $row['sqlu_name'];
-	}
-
-	return $userList;
-}
-
-/**
  * Get SQL user list
  *
  * @param iMSCP_pTemplate $tpl
- * @param int $customeId Customer id
+ * @param int $customerId Customer id
  * @param int $databaseId Database id
- * @return bool
+ * @return void
  */
-function client_generateSqlUserList($tpl, $customeId, $databaseId)
+function client_generateSqlUserList($tpl, $customerId, $databaseId)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$domainId = get_user_domain_id($customeId);
-
-	// Let's select all SQL users of the current domain except the users of the current database
+	// Select all SQL users of the current domain except those which are already assigned to the database on which we
+	// want operate on
 	$stmt = exec_query(
-		'
+		"
 			SELECT
-				t1.sqlu_name, t1.sqlu_host, t1.sqlu_id
+				sqlu_id, sqlu_name, sqlu_host
 			FROM
-				sql_user AS t1, sql_database AS t2
+				sql_user
+			INNER JOIN
+				sql_database USING(sqld_id)
 			WHERE
-				t1.sqld_id = t2.sqld_id
+				domain_id = :domain_id
 			AND
-				t2.domain_id = ?
+				sqld_id != :sqld_id
 			AND
-				t1.sqld_id <> ?
-			ORDER BY
-				t1.sqlu_name
-		',
-		array($domainId, $databaseId)
+				CONCAT(sqlu_name, sqlu_host) NOT IN(
+					SELECT CONCAT(sqlu_name, sqlu_host) FROM sql_user WHERE sqld_id = :sqld_id
+				)
+			GROUP BY
+				sqlu_name, sqlu_host
+		",
+		array('domain_id' => get_user_domain_id($customerId), 'sqld_id' => $databaseId)
 	);
 
-	$firstPassed = true;
-	$sqlUserFound = false;
-	$prevSeenName = '';
-
-	$userList = client_getSqlUserList($databaseId);
-
-	while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-		// Checks if it's the first element of the combo box and set it as selected
-		if ($firstPassed) {
-			$select = $cfg->HTML_SELECTED;
-			$firstPassed = false;
-		} else {
-			$select = '';
-		}
-
-		// 1. Compares the sqluser name with the record before (Is set as '' at the first time, see above)
-		// 2. Compares the sqluser name with the userlist of the current database
-		if ($prevSeenName != $row['sqlu_name'] && !in_array($row['sqlu_name'], $userList)) {
-			$sqlUserFound = true;
-			$prevSeenName = $row['sqlu_name'];
-
+	if($stmt->rowCount()) {
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			$tpl->assign(
 				array(
-					'SQLUSER_ID' => $row['sqlu_id'],
-					'SQLUSER_SELECTED' => $select,
+					'SQLUSER_ID' => intval($row['sqlu_id']),
 					'SQLUSER_NAME' => tohtml($row['sqlu_name']),
 					'SQLUSER_HOST' => tohtml(decode_idna($row['sqlu_host'])),
 				)
@@ -162,14 +123,8 @@ function client_generateSqlUserList($tpl, $customeId, $databaseId)
 
 			$tpl->parse('SQLUSER_LIST', '.sqluser_list');
 		}
-	}
-
-	// let's hide the combobox in case there are no other sqlusers
-	if (!$sqlUserFound) {
-		$tpl->assign('SHOW_SQLUSER_LIST', '');
-		return false;
 	} else {
-		return true;
+		$tpl->assign('SHOW_SQLUSER_LIST', '');
 	}
 }
 
