@@ -48,7 +48,7 @@
 <!-- EDP: users_search -->
 
 <!-- BDP: usr_message -->
-<div class="info">{USR_MESSAGE}</div>
+<div class="static_info">{USR_MESSAGE}</div>
 <!-- EDP: usr_message -->
 
 <!-- BDP: users_list -->

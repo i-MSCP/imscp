@@ -14,7 +14,7 @@
 <h3 class="user_yellow"><span>{TR_ADMINISTRATORS}</span></h3>
 
 <!-- BDP: admin_message -->
-<div class="info">{ADMIN_MESSAGE}</div>
+<div class="static_info">{ADMIN_MESSAGE}</div>
 <!-- EDP: admin_message -->
 
 <!-- BDP: admin_list -->
@@ -53,7 +53,7 @@
 <h3 class="user_green"><span>{TR_RESELLERS}</span></h3>
 
 <!-- BDP: rsl_message -->
-<div class="info">{RSL_MESSAGE}</div>
+<div class="static_info">{RSL_MESSAGE}</div>
 <!-- EDP: rsl_message -->
 
 <!-- BDP: rsl_list -->
@@ -122,7 +122,7 @@
 <!-- EDP: search_form -->
 
 <!-- BDP: usr_message -->
-<div class="info">{USR_MESSAGE}</div>
+<div class="static_info">{USR_MESSAGE}</div>
 <!-- EDP: usr_message -->
 
 <!-- BDP: usr_list -->

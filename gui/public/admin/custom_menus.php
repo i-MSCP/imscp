@@ -52,7 +52,7 @@ function admin_generateMenusList($tpl)
 
 	if (!$stmt->rowCount()) {
 		$tpl->assign('MENUS_LIST_BLOCK', '');
-		set_page_message(tr('No custom menu found.'), 'info');
+		set_page_message(tr('No custom menu found.'), 'static_info');
 	} else {
 		while (!$stmt->EOF) {
 			$menuId = $stmt->fields['menu_id'];

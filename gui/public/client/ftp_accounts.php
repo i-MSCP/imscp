@@ -42,7 +42,7 @@ function ftp_generatePageData($tpl)
 	$stmt = exec_query($query, $_SESSION['user_id']);
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('You do not have FTP accounts.'), 'info');
+		set_page_message(tr('You do not have FTP accounts.'), 'static_info');
 		$tpl->assign('FTP_ACCOUNTS', '');
 	} else {
 		/** @var $cfg iMSCP_Config_Handler_File */

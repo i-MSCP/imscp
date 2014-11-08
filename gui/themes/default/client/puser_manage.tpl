@@ -13,7 +13,7 @@
 <h2 class="groups"><span>{TR_USERS}</span></h2>
 
 <!-- BDP: users_message_block -->
-<div class="info">{USERS_MESSAGE}</div>
+<div class="static_info">{USERS_MESSAGE}</div>
 <!-- EDP: users_message_block -->
 
 <!-- BDP: users_block -->
@@ -48,7 +48,7 @@
 <h2 class="groups"><span>{TR_GROUPS}</span></h2>
 
 <!-- BDP: groups_message_block -->
-<div class="info">{GROUPS_MESSAGE}</div>
+<div class="static_info">{GROUPS_MESSAGE}</div>
 <!-- EDP: groups_message_block -->
 
 <!-- BDP: groups_block -->
