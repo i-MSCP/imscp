@@ -180,7 +180,7 @@ function reseller_generateHostingPlanList($tpl, $resellerId)
 		$tpl->assign('CUSTOMIZE_HOSTING_PLAN_BLOCK', ''); // Hosting plan created by administrators can't be customized
 
 		if (!$stmt->rowCount()) {
-			set_page_message(tr('No hosting plan available. Please contact your administrator.'), 'error');
+			set_page_message(tr('No hosting plan available. Please contact your administrator.'), 'static_error');
 			$tpl->assign('ADD_CUSTOMER_BLOCK', '');
 		}
 	} else {

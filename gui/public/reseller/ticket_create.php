@@ -97,7 +97,7 @@ switch ($userdata['URGENCY']) {
         $userdata['OPT_URGENCY_2'] = $cfg->HTML_SELECTED;
 }
 
-$userdata['SUBJECT'] = isset($_POST['subject']) ? clean_input($_POST['subj'], true) : '';
+$userdata['SUBJECT'] = isset($_POST['subject']) ? clean_input($_POST['subject'], true) : '';
 $userdata['USER_MESSAGE'] = isset($_POST['user_message'])
     ? clean_input($_POST['user_message'], true) : '';
 

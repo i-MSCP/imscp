@@ -69,7 +69,7 @@ function admin_generatePage($tpl)
 			)
 		);
 
-		set_page_message(tr("No hosting plan available."), 'info');
+		set_page_message(tr("No hosting plan available."), 'static_info');
 	} else {
 		$tpl->assign(
 			array(

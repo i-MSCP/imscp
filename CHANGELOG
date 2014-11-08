@@ -13,8 +13,12 @@ ENGINE
 	Added: Cron task attributes validation routines ( Servers::cron::cron )
 	Fixed: Cron server is broken - Unable to remove cron task ( Servers::cron::cron )
 
-GUI:
+GUI
+	Added: New static_* CSS classes for static page messages ( Layout )
+	Changed: The flash messages are now positioned relatively and over the page body ( Layout )
+	Changed: Lowered Gzip compression level to avoid high server load
 	Fixed: When adding a SQL user to a database, some SQL users are not listed in the select box
+	Fixed: Wrong POST variable in client/ticket_create.php
 
 TICKETS
 	Fixed: #1175: Bug - Domains - Shared mount points are always deleted

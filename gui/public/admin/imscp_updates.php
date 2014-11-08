@@ -51,7 +51,7 @@ function admin_generatePage($tpl)
 	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($cfg['CHECK_FOR_UPDATES']) || !$cfg['CHECK_FOR_UPDATES']) {
-		set_page_message(tr('i-MSCP version update checking is disabled'), 'warning');
+		set_page_message(tr('i-MSCP version update checking is disabled'), 'static_warning');
 	} else {
 		/** @var iMSCP_Update_Version $updateVersion */
 		$updateVersion = iMSCP_Update_Version::getInstance();

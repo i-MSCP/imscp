@@ -102,7 +102,7 @@ class iMSCP_Filter_Compress_Gzip {
 	 *
 	 * @var int
 	 */
-	protected $_compressionLevel = 7;
+	protected $_compressionLevel = 1;
 
 	/**
 	 * Accepted browser content-coding
@@ -141,14 +141,15 @@ class iMSCP_Filter_Compress_Gzip {
 	protected $_mode;
 
 	/**
-	 * Constructor.
+	 * Constructor
 	 *
+	 * @throws iMSCP_Exception
 	 * @param int $mode Tells if the filter should act as callback function for the PHP ob_start function or as function
 	 * 					for create a standard gz file. The filter mode must be one of the
 	 * 					iMSCP_Filter_Compress_Gzip::FILTER_* constants.
 	 * @param int $compressionLevel Compression level
 	 */
-	public function __construct($mode = self::FILTER_FILE, $compressionLevel = 7) {
+	public function __construct($mode = self::FILTER_FILE, $compressionLevel = 1) {
 
 		if(extension_loaded('zlib')) {
 			if($mode === self::FILTER_BUFFER or $mode === self::FILTER_FILE) {

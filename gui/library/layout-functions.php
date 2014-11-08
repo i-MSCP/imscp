@@ -76,12 +76,15 @@ function generatePageMessage($tpl)
 	$namespace = new Zend_Session_Namespace('pageMessages');
 
 	if (Zend_Session::namespaceIsset('pageMessages')) {
-		foreach (array('success', 'error', 'warning', 'info') as $level) {
+		foreach (
+			array(
+				'success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info'
+			) as $level
+		) {
 			if (isset($namespace->{$level})) {
 				$tpl->assign(
 					array(
-						'MESSAGE_CLS' => $level .
-						(($level == 'success') ? ' timeout' : ''),
+						'MESSAGE_CLS' => $level,
 						'MESSAGE' => $namespace->{$level}
 					)
 				);
@@ -110,7 +113,14 @@ function set_page_message($message, $level = 'info')
 
 	if (!is_string($message)) {
 		throw new iMSCP_Exception('set_page_message() expects a string for $message');
-	} elseif (!in_array($level, array('info', 'warning', 'error', 'success'))) {
+	} elseif (
+		!in_array(
+			$level,
+			array(
+				'info', 'warning', 'error', 'success', 'static_success', 'static_error', 'static_warning', 'static_info'
+			)
+		)
+	) {
 		throw new iMSCP_Exception(sprintf('Wrong level %s for page message.', $level));
 	}
 

@@ -45,7 +45,7 @@
 </script>
 
 <!-- BDP: no_software_support -->
-<div class="info">{NO_SOFTWARE_AVAIL}</div>
+<div class="static_info">{NO_SOFTWARE_AVAIL}</div>
 <!-- EDP: no_software_support -->
 
 <!-- BDP: software_list -->

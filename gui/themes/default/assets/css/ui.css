@@ -100,7 +100,7 @@ body {
     min-width: 850px;
     position: relative;
     height: 100%;
-    font: 12px/18px Arial, Helvetica, sans-serif;
+    font: 13px/18px Arial, Helvetica, sans-serif;
 }
 
 .no_min_width {
@@ -669,6 +669,28 @@ small {
 .success,
 .error,
 .info {
+    border-top:none;
+    border-right:2px solid;
+    border-bottom:2px solid;
+    border-left:2px solid;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    border-radius: 0 0 4px 4px;
+    padding: 15px 10px 15px 50px;
+    background: no-repeat 10px center;
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    width:50%;
+    margin: 0 auto 0 auto;
+    z-index: 5000;
+}
+
+.static_warning,
+.static_success,
+.static_error,
+.static_info {
     margin: 0.5em 0 1.5em 0;
     border: 1px solid;
     padding: 15px 10px 15px 50px;
@@ -679,6 +701,7 @@ small {
     border-radius: 4px;
 }
 
+.static_warning,
 .warning {
     color: #954a00;
     border-color: #954a00;
@@ -686,6 +709,7 @@ small {
     background-image: url(../images/messages/warning.png);
 }
 
+.static_success,
 .success {
     color: #3d7a15;
     border-color: #3d7a15;
@@ -693,6 +717,7 @@ small {
     background-image: url(../images/messages/success.png);
 }
 
+.static_error,
 .error {
     color: #ca1d11;
     border-color: #ca1d11;
@@ -700,6 +725,7 @@ small {
     background-image: url(../images/messages/error.png);
 }
 
+.static_info,
 .info {
     color: #0f3d87;
     border-color: #0f3d87;
