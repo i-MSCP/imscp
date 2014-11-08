@@ -401,9 +401,9 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
 		);
 
 		if ($status == 'open') {
-			set_page_message(tr('You have no open tickets.'), 'info');
+			set_page_message(tr('You have no open tickets.'), 'static_info');
 		} else {
-			set_page_message(tr('You have no closed tickets.'), 'info');
+			set_page_message(tr('You have no closed tickets.'), 'static_info');
 		}
 	}
 }

@@ -76,7 +76,7 @@ function gen_htaccess_entries($tpl, &$dmn_id)
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('PROTECTED_AREAS', '');
-		set_page_message(tr('You do not have protected areas.'), 'info');
+		set_page_message(tr('You do not have protected areas.'), 'static_info');
 	} else {
 		$counter = 0;
 		while (!$rs->EOF) {

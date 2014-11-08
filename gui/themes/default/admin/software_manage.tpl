@@ -82,7 +82,7 @@
 	<!-- BDP: no_softwaredepot_list -->
 	<tbody>
 	<tr>
-		<td colspan="8"><div class="info">{NO_SOFTWAREDEPOT}</div></td>
+		<td colspan="8"><div class="static_info">{NO_SOFTWAREDEPOT}</div></td>
 	</tr>
 	<!-- EDP: no_softwaredepot_list -->
 	<!-- BDP: list_softwaredepot -->
@@ -104,7 +104,7 @@
 <h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
 
 <!-- BDP: no_webdepotsoftware_lists -->
-<div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div>
+<div class="static_info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div>
 <!-- EDP: no_webdepotsoftware_list -->
 
 <form action="software_manage.php" method="post" name="update_webdepot" id="update_webdepot">
@@ -179,7 +179,7 @@
 	<!-- BDP: no_software_list -->
 	<tr>
 		<td colspan="9">
-			<div class="info">{NO_SOFTWARE}</div>
+			<div class="static_info">{NO_SOFTWARE}</div>
 		</td>
 	</tr>
 	<!-- EDP: no_software_list -->
@@ -220,7 +220,7 @@
 	<!-- BDP: no_reseller_list -->
 	<tr>
 		<td colspan="5">
-			<div class="info">{NO_RESELLER}</div>
+			<div class="static_info">{NO_RESELLER}</div>
 		</td>
 	</tr>
 	<!-- EDP: no_reseller_list -->

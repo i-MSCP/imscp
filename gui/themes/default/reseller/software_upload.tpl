@@ -19,7 +19,7 @@
 	<!-- BDP: no_software_list -->
 	<tr>
 		<td colspan="6">
-			<div class="info">{NO_SOFTWARE}</div>
+			<div class="static_info">{NO_SOFTWARE}</div>
 		</td>
 	</tr>
 	<!-- EDP: no_software_list -->
@@ -73,7 +73,7 @@
 <h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
 
 <!-- BDP: no_webdepotsoftware_list -->
-<div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div>
+<div class="static_info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div>
 <!-- EDP: no_webdepotsoftware_list -->
 
 <form action="software_upload.php" method="post" name="update_webdepot" id="update_webdepot">

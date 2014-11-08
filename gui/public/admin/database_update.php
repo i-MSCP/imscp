@@ -125,7 +125,7 @@ $tpl->assign(
 generateNavigation($tpl);
 
 if ($dbUpdate->isAvailableUpdate()) {
-	set_page_message(tr('One or more database updates are now available. See the details below.'), 'info');
+	set_page_message(tr('One or more database updates are now available. See the details below.'), 'static_info');
 	admin_generateDatabaseUpdateDetail($tpl);
 
 	$tpl->assign(
@@ -135,7 +135,7 @@ if ($dbUpdate->isAvailableUpdate()) {
 			'TR_PROCESS_UPDATES' => tr('Process update')));
 } else {
 	$tpl->assign('DATABASE_UPDATES', '');
-	set_page_message(tr('No database update available.'), 'info');
+	set_page_message(tr('No database update available.'), 'static_info');
 }
 
 generatePageMessage($tpl);

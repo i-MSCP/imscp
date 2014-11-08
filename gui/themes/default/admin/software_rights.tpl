@@ -10,7 +10,7 @@
 	<!-- BDP: no_select_reseller -->
 	<tr>
 		<td colspan="3">
-			<div class="info">{NO_RESELLER_AVAILABLE}</div>
+			<div class="static_info">{NO_RESELLER_AVAILABLE}</div>
 		</td>
 	</tr>
 	<!-- EDP: no_select_reseller -->

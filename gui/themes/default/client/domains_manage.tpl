@@ -48,7 +48,7 @@
 <h3 class="domains"><span>{TR_DOMAIN_ALIASES}</span></h3>
 
 <!-- BDP: als_message -->
-<div class="info">{ALS_MSG}</div>
+<div class="static_info">{ALS_MSG}</div>
 <!-- EDP: als_message -->
 
 <!-- BDP: als_list -->
@@ -95,7 +95,7 @@
 <h3 class="domains"><span>{TR_SUBDOMAINS}</span></h3>
 
 <!-- BDP: sub_message -->
-<div class="info">{SUB_MSG}</div>
+<div class="static_info">{SUB_MSG}</div>
 <!-- EDP: sub_message -->
 
 <!-- BDP: sub_list -->
@@ -142,7 +142,7 @@
 <h3 class="domains"><span>{TR_DNS}</span></h3>
 
 <!-- BDP: dns_message -->
-<div class="info">{DNS_MSG}</div>
+<div class="static_info">{DNS_MSG}</div>
 <!-- EDP: dns_message -->
 
 <!-- BDP: dns_list -->

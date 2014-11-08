@@ -116,7 +116,7 @@ function client_databasesList($tpl, $domainId)
 	);
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('You do not have databases.'), 'info');
+		set_page_message(tr('You do not have databases.'), 'static_info');
 		$tpl->assign('SQL_DATABASES_USERS_LIST', '');
 	} else {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
