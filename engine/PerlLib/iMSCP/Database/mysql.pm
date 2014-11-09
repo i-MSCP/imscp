@@ -65,15 +65,19 @@ use parent 'Common::SingletonClass';
 
  Param string $prop Propertie name
  Param string $value Propertie value
- Return string Value of propertie which has been set
+ Return string|undef Value of propertie which has been set or undef in case the properties doesn't exist
 
 =cut
 
-sub set($$$)
+sub set
 {
 	my ($self, $prop, $value) = @_;
 
-	$self->{'db'}->{$prop} = $value if exists $self->{'db'}->{$prop};
+	if(exists $self->{'db'}->{$prop}) {
+		$self->{'db'}->{$prop} = $value;
+	} else {
+		undef;
+	}
 }
 
 =item connect()
@@ -202,7 +206,7 @@ sub getRawDb
 
 =cut
 
-sub doQuery($$$;@)
+sub doQuery
 {
 	my ($self, $key, $query, @bindValues) = @_;
 
@@ -256,7 +260,7 @@ sub getDBTables
 
 =cut
 
-sub getTableColumns($$)
+sub getTableColumns
 {
 	my ($self, $tableName) = @_;
 
@@ -292,7 +296,7 @@ sub getTableColumns($$)
 
 =cut
 
-sub dumpdb($$$)
+sub dumpdb
 {
 	my ($self, $dbName, $filename) = @_;
 

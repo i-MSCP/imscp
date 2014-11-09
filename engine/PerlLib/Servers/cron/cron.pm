@@ -41,7 +41,6 @@ use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser;
 use File::Basename;
-use Switch;
 
 use parent 'Common::SingletonClass';
 
@@ -351,19 +350,20 @@ sub _validateAttribute
 		my $days = 'mon|tue|wed|thu|fri|sat|sun';
 		my @namesArr = ();
 
-		switch ($name) {
-			case 'minute' { $pattern = '[ ]*(\b[0-5]?[0-9]\b)[ ]*'; }
-			case 'hour' { $pattern = '[ ]*(\b[01]?[0-9]\b|\b2[0-3]\b)[ ]*'; }
-			case 'dmonth' { $pattern = '[ ]*(\b[01]?[1-9]\b|\b2[0-9]\b|\b3[01]\b)[ ]*'; }
-			case 'month' {
-				@namesArr = split '|', $months;
-				$pattern = "([ ]*(\b[0-1]?[0-9]\b)[ ]*)|([ ]*($months)[ ]*)";
-			}
-			case 'dweek' {
-				@namesArr = split '|', $days;
-				$pattern = "([ ]*(\b[0]?[0-7]\b)[ ]*)|([ ]*($days)[ ]*)";
-			}
-			else { die(sprintf("Unknown '%s' cron task attribute", $name)); }
+		if($name eq 'minute') {
+			$pattern = '[ ]*(\b[0-5]?[0-9]\b)[ ]*';
+		} elsif($name eq 'hour') {
+			$pattern = '[ ]*(\b[01]?[0-9]\b|\b2[0-3]\b)[ ]*';
+		} elsif ($name eq 'dmonth') {
+			$pattern = '[ ]*(\b[01]?[1-9]\b|\b2[0-9]\b|\b3[01]\b)[ ]*';
+		} elsif ($name eq 'month') {
+			@namesArr = split '|', $months;
+			$pattern = "([ ]*(\b[0-1]?[0-9]\b)[ ]*)|([ ]*($months)[ ]*)";
+		} elsif ($name eq 'dweek') {
+			@namesArr = split '|', $days;
+			$pattern = "([ ]*(\b[0]?[0-7]\b)[ ]*)|([ ]*($days)[ ]*)";
+		} else {
+			die(sprintf("Unknown '%s' cron task attribute", $name));
 		}
 
 		my $range = "((($pattern)|(\\*\\/$step)?)|((($pattern)-($pattern))(\\/$step)?))";
