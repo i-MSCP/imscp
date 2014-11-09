@@ -104,7 +104,7 @@
 
 			if ($.trim(errorMessages.text()) == '') {
 				errorMessages.empty().append('<span id="msg_default">{TR_FIELDS_OK}</span>').
-					removeClass('error').addClass('success');
+					removeClass('static_error').addClass('static_success');
 			}
 		}
 
@@ -251,7 +251,7 @@
 				<input type="button" id="php_editor_dialog_open" value="{TR_SETTINGS}"/>
 			</div>
 			<div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
-				<div class="php_editor_error success">
+				<div class="php_editor_error static_success">
 					<span id="msg_default">{TR_FIELDS_OK}</span>
 				</div>
 				<table class="firstColFixed">

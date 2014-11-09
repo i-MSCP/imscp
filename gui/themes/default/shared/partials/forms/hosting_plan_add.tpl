@@ -42,7 +42,7 @@
 				if (!$('#err_' + k).length) {
 					$("#msg_default").remove();
 					errorMessages.append('<span style="display:block" id="err_' + k + '">' + t + '</span>').
-						removeClass('success').addClass('error');
+						removeClass('static_success').addClass('static_error');
 				}
 			} else if ($('#err_' + k).length) {
 				$('#err_' + k).remove();
@@ -50,7 +50,7 @@
 
 			if ($.trim(errorMessages.text()) == '') {
 				errorMessages.empty().append('<span id="msg_default">{TR_FIELDS_OK}</span>').
-					removeClass('error').addClass('success');
+					removeClass('static_error').addClass('static_success');
 			}
 		}
 
@@ -181,7 +181,7 @@
 			<input type="button" name="php_editor_dialog_open" id="php_editor_dialog_open" value="{TR_SETTINGS}"/>
 		</div>
 		<div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
-			<div class="php_editor_error success">
+			<div class="php_editor_error static_success">
 				<span id="msg_default">{TR_FIELDS_OK}</span>
 			</div>
 			<!-- BDP: php_editor_permissions_block -->
