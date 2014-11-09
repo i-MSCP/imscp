@@ -96,7 +96,7 @@
 				if (!$('#err_' + k).length) {
 					$("#msg_default").remove();
 					errorMessages.append('<span style="display:block" id="err_' + k + '">' + t + '</span>').
-						removeClass('success').addClass('error');
+						removeClass('static_success').addClass('static_error');
 				}
 			} else if ($('#err_' + k).length) {
 				$('#err_' + k).remove();
