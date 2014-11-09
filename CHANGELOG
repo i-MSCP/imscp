@@ -22,6 +22,7 @@ GUI
 
 TICKETS
 	Fixed: #1175: Bug - Domains - Shared mount points are always deleted
+	Fixed: #1178: Cosmetics - Logout is not a translatable string
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.16
