@@ -20,6 +20,9 @@ GUI
 	Fixed: When adding a SQL user to a database, some SQL users are not listed in the select box
 	Fixed: Wrong POST variable in client/ticket_create.php
 
+PLUGINS
+	Updated: Plugin API to version 0.2.13
+
 TICKETS
 	Fixed: #1175: Bug - Domains - Shared mount points are always deleted
 	Fixed: #1178: Cosmetics - Logout is not a translatable string
