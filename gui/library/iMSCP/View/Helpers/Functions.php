@@ -420,7 +420,7 @@ function generateNavigation($tpl)
 	// Static variables
 	$tpl->assign(
 		array(
-			'TR_MENU_LOGOUT' => 'Logout',
+			'TR_MENU_LOGOUT' => tr('Logout'),
 			'VERSION' => (isset($cfg['Version']) && $cfg['Version'] != '') ? $cfg['Version'] : tr('Unknown'),
 			'BUILDDATE' => (isset($cfg['BuildDate']) && $cfg['BuildDate'] != '') ? $cfg['BuildDate'] : tr('Unavailable'),
 			'CODENAME' => (isset($cfg['CodeName']) && $cfg['CodeName'] != '') ? $cfg['CodeName'] : tr('Unknown')
