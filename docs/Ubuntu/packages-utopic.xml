@@ -1,13 +1,6 @@
 <packages>
     <frontend default="nginx">
-        <nginx
-                pinning_package="nginx"
-                pinning_pin="origin nginx.org"
-                pinning_pin_priority="1001"
-                repository="deb http://nginx.org/packages/ubuntu raring nginx"
-                repository_origin="nginx"
-                repository_key_uri="http://nginx.org/keys/nginx_signing.key"
-                >
+        <nginx>
             <package>nginx</package>
             <package>spawn-fcgi</package>
             <package>php5-cgi</package>
@@ -16,20 +9,18 @@
     <httpd default="apache_php_fpm">
         <apache_fcgid>
             <package>apache2</package>
-            <package>apache2-mpm-worker</package>
             <package>apache2-suexec-custom</package>
             <package>libapache2-mod-fcgid</package>
             <package>php5-cgi</package>
         </apache_fcgid>
         <apache_itk>
             <package>apache2</package>
-            <package>apache2-mpm-itk</package>
+            <package>libapache2-mpm-itk</package>
             <package>libapache2-mod-php5</package>
         </apache_itk>
         <apache_php_fpm>
             <package>apache2</package>
             <package>apache2-suexec-custom</package>
-            <package>apache2-mpm-worker</package>
             <package>libapache2-mod-fastcgi</package>
             <package>php5-fpm</package>
         </apache_php_fpm>
@@ -76,7 +67,7 @@
     <sql default="mysql_5.5">
         <mysql_5.5
                 pinning_package="mysql-server-5.5 mysql-server-5.5 mysql-common libmysqlclient16 libmysqlclient18"
-                pinning_pin="release o=Ubuntu,n=raring"
+                pinning_pin="release o=Ubuntu,n=utopic"
                 pinning_pin_priority="1001"
                 >
             <package>mysql-server-5.5</package>
@@ -85,61 +76,30 @@
         </mysql_5.5>
         <mariadb_5.5
                 pinning_package="*"
-                pinning_pin="origin mirror2.hs-esslingen.de"
+                pinning_pin="release o=Ubuntu,n=utopic"
                 pinning_pin_priority="1001"
-                repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/5.5/ubuntu raring main"
-                repository_origin="MariaDB"
-                repository_key_srv="keyserver.ubuntu.com"
-                repository_key_id="0xcbcb082a1bb943db"
                 >
             <package>mariadb-client-5.5</package>
             <package>mariadb-server-5.5</package>
             <package>mariadb-common</package>
             <package>mysql-common</package>
         </mariadb_5.5>
-        <mariadb_10.0
-                pinning_package="*"
-                pinning_pin="origin mirror2.hs-esslingen.de"
-                pinning_pin_priority="1001"
-                repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu raring main"
-                repository_origin="MariaDB"
-                repository_key_srv="keyserver.ubuntu.com"
-                repository_key_id="0xcbcb082a1bb943db"
-                allow_switch_to="percona_5.6,remote_server"
-                >
-            <package>mariadb-client-10.0</package>
-            <package>mariadb-server-10.0</package>
-            <package>mariadb-common</package>
-            <package>mysql-common</package>
-        </mariadb_10.0>
-        <percona_5.5
-                pinning_package="*"
-                pinning_pin="origin repo.percona.com"
-                pinning_pin_priority="1001"
-                repository="deb http://repo.percona.com/apt raring main"
-                repository_origin="Percona"
-                repository_key_srv="keys.gnupg.net"
-                repository_key_id="1C4CBDCDCD2EFD2A"
-                >
-            <package>percona-server-client-5.5</package>
-            <package>percona-server-server-5.5</package>
-        </percona_5.5>
         <percona_5.6
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                repository="deb http://repo.percona.com/apt raring main"
+                repository="deb http://repo.percona.com/apt utopic main"
                 repository_origin="Percona"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
-                allow_switch_to="mariadb_10.0,remote_server"
+                allow_switch_to="remote_server"
                 >
             <package>percona-server-client-5.6</package>
             <package>percona-server-server-5.6</package>
         </percona_5.6>
         <remote_server
                 pinning_package="mysql-server-5.5 mysql-server-5.5 mysql-common libmysqlclient16 libmysqlclient18"
-                pinning_pin="release o=Ubuntu,n=raring"
+                pinning_pin="release o=Ubuntu,n=utopic"
                 pinning_pin_priority="1001"
                 >
             <package>mysql-client-5.5</package>
@@ -155,6 +115,7 @@
         <package>php-gettext</package>
         <package>php5-imap</package>
         <package>php5-intl</package>
+        <package>php5-json</package>
         <package>php5-mcrypt</package>
         <package>php5-mysqlnd</package>
     </php>
