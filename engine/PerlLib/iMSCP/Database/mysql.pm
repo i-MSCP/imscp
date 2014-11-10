@@ -210,18 +210,22 @@ sub doQuery
 {
 	my ($self, $key, $query, @bindValues) = @_;
 
+	# Must be done prior any processing to handle error case
+	# (ie, wrong sql statement and then, next query which set error status use default fetch mode)
+	my $fetchMode = $self->{'db'}->{'FETCH_MODE'};
+	$self->set('FETCH_MODE', 'hashref');
+
 	$query or return 'No query provided';
 
 	$self->{'sth'} = $self->{'connection'}->prepare($query) or return "Error while preparing statement: $DBI::errstr";
 	$self->{'sth'}->execute(@bindValues) or return "Error while executing statement: $DBI::errstr";
 
-	if($self->{'db'}->{'FETCH_MODE'} eq 'hashref') {
+	if($fetchMode eq 'hashref') {
 		$self->{'sth'}->fetchall_hashref($key) || { };
-	} elsif($self->{'db'}->{'FETCH_MODE'} eq 'arrayref') {
-		$self->set('FETCH_MODE', 'hashref');
+	} elsif($fetchMode eq 'arrayref') {
 		$self->{'sth'}->fetchall_arrayref($key) || [ ];
 	} else {
-		return sprintf('Unsupported fetch mode: %s', $self->{'db'}->{'FETCH_MODE'});
+		return sprintf('Unsupported fetch mode: %s', $fetchMode);
 	}
 }
 
@@ -407,8 +411,6 @@ sub _init
 	$self->{'_dsn'} = '';
 	$self->{'_currentUser'} = '';
 	$self->{'_currentPassword'} = '';
-
-	$self->{'_fetchMode'} = 'hashref';
 
 	$self;
 }
