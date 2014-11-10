@@ -1796,7 +1796,7 @@ sub setupDefaultAdmin
 						LAST_INSERT_ID(), ?, ?, ?, ?, ?
 					)
 				',
-				'en_GB', 'default', 'black', '', '1'
+				'auto', 'default', 'black', '', '1'
 			);
 			unless(ref $rs eq 'HASH') {
 				error($rs);
@@ -1805,7 +1805,7 @@ sub setupDefaultAdmin
 		} else {
 			$rs = $database->doQuery(
 				'dummy',
-				'UPDATE `admin` SET `admin_name` = ? , `admin_pass` = ?, `email` = ? WHERE `admin_id` = ?',
+				'UPDATE `admin` SET `admin_name` = ?, `admin_pass` = ?, `email` = ? WHERE `admin_id` = ?',
 				$adminLoginName, $adminPassword, $adminEmail, $rs->{$adminOldLoginName}->{'admin_id'}
 			);
 			unless(ref $rs eq 'HASH') {

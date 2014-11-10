@@ -48,7 +48,7 @@ $config->set('HTML_READONLY', ' readonly="readonly"');
 $config->set('HTML_SELECTED', ' selected="selected"');
 
 // Default Language (if not overriden by admin)
-$config->set('USER_INITIAL_LANG', 'en_GB');
+$config->set('USER_INITIAL_LANG', 'auto');
 
 // Tell whether or not output must be compressed
 $config->set('COMPRESS_OUTPUT', 1);
