@@ -65,7 +65,7 @@ use parent 'Common::SingletonClass';
 
  Param string $prop Propertie name
  Param string $value Propertie value
- Return string Value of propertie which has been set
+ Return string|undef Value of propertie which has been set or undef in case the properties doesn't exist
 
 =cut
 
@@ -73,7 +73,11 @@ sub set
 {
 	my ($self, $prop, $value) = @_;
 
-	$self->{'db'}->{$prop} = $value if exists $self->{'db'}->{$prop};
+	if(exists $self->{'db'}->{$prop}) {
+		$self->{'db'}->{$prop} = $value;
+	} else {
+		undef;
+	}
 }
 
 =item connect()
