@@ -107,7 +107,9 @@ function client_isDatabase($dbName)
  * Add SQL database
  *
  * @param int $userId
- * @return void
+ * @throws Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_addSqlDb($userId)
 {
@@ -144,8 +146,8 @@ function client_addSqlDb($userId)
 	}
 
 	// Are wildcards used?
-	if (preg_match("/[%|\?]+/", $dbName)) {
-		set_page_message(tr('Wildcards such as %% and are not allowed.'), 'error');
+	if (preg_match('/[%|\?]+/', $dbName)) {
+		set_page_message(tr("Wildcards such as '%%' and '?' are not allowed."), 'error');
 		return;
 	}
 
