@@ -345,8 +345,3 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
 		$primaryTranslator->addTranslation(array('content' => $pluginTranslator));
 	}
 }
-
-// Dirty hack to make gettext add this entry to the .pot file
-if (false) {
-	tr('_: Localised language');
-}

@@ -19,21 +19,12 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage	I18n
+ * @subpackage  I18n
  * @copyright   2010-2014 by i-MSCP team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
-
-die('The ./gui/library/resources/i18n/zend.php file must not be loaded.');
-
-/**
- * Dummy function.
- *
- * @return void
- */
-function tr(){}
 
 // Note this file is not intended to be loaded. It will simply parsed by the gettext
 // tools when updating translation files. All translation string were extracted from
@@ -41,7 +32,6 @@ function tr(){}
 // validator, the developer must think to update this file. Same thing for the
 // iMSCP_Validate class. When a developer provides custom errors messages, this file
 // must be updated.
-
 
 // Zend validators - shared strings
 tr("Invalid type given. String expected");
