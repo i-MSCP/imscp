@@ -22,6 +22,9 @@ GUI
 	Fixed: When adding a SQL user to a database, some SQL users are not listed in the select box
 	Fixed: Wrong POST variable in client/ticket_create.php
 
+i18n
+	Added gui/library/resources/i18n/iMSCP.php file for indirect translation strings
+
 PLUGINS
 	Updated: Plugin API to version 0.2.13
 
