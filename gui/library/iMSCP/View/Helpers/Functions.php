@@ -130,13 +130,20 @@ function gen_def_language($tpl, $userDefinedLanguage)
 	$htmlSelected = $cfg['HTML_SELECTED'];
 	$availableLanguages = i18n_getAvailableLanguages();
 
+	array_unshift(
+		$availableLanguages,
+		array(
+			'locale' => 'auto',
+			'language' => tr('Auto (Browser language)')
+		)
+	);
+
 	if(!empty($availableLanguages)) {
 		foreach($availableLanguages as $language) {
 			$tpl->assign(
 				array(
 					'LANG_VALUE' => $language['locale'],
-					'LANG_SELECTED' => ($language['locale'] == $userDefinedLanguage)
-						? $htmlSelected : '',
+					'LANG_SELECTED' => ($language['locale'] == $userDefinedLanguage) ? $htmlSelected : '',
 					'LANG_NAME' => tohtml($language['language'])
 				)
 			);
