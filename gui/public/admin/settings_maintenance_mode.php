@@ -82,7 +82,9 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 		'TR_MESSAGE' => tr('Message'),
-		'MESSAGE_VALUE' => $cfg->MAINTENANCEMODE_MESSAGE,
+		'MESSAGE_VALUE' => (isset($cfg['MAINTENANCEMODE_MESSAGE']))
+			? nl2br(tohtml($cfg['MAINTENANCEMODE_MESSAGE']))
+			: tr("We are sorry, but the system is currently under maintenance.\nPlease try again later."),
 		'SELECTED_ON' => $selected_on,
 		'SELECTED_OFF' => $selected_off,
 		'TR_ENABLED' => tr('Enabled'),
