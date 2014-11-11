@@ -468,7 +468,9 @@ class iMSCP_Initializer
 	protected function _initializeLocalization()
 	{
 		$locale = iMSCP_Registry::set(
-			'user_def_lang', isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : 'auto'
+			'user_def_lang', isset($_SESSION['user_def_lang'])
+				? $_SESSION['user_def_lang']
+				: ((isset($this->_config['USER_INITIAL_LANG'])) ? $this->_config['USER_INITIAL_LANG'] : 'auto')
 		);
 
 		$trFilePattern = $this->_config->GUI_ROOT_DIR . '/i18n/locales/%s/LC_MESSAGES/%s.mo';
