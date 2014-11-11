@@ -325,9 +325,12 @@ function i18n_changeDefaultLanguage()
  */
 function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan = Zend_Translate::LOCALE_FILENAME)
 {
-	$locale = iMSCP_Registry::get('user_def_lang');
+	/** @var Zend_Translate_Adapter $primaryTranslator */
+	$primaryTranslator = iMSCP_Registry::get('translator')->getAdapter();
 
-	$translator = new Zend_Translate(
+	$locale = $primaryTranslator->getLocale();
+
+	$pluginTranslator = new Zend_Translate(
 		array(
 			'adapter' => $type,
 			'content' => $dirpath,
@@ -338,8 +341,8 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
 		)
 	);
 
-	if($translator->getAdapter()->isAvailable($locale)) {
-		iMSCP_Registry::get('translator')->addTranslation(array('content' => $translator));
+	if($pluginTranslator->getAdapter()->isAvailable($locale)) {
+		$primaryTranslator->addTranslation(array('content' => $pluginTranslator));
 	}
 }
 
