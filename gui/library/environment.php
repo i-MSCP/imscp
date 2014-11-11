@@ -227,13 +227,5 @@ $config->set('PHPINI_OPEN_BASEDIR', '');
 // Initialize the application
 iMSCP_Initializer::run($config);
 
-// Please: Don't move this statement before the initialization process
-if(PHP_SAPI != 'cli' && !isset(iMSCP_Registry::get('dbConfig')->MAINTENANCEMODE_MESSAGE)) {
-    $config->set(
-		'MAINTENANCEMODE_MESSAGE',
-        tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.")
-	);
-}
-
 // Removing useless variable
 unset($config);
