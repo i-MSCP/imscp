@@ -43,13 +43,30 @@ function client_generatePage($tpl)
 	$query = "SELECT domain_created from admin where admin_id = ?";
 	$stmt = exec_query($query, (int)$_SESSION['user_id']);
 
+	switch($_SESSION['user_type']){
+		case "user"{
+			$trusertype = tr('user');
+			break;
+		}
+		case "reseller"{
+			$trusertype = tr('reseller')
+			break;
+		}
+		case "admin"{
+			$trusertype = tr('admin')
+			break;
+		}
+		default:
+			$trusertype tr('No known usertype');
+	}
+
 	$tpl->assign(
 		array(
 			'TR_ACCOUNT_SUMMARY' => tr('Account summary'),
 			'TR_USERNAME' => tr('Username'),
 			'USERNAME' => tohtml($_SESSION['user_logged']),
 			'TR_ACCOUNT_TYPE' => tr('Account type'),
-			'ACCOUNT_TYPE' => $_SESSION['user_type'],
+			'ACCOUNT_TYPE' => $trusertype,
 			'TR_REGISTRATION_DATE' => tr('Registration date'),
 			'REGISTRATION_DATE' => ($stmt->fields['domain_created'] != 0) ? date($cfg->DATE_FORMAT, $stmt->fields['domain_created']) : tr('Unknown')));
 }
