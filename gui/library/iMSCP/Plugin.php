@@ -176,6 +176,8 @@ abstract class iMSCP_Plugin
 	 */
 	final public function getConfigFromFile()
 	{
+		$this->isLoadedConfig = false;
+
 		$pluginName = $this->getName();
 
 		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . "/$pluginName/config.php";
@@ -234,6 +236,7 @@ abstract class iMSCP_Plugin
 
 		if ($stmt->rowCount()) {
 			$this->config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);
+			$this->isLoadedConfig = true;
 		} else {
 			$this->config = array();
 		}
