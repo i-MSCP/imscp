@@ -44,18 +44,15 @@ function client_generatePage($tpl)
 	$stmt = exec_query($query, (int)$_SESSION['user_id']);
 
 	switch($_SESSION['user_type']){
-		case "user"{
+		case "user":
 			$trusertype = tr('user');
 			break;
-		}
-		case "reseller"{
+		case "reseller":
 			$trusertype = tr('reseller')
 			break;
-		}
-		case "admin"{
+		case "admin":
 			$trusertype = tr('admin')
 			break;
-		}
 		default:
 			$trusertype tr('No known usertype');
 	}
