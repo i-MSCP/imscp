@@ -590,9 +590,11 @@ class iMSCP_Initializer
 		/** @var iMSCP_Plugin_Manager $pluginManager */
 		$pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager(PLUGINS_PATH));
 
-		foreach ($pluginManager->getPluginList() as $pluginName) {
-			if(! $pluginManager->loadPlugin($pluginName)) {
-				throw new iMSCP_Exception(sprintf('Unable to load plugin: %s', $pluginName));
+		foreach($pluginManager->getPluginList() as $pluginName) {
+			if(!$pluginManager->hasPluginError($pluginName)) {
+				if(!$pluginManager->loadPlugin($pluginName)) {
+					throw new iMSCP_Exception(sprintf('Unable to load plugin: %s', $pluginName));
+				}
 			}
 		}
 	}
