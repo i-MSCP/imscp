@@ -26,11 +26,11 @@
 					<td>
 						<div>
 							<div style="float:left;clear:left;width: 100px;text-align: left;font-weight: bold">
-								{TR_DB_USER}:
+								{TR_DB_USER}
 							</div>
 							<div style="display: inline-block;float: left">{DB_USER}</span></div>
 							<div style="float:left;clear: left;width: 100px;text-align: left;font-weight: bold">
-								{TR_DB_USER_HOST}<span style="" class="icon i_help" title="{TR_DB_USER_HOST_TOOLTIP}">&nbsp;</span>:
+								{TR_DB_USER_HOST}<span style="" class="icon i_help" title="{TR_DB_USER_HOST_TOOLTIP}">&nbsp;</span>
 							</div>
 							<div style="display: inline-block;float: left">{DB_USER_HOST}</div>
 						</div>
