@@ -27,6 +27,7 @@ i18n
 
 PLUGINS
 	Fixed: isLoadedConfig flag is never set ( iMSCP_Plugin )
+	Fixed: Plugins for which the plugin_error field is not NULL must not be loaded
 	Updated: Plugin API to version 0.2.13
 
 TICKETS
