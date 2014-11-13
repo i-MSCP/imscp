@@ -40,162 +40,238 @@
  */
 
 /**
+ * Send JSON response
+ *
+ * @param int $statusCode
+ * @param array $data
+ */
+function admin_sendJsonResponse($statusCode = 200, array $data = array())
+{
+	header('Cache-Control: no-cache, must-revalidate');
+	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header('Content-type: application/json');
+
+	switch($statusCode) {
+		case 202:
+			header('Status: 202 Accepted');
+			break;
+		case 400:
+			header('Status: 400 Bad Request');
+			break;
+		case 404:
+			header('Status: 404 Not Found');
+			break;
+		case 500:
+			header('Status: 500 Internal Server Error');
+			break;
+		case 501:
+			header('Status: 501 Not Implemented');
+			break;
+		default:
+			header('Status: 200 OK');
+	}
+
+	exit(json_encode($data));
+}
+
+/**
  * Clear logs
  *
  * @throws iMSCP_Exception
  * @return void
  */
-function admin_ClearLogs()
+function admin_clearLogs()
 {
-	switch ($_POST['uaction_clear']) {
+	switch($_POST['uaction_clear']) {
 		case 0:
 			$query = 'DELETE FROM log';
-			$msg = tr('%s deleted the full admin log.', $_SESSION['user_logged']);
+			$msg = sprintf('%s deleted the full admin log.', $_SESSION['user_logged']);
 			break;
 		case 2:
 			$query = 'DELETE FROM log WHERE DATE_SUB(CURDATE(), INTERVAL 14 DAY) >= log_time';
-			$msg = tr('%s deleted the admin log older than two weeks!', $_SESSION['user_logged']);
+			$msg = sprintf('%s deleted the admin log older than two weeks!', $_SESSION['user_logged']);
 			break;
 		case 4:
 			$query = 'DELETE FROM log WHERE DATE_SUB(CURDATE(), INTERVAL 1 MONTH) >= log_time';
-			$msg = tr('%s deleted the admin log older than one month.', $_SESSION['user_logged']);
+			$msg = sprintf('%s deleted the admin log older than one month.', $_SESSION['user_logged']);
 			break;
 		case 12:
 			$query = 'DELETE FROM log WHERE DATE_SUB(CURDATE(), INTERVAL 3 MONTH) >= log_time';
-			$msg = tr('%s deleted the admin log older than three months.', $_SESSION['user_logged']);
+			$msg = sprintf('%s deleted the admin log older than three months.', $_SESSION['user_logged']);
 			break;
 
 		case 26:
 			$query = 'DELETE FROM log WHERE DATE_SUB(CURDATE(), INTERVAL 6 MONTH) >= log_time';
-			$msg = tr('%s deleted the admin log older than six months.', $_SESSION['user_logged']);
+			$msg = sprintf('%s deleted the admin log older than six months.', $_SESSION['user_logged']);
 			break;
 		case 52;
 			$query = 'DELETE FROM log WHERE DATE_SUB(CURDATE(), INTERVAL 1 YEAR) >= log_time';
-			$msg = tr('%s deleted the admin log older than one year.', $_SESSION['user_logged']);
+			$msg = sprintf('%s deleted the admin log older than one year.', $_SESSION['user_logged']);
 			break;
 		default:
-			return;
+			admin_sendJsonResponse(400, array('message' => tr('Bad request.', true)));
+			exit;
 	}
 
-	$stmt = execute_query($query);
+	try {
+		$stmt = execute_query($query);
 
-	if ($stmt->rowCount()) {
-		set_page_message(tr('Log entries successfully deleted.'), 'success');
-		write_log($msg, E_USER_NOTICE);
-	} else {
-		set_page_message(tr('Nothing has been deleted.'), 'info');
+		if($stmt->rowCount()) {
+			write_log($msg, E_USER_NOTICE);
+			admin_sendJsonResponse(200, array('message' => tr('Log entries successfully deleted.', true)));
+		} else {
+			admin_sendJsonResponse(202, array('message' => tr('Nothing has been deleted.', true)));
+		}
+	} catch(iMSCP_Exception_Database $e) {
+		admin_sendJsonResponse(500, array('message' => tr('An unexpected error occured: %s', true, $e->getMessage())));
 	}
 }
 
 /**
- * Generate page data
+ * Get logs
  *
- * @param iMSCP_pTemplate $tpl
- * @return void
+ * @throws iMSCP_Exception
  */
-function admin_generatePageData($tpl)
+function admin_getLogs()
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	try {
+		// Filterable / orderable columns
+		$columns = array('log_time', 'log_message');
 
-	$startIndex = 0;
-	$rowPerPage = $cfg['DOMAIN_ROWS_PER_PAGE'];
+		$nbColumns = count($columns);
 
-	if (isset($_GET['psi']) && is_numeric($_GET['psi'])) {
-		$startIndex = intval($_GET['psi']);
-	}
+		$indexColumn = 'log_id';
 
-	$stmt = exec_query('SELECT COUNT(log_id) cnt FROM log');
-	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+		/* DB table to use */
+		$table = 'log';
 
-	if (!$row['cnt']) {
-		$tpl->assign('LOGS', '');
-		set_page_message(tr('No logs found.'), 'info');
-	} else {
-		$stmt = execute_query(
-			"
+		/* Paging */
+		$limit = '';
+
+		if(isset($_GET['iDisplayStart']) && isset($_GET['iDisplayLength']) && $_GET['iDisplayLength'] !== '-1') {
+			$limit = 'LIMIT ' . intval($_GET['iDisplayStart']) . ', ' . intval($_GET['iDisplayLength']);
+		}
+
+		/* Ordering */
+		$order = '';
+
+		if(isset($_GET['iSortCol_0']) && isset($_GET['iSortingCols'])) {
+			$order = 'ORDER BY ';
+
+			for($i = 0; $i < intval($_GET['iSortingCols']); $i++) {
+				if($_GET['bSortable_' . intval($_GET['iSortCol_' . $i])] === 'true') {
+					$sortDir = (
+						isset($_GET['sSortDir_' . $i]) && in_array($_GET['sSortDir_' . $i], array('asc', 'desc'))
+					) ? $_GET['sSortDir_' . $i] : 'asc';
+
+					$order .= $columns[intval($_GET['iSortCol_' . $i])] . ' ' . $sortDir . ', ';
+				}
+			}
+
+			$order = substr_replace($order, '', -2);
+
+			if($order == 'ORDER BY') {
+				$order = '';
+			}
+		}
+
+		/* Filtering */
+		$where = '';
+
+		if($_GET['sSearch'] != '') {
+			$where .= 'WHERE (';
+
+			for($i = 0; $i < $nbColumns; $i++) {
+				$where .= $columns[$i] . ' LIKE ' . quoteValue('%' . $_GET['sSearch'] . '%') . ' OR ';
+			}
+
+			$where = substr_replace($where, '', -3);
+			$where .= ')';
+		}
+
+		/* Individual column filtering */
+		for($i = 0; $i < $nbColumns; $i++) {
+			if(isset($_GET['bSearchable_' . $i]) && $_GET['bSearchable_' . $i] === 'true' && $_GET['sSearch_' . $i] !== '') {
+				$where .= "AND {$columns[$i]} LIKE " . quoteValue('%' . $_GET['sSearch_' . $i] . '%');
+			}
+		}
+
+		/* Get data to display */
+		$rResult = execute_query(
+			'
 				SELECT
-					DATE_FORMAT(log_time, '%Y-%m-%d %H:%i') date, log_message
+					SQL_CALC_FOUND_ROWS ' . str_replace(' , ', ' ', implode(', ', $columns)) . "
 				FROM
-					log
-				ORDER BY
-					log_time DESC
-				LIMIT
-					$startIndex, $rowPerPage
+					$table
+				$where
+				$order
+				$limit
 			"
 		);
 
-		if (!$stmt->rowCount()) {
-			$tpl->assign(
-				array(
-					'LOG_ROW' => '',
-					'PAG_MESSAGE' => tr('No logs found.'),
-					'USERS_LIST' => '',
-					'SCROLL_PREV' => '',
-					'SCROLL_NEXT' => '',
-					'CLEAR_LOG' => ''
-				)
-			);
-		} else {
-			$prevSi = $startIndex - $rowPerPage;
+		/* Data set length after filtering */
+		$resultFilterTotal = execute_query('SELECT FOUND_ROWS()');
+		$resultFilterTotal = $resultFilterTotal->fetchRow(\PDO::FETCH_NUM);
+		$filteredTotal = $resultFilterTotal[0];
 
-			if ($startIndex == 0) {
-				$tpl->assign('SCROLL_PREV', '');
-			} else {
-				$tpl->assign(
-					array(
-						'SCROLL_PREV_GRAY' => '',
-						'PREV_PSI' => $prevSi
-					)
-				);
-			}
+		/* Total data set length */
+		$resultTotal = exec_query("SELECT COUNT($indexColumn) FROM $table");
+		$resultTotal = $resultTotal->fetchRow(\PDO::FETCH_NUM);
+		$total = $resultTotal[0];
 
-			$nextSi = $startIndex + $rowPerPage;
+		/* Output */
+		$output = array(
+			'sEcho' => intval($_GET['sEcho']),
+			'iTotalRecords' => $total,
+			'iTotalDisplayRecords' => $filteredTotal,
+			'aaData' => array()
+		);
 
-			if ($nextSi + 1 > $row['cnt']) {
-				$tpl->assign('SCROLL_NEXT', '');
-			} else {
-				$tpl->assign(
-					array(
-						'SCROLL_NEXT_GRAY' => '',
-						'NEXT_PSI' => $nextSi
-					)
-				);
-			}
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+		$dateFormat = $cfg['DATE_FORMAT'] . ' H:i:s';
 
-			$dateFormat = $cfg['DATE_FORMAT'] . ' H:i';
+		while($data = $rResult->fetchRow(PDO::FETCH_ASSOC)) {
+			$row = array();
 
-			while ($row = $stmt->fetchRow(PDo::FETCH_ASSOC)) {
-				$logMessage = $row['log_message'];
-				$replaces = array(
-					'/\b(deactivated|delete[sd]?|deletion|deactivation|failed)\b/i' => '<strong style="color:#FF0000">\\1</strong>',
-					'/\b(remove[sd]?)\b/i' => '<strong style="color:#FF0000">\\1</strong>',
-					'/\b(unable)\b/i' => ' <strong style="color:#FF0000">\\1</strong>',
-					'/\b(activated|activation|addition|add(s|ed)?|switched)\b/i' => '<strong style="color:#33CC66">\\1</strong>',
-					'/\b(created|ordered)\b/i' => '<strong style="color:#3300FF">\\1</strong>',
-					'/\b(update[sd]?)\b/i' => '<strong style="color:#3300FF">\\1</strong>',
-					'/\b(edit(s|ed)?)\b/i' => '<strong style="color:#33CC66">\\1</strong>',
-					'/\b(unknown)\b/i' => '<strong style="color:#CC00FF">\\1</strong>',
-					'/\b(logged)\b/i' => '<strong style="color:#336600">\\1</strong>',
-					'/\b(Warning[\!]?)\b/i' => '<strong style="color:#FF0000">\\1</strong>',
-				);
+			for($i = 0; $i < $nbColumns; $i++) {
+				if($columns[$i] == 'log_time') {
+					$row[$columns[$i]] = date($dateFormat, strtotime($data[$columns[$i]]));
+				} else {
+					$replaces = array(
+						'/\b(deactivated|delete[sd]?|deletion|deactivation|failed)\b/i' => '<strong style="color:#FF0000">\\1</strong>',
+						'/\b(remove[sd]?)\b/i' => '<strong style="color:#FF0000">\\1</strong>',
+						'/\b(unable)\b/i' => ' <strong style="color:#FF0000">\\1</strong>',
+						'/\b(activated|activation|addition|add(s|ed)?|switched)\b/i' => '<strong style="color:#33CC66">\\1</strong>',
+						'/\b(created|ordered)\b/i' => '<strong style="color:#3300FF">\\1</strong>',
+						'/\b(update[sd]?)\b/i' => '<strong style="color:#3300FF">\\1</strong>',
+						'/\b(edit(s|ed)?)\b/i' => '<strong style="color:#33CC66">\\1</strong>',
+						'/\b(unknown)\b/i' => '<strong style="color:#CC00FF">\\1</strong>',
+						'/\b(logged)\b/i' => '<strong style="color:#336600">\\1</strong>',
+						'/\b(Warning[\!]?)\b/i' => '<strong style="color:#FF0000">\\1</strong>',
+					);
 
-				foreach ($replaces as $pattern => $replacement) {
-					$logMessage = preg_replace($pattern, $replacement, $logMessage);
+					foreach($replaces as $pattern => $replacement) {
+						$data[$columns[$i]] = preg_replace($pattern, $replacement, $data[$columns[$i]]);
+					}
+
+					$row[$columns[$i]] = $data[$columns[$i]];
 				}
-
-				$tpl->assign(
-					array(
-						'MESSAGE' => $logMessage,
-						'DATE' => tohtml(date($dateFormat, strtotime($stmt->fields['date']))
-						)
-					)
-				);
-
-				$tpl->parse('LOG_ROW', '.log_row');
 			}
+
+			$output['aaData'][] = $row;
 		}
+
+		admin_sendJsonResponse(200, $output);
+	} catch(iMSCP_Exception_Database $e) {
+		write_log(sprintf('Unable to get logs: %s', $e->getMessage()), E_USER_ERROR);
+
+		admin_sendJsonResponse(
+			500, array('message' => tr('An unexpected error occurred: %s.', true, $e->getMessage()))
+		);
 	}
+
+	admin_sendJsonResponse(400, array('message' => tr('Bad request.', true)));
 }
 
 /***********************************************************************************************************************
@@ -209,31 +285,34 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 
 check_login('admin');
 
+if(isset($_REQUEST['action'])) {
+	if(is_xhr()) {
+		$action = clean_input($_REQUEST['action']);
+
+		switch($action) {
+			case 'get_logs':
+				admin_getLogs();
+				break;
+			case 'clear_logs':
+				admin_clearLogs();
+				break;
+			default:
+				admin_sendJsonResponse(400, array('message' => tr('Bad request.', true)));
+		}
+	}
+
+	showBadRequestErrorPage();
+}
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
-
-// Dispatch the request
-if (isset($_POST['uaction']) && $_POST['uaction'] == 'clear_log') {
-	if (isset($_POST['uaction_clear']) && in_array($_POST['uaction_clear'], array(0, 2, 4, 12, 26, 52))) {
-		admin_ClearLogs();
-	} else {
-		showBadRequestErrorPage();
-	}
-}
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/admin_log.tpl',
-		'page_message' => 'layout',
-		'logs' => 'page',
-		'clear_log' => 'logs',
-		'log_row' => 'logs',
-		'scroll_prev_gray' => 'logs',
-		'scroll_prev' => 'logs',
-		'scroll_next_gray' => 'logs',
-		'scroll_next' => 'logs'
+		'page_message' => 'layout'
 	)
 );
 
@@ -241,24 +320,25 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / General / Admin Log'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_ADMIN_LOG' => tr('Admin Log'),
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'TR_CLEAR_LOG' => tr('Clear log'),
+		'ROWS_PER_PAGE' => json_encode($cfg['DOMAIN_ROWS_PER_PAGE']),
 		'TR_DATE' => tr('Date'),
 		'TR_MESSAGE' => tr('Message'),
-		'TR_NEXT' => tr('Next'),
-		'TR_PREVIOUS' => tr('Previous'),
 		'TR_CLEAR_LOG_MESSAGE' => tr('Delete from log:'),
 		'TR_CLEAR_LOG_EVERYTHING' => tr('everything'),
 		'TR_CLEAR_LOG_LAST2' => tr('older than 2 weeks'),
 		'TR_CLEAR_LOG_LAST4' => tr('older than 1 month'),
 		'TR_CLEAR_LOG_LAST12' => tr('older than 3 months'),
 		'TR_CLEAR_LOG_LAST26' => tr('older than 6 months'),
-		'TR_CLEAR_LOG_LAST52' => tr('older than 12 months')
+		'TR_CLEAR_LOG_LAST52' => tr('older than 12 months'),
+
+		'TR_TIMEOUT_ERROR' => json_encode(tr('Request Timeout: The server took too long to send the data.', true)),
+		'TR_UNEXPECTED_ERROR' => json_encode(tr('An unexpected error occurred.', true))
 	)
 );
 
 generateNavigation($tpl);
-admin_generatePageData($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
