@@ -11,7 +11,6 @@
 	</select>
 	<input name="submit" type="submit" value="{TR_CLEAR_LOG}"/>
 </form>
-
 <table class="datatable firstColFixed">
 	<thead>
 	<tr>
@@ -27,7 +26,7 @@
 	</tfoot>
 	<tbody>
 	<tr>
-		<td colspan="2">Loading...</td>
+		<td colspan="2">{TR_LOADING_DATA}</td>
 	</tr>
 	</tbody>
 </table>

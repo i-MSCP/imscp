@@ -332,7 +332,7 @@ $tpl->assign(
 		'TR_CLEAR_LOG_LAST12' => tr('older than 3 months'),
 		'TR_CLEAR_LOG_LAST26' => tr('older than 6 months'),
 		'TR_CLEAR_LOG_LAST52' => tr('older than 12 months'),
-
+		'TR_LOADING_DATA' => tr('Loading data...'),
 		'TR_TIMEOUT_ERROR' => json_encode(tr('Request Timeout: The server took too long to send the data.', true)),
 		'TR_UNEXPECTED_ERROR' => json_encode(tr('An unexpected error occurred.', true))
 	)
