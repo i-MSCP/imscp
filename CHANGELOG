@@ -25,6 +25,9 @@ GUI
 i18n
 	Added gui/library/resources/i18n/iMSCP.php file for indirect translation strings
 
+INSTALLER
+	Fixed: The installer hangs when a new conffile is provided by a Debian package
+
 PLUGINS
 	Fixed: isLoadedConfig flag is never set ( iMSCP_Plugin )
 	Fixed: Plugins for which the plugin_error field is not NULL must not be loaded
