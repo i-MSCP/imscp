@@ -205,7 +205,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 
 	if (empty($pluginList)) {
 		$tpl->assign('PLUGINS_BLOCK', '');
-		set_page_message(tr('Plugin list is empty.'), 'info');
+		set_page_message(tr('Plugin list is empty.'), 'static_info');
 	} else {
 		natsort($pluginList);
 		$cacheFile = PERSISTENT_PATH . '/protected_plugins.php';
