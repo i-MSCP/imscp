@@ -86,7 +86,8 @@ sub installPreRequiredPackages
 
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$command -y install @{$self->{'preRequiredPackages'}} --no-install-recommends",
+		"$command -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' --auto-remove --purge " .
+			"--no-install-recommends install @{$self->{'preRequiredPackages'}}",
 		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
@@ -191,13 +192,14 @@ EOF
 	$rs = $file->mode(0755);
 	return $rs if $rs;
 
-	if($main::forcereinstall) {
-		unshift @command, 'UCF_FORCE_CONFFMISS=1 '; # Force installation of missing conffiles which are managed by UCF
+	unshift @command, 'UCF_FORCE_CONFFMISS=1 '; # Force installation of missing conffiles which are managed by UCF
 
-		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o Dpkg::Options::='--force-confask' " .
-			"--reinstall install @{$self->{'packagesToInstall'}} --auto-remove --purge --force-yes";
+	if($main::forcereinstall) {
+		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
+			"--reinstall --auto-remove --purge install @{$self->{'packagesToInstall'}}";
 	} else {
-		push @command, "apt-get -y install @{$self->{'packagesToInstall'}} --auto-remove --purge --force-yes";
+		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
+			"--auto-remove --purge install @{$self->{'packagesToInstall'}}";
 	}
 
 	my ($stdout, $stderr);
