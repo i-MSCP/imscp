@@ -57,6 +57,8 @@ silent(1);
 
 iMSCP::Bootstrapper->getInstance()->boot({ 'norequirements' => 'yes' });
 
+my $dbh = iMSCP::Database->factory()->getRawDb();
+
 sub _process
 {
 	my ($moduleName, $sql, $ipModule) = @_;
@@ -69,20 +71,18 @@ sub _process
 		print("Processing $moduleName items.\n");
 	}
 
-	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
+	my $rows = $dbh->selectall_arrayref($sql, { Slice => { } });
+	if(!defined $rows || $dbh->err) {
+		error($dbh->errstr);
 		return 1;
 	}
 
-	if(%{$rdata}) {
+	if(@{$rows}) {
 		my $i = 1;
-		my $totalItems = scalar keys %{$rdata};
+		my $totalItems = scalar @{$rows};
 
-		for (keys %{$rdata}) {
-			my $id = $rdata->{$_}->{'id'};
-			my $name = $rdata->{$_}->{'name'};
-			my $status = $rdata->{$_}->{'status'};
+		for my $row(@{$rows}) {
+			my ($id, $name, $status) = ($row->{'id'}, $row->{'name'}, $row->{'status'});
 
 			$$ipModule++ if $moduleName ~~ ['Domain', 'Subdomain', 'Alias', 'SubAlias'];
 
@@ -146,6 +146,8 @@ sub run
 				plugin_error IS NULL
 			AND
 				plugin_backend = 'yes'
+			ORDER BY
+				plugin_priority DESC
 		"
 	);
 
