@@ -78,7 +78,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 			";
 			$res = exec_query($delete, array('todelete', $_GET['id'], $dmn_id));
 			send_request();
-			set_page_message(tr('Software scheduled for deletion.'), 'success');
+			set_page_message(tr('Software successfully scheduled for deletion.'), 'success');
 		}
 			redirectTo('software.php');
 	}
