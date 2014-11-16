@@ -85,9 +85,12 @@ function _client_pmaCreateCookies($cookies)
  */
 function _client_pmaSetLanguage($location)
 {
+	/** @var Zend_Translate_Adapter $primaryTranslator */
+	$translator = iMSCP_Registry::get('translator')->getAdapter();
+
 	$uriComponents = parse_url($location);
 	parse_str($uriComponents['query'], $queryParts);
-	$queryParts['lang'] = substr($_SESSION['user_def_lang'], 0, 2);
+	$queryParts['lang'] = substr($translator->getLocale(), 0, 2);
 	$uriComponents['query'] = http_build_query($queryParts);
 
 	return http_build_url($location, $uriComponents);
