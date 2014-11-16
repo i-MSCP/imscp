@@ -69,7 +69,7 @@ function admin_generatePage($tpl, $resellerId)
 		}
 	} else {
 		$tpl->assign('DOMAIN_STATISTICS_ENTRIES_BLOCK', '');
-		set_page_message(tr('No domain statistics to display for this reseller.'), 'info');
+		set_page_message(tr('No domain statistics to display for this reseller.'), 'static_info');
 	}
 }
 

@@ -134,9 +134,9 @@ function admin_generateCustomersTable($tpl)
 
 	if (!$stmt->rowCount()) {
 		if ($resellerId) {
-			set_page_message(tr('No users found for this reseller.'), 'info');
+			set_page_message(tr('No users found for this reseller.'), 'static_info');
 		} else {
-			set_page_message(tr('No unassigned users were found in the database.'), 'info');
+			set_page_message(tr('No unassigned users were found in the database.'), 'static_info');
 		}
 		
 		$tpl->assign('RESELLER_ITEM', '');

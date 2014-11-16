@@ -162,7 +162,7 @@ if (!empty($antiRootkitLogFiles)) {
 	$tpl->assign('NB_LOG', sizeof($antiRootkitLogFiles));
 } else {
 	$tpl->assign('ANTIROOTKITS_LOG', '');
-	set_page_message(tr('No anti-rootkits logs'), 'info');
+	set_page_message(tr('No anti-rootkits logs'), 'static_info');
 }
 
 generateNavigation($tpl);

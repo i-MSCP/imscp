@@ -53,9 +53,12 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => 'client/language.tpl',
-		 'page_message' => 'layout',
-		 'def_language' => 'page'));
+		'page' => 'client/language.tpl',
+		'page_message' => 'layout',
+		'languages_available' => 'page',
+		'def_language' => 'languages_available'
+	)
+);
 
 // Getting current customer language
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {

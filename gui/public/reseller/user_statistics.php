@@ -121,7 +121,7 @@ function reseller_generatePage($tpl)
 		}
 	} else {
 		$tpl->assign('DOMAIN_STATISTICS_ENTRIES_BLOCK', '');
-		set_page_message(tr('No domain statistics to display.'), 'info');
+		set_page_message(tr('No domain statistics to display.'), 'static_info');
 	}
 }
 
