@@ -90,15 +90,15 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
-	 * Make new event availables
-	 *
-	 * @param string $type
+	 * Add events
+	 * @param $type
 	 * @param array $events
+	 * @return iMSCP_Events_Aggregator
 	 */
 	public function addEvents($type, array $events = array())
 	{
 		if (isset($this->events[$type])) {
-			$this->events[$type] += $events;
+			$this->events[$type] = array_merge($this->events[$type], $events);
 		} else {
 			$this->events[$type] = $events;
 			$this->eventManagers[$type] = new iMSCP_Events_Manager();
@@ -167,9 +167,9 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
-	 * Retrieve all registered events
+	 * Get all known events
 	 *
-	 * @param string $type Event type
+	 * @param string $type Events type
 	 * @return array
 	 */
 	public function getEvents($type = null)
@@ -177,7 +177,13 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 		$type = (string) $type;
 
 		if (!$type) {
-			return $this->events['application'];
+			$events = array();
+
+			foreach($this->events as $type) {
+				$events = array_merge($events, $type);
+			}
+
+			return $events;
 		} elseif(isset($this->events[$type])) {
 			return $this->events[$type];
 		} else {
