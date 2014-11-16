@@ -82,7 +82,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		";
 		$res = exec_query($delete, array($_GET['id'], $_SESSION['user_id']));
 
-		set_page_message(tr('Software scheduled for deletion.'), 'success');
+		set_page_message(tr('Software successfully scheduled for deletion.'), 'success');
 		redirectTo('software_upload.php');
 	}
 } else {
