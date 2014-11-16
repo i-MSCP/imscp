@@ -66,7 +66,7 @@ function admin_generateSupportQuestionsMessage()
 
 	if ($nbQuestions) {
 		set_page_message(
-			tr('You have received %s new support ticket(s).', '<strong>' . $nbQuestions . '</strong>'), 'info'
+			tr('You have received %s new support ticket(s).', '<strong>' . $nbQuestions . '</strong>'), 'static_info'
 		);
 	}
 }
@@ -85,7 +85,7 @@ function admin_generateUpdateMessages()
 
 	if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
 		set_page_message(
-			'<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>', 'info'
+			'<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>', 'static_info'
 		);
 	}
 
@@ -94,7 +94,7 @@ function admin_generateUpdateMessages()
 
 		if ($updateVersion->isAvailableUpdate()) {
 			set_page_message(
-				'<a href="imscp_updates.php" class="link">' . tr('A new i-MSCP version is available') . '</a>', 'info'
+				'<a href="imscp_updates.php" class="link">' . tr('A new i-MSCP version is available') . '</a>', 'static_info'
 			);
 		} elseif (($error = $updateVersion->getError())) {
 			set_page_message($error, 'error');
@@ -195,7 +195,7 @@ function admin_generateServerTrafficInfo($tpl)
 			// In any case, display a warning if traffic limit is reached
 			($trafficLimitBytes && $trafficUsageBytes > $trafficLimitBytes)
 		) {
-			set_page_message(tr('You are exceeding the monthly server traffic limit.'), 'warning');
+			set_page_message(tr('You are exceeding the monthly server traffic limit.'), 'static_warning');
 		}
 	}
 

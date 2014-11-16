@@ -257,7 +257,7 @@ function admin_showServices($tpl)
 
 	if(empty($services)) {
 		$tpl->assign('SERVICE_PORTS', '');
-		set_page_message(tr('You have not service ports defined.'), 'info');
+		set_page_message(tr('You have not service ports defined.'), 'static_info');
 	} else {
 		sort($services);
 

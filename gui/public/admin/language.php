@@ -55,8 +55,10 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/language.tpl',
 		'page_message' => 'layout',
-		'def_language' => 'page',
-		'logged_from' => 'page'));
+		'languages_available' => 'page',
+		'def_language' => 'languages_available'
+	)
+);
 
 // Getting current admin language
 $adminCurrentLanguage = $_SESSION['user_def_lang'];

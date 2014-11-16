@@ -55,8 +55,10 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/language.tpl',
 		'page_message' => 'layout',
-		'def_language' => 'page',
-		'logged_from' => 'page'));
+		'languages_available' => 'page',
+		'def_language' => 'languages_available'
+	)
+);
 
 // Getting current reseller language
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
