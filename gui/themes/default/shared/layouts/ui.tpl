@@ -21,7 +21,7 @@ $(document).ready(function () {
 	$.fx.speeds._default = 500;
 
 	$(".body").on("message_timeout", ".success,.info,.warning,.error", function() {
-		$(this).hide().slideDown('fast').delay(10000).slideUp("normal", function () { $(this).remove(); });
+		$(this).hide().slideDown('fast').delay(5000).slideUp("normal", function () { $(this).remove(); });
 	});
 
 	$(".success,.info,.warning,.error").trigger("message_timeout");
