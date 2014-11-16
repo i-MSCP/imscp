@@ -62,7 +62,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 193;
+	protected $lastUpdate = 194;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3064,6 +3064,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$this->addIndex('mail_users', 'mail_addr', 'index'),
 			$this->addIndex('mail_users', 'status', 'index'),
 			$this->addIndex('mail_users', 'po_active', 'index')
+		);
+	}
+
+	/**
+	 * Added plugin_priority column in plugin table
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function r194()
+	{
+		return array(
+			$this->addColumn('plugin', 'plugin_priority', "INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER plugin_config"),
+			$this->addIndex('plugin', 'plugin_priority', 'INDEX', 'plugin_priority')
 		);
 	}
 }
