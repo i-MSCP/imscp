@@ -57,7 +57,7 @@ function admin_generatePage($tpl)
 		}
 	} else {
 		$tpl->assign('RESELLER_STATISTICS_ENTRIES_BLOCK', '');
-		set_page_message('{TR_NO_RESELLER_STATISTICS}', 'info');
+		set_page_message('{TR_NO_RESELLER_STATISTICS}', 'static_info');
 	}
 }
 

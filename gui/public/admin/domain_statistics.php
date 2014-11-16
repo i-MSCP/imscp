@@ -144,7 +144,7 @@ function admin_generatePage($tpl, $domainId, $month, $year)
 			)
 		);
 	} else {
-		set_page_message(tr('No statistics found for the given period. Try another period.'), 'info');
+		set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
 		$tpl->assign('DOMAIN_STATISTICS_BLOCK', '');
 	}
 }

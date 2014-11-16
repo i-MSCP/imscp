@@ -83,7 +83,7 @@ function admin_generatePage($tpl)
 		} elseif ($updateVersion->getError()) {
 			set_page_message($updateVersion, 'error');
 		} else {
-			set_page_message(tr('No update available'), 'info');
+			set_page_message(tr('No update available'), 'static_info');
 		}
 	}
 

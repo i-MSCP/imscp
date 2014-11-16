@@ -1,4 +1,5 @@
 
+<!-- BDP: languages_available -->
 <form action="language.php" method="post" id="client_language_frm">
 	<table class="firstColFixed">
 		<thead>
@@ -24,3 +25,4 @@
 		<input type="submit" name="submit" value="{TR_UPDATE}"/>
 	</div>
 </form>
+<!-- EDP: languages_available -->

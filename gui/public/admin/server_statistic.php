@@ -152,7 +152,7 @@ function admin_generatePage($tpl, $month, $year)
 			)
 		);
 	} else { // no statistic available for the given period
-		set_page_message(tr('No statistics found for the given period. Try another period.'), 'info');
+		set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
 		$tpl->assign('SERVER_STATISTICS_BLOCK', '');
 	}
 }

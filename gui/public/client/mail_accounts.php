@@ -287,11 +287,11 @@ function client_generatePage($tpl)
 			$tpl->assign('TOTAL_MAIL_ACCOUNTS', $totalMails);
 		} else {
 			$tpl->assign('MAIL_ITEMS', '');
-			set_page_message(tr('Mail accounts list is empty.'), 'info');
+			set_page_message(tr('Mail accounts list is empty.'), 'static_info');
 		}
 	} else {
 		$tpl->assign('MAIL_FEATURE', '');
-		set_page_message(tr('Mail feature is disabled.'), 'info');
+		set_page_message(tr('Mail feature is disabled.'), 'static_info');
 	}
 }
 

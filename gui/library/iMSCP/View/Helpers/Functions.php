@@ -152,7 +152,7 @@ function gen_def_language($tpl, $userDefinedLanguage)
 		}
 	} else {
 		$tpl->assign('LANGUAGES_AVAILABLE', '');
-		set_page_message(tr('No languages found.'), 'warning');
+		set_page_message(tr('No languages found.'), 'static_warning');
 	}
 }
 
