@@ -1244,6 +1244,7 @@ class iMSCP_Plugin_Manager
 							'type' => $pluginInstance->getType(),
 							'info' => json_encode($pluginInfo),
 							'config' => json_encode($pluginConfig),
+							'priority' => (isset($pluginInfo['priority'])) ? $pluginInfo['priority'] : 0,
 							'status' => $pluginStatus,
 							'backend' => (
 								file_exists($fileInfo->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no'
@@ -1368,9 +1369,10 @@ class iMSCP_Plugin_Manager
 			exec_query(
 				'
 					INSERT INTO plugin (
-						plugin_name, plugin_type, plugin_info, plugin_config, plugin_status, plugin_backend
+						plugin_name, plugin_type, plugin_info, plugin_config, plugin_priority, plugin_status,
+						plugin_backend
 					) VALUE (
-						:name, :type, :info, :config, :status, :backend
+						:name, :type, :info, :config, :priority, :status, :backend
 					)
 				',
 				$pluginData
@@ -1384,8 +1386,8 @@ class iMSCP_Plugin_Manager
 						plugin_name = ?
 				',
 				array(
-					$pluginData['info'], $pluginData['config'], $pluginData['status'], $pluginData['backend'],
-					$pluginData['name']
+					$pluginData['info'], $pluginData['config'], $pluginData['prirotiy'], $pluginData['status'],
+					$pluginData['backend'], $pluginData['name']
 				)
 			);
 		}

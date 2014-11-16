@@ -66,7 +66,7 @@ OPTIONS:
 
 iMSCP::Bootstrapper->getInstance()->boot({ 'norequirements' => 'yes' });
 
-my $db = iMSCP::Database->factory();
+my $dbh = iMSCP::Database->factory()->getRawDb();
 
 sub _process
 {
@@ -79,19 +79,18 @@ sub _process
 		debug("Processing $moduleName items.");
 	}
 
-	# Get arrayref instead of hashref
-	$db->set('FETCH_MODE', 'arrayref');
-	my $rdata = $db->doQuery({ }, $sql); # Get arrayref of hashref
-
-	unless(ref $rdata eq 'ARRAY') {
-		error($rdata);
+	my $rows = $dbh->selectall_arrayref($sql, { Slice => { } });
+	if(!defined $rows || $dbh->err) {
+		error($dbh->errstr);
 		return 1;
-	} elsif(@{$rdata}) {
-		my $i = 1;
-		my $totalItems = scalar @{$rdata};
+	}
 
-		for (@{$rdata}) {
-			my ($id, $name, $status) = ($_->{'id'}, $_->{'name'}, $_->{'status'});
+	if(@{$rows}) {
+		my $i = 1;
+		my $totalItems = scalar @{$rows};
+
+		for my $row(@{$rows}) {
+			my ($id, $name, $status) = ($row->{'id'}, $row->{'name'}, $row->{'status'});
 
 			$$ipModule++ if $moduleName ~~ ['Domain', 'Subdomain', 'Alias', 'SubAlias'];
 
@@ -148,7 +147,7 @@ sub run
 			AND
 				plugin_backend = 'yes'
 			ORDER BY
-				plugin_id ASC
+				plugin_priority DESC
 		"
 	);
 
