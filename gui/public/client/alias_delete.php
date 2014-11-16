@@ -53,7 +53,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Domain alias you are trying to remove has subdomains. Remove them first.'), 'error'
+				tr('Domain alias you are trying to remove has subdomains. Please remove them first.'), 'error'
 			);
 			$ret = true;
 		}
@@ -64,7 +64,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Domain alias you are trying to remove has custom DNS records. Remove them first.'), 'error'
+				tr('Domain alias you are trying to remove has custom DNS records. Please remove them first.'), 'error'
 			);
 			$ret = true;
 		}
@@ -75,7 +75,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Domain alias you are trying to remove has Ftp accounts. Remove them first.'), 'error'
+				tr('Domain alias you are trying to remove has FTP accounts. Please remove them first.'), 'error'
 			);
 			$ret = true;
 		}
@@ -98,7 +98,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Domain alias you are trying to remove has email accounts. Remove them first.'), 'error'
+				tr('Domain alias you are trying to remove has email accounts. Please remove them first.'), 'error'
 			);
 			$ret = true;
 		}
