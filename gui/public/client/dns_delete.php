@@ -79,7 +79,7 @@ if (isset($_GET['id'])) {
 
 		send_request();
 		write_log($_SESSION['user_logged'] . ": deleted custom DNS record with ID $dnsRecordId", E_USER_NOTICE);
-		set_page_message(tr('Custom DNS record scheduled for deletion.'), 'success');
+		set_page_message(tr('Custom DNS record successfully scheduled for deletion.'), 'success');
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
 		throw new $e;
