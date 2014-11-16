@@ -97,7 +97,7 @@ if (isset($_POST['details']) && !empty($_POST['details'])) {
 
 if (isset($_SESSION['user_added'])) {
 	unset($_SESSION['user_added']);
-	set_page_message(tr('Customer scheduled for addition.'), 'success');
+	set_page_message(tr('Customer successfully scheduled for addition.'), 'success');
 } elseif (isset($_SESSION['reseller_added'])) {
 	unset($_SESSION['reseller_added']);
 	set_page_message(tr('Reseller successfully added.'), 'success');
@@ -109,10 +109,10 @@ if (isset($_SESSION['user_added'])) {
 	set_page_message(tr('Customer successfully scheduled for deletion.'), 'success');
 } elseif (isset($_SESSION['email_updated'])) {
 	unset($_SESSION['email_updated']);
-	set_page_message(tr('Email updated.'), 'success');
+	set_page_message(tr('Email successfully  updated.'), 'success');
 } elseif (isset($_SESSION['hdomain'])) {
 	unset($_SESSION['hdomain']);
-	set_page_message(tr('The reseller you want to remove has one or more customers accounts.<br />Remove them first.'), 'error');
+	set_page_message(tr('The reseller you want to remove has one or more customers accounts.<br />Please remove them first.'), 'error');
 }
 
 if (!$cfg->exists('HOSTING_PLANS_LEVEL') || strtolower($cfg->HOSTING_PLANS_LEVEL) !== 'admin') {
