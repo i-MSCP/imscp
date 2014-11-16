@@ -83,7 +83,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Subdomain you are trying to remove has email accounts. Remove them first.'), 'error'
+				tr('Subdomain you are trying to remove has email accounts. Please remove them first.'), 'error'
 			);
 			$ret = true;
 		}
@@ -94,7 +94,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Subdomain alias you are trying to remove has Ftp accounts. Remove them first.'), 'error'
+				tr('Subdomain alias you are trying to remove has FTP accounts. Please remove them first.'), 'error'
 			);
 			$ret = true;
 		}
@@ -128,7 +128,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 			send_request();
 
-			write_log("{$_SESSION['user_logged']} scheduled deletion of subdomain alias $alssubName", E_USER_NOTICE);
+			write_log("{$_SESSION['user_logged']} successfully scheduled deletion of subdomain alias $alssubName", E_USER_NOTICE);
 			set_page_message(tr('Subdomain alias successfully scheduled for deletion.'), 'success');
 		}
 
