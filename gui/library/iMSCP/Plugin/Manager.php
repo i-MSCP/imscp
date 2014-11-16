@@ -1381,7 +1381,8 @@ class iMSCP_Plugin_Manager
 			exec_query(
 				'
 					UPDATE
-						plugin SET plugin_info = ?, plugin_config = ?, plugin_status = ?, plugin_backend = ?
+						plugin SET plugin_info = ?, plugin_config = ?, plugin_priority = ?, plugin_status = ?,
+						plugin_backend = ?
 					WHERE
 						plugin_name = ?
 				',
