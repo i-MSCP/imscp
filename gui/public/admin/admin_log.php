@@ -178,7 +178,7 @@ function admin_getLogs()
 		/* Filtering */
 		$where = '';
 
-		if($_GET['sSearch'] != '') {
+		if(isset($_GET['sSearch']) && $_GET['sSearch'] != '') {
 			$where .= 'WHERE (';
 
 			for($i = 0; $i < $nbColumns; $i++) {
