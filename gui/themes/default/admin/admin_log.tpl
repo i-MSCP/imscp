@@ -1,16 +1,4 @@
 
-<form name="clear_log_frm" id="clear_log_frm">
-	<label for="uaction_clear">{TR_CLEAR_LOG_MESSAGE}</label>
-	<select name="uaction_clear" id="uaction_clear">
-		<option value="0">{TR_CLEAR_LOG_EVERYTHING}</option>
-		<option value="2">{TR_CLEAR_LOG_LAST2}</option>
-		<option value="4">{TR_CLEAR_LOG_LAST4}</option>
-		<option value="12">{TR_CLEAR_LOG_LAST12}</option>
-		<option value="26">{TR_CLEAR_LOG_LAST26}</option>
-		<option value="52">{TR_CLEAR_LOG_LAST52}</option>
-	</select>
-	<input name="submit" type="submit" value="{TR_CLEAR_LOG}"/>
-</form>
 <table class="datatable firstColFixed">
 	<thead>
 	<tr>
@@ -29,6 +17,24 @@
 		<td colspan="2">{TR_LOADING_DATA}</td>
 	</tr>
 	</tbody>
+	<tbody id="clear_log">
+	<tr>
+		<td colspan="2" style="text-align:right;">
+			<form name="clear_log_frm" id="clear_log_frm">
+				<label for="uaction_clear">{TR_CLEAR_LOG_MESSAGE}</label>
+				<select name="uaction_clear" id="uaction_clear">
+					<option value="0">{TR_CLEAR_LOG_EVERYTHING}</option>
+					<option value="2">{TR_CLEAR_LOG_LAST2}</option>
+					<option value="4">{TR_CLEAR_LOG_LAST4}</option>
+					<option value="12">{TR_CLEAR_LOG_LAST12}</option>
+					<option value="26">{TR_CLEAR_LOG_LAST26}</option>
+					<option value="52">{TR_CLEAR_LOG_LAST52}</option>
+				</select>
+				<input name="submit" type="submit" value="{TR_CLEAR_LOG}"/>
+			</form>
+		</td>
+	</tr>
+	</tbody>
 </table>
 <script>
 	var oTable;
@@ -36,7 +42,7 @@
 	function flashMessage(type, message) {
 		$('<div />',
 			{
-				"class": 'flash_message ' + type,
+				"class": "flash_message " + type,
 				"html": $.parseHTML(message),
 				"hide": true
 			}
@@ -67,9 +73,7 @@
 			iDisplayLength: {ROWS_PER_PAGE},
 			bProcessing: true,
 			bServerSide: true,
-			info: false,
 			lengthChange: false,
-			filter:false,
 			pagingType: "simple",
 			sAjaxSource: "/admin/admin_log.php?action=get_logs",
 			bStateSave: false,
@@ -85,24 +89,26 @@
 					data: aoData,
 					success: fnCallback,
 					timeout: 3000,
-					error: function (xhr, textStatus, error) {
+					error: function () {
 						oTable.fnProcessingIndicator(false);
 					}
 				});
 			}
 		});
 
-		oTable.on('draw.dt', function () {
+		oTable.on("draw.dt", function () {
 			if(oTable.fnSettings().fnRecordsTotal() < 2) {
-				$("#clear_log_frm").hide();
+				$("#clear_log").hide();
+			} else {
+				$("#clear_log").show();
 			}
 		});
 
 		$( "#clear_log_frm" ).submit(function( event ) {
 			event.preventDefault();
 
-			doRequest('POST', 'clear_logs', $(this).serialize()).done(function (data) {
-				flashMessage('success', data.message);
+			doRequest("POST", "clear_logs", $(this).serialize()).done(function (data) {
+				flashMessage("success", data.message);
 				oTable.fnDraw();
 			});
 		});
