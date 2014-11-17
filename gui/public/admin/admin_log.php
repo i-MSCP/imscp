@@ -267,7 +267,7 @@ function admin_getLogs()
 		write_log(sprintf('Unable to get logs: %s', $e->getMessage()), E_USER_ERROR);
 
 		admin_sendJsonResponse(
-			500, array('message' => tr('An unexpected error occurred: %s.', true, $e->getMessage()))
+			500, array('message' => tr('An unexpected error occurred: %s', true, $e->getMessage()))
 		);
 	}
 
