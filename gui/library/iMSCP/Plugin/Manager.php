@@ -1244,7 +1244,7 @@ class iMSCP_Plugin_Manager
 							'type' => $pluginInstance->getType(),
 							'info' => json_encode($pluginInfo),
 							'config' => json_encode($pluginConfig),
-							'priority' => (isset($pluginInfo['priority'])) ? $pluginInfo['priority'] : 0,
+							'priority' => (isset($pluginInfo['priority'])) ? (int) $pluginInfo['priority'] : 0,
 							'status' => $pluginStatus,
 							'backend' => (
 								file_exists($fileInfo->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no'
