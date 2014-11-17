@@ -38,8 +38,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -294,30 +294,6 @@ msgstr "%s / unbegrenzt"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s Konto erfolgreich gelöscht."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s löschte die Adminmeldungen, die älter waren als einen Monat."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s löschte die Adminmeldungen, die älter waren als ein Jahr."
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s löschte die Adminmeldungen, die älter waren als sechs Monate."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s löschte die Adminmeldungen die älter waren als drei Monate."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s hat alle Meldungen, die älter als zwei Wochen sind, gelöscht!"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s löschte das gesamte Protokoll."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -901,9 +877,6 @@ msgstr "Admin / Benutzer / Resellerzuordnung"
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Benutzer / Sitzungen"
 
-msgid "Admin Log"
-msgstr "Admin Protokoll"
-
 msgid "Admin account successfully created."
 msgstr "Administratorkonto erfolgreich angelegt."
 
@@ -1053,8 +1026,19 @@ msgid "An unexpected error occured. Please retry"
 msgstr "Ein unerwarteter Fehler ist aufgetreten. Bitte erneut versuchen."
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
+
+#, php-format
+msgid "An unexpected error occurred: %s."
+msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1185,6 +1169,9 @@ msgstr "Gruppe zuweisen"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Als erstes müssen Sie eine Datenbank mit mindestens einem SQL-Benutzer erstellen."
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Auto-E-Mail-Templatedaten aktualisiert!"
 
@@ -1232,6 +1219,9 @@ msgstr "Backup wurde erfolgreich zur Wiederherstellung vorgemerkt."
 
 msgid "Bad password."
 msgstr "Falsches Passwort."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "dahinter"
@@ -1556,7 +1546,7 @@ msgid "Client / Webtools / Software"
 msgstr "Kunde / Webwerkzeuge / Software"
 
 msgid "Client / Webtools / Software / Software Installation"
-msgstr ""
+msgstr "Kunde / Webtools / Software / Softwareinstallation"
 
 msgid "Client / Webtools / Software / View"
 msgstr "Kunde / Webwerkzeuge / Software / Ansehen"
@@ -1802,7 +1792,7 @@ msgid "Database users"
 msgstr "Datenbankbenutzer"
 
 msgid "Database with comma(s) in name is not accepted."
-msgstr ""
+msgstr "Datenbank mit Kommata im Namen sind nicht erlaubt."
 
 msgid "Databases"
 msgstr "Datenbanken"
@@ -2278,7 +2268,7 @@ msgid "Email address"
 msgstr "E-Mail-Addresse"
 
 msgid "Email address with comma(s) are not accepted."
-msgstr ""
+msgstr "E-Mail Adressen mit Kommata sind nicht erlaubt."
 
 msgid "Email forward"
 msgstr "E-Mail-Weiterleitung"
@@ -2587,7 +2577,7 @@ msgid "GiB"
 msgstr "GiB"
 
 msgid "Go to the debugger for more details"
-msgstr ""
+msgstr "Schauen Sie in den Debugger für mehr Details"
 
 msgid "Group"
 msgstr "Gruppe"
@@ -2909,7 +2899,7 @@ msgid "Invalid domain name."
 msgstr "Ungültiger Domain-Name"
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "Ungültige E-Mail Adresse."
 
 msgid "Invalid expiration date."
 msgstr "Ungültiges Ablaufdatum."
@@ -2939,7 +2929,7 @@ msgid "Invalid type given. String expected"
 msgstr "Ungültiger Typ angegeben. String erwartet"
 
 msgid "Invalid username."
-msgstr ""
+msgstr "Ungültiger Benutzername."
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3024,6 +3014,9 @@ msgstr "Link zur Homepage des Autors"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Last (1 Min., 5 Min., 15 Min.)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr "Logeinträge erfolgreich gelöscht."
 
@@ -3060,6 +3053,9 @@ msgstr "Logo erfolgreich entfernt."
 
 msgid "Logo successfully updated."
 msgstr "Logo erfolgreich aktualisiert."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Passwort vergessen"
@@ -3337,9 +3333,6 @@ msgstr "Es stehen keine Tarife zur Verfügung. Bitte kontaktieren Sie Ihren Admi
 
 msgid "No languages found."
 msgstr "Keine Sprachen gefunden."
-
-msgid "No logs found."
-msgstr "Keine Logs gefunden."
 
 msgid "No records found matching the search criteria."
 msgstr "Keine Einträge gefunden welche den Suchkriterien entsprechen."
@@ -3665,7 +3658,7 @@ msgid "Password successfully updated."
 msgstr "Passwort erfolgreich aktualisiert."
 
 msgid "Password with comma(s) are not accepted."
-msgstr ""
+msgstr "Passwörter mit Kommata sind nicht erlaubt."
 
 msgid "Passwords do not match"
 msgstr "Passwörter stimmen nicht überein"
@@ -4114,6 +4107,9 @@ msgstr "Passwort wiederholen"
 msgid "Reply"
 msgstr "Antwort"
 
+msgid "Request Timeout: The server took too long to send the data."
+msgstr ""
+
 msgid "Request from foreign host was blocked."
 msgstr "Anfragen von einem fremden Server wurden geblockt."
 
@@ -4383,7 +4379,7 @@ msgid "SQL user successfully added."
 msgstr "SQL-Benutzer erfolgreich hinzugefügt."
 
 msgid "SQL user with comma(s) in name is not accepted."
-msgstr ""
+msgstr "SQL-Benutzer mit Kommata sind nicht erlaubt."
 
 msgid "SQL users"
 msgstr "SQL Benutzer"
@@ -4618,7 +4614,7 @@ msgid "Software installer requires PHP support."
 msgstr "Der Software Installer benötigt PHP Unterstützung."
 
 msgid "Software instance has been scheduled for installation"
-msgstr ""
+msgstr "Software-Instanz wurde zur Installation vorgemerkt"
 
 msgid "Software management"
 msgstr "Software Verwaltung"
@@ -4837,7 +4833,7 @@ msgid "Target"
 msgstr "Ziel"
 
 msgid "Target domain"
-msgstr ""
+msgstr "Ziel-Domain"
 
 msgid "Target host"
 msgstr "Zielrechner"
@@ -4907,7 +4903,7 @@ msgstr "Das Zertifikat-Feld darf nicht leer sein."
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
 "file manager."
-msgstr ""
+msgstr "Das Verzeichnis %s existiert nicht. Bitte erstellen Sie dieses mit Ihrem Dateimanager."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5159,7 +5155,7 @@ msgstr "Schließen des Tickets mit der ID '%s' nicht möglich."
 
 msgid ""
 "Unable to connect to the selected database using the selected SQL user."
-msgstr ""
+msgstr "Es war nicht möglich eine Verbindung zur ausgewählen Datenbank mit dem ausgewählten SQL-Benutzer herzustellen."
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5270,7 +5266,7 @@ msgid "Unavailable"
 msgstr "Nicht verfügbar"
 
 msgid "Unexpected error"
-msgstr ""
+msgstr "Unerwarteter Fehler"
 
 msgid "Uninstall"
 msgstr "Deinstallieren"
@@ -5321,6 +5317,9 @@ msgstr "Unbekannter Status"
 
 msgid "Unknown type."
 msgstr "Unbekannter Typ."
+
+msgid "Unknown user type"
+msgstr ""
 
 msgid "Unknown username."
 msgstr "Unbekannter Benutzername."
@@ -5589,8 +5588,8 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr "Platzhalter wie %% und ? sind im Benutzernamen nicht erlaubt."
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
-msgstr "Platzhalter wie %% und ? sind nicht erlaubt."
+msgid "Wildcards such as '%%' and '?' are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Falsche IP-Adresse."
@@ -5690,7 +5689,7 @@ msgstr "Sie können nur Bilder hochladen."
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
 "domain."
-msgstr ""
+msgstr "Sie können die Software nicht außerhalb des htdocs Verzeichnisses der ausgewählten Domain installieren."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Sie können keinen Reseller löschen, der noch Kundenkonten hat."
@@ -5932,6 +5931,11 @@ msgstr "Ihr Zertifikat ist ungültig."
 
 msgid "Your consumption"
 msgstr "Ihr Verbrauch"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "Ihre Nachricht"

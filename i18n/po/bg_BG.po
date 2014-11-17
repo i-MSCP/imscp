@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -265,30 +265,6 @@ msgstr ""
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s Акаунтът е успешно изтрит."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s изтрити логове на админа по-стари от един месец."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s изтрити логове на админа по-стари от една година "
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s изтрити логове на админа по-стари от шест месеца."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s изтрити логове на админа по-стари от три месеца."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s изтрий логовете на админа по-стари от две седмици!"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s изтриване на пълен админски лог."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -872,9 +848,6 @@ msgstr ""
 msgid "Admin / Users / Sessions"
 msgstr ""
 
-msgid "Admin Log"
-msgstr "Лог админ"
-
 msgid "Admin account successfully created."
 msgstr ""
 
@@ -1024,7 +997,18 @@ msgid "An unexpected error occured. Please retry"
 msgstr ""
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
+msgstr ""
+
+#, php-format
+msgid "An unexpected error occurred: %s."
 msgstr ""
 
 #, php-format
@@ -1156,6 +1140,9 @@ msgstr ""
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Шаблон за авто разпращане е променен!"
 
@@ -1202,6 +1189,9 @@ msgid "Backup has been successfully scheduled for restoration."
 msgstr ""
 
 msgid "Bad password."
+msgstr ""
+
+msgid "Bad request."
 msgstr ""
 
 msgid "Behind"
@@ -2995,6 +2985,9 @@ msgstr "Линк към автора на страницата"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "натоварване  (1 Min, 5 Min, 15 Min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr ""
 
@@ -3031,6 +3024,9 @@ msgstr "Логът е успешно премахнат."
 
 msgid "Logo successfully updated."
 msgstr "Лога е успешно обновен."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Забравена парола"
@@ -3308,9 +3304,6 @@ msgstr ""
 
 msgid "No languages found."
 msgstr "Не са намерени езици."
-
-msgid "No logs found."
-msgstr ""
 
 msgid "No records found matching the search criteria."
 msgstr ""
@@ -4083,6 +4076,9 @@ msgid "Repeat password"
 msgstr "Повторете паролата"
 
 msgid "Reply"
+msgstr ""
+
+msgid "Request Timeout: The server took too long to send the data."
 msgstr ""
 
 msgid "Request from foreign host was blocked."
@@ -5293,6 +5289,9 @@ msgstr ""
 msgid "Unknown type."
 msgstr ""
 
+msgid "Unknown user type"
+msgstr ""
+
 msgid "Unknown username."
 msgstr ""
 
@@ -5560,7 +5559,7 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
+msgid "Wildcards such as '%%' and '?' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
@@ -5902,6 +5901,11 @@ msgid "Your certificate is not valid."
 msgstr "Вашият сертификат не е валиден."
 
 msgid "Your consumption"
+msgstr ""
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
 msgstr ""
 
 msgid "Your message"

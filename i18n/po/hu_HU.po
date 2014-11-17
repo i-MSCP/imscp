@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -270,30 +270,6 @@ msgstr "%s / korlátlan"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s azonosító sikeresen törölve"
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s törölte az 1 hónapnál régebbi adminisztrátori naplóbejegyzéseket"
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s törölte az 1 évnél régebbi adminisztrátori naplóbejegyzéseket"
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s törölte a 6 hónapnál régebbi adminisztrátori naplóbejegyzéseket"
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s törölte a 3 hónapnál régebbi adminisztrátori naplóbejegyzéseket"
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s törölte a 2 hétnél régebbi adminisztrátori naplóbejegyzéseket!"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s törölte a teljes adminisztrátori naplót"
 
 #, php-format
 msgid "%s doesn't exist"
@@ -877,9 +853,6 @@ msgstr "Adminisztrátor / Felhasználók / Viszonteladó átadása"
 msgid "Admin / Users / Sessions"
 msgstr "Adminisztrátor / Felhasználók / Munkafolyamatok"
 
-msgid "Admin Log"
-msgstr "Adminisztrátori napló"
-
 msgid "Admin account successfully created."
 msgstr "Adminisztrátor sikeresen létrehozva"
 
@@ -1029,8 +1002,19 @@ msgid "An unexpected error occured. Please retry"
 msgstr "Váratlan hiba történt. Kérjük, próbáld meg újra! "
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Váratlan hiba történt: %s"
+
+#, php-format
+msgid "An unexpected error occurred: %s."
+msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1161,6 +1145,9 @@ msgstr "Csoport hozzárendelése"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Először is készítened kell egy adatbázist, ami legalább egy SQL felhasználót tartalmaz."
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Automatikus email sablon módosítva"
 
@@ -1208,6 +1195,9 @@ msgstr "Biztonsági mentés visszatöltése sikeresen beütemezve."
 
 msgid "Bad password."
 msgstr "Rossz jelszó."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "Mögötte"
@@ -3000,6 +2990,9 @@ msgstr "Hivatkozás a készítő weboldalára"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Terhelés (1, 5, 15 percre vonatkozóan):"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr "Naplóbejegyzések sikeresen törölve."
 
@@ -3036,6 +3029,9 @@ msgstr "Logó sikeresen törlölve"
 
 msgid "Logo successfully updated."
 msgstr "Logó sikeresen frissítve"
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Elfelejtett jelszó"
@@ -3313,9 +3309,6 @@ msgstr "Nincs elérhető tárhely csomag. Kérjük vegye fel a kapcsolatot a ren
 
 msgid "No languages found."
 msgstr "Nyelv nem található"
-
-msgid "No logs found."
-msgstr "Napló nem található"
 
 msgid "No records found matching the search criteria."
 msgstr "A keresési feltételek alapján nem találhatók rekordok."
@@ -4089,6 +4082,9 @@ msgstr "Jelszó megerősítése"
 
 msgid "Reply"
 msgstr "Válasz"
+
+msgid "Request Timeout: The server took too long to send the data."
+msgstr ""
 
 msgid "Request from foreign host was blocked."
 msgstr "Külföldi oldalról érkező kérelem blokkolva"
@@ -5298,6 +5294,9 @@ msgstr "Ismeretlen állapot"
 msgid "Unknown type."
 msgstr "Ismeretlen típus"
 
+msgid "Unknown user type"
+msgstr ""
+
 msgid "Unknown username."
 msgstr "Ismeretlen felhasználói név"
 
@@ -5565,8 +5564,8 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr "A \"%%\" és a \"?\" helyettesítő karakterek nem engedélyezettek a felhasználónévben."
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
-msgstr "A %% és ? helyettesítő karakterek nem engedélyezettek."
+msgid "Wildcards such as '%%' and '?' are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Hibás IP-cím"
@@ -5908,6 +5907,11 @@ msgstr "A tanúsítványod érvénytelen."
 
 msgid "Your consumption"
 msgstr "Ügyfél felhasználás"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "Üzenet szövege"

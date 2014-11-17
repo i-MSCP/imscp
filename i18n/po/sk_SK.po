@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/i-MSCP/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -266,30 +266,6 @@ msgstr "%s / neobmedzené "
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s konto bolo úspešne vymazané. "
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s vymazať admin záznamy staršie ako mesiac. "
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s vymazať admin záznamy staršie ako rok. "
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s vymazané admin záznamy staršie ako šesť mesiacov. "
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s vymazané admin záznamy staršie ako tri mesiace. "
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s zmazal administrátorské záznamy staršie ako dva týždne!"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s vymazané všetky admin záznamy. "
 
 #, php-format
 msgid "%s doesn't exist"
@@ -873,9 +849,6 @@ msgstr ""
 msgid "Admin / Users / Sessions"
 msgstr ""
 
-msgid "Admin Log"
-msgstr "Admin Log"
-
 msgid "Admin account successfully created."
 msgstr ""
 
@@ -1025,7 +998,18 @@ msgid "An unexpected error occured. Please retry"
 msgstr ""
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
+msgstr ""
+
+#, php-format
+msgid "An unexpected error occurred: %s."
 msgstr ""
 
 #, php-format
@@ -1157,6 +1141,9 @@ msgstr ""
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Šablóna pre automatický e-mail zaktualizovaná!"
 
@@ -1204,6 +1191,9 @@ msgstr ""
 
 msgid "Bad password."
 msgstr "Nesprávne heslo."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr ""
@@ -2996,6 +2986,9 @@ msgstr ""
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Načítanie (1 Min, 5 Min, 15 Min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr ""
 
@@ -3032,6 +3025,9 @@ msgstr "Logo bolo úspešne vymazané."
 
 msgid "Logo successfully updated."
 msgstr "Logo bolo úspešne aktualizované."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Zabudnuté heslo"
@@ -3308,9 +3304,6 @@ msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
 
 msgid "No languages found."
-msgstr ""
-
-msgid "No logs found."
 msgstr ""
 
 msgid "No records found matching the search criteria."
@@ -4084,6 +4077,9 @@ msgid "Repeat password"
 msgstr "Zopakovať heslo"
 
 msgid "Reply"
+msgstr ""
+
+msgid "Request Timeout: The server took too long to send the data."
 msgstr ""
 
 msgid "Request from foreign host was blocked."
@@ -5294,6 +5290,9 @@ msgstr "Neznámy status"
 msgid "Unknown type."
 msgstr ""
 
+msgid "Unknown user type"
+msgstr ""
+
 msgid "Unknown username."
 msgstr ""
 
@@ -5561,7 +5560,7 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
+msgid "Wildcards such as '%%' and '?' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
@@ -5904,6 +5903,11 @@ msgstr "Váš certifikát je nesprávny."
 
 msgid "Your consumption"
 msgstr "Vaša spotreba"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "Vaša správa"

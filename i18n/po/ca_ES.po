@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -275,30 +275,6 @@ msgstr "%s / il·limitat"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "compte %s eliminat correctament."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s esborrat el registres d'admin més vells d'un mes."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s ha esborrat els registres d'admin més vells de un any."
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s ha esborrat els registres d'admin més vells de sis mesos."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s ha esborrat els registres d'admin més vells de tres mesos."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s ha esborrat el registre d'admin més antic de dos setmanes"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s ha esborrat tots els registres d'admin."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -882,9 +858,6 @@ msgstr "Admin / Usuaris / Assignació de distribuïdor"
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Usuaris / Sessions"
 
-msgid "Admin Log"
-msgstr "Registre d'admin"
-
 msgid "Admin account successfully created."
 msgstr "Compte d'admin creat satisfactòriament."
 
@@ -1034,8 +1007,19 @@ msgid "An unexpected error occured. Please retry"
 msgstr "Hi ha hagut un error inesperat. Torneu-ho a intentar"
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Hi ha hagut un error inesperat: %s"
+
+#, php-format
+msgid "An unexpected error occurred: %s."
+msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1166,6 +1150,9 @@ msgstr "Assignar grup"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Plantilla automàtica de correu actualitzada!"
 
@@ -1213,6 +1200,9 @@ msgstr "La copia s'ha programat correctament per la restauració."
 
 msgid "Bad password."
 msgstr "Contrasenya incorrecta."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "Darrera"
@@ -3005,6 +2995,9 @@ msgstr "Enllaç a la pàgina de l'autor"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Carrega (1 Min, 5 Min, 15 Min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr ""
 
@@ -3041,6 +3034,9 @@ msgstr "Logotip eliminat correctament."
 
 msgid "Logo successfully updated."
 msgstr "Logotip actualitzat correctament."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Contrasenya perduda"
@@ -3318,9 +3314,6 @@ msgstr ""
 
 msgid "No languages found."
 msgstr "No s'han trobat idiomes."
-
-msgid "No logs found."
-msgstr "No s'han trobat logs."
 
 msgid "No records found matching the search criteria."
 msgstr ""
@@ -4093,6 +4086,9 @@ msgid "Repeat password"
 msgstr "Repeteix la contrasenya"
 
 msgid "Reply"
+msgstr ""
+
+msgid "Request Timeout: The server took too long to send the data."
 msgstr ""
 
 msgid "Request from foreign host was blocked."
@@ -5303,6 +5299,9 @@ msgstr ""
 msgid "Unknown type."
 msgstr "Tipus desconegut."
 
+msgid "Unknown user type"
+msgstr ""
+
 msgid "Unknown username."
 msgstr "Nom d'usuari desconegut."
 
@@ -5570,7 +5569,7 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
+msgid "Wildcards such as '%%' and '?' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
@@ -5913,6 +5912,11 @@ msgstr ""
 
 msgid "Your consumption"
 msgstr "El teu consum."
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "El vostre missatge"

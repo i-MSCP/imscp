@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -273,30 +273,6 @@ msgstr "%s / unlimited"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s account successfully deleted."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s deleted the admin log older than one month."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s deleted the admin log older than one year."
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s deleted the admin log older than six months."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s deleted the admin log older than three months."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s deleted the admin log older than two weeks!"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s deleted the full admin log."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -880,9 +856,6 @@ msgstr "Admin / Users / Resellers Assignment"
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Users / Sessions"
 
-msgid "Admin Log"
-msgstr "Admin Log"
-
 msgid "Admin account successfully created."
 msgstr "Admin account successfully created."
 
@@ -1032,8 +1005,19 @@ msgid "An unexpected error occured. Please retry"
 msgstr "An unexpected error occured. Please retry"
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "An unexpected error occurred: %s"
+
+#, php-format
+msgid "An unexpected error occurred: %s."
+msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1164,6 +1148,9 @@ msgstr "Assign group"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "At first you must create a database which have at least one SQL user."
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Auto email template data updated!"
 
@@ -1211,6 +1198,9 @@ msgstr "Backup has been successfully scheduled for restoration."
 
 msgid "Bad password."
 msgstr "Bad password."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "Behind"
@@ -1535,7 +1525,7 @@ msgid "Client / Webtools / Software"
 msgstr "Client / Webtools / Software"
 
 msgid "Client / Webtools / Software / Software Installation"
-msgstr ""
+msgstr "Client / Webtools / Software / Software Installation"
 
 msgid "Client / Webtools / Software / View"
 msgstr "Client / Webtools / Software / View"
@@ -1781,7 +1771,7 @@ msgid "Database users"
 msgstr "Database users"
 
 msgid "Database with comma(s) in name is not accepted."
-msgstr ""
+msgstr "Database with comma(s) in name is not accepted."
 
 msgid "Databases"
 msgstr "Databases"
@@ -2257,7 +2247,7 @@ msgid "Email address"
 msgstr "Email address"
 
 msgid "Email address with comma(s) are not accepted."
-msgstr ""
+msgstr "Email address with comma(s) are not accepted."
 
 msgid "Email forward"
 msgstr "Email forward"
@@ -2566,7 +2556,7 @@ msgid "GiB"
 msgstr "GiB"
 
 msgid "Go to the debugger for more details"
-msgstr ""
+msgstr "Go to the debugger for more details"
 
 msgid "Group"
 msgstr "Group"
@@ -2888,7 +2878,7 @@ msgid "Invalid domain name."
 msgstr "Invalid domain name."
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "Invalid email address."
 
 msgid "Invalid expiration date."
 msgstr "Invalid expiration date."
@@ -2918,7 +2908,7 @@ msgid "Invalid type given. String expected"
 msgstr "Invalid type given. String expected"
 
 msgid "Invalid username."
-msgstr ""
+msgstr "Invalid username."
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -3003,6 +2993,9 @@ msgstr "Link to authors homepage"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Load (1 Min, 5 Min, 15 Min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr "Log entries successfully deleted."
 
@@ -3039,6 +3032,9 @@ msgstr "Logo successfully removed."
 
 msgid "Logo successfully updated."
 msgstr "Logo successfully updated."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Lost password"
@@ -3316,9 +3312,6 @@ msgstr "No hosting plan available. Please contact your administrator."
 
 msgid "No languages found."
 msgstr "No languages found."
-
-msgid "No logs found."
-msgstr "No logs found."
 
 msgid "No records found matching the search criteria."
 msgstr "No records found matching the search criteria."
@@ -3644,7 +3637,7 @@ msgid "Password successfully updated."
 msgstr "Password successfully updated."
 
 msgid "Password with comma(s) are not accepted."
-msgstr ""
+msgstr "Password with comma(s) are not accepted."
 
 msgid "Passwords do not match"
 msgstr "Passwords do not match"
@@ -4093,6 +4086,9 @@ msgstr "Repeat password"
 msgid "Reply"
 msgstr "Reply"
 
+msgid "Request Timeout: The server took too long to send the data."
+msgstr ""
+
 msgid "Request from foreign host was blocked."
 msgstr "Request from foreign host was blocked."
 
@@ -4362,7 +4358,7 @@ msgid "SQL user successfully added."
 msgstr "SQL user successfully added."
 
 msgid "SQL user with comma(s) in name is not accepted."
-msgstr ""
+msgstr "SQL user with comma(s) in name is not accepted."
 
 msgid "SQL users"
 msgstr "SQL users"
@@ -4597,7 +4593,7 @@ msgid "Software installer requires PHP support."
 msgstr "Software installer requires PHP support."
 
 msgid "Software instance has been scheduled for installation"
-msgstr ""
+msgstr "Software instance has been scheduled for installation"
 
 msgid "Software management"
 msgstr "Software management"
@@ -4816,7 +4812,7 @@ msgid "Target"
 msgstr "Target"
 
 msgid "Target domain"
-msgstr ""
+msgstr "Target domain"
 
 msgid "Target host"
 msgstr "Target host"
@@ -4886,7 +4882,7 @@ msgstr "The certificate field cannot be empty."
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
 "file manager."
-msgstr ""
+msgstr "The directory %s doesn't exists. Please create that directory using your file manager."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5138,7 +5134,7 @@ msgstr "Unable to close the ticket with Id '%s'."
 
 msgid ""
 "Unable to connect to the selected database using the selected SQL user."
-msgstr ""
+msgstr "Unable to connect to the selected database using the selected SQL user."
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5249,7 +5245,7 @@ msgid "Unavailable"
 msgstr "Unavailable"
 
 msgid "Unexpected error"
-msgstr ""
+msgstr "Unexpected error"
 
 msgid "Uninstall"
 msgstr "Uninstall"
@@ -5300,6 +5296,9 @@ msgstr "Unknown status"
 
 msgid "Unknown type."
 msgstr "Unknown type."
+
+msgid "Unknown user type"
+msgstr ""
 
 msgid "Unknown username."
 msgstr "Unknown username."
@@ -5568,8 +5567,8 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr "Wildcards such as %% and ? are not allowed in username."
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
-msgstr "Wildcards such as %% and are not allowed."
+msgid "Wildcards such as '%%' and '?' are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Wrong IP address."
@@ -5669,7 +5668,7 @@ msgstr "You can only upload images."
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
 "domain."
-msgstr ""
+msgstr "You can't install the software outside the htdocs directory of the selected domain."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "You cannot delete a reseller that has customer accounts."
@@ -5911,6 +5910,11 @@ msgstr "Your certificate is not valid."
 
 msgid "Your consumption"
 msgstr "Your consumption"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "Your message"

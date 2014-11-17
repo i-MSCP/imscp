@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -286,30 +286,6 @@ msgstr "%s / illimité"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s compte supprimé(s) avec succès."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s a supprimé les journaux de l'administrateur plus vieux qu'un mois."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s a supprimé les journaux de l'administrateur plus vieux qu'un an."
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s a supprimé les journaux de l'administrateur plus vieux que six mois."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s a supprimé les journaux de l'administrateur plus vieux que trois mois."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s a effacé les journaux de l'administrateur antérieurs à 2 semaines !"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s a supprimé la totalité des journaux de l'administrateur."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -893,9 +869,6 @@ msgstr "Administrateur / Utilisateurs / Assignation des revendeurs"
 msgid "Admin / Users / Sessions"
 msgstr "Administrateur / Utilisateurs / Sessions"
 
-msgid "Admin Log"
-msgstr "Journal de l'administrateur"
-
 msgid "Admin account successfully created."
 msgstr "Compte administrateur créé avec succès"
 
@@ -1045,8 +1018,19 @@ msgid "An unexpected error occured. Please retry"
 msgstr "Une erreur inattendue est survenue. Veuillez réessayer."
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Une erreur inattendue est survenue : %s"
+
+#, php-format
+msgid "An unexpected error occurred: %s."
+msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1177,6 +1161,9 @@ msgstr "Assigner le group"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Vous devez d'abord créer une base de donnée qui contient au moins un utilisateur SQL."
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Mise en page automatique des e-mails mise à jour !"
 
@@ -1224,6 +1211,9 @@ msgstr "La sauvegarde va être restaurée."
 
 msgid "Bad password."
 msgstr "Mot de passe erroné."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "Derrière"
@@ -3016,6 +3006,9 @@ msgstr "Lien sur la page de l'auteur."
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Charge (1 min, 5 min, 15 min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr "Entrées du journal supprimées avec succès."
 
@@ -3052,6 +3045,9 @@ msgstr "Logo supprimer avec succès."
 
 msgid "Logo successfully updated."
 msgstr "Logo mis à jour avec succès."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Mot de passe perdu"
@@ -3329,9 +3325,6 @@ msgstr "Aucun plan d'hébergement disponible. Veuillez contacter votre administr
 
 msgid "No languages found."
 msgstr "Pas de fichier langue trouvé."
-
-msgid "No logs found."
-msgstr "Aucun journal trouvé."
 
 msgid "No records found matching the search criteria."
 msgstr "Aucun enregistrement trouvé pour ces critères de recherche."
@@ -4105,6 +4098,9 @@ msgstr "Confirmation du mot de passe"
 
 msgid "Reply"
 msgstr "Répondre"
+
+msgid "Request Timeout: The server took too long to send the data."
+msgstr ""
 
 msgid "Request from foreign host was blocked."
 msgstr "Une requête d'un hôte étranger a été bloquée."
@@ -5314,6 +5310,9 @@ msgstr "Statut inconnu"
 msgid "Unknown type."
 msgstr "Type inconnu."
 
+msgid "Unknown user type"
+msgstr ""
+
 msgid "Unknown username."
 msgstr "Nom d'utilisateur inconnu."
 
@@ -5581,8 +5580,8 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr "Les jokers comme %% et ? ne sont pas autorisés dans le nom d'utilisateur."
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
-msgstr "Les jokers comme %% ne sont pas autorisés."
+msgid "Wildcards such as '%%' and '?' are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Mauvais adresse IP."
@@ -5924,6 +5923,11 @@ msgstr "Votre certificat SSL n'est pas valide."
 
 msgid "Your consumption"
 msgstr "Votre consommation"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "Votre message"

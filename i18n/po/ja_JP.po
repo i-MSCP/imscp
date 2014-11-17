@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -268,30 +268,6 @@ msgstr "%s / 無制限"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s のアカウントは削除されました。"
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s は1ヶ月以上古い管理者ログを削除しました。"
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s は1年以上古い管理者ログを削除しました。"
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s は半年以上古い管理者ログを削除しました。"
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s は3ヶ月以上古い管理者ログを削除しました。"
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s は2週より古い管理ログを削除しました！"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s は全ての管理者ログを削除しました。"
 
 #, php-format
 msgid "%s doesn't exist"
@@ -875,9 +851,6 @@ msgstr "管理者 / ユーザー / 代理店の割当"
 msgid "Admin / Users / Sessions"
 msgstr "管理者 / ユーザー / セッション"
 
-msgid "Admin Log"
-msgstr "管理者ログ"
-
 msgid "Admin account successfully created."
 msgstr "管理者アカウントの作成に成功しました。"
 
@@ -1027,8 +1000,19 @@ msgid "An unexpected error occured. Please retry"
 msgstr "予期しないエラーが発生しました。再試行してください"
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "予期しないエラーが発生しました：%s"
+
+#, php-format
+msgid "An unexpected error occurred: %s."
+msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1159,6 +1143,9 @@ msgstr "グループを割り当てる"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "最初に、少なくとも1つのSQLユーザを持つデータベースを作成する必要があります。"
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "自動送信Eメールのテンプレート情報が更新されました！"
 
@@ -1206,6 +1193,9 @@ msgstr "バックアップの復元が予定されました。"
 
 msgid "Bad password."
 msgstr "パスワードが間違っています。"
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "ビハインド"
@@ -1530,7 +1520,7 @@ msgid "Client / Webtools / Software"
 msgstr "クライアント / Webツール / ソフトウェア"
 
 msgid "Client / Webtools / Software / Software Installation"
-msgstr ""
+msgstr "クライアント / Webツール / ソフトウェア / ソフトウェアインストール"
 
 msgid "Client / Webtools / Software / View"
 msgstr "クライアント / Webツール / ソフトウェア / 表示"
@@ -1776,7 +1766,7 @@ msgid "Database users"
 msgstr "データベースユーザー"
 
 msgid "Database with comma(s) in name is not accepted."
-msgstr ""
+msgstr "名前にカンマを持つデータベースは受け付けられません。"
 
 msgid "Databases"
 msgstr "データベース"
@@ -2252,7 +2242,7 @@ msgid "Email address"
 msgstr "Eメールアドレス"
 
 msgid "Email address with comma(s) are not accepted."
-msgstr ""
+msgstr "カンマがあるＥメールアドレスは受付けられません。"
 
 msgid "Email forward"
 msgstr "Email forward"
@@ -2561,7 +2551,7 @@ msgid "GiB"
 msgstr "GiB"
 
 msgid "Go to the debugger for more details"
-msgstr ""
+msgstr "詳細については、デバッガに進んでください"
 
 msgid "Group"
 msgstr "グループ"
@@ -2883,7 +2873,7 @@ msgid "Invalid domain name."
 msgstr "無効なドメイン名。"
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "無効なメールアドレスです。"
 
 msgid "Invalid expiration date."
 msgstr "無効な有効期限。"
@@ -2913,7 +2903,7 @@ msgid "Invalid type given. String expected"
 msgstr "無効な型の文字列が指定された。"
 
 msgid "Invalid username."
-msgstr ""
+msgstr "無効なユーザ名です。"
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -2998,6 +2988,9 @@ msgstr "著者ホームページへのリンク"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "ロードアベレージ (1 秒, 5 秒, 15秒)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr "ログエントリを削除しました。"
 
@@ -3034,6 +3027,9 @@ msgstr "ロゴは削除されました。"
 
 msgid "Logo successfully updated."
 msgstr "ロゴは更新されました。"
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "パスワードを忘れた"
@@ -3311,9 +3307,6 @@ msgstr "利用可能なホスティングプランはありません。管理者
 
 msgid "No languages found."
 msgstr "言語が見つかりません。"
-
-msgid "No logs found."
-msgstr "ログは見つかりませんでした。"
 
 msgid "No records found matching the search criteria."
 msgstr "レコードが検索条件に一致する見つかりませんでした。"
@@ -3639,7 +3632,7 @@ msgid "Password successfully updated."
 msgstr "パスワードは更新されました。"
 
 msgid "Password with comma(s) are not accepted."
-msgstr ""
+msgstr "カンマがあるパスワードは受け付けられません。"
 
 msgid "Passwords do not match"
 msgstr "パスワードが一致しません"
@@ -4088,6 +4081,9 @@ msgstr "パスワード再入力"
 msgid "Reply"
 msgstr "返信"
 
+msgid "Request Timeout: The server took too long to send the data."
+msgstr ""
+
 msgid "Request from foreign host was blocked."
 msgstr "外部ホストからの要求がブロックされました。"
 
@@ -4357,7 +4353,7 @@ msgid "SQL user successfully added."
 msgstr "SQLユーザーを追加しました。"
 
 msgid "SQL user with comma(s) in name is not accepted."
-msgstr ""
+msgstr "名前にカンマを持つSQLユーザは受け付けません。"
 
 msgid "SQL users"
 msgstr "SQLユーザー"
@@ -4592,7 +4588,7 @@ msgid "Software installer requires PHP support."
 msgstr "ソフトウェアのインストーラは、PHPのサポートが必要です。"
 
 msgid "Software instance has been scheduled for installation"
-msgstr ""
+msgstr "ソフトウェアのインスタンスは、インストールのために予定されています"
 
 msgid "Software management"
 msgstr "ソフトウェア管理"
@@ -4811,7 +4807,7 @@ msgid "Target"
 msgstr "ターゲット"
 
 msgid "Target domain"
-msgstr ""
+msgstr "ターゲットドメイン"
 
 msgid "Target host"
 msgstr "ターゲットホスト"
@@ -4881,7 +4877,7 @@ msgstr "証明書フィールドを空にすることはできません。"
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
 "file manager."
-msgstr ""
+msgstr "ディレクトリ%sは存在しません。ファイルマネージャを使用してディレクトリを作成してください。"
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5133,7 +5129,7 @@ msgstr "ID '%s'のチケットをクローズできません。"
 
 msgid ""
 "Unable to connect to the selected database using the selected SQL user."
-msgstr ""
+msgstr "選択したSQLユーザを使用して、選択されたデータベースに接続することができません。"
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5244,7 +5240,7 @@ msgid "Unavailable"
 msgstr "使用禁止"
 
 msgid "Unexpected error"
-msgstr ""
+msgstr "予期しないエラー"
 
 msgid "Uninstall"
 msgstr "アンインストール"
@@ -5295,6 +5291,9 @@ msgstr "未確認状態"
 
 msgid "Unknown type."
 msgstr "不明な種別が指定されました。"
+
+msgid "Unknown user type"
+msgstr ""
 
 msgid "Unknown username."
 msgstr "未知のユーザー名。"
@@ -5563,8 +5562,8 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr "%%と?などのワイルドカードは、ユーザ名では許可されません。"
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
-msgstr "%%などのワイルドカードは使用できません。"
+msgid "Wildcards such as '%%' and '?' are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "IPアドレスに誤りがあります"
@@ -5664,7 +5663,7 @@ msgstr "イメージをアップロードすることができるだけです。
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
 "domain."
-msgstr ""
+msgstr "選択したドメインのhtdocsディレクトリ外にソフトウェアをインストールすることはできません。"
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "顧客アカウントを持っている代理店は削除できません。"
@@ -5906,6 +5905,11 @@ msgstr "証明書が有効ではありません。"
 
 msgid "Your consumption"
 msgstr "あなたの消費量"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "本文"

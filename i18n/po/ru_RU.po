@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -268,30 +268,6 @@ msgstr "%s / не ограничено"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s учетная запись успешно удалена."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s удалил лог админа, старше одного месяца."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s удалил лог админа, старше одного года."
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s удалил лог админа, старше шести месяцев."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s удалил лог админа, старше чем три месяца."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s удалил логи администратора старше двух недель!"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s удалил лог админа полностью."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -875,9 +851,6 @@ msgstr "Админ / Пользователи / Подтверждение ре�
 msgid "Admin / Users / Sessions"
 msgstr "Админ / Пользователи / Сессии"
 
-msgid "Admin Log"
-msgstr "Лог администратора"
-
 msgid "Admin account successfully created."
 msgstr "Учетная запись администратора успешно создана."
 
@@ -1027,8 +1000,19 @@ msgid "An unexpected error occured. Please retry"
 msgstr "Произошла неизвестная ошибка, пожалуйста, попробуйте заново"
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Произошла неожиданная ошибка: %s"
+
+#, php-format
+msgid "An unexpected error occurred: %s."
+msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1159,6 +1143,9 @@ msgstr "Назначить группу"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Сначала Вам нужно создать базу данный SQL имеющую хотябы одного пользователя."
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Шаблон авто рассылки изменён!"
 
@@ -1206,6 +1193,9 @@ msgstr "Резервная копия успешно помечена для в�
 
 msgid "Bad password."
 msgstr "Неверный пароль."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "После"
@@ -2998,6 +2988,9 @@ msgstr "Ссылка на страницу авторов"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Загрузка (1 Min, 5 Min, 15 Min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr "Записи лога успешно удалены."
 
@@ -3034,6 +3027,9 @@ msgstr "Логотип успешно удален."
 
 msgid "Logo successfully updated."
 msgstr "Логотип успешно обновлен."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Восстановление пароля"
@@ -3311,9 +3307,6 @@ msgstr "Нет доступных для заказа хостинг-плано�
 
 msgid "No languages found."
 msgstr "Языки не найдены."
-
-msgid "No logs found."
-msgstr "Не найдено логов"
 
 msgid "No records found matching the search criteria."
 msgstr "Не найдено записей, удовлетворяющих критерию."
@@ -4087,6 +4080,9 @@ msgstr "Повторите пароль"
 
 msgid "Reply"
 msgstr "Ответ"
+
+msgid "Request Timeout: The server took too long to send the data."
+msgstr ""
 
 msgid "Request from foreign host was blocked."
 msgstr "Запрос с иностранного хоста был заблокирован."
@@ -5296,6 +5292,9 @@ msgstr "Неизвестный статус"
 msgid "Unknown type."
 msgstr "Неизвестный тип."
 
+msgid "Unknown user type"
+msgstr ""
+
 msgid "Unknown username."
 msgstr "Неизвестное имя пользователя."
 
@@ -5563,8 +5562,8 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr "Групповые символы, такие как %% и ? не разрешены в имени пользователя."
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
-msgstr "Групповые символы, такие как %% и ? не разрешены."
+msgid "Wildcards such as '%%' and '?' are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Неверный IP адрес."
@@ -5906,6 +5905,11 @@ msgstr "Ваш сертификат неверен."
 
 msgid "Your consumption"
 msgstr "Ваши затраты"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "Ваше сообщение"

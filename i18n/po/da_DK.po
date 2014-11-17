@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-02 19:08+0100\n"
-"PO-Revision-Date: 2014-11-02 18:11+0000\n"
+"POT-Creation-Date: 2014-11-17 06:25+0100\n"
+"PO-Revision-Date: 2014-11-17 05:28+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -268,30 +268,6 @@ msgstr "%s / ubegrænset"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s konto slettet."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s slettede admin logen ældre end en måned."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s slettede admin logen ældre end et år."
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s slettede admin logen ældre end 6 måneder."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s slettede admin logen ældre end 3 måneder."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s sletted admin logen ældre end 2 uger!"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s slettede den fulde admin log."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -875,9 +851,6 @@ msgstr "Admin / Brugere / Forhandler Tildeling"
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Brugere / Sessioner"
 
-msgid "Admin Log"
-msgstr "Admin Log"
-
 msgid "Admin account successfully created."
 msgstr "Admin konto oprettet."
 
@@ -1027,8 +1000,19 @@ msgid "An unexpected error occured. Please retry"
 msgstr "En uventet fejl opstod. Forsøg igen"
 
 #, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "En uventet fejl opstod: %s"
+
+#, php-format
+msgid "An unexpected error occurred: %s."
+msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1159,6 +1143,9 @@ msgstr "Tildel gruppe"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Først skal du oprette en database, der har mindst én SQL-bruger."
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Auto Email skabelon, data er opdateret"
 
@@ -1206,6 +1193,9 @@ msgstr "Backup er succesfuldt blevet planlagt til gendannelse."
 
 msgid "Bad password."
 msgstr "Forkert password."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "Bag"
@@ -2998,6 +2988,9 @@ msgstr "Link til udviklerens hjemmeside"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Load (1 Min, 5 Min, 15 Min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr "Log poster succesfuldt slettet."
 
@@ -3034,6 +3027,9 @@ msgstr "Logo succesfuldt fjernet."
 
 msgid "Logo successfully updated."
 msgstr "Logo succesfuldt opdateret."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Glemt Adgangskode"
@@ -3311,9 +3307,6 @@ msgstr "Ingen hosting plan til rådighed. Kontakt venligst din systemadministrat
 
 msgid "No languages found."
 msgstr "Ingen sprog fundet."
-
-msgid "No logs found."
-msgstr "Ingen logs fundet."
 
 msgid "No records found matching the search criteria."
 msgstr "Har ikke fundet records, der matcher søgekriterierne."
@@ -4087,6 +4080,9 @@ msgstr "Gentag Adgangskoden"
 
 msgid "Reply"
 msgstr "Svar"
+
+msgid "Request Timeout: The server took too long to send the data."
+msgstr ""
 
 msgid "Request from foreign host was blocked."
 msgstr "Anmodning fra udenlandske host blev blokeret."
@@ -5296,6 +5292,9 @@ msgstr "Ukendt status"
 msgid "Unknown type."
 msgstr "Ukendt type."
 
+msgid "Unknown user type"
+msgstr ""
+
 msgid "Unknown username."
 msgstr "Ukendt brugernavn."
 
@@ -5563,8 +5562,8 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr "Jokertegn såsom %% og ? er ikke tilladt i brugernavn."
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
-msgstr "Jokertegn såsom %% og ? er ikke tilladt."
+msgid "Wildcards such as '%%' and '?' are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Forkert IP-adresse."
@@ -5906,6 +5905,11 @@ msgstr "Dit certifikat er ikke gyldigt."
 
 msgid "Your consumption"
 msgstr "Dit forbrug"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "Din Meddelse"
