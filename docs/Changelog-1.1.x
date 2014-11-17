@@ -1,6 +1,47 @@
 i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
+1.1.17
+------------------------------------------------------------------------------------------------------------------------
+
+2014-11-17: Laurent Declercq
+	RELEASE i-MSCP 1.1.17
+
+CONGIGS
+	Added: Dedicated configuration template file for Dovecot 2.1.x
+	Fixed: SSLv2 and SSLv3 must be disabled to prevent POODLE attacks ( Postfix, Dovecot >= 2.1, Proftpd )
+	Removed: The iterate_query parameter from the dovecot-sql.conf file ( Parameter not available in Dovecot 1.x )
+
+ENGINE
+	Added: Cron task attributes validation routines ( Servers::cron::cron )
+	Fixed: Cron server is broken - Unable to remove cron task ( Servers::cron::cron )
+
+GUI
+	Added: Browser detection capability (i18n)
+	Added: New static_* CSS classes for static page messages ( Layout )
+	Changed: The flash messages are now positioned relatively and over the page body ( Layout )
+	Changed: Lowered Gzip compression level to avoid high server load
+	Fixed: Default language set through admin/settings is not used
+	Fixed: When adding a SQL user to a database, some SQL users are not listed in the select box
+	Fixed: Wrong POST variable in client/ticket_create.php
+
+i18n
+	Added gui/library/resources/i18n/iMSCP.php file for indirect translation strings
+
+INSTALLER
+	Fixed: The installer hangs when a new conffile is provided by a Debian package
+
+PLUGINS
+	Added: Plugin priority field (allow to prioritize plugin (backend) loading order)
+	Fixed: isLoadedConfig flag is never set ( iMSCP_Plugin )
+	Fixed: Plugins for which the plugin_error field is not NULL must not be loaded
+	Updated: Plugin API to version 0.2.13
+
+TICKETS
+	Fixed: #1175: Bug - Domains - Shared mount points are always deleted
+	Fixed: #1178: Cosmetics - Logout is not a translatable string
+
+------------------------------------------------------------------------------------------------------------------------
 1.1.16
 ------------------------------------------------------------------------------------------------------------------------
 
