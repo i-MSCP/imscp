@@ -62,7 +62,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 194;
+	protected $lastUpdate = 195;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3078,5 +3078,20 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$this->addColumn('plugin', 'plugin_priority', "INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER plugin_config"),
 			$this->addIndex('plugin', 'plugin_priority', 'INDEX', 'plugin_priority')
 		);
+	}
+
+	/**
+	 * Remove deprecated MAIL_WRITER_EXPIRY_TIME parameter
+	 *
+	 * @return void
+	 */
+	protected function r195()
+	{
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		if(isset($dbConfig['MAIL_WRITER_EXPIRY_TIME'])) {
+			unset($dbConfig['MAIL_WRITER_EXPIRY_TIME']);
+		}
 	}
 }

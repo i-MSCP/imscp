@@ -140,7 +140,6 @@ class iMSCP_Initializer
 		$this->_setInternalEncoding();
 		$this->_setDisplayErrors();
 		$this->_initializeLayout();
-		$this->_setExceptionWriters();
 		$this->_initializeSession();
 		$this->_initializeDatabase();
 		$this->_setTimezone();
@@ -221,8 +220,7 @@ class iMSCP_Initializer
 				iMSCP_Events::onLostPasswordScriptEnd,
 				iMSCP_Events::onAdminScriptEnd,
 				iMSCP_Events::onResellerScriptEnd,
-				iMSCP_Events::onClientScriptEnd,
-				iMSCP_Events::onExceptionToBrowserEnd
+				iMSCP_Events::onClientScriptEnd
 			),
 			'layout_init'
 		);
@@ -232,29 +230,6 @@ class iMSCP_Initializer
 				iMSCP_Events::onAfterSetIdentity, function () {
 				unset($_SESSION['user_theme_color']);
 			});
-		}
-	}
-
-	/**
-	 * Sets additional writers or exception handler
-	 *
-	 * @return void
-	 * @todo Automatic detection of new writers based on the namespace
-	 */
-	protected function _setExceptionWriters()
-	{
-		$exceptionHandler = iMSCP_Exception_Handler::getInstance();
-
-		$writerObservers = explode(',', $this->_config->GUI_EXCEPTION_WRITERS);
-		$writerObservers = array_map('trim', $writerObservers);
-		$writerObservers = array_map('strtolower', $writerObservers);
-
-		if (in_array('mail', $writerObservers)) {
-			$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
-
-			if (!empty($admin_email)) {
-				$exceptionHandler->attach(new iMSCP_Exception_Writer_Mail($admin_email));
-			}
 		}
 	}
 
