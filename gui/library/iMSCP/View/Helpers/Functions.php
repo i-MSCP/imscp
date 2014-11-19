@@ -212,7 +212,7 @@ function generateSelectListForMonthsAndYears($tpl, $fromMonth = null, $fromYear 
 /**
  * Helper function to generate navigation
  *
- * @throws iMSCP_Exception_Production
+ * @throws iMSCP_Exception
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
@@ -319,9 +319,7 @@ function generateNavigation($tpl)
 					}
 				} else {
 					$name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-					throw new iMSCP_Exception_Production(
-						sprintf('Privileges callback is not callable: %s', $name)
-					);
+					throw new iMSCP_Exception(sprintf('Privileges callback is not callable: %s', $name));
 				}
 			}
 		}
@@ -369,9 +367,7 @@ function generateNavigation($tpl)
 									}
 								} else {
 									$name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-									throw new iMSCP_Exception_Production(
-										sprintf('Privileges callback is not callable: %s', $name)
-									);
+									throw new iMSCP_Exception(sprintf('Privileges callback is not callable: %s', $name));
 								}
 							}
 						}

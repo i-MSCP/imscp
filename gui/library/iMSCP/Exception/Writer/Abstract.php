@@ -25,41 +25,16 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @see iMSCP_Exception */
-require_once 'iMSCP/Exception.php';
-
 /**
- * Class iMSCP_Exception_Database
+ * Class iMSCP_Exception_Writer
  */
-class iMSCP_Exception_Database extends iMSCP_Exception
+abstract class iMSCP_Exception_Writer_Abstract
 {
 	/**
-	 * @var string Query that failed
-	 */
-	protected $query = null;
-
-	/**
-	 * Constructor
+	 * onUncaughtException event listener
 	 *
-	 * @param string $msg Exception Message
-	 * @param string $query query Last query executed
-	 * @param int $code Exception code
-	 * @param Exception $previous OPTIONAL Previous exception
+	 * @param iMSCP_Exception_Event $event
+	 * @return void
 	 */
-	public function __construct($msg = '', $query = null, $code = 0, Exception $previous = null)
-	{
-		$this->query = (string)preg_replace("/[\t\n]+/", ' ', $query);
-
-		parent::__construct($msg, $code, $previous);
-	}
-
-	/**
-	 * Gets query
-	 *
-	 * @return string
-	 */
-	public function getQuery()
-	{
-		return $this->query;
-	}
+	abstract public function onUncaughtException(iMSCP_Exception_Event $event);
 }
