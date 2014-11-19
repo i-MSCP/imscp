@@ -55,18 +55,11 @@ if (version_compare(phpversion(), '5.3.2', '<') === true) {
 	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.2 or newer.\n");
 }
 
+// Define paths
 define('GUI_ROOT_DIR', dirname(__DIR__));
-
-// Define path for the i-MSCP library directory
 define('LIBRARY_PATH', GUI_ROOT_DIR . '/library');
-
-// Define path of the plugins directory
 define('PLUGINS_PATH', GUI_ROOT_DIR .'/plugins');
-
-// Define cache directory path
 define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
-
-// Define persistent directory path
 define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
 // Setup include path
@@ -90,17 +83,8 @@ Zend_Loader_AutoloaderFactory::factory(
 	)
 );
 
-/**
- * Attach the primary exception writer to write uncaught exceptions messages to the client browser.
- *
- * The exception writer writes all exception messages to the client browser. In production, all messages are replaced by
- * a specific message to avoid revealingimportant information about the i-MSCP application environment if the user is
- * not an administrator.
- *
- * Another writers will be attached to this object during initialization process if enabled in the application wide
- * configuration file.
- */
-iMSCP_Exception_Handler::getInstance()->attach(new iMSCP_Exception_Writer_Browser('message.tpl'));
+// Set handler for uncaught exceptions
+iMSCP_Registry::set('exceptionHandler', new iMSCP_Exception_Handler());
 
 /**
  * Include i-MSCP common functions

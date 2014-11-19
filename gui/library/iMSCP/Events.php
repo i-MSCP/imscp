@@ -152,6 +152,7 @@ class iMSCP_Events
 	 *
 	 * - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
 	 *
+	 * @deprecated This event is deprecated and no longer triggered
 	 * @const string
 	 */
 	const onExceptionToBrowserStart = 'onExceptionToBrowserStart';
@@ -164,6 +165,7 @@ class iMSCP_Events
 	 * - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
 	 * - templateEngine: An iMSCP_pTemplate object
 	 *
+	 * @deprecated This event is deprecated and no longer triggered
 	 * @const string
 	 */
 	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';

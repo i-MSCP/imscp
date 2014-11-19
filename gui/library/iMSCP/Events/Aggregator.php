@@ -79,6 +79,21 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
+	 * Get the given event manager
+	 *
+	 * @param string $name Event manager unique name
+	 * @return iMSCP_Events_Manager_Interface|null
+	 */
+	public function getEventManager($name)
+	{
+		if(isset($this->eventManagers[$name])) {
+			return $this->eventManagers[$name];
+		}
+
+		return  null;
+	}
+
+	/**
 	 * Reset instance
 	 *
 	 * @static

@@ -2814,8 +2814,6 @@ function getDataTablesPluginTranslations()
 /**
  * Show 400 error page
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @throws iMSCP_Exception_Production in case the error page is not found
  * @return void
  */
 function showBadRequestErrorPage()
@@ -2862,8 +2860,6 @@ function showBadRequestErrorPage()
 /**
  * Show 404 error page
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @throws iMSCP_Exception_Production in case the error page is not found
  * @return void
  */
 function showNotFoundErrorPage()

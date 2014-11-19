@@ -4,7 +4,13 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+GUI
+	Added: iMSCP_Events_Aggregator::getEventManager() method
+	Changed: Mail sent by the exception mail writer are now sent every 24 hours ( in context of an identical exception )
+	Changed: Exception writers are now lazy-loaded
+	Fixed: The Mail writer ignores the MAIL_WRITER_EXPIRY_TIME parameter
 	Fixed: Undefined sSearch index in admin_log.php
+	Rewritten: Handler for uncaught exceptions ( including writers )
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.17
