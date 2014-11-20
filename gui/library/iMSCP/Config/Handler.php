@@ -1,33 +1,28 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2014 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP - ISP Control Panel".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
- * @package     iMSCP_Config
- * @subpackage  Handler
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @copyright   2010-2014 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://i-mscp.net i-MSCP Home Site
- * @license     http://www.mozilla.org/MPL/ MPL 1.1
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
@@ -42,27 +37,23 @@
  * - An array
  * - Via object properties
  * - Via setter and getter methods
- *
- * @package     iMSCP_Config
- * @subpackage  Handler
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Config_Handler implements ArrayAccess
 {
 	/**
-	 * Loads all configuration parameters from an array.
+	 * Loads all configuration parameters from an array
 	 *
 	 * @param array $parameters Configuration parameters
 	 */
 	public function __construct(array $parameters)
 	{
-		foreach ($parameters as $parameter => $value) {
+		foreach($parameters as $parameter => $value) {
 			$this->$parameter = $value;
 		}
 	}
 
 	/**
-	 * Sets a configuration parameter.
+	 * Sets a configuration parameter
 	 *
 	 * @param string $key Configuration parameter key name
 	 * @param mixed $value Configuration parameter value
@@ -70,11 +61,11 @@ class iMSCP_Config_Handler implements ArrayAccess
 	 */
 	public function set($key, $value)
 	{
-		$this->$key = $value;
+		$this->{$key} = $value;
 	}
 
 	/**
-	 * PHP overloading on inaccessible members.
+	 * PHP overloading on inaccessible members
 	 *
 	 * @param string $key Configuration parameter key name
 	 * @return mixed Configuration parameter value
@@ -85,7 +76,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 	}
 
 	/**
-	 * Getter method to retrieve a configuration parameter value.
+	 * Getter method to retrieve a configuration parameter value
 	 *
 	 * @throws iMSCP_Exception
 	 * @param string $key Configuration parameter key name
@@ -93,7 +84,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 	 */
 	public function get($key)
 	{
-		if (!$this->exists($key)) {
+		if(!$this->exists($key)) {
 			throw new iMSCP_Exception("Configuration variable `$key` is missing.");
 		}
 
@@ -101,7 +92,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 	}
 
 	/**
-	 * Deletes a configuration parameters.
+	 * Deletes a configuration parameters
 	 *
 	 * @param string $key Configuration parameter key name
 	 * @return void
@@ -124,31 +115,24 @@ class iMSCP_Config_Handler implements ArrayAccess
 	}
 
 	/**
-	 * Replaces all parameters of this object with parameters from another.
+	 * Merge the given configuration object
 	 *
-	 * This method replace the parameters values of this object with the same values from another
-	 * {@link iMSCP_Config_Handler} object.
-	 *
-	 * If a key from this object exists in the second object, its value will be replaced by the value from the second
-	 * object. If the key exists in the second object, and not in the first, it will be created in the first object.
 	 * All keys in this object that don't exist in the second object will be left untouched.
 	 *
 	 * <b>Note:</b> This method is not recursive.
 	 *
 	 * @param iMSCP_Config_Handler $config iMSCP_Config_Handler object
-	 * @return bool TRUE on success, FALSE otherwise
+	 * @return void
 	 */
-	public function replaceWith(iMSCP_Config_Handler $config)
+	public function merge(iMSCP_Config_Handler $config)
 	{
-		foreach ($config as $key => $value) {
+		foreach($config as $key => $value) {
 			$this->set($key, $value);
 		}
-
-		return true;
 	}
 
 	/**
-	 * Return an associative array that contains all configuration parameters.
+	 * Return an associative array that contains all configuration parameters
 	 *
 	 * @return array Array that contains configuration parameters
 	 */
@@ -158,7 +142,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 		$properties = $ref->getProperties(ReflectionProperty::IS_PUBLIC);
 		$array = array();
 
-		foreach ($properties as $property) {
+		foreach($properties as $property) {
 			$name = $property->name;
 			$array[$name] = $this->$name;
 		}
@@ -167,7 +151,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 	}
 
 	/**
-	 * Assigns a value to the specified offset.
+	 * Assigns a value to the specified offset
 	 *
 	 * @param mixed $offset The offset to assign the value to
 	 * @param mixed $value The value to set.
@@ -179,7 +163,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 	}
 
 	/**
-	 * Returns the value at specified offset.
+	 * Returns the value at specified offset
 	 *
 	 * @param  mixed $offset The offset to retrieve
 	 * @return mixed Offset value
@@ -190,7 +174,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 	}
 
 	/**
-	 * Whether or not an offset exists.
+	 * Whether or not an offset exists
 	 *
 	 * @param mixed $offset An offset to check for existence
 	 * @return boolean TRUE on success or FALSE on failure
@@ -201,7 +185,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 	}
 
 	/**
-	 * Unsets an offset.
+	 * Unsets an offset
 	 *
 	 * @param  mixed $offset The offset to unset
 	 * @return void

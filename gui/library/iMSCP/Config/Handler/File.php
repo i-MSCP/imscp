@@ -1,38 +1,32 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2014 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP - ISP Control Panel".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
+ * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage  Config_Handler
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2014 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://i-mscp.net i-MSCP Home Site
- * @license     http://www.mozilla.org/MPL/ MPL 1.1
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /** @see iMSCP_Config_Handler */
-require_once  'iMSCP/Config/Handler.php';
+require_once 'iMSCP/Config/Handler.php';
 
 /**
  * Class to handle configuration parameters from a flat file.
@@ -137,11 +131,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @property int THEME_ASSETS_VERSION unique string used for assets cache busting
  * @property string PANEL_SSL_ENABLED Whether or not SSL is enabled for the panel
  * @property int EMAIL_QUOTA_SYNC_MODE
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Config_Handler
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
 {
@@ -161,11 +150,11 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
 	 */
 	public function __construct($pathFile = null)
 	{
-		if (is_null($pathFile)) {
-			if (getenv('IMSCP_CONF')) {
+		if(is_null($pathFile)) {
+			if(getenv('IMSCP_CONF')) {
 				$pathFile = getEnv('IMSCP_CONF');
 			} else {
-				switch (PHP_OS) {
+				switch(PHP_OS) {
 					case 'FreeBSD':
 					case 'OpenBSD':
 					case 'NetBSD':
@@ -182,20 +171,19 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
 	}
 
 	/**
-	 * Opens a configuration file and parses its Key = Value pairs into the
-	 * {@link iMSCP_Config_Hangler::parameters} array.
+	 * Opens a configuration file and parses its Key = Value pairs
 	 *
 	 * @throws iMSCP_Exception
 	 * @return void
 	 */
 	protected function _parseFile()
 	{
-		if (($fd = @file_get_contents($this->_pathFile)) == false) {
+		if(($fd = @file_get_contents($this->_pathFile)) == false) {
 			throw new iMSCP_Exception(sprintf('Unable to open the configuration file `%s`', $this->_pathFile));
 		}
 
-		foreach (explode(PHP_EOL, $fd) as $line) {
-			if (!empty($line) && $line[0] != '#' && strpos($line, '=')) {
+		foreach(explode(PHP_EOL, $fd) as $line) {
+			if(!empty($line) && $line[0] != '#' && strpos($line, '=')) {
 				list($key, $value) = explode('=', $line, 2);
 				$this[trim($key)] = trim($value);
 			}

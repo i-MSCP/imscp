@@ -1,34 +1,28 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2014 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP - ISP Control Panel".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
- * @package     iMSCP_Config
- * @subpackage  Handler
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @copyright   2010-2014 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://i-mscp.net i-MSCP Home Site
- * @license     http://www.mozilla.org/MPL/ MPL 1.1
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
@@ -55,24 +49,20 @@ require_once 'iMSCP/Config/Handler.php';
  * @subpackage  Handler
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
-class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
+class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator, Serializable
 {
 	/**
-	 * PDO instance.
-	 *
-	 * @var PDO
+	 * @var PDO PDO instance used by objects of this class
 	 */
 	protected $_db;
 
 	/**
-	 * Array that contains all configuration parameters from the database.
-	 *
-	 * @var array
+	 * @var array Array that contains all configuration parameters from the database
 	 */
 	protected $_parameters = array();
 
 	/**
-	 * PDOStatement to insert a configuration parameter in the database.
+	 * PDOStatement to insert a configuration parameter in the database
 	 *
 	 * <b>Note:</b> For performance reason, the PDOStatement instance is created only once at the first execution of the
 	 * {@link _insert()} method.
@@ -82,7 +72,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	protected $_insertStmt = null;
 
 	/**
-	 * PDOStatement to update a configuration parameter in the database.
+	 * PDOStatement to update a configuration parameter in the database
 	 *
 	 * <b>Note:</b> For performances reasons, the PDOStatement instance is created only once at the first execution of
 	 * the {@link _update()} method.
@@ -92,7 +82,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	protected $_updateStmt = null;
 
 	/**
-	 * PDOStatement to delete a configuration parameter in the database.
+	 * PDOStatement to delete a configuration parameter in the database
 	 *
 	 * <b>Note:</b> For performances reasons, the PDOStatement instance is created only once at the first execution of
 	 * the {@link _delete()} method.
@@ -102,7 +92,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	protected $_deleteStmt = null;
 
 	/**
-	 * Variable bound to the PDOStatement instances.
+	 * Variable bound to the PDOStatement instances
 	 *
 	 * This variable is bound to the PDOStatement instances that are used by {@link _insert()}, {@link _update()} and
 	 * {@link _delete()} methods.
@@ -112,7 +102,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	protected $_key = null;
 
 	/**
-	 * Variable bound to the PDOStatement objects.
+	 * Variable bound to the PDOStatement objects
 	 *
 	 * This variable is bound to the PDOStatement instances that are used by both {@link _insert()} and
 	 * {@link _update()} methods.
@@ -122,49 +112,42 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	protected $_value = null;
 
 	/**
-	 * Counter for SQL update queries.
-	 *
-	 * @var int
+	 * @var int Counter for SQL update queries
 	 */
 	protected $_insertQueriesCounter = 0;
 
 	/**
-	 * Counter for SQL insert queries.
-	 *
-	 * @var int
+	 * @var int Counter for SQL insert queries
 	 */
 	protected $_updateQueriesCounter = 0;
 
 	/**
-	 * Counter for SQL delete queries.
-	 *
-	 * @var int
+	 * @var int Counter for SQL delete queries
 	 */
 	protected $_deleteQueriesCounter = 0;
 
 	/**
-	 * Database table name for configuration parameters.
-	 *
-	 * @var string
+	 * @var string Database table name for configuration parameters
 	 */
 	protected $_tableName = 'config';
 
 	/**
-	 * Database column name for configuration parameters keys.
-	 *
-	 * @var string
+	 * @var string Database column name for configuration parameters keys
 	 */
 	protected $_keysColumn = 'name';
 
 	/**
-	 * Database column name for configuration parameters values.
-	 *
-	 * @var string
+	 * @var string Database column name for configuration parameters values
 	 */
 	protected $_valuesColumn = 'value';
 
 	/**
-	 * Loads all configuration parameters from the database.
+	 * @var bool Internal flag indicating whether or not cached dbconfig object must be flushed
+	 */
+	protected $flushCache = false;
+
+	/**
+	 * Loads all configuration parameters from the database
 	 *
 	 * <b>Parameters:</b>
 	 *
@@ -218,7 +201,47 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Allow access as object properties.
+	 * Set PDO instance
+	 *
+	 * @param PDO $db
+	 */
+	public function setDb(PDO $db)
+	{
+		$this->_db = $db;
+	}
+
+	/**
+	 * Set table name onto operate
+	 *
+	 * @param $tableName
+	 */
+	public function setTable($tableName)
+	{
+		$this->_tableName = (string) $tableName;
+	}
+
+	/**
+	 * Set key column
+	 *
+	 * @param $columnName
+	 */
+	public function setKeyColumn($columnName)
+	{
+		$this->_keysColumn = (string) $columnName;
+	}
+
+	/**
+	 * Set value column
+	 *
+	 * @param $columnName
+	 */
+	public function setValueColumn($columnName)
+	{
+		$this->_valuesColumn = (string) $columnName;
+	}
+
+	/**
+	 * Allow access as object properties
 	 *
 	 * @see set()
 	 * @param string $key Configuration parameter key name
@@ -231,7 +254,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Insert or update a configuration parameter in the database.
+	 * Insert or update a configuration parameter in the database
 	 *
 	 * <b>Note:</b> For performances reasons, queries for updates are only done if old and new value of a parameter are
 	 * not the same.
@@ -257,7 +280,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Retrieve a configuration parameter value.
+	 * Retrieve a configuration parameter value
 	 *
 	 * @throws iMSCP_Exception
 	 * @param string $key Configuration parameter key name
@@ -273,7 +296,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Checks if a configuration parameters exists.
+	 * Checks if a configuration parameters exists
 	 *
 	 * @param string $key Configuration parameter key name
 	 * @return boolean TRUE if configuration parameter exists, FALSE otherwise
@@ -284,7 +307,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Replaces all parameters of this object with parameters from another.
+	 * Replaces all parameters of this object with parameters from another
 	 *
 	 * This method replace the parameters values of this object with the same values from another
 	 * {@link iMSCP_Config_Handler} object.
@@ -298,12 +321,12 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	 * @param iMSCP_Config_Handler $config iMSCP_Config_Handler object
 	 * @return bool TRUE on success, FALSE otherwise
 	 */
-	public function replaceWith(iMSCP_Config_Handler $config)
+	public function merge(iMSCP_Config_Handler $config)
 	{
 		try {
 			$this->_db->beginTransaction();
 
-			parent::replaceWith($config);
+			parent::merge($config);
 
 			$this->_db->commit();
 		} catch(PDOException $e) {
@@ -316,7 +339,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * PHP isset() overloading on inaccessible members.
+	 * PHP isset() overloading on inaccessible members
 	 *
 	 * This method is triggered by calling isset() or empty() on inaccessible members.
 	 *
@@ -332,7 +355,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * PHP unset() overloading on inaccessible members.
+	 * PHP unset() overloading on inaccessible members
 	 *
 	 * This method is triggered by calling isset() or empty() on inaccessible members.
 	 *
@@ -345,7 +368,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Force reload of all configuration parameters from the database.
+	 * Force reload of all configuration parameters from the database
 	 *
 	 * This method will remove all the current loaded parameters and reload it from the database.
 	 *
@@ -358,7 +381,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Returns the count of SQL queries that were executed.
+	 * Returns the count of SQL queries that were executed
 	 *
 	 * This method returns the count of queries that were executed since the last call of
 	 * {@link reset_queries_counter()} method.
@@ -385,7 +408,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Reset a counter of queries.
+	 * Reset a counter of queries
 	 *
 	 * @throws iMSCP_Exception
 	 * @param string $queriesCounterType Type of query counter (insert|update|delete)
@@ -409,7 +432,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Deletes a configuration parameters from the database.
+	 * Deletes a configuration parameters from the database
 	 *
 	 * @param string $key Configuration parameter key name
 	 * @return void
@@ -423,7 +446,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Load all configuration parameters from the database.
+	 * Load all configuration parameters from the database
 	 *
 	 * @throws iMSCP_Exception
 	 * @return void
@@ -445,7 +468,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Store a new configuration parameter in the database.
+	 * Store a new configuration parameter in the database
 	 *
 	 * @throws iMSCP_Exception_Database
 	 * @return void
@@ -466,15 +489,15 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 		}
 
 		if (!$this->_insertStmt->execute(array(':index' => $this->_key, ':value' => $this->_value))) {
-			throw new iMSCP_Exception_Database(
-				"Unable to insert new entry `{$this->_key}` in config table.");
+			throw new iMSCP_Exception_Database("Unable to insert new entry `{$this->_key}` in config table.");
 		} else {
+			$this->flushCache = true;
 			$this->_insertQueriesCounter++;
 		}
 	}
 
 	/**
-	 * Update a configuration parameter in the database.
+	 * Update a configuration parameter in the database
 	 *
 	 * @throws iMSCP_Exception_Database
 	 * @return void
@@ -492,12 +515,13 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 		if (!$this->_updateStmt->execute(array(':index' => $this->_key, ':value' => $this->_value))) {
 			throw new iMSCP_Exception_Database("Unable to update entry `{$this->_key}` in config table.");
 		} else {
+			$this->flushCache = true;
 			$this->_updateQueriesCounter++;
 		}
 	}
 
 	/**
-	 * Deletes a configuration parameter from the database.
+	 * Deletes a configuration parameter from the database
 	 *
 	 * @throws iMSCP_Exception_Database
 	 * @return void
@@ -512,12 +536,13 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 		if (!$this->_deleteStmt->execute(array(':index' => $this->_key))) {
 			throw new iMSCP_Exception_Database('Unable to delete entry in config table.');
 		} else {
+			$this->flushCache = true;
 			$this->_deleteQueriesCounter++;
 		}
 	}
 
 	/**
-	 * Whether or not an offset exists.
+	 * Whether or not an offset exists
 	 *
 	 * @param mixed $offset An offset to check for existence
 	 * @return boolean TRUE on success or FALSE on failure
@@ -528,7 +553,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Returns an associative array that contains all configuration parameters.
+	 * Returns an associative array that contains all configuration parameters
 	 *
 	 * @return array Array that contains configuration parameters
 	 */
@@ -538,7 +563,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Returns the current element.
+	 * Returns the current element
 	 *
 	 * @return mixed Returns the current element
 	 */
@@ -548,7 +573,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Returns the key of the current element.
+	 * Returns the key of the current element
 	 *
 	 * @return string|null Return the key of the current element or NULL on failure
 	 */
@@ -558,7 +583,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Moves the current position to the next element.
+	 * Moves the current position to the next element
 	 *
 	 * @return void
 	 */
@@ -581,12 +606,48 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	}
 
 	/**
-	 * Checks if current position is valid.
+	 * Checks if current position is valid
 	 *
 	 * @return boolean TRUE on success or FALSE on failure
 	 */
 	public function valid()
 	{
 		return array_key_exists(key($this->_parameters), $this->_parameters);
+	}
+
+
+	/**
+	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * String representation of object
+	 * @link http://php.net/manual/en/serializable.serialize.php
+	 * @return string the string representation of the object or null
+	 */
+	public function serialize()
+	{
+		return serialize($this->_parameters);
+	}
+
+	/**
+	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * Constructs the object
+	 * @link http://php.net/manual/en/serializable.unserialize.php
+	 * @param string $serialized <p>
+	 * The string representation of the object.
+	 * </p>
+	 * @return void
+	 */
+	public function unserialize($serialized)
+	{
+		$this->_parameters = unserialize($serialized);
+	}
+
+	/**
+	 * Destructor
+	 */
+	public function __destruct()
+	{
+		if($this->flushCache) {
+			@unlink(DBCONFIG_CACHE_FILE_PATH);
+		}
 	}
 }

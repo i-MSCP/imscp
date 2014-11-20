@@ -92,7 +92,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$phpini->setData('phpiniMaxInputTime', clean_input($_POST['phpini_max_input_time']));
 	$phpini->setData('phpiniMemoryLimit', clean_input($_POST['phpini_memory_limit']));
 	$phpini_open_basedir = isset($_POST['phpini_open_basedir'])
-		? clean_input($_POST['phpini_open_basedir']) : $cfg->PHPINI_OPEN_BASEDIR;
+		? clean_input($_POST['phpini_open_basedir']) : $cfg['PHPINI_OPEN_BASEDIR'];
 
 	if (PHP_SAPI != 'apache2handler') {
 		$disabledFunctions = array();
@@ -111,7 +111,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		// Builds the PHP disable_function directive with a pre-check on functions that can be disabled
 		$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
 	} else {
-		$phpini->setData('phpiniDisableFunctions', $cfg->PHPINI_DISABLE_FUNCTIONS);
+		$phpini->setData('phpiniDisableFunctions', $cfg['PHPINI_DISABLE_FUNCTIONS']);
 	}
 
 	if(!is_scalar($phpini_open_basedir)) { // No more check here - Admin must know what he do...
@@ -135,67 +135,64 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		/** @var $dbCfg iMSCP_Config_Handler_Db */
 		$dbCfg = iMSCP_Registry::get('dbConfig');
 
-		$dbCfg->LOSTPASSWORD = $lostPasswd;
-		$dbCfg->LOSTPASSWORD_TIMEOUT = $lostPasswdTimeout;
-		$dbCfg->PASSWD_CHARS = $passwdChars;
-		$dbCfg->PASSWD_STRONG = $passwdStrong;
-		$dbCfg->BRUTEFORCE = $bruteforce;
-		$dbCfg->BRUTEFORCE_BETWEEN = $bruteforce_between;
-		$dbCfg->BRUTEFORCE_MAX_LOGIN = $bruteforce_max_login;
-		$dbCfg->BRUTEFORCE_BLOCK_TIME = $bruteforce_block_time;
-		$dbCfg->BRUTEFORCE_BETWEEN_TIME = $bruteforce_between_time;
-		$dbCfg->BRUTEFORCE_MAX_CAPTCHA = $bruteforce_max_capcha;
-		$dbCfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT = $bruteforce_max_attempts_before_wait;
-		$dbCfg->CREATE_DEFAULT_EMAIL_ADDRESSES = $createDefaultEmails;
-		$dbCfg->COUNT_DEFAULT_EMAIL_ADDRESSES = $countDefaultEmails;
-		$dbCfg->HARD_MAIL_SUSPENSION = $hardMailSuspension;
-		$dbCfg->EMAIL_QUOTA_SYNC_MODE = $emailQuotaSyncMode;
-		$dbCfg->USER_INITIAL_LANG = $userInitialLang;
-		$dbCfg->IMSCP_SUPPORT_SYSTEM = $supportSystem;
-		$dbCfg->HOSTING_PLANS_LEVEL = $hostingPlanLevel;
-		$dbCfg->DOMAIN_ROWS_PER_PAGE = $domainRowsPerPage;
-		$dbCfg->LOG_LEVEL = $logLevel;
-		$dbCfg->CHECK_FOR_UPDATES = $checkForUpdate;
-		$dbCfg->ENABLE_SSL = $enableSSL;
-		$dbCfg->COMPRESS_OUTPUT = $compressOutput;
-		$dbCfg->SHOW_COMPRESSION_SIZE = $showCompressionSize;
-		$dbCfg->PREVENT_EXTERNAL_LOGIN_ADMIN = $prevExtLoginAdmin;
-		$dbCfg->PREVENT_EXTERNAL_LOGIN_RESELLER = $prevExtLoginReseller;
-		$dbCfg->PREVENT_EXTERNAL_LOGIN_CLIENT = $prevExtLoginClient;
-		$dbCfg->PHPINI_ALLOW_URL_FOPEN = $phpini->getDataVal('phpiniAllowUrlFopen');
-		$dbCfg->PHPINI_DISPLAY_ERRORS = $phpini->getDataVal('phpiniDisplayErrors');
-		$dbCfg->PHPINI_ERROR_REPORTING = $phpini->getDataVal('phpiniErrorReporting');
-		$dbCfg->PHPINI_POST_MAX_SIZE = $phpini->getDataVal('phpiniPostMaxSize');
-		$dbCfg->PHPINI_UPLOAD_MAX_FILESIZE = $phpini->getDataVal('phpiniUploadMaxFileSize');
-		$dbCfg->PHPINI_MAX_EXECUTION_TIME = $phpini->getDataVal('phpiniMaxExecutionTime');
-		$dbCfg->PHPINI_MAX_INPUT_TIME = $phpini->getDataVal('phpiniMaxInputTime');
-		$dbCfg->PHPINI_MEMORY_LIMIT = $phpini->getDataVal('phpiniMemoryLimit');
-		$dbCfg->PHPINI_OPEN_BASEDIR = $phpini_open_basedir;
-		$dbCfg->PHPINI_DISABLE_FUNCTIONS = $phpini->getDataVal('phpiniDisableFunctions');
+		$dbCfg['LOSTPASSWORD'] = $lostPasswd;
+		$dbCfg['LOSTPASSWORD_TIMEOUT'] = $lostPasswdTimeout;
+		$dbCfg['PASSWD_CHARS'] = $passwdChars;
+		$dbCfg['PASSWD_STRONG'] = $passwdStrong;
+		$dbCfg['BRUTEFORCE'] = $bruteforce;
+		$dbCfg['BRUTEFORCE_BETWEEN'] = $bruteforce_between;
+		$dbCfg['BRUTEFORCE_MAX_LOGIN'] = $bruteforce_max_login;
+		$dbCfg['BRUTEFORCE_BLOCK_TIME'] = $bruteforce_block_time;
+		$dbCfg['BRUTEFORCE_BETWEEN_TIME'] = $bruteforce_between_time;
+		$dbCfg['BRUTEFORCE_MAX_CAPTCHA'] = $bruteforce_max_capcha;
+		$dbCfg['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'] = $bruteforce_max_attempts_before_wait;
+		$dbCfg['CREATE_DEFAULT_EMAIL_ADDRESSES'] = $createDefaultEmails;
+		$dbCfg['COUNT_DEFAULT_EMAIL_ADDRESSES'] = $countDefaultEmails;
+		$dbCfg['HARD_MAIL_SUSPENSION'] = $hardMailSuspension;
+		$dbCfg['EMAIL_QUOTA_SYNC_MODE'] = $emailQuotaSyncMode;
+		$dbCfg['USER_INITIAL_LANG'] = $userInitialLang;
+		$dbCfg['IMSCP_SUPPORT_SYSTEM'] = $supportSystem;
+		$dbCfg['HOSTING_PLANS_LEVEL'] = $hostingPlanLevel;
+		$dbCfg['DOMAIN_ROWS_PER_PAGE'] = $domainRowsPerPage;
+		$dbCfg['LOG_LEVEL'] = $logLevel;
+		$dbCfg['CHECK_FOR_UPDATES'] = $checkForUpdate;
+		$dbCfg['ENABLE_SSL'] = $enableSSL;
+		$dbCfg['COMPRESS_OUTPUT'] = $compressOutput;
+		$dbCfg['SHOW_COMPRESSION_SIZE'] = $showCompressionSize;
+		$dbCfg['PREVENT_EXTERNAL_LOGIN_ADMIN'] = $prevExtLoginAdmin;
+		$dbCfg['PREVENT_EXTERNAL_LOGIN_RESELLER'] = $prevExtLoginReseller;
+		$dbCfg['PREVENT_EXTERNAL_LOGIN_CLIENT'] = $prevExtLoginClient;
+		$dbCfg['PHPINI_ALLOW_URL_FOPEN'] = $phpini->getDataVal('phpiniAllowUrlFopen');
+		$dbCfg['PHPINI_DISPLAY_ERRORS'] = $phpini->getDataVal('phpiniDisplayErrors');
+		$dbCfg['PHPINI_ERROR_REPORTING'] = $phpini->getDataVal('phpiniErrorReporting');
+		$dbCfg['PHPINI_POST_MAX_SIZE'] = $phpini->getDataVal('phpiniPostMaxSize');
+		$dbCfg['PHPINI_UPLOAD_MAX_FILESIZE'] = $phpini->getDataVal('phpiniUploadMaxFileSize');
+		$dbCfg['PHPINI_MAX_EXECUTION_TIME'] = $phpini->getDataVal('phpiniMaxExecutionTime');
+		$dbCfg['PHPINI_MAX_INPUT_TIME'] = $phpini->getDataVal('phpiniMaxInputTime');
+		$dbCfg['PHPINI_MEMORY_LIMIT'] = $phpini->getDataVal('phpiniMemoryLimit');
+		$dbCfg['PHPINI_OPEN_BASEDIR'] = $phpini_open_basedir;
+		$dbCfg['PHPINI_DISABLE_FUNCTIONS'] = $phpini->getDataVal('phpiniDisableFunctions');
 
-		if($cfg->replaceWith($dbCfg)) {
-			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditAdminGeneralSettings);
+		$cfg->merge($dbCfg);
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditAdminGeneralSettings);
 
-			// gets the number of queries that were been executed
-			$updtCount = $dbCfg->countQueries('update');
-			$newCount = $dbCfg->countQueries('insert');
+		// gets the number of queries that were been executed
+		$updtCount = $dbCfg->countQueries('update');
+		$newCount = $dbCfg->countQueries('insert');
 
-			// An Update was been made in the database ?
-			if ($updtCount > 0) {
-				set_page_message(tr('%d configuration parameter(s) have/has been updated.', $updtCount), 'success');
-			}
+		// An Update was been made in the database ?
+		if ($updtCount > 0) {
+			set_page_message(tr('%d configuration parameter(s) have/has been updated.', $updtCount), 'success');
+		}
 
-			if ($newCount > 0) {
-				set_page_message(tr('%d configuration parameter(s) have/has been created.', $newCount), 'success');
-			}
+		if ($newCount > 0) {
+			set_page_message(tr('%d configuration parameter(s) have/has been created.', $newCount), 'success');
+		}
 
-			if ($newCount == 0 && $updtCount == 0) {
-				set_page_message(tr("Nothing has been changed."), 'info');
-			} else {
-				write_log("{$_SESSION['user_logged']} updated settings.", E_USER_NOTICE);
-			}
+		if ($newCount == 0 && $updtCount == 0) {
+			set_page_message(tr("Nothing has been changed."), 'info');
 		} else {
-			set_page_message(tr('An unexpected error occured. Please retry'), 'error');
+			write_log("{$_SESSION['user_logged']} updated settings.", E_USER_NOTICE);
 		}
 	}
 
@@ -217,9 +214,9 @@ $tpl->define_dynamic(
 );
 
 // Grab the value only once to improve performances
-$htmlSelected = $cfg->HTML_SELECTED;
+$htmlSelected = $cfg['HTML_SELECTED'];
 
-if ($cfg->LOSTPASSWORD) {
+if ($cfg['LOSTPASSWORD']) {
 	$tpl->assign(
 		array(
 			 'LOSTPASSWORD_SELECTED_ON' => $htmlSelected,
@@ -235,7 +232,7 @@ if ($cfg->LOSTPASSWORD) {
 	);
 }
 
-if ($cfg->PASSWD_STRONG) {
+if ($cfg['PASSWD_STRONG']) {
 	$tpl->assign(
 		array(
 			 'PASSWD_STRONG_ON' => $htmlSelected,
@@ -251,7 +248,7 @@ if ($cfg->PASSWD_STRONG) {
 	);
 }
 
-if ($cfg->BRUTEFORCE) {
+if ($cfg['BRUTEFORCE']) {
 	$tpl->assign(
 		array(
 			 'BRUTEFORCE_SELECTED_ON' => $htmlSelected,
@@ -267,7 +264,7 @@ if ($cfg->BRUTEFORCE) {
 	);
 }
 
-if ($cfg->BRUTEFORCE_BETWEEN) {
+if ($cfg['BRUTEFORCE_BETWEEN']) {
 	$tpl->assign(
 		array(
 			 'BRUTEFORCE_BETWEEN_SELECTED_ON' => $htmlSelected,
@@ -283,7 +280,7 @@ if ($cfg->BRUTEFORCE_BETWEEN) {
 	);
 }
 
-if ($cfg->IMSCP_SUPPORT_SYSTEM) {
+if ($cfg['IMSCP_SUPPORT_SYSTEM']) {
 	$tpl->assign(
 		array(
 			 'SUPPORT_SYSTEM_SELECTED_ON' => $htmlSelected,
@@ -299,7 +296,7 @@ if ($cfg->IMSCP_SUPPORT_SYSTEM) {
 	);
 }
 
-if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
+if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
 	$tpl->assign(
 		array(
 			 'CREATE_DEFAULT_EMAIL_ADDRESSES_ON' => $htmlSelected,
@@ -315,7 +312,7 @@ if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
 	);
 }
 
-if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
+if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
 	$tpl->assign(
 		array(
 			 'COUNT_DEFAULT_EMAIL_ADDRESSES_ON' => $htmlSelected,
@@ -331,7 +328,7 @@ if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
 	);
 }
 
-if ($cfg->HARD_MAIL_SUSPENSION) {
+if ($cfg['HARD_MAIL_SUSPENSION']) {
 	$tpl->assign(
 		array(
 			 'HARD_MAIL_SUSPENSION_ON' => $htmlSelected,
@@ -363,7 +360,7 @@ if (isset($cfg['EMAIL_QUOTA_SYNC_MODE']) && $cfg['EMAIL_QUOTA_SYNC_MODE']) {
 	);
 }
 
-if ($cfg->HOSTING_PLANS_LEVEL == 'admin') {
+if ($cfg['HOSTING_PLANS_LEVEL'] == 'admin') {
 	$tpl->assign(
 		array(
 			 'HOSTING_PLANS_LEVEL_ADMIN' => $htmlSelected,
@@ -379,7 +376,7 @@ if ($cfg->HOSTING_PLANS_LEVEL == 'admin') {
 	);
 }
 
-if ($cfg->CHECK_FOR_UPDATES) {
+if ($cfg['CHECK_FOR_UPDATES']) {
 	$tpl->assign(
 		array(
 			 'CHECK_FOR_UPDATES_SELECTED_ON' => $htmlSelected,
@@ -395,7 +392,7 @@ if ($cfg->CHECK_FOR_UPDATES) {
 	);
 }
 
-if ($cfg->ENABLE_SSL) {
+if ($cfg['ENABLE_SSL']) {
 	$tpl->assign(
 		array(
 			 'ENABLE_SSL_ON' => $htmlSelected,
@@ -411,7 +408,7 @@ if ($cfg->ENABLE_SSL) {
 	);
 }
 
-if ($cfg->COMPRESS_OUTPUT) {
+if ($cfg['COMPRESS_OUTPUT']) {
 	$tpl->assign(
 		array(
 			 'COMPRESS_OUTPUT_ON' => $htmlSelected,
@@ -427,7 +424,7 @@ if ($cfg->COMPRESS_OUTPUT) {
 	);
 }
 
-if ($cfg->SHOW_COMPRESSION_SIZE) {
+if ($cfg['SHOW_COMPRESSION_SIZE']) {
 	$tpl->assign(
 		array(
 			 'SHOW_COMPRESSION_SIZE_SELECTED_ON' => $htmlSelected,
@@ -443,7 +440,7 @@ if ($cfg->SHOW_COMPRESSION_SIZE) {
 	);
 }
 
-if ($cfg->PREVENT_EXTERNAL_LOGIN_ADMIN) {
+if ($cfg['PREVENT_EXTERNAL_LOGIN_ADMIN']) {
 	$tpl->assign(
 		array(
 			 'PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON' => $htmlSelected,
@@ -459,7 +456,7 @@ if ($cfg->PREVENT_EXTERNAL_LOGIN_ADMIN) {
 	);
 }
 
-if ($cfg->PREVENT_EXTERNAL_LOGIN_RESELLER) {
+if ($cfg['PREVENT_EXTERNAL_LOGIN_RESELLER']) {
 	$tpl->assign(
 		array(
 			 'PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON' => $htmlSelected,
@@ -475,7 +472,7 @@ if ($cfg->PREVENT_EXTERNAL_LOGIN_RESELLER) {
 	);
 }
 
-if ($cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
+if ($cfg['PREVENT_EXTERNAL_LOGIN_CLIENT']) {
 	$tpl->assign(
 		array(
 			 'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON' => $htmlSelected,
@@ -583,7 +580,7 @@ if (PHP_SAPI != 'apache2handler') {
 	$tpl->assign('PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK', '');
 }
 
-switch ($cfg->LOG_LEVEL) {
+switch ($cfg['LOG_LEVEL']) {
 	case false:
 		$tpl->assign(
 			array(
@@ -630,14 +627,14 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('Admin / Settings'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_UPDATES' => tr('Updates'),
-		'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg->LOSTPASSWORD_TIMEOUT,
-		'PASSWD_CHARS' => $cfg->PASSWD_CHARS,
-		'BRUTEFORCE_MAX_LOGIN_VALUE' => $cfg->BRUTEFORCE_MAX_LOGIN,
-		'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg->BRUTEFORCE_BLOCK_TIME,
-		'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg->BRUTEFORCE_BETWEEN_TIME,
-		'BRUTEFORCE_MAX_CAPTCHA' => $cfg->BRUTEFORCE_MAX_CAPTCHA,
-		'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => $cfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT,
-		'DOMAIN_ROWS_PER_PAGE' => $cfg->DOMAIN_ROWS_PER_PAGE,
+		'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg['LOSTPASSWORD_TIMEOUT'],
+		'PASSWD_CHARS' => $cfg['PASSWD_CHARS'],
+		'BRUTEFORCE_MAX_LOGIN_VALUE' => $cfg['BRUTEFORCE_MAX_LOGIN'],
+		'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg['BRUTEFORCE_BLOCK_TIME'],
+		'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg['BRUTEFORCE_BETWEEN_TIME'],
+		'BRUTEFORCE_MAX_CAPTCHA' => $cfg['BRUTEFORCE_MAX_CAPTCHA'],
+		'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => $cfg['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'],
+		'DOMAIN_ROWS_PER_PAGE' => $cfg['DOMAIN_ROWS_PER_PAGE'],
 		'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'),
 		'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
 		'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
@@ -711,7 +708,7 @@ $tpl->assign(
 );
 
 generateNavigation($tpl);
-gen_def_language($tpl, $cfg->USER_INITIAL_LANG);
+gen_def_language($tpl, $cfg['USER_INITIAL_LANG']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
