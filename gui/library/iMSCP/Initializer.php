@@ -64,6 +64,8 @@ class iMSCP_Initializer
 			// Overrides _processAll command for CLI interface
 			if($command == '_processAll' && PHP_SAPI == 'cli') {
 				$command = '_processCLI';
+			} elseif(is_xhr()) {
+				$command = 'processAjax';
 			}
 
 			$initializer = new self(is_object($config) ? $config : new iMSCP_Config_Handler_File());
@@ -100,7 +102,7 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Executes all of the available initialization routines
+	 * Executes all of the available initialization routines for normal
 	 *
 	 * @return void
 	 */
@@ -120,11 +122,37 @@ class iMSCP_Initializer
 		$this->checkForDatabaseUpdate();
 		$this->initializePlugins();
 
+		// Trigger the onAfterInitialize event
+		$this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
+
 		self::$_initialized = true;
 	}
 
 	/**
-	 * Executes all of the available initialization routines for CLI interface
+	 * Executes all of the available initialization routines for Ajax context
+	 *
+	 * @return void
+	 */
+	protected function processAjax()
+	{
+		$this->setDisplayErrors();
+		$this->initializeSession();
+		$this->initializeDatabase();
+		$this->loadDbConfig();
+		$this->setInternalEncoding();
+		$this->setTimezone();
+		$this->initializeUserGuiProperties();
+		$this->initializeLocalization();
+		$this->initializePlugins();
+
+		// Trigger the onAfterInitialize event
+		$this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
+
+		self::$_initialized = true;
+	}
+
+	/**
+	 * Executes all of the available initialization routines for CLI context
 	 *
 	 * @return void
 	 */
@@ -134,7 +162,7 @@ class iMSCP_Initializer
 		$this->loadDbConfig();
 		$this->initializeLocalization(); // Needed for rebuilt of languages index
 
-		// Run after initialize callbacks
+		// Trigger the onAfterInitialize event
 		$this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
 
 		self::$_initialized = true;
