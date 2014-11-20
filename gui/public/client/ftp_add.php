@@ -99,13 +99,11 @@ function ftp_getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
 		if (!$stmt->rowCount()) {
 			showBadRequestErrorPage();
 		} else {
-			while (!$stmt->EOF) {
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$dmnList[] = array(
-					'domain_name_val' => $stmt->fields['name'],
-					'domain_name' => decode_idna($stmt->fields['name'])
+					'domain_name_val' => $row['name'],
+					'domain_name' => decode_idna($row['name'])
 				);
-
-				$stmt->moveNext();
 			}
 		}
 	}

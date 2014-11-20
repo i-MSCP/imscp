@@ -42,6 +42,16 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 
 check_login('admin');
 
+// Dispatches the request
+if (is_xhr()) { // Password generation (AJAX request)
+	header('Content-Type: text/plain; charset=utf-8');
+	header('Cache-Control: no-cache, private');
+	header('Pragma: no-cache');
+	header("HTTP/1.0 200 Ok");
+	echo passgen();
+	exit;
+}
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
@@ -70,15 +80,7 @@ function add_user($tpl)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	// Dispatches the request
-	if (is_xhr()) { // Password generation (AJAX request)
-		header('Content-Type: text/plain; charset=utf-8');
-		header('Cache-Control: no-cache, private');
-		header('Pragma: no-cache');
-		header("HTTP/1.0 200 Ok");
-		echo passgen();
-		exit;
-	} elseif (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
+	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
 		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
 
 		if (check_user_data()) {

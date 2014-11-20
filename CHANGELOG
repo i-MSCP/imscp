@@ -11,6 +11,7 @@ GUI
 	Changed: Writers are now lazy-loaded ( Exception writers )
 	Fixed: The MAIL_WRITER_EXPIRY_TIME configuration parameter is not honored ( Exception mail writer )
 	Fixed: Undefined sSearch index in admin_log.php
+	Fixed: Useless initialization routines in context of the AJAX requests ( Initializer )
 	Fixed: Wrong routine initialization order ( Intializer )
 	Improved: Fallback template ( Exception browser writer )
 	Removed MAIL_BODY_FOOTPRINTS and MAIL_WRITER_EXPIRY_TIME configuration parameters ( Exception mail writer )
