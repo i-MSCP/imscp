@@ -54,106 +54,113 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
  */
 function generate_reseller_user_props($resellerId)
 {
-	$rdmn_current = $rdmn_max = $rsub_current = $rsub_max = $rals_current = $rals_max = $rmail_current = $rmail_max =
-	$rftp_current = $rftp_max = $rsql_db_current = $rsql_db_max = $rsql_user_current = $rsql_user_max =
-	$rtraff_current = $rtraff_max = $rdisk_current = $rdisk_max = 0;
+	$rdmnCurrent = $rdmnMax = $rsubCurrent = $rsubMax = $ralsCurrent = $ralsMax = $rmailCurrent = $rmailMax =
+	$rftpCurrent = $rftpMax = $rsqlDbCurrent = $rsqlDbMax = $rsqlUserCurrent = $rsqlUserMax = $rtraffCurrent =
+	$rtraffMax = $rdiskCurrent = $rdiskMax = 0;
 
-	$rdmn_uf = $rsub_uf = $rals_uf = $rmail_uf = $rftp_uf = $rsql_db_uf =
-	$rsql_user_uf = $rtraff_uf = $rdisk_uf = '_off_';
+	$rdmnUf = $rsubUf = $ralsUf = $rmailUf = $rftpUf = $rsqlDbUf = $rsqlUserUf = $rtraffUf = $rdiskUf = '_off_';
 
-	$stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $resellerId);
+	$stmt = exec_query(
+		'
+			SELECT
+				admin_id, domain_id
+			FROM
+				admin
+			INNER JOIN
+				domain ON(domain_admin_id = admin_id)
+			WHERE
+				created_by = ?
+		',
+		$resellerId
+	);
 
-	if (!$stmt->rowCount()) {
+	if(!$stmt->rowCount()) {
 		return array_fill(0, 27, 0);
 	}
 
-	while ($data = $stmt->fetchRow()) {
-		$admin_id = $data['admin_id'];
-
-		$stmt1 = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', $admin_id);
-
-		$ddata = $stmt1->fetchRow();
-		$user_id = $ddata['domain_id'];
+	while($data = $stmt->fetchRow()) {
+		$adminId = $data['admin_id'];
+		$domainId = $data['domain_id'];
 
 		list(
-			$sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current, $ftp_max,
-			$sql_db_current, $sql_db_max, $sql_user_current,
-			$sql_user_max, $traff_max, $disk_max
-		) = get_user_props($user_id);
+			$subCurrent, $subMax, $alsCurrent, $alsMax, $mailCurrent, $mailMax, $ftpCurrent, $ftpMax, $sqlDbCurrent,
+			$sqlDbMax, $sqlUserCurrent, $sqlUserMax, $traffMax, $diskMax
+		) = get_user_props($adminId);
 
-		list(, , , , , , $traff_current, $disk_current) = shared_getCustomerStats($user_id);
-		$rdmn_current += 1;
+		list(, , , , , , $traffCurrent, $diskCurrent) = shared_getCustomerStats($domainId);
 
-		if ($sub_max != -1) {
-			if ($sub_max == 0) {
-				$rsub_uf = '_on_';
+		$rdmnCurrent += 1;
+
+		if($subMax != -1) {
+			if($subMax == 0) {
+				$rsubUf = '_on_';
 			}
 
-			$rsub_current += $sub_current;
-			$rsub_max += $sub_max;
+			$rsubCurrent += $subCurrent;
+			$rsubMax += $subMax;
 		}
 
-		if ($als_max == 0) {
-			$rals_uf = '_on_';
+		if($alsMax == 0) {
+			$ralsUf = '_on_';
 		}
 
-		$rals_current += $als_current;
-		$rals_max += $als_max;
+		$ralsCurrent += $alsCurrent;
+		$ralsMax += $alsMax;
 
-		if ($mail_max != -1) {
-			if ($mail_max == 0) {
-				$rmail_uf = '_on_';
+		if($mailMax != -1) {
+			if($mailMax == 0) {
+				$rmailUf = '_on_';
 			}
 
-			$rmail_current += $mail_current;
-			$rmail_max += $mail_max;
+			$rmailCurrent += $mailCurrent;
+			$rmailMax += $mailMax;
 		}
 
-		if ($ftp_max != -1) {
-			if ($ftp_max == 0) {
-				$rftp_uf = '_on_';
+		if($ftpMax != -1) {
+			if($ftpMax == 0) {
+				$rftpUf = '_on_';
 			}
 
-			$rftp_current += $ftp_current;
-			$rftp_max += $ftp_max;
+			$rftpCurrent += $ftpCurrent;
+			$rftpMax += $ftpMax;
 		}
 
-		if ($sql_db_max != -1) {
-			if ($sql_db_max == 0) {
-				$rsql_db_uf = '_on_';
+		if($sqlDbMax != -1) {
+			if($sqlDbMax == 0) {
+				$rsqlDbUf = '_on_';
 			}
 
-			$rsql_db_current += $sql_db_current;
-			$rsql_db_max += $sql_db_max;
+			$rsqlDbCurrent += $sqlDbCurrent;
+			$rsqlDbMax += $sqlDbMax;
 		}
 
-		if ($sql_user_max != -1) {
-			if ($sql_user_max == 0) {
-				$rsql_user_uf = '_on_';
+		if($sqlUserMax != -1) {
+			if($sqlUserMax == 0) {
+				$rsqlUserUf = '_on_';
 			}
 
-			$rsql_user_current += $sql_user_current;
-			$rsql_user_max += $sql_user_max;
+			$rsqlUserCurrent += $sqlUserCurrent;
+			$rsqlUserMax += $sqlUserMax;
 		}
 
-		if ($traff_max == 0) $rtraff_uf = '_on_';
+		if($traffMax == 0) $rtraffUf = '_on_';
 
-		$rtraff_current += $traff_current;
-		$rtraff_max += $traff_max;
+		$rtraffCurrent += $traffCurrent;
+		$rtraffMax += $traffMax;
 
-		if ($disk_max == 0) {
-			$rdisk_uf = '_on_';
+		if($diskMax == 0) {
+			$rdiskUf = '_on_';
 		}
 
-		$rdisk_current += $disk_current;
-		$rdisk_max += $disk_max;
+		$rdiskCurrent += $diskCurrent;
+		$rdiskMax += $diskMax;
 	}
 
 	return array(
-		$rdmn_current, $rdmn_max, $rdmn_uf, $rsub_current, $rsub_max, $rsub_uf, $rals_current, $rals_max, $rals_uf,
-		$rmail_current, $rmail_max, $rmail_uf, $rftp_current, $rftp_max, $rftp_uf, $rsql_db_current, $rsql_db_max,
-		$rsql_db_uf, $rsql_user_current, $rsql_user_max, $rsql_user_uf, $rtraff_current, $rtraff_max, $rtraff_uf,
-		$rdisk_current, $rdisk_max, $rdisk_uf
+		$rdmnCurrent, $rdmnMax, $rdmnUf, $rsubCurrent, $rsubMax, $rsubUf, $ralsCurrent, $ralsMax, $ralsUf,
+		$rmailCurrent, $rmailMax, $rmailUf, $rftpCurrent, $rftpMax, $rftpUf, $rsqlDbCurrent, $rsqlDbMax,  $rsqlDbUf,
+		$rsqlUserCurrent, $rsqlUserMax, $rsqlUserUf, $rtraffCurrent, $rtraffMax, $rtraffUf, $rdiskCurrent, $rdiskMax,
+		$rdiskUf
 	);
 }
 
@@ -237,31 +244,31 @@ function get_user_trafficAndDiskUsage($customerId)
 /**
  * Returns user's properties from database.
  *
- * @param int $user_id User unique identifier
+ * @param int $adminId Customer unique identifier
  * @return array An array that contain user's properties
  */
-function get_user_props($user_id)
+function get_user_props($adminId)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$stmt = exec_query('SELECT * FROM domain WHERE domain_id = ?', $user_id);
+	$stmt = exec_query('SELECT * FROM domain WHERE domain_id = ?', $adminId);
 
 	if (!$stmt->rowCount()) {
 		return array_fill(0, 14, 0);
 	}
 
 	$data = $stmt->fetchRow();
-	$sub_current = get_domain_running_sub_cnt($user_id);
+	$sub_current = get_domain_running_sub_cnt($adminId);
 	$sub_max = $data['domain_subd_limit'];
-	$als_current = records_count('domain_aliasses', 'domain_id', $user_id);
+	$als_current = records_count('domain_aliasses', 'domain_id', $adminId);
 	$als_max = $data['domain_alias_limit'];
 
 	if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
 		// Catch all is not a mailbox and haven't to be count
 		$mail_current = records_count('mail_users',
 			'mail_type NOT RLIKE \'_catchall\' AND domain_id',
-			$user_id);
+			$adminId);
 	} else {
 		$where = "
 				mail_acc != 'abuse'
@@ -275,23 +282,23 @@ function get_user_props($user_id)
 				domain_id
 		";
 
-		$mail_current = records_count('mail_users', $where, $user_id);
+		$mail_current = records_count('mail_users', $where, $adminId);
 	}
 
 	$mail_max = $data['domain_mailacc_limit'];
 
 	$ftp_current = sub_records_rlike_count(
-		'domain_name', 'domain', 'domain_id', $user_id, 'userid', 'ftp_users', 'userid', '@', ''
+		'domain_name', 'domain', 'domain_id', $adminId, 'userid', 'ftp_users', 'userid', '@', ''
 	);
 
 	$ftp_current += sub_records_rlike_count(
-		'alias_name', 'domain_aliasses', 'domain_id', $user_id, 'userid', 'ftp_users', 'userid', '@', ''
+		'alias_name', 'domain_aliasses', 'domain_id', $adminId, 'userid', 'ftp_users', 'userid', '@', ''
 	);
 
 	$ftp_max = $data['domain_ftpacc_limit'];
-	$sql_db_current = records_count('sql_database', 'domain_id', $user_id);
+	$sql_db_current = records_count('sql_database', 'domain_id', $adminId);
 	$sql_db_max = $data['domain_sqld_limit'];
-	$sql_user_current = get_domain_running_sqlu_acc_cnt($user_id);
+	$sql_user_current = get_domain_running_sqlu_acc_cnt($adminId);
 	$sql_user_max = $data['domain_sqlu_limit'];
 	$traff_max = $data['domain_traffic_limit'];
 	$disk_max = $data['domain_disk_limit'];
