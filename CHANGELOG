@@ -10,6 +10,7 @@ GUI
 	Changed: Mail body footprints are now stored in flat file instead of database ( Exception mail writer )
 	Changed: Mails are now sent every 24 hours in context of an identical exception ( Exception mail writer )
 	Changed: Writers are now lazy-loaded ( Exception writers )
+	Fixed: Ignore orphaned admin entries ( customer ) in generate_reseller_user_props() function
 	Fixed: The MAIL_WRITER_EXPIRY_TIME configuration parameter is not honored ( Exception mail writer )
 	Fixed: Undefined sSearch index in admin_log.php
 	Fixed: Useless initialization routines in context of the AJAX requests ( Initializer )
