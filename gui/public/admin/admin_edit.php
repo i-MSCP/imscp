@@ -172,9 +172,6 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 
 check_login('admin');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 // Dispatches the request
 if (is_xhr()) { // Password generation (AJAX request)
 	header('Content-Type: text/plain; charset=utf-8');
@@ -184,6 +181,9 @@ if (is_xhr()) { // Password generation (AJAX request)
 	echo passgen();
 	exit;
 }
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
 
 if (isset($_GET['edit_id'])) {
 	$userId = intval($_GET['edit_id']);
