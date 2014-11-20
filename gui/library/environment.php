@@ -1,231 +1,237 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2014 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP - ISP Control Panel".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
- * @package     i-MSCP_Core
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net i-MSCP Home Site
- * @license     http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @copyright   2010-2014 by i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
-
-// Configuration parameters
 
 /** @var $config iMSCP_Config_Handler_File */
-$config = iMSCP_Config::getInstance();
+if(is_readable(CONFIG_CACHE_FILE_PATH)) {
+	$config = unserialize(file_get_contents(CONFIG_CACHE_FILE_PATH));
 
-// Template root directory
-$config->set('ROOT_TEMPLATE_PATH', dirname(dirname(__FILE__)) . '/themes/' . $config->USER_INITIAL_THEME);
+	clearstatcache(true, CONFIG_FILE_PATH);
 
-// Set the isp logos path
-$config->set('ISP_LOGO_PATH', '/ispLogos');
+	if($config['DEBUG'] || filemtime(CONFIG_FILE_PATH) !== $config['__filemtime__']) {
+		goto FORCE_CONFIG_RELOAD;
+	}
+} else {
+	FORCE_CONFIG_RELOAD:
 
-$config->set('HTML_CHECKED', ' checked="checked"');
-$config->set('HTML_DISABLED', ' disabled="disabled"');
-$config->set('HTML_READONLY', ' readonly="readonly"');
-$config->set('HTML_SELECTED', ' selected="selected"');
+	$config = new iMSCP_Config_Handler_File(CONFIG_FILE_PATH);
 
-// Default Language (if not overriden by admin)
-$config->set('USER_INITIAL_LANG', 'auto');
+	// Template root directory
+	$config['ROOT_TEMPLATE_PATH'] = dirname(dirname(__FILE__)) . '/themes/' . $config['USER_INITIAL_THEME'];
 
-// Tell whether or not output must be compressed
-$config->set('COMPRESS_OUTPUT', 1);
+	// Set the isp logos path
+	$config['ISP_LOGO_PATH'] = '/ispLogos';
 
-// show spGZIP compression information in HTML output
-$config->set('SHOW_COMPRESSION_SIZE', 1);
+	$config['HTML_CHECKED'] = ' checked="checked"';
+	$config['HTML_DISABLED'] = ' disabled="disabled"';
+	$config['HTML_READONLY'] = ' readonly="readonly"';
+	$config['HTML_SELECTED'] = ' selected="selected"';
 
-// Session timeout in minutes
-$config->set('SESSION_TIMEOUT', 30);
+	// Default Language (if not overriden by admin)
+	$config['USER_INITIAL_LANG'] = 'auto';
 
-// Item status
-$config->set('ITEM_OK_STATUS', 'ok');
-$config->set('ITEM_ENABLED_STATUS', 'enabled');
-$config->set('ITEM_DISABLED_STATUS', 'disabled');
-$config->set('ITEM_UNINSTALLED_STATUS', 'uninstalled');
-$config->set('ITEM_TOINSTALL_STATUS', 'toinstall');
-$config->set('ITEM_TOUPDATE_STATUS', 'toupdate');
-$config->set('ITEM_TOUNINSTALL_STATUS', 'touninstall');
-$config->set('ITEM_TOADD_STATUS', 'toadd');
-$config->set('ITEM_TOCHANGE_STATUS', 'tochange');
-$config->set('ITEM_TORESTORE_STATUS', 'torestore');
-$config->set('ITEM_TOENABLE_STATUS', 'toenable');
-$config->set('ITEM_TODISABLE_STATUS', 'todisable');
-$config->set('ITEM_TODELETE_STATUS', 'todelete');
+	// Tell whether or not output must be compressed
+	$config['COMPRESS_OUTPUT'] = 1;
 
-$config->set('ITEM_ORDERED_STATUS', 'ordered');
+	// show spGZIP compression information in HTML output
+	$config['SHOW_COMPRESSION_SIZE'] = 1;
 
-// SQL variables
-$config->set('MAX_SQL_DATABASE_LENGTH', 64);
-$config->set('MAX_SQL_USER_LENGTH', 16);
-$config->set('MAX_SQL_PASS_LENGTH', 32);
+	// Session timeout in minutes
+	$config['SESSION_TIMEOUT'] = 30;
 
-/**
- * The following settings can be overridden via the control panel - (admin/settings.php)
- */
+	// Item status
+	$config['ITEM_OK_STATUS'] = 'ok';
+	$config['ITEM_ENABLED_STATUS'] = 'enabled';
+	$config['ITEM_DISABLED_STATUS'] = 'disabled';
+	$config['ITEM_UNINSTALLED_STATUS'] = 'uninstalled';
+	$config['ITEM_TOINSTALL_STATUS'] = 'toinstall';
+	$config['ITEM_TOUPDATE_STATUS'] = 'toupdate';
+	$config['ITEM_TOUNINSTALL_STATUS'] = 'touninstall';
+	$config['ITEM_TOADD_STATUS'] = 'toadd';
+	$config['ITEM_TOCHANGE_STATUS'] = 'tochange';
+	$config['ITEM_TORESTORE_STATUS'] = 'torestore';
+	$config['ITEM_TOENABLE_STATUS'] = 'toenable';
+	$config['ITEM_TODISABLE_STATUS'] = 'todisable';
+	$config['ITEM_TODELETE_STATUS'] = 'todelete';
+	$config['ITEM_ORDERED_STATUS'] = 'ordered';
 
-// Domain rows pagination
-$config->set('DOMAIN_ROWS_PER_PAGE', 10);
+	// SQL variables
+	$config['MAX_SQL_DATABASE_LENGTH'] = 64;
+	$config['MAX_SQL_USER_LENGTH'] = 16;
+	$config['MAX_SQL_PASS_LENGTH'] = 32;
 
-// 'admin': hosting plans are available only in admin level, the
-// reseller cannot make custom changes
-// 'reseller': hosting plans are available only in reseller level
-$config->set('HOSTING_PLANS_LEVEL', 'reseller');
+	/**
+	 * The following settings can be overridden via the control panel - (admin/settings.php)
+	 */
 
-// Enable or disable support system
-$config->set('IMSCP_SUPPORT_SYSTEM', 1);
+	// Domain rows pagination
+	$config['DOMAIN_ROWS_PER_PAGE'] = 10;
 
-// Enable or disable lost password support
-$config->set('LOSTPASSWORD', 1);
+	// admin    : hosting plans are available only in admin level, the reseller cannot make custom changes
+	// reseller : hosting plans are available only in reseller level
+	$config['HOSTING_PLANS_LEVEL'] = 'reseller';
 
-// Uniqkeytimeout in minutes
-$config->set('LOSTPASSWORD_TIMEOUT', 30);
+	// Enable or disable support system
+	$config['IMSCP_SUPPORT_SYSTEM'] = 1;
 
-// Captcha imagewidth
-$config->set('LOSTPASSWORD_CAPTCHA_WIDTH', 276);
+	// Enable or disable lost password support
+	$config['LOSTPASSWORD'] = 1;
 
-// Captcha imagehigh
-$config->set('LOSTPASSWORD_CAPTCHA_HEIGHT', 30);
+	// Uniqkeytimeout in minutes
+	$config['LOSTPASSWORD_TIMEOUT'] = 30;
 
-// Captcha background color
-$config->set('LOSTPASSWORD_CAPTCHA_BGCOLOR', array(176,222,245));
+	// Captcha imagewidth
+	$config['LOSTPASSWORD_CAPTCHA_WIDTH'] = 276;
 
-// Captcha text color
-$config->set('LOSTPASSWORD_CAPTCHA_TEXTCOLOR', array(1, 53, 920));
+	// Captcha imagehigh
+	$config['LOSTPASSWORD_CAPTCHA_HEIGHT'] = 30;
 
-/**
- * Captcha ttf fontfiles (have to be under compatible open source license)
- */
-$fonts = array(
-    'FreeMono.ttf',
-    'FreeMonoBold.ttf',
-    'FreeMonoBoldOblique.ttf',
-    'FreeMonoOblique.ttf',
-    'FreeSans.ttf',
-    'FreeSansBold.ttf',
-    'FreeSansBoldOblique.ttf',
-    'FreeSansOblique.ttf',
-    'FreeSerif.ttf',
-    'FreeSerifBold.ttf',
-    'FreeSerifBoldItalic.ttf',
-    'FreeSerifItalic.ttf'
-);
+	// Captcha background color
+	$config['LOSTPASSWORD_CAPTCHA_BGCOLOR'] = array(176, 222, 245);
 
-// Set random captcha font file
-$config->set('LOSTPASSWORD_CAPTCHA_FONT', LIBRARY_PATH . '/fonts/' . $fonts[mt_rand(0, count($fonts)-1)]);
+	// Captcha text color
+	$config['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'] = array(1, 53, 920);
 
-// Enable or disable bruteforcedetection
-$config->set('BRUTEFORCE', 1);
+	/**
+	 * Captcha ttf fontfiles (have to be under compatible open source license)
+	 */
+	$fonts = array(
+		'FreeMono.ttf',
+		'FreeMonoBold.ttf',
+		'FreeMonoBoldOblique.ttf',
+		'FreeMonoOblique.ttf',
+		'FreeSans.ttf',
+		'FreeSansBold.ttf',
+		'FreeSansBoldOblique.ttf',
+		'FreeSansOblique.ttf',
+		'FreeSerif.ttf',
+		'FreeSerifBold.ttf',
+		'FreeSerifBoldItalic.ttf',
+		'FreeSerifItalic.ttf'
+	);
 
-// Blocktime in minutes
-$config->set('BRUTEFORCE_BLOCK_TIME', 30);
+	// Set random captcha font file
+	$config['LOSTPASSWORD_CAPTCHA_FONT'] = LIBRARY_PATH . '/fonts/' . $fonts[mt_rand(0, count($fonts) - 1)];
 
-// Max login before block
-$config->set('BRUTEFORCE_MAX_LOGIN', 3);
+	// Enable or disable bruteforcedetection
+	$config['BRUTEFORCE'] = 1;
 
-// Max login attempts before forced to wait
-$config->set('BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT', 2);
+	// Blocktime in minutes
+	$config['BRUTEFORCE_BLOCK_TIME'] = 30;
 
-// Max captcha failed attempts before block
-$config->set('BRUTEFORCE_MAX_CAPTCHA', 5);
+	// Max login before block
+	$config['BRUTEFORCE_MAX_LOGIN'] = 3;
 
-// Enable or disable time between logins
-$config->set('BRUTEFORCE_BETWEEN', 1);
+	// Max login attempts before forced to wait
+	$config['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'] = 2;
 
-// Time between logins in seconds
-$config->set('BRUTEFORCE_BETWEEN_TIME', 30);
+	// Max captcha failed attempts before block
+	$config['BRUTEFORCE_MAX_CAPTCHA'] = 5;
 
-// Enable or disable maintenance mode
-// 1: Maintenance mode enabled
-// 0: Maintenance mode disabled
-$config->set('MAINTENANCEMODE', 0);
+	// Enable or disable time between logins
+	$config['BRUTEFORCE_BETWEEN'] = 1;
 
-// Minimum password chars
-$config->set('PASSWD_CHARS', 6);
+	// Time between logins in seconds
+	$config['BRUTEFORCE_BETWEEN_TIME'] = 30;
 
-// Enable or disable strong passwords
-// 1: Strong password not allowed
-// 0: Strong password allowed
-$config->set('PASSWD_STRONG', 1);
+	// Enable or disable maintenance mode
+	// 1: Maintenance mode enabled
+	// 0: Maintenance mode disabled
+	$config['MAINTENANCEMODE'] = 0;
 
-/**
- * Logging Mailer default level (messages sent to DEFAULT_ADMIN_ADDRESS)
- *
- * E_USER_NOTICE: common operations (normal work flow)
- * E_USER_WARNING: Operations that may be related to a problem
- * E_USER_ERROR: Errors for which the admin should pay attention
- *
- * Note: PHP's E_USER_* constants are used for simplicity.
- */
-$config->set('LOG_LEVEL', E_USER_WARNING);
+	// Minimum password chars
+	$config['PASSWD_CHARS'] = 6;
 
-// Creation of webmaster, postmaster and abuse forwarders when
-$config->set('CREATE_DEFAULT_EMAIL_ADDRESSES', 1);
+	// Enable or disable strong passwords
+	// 1: Strong password not allowed
+	// 0: Strong password allowed
+	$config['PASSWD_STRONG'] = 1;
 
-// Count default email accounts (abuse, postmaster, webmaster) in user limit
-// 1: default email accounts are counted
-// 0: default email accounts are NOT counted
-$config->set('COUNT_DEFAULT_EMAIL_ADDRESSES', 1);
+	/**
+	 * Logging Mailer default level (messages sent to DEFAULT_ADMIN_ADDRESS)
+	 *
+	 * E_USER_NOTICE: common operations (normal work flow)
+	 * E_USER_WARNING: Operations that may be related to a problem
+	 * E_USER_ERROR: Errors for which the admin should pay attention
+	 *
+	 * Note: PHP's E_USER_* constants are used for simplicity.
+	 */
+	$config['LOG_LEVEL'] = E_USER_WARNING;
 
-// Use hard mail suspension when suspending a domain:
-// 1: email accounts are hard suspended (completely unreachable)
-// 0: email accounts are soft suspended (passwords are modified so
-// user can't access the accounts)
-$config->set('HARD_MAIL_SUSPENSION', 1);
+	// Creation of webmaster, postmaster and abuse forwarders when
+	$config['CREATE_DEFAULT_EMAIL_ADDRESSES'] = 1;
 
-// Prevent external login (i.e. check for valid local referer)
-// separated in admin, reseller and client
-// This option allows to use external login scripts
-// 1: prevent external login, check for referer, more secure
-// 0: allow external login, do not check for referer, less security (risky)
-$config->set('PREVENT_EXTERNAL_LOGIN_ADMIN', 1);
-$config->set('PREVENT_EXTERNAL_LOGIN_RESELLER', 1);
-$config->set('PREVENT_EXTERNAL_LOGIN_CLIENT', 1);
+	// Count default email accounts (abuse, postmaster, webmaster) in user limit
+	// 1: default email accounts are counted
+	// 0: default email accounts are NOT counted
+	$config['COUNT_DEFAULT_EMAIL_ADDRESSES'] = 1;
 
-// Automatic search for new version
-$config->set('CHECK_FOR_UPDATES', false);
-$config->set('ENABLE_SSL', false);
+	// Use hard mail suspension when suspending a domain:
+	// 1: email accounts are hard suspended (completely unreachable)
+	// 0: email accounts are soft suspended (passwords are modified so user can't access the accounts)
+	$config['HARD_MAIL_SUSPENSION'] = 1;
 
-if(!$config->get('IMSCP_SUPPORT_SYSTEM_TARGET')) {
-	$config->set('IMSCP_SUPPORT_SYSTEM_TARGET', '_self');
+	// Prevent external login (i.e. check for valid local referer) separated in admin, reseller and client.
+	// This option allows to use external login scripts
+	//
+	// 1: prevent external login, check for referer, more secure
+	// 0: allow external login, do not check for referer, less security (risky)
+	$config['PREVENT_EXTERNAL_LOGIN_ADMIN'] = 1;
+	$config['PREVENT_EXTERNAL_LOGIN_RESELLER'] = 1;
+	$config['PREVENT_EXTERNAL_LOGIN_CLIENT'] = 1;
+
+	// Automatic search for new version
+	$config['CHECK_FOR_UPDATES'] = false;
+	$config['ENABLE_SSL'] = false;
+
+	if(!$config['IMSCP_SUPPORT_SYSTEM_TARGET']) {
+		$config['IMSCP_SUPPORT_SYSTEM_TARGET'] = '_self';
+	}
+
+	// Converting some possible IDN to ACE
+	$config['DEFAULT_ADMIN_ADDRESS'] = encode_idna($config->get('DEFAULT_ADMIN_ADDRESS'));
+	$config['SERVER_HOSTNAME'] = encode_idna($config->get('SERVER_HOSTNAME'));
+	$config['BASE_SERVER_VHOST'] = encode_idna($config->get('BASE_SERVER_VHOST'));
+	$config['DATABASE_HOST'] = encode_idna($config->get('DATABASE_HOST'));
+
+	// Server traffic settings
+	$config['SERVER_TRAFFIC_LIMIT'] = 0;
+	$config['SERVER_TRAFFIC_WARN'] = 0;
+
+	// Paths appended to the default PHP open_basedir directive of customers
+	$config['PHPINI_OPEN_BASEDIR'] = '';
+
+	// Store file last modification time to force reloading of configuration file if needed
+	$config['__filemtime__'] = filemtime(CONFIG_FILE_PATH);
+
+	@file_put_contents(CONFIG_CACHE_FILE_PATH, serialize($config), LOCK_EX);
 }
 
-// Converting some possible IDN to ACE
-$config->set('DEFAULT_ADMIN_ADDRESS', encode_idna($config->get('DEFAULT_ADMIN_ADDRESS')));
-$config->set('SERVER_HOSTNAME', encode_idna($config->get('SERVER_HOSTNAME')));
-$config->set('BASE_SERVER_VHOST', encode_idna($config->get('BASE_SERVER_VHOST')));
-$config->set('DATABASE_HOST', encode_idna($config->get('DATABASE_HOST')));
-
-// Server traffic settings
-$config->set('SERVER_TRAFFIC_LIMIT', 0);
-$config->set('SERVER_TRAFFIC_WARN', 0);
-
-// Paths appended to the default PHP open_basedir directive of customers
-$config->set('PHPINI_OPEN_BASEDIR', '');
-
-// Initialize the application
+// Initialize application
 iMSCP_Initializer::run($config);
 
-// Removing useless variable
-unset($config);
+// Remove useless variable
+unset($configFilePath, $cachedConfigFilePath, $config);

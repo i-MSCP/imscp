@@ -53,17 +53,17 @@ class iMSCP_Initializer
 	 * @param iMSCP_Config_Handler_File $config OPTIONAL iMSCP_Config_Handler_File object
 	 * @return iMSCP_Initializer
 	 */
-	public static function run($command = '_processAll', iMSCP_Config_Handler_File $config = null)
+	public static function run($command = 'processAll', iMSCP_Config_Handler_File $config = null)
 	{
 		if(!self::$_initialized) {
 			if($command instanceof iMSCP_Config_Handler_File) {
 				$config = $command;
-				$command = '_processAll';
+				$command = 'processAll';
 			}
 
 			// Overrides _processAll command for CLI interface
-			if($command == '_processAll' && PHP_SAPI == 'cli') {
-				$command = '_processCLI';
+			if($command == 'processAll' && PHP_SAPI == 'cli') {
+				$command = 'processCLI';
 			} elseif(is_xhr()) {
 				$command = 'processAjax';
 			}
@@ -102,16 +102,16 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Executes all of the available initialization routines for normal
+	 * Executes all of the available initialization routines for normal context
 	 *
 	 * @return void
 	 */
-	protected function _processAll()
+	protected function processAll()
 	{
 		$this->setDisplayErrors();
 		$this->initializeSession();
 		$this->initializeDatabase();
-		$this->loadDbConfig();
+		$this->loadConfig();
 		$this->setInternalEncoding();
 		$this->setTimezone();
 		$this->initializeUserGuiProperties();
@@ -129,7 +129,7 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Executes all of the available initialization routines for Ajax context
+	 * Executes all of the available initialization routines for AJAX context
 	 *
 	 * @return void
 	 */
@@ -138,7 +138,7 @@ class iMSCP_Initializer
 		$this->setDisplayErrors();
 		$this->initializeSession();
 		$this->initializeDatabase();
-		$this->loadDbConfig();
+		$this->loadConfig();
 		$this->setInternalEncoding();
 		$this->setTimezone();
 		$this->initializeUserGuiProperties();
@@ -159,7 +159,7 @@ class iMSCP_Initializer
 	protected function processCLI()
 	{
 		$this->initializeDatabase();
-		$this->loadDbConfig();
+		$this->loadConfig();
 		$this->initializeLocalization(); // Needed for rebuilt of languages index
 
 		// Trigger the onAfterInitialize event
@@ -356,20 +356,28 @@ class iMSCP_Initializer
 	 * @throws iMSCP_Exception
 	 * @return void
 	 */
-	protected function loadDbConfig()
+	protected function loadConfig()
 	{
 		/** @var $pdo PDO */
 		$pdo = iMSCP_Database::getRawInstance();
 
-		// Creating new Db configuration handler.
-		$dbConfig = new iMSCP_Config_Handler_Db($pdo);
+		if(is_readable(DBCONFIG_CACHE_FILE_PATH)) {
+			/** @var iMSCP_Config_Handler_Db $dbConfig */
+			$dbConfig = unserialize(file_get_contents(DBCONFIG_CACHE_FILE_PATH));
+			$dbConfig->setDb($pdo);
+		} else {
+			// Creating new Db configuration handler.
+			$dbConfig = new iMSCP_Config_Handler_Db($pdo);
 
-		// Now, we can override our basis configuration object with parameter that come from the database
-		if(!$this->config->replaceWith($dbConfig)) {
-			throw new iMSCP_Exception('An unexpected error occured.');
+			if(PHP_SAPI != 'cli') {
+				@file_put_contents(DBCONFIG_CACHE_FILE_PATH, serialize($dbConfig), LOCK_EX);
+			}
 		}
 
-		// Finally, we register the iMSCP_Config_Handler_Db for shared access
+		// Merge main configuration object with the dbConfig object
+		$this->config->merge($dbConfig);
+
+		// Add the dbconfig object into the registry for later use
 		iMSCP_Registry::set('dbConfig', $dbConfig);
 	}
 
