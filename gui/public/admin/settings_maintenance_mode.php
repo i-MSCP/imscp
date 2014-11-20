@@ -60,7 +60,7 @@ if (isset($_POST['uaction']) and $_POST['uaction'] == 'apply') {
 	$db_cfg->MAINTENANCEMODE = $maintenancemode;
 	$db_cfg->MAINTENANCEMODE_MESSAGE = $maintenancemode_message;
 
-	$cfg->replaceWith($db_cfg);
+	$cfg->merge($db_cfg);
 
 	set_page_message(tr('Settings saved.'), 'success');
 }

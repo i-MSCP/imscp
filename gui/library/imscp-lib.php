@@ -1,38 +1,28 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2014 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
- * @package	    i-MSCP
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @copyright   2010-2014 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://i-mscp.net i-MSCP Home Site
- * @license     http://www.mozilla.org/MPL/ MPL 1.1
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 // Set default error reporting level
@@ -46,16 +36,19 @@ ini_set('display_errors', 1);
 /**
  * Check PHP version
  */
-if (version_compare(phpversion(), '5.3.2', '<') === true) {
-	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.2 or newer.\n");
-}
+//if (version_compare(phpversion(), '5.3.2', '<') === true) {
+//	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.2 or newer.\n");
+//}
 
 // Define paths
 define('GUI_ROOT_DIR', dirname(__DIR__));
 define('LIBRARY_PATH', GUI_ROOT_DIR . '/library');
-define('PLUGINS_PATH', GUI_ROOT_DIR .'/plugins');
-define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
-define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
+define('PLUGINS_PATH', GUI_ROOT_DIR . '/plugins');
+define('CACHE_PATH', GUI_ROOT_DIR . '/data/cache');
+define('PERSISTENT_PATH', GUI_ROOT_DIR . '/data/persistent');
+define('CONFIG_FILE_PATH', getenv('IMSCP_CONF') ?: '/etc/imscp/imscp.conf');
+define('CONFIG_CACHE_FILE_PATH', CACHE_PATH . '/imscp_config.conf');
+define('DBCONFIG_CACHE_FILE_PATH', CACHE_PATH . '/imscp_dbconfig.conf');
 
 // Setup include path
 set_include_path(implode(PATH_SEPARATOR, array_unique(
