@@ -62,7 +62,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 195;
+	protected $lastUpdate = 196;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3081,7 +3081,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Remove deprecated MAIL_WRITER_EXPIRY_TIME parameter
+	 * Remove deprecated MAIL_WRITER_EXPIRY_TIME configuration parameter
 	 *
 	 * @return void
 	 */
@@ -3092,6 +3092,21 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if(isset($dbConfig['MAIL_WRITER_EXPIRY_TIME'])) {
 			unset($dbConfig['MAIL_WRITER_EXPIRY_TIME']);
+		}
+	}
+
+	/**
+	 * Remove deprecated MAIL_BODY_FOOTPRINTS configuration parameter
+	 *
+	 * @return void
+	 */
+	protected function r196()
+	{
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		if(isset($dbConfig['MAIL_BODY_FOOTPRINTS'])) {
+			unset($dbConfig['MAIL_BODY_FOOTPRINTS']);
 		}
 	}
 }

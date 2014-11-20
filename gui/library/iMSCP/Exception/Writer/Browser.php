@@ -103,6 +103,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
 		} catch(Exception $event) {
 		}
 
+		# Fallback to inline template in case something goes wrong with template engine
 		if(!($tpl = $this->templateEngine)) {
 			echo <<<HTML
 <!DOCTYPE html>
@@ -113,24 +114,44 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
 		<meta name="robots" content="nofollow, noindex">
 		<style>
 			h1 {
+				font-size: 1.5em;
+				letter-spacing: .1em;
 				text-align: center;
+				padding: 0;
+				margin: 0;
 			}
-			div {
+
+			#message_container {
+				background: transparent url('/themes/default/assets/images/black/box/message_top.jpg') no-repeat top left;
 				position: absolute;
-				top:0;
+				top:170px;
 				left:0;
 				right:0;
-				width:50%;
-				margin: 170px auto 0 auto;
-				padding: 5px;
-				border: 3px solid #666666;
+				width:453px;
+				margin: 0 auto 0 auto;
+				padding-top: 80px;
+				border: 1px solid #ededed;
+				border-top: none;
+				-webkit-border-radius: 4px;
+				-moz-border-radius: 4px;
+				border-radius: 4px;
+			}
+
+			#message_container pre {
+				margin-top: 1em;
+				padding: 0 .5em;
+				white-space: -moz-pre-wrap;
+				white-space: -pre-wrap;
+				white-space: -o-pre-wrap;
+				white-space: pre-wrap;
+				word-wrap: break-word;
 			}
 		</style>
 	</head>
 	<body>
-		<div>
-		<h1>An unexpected error occured</h1>
-		<p>{$this->message}</p>
+		<div id="message_container">
+			<h1>An unexpected error occured</h1>
+			<pre>{$this->message}</pre>
 		</div>
 	</body>
 </html>
@@ -170,9 +191,6 @@ HTML;
 			array(
 				'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Fatal Error',
 				'CONTEXT_CLASS' => ' no_header',
-				'productLink' => 'http://www.i-mscp.net',
-				'productLongName' => 'internet Multi Server Control Panel',
-				'productCopyright' => '© 2010-2014 i-MSCP Team<br/>All Rights Reserved',
 				'BOX_MESSAGE_TITLE' => 'An unexpected error occured',
 				'PAGE_MESSAGE' => '',
 				'BOX_MESSAGE' => $this->message,
