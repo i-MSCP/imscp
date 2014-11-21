@@ -92,7 +92,7 @@ sub askHostname
 	my ($self, $dialog) = @_;
 
 	my $vhost = main::setupGetQuestion('BASE_SERVER_VHOST');
-	my %options =  (domain_private_tld => qr /^(?:bogus|test|lan)$/);
+	my %options =  (domain_private_tld => qr /.*/);
 
 	my ($rs, @labels) = (0, $vhost ? split(/\./, $vhost) : ());
 
