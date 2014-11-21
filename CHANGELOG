@@ -19,6 +19,7 @@ GUI
 	Removed MAIL_BODY_FOOTPRINTS and MAIL_WRITER_EXPIRY_TIME configuration parameters ( Exception mail writer )
 	Rewritten: Handler for uncaught exceptions ( including writers )
 	Rewritten: SSL certificate interface ( client level )
+	Refactoring: Moved js initialiazation routines into the imscp.js file +++
 
 Vendor
 	Fixed: base64_encode() expects parameter 1 to be string, array given in ASN1.php ( phpseclib )
