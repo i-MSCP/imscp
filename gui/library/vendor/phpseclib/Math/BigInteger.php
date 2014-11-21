@@ -329,9 +329,12 @@ class Math_BigInteger
 
         switch ( MATH_BIGINTEGER_MODE ) {
             case MATH_BIGINTEGER_MODE_GMP:
-                if (is_resource($x) && get_resource_type($x) == 'GMP integer') {
-                    $this->value = $x;
-                    return;
+                switch (true) {
+                    case is_resource($x) && get_resource_type($x) == 'GMP integer':
+                    // PHP 5.6 switched GMP from using resources to objects
+                    case is_object($x) && get_class($x) == 'GMP':
+                        $this->value = $x;
+                        return;
                 }
                 $this->value = gmp_init(0);
                 break;
@@ -912,7 +915,7 @@ class Math_BigInteger
             $value = $x_value;
         }
 
-        $value[] = 0; // just in case the carry adds an extra digit
+        $value[count($value)] = 0; // just in case the carry adds an extra digit
 
         $carry = 0;
         for ($i = 0, $j = 1; $j < $size; $i+=2, $j+=2) {
@@ -2134,7 +2137,7 @@ class Math_BigInteger
 
         if ($this->_compare($result, false, $temp[MATH_BIGINTEGER_VALUE], $temp[MATH_BIGINTEGER_SIGN]) < 0) {
             $corrector_value = $this->_array_repeat(0, $n_length + 1);
-            $corrector_value[] = 1;
+            $corrector_value[count($corrector_value)] = 1;
             $result = $this->_add($result, false, $corrector_value, false);
             $result = $result[MATH_BIGINTEGER_VALUE];
         }
@@ -3479,7 +3482,7 @@ class Math_BigInteger
         }
 
         if ( $carry ) {
-            $this->value[] = $carry;
+            $this->value[count($this->value)] = $carry;
         }
 
         while ($num_digits--) {
