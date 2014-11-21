@@ -19,6 +19,9 @@ GUI
 	Removed MAIL_BODY_FOOTPRINTS and MAIL_WRITER_EXPIRY_TIME configuration parameters ( Exception mail writer )
 	Rewritten: Handler for uncaught exceptions ( including writers )
 
+INSTALLER
+	Fixed: Any TLD must be allowed ( hostname and domain name validation )
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.17
 ------------------------------------------------------------------------------------------------------------------------

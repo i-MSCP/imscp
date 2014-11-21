@@ -232,7 +232,7 @@ sub setupAskServerHostname
 	my $dialog = $_[0];
 
 	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-	my %options = (domain_private_tld => qr /^(?:bogus|test|lan)$/);
+	my %options = (domain_private_tld => qr /.*/);
 	my ($rs, @labels) = (0, $hostname ? split(/\./, $hostname) : ());
 
 	if($main::reconfigure ~~ ['hostname', 'all', 'forced'] || ! (@labels >= 3 && is_domain($hostname, \%options))) {
@@ -274,8 +274,7 @@ sub setupAskImscpVhost
 	my $dialog = $_[0];
 
 	my $vhost = setupGetQuestion('BASE_SERVER_VHOST');
-	my %options =  (domain_private_tld => qr /^(?:bogus|test|lan)$/);
-
+	my %options = (domain_private_tld => qr /.*/);
 	my ($rs, @labels) = (0, $vhost ? split(/\./, $vhost) : ());
 
 	if($main::reconfigure ~~ ['hostname', 'all', 'forced'] || ! (@labels >= 3 && is_domain($vhost, \%options))) {
