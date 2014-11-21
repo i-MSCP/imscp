@@ -227,7 +227,7 @@ sub setupAskServerHostname
 	my $dialog = $_[0];
 
 	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-	my %options = (domain_private_tld => qr /^(?:bogus|test|lan)$/);
+	my %options = (domain_private_tld => qr /.*/);
 	my ($rs, @labels) = (0, $hostname ? split(/\./, $hostname) : ());
 
 	if(
