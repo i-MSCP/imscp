@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -348,7 +348,7 @@ msgstr "%s: Você não pode desabilitar um serviço já vendidos aos clientes do
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
-msgstr ""
+msgstr "%s::getInfo() não foi implementado e %s não encontrado. Isso pode ser um bug no plugin %s e deve ser reportado a seu(s) autor(es)."
 
 #, php-format
 msgid ""
@@ -996,14 +996,8 @@ msgstr "Um erro foi encontrado na lista de encaminhamento de e-mail."
 msgid "An error occurred during authentication."
 msgstr "Ocorreu um erro durante a autenticação."
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Ocorreu um erro. Por favor, contate o administrador."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Ocorreu um erro inesperado. Por favor, contate o seu revendedor."
-
-msgid "An unexpected error occured. Please retry"
-msgstr "Ocorreu um erro inesperado. Por favor, tente novamente"
 
 #, php-format
 msgid "An unexpected error occured: %s"
@@ -1012,13 +1006,12 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr ""
 
+msgid "An unexpected error occurred. Please contact your administrator."
+msgstr ""
+
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ocorreu um erro inesperado: %s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1296,9 +1289,6 @@ msgstr "Certificado"
 
 msgid "Certificate data"
 msgstr "Dados do certificado"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "Certificado agendada com sucesso para exclusão."
 
 msgid "Change"
 msgstr "Alterar"
@@ -2899,8 +2889,8 @@ msgstr "Ordem de menu inválido."
 msgid "Invalid name."
 msgstr "Nome inválido."
 
-msgid "Invalid private key or passphrase"
-msgstr "Chave  ou senha privada inválida."
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Destino inválido."
@@ -3035,7 +3025,7 @@ msgid "Logo successfully updated."
 msgstr "Logo atualizado com sucesso."
 
 msgid "Logout"
-msgstr ""
+msgstr "Sair"
 
 msgid "Lost password"
 msgstr "Senha perdida"
@@ -3277,9 +3267,6 @@ msgstr "Não há registros de anti-rootkits"
 
 msgid "No available"
 msgstr "não disponível"
-
-msgid "No certificate found"
-msgstr "Nenhum certificado encontrado"
 
 msgid "No custom menu found."
 msgstr "Nenhum menu personalizado encontrado."
@@ -3956,8 +3943,8 @@ msgstr "Prioridade: %s\n"
 msgid "Private key"
 msgstr "Chave privada"
 
-msgid "Private key field cannot be empty"
-msgstr "O campo da chave privada não pode ser vazia"
+msgid "Private key field cannot be empty."
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "Senha de chave privada se houver"
@@ -4364,14 +4351,17 @@ msgstr ""
 msgid "SQL users"
 msgstr "Usuários SQL"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr "Certificado SSL agendada com sucesso para adição ou atualização."
-
 msgid "SSL certificate"
 msgstr "Certificado SSL"
 
-msgid "SSL feature is not available."
-msgstr "SSL não está disponível."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL não está disponível. Você só pode ver o seu certificado."
@@ -4873,11 +4863,17 @@ msgstr "O endereço IP que você está tentando remover está atribuído à um r
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "A tecla Enter está desativada por motivos de desempenho."
 
-msgid "The certificate doesn't match with the private key."
-msgstr "O certificado não coincide com a chave privada."
-
 msgid "The certificate field cannot be empty."
 msgstr "O campo de certificado não pode ser vazio."
+
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4901,6 +4897,9 @@ msgstr "O domínio ou uma das suas entidades tem um status diferente de 'ok'."
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "O domínio que você está tentando editar não existe."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "O menu que você está tentando editar não existe."
@@ -5483,6 +5482,9 @@ msgstr "Urgente"
 msgid "View"
 msgstr "Ver"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Ver chamados de suporte"
 
@@ -5899,15 +5901,6 @@ msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
 msgstr "Sua conta está em manutenção ou desativada. Por favor, contate o seu revendedor."
-
-msgid "Your certificate is expired"
-msgstr "Seu certificado expirou"
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr "O certificado não é válido ou o pacote de CA está faltando."
-
-msgid "Your certificate is not valid."
-msgstr "O certificado não é válido."
 
 msgid "Your consumption"
 msgstr "Seu comsumo"

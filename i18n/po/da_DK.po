@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -990,14 +990,8 @@ msgstr "En fejl er blevet fundet i mail forward listen."
 msgid "An error occurred during authentication."
 msgstr "Der opstod en fejl i forbindelse med godkendelse."
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Der opstod en fejl. Kontakt venligst din administrator."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "En uventet fejl opstod. Kontakt din forhandler."
-
-msgid "An unexpected error occured. Please retry"
-msgstr "En uventet fejl opstod. Forsøg igen"
 
 #, php-format
 msgid "An unexpected error occured: %s"
@@ -1006,13 +1000,12 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr ""
 
+msgid "An unexpected error occurred. Please contact your administrator."
+msgstr ""
+
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "En uventet fejl opstod: %s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1290,9 +1283,6 @@ msgstr "Certifikat"
 
 msgid "Certificate data"
 msgstr "Certifikat data"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "Certifikat planlagt til sletning."
 
 msgid "Change"
 msgstr "Ændre"
@@ -2893,8 +2883,8 @@ msgstr "Ugyldig menu rækkefølge."
 msgid "Invalid name."
 msgstr "Ugyldig navn."
 
-msgid "Invalid private key or passphrase"
-msgstr "Ugyldig privat nøgle eller adgangssætning"
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Ugyldig mål."
@@ -3029,7 +3019,7 @@ msgid "Logo successfully updated."
 msgstr "Logo succesfuldt opdateret."
 
 msgid "Logout"
-msgstr ""
+msgstr "Log ud"
 
 msgid "Lost password"
 msgstr "Glemt Adgangskode"
@@ -3271,9 +3261,6 @@ msgstr "Ingen anti-rootkits logs"
 
 msgid "No available"
 msgstr "Ikke tilgængelig"
-
-msgid "No certificate found"
-msgstr "Ingen certifikat fundet."
 
 msgid "No custom menu found."
 msgstr "Ingen brugerdefineret menu fundet."
@@ -3950,8 +3937,8 @@ msgstr "Prioritet: %s\n"
 msgid "Private key"
 msgstr "Privat nøgle"
 
-msgid "Private key field cannot be empty"
-msgstr "Privat nøgle felt kan ikke være tomt"
+msgid "Private key field cannot be empty."
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "Privat nøgle adgangssætning, hvis nogen"
@@ -4358,14 +4345,17 @@ msgstr ""
 msgid "SQL users"
 msgstr "SQL brugere"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr "SSL-certifikat er med succes planlagt til tilføjelse eller opdatering."
-
 msgid "SSL certificate"
 msgstr "SSL certifikat"
 
-msgid "SSL feature is not available."
-msgstr "SSL-funktionen er ikke tilgængelig."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-funktionen er ikke tilgængelig. Du kan kun se dit certifikat."
@@ -4867,11 +4857,17 @@ msgstr "Den IP-adresse, du forsøger at fjerne er tildelt en forhandler."
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "`Enter` tasten er deaktiveret på grund af ydeevnen."
 
-msgid "The certificate doesn't match with the private key."
-msgstr "Certifikatet passer ikke sammen med den private nøgle."
-
 msgid "The certificate field cannot be empty."
 msgstr "Feltet certifikat kan ikke være tom."
+
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4895,6 +4891,9 @@ msgstr "Domænet eller mindst en af sine objekter har en anden status end 'ok'."
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Det domæne, du forsøger at redigere findes ikke."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Den menu, du forsøger at redigere findes ikke."
@@ -5477,6 +5476,9 @@ msgstr "Meget høj"
 msgid "View"
 msgstr "Se"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Se Support Ticket"
 
@@ -5893,15 +5895,6 @@ msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
 msgstr "Din konto er i øjeblikket under vedligeholdelse eller deaktiveret. Kontakt venligst din forhandler."
-
-msgid "Your certificate is expired"
-msgstr "Dit certifikat er udløbet"
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr "Dit certifikat er ikke gyldigt eller CA bundle mangler."
-
-msgid "Your certificate is not valid."
-msgstr "Dit certifikat er ikke gyldigt."
 
 msgid "Your consumption"
 msgstr "Dit forbrug"

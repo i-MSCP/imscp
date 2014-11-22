@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -253,7 +253,7 @@ msgstr "%d configuratie parameter(s) is/zijn gemaakt."
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
-msgstr "%d configuratie parameter(s) is/zijn bijgewerkt."
+msgstr "%d configuratieparameter(s) bijgewerkt."
 
 #, php-format
 msgid "%d of %s"
@@ -643,10 +643,10 @@ msgid "Add custom menu"
 msgstr "Voeg eigen menu toe"
 
 msgid "Add customer"
-msgstr "Voeg klant toe"
+msgstr "Klant toevoegen"
 
 msgid "Add customer - Next step"
-msgstr "Voeg klant toe - Volgende stap"
+msgstr "Klant toevoegen - Volgende stap"
 
 msgid "Add domain alias"
 msgstr "Domeinalias toevoegen"
@@ -775,21 +775,21 @@ msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
 msgstr "Beheerder / Instellingen / {TR_DYNAMID_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr "Beheerder / Softwarebeheer / Resellersoftware"
+msgstr "Beheerder / Softwarebeheer / Wederverkopersssoftware"
 
 msgid "Admin / Statistics / IP Usage"
 msgstr "Beheerder / Statistieken / IP-gebruik"
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr "Beheerder / Statistieken / Resellerstatistieken"
+msgstr "Beheerder / Statistieken / Wederverkopersstatistieken"
 
 msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr "Beheerder / Statistieken / Resellerstatistieken / Klantstatistieken"
+msgstr "Beheerder / Statistieken / Wederverkopersstatistieken / Klantstatistieken"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
 "Statistics"
-msgstr "Beheerder / Statistieken / Resellerstatistieken / Klantstatistieken / Domeinstatistieken"
+msgstr "Beheerder / Statistieken / Wederverkopersstatistieken / Klantstatistieken / Domeinstatistieken"
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Beheerder / Statistieken / Serverstatistieken"
@@ -996,29 +996,22 @@ msgstr "Er is een fout gevonden in de doorstuurlijst."
 msgid "An error occurred during authentication."
 msgstr "Er is een aanmeldfout opgetreden"
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Er is een fout opgetreden. Neem contact op met uw beheerder."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Er heeft zich een onverwachte fout voorgedaan. Neem contact op met uw wederverkoper."
 
-msgid "An unexpected error occured. Please retry"
-msgstr "Een onverwachte fout opgetreden. Probeer opnieuw"
-
 #, php-format
 msgid "An unexpected error occured: %s"
-msgstr ""
+msgstr "Er is een onverwachte fout opgetreden: %s"
 
 msgid "An unexpected error occurred."
+msgstr "Er is een onverwachte fout opgetreden."
+
+msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Een onverwachte fout opgetreden: %s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1150,7 +1143,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "U dient eerst een databank met minimaal 1 gebruiker aan te maken."
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Automatisch (Browsertaal)"
 
 msgid "Auto email template data updated!"
 msgstr "Auto-e-mail-template gewijzigd!"
@@ -1201,7 +1194,7 @@ msgid "Bad password."
 msgstr "Wachtwoord niet correct."
 
 msgid "Bad request."
-msgstr ""
+msgstr "Fout verzoek"
 
 msgid "Behind"
 msgstr "Achter"
@@ -1296,9 +1289,6 @@ msgstr "Certificaat"
 
 msgid "Certificate data"
 msgstr "Certificaatdata"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "Certificaat succesvol ingepland om verwijderd te worden."
 
 msgid "Change"
 msgstr "Aanpassen"
@@ -1601,7 +1591,7 @@ msgid "Created by"
 msgstr "Gemaakt door"
 
 msgid "Creation date"
-msgstr "Aangemaakt op"
+msgstr "Aanmaakdatum"
 
 msgid "Current password"
 msgstr "Huidig wachtwoord"
@@ -1652,10 +1642,10 @@ msgid "Customer"
 msgstr "Klant"
 
 msgid "Customer ID"
-msgstr "Klant-ID"
+msgstr "Klantnummer"
 
 msgid "Customer ID cannot have more than 200 characters"
-msgstr "KlantID kan niet meer dan 200 tekens bevatten"
+msgstr "Klantnummer kan niet meer dan 200 tekens bevatten"
 
 msgid "Customer account"
 msgstr "Klantaccount"
@@ -1736,7 +1726,7 @@ msgid "Database"
 msgstr "Databank"
 
 msgid "Database Name and Users"
-msgstr "Databanknaam en Gebruikers"
+msgstr "Databanknaam en gebruikers"
 
 msgid "Database Update Revision"
 msgstr "Databank-update-revisie"
@@ -1828,7 +1818,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "Beste {ADMIN},\n\t{RESELLER} heeft een nieuw softwarepakket geüpload.\n\n\tDetails:\n\tWederverkoper-ID: {RESELLER_ID}\n\tPakketnaam: {SOFTWARE}\n\tPakket-ID: {SOFTWARE_ID}\n\n\tLog in via i-MSCP voor meer informatie."
+msgstr "Beste {ADMIN},\n\t{RESELLER} heeft een nieuw softwarepakket geüpload.\n\n\tDetails:\n\tWederverkopersnummer: {RESELLER_ID}\n\tPakketnaam: {SOFTWARE}\n\tPakketnummer: {SOFTWARE_ID}\n\n\tLog in via i-MSCP voor meer informatie."
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -1840,7 +1830,7 @@ msgid ""
 "\n"
 "\tMessage from {ADMIN}:\n"
 "\t"
-msgstr "Beste {RESELLER},\n\t\tUw geüploade software is verwijderd door {ADMIN}.\n\n\tDetails:\n\tPakketnaam: {SOFTWARE}\n\tPakket-ID: {SOFTWARE_ID}\n\n\tBericht van {ADMIN}:\n\t"
+msgstr "Beste {ADMIN},\n\t{RESELLER} heeft een nieuw softwarepakket geüpload.\n\n\tDetails:\n\tWederverkopersnummer: {RESELLER_ID}\n\tPakketnaam: {SOFTWARE}\n\tPakketnummer: {SOFTWARE_ID}\n\n\tLog in via i-MSCP voor meer informatie."
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -1851,7 +1841,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "Beste {RESELLER},\n\tUw softwarepakket is succesvol geactiveerd door {ADMIN}.\n\n\tDetails:\n\tPakketnaam: {SOFTWARE}\n\tPakket-ID: {SOFTWARE_ID}\n\n\tLog in via i-MSCP voor meer informatie"
+msgstr "Beste {RESELLER},\n\tUw softwarepakket is succesvol geactiveerd door {ADMIN}.\n\n\tDetails:\n\tPakketnaam: {SOFTWARE}\n\tPakketnummer: {SOFTWARE_ID}\n\n\tLog in via i-MSCP voor meer informatie"
 
 msgid "Debugger"
 msgstr "Debugger"
@@ -2899,8 +2889,8 @@ msgstr "Ongeldige menuvolgorde."
 msgid "Invalid name."
 msgstr "Ongeldige naam."
 
-msgid "Invalid private key or passphrase"
-msgstr "Ongeldige private-key of wachtwoordsleutel"
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Doel is ongeldig"
@@ -2941,7 +2931,7 @@ msgid "Language successfully updated."
 msgstr "Taal succesvol bijgewerkt."
 
 msgid "Languages"
-msgstr "Taalinstelling"
+msgstr "Taalinstellingen"
 
 msgid "Languages index was successfully re-built."
 msgstr "Taalindex is succesvol herbouwd."
@@ -2995,7 +2985,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Systeembelasting (1 min, 5 min, 15 min)"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "Data aan het laden..."
 
 msgid "Log entries successfully deleted."
 msgstr "Logboekinvoer succesvol verwijderd."
@@ -3035,7 +3025,7 @@ msgid "Logo successfully updated."
 msgstr "Logo succesvol bijgewerkt."
 
 msgid "Logout"
-msgstr ""
+msgstr "Uitloggen"
 
 msgid "Lost password"
 msgstr "Wachtwoord opvragen"
@@ -3277,9 +3267,6 @@ msgstr "Geen anti-rootkit log"
 
 msgid "No available"
 msgstr "Geen beschikbaar"
-
-msgid "No certificate found"
-msgstr "Geen certificaat gevonden"
 
 msgid "No custom menu found."
 msgstr "Geen eigen menu gevonden."
@@ -3577,7 +3564,7 @@ msgid "Package type"
 msgstr "Pakkettype"
 
 msgid "Package vendor HP"
-msgstr "Pakketmaker HP"
+msgstr "Website ontwikkelaar"
 
 msgid "Package version"
 msgstr "Pakketversie"
@@ -3741,7 +3728,7 @@ msgid "Please specify a message subject."
 msgstr "Vul de berichtkop in"
 
 msgid "Please type database name."
-msgstr "Typ de databanknaam"
+msgstr "Geef databanknaam in"
 
 msgid "Please type your message."
 msgstr "Typ uw boodschap."
@@ -3935,10 +3922,10 @@ msgid "Prevent external login for admins"
 msgstr "Voorkom externe login voor beheerder"
 
 msgid "Prevent external login for clients"
-msgstr "voorkom externe login voor clients"
+msgstr "voorkom externe login voor klanten"
 
 msgid "Prevent external login for resellers"
-msgstr "Voorkom externe login voor resellers"
+msgstr "Voorkom externe login voor wederverkopers"
 
 msgid "Previous"
 msgstr "Vorige"
@@ -3956,8 +3943,8 @@ msgstr "Prioriteit: %s\n"
 msgid "Private key"
 msgstr "Private-key"
 
-msgid "Private key field cannot be empty"
-msgstr "Veld voor private-key kan niet leeg zijn"
+msgid "Private key field cannot be empty."
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "Indien nodig: wachtwoord voor private-key"
@@ -3979,7 +3966,7 @@ msgstr "Eigenschappen"
 
 #, php-format
 msgid "Properties for reseller with ID %d were not found in database."
-msgstr "Eigenschappen voor wederverkoper met ID %d zijn niet gevonden in de databank."
+msgstr "Eigenschappen voor wederverkoper met nummer %d zijn niet gevonden in de databank."
 
 msgid "Protect"
 msgstr "Beveilig"
@@ -4088,7 +4075,7 @@ msgid "Reply"
 msgstr "Antwoorde"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr ""
+msgstr "Verzoek time-out: De server deed er te lang over om data te versturen."
 
 msgid "Request from foreign host was blocked."
 msgstr "Verzoek van externe host is geblokkeerd."
@@ -4220,7 +4207,7 @@ msgid "Reseller list"
 msgstr "Wederverkoper lijst"
 
 msgid "Reseller list is empty."
-msgstr "Resellers lijst is leeg"
+msgstr "Wederverkoperslijst is leeg."
 
 msgid "Reseller name"
 msgstr "Wederverkoper naam"
@@ -4250,10 +4237,10 @@ msgid "Reseller/IP usage statistics"
 msgstr "Wederverkoper/Statistieken IP-gebruik"
 
 msgid "Resellers"
-msgstr "Resellers"
+msgstr "Wederverkopers"
 
 msgid "Resellers and customers"
-msgstr "Resellers en klanten"
+msgstr "Wederverkopers en klanten"
 
 msgid "Resellers assignment"
 msgstr "Wederverkoperstoewijzing"
@@ -4364,14 +4351,17 @@ msgstr "SQL-gebruiker met komma('s) in naam is niet toegestaan."
 msgid "SQL users"
 msgstr "MySQL-gebruikers"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr "SSL-certificaat ingepland om toegevoegd of bijgewerkt te worden."
-
 msgid "SSL certificate"
 msgstr "SSL-certificaat"
 
-msgid "SSL feature is not available."
-msgstr "SSL-functie is niet beschikbaar."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-functie is niet beschikbaar, u kunt alleen uw certificaat bekijken."
@@ -4600,7 +4590,7 @@ msgid "Software management"
 msgstr "Softwarebeheer"
 
 msgid "Software name"
-msgstr "Softwarenaam"
+msgstr "Programmanaam"
 
 msgid "Software not found!"
 msgstr "Software niet gevonden!"
@@ -4618,7 +4608,7 @@ msgid "Software scheduled for deletion."
 msgstr "Software ingepland voor verwijdering."
 
 msgid "Software status"
-msgstr "Softwarestatus."
+msgstr "Softwarestatus"
 
 msgid "Software total"
 msgstr "Software totaal"
@@ -4633,7 +4623,7 @@ msgid "Software was deleted."
 msgstr "Software is verwijderd"
 
 msgid "Software-Synonym"
-msgstr "Softwaresynoniem"
+msgstr "Programmasynoniem"
 
 msgid "Software-Version"
 msgstr "Softwareversie"
@@ -4873,11 +4863,17 @@ msgstr "Het IP-adres wat je probeert te verwijderen is toegewezen aan een wederv
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "De enter-toets is voor prestatiedoeleinden uitgeschakeld."
 
-msgid "The certificate doesn't match with the private key."
-msgstr "Het certificaat komt niet overeen met de privésleutel."
-
 msgid "The certificate field cannot be empty."
 msgstr "Het certificaatveld kan niet leeg zijn."
+
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4901,6 +4897,9 @@ msgstr "Het domein of tenminste een van zijn recordtypes heeft een andere status
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Het domein dat u probeert te bewerken bestaat niet."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Het menu dat u probeert te bewerken bestaat niet."
@@ -5053,7 +5052,7 @@ msgstr "Ticket succesvol heropend."
 
 #, php-format
 msgid "Ticket with Id '%d' was not found."
-msgstr "Ticket met de ID '%d' was niet gevonden."
+msgstr "Ticket met nummer '%d' was niet gevonden."
 
 msgid "To Admin"
 msgstr "Naar beheer"
@@ -5112,7 +5111,7 @@ msgid "URL forwarding"
 msgstr "URL doorsturen"
 
 msgid "URL protocol"
-msgstr "URL-Protocol"
+msgstr "URL-protocol"
 
 msgid "URL to this admin panel"
 msgstr "URL voor dit beheerderspaneel"
@@ -5131,7 +5130,7 @@ msgstr "Kan de invoegtoepassing %s niet veranderen: %s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
-msgstr "Kan de ticket met de ID '%s' niet sluiten."
+msgstr "Kan de ticket met nummer '%s' niet sluiten."
 
 msgid ""
 "Unable to connect to the selected database using the selected SQL user."
@@ -5197,7 +5196,7 @@ msgstr "Kan XML-bestand niet uit websoftware lezen."
 
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
-msgstr "Kan ticket met de ID '%s' niet heropenen."
+msgstr "Kan ticket met nummer '%s' niet heropenen."
 
 #, php-format
 msgid "Unable to restore %s plugin directory"
@@ -5258,7 +5257,7 @@ msgid "Uninstallation in progress..."
 msgstr "Bezig met verwijderen"
 
 msgid "Uninstalled"
-msgstr "Gedeïnstalleert"
+msgstr "Gedeïnstalleerd"
 
 msgid "Unknown"
 msgstr "Onbekend"
@@ -5299,7 +5298,7 @@ msgid "Unknown type."
 msgstr "Onbekend type."
 
 msgid "Unknown user type"
-msgstr ""
+msgstr "Onbekend gebruikerstype"
 
 msgid "Unknown username."
 msgstr "Onbekende gebruikersnaam."
@@ -5419,7 +5418,7 @@ msgid "User password"
 msgstr "Gebruikerswachtwoord"
 
 msgid "User real (first and last) name"
-msgstr "Gebruiker zijn echter (voor en achter) naam"
+msgstr "Gebruiker's echte (voor- en achter-) naam"
 
 msgid "User scheduled for deletion."
 msgstr "Gebruiker gepland voor verwijdering."
@@ -5483,6 +5482,9 @@ msgstr "Zeer hoog"
 msgid "View"
 msgstr "Bekijk"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Bekijk ondersteuningsticket"
 
@@ -5525,7 +5527,7 @@ msgid "Web out"
 msgstr "Web uit"
 
 msgid "Web software depot packages total"
-msgstr "Totaal aantal pakketten van softwaredepot"
+msgstr "Totaal aantal pakketten in online softwaredepot"
 
 msgid "Web software repository"
 msgstr "Softwaredepot"
@@ -5569,7 +5571,7 @@ msgstr "Wildcards zoals %% en ? zijn niet toegestaan in gebruikersnaam."
 
 #, php-format
 msgid "Wildcards such as '%%' and '?' are not allowed."
-msgstr ""
+msgstr "Wildcards zoals '%%' en '?' zijn niet toegestaan"
 
 msgid "Wrong IP address."
 msgstr "Fout IP-adres."
@@ -5581,13 +5583,13 @@ msgid "Wrong request."
 msgstr "Verkeerd verzoek."
 
 msgid "Wrong reseller id."
-msgstr "Verkeerde wederverkoperID"
+msgstr "Verkeerd wederverkopersnummer."
 
 msgid "Wrong security code"
 msgstr "Verkeerde beveiligingscode"
 
 msgid "Wrong software id."
-msgstr "Verkeerde software-ID."
+msgstr "Verkeerde softwarenummer."
 
 msgid "Wrong syntax for new expire date."
 msgstr "Verkeerde syntaxis voor nieuwe vervaldatum."
@@ -5900,22 +5902,13 @@ msgid ""
 "your reseller."
 msgstr "Uw account is momenteel in onderhoud of uitgeschakeld. Gelieve contact op te nemen met uw wederverkoper."
 
-msgid "Your certificate is expired"
-msgstr "Uw certificaat is verlopen"
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr "Uw certificaat is ongeldig of de CA-bundel mist."
-
-msgid "Your certificate is not valid."
-msgstr "Uw certificaat is ongeldig."
-
 msgid "Your consumption"
 msgstr "Uw verbruik"
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
-msgstr ""
+msgstr "Uw i-MSCP-versie is niet compatibel met deze plugin. Probeer het met een nieuwere pluginversie."
 
 msgid "Your message"
 msgstr "Uw bericht"
@@ -5972,7 +5965,7 @@ msgid "activated"
 msgstr "geactiveerd"
 
 msgid "activated (Softwaredepot)"
-msgstr "geactiveerd (Softwaredepot)"
+msgstr "geactiveerd (in softwaredepot)"
 
 msgid "and"
 msgstr "en"

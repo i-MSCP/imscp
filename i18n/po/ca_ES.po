@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -997,14 +997,8 @@ msgstr "Hi ha hagut un error a la llista de redireccions de correu."
 msgid "An error occurred during authentication."
 msgstr "Hi ha hagut un error durant l'autenticació"
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Hi ha hagut un error. Contacteu amb l'administrador."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr ""
-
-msgid "An unexpected error occured. Please retry"
-msgstr "Hi ha hagut un error inesperat. Torneu-ho a intentar"
 
 #, php-format
 msgid "An unexpected error occured: %s"
@@ -1013,13 +1007,12 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr ""
 
+msgid "An unexpected error occurred. Please contact your administrator."
+msgstr ""
+
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Hi ha hagut un error inesperat: %s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1297,9 +1290,6 @@ msgstr "Certificat"
 
 msgid "Certificate data"
 msgstr "Dades del certificat"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "S'ha programat l'eliminació del certificat."
 
 msgid "Change"
 msgstr "Canviar"
@@ -2900,7 +2890,7 @@ msgstr "L'ordre dels menús no és vàlid."
 msgid "Invalid name."
 msgstr "Nom incorrecte."
 
-msgid "Invalid private key or passphrase"
+msgid "Invalid private key or passphrase."
 msgstr ""
 
 msgid "Invalid target."
@@ -3036,7 +3026,7 @@ msgid "Logo successfully updated."
 msgstr "Logotip actualitzat correctament."
 
 msgid "Logout"
-msgstr ""
+msgstr "Sortir"
 
 msgid "Lost password"
 msgstr "Contrasenya perduda"
@@ -3277,9 +3267,6 @@ msgid "No anti-rootkits logs"
 msgstr ""
 
 msgid "No available"
-msgstr ""
-
-msgid "No certificate found"
 msgstr ""
 
 msgid "No custom menu found."
@@ -3957,7 +3944,7 @@ msgstr "Prioritat: %s\n"
 msgid "Private key"
 msgstr ""
 
-msgid "Private key field cannot be empty"
+msgid "Private key field cannot be empty."
 msgstr ""
 
 msgid "Private key passphrase if any"
@@ -4365,13 +4352,16 @@ msgstr ""
 msgid "SQL users"
 msgstr "Usuaris SQL"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr ""
-
 msgid "SSL certificate"
 msgstr ""
 
-msgid "SSL feature is not available."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
 msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
@@ -4874,10 +4864,16 @@ msgstr ""
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "La tecla 'Enter' està desactivada per raons de rendiment."
 
-msgid "The certificate doesn't match with the private key."
+msgid "The certificate field cannot be empty."
 msgstr ""
 
-msgid "The certificate field cannot be empty."
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
 msgstr ""
 
 #, php-format
@@ -4902,6 +4898,9 @@ msgstr "El domini o almenys alguna de les seves entitats te un estat diferent de
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "El domini que estàs intentant editar no existeix."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr ""
@@ -5484,6 +5483,9 @@ msgstr "Molt alta"
 msgid "View"
 msgstr "Veure"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Veure tiquet"
 
@@ -5899,15 +5901,6 @@ msgstr "El seu compte ha expirat. Sisplau renoveu la vostra subscripció."
 msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
-msgstr ""
-
-msgid "Your certificate is expired"
-msgstr ""
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr ""
-
-msgid "Your certificate is not valid."
 msgstr ""
 
 msgid "Your consumption"

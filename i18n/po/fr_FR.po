@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1008,29 +1008,22 @@ msgstr "Une erreur a été trouvée dans la liste de transfert e-mail."
 msgid "An error occurred during authentication."
 msgstr "Une erreur est survenue durant l'authentification."
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Une erreur est survenue. Veuillez contacter votre administrateur."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Une erreur inattendue est survenue. Veuillez contacter votre revendeur."
 
-msgid "An unexpected error occured. Please retry"
-msgstr "Une erreur inattendue est survenue. Veuillez réessayer."
-
 #, php-format
 msgid "An unexpected error occured: %s"
-msgstr ""
+msgstr "Une erreur inattendue s'est produite: %s"
 
 msgid "An unexpected error occurred."
+msgstr "Une erreur inattendue s'est produite."
+
+msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Une erreur inattendue est survenue : %s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1162,7 +1155,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "Vous devez d'abord créer une base de donnée qui contient au moins un utilisateur SQL."
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Auto (Langage du navigateur)"
 
 msgid "Auto email template data updated!"
 msgstr "Mise en page automatique des e-mails mise à jour !"
@@ -1213,7 +1206,7 @@ msgid "Bad password."
 msgstr "Mot de passe erroné."
 
 msgid "Bad request."
-msgstr ""
+msgstr "Mauvaise requête."
 
 msgid "Behind"
 msgstr "Derrière"
@@ -1308,9 +1301,6 @@ msgstr "Certificat"
 
 msgid "Certificate data"
 msgstr "Donnée du certificat"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "Le certificat va être supprimé."
 
 msgid "Change"
 msgstr "Changer"
@@ -2911,8 +2901,8 @@ msgstr "Ordre du menu invalide."
 msgid "Invalid name."
 msgstr "Nom incorrecte."
 
-msgid "Invalid private key or passphrase"
-msgstr "Clé ou mot de passe invalide."
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Cible invalide"
@@ -3007,7 +2997,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Charge (1 min, 5 min, 15 min)"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "Chargement des données..."
 
 msgid "Log entries successfully deleted."
 msgstr "Entrées du journal supprimées avec succès."
@@ -3047,7 +3037,7 @@ msgid "Logo successfully updated."
 msgstr "Logo mis à jour avec succès."
 
 msgid "Logout"
-msgstr ""
+msgstr "Déconnexion"
 
 msgid "Lost password"
 msgstr "Mot de passe perdu"
@@ -3289,9 +3279,6 @@ msgstr "Aucun journal anti-Rootkits"
 
 msgid "No available"
 msgstr "Non disponible"
-
-msgid "No certificate found"
-msgstr "Aucun certificat trouvé."
 
 msgid "No custom menu found."
 msgstr "Aucun menu personalisé trouvé."
@@ -3968,8 +3955,8 @@ msgstr "Priorité : %s\n"
 msgid "Private key"
 msgstr "Clé privée"
 
-msgid "Private key field cannot be empty"
-msgstr "Le champ de clé privée de peut pas être vide"
+msgid "Private key field cannot be empty."
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "Mot de passe pour la clé privé"
@@ -4100,7 +4087,7 @@ msgid "Reply"
 msgstr "Répondre"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr ""
+msgstr "Temp de réponse dépassé: Le serveur prend trop de temps pour envoyer les données."
 
 msgid "Request from foreign host was blocked."
 msgstr "Une requête d'un hôte étranger a été bloquée."
@@ -4376,14 +4363,17 @@ msgstr "Les virgules ne sont pas acceptées dans les noms des utilisateurs SQL."
 msgid "SQL users"
 msgstr "Utilisateurs SQL"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr "Le certificat SSL va être ajouté ou modifié."
-
 msgid "SSL certificate"
 msgstr "Certificat SSL"
 
-msgid "SSL feature is not available."
-msgstr "SSL est désactivé."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL n'est pas disponible. Vous pouvez seulement voir vos certificats."
@@ -4885,11 +4875,17 @@ msgstr "L'adresse IP que vous essayez de supprimer est assignée à un revendeur
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "La touche 'Enter' a été désactivée pour des raisons de performances."
 
-msgid "The certificate doesn't match with the private key."
-msgstr "Le certificat SSL ne correspond pas à la clé privée."
-
 msgid "The certificate field cannot be empty."
 msgstr "Le champ du certificat SSL ne peut pas être vide."
+
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4913,6 +4909,9 @@ msgstr "Le domaine ou au moins une de ses entités se trouve dans un état incoh
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Le domaine que vous essayez d'éditer n'existe pas."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Le menu que vous essayez d’éditer n'existe pas."
@@ -5311,7 +5310,7 @@ msgid "Unknown type."
 msgstr "Type inconnu."
 
 msgid "Unknown user type"
-msgstr ""
+msgstr "Type d'utilisateur inconnu"
 
 msgid "Unknown username."
 msgstr "Nom d'utilisateur inconnu."
@@ -5495,6 +5494,9 @@ msgstr "Très élevée"
 msgid "View"
 msgstr "Afficher"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Afficher les tickets de support"
 
@@ -5581,7 +5583,7 @@ msgstr "Les jokers comme %% et ? ne sont pas autorisés dans le nom d'utilisateu
 
 #, php-format
 msgid "Wildcards such as '%%' and '?' are not allowed."
-msgstr ""
+msgstr "Les jokers come '%%' et '?' ne sont pas autorisés."
 
 msgid "Wrong IP address."
 msgstr "Mauvais adresse IP."
@@ -5912,22 +5914,13 @@ msgid ""
 "your reseller."
 msgstr "Votre compte est actuellement en maintenance ou désactivé. Veuillez contacter votre revendeur."
 
-msgid "Your certificate is expired"
-msgstr "Votre certificat SSL est expiré."
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr "Votre certificat SSL n'est pas valide ou le CA Bundle est absent."
-
-msgid "Your certificate is not valid."
-msgstr "Votre certificat SSL n'est pas valide."
-
 msgid "Your consumption"
 msgstr "Votre consommation"
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
-msgstr ""
+msgstr "Votre version d'i-MSCP n'est pas compatible avec ce plugin. Veuillez re-essayer avec une version plus récente."
 
 msgid "Your message"
 msgstr "Votre message"

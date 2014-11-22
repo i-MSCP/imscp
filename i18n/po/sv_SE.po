@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -987,29 +987,22 @@ msgstr "Ett fel har upptäckts i post översända lista."
 msgid "An error occurred during authentication."
 msgstr "Ett fel uppstod vid autentisering."
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Ett fel inträffade, var god och kontaktar administratören-"
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Ett oväntat fel inträffade. Kontakta din återförsäljare."
 
-msgid "An unexpected error occured. Please retry"
-msgstr "Ett oväntat fel uppstod, vänligen prova igen."
-
 #, php-format
 msgid "An unexpected error occured: %s"
-msgstr ""
+msgstr "Ett oväntat fel uppstod: %s"
 
 msgid "An unexpected error occurred."
+msgstr "Ett oväntat fel inträffade."
+
+msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ett oväntat fel uppstod: %s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1141,7 +1134,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "Först måste du skapa en databas som har minst en SQL-användare."
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Auto (Browser språk)"
 
 msgid "Auto email template data updated!"
 msgstr "Automatisk e-postmall uppdaterad!"
@@ -1192,7 +1185,7 @@ msgid "Bad password."
 msgstr "Felaktigt lösenord."
 
 msgid "Bad request."
-msgstr ""
+msgstr "Dåligt begäran."
 
 msgid "Behind"
 msgstr "Bakom"
@@ -1287,9 +1280,6 @@ msgstr "Certifikat"
 
 msgid "Certificate data"
 msgstr "Certifikats data"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "Certificate successfully scheduled for deletion."
 
 msgid "Change"
 msgstr "Ändra"
@@ -2890,8 +2880,8 @@ msgstr "Invalid menu order."
 msgid "Invalid name."
 msgstr "Invalid name."
 
-msgid "Invalid private key or passphrase"
-msgstr "Invalid private key or passphrase"
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Invalid target."
@@ -2986,7 +2976,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Load (1 min, 5 min, 15 min)"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "Laddar data ..."
 
 msgid "Log entries successfully deleted."
 msgstr "Log entries successfully deleted."
@@ -3026,7 +3016,7 @@ msgid "Logo successfully updated."
 msgstr "Logo uppdaterats."
 
 msgid "Logout"
-msgstr ""
+msgstr "Logga ut"
 
 msgid "Lost password"
 msgstr "Glömt lösenord"
@@ -3268,9 +3258,6 @@ msgstr "No anti-rootkits logs"
 
 msgid "No available"
 msgstr "Inte tillgänglig"
-
-msgid "No certificate found"
-msgstr "No certificate found"
 
 msgid "No custom menu found."
 msgstr "Inget eget meny hittades."
@@ -3947,8 +3934,8 @@ msgstr "Priority: %s\n"
 msgid "Private key"
 msgstr "Private key"
 
-msgid "Private key field cannot be empty"
-msgstr "Private key field cannot be empty"
+msgid "Private key field cannot be empty."
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "Private key passphrase if any"
@@ -4079,7 +4066,7 @@ msgid "Reply"
 msgstr "Svara"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr ""
+msgstr "Begär Timeout: Servern tog för lång tid att skicka data."
 
 msgid "Request from foreign host was blocked."
 msgstr "Begäran från värd var blockerad."
@@ -4355,14 +4342,17 @@ msgstr "SQL användare med kommatecken (er) i namn accepteras inte."
 msgid "SQL users"
 msgstr "SQL-användare"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr "SSL Certificate successfully scheduled for addition or update."
-
 msgid "SSL certificate"
 msgstr "SSL certificate"
 
-msgid "SSL feature is not available."
-msgstr "SSL feature is not available."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-funktionen är inte tillgänglig. Du kan bara visa ditt certifikat."
@@ -4864,11 +4854,17 @@ msgstr "The IP address you trying to remove is assigned to a reseller."
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "The `Enter` key is disabled for performance reasons."
 
-msgid "The certificate doesn't match with the private key."
-msgstr "The certificate doesn't match with the private key."
-
 msgid "The certificate field cannot be empty."
 msgstr "The certificate field cannot be empty."
+
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4892,6 +4888,9 @@ msgstr "The domain or at least one of its entities has a different status than '
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "The domain you are trying to edit doesn't exist."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "The menu you are trying to edit doesn't exist."
@@ -5290,7 +5289,7 @@ msgid "Unknown type."
 msgstr "Okänd typ."
 
 msgid "Unknown user type"
-msgstr ""
+msgstr "Okänd användartyp"
 
 msgid "Unknown username."
 msgstr "Okänt användarnamn."
@@ -5474,6 +5473,9 @@ msgstr "Mycket hög"
 msgid "View"
 msgstr "Visa"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Visa Support Ticket"
 
@@ -5560,7 +5562,7 @@ msgstr "Jokertecken som%% och? är inte tillåtna."
 
 #, php-format
 msgid "Wildcards such as '%%' and '?' are not allowed."
-msgstr ""
+msgstr "Jokertecken som '%%' och '?' är inte tillåtna."
 
 msgid "Wrong IP address."
 msgstr "Fel IP adr."
@@ -5891,22 +5893,13 @@ msgid ""
 "your reseller."
 msgstr "Your account is currently under maintenance or disabled. Please, contact your reseller."
 
-msgid "Your certificate is expired"
-msgstr "Your certificate is expired"
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr "Your certificate is not valid or the CA bundle is missing."
-
-msgid "Your certificate is not valid."
-msgstr "Your certificate is not valid."
-
 msgid "Your consumption"
 msgstr "Your consumption"
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
-msgstr ""
+msgstr "Din i-MSCP versionen är inte kompatibel med denna plugin. Pröva med en nyare version."
 
 msgid "Your message"
 msgstr "Ditt meddelande"

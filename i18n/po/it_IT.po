@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -995,14 +995,8 @@ msgstr "Un errore è stato trovato nella lista dell'inoltro email"
 msgid "An error occurred during authentication."
 msgstr "Un errore è occorso durante l'autenticazione."
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Un errore è occorso. Per piacere contatta il tuo amministratore."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr ""
-
-msgid "An unexpected error occured. Please retry"
-msgstr "Un errore inaspettato è occorso. Per piacere riprova"
 
 #, php-format
 msgid "An unexpected error occured: %s"
@@ -1011,13 +1005,12 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr ""
 
+msgid "An unexpected error occurred. Please contact your administrator."
+msgstr ""
+
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Un errore inaspettato è occorso: %s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1295,9 +1288,6 @@ msgstr "Certificato"
 
 msgid "Certificate data"
 msgstr "Dati del certificato"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "Il Certificato è stato schedato con successo per l'eliminazione."
 
 msgid "Change"
 msgstr "Modifica"
@@ -2898,8 +2888,8 @@ msgstr "Ordine del menù non valido."
 msgid "Invalid name."
 msgstr "Nome non valido."
 
-msgid "Invalid private key or passphrase"
-msgstr "Private key o passphrase non valida"
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Obiettivo non valido."
@@ -3034,7 +3024,7 @@ msgid "Logo successfully updated."
 msgstr "Il logo é stato aggiornato correttamente."
 
 msgid "Logout"
-msgstr ""
+msgstr "Logout"
 
 msgid "Lost password"
 msgstr "Password dimenticata"
@@ -3276,9 +3266,6 @@ msgstr ""
 
 msgid "No available"
 msgstr "No disponibile"
-
-msgid "No certificate found"
-msgstr "Nessun certificato trovato"
 
 msgid "No custom menu found."
 msgstr "Nessun menù personalizzato trovato."
@@ -3955,7 +3942,7 @@ msgstr "Priorità: %s\n"
 msgid "Private key"
 msgstr "Private key"
 
-msgid "Private key field cannot be empty"
+msgid "Private key field cannot be empty."
 msgstr ""
 
 msgid "Private key passphrase if any"
@@ -4363,13 +4350,16 @@ msgstr ""
 msgid "SQL users"
 msgstr "Utenti SQL"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr ""
-
 msgid "SSL certificate"
 msgstr "Certificato SSL"
 
-msgid "SSL feature is not available."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
 msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
@@ -4872,10 +4862,16 @@ msgstr "L'indirizzo IP che stai provando ad eliminare è assegnato a un rivendit
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "Il tasto 'Enter' è disabilitato per motivi di prestazioni."
 
-msgid "The certificate doesn't match with the private key."
+msgid "The certificate field cannot be empty."
 msgstr ""
 
-msgid "The certificate field cannot be empty."
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
 msgstr ""
 
 #, php-format
@@ -4900,6 +4896,9 @@ msgstr "Il dominio o almeno uno dei suoi soggetti ha uno stato diverso da 'ok'."
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Il dominio che stai provando a modificare non esiste."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Il menù che state provando a modificare non esiste."
@@ -5482,6 +5481,9 @@ msgstr "Molto alta"
 msgid "View"
 msgstr "Visualizza"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Visualizza Supporto Ticket"
 
@@ -5898,15 +5900,6 @@ msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
 msgstr "Il tuo account è, al momento, in manutenzione o disabilitato. Contatta, per favore, il tuo rivenditore."
-
-msgid "Your certificate is expired"
-msgstr "Il tuo certificato è scaduto"
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr ""
-
-msgid "Your certificate is not valid."
-msgstr "Il tuo certificato non è valido"
 
 msgid "Your consumption"
 msgstr "Il consumo di"

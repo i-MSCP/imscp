@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -990,29 +990,22 @@ msgstr "Была найдена ошибка в списке перенапра�
 msgid "An error occurred during authentication."
 msgstr "При попытке аутентификации обнаружена ошибка."
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Обнаружена ошибка, пожалуйста свяжитесь с администратором."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Произошла неизвестная ошибка, пожалуйста, свяжитесь с Вашим реселлером."
 
-msgid "An unexpected error occured. Please retry"
-msgstr "Произошла неизвестная ошибка, пожалуйста, попробуйте заново"
-
 #, php-format
 msgid "An unexpected error occured: %s"
-msgstr ""
+msgstr "Произошла неожиданная ошибка: %s"
 
 msgid "An unexpected error occurred."
+msgstr "Произошла неожиданная ошибка."
+
+msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Произошла неожиданная ошибка: %s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1144,7 +1137,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "Сначала Вам нужно создать базу данный SQL имеющую хотябы одного пользователя."
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Автоматически (язык браузера)"
 
 msgid "Auto email template data updated!"
 msgstr "Шаблон авто рассылки изменён!"
@@ -1195,7 +1188,7 @@ msgid "Bad password."
 msgstr "Неверный пароль."
 
 msgid "Bad request."
-msgstr ""
+msgstr "Неверный запрос."
 
 msgid "Behind"
 msgstr "После"
@@ -1290,9 +1283,6 @@ msgstr "Сертификат"
 
 msgid "Certificate data"
 msgstr "Данные сертификата"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "Сертификат успешно отмечен для удаления."
 
 msgid "Change"
 msgstr "Изменить"
@@ -2893,8 +2883,8 @@ msgstr "Неверный заказ меню."
 msgid "Invalid name."
 msgstr "Неверное имя."
 
-msgid "Invalid private key or passphrase"
-msgstr "Неверный приватный ключ или пароль."
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Неверная цель"
@@ -2989,7 +2979,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Загрузка (1 Min, 5 Min, 15 Min)"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "Загрузка данных..."
 
 msgid "Log entries successfully deleted."
 msgstr "Записи лога успешно удалены."
@@ -3029,7 +3019,7 @@ msgid "Logo successfully updated."
 msgstr "Логотип успешно обновлен."
 
 msgid "Logout"
-msgstr ""
+msgstr "Выйти"
 
 msgid "Lost password"
 msgstr "Восстановление пароля"
@@ -3271,9 +3261,6 @@ msgstr "Логи руткитов отсутствуют"
 
 msgid "No available"
 msgstr "Недоступно"
-
-msgid "No certificate found"
-msgstr "Не найдено сертификатов"
 
 msgid "No custom menu found."
 msgstr "Не найдены пользовательские меню."
@@ -3950,8 +3937,8 @@ msgstr "Приоритет: %s\n"
 msgid "Private key"
 msgstr "Приватный ключ"
 
-msgid "Private key field cannot be empty"
-msgstr "Поле приватного ключа не может пустовать"
+msgid "Private key field cannot be empty."
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "Пароль приватного ключа, если необходимо"
@@ -4082,7 +4069,7 @@ msgid "Reply"
 msgstr "Ответ"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr ""
+msgstr "Задержка зарпоса: Сервер ожидает слишком долго."
 
 msgid "Request from foreign host was blocked."
 msgstr "Запрос с иностранного хоста был заблокирован."
@@ -4358,14 +4345,17 @@ msgstr "Пользователь SQL не должен содержать зап
 msgid "SQL users"
 msgstr "Пользователи SQL"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr "SSL cертификат успешно отмечен для добавления или изменения."
-
 msgid "SSL certificate"
 msgstr "SSL сертификат"
 
-msgid "SSL feature is not available."
-msgstr "Функция SSL недоступна."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "Функция SSL недоступна. Вы можете только просмотреть Ваш сертификат."
@@ -4867,11 +4857,17 @@ msgstr "IP адрес, который вы пытаетесь удалить, н
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "Клавиша `Enter` отключена по причинам производительности."
 
-msgid "The certificate doesn't match with the private key."
-msgstr "Сертификат не совпадает с приватным ключом."
-
 msgid "The certificate field cannot be empty."
 msgstr "Поле сертификата не может пустовать"
+
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4895,6 +4891,9 @@ msgstr "Домен, или как минимум одно его записей 
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Домен, который Вы пытаетесь отредактировать, не существует."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Меню, которое Вы пытаетесь отредактировать, не существует."
@@ -5293,7 +5292,7 @@ msgid "Unknown type."
 msgstr "Неизвестный тип."
 
 msgid "Unknown user type"
-msgstr ""
+msgstr "Неизвестный тип пользователя"
 
 msgid "Unknown username."
 msgstr "Неизвестное имя пользователя."
@@ -5477,6 +5476,9 @@ msgstr "Очень высокий"
 msgid "View"
 msgstr "Просмотр"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Просмотреть тикет службы поддержки"
 
@@ -5563,7 +5565,7 @@ msgstr "Групповые символы, такие как %% и ? не раз
 
 #, php-format
 msgid "Wildcards such as '%%' and '?' are not allowed."
-msgstr ""
+msgstr "Специальные символы, такие как %% и ? не разрешены."
 
 msgid "Wrong IP address."
 msgstr "Неверный IP адрес."
@@ -5894,22 +5896,13 @@ msgid ""
 "your reseller."
 msgstr "Ваша учетная запись находится на техобслуживании или отключена, пожалуйста, свяжитесь с Вашим реселлером."
 
-msgid "Your certificate is expired"
-msgstr "Ваш сертификат истек."
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr "Сертификат неверен или Ваша связка ключей отсутствует"
-
-msgid "Your certificate is not valid."
-msgstr "Ваш сертификат неверен."
-
 msgid "Your consumption"
 msgstr "Ваши затраты"
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
-msgstr ""
+msgstr "Ваша версия i-MSCP несовместима с этим плагином. Попробуйте установить новую версию."
 
 msgid "Your message"
 msgstr "Ваше сообщение"

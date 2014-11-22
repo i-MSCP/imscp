@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -992,29 +992,22 @@ msgstr "Hiba található a levél továbbítási listában."
 msgid "An error occurred during authentication."
 msgstr "Hiba történt a hitelesítés közben."
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Hiba történt. Kérjük, fordulj a rendszergazdához."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Váratlan hiba történt. kérjük, lépj kapcsolatba viszonteladóddal. "
 
-msgid "An unexpected error occured. Please retry"
-msgstr "Váratlan hiba történt. Kérjük, próbáld meg újra! "
-
 #, php-format
 msgid "An unexpected error occured: %s"
-msgstr ""
+msgstr "Váratlan hiba történt: %s"
 
 msgid "An unexpected error occurred."
+msgstr "Váratlan hiba történt."
+
+msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Váratlan hiba történt: %s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1146,7 +1139,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "Először is készítened kell egy adatbázist, ami legalább egy SQL felhasználót tartalmaz."
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Automatikus (böngésző nyelve)"
 
 msgid "Auto email template data updated!"
 msgstr "Automatikus email sablon módosítva"
@@ -1197,7 +1190,7 @@ msgid "Bad password."
 msgstr "Rossz jelszó."
 
 msgid "Bad request."
-msgstr ""
+msgstr "Hibás kérés."
 
 msgid "Behind"
 msgstr "Mögötte"
@@ -1292,9 +1285,6 @@ msgstr "Tanúsítvány"
 
 msgid "Certificate data"
 msgstr "Tanúsítvány "
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "Tanúsítvány törlése sikeresen beütemezve."
 
 msgid "Change"
 msgstr "Módosítás"
@@ -2895,8 +2885,8 @@ msgstr "Érvénytelen megrendelés menü"
 msgid "Invalid name."
 msgstr "Érvénytelen név"
 
-msgid "Invalid private key or passphrase"
-msgstr "Érvénytelen privát kulcs vagy jelszó"
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Érvénytelen cél"
@@ -2991,7 +2981,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Terhelés (1, 5, 15 percre vonatkozóan):"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "Adat betöltése..."
 
 msgid "Log entries successfully deleted."
 msgstr "Naplóbejegyzések sikeresen törölve."
@@ -3031,7 +3021,7 @@ msgid "Logo successfully updated."
 msgstr "Logó sikeresen frissítve"
 
 msgid "Logout"
-msgstr ""
+msgstr "Kijelentkezés"
 
 msgid "Lost password"
 msgstr "Elfelejtett jelszó"
@@ -3273,9 +3263,6 @@ msgstr "Nincs anti-rootkits napló"
 
 msgid "No available"
 msgstr "Nem elérhető"
-
-msgid "No certificate found"
-msgstr "Nem található tanúsítvány"
 
 msgid "No custom menu found."
 msgstr "Nem található egyéni menü"
@@ -3952,8 +3939,8 @@ msgstr "Prioritás: %s\n"
 msgid "Private key"
 msgstr "Privát kulcs"
 
-msgid "Private key field cannot be empty"
-msgstr "Privát kulcs mező nem lehet üres"
+msgid "Private key field cannot be empty."
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "Privát kulcs vagy jelszó, ha van ilyen"
@@ -4084,7 +4071,7 @@ msgid "Reply"
 msgstr "Válasz"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr ""
+msgstr "Kérés időtúllépés: A szervernek túl sokáig tartott elküldeni az adatot."
 
 msgid "Request from foreign host was blocked."
 msgstr "Külföldi oldalról érkező kérelem blokkolva"
@@ -4360,14 +4347,17 @@ msgstr "A vesszővel jelölt SQL felhasználó neve nem elfogadható."
 msgid "SQL users"
 msgstr "SQL felhasználók"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr "SSL tanúsítvány sikeresen beütemezve hozzáadásra vagy törlésre."
-
 msgid "SSL certificate"
 msgstr "SSL tanúsítvány"
 
-msgid "SSL feature is not available."
-msgstr "SSL funkció nem elérhető."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL funkció nem elérhető. Csak megnézni tudod a tanúsítványaidat."
@@ -4869,11 +4859,17 @@ msgstr "IP-cím, amit próbál eltávolítani, hozzá van rendelve viszonteladó
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "Az `Enter` kulcs le van tiltva a megfelelő teljesítmény érdekében."
 
-msgid "The certificate doesn't match with the private key."
-msgstr "A tanúsítvány nem egyezik a privát kulccsal."
-
 msgid "The certificate field cannot be empty."
 msgstr "A tanúsítvány mező nem lehet üres."
+
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4897,6 +4893,9 @@ msgstr "A domain vagy legalábbis annak egyik része más állapottal rendelkezi
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt domain név nem létezik"
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt menü nem létezik."
@@ -5295,7 +5294,7 @@ msgid "Unknown type."
 msgstr "Ismeretlen típus"
 
 msgid "Unknown user type"
-msgstr ""
+msgstr "Ismeretlen felhasználó típus"
 
 msgid "Unknown username."
 msgstr "Ismeretlen felhasználói név"
@@ -5479,6 +5478,9 @@ msgstr "Nagyon magas"
 msgid "View"
 msgstr "Megjelenítés"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Hibajegy megtekintése"
 
@@ -5565,7 +5567,7 @@ msgstr "A \"%%\" és a \"?\" helyettesítő karakterek nem engedélyezettek a fe
 
 #, php-format
 msgid "Wildcards such as '%%' and '?' are not allowed."
-msgstr ""
+msgstr "A „%%” és a „?” helyettesítő karakterek nem engedélyezettek."
 
 msgid "Wrong IP address."
 msgstr "Hibás IP-cím"
@@ -5896,22 +5898,13 @@ msgid ""
 "your reseller."
 msgstr "A fiókod jelenleg karbantartás alatt áll vagy le van tiltva. Kérjük, vedd fel a kapcsolatot a viszonteladóval!"
 
-msgid "Your certificate is expired"
-msgstr "A tanúsítványod lejárt"
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr "A tanúsítványod érvénytelen vagy a CA bundle hiányzik."
-
-msgid "Your certificate is not valid."
-msgstr "A tanúsítványod érvénytelen."
-
 msgid "Your consumption"
 msgstr "Ügyfél felhasználás"
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
-msgstr ""
+msgstr "Az i-MSCP verziód nem kompatibilis ezzel a bővítménnyel. Próbálj meg egy újabb verziót."
 
 msgid "Your message"
 msgstr "Üzenet szövege"

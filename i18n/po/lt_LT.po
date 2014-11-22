@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Lithuanian (Lithuania) (http://www.transifex.com/projects/p/i-MSCP/language/lt_LT/)\n"
 "MIME-Version: 1.0\n"
@@ -986,13 +986,7 @@ msgstr ""
 msgid "An error occurred during authentication."
 msgstr ""
 
-msgid "An error occurred. Please contact your administrator."
-msgstr ""
-
 msgid "An unexpected error occured. Please contact your reseller."
-msgstr ""
-
-msgid "An unexpected error occured. Please retry"
 msgstr ""
 
 #, php-format
@@ -1002,12 +996,11 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr ""
 
-#, php-format
-msgid "An unexpected error occurred: %s"
+msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
 #, php-format
-msgid "An unexpected error occurred: %s."
+msgid "An unexpected error occurred: %s"
 msgstr ""
 
 #, php-format
@@ -1285,9 +1278,6 @@ msgid "Certificate"
 msgstr ""
 
 msgid "Certificate data"
-msgstr ""
-
-msgid "Certificate successfully scheduled for deletion."
 msgstr ""
 
 msgid "Change"
@@ -2889,7 +2879,7 @@ msgstr ""
 msgid "Invalid name."
 msgstr ""
 
-msgid "Invalid private key or passphrase"
+msgid "Invalid private key or passphrase."
 msgstr ""
 
 msgid "Invalid target."
@@ -3266,9 +3256,6 @@ msgid "No anti-rootkits logs"
 msgstr ""
 
 msgid "No available"
-msgstr ""
-
-msgid "No certificate found"
 msgstr ""
 
 msgid "No custom menu found."
@@ -3946,7 +3933,7 @@ msgstr ""
 msgid "Private key"
 msgstr ""
 
-msgid "Private key field cannot be empty"
+msgid "Private key field cannot be empty."
 msgstr ""
 
 msgid "Private key passphrase if any"
@@ -4354,13 +4341,16 @@ msgstr ""
 msgid "SQL users"
 msgstr "SQL vartotojø"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr ""
-
 msgid "SSL certificate"
 msgstr ""
 
-msgid "SSL feature is not available."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
 msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
@@ -4863,10 +4853,16 @@ msgstr ""
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr ""
 
-msgid "The certificate doesn't match with the private key."
+msgid "The certificate field cannot be empty."
 msgstr ""
 
-msgid "The certificate field cannot be empty."
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
 msgstr ""
 
 #, php-format
@@ -4890,6 +4886,9 @@ msgid ""
 msgstr ""
 
 msgid "The domain you are trying to edit doesn't exist."
+msgstr ""
+
+msgid "The key is not the private key that corresponds to the certificate."
 msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
@@ -5473,6 +5472,9 @@ msgstr ""
 msgid "View"
 msgstr "Rodyti"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr ""
 
@@ -5888,15 +5890,6 @@ msgstr ""
 msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
-msgstr ""
-
-msgid "Your certificate is expired"
-msgstr ""
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr ""
-
-msgid "Your certificate is not valid."
 msgstr ""
 
 msgid "Your consumption"

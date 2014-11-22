@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-17 06:25+0100\n"
-"PO-Revision-Date: 2014-11-17 05:28+0000\n"
+"POT-Creation-Date: 2014-11-22 14:26+0100\n"
+"PO-Revision-Date: 2014-11-22 13:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -990,29 +990,22 @@ msgstr "メール転送リストにエラーがあります。"
 msgid "An error occurred during authentication."
 msgstr "認証中にエラーが発生した。"
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "エラーが発生しました。管理者に連絡してください。"
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "予期しないエラーが発生しました。代理店にお問い合わせください。"
 
-msgid "An unexpected error occured. Please retry"
-msgstr "予期しないエラーが発生しました。再試行してください"
-
 #, php-format
 msgid "An unexpected error occured: %s"
-msgstr ""
+msgstr "予期しないエラーが発生しました：%s"
 
 msgid "An unexpected error occurred."
+msgstr "予期しないエラーが発生しました。"
+
+msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "予期しないエラーが発生しました：%s"
-
-#, php-format
-msgid "An unexpected error occurred: %s."
-msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
@@ -1144,7 +1137,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "最初に、少なくとも1つのSQLユーザを持つデータベースを作成する必要があります。"
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "自動（ブラウザの言語）"
 
 msgid "Auto email template data updated!"
 msgstr "自動送信Eメールのテンプレート情報が更新されました！"
@@ -1195,7 +1188,7 @@ msgid "Bad password."
 msgstr "パスワードが間違っています。"
 
 msgid "Bad request."
-msgstr ""
+msgstr "不正な要求。"
 
 msgid "Behind"
 msgstr "ビハインド"
@@ -1290,9 +1283,6 @@ msgstr "証明書"
 
 msgid "Certificate data"
 msgstr "証明書データ"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "証明書の削除が予定されました。"
 
 msgid "Change"
 msgstr "変更"
@@ -2893,8 +2883,8 @@ msgstr "無効なメニューの順序。"
 msgid "Invalid name."
 msgstr "名前が無効です。"
 
-msgid "Invalid private key or passphrase"
-msgstr "無効な秘密鍵又はパスフレーズ"
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "ターゲットが無効です。"
@@ -2989,7 +2979,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "ロードアベレージ (1 秒, 5 秒, 15秒)"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "データのロード中..."
 
 msgid "Log entries successfully deleted."
 msgstr "ログエントリを削除しました。"
@@ -3029,7 +3019,7 @@ msgid "Logo successfully updated."
 msgstr "ロゴは更新されました。"
 
 msgid "Logout"
-msgstr ""
+msgstr "ログアウト"
 
 msgid "Lost password"
 msgstr "パスワードを忘れた"
@@ -3271,9 +3261,6 @@ msgstr "アンチルートキットログはありません"
 
 msgid "No available"
 msgstr "使用不可"
-
-msgid "No certificate found"
-msgstr "証明書が見つかりません"
 
 msgid "No custom menu found."
 msgstr "カスタムメニューが見つかりません。"
@@ -3950,8 +3937,8 @@ msgstr "優先度： %s\n"
 msgid "Private key"
 msgstr "秘密鍵"
 
-msgid "Private key field cannot be empty"
-msgstr "秘密鍵フィールドは空にすることはできません"
+msgid "Private key field cannot be empty."
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "もしあれば、秘密鍵のパスフレーズ"
@@ -4082,7 +4069,7 @@ msgid "Reply"
 msgstr "返信"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr ""
+msgstr "リクエストタイムアウト：サーバーはデータを送信するにはあまりにも時間がかかった。"
 
 msgid "Request from foreign host was blocked."
 msgstr "外部ホストからの要求がブロックされました。"
@@ -4358,14 +4345,17 @@ msgstr "名前にカンマを持つSQLユーザは受け付けません。"
 msgid "SQL users"
 msgstr "SQLユーザー"
 
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr "SSL証明書の追加又は更新が予定されました。"
-
 msgid "SSL certificate"
 msgstr "SSL証明書"
 
-msgid "SSL feature is not available."
-msgstr "SSL機能は使用できません。"
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL機能は使用できません。あなたは証明書を表示することができます。"
@@ -4867,11 +4857,17 @@ msgstr "削除しようとしているIPアドレスは、代理店に割り当�
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "`Enter`キーは、パフォーマンス理由のために無効です。"
 
-msgid "The certificate doesn't match with the private key."
-msgstr "証明書が秘密鍵と一致しません。"
-
 msgid "The certificate field cannot be empty."
 msgstr "証明書フィールドを空にすることはできません。"
+
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4895,6 +4891,9 @@ msgstr "ドメインまたはエンティティの少なくとも一方が'OK'�
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "編集しようとしているドメインは存在しません。"
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "編集するメニューは存在しません。"
@@ -5293,7 +5292,7 @@ msgid "Unknown type."
 msgstr "不明な種別が指定されました。"
 
 msgid "Unknown user type"
-msgstr ""
+msgstr "未知のユーザタイプ"
 
 msgid "Unknown username."
 msgstr "未知のユーザー名。"
@@ -5477,6 +5476,9 @@ msgstr "緊急"
 msgid "View"
 msgstr "表示"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "サポートチケット表示"
 
@@ -5563,7 +5565,7 @@ msgstr "%%と?などのワイルドカードは、ユーザ名では許可され
 
 #, php-format
 msgid "Wildcards such as '%%' and '?' are not allowed."
-msgstr ""
+msgstr "'%%' や'?' などのワイルドカードは許可さていません。"
 
 msgid "Wrong IP address."
 msgstr "IPアドレスに誤りがあります"
@@ -5894,22 +5896,13 @@ msgid ""
 "your reseller."
 msgstr "アカウントがメンテナンス中か無効です。代理店にお問い合わせください。"
 
-msgid "Your certificate is expired"
-msgstr "証明書の有効期限が切れています"
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr "証明書が無効であるか、CAバンドルが欠落しています。"
-
-msgid "Your certificate is not valid."
-msgstr "証明書が有効ではありません。"
-
 msgid "Your consumption"
 msgstr "あなたの消費量"
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
-msgstr ""
+msgstr "あなたのi-MSCPバージョンは、このプラグインと互換性がありません。新しいバージョンでお試しください。"
 
 msgid "Your message"
 msgstr "本文"
