@@ -4,6 +4,9 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+ENGINE
+	Fixed: Unable to remove the domain aliasses nor the subdomains ( Web folder protection )
+
 GUI
 	Added: iMSCP_Events_Aggregator::getEventManager() method
 	Changed: Configuration objects are now cached for better performances
