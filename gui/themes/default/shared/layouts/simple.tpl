@@ -6,17 +6,14 @@
 <meta name="robots" content="nofollow, noindex">
 <link href="{THEME_ASSETS_PATH}/css/simple.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
 <link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
-<script src="{THEME_ASSETS_PATH}/js/jquery.min.js?v={THEME_ASSETS_VERSION}"></script>
-<script src="{THEME_ASSETS_PATH}/js/jquery-ui.min.js?v={THEME_ASSETS_VERSION}"></script>
-<script src="{THEME_ASSETS_PATH}/js/jquery.imscpTooltip-min.js?v={THEME_ASSETS_VERSION}"></script>
+<script src="{THEME_ASSETS_PATH}/js/jquery/jquery.js?v={THEME_ASSETS_VERSION}"></script>
+<script src="{THEME_ASSETS_PATH}/js/jquery/jquery-ui.js?v={THEME_ASSETS_VERSION}"></script>
+<script src="{THEME_ASSETS_PATH}/js/jquery/plugins/imscpTooltip.js?v={THEME_ASSETS_VERSION}"></script>
+<script src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
 <script>
-$(document).ready(function () {
-	setTimeout(function () { $('.error, .success').fadeOut(1000); }, 5000);
-	$('a').imscpTooltip();
-	$('.link_as_button,button').button({icons: {secondary: "ui-icon-triangle-1-e"}});
-	$('input').first().focus();
-	$(".no_header #header").hide();
-});
+	$(document).ready(function () {
+		iMSCP.initApplication('simple');
+	});
 </script>
 </head>
 <body class="{THEME_COLOR}">
