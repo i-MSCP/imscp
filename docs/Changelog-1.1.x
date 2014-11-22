@@ -1,6 +1,40 @@
 i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
+1.1.18
+------------------------------------------------------------------------------------------------------------------------
+
+2014-11-22: Laurent Declercq
+	RELEASE i-MSCP 1.1.18
+
+ENGINE
+	Fixed: Unable to remove the domain aliases and the subdomains ( Web folder protection )
+
+GUI
+	Added: iMSCP_Events_Aggregator::getEventManager() method
+	Changed: Configuration objects are now cached for better performances
+	Changed: Mail body footprints are now stored in flat file instead of database ( Exception mail writer )
+	Changed: Mails are now sent every 24 hours in context of an identical exception ( Exception mail writer )
+	Changed: Writers are now lazy-loaded ( Exception writers )
+	Fixed: Ignore orphaned admin entries ( customer ) in generate_reseller_user_props() function
+	Fixed: The MAIL_WRITER_EXPIRY_TIME configuration parameter is not honored ( Exception mail writer )
+	Fixed: Undefined sSearch index in admin_log.php
+	Fixed: Useless initialization routines in context of the AJAX requests ( Initializer )
+	Fixed: Wrong routine initialization order ( Intializer )
+	Improved: Fallback template ( Exception browser writer )
+	Removed MAIL_BODY_FOOTPRINTS and MAIL_WRITER_EXPIRY_TIME configuration parameters ( Exception mail writer )
+	Refactoring: Moved js initialiazation routines into the imscp.js file +++
+	Rewritten: Handler for uncaught exceptions ( including writers )
+	Rewritten: SSL certificate interface ( client level )
+
+Vendor
+	Fixed: base64_encode() expects parameter 1 to be string, array given in ASN1.php ( phpseclib )
+	Updated phpseclib library to version 0.3.9
+
+INSTALLER
+	Fixed: Any TLD must be allowed ( hostname and domain name validation )
+
+------------------------------------------------------------------------------------------------------------------------
 1.1.17
 ------------------------------------------------------------------------------------------------------------------------
 
