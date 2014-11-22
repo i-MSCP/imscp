@@ -4,8 +4,8 @@
 <title>{TR_PAGE_TITLE}</title>
 <meta charset="{THEME_CHARSET}">
 <meta name="robots" content="nofollow, noindex">
-<link href="{THEME_ASSETS_PATH}/css/simple.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
 <link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
+<link href="{THEME_ASSETS_PATH}/css/simple.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
 <script src="{THEME_ASSETS_PATH}/js/jquery/jquery.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/jquery/jquery-ui.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/jquery/plugins/imscpTooltip.js?v={THEME_ASSETS_VERSION}"></script>

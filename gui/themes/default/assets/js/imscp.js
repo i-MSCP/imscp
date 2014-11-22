@@ -39,11 +39,19 @@ var iMSCP = function () {
     // Function to initialize tooltips
     var initTooltips = function ($context) {
         if ($context == 'simple') {
-            $('a').imscpTooltip();
+            $("a").tooltip(
+                {
+                    tooltipClass: 'ui-tooltip-notice',
+                    track: true
+                }
+            );
         } else {
-            $(".main_menu a").imscpTooltip();
-            $(".body a, .body span, .body input, .dataTables_paginate div").imscpTooltip(
-                {extraClass: "tooltip_icon tooltip_notice"}
+            $(".main_menu a").tooltip({ track: true });
+            $(".body a,.body span,.body input,.dataTables_paginate div").tooltip(
+                {
+                    tooltipClass: 'ui-tooltip-notice',
+                    track: true
+                }
             );
         }
     };
@@ -51,7 +59,7 @@ var iMSCP = function () {
     // Function to initialize buttons
     var initButtons = function (context) {
         if (context == 'simple') {
-            $('.link_as_button,button').button({icons: {secondary: "ui-icon-triangle-1-e"}});
+            $('.link_as_button,button').button({icons: { secondary: "ui-icon-triangle-1-e"} });
             $('input').first().focus();
         } else {
             $("input:submit, input:button, input:reset, button, .link_as_button").button();

@@ -175,10 +175,6 @@ select:disabled,
 textarea[readonly],
 textarea:disabled {
     background: #cccccc url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
-    border-color: #cccccc!important;
-    -webkit-box-shadow:none!important;
-    -moz-box-shadow: none!important;
-    box-shadow: none!important;
 }
 
 .buttons {
@@ -186,17 +182,18 @@ textarea:disabled {
 }
 
 /** Tooltips */
-#imscpTooltip {
-    background-color: #85742f;
+.ui-tooltip {
+    background: #85742f;
     border-color: #85742f;
 }
 
-#imscpTooltip .tooltipBody {
-    color: #ffffff;
+.ui-tooltip.ui-tooltip-notice {
+    background: #85742f url(../images/tooltips/info.png) no-repeat 5px 50%;
 }
 
-.tooltip_notice {
-    background: url(../images/tooltips/info.png) no-repeat 5px 50%;
+.ui-tooltip-content
+{
+    color: #ffffff;
 }
 
 /* services status */
