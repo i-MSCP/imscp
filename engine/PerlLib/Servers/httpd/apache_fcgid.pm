@@ -374,11 +374,20 @@ sub deleteDmn
 	# Remove Web folder directory ( only if it is not shared with another domain )
 	if(-d $data->{'WEB_DIR'}) {
 		if($data->{'DOMAIN_TYPE'} eq 'dmn' || ($data->{'MOUNT_POINT'} ne '/' && ! @{$data->{'SHARED_MOUNT_POINTS'}})) {
-			# Unprotect Web root directory
+			my $parentDir = dirname($data->{'WEB_DIR'});
+			my $isProtectedParentDir = isImmutable($parentDir);
+
+			# Remove immutable bit on Web folder parent directory if needed
+			clearImmutable($parentDir) if $isProtectedParentDir;
+
+			# Remove immutable bit on Web folder
 			clearImmutable($data->{'WEB_DIR'}, 'recursive');
 
 			$rs = iMSCP::Dir->new('dirname' => $data->{'WEB_DIR'})->remove();
 			return $rs if $rs;
+
+			# Re-add immutable bit on parent Web folder if needed
+			setImmutable($parentDir) if $isProtectedParentDir;
 		}
 	}
 
