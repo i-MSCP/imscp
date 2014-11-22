@@ -1285,25 +1285,20 @@ table .graph {
     vertical-align: middle;
 }
 
-/* Tooltips */
-#imscpTooltip {
-    min-width: 150px;
-    padding: 15px 5px;
-    position: absolute;
-    z-index: 3000;
+/** Tooltips */
+.ui-tooltip {
     border: 1px solid;
     opacity: 0.85;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
 }
-
-#imscpTooltip.tooltip_icon {
-    max-width: 600px;
-    padding: 15px 5px 15px 45px;
+.ui-tooltip.ui-tooltip-notice {
+    padding-left: 45px;
 }
-
-#imscpTooltip .tooltipBody {
+.ui-tooltip-content
+{
+    padding: 10px 5px;
     font-size: 0.90em;
     font-weight: bold;
     text-align: left;
