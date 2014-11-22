@@ -197,39 +197,58 @@ a:hover,
 
 /*------------TOOLTIPS--------------*/
 
-#imscpTooltip {
-    padding: 15px 5px;
-    position: absolute;
-    z-index: 3000;
+.black .ui-tooltip {
+    background: #000000;
+    border-color: #000000;
+}
+.blue .ui-tooltip {
+    background: #161e73;
+    border-color: #161e73;
+}
+.green .ui-tooltip {
+    background: #1f5c16;
+    border-color: #1f5c16;
+}
+.red .ui-tooltip {
+    background: #590405;
+    border-color: #590405;
+}
+.yellow .ui-tooltip {
+    background: #85742f;
+    border-color: #85742f;
+}
+.ui-tooltip {
     border: 1px solid;
     opacity: 0.85;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
 }
-
-#imscpTooltip .tooltip_icon {
-    width: 250px;
-    padding: 15px 5px 15px 45px;
+.black .ui-tooltip.ui-tooltip-notice {
+    background: #000000 url(../images/tooltips/info.png) no-repeat 5px 50%;
 }
-
-#imscpTooltip .tooltipBody {
+.blue .ui-tooltip.ui-tooltip-notice {
+    background: #161e73 url(../images/tooltips/info.png) no-repeat 5px 50%;
+}
+.green .ui-tooltip.ui-tooltip-notice {
+    background: #1f5c16 url(../images/tooltips/info.png) no-repeat 5px 50%;
+}
+.red .ui-tooltip.ui-tooltip-notice {
+    background: #590405 url(../images/tooltips/info.png) no-repeat 5px 50%;
+}
+.yellow .ui-tooltip.ui-tooltip-notice {
+    background: #85742f url(../images/tooltips/info.png) no-repeat 5px 50%;
+}
+.ui-tooltip.ui-tooltip-notice {
+    padding-left: 45px;
+}
+.ui-tooltip-content
+{
+    padding: 10px 5px;
     font-size: 0.90em;
     font-weight: bold;
     text-align: left;
-}
-
-#imscpTooltip {
-    background-color: #000000;
-    border-color: #000000;
-}
-
-#imscpTooltip .tooltipBody {
     color: #ffffff;
-}
-
-.tooltip_notice {
-    background: url(../images/tooltips/info.png) no-repeat 5px 50%;
 }
 
 /*-----------LOGIN AND LOSTPASSWORD-----------*/
