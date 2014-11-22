@@ -5,7 +5,7 @@ Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
 ENGINE
-	Fixed: Unable to remove the domain aliases nor the subdomains ( Web folder protection )
+	Fixed: Unable to remove the domain aliases and the subdomains ( Web folder protection )
 
 GUI
 	Added: iMSCP_Events_Aggregator::getEventManager() method
