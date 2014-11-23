@@ -106,11 +106,6 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 		return;
 	}
 
-	if (!preg_match('/^[[:alnum:]:!*+#_.-]+$/', $password)) {
-		set_page_message(tr("Please don't use special character such as '@, $, %% ...' in password."), 'error');
-		return;
-	}
-
 	if (!checkPasswordSyntax($password)) {
 		return;
 	}
