@@ -104,7 +104,7 @@ function client_editMailAccount()
 				} elseif ($password !== $password_rep) {
 					set_page_message(tr("Passwords do not match."), 'error');
 					return false;
-				} elseif (!checkPasswordSyntax($password, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
+				} elseif (!checkPasswordSyntax($password)) {
 					return false;
 				}
 			} else {

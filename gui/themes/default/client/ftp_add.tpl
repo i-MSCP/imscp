@@ -1,33 +1,4 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-
-	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
-	var js_i18n_tr_close = '{TR_CLOSE}';
-
-	$(document).ready(function () {
-		$('#domain_type').change(
-			function () {
-				$.post(
-					"ftp_add.php",
-					{ "domain_type": this.value },
-					function (data) {
-						var select = $("#domain_name");
-						select.empty();
-						for (var i = 0; i < data.length; i++) {
-							select.append(
-								'<option value="' + data[i].domain_name_val + '">' + data[i].domain_name + '</option>'
-							);
-						}
-					},
-					"json"
-				);
-			}
-		);
-	});
-	/*]]>*/
-</script>
-
 <form name="add_ftp_account_frm" method="post" action="ftp_add.php">
 	<table>
 		<thead>
@@ -61,14 +32,11 @@
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASSWORD}</label></td>
-			<td><input type="password" id="password" name="password" value="{PASSWORD}" autocomplete="off"/></td>
+			<td><input type="password" id="password" name="password" value="" class="pwd_generator" autocomplete="off"/></td>
 		</tr>
 		<tr>
-			<td><label for="password_repeat">{TR_PASSWORD_REPEAT}</label></td>
-			<td>
-				<input type="password" id="password_repeat" name="password_repeat" value="{PASSWORD_REPEAT}"
-					   autocomplete="off"/>
-			</td>
+			<td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
+			<td><input type="password" id="cpassword" name="password_repeat" value="" autocomplete="off"/></td>
 		</tr>
 		<tr>
 			<td><label for="ftp_directory">{TR_HOME_DIR}</label></td>
@@ -85,3 +53,29 @@
 		<a class="link_as_button" href="ftp_accounts.php">{TR_CANCEL}</a>
 	</div>
 </form>
+
+<script>
+	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
+	var js_i18n_tr_close = '{TR_CLOSE}';
+
+	$(document).ready(function () {
+		$('#domain_type').change(
+			function () {
+				$.post(
+					"ftp_add.php",
+					{ "domain_type": this.value },
+					function (data) {
+						var select = $("#domain_name");
+						select.empty();
+						for (var i = 0; i < data.length; i++) {
+							select.append(
+								'<option value="' + data[i].domain_name_val + '">' + data[i].domain_name + '</option>'
+							);
+						}
+					},
+					"json"
+				);
+			}
+		);
+	});
+</script>

@@ -7,12 +7,11 @@
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASSWORD}</label></td>
-			<td><input id="password" type="password" name="password" value="" autocomplete="off"/></td>
+			<td><input id="password" type="password" name="password" value="" class="pwd_generator" autocomplete="off"/></td>
 		</tr>
 		<tr>
-			<td><label for="password_confirmation">{TR_PASSWORD_CONFIRMATION}</label></td>
-			<td><input id="password_confirmation" type="password" name="password_confirmation" value=""
-					   autocomplete="off"/></td>
+			<td><label for="cpassword">{TR_PASSWORD_CONFIRMATION}</label></td>
+			<td><input id="cpassword" type="password" name="password_confirmation" value="" autocomplete="off"/></td>
 		</tr>
 	</table>
 	<div class="buttons">

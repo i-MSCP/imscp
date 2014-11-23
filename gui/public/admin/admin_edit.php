@@ -172,16 +172,6 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 
 check_login('admin');
 
-// Dispatches the request
-if (is_xhr()) { // Password generation (AJAX request)
-	header('Content-Type: text/plain; charset=utf-8');
-	header('Cache-Control: no-cache, private');
-	header('Pragma: no-cache');
-	header("HTTP/1.0 200 Ok");
-	echo passgen();
-	exit;
-}
-
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
@@ -189,6 +179,7 @@ if (isset($_GET['edit_id'])) {
 	$userId = intval($_GET['edit_id']);
 } else {
 	showBadRequestErrorPage();
+	exit;
 }
 
 if(!empty($_POST) && admin_isValidData()) {
@@ -237,11 +228,6 @@ $tpl->assign(
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_PASSWORD' => tr('Password'),
-		'TR_GENERATE' => tr('Generate'),
-		'TR_SHOW' => tr('Show'),
-		'TR_PASSWORD_GENERATION_NEEDED' => tr('You must first generate a password'),
-		'TR_NEW_PASSWORD_IS' => tr('New password is'),
-		'TR_RESET' => tr('Reset'),
 		'TR_PASSWORD_REPEAT' => tr('Password confirmation'),
 		'TR_EMAIL' => tr('Email'),
 		'TR_ADDITIONAL_DATA' => tr('Additional data'),

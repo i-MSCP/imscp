@@ -42,16 +42,6 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 
 check_login('admin');
 
-// Dispatches the request
-if (is_xhr()) { // Password generation (AJAX request)
-	header('Content-Type: text/plain; charset=utf-8');
-	header('Cache-Control: no-cache, private');
-	header('Pragma: no-cache');
-	header("HTTP/1.0 200 Ok");
-	echo passgen();
-	exit;
-}
-
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
@@ -269,12 +259,7 @@ $tpl->assign(
 		'TR_STREET_2' => tr('Street 2'),
 		'TR_PHONE' => tr('Phone'),
 		'TR_FAX' => tr('Fax'),
-		'TR_ADD' => tr('Add'),
-		'TR_GENERATE' => tr('Generate'),
-		'TR_SHOW' => tr('Show'),
-		'TR_PASSWORD_GENERATION_NEEDED' => tr('You must first generate a password'),
-		'TR_NEW_PASSWORD_IS' => tr('New password is'),
-		'TR_RESET' => tr('Reset')
+		'TR_ADD' => tr('Add')
 	)
 );
 

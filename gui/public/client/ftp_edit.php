@@ -61,8 +61,6 @@ function generatePageData($tpl, $ftpUserId, $mainDomainName)
 	$tpl->assign(
 		array(
 			'USERNAME' => tohtml($ftpUserId),
-			'PASSWORD' => '',
-			'PASSWORD_REPEAT' => '',
 			'HOME_DIR' => (isset($_POST['home_dir'])) ? tohtml($_POST['home_dir']) : tohtml($customFtpHomeDir),
 			'ID' => tohtml($ftpUserId),
 		)

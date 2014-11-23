@@ -114,7 +114,6 @@ function reseller_generatePage($tpl)
 	$tpl->assign(
 		array(
 			'VL_USERNAME' => tohtml($dmnUsername),
-			'VL_USR_PASS' => tohtml(passgen()),
 			'VL_MAIL' => tohtml($userEmail),
 			'VL_USR_ID' => $customerId,
 			'VL_USR_NAME' => tohtml($firstName),
@@ -395,7 +394,6 @@ $tpl->assign(
 		'TR_PHONE' => tr('Phone'),
 		'TR_FAX' => tr('Fax'),
 		'TR_BTN_ADD_USER' => tr('Add user'),
-		'VL_USR_PASS' => passgen()
 	)
 );
 

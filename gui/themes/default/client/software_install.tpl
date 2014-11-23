@@ -88,11 +88,8 @@
 			<td><input type="text" name="install_username" id="install_username" value="{VAL_INSTALL_USERNAME}"/></td>
 		</tr>
 		<tr>
-			<td><label for="install_password">{TR_INSTALL_PWD}</label></td>
-			<td>
-				<input type="password" name="install_password" id="install_password" value="{VAL_INSTALL_PASSWORD}"
-					   autocomplete="off"/>
-			</td>
+			<td><label for="password">{TR_INSTALL_PWD}</label></td>
+			<td><input type="password" name="install_password" id="password" value="" class="pwd_generator" autocomplete="off"/></td>
 		</tr>
 		<tr>
 			<td><label for="install_email">{TR_INSTALL_EMAIL}</label></td>
@@ -101,7 +98,6 @@
 		<!-- EDP: software_item -->
 		</tbody>
 	</table>
-
 	<div class="buttons">
 		<a class="link_as_button" href="software.php">{TR_CANCEL}</a>
 		<!-- BDP: software_install -->

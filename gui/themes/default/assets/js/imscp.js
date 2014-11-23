@@ -104,6 +104,48 @@ var iMSCP = function () {
         $("tbody").trigger('updateTable');
     };
 
+    // Function to initialize password generator
+    // To enable the password generator for an password input field, just add the .pwd_generator class to it
+    // Only password input fields with the password and cpassword identifier are filled
+    var passwordGenerator = function() {
+        if($(".pwd_generator").length) {
+            $("<span/>", {
+                style:"display:inline-block;margin-left:5px",
+                html: [
+                    $("<button/>", { id: "pwd_generate", text: "Generate" }),
+                    $("<button/>", { id: "pwd_show", text: "Show" })
+                ]
+            }).insertAfter(".pwd_generator");
+
+            $("#pwd_generate").pGenerator({
+                'bind': 'click',
+                'passwordElement': $("#password,#cpassword"),
+                'displayElement': null,
+                'passwordLength': 8,
+                'uppercase': true,
+                'lowercase': true,
+                'numbers':   true,
+                'specialChars': true
+            });
+
+            $("#pwd_show").click(function(e) {
+                e.preventDefault();
+                var password = $("#password").val();
+                if (password != '') {
+                    $('<div/>', { html: $("<strong/>", { text: password }) }).dialog({
+                        modal: true,
+                        hide: "blind",
+                        show: "blind",
+                        title: "Your new password",
+                        buttons: { Ok: function () { $(this).dialog("destroy").remove(); } }
+                    });
+                } else {
+                    alert("You must first generate a password by clicking on the generate button.");
+                }
+            });
+        }
+    };
+
     // Function to fix bad jQuery UI behaviors
     var fixJqueryUI = function () {
         // Dirty fix for http://bugs.jqueryui.com/ticket/7856
@@ -113,7 +155,7 @@ var iMSCP = function () {
             }
         });
 
-        $(document).on("click", "button", function () {
+        $(document).on("click", "button,input", function () {
             $(this).removeClass("ui-state-focus ui-state-hover");
         });
     };
@@ -122,13 +164,15 @@ var iMSCP = function () {
     var initLayout = function (context) {
         initPageMessages();
         initTooltips(context);
-        initButtons(context);
 
         if (context == 'simple') {
             $(".no_header #header").hide();
         } else {
             initTables();
+            passwordGenerator();
         }
+
+        initButtons(context);
     };
 
     return {
