@@ -70,7 +70,7 @@
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASS}</label></td>
-			<td><input id="password" type="password" name="pass" value="" class="pwd_generator" autocomplete="off"/></td>
+			<td><input id="password" type="password" name="pass" value="" class="pwd_generator pwd_prefill" autocomplete="off"/></td>
 		</tr>
 		<tr>
 			<td><label for="cpassword">{TR_PASS_REP}</label></td>
