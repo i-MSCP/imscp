@@ -160,14 +160,14 @@ function tojs($text)
 }
 
 /**
- * Checks if the syntax of the given password is valid.
+ * Checks if the syntax of the given password is valid
  *
  * @param string $password username to be checked
  * @param string $unallowedChars RegExp for unallowed characters
  * @param bool $noErrorMsg Whether or not error message should be discarded
  * @return bool TRUE if the password is valid, FALSE otherwise
  */
-function checkPasswordSyntax($password, $unallowedChars = '', $noErrorMsg = false)
+function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noErrorMsg = false)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');

@@ -7,8 +7,8 @@
 				<td class="right"><input type="text" name="uname" id="uname" value="{UNAME}"/></td>
 			</tr>
 			<tr>
-				<td class="left"><label for="upass">{TR_PASSWORD}</label></td>
-				<td class="right"><input type="password" name="upass" id="upass" value="" autocomplete="off"/></td>
+				<td class="left"><label for="password">{TR_PASSWORD}</label></td>
+				<td class="right"><input type="password" name="upass" id="password" value="" autocomplete="off"/></td>
 			</tr>
 			<tr>
 				<td colspan="2" class="right">

@@ -14,16 +14,11 @@
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASSWORD}</label></td>
-			<td>
-				<input type="password" name="userpassword" id="password" value="{VL_USR_PASS}" autocomplete="off"/>
-			</td>
+			<td><input type="password" name="userpassword" id="password" value="" class="pwd_generator" autocomplete="off"/></td>
 		</tr>
 		<tr>
-			<td><label for="pass_rep">{TR_REP_PASSWORD}</label></td>
-			<td>
-				<input type="password" name="userpassword_repeat" id="pass_rep" value="{VL_USR_PASS}"
-					   autocomplete="off"/>
-			</td>
+			<td><label for="cpassword">{TR_REP_PASSWORD}</label></td>
+			<td><input type="password" name="userpassword_repeat" id="cpassword" value="{VL_USR_PASS}" autocomplete="off"/></td>
 		</tr>
 		<tr>
 			<td><label for="domain_ip">{TR_DOMAIN_IP}</label></td>
@@ -41,7 +36,6 @@
 		</tr>
 		</tbody>
 	</table>
-
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -109,7 +103,6 @@
 		</tr>
 		</tbody>
 	</table>
-
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_BTN_ADD_USER}"/>
 		<input type="hidden" name="uaction" value="user_add3_nxt"/>

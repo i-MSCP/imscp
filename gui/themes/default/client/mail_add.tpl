@@ -1,33 +1,4 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-	$(document).ready(function () {
-		$("#normal, #forward, #normal_forward").on('change', function() {
-			if($(this).val() == '1') {
-				if($(this).is(':checked')) {
-					$("#tr_password, #tr_password_rep, #tr_quota").show();
-					$("#tr_forward_list").hide();
-				} else {
-					$("#tr_password, #tr_password_rep, #tr_quota").hide();
-				}
-			} else if($(this).val() == '2') {
-				if($(this).is(":checked")) {
-					$("#tr_forward_list").show();
-					$("#tr_password, #tr_password_rep, #tr_quota").hide();
-				} else {
-					$("#tr_forward_list").hide();
-				}
-			} else {
-				if($(this).is(':checked')) {
-					$("#tr_password, #tr_password_rep, #tr_quota").show();
-					$("#tr_forward_list").show();
-				}
-			}
-		}).trigger('change');
-	});
-	/* ]]> */
-</script>
-
 <!-- BDP: mail_account -->
 <form name="client_mail_add" action="mail_add.php" method="post">
 	<table class="firstColFixed">
@@ -66,13 +37,11 @@
 		</tr>
 		<tr id="tr_password">
 			<td><label for="password">{TR_PASSWORD}</label></td>
-			<td><input id="password" type="password" name="password" value="{PASSWORD}" autocomplete="off"/></td>
+			<td><input id="password" type="password" name="password" value="" class="pwd_generator" autocomplete="off"/></td>
 		</tr>
 		<tr id="tr_password_rep">
-			<td><label for="password_rep">{TR_PASSWORD_REPEAT}</label></td>
-			<td>
-				<input id="password_rep" type="password" name="password_rep" value="{PASSWORD_REP}" autocomplete="off"/>
-			</td>
+			<td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
+			<td><input id="cpassword" type="password" name="password_rep" value="" autocomplete="off"/></td>
 		</tr>
 		<tr id="tr_quota">
 			<td><label for="quota">{TR_QUOTA}</label></td>
@@ -87,10 +56,36 @@
 		</tr>
 		</tbody>
 	</table>
-
 	<div class="buttons">
 		<input type="submit" name="submit" value="{TR_ADD}"/>
 		<a href="mail_accounts.php" class="link_as_button">{TR_CANCEL}</a>
 	</div>
 </form>
 <!-- EDP: mail_account -->
+
+<script>
+	$(document).ready(function () {
+		$("#normal, #forward, #normal_forward").on('change', function() {
+			if($(this).val() == '1') {
+				if($(this).is(':checked')) {
+					$("#tr_password, #tr_password_rep, #tr_quota").show();
+					$("#tr_forward_list").hide();
+				} else {
+					$("#tr_password, #tr_password_rep, #tr_quota").hide();
+				}
+			} else if($(this).val() == '2') {
+				if($(this).is(":checked")) {
+					$("#tr_forward_list").show();
+					$("#tr_password, #tr_password_rep, #tr_quota").hide();
+				} else {
+					$("#tr_forward_list").hide();
+				}
+			} else {
+				if($(this).is(':checked')) {
+					$("#tr_password, #tr_password_rep, #tr_quota").show();
+					$("#tr_forward_list").show();
+				}
+			}
+		}).trigger('change');
+	});
+</script>

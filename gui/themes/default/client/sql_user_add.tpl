@@ -1,3 +1,4 @@
+
 <form name="sql_add_user_frm" method="post" action="sql_user_add.php">
 	<!-- BDP: show_sqluser_list -->
 	<table class="firstColFixed">
@@ -68,12 +69,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="pass">{TR_PASS}</label></td>
-			<td><input id="pass" type="password" name="pass" value="" autocomplete="off"/></td>
+			<td><label for="password">{TR_PASS}</label></td>
+			<td><input id="password" type="password" name="pass" value="" class="pwd_generator" autocomplete="off"/></td>
 		</tr>
 		<tr>
-			<td><label for="pass_rep">{TR_PASS_REP}</label></td>
-			<td><input id="pass_rep" type="password" name="pass_rep" value="" autocomplete="off"/></td>
+			<td><label for="cpassword">{TR_PASS_REP}</label></td>
+			<td><input id="cpassword" type="password" name="pass_rep" value="" autocomplete="off"/></td>
 		</tr>
 		</tbody>
 	</table>

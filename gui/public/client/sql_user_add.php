@@ -202,7 +202,7 @@ function client_addSqlUser($customerId, $databaseId)
 				return;
 			}
 
-			if (!checkPasswordSyntax($_POST['pass'], '/[^\x21-\x7e]/')) {
+			if (!checkPasswordSyntax($_POST['pass'])) {
 				set_page_message(
 					tr(
 						'Only printable characters from the ASCII table (not extended), excepted the space, are allowed.'

@@ -159,7 +159,7 @@ function client_addMailAccount()
 				} elseif ($password !== $password_rep) {
 					set_page_message(tr("Passwords do not match."), 'error');
 					return false;
-				} elseif (!checkPasswordSyntax($password, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
+				} elseif (!checkPasswordSyntax($password)) {
 					return false;
 				}
 
@@ -341,8 +341,6 @@ function client_generatePage($tpl)
 				'NORMAL_CHECKED' => ($mailType == '1') ? $checked : '',
 				'FORWARD_CHECKED' => ($mailType == '2') ? $checked : '',
 				'NORMAL_FORWARD_CHECKED' => ($mailType == '3') ? $checked : '',
-				'PASSWORD' => isset($_POST['password']) ? tohtml($_POST['password']) : '',
-				'PASSWORD_REP' => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
 				'TR_QUOTA' => ($mainDmnProps['mail_quota'] == '0')
 					? tr('Quota in MiB (0 for unlimited)')
 					: tr('Quota in MiB (Max: %s)', bytesHuman($mainDmnProps['mail_quota'] - $quota, 'MiB')),

@@ -1,134 +1,4 @@
 
-<script>
-	$(document).ready(function () {
-		errFieldsStack = {ERR_FIELDS_STACK};
-		$.each(errFieldsStack, function () {
-			$('#' + this).css('border-color', '#ca1d11');
-		});
-		$('<img>').attr({src:'{THEME_ASSETS_PATH}/images/ajax/small-spinner.gif'}).addClass('small-spinner').
-			insertAfter($('#password, #password_confirmation'));
-		$('.datatable').dataTable(
-			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"bStateSave": true,
-				"pagingType": "simple"
-			}
-		);
-		$.ajaxSetup({
-			url: $(location).attr('pathname'),
-			type: 'GET',
-			data: 'edit_id={EDIT_ID}',
-			datatype: 'text',
-			beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-			success: function (r) { $('#password, #password_confirmation').val(r); },
-			error: iMSCPajxError
-		});
-
-		$('#password ~ img, #password_confirmation ~ img').ajaxStart(function () { $(this).show() });
-		$('#password ~ img, #password_confirmation ~ img').ajaxStop(function () { $(this).hide() });
-		$('#generate_password').click(function () { $.ajax(); });
-		$('#reset_password').click(function () { $('#password, #password_confirmation').val('');});
-		$('#reset_password').trigger('click');
-
-		// Create dialog box for some messages (password and notices)
-		$('#dialog_box').dialog({
-			modal: true,
-			autoOpen: false,
-			hide: 'blind',
-			show: 'blind',
-			buttons: { Ok: function () { $(this).dialog('close'); }}
-		});
-
-		// Show generated password in specific dialog box
-		$('#show_password').click(function () {
-			var password = $('#password').val();
-			if (password == '') {
-				password = '<br/>{TR_PASSWORD_GENERATION_NEEDED}';
-			} else {
-				password = '<br/>{TR_NEW_PASSWORD_IS}: <strong>' + $('#password').val() + '</strong>';
-			}
-			$('#dialog_box').dialog("option", "title", '{TR_PASSWORD}').html(password);
-			$('#dialog_box').dialog('open');
-		});
-
-		// Disable enter key for form submission (really needed ?)
-		$(':input').on('keypress', function (e) {
-			if (e.keyCode == 13) {
-				e.preventDefault();
-				$('#dialog_box').dialog("option", "title", '{TR_NOTICE}').html('<br />{TR_EVENT_NOTICE}');
-				$('#dialog_box').dialog("open");
-			}
-		});
-
-		// Workaround to prevent click event on readonly input (and their labels)
-		$('input, label').click(function (e) {
-			if (this.type == 'checkbox' && $(this).is('[readonly]')) {
-				e.preventDefault();
-			}
-		});
-
-		$.ui.dialog.prototype._focusTabbable = function(){ };
-		$('#php_editor_dialog').dialog({
-			hide: 'blind',
-			show: 'slide',
-			focus: false,
-			autoOpen: false,
-			width: 650,
-			modal: true,
-			buttons: { '{TR_CLOSE}': function(){ $(this).dialog('close'); } }
-		});
-
-		$('form').submit(function (){ $('#php_editor_dialog').parent().appendTo($('#dialogContainer')); });
-
-		$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
-			$('#php_editor_dialog').dialog('open');
-			return false;
-		});
-
-		if ($('#php_ini_system_no').is(':checked')) { $('#php_editor_dialog_open').hide(); }
-
-		$('input[name="php_ini_system"]').change(function (){ $('#php_editor_dialog_open').fadeToggle(); });
-
-		var errorMessages = $('.php_editor_error');
-
-		function _updateErrorMesssages(k, t) {
-			if (t != undefined) {
-				if (!$('#err_' + k).length) {
-					$("#msg_default").remove();
-					errorMessages.append('<span style="display:block" id="err_' + k + '">' + t + '</span>').
-						removeClass('static_success').addClass('static_error');
-				}
-			} else if ($('#err_' + k).length) {
-				$('#err_' + k).remove();
-			}
-
-			if ($.trim(errorMessages.text()) == '') {
-				errorMessages.empty().append('<span id="msg_default">{TR_FIELDS_OK}</span>').
-					removeClass('static_error').addClass('static_success');
-			}
-		}
-
-		$.each(['php_ini_max_post_max_size', 'php_ini_max_upload_max_filesize', 'php_ini_max_max_execution_time' ,
-			'php_ini_max_max_input_time', 'php_ini_max_memory_limit'], function () {
-			var k = this;
-			$('#' + k).keyup(function () {
-				var r = /^(0|[1-9]\d*)$/; // Regexp to check value syntax
-				var nv = $(this).val(); // Get new value to be checked
-
-				if (!r.test(nv) || parseInt(nv) < 0 || parseInt(nv) >= 10000) {
-					$(this).addClass('ui-state-error');
-					_updateErrorMesssages(k, sprintf('{TR_VALUE_ERROR}', k.substr(12), 0, 10000));
-				} else {
-					$(this).removeClass('ui-state-error');
-					_updateErrorMesssages(k);
-				}
-			}).trigger('keyup');
-		});
-	});
-</script>
-
-<div id="dialog_box"></div>
-
 <form name="editFrm" method="post" action="reseller_edit.php?edit_id={EDIT_ID}">
 <table class="firstColFixed">
 	<thead>
@@ -143,19 +13,11 @@
 	</tr>
 	<tr>
 		<td><label for="password">{TR_PASSWORD}</label></td>
-		<td>
-			<input type="password" name="password" id="password" value="{PASSWORD}" autocomplete="off"/>
-			<input type="button" id="generate_password" value="{TR_GENERATE}"/>
-			<input type="button" id="show_password" value="{TR_SHOW}"/>
-			<input type="button" id="reset_password" value="{TR_RESET}"/>
-		</td>
+		<td><input type="password" name="password" id="password" class="pwd_generator" value="" autocomplete="off"/></td>
 	</tr>
 	<tr>
-		<td><label for="password_confirmation">{TR_PASSWORD_CONFIRMATION}</label></td>
-		<td>
-			<input type="password" name="password_confirmation" id="password_confirmation"
-				   value="{PASSWORD_CONFIRMATION}" autocomplete="off"/>
-		</td>
+		<td><label for="cpassword">{TR_PASSWORD_CONFIRMATION}</label></td>
+		<td><input type="password" name="password_confirmation" id="cpassword" value="" autocomplete="off"/></td>
 	</tr>
 	<tr>
 		<td><label for="email">{TR_EMAIL}</label></td>
@@ -176,7 +38,7 @@
 	<tbody>
 	<!-- BDP: ip_block -->
 	<tr>
-		<td>{IP_NUMBER}</td>
+		<td><label for="ip_{IP_ID}">{IP_NUMBER}</label></td>
 		<td>
 			<input type="checkbox" id="ip_{IP_ID}" name="reseller_ips[]" value="{IP_ID}" {IP_ASSIGNED} {IP_READONLY} />
 		</td>
@@ -490,3 +352,95 @@
 	<a class="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
 </div>
 </form>
+
+<script>
+	$(document).ready(function () {
+		errFieldsStack = {ERR_FIELDS_STACK};
+		$.each(errFieldsStack, function () {
+			$('#' + this).css('border-color', '#ca1d11');
+		});
+		$('<img>').attr({src:'{THEME_ASSETS_PATH}/images/ajax/small-spinner.gif'}).addClass('small-spinner').
+			insertAfter($('#password, #password_confirmation'));
+		$('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"bStateSave": true,
+				"pagingType": "simple"
+			}
+		);
+
+		// Disable enter key for form submission (really needed ?)
+		$(':input').on('keypress', function (e) {
+			if (e.keyCode == 13) {
+				e.preventDefault();
+				$('#dialog_box').dialog("option", "title", '{TR_NOTICE}').html('<br />{TR_EVENT_NOTICE}');
+				$('#dialog_box').dialog("open");
+			}
+		});
+
+		// Workaround to prevent click event on readonly input (and their labels)
+		$('input, label').click(function (e) {
+			if (this.type == 'checkbox' && $(this).is('[readonly]')) {
+				e.preventDefault();
+			}
+		});
+
+		$.ui.dialog.prototype._focusTabbable = function(){ };
+		$('#php_editor_dialog').dialog({
+			hide: 'blind',
+			show: 'slide',
+			focus: false,
+			autoOpen: false,
+			width: 650,
+			modal: true,
+			buttons: { '{TR_CLOSE}': function(){ $(this).dialog('close'); } }
+		});
+
+		$('form').submit(function (){ $('#php_editor_dialog').parent().appendTo($('#dialogContainer')); });
+
+		$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
+			$('#php_editor_dialog').dialog('open');
+			return false;
+		});
+
+		if ($('#php_ini_system_no').is(':checked')) { $('#php_editor_dialog_open').hide(); }
+
+		$('input[name="php_ini_system"]').change(function (){ $('#php_editor_dialog_open').fadeToggle(); });
+
+		var errorMessages = $('.php_editor_error');
+
+		function _updateErrorMesssages(k, t) {
+			if (t != undefined) {
+				if (!$('#err_' + k).length) {
+					$("#msg_default").remove();
+					errorMessages.append('<span style="display:block" id="err_' + k + '">' + t + '</span>').
+						removeClass('static_success').addClass('static_error');
+				}
+			} else if ($('#err_' + k).length) {
+				$('#err_' + k).remove();
+			}
+
+			if ($.trim(errorMessages.text()) == '') {
+				errorMessages.empty().append('<span id="msg_default">{TR_FIELDS_OK}</span>').
+					removeClass('static_error').addClass('static_success');
+			}
+		}
+
+		$.each(['php_ini_max_post_max_size', 'php_ini_max_upload_max_filesize', 'php_ini_max_max_execution_time' ,
+			'php_ini_max_max_input_time', 'php_ini_max_memory_limit'], function () {
+			var k = this;
+			$('#' + k).keyup(function () {
+				var r = /^(0|[1-9]\d*)$/; // Regexp to check value syntax
+				var nv = $(this).val(); // Get new value to be checked
+
+				if (!r.test(nv) || parseInt(nv) < 0 || parseInt(nv) >= 10000) {
+					$(this).addClass('ui-state-error');
+					_updateErrorMesssages(k, sprintf('{TR_VALUE_ERROR}', k.substr(12), 0, 10000));
+				} else {
+					$(this).removeClass('ui-state-error');
+					_updateErrorMesssages(k);
+				}
+			}).trigger('keyup');
+		});
+	});
+</script>
