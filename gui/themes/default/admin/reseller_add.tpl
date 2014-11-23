@@ -17,7 +17,7 @@
 	</tr>
 	<tr>
 		<td><label for="cpassword">{TR_PASSWORD_CONFIRMATION}</label></td>
-		<td><input type="password" name="password_confirmation" id="cpassword" class="pwd_generator" value="" autocomplete="off"/></td>
+		<td><input type="password" name="password_confirmation" id="cpassword" class="pwd_generator pwd_prefill" value="" autocomplete="off"/></td>
 	</tr>
 	<tr>
 		<td><label for="email">{TR_EMAIL}</label></td>

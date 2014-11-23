@@ -69,7 +69,6 @@ var iMSCP = function () {
 
     // Function to initialize tables
     var initTables = function () {
-
         // Override some built-in jQuery method to trigger the i-MSCP updateTable event
         (function ($) {
             var origShow = $.fn.show;
@@ -127,6 +126,13 @@ var iMSCP = function () {
                 'numbers':   true,
                 'specialChars': true
             });
+
+            // Prefill password field if needed
+            if($(".pwd_prefill").length) {
+                $("#pwd_generate").trigger('click');
+            } else {
+                $("#password,#cpassword").val("");
+            }
 
             $("#pwd_show").click(function(e) {
                 e.preventDefault();

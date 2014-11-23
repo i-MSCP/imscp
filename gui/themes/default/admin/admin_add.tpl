@@ -14,7 +14,7 @@
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASSWORD}</label></td>
-			<td><input type="password" name="password" id="password" class="pwd_generator" value="" autocomplete="off"/></td>
+			<td><input type="password" name="password" id="password" class="pwd_generator pwd_prefill" value="" autocomplete="off"/></td>
 		</tr>
 		<tr>
 			<td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
