@@ -181,12 +181,6 @@ function _admin_generateAccountForm($tpl, &$data)
 			'TR_RESELLER_NAME' => tr('Name'),
 			'RESELLER_NAME' => tohtml($data['admin_name']),
 			'TR_PASSWORD' => tr('Password'),
-			'PASSWORD' => tohtml($data['password']),
-			'TR_GENERATE' => tr('Generate'),
-			'TR_SHOW' => tr('Show'),
-			'TR_PASSWORD_GENERATION_NEEDED' => tr('You must first generate a password'),
-			'TR_NEW_PASSWORD_IS' => tr('New password is'),
-			'TR_RESET' => tr('Reset'),
 			'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
 			'PASSWORD_CONFIRMATION' => tohtml($data['password_confirmation']),
 			'TR_EMAIL' => tr('Email'),
@@ -446,9 +440,6 @@ function admin_generateForm($tpl, &$data)
 function admin_checkAndUpdateData($resellerId)
 {
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $resellerId));
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
 
 	$errFieldsStack = array();
 
@@ -827,7 +818,7 @@ function admin_checkResellerLimit($newLimit, $assignedByReseller, $consumedByCus
 		if ($unlimitedService == false) {
 			// If the new limit is lower than the already consomed item by customer
 			if ($newLimit < $consumedByCustomers && $newLimit != -1) {
-				set_page_message(tr("%s: The clients consumption (%s) for this reseller is greater than the new limit.", true, '<b>' . ucfirst($serviceName) . '</b', $consumedByCustomers), 'error');
+				set_page_message(tr("%s: The clients consumption (%s) for this reseller is greater than the new limit.", true, '<b>' . ucfirst($serviceName) . '</b>', $consumedByCustomers), 'error');
 				$retVal = false;
 				// If the new limit is lower than the items already assigned by the reseller
 			} elseif ($newLimit < $assignedByReseller && $newLimit != -1) {
@@ -870,13 +861,6 @@ check_login('admin');
 // Dispatches the request
 if (!isset($_GET['edit_id'])) {
 	showBadRequestErrorPage();
-} elseif (is_xhr()) { // Passsword generation (AJAX request)
-	header('Content-Type: text/plain; charset=utf-8');
-	header('Cache-Control: no-cache, private');
-	header('Pragma: no-cache');
-	header("HTTP/1.0 200 Ok");
-	echo passgen();
-	exit;
 } else {
 	$resellerId = (int)$_GET['edit_id'];
 

@@ -277,21 +277,14 @@ if (isset($_REQUEST['edit_id'])) {
 			'TR_UNKNOWN' => tr('Unknown'),
 			'EDIT_ID' => $adminId,
 			'TR_UPDATE' => tr('Update'),
-			'TR_SEND_DATA' => tr('Send new login data'),
-			'TR_PASSWORD_GENERATE' => tr('Generate password')
+			'TR_SEND_DATA' => tr('Send new login data')
 		)
 	);
 	
 	reseller_loadUserData($adminId);
-	
-	if (isset($_POST['genpass'])) {
-		$tpl->assign('VAL_PASSWORD', passgen());
-	} else {
-		$tpl->assign('VAL_PASSWORD', '');
 
-		if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_changes' && check_ruser_data(true)) {
-			reseller_updateUserData($adminId); // Save data to db
-		}
+	if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_changes' && check_ruser_data(true)) {
+		reseller_updateUserData($adminId); // Save data to db
 	}
 
 	generateNavigation($tpl);

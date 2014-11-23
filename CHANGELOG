@@ -8,6 +8,12 @@ GUI
 	Fixed: CSS loading order
 	Replaced: i-MSCP jQuery tooltip plugin by jQuery UI tooltip widget
 
+VENDOR
+	Added: pGenerator jQuery plugin v1.0.0
+
+TICKETS
+	Fixed #1187: Enhancement - Password generator for any password field
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.18
 ------------------------------------------------------------------------------------------------------------------------
@@ -35,7 +41,7 @@ GUI
 	Rewritten: Handler for uncaught exceptions ( including writers )
 	Rewritten: SSL certificate interface ( client level )
 
-Vendor
+VENDOR
 	Fixed: base64_encode() expects parameter 1 to be string, array given in ASN1.php ( phpseclib )
 	Updated phpseclib library to version 0.3.9
 
@@ -67,7 +73,7 @@ GUI
 	Fixed: When adding a SQL user to a database, some SQL users are not listed in the select box
 	Fixed: Wrong POST variable in client/ticket_create.php
 
-i18n
+I18N
 	Added gui/library/resources/i18n/iMSCP.php file for indirect translation strings
 
 INSTALLER

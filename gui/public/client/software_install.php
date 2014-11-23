@@ -412,7 +412,6 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 			'TR_INSTALL_EMAIL' => tr('Email address'),
 			'VAL_OTHER_DIR' => tohtml($otherDir),
 			'VAL_INSTALL_USERNAME' => tohtml($appLoginName),
-			'VAL_INSTALL_PASSWORD' => tohtml($appPassword),
 			'VAL_INSTALL_EMAIL' => tohtml($appEmail)
 		)
 	);

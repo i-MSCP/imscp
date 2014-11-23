@@ -141,16 +141,12 @@ function _admin_generateAccountForm($tpl, &$data)
 			 'TR_RESELLER_NAME' => tr('Name'),
 			 'RESELLER_NAME' => tohtml($data['admin_name']),
 			 'TR_PASSWORD' => tr('Password'),
-			 'PASSWORD' => tohtml($data['password']),
-			 'TR_GENERATE' => tr('Generate'),
-			 'TR_SHOW' => tr('Show'),
-			 'TR_PASSWORD_GENERATION_NEEDED' => tr('You must first generate a password'),
-			 'TR_NEW_PASSWORD_IS' => tr('New password is'),
-			 'TR_RESET' => tr('Reset'),
 			 'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
 			 'PASSWORD_CONFIRMATION' => tohtml($data['password_confirmation']),
 			 'TR_EMAIL' => tr('Email'),
-			 'EMAIL' => tohtml($data['email'])));
+			 'EMAIL' => tohtml($data['email'])
+		)
+	);
 }
 
 /**
@@ -370,9 +366,12 @@ function admin_generateForm($tpl, &$data)
 }
 
 /**
- * Check and create reseller account.
+ * Create reseller account
  *
- * @return bool TRUE on success, FALSE otherwise
+ * @throws Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
+ * @return bool
  */
 function admin_checkAndCreateResellerAccount()
 {
@@ -650,14 +649,7 @@ $cfg = iMSCP_Registry::get('config');
 check_login('admin');
 
 // Dispatches the request
-if (is_xhr()) { // Passsword generation (AJAX request)
-		header('Content-Type: text/plain; charset=utf-8');
-		header('Cache-Control: no-cache, private');
-		header('Pragma: no-cache');
-		header("HTTP/1.0 200 Ok");
-		echo passgen();
-		exit;
-} elseif(!empty($_POST) && admin_checkAndCreateResellerAccount()) {
+if(!empty($_POST) && admin_checkAndCreateResellerAccount()) {
 	redirectTo('manage_users.php');
 }
 

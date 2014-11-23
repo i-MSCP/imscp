@@ -1,11 +1,4 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
-	var js_i18n_tr_close = '{TR_CLOSE}';
-	/*]]>*/
-</script>
-
 <form name="edit_ftp_account_frm" method="post" action="ftp_edit.php?id={ID}">
 	<table>
 		<thead>
@@ -20,14 +13,11 @@
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASSWORD}</label></td>
-			<td><input id="password" type="password" name="password" value="{PASSWORD}" autocomplete="off"/></td>
+			<td><input id="password" type="password" name="password" class="pwd_generator" value="" autocomplete="off"/></td>
 		</tr>
 		<tr>
-			<td><label for="password_repeat">{TR_PASSWORD_REPEAT}</label></td>
-			<td>
-				<input id="password_repeat" type="password" name="password_repeat" value="{PASSWORD_REPEAT}"
-					   autocomplete="off"/>
-			</td>
+			<td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
+			<td><input id="cpassword" type="password" name="password_repeat" value="" autocomplete="off"/></td>
 		</tr>
 		<tr>
 			<td><label for="ftp_directory">{TR_HOME_DIR}</label></td>
@@ -38,9 +28,13 @@
 		</tr>
 		</tbody>
 	</table>
-
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_CHANGE}"/>
 		<a class="link_as_button" href="ftp_accounts.php">{TR_CANCEL}</a>
 	</div>
 </form>
+
+<script>
+	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
+	var js_i18n_tr_close = '{TR_CLOSE}';
+</script>

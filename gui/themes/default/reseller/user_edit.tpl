@@ -14,16 +14,13 @@
 		<tr>
 			<td><label for="userpassword">{TR_PASSWORD}</label></td>
 			<td>
-				<input type="password" name="userpassword" id="userpassword" value="{VAL_PASSWORD}" autocomplete="off"/>
+				<input type="password" name="userpassword" id="userpassword" value="" class="pwd_generator" autocomplete="off"/>
 				<input name="genpass" type="submit" value="{TR_PASSWORD_GENERATE}"/>
 			</td>
 		</tr>
 		<tr>
-			<td><label for="userpassword_repeat">{TR_REP_PASSWORD}</label></td>
-			<td>
-				<input type="password" name="userpassword_repeat" id="userpassword_repeat" value="{VAL_PASSWORD}"
-					   autocomplete="off"/>
-			</td>
+			<td><label for="cpassword">{TR_REP_PASSWORD}</label></td>
+			<td><input type="password" name="userpassword_repeat" id="cpassword" value="" autocomplete="off"/></td>
 		</tr>
 		<tr>
 			<td><label for="useremail">{TR_USREMAIL}</label></td>
@@ -31,7 +28,6 @@
 		</tr>
 		</tbody>
 	</table>
-
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -99,7 +95,6 @@
 		</tr>
 		</tbody>
 	</table>
-
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
 		<input type="checkbox" id="send_data" name="send_data"/>
