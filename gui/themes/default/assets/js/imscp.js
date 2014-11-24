@@ -38,10 +38,10 @@ var iMSCP = function () {
 
     // Function to initialize tooltips
     var initTooltips = function ($context) {
-        if ($context == 'simple') {
+        if ($context == "simple") {
             $("a").tooltip(
                 {
-                    tooltipClass: 'ui-tooltip-notice',
+                    tooltipClass: "ui-tooltip-notice",
                     track: true
                 }
             );
@@ -49,7 +49,7 @@ var iMSCP = function () {
             $(".main_menu a").tooltip({ track: true });
             $(".body a,.body span,.body input,.dataTables_paginate div").tooltip(
                 {
-                    tooltipClass: 'ui-tooltip-notice',
+                    tooltipClass: "ui-tooltip-notice",
                     track: true
                 }
             );
@@ -58,9 +58,9 @@ var iMSCP = function () {
 
     // Function to initialize buttons
     var initButtons = function (context) {
-        if (context == 'simple') {
-            $('.link_as_button,button').button({icons: { secondary: "ui-icon-triangle-1-e"} });
-            $('input').first().focus();
+        if (context == "simple") {
+            $(".link_as_button,button").button({ icons: { secondary: "ui-icon-triangle-1-e"} });
+            $("input").first().focus();
         } else {
             $("input:submit, input:button, input:reset, button, .link_as_button").button();
             $(".radio, .checkbox").buttonset();
@@ -90,7 +90,7 @@ var iMSCP = function () {
             };
             $.fn.html = function () {
                 var ret = origHtml.apply(this, arguments);
-                $('tbody').trigger("updateTable");
+                $("tbody").trigger("updateTable");
                 return ret;
             };
         })(jQuery);
@@ -98,57 +98,50 @@ var iMSCP = function () {
         $("body").on("updateTable", "tbody", function () {
             $(this).find("tr:visible:odd").removeClass("odd").addClass("even");
             $(this).find("tr:visible:even").removeClass("even").addClass("odd");
-            $(this).find('th').parent().removeClass("even odd");
+            $(this).find("th").parent().removeClass("even odd");
         });
-        $("tbody").trigger('updateTable');
+        $("tbody").trigger("updateTable");
     };
 
     // Function to initialize password generator
     // To enable the password generator for an password input field, just add the .pwd_generator class to it
     // Only password input fields with the password and cpassword identifier are filled
     var passwordGenerator = function() {
-        if($(".pwd_generator").length) {
-            $("<span/>", {
-                style:"display:inline-block;margin-left:5px",
-                html: [
-                    $("<button/>", { id: "pwd_generate", text: "Generate" }),
-                    $("<button/>", { id: "pwd_show", text: "Show" })
-                ]
-            }).insertAfter(".pwd_generator");
+        var $pwdGenerator = $(".pwd_generator");
 
-            $("#pwd_generate").pGenerator({
-                'bind': 'click',
-                'passwordElement': $("#password,#cpassword"),
-                'displayElement': null,
-                'passwordLength': 8,
-                'uppercase': true,
-                'lowercase': true,
-                'numbers':   true,
-                'specialChars': true
-            });
+        if($pwdGenerator.length) {
+            var $pwdElements = $("#password,#cpassword");
+
+            $("<span>", {
+                style: "display:inline-block;margin-left:5px",
+                html: [
+                    $("<button>", { id: "pwd_generate", type: "button", text: "Generate" }).pGenerator({
+                        'passwordElement': $pwdElements,
+                        'passwordLength': 8
+                    }),
+                    $("<button>", { id: "pwd_show", type: "button", text: "Show" }).click(function() {
+                        var password = $pwdElements.first().val();
+                        if (password != '') {
+                            $('<div>', { html: $("<strong>", { text: password }) }).dialog({
+                                modal: true,
+                                hide: "blind",
+                                show: "blind",
+                                title: "Your new password",
+                                buttons: { Ok: function () { $(this).dialog("destroy").remove(); } }
+                            });
+                        } else {
+                            alert("You must first generate a password by clicking on the generate button.");
+                        }
+                    })
+                ]
+            }).insertAfter($pwdGenerator);
 
             // Prefill password field if needed
             if($(".pwd_prefill").length) {
-                $("#pwd_generate").trigger('click');
+                $("#pwd_generate").trigger("click");
             } else {
-                $("#password,#cpassword").val("");
+                $pwdElements.val("");
             }
-
-            $("#pwd_show").click(function(e) {
-                e.preventDefault();
-                var password = $("#password").val();
-                if (password != '') {
-                    $('<div/>', { html: $("<strong/>", { text: password }) }).dialog({
-                        modal: true,
-                        hide: "blind",
-                        show: "blind",
-                        title: "Your new password",
-                        buttons: { Ok: function () { $(this).dialog("destroy").remove(); } }
-                    });
-                } else {
-                    alert("You must first generate a password by clicking on the generate button.");
-                }
-            });
         }
     };
 
@@ -171,7 +164,7 @@ var iMSCP = function () {
         initPageMessages();
         initTooltips(context);
 
-        if (context == 'simple') {
+        if (context == "simple") {
             $(".no_header #header").hide();
         } else {
             initTables();
