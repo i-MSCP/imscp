@@ -377,16 +377,12 @@ sub deleteDmn
 			my $parentDir = dirname($data->{'WEB_DIR'});
 			my $isProtectedParentDir = isImmutable($parentDir);
 
-			# Remove immutable bit on Web folder parent directory if needed
 			clearImmutable($parentDir) if $isProtectedParentDir;
-
-			# Remove immutable bit on Web folder
 			clearImmutable($data->{'WEB_DIR'}, 'recursive');
 
 			$rs = iMSCP::Dir->new('dirname' => $data->{'WEB_DIR'})->remove();
 			return $rs if $rs;
 
-			# Re-add immutable bit on parent Web folder if needed
 			setImmutable($parentDir) if $isProtectedParentDir;
 		}
 	}
@@ -1512,7 +1508,7 @@ sub _init
 
 =item _addCfg(\%data)
 
- Add configuration files for the given domain or subdomain
+ Add configuration files for the given domain
 
  Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
@@ -1554,28 +1550,34 @@ sub _addCfg
 
 	# Build Apache sites - Begin
 
-	my %configs;
-	$configs{"$data->{'DOMAIN_NAME'}.conf"} = { 'redirect' => 'domain_redirect.tpl', 'normal' => 'domain.tpl' };
+	my @templates = (
+		{
+			tplFile => ($data->{'FORWARD'} eq 'no') ? 'domain.tpl' : 'domain_redirect.tpl',
+			siteFile => "$data->{'DOMAIN_NAME'}.conf"
+		}
+	);
 
 	if($data->{'SSL_SUPPORT'}) {
-		$configs{"$data->{'DOMAIN_NAME'}_ssl.conf"} = {
-			'redirect' => 'domain_redirect_ssl.tpl', 'normal' => 'domain_ssl.tpl'
+		push @templates, {
+			tplFile => ($data->{'FORWARD'} eq 'no') ? 'domain_ssl.tpl' : 'domain_redirect_ssl.tpl',
+			siteFile => "$data->{'DOMAIN_NAME'}_ssl.conf"
 		};
 
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
-	my $phpiniLevel = $self->{'config'}->{'INI_LEVEL'};
+	my $iniLevel = $self->{'config'}->{'INI_LEVEL'};
+	my $fcgidName;
 
-	if($data->{'FORWARD'} eq 'no') {
-		if($phpiniLevel eq 'per_user') {
-			$self->setData({ FCGID_NAME => $data->{'ROOT_DOMAIN_NAME'} });
-		} elsif ($phpiniLevel eq 'per_domain') {
-			$self->setData({ FCGID_NAME => $data->{'PARENT_DOMAIN_NAME'} });
-		} elsif($phpiniLevel eq 'per_site') {
-			$self->setData({ FCGID_NAME => $data->{'DOMAIN_NAME'} });
+	if($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
+		if($iniLevel eq 'per_user') {
+			$fcgidName = $data->{'ROOT_DOMAIN_NAME'};
+		} elsif ($iniLevel eq 'per_domain') {
+			$fcgidName = $data->{'PARENT_DOMAIN_NAME'};
+		} elsif($iniLevel eq 'per_site') {
+			$fcgidName = $data->{'DOMAIN_NAME'};
 		} else {
-			error("Unknown php.ini level: $phpiniLevel");
+			error("Unknown php.ini level: $iniLevel");
 			return 1;
 		}
 	}
@@ -1592,45 +1594,51 @@ sub _addCfg
 			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
 			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
 			DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
-				? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
+				? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
+			FCGID_NAME => $fcgidName,
 		}
 	);
 
-	for(keys %configs) {
+	for my $template(@templates) {
 		$rs = $self->buildConfFile(
-			$data->{'FORWARD'} eq 'no'
-				? "$self->{'tplDir'}/$configs{$_}->{'normal'}"
-				: "$self->{'tplDir'}/$configs{$_}->{'redirect'}",
+			"$self->{'tplDir'}/$template->{'tplFile'}",
 			$data,
-			{ 'destination' => "$self->{'apacheWrkDir'}/$_" }
+			{ 'destination' => "$self->{'apacheWrkDir'}/$template->{'siteFile'}" }
 		);
 
-		$rs = $self->installConfFile($_);
+		$rs = $self->installConfFile($template->{'siteFile'});
 		return $rs if $rs;
 	}
 
 	# Build Apache sites - End
 
 	# Build and install custom Apache configuration file
-	$rs = $self->buildConfFile(
-		"$self->{'tplDir'}/custom.conf.tpl",
-		$data,
-		{ 'destination' => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
-	) unless (-f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf");
-	return $rs if $rs;
-
-	# Enable all Apache sites
-	for(keys %configs) {
-		$rs = $self->enableSites($_);
+	unless(-f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf") {
+		$rs = $self->buildConfFile(
+			"$self->{'tplDir'}/custom.conf.tpl",
+			$data,
+			{ 'destination' => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
+		);
 		return $rs if $rs;
 	}
+
+	# Enable Apache sites
+	for my $template(@templates) {
+		$rs = $self->enableSites($template->{'siteFile'});
+		return $rs if $rs;
+	}
+
+	# Build PHP related configuration files
+
+	$rs = $self->_buildPHPConfig($data);
+	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterHttpdAddCfg', $data);
 }
 
 =item _dmnFolders(\%data)
 
- Get Web folders list to create for the given domain or subdomain
+ Get Web folders list to create for the given domain
 
  Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return array List of Web folders to create
@@ -1639,15 +1647,11 @@ sub _addCfg
 
 sub _dmnFolders
 {
-	my ($self, $data) = @_;;
+	my ($self, $data) = @_;
 
 	my @folders = ();
 
 	$self->{'eventManager'}->trigger('beforeHttpdDmnFolders', \@folders);
-
-	my $fcgiDir = "$self->{'config'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
-	my $phpiniLevel = $self->{'config'}->{'INI_LEVEL'};
-	my $domainType = $data->{'DOMAIN_TYPE'};
 
 	push(@folders, [
 		"$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
@@ -1656,21 +1660,6 @@ sub _dmnFolders
 		0750
 	]);
 
-	if(
-		$data->{'FORWARD'} eq 'no' &&
-		(
-			($phpiniLevel eq 'per_user' && $domainType eq 'dmn') ||
-			($phpiniLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
-			$phpiniLevel eq 'per_site'
-		)
-	) {
-		push(@folders, ["$fcgiDir", $data->{'USER'}, $data->{'GROUP'}, 0550]);
-		push(@folders, ["$fcgiDir/php5", $data->{'USER'}, $data->{'GROUP'}, 0550]);
-	} else {
-		my $rs = iMSCP::Dir->new('dirname' => $fcgiDir)->remove();
-		return $rs if $rs;
-	}
-
 	$self->{'eventManager'}->trigger('afterHttpdDmnFolders', \@folders);
 
 	@folders;
@@ -1678,7 +1667,7 @@ sub _dmnFolders
 
 =item _addFiles(\%data)
 
- Add default directories and files for the given domain or subdomain
+ Add default directories and files for the given domain
 
  Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on sucess, other on failure
@@ -1702,12 +1691,10 @@ sub _addFiles
 		return $rs if $rs;
 	}
 
-	# Create Web folder tree only if the domain is not forwarded
 	if($data->{'FORWARD'} eq 'no') {
+		# Build Web directory tree using skeleton from /etc/imscp/apache/skel - BEGIN
+
 		my $webDir = $data->{'WEB_DIR'};
-
-		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/skel) - BEGIN
-
 		my $skelDir;
 
 		if($data->{'DOMAIN_TYPE'} eq 'dmn') {
@@ -1732,8 +1719,7 @@ sub _addFiles
 			return 1;
 		}
 
-		# Build default domain/subdomain page if needed (if htdocs doesn't exist or is empty)
-		# Remove it from Web directory tree otherwise
+		# Build default page if needed ( if htdocs doesn't exist or is empty )
 		if(! -d "$webDir/htdocs" || iMSCP::Dir->new('dirname' => "$webDir/htdocs")->isEmpty()) {
 			if(-d "$tmpDir/htdocs") {
 				# Test needed in case admin removed the index.html file from the skeleton
@@ -1743,7 +1729,6 @@ sub _addFiles
 					return $rs if $rs;
 				}
 			} else {
-				# TODO should we just create it instead?
 				error("Web folder skeleton $skelDir must provide the 'htdocs' directory.");
 				return 1;
 			}
@@ -1764,19 +1749,12 @@ sub _addFiles
 			}
 		}
 
-		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/skel) - END
+		# Build Web directory tree using skeleton /etc/imscp/apache/skel - END
 
-		my $protectedParentDir = dirname($webDir);
-		$protectedParentDir = dirname($protectedParentDir) while(! -d $protectedParentDir);
-		my $isProtectedParentDir = 0;
+		my $parentDir = dirname($webDir);
 
-		# Unprotect parent directory if needed
-		if(isImmutable($protectedParentDir)) {
-			$isProtectedParentDir = 1;
-			clearImmutable($protectedParentDir);
-		}
+		clearImmutable($parentDir);
 
-		# Unprotect Web root directory
 		if(-d $webDir) {
 			clearImmutable($webDir);
 		} else {
@@ -1802,10 +1780,10 @@ sub _addFiles
 		return $rs if $rs;
 
 		# Get list of directories/files for which permissions, owner and group must be set
-		my @items = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
+		my @files = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
 
 		# Set default owner and group recursively
-		for(@items) {
+		for(@files) {
 			$rs = setRights(
 				"$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 }
 			) if -e "$webDir/$_";
@@ -1814,7 +1792,7 @@ sub _addFiles
 
 		# Sets default permissions recursively, excepted for directories for which permissions of directories and files
 		# they contain should be preserved
-		for(@items) {
+		for(@files) {
 			$rs = setRights(
 				"$webDir/$_",
 				{
@@ -1839,84 +1817,118 @@ sub _addFiles
 			return $rs if $rs;
 		}
 
-		# Permissions, owner and group - Ending
-
 		if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
-			# Protect Web root directory
 			setImmutable($webDir);
-
-			# Protect parent directory if needed
-			setImmutable($protectedParentDir) if $isProtectedParentDir;
+			setImmutable($parentDir) if $data->{'DOMAIN_TYPE'} ne 'dmn';
 		}
 
-		# Build fcgi wrapper and php configuration files
-
-		my $domainType = $data->{'DOMAIN_TYPE'};
-		my $phpiniLevel = $self->{'config'}->{'INI_LEVEL'};
-
-		if(
-			($phpiniLevel eq 'per_user' && $domainType eq 'dmn') ||
-			($phpiniLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
-			$phpiniLevel eq 'per_site'
-		) {
-			$rs = $self->_buildPHPini($data);
-			return $rs if $rs;
-		}
+		# Permissions, owner and group - Ending
 	}
 
 	$self->{'eventManager'}->trigger('afterHttpdAddFiles', $data);
 }
 
-=item _buildPHPini(\%data)
+=item _buildPHPConfig(\%data)
 
- Build FCGI and PHP configuration files
+ Build PHP related configuration files
 
  Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on sucess, other on failure
 
 =cut
 
-sub _buildPHPini
+sub _buildPHPConfig
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildPhpIni', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildPhpConf', $data);
+	return $rs if $rs;
 
-	$self->setData(
-		{
-			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
-			PHP_CGI_BIN => $self->{'config'}->{'PHP_CGI_BIN'}
+	my $fcgiRootDir = $self->{'config'}->{'PHP_STARTER_DIR'};
+	my $iniLevel = $self->{'config'}->{'INI_LEVEL'};
+	my $domainType = $data->{'DOMAIN_TYPE'};
+	my $fcgiDir;
+
+	if($iniLevel eq 'per_user') {
+		$fcgiDir = "$fcgiRootDir/$data->{'ROOT_DOMAIN_NAME'}";
+	} elsif ($iniLevel eq 'per_domain') {
+		$fcgiDir = "$fcgiRootDir/$data->{'PARENT_DOMAIN_NAME'}";
+	} elsif($iniLevel eq 'per_site') {
+		$fcgiDir = "$fcgiRootDir/$data->{'DOMAIN_NAME'}";
+	} else {
+		error("Unknown php.ini level: $iniLevel");
+		return 1;
+	}
+
+	if($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
+		# Ensure that the FCGI root directory exists
+		$rs = iMSCP::Dir->new(
+			'dirname' => $fcgiRootDir
+		)->make(
+			{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0550 }
+		);
+		return $rs if $rs;
+
+		# Create FCGI tree
+		for ($fcgiDir, "$fcgiDir/php5") {
+			$rs = iMSCP::Dir->new(
+				'dirname' => $_
+			)->make(
+				{ 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => 0550 }
+			);
+			return $rs if $rs;
 		}
-	);
 
-	my $php5Dir = "$self->{'config'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
+		# Build Fcgid wrapper
 
-	# Fcgid wrapper setup
-	my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fcgid-starter.tpl";
-	my $destFile = "$php5Dir/php5-fcgid-starter";
+		$self->setData({ FCGI_DIR => $fcgiDir, PHP5_FASTCGI_BIN => $self->{'config'}->{'PHP5_FASTCGI_BIN'} });
 
-	$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $destFile });
-	return $rs if $rs;
+		$rs = $self->buildConfFile(
+			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fcgid-starter.tpl",
+			$data,
+			{
+				destination => "$fcgiDir/php5-fcgid-starter",
+				user => $data->{'USER'},
+				group => $data->{'GROUP'},
+				mode => 0550
+			}
+		);
+		return $rs if $rs;
 
-	$rs = setRights($destFile, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0550' });
-	return $rs if $rs;
+		# Build php.ini file
 
-	# Transitional
-	if(-f "$php5Dir/php5-fastcgi-starter") {
-		$rs = iMSCP::File->new('filename' => "$php5Dir/php5-fastcgi-starter")->delFile();
+		$rs = $self->buildConfFile(
+			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5/php.ini",
+			$data,
+			{
+				destination => "$fcgiDir/php5/php.ini",
+				user => $data->{'USER'},
+				group => $data->{'GROUP'},
+				mode => 0440
+			}
+		);
+		return $rs if $rs;
+
+		# Handle ini level switch
+		if(
+			($iniLevel eq 'per_user' && $domainType ne 'dmn') ||
+			($iniLevel eq 'per_domain' && not $domainType ~~ ['dmn', 'als'])
+		) {
+			$rs = iMSCP::Dir->new( 'dirname' => "$fcgiRootDir/$data->{'DOMAIN_NAME'}" )->remove();
+			return $rs if $rs;
+		}
+	} elsif(
+		$data->{'PHP_SUPPORT'} ne 'yes' || (
+			($iniLevel eq 'per_user' && $domainType ne 'dmn') ||
+			($iniLevel eq 'per_domain' && not $domainType ~~ ['dmn', 'als']) ||
+			$iniLevel eq 'per_site'
+		)
+	) {
+		$rs = iMSCP::Dir->new( 'dirname' => "$fcgiRootDir/$data->{'DOMAIN_NAME'}" )->remove();
 		return $rs if $rs;
 	}
 
-	$fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5/php.ini";
-	$destFile = "$php5Dir/php5/php.ini";
-
-	$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $destFile });
-	return $rs if $rs;
-
-	$rs = setRights($destFile, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0440' });
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdBuildPhpIni', $data);
+	$self->{'eventManager'}->trigger('afterHttpdBuildPhpConf', $data);
 }
 
 =item _cleanTemplate(\$cfgTpl, $filename, \%data)

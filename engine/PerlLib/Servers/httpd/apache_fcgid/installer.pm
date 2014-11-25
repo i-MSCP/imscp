@@ -784,7 +784,18 @@ sub _oldEngineCompatibility
 		}
 	}
 
-	# Removing directories no longer needed (since 1.1.0)
+	# Remove deprecated php5-fastcgi-starter files if any
+	if(-d $self->{'config'}->{'PHP_STARTER_DIR'}) {
+		my ($stdout, $stderr);
+		$rs = execute(
+			"$main::imscpConfig{'CMD_RM'} -f $self->{'config'}->{'PHP_STARTER_DIR'}/*/php5-fastcgi-starter",
+			\$stdout,
+			\$stderr
+		);
+		return $rs if $rs;
+	}
+
+	# Remove directories no longer needed (since 1.1.0)
 	for(
 		$self->{'config'}->{'APACHE_BACKUP_LOG_DIR'}, $self->{'config'}->{'HTTPD_USERS_LOG_DIR'},
 		$self->{'config'}->{'APACHE_SCOREBOARDS_DIR'}
