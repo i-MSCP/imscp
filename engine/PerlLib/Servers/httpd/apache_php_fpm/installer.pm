@@ -320,6 +320,19 @@ sub _makeDirs
 		return $rs if $rs;
 	}
 
+	# Todo move this statement into the httpd apache_fcgid server implementation (uninstaller) when it will be ready for
+	# call when switching to another httpd server implementation.
+	$rs = iMSCP::Dir->new('dirname' => $self->{'config'}->{'PHP_STARTER_DIR'})->remove();
+	return $rs if $rs;
+
+	# Cleanup pools configuration directory ( eg, remove possible orphaned pool file )
+	my ($stdout, $stderr);
+	$rs = execute(
+		"$main::imscpConfig{'CMD_RM'} -f $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/*",
+		\$stdout,
+		\$stderr
+	);
+
 	$self->{'eventManager'}->trigger('afterHttpdMakeDirs');
 }
 

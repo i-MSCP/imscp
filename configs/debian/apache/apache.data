@@ -35,7 +35,7 @@ HTACCESS_USERS_FILENAME = .htpasswd
 HTACCESS_GROUPS_FILENAME = .htgroup
 
 ###### LEVEL FOR PHP.INI FILE
-# Accepted values are: per_user, per_domain or per_vhost
+# Accepted values are: per_user, per_domain or per_site
 #
 # per_user: each customer will have only one php.ini file
 # per_domain: each domain / domain alias will have its own php.ini file

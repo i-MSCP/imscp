@@ -378,16 +378,12 @@ sub deleteDmn
 			my $parentDir = dirname($data->{'WEB_DIR'});
 			my $isProtectedParentDir = isImmutable($parentDir);
 
-			# Remove immutable bit on Web folder parent directory if needed
 			clearImmutable($parentDir) if $isProtectedParentDir;
-
-			# Remove immutable bit on Web folder
 			clearImmutable($data->{'WEB_DIR'}, 'recursive');
 
 			$rs = iMSCP::Dir->new('dirname' => $data->{'WEB_DIR'})->remove();
 			return $rs if $rs;
 
-			# Re-add immutable bit on parent Web folder if needed
 			setImmutable($parentDir) if $isProtectedParentDir;
 		}
 	}
@@ -1628,7 +1624,7 @@ sub _init
 
 =item _addCfg(\%data)
 
- Add configuration files for the given domain or subdomain
+ Add configuration files for the given domain
 
  Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
@@ -1666,27 +1662,32 @@ sub _addCfg
 
 	# Build Apache sites - Begin
 
-	my %configs;
-	$configs{"$data->{'DOMAIN_NAME'}.conf"} = { 'redirect' => 'domain_redirect.tpl', 'normal' => 'domain.tpl' };
+	my @templates = (
+		{
+			tplFile => ($data->{'FORWARD'} eq 'no') ? 'domain.tpl' : 'domain_redirect.tpl',
+			siteFile => "$data->{'DOMAIN_NAME'}.conf"
+		}
+	);
 
 	if($data->{'SSL_SUPPORT'}) {
-		$configs{"$data->{'DOMAIN_NAME'}_ssl.conf"} = {
-			'redirect' => 'domain_redirect_ssl.tpl', 'normal' => 'domain_ssl.tpl'
+		push @templates, {
+			tplFile => ($data->{'FORWARD'} eq 'no') ? 'domain_ssl.tpl' : 'domain_redirect_ssl.tpl',
+			siteFile => "$data->{'DOMAIN_NAME'}_ssl.conf"
 		};
 
-		$self->{'data'}->{'CERTIFICATE'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem";
+		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
 	my $poolLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+	my $poolName;
 
 	if($data->{'FORWARD'} eq 'no') {
-		# Dertermine pool name according pool level setting
 		if($poolLevel eq 'per_user') {
-			$self->setData({ POOL_NAME => $data->{'ROOT_DOMAIN_NAME'} });
+			$poolName = $data->{'ROOT_DOMAIN_NAME'};
 		} elsif($poolLevel eq 'per_domain') {
-			$self->setData({ POOL_NAME => $data->{'PARENT_DOMAIN_NAME'} });
+			$poolName = $data->{'PARENT_DOMAIN_NAME'};
 		} elsif($poolLevel eq 'per_site') {
-			$self->setData({ POOL_NAME => $data->{'DOMAIN_NAME'} });
+			$poolName = $data->{'DOMAIN_NAME'};
 		} else {
 			error("Unknown php-fpm pool level: $poolLevel");
 			return 1;
@@ -1704,21 +1705,19 @@ sub _addCfg
 			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
 			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
 			DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
-				? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
+				? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
+			POOL_NAME => $poolName
 		}
 	);
 
-	for(keys %configs) {
+	for my $template(@templates) {
 		$rs = $self->buildConfFile(
-			$data->{'FORWARD'} eq 'no'
-				? "$self->{'apacheTplDir'}/$configs{$_}->{'normal'}"
-				: "$self->{'apacheTplDir'}/$configs{$_}->{'redirect'}",
+			"$self->{'apacheTplDir'}/$template->{'tplFile'}",
 			$data,
-			{ 'destination' => "$self->{'apacheWrkDir'}/$_" }
+			{ 'destination' => "$self->{'apacheWrkDir'}/$template->{'siteFile'}" }
 		);
-		return $rs if $rs;
 
-		$rs = $self->installConfFile($_);
+		$rs = $self->installConfFile($template->{'siteFile'});
 		return $rs if $rs;
 	}
 
@@ -1732,60 +1731,23 @@ sub _addCfg
 	) unless (-f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf");
 	return $rs if $rs;
 
-	# Enable all Apache sites
-	for(keys %configs) {
-		$rs = $self->enableSites($_);
+	# Enable Apache sites
+	for my $template(@templates) {
+		$rs = $self->enableSites($template->{'siteFile'});
 		return $rs if $rs;
 	}
 
-	# Build PHP FPM pool file - Begin
+	# Build PHP related configuration files
 
-	# Backup older pool files if any
-	$rs = $self->phpfpmBkpConfFile("$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf");
+	$rs = $self->_buildPHPConfig($data);
 	return $rs if $rs;
-
-	my $domainType = $data->{'DOMAIN_TYPE'};
-
-	if(
-		$data->{'FORWARD'} eq 'no' &&
-		(
-			($poolLevel eq 'per_user' && $domainType eq 'dmn') ||
-			($poolLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
-			$poolLevel eq 'per_site'
-		)
-	) {
-		$rs = $self->buildConfFile(
-			"$self->{'phpfpmTplDir'}/pool.conf",
-			$data,
-			{ 'destination' => "$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf" }
-		);
-		return $rs if $rs;
-
-		$rs = $self->installConfFile(
-			"$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
-			{ 'destination' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
-		);
-		return $rs if $rs;
-	} else {
-		$rs = iMSCP::File->new(
-			'filename' => "$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf"
-		)->delFile() if -f "$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf";
-		return $rs if $rs;
-
-		$rs = iMSCP::File->new(
-			'filename' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-		)->delFile() if -f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf";
-		return $rs if $rs;
-	}
-
-	# Build PHP FPM pool file - End
 
 	$self->{'eventManager'}->trigger('afterHttpdAddCfg', $data);
 }
 
 =item _dmnFolders(\%data)
 
- Get Web folders list to create for the given domain or subdomain
+ Get Web folders list to create for the given domain
 
  Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return array List of Web folders to create
@@ -1796,7 +1758,7 @@ sub _dmnFolders
 {
 	my ($self, $data) = @_;
 
-	my @folders;
+	my @folders = ();
 
 	$self->{'eventManager'}->trigger('beforeHttpdDmnFolders', \@folders);
 
@@ -1814,7 +1776,7 @@ sub _dmnFolders
 
 =item _addFiles(\%data)
 
- Add default directories and files for the given domain or subdomain
+ Add default directories and files for the given domain
 
  Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on sucess, other on failure
@@ -1840,10 +1802,9 @@ sub _addFiles
 
 	# Create Web folder tree only if th domain is not forwarded
 	if($data->{'FORWARD'} eq 'no') {
+		# Build Web directory tree using skeleton from /etc/imscp/apache/skel - BEGIN
+
 		my $webDir = $data->{'WEB_DIR'};
-
-		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/skel) - BEGIN
-
 		my $skelDir;
 
 		if($data->{'DOMAIN_TYPE'} eq 'dmn') {
@@ -1868,8 +1829,7 @@ sub _addFiles
 			return 1;
 		}
 
-		# Build default domain/subdomain page if needed (if htdocs doesn't exist or is empty)
-		# Remove it from Web directory tree otherwise
+		# Build default page if needed ( if htdocs doesn't exist or is empty )
 		if(! -d "$webDir/htdocs" || iMSCP::Dir->new('dirname' => "$webDir/htdocs")->isEmpty()) {
 			if(-d "$tmpDir/htdocs") {
 				# Test needed in case admin removed the index.html file from the skeleton
@@ -1879,7 +1839,6 @@ sub _addFiles
 					return $rs if $rs;
 				}
 			} else {
-				# TODO should we just create it instead?
 				error("Web folder skeleton $skelDir must provide the 'htdocs' directory.");
 				return 1;
 			}
@@ -1900,19 +1859,12 @@ sub _addFiles
 			}
 		}
 
-		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/skel) - END
+		# Build Web directory tree using skeleton /etc/imscp/apache/skel - END
 
-		my $protectedParentDir = dirname($webDir);
-		$protectedParentDir = dirname($protectedParentDir) while(! -d $protectedParentDir);
-		my $isProtectedParentDir = 0;
+		my $parentDir = dirname($webDir);
 
-		# Unprotect parent directory if needed
-		if(isImmutable($protectedParentDir)) {
-			$isProtectedParentDir = 1;
-			clearImmutable($protectedParentDir);
-		}
+		clearImmutable($parentDir);
 
-		# Unprotect Web root directory
 		if(-d $webDir) {
 			clearImmutable($webDir);
 		} else {
@@ -1938,10 +1890,10 @@ sub _addFiles
 		return $rs if $rs;
 
 		# Get list of directories/files for which permissions, owner and group must be set
-		my @items = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
+		my @files = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
 
 		# Set default owner and group recursively
-		for(@items) {
+		for(@files) {
 			$rs = setRights(
 				"$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 }
 			) if -e "$webDir/$_";
@@ -1950,7 +1902,7 @@ sub _addFiles
 
 		# Sets default permissions recursively, excepted for directories for which permissions of directories and files
 		# they contain should be preserved
-		for(@items) {
+		for(@files) {
 			$rs = setRights(
 				"$webDir/$_",
 				{
@@ -1975,18 +1927,100 @@ sub _addFiles
 			return $rs if $rs;
 		}
 
-		# Permissions, owner and group - Ending
-
 		if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
-			# Protect Web root directory
 			setImmutable($webDir);
-
-			# Protect parent directory if needed
-			setImmutable($protectedParentDir) if $isProtectedParentDir;
+			setImmutable($parentDir) if $data->{'DOMAIN_TYPE'} ne 'dmn';
 		}
+
+		# Permissions, owner and group - Ending
 	}
 
 	$self->{'eventManager'}->trigger('afterHttpdAddFiles', $data);
+}
+
+=item _buildPHPConfig(\%data)
+
+ Build PHP related configuration files
+
+ Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Return int 0 on sucess, other on failure
+
+=cut
+
+sub _buildPHPConfig
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildPhpConf', $data);
+	return $rs if $rs;
+
+	# Backup older pool files if any
+	$rs = $self->phpfpmBkpConfFile("$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf");
+	return $rs if $rs;
+
+	my $poolLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+	my $domainType = $data->{'DOMAIN_TYPE'};
+	my $poolName;
+
+	if($poolLevel eq 'per_user') {
+		$poolName = $data->{'ROOT_DOMAIN_NAME'};
+	} elsif ($poolLevel eq 'per_domain') {
+		$poolName = $data->{'PARENT_DOMAIN_NAME'};
+	} elsif($poolLevel eq 'per_site') {
+		$poolName = $data->{'DOMAIN_NAME'};
+	} else {
+		error("Unknown php.ini level: $poolLevel");
+		return 1;
+	}
+
+	if($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
+		$rs = $self->buildConfFile(
+			"$self->{'phpfpmTplDir'}/pool.conf",
+			$data,
+			{ 'destination' => "$self->{'phpfpmWrkDir'}/$poolName.conf" }
+		);
+		return $rs if $rs;
+
+		$rs = $self->installConfFile(
+			"$self->{'phpfpmWrkDir'}/$poolName.conf",
+			{ 'destination' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$poolName.conf" }
+		);
+		return $rs if $rs;
+
+		# Handle ini level switch
+		if(
+			($poolLevel eq 'per_user' && $domainType ne 'dmn') ||
+			($poolLevel eq 'per_domain' && not $domainType ~~ ['dmn', 'als'])
+		) {
+			for(
+				"$self->{'phpfpmWrkDir'}/$poolName.conf",
+				"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$poolName.conf"
+			) {
+				if(-f $_) {
+					$rs = iMSCP::File->new('filename' => $_)->delFile();
+					return $rs if $rs;
+				}
+			}
+		}
+	} elsif(
+		$data->{'PHP_SUPPORT'} ne 'yes' || (
+			($poolLevel eq 'per_user' && $domainType ne 'dmn') ||
+			($poolLevel eq 'per_domain' && not $domainType ~~ ['dmn', 'als']) ||
+			$poolLevel eq 'per_site'
+		)
+	) {
+		for(
+			"$self->{'phpfpmWrkDir'}/$poolName.conf",
+			"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$poolName.conf"
+		) {
+			if(-f $_) {
+				$rs = iMSCP::File->new('filename' => $_)->delFile();
+				return $rs if $rs;
+			}
+		}
+	}
+
+	$self->{'eventManager'}->trigger('afterHttpdBuildPhpConf', $data);
 }
 
 =item _cleanTemplate(\$cfgTpl, $filename, \%data)
