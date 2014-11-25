@@ -525,6 +525,14 @@ sub _makeDirs
 	$rs = iMSCP::Dir->new('dirname' => $self->{'config'}->{'PHP_STARTER_DIR'})->remove();
 	return $rs if $rs;
 
+	# Cleanup pools configuration directory ( eg, remove possible orphaned pool file )
+	my ($stdout, $stderr);
+	$rs = execute(
+		"$main::imscpConfig{'CMD_RM'} -f $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/*",
+		\$stdout,
+		\$stderr
+	);
+
 	$self->{'eventManager'}->trigger('afterHttpdMakeDirs');
 }
 
@@ -803,13 +811,6 @@ sub _buildMasterPhpFpmPoolFile
 		{ 'destination' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/master.conf" }
 	);
 	return $rs if $rs;
-
-	# Disable default pool configuration file if exists
-	if(-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf") {
-		my $file = iMSCP::File->new('filename' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf");
-		$rs = $file->moveFile("$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled");
-		return $rs if $rs;
-	}
 
 	$self->{'eventManager'}->trigger('afterBuildMasterPhpFpmPoolFile');
 }

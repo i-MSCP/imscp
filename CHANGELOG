@@ -4,6 +4,10 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+	Fixed: Fcgi wrapper is not created in some contexts ( apache_fcgid )
+	Fixed: Pool configuration file is not created in some contexts ( apache_php_fpm )
+
 GUI
 	Fixed: CSS loading order
 	Replaced: i-MSCP jQuery tooltip plugin by jQuery UI tooltip widget
@@ -13,6 +17,7 @@ VENDOR
 
 TICKETS
 	Fixed #1187: Enhancement - Password generator for any password field
+	Fixed #1188: Bug - apache_fcgid - Fcgid wrapper not created in some context
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.18
