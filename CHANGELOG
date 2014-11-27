@@ -12,6 +12,9 @@ GUI
 	Fixed: CSS loading order
 	Replaced: i-MSCP jQuery tooltip plugin by jQuery UI tooltip widget
 
+L10N
+	Fixed: Don't throw any exception when a locale is not valid. Fallback to the default locale instead
+
 VENDOR
 	Added: pGenerator jQuery plugin v1.0.0
 
