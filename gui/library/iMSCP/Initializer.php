@@ -455,22 +455,16 @@ class iMSCP_Initializer
 				: ((isset($this->config['USER_INITIAL_LANG'])) ? $this->config['USER_INITIAL_LANG'] : 'auto')
 		);
 
-		$trFilePattern = $this->config->GUI_ROOT_DIR . '/i18n/locales/%s/LC_MESSAGES/%s.mo';
+		$trFilePathPattern = $this->config['GUI_ROOT_DIR'] . '/i18n/locales/%s/LC_MESSAGES/%s.mo';
 
-		if($locale == 'auto') {
-			$find = new Zend_Locale($locale);
-			$browser = $find->getEnvironment() + $find->getBrowser();
-			arsort($browser);
-			foreach($browser as $language => $quality) {
-				if(file_exists(sprintf($trFilePattern, $language, $language))) {
-					$locale = $language;
-					break;
-				}
-			}
+		if(Zend_Locale::isLocale($locale)) {
+			$locale = new Zend_Locale($locale);
 
-			if($locale == 'auto') {
-				$locale = 'en_GB';
+			if(!file_exists(sprintf($trFilePathPattern, $locale, $locale))) {
+				$locale->setLocale('en_GB');
 			}
+		} else {
+			$locale = new Zend_Locale('en_GB');
 		}
 
 		// Setup cache object for translations
@@ -481,7 +475,7 @@ class iMSCP_Initializer
 				'caching' => true,
 				'lifetime' => null, // Translation cache is never flushed automatically
 				'automatic_serialization' => true,
-				'automatic_cleaning_factor' => 20,
+				'automatic_cleaning_factor' => 0,
 				'ignore_user_abort' => true,
 				'cache_id_prefix' => 'iMSCP_Translate'
 			),
@@ -503,9 +497,7 @@ class iMSCP_Initializer
 			new Zend_Translate(
 				array(
 					'adapter' => 'gettext',
-					//'content' => $this->_config->GUI_ROOT_DIR . '/i18n/locales',
-					'content' => sprintf($trFilePattern, $locale, $locale),
-					//'scan' => Zend_Translate::LOCALE_DIRECTORY,
+					'content' => sprintf($trFilePathPattern, $locale, $locale),
 					'locale' => $locale,
 					'disableNotices' => true,
 					'tag' => 'iMSCP'
