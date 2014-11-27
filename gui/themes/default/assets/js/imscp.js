@@ -37,8 +37,8 @@ var iMSCP = function () {
     };
 
     // Function to initialize tooltips
-    var initTooltips = function ($context) {
-        if ($context == "simple") {
+    var initTooltips = function (context) {
+        if (context == "simple") {
             $("a").tooltip(
                 {
                     tooltipClass: "ui-tooltip-notice",
