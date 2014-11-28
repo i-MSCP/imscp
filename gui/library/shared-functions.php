@@ -568,10 +568,12 @@ function change_domain_status($customerId, $action)
 				'
 					UPDATE
 						subdomain_alias
+					INNER JOIN
+						domain_aliasses USING(alias_id)
 					SET
 						subdomain_alias_status = ?
 					WHERE
-						alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+						domain_id = ?
 				',
 				array($newStatus, $domainId)
 			);

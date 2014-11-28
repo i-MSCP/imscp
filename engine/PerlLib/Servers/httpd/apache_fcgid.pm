@@ -1908,15 +1908,6 @@ sub _buildPHPConfig
 			}
 		);
 		return $rs if $rs;
-
-		# Handle ini level switch
-		if(
-			($iniLevel eq 'per_user' && $domainType ne 'dmn') ||
-			($iniLevel eq 'per_domain' && not $domainType ~~ ['dmn', 'als'])
-		) {
-			$rs = iMSCP::Dir->new( 'dirname' => "$fcgiRootDir/$data->{'DOMAIN_NAME'}" )->remove();
-			return $rs if $rs;
-		}
 	} elsif(
 		$data->{'PHP_SUPPORT'} ne 'yes' || (
 			($iniLevel eq 'per_user' && $domainType ne 'dmn') ||

@@ -208,6 +208,55 @@ sub postaddDmn
 	0;
 }
 
+=item disableDmn(\%data)
+
+ Process disableDmn tasks
+
+ When a domain is being disabled, we must ensure that the DNS data are still present for it (eg: when doing a full
+upgrade or reconfiguration). This explain here why we are calling the addDmn() method.
+
+ Param hash \%data Domain data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disableDmn
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedDisableDmn', $data);
+	return $rs if $rs;
+
+	$rs = $self->addDmn($data);
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterNamedDisableDmn', $data);
+}
+
+=item postdisableDmn(\%data)
+
+ Process postdisableDmn tasks
+
+ See the disableDmn() method for explaination.
+
+ Param hash \%data Domain data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postdisableDmn
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDisableDmn', $data);
+	return $rs if $rs;
+
+	$rs = $self->postaddDmn($_[1]);
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterNamedPostDisableDmn', $data);
+}
+
 =item deleteDmn(\%data)
 
  Process deleteDmn tasks
@@ -483,6 +532,55 @@ sub postaddSub
 	$self->{'restart'} = 1;
 
 	0;
+}
+
+=item disableSub(\%data)
+
+ Process disableSub tasks
+
+ When a subdomain is being disabled, we must ensure that the DNS data are still present for it (eg: when doing a full
+upgrade or reconfiguration). This explain here why we are calling the addSub() method.
+
+ Param hash \%data Domain data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disableSub
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedDisableSub', $data);
+	return $rs if $rs;
+
+	$rs = $self->addSub($data);
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterNamedDisableSub', $data);
+}
+
+=item postdisableSub(\%data)
+
+ Process postdisableSub tasks
+
+ See the disableSub() method for explaination.
+
+ Param hash \%data Domain data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postdisableSub
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDisableSub', $data);
+	return $rs if $rs;
+
+	$rs = $self->postaddSub($_[1]);
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterNamedPostDisableSub', $data);
 }
 
 =item deleteSub(\%data)
