@@ -10,6 +10,11 @@
 
     Alias /errors {HOME_DIR}/errors/
 
+    <Directory {HOME_DIR}>
+        Options +SymLinksIfOwnerMatch
+        {AUTHZ_ALLOW_ALL}
+    </Directory>
+
     <Directory {HOME_DIR}/domain_disable_page>
         {AUTHZ_ALLOW_ALL}
     </Directory>

@@ -1977,31 +1977,14 @@ sub _buildPHPConfig
 		$rs = $self->buildConfFile(
 			"$self->{'phpfpmTplDir'}/pool.conf",
 			$data,
-			{ 'destination' => "$self->{'phpfpmWrkDir'}/$poolName.conf" }
-		);
-		return $rs if $rs;
-
-		$rs = $self->installConfFile(
-			"$self->{'phpfpmWrkDir'}/$poolName.conf",
-			{ 'destination' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$poolName.conf" }
-		);
-		return $rs if $rs;
-
-		# Handle ini level switch
-		if(
-			($poolLevel eq 'per_user' && $domainType ne 'dmn') ||
-			($poolLevel eq 'per_domain' && not $domainType ~~ ['dmn', 'als'])
-		) {
-			for(
-				"$self->{'phpfpmWrkDir'}/$poolName.conf",
-				"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$poolName.conf"
-			) {
-				if(-f $_) {
-					$rs = iMSCP::File->new('filename' => $_)->delFile();
-					return $rs if $rs;
-				}
+			{
+				destination => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$poolName.conf",
+				user => $main::imscpConfig{'ROOT_USER'},
+				group => $main::imscpConfig{'ROOT_GROUP'},
+				mode => 0644
 			}
-		}
+		);
+		return $rs if $rs;
 	} elsif(
 		$data->{'PHP_SUPPORT'} ne 'yes' || (
 			($poolLevel eq 'per_user' && $domainType ne 'dmn') ||
@@ -2009,14 +1992,11 @@ sub _buildPHPConfig
 			$poolLevel eq 'per_site'
 		)
 	) {
-		for(
-			"$self->{'phpfpmWrkDir'}/$poolName.conf",
-			"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$poolName.conf"
-		) {
-			if(-f $_) {
-				$rs = iMSCP::File->new('filename' => $_)->delFile();
-				return $rs if $rs;
-			}
+		if(-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf") {
+			$rs = iMSCP::File->new(
+				filename => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf"
+			)->delFile();
+			return $rs if $rs;
 		}
 	}
 

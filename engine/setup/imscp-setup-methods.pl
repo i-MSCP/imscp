@@ -1902,6 +1902,8 @@ sub setupRebuildCustomerFiles
 					$aditionalCondition
 				"
 			);
+
+			$rawDb->do("UPDATE $table SET $field = 'todisable' WHERE $field = 'disabled' $aditionalCondition");
 		}
 
 		$rawDb->do(
