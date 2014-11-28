@@ -247,7 +247,7 @@ sub postdisableDmn
 	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDisableDmn', $data);
 	return $rs if $rs;
 
-	$rs = $self->postaddDmn($_[1]);
+	$rs = $self->postaddDmn($data);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterNamedPostDisableDmn', $data);
@@ -573,7 +573,7 @@ sub postdisableSub
 	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDisableSub', $data);
 	return $rs if $rs;
 
-	$rs = $self->postaddSub($_[1]);
+	$rs = $self->postaddSub($data);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterNamedPostDisableSub', $data);
