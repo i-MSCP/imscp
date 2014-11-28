@@ -529,6 +529,10 @@ sub _makeDirs
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 	my $phpdir = $self->{'config'}->{'PHP_STARTER_DIR'};
 
+	# Remove any older fcgi directory ( prevent possible orphaned file when switching to another ini level )
+	$rs = iMSCP::Dir->new('dirname' => $self->{'config'}->{'PHP_STARTER_DIR'})->remove();
+	return $rs if $rs;
+
 	for (
 		[$self->{'config'}->{'APACHE_LOG_DIR'}, $rootUName, $rootUName, 0755],
 		["$self->{'config'}->{'APACHE_LOG_DIR'}/$main::imscpConfig{'BASE_SERVER_VHOST'}", $rootUName, $rootUName, 0750],

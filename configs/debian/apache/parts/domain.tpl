@@ -38,7 +38,7 @@
     # SECTION php_fpm END.
     # SECTION php_enabled END.
 
-    <Directory {WEB_DIR}>
+    <Directory {HOME_DIR}>
         Options +SymLinksIfOwnerMatch
         {AUTHZ_ALLOW_ALL}
     </Directory>

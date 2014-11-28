@@ -4,6 +4,10 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIGS
+	Fixed: Access to error documents is forbiden in some contexts ( Apache )
+	Fixed: Domain aliases and subdomains can't follow sylinks from customer homedir
+
 BACKEND
 	Fixed: Fcgi wrapper is not created in some contexts ( apache_fcgid )
 	Fixed: Pool configuration file is not created in some contexts ( apache_php_fpm )
@@ -20,7 +24,8 @@ VENDOR
 
 TICKETS
 	Fixed #1187: Enhancement - Password generator for any password field
-	Fixed #1188: Bug - apache_fcgid - Fcgid wrapper not created in some context
+	Fixed #1188: Bug - apache_fcgid - Fcgid wrapper not created in some contexts
+	Fixed #1191: Bug - Domains which belong to disabled accounts are no longer reachable after an i-MSCP reconfiguration
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.18
