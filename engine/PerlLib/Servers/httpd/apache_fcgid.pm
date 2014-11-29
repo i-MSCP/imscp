@@ -1865,7 +1865,7 @@ sub _buildPHPConfig
 		$rs = iMSCP::Dir->new(
 			'dirname' => $fcgiRootDir
 		)->make(
-			{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0550 }
+			{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0555 }
 		);
 		return $rs if $rs;
 
