@@ -106,15 +106,15 @@ sub showDialog
 
 		($rs, $poolsLevel) = $dialog->radiolist(
 "
-\\Z4\\Zb\\ZuPHP FPM Pools Level\\Zn
+\\Z4\\Zb\\ZuFPM Pool Of Processes Level\\Zn
 
-Please, choose the pools level you want use for PHP. Available levels are:
+Please, choose the level you want use for the pools of processes. Available levels are:
 
-\\Z4Per user:\\Zn Each customer will have only one pool
-\\Z4Per domain:\\Zn Each domain / domain alias will have its own pool
-\\Z4Per site:\\Zn Each site will have its own pool
+\\Z4Per user:\\Zn Each customer will have only one pool of processes
+\\Z4Per domain:\\Zn Each domain / domain alias will have its own pool of processes
+\\Z4Per site:\\Zn Each site will have its own pool pool of processes
 
-Note: PHP FPM use a global php.ini configuration file but you can override any settings per pool.
+Note: FPM use a global php.ini configuration file but you can override any settings in pool files.
 ",
 			['per user', 'per domain', 'per site'],
 			$poolsLevel ne 'per site' && $poolsLevel ne 'per domain' ? 'per user' : $poolsLevel
