@@ -270,7 +270,7 @@ sub _bkpConfFile
 	return $rs if $rs;
 
 	if(-f $cfgFile){
-		my $file = iMSCP::File->new('filename' => $cfgFile );
+		my $file = iMSCP::File->new('filename' => $cfgFile);
 		my $filename = fileparse($cfgFile);
 
 		if(! -f "$self->{'apacheBkpDir'}/$filename.system") {
