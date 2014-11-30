@@ -112,6 +112,7 @@ sub run
 	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
 	my $confDir = $main::imscpConfig{'CONF_DIR'};
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
+	my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'};
 	my $logDir = $main::imscpConfig{'LOG_DIR'};
 
 	# eg. /etc/imscp/*
@@ -120,10 +121,16 @@ sub run
 		{ 'user' => $rootUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
 
+	# eg ./var/www/imscp
+	$rs |= setRights($rootDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0755' });
+
 	# eg. /var/www/imscp/engine
 	$rs |= setRights(
 		"$rootDir/engine", { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750', 'recursive' => 1 }
 	);
+
+	# eg ./var/www/virtual
+	$rs |= setRights($userWebDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0755' });
 
 	# eg. /var/log/imscp
 	$rs |= setRights($logDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750'} );
