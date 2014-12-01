@@ -11,10 +11,12 @@
 <link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
 <link href="{THEME_ASSETS_PATH}/css/ui.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
 <link href="{THEME_ASSETS_PATH}/css/{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
+<script>
+imscp_i18n = {JS_TRANSLATIONS};
+</script>
 <script src="{THEME_ASSETS_PATH}/js/jquery/jquery.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/jquery/jquery-ui.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/jquery/plugins/dataTables.js?v={THEME_ASSETS_VERSION}"></script>
-<script src="{THEME_ASSETS_PATH}/js/jquery/plugins/imscpTooltip.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/jquery/plugins/pGenerator.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
 <script>

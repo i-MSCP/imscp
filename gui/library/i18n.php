@@ -345,3 +345,50 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
 		$primaryTranslator->addTranslation(array('content' => $pluginTranslator));
 	}
 }
+
+/**
+ * Get JS translations strings
+ *
+ * Note: Plugins can register their own JS translation strings by listening on the onBeforeGetJsTranslations event, and
+ * add them to the translations array which is a parameter of that event.
+ *
+ * For instance:
+ *
+ * iMSCP_Events_Aggregator::getInstance()->register('onBeforeJsTranslations', function($e) {
+ *    $translations = $e->getParam('translations');
+ *    $translations['my_namespace'] = array(
+ *        'first_translation_string_identifier' => tr('my first translation string', true),
+ *        'second_translation_string_identifier' => t('my second translation string', true)
+ *    )
+ * });
+ *
+ * Then, in your JS script, you can access your translation strings as follow:
+ *
+ * imscp_i18n.my_namespace.first_translation_string_identifier
+ * imscp_i18n.my_namespace.second_translation_string_identifier
+ * ...
+ *
+ * @return string JS object as string
+ * TODO ASSETIC management
+ */
+function i10n_getJsTranslations()
+{
+	$translations = new ArrayObject(
+		array(
+			// Core translation strings
+			'core' => array(
+				'close' => tr('Close'),
+				'generate' => tr('Generate', true),
+				'show' => tr('Show', true),
+				'your_new_password' => tr('Your new password', true),
+				'password_generate_alert' => tr('You must first generate a password by clicking on the generate button.', true),
+			)
+		)
+	);
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
+		'onBeforeGetJsTranslations', array('translations' => $translations)
+	);
+
+	return json_encode($translations, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT);
+}

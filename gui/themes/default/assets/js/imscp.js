@@ -115,22 +115,27 @@ var iMSCP = function () {
             $("<span>", {
                 style: "display:inline-block;margin-left:5px",
                 html: [
-                    $("<button>", { id: "pwd_generate", type: "button", text: "Generate" }).pGenerator({
+                    $("<button>", { id: "pwd_generate", type: "button", text: imscp_i18n.core.generate }).pGenerator({
                         'passwordElement': $pwdElements,
                         'passwordLength': 8
                     }),
-                    $("<button>", { id: "pwd_show", type: "button", text: "Show" }).click(function() {
+                    $("<button>", { id: "pwd_show", type: "button", text: imscp_i18n.core.show }).click(function() {
                         var password = $pwdElements.first().val();
                         if (password != '') {
                             $('<div>', { html: $("<strong>", { text: password }) }).dialog({
                                 modal: true,
                                 hide: "blind",
                                 show: "blind",
-                                title: "Your new password",
-                                buttons: { Ok: function () { $(this).dialog("destroy").remove(); } }
+                                title: imscp_i18n.core.your_new_password,
+                                buttons: [
+                                    {
+                                        text: imscp_i18n.core.close,
+                                        click: function () { $(this).dialog("destroy").remove(); }
+                                    }
+                                ]
                             });
                         } else {
-                            alert("You must first generate a password by clicking on the generate button.");
+                            alert(imscp_i18n.core.password_generate_alert);
                         }
                     })
                 ]

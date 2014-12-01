@@ -341,7 +341,8 @@ function layout_init($event)
 			'THEME_CHARSET' => 'UTF-8',
 			'THEME_ASSETS_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME . '/assets',
 			'THEME_ASSETS_VERSION' => $themesAssetsVersion,
-			'THEME_COLOR' => $color
+			'THEME_COLOR' => $color,
+			'JS_TRANSLATIONS' => i10n_getJsTranslations()
 		)
 	);
 
