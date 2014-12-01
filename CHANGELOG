@@ -37,6 +37,7 @@ TICKETS
 	Fixed #1188: Bug - apache_fcgid - Fcgid wrapper not created in some contexts
 	Fixed #1191: Bug - Domains which belong to disabled accounts are no longer reachable after an i-MSCP reconfiguration
 	Fixed #1192: Bug - Network manager - Server connection lost
+	Fixed #1194: Enhancement - Allowed character range for TXT DNS resource records
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.18

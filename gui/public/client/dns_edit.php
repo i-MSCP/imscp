@@ -187,7 +187,7 @@ function client_validate_TXT($record, &$errorString)
 	if (empty($record['dns_txt_data'])) {
 		$errorString .= tr('TXT field is empty or invalid.');
 		return false;
-	} elseif (!preg_match('/^([a-zA-Z0-9\+\?\-\*_~=:. \/])+$/', str_replace('"', '', $record['dns_txt_data']))) {
+	} elseif (!preg_match('/^([a-zA-Z0-9\+\?\-\*_~=:. \/;@])+$/', str_replace('"', '', $record['dns_txt_data']))) {
 		$errorString .= tr('Invalid TXT data');
 		return false;
 	}
