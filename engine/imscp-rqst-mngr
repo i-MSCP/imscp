@@ -461,8 +461,9 @@ sub run
 				server_ips
 			WHERE
 				ip_status <> 'ok'
-			ORDER BY
-				ip_id ASC
+			LIMIT
+				1
+				
 		"
 	);
 

@@ -1256,6 +1256,12 @@ sub setupServerIps
 	);
 	return $rs if $rs;
 
+	# Ensure promoting of secondary IP addresses in case a PRIMARY addresse is being deleted
+	my ($stdout, $stderr);
+	$rs = execute("$main::imscpConfig{'CMD_SYSCTL'} -q net.ipv4.conf.all.promote_secondaries=1", \$stdout, \$stderr);
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
 	my ($database, $errstr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 	if(! $database) {
 		error("Unable to connect to the SQL database: $errstr");;
