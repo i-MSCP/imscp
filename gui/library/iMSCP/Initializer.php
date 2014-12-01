@@ -449,23 +449,34 @@ class iMSCP_Initializer
 	 */
 	protected function initializeLocalization()
 	{
+		$trFilePathPattern = $this->config['GUI_ROOT_DIR'] . '/i18n/locales/%s/LC_MESSAGES/%s.mo';
+
 		if(PHP_SAPI != 'cli') {
-			$locale = iMSCP_Registry::set(
+			$lang = iMSCP_Registry::set(
 				'user_def_lang', isset($_SESSION['user_def_lang'])
 					? $_SESSION['user_def_lang']
 					: ((isset($this->config['USER_INITIAL_LANG'])) ? $this->config['USER_INITIAL_LANG'] : 'auto')
 			);
-		} else {
-			$locale = 'en_GB';
-		}
 
-		$trFilePathPattern = $this->config['GUI_ROOT_DIR'] . '/i18n/locales/%s/LC_MESSAGES/%s.mo';
+			if(Zend_Locale::isLocale($lang)) {
+				$locale = new Zend_Locale($lang);
 
-		if(Zend_Locale::isLocale($locale)) {
-			$locale = new Zend_Locale($locale);
+				if($lang == 'auto') {
+					$locale->setLocale('en_GB');
+					$browser = $locale->getBrowser();
 
-			if(!file_exists(sprintf($trFilePathPattern, $locale, $locale))) {
-				$locale->setLocale('en_GB');
+					arsort($browser);
+					foreach($browser as $language => $quality) {
+						if(file_exists(sprintf($trFilePathPattern, $language, $language))) {
+							$locale->setLocale($language);
+							break;
+						}
+					}
+				} elseif(!file_exists(sprintf($trFilePathPattern, $locale, $locale))) {
+					$locale->setLocale('en_GB');
+				}
+			} else {
+				$locale = new Zend_Locale('en_GB');
 			}
 		} else {
 			$locale = new Zend_Locale('en_GB');
