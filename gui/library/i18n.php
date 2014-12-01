@@ -354,7 +354,7 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
  *
  * For instance:
  *
- * iMSCP_Events_Aggregator::getInstance()->register('onBeforeJsTranslations', function($e) {
+ * iMSCP_Events_Aggregator::getInstance()->register('onBeforeGetJsTranslations', function($e) {
  *    $translations = $e->getParam('translations');
  *    $translations['my_namespace'] = array(
  *        'first_translation_string_identifier' => tr('my first translation string', true),
