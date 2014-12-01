@@ -51,14 +51,16 @@ sub _addAddresses
 {
 	my $rs = 0;
 
-	my $rdata = iMSCP::Database->factory()->doQuery('ip_number', 'SELECT ip_number, ip_card FROM server_ips');
+	my $rdata = iMSCP::Database->factory()->doQuery(
+		'ip_number', "SELECT ip_number, ip_card FROM server_ips WHERE ip_status <> 'todelete'"
+	);
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
 		$rs = 1;
 	} elsif(%{$rdata}) {
 		my $net = iMSCP::Net->getInstance();
 
-		for my $addr(reverse(sort(keys %{$rdata}))){
+		for my $addr(sort(keys %{$rdata})) {
 			unless($net->isKnownAddr($addr)) {
 				my $dev = $rdata->{$addr}->{'ip_card'};
 
@@ -66,7 +68,7 @@ sub _addAddresses
 					$rs |= $net->upDevice($dev) unless $net->isDeviceUp($dev);
 					$rs |= $net->addAddr($addr, $dev);
 				} else {
-					error("Network device $dev doesn't exist. Please rerun the setup script to fix this.");
+					error("Network device $dev doesn't exist.");
 					$rs |= 1;
 				}
 			}
@@ -80,15 +82,26 @@ sub _removeAddresses
 {
 	my $rs = 0;
 
+	# When run through the backend we must remove only IP which are being deleted
 	my $rdata = iMSCP::Database->factory()->doQuery(
-		'ip_number', "SELECT ip_number FROM server_ips WHERE ip_number <> '$main::imscpConfig{'BASE_SERVER_IP'}'"
+		'ip_number',
+		"SELECT ip_number FROM server_ips WHERE ip_number <> '$main::imscpConfig{'BASE_SERVER_IP'}'" . (
+			(exists $ENV{'IMSCP_BACKEND'}) ? " AND ip_status = 'todelete'" : ''
+		)
 	);
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
 		$rs = 1;
 	} elsif(%{$rdata}) {
+		# IP in use for SSH connection must not be removed
+		my $sshConnectIp = defined ($ENV{'SSH_CONNECTION'}) ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
 		my $net = iMSCP::Net->getInstance();
-		$rs |= $net->delAddr($_) for keys %{$rdata};
+
+		for(keys %{$rdata}) {
+			unless((defined $sshConnectIp && $sshConnectIp eq $_)) {
+				$rs |= $net->delAddr($_)
+			}
+		}
 	}
 
 	$rs;
@@ -109,25 +122,6 @@ sub run
 	} else {
 		error("Must be called with 'start', 'restart' or 'stop' argument");
 		$rs = 1;
-	}
-
-	my $db = iMSCP::Database->factory();
-
-	my $rdata = $db->doQuery('dummy', "DELETE FROM server_ips WHERE ip_status = 'todelete'");
-	unless (ref $rdata eq 'HASH') {
-		error($rdata);
-		$rs = 1;
-	}
-
-	$rdata = $db->doQuery('dummy', "UPDATE server_ips SET ip_status = 'ok'");
-	unless (ref $rdata eq 'HASH') {
-		error($rdata);
-		$rs |= 1;
-	}
-
-	if($rs) {
-		require iMSCP::Mail;
-		iMSCP::Mail->new()->errmsg(join "\n\n", iMSCP::Debug::getLastError());
 	}
 
 	$rs;

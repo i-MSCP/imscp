@@ -422,6 +422,7 @@ sub run
 	);
 
 	# Process network cards tasks
+	# We select only one record because the Netcard module always process all IPs
 	$rs ||= _process(
 		'NetCard',
 		"
@@ -431,6 +432,8 @@ sub run
 				server_ips
 			WHERE
 				ip_status <> 'ok'
+			LIMIT
+				1
 		"
 	);
 

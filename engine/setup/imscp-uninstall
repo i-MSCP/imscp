@@ -74,6 +74,7 @@ sub process
 		[\&_uninstallDaemons, 'Uninstalling i-MSCP daemons'],
 		[\&_removeCrontabFile, 'Removing i-MSCP crontab file'],
 		[\&_removeLogrotateFile, 'Removing i-MSCP logorate file'],
+		[\&_removeSysctlFile, 'Removing i-MSCP sysctl file'],
 		[\&_removeSqlData, 'Removing i-MSCP SQL data'],
 		[\&_removeiMSCPSystemGroup, 'Removing i-MSCP system group'],
 		[\&_removeFiles, 'Removing i-MSCP files'],
@@ -328,6 +329,15 @@ sub _removeLogrotateFile
 	$rs;
 }
 
+sub _removeSysctlFile
+{
+	my $rs = 0;
+
+	iMSCP::File->new('filename' =>'/etc/sysctl.d/imscp.conf')->delFile() if -f '/etc/sysctl.d/imscp.conf';
+
+	$rs;
+}
+
 # FIXME: localhost is not always the correct value
 sub _removeSqlData
 {
@@ -386,7 +396,7 @@ sub _removeFiles
 
 	for (
 		$main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
-		$main::imscpConfig{'ROOT_DIR'}, $main::imscpConfig{'CACHE_DATA_DIR'}, $main::imscpConfig{'VARIABLE_DATA_DIR'}
+		$main::imscpConfig{'ROOT_DIR'}, $main::imscpConfig{'CACHE_DATA_DIR'}, $main::imscpConfig{'VARIABLE_DATA_DIR'},
 	) {
 		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
 		return $rs if $rs;
