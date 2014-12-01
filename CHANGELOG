@@ -20,7 +20,10 @@ GUI
 	Fixed: CSS loading order
 	Replaced: i-MSCP jQuery tooltip plugin by jQuery UI tooltip widget
 
-L10N
+i18n:
+	Added: i10n_getJsTranslations() function which allow to translate JS scripts
+
+l10N
 	Fixed: Don't throw any exception when a locale is not valid. Fallback to the default locale instead
 
 VENDOR
