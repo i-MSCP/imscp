@@ -1387,7 +1387,7 @@ class iMSCP_Plugin_Manager
 						plugin_name = ?
 				',
 				array(
-					$pluginData['info'], $pluginData['config'], $pluginData['prirotiy'], $pluginData['status'],
+					$pluginData['info'], $pluginData['config'], $pluginData['priority'], $pluginData['status'],
 					$pluginData['backend'], $pluginData['name']
 				)
 			);

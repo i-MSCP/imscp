@@ -26,6 +26,9 @@ i18n:
 l10N
 	Fixed: Don't throw any exception when a locale is not valid. Fallback to the default locale instead
 
+PLUGINS
+	Fixed: PHP Notice: Undefined index: prirotiy in /var/www/imscp/gui/library/iMSCP/Plugin/Manager.php on line 1390
+
 VENDOR
 	Added: pGenerator jQuery plugin v1.0.0
 
