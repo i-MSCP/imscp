@@ -371,7 +371,7 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
  * @return string JS object as string
  * TODO ASSETIC management
  */
-function i10n_getJsTranslations()
+function i18n_getJsTranslations()
 {
 	$translations = new ArrayObject(
 		array(
