@@ -22,8 +22,6 @@ GUI
 
 i18n:
 	Added: i10n_getJsTranslations() function which allow to translate JS scripts
-
-l10N
 	Fixed: Don't throw any exception when a locale is not valid. Fallback to the default locale instead
 
 PLUGINS
@@ -98,7 +96,7 @@ GUI
 	Fixed: When adding a SQL user to a database, some SQL users are not listed in the select box
 	Fixed: Wrong POST variable in client/ticket_create.php
 
-I18N
+i18N
 	Added gui/library/resources/i18n/iMSCP.php file for indirect translation strings
 
 INSTALLER
