@@ -37,7 +37,7 @@ APACHE_GROUP = www-data
 
 PHP_STARTER_DIR = /var/www/fcgi
 
-PHP5_FASTCGI_BIN = /usr/bin/php5-cgi
+PHP_CGI_BIN = /usr/bin/php5-cgi
 
 HTACCESS_USERS_FILE_NAME = .htpasswd
 

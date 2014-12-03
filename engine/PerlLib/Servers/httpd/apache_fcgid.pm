@@ -1919,7 +1919,7 @@ sub _buildPHPConfig
 
 		# Build Fcgid wrapper
 
-		$self->setData({ FCGI_DIR => $fcgiDir, PHP5_FASTCGI_BIN => $self->{'config'}->{'PHP5_FASTCGI_BIN'} });
+		$self->setData({ FCGI_DIR => $fcgiDir, PHP_CGI_BIN => $self->{'config'}->{'PHP_CGI_BIN'} });
 
 		$rs = $self->buildConfFile(
 			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fcgid-starter.tpl",

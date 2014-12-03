@@ -713,7 +713,7 @@ sub _buildPhpConfFiles
 	$self->{'httpd'}->setData(
 		{
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
-			PHP5_FASTCGI_BIN => $self->{'config'}->{'PHP5_FASTCGI_BIN'},
+			PHP_CGI_BIN => $self->{'config'}->{'PHP_CGI_BIN'},
 			HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			DOMAIN_NAME => 'master'
