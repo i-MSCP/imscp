@@ -27,6 +27,7 @@ i18n
 
 PLUGINS
 	Fixed: PHP Notice: Undefined index: prirotiy in /var/www/imscp/gui/library/iMSCP/Plugin/Manager.php on line 1390
+	Fixed: Plugins's configuration is not updated using the latest conffiles state when an OPCODE cache is enabled
 
 VENDOR
 	Added: pGenerator jQuery plugin v1.0.0
