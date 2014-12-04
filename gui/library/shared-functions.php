@@ -3257,3 +3257,19 @@ function getLastDayOfMonth($month = null, $year = null)
 
 	return mktime(23, 59, 59, $month + 1, 0, $year);
 }
+
+/**
+ * Delete the given file from the opcode cache if any
+ *
+ * Note: Only opcache and apc are supported
+ *
+ * @param string $filepath filepath
+ */
+function imscp_delete_opcode_file($filepath)
+{
+	if(function_exists('opcache_invalidate')) {
+		opcache_invalidate($filepath);
+	} elseif(function_exists('apc_delete_file')) {
+		apc_delete_file($filepath);
+	}
+}

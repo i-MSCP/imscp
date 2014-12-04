@@ -185,10 +185,14 @@ abstract class iMSCP_Plugin
 
 		if (@file_exists($configFile)) {
 			if (@is_readable($configFile)) {
+				imscp_delete_opcode_file($configFile);
+
 				$config = include $configFile;
 				$localConfigFile = PERSISTENT_PATH . "/plugins/$pluginName.php";
 
 				if (@is_readable($localConfigFile)) {
+					imscp_delete_opcode_file($localConfigFile);
+
 					$localConfig = include $localConfigFile;
 
 					if (array_key_exists('__REMOVE__', $localConfig) && is_array($localConfig['__REMOVE__'])) {
