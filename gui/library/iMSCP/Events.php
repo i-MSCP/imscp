@@ -1047,6 +1047,53 @@ class iMSCP_Events
 	const onAfterDeleteMail = 'onAfterDeleteMail';
 
 	/**
+	 * The onBeforeAddMailCatchall event is triggered after a mail catchall is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - mailCatchall: A string representing the catchall being added
+	 * - mailForwardList: An array representing list of mail addresses to which catched mails must be forwarded
+	 *
+	 * @const string
+	 */
+	const onBeforeAddMailCatchall = 'onBeforeAddMailCatchall';
+
+	/**
+	 * The onAfterAddMailCatchall event is triggered after a mail catchall is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - mailCatchallId: An integer representing the ID of the mail catchall that has been added
+	 * - mailCatchall: A string representing the catchall that has been added
+	 * - mailForwardList: A array representing list of mail addresses to which catched mails must be forwarded
+	 *
+	 * @const string
+	 */
+	const onAfterAddMailCatchall = 'onAfterAddMailCatchall';
+
+	/**
+	 * The onBeforeDeleteMailCatchall event is triggered before a mail catchall is deleted.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - mailCatchallId: An integer representing the ID of the mail catchall being deleted
+	 *
+	 * @const string
+	 */
+	const onBeforeDeleteMailCatchall = 'onBeforeDeleteMailCatchall';
+
+	/**
+	 * The onAfterDeleteMail event is triggered after a mail account is deleted.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - mailCatchallId: An integer representing the ID of the mail catchall that has been deleted
+	 *
+	 * @const string
+	 */
+	const onafterDeleteMailCatchall = 'onafterDeleteMailCatchall';
+
+	/**
 	 * The onBeforeQueryPrepare event is triggered before an SQL statement is prepared for execution.
 	 *
 	 * The listeners receive an iMSCP_Database_Events_Database instance with the following parameters:

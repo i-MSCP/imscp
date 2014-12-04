@@ -16,6 +16,7 @@ BACKEND
 	Fixed: Network manager must not remove SSH connection IP
 
 GUI
+	Added: Events for mail catch-all
 	Changed: All network interfaces are now selectable, even if they are not up
 	Fixed: CSS loading order
 	Replaced: i-MSCP jQuery tooltip plugin by jQuery UI tooltip widget

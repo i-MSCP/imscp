@@ -47,19 +47,27 @@ check_login('user');
 
 customerHasFeature('mail') or showBadRequestErrorPage();
 
-if (isset($_GET['id'])) {
-	$catchallId = clean_input($_GET['id']);
+if(isset($_GET['id'])) {
+	$catchallId = intval($_GET['id']);
 
-	$query = "SELECT `mail_id` FROM `mail_users` WHERE `domain_id` = ? AND `mail_id` = ?";
+	$stmt = exec_query(
+		'SELECT mail_id FROM mail_users WHERE domain_id = ? AND mail_id = ?',
+		array(get_user_domain_id($_SESSION['user_id']), $catchallId)
+	);
 
-	$stmt = exec_query($query, array(get_user_domain_id($_SESSION['user_id']), $catchallId));
-
-	if (!$stmt->rowCount()) {
+	if(!$stmt->rowCount()) {
 		showBadRequestErrorPage();
 	}
 
-	$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
-	exec_query($query, array('todelete', $catchallId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
+		iMSCP_Events::onBeforeDeleteMailCatchall, array('mailCatchallId' => $catchallId)
+	);
+
+	exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $catchallId));
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
+		iMSCP_Events::onafterDeleteMailCatchall, array('mailCatchallId' => $catchallId)
+	);
 
 	send_request();
 
