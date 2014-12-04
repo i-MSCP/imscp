@@ -1338,6 +1338,8 @@ class iMSCP_Plugin_Manager
 				$content .= "\$protectedPlugins[] = '$pluginName';\n";
 			}
 
+			imscp_delete_opcode_file($file);
+
 			@unlink($file);
 
 			if (@file_put_contents($file, "$content\n", LOCK_EX) === false) {
