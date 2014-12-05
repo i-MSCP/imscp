@@ -166,6 +166,7 @@ class iMSCP_Update_Version extends iMSCP_Update
 				$content .= " * $lastUpdate\n */\n\n";
 				$content .= 'return ' . var_export($this->updateInfo, true) . ';';
 
+				imscp_delete_opcode_file($cacheFile);
 				@unlink($cacheFile);
 
 				if (@file_put_contents($cacheFile, "$content\n", LOCK_EX) === false) {
