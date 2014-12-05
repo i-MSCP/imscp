@@ -501,7 +501,7 @@ function client_generatePage($tpl, $id)
 					ORDER BY
 						mail_type DESC, mail_acc
 				",
-				array($dmnId, $okStatus, $itemId)
+				array($dmnId, $itemId, $okStatus)
 			);
 
 			if(!$stmt->rowCount()) {
