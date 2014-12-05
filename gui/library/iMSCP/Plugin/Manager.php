@@ -1339,7 +1339,6 @@ class iMSCP_Plugin_Manager
 			}
 
 			imscp_delete_opcode_file($file);
-
 			@unlink($file);
 
 			if (@file_put_contents($file, "$content\n", LOCK_EX) === false) {
@@ -1350,6 +1349,8 @@ class iMSCP_Plugin_Manager
 				return false;
 			}
 		} elseif (@is_writable($file)) {
+			imscp_delete_opcode_file($file);
+
 			if (!@unlink($file)) {
 				write_log(sprintf('Plugin Manager: Unable to remove the %s file'), $file, E_USER_WARNING);
 				return false;

@@ -32,6 +32,7 @@ if(is_readable(CONFIG_CACHE_FILE_PATH)) {
 	clearstatcache(true, CONFIG_FILE_PATH);
 
 	if($config['DEBUG'] || filemtime(CONFIG_FILE_PATH) !== $config['__filemtime__']) {
+		@unlink(CONFIG_CACHE_FILE_PATH);
 		goto FORCE_CONFIG_RELOAD;
 	}
 } else {
@@ -227,7 +228,9 @@ if(is_readable(CONFIG_CACHE_FILE_PATH)) {
 	// Store file last modification time to force reloading of configuration file if needed
 	$config['__filemtime__'] = filemtime(CONFIG_FILE_PATH);
 
-	@file_put_contents(CONFIG_CACHE_FILE_PATH, serialize($config), LOCK_EX);
+	if(!$config['DEBUG']) {
+		@file_put_contents(CONFIG_CACHE_FILE_PATH, serialize($config), LOCK_EX);
+	}
 }
 
 // Initialize application
