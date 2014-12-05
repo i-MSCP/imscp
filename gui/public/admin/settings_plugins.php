@@ -666,6 +666,9 @@ if (!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
 		admin_pluginManagerDoBulkAction($pluginManager);
 	} elseif (!empty($_FILES)) {
 		if (admin_pluginManagerUploadPlugin($pluginManager)) {
+			// Make sure that new plugin files will be loaded
+			imscp_clear_opcode_cache();
+
 			set_page_message(tr('Plugin has been uploaded.'), 'success');
 			redirectTo('settings_plugins.php?update_plugin_list=all');
 		}
