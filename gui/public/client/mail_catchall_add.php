@@ -39,280 +39,17 @@
  */
 
 /**
- * Generate page data
- *
- * @param iMSCP_pTemplate $tpl
- * @param int $id
- * @return void
- */
-function client_generatePage($tpl, $id)
-{
-	$cfg = iMSCP_Registry::get('config');
-
-	$domainProps = get_domain_default_props($_SESSION['user_id']);
-	$dmnId = $domainProps['domain_id'];
-	$dmnMailAccountLimit = $domainProps['domain_mailacc_limit'];
-
-	list($nbMailAccounts) = get_domain_running_mail_acc_cnt($dmnId);
-
-	if ($dmnMailAccountLimit != 0 && $nbMailAccounts >= $dmnMailAccountLimit) {
-		set_page_message(tr('Email account limit is reached.'), 'error');
-		redirectTo('mail_catchall.php');
-	}
-
-	$okStatus = 'ok';
-	$match = array();
-
-	if (preg_match("/^(\d+);(normal|alias|subdom|alssub)$/", $id, $match)) {
-		$itemId = $match[1];
-		$itemType = $match[2];
-
-		if ($itemType == 'normal') {
-			$query = '
-				SELECT
-					`t1`.`mail_id`, `t1`.`mail_type`, `t2`.`domain_name`, `t1`.`mail_acc`
-				FROM
-					`mail_users` AS `t1`, `domain` AS `t2`
-				WHERE
-					`t1`.`domain_id` = ?
-				AND
-					`t2`.`domain_id` = ?
-				AND
-					`t1`.`sub_id` = ?
-				AND
-					`t1`.`status` = ?
-				ORDER BY
-					`t1`.`mail_type` DESC, `t1`.`mail_acc`
-			';
-			$stmt = exec_query($query, array($itemId, $itemId, 0, $okStatus));
-
-			if (!$stmt->rowCount()) {
-				$tpl->assign(
-					array(
-						'FORWARD_MAIL_CHECKED' => $cfg->HTML_CHECKED,
-						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
-						'MAIL_LIST' => ''
-					)
-				);
-			} else {
-				$tpl->assign(
-					array(
-						'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] == 'forward')
-							? '' : $cfg->HTML_CHECKED,
-						'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] == 'forward')
-							? $cfg->HTML_CHECKED : '',
-						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
-					)
-				);
-
-				while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-					$showMailAccount = decode_idna($data['mail_acc']);
-					$showDomainName = decode_idna($data['domain_name']);
-					$mailAccount = $data['mail_acc'];
-					$domainName = $data['domain_name'];
-					$tpl->assign(
-						array(
-							'MAIL_ID' => $data['mail_id'],
-							'MAIL_ACCOUNT' => tohtml($showMailAccount . '@' . $showDomainName),
-							'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $domainName)
-						)
-					);
-
-					$tpl->parse('MAIL_ITEM', '.mail_item');
-				}
-			}
-		} elseif ($itemType == 'alias') {
-			$query = "
-				SELECT
-					`t1`.`mail_id`, `t1`.`mail_type`, `t2`.`alias_name`, `t1`.`mail_acc`
-				FROM
-					`mail_users` AS `t1`, `domain_aliasses` AS `t2`
-				WHERE
-					`t1`.`sub_id` = `t2`.`alias_id`
-				AND
-					`t1`.`status` = ?
-				AND
-					`t1`.`mail_type` LIKE 'alias_%'
-				AND
-					`t2`.`alias_id` = ?
-				ORDER BY
-					`t1`.`mail_type` DESC, `t1`.`mail_acc`
-			";
-
-			$stmt = exec_query($query, array($okStatus, $itemId));
-
-			if (!$stmt->rowCount()) {
-				$tpl->assign(
-					array(
-						'FORWARD_MAIL_CHECKED' => $cfg->HTML_CHECKED,
-						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
-						'MAIL_LIST' => ''
-					)
-				);
-			} else {
-				$tpl->assign(
-					array(
-						'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] == 'forward')
-							? '' : $cfg->HTML_CHECKED,
-						'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] == 'forward')
-							? $cfg->HTML_CHECKED : '',
-						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
-					)
-				);
-
-				while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-					$showMailAccount = decode_idna($data['mail_acc']);
-					$show_alias_name = decode_idna($data['alias_name']);
-					$mailAccount = $data['mail_acc'];
-					$alsName = $data['alias_name'];
-
-					$tpl->assign(
-						array(
-							'MAIL_ID' => $data['mail_id'],
-							'MAIL_ACCOUNT' => tohtml($showMailAccount . '@' . $show_alias_name),
-							'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $alsName)
-						)
-					);
-
-					$tpl->parse('MAIL_ITEM', '.mail_item');
-				}
-			}
-		} elseif ($itemType == 'subdom') {
-			$query = "
-				SELECT
-					`t1`.`mail_id`, `t1`.`mail_type`,
-					CONCAT(`t2`.`subdomain_name`, '.', `t3`.`domain_name`) AS `subdomain_name`,
-					`t1`.`mail_acc`
-				FROM
-					`mail_users` AS `t1`, `subdomain` AS `t2`, `domain` AS `t3`
-				WHERE
-					`t1`.`sub_id` = `t2`.`subdomain_id`
-				AND
-					`t2`.`domain_id` = `t3`.`domain_id`
-				AND
-					`t1`.`status` = ?
-				AND
-					`t1`.`mail_type` LIKE 'subdom_%'
-				AND
-					`t2`.`subdomain_id` = ?
-				ORDER BY
-					`t1`.`mail_type` DESC, `t1`.`mail_acc`
-			";
-			$stmt = exec_query($query, array($okStatus, $itemId));
-
-			if (!$stmt->rowCount()) {
-				$tpl->assign(
-					array(
-						'FORWARD_MAIL_CHECKED' => $cfg->HTML_CHECKED,
-						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
-						'MAIL_LIST' => ''
-					)
-				);
-			} else {
-				$tpl->assign(
-					array(
-						'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] == 'forward')
-							? '' : $cfg->HTML_CHECKED,
-						'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] == 'forward')
-							? $cfg->HTML_CHECKED : '',
-						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
-					)
-				);
-
-				while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-					$showMailAccount = decode_idna($data['mail_acc']);
-					$show_alias_name = decode_idna($data['subdomain_name']);
-					$mailAccount = $data['mail_acc'];
-					$alsName = $data['subdomain_name'];
-
-					$tpl->assign(
-						array(
-							'MAIL_ID' => $data['mail_id'],
-							'MAIL_ACCOUNT' => tohtml($showMailAccount . '@' . $show_alias_name),
-							'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $alsName)
-						)
-					);
-
-					$tpl->parse('MAIL_ITEM', '.mail_item');
-				}
-			}
-		} elseif ($itemType == 'alssub') {
-			$query = "
-				SELECT
-					`t1`.`mail_id`, `t1`.`mail_type`,
-					CONCAT(`t2`.`subdomain_alias_name`, '.', `t3`.`alias_name`) AS `subdomain_name`,
-					`t1`.`mail_acc`
-				FROM
-					`mail_users` AS `t1`, `subdomain_alias` AS `t2`, `domain_aliasses` AS `t3`
-				WHERE
-					`t1`.`sub_id` = `t2`.`subdomain_alias_id`
-				AND
-					`t2`.`alias_id` = `t3`.`alias_id`
-				AND
-					`t1`.`status` = ?
-				AND
-					`t1`.`mail_type` LIKE 'alssub_%'
-				AND
-					`t2`.`subdomain_alias_id` = ?
-				ORDER BY
-					`t1`.`mail_type` DESC, `t1`.`mail_acc`
-			";
-			$stmt = exec_query($query, array($okStatus, $itemId));
-
-			if (!$stmt->rowCount()) {
-				$tpl->assign(
-					array(
-						'FORWARD_MAIL_CHECKED' => $cfg->HTML_CHECKED,
-						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
-						'MAIL_LIST' => ''
-					)
-				);
-			} else {
-				$tpl->assign(
-					array(
-						'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] == 'forward')
-							? '' : $cfg->HTML_CHECKED,
-						'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] == 'forward')
-							? $cfg->HTML_CHECKED : '',
-						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
-					)
-				);
-
-				while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-					$showMailAccount = decode_idna($data['mail_acc']);
-					$show_alias_name = decode_idna($data['subdomain_name']);
-					$mailAccount = $data['mail_acc'];
-					$alsName = $data['subdomain_name'];
-
-					$tpl->assign(
-						array(
-							'MAIL_ID' => $data['mail_id'],
-							'MAIL_ACCOUNT' => tohtml($showMailAccount . '@' . $show_alias_name),
-							'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $alsName)
-						)
-					);
-
-					$tpl->parse('MAIL_ITEM', '.mail_item');
-				}
-			}
-		}
-	} else {
-		showBadRequestErrorPage();
-	}
-}
-
-/**
  * Add catchall
  *
- * @param string $id
+ * @param string $itemId
  * @return void
  */
-function client_addCatchall($id)
+function client_addCatchall($itemId)
 {
-	list($realId, $type) = explode(';', $id);
+	list($realId, $type) = explode(';', $itemId);
 
 	// Check if user is owner of the domain
-	if (!preg_match('(normal|alias|subdom|alssub)', $type) || who_owns_this($realId, $type) != $_SESSION['user_id']) {
+	if(!preg_match('(normal|alias|subdom|alssub)', $type) || who_owns_this($realId, $type) != $_SESSION['user_id']) {
 		set_page_message(tr('User do not exist or you do not have permission to access this interface'), 'error');
 		redirectTo('mail_catchall.php');
 	}
@@ -320,49 +57,211 @@ function client_addCatchall($id)
 	$match = array();
 	$mailType = $dmnId = $subId = $mailAddr = '';
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] == 'create_catchall' && $_POST['mail_type'] == 'normal') {
-		if (preg_match("/^(\d+);(normal|alias|subdom|alssub)$/", $id, $match)) {
-			$itemId = $match[1];
-			$itemType = $match[2];
-			$postMailId = $_POST['mail_id'];
+	if(isset($_POST['mail_type'])) {
+		if($_POST['mail_type'] === 'normal' && isset($_POST['mail_id'])) {
+			if(preg_match('/^\d+;(normal|alias|subdom|alssub)$/', $itemId, $match)) {
+				$itemType = $match[1];
+				$postMailId = clean_input($_POST['mail_id']);
 
-			if (preg_match("/(\d+);([^;]+);/", $postMailId, $match)) {
-				$mailId = $match[1];
-				$mailAccount = $match[2];
+				if(preg_match('/(\d+);([^;]+);/', $postMailId, $match)) {
+					$mailId = $match[1];
+					$mailAccount = $match[2];
 
-				if ($itemType == 'normal') {
+					if($itemType === 'normal') {
+						$mailType = MT_NORMAL_CATCHALL;
+					} elseif($itemType === 'alias') {
+						$mailType = MT_ALIAS_CATCHALL;
+					} elseif($itemType === 'subdom') {
+						$mailType = MT_SUBDOM_CATCHALL;
+					} elseif($itemType === 'alssub') {
+						$mailType = MT_ALSSUB_CATCHALL;
+					} else {
+						showBadRequestErrorPage();
+					}
+
+					$stmt = exec_query('SELECT domain_id, sub_id FROM mail_users WHERE mail_id = ?', $mailId);
+
+					if($stmt->rowCount()) {
+						$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+						$dmnId = $row['domain_id'];
+						$subId = $row['sub_id'];
+
+						// Find the mail_addr (catchall -> "@(sub/alias)domain.tld", should be domain part of mail_acc
+						$match = explode('@', $mailAccount);
+						$mailAddr = '@' . $match[1];
+
+						iMSCP_Events_Aggregator::getInstance()->dispatch(
+							iMSCP_Events::onBeforeAddMailCatchall,
+							array(
+								'mailCatchall' => $mailAddr,
+								'mailForwardList' => array($mailAccount)
+							)
+						);
+
+						exec_query(
+							'
+								INSERT INTO mail_users (
+									mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status,
+									mail_auto_respond, quota, mail_addr
+								) VALUES (
+									?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+								)
+							',
+							array(
+								$mailAccount, '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd', '_no_', NULL,
+								$mailAddr
+							)
+						);
+
+						iMSCP_Events_Aggregator::getInstance()->dispatch(
+							iMSCP_Events::onAfterAddMailCatchall,
+							array(
+								'mailCatchallId' => iMSCP_Database::getInstance()->insertId(),
+								'mailCatchall' => $mailAddr,
+								'mailForwardList' => array($mailAccount)
+							)
+						);
+
+						send_request();
+
+						write_log("{$_SESSION['user_logged']} added new catch all", E_USER_NOTICE);
+						set_page_message(tr('Catch all successfully scheduled for addition.'), 'success');
+						redirectTo('mail_catchall.php');
+					} else {
+						showBadRequestErrorPage();
+					}
+				} else {
+					redirectTo('mail_catchall.php');
+				}
+			}
+		} else if($_POST['mail_type'] === 'forward' && isset($_POST['forward_list'])) {
+			if(preg_match('/^(\d+);(normal|alias|subdom|alssub)$/', $itemId, $match) == 1) {
+				$itemId = $match[1];
+				$itemType = $match[2];
+
+				if($itemType === 'normal') {
 					$mailType = MT_NORMAL_CATCHALL;
-				} elseif ($itemType == 'alias') {
+					$subId = '0';
+					$dmnId = $itemId;
+					$stmt = exec_query('SELECT domain_name FROM domain WHERE domain_id = ?', $dmnId);
+					if($stmt->rowCount()) {
+						$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+						$mailAddr = '@' . $row['domain_name'];
+					} else {
+						showBadRequestErrorPage();
+					}
+				} elseif($itemType == 'alias') {
 					$mailType = MT_ALIAS_CATCHALL;
-				} elseif ($itemType == 'subdom') {
+					$subId = $itemId;
+					$stmt = exec_query('SELECT domain_id, alias_name FROM domain_aliasses WHERE alias_id = ?', $itemId);
+
+					if($stmt->rowCount()) {
+						$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+						$dmnId = $row['domain_id'];
+						$mailAddr = '@' . $row['alias_name'];
+					} else {
+						showBadRequestErrorPage();
+					}
+				} elseif($itemType === 'subdom') {
 					$mailType = MT_SUBDOM_CATCHALL;
-				} elseif ($itemType == 'alssub') {
+					$subId = $itemId;
+					$stmt = exec_query(
+						"
+							SELECT
+								domain_id, CONCAT(subdomain_name, '.', domain_name) AS subdomain_name
+							FROM
+								subdomain
+							INNER JOIN
+								domain USING(domain_id)
+							WHERE
+								subdomain_id = ?
+						",
+						$itemId
+					);
+
+					if($stmt->rowCount()) {
+						$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+						$dmnId = $row['domain_id'];
+						$mailAddr = '@' . $row['subdomain_name'];
+					} else {
+						showBadRequestErrorPage();
+					}
+				} elseif($itemType === 'alssub') {
 					$mailType = MT_ALSSUB_CATCHALL;
+					$subId = $itemId;
+					$stmt = exec_query(
+						"
+							SELECT
+								domain_id, CONCAT(subdomain_alias_name, '.', alias_name) AS subdomain_alias_name
+							FROM
+								subdomain_alias
+							INNER JOIN
+								domain_aliasses USING(alias_id)
+							WHERE
+								subdomain_alias_id = ?
+						",
+						$itemId
+					);
+
+					if($stmt->rowCount()) {
+						$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+						$dmnId = $row['domain_id'];
+						$mailAddr = '@' . $row['subdomain_alias_name'];
+					} else {
+						showBadRequestErrorPage();
+					}
+				} else {
+					showBadRequestErrorPage();
 				}
 
-				$query = "SELECT `domain_id`, `sub_id` FROM `mail_users` WHERE `mail_id` = ?";
+				$mailForward = clean_input($_POST['forward_list']);
+				$mailAccount = array();
+				$faray = preg_split("/[\n,]+/", $mailForward);
 
-				$stmt = exec_query($query, $mailId);
-				$dmnId = $stmt->fields['domain_id'];
-				$subId = $stmt->fields['sub_id'];
+				foreach($faray as $value) {
+					$value = trim($value);
 
-				// Find the mail_addr (catchall -> "@(sub/alias)domain.tld", should be domain part of mail_acc
-				$match = explode('@', $mailAccount);
-				$mailAddr = '@' . $match[1];
+					if(!chk_email($value) && $value != '') {
+						set_page_message(tr('An email addresse is not valid in mail forward list.'), 'error');
+						return;
+					} else if($value == '') {
+						set_page_message(tr('Syntax error found in mail forward list.'), 'error');
+						return;
+					}
 
-				$query = "
-					INSERT INTO `mail_users` (
-						`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
-						`mail_auto_respond`, `quota`, `mail_addr`
-					) VALUES (
-						?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-					)
-				";
-				exec_query(
-					$query,
+					$mailAccount[] = $value;
+				}
+
+				iMSCP_Events_Aggregator::getInstance()->dispatch(
+					iMSCP_Events::onBeforeAddMailCatchall,
 					array(
-						$mailAccount, '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd', '_no_', NULL,
+						'mailCatchall' => $mailAddr,
+						'mailForwardList' => $mailAccount
+					)
+				);
+
+				exec_query(
+					'
+						INSERT INTO mail_users (
+							mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status,
+							mail_auto_respond, quota, mail_addr
+						) VALUES (
+							?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+						)
+					',
+					array(
+						implode(',', $mailAccount), '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd', '_no_', NULL,
 						$mailAddr
+					)
+				);
+
+				iMSCP_Events_Aggregator::getInstance()->dispatch(
+					iMSCP_Events::onAfterAddMailCatchall,
+					array(
+						'mailCatchallId' => iMSCP_Database::getInstance()->insertId(),
+						'mailCatchall' => $mailAddr,
+						'mailForwardList' => $mailAccount
 					)
 				);
 
@@ -374,98 +273,276 @@ function client_addCatchall($id)
 			} else {
 				redirectTo('mail_catchall.php');
 			}
+		} else {
+			showBadRequestErrorPage();
 		}
-	} else if (
-		isset($_POST['uaction']) && $_POST['uaction'] == 'create_catchall' && $_POST['mail_type'] == 'forward'
-		&& isset($_POST['forward_list'])
-	) {
-		if (preg_match("/^(\d+);(normal|alias|subdom|alssub)$/", $id, $match) == 1) {
-			$itemId = $match[1];
-			$itemType = $match[2];
+	} else {
+		showBadRequestErrorPage();
+	}
+}
 
-			if ($itemType == 'normal') {
-				$mailType = MT_NORMAL_CATCHALL;
-				$subId = '0';
-				$dmnId = $itemId;
-				$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
-				$stmt = exec_query($query, $dmnId);
-				$mailAddr = '@' . $stmt->fields['domain_name'];
-			} elseif ($itemType == 'alias') {
-				$mailType = MT_ALIAS_CATCHALL;
-				$subId = $itemId;
-				$query = "SELECT `domain_aliasses`.`domain_id`, `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?";
-				$stmt = exec_query($query, $itemId);
-				$dmnId = $stmt->fields['domain_id'];
-				$mailAddr = '@' . $stmt->fields['alias_name'];
-			} elseif ($itemType == 'subdom') {
-				$mailType = MT_SUBDOM_CATCHALL;
-				$subId = $itemId;
-				$query = "SELECT `subdomain`.`domain_id`, `subdomain_name`, `domain_name` FROM `subdomain`, `domain`
-					WHERE `subdomain_id` = ? AND `domain`.`domain_id` = `subdomain`.`domain_id`";
-				$stmt = exec_query($query, $itemId);
-				$dmnId = $stmt->fields['domain_id'];
-				$mailAddr = '@' . $stmt->fields['subdomain_name'] . '.' . $stmt->fields['domain_name'];
-			} elseif ($itemType == 'alssub') {
-				$mailType = MT_ALSSUB_CATCHALL;
-				$subId = $itemId;
-				$query = "
+/**
+ * Generate page
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param int $id
+ * @return void
+ */
+function client_generatePage($tpl, $id)
+{
+	$cfg = iMSCP_Registry::get('config');
+
+	$domainProps = get_domain_default_props($_SESSION['user_id']);
+	$dmnId = $domainProps['domain_id'];
+	$htmlChecked = $cfg['HTML_CHECKED'];
+
+	$okStatus = 'ok';
+	$match = array();
+
+	if(preg_match('/^(\d+);(normal|alias|subdom|alssub)$/', $id, $match)) {
+		$itemId = $match[1];
+		$itemType = $match[2];
+
+		if($itemType === 'normal') {
+			$stmt = exec_query(
+				'
 					SELECT
-						`t1`.`subdomain_alias_name`, `t2`.`alias_name`, `t2`.`domain_id`
+						mail_id, mail_type, domain_name, mail_acc
 					FROM
-						`subdomain_alias` AS `t1`, `domain_aliasses` AS `t2`
+						mail_users
+					INNER JOIN
+						domain USING(domain_id)
 					WHERE
-						`t1`.`subdomain_alias_id` = ?
+						domain_id = ?
 					AND
-						`t1`.`alias_id` = `t2`.`alias_id`
-				";
-				$stmt = exec_query($query, $itemId);
-
-				$dmnId = $stmt->fields['domain_id'];
-				$mailAddr = '@' . $stmt->fields['subdomain_alias_name'] . '.' . $stmt->fields['alias_name'];
-			}
-
-			$mailForward = clean_input($_POST['forward_list']);
-			$mailAccount = array();
-			$faray = preg_split("/[\n,]+/", $mailForward);
-
-			foreach ($faray as $value) {
-				$value = trim($value);
-
-				if (!chk_email($value) && $value != '') {
-					set_page_message(tr('An error has been found in mail forward list.'), 'error');
-					return;
-				} else if ($value == '') {
-					set_page_message(tr('An error has been found in mail forward list.'), 'error');
-					return;
-				}
-
-				$mailAccount[] = $value;
-			}
-
-			$query = "
-				INSERT INTO `mail_users` (
-					`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
-					`mail_auto_respond`, `quota`, `mail_addr`
-				) VALUES (
-					?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-				)
-			";
-			exec_query(
-				$query,
-				array(
-					implode(',', $mailAccount), '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd',
-					'_no_', NULL, $mailAddr
-				)
+						sub_id = ?
+					AND
+						status = ?
+					ORDER BY
+						mail_type DESC, mail_acc
+				',
+				array($dmnId, 0, $okStatus)
 			);
 
-			send_request();
+			if(!$stmt->rowCount()) {
+				$tpl->assign(
+					array(
+						'FORWARD_MAIL_CHECKED' => $htmlChecked,
+						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
+						'MAIL_LIST' => ''
+					)
+				);
+			} else {
+				$tpl->assign(
+					array(
+						'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
+							? '' : $htmlChecked,
+						'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
+							? $htmlChecked : '',
+						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
+					)
+				);
 
-			write_log("{$_SESSION['user_logged']} added new catch all", E_USER_NOTICE);
-			set_page_message(tr('Catch all successfully scheduled for addition.'), 'success');
-			redirectTo('mail_catchall.php');
-		} else {
-			redirectTo('mail_catchall.php');
+				while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+					$showMailAccount = decode_idna($row['mail_acc']);
+					$showDomainName = decode_idna($row['domain_name']);
+					$mailAccount = $row['mail_acc'];
+					$domainName = $row['domain_name'];
+					$tpl->assign(
+						array(
+							'MAIL_ID' => $row['mail_id'],
+							'MAIL_ACCOUNT' => tohtml($showMailAccount . '@' . $showDomainName),
+							'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $domainName)
+						)
+					);
+
+					$tpl->parse('MAIL_ITEM', '.mail_item');
+				}
+			}
+		} elseif($itemType === 'alias') {
+			$stmt = exec_query(
+				"
+					SELECT
+						mail_id, mail_type, alias_name, mail_acc
+					FROM
+						mail_users
+					INNER JOIN
+						domain_aliasses ON(sub_id = alias_id)
+					WHERE
+						mail_users.domain_id = ?
+					AND
+						alias_id = ?
+					AND
+						mail_type LIKE 'alias_%'
+					AND
+						status = ?
+					ORDER BY
+						mail_type DESC, mail_acc
+				",
+				array($dmnId, $itemId, $okStatus)
+			);
+
+			if(!$stmt->rowCount()) {
+				$tpl->assign(
+					array(
+						'FORWARD_MAIL_CHECKED' => $htmlChecked,
+						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
+						'MAIL_LIST' => ''
+					)
+				);
+			} else {
+				$tpl->assign(
+					array(
+						'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
+							? '' : $htmlChecked,
+						'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
+							? $htmlChecked : '',
+						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
+					)
+				);
+
+				while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+					$showMailAccount = decode_idna($row['mail_acc']);
+					$show_alias_name = decode_idna($row['alias_name']);
+					$mailAccount = $row['mail_acc'];
+					$alsName = $row['alias_name'];
+
+					$tpl->assign(
+						array(
+							'MAIL_ID' => $row['mail_id'],
+							'MAIL_ACCOUNT' => tohtml($showMailAccount . '@' . $show_alias_name),
+							'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $alsName)
+						)
+					);
+
+					$tpl->parse('MAIL_ITEM', '.mail_item');
+				}
+			}
+		} elseif($itemType === 'subdom') {
+			$stmt = exec_query(
+				"
+					SELECT
+						mail_id, mail_type, CONCAT(subdomain_name, '.', domain_name) AS subdomain_name, mail_acc
+					FROM
+						mail_users
+					INNER JOIN
+						subdomain ON(sub_id = subdomain_id)
+					INNER JOIN
+						domain ON(subdomain.domain_id = domain.domain_id)
+					WHERE
+						mail_users.domain_id = ?
+					AND
+						subdomain_id = ?
+					AND
+						mail_type LIKE 'subdom_%'
+					AND
+						status = ?
+					ORDER BY
+						mail_type DESC, mail_acc
+				",
+				array($dmnId, $itemId, $okStatus)
+			);
+
+			if(!$stmt->rowCount()) {
+				$tpl->assign(
+					array(
+						'FORWARD_MAIL_CHECKED' => $htmlChecked,
+						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
+						'MAIL_LIST' => ''
+					)
+				);
+			} else {
+				$tpl->assign(
+					array(
+						'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
+							? '' : $htmlChecked,
+						'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
+							? $htmlChecked : '',
+						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
+					)
+				);
+
+				while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+					$showMailAccount = decode_idna($row['mail_acc']);
+					$showAliasName = decode_idna($row['subdomain_name']);
+					$mailAccount = $row['mail_acc'];
+					$alsName = $row['subdomain_name'];
+
+					$tpl->assign(
+						array(
+							'MAIL_ID' => $row['mail_id'],
+							'MAIL_ACCOUNT' => tohtml($showMailAccount . '@' . $showAliasName),
+							'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $alsName)
+						)
+					);
+
+					$tpl->parse('MAIL_ITEM', '.mail_item');
+				}
+			}
+		} elseif($itemType === 'alssub') {
+			$stmt = exec_query(
+				"
+					SELECT
+						mail_id, mail_type, CONCAT(subdomain_alias_name, '.', alias_name) AS subdomain_name, mail_acc
+					FROM
+						mail_users
+					INNER JOIN
+						subdomain_alias ON(sub_id = subdomain_alias_id)
+					INNER JOIN
+						domain_aliasses USING(alias_id)
+					WHERE
+						mail_users.domain_id = ?
+					AND
+						subdomain_alias_id = ?
+					AND
+						mail_type LIKE 'alssub_%'
+					AND
+						status = ?
+					ORDER BY
+						mail_type DESC, mail_acc
+				",
+				array($dmnId, $okStatus, $itemId)
+			);
+
+			if(!$stmt->rowCount()) {
+				$tpl->assign(
+					array(
+						'FORWARD_MAIL_CHECKED' => $htmlChecked,
+						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
+						'MAIL_LIST' => ''
+					)
+				);
+			} else {
+				$tpl->assign(
+					array(
+						'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
+							? '' : $htmlChecked,
+						'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
+							? $htmlChecked : '',
+						'FORWARD_LIST_VAL' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
+					)
+				);
+
+				while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+					$showMailAccount = decode_idna($row['mail_acc']);
+					$showAliasName = decode_idna($row['subdomain_name']);
+					$mailAccount = $row['mail_acc'];
+					$alsName = $row['subdomain_name'];
+
+					$tpl->assign(
+						array(
+							'MAIL_ID' => $row['mail_id'],
+							'MAIL_ACCOUNT' => tohtml($showMailAccount . '@' . $showAliasName),
+							'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $alsName)
+						)
+					);
+
+					$tpl->parse('MAIL_ITEM', '.mail_item');
+				}
+			}
 		}
+	} else {
+		showBadRequestErrorPage();
 	}
 }
 
@@ -480,63 +557,51 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptSta
 
 check_login('user');
 
-customerHasFeature('mail') or showBadRequestErrorPage();
+if(customerHasFeature('mail') && isset($_REQUEST['id'])) {
+	$itemId = clean_input($_REQUEST['id']);
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+	if(isset($_POST['uaction']) && $_POST['uaction'] === 'create_catchall') {
+		client_addCatchall($itemId);
+	}
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'client/mail_catchall_add.tpl',
-		'page_message' => 'layout',
-		'mail_list' => 'page',
-		'mail_item' => 'mail_list'
-	)
-);
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic(
+		array(
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'client/mail_catchall_add.tpl',
+			'page_message' => 'layout',
+			'mail_list' => 'page',
+			'mail_item' => 'mail_list'
+		)
+	);
 
-if (isset($_GET['id'])) {
-	$itemId = $_GET['id'];
-} else if (isset($_POST['id'])) {
-	$itemId = $_POST['id'];
+	$tpl->assign(
+		array(
+			'TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE' => tr('i-MSCP - Client/Create CatchAll Mail Account'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_PAGE_TITLE' => tr('Client / Email / Catchall / Add Catchall'),
+			'TR_MAIL_LIST' => tr('Email account list'),
+			'TR_CATCHALL' => tr('Catchall'),
+			'TR_ADD' => tr('Add'),
+			'TR_CANCEL' => tr('Cancel'),
+			'TR_FORWARD_MAIL' => tr('Forward mail'),
+			'TR_FORWARD_TO' => tr('Forward to'),
+			'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.'),
+			'ID' => tohtml($itemId)
+		)
+	);
+
+	generateNavigation($tpl);
+	generatePageMessage($tpl);
+	client_generatePage($tpl, $itemId);
+
+	$tpl->parse('LAYOUT_CONTENT', 'page');
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+
+	$tpl->prnt();
+
+	unsetMessages();
 } else {
-	redirectTo('mail_catchall.php');
-	exit;
+	showBadRequestErrorPage();
 }
-
-$tpl->assign(
-	array(
-		'TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE' => tr('i-MSCP - Client/Create CatchAll Mail Account'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
-
-client_generatePage($tpl, $itemId);
-client_addCatchall($itemId);
-$tpl->assign('ID', $itemId);
-
-generateNavigation($tpl);
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Client / Email / Catchall / Add Catchall'),
-		'TR_MAIL_LIST' => tr('Email account list'),
-		'TR_CATCHALL' => tr('Catchall'),
-		'TR_ADD' => tr('Add'),
-		'TR_CANCEL' => tr('Cancel'),
-		'TR_FORWARD_MAIL' => tr('Forward mail'),
-		'TR_FORWARD_TO' => tr('Forward to'),
-		'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.')
-	)
-);
-
-generatePageMessage($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();
-
-unsetMessages();
