@@ -5,7 +5,7 @@ Git develop
 ------------------------------------------------------------------------------------------------------------------------
 
 DAEMON
-	Fixed: The server traffic must be collected before any stopping attempt (imscp_network)
+	Fixed: The server traffic must be collected before any stopping attempt ( imscp_network )
 
 CONFIGS
 	Fixed: SSLv3 must be disabled to prevent POODLE attacks ( Nginx )
@@ -23,11 +23,11 @@ DOCS
 
 ENGINE
 	Added: FETCH_MODE option in iMSCP::Database::mysql
-	Added: iMSCP::ProgramFinder library which allow to test whether programs are available on the executable search path
-	Added: iMSCP::Service library for service management ( start, stop, restart, reload, status )
+	Added: iMSCP::ProgramFinder module which allow to test whether programs are available on the executable search path
+	Added: iMSCP::Service module for service management ( start, stop, restart, reload, status )
 	Added: Methods which allow to enable/disable apache conffiles from the conf-available directory ( Apache 2.4.x )
-	Added: pigz (Parallel Implementation of GZip) algorithm for backups compression
-	Added: Standard directory which allow to load apache conffiles prior any other vhost file (Apache)
+	Added: pigz ( Parallel Implementation of GZip ) algorithm for backups compression
+	Added: Standard directory which allow to load apache conffiles prior any other vhost file ( Apache )
 	Added: --verbose command line options for all scripts
 	Changed: i-MSCP is now run through a dedicated httpd instance by using the nginx Web server
 	Changed: Logfiles are now written as soon as possible ( allows to mitigate memory consumption )
@@ -35,7 +35,7 @@ ENGINE
 	Fixed: Backend logs which are older than 7 days are never removed
 
 GUI
-	Changed: i-MSCP is now accessible through dedicated http ports (default is 8080 for http and 4443 for https)
+	Changed: i-MSCP is now accessible through dedicated http ports ( default is 8080 for http and 4443 for https )
 
 INSTALLER
 	Added: panel_hostname, system_hostname, panel_ssl and services_ssl reconfiguration items
@@ -43,7 +43,7 @@ INSTALLER
 	Moved: Control panel hostname and SSL dialogs into FrontEnd installer
 	Renamed: Option --hook-file to --listener
 	Fixed: Prevent start of apache2 service by package manager using policy layer interface
-	Fixed: Unable to handle i-MSCP services (start/restart/stop...) on systems  using systemd (e.g Jessie)
+	Fixed: Unable to handle i-MSCP services (start/restart/stop...) on systems using systemd ( e.g Jessie )
 
 PACKAGES:
 	Updated: Roundcube installer according new roundcube version ( 1.0.3 )
