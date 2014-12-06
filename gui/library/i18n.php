@@ -390,5 +390,5 @@ function i18n_getJsTranslations()
 		'onBeforeGetJsTranslations', array('translations' => $translations)
 	);
 
-	return json_encode($translations, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT);
+	return json_encode($translations, JSON_FORCE_OBJECT);
 }
