@@ -8,7 +8,9 @@ CONFIGS
 	Added: Sysctl configuration file for secondary IP promoting ( /etc/sysctl.d/imscp.conf file )
 	Changed: SPF - Email treating level is now set to softfail instead of fail ( bind9 )
 	Fixed: Access to error documents is forbiden in some contexts ( Apache )
+	Fixed: A TLS fatal alert has been received - Wrong cipher suite ( proFTPD )
 	Fixed: Domain aliases and subdomains can't follow sylinks from customer homedir
+	Fixed: Missing NoSessionReuseRequired parameter ( ProFTPD )
 
 BACKEND
 	Fixed: Fcgi wrapper is not created in some contexts ( apache_fcgid )
