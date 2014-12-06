@@ -1293,4 +1293,15 @@ class iMSCP_Events
 	 * - body Circular body
 	 */
 	const onAfterSendCircular = 'onAfterSendCircular';
+
+	/**
+	 * The onGetJsTranslations event is triggered by the i18n_getJsTranslations() function.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - translations An ArrayObject which allows the plugins to add their own JS translations
+	 *
+	 * @see i18n_getJsTranslations() for more details
+	 */
+	const onGetJsTranslations = 'onGetJsTranslations';
 }
