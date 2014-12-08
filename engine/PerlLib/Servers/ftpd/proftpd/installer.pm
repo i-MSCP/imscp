@@ -46,6 +46,7 @@ use iMSCP::TemplateParser;
 use iMSCP::EventManager;
 use File::Basename;
 use Servers::ftpd::proftpd;
+use version;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -167,6 +168,9 @@ sub install
 	$rs = $self->_bkpConfFile($self->{'config'}->{'FTPD_CONF_FILE'});
 	return $rs if $rs;
 
+	$rs = $self->_setVersion();
+	return $rs if $rs;
+
 	$rs = $self->_setupDatabase();
 	return $rs if $rs;
 
@@ -265,6 +269,36 @@ sub _bkpConfFile
 	}
 
 	$self->{'eventManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
+}
+
+=item _setVersion
+
+ Set version
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _setVersion
+{
+	my $self = $_[0];
+
+	my ($stdout, $stderr);
+	my $rs = execute("proftpd -v", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to find ProFTPD version') if $rs && ! $stderr;
+	return $rs if $rs;
+
+	if($stdout =~ m%([\d.]+)%) {
+		$self->{'config'}->{'PROFTPD_VERSION'} = $1;
+		debug("ProFTPD version set to: $1");
+	} else {
+		error('Unable to parse ProFTPD version from ProFTPD version string');
+		return 1;
+	}
+
+	0;
 }
 
 =item _setupDatabase()
@@ -370,7 +404,9 @@ sub _buildConfigFile
 		FTPD_MIN_GID => $self->{'config'}->{'MIN_GID'},
 		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 		SSL => (main::setupGetQuestion('SERVICES_SSL_ENABLED') eq 'yes') ? '' : '#',
-		CERTIFICATE => 'imscp_services'
+		CERTIFICATE => 'imscp_services',
+		TLSOPTIONS => (qv("v$self->{'config'}->{'PROFTPD_VERSION'}") >= qv('v1.3.3'))
+			? 'NoCertRequest NoSessionReuseRequired' : 'NoCertRequest'
 	};
 
 	# Load template
