@@ -1,3 +1,5 @@
+PROFTPD_VERSION =
+
 FTPD_SNAME = proftpd
 FTPD_CONF_FILE = /etc/proftpd/proftpd.conf
 FTP_TRAFF_LOG_PATH = proftpd/ftp_traff.log
