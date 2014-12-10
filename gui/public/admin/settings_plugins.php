@@ -481,7 +481,7 @@ function admin_pluginManagerDoAction($pluginManager, $pluginName, $action)
 
 				set_page_message($msg, 'error');
 			} else {
-				if ($pluginManager->hasPluginBackend($pluginName)) {
+				if ($action !== 'delete' && $pluginManager->hasPluginBackend($pluginName)) {
 					switch ($action) {
 						case 'install':
 							$msg = tr('Plugin %s scheduled for installation.', "<strong>$pluginName</strong>");

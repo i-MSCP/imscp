@@ -52,13 +52,30 @@ abstract class iMSCP_Plugin
 	private $pluginType;
 
 	/**
+	 * @var iMSCP_Plugin_Manager
+	 */
+	private $pluginManager;
+
+	/**
 	 * Constructor
 	 *
+	 * @param iMSCP_Plugin_Manager $pluginManager
 	 * @return iMSCP_Plugin
 	 */
-	public function __construct()
+	public function __construct(iMSCP_Plugin_Manager $pluginManager)
 	{
+		$this->pluginManager = $pluginManager;
 		$this->init();
+	}
+
+	/**
+	 * Get plugin manager
+	 *
+	 * @return iMSCP_Plugin_Manager
+	 */
+	public function getPluginManager()
+	{
+		return $this->pluginManager;
 	}
 
 	/**
