@@ -44,71 +44,71 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	/**
 	 * @var int Tells whether or not bruteforce detection is enabled
 	 */
-	protected $_bruteForceEnabled = 0;
+	protected $bruteForceEnabled = 0;
 
 	/**
 	 * @var int Tells whether or not waiting time between login|captcha attempts is enabled
 	 */
-	protected $_waitTimeEnabled = 0;
+	protected $waitTimeEnabled = 0;
 
 	/**
 	 * @var int Blocking time in minutes
 	 */
-	protected $_blockTime = 0;
+	protected $blockTime = 0;
 
 	/**
 	 * @var int Waiting time in seconds between each login|captcha attempts
 	 */
-	protected $_waitTime = 0;
+	protected $waitTime = 0;
 
 	/**
 	 * @var int Max attempts before an IP address is blocked
 	 */
-	protected $_maxAttempts = 0;
+	protected $maxAttempts = 0;
 
 	/**
 	 * @var string IP address (The subject)
 	 */
-	protected $_ipAddr = '';
+	protected $ipAddr = '';
 
 	/**
 	 * @var string Bruteforce detection type (login|captcha)
 	 */
-	protected $_type = 'login';
+	protected $type = 'login';
 
 	/**
 	 * @var int Time during which an IP address is blocked
 	 */
-	protected $_isBlockedFor = 0;
+	protected $isBlockedFor = 0;
 
 	/**
 	 * @var int Time to wait before a new login|captcha attempts is allowed
 	 */
-	protected $_isWaitingFor = 0;
+	protected $isWaitingFor = 0;
 	
 	/**
 	 * 
 	 * @var int Max attemps before IP is forced to wait.
 	 */
-	protected $_maxAttemptsBeforeWait = 0;
+	protected $maxAttemptsBeforeWait = 0;
 
 	/**
 	 * @var bool Tells whether or not a bruteforce detection record exists for $_ipAddr
 	 */
-	protected $_recordExists = false;
+	protected $recordExists = false;
 
 	/**
 	 * @var string Session unique identifier
 	 */
-	protected $_sessionId = '';
+	protected $sessionId = '';
 
 	/**
 	 * @var string Last message raised
 	 */
-	protected $_message = '';
+	protected $message = '';
 
 	/**
-	 * Constructor.
+	 * Constructor
 	 *
 	 * @param string $type Bruteforce detection type (login|captcha) (defaulted to login)
 	 */
@@ -117,57 +117,57 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
-		$this->_sessionId = session_id();
-		$this->_type = $type;
-		$this->_ipAddr = getIpAddr();
+		$this->sessionId = session_id();
+		$this->type = $type;
+		$this->ipAddr = getIpAddr();
 
 		if ($type == 'login') {
-			$this->_maxAttempts = $cfg->BRUTEFORCE_MAX_LOGIN;
+			$this->maxAttempts = $cfg['BRUTEFORCE_MAX_LOGIN'];
 		} else {
-			$this->_maxAttempts = $cfg->BRUTEFORCE_MAX_CAPTCHA;
+			$this->maxAttempts = $cfg['BRUTEFORCE_MAX_CAPTCHA'];
 		}
 
-		$this->_blockTime = $cfg->BRUTEFORCE_BLOCK_TIME;
-		$this->_waitTime = $cfg->BRUTEFORCE_BETWEEN_TIME;
-		$this->_maxAttemptsBeforeWait = $cfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT;
+		$this->blockTime = $cfg['BRUTEFORCE_BLOCK_TIME'];
+		$this->waitTime = $cfg['BRUTEFORCE_BETWEEN_TIME'];
+		$this->maxAttemptsBeforeWait = $cfg['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'];
 		
-		$this->_unblock();
+		$this->unblock();
 
 		// Plugin initialization
-		parent::__construct();
+		parent::__construct(iMSCP_Registry::get('pluginManager'));
 	}
 
 	/**
-	 * Initialization.
+	 * Initialization
 	 *
 	 * @return void
 	 */
 	protected function init()
 	{
-		$query = 'SELECT * FROM `login` WHERE `ipaddr` = ? AND `user_name` IS NULL';
-		$stmt = exec_query($query, $this->_ipAddr);
+		$stmt = exec_query('SELECT * FROM login WHERE ipaddr = ? AND user_name IS NULL', $this->ipAddr);
 
-		if (!$stmt->rowCount()) {
-			$this->_recordExists = false;
-		} else {
-			$this->_recordExists = true;
+		if ($stmt->rowCount()) {
+			$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+			$this->recordExists = true;
 
-			if ($stmt->fields($this->_type . '_count') >= $this->_maxAttempts) {
-				$this->_isBlockedFor = $stmt->fields('lastaccess') + $this->_blockTime * 60;
-				$this->_isWaitingFor = 0;
+			if ($row[$this->type . '_count'] >= $this->maxAttempts) {
+				$this->isBlockedFor = $row['lastaccess'] + $this->blockTime * 60;
+				$this->isWaitingFor = 0;
 			} else {
-				$this->_isBlockedFor = 0;
-				if ($stmt->fields($this->_type . '_count') >= $this->_maxAttemptsBeforeWait) {
-					$this->_isWaitingFor = $stmt->fields('lastaccess') + $this->_waitTime;
+				$this->isBlockedFor = 0;
+				if ($row[$this->type . '_count'] >= $this->maxAttemptsBeforeWait) {
+					$this->isWaitingFor = $row['lastaccess'] + $this->waitTime;
 				} else {
-					$this->_isWaitingFor = 0;
+					$this->isWaitingFor = 0;
 				}
 			}
+		} else {
+			$this->recordExists = false;
 		}
 	}
 
 	/**
-	 * Returns plugin general information.
+	 * Returns plugin general information
 	 *
 	 * @return array
 	 */
@@ -185,7 +185,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	}
 
 	/**
-	 * Register a callback for the given event(s).
+	 * Register a callback for the given event(s)
 	 *
 	 * @param iMSCP_Events_Manager_Interface $eventsManager
 	 */
@@ -197,7 +197,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	}
 
 	/**
-	 * Implements the onBeforeAuthentication listener method.
+	 * Implements the onBeforeAuthentication listener method
 	 *
 	 * @param iMSCP_Events_Event $event Represent an onBeforeAuthentication event that is triggered in the
 	 *									iMSCP_Authentication component.
@@ -218,15 +218,13 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	}
 
 	/**
-	 * Implement the onBeforeSetIdentity listener method.
+	 * Implement the onBeforeSetIdentity listener method
 	 *
-	 * @param iMSCP_Events_Event $event Represent an onBeforeSetIdentity event that is triggered in the
-	 *									 iMSCP_Authentication component.
 	 * @return void
 	 */
-	public function onBeforeSetIdentity($event)
+	public function onBeforeSetIdentity()
 	{
-		exec_query('DELETE FROM login WHERE session_id = ?', $this->_sessionId);
+		exec_query('DELETE FROM login WHERE session_id = ?', $this->sessionId);
 	}
 
 	/**
@@ -236,8 +234,8 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	 */
 	public function isBlocked()
 	{
-		if ($this->_isBlockedFor - time() > 0) {
-			$this->_message = tr('Ip %s is blocked for %s minutes.', $this->_ipAddr, $this->isBlockedFor());
+		if ($this->isBlockedFor - time() > 0) {
+			$this->message = tr('Ip %s is blocked for %s minutes.', $this->ipAddr, $this->isBlockedFor());
 			return true;
 		}
 
@@ -251,8 +249,8 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	 */
 	public function isWaiting()
 	{
-		if ($this->_isWaitingFor - time() > 0) {
-			$this->_message = tr('Ip %s is waiting %s seconds.', $this->_ipAddr, $this->isWaitingFor());
+		if ($this->isWaitingFor - time() > 0) {
+			$this->message = tr('Ip %s is waiting %s seconds.', $this->ipAddr, $this->isWaitingFor());
 			return true;
 		}
 
@@ -260,94 +258,96 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	}
 
 	/**
-	 * Create/Update bruteforce detection record for $_ipAddr.
+	 * Create/Update bruteforce detection record for $_ipAddr
 	 *
 	 * @return void
 	 */
 	public function recordAttempt()
 	{
-		if (!$this->_recordExists) {
-			$this->_createRecord();
+		if (!$this->recordExists) {
+			$this->createRecord();
 		} else {
-			$this->_updateRecord();
+			$this->updateRecord();
 		}
 	}
 
 	/**
-	 * Returns last message raised.
+	 * Returns last message raised
 	 *
 	 * @return string
 	 */
 	public function getLastMessage()
 	{
-		return $this->_message;
+		return $this->message;
 	}
 
 	/**
-	 * Returns human readable blocking time.
+	 * Returns human readable blocking time
 	 *
 	 * @return string
 	 */
 	protected function isBlockedFor()
 	{
-		return strftime("%M:%S", ($this->_isBlockedFor - time() > 0) ? $this->_isBlockedFor - time() : 0);
+		return strftime("%M:%S", ($this->isBlockedFor - time() > 0) ? $this->isBlockedFor - time() : 0);
 	}
 
 	/**
-	 * Returns human readable waiting time.
+	 * Returns human readable waiting time
 	 *
 	 * @return string
 	 */
 	protected function isWaitingFor()
 	{
-		return strftime("%M:%S", ($this->_isWaitingFor - time() > 0) ? $this->_isWaitingFor - time() : 0);
+		return strftime("%M:%S", ($this->isWaitingFor - time() > 0) ? $this->isWaitingFor - time() : 0);
 	}
 
 	/**
-	 * Increase login|captcha attempts by 1 for $_ipAddr.
+	 * Increase login|captcha attempts by 1 for $_ipAddr
 	 *
 	 * @return void
 	 */
-	protected function _updateRecord()
+	protected function updateRecord()
 	{
-		$query = "
-			UPDATE
-				login
-			SET
-				lastaccess = UNIX_TIMESTAMP(), {$this->_type}_count = {$this->_type}_count + 1
-			WHERE
-				ipaddr= ? AND user_name IS NULL
-		";
-		exec_query($query, ($this->_ipAddr));
+		exec_query(
+			"
+				UPDATE
+					login
+				SET
+					lastaccess = UNIX_TIMESTAMP(), {$this->type}_count = {$this->type}_count + 1
+				WHERE
+					ipaddr= ? AND user_name IS NULL
+			",
+			($this->ipAddr)
+		);
 	}
 
 	/**
-	 * Create bruteforce detection record.
+	 * Create bruteforce detection record
 	 *
 	 * @return void
 	 */
-	protected function _createRecord()
+	protected function createRecord()
 	{
-		$query = "
-			REPLACE INTO login (
-				session_id, ipaddr, {$this->_type}_count, user_name, lastaccess
-				) VALUES (
-					?, ?, 1, NULL, UNIX_TIMESTAMP()
-			)
-		";
-		exec_query($query, array($this->_sessionId, $this->_ipAddr));
+		exec_query(
+			"
+				REPLACE INTO login (
+					session_id, ipaddr, {$this->type}_count, user_name, lastaccess
+					) VALUES (
+						?, ?, 1, NULL, UNIX_TIMESTAMP()
+				)
+			",
+			array($this->sessionId, $this->ipAddr)
+		);
 	}
 
 	/**
-	 * Unblock any Ip address for which blocking time is expired.
+	 * Unblock any Ip address for which blocking time is expired
 	 *
 	 * @return void
 	 */
-	protected function _unblock()
+	protected function unblock()
 	{
-		$timeout = time() - ($this->_blockTime * 60);
-
-		$query = "DELETE FROM login WHERE lastaccess < ? AND `{$this->_type}_count` > 0";
-		exec_query($query, $timeout);
+		$timeout = time() - ($this->blockTime * 60);
+		exec_query("DELETE FROM login WHERE lastaccess < ? AND `{$this->type}_count` > 0", $timeout);
 	}
 }

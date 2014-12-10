@@ -34,7 +34,7 @@ class iMSCP_Plugin_Manager
 	/**
 	 * @const string Plugin API version
 	 */
-	const PLUGIN_API_VERSION = '0.2.13';
+	const PLUGIN_API_VERSION = '0.2.14';
 
 	/**
 	 * @const int Action success
@@ -126,7 +126,7 @@ class iMSCP_Plugin_Manager
 		if (@is_dir($pluginDir)) {
 			$this->setPluginDirectory($pluginDir);
 			$this->eventsManager = iMSCP_Events_Aggregator::getInstance()->addEvents('pluginManager', $this->events);
-			$this->init();
+			$this->loadPluginData();
 			spl_autoload_register(array($this, '_autoload'));
 		} else {
 			write_log(sprintf('Plugin Manager: Invalid plugin directory: %s', $pluginDir), E_USER_ERROR);
@@ -267,7 +267,7 @@ class iMSCP_Plugin_Manager
 				return false;
 			}
 
-			$this->loadedPlugins[$pluginName] = new $className();
+			$this->loadedPlugins[$pluginName] = new $className($this);
 
 			if($this->loadedPlugins[$pluginName] instanceof iMSCP_Plugin_Action) {
 				$this->loadedPlugins[$pluginName]->register($this->getEventManager());
@@ -996,7 +996,7 @@ class iMSCP_Plugin_Manager
 					if (!$responses->isStopped()) {
 						$pluginInstance->delete($this);
 
-						$this->deletePluginFromDatabase($pluginName);
+						$this->deletePluginData($pluginName);
 
 						$pluginDir = $this->pluginsDirectory . '/' . $pluginName;
 
@@ -1238,13 +1238,13 @@ class iMSCP_Plugin_Manager
 					}
 
 					// Add/update plugin data in database
-					$this->addPluginIntoDatabase(
+					$this->updatePluginData(
 						array(
 							'name' => $pluginName,
 							'type' => $pluginInstance->getType(),
 							'info' => json_encode($pluginInfo),
 							'config' => json_encode($pluginConfig),
-							'priority' => (isset($pluginInfo['priority'])) ? (int) $pluginInfo['priority'] : 0,
+							'priority' => (isset($pluginInfo['priority'])) ? intval($pluginInfo['priority']) : 0,
 							'status' => $pluginStatus,
 							'backend' => (
 								file_exists($fileInfo->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no'
@@ -1257,14 +1257,14 @@ class iMSCP_Plugin_Manager
 			}
 		}
 
-		// Make the plugin manager aware of new plugin data
-		$this->init();
+		// Make the plugin manager aware of the new plugin data
+		$this->loadPluginData();
 
 		// Processing plugin (update/change/deletion)
 
 		foreach (array_keys($this->pluginData) as $pluginName) {
 			if (!in_array($pluginName, $seenPlugins)) {
-				if ($this->deletePluginFromDatabase($pluginName)) {
+				if ($this->deletePluginData($pluginName)) {
 					$returnInfo['deleted']++;
 				}
 			} elseif (in_array($pluginName, $toUpdatePlugins)) {
@@ -1298,11 +1298,11 @@ class iMSCP_Plugin_Manager
 	}
 
 	/**
-	 * Initialize plugin manager
+	 * Load plugin data from database
 	 *
 	 * @return void
 	 */
-	protected function init()
+	protected function loadPluginData()
 	{
 		$this->pluginData = array();
 		$this->pluginsByType = array();
@@ -1361,12 +1361,12 @@ class iMSCP_Plugin_Manager
 	}
 
 	/**
-	 * Add or update plugin in database
+	 * Update plugin data
 	 *
 	 * @param array $pluginData Plugin data
 	 * @return void
 	 */
-	protected function addPluginIntoDatabase(array $pluginData)
+	protected function updatePluginData(array $pluginData)
 	{
 		if (!isset($this->pluginData[$pluginData['name']])) {
 			exec_query(
@@ -1398,12 +1398,12 @@ class iMSCP_Plugin_Manager
 	}
 
 	/**
-	 * Delete plugin from database
+	 * Delete plugin data
 	 *
 	 * @param string $pluginName Plugin name
 	 * @return bool TRUE if $pluginName has been deleted from database, FALSE otherwise
 	 */
-	protected function deletePluginFromDatabase($pluginName)
+	protected function deletePluginData($pluginName)
 	{
 		$stmt = exec_query('DELETE FROM plugin WHERE plugin_name = ?', $pluginName);
 
@@ -1418,6 +1418,9 @@ class iMSCP_Plugin_Manager
 			$this->protectedPlugins = array_flip($protectedPlugins);
 			$this->updateProtectFile();
 		}
+
+		// Make the plugin manager aware of the deletion by reloading plugin data from database
+		$this->loadPluginData();
 
 		write_log(sprintf('Plugin Manager: %s plugin has been removed from database', $pluginName), E_USER_NOTICE);
 

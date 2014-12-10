@@ -31,8 +31,11 @@ i18n
 	Fixed: Don't throw any exception when a locale is not valid. Fallback to the default locale instead
 
 PLUGINS
+	Changed: Plugins are now aware of plugin manager
 	Fixed: PHP Notice: Undefined index: prirotiy in /var/www/imscp/gui/library/iMSCP/Plugin/Manager.php on line 1390
 	Fixed: Plugins's configuration is not updated using the latest conffiles state when an OPCODE cache is enabled
+	Fixed: Plugin manager must be aware of plugin deletion
+	Updated: Plugin API to version 0.2.14
 
 VENDOR
 	Added: pGenerator jQuery plugin v1.0.0
