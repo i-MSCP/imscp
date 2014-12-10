@@ -61,7 +61,7 @@ function init_login($events)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($cfg->BRUTEFORCE) {
+	if ($cfg['BRUTEFORCE']) {
 		$bruteforce = new iMSCP_Authentication_Bruteforce();
 		$bruteforce->register($events);
 	}
