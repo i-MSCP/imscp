@@ -8,7 +8,7 @@ CONFIGS
 	Added: Sysctl configuration file for secondary IP promoting ( /etc/sysctl.d/imscp.conf file )
 	Changed: SPF - Email treating level is now set to softfail instead of fail ( bind9 )
 	Fixed: Access to error documents is forbiden in some contexts ( Apache )
-	Fixed: A TLS fatal alert has been received - Wrong cipher suite ( proFTPD )
+	Fixed: A TLS fatal alert has been received - Wrong cipher suite ( ProFTPD )
 	Fixed: Domain aliases and subdomains can't follow sylinks from customer homedir
 	Fixed: Missing NoSessionReuseRequired parameter ( ProFTPD )
 
@@ -28,8 +28,8 @@ GUI
 i18n
 	Added: i18n_getJsTranslations() function which allow to translate JS scripts
 	Added: onGetJsTranslations event which allows the plugins to add their own JS translations
-	Added: New languages: Breton, Czech, Icelandic and Georgian (Requested languages)
-	Fixed: Don't throw any exception when a locale is not valid. Fallback to the default locale instead
+	Added: New languages: Breton, Czech, Icelandic and Georgian ( Requested languages )
+	Fixed: Don't throw any exception when a locale is not valid. Fallback to the default en_GB locale instead
 
 PLUGINS
 	Changed: Plugins are now aware of plugin manager
