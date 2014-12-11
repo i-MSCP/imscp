@@ -20,6 +20,7 @@ BACKEND
 GUI
 	Added: Events for mail catch-all
 	Changed: All network interfaces are now selectable, even if they are not up
+	Fixed: Allow the message_timeout event to be triggered for elements which are out of the .body container ( layout )
 	Fixed: Clear opcode cache when needed ( Opcache, APC )
 	Fixed: CSS loading order
 	Replaced: i-MSCP jQuery tooltip plugin by jQuery UI tooltip widget
