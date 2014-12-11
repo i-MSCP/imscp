@@ -1929,7 +1929,7 @@ sub _addFiles
 
 		if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
 			setImmutable($webDir);
-			setImmutable($parentDir) if $data->{'DOMAIN_TYPE'} ne 'dmn';
+			setImmutable($parentDir) if $parentDir ne $main::imscpConfig{'USER_WEB_DIR'};
 		}
 
 		# Permissions, owner and group - Ending
