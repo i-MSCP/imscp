@@ -27,7 +27,7 @@
 var iMSCP = function () {
     // Function to initialize page messages
     var initPageMessages = function () {
-        $(".body").on("message_timeout", ".success,.info,.warning,.error", function () {
+        $("body").on("message_timeout", ".success,.info,.warning,.error", function () {
             $(this).hide().slideDown('fast').delay(5000).slideUp("normal", function () {
                 $(this).remove();
             });
