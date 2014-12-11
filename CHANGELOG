@@ -9,13 +9,15 @@ CONFIGS
 	Changed: SPF - Email treating level is now set to softfail instead of fail ( bind9 )
 	Fixed: Access to error documents is forbiden in some contexts ( Apache )
 	Fixed: A TLS fatal alert has been received - Wrong cipher suite ( ProFTPD )
-	Fixed: Domain aliases and subdomains can't follow sylinks from customer homedir
+	Fixed: Domain aliases and subdomains can't follow symlinks from customer homedir
 	Fixed: Missing NoSessionReuseRequired parameter ( ProFTPD )
 
-BACKEND
+DAEMON
+	Fixed: Network manager must not remove SSH connection IP
+
+ENGINE
 	Fixed: Fcgi wrapper is not created in some contexts ( apache_fcgid )
 	Fixed: Pool configuration file is not created in some contexts ( apache_php_fpm )
-	Fixed: Network manager must not remove SSH connection IP
 
 GUI
 	Added: Events for mail catch-all
