@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -988,11 +988,11 @@ msgstr "En ús"
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa per arribar a la teva web"
 
-msgid "An entry is defined twice below."
+msgid "An email addresse is not valid in mail forward list."
 msgstr ""
 
-msgid "An error has been found in mail forward list."
-msgstr "Hi ha hagut un error a la llista de redireccions de correu."
+msgid "An entry is defined twice below."
+msgstr ""
 
 msgid "An error occurred during authentication."
 msgstr "Hi ha hagut un error durant l'autenticació"
@@ -2217,9 +2217,6 @@ msgstr ""
 msgid "Email account limit"
 msgstr "Límit de comptes de correu."
 
-msgid "Email account limit is reached."
-msgstr ""
-
 msgid "Email account list"
 msgstr ""
 
@@ -2537,9 +2534,6 @@ msgstr "Paràmetres generals"
 
 msgid "Generate"
 msgstr "Generar"
-
-msgid "Generate password"
-msgstr "Generar contrasenya"
 
 msgid "Get a new image"
 msgstr "Obtenir una nova imatge"
@@ -3242,9 +3236,6 @@ msgstr "Nova ordre d'àlies per a {CUSTOMER}"
 msgid "New password has not been sent. Ask your administrator."
 msgstr "La nova contrasenya no s'ha enviat. Aviseu al vostre administrador."
 
-msgid "New password is"
-msgstr "La nova contrasenya és"
-
 msgid "New ticket"
 msgstr "Nou tiquet"
 
@@ -3684,10 +3675,6 @@ msgid ""
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr "Siusplau contacta amb l'administrador!<br />Pregunta-li pels permisos per usar aquest paquet.<br />no està permés carregar aquest paquet dues vegades.<br />Refresca el teu lloc per a veure el nou estat!"
-
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Siusplau introdueix un nom per l'àrea protegida."
@@ -4763,6 +4750,9 @@ msgstr ""
 msgid "Switch to user interface"
 msgstr "Canviar a la interfície d'usuari"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "Sistema"
 
@@ -5484,7 +5474,7 @@ msgid "View"
 msgstr "Veure"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Veure el certificat SSL"
 
 msgid "View Support Ticket"
 msgstr "Veure tiquet"
@@ -5849,8 +5839,8 @@ msgstr ""
 msgid "You must enter a subdomain name."
 msgstr ""
 
-msgid "You must first generate a password"
-msgstr "En primer lloc, ha de generar una contrasenya"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr ""
@@ -5919,6 +5909,9 @@ msgstr "El teu missatge ha estat enviat correctament."
 
 msgid "Your new i-MSCP login"
 msgstr "El teu nou inici de sessió i-MSCP"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr ""

@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -987,11 +987,11 @@ msgstr "Reeds in gebruik"
 msgid "Alternative URL to reach your website"
 msgstr "Alternatieve URL om uw website te bereiken"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "Invoer hieronder twee keer aangegeven."
-
-msgid "An error has been found in mail forward list."
-msgstr "Er is een fout gevonden in de doorstuurlijst."
 
 msgid "An error occurred during authentication."
 msgstr "Er is een aanmeldfout opgetreden"
@@ -1007,7 +1007,7 @@ msgid "An unexpected error occurred."
 msgstr "Er is een onverwachte fout opgetreden."
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr ""
+msgstr "Er is een onbekende fout opgetreden. Neem contact op met uw beheerder."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2216,9 +2216,6 @@ msgstr "E-mailaccountfouten"
 msgid "Email account limit"
 msgstr "E-mailaccountlimiet"
 
-msgid "Email account limit is reached."
-msgstr "E-mailaccountlimiet bereikt."
-
 msgid "Email account list"
 msgstr "E-mailaccountlijst"
 
@@ -2536,9 +2533,6 @@ msgstr "Algemene instellingen"
 
 msgid "Generate"
 msgstr "Genereren"
-
-msgid "Generate password"
-msgstr "Genereer een wachtwoord"
 
 msgid "Get a new image"
 msgstr "Haal een nieuw plaatje op."
@@ -2890,7 +2884,7 @@ msgid "Invalid name."
 msgstr "Ongeldige naam."
 
 msgid "Invalid private key or passphrase."
-msgstr ""
+msgstr "Ongeldige private-key of wachtwoordsleutel."
 
 msgid "Invalid target."
 msgstr "Doel is ongeldig"
@@ -3240,9 +3234,6 @@ msgstr "Nieuwe aliasorder voor {CUSTOMER}"
 
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Nieuw wachtwoord is niet verzonden. Vraag uw beheerder."
-
-msgid "New password is"
-msgstr "Nieuwe wachtwoord is"
 
 msgid "New ticket"
 msgstr "Nieuw ticket"
@@ -3684,10 +3675,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Gelieve contact op te nemen met de beheerder!<br />Vraag hem om de rechten om dit pakket te gebruiken.<br />Het is niet toegestaan om dit pakket twee keer te uploaden.<br />Herlaad uw site om de nieuwe status te zien!"
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr "Gebruik geen speciale tekent zoals '@,$,%%...' in uw wachtwoord."
-
 msgid "Please enter a name for the protected area."
 msgstr "Geef een naam op voor de beveiligde map."
 
@@ -3893,7 +3880,7 @@ msgid "Plugin list is empty."
 msgstr "Invoegtoepassingslijst is leeg."
 
 msgid "Plugin management"
-msgstr "Pluginbeheer"
+msgstr "Invoegtoepassingsbeheer"
 
 msgid "Plugins Upload"
 msgstr "Invoegtoepassingsupload"
@@ -3944,7 +3931,7 @@ msgid "Private key"
 msgstr "Private-key"
 
 msgid "Private key field cannot be empty."
-msgstr ""
+msgstr "Het veld private-key mag niet leeg zijn."
 
 msgid "Private key passphrase if any"
 msgstr "Indien nodig: wachtwoord voor private-key"
@@ -4355,13 +4342,13 @@ msgid "SSL certificate"
 msgstr "SSL-certificaat"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr ""
+msgstr "SL-certificaat is succesvol ingepland op toegevoegd te worden."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "SL-certificaat is succesvol ingepland op verwijderd te worden."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr ""
+msgstr "SL-certificaat is succesvol ingepland op bijgewerkt te worden."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-functie is niet beschikbaar, u kunt alleen uw certificaat bekijken."
@@ -4762,6 +4749,9 @@ msgstr "Wissel naar de 'backups'-map"
 msgid "Switch to user interface"
 msgstr "Verander van gebruiker"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "Systeem"
 
@@ -4867,13 +4857,13 @@ msgid "The certificate field cannot be empty."
 msgstr "Het certificaatveld kan niet leeg zijn."
 
 msgid "The certificate is expired."
-msgstr ""
+msgstr "Dit certificaat is verlopen"
 
 msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
+msgstr "Dit certificaat is niet geldig  of de CA-bundel mist."
 
 msgid "The certificate is not valid."
-msgstr ""
+msgstr "Dit certificaat is niet geldig."
 
 #, php-format
 msgid ""
@@ -4899,7 +4889,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "Het domein dat u probeert te bewerken bestaat niet."
 
 msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
+msgstr "De ingegeven sleutel komt niet overeen met de privésleutel voor het certificaat."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Het menu dat u probeert te bewerken bestaat niet."
@@ -5483,7 +5473,7 @@ msgid "View"
 msgstr "Bekijk"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Toon SSL-certificaat"
 
 msgid "View Support Ticket"
 msgstr "Bekijk ondersteuningsticket"
@@ -5848,8 +5838,8 @@ msgstr "U dienst hier een domeinalias in te vullen."
 msgid "You must enter a subdomain name."
 msgstr "U dienst hier een subdomein in te vullen."
 
-msgid "You must first generate a password"
-msgstr "U dienst eerst een wachtwoord te genereren"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "U moet 'www' weglaten. Het zal automatisch worden toegevoegd."
@@ -5918,6 +5908,9 @@ msgstr "Uw bericht is succesvol verzonden."
 
 msgid "Your new i-MSCP login"
 msgstr "Uw nieuwe i-MSCP-login."
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Uw nieuwe wachtwoord is verzonden. Controleer uw e-mail."

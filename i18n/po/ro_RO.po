@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/i-MSCP/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -979,10 +979,10 @@ msgstr "OK"
 msgid "Alternative URL to reach your website"
 msgstr "Adresa alternativa pentru website"
 
-msgid "An entry is defined twice below."
+msgid "An email addresse is not valid in mail forward list."
 msgstr ""
 
-msgid "An error has been found in mail forward list."
+msgid "An entry is defined twice below."
 msgstr ""
 
 msgid "An error occurred during authentication."
@@ -2208,9 +2208,6 @@ msgstr ""
 msgid "Email account limit"
 msgstr ""
 
-msgid "Email account limit is reached."
-msgstr ""
-
 msgid "Email account list"
 msgstr ""
 
@@ -2528,9 +2525,6 @@ msgstr "Setari Generale"
 
 msgid "Generate"
 msgstr ""
-
-msgid "Generate password"
-msgstr "Genereaza parola!"
 
 msgid "Get a new image"
 msgstr ""
@@ -3233,9 +3227,6 @@ msgstr ""
 msgid "New password has not been sent. Ask your administrator."
 msgstr ""
 
-msgid "New password is"
-msgstr ""
-
 msgid "New ticket"
 msgstr "Interogare noua"
 
@@ -3674,10 +3665,6 @@ msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
-msgstr ""
-
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -4753,6 +4740,9 @@ msgstr ""
 
 msgid "Switch to user interface"
 msgstr "Schimba pe interfata utilizator"
+
+msgid "Syntax error found in mail forward list."
+msgstr ""
 
 msgid "System"
 msgstr "Sistem"
@@ -5840,7 +5830,7 @@ msgstr ""
 msgid "You must enter a subdomain name."
 msgstr ""
 
-msgid "You must first generate a password"
+msgid "You must first generate a password by clicking on the generate button."
 msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
@@ -5909,6 +5899,9 @@ msgid "Your message has been successfully sent."
 msgstr ""
 
 msgid "Your new i-MSCP login"
+msgstr ""
+
+msgid "Your new password"
 msgstr ""
 
 msgid "Your new password has been sent. Check your email."

@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -981,11 +981,11 @@ msgstr "Allerede i brug"
 msgid "Alternative URL to reach your website"
 msgstr "Alternativ URL til at nå dit website"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "En post er defineret to gange nedenfor."
-
-msgid "An error has been found in mail forward list."
-msgstr "En fejl er blevet fundet i mail forward listen."
 
 msgid "An error occurred during authentication."
 msgstr "Der opstod en fejl i forbindelse med godkendelse."
@@ -2210,9 +2210,6 @@ msgstr "E-mail konto fejl"
 msgid "Email account limit"
 msgstr "E-mail konti grænse"
 
-msgid "Email account limit is reached."
-msgstr "E-mail konto grænsen er nået."
-
 msgid "Email account list"
 msgstr "E-mail konti liste"
 
@@ -2530,9 +2527,6 @@ msgstr "Generel indstillinger"
 
 msgid "Generate"
 msgstr "Generer"
-
-msgid "Generate password"
-msgstr "Lav adgangskode"
 
 msgid "Get a new image"
 msgstr "Anskaf et nyt billede"
@@ -3235,9 +3229,6 @@ msgstr "Ny alias ordrer for {CUSTOMER}"
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Ny adgangskode er ikke blevet sendt. Spørg din administrator."
 
-msgid "New password is"
-msgstr "Ny password er"
-
 msgid "New ticket"
 msgstr "Ny Sag"
 
@@ -3677,10 +3668,6 @@ msgid ""
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr "Kontakt venligst administratoren!<br />Spørg ham om tilladelser til at bruge denne pakke.<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
-
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr "Bruge ikke specielle tegn som \"@, $, %% ...\" i password."
 
 msgid "Please enter a name for the protected area."
 msgstr "Indtast et navn for det beskyttede område."
@@ -4756,6 +4743,9 @@ msgstr "Skift til backup biblioteket"
 msgid "Switch to user interface"
 msgstr "Skift til bruger interface"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "System Information."
 
@@ -5477,7 +5467,7 @@ msgid "View"
 msgstr "Se"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Se SSL certifikat"
 
 msgid "View Support Ticket"
 msgstr "Se Support Ticket"
@@ -5842,8 +5832,8 @@ msgstr "Du skal indtaste et domæne alias navn."
 msgid "You must enter a subdomain name."
 msgstr "Du skal indtaste et subdomæne navn."
 
-msgid "You must first generate a password"
-msgstr "Du skal først oprette et password"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "Du behøver ikke \"www\". i-MSCP vil tilføje det automatisk."
@@ -5912,6 +5902,9 @@ msgstr "Din besked er blevet sendt."
 
 msgid "Your new i-MSCP login"
 msgstr "Dit nye i-MSCP login"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Dit nye password er blevet sendt. Tjek din e-mail."

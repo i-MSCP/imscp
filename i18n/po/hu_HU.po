@@ -3,7 +3,8 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Adam Radovits <adamradovits12@hotmail.com>, 2013-2014
+# Ádám Radovits <adamradovits12@hotmail.com>, 2013-2014
+# Ádám Radovits <adamradovits12@hotmail.com>, 2014
 # Zoltán Balázs <balazsz@citromail.hu>, 2011-2012
 # knorbi555 <k.norbi555@gmail.com>, 2012
 # starring94 <kovinor123@gmail.com>, 2014
@@ -14,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -983,11 +984,11 @@ msgstr "OK"
 msgid "Alternative URL to reach your website"
 msgstr "Alternatív webcím a weboldal eléréséhez"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "Ilyen nevű már létezik."
-
-msgid "An error has been found in mail forward list."
-msgstr "Hiba található a levél továbbítási listában."
 
 msgid "An error occurred during authentication."
 msgstr "Hiba történt a hitelesítés közben."
@@ -1003,7 +1004,7 @@ msgid "An unexpected error occurred."
 msgstr "Váratlan hiba történt."
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr ""
+msgstr "Váratlan hiba történt. Kérjük, fordulj a rendszergazdához!"
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1230,7 +1231,7 @@ msgid "Bulk Actions"
 msgstr "Csoportműveletek"
 
 msgid "By"
-msgstr "által"
+msgstr "Készítő:"
 
 msgid "CA bundle"
 msgstr "CA csomag"
@@ -2212,9 +2213,6 @@ msgstr "Postafiók hibák"
 msgid "Email account limit"
 msgstr "Postafiók korlát"
 
-msgid "Email account limit is reached."
-msgstr "Postafiók korlát elérve."
-
 msgid "Email account list"
 msgstr "Postafiók lista"
 
@@ -2532,9 +2530,6 @@ msgstr "Általános beállítások"
 
 msgid "Generate"
 msgstr "Generálás"
-
-msgid "Generate password"
-msgstr "Jelszó generálása"
 
 msgid "Get a new image"
 msgstr "Új kép"
@@ -2886,7 +2881,7 @@ msgid "Invalid name."
 msgstr "Érvénytelen név"
 
 msgid "Invalid private key or passphrase."
-msgstr ""
+msgstr "Érvénytelen személyes kulcs vagy jelszó."
 
 msgid "Invalid target."
 msgstr "Érvénytelen cél"
@@ -3236,9 +3231,6 @@ msgstr "Új álnév megrendelése a(z) {CUSTOMER} felhasználónak"
 
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Új jelszó elküldése sikertelen volt. Kérjük, forduljon az adminisztrátorhoz"
-
-msgid "New password is"
-msgstr "Az új jelszó"
 
 msgid "New ticket"
 msgstr "Új hibajegy"
@@ -3680,10 +3672,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Kérjük, forduljon az adminisztrátorhoz! <br /> Kérdezze meg ennek a programcsomag a jogosultságait. <br /> Nem töltheti fel ezt a programcsomagot mégegyszer. <br /> Frissítse a weboldalt az új állapot megtekintéséhez!"
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr "Kérjük, ne használj speciális karaktereket (@, $, %%, stb) a jelszóban!"
-
 msgid "Please enter a name for the protected area."
 msgstr "Kérem a védett terület nevét"
 
@@ -3940,7 +3928,7 @@ msgid "Private key"
 msgstr "Privát kulcs"
 
 msgid "Private key field cannot be empty."
-msgstr ""
+msgstr "Privát kulcs mező nem lehet üres."
 
 msgid "Private key passphrase if any"
 msgstr "Privát kulcs vagy jelszó, ha van ilyen"
@@ -4351,13 +4339,13 @@ msgid "SSL certificate"
 msgstr "SSL tanúsítvány"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr ""
+msgstr "SSL tanúsítvány sikeresen beütemezve hozzáadásra."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "SSL tanúsítvány sikeresen beütemezve törlésre."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr ""
+msgstr "SSL tanúsítvány sikeresen beütemezve frissítésre."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL funkció nem elérhető. Csak megnézni tudod a tanúsítványaidat."
@@ -4758,6 +4746,9 @@ msgstr "Átlépés a mentések könyvtárba"
 msgid "Switch to user interface"
 msgstr "Átlépés a felhasználó felületére"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "Rendszer"
 
@@ -4863,13 +4854,13 @@ msgid "The certificate field cannot be empty."
 msgstr "A tanúsítvány mező nem lehet üres."
 
 msgid "The certificate is expired."
-msgstr ""
+msgstr "A tanúsítvány lejárt."
 
 msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
+msgstr "A tanúsítvány érvénytelen vagy a CA bundle hiányzik."
 
 msgid "The certificate is not valid."
-msgstr ""
+msgstr "A tanúsítvány érvénytelen."
 
 #, php-format
 msgid ""
@@ -4895,7 +4886,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt domain név nem létezik"
 
 msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
+msgstr "A kulcs nem a privát kulcs, ami megfelel a tanúsítványnak."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt menü nem létezik."
@@ -5470,7 +5461,7 @@ msgid "Vendor hompage"
 msgstr "Termék oldala"
 
 msgid "Version"
-msgstr "Verzió"
+msgstr "Verzió:"
 
 msgid "Very high"
 msgstr "Nagyon magas"
@@ -5479,7 +5470,7 @@ msgid "View"
 msgstr "Megjelenítés"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "SSL tanúsítvány megjelenítése"
 
 msgid "View Support Ticket"
 msgstr "Hibajegy megtekintése"
@@ -5844,8 +5835,8 @@ msgstr "Be kell írnod egy domain álnevet."
 msgid "You must enter a subdomain name."
 msgstr "Be kell írnod egy aldomain nevet!"
 
-msgid "You must first generate a password"
-msgstr "Először létre kell hozni egy jelszót"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "A „www”-t hagyd ki, mert ezt a rendszer automatikusan hozzáadja."
@@ -5914,6 +5905,9 @@ msgstr "Üzenet sikeresen elküldve."
 
 msgid "Your new i-MSCP login"
 msgstr "Az Ön új belépési azonosítója"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Új jelszó elküldve. Kérjük, ellenőrizze a leveleit."

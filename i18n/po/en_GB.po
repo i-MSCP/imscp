@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -986,11 +986,11 @@ msgstr "Already in use"
 msgid "Alternative URL to reach your website"
 msgstr "Alternative URL to reach your website"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "An entry is defined twice below."
-
-msgid "An error has been found in mail forward list."
-msgstr "An error has been found in mail forward list."
 
 msgid "An error occurred during authentication."
 msgstr "An error occurred during authentication."
@@ -1006,7 +1006,7 @@ msgid "An unexpected error occurred."
 msgstr "An unexpected error occurred."
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr ""
+msgstr "An unexpected error occurred. Please contact your administrator."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2215,9 +2215,6 @@ msgstr "Email account errors"
 msgid "Email account limit"
 msgstr "Email account limit"
 
-msgid "Email account limit is reached."
-msgstr "Email account limit is reached."
-
 msgid "Email account list"
 msgstr "Email account list"
 
@@ -2535,9 +2532,6 @@ msgstr "General settings"
 
 msgid "Generate"
 msgstr "Generate"
-
-msgid "Generate password"
-msgstr "Generate password"
 
 msgid "Get a new image"
 msgstr "Get a new image"
@@ -2889,7 +2883,7 @@ msgid "Invalid name."
 msgstr "Invalid name."
 
 msgid "Invalid private key or passphrase."
-msgstr ""
+msgstr "Invalid private key or passphrase."
 
 msgid "Invalid target."
 msgstr "Invalid target."
@@ -3239,9 +3233,6 @@ msgstr "New alias order for {CUSTOMER}"
 
 msgid "New password has not been sent. Ask your administrator."
 msgstr "New password has not been sent. Ask your administrator."
-
-msgid "New password is"
-msgstr "New password is"
 
 msgid "New ticket"
 msgstr "New ticket"
@@ -3683,10 +3674,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Please contact the administrator!<br />Ask him for the permissions to use this package.<br />It is not allowed to upload this packet two times.<br />Refresh your site to see the new status!"
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr "Please don't use special character such as '@, $, %% ...' in password."
-
 msgid "Please enter a name for the protected area."
 msgstr "Please enter a name for the protected area."
 
@@ -3943,7 +3930,7 @@ msgid "Private key"
 msgstr "Private key"
 
 msgid "Private key field cannot be empty."
-msgstr ""
+msgstr "Private key field cannot be empty."
 
 msgid "Private key passphrase if any"
 msgstr "Private key passphrase if any"
@@ -4354,13 +4341,13 @@ msgid "SSL certificate"
 msgstr "SSL certificate"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr ""
+msgstr "SSL certificate successfully scheduled for addition."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "SSL certificate successfully scheduled for deletion."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr ""
+msgstr "SSL certificate successfully scheduled for update."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL feature is not available. You can only view your certificate."
@@ -4761,6 +4748,9 @@ msgstr "Switch to the backups directory"
 msgid "Switch to user interface"
 msgstr "Switch to user interface"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "System"
 
@@ -4866,13 +4856,13 @@ msgid "The certificate field cannot be empty."
 msgstr "The certificate field cannot be empty."
 
 msgid "The certificate is expired."
-msgstr ""
+msgstr "The certificate is expired."
 
 msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
+msgstr "The certificate is not valid or the CA bundle is missing."
 
 msgid "The certificate is not valid."
-msgstr ""
+msgstr "The certificate is not valid."
 
 #, php-format
 msgid ""
@@ -4898,7 +4888,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "The domain you are trying to edit doesn't exist."
 
 msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
+msgstr "The key is not the private key that corresponds to the certificate."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "The menu you are trying to edit doesn't exist."
@@ -5482,7 +5472,7 @@ msgid "View"
 msgstr "View"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "View SSL certificate"
 
 msgid "View Support Ticket"
 msgstr "View Support Ticket"
@@ -5847,8 +5837,8 @@ msgstr "You must enter a domain alias name."
 msgid "You must enter a subdomain name."
 msgstr "You must enter a subdomain name."
 
-msgid "You must first generate a password"
-msgstr "You must first generate a password"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "You must omit 'www'. It will be added automatically."
@@ -5917,6 +5907,9 @@ msgstr "Your message has been successfully sent."
 
 msgid "Your new i-MSCP login"
 msgstr "Your new i-MSCP login"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Your new password has been sent. Check your email."

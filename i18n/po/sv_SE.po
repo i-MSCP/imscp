@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -978,11 +978,11 @@ msgstr "Redan i bruk"
 msgid "Alternative URL to reach your website"
 msgstr "Alternativ URL för att nå din webbplats"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "En post är dubbelt definierad nedan."
-
-msgid "An error has been found in mail forward list."
-msgstr "Ett fel har upptäckts i post översända lista."
 
 msgid "An error occurred during authentication."
 msgstr "Ett fel uppstod vid autentisering."
@@ -998,7 +998,7 @@ msgid "An unexpected error occurred."
 msgstr "Ett oväntat fel inträffade."
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr ""
+msgstr "Ett oväntat fel inträffade. Vänligen kontakta administratören."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2207,9 +2207,6 @@ msgstr "E-postkontofel"
 msgid "Email account limit"
 msgstr "Email account limit"
 
-msgid "Email account limit is reached."
-msgstr "Postkonton max. antal nådd."
-
 msgid "Email account list"
 msgstr "E-postkontolista"
 
@@ -2527,9 +2524,6 @@ msgstr "Allmänna inställningar"
 
 msgid "Generate"
 msgstr "Generera"
-
-msgid "Generate password"
-msgstr "Generera lösenord"
 
 msgid "Get a new image"
 msgstr "Tar fram ett nytt bild"
@@ -2881,7 +2875,7 @@ msgid "Invalid name."
 msgstr "Invalid name."
 
 msgid "Invalid private key or passphrase."
-msgstr ""
+msgstr "Ogiltig privat nyckel eller lösenordsfras."
 
 msgid "Invalid target."
 msgstr "Invalid target."
@@ -3231,9 +3225,6 @@ msgstr "New alias order for {CUSTOMER}"
 
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Nytt lösenord har inte skickats. Fråga din administratör."
-
-msgid "New password is"
-msgstr "New password is"
 
 msgid "New ticket"
 msgstr "Skapa support-ärende"
@@ -3675,10 +3666,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Please contact the administrator!<br />Ask him for the permissions to use this package.<br />It is not allowed to upload this packet two times.<br />Refresh your site to see the new status!"
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr "Var god och inte använd '@, $, %%...' i lösenord."
-
 msgid "Please enter a name for the protected area."
 msgstr "Please enter a name for the protected area."
 
@@ -3935,7 +3922,7 @@ msgid "Private key"
 msgstr "Private key"
 
 msgid "Private key field cannot be empty."
-msgstr ""
+msgstr "Privata nyckelfält kan inte vara tomt."
 
 msgid "Private key passphrase if any"
 msgstr "Private key passphrase if any"
@@ -4346,13 +4333,13 @@ msgid "SSL certificate"
 msgstr "SSL certificate"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr ""
+msgstr "SSL-certifikat med framgång planerad till tillägg."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "SSL-certifikat med framgång planerad till radering."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr ""
+msgstr "SSL-certifikat med framgång planerad till uppdatering."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-funktionen är inte tillgänglig. Du kan bara visa ditt certifikat."
@@ -4753,6 +4740,9 @@ msgstr "Gå in i katalogen backups/"
 msgid "Switch to user interface"
 msgstr "Växla till användargränssnitt"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "System"
 
@@ -4858,13 +4848,13 @@ msgid "The certificate field cannot be empty."
 msgstr "The certificate field cannot be empty."
 
 msgid "The certificate is expired."
-msgstr ""
+msgstr "Certifikatet har gått ut."
 
 msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
+msgstr "Certifikatet är inte giltigt eller CA bunt saknas."
 
 msgid "The certificate is not valid."
-msgstr ""
+msgstr "Certifikatet är inte giltigt."
 
 #, php-format
 msgid ""
@@ -4890,7 +4880,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "The domain you are trying to edit doesn't exist."
 
 msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
+msgstr "Den nyckel är inte den privata nyckeln som motsvarar certifikatet."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "The menu you are trying to edit doesn't exist."
@@ -5474,7 +5464,7 @@ msgid "View"
 msgstr "Visa"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "View SSL certificate"
 
 msgid "View Support Ticket"
 msgstr "Visa Support Ticket"
@@ -5839,8 +5829,8 @@ msgstr "Du måste ange en domän alias."
 msgid "You must enter a subdomain name."
 msgstr "Du måste ange en subdomain namn."
 
-msgid "You must first generate a password"
-msgstr "Du måste först skapa ett lösenord"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "You must omit 'www'. It will be added automatically."
@@ -5909,6 +5899,9 @@ msgstr "Ditt meddelande har skickats."
 
 msgid "Your new i-MSCP login"
 msgstr "Ditt nya i-MSCP inloggning"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Your new password has been sent. Check your email."

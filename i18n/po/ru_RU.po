@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -981,11 +981,11 @@ msgstr "Уже используется"
 msgid "Alternative URL to reach your website"
 msgstr "Альтернативный URL для доступа к сайту"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "Вхождение указано дважды."
-
-msgid "An error has been found in mail forward list."
-msgstr "Была найдена ошибка в списке перенаправления."
 
 msgid "An error occurred during authentication."
 msgstr "При попытке аутентификации обнаружена ошибка."
@@ -1001,7 +1001,7 @@ msgid "An unexpected error occurred."
 msgstr "Произошла неожиданная ошибка."
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr ""
+msgstr "Обнаружена непредвиденная ошибка. Пожалуйста свяжитесь с Вашим администратором."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2210,9 +2210,6 @@ msgstr "Ошибки почтовых ящиков"
 msgid "Email account limit"
 msgstr "Ограничение учетных записей почты."
 
-msgid "Email account limit is reached."
-msgstr "Лимит почтовых ящиков исчерпан."
-
 msgid "Email account list"
 msgstr "Список почтовых ящиков"
 
@@ -2530,9 +2527,6 @@ msgstr "Общие настройки"
 
 msgid "Generate"
 msgstr "Генерировать"
-
-msgid "Generate password"
-msgstr "Сгенерировать пароль"
 
 msgid "Get a new image"
 msgstr "Взять новое изображение"
@@ -2884,7 +2878,7 @@ msgid "Invalid name."
 msgstr "Неверное имя."
 
 msgid "Invalid private key or passphrase."
-msgstr ""
+msgstr "Неверный приватный ключ или пароль."
 
 msgid "Invalid target."
 msgstr "Неверная цель"
@@ -3234,9 +3228,6 @@ msgstr "Новый заказ алиаса для {CUSTOMER}"
 
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Новый пароль не был отправлен. Обратитесь к администратору. "
-
-msgid "New password is"
-msgstr "Новый пароль:"
 
 msgid "New ticket"
 msgstr "Новый тикет"
@@ -3678,10 +3669,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Пожалуйста, свяжитесь с администратором!<br />Обратитесь к нему за разрешениями на пакет.<br />Не разрешается загружать один и тот же пакет дважды.<br />Обновите страницу, чтобы увидеть новый статус!"
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr "Пожалуйста, не используйте специальные символы, такие как '@, $, %%...' в пароле."
-
 msgid "Please enter a name for the protected area."
 msgstr "Пожалуйста, введите имя для защищенной зоны."
 
@@ -3938,7 +3925,7 @@ msgid "Private key"
 msgstr "Приватный ключ"
 
 msgid "Private key field cannot be empty."
-msgstr ""
+msgstr "Поле приватного ключа не может пустовать"
 
 msgid "Private key passphrase if any"
 msgstr "Пароль приватного ключа, если необходимо"
@@ -4349,13 +4336,13 @@ msgid "SSL certificate"
 msgstr "SSL сертификат"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr ""
+msgstr "SSL cертификат успешно отмечен для добавления."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "SSL cертификат успешно отмечен для удаления."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr ""
+msgstr "SSL cертификат успешно отмечен для обновления."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "Функция SSL недоступна. Вы можете только просмотреть Ваш сертификат."
@@ -4756,6 +4743,9 @@ msgstr "Перейти в каталог backups/"
 msgid "Switch to user interface"
 msgstr "Перейти в интерфейс пользователя"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "Система"
 
@@ -4861,13 +4851,13 @@ msgid "The certificate field cannot be empty."
 msgstr "Поле сертификата не может пустовать"
 
 msgid "The certificate is expired."
-msgstr ""
+msgstr "Сертификат истек."
 
 msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
+msgstr "Сертификат неверен или Ваша связка ключей отсутствует"
 
 msgid "The certificate is not valid."
-msgstr ""
+msgstr "Сертификат неверен."
 
 #, php-format
 msgid ""
@@ -4893,7 +4883,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "Домен, который Вы пытаетесь отредактировать, не существует."
 
 msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
+msgstr "Данный ключ не является приватным ключем, который привязан к сертификату."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Меню, которое Вы пытаетесь отредактировать, не существует."
@@ -5477,7 +5467,7 @@ msgid "View"
 msgstr "Просмотр"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Просмотреть SSL сертификат"
 
 msgid "View Support Ticket"
 msgstr "Просмотреть тикет службы поддержки"
@@ -5842,8 +5832,8 @@ msgstr "Вы должны ввести имя алиаса домена"
 msgid "You must enter a subdomain name."
 msgstr "Вы должны ввести имя поддомена"
 
-msgid "You must first generate a password"
-msgstr "Сначала вы должны сгенерировать пароль"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "Вам не нужен префикс 'www.' Он будет добавлен самостоятельно."
@@ -5912,6 +5902,9 @@ msgstr "Ваше сообщение было успешно отправлено
 
 msgid "Your new i-MSCP login"
 msgstr "Новый I-MSCP логин"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Новый пароль отправлен на Ваш почтовый ящик."

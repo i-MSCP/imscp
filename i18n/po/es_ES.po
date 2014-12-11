@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -984,11 +984,11 @@ msgstr "Ya en uso"
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa para encontrar tu sitio web"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "Una entrada esta definida dos veces a continuación."
-
-msgid "An error has been found in mail forward list."
-msgstr "Se ha encontrado un error en la lista de reenvio de correo."
 
 msgid "An error occurred during authentication."
 msgstr "Se produjo un error durante la autenticación."
@@ -2213,9 +2213,6 @@ msgstr "Errores de la cuenta de correo"
 msgid "Email account limit"
 msgstr "Limite de la cuenta de correo"
 
-msgid "Email account limit is reached."
-msgstr "Se ha alcanzado el límite de cuentas de correo."
-
 msgid "Email account list"
 msgstr "Lista de cuentas de correo"
 
@@ -2533,9 +2530,6 @@ msgstr "Configuración general"
 
 msgid "Generate"
 msgstr "Generar"
-
-msgid "Generate password"
-msgstr "Generar contraseña"
 
 msgid "Get a new image"
 msgstr "Obtener una nueva imagen"
@@ -3238,9 +3232,6 @@ msgstr "Nuevo pedido de alias de {CUSTOMER}"
 msgid "New password has not been sent. Ask your administrator."
 msgstr "La nueva contraseña no se ha enviado. Pregunte a su administrador."
 
-msgid "New password is"
-msgstr "La nueva contraseña es"
-
 msgid "New ticket"
 msgstr "Nuevo ticket"
 
@@ -3680,10 +3671,6 @@ msgid ""
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr "¡Por favor, ponte en contacto con el administrador! <br /> Pregúntale por los permisos para utilizar este paquete. <br /> No estás autorizado a cargar este paquete dos veces. <br />¡ Actualiza tu sitio para ver el nuevo estado!"
-
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Por favor, intoduce un nombre para el área aprotegida."
@@ -4759,6 +4746,9 @@ msgstr "Cambiar al directorio de Backups"
 msgid "Switch to user interface"
 msgstr "Cambiar a interfaz de usuario"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "Sistema"
 
@@ -5480,7 +5470,7 @@ msgid "View"
 msgstr "Ver"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Ver certificado SSL"
 
 msgid "View Support Ticket"
 msgstr "Ver Ticket de Soporte"
@@ -5845,8 +5835,8 @@ msgstr "Debes ingresar un nombre de alias de dominio."
 msgid "You must enter a subdomain name."
 msgstr "Debes introducir un nombre de subdominio."
 
-msgid "You must first generate a password"
-msgstr "Primero debes generar una contraseña."
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "Debe omitir 'www'. Este se añadirá automáticamente."
@@ -5915,6 +5905,9 @@ msgstr "Tu mensaje ha sido enviado correctamente."
 
 msgid "Your new i-MSCP login"
 msgstr "Tu nuevo inicio de sesión i_MSCP"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Su nueva contraseña ha sido enviada. Revise su correo."

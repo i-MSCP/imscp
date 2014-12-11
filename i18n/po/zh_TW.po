@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -978,10 +978,10 @@ msgstr "已經被使用"
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "An entry is defined twice below."
+msgid "An email addresse is not valid in mail forward list."
 msgstr ""
 
-msgid "An error has been found in mail forward list."
+msgid "An entry is defined twice below."
 msgstr ""
 
 msgid "An error occurred during authentication."
@@ -2207,9 +2207,6 @@ msgstr "Email 帳戶錯誤"
 msgid "Email account limit"
 msgstr "Email 帳號限制"
 
-msgid "Email account limit is reached."
-msgstr ""
-
 msgid "Email account list"
 msgstr ""
 
@@ -2527,9 +2524,6 @@ msgstr "一般設定"
 
 msgid "Generate"
 msgstr "產生"
-
-msgid "Generate password"
-msgstr "產生密碼"
 
 msgid "Get a new image"
 msgstr ""
@@ -3232,9 +3226,6 @@ msgstr ""
 msgid "New password has not been sent. Ask your administrator."
 msgstr "新密碼並未發送，請詢問管理員．"
 
-msgid "New password is"
-msgstr "新的密碼是"
-
 msgid "New ticket"
 msgstr "新客戶疑問"
 
@@ -3673,10 +3664,6 @@ msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
-msgstr ""
-
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -4752,6 +4739,9 @@ msgstr "切換至 backups 資料夾"
 
 msgid "Switch to user interface"
 msgstr "切換使用者介面"
+
+msgid "Syntax error found in mail forward list."
+msgstr ""
 
 msgid "System"
 msgstr "系統"
@@ -5839,8 +5829,8 @@ msgstr "您必須輸入一個網域別稱"
 msgid "You must enter a subdomain name."
 msgstr "您必須輸入一個子網域名稱"
 
-msgid "You must first generate a password"
-msgstr "您必須先產生一個密碼"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr ""
@@ -5908,6 +5898,9 @@ msgid "Your message has been successfully sent."
 msgstr ""
 
 msgid "Your new i-MSCP login"
+msgstr ""
+
+msgid "Your new password"
 msgstr ""
 
 msgid "Your new password has been sent. Check your email."

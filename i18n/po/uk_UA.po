@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -981,10 +981,10 @@ msgstr "Уже используется"
 msgid "Alternative URL to reach your website"
 msgstr "Альтернативный URL для доступа к сайту"
 
-msgid "An entry is defined twice below."
+msgid "An email addresse is not valid in mail forward list."
 msgstr ""
 
-msgid "An error has been found in mail forward list."
+msgid "An entry is defined twice below."
 msgstr ""
 
 msgid "An error occurred during authentication."
@@ -2210,9 +2210,6 @@ msgstr ""
 msgid "Email account limit"
 msgstr ""
 
-msgid "Email account limit is reached."
-msgstr ""
-
 msgid "Email account list"
 msgstr ""
 
@@ -2530,9 +2527,6 @@ msgstr "Загальні налаштування"
 
 msgid "Generate"
 msgstr "Генерировать"
-
-msgid "Generate password"
-msgstr "Сгенерувати пароль"
 
 msgid "Get a new image"
 msgstr "Взять новое изображение"
@@ -3235,9 +3229,6 @@ msgstr "Новый заказ алиаса для {CUSTOMER}"
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Новий пароль не було відправлено. Зверніться до адміністратора. "
 
-msgid "New password is"
-msgstr "Новый пароль:"
-
 msgid "New ticket"
 msgstr "Новий запит підтримки"
 
@@ -3677,10 +3668,6 @@ msgid ""
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr "Пожалуйста, свяжитесь с администратором!<br />Обратитесь к нему за разрешениями на пакет.<br />Не разрешается загружать один и тот же пакет дважды.<br />Обновите страницу, чтобы увидеть новый статус!"
-
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Пожалуйста, введите имя для защищенной зоны."
@@ -4756,6 +4743,9 @@ msgstr ""
 msgid "Switch to user interface"
 msgstr "Перейти в інтерфейс користувача"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "Система"
 
@@ -5477,7 +5467,7 @@ msgid "View"
 msgstr "Перегляд"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Просмотреть SSL сертификат"
 
 msgid "View Support Ticket"
 msgstr "Просмотреть тикет службы поддержки"
@@ -5842,8 +5832,8 @@ msgstr ""
 msgid "You must enter a subdomain name."
 msgstr ""
 
-msgid "You must first generate a password"
-msgstr "Сначала вы должны сгенерировать пароль"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr ""
@@ -5912,6 +5902,9 @@ msgstr "Ваше сообщение было успешно отправлено
 
 msgid "Your new i-MSCP login"
 msgstr "Новый I-MSCP логин"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr ""

@@ -38,8 +38,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -1007,11 +1007,11 @@ msgstr "Bereits in Benutzung"
 msgid "Alternative URL to reach your website"
 msgstr "Alternative URL um Ihre Webseite zu erreichen"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "Ein Eintrag ist unten doppelt definiert."
-
-msgid "An error has been found in mail forward list."
-msgstr "Es wurde ein Fehler in der Mail-Forward Liste gefunden."
 
 msgid "An error occurred during authentication."
 msgstr "Währen der Authentifizierung trat ein Fehler auf."
@@ -1021,13 +1021,13 @@ msgstr "Ein unerwarteter Fehler ist aufgetreten. Bitte kontaktieren Sie Ihren Re
 
 #, php-format
 msgid "An unexpected error occured: %s"
-msgstr ""
+msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
 
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Ein unerwarteter Fehler ist aufgetreten."
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr ""
+msgstr "Ein unerwarteter Fehler ist aufgetreten. Bitte kontaktieren Sie den Administrator."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1163,7 +1163,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "Als erstes müssen Sie eine Datenbank mit mindestens einem SQL-Benutzer erstellen."
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Automatisch (Browsereinstellung)"
 
 msgid "Auto email template data updated!"
 msgstr "Auto-E-Mail-Templatedaten aktualisiert!"
@@ -1214,7 +1214,7 @@ msgid "Bad password."
 msgstr "Falsches Passwort."
 
 msgid "Bad request."
-msgstr ""
+msgstr "Fehlerhafte Anfrage."
 
 msgid "Behind"
 msgstr "dahinter"
@@ -2236,9 +2236,6 @@ msgstr "E-Mail Konto Fehler"
 msgid "Email account limit"
 msgstr "E-Mail Konto Limit"
 
-msgid "Email account limit is reached."
-msgstr "E-Mail Konto Limit erreicht."
-
 msgid "Email account list"
 msgstr "E-Mail Konten"
 
@@ -2556,9 +2553,6 @@ msgstr "Allgemeine Einstellungen"
 
 msgid "Generate"
 msgstr "Generieren"
-
-msgid "Generate password"
-msgstr "Passwort generieren"
 
 msgid "Get a new image"
 msgstr "Hole neues Bild"
@@ -2910,7 +2904,7 @@ msgid "Invalid name."
 msgstr "Ungültiger Name."
 
 msgid "Invalid private key or passphrase."
-msgstr ""
+msgstr "Falscher Privater Schlüssel oder falsche Passphrase."
 
 msgid "Invalid target."
 msgstr "Ungültiges Ziel."
@@ -3005,7 +2999,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Last (1 Min., 5 Min., 15 Min.)"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "Lade Daten..."
 
 msgid "Log entries successfully deleted."
 msgstr "Logeinträge erfolgreich gelöscht."
@@ -3260,9 +3254,6 @@ msgstr "Neue Alias-Bestellung für {CUSTOMER}"
 
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Es wurde kein neues Passwort versendet. Bitte wenden Sie sich an den Administrator"
-
-msgid "New password is"
-msgstr "Neues Passwort ist"
 
 msgid "New ticket"
 msgstr "Neues Ticket"
@@ -3704,10 +3695,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Bitte kontaktieren Sie den Administrator!<br />Fragen Sie ihn nach Rechten für die Nutzung dieses Pakets<br />Es ist nicht erlaubt dieses Paket zweimal hochzuladen.<br />Bitte aktualisieren Sie ihre Seite um den neuen Status zu sehen!"
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr "Bitte verwenden Sie im Passwort keine Sonderzeichen wie '@, $, %% ...' ."
-
 msgid "Please enter a name for the protected area."
 msgstr "Bitte geben Sie für den geschützen Bereich einen Namen ein."
 
@@ -3964,7 +3951,7 @@ msgid "Private key"
 msgstr "Privater Schlüssel"
 
 msgid "Private key field cannot be empty."
-msgstr ""
+msgstr "Privater Schlüssel-Feld darf nicht leer sein."
 
 msgid "Private key passphrase if any"
 msgstr "Privater Schlüssel-Passphrase wenn existent"
@@ -4095,7 +4082,7 @@ msgid "Reply"
 msgstr "Antwort"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr ""
+msgstr "Anfrage-Timeout: Der Server brauchte zu lange um die Daten zu  senden."
 
 msgid "Request from foreign host was blocked."
 msgstr "Anfragen von einem fremden Server wurden geblockt."
@@ -4375,13 +4362,13 @@ msgid "SSL certificate"
 msgstr "SSL Zertifikat"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr ""
+msgstr "SSL Zertifikat erfolgreich zum Hinzufügen vorgemerkt."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "SSL Zertifikat wurde erfolgreich für die Löschung vorgemerkt."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr ""
+msgstr "SSL Zertifikat erfolgreich zum Aktualisieren vorgemerkt."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL ist nicht verfügbar. Sie können nur Ihr Zertifikat ansehen."
@@ -4782,6 +4769,9 @@ msgstr "Wechseln Sie in das Verzeichnis \"backups/\""
 msgid "Switch to user interface"
 msgstr "Zum Benutzer wechseln"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "System"
 
@@ -4887,13 +4877,13 @@ msgid "The certificate field cannot be empty."
 msgstr "Das Zertifikat-Feld darf nicht leer sein."
 
 msgid "The certificate is expired."
-msgstr ""
+msgstr "Das Zertifikat ist abgelaufen."
 
 msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
+msgstr "Das Zertifikat ist nicht gültig oder das CA-Bundle fehlt."
 
 msgid "The certificate is not valid."
-msgstr ""
+msgstr "Das Zertifikat ist ungültig."
 
 #, php-format
 msgid ""
@@ -4919,7 +4909,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "Die Domain, die Sie versuchen zu bearbeiten, existiert nicht."
 
 msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
+msgstr "Der Schlüssel ist nicht der Private Schlüssel der zu dem Zertifikat gehört."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Das zu bearbeitende Menü existiert nicht."
@@ -5318,7 +5308,7 @@ msgid "Unknown type."
 msgstr "Unbekannter Typ."
 
 msgid "Unknown user type"
-msgstr ""
+msgstr "Unbekannter Benutzer-Typ"
 
 msgid "Unknown username."
 msgstr "Unbekannter Benutzername."
@@ -5503,7 +5493,7 @@ msgid "View"
 msgstr "Anzeigen"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "SSL-Zertifikat anzeigen"
 
 msgid "View Support Ticket"
 msgstr "Support Ticket ansehen"
@@ -5591,7 +5581,7 @@ msgstr "Platzhalter wie %% und ? sind im Benutzernamen nicht erlaubt."
 
 #, php-format
 msgid "Wildcards such as '%%' and '?' are not allowed."
-msgstr ""
+msgstr "Platzhalter wie '%%' und '?' sind nicht erlaubt."
 
 msgid "Wrong IP address."
 msgstr "Falsche IP-Adresse."
@@ -5868,8 +5858,8 @@ msgstr "Sie müssen einen Domain-Alias Namen eingeben"
 msgid "You must enter a subdomain name."
 msgstr "Sie müssen einen Subdomain Namen eingeben."
 
-msgid "You must first generate a password"
-msgstr "Sie müssen erst ein Passwort generieren"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "Sie müssen 'www.' entfernen. Es wird automatisch hinzugefügt."
@@ -5928,7 +5918,7 @@ msgstr "Ihr Verbrauch"
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
-msgstr ""
+msgstr "Ihre i-MSCP Version nicht nicht kompatibel mit diesem Plugin. Versuchen Sie es mit einer neueren Version."
 
 msgid "Your message"
 msgstr "Ihre Nachricht"
@@ -5938,6 +5928,9 @@ msgstr "Ihre Nachicht wurde erfolgreich gesendet."
 
 msgid "Your new i-MSCP login"
 msgstr "Ihr neuer i-MSCP Login"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Ihr neues Passwort wurde versendet. Bitte überprüfen Sie Ihr E-Mail Postfach."

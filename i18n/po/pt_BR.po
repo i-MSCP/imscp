@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-11-22 13:29+0000\n"
+"POT-Creation-Date: 2014-12-11 08:51+0100\n"
+"PO-Revision-Date: 2014-12-11 07:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -987,11 +987,11 @@ msgstr "Em uso"
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa para chegar ao seu site"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "Uma entrada é definida por duas vezes abaixo."
-
-msgid "An error has been found in mail forward list."
-msgstr "Um erro foi encontrado na lista de encaminhamento de e-mail."
 
 msgid "An error occurred during authentication."
 msgstr "Ocorreu um erro durante a autenticação."
@@ -1004,10 +1004,10 @@ msgid "An unexpected error occured: %s"
 msgstr ""
 
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Ocorreu um erro inesperado."
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr ""
+msgstr "Ocorreu um erro inesperado. Por favor, contate o administrador."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1143,7 +1143,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "No primeiro você deve criar um banco de dados que têm pelo menos um usuário SQL."
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Auto (Idioma do Navegador)"
 
 msgid "Auto email template data updated!"
 msgstr "Modelo de e-mail automático atualizado!"
@@ -1194,7 +1194,7 @@ msgid "Bad password."
 msgstr "Senha fraca."
 
 msgid "Bad request."
-msgstr ""
+msgstr "Requisição não aceita"
 
 msgid "Behind"
 msgstr "atrás"
@@ -1762,7 +1762,7 @@ msgid "Database users"
 msgstr "Usuários de banco de dados"
 
 msgid "Database with comma(s) in name is not accepted."
-msgstr ""
+msgstr "Banco de dados com vírgula(s) em nome não é aceite."
 
 msgid "Databases"
 msgstr "Banco de Dados"
@@ -2216,9 +2216,6 @@ msgstr "Erros de contas de e-mail"
 msgid "Email account limit"
 msgstr "Limite de conta de e-mail"
 
-msgid "Email account limit is reached."
-msgstr "Limite de conta de e-mail é atingido."
-
 msgid "Email account list"
 msgstr "Lista de contas de e-mail"
 
@@ -2238,7 +2235,7 @@ msgid "Email address"
 msgstr "Endereço de e-mail"
 
 msgid "Email address with comma(s) are not accepted."
-msgstr ""
+msgstr "Endereço de e-mail com vírgula(s) não são aceitos."
 
 msgid "Email forward"
 msgstr "E-mail redirecionado"
@@ -2537,9 +2534,6 @@ msgstr "Configurações Gerais"
 msgid "Generate"
 msgstr "Gerar"
 
-msgid "Generate password"
-msgstr "Gerar senha"
-
 msgid "Get a new image"
 msgstr "Obter uma nova imagem"
 
@@ -2547,7 +2541,7 @@ msgid "GiB"
 msgstr "GB"
 
 msgid "Go to the debugger for more details"
-msgstr ""
+msgstr "Ir para o depurador para obter mais detalhes"
 
 msgid "Group"
 msgstr "Grupo"
@@ -2584,7 +2578,7 @@ msgid "Homepage"
 msgstr "Página inicial"
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
-msgstr ""
+msgstr "Usuário SQL é permitido para se conectar ao host do servidor de SQL"
 
 msgid "Hosting plan"
 msgstr "Plano de hospedagem"
@@ -2869,7 +2863,7 @@ msgid "Invalid domain name."
 msgstr "Nome de domínio inválido."
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "Usuário de e-mail inválido."
 
 msgid "Invalid expiration date."
 msgstr "Data de expiração inválida."
@@ -2890,7 +2884,7 @@ msgid "Invalid name."
 msgstr "Nome inválido."
 
 msgid "Invalid private key or passphrase."
-msgstr ""
+msgstr "Chave  ou senha privada inválida."
 
 msgid "Invalid target."
 msgstr "Destino inválido."
@@ -2899,7 +2893,7 @@ msgid "Invalid type given. String expected"
 msgstr "Tipo de dado inválido. Aguardando string"
 
 msgid "Invalid username."
-msgstr ""
+msgstr "Usuário inválido."
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -2985,7 +2979,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Load (1 min, 5 min, 15 min)"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "Carregando dados..."
 
 msgid "Log entries successfully deleted."
 msgstr "Log excluído com sucesso."
@@ -3240,9 +3234,6 @@ msgstr "Novo pedido de alias para {CUSTOMER}"
 
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Nova senha não foi enviada. Pergunte ao seu administrador."
-
-msgid "New password is"
-msgstr "A nova senha é"
 
 msgid "New ticket"
 msgstr "Novo Chamado"
@@ -3582,7 +3573,7 @@ msgid "Password"
 msgstr "Senha"
 
 msgid "Password cannot be empty."
-msgstr ""
+msgstr "A senha não pode estar vazia."
 
 msgid "Password cannot be longer than 30 characters."
 msgstr "A senha não pode ser superior a 30 caracteres."
@@ -3625,7 +3616,7 @@ msgid "Password successfully updated."
 msgstr "Senha atualizada com sucesso."
 
 msgid "Password with comma(s) are not accepted."
-msgstr ""
+msgstr "Senha com vírgula(s) não são aceitas."
 
 msgid "Passwords do not match"
 msgstr "Senhas não conferem"
@@ -3676,17 +3667,13 @@ msgid "Please choose htaccess user or htaccess group."
 msgstr "Por favor escolha um usuário de htaccess ou um grupo de htaccess."
 
 msgid "Please confirm the password."
-msgstr ""
+msgstr "Por favor, confirme a senha."
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
 msgstr "Entre em contato com o administrador! <br /> Peça-lhe para as permissões para usar este pacote. <br /> Não é permitido fazer o upload deste pacote duas vezes. <br /> Atulize o seu site para ver o novo status!"
-
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Por favor insira um nome para a área protegida."
@@ -3944,7 +3931,7 @@ msgid "Private key"
 msgstr "Chave privada"
 
 msgid "Private key field cannot be empty."
-msgstr ""
+msgstr "Campo de chave privada não pode ser vazia."
 
 msgid "Private key passphrase if any"
 msgstr "Senha de chave privada se houver"
@@ -4075,7 +4062,7 @@ msgid "Reply"
 msgstr "Responder"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr ""
+msgstr "Timeout: O servidor levou muito tempo para enviar os dados."
 
 msgid "Request from foreign host was blocked."
 msgstr "Consultar estrangeira foi bloqueado."
@@ -4346,7 +4333,7 @@ msgid "SQL user successfully added."
 msgstr "Usuário SQL adicionado com sucesso."
 
 msgid "SQL user with comma(s) in name is not accepted."
-msgstr ""
+msgstr "Usuário SQL com vírgula(s) em nome não são aceito."
 
 msgid "SQL users"
 msgstr "Usuários SQL"
@@ -4355,13 +4342,13 @@ msgid "SSL certificate"
 msgstr "Certificado SSL"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr ""
+msgstr "Certificado SSL agendada com êxito para adição."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "Certificado SSL agendado com sucesso para exclusão."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr ""
+msgstr "Certificado SSL agendada com êxito para atualização."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL não está disponível. Você só pode ver o seu certificado."
@@ -4584,7 +4571,7 @@ msgid "Software installer requires PHP support."
 msgstr "Instalador do software requer suporte PHP."
 
 msgid "Software instance has been scheduled for installation"
-msgstr ""
+msgstr "Software foi agendada para a instalação"
 
 msgid "Software management"
 msgstr "Gerenciar Software"
@@ -4762,6 +4749,9 @@ msgstr "Mude para o diretório backups"
 msgid "Switch to user interface"
 msgstr "Acessar interface do usuário"
 
+msgid "Syntax error found in mail forward list."
+msgstr ""
+
 msgid "System"
 msgstr "Sistema"
 
@@ -4867,19 +4857,19 @@ msgid "The certificate field cannot be empty."
 msgstr "O campo de certificado não pode ser vazio."
 
 msgid "The certificate is expired."
-msgstr ""
+msgstr "Certificado expirou."
 
 msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
+msgstr "O certificado não é válido ou o pacote de CA está faltando."
 
 msgid "The certificate is not valid."
-msgstr ""
+msgstr "O certificado não é válido."
 
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
 "file manager."
-msgstr ""
+msgstr "O diretório %s não existe. Por favor, crie esse diretório usando o gerenciador de arquivos."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -4899,7 +4889,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "O domínio que você está tentando editar não existe."
 
 msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
+msgstr "A chave não é a chave privada que corresponde ao certificado."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "O menu que você está tentando editar não existe."
@@ -4995,7 +4985,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %% character to allow this SQL user to connect from "
 "any host."
-msgstr ""
+msgstr "Esta é a máquina da qual este usuário SQL devem ser autorizados a se conectar ao servidor SQL. Digite o %% caráter permitir que este usuário SQL para conectar a partir de qualquer máquina."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Este software já existe no repositório do administrador."
@@ -5134,7 +5124,7 @@ msgstr "Não é possível fechar o chamado com ID '%s'."
 
 msgid ""
 "Unable to connect to the selected database using the selected SQL user."
-msgstr ""
+msgstr "Não foi possível conectar ao banco de dados selecionado usando o usuário SQL selecionado."
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5245,7 +5235,7 @@ msgid "Unavailable"
 msgstr "Indisponível"
 
 msgid "Unexpected error"
-msgstr ""
+msgstr "Erro inesperado"
 
 msgid "Uninstall"
 msgstr "Desinstalar"
@@ -5298,7 +5288,7 @@ msgid "Unknown type."
 msgstr "Tipo desconhecido."
 
 msgid "Unknown user type"
-msgstr ""
+msgstr "Tipo de usuário desconhecido"
 
 msgid "Unknown username."
 msgstr "Nome de usuário desconhecido."
@@ -5483,7 +5473,7 @@ msgid "View"
 msgstr "Ver"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Ver certificado SSL"
 
 msgid "View Support Ticket"
 msgstr "Ver chamados de suporte"
@@ -5571,7 +5561,7 @@ msgstr "Wildcards como %% e? Não são permitidos no nome de usuário."
 
 #, php-format
 msgid "Wildcards such as '%%' and '?' are not allowed."
-msgstr ""
+msgstr "Caractere curinga como '%%' e '?' não são permitidos."
 
 msgid "Wrong IP address."
 msgstr "Endereço de IP incorreto."
@@ -5671,7 +5661,7 @@ msgstr "Você só pode fazer upload de imagens."
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
 "domain."
-msgstr ""
+msgstr "Você não pode instalar o software fora do diretório htdocs do domínio selecionado."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Você não pode excluir um revendedor que tem contas de clientes."
@@ -5848,8 +5838,8 @@ msgstr "Você deve digitar um nome de alias de domínio."
 msgid "You must enter a subdomain name."
 msgstr "Você deve digitar um nome de subdomínio."
 
-msgid "You must first generate a password"
-msgstr "Você deve primeiramente criar uma senha"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "Você deve omitir 'www'. Ele será adicionado automaticamente."
@@ -5908,7 +5898,7 @@ msgstr "Seu comsumo"
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
-msgstr ""
+msgstr "Sua versão i-MSCP não é compatível com este plugin. Tente com uma nova versão."
 
 msgid "Your message"
 msgstr "Sua mensagem"
@@ -5918,6 +5908,9 @@ msgstr "Sua mensagem foi enviada com sucesso."
 
 msgid "Your new i-MSCP login"
 msgstr "O seu novo login "
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Sua nova senha foi enviada. Verifique se o seu e-mail."
