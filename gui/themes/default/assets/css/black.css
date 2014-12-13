@@ -178,6 +178,20 @@ textarea:disabled,
     background: #cccccc url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
 }
 
+input[readonly="readonly"]:focus,
+input[readonly]:focus,
+input[type="text"]:disabled:focus,
+input[type="password"]:disabled:focus,
+select:disabled:focus,
+textarea[readonly]:focus,
+textarea:disabled:focus,
+.disabled {
+    border-color: #cccccc;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
 .buttons {
     background: transparent;
 }
