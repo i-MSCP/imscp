@@ -301,7 +301,8 @@ sub _init
 
 	$self->{'repositorySections'} = ['main', 'non-free'];
 	$self->{'preRequiredPackages'} = [
-		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget', 'resolvconf'
+		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget', 'resolvconf',
+		'rsync'
 	];
 	$self->{'aptRepositoriesToRemove'} = { };
 	$self->{'aptRepositoriesToAdd'} = { };

@@ -887,7 +887,7 @@ sub _installFiles
 	return $rs if $rs;
 
 	# Install new i-MSCP files on the files system
-	$rs = execute("$main::imscpConfig{'CMD_CP'} -fR $main::{'INST_PREF'}/* /", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'CMD_RSYNC'} -K -a $main::{'INST_PREF'}/* /", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 
