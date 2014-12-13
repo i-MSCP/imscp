@@ -36,7 +36,12 @@ use warnings;
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-use iMSCP::Debug qw /error debugRegisterCallBack output /;
+use iMSCP::Debug qw /error debugRegisterCallBack/;
+
+use Text::Wrap;
+$Text::Wrap::columns = 80;
+$Text::Wrap::break = qr/[\s\n\|]/;
+
 use fields qw / reconfigure noprompt preseed hookFile cleanAddons skipAddonsUpdate debug /;
 our $options = fields::new('iMSCP::Getopt');
 
@@ -71,7 +76,7 @@ sub parse
 
 	my $showUsage = sub {
 		my $exitCode = shift || 0;
-		print STDERR output(<<EOF);
+		print STDERR wrap('', '', <<EOF);
 $usage
  -r,    --reconfigure [item]  Type --reconfigure help for more information.
  -n,    --noprompt            Switch to non-interactive mode.
@@ -94,7 +99,7 @@ EOF
 	local $SIG{__WARN__} = sub {
 		my $error = shift;
 		$error =~ s/(.*?) at.*/$1/;
-		print STDERR output($error) if $error ne "Died\n";
+		print STDERR wrap('', '', $error) if $error ne "Died\n";
 	};
 
 	require Getopt::Long;
@@ -136,7 +141,7 @@ sub parseNoDefault
 
 	my $showUsage = sub {
 		my $exitCode = shift || 0;
-		print STDERR output(<<EOF);
+		print STDERR wrap('', '', <<EOF);
 $usage
  -?, --help Show this help.
 
@@ -151,7 +156,7 @@ EOF
 	local $SIG{__WARN__} = sub {
 		my $error = shift;
 		$error =~ s/(.*?) at.*/$1/;
-		print STDERR output($error) if $error ne "Died\n";
+		print STDERR wrap('', '', $error) if $error ne "Died\n";
 	};
 
 	require Getopt::Long;
