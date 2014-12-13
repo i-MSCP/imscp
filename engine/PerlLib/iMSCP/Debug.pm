@@ -32,11 +32,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Log;
-use Text::Wrap;
 use parent 'Exporter';
-
-$Text::Wrap::columns = 80;
-$Text::Wrap::break = qr/[\s\n\|]/;
 
 our @EXPORT = qw/
 	debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType silent verbose
@@ -335,7 +331,7 @@ sub output
 		$output = "\n$text\n\n";
 	}
 
-	return wrap('', '', $output);
+	$output;
 }
 
 =item debugRegisterCallBack
