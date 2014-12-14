@@ -66,8 +66,8 @@ class iMSCP_Plugin_Manager
 		iMSCP_Events::onAfterEnablePlugin,
 		iMSCP_Events::onBeforeDisablePlugin,
 		iMSCP_Events::onAfterDisablePlugin,
-		iMSCP_Events::onBeforeUninstall,
-		iMSCP_Events::onAfterUninstall,
+		iMSCP_Events::onBeforeUninstallPlugin,
+		iMSCP_Events::onAfterUninstallPlugin,
 		iMSCP_Events::onBeforeDeletePlugin,
 		iMSCP_Events::onAfterDeletePlugin
 	);
@@ -118,7 +118,6 @@ class iMSCP_Plugin_Manager
 	 *
 	 * @param string $pluginDir Plugin directory
 	 * @throws iMSCP_Plugin_Exception
-	 * @internal param iMSCP_Events_Manager $eventManager
 	 * @return iMSCP_Plugin_Manager
 	 */
 	public function __construct($pluginDir)
@@ -473,8 +472,10 @@ class iMSCP_Plugin_Manager
 	public function lockPlugin($pluginName)
 	{
 		if ($this->isPluginKnown($pluginName)) {
-			exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(1, $pluginName));
-			$this->pluginData[$pluginName]['locked'] = 1;
+			if(!$this->isPluginLocked($pluginName)) {
+				exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(1, $pluginName));
+				$this->pluginData[$pluginName]['locked'] = 1;
+			}
 		} else {
 			write_log(sprintf('Plugin Manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
 			throw new iMSCP_Plugin_Exception(sprintf('Plugin Manager: Unknown plugin %s', $pluginName));
@@ -486,12 +487,15 @@ class iMSCP_Plugin_Manager
 	 *
 	 * @throws iMSCP_Plugin_Exception When $pluginName is not known
 	 * @param string $pluginName Plugin name
+	 * @return void
 	 */
 	public function unlockPlugin($pluginName)
 	{
 		if ($this->isPluginKnown($pluginName)) {
-			exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(0, $pluginName));
-			$this->pluginData[$pluginName]['locked'] = 0;
+			if($this->isPluginLocked($pluginName)) {
+				exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(0, $pluginName));
+				$this->pluginData[$pluginName]['locked'] = 0;
+			}
 		} else {
 			write_log(sprintf('Plugin Manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
 			throw new iMSCP_Plugin_Exception(sprintf('Plugin Manager: Unknown plugin %s', $pluginName));
@@ -1094,8 +1098,6 @@ class iMSCP_Plugin_Manager
 						),
 						'warning'
 					);
-
-					return self::ACTION_FAILURE;
 				}
 			}
 		}

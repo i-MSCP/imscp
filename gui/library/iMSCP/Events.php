@@ -707,30 +707,6 @@ class iMSCP_Events
 	const onAfterUninstallPlugin = 'onAfterUninstallPlugin';
 
 	/**
-	 * The onBeforeUninstall event is triggered before a plugin uninstallation.
-	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
-	 *
-	 * - pluginManager: iMSCP_Plugin_Manager instance
-	 * - pluginName: Plugin name
-	 *
-	 * @const string
-	 */
-	const onBeforeUninstall = 'onBeforeUninstall';
-
-	/**
-	 * The onAfterDeletePlugin event is triggered after a plugin uninstallation.
-	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
-	 *
-	 * - pluginManager: iMSCP_Plugin_Manager instance
-	 * - pluginName: Plugin name
-	 *
-	 * @const string
-	 */
-	const onAfterUninstall = 'onAfterUninstall';
-
-	/**
 	 * The onBeforeDeletePlugin event is triggered before a plugin deletion.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
