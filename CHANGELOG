@@ -8,6 +8,10 @@ INSTALLER
 	Fixed: sysctl: permission denied on key 'net.ipv4.conf.all.promote_secondaries' ( vps )
 	Fixed: /bin/cp: cannot overwrite non-directory when using symlinks ( replaced by rsync command )
 
+PLUGINS
+	Added plugin_locked attribute which allow a plugin to lock another plugin for deletion
+	Updated: Plugin API to version 0.2.15
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.20
 ------------------------------------------------------------------------------------------------------------------------
