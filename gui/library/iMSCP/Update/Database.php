@@ -62,7 +62,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 196;
+	protected $lastUpdate = 197;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3108,5 +3108,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if(isset($dbConfig['MAIL_BODY_FOOTPRINTS'])) {
 			unset($dbConfig['MAIL_BODY_FOOTPRINTS']);
 		}
+	}
+
+	/**
+	 * Add plugin.plugin_lock field
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r197()
+	{
+		return $this->addColumn('plugin', 'plugin_locked', "TINYINT UNSIGNED NOT NULL DEFAULT '0'");
 	}
 }
