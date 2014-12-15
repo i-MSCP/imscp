@@ -439,6 +439,8 @@ function admin_generateForm($tpl, &$data)
  */
 function admin_checkAndUpdateData($resellerId)
 {
+	$cfg = iMSCP_Registry::get('config');
+
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $resellerId));
 
 	$errFieldsStack = array();
@@ -625,7 +627,7 @@ function admin_checkAndUpdateData($resellerId)
 			// Check for permissions - We are safe here (If a value is not accepted, we use previous value)
 			$phpEditor->setRePerm('phpiniSystem', 'yes');
 
-			if (PHP_SAPI != 'apache_itk') {
+			if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
 				if (!$phpEditor->setRePerm('phpiniDisableFunctions', $data['php_ini_al_disable_functions'])) {
 					$phpEditor->setRePerm('phpiniDisableFunctions', $data['fallback_php_ini_al_disable_functions']);
 				}
