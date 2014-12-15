@@ -55,19 +55,7 @@ function generate_reseller_users_props($resellerId)
 	$rsqlUserAssigned = $rtraffConsumed = $rtraffAssigned = $rdiskConsumed = $rdiskAssigned = 0;
 
 	$stmt = exec_query(
-		'
-			SELECT
-				domain_id
-			FROM
-				domain
-			INNER JOIN
-				admin ON(admin_id = domain_admin_id)
-			WHERE
-				admin_id IS NOT NULL
-			AND
-				created_by = ?
-		',
-		$resellerId
+		'SELECT domain_id FROM domain INNER JOIN admin ON(admin_id = domain_admin_id) WHERE created_by = ?', $resellerId
 	);
 
 	$rdmnUnlimited = $rsubUnlimited = $ralsUnlimited = $rmailUnlimited = $rftpUnlimited = $rsqlDbUnlimited =
