@@ -193,7 +193,7 @@ sub reconfigure
 	if(defined $value) {
 		if($value eq 'help') {
 			$optionHelp .= "Without any argument, the --reconfigure option allows to reconfigure all items.";
-			$optionHelp .= " You can reconfigure a specific item by pasing it name as argument.\n\n";
+			$optionHelp .= " You can reconfigure a specific item by passing it name as argument.\n\n";
 			$optionHelp .= " Available items are:\n\n";
 			$optionHelp .=  ' ' . (join '|', @{$reconfigureItems});
 			die();
