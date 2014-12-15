@@ -4,6 +4,9 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+GUI:
+	Fixed: Ignore orphaned users ( users without domain ) when editing reseller
+
 INSTALLER
 	Fixed: sysctl: permission denied on key 'net.ipv4.conf.all.promote_secondaries' ( vps )
 	Fixed: /bin/cp: cannot overwrite non-directory when using symlinks ( replaced by rsync command )
