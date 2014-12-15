@@ -83,7 +83,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Subdomain you are trying to remove has email accounts. Remove them first.'), 'error'
+				tr('Subdomain you are trying to remove has email accounts. Please remove them first.'), 'error'
 			);
 			$ret = true;
 		}
@@ -94,7 +94,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Subdomain alias you are trying to remove has Ftp accounts. Remove them first.'), 'error'
+				tr('Subdomain alias you are trying to remove has Ftp accounts. Please remove them first.'), 'error'
 			);
 			$ret = true;
 		}
