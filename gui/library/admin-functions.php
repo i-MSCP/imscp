@@ -54,8 +54,21 @@ function generate_reseller_users_props($resellerId)
 	$rmailAssigned = $rftpConsumed = $rftpAssigned = $rsqlDbConsumed = $rsqlDbAssigned = $rsqlUserConsumed =
 	$rsqlUserAssigned = $rtraffConsumed = $rtraffAssigned = $rdiskConsumed = $rdiskAssigned = 0;
 
-	$query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
-	$stmt = exec_query($query, $resellerId);
+	$stmt = exec_query(
+		'
+			SELECT
+				domain_id
+			FROM
+				domain
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
+			WHERE
+				admin_id IS NOT NULL
+			AND
+				created_by = ?
+		',
+		$resellerId
+	);
 
 	$rdmnUnlimited = $rsubUnlimited = $ralsUnlimited = $rmailUnlimited = $rftpUnlimited = $rsqlDbUnlimited =
 	$rsqlUserUnlimited = $rtraffUnlimited = $rdiskUnlimited = false;
@@ -75,16 +88,13 @@ function generate_reseller_users_props($resellerId)
 		);
 	}
 
-	while (!$stmt->EOF) {
-		$stmt2 = exec_query("SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", $stmt->fields['admin_id']);
-		$userId = $stmt2->fields['domain_id'];
-
+	while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 		list(
 			$subConsumed, $subAssigned, $alsConsumed, $alsAssigned, $mailConsumed, $mailAssigned, $ftpConsumed,
 			$ftpAssigned, $sqlDbConsumed, $sqlDbAssigned, $sqlUserConsumed, $sqlUserAssigned, $traffAssigned, $diskAssigned
-			) = shared_getCustomerProps($userId);
+			) = shared_getCustomerProps($row['domain_id']);
 
-		list(, , , , , , $traffConsumed, $diskConsumed) = shared_getCustomerStats($userId);
+		list(, , , , , , $traffConsumed, $diskConsumed) = shared_getCustomerStats($row['domain_id']);
 
 		$rdmnConsumed += 1;
 
@@ -93,7 +103,9 @@ function generate_reseller_users_props($resellerId)
 			$rsubConsumed += $subConsumed;
 			$rsubAssigned += $subAssigned;
 
-			if (!$subAssigned) $rsubUnlimited = true;
+			if (!$subAssigned) {
+				$rsubUnlimited = true;
+			}
 		}
 
 		// Compute domain aliases
@@ -101,7 +113,9 @@ function generate_reseller_users_props($resellerId)
 			$ralsConsumed += $alsConsumed;
 			$ralsAssigned += $alsAssigned;
 
-			if (!$alsAssigned) $ralsUnlimited = true;
+			if (!$alsAssigned){
+				$ralsUnlimited = true;
+			}
 		}
 
 		// Compute mail accounts
@@ -109,7 +123,9 @@ function generate_reseller_users_props($resellerId)
 			$rmailConsumed += $mailConsumed;
 			$rmailAssigned += $mailAssigned;
 
-			if (!$mailAssigned) $rmailUnlimited = true;
+			if (!$mailAssigned){
+				$rmailUnlimited = true;
+			}
 		}
 
 		// Compute Ftp account
@@ -117,7 +133,9 @@ function generate_reseller_users_props($resellerId)
 			$rftpConsumed += $ftpConsumed;
 			$rftpAssigned += $ftpAssigned;
 
-			if (!$ftpAssigned) $rftpUnlimited = true;
+			if (!$ftpAssigned){
+				$rftpUnlimited = true;
+			}
 		}
 
 		// Compute Sql databases
@@ -125,7 +143,9 @@ function generate_reseller_users_props($resellerId)
 			$rsqlDbConsumed += $sqlDbConsumed;
 			$rsqlDbAssigned += $sqlDbAssigned;
 
-			if (!$sqlDbAssigned) $rsqlDbUnlimited = true;
+			if (!$sqlDbAssigned){
+				$rsqlDbUnlimited = true;
+			}
 		}
 
 		// Compute Sql users
@@ -133,20 +153,26 @@ function generate_reseller_users_props($resellerId)
 			$rsqlUserConsumed += $sqlUserConsumed;
 			$rsqlUserAssigned += $sqlUserAssigned;
 
-			if (!$sqlUserAssigned) $rsqlUserUnlimited = true;
+			if (!$sqlUserAssigned) {
+				$rsqlUserUnlimited = true;
+			}
 		}
 
 		// Compute Monthly traffic volume
 		$rtraffConsumed += $traffConsumed;
 		$rtraffAssigned += $traffAssigned;
-		if (!$rtraffAssigned) $rtraffUnlimited = true;
+
+		if (!$rtraffAssigned) {
+			$rtraffUnlimited = true;
+		}
 
 		// Compute diskspace
 		$rdiskConsumed += $diskConsumed;
 		$rdiskAssigned += $diskAssigned;
-		if (!$rdiskAssigned) $rdiskUnlimited = true;
 
-		$stmt->moveNext();
+		if (!$rdiskAssigned){
+			$rdiskUnlimited = true;
+		}
 	}
 
 	return array(
@@ -307,10 +333,6 @@ function systemHasCustomers($minNbCustomers = 1)
 	static $customersCount = null;
 
 	if (null === $customersCount ) {
-
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		$stmt = exec_query(
 			'SELECT COUNT(`admin_id`) AS `count` FROM `admin` WHERE `admin_type` = ? AND `admin_status` <> ?',
 			array('user', 'todelete')
