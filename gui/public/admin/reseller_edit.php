@@ -625,7 +625,7 @@ function admin_checkAndUpdateData($resellerId)
 			// Check for permissions - We are safe here (If a value is not accepted, we use previous value)
 			$phpEditor->setRePerm('phpiniSystem', 'yes');
 
-			if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
+			if (PHP_SAPI != 'apache_itk') {
 				if (!$phpEditor->setRePerm('phpiniDisableFunctions', $data['php_ini_al_disable_functions'])) {
 					$phpEditor->setRePerm('phpiniDisableFunctions', $data['fallback_php_ini_al_disable_functions']);
 				}
