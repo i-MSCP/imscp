@@ -175,6 +175,7 @@ textarea[readonly],
 textarea:disabled,
 .disabled {
     background: #cccccc url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
+    color: #666666;
 }
 
 input[readonly="readonly"]:focus,
