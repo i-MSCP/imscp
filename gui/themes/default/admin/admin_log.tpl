@@ -37,94 +37,91 @@
 	</tbody>
 </table>
 <script>
-	var oTable;
+	$(function() {
+		var $dataTable;
 
-	function flashMessage(type, message) {
-		$('<div />',
-			{
-				"class": "flash_message " + type,
-				"html": $.parseHTML(message),
-				"hide": true
-			}
-		).prependTo(".body").trigger('message_timeout');
-	}
+		function flashMessage(type, message) {
+			$('<div>', { "class": "flash_message " + type, "html": $.parseHTML(message), "hide": true }).
+				prependTo(".body").trigger('message_timeout');
+		}
 
-	function doRequest(rType, action, data) {
-		return $.ajax({
-			dataType: "json",
-			type: rType,
-			url: "/admin/admin_log.php?action=" + action,
-			data: data,
-			timeout: 3000
-		});
-	}
+		function doRequest(rType, action, data) {
+			return $.ajax({
+				dataType: "json",
+				type: rType,
+				url: "/admin/admin_log.php?action=" + action,
+				data: data,
+				timeout: 3000
+			});
+		}
 
-	$(document).ready(function () {
-		jQuery.fn.dataTableExt.oApi.fnProcessingIndicator = function (oSettings, onoff) {
+		jQuery.fn.dataTableExt.oApi.fnProcessingIndicator = function (settings, onoff) {
 			if (typeof(onoff) == "undefined") {
 				onoff = true;
 			}
 
-			this.oApi._fnProcessingDisplay(oSettings, onoff);
+			this.oApi._fnProcessingDisplay(settings, onoff);
 		};
 
-		oTable = $(".datatable").dataTable({
-			oLanguage: {DATATABLE_TRANSLATIONS},
-			iDisplayLength: {ROWS_PER_PAGE},
-			bProcessing: true,
-			bServerSide: true,
+		$dataTable = $(".datatable").dataTable({
+			language: {DATATABLE_TRANSLATIONS},
+			displayLength: {ROWS_PER_PAGE},
+			propcessing: true,
+			serverSide: true,
 			lengthChange: false,
 			pagingType: "simple",
-			sAjaxSource: "/admin/admin_log.php?action=get_logs",
-			bStateSave: false,
-			aoColumns: [
-				{ mData: "log_time" },
-				{ mData: "log_message" }
+			ajaxSource: "/admin/admin_log.php?action=get_logs",
+			stateSave: true,
+			order: [[ 0, "desc" ]],
+			columns: [
+				{ data: "log_time" },
+				{ data: "log_message" }
 			],
-			fnServerData: function (sSource, aoData, fnCallback) {
+			serverData: function (source, data, callback) {
 				$.ajax({
 					dataType: "json",
 					type: "GET",
-					url: sSource,
-					data: aoData,
-					success: fnCallback,
-					timeout: 3000,
-					error: function () {
-						oTable.fnProcessingIndicator(false);
-					}
+					url: source,
+					data: data,
+					success: callback,
+					timeout: 3000
+				}).fail(function(jqXHR) {
+					$dataTable.fnProcessingIndicator(false);
+					flashMessage('error', $.parseJSON(jqXHR.responseText).message);
 				});
 			}
 		});
 
-		oTable.on("draw.dt", function () {
-			if(oTable.fnSettings().fnRecordsTotal() < 2) {
+		$dataTable.on("draw.dt", function () {
+			if($dataTable.fnSettings().fnRecordsTotal() < 2) {
 				$("#clear_log").hide();
 			} else {
 				$("#clear_log").show();
 			}
 		});
 
-		$( "#clear_log_frm" ).submit(function( event ) {
+		$("#clear_log_frm" ).submit(function( event ) {
 			event.preventDefault();
 
 			doRequest("POST", "clear_logs", $(this).serialize()).done(function (data) {
 				flashMessage("success", data.message);
-				oTable.fnDraw();
+				$dataTable.fnDraw();
 			});
 		});
 
-		$(document).ajaxStart(function () { oTable.fnProcessingIndicator();});
-		$(document).ajaxStop(function () { oTable.fnProcessingIndicator(false);});
-		$(document).ajaxError(function (e, jqXHR, settings, exception) {
-			if(jqXHR.status == 403) {
-				window.location.href = "/index.php";
-			} else if (jqXHR.responseJSON != "") {
-				flashMessage("error", jqXHR.responseJSON.message);
-			} else if (exception == "timeout") {
-				flashMessage("error", {TR_TIMEOUT_ERROR});
-			} else {
-				flashMessage("error", {TR_UNEXPECTED_ERROR});
-			}
-		});
+		$(document).
+			ajaxStart(function () { $dataTable.fnProcessingIndicator(); });
+			ajaxStop(function () { $dataTable.fnProcessingIndicator(false); });
+			ajaxError(function (e, jqXHR, settings, exception) {
+				if(jqXHR.status == 403) {
+					window.location.replace("/index.php");
+				} else if (jqXHR.responseJSON !== "undefined") {
+					flashMessage("error", jqXHR.responseJSON.message);
+				} else if (exception == "timeout") {
+					flashMessage("error", {TR_TIMEOUT_ERROR});
+				} else {
+					flashMessage("error", {TR_UNEXPECTED_ERROR});
+				}
+			});
 	});
 </script>
