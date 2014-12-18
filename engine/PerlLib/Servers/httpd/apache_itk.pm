@@ -386,6 +386,10 @@ sub deleteDmn
 		}
 	}
 
+	# Remove log directory if any
+	$rs = iMSCP::Dir->new( dirname => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
+	return $rs if $rs;
+
 	# Remove vlogger entry if any
 	require iMSCP::Database;
 	$rs = iMSCP::Database->factory()->doQuery(
