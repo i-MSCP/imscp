@@ -12,10 +12,9 @@
 			<td>{VL_USERNAME}</td>
 		</tr>
 		<tr>
-			<td><label for="userpassword">{TR_PASSWORD}</label></td>
+			<td><label for="password">{TR_PASSWORD}</label></td>
 			<td>
-				<input type="password" name="userpassword" id="userpassword" value="" class="pwd_generator" autocomplete="off"/>
-				<input name="genpass" type="submit" value="{TR_PASSWORD_GENERATE}"/>
+				<input type="password" name="userpassword" id="password" value="" class="pwd_generator" autocomplete="off"/>
 			</td>
 		</tr>
 		<tr>
