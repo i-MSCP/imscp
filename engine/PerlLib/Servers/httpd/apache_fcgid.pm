@@ -387,6 +387,10 @@ sub deleteDmn
 		}
 	}
 
+	# Remove log directory if any
+	$rs = iMSCP::Dir->new( dirname => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
+	return $rs if $rs;
+
 	# Remove fcgi directory if any
 	my $fcgiDir = "$self->{'config'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
 
