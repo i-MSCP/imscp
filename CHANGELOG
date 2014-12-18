@@ -4,7 +4,10 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
-GUI:
+ENGINE
+	Changed: Remove apache log directory on domain deletion
+
+GUI
 	Fixed: Admin logs default order ( last in, first out )
 	Fixed: Ignore orphaned users ( users without domain ) when editing reseller
 
