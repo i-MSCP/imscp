@@ -16,6 +16,9 @@ PLUGINS
 	Added: plugin_locked attribute which allow a plugin to lock another plugin for deletion
 	Updated: Plugin API to version 0.2.15
 
+TICKETS
+	Fixed #1199: Defect - TR_PASSWORD_GENERATE placeholder is not parsed
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.20
 ------------------------------------------------------------------------------------------------------------------------
