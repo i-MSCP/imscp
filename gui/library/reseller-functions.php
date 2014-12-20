@@ -844,83 +844,49 @@ function resellerHasCustomers($minNbCustomers = 1)
 /**
  * Check user data
  *
- * @param  bool $noPass
- * @return bool
+ * @param  bool $noPass If true skip password check
+ * @return bool True if user data are valid, false otherwise
  */
-function check_ruser_data($noPass)
+function check_ruser_data($noPass = false)
 {
-	global $userEmail, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country, $street1,
-		   $street2, $mail, $phone, $fax, $password, $domainIp;
-
-	$passwordRepeat = '';
+	global $password, $passwordRepeat, $email, $customerId, $firstName, $lastName, $gender, $firm, $street1,
+		$street2, $zip, $city, $state, $country, $phone, $fax, $domainIp;
 
 	// Get data for fields from previous page
 	if (isset($_POST['userpassword'])) {
-		$password = $_POST['userpassword'];
+		$password = clean_input($_POST['userpassword']);
+	} else {
+		$password = '';
 	}
 
 	if (isset($_POST['userpassword_repeat'])) {
-		$passwordRepeat = $_POST['userpassword_repeat'];
-	}
-
-	if (isset($_POST['domain_ip'])) {
-		$domainIp = $_POST['domain_ip'];
+		$passwordRepeat = clean_input($_POST['userpassword_repeat']);
+	} else {
+		$passwordRepeat = '';
 	}
 
 	if (isset($_POST['useremail'])) {
-		$userEmail = $_POST['useremail'];
+		$email = clean_input($_POST['useremail']);
+	} else {
+		$email = '';
 	}
 
 	if (isset($_POST['useruid'])) {
-		$customerId = $_POST['useruid'];
+		$customerId = clean_input($_POST['useruid']);
+	} else {
+		$customerId = '';
 	}
 
 	if (isset($_POST['userfname'])) {
-		$firstName = $_POST['userfname'];
+		$firstName = clean_input($_POST['userfname']);
+	} else {
+		$firstName = '';
 	}
 
 	if (isset($_POST['userlname'])) {
-		$lastName = $_POST['userlname'];
-	}
-
-	if (isset($_POST['userfirm'])) {
-		$firm = $_POST['userfirm'];
-	}
-
-	if (isset($_POST['userzip'])) {
-		$zip = $_POST['userzip'];
-	}
-
-	if (isset($_POST['usercity'])) {
-		$city = $_POST['usercity'];
-	}
-
-	if (isset($_POST['userstate'])) {
-		$state = $_POST['userstate'];
-	}
-
-	if (isset($_POST['usercountry'])) {
-		$country = $_POST['usercountry'];
-	}
-
-	if (isset($_POST['userstreet1'])) {
-		$street1 = $_POST['userstreet1'];
-	}
-
-	if (isset($_POST['userstreet2'])) {
-		$street2 = $_POST['userstreet2'];
-	}
-
-	if (isset($_POST['useremail'])) {
-		$mail = $_POST['useremail'];
-	}
-
-	if (isset($_POST['userphone'])) {
-		$phone = $_POST['userphone'];
-	}
-
-	if (isset($_POST['userfax'])) {
-		$fax = $_POST['userfax'];
+		$lastName = clean_input($_POST['userlname']);
+	}  else {
+		$lastName = '';
 	}
 
 	if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) !== null) {
@@ -929,17 +895,77 @@ function check_ruser_data($noPass)
 		$gender = 'U';
 	}
 
+	if (isset($_POST['userfirm'])) {
+		$firm = clean_input($_POST['userfirm']);
+	} else {
+		$firm = '';
+	}
+
+	if (isset($_POST['userstreet1'])) {
+		$street1 = clean_input($_POST['userstreet1']);
+	} else {
+		$street1 = '';
+	}
+
+	if (isset($_POST['userstreet2'])) {
+		$street2 = clean_input($_POST['userstreet2']);
+	} else {
+		$street2 = '';
+	}
+
+	if (isset($_POST['userzip'])) {
+		$zip = clean_input($_POST['userzip']);
+	} else {
+		$zip = '';
+	}
+
+	if (isset($_POST['usercity'])) {
+		$city = clean_input($_POST['usercity']);
+	} else {
+		$city = '';
+	}
+
+	if (isset($_POST['userstate'])) {
+		$state = clean_input($_POST['userstate']);
+	} else {
+		$state = '';
+	}
+
+	if (isset($_POST['usercountry'])) {
+		$country = clean_input($_POST['usercountry']);
+	} else {
+		$country = '';
+	}
+
+	if (isset($_POST['userphone'])) {
+		$phone = clean_input($_POST['userphone']);
+	} else {
+		$phone = '';
+	}
+
+	if (isset($_POST['userfax'])) {
+		$fax = clean_input($_POST['userfax']);
+	} else {
+		$fax = '';
+	}
+
+	if (isset($_POST['domain_ip'])) {
+		$domainIp = clean_input($_POST['domain_ip']);
+	} else {
+		$domainIp = '';
+	}
+
 	if (!$noPass) {
 		if ('' === $passwordRepeat || '' === $password) {
 			set_page_message(tr('Please fill up both data fields for password.'), 'error');
 		} elseif ($passwordRepeat !== $password) {
 			set_page_message(tr("Passwords do not match."), 'error');
+		} else {
+			checkPasswordSyntax($password);
 		}
-
-		checkPasswordSyntax($password);
 	}
 
-	if ($userEmail == NULL) { // TODO check email
+	if (!chk_email($email)) {
 		set_page_message(tr('Incorrect email length or syntax.'), 'error');
 	}
 

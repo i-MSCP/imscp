@@ -65,14 +65,13 @@
 
 		$dataTable = $(".datatable").dataTable({
 			language: {DATATABLE_TRANSLATIONS},
-			displayLength: {ROWS_PER_PAGE},
-			propcessing: true,
+			displayLength: parseInt({ROWS_PER_PAGE}),
+			processing: true,
 			serverSide: true,
-			lengthChange: false,
 			pagingType: "simple",
 			ajaxSource: "/admin/admin_log.php?action=get_logs",
 			stateSave: true,
-			order: [[ 0, "desc" ]],
+			order: [ 0, "desc" ],
 			columns: [
 				{ data: "log_time" },
 				{ data: "log_message" }

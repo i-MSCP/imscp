@@ -9,6 +9,7 @@ ENGINE
 
 GUI
 	Fixed: Admin logs default order ( last in, first out )
+	Fixed: Customer data get updated even when passwords do not match ( reseller/user_edit.php )
 	Fixed: Ignore orphaned users ( users without domain ) when editing reseller
 
 INSTALLER
