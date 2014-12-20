@@ -40,36 +40,36 @@
  */
 
 /**
- * Load data user data from database
+ * Load user data
  *
  * @param int $adminId Customer unique identifier
  * @return void
  */
 function reseller_loadUserData($adminId)
 {
-	global $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
-		$street1, $street2, $mail, $phone, $fax;
+	global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
+		$street1, $street2, $phone, $fax;
 
-	$query = "
-		SELECT
-			`admin_name`, `created_by`, `fname`, `lname`, `firm`, `zip`, `city`, `state`, `country`, `email`, `phone`,
-			`fax`, `street1`, `street2`, `customer_id`, `gender`
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-		AND
-			`created_by` = ?
-	";
-	$stmt = exec_query($query, array($adminId, $_SESSION['user_id']));
+	$stmt = exec_query(
+		'
+			SELECT
+				admin_name, created_by, fname, lname, firm, zip, city, state, country, email, phone, fax, street1,
+				street2, customer_id, gender
+			FROM
+				admin
+			WHERE
+				admin_id = ?
+			AND
+				created_by = ?
+		',
+		array($adminId, $_SESSION['user_id'])
+	);
 
-	if (!$stmt->rowCount()) {
-		showBadRequestErrorPage();
-	} else {
+	if($stmt->rowCount()) {
 		$data = $stmt->fetchRow();
 
-		$dmnUsername = $data['admin_name'];
-		$userEmail = $data['email'];
+		$adminName = $data['admin_name'];
+		$email = $data['email'];
 		$customerId = $data['customer_id'];
 		$firstName = $data['fname'];
 		$lastName = $data['lname'];
@@ -81,9 +81,10 @@ function reseller_loadUserData($adminId)
 		$country = $data['country'];
 		$street1 = $data['street1'];
 		$street2 = $data['street2'];
-		$mail = $data['email'];
 		$phone = $data['phone'];
 		$fax = $data['fax'];
+	} else {
+		showBadRequestErrorPage();
 	}
 }
 
@@ -95,16 +96,15 @@ function reseller_loadUserData($adminId)
  */
 function reseller_generatePage($tpl)
 {
-	global $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
+	global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
 		$street1, $street2, $phone, $fax;
 
 	$cfg = iMSCP_Registry::get('config');
 
-	// Fill in the fields
 	$tpl->assign(
 		array(
-			'VL_USERNAME' => tohtml(decode_idna($dmnUsername)),
-			'VL_MAIL' => tohtml($userEmail),
+			'VL_USERNAME' => tohtml(decode_idna($adminName)),
+			'VL_MAIL' => tohtml($email),
 			'VL_USR_ID' => tohtml($customerId),
 			'VL_USR_NAME' => tohtml($firstName),
 			'VL_LAST_USRNAME' => tohtml($lastName),
@@ -115,9 +115,9 @@ function reseller_generatePage($tpl)
 			'VL_COUNTRY' => tohtml($country),
 			'VL_STREET1' => tohtml($street1),
 			'VL_STREET2' => tohtml($street2),
-			'VL_MALE' => ($gender == 'M') ? $cfg->HTML_SELECTED : '',
-			'VL_FEMALE' => ($gender == 'F') ? $cfg->HTML_SELECTED : '',
-			'VL_UNKNOWN' => ($gender == 'U') ? $cfg->HTML_SELECTED : '',
+			'VL_MALE' => ($gender == 'M') ? $cfg['HTML_SELECTED'] : '',
+			'VL_FEMALE' => ($gender == 'F') ? $cfg['HTML_SELECTED'] : '',
+			'VL_UNKNOWN' => ($gender == 'U') ? $cfg['HTML_SELECTED'] : '',
 			'VL_PHONE' => tohtml($phone),
 			'VL_FAX' => tohtml($fax)
 		)
@@ -134,89 +134,71 @@ function reseller_updateUserData($adminId)
 {
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $adminId));
 
-	global $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
-		$street1, $street2, $mail, $phone, $fax, $password;
+	global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
+		$street1, $street2, $phone, $fax, $password, $passwordRepeat;
 
-	$resellerId = $_SESSION['user_id'];
+	$resellerId = intval($_SESSION['user_id']);
 
-	$firstName = clean_input($firstName);
-	$lastName = clean_input($lastName);
-	$firm = clean_input($firm);
-	$gender = clean_input($gender);
-	$zip = clean_input($zip);
-	$city = clean_input($city);
-	$state = clean_input($state);
-	$country = clean_input($country);
-	$phone = clean_input($phone);
-	$fax = clean_input($fax);
-	$street1 = clean_input($street1);
-	$street2 = clean_input($street2);
-
-	if ($password == '') {
-		// Save without password
-		$query = "
-			UPDATE
-				`admin`
-			SET
-				`fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?, `city` = ?, `state` = ?, `country` = ?, `email` = ?,
-				`phone` = ?, `fax` = ?, `street1` = ?, `street2` = ?, `gender` = ?, `customer_id` = ?
-			WHERE
-				`admin_id` = ?
-			AND
-				`created_by` = ?
-		";
+	if($password === '' && $passwordRepeat === '') { // Save without password
 		exec_query(
-			$query,
+			'
+				UPDATE
+					admin
+				SET
+					fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?, phone = ?,
+					fax = ?, street1 = ?, street2 = ?, gender = ?, customer_id = ?
+				WHERE
+					admin_id = ?
+				AND
+					created_by = ?
+			',
 			array(
-				$firstName, $lastName, $firm, $zip, $city, $state, $country, $mail, $phone, $fax, $street1, $street2,
+				$firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1,  $street2,
 				$gender, $customerId, $adminId, $resellerId
 			)
 		);
 	} else { // Change password
-		if (!checkPasswordSyntax($_POST['userpassword'])) {
+		if($password != $passwordRepeat) {
+			set_page_message(tr("Passwords do not match."), 'error');
 			redirectTo('user_edit.php?edit_id=' . $adminId);
 		}
 
-		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
-			set_page_message(tr("Passwords do not match."), 'error');
+		if(!checkPasswordSyntax($password)) {
 			redirectTo('user_edit.php?edit_id=' . $adminId);
 		}
 
 		$encryptedPassword = cryptPasswordWithSalt($password);
 
-		$query = "
-			UPDATE
-				`admin`
-			SET
-				`admin_pass` = ?, `fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?, `city` = ?, `state` = ?,
-				`country` = ?, `email` = ?, `phone` = ?, `fax` = ?, `street1` = ?, `street2` = ?, `gender` = ?,
-				`customer_id` = ?
-			WHERE
-				`admin_id` = ?
-			AND
-				`created_by` = ?
-		";
 		exec_query(
-			$query,
+			'
+				UPDATE
+					admin
+				SET
+					admin_pass = ?, fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?,
+					phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?, customer_id = ?
+				WHERE
+					admin_id = ?
+				AND
+					created_by = ?
+			',
 			array(
-				$encryptedPassword, $firstName, $lastName, $firm, $zip, $city, $state, $country, $mail, $phone, $fax,
+				$encryptedPassword, $firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax,
 				$street1, $street2, $gender, $customerId, $adminId, $resellerId
 			)
 		);
 
 		$adminName = get_user_name($adminId);
 
-		$query = "DELETE FROM `login` WHERE `user_name` = ?";
-		exec_query($query, $adminName);
+		exec_query('DELETE FROM login WHERE user_name = ?', $adminName);
 	}
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $adminId));
 
 	set_page_message(tr('User data successfully updated'), 'success');
-	write_log("{$_SESSION['user_logged']} updated data for $dmnUsername.", E_USER_NOTICE);
+	write_log("{$_SESSION['user_logged']} updated data for $adminName.", E_USER_NOTICE);
 
-	if (isset($_POST['send_data']) && $password != '') {
-		send_add_user_auto_msg($resellerId, $dmnUsername, $password, $userEmail, $firstName, $lastName, tr('Customer', true));
+	if(isset($_POST['send_data']) && $password !== '') {
+		send_add_user_auto_msg($resellerId, $adminName, $password, $email, $firstName, $lastName, tr('Customer', true));
 	}
 
 	redirectTo('users.php');
@@ -236,8 +218,8 @@ $cfg = iMSCP_Registry::get('config');
 
 check_login('reseller');
 
-if (isset($_REQUEST['edit_id'])) {
-	$adminId = clean_input($_GET['edit_id']);
+if(isset($_REQUEST['edit_id'])) {
+	$adminId = intval($_GET['edit_id']);
 
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(
@@ -280,10 +262,10 @@ if (isset($_REQUEST['edit_id'])) {
 			'TR_SEND_DATA' => tr('Send new login data')
 		)
 	);
-	
+
 	reseller_loadUserData($adminId);
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_changes' && check_ruser_data(true)) {
+	if(isset($_POST['uaction']) && $_POST['uaction'] === 'save_changes' && check_ruser_data(true)) {
 		reseller_updateUserData($adminId); // Save data to db
 	}
 
