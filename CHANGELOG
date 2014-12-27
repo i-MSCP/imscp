@@ -4,6 +4,9 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIGS
+	Changed: Dovecot becomes the default choice for POP3/IMAP servers
+
 ENGINE
 	Changed: Remove apache log directory on domain deletion
 
