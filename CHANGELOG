@@ -8,10 +8,8 @@ DAEMON
 	Fixed: The server traffic must be collected before any stopping attempt ( imscp_network )
 
 CONFIGS
-	Fixed: SSLv3 must be disabled to prevent POODLE attacks ( Nginx )
 	Fixed: The time at which the backup script must be run is no configurable
-	Changed: The BuildDate variable is no longer set for development time
-	Renamed: hooks.d directory to listeners.d
+	Renamed: /etc/imscp/hooks.d directory to /etc/imscp/listeners.d
 	Removed: Roundcube configuration directory ( now shipped with the roundcube package )
 
 DISTROS
@@ -34,21 +32,22 @@ ENGINE
 	Changed: The quota accounting script is now run every 30 minutes
 	Fixed: Backend logs which are older than 7 days are never removed
 
-GUI
-	Changed: i-MSCP is now accessible through dedicated http ports ( default is 8080 for http and 4443 for https )
+FRONTEND
+	Changed: The frontEnd is now reachable through dedicated Web server ( Nginx )
+	Changed: The frontEnd is now reachable through dedicated http ports ( default is 8080 for http and 4443 for https )
 
 INSTALLER
 	Added: panel_hostname, system_hostname, panel_ssl and services_ssl reconfiguration items
-	Changed: 'hostname' configuration item to 'hostnames'
 	Moved: Control panel hostname and SSL dialogs into FrontEnd installer
+	Renamed: hostname configuration item to hostnames
 	Renamed: Option --hook-file to --listener
 	Fixed: Prevent start of apache2 service by package manager using policy layer interface
-	Fixed: Unable to handle i-MSCP services (start/restart/stop...) on systems using systemd ( e.g Jessie )
+	Fixed: Unable to handle i-MSCP services ( start/restart/stop... ) on systems using systemd ( e.g Jessie )
 
-PACKAGES:
+PACKAGES
 	Updated: Roundcube installer according new roundcube version ( 1.0.3 )
 
-UNINSTALLER:
+UNINSTALLER
 	Added: Backend exec mode ( uninstall )
 
 TICKETS
