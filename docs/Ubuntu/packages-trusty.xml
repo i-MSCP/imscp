@@ -32,7 +32,7 @@
             <package>php5-fpm</package>
         </apache_php_fpm>
     </httpd>
-    <po default="courier">
+    <po default="dovecot">
         <courier>
             <package>courier-authlib-mysql</package>
             <package>courier-imap</package>
