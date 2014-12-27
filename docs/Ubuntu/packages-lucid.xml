@@ -27,7 +27,7 @@
             <package>libapache2-mod-php5</package>
         </apache_itk>
     </httpd>
-    <po default="courier">
+    <po default="dovecot">
         <courier>
             <package>courier-authlib-mysql</package>
             <package>courier-imap</package>
