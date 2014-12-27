@@ -231,7 +231,7 @@ sub setupAskServerHostname
 	my ($rs, @labels) = (0, $hostname ? split(/\./, $hostname) : ());
 
 	if(
-		$main::reconfigure ~~ ['system_hostname', 'hostname', 'all', 'forced'] ||
+		$main::reconfigure ~~ ['system_hostname', 'hostnames', 'all', 'forced'] ||
 		! (@labels >= 3 && is_domain($hostname, \%options))
 	) {
 		unless($hostname) {
