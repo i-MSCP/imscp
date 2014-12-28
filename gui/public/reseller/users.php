@@ -232,17 +232,17 @@ function generate_users_list($tpl, $resellerId)
 				$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
 			}
 
-			$domainCreated = $stmt->fields['domain_created'];
+			$domainExpiring = $stmt->fields['domain_expires'];
 
-			if ($domainCreated == 0) {
-				$domainCreated = tr('N/A');
+			if ($domainExpiring == 0) {
+				$domainExpiring = tr('N/A');
 			} else {
-				$domainCreated = date($cfg->DATE_FORMAT, $domainCreated);
+				$domainExpiring = date($cfg->DATE_FORMAT, $domainExpiring);
 			}
 
 			$tpl->assign(
 				array(
-					'CREATION_DATE' => $domainCreated,
+					'EXPIRATION_DATE' => $domainExpiring,
 					'DOMAIN_ID' => $stmt->fields['domain_id'],
 					'ACTION' => tr('Delete'),
 					'USER_ID' => $stmt->fields['domain_admin_id'],
@@ -340,7 +340,7 @@ $tpl->assign(
 		'TR_SEARCH' => tr('Search'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_ACTION' => tr('Actions'),
-		'TR_CREATION_DATE' => tr('Creation date'),
+		'TR_EXPIRATION_DATE' => tr('Expiration date'),
 		'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s?', true, '%s'),
 		'TR_STAT' => tr('Stats'),
 		'VL_MONTH' => date('m'),
