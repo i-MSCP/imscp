@@ -83,8 +83,6 @@ $down = tr('DOWN');
 $services = new iMSCP_Services();
 
 foreach ($services as $service) {
-	$services->setService($services->key($services), false);
-
 	if ($services->isVisible()) {
 		$serviceState = $services->isRunning();
 
