@@ -7,6 +7,9 @@ Git 1.1.x
 CONFIGS
 	Changed: Dovecot becomes the default choice for POP3/IMAP servers
 
+DISTROS
+	Removed: Support for obsolete Ubuntu versions ( Quantal Quetzal, Raring Ringtail, Saucy Salamander )
+
 ENGINE
 	Changed: Remove apache log directory on domain deletion
 
