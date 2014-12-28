@@ -235,7 +235,7 @@ sub addDmn
 	$rs = $self->_addCfg($data);
 	return $rs if $rs;
 
-	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
+	$rs = $self->_addFiles($data);
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -263,7 +263,7 @@ sub restoreDmn
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdRestoreDmn', $data);
 	return $rs if $rs;
 
-	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
+	$rs = $self->_addFiles($data);
 	return $rs if $rs;
 
 	$self->flushData();
@@ -424,7 +424,7 @@ sub addSub
 	$rs = $self->_addCfg($data);
 	return $rs if $rs;
 
-	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
+	$rs = $self->_addFiles($data);
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -452,7 +452,7 @@ sub restoreSub
 
 	$self->setData($data);
 
-	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
+	$rs = $self->_addFiles($data);
 	return $rs if $rs;
 
 	$self->flushData();

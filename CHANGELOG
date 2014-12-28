@@ -12,6 +12,7 @@ DISTROS
 
 ENGINE
 	Changed: Remove apache log directory on domain deletion
+	Fixed: Logs directory is not created in some contexts ( apache_itk )
 
 GUI
 	Fixed: Admin logs default order ( last in, first out )
