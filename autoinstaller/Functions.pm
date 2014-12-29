@@ -122,6 +122,8 @@ sub loadConfig
 
 sub build
 {
+	newDebug('imscp-build.log');
+
 	if($main::skippackages && ! iMSCP::Getopt->preseed) {
 		unless(
 			$main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'PO_SERVER'} && $main::imscpConfig{'MTA_SERVER'} &&
@@ -152,8 +154,6 @@ sub build
 
 	$rs = _askInstallMode($dialog) unless $main::noprompt || $main::buildonly || $main::reconfigure ne 'none';
 	return $rs if $rs;
-
-	newDebug('imscp-build.log');
 
 	$rs = _getDistroAdapter()->preBuild();
 	return $rs if $rs;
@@ -218,7 +218,7 @@ sub build
 
 	# Clean build directory (remove any .gitignore|empty-file)
 	find(
-		sub { unlink or fatal("Unable to remove $File::Find::name: $!") if  $_ eq '.gitignore' || $_ eq 'empty-file'; },
+		sub { unlink or fatal("Unable to remove $File::Find::name: $!") if $_ eq '.gitignore' || $_ eq 'empty-file'; },
 		$main::{'INST_PREF'}
 	);
 
@@ -238,6 +238,8 @@ sub build
 
 sub install
 {
+	newDebug('imscp-setup.log');
+
 	my $runningProcess = 0;
 	my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 
@@ -269,8 +271,6 @@ EOF
 		[\&main::setupTasks,             'Processing setup tasks'],
 		[\&_deleteBuildDir,              'Deleting Build directory']
 	);
-
-	newDebug('imscp-setup.log');
 
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeInstall', \@steps);
 	return $rs if $rs;
@@ -465,7 +465,6 @@ sub _processDistroPackages
 {
 	_getDistroAdapter()->installPackages() || _getDistroAdapter()->uninstallPackages();
 }
-
 
 =item _testRequirements()
 

@@ -83,6 +83,7 @@ sub _init
 	$self->{'aptRepositoriesToAdd'} = { };
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
+	$self->{'packagesToInstallDelayed'} = [];
 	$self->{'packagesToUninstall'} = [];
 
 	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') unless $main::skippackages;
