@@ -152,14 +152,14 @@ sub installPackages
 {
 	my $self = $_[0];
 
+	iMSCP::Dialog->getInstance()->endGauge();
+
 	my $rs = $self->{'eventManager'}->trigger(
 		'beforeInstallPackages', $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}
 	);
 	return $rs if $rs;
 
 	my $preseed = iMSCP::Getopt->preseed;
-
-	iMSCP::Dialog->getInstance()->endGauge();
 
 	for($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
 		if(@{$_}) {
