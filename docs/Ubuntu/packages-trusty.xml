@@ -22,8 +22,8 @@
         </apache_fcgid>
         <apache_itk>
             <package>apache2</package>
-            <package>libapache2-mpm-itk</package>
             <package>libapache2-mod-php5</package>
+            <package_delayed>libapache2-mpm-itk</package_delayed>
         </apache_itk>
         <apache_php_fpm>
             <package>apache2</package>
