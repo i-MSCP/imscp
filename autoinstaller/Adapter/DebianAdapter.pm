@@ -212,9 +212,6 @@ sub uninstallPackages
 		not $_ ~~ [@{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}}]
 	} uniq(@{$self->{'packagesToUninstall'}});
 
-	use Data::Dumper;
-	print Dumper($self->{'packagesToUninstall'});
-
 	# Do not try to remove packages which are no longer available on the system or not installed
 	if(@{$self->{'packagesToUninstall'}}) {
 		my ($stdout, $stderr);
