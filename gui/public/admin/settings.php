@@ -520,7 +520,7 @@ if ($phpini->getDataVal('phpiniDisplayErrors') == 'on') {
 	);
 }
 
-$errorReportingValue = $phpini->errorReportingToLitteral($phpini->getDataVal('phpiniErrorReporting'));
+$errorReportingValue = (string) $phpini->errorReportingToLitteral($phpini->getDataVal('phpiniErrorReporting'));
 
 switch ($errorReportingValue) {
 	case 'E_ALL & ~E_NOTICE':
@@ -553,7 +553,7 @@ switch ($errorReportingValue) {
 			)
 		);
 		break;
-	case '0':
+	default:
 		$tpl->assign(
 			array(
 				 'PHPINI_ERROR_REPORTING_0' => '',
@@ -562,7 +562,6 @@ switch ($errorReportingValue) {
 				 'PHPINI_ERROR_REPORTING_3' => $htmlSelected
 			)
 		);
-		break;
 }
 
 $htmlChecked = $cfg->HTML_CHECKED;
