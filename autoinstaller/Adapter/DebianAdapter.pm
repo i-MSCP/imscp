@@ -153,24 +153,10 @@ sub installPackages
 
 	iMSCP::Dialog->getInstance()->endGauge();
 
-	eval "use List::MoreUtils qw(uniq); 1";
-	fatal($@) if $@;
-
-	# Remove any duplicate entry
-	@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
-
-	my $rs = $self->{'eventManager'}->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
+	my $rs = $self->{'eventManager'}->trigger(
+		'beforeInstallPackages', $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}
+	);
 	return $rs if $rs;
-
-	my $preseed = iMSCP::Getopt->preseed;
-
-	my @command;
-
-	unless($preseed || $main::noprompt || ! iMSCP::ProgramFinder::find('debconf-apt-progress')) {
-		iMSCP::Dialog->getInstance()->endGauge();
-
-		push @command, 'debconf-apt-progress --logstderr --';
-	}
 
 	# Prevent the package manager to start apache2 service itself (excluding mysql) using the policy layer interface.
 	# This prevents failures such as when nginx is installed after Apache2 which is already listening on port 80...
@@ -192,22 +178,34 @@ EOF
 	$rs = $file->mode(0755);
 	return $rs if $rs;
 
-	unshift @command, 'UCF_FORCE_CONFFMISS=1 '; # Force installation of missing conffiles which are managed by UCF
+	my $preseed = iMSCP::Getopt->preseed;
 
-	if($main::forcereinstall) {
-		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-			"--reinstall --auto-remove --purge install @{$self->{'packagesToInstall'}}";
-	} else {
-		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-			"--auto-remove --purge install @{$self->{'packagesToInstall'}}";
+	for($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
+		if(@{$_}) {
+			my @command = ();
+
+			unless($preseed || $main::noprompt || ! iMSCP::ProgramFinder::find('debconf-apt-progress')) {
+				push @command, 'debconf-apt-progress --logstderr --';
+			}
+
+			unshift @command, 'UCF_FORCE_CONFFMISS=1 '; # Force installation of missing conffiles which are managed by UCF
+
+			if($main::forcereinstall) {
+				push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
+					"--reinstall --auto-remove --purge install @{$_}";
+			} else {
+				push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
+					"--auto-remove --purge install @{$_}";
+			}
+
+			my ($stdout, $stderr);
+			$rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			error('Unable to install packages') if $rs && ! $stderr;
+			return $rs if $rs;
+		}
 	}
-
-	my ($stdout, $stderr);
-	$rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error('Unable to install packages') if $rs && ! $stderr;
-	return $rs if $rs;
 
 	# Delete '/usr/sbin/policy-rc.d file
 	$rs = $file->delFile();
@@ -234,10 +232,10 @@ sub uninstallPackages
 	# Remove any duplicate entry
 	# Do not try to remove any packages which were scheduled for installation
 	@{$self->{'packagesToUninstall'}} = grep {
-		not $_ ~~ @{$self->{'packagesToInstall'}}
+		not $_ ~~ [@{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}}]
 	} uniq(@{$self->{'packagesToUninstall'}});
 
-	# Do not try to remove packages which is no longer available on the system or not installed
+	# Do not try to remove packages which are no longer available on the system or not installed
 	if(@{$self->{'packagesToUninstall'}}) {
 		my ($stdout, $stderr);
 		my $rs = execute(
@@ -276,6 +274,28 @@ sub uninstallPackages
 	$self->{'eventManager'}->trigger('afterUninstallPackages');
 }
 
+=item postBuild()
+
+ Process postBuild tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postBuild
+{
+	# Make sure that PHP modules are enabled
+	if(-x '/usr/sbin/php5enmod') {
+		my($stdout, $stderr);
+		my $rs = execute('php5enmod gd imap intl json mcrypt mysql mysqlnd pdo pdo_mysql', \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
+
+	0;
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -308,6 +328,7 @@ sub _init
 	$self->{'aptRepositoriesToAdd'} = { };
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
+	$self->{'packagesToInstallDelayed'} = [];
 	$self->{'packagesToUninstall'} = [];
 
 	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') unless $main::skippackages;
@@ -336,14 +357,20 @@ sub _buildPackageList
 	fatal($@) if $@;
 
 	my $xml = XML::Simple->new(NoEscape => 1);
-	my $pkgList = eval { $xml->XMLin($pkgFile, ForceArray => [ 'package']) };
+	my $pkgList = eval { $xml->XMLin($pkgFile, ForceArray => [ 'package', 'package_delayed' ]) };
 
 	unless($@) {
 		# For each package section find in package list
 		for (sort keys %{$pkgList}) {
-			if(exists $pkgList->{$_}->{'package'}) { # Simple list of packages to install
-				push @{$self->{'packagesToInstall'}}, @{$pkgList->{$_}->{'package'}};
-			} else { # List of alternative package (software) available for installation
+			if(exists $pkgList->{$_}->{'package'} || exists $pkgList->{$_}->{'package_delayed'}) { # Simple list of packages to install
+				if(exists $pkgList->{$_}->{'package'}) {
+					push @{$self->{'packagesToInstall'}}, @{$pkgList->{$_}->{'package'}};
+				}
+
+				if(exists $pkgList->{$_}->{'package_delayed'}) {
+					push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$_}->{'package_delayed'}};
+				}
+			} else { # List of alternative package ( software ) available for installation
 				my $defaultAlt = delete $pkgList->{$_}->{'default'};
 				my $selectedAlt = $main::questions{ uc($_) . '_SERVER' } || $main::imscpConfig{ uc($_) . '_SERVER' };
 				my $forceDialog = ($selectedAlt) ? 0 : 1;
@@ -401,6 +428,10 @@ EOF
 						if(exists $pkgList->{$_}->{$alt}->{'package'}) {
 							push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$_}->{$alt}->{'package'}};
 						}
+
+						if(exists $pkgList->{$_}->{$alt}->{'package_delayed'}) {
+							push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$_}->{$alt}->{'package_delayed'}};
+						}
 					}
 				}
 
@@ -426,6 +457,10 @@ EOF
 				# Packages to install
 				if(exists $pkgList->{$_}->{$selectedAlt}->{'package'}) {
 					push @{$self->{'packagesToInstall'}}, @{$pkgList->{$_}->{$selectedAlt}->{'package'}};
+				}
+
+				if(exists $pkgList->{$_}->{$selectedAlt}->{'package_delayed'}) {
+					push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$_}->{$selectedAlt}->{'package_delayed'}};
 				}
 
 				# Set server implementation to use
@@ -727,6 +762,10 @@ EOF
 			$selectionsFileContent .= <<EOF;
 courier-base courier-base/webadmin-configmode boolean false
 courier-ssl courier-ssl/certnotice note
+EOF
+		} elsif($poServer eq 'dovecot') {
+	$selectionsFileContent .= <<EOF;
+dovecot-core dovecot-core/create-ssl-cert boolean false
 EOF
 		}
 	} else {
