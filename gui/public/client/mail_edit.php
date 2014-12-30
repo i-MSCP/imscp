@@ -287,7 +287,7 @@ function client_generatePage($tpl)
 			'QUOTA' => isset($_POST['quota']) ? tohtml($_POST['quota']) : ($quota !== NULL ? floor($mailData['quota'] / 1048576) : ''),
 			'FORWARD_LIST' => isset($_POST['forward_list'])
 				? tohtml($_POST['forward_list'])
-				: ($mailData['mail_forward'] != '_no_' ? tohtml($mailData['mail_forward']) : '')
+				: ($mailData['mail_forward'] != '_no_' ? tohtml(str_replace(",", "\n", $mailData['mail_forward'])) : '')
 		)
 	);
 
