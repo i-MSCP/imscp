@@ -57,7 +57,7 @@
 	<tr>
 		<th>{TR_USER_STATUS}</th>
 		<th>{TR_USERNAME}</th>
-		<th>{TR_CREATION_DATE}</th>
+		<th>{TR_EXPIRATION_DATE}</th>
 		<th>{TR_DISK_USAGE}</th>
 		<th>{TR_ACTION}</th>
 	</tr>
@@ -77,7 +77,7 @@
 			<span class="icon i_goto">{NAME}</span>
 			<!-- EDP: status_reload_false -->
 		</td>
-		<td>{CREATION_DATE}</td>
+		<td>{EXPIRATION_DATE}</td>
 		<td>{DISK_USAGE}</td>
 		<td>
 			<a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}"
