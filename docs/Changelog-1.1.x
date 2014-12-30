@@ -1,6 +1,109 @@
 i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
+1.1.21
+------------------------------------------------------------------------------------------------------------------------
+
+2014-12-30: Laurent Declercq
+	RELEASE i-MSCP 1.1.21
+
+CONFIGS
+	Changed: Dovecot becomes the default choice for POP3/IMAP servers
+
+DISTROS
+	Removed: Support for obsolete Ubuntu versions ( Quantal Quetzal, Raring Ringtail, Saucy Salamander )
+
+ENGINE
+	Changed: Remove apache log directory on domain deletion
+	Fixed: Logs directory is not created in some contexts ( apache_itk )
+
+GUI
+	Fixed: Admin logs default order ( last in, first out )
+	Fixed: Customer data get updated even when passwords do not match ( reseller/user_edit.php )
+	Fixed: error_reporting directive value remain to default option when set to 0 ( admin/settings.php )
+	Fixed: Ignore orphaned users ( users without domain ) when editing reseller
+
+INSTALLER
+	Changed: Installation of the libapache2-mpm-itk package is now delayed to avoid dpkg configuration errors
+	Fixed: sysctl: permission denied on key 'net.ipv4.conf.all.promote_secondaries' ( vps )
+	Fixed: /bin/cp: cannot overwrite non-directory when using symlinks ( replaced by rsync command )
+	Fixed: Missing mcrypt PHP module error on fresh installation ( Trusty Tahr )
+	Fixed: Prefill debconf database for the dovecot-core/create-ssl-cert question ( Dovecot )
+
+PLUGINS
+	Added: plugin_locked attribute which allow a plugin to lock another plugin for deletion
+	Updated: Plugin API to version 0.2.15
+
+TICKETS
+	Fixed #1199: Defect - TR_PASSWORD_GENERATE placeholder is not parsed
+
+------------------------------------------------------------------------------------------------------------------------
+1.1.20
+------------------------------------------------------------------------------------------------------------------------
+
+2014-12-11: Laurent Declercq
+	RELEASE i-MSCP 1.1.20
+
+CONFIGS
+	Fixed: Unable to start the Ftp server - unknown protocol: 'TLSv1.1' ( ProFTPD )
+
+ENGINE
+	Fixed: Unable to do any operation on the user web directory - ( immutable bit )
+
+------------------------------------------------------------------------------------------------------------------------
+1.1.19
+------------------------------------------------------------------------------------------------------------------------
+
+2014-12-11: Laurent Declercq
+	RELEASE i-MSCP 1.1.19
+
+CONFIGS
+	Added: Sysctl configuration file for secondary IP promoting ( /etc/sysctl.d/imscp.conf file )
+	Changed: SPF - Email treating level is now set to softfail instead of fail ( bind9 )
+	Fixed: Access to error documents is forbiden in some contexts ( Apache )
+	Fixed: A TLS fatal alert has been received - Wrong cipher suite ( ProFTPD )
+	Fixed: Domain aliases and subdomains can't follow symlinks from customer homedir
+	Fixed: Missing NoSessionReuseRequired parameter ( ProFTPD )
+
+DAEMON
+	Fixed: Network manager must not remove SSH connection IP
+
+ENGINE
+	Fixed: Fcgi wrapper is not created in some contexts ( apache_fcgid )
+	Fixed: Pool configuration file is not created in some contexts ( apache_php_fpm )
+
+GUI
+	Added: Events for mail catch-all
+	Changed: All network interfaces are now selectable, even if they are not up
+	Fixed: Allow the message_timeout event to be triggered for elements which are out of the .body container ( layout )
+	Fixed: Clear opcode cache when needed ( Opcache, APC )
+	Fixed: CSS loading order
+	Replaced: i-MSCP jQuery tooltip plugin by jQuery UI tooltip widget
+
+i18n
+	Added: i18n_getJsTranslations() function which allow to translate JS scripts
+	Added: onGetJsTranslations event which allows the plugins to add their own JS translations
+	Added: New languages: Breton, Czech, Icelandic and Georgian ( Requested languages )
+	Fixed: Don't throw any exception when a locale is not valid. Fallback to the default en_GB locale instead
+
+PLUGINS
+	Changed: Plugins are now aware of plugin manager
+	Fixed: PHP Notice: Undefined index: prirotiy in /var/www/imscp/gui/library/iMSCP/Plugin/Manager.php on line 1390
+	Fixed: Plugins's configuration is not updated using the latest conffiles state when an OPCODE cache is enabled
+	Fixed: Plugin manager must be aware of plugin deletion
+	Updated: Plugin API to version 0.2.14
+
+VENDOR
+	Added: pGenerator jQuery plugin v1.0.0
+
+TICKETS
+	Fixed #1187: Enhancement - Password generator for any password field
+	Fixed #1188: Bug - apache_fcgid - Fcgid wrapper not created in some contexts
+	Fixed #1191: Bug - Domains which belong to disabled accounts are no longer reachable after an i-MSCP reconfiguration
+	Fixed #1192: Bug - Network manager - Server connection lost
+	Fixed #1194: Enhancement - Allowed character range for TXT DNS resource records
+
+------------------------------------------------------------------------------------------------------------------------
 1.1.18
 ------------------------------------------------------------------------------------------------------------------------
 
