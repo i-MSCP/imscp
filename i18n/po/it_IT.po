@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-12-11 13:01+0100\n"
-"PO-Revision-Date: 2014-12-11 07:54+0000\n"
+"POT-Creation-Date: 2014-12-30 01:48+0100\n"
+"PO-Revision-Date: 2014-12-30 00:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -3844,6 +3844,12 @@ msgstr ""
 msgid ""
 "Plugin Manager: Unable to delete the %s plugin files. Please, remove them "
 "manually."
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
+"another plugin."
 msgstr ""
 
 #, php-format

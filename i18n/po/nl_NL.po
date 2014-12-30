@@ -12,14 +12,16 @@
 # Kevin Morssink, 2013
 # Steve Kuijpers <s.kuijpers@freakez.eu>, 2012
 # Steve Kuijpers <s.kuijpers@freakez.eu>, 2012
-# theemstra <thom@heemstra.us>, 2014
+# Thom Heemstra <thom@heemstra.us>, 2014
+# Thom Heemstra <thom@heemstra.us>, 2014
+# Thom Heemstra <thom@heemstra.us>, 2014
 # yves claeys <claeysy@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-12-11 13:01+0100\n"
-"PO-Revision-Date: 2014-12-11 07:54+0000\n"
+"POT-Creation-Date: 2014-12-30 01:48+0100\n"
+"PO-Revision-Date: 2014-12-30 00:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -49,7 +51,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nBeste {NAME},\n\nDit is een automatische bevestiging voor uw bestelling van het domein:\n\n{DOMAIN}\n\nU moet op de volgende link klikken om uw bestelling te bevestigen.\n\n{ACTIVATION_LINK}\n\nIndien u uw bestelling niet bevestigt voor {EXPIRE_DATE} zal hij automatisch geannuleerd worden.\n\nHartelijk dank voor het gebruiken van de service van i-MSCP\n\n___________________________\nHet i-MSCP-team\n"
+msgstr "\n\nBeste {NAME},\n\nDit is een automatische bevestiging voor uw bestelling van het domein:\n\n{DOMAIN}\n\nU dient op de volgende link klikken om uw bestelling te bevestigen.\n\n{ACTIVATION_LINK}\n\nIndien u uw bestelling niet bevestigt voor {EXPIRE_DATE} zal hij automatisch geannuleerd worden.\n\nHartelijk dank voor het gebruiken van de service van i-MSCP\n\n___________________________\nHet i-MSCP-team\n"
 
 msgid ""
 "\n"
@@ -348,7 +350,7 @@ msgstr "%s: U kunt een service die reeds aan klanten van de wederverkoper worden
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
-msgstr "%s::getInfo() niet geïmplementeerd en %s niet gevonden. Dit is een bug in de invoegtoepassing %s welke bij de maker(s) gemeld moet worden."
+msgstr "%s::getInfo() niet geïmplementeerd en %s niet gevonden. Dit is een bug in de invoegtoepassing %s welke bij de maker(s) gemeld dient te worden."
 
 #, php-format
 msgid ""
@@ -364,7 +366,7 @@ msgstr "'%%hostname%%' is geen gelige hostname voor het e-mailadres  '%%value%%'
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr "'%%hostname%%' bevindt zich niet in een routeerbaar netwerksegment. Het e-mailadres '%%value%%' moet niet uit het publieke netwerk worden opgevraagd"
+msgstr "'%%hostname%%' bevindt zich niet in een routeerbaar netwerksegment. Het e-mailadres '%%value%%' dient niet uit het publieke netwerk te worden opgevraagd"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
@@ -751,7 +753,7 @@ msgid "Admin / Settings / Languages"
 msgstr "Beheerder / Instellingen / Talen"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr "Beheerder / Instellingen / Wachtwoord vergeten-mail"
+msgstr "Wederverkoper / Instellingen / Wachtwoord vergetene-mail"
 
 msgid "Admin / Settings / Plugin Management"
 msgstr "Beheerder / Instellingen / Invoegtoepassingsbeheer"
@@ -988,7 +990,7 @@ msgid "Alternative URL to reach your website"
 msgstr "Alternatieve URL om uw website te bereiken"
 
 msgid "An email addresse is not valid in mail forward list."
-msgstr ""
+msgstr "Een e-mailadres is niet geldig in de maildoorstuurlijst."
 
 msgid "An entry is defined twice below."
 msgstr "Invoer hieronder twee keer aangegeven."
@@ -1114,21 +1116,21 @@ msgstr "Weet u zeker dat u dit pakket wilt verwijderen?"
 msgid ""
 "Are you sure you want to import this package into the local software "
 "repository?"
-msgstr "Weet u zeker dat u dit pakket in het lokale softwaredepot wilt laden?"
+msgstr "Weet u zeker dat u dit pakket in de lokale softwareberging wilt laden?"
 
 msgid "Are you sure you want to import this package into the software depot?"
-msgstr "Weet u zeker dat u dit pakket in het lokale softwaredepot wilt laden?"
+msgstr "Weet u zeker dat u dit pakket in de lokale softwarebergingwilt laden?"
 
 msgid ""
 "Are you sure you want to install this package from the Web software "
 "repository?"
-msgstr "Weet u zeker dat u dit pakket vanuit het online websoftwaredepot."
+msgstr "Weet u zeker dat u dit pakket vanuit de online softwareberging."
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Weet u zeker dat u deze back-up wilt herstellen?"
 
 msgid "Area name"
-msgstr "Gebiedsnaam"
+msgstr "Gebied"
 
 msgid "Assign"
 msgstr "Toewijzen"
@@ -1146,7 +1148,7 @@ msgid "Auto (Browser language)"
 msgstr "Automatisch (Browsertaal)"
 
 msgid "Auto email template data updated!"
-msgstr "Auto-e-mail-template gewijzigd!"
+msgstr "Auto-e-mail-template bijgewerkt!"
 
 msgid "Auto responder"
 msgstr "Automatische beantwoorder"
@@ -1194,7 +1196,7 @@ msgid "Bad password."
 msgstr "Wachtwoord niet correct."
 
 msgid "Bad request."
-msgstr "Fout verzoek"
+msgstr "Fout verzoek."
 
 msgid "Behind"
 msgstr "Achter"
@@ -1435,7 +1437,7 @@ msgid "Client / Email / Overview"
 msgstr "Klant / E-mail / Overzicht"
 
 msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr "Klant / E-mail / Overview / Wijzig auto-beantwoorder"
+msgstr "Klant / E-mail / Overview / Auto-beantwoorder bewerken"
 
 msgid "Client / Email / Overview / Enable Auto Responder"
 msgstr "Klant / E-mail / Zet auto-beantwoorder aan"
@@ -1687,7 +1689,7 @@ msgid "Customer's layout color successfully updated."
 msgstr "Lay-outkleur van klant succesvol aangepast."
 
 msgid "Customer(s) successfully moved."
-msgstr "Klant(en) succesvol verwijderd."
+msgstr "Klant(en) succesvol verplaatst."
 
 msgid "Customers"
 msgstr "Klanten"
@@ -1729,7 +1731,7 @@ msgid "Database Name and Users"
 msgstr "Databanknaam en gebruikers"
 
 msgid "Database Update Revision"
-msgstr "Databank-update-revisie"
+msgstr "Databank-updaterevisie"
 
 msgid "Database Update details"
 msgstr "Databank-updatedetails"
@@ -1903,7 +1905,7 @@ msgid "Description cannot be empty."
 msgstr "Beschrijving kan niet leeg zijn."
 
 msgid "Details"
-msgstr "Details"
+msgstr "Bekijk details"
 
 msgid "Directive values"
 msgstr "Optiewaarde"
@@ -2042,7 +2044,7 @@ msgid "Domain expiration date"
 msgstr "Vervaldatum domein"
 
 msgid "Domain expiration date must be filled."
-msgstr "Vervaldatum domein moet worden ingevuld."
+msgstr "Vervaldatum domein dient te worden ingevuld."
 
 msgid "Domain limit"
 msgstr "Domeinlimiet"
@@ -2136,7 +2138,7 @@ msgid "EB"
 msgstr "B"
 
 msgid "Edit"
-msgstr "Wijzig"
+msgstr "Bewerken"
 
 msgid "Edit FTP account"
 msgstr "FTP-account aanpassen"
@@ -2163,19 +2165,19 @@ msgid "Edit customer"
 msgstr "Klant aanpassen"
 
 msgid "Edit domain"
-msgstr "Wijzig domein"
+msgstr "Domein bewerken"
 
 msgid "Edit domain alias"
-msgstr "Wijzig domeinalias"
+msgstr "Domeinalias bewerken"
 
 msgid "Edit error page"
-msgstr "Wijzig errorpagina"
+msgstr "Foutpagina bewerken"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
 msgstr "Externe mailserver voor {DOMAIN_UTF8} aanpassen"
 
 msgid "Edit hosting plan"
-msgstr "Wijzig hostingpakket"
+msgstr "Foutpagina bewerken"
 
 msgid "Edit htaccess user"
 msgstr "Htaccess-gebruiker aanpassen"
@@ -2190,13 +2192,13 @@ msgid "Edit protected area"
 msgstr "Bewerk beschermd gedeelte"
 
 msgid "Edit reseller"
-msgstr "Wijzig wederverkoper"
+msgstr "Wederverkoper bewerken"
 
 msgid "Edit subdomain"
 msgstr "Subdomein aanpassen"
 
 msgid "Edit user"
-msgstr "Wijzig gebruiker"
+msgstr "Klant bewerken"
 
 msgid "EiB"
 msgstr "EiB"
@@ -2257,14 +2259,14 @@ msgstr "E-mailquota kan niet grote zijn dan het limiet qua opslagruimte"
 msgid ""
 "Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
 "quota."
-msgstr "E-mailquota kan niet lager zijn dan %d. Elke mailbox moet minimaal 1MB ruimte hebben."
+msgstr "E-mailquota kan niet lager zijn dan %d. Elke mailbox dient minimaal 1MB ruimte te hebben."
 
 #, php-format
 msgid "Email quota cannot be unlimited. Max value is %d MiB."
 msgstr "E-mailquota kan niet ongelimiteerd zijn. Maximaal toegestaan is %d MiB."
 
 msgid "Email quota must be a number."
-msgstr "E-mailquota moet een nummer zijn."
+msgstr "E-mailquota dient een nummer te zijn."
 
 msgid "Email settings"
 msgstr "E-mailinstellingen"
@@ -2435,7 +2437,7 @@ msgid "File is not readable."
 msgstr "Bestand is niet leesbaar."
 
 msgid "File needs to be a 'tar.gz' archive."
-msgstr "Bestand moet een 'tar.gz'-archief zijn."
+msgstr "Bestand dient een 'tar.gz'-archief te zijn."
 
 msgid "File successfully uploaded."
 msgstr "Bestand succesvol geüpload"
@@ -2575,7 +2577,7 @@ msgid "Home directory '%s' doesn't exist"
 msgstr "Thuis-map '%s' bestaat niet"
 
 msgid "Homepage"
-msgstr "Homepage"
+msgstr "Startpagina"
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr "De host waarvan een SQL-gebruiker toegestaan is om te verbinden naar de SQL-server"
@@ -2696,7 +2698,7 @@ msgid ""
 msgstr "Als je een invoegtoepassing beveiligt, kan je deze niet langer deactiveren vanuit de invoegtoepassingsbeheerdersinterface."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
-msgstr "Als je een wederverkoper wilt limiteren, moeten de klanten eerst een limiet krijgen."
+msgstr "Als u een wederverkoper wilt limiteren, dienen de klanten eerst een limiet te krijgen."
 
 msgid "Images have to be smaller than 500 x 90 pixels."
 msgstr "Afbeelding mag niet groter dan 500x90 pixels zijn"
@@ -2705,7 +2707,7 @@ msgid "Import"
 msgstr "Importeren"
 
 msgid "Import in local repository"
-msgstr "Importeren in lokale opslagplaats"
+msgstr "Importeren in lokale softwareberging"
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2781,7 +2783,7 @@ msgid "Info Unavailable"
 msgstr "Informatie niet beschikbaar"
 
 msgid "Install"
-msgstr "Installeer"
+msgstr "Installeren"
 
 msgid "Install in progress"
 msgstr "Installatie bezig"
@@ -2805,10 +2807,10 @@ msgid "Installed Package which was deleted by your reseller."
 msgstr "Geïnstalleerd pakket is verwijderd door uw wederverkoper"
 
 msgid "Installed in reseller repository"
-msgstr "Geïnstalleerd in het softwaredepot van wederverkoper"
+msgstr "Geïnstalleerd in de softwareberging van wederverkoper"
 
 msgid "Installed in software repository"
-msgstr "Geïnstalleerd in het softwaredepot"
+msgstr "Geïnstalleerd in de softwareberging "
 
 msgid "Installed on"
 msgstr "Geïnstalleerd op"
@@ -2931,7 +2933,7 @@ msgid "Languages index was successfully re-built."
 msgstr "Taalindex is succesvol herbouwd."
 
 msgid "Last Web software repository update"
-msgstr "De laatste webdepot-update."
+msgstr "Laatste update van softwareberging."
 
 msgid "Last access"
 msgstr "Laatste toegang"
@@ -3094,7 +3096,7 @@ msgid "Malformed resolver SQL query"
 msgstr "Ongeldige resolver-SQL-query"
 
 msgid "Manage SQL"
-msgstr "Beheer MySQL"
+msgstr "Beheer SQL"
 
 msgid "Manage htaccess users and groups"
 msgstr "Beheer htaccess-gebruikers en -groepen"
@@ -3185,13 +3187,13 @@ msgid "Monthly traffic limit [MiB]"
 msgstr "Maandelijks verkeerslimiet [MiB]"
 
 msgid "Monthly traffic limit must be a number."
-msgstr "Maandelijks verkeerslimiet moet een nummer zijn."
+msgstr "Maandelijks verkeerslimiet dient een nummer te zijn."
 
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
 msgstr "Maandelijks verkeerslimiet kan niet groter zijn dan het verkeerslimiet."
 
 msgid "Monthly traffic warning must be a number."
-msgstr "Maandelijkse verkeerslimietswaarschuwing moet een nummer zijn."
+msgstr "Maandelijkse verkeerslimietswaarschuwing dient een nummer te zijn."
 
 msgid "More Details"
 msgstr "Meer details"
@@ -3317,7 +3319,7 @@ msgid "No software available"
 msgstr "Geen software beschikbaar"
 
 msgid "No software in Web repository found!"
-msgstr "Geen software in websoftwaredepot gevonden!"
+msgstr "Geen software in websoftwareberging gevonden!"
 
 msgid "No software in software depot available!"
 msgstr "Geen software in softwaredepot beschikbaar."
@@ -3528,10 +3530,10 @@ msgid "Package already exists in the software depot!"
 msgstr "Pakket is reeds geïnstalleerd in het softwaredepot"
 
 msgid "Package already exists in the software repository!"
-msgstr "Pakket is reeds geïnstalleerd in het softwaredepot"
+msgstr "Pakket is reeds geïnstalleerd in de softwareberging!"
 
 msgid "Package already exists in your software repository!"
-msgstr "Pakket is reeds geïnstalleerd in uw softwaredepot"
+msgstr "Pakket is reeds geïnstalleerd in de softwareberging!"
 
 msgid "Package install type"
 msgstr "Pakketinstallatietype"
@@ -3546,7 +3548,7 @@ msgid "Package language"
 msgstr "Pakkettaal"
 
 msgid "Package name"
-msgstr "Pakketnaa"
+msgstr "Pakketnaam"
 
 msgid "Package title"
 msgstr "Pakkettitel"
@@ -3607,10 +3609,10 @@ msgstr "Wachtwoord lengte"
 msgid ""
 "Password must be at least %s characters long and contain letters and numbers"
 " to be valid."
-msgstr "Wachtwoord moet minimaal %s tekens lang zijn en moet letters en cijfers bevatten om geldig te zijn."
+msgstr "Wachtwoord dient minimaal %s tekens lang zijn en dient zowel letters en cijfers bevatten om geldig te zijn."
 
 msgid "Password settings"
-msgstr "Wachtwoord instellingen"
+msgstr "Wachtwoordinstellingen"
 
 msgid "Password successfully updated."
 msgstr "Wachtwoord succesvol bijgewerkt"
@@ -3631,7 +3633,7 @@ msgid ""
 "Paths are appended to the default PHP open_basedir directive of customers. "
 "Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
 "for more information."
-msgstr "Paden zijn bij de standaard 'PHP open_basedir'-map van klanten toegevoegd. Ze moeten elk worden onderscheiden door PATH_SEPARATOR. Zie de PHP-documentatie voor meer informatie."
+msgstr "Paden zijn bij de standaard 'PHP open_basedir'-map van klanten toegevoegd. Ze dienen elk te worden onderscheiden door PATH_SEPARATOR. Zie de PHP-documentatie voor meer informatie."
 
 msgid "Percent"
 msgstr "Procent"
@@ -3733,11 +3735,11 @@ msgstr "Invoegtoepassing %s kon niet worden aangepast."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must deactivate it first."
-msgstr "Invoegtoepassing %s kon niet verwijderd worden, u moet deze eerst deactiveren."
+msgstr "Invoegtoepassing %s kon niet verwijderd worden, u dient deze eerst te deactiveren."
 
 #, php-format
 msgid "Plugin %s cannot be deleted. You must uninstall it first."
-msgstr "Invoegtoepassing %s  kon niet verwijderd worden, u moet deze eerst verwijderen."
+msgstr "Invoegtoepassing %s  kon niet verwijderd worden, u dient deze eerst te deïnstalleren."
 
 #, php-format
 msgid "Plugin %s cannot be disabled."
@@ -3846,6 +3848,12 @@ msgid ""
 "Plugin Manager: Unable to delete the %s plugin files. Please, remove them "
 "manually."
 msgstr "Invoegtoepassingsbeheer: Kon de %s-bestanden niet verwijderen, verwijder deze handmatig."
+
+#, php-format
+msgid ""
+"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
+"another plugin."
+msgstr ""
 
 #, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
@@ -3968,7 +3976,7 @@ msgid "Protected"
 msgstr "Beveiligd"
 
 msgid "Protected area status should be 'OK' if you want to delete it."
-msgstr "Beveiligde mappen moeten de status 'Oké' hebben als je ze wilt verwijderen"
+msgstr "Beveiligde mappen dienen de status 'Oké' te hebben als u ze wilt verwijderen"
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "Beveiligde map succesvol ingepland om toegevoegd te worden"
@@ -4020,7 +4028,7 @@ msgid "Relative weight"
 msgstr "Relatief gewicht"
 
 msgid "Relative weight must be a number."
-msgstr "Relatief gewicht moet een nummer zijn."
+msgstr "Relatief gewicht dient een nummer te zijn."
 
 msgid "Release date"
 msgstr "Uitgavedatum"
@@ -4032,7 +4040,7 @@ msgid "Release version"
 msgstr "Uitgaveversie"
 
 msgid "Remote Web software repository"
-msgstr "Externe websoftwaredepot"
+msgstr "Externe websoftwareberging"
 
 msgid "Remote file not found."
 msgstr "Extern bestand niet gevonden."
@@ -4062,7 +4070,7 @@ msgid "Reply"
 msgstr "Antwoorde"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr "Verzoek time-out: De server deed er te lang over om data te versturen."
+msgstr "Geen antwoord: De server deed er te lang over om data te versturen."
 
 msgid "Request from foreign host was blocked."
 msgstr "Verzoek van externe host is geblokkeerd."
@@ -4086,7 +4094,7 @@ msgid "Reseller / Customers / Domain Aliases"
 msgstr "Wederverkoper / Klanten / Domeinaliassen"
 
 msgid "Reseller / Customers / Lost Password Email"
-msgstr "Wederverkoper / Instellingen / Wachtwoord vergeten-mail"
+msgstr "Wederverkoper / Instellingen / Wachtwoord vergetene-mail"
 
 msgid "Reseller / Customers / Overview"
 msgstr "Wederverkoper / Klanten / Overzicht"
@@ -4200,7 +4208,7 @@ msgid "Reseller name"
 msgstr "Wederverkoper naam"
 
 msgid "Reseller software list"
-msgstr "Wederverkopersoftwarelijst"
+msgstr "Wederverkoperssoftwarelijst"
 
 msgid "Reseller statistics"
 msgstr "Statistieken wederverkoper"
@@ -4245,7 +4253,7 @@ msgid "Restore backup"
 msgstr "Herstel laatste back-up"
 
 msgid "Revision date"
-msgstr "Revisiedatum"
+msgstr "Laatst bijgewerkt"
 
 msgid "Rights"
 msgstr "Rechten"
@@ -4360,7 +4368,7 @@ msgid "Search"
 msgstr "Zoeken"
 
 msgid "Sec."
-msgstr "Seconde"
+msgstr "Seconden"
 
 msgid "Secure connection"
 msgstr "Beveiligde verbinding"
@@ -4553,7 +4561,7 @@ msgid "Software has been successfully imported."
 msgstr "Software is succesvol geïmporteerd."
 
 msgid "Software in repository"
-msgstr "Software in depot"
+msgstr "Software in berging"
 
 msgid "Software installation"
 msgstr "Software installatie"
@@ -4589,7 +4597,7 @@ msgid "Software permissions"
 msgstr "Software permissies"
 
 msgid "Software repository"
-msgstr "Softwaredepot"
+msgstr "Softwareberging"
 
 msgid "Software scheduled for deletion."
 msgstr "Software ingepland voor verwijdering."
@@ -4648,7 +4656,7 @@ msgid "Status"
 msgstr "Status"
 
 msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr "Status voor beveiligde map moet 'oké' zijn als u het wilt bewerken."
+msgstr "Status voor beveiligde map dient 'oké' te zijn als u het wilt bewerken."
 
 msgid "Street 1"
 msgstr "Straat 1"
@@ -4750,7 +4758,7 @@ msgid "Switch to user interface"
 msgstr "Verander van gebruiker"
 
 msgid "Syntax error found in mail forward list."
-msgstr ""
+msgstr "Syntaxis-fout gevonden in de maildoorstuurdlijst."
 
 msgid "System"
 msgstr "Systeem"
@@ -4781,7 +4789,7 @@ msgid "TTL"
 msgstr "TTL"
 
 msgid "TTL must be a number."
-msgstr "TTL moet een nummer zijn."
+msgstr "TTL dient een nummer te zijn."
 
 msgid "TXT data"
 msgstr "TXT-data"
@@ -4835,13 +4843,13 @@ msgstr "Het limiet %s kan niet worden uitgeschakeld, omdat hij heeft: <strong>%d
 msgid ""
 "The %s limit for this customer cannot be unlimited because his reseller is "
 "limited for this service."
-msgstr "Het limiet %s voor deze klant kan niet oneindig zijn, omdat de wederverkoper dat niet voor deze service heeft."
+msgstr "Het limiet %s voor deze klant kan niet ongelimiteerd zijn, omdat de wederverkoper gelimiteerd is."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
-msgstr "Het limiet %s voor deze klant kan niet oneindig zijn, omdat u dat niet voor deze service heeft."
+msgstr "Het limiet %s voor deze klant kan niet ongelimiteerd zijn, omdat u gelimiteerd bent."
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
@@ -4940,7 +4948,7 @@ msgid "The value has not been found in the stack"
 msgstr "Deze waarde staat er niet tussen"
 
 msgid "The values must not be equal"
-msgstr "De waarden moeten niet gelijk zijn"
+msgstr "De waarden mogen niet gelijk zijn"
 
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
@@ -4978,7 +4986,7 @@ msgid ""
 " and will be available for assignment to one or many of your resellers. If "
 "an IP address is not already configured on the system, it will be attached "
 "to the selected network interface."
-msgstr "Deze interface staat u toe om IP-adressen toe te voegen of te verwijderen. IP-adressen die hieronder staan aangegeven worden reeds beheerd door i-MSCP. IP-adressen die zijn toegevoegd via deze interface worden automatisch in de databank van i-MSCP toegevoegd, en zullen beschikbaar zijn om toegewezen te worden aan een van uw vele wederverkopers. Als een IP-adres nog niet in het systeem is geconfigureerd zal het worden gekoppeld aan de geselecteerde netwerkinterface."
+msgstr "Deze interface staat u toe om IP-adressen toe te voegen of te verwijderen. IP-adressen die hieronder staan aangegeven worden reeds beheerd door i-MSCP. IP-adressen die zijn toegevoegd via deze interface worden automatisch in de databank van i-MSCP toegevoegd, en zullen beschikbaar zijn om toegewezen te worden aan een van uw wederverkopers. Als een IP-adres nog niet in het systeem is geconfigureerd zal het worden gekoppeld aan de geselecteerde netwerkinterface."
 
 #, php-format
 msgid ""
@@ -4988,7 +4996,7 @@ msgid ""
 msgstr "Dit is de host waarvandaan deze SQL-gebruiken toestemming moet hebben om te verbinden met de SQL-server. Voer het teken %% in om deze SQL-gebruiker toestemming te geven om vanaf elke host te verbinden."
 
 msgid "This package already exists in the administrator software repository."
-msgstr "Dit pakket bestaat al in het softwaredepot voor beheerders."
+msgstr "Dit pakket bestaat al in de softwareberging voor beheerders."
 
 #, php-format
 msgid "This package already exists in the depot of the reseller \"%1$s\"!"
@@ -4998,7 +5006,7 @@ msgid "This package already exists in the software depot!"
 msgstr "Dit pakket bestaat reeds in het softwaredepot!"
 
 msgid "This package already exists in your software repository."
-msgstr "Dit pakket bestaat reeds in uw softwaredepot."
+msgstr "Dit pakket bestaat reeds in uw softwareberging."
 
 msgid "This package is installed on following domain(s):"
 msgstr "Dit pakket is geïnstalleerd op de volgende domeinen:"
@@ -5052,7 +5060,7 @@ msgstr "Naar wederverkoper"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
-msgstr "Om de beveiliging van deze invoegtoepassing op te heffen moet u het bestand %s aanpassen"
+msgstr "Om de beveiliging van deze invoegtoepassing op te heffen dient u het bestand %s aan te passen"
 
 msgid "Total"
 msgstr "Totaal"
@@ -5074,7 +5082,7 @@ msgid "Total mails: %s / %s %s"
 msgstr "Totaal aantal e-mails: %s / %s %s"
 
 msgid "Total packages in Web software repository"
-msgstr "Totaal aantal pakketten in softwaredepot"
+msgstr "Totaal aantal pakketten in softwareberging"
 
 msgid "Total reseller"
 msgstr "Totaal wederverkoper"
@@ -5179,7 +5187,7 @@ msgid "Unable to protect the %s plugin: %s"
 msgstr "Kan de invoegtoepassing %s niet beveiligen: %s"
 
 msgid "Unable to read Web software repository index file."
-msgstr "Kan index-bestand van softwaredepot niet uitlezen."
+msgstr "Kan index-bestand van softwareberging niet uitlezen."
 
 msgid "Unable to read xml file for web software."
 msgstr "Kan XML-bestand niet uit websoftware lezen."
@@ -5309,10 +5317,10 @@ msgid "Update SQL user password"
 msgstr "SQL-gebruikerswachtwoord bijwerken"
 
 msgid "Update data"
-msgstr "Wijzig gegevens"
+msgstr "Gegevens bijwerken"
 
 msgid "Update from Web software repository"
-msgstr "Bijwerken vanuit softwaredepot"
+msgstr "Bijwerken vanuit softwareberging"
 
 msgid "Update from web depot"
 msgstr "Bijwerken vanuit webdepot"
@@ -5326,7 +5334,7 @@ msgstr "Informatie bijwerken"
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
-msgstr "Bijwerken van de index van het softwaredepot is afgebroken. Lege of ontbrekende velden."
+msgstr "Bijwerken van de index van het softwareberging is afgebroken. Lege of ontbrekende velden."
 
 msgid "Update password"
 msgstr "Wachtwoord bijwerken"
@@ -5368,10 +5376,10 @@ msgid "Used database"
 msgstr "Gebruikte databank"
 
 msgid "User"
-msgstr "gebruiker"
+msgstr "Gebruiker"
 
 msgid "User (first and last) name"
-msgstr "Gebruikers (voor- en achter-) naam"
+msgstr "Gebruikers(voor- en achter-)naam"
 
 msgid "User assignment"
 msgstr "Gebruikerstoekenning"
@@ -5455,13 +5463,13 @@ msgstr "Waarde voor de PHP-richtlijn %s bevindt zich buiten bereik."
 msgid ""
 "Value for the PHP <strong>%%s</strong> directive must be between %%d and "
 "%%d."
-msgstr "Waarde voor de PHP-richtlijn <strong>%%s</strong> moet zich tussen %%d en %%d bevinden."
+msgstr "Waarde voor de PHP-richtlijn <strong>%%s</strong> dient zich tussen %%d en %%d te bevinden."
 
 msgid "Values"
 msgstr "Waarde"
 
 msgid "Vendor hompage"
-msgstr "Homepage van verkoper"
+msgstr "Website van ontwikkelaar"
 
 msgid "Version"
 msgstr "Versie"
@@ -5479,7 +5487,7 @@ msgid "View Support Ticket"
 msgstr "Bekijk ondersteuningsticket"
 
 msgid "View aliases"
-msgstr "Bekijk aliassen"
+msgstr "Aliassen bekijken"
 
 msgid "View hosting plan"
 msgstr "Bekijk het hostingpakket"
@@ -5520,13 +5528,13 @@ msgid "Web software depot packages total"
 msgstr "Totaal aantal pakketten in online softwaredepot"
 
 msgid "Web software repository"
-msgstr "Softwaredepot"
+msgstr "Softwareberging"
 
 msgid "Web software repository index been successfully updated."
-msgstr "Index van softwaredepot is succesvol bijgewerkt."
+msgstr "Index van softwareberging is succesvol bijgewerkt."
 
 msgid "Web software repository index is already up to date."
-msgstr "Index van softwaredepot is reeds bijgewerkt."
+msgstr "Index van softwareberging is reeds bijgewerkt."
 
 msgid "Web statistics"
 msgstr "Webstatistieken"
@@ -5601,7 +5609,7 @@ msgid "Wrong value for the PHP open_basedir directive."
 msgstr "Verkeerde waarde voor de PHP 'open_basedir'-richtlijn."
 
 msgid "XML file URL for the Web software repository"
-msgstr "URL van XML-bestand voor het softwaredepot"
+msgstr "URL van XML-bestand voor het softwareberging"
 
 msgid "YB"
 msgstr "YB"
@@ -5830,7 +5838,7 @@ msgid "You must confirm customer account deletion."
 msgstr "U dient het verwijderen te bevestigen."
 
 msgid "You must confirm your password."
-msgstr "U moet uw wachtwoord bevestigen"
+msgstr "U dient uw wachtwoord te bevestigen."
 
 msgid "You must enter a domain alias name."
 msgstr "U dienst hier een domeinalias in te vullen."
@@ -5839,40 +5847,40 @@ msgid "You must enter a subdomain name."
 msgstr "U dienst hier een subdomein in te vullen."
 
 msgid "You must first generate a password by clicking on the generate button."
-msgstr ""
+msgstr "U dient eerst een wachtwoord te genereren door op de Genereer-knop te klikken."
 
 msgid "You must omit 'www'. It will be added automatically."
-msgstr "U moet 'www' weglaten. Het zal automatisch worden toegevoegd."
+msgstr "U dient 'www' weg te laten. Het zal automatisch worden toegevoegd."
 
 msgid "You must provide a password."
-msgstr "U moet een wachtwoord ingeven."
+msgstr "U dient een wachtwoord in te geven."
 
 msgid "You must select a file to upload."
-msgstr "U moet een bestand selecteren om te uploaden."
+msgstr "U dient een bestand te selecteren om te uploaden."
 
 msgid "You must select a file to upload/download."
-msgstr "U moet een bestand selecteren om te uploaden/downloaden."
+msgstr "U dient een bestand te selecteren om te uploaden/downloaden."
 
 msgid "You must select a least one item to deactivate."
-msgstr "U moet tenminste één voorwerp selecteren om uit te schakelen."
+msgstr "U dient tenminste één voorwerp te selecteren om uit te schakelen."
 
 msgid "You must select a least one item to delete"
-msgstr "U moet tenminste één voorwerp selecteren om te verwijderen"
+msgstr "U dient tenminste één voorwerp te selecteren om te verwijderen"
 
 msgid "You must select a least one mail account to delete."
-msgstr "Uw moet tenminste één e-mailaccount selecteren om te verwijderen."
+msgstr "U dient tenminste één e-mailaccount te selecteren om te verwijderen."
 
 msgid "You must select a network interface."
-msgstr "U moet een netwerkinterface selecteren"
+msgstr "U dient een netwerkinterface te selecteren."
 
 msgid "You must select a plugin."
-msgstr "U moet een invoegtoepassing selecteren."
+msgstr "U dient een invoegtoepassing te selecteren."
 
 msgid "You must specify a message."
-msgstr "U moet een bericht specificeren."
+msgstr "U dient een bericht te specificeren."
 
 msgid "You must specify a subject."
-msgstr "U moet een onderwerp specificeren."
+msgstr "U dient een onderwerp te specificeren."
 
 msgid "You need a Database for this software"
 msgstr "U heeft een databank nodig voor deze nieuwe software"
@@ -5910,7 +5918,7 @@ msgid "Your new i-MSCP login"
 msgstr "Uw nieuwe i-MSCP-login."
 
 msgid "Your new password"
-msgstr ""
+msgstr "Uw nieuwe wachtwoord"
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Uw nieuwe wachtwoord is verzonden. Controleer uw e-mail."
@@ -6042,10 +6050,10 @@ msgid "i-MSCP Notice"
 msgstr "i-MSCP Mededeling"
 
 msgid "i-MSCP Software installer / Web software repository"
-msgstr "i-MSCP Software-installer / Softwaredepot"
+msgstr "i-MSCP Software-installer / Softwareberging"
 
 msgid "i-MSCP Web software repository"
-msgstr "i-MSCP Softwaredepot"
+msgstr "i-MSCP Softwareberging"
 
 msgid "i-MSCP plugin store"
 msgstr "i-MSCP invoegtoepassingwinkel"
@@ -6145,7 +6153,7 @@ msgid "unlimited"
 msgstr "ongelimiteerd"
 
 msgid "view aliases"
-msgstr "bekijk aliassen"
+msgstr "aliassen bekijken"
 
 msgid "waiting for activation"
 msgstr "wachten op activering"

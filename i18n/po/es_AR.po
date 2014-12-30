@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-12-11 13:01+0100\n"
-"PO-Revision-Date: 2014-12-11 07:54+0000\n"
+"POT-Creation-Date: 2014-12-30 01:48+0100\n"
+"PO-Revision-Date: 2014-12-30 00:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nEstimado {NAME},\n\nEsta es una confirmación automática para el pedido del dominio:\n\n{DOMAIN}\n\nTiene que pulsar en el siguiente enlace para confirmar su orden.\n\n{ACTIVATION_LINK}\n\nSi no la confirma antes de {EXPIRE_DATE}, ésta será cancelada automáticamente.\n\nGracias por usar los servicios i-MSCP.\n\n___________________________\nEl Equipo de i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -56,7 +56,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nEstimado {NAME},\n\nUtilice este enlace para activar su nueva contraseña de i-MSCP:\n\n{LINK}\n\nGracias por utlilizar los servicios i-MSCP.\n\n___________________________\nEl Equipo de i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -74,7 +74,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nEstimado {RESELLER},\n\nSu cliente {CUSTOMER} está esperando la aprobación de su nuevo alias de dominio:\n\n{ALIAS}\n\nUna vez iniciada sesión, usted puede activar su nuevo alias desde {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nGracias por usar los servicios i-MSCP\n\n___________________________\nEl Equipo de i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -91,7 +91,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nHola {NAME},\n\nSu nombre de usuario es: {USERNAME}\nSu contraseña es: {PASSWORD}\n\nUsted puede iniciar sesión desde {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nGracias por usar los servicios i-MSCP.\n\n___________________________\nEl Equipo de i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -113,7 +113,7 @@ msgid ""
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nEstimado {NAME},\n\nHa sido creada una nueva cuenta para usted.\n\nInformación de su cuenta:\n\nTipo de Usuario: {USERTYPE}\nNombre de Usuario: {USERNAME}\nContraseña: {PASSWORD}\n\nRecuerde cambiar su contraseña al iniciar sesión por primera vez.\n\nYa puede iniciar sesión desde {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nEstadísticas: http://{USERNAME}/{WEBSTATS_RPATH}\n(Con el mismo usuario y contaseña ya señalados)\n\nGracias por utilizar nuestros servicios.\n"
 
 msgid ""
 "\n"
@@ -132,43 +132,43 @@ msgid ""
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nEstimado {NAME},\n\nHa sido creada una nueva cuenta para usted.\n\nInformación de su cuenta:\n\nTipo de Usuario: {USERTYPE}\nNombre de Usuario: {USERNAME}\nContraseña: {PASSWORD}\n\nRecuerde cambiar su contraseña al iniciar sesión por primera vez.\n\nYa puede iniciar sesión desde {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nGracias por utilizar nuestro servicios.\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr "Administrador / Soporte / Tickets abiertos"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
-msgstr ""
+msgstr "Cliente / Herramientas Web / Páginas de Error Personalizadas / Editar Páginas de Error Personalizadas"
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr "Mostrar todos los errores, excepto advertencias sobre código obsoleto (Producción)"
 
 msgid " Wrong IP address."
-msgstr ""
+msgstr "Dirección IP incorrecta."
 
 msgid " was deleted by {ADMIN}!"
-msgstr ""
+msgstr "fue eliminado por {ADMIN}!"
 
 #, php-format
 msgid "%1$d / %2$d"
-msgstr ""
+msgstr "%1$d / %2$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
-msgstr ""
+msgstr "%1$d / %2$d de %3$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d</b>"
-msgstr ""
+msgstr "%1$d / %2$d de %3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr ""
+msgstr "%1$d / %2$d de ilimitado"
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
+msgstr "%1$d de %2$d"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -184,7 +184,7 @@ msgstr "%1$s (%2$s)"
 
 #, php-format
 msgid "%1$s - (Softwaredepot)"
-msgstr ""
+msgstr "%1$s - (Almacen de Software)"
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
@@ -192,23 +192,23 @@ msgstr "%1$s - (Versión: %2$s, Idioma: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
-msgstr ""
+msgstr "%1$s / %2$s de %3$s"
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr ""
+msgstr "%1$s / %2$s de ilimitado"
 
 #, php-format
 msgid "%1$s of %2$s"
-msgstr ""
+msgstr "%1$s de %2$s"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr ""
+msgstr "%1$s de <b>ilimitado</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -224,7 +224,7 @@ msgstr "%1$s%% [%2$s de ilimitado]"
 
 #, php-format
 msgid "%1$s`s - Software"
-msgstr ""
+msgstr "%1$s`s - Software"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
@@ -232,11 +232,11 @@ msgstr "%d %s remanentes hasta el vencimiento de la cuenta"
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / ilimitado"
 
 #, php-format
 msgid "%d Service(s) port successfully updateds"
-msgstr ""
+msgstr "%d Puertos de Servicio(s) actualizados satisfactoriamente"
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -248,7 +248,7 @@ msgstr "%d Parámetro(s) de configuración actualizado(s)."
 
 #, php-format
 msgid "%d of %s"
-msgstr ""
+msgstr "%d de %s"
 
 #, php-format
 msgid "%d strings translated"
@@ -256,11 +256,11 @@ msgstr "%d cadenas traducidas"
 
 #, php-format
 msgid "%s / %s of %s"
-msgstr ""
+msgstr "%s / %s de %s"
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / ilimitado"
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -272,15 +272,15 @@ msgstr "%s no existe"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s no existe o está vacío."
 
 #, php-format
 msgid "%s field is empty or invalid."
-msgstr ""
+msgstr "campo %s está vacío o es inválido."
 
 #, php-format
 msgid "%s host field is empty or invalid."
-msgstr ""
+msgstr "campo host %s está vacío o es inválido."
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -288,19 +288,19 @@ msgstr "%s no es un archivo i-MSCP de idioma válido."
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
+msgstr "%s no está permitido como etiqueta de subdominio."
 
 #, php-format
 msgid "%s is not part of domain %s."
-msgstr ""
+msgstr "%s no es parte del dominio %s."
 
 #, php-format
 msgid "%s of %s"
-msgstr ""
+msgstr "%s de %s"
 
 #, php-format
 msgid "%s of unlimited"
-msgstr ""
+msgstr "%s de ilimitado"
 
 #, php-format
 msgid "%s page"
@@ -314,82 +314,82 @@ msgstr "%s registros"
 msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
-msgstr ""
+msgstr "%s: El consumo (%s) de los Clientes para este revendedor es mayor que el nuevo límite."
 
 #, php-format
 msgid ""
 "%s: The total of items (%s) already assigned by the reseller is greater than"
 " the new limit."
-msgstr ""
+msgstr "%s: El total de ítems (%s) actualmente asignado por este revendedor es mayor que el nuevo límite."
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr ""
+msgstr "%s: Este revendedor tiene cliente(s) con ítems ilimitados."
 
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers"
-msgstr ""
+msgstr "%s: No puede desactivar un servicio que actualmente utilizado por clientes de los revendedores"
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
-msgstr ""
+msgstr "%s: No puede desactivar un servicio actualmente vendido a clientes de los revendedores."
 
 #, php-format
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
-msgstr ""
+msgstr "%s::getInfo() no implementado y %s no encontrado. Esta es una falla en el plugin %s que debe ser reportada a su(s) autor(es)."
 
 #, php-format
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' parece no tener un registro MX válido para esta dirección de email '%%value%%'"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' no es un nombre de host válido para esta dirección de email '%%value%%'"
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr ""
+msgstr "'%%hostname%%' no es un segmento de red rutable. La dirección de email '%%value%%' no será resuelta desde redes públicas"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%%localPart%%' no puede ser emparejado contra el formato dot-atom"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%%localPart%%' no puede ser emparejado contra el formato quoted-string"
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
+msgstr "'%%localPart%%' no es parte local válida para la dirección de email '%%value%%'"
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' parece ser un nombre de host DNS pero no se puede extraer la parte TLD"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%' parece ser un nombre de host DNS pero no se puede encontrar su TLD en la lista conocida"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' parece ser un nombre de host DNS pero no concuerda con ningún esquema de nombre para el TLD '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' parece ser un nombre de host DNS pero contiene un guión en una posición inválida"
 
 #, php-format
 msgid ""
@@ -3836,6 +3836,12 @@ msgstr ""
 msgid ""
 "Plugin Manager: Unable to delete the %s plugin files. Please, remove them "
 "manually."
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
+"another plugin."
 msgstr ""
 
 #, php-format
