@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 18:09+0200\n"
-"PO-Revision-Date: 2014-09-19 16:12+0000\n"
+"POT-Creation-Date: 2014-12-30 03:26+0100\n"
+"PO-Revision-Date: 2014-12-30 02:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -268,30 +268,6 @@ msgstr "%s de ilimitado"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "La cuenta %s ha sido eliminada correctamente."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s ha eliminado el log de administración anterior a un mes."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s ha eliminado el log de administración anterior a un año."
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s ha eliminado el log de administración anterior a seis meses."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s ha eliminado el log de administración anterior a tres meses."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s ha borrado los registros anteriores a 2 semanas del log de administración"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s se ha eliminado todo el log de administración."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -875,9 +851,6 @@ msgstr "Administrador / Usuarios / Asignación de Revendedores"
 msgid "Admin / Users / Sessions"
 msgstr "Administrador / Usuarios / Sesiones"
 
-msgid "Admin Log"
-msgstr "Log de Administración"
-
 msgid "Admin account successfully created."
 msgstr "La cuenta de Administrador se ha creado correctamente."
 
@@ -1008,23 +981,27 @@ msgstr "Ya en uso"
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa para encontrar tu sitio web"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "Una entrada esta definida dos veces a continuación."
-
-msgid "An error has been found in mail forward list."
-msgstr "Se ha encontrado un error en la lista de reenvio de correo."
 
 msgid "An error occurred during authentication."
 msgstr "Se produjo un error durante la autenticación."
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Ha ocurrido un error. Por favor, contactate con tu administrador."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Ha ocurrido un error inesperado, favor contáctese con su revendedor"
 
-msgid "An unexpected error occured. Please retry"
-msgstr "Ha ocurrido un error inesperado. Por favor reintentalo"
+#, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+msgid "An unexpected error occurred. Please contact your administrator."
+msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1159,6 +1136,9 @@ msgstr "Asignar grupo"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "¡Datos de la plantilla de correo automatico actualizados!"
 
@@ -1206,6 +1186,9 @@ msgstr "El Backup se ha programado con éxito para la restauración."
 
 msgid "Bad password."
 msgstr "Contraseña equivocada"
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "Detrás"
@@ -1300,9 +1283,6 @@ msgstr "Certificado"
 
 msgid "Certificate data"
 msgstr "Fecha del certificado"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "El certificado ha sido programado para su eliminación."
 
 msgid "Change"
 msgstr "Cambiar"
@@ -1529,8 +1509,8 @@ msgstr "Cliente / Webtools / Áreas protegidas / {TR_DYNAMIC_TITLE}"
 msgid "Client / Webtools / Software"
 msgstr "Cliente / Webtools / Software"
 
-msgid "Client / Webtools / Software / Install"
-msgstr "Cliente / Webtools / Software / Instalar"
+msgid "Client / Webtools / Software / Software Installation"
+msgstr ""
 
 msgid "Client / Webtools / Software / View"
 msgstr "Cliente / Webtools / Software / Ver"
@@ -1601,9 +1581,6 @@ msgstr "Crear Catch-All"
 msgid "Create default email addresses"
 msgstr "Crear direcciones de correo predeterminadas"
 
-msgid "Create directory, if not existing!"
-msgstr "Crear directorio, si no existe!"
-
 msgid "Created by"
 msgstr "Creado por"
 
@@ -1619,11 +1596,11 @@ msgstr "La contraseña actual es incorrecta."
 msgid "Custom DNS record"
 msgstr "Registro DNS personalizado"
 
-msgid "Custom DNS record scheduled for deletion."
-msgstr "Registro DNS personalizado programado para su eliminación."
-
 msgid "Custom DNS record successfully scheduled for addition."
 msgstr "El Registro DNS personalizado ha sido programado con éxito para añadirlo."
+
+msgid "Custom DNS record successfully scheduled for deletion."
+msgstr ""
 
 msgid "Custom DNS record successfully scheduled for update."
 msgstr "Registro DNS personalizado programado con éxito para la actualización."
@@ -1691,11 +1668,11 @@ msgstr "Consumo del cliente"
 msgid "Customer level"
 msgstr "Nivel del cliente"
 
-msgid "Customer scheduled for addition."
-msgstr "Cliente programado para ser añadido."
-
 msgid "Customer statistics"
 msgstr "Estadisticas del cliente"
+
+msgid "Customer successfully scheduled for addition."
+msgstr ""
 
 msgid "Customer successfully scheduled for deletion."
 msgstr "Cliente programado correctamente para su eliminación."
@@ -1777,6 +1754,9 @@ msgstr "Uso de Base de Datos"
 
 msgid "Database users"
 msgstr "Usuarios de la base de datos"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr ""
 
 msgid "Databases"
 msgstr "Bases de Datos"
@@ -2021,21 +2001,24 @@ msgid "Domain alias successfully scheduled for update."
 msgstr "Alias de Dominio programado correctamente para actualización."
 
 msgid ""
-"Domain alias you are trying to remove has Ftp accounts. Remove them first."
-msgstr "El alias de dominio que está intentando eliminar tiene cuentas FTP. Elimínelas primero."
-
-msgid ""
 "Domain alias you are trying to remove has custom DNS records. Remove them "
 "first."
 msgstr "El alias de dominio que está intentando eliminar tiene registros DNS personalizados. Elimínelos primero."
 
 msgid ""
-"Domain alias you are trying to remove has email accounts. Remove them first."
-msgstr "El alias de dominio que está intentando eliminar tiene cuentas de correo electrónico. Elimínelas primero."
+"Domain alias you are trying to remove has subdomains. Please remove them "
+"first."
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has subdomains. Remove them first."
-msgstr "El alias de dominio que está intentando eliminar tiene subdominios. Elimínelos primero."
+"Domain alias you are trying to remove still has FTP accounts. Please remove "
+"them first."
+msgstr ""
+
+msgid ""
+"Domain alias you are trying to remove still has email accounts. Please "
+"remove them first."
+msgstr ""
 
 msgid "Domain aliases"
 msgstr "Los Alias de dominio"
@@ -2230,9 +2213,6 @@ msgstr "Errores de la cuenta de correo"
 msgid "Email account limit"
 msgstr "Limite de la cuenta de correo"
 
-msgid "Email account limit is reached."
-msgstr "Se ha alcanzado el límite de cuentas de correo."
-
 msgid "Email account list"
 msgstr "Lista de cuentas de correo"
 
@@ -2250,6 +2230,9 @@ msgstr "Las cuentas de correo han sido suspendidas duramente"
 
 msgid "Email address"
 msgstr "Dirección de Email"
+
+msgid "Email address with comma(s) are not accepted."
+msgstr ""
 
 msgid "Email forward"
 msgstr "Reenvio de Email"
@@ -2286,8 +2269,8 @@ msgstr "Configuraciónes del correo"
 msgid "Email setup"
 msgstr "Configuración de Email"
 
-msgid "Email updated."
-msgstr "Correo actualizado."
+msgid "Email successfully updated."
+msgstr ""
 
 msgid "Emails"
 msgstr "Correos electrónicos"
@@ -2548,14 +2531,14 @@ msgstr "Configuración general"
 msgid "Generate"
 msgstr "Generar"
 
-msgid "Generate password"
-msgstr "Generar contraseña"
-
 msgid "Get a new image"
 msgstr "Obtener una nueva imagen"
 
 msgid "GiB"
 msgstr "GiB"
+
+msgid "Go to the debugger for more details"
+msgstr ""
 
 msgid "Group"
 msgstr "Grupo"
@@ -2797,14 +2780,8 @@ msgstr ""
 msgid "Install"
 msgstr "Instalar"
 
-msgid "Install Software"
-msgstr "Instalar Software"
-
 msgid "Install in progress"
 msgstr "Instalación en curso"
-
-msgid "Install path"
-msgstr "Ruta de instalación"
 
 msgid "Install this plugin"
 msgstr "Instalar este plugin"
@@ -2882,6 +2859,9 @@ msgstr "URL inválida"
 msgid "Invalid domain name."
 msgstr "Nombre de dominio inválido."
 
+msgid "Invalid email address."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Fecha de expiración no válida."
 
@@ -2900,7 +2880,7 @@ msgstr "Orden de menú no válido."
 msgid "Invalid name."
 msgstr "Nombre no válido."
 
-msgid "Invalid private key or passphrase"
+msgid "Invalid private key or passphrase."
 msgstr ""
 
 msgid "Invalid target."
@@ -2908,6 +2888,9 @@ msgstr "Destino no válido."
 
 msgid "Invalid type given. String expected"
 msgstr "Tipo dado inválido. Se esperaba un string."
+
+msgid "Invalid username."
+msgstr ""
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -2992,6 +2975,9 @@ msgstr "Enlace a la página del autor"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Carga (1 Min, 5 Min, 15 Min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr "Las entradas del Log se han eliminado correctamente."
 
@@ -3028,6 +3014,9 @@ msgstr "Logo eliminado correctamente."
 
 msgid "Logo successfully updated."
 msgstr "Logo subido correctamente."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Recuperar contraseña"
@@ -3243,9 +3232,6 @@ msgstr "Nuevo pedido de alias de {CUSTOMER}"
 msgid "New password has not been sent. Ask your administrator."
 msgstr "La nueva contraseña no se ha enviado. Pregunte a su administrador."
 
-msgid "New password is"
-msgstr "La nueva contraseña es"
-
 msgid "New ticket"
 msgstr "Nuevo ticket"
 
@@ -3269,9 +3255,6 @@ msgstr "No hay logs anti-rootkits"
 
 msgid "No available"
 msgstr "No disponible"
-
-msgid "No certificate found"
-msgstr ""
 
 msgid "No custom menu found."
 msgstr "No se encontró menú personalizado."
@@ -3305,9 +3288,6 @@ msgstr "No hay un plan de Hosting disponible. Por favor, contacte a su administr
 
 msgid "No languages found."
 msgstr "No se encontraron idiomas."
-
-msgid "No logs found."
-msgstr "No se encontraron registros (logs)."
 
 msgid "No records found matching the search criteria."
 msgstr "No se encontraron registros que coincidan con los criterios de búsqueda."
@@ -3632,6 +3612,9 @@ msgstr "Configuración de contraseña"
 msgid "Password successfully updated."
 msgstr "La contraseña ha sido actualizada correctamente."
 
+msgid "Password with comma(s) are not accepted."
+msgstr ""
+
 msgid "Passwords do not match"
 msgstr "Las contraseñas no coinciden"
 
@@ -3689,10 +3672,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "¡Por favor, ponte en contacto con el administrador! <br /> Pregúntale por los permisos para utilizar este paquete. <br /> No estás autorizado a cargar este paquete dos veces. <br />¡ Actualiza tu sitio para ver el nuevo estado!"
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
-
 msgid "Please enter a name for the protected area."
 msgstr "Por favor, intoduce un nombre para el área aprotegida."
 
@@ -3713,9 +3692,6 @@ msgstr "Por favor ingrese su mensaje de auto-respuesta abajo"
 
 msgid "Please fill up both data fields for password."
 msgstr "Por favor llenar los dos campos de contraseña."
-
-msgid "Please select a valid SQL user for the database."
-msgstr "Por favor, selecciona un usuario SQL válido para la Base de Datos."
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -3869,6 +3845,12 @@ msgid ""
 msgstr "Administrador de Plugins: no se puede eliminar los archivos %s del plugin. Por favor, eliminelo manualmente."
 
 #, php-format
+msgid ""
+"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
+"another plugin."
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
 msgstr "Administrador de plugins: no se ha podido cargar el plugin %s."
 
@@ -3951,7 +3933,7 @@ msgstr "Prioridad: %s\n"
 msgid "Private key"
 msgstr ""
 
-msgid "Private key field cannot be empty"
+msgid "Private key field cannot be empty."
 msgstr ""
 
 msgid "Private key passphrase if any"
@@ -4081,6 +4063,9 @@ msgstr "Repetir la contraseña"
 
 msgid "Reply"
 msgstr "Responder"
+
+msgid "Request Timeout: The server took too long to send the data."
+msgstr ""
 
 msgid "Request from foreign host was blocked."
 msgstr "La petición del servidor externo ha sido bloqueada."
@@ -4350,16 +4335,22 @@ msgstr "Usuario SQL prefijo/sufijo"
 msgid "SQL user successfully added."
 msgstr "El usuario SQL ha sido añadido correctamente."
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr ""
+
 msgid "SQL users"
 msgstr "Usuarios SQL"
-
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr ""
 
 msgid "SSL certificate"
 msgstr ""
 
-msgid "SSL feature is not available."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
 msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
@@ -4380,14 +4371,8 @@ msgstr "Conexión segura"
 msgid "Security code"
 msgstr "Código de seguridad"
 
-msgid "Select Domain"
-msgstr "Seleccionar Dominio"
-
 msgid "Select all entries for deletion."
 msgstr "Seleccionar todos los registros para ser eliminados"
-
-msgid "Select database"
-msgstr "Seleccionar Base de Datos"
 
 msgid "Select group"
 msgstr "Selecciona un grupo"
@@ -4588,6 +4573,9 @@ msgstr "Opciones del instalador de software han sido actualizadas."
 msgid "Software installer requires PHP support."
 msgstr "El instalador de software requiere soportar PHP."
 
+msgid "Software instance has been scheduled for installation"
+msgstr ""
+
 msgid "Software management"
 msgstr "Administración de software"
 
@@ -4606,11 +4594,11 @@ msgstr "Permisos del software"
 msgid "Software repository"
 msgstr "Repositorio de Software"
 
-msgid "Software scheduled for deletion."
-msgstr "Software programado para su eliminación."
-
 msgid "Software status"
 msgstr "Estado del software"
+
+msgid "Software successfully scheduled for deletion."
+msgstr ""
 
 msgid "Software total"
 msgstr "Total software"
@@ -4692,9 +4680,9 @@ msgid "Subdomain alias successfully scheduled for deletion."
 msgstr "El Alias del ​​Subdominio fue programado exitosamente para su eliminación."
 
 msgid ""
-"Subdomain alias you are trying to remove has Ftp accounts. Remove them "
-"first."
-msgstr "El alias de Subdominio que está intentando eliminar tiene cuentas de FTP. Elimínelas primero."
+"Subdomain alias you are trying to remove has Ftp accounts. Please remove "
+"them first."
+msgstr ""
 
 msgid "Subdomain errors"
 msgstr "Errores de subdominio"
@@ -4726,6 +4714,11 @@ msgstr "Subdominio programado correctamente para actualización"
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
 msgstr "El Subdominio que está tratando de eliminar dispone de cuentas FTP. Elimínelas primero."
+
+msgid ""
+"Subdomain you are trying to remove has email accounts. Please remove them "
+"first."
+msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has email accounts. Remove them first."
@@ -4763,6 +4756,9 @@ msgstr "Cambiar al directorio de Backups"
 
 msgid "Switch to user interface"
 msgstr "Cambiar a interfaz de usuario"
+
+msgid "Syntax error found in mail forward list."
+msgstr ""
 
 msgid "System"
 msgstr "Sistema"
@@ -4803,6 +4799,9 @@ msgstr "El campo TXT esta vacio o es invalido."
 
 msgid "Target"
 msgstr "Destino"
+
+msgid "Target domain"
+msgstr ""
 
 msgid "Target host"
 msgstr "Servidor destino"
@@ -4862,19 +4861,23 @@ msgstr "La dirección IP que está intentando eliminar está asignada a un Reven
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "La tecla 'Enter' está desactivada por razones de rendimiento."
 
-msgid "The certificate doesn't match with the private key."
-msgstr ""
-
 msgid "The certificate field cannot be empty."
 msgstr ""
 
-#, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "El directorio %s no existe. Por favor crealo primero."
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
-msgid "The directory %s was created."
-msgstr "El directorio %s ha sido creado."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -4892,6 +4895,9 @@ msgstr "El dominio o por lo menos una de sus entidades tiene un estatus diferent
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "El dominio que estas intentando editar no existe."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "El menú que estas intentando editar no existe."
@@ -4916,8 +4922,8 @@ msgstr "La cuenta de revendedor que estas intentando editar no se ha encontrado.
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts.<br "
-"/>Remove them first."
-msgstr "El Revendedor que estas intentando eliminar tiene una o más cuentas de clientes. <br />Elimínalas primero."
+"/>Please remove them first."
+msgstr ""
 
 msgid "The software installer feature requires PHP."
 msgstr "La función de instalación de software requiere PHP."
@@ -5124,6 +5130,10 @@ msgstr ""
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "No se puede cerrar el tiquet con Id '%s'."
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr ""
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "Imposible crear el directorio '%s' para el fichero de idioma."
@@ -5232,6 +5242,9 @@ msgstr "No autorizado"
 msgid "Unavailable"
 msgstr "No Disponible"
 
+msgid "Unexpected error"
+msgstr ""
+
 msgid "Uninstall"
 msgstr "Desinstalar"
 
@@ -5263,9 +5276,6 @@ msgstr "La acción solicitada es desconocida."
 msgid "Unknown action: %s"
 msgstr "Acción desconocida: %s"
 
-msgid "Unknown error"
-msgstr "Error desconocido"
-
 msgid "Unknown language name."
 msgstr "Nombre de idioma desconocido."
 
@@ -5284,6 +5294,9 @@ msgstr "Estado desconocido"
 
 msgid "Unknown type."
 msgstr "Tipo desconocido."
+
+msgid "Unknown user type"
+msgstr ""
 
 msgid "Unknown username."
 msgstr "Nombre de usuario desconocido."
@@ -5467,6 +5480,9 @@ msgstr "Muy alto"
 msgid "View"
 msgstr "Ver"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Ver Ticket de Soporte"
 
@@ -5552,7 +5568,7 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
+msgid "Wildcards such as '%%' and '?' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
@@ -5650,8 +5666,10 @@ msgstr "No estás autorizado para actualizar un plugin protegido."
 msgid "You can only upload images."
 msgstr "Solo puedes cargar imágenes."
 
-msgid "You can't install the software outside the htdocs directory."
-msgstr "No puedes instalar el software fuera del directorio htdocs."
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
+msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "No puedes eliminar a un Revendedor que tenga cuentas de clientes."
@@ -5768,9 +5786,6 @@ msgstr "Tienes un límite de cuentas de correo.<br />No puedes añadir un usuari
 msgid "You have been successfully logged out."
 msgstr "Te has desconectado correctamente."
 
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr "Has elegido un directorio que no coincide con el directorio del dominio."
-
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
 "users here."
@@ -5831,8 +5846,8 @@ msgstr "Debes ingresar un nombre de alias de dominio."
 msgid "You must enter a subdomain name."
 msgstr "Debes introducir un nombre de subdominio."
 
-msgid "You must first generate a password"
-msgstr "Primero debes generar una contraseña."
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "Debe omitir 'www'. Este se añadirá automáticamente."
@@ -5885,17 +5900,13 @@ msgid ""
 "your reseller."
 msgstr ""
 
-msgid "Your certificate is expired"
-msgstr ""
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr ""
-
-msgid "Your certificate is not valid."
-msgstr ""
-
 msgid "Your consumption"
 msgstr "Tu consumo"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "Su mensaje"
@@ -5905,6 +5916,9 @@ msgstr "Tu mensaje ha sido enviado correctamente."
 
 msgid "Your new i-MSCP login"
 msgstr "Tu nuevo inicio de sesión i_MSCP"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Su nueva contraseña ha sido enviada. Revise su correo."
@@ -5992,10 +6006,6 @@ msgstr "Cuentas de correo"
 
 msgid "enabled"
 msgstr "activado"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "todo"

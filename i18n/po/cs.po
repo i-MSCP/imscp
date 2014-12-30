@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-11-22 14:26+0100\n"
-"PO-Revision-Date: 2014-12-02 23:00+0000\n"
+"POT-Creation-Date: 2014-12-30 03:26+0100\n"
+"PO-Revision-Date: 2014-12-30 02:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/i-MSCP/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -976,10 +976,10 @@ msgstr ""
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "An entry is defined twice below."
+msgid "An email addresse is not valid in mail forward list."
 msgstr ""
 
-msgid "An error has been found in mail forward list."
+msgid "An entry is defined twice below."
 msgstr ""
 
 msgid "An error occurred during authentication."
@@ -1591,10 +1591,10 @@ msgstr ""
 msgid "Custom DNS record"
 msgstr ""
 
-msgid "Custom DNS record scheduled for deletion."
+msgid "Custom DNS record successfully scheduled for addition."
 msgstr ""
 
-msgid "Custom DNS record successfully scheduled for addition."
+msgid "Custom DNS record successfully scheduled for deletion."
 msgstr ""
 
 msgid "Custom DNS record successfully scheduled for update."
@@ -1663,10 +1663,10 @@ msgstr ""
 msgid "Customer level"
 msgstr ""
 
-msgid "Customer scheduled for addition."
+msgid "Customer statistics"
 msgstr ""
 
-msgid "Customer statistics"
+msgid "Customer successfully scheduled for addition."
 msgstr ""
 
 msgid "Customer successfully scheduled for deletion."
@@ -1996,20 +1996,23 @@ msgid "Domain alias successfully scheduled for update."
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
-
-msgid ""
 "Domain alias you are trying to remove has custom DNS records. Remove them "
 "first."
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts. Remove them first."
+"Domain alias you are trying to remove has subdomains. Please remove them "
+"first."
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has subdomains. Remove them first."
+"Domain alias you are trying to remove still has FTP accounts. Please remove "
+"them first."
+msgstr ""
+
+msgid ""
+"Domain alias you are trying to remove still has email accounts. Please "
+"remove them first."
 msgstr ""
 
 msgid "Domain aliases"
@@ -2205,9 +2208,6 @@ msgstr ""
 msgid "Email account limit"
 msgstr ""
 
-msgid "Email account limit is reached."
-msgstr ""
-
 msgid "Email account list"
 msgstr ""
 
@@ -2264,7 +2264,7 @@ msgstr ""
 msgid "Email setup"
 msgstr ""
 
-msgid "Email updated."
+msgid "Email successfully updated."
 msgstr ""
 
 msgid "Emails"
@@ -2524,9 +2524,6 @@ msgid "General settings"
 msgstr ""
 
 msgid "Generate"
-msgstr ""
-
-msgid "Generate password"
 msgstr ""
 
 msgid "Get a new image"
@@ -3230,9 +3227,6 @@ msgstr ""
 msgid "New password has not been sent. Ask your administrator."
 msgstr ""
 
-msgid "New password is"
-msgstr ""
-
 msgid "New ticket"
 msgstr ""
 
@@ -3673,10 +3667,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
-
 msgid "Please enter a name for the protected area."
 msgstr ""
 
@@ -3847,6 +3837,12 @@ msgstr ""
 msgid ""
 "Plugin Manager: Unable to delete the %s plugin files. Please, remove them "
 "manually."
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
+"another plugin."
 msgstr ""
 
 #, php-format
@@ -4593,10 +4589,10 @@ msgstr ""
 msgid "Software repository"
 msgstr ""
 
-msgid "Software scheduled for deletion."
+msgid "Software status"
 msgstr ""
 
-msgid "Software status"
+msgid "Software successfully scheduled for deletion."
 msgstr ""
 
 msgid "Software total"
@@ -4679,8 +4675,8 @@ msgid "Subdomain alias successfully scheduled for deletion."
 msgstr ""
 
 msgid ""
-"Subdomain alias you are trying to remove has Ftp accounts. Remove them "
-"first."
+"Subdomain alias you are trying to remove has Ftp accounts. Please remove "
+"them first."
 msgstr ""
 
 msgid "Subdomain errors"
@@ -4712,6 +4708,11 @@ msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
+msgstr ""
+
+msgid ""
+"Subdomain you are trying to remove has email accounts. Please remove them "
+"first."
 msgstr ""
 
 msgid ""
@@ -4749,6 +4750,9 @@ msgid "Switch to the backups directory"
 msgstr ""
 
 msgid "Switch to user interface"
+msgstr ""
+
+msgid "Syntax error found in mail forward list."
 msgstr ""
 
 msgid "System"
@@ -4913,7 +4917,7 @@ msgstr ""
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts.<br "
-"/>Remove them first."
+"/>Please remove them first."
 msgstr ""
 
 msgid "The software installer feature requires PHP."
@@ -5837,7 +5841,7 @@ msgstr ""
 msgid "You must enter a subdomain name."
 msgstr ""
 
-msgid "You must first generate a password"
+msgid "You must first generate a password by clicking on the generate button."
 msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
@@ -5906,6 +5910,9 @@ msgid "Your message has been successfully sent."
 msgstr ""
 
 msgid "Your new i-MSCP login"
+msgstr ""
+
+msgid "Your new password"
 msgstr ""
 
 msgid "Your new password has been sent. Check your email."

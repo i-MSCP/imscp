@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 18:09+0200\n"
-"PO-Revision-Date: 2014-09-19 16:12+0000\n"
+"POT-Creation-Date: 2014-12-30 03:26+0100\n"
+"PO-Revision-Date: 2014-12-30 02:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -263,30 +263,6 @@ msgstr "%s / obegränsad"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s konto raderades."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s deleted the admin log older than one month."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s deleted the admin log older than one year."
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s deleted the admin log older than six months."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s deleted the admin log older than three months."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s tog bort allt från administrationsloggen som var äldre än två veckor"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s deleted the full admin log."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -870,9 +846,6 @@ msgstr "Admin / Users / Resellers Assignment"
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Users / Sessions"
 
-msgid "Admin Log"
-msgstr "Adminstratörslogg"
-
 msgid "Admin account successfully created."
 msgstr "Ett admin konto har lagds till."
 
@@ -1003,23 +976,27 @@ msgstr "Redan i bruk"
 msgid "Alternative URL to reach your website"
 msgstr "Alternativ URL för att nå din webbplats"
 
+msgid "An email addresse is not valid in mail forward list."
+msgstr ""
+
 msgid "An entry is defined twice below."
 msgstr "En post är dubbelt definierad nedan."
-
-msgid "An error has been found in mail forward list."
-msgstr "Ett fel har upptäckts i post översända lista."
 
 msgid "An error occurred during authentication."
 msgstr "Ett fel uppstod vid autentisering."
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Ett fel inträffade, var god och kontaktar administratören-"
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Ett oväntat fel inträffade. Kontakta din återförsäljare."
 
-msgid "An unexpected error occured. Please retry"
-msgstr "Ett oväntat fel uppstod, vänligen prova igen."
+#, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+msgid "An unexpected error occurred. Please contact your administrator."
+msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1154,6 +1131,9 @@ msgstr "Tilldela grupp"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Först måste du skapa en databas som har minst en SQL-användare."
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Automatisk e-postmall uppdaterad!"
 
@@ -1201,6 +1181,9 @@ msgstr "Backup arkiv planeras för att återställa."
 
 msgid "Bad password."
 msgstr "Felaktigt lösenord."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "Bakom"
@@ -1295,9 +1278,6 @@ msgstr "Certifikat"
 
 msgid "Certificate data"
 msgstr "Certifikats data"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "Certificate successfully scheduled for deletion."
 
 msgid "Change"
 msgstr "Ändra"
@@ -1524,8 +1504,8 @@ msgstr "Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
 msgid "Client / Webtools / Software"
 msgstr "Kund / Webtools / Softwares"
 
-msgid "Client / Webtools / Software / Install"
-msgstr "Kund / Webtools / Software / Install"
+msgid "Client / Webtools / Software / Software Installation"
+msgstr ""
 
 msgid "Client / Webtools / Software / View"
 msgstr "Kund / Webtools / Softwares / View"
@@ -1596,9 +1576,6 @@ msgstr "Skapa catch-all"
 msgid "Create default email addresses"
 msgstr "Skapa standard e-postadresser"
 
-msgid "Create directory, if not existing!"
-msgstr "Skapa katalogen om den inte finns!"
-
 msgid "Created by"
 msgstr "Skapad av"
 
@@ -1614,11 +1591,11 @@ msgstr "Det nuvarande lösenordet är felaktigt!"
 msgid "Custom DNS record"
 msgstr "Anpassad DNS-post"
 
-msgid "Custom DNS record scheduled for deletion."
-msgstr "Custom DNS-posten planerad för radering."
-
 msgid "Custom DNS record successfully scheduled for addition."
 msgstr "Custom DNS-posten planerad till tillägg."
+
+msgid "Custom DNS record successfully scheduled for deletion."
+msgstr ""
 
 msgid "Custom DNS record successfully scheduled for update."
 msgstr "Custom DNS-posten planerad till uppdatering."
@@ -1686,11 +1663,11 @@ msgstr "Customer consumption"
 msgid "Customer level"
 msgstr "Customer level"
 
-msgid "Customer scheduled for addition."
-msgstr "Kunden planerad till tillägg."
-
 msgid "Customer statistics"
 msgstr "Customer statistics"
+
+msgid "Customer successfully scheduled for addition."
+msgstr ""
 
 msgid "Customer successfully scheduled for deletion."
 msgstr "Kundkonto planerad till radering."
@@ -1772,6 +1749,9 @@ msgstr "Database usage"
 
 msgid "Database users"
 msgstr "Databasanvändare"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr ""
 
 msgid "Databases"
 msgstr "Databaser"
@@ -2016,21 +1996,24 @@ msgid "Domain alias successfully scheduled for update."
 msgstr "Domän alias schemalagt för uppdatering."
 
 msgid ""
-"Domain alias you are trying to remove has Ftp accounts. Remove them first."
-msgstr "Domänalias du försöker ta bort har FTP-konton. <br> Först ta bort dem."
-
-msgid ""
 "Domain alias you are trying to remove has custom DNS records. Remove them "
 "first."
 msgstr "Domän alias du försöker ta bort har egna DNS-poster! <br />Först ta bort dem!"
 
 msgid ""
-"Domain alias you are trying to remove has email accounts. Remove them first."
-msgstr "Domänalias du försöker ta bort har e-postkonton. <br> Först ta bort dem."
+"Domain alias you are trying to remove has subdomains. Please remove them "
+"first."
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has subdomains. Remove them first."
-msgstr "Domänaliaset du försöker ta bort har subdomäner!<br>Vänligen ta bort dem först!"
+"Domain alias you are trying to remove still has FTP accounts. Please remove "
+"them first."
+msgstr ""
+
+msgid ""
+"Domain alias you are trying to remove still has email accounts. Please "
+"remove them first."
+msgstr ""
 
 msgid "Domain aliases"
 msgstr "Domänalias"
@@ -2225,9 +2208,6 @@ msgstr "E-postkontofel"
 msgid "Email account limit"
 msgstr "Email account limit"
 
-msgid "Email account limit is reached."
-msgstr "Postkonton max. antal nådd."
-
 msgid "Email account list"
 msgstr "E-postkontolista"
 
@@ -2245,6 +2225,9 @@ msgstr "E-postkonton är hårdavstängda"
 
 msgid "Email address"
 msgstr "E-mail adr."
+
+msgid "Email address with comma(s) are not accepted."
+msgstr ""
 
 msgid "Email forward"
 msgstr "Email forward"
@@ -2281,8 +2264,8 @@ msgstr "E-postinställningar"
 msgid "Email setup"
 msgstr "E-postinställningar"
 
-msgid "Email updated."
-msgstr "Email uppdaterat."
+msgid "Email successfully updated."
+msgstr ""
 
 msgid "Emails"
 msgstr "E-post"
@@ -2543,14 +2526,14 @@ msgstr "Allmänna inställningar"
 msgid "Generate"
 msgstr "Generera"
 
-msgid "Generate password"
-msgstr "Generera lösenord"
-
 msgid "Get a new image"
 msgstr "Tar fram ett nytt bild"
 
 msgid "GiB"
 msgstr "GiB"
+
+msgid "Go to the debugger for more details"
+msgstr ""
 
 msgid "Group"
 msgstr "Grupp"
@@ -2792,14 +2775,8 @@ msgstr "Information ej tillgänglig"
 msgid "Install"
 msgstr "Intallera"
 
-msgid "Install Software"
-msgstr "Installera program"
-
 msgid "Install in progress"
 msgstr "Install in progress..."
-
-msgid "Install path"
-msgstr "Installations-väg"
 
 msgid "Install this plugin"
 msgstr "Install this plugin"
@@ -2877,6 +2854,9 @@ msgstr "Invalid URL."
 msgid "Invalid domain name."
 msgstr "Ogiltigt domännamn."
 
+msgid "Invalid email address."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Ogiltigt förfallodatum."
 
@@ -2895,14 +2875,17 @@ msgstr "Invalid menu order."
 msgid "Invalid name."
 msgstr "Invalid name."
 
-msgid "Invalid private key or passphrase"
-msgstr "Invalid private key or passphrase"
+msgid "Invalid private key or passphrase."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Invalid target."
 
 msgid "Invalid type given. String expected"
 msgstr "Ogiltig typ. String förväntad"
+
+msgid "Invalid username."
+msgstr ""
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -2987,6 +2970,9 @@ msgstr "Länk till författarens hemsida"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Load (1 min, 5 min, 15 min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr "Log entries successfully deleted."
 
@@ -3023,6 +3009,9 @@ msgstr "Logo tagits bort."
 
 msgid "Logo successfully updated."
 msgstr "Logo uppdaterats."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Glömt lösenord"
@@ -3238,9 +3227,6 @@ msgstr "New alias order for {CUSTOMER}"
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Nytt lösenord har inte skickats. Fråga din administratör."
 
-msgid "New password is"
-msgstr "New password is"
-
 msgid "New ticket"
 msgstr "Skapa support-ärende"
 
@@ -3264,9 +3250,6 @@ msgstr "No anti-rootkits logs"
 
 msgid "No available"
 msgstr "Inte tillgänglig"
-
-msgid "No certificate found"
-msgstr "No certificate found"
 
 msgid "No custom menu found."
 msgstr "Inget eget meny hittades."
@@ -3300,9 +3283,6 @@ msgstr "No hosting plan available. Please contact your administrator."
 
 msgid "No languages found."
 msgstr "Inga språk hittats."
-
-msgid "No logs found."
-msgstr "Inga loggar hittades."
 
 msgid "No records found matching the search criteria."
 msgstr "Hittades inte poster som matchar sökkriteriet."
@@ -3627,6 +3607,9 @@ msgstr "Lösenordsinställningar"
 msgid "Password successfully updated."
 msgstr "Lösenord uppdaterats."
 
+msgid "Password with comma(s) are not accepted."
+msgstr ""
+
 msgid "Passwords do not match"
 msgstr "Lösenord matchar inte."
 
@@ -3684,10 +3667,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Please contact the administrator!<br />Ask him for the permissions to use this package.<br />It is not allowed to upload this packet two times.<br />Refresh your site to see the new status!"
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr "Var god och inte använd '@, $, %%...' i lösenord."
-
 msgid "Please enter a name for the protected area."
 msgstr "Please enter a name for the protected area."
 
@@ -3708,9 +3687,6 @@ msgstr "Ange ditt auto-responder meddelande nedan"
 
 msgid "Please fill up both data fields for password."
 msgstr "Fyll upp båda datafält för lösenord."
-
-msgid "Please select a valid SQL user for the database."
-msgstr "Välj rätt användarnamn för databasen!"
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -3864,6 +3840,12 @@ msgid ""
 msgstr "Plugin Manager: Unable to delete the %s plugin files. Please, remove them manually."
 
 #, php-format
+msgid ""
+"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
+"another plugin."
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
 msgstr "Plugin Manager: Det gick inte att hämta plugin %s"
 
@@ -3946,8 +3928,8 @@ msgstr "Priority: %s\n"
 msgid "Private key"
 msgstr "Private key"
 
-msgid "Private key field cannot be empty"
-msgstr "Private key field cannot be empty"
+msgid "Private key field cannot be empty."
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "Private key passphrase if any"
@@ -4076,6 +4058,9 @@ msgstr "Upprepa lösenord"
 
 msgid "Reply"
 msgstr "Svara"
+
+msgid "Request Timeout: The server took too long to send the data."
+msgstr ""
 
 msgid "Request from foreign host was blocked."
 msgstr "Begäran från värd var blockerad."
@@ -4345,17 +4330,23 @@ msgstr "SQL-användare prefix/suffix"
 msgid "SQL user successfully added."
 msgstr "SQL användare skapades."
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr ""
+
 msgid "SQL users"
 msgstr "SQL-användare"
-
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr "SSL Certificate successfully scheduled for addition or update."
 
 msgid "SSL certificate"
 msgstr "SSL certificate"
 
-msgid "SSL feature is not available."
-msgstr "SSL feature is not available."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-funktionen är inte tillgänglig. Du kan bara visa ditt certifikat."
@@ -4375,14 +4366,8 @@ msgstr "Säker anslutning"
 msgid "Security code"
 msgstr "Säkerhetskod"
 
-msgid "Select Domain"
-msgstr "Välj domän"
-
 msgid "Select all entries for deletion."
 msgstr "Välj alla poster för radering."
-
-msgid "Select database"
-msgstr "Välj databas"
 
 msgid "Select group"
 msgstr "Välj grupp:"
@@ -4583,6 +4568,9 @@ msgstr "Software installer options successfully updated."
 msgid "Software installer requires PHP support."
 msgstr "Installationsprogrammet kräver PHP-stöd."
 
+msgid "Software instance has been scheduled for installation"
+msgstr ""
+
 msgid "Software management"
 msgstr "Software management"
 
@@ -4601,11 +4589,11 @@ msgstr "Programvara behörigheter"
 msgid "Software repository"
 msgstr "Programvara arkiv"
 
-msgid "Software scheduled for deletion."
-msgstr "Programvara schemalagd för radering."
-
 msgid "Software status"
 msgstr "Programvara status"
+
+msgid "Software successfully scheduled for deletion."
+msgstr ""
 
 msgid "Software total"
 msgstr "Programvara totala"
@@ -4687,9 +4675,9 @@ msgid "Subdomain alias successfully scheduled for deletion."
 msgstr "Underdomän alias schemalagd för radering."
 
 msgid ""
-"Subdomain alias you are trying to remove has Ftp accounts. Remove them "
-"first."
-msgstr "Domänalias du försöker ta bort har FTP-konton. <br> Först ta bort dem."
+"Subdomain alias you are trying to remove has Ftp accounts. Please remove "
+"them first."
+msgstr ""
 
 msgid "Subdomain errors"
 msgstr "Subdomain errors"
@@ -4721,6 +4709,11 @@ msgstr "Subdomain schemalagt för uppdatering"
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
 msgstr "Underdomän du försöker ta bort har e-postkonton. <br> Först ta bort dem."
+
+msgid ""
+"Subdomain you are trying to remove has email accounts. Please remove them "
+"first."
+msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has email accounts. Remove them first."
@@ -4758,6 +4751,9 @@ msgstr "Gå in i katalogen backups/"
 
 msgid "Switch to user interface"
 msgstr "Växla till användargränssnitt"
+
+msgid "Syntax error found in mail forward list."
+msgstr ""
 
 msgid "System"
 msgstr "System"
@@ -4798,6 +4794,9 @@ msgstr "TXT-fältet är tomt eller ogiltig."
 
 msgid "Target"
 msgstr "Target"
+
+msgid "Target domain"
+msgstr ""
 
 msgid "Target host"
 msgstr "Målvärd"
@@ -4857,19 +4856,23 @@ msgstr "The IP address you trying to remove is assigned to a reseller."
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "The `Enter` key is disabled for performance reasons."
 
-msgid "The certificate doesn't match with the private key."
-msgstr "The certificate doesn't match with the private key."
-
 msgid "The certificate field cannot be empty."
 msgstr "The certificate field cannot be empty."
 
-#, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "The directory %s doesn't exist. Please create it first."
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
-msgid "The directory %s was created."
-msgstr "The directory %s was created."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -4887,6 +4890,9 @@ msgstr "The domain or at least one of its entities has a different status than '
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "The domain you are trying to edit doesn't exist."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "The menu you are trying to edit doesn't exist."
@@ -4911,8 +4917,8 @@ msgstr "Återförsäljarens konto som du försöker redigera har inte hittats."
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts.<br "
-"/>Remove them first."
-msgstr "The reseller you want to remove has one or more customers accounts.<br />Remove them first."
+"/>Please remove them first."
+msgstr ""
 
 msgid "The software installer feature requires PHP."
 msgstr "Installationsprogrammet kräver PHP."
@@ -5119,6 +5125,10 @@ msgstr "Unable to change the %s plugin: %s"
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "Det gick inte att stänga biljett med Id '%s'."
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr ""
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "Kunde inte skapa%s katalog för språk-fil."
@@ -5227,6 +5237,9 @@ msgstr "Obehörig"
 msgid "Unavailable"
 msgstr "Unavailable"
 
+msgid "Unexpected error"
+msgstr ""
+
 msgid "Uninstall"
 msgstr "Avinstallera"
 
@@ -5258,9 +5271,6 @@ msgstr "Okänd åtgärd begärt."
 msgid "Unknown action: %s"
 msgstr "Okänd åtgärd:%s"
 
-msgid "Unknown error"
-msgstr "Okänt fel"
-
 msgid "Unknown language name."
 msgstr "Okänt språk namn."
 
@@ -5279,6 +5289,9 @@ msgstr "Unknown status"
 
 msgid "Unknown type."
 msgstr "Okänd typ."
+
+msgid "Unknown user type"
+msgstr ""
 
 msgid "Unknown username."
 msgstr "Okänt användarnamn."
@@ -5462,6 +5475,9 @@ msgstr "Mycket hög"
 msgid "View"
 msgstr "Visa"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Visa Support Ticket"
 
@@ -5547,8 +5563,8 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr "Jokertecken som%% och? är inte tillåtna."
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
-msgstr "Jokertecken som%% och? är inte tillåtna."
+msgid "Wildcards such as '%%' and '?' are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Fel IP adr."
@@ -5645,8 +5661,10 @@ msgstr "You are not allowed to update a protected plugin."
 msgid "You can only upload images."
 msgstr "Du kan bara ladda upp bilder."
 
-msgid "You can't install the software outside the htdocs directory."
-msgstr "You can't install the software outside the htdocs directory."
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
+msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Du kan inte radera en återförsäljare som har kund konton."
@@ -5763,9 +5781,6 @@ msgstr "You have an email account limit.<br />You cannot add a user with unlimit
 msgid "You have been successfully logged out."
 msgstr "Du blev utloggad."
 
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr "You have chosen a directory which doesn't match the domain directory."
-
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
 "users here."
@@ -5826,8 +5841,8 @@ msgstr "Du måste ange en domän alias."
 msgid "You must enter a subdomain name."
 msgstr "Du måste ange en subdomain namn."
 
-msgid "You must first generate a password"
-msgstr "Du måste först skapa ett lösenord"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr "You must omit 'www'. It will be added automatically."
@@ -5880,17 +5895,13 @@ msgid ""
 "your reseller."
 msgstr "Your account is currently under maintenance or disabled. Please, contact your reseller."
 
-msgid "Your certificate is expired"
-msgstr "Your certificate is expired"
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr "Your certificate is not valid or the CA bundle is missing."
-
-msgid "Your certificate is not valid."
-msgstr "Your certificate is not valid."
-
 msgid "Your consumption"
 msgstr "Your consumption"
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "Ditt meddelande"
@@ -5900,6 +5911,9 @@ msgstr "Ditt meddelande har skickats."
 
 msgid "Your new i-MSCP login"
 msgstr "Ditt nya i-MSCP inloggning"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr "Your new password has been sent. Check your email."
@@ -5987,10 +6001,6 @@ msgstr "email accounts"
 
 msgid "enabled"
 msgstr "enabled"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "kodning"
 
 msgid "everything"
 msgstr "allt"

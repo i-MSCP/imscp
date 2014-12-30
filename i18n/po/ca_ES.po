@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team - All rights reserved
+# Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-09-19 18:09+0200\n"
-"PO-Revision-Date: 2014-09-19 16:12+0000\n"
+"POT-Creation-Date: 2014-12-30 03:26+0100\n"
+"PO-Revision-Date: 2014-12-30 02:29+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -270,30 +270,6 @@ msgstr "%s / il·limitat"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "compte %s eliminat correctament."
-
-#, php-format
-msgid "%s deleted the admin log older than one month."
-msgstr "%s esborrat el registres d'admin més vells d'un mes."
-
-#, php-format
-msgid "%s deleted the admin log older than one year."
-msgstr "%s ha esborrat els registres d'admin més vells de un any."
-
-#, php-format
-msgid "%s deleted the admin log older than six months."
-msgstr "%s ha esborrat els registres d'admin més vells de sis mesos."
-
-#, php-format
-msgid "%s deleted the admin log older than three months."
-msgstr "%s ha esborrat els registres d'admin més vells de tres mesos."
-
-#, php-format
-msgid "%s deleted the admin log older than two weeks!"
-msgstr "%s ha esborrat el registre d'admin més antic de dos setmanes"
-
-#, php-format
-msgid "%s deleted the full admin log."
-msgstr "%s ha esborrat tots els registres d'admin."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -877,9 +853,6 @@ msgstr "Admin / Usuaris / Assignació de distribuïdor"
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Usuaris / Sessions"
 
-msgid "Admin Log"
-msgstr "Registre d'admin"
-
 msgid "Admin account successfully created."
 msgstr "Compte d'admin creat satisfactòriament."
 
@@ -1010,23 +983,27 @@ msgstr "En ús"
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa per arribar a la teva web"
 
-msgid "An entry is defined twice below."
+msgid "An email addresse is not valid in mail forward list."
 msgstr ""
 
-msgid "An error has been found in mail forward list."
-msgstr "Hi ha hagut un error a la llista de redireccions de correu."
+msgid "An entry is defined twice below."
+msgstr ""
 
 msgid "An error occurred during authentication."
 msgstr "Hi ha hagut un error durant l'autenticació"
 
-msgid "An error occurred. Please contact your administrator."
-msgstr "Hi ha hagut un error. Contacteu amb l'administrador."
-
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr ""
 
-msgid "An unexpected error occured. Please retry"
-msgstr "Hi ha hagut un error inesperat. Torneu-ho a intentar"
+#, php-format
+msgid "An unexpected error occured: %s"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+msgid "An unexpected error occurred. Please contact your administrator."
+msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1161,6 +1138,9 @@ msgstr "Assignar grup"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
+msgid "Auto (Browser language)"
+msgstr ""
+
 msgid "Auto email template data updated!"
 msgstr "Plantilla automàtica de correu actualitzada!"
 
@@ -1208,6 +1188,9 @@ msgstr "La copia s'ha programat correctament per la restauració."
 
 msgid "Bad password."
 msgstr "Contrasenya incorrecta."
+
+msgid "Bad request."
+msgstr ""
 
 msgid "Behind"
 msgstr "Darrera"
@@ -1302,9 +1285,6 @@ msgstr "Certificat"
 
 msgid "Certificate data"
 msgstr "Dades del certificat"
-
-msgid "Certificate successfully scheduled for deletion."
-msgstr "S'ha programat l'eliminació del certificat."
 
 msgid "Change"
 msgstr "Canviar"
@@ -1531,7 +1511,7 @@ msgstr ""
 msgid "Client / Webtools / Software"
 msgstr ""
 
-msgid "Client / Webtools / Software / Install"
+msgid "Client / Webtools / Software / Software Installation"
 msgstr ""
 
 msgid "Client / Webtools / Software / View"
@@ -1603,9 +1583,6 @@ msgstr "Crear catch all"
 msgid "Create default email addresses"
 msgstr "Crear les adreces per defecte"
 
-msgid "Create directory, if not existing!"
-msgstr "Crear directori si no existeix!"
-
 msgid "Created by"
 msgstr "Creat per"
 
@@ -1621,11 +1598,11 @@ msgstr "La contrasenya actual no és vàlida."
 msgid "Custom DNS record"
 msgstr "Registre DNS personalitzat"
 
-msgid "Custom DNS record scheduled for deletion."
-msgstr "S'ha programat l'eliminació del registre DNS personalitzat."
-
 msgid "Custom DNS record successfully scheduled for addition."
 msgstr "S'ha programat la creació de l'entrada DNS personalitzada"
+
+msgid "Custom DNS record successfully scheduled for deletion."
+msgstr ""
 
 msgid "Custom DNS record successfully scheduled for update."
 msgstr "S'ha programat l'actualització de l'entrada DNS personalitzada"
@@ -1693,11 +1670,11 @@ msgstr "Consum del client"
 msgid "Customer level"
 msgstr "Nivell del client"
 
-msgid "Customer scheduled for addition."
-msgstr "S'ha programat l'alta del client."
-
 msgid "Customer statistics"
 msgstr "Estadístiques del client"
+
+msgid "Customer successfully scheduled for addition."
+msgstr ""
 
 msgid "Customer successfully scheduled for deletion."
 msgstr ""
@@ -1779,6 +1756,9 @@ msgstr "Ús de la base de dades"
 
 msgid "Database users"
 msgstr "Usuaris de base de dades"
+
+msgid "Database with comma(s) in name is not accepted."
+msgstr ""
 
 msgid "Databases"
 msgstr "Bases de dades"
@@ -2023,20 +2003,23 @@ msgid "Domain alias successfully scheduled for update."
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
-
-msgid ""
 "Domain alias you are trying to remove has custom DNS records. Remove them "
 "first."
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts. Remove them first."
+"Domain alias you are trying to remove has subdomains. Please remove them "
+"first."
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has subdomains. Remove them first."
+"Domain alias you are trying to remove still has FTP accounts. Please remove "
+"them first."
+msgstr ""
+
+msgid ""
+"Domain alias you are trying to remove still has email accounts. Please "
+"remove them first."
 msgstr ""
 
 msgid "Domain aliases"
@@ -2232,9 +2215,6 @@ msgstr ""
 msgid "Email account limit"
 msgstr "Límit de comptes de correu."
 
-msgid "Email account limit is reached."
-msgstr ""
-
 msgid "Email account list"
 msgstr ""
 
@@ -2252,6 +2232,9 @@ msgstr ""
 
 msgid "Email address"
 msgstr "Adreça d'email"
+
+msgid "Email address with comma(s) are not accepted."
+msgstr ""
 
 msgid "Email forward"
 msgstr "Reenviament d'email"
@@ -2288,7 +2271,7 @@ msgstr ""
 msgid "Email setup"
 msgstr "Configurar Email"
 
-msgid "Email updated."
+msgid "Email successfully updated."
 msgstr ""
 
 msgid "Emails"
@@ -2550,14 +2533,14 @@ msgstr "Paràmetres generals"
 msgid "Generate"
 msgstr "Generar"
 
-msgid "Generate password"
-msgstr "Generar contrasenya"
-
 msgid "Get a new image"
 msgstr "Obtenir una nova imatge"
 
 msgid "GiB"
 msgstr "GiB"
+
+msgid "Go to the debugger for more details"
+msgstr ""
 
 msgid "Group"
 msgstr "Grup"
@@ -2799,14 +2782,8 @@ msgstr ""
 msgid "Install"
 msgstr "Instal·lar"
 
-msgid "Install Software"
-msgstr "Instal·lar software"
-
 msgid "Install in progress"
 msgstr ""
-
-msgid "Install path"
-msgstr "Ruta d'instal·lació"
 
 msgid "Install this plugin"
 msgstr ""
@@ -2884,6 +2861,9 @@ msgstr "Adreça URL incorrecte."
 msgid "Invalid domain name."
 msgstr ""
 
+msgid "Invalid email address."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Data d'expiració invàlida."
 
@@ -2902,7 +2882,7 @@ msgstr "L'ordre dels menús no és vàlid."
 msgid "Invalid name."
 msgstr "Nom incorrecte."
 
-msgid "Invalid private key or passphrase"
+msgid "Invalid private key or passphrase."
 msgstr ""
 
 msgid "Invalid target."
@@ -2910,6 +2890,9 @@ msgstr "Destí incorrecte."
 
 msgid "Invalid type given. String expected"
 msgstr "Tipus invàlid. S'esperava una cadena"
+
+msgid "Invalid username."
+msgstr ""
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -2994,6 +2977,9 @@ msgstr "Enllaç a la pàgina de l'autor"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Carrega (1 Min, 5 Min, 15 Min)"
 
+msgid "Loading data..."
+msgstr ""
+
 msgid "Log entries successfully deleted."
 msgstr ""
 
@@ -3030,6 +3016,9 @@ msgstr "Logotip eliminat correctament."
 
 msgid "Logo successfully updated."
 msgstr "Logotip actualitzat correctament."
+
+msgid "Logout"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Contrasenya perduda"
@@ -3245,9 +3234,6 @@ msgstr "Nova ordre d'àlies per a {CUSTOMER}"
 msgid "New password has not been sent. Ask your administrator."
 msgstr "La nova contrasenya no s'ha enviat. Aviseu al vostre administrador."
 
-msgid "New password is"
-msgstr "La nova contrasenya és"
-
 msgid "New ticket"
 msgstr "Nou tiquet"
 
@@ -3270,9 +3256,6 @@ msgid "No anti-rootkits logs"
 msgstr ""
 
 msgid "No available"
-msgstr ""
-
-msgid "No certificate found"
 msgstr ""
 
 msgid "No custom menu found."
@@ -3307,9 +3290,6 @@ msgstr ""
 
 msgid "No languages found."
 msgstr "No s'han trobat idiomes."
-
-msgid "No logs found."
-msgstr "No s'han trobat logs."
 
 msgid "No records found matching the search criteria."
 msgstr ""
@@ -3634,6 +3614,9 @@ msgstr "Paràmetres de la contrasenya"
 msgid "Password successfully updated."
 msgstr "Contrasenya actualitzada."
 
+msgid "Password with comma(s) are not accepted."
+msgstr ""
+
 msgid "Passwords do not match"
 msgstr ""
 
@@ -3691,10 +3674,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Siusplau contacta amb l'administrador!<br />Pregunta-li pels permisos per usar aquest paquet.<br />no està permés carregar aquest paquet dues vegades.<br />Refresca el teu lloc per a veure el nou estat!"
 
-#, php-format
-msgid "Please don't use special character such as '@, $, %% ...' in password."
-msgstr ""
-
 msgid "Please enter a name for the protected area."
 msgstr "Siusplau introdueix un nom per l'àrea protegida."
 
@@ -3715,9 +3694,6 @@ msgstr ""
 
 msgid "Please fill up both data fields for password."
 msgstr "Si us plau ompliu els dos camps de la contrasenya."
-
-msgid "Please select a valid SQL user for the database."
-msgstr ""
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -3871,6 +3847,12 @@ msgid ""
 msgstr ""
 
 #, php-format
+msgid ""
+"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
+"another plugin."
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
 msgstr ""
 
@@ -3953,7 +3935,7 @@ msgstr "Prioritat: %s\n"
 msgid "Private key"
 msgstr ""
 
-msgid "Private key field cannot be empty"
+msgid "Private key field cannot be empty."
 msgstr ""
 
 msgid "Private key passphrase if any"
@@ -4082,6 +4064,9 @@ msgid "Repeat password"
 msgstr "Repeteix la contrasenya"
 
 msgid "Reply"
+msgstr ""
+
+msgid "Request Timeout: The server took too long to send the data."
 msgstr ""
 
 msgid "Request from foreign host was blocked."
@@ -4352,16 +4337,22 @@ msgstr ""
 msgid "SQL user successfully added."
 msgstr "Usuari SQL afegit correctament."
 
+msgid "SQL user with comma(s) in name is not accepted."
+msgstr ""
+
 msgid "SQL users"
 msgstr "Usuaris SQL"
-
-msgid "SSL Certificate successfully scheduled for addition or update."
-msgstr ""
 
 msgid "SSL certificate"
 msgstr ""
 
-msgid "SSL feature is not available."
+msgid "SSL certificate successfully scheduled for addition."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for deletion."
+msgstr ""
+
+msgid "SSL certificate successfully scheduled for update."
 msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
@@ -4382,14 +4373,8 @@ msgstr "Connexió segura"
 msgid "Security code"
 msgstr "Codi de seguretat"
 
-msgid "Select Domain"
-msgstr "Escull el domini"
-
 msgid "Select all entries for deletion."
 msgstr ""
-
-msgid "Select database"
-msgstr "Escull la base de dades"
 
 msgid "Select group"
 msgstr ""
@@ -4590,6 +4575,9 @@ msgstr "Opcions de l'instal·lador de software actualitzades."
 msgid "Software installer requires PHP support."
 msgstr ""
 
+msgid "Software instance has been scheduled for installation"
+msgstr ""
+
 msgid "Software management"
 msgstr ""
 
@@ -4608,11 +4596,11 @@ msgstr "Permisos d'aplicacions"
 msgid "Software repository"
 msgstr "Repositori de software"
 
-msgid "Software scheduled for deletion."
-msgstr "Programari programat per a ésser esborrat."
-
 msgid "Software status"
 msgstr "Estat del software"
+
+msgid "Software successfully scheduled for deletion."
+msgstr ""
 
 msgid "Software total"
 msgstr "Total d'aplicacions"
@@ -4694,8 +4682,8 @@ msgid "Subdomain alias successfully scheduled for deletion."
 msgstr ""
 
 msgid ""
-"Subdomain alias you are trying to remove has Ftp accounts. Remove them "
-"first."
+"Subdomain alias you are trying to remove has Ftp accounts. Please remove "
+"them first."
 msgstr ""
 
 msgid "Subdomain errors"
@@ -4727,6 +4715,11 @@ msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
+msgstr ""
+
+msgid ""
+"Subdomain you are trying to remove has email accounts. Please remove them "
+"first."
 msgstr ""
 
 msgid ""
@@ -4765,6 +4758,9 @@ msgstr ""
 
 msgid "Switch to user interface"
 msgstr "Canviar a la interfície d'usuari"
+
+msgid "Syntax error found in mail forward list."
+msgstr ""
 
 msgid "System"
 msgstr "Sistema"
@@ -4805,6 +4801,9 @@ msgstr ""
 
 msgid "Target"
 msgstr "Destí"
+
+msgid "Target domain"
+msgstr ""
 
 msgid "Target host"
 msgstr "Servidor destí"
@@ -4864,19 +4863,23 @@ msgstr ""
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "La tecla 'Enter' està desactivada per raons de rendiment."
 
-msgid "The certificate doesn't match with the private key."
-msgstr ""
-
 msgid "The certificate field cannot be empty."
 msgstr ""
 
-#, php-format
-msgid "The directory %s doesn't exist. Please create it first."
-msgstr "El directori %s no existeix. Siusplau primer de tot cal crear-lo."
+msgid "The certificate is expired."
+msgstr ""
+
+msgid "The certificate is not valid or the CA bundle is missing."
+msgstr ""
+
+msgid "The certificate is not valid."
+msgstr ""
 
 #, php-format
-msgid "The directory %s was created."
-msgstr "El directori %s s'ha creat."
+msgid ""
+"The directory %s doesn't exists. Please create that directory using your "
+"file manager."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -4894,6 +4897,9 @@ msgstr "El domini o almenys alguna de les seves entitats te un estat diferent de
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "El domini que estàs intentant editar no existeix."
+
+msgid "The key is not the private key that corresponds to the certificate."
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr ""
@@ -4918,7 +4924,7 @@ msgstr ""
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts.<br "
-"/>Remove them first."
+"/>Please remove them first."
 msgstr ""
 
 msgid "The software installer feature requires PHP."
@@ -5126,6 +5132,10 @@ msgstr ""
 msgid "Unable to close the ticket with Id '%s'."
 msgstr ""
 
+msgid ""
+"Unable to connect to the selected database using the selected SQL user."
+msgstr ""
+
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr "No ha sigut possible crear el directori %s per el fitxer d'idioma."
@@ -5234,6 +5244,9 @@ msgstr ""
 msgid "Unavailable"
 msgstr ""
 
+msgid "Unexpected error"
+msgstr ""
+
 msgid "Uninstall"
 msgstr "Desinstal.lar"
 
@@ -5265,9 +5278,6 @@ msgstr "No s'ha trobat l'acció sol·licitada."
 msgid "Unknown action: %s"
 msgstr "Acció desconeguda: %s"
 
-msgid "Unknown error"
-msgstr "Error desconegut"
-
 msgid "Unknown language name."
 msgstr "Nom de llenguatge desconegut."
 
@@ -5286,6 +5296,9 @@ msgstr ""
 
 msgid "Unknown type."
 msgstr "Tipus desconegut."
+
+msgid "Unknown user type"
+msgstr ""
 
 msgid "Unknown username."
 msgstr "Nom d'usuari desconegut."
@@ -5469,6 +5482,9 @@ msgstr "Molt alta"
 msgid "View"
 msgstr "Veure"
 
+msgid "View SSL certificate"
+msgstr ""
+
 msgid "View Support Ticket"
 msgstr "Veure tiquet"
 
@@ -5554,7 +5570,7 @@ msgid "Wildcards such as %% and ? are not allowed in username."
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and are not allowed."
+msgid "Wildcards such as '%%' and '?' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
@@ -5652,7 +5668,9 @@ msgstr ""
 msgid "You can only upload images."
 msgstr "Només pots carregar imatges,"
 
-msgid "You can't install the software outside the htdocs directory."
+msgid ""
+"You can't install the software outside the htdocs directory of the selected "
+"domain."
 msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
@@ -5770,9 +5788,6 @@ msgstr ""
 msgid "You have been successfully logged out."
 msgstr "La sessió ha estat tancada."
 
-msgid "You have chosen a directory which doesn't match the domain directory."
-msgstr ""
-
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
 "users here."
@@ -5833,8 +5848,8 @@ msgstr ""
 msgid "You must enter a subdomain name."
 msgstr ""
 
-msgid "You must first generate a password"
-msgstr "En primer lloc, ha de generar una contrasenya"
+msgid "You must first generate a password by clicking on the generate button."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
 msgstr ""
@@ -5887,17 +5902,13 @@ msgid ""
 "your reseller."
 msgstr ""
 
-msgid "Your certificate is expired"
-msgstr ""
-
-msgid "Your certificate is not valid or the CA bundle is missing."
-msgstr ""
-
-msgid "Your certificate is not valid."
-msgstr ""
-
 msgid "Your consumption"
 msgstr "El teu consum."
+
+msgid ""
+"Your i-MSCP version is not compatible with this plugin. Try with a newer "
+"version."
+msgstr ""
 
 msgid "Your message"
 msgstr "El vostre missatge"
@@ -5907,6 +5918,9 @@ msgstr "El teu missatge ha estat enviat correctament."
 
 msgid "Your new i-MSCP login"
 msgstr "El teu nou inici de sessió i-MSCP"
+
+msgid "Your new password"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
 msgstr ""
@@ -5994,10 +6008,6 @@ msgstr ""
 
 msgid "enabled"
 msgstr "activat"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "everything"
 msgstr "tot"
