@@ -13,7 +13,6 @@ CONFIGS
 	Removed: Roundcube configuration directory ( now shipped with the roundcube package )
 
 DISTROS
-	Added: Support for Ubuntu Utopic Unicorn
 	Removed: Support for obsolete Ubuntu versions ( Quantal Quetzal, Raring Ringtail, Saucy Salamander )
 
 DOCS
