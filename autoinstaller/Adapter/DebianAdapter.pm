@@ -266,8 +266,10 @@ sub postBuild
 		my($stdout, $stderr);
 		my $rs = execute('php5enmod gd imap intl json mcrypt mysql mysqli mysqlnd pdo pdo_mysql', \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		unless($rs ~~ [0, 2]) {
+			error($stderr) if $stderr;
+			return $rs;
+		}
 	}
 
 	0;

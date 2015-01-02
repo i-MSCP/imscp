@@ -108,6 +108,7 @@
         <package>php-gettext</package>
         <package>php5-imap</package>
         <package>php5-intl</package>
+        <package>php5-json</package>
         <package>php5-mcrypt</package>
         <package>php5-mysqlnd</package>
     </php>
