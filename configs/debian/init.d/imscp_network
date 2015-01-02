@@ -29,7 +29,6 @@ do_start()
 {
 	${TOOLSDIR}/imscp-net-interfaces-mngr start 2>/dev/null
 	${TOOLSDIR}/imscp-net-traffic-logger start 2>/dev/null
-	${TOOLSDIR}/imscp-local-dns-resolver start 2>/dev/null
 
 	# Touch lock file
 	touch $LFILE
@@ -39,7 +38,6 @@ do_stop()
 {
 	${TOOLSDIR}/imscp-net-traffic-logger stop 2>/dev/null
 	${TOOLSDIR}/imscp-net-interfaces-mngr stop 2>/dev/null
-	${TOOLSDIR}/imscp-local-dns-resolver stop 2>/dev/null
 
 	# Remove lock file
 	rm -f $LFILE

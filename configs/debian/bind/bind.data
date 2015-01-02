@@ -23,3 +23,8 @@ PRIMARY_DNS =
 SECONDARY_DNS =
 
 BIND_IPV6 =
+
+# DNS Resolver
+
+CMD_RESOLVCONF = /sbin/resolvconf
+LOCAL_DNS_RESOLVER =

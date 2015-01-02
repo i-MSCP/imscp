@@ -72,7 +72,12 @@ sub registerSetupListeners
 
 	$eventManager->register(
 		'beforeSetupDialog',
-		sub { push @{$_[0]}, sub { $self->askDnsServerMode(@_) }, sub { $self->askIPv6Support(@_) }; 0; }
+		sub {
+			push @{$_[0]}, sub { $self->askDnsServerMode(@_) }, sub { $self->askIPv6Support(@_) },
+				sub { $self->askLocalDnsResolver(@_) };
+
+			0;
+		}
 	);
 }
 
@@ -107,7 +112,7 @@ sub askDnsServerMode
 	$rs;
 }
 
-=item askDnsServerMode(\%dialog)
+=item askDnsServerIps(\%dialog)
 
  Ask user for DNS server IPs
 
@@ -228,6 +233,35 @@ sub askIPv6Support
 	if($rs != 30) {
 		$self->{'config'}->{'BIND_IPV6'} = $ipv6;
 	}
+
+	$rs;
+}
+
+=item askLocalDnsResolver(\%dialog)
+
+ Ask user for local DNS resolver
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 on success, other on failure
+
+=cut
+
+sub askLocalDnsResolver
+{
+	my ($self, $dialog) = @_;
+
+	my $localDnsResolver = main::setupGetQuestion('LOCAL_DNS_RESOLVER') || $self->{'config'}->{'LOCAL_DNS_RESOLVER'};
+	my $rs = 0;
+
+	if($main::reconfigure ~~ ['resolver', 'named', 'all', 'forced'] || $localDnsResolver !~ /^yes|no$/) {
+		($rs, $localDnsResolver) = $dialog->radiolist(
+			"\nDo you want allow the system resolver to use the local nameserver?",
+			['yes', 'no'],
+			$localDnsResolver ne 'no' ? 'yes' : 'no'
+		);
+	}
+
+	$self->{'config'}->{'LOCAL_DNS_RESOLVER'} = $localDnsResolver if $rs != 30;
 
 	$rs;
 }
@@ -459,7 +493,7 @@ sub _buildConf
 				return $rs if $rs;
 
 				# Enable or disable local DNS resolver
-				$fileContent =~ s/RESOLVCONF=(?:no|yes)/RESOLVCONF=$main::imscpConfig{'LOCAL_DNS_RESOLVER'}/i;
+				$fileContent =~ s/RESOLVCONF=(?:no|yes)/RESOLVCONF=$self->{'config'}->{'LOCAL_DNS_RESOLVER'}/i;
 
 				# Enable or disable IPV6 support
 				if($fileContent =~/OPTIONS="(.*)"/) {
@@ -573,6 +607,14 @@ sub _oldEngineCompatibility
 
 	my $rs = $self->{'eventManager'}->trigger('beforeNamedOldEngineCompatibility');
 	return $rs if $rs;
+
+	if(-x $self->{'config'}->{'CMD_RESOLVCONF'}) {
+		my ($stdout, $stderr);
+		my $rs = execute("$self->{'config'}->{'CMD_RESOLVCONF'} -d lo.imscp", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
 	$self->{'eventManager'}->trigger('afterNameddOldEngineCompatibility');
 }

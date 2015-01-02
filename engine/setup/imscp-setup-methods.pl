@@ -131,7 +131,6 @@ sub setupDialog
 		@$dialogStack,
 		(
 			\&setupAskServerHostname,
-			\&setupAskLocalDnsResolver,
 			\&setupAskServerIps,
 			\&setupAskSqlDsn,
 			\&setupAskSqlUserHost,
@@ -262,31 +261,6 @@ sub setupAskServerHostname
 	}
 
 	setupSetQuestion('SERVER_HOSTNAME', $hostname) if $rs != 30;
-
-	$rs;
-}
-
-# Ask for local DNS resolver
-sub setupAskLocalDnsResolver
-{
-	my $dialog = $_[0];
-
-	my $localDnsResolver = setupGetQuestion('LOCAL_DNS_RESOLVER');
-	my $rs = 0;
-
-	unless($main::imscpConfig{'NAMED_SERVER'} ~~ ['no', 'external_server']) {
-		if($main::reconfigure ~~ ['resolver', 'named', 'all', 'forced'] || $localDnsResolver !~ /^yes|no$/) {
-			($rs, $localDnsResolver) = $dialog->radiolist(
-				"\nDo you want allow the system resolver to use the local nameserver?",
-				['yes', 'no'],
-				$localDnsResolver ne 'no' ? 'yes' : 'no'
-			);
-		}
-	} else {
-		$localDnsResolver = 'no';
-	}
-
-	setupSetQuestion('LOCAL_DNS_RESOLVER', $localDnsResolver) if $rs != 30;
 
 	$rs;
 }

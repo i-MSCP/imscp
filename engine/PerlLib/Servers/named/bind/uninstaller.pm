@@ -62,10 +62,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->_disableLocalResolver();
-	return $rs if $rs;
-
-	$rs = $self->_restoreConfFiles();
+	my $rs = $self->_restoreConfFiles();
 	return $rs if $rs;
 
 	$self->_deleteDbFiles();
@@ -99,28 +96,6 @@ sub _init
 	$self->{'config'} = $self->{'named'}->{'config'};
 
 	$self;
-}
-
-=item _disableLocalResolver()
-
- Disable local resolver
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _disableLocalResolver
-{
-	my ($stdout, $stderr);
-	my $rs = execute(
-		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'TOOLS_ROOT_DIR'}/imscp-local-dns-resolver stop",
-		\$stdout,
-		\$stderr
-	);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-
-	$rs;
 }
 
 =item _restoreConfFiles()

@@ -127,8 +127,10 @@ sub uninstall
 	$rs = Servers::named::bind::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
-	$rs = $self->restart();
-	return $rs if $rs;
+	unless($main::imscpConfig{'NAMED_SERVER'} eq 'external_server' || $main::execmode && $main::execmode eq 'setup') {
+		$rs = $self->restart();
+		return $rs if $rs;
+	}
 
 	$self->{'eventManager'}->trigger('afterNamedUninstall', 'bind');
 }

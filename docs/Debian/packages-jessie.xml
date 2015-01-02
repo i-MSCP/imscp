@@ -60,6 +60,7 @@
     </ftpd>
     <named default="bind">
         <bind>
+            <package>resolvconf</package>
             <package>bind9</package>
         </bind>
         <external_server/>
@@ -115,6 +116,7 @@
         <package>php-gettext</package>
         <package>php5-imap</package>
         <package>php5-intl</package>
+        <package>php5-json</package>
         <package>php5-mcrypt</package>
         <package>php5-mysqlnd</package>
     </php>

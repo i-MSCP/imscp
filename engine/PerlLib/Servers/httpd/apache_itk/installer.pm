@@ -47,6 +47,7 @@ use iMSCP::SystemUser;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::TemplateParser;
+use iMSCP::ProgramFinder;
 use File::Basename;
 use Servers::httpd::apache_itk;
 use version;
@@ -377,12 +378,14 @@ sub _buildPhpConfFiles
 	}
 
 	# Make sure that PHP modules are enabled
-	if(-x '/usr/sbin/php5enmod') {
+	if(iMSCP::ProgramFinder::find('php5enmod')) {
 		my($stdout, $stderr);
 		$rs = execute('php5enmod gd imap intl json mcrypt mysql mysqli mysqlnd pdo pdo_mysql', \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		unless($rs ~~ [0, 2]) {
+			error($stderr) if $stderr;
+			return $rs;
+		}
 	}
 
 	$self->{'eventManager'}->trigger('afterHttpdBuildPhpConfFiles');

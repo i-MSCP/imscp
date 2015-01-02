@@ -46,6 +46,7 @@ use iMSCP::File;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
+use iMSCP::ProgramFinder;
 use Servers::httpd::apache_php_fpm;
 use Net::LibIDN qw/idn_to_ascii/;
 use Cwd;
@@ -470,12 +471,14 @@ sub _buildFastCgiConfFiles
 	}
 
 	# Make sure that PHP modules are enabled
-	if(-x '/usr/sbin/php5enmod') {
+	if(iMSCP::ProgramFinder::find('php5enmod')) {
 		my($stdout, $stderr);
 		$rs = execute('php5enmod gd imap intl json mcrypt mysql mysqli mysqlnd pdo pdo_mysql', \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		unless($rs ~~ [0, 2]) {
+			error($stderr) if $stderr;
+			return $rs;
+		}
 	}
 
 	$self->{'eventManager'}->trigger('afterHttpdBuildFastCgiConfFiles');

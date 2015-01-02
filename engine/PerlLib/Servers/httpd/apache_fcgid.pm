@@ -1325,18 +1325,20 @@ sub enableConfs
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdEnableConfs', \$confs);
 	return $rs if $rs;
 
-	if(-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
-		for(split(' ', $confs)) {
-			if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
-				my ($stdout, $stderr);
-				my $rs = execute("$self->{'config'}->{'CMD_A2ENCONF'} $_", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
+	if(-x $self->{'config'}->{'CMD_A2ENCONF'}) {
+		if(-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
+			for(split(' ', $confs)) {
+				if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
+					my ($stdout, $stderr);
+					my $rs = execute("$self->{'config'}->{'CMD_A2ENCONF'} $_", \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+					error($stderr) if $stderr && $rs;
+					return $rs if $rs;
 
-				$self->{'restart'} = 1;
-			} else {
-				warning("Configuration file $_ doesn't exist");
+					$self->{'restart'} = 1;
+				} else {
+					warning("Configuration file $_ doesn't exist");
+				}
 			}
 		}
 	}
@@ -1360,18 +1362,20 @@ sub disableConfs
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDisableConfs', \$confs);
 	return $rs if $rs;
 
-	if(-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
-		for(split(' ', $confs)) {
-			if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
-				my ($stdout, $stderr);
-				my $rs = execute("$self->{'config'}->{'CMD_A2DISCONF'} $_", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
+	if(-x $self->{'config'}->{'CMD_A2DISCONF'}) {
+		if(-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
+			for(split(' ', $confs)) {
+				if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
+					my ($stdout, $stderr);
+					my $rs = execute("$self->{'config'}->{'CMD_A2DISCONF'} $_", \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+					error($stderr) if $stderr && $rs;
+					return $rs if $rs;
 
-				$self->{'restart'} = 1;
-			} else {
-				warning("Configuration file $_ doesn't exist");
+					$self->{'restart'} = 1;
+				} else {
+					warning("Configuration file $_ doesn't exist");
+				}
 			}
 		}
 	}

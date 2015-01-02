@@ -158,14 +158,15 @@ sub installPackages
 	);
 	return $rs if $rs;
 
-	# Prevent the package manager to start apache2 service itself (excluding mysql) using the policy layer interface.
-	# This prevents failures such as when nginx is installed after Apache2 which is already listening on port 80...
+	# Prevent the package manager to start some services itself using the policy layer interface.
+	# Apache2: This prevents failures such as when nginx is installed after Apache2 which is already listening on port 80...
+	# Bind9: This avoid error when resolvconf is not configured yet
 	my $file = iMSCP::File->new('filename' => '/usr/sbin/policy-rc.d');
 	$rs = $file->set(<<EOF);
 #/bin/sh
 initscript=\$1
 action=\$2
-if [ "\$initscript" = "apache2" ] && [ "\$action" = "start" ] ; then
+if [ "\$action" = "start" ] && { [ "\$initscript" = "apache2" ] || [ "\$initscript" = "bind9" ] ; } then
         exit 101;
 fi
 exit 0
@@ -285,12 +286,14 @@ sub uninstallPackages
 sub postBuild
 {
 	# Make sure that PHP modules are enabled
-	if(-x '/usr/sbin/php5enmod') {
+	if(iMSCP::ProgramFinder::find('php5enmod')) {
 		my($stdout, $stderr);
 		my $rs = execute('php5enmod gd imap intl json mcrypt mysql mysqli mysqlnd pdo pdo_mysql', \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		unless($rs ~~ [0, 2]) {
+			error($stderr) if $stderr;
+			return $rs;
+		}
 	}
 
 	0;
@@ -321,8 +324,7 @@ sub _init
 
 	$self->{'repositorySections'} = ['main', 'non-free'];
 	$self->{'preRequiredPackages'} = [
-		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget', 'resolvconf',
-		'rsync'
+		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget', 'rsync'
 	];
 	$self->{'aptRepositoriesToRemove'} = { };
 	$self->{'aptRepositoriesToAdd'} = { };

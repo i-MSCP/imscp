@@ -85,7 +85,7 @@ $usage
  -c     --clean-packages-cache  Cleanup i-MSCP packages cache.
  -a     --skip-packages-update  Skip i-MSCP packages update
  -d,    --debug                 Force debug mode.
- -?,    --help                  Show this help.
+ -?,-h  --help                  Show this help.
 
  $optionHelp
 EOF
@@ -115,7 +115,7 @@ EOF
 			'clean-packages-cache|c', sub { $options->{'cleanPackagesCache'} = 1 },
 			'skip-packages-update|a', sub { $options->{'skipPackagesUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
-			'help|?', sub { $showUsage->() },
+			'help|?|h', sub { $showUsage->() },
 			@_,
 		) || $showUsage->(1);
 	};
@@ -142,7 +142,7 @@ sub parseNoDefault
 		my $exitCode = shift || 0;
 		print STDERR wrap('', '', <<EOF);
 $usage
- -?,    --help          Show this help.
+ -?,-h  --help          Show this help.
 
 EOF
 		debugRegisterCallBack(sub { exit $exitCode; });
@@ -164,7 +164,7 @@ EOF
 
 	eval {
 		Getopt::Long::GetOptions(
-			'help|?', sub { $showUsage->() },
+			'help|?|h', sub { $showUsage->() },
 			@_,
 		) || $showUsage->(1);
 	};
@@ -198,7 +198,7 @@ sub showUsage
 
 our $reconfigurationItems = [
 	'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostnames', 'system_hostname',
-	'panel_hostname', 'resolver', 'ips', 'admin', 'php', 'panel_ssl', 'services_ssl', 'ssl', 'backup', 'webstats',
+	'panel_hostname', 'ips', 'admin', 'php', 'panel_ssl', 'services_ssl', 'ssl', 'backup', 'webstats',
 	'sqlmanager', 'webmail', 'filemanager', 'antirootkits'
 ];
 

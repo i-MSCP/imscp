@@ -61,6 +61,7 @@
     </ftpd>
     <named default="bind">
         <bind>
+            <package>resolvconf</package>
             <package>bind9</package>
         </bind>
         <external_server/>
