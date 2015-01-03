@@ -7,6 +7,9 @@ Git 1.1.x
 CONFIGS
 	Added php5-json package ( Debian Jessie )
 
+FRONTEND
+	Added: Support for eAccelerator, WinCache, XCache and ZendOptimizerPlus opcode caches
+
 INSTALLER
 	Fixed: Migration from Courier to Dovecot is broken ( courier-dovecot-migrate.pl is run with a wrong option )
 	Fixed: php5enmod command throws an error when a PHP module is missing ( PHP5.4 )
