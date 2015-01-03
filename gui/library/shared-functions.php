@@ -3261,18 +3261,14 @@ function getLastDayOfMonth($month = null, $year = null)
 /**
  * Delete the given file from the opcode cache
  *
- * Note: Only opcache and apc are supported
+ * Note: If the opcache doesn't implement file clearing, the full opcode cache is cleared.
  *
  * @param string $filepath filepath
  * @return void
  */
 function imscp_delete_opcode_file($filepath)
 {
-	if(function_exists('opcache_invalidate')) {
-		opcache_invalidate($filepath);
-	} elseif(function_exists('apc_delete_file')) {
-		apc_delete_file($filepath);
-	}
+	iMSCP_Utility_OpcodeCache::clearAllActive($filepath);
 }
 
 /**
@@ -3282,9 +3278,5 @@ function imscp_delete_opcode_file($filepath)
  */
 function imscp_clear_opcode_cache()
 {
-	if(function_exists('opcache_reset')) {
-		opcache_reset();
-	} elseif(function_exists('apc_clear_cache')) {
-		apc_clear_cache();
-	}
+	iMSCP_Utility_OpcodeCache::clearAllActive();
 }

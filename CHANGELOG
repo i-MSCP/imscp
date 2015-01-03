@@ -17,6 +17,9 @@ ENGINE
 	Moved: Local DNS resolver question into bind9 installer
 	Removed: imscp-local-dns-resolver script (  The bind9 initscript invokes resolvconf itself )
 
+FRONTEND
+	Added: Support for eAccelerator, WinCache, XCache and ZendOptimizerPlus opcode caches
+
 INSTALLER
 
 	Fixed: Migration from Courier to Dovecot is broken ( courier-dovecot-migrate.pl is run with a wrong option )
