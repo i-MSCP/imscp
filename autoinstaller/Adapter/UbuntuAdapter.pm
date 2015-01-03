@@ -118,12 +118,12 @@ sub _processAptRepositories
 		delete $self->{'aptRepositoriesToRemove'}->{$_} for keys %{$self->{'aptRepositoriesToAdd'}};
 
 		my $distroRelease = iMSCP::LsbRelease->getInstance()->getRelease(1);
-		my (@cmd, $stdout, $stderr);
 
 		for(keys %{$self->{'aptRepositoriesToRemove'}}) {
 			if(/^ppa:/ || $fileContent =~ /^$_/m) {
 				if($distroRelease > 10.04) {
-					@cmd = ('add-apt-repository -y -r', escapeShell($_));
+					my @cmd = ('add-apt-repository -y -r', escapeShell($_));
+					my ($stdout, $stderr);
 					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
@@ -133,6 +133,7 @@ sub _processAptRepositories
 						my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
 
 						if(glob $ppaFile) {
+							my ($stdout, $stderr);
 							$rs = execute("$main::imscpConfig{'CMD_RM'} $ppaFile", \$stdout, \$stderr);
 							debug($stdout) if $stdout;
 							error($stderr) if $stderr && $rs;
@@ -157,6 +158,7 @@ sub _processAptRepositories
 		for(keys %{$self->{'aptRepositoriesToAdd'}}) {
 			if(/^ppa:/ || $fileContent !~ /^$_/m) {
 				my $repository = $self->{'aptRepositoriesToAdd'}->{$_};
+				my @cmd = ();
 
 				if(/^ppa:/) { # PPA repository
 					if($distroRelease > 10.4) {
@@ -173,6 +175,7 @@ sub _processAptRepositories
 						@cmd = ('add-apt-repository', escapeShell($_));
 				 	}
 
+					my ($stdout, $stderr);
 					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
@@ -180,14 +183,18 @@ sub _processAptRepositories
 				} else { # Normal repository
 					if($distroRelease > 10.4) {
 						@cmd = ('add-apt-repository -y ', escapeShell($_));
+						my ($stdout, $stderr);
 						$rs = execute("@cmd", \$stdout, \$stderr);
 					} else {
 						@cmd = ('add-apt-repository ', escapeShell($_));
+						my ($stdout, $stderr);
 						$rs = execute("@cmd", \$stdout, \$stderr);
 					}
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
+
+					@cmd = ();
 
 					if($repository->{'repository_key_srv'}) {
 						if($repository->{'repository_key_id'}) {
@@ -202,15 +209,15 @@ sub _processAptRepositories
 						}
 					} elsif($repository->{'repository_key_uri'}) {
 						@cmd = ('wget -qO-', escapeShell($repository->{'repository_key_uri'}), '| apt-key add -');
-					} else {
-						error("The repository_key_uri entry for the '$_' repository was not found");
-						return 1;
 					}
 
-					$rs = execute("@cmd", \$stdout, \$stderr);
-					debug($stdout) if $stdout;
-					error($stderr) if $stderr && $rs;
-					return $rs if $rs
+					if(@cmd) {
+						my ($stdout, $stderr);
+						$rs = execute("@cmd", \$stdout, \$stderr);
+						debug($stdout) if $stdout;
+						error($stderr) if $stderr && $rs;
+						return $rs if $rs
+					}
 				}
 			}
 		}

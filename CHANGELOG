@@ -8,6 +8,9 @@ CONFIGS
 	Added php5-json package ( Debian Jessie )
 	Moved: Local DNS resolver parameters from the imscp.conf file to the  bind.data configuration file
 
+DISTRO
+	Changed: Dovecot packages are now installed from backports repository ( Squeeze, Wheezy )
+
 ENGINE
 	Added: Checks for a2enconf/a2disconf command availability
 	Added: -h ( help ) short option  ( iMSCP::Getopt module )
@@ -15,8 +18,11 @@ ENGINE
 	Removed: imscp-local-dns-resolver script (  The bind9 initscript invokes resolvconf itself )
 
 INSTALLER
-	Removed: 'resolver' configuration item ( local DNS resolver question is part of 'named' configuration item )
+
+	Fixed: Migration from Courier to Dovecot is broken ( courier-dovecot-migrate.pl is run with a wrong option )
 	Fixed: php5enmod command throws an error when a PHP module is missing ( PHP5.4 )
+	Fixed: Unable to define custom APT repository without key ( Debian, Ubuntu )
+	Removed: 'resolver' configuration item ( local DNS resolver question is part of 'named' configuration item )
 
 TICKETS
 	Fixed #1205: Good practices - Use "-h" as abbrev for "--help" (instead of "-?")

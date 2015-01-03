@@ -578,8 +578,6 @@ sub _processAptRepositories
 
 		delete $self->{'aptRepositoriesToRemove'}->{$_} for keys %{$self->{'aptRepositoriesToAdd'}};
 
-		my (@cmd, $stdout, $stderr);
-
 		for(keys %{$self->{'aptRepositoriesToRemove'}}) {
 			if($fileContent =~ /^$_/m) {
 				# Remove the repository from the sources.list file
@@ -591,6 +589,7 @@ sub _processAptRepositories
 		# Add needed APT repositories
 		for(keys %{$self->{'aptRepositoriesToAdd'}}) {
 			if($fileContent !~ /^$_/m) {
+				my @cmd = ();
 				my $repository = $self->{'aptRepositoriesToAdd'}->{$_};
 
 				$fileContent .= "\n$_\n";
@@ -608,15 +607,15 @@ sub _processAptRepositories
 					}
 				} elsif($repository->{'repository_key_uri'}) { # Add the repository key by fetching it from the given URI
 					@cmd = ('wget -qO-', escapeShell($repository->{'repository_key_uri'}), '| apt-key add -');
-				} else {
-					error("The repository_key_uri entry for the '$_' repository was not found");
-					return 1;
 				}
 
-				$rs = execute("@cmd", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
+				if(@cmd) {
+					my ($stdout, $stderr);
+					$rs = execute("@cmd", \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+					error($stderr) if $stderr && $rs;
+					return $rs if $rs;
+				}
 			}
 		}
 

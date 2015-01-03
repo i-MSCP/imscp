@@ -628,7 +628,7 @@ sub _migrateFromCourier
 	my @cmd = (
 		$main::imscpConfig{'CMD_PERL'},
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl",
-		'--to-courier',
+		'--to-dovecot',
 		'--convert',
 		'--overwrite',
 		'--recursive',

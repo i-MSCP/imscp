@@ -48,8 +48,13 @@
             <package>libgamin0</package>
             <package>maildrop</package>
         </courier>
-        <dovecot>
-            <package>dovecot-common</package>
+        <dovecot
+                pinning_package="dovecot-core dovecot-imapd dovecot-pop3d dovecot-managesieved dovecot-sieve"
+                repository="deb http://http.debian.net/debian-backports squeeze-backports main"
+                pinning_pin="release a=squeeze-backports"
+                pinning_pin_priority="1001"
+                >
+            <package>dovecot-core</package>
             <package>dovecot-imapd</package>
             <package>dovecot-pop3d</package>
         </dovecot>
