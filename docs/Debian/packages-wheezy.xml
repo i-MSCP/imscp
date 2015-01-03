@@ -64,6 +64,8 @@
                 pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient16 libmysqlclient18"
                 pinning_pin="release o=Debian,n=wheezy"
                 pinning_pin_priority="1001"
+                repository_key_srv="keyserver.ubuntu.com"
+                repository_key_id="0xcbcb082a1bb943db"
                 >
             <package>mysql-server-5.5</package>
             <package>mysql-client-5.5</package>
