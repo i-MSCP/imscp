@@ -17,6 +17,7 @@ INSTALLER
 
 TICKETS
 	Fixed #1207: Defect - DataTable - Sorting not functional for data strings containing numeric values
+	Fixed #1208: Task - Untranslatable string
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.21
