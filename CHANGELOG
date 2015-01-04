@@ -30,6 +30,7 @@ INSTALLER
 TICKETS
 	Fixed #1205: Good practices - Use "-h" as abbrev for "--help" (instead of "-?")
 	Fixed #1206: Good practices - Install resolvconf only when bind9 is also installed
+	Fixed #1207: Defect - DataTable - Sorting not functional for data strings containing numeric values
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.0

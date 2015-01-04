@@ -61,13 +61,17 @@
 	</div>
 </form>
 
-<script type="text/javascript">
+<script src="{THEME_ASSETS_PATH}/js/jquery/plugins/dataTables_naturalSorting.js?v={THEME_ASSETS_VERSION}"></script>
+<script>
 	$(document).ready(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"bStateSave": true,
-				"pagingType": "simple"
+				"Language": {DATATABLE_TRANSLATIONS},
+				"stateSave": true,
+				"pagingType": "simple",
+				"columnDefs": [
+					{ "type": "natural", "targets": [ 1 ] }
+				]
 			}
 		);
 	});
