@@ -125,7 +125,7 @@ function client_addMailAccount()
 		$username = strtolower(clean_input($_POST['username']));
 
 		if ($_POST['username'] == '' || ! chk_email($username, true)) {
-			set_page_message(tr('Invalid Email username.'), 'error');
+			set_page_message(tr('Invalid email username.'), 'error');
 			return false;
 		}
 
@@ -171,7 +171,7 @@ function client_addMailAccount()
 
 					if ($mainDmnProps['mail_quota'] != '0') {
 						if ($quota == '0') {
-							set_page_message(tr('Incorrect Email quota.'), 'error');
+							set_page_message(tr('Incorrect email quota.'), 'error');
 							return false;
 						}
 
@@ -321,7 +321,7 @@ function client_generatePage($tpl)
 
 	if ($mainDmnProps['mail_quota'] != '0' && $quota >= $mainDmnProps['mail_quota']) {
 		set_page_message(
-			'You cannot add new Email account. You have already assigned all your Email quota to other mailboxes. Please first, review your quota assignments.',
+			tr('You cannot add new email account. You have already assigned all your email quota to other mailboxes. Please first, review your quota assignments.'),
 			'warning'
 		);
 		$tpl->assign('MAIL_ACCOUNT', '');
@@ -386,7 +386,7 @@ if ($emailAccountsLimit != '0') {
 	list($nbEmailAccounts) = get_domain_running_mail_acc_cnt($dmnProps['domain_id']);
 
 	if ($nbEmailAccounts >= $emailAccountsLimit) {
-		set_page_message(tr('You have reached the maximum number of Email accounts allowed by your subscription.'), 'warning');
+		set_page_message(tr('You have reached the maximum number of email accounts allowed by your subscription.'), 'warning');
 		redirectTo('mail_accounts.php');
 	}
 }
