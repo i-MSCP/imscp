@@ -233,16 +233,24 @@ function generate_users_list($tpl, $resellerId)
 			}
 
 			$domainExpiring = $stmt->fields['domain_expires'];
+			$domainCreated = $stmt->fields['domain_created'];
 
 			if ($domainExpiring == 0) {
 				$domainExpiring = tr('N/A');
 			} else {
 				$domainExpiring = date($cfg->DATE_FORMAT, $domainExpiring);
 			}
+			
+			if ($domainCreated == 0) {
+				$domainCreated = tr('N/A');
+			} else {
+				$domainCreated = date($cfg->DATE_FORMAT, $domainCreated);
+			}
 
 			$tpl->assign(
 				array(
 					'EXPIRATION_DATE' => $domainExpiring,
+					'CREATION_DATE' => $domainCreated,
 					'DOMAIN_ID' => $stmt->fields['domain_id'],
 					'ACTION' => tr('Delete'),
 					'USER_ID' => $stmt->fields['domain_admin_id'],
