@@ -57,7 +57,7 @@
 	<tr>
 		<th>{TR_USER_STATUS}</th>
 		<th>{TR_USERNAME}</th>
-		<td>{CREATION_DATE}</td>
+		<td>{TR_CREATION_DATE}</td>
 		<th>{TR_EXPIRATION_DATE}</th>
 		<th>{TR_DISK_USAGE}</th>
 		<th>{TR_ACTION}</th>
