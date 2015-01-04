@@ -14,7 +14,7 @@
 	<tr>
 		<td>{TR_DOMAIN_ALTERNATIVE_URL}</td>
 		<td>
-			<a id="dmn_tmp_access" href="{HREF_DOMAIN_ALTERNATIVE_URL}"target="_blank">{HREF_DOMAIN_ALTERNATIVE_URL}</a>
+			<a id="dmn_tmp_access" href="{HREF_DOMAIN_ALTERNATIVE_URL}" target="_blank">{HREF_DOMAIN_ALTERNATIVE_URL}</a>
 		</td>
 	</tr>
 	<!-- EDP: domain_alternative_url -->
