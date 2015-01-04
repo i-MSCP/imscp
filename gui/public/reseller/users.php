@@ -348,6 +348,7 @@ $tpl->assign(
 		'TR_SEARCH' => tr('Search'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_ACTION' => tr('Actions'),
+		'TR_CREATION_DATE' => tr('Creation date'),
 		'TR_EXPIRATION_DATE' => tr('Expiration date'),
 		'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s?', true, '%s'),
 		'TR_STAT' => tr('Stats'),
