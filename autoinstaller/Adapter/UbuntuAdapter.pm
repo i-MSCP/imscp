@@ -103,6 +103,9 @@ sub _processAptRepositories
 	my $self = $_[0];
 
 	if(%{$self->{'aptRepositoriesToRemove'}} || %{$self->{'aptRepositoriesToAdd'}}) {
+		my ($stdout, $stderr);
+		my @cmd = ();
+
 		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
 		my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
@@ -122,8 +125,7 @@ sub _processAptRepositories
 		for(keys %{$self->{'aptRepositoriesToRemove'}}) {
 			if(/^ppa:/ || $fileContent =~ /^$_/m) {
 				if($distroRelease > 10.04) {
-					my @cmd = ('add-apt-repository -y -r', escapeShell($_));
-					my ($stdout, $stderr);
+					@cmd = ('add-apt-repository -y -r', escapeShell($_));
 					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
@@ -133,7 +135,6 @@ sub _processAptRepositories
 						my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
 
 						if(glob $ppaFile) {
-							my ($stdout, $stderr);
 							$rs = execute("$main::imscpConfig{'CMD_RM'} $ppaFile", \$stdout, \$stderr);
 							debug($stdout) if $stdout;
 							error($stderr) if $stderr && $rs;
@@ -158,7 +159,6 @@ sub _processAptRepositories
 		for(keys %{$self->{'aptRepositoriesToAdd'}}) {
 			if(/^ppa:/ || $fileContent !~ /^$_/m) {
 				my $repository = $self->{'aptRepositoriesToAdd'}->{$_};
-				my @cmd = ();
 
 				if(/^ppa:/) { # PPA repository
 					if($distroRelease > 10.4) {
@@ -175,7 +175,6 @@ sub _processAptRepositories
 						@cmd = ('add-apt-repository', escapeShell($_));
 				 	}
 
-					my ($stdout, $stderr);
 					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
@@ -183,13 +182,12 @@ sub _processAptRepositories
 				} else { # Normal repository
 					if($distroRelease > 10.4) {
 						@cmd = ('add-apt-repository -y ', escapeShell($_));
-						my ($stdout, $stderr);
 						$rs = execute("@cmd", \$stdout, \$stderr);
 					} else {
 						@cmd = ('add-apt-repository ', escapeShell($_));
-						my ($stdout, $stderr);
 						$rs = execute("@cmd", \$stdout, \$stderr);
 					}
+
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
@@ -212,7 +210,6 @@ sub _processAptRepositories
 					}
 
 					if(@cmd) {
-						my ($stdout, $stderr);
 						$rs = execute("@cmd", \$stdout, \$stderr);
 						debug($stdout) if $stdout;
 						error($stderr) if $stderr && $rs;

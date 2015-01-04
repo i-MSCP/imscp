@@ -564,6 +564,9 @@ sub _processAptRepositories
 	my $self = $_[0];
 
 	if(%{$self->{'aptRepositoriesToRemove'}} || %{$self->{'aptRepositoriesToAdd'}}) {
+		my ($stdout, $stderr);
+		my @cmd = ();
+
 		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
 		my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
@@ -589,10 +592,11 @@ sub _processAptRepositories
 		# Add needed APT repositories
 		for(keys %{$self->{'aptRepositoriesToAdd'}}) {
 			if($fileContent !~ /^$_/m) {
-				my @cmd = ();
 				my $repository = $self->{'aptRepositoriesToAdd'}->{$_};
 
 				$fileContent .= "\n$_\n";
+
+				@cmd = ();
 
 				if($repository->{'repository_key_srv'}) { # Add the repository key from the given server, using key id
 					if($repository->{'repository_key_id'}) {
@@ -610,7 +614,6 @@ sub _processAptRepositories
 				}
 
 				if(@cmd) {
-					my ($stdout, $stderr);
 					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
