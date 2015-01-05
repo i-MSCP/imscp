@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2014 by i-MSCP Team
+ * Copyright (C) 2010-2015 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
  * @category    i-MSCP
  * @package     iMSCP_Core
  * @subpackage  Reseller
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://i-mscp.net
  */
