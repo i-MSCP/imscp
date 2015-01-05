@@ -13,6 +13,7 @@ FRONTEND
 INSTALLER
 	Fixed: Migration from Courier to Dovecot is broken ( courier-dovecot-migrate.pl is run with a wrong option )
 	Fixed: php5enmod command throws an error when a PHP module is missing ( PHP5.4 )
+	Fixed: rsync: failed to set times on "/var/www/virtual": Operation not permitted (1)
 	Fixed: Unable to define custom APT repository without key ( Debian, Ubuntu )
 
 TICKETS
