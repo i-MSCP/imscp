@@ -6,7 +6,7 @@ Git 1.2.x
 
 CONFIGS
 	Added php5-json package ( Debian Jessie )
-	Moved: Local DNS resolver parameters from the imscp.conf file to the  bind.data configuration file
+	Moved: Local DNS resolver parameters from the imscp.conf file to the bind.data configuration file
 
 DISTRO
 	Changed: Dovecot packages are now installed from backports repository ( Squeeze, Wheezy )
@@ -23,6 +23,7 @@ FRONTEND
 INSTALLER
 	Fixed: Migration from Courier to Dovecot is broken ( courier-dovecot-migrate.pl is run with a wrong option )
 	Fixed: php5enmod command throws an error when a PHP module is missing ( PHP5.4 )
+	Fixed: rsync: failed to set times on "/var/www/virtual": Operation not permitted (1)
 	Fixed: Unable to define custom APT repository without key ( Debian, Ubuntu )
 	Removed: 'resolver' configuration item ( local DNS resolver question is part of 'named' configuration item )
 
