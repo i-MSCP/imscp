@@ -19,7 +19,7 @@
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Validate
- * @copyright   2010-2014 by i-MSCP team
+ * @copyright   2010-2015 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2

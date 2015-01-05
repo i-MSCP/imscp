@@ -21,14 +21,14 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    iMSCP
  * @package     Client_Subdomains
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net

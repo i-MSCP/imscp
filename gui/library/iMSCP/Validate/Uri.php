@@ -20,7 +20,7 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Validate
- * @copyright	2010-2014 by by i-MSCP team
+ * @copyright	2010-2015 by by i-MSCP team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.1
  * @link		http://www.i-mscp.net i-MSCP Home Site
