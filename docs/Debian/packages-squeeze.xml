@@ -49,7 +49,7 @@
             <package>maildrop</package>
         </courier>
         <dovecot
-                pinning_package="dovecot-core dovecot-imapd dovecot-pop3d dovecot-managesieved dovecot-sieve"
+                pinning_package="dovecot-core dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-managesieved dovecot-sieve"
                 repository="deb http://http.debian.net/debian-backports squeeze-backports main"
                 pinning_pin="release a=squeeze-backports"
                 pinning_pin_priority="1001"
