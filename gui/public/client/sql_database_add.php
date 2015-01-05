@@ -147,7 +147,7 @@ function client_addSqlDb($userId)
 
 	// Are wildcards used?
 	if (preg_match('/[%|\?]+/', $dbName)) {
-		set_page_message(tr("Wildcards such as '%%' and '?' are not allowed."), 'error');
+		set_page_message(tr("Wildcards such as 's%' and 's%' are not allowed.", '%', '?'), 'error');
 		return;
 	}
 
