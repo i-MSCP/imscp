@@ -72,7 +72,7 @@ sub factory
 
 END
 {
-	unless(!$Servers::mta::instance || $main::execmode && $main::execmode eq 'setup') {
+	unless(!$Servers::mta::instance || ( $main::execmode && $main::execmode eq 'setup' )) {
 		my $rs = 0;
 
 		if($Servers::mta::instance->{'restart'}) {

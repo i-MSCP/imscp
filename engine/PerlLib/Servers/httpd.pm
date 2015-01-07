@@ -72,13 +72,13 @@ sub factory
 
 END
 {
-	unless(!$Servers::http::instance || $main::execmode && $main::execmode eq 'setup') {
+	unless(!$Servers::httpd::instance || ( $main::execmode && $main::execmode eq 'setup' )) {
 		my $rs = 0;
 
-		if($Servers::http::instance->{'start'}) {
-			$rs = $Servers::http::instance->start();
-		} elsif($Servers::http::instance->{'restart'}) {
-			$rs = $Servers::http::instance->restart();
+		if($Servers::httpd::instance->{'start'}) {
+			$rs = $Servers::httpd::instance->start();
+		} elsif($Servers::httpd::instance->{'restart'}) {
+			$rs = $Servers::httpd::instance->restart();
 		}
 
 		$? ||= $rs;

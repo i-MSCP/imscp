@@ -95,7 +95,7 @@ END
 {
 	unless(
 		!$Servers::named::instance || $main::imscpConfig{'NAMED_SERVER'} eq 'external_server' ||
-		$main::execmode && $main::execmode eq 'setup'
+		( $main::execmode && $main::execmode eq 'setup' )
 	) {
 		my $rs = 0;
 

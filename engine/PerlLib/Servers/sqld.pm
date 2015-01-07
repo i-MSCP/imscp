@@ -80,7 +80,7 @@ END
 {
 	unless(
 		!$Servers::sqld::instance || $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ||
-		$main::execmode && $main::execmode eq 'setup'
+		( $main::execmode && $main::execmode eq 'setup' )
 	) {
 		my $rs = 0;
 

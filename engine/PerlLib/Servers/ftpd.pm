@@ -72,7 +72,7 @@ sub factory
 
 END
 {
-	unless(!$Servers::ftpd::instance || $main::execmode && $main::execmode eq 'setup') {
+	unless(!$Servers::ftpd::instance || ( $main::execmode && $main::execmode eq 'setup' )) {
 		my $rs = 0;
 
 		if($Servers::ftpd::instance->{'start'}) {
