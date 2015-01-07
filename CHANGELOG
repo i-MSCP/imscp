@@ -16,6 +16,9 @@ INSTALLER
 	Fixed: rsync: failed to set times on "/var/www/virtual": Operation not permitted (1)
 	Fixed: Unable to define custom APT repository without key ( Debian, Ubuntu )
 
+PLUGINS
+	Fixed: Plugins that don't implement an API method which is being executed must not be instantiated
+
 TICKETS
 	Fixed #1207: Defect - DataTable - Sorting not functional for data strings containing numeric values
 	Fixed #1208: Task - Untranslatable string
