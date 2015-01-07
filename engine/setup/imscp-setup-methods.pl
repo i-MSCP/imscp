@@ -2488,9 +2488,7 @@ sub setupRestartServices
 	my @services = (
 		#['Variable holding service name', 'command to execute', 'ignore error if 0 exit on error if 1']
 		[$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'restart', 1],
-		[$main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'restart', 1],
-		[$main::imscpConfig{'POSTGREY_SNAME'}, 'restart', 1], # FIXME This should be done by an addon
-		[$main::imscpConfig{'POLICYD_WEIGHT_SNAME'}, 'restart', 0] # FIXME This should be done by the addon
+		[$main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'restart', 1]
 	);
 
 	my ($stdout, $stderr);
