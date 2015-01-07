@@ -2256,19 +2256,7 @@ sub setupRestartServices
 
 	unshift @services, (
 		[ sub { $serviceMngr->restart($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'retval'); }, 'i-MSCP Network' ],
-		[ sub { $serviceMngr->restart($main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'imscp_daemon'); }, 'i-MSCP Daemon' ],
-		[
-			sub {
-					# We process like this because policyd-weight refuses to restart if the pid file has gone away
-					# for any reason...
-					(
-						$serviceMngr->stop($main::imscpConfig{'POLICYD_WEIGHT_SNAME'}, '-f policyd-weight') ||
-						$serviceMngr->start($main::imscpConfig{'POLICYD_WEIGHT_SNAME'}, '-f policyd-weight')
-					);
-			},
-			'Policyd-Weight'
-		],
-		[ sub { $serviceMngr->restart($main::imscpConfig{'POSTGREY_SNAME'}, '-u postgrey -f postgrey'); }, 'Postgrey' ]
+		[ sub { $serviceMngr->restart($main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'imscp_daemon'); }, 'i-MSCP Daemon' ]
 	);
 
 	my $nbSteps = @services;
