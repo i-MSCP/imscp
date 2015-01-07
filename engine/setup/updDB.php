@@ -44,6 +44,9 @@ require_once "$guiRootDir/library/imscp-lib.php";
 
 unset($guiRootDir);
 
+# Flush any opcode cache
+iMSCP_Utility_OpcodeCache::clearAllActive();
+
 try {
 	$databaseUpdate = iMSCP_Update_Database::getInstance();
 

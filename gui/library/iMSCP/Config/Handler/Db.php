@@ -37,7 +37,6 @@ require_once 'iMSCP/Config/Handler.php';
  * are stored in database.
  *
  * @property string MAIL_BODY_FOOTPRINTS Mail body footprint
- * @property string PORT_POSTGREY Posgrey port
  * @property int FAILED_UPDATE Failed database update
  * @property string PORT_IMSCP_DAEMON i-MSCP daemon service properties
  * @property string USER_INITIAL_LANG User initial language

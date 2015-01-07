@@ -57,8 +57,6 @@
             <package>libsasl2-modules</package>
             <package>libsasl2-modules-sql</package>
             <package>sasl2-bin</package>
-            <package>policyd-weight</package>
-            <package>postgrey</package>
         </postfix>
     </mta>
     <ftpd default="proftpd">

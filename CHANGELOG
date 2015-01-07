@@ -14,9 +14,10 @@ DISTRO
 ENGINE
 	Added: Checks for a2enconf/a2disconf command availability
 	Added: -h ( help ) short option  ( iMSCP::Getopt module )
+	Fixed: Useless instantiation of servers
 	Moved: Local DNS resolver question into bind9 installer
 	Removed: imscp-local-dns-resolver script (  The bind9 initscript invokes resolvconf itself )
-	Fixed: Useless instantiation of servers
+	Removed: policyd-weight and postgrey ( Postfix SMTP access policy delegation )
 
 FRONTEND
 	Added: Support for eAccelerator, WinCache, XCache and ZendOptimizerPlus opcode caches
