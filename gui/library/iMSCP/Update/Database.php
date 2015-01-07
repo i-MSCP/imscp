@@ -62,7 +62,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 197;
+	protected $lastUpdate = 198;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3118,5 +3118,24 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r197()
 	{
 		return $this->addColumn('plugin', 'plugin_locked', "TINYINT UNSIGNED NOT NULL DEFAULT '0'");
+	}
+
+	/**
+	 * Remove postgrey and policyd-weight ports
+	 *
+	 * @return void
+	 */
+	protected function r198()
+	{
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		if (isset($dbConfig['PORT_POSTGREY'])) {
+			$dbConfig->del('PORT_POSTGREY');
+		}
+
+		if (isset($dbConfig['PORT_POLICYD-WEIGHT'])) {
+			$dbConfig->del('PORT_POLICYD-WEIGHT');
+		}
 	}
 }

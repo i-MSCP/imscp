@@ -92,8 +92,6 @@ smtpd_recipient_restrictions = reject_non_fqdn_recipient,
                                permit_sasl_authenticated,
                                reject_unauth_destination,
                                reject_unlisted_recipient,
-                               check_policy_service inet:127.0.0.1:12525,
-                               check_policy_service inet:127.0.0.1:{PORT_POSTGREY},
                                permit
 
 smtpd_data_restrictions = reject_multi_recipient_bounce,
