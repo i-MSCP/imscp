@@ -36,6 +36,8 @@ use warnings;
 
 use iMSCP::Debug;
 
+our $instance;
+
 =head1 DESCRIPTION
 
  i-MSCP Ftpd server implementation.
@@ -65,19 +67,18 @@ sub factory
 
 	fatal($@) if $@;
 
-	$package->getInstance();
+	$instance = $package->getInstance();
 }
 
 END
 {
-	unless($main::execmode && $main::execmode eq 'setup') {
-		my $ftpd = __PACKAGE__->factory();
+	unless(!$Servers::ftpd::instance || $main::execmode && $main::execmode eq 'setup') {
 		my $rs = 0;
 
-		if($ftpd->{'start'}) {
-			$rs = $ftpd->start();
-		} elsif($ftpd->{'restart'}) {
-			$rs = $ftpd->restart();
+		if($Servers::ftpd::instance->{'start'}) {
+			$rs = $Servers::ftpd::instance->start();
+		} elsif($Servers::ftpd::instance->{'restart'}) {
+			$rs = $Servers::ftpd::instance->restart();
 		}
 
 		$? ||= $rs;

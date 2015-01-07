@@ -36,6 +36,8 @@ use warnings;
 
 use iMSCP::Debug;
 
+our $instance;
+
 =head1 DESCRIPTION
 
  i-MSCP Httpd server implementation.
@@ -65,19 +67,18 @@ sub factory
 
 	fatal($@) if $@;
 
-	$package->getInstance();
+	$instance = $package->getInstance();
 }
 
 END
 {
-	unless($main::execmode && $main::execmode eq 'setup') {
-		my $httpd = __PACKAGE__->factory();
+	unless(!$Servers::http::instance || $main::execmode && $main::execmode eq 'setup') {
 		my $rs = 0;
 
-		if($httpd->{'start'}) {
-			$rs = $httpd->start();
-		} elsif($httpd->{'restart'}) {
-			$rs = $httpd->restart();
+		if($Servers::http::instance->{'start'}) {
+			$rs = $Servers::http::instance->start();
+		} elsif($Servers::http::instance->{'restart'}) {
+			$rs = $Servers::http::instance->restart();
 		}
 
 		$? ||= $rs;

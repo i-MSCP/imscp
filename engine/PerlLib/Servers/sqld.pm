@@ -36,6 +36,8 @@ use warnings;
 
 use iMSCP::Debug;
 
+our $instance;
+
 =head1 DESCRIPTION
 
  i-MSCP Sqld server implementation.
@@ -71,17 +73,19 @@ sub factory
 
 	fatal($@) if $@;
 
-	$package->getInstance();
+	$instance = $package->getInstance();
 }
 
 END
 {
-	unless($main::imscpConfig{'SQL_SERVER'} eq 'remote_server' || $main::execmode && $main::execmode eq 'setup') {
-		my $sqld = __PACKAGE__->factory();
+	unless(
+		!$Servers::sqld::instance || $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ||
+		$main::execmode && $main::execmode eq 'setup'
+	) {
 		my $rs = 0;
 
-		if($sqld->{'restart'}) {
-			$rs = $sqld->restart();
+		if($Servers::sqld::instance->{'restart'}) {
+			$rs = $Servers::sqld::instance->restart();
 		}
 
 		$? ||= $rs;

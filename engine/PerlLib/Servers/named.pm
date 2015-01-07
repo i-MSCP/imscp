@@ -36,6 +36,8 @@ use warnings;
 
 use iMSCP::Debug;
 
+our $instance;
+
 =head1 DESCRIPTION
 
  i-MSCP MTA server implementation.
@@ -86,17 +88,19 @@ sub factory
 
 	fatal($@) if $@;
 
-	$package->getInstance();
+	$instance = $package->getInstance();
 }
 
 END
 {
-	unless($main::imscpConfig{'NAMED_SERVER'} eq 'external_server' || $main::execmode && $main::execmode eq 'setup') {
-		my $named = __PACKAGE__->factory();
+	unless(
+		!$Servers::named::instance || $main::imscpConfig{'NAMED_SERVER'} eq 'external_server' ||
+		$main::execmode && $main::execmode eq 'setup'
+	) {
 		my $rs = 0;
 
-		if($named->{'restart'}) {
-			$rs = $named->restart();
+		if($Servers::named::instance->{'restart'}) {
+			$rs = $Servers::named::instance->restart();
 		}
 
 		$? ||= $rs;

@@ -409,11 +409,13 @@ sub _exec
 		# Turn any warning from plugin into exception
 		local $SIG{__WARN__} = sub { die shift };
 
-		$pluginInstance = $pluginClass->getInstance(
-			'hooksManager' => $self->{'eventManager'}, # Only there to ensure backward compatibility
-			'eventManager' => $self->{'eventManager'},
-			'action' => $self->{'action'}
-		);
+		if($pluginClass->can($pluginMethod)) {
+			$pluginInstance = $pluginClass->getInstance(
+				'hooksManager' => $self->{'eventManager'}, # Only to ensure backward compatibility
+				'eventManager' => $self->{'eventManager'},
+				'action' => $self->{'action'}
+			);
+		}
 	};
 
 	if($@) {
@@ -421,8 +423,7 @@ sub _exec
 		return 1;
 	}
 
-	# We execute the action on the plugin only if it implements it
-	if($pluginInstance->can($pluginMethod)) {
+	if($pluginInstance) {
 		debug("Executing ${pluginClass}::${pluginMethod}() action");
 		$rs = $pluginInstance->$pluginMethod($fromVersion, $toVersion);
 

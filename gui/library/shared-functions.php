@@ -344,19 +344,19 @@ function translate_dmn_status($status, $escapeHtml = true)
 		case 'ok':
 			return tr('Ok', $escapeHtml);
 		case 'toadd':
-			return tr('Addition in progress', $escapeHtml);
+			return tr('Addition in progress...', $escapeHtml);
 		case 'tochange':
-			return tr('Modification in progress', $escapeHtml);
+			return tr('Modification in progress...', $escapeHtml);
 		case 'todelete':
-			return tr('Deletion in progress', $escapeHtml);
+			return tr('Deletion in progress...', $escapeHtml);
 		case 'disabled':
-			return tr('Suspended', $escapeHtml);
+			return tr('Deactivated', $escapeHtml);
 		case 'toenable':
-			return tr('Being enabled', $escapeHtml);
+			return tr('Activation in progress...', $escapeHtml);
 		case 'todisable':
-			return tr('Being suspended', $escapeHtml);
+			return tr('Deactivation in progress...', $escapeHtml);
 		case 'ordered':
-			return tr('Awaiting approval', $escapeHtml);
+			return tr('Awaiting for approval', $escapeHtml);
 		default:
 			return (isset($_SESSION['logged_from_type']) && $_SESSION['logged_from_type'] == 'admin')
 				?  tr('Unexpected error') . '<span class="icon i_help" title="' .
