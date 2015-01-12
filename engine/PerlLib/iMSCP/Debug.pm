@@ -41,7 +41,7 @@ use parent 'Exporter';
 
 our @EXPORT = qw/
 	debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType setVerbose setDebug
-	debugRegisterCallBack output
+	debugRegisterCallBack output silent
 /;
 
 BEGIN
