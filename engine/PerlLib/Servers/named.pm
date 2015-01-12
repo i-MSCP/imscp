@@ -59,36 +59,40 @@ our $instance;
 
 sub factory
 {
-	my ($self, $sName) = @_;
+	unless(defined $instance) {
+		my ($self, $sName) = @_;
 
-	$sName ||= $main::imscpConfig{'NAMED_SERVER'} || 'no';
+		$sName ||= $main::imscpConfig{'NAMED_SERVER'} || 'no';
 
-	my $package = undef;
+		my $package = undef;
 
-	if($sName eq 'external_server') {
-		my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'} || 'no';
+		if($sName eq 'external_server') {
+			my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'} || 'no';
 
-		unless($oldSname eq 'external_server' || $oldSname eq 'no') {
-			$package = "Servers::named::$oldSname";
+			unless($oldSname eq 'external_server' || $oldSname eq 'no') {
+				$package = "Servers::named::$oldSname";
 
-			eval "require $package";
+				eval "require $package";
 
-			fatal($@) if $@;
+				fatal($@) if $@;
 
-			my $rs = $package->getInstance()->uninstall();
-			fatal("Unable to uninstall $oldSname server") if $rs;
+				my $rs = $package->getInstance()->uninstall();
+				fatal("Unable to uninstall $oldSname server") if $rs;
+			}
+
+			$package = 'Servers::noserver';
+		} else {
+			$package = "Servers::named::$sName";
 		}
 
-		$package = 'Servers::noserver';
-	} else {
-		$package = "Servers::named::$sName";
+		eval "require $package";
+
+		fatal($@) if $@;
+
+		$instance = $package->getInstance();
 	}
 
-	eval "require $package";
-
-	fatal($@) if $@;
-
-	$instance = $package->getInstance();
+	$instance;
 }
 
 END

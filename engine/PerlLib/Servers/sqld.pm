@@ -57,23 +57,27 @@ our $instance;
 
 sub factory
 {
-	my ($self, $sName) = @_;
+	unless(defined $instance) {
+		my ($self, $sName) = @_;
 
-	$sName ||= $main::imscpConfig{'SQL_SERVER'} || 'mysql';
+		$sName ||= $main::imscpConfig{'SQL_SERVER'} || 'mysql';
 
-	if($sName eq 'remote_server') {
-		$sName = 'mysql';
-	} else {
-		$sName =~ s/_\d+\.\d+$//;
+		if($sName eq 'remote_server') {
+			$sName = 'mysql';
+		} else {
+			$sName =~ s/_\d+\.\d+$//;
+		}
+
+		my $package = "Servers::sqld::$sName";
+
+		eval "require $package";
+
+		fatal($@) if $@;
+
+		$instance = $package->getInstance();
 	}
 
-	my $package = "Servers::sqld::$sName";
-
-	eval "require $package";
-
-	fatal($@) if $@;
-
-	$instance = $package->getInstance();
+	$instance;
 }
 
 END

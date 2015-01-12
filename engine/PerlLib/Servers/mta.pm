@@ -57,17 +57,21 @@ our $instance;
 
 sub factory
 {
-	my ($self, $sName) = @_;
+	unless(defined $instance) {
+		my ($self, $sName) = @_;
 
-	$sName ||= $main::imscpConfig{'MTA_SERVER'} || 'no';
+		$sName ||= $main::imscpConfig{'MTA_SERVER'} || 'no';
 
-	my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::mta::$sName";
+		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::mta::$sName";
 
-	eval "require $package";
+		eval "require $package";
 
-	fatal($@) if $@;
+		fatal($@) if $@;
 
-	$instance = $package->getInstance();
+		$instance = $package->getInstance();
+	}
+
+	$instance;
 }
 
 END
