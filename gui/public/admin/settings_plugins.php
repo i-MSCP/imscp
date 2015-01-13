@@ -405,21 +405,18 @@ function admin_pluginManagerCheckAction($pluginManager, $pluginName, $action)
 			break;
 		case 'delete':
 			if ($pluginStatus != 'todelete') {
-
-				if($pluginManager->isPluginInstallable($pluginName) && $pluginManager->isPluginInstalled($pluginName)) {
+				if($pluginManager->isPluginUninstallable($pluginName)) {
 					set_page_message(
 						tr('Plugin %s cannot be deleted. You must uninstall it first.', "<strong>$pluginName</strong>"),
 						'warning'
 					);
 					$ret = false;
-				} else {
-					if($pluginManager->isPluginEnabled($pluginName)) {
-						set_page_message(
-							tr('Plugin %s cannot be deleted. You must deactivate it first.', "<strong>$pluginName</strong>"),
-							'warning'
-						);
-						$ret = false;
-					}
+				} elseif($pluginManager->isPluginEnabled($pluginName)) {
+					set_page_message(
+						tr('Plugin %s cannot be deleted. You must deactivate it first.', "<strong>$pluginName</strong>"),
+						'warning'
+					);
+					$ret = false;
 				}
 			}
 			break;

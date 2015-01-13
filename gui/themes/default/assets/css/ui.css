@@ -815,8 +815,9 @@ table .icon {
     display: -moz-inline-block;
     overflow: hidden;
     height: 16px;
-    line-height: 18px;
-    padding-left: 20px;
+    line-height: 16px;
+    vertical-align: middle;
+    padding-left: 18px;
 }
 
 .paginator .icon {

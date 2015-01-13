@@ -7,6 +7,11 @@ Git 1.1.x
 CONFIGS
 	Added php5-json package ( Debian Jessie )
 
+DAEMON
+	Fixed: Messages must not be hardcoded in functions
+	Fixed: Restart of some services fail when the backend ( imscp-rqst-mngr ) is run through the daemon
+	Updated: Version to 1.2.2
+
 ENGINE
 	Removed: policyd-weight and postgrey ( Postfix SMTP access policy delegation )
 
@@ -21,6 +26,8 @@ INSTALLER
 
 PLUGINS
 	Fixed: Plugins that don't implement an API method which is being executed must not be instantiated
+	Fixed: Plugin uninstall() method must stay optional, even if the install() method is implemented
+	Updated: API to version 0.2.16
 
 TICKETS
 	Fixed #1207: Defect - DataTable - Sorting not functional for data strings containing numeric values

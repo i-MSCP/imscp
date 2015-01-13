@@ -2381,7 +2381,9 @@ function daemon_readAnswer(&$socket)
 {
 	if(($answer = @socket_read($socket, 1024, PHP_NORMAL_READ)) !== false) {
 		list($code) = explode(' ', $answer);
-		if($code == '999') {
+		$code = intval($code);
+
+		if($code != 250) {
 			write_log(sprintf('i-MSCP daemon returned an unexpected answer: %s', $answer), E_USER_ERROR);
 			return false;
 		}

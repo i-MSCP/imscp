@@ -11,6 +11,7 @@
 #include <sys/time.h>
 #include <signal.h>
 #include <string.h>
+#include <strings.h>
 #include <errno.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -18,12 +19,10 @@
 
 #include "defs.h"
 
-char client_ip[MAX_MSG_SIZE];
-
 struct timeval *tv_rcv;
 struct timeval *tv_snd;
 
-extern int daemonInit(const char *pname, int facility);
+extern void daemonInit(const char *pname, int facility);
 extern char *message(int message_number);
 extern void say(char *format, char *message);
 extern void sigChild (int signo);

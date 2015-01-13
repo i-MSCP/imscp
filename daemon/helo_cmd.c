@@ -3,7 +3,7 @@
 int heloCommand(int fd)
 {
 	char *buffer = calloc(MAX_MSG_SIZE, sizeof(char));
-	int res;
+	int rs;
 
 	while (1) {
 		memset(buffer, '\0', MAX_MSG_SIZE);
@@ -13,12 +13,12 @@ int heloCommand(int fd)
 			return -1;
 		}
 
-		res = heloSyntax(fd, buffer);
+		rs = heloSyntax(fd, buffer);
 
-		if (res == -1) {
+		if (rs == -1) {
 			free(buffer);
 			return -1;
-		} else if (res == 1) {
+		} else if (rs == 1) {
 			continue;
 		} else {
 			break;

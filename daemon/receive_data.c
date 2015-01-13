@@ -2,20 +2,20 @@
 
 int receiveData(int fd, char *dest, size_t n)
 {
-	ssize_t i, res;
+	ssize_t i, rs;
 	char c, *p;
 	p = dest;
 
 	for (i = 1; i <= n; i++) {
 		try_again:
 
-		if ((res = read(fd, &c, 1)) == 1) {
+		if ((rs = read(fd, &c, 1)) == 1) {
 			*p++ = c;
 
 			if (c == '\n') {
 				break;
 			}
-		} else if (res == 0) { /* EOF, arrived ! */
+		} else if (rs == 0) { /* EOF, arrived ! */
 			if (i == 1) { /* no data read. */
 				return 0;
 			} else { /* some data was read. */

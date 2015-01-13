@@ -1,34 +1,38 @@
 #include "daemon_init.h"
 
-int daemonInit(const char *pname, int facility)
+void daemonInit(const char *pname, int facility)
 {
 	pid_t pid;
 	int i;
 
 	pid = fork();
-	if(pid == -1) {
-		return -1;
-	} else if(pid != 0) {
-		exit(0);
-	}
 
-	umask(0);
+	if(pid < 0)
+		exit(EXIT_FAILURE);
 
-	if(setsid() == -1) {
-		return -1;
-	}
+	if(pid > 0)
+		exit(EXIT_SUCCESS);
+
+	if (setsid() < 0)
+		exit(EXIT_FAILURE);
 
 	signal(SIGHUP, SIG_IGN);
 
-	if(chdir ("/") == -1) {
-		return -1;
-	}
+	pid = fork();
 
-	for (i = 0; i < 64; i++) {
-		close(i);
+	if (pid < 0)
+		exit(EXIT_FAILURE);
+
+	if (pid > 0)
+		exit(EXIT_SUCCESS);
+
+	umask(0);
+
+	chdir("/");
+
+	for (i = sysconf(_SC_OPEN_MAX); i > 0; i--) {
+		close (i);
 	}
 
 	openlog(pname, LOG_PID, facility);
-
-	return 0;
 }
