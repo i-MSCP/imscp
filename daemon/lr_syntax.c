@@ -11,7 +11,7 @@ int lrSyntax(int fd, char *buffer)
 	} else {
 		char *lr_answer = calloc(MAX_MSG_SIZE, sizeof(char));
 
-		if(fork() == 0) {
+		if (fork() == 0) {
 			close(fd);
 
 			#if !defined(__OpenBSD__) && !defined(__FreeBSD__)

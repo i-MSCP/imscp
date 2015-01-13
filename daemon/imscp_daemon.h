@@ -11,7 +11,6 @@
 #include <sys/time.h>
 #include <signal.h>
 #include <string.h>
-#include <strings.h>
 #include <errno.h>
 #include <unistd.h>
 #include <stdio.h>
