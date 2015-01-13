@@ -2,9 +2,9 @@
 
 int sendLine(int fd, char *src, size_t len)
 {
-	int res;
+	int rs;
 
-	if ((res = sendData(fd, src, len)) < 0) {
+	if ((rs = sendData(fd, src, len)) < 0) {
 		say(message(MSG_ERROR_SOCKET_WR), strerror(errno));
 
 		return -1;

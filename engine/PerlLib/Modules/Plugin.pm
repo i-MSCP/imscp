@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Plugin - i-MSCP Plugin module
@@ -139,8 +137,8 @@ sub _init
 {
 	my $self = $_[0];
 
- 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
- 	$self->{'db'} = iMSCP::Database->factory();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
+	$self->{'db'} = iMSCP::Database->factory();
 
 	$self;
 }
@@ -449,3 +447,4 @@ sub _exec
 =cut
 
 1;
+__END__

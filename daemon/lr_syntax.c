@@ -9,32 +9,30 @@ int lrSyntax(int fd, char *buffer)
 	if (ptr != buffer) {
 		return 1;
 	} else {
-		char *lr_ans = calloc(MAX_MSG_SIZE, sizeof(char));
+		char *lr_answer = calloc(MAX_MSG_SIZE, sizeof(char));
 
-		if (fork() == 0) {
+		if(fork() == 0) {
 			close(fd);
 
 			#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
-
-			execl("/var/www/imscp/engine/imscp-rqst-mngr", "imscp-rqst-mngr", (char*)NULL);
-
+			system("perl /var/www/imscp/engine/imscp-rqst-mngr");
 			#else
-
-			execl("/usr/local/www/imscp/engine/imscp-rqst-mngr", "imscp-rqst-mngr", (char*)NULL);
-
+			system("perl /usr/local/www/imscp/engine/imscp-rqst-mngr");
 			#endif
 
 			exit(0);
 		}
 
-		strcat(lr_ans, message(MSG_CMD_OK));
-		strcat(lr_ans, "request is being processed.\n");
+		strcat(lr_answer, message(MSG_CMD_OK));
+		strcat(lr_answer, message(MSG_CMD_ANSWER));
 
-		if (sendLine(fd, lr_ans, strlen(lr_ans)) < 0) {
-			free(lr_ans);
+		if (sendLine(fd, lr_answer, strlen(lr_answer)) < 0) {
+			free(lr_answer);
 
 			return -1;
 		}
+
+		free(lr_answer);
 	}
 
 	return 0;
