@@ -125,7 +125,7 @@ sub process
 
 =over 4
 
-=item init()
+=item _init()
 
  Initialize instance
 
