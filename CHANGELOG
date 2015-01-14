@@ -18,7 +18,7 @@ DISTRO
 
 ENGINE
 	Added: Checks for a2enconf/a2disconf command availability
-	Added: -h ( help ) short option  ( iMSCP::Getopt module )
+	Added: -h ( help ) short option ( iMSCP::Getopt module )
 	Fixed: Useless instantiation of servers
 	Fixed: Postfix not restarted in some contexts ( Missing iMSCP::Service module )
 	Moved: Local DNS resolver question into bind9 installer
