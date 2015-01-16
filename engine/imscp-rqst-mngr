@@ -41,6 +41,9 @@ use iMSCP::Getopt;
 use File::Basename;
 use JSON;
 
+# Set umask ( default is 0 when this script is run through the i-MSCP daemon, which leads to some problems )
+umask 0022;
+
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
 
