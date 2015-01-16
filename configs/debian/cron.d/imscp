@@ -1,27 +1,27 @@
-# Quota accounting (updated every 30 minutes)
-0,30 * * * * root {CMD_NICE} -n 19 {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
+# Quota accounting
+0,30 * * * * root {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
 
-# Traffic accounting (updated every 30 minutes)
-0,30 * * * * root {CMD_NICE} -n 19 {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
-0,30 * * * * root {CMD_NICE} -n 19 {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
+# Traffic accounting
+0,30 * * * * root {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
+0,30 * * * * root {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
 
 # Customer logs
-@daily root {CMD_NICE} -n 19 {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
+@daily root {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
 
 # Backup customers' data depending of the domain properties
-{BACKUP_MINUTE} {BACKUP_HOUR} * * * root {CMD_NICE} -n 19 {BACKUP_ROOT_DIR}/imscp-backup-all &>{LOG_DIR}/imscp-backup-all-mngr.log
+{BACKUP_MINUTE} {BACKUP_HOUR} * * * root {CMD_NICE} -n 10 {BACKUP_ROOT_DIR}/imscp-backup-all &>{LOG_DIR}/imscp-backup-all-mngr.log
 
 # Backup i-MSCP configuration files and database
-@weekly root {CMD_NICE} -n 19 {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
+@weekly root {CMD_NICE} -n 10 {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
 
 # Remove configuration backups older than 7 days
-@daily root {CMD_NICE} -n 19 {CMD_FIND} {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*?[0-9]{10}$' | xargs -r {CMD_RM}
+@daily root {CMD_FIND} {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*?[0-9]{10}$' | xargs -r {CMD_RM}
 
 # Remove backend Logs older than 7 days
-@daily root {CMD_NICE} -n 19 {CMD_FIND} {LOG_DIR}/* -maxdepth 1 -type f -mtime +7 -print | xargs -r {CMD_RM}
+@daily root {CMD_FIND} {LOG_DIR}/* -maxdepth 1 -type f -mtime +7 -print | xargs -r {CMD_RM}
 
 # Disable expired accounts
-@daily root {CMD_NICE} -n 19 {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
+@daily root {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
 
 # imscp [{ENTRY_ID}] entry BEGIN
 # imscp [{ENTRY_ID}] entry ENDING
