@@ -38,7 +38,7 @@ use iMSCP::Getopt;
 use File::Basename;
 
 # Turn off localisation features to force any command output to be in english
-$ENV{'LC_MESSAGES'} = 'C';
+$ENV{'LANG'} = 'C';
 
 # Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;

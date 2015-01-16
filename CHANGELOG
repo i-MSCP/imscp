@@ -19,8 +19,9 @@ DISTRO
 ENGINE
 	Added: Checks for a2enconf/a2disconf command availability
 	Added: -h ( help ) short option ( iMSCP::Getopt module )
-	Fixed: Useless instantiation of servers
+	Fixed: LC_MESSAGES has not expected effect in backend's scripts
 	Fixed: Postfix not restarted in some contexts ( Missing iMSCP::Service module )
+	Fixed: Useless instantiation of servers
 	Fixed: Wrong umask when the imscp-rqst-mngr script is run through the i-MSCP Daemon
 	Moved: Local DNS resolver question into bind9 installer
 	Removed: imscp-local-dns-resolver script ( The bind9 initscript invokes resolvconf itself )

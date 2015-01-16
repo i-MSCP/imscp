@@ -871,7 +871,7 @@ EOF
 #
 
 # Turn off localisation features to force any command output to be in English
-$ENV{'LC_MESSAGES'} = 'C';
+$ENV{'LANG'} = 'C';
 
 newDebug('imscp-migrate-from-ispcp.log');
 

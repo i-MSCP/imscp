@@ -43,7 +43,7 @@ use File::Basename;
 use autoinstaller::Functions qw/loadConfig build install/;
 
 # Turn off localisation features to force any command output to be in english
-$ENV{'LC_MESSAGES'} = 'C';
+$ENV{'LANG'} = 'C';
 
 newDebug('imscp-autoinstall.log');
 
