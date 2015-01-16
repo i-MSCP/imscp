@@ -47,7 +47,7 @@ use iMSCP::Addons;
 use File::Basename;
 
 # Turn off localisation features to force any command output to be in english
-$ENV{'LC_MESSAGES'} = 'C';
+$ENV{'LANG'} = 'C';
 
 umask(027);
 

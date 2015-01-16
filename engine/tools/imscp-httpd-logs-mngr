@@ -36,7 +36,7 @@ use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use File::Basename;
 
 # Turn off localisation features to force any command output to be in English
-$ENV{'LC_MESSAGES'} = 'C';
+$ENV{'LC_ALL'} = 'C';
 
 # Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;

@@ -34,7 +34,7 @@ use iMSCP::Bootstrapper;
 use iMSCP::Database;
 use iMSCP::Net;
 
-$ENV{'LC_MESSAGES'} = 'C';
+$ENV{'LANG'} = 'C';
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-net-interfaces-mngr.log');
