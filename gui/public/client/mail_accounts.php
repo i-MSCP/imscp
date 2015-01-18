@@ -265,7 +265,7 @@ function client_generatePage($tpl)
 		$mainDmnId = $dmnProps['domain_id'];
 		$dmnMailAccLimit = $dmnProps['domain_mailacc_limit'];
 
-		$countedMails = _client_generateMailAccountsList($tpl, $mainDmnId);;
+		$countedMails = _client_generateMailAccountsList($tpl, $mainDmnId);
 		$defaultMails = _client_countDefaultMails($mainDmnId);
 
 		if (!$cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
