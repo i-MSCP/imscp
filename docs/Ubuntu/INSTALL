@@ -10,18 +10,17 @@ Table of Content
 4) Installation
 5) Update
 6) Uninstall
-7) Credits
 
-1)  Version Info
-----------------
+1) Version Info
+---------------
 
 i-MSCP Version:  <version>
 Maintainer:      i-MSCP Team
 Homepage:        http://i-mscp.net
 Distros:         Any LTS version
 
-2)  Requirements
-----------------
+2) Requirements
+---------------
 
  - 1 GHz or faster 32-bit (x86) or 64-bit (x64) processor
  - 1024 MiB RAM minimum - For heavily loaded servers or high flow is recommended at least 8 GiB
@@ -33,8 +32,8 @@ Distros:         Any LTS version
 
 All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
 
-3)  Introduction
-----------------
+3) Introduction
+---------------
 
 i-MSCP delivers a complete hosting automation appliance by offering significant security, total-cost-of-ownership, and
 performance advantages over competing commercial solutions.
@@ -44,17 +43,49 @@ operations that take less than a minute. There is no limit to the number of rese
 created. The core of i-MSCP are 3 easy-to-use, web-based control panels. i-MSCP provides graphic user interfaces for the
 administrators, resellers and users.
 
-4)  Installation
-----------------
+4) Installation
+---------------
 
 Make sure you as logged as root
 
-1. Install the required packages
+1. Make sure that your system is up-to-date
+
+	# apt-get update && apt-get dist-upgrade
+
+2. Install the required packages
 
 	# apt-get update && apt-get install tasksel
 	# tasksel install standard
 
-2.  Download and untar the distribution files to a secure directory
+3. Download and untar the distribution files to a secure directory
+
+	# cd /usr/local/src
+	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+	# tar xzf imscp-<version>.tar.gz
+
+4. Change to the newly created directory
+
+	# cd ./imscp-<version>
+
+
+5. Install by running the imscp-autoinstall script
+
+	# sudo perl imscp-autoinstall -d
+
+6. Install i-MSCP step-by-step
+
+	If you get no error, all went good; if you get one, look at http://i-mscp.net to solve the problem.
+
+5) Update
+----------
+
+Make sure you are logged in as root and MySQL is running.
+
+1. Make sure that your system is up-to-date
+
+	# apt-get update && apt-get dist-upgrade
+
+2. Download and untar the distribution files to a secure directory
 
 	# cd /usr/local/src
 	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
@@ -64,59 +95,25 @@ Make sure you as logged as root
 
 	# cd ./imscp-<version>
 
-
-4.  Install by running the imscp-autoinstall script
-
-	# sudo perl imscp-autoinstall -d
-
-5.  Install i-MSCP step-by-step
-
-	If you get no error, all went good; if you get one, look at http://i-mscp.net to solve the problem.
-
-6)  Update
-----------
-
-Make sure you are logged in as root and MySQL is running.
-
-1. Download and untar the distribution files to a secure directory
-
-	# cd /usr/local/src
-	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-	# tar xzf imscp-<version>.tar.gz
-
-2.  Change to the newly created directory
-
-	# cd ./imscp-<version>
-
-3.  Update by running the imscp-autoinstall script
+4. Update by running the imscp-autoinstall script
 
 	# perl imscp-autoinstall -d
 
-4.  Update i-MSCP step-by-step
+5. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at http://i-mscp.net to solve the problem.
 
-6)  Uninstall
--------------
+6) Uninstall
+------------
 
 Make sure you are logged in as root and MySQL is running.
 
-1.  Change into the engine directory
+1. Change into the engine directory
 
 	# cd /var/www/imscp/engine/setup
 
-2.  Start the uninstall script
+2. Start the uninstall script
 
 	# perl imscp-uninstall
 
 3.  Clean up your system
-
-7)  Credits
------------
-
-i-MSCP is a project of i-MSCP | internet Multi Server Control Panel. i-MSCP, internet Multi Server Control Panel and the
-i-MSCP logo are trademarks of the i-MSCP | internet Multi Server Control Panel Project Team.
-
-Please visit our site under http://i-mscp.net for further information on i-MSCP and other themes.
-
-We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We would be glad on any help provided.

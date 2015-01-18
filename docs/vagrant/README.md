@@ -1,6 +1,6 @@
-## Vagrant Files
+# Vagrant Files
 
-This directory contains Vagrantfiles which can be used to setup and quickly test i-MSCP using [vagrant](http://www.vagrantup.com/).
+This directory contains Vagrantfile which can be used to setup and quickly test i-MSCP using [vagrant](http://www.vagrantup.com/).
 
 To get started, it is best to link the Vagrantfile to the base directory of your development environment.
 
