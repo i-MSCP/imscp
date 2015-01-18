@@ -1,26 +1,26 @@
-# Quota
+# Quota accounting
 @daily root {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
 
-# Traffic accounting (updated every 30 minutes)
+# Traffic accounting
 0,30 * * * * root {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
 0,30 * * * * root {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
 
 # Customer logs
 @daily root {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
 
-# Backup for all the customers' data depending of the domain properties
-@daily root {BACKUP_ROOT_DIR}/imscp-backup-all yes &>{LOG_DIR}/imscp-backup-all-mngr.log
+# Backup customers' data depending of the domain properties
+@daily * * * root {BACKUP_ROOT_DIR}/imscp-backup-all yes &>{LOG_DIR}/imscp-backup-all-mngr.log
 
-# Backup for i-MSCP database and all /etc/imscp/* configuration files
-@weekly root {BACKUP_ROOT_DIR}/imscp-backup-imscp noreport &>{LOG_DIR}/imscp-backup-imscp-mngr.log
+# Backup i-MSCP configuration files and database
+@daily root {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
 
-# Remove config backups older than 7 days
-@daily root find {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs -r /bin/rm
+# Remove configuration backups older than 7 days
+@weekly root {CMD_FIND} {CONF_DIR}/*/backup -type -f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec {CMD_RM} -- {} +
 
-# Remove Daemon Logs older than 7 days (except .gz files)
-@daily root find {LOG_DIR}/* -maxdepth 1 -type f -mtime +7 -print | egrep '.*\.gz$' | xargs -r /bin/rm
+# Remove backend Logs older than 7 days
+@weekly root {CMD_FIND} {LOG_DIR} -type f -mtime +7 -exec {CMD_RM} -- {} +
 
-# Disable entities (dmn, als, sub, alssub and mail) of expired accounts
+# Disable expired accounts
 @daily root {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
 
 # Look for and purge old PHP sessions every 30 minutes

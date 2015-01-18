@@ -34,6 +34,7 @@ TICKETS
 	Fixed #1207: Defect - DataTable - Sorting not functional for data strings containing numeric values
 	Fixed #1208: Task - Untranslatable string
 	Fixed #1209: Cosmetics - Data usage bar glitches on 4k screens
+	Fixed #1217: Defect - Faulty cron for removing old backend logs
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.21
