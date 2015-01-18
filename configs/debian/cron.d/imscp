@@ -15,7 +15,7 @@
 @daily root {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
 
 # Remove configuration backups older than 7 days
-@weekly root {CMD_FIND} {CONF_DIR}/*/backup -type -f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec {CMD_RM} -- {} +
+@weekly root {CMD_FIND} {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec {CMD_RM} -- {} +
 
 # Remove backend Logs older than 7 days
 @weekly root {CMD_FIND} {LOG_DIR} -type f -mtime +7 -exec {CMD_RM} -- {} +
