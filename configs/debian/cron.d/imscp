@@ -12,13 +12,13 @@
 {BACKUP_MINUTE} {BACKUP_HOUR} * * * root {CMD_NICE} -n 10 {BACKUP_ROOT_DIR}/imscp-backup-all &>{LOG_DIR}/imscp-backup-all-mngr.log
 
 # Backup i-MSCP configuration files and database
-@weekly root {CMD_NICE} -n 10 {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
+@daily root {CMD_NICE} -n 10 {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
 
 # Remove configuration backups older than 7 days
-@daily root {CMD_FIND} {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*?[0-9]{10}$' | xargs -r {CMD_RM}
+@weekly root {CMD_FIND} {CONF_DIR}/*/backup -type -f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec {CMD_RM} -- {} +
 
 # Remove backend Logs older than 7 days
-@daily root {CMD_FIND} {LOG_DIR}/* -maxdepth 1 -type f -mtime +7 -print | xargs -r {CMD_RM}
+@weekly root {CMD_FIND} {LOG_DIR} -type f -mtime +7 -exec {CMD_RM} -- {} +
 
 # Disable expired accounts
 @daily root {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1

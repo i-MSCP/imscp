@@ -300,7 +300,7 @@ sub run
 		'Htusers',
 		"
 			SELECT
-				id, uname AS name, status
+				id, CONTACT(uname, ':', id) AS name, status
 			FROM
 				htaccess_users
 			INNER JOIN
@@ -340,7 +340,7 @@ sub run
 		'Htaccess',
 		"
 			SELECT
-				id, auth_name AS name, status
+				id, CONCAT(auth_name, ':', id) AS name, status
 			FROM
 				htaccess
 			INNER JOIN
