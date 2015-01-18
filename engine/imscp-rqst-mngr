@@ -283,7 +283,7 @@ sub run
 		'Htusers',
 		"
 			SELECT
-				id, CONTACT(uname, ':', id) AS name, status
+				id, CONCAT(uname, ':', id) AS name, status
 			FROM
 				htaccess_users
 			INNER JOIN
