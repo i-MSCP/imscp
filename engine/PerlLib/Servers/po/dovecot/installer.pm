@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::po::dovecot::installer - i-MSCP Dovecot IMAP/POP3 Server installer implementation
@@ -674,3 +672,4 @@ sub _oldEngineCompatibility
 =cut
 
 1;
+__END__

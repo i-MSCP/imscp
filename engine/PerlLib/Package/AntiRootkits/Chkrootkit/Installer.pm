@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::AntiRootkits::Chkrootkit::Installer - i-MSCP Chkrootkit package installer
@@ -195,3 +193,4 @@ sub _scheduleCheck
 =cut
 
 1;
+__END__

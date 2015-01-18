@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::Webstats::Awstats::Awstats - i-MSCP AWStats package
@@ -563,3 +561,4 @@ sub _deleteAwstatsCronTask
 =cut
 
 1;
+__END__

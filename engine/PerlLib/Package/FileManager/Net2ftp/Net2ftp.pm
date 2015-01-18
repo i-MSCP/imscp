@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::FileManager::Net2ftp::Net2ftp - i-MSCP package
@@ -100,3 +98,4 @@ sub setGuiPermissions
 =cut
 
 1;
+__END__

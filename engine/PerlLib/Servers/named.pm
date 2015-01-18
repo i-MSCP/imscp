@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::named - i-MSCP Named Server implementation
@@ -120,3 +118,4 @@ END
 =cut
 
 1;
+__END__

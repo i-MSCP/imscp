@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Alias - i-MSCP domain alias module
@@ -555,3 +553,4 @@ sub _getSharedMountPoints
 =cut
 
 1;
+__END__

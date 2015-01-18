@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::NetCard - i-MSCP NetCard module
@@ -99,3 +97,4 @@ sub process
 =cut
 
 1;
+__END__

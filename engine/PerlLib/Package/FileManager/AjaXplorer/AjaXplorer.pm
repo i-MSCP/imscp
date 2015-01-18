@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::FileManager::AjaXplorer::AjaXplorer - i-MSCP AjaXplorer package
@@ -101,3 +99,4 @@ sub setGuiPermissions
 =cut
 
 1;
+__END__

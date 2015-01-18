@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::FrontEnd::Uninstaller - i-MSCP FrontEnd package Uninstaller
@@ -213,3 +211,4 @@ Laurent Declercq <l.declercq@nuxwin.com>
 =cut
 
 1;
+__END__

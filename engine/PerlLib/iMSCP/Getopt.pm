@@ -1,5 +1,3 @@
-#/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Getopt - Provides command line options for both imscp-autoinstall and imscp-setup scripts
@@ -330,3 +328,4 @@ sub AUTOLOAD
 =cut
 
 1;
+__END__

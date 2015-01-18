@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::AntiRootkits::Rkhunter::Installer - i-MSCP Rkhunter package installer
@@ -278,3 +276,4 @@ sub _scheduleCheck
 =cut
 
 1;
+__END__

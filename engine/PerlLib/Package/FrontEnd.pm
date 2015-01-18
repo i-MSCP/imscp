@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::FrontEnd - i-MSCP FrontEnd package
@@ -550,3 +548,4 @@ END
 =cut
 
 1;
+__END__

@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::AntiRootkits - i-MSCP Anti-Rootkits package
@@ -394,3 +392,4 @@ sub _removePackages
 =cut
 
 1;
+__END__

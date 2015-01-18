@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Database iMSCP database adapter factory
@@ -79,3 +77,4 @@ sub factory
 =cut
 
 1;
+__END__

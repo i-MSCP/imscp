@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::SystemGroup - i-MSCP library allowing to add and delete UNIX groups
@@ -117,3 +115,4 @@ sub delSystemGroup
 =cut
 
 1;
+__END__

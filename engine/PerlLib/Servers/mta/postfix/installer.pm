@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::mta::postfix::installer - i-MSCP Postfix MTA server installer implementation
@@ -957,3 +955,4 @@ sub _oldEngineCompatibility
 =cut
 
 1;
+__END__

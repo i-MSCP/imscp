@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::FileManager::AjaXplorer::Installer - i-MSCP AjaXplorer package installer
@@ -153,3 +151,4 @@ sub _installFiles
 =cut
 
 1;
+__END__

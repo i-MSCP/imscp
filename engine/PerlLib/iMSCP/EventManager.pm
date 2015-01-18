@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::EventManager - i-MSCP event Manager
@@ -187,3 +185,4 @@ Laurent Declercq <l.declercq@nuxwin.com>
 =cut
 
 1;
+__END__

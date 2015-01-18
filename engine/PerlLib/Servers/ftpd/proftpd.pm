@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::ftpd::proftpd - i-MSCP Proftpd Server implementation
@@ -282,35 +280,29 @@ sub getTraffic
 	# Load traffic database
 	tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'nowarn' => 1;
 
-	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}";
+	# Data source file
+	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}";
 
-	if(-f $trafficLogFile && -s _) {
-		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/" . basename($trafficLogFile);
+	if(-f $trafficDataSrc && -s _) {
+		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/" . basename($trafficDataSrc);
 
-		# Creating working file from current state of upstream data source
-		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->moveFile($wrkLogFile);
+		# Creating working file from current state of data source
+		my $rs = iMSCP::File->new( filename => $trafficDataSrc)->moveFile($wrkLogFile );
 		die(iMSCP::Debug::getLastError()) if $rs;
 
 		# Getting working file content
-		my $wrkLogContent = iMSCP::File->new('filename' => $wrkLogFile)->get();
+		my $wrkLogContent = iMSCP::File->new( filename => $wrkLogFile )->get();
 		die(iMSCP::Debug::getLastError()) unless defined $wrkLogContent;
 
-		# Getting FTP traffic
+		# Collect traffic data
 		$trafficDb{$2} += $1 while($wrkLogContent =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
 	}
 
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
-	# in place for later processing. In such case, data already processed (put in database) are zeroed by the
-	# traffic processor script.
+	# in place for later processing. In such case, data already processed ( put in database ) are zeroed by the traffic
+	# processor script.
 	$self->{'eventManager'}->register(
-		'afterVrlTraffic',
-		sub {
-			if(-f $trafficDbPath) {
-				iMSCP::File->new('filename' => $trafficDbPath)->delFile();
-			} else {
-				0;
-			}
-		}
+		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
 	) and die(iMSCP::Debug::getLastError());
 
 	\%trafficDb;
@@ -368,3 +360,4 @@ sub _init
 =cut
 
 1;
+__END__

@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::SubAlias - i-MSCP SubAlias module
@@ -518,3 +516,4 @@ sub _getSharedMountPoints
 =cut
 
 1;
+__END__

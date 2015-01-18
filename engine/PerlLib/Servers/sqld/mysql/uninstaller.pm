@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::sqld::mysql::uninstaller - i-MSCP MySQL server uninstaller implementation
@@ -124,3 +122,4 @@ sub _removeOptionsFile
 =cut
 
 1;
+__END__

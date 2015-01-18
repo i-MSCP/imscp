@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Mail - i-MSCP Mail module
@@ -301,3 +299,4 @@ sub _getPackagesData
 =cut
 
 1;
+__END__

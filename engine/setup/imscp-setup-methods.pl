@@ -1237,7 +1237,7 @@ sub setupServerIps
 
 	my ($database, $errstr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 	if(! $database) {
-		error("Unable to connect to the SQL database: $errstr");;
+		error("Unable to connect to the SQL database: $errstr");
 		return 1;
 	}
 

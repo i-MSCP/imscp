@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::Roundcube - i-MSCP Roundcube package
@@ -196,3 +194,4 @@ sub _init
 =cut
 
 1;
+__END__

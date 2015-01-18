@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Abstract - Base class for i-MSCP modules
@@ -394,3 +392,4 @@ sub _getSqldData
 =cut
 
 1;
+__END__

@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::TemplateParser - i-MSCP Template parser implementation
@@ -141,3 +139,4 @@ sub replaceBloc
 =cut
 
 1;
+__END__

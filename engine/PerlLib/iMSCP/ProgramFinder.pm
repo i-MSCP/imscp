@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 iMSCP::ProgramFinder - Program finder
@@ -72,3 +70,4 @@ sub find
 =cut
 
 1;
+__END__

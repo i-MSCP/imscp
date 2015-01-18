@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Bootstrapper - Boot i-MSCP
@@ -220,3 +218,4 @@ sub _genKeys
 =cut
 
 1;
+__END__

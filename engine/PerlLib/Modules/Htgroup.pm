@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Htgroup - i-MSCP Htgroup module
@@ -238,3 +236,4 @@ sub _getHttpdData
 =cut
 
 1;
+__END__

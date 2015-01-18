@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::httpd::apache_php_fpm::uninstaller - i-MSCP Apache2/PHP-FPM Server uninstaller
@@ -265,3 +263,4 @@ sub _restorePhpfpmConfig
 =cut
 
 1;
+__END__

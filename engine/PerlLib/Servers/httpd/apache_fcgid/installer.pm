@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::httpd::apache_fcgid::installer - i-MSCP Apache2/FastCGI Server implementation
@@ -892,3 +890,4 @@ sub _fixPhpErrorReportingValues
 =cut
 
 1;
+__END__

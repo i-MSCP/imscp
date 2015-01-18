@@ -1,5 +1,3 @@
-#/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::LsbRelease - Provides distribution-specific information
@@ -592,3 +590,4 @@ but that heuristic is subject to error.
 =cut
 
 1;
+__END__

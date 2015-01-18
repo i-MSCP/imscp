@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::SSLcertificate - i-MSCP SSLcertificate module
@@ -282,3 +280,4 @@ sub _loadData
 =cut
 
 1;
+__END__

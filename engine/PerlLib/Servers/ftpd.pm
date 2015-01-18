@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::ftpd - i-MSCP Ftpd Server implementation
@@ -98,3 +96,4 @@ END
 =cut
 
 1;
+__END__

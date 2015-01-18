@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::mta::postfix - i-MSCP Postfix MTA server implementation
@@ -598,13 +596,15 @@ sub getTraffic
 	my $self = $_[0];
 
 	my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
+	my $trafficDbPath = "$variableDataDir/smtp_traffic.db";
 
 	# Load traffic database
-	tie my %trafficDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/smtp_traffic.db", 'nowarn' => 1;
+	tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'nowarn' => 1;
 
-	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+	# Data source file
+	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-	if(-f $trafficLogFile && -s _) {
+	if(-f $trafficDataSrc && -s _) {
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
 
 		# We are using a small file to memorize the number of the last line that has been read and his content
@@ -617,7 +617,7 @@ sub getTraffic
 		my $lastlineContent = $indexDb{'smtp_lineContent'};
 
 		# Creating working file from current state of upstream data source
-		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile, { 'preserve' => 'no' });
+		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $wrkLogFile, { 'preserve' => 'no' } );
 		die(iMSCP::Debug::getLastError()) if $rs;
 
 		require Tie::File;
@@ -639,7 +639,7 @@ sub getTraffic
 		# This should allow to retrieve traffic data logged between the last collect and the log rotation. Those data
 		# are currently lost because they are never collected.
 
-		# Making the working log file ready for analyze using the maillogconvert.pl utility script
+		# Extract postfix data
 		my ($stdout, $stderr);
 		$rs = execute(
 			"$main::imscpConfig{'CMD_GREP'} 'postfix' $wrkLogFile | $self->{'config'}->{'CMD_PFLOGSUM'} standard",
@@ -647,7 +647,7 @@ sub getTraffic
 			\$stderr
 		);
 
-		# Getting SMTP traffic
+		# Extract traffic data
 		#
 		# SMTP traffic line sample (as provided by the maillogconvert.pl utility script)
 		#                               1                 2               3                     4                                     5
@@ -663,17 +663,10 @@ sub getTraffic
 	}
 
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
-	# in place for later processing. In such case, data already processed (put in database) are zeroed by the
-	# traffic processor script.
+	# in place for later processing. In such case, data already processed (put in database) are zeroed by the traffic
+	# processor script.
 	$self->{'eventManager'}->register(
-		'afterVrlTraffic',
-		sub {
-			if(-f "$variableDataDir/smtp_traffic.db") {
-				iMSCP::File->new('filename' => "$variableDataDir/smtp_traffic.db")->delFile();
-			} else {
-				0;
-			}
-		}
+		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
 	) and die(iMSCP::Debug::getLastError());
 
 	\%trafficDb;
@@ -1444,3 +1437,4 @@ END
 =cut
 
 1;
+__END__

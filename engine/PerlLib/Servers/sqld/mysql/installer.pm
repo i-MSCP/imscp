@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::sqld::mysql::installer - i-MSCP MySQL server installer implementation
@@ -350,3 +348,4 @@ sub _isMysqldInsideCt
 =cut
 
 1;
+__END__

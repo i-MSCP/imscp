@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::named::bind::uninstaller - i-MSCP Bind9 Server implementation
@@ -172,3 +170,4 @@ sub _deleteDbFiles
 =cut
 
 1;
+__END__

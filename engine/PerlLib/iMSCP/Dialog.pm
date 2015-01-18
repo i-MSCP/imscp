@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Dialog - i-MSCP Dialog
@@ -741,3 +739,4 @@ sub _textbox
 =cut
 
 1;
+__END__

@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  autoinstaller::Adapter::UbuntuAdapter - Ubuntu autoinstaller adapter class
@@ -232,3 +230,4 @@ sub _processAptRepositories
 =cut
 
 1;
+__END__

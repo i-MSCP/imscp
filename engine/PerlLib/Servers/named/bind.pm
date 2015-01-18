@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::named::bind - i-MSCP Bind9 Server implementation
@@ -1252,3 +1250,4 @@ sub _generateSoalSerialNumber
 =cut
 
 1;
+__END__

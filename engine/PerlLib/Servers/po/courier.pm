@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::po::courier - i-MSCP Courier IMAP/POP3 Server implementation
@@ -392,13 +390,15 @@ sub getTraffic
 	my $self = $_[0];
 
 	my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
+	my $trafficDbPath = "$variableDataDir/po_traffic.db";
 
 	# Load traffic database
-	tie my %trafficDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/po_traffic.db", 'nowarn' => 1;
+	tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'nowarn' => 1;
 
-	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+	# Data source file
+	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-	if(-f $trafficLogFile && -s _) {
+	if(-f $trafficDataSrc && -s _) {
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 
 		# We are using a small file to memorize the number of the last line that has been read and his content
@@ -411,7 +411,7 @@ sub getTraffic
 		my $lastlineContent = $indexDb{'po_lineContent'};
 
 		# Creating working file from current state of upstream data source
-		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile, { 'preserve' => 'no' });
+		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $wrkLogFile, { 'preserve' => 'no' } );
 		die(iMSCP::Debug::getLastError()) if $rs;
 
 		require Tie::File;
@@ -436,7 +436,7 @@ sub getTraffic
 		my $wrkLogContent = iMSCP::File->new('filename' => $wrkLogFile)->get();
 		die(iMSCP::Debug::getLastError()) unless defined $wrkLogContent;
 
-		# Getting IMAP traffic
+		# Extract traffic data ( IMAP )
 		#
 		# Important consideration for both IMAP and POP traffic accounting with courier
 		#
@@ -455,7 +455,7 @@ sub getTraffic
 			}
 		}
 
-		# Getting POP traffic
+		# Extract traffic data ( POP3 )
 		#
 		# POP traffic line sample
 		#
@@ -475,14 +475,7 @@ sub getTraffic
 	# in place for later processing. In such case, data already processed (put in database) are zeroed by the
 	# traffic processor script.
 	$self->{'eventManager'}->register(
-		'afterVrlTraffic',
-		sub {
-			if(-f "$variableDataDir/po_traffic.db") {
-				iMSCP::File->new('filename' => "$variableDataDir/po_traffic.db")->delFile();
-			} else {
-				0;
-			}
-		}
+		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
 	) and die(iMSCP::Debug::getLastError());
 
 	\%trafficDb;
@@ -537,3 +530,4 @@ sub _init
 =cut
 
 1;
+__END__

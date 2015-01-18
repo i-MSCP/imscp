@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Common::SingletonClass - Base class implementing Singleton Design Pattern
@@ -113,3 +111,4 @@ sub _init
 =cut
 
 1;
+__END__

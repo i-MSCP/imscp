@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Domain - i-MSCP Domain module
@@ -692,3 +690,4 @@ sub isValidCertificate
 =cut
 
 1;
+__END__

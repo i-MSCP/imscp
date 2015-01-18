@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Service - Package providing a set of functions for service management
@@ -273,3 +271,4 @@ sub _runCommand
 =cut
 
 1;
+__END__

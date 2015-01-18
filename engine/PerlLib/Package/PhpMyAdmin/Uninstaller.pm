@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::PhpMyAdmin::Uninstaller - i-MSCP PhpMyAdmin package uninstaller
@@ -181,3 +179,4 @@ sub _removeFiles
 =cut
 
 1;
+__END__

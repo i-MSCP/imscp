@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::httpd::apache_php_fpm - i-MSCP Apache2/PHP-FPM Server implementation
@@ -1103,34 +1101,29 @@ sub getTraffic
 	# Load traffic database
 	tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'nowarn' => 1;
 
+	require Date::Format;
+	Date::Format->import();
+	my $ldate = time2str('%Y%m%d', $timestamp);
+
 	my $db = iMSCP::Database->factory();
+	my $dbh = $db->startTransaction();
+	my $sth = $dbh->prepare('SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE');
 
-	my $rawDb = $db->startTransaction();
+	die("Couldn't prepare SQL statement: " . $dbh->errstr) unless $sth;
+	die("Couldn't execute prepared statement: " . $dbh->errstr) unless $sth->execute($ldate);
 
-	# Collect data from upstream traffic data source
-	eval {
-		require Date::Format;
-		Date::Format->import();
+	# Collect traffic data
+	while (my $row = $sth->fetchrow_hashref()) {
+		$trafficDb{$row->{'vhost'}} += $row->{'bytes'};
+	}
 
-		my $ldate = time2str('%Y%m%d', $timestamp);
+	# Delete traffic data source
+	$dbh->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
 
-		my $trafficData = $db->doQuery(
-		 	'vhost', 'SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE', $ldate
-		);
-
-		if(%{$trafficData}) {
-			# Getting HTTPD traffic
-			$trafficDb{$_} += $trafficData->{$_}->{'bytes'} for keys %{$trafficData};
-
-			# Deleting upstream source data
-			$rawDb->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
-		}
-
-		$rawDb->commit();
-	};
+	$dbh->commit();
 
 	if($@) {
-		$rawDb->rollback();
+		$dbh->rollback();
 		%trafficDb = ();
 		$db->endTransaction();
 		die("Unable to collect traffic data: $@");
@@ -1138,18 +1131,11 @@ sub getTraffic
 
 	$db->endTransaction();
 
-	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is
-	# kept in place for later processing. In such case, data already processed (put in database) are zeroed by
-	# the traffic processor script.
+	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept in
+	# place for later processing. In such case, data already processed (put in database) are zeroed by the traffic
+	# processor script.
 	$self->{'eventManager'}->register(
-		'afterVrlTraffic',
-		sub {
-			if(-f $trafficDbPath) {
-				iMSCP::File->new('filename' => $trafficDbPath)->delFile();
-			} else {
-				0;
-			}
-		}
+		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
 	) and die(iMSCP::Debug::getLastError());
 
 	\%trafficDb;
@@ -2053,3 +2039,4 @@ sub _cleanTemplate
 =cut
 
 1;
+__END__

@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::mta - i-MSCP MTA Server implementation
@@ -96,3 +94,4 @@ END
 =cut
 
 1;
+__END__

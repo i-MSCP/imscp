@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::cron::cron - i-MSCP Cron server implementation
@@ -407,3 +405,4 @@ sub _validateAttribute
 =cut
 
 1;
+__END__

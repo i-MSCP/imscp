@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::AntiRootkits::Rkhunter::Rkhunter - i-MSCP Rkhunter package
@@ -122,3 +120,4 @@ sub getDistroPackages
 =cut
 
 1;
+__END__

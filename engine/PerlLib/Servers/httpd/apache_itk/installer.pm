@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::httpd::apache_itk::installer - i-MSCP Apache2/ITK Server implementation
@@ -809,3 +807,4 @@ sub _fixPhpErrorReportingValues
 =cut
 
 1;
+__END__

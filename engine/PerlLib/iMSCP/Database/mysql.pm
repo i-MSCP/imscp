@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Database::mysql iMSCP MySQL database adapter
@@ -425,3 +423,4 @@ sub _init
 =cut
 
 1;
+__END__

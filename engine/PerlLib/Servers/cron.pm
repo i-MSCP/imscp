@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Servers::cron - i-MSCP Cron server implementation
@@ -74,3 +72,4 @@ sub factory
 =cut
 
 1;
+__END__

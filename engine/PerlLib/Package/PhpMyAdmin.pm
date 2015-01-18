@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::PhpMyAdmin - i-MSCP PhpMyAdmin package
@@ -184,3 +182,4 @@ sub _init
 =cut
 
 1;
+__END__

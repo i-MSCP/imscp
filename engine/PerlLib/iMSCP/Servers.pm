@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Servers - Package which allow to retrieve i-MSCP server list
@@ -92,3 +90,4 @@ Laurent Declercq <l.declercq@nuxwin.com>
 =cut
 
 1;
+__END__

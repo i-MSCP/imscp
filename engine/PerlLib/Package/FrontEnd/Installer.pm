@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::FrontEnd::Installer - i-MSCP FrontEnd package installer
@@ -1183,3 +1181,4 @@ Laurent Declercq <l.declercq@nuxwin.com>
 =cut
 
 1;
+__END__

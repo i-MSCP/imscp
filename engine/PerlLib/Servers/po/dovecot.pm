@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::po::dovecot - i-MSCP Dovecot IMAP/POP3 Server implementation
@@ -252,9 +250,10 @@ sub getTraffic
 	# Load traffic database
 	tie my %trafficDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/po_traffic.db", 'nowarn' => 1;
 
-	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+	# Data source file
+	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-	if(-f $trafficLogFile && -s _) {
+	if(-f $trafficDataSrc && -s _) {
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 
 		# We are using a small file to memorize the number of the last line that has been read and his content
@@ -267,7 +266,7 @@ sub getTraffic
 		my $lastlineContent = $indexDb{'po_lineContent'};
 
 		# Creating working file from current state of upstream data source
-		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile, { 'preserve' => 'no' });
+		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $wrkLogFile, { 'preserve' => 'no' } );
 		die(iMSCP::Debug::getLastError()) if $rs;
 
 		require Tie::File;
@@ -383,3 +382,4 @@ sub _init
 =cut
 
 1;
+__END__

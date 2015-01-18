@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::Webstats::Awstats::Installer - i-MSCP AWStats package installer
@@ -300,3 +298,4 @@ sub _addAwstatsCronTask
 =cut
 
 1;
+__END__

@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  autoinstaller::Functions - Functions for the i-MSCP autoinstaller
@@ -1251,3 +1249,4 @@ sub _getDistroAdapter
 =cut
 
 1;
+__END__

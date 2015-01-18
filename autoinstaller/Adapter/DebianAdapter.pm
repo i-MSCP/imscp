@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  autoinstaller::Adapter::DebianAdapter - Debian autoinstaller adapter class
@@ -805,3 +803,4 @@ EOF
 =cut
 
 1;
+__END__

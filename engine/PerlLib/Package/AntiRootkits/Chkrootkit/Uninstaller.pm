@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit package uninstaller
@@ -95,3 +93,4 @@ sub _restoreDebianConfig
 =cut
 
 1;
+__END__

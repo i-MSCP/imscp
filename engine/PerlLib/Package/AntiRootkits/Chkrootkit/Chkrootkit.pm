@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::AntiRootkits::Chkrootkit::Chkrootkit - i-MSCP Chkrootkit package
@@ -125,3 +123,4 @@ sub getDistroPackages
 =cut
 
 1;
+__END__

@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::Roundcube::Uninstaller - i-MSCP Roundcube package uninstaller
@@ -186,3 +184,4 @@ sub _removeFiles
 =cut
 
 1;
+__END__

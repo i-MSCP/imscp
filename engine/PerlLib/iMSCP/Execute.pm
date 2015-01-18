@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Execute - Allows to execute external commands
@@ -161,3 +159,4 @@ sub getExitCode(;$)
 =cut
 
 1;
+__END__

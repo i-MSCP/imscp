@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::noserver - i-MSCP No Server implementation
@@ -83,3 +81,4 @@ sub AUTOLOAD
 =cut
 
 1;
+__END__

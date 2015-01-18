@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::FileManager::Net2ftp::Installer - i-MSCP Net2ftp package installer
@@ -245,3 +243,4 @@ sub _buildConfig
 =cut
 
 1;
+__END__

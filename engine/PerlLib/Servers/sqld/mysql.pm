@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::sqld::mysql - i-MSCP MySQL server implementation
@@ -193,3 +191,4 @@ sub _init
 =cut
 
 1;
+__END__

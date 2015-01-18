@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Ext2Attributes - Package providing access to Linux ext2 file system attributes
@@ -386,3 +384,4 @@ sub _isSupported
 =cut
 
 1;
+__END__

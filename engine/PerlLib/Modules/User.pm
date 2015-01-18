@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::User - i-MSCP User module
@@ -384,3 +382,4 @@ sub _getFtpdData
 =cut
 
 1;
+__END__

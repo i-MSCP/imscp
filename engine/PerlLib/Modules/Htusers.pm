@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Htusers - i-MSCP Htusers module
@@ -215,3 +213,4 @@ sub _getHttpdData
 =cut
 
 1;
+__END__

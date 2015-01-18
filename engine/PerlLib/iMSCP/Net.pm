@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Net - Package allowing to manage network devices and IP addresses
@@ -483,3 +481,4 @@ sub _extractAddresses
 =cut
 
 1;
+__END__

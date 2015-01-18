@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::Roundcube::Installer - i-MSCP Roundcube package installer
@@ -776,3 +774,4 @@ sub _saveConfig
 =cut
 
 1;
+__END__

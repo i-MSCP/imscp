@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::PhpMyAdmin::Installer - i-MSCP PhpMyAdmin package installer
@@ -692,3 +690,4 @@ sub _buildConfig
 =cut
 
 1;
+__END__

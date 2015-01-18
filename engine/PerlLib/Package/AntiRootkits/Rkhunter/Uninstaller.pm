@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::AntiRootkits::Rkhunter::Uninstaller - i-MSCP Rkhunter Anti-Rootkits package uninstaller
@@ -129,3 +127,4 @@ sub _restoreDebianConfig
 =cut
 
 1;
+__END__

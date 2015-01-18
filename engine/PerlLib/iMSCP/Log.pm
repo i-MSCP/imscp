@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Log - i-MSCP generic message storing mechanism
@@ -291,3 +289,4 @@ sub flush
 =cut
 
 1;
+__END__

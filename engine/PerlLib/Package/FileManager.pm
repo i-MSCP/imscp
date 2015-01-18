@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::FileManager - i-MSCP FileManager package
@@ -234,3 +232,4 @@ sub _init()
 =cut
 
 1;
+__END__

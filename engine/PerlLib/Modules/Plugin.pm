@@ -189,7 +189,7 @@ sub _install
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeInstallPlugin', $pluginName);
 
-	$rs ||= $self->_exec($pluginName, 'install');
+	$rs ||= $self->_call($pluginName, 'install');
 
 	$rs ||= $self->{'eventManager'}->trigger('onAfterInstallPlugin', $pluginName);
 
@@ -213,7 +213,7 @@ sub _uninstall
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeUninstallPlugin', $pluginName);
 
-	$rs ||= $self->_exec($pluginName, 'uninstall');
+	$rs ||= $self->_call($pluginName, 'uninstall');
 
 	$rs ||= $self->{'eventManager'}->trigger('onAfterUninstallPlugin', $pluginName);
 
@@ -235,7 +235,7 @@ sub _enable
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeEnablePlugin', $pluginName);
 
-	$rs ||= $self->_exec($pluginName, 'enable');
+	$rs ||= $self->_call($pluginName, 'enable');
 
 	$rs ||= $self->{'eventManager'}->trigger('onAfterEnablePlugin', $pluginName);
 
@@ -257,7 +257,7 @@ sub _disable
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeDisablePlugin', $pluginName);
 
-	$rs ||= $self->_exec($pluginName, 'disable');
+	$rs ||= $self->_call($pluginName, 'disable');
 
 	$rs ||= $self->{'eventManager'}->trigger('onAfterDisablePlugin', $pluginName);
 
@@ -281,7 +281,7 @@ sub _change
 
 	$rs ||= $self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
 
-	$rs ||= $self->_exec($pluginName, 'change');
+	$rs ||= $self->_call($pluginName, 'change');
 
 	unless($rs) {
 		my $info = decode_json($self->{'plugin_info'});
@@ -325,13 +325,13 @@ sub _update
 
 	my $info = decode_json($self->{'plugin_info'});
 
-	$rs ||= $self->_exec($pluginName, 'update', $info->{'version'}, $info->{'__nversion__'});
+	$rs ||= $self->_call($pluginName, 'update', $info->{'version'}, $info->{'__nversion__'});
 
 	unless($rs) {
 		$info->{'version'} = $info->{'__nversion__'};
 
 		if($info->{'__need_change__'}) {
-			$rs = $self->_exec($pluginName, 'change');
+			$rs = $self->_call($pluginName, 'change');
 			$info->{'__need_change__'} = JSON::false unless $rs;
 		}
 
@@ -366,26 +366,26 @@ sub _run
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeRunPlugin', $pluginName);
 
-	$rs ||= $self->_exec($pluginName, 'run');
+	$rs ||= $self->_call($pluginName, 'run');
 
 	$rs ||= $self->{'eventManager'}->trigger('onAfterRunPlugin', $pluginName);
 
 	$rs;
 }
 
-=item _exec($pluginName, $pluginMethod, [$fromVersion = undef], [$toVersion = undef])
+=item _call($pluginName, $pluginMethod [, $fromVersion = undef [, $toVersion = undef ]])
 
  Execute the given plugin method
 
- Param string Plugin name
- Param string Plugin method to execute
- Param string OPTIONAL Version from which the plugin is updated
- Param string OPTIONAL Version to which the plugin is updated
+ Param string $pluginName Plugin name
+ Param string $pluginMethod Name of the method to call on the plugin
+ Param string OPTIONAL $fromVersion Version from which the plugin is being updated
+ Param string OPTIONAL $toVersion Version to which the plugin is being updated
  Return int 0 on success, other on failure
 
 =cut
 
-sub _exec
+sub _call
 {
 	my ($self, $pluginName, $pluginMethod, $fromVersion, $toVersion) = @_;
 
@@ -428,7 +428,7 @@ sub _exec
 		# Return value from the run() action is ignored by default because it's the responsability of the plugins to set
 		# error status for their items. In case a plugin doesn't manage any item, it can force return value by
 		# defining the FORCE_RETVAL attribute and set it value to 'yes'
-		if($pluginMethod ne 'run' || $pluginInstance->{'FORCE_RETVAL'} && $pluginInstance->{'FORCE_RETVAL'} eq 'yes') {
+		if($pluginMethod ne 'run' || ($pluginInstance->{'FORCE_RETVAL'} && $pluginInstance->{'FORCE_RETVAL'} eq 'yes')) {
 			return $rs if $rs;
 		} else {
 			$rs = 0;

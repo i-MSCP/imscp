@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Ips - i-MSCP Ips module
@@ -237,3 +235,4 @@ sub _getHttpdData
 =cut
 
 1;
+__END__

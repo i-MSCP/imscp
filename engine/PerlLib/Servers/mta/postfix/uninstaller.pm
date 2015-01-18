@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2015 by internet Multi Server Control Panel
 #
@@ -131,3 +129,4 @@ sub _restoreConfFile
 }
 
 1;
+__END__

@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 =head1 NAME
 
  iMSCP::Config - i-MSCP configuration files handler
@@ -336,3 +335,4 @@ sub _insertConfig
 =cut
 
 1;
+__END__

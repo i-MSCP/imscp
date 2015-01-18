@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::sqld - i-MSCP Sqld Server implementation
@@ -105,3 +103,4 @@ END
 =cut
 
 1;
+__END__

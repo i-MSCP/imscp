@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::File - i-MSCP File library
@@ -381,3 +379,4 @@ sub DESTROY
 =cut
 
 1;
+__END__

@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::sqld::mariadb - i-MSCP MariaDB server implementation
@@ -46,3 +44,4 @@ use parent 'Servers::sqld::mysql';
 =cut
 
 1;
+__END__

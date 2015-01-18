@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Subdomain - i-MSCP Subdomain module
@@ -393,7 +391,7 @@ sub _getNamedData
 				'ext_mail_feature'
 			);
 			unless(ref $rdata eq 'HASH') {
-				fatal($rdata);;
+				fatal($rdata);
 			}
 
 			($self->{'named'}->{'MAIL_DATA'}->{$_} = $rdata->{$_}->{'domain_text'}) =~ s/(.*)\.$/$1./ for keys %{$rdata};
@@ -551,3 +549,4 @@ sub isValidCertificate
 =cut
 
 1;
+__END__

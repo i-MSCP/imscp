@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::Webstats::Awstats::Uninstaller - i-MSCP AWStats package uninstaller
@@ -201,3 +199,4 @@ sub _restoreDebianConfig
 =cut
 
 1;
+__END__

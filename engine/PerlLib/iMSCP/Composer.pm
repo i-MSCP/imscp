@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Composer - i-MSCP Composer packages installer
@@ -375,3 +373,4 @@ sub _checkRequirements
 =cut
 
 1;
+__END__

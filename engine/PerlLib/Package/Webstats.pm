@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 Package::Webstats - i-MSCP Webstats package
@@ -549,3 +547,4 @@ sub _removePackages
 =cut
 
 1;
+__END__

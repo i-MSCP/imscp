@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::ftpd::proftpd::installer - i-MSCP Proftpd Server implementation
@@ -132,7 +130,7 @@ sub showDialog
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);;
+					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
@@ -542,3 +540,4 @@ sub _oldEngineCompatibility
 =cut
 
 1;
+__END__

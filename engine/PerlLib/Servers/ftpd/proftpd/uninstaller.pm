@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Servers::ftpd::proftpd::uninstaller - i-MSCP Proftpd Server implementation
@@ -177,3 +175,4 @@ sub _init
 =cut
 
 1;
+__END__

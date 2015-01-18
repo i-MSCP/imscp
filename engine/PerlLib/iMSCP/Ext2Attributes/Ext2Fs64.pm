@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Ext2Attributes::Ext2Fs64 - Package providing Ioctl command values (64-bit constants) and Inode flags values
@@ -93,3 +91,4 @@ use constant EXT2_NOATIME_FL			=> 0x00000080; # do not update atime (A)
 =cut
 
 1;
+__END__

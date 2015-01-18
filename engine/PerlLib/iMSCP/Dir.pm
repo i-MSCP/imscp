@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 # i-MSCP - internet Multi Server Control Panel
 # Copyright 2010-2015 by internet Multi Server Control Panel
 #
@@ -363,3 +361,4 @@ sub _get
 }
 
 1;
+__END__

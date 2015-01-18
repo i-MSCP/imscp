@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Htaccess - i-MSCP Htaccess module
@@ -260,3 +258,4 @@ sub _getHttpdData
 =cut
 
 1;
+__END__

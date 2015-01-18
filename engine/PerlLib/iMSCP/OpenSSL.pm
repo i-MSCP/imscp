@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 iMSCP::OpenSSL - i-MSCP OpenSSL library
@@ -389,3 +387,4 @@ sub _init
 =cut
 
 1;
+__END__

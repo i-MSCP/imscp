@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  iMSCP::Debug - Debug library
@@ -454,3 +452,4 @@ END
 =cut
 
 1;
+__END__

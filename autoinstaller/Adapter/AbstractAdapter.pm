@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
 autoinstaller::Adapter::AbstractAdapter - Abstract class for autoinstaller distro adapters
@@ -119,3 +117,4 @@ sub postBuild
 =cut
 
 1;
+__END__
