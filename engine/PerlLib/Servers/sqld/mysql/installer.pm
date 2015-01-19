@@ -99,7 +99,7 @@ sub setEnginePermissions
 
 	if(defined $homeDir) {
 		if(-f "$homeDir/.my.cnf") {
-			$rs = setRights("$homeDir/.my.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0600' });
+			$rs = setRights( "$homeDir/.my.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0600' } );
 			return $rs if $rs;
 		}
 	} else {
@@ -108,7 +108,7 @@ sub setEnginePermissions
 	}
 
 	if(-f "$confDir/imscp.cnf") {
-		$rs = setRights("$confDir/imscp.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0644' });
+		$rs = setRights( "$confDir/imscp.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0644' } );
 		return $rs if $rs;
 	}
 
@@ -185,7 +185,7 @@ sub _createGlobalConfFile
 			return $rs if $rs;
 
 			unless(defined $cfgTpl) {
-				$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/imscp.cnf")->get();
+				$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
 				unless(defined $cfgTpl) {
 					error("Unable to read $self->{'cfgDir'}/imscp.cnf");
 					return 1;
@@ -198,7 +198,7 @@ sub _createGlobalConfFile
 
 			my $version = $1 if($main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/);
 
-			if(qv("v$version") >= qv('v5.5')) {
+			if(version->parse("v$version") >= version->parse('v5.5')) {
 				$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
 			} else {
 				# The innodb_use_native_aio parameter is not available in MySQL < 5.5
@@ -209,7 +209,7 @@ sub _createGlobalConfFile
 
 			# Store file
 
-			my $file = iMSCP::File->new('filename' => "$confDir/imscp.cnf");
+			my $file = iMSCP::File->new( filename => "$confDir/imscp.cnf" );
 
 			$rs = $file->set($cfgTpl);
 			return $rs if $rs;
@@ -223,7 +223,7 @@ sub _createGlobalConfFile
 			$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 			return $rs if $rs;
 		} elsif(-f "$confDir/imscp.cnf") {
-			$rs = iMSCP::File->new('filename' => "$confDir/imscp.cnf")->defFile;
+			$rs = iMSCP::File->new( filename => "$confDir/imscp.cnf" )->defFile;
 			return $rs if $rs;
 		}
 	}
@@ -263,7 +263,7 @@ sub _createRootUserConfFile
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
-			$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/.my.cnf")->get();
+			$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/.my.cnf" )->get();
 			unless(defined $cfgTpl) {
 				error("Unable to read $self->{'cfgDir'}/.my.cnf");
 				return 1;
@@ -287,7 +287,7 @@ sub _createRootUserConfFile
 
 		# Store file
 
-		my $file = iMSCP::File->new('filename' => "$homeDir/.my.cnf");
+		my $file = iMSCP::File->new( filename => "$homeDir/.my.cnf" );
 
 		$rs = $file->set($cfgTpl);
 		return $rs if $rs;

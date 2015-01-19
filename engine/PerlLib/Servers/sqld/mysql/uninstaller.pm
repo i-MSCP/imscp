@@ -103,7 +103,7 @@ sub _removeOptionsFile
 
 	if(defined $homeDir) {
 		if(-f "$homeDir/.my.cnf") {
-			return iMSCP::File->new('filename' => "$homeDir/.my.cnf")->delFile();
+			return iMSCP::File->new( filename => "$homeDir/.my.cnf" )->delFile();
 		}
 	} else {
 		error('Unable to find root user homedir');

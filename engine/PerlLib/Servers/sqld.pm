@@ -38,17 +38,16 @@ our $instance;
 
 =head1 DESCRIPTION
 
- i-MSCP Sqld server implementation.
+ i-MSCP sqld server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item factory([ $sName = $main::imscpConfig{'SQL_SERVER'} || 'mysql' ])
+=item factory()
 
- Create and return Sqld server instance
+ Create and return sqld server instance
 
- Param string $sName OPTIONAL Name of Sqld server implementation to instantiate
  Return Sqld server instance
 
 =cut
@@ -56,9 +55,7 @@ our $instance;
 sub factory
 {
 	unless(defined $instance) {
-		my ($self, $sName) = @_;
-
-		$sName ||= $main::imscpConfig{'SQL_SERVER'} || 'mysql';
+		my $sName = $main::imscpConfig{'SQL_SERVER'} || 'mysql';
 
 		if($sName eq 'remote_server') {
 			$sName = 'mysql';

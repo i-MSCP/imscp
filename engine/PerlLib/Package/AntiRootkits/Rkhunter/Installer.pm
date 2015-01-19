@@ -133,11 +133,11 @@ sub _disableDebianConfig
 	my $rs = 0;
 
 	if(-f '/etc/default/rkhunter') {
-		my $file = iMSCP::File->new ('filename' => '/etc/default/rkhunter');
+		my $file = iMSCP::File->new ( filename => '/etc/default/rkhunter' );
 
 		my $rdata = $file->get();
 		unless(defined $rdata) {
-			error("Unable to read $file->{'filename'} file");
+			error("Unable to read $file->{'filename'}");
 			return 1;
 		}
 
@@ -223,7 +223,7 @@ sub _addCronTask
 			DWEEK => '',
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND =>
-				"$main::imscpConfig{'CMD_NICE'} -n 19 $main::imscpConfig{'CMD_PERL'} " .
+				"$main::imscpConfig{'CMD_NICE'} -n 10 $main::imscpConfig{'CMD_PERL'} " .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl " .
 				">/dev/null 2>&1"
 		}
@@ -240,7 +240,7 @@ sub _addCronTask
 
 sub _scheduleCheck
 {
-	if(! -f -s $main::imscpConfig{'RKHUNTER_LOG'}) {
+	unless(-f -s $main::imscpConfig{'RKHUNTER_LOG'}) {
 		# Create a dummy file to avoid planning multiple check if installer is run many time
 		my $file = iMSCP::File->new('filename' => $main::imscpConfig{'RKHUNTER_LOG'});
 

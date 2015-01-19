@@ -72,16 +72,12 @@ sub uninstall
 
 sub _restoreDebianConfig
 {
-	my $rs = 0;
-
 	# Restore daily cron task
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/cron.daily/chkrootkit.disabled'
-	)->moveFile(
-		'/etc/cron.daily/chkrootkit'
-	) if -f '/etc/cron.daily/chkrootkit.disabled';
-
-	$rs;
+	if(-f '/etc/cron.daily/chkrootkit.disabled') {
+		iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit.disabled' )->moveFile( '/etc/cron.daily/chkrootkit');
+	} else {
+		0;
+	}
 }
 
 =back

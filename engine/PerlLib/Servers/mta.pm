@@ -38,17 +38,16 @@ our $instance;
 
 =head1 DESCRIPTION
 
- i-MSCP MTA server implementation.
+ i-MSCP mta server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item factory([ $sName = $main::imscpConfig{'MTA_SERVER'} || 'no' ])
+=item factory()
 
- Create and return MTA server instance
+ Create and return mta server instance
 
- Param string $sName OPTIONAL Name of MTA server implementation to instantiate
  Return MTA server instance
 
 =cut
@@ -56,9 +55,7 @@ our $instance;
 sub factory
 {
 	unless(defined $instance) {
-		my ($self, $sName) = @_;
-
-		$sName ||= $main::imscpConfig{'MTA_SERVER'} || 'no';
+		my $sName ||= $main::imscpConfig{'MTA_SERVER'} || 'no';
 
 		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::mta::$sName";
 

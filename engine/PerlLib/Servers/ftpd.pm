@@ -38,17 +38,16 @@ our $instance;
 
 =head1 DESCRIPTION
 
- i-MSCP Ftpd server implementation.
+ i-MSCP ftpd server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item factory([ $sName = $main::imscpConfig{'FTPD_SERVER'} || 'no' ])
+=item factory()
 
- Create and return Ftpd server instance
+ Create and return ftpd server instance
 
- Param string $sName OPTIONAL Name of Ftpd server implementation to instantiate
  Return Ftpd server instance
 
 =cut
@@ -56,9 +55,7 @@ our $instance;
 sub factory
 {
 	unless(defined $instance) {
-		my ($self, $sName) = @_;
-
-		$sName ||= $main::imscpConfig{'FTPD_SERVER'} || 'no';
+		my $sName = $main::imscpConfig{'FTPD_SERVER'} || 'no';
 
 		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::ftpd::$sName";
 

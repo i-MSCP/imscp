@@ -24,6 +24,7 @@
 # @category     i-MSCP
 # @copyright    2010-2015 by i-MSCP | http://i-mscp.net
 # @author       Daniel Andreca <sci2tech@gmail.com>
+# @author       Laurent Declercq <l.declercq@nuxwin.com>
 # @link         http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 

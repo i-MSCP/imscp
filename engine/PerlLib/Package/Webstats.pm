@@ -36,8 +36,10 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
 use iMSCP::Dialog;
-use iMSCP::Getopt;
+use iMSCP::Dir;
 use iMSCP::Execute;
+use iMSCP::Getopt;
+use iMSCP::ProgramFinder;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -86,7 +88,7 @@ sub showDialog
 		grep { not $_ ~~ [$self->{'PACKAGES'}, 'No'] } @{$packages}
 	) {
 		($rs, $packages) = $dialog->checkbox(
-			"\nPlease, select the Webstats packages you want install:",
+			"\nPlease select the Webstats packages you want to install:",
 			$self->{'PACKAGES'},
 			(@{$packages} ~~ 'No') ? () : (@{$packages} ? @{$packages} : @{$self->{'PACKAGES'}})
 		);
@@ -153,8 +155,10 @@ sub preinstall
 			}
 		}
 
-		$rs = $self->_removePackages($packages) if @${packages};
-		return $rs if $rs;
+		if(defined $main::skippackages && !$main::skippackages && @{$packages}) {
+			$rs = $self->_removePackages($packages);
+			return $rs if $rs;
+		}
 	}
 
 	if(@{$packagesToInstall}) {
@@ -176,8 +180,10 @@ sub preinstall
 			}
 		}
 
-		$rs = $self->_installPackages($packages) if @{$packages};
-		return $rs if $rs;
+		if(defined $main::skippackages && !$main::skippackages && @{$packages}) {
+			$rs = $self->_installPackages($packages);
+			return $rs if $rs;
+		}
 	}
 
 	$rs;
@@ -249,7 +255,9 @@ sub uninstall
 		}
 	}
 
-	$rs = $self->_removePackages($packages) if @{$packages};
+	if(defined $main::skippackages && !$main::skippackages && @{$packages}) {
+		$rs = $self->_removePackages($packages);
+	}
 
 	$rs;
 }
@@ -463,7 +471,7 @@ sub _init
 
 	# Find list of available Webstats packages
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
-		'dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats"
+		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats"
 	)->getDirs();
 
 	$self;
@@ -482,24 +490,29 @@ sub _installPackages
 {
 	my ($self, $packages) = @_;
 
-	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
+	my @command = ();
 
-	unless ($preseed || $main::noprompt) {
+	unless ($preseed || $main::noprompt || !iMSCP::ProgramFinder::find('debconf-apt-progress')) {
 		iMSCP::Dialog->getInstance()->endGauge();
+		push @command, 'debconf-apt-progress --logstderr --';
+	}
 
-		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+	unshift @command, 'UCF_FORCE_CONFFMISS=1 '; # Force installation of missing conffiles which are managed by UCF
+
+	if($main::forcereinstall) {
+		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
+			"--reinstall --auto-remove --purge --no-install-recommends install @{$packages}";
+	} else {
+		push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
+			"--auto-remove --purge --no-install-recommends install @{$packages}";
 	}
 
 	my ($stdout, $stderr);
-	my $rs = execute(
-		"$command -y -o DPkg::Options::='--force-confdef' install @{$packages} --auto-remove --purge " .
-			"--no-install-recommends",,
-		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
-	);
+	my $rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Unable to install anti-rootkits packages') if $rs && ! $stderr;
+	error('Unable to install anti-rootkits distro packages') if $rs && !$stderr;
 
 	$rs;
 }
@@ -517,25 +530,33 @@ sub _removePackages
 {
 	my ($self, $packages) = @_;
 
-	my $command = 'apt-get';
-	my $preseed = iMSCP::Getopt->preseed;
+	# Do not try to remove packages which are no longer available on the system or not installed
+	my ($stdout, $stderr);
+	my $rs = execute("LANG=C dpkg-query -W -f='\${Package}/\${Status}\n' @{$packages}", \$stdout, \$stderr);
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
-	unless ($preseed || $main::noprompt) {
-		iMSCP::Dialog->getInstance()->endGauge();
+	@{$packages} = grep { m%^(.*?)/install% && ($_ =  $1) } split /\n/, $stdout;
 
-		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+	if(@{$packages}) {
+		my $preseed = iMSCP::Getopt->preseed;
+		my @command = ();
+
+		unless ($preseed || $main::noprompt || !iMSCP::ProgramFinder::find('debconf-apt-progress')) {
+			iMSCP::Dialog->getInstance()->endGauge();
+			push @command, 'debconf-apt-progress --logstderr -- ';
+		}
+
+		push @command, "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packages}";
+
+		my $rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		error('Unable to remove anti-rootkits distro packages') if $rs && !$stderr;
+		return $rs if $rs;
 	}
 
-	my ($stdout, $stderr);
-	my $rs = execute(
-		"$command -y remove @{$packages} --auto-remove --purge",
-		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
-	);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error('Unable to remove anti-rootkits distro packages') if $rs && ! $stderr;
-
-	$rs;
+	0;
 }
 
 =back

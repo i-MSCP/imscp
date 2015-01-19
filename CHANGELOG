@@ -35,7 +35,12 @@ INSTALLER
 	Fixed: php5enmod command throws an error when a PHP module is missing ( PHP5.4 )
 	Fixed: rsync: failed to set times on "/var/www/virtual": Operation not permitted (1)
 	Fixed: Unable to define custom APT repository without key ( Debian, Ubuntu )
-	Removed: 'resolver' configuration item ( local DNS resolver question is part of 'named' configuration item )
+	Removed: 'resolver' configuration item ( local DNS resolver question is now part of 'named' configuration item )
+
+PACKAGES
+	Fixed: The force-reinstall installer command line option shouldn't be ignored by package installers
+	Fixed: The skip-distro-packages installer command line option shouldn't be ignored by package installers
+	Updated: logresolvmerge.pl script from Awstats package to version 1.2 ( build 20140126 )
 
 PLUGINS
 	Fixed: Plugins that don't implement an API method which is being executed must not be instantiated
@@ -49,6 +54,8 @@ TICKETS
 	Fixed #1208: Task - Untranslatable string
 	Fixed #1209: Cosmetics - Data usage bar glitches on 4k screens
 	Fixed #1217: Defect - Faulty cron for removing old backend logs
+	Fixed #1223: Bug - Admin log shows server IP instead of user IP
+	Fixed #1226: Panel maintenance mode: text message error
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.0

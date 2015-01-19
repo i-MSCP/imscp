@@ -110,16 +110,12 @@ sub setEnginePermissions()
 
 sub _disableDebianConfig
 {
-	my $rs = 0;
-
 	# Disable daily cron tasks
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/cron.daily/chkrootkit'
-	)->moveFile(
-		'/etc/cron.daily/chkrootkit.disabled'
-	) if -f '/etc/cron.daily/chkrootkit';
-
-	$rs;
+	if(-f '/etc/cron.daily/chkrootkit') {
+		iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit' )->moveFile( '/etc/cron.daily/chkrootkit.disabled' );
+	} else {
+		0;
+	}
 }
 
 =item _addCronTask()
@@ -141,7 +137,7 @@ sub _addCronTask
 			MONTH => '',
 			DWEEK => '',
 			USER => $main::imscpConfig{'ROOT_USER'},
-			COMMAND => "$main::imscpConfig{'CMD_NICE'} -n 19 $main::imscpConfig{'CMD_CHKROOTKIT'} " .
+			COMMAND => "$main::imscpConfig{'CMD_NICE'} -n 10 $main::imscpConfig{'CMD_CHKROOTKIT'} " .
 				"1> $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
 		}
 	);
@@ -157,9 +153,9 @@ sub _addCronTask
 
 sub _scheduleCheck
 {
-	if(! -f -s $main::imscpConfig{'CHKROOTKIT_LOG'}) {
+	unless(-f -s $main::imscpConfig{'CHKROOTKIT_LOG'}) {
 		# Create a dummy file to avoid planning multiple check if installer is run many time
-		my $file = iMSCP::File->new('filename' => $main::imscpConfig{'CHKROOTKIT_LOG'});
+		my $file = iMSCP::File->new( filename => $main::imscpConfig{'CHKROOTKIT_LOG'} );
 
 		my $rs = $file->set('Check scheduled...');
 		return $rs if $rs;
@@ -169,8 +165,8 @@ sub _scheduleCheck
 
 		my ($stdout, $stderr);
 		$rs = execute(
-			"$main::imscpConfig{'CMD_ECHO'} '$main::imscpConfig{'CMD_NICE'} -n 19 " .
-			"$main::imscpConfig{'CMD_CHKROOTKIT'} 1> $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' " .
+			"$main::imscpConfig{'CMD_ECHO'} " .
+			"'$main::imscpConfig{'CMD_CHKROOTKIT'} 1> $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' " .
 			"| $main::imscpConfig{'CMD_BATCH'}",
 			\$stdout,
 			\$stderr

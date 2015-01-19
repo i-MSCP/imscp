@@ -191,10 +191,10 @@ EOF
 
 			if($main::forcereinstall) {
 				push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-					"--reinstall --auto-remove --purge install @{$_}";
+					"--reinstall --auto-remove --purge --no-install-recommends install @{$_}";
 			} else {
 				push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-					"--auto-remove --purge install @{$_}";
+					"--auto-remove --purge --no-install-recommends install @{$_}";
 			}
 
 			my ($stdout, $stderr);
@@ -238,7 +238,7 @@ sub uninstallPackages
 	if(@{$self->{'packagesToUninstall'}}) {
 		my ($stdout, $stderr);
 		my $rs = execute(
-			"dpkg-query -W -f='\${Package}/\${Status}\n' @{$self->{'packagesToUninstall'}}", \$stdout, \$stderr
+			"LANG=C dpkg-query -W -f='\${Package}/\${Status}\n' @{$self->{'packagesToUninstall'}}", \$stdout, \$stderr
 		);
 		error($stderr) if $stderr && $rs > 1;
 		return $rs if $rs > 1;
@@ -250,20 +250,18 @@ sub uninstallPackages
 	return $rs if $rs;
 
 	if(@{$self->{'packagesToUninstall'}}) {
-		my ($stdout, $stderr);
-		my $command = 'apt-get';
 		my $preseed = iMSCP::Getopt->preseed;
+		my @command = ();
 
 		unless($preseed || $main::noprompt || ! iMSCP::ProgramFinder::find('debconf-apt-progress')) {
 			iMSCP::Dialog->getInstance()->endGauge();
-
-			$command = 'debconf-apt-progress --logstderr -- ' . $command;
+			push @command, 'debconf-apt-progress --logstderr --';
 		}
 
-		my $rs = execute(
-			"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove --purge --no-install-recommends",
-			($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
-		);
+		push @command, "apt-get -y --auto-remove --purge --no-install-recommends remove @{$self->{'packagesToUninstall'}}";
+
+		my ($stdout, $stderr);
+		my $rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error('Unable to uninstall packages') if $rs && ! $stderr;

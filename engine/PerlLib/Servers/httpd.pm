@@ -38,17 +38,16 @@ our $instance;
 
 =head1 DESCRIPTION
 
- i-MSCP Httpd server implementation.
+ i-MSCP httpd server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item factory([ $sName = $main::imscpConfig{'HTTPD_SERVER'} || 'no' ])
+=item factory()
 
- Create and return Httpd server instance
+ Create and return httpd server instance
 
- Param string $sName OPTIONAL Name of Httpd server implementation to instantiate
  Return Httpd server instance
 
 =cut
@@ -56,9 +55,7 @@ our $instance;
 sub factory
 {
 	unless(defined $instance) {
-		my ($self, $sName) = @_;
-
-		$sName ||= $main::imscpConfig{'HTTPD_SERVER'} || 'no';
+		my $sName = $main::imscpConfig{'HTTPD_SERVER'} || 'no';
 
 		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::httpd::$sName";
 

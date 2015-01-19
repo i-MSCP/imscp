@@ -71,7 +71,7 @@ sub showDialog
 
 	if($main::reconfigure ~~ ['webstats', 'all', 'forced'] || not $awstatsMode ~~ ['0','1']) {
 		($rs, $awstatsMode) = $dialog->radiolist(
-			"\nPlease, select the AWStats mode you want use:", ['Dynamic', 'Static'], $awstatsMode ? 'Static' : 'Dynamic'
+			"\nPlease select the AWStats mode you want use:", ['Dynamic', 'Static'], $awstatsMode ? 'Static' : 'Dynamic'
 		);
 
 		$awstatsMode = $awstatsMode eq 'Dynamic' ? 0 : 1 if $rs != 30;

@@ -38,15 +38,15 @@ our $instance;
 
 =head1 DESCRIPTION
 
- i-MSCP MTA server implementation.
+ i-MSCP po server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item factory([ $sName = $main::imscpConfig{'PO_SERVER'} || 'no' ])
+=item factory()
 
- Create and return PO server instance
+ Create and return po server instance
 
  Param string $sName OPTIONAL Name of PO server implementation to instantiate
  Return PO server instance
@@ -56,9 +56,7 @@ our $instance;
 sub factory
 {
 	unless(defined $instance) {
-		my ($self, $sName) = @_;
-
-		$sName ||= $main::imscpConfig{'PO_SERVER'} || 'no';
+		my $sName = $main::imscpConfig{'PO_SERVER'} || 'no';
 
 		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::po::$sName";
 

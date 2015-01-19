@@ -38,19 +38,18 @@ our $instance;
 
 =head1 DESCRIPTION
 
- i-MSCP MTA server implementation.
+ i-MSCP named server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item factory([ $sName = $main::imscpConfig{'NAMED_SERVER'} || 'no' ])
+=item factory()
 
- Create and return Named server instance
+ Create and return named server instance
 
  Also trigger uninstallation of old named server when needed.
 
- Param string $sName OPTIONAL Name of Named server implementation to instantiate
  Return Named server instance
 
 =cut
@@ -58,16 +57,16 @@ our $instance;
 sub factory
 {
 	unless(defined $instance) {
-		my ($self, $sName) = @_;
-
-		$sName ||= $main::imscpConfig{'NAMED_SERVER'} || 'no';
+		my $sName = $main::imscpConfig{'NAMED_SERVER'} || 'no';
 
 		my $package = undef;
 
-		if($sName eq 'external_server') {
+		if($sName eq 'no') {
+			$package = 'Servers::noserver';
+		} elsif($sName eq 'external_server') {
 			my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'} || 'no';
 
-			unless($oldSname eq 'external_server' || $oldSname eq 'no') {
+			unless($oldSname eq 'external_server') {
 				$package = "Servers::named::$oldSname";
 
 				eval "require $package";

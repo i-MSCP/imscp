@@ -32,14 +32,14 @@ package Servers::noserver;
 use strict;
 use warnings;
 
-use iMSCP::Debug;
-
 use vars qw/$AUTOLOAD/;
 use parent 'Common::SingletonClass';
 
+our $instance;
+
 =head1 DESCRIPTION
 
- i-MSCP no server implementation.
+ i-MSCP noserver server implementation.
 
 =head1 PUBLIC METHODS
 
@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 =item factory()
 
- Create and return no server instance
+ Create and return noserver server instance
 
  Return Servers::noserver
 
@@ -55,9 +55,12 @@ use parent 'Common::SingletonClass';
 
 sub factory
 {
-	__PACKAGE__->getInstance();
-}
+	unless(defined $instance) {
+		$instance = __PACKAGE__->getInstance();
+	}
 
+	$instance;
+}
 
 =item AUTOLOAD()
 

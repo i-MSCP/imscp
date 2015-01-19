@@ -34,9 +34,11 @@ use warnings;
 
 use iMSCP::Debug;
 
+our $instance;
+
 =head1 DESCRIPTION
 
- i-MSCP Cron server implementation.
+ i-MSCP cron server implementation.
 
 =head1 PUBLIC METHODS
 
@@ -44,7 +46,7 @@ use iMSCP::Debug;
 
 =item factory()
 
- Return an instance of cron server implementation
+ Create and return cron server instance
 
  Return cron server implementation
 
@@ -52,15 +54,17 @@ use iMSCP::Debug;
 
 sub factory
 {
-	my $self = $_[0];
-	my $server = $_[1] || 'cron';
-	my $package = ($server eq 'no') ? 'Servers::noserver' : "Servers::cron::$server";
+	unless(defined $instance) {
+		my $package = 'Servers::cron::cron';
 
-	eval "require $package";
+		eval "require $package";
 
-	fatal($@) if $@;
+		fatal($@) if $@;
 
-	$package->getInstance();
+		$instance = $package->getInstance();
+	}
+
+	$instance;
 }
 
 =back
