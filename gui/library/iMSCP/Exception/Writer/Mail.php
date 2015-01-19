@@ -180,7 +180,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
 					$mail['body'] .= "\nAdditional information:\n";
 					$mail['body'] .= str_repeat('-', 22) . "\n\n";
 
-					foreach(array('HTTP_USER_AGENT', 'REQUEST_URI', 'HTTP_REFERER', 'REMOTE_ADDR', 'SERVER_ADDR') as $key) {
+					foreach(array('HTTP_USER_AGENT', 'REQUEST_URI', 'HTTP_REFERER', 'REMOTE_ADDR', 'X-FORWARDED-FOR', 'SERVER_ADDR') as $key) {
 						if(isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
 							$mail['body'] .= ucwords(strtolower(str_replace('_', ' ', $key))) . ": {$_SERVER["$key"]}\n";
 						}

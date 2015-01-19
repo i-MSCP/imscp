@@ -1865,7 +1865,7 @@ function write_log($msg, $logLevel = E_USER_WARNING)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$clientIp = (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
+	$clientIp = getIpAddr() ? getIpAddr() : 'unknown';
 
 	$msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>', ENT_COMPAT, 'UTF-8');
 
