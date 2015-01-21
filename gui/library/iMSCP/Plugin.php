@@ -467,13 +467,10 @@ abstract class iMSCP_Plugin
 	{
 		$pluginName = $this->getName();
 		$pluginManager = $this->pluginManager;
-		$pluginInfo = $pluginManager->getPluginInfo($pluginName);
-
-		//$parts = explode('_', get_class($this));
-		//$sqlDir = $pluginManager->getPluginDirectory() . '/' . $parts[2] . '/sql';
 		$sqlDir = $pluginManager->getPluginDirectory() . '/' . $pluginName . '/sql';
 
 		if (is_dir($sqlDir)) {
+			$pluginInfo = $pluginManager->getPluginInfo($pluginName);
 			$dbSchemaVersion = (isset($pluginInfo['db_schema_version'])) ? $pluginInfo['db_schema_version'] : '000';
 			$migrationFiles = array();
 
@@ -493,7 +490,7 @@ abstract class iMSCP_Plugin
 			try {
 				foreach ($migrationFiles as $migrationFile) {
 					if (is_readable($migrationFile)) {
-						if (preg_match('/(\d+)_[^/]+\.php$/i', $migrationFile, $version)) {
+						if (preg_match('/(\d+)_[^\/]+\.php$/i', $migrationFile, $version)) {
 							if (
 								($migrationMode == 'up' && $version[1] > $dbSchemaVersion) ||
 								($migrationMode == 'down' && $version[1] <= $dbSchemaVersion)
