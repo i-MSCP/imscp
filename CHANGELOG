@@ -35,6 +35,8 @@ TICKETS
 	Fixed #1208: Task - Untranslatable string
 	Fixed #1209: Cosmetics - Data usage bar glitches on 4k screens
 	Fixed #1217: Defect - Faulty cron for removing old backend logs
+	Fixed #1223: Bug - Admin log shows server IP instead of user IP
+	Fixed #1226: Panel maintenance mode: text message error
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.21
