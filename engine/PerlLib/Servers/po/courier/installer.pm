@@ -542,7 +542,7 @@ sub _buildConf
 		# Load template
 
 		my $cfgTpl;
-		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', $_, \$cfgTpl, $data);
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', $_, \$cfgTpl, $data);
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -605,7 +605,7 @@ sub _buildConf
 
 		$fileContent .=
 			"\n# Servers::po::courier::installer - BEGIN\n" .
-			"source $self->{'cfgDir'}/imapd.local\n" .
+			". $self->{'cfgDir'}/imapd.local\n" .
 			"# Servers::po::courier::installer - ENDING\n";
 
 		$rs = $file->set($fileContent);
