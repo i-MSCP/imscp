@@ -5,5 +5,6 @@
     <folders>${SYSTEM_CONF}/courier/working</folders>
     <copy_config>${SYSTEM_CONF}/courier/authmysqlrc</copy_config>
     <copy_config>${SYSTEM_CONF}/courier/courier.data</copy_config>
+    <copy_config>${SYSTEM_CONF}/courier/imapd.local</copy_config>
     <copy_config>${SYSTEM_CONF}/courier/quota-warning</copy_config>
 </install>

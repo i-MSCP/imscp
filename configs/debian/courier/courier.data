@@ -10,6 +10,7 @@ DATABASE_PASSWORD =
 
 ## Courier IMAP/POP3
 
+COURIER_CONF_DIR = /etc/courier
 COURIER_IMAP_SSL = imapd-ssl
 COURIER_POP_SSL = pop3d-ssl
 IMAPD_SNAME = courier-imap

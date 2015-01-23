@@ -584,6 +584,44 @@ sub _buildConf
 		$rs = $file->copyFile($cfgFiles{$_}->[0]);
 		return $rs if $rs;
 	}
+
+	# Include imapd.local configuration file in main imapd configuration file
+
+	if(-f "$self->{'cfgDir'}/imapd.local") {
+		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
+
+		my $fileContent = $file->get();
+		unless(defined $fileContent) {
+			error("Unable to read $self->{'filename'}");
+			return 1;
+		}
+
+		$fileContent = replaceBloc(
+			"\n# Servers::po::courier::installer - BEGIN\n",
+			"# Servers::po::courier::installer - ENDING\n",
+			'',
+			$fileContent
+		);
+
+		$fileContent .=
+			"\n# Servers::po::courier::installer - BEGIN\n" .
+			"source $self->{'cfgDir'}/imapd.local\n" .
+			"# Servers::po::courier::installer - ENDING\n";
+
+		$rs = $file->set($fileContent);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0644);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
+	}
+
+	0;
 }
 
 =item _buildAuthdaemonrcFile()

@@ -31,6 +31,7 @@ use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
 use iMSCP::Database;
+use iMSCP::TemplateParser;
 use Servers::po::courier;
 use parent 'Common::SingletonClass';
 
@@ -115,6 +116,35 @@ sub _restoreConfFile
 		)->copyFile(
 			"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_"
 		) if -f "$self->{'bkpDir'}/$_.system";
+		return $rs if $rs;
+	}
+
+	if(-f "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd") {
+		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
+
+		my $fileContent = $file->get();
+		unless(defined $fileContent) {
+			error("Unable to read $self->{'filename'}");
+			return 1;
+		}
+
+		$fileContent = replaceBloc(
+			"\n# Servers::po::courier::installer - BEGIN\n",
+			"# Servers::po::courier::installer - ENDING\n",
+			'',
+			$fileContent
+		);
+
+		my $rs = $file->set($fileContent);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0644);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
 	}
 
