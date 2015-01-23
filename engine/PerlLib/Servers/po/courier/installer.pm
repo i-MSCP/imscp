@@ -227,7 +227,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set engigne permissions
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
