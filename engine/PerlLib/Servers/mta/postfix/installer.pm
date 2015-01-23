@@ -80,7 +80,7 @@ sub registerSetupListeners
 
  Show dialog
 
- Param iMSCP::Dialogg \%dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
@@ -96,23 +96,26 @@ sub showDialog
 
 	if(
 		$main::reconfigure ~~ ['mta', 'servers', 'all', 'forced'] ||
-		$dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
+		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
 	) {
 		# Ask for the SASL restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->getInstance()->inputbox(
-				"\nPlease enter an username for the restricted sasl SQL user:$msg", $dbUser
+			($rs, $dbUser) = $dialog->inputbox(
+				"\nPlease enter an username for the Postfix SASL SQL user:$msg", $dbUser
 			);
 
-			# i-MSCP SQL user cannot be reused
-			if($dbUser eq main::setupGetQuestion('DATABASE_USER')) {
-				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
+			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
+				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			} elsif(length $dbUser > 16) {
-				$msg = "\n\n\\Z1SQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
+				$msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
+				$dbUser = '';
+			} elsif(length $dbUser < 6) {
+				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
@@ -126,9 +129,16 @@ sub showDialog
 					"\nPlease, enter a password for the restricted sasl SQL user (blank for autogenerate):$msg", $dbPass
 				);
 
-				if($dbPass ne '' && $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-					$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
-					$dbPass = '';
+				if($dbPass ne '') {
+					if(length $dbPass < 6) {
+						$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
+						$dbPass = '';
+					} elsif($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+						$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+						$dbPass = '';
+					} else {
+						$msg = '';
+					}
 				} else {
 					$msg = '';
 				}
@@ -141,7 +151,7 @@ sub showDialog
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
 
-				$dialog->msgbox("\nPassword for the restricted sasl SQL user set to: $dbPass");
+				$dialog->msgbox("\nPassword for the restricted SASL SQL user set to: $dbPass");
 			}
 		}
 	}
@@ -470,7 +480,7 @@ sub _makeDirs
 
 =cut
 
-sub _setupSqlUser()
+sub _setupSqlUser
 {
 	my $self = $_[0];
 
