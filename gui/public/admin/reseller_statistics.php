@@ -72,7 +72,7 @@ function admin_generatePage($tpl)
  */
 function _admin_generateResellerStatisticsEntry($tpl, $resellerId, $resellerName)
 {
-	$resellerProperties = imscp_getResellerProperties($resellerId);
+	$resellerProperties = imscp_getResellerProperties($resellerId, true);
 
 	list(
 		$udmn_current, , , $usub_current, , , $uals_current, , , $umail_current, , , $uftp_current, , , $usql_db_current, , ,

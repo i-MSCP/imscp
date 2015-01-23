@@ -59,6 +59,7 @@ TICKETS
 	Fixed #IP-1217: Defect - Faulty cron for removing old backend logs
 	Fixed #IP-1223: Bug - Admin log shows server IP instead of user IP
 	Fixed #IP-1226: Panel maintenance mode: text message error
+	Fixed #IP-1227: Page reseller statistics shows the same max/curr traffic/disk for all resellers
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.0
