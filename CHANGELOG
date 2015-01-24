@@ -62,7 +62,6 @@ TICKETS
 	Fixed #IP-1227: Page reseller statistics shows the same max/curr traffic/disk for all resellers
 	Fixed #IP-1229: Courier - CRAM-MD5 authentication not enabled by default
 
-
 ------------------------------------------------------------------------------------------------------------------------
 1.2.0
 ------------------------------------------------------------------------------------------------------------------------
