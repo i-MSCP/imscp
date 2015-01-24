@@ -43,6 +43,7 @@ TICKETS
 	Fixed #1223: Bug - Admin log shows server IP instead of user IP
 	Fixed #1226: Panel maintenance mode: text message error
 	Fixed #IP-1227: Page reseller statistics shows the same max/curr traffic/disk for all resellers
+	Fixed #IP-1233: Autoresponder script ( imscp-arpl-msgr ) cannot write in /var/log/imscp/imscp-arpl-msgr
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.21
