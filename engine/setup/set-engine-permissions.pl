@@ -133,7 +133,7 @@ sub run
 	$rs |= setRights($userWebDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0755' });
 
 	# eg. /var/log/imscp
-	$rs |= setRights($logDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750'} );
+	$rs |= setRights($logDir, { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750'} );
 
 	# eg. /var/cache/imscp
 	$rs |= setRights(

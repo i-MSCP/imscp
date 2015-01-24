@@ -266,7 +266,7 @@ sub setEnginePermissions
 	# eg. /var/log/imscp/imscp-arpl-msgr
 	$rs = setRights(
 		"$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
-		{ 'user' => $mtaUName, 'group' => $mtaGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
+		{ 'user' => $mtaUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0600', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
@@ -450,7 +450,7 @@ sub _makeDirs
 		[
 			$main::imscpConfig{'LOG_DIR'} . '/imscp-arpl-msgr', # eg /var/log/imscp/imscp-arpl-msgr
 			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+			$main::imscpConfig{'IMSCP_GROUP'},
 			0750
 		]
 	);

@@ -61,6 +61,7 @@ TICKETS
 	Fixed #IP-1226: Panel maintenance mode: text message error
 	Fixed #IP-1227: Page reseller statistics shows the same max/curr traffic/disk for all resellers
 	Fixed #IP-1229: Courier - CRAM-MD5 authentication not enabled by default
+	Fixed #IP-1233: Autoresponder script ( imscp-arpl-msgr ) cannot write in /var/log/imscp/imscp-arpl-msgr
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.0
