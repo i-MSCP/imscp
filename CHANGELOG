@@ -67,6 +67,7 @@ TICKETS
 	Fixed #IP-1233: Autoresponder script ( imscp-arpl-msgr ) cannot write in /var/log/imscp/imscp-arpl-msgr
 	Fixed #IP-1234: IPv6 addresses causes exception
 	Fixed #IP-1235: Cosmetics - Reseller overview - Exception in domain status breaks the layout
+	Fixed #IP-1238: Question mark information box not functioning when switching page
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.0

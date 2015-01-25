@@ -1,89 +1,12 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-	$(document).ready(function () {
-		$('.datatable').dataTable(
-			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true,
-				"pagingType": "simple"
-			}
-		);
-
-		$("#dialog_box").dialog(
-			{
-				modal: true,
-				autoOpen: false,
-				hide: "blind",
-				show: "blind",
-				width: 650
-			}
-		);
-
-		$(".i_change_password").click(function (e) {
-			e.preventDefault();
-			var href = $(this).attr("href");
-			var $dialogBox = $("#dialog_box");
-
-			$dialogBox.dialog("option", "buttons", {
-				"{TR_PROTECT}": function () { window.location.href = href; },
-				"{TR_CANCEL}": function () { $(this).dialog("close"); }
-			});
-
-			$dialogBox.dialog("open");
-		});
-
-		$('#bulkActionsTop, #bulkActionsBottom').change(function () {
-			$('select[name="bulkActions"] option[value=' + $(this).val() + ']').attr("selected", "selected");
-		});
-
-		$("thead :checkbox, tfoot :checkbox").change(
-			function ($e) { $("table :checkbox").prop('checked', $(this).is(':checked')); }
-		);
-
-		$('button[name=update_plugin_list]').click(function () { document.location = "?update_plugin_list=all"; });
-
-		$(".plugin_error").click(function (e) {
-			var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');
-			var pluginName = $(this).attr('id');
-
-			errDialog.dialog(
-				{
-					modal: true,
-					title: pluginName + " - {TR_ERROR_DETAILS}",
-					show: "clip",
-					hide: "clip",
-					minHeight: 200,
-					minWidth: 500,
-					buttons: [
-						{ text: "{TR_FORCE_RETRY}", click: function () {
-							window.location = "?retry=" + pluginName
-						} },
-						{ text: "{TR_CLOSE}", click: function () {
-							$(this).dialog("close").dialog("destroy")
-						} }
-					]
-				}
-			);
-
-			return false;
-		});
-	});
-	/*]]>*/
-</script>
 <p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PLUGIN_HINT}</p>
-<br/>
+<br>
 <!-- BDP: plugins_block -->
-<div id="dialog_box" title="{TR_PLUGIN_CONFIRMATION_TITLE}">
-	<p>{TR_PROTECT_CONFIRMATION}</p>
-</div>
-
 <form name="plugin_frm" action="settings_plugins.php" method="post">
 	<table class="datatable">
 		<thead>
 		<tr style="border: none;">
-			<th style="width:21px;"><label><input type="checkbox"/></label></th>
+			<th style="width:21px;"><label><input type="checkbox"></label></th>
 			<th style="width:150px">{TR_PLUGIN}</th>
 			<th>{TR_DESCRIPTION}</th>
 			<th>{TR_STATUS}</th>
@@ -102,7 +25,7 @@
 		<tbody>
 		<!-- BDP: plugin_block -->
 		<tr>
-			<td><label><input type='checkbox' name='checked[]' value="{PLUGIN_NAME}"/></label></td>
+			<td><label><input type='checkbox' name='checked[]' value="{PLUGIN_NAME}"></label></td>
 			<td><p><strong>{PLUGIN_NAME}</strong></p></td>
 			<td>
 				<p>{PLUGIN_DESCRIPTION}</p>
@@ -115,9 +38,7 @@
 				{PLUGIN_STATUS}
 				<!-- BDP: plugin_status_details_block -->
 				<span id="{PLUGIN_NAME}" style="vertical-align: middle;" class="plugin_error icon i_help"
-					  title="{TR_CLICK_FOR_MORE_DETAILS}">
-					{PLUGIN_STATUS_DETAILS}
-				</span>
+					  title="{TR_CLICK_FOR_MORE_DETAILS}">{PLUGIN_STATUS_DETAILS}</span>
 				<!-- EDP: plugin_status_details_block -->
 			</td>
 			<td>
@@ -152,21 +73,16 @@
 			<option value="uninstall">{TR_UNINSTALL}</option>
 			<option value="protect">{TR_PROTECT}</option>
 			<option value="delete">{TR_DELETE}</option>
-
 		</select>
-		<label for="bulk_actions"><input type="submit" name="Submit" value="{TR_APPLY}"/></label>
+		<label for="bulk_actions"><input type="submit" name="Submit" value="{TR_APPLY}"></label>
 	</div>
 </form>
 <!-- EDP: plugins_block -->
-
 <div class="buttons">
 	<button type="button" name="update_plugin_list">{TR_UPDATE_PLUGIN_LIST}</button>
 </div>
-
-<br/>
-
+<br>
 <h2 class="plugin"><span>{TR_PLUGIN_UPLOAD}</span></h2>
-
 <form name="plugin_upload_frm" action="settings_plugins.php" method="post" enctype="multipart/form-data">
 	<table class="firstColFixed">
 		<thead>
@@ -188,3 +104,57 @@
 		</tbody>
 	</table>
 </form>
+<script>
+	$(function() {
+		var $dataTable;
+
+		$dataTable = $(".datatable").dataTable(
+			{
+				"language": {DATATABLE_TRANSLATIONS},
+				"displayLength": 5,
+				"stateSave": true,
+				"pagingType": "simple"
+			}
+		);
+
+		$('#bulkActionsTop, #bulkActionsBottom').change(function () {
+			$("select[name=\"bulkActions\"] option[value=" + $(this).val() + "]").attr("selected", "selected");
+		});
+
+		$("thead :checkbox, tfoot :checkbox").change(
+			function () { $("table :checkbox").prop('checked', $(this).is(':checked')); }
+		);
+
+		$("button[name=update_plugin_list]").click(function () { window.location.replace("?update_plugin_list=all"); });
+
+		$dataTable.on("click", ".plugin_error", function() {
+			var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');
+			var pluginName = $(this).attr('id');
+
+			errDialog.dialog(
+				{
+					modal: true,
+					title: pluginName + " - {TR_ERROR_DETAILS}",
+					show: "clip",
+					hide: "clip",
+					minHeight: 200,
+					minWidth: 500,
+					buttons: [
+						{
+							text: "{TR_FORCE_RETRY}", click: function () {
+								window.location.replace("?retry=" + pluginName)
+							}
+						},
+						{
+							text: "{TR_CLOSE}", click: function () {
+								$(this).dialog("close").dialog("destroy")
+							}
+						}
+					]
+				}
+			);
+
+			return false;
+		});
+	});
+</script>

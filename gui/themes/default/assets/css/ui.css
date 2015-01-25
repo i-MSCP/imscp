@@ -1298,6 +1298,7 @@ table .graph {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    max-width: 500px;
 }
 .ui-tooltip.ui-tooltip-notice {
     padding-left: 45px;
