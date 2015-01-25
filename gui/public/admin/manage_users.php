@@ -69,6 +69,8 @@ $tpl->define_dynamic(
 		'search_form' => 'page',
 		'usr_list' => 'page',
 		'usr_item' => 'usr_list',
+		'domain_status_change' => 'usr_item',
+		'domain_status_nochange' => 'usr_item',
 		'user_details' => 'usr_list',
 		'usr_status_reload_true' => 'usr_item',
 		'usr_status_reload_false' => 'usr_item',
@@ -112,7 +114,7 @@ if (isset($_SESSION['user_added'])) {
 	set_page_message(tr('Email successfully updated.'), 'success');
 } elseif (isset($_SESSION['hdomain'])) {
 	unset($_SESSION['hdomain']);
-	set_page_message(tr('The reseller you want to remove has one or more customers accounts.<br />Please remove them first.'), 'error');
+	set_page_message(tr('The reseller you want to remove has one or more customers accounts.<br>Remove them first.'), 'error');
 }
 
 if (!$cfg->exists('HOSTING_PLANS_LEVEL') || strtolower($cfg->HOSTING_PLANS_LEVEL) !== 'admin') {

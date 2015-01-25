@@ -1,16 +1,4 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-	function action_status(dom_id, dmn_name) {
-		if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name))) {
-			return false;
-		}
-
-		location = ("domain_status_change.php?domain_id=" + dom_id);
-	}
-	/* ]]> */
-</script>
-
 <!-- BDP: users_search -->
 <form action="users.php" method="post" name="search_user" id="search_user">
 	<div style="width=100%;vertical-align: middle;">
@@ -66,8 +54,13 @@
 	<!-- BDP: user_entry -->
 	<tr>
 		<td>
-			<a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{NAME}'); return false;"
-			   class="icon i_{STATUS_ICON}" title="{STATUS_DOMAIN}">{STATUS_DOMAIN}</a>
+			<!-- BDP: domain_status_change -->
+			<a href="domain_status_change.php?domain_id={DOMAIN_ID}" class="icon i_{STATUS_ICON}"
+			   title="{DOMAIN_STATUS_TOOLTIP}">{DOMAIN_STATUS}</a>
+			<!-- EDP: domain_status_change -->
+			<!-- BDP: domain_status_nochange -->
+			<span class="icon i_{STATUS_ICON}" title="{DOMAIN_STATUS_TOOLTIP}">{DOMAIN_STATUS}</span>
+			<!-- EDP: domain_status_nochange -->
 		</td>
 		<td>
 			<!-- BDP: status_reload_true -->

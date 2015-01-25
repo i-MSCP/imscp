@@ -57,6 +57,8 @@ if (isset($_GET['domain_id'])) {
 			change_domain_status($row['domain_admin_id'], 'deactivate');
 		} elseif ($row['domain_status'] == 'disabled') {
 			change_domain_status($row['domain_admin_id'], 'activate');
+		} else {
+			showBadRequestErrorPage();
 		}
 
 		redirectTo('manage_users.php');

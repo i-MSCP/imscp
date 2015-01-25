@@ -63,6 +63,7 @@ TICKETS
 	Fixed #IP-1229: Courier - CRAM-MD5 authentication not enabled by default
 	Fixed #IP-1233: Autoresponder script ( imscp-arpl-msgr ) cannot write in /var/log/imscp/imscp-arpl-msgr
 	Fixed #IP-1234: IPv6 addresses causes exception
+	Fixed #IP-1235: Cosmetics - Reseller overview - Exception in domain status breaks the layout
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.0
