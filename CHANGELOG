@@ -4,6 +4,17 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+	Added: Checks for a2enconf/a2disconf command availability
+	Added: -h ( help ) short option ( iMSCP::Getopt module )
+	Fixed: LC_MESSAGES has not expected effect in backend's scripts
+	Fixed: Postfix not restarted in some contexts ( Missing iMSCP::Service module )
+	Fixed: Useless instantiation of servers
+	Fixed: Wrong umask when the imscp-rqst-mngr script is run through the i-MSCP Daemon
+	Moved: Local DNS resolver question into bind9 installer
+	Removed: imscp-local-dns-resolver script ( The bind9 initscript invokes resolvconf itself )
+	Removed: policyd-weight and postgrey ( Postfix SMTP access policy delegation )
+
 CONFIGS
 	Added php5-json package ( Debian Jessie )
 	Moved: Local DNS resolver parameters from the imscp.conf file to the bind.data configuration file
@@ -15,17 +26,6 @@ DAEMON
 
 DISTRO
 	Changed: Dovecot packages are now installed from backports repository ( Squeeze, Wheezy )
-
-ENGINE
-	Added: Checks for a2enconf/a2disconf command availability
-	Added: -h ( help ) short option ( iMSCP::Getopt module )
-	Fixed: LC_MESSAGES has not expected effect in backend's scripts
-	Fixed: Postfix not restarted in some contexts ( Missing iMSCP::Service module )
-	Fixed: Useless instantiation of servers
-	Fixed: Wrong umask when the imscp-rqst-mngr script is run through the i-MSCP Daemon
-	Moved: Local DNS resolver question into bind9 installer
-	Removed: imscp-local-dns-resolver script ( The bind9 initscript invokes resolvconf itself )
-	Removed: policyd-weight and postgrey ( Postfix SMTP access policy delegation )
 
 FRONTEND
 	Added: Support for eAccelerator, WinCache, XCache and ZendOptimizerPlus opcode caches
@@ -73,21 +73,7 @@ TICKETS
 2014-12-30: Laurent Declercq
 	RELEASE i-MSCP 1.2.0
 
-DAEMON
-	Fixed: The server traffic must be collected before any stopping attempt ( imscp_network )
-
-CONFIGS
-	Fixed: The time at which the backup script must be run is no configurable
-	Renamed: /etc/imscp/hooks.d directory to /etc/imscp/listeners.d
-	Removed: Roundcube configuration directory ( now shipped with the roundcube package )
-
-DISTROS
-	Removed: Support for obsolete Ubuntu versions ( Quantal Quetzal, Raring Ringtail, Saucy Salamander )
-
-DOCS
-	Updated: INSTALL files
-
-ENGINE
+BACKEND
 	Added: FETCH_MODE option in iMSCP::Database::mysql
 	Added: iMSCP::ProgramFinder module which allow to test whether programs are available on the executable search path
 	Added: iMSCP::Service module for service management ( start, stop, restart, reload, status )
@@ -99,6 +85,20 @@ ENGINE
 	Changed: Logfiles are now written as soon as possible ( allows to mitigate memory consumption )
 	Changed: The quota accounting script is now run every 30 minutes
 	Fixed: Backend logs which are older than 7 days are never removed
+
+CONFIGS
+	Fixed: The time at which the backup script must be run is no configurable
+	Renamed: /etc/imscp/hooks.d directory to /etc/imscp/listeners.d
+	Removed: Roundcube configuration directory ( now shipped with the roundcube package )
+
+DAEMON
+	Fixed: The server traffic must be collected before any stopping attempt ( imscp_network )
+
+DISTROS
+	Removed: Support for obsolete Ubuntu versions ( Quantal Quetzal, Raring Ringtail, Saucy Salamander )
+
+DOCS
+	Updated: INSTALL files
 
 FRONTEND
 	Changed: The frontEnd is now reachable through dedicated Web server ( Nginx )
