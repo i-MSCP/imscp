@@ -69,6 +69,8 @@ $tpl->define_dynamic(
 		'search_form' => 'page',
 		'usr_list' => 'page',
 		'usr_item' => 'usr_list',
+		'domain_status_change' => 'usr_item',
+		'domain_status_nochange' => 'usr_item',
 		'user_details' => 'usr_list',
 		'usr_status_reload_true' => 'usr_item',
 		'usr_status_reload_false' => 'usr_item',

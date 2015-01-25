@@ -109,6 +109,7 @@ function generate_users_list($tpl, $resellerId)
 
 	$stmt = execute_query($countQuery);
 	$recordsCount = $stmt->fields['cnt'];
+
 	$stmt = execute_query($searchQuery);
 
 	if ($recordsCount == 0) {
@@ -169,58 +170,60 @@ function generate_users_list($tpl, $resellerId)
 			);
 		}
 
-		while (!$stmt->EOF) {
-			if ($stmt->fields['admin_status'] == 'ok' && $stmt->fields['domain_status'] == 'ok') {
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			if ($row['admin_status'] == 'ok' && $row['domain_status'] == 'ok') {
 				$statusIcon = 'ok';
-				$statusDomain = translate_dmn_status($stmt->fields['domain_status']);
+				$statusDomain = translate_dmn_status($row['domain_status']);
+				$domainStatusTooltip = tr('Click to deactivate');
 				$statusBool = true;
-			} else if ($stmt->fields['domain_status'] == 'disabled') {
+				$canChange = true;
+			} else if ($row['domain_status'] == 'disabled') {
 				$statusIcon = 'disabled';
-				$statusDomain = translate_dmn_status($stmt->fields['domain_status']);
+				$statusDomain =  translate_dmn_status($row['domain_status']);
+				$domainStatusTooltip = tr('Click to activate');
 				$statusBool = false;
+				$canChange = true;
 			} else if (
-				(
-					$stmt->fields['admin_status'] == 'toadd' ||
-					$stmt->fields['admin_status'] == 'tochange' ||
-					$stmt->fields['admin_status'] == 'todelete'
-				) ||
-				(
-					$stmt->fields['domain_status'] == 'toadd' ||
-					$stmt->fields['domain_status'] == 'torestore' ||
-					$stmt->fields['domain_status'] == 'tochange' ||
-					$stmt->fields['domain_status'] == 'toenable' ||
-					$stmt->fields['domain_status'] == 'todisable' ||
-					$stmt->fields['domain_status'] == 'todelete'
-				)
+				$row['domain_status'] == 'toadd' || $row['domain_status'] == 'torestore' ||
+				$row['domain_status'] == 'tochange' || $row['domain_status'] == 'toenable' ||
+				$row['domain_status'] == 'todisable' || $row['domain_status'] == 'todelete'
 			) {
 				$statusIcon = 'reload';
-				$statusDomain = translate_dmn_status(
-					($stmt->fields['admin_status'] != 'ok')
-						? $stmt->fields['admin_status']
-						: $stmt->fields['domain_status']
+				$statusDomain = $domainStatusTooltip = translate_dmn_status(
+					($row['admin_status'] != 'ok') ? $row['admin_status'] : $row['domain_status']
 				);
 				$statusBool = false;
+				$canChange = false;
 			} else {
 				$statusIcon = 'error';
 				$statusDomain = translate_dmn_status(
-					($stmt->fields['admin_status'] != 'ok')
-						? $stmt->fields['admin_status']
-						: $stmt->fields['domain_status']
+					($row['admin_status'] != 'ok')  ? $row['admin_status'] : $row['domain_status']
 				);
+				$domainStatusTooltip = tr('An unexpected error occured. Please contact your administrator.');
 				$statusBool = false;
+				$canChange = false;
 			}
 
-			$status_url = $stmt->fields['domain_id'];
+			$domainId = $row['domain_id'];
 
 			$tpl->assign(
 				array(
-					'STATUS_DOMAIN' => $statusDomain,
+					'DOMAIN_STATUS' => $statusDomain,
+					'DOMAIN_STATUS_TOOLTIP' => $domainStatusTooltip,
 					'STATUS_ICON' => $statusIcon,
-					'URL_CHANGE_STATUS' => $status_url
+					'DOMAIN_ID' => $domainId
 				)
 			);
 
-			$adminName = decode_idna($stmt->fields['domain_name']);
+			if($canChange) {
+				$tpl->assign('DOMAIN_STATUS_NOCHANGE', '');
+				$tpl->parse('DOMAIN_STATUS_CHANGE', 'domain_status_change');
+			} else {
+				$tpl->assign('DOMAIN_STATUS_CHANGE', '');
+				$tpl->parse('DOMAIN_STATUS_NOCHANGE', 'domain_status_nochange');
+			}
+
+			$adminName = decode_idna($row['domain_name']);
 
 			if ($statusBool == false) { // reload
 				$tpl->assign('STATUS_RELOAD_TRUE', '');
@@ -232,7 +235,7 @@ function generate_users_list($tpl, $resellerId)
 				$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
 			}
 
-			$domainCreated = $stmt->fields['domain_created'];
+			$domainCreated = $row['domain_created'];
 
 			if ($domainCreated == 0) {
 				$domainCreated = tr('N/A');
@@ -243,23 +246,22 @@ function generate_users_list($tpl, $resellerId)
 			$tpl->assign(
 				array(
 					'CREATION_DATE' => $domainCreated,
-					'DOMAIN_ID' => $stmt->fields['domain_id'],
 					'ACTION' => tr('Delete'),
-					'USER_ID' => $stmt->fields['domain_admin_id'],
+					'USER_ID' => $row['domain_admin_id'],
 					'CHANGE_INTERFACE' => tr('Switch'),
-					'DISK_USAGE' => ($stmt->fields['domain_disk_limit'])
+					'DISK_USAGE' => ($row['domain_disk_limit'])
 						? tr(
 							'%1$s of %2$s',
-							bytesHuman($stmt->fields['domain_disk_usage']),
-							mebibyteHuman($stmt->fields['domain_disk_limit'])
+							bytesHuman($row['domain_disk_usage']),
+							mebibyteHuman($row['domain_disk_limit'])
 						)
-						: tr('%1$s of <b>unlimited</b>', bytesHuman($stmt->fields['domain_disk_usage']))
+						: tr('%1$s of <b>unlimited</b>', bytesHuman($row['domain_disk_usage']))
 				)
 			);
 
-			gen_domain_details($tpl, $stmt->fields['domain_id']);
+			gen_domain_details($tpl, $row['domain_id']);
+
 			$tpl->parse('USER_ENTRY', '.user_entry');
-			$stmt->moveNext();
 		}
 
 		$tpl->assign('USR_MESSAGE', '');
@@ -319,6 +321,8 @@ $tpl->define_dynamic(
 		'usr_message' => 'page',
 		'users_list' => 'page',
 		'user_entry' => 'users_list',
+		'domain_status_change' => 'user_entry',
+		'domain_status_nochange' => 'user_entry',
 		'status_reload_true' => 'users_list',
 		'status_reload_false' => 'users_list',
 		'user_details' => 'users_list',
@@ -341,7 +345,6 @@ $tpl->assign(
 		'TR_USERNAME' => tr('Username'),
 		'TR_ACTION' => tr('Actions'),
 		'TR_CREATION_DATE' => tr('Creation date'),
-		'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s?', true, '%s'),
 		'TR_STAT' => tr('Stats'),
 		'VL_MONTH' => date('m'),
 		'VL_YEAR' => date('Y'),

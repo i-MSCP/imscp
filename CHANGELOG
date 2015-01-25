@@ -45,6 +45,7 @@ TICKETS
 	Fixed #IP-1227: Page reseller statistics shows the same max/curr traffic/disk for all resellers
 	Fixed #IP-1233: Autoresponder script ( imscp-arpl-msgr ) cannot write in /var/log/imscp/imscp-arpl-msgr
 	Fixed #IP-1234: IPv6 addresses causes exception
+	Fixed #IP-1235: Cosmetics - Reseller overview - Exception in domain status breaks the layout
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.21

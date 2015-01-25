@@ -1,16 +1,4 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-	function action_status(dmn_name) {
-		return confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name));
-	}
-
-	function action_delete(dmn_name) {
-		return  confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name));
-	}
-	/* ]]> */
-</script>
-
 <h3 class="user_yellow"><span>{TR_ADMINISTRATORS}</span></h3>
 
 <!-- BDP: admin_message -->
@@ -140,8 +128,13 @@
 	<!-- BDP: usr_item -->
 	<tr>
 		<td>
-			<a href="{URL_CHANGE_STATUS}" onclick="return action_status('{USR_USERNAME}')"
-			   class="icon i_{STATUS}" title="{TR_STATUS}">{TR_STATUS}</a>
+			<!-- BDP: domain_status_change -->
+			<a href="domain_status_change.php?domain_id={DOMAIN_ID}" class="icon i_{STATUS}"
+			   title="{STATUS_TOOLTIP}">{TR_STATUS}</a>
+			<!-- EDP: domain_status_change -->
+			<!-- BDP: domain_status_nochange -->
+			<span class="icon i_{STATUS}" title="{STATUS_TOOLTIP}">{TR_STATUS}</span>
+			<!-- EDP: domain_status_nochange -->
 		</td>
 		<td>
 			<!-- BDP: usr_status_reload_true -->
@@ -192,3 +185,9 @@
 	<!-- EDP: scroll_next -->
 </div>
 <!-- EDP: usr_list -->
+
+<script>
+	function action_delete(dmn_name) {
+		return  confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name));
+	}
+</script>

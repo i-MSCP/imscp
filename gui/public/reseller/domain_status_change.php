@@ -48,6 +48,7 @@ check_login('reseller');
 
 if (isset($_GET['domain_id'])) {
 	$domainId = intval($_GET['domain_id']);
+	$resellerId = intval($_SESSION['user_id']);
 
 	$stmt = exec_query(
 		'
@@ -59,22 +60,24 @@ if (isset($_GET['domain_id'])) {
 				admin ON(admin_id = domain_admin_id)
 			WHERE
 				domain_id = ?
+			AND
+				created_by = ?
 		',
-		$domainId
+		array($domainId, $resellerId)
 	);
 
 	if ($stmt->rowCount()) {
-		$data = $stmt->fetchRow(PDO::FETCH_ASSOC);
+		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-		if ($data['created_by'] == $_SESSION['user_id']) {
-			if ($data['domain_status'] == 'ok') {
-				change_domain_status($data['admin_id'], 'deactivate');
-			} elseif ($data['domain_status'] == 'disabled') {
-				change_domain_status($data['admin_id'], 'activate');
-			}
-
-			redirectTo('users.php');
+		if ($row['domain_status'] == 'ok') {
+			change_domain_status($row['admin_id'], 'deactivate');
+		} elseif ($row['domain_status'] == 'disabled') {
+			change_domain_status($row['admin_id'], 'activate');
+		} else {
+			showBadRequestErrorPage();
 		}
+
+		redirectTo('users.php');
 	}
 }
 
