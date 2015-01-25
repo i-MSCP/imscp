@@ -25,12 +25,14 @@ DAEMON
 	Updated: Version to 1.2.2
 
 DISTRO
-	Changed: Dovecot packages are now installed from backports repository ( Squeeze, Wheezy )
+	Changed: Dovecot is now installed using packages from backports repository ( Squeeze, Wheezy )
+	Changed: Postfix is now installed using package from backports repository ( Squeeze, Wheezy )
 
 FRONTEND
 	Added: Support for eAccelerator, WinCache, XCache and ZendOptimizerPlus opcode caches
 
 INSTALLER
+	Fixed: Dovecot packages installation fail when no SSL certificate is generated
 	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )
 	Fixed: Migration from Courier to Dovecot is broken ( courier-dovecot-migrate.pl is run with a wrong option )
 	Fixed: php5enmod command throws an error when a PHP module is missing ( PHP5.4 )

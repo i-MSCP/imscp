@@ -765,7 +765,8 @@ courier-ssl courier-ssl/certnotice note
 EOF
 		} elsif($poServer eq 'dovecot') {
 	$selectionsFileContent .= <<EOF;
-dovecot-core dovecot-core/create-ssl-cert boolean false
+dovecot-core dovecot-core/create-ssl-cert boolean true
+dovecot-core dovecot-core/ssl-cert-name string localhost
 EOF
 		}
 	} else {

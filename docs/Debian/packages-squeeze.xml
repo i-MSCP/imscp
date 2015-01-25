@@ -60,7 +60,12 @@
         </dovecot>
     </po>
     <mta default="postfix">
-        <postfix>
+        <postfix
+                pinning_package="postfix"
+                repository="deb http://http.debian.net/debian-backports squeeze-backports main"
+                pinning_pin="release a=squeeze-backports"
+                pinning_pin_priority="1001"
+                >
             <package>postfix</package>
             <package>libsasl2-modules</package>
             <package>libsasl2-modules-sql</package>
