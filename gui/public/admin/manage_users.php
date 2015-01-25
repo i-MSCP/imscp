@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
@@ -29,7 +29,7 @@
  * @subpackage	Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
@@ -69,6 +69,8 @@ $tpl->define_dynamic(
 		'search_form' => 'page',
 		'usr_list' => 'page',
 		'usr_item' => 'usr_list',
+		'domain_status_change' => 'usr_item',
+		'domain_status_nochange' => 'usr_item',
 		'user_details' => 'usr_list',
 		'usr_status_reload_true' => 'usr_item',
 		'usr_status_reload_false' => 'usr_item',

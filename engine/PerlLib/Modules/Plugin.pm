@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 =head1 NAME
 
  Modules::Plugin - i-MSCP Plugin module
@@ -7,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2014 by internet Multi Server Control Panel
+# Copyright (C) 2010-2015 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category    i-MSCP
-# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @copyright   2010-2015 by i-MSCP | http://i-mscp.net
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -127,7 +125,7 @@ sub process
 
 =over 4
 
-=item init()
+=item _init()
 
  Initialize instance
 
@@ -139,8 +137,8 @@ sub _init
 {
 	my $self = $_[0];
 
- 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
- 	$self->{'db'} = iMSCP::Database->factory();
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
+	$self->{'db'} = iMSCP::Database->factory();
 
 	$self;
 }
@@ -409,11 +407,13 @@ sub _exec
 		# Turn any warning from plugin into exception
 		local $SIG{__WARN__} = sub { die shift };
 
-		$pluginInstance = $pluginClass->getInstance(
-			'hooksManager' => $self->{'eventManager'}, # Only there to ensure backward compatibility
-			'eventManager' => $self->{'eventManager'},
-			'action' => $self->{'action'}
-		);
+		if($pluginClass->can($pluginMethod)) {
+			$pluginInstance = $pluginClass->getInstance(
+				'hooksManager' => $self->{'eventManager'}, # Only to ensure backward compatibility
+				'eventManager' => $self->{'eventManager'},
+				'action' => $self->{'action'}
+			);
+		}
 	};
 
 	if($@) {
@@ -421,8 +421,7 @@ sub _exec
 		return 1;
 	}
 
-	# We execute the action on the plugin only if it implements it
-	if($pluginInstance->can($pluginMethod)) {
+	if($pluginInstance) {
 		debug("Executing ${pluginClass}::${pluginMethod}() action");
 		$rs = $pluginInstance->$pluginMethod($fromVersion, $toVersion);
 
@@ -448,3 +447,4 @@ sub _exec
 =cut
 
 1;
+__END__

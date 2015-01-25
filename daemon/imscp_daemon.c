@@ -2,14 +2,10 @@
 
 int main(int argc, char *argv[])
 {
-	int listenfd, c;
-	struct sockaddr_in servaddr;
-
-	int connfd;
-	struct sockaddr_in cliaddr;
-
+	int listenfd, connfd, c, given_pid;
 	char *pidfile_path;
-	int given_pid;
+	struct sockaddr_in servaddr, cliaddr;
+	struct timeval timeout_rcv, timeout_snd;
 
 	pid_t childpid;
 	socklen_t clilen;
@@ -17,6 +13,7 @@ int main(int argc, char *argv[])
 	given_pid = 0;
 	pidfile_path = (char)'\0';
 
+	/* Parse command line options */
 	while ((c = getopt(argc, argv, "p:")) != EOF) {
 		switch(c) {
 			case 'p':
@@ -26,42 +23,40 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if(daemonInit(message(MSG_DAEMON_NAME), SYSLOG_FACILITY) != 0) {
-		exit(1);
+	/* Daemonize */
+	daemonInit(message(MSG_DAEMON_NAME), SYSLOG_FACILITY);
+
+	/* Creates an endpoint for communication */
+	if((listenfd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0) {
+		say(message(MSG_ERROR_SOCKET_CREATE), strerror(errno));
+		exit(errno);
 	}
 
-	listenfd = socket(AF_INET, SOCK_STREAM, 0);
-
+	/* Ident socket */
 	memset((void *) &servaddr, '\0', (size_t) sizeof(servaddr));
-
 	servaddr.sin_family = AF_INET;
-	servaddr.sin_addr.s_addr = htonl(0x7F000001);
-	/*servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");*/
-	servaddr.sin_port = htons(SERVER_LISTEN_PORT);
+	servaddr.sin_addr.s_addr = htonl(DAEMON_LISTEN_ADDR);
+	servaddr.sin_port = htons(DAEMON_LISTEN_PORT);
 
+	/* Assign name to the socket */
 	if (bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
 		say(message(MSG_ERROR_BIND), strerror(errno));
 		exit(errno);
 	}
 
-	if (listen(listenfd, MAX_LISTENQ) < 0) {
+	/* Marks the socket referred to by listenfd as a passive socket */
+	if (listen(listenfd, DAEMON_MAX_LISTENQ) < 0) {
 		say(message(MSG_ERROR_LISTEN), strerror(errno));
 		exit(errno);
 	}
 
-	say("%s", message(MSG_DAEMON_VER));
+	/* Setup timeout for input operations  */
+	timeout_rcv.tv_sec = 10;
+	timeout_rcv.tv_usec = 0;
 
-	tv_rcv = (struct timeval *) calloc(1, sizeof(struct timeval));
-	tv_snd = (struct timeval *) calloc(1, sizeof(struct timeval));
-
-	memset(tv_rcv, '\0', sizeof(struct timeval));
-	memset(tv_snd, '\0', sizeof(struct timeval));
-
-	tv_rcv -> tv_sec = 30;
-	tv_rcv -> tv_usec = 0;
-
-	tv_snd -> tv_sec = 30;
-	tv_snd -> tv_usec = 0;
+	/* Setup timeout for output operations */
+	timeout_snd.tv_sec = 10;
+	timeout_snd.tv_usec = 0;
 
 	signal(SIGCHLD, sigChild);
 	signal(SIGPIPE, sigPipe);
@@ -72,10 +67,13 @@ int main(int argc, char *argv[])
 		fclose(file);
 	}
 
-	for (;;) {
+	say("%s", message(MSG_DAEMON_STARTED));
+
+	while (1) {
 		memset((void *) &cliaddr, '\0', sizeof(cliaddr));
 		clilen = (socklen_t) sizeof(cliaddr);
 
+		/* Wait for new connection */
 		if ((connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen)) < 0) {
 			if (errno == EINTR) {
 				continue;
@@ -85,12 +83,8 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO, tv_rcv, sizeof(struct timeval));
-		setsockopt(connfd, SOL_SOCKET, SO_SNDTIMEO, tv_snd, sizeof(struct timeval));
-
-		memset(client_ip, '\0', MAX_MSG_SIZE);
-
-		inet_ntop(AF_INET, &cliaddr.sin_addr, client_ip, MAX_MSG_SIZE);
+		setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout_rcv, sizeof(timeout_rcv));
+		setsockopt(connfd, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout_snd, sizeof(timeout_snd));
 
 		if ( ( childpid = fork() ) == 0) {
 			char *nmb = calloc(50, sizeof(char));
@@ -104,7 +98,7 @@ int main(int argc, char *argv[])
 			say(message(MSG_START_CHILD), nmb);
 
 			takeConnection(connfd);
-            free(nmb);
+			free(nmb);
 
 			exit(0);
 		}

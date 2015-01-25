@@ -21,14 +21,14 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    i-MSCP
  * @package     iMSCP_Core
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
@@ -87,7 +87,7 @@ $tpl->assign(
 	array(
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
-		'productCopyright' => tr('© 2010-2014 i-MSCP Team<br/>All Rights Reserved')
+		'productCopyright' => tr('© 2010-2015 i-MSCP Team<br/>All Rights Reserved')
 	)
 );
 
@@ -102,7 +102,7 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_REQUEST['admin'])) {
 			'CONTEXT_CLASS' => ' no_header',
 			'BOX_MESSAGE_TITLE' => tr('System under maintenance'),
 			'BOX_MESSAGE' => (isset($cfg['MAINTENANCEMODE_MESSAGE']))
-				? nl2br(tohtml($cfg['MAINTENANCEMODE_MESSAGE']))
+				? preg_replace('/\s\s+/', '', nl2br(tohtml($cfg['MAINTENANCEMODE_MESSAGE'])))
 				: tr("We are sorry, but the system is currently under maintenance.\nPlease try again later."),
 			'TR_BACK' => tr('Administrator login'),
 			'BACK_BUTTON_DESTINATION' => '/index.php?admin=1'

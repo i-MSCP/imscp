@@ -7,7 +7,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2014 by internet Multi Server Control Panel
+# Copyright (C) 2010-2015 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category    i-MSCP
-# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @copyright   2010-2015 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
@@ -86,29 +86,33 @@ sub askProftpd
 {
 	my ($self, $dialog) = @_;
 
-	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'vftp';
+	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'vftp_user';
 	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
 
 	my ($rs, $msg) = (0, '');
 
 	if(
 		$main::reconfigure ~~ ['ftpd', 'servers', 'all', 'forced'] ||
-		$dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
+		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
 	) {
 		# Ask for the proftpd restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->getInstance()->inputbox(
-				"\nPlease enter an username for the restricted proftpd SQL user:$msg", $dbUser
+			($rs, $dbUser) = $dialog->inputbox(
+				"\nPlease enter an username for the ProFTPD SQL user:$msg", $dbUser
 			);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
-				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
+				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			} elsif(length $dbUser > 16) {
-				$msg = "\n\n\\Z1SQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
+				$msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
+				$dbUser = '';
+			} elsif(length $dbUser < 6) {
+				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
@@ -122,9 +126,16 @@ sub askProftpd
 					"\nPlease, enter a password for the restricted proftpd SQL user (blank for autogenerate):$msg", $dbPass
 				);
 
-				if($dbPass ne '' && $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-					$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
-					$dbPass = '';
+				if($dbPass ne '') {
+					if(length $dbPass < 6) {
+						$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
+						$dbPass = '';
+					} elsif($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+						$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+						$dbPass = '';
+					} else {
+						$msg = '';
+					}
 				} else {
 					$msg = '';
 				}
@@ -132,7 +143,7 @@ sub askProftpd
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);;
+					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
@@ -469,8 +480,6 @@ sub _createTrafficLogFile
 
 	# Creating proftpd traffic log directory if it doesn't already exists
 	if (! -d "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
-		debug("Creating $main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd directory");
-
 		$rs = iMSCP::Dir->new(
 			'dirname' => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"
 		)->make(

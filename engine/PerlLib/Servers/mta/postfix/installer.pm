@@ -7,7 +7,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2014 by internet Multi Server Control Panel
+# Copyright (C) 2010-2015 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category    i-MSCP
-# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @copyright   2010-2015 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
@@ -80,7 +80,7 @@ sub registerSetupListeners
 
  Show dialog
 
- Param iMSCP::Dialogg \%dialog
+ Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
@@ -96,23 +96,26 @@ sub showDialog
 
 	if(
 		$main::reconfigure ~~ ['mta', 'servers', 'all', 'forced'] ||
-		$dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
+		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
 	) {
 		# Ask for the SASL restricted SQL username
 		do{
-			($rs, $dbUser) = iMSCP::Dialog->getInstance()->inputbox(
-				"\nPlease enter an username for the restricted sasl SQL user:$msg", $dbUser
+			($rs, $dbUser) = $dialog->inputbox(
+				"\nPlease enter an username for the Postfix SASL SQL user:$msg", $dbUser
 			);
 
-			# i-MSCP SQL user cannot be reused
-			if($dbUser eq main::setupGetQuestion('DATABASE_USER')) {
-				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
+			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
+				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			} elsif(length $dbUser > 16) {
-				$msg = "\n\n\\Z1SQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
+				$msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
+				$dbUser = '';
+			} elsif(length $dbUser < 6) {
+				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
@@ -126,9 +129,16 @@ sub showDialog
 					"\nPlease, enter a password for the restricted sasl SQL user (blank for autogenerate):$msg", $dbPass
 				);
 
-				if($dbPass ne '' && $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-					$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease, try again:";
-					$dbPass = '';
+				if($dbPass ne '') {
+					if(length $dbPass < 6) {
+						$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
+						$dbPass = '';
+					} elsif($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+						$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+						$dbPass = '';
+					} else {
+						$msg = '';
+					}
 				} else {
 					$msg = '';
 				}
@@ -141,7 +151,7 @@ sub showDialog
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
 
-				$dialog->msgbox("\nPassword for the restricted sasl SQL user set to: $dbPass");
+				$dialog->msgbox("\nPassword for the restricted SASL SQL user set to: $dbPass");
 			}
 		}
 	}
@@ -258,7 +268,7 @@ sub setEnginePermissions
 	# eg. /var/log/imscp/imscp-arpl-msgr
 	$rs = setRights(
 		"$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
-		{ 'user' => $mtaUName, 'group' => $mtaGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
+		{ 'user' => $mtaUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0600', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
@@ -442,7 +452,7 @@ sub _makeDirs
 		[
 			$main::imscpConfig{'LOG_DIR'} . '/imscp-arpl-msgr', # eg /var/log/imscp/imscp-arpl-msgr
 			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+			$main::imscpConfig{'IMSCP_GROUP'},
 			0750
 		]
 	);
@@ -470,7 +480,7 @@ sub _makeDirs
 
 =cut
 
-sub _setupSqlUser()
+sub _setupSqlUser
 {
 	my $self = $_[0];
 
@@ -712,7 +722,6 @@ sub _buildMainCfFile
 		MTA_MAILBOX_MIN_UID => $uid,
 		MTA_MAILBOX_UID => $uid,
 		MTA_MAILBOX_GID => $gid,
-		PORT_POSTGREY => $main::imscpConfig{'PORT_POSTGREY'},
 		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 		SSL => ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') ? '' : '#',
 		CERTIFICATE => 'imscp_services'

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2014 by i-MSCP Team
+ * Copyright (C) 2010-2015 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @copyright   2010-2014 by i-MSCP Team
+ * @copyright   2010-2015 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -88,7 +88,6 @@ require_once 'iMSCP/Config/Handler.php';
  * @property int CRITICAL_UPDATE_REVISION Last critical update revision
  * @property string WEBSTATS_GROUP_AUTH Webstats group authentication
  * @property string BASE_SERVER_IP Base server IP
- * @property string PORT_POSTGREY Posgrey port
  * @property int BuildDate i-MSCP package Build date
  * @property string PHP_TIMEZONE PHP timezone
  * @property int DEBUG Debug mode

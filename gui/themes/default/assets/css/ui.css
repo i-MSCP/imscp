@@ -18,7 +18,7 @@
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Layout
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @author      i-MSCP Team
@@ -815,8 +815,9 @@ table .icon {
     display: -moz-inline-block;
     overflow: hidden;
     height: 16px;
-    line-height: 18px;
-    padding-left: 20px;
+    line-height: 16px;
+    vertical-align: middle;
+    padding-left: 18px;
 }
 
 .paginator .icon {
@@ -1244,21 +1245,26 @@ table textarea {
 
 /* Graph */
 .graph {
-    height: 20px;
-    background: url('../images/background/graph_empty.png') no-repeat right top;
     width: 100%;
+    height: 20px;
     margin-bottom: 0.5em;
-    padding-right: 3px;
-    position : relative;
-    overflow: hidden;
+    padding-right: 2px;
+    border: 1px solid #4e5554;
+    background: #2e2e2e;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 .graph span {
     display: block;
-    min-width: 3px;
-    height: 20px;
-    background: url('../images/background/graph_full.png') no-repeat left top;
+    background: #33CC66;
     width: 0;
+    height: 18px;
+    margin: 1px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 .graph strong {
@@ -1375,6 +1381,10 @@ table .graph {
 .accordion .odd,
 .accordion .even {
     width: 100%;
+}
+
+.ui-accordion .ui-accordion-content {
+    padding: 0;
 }
 
 iframe {

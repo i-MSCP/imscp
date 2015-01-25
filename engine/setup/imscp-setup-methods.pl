@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2014 by internet Multi Server Control Panel
+# Copyright (C) 2010-2015 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # @category    i-MSCP
-# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @copyright   2010-2015 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
@@ -1436,7 +1436,7 @@ sub setupServerIps
 
 	my ($database, $errstr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 	if(! $database) {
-		error("Unable to connect to the SQL database: $errstr");;
+		error("Unable to connect to the SQL database: $errstr");
 		return 1;
 	}
 
@@ -2488,9 +2488,7 @@ sub setupRestartServices
 	my @services = (
 		#['Variable holding service name', 'command to execute', 'ignore error if 0 exit on error if 1']
 		[$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'restart', 1],
-		[$main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'restart', 1],
-		[$main::imscpConfig{'POSTGREY_SNAME'}, 'restart', 1], # FIXME This should be done by an addon
-		[$main::imscpConfig{'POLICYD_WEIGHT_SNAME'}, 'restart', 0] # FIXME This should be done by the addon
+		[$main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'restart', 1]
 	);
 
 	my ($stdout, $stderr);

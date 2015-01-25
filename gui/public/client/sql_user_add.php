@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    i-MSCP
@@ -29,7 +29,7 @@
  * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
@@ -252,7 +252,7 @@ function client_addSqlUser($customerId, $databaseId)
 
 		// Check for unallowed character in username
 		if (preg_match('/[%|\?]+/', $sqlUser)) {
-			set_page_message(tr('Wildcards such as %% and ? are not allowed in username.'), 'error');
+			set_page_message(tr("Wildcards such as '%s' and '%s' are not allowed in username.", '%', '?'), 'error');
 			return;
 		}
 
@@ -425,7 +425,7 @@ $tpl->assign(
 		'TR_ADD_SQL_USER' => tr('Add SQL user'),
 		'TR_USER_NAME' => tr('SQL user name'),
 		'TR_USER_HOST' => tr('SQL user host'),
-		'TR_USER_HOST_TIP' => tr("This is the host from which this SQL user must be allowed to connect to the SQL server. Enter the %% character to allow this SQL user to connect from any host."),
+		'TR_USER_HOST_TIP' => tr("This is the host from which this SQL user must be allowed to connect to the SQL server. Enter the %s wildcard character to allow this SQL user to connect from any host.", '%'),
 		'TR_USE_DMN_ID' => tr('SQL user prefix/suffix'),
 		'TR_START_ID_POS' => tr('In front'),
 		'TR_END_ID_POS' => tr('Behind'),

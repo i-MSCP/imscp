@@ -21,12 +21,12 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -842,51 +842,52 @@ function gen_user_list($tpl)
 
 			if($row['admin_status'] == 'ok' && $row['domain_status'] == 'ok') {
 				$status = 'ok';
+				$statusTooltip = tr('Click to deactivate');
 				$statusTxt = translate_dmn_status($row['domain_status']);
-				$statusUrl = 'domain_status_change.php?domain_id=' . $row['domain_id'];
 				$statusBool = true;
+				$canChange = true;
 			} elseif($row['domain_status'] == 'disabled') {
 				$status = 'disabled';
+				$statusTooltip = tr('Click to activate');
 				$statusTxt = translate_dmn_status($row['domain_status']);
-				$statusUrl = 'domain_status_change.php?domain_id=' . $row['domain_id'];
 				$statusBool = false;
+				$canChange = true;
 			} elseif(
-				(
-					$row['admin_status'] == 'toadd' ||
-					$row['admin_status'] == 'tochange' ||
-					$row['admin_status'] == 'todelete'
-				) || (
-					$row['domain_status'] == 'toadd' ||
-					$row['domain_status'] == 'torestore' ||
-					$row['domain_status'] == 'tochange' ||
-					$row['domain_status'] == 'toenable' ||
-					$row['domain_status'] == 'todisable' ||
-					$row['domain_status'] == 'todelete'
-				)
+				$row['domain_status'] == 'toadd' || $row['domain_status'] == 'torestore' ||
+				$row['domain_status'] == 'tochange' || $row['domain_status'] == 'toenable' ||
+				$row['domain_status'] == 'todisable' ||  $row['domain_status'] == 'todelete'
 			) {
-
 				$status = 'reload';
-				$statusTxt = translate_dmn_status(
+				$statusTxt = $statusTooltip = translate_dmn_status(
 					($row['admin_status'] != 'ok') ? $row['admin_status'] : $row['domain_status']
 				);
-				$statusUrl = '#';
 				$statusBool = false;
+				$canChange = false;
 			} else {
 				$status = 'error';
+				$statusTooltip = tr('An unexpected error occured. Go to the debugger interface for more details.');
 				$statusTxt = translate_dmn_status(
 					($row['admin_status'] != 'ok') ? $row['admin_status'] : $row['domain_status']
 				);
-				$statusUrl = 'domain_details.php?domain_id=' . $row['domain_id'];
 				$statusBool = false;
+				$canChange = false;
 			}
 
 			$tpl->assign(
 				array(
 					'STATUS' => $status,
+					'STATUS_TOOLTIP' => $statusTooltip,
 					'TR_STATUS' => $statusTxt,
-					'URL_CHANGE_STATUS' => $statusUrl
 				)
 			);
+
+			if($canChange) {
+				$tpl->assign('DOMAIN_STATUS_NOCHANGE', '');
+				$tpl->parse('DOMAIN_STATUS_CHANGE', 'domain_status_change');
+			} else {
+				$tpl->assign('DOMAIN_STATUS_CHANGE', '');
+				$tpl->parse('DOMAIN_STATUS_NOCHANGE', 'domain_status_nochange');
+			}
 
 			$adminName = decode_idna($row['domain_name']);
 			$domainCreated = $row['domain_created'];
@@ -924,9 +925,7 @@ function gen_user_list($tpl)
 					'USR_CREATED_BY' => tohtml($createdByName),
 					'USR_OPTIONS' => '',
 					'URL_EDIT_USR' => 'admin_edit.php?edit_id=' . $row['domain_admin_id'],
-					'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s domain account?', '%s'),
-					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'
-					)
+					'TR_MESSAGE_DELETE' => tojs(tr('Are you sure you want to delete %s?', true, '%s'))
 				)
 			);
 

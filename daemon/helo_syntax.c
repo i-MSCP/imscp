@@ -3,24 +3,22 @@
 int heloSyntax(int fd, char *buffer)
 {
 	char *ptr;
-	char *helo_ans = calloc(MAX_MSG_SIZE, sizeof(char));
+	char *helo_answer = calloc(MAX_MSG_SIZE, sizeof(char));
 	ptr = strstr(buffer, message(MSG_HELO_CMD));
 
 	ptr = strstr(buffer, " ");
 
-	strcat(helo_ans, message(MSG_CMD_OK));
-	strcat(helo_ans, client_ip);
-	strcat(helo_ans, "/");
-	strncat(helo_ans, ptr + 1, strlen(ptr + 1) - 2);
-	strcat(helo_ans, "\n");
+	strcat(helo_answer, message(MSG_CMD_OK));
+	strncat(helo_answer, ptr + 1, strlen(ptr + 1) - 2);
+	strcat(helo_answer, "\n");
 
-	if (sendLine(fd, helo_ans, strlen(helo_ans)) < 0) {
-		free(helo_ans);
+	if (sendLine(fd, helo_answer, strlen(helo_answer)) < 0) {
+		free(helo_answer);
 
 		return -1;
 	}
 
-	free(helo_ans);
+	free(helo_answer);
 
 	return 0;
 }

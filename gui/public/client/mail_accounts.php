@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2014 by i-MSCP Team
+ * Copyright (C) 2010-2015 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
  *
  * @category    iMSCP
  * @package     Client_Mail
- * @copyright   2010-2014 by i-MSCP Team
+ * @copyright   2010-2015 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -265,7 +265,7 @@ function client_generatePage($tpl)
 		$mainDmnId = $dmnProps['domain_id'];
 		$dmnMailAccLimit = $dmnProps['domain_mailacc_limit'];
 
-		$countedMails = _client_generateMailAccountsList($tpl, $mainDmnId);;
+		$countedMails = _client_generateMailAccountsList($tpl, $mainDmnId);
 		$defaultMails = _client_countDefaultMails($mainDmnId);
 
 		if (!$cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {

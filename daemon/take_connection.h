@@ -8,7 +8,6 @@
 
 #include "defs.h"
 
-extern char client_ip[MAX_MSG_SIZE];
 extern char *message(int message_number);
 
 extern int sendLine(int fd, char *src, size_t len);

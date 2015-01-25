@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2014 by i-MSCP Team
+ * Copyright (C) 2010-2015 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Plugin
- * @copyright   2010-2014 by i-MSCP Team
+ * @copyright   2010-2015 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -124,7 +124,7 @@ abstract class iMSCP_Plugin
 				);
 			} else {
 				throw new iMSCP_Plugin_Exception(
-					sprintf("Unable to read the $%s file. Please, check file permissions", $infoFile)
+					tr("Unable to read the $%s file. Please, check file permissions", $infoFile)
 				);
 			}
 		}
@@ -222,7 +222,7 @@ abstract class iMSCP_Plugin
 				}
 			} else {
 				throw new iMSCP_Plugin_Exception(
-					sprintf('Unable to read the plugin %s file. Please check file permissions', $configFile)
+					tr('Unable to read the plugin %s file. Please check file permissions', $configFile)
 				);
 			}
 		}
@@ -466,17 +466,14 @@ abstract class iMSCP_Plugin
 	protected function migrateDb($migrationMode = 'up')
 	{
 		$pluginName = $this->getName();
-
-		/** @var iMSCP_Plugin_Manager $pluginManager */
-		$pluginManager = iMSCP_Registry::get('pluginManager');
-		$pluginInfo = $pluginManager->getPluginInfo($pluginName);
-		$dbSchemaVersion = (isset($pluginInfo['db_schema_version'])) ? $pluginInfo['db_schema_version'] : '000';
-		$migrationFiles = array();
-
-		$parts = explode('_', get_class($this));
-		$sqlDir = $pluginManager->getPluginDirectory() . '/' . $parts[2] . '/sql';
+		$pluginManager = $this->pluginManager;
+		$sqlDir = $pluginManager->getPluginDirectory() . '/' . $pluginName . '/sql';
 
 		if (is_dir($sqlDir)) {
+			$pluginInfo = $pluginManager->getPluginInfo($pluginName);
+			$dbSchemaVersion = (isset($pluginInfo['db_schema_version'])) ? $pluginInfo['db_schema_version'] : '000';
+			$migrationFiles = array();
+
 			/** @var $migrationFileInfo DirectoryIterator */
 			foreach (new DirectoryIterator($sqlDir) as $migrationFileInfo) {
 				if (!$migrationFileInfo->isDot()) {
@@ -493,7 +490,7 @@ abstract class iMSCP_Plugin
 			try {
 				foreach ($migrationFiles as $migrationFile) {
 					if (is_readable($migrationFile)) {
-						if (preg_match('%/(\d+)_[^/]+?\.php$%', $migrationFile, $version)) {
+						if (preg_match('/(\d+)_[^\/]+\.php$/i', $migrationFile, $version)) {
 							if (
 								($migrationMode == 'up' && $version[1] > $dbSchemaVersion) ||
 								($migrationMode == 'down' && $version[1] <= $dbSchemaVersion)
@@ -508,11 +505,11 @@ abstract class iMSCP_Plugin
 							}
 						} else {
 							throw new iMSCP_Plugin_Exception(
-								sprintf("File %s doesn't look like a migration file.", $migrationFile)
+								tr("File %s doesn't look like a migration file.", $migrationFile)
 							);
 						}
 					} else {
-						throw new iMSCP_Plugin_Exception(sprintf('Migration file %s is not readable.', $migrationFile));
+						throw new iMSCP_Plugin_Exception(tr('Migration file %s is not readable.', $migrationFile));
 					}
 				}
 
@@ -525,7 +522,7 @@ abstract class iMSCP_Plugin
 				throw new iMSCP_Plugin_Exception($e->getMessage(), $e->getCode(), $e);
 			}
 		} else {
-			throw new iMSCP_Plugin_Exception(sprintf("Directory %s doesn't exists.", $sqlDir));
+			throw new iMSCP_Plugin_Exception(tr("Directory %s doesn't exists.", $sqlDir));
 		}
 	}
 }

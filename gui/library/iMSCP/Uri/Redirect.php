@@ -20,7 +20,7 @@
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Uri
- * @copyright   2010-2014 by by i-MSCP team
+ * @copyright   2010-2015 by by i-MSCP team
  * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license	    http://www.gnu.org/licenses/gpl-2.0.html GPL v2

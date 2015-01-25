@@ -2,14 +2,14 @@
 
 int receiveLine(int fd, char *dest, size_t n)
 {
-	int res;
+	int rs;
 
-	if ((res = receiveData(fd, dest, n)) < 0) {
+	if ((rs = receiveData(fd, dest, n)) < 0) {
 		say(message(MSG_ERROR_SOCKET_RD), strerror(errno));
 		return -1;
-	} else if (res == 0) {
+	} else if (rs == 0) {
 		say("%s", message(MSG_ERROR_SOCKET_EOF));
 	}
 
-	return res;
+	return rs;
 }

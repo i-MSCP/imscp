@@ -21,12 +21,12 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @copyright    2001-2006 by moleSoftware GmbH
  * @copyright    2006-2010 by ispCP | http://isp-control.net
- * @copyright    2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright    2010-2015 by i-MSCP | http://i-mscp.net
  * @link         http://i-mscp.net
  * @author       ispCP Team
  * @author       i-MSCP Team
@@ -344,24 +344,21 @@ function translate_dmn_status($status, $escapeHtml = true)
 		case 'ok':
 			return tr('Ok', $escapeHtml);
 		case 'toadd':
-			return tr('Addition in progress', $escapeHtml);
+			return tr('Addition in progress...', $escapeHtml);
 		case 'tochange':
-			return tr('Modification in progress', $escapeHtml);
+			return tr('Modification in progress...', $escapeHtml);
 		case 'todelete':
-			return tr('Deletion in progress', $escapeHtml);
+			return tr('Deletion in progress...', $escapeHtml);
 		case 'disabled':
-			return tr('Suspended', $escapeHtml);
+			return tr('Deactivated', $escapeHtml);
 		case 'toenable':
-			return tr('Being enabled', $escapeHtml);
+			return tr('Activation in progress...', $escapeHtml);
 		case 'todisable':
-			return tr('Being suspended', $escapeHtml);
+			return tr('Deactivation in progress...', $escapeHtml);
 		case 'ordered':
-			return tr('Awaiting approval', $escapeHtml);
+			return tr('Awaiting for approval', $escapeHtml);
 		default:
-			return (isset($_SESSION['logged_from_type']) && $_SESSION['logged_from_type'] == 'admin')
-				?  tr('Unexpected error') . '<span class="icon i_help" title="' .
-					tr('Go to the debugger for more details') . '">&nbsp;</span>'
-				: tr('Unexpected error');
+			return tr('Unexpected error');
 	}
 }
 
@@ -1865,7 +1862,7 @@ function write_log($msg, $logLevel = E_USER_WARNING)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$clientIp = (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
+	$clientIp = getIpAddr() ? getIpAddr() : 'unknown';
 
 	$msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>', ENT_COMPAT, 'UTF-8');
 
@@ -2381,7 +2378,9 @@ function daemon_readAnswer(&$socket)
 {
 	if(($answer = @socket_read($socket, 1024, PHP_NORMAL_READ)) !== false) {
 		list($code) = explode(' ', $answer);
-		if($code == '999') {
+		$code = intval($code);
+
+		if($code != 250) {
 			write_log(sprintf('i-MSCP daemon returned an unexpected answer: %s', $answer), E_USER_ERROR);
 			return false;
 		}

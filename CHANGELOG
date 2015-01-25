@@ -4,19 +4,49 @@
 Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
+ADDONS
+	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )
+	Fixed: Single quotes in sql usernames must be escaped in configuration files ( PhpMyAdmin, Roundcube )
+
 CONFIGS
 	Added php5-json package ( Debian Jessie )
+
+DAEMON
+	Fixed: Messages must not be hardcoded in functions
+	Fixed: Restart of some services fail when the backend ( imscp-rqst-mngr ) is run through the daemon
+	Updated: Version to 1.2.2
+
+ENGINE
+	Fixed: LC_MESSAGES has not expected effect in backend's scripts
+	Removed: policyd-weight and postgrey ( Postfix SMTP access policy delegation )
 
 FRONTEND
 	Added: Support for eAccelerator, WinCache, XCache and ZendOptimizerPlus opcode caches
 
 INSTALLER
+	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )
 	Fixed: Migration from Courier to Dovecot is broken ( courier-dovecot-migrate.pl is run with a wrong option )
 	Fixed: php5enmod command throws an error when a PHP module is missing ( PHP5.4 )
+	Fixed: rsync: failed to set times on "/var/www/virtual": Operation not permitted (1)
 	Fixed: Unable to define custom APT repository without key ( Debian, Ubuntu )
+
+PLUGINS
+	Fixed: Plugins that don't implement an API method which is being executed must not be instantiated
+	Fixed: Plugin uninstall() method must stay optional, even if the install() method is implemented
+	Updated: API to version 0.2.16
 
 TICKETS
 	Fixed #1207: Defect - DataTable - Sorting not functional for data strings containing numeric values
+	Fixed #1208: Task - Untranslatable string
+	Fixed #1209: Cosmetics - Data usage bar glitches on 4k screens
+	Fixed #1217: Defect - Faulty cron for removing old backend logs
+	Fixed #1223: Bug - Admin log shows server IP instead of user IP
+	Fixed #1226: Panel maintenance mode: text message error
+	Fixed #IP-1227: Page reseller statistics shows the same max/curr traffic/disk for all resellers
+	Fixed #IP-1230: RFC 7208 states that DNS SPF shoudln't be used anymore
+	Fixed #IP-1233: Autoresponder script ( imscp-arpl-msgr ) cannot write in /var/log/imscp/imscp-arpl-msgr
+	Fixed #IP-1234: IPv6 addresses causes exception
+	Fixed #IP-1235: Cosmetics - Reseller overview - Exception in domain status breaks the layout
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.21

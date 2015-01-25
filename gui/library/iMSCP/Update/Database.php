@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2014 by i-MSCP team
+ * Copyright (C) 2010-2015 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
  * @category    iMSCP
  * @package     iMSCP_Update
  * @subpackage  Database
- * @copyright   2010-2014 by i-MSCP team
+ * @copyright   2010-2015 by i-MSCP team
  * @author      Daniel Andreca <sci2tech@gmail.com>
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -62,7 +62,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 197;
+	protected $lastUpdate = 198;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3118,5 +3118,24 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r197()
 	{
 		return $this->addColumn('plugin', 'plugin_locked', "TINYINT UNSIGNED NOT NULL DEFAULT '0'");
+	}
+
+	/**
+	 * Remove postgrey and policyd-weight ports
+	 *
+	 * @return void
+	 */
+	protected function r198()
+	{
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		if (isset($dbConfig['PORT_POSTGREY'])) {
+			$dbConfig->del('PORT_POSTGREY');
+		}
+
+		if (isset($dbConfig['PORT_POLICYD-WEIGHT'])) {
+			$dbConfig->del('PORT_POLICYD-WEIGHT');
+		}
 	}
 }

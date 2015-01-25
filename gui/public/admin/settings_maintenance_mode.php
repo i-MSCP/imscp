@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
@@ -29,7 +29,7 @@
  * @subpackage	Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
@@ -83,7 +83,7 @@ $tpl->assign(
 		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 		'TR_MESSAGE' => tr('Message'),
 		'MESSAGE_VALUE' => (isset($cfg['MAINTENANCEMODE_MESSAGE']))
-			? nl2br(tohtml($cfg['MAINTENANCEMODE_MESSAGE']))
+			? tohtml($cfg['MAINTENANCEMODE_MESSAGE'])
 			: tr("We are sorry, but the system is currently under maintenance.\nPlease try again later."),
 		'SELECTED_ON' => $selected_on,
 		'SELECTED_OFF' => $selected_off,

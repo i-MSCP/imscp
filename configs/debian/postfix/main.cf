@@ -1,7 +1,3 @@
-# Postfix directory settings; These are critical for normal Postfix MTA functionallity
-command_directory = /usr/sbin
-daemon_directory = /usr/lib/postfix
-
 # Some common configuration parameters
 inet_protocols = {MTA_INET_PROTOCOLS}
 inet_interfaces = all
@@ -18,7 +14,6 @@ mydomain = {MTA_LOCAL_DOMAIN}
 myorigin = $myhostname
 
 smtpd_banner = $myhostname ESMTP i-MSCP {MTA_VERSION} Managed
-setgid_group = postdrop
 
 # Receiving messages parameters
 mydestination = $myhostname, $mydomain
@@ -92,8 +87,6 @@ smtpd_recipient_restrictions = reject_non_fqdn_recipient,
                                permit_sasl_authenticated,
                                reject_unauth_destination,
                                reject_unlisted_recipient,
-                               check_policy_service inet:127.0.0.1:12525,
-                               check_policy_service inet:127.0.0.1:{PORT_POSTGREY},
                                permit
 
 smtpd_data_restrictions = reject_multi_recipient_bounce,

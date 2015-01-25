@@ -66,7 +66,7 @@
 	$(document).ready(function () {
 		$('.datatable').dataTable(
 			{
-				"Language": {DATATABLE_TRANSLATIONS},
+				"language": {DATATABLE_TRANSLATIONS},
 				"stateSave": true,
 				"pagingType": "simple",
 				"columnDefs": [

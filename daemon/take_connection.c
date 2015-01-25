@@ -4,12 +4,12 @@ void takeConnection(int sockfd)
 {
 	int status;
 	char *buffer;
+	char *welcome_msg = calloc(MAX_MSG_SIZE, sizeof(char));
 
-	sendLine(sockfd, message(MSG_WELCOME), strlen(message(MSG_WELCOME)));
+	strcat(welcome_msg, message(MSG_CMD_OK));
+	strcat(welcome_msg, message(MSG_WELCOME));
 
-	if (heloCommand(sockfd)) {
-		close(sockfd);
-	} else {
+	if(sendLine(sockfd, welcome_msg, strlen(welcome_msg)) == 0 && heloCommand(sockfd) == 0) {
 		buffer = calloc(MAX_MSG_SIZE, sizeof(char));
 
 		while (1) {
@@ -38,7 +38,9 @@ void takeConnection(int sockfd)
 			}
 		}
 
-		sleep(1);
-		close(sockfd);
+		/*sleep(1);*/
 	}
+
+	free(welcome_msg);
+	close(sockfd);
 }
