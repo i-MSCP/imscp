@@ -756,7 +756,8 @@ sub _buildPhpConfFiles
 			OTHER_ROOTKIT_LOG => ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '')
 				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
 			PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
-			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'}
+			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
+			DISTRO_CA_BUNDLE => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
 		}
 	);
 

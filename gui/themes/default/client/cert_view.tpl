@@ -18,6 +18,12 @@
 		</tr>
 		<!-- EDP: ssl_certificate_status -->
 		<tr>
+			<td><label for="selfsigned">{TR_GENERATE_SELFSIGNED_CERTIFICAT}</label></td>
+			<td><input type="checkbox" id="selfsigned" name="selfsigned"></td>
+		</tr>
+		</tbody>
+		<tbody id="input_fields">
+		<tr>
 			<td><label for="passphrase">{TR_PASSWORD}</label></td>
 			<td><input id="passphrase" type="password" name="passphrase" value="" autocomplete="off"/></td>
 		</tr>
@@ -45,9 +51,18 @@
 	</div>
 </form>
 <script>
-	$(document).ready(function() {
+	$(function() {
 		if(!$("#add_update").length) {
 			$("input,textarea").prop('disabled', true);
 		}
+
+		$("#selfsigned").change(function() {
+			if($(this).is(':checked')) {
+				$("#input_fields input,textarea");
+				$("#input_fields").hide();
+			} else {
+				$("#input_fields").show();
+			}
+		});
 	});
 </script>

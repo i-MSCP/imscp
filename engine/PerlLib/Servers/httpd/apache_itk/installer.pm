@@ -746,7 +746,8 @@ sub _buildMasterVhostFiles
 				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
 			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
-				? 'Require all granted' : 'Allow from all'
+				? 'Require all granted' : 'Allow from all',
+			DISTRO_CA_BUNDLE => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
 		}
 	);
 

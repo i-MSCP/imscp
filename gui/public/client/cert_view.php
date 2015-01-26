@@ -37,7 +37,7 @@
  * @param string $domainType Domain entity type to update (dmn, als,sub, alssub)
  * @return string|false Domain name or false if the domain name is not found or not owned by logged-in customer
  */
-function client_getDomainName($domainId, $domainType)
+function _client_getDomainName($domainId, $domainType)
 {
 	static $domainName = null;
 
@@ -112,7 +112,7 @@ function client_getDomainName($domainId, $domainType)
  * @param int $domainId Domain entity unique identifier
  * @return void
  */
-function client_updateDomainStatus($domainType, $domainId)
+function _client_updateDomainStatus($domainType, $domainId)
 {
 	switch($domainType) {
 		case 'dmn':
@@ -132,6 +132,58 @@ function client_updateDomainStatus($domainType, $domainId)
 }
 
 /**
+ * Generate self-signed certificate
+ *
+ * @param string $domainName Domain name
+ * @return bool
+ */
+function client_generateSelfSignedCert($domainName)
+{
+	$privateKey = @openssl_pkey_new();
+	if(!is_resource($privateKey)) {
+		write_log(sprintf('Unable to generate private key: %s', $php_errormsg));
+		return false;
+	}
+
+	$csr = @openssl_csr_new(
+		array(
+			"organizationName" => "iMSCP CA",
+			"commonName" => $domainName,
+			"emailAddress" => $_SESSION['user_email']
+		),
+		$privateKey
+	);
+
+	if(!is_resource($csr)) {
+		write_log(sprintf('Unable to generate certificat signing request'));
+		return false;
+	}
+
+	$certificate = @openssl_csr_sign($csr, null, $privateKey, 365);
+	if(!is_resource($certificate)) {
+		write_log(sprintf('Unable to generate certificate'));
+		return false;
+	}
+
+	if(@openssl_pkey_export($privateKey, $privateKeyStr) !== true) {
+		write_log(sprintf('Unable to export private key'));
+		return false;
+	}
+
+	if(@openssl_x509_export($certificate, $certificateStr) !== true) {
+		write_log(sprintf('Unable to export certificate'));
+		return false;
+	}
+
+	$_POST['passphrase'] = '';
+	$_POST['private_key'] = $privateKeyStr;
+	$_POST['certificate'] = $certificateStr;
+	$_POST['ca_bundle'] = '';
+
+	return true;
+}
+
+/**
  * Add or update an SSL certificate
  *
  * @throws iMSCP_Exception
@@ -141,9 +193,19 @@ function client_updateDomainStatus($domainType, $domainId)
  */
 function client_addSslCert($domainId, $domainType)
 {
-	$domainName = client_getDomainName($domainId, $domainType);
+	/** @var iMSCP_Config_Handler_File $config */
+	$config = iMSCP_Registry::get('config');
+
+	$domainName = _client_getDomainName($domainId, $domainType);
 
 	if($domainName !== false) {
+		if(isset($_POST['selfsigned'])) {
+			if(!client_generateSelfSignedCert($domainName)) {
+				set_page_message(tr('An unexpected error occured. Please contact your reseller'), 'error');
+				redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
+			}
+		}
+
 		if(
 			isset($_POST['passphrase']) && isset($_POST['private_key']) && isset($_POST['certificate']) &&
 			isset($_POST['ca_bundle']) && isset($_POST['cert_id'])
@@ -154,160 +216,142 @@ function client_addSslCert($domainId, $domainType)
 			$caBundle = clean_input($_POST['ca_bundle']);
 			$certId = intval($_POST['cert_id']);
 
-			// Validate private key
+			// Validating certificate ( private key, certificate and certificate chain )
 
-			$privateKeyObj = new Crypt_RSA();
-
-			if($privateKey !== '') {
-				if($passPhrase !== '') {
-					$privateKeyObj->setPassword($passPhrase);
-				}
-
-				if(!$privateKeyObj->loadKey($privateKey)) {
-					set_page_message(tr('Invalid private key or passphrase.'), 'error');
-				}
-
-				// Clear out passphrase if any
-
-				$privateKeyObj->setPassword();
-
-				// Get unencrypted private key
-				$privateKey = $privateKeyObj->getPrivateKey(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
-			} else {
-				set_page_message(tr('Private key field cannot be empty.'), 'error');
+			$privateKey = @openssl_pkey_get_private($privateKey, $passPhrase);
+			if(!is_resource($privateKey)) {
+				set_page_message(tr('Invalid private key or passphrase.'), 'error');
 			}
 
-			// Validate CA bundle
+			$certificateStr = $certificate;
+			$certificate = @openssl_x509_read($certificate);
+			if(!is_resource($certificate)) {
+				set_page_message(tr('Invalid certificate.'), 'error');
+			} elseif(@openssl_x509_check_private_key($certificate, $privateKey) !== true) {
+				set_page_message(tr("The private key doesn't belong to the provided certificate."), 'error');
+			}
 
-			if(!Zend_Session::namespaceIsset('pageMessages')) {
-				$certificatPattern = '-{5}BEGIN CERTIFICATE-{5}.*?-{5}END CERTIFICATE-{5}';
-				$intCertificates = array();
-				$x509 = new File_X509();
-
-				if($caBundle !== '') {
-					if(
-						preg_match("/^$certificatPattern$/s", $caBundle) &&
-						preg_match_all("/$certificatPattern/s", $caBundle, $intCertificates)
-					) {
-						$intCertificates = array_reverse($intCertificates[0]);
-						$unallowSelfSigned = false;
-
-						// Check each certificate in the chain. Only the top-most certificate can be self-signed
-						foreach($intCertificates as $intCertificate) {
-							if($x509->loadX509($intCertificate) && $x509->validateSignature($unallowSelfSigned)) {
-								$x509->loadCA($intCertificate); // Add certificate in CA chain
-								$unallowSelfSigned = true;
-							} else {
-								set_page_message(tr('A certificate in your CA bundle is missing or invalid.'), 'error');
-								break;
-							}
-						}
-					} else {
-						set_page_message(tr('Invalid CA Bundle.'), 'error');
-					}
+			if($caBundle !== '') {
+				$tmpfname = @tempnam(sys_get_temp_dir(), 'ssl-ca');
+				if(!@file_put_contents($tmpfname, $caBundle)) {
+					write_log(sprintf('Unable to export customer CA bundle in tmp file'));
+					set_page_message(tr('An unexpected error occured. Please contact your reseller'), 'error');
 				}
 
-				// Validate SSL certificate
+				// Note: Here we also are the ca bundle in the trusted chain to support self-signed certificates
+				if(@openssl_x509_checkpurpose(
+					$certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname), $tmpfname) !== true
+				) {
+					set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
+				}
+
+				@unlink($tmpfname);
+			} else {
+				$tmpfname = @tempnam(sys_get_temp_dir(), 'ssl-ca');
+				file_put_contents($tmpfname, $certificateStr);
+
+				// Note: Here we also are the certificate in the trusted chain to support self-signed certificates
+				if(@openssl_x509_checkpurpose(
+					$certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname)) !== true
+				) {
+					set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
+				}
+
+				@unlink($tmpfname);
+			}
+
+			// TODO validate CN / ALT subject
+
+			if(!Zend_Session::namespaceIsset('pageMessages')) {
+				// Preparing data for insertion in database
+
+				if(@openssl_pkey_export($privateKey, $privateKeyStr) !== true) {
+					write_log(sprintf('Unable to export private key'));
+					set_page_message(tr('An unexpected error occured. Please contact your reseller'), 'error');
+				}
+
+				@openssl_pkey_free($privateKey);
+
+				if(@openssl_x509_export($certificate, $certificateStr) !== true) {
+					write_log(sprintf('Unable to export certificate'));
+					set_page_message(tr('An unexpected error occured. Please contact your reseller'), 'error');
+				}
+
+				openssl_x509_free($certificate);
+
+				$caBundleStr = str_replace("\r\n", "\n", $caBundle);
 
 				if(!Zend_Session::namespaceIsset('pageMessages')) {
-					if($certificate !== '') {
-						if(preg_match("/^$certificatPattern$/s", $certificate, $match)) {
-							$certificate = $match[0];
+					# Inserting/updating data into database
 
-							if(!$x509->loadX509($certificate)) {
-								set_page_message(tr('The certificate is not valid.'), 'error');
-							} elseif(!$x509->validateSignature(false)) {
-								set_page_message(tr('The certificate is not valid or the CA bundle is missing.'), 'error');
-							} elseif(!$x509->validateDate()) {
-								set_page_message(tr('The certificate is expired.'), 'error');
-							} elseif(!openssl_x509_check_private_key($certificate, $privateKey)) {
-								set_page_message(tr("The key is not the private key that corresponds to the certificate."), 'error');
-							}
-						} else {
-							set_page_message(tr('The certificate is not valid.'), 'error');
-						}
-					} else {
-						set_page_message(tr('The certificate field cannot be empty.'), 'error');
-					}
+					$db = iMSCP_Database::getInstance();
 
-					if(!Zend_Session::namespaceIsset('pageMessages')) {
-						// Data normalization
-						$privateKey = str_replace("\r\n", "\n", $privateKey) . PHP_EOL;
-						$certificate = str_replace("\r\n", "\n", $certificate) . PHP_EOL;
-						$caBundle = str_replace("\r\n", "\n", $caBundle);
+					try {
+						$db->beginTransaction();
 
-						$db = iMSCP_Database::getInstance();
-
-						try {
-							$db->beginTransaction();
-
-							if(!$certId) { // Add new certificate
-								exec_query(
-									'
-										INSERT INTO ssl_certs (
-											domain_id, domain_type, private_key, certificate, ca_bundle, status
-										) VALUES (
-											?, ?, ?, ?, ?, ?
-										)
-									',
-									array($domainId, $domainType, $privateKey, $certificate, $caBundle, 'toadd')
-								);
-
-
-							} else { // Update existing certificate
-								exec_query(
-									'
-										UPDATE
-											ssl_certs
-										SET
-											private_key = ?, certificate = ?, ca_bundle = ?, status = ?
-										WHERE
-											cert_id = ?
-										AND
-											domain_id = ?
-										AND
-											domain_type = ?
-									',
-									array(
-										$privateKey, $certificate, $caBundle, 'tochange', $certId, $domainId,
-										$domainType
+						if(!$certId) { // Add new certificate
+							exec_query(
+								'
+									INSERT INTO ssl_certs (
+										domain_id, domain_type, private_key, certificate, ca_bundle, status
+									) VALUES (
+										?, ?, ?, ?, ?, ?
 									)
-								);
-							}
-
-							client_updateDomainStatus($domainType, $domainId);
-
-							$db->commit();
-
-							send_request();
-
-							if(!$certId) {
-								set_page_message(tr('SSL certificate successfully scheduled for addition.'), 'success');
-								write_log(
-									sprintf(
-										'%s added a new SSL certificate for the %s domain', $_SESSION['user_logged'],
-										$domainName
-									),
-									E_USER_NOTICE
-								);
-							} else {
-								set_page_message(tr('SSL certificate successfully scheduled for update.'), 'success');
-								write_log(
-									sprintf(
-										'%s updated an SSL certificate for the %s domain', $_SESSION['user_logged'],
-										$domainName
-									),
-									E_USER_NOTICE
-								);
-							}
-
-							redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
-						} catch(iMSCP_Exception_Database $e) {
-							$db->rollBack();
-							throw new iMSCP_Exception_Database(
-								sprintf('Unable to add or update SSL certificate: %s', $e->getMessage())
+								',
+								array($domainId, $domainType, $privateKeyStr, $certificateStr, $caBundleStr, 'toadd')
+							);
+						} else { // Update existing certificate
+							exec_query(
+								'
+									UPDATE
+										ssl_certs
+									SET
+										private_key = ?, certificate = ?, ca_bundle = ?, status = ?
+									WHERE
+										cert_id = ?
+									AND
+										domain_id = ?
+									AND
+										domain_type = ?
+								',
+								array(
+									$privateKeyStr, $certificateStr, $caBundleStr, 'tochange', $certId, $domainId,
+									$domainType
+								)
 							);
 						}
+
+						_client_updateDomainStatus($domainType, $domainId);
+
+						$db->commit();
+
+						send_request();
+
+						if(!$certId) {
+							set_page_message(tr('SSL certificate successfully scheduled for addition.'), 'success');
+							write_log(
+								sprintf(
+									'%s added a new SSL certificate for the %s domain', $_SESSION['user_logged'],
+									decode_idna($domainName)
+								),
+								E_USER_NOTICE
+							);
+						} else {
+							set_page_message(tr('SSL certificate successfully scheduled for update.'), 'success');
+							write_log(
+								sprintf(
+									'%s updated an SSL certificate for the %s domain', $_SESSION['user_logged'],
+									$domainName
+								),
+								E_USER_NOTICE
+							);
+						}
+
+						redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
+					} catch(iMSCP_Exception_Database $e) {
+						$db->rollBack();
+						write_log('Unable to add/update SSL certificate in database');
+						set_page_message('An unexpected error occured. Please contact your reseller.');
 					}
 				}
 			}
@@ -327,7 +371,7 @@ function client_addSslCert($domainId, $domainType)
  */
 function client_deleteSslCert($domainId, $domainType)
 {
-	$domainName = client_getDomainName($domainId, $domainType);
+	$domainName = _client_getDomainName($domainId, $domainType);
 
 	if($domainName !== false) {
 		if(isset($_POST['cert_id'])) {
@@ -343,7 +387,7 @@ function client_deleteSslCert($domainId, $domainType)
 					array('todelete', $certId, $domainId, $domainType)
 				);
 
-				client_updateDomainStatus($domainType, $domainId);
+				_client_updateDomainStatus($domainType, $domainId);
 
 				$db->commit();
 
@@ -376,7 +420,7 @@ function client_deleteSslCert($domainId, $domainType)
  */
 function client_generatePage($tpl, $domainId, $domainType)
 {
-	$domainName = client_getDomainName($domainId, $domainType);
+	$domainName = _client_getDomainName($domainId, $domainType);
 
 	if($domainName !== false) {
 		$stmt = exec_query(
@@ -492,10 +536,11 @@ if(
 			'TR_CERTIFICATE_DATA' => tr('Certificate data'),
 			'TR_CERT_FOR' => tr('Common name'),
 			'TR_STATUS' => tr('Status'),
+			'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
 			'TR_PASSWORD' => tr('Private key passphrase if any'),
 			'TR_PRIVATE_KEY' => tr('Private key'),
 			'TR_CERTIFICATE' => tr('Certificate'),
-			'TR_CA_BUNDLE' => tr('CA bundle'),
+			'TR_CA_BUNDLE' => tr('Intermediate certificate(s)'),
 			'TR_DELETE' => tr('Delete'),
 			'TR_CANCEL' => tr('Cancel'),
 			'DOMAIN_ID' => tohtml($domainId),

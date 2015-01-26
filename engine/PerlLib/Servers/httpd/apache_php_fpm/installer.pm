@@ -780,7 +780,8 @@ sub _buildMasterPhpFpmPoolFile
 			CHKROOTKIT_LOG => $main::imscpConfig{'CHKROOTKIT_LOG'},
 			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 			OTHER_ROOTKIT_LOG => ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '')
-				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : ''
+				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
+			DISTRO_CA_BUNDLE => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
 		}
 	);
 
