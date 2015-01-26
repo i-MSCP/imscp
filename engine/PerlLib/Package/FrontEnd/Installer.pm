@@ -817,6 +817,7 @@ sub _buildPhpConfig
 		OTHER_ROOTKIT_LOG => ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '')
 			? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
 		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
+		DISTRO_CA_BUNDLE => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
 	};
 
 	# Build file using template from fcgi/parts/master/php5
