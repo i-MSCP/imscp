@@ -141,7 +141,7 @@ function client_generateSelfSignedCert($domainName)
 {
 	$privateKey = @openssl_pkey_new();
 	if(!is_resource($privateKey)) {
-		write_log(sprintf('Unable to generate private key: %s', $php_errormsg));
+		write_log(sprintf('Unable to generate private key'), E_USER_ERROR);
 		return false;
 	}
 
@@ -155,7 +155,7 @@ function client_generateSelfSignedCert($domainName)
 	);
 
 	if(!is_resource($csr)) {
-		write_log(sprintf('Unable to generate certificat signing request'));
+		write_log(sprintf('Unable to generate certificate signing request'), E_USER_ERROR);
 		return false;
 	}
 
@@ -166,12 +166,12 @@ function client_generateSelfSignedCert($domainName)
 	}
 
 	if(@openssl_pkey_export($privateKey, $privateKeyStr) !== true) {
-		write_log(sprintf('Unable to export private key'));
+		write_log(sprintf('Unable to export private key'), E_USER_ERROR);
 		return false;
 	}
 
 	if(@openssl_x509_export($certificate, $certificateStr) !== true) {
-		write_log(sprintf('Unable to export certificate'));
+		write_log(sprintf('Unable to export certificate'), E_USER_ERROR);
 		return false;
 	}
 
@@ -201,7 +201,7 @@ function client_addSslCert($domainId, $domainType)
 	if($domainName !== false) {
 		if(isset($_POST['selfsigned'])) {
 			if(!client_generateSelfSignedCert($domainName)) {
-				set_page_message(tr('An unexpected error occured. Please contact your reseller'), 'error');
+				set_page_message(tr('An unexpected error occured. Please contact your reseller.'), 'error');
 				redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
 			}
 		}
@@ -234,8 +234,8 @@ function client_addSslCert($domainId, $domainType)
 			if($caBundle !== '') {
 				$tmpfname = @tempnam(sys_get_temp_dir(), 'ssl-ca');
 				if(!@file_put_contents($tmpfname, $caBundle)) {
-					write_log(sprintf('Unable to export customer CA bundle in tmp file'));
-					set_page_message(tr('An unexpected error occured. Please contact your reseller'), 'error');
+					write_log(sprintf('Unable to export customer CA bundle in tmp file'), E_USER_ERROR);
+					set_page_message(tr('An unexpected error occured. Please contact your reseller.'), 'error');
 				}
 
 				// Note: Here we also are the ca bundle in the trusted chain to support self-signed certificates
@@ -266,18 +266,18 @@ function client_addSslCert($domainId, $domainType)
 				// Preparing data for insertion in database
 
 				if(@openssl_pkey_export($privateKey, $privateKeyStr) !== true) {
-					write_log(sprintf('Unable to export private key'));
-					set_page_message(tr('An unexpected error occured. Please contact your reseller'), 'error');
+					write_log(sprintf('Unable to export private key'), E_USER_ERROR);
+					set_page_message(tr('An unexpected error occured. Please contact your reseller.'), 'error');
 				}
 
 				@openssl_pkey_free($privateKey);
 
 				if(@openssl_x509_export($certificate, $certificateStr) !== true) {
-					write_log(sprintf('Unable to export certificate'));
-					set_page_message(tr('An unexpected error occured. Please contact your reseller'), 'error');
+					write_log(sprintf('Unable to export certificate'), E_USER_ERROR);
+					set_page_message(tr('An unexpected error occured. Please contact your reseller.'), 'error');
 				}
 
-				openssl_x509_free($certificate);
+				@openssl_x509_free($certificate);
 
 				$caBundleStr = str_replace("\r\n", "\n", $caBundle);
 
@@ -350,7 +350,7 @@ function client_addSslCert($domainId, $domainType)
 						redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
 					} catch(iMSCP_Exception_Database $e) {
 						$db->rollBack();
-						write_log('Unable to add/update SSL certificate in database');
+						write_log('Unable to add/update SSL certificate in database', E_USER_ERROR);
 						set_page_message('An unexpected error occured. Please contact your reseller.');
 					}
 				}
