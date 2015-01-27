@@ -109,7 +109,7 @@ sub run
 			my $rs = execute("$cmdIptables -Z $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
-			return $rs;
+			return $rs if $rs;
 		}
 	}
 
