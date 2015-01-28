@@ -66,7 +66,7 @@ sub factory
 		} elsif($sName eq 'external_server') {
 			my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'} || 'no';
 
-			unless($oldSname eq 'external_server') {
+			unless($oldSname eq 'external_server' || $oldSname eq 'no') {
 				$package = "Servers::named::$oldSname";
 
 				eval "require $package";
