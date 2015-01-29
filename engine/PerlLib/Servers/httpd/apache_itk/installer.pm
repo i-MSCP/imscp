@@ -378,7 +378,7 @@ sub _buildPhpConfFiles
 	# Make sure that PHP modules are enabled
 	if(iMSCP::ProgramFinder::find('php5enmod')) {
 		my($stdout, $stderr);
-		$rs = execute('php5enmod gd imap intl json mcrypt mysql mysqli mysqlnd pdo pdo_mysql', \$stdout, \$stderr);
+		$rs = execute('php5enmod gd imap intl json mcrypt mysqlnd/10 mysql mysqli pdo/10 pdo_mysql', \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		unless($rs ~~ [0, 2]) {
 			error($stderr) if $stderr;

@@ -281,10 +281,21 @@ sub uninstallPackages
 
 sub postBuild
 {
-	# Make sure that PHP modules are enabled
+	# Needed to fix #IP-1246
+	if(iMSCP::ProgramFinder::find('php5dismod')) {
+		my($stdout, $stderr);
+		my $rs = execute('php5dismod gd imap intl json mcrypt mysqlnd mysqli mysql pdo pdo_mysql', \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		unless($rs ~~ [0, 2]) {
+			error($stderr) if $stderr;
+			return $rs;
+		}
+	}
+
+	# Enable needed PHP modules
 	if(iMSCP::ProgramFinder::find('php5enmod')) {
 		my($stdout, $stderr);
-		my $rs = execute('php5enmod gd imap intl json mcrypt mysql mysqli mysqlnd pdo pdo_mysql', \$stdout, \$stderr);
+		my $rs = execute('php5enmod gd imap intl json mcrypt mysqlnd/10 mysqli mysql pdo/10 pdo_mysql', \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		unless($rs ~~ [0, 2]) {
 			error($stderr) if $stderr;
