@@ -51,6 +51,7 @@ TICKETS
 	Fixed #IP-1238: Question mark information box not functioning when switching page
 	Fixed #IP-1239: SSL Certificate - Usage of CA certificates as provided by OS for validation
 	Fixed #IP-1241: Allow customers to generate self-signed SSL certificate for their domains through the frontEnd
+	Fixed #IP-1247: Apache2 - vlogger - failed unexpectedly
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.21
