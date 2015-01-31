@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::Roundcube - i-MSCP Roundcube package
+Package::Webmail::Roundcube::Roundcube - i-MSCP Roundcube package
 
 =cut
 
@@ -27,7 +27,7 @@ Package::Roundcube - i-MSCP Roundcube package
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Package::Roundcube;
+package Package::Webmail::Roundcube::Roundcube;
 
 use strict;
 use warnings;
@@ -53,22 +53,52 @@ filters.
 
 =over 4
 
-=item registerSetupListeners(\%eventManager)
+=item showDialog(\%dialog)
 
- Register setup event listeners
+ Show dialog
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::Dialog \%dialog
+ Return int 0 or 30
+
+=cut
+
+sub showDialog
+{
+	my ($self, $dialog) = @_;
+
+	require Package::Webmail::Roundcube::Installer;
+
+	Package::Webmail::Roundcube::Installer->getInstance()->showDialog($dialog);
+}
+
+=item preinstall()
+
+ Process preinstall tasks
+
  Return int 0 on success, other on failure
 
 =cut
 
-sub registerSetupListeners
+sub preinstall
 {
-	my ($self, $eventManager) = @_;
+	require Package::Webmail::Roundcube::Installer;
 
-	require Package::Roundcube::Installer;
+	Package::Webmail::Roundcube::Installer->getInstance()->preinstall();
+}
 
-	Package::Roundcube::Installer->getInstance()->registerSetupListeners($eventManager);
+=item install()
+
+ Process install tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
+	require Package::Webmail::Roundcube::Installer;
+
+	Package::Webmail::Roundcube::Installer->getInstance()->install();
 }
 
 =item uninstall()
@@ -81,9 +111,9 @@ sub registerSetupListeners
 
 sub uninstall
 {
-	require Package::Roundcube::Uninstaller;
+	require Package::Webmail::Roundcube::Uninstaller;
 
-	Package::Roundcube::Uninstaller->getInstance()->uninstall();
+	Package::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
 }
 
 =item setPermissionsListener()
@@ -96,9 +126,9 @@ sub uninstall
 
 sub setPermissionsListener
 {
-	require Package::Roundcube::Installer;
+	require Package::Webmail::Roundcube::Installer;
 
-	Package::Roundcube::Installer->getInstance()->setGuiPermissions();
+	Package::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
 }
 
 =item deleteMail(\%data)
@@ -152,7 +182,7 @@ sub deleteMail
 
  Initialize instance
 
- Return Package::Roundcube
+ Return Package::Webmail::Roundcube::Roundcube
 
 =cut
 

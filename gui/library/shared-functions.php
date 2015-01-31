@@ -3279,3 +3279,19 @@ function imscp_clear_opcode_cache()
 {
 	iMSCP_Utility_OpcodeCache::clearAllActive();
 }
+
+/**
+ * Get list of available webmail
+ *
+ * @return array
+ */
+function getWebmailList()
+{
+	$config = iMSCP_Registry::get('config');
+
+	if( isset($config['WEBMAIL_PACKAGES']) && $config['WEBMAIL_PACKAGES'] != strtolower('no') ) {
+		return explode(',', $config['WEBMAIL_PACKAGES']);
+	}
+
+	return array();
+}

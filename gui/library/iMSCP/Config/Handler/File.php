@@ -116,13 +116,10 @@ require_once 'iMSCP/Config/Handler.php';
  * @property bool MAIN_MENU_SHOW_LABELS Tells whether or not labels must be showed for main menu links
  * @property string PHPINI_OPEN_BASEDIR paths appended to the default PHP open_basedir directive of customers
  * @property string FTP_USERNAME_SEPARATOR Ftp username separator
- * @property string FILEMANAGER_TARGET Filemanager target window
  * @property string FILEMANAGER_PATH Filenamager path
  * @property string PMA_PATH PhpMyAdmin path
  * @property string WEBMAIL_PATH Webmail path
- * @property string WEBMAIL_TARGET Webmail target window
  * @property string WEBSTATS_RPATH Web statistics path
- * @property string WEBSTATS_TARGET Web statistics target window
  * @property string BACKUP_DOMAINS (yes|no)
  * @property string WEBSTATS_PACKAGES (No|<webstats_package_name>)
  * @property string CONF_DIR i-MSCP configuration directory (eg. /etc/imscp)

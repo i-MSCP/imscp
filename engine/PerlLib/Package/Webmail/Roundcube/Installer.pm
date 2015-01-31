@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::Roundcube::Installer - i-MSCP Roundcube package installer
+Package::Webmail::Roundcube::Installer - i-MSCP Roundcube package installer
 
 =cut
 
@@ -27,7 +27,7 @@ Package::Roundcube::Installer - i-MSCP Roundcube package installer
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Package::Roundcube::Installer;
+package Package::Webmail::Roundcube::Installer;
 
 use strict;
 use warnings;
@@ -54,35 +54,11 @@ our $VERSION = '0.6.0';
 
  This is the installer for the i-MSCP Roundcube package.
 
- See Package::Roundcube for more information.
+ See Package::Webmail::Roundcube::Roundcube for more information.
 
 =head1 PUBLIC METHODS
 
 =over 4
-
-=item registerSetupListeners(\%eventManager)
-
- Register setup event listeners
-
- Param iMSCP::EventManager \%eventManager
- Return int 0 on success, other on failure
-
-=cut
-
-sub registerSetupListeners
-{
-	my ($self, $eventManager) = @_;
-
-	my $rs = $eventManager->register( 'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; } );
-	return $rs if $rs;
-
-	# Preinstall tasks must be processed after frontEnd preinstall tasks
-	$rs = $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstall(); } );
-	return $rs if $rs;
-
-	# Install tasks must be processed after frontEnd install tasks
-	$eventManager->register( 'afterFrontEndInstall', sub { $self->install(); } );
-}
 
 =item showDialog(\%dialog)
 
@@ -103,7 +79,7 @@ sub showDialog
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['webmail', 'all', 'forced'] ||
+		$main::reconfigure ~~ [ 'webmails', 'all', 'forced' ] ||
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
 		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
 	) {
@@ -322,7 +298,7 @@ sub afterFrontEndBuildConfFile
 
  Initialize instance
 
- Return Package::Roundcube::Installer
+ Return Package::Webmail::Roundcube::Installer
 
 =cut
 
@@ -330,7 +306,7 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'roundcube'} = Package::Roundcube->getInstance();
+	$self->{'roundcube'} = Package::Webmail::Roundcube::Roundcube->getInstance();
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
 	$self->{'cfgDir'} = $self->{'roundcube'}->{'cfgDir'};
@@ -358,7 +334,7 @@ sub _backupConfigFile
 
 	if(-f $cfgFile) {
 		my $filename = fileparse($cfgFile);
-		my $file = iMSCP::File->new('filename' => $cfgFile);
+		my $file = iMSCP::File->new( filename => $cfgFile );
 		my $rs = $file->copyFile("$self->{'bkpDir'}/$filename" . time);
 
 		return $rs if $rs;

@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::Roundcube::Uninstaller - i-MSCP Roundcube package uninstaller
+Package::Webmail::Roundcube::Uninstaller - i-MSCP Roundcube package uninstaller
 
 =cut
 
@@ -27,7 +27,7 @@ Package::Roundcube::Uninstaller - i-MSCP Roundcube package uninstaller
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Package::Roundcube::Uninstaller;
+package Package::Webmail::Roundcube::Uninstaller;
 
 use strict;
 use warnings;
@@ -37,7 +37,7 @@ use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Database;
 use Package::FrontEnd;
-use Package::Roundcube;
+use Package::Webmail::Roundcube::Roundcube;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -66,7 +66,7 @@ sub uninstall
 	$rs = $self->_removeSqlDatabase();
 	return $rs if $rs;
 
-	rs = $self->_unregisterConfig();
+	$rs = $self->_unregisterConfig();
 	return $rs if $rs;
 
 	$self->_removeFiles();
@@ -82,7 +82,7 @@ sub uninstall
 
  Initialize instance
 
- Return Package::Roundcube::Uninstaller
+ Return Package::Webmail::Roundcube::Uninstaller
 
 =cut
 
@@ -91,7 +91,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
-	$self->{'roundcube'} = Package::Roundcube->getInstance();
+	$self->{'roundcube'} = Package::Webmail::Roundcube::Roundcube->getInstance();
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -158,7 +158,7 @@ sub _removeSqlDatabase
 
 sub _unregisterConfig
 {
-	my ($tplContent, $tplName) = @_;
+	my $self = $_[0];
 
 	for my $vhostFile('00_master.conf', '00_master_ssl.conf') {
 		if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile") {

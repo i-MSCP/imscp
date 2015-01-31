@@ -197,7 +197,7 @@ sub showUsage
 our $reconfigurationItems = [
 	'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostnames', 'system_hostname',
 	'panel_hostname', 'ips', 'admin', 'php', 'panel_ssl', 'services_ssl', 'ssl', 'backup', 'webstats',
-	'sqlmanager', 'webmail', 'filemanager', 'antirootkits'
+	'sqlmanager', 'webmails', 'filemanager', 'antirootkits'
 ];
 
 =item reconfigure($value = 'none')

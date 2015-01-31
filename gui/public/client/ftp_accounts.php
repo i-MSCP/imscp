@@ -114,7 +114,6 @@ $tpl->assign(
 		'TR_EDIT' => tr('Edit'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', true, '%s'),
-		'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET
 	)
 );
 

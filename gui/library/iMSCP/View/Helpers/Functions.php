@@ -238,23 +238,48 @@ function generateNavigation($tpl)
 
 	generateLoggedFrom($tpl);
 
+	/** @var $navigation Zend_Navigation */
+	$navigation = iMSCP_Registry::get('navigation');
+
 	// Dynamic links (only at customer level)
 	if(isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'user') {
-
 		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 		$tpl->assign(
 			array(
 				'FILEMANAGER_PATH' => $cfg['FILEMANAGER_PATH'],
-				'FILEMANAGER_TARGET' => $cfg['FILEMANAGER_TARGET'],
 				'PMA_PATH' => $cfg['PMA_PATH'],
-				'PMA_TARGET' => $cfg['PMA_TARGET'],
-				'WEBMAIL_PATH' => $cfg['WEBMAIL_PATH'],
-				'WEBMAIL_TARGET' => $cfg['WEBMAIL_TARGET'],
-				'WEBSTATS_RPATH' => 'http://' . decode_idna($domainProperties['domain_name']) . '/' . $cfg['WEBSTATS_RPATH'],
-				'WEBSTATS_TARGET' => $cfg['WEBSTATS_TARGET']
+				'WEBSTATS_RPATH' => 'http://' . decode_idna($domainProperties['domain_name']) . '/' . $cfg['WEBSTATS_RPATH']
 			)
 		);
+
+		if(customerHasFeature('mail')) {
+			$webmails = getWebmailList();
+
+			if(!empty($webmails)) {
+				$page1 = $navigation->findOneBy('class', 'email');
+				$page2 = $navigation->findOneBy('class', 'webtools');
+
+				foreach($webmails as $webmail) {
+					$page =array(
+						'label' => tr('%s webmail', $webmail),
+						'uri' => '/' . (($webmail == 'Roundcube') ? 'webmail' : '/'. $webmail),
+						'target' => '_blank',
+					);
+
+					$page1->addPage($page);
+					$page2->addPage($page);
+				}
+			}
+		}
+	} else {
+		if($cfg['HOSTING_PLANS_LEVEL'] != $_SESSION['user_type']) {
+			if($_SESSION['user_type'] === 'admin') {
+				$navigation->findOneBy('class', 'hosting_plans')->setVisible(false);
+			} else {
+				$navigation->findOneBy('class', 'hosting_plan_add')->setVisible(false);
+			}
+		}
 	}
 
 	// Dynamic links (All levels)
@@ -265,22 +290,9 @@ function generateNavigation($tpl)
 		)
 	);
 
-	/** @var $navigation Zend_Navigation */
-	$navigation = iMSCP_Registry::get('navigation');
-
 	// Remove support system page if feature is globally disabled
 	if(!$cfg['IMSCP_SUPPORT_SYSTEM']) {
 		$navigation->removePage($navigation->findOneBy('class', 'support'));
-	}
-
-	if($_SESSION['user_type'] != 'user') {
-		if($cfg['HOSTING_PLANS_LEVEL'] != $_SESSION['user_type']) {
-			if($_SESSION['user_type'] === 'admin') {
-				$navigation->findOneBy('class', 'hosting_plans')->setVisible(false);
-			} else {
-				$navigation->findOneBy('class', 'hosting_plan_add')->setVisible(false);
-			}
-		}
 	}
 
 	// Custom menus
@@ -292,7 +304,9 @@ function generateNavigation($tpl)
 					'label' => tohtml($customMenu['menu_name']),
 					'uri' => get_menu_vars($customMenu['menu_link']),
 					'target' => (!empty($customMenu['menu_target']) ? tohtml($customMenu['menu_target']) : '_self'),
-					'class' => 'custom_link'));
+					'class' => 'custom_link'
+				)
+			);
 		}
 	}
 
@@ -332,7 +346,8 @@ function generateNavigation($tpl)
 					'IS_ACTIVE_CLASS' => ($page->isActive(true)) ? 'active' : 'dummy',
 					'LABEL' => tr($page->getLabel()),
 					'TARGET' => ($page->getTarget()) ? $page->getTarget() : '_self',
-					'LINK_LABEL' => ($_SESSION['show_main_menu_labels']) ? tr($page->getLabel()) : '')
+					'LINK_LABEL' => ($_SESSION['show_main_menu_labels']) ? tr($page->getLabel()) : ''
+				)
 			);
 
 			// Add page to main menu
@@ -357,11 +372,9 @@ function generateNavigation($tpl)
 
 							foreach($callbacks AS $callback) {
 								if(is_callable($callback['name'])) {
-									if(
-									!call_user_func_array(
+									if(!call_user_func_array(
 										$callback['name'],
-										isset($callback['param']) ? (array)$callback['param'] : array()
-									)
+										isset($callback['param']) ? (array)$callback['param'] : array())
 									) {
 										continue 2;
 									}

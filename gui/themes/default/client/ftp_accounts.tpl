@@ -28,7 +28,7 @@
 		<td>{FTP_ACCOUNT}</td>
 		<td>
 			<!-- BDP: ftp_easy_login -->
-			<a href="ftp_auth.php?id={UID}" target="{FILEMANAGER_TARGET}" class="icon i_filemanager">{TR_LOGINAS}</a>
+			<a href="ftp_auth.php?id={UID}" target="_blank" class="icon i_filemanager">{TR_LOGINAS}</a>
 			<!-- EDP: ftp_easy_login -->
 			<a href="ftp_edit.php?id={UID}" class="icon i_edit">{TR_EDIT}</a>
 			<a href="ftp_delete.php?id={UID}" class="icon i_delete"
