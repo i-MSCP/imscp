@@ -154,7 +154,7 @@ sub _addCronTask
 sub _scheduleCheck
 {
 	unless(-f -s $main::imscpConfig{'CHKROOTKIT_LOG'}) {
-		# Create a dummy file to avoid planning multiple check if installer is run many time
+		# Create an emtpy file to avoid planning multiple check if installer is run many time
 		my $file = iMSCP::File->new( filename => $main::imscpConfig{'CHKROOTKIT_LOG'} );
 
 		my $rs = $file->set('Check scheduled...');

@@ -79,9 +79,10 @@ sub registerSetupListeners
 
 sub showDialog
 {
-	my ($self, $dialog, $rs) = (@_, 0);
+	my ($self, $dialog) = @_;
 
 	my $packages = [split ',', main::setupGetQuestion('WEBSTATS_PACKAGES')];
+	my $rs = 0;
 
 	if(
 		$main::reconfigure ~~ ['webstats', 'all', 'forced'] || ! @{$packages} ||

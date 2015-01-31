@@ -84,33 +84,8 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	require Package::PhpMyAdmin::Installer;
+
 	Package::PhpMyAdmin::Installer->getInstance()->registerSetupListeners($eventManager);
-}
-
-=item preinstall()
-
- Process preinstall tasks
-
-=cut
-
-sub preinstall
-{
-	require Package::PhpMyAdmin::Installer;
-	Package::PhpMyAdmin::Installer->getInstance()->preinstall();
-}
-
-=item install()
-
- Process install tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub install
-{
-	require Package::PhpMyAdmin::Installer;
-	Package::PhpMyAdmin::Installer->getInstance()->install();
 }
 
 =item uninstall()
@@ -124,6 +99,7 @@ sub install
 sub uninstall
 {
 	require Package::PhpMyAdmin::Uninstaller;
+
 	Package::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
 }
 
@@ -138,6 +114,7 @@ sub uninstall
 sub setPermissionsListener
 {
 	require Package::PhpMyAdmin::Installer;
+
 	Package::PhpMyAdmin::Installer->getInstance()->setGuiPermissions();
 }
 
@@ -165,9 +142,9 @@ sub _init
 
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/phpmyadmin.data";
 
-	# PhpMyAdmin permissions must be set after FrontEnd base permissions
+	# Permissions must be set after FrontEnd base permissions
 	iMSCP::EventManager->getInstance()->register(
-		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_); }
+		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(); }
 	);
 
 	$self;

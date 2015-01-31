@@ -136,7 +136,7 @@ sub _removeHttpdConfig
 
 		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
 			$rs = iMSCP::File->new(
-				'filename' => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_"
+				filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_"
 			)->delFile();
 			return $rs if $rs;
 		}
@@ -145,7 +145,7 @@ sub _removeHttpdConfig
 	# Remove imscp_fastcgi.conf file
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf") {
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf"
+			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf"
 		)->delFile();
 		return $rs if $rs;
 	}
@@ -153,7 +153,7 @@ sub _removeHttpdConfig
 	# Remove imscp_php.conf file
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf") {
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf"
+			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf"
 		)->delFile();
 		return $rs if $rs;
 	}
@@ -164,7 +164,7 @@ sub _removeHttpdConfig
 		return $rs if $rs;
 	} elsif("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled") { # Nginx package as provided by Nginx
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled"
+			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled"
 		)->moveFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf");
 		return $rs if $rs;
 	}
@@ -184,7 +184,7 @@ sub _removePhpConfig
 {
 	my $self = $_[0];
 
-	iMSCP::Dir->new('dirname' => "$self->{'config'}->{'PHP_STARTER_DIR'}/master")->remove();
+	iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_STARTER_DIR'}/master" )->remove();
 }
 
 =item _removeInitScript()

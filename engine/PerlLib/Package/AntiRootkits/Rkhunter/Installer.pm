@@ -130,21 +130,19 @@ sub setEnginePermissions
 
 sub _disableDebianConfig
 {
-	my $rs = 0;
-
 	if(-f '/etc/default/rkhunter') {
-		my $file = iMSCP::File->new ( filename => '/etc/default/rkhunter' );
+		my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
 
-		my $rdata = $file->get();
-		unless(defined $rdata) {
+		my $fileContent = $file->get();
+		unless(defined $fileContent) {
 			error("Unable to read $file->{'filename'}");
 			return 1;
 		}
 
-		$rdata =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN="false"/i;
-		$rdata =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE="false"/i;
+		$fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN="false"/i;
+		$fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE="false"/i;
 
-		$rs = $file->set($rdata);
+		my $rs = $file->set($fileContent);
 		return $rs if $rs;
 
 		$rs = $file->save();
@@ -152,29 +150,36 @@ sub _disableDebianConfig
 	}
 
 	# Disable daily cron tasks
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/cron.daily/rkhunter'
-	)->moveFile(
-		'/etc/cron.daily/rkhunter.disabled'
-	) if -f '/etc/cron.daily/rkhunter';
-	return $rs if $rs;
+	if(-f '/etc/cron.daily/rkhunter') {
+		my $rs = iMSCP::File->new(
+			filename => '/etc/cron.daily/rkhunter'
+		)->moveFile(
+			'/etc/cron.daily/rkhunter.disabled'
+		);
+		return $rs if $rs;
+	}
 
 	# Disable weekly cron tasks
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/cron.weekly/rkhunter'
-	)->moveFile(
-		'/etc/cron.weekly/rkhunter.disabled'
-	) if -f '/etc/cron.weekly/rkhunter';
-	return $rs if $rs;
+	if(-f '/etc/cron.weekly/rkhunter') {
+		my $rs = iMSCP::File->new(
+			filename => '/etc/cron.weekly/rkhunter'
+		)->moveFile(
+			'/etc/cron.weekly/rkhunter.disabled'
+		);
+		return $rs if $rs;
+	}
 
 	# Disable logrotate task
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/logrotate.d/rkhunter'
-	)->moveFile(
-		'/etc/logrotate.d/rkhunter.disabled'
-	) if -f '/etc/logrotate.d/rkhunter';
+	if(-f '/etc/logrotate.d/rkhunter') {
+		my $rs = iMSCP::File->new(
+			filename => '/etc/logrotate.d/rkhunter'
+		)->moveFile(
+			'/etc/logrotate.d/rkhunter.disabled'
+		);
+		return $rs if $rs;
+	}
 
-	$rs;
+	0;
 }
 
 =item _addCronTask()
@@ -188,7 +193,7 @@ sub _disableDebianConfig
 sub _addCronTask
 {
 	my $cronFile = iMSCP::File->new(
-		'filename' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl"
+		filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl"
 	);
 
 	my $cronFileContent = $cronFile->get();
@@ -208,7 +213,7 @@ sub _addCronTask
 	return $rs if $rs;
 
 	$rs = $cronFile->mode(0700);
-    return $rs if $rs;
+	return $rs if $rs;
 
 	$rs = $cronFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
@@ -241,8 +246,8 @@ sub _addCronTask
 sub _scheduleCheck
 {
 	unless(-f -s $main::imscpConfig{'RKHUNTER_LOG'}) {
-		# Create a dummy file to avoid planning multiple check if installer is run many time
-		my $file = iMSCP::File->new('filename' => $main::imscpConfig{'RKHUNTER_LOG'});
+		# Create an empty file to avoid planning multiple check if installer is run many time
+		my $file = iMSCP::File->new( filename => $main::imscpConfig{'RKHUNTER_LOG'} );
 
 		my $rs = $file->set('Check scheduled...');
 		return $rs if $rs;

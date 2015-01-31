@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::FileManager::Net2ftp::Installer - i-MSCP Net2ftp package installer
+Package::FileManager::Pydio::Installer - i-MSCP Pydio package installer
 
 =cut
 
@@ -27,7 +27,7 @@ Package::FileManager::Net2ftp::Installer - i-MSCP Net2ftp package installer
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Package::FileManager::Net2ftp::Installer;
+package Package::FileManager::Pydio::Installer;
 
 use strict;
 use warnings;
@@ -40,15 +40,14 @@ use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Composer;
 use iMSCP::TemplateParser;
-use iMSCP::File;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
-our $VERSION = '0.1.0';
+our $VERSION = '0.2.0';
 
 =head1 DESCRIPTION
 
- i-MSCP Net2ftp package installer.
+ i-MSCP Pydio package installer.
 
 =head1 PUBLIC METHODS
 
@@ -66,7 +65,7 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/net2ftp', "$VERSION.*\@dev");
+	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/ajaxplorer', "$VERSION.*\@dev");
 	return $rs if $rs;
 
 	# Register listener which is responsible to add custom entry into the frontEnd vhost files
@@ -85,15 +84,12 @@ sub install
 {
 	my $self = $_[0];
 
+	# Install Pydio files from local packages repository
 	my $rs = $self->_installFiles();
 	return $rs if $rs;
 
-	# Build httpd configuration file
-	$rs = $self->_buildHttpdConfig();
-	return $rs if $rs;
-
-	# Build config
-	$self->_buildConfig();
+	# Build Pydio httpd configuration file
+	$self->_buildHttpdConfig();
 }
 
 =item setGuiPermissions()
@@ -108,10 +104,17 @@ sub setGuiPermissions
 {
 	my $panelUName =
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+
+	my $rs = setRights(
+		"$guiPublicDir/tools/ftp",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
+	);
+	return $rs if $rs;
 
 	setRights(
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
+		"$guiPublicDir/tools/ftp/data",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 1 }
 	);
 }
 
@@ -145,7 +148,7 @@ sub afterFrontEndBuildConfFile
 				"# SECTION custom END.\n",
 				$$tplContent
 			) .
-				"    include imscp_net2ftp.conf;\n" .
+				"    include imscp_pydio.conf;\n" .
 				"    # SECTION custom END.\n",
 			$$tplContent
 		);
@@ -164,7 +167,7 @@ sub afterFrontEndBuildConfFile
 
  Initialize instance
 
- Return Package::FileManager::Net2ftp::Installer
+ Return Package::Pydio::Installer
 
 =cut
 
@@ -179,7 +182,7 @@ sub _init
 
 =item _installFiles()
 
- Install Net2ftp files in production directory
+ Install files in production directory
 
  Return int 0 on success, other on failure
 
@@ -187,43 +190,37 @@ sub _init
 
 sub _installFiles
 {
-	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/net2ftp";
+	my $self = $_[0];
+
+	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer";
 
 	if(-d $packageDir) {
 		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp";
 
+		# Remove older production directory if any
 		my ($stdout, $stderr);
 		my $rs = execute("$main::imscpConfig{'CMD_RM'} -fR $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -fR $packageDir $destDir", \$stdout, \$stderr);
+		# Copy pydio source
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -fR $packageDir/src $destDir", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
+
+		# Override pydio source
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -fRT $packageDir/iMSCP/src $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 	} else {
-		error("Couldn't find the imscp/net2ftp package into the packages cache directory");
+		error("Couldn't find the imscp/ajaxplorer ( Pydio ) package into the packages cache directory");
 		return 1;
 	}
 
 	0;
-}
-
-=item _generateMd5SaltString()
-
- Generate MD5 salt string
-
- Return string Salt string
-
-=cut
-
-sub _generateMd5SaltString
-{
-	my $saltString = '';
-	$saltString .= ('A'..'Z', '0'..'9')[rand(35)] for 1..38;
-
-	$saltString;
 }
 
 =item _buildHttpdConfig()
@@ -240,66 +237,10 @@ sub _buildHttpdConfig
 
 	# Build and install file
 	$frontEnd->buildConfFile(
-		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager/Net2ftp/config/nginx/imscp_net2ftp.conf",
+		"$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
 		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
-		{ destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf" }
+		{ destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf" }
 	);
-}
-
-=item _buildConfig()
-
- Build configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _buildConfig
-{
-	my $self = $_[0];
-
-	my $panelUName =
-	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings.inc.php";
-
-	# Define data
-
-	my $data = {
-		ADMIN_EMAIL => ($main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}) ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
-		MD5_SALT_STRING => $self->_generateMd5SaltString()
-	};
-
-	# Load template
-
-	my $cfgTpl;
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'net2ftp', 'settings.inc.php', \$cfgTpl, $data);
-	return $rs if $rs;
-
-	unless(defined $cfgTpl) {
-		$cfgTpl = iMSCP::File->new( filename => $conffile )->get();
-		unless(defined $cfgTpl) {
-			error("Unable to read file $conffile");
-			return 1;
-		}
-	}
-
-	# Build file
-
-	$cfgTpl = process($data, $cfgTpl);
-
-	# Store file
-
-	my $file = iMSCP::File->new( filename  => $conffile );
-	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$file->owner($panelUName, $panelGName);
 }
 
 =back

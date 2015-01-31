@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::FileManager::AjaXplorer::AjaXplorer - i-MSCP AjaXplorer package
+Package::FileManager::Pydio::Pydio - i-MSCP Pydio package
 
 =cut
 
@@ -27,7 +27,7 @@ Package::FileManager::AjaXplorer::AjaXplorer - i-MSCP AjaXplorer package
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Package::FileManager::AjaXplorer::AjaXplorer;
+package Package::FileManager::Pydio::Pydio;
 
 use strict;
 use warnings;
@@ -37,12 +37,12 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP AjaXplorer package.
+ i-MSCP Pydio package.
 
- AjaXplorer is a software that can turn any web server into a powerfull file management system and an alternative to
-mainstream cloud storage providers.
+ Pydio ( formely AjaXplorer ) is a software that can turn any web server into a powerfull file management system and an
+alternative to mainstream cloud storage providers.
 
- Project homepage: http://ajaxplorer.info/
+ Project homepage: https://pyd.io/
 
 =head1 PUBLIC METHODS
 
@@ -58,8 +58,9 @@ mainstream cloud storage providers.
 
 sub preinstall
 {
-	require Package::FileManager::AjaXplorer::Installer;
-	Package::FileManager::AjaXplorer::Installer->getInstance()->preinstall();
+	require Package::FileManager::Pydio::Installer;
+
+	Package::FileManager::Pydio::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -72,8 +73,24 @@ sub preinstall
 
 sub install
 {
-	require Package::FileManager::AjaXplorer::Installer;
-	Package::FileManager::AjaXplorer::Installer->getInstance()->install();
+	require Package::FileManager::Pydio::Installer;
+
+	Package::FileManager::Pydio::Installer->getInstance()->install();
+}
+
+=item uninstall()
+
+ Process uninstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+	require Package::FileManager::Pydio::Uninstaller;
+
+	Package::FileManager::Pydio::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions()
@@ -86,8 +103,9 @@ sub install
 
 sub setGuiPermissions
 {
-	require Package::FileManager::AjaXplorer::Installer;
-	Package::FileManager::AjaXplorer::Installer->getInstance()->setGuiPermissions();
+	require Package::FileManager::Pydio::Installer;
+
+	Package::FileManager::Pydio::Installer->getInstance()->setGuiPermissions();
 }
 
 =back

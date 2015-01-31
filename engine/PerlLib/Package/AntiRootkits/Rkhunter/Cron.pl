@@ -62,7 +62,7 @@ if(-x $main::imscpConfig{'CMD_RKHUNTER'}) {
 	debug($stderr) if $stderr;
 
 	if(-f $rkhunterLogFile) {
-		my $file = iMSCP::File->new('filename', $rkhunterLogFile);
+		my $file = iMSCP::File->new( filename => $rkhunterLogFile );
 		$rs = $file->mode(0640);
 		$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'IMSCP_GROUP'});
 	}

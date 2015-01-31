@@ -53,6 +53,7 @@ use parent 'Common::SingletonClass';
 sub preinstall
 {
 	require Package::AntiRootkits::Rkhunter::Installer;
+
 	Package::AntiRootkits::Rkhunter::Installer->getInstance()->preinstall();
 }
 
@@ -67,6 +68,7 @@ sub preinstall
 sub install
 {
 	require Package::AntiRootkits::Rkhunter::Installer;
+
 	Package::AntiRootkits::Rkhunter::Installer->getInstance()->install();
 }
 
@@ -81,6 +83,7 @@ sub install
 sub uninstall
 {
 	require Package::AntiRootkits::Rkhunter::Uninstaller;
+
 	Package::AntiRootkits::Rkhunter::Uninstaller->getInstance()->uninstall();
 }
 
@@ -95,6 +98,7 @@ sub uninstall
 sub setEnginePermissions
 {
 	require Package::AntiRootkits::Rkhunter::Installer;
+
 	Package::AntiRootkits::Rkhunter::Installer->getInstance()->setEnginePermissions();
 }
 

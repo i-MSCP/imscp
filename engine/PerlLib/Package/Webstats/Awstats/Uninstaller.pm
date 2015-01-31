@@ -88,7 +88,7 @@ sub _deleteFiles
 	my $rs = 0;
 
 	if(-d $main::imscpConfig{'USER_WEB_DIR'}) {
-		my @homeDirs = iMSCP::Dir->new('dirname' => $main::imscpConfig{'USER_WEB_DIR'})->getDirs();
+		my @homeDirs = iMSCP::Dir->new( dirname => $main::imscpConfig{'USER_WEB_DIR'})->getDirs();
 
 		if(@homeDirs) {
 			for(@homeDirs) {
@@ -97,7 +97,7 @@ sub _deleteFiles
 				$rs = clearImmutable("$main::imscpConfig{'USER_WEB_DIR'}/$_") if $isImmutableHomeDir;
 				return $rs if $rs;
 
-				$rs = iMSCP::Dir->new('dirname' => "$main::imscpConfig{'USER_WEB_DIR'}/$_/statistics")->remove();
+				$rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'USER_WEB_DIR'}/$_/statistics" )->remove();
 				return $rs if $rs;
 
 				$rs = setImmutable("$main::imscpConfig{'USER_WEB_DIR'}/$_") if $isImmutableHomeDir;
@@ -144,7 +144,7 @@ sub _removeVhost
 	my $rs = 0;
 
 	if(-f "$httpd->{'apacheWrkDir'}/01_awstats.conf") {
-		$rs = iMSCP::File->new('filename' => "$httpd->{'apacheWrkDir'}/01_awstats.conf")->delFile();
+		$rs = iMSCP::File->new( filename => "$httpd->{'apacheWrkDir'}/01_awstats.conf" )->delFile();
 		return $rs if $rs;
 	}
 
@@ -152,7 +152,9 @@ sub _removeVhost
 		$rs = $httpd->disableSites('01_awstats.conf');
 		return $rs if $rs;
 
-		$rs = iMSCP::File->new('filename' => "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf")->delFile();
+		$rs = iMSCP::File->new(
+			filename => "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf"
+		)->delFile();
 	}
 
 	$rs;
@@ -172,7 +174,7 @@ sub _restoreDebianConfig
 
 	if(-f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled") {
 		$rs = iMSCP::File->new(
-			'filename' => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
+			filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
 		)->moveFile(
 			"$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf"
 		);
@@ -181,7 +183,7 @@ sub _restoreDebianConfig
 
 	if(-f "$main::imscpConfig{'CRON_D_DIR'}/awstats.disable") {
 		$rs = iMSCP::File->new(
-			'filename' => "$main::imscpConfig{'CRON_D_DIR'}/awstats.disable"
+			filename => "$main::imscpConfig{'CRON_D_DIR'}/awstats.disable"
 		)->moveFile(
 			"$main::imscpConfig{'CRON_D_DIR'}/awstats"
 		);

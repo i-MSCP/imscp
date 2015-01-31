@@ -53,7 +53,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	$_ [0]->_restoreDebianConfig();
+	$_[0]->_restoreDebianConfig();
 }
 
 =back
@@ -72,20 +72,19 @@ sub uninstall
 
 sub _restoreDebianConfig
 {
-	my $rs = 0;
-
 	if(-f '/etc/default/rkhunter') {
-		my $file = iMSCP::File->new ('filename' => '/etc/default/rkhunter');
-		my $rdata = $file->get();
-		unless(defined $rdata) {
+		my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
+
+		my $fileContent = $file->get();
+		unless(defined $fileContent) {
 			error("Unable to read /etc/default/rkhunter file");
 			return 1;
 		}
 
-		$rdata =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN=""/i;
-		$rdata =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE=""/i;
+		$fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN=""/i;
+		$fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE=""/i;
 
-		$rs = $file->set($rdata);
+		my $rs = $file->set($fileContent);
 		return $rs if $rs;
 
 		$rs = $file->save();
@@ -93,29 +92,36 @@ sub _restoreDebianConfig
 	}
 
 	# Restore daily cron task
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/cron.daily/rkhunter.disabled'
-	)->moveFile(
-		'/etc/cron.daily/rkhunter'
-	) if -f '/etc/cron.daily/rkhunter.disabled';
-	return $rs if $rs;
+	if(-f '/etc/cron.daily/rkhunter.disabled') {
+		my $rs = iMSCP::File->new(
+			filename => '/etc/cron.daily/rkhunter.disabled'
+		)->moveFile(
+			'/etc/cron.daily/rkhunter'
+		);
+		return $rs if $rs;
+	}
 
 	# Restore weekly cron tasks
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/cron.weekly/rkhunter.disabled'
-	)->moveFile(
-		'/etc/cron.weekly/rkhunter'
-	) if -f '/etc/cron.weekly/rkhunter.disabled';
-	return $rs if $rs;
+	if(-f '/etc/cron.weekly/rkhunter.disabled') {
+		my $rs = iMSCP::File->new(
+			filename => '/etc/cron.weekly/rkhunter.disabled'
+		)->moveFile(
+			'/etc/cron.weekly/rkhunter'
+		);
+		return $rs if $rs;
+	}
 
 	# Restore logrotate task
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/logrotate.d/rkhunter.disabled'
-	)->moveFile(
-		'/etc/logrotate.d/rkhunter'
-	) if -f '/etc/logrotate.d/rkhunter.disabled';
+	if(-f '/etc/logrotate.d/rkhunter.disabled') {
+		my $rs = iMSCP::File->new(
+			filename => '/etc/logrotate.d/rkhunter.disabled'
+		)->moveFile(
+			'/etc/logrotate.d/rkhunter'
+		);
+		return $rs if $rs;
+	}
 
-	$rs;
+	0;
 }
 
 =back

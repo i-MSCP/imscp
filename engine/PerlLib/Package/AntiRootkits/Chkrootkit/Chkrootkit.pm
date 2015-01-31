@@ -56,6 +56,7 @@ set of programs and hacks designed to take control of a target machine by using 
 sub preinstall
 {
 	require Package::AntiRootkits::Chkrootkit::Installer;
+
 	Package::AntiRootkits::Chkrootkit::Installer->getInstance()->preinstall();
 }
 
@@ -70,6 +71,7 @@ sub preinstall
 sub install
 {
 	require Package::AntiRootkits::Chkrootkit::Installer;
+
 	Package::AntiRootkits::Chkrootkit::Installer->getInstance()->install();
 }
 
@@ -84,6 +86,7 @@ sub install
 sub uninstall
 {
 	require Package::AntiRootkits::Chkrootkit::Uninstaller;
+
 	Package::AntiRootkits::Chkrootkit::Uninstaller->getInstance()->uninstall();
 }
 
@@ -98,6 +101,7 @@ sub uninstall
 sub setEnginePermissions
 {
 	require Package::AntiRootkits::Chkrootkit::Installer;
+
 	Package::AntiRootkits::Chkrootkit::Installer->getInstance()->setEnginePermissions();
 }
 

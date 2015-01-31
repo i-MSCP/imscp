@@ -33,8 +33,10 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Dir;
+use iMSCP::File;
 use iMSCP::Database;
-use iMSCP::Execute;
+use Package::FrontEnd;
 use Package::Roundcube;
 use parent 'Common::SingletonClass';
 
@@ -64,6 +66,9 @@ sub uninstall
 	$rs = $self->_removeSqlDatabase();
 	return $rs if $rs;
 
+	rs = $self->_unregisterConfig();
+	return $rs if $rs;
+
 	$self->_removeFiles();
 }
 
@@ -85,6 +90,7 @@ sub _init
 {
 	my $self = $_[0];
 
+	$self->{'frontend'} = Package::FrontEnd->getInstance();
 	$self->{'roundcube'} = Package::Roundcube->getInstance();
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
@@ -100,7 +106,7 @@ sub _init
 
  Remove SQL user
 
- Return int 0
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -142,6 +148,45 @@ sub _removeSqlDatabase
 	0;
 }
 
+=item _unregisterConfig
+
+ Remove include directive from frontEnd vhost files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _unregisterConfig
+{
+	my ($tplContent, $tplName) = @_;
+
+	for my $vhostFile('00_master.conf', '00_master_ssl.conf') {
+		if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile") {
+			my $file = iMSCP::File->new(
+				filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile"
+			);
+
+			my $fileContent = $file->get();
+			unless(defined $fileContent) {
+				error("Unable to read file $file->{'filename'}");
+				return 1;
+			}
+
+			$fileContent =~ /[\t ]*include imscp_roundcube.conf;\n//;
+
+			my $rs = $file->set($fileContent);
+			return $rs if $rs;
+
+			$rs = $file->save();
+			return $rs if $rs;
+		}
+	}
+
+	$self->{'frontend'}->{'reload'} = 1;
+
+	0;
+}
+
 =item _removeFiles()
 
  Remove files
@@ -154,21 +199,16 @@ sub _removeFiles
 {
 	my $self = $_[0];
 
-	my ($stdout, $stderr);
+	my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove();
+	return $rs if $rs;
 
-	if(-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail") {
-		my $rs = execute(
-			"$main::imscpConfig{'CMD_RM'} -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail", \$stdout, \$stderr
-		);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
+	$rs = iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
+	return $rs if $rs;
 
-	if(-d $self->{'cfgDir'}) {
-		my $rs = execute("$main::imscpConfig{'CMD_RM'} -fR $self->{'cfgDir'}", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
+	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf") {
+		$rs = iMSCP::File->new(
+			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"
+		)->delFile();
 		return $rs if $rs;
 	}
 

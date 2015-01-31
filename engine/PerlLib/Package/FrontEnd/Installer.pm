@@ -733,7 +733,7 @@ sub _makeDirs
 		["$phpdir/master", $panelUName, $panelGName, 0550],
 		["$phpdir/master/php5", $panelUName, $panelGName, 0550]
 	) {
-		$rs = iMSCP::Dir->new('dirname' => $_->[0])->make({ 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3] });
+		$rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3] } );
 		return $rs if $rs;
 	}
 
@@ -766,7 +766,7 @@ sub _buildPhpConfig
 	for ('php5-fcgi-starter', 'php5/php.ini') {
 		if(-f "$self->{'config'}->{'PHP_STARTER_DIR'}/master/$_") {
 			my $fileName = basename($_);
-			my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'PHP_STARTER_DIR'}/master/$_");
+			my $file = iMSCP::File->new( filename => "$self->{'config'}->{'PHP_STARTER_DIR'}/master/$_" );
 			$rs = $file->copyFile("$bkpDir/$fileName.$timestamp");
 			return $rs if $rs;
 		}
@@ -798,7 +798,7 @@ sub _buildPhpConfig
 	return $rs if $rs;
 
 	# Install file in production directory
-	$rs = iMSCP::File->new('filename' => "$wrkDir/master.php5-fcgi-starter")->copyFile(
+	$rs = iMSCP::File->new( filename => "$wrkDir/master.php5-fcgi-starter" )->copyFile(
 		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5-fcgi-starter"
 	);
 	return $rs if $rs;
@@ -830,7 +830,7 @@ sub _buildPhpConfig
 
 	# Install new file in production directory
 	$rs = iMSCP::File->new(
-		'filename' => "$wrkDir/master.php.ini"
+		filename => "$wrkDir/master.php.ini"
 	)->copyFile(
 		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5/php.ini"
 	);
@@ -859,7 +859,7 @@ sub _buildHttpdConfig
 	# Backup file
 	if(-f "$self->{'wrkDir'}/nginx.conf") {
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'wrkDir'}/nginx.conf"
+			filename => "$self->{'wrkDir'}/nginx.conf"
 		)->copyFile("$self->{'bkpDir'}/nginx.conf." . time);
 		return $rs if $rs;
 	}
@@ -901,7 +901,7 @@ sub _buildHttpdConfig
 	return $rs if $rs;
 
 	# Install file
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/nginx.conf");
+	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/nginx.conf" );
 	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}");
 
 	# Backup, build, store and install the imscp_fastcgi.conf file
@@ -909,7 +909,7 @@ sub _buildHttpdConfig
 	# Backup file
 	if(-f "$self->{'wrkDir'}/imscp_fastcgi.conf") {
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'wrkDir'}/imscp_fastcgi.conf"
+			filename => "$self->{'wrkDir'}/imscp_fastcgi.conf"
 		)->copyFile("$self->{'bkpDir'}/imscp_fastcgi.conf." . time);
 		return $rs if $rs;
 	}
@@ -919,7 +919,7 @@ sub _buildHttpdConfig
 	return $rs if $rs;
 
 	# Install file
-	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp_fastcgi.conf");
+	$file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_fastcgi.conf");
 	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}");
 	return $rs if $rs;
 
@@ -928,7 +928,7 @@ sub _buildHttpdConfig
 	# Backup file
 	if(-f "$self->{'wrkDir'}/imscp_php.conf") {
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'wrkDir'}/imscp_php.conf"
+			filename => "$self->{'wrkDir'}/imscp_php.conf"
 		)->copyFile("$self->{'bkpDir'}/imscp_php.conf." . time);
 		return $rs if $rs;
 	}
@@ -938,7 +938,7 @@ sub _buildHttpdConfig
 	return $rs if $rs;
 
 	# Install file
-	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp_php.conf");
+	$file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_php.conf" );
 	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d");
 	return $rs if $rs;
 
@@ -997,7 +997,7 @@ sub _buildHttpdConfig
 
 	# Install new file
 	$rs = iMSCP::File->new(
-		'filename' => "$self->{'wrkDir'}/00_master.conf"
+		filename => "$self->{'wrkDir'}/00_master.conf"
 	)->copyFile(
 		"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
 	);
@@ -1015,7 +1015,7 @@ sub _buildHttpdConfig
 
 		# Install vhost in production directory
 		iMSCP::File->new(
-			'filename' => "$self->{'wrkDir'}/00_master_ssl.conf"
+			filename => "$self->{'wrkDir'}/00_master_ssl.conf"
 		)->copyFile(
 			"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
 		);
@@ -1034,7 +1034,7 @@ sub _buildHttpdConfig
 			"$self->{'wrkDir'}/00_master_ssl.conf",
 			"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
 		) {
-			$rs = iMSCP::File->new('filename' => $_)->delFile() if -f $_;
+			$rs = iMSCP::File->new( filename => $_)->delFile() if -f $_;
 			return $rs if $rs;
 		}
 	}
@@ -1045,7 +1045,7 @@ sub _buildHttpdConfig
 
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf") { # Nginx package as provided by Nginx Team
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf"
+			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf"
 		)->moveFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled");
 		return $rs if $rs;
 	} else {
@@ -1077,7 +1077,7 @@ sub _buildInitDefaultFile
 		# Backup file
 		if(-f "$imscpInitdConfDir/working/imscp_panel") {
 			$rs = iMSCP::File->new(
-				'filename' => "$imscpInitdConfDir/working/imscp_panel"
+				filename => "$imscpInitdConfDir/working/imscp_panel"
 			)->copyFile("$imscpInitdConfDir/backup/imscp_panel." . time);
 			return $rs if $rs;
 		}
@@ -1095,7 +1095,7 @@ sub _buildInitDefaultFile
 		return $rs if $rs;
 
 		# Install file
-		my $file = iMSCP::File->new('filename' => "$imscpInitdConfDir/working/imscp_panel");
+		my $file = iMSCP::File->new( filename => "$imscpInitdConfDir/working/imscp_panel" );
 		$rs = $file->copyFile('/etc/default');
 		return $rs if $rs;
 	}
@@ -1145,7 +1145,7 @@ sub _saveConfig
 	my $rootUname = $main::imscpConfig{'ROOT_USER'};
 	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
 
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/nginx.data");
+	my $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/nginx.data" );
 
 	my $rs = $file->owner($rootUname, $rootGname);
 	return $rs if $rs;
@@ -1159,7 +1159,7 @@ sub _saveConfig
 		return 1;
 	}
 
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/nginx.old.data");
+	$file = iMSCP::File->new( filename => "$self->{'cfgDir'}/nginx.old.data" );
 
 	$rs = $file->set($cfg);
 	return $rs if $rs;

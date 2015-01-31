@@ -43,6 +43,7 @@ use iMSCP::Composer;
 use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::File;
+use Package::FrontEnd;
 use File::Basename;
 use JSON;
 use version;
@@ -70,9 +71,15 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	$eventManager->register(
-		'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; }
-	);
+	my $rs = $eventManager->register( 'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; } );
+	return $rs if $rs;
+
+	# Preinstall tasks must be processed after frontEnd preinstall tasks
+	$rs = $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstall(); } );
+	return $rs if $rs;
+
+	# Install tasks must be processed after frontEnd install tasks
+	$eventManager->register( 'afterFrontEndInstall', sub { $self->install(); } );
 }
 
 =item showDialog(\%dialog)
@@ -173,6 +180,8 @@ sub showDialog
 
 sub preinstall
 {
+	my $self = $_[0];
+
 	my $version = undef;
 
 	if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
@@ -194,7 +203,11 @@ sub preinstall
 
 	my $pmaBranch = (qv("v$version") >= qv('v5.5')) ? '0.3.0' : '0.2.0';
 
-	iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', "$pmaBranch.*\@dev");
+	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', "$pmaBranch.*\@dev");
+	return $rs if $rs;
+
+	# Register listener which is responsible to add custom entry into the frontEnd vhost files
+	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
 }
 
 =item install()
@@ -209,25 +222,25 @@ sub install
 {
 	my $self = $_[0];
 
-	# Backup current configuration file if it exists (only relevant when running imscp-setup)
+	# Backup current configuration file if it exists ( only relevant when running imscp-setup )
 	my $rs = $self->_backupConfigFile(
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
 	);
 	return $rs if $rs;
 
-	# Install phpmyadmin files from local packages repository
+	# Install files from local packages repository
 	$rs = $self->_installFiles();
 	return $rs if $rs;
 
-	# Setup phpmyadmin database
+	# Setup database
 	$rs = $self->_setupDatabase();
 	return $rs if $rs;
 
-	# Setup phpmyadmin restricted SQL user
+	# Setup restricted SQL user
 	$rs = $self->_setupSqlUser();
 	return $rs if $rs;
 
-	# Generate Blowfish secret
+	# Generate blowfish secret
 	$rs = $self->_generateBlowfishSecret();
 	return $rs if $rs;
 
@@ -235,7 +248,11 @@ sub install
 	$rs = $self->_buildConfig();
 	return $rs if $rs;
 
-	# Set new phpMyAdmin version
+	# Build httpd configuration file
+	$rs = $self->_buildHttpdConfig();
+	return $rs if $rs;
+
+	# Set version
 	$rs = $self->_setVersion();
 	return $rs if $rs;
 
@@ -253,14 +270,58 @@ sub install
 
 sub setGuiPermissions
 {
-	my $panelUName =
-	my $panelGName =
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	if(-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma") {
+		my $panelUName =
+		my $panelGName =
+			$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	setRights(
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
-	);
+		my $rs = setRights(
+			"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
+			{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
+		);
+		return $rs if $rs;
+	}
+
+	0;
+}
+
+=back
+
+=head1 EVENT LISTENERS
+
+=over 4
+
+=item afterFrontEndBuildConfFile(\$tplContent, $filename)
+
+ Include httpd configuration into frontEnd vhost files
+
+ Param string \$tplContent Template file tplContent
+ Param string $tplName Template name
+ Return int 0 on success, other on failure
+
+=cut
+
+sub afterFrontEndBuildConfFile
+{
+	my ($tplContent, $tplName) = @_;
+
+	if($tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ]) {
+		$$tplContent = replaceBloc(
+			"# SECTION custom BEGIN.\n",
+			"# SECTION custom END.\n",
+			"    # SECTION custom BEGIN.\n" .
+			getBloc(
+				"# SECTION custom BEGIN.\n",
+				"# SECTION custom END.\n",
+				$$tplContent
+			) .
+				"    include imscp_pma.conf;\n" .
+				"    # SECTION custom END.\n",
+			$$tplContent
+		);
+	}
+
+	0;
 }
 
 =back
@@ -319,7 +380,7 @@ sub _backupConfigFile
 	if(-f $cfgFile) {
 		my $filename = fileparse($cfgFile);
 
-		my $file = iMSCP::File->new('filename' => $cfgFile);
+		my $file = iMSCP::File->new( filename => $cfgFile );
 		my $rs = $file->copyFile("$self->{'bkpDir'}/$filename." . time);
 
 		return $rs if $rs;
@@ -338,32 +399,27 @@ sub _backupConfigFile
 
 sub _installFiles
 {
-	my $repoDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages";
-	my $rs = 0;
+	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/phpmyadmin";
 
-	if(-d "$repoDir/vendor/imscp/phpmyadmin") {
-		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+	if(-d $packageDir) {
+		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 
 		my ($stdout, $stderr);
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $guiPublicDir/tools/pma", \$stdout, \$stderr);
+		my $rs = execute("$main::imscpConfig{'CMD_RM'} -fR $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -R $repoDir/vendor/imscp/phpmyadmin $guiPublicDir/tools/pma",
-			\$stdout,
-			\$stderr
-		);
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -fR $packageDir $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 	} else {
 		error("Couldn't find the imscp/phpmyadmin package into the packages cache directory");
-		$rs = 1;
+		return 1;
 	}
 
-	$rs;
+	0;
 }
 
 =item _saveConfig()
@@ -379,7 +435,7 @@ sub _saveConfig
 	my $self = $_[0];
 
 	iMSCP::File->new(
-		'filename' => "$self->{'cfgDir'}/phpmyadmin.data"
+		filename => "$self->{'cfgDir'}/phpmyadmin.data"
 	)->copyFile(
 		"$self->{'cfgDir'}/phpmyadmin.old.data"
 	);
@@ -552,7 +608,7 @@ sub _setupDatabase
 	fatal("Unable to connect to SQL server: $errStr") if ! $db;
 
 	# Import database schema
-	my $schemaFile = iMSCP::File->new('filename' => "$phpmyadminDir/examples/create_tables.sql")->get();
+	my $schemaFile = iMSCP::File->new( filename => "$phpmyadminDir/examples/create_tables.sql" )->get();
 	unless(defined $schemaFile) {
 		error("Unable to read $phpmyadminDir/examples/create_tables.sql");
 		return 1;
@@ -576,6 +632,26 @@ sub _setupDatabase
 	0;
 }
 
+=item _buildHttpdConfig()
+
+ Build Httpd configuration
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildHttpdConfig
+{
+	my $frontEnd = Package::FrontEnd->getInstance();
+
+	# Build and install file
+	$frontEnd->buildConfFile(
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/PhpMyAdmin/config/nginx/imscp_pma.conf",
+		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
+		{ destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf" }
+	);
+}
+
 =item _setVersion()
 
  Set version
@@ -590,7 +666,7 @@ sub _setVersion
 
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
-	my $json = iMSCP::File->new('filename' => "$guiPublicDir/tools/pma/composer.json")->get();
+	my $json = iMSCP::File->new( filename => "$guiPublicDir/tools/pma/composer.json" )->get();
 	unless(defined $json) {
 		error("Unable to read $guiPublicDir/tools/pma/composer.json");
 		return 1;
@@ -663,7 +739,7 @@ sub _buildConfig
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
-		$cfgTpl = iMSCP::File->new('filename' => "$confDir/imscp.config.inc.php")->get();
+		$cfgTpl = iMSCP::File->new( filename => "$confDir/imscp.config.inc.php" )->get();
 		unless(defined $cfgTpl) {
 			error("Unable to read file $confDir/imscp.config.inc.php");
 			return 1;
@@ -676,7 +752,7 @@ sub _buildConfig
 
 	# Store file
 
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
+	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$_" );
 	$rs = $file->set($cfgTpl);
 	return $rs if $rs;
 

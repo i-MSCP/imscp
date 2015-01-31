@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2014.09.25
+# Last update: 2015.01.31
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -176,7 +176,7 @@ $main::questions{'WEBSTATS_PACKAGES'} = 'Awstats'; # 'Awstats' or 'No'
 $main::questions{'AWSTATS_MODE'} = '0'; # Empty value if WEBSTATS_PACKAGES is set to 'No', 0 for dynamic or 1 for static
 
 # Ftp Web file manager
-$main::questions{'FILEMANAGER_PACKAGE'} = 'AjaXplorer'; # AjaXplorer or Net2ftp
+$main::questions{'FILEMANAGER_PACKAGE'} = 'Pydio'; # Pydio or Net2ftp
 
 # Phpmyadmin package restricted SQL user
 $main::questions{'PHPMYADMIN_SQL_USER'} = 'pma';

@@ -60,7 +60,15 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
+	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
+	return $rs if $rs;
+
+	# preinstall tasks must be processed after frontEnd preInstall tasks
+	$rs = $eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
+	return $rs if $rs;
+
+	# install tasks must be processed after frontEnd install tasks
+	$eventManager->register('afterFrontEndInstall', sub { $self->installListener(); });
 }
 
 =item showDialog(\%dialog)
@@ -74,9 +82,10 @@ sub registerSetupListeners
 
 sub showDialog
 {
-	my ($self, $dialog, $rs) = (@_, 0);
+	my ($self, $dialog) = @_;
 
 	my $package = main::setupGetQuestion('FILEMANAGER_PACKAGE');
+	my $rs = 0;
 
 	if(
 		$main::reconfigure ~~ ['filemanager', 'all', 'forced'] || ! $package || not $package ~~ @{$self->{'PACKAGES'}}
@@ -84,7 +93,7 @@ sub showDialog
 		($rs, $package) = $dialog->radiolist(
 			"\nPlease select the Ftp Web file manager package you want to install:",
 			$self->{'PACKAGES'},
-			($package ne  '' && $package ~~ $self->{'PACKAGES'} ) ? $package : @{$self->{'PACKAGES'}}[0]
+			($package ne '' && $package ~~ $self->{'PACKAGES'} ) ? $package : @{$self->{'PACKAGES'}}[0]
 		);
 	}
 
@@ -107,17 +116,28 @@ sub showDialog
 	$rs;
 }
 
-=item preinstall()
+=item preinstallListener()
 
  Process preinstall tasks
+
+ /!\ This method also trigger uninstallation of previous filemanager if needed.
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub preinstall
+sub preinstallListener
 {
+	my $self = $_[0];
+
+	my $oldPackage = $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
 	my $package = main::setupGetQuestion('FILEMANAGER_PACKAGE');
+
+	# Uninstall previous installed package if not identical
+	if($oldPackage && $oldPackage ne $package) {
+		my $rs = $self->uninstall($oldPackage);
+		return $rs if $rs;
+	}
 
 	$package = "Package::FileManager::${package}::${package}";
 	eval "require $package";
@@ -134,7 +154,7 @@ sub preinstall
 	0;
 }
 
-=item install()
+=item installListener()
 
  Process install tasks
 
@@ -142,8 +162,10 @@ sub preinstall
 
 =cut
 
-sub install
+sub installListener
 {
+	my $self = $_[0];
+
 	my $package = main::setupGetQuestion('FILEMANAGER_PACKAGE');
 
 	$package = "Package::FileManager::${package}::${package}";
@@ -156,6 +178,38 @@ sub install
 	} else {
 		error($@);
 		return 1;
+	}
+
+	0;
+}
+
+=item uninstall( [ $package ])
+
+ Process uninstall tasks
+
+ Param string $package OPTIONAL Package to uninstall
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+	my ($self, $package) = @_;
+
+	$package ||= $main::imscpConfig{'FILEMANAGER_PACKAGE'};
+
+	if($package) {
+		$package = "Package::FileManager::${package}::${package}";
+		eval "require $package";
+
+		unless($@) {
+			$package = $package->getInstance();
+			my $rs = $package->uninstall() if $package->can('uninstall');
+			return $rs if $rs;
+		} else {
+			error($@);
+			return 1;
+		}
 	}
 
 	0;
@@ -212,12 +266,12 @@ sub _init()
 
 	# Find list of available FileManager packages
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
-		'dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager"
+		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager"
 	)->getDirs();
 
-	# Filemanager permissions must be set after FrontEnd base permissions
+	# Permissions must be set after FrontEnd base permissions
 	iMSCP::EventManager->getInstance()->register(
-		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_) }
+		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_); }
 	);
 
 	$self;

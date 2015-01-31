@@ -56,10 +56,10 @@ function _getLoginCredentials($userId)
 }
 
 /**
- * Creates all cookies for Pydio (AjaXplorer)
+ * Creates all cookies for Pydio
  *
  * @access private
- * @param  array|string $cookies Array or string which contains cookies definitions for ajaxplorer
+ * @param  array|string $cookies Array or string which contains cookies definitions for Pydio
  * @return void
  */
 function _ajaxplorerCreateCookies($cookies)
@@ -70,7 +70,7 @@ function _ajaxplorerCreateCookies($cookies)
 }
 
 /**
- * Pydio (AjaXplorer) authentication
+ * Pydio authentication
  *
  * @param  int $userId ftp username
  * @return bool FALSE on failure
@@ -90,7 +90,7 @@ function _ajaxplorerAuth($userId)
 
 	$contextOptions = array();
 
-	// Prepares Pydio (AjaXplorer) absolute Uri to use
+	// Prepares Pydio absolute Uri to use
 	if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) {
 		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$ajaxplorerUri = "https://{$_SERVER['SERVER_NAME']}$port/ftp/";
@@ -106,7 +106,7 @@ function _ajaxplorerAuth($userId)
 		$ajaxplorerUri = "http://{$_SERVER['SERVER_NAME']}$port/ftp/";
 	}
 
-	// Pydio (AjaXplorer) authentication
+	// Pydio authentication
 
 	$context = stream_context_create(
 		array_merge($contextOptions, array(
@@ -178,7 +178,7 @@ check_login('user');
 /** @var $cg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (!customerHasFeature('ftp') || !(isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'AjaXplorer')) {
+if (!customerHasFeature('ftp') || !(isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'Pydio')) {
 	showBadRequestErrorPage();
 }
 

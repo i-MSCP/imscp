@@ -46,6 +46,7 @@ PACKAGES
 	Fixed: The force-reinstall installer command line option shouldn't be ignored by package installers
 	Fixed: The skip-distro-packages installer command line option shouldn't be ignored by package installers
 	Updated: logresolvmerge.pl script from Awstats package to version 1.2 ( build 20140126 )
+	Updated: Pydio (formely AjaxPlorer) package installer according new upstream release ( 6.x )
 
 PLUGINS
 	Fixed: Plugins that don't implement an API method which is being executed must not be instantiated

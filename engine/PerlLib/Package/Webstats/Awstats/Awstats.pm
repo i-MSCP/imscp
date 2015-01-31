@@ -155,7 +155,7 @@ sub addDmn
 		# Create statistics directory if it doesn't already exist - Set its permissions, owner and group in any case
 		if(! -d $userStatisticsDir) {
 			$rs = iMSCP::Dir->new(
-				'dirname' => $userStatisticsDir
+				dirname => $userStatisticsDir
 			)->make(
 				{ 'mode' => 02750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $data->{'GROUP'} }
 			);
@@ -200,7 +200,7 @@ sub addDmn
 			return $rs if $rs;
 		}
 	} else {
-		$rs = iMSCP::Dir->new('dirname' => $userStatisticsDir)->remove();
+		$rs = iMSCP::Dir->new( dirname => $userStatisticsDir )->remove();
 	}
 
 	# Protect home directory if needed
@@ -228,10 +228,10 @@ sub deleteDmn
 
 	my $rs = 0;
 
-	$rs = iMSCP::File->new('filename' => $cfgFileName)->delFile() if -f $cfgFileName;
+	$rs = iMSCP::File->new( filename => $cfgFileName )->delFile() if -f $cfgFileName;
 	return $rs if $rs;
 
-	$rs = iMSCP::File->new('filename' => $wrkFileName)->delFile() if -f $wrkFileName;
+	$rs = iMSCP::File->new( filename => $wrkFileName )->delFile() if -f $wrkFileName;
 	return $rs if $rs;
 
 	# Remove AWStats static HTML files if any
@@ -240,8 +240,8 @@ sub deleteDmn
 
 		if(-d $userStatisticsDir) {
 			my @awstatsStaticFiles = iMSCP::Dir->new(
-				'dirname' => $userStatisticsDir,
-				'fileType' => '^' . quotemeta("awstats.$data->{'DOMAIN_NAME'}") . '.*?\\.html'
+				dirname => $userStatisticsDir,
+				fileType => '^' . quotemeta("awstats.$data->{'DOMAIN_NAME'}") . '.*?\\.html'
 			)->getFiles();
 
 			if(@awstatsStaticFiles) {
@@ -261,8 +261,8 @@ sub deleteDmn
 
 	if(-d $awstatsCacheDir) {
 		my @awstatsCacheFiles = iMSCP::Dir->new(
-			'dirname' => $awstatsCacheDir,
-			'fileType' => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta(".$data->{'DOMAIN_NAME'}.txt")
+			dirname => $awstatsCacheDir,
+			fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta(".$data->{'DOMAIN_NAME'}.txt")
 		)->getFiles();
 
 		if(@awstatsCacheFiles) {
@@ -461,7 +461,7 @@ sub _addAwstatsConfig
 	my $awstatsPackageRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
 
 	# Loading template file
-	my $tplFileContent = iMSCP::File->new('filename' => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf")->get();
+	my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get();
 	unless(defined $tplFileContent) {
 		error("Unable to read $tplFileContent->{'filename'}");
 		return 1;
@@ -489,7 +489,7 @@ sub _addAwstatsConfig
 
 	# Install file
 	my $file = iMSCP::File->new(
-		'filename' => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf"
+		filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf"
 	);
 
 	my $rs = $file->set($tplFileContent);

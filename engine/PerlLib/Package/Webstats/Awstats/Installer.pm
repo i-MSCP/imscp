@@ -190,7 +190,7 @@ sub _init
 sub _createCacheDir
 {
 	iMSCP::Dir->new(
-		'dirname' => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
+		dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
 	)->make(
 		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $_[0]->{'httpd'}->getRunningGroup(), 'mode' => 02750 }
 	);
@@ -245,7 +245,7 @@ sub _disableDefaultConfig
 
 	if(-f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf") {
 		$rs = iMSCP::File->new(
-			'filename' => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf"
+			filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf"
 		)->moveFile(
 			"$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
 		);
@@ -254,7 +254,7 @@ sub _disableDefaultConfig
 
 	if(-f "$main::imscpConfig{'CRON_D_DIR'}/awstats") {
 		$rs = iMSCP::File->new(
-			'filename' => "$main::imscpConfig{'CRON_D_DIR'}/awstats"
+			filename => "$main::imscpConfig{'CRON_D_DIR'}/awstats"
 		)->moveFile(
 			"$main::imscpConfig{'CRON_D_DIR'}/awstats.disable"
 		);

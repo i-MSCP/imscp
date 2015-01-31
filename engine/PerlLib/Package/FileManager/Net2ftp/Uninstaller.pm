@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::PhpMyAdmin::Uninstaller - i-MSCP PhpMyAdmin package uninstaller
+Package::FileManager::Net2ftp::Uninstaller - i-MSCP Net2ftp package uninstaller
 
 =cut
 
@@ -27,7 +27,7 @@ Package::PhpMyAdmin::Uninstaller - i-MSCP PhpMyAdmin package uninstaller
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Package::PhpMyAdmin::Uninstaller;
+package Package::FileManager::Net2ftp::Uninstaller;
 
 use strict;
 use warnings;
@@ -35,14 +35,12 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::Database;
-use Package::PhpMyAdmin;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP PhpMyAdmin package uninstaller.
+ i-MSCP Net2ftp package uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -60,13 +58,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->_removeSqlUser();
-	return $rs if $rs;
-
-	$rs = $self->_removeSqlDatabase();
-	return $rs if $rs;
-
-	$rs = $self->_unregisterConfig();
+	my $rs = $self->_unregisterConfig();
 	return $rs if $rs;
 
 	$self->_removeFiles();
@@ -82,7 +74,7 @@ sub uninstall
 
  Initialize instance
 
- Return Package::PhpMyAdmin::Uninstaller
+ Return Package::FileManager::Net2ftp::Uninstaller
 
 =cut
 
@@ -90,60 +82,12 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance();
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
-
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
-	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
 	$self;
 }
 
-=item _removeSqlUser()
-
- Remove SQL user
-
- Return int 0
-
-=cut
-
-sub _removeSqlUser
-{
-	my $self = $_[0];
-
-	my $db = iMSCP::Database->factory();
-
-	$db->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
-	$db->doQuery('dummy', 'FLUSH PRIVILEGES');
-
-	0;
-}
-
-=item _removeSqlDatabase()
-
- Remove database
-
- Return int 0
-
-=cut
-
-sub _removeSqlDatabase
-{
-	my $self = $_[0];
-
-	my $database = iMSCP::Database->factory();
-
-	my $dbName = $database->quoteIdentifier($main::imscpConfig{'DATABASE_NAME'} . '_pma');
-
-	$database->doQuery('dummy', "DROP DATABASE IF EXISTS $dbName");
-
-	0;
-}
-
-=item _unregisterConfig
+=item _unregisterConfig()
 
  Remove include directive from frontEnd vhost files
 
@@ -167,7 +111,7 @@ sub _unregisterConfig
 				return 1;
 			}
 
-			$fileContent =~ s/[\t ]*include imscp_pma.conf;\n//;
+			$fileContent =~ s/[\t ]*include imscp_net2ftp.conf;\n//;
 
 			my $rs = $file->set($fileContent);
 			return $rs if $rs;
@@ -186,7 +130,7 @@ sub _unregisterConfig
 
  Remove files
 
- Return int 0
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -194,15 +138,12 @@ sub _removeFiles
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove();
+	my $rs = iMSCP::Dir->new( dirname =>  "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
 	return $rs if $rs;
 
-	$rs = iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
-	return $rs if $rs;
-
-	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf") {
+	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf") {
 		$rs = iMSCP::File->new(
-			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf"
+			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf"
 		)->delFile();
 		return $rs if $rs;
 	}

@@ -63,6 +63,7 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	require Package::FrontEnd::Installer;
+
 	Package::FrontEnd::Installer->getInstance()->registerSetupListeners($eventManager);
 }
 
@@ -103,6 +104,7 @@ sub install
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
+
 	$rs = Package::FrontEnd::Installer->getInstance()->install();
 	return $rs if $rs;
 
@@ -147,6 +149,7 @@ sub uninstall
 	return $rs if $rs;
 
 	require Package::FrontEnd::Uninstaller;
+
 	$rs = Package::FrontEnd::Uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
@@ -169,6 +172,7 @@ sub setGuiPermissions
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
+
 	$rs = Package::FrontEnd::Installer->getInstance()->setGuiPermissions();
 	return $rs if $rs;
 
@@ -191,6 +195,7 @@ sub setEnginePermissions
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
+
 	$rs = Package::FrontEnd::Installer->getInstance()->setEnginePermissions();
 	return $rs if $rs;
 
@@ -411,7 +416,7 @@ sub buildConfFile
 	unless(defined $cfgTpl) {
 		$file = "$self->{'cfgDir'}/$file" unless -d $path && $path ne './';
 
-		$cfgTpl = iMSCP::File->new('filename' => $file)->get();
+		$cfgTpl = iMSCP::File->new( filename => $file )->get();
 		unless(defined $cfgTpl) {
 			error("Unable to read $file");
 			return 1;
@@ -433,7 +438,7 @@ sub buildConfFile
 	# Store file
 
 	my $fileHandler = iMSCP::File->new(
-		'filename' => ($options->{'destination'}) ? $options->{'destination'} : "$self->{'wrkDir'}/$filename"
+		filename => ($options->{'destination'}) ? $options->{'destination'} : "$self->{'wrkDir'}/$filename"
 	);
 
 	$rs = $fileHandler->set($cfgTpl);
