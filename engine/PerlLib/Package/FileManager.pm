@@ -131,6 +131,12 @@ sub preinstallListener
 	my $self = $_[0];
 
 	my $oldPackage = $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
+
+	# Ensure backward compatibility ( See #IP-1249 )
+	if($oldPackage && $oldPackage eq 'AjaXplorer') {
+		$oldPackage = 'Pydio';
+	}
+
 	my $package = main::setupGetQuestion('FILEMANAGER_PACKAGE');
 
 	# Uninstall previous installed package if not identical
