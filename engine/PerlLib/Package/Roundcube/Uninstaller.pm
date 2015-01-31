@@ -172,7 +172,7 @@ sub _unregisterConfig
 				return 1;
 			}
 
-			$fileContent =~ /[\t ]*include imscp_roundcube.conf;\n//;
+			$fileContent =~ s/[\t ]*include imscp_roundcube.conf;\n//;
 
 			my $rs = $file->set($fileContent);
 			return $rs if $rs;
