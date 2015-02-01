@@ -7,6 +7,7 @@ Git 1.2.x
 BACKEND
 	Added: Checks for a2enconf/a2disconf command availability
 	Added: -h ( help ) short option ( iMSCP::Getopt module )
+	Fixed: Composer cache is not cleared correctly
 	Fixed: LC_MESSAGES has not expected effect in backend's scripts
 	Fixed: Postfix not restarted in some contexts ( Missing iMSCP::Service module )
 	Fixed: Useless instantiation of servers
