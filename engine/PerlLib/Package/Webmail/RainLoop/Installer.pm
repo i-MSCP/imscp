@@ -409,7 +409,7 @@ sub _setupDatabase
 	my $self = $_[0];
 
 	my $imscpDbName = main::setupGetQuestion('DATABASE_NAME');
-	my $rainloopDbName =  $imscpDbName . '_rainloop';
+	my $rainloopDbName = $imscpDbName . '_rainloop';
 	my $dbUser = main::setupGetQuestion('RAINLOOP_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('RAINLOOP_SQL_PASSWORD');

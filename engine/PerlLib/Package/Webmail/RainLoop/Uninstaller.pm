@@ -135,7 +135,7 @@ sub _removeSqlDatabase
 
 	my $dbName = $self->{'db'}->quoteIdentifier($main::imscpConfig{'DATABASE_NAME'} . '_rainloop');
 
-	$self->{'db'}->doQuery('delete', "DROP DATABASE IF EXISTS $dbName");
+	$self->{'db'}->doQuery('dummy', "DROP DATABASE IF EXISTS $dbName");
 
 	0;
 }
