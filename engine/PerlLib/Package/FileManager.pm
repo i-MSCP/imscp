@@ -88,11 +88,11 @@ sub showDialog
 	my $rs = 0;
 
 	if(
-		$main::reconfigure ~~ ['filemanager', 'all', 'forced'] || ! $package || not $package ~~ @{$self->{'PACKAGES'}}
+		$main::reconfigure ~~ [ 'filemanager', 'all', 'forced' ] || ! $package || not $package ~~ @{$self->{'PACKAGES'}}
 	) {
 		($rs, $package) = $dialog->radiolist(
 			"\nPlease select the Ftp Web file manager package you want to install:",
-			$self->{'PACKAGES'},
+			[ @{$self->{'PACKAGES'}} ],
 			($package ne '' && $package ~~ $self->{'PACKAGES'} ) ? $package : @{$self->{'PACKAGES'}}[0]
 		);
 	}

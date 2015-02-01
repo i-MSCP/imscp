@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2015.01.31
+# Last update: 2015.02.01
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -182,11 +182,24 @@ $main::questions{'FILEMANAGER_PACKAGE'} = 'Pydio'; # Pydio or Net2ftp
 $main::questions{'PHPMYADMIN_SQL_USER'} = 'pma';
 $main::questions{'PHPMYADMIN_SQL_PASSWORD'} = 'password'; # Password must not be empty
 
+# Webmmail packages
+# List of webmail packages to install such as ( RainLoop,Roundcube )
+# Set the value to 'No' if you do not want install any webmail
+$main::questions{'WEBMAIL_PACKAGES'} = 'Rainloop,Roundcube';
+
 # Roundcube package restricted SQL user
+# Only relevant if the Roundcube package is listed in the WEBMAIL_PACKAGES parameter
 $main::questions{'ROUNDCUBE_SQL_USER'} = 'roundcube_user';
 $main::questions{'ROUNDCUBE_SQL_PASSWORD'} = 'password'; # Password must not be empty
 
+# Rainloop package restricted SQL user
+# Only relevant if the RainLoop package is listed in the WEBMAIL_PACKAGES parameter
+$main::questions{'RAINLOOP_SQL_USER'} = 'rainloop_user';
+$main::questions{'RAINLOOP_SQL_PASSWORD'} = 'password'; # Password must not be empty
+
 # Anti-Rootkits packages
-$main::questions{'ANTI_ROOTKITS_PACKAGES'} = 'Chkrootkit,Rkhunter'; # 'Chkrootkit' and/or 'Rkhunter' or 'No', each value comma separated
+# List of Anti-Rootkits packages to install such as ( Chkrootkit,Rkhunter )
+# Set the value to 'No' if you do not want install any Anti-Rootkit
+$main::questions{'ANTI_ROOTKITS_PACKAGES'} = 'Chkrootkit,Rkhunter';
 
 1;

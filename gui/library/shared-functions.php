@@ -3289,7 +3289,7 @@ function getWebmailList()
 {
 	$config = iMSCP_Registry::get('config');
 
-	if( isset($config['WEBMAIL_PACKAGES']) && $config['WEBMAIL_PACKAGES'] != strtolower('no') ) {
+	if( isset($config['WEBMAIL_PACKAGES']) && strtolower($config['WEBMAIL_PACKAGES']) != 'no' ) {
 		return explode(',', $config['WEBMAIL_PACKAGES']);
 	}
 

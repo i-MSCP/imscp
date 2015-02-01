@@ -81,16 +81,16 @@ sub showDialog
 {
 	my ($self, $dialog) = @_;
 
-	my $packages = [split ',', main::setupGetQuestion('ANTI_ROOTKITS_PACKAGES')];
+	my $packages = [ split ',', main::setupGetQuestion('ANTI_ROOTKITS_PACKAGES') ];
 	my $rs = 0;
 
 	if(
-		$main::reconfigure ~~ ['antirootkits', 'all', 'forced'] || ! @{$packages} ||
-		grep { not $_ ~~ [$self->{'PACKAGES'}, 'No'] } @{$packages}
+		$main::reconfigure ~~ [ 'antirootkits', 'all', 'forced' ] || ! @{$packages} ||
+		grep { not $_ ~~ [ $self->{'PACKAGES'}, 'No' ] } @{$packages}
 	) {
 		($rs, $packages) = $dialog->checkbox(
 			"\nPlease select the Anti-Rootkits packages you want to install:",
-			$self->{'PACKAGES'},
+			[ @{$self->{'PACKAGES'}} ],
 			(@{$packages} ~~ 'No') ? () : (@{$packages} ? @{$packages} : @{$self->{'PACKAGES'}})
 		);
 	}
@@ -134,8 +134,8 @@ sub preinstall
 
 	my $rs = 0;
 	my @packages = split ',', main::setupGetQuestion('ANTI_ROOTKITS_PACKAGES');
-	my $packagesToInstall = [grep { $_ ne 'No'} @packages];
-	my $packagesToUninstall = [grep { not $_ ~~  @{$packagesToInstall}} @{$self->{'PACKAGES'}}];
+	my $packagesToInstall = [ grep { $_ ne 'No'} @packages ];
+	my $packagesToUninstall = [ grep { not $_ ~~  @{$packagesToInstall}} @{$self->{'PACKAGES'}} ];
 
 	if(@{$packagesToUninstall}) {
 		my $packages = [];

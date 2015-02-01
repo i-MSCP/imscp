@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::Webmail::Roundcube::Uninstaller - i-MSCP Roundcube package uninstaller
+Package::Webmail::RainLoop::Uninstaller - i-MSCP RainLoop package uninstaller
 
 =cut
 
@@ -27,7 +27,7 @@ Package::Webmail::Roundcube::Uninstaller - i-MSCP Roundcube package uninstaller
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Package::Webmail::Roundcube::Uninstaller;
+package Package::Webmail::RainLoop::Uninstaller;
 
 use strict;
 use warnings;
@@ -37,12 +37,12 @@ use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Database;
 use Package::FrontEnd;
-use Package::Webmail::Roundcube::Roundcube;
+use Package::Webmail::RainLoop::RainLoop;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Roundcube package uninstaller.
+ i-MSCP RainLoop package uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -82,7 +82,7 @@ sub uninstall
 
  Initialize instance
 
- Return Package::Webmail::Roundcube::Uninstaller
+ Return Package::Webmail::RainLoop::Uninstaller
 
 =cut
 
@@ -90,15 +90,9 @@ sub _init
 {
 	my $self = $_[0];
 
+	$self->{'rainloop'} = Package::Webmail::RainLoop::RainLoop->getInstance();
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
-	$self->{'roundcube'} = Package::Webmail::Roundcube::Roundcube->getInstance();
 	$self->{'db'} = iMSCP::Database->factory();
-
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
-	$self->{'config'} = $self->{'roundcube'}->{'config'};
 
 	$self;
 }
@@ -118,7 +112,8 @@ sub _removeSqlUser
 	# We do not catch any error here - It's expected
 	for($main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%') {
 		next unless $_;
-		$self->{'db'}->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $_);
+
+		$self->{'db'}->doQuery('dummy', "DROP USER ?@?", $self->{'rainloop'}->{'config'}->{'DATABASE_USER'}, $_);
 	}
 
 	$self->{'db'}->doQuery('dummy', 'FLUSH PRIVILEGES');
@@ -138,7 +133,7 @@ sub _removeSqlDatabase
 {
 	my $self = $_[0];
 
-	my $dbName = $self->{'db'}->quoteIdentifier($main::imscpConfig{'DATABASE_NAME'} . '_roundcube');
+	my $dbName = $self->{'db'}->quoteIdentifier($main::imscpConfig{'DATABASE_NAME'} . '_rainloop');
 
 	$self->{'db'}->doQuery('delete', "DROP DATABASE IF EXISTS $dbName");
 
@@ -169,7 +164,7 @@ sub _unregisterConfig
 				return 1;
 			}
 
-			$fileContent =~ s/[\t ]*include imscp_roundcube.conf;\n//;
+			$fileContent =~ s/[\t ]*include imscp_rainloop.conf;\n//;
 
 			my $rs = $file->set($fileContent);
 			return $rs if $rs;
@@ -196,15 +191,15 @@ sub _removeFiles
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove();
+	my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" )->remove();
 	return $rs if $rs;
 
-	$rs = iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
+	$rs = iMSCP::Dir->new( dirname => $self->{'rainloop'}->{'cfgDir'} )->remove();
 	return $rs if $rs;
 
-	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf") {
+	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf") {
 		$rs = iMSCP::File->new(
-			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"
+			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
 		)->delFile();
 		return $rs if $rs;
 	}

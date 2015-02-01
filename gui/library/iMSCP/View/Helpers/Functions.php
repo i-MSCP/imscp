@@ -263,7 +263,7 @@ function generateNavigation($tpl)
 				foreach($webmails as $webmail) {
 					$page =array(
 						'label' => tr('%s webmail', $webmail),
-						'uri' => '/' . (($webmail == 'Roundcube') ? 'webmail' : '/'. $webmail),
+						'uri' => '/' . (($webmail == 'Roundcube') ? 'webmail' : strtolower($webmail)),
 						'target' => '_blank',
 					);
 

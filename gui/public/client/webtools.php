@@ -50,14 +50,14 @@ function client_hideDisabledFeatures($tpl)
 		$tpl->assign('BACKUP_FEATURE', '');
 	}
 
-	$webmails =  getWebmailList();
+	$webmails = getWebmailList();
 	if (!customerHasFeature('mail') || empty($webmails)) {
 		$tpl->assign('MAIL_FEATURE', '');
 	} else {
 		if(in_array('Roundcube', $webmails)) {
 			$tpl->assign('WEBMAIL_PATH', '/webmail');
 		} else {
-			$tpl->assign('WEBMAIL_PATH', '/'. $webmails[0]);
+			$tpl->assign('WEBMAIL_PATH', '/'. strtolower($webmails[0]));
 		}
 	}
 

@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::Webmail::Roundcube::Roundcube - i-MSCP Roundcube package
+Package::Webmail::RainLoop::RainLoop - i-MSCP RainLoop package
 
 =cut
 
@@ -27,7 +27,7 @@ Package::Webmail::Roundcube::Roundcube - i-MSCP Roundcube package
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Package::Webmail::Roundcube::Roundcube;
+package Package::Webmail::RainLoop::RainLoop;
 
 use strict;
 use warnings;
@@ -35,19 +35,16 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Database;
+use iMSCP::Dir;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Roundcube package for i-MSCP.
+ RainLoop package for i-MSCP.
 
- RoundCube Webmail is a browser-based multilingual IMAP client with an application-like user interface. It provides full
-functionality expected from an email client, including MIME support, address book, folder manipulation and message
-filters.
+ RainLoop Webmail is a simple, modern and fast Web-based email client.
 
- The user interface is fully skinnable using XHTML and CSS 2.
-
- Project homepage: http://www.roundcube.net/
+ Project homepage: http://http://rainloop.net/
 
 =head1 PUBLIC METHODS
 
@@ -66,9 +63,9 @@ sub showDialog
 {
 	my ($self, $dialog) = @_;
 
-	require Package::Webmail::Roundcube::Installer;
+	require Package::Webmail::RainLoop::Installer;
 
-	Package::Webmail::Roundcube::Installer->getInstance()->showDialog($dialog);
+	Package::Webmail::RainLoop::Installer->getInstance()->showDialog($dialog);
 }
 
 =item preinstall()
@@ -81,9 +78,9 @@ sub showDialog
 
 sub preinstall
 {
-	require Package::Webmail::Roundcube::Installer;
+	require Package::Webmail::RainLoop::Installer;
 
-	Package::Webmail::Roundcube::Installer->getInstance()->preinstall();
+	Package::Webmail::RainLoop::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -96,9 +93,9 @@ sub preinstall
 
 sub install
 {
-	require Package::Webmail::Roundcube::Installer;
+	require Package::Webmail::RainLoop::Installer;
 
-	Package::Webmail::Roundcube::Installer->getInstance()->install();
+	Package::Webmail::RainLoop::Installer->getInstance()->install();
 }
 
 =item uninstall()
@@ -111,9 +108,9 @@ sub install
 
 sub uninstall
 {
-	require Package::Webmail::Roundcube::Uninstaller;
+	require Package::Webmail::RainLoop::Uninstaller;
 
-	Package::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
+	Package::Webmail::RainLoop::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions()
@@ -126,9 +123,9 @@ sub uninstall
 
 sub setGuiPermissions
 {
-	require Package::Webmail::Roundcube::Installer;
+	require Package::Webmail::RainLoop::Installer;
 
-	Package::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
+	Package::Webmail::RainLoop::Installer->getInstance()->setGuiPermissions();
 }
 
 =item deleteMail(\%data)
@@ -144,32 +141,57 @@ sub deleteMail
 {
 	my ($self, $data) = @_;
 
-	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
-	my $rs = 0;
-
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 		my $database = iMSCP::Database->factory();
-		$database->set('DATABASE_NAME', $roundcubeDbName);
-		$rs = $database->connect();
+		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} . '_rainloop');
+		my $rs = $database->connect();
 
 		unless($rs) {
-			my $rdata = $database->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
-			unless(ref $rdata eq 'HASH') {
-				error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from roundcube database: $rdata");
-				$rs = 1;
+			# Remove contacts if any
+
+			$rs = $database->doQuery(
+				'dummy',
+				'
+					DELETE
+						u, c, p
+					FROM
+						rainloop_users u
+					JOIN
+						rainloop_ab_contacts c USING(id_user)
+					JOIN
+						rainloop_ab_properties p USING(id_user)
+					WHERE
+						rl_email = ?
+				',
+				$data->{'MAIL_ADDR'}
+			);
+			unless(ref $rs eq 'HASH') {
+				error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from rainloop database: $rs");
+				return 1;
 			}
 		} else {
 			error($rs);
-			$rs = 1;
+			return 1;
 		}
 
 		# Restore connection to i-MSCP database
 		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
 
 		fatal("Unable to restore connection to i-MSCP database: $rs") if $database->connect();
+
+		# Remove settings from file storage if any
+
+		my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" .
+			"/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/storage/cfg";
+
+		(my $email = $data->{'MAIL_ADDR'}) =~ s/[^a-z0-9\-\.@]+/_/;
+		(my $storagePath = substr($email, 0, 2)) =~ s/\@$//;
+
+		$rs = iMSCP::Dir->new( dirname => $storageDir . '/' . $storagePath . '/' . $email )->remove();
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 =back
@@ -182,7 +204,7 @@ sub deleteMail
 
  Initialize instance
 
- Return Package::Webmail::Roundcube::Roundcube
+ Return Package::Webmail::RainLoop::RainLoop
 
 =cut
 
@@ -190,12 +212,10 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/rainloop";
 
-	if(-f "$self->{'cfgDir'}/roundcube.data") {
-		tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
+	if(-f "$self->{'cfgDir'}/rainloop.data") {
+		tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/rainloop.data";
 	} else {
 		$self->{'config'} = { };
 	}

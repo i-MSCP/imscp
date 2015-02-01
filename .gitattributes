@@ -1,6 +1,6 @@
 .gitattributes export-ignore
 .gitignore export-ignore
-* text=eol=lf
+* text eol=lf
 *.gif binary
 *.jpg binary
 *.mo binary

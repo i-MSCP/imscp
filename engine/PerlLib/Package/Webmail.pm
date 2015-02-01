@@ -62,11 +62,9 @@ sub registerSetupListeners
 	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 	return $rs if $rs;
 
-	# preinstall tasks must be processed after frontEnd preInstall tasks
 	$rs = $eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
 	return $rs if $rs;
 
-	# install tasks must be processed after frontEnd install tasks
 	$eventManager->register('afterFrontEndInstall', sub { $self->installListener(); });
 }
 
@@ -88,11 +86,11 @@ sub showDialog
 
 	if(
 		$main::reconfigure ~~ [ 'webmails', 'all', 'forced' ] || ! @{$packages} ||
-		grep { not $_ ~~ [$self->{'PACKAGES'}, 'No'] } @{$packages}
+		grep { not $_ ~~ [ $self->{'PACKAGES'}, 'No' ] } @{$packages}
 	) {
 		($rs, $packages) = $dialog->checkbox(
 			"\nPlease select the webmail packages you want to install:",
-			$self->{'PACKAGES'},
+			[ @{$self->{'PACKAGES'}} ],
 			(@{$packages} ~~ 'No') ? () : (@{$packages} ? @{$packages} : @{$self->{'PACKAGES'}})
 		);
 	}
@@ -106,9 +104,10 @@ sub showDialog
 				eval "require $package";
 
 				unless($@) {
-					$package = $package->getInstance();
-					$rs = $package->showDialog($dialog) if $package->can('showDialog');
-					last if $rs;
+					if($package->can('showDialog')) {
+						$rs = $package->getInstance()->showDialog($dialog);
+						return $rs if $rs;
+					}
 				} else {
 					error($@);
 					return 1;
@@ -124,7 +123,7 @@ sub showDialog
 
  Process preinstall tasks
 
- /!\ This method also trigger uninstallation of unselected webmail package.
+ /!\ This method also trigger uninstallation of unselected webmail packages.
 
  Return int 0 on success, other on failure
 
@@ -135,24 +134,13 @@ sub preinstallListener
 	my $self = $_[0];
 
 	my @packages = split ',', main::setupGetQuestion('WEBMAIL_PACKAGES');
+
 	my $packagesToInstall = [ grep { $_ ne 'No'} @packages ];
 	my $packagesToUninstall = [ grep { not $_ ~~  @{$packagesToInstall} } @{$self->{'PACKAGES'}} ];
-	debug("god: @{$packagesToUninstall}");
 
 	if(@{$packagesToUninstall}) {
-		for(@{$packagesToUninstall}) {
-			my $package = "Package::Webmail::${_}::${_}";
-			eval "require $package";
-
-			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->uninstall(); # Mandatory method
-				return $rs if $rs;
-			} else {
-				error($@);
-				return 1;
-			}
-		}
+		my $rs = $self->uninstall(@{$packagesToUninstall});
+		return $rs if $rs;
 	}
 
 	if(@{$packagesToInstall}) {
@@ -161,9 +149,10 @@ sub preinstallListener
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->preinstall() if $package->can('preinstall');
-				return $rs if $rs;
+				if($package->can('preinstall')) {
+					my $rs = $package->getInstance()->preinstall();
+					return $rs if $rs;
+				}
 			} else {
 				error($@);
 				return 1;
@@ -192,9 +181,10 @@ sub installListener
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->install() if $package->can('install');
-				return $rs if $rs;
+				if($package->can('install')) {
+					my $rs = $package->getInstance()->install();
+					return $rs if $rs;
+				}
 			} else {
 				error($@);
 				return 1;
@@ -209,16 +199,16 @@ sub installListener
 
  Process uninstall tasks
 
- Param string $package OPTIONAL Package to uninstall
+ Param list @packages OPTIONAL Packages to uninstall
  Return int 0 on success, other on failure
 
 =cut
 
 sub uninstall
 {
-	my $self = $_[0];
+	my ($self, @packages) = @_;
 
-	my @packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'};
+	@packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} unless @packages;
 
 	for(@packages) {
 		if($_ ~~ @{$self->{'PACKAGES'}}) {
@@ -226,9 +216,10 @@ sub uninstall
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->uninstall(); # Mandatory method;
-				return $rs if $rs;
+				if($package->can('uninstall')) {
+					my $rs = $package->getInstance()->uninstall();
+					return $rs if $rs;
+				}
 			} else {
 				error($@);
 				return 1;
@@ -259,9 +250,10 @@ sub setPermissionsListener
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->setGuiPermissions() if $package->can('setGuiPermissions');
-				return $rs if $rs;
+				if($package->can('setGuiPermissions')) {
+					my $rs = $package->getInstance()->setGuiPermissions();
+					return $rs if $rs;
+				}
 			} else {
 				error($@);
 				return 1;
@@ -293,9 +285,10 @@ sub deleteMail
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->deleteMail() if $package->can('deleteMail');
-				return $rs if $rs;
+				if($package->can('deleteMail')) {
+					my $rs = $package->getInstance()->deleteMail();
+					return $rs if $rs;
+				}
 			} else {
 				error($@);
 				return 1;
