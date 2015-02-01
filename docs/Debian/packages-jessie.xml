@@ -111,7 +111,6 @@
         <package>php5-cli</package>
         <package>php5-curl</package>
         <package>php-pear</package>
-        <package>php5-sqlite</package>
         <package>php5-gd</package>
         <package>php-gettext</package>
         <package>php5-imap</package>
