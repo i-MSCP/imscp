@@ -115,11 +115,11 @@ sub _init
 		'afterSetupPreInstallAddons', sub {
 			iMSCP::Dialog->getInstance()->endGauge();
 
-			my $rs = iMSCP::Dir->new('dirname' => $self->{'wrkDir'})->make();
+			# Clear local repository if asked by user
+			my $rs = $self->_clearLocalRepository() if iMSCP::Getopt->cleanAddons;
 			return $rs if $rs;
 
-			# Clear local repository if asked by user
-			$rs = $self->_clearLocalRepository() if iMSCP::Getopt->cleanAddons;
+			$rs = iMSCP::Dir->new('dirname' => $self->{'wrkDir'})->make();
 			return $rs if $rs;
 
 			if(! iMSCP::Getopt->skipAddonsUpdate || ! -x "$self->{'wrkDir'}/composer.phar") {
@@ -313,7 +313,7 @@ sub _clearLocalRepository
 
 	if(-d $self->{'wrkDir'}) {
 		my ($stdout, $stderr);
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $self->{'wrkDir'}/*", \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $self->{'wrkDir'}", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error('Unable to clear local repository') if $rs && ! $stderr;

@@ -1,4 +1,4 @@
-﻿i-MSCP ChangeLog
+﻿﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
 Git 1.1.x
@@ -17,6 +17,7 @@ DAEMON
 	Updated: Version to 1.2.2
 
 ENGINE
+	Fixed: Composer cache is not cleared correctly
 	Fixed: LC_MESSAGES has not expected effect in backend's scripts
 	Removed: policyd-weight and postgrey ( Postfix SMTP access policy delegation )
 
