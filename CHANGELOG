@@ -42,7 +42,7 @@ INSTALLER
 	Renamed: 'webmail' configuration item to 'webmails' ( --reconfigure command line option )
 
 PACKAGES
-	Added: Rainloop package ( alternative webmail )
+	Added: RainLoop package ( alternative webmail )
 	Changed: Installation of webmail package is now optional
 	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )
 	Fixed: Single quotes in sql usernames must be escaped in configuration files ( PhpMyAdmin, Roundcube )
