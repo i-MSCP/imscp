@@ -293,7 +293,8 @@ function customerHasFeature($featureNames, $forceReload = false)
 			'domain' => ($dmnProps['domain_alias_limit'] != '-1'
 				|| $dmnProps['domain_subd_limit'] != '-1'
 				|| $dmnProps['domain_dns'] == 'yes'
-				|| $dmnProps['phpini_perm_system'] == 'yes') ? true : false,
+				|| $dmnProps['phpini_perm_system'] == 'yes'
+				|| $cfg['ENABLE_SSL']) ? true : false,
 			'external_mail' => ($dmnProps['domain_external_mail'] == 'yes') ? true : false,
 			'php' => ($dmnProps['domain_php'] == 'yes') ? true : false,
 			'php_editor' => ($dmnProps['phpini_perm_system'] == 'yes' &&
