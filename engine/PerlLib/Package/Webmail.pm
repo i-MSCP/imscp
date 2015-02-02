@@ -275,7 +275,7 @@ sub setPermissionsListener
 
 sub deleteMail
 {
-	my $self = $_[0];
+	my ($self, $data) = @_;
 
 	my @packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'};
 
@@ -286,7 +286,7 @@ sub deleteMail
 
 			unless($@) {
 				if($package->can('deleteMail')) {
-					my $rs = $package->getInstance()->deleteMail();
+					my $rs = $package->getInstance()->deleteMail($data);
 					return $rs if $rs;
 				}
 			} else {
