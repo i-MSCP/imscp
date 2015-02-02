@@ -416,7 +416,7 @@ sub _setupDatabase
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
-	$quotedRainLoopDbName = $db->quoteIdentifier($rainLoopDbName);
+	my $quotedRainLoopDbName = $db->quoteIdentifier($rainLoopDbName);
 
 	my $rs = $db->doQuery(
 		'dummy', "CREATE DATABASE IF NOT EXISTS $quotedRainLoopDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
@@ -450,7 +450,7 @@ sub _setupDatabase
 		return 1;
 	}
 
-	$quotedImscpDbName = $db->quoteIdentifier($imscpDbName);
+	my $quotedImscpDbName = $db->quoteIdentifier($imscpDbName);
 
 	$rs = $db->doQuery(
 		'dummy',

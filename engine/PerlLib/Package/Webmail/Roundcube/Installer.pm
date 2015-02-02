@@ -481,7 +481,7 @@ sub _setupDatabase
 		return 1;
 	}
 
-	$quotedImscpDbName = $db->quoteIdentifier($imscpDbName);
+	my $quotedImscpDbName = $db->quoteIdentifier($imscpDbName);
 
 	$rs = $db->doQuery(
 		'dummy',
