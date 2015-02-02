@@ -88,7 +88,7 @@ sub showDialog
 	) {
 		($rs, $addons) = $dialog->checkbox(
 			"\nPlease, select the Webstats addons you want install:",
-			$self->{'ADDONS'},
+			[ @{$self->{'ADDONS'}} ],
 			(@{$addons} ~~ 'No') ? () : (@{$addons} ? @{$addons} : @{$self->{'ADDONS'}})
 		);
 	}

@@ -84,7 +84,7 @@ sub showDialog
 	) {
 		($rs, $addon) = $dialog->radiolist(
 			"\nPlease, select the Ftp Web file manager addon you want install:",
-			$self->{'ADDONS'},
+			[ @{$self->{'ADDONS'}} ],
 			($addon ne  '' && $addon ~~ $self->{'ADDONS'} ) ? $addon : @{$self->{'ADDONS'}}[0]
 		);
 	}
