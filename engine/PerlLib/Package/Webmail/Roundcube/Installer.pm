@@ -415,7 +415,7 @@ sub _setupDatabase
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 
 	my $imscpDbName = main::setupGetQuestion('DATABASE_NAME');
-	my $roundcubeDbName =  $imscpDbName . '_roundcube';
+	my $roundcubeDbName = $imscpDbName . '_roundcube';
 	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD');
@@ -620,7 +620,7 @@ sub _updateDatabase
 	# correctly updated (These checks will be removed when http://trac.roundcube.net/ticket/1489044 will be fixed)
 
 	my ($database, $errStr) = main::setupGetSqlConnect($roundcubeDbName);
-	if(! $database) {
+	unless($database) {
 		error("Unable to connect to SQL database: $errStr");
 		return 1;
 	}

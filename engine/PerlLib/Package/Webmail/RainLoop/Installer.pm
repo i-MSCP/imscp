@@ -406,7 +406,7 @@ sub _setupDatabase
 	my $self = $_[0];
 
 	my $imscpDbName = main::setupGetQuestion('DATABASE_NAME');
-	my $rainloopDbName = $imscpDbName . '_rainloop';
+	my $rainLoopDbName = $imscpDbName . '_rainloop';
 	my $dbUser = main::setupGetQuestion('RAINLOOP_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('RAINLOOP_SQL_PASSWORD');
@@ -416,10 +416,10 @@ sub _setupDatabase
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
-	$quoredRainloopDbName = $db->quoteIdentifier($rainloopDbName);
+	$quotedRainLoopDbName = $db->quoteIdentifier($rainLoopDbName);
 
 	my $rs = $db->doQuery(
-		'dummy', "CREATE DATABASE IF NOT EXISTS $quoredRainloopDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+		'dummy', "CREATE DATABASE IF NOT EXISTS $quotedRainLoopDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 	);
 	unless(ref $rs eq 'HASH') {
 		error("Unable to create SQL database: $rs");
@@ -443,7 +443,7 @@ sub _setupDatabase
 	}
 
 	$rs = $db->doQuery(
-		'dummy', "GRANT ALL PRIVILEGES ON $quoredRainloopDbName.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
+		'dummy', "GRANT ALL PRIVILEGES ON $quotedRainLoopDbName.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
 	);
 	unless(ref $rs eq 'HASH') {
 		error("Unable to add privileges: $rs");
