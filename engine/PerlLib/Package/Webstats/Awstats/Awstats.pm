@@ -71,6 +71,7 @@ sub showDialog
 	my ($self, $dialog) = @_;
 
 	require Package::Webstats::Awstats::Installer;
+
 	Package::Webstats::Awstats::Installer->getInstance()->showDialog($dialog);
 }
 
@@ -85,6 +86,7 @@ sub showDialog
 sub install
 {
 	require Package::Webstats::Awstats::Installer;
+
 	Package::Webstats::Awstats::Installer->getInstance()->install();
 }
 
@@ -99,6 +101,7 @@ sub install
 sub uninstall
 {
 	require Package::Webstats::Awstats::Uninstaller;
+
 	Package::Webstats::Awstats::Uninstaller->getInstance()->uninstall();
 }
 
@@ -113,6 +116,7 @@ sub uninstall
 sub setEnginePermissions
 {
 	require Package::Webstats::Awstats::Installer;
+
 	Package::Webstats::Awstats::Installer->getInstance()->setEnginePermissions();
 }
 
@@ -147,13 +151,11 @@ sub addDmn
 
 	my $userStatisticsDir = "$data->{'HOME_DIR'}/statistics";
 
-	# Unprotect home directory
 	$rs = clearImmutable($data->{'HOME_DIR'});
 	return $rs if $rs;
 
 	if($main::imscpConfig{'AWSTATS_MODE'} eq '1') { # Static mode
-		# Create statistics directory if it doesn't already exist - Set its permissions, owner and group in any case
-		if(! -d $userStatisticsDir) {
+		unless(-d $userStatisticsDir) {
 			$rs = iMSCP::Dir->new(
 				dirname => $userStatisticsDir
 			)->make(
@@ -164,7 +166,6 @@ sub addDmn
 			require iMSCP::Rights;
 			iMSCP::Rights->import();
 
-			# Set user statistics pages permissions, owner and group
 			$rs = setRights(
 				$userStatisticsDir,
 				{
@@ -177,11 +178,9 @@ sub addDmn
 			return $rs if $rs;
 		}
 
-		# Add cron task for static mode
 		$rs = $self->_addAwstatsCronTask($data);
 		return $rs if $rs;
 
-		# Schedule static pages generation for the domain if needed
 		unless(-f "$userStatisticsDir/awstats.$data->{'DOMAIN_NAME'}.html") {
 			my ($stdout, $stderr);
 			$rs = execute(
@@ -203,7 +202,6 @@ sub addDmn
 		$rs = iMSCP::Dir->new( dirname => $userStatisticsDir )->remove();
 	}
 
-	# Protect home directory if needed
 	$rs = setImmutable($data->{'HOME_DIR'}) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
 	return $rs if $rs;
 
@@ -234,7 +232,6 @@ sub deleteDmn
 	$rs = iMSCP::File->new( filename => $wrkFileName )->delFile() if -f $wrkFileName;
 	return $rs if $rs;
 
-	# Remove AWStats static HTML files if any
 	if($main::imscpConfig{'AWSTATS_MODE'} eq '1') { # Static mode
 		my $userStatisticsDir = "$data->{'HOME_DIR'}/statistics";
 
@@ -256,7 +253,6 @@ sub deleteDmn
 		}
 	}
 
-	# Remove AWStats cache files if any
 	my $awstatsCacheDir = $main::imscpConfig{'AWSTATS_CACHE_DIR'};
 
 	if(-d $awstatsCacheDir) {
@@ -334,7 +330,6 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
-	# Register event listener which is responsible to add Awstats configuration snippet in Apache vhost file
 	iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', sub { $self->_addAwstatsSection(@_); });
 
 	$self;
@@ -361,8 +356,6 @@ sub _addAwstatsSection
 	if($tplName =~ /^domain(?:_ssl)?\.tpl$/ && $data->{'FORWARD'} eq 'no') {
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
-
-		# Build and add Apache configuration snippet for AWStats
 
 		$$cfgTpl = replaceBloc(
 			"# SECTION addons BEGIN.\n",
@@ -460,7 +453,6 @@ sub _addAwstatsConfig
 
 	my $awstatsPackageRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
 
-	# Loading template file
 	my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get();
 	unless(defined $tplFileContent) {
 		error("Unable to read $tplFileContent->{'filename'}");
@@ -487,7 +479,6 @@ sub _addAwstatsConfig
 		return 1;
 	}
 
-	# Install file
 	my $file = iMSCP::File->new(
 		filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf"
 	);

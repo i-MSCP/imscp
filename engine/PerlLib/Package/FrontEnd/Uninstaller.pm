@@ -129,7 +129,6 @@ sub _removeHttpdConfig
 
 	my $rs = 0;
 
-	# Remove vhost files
 	for('00_master_ssl.conf', '00_master.conf') {
 		$rs = $self->{'frontend'}->disableSites($_);
 		return $rs if $rs;
@@ -142,7 +141,6 @@ sub _removeHttpdConfig
 		}
 	}
 
-	# Remove imscp_fastcgi.conf file
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf") {
 		$rs = iMSCP::File->new(
 			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf"
@@ -150,7 +148,6 @@ sub _removeHttpdConfig
 		return $rs if $rs;
 	}
 
-	# Remove imscp_php.conf file
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf") {
 		$rs = iMSCP::File->new(
 			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf"
@@ -158,7 +155,6 @@ sub _removeHttpdConfig
 		return $rs if $rs;
 	}
 
-	# Re-enable default vhost
 	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/default") { # Nginx as provided by Debian
 		$rs = $self->{'frontend'}->enableSites('default');
 		return $rs if $rs;

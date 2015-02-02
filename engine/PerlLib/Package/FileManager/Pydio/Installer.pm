@@ -68,7 +68,6 @@ sub preinstall
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/ajaxplorer', "$VERSION.*\@dev");
 	return $rs if $rs;
 
-	# Register listener which is responsible to add custom entry into the frontEnd vhost files
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
 }
 
@@ -84,11 +83,9 @@ sub install
 {
 	my $self = $_[0];
 
-	# Install Pydio files from local packages repository
 	my $rs = $self->_installFiles();
 	return $rs if $rs;
 
-	# Build Pydio httpd configuration file
 	$self->_buildHttpdConfig();
 }
 
@@ -197,20 +194,17 @@ sub _installFiles
 	if(-d $packageDir) {
 		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp";
 
-		# Remove older production directory if any
 		my ($stdout, $stderr);
 		my $rs = execute("$main::imscpConfig{'CMD_RM'} -fR $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		# Copy pydio source
 		$rs = execute("$main::imscpConfig{'CMD_CP'} -fR $packageDir/src $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		# Override pydio source
 		$rs = execute("$main::imscpConfig{'CMD_CP'} -fRT $packageDir/iMSCP/src $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
@@ -235,7 +229,6 @@ sub _buildHttpdConfig
 {
 	my $frontEnd = Package::FrontEnd->getInstance();
 
-	# Build and install file
 	$frontEnd->buildConfFile(
 		"$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
 		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },

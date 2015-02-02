@@ -142,7 +142,6 @@ sub _init
 
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/phpmyadmin.data";
 
-	# Permissions must be set after FrontEnd base permissions
 	iMSCP::EventManager->getInstance()->register(
 		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(); }
 	);

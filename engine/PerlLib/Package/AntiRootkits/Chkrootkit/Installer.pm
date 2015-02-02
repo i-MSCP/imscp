@@ -110,7 +110,6 @@ sub setEnginePermissions()
 
 sub _disableDebianConfig
 {
-	# Disable daily cron tasks
 	if(-f '/etc/cron.daily/chkrootkit') {
 		iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit' )->moveFile( '/etc/cron.daily/chkrootkit.disabled' );
 	} else {

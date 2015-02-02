@@ -104,9 +104,10 @@ sub showDialog
 				eval "require $package";
 
 				unless($@) {
-					$package = $package->getInstance();
-					$rs = $package->showDialog($dialog) if $package->can('showDialog');
-					last if $rs;
+					if($package->can('showDialog')) {
+						$rs = $package->getInstance()->showDialog($dialog);
+						return $rs if $rs;
+					}
 				} else {
 					error($@);
 					return 1;
@@ -208,9 +209,10 @@ sub install
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->install() if $package->can('install');
-				return $rs if $rs;
+				if($package->can('install')) {
+					my $rs = $package->getInstance()->install();
+					return $rs if $rs;
+				}
 			} else {
 				error($@);
 				return 1;
@@ -243,7 +245,7 @@ sub uninstall
 			my $package = "Package::AntiRootkits::${_}::${_}";
 			eval "require $package";
 
-			unless(! $@) {
+			unless($@) {
 				$package = $package->getInstance();
 				$rs = $package->uninstall(); # Mandatory method;
 				return $rs if $rs;
@@ -283,9 +285,10 @@ sub setEnginePermissions
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->setEnginePermissions() if $package->can('setEnginePermissions');
-				return $rs if $rs;
+				if($package->can('setEnginePermissions')) {
+					my $rs = $package->getInstance()->setEnginePermissions();
+					return $rs if $rs;
+				}
 			} else {
 				error($@);
 				return 1;

@@ -81,7 +81,7 @@ sub showDialog
 {
 	my ($self, $dialog) = @_;
 
-	my $packages = [split ',', main::setupGetQuestion('WEBSTATS_PACKAGES')];
+	my $packages = [ split ',', main::setupGetQuestion('WEBSTATS_PACKAGES') ];
 	my $rs = 0;
 
 	if(
@@ -104,9 +104,10 @@ sub showDialog
 				eval "require $package";
 
 				unless($@) {
-					$package = $package->getInstance();
-					$rs = $package->showDialog($dialog) if $package->can('showDialog');
-					last if $rs;
+					if($package->can('showDialog')) {
+						$rs = $package->getInstance()->showDialog($dialog);
+						return $rs if $rs;
+					}
 				} else {
 					error($@);
 					return 1;
@@ -208,9 +209,10 @@ sub install
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->install() if $package->can('install');
-				return $rs if $rs;
+				if($package->can('install')) {
+					my $rs = $package->getInstance()->install();
+					return $rs if $rs;
+				}
 			} else {
 				error($@);
 				return 1;
@@ -283,9 +285,10 @@ sub setEnginePermissions
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				my $rs = $package->setEnginePermissions() if $package->can('setEnginePermissions');
-				return $rs if $rs;
+				if($package->can('setEnginePermissions')) {
+					my $rs = $package->getInstance()->setEnginePermissions();
+					return $rs if $rs;
+				}
 			} else {
 				error($@);
 				return 1;
@@ -318,9 +321,10 @@ sub preaddDmn
 				eval "require $package";
 
 				unless($@) {
-					$package = $package->getInstance();
-					my $rs = $package->preaddDmn($data) if $package->can('preaddDmn');
-					return $rs if $rs;
+					if($package->can('preaddDmn')) {
+						my $rs = $package->getInstance()->preaddDmn($data);
+						return $rs if $rs;
+					}
 				} else {
 					error($@);
 					return 1;
@@ -354,9 +358,10 @@ sub addDmn
 				eval "require $package";
 
 				unless($@) {
-					$package = $package->getInstance();
-					my $rs = $package->addDmn($data) if $package->can('addDmn');
-					return $rs if $rs;
+					if($package->can('addDmn')) {
+						my $rs = $package->getInstance()->addDmn($data);
+						return $rs if $rs;
+					}
 				} else {
 					error($@);
 					return 1;
@@ -390,9 +395,10 @@ sub deleteDmn
 				eval "require $package";
 
 				unless($@) {
-					$package = $package->getInstance();
-					my $rs = $package->deleteDmn($data) if $package->can('deleteDmn');
-					return $rs if $rs;
+					if($package->can('deleteDmn')) {
+						my $rs = $package->getInstance()->deleteDmn($data);
+						return $rs if $rs;
+					}
 				} else {
 					error($@);
 					return 1;
@@ -470,7 +476,6 @@ sub _init
 {
 	my $self = $_[0];
 
-	# Find list of available Webstats packages
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
 		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats"
 	)->getDirs();

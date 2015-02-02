@@ -63,11 +63,9 @@ sub registerSetupListeners
 	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 	return $rs if $rs;
 
-	# preinstall tasks must be processed after frontEnd preInstall tasks
 	$rs = $eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
 	return $rs if $rs;
 
-	# install tasks must be processed after frontEnd install tasks
 	$eventManager->register('afterFrontEndInstall', sub { $self->installListener(); });
 }
 
@@ -139,7 +137,6 @@ sub preinstallListener
 
 	my $package = main::setupGetQuestion('FILEMANAGER_PACKAGE');
 
-	# Uninstall previous installed package if not identical
 	if($oldPackage && $oldPackage ne $package) {
 		my $rs = $self->uninstall($oldPackage);
 		return $rs if $rs;
@@ -275,12 +272,10 @@ sub _init()
 {
 	my $self = $_[0];
 
-	# Find list of available FileManager packages
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
 		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager"
 	)->getDirs();
 
-	# Permissions must be set after FrontEnd base permissions
 	iMSCP::EventManager->getInstance()->register(
 		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_); }
 	);

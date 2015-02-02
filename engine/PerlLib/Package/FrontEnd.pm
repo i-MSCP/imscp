@@ -407,8 +407,6 @@ sub buildConfFile
 
 	my ($filename, $path) = fileparse($file);
 
-	# Load template
-
 	my $cfgTpl;
 	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'frontend', $filename, \$cfgTpl, $tplVars);
 	return $rs if $rs;
@@ -423,8 +421,6 @@ sub buildConfFile
 		}
 	}
 
-	# Build file
-
 	$rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildConfFile', \$cfgTpl, $filename, $tplVars, $options);
 	return $rs if $rs;
 
@@ -434,8 +430,6 @@ sub buildConfFile
 
 	$rs = $self->{'eventManager'}->trigger('afterFrontEndBuildConfFile', \$cfgTpl, $filename, $tplVars, $options);
 	return $rs if $rs;
-
-	# Store file
 
 	my $fileHandler = iMSCP::File->new(
 		filename => ($options->{'destination'}) ? $options->{'destination'} : "$self->{'wrkDir'}/$filename"

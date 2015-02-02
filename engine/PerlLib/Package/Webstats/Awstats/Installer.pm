@@ -104,7 +104,6 @@ sub install
 	return $rs if $rs;
 
 	if(main::setupGetQuestion('AWSTATS_MODE') eq '0') {
-		# Add cron task for dynamic mode
 		$rs = $self->_addAwstatsCronTask();
 	}
 

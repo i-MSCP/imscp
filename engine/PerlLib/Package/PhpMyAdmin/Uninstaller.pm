@@ -92,6 +92,7 @@ sub _init
 
 	$self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance();
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
+	$self->{'db'} = iMSCP::Database->factory();
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -114,10 +115,8 @@ sub _removeSqlUser
 {
 	my $self = $_[0];
 
-	my $db = iMSCP::Database->factory();
-
-	$db->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
-	$db->doQuery('dummy', 'FLUSH PRIVILEGES');
+	$self->{'db'}->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
+	$self->{'db'}->doQuery('dummy', 'FLUSH PRIVILEGES');
 
 	0;
 }
@@ -134,11 +133,9 @@ sub _removeSqlDatabase
 {
 	my $self = $_[0];
 
-	my $database = iMSCP::Database->factory();
+	my $dbName = $self->{'db'}->quoteIdentifier($main::imscpConfig{'DATABASE_NAME'} . '_pma');
 
-	my $dbName = $database->quoteIdentifier($main::imscpConfig{'DATABASE_NAME'} . '_pma');
-
-	$database->doQuery('dummy', "DROP DATABASE IF EXISTS $dbName");
+	$self->{'db'}->doQuery('dummy', "DROP DATABASE IF EXISTS $dbName");
 
 	0;
 }

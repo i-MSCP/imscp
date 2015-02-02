@@ -69,7 +69,6 @@ sub preinstall
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/net2ftp', "$VERSION.*\@dev");
 	return $rs if $rs;
 
-	# Register listener which is responsible to add custom entry into the frontEnd vhost files
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
 }
 
@@ -88,11 +87,9 @@ sub install
 	my $rs = $self->_installFiles();
 	return $rs if $rs;
 
-	# Build httpd configuration file
 	$rs = $self->_buildHttpdConfig();
 	return $rs if $rs;
 
-	# Build config
 	$self->_buildConfig();
 }
 
@@ -238,7 +235,6 @@ sub _buildHttpdConfig
 {
 	my $frontEnd = Package::FrontEnd->getInstance();
 
-	# Build and install file
 	$frontEnd->buildConfFile(
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager/Net2ftp/config/nginx/imscp_net2ftp.conf",
 		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
@@ -262,14 +258,10 @@ sub _buildConfig
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings.inc.php";
 
-	# Define data
-
 	my $data = {
 		ADMIN_EMAIL => ($main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}) ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
 		MD5_SALT_STRING => $self->_generateMd5SaltString()
 	};
-
-	# Load template
 
 	my $cfgTpl;
 	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'net2ftp', 'settings.inc.php', \$cfgTpl, $data);
@@ -283,11 +275,7 @@ sub _buildConfig
 		}
 	}
 
-	# Build file
-
 	$cfgTpl = process($data, $cfgTpl);
-
-	# Store file
 
 	my $file = iMSCP::File->new( filename  => $conffile );
 	$rs = $file->set($cfgTpl);

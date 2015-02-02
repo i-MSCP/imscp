@@ -81,7 +81,6 @@ sub showDialog
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/) ||
 		(length $dbPass < 6 || $dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/)
 	) {
-		# Ask for the rainloop restricted SQL username
 		do{
 			($rs, $dbUser) = $dialog->inputbox(
 				"\nPlease enter an username for the rainloop SQL user:$msg", $dbUser
@@ -106,7 +105,6 @@ sub showDialog
 			$msg = '';
 
 			do {
-				# Ask for the RainLoop restricted SQL user password
 				($rs, $dbPass) = $dialog->passwordbox(
 					"\nPlease, enter a password for the restricted rainloop SQL user (blank for autogenerate):$msg", $dbPass
 				);
@@ -161,7 +159,6 @@ sub preinstall
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/rainloop');
 	return $rs if $rs;
 
-	# Register listener which is responsible to add custom entry into the frontEnd vhost files
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
 }
 
@@ -416,21 +413,19 @@ sub _setupDatabase
 
 	my $dbOldUser = $self->{'rainloop'}->{'config'}->{'DATABASE_USER'};
 
-	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
-	$rainloopDbName = $db->quoteIdentifier($rainloopDbName);
+	$quoredRainloopDbName = $db->quoteIdentifier($rainloopDbName);
 
 	my $rs = $db->doQuery(
-		'dummy', "CREATE DATABASE IF NOT EXISTS $rainloopDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+		'dummy', "CREATE DATABASE IF NOT EXISTS $quoredRainloopDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 	);
 	unless(ref $rs eq 'HASH') {
 		error("Unable to create SQL database: $rs");
 		return 1;
 	}
 
-	# Removing any old SQL user ( including privileges )
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next unless $sqlUser;
 
@@ -447,17 +442,15 @@ sub _setupDatabase
 		}
 	}
 
-	# Adding SQL user with needed privileges
-
 	$rs = $db->doQuery(
-		'dummy', "GRANT ALL PRIVILEGES ON $rainloopDbName.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
+		'dummy', "GRANT ALL PRIVILEGES ON $quoredRainloopDbName.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
 	);
 	unless(ref $rs eq 'HASH') {
 		error("Unable to add privileges: $rs");
 		return 1;
 	}
 
-	$imscpDbName = $db->quoteIdentifier($imscpDbName);
+	$quotedImscpDbName = $db->quoteIdentifier($imscpDbName);
 
 	$rs = $db->doQuery(
 		'dummy',
@@ -465,7 +458,7 @@ sub _setupDatabase
 			GRANT
 				SELECT (`mail_addr`, `mail_pass`), UPDATE (`mail_pass`)
 			ON
-				$imscpDbName.`mail_users`
+				$quotedImscpDbName.`mail_users`
 			TO
 				?@?
 			IDENTIFIED BY ?
@@ -479,7 +472,6 @@ sub _setupDatabase
 		return 1;
 	}
 
-	# Store database user and password in config file
 	$self->{'rainloop'}->{'config'}->{'DATABASE_USER'} = $dbUser;
 	$self->{'rainloop'}->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
@@ -515,8 +507,6 @@ sub _buildRainLoopConfig
 			DISTRO_CA_PATH => main::setupGetQuestion('DISTRO_CA_PATH')
 		};
 
-		# Load template
-
 		my $cfgTpl;
 		my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'rainloop', $confFile, \$cfgTpl, $data);
 		return $rs if $rs;
@@ -529,11 +519,7 @@ sub _buildRainLoopConfig
 			}
 		}
 
-		# Build file
-
 		$cfgTpl = process($data, $cfgTpl);
-
-		# Store file
 
 		my $file = iMSCP::File->new( filename => "$confDir/$confFile" );
 
@@ -590,7 +576,6 @@ sub _buildHttpdConfig
 {
 	my ($self, $tplContent, $tplName) = @_;
 
-	# Build and install file
 	$self->{'frontend'}->buildConfFile(
 		"$self->{'rainloop'}->{'cfgDir'}/nginx/imscp_rainloop.conf",
 		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },

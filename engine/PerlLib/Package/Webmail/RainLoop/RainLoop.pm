@@ -147,8 +147,6 @@ sub deleteMail
 		my $rs = $database->connect();
 
 		unless($rs) {
-			# Remove contacts if any
-
 			$rs = $database->doQuery(
 				'dummy',
 				'
@@ -174,12 +172,9 @@ sub deleteMail
 			return 1;
 		}
 
-		# Restore connection to i-MSCP database
 		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
 
 		fatal("Unable to restore connection to i-MSCP database: $rs") if $database->connect();
-
-		# Remove settings from file storage if any
 
 		my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" .
 			"/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/storage/cfg";

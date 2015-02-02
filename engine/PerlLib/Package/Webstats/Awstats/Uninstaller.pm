@@ -88,7 +88,7 @@ sub _deleteFiles
 	my $rs = 0;
 
 	if(-d $main::imscpConfig{'USER_WEB_DIR'}) {
-		my @homeDirs = iMSCP::Dir->new( dirname => $main::imscpConfig{'USER_WEB_DIR'})->getDirs();
+		my @homeDirs = iMSCP::Dir->new( dirname => $main::imscpConfig{'USER_WEB_DIR'} )->getDirs();
 
 		if(@homeDirs) {
 			for(@homeDirs) {
@@ -106,7 +106,6 @@ sub _deleteFiles
 		}
 	}
 
-	# Remove cache directory content
 	if(-d $main::imscpConfig{'AWSTATS_CACHE_DIR'}) {
 		my ($stdout, $stderr);
 		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*",  \$stdout, \$stderr);
@@ -115,7 +114,6 @@ sub _deleteFiles
 		return $rs if $rs;
 	}
 
-	# Remove configuration files created by i-MSCP
 	if(-d $main::imscpConfig{'AWSTATS_CONFIG_DIR'}) {
 		my ($stdout, $stderr);
 		$rs = execute(

@@ -147,13 +147,11 @@ sub askSsl
 	if($main::reconfigure ~~ ['panel_ssl', 'ssl', 'all', 'forced'] || not $sslEnabled ~~ ['yes', 'no']) {
 		SSL_DIALOG:
 
-		# Ask for SSL
 		($rs, $sslEnabled) = $dialog->radiolist(
 			"\nDo you want to activate SSL for the control panel?", ['no', 'yes'], ($sslEnabled eq 'yes') ? 'yes' : 'no'
 		);
 
 		if($sslEnabled eq 'yes' && $rs != 30) {
-			# Ask for self-signed certificate
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
 				"\nDo you have an SSL certificate for the $domainName domain?",
 				['yes', 'no'],
@@ -163,13 +161,11 @@ sub askSsl
 			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
 
 			if($selfSignedCertificate eq 'no' && $rs != 30) {
-				# Ask for private key
 				my $msg = '';
 
 				do {
 					$dialog->msgbox("$msg\nPlease select your private key in next dialog.");
 
-					# Ask for private key container path
 					do {
 						($rs, $privateKeyPath) = $dialog->fselect($privateKeyPath);
 					} while($rs != 30 && ! ($privateKeyPath && -f $privateKeyPath));
@@ -192,7 +188,6 @@ sub askSsl
 					}
 				} while($rs != 30 && $msg);
 
-				# Ask for the CA bundle
 				if($rs != 30) {
 					# The codes used for "Yes" and "No" match those used for "OK" and "Cancel", internally no
 					# distinction is made... Therefore, we override the Cancel value temporarly
@@ -642,15 +637,14 @@ sub _addMasterWebUser
 		$userUid = getpwnam($userName);
 		$userGid = getgrnam($groupName);
 	} else {
-		# Modify existents i-MSCP Master Web user
 		my @cmd = (
 			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($oldUserName), ';',
 			"$main::imscpConfig{'CMD_USERMOD'}",
-			'-c', escapeShell('i-MSCP Master Web User'), # New comment
-			'-d', escapeShell($main::imscpConfig{'GUI_ROOT_DIR'}), # New homedir
-			'-l', escapeShell($userName), # New login
-			'-m', # Move current homedir content to new homedir
-			escapeShell($adminSysName) # Old username
+			'-c', escapeShell('i-MSCP Master Web User'),
+			'-d', escapeShell($main::imscpConfig{'GUI_ROOT_DIR'}),
+			'-l', escapeShell($userName),
+			'-m',
+			escapeShell($adminSysName)
 		);
 		my($stdout, $stderr);
 		$rs = execute("@cmd", \$stdout, \$stderr);
@@ -658,11 +652,10 @@ sub _addMasterWebUser
 		debug($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
-		# Modify existents i-MSCP Master Web group
 		@cmd = (
 			$main::imscpConfig{'CMD_GROUPMOD'},
-			'-n', escapeShell($groupName), # New group name
-			escapeShell($adminSysGname) # Current group name
+			'-n', escapeShell($groupName),
+			escapeShell($adminSysGname)
 		);
 		debug($stdout) if $stdout;
 		debug($stderr) if $stderr && $rs;
@@ -692,11 +685,9 @@ sub _addMasterWebUser
 		return 1;
 	}
 
-	# Add the i-MSCP Master Web user into the i-MSCP group
 	$rs = iMSCP::SystemUser->new('username' => $userName)->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
 	return $rs if $rs;
 
-	# Add the httpd user into i-MSCP Master Web group
 	$rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'HTTPD_USER'})->addToGroup($groupName);
 	return $rs if $rs;
 
@@ -762,7 +753,6 @@ sub _buildPhpConfig
 
 	my $timestamp = time;
 
-	# Backup any current file
 	for ('php5-fcgi-starter', 'php5/php.ini') {
 		if(-f "$self->{'config'}->{'PHP_STARTER_DIR'}/master/$_") {
 			my $fileName = basename($_);
@@ -772,12 +762,9 @@ sub _buildPhpConfig
 		}
 	}
 
-	# Build PHP FCGI starter script
-
 	my $user = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	# Set template vars
 	my $tplVars = {
 		PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
 		DOMAIN_NAME => 'master',
@@ -797,15 +784,11 @@ sub _buildPhpConfig
 	);
 	return $rs if $rs;
 
-	# Install file in production directory
 	$rs = iMSCP::File->new( filename => "$wrkDir/master.php5-fcgi-starter" )->copyFile(
 		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5-fcgi-starter"
 	);
 	return $rs if $rs;
 
-	# Build php.ini file
-
-	# Set Set template vars
 	$tplVars = {
 		HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 		WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
@@ -820,7 +803,6 @@ sub _buildPhpConfig
 		DISTRO_CA_BUNDLE => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
 	};
 
-	# Build file using template from fcgi/parts/master/php5
 	$rs = $self->{'frontend'}->buildConfFile(
 		"$cfgDir/parts/master/php5/php.ini",
 		$tplVars,
@@ -828,7 +810,6 @@ sub _buildPhpConfig
 	);
 	return $rs if $rs;
 
-	# Install new file in production directory
 	$rs = iMSCP::File->new(
 		filename => "$wrkDir/master.php.ini"
 	)->copyFile(
@@ -854,9 +835,6 @@ sub _buildHttpdConfig
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildHttpdConfig');
 	return $rs if $rs;
 
-	# Backup, build, store and install the nginx.conf file
-
-	# Backup file
 	if(-f "$self->{'wrkDir'}/nginx.conf") {
 		$rs = iMSCP::File->new(
 			filename => "$self->{'wrkDir'}/nginx.conf"
@@ -883,7 +861,6 @@ sub _buildHttpdConfig
 		}
 	}
 
-	# Build file
 	$rs = $self->{'frontend'}->buildConfFile(
 		"$self->{'cfgDir'}/nginx.conf",
 		{
@@ -900,13 +877,9 @@ sub _buildHttpdConfig
 	);
 	return $rs if $rs;
 
-	# Install file
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/nginx.conf" );
 	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}");
 
-	# Backup, build, store and install the imscp_fastcgi.conf file
-
-	# Backup file
 	if(-f "$self->{'wrkDir'}/imscp_fastcgi.conf") {
 		$rs = iMSCP::File->new(
 			filename => "$self->{'wrkDir'}/imscp_fastcgi.conf"
@@ -914,18 +887,13 @@ sub _buildHttpdConfig
 		return $rs if $rs;
 	}
 
-	# Build file
 	$rs = $self->{'frontend'}->buildConfFile("$self->{'cfgDir'}/imscp_fastcgi.conf");
 	return $rs if $rs;
 
-	# Install file
 	$file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_fastcgi.conf");
 	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}");
 	return $rs if $rs;
 
-	# Backup, build, store and install imscp_php.conf file
-
-	# Backup file
 	if(-f "$self->{'wrkDir'}/imscp_php.conf") {
 		$rs = iMSCP::File->new(
 			filename => "$self->{'wrkDir'}/imscp_php.conf"
@@ -933,11 +901,9 @@ sub _buildHttpdConfig
 		return $rs if $rs;
 	}
 
-	# Build file
 	$rs = $self->{'frontend'}->buildConfFile("$self->{'cfgDir'}/imscp_php.conf");
 	return $rs if $rs;
 
-	# Install file
 	$file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_php.conf" );
 	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d");
 	return $rs if $rs;
@@ -949,7 +915,6 @@ sub _buildHttpdConfig
 
 	my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
-	# Set needed data
 	my $tplVars = {
 		'BASE_SERVER_VHOST' => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		'BASE_SERVER_IP' => $main::imscpConfig{'BASE_SERVER_IP'},
@@ -959,9 +924,6 @@ sub _buildHttpdConfig
 		'CONF_DIR' => $main::imscpConfig{'CONF_DIR'}
 	};
 
-	# Build http vhost file
-
-	# Force HTTPS if needed
 	if($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
 		$rs = $self->{'eventManager'}->register(
 			'afterFrontEndBuildConf',
@@ -991,11 +953,9 @@ sub _buildHttpdConfig
 		return $rs if $rs;
 	}
 
-	# Build file
 	$rs = $self->{'frontend'}->buildConfFile('00_master.conf', $tplVars);
 	return $rs if $rs;
 
-	# Install new file
 	$rs = iMSCP::File->new(
 		filename => "$self->{'wrkDir'}/00_master.conf"
 	)->copyFile(
@@ -1006,14 +966,10 @@ sub _buildHttpdConfig
 	$rs = $self->{'frontend'}->enableSites('00_master.conf');
 	return $rs if $rs;
 
-	# Build https vhost file if SSL is enabled, remove it otherwise
-
 	if($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
-		# Build vhost
 		$rs = $self->{'frontend'}->buildConfFile('00_master_ssl.conf', $tplVars);
 		return $rs if $rs;
 
-		# Install vhost in production directory
 		iMSCP::File->new(
 			filename => "$self->{'wrkDir'}/00_master_ssl.conf"
 		)->copyFile(
@@ -1021,15 +977,12 @@ sub _buildHttpdConfig
 		);
 		return $rs if $rs;
 
-		# Enable vhost
 		$rs = $self->{'frontend'}->enableSites('00_master_ssl.conf');
 		return $rs if $rs;
 	} else {
-		# Disable vhost if any
 		$rs = $self->{'frontend'}->disableSites('00_master_ssl.conf');
 		return $rs if $rs;
 
-		# Remove vhost if any
 		for(
 			"$self->{'wrkDir'}/00_master_ssl.conf",
 			"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
@@ -1039,7 +992,6 @@ sub _buildHttpdConfig
 		}
 	}
 
-	# Disable default site if any (Nginx package as provided by Debian)
 	$rs = $self->{'frontend'}->disableSites('default');
 	return $rs if $rs;
 
@@ -1072,9 +1024,6 @@ sub _buildInitDefaultFile
 	my $imscpInitdConfDir = "$main::imscpConfig{'CONF_DIR'}/init.d";
 
 	if(-f "$imscpInitdConfDir/imscp_panel.default") {
-		# Backup, build, store and install the imscp_panel default file
-
-		# Backup file
 		if(-f "$imscpInitdConfDir/working/imscp_panel") {
 			$rs = iMSCP::File->new(
 				filename => "$imscpInitdConfDir/working/imscp_panel"
@@ -1082,7 +1031,6 @@ sub _buildInitDefaultFile
 			return $rs if $rs;
 		}
 
-		# Build file
 		$rs = $self->{'frontend'}->buildConfFile(
 			"$imscpInitdConfDir/imscp_panel.default",
 			{
@@ -1094,7 +1042,6 @@ sub _buildInitDefaultFile
 		);
 		return $rs if $rs;
 
-		# Install file
 		my $file = iMSCP::File->new( filename => "$imscpInitdConfDir/working/imscp_panel" );
 		$rs = $file->copyFile('/etc/default');
 		return $rs if $rs;

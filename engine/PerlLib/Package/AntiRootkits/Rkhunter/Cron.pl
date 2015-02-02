@@ -33,10 +33,7 @@ use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::File;
 
-# Turn off localisation features to force any command output to be in English
 $ENV{'LANG'} = 'C';
-
-# Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-rkhunter-package.log');

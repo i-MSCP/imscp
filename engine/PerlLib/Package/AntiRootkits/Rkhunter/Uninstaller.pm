@@ -91,7 +91,6 @@ sub _restoreDebianConfig
 		return $rs if $rs;
 	}
 
-	# Restore daily cron task
 	if(-f '/etc/cron.daily/rkhunter.disabled') {
 		my $rs = iMSCP::File->new(
 			filename => '/etc/cron.daily/rkhunter.disabled'
@@ -101,7 +100,6 @@ sub _restoreDebianConfig
 		return $rs if $rs;
 	}
 
-	# Restore weekly cron tasks
 	if(-f '/etc/cron.weekly/rkhunter.disabled') {
 		my $rs = iMSCP::File->new(
 			filename => '/etc/cron.weekly/rkhunter.disabled'
@@ -111,7 +109,6 @@ sub _restoreDebianConfig
 		return $rs if $rs;
 	}
 
-	# Restore logrotate task
 	if(-f '/etc/logrotate.d/rkhunter.disabled') {
 		my $rs = iMSCP::File->new(
 			filename => '/etc/logrotate.d/rkhunter.disabled'

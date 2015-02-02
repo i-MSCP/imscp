@@ -109,7 +109,6 @@ sub _removeSqlUser
 {
 	my $self = $_[0];
 
-	# We do not catch any error here - It's expected
 	for($main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%') {
 		next unless $_;
 

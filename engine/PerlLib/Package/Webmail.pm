@@ -317,12 +317,10 @@ sub _init()
 {
 	my $self = $_[0];
 
-	# Find list of available Webmail packages
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
 		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webmail"
 	)->getDirs();
 
-	# Permissions must be set after FrontEnd base permissions
 	iMSCP::EventManager->getInstance()->register(
 		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_); }
 	);

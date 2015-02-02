@@ -74,11 +74,9 @@ sub registerSetupListeners
 	my $rs = $eventManager->register( 'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; } );
 	return $rs if $rs;
 
-	# Preinstall tasks must be processed after frontEnd preinstall tasks
 	$rs = $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstall(); } );
 	return $rs if $rs;
 
-	# Install tasks must be processed after frontEnd install tasks
 	$eventManager->register( 'afterFrontEndInstall', sub { $self->install(); } );
 }
 
@@ -105,7 +103,6 @@ sub showDialog
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
 		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
 	) {
-		# Ask for the PhpMyAdmin restricted SQL username
 		do{
 			($rs, $dbUser) = $dialog->inputbox(
 				"\nPlease enter an username for the PhpMyAdmin SQL user:$msg", $dbUser
@@ -130,7 +127,6 @@ sub showDialog
 			$msg = '';
 
 			do {
-				# Ask for the PhpMyAdmin restricted SQL user password
 				($rs, $dbPass) = $dialog->passwordbox(
 					"\nPlease, enter a password for the restricted phpmyadmin SQL user (blank for autogenerate):$msg", $dbPass
 				);
@@ -206,7 +202,6 @@ sub preinstall
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', "$pmaBranch.*\@dev");
 	return $rs if $rs;
 
-	# Register listener which is responsible to add custom entry into the frontEnd vhost files
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
 }
 
@@ -222,41 +217,32 @@ sub install
 {
 	my $self = $_[0];
 
-	# Backup current configuration file if it exists ( only relevant when running imscp-setup )
 	my $rs = $self->_backupConfigFile(
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
 	);
 	return $rs if $rs;
 
-	# Install files from local packages repository
 	$rs = $self->_installFiles();
 	return $rs if $rs;
 
-	# Setup database
 	$rs = $self->_setupDatabase();
 	return $rs if $rs;
 
-	# Setup restricted SQL user
 	$rs = $self->_setupSqlUser();
 	return $rs if $rs;
 
-	# Generate blowfish secret
 	$rs = $self->_generateBlowfishSecret();
 	return $rs if $rs;
 
-	# Build new configuration files
 	$rs = $self->_buildConfig();
 	return $rs if $rs;
 
-	# Build httpd configuration file
 	$rs = $self->_buildHttpdConfig();
 	return $rs if $rs;
 
-	# Set version
 	$rs = $self->_setVersion();
 	return $rs if $rs;
 
-	# Save configuration
 	$self->_saveConfig();
 }
 
@@ -350,7 +336,6 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
-	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/phpmyadmin.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
@@ -461,7 +446,6 @@ sub _setupSqlUser
 
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next unless $sqlUser;
 
@@ -478,11 +462,8 @@ sub _setupSqlUser
 		}
 	}
 
-	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
-
-	# Adding new SQL user with needed privileges
 
 	my $rs = $db->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
 	unless(ref $rs eq 'HASH') {
@@ -547,7 +528,6 @@ sub _setupSqlUser
 		return 1;
 	}
 
-	# Store database user and password in config file
 	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
 	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
@@ -569,19 +549,16 @@ sub _setupDatabase
 	my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 	my $phpmyadminDbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
 
-	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	fatal("Unable to connect to SQL server: $errStr") if ! $db;
 
 	my $quotedDbName = $db->quoteIdentifier($phpmyadminDbName);
 
-	# Check for database existence
 	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $phpmyadminDbName);
 	unless(ref $rs eq 'HASH') {
 		error($rs);
 		return 1;
 	} elsif(%{$rs}) {
-		# Ensure that the database has tables (recovery case)
 		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedDbName");
 		unless(ref $rs eq 'HASH') {
 			error($rs);
@@ -589,7 +566,6 @@ sub _setupDatabase
 		}
 	}
 
-	# Database doesn't exist or doesn't have any table
 	unless(%{$rs}) {
 		$rs = $db->doQuery(
 			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
@@ -603,11 +579,9 @@ sub _setupDatabase
 	# In any case (new install / upgrade) we execute queries from the create_tables.sql file. On upgrade, this will
 	# create the missing tables
 
-	# Connecting to newly created database
 	($db, $errStr) = main::setupGetSqlConnect($phpmyadminDbName);
 	fatal("Unable to connect to SQL server: $errStr") if ! $db;
 
-	# Import database schema
 	my $schemaFile = iMSCP::File->new( filename => "$phpmyadminDir/examples/create_tables.sql" )->get();
 	unless(defined $schemaFile) {
 		error("Unable to read $phpmyadminDir/examples/create_tables.sql");
@@ -644,7 +618,6 @@ sub _buildHttpdConfig
 {
 	my $frontEnd = Package::FrontEnd->getInstance();
 
-	# Build and install file
 	$frontEnd->buildConfFile(
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/PhpMyAdmin/config/nginx/imscp_pma.conf",
 		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
@@ -719,8 +692,6 @@ sub _buildConfig
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	(my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD')) =~ s%(')%\\$1%g;
 
-	# Define data
-
 	my $data = {
 		PMA_DATABASE => $dbName,
 		PMA_USER => $dbUser,
@@ -731,8 +702,6 @@ sub _buildConfig
 		TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 		BLOWFISH => $self->{'config'}->{'BLOWFISH_SECRET'}
 	};
-
-	# Load template
 
 	my $cfgTpl;
 	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \$cfgTpl, $data);
@@ -746,11 +715,7 @@ sub _buildConfig
 		}
 	}
 
-	# Build file
-
 	$cfgTpl = process($data, $cfgTpl);
-
-	# Store file
 
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$_" );
 	$rs = $file->set($cfgTpl);

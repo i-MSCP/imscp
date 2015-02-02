@@ -149,7 +149,6 @@ sub _disableDebianConfig
 		return $rs if $rs;
 	}
 
-	# Disable daily cron tasks
 	if(-f '/etc/cron.daily/rkhunter') {
 		my $rs = iMSCP::File->new(
 			filename => '/etc/cron.daily/rkhunter'
@@ -159,7 +158,6 @@ sub _disableDebianConfig
 		return $rs if $rs;
 	}
 
-	# Disable weekly cron tasks
 	if(-f '/etc/cron.weekly/rkhunter') {
 		my $rs = iMSCP::File->new(
 			filename => '/etc/cron.weekly/rkhunter'
@@ -169,7 +167,6 @@ sub _disableDebianConfig
 		return $rs if $rs;
 	}
 
-	# Disable logrotate task
 	if(-f '/etc/logrotate.d/rkhunter') {
 		my $rs = iMSCP::File->new(
 			filename => '/etc/logrotate.d/rkhunter'

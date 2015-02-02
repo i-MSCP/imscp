@@ -163,7 +163,6 @@ sub deleteMail
 			$rs = 1;
 		}
 
-		# Restore connection to i-MSCP database
 		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
 
 		fatal("Unable to restore connection to i-MSCP database: $rs") if $database->connect();

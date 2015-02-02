@@ -83,7 +83,6 @@ sub showDialog
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
 		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
 	) {
-		# Ask for the roundcube restricted SQL username
 		do{
 			($rs, $dbUser) = $dialog->inputbox(
 				"\nPlease enter an username for the Roundcube SQL user:$msg", $dbUser
@@ -108,7 +107,6 @@ sub showDialog
 			$msg = '';
 
 			do {
-				# Ask for the Roundcube restricted SQL user password
 				($rs, $dbPass) = $dialog->passwordbox(
 					"\nPlease, enter a password for the restricted roundcube SQL user (blank for autogenerate):$msg", $dbPass
 				);
@@ -163,7 +161,6 @@ sub preinstall
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/roundcube', "$VERSION.*\@dev");
 	return $rs if $rs;
 
-	# Register listener which is responsible to add custom entry into the frontEnd vhost files
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
 }
 
@@ -179,41 +176,32 @@ sub install
 {
 	my $self = $_[0];
 
-	# Backup current configuration file if any
 	my $rs = $self->_backupConfigFile(
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php"
 	);
 	return $rs if $rs;
 
-	# Install files from local packages repository
 	$rs = $self->_installFiles();
 	return $rs if $rs;
 
-	# Merge old config into new configuration file (this load new config as well)
 	$rs = $self->_mergeConfig();
 	return $rs if $rs;
 
-	# Setup database ( database, user )
 	$rs = $self->_setupDatabase();
 	return $rs if $rs;
 
-	# Build configuration files
 	$rs = $self->_buildRoundcubeConfig();
 	return $rs if $rs;
 
-	# Update database if needed (should be done after roundcube config files generation)
 	$rs = $self->_updateDatabase() unless $self->{'newInstall'};
 	return $rs if $rs;
 
-	# Build httpd configuration file
 	$rs = $self->_buildHttpdConfig();
 	return $rs if $rs;
 
-	# Set version
 	$rs = $self->_setVersion();
 	return $rs if $rs;
 
-	# Save package configuration file
 	$self->_saveConfig();
 }
 
@@ -360,20 +348,17 @@ sub _installFiles
 	if(-d $packageDir) {
 		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 
-		# Remove older production directory if any
 		my ($stdout, $stderr);
 		my $rs = execute("$main::imscpConfig{'CMD_RM'} -fR $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		# Copy configuration directory
 		$rs = execute("$main::imscpConfig{'CMD_CP'} -fRT $packageDir/iMSCP/config $self->{'cfgDir'}", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		# Copy source
 		$rs = execute("$main::imscpConfig{'CMD_CP'} -fR $packageDir/src $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
@@ -415,7 +400,6 @@ sub _mergeConfig
 	0;
 }
 
-
 =item _setupDatabase()
 
  Setup database
@@ -429,56 +413,50 @@ sub _setupDatabase
 	my $self = $_[0];
 
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-	my $roundcubeDbName =  main::setupGetQuestion('DATABASE_NAME') . '_roundcube';
 
+	my $imscpDbName = main::setupGetQuestion('DATABASE_NAME');
+	my $roundcubeDbName =  $imscpDbName . '_roundcube';
 	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD');
 
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
-	my $quotedDbName = $db->quoteIdentifier($roundcubeDbName);
+	my $quotedRoundcubeDbName = $db->quoteIdentifier($roundcubeDbName);
 
-	# Checking for database existence
 	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $roundcubeDbName);
 	unless(ref $rs eq 'HASH') {
 		error($rs);
 		return 1;
 	} elsif(%{$rs}) {
-		# Ensure that the database has tables (recovery case)
-		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedDbName");
+		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedRoundcubeDbName");
 		unless(ref $rs eq 'HASH') {
 			error($rs);
 			return 1;
 		}
 	}
 
-	# Database doesn't exist or doesn't have any table
 	unless(%{$rs}) {
 		$rs = $db->doQuery(
-			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedRoundcubeDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 		);
 		unless(ref $rs eq 'HASH') {
 			error("Unable to create SQL database: $rs");
 			return 1;
 		}
 
-		# Connecting to newly created database
 		my ($db, $errStr) = main::setupGetSqlConnect($roundcubeDbName);
 		fatal("Unable to connect to SQL server: $errStr") unless $db;
 
-		# Importing database schema
 		$rs = main::setupImportSqlSchema($db, "$roundcubeDir/SQL/mysql.initial.sql");
 		return $rs if $rs;
 	} else {
 		$self->{'newInstall'} = 0;
 	}
 
-	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next unless $sqlUser;
 
@@ -495,17 +473,36 @@ sub _setupDatabase
 		}
 	}
 
-	# Adding SQL user with needed privileges
-
 	$rs = $db->doQuery(
-		'dummy', "GRANT ALL PRIVILEGES ON `$roundcubeDbName`.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
+		'dummy', "GRANT ALL PRIVILEGES ON $quotedRoundcubeDbName.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
 	);
 	unless(ref $rs eq 'HASH') {
 		error("Unable to add privileges: $rs");
 		return 1;
 	}
 
-	# Store database user and password in config file
+	$quotedImscpDbName = $db->quoteIdentifier($imscpDbName);
+
+	$rs = $db->doQuery(
+		'dummy',
+		"
+			GRANT
+				SELECT (`mail_addr`, `mail_pass`), UPDATE (`mail_pass`)
+			ON
+				$quotedImscpDbName.`mail_users`
+			TO
+				?@?
+			IDENTIFIED BY ?
+		",
+		$dbUser,
+		$dbUserHost,
+		$dbPass
+	);
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privileges: $rs");
+		return 1;
+	}
+
 	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
 	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
@@ -549,8 +546,6 @@ sub _buildRoundcubeConfig
 	(my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER')) =~ s%(')%\\$1%g;
 	(my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD')) =~ s%(')%\\$1%g;
 
-	# Define data
-
 	my $data = {
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		DB_NAME => $dbName,
@@ -561,8 +556,6 @@ sub _buildRoundcubeConfig
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 		DES_KEY => $self->_generateDESKey()
 	};
-
-	# Load template
 
 	my $cfgTpl;
 	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'roundcube', 'config.inc.php', \$cfgTpl, $data);
@@ -576,11 +569,7 @@ sub _buildRoundcubeConfig
 		}
 	}
 
-	# Build file
-
 	$cfgTpl = process($data, $cfgTpl);
-
-	# Store file
 
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/config.inc.php" );
 
@@ -596,7 +585,6 @@ sub _buildRoundcubeConfig
 	$rs = $file->owner($panelUName, $panelGName);
 	return $rs if $rs;
 
-	# Install file in production directory
 	$file->copyFile("$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php");
 }
 
@@ -718,7 +706,6 @@ sub _buildHttpdConfig
 {
 	my ($self, $tplContent, $tplName) = @_;
 
-	# Backup file
 	if(-f "$self->{'wrkDir'}/imscp_roundcube.conf") {
 		my $rs = iMSCP::File->new(
 			filename => "$self->{'wrkDir'}/imscp_roundcube.conf"
@@ -730,7 +717,6 @@ sub _buildHttpdConfig
 
 	my $frontEnd = Package::FrontEnd->getInstance();
 
-	# Build file
 	my $rs = $frontEnd->buildConfFile(
 		"$self->{'cfgDir'}/nginx/imscp_roundcube.conf",
 		{ WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'} },
@@ -738,7 +724,6 @@ sub _buildHttpdConfig
 	);
 	return $rs if $rs;
 
-	# Install new file
 	iMSCP::File->new(
 		filename => "$self->{'wrkDir'}/imscp_roundcube.conf"
 	)->copyFile(
