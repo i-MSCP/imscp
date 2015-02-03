@@ -38,6 +38,8 @@ use iMSCP::Database;
 use iMSCP::Dir;
 use parent 'Common::SingletonClass';
 
+my $dbInitialized = undef;
+
 =head1 DESCRIPTION
 
  RainLoop package for i-MSCP.
@@ -142,48 +144,73 @@ sub deleteMail
 	my ($self, $data) = @_;
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-		my $database = iMSCP::Database->factory();
-		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} . '_rainloop');
-		my $rs = $database->connect();
+		my $db = iMSCP::Database->factory();
 
-		unless($rs) {
-			$rs = $database->doQuery(
-				'dummy',
-				'
-					DELETE
-						u, c, p
-					FROM
-						rainloop_users u
-					JOIN
-						rainloop_ab_contacts c USING(id_user)
-					JOIN
-						rainloop_ab_properties p USING(id_user)
-					WHERE
-						rl_email = ?
-				',
-				$data->{'MAIL_ADDR'}
-			);
+		unless($dbInitialized) {
+			my $quotedRainLoopDbName = $db->quoteIdentifier($main::imscpConfig{'DATABASE_NAME'} . '_rainloop');
+
+			my $rs = $db->doQuery('1', "SHOW TABLES FROM $quotedRainLoopDbName");
 			unless(ref $rs eq 'HASH') {
-				error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from rainloop database: $rs");
+				error($rs);
 				return 1;
+			} elsif(%{$rs}) {
+				$dbInitialized = 1;
 			}
-		} else {
-			error($rs);
-			return 1;
 		}
 
-		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
+		if($dbInitialized) {
+			$db->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} . '_rainloop');
+			my $rs = $db->connect();
 
-		fatal("Unable to restore connection to i-MSCP database: $rs") if $database->connect();
+			unless($rs) {
+				$rs = $db->doQuery(
+					'dummy',
+					'
+						DELETE
+							u, c, p
+						FROM
+							rainloop_users u
+						JOIN
+							rainloop_ab_contacts c USING(id_user)
+						JOIN
+							rainloop_ab_properties p USING(id_user)
+						WHERE
+							rl_email = ?
+					',
+					$data->{'MAIL_ADDR'}
+				);
+				unless(ref $rs eq 'HASH') {
+					error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from rainloop database: $rs");
+					return 1;
+				}
+			} else {
+				error($rs);
+				return 1;
+			}
+
+			$db->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
+			fatal("Unable to restore connection to i-MSCP database: $rs") if $db->connect();
+		}
 
 		my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" .
-			"/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/storage/cfg";
+			"/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/storage";
 
 		(my $email = $data->{'MAIL_ADDR'}) =~ s/[^a-z0-9\-\.@]+/_/;
 		(my $storagePath = substr($email, 0, 2)) =~ s/\@$//;
 
-		$rs = iMSCP::Dir->new( dirname => $storageDir . '/' . $storagePath . '/' . $email )->remove();
-		return $rs if $rs;
+		for my $storageType('cfg', 'data', 'files') {
+			my $rs = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove();
+			return $rs if $rs;
+
+			if (-d "$storageDir/$storageType/$storagePath") {
+				my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
+
+				if($dir->isEmpty()) {
+					$rs = $dir->remove();
+					return $rs if $rs;
+				}
+			}
+		}
 	}
 
 	0;

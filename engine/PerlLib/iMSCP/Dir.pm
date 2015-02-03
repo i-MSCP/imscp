@@ -41,10 +41,15 @@ sub getFiles
 	unless(defined $self->{'files'}) {
 		$self->{'files'} = [];
 		$self->_get();
-		$self->{'fileType'} = '' unless $self->{'fileType'};
 
-		for (@{$self->{'dirContent'}}) {
-			push(@{$self->{'files'}}, $_) if -f "$self->{'dirname'}/$_" && /$self->{'fileType'}$/;
+		if($self->{'fileType'}) {
+			for (@{$self->{'dirContent'}}) {
+				push(@{$self->{'files'}}, $_) if -f "$self->{'dirname'}/$_" && /$self->{'fileType'}$/;
+			}
+		} else {
+			for (@{$self->{'dirContent'}}) {
+				push(@{$self->{'files'}}, $_) if -f "$self->{'dirname'}/$_";
+			}
 		}
 	}
 

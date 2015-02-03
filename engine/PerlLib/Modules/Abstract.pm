@@ -33,6 +33,8 @@ package Modules::Abstract;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use iMSCP::Servers;
 use iMSCP::Packages;
@@ -151,68 +153,64 @@ sub _loadData
 	fatal(ref($_[0]) . ' module must implement the _loadData() method');
 }
 
-=item _runAction($action, \%items)
+=item _runAction($action, \@items, $itemType)
 
  Run the given action on all servers/packages which implement it
 
  Param string $action Action to run
- Param hash \%items Hash where the keys are the items type and the value, the items to process
+ Param array \@items List of item to process
+ Param string $itemType Item type ( server|package )
  Return int 0 on success, other on failure
 
 =cut
 
 sub _runAction
 {
-	my ($self, $action, $items) = @_;
+	my ($self, $action, $items, $itemType) = @_;
 
-	for my $itemType (keys %{$items}) {
-		if($itemType eq 'servers') {
-			for my $item (@{$items->{$itemType}}) {
-				next if $item eq 'noserver';
+	if($itemType eq 'server') {
+		for my $item (@{$items}) {
+			next if $item eq 'noserver';
 
-				my $dataProvider = '_get' . ucfirst($item) . 'Data';
-				my %moduleData = $self->$dataProvider($action);
+			my $dataProvider = '_get' . ucfirst($item) . 'Data';
+			my %moduleData = $self->$dataProvider($action);
 
-				if(%moduleData) {
-					my $package = "Servers::$item";
-					eval "require $package";
+			if(%moduleData) {
+				my $package = "Servers::$item";
+				eval "require $package";
 
-					unless($@) {
-						if ($package->can($action)) {
-							debug("Calling action $action on $package");
-							my $rs = $package->factory()->$action(\%moduleData);
-							return $rs if $rs;
-						}
-					} else {
-						error($@);
-						return 1;
+				unless($@) {
+					if ($package->can($action)) {
+						debug("Calling action $action on $package");
+						my $rs = $package->factory()->$action(\%moduleData);
+						return $rs if $rs;
 					}
+				} else {
+					error($@);
+					return 1;
 				}
 			}
-		} elsif($itemType eq 'packages') {
-			for my $item (@{$items->{$itemType}}) {
-				my $dataProvider = '_getPackagesData';
-				my %moduleData = $self->$dataProvider($action);
+		}
+	} elsif($itemType eq 'package') {
+		for my $item (@{$items}) {
+			my $dataProvider = '_getPackagesData';
+			my %moduleData = $self->$dataProvider($action);
 
-				if(%moduleData) {
-					my $package = "Package::$item";
-					eval "require $package";
+			if(%moduleData) {
+				my $package = "Package::$item";
+				eval "require $package";
 
-					unless($@) {
-						if ($package->can($action)) {
-							debug("Calling action $action on $package");
-							my $rs = $package->getInstance()->$action(\%moduleData);
-							return $rs if $rs;
-						}
-					} else {
-						error($@);
-						return 1;
+				unless($@) {
+					if ($package->can($action)) {
+						debug("Calling action $action on $package");
+						my $rs = $package->getInstance()->$action(\%moduleData);
+						return $rs if $rs;
 					}
+				} else {
+					error($@);
+					return 1;
 				}
 			}
-		} else {
-			error('Unknown items type');
-			return 1;
 		}
 	}
 
@@ -231,16 +229,26 @@ sub _runAllActions
 {
 	my ($self, $action) = @_;
 
-	my %items = (
-		'servers' => [iMSCP::Servers->getInstance()->get()],
-		'packages' => [iMSCP::Packages->getInstance()->get()]
-	);
-
+	my @servers = iMSCP::Servers->getInstance()->get();
+	my @packages = iMSCP::Packages->getInstance()->get();
 	my $moduleType = $self->getType();
 
-	for('pre', '', 'post') {
-		my $rs = $self->_runAction("$_$action$moduleType", \%items);
-		return $rs if $rs;
+	if($action ~~ [ 'add', 'restore' ]) {
+		for('pre', '', 'post') {
+			my $rs = $self->_runAction("$_$action$moduleType", \@servers, 'server');
+			return $rs if $rs;
+
+			$rs = $self->_runAction("$_$action$moduleType", \@packages, 'package');
+			return $rs if $rs;
+		}
+	} else {
+		for('pre', '', 'post') {
+			my $rs = $self->_runAction("$_$action$moduleType", \@packages, 'package');
+			return $rs if $rs;
+
+			$rs = $self->_runAction("$_$action$moduleType", \@servers, 'server');
+			return $rs if $rs;
+		}
 	}
 
 	0;

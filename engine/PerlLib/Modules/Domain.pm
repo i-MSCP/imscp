@@ -187,7 +187,7 @@ sub restore
 						sprintf(
 							'Unable to restore the <strong>%s</strong> SQL database which belong to the ' .
 							'%s account: Unknown database.', $1, $self->{'domain_name'}
-                        )
+						)
 					);
 					unless(ref $rdata eq 'HASH') {
 						error($rdata);
