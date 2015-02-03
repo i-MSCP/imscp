@@ -241,9 +241,6 @@ sub _runAllActions
 	for('pre', '', 'post') {
 		my $rs = $self->_runAction("$_$action$moduleType", \%items);
 		return $rs if $rs;
-
-		$rs = $self->_runAction("$_$action$moduleType", \%items);
-		return $rs if $rs;
 	}
 
 	0;

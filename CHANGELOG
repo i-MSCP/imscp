@@ -9,6 +9,7 @@ BACKEND
 	Added: -h ( help ) short option ( iMSCP::Getopt module )
 	Fixed: Composer cache is not cleared correctly
 	Fixed: LC_MESSAGES has not expected effect in backend's scripts
+	Fixed: Module's actions are called twice
 	Fixed: Postfix not restarted in some contexts ( Missing iMSCP::Service module )
 	Fixed: Useless instantiation of servers
 	Fixed: Wrong umask when the imscp-rqst-mngr script is run through the i-MSCP Daemon
