@@ -75,6 +75,34 @@ sub factory
 	$instance;
 }
 
+=item can($method)
+
+ Checks if the sqld server class provide the given method
+
+ Return subref|undef
+
+=cut
+
+sub can
+{
+	my $sName = $main::imscpConfig{'SQL_SERVER'} || undef;
+
+	if($sName && $sName ne 'no') {
+		if($sName eq 'remote_server') {
+			$sName = 'mysql';
+		} else {
+			$sName =~ s/_\d+\.\d+$//;
+		}
+
+		my $package = "Servers::po::$sName";
+		eval "require $package";
+		fatal($@) if $@;
+		$package->can($_[1]);
+	} else {
+		undef;
+	}
+}
+
 END
 {
 	unless(

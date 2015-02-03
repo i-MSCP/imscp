@@ -175,15 +175,12 @@ sub _runAction
 
 				if(%moduleData) {
 					my $package = "Servers::$item";
-
 					eval "require $package";
 
 					unless($@) {
-						my $instance = $package->factory();
-
-						if ($instance->can($action)) {
+						if ($package->can($action)) {
 							debug("Calling action $action on $package");
-							my $rs = $instance->$action(\%moduleData);
+							my $rs = $package->factory()->$action(\%moduleData);
 							return $rs if $rs;
 						}
 					} else {
@@ -202,11 +199,9 @@ sub _runAction
 					eval "require $package";
 
 					unless($@) {
-						my $instance = $package->getInstance();
-
-						if ($instance->can($action)) {
+						if ($package->can($action)) {
 							debug("Calling action $action on $package");
-							my $rs = $instance->$action(\%moduleData);
+							my $rs = $package->getInstance()->$action(\%moduleData);
 							return $rs if $rs;
 						}
 					} else {

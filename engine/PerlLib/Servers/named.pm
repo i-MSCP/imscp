@@ -58,7 +58,6 @@ sub factory
 {
 	unless(defined $instance) {
 		my $sName = $main::imscpConfig{'NAMED_SERVER'} || 'no';
-
 		my $package = undef;
 
 		if($sName eq 'no') {
@@ -83,13 +82,33 @@ sub factory
 		}
 
 		eval "require $package";
-
 		fatal($@) if $@;
-
 		$instance = $package->getInstance();
 	}
 
 	$instance;
+}
+
+=item can($method)
+
+ Checks if the named server class provide the given method
+
+ Return subref|undef
+
+=cut
+
+sub can
+{
+	my $sName = $main::imscpConfig{'NAMED_SERVER'} || undef;
+
+	if($sName && $sName ne 'no' && $sName ne 'external_server') {
+		my $package = "Servers::named::$sName";
+		eval "require $package";
+		fatal($@) if $@;
+		$package->can($_[1]);
+	} else {
+		undef;
+	}
 }
 
 END

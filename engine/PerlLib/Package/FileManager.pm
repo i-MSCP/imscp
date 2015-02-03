@@ -102,9 +102,11 @@ sub showDialog
 		eval "require $package";
 
 		unless($@) {
-			$package = $package->getInstance();
-			$rs = $package->showDialog($dialog) if $package->can('showDialog');
-			last if $rs;
+			if($package->can('showDialog')) {
+				debug("Calling action showDialog on $package");
+				$rs = $package->getInstance()->showDialog($dialog);
+				return $rs if $rs;
+			}
 		} else {
 			error($@);
 			return 1;
@@ -146,9 +148,11 @@ sub preinstallListener
 	eval "require $package";
 
 	unless($@) {
-		$package = $package->getInstance();
-		my $rs = $package->preinstall() if $package->can('preinstall');
-		return $rs if $rs;
+		if($package->can('preinstall')) {
+			debug("Calling action preinstall on $package");
+			my $rs = $package->getInstance()->preinstall();
+			return $rs if $rs;
+		}
 	} else {
 		error($@);
 		return 1;
@@ -175,9 +179,11 @@ sub installListener
 	eval "require $package";
 
 	unless($@) {
-		$package = $package->getInstance();
-		my $rs = $package->install() if $package->can('install');
-		return $rs if $rs;
+		if($package->can('install')) {
+			debug("Calling action install on $package");
+			my $rs = $package->getInstance()->install();
+			return $rs if $rs;
+		}
 	} else {
 		error($@);
 		return 1;
@@ -211,9 +217,11 @@ sub uninstall
 		eval "require $package";
 
 		unless($@) {
-			$package = $package->getInstance();
-			my $rs = $package->uninstall() if $package->can('uninstall');
-			return $rs if $rs;
+			if($package->can('uninstall')) {
+				debug("Calling action uninstall on $package");
+				my $rs = $package->getInstance()->uninstall();
+				return $rs if $rs;
+			}
 		} else {
 			error($@);
 			return 1;
@@ -242,9 +250,11 @@ sub setPermissionsListener
 		eval "require $package";
 
 		unless($@) {
-			$package = $package->getInstance();
-			my $rs = $package->setGuiPermissions() if $package->can('setGuiPermissions');
-			return $rs if $rs;
+			if($package->can('setGuiPermissions')) {
+				debug("Calling action setGuiPermissions on $package");
+				my $rs = $package->getInstance()->setGuiPermissions();
+				return $rs if $rs;
+			}
 		} else {
 			error($@);
 			return 1;

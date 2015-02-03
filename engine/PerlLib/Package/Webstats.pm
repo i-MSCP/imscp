@@ -105,6 +105,7 @@ sub showDialog
 
 				unless($@) {
 					if($package->can('showDialog')) {
+						debug("Calling action showDialog on $package");
 						$rs = $package->getInstance()->showDialog($dialog);
 						return $rs if $rs;
 					}
@@ -146,11 +147,16 @@ sub preinstall
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				$rs = $package->uninstall(); # Mandatory method
-				return $rs if $rs;
+				if($package->can('uninstall')) {
+					debug("Calling action uninstall on $package");
+					$rs = $package->getInstance()->uninstall();
+					return $rs if $rs;
+				}
 
-				@{$packages} = (@{$packages}, @{$package->getDistroPackages()}) if $package->can('getDistroPackages');
+				if($package->can('getDistroPackages')) {
+					debug("Calling action getDistroPackages on $package");
+					@{$packages} = (@{$packages}, @{$package->getDistroPackages()});
+				}
 			} else {
 				error($@);
 				return 1;
@@ -171,11 +177,16 @@ sub preinstall
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				$rs = $package->preinstall() if $package->can('preinstall');
-				return $rs if $rs;
+				if($package->can('preinstall')) {
+					debug("Calling action preinstall on $package");
+					$rs = $package->getInstance()->preinstall();
+					return $rs if $rs;
+				}
 
-				@{$packages} = (@{$packages}, @{$package->getDistroPackages()}) if $package->can('getDistroPackages');
+				if($package->can('getDistroPackages')) {
+					debug("Calling action getDistroPackages on $package");
+					@{$packages} = (@{$packages}, @{$package->getDistroPackages()});
+				}
 			} else {
 				error($@);
 				return 1;
@@ -210,6 +221,7 @@ sub install
 
 			unless($@) {
 				if($package->can('install')) {
+					debug("Calling action install on $package");
 					my $rs = $package->getInstance()->install();
 					return $rs if $rs;
 				}
@@ -246,11 +258,16 @@ sub uninstall
 			eval "require $package";
 
 			unless($@) {
-				$package = $package->getInstance();
-				$rs = $package->uninstall(); # Mandatory method;
-				return $rs if $rs;
+				if($package->can('uninstall')) {
+					debug("Calling action uninstall on $package");
+					$rs = $package->getInstance()->uninstall();
+					return $rs if $rs;
+				}
 
-				@{$packages} = (@{$packages}, @{$package->getDistroPackages()}) if $package->can('getDistroPackages');
+				if($package->can('getDistroPackages')) {
+					debug("Calling action getDistroPackages on $package");
+					@{$packages} = (@{$packages}, @{$package->getDistroPackages()});
+				}
 			} else {
 				error($@);
 				return 1;
@@ -286,6 +303,7 @@ sub setEnginePermissions
 
 			unless($@) {
 				if($package->can('setEnginePermissions')) {
+					debug("Calling action setEnginePermissions on $package");
 					my $rs = $package->getInstance()->setEnginePermissions();
 					return $rs if $rs;
 				}
@@ -322,6 +340,7 @@ sub preaddDmn
 
 				unless($@) {
 					if($package->can('preaddDmn')) {
+						debug("Calling action preaddDmn on $package");
 						my $rs = $package->getInstance()->preaddDmn($data);
 						return $rs if $rs;
 					}
@@ -359,6 +378,7 @@ sub addDmn
 
 				unless($@) {
 					if($package->can('addDmn')) {
+						debug("Calling action addDmn on $package");
 						my $rs = $package->getInstance()->addDmn($data);
 						return $rs if $rs;
 					}
@@ -396,6 +416,7 @@ sub deleteDmn
 
 				unless($@) {
 					if($package->can('deleteDmn')) {
+						debug("Calling action deleteDmn on $package");
 						my $rs = $package->getInstance()->deleteDmn($data);
 						return $rs if $rs;
 					}

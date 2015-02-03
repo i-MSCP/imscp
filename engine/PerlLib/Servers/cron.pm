@@ -56,15 +56,28 @@ sub factory
 {
 	unless(defined $instance) {
 		my $package = 'Servers::cron::cron';
-
 		eval "require $package";
-
 		fatal($@) if $@;
-
 		$instance = $package->getInstance();
 	}
 
 	$instance;
+}
+
+=item can($method)
+
+ Checks if the cron server class provide the given method
+
+ Return subref|undef
+
+=cut
+
+sub can
+{
+	my $package = 'Servers::cron::cron';
+	eval "require $package";
+	fatal($@) if $@;
+	$package->can($_[1]);
 }
 
 =back

@@ -56,17 +56,35 @@ sub factory
 {
 	unless(defined $instance) {
 		my $sName = $main::imscpConfig{'HTTPD_SERVER'} || 'no';
-
 		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::httpd::$sName";
-
 		eval "require $package";
-
 		fatal($@) if $@;
-
 		$instance = $package->getInstance();
 	}
 
 	$instance;
+}
+
+=item can($method)
+
+ Checks if the httpd server class provide the given method
+
+ Return subref|undef
+
+=cut
+
+sub can
+{
+	my $sName = $main::imscpConfig{'HTTPD_SERVER'} || undef;
+
+	if($sName && $sName ne 'no') {
+		my $package = "Servers::httpd::$sName";
+		eval "require $package";
+		fatal($@) if $@;
+		$package->can($_[1]);
+	} else {
+		undef;
+	}
 }
 
 END

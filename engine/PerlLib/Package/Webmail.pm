@@ -105,6 +105,7 @@ sub showDialog
 
 				unless($@) {
 					if($package->can('showDialog')) {
+						debug("Calling action showDialog on $package");
 						$rs = $package->getInstance()->showDialog($dialog);
 						return $rs if $rs;
 					}
@@ -150,6 +151,7 @@ sub preinstallListener
 
 			unless($@) {
 				if($package->can('preinstall')) {
+					debug("Calling action preinstall on $package");
 					my $rs = $package->getInstance()->preinstall();
 					return $rs if $rs;
 				}
@@ -182,6 +184,7 @@ sub installListener
 
 			unless($@) {
 				if($package->can('install')) {
+					debug("Calling action install on $package");
 					my $rs = $package->getInstance()->install();
 					return $rs if $rs;
 				}
@@ -217,6 +220,7 @@ sub uninstall
 
 			unless($@) {
 				if($package->can('uninstall')) {
+					debug("Calling action uninstall on $package");
 					my $rs = $package->getInstance()->uninstall();
 					return $rs if $rs;
 				}
@@ -251,6 +255,7 @@ sub setPermissionsListener
 
 			unless($@) {
 				if($package->can('setGuiPermissions')) {
+					debug("Calling action setGuiPermissions on $package");
 					my $rs = $package->getInstance()->setGuiPermissions();
 					return $rs if $rs;
 				}
@@ -286,6 +291,7 @@ sub deleteMail
 
 			unless($@) {
 				if($package->can('deleteMail')) {
+					debug("Calling action deleteMail on $package");
 					my $rs = $package->getInstance()->deleteMail($data);
 					return $rs if $rs;
 				}

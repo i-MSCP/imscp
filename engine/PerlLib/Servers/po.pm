@@ -57,17 +57,35 @@ sub factory
 {
 	unless(defined $instance) {
 		my $sName = $main::imscpConfig{'PO_SERVER'} || 'no';
-
 		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::po::$sName";
-
 		eval "require $package";
-
 		fatal($@) if $@;
-
 		$instance = $package->getInstance();
 	}
 
 	$instance;
+}
+
+=item can($method)
+
+ Checks if the po server class provide the given method
+
+ Return subref|undef
+
+=cut
+
+sub can
+{
+	my $sName = $main::imscpConfig{'PO_SERVER'} || undef;
+
+	if($sName && $sName ne 'no' && $sName ne 'external_server') {
+		my $package = "Servers::po::$sName";
+		eval "require $package";
+		fatal($@) if $@;
+		$package->can($_[1]);
+	} else {
+		undef;
+	}
 }
 
 END
