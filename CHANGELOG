@@ -57,6 +57,7 @@ TICKETS
 	Fixed #IP-1241: Allow customers to generate self-signed SSL certificate for their domains through the frontEnd
 	Fixed #IP-1246: PHP modules - Priority order - Priority is not honored in some contexts
 	Fixed #IP-1247: Apache2 - vlogger - failed unexpectedly
+	Fixed #IP-1251: Bug - per_user/per_domain settings - wrong domains/paths in php.ini
 	Fixed #IP-1252: Unable to add SSL certificate in some contexts
 
 ------------------------------------------------------------------------------------------------------------------------

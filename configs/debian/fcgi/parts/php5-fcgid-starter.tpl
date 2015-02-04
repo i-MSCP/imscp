@@ -3,5 +3,5 @@ umask 027
 export PHPRC={FCGI_DIR}/php5/
 export PHP_FCGI_MAX_REQUESTS=600
 export PHP_FCGI_CHILDREN=0
-export TMPDIR={WEB_DIR}/phptmp
+export TMPDIR={TMPDIR}
 exec {PHP_CGI_BIN} "$@"

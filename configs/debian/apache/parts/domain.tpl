@@ -56,10 +56,10 @@
         # SECTION fcgid END.
         # SECTION itk BEGIN.
         php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
-        php_admin_value upload_tmp_dir "{WEB_DIR}/phptmp"
-        php_admin_value session.save_path "{WEB_DIR}/phptmp"
-        php_admin_value soap.wsdl_cache_dir "{WEB_DIR}/phptmp"
-        php_admin_value sendmail_path "/usr/sbin/sendmail -t -i -f webmaster@{DOMAIN_NAME}"
+        php_admin_value upload_tmp_dir "{TMPDIR}"
+        php_admin_value session.save_path "{TMPDIR}"
+        php_admin_value soap.wsdl_cache_dir "{TMPDIR}"
+        php_admin_value sendmail_path "/usr/sbin/sendmail -t -i -f webmaster@{EMAIL_DOMAIN}"
         # Custom values
         php_admin_value max_execution_time {MAX_EXECUTION_TIME}
         php_admin_value max_input_time {MAX_INPUT_TIME}

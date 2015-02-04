@@ -1502,7 +1502,15 @@ sub _addCfg
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddCfg', $data);
 	return $rs if $rs;
 
+	# Set needed data
+
 	$self->setData($data);
+	$self->setData(
+		{
+			TMPDIR => $data->{'WEB_DIR'} . '/phptmp',
+			EMAIL_DOMAIN => $data->{'DOMAIN_NAME'}
+		}
+	);
 
 	# Disable and backup Apache sites if any
 	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {

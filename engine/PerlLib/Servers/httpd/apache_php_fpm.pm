@@ -2016,20 +2016,34 @@ sub _buildPHPConfig
 
 	my $poolLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 	my $domainType = $data->{'DOMAIN_TYPE'};
-	my $poolName;
+	my ($poolName, $tmpDir, $emailDomain);
 
 	if($poolLevel eq 'per_user') {
 		$poolName = $data->{'ROOT_DOMAIN_NAME'};
+		$tmpDir = $data->{'HOME_DIR'} . '/phptmp';
+		$emailDomain = $data->{'ROOT_DOMAIN_NAME'};
 	} elsif ($poolLevel eq 'per_domain') {
 		$poolName = $data->{'PARENT_DOMAIN_NAME'};
+		$tmpDir = ($domainType ~~ [ 'dmn', 'sub' ])
+			? $data->{'HOME_DIR'} . '/phptmp' : $data->{'HOME_DIR'} . '/' . $data->{'PARENT_DOMAIN_NAME'} . '/phptmp';
 	} elsif($poolLevel eq 'per_site') {
 		$poolName = $data->{'DOMAIN_NAME'};
+		$tmpDir = $data->{'WEB_DIR'} . '/phptmp';
+		$emailDomain = $data->{'DOMAIN_NAME'};
 	} else {
 		error("Unknown php.ini level: $poolLevel");
 		return 1;
 	}
 
 	if($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
+		$self->setData(
+			{
+				POOL_NAME => $poolName,
+				TMPDIR => $tmpDir,
+				EMAIL_DOMAIN => $emailDomain
+			}
+		);
+
 		$rs = $self->buildConfFile(
 			"$self->{'phpfpmTplDir'}/pool.conf",
 			$data,
