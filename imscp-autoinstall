@@ -53,7 +53,7 @@ newDebug('imscp-autoinstall.log');
 {
 	no warnings qw/once/;
 	$main::execmode = 'setup';
-    %main::questions = ();
+	%main::questions = ();
 }
 
 # Load config
@@ -114,8 +114,6 @@ if($main::noprompt) {
 					}
 				}
 			} else {
-				$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
-
 				unless($main::buildonly) {
 					print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok');
 				} else {
@@ -130,6 +128,8 @@ if($main::noprompt) {
 	} else {
 		print STDOUT output("Build steps in progress... Please wait.")
 	}
+} elsif(!iMSCP::Getopt->preseed) {
+	system('clear');
 }
 
 # Build steps

@@ -39,9 +39,6 @@ use File::Basename;
 # Turn off localisation features to force any command output to be in English
 $ENV{'LC_ALL'} = 'C';
 
-# Do not clear screen at end of script
-$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
-
 newDebug('imscp-httpd-logs-mngr.log');
 
 # Parse command line options

@@ -85,7 +85,6 @@ if($main::noprompt) {
 					}
 				}
 			} else {
-				$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 				print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok');
 			}
 		}
@@ -154,9 +153,9 @@ EOF
 	return $rs if $rs;
 
 	unless($main::noprompt) {
-		iMSCP::Dialog->getInstance()->msgbox(<<EOF);
+		iMSCP::Dialog->getInstance()->infobox(<<EOF);
 
-\\Z1Congratulation\\Zn
+\\Z1Congratulations\\Zn
 
 i-MSCP has been successfully updated.
 

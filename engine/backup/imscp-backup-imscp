@@ -43,9 +43,6 @@ use POSIX qw/strftime/;
 # Turn off localisation features to force any command output to be in english
 $ENV{'LANG'} = 'C';
 
-# Do not clear screen at end of script
-$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
-
 newDebug('imscp-backup-imscp.log');
 
 # Parse command line options

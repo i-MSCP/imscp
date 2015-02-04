@@ -293,7 +293,7 @@ EOF
 		? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
 		: $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
-	iMSCP::Dialog->getInstance()->msgbox(<<EOF);
+	iMSCP::Dialog->getInstance()->infobox(<<EOF);
 
 \\Z1Congratulations\\Zn
 

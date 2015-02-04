@@ -423,8 +423,6 @@ END
 		$self->{'target'}->store( message => "Exit code: $exitCode", tag => 'fatal' );
 	}
 
-	#system('tput clear') if defined $ENV{'TERM'} && (!defined $ENV{'IMSCP_CLEAR_SCREEN'} || $ENV{'IMSCP_CLEAR_SCREEN'});
-
 	endDebug() for @{$self->{'targets'}};
 
 	my @logs = $self->{'screen'}->retrieve( tag => qr/^(?:warn|error|fatal)$/ );

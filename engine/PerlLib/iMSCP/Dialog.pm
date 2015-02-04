@@ -729,6 +729,11 @@ sub _textbox
 	wantarray ? ($ret, $output) : $output;
 }
 
+sub DESTROY
+{
+
+}
+
 =back
 
 =head1 AUTHORS

@@ -40,9 +40,6 @@ use File::Basename;
 # Turn off localisation features to force any command output to be in english
 $ENV{'LANG'} = 'C';
 
-# Do not clear screen at end of script
-$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
-
 newDebug('imscp-set-engine-permissions.log');
 
 # Initialize command line options

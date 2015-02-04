@@ -34,7 +34,6 @@ use iMSCP::Execute;
 use iMSCP::File;
 
 $ENV{'LANG'} = 'C';
-$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-rkhunter-package.log');
 

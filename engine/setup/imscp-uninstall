@@ -98,7 +98,7 @@ sub process
 sub shutDown
 {
 
-	iMSCP::Dialog->getInstance()->msgbox(<<EOF);
+	iMSCP::Dialog->getInstance()->infobox(<<EOF);
 
 \\Z1Congratulations\\Zn
 
