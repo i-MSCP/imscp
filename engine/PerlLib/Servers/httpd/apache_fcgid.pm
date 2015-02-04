@@ -1841,14 +1841,21 @@ sub _buildPHPConfig
 	my $fcgiRootDir = $self->{'config'}->{'PHP_STARTER_DIR'};
 	my $iniLevel = $self->{'config'}->{'INI_LEVEL'};
 	my $domainType = $data->{'DOMAIN_TYPE'};
-	my $fcgiDir;
+	my ($fcgiDir, $tmpDir, $emailDomain);
 
 	if($iniLevel eq 'per_user') {
 		$fcgiDir = "$fcgiRootDir/$data->{'ROOT_DOMAIN_NAME'}";
+		$tmpDir = $data->{'HOME_DIR'} . '/phptmp';
+		$emailDomain = $data->{'ROOT_DOMAIN_NAME'};
 	} elsif ($iniLevel eq 'per_domain') {
 		$fcgiDir = "$fcgiRootDir/$data->{'PARENT_DOMAIN_NAME'}";
+		$tmpDir = ($domainType ~~ [ 'dmn', 'sub' ])
+			? $data->{'HOME_DIR'} . '/phptmp' : $data->{'HOME_DIR'} . '/' . $data->{'PARENT_DOMAIN_NAME'} . '/phptmp';
+		$emailDomain = $data->{'PARENT_DOMAIN_NAME'};
 	} elsif($iniLevel eq 'per_site') {
 		$fcgiDir = "$fcgiRootDir/$data->{'DOMAIN_NAME'}";
+		$tmpDir = $data->{'WEB_DIR'} . '/phptmp';
+		$emailDomain = $data->{'DOMAIN_NAME'};
 	} else {
 		error("Unknown php.ini level: $iniLevel");
 		return 1;
@@ -1873,9 +1880,18 @@ sub _buildPHPConfig
 			return $rs if $rs;
 		}
 
-		# Build Fcgid wrapper
+		# Set needed data
 
-		$self->setData({ FCGI_DIR => $fcgiDir, PHP_CGI_BIN => $self->{'config'}->{'PHP_CGI_BIN'} });
+		$self->setData(
+			{
+				FCGI_DIR => $fcgiDir,
+				PHP_CGI_BIN => $self->{'config'}->{'PHP_CGI_BIN'},
+				TMPDIR => $tmpDir,
+				EMAIL_DOMAIN => $emailDomain
+			}
+		);
+
+		# Build Fcgid wrapper
 
 		$rs = $self->buildConfFile(
 			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fcgid-starter.tpl",
