@@ -26,16 +26,10 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/** @see iMSCP_Events_Listener_SplPriorityQueue */
-require_once 'iMSCP/Events/Listener/SplPriorityQueue.php';
-
-/** @see iMSCP_Events_Manager_Interface */
-require_once 'iMSCP/Events/Listener.php';
-
 /**
  * Class iMSCP_Listener_PriorityQueue
  */
-class iMSCP_Listener_PriorityQueue implements Countable, IteratorAggregate
+class iMSCP_Events_Listener_PriorityQueue implements Countable, IteratorAggregate
 {
 	/**
 	 * Actual items aggregated in the priority queue. Each item is an array with keys "listener" and "priority"
@@ -52,7 +46,7 @@ class iMSCP_Listener_PriorityQueue implements Countable, IteratorAggregate
 	/**
 	 * Constructor
 	 *
-	 * @return iMSCP_Listener_PriorityQueue
+	 * @return iMSCP_Events_Listener_PriorityQueue
 	 */
 	public function __construct()
 	{
@@ -64,11 +58,11 @@ class iMSCP_Listener_PriorityQueue implements Countable, IteratorAggregate
 	 *
 	 * Priority defaults to 1 (low priority) if none provided.
 	 *
-	 * @param iMSCP_Listener $listener Listener
+	 * @param iMSCP_Events_Listener $listener Listener
 	 * @param int $priority Listener priority
-	 * @return iMSCP_Listener_PriorityQueue
+	 * @return iMSCP_Events_Listener_PriorityQueue
 	 */
-	public function addListener(iMSCP_Listener $listener, $priority = 1)
+	public function addListener(iMSCP_Events_Listener $listener, $priority = 1)
 	{
 		$priority = (int) $priority;
 		$this->items[] = array('listener' => $listener, 'priority' => $priority);
@@ -83,10 +77,10 @@ class iMSCP_Listener_PriorityQueue implements Countable, IteratorAggregate
 	 * Note: This removes the first listener matching the provided listener found. If the same listener item has been
 	 * added multiple times, it will not remove other instances.
 	 *
-	 * @param iMSCP_Listener $listener Listener to remove from the queue
+	 * @param iMSCP_Events_Listener $listener Listener to remove from the queue
 	 * @return bool FALSE if the item was not found, TRUE otherwise.
 	 */
-	public function removeListener(iMSCP_Listener $listener)
+	public function removeListener(iMSCP_Events_Listener $listener)
 	{
 		$key = false;
 

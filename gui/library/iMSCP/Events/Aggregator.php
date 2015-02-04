@@ -26,15 +26,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/** @see iMSCP_Events_Manager_Interface */
-require_once 'iMSCP/Events/Manager/Interface.php';
-
-/** @see iMSCP_Listener_PriorityQueue */
-require_once 'iMSCP/Events/Listener/PriorityQueue.php';
-
-/** @see iMSCP_Events_Manager_Interface */
-require_once 'iMSCP/Events/Listener.php';
-
 /**
  * Class iMSCP_Events_Aggregator
  */
@@ -167,10 +158,10 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	/**
 	 * Unregister an event listener from an event
 	 *
-	 * @param iMSCP_Listener $listener The listener object to remove
+	 * @param iMSCP_Events_Listener $listener The listener object to remove
 	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
 	 */
-	public function unregisterListener(iMSCP_Listener $listener)
+	public function unregisterListener(iMSCP_Events_Listener $listener)
 	{
 		$event = $listener->getMetadatum('event');
 
@@ -235,7 +226,7 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 			return $this->eventManagers[$eventType]->getListeners($event);
 		}
 
-		return new iMSCP_Listener_PriorityQueue();
+		return new iMSCP_Events_Listener_PriorityQueue();
 	}
 
 	/**

@@ -26,16 +26,8 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @see iMSCP_Database_Events_Database */
-require_once 'iMSCP/Database/Events/Database.php';
-
 /**
- * Base class for events thrown in the iMSCP_Database component.
- *
- * @category    iMSCP
- * @package     iMSCP_Database
- * @package     Events
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * Base class for events thrown in the iMSCP_Database component
  */
 class iMSCP_Database_Events_Statement extends iMSCP_Database_Events_Database
 {

@@ -37,20 +37,10 @@
  * This class provides filter that allow to compress a string in GZIP file format.
  *
  * This filter can be used both for create a standard gz file, and as filter for the PHP ob_start() function.
- *
- * This filter compresses the data by using the GZIP format specifications
- * according the rfc 1952.
- *
- * @category	i-MSCP
- * @package		iMSCP_Filter
- * @subpackage	Compress
- * @author		Laurent declercq <l.declercq@nuxwin.com>
- * @since       1.0.7 (ispCP)
- * @version		1.0.4
- * @replace		spOutput class
+ * This filter compresses the data by using the GZIP format specifications according the rfc 1952.
  */
-class iMSCP_Filter_Compress_Gzip {
-
+class iMSCP_Filter_Compress_Gzip
+{
 	/**
 	 * Contains the filter method name
 	 *

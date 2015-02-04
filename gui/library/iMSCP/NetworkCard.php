@@ -32,11 +32,7 @@
  */
 
 /**
- * Class Network Card
- *
- * @category    i-MSCP
- * @package     iMSCP_NetworkCard
- * @author      ispCP Team
+ * Class iMSCP_NetworkCard
  */
 class iMSCP_NetworkCard
 {

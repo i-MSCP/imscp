@@ -23,6 +23,9 @@ ENGINE
 
 FRONTEND
 	Added: Support for eAccelerator, WinCache, XCache and ZendOptimizerPlus opcode caches
+	Fixed: Usage of autoloader instead of require_once
+	Fixed: Wrong classname iMSCP_Listener ( should be iMSCP_Events_Listener )
+	Fixed: Wrong classname iMSCP_Listener_PriorityQueue ( should be iMSCP_Events_Listener_PriorityQueue )
 
 INSTALLER
 	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )

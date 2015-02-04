@@ -26,14 +26,8 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @see iMSCP_Exception */
-require_once 'iMSCP/I18n/Parser/Exception.php';
-
 /**
- * i18n Parser Exception class.
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
+ * i18n Parser Exception class
  */
 class iMSCP_I18n_Parser_Exception extends iMSCP_I18n_Exception
 {

@@ -26,22 +26,13 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/** @see iMSCP_Events_Manager_Interface */
-require_once 'iMSCP/Events/Manager/Interface.php';
-
-/** @see iMSCP_Listener_PriorityQueue */
-require_once 'iMSCP/Events/Listener/PriorityQueue.php';
-
-/** @see iMSCP_Events_Manager_Interface */
-require_once 'iMSCP/Events/Listener.php';
-
 /**
  * Class iMSCP_Events_Manager
  */
 class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 {
 	/**
-	 * @var iMSCP_Listener_PriorityQueue[] Array that contains events listeners stacks.
+	 * @var iMSCP_Events_Listener_PriorityQueue[] Array that contains events listeners stacks.
 	 */
 	protected $events = array();
 
@@ -77,7 +68,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 		$listeners = $this->getListeners($event);
 		//$listeners = clone $listeners;
 
-		/** @var $listener iMSCP_Listener */
+		/** @var $listener iMSCP_Events_Listener */
 		foreach ($listeners as $listener) {
 			$responses->push(call_user_func($listener->getHandler(), $eventObject));
 
@@ -96,7 +87,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 * @param string|array $event  The event(s) to listen on
 	 * @param callable|object $listener PHP callback or object which implement method with same name as event
 	 * @param int $priority Higher values have higher priority
-	 * @return iMSCP_Listener|iMSCP_Listener[]
+	 * @return iMSCP_Events_Listener|iMSCP_Events_Listener[]
 	 */
 	public function registerListener($event, $listener, $priority = 1)
 	{
@@ -111,10 +102,10 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 		}
 
 		if (empty($this->events[$event])) {
-			$this->events[$event] = new iMSCP_Listener_PriorityQueue();
+			$this->events[$event] = new iMSCP_Events_Listener_PriorityQueue();
 		}
 
-		$listener = new iMSCP_Listener($listener, array('event' => $event, 'priority' => $priority));
+		$listener = new iMSCP_Events_Listener($listener, array('event' => $event, 'priority' => $priority));
 		$this->events[$event]->addListener($listener, $priority);
 
 		return $listener;
@@ -141,10 +132,10 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * Unregister a listener from an event
 	 *
-	 * @param iMSCP_Listener $listener The listener object to remove
+	 * @param iMSCP_Events_Listener $listener The listener object to remove
 	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
 	 */
-	public function unregisterListener(iMSCP_Listener $listener)
+	public function unregisterListener(iMSCP_Events_Listener $listener)
 	{
 		$event = $listener->getMetadatum('event');
 
@@ -177,12 +168,12 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 * Retrieve all listeners which listen to a particular event
 	 *
 	 * @param string $event Event name
-	 * @return iMSCP_Listener_PriorityQueue
+	 * @return iMSCP_Events_Listener_PriorityQueue
 	 */
 	public function getListeners($event)
 	{
 		if (!array_key_exists($event, $this->events)) {
-			return new iMSCP_Listener_PriorityQueue();
+			return new iMSCP_Events_Listener_PriorityQueue();
 		}
 
 		return $this->events[$event];

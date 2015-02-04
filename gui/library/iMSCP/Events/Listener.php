@@ -27,9 +27,9 @@
  */
 
 /**
- * Class iMSCP_Listener
+ * Class iMSCP_Events_Listener
  */
-class iMSCP_Listener
+class iMSCP_Events_Listener
 {
 	/**
 	 * @var string|array|callable

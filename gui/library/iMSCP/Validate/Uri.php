@@ -27,19 +27,8 @@
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
- /** @see Zend_Validate_Abstract */
-require_once 'Zend/Validate/Abstract.php';
-
-/** @See Zend_Uri */
-require_once 'Zend/Uri.php';
-
 /**
- *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Validate
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.1
+ * Class iMSCP_Validate_Uri
  */
 class iMSCP_Validate_Uri extends Zend_Validate_Abstract
 {

@@ -61,11 +61,6 @@
  * To resume, the iMSCP_Config class acts as a registry for the iMSCP_Config_Handler
  * objects where the registered values (that are iMSCP_Config_Handler objects) are
  * indexed by they class name.
- *
- * @category	iMSCP
- * @package		iMSCP_Config
- * @author		ispCP Team
- * @author		iMSCP Team
  */
 class iMSCP_Config
 {

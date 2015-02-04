@@ -28,12 +28,7 @@
  */
 
 /**
- * Result class.
- *
- * @category	iMSCP
- * @package		Authentication
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * Class iMSCP_Authentication_Result
  */
 class iMSCP_Authentication_Result
 {

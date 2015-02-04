@@ -25,9 +25,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @see iMSCP_Exception_Writer_Abstract */
-require_once 'iMSCP/Exception/Writer/Abstract.php';
-
 /**
  * iMSCP_Exception_Writer_Browser
  *

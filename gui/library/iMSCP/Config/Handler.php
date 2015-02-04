@@ -26,8 +26,7 @@
  */
 
 /**
- * This class provides an interface to manage easily a set of configuration
- * parameters from an array.
+ * This class provides an interface to manage easily a set of configuration parameters from an array.
  *
  * This class implements the ArrayAccess and Iterator interfaces to improve
  * the access to the configuration parameters.

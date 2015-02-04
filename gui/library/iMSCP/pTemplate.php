@@ -38,15 +38,7 @@
  */
 
 /**
- * Class pTemplate is the i-MSCP template engine.
- *
- * @category    i-MSCP
- * @package     iMSCP_Core
- * @subpckage   pTemplate
- * @author      VHCS Team
- * @author      ispCP Team
- * @author      iMSCP Team
- * @todo remove all error operators
+ * Class pTemplate is the i-MSCP template engine
  */
 class iMSCP_pTemplate
 {

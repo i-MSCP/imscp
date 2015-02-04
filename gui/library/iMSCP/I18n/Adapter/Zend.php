@@ -26,20 +26,11 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @see Zend_Translate_Adapter */
-require_once 'Zend/Translate/Adapter.php';
-
 /**
- * Transitional adapter class for Zend.
+ * Transitional adapter class for Zend
  *
  * This adapter is coded in a dirty style. It provides an ugly way to translate
  * validation messages from Zend_validator by using the i-MSCP translation system.
- *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	I18n
- * @copyright	2010-2015 by i-MSCP team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_I18n_Adapter_Zend extends Zend_Translate_Adapter
 {
