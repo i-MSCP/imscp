@@ -31,11 +31,7 @@
  */
 
 /**
- * Class to store shared data (Better than global variables usage)
- *
- * @package     iMSCP_Registry
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.7
+ * Class to store shared data
  */
 class iMSCP_Registry
 {

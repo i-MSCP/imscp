@@ -26,9 +26,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/** @see iMSCP_Exception */
-require_once 'iMSCP/Exception.php';
-
 /**
  * Class iMSCP_Events_Exception
  */

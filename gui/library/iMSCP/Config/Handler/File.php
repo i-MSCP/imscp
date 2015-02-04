@@ -25,9 +25,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @see iMSCP_Config_Handler */
-require_once 'iMSCP/Config/Handler.php';
-
 /**
  * Class to handle configuration parameters from a flat file.
  *

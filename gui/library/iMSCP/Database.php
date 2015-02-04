@@ -32,13 +32,7 @@
  */
 
 /**
- * Class iMSCP_Database.
- *
- * @category    i-MSCP
- * @package     iMSCP_Database
- * @author      ispCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * TODO: use platform adapters (Mysql, Postgresql...)
+ * Class iMSCP_Database
  */
 class iMSCP_Database
 {

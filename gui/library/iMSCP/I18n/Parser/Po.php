@@ -30,7 +30,6 @@
  * Class to parse gettext portable object files.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
  */
 class iMSCP_I18n_Parser_Po extends iMSCP_I18n_Parser
 {
@@ -49,12 +48,9 @@ class iMSCP_I18n_Parser_Po extends iMSCP_I18n_Parser
 	/**
 	 * Parse a portable object file.
 	 *
-	 * @throws iMSCP_I18n_Parser_Exception
 	 * @param int $part Part to parse (default to iMSCP_I18n_Parser::ALL)
-	 * @return array|string An array of pairs key/value where the keys are the
-	 *                      original strings (msgid) and the values, the translated
-	 *                      strings (msgstr) or a string that contains headers, each
-	 * 						of them separated by EOL.
+	 * @return array|string
+	 * @throws iMSCP_i18n_Exception
 	 */
 	protected function _parse($part)
 	{

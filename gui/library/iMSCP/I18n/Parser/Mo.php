@@ -32,7 +32,6 @@
  * Gettext Machine Object (MO) file parser.
  *
  * @see http://www.gnu.org/software/gettext/manual/gettext.html#MO-Files
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 {

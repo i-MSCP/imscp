@@ -26,17 +26,7 @@
  */
 
 /**
- * iMSCP validation class.
- *
- * This class provide a way to access all validation routines via an unique handler.
- *
- * Note: Working in progress...
- *
- * @category    iMSCP
- * @package        iMSCP_Core
- * @subpackage    Validate
- * @author        Laurent Declercq <l.declercq@nuxwin.com>
- * @version        0.0.6
+ * iMSCP validation class
  */
 class iMSCP_Validate
 {

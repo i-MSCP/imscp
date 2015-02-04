@@ -26,16 +26,8 @@
  * @license	    http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @see Zend_Uri_Http */
-require_once 'Zend/Uri/Http.php';
-
 /**
- * Redirect URI handler (Like supported in i-MSCP engine)
- *
- * @category    iMSCP
- * @package	    iMSCP_Core
- * @subpackage  Uri
- * @author      Laurent Declercq <l.declercq@i-mscp.net>
+ * Redirect URI handler ( Like supported in i-MSCP engine )
  */
 class iMSCP_Uri_Redirect extends Zend_Uri_Http
 {

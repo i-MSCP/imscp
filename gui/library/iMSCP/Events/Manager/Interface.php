@@ -26,9 +26,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/** @see iMSCP_Events_Manager_Interface */
-require_once 'iMSCP/Events/Listener.php';
-
 /**
  * Events Manager interface
  *
@@ -65,10 +62,10 @@ interface iMSCP_Events_Manager_Interface
 	/**
 	 * Unregister an event listener from an event
 	 *
-	 * @param iMSCP_Listener $listener The listener object to remove
+	 * @param iMSCP_Events_Listener $listener The listener object to remove
 	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
 	 */
-	public function unregisterListener(iMSCP_Listener $listener);
+	public function unregisterListener(iMSCP_Events_Listener $listener);
 
 	/**
 	 * Retrieve all registered events

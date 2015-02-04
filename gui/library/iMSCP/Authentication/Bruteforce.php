@@ -28,7 +28,7 @@
  */
 
 /**
- * Bruteforce detection plugin.
+ * Bruteforce detection plugin
  *
  * This plugin allows to increase system security by detecting any dictionary attacks and blocking them according a set
  * of configuration parameters.

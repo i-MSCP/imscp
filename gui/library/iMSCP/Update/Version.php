@@ -26,9 +26,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/** @see iMSCP_Update */
-require_once 'iMSCP/Update.php';
-
 /**
  * Update version class
  *

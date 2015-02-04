@@ -30,8 +30,6 @@
  * Class iMSCP_I18n_Parser
  *
  * Base class for Gettext Portable Object and Machine Object file parsers
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  */
 abstract class iMSCP_I18n_Parser
 {

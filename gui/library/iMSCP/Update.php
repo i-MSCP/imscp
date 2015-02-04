@@ -28,11 +28,6 @@
 
 /**
  * Base class for update
- *
- * @category    iMSCP
- * @package     iMSCP_Update
- * @author      Daniel Andreca <sci2tech@gmail.com>
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 abstract class iMSCP_Update
 {

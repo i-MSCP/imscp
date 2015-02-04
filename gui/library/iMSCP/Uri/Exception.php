@@ -27,16 +27,8 @@
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @See iMSCP_Exception */
-require_once 'iMSCP/Exception.php';
-
 /**
- *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Uri
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.1
+ * Class iMSCP_Uri_Exception
  */
 class iMSCP_Uri_Exception extends iMSCP_Exception
 {

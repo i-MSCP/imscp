@@ -26,11 +26,7 @@
  */
 
 /**
- * Describes all events triggered in the iMSCP core code.
- *
- * @category    iMSCP
- * @package     iMSCP_Events
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * Class iMSCP_Events
  */
 class iMSCP_Events
 {

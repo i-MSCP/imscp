@@ -31,11 +31,6 @@
  *
  * Please, do not inherite from this class. Instead, inherite from the specialized classes localized into
  * gui/library/iMSCP/Plugin/
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Plugin
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 abstract class iMSCP_Plugin
 {

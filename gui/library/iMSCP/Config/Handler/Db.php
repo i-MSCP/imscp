@@ -26,11 +26,6 @@
  */
 
 /**
- * @see iMSCP_Config_Handler
- */
-require_once 'iMSCP/Config/Handler.php';
-
-/**
  * Class to handle configuration parameters from database
  *
  * iMSCP_Config_Handler adapter class to handle configuration parameters that
@@ -43,10 +38,6 @@ require_once 'iMSCP/Config/Handler.php';
  * @property string PHPINI_OPEN_BASEDIR PHP open_basedir
  * @property int DATABASE_REVISION Database revision
  * @property  int EMAIL_QUOTA_SYNC_MODE Email quota sync mode
- *
- * @package     iMSCP_Config
- * @subpackage  Handler
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator, Serializable
 {

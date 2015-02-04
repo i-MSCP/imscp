@@ -34,11 +34,6 @@
  *
  * @property mixed EOF
  * @property mixed fields
- *
- * @category    i-MSCP
- * @package     iMSCP_Database
- * @author      ispCP Team
- * @author      iMSCP team
  */
 class iMSCP_Database_ResultSet
 {

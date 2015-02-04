@@ -30,9 +30,7 @@
  */
 
 /**
- * This class provides the functionality needed by {@see admin/system_info.php} for Linux and BSD systems.
- *
- * TODO: complete rewrite
+ * This class provides the functionality needed by {@see admin/system_info.php} for Linux and BSD systems
  */
 class iMSCP_SystemInfo
 {

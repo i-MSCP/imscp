@@ -28,15 +28,7 @@
  */
 
 /**
- * Class to manage php.ini files.
- *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	PHPini
- * @author		Hannes Koschier <hannes@cheat.at>
- * @contributor	Laurent Declercq <l.declercq@nuxwin.com>
- * @contributor Paweł Iwanowski <kontakt@raisen.pl>
- * @version		0.0.8
+ * Class iMSCP_PHPini
  */
 class iMSCP_PHPini
 {
