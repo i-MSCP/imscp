@@ -263,23 +263,27 @@ sub postBuild
 {
 	# Needed to fix #IP-1246
 	if(-x '/usr/sbin/php5dismod') {
-		my($stdout, $stderr);
-		my $rs = execute('php5dismod gd imap intl json mcrypt mysqlnd mysqli mysql pdo pdo_mysql', \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		unless($rs ~~ [0, 2]) {
-			error($stderr) if $stderr;
-			return $rs;
+		for ('gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd', 'mysqli', 'mysql', 'pdo', 'pdo_mysql') {
+			my($stdout, $stderr);
+			my $rs = execute("php5dismod $_", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			unless($rs ~~ [0, 2]) {
+				error($stderr) if $stderr;
+				return $rs;
+			}
 		}
 	}
 
 	# Enable needed PHP modules
 	if(-x '/usr/sbin/php5enmod') {
-		my($stdout, $stderr);
-		my $rs = execute('php5enmod gd imap intl json mcrypt mysqlnd/10 mysqli mysql pdo/10 pdo_mysql', \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		unless($rs ~~ [0, 2]) {
-			error($stderr) if $stderr;
-			return $rs;
+		for ('gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'pdo/10', 'pdo_mysql') {
+			my($stdout, $stderr);
+			my $rs = execute("php5enmod $_", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			unless($rs ~~ [0, 2]) {
+				error($stderr) if $stderr;
+				return $rs;
+			}
 		}
 	}
 
