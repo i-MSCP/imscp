@@ -207,7 +207,7 @@
         <package>iproute</package>
         <package>ispell</package>
         <package>libc6-dev</package>
-        <package>locales</package>
+        <package>locales-all</package>
         <package>lzma</package>
         <package>make</package>
         <package>openssl</package>
