@@ -368,7 +368,9 @@ sub _setupDatabase
 	my $self = $_[0];
 
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-	my $roundcubeDbName =  main::setupGetQuestion('DATABASE_NAME') . '_roundcube';
+
+	my $imscpDbName = main::setupGetQuestion('DATABASE_NAME');
+	my $roundcubeDbName = $imscpDbName . '_roundcube';
 
 	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -380,7 +382,7 @@ sub _setupDatabase
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
-	my $quotedDbName = $db->quoteIdentifier($roundcubeDbName);
+	my $quotedRoundcubeDbName = $db->quoteIdentifier($roundcubeDbName);
 
 	# Checking for database existence
 	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $roundcubeDbName);
@@ -389,7 +391,7 @@ sub _setupDatabase
 		return 1;
 	} elsif(%{$rs}) {
 		# Ensure that the database has tables (recovery case)
-		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedDbName");
+		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedRoundcubeDbName");
 		unless(ref $rs eq 'HASH') {
 			error($rs);
 			return 1;
@@ -399,7 +401,7 @@ sub _setupDatabase
 	# Database doesn't exist or doesn't have any table
 	unless(%{$rs}) {
 		$rs = $db->doQuery(
-			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedRoundcubeDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 		);
 		unless(ref $rs eq 'HASH') {
 			error("Unable to create SQL database: $rs");
@@ -438,6 +440,28 @@ sub _setupDatabase
 
 	$rs = $db->doQuery(
 		'dummy', "GRANT ALL PRIVILEGES ON `$roundcubeDbName`.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
+	);
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privileges: $rs");
+		return 1;
+	}
+
+	my $quotedImscpDbName = $db->quoteIdentifier($imscpDbName);
+
+	$rs = $db->doQuery(
+		'dummy',
+		"
+			GRANT
+				SELECT (`mail_addr`, `mail_pass`), UPDATE (`mail_pass`)
+			ON
+				$quotedImscpDbName.`mail_users`
+			TO
+				?@?
+			IDENTIFIED BY ?
+		",
+		$dbUser,
+		$dbUserHost,
+		$dbPass
 	);
 	unless(ref $rs eq 'HASH') {
 		error("Unable to add privileges: $rs");

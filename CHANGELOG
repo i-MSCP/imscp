@@ -5,6 +5,7 @@ Git 1.1.x
 ------------------------------------------------------------------------------------------------------------------------
 
 ADDONS
+	Added: Read/Write permissions on the <imscp>.mail_users table for the roundcube SQL user
 	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )
 	Fixed: Single quotes in sql usernames must be escaped in configuration files ( PhpMyAdmin, Roundcube )
 
