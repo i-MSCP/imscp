@@ -116,7 +116,7 @@ a:hover,
     background: #6e0e0f url('../images/red/login/stripe.png') repeat-x left top;
 }
 
-.yellow {
+.yellow #header {
     background: #918137 url('../images/yellow/login/stripe.png') repeat-x left top;
 }
 
@@ -261,23 +261,53 @@ a:hover,
 }
 
 .black #login {
-    background: transparent url('../images/black/login/form_box.png') no-repeat left top;
+    background-image: url('../images/black/login/form_box.png'), url(../images/black/login/gradient_box.png), url(../images/black/login/stripe_box.png);
+    background-position: center top 30px, bottom, top;
+    background-repeat: no-repeat, repeat-x, repeat;
+    background-size: auto, 100% 100%, auto;
+    border: 1px solid silver;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 .blue #login {
-    background: transparent url('../images/blue/login/form_box.png') no-repeat left top;
+    background-image: url('../images/blue/login/form_box.png'), url(../images/blue/login/gradient_box.png), url(../images/blue/login/stripe_box.png);
+    background-position: center top 30px, bottom, top;
+    background-repeat: no-repeat, repeat-x, repeat;
+    background-size: auto, 100% 100%, auto;
+    border: 1px solid silver;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 .green #login {
-    background: transparent url('../images/green/login/form_box.png') no-repeat left top;
+    background-image: url('../images/green/login/form_box.png'), url(../images/green/login/gradient_box.png), url(../images/green/login/stripe_box.png);
+    background-position: center top 30px, bottom, top;
+    background-repeat: no-repeat, repeat-x, repeat;
+    background-size: auto, 100% 100%, auto;
+    border: 1px solid silver;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 .red #login {
-    background: transparent url('../images/red/login/form_box.png') no-repeat left top;
+    background-image: url('../images/red/login/form_box.png'), url(../images/red/login/gradient_box.png), url(../images/red/login/stripe_box.png);
+    background-position: center top 30px, bottom, top;
+    background-repeat: no-repeat, repeat-x, repeat;
+    background-size: auto, 100% 100%, auto;
+    border: 1px solid silver;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 .yellow #login {
-    background: transparent url('../images/yellow/login/form_box.png') no-repeat left top;
+    background-image: url('../images/yellow/login/form_box.png'), url(../images/yellow/login/gradient_box.png), url(../images/yellow/login/stripe_box.png);
+    background-position: center top 30px, bottom, top;
+    background-repeat: no-repeat, repeat-x, repeat;
+    background-size: auto, 100% 100%, auto;
+    border: 1px solid silver;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 #login form {
