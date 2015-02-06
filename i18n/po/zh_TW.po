@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-12-30 01:48+0100\n"
-"PO-Revision-Date: 2014-12-30 00:51+0000\n"
+"POT-Creation-Date: 2015-02-06 02:16+0100\n"
+"PO-Revision-Date: 2015-02-06 01:18+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -522,9 +522,6 @@ msgstr ""
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-msgid "A certificate in your CA bundle is missing or invalid."
-msgstr ""
-
 msgid "A database update is available"
 msgstr ""
 
@@ -535,7 +532,7 @@ msgid "A new i-MSCP version is available"
 msgstr "i-MSCP 目前已經有最新版本"
 
 msgid "Access your domain statistics through the Web interface."
-msgstr ""
+msgstr "透過 Web 介面使用您的 Domain Statistics"
 
 msgid "Access your files through the web interface."
 msgstr "經由網頁介面連線至您的 FTP"
@@ -690,7 +687,7 @@ msgstr "增加使用者"
 msgid "Added by"
 msgstr ""
 
-msgid "Addition in progress"
+msgid "Addition in progress..."
 msgstr ""
 
 msgid "Additional data"
@@ -917,7 +914,7 @@ msgid "All"
 msgstr "所有"
 
 msgid "All closed tickets were successfully deleted."
-msgstr ""
+msgstr "所以已關閉的服務單已成功刪除。"
 
 msgid "All fields are required."
 msgstr "所有欄位皆必填．"
@@ -932,7 +929,7 @@ msgid "All levels"
 msgstr ""
 
 msgid "All open tickets were successfully deleted."
-msgstr ""
+msgstr "所有已開啟的服務單已成功刪除。"
 
 msgid "All out"
 msgstr "全部發送"
@@ -976,7 +973,7 @@ msgid "Already in use"
 msgstr "已經被使用"
 
 msgid "Alternative URL to reach your website"
-msgstr ""
+msgstr "您的臨時網址"
 
 msgid "An email addresse is not valid in mail forward list."
 msgstr ""
@@ -985,6 +982,16 @@ msgid "An entry is defined twice below."
 msgstr ""
 
 msgid "An error occurred during authentication."
+msgstr ""
+
+msgid "An unexpected error occured"
+msgstr ""
+
+msgid ""
+"An unexpected error occured. Go to the debugger interface for more details."
+msgstr ""
+
+msgid "An unexpected error occured. Please contact your administrator."
 msgstr ""
 
 msgid "An unexpected error occured. Please contact your reseller."
@@ -1037,14 +1044,6 @@ msgid "Are you sure you want to activate this package?"
 msgstr ""
 
 #, php-format
-msgid "Are you sure you want to change the status of %s domain account?"
-msgstr "您確定要變更 %s 網域帳號的狀態?"
-
-#, php-format
-msgid "Are you sure you want to change the status of %s?"
-msgstr "你確定想改變 %s? 的狀態嗎？"
-
-#, php-format
 msgid ""
 "Are you sure you want to deactivate the external mail server(s) for the '%s'"
 " domain?"
@@ -1059,7 +1058,7 @@ msgid "Are you sure you want to delete %s?"
 msgstr "你確定想刪除%s?"
 
 msgid "Are you sure you want to delete all closed tickets?"
-msgstr ""
+msgstr "您確定要刪除所有已關閉的服務單?"
 
 msgid "Are you sure you want to delete all selected items?"
 msgstr ""
@@ -1133,6 +1132,9 @@ msgstr "指派群組"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
+msgid "At least one intermediate certificate is invalid or missing."
+msgstr ""
+
 msgid "Auto (Browser language)"
 msgstr ""
 
@@ -1163,7 +1165,7 @@ msgstr ""
 msgid "Awaiting activation"
 msgstr ""
 
-msgid "Awaiting approval"
+msgid "Awaiting for approval"
 msgstr ""
 
 msgid "B"
@@ -1190,21 +1192,15 @@ msgstr ""
 msgid "Behind"
 msgstr ""
 
-msgid "Being enabled"
-msgstr ""
-
-msgid "Being suspended"
-msgstr ""
-
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
 msgstr ""
 
 msgid "Blocking time between logins and captcha attempts"
-msgstr ""
+msgstr "每次登入及驗證碼嘗試的間隔"
 
 msgid "Blocktime <small>(in minutes)</small>"
-msgstr ""
+msgstr "凍結時間 <small>(分鐘)</small>"
 
 msgid "Body"
 msgstr "內文"
@@ -1225,9 +1221,6 @@ msgid "Bulk Actions"
 msgstr ""
 
 msgid "By"
-msgstr ""
-
-msgid "CA bundle"
 msgstr ""
 
 msgid "CGI"
@@ -1354,6 +1347,12 @@ msgstr ""
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr "點擊“恢復”按鈕系統將恢復到最後的日常備份"
+
+msgid "Click to activate"
+msgstr ""
+
+msgid "Click to deactivate"
+msgstr ""
 
 msgid "Client / Choose Directory"
 msgstr ""
@@ -1534,12 +1533,9 @@ msgid "Company"
 msgstr "公司名稱"
 
 msgid "Compress HTML output"
-msgstr ""
+msgstr "HTML 壓縮輸出"
 
 msgid "Confirmation for domain order {DOMAIN}"
-msgstr ""
-
-msgid "Confirmation for plugin protection"
 msgstr ""
 
 #, php-format
@@ -1693,7 +1689,7 @@ msgid "DNS record already exist."
 msgstr "DNS 紀錄已經存在．"
 
 msgid "DNS resource records"
-msgstr ""
+msgstr "DNS 紀錄"
 
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr ""
@@ -1747,7 +1743,7 @@ msgid "Database update"
 msgstr "資料庫更新"
 
 msgid "Database usage"
-msgstr ""
+msgstr "資料庫使用量"
 
 msgid "Database users"
 msgstr "資料庫使用者"
@@ -1884,6 +1880,9 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr ""
 
+msgid "Deletion in progress..."
+msgstr ""
+
 msgid "Depot import"
 msgstr ""
 
@@ -1901,6 +1900,10 @@ msgstr ""
 
 msgid "Directories"
 msgstr "目錄"
+
+#, php-format
+msgid "Directory %s doesn't exists."
+msgstr ""
 
 msgid "Directory tree"
 msgstr "目錄樹"
@@ -1930,7 +1933,7 @@ msgid "Disk usage"
 msgstr "磁片使用量"
 
 msgid "Disk usage detail"
-msgstr ""
+msgstr "硬碟使用量資訊"
 
 msgid "Display errors"
 msgstr "顯示錯誤訊息"
@@ -2350,7 +2353,7 @@ msgid "External mail server successfully scheduled for update."
 msgstr ""
 
 msgid "External mail servers"
-msgstr ""
+msgstr "外部郵件伺服器"
 
 msgid "FTP Users"
 msgstr "FTP 使用者"
@@ -2405,11 +2408,15 @@ msgid "File %s doesn't exist or cannot be reached!"
 msgstr ""
 
 #, php-format
-msgid "File %s has not been found in plugin directory."
+msgid "File %s doesn't look like a migration file."
 msgstr ""
 
 #, php-format
-msgid "File %s is missing in plugin directory."
+msgid "File %s has not been found in plugin archive."
+msgstr ""
+
+#, php-format
+msgid "File %s is missing in plugin archive."
 msgstr ""
 
 #, php-format
@@ -2432,7 +2439,7 @@ msgid "File successfully uploaded."
 msgstr "檔案已經成功上傳"
 
 msgid "File usage"
-msgstr ""
+msgstr "檔案使用量"
 
 msgid "FileManager"
 msgstr ""
@@ -2525,13 +2532,13 @@ msgstr "一般設定"
 msgid "Generate"
 msgstr "產生"
 
+msgid "Generate a self-signed certificate"
+msgstr ""
+
 msgid "Get a new image"
 msgstr ""
 
 msgid "GiB"
-msgstr ""
-
-msgid "Go to the debugger for more details"
 msgstr ""
 
 msgid "Group"
@@ -2681,11 +2688,6 @@ msgid ""
 "system)."
 msgstr ""
 
-msgid ""
-"If you protect a plugin, you'll no longer be able to deactivate it from the "
-"plugin management interface."
-msgstr "插件管理"
-
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
 
@@ -2749,6 +2751,9 @@ msgstr "不正確的 Email 帳號限制"
 msgid "Incorrect email length or syntax."
 msgstr "不正確的Email長度 或 格式"
 
+msgid "Incorrect email quota."
+msgstr ""
+
 #, php-format
 msgid "Incorrect limit for %s."
 msgstr ""
@@ -2781,7 +2786,7 @@ msgid "Install this plugin"
 msgstr "安裝這個插件"
 
 msgid "Install various Web applications with a few clicks."
-msgstr ""
+msgstr "透過簡單的畫面點選安裝各種不同的 Web 應用程式"
 
 msgid "Installation details"
 msgstr ""
@@ -2810,19 +2815,16 @@ msgstr ""
 msgid "Instructions to download today's backup"
 msgstr "下載今天備份的說明"
 
+msgid "Intermediate certificate(s)"
+msgstr ""
+
 msgid "Internal Server Error"
 msgstr ""
 
 msgid "Internationalization"
 msgstr ""
 
-msgid "Invalid CA Bundle."
-msgstr ""
-
 msgid "Invalid CNAME"
-msgstr ""
-
-msgid "Invalid Email username."
 msgstr ""
 
 msgid "Invalid IPv4 address."
@@ -2850,10 +2852,16 @@ msgstr ""
 msgid "Invalid URL."
 msgstr "不正確的 URL"
 
+msgid "Invalid certificate."
+msgstr ""
+
 msgid "Invalid domain name."
 msgstr ""
 
 msgid "Invalid email address."
+msgstr ""
+
+msgid "Invalid email username."
 msgstr ""
 
 msgid "Invalid expiration date."
@@ -3050,7 +3058,7 @@ msgid "Mail feature is disabled."
 msgstr ""
 
 msgid "Mail usage"
-msgstr ""
+msgstr "Mail 使用量"
 
 #, php-format
 msgid "Mailhost %s is not valid."
@@ -3154,6 +3162,10 @@ msgstr "訊息"
 msgid "MiB"
 msgstr ""
 
+#, php-format
+msgid "Migration file %s is not readable."
+msgstr ""
+
 msgid "Minute"
 msgstr "分"
 
@@ -3166,7 +3178,7 @@ msgstr ""
 msgid "Model"
 msgstr "型號"
 
-msgid "Modification in progress"
+msgid "Modification in progress..."
 msgstr ""
 
 msgid "Month"
@@ -3719,23 +3731,31 @@ msgid "Plugin %s activated."
 msgstr ""
 
 #, php-format
+msgid "Plugin %s cannot be activated."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s cannot be changed."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgid "Plugin %s cannot be deactivated."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be deleted. You must uninstall it first."
+msgid "Plugin %s cannot be deleted."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be disabled."
+msgid "Plugin %s cannot be installed."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be enabled."
+msgid "Plugin %s cannot be protected."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be uninstalled."
 msgstr ""
 
 #, php-format
@@ -3756,30 +3776,6 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s installed."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s is already activated."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s is already deactivated."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s is already installed."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s is already uninstalled."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s is not installable."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s is not uninstallable."
 msgstr ""
 
 #, php-format
@@ -3927,9 +3923,6 @@ msgstr ""
 msgid "Private key"
 msgstr "私密金鑰"
 
-msgid "Private key field cannot be empty."
-msgstr ""
-
 msgid "Private key passphrase if any"
 msgstr ""
 
@@ -4002,7 +3995,7 @@ msgid "Rebuild languages index"
 msgstr "重建語言索引"
 
 msgid "Record data"
-msgstr ""
+msgstr "值"
 
 msgid "Redirect"
 msgstr ""
@@ -4556,7 +4549,7 @@ msgid "Software installation"
 msgstr "軟體安裝"
 
 msgid "Software installer"
-msgstr ""
+msgstr "軟體自動安裝"
 
 msgid "Software installer options"
 msgstr "軟體安裝設定"
@@ -4850,18 +4843,6 @@ msgstr ""
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr ""
 
-msgid "The certificate field cannot be empty."
-msgstr ""
-
-msgid "The certificate is expired."
-msgstr ""
-
-msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
-
-msgid "The certificate is not valid."
-msgstr ""
-
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
@@ -4885,9 +4866,6 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr ""
 
-msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
-
 msgid "The menu you are trying to edit doesn't exist."
 msgstr ""
 
@@ -4900,6 +4878,9 @@ msgid ""
 msgstr ""
 
 msgid "The password field is empty."
+msgstr ""
+
+msgid "The private key doesn't belong to the provided certificate."
 msgstr ""
 
 #, php-format
@@ -4980,8 +4961,8 @@ msgstr ""
 #, php-format
 msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
-"SQL server. Enter the %% character to allow this SQL user to connect from "
-"any host."
+"SQL server. Enter the %s wildcard character to allow this SQL user to "
+"connect from any host."
 msgstr ""
 
 msgid "This package already exists in the administrator software repository."
@@ -5148,7 +5129,7 @@ msgstr ""
 msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr ""
 
-msgid "Unable to find plugin root directory."
+msgid "Unable to find plugin root directory withing archive."
 msgstr ""
 
 #, php-format
@@ -5168,7 +5149,7 @@ msgstr ""
 msgid "Unable to move file."
 msgstr "無法移動檔案"
 
-msgid "Unable to open archive."
+msgid "Unable to open plugin archive."
 msgstr ""
 
 #, php-format
@@ -5176,6 +5157,14 @@ msgid "Unable to protect the %s plugin: %s"
 msgstr ""
 
 msgid "Unable to read Web software repository index file."
+msgstr ""
+
+#, php-format
+msgid "Unable to read the $%s file. Please, check file permissions"
+msgstr ""
+
+#, php-format
+msgid "Unable to read the plugin %s file. Please check file permissions"
 msgstr ""
 
 msgid "Unable to read xml file for web software."
@@ -5303,7 +5292,7 @@ msgid "Update Plugins"
 msgstr ""
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "修改 SQL 使用者密碼"
 
 msgid "Update data"
 msgstr "更新資料"
@@ -5326,7 +5315,7 @@ msgid ""
 msgstr ""
 
 msgid "Update password"
-msgstr ""
+msgstr "修改密碼"
 
 msgid "Updates"
 msgstr "升級"
@@ -5505,7 +5494,7 @@ msgid "Web files only"
 msgstr ""
 
 msgid "Web folder protection"
-msgstr ""
+msgstr "網頁資料夾保護"
 
 msgid "Web in"
 msgstr "Web 接收"
@@ -5553,11 +5542,10 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed in username."
+msgid "Wildcards such as '%s' and '%s' are not allowed in username."
 msgstr ""
 
-#, php-format
-msgid "Wildcards such as '%%' and '?' are not allowed."
+msgid "Wildcards such as 's%' and 's%' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
@@ -5658,6 +5646,11 @@ msgstr "您僅能上傳圖片"
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
 "domain."
+msgstr ""
+
+msgid ""
+"You cannot add new email account. You have already assigned all your email "
+"quota to other mailboxes. Please first, review your quota assignments."
 msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
@@ -5781,24 +5774,24 @@ msgid ""
 msgstr ""
 
 msgid "You have no closed tickets."
-msgstr ""
+msgstr "您沒有任何已關閉的服務單。"
 
 msgid "You have no groups."
 msgstr ""
 
 msgid "You have no open tickets."
-msgstr ""
+msgstr "您沒有任何已開啟的服務單。"
 
 msgid "You have not service ports defined."
 msgstr ""
 
 msgid ""
-"You have reached the maximum number of Email accounts allowed by your "
+"You have reached the maximum number of domain aliasses allowed by your "
 "subscription."
 msgstr ""
 
 msgid ""
-"You have reached the maximum number of domain aliasses allowed by your "
+"You have reached the maximum number of email accounts allowed by your "
 "subscription."
 msgstr ""
 
@@ -5862,8 +5855,8 @@ msgstr ""
 msgid "You must select a network interface."
 msgstr "您必須選擇一個網路介面"
 
-msgid "You must select a plugin."
-msgstr "您必須選擇一個插件"
+msgid "You must select at least one plugin."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "您必須輸入一個訊息"
@@ -6159,5 +6152,5 @@ msgstr ""
 msgid "{RESELLER} uploaded a new software package"
 msgstr ""
 
-msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
