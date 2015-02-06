@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-12-30 03:26+0100\n"
-"PO-Revision-Date: 2014-12-30 02:29+0000\n"
+"POT-Creation-Date: 2015-02-06 02:28+0100\n"
+"PO-Revision-Date: 2015-02-06 01:30+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -312,6 +312,10 @@ msgid "%s record"
 msgstr "%s record"
 
 #, php-format
+msgid "%s webmail"
+msgstr ""
+
+#, php-format
 msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
@@ -523,9 +527,6 @@ msgstr "<b>%s</b> har IP-adresse, der ikke kan styres fra destinations forhandle
 msgid "A PHP extension stopped the file upload."
 msgstr "En PHP extension stoppede fil upload."
 
-msgid "A certificate in your CA bundle is missing or invalid."
-msgstr "Et certifikat i dit CA bundle mangler eller er ugyldig."
-
 msgid "A database update is available"
 msgstr "En database opdatering er tilgængelig"
 
@@ -691,8 +692,8 @@ msgstr "Tilføj bruger"
 msgid "Added by"
 msgstr "Tilføjet af"
 
-msgid "Addition in progress"
-msgstr "Tilføjelse sat i gang"
+msgid "Addition in progress..."
+msgstr ""
 
 msgid "Additional data"
 msgstr "Ekstra data"
@@ -988,6 +989,16 @@ msgstr "En post er defineret to gange nedenfor."
 msgid "An error occurred during authentication."
 msgstr "Der opstod en fejl i forbindelse med godkendelse."
 
+msgid "An unexpected error occured"
+msgstr ""
+
+msgid ""
+"An unexpected error occured. Go to the debugger interface for more details."
+msgstr ""
+
+msgid "An unexpected error occured. Please contact your administrator."
+msgstr ""
+
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "En uventet fejl opstod. Kontakt din forhandler."
 
@@ -1036,14 +1047,6 @@ msgstr "Er du sikker på, du vil slette %s SQL bruger?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Er du sikker på, du vil aktivere denne pakke?"
-
-#, php-format
-msgid "Are you sure you want to change the status of %s domain account?"
-msgstr "Er du sikker på du vil ændre status for %s domæne-konto?"
-
-#, php-format
-msgid "Are you sure you want to change the status of %s?"
-msgstr "Er du sikker på du vil ændre status for %s?"
 
 #, php-format
 msgid ""
@@ -1134,6 +1137,9 @@ msgstr "Tildel gruppe"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Først skal du oprette en database, der har mindst én SQL-bruger."
 
+msgid "At least one intermediate certificate is invalid or missing."
+msgstr ""
+
 msgid "Auto (Browser language)"
 msgstr ""
 
@@ -1164,8 +1170,8 @@ msgstr "Tilgængelig software"
 msgid "Awaiting activation"
 msgstr "Afventer aktivering"
 
-msgid "Awaiting approval"
-msgstr "Afventer godkendelse"
+msgid "Awaiting for approval"
+msgstr ""
 
 msgid "B"
 msgstr "B"
@@ -1190,12 +1196,6 @@ msgstr ""
 
 msgid "Behind"
 msgstr "Bag"
-
-msgid "Being enabled"
-msgstr "Bliver aktiveret"
-
-msgid "Being suspended"
-msgstr "Bliver suspenderet"
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1227,9 +1227,6 @@ msgstr "Bulk-handlinger"
 
 msgid "By"
 msgstr "Af"
-
-msgid "CA bundle"
-msgstr "CA bundle"
 
 msgid "CGI"
 msgstr "CGI"
@@ -1355,6 +1352,12 @@ msgstr "Klik her for flere detaljer"
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr "Klik på Gendan knappen og systemet vil gendanne den seneste daglige backup"
+
+msgid "Click to activate"
+msgstr ""
+
+msgid "Click to deactivate"
+msgstr ""
 
 msgid "Client / Choose Directory"
 msgstr "Klient / Vælg bibliotek"
@@ -1539,9 +1542,6 @@ msgstr "Komprimere HTML-output"
 
 msgid "Confirmation for domain order {DOMAIN}"
 msgstr "Bekræftelse for domæne ordre {DOMAIN}"
-
-msgid "Confirmation for plugin protection"
-msgstr "Bekræftelse for plugin beskyttelse"
 
 #, php-format
 msgid "Conflict with an existent %s record."
@@ -1885,6 +1885,9 @@ msgstr "Slet ticket"
 msgid "Deletion in progress"
 msgstr "Sletning i gang"
 
+msgid "Deletion in progress..."
+msgstr ""
+
 msgid "Depot import"
 msgstr "Depot import"
 
@@ -1902,6 +1905,10 @@ msgstr "Direktiv værdier"
 
 msgid "Directories"
 msgstr "Mapper"
+
+#, php-format
+msgid "Directory %s doesn't exists."
+msgstr ""
 
 msgid "Directory tree"
 msgstr "Mappe træ"
@@ -2409,12 +2416,16 @@ msgid "File %s doesn't exist or cannot be reached!"
 msgstr "Fil %s eksisterer ikke eller kan ikke nås!"
 
 #, php-format
-msgid "File %s has not been found in plugin directory."
-msgstr "Fil %s er ikke fundet i plugin mappe."
+msgid "File %s doesn't look like a migration file."
+msgstr ""
 
 #, php-format
-msgid "File %s is missing in plugin directory."
-msgstr "Fil %s mangler i plugin mappe."
+msgid "File %s has not been found in plugin archive."
+msgstr ""
+
+#, php-format
+msgid "File %s is missing in plugin archive."
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2529,14 +2540,14 @@ msgstr "Generel indstillinger"
 msgid "Generate"
 msgstr "Generer"
 
+msgid "Generate a self-signed certificate"
+msgstr ""
+
 msgid "Get a new image"
 msgstr "Anskaf et nyt billede"
 
 msgid "GiB"
 msgstr "GiB"
-
-msgid "Go to the debugger for more details"
-msgstr ""
 
 msgid "Group"
 msgstr "Gruppe"
@@ -2685,11 +2696,6 @@ msgid ""
 "system)."
 msgstr "Hvis den sættes til »ja«, vil web-mapper, som klargjorte af i-MSCP være beskyttet mod sletnings ved brug af ej ændre flaget (kun hvis det understøttes af filsystem)."
 
-msgid ""
-"If you protect a plugin, you'll no longer be able to deactivate it from the "
-"plugin management interface."
-msgstr "Hvis du beskytter et plugin, vil du ikke længere være i stand til at deaktivere det fra plugin management interface."
-
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Hvis du ønsker at begrænse forhandleren, skal du først begrænse forhandlerens kunder."
 
@@ -2753,6 +2759,9 @@ msgstr "Forkert e-mail konti grænse."
 msgid "Incorrect email length or syntax."
 msgstr "Forkert email længde eller syntaks."
 
+msgid "Incorrect email quota."
+msgstr ""
+
 #, php-format
 msgid "Incorrect limit for %s."
 msgstr "Forkert grænse for %s."
@@ -2814,20 +2823,17 @@ msgstr "Installation af uploadet pakke. Opdater venligst denne side."
 msgid "Instructions to download today's backup"
 msgstr "Instruktion om download af dagen's backup"
 
+msgid "Intermediate certificate(s)"
+msgstr ""
+
 msgid "Internal Server Error"
 msgstr "Intern Serverfejl"
 
 msgid "Internationalization"
 msgstr "Internationalisering"
 
-msgid "Invalid CA Bundle."
-msgstr "Ugyldig CA Bundle."
-
 msgid "Invalid CNAME"
 msgstr "Ugyldig CNAME"
-
-msgid "Invalid Email username."
-msgstr "Ugyldig e-mail brugernavn."
 
 msgid "Invalid IPv4 address."
 msgstr "Ugyldig IPv4 adresse."
@@ -2854,10 +2860,16 @@ msgstr "Ugyldig TXT data"
 msgid "Invalid URL."
 msgstr "Ugyldig URL."
 
+msgid "Invalid certificate."
+msgstr ""
+
 msgid "Invalid domain name."
 msgstr "Ugyldig domæne navn."
 
 msgid "Invalid email address."
+msgstr ""
+
+msgid "Invalid email username."
 msgstr ""
 
 msgid "Invalid expiration date."
@@ -3014,7 +3026,7 @@ msgid "Logo successfully updated."
 msgstr "Logo succesfuldt opdateret."
 
 msgid "Logout"
-msgstr ""
+msgstr "Log ud"
 
 msgid "Lost password"
 msgstr "Glemt Adgangskode"
@@ -3158,6 +3170,10 @@ msgstr "Meddelser"
 msgid "MiB"
 msgstr "MiB"
 
+#, php-format
+msgid "Migration file %s is not readable."
+msgstr ""
+
 msgid "Minute"
 msgstr "Minut"
 
@@ -3170,8 +3186,8 @@ msgstr "Manglende domæne"
 msgid "Model"
 msgstr "Model"
 
-msgid "Modification in progress"
-msgstr "Ændring i gang"
+msgid "Modification in progress..."
+msgstr ""
 
 msgid "Month"
 msgstr "Måned"
@@ -3723,24 +3739,32 @@ msgid "Plugin %s activated."
 msgstr "Plugin %s  aktiveret."
 
 #, php-format
+msgid "Plugin %s cannot be activated."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s cannot be changed."
 msgstr "Plugin %s kan ikke ændres."
 
 #, php-format
-msgid "Plugin %s cannot be deleted. You must deactivate it first."
-msgstr "Plugin %s kan ikke slettes. Du skal deaktivere det først."
+msgid "Plugin %s cannot be deactivated."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be deleted. You must uninstall it first."
-msgstr "Plugin %s kan ikke slettes. Du skal afinstallere det først."
+msgid "Plugin %s cannot be deleted."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be disabled."
-msgstr "Plugin %s kan ikke  deaktiveres."
+msgid "Plugin %s cannot be installed."
+msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be enabled."
-msgstr "Plugin %s kan ikke aktiveres."
+msgid "Plugin %s cannot be protected."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be uninstalled."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be updated."
@@ -3761,30 +3785,6 @@ msgstr "Plugin %s slettet."
 #, php-format
 msgid "Plugin %s installed."
 msgstr "Plugin %s installeret."
-
-#, php-format
-msgid "Plugin %s is already activated."
-msgstr "Plugin %s er allerede aktiveret."
-
-#, php-format
-msgid "Plugin %s is already deactivated."
-msgstr "Plugin %s er allerede deaktiveret."
-
-#, php-format
-msgid "Plugin %s is already installed."
-msgstr "Plugin %s er allerede installeret."
-
-#, php-format
-msgid "Plugin %s is already uninstalled."
-msgstr "Plugin %s er allerede afinstalleret."
-
-#, php-format
-msgid "Plugin %s is not installable."
-msgstr "Plugin %s er ikke installerbare."
-
-#, php-format
-msgid "Plugin %s is not uninstallable."
-msgstr "Plugin %s er ikke til afinstallering."
 
 #, php-format
 msgid "Plugin %s is protected."
@@ -3930,9 +3930,6 @@ msgstr "Prioritet: %s\n"
 
 msgid "Private key"
 msgstr "Privat nøgle"
-
-msgid "Private key field cannot be empty."
-msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr "Privat nøgle adgangssætning, hvis nogen"
@@ -4859,18 +4856,6 @@ msgstr "Den IP-adresse, du forsøger at fjerne er tildelt en forhandler."
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "`Enter` tasten er deaktiveret på grund af ydeevnen."
 
-msgid "The certificate field cannot be empty."
-msgstr "Feltet certifikat kan ikke være tom."
-
-msgid "The certificate is expired."
-msgstr ""
-
-msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
-
-msgid "The certificate is not valid."
-msgstr ""
-
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
@@ -4894,9 +4879,6 @@ msgstr "Domænet eller mindst en af sine objekter har en anden status end 'ok'."
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Det domæne, du forsøger at redigere findes ikke."
 
-msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
-
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Den menu, du forsøger at redigere findes ikke."
 
@@ -4911,6 +4893,9 @@ msgstr "Pakken vil blive installeret automatisk til dit system efter upload.<br 
 msgid "The password field is empty."
 msgstr "Password feltet er tomt."
 
+msgid "The private key doesn't belong to the provided certificate."
+msgstr ""
+
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
 msgstr "Den eksterne filstørrelse (%s) er lavere end 1 byte. Kontroller URL."
@@ -4919,8 +4904,8 @@ msgid "The reseller account that you are trying to edit has not been found."
 msgstr "Den forhandler konto, som du forsøger at redigere er ikke blevet fundet."
 
 msgid ""
-"The reseller you want to remove has one or more customers accounts.<br "
-"/>Please remove them first."
+"The reseller you want to remove has one or more customers "
+"accounts.<br>Remove them first."
 msgstr ""
 
 msgid "The software installer feature requires PHP."
@@ -4989,9 +4974,9 @@ msgstr "Dette interface gør det muligt at tilføje eller fjerne IP-adresser. IP
 #, php-format
 msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
-"SQL server. Enter the %% character to allow this SQL user to connect from "
-"any host."
-msgstr "Det er den host, hvorfra denne SQL bruger skal have lov til at forbinde til SQL server. Indtast %% karakter for at muliggøre denne SQL bruger til at oprette forbindelse fra enhver vært."
+"SQL server. Enter the %s wildcard character to allow this SQL user to "
+"connect from any host."
+msgstr ""
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Denne pakke findes allerede i administratorens softwarearkiv."
@@ -5157,8 +5142,8 @@ msgstr "Kan ikke udpakke plugin arkiv: %s"
 msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr "Kan ikke finde nogen netværks interface. Du kan ikke tilføje nye IP-adresse."
 
-msgid "Unable to find plugin root directory."
-msgstr "Kan ikke finde plugin root mappe."
+msgid "Unable to find plugin root directory withing archive."
+msgstr ""
 
 #, php-format
 msgid "Unable to get stats for file %s."
@@ -5177,8 +5162,8 @@ msgstr "Kan ikke installere %s plugin: %s"
 msgid "Unable to move file."
 msgstr "Kan ikke flytte fil."
 
-msgid "Unable to open archive."
-msgstr "Kan ikke åbne arkivet."
+msgid "Unable to open plugin archive."
+msgstr ""
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
@@ -5186,6 +5171,14 @@ msgstr "Ikke i stand til at beskytte %s plugin: %s"
 
 msgid "Unable to read Web software repository index file."
 msgstr "Kan ikke læse web softwarearkiv index-fil."
+
+#, php-format
+msgid "Unable to read the $%s file. Please, check file permissions"
+msgstr ""
+
+#, php-format
+msgid "Unable to read the plugin %s file. Please check file permissions"
+msgstr ""
 
 msgid "Unable to read xml file for web software."
 msgstr "Kan ikke læse xml-fil for web software."
@@ -5479,7 +5472,7 @@ msgid "View"
 msgstr "Se"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Se SSL certifikat"
 
 msgid "View Support Ticket"
 msgstr "Se Support Ticket"
@@ -5562,11 +5555,10 @@ msgid ""
 msgstr "Wildcard: Setup en DNS MX-record til at videresende post til ikke-eksisterende underdomæner."
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed in username."
-msgstr "Jokertegn såsom %% og ? er ikke tilladt i brugernavn."
+msgid "Wildcards such as '%s' and '%s' are not allowed in username."
+msgstr ""
 
-#, php-format
-msgid "Wildcards such as '%%' and '?' are not allowed."
+msgid "Wildcards such as 's%' and 's%' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
@@ -5667,6 +5659,11 @@ msgstr "Du kan kun uploade billeder."
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
 "domain."
+msgstr ""
+
+msgid ""
+"You cannot add new email account. You have already assigned all your email "
+"quota to other mailboxes. Please first, review your quota assignments."
 msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
@@ -5802,14 +5799,14 @@ msgid "You have not service ports defined."
 msgstr "Du har ingen service porte defineret."
 
 msgid ""
-"You have reached the maximum number of Email accounts allowed by your "
-"subscription."
-msgstr "Du har nået det maksimale antal e-mail konti, tilladt af dit abonnement."
-
-msgid ""
 "You have reached the maximum number of domain aliasses allowed by your "
 "subscription."
 msgstr "Du har nået det maksimale antal domæne aliasser tilladt af dit abonnement."
+
+msgid ""
+"You have reached the maximum number of email accounts allowed by your "
+"subscription."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
@@ -5871,8 +5868,8 @@ msgstr "Du skal vælge mindst en email-konto der skal slettes."
 msgid "You must select a network interface."
 msgstr "Du skal vælge et netværks interface."
 
-msgid "You must select a plugin."
-msgstr "Du skal vælge en plugin."
+msgid "You must select at least one plugin."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "Du skal angive en besked."
@@ -6168,5 +6165,5 @@ msgstr "{ADMIN} aktiverede din softwarepakke"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{FORHANDLER} uploadede en ny softwarepakke"
 
-msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2014 i-MSCP Team<br/>Alle rettigheder forbeholdes"
+msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

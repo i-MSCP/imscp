@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-12-30 03:26+0100\n"
-"PO-Revision-Date: 2014-12-30 02:29+0000\n"
+"POT-Creation-Date: 2015-02-06 02:28+0100\n"
+"PO-Revision-Date: 2015-02-06 01:30+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -314,6 +314,10 @@ msgid "%s record"
 msgstr "%s registro"
 
 #, php-format
+msgid "%s webmail"
+msgstr ""
+
+#, php-format
 msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
@@ -525,9 +529,6 @@ msgstr "<b>%s</b> tiene una dirección IP que no puede ser administrada por el r
 msgid "A PHP extension stopped the file upload."
 msgstr "Una extensión de PHP detuvo la carga de archivos."
 
-msgid "A certificate in your CA bundle is missing or invalid."
-msgstr ""
-
 msgid "A database update is available"
 msgstr ""
 
@@ -693,8 +694,8 @@ msgstr "Añadir usuario"
 msgid "Added by"
 msgstr "Añadido por"
 
-msgid "Addition in progress"
-msgstr "Creación en progreso"
+msgid "Addition in progress..."
+msgstr ""
 
 msgid "Additional data"
 msgstr "Información adicional"
@@ -990,6 +991,16 @@ msgstr "Una entrada esta definida dos veces a continuación."
 msgid "An error occurred during authentication."
 msgstr "Se produjo un error durante la autenticación."
 
+msgid "An unexpected error occured"
+msgstr ""
+
+msgid ""
+"An unexpected error occured. Go to the debugger interface for more details."
+msgstr ""
+
+msgid "An unexpected error occured. Please contact your administrator."
+msgstr ""
+
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Ha ocurrido un error inesperado, favor contáctese con su revendedor"
 
@@ -1038,14 +1049,6 @@ msgstr ""
 
 msgid "Are you sure you want to activate this package?"
 msgstr "¿Estás seguro de que quieres activar este paquete?"
-
-#, php-format
-msgid "Are you sure you want to change the status of %s domain account?"
-msgstr "¿Estas seguro de querer cambiar el estado de la cuenta de dominio %s ?"
-
-#, php-format
-msgid "Are you sure you want to change the status of %s?"
-msgstr "¿Está seguro de que quiere cambiar el estado de %s?"
 
 #, php-format
 msgid ""
@@ -1136,6 +1139,9 @@ msgstr "Asignar grupo"
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
+msgid "At least one intermediate certificate is invalid or missing."
+msgstr ""
+
 msgid "Auto (Browser language)"
 msgstr ""
 
@@ -1166,8 +1172,8 @@ msgstr "Software disponible"
 msgid "Awaiting activation"
 msgstr "En espera de activación"
 
-msgid "Awaiting approval"
-msgstr "¡En espera de aprobación!"
+msgid "Awaiting for approval"
+msgstr ""
 
 msgid "B"
 msgstr "B"
@@ -1192,12 +1198,6 @@ msgstr ""
 
 msgid "Behind"
 msgstr "Detrás"
-
-msgid "Being enabled"
-msgstr "Habilitado"
-
-msgid "Being suspended"
-msgstr "Suspendido"
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1229,9 +1229,6 @@ msgstr "Acciones masivas"
 
 msgid "By"
 msgstr "Por"
-
-msgid "CA bundle"
-msgstr ""
 
 msgid "CGI"
 msgstr "CGI"
@@ -1357,6 +1354,12 @@ msgstr "Haga clic aquí para más detalles"
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr "Pulsa el botón de restaurar y el sistema restaurará el último backup diario"
+
+msgid "Click to activate"
+msgstr ""
+
+msgid "Click to deactivate"
+msgstr ""
 
 msgid "Client / Choose Directory"
 msgstr "Cliente / Elegir directorio"
@@ -1541,9 +1544,6 @@ msgstr "Comprimir salida HTML"
 
 msgid "Confirmation for domain order {DOMAIN}"
 msgstr "Confirmación para el pedido del dominio {DOMAIN}"
-
-msgid "Confirmation for plugin protection"
-msgstr "Confirmación para protecció del plug-in"
 
 #, php-format
 msgid "Conflict with an existent %s record."
@@ -1887,6 +1887,9 @@ msgstr "Eliminar ticket"
 msgid "Deletion in progress"
 msgstr "Eliminación en progreso"
 
+msgid "Deletion in progress..."
+msgstr ""
+
 msgid "Depot import"
 msgstr "Repositorio de importación "
 
@@ -1904,6 +1907,10 @@ msgstr "Valores de directiva"
 
 msgid "Directories"
 msgstr "Directorios"
+
+#, php-format
+msgid "Directory %s doesn't exists."
+msgstr ""
 
 msgid "Directory tree"
 msgstr "Arbol de directorios"
@@ -2411,12 +2418,16 @@ msgid "File %s doesn't exist or cannot be reached!"
 msgstr "El archivo %s no existe o no se puede llegar a el!"
 
 #, php-format
-msgid "File %s has not been found in plugin directory."
-msgstr "El archivo %s no se ha encontrado en el directorio del plugins."
+msgid "File %s doesn't look like a migration file."
+msgstr ""
 
 #, php-format
-msgid "File %s is missing in plugin directory."
-msgstr "El archivo %s falta en el directorio del plugins."
+msgid "File %s has not been found in plugin archive."
+msgstr ""
+
+#, php-format
+msgid "File %s is missing in plugin archive."
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2531,14 +2542,14 @@ msgstr "Configuración general"
 msgid "Generate"
 msgstr "Generar"
 
+msgid "Generate a self-signed certificate"
+msgstr ""
+
 msgid "Get a new image"
 msgstr "Obtener una nueva imagen"
 
 msgid "GiB"
 msgstr "GiB"
-
-msgid "Go to the debugger for more details"
-msgstr ""
 
 msgid "Group"
 msgstr "Grupo"
@@ -2687,11 +2698,6 @@ msgid ""
 "system)."
 msgstr ""
 
-msgid ""
-"If you protect a plugin, you'll no longer be able to deactivate it from the "
-"plugin management interface."
-msgstr "Si proteges un plugin, ya no podrás desactivarlo desde la interfaz de gestión de plugins."
-
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Si quieres ponerle limites a un revendedor, primero debes ponerle límites a sus clientes."
 
@@ -2755,6 +2761,9 @@ msgstr "Límite de cuenta de correo incorrecto."
 msgid "Incorrect email length or syntax."
 msgstr "La longitud o la sintaxis del email són incorrectas."
 
+msgid "Incorrect email quota."
+msgstr ""
+
 #, php-format
 msgid "Incorrect limit for %s."
 msgstr "Límite incorrecto para %s."
@@ -2816,20 +2825,17 @@ msgstr "Instalando el paquete cargado. Por favor, actualice esta página."
 msgid "Instructions to download today's backup"
 msgstr "Instrucciones para descargar el backup de hoy"
 
+msgid "Intermediate certificate(s)"
+msgstr ""
+
 msgid "Internal Server Error"
 msgstr "Error interno del servidor"
 
 msgid "Internationalization"
 msgstr "Internacionalización"
 
-msgid "Invalid CA Bundle."
-msgstr ""
-
 msgid "Invalid CNAME"
 msgstr "CNAME invalido"
-
-msgid "Invalid Email username."
-msgstr "Email inválido para el nombre de usuario."
 
 msgid "Invalid IPv4 address."
 msgstr "Dirección IPv4 incorrecta."
@@ -2856,10 +2862,16 @@ msgstr "Datos TXT inválido"
 msgid "Invalid URL."
 msgstr "URL inválida"
 
+msgid "Invalid certificate."
+msgstr ""
+
 msgid "Invalid domain name."
 msgstr "Nombre de dominio inválido."
 
 msgid "Invalid email address."
+msgstr ""
+
+msgid "Invalid email username."
 msgstr ""
 
 msgid "Invalid expiration date."
@@ -3016,7 +3028,7 @@ msgid "Logo successfully updated."
 msgstr "Logo subido correctamente."
 
 msgid "Logout"
-msgstr ""
+msgstr "Cerrar sesión"
 
 msgid "Lost password"
 msgstr "Recuperar contraseña"
@@ -3160,6 +3172,10 @@ msgstr "mensajes"
 msgid "MiB"
 msgstr "MiB"
 
+#, php-format
+msgid "Migration file %s is not readable."
+msgstr ""
+
 msgid "Minute"
 msgstr "Minuto"
 
@@ -3172,8 +3188,8 @@ msgstr "Falta el dominio"
 msgid "Model"
 msgstr "Modelo"
 
-msgid "Modification in progress"
-msgstr "Modificación en progreso"
+msgid "Modification in progress..."
+msgstr ""
 
 msgid "Month"
 msgstr "Mes"
@@ -3725,23 +3741,31 @@ msgid "Plugin %s activated."
 msgstr ""
 
 #, php-format
+msgid "Plugin %s cannot be activated."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s cannot be changed."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be deleted. You must deactivate it first."
+msgid "Plugin %s cannot be deactivated."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be deleted. You must uninstall it first."
+msgid "Plugin %s cannot be deleted."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be disabled."
+msgid "Plugin %s cannot be installed."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s cannot be enabled."
+msgid "Plugin %s cannot be protected."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s cannot be uninstalled."
 msgstr ""
 
 #, php-format
@@ -3762,30 +3786,6 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s installed."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s is already activated."
-msgstr "El Plugin %s ya esta activado."
-
-#, php-format
-msgid "Plugin %s is already deactivated."
-msgstr "El Plugin %s ya esta desactivado."
-
-#, php-format
-msgid "Plugin %s is already installed."
-msgstr "El Plugin %s ya esta instalado."
-
-#, php-format
-msgid "Plugin %s is already uninstalled."
-msgstr "El Plugin %s ya esta desinstalado."
-
-#, php-format
-msgid "Plugin %s is not installable."
-msgstr ""
-
-#, php-format
-msgid "Plugin %s is not uninstallable."
 msgstr ""
 
 #, php-format
@@ -3931,9 +3931,6 @@ msgid "Priority: %s\n"
 msgstr "Prioridad: %s\n"
 
 msgid "Private key"
-msgstr ""
-
-msgid "Private key field cannot be empty."
 msgstr ""
 
 msgid "Private key passphrase if any"
@@ -4861,18 +4858,6 @@ msgstr "La dirección IP que está intentando eliminar está asignada a un Reven
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "La tecla 'Enter' está desactivada por razones de rendimiento."
 
-msgid "The certificate field cannot be empty."
-msgstr ""
-
-msgid "The certificate is expired."
-msgstr ""
-
-msgid "The certificate is not valid or the CA bundle is missing."
-msgstr ""
-
-msgid "The certificate is not valid."
-msgstr ""
-
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
@@ -4896,9 +4881,6 @@ msgstr "El dominio o por lo menos una de sus entidades tiene un estatus diferent
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "El dominio que estas intentando editar no existe."
 
-msgid "The key is not the private key that corresponds to the certificate."
-msgstr ""
-
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "El menú que estas intentando editar no existe."
 
@@ -4913,6 +4895,9 @@ msgstr "El paquete se instalará automaticamente en tu sistema después de su ca
 msgid "The password field is empty."
 msgstr "El campo Contraseña está vacío"
 
+msgid "The private key doesn't belong to the provided certificate."
+msgstr ""
+
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
 msgstr "El tamaño del archivo remoto (%s) es inferior a 1 Byte. Por favor compruebe la URL."
@@ -4921,8 +4906,8 @@ msgid "The reseller account that you are trying to edit has not been found."
 msgstr "La cuenta de revendedor que estas intentando editar no se ha encontrado."
 
 msgid ""
-"The reseller you want to remove has one or more customers accounts.<br "
-"/>Please remove them first."
+"The reseller you want to remove has one or more customers "
+"accounts.<br>Remove them first."
 msgstr ""
 
 msgid "The software installer feature requires PHP."
@@ -4991,8 +4976,8 @@ msgstr "Esta interfaz permite añadir o eliminar direcciones IP. Las direcciones
 #, php-format
 msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
-"SQL server. Enter the %% character to allow this SQL user to connect from "
-"any host."
+"SQL server. Enter the %s wildcard character to allow this SQL user to "
+"connect from any host."
 msgstr ""
 
 msgid "This package already exists in the administrator software repository."
@@ -5159,8 +5144,8 @@ msgstr "No es posible extraer el archivo del plugin: %s"
 msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr "No se pueden encontrar tarjetas de red. No puedes agregar una nueva dirección IP."
 
-msgid "Unable to find plugin root directory."
-msgstr "No se puede encontrar el directorio raíz del plugin."
+msgid "Unable to find plugin root directory withing archive."
+msgstr ""
 
 #, php-format
 msgid "Unable to get stats for file %s."
@@ -5179,8 +5164,8 @@ msgstr ""
 msgid "Unable to move file."
 msgstr "No se puede mover el fichero."
 
-msgid "Unable to open archive."
-msgstr "No se puede abrir el archivo."
+msgid "Unable to open plugin archive."
+msgstr ""
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
@@ -5188,6 +5173,14 @@ msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "No se puede leer el archivo índice de repositorio de software Web"
+
+#, php-format
+msgid "Unable to read the $%s file. Please, check file permissions"
+msgstr ""
+
+#, php-format
+msgid "Unable to read the plugin %s file. Please check file permissions"
+msgstr ""
 
 msgid "Unable to read xml file for web software."
 msgstr "No se puede leer el archivo XML para el software web."
@@ -5481,7 +5474,7 @@ msgid "View"
 msgstr "Ver"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Ver certificado SSL"
 
 msgid "View Support Ticket"
 msgstr "Ver Ticket de Soporte"
@@ -5564,11 +5557,10 @@ msgid ""
 msgstr "Comodín: Configurar un registro DNS MX para retransmitir correo para los subdominios inexistentes."
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed in username."
+msgid "Wildcards such as '%s' and '%s' are not allowed in username."
 msgstr ""
 
-#, php-format
-msgid "Wildcards such as '%%' and '?' are not allowed."
+msgid "Wildcards such as 's%' and 's%' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
@@ -5669,6 +5661,11 @@ msgstr "Solo puedes cargar imágenes."
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
 "domain."
+msgstr ""
+
+msgid ""
+"You cannot add new email account. You have already assigned all your email "
+"quota to other mailboxes. Please first, review your quota assignments."
 msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
@@ -5804,14 +5801,14 @@ msgid "You have not service ports defined."
 msgstr "No ha definido los puertos de servicio."
 
 msgid ""
-"You have reached the maximum number of Email accounts allowed by your "
-"subscription."
-msgstr "Has alcanzado el número máximo de cuentas de correo permitidas por tu suscripción."
-
-msgid ""
 "You have reached the maximum number of domain aliasses allowed by your "
 "subscription."
 msgstr "Has alcanzado el número máximo de alias de dominio permitidos por tu suscripción."
+
+msgid ""
+"You have reached the maximum number of email accounts allowed by your "
+"subscription."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
@@ -5873,8 +5870,8 @@ msgstr "Usted debe seleccionar mínimo una cuenta de correo para eliminar."
 msgid "You must select a network interface."
 msgstr "Debes seleccionar una tarjeta de red."
 
-msgid "You must select a plugin."
-msgstr "Debes seleccionar un plugin."
+msgid "You must select at least one plugin."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "Debes especificar un mensaje."
@@ -6170,5 +6167,5 @@ msgstr "{ADMIN} ha activado tu paquete de software"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha subido un nuevo paquete de software"
 
-msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2014 i-MSCP Team<br/>Todos los Derechos Reservados"
+msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
