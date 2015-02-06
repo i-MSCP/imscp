@@ -1,6 +1,71 @@
 i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
+1.1.22
+------------------------------------------------------------------------------------------------------------------------
+
+2015-02-06: Laurent Declercq
+	RELEASE i-MSCP 1.1.22
+
+ADDONS
+	Added: Read/Write permissions on the <imscp>.mail_users table for the roundcube SQL user
+	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )
+	Fixed: Single quotes in sql usernames must be escaped in configuration files ( PhpMyAdmin, Roundcube )
+
+CONFIGS
+	Added php5-json package ( Debian Jessie )
+
+DAEMON
+	Fixed: Messages must not be hardcoded in functions
+	Fixed: Restart of some services fail when the backend ( imscp-rqst-mngr ) is run through the daemon
+	Updated: Version to 1.2.2
+
+ENGINE
+	Fixed: Composer cache is not cleared correctly
+	Fixed: LC_MESSAGES has not expected effect in backend's scripts
+	Removed: policyd-weight and postgrey ( Postfix SMTP access policy delegation )
+
+FRONTEND
+	Added: Support for eAccelerator, WinCache, XCache and ZendOptimizerPlus opcode caches
+	Fixed: Usage of autoloader instead of require_once
+	Fixed: Wrong classname iMSCP_Listener ( should be iMSCP_Events_Listener )
+	Fixed: Wrong classname iMSCP_Listener_PriorityQueue ( should be iMSCP_Events_Listener_PriorityQueue )
+
+INSTALLER
+	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )
+	Fixed: Migration from Courier to Dovecot is broken ( courier-dovecot-migrate.pl is run with a wrong option )
+	Fixed: php5enmod command throws an error when a PHP module is missing ( PHP5.4 )
+	Fixed: rsync: failed to set times on "/var/www/virtual": Operation not permitted (1)
+	Fixed: Unable to define custom APT repository without key ( Debian, Ubuntu )
+
+PLUGINS
+	Fixed: Plugins that don't implement an API method which is being executed must not be instantiated
+	Fixed: Plugin uninstall() method must stay optional, even if the install() method is implemented
+	Updated: API to version 0.2.16
+
+TICKETS
+	Fixed #IP-1207: Defect - DataTable - Sorting not functional for data strings containing numeric values
+	Fixed #IP-1208: Task - Untranslatable string
+	Fixed #IP-1209: Cosmetics - Data usage bar glitches on 4k screens
+	Fixed #IP-1217: Defect - Faulty cron for removing old backend logs
+	Fixed #IP-1223: Bug - Admin log shows server IP instead of user IP
+	Fixed #IP-1226: Panel maintenance mode: text message error
+	Fixed #IP-1227: Page reseller statistics shows the same max/curr traffic/disk for all resellers
+	Fixed #IP-1228: Adding SSL-certificate causes undefined index warning
+	Fixed #IP-1230: RFC 7208 states that DNS SPF shoudln't be used anymore
+	Fixed #IP-1233: Autoresponder script ( imscp-arpl-msgr ) cannot write in /var/log/imscp/imscp-arpl-msgr
+	Fixed #IP-1234: IPv6 addresses causes exception
+	Fixed #IP-1235: Cosmetics - Reseller overview - Exception in domain status breaks the layout
+	Fixed #IP-1238: Question mark information box not functioning when switching page
+	Fixed #IP-1239: SSL Certificate - Usage of CA certificates as provided by OS for validation
+	Fixed #IP-1241: Allow customers to generate self-signed SSL certificate for their domains through the frontEnd
+	Fixed #IP-1246: PHP modules - Priority order - Priority is not honored in some contexts
+	Fixed #IP-1247: Apache2 - vlogger - failed unexpectedly
+	Fixed #IP-1251: Bug - per_user/per_domain settings - wrong domains/paths in php.ini
+	Fixed #IP-1252: Unable to add SSL certificate in some contexts
+	Fixed #IP-1256: Backup script - The SQL root password is shown in processes table
+
+------------------------------------------------------------------------------------------------------------------------
 1.1.21
 ------------------------------------------------------------------------------------------------------------------------
 
