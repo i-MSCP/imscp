@@ -114,8 +114,11 @@ $tpl->assign(
 		'TR_SENDER_EMAIL' => tr('Sender email'),
 		'TR_SENDER_NAME' => tr('Sender name'),
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
+		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol'),
 		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
-		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol')));
+		'TR_BASE_SERVER_VHOST_PORT' => tr('URL port')
+	)
+);
 
 generatePageMessage($tpl);
 

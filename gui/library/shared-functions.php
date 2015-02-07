@@ -1956,6 +1956,8 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 		$to = $uemail;
 	}
 
+	$baseServerVhostPrefix = $cfg['BASE_SERVER_VHOST_PREFIX'];
+
 	$search = array();
 	$replace = array();
 
@@ -1972,10 +1974,14 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 	$replace[] = $upass;
 
 	$search [] = '{BASE_SERVER_VHOST}';
-	$replace[] = $cfg->BASE_SERVER_VHOST;
+	$replace[] = $cfg['BASE_SERVER_VHOST'];
 
 	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
-	$replace[] = $cfg->BASE_SERVER_VHOST_PREFIX;
+	$replace[] = $baseServerVhostPrefix;
+
+	$search [] = '{BASE_SERVER_VHOST_PORT}';
+	$replace[] = ($baseServerVhostPrefix == 'http://')
+		? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'] ;
 
 	$search[] = '{WEBSTATS_RPATH}';
 	$replace[] = $cfg->WEBSTATS_RPATH;

@@ -24,12 +24,16 @@
 			<td>{USERTYPE}</td>
 		</tr>
 		<tr>
+			<td>{TR_BASE_SERVER_VHOST_PREFIX}</td>
+			<td>{BASE_SERVER_VHOST_PREFIX}</td>
+		</tr>
+		<tr>
 			<td>{TR_BASE_SERVER_VHOST}</td>
 			<td>{BASE_SERVER_VHOST}</td>
 		</tr>
 		<tr>
-			<td>{TR_BASE_SERVER_VHOST_PREFIX}</td>
-			<td>{BASE_SERVER_VHOST_PREFIX}</td>
+			<td>{TR_BASE_SERVER_VHOST_PORT}</td>
+			<td>{BASE_SERVER_VHOST_PORT}</td>
 		</tr>
 		</tbody>
 	</table>

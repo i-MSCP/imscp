@@ -272,8 +272,10 @@ function sendPassword($uniqueKey){
 		$subject = $data['subject'];
 		$message = $data['message'];
 
-		$baseVhost = $cfg->BASE_SERVER_VHOST;
-		$baseVhostPrefix = $cfg->BASE_SERVER_VHOST_PREFIX;
+		$baseServerVhostPrefix = $cfg['BASE_SERVER_VHOST_PREFIX'];
+		$baseServerVhost = $cfg['BASE_SERVER_VHOST'];
+		$baseServerVhostPort = ($baseServerVhostPrefix == 'http://')
+			? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'];
 
 		if ($fromName) {
 			$from = '"' . $fromName . '" <' . $fromEmail . '>';
@@ -286,14 +288,21 @@ function sendPassword($uniqueKey){
 
 		$search [] = '{USERNAME}';
 		$replace[] = $adminName;
+
 		$search [] = '{NAME}';
 		$replace[] = $adminFirstName . " " . $adminLastName;
+
 		$search [] = '{PASSWORD}';
 		$replace[] = $userPassword;
-		$search [] = '{BASE_SERVER_VHOST}';
-		$replace[] = $baseVhost;
+
 		$search [] = '{BASE_SERVER_VHOST_PREFIX}';
-		$replace[] = $baseVhostPrefix;
+		$replace[] = $baseServerVhostPrefix;
+
+		$search [] = '{BASE_SERVER_VHOST}';
+		$replace[] = $baseServerVhost;
+
+		$search [] = '{BASE_SERVER_VHOST_PORT}';
+		$replace[] = $baseServerVhostPort;
 
 		$subject = str_replace($search, $replace, $subject);
 		$message = str_replace($search, $replace, $message);
@@ -353,8 +362,10 @@ function requestPassword($adminName){
 	$fromEmail = $data['sender_email'];
 	$subject = $data['subject'];
 	$message = $data['message'];
-	$baseVhost = $cfg->BASE_SERVER_VHOST;
-	$baseVhostPrefix = $cfg->BASE_SERVER_VHOST_PREFIX;
+	$baseServerVhostPrefix = $cfg['BASE_SERVER_VHOST_PREFIX'];
+	$baseServerVhost = $cfg['BASE_SERVER_VHOST'];
+	$baseServerVhostPort = ($baseServerVhostPrefix == 'http://')
+		? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'];
 
 	if ($fromName) {
 		$from =  encode_mime_header($fromName) . " <$fromEmail>";
@@ -362,22 +373,29 @@ function requestPassword($adminName){
 		$from = $fromEmail;
 	}
 
-	$protocol = isset($_SERVER['https']) ? 'https' : 'http';
-	$link = $protocol . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . '?key=' . $uniqueKey;
+	$link = $baseServerVhostPrefix . $baseServerVhost . ':' . $baseServerVhostPort .
+		$_SERVER["PHP_SELF"] . '?key=' . $uniqueKey;
 
-	$search		= array();
-	$replace	= array();
+	$search = array();
+	$replace = array();
 
 	$search [] = '{USERNAME}';
 	$replace[] = $adminName;
+
 	$search [] = '{NAME}';
 	$replace[] = "$adminFirstName $adminLastName";
+
 	$search [] = '{LINK}';
 	$replace[] = $link;
-	$search [] = '{BASE_SERVER_VHOST}';
-	$replace[] = $baseVhost;
+
 	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
-	$replace[] = $baseVhostPrefix;
+	$replace[] = $baseServerVhostPrefix;
+
+	$search [] = '{BASE_SERVER_VHOST}';
+	$replace[] = $baseServerVhost;
+
+	$search [] = '{BASE_SERVER_VHOST_PORT}';
+	$replace[] = $baseServerVhostPort;
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);

@@ -35,17 +35,21 @@
 /**
  * Returns email template data
  *
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  * @param int $userId User unique identifier
  * @param string $tplName Template name
  * @return array An array containing email parts (sender_name, sender_name_email, subject, message)
  */
 function get_email_tpl_data($userId, $tplName)
 {
-	$stmt = exec_query("SELECT `fname`, `lname`, `firm`, `email` FROM `admin` WHERE `admin_id` = ?", $userId);
+	$stmt = exec_query("SELECT fname, lname, firm, email FROM admin WHERE admin_id = ?", $userId);
 
 	if ($stmt->rowCount()) {
-		$firstname = trim($stmt->fields('fname'));
-		$lastname = trim($stmt->fields('lname'));
+		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+		$firstname = trim($row['fname']);
+		$lastname = trim($row['lname']);
 
 		if ($firstname != '' && $lastname != '') {
 			$data['sender_name'] = $firstname . ' ' . $lastname;
@@ -57,7 +61,7 @@ function get_email_tpl_data($userId, $tplName)
 			$data['sender_name'] = '';
 		}
 
-		$firm = trim($stmt->fields('firm'));
+		$firm = trim($row['firm']);
 
 		if ($firm != '') {
 			if ($data['sender_name'] != '') {
@@ -67,14 +71,17 @@ function get_email_tpl_data($userId, $tplName)
 			}
 		}
 
-		$data['sender_email'] = $stmt->fields('email');
+		$data['sender_email'] = $row['email'];
 
-		$query = "SELECT `subject`, `message` FROM `email_tpls` WHERE `owner_id` = ? AND `name` = ?";
-		$stmt = exec_query($query, array($userId, $tplName));
+		$stmt = exec_query(
+			'SELECT subject, message FROM email_tpls WHERE owner_id = ? AND name = ?', array($userId, $tplName)
+		);
 
 		if ($stmt->rowCount()) {
-			$data['subject'] = $stmt->fields['subject'];
-			$data['message'] = $stmt->fields['message'];
+			$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+			$data['subject'] = $row['subject'];
+			$data['message'] = $row['message'];
 		} else {
 			$data['subject'] = '';
 			$data['message'] = '';
@@ -96,13 +103,15 @@ function get_email_tpl_data($userId, $tplName)
  */
 function set_email_tpl_data($userId, $tplName, $data)
 {
-	$query = "SELECT `subject`, `message` FROM `email_tpls` WHERE `owner_id` = ? AND `name` = ?";
-	$stmt = exec_query($query, array($userId, $tplName));
+
+	$stmt = exec_query(
+		'SELECT subject, message FROM email_tpls WHERE owner_id = ? AND name = ?', array($userId, $tplName)
+	);
 
 	if (!$stmt->rowCount()) {
-		$query = "INSERT INTO `email_tpls` (`subject`, `message`, `owner_id`, `name`) VALUES (?, ?, ?, ?)";
+		$query = 'INSERT INTO email_tpls (subject, message, owner_id, name) VALUES (?, ?, ?, ?)';
 	} else {
-		$query = "UPDATE `email_tpls` SET `subject` = ?, `message` = ? WHERE `owner_id` = ? AND `name` = ?";
+		$query = 'UPDATE email_tpls SET subject = ?, message = ? WHERE owner_id = ? AND name = ?';
 	}
 
 	exec_query($query, array($data['subject'], $data['message'], $userId, $tplName));
@@ -144,7 +153,7 @@ Password: {PASSWORD}
 
 Remember to change your password often and the first time you login.
 
-You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
+You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}
 
 Statistics: http://{USERNAME}/{WEBSTATS_RPATH}
 (Same username and password than above)
@@ -166,7 +175,7 @@ Password: {PASSWORD}
 
 Remember to change your password often and the first time you login.
 
-You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
+You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}
 
 Thank you for using our services.
 ', true);
@@ -214,7 +223,7 @@ Use this link to activate your new i-MSCP password:
 
 {LINK}
 
-Thank you for using i-MSCP services.
+Thank you for using our services.
 
 ___________________________
 The i-MSCP Team
@@ -262,9 +271,9 @@ Hello {NAME},
 Your user name is: {USERNAME}
 Your password is: {PASSWORD}
 
-You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
+You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}
 
-Thank you for using i-MSCP services.
+Thank you for using our services.
 
 ___________________________
 The i-MSCP Team
@@ -289,49 +298,6 @@ function set_lostpassword_password_email($userId, $data)
 }
 
 /**
- * Generates and returns order email parts.
- *
- * @see get_email_tpl_data()
- * @param int $userId User unique identifier - template owner
- * @return array An associative array where each key correspond to a specific email part: sender_name, sender_name_email,
- *               subject, message
- */
-function get_order_email($userId)
-{
-	$data = get_email_tpl_data($userId, 'after-order-msg');
-
-	if (!$data['subject']) {
-		$data['subject'] = tr('Confirmation for domain order {DOMAIN}', true);
-	}
-
-	if (!$data['message']) {
-		$data['message'] = tr("
-
-Dear {NAME},
-
-This is an automatic confirmation for the order of the domain:
-
-{DOMAIN}
-
-You have to click the following link to confirm your order.
-
-{ACTIVATION_LINK}
-
-If you do not confirm it before the {EXPIRE_DATE}, it will be
-automatically canceled.
-
-Thank you for using i-MSCP services.
-
-___________________________
-The i-MSCP Team
-
-", true);
-	}
-
-	return $data;
-}
-
-/**
  * Generates and returns alias order email.
  *
  * @see get_email_tpl_data()
@@ -352,13 +318,13 @@ function get_alias_order_email($userId)
 
 Dear {RESELLER},
 
-Your customer {CUSTOMER} is awaiting for the approval of his new domain alias:
+Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:
 
 {ALIAS}
 
-Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php
+Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}/reseller/alias.php
 
-Thank you for using i-MSCP services.
+Thank you for using our services.
 
 ___________________________
 The i-MSCP Team
