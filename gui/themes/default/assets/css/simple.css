@@ -116,7 +116,7 @@ a:hover,
     background: #6e0e0f url('../images/red/login/stripe.png') repeat-x left top;
 }
 
-.yellow {
+.yellow #header {
     background: #918137 url('../images/yellow/login/stripe.png') repeat-x left top;
 }
 
@@ -256,28 +256,35 @@ a:hover,
 #login {
     position: relative;
     width: 316px;
-    height: 350px;
+    height: 315px;
     margin: 0 auto 0 auto;
+
+    background-position: center 30px, bottom, top;
+    background-repeat: no-repeat, repeat-x, repeat;
+    background-size: auto, 100% 100%, auto;
+    border: 1px solid silver;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 .black #login {
-    background: transparent url('../images/black/login/form_box.png') no-repeat left top;
+    background-image: url('../images/imscp_logo90.png'), url(../images/black/login/gradient_box.png), url(../images/stripe_box.png);
 }
 
 .blue #login {
-    background: transparent url('../images/blue/login/form_box.png') no-repeat left top;
+    background-image: url('../images/imscp_logo90.png'), url(../images/blue/login/gradient_box.png), url(../images/stripe_box.png);
 }
 
 .green #login {
-    background: transparent url('../images/green/login/form_box.png') no-repeat left top;
+    background-image: url('../images/imscp_logo90.png'), url(../images/green/login/gradient_box.png), url(../images/stripe_box.png);
 }
 
 .red #login {
-    background: transparent url('../images/red/login/form_box.png') no-repeat left top;
+    background-image: url('../images/imscp_logo90.png'), url(../images/red/login/gradient_box.png), url(../images/stripe_box.png);
 }
 
 .yellow #login {
-    background: transparent url('../images/yellow/login/form_box.png') no-repeat left top;
+    background-image: url('../images/imscp_logo90.png'), url(../images/yellow/login/gradient_box.png), url(../images/stripe_box.png);
 }
 
 #login form {
@@ -386,33 +393,36 @@ table td {
     position: relative;
     width: 453px;
     margin: 0 auto;
-    padding: 80px 0 .5em 0;
-    border: 1px solid #ededed;
-    border-top: none;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    padding: 100px 10px 10px 10px;
     text-align: center;
+
+    background-position: left top, bottom, top;
+    background-repeat: no-repeat, repeat-x, repeat;
+    background-size: auto, 100% 100%, auto;
+    border: 1px solid silver;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    color: #ffffff;
 }
 
 .black #message_container {
-    background: transparent url('../images/black/box/message_top.jpg') no-repeat top left;
+    background-image: url('../images/imscp_logo90.png'), url(../images/black/box/gradient_box.png), url(../images/stripe_box.png);
 }
 
 .blue #message_container {
-    background: transparent url('../images/blue/box/message_top.jpg') no-repeat top left;
+    background-image: url('../images/imscp_logo90.png'), url(../images/blue/box/gradient_box.png), url(../images/stripe_box.png);
 }
 
 .green #message_container {
-    background: transparent url('../images/green/box/message_top.jpg') no-repeat top left;
+    background-image: url('../images/imscp_logo90.png'), url(../images/green/box/gradient_box.png), url(../images/stripe_box.png);
 }
 
 .red #message_container {
-    background: transparent url('../images/red/box/message_top.jpg') no-repeat top left;
+    background-image: url('../images/imscp_logo90.png'), url(../images/red/box/gradient_box.png), url(../images/stripe_box.png);
 }
 
 .yellow #message_container {
-    background: transparent url('../images/yellow/box/message_top.jpg') no-repeat top left;
+    background-image: url('../images/imscp_logo90.png'), url(../images/yellow/box/gradient_box.png), url(../images/stripe_box.png);
 }
 
 #message_container h1 {
