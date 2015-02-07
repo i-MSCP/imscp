@@ -72,7 +72,9 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	my $rs = $eventManager->register(
-		'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->askHostname(@_) }, sub { $self->askSsl(@_) }; 0; }
+		'beforeSetupDialog', sub {
+			push @{$_[0]}, sub { $self->askHostname(@_) }, sub { $self->askSsl(@_) }, sub { $self->askPorts(@_) }; 0;
+		}
 	);
 }
 
@@ -104,10 +106,10 @@ sub askHostname
 
 		do {
 			($rs, $vhost) = $dialog->inputbox(
-				"\nPlease enter the domain name from which i-MSCP frontEnd must be reachable: $msg",
+				"\nPlease enter the domain name from which the control panel must be reachable:$msg",
 				idn_to_unicode($vhost, 'utf-8')
 			);
-			$msg = "\n\n\\Z1'$vhost' is not a fully-qualified domain name (FQDN).\\Zn\n\nPlease, try again:";
+			$msg = "\n\n\\Z1'$vhost' is not a fully-qualified domain name (FQDN).\\Zn\n\nPlease try again:";
 			$vhost = idn_to_ascii($vhost, 'utf-8');
 			@labels = split(/\./, $vhost);
 		} while($rs != 30 && ! (@labels >= 3 && is_domain($vhost, \%options)));
@@ -256,6 +258,73 @@ sub askSsl
 		main::setupSetQuestion('PANEL_SSL_CERTIFICATE_PATH', $certificatPath);
 		main::setupSetQuestion('PANEL_SSL_CA_BUNDLE_PATH', $caBundlePath);
 		main::setupSetQuestion('BASE_SERVER_VHOST_PREFIX', ($sslEnabled eq 'yes') ? $baseServerVhostPrefix : 'http://');
+	}
+
+	$rs;
+}
+
+=item askPorts(\%dialog)
+
+ Show ports dialog
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 or 30
+
+=cut
+
+sub askPorts
+{
+	my ($self, $dialog) = @_;
+
+	my $httpPort = main::setupGetQuestion('BASE_SERVER_VHOST_HTTP_PORT');
+	my $httpsPort = main::setupGetQuestion('BASE_SERVER_VHOST_HTTPS_PORT');
+	my $ssl = main::setupGetQuestion('PANEL_SSL_ENABLED', 'no');
+
+	my $rs = 0;
+
+	if(
+		$main::reconfigure ~~ ['panel_ports', 'all', 'forced'] ||
+		(! $httpPort || $httpPort =~ /[^\d]/ || $httpPort < 1023 || $httpPort > 65535)
+	) {
+		my $msg = '';
+
+		do {
+			($rs, $httpPort) = $dialog->inputbox(
+				"\nPlease enter the http port from which the control panel must be reachable:$msg",
+				($httpPort) ? $httpPort : '8080'
+			);
+			$msg = "\n\n\\Z1The port '$httpPort' is reserved or not valid.\\Zn\n\nPlease try again:";
+		} while($rs != 30 && (! $httpPort || $httpPort =~ /[^\d]/ || $httpPort < 1023 || $httpPort > 65535));
+	}
+
+	if($rs != 30 && $ssl eq 'yes') {
+		if(
+			$main::reconfigure ~~ ['panel_ports', 'all', 'forced'] || ! $httpsPort ||
+			(! $httpsPort || $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535 || $httpsPort == $httpPort)
+		) {
+			my $msg = '';
+
+			do {
+				($rs, $httpsPort) = $dialog->inputbox(
+					"\nPlease enter the https port from which the control panel must be reachable:$msg",
+					($httpsPort) ? $httpsPort : '4443'
+				);
+				$msg = "\n\n\\Z1The port '$httpsPort' is reserved or not valid.\\Zn\n\nPlease try again:";
+			} while(
+				$rs != 30 &&
+				(
+					! $httpsPort ||  $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535 ||
+					$httpsPort == $httpPort
+				)
+			);
+		}
+	} else {
+		$httpsPort = '';
+	}
+
+	if($rs != 30) {
+		main::setupSetQuestion('BASE_SERVER_VHOST_HTTP_PORT', $httpPort);
+		main::setupSetQuestion('BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort);
 	}
 
 	$rs;
