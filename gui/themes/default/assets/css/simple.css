@@ -256,7 +256,7 @@ a:hover,
 #login {
     position: relative;
     width: 316px;
-    height: 315px;
+    padding-bottom: 30px;
     margin: 0 auto 0 auto;
 
     background-position: center 30px, bottom, top;
