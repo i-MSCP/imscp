@@ -6,6 +6,9 @@
 <meta name="robots" content="nofollow, noindex">
 <link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
 <link href="{THEME_ASSETS_PATH}/css/simple.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
+<!--[if (IE 7)|(IE 8)]>
+	<link href="{THEME_ASSETS_PATH}/css/ie78overrides.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
+<![endif]-->
 <script>
 imscp_i18n = {JS_TRANSLATIONS};
 </script>

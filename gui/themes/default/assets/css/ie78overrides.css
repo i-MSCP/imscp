@@ -1,0 +1,58 @@
+/*-----------LOGIN AND LOSTPASSWORD-----------*/
+
+#login {
+    background-position: center 30px;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-color: black;
+}
+
+.black #login {
+    background-image: url('../images/imscp_logo90.png');
+}
+
+.blue #login {
+    background-image: url('../images/imscp_logo90.png');
+}
+
+.green #login {
+    background-image: url('../images/imscp_logo90.png');
+}
+
+.red #login {
+    background-image: url('../images/imscp_logo90.png');
+}
+
+.yellow #login {
+    background-image: url('../images/imscp_logo90.png');
+}
+
+
+/*------------MESSAGES--------------*/
+
+#message_container {
+    background-position: left top;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-color: black;
+}
+
+.black #message_container {
+    background-image: url('../images/imscp_logo90.png');
+}
+
+.blue #message_container {
+    background-image: url('../images/imscp_logo90.png');
+}
+
+.green #message_container {
+    background-image: url('../images/imscp_logo90.png');
+}
+
+.red #message_container {
+    background-image: url('../images/imscp_logo90.png');
+}
+
+.yellow #message_container {
+    background-image: url('../images/imscp_logo90.png');
+}

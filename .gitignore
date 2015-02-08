@@ -7,3 +7,4 @@ nbproject
 .vagrant
 .settings
 Vagrantfile
+.DS_Store
