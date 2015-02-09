@@ -105,8 +105,8 @@ sub showDialog
 
 	if(
 		$main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] ||
-		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
-		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
+		(length $dbUser < 6 || length $dbUser > 16 || $dbUser =~ /[^\x21-\x7e]+/) ||
+		(length $dbPass < 6 || $dbPass =~ /[^\x21-\x7e]+/)
 	) {
 		# Ask for the dovecot restricted SQL username
 		do{
@@ -123,8 +123,8 @@ sub showDialog
 			} elsif(length $dbUser < 6) {
 				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
 				$dbUser = '';
-			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+			} elsif($dbUser =~ /[^\x21-\x7e]+/) {
+				$msg = "\n\n\\Z1Only printable ASCII characters (excluding space) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
@@ -142,8 +142,8 @@ sub showDialog
 					if(length $dbPass < 6) {
 						$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
 						$dbPass = '';
-					} elsif($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-						$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+					} elsif($dbPass =~ /[^\x21-\x7e]+/) {
+						$msg = "\n\n\\Z1Only printable ASCII characters (excluding space) are allowed.\\Zn\n\nPlease try again:";
 						$dbPass = '';
 					} else {
 						$msg = '';
@@ -155,7 +155,7 @@ sub showDialog
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
+					my @allowedChr = map { chr } 0x21..0x7e;
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
@@ -463,15 +463,17 @@ sub _buildConf
 
 	# Define data
 
+	(my $dbName = main::setupGetQuestion('DATABASE_NAME')) =~ s%('|"|\\)%\\$1%g;
+	(my $dbUser = $self->{'config'}->{'DATABASE_USER'}) =~ s%('|"|\\)%\\$1%g;
+	(my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'}) =~ s%('|"|\\)%\\$1%g;
+
 	my $data = {
 		DATABASE_TYPE => $main::imscpConfig{'DATABASE_TYPE'},
-		DATABASE_HOST =>
-			($main::imscpConfig{'DATABASE_PORT'} && $main::imscpConfig{'DATABASE_PORT'} ne 'localhost')
-				? "$main::imscpConfig{'DATABASE_HOST'} port=$main::imscpConfig{'DATABASE_PORT'}"
-				: $main::imscpConfig{'DATABASE_HOST'},
-		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
-		DATABASE_PASSWORD => $self->{'config'}->{'DATABASE_PASSWORD'},
-		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
+		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
+		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
+		DATABASE_NAME => $dbName,
+		DATABASE_USER => $dbUser,
+		DATABASE_PASSWORD => $dbPass,
 		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 		HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 		DOVECOT_SSL => ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') ? 'yes' : 'no',

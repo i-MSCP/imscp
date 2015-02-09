@@ -466,14 +466,12 @@ sub setupAskSqlDsn
 	my $dbHost = setupGetQuestion('DATABASE_HOST') || 'localhost';
 	my $dbPort = setupGetQuestion('DATABASE_PORT') || '3306';
 	my $dbUser = setupGetQuestion('DATABASE_USER') || 'root';
-
-	my $dbPass = setupGetQuestion('DATABASE_PASSWORD');
+	my $dbPass;
 
 	if(iMSCP::Getopt->preseed) {
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD');
 	} else {
-		$dbPass = setupGetQuestion('DATABASE_PASSWORD')
-			? iMSCP::Crypt->getInstance()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD')) : '';
+		$dbPass = (defined $dbPass) ? iMSCP::Crypt->getInstance()->decrypt_db_password($dbPass)) : '';
 	}
 
 	my $rs = 0;
@@ -482,7 +480,7 @@ sub setupAskSqlDsn
 
 	if(
 		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
-		! ($dbPass ne '' && ! setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))
+		($dbPass eq '' || setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))
 	) {
 		my $msg = my $dbError = '';
 

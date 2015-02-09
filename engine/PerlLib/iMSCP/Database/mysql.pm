@@ -240,14 +240,7 @@ sub getDBTables
 	my $self = $_[0];
 
 	$self->{'sth'} = $self->{'connection'}->prepare(
-		"
-			SELECT
-				TABLE_NAME
-			FROM
-				INFORMATION_SCHEMA.COLUMNS
-			WHERE
-				TABLE_SCHEMA = '$self->{'db'}->{'DATABASE_NAME'}'
-		"
+		'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', $self->{'db'}->{'DATABASE_NAME'}
 	);
 
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
@@ -272,16 +265,9 @@ sub getTableColumns
 	my ($self, $tableName) = @_;
 
 	$self->{'sth'} = $self->{'connection'}->prepare(
-		"
-			SELECT
-				COLUMN_NAME
-			FROM
-				INFORMATION_SCHEMA.COLUMNS
-			WHERE
-				TABLE_SCHEMA = '$self->{'db'}->{'DATABASE_NAME'}'
-			AND
-				TABLE_NAME = '$tableName'
-		"
+		'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
+		$self->{'db'}->{'DATABASE_NAME'},
+		$tableName
 	);
 
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
@@ -312,11 +298,6 @@ sub dumpdb
 	$dbName = escapeShell($dbName);
 	$filename = escapeShell($filename);
 
-	my $dbHost = escapeShell($self->{'db'}->{'DATABASE_HOST'});
-	my $dbPort = escapeShell($self->{'db'}->{'DATABASE_PORT'});
-	my $dbUser = escapeShell($self->{'db'}->{'DATABASE_USER'});
-	my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
-
 	my $rootHomeDir = File::HomeDir->users_home($main::imscpConfig{'ROOT_USER'});
 
 	my @cmd;
@@ -327,6 +308,11 @@ sub dumpdb
 			'--compress', '--default-character-set=utf8', '--quote-names', "--result-file=$filename", $dbName
 		);
 	} else {
+		my $dbHost = escapeShell($self->{'db'}->{'DATABASE_HOST'});
+		my $dbPort = escapeShell($self->{'db'}->{'DATABASE_PORT'});
+		my $dbUser = escapeShell($self->{'db'}->{'DATABASE_USER'});
+		my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
+
 		@cmd = (
 			$main::imscpConfig{'CMD_MYSQLDUMP'}, '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
 			'--compress', '--default-character-set=utf8', '--quote-names', "-h $dbHost", "-P $dbPort", "-u $dbUser",
