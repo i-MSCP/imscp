@@ -34,7 +34,6 @@ use iMSCP::Bootstrapper;
 use Mail::Address;
 use MIME::Parser;
 use MIME::Entity;
-use Data::Dumper;
 use Encode;
 
 $ENV{'LC_MESSAGES'} = 'C';
