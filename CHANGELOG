@@ -20,6 +20,7 @@ PACKAGE
 
 TICKETS
 	Fixed #IP-1259: Layout - Text goes out of statistic bar
+	Fixed #IP-1267: Double-quotes in the Dovecot SQL user's password must be escaped
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.1
