@@ -3,14 +3,11 @@
 <head>
 <title>{TR_PAGE_TITLE}</title>
 <meta charset="{THEME_CHARSET}">
-<meta name="copyright" content="i-MSCP">
-<meta name="owner" content="i-MSCP">
-<meta name="publisher" content="i-MSCP">
 <meta name="robots" content="nofollow, noindex">
-<meta name="title" content="{TR_PAGE_TITLE}">
-<link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
-<link href="{THEME_ASSETS_PATH}/css/ui.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
-<link href="{THEME_ASSETS_PATH}/css/{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
+<link rel="icon" href="{THEME_ASSETS_PATH}/images/favicon.ico">
+<link rel="stylesheet" href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}">
+<link rel="stylesheet" href="{THEME_ASSETS_PATH}/css/ui.css?v={THEME_ASSETS_VERSION}">
+<link rel="stylesheet" href="{THEME_ASSETS_PATH}/css/{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}">
 <script>
 imscp_i18n = {JS_TRANSLATIONS};
 </script>

@@ -1,5 +1,4 @@
 
-
 	<div id="message_container">
 		<h1>{BOX_MESSAGE_TITLE}</h1>
 		<pre>{BOX_MESSAGE}</pre>

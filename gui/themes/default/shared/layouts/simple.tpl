@@ -4,8 +4,9 @@
 <title>{TR_PAGE_TITLE}</title>
 <meta charset="{THEME_CHARSET}">
 <meta name="robots" content="nofollow, noindex">
-<link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
-<link href="{THEME_ASSETS_PATH}/css/simple.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
+<link rel="icon" href="{THEME_ASSETS_PATH}/images/favicon.ico">
+<link rel="stylesheet" href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}">
+<link rel="stylesheet" href="{THEME_ASSETS_PATH}/css/simple.css?v={THEME_ASSETS_VERSION}">
 <!--[if (IE 7)|(IE 8)]>
 	<link href="{THEME_ASSETS_PATH}/css/ie78overrides.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
 <![endif]-->
