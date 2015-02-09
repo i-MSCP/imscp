@@ -41,6 +41,9 @@ use iMSCP::Getopt;
 use File::Basename;
 use POSIX qw/strftime/;
 
+$ENV{'LC_MESSAGES'} = 'C';
+use open ':locale';
+
 sub run
 {
 	return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';

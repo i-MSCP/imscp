@@ -40,8 +40,8 @@ use iMSCP::Getopt;
 use File::Basename;
 use POSIX qw/strftime/;
 
-# Turn off localisation features to force any command output to be in english
-$ENV{'LANG'} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
+use open ':locale';
 
 newDebug('imscp-backup-imscp.log');
 

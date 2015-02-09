@@ -36,8 +36,8 @@ use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Getopt;
 use File::Basename;
 
-# Turn off localisation features to force any command output to be in English
-$ENV{'LC_ALL'} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
+use open ':locale';
 
 newDebug('imscp-httpd-logs-mngr.log');
 

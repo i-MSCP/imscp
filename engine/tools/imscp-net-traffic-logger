@@ -35,8 +35,8 @@ use iMSCP::Execute;
 use iMSCP::Getopt;
 use File::Basename;
 
-# Turn off localisation features to force any command output to be in English
-$ENV{'LC_ALL'} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
+use open ':locale';
 
 newDebug('imscp-net-traffic-logger.log');
 

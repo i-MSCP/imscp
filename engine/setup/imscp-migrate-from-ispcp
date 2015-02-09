@@ -48,6 +48,9 @@ use File::Basename;
 use Data::Dumper;
 use version;
 
+$ENV{'LC_MESSAGES'} = 'C';
+use open ':locale';
+
 ########################################################################################################################
 # Subroutines
 #

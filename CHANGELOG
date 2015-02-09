@@ -10,6 +10,7 @@ FRONTEND
 
 INSTALLER
 	Added: panel_ports item for the --reconfigure command line option
+	Fixed: Encoding issue when running installer through SSH with PuTTY
 
 PACKAGE
 	Added: Ports dialog ( FrontEnd package )

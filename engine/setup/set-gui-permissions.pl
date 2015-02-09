@@ -36,8 +36,8 @@ use iMSCP::Packages;
 use iMSCP::Getopt;
 use File::Basename;
 
-# Turn off localisation features to force any command output to be in english
-$ENV{'LANG'} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
+use open ':locale';
 
 newDebug('imscp-set-gui-permissions.log');
 

@@ -33,7 +33,8 @@ use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::File;
 
-$ENV{'LANG'} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
+use open ':locale';
 
 newDebug('imscp-rkhunter-package.log');
 
