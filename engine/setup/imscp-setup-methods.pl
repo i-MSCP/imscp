@@ -471,7 +471,8 @@ sub setupAskSqlDsn
 	if(iMSCP::Getopt->preseed) {
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD');
 	} else {
-		$dbPass = (defined $dbPass) ? iMSCP::Crypt->getInstance()->decrypt_db_password($dbPass)) : '';
+		$dbPass = setupGetQuestion('DATABASE_PASSWORD', undef);
+		$dbPass = (defined $dbPass) ? iMSCP::Crypt->getInstance()->decrypt_db_password($dbPass) : '';
 	}
 
 	my $rs = 0;
