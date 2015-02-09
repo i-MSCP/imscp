@@ -186,7 +186,6 @@
         <package>libtimedate-perl</package>
         <package>libxml-parser-perl</package>
         <package>libxml-simple-perl</package>
-        <package>libemail-simple-perl</package>
         <package>libjson-perl</package>
     </perl>
     <other>
