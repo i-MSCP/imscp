@@ -6,6 +6,7 @@ Git 1.2.x
 
 FRONTEND
 	Fixed: Wrong URL in default email templates ( Missing port )
+	Updated: Logo and CSS
 
 INSTALLER
 	Added: panel_ports item for the --reconfigure command line option
