@@ -111,7 +111,6 @@ eval {
 
 				$nEnt->attach(
 					'Type' => 'message/rfc822',
-					'Encoding' => '8bit',
 					'Description' => 'Original Message',
 					'Data' => $oBody->as_string()
 				);
