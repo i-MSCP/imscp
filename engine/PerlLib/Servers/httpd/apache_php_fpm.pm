@@ -1963,6 +1963,7 @@ sub _buildPHPConfig
 		$poolName = $data->{'PARENT_DOMAIN_NAME'};
 		$tmpDir = ($domainType ~~ [ 'dmn', 'sub' ])
 			? $data->{'HOME_DIR'} . '/phptmp' : $data->{'HOME_DIR'} . '/' . $data->{'PARENT_DOMAIN_NAME'} . '/phptmp';
+		$emailDomain = $data->{'DOMAIN_NAME'};
 	} elsif($poolLevel eq 'per_site') {
 		$poolName = $data->{'DOMAIN_NAME'};
 		$tmpDir = $data->{'WEB_DIR'} . '/phptmp';
