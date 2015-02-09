@@ -104,9 +104,11 @@ sub showDialog
 				eval "require $package";
 
 				unless($@) {
+					$package = $package->getInstance();
+
 					if($package->can('showDialog')) {
 						debug("Calling action showDialog on $package");
-						$rs = $package->getInstance()->showDialog($dialog);
+						$rs = $package->showDialog($dialog);
 						return $rs if $rs;
 					}
 				} else {
@@ -147,9 +149,11 @@ sub preinstall
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('uninstall')) {
 					debug("Calling action uninstall on $package");
-					$rs = $package->getInstance()->uninstall();
+					$rs = $package->uninstall();
 					return $rs if $rs;
 				}
 
@@ -177,9 +181,11 @@ sub preinstall
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('preinstall')) {
 					debug("Calling action preinstall on $package");
-					$rs = $package->getInstance()->preinstall();
+					$rs = $package->preinstall();
 					return $rs if $rs;
 				}
 
@@ -220,9 +226,11 @@ sub install
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('install')) {
 					debug("Calling action install on $package");
-					my $rs = $package->getInstance()->install();
+					my $rs = $package->install();
 					return $rs if $rs;
 				}
 			} else {
@@ -258,9 +266,11 @@ sub uninstall
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('uninstall')) {
 					debug("Calling action uninstall on $package");
-					$rs = $package->getInstance()->uninstall();
+					$rs = $package->uninstall();
 					return $rs if $rs;
 				}
 
@@ -302,9 +312,11 @@ sub setEnginePermissions
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('setEnginePermissions')) {
 					debug("Calling action setEnginePermissions on $package");
-					my $rs = $package->getInstance()->setEnginePermissions();
+					my $rs = $package->setEnginePermissions();
 					return $rs if $rs;
 				}
 			} else {

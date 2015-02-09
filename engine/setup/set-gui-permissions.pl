@@ -61,72 +61,62 @@ iMSCP::Bootstrapper->getInstance()->boot(
 	{ 'norequirements' => 'yes', 'nolock' => 'yes', 'nodatabase' => 'yes', 'nokeys' => 'yes' }
 );
 
-sub run
-{
-	my $rs = 0;
+my $rs = 0;
+my @toProcess = ();
 
-	my @toProcess = ();
+for(iMSCP::Servers->getInstance()->get()) {
+	my $package = "Servers::$_";
+	eval "require $package";
 
-	for(iMSCP::Servers->getInstance()->get()) {
-		next if $_ eq 'noserver';
-
-		my $package = "Servers::$_";
-
-		eval "require $package";
-
-		unless($@) {
-			my $instance = $package->factory();
-			push @toProcess, [$_, $instance] if $instance->can('setGuiPermissions');
-		} else {
-			error($@);
-			$rs = 1;
-		}
+	unless($@) {
+		my $package = $package->factory();
+		push @toProcess, [ $_, $package ] if $package->can('setGuiPermissions');;
+	} else {
+		error($@);
+		$rs = 1;
 	}
-
-	for(iMSCP::Packages->getInstance()->get()) {
-		my $package = "Package::$_";
-
-		eval "require $package";
-
-		unless($@) {
-			my $instance = $package->getInstance();
-			push @toProcess, [$_, $instance] if $instance->can('setGuiPermissions');
-		} else {
-			error($@);
-			$rs = 1;
-		}
-	}
-
-	my $totalItems = @toProcess;
-	my $counter = 1;
-
-	for(@toProcess) {
-		my ($package, $instance) = @{$_};
-
-		debug("Setting $_ package frontEnd permissions");
-
-		if ($main::execmode eq 'setup') {
-			print "Setting $package frontEnd permissions\t$totalItems\t$counter\n";
-		}
-
-		$rs |= $instance->setGuiPermissions();
-
-		$counter++;
-	}
-
-	unless($main::execmode eq 'setup') {
-		my @warnings = getMessageByType('warn');
-		my @errors = getMessageByType('error');
-		my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
-		$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
-
-		if($msg) {
-			require iMSCP::Mail;
-			$rs |= iMSCP::Mail->new()->errmsg($msg);
-		}
-	}
-
-	$rs;
 }
 
-exit run();
+for(iMSCP::Packages->getInstance()->get()) {
+	my $package = "Package::$_";
+	eval "require $package";
+
+	unless($@) {
+		my $package = $package->getInstance();
+		push @toProcess, [ $_, $package ] if $package->can('setGuiPermissions');
+	} else {
+		error($@);
+		$rs = 1;
+	}
+}
+
+my $totalItems = @toProcess;
+my $counter = 1;
+
+for(@toProcess) {
+	my ($package, $instance) = @{$_};
+
+	debug("Setting $package ( frontEnd ) permissions");
+
+	if ($main::execmode eq 'setup') {
+		print "Setting $package ( frontEnd ) permissions\t$totalItems\t$counter\n";
+	}
+
+	$rs |= $instance->setGuiPermissions();
+
+	$counter++;
+}
+
+unless($main::execmode eq 'setup') {
+	my @warnings = getMessageByType('warn');
+	my @errors = getMessageByType('error');
+	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
+	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
+
+	if($msg) {
+		require iMSCP::Mail;
+		$rs |= iMSCP::Mail->new()->errmsg($msg);
+	}
+}
+
+exit $rs;

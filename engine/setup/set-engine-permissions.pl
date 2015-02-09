@@ -61,118 +61,109 @@ iMSCP::Bootstrapper->getInstance()->boot(
 	{ 'norequirements' => 'yes', 'nolock' => 'yes', 'nodatabase' => 'yes', 'nokeys' => 'yes' }
 );
 
-sub run
-{
-	my $rs = 0;
 
-	my @toProcess = ();
+my $rs = 0;
+my @toProcess = ();
 
-	for(iMSCP::Servers->getInstance()->get()) {
-		next if $_ eq 'noserver';
+for(iMSCP::Servers->getInstance()->get()) {
+	my $package = "Servers::$_";
+	eval "require $package";
 
-		my $package = "Servers::$_";
-
-		eval "require $package";
-
-		unless($@) {
-			my $instance = $package->factory();
-			push @toProcess, [$_, $instance] if $instance->can('setEnginePermissions');
-		} else {
-			error($@);
-			$rs = 1;
-		}
+	unless($@) {
+		my $instance = $package->factory();
+		push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
+	} else {
+		error($@);
+		$rs = 1;
 	}
-
-	for(iMSCP::Packages->getInstance()->get()) {
-		my $package = "Package::$_";
-
-		eval "require $package";
-
-		unless($@) {
-			my $instance = $package->getInstance();
-			push @toProcess, [$_, $instance] if $instance->can('setEnginePermissions');
-		} else {
-			error($@);
-			$rs = 1;
-		}
-	}
-
-	my $totalItems = @toProcess + 1;
-	my $counter = 1;
-
-	# Set base permissions - begin
-	debug('Setting backend base permissions');
-	print "Setting backend base permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
-
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
-	my $confDir = $main::imscpConfig{'CONF_DIR'};
-	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'};
-	my $logDir = $main::imscpConfig{'LOG_DIR'};
-
-	# eg. /etc/imscp/*
-	$rs = setRights(
-		$confDir,
-		{ 'user' => $rootUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
-	);
-
-	# eg ./var/www/imscp
-	$rs |= setRights($rootDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0755' });
-
-	# eg. /var/www/imscp/engine
-	$rs |= setRights(
-		"$rootDir/engine", { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750', 'recursive' => 1 }
-	);
-
-	# eg ./var/www/virtual
-	$rs |= setRights($userWebDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0755' });
-
-	# eg. /var/log/imscp
-	$rs |= setRights($logDir, { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750'} );
-
-	# eg. /var/cache/imscp
-	$rs |= setRights(
-		$main::imscpConfig{'CACHE_DATA_DIR'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
-	);
-
-	# eg. /var/local/imscp
-	$rs |= setRights(
-		$main::imscpConfig{'VARIABLE_DATA_DIR'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
-	);
-
-	$counter++;
-
-	# Set base permissions - ending
-
-	for(@toProcess) {
-		my ($package, $instance) = @{$_};
-
-		debug("Setting $package server backend permissions");
-
-		if ($main::execmode eq 'setup') {
-			print "Setting $package backend permissions\t$totalItems\t$counter\n";
-		}
-
-		$rs |= $instance->setEnginePermissions();
-
-		$counter++;
-	}
-
-	unless($main::execmode eq 'setup') {
-		my @warnings = getMessageByType('warn');
-		my @errors = getMessageByType('error');
-		my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
-		$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
-
-		if($msg) {
-			require iMSCP::Mail;
-			$rs |= iMSCP::Mail->new()->errmsg($msg);
-		}
-	}
-
-	$rs;
 }
 
-exit run();
+for(iMSCP::Packages->getInstance()->get()) {
+	my $package = "Package::$_";
+	eval "require $package";
+
+	unless($@) {
+		my $instance = $package->getInstance();
+		push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
+	} else {
+		error($@);
+		$rs = 1;
+	}
+}
+
+my $totalItems = @toProcess + 1;
+my $counter = 1;
+
+# Set base permissions - begin
+debug('Setting base ( backend ) permissions');
+print "Setting base ( backend ) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
+
+my $rootUName = $main::imscpConfig{'ROOT_USER'};
+my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
+my $confDir = $main::imscpConfig{'CONF_DIR'};
+my $rootDir = $main::imscpConfig{'ROOT_DIR'};
+my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'};
+my $logDir = $main::imscpConfig{'LOG_DIR'};
+
+# eg. /etc/imscp/*
+$rs = setRights(
+	$confDir,
+	{ 'user' => $rootUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
+);
+
+# eg ./var/www/imscp
+$rs |= setRights($rootDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0755' });
+
+# eg. /var/www/imscp/engine
+$rs |= setRights(
+	"$rootDir/engine", { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750', 'recursive' => 1 }
+);
+
+# eg ./var/www/virtual
+$rs |= setRights($userWebDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0755' });
+
+# eg. /var/log/imscp
+$rs |= setRights($logDir, { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750'} );
+
+# eg. /var/cache/imscp
+$rs |= setRights(
+	$main::imscpConfig{'CACHE_DATA_DIR'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
+);
+
+# eg. /var/local/imscp
+$rs |= setRights(
+	$main::imscpConfig{'VARIABLE_DATA_DIR'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
+);
+
+$counter++;
+
+# Set base permissions - ending
+
+for(@toProcess) {
+	my ($package, $instance) = @{$_};
+
+	debug("Setting $package ( backend ) permissions");
+
+	if ($main::execmode eq 'setup') {
+		print "Setting $package ( backend ) permissions\t$totalItems\t$counter\n";
+	}
+
+	$rs |= $instance->setEnginePermissions();
+
+	$counter++;
+}
+
+unless($main::execmode eq 'setup') {
+	my @warnings = getMessageByType('warn');
+	my @errors = getMessageByType('error');
+	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
+	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
+
+	if($msg) {
+		require iMSCP::Mail;
+		$rs |= iMSCP::Mail->new()->errmsg($msg);
+	}
+}
+
+exit $rs;

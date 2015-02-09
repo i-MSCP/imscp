@@ -4,8 +4,9 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
-BACKEND:
+BACKEND
 	Fixed: Invalid argument at /usr/share/perl5/MIME/Entity.pm line 1878 ( autoreply script )
+	Fixed: Wrong sqld server name
 
 FRONTEND
 	Fixed: Wrong URL in default email templates ( Missing port )
@@ -15,11 +16,14 @@ INSTALLER
 	Added: panel_ports item for the --reconfigure command line option
 	Fixed: Encoding issue when running installer through SSH with PuTTY
 
-PACKAGE
+PACKAGES
 	Added: Ports dialog ( FrontEnd package )
+	Fixed: Several event listeners are registered too late ( regression fix )
+	Fixed: Awstats section not added in vhost files
 
 TICKETS
 	Fixed #IP-1259: Layout - Text goes out of statistic bar
+	Fixed #IP-1263: Access to statistics ( Awstats ) is broken - 404 error
 	Fixed #IP-1267: Double-quotes in the Dovecot SQL user's password must be escaped
 
 ------------------------------------------------------------------------------------------------------------------------

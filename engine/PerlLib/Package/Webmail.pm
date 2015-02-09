@@ -104,9 +104,11 @@ sub showDialog
 				eval "require $package";
 
 				unless($@) {
+					$package = $package->getInstance();
+
 					if($package->can('showDialog')) {
 						debug("Calling action showDialog on $package");
-						$rs = $package->getInstance()->showDialog($dialog);
+						$rs = $package->showDialog($dialog);
 						return $rs if $rs;
 					}
 				} else {
@@ -150,9 +152,11 @@ sub preinstallListener
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('preinstall')) {
 					debug("Calling action preinstall on $package");
-					my $rs = $package->getInstance()->preinstall();
+					my $rs = $package->preinstall();
 					return $rs if $rs;
 				}
 			} else {
@@ -183,9 +187,11 @@ sub installListener
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('install')) {
 					debug("Calling action install on $package");
-					my $rs = $package->getInstance()->install();
+					my $rs = $package->install();
 					return $rs if $rs;
 				}
 			} else {
@@ -219,9 +225,11 @@ sub uninstall
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('uninstall')) {
 					debug("Calling action uninstall on $package");
-					my $rs = $package->getInstance()->uninstall();
+					my $rs = $package->uninstall();
 					return $rs if $rs;
 				}
 			} else {
@@ -254,9 +262,11 @@ sub setPermissionsListener
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('setGuiPermissions')) {
 					debug("Calling action setGuiPermissions on $package");
-					my $rs = $package->getInstance()->setGuiPermissions();
+					my $rs = $package->setGuiPermissions();
 					return $rs if $rs;
 				}
 			} else {
@@ -290,9 +300,11 @@ sub deleteMail
 			eval "require $package";
 
 			unless($@) {
+				$package = $package->getInstance();
+
 				if($package->can('deleteMail')) {
 					debug("Calling action deleteMail on $package");
-					my $rs = $package->getInstance()->deleteMail($data);
+					my $rs = $package->deleteMail($data);
 					return $rs if $rs;
 				}
 			} else {

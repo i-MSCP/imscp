@@ -180,9 +180,11 @@ sub _runAction
 				eval "require $package";
 
 				unless($@) {
+					$package = $package->factory();
+
 					if ($package->can($action)) {
 						debug("Calling action $action on $package");
-						my $rs = $package->factory()->$action(\%moduleData);
+						my $rs = $package->$action(\%moduleData);
 						return $rs if $rs;
 					}
 				} else {
@@ -201,9 +203,11 @@ sub _runAction
 				eval "require $package";
 
 				unless($@) {
+					$package = $package->getInstance();
+
 					if ($package->can($action)) {
 						debug("Calling action $action on $package");
-						my $rs = $package->getInstance()->$action(\%moduleData);
+						my $rs = $package->$action(\%moduleData);
 						return $rs if $rs;
 					}
 				} else {

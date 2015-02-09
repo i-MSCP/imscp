@@ -94,7 +94,7 @@ sub can
 			$sName =~ s/_\d+\.\d+$//;
 		}
 
-		my $package = "Servers::po::$sName";
+		my $package = "Servers::sqld::$sName";
 		eval "require $package";
 		fatal($@) if $@;
 		$package->can($_[1]);
