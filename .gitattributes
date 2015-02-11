@@ -6,5 +6,5 @@
 *.mo binary
 *.mgc binary
 *.png binary
-*.sfd
-*.ttf
+*.sfd binary
+*.ttf binary
