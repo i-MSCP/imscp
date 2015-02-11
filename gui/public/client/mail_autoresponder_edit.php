@@ -178,7 +178,7 @@ if (customerHasFeature('mail') && (isset($_REQUEST['mail_account_id']) && is_num
 
 			$tpl->parse('LAYOUT_CONTENT', 'page');
 
-			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateengine' => $tpl));
 
 			$tpl->prnt();
 

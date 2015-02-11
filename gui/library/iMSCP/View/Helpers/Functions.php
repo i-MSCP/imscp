@@ -219,7 +219,7 @@ function generateSelectListForMonthsAndYears($tpl, $fromMonth = null, $fromYear 
 function generateNavigation($tpl)
 {
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeGenerateNavigation, array('templateEngine' => $tpl)
+		iMSCP_Events::onBeforeGenerateNavigation, array('templateengine' => $tpl)
 	);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
@@ -444,7 +444,7 @@ function generateNavigation($tpl)
 	);
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onAfterGenerateNavigation, array('templateEngine' => $tpl)
+		iMSCP_Events::onAfterGenerateNavigation, array('templateengine' => $tpl)
 	);
 }
 

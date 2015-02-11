@@ -338,8 +338,8 @@ function reseller_addDomainAlias()
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onBeforeAddDomainAlias,
 			array(
-				'domainId' => $domainId,
-				'domainAliasName' => $domainAliasNameAscii
+				'domainid' => $domainId,
+				'domainaliasname' => $domainAliasNameAscii
 			)
 		);
 
@@ -387,9 +387,9 @@ function reseller_addDomainAlias()
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onAfterAddDomainAlias,
 			array(
-				'domainId' => $domainId,
-				'domainAliasName' => $domainAliasNameAscii,
-				'domainAliasId' => $alsId
+				'domainid' => $domainId,
+				'domainaliasname' => $domainAliasNameAscii,
+				'domainaliasid' => $alsId
 			)
 		);
 
@@ -473,7 +473,7 @@ if ($resellerProps['max_als_cnt'] != 0 && $resellerProps['current_als_cnt'] >= $
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateengine' => $tpl));
 
 	$tpl->prnt();
 

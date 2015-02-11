@@ -558,7 +558,7 @@ function admin_pluginManagerUpdatePluginList($pluginManager)
 	if (!$responses->isStopped()) {
 		$updateInfo = $pluginManager->updatePluginList();
 
-		$eventManager->dispatch(iMSCP_Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager));
+		$eventManager->dispatch(iMSCP_Events::onAfterUpdatePluginList, array('pluginmanager' => $pluginManager));
 
 		set_page_message(
 			tr(
@@ -714,7 +714,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateengine' => $tpl));
 
 $tpl->prnt();
 

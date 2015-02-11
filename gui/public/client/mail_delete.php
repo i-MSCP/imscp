@@ -44,7 +44,7 @@ function client_deleteMailAccount($mailId, $dmnProps)
 		$mailAddr = $stmt->fields['mail_addr'];
 		$toDeleteStatus = 'todelete';
 
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $mailId));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailid' => $mailId));
 
 		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?', array($toDeleteStatus, $mailId));
 
@@ -63,7 +63,7 @@ function client_deleteMailAccount($mailId, $dmnProps)
 
 		delete_autoreplies_log_entries($mailAddr);
 
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $mailId));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailid' => $mailId));
 
 		set_page_message(
 			tr(

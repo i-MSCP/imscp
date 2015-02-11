@@ -908,7 +908,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 			}
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onBeforeEditDomain, array('domainId' => $domainId)
+				iMSCP_Events::onBeforeEditDomain, array('domainid' => $domainId)
 			);
 
 			// Start transaction
@@ -1056,7 +1056,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 			$db->commit();
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterEditDomain, array('domainId' => $domainId)
+				iMSCP_Events::onAfterEditDomain, array('domainid' => $domainId)
 			);
 
 			if ($daemonRequest) {
@@ -1211,6 +1211,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateengine' => $tpl));
 
 $tpl->prnt();

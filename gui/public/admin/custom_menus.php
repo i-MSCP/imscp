@@ -194,7 +194,6 @@ function admin_generateForm($tpl)
  */
 function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuOrder)
 {
-
 	$errorFieldsStack = array();
 
 	if (empty($menuName)) {
@@ -245,6 +244,20 @@ function admin_addMenu()
 	$menuOrder = isset($_POST['menu_order']) ? clean_input($_POST['menu_order']) : null;
 
 	if (admin_isValidMenu($menuName, $menuLink, $menuTarget, $visibilityLevel, $menuOrder)) {
+		$eventManager = iMSCP_Events_Aggregator::getInstance();
+		$eventManager->dispatch(
+			iMSCP_Events::onBeforeAddCustomMenu,
+			$eventManager->prepareArgs(
+				array(
+					'menu_name' => $menuName,
+					'menu_link' => $menuLink,
+					'menut_arget' => $menuTarget,
+					'menu_level' => $visibilityLevel,
+					'menu_order' => $menuOrder
+				)
+			)
+		);
+
 		$query = "
 			INSERT INTO
 				`custom_menus` (
@@ -254,6 +267,17 @@ function admin_addMenu()
 				)
 		";
 		exec_query($query, array($visibilityLevel, $menuOrder, $menuName, $menuLink, $menuTarget));
+
+		$eventManager->dispatch(
+			iMSCP_Events::onAfterAddCustomMenu,
+			array(
+				'menu_name' => $menuName,
+				'menu_link' => $menuLink,
+				'menu_target' => $menuTarget,
+				'menu_level' => $visibilityLevel,
+				'menu_order' => $menuOrder
+			)
+		);
 
 		set_page_message(tr('Custom menu successfully added.'), 'success');
 
@@ -391,7 +415,7 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(
-	iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+	iMSCP_Events::onAdminScriptEnd, array('templateengine' => $tpl)
 );
 
 $tpl->prnt();

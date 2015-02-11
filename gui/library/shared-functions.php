@@ -531,7 +531,7 @@ function change_domain_status($customerId, $action)
 			$db->beginTransaction();
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onBeforeChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
+				iMSCP_Events::onBeforeChangeDomainStatus, array('customerid' => $customerId, 'action' => $action)
 			);
 
 			if($action == 'deactivate') {
@@ -576,7 +576,7 @@ function change_domain_status($customerId, $action)
 			);
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
+				iMSCP_Events::onAfterChangeDomainStatus, array('customerid' => $customerId, 'action' => $action)
 			);
 
 			$db->commit();
@@ -618,7 +618,7 @@ function change_domain_status($customerId, $action)
 function sql_delete_user($domainId, $sqlUserId, $flushPrivileges = true)
 {
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeleteSqlUser, array('sqlUserId' => $sqlUserId)
+		iMSCP_Events::onBeforeDeleteSqlUser, array('sqluserid' => $sqlUserId)
 	);
 
 	$db = iMSCP_Database::getInstance();
@@ -682,7 +682,7 @@ function sql_delete_user($domainId, $sqlUserId, $flushPrivileges = true)
 		}
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
-			iMSCP_Events::onAfterDeleteSqlUser, array('sqlUserId' => $sqlUserId)
+			iMSCP_Events::onAfterDeleteSqlUser, array('sqluserid' => $sqlUserId)
 		);
 	} catch(iMSCP_Exception_Database $e) {
 		$db->rollBack();
@@ -704,7 +704,7 @@ function delete_sql_database($domainId, $databaseId)
 {
 	$db = iMSCP_Database::getInstance();
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, array('sqlDbId' => $databaseId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, array('sqldbid' => $databaseId));
 
 	try {
 		$db->beginTransaction();
@@ -751,7 +751,7 @@ function delete_sql_database($domainId, $databaseId)
 			execute_query('FLUSH PRIVILEGES');
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterDeleteSqlDb, array('sqlDbId' => $databaseId)
+				iMSCP_Events::onAfterDeleteSqlDb, array('sqldbid' => $databaseId)
 			);
 
 			return true;
@@ -777,7 +777,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 	$customerId = (int)$customerId;
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeleteCustomer, array('customerId' => $customerId)
+		iMSCP_Events::onBeforeDeleteCustomer, array('customerid' => $customerId)
 	);
 
 	// Get username, uid and gid of domain user
@@ -960,7 +960,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		$db->commit();
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
-			iMSCP_Events::onAfterDeleteCustomer, array('customerId' => $customerId)
+			iMSCP_Events::onAfterDeleteCustomer, array('customerid' => $customerId)
 		);
 	} catch (iMSCP_Exception $e) {
 		$db->rollBack();

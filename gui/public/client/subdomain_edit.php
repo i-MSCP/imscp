@@ -203,7 +203,7 @@ function client_editSubdomain()
 			}
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onBeforeEditSubdomain, array('subdomainId' => $subdomainId)
+				iMSCP_Events::onBeforeEditSubdomain, array('subdomainid' => $subdomainId)
 			);
 
 			if ($subdomainType == 'dmn') {
@@ -229,7 +229,7 @@ function client_editSubdomain()
 			exec_query($query, array($forwardUrl, 'tochange', $subdomainId));
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterEditSubdomain, array('subdomainId' => $subdomainId)
+				iMSCP_Events::onAfterEditSubdomain, array('subdomainid' => $subdomainId)
 			);
 
 			send_request();
@@ -299,7 +299,7 @@ if (!empty($_POST) && client_editSubdomain()) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateengine' => $tpl));
 
 	$tpl->prnt();
 

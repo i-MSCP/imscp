@@ -121,7 +121,7 @@ function updateFtpAccount($userid, $mainDomainName)
 	}
 
 	if($ret) {
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array('ftpUserId' => $userid));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array('ftpuserid' => $userid));
 
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
@@ -135,7 +135,7 @@ function updateFtpAccount($userid, $mainDomainName)
 			exec_query($query, array($homeDir, $userid));
 		}
 
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array('ftpUserId' => $userid));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array('ftpuserid' => $userid));
 
 		write_log(sprintf("%s updated Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
 		set_page_message(tr('FTP account successfully updated.'), 'success');
@@ -201,7 +201,7 @@ if (isset($_GET['id'])) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateengine' => $tpl));
 
 	$tpl->prnt();
 

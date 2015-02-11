@@ -288,12 +288,12 @@ function client_addSubdomain()
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
 		iMSCP_Events::onBeforeAddSubdomain,
 		array(
-			'subdomainName' => $subdomainName,
-			'subdomainType' => $domainType,
-			'parentDomainId' => $domainId,
-			'mountPoint' => $mountPoint,
-			'forwardUrl' => $forwardUrl,
-			'customerId' => $_SESSION['user_id']
+			'subdomainname' => $subdomainName,
+			'subdomaintype' => $domainType,
+			'parentdomainid' => $domainId,
+			'mountpoint' => $mountPoint,
+			'forwardurl' => $forwardUrl,
+			'customerid' => $_SESSION['user_id']
 		)
 	);
 
@@ -321,13 +321,13 @@ function client_addSubdomain()
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
 		iMSCP_Events::onAfterAddSubdomain,
 		array(
-			'subdomainName' => $subdomainName,
-			'subdomainType' => $domainType,
-			'parentDomainId' => $domainId,
-			'mountPoint' => $mountPoint,
-			'forwardUrl' => $forwardUrl,
-			'customerId' => $_SESSION['user_id'],
-			'subdomainId' => $db->insertId()
+			'subdomainname' => $subdomainName,
+			'subdomaintype' => $domainType,
+			'parentdomainid' => $domainId,
+			'mountpoint' => $mountPoint,
+			'forwardurl' => $forwardUrl,
+			'customerid' => $_SESSION['user_id'],
+			'subdomainid' => $db->insertId()
 		)
 	);
 
@@ -399,7 +399,7 @@ if ($mainDmnProps['domain_subd_limit'] != 0 && $subdomainsCount >= $mainDmnProps
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateengine' => $tpl));
 
 	$tpl->prnt();
 

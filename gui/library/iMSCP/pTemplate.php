@@ -504,7 +504,7 @@ class iMSCP_pTemplate
 		if (!is_array($fname)) {
 			$this->eventManager->dispatch(
 				iMSCP_Events::onBeforeAssembleTemplateFiles,
-				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
+				array('context' => $this, 'templatepath' => self::$_root_dir . '/'. $fname)
 			);
 		} else { // INCLUDED file
 			$fname = ($parentTplDir !== null) ? $parentTplDir . '/' . $fname[1] : $fname[1];
@@ -516,13 +516,13 @@ class iMSCP_pTemplate
 
 			$this->eventManager->dispatch(
 				iMSCP_Events::onBeforeLoadTemplateFile,
-				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
+				array('context' => $this, 'templatepath' => self::$_root_dir . '/'. $fname)
 			);
 
 			$fileContent = file_get_contents(self::$_root_dir . '/' . $fname);
 
 			$this->eventManager->dispatch(
-				iMSCP_Events::onAfterLoadTemplateFile, array('context' => $this, 'templateContent' => $fileContent)
+				iMSCP_Events::onAfterLoadTemplateFile, array('context' => $this, 'templatecontent' => $fileContent)
 			);
 
 			$fileContent = preg_replace_callback($this->tpl_include, array($this, 'get_file'), $fileContent);
@@ -532,7 +532,7 @@ class iMSCP_pTemplate
 		}
 
 		$this->eventManager->dispatch(
-			iMSCP_Events::onAfterAssembleTemplateFiles, array('context' => $this, 'templateContent' => $fileContent)
+			iMSCP_Events::onAfterAssembleTemplateFiles, array('context' => $this, 'templatecontent' => $fileContent)
 		);
 
 		return $fileContent;

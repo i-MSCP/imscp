@@ -94,8 +94,8 @@ function client_addCatchall($itemId)
 						iMSCP_Events_Aggregator::getInstance()->dispatch(
 							iMSCP_Events::onBeforeAddMailCatchall,
 							array(
-								'mailCatchall' => $mailAddr,
-								'mailForwardList' => array($mailAccount)
+								'mailcatchall' => $mailAddr,
+								'mailforwardlist' => array($mailAccount)
 							)
 						);
 
@@ -117,9 +117,9 @@ function client_addCatchall($itemId)
 						iMSCP_Events_Aggregator::getInstance()->dispatch(
 							iMSCP_Events::onAfterAddMailCatchall,
 							array(
-								'mailCatchallId' => iMSCP_Database::getInstance()->insertId(),
-								'mailCatchall' => $mailAddr,
-								'mailForwardList' => array($mailAccount)
+								'mailcatchallid' => iMSCP_Database::getInstance()->insertId(),
+								'mailcatchall' => $mailAddr,
+								'mailforwardlist' => array($mailAccount)
 							)
 						);
 
@@ -236,8 +236,8 @@ function client_addCatchall($itemId)
 				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onBeforeAddMailCatchall,
 					array(
-						'mailCatchall' => $mailAddr,
-						'mailForwardList' => $mailAccount
+						'mailcatchall' => $mailAddr,
+						'mailforwardlist' => $mailAccount
 					)
 				);
 
@@ -259,9 +259,9 @@ function client_addCatchall($itemId)
 				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onAfterAddMailCatchall,
 					array(
-						'mailCatchallId' => iMSCP_Database::getInstance()->insertId(),
-						'mailCatchall' => $mailAddr,
-						'mailForwardList' => $mailAccount
+						'mailcatchallid' => iMSCP_Database::getInstance()->insertId(),
+						'mailcatchall' => $mailAddr,
+						'mailforwardlist' => $mailAccount
 					)
 				);
 
@@ -597,7 +597,7 @@ if(customerHasFeature('mail') && isset($_REQUEST['id'])) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateengine' => $tpl));
 
 	$tpl->prnt();
 

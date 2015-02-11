@@ -566,8 +566,8 @@ class iMSCP_Plugin_Manager
 					$responses = $this->eventsManager->dispatch(
 						iMSCP_Events::onBeforeInstallPlugin,
 						array(
-							'pluginManager' => $this,
-							'pluginName' => $pluginName
+							'pluginmanager' => $this,
+							'pluginname' => $pluginName
 						)
 					);
 
@@ -577,8 +577,8 @@ class iMSCP_Plugin_Manager
 						$this->eventsManager->dispatch(
 							iMSCP_Events::onAfterInstallPlugin,
 							array(
-								'pluginManager' => $this,
-								'pluginName' => $pluginName
+								'pluginmanager' => $this,
+								'pluginname' => $pluginName
 							)
 						);
 
@@ -674,8 +674,8 @@ class iMSCP_Plugin_Manager
 					$responses = $this->eventsManager->dispatch(
 						iMSCP_Events::onBeforeUninstallPlugin,
 						array(
-							'pluginManager' => $this,
-							'pluginName' => $pluginName
+							'pluginmanager' => $this,
+							'pluginname' => $pluginName
 						)
 					);
 
@@ -685,8 +685,8 @@ class iMSCP_Plugin_Manager
 						$this->eventsManager->dispatch(
 							iMSCP_Events::onAfterUninstallPlugin,
 							array(
-								'pluginManager' => $this,
-								'pluginName' => $pluginName
+								'pluginmanager' => $this,
+								'pluginname' => $pluginName
 							)
 						);
 
@@ -769,8 +769,8 @@ class iMSCP_Plugin_Manager
 					$responses = $this->eventsManager->dispatch(
 						iMSCP_Events::onBeforeEnablePlugin,
 						array(
-							'pluginManager' => $this,
-							'pluginName' => $pluginName
+							'pluginmanager' => $this,
+							'pluginname' => $pluginName
 						)
 					);
 
@@ -780,8 +780,8 @@ class iMSCP_Plugin_Manager
 						$this->eventsManager->dispatch(
 							iMSCP_Events::onAfterEnablePlugin,
 							array(
-								'pluginManager' => $this,
-								'pluginName' => $pluginName
+								'pluginmanager' => $this,
+								'pluginname' => $pluginName
 							)
 						);
 
@@ -849,8 +849,8 @@ class iMSCP_Plugin_Manager
 					$responses = $this->eventsManager->dispatch(
 						iMSCP_Events::onBeforeDisablePlugin,
 						array(
-							'pluginManager' => $this,
-							'pluginName' => $pluginName
+							'pluginmanager' => $this,
+							'pluginname' => $pluginName
 						)
 					);
 
@@ -860,8 +860,8 @@ class iMSCP_Plugin_Manager
 						$this->eventsManager->dispatch(
 							iMSCP_Events::onAfterDisablePlugin,
 							array(
-								'pluginManager' => $this,
-								'pluginName' => $pluginName
+								'pluginmanager' => $this,
+								'pluginname' => $pluginName
 							)
 						);
 
@@ -969,10 +969,10 @@ class iMSCP_Plugin_Manager
 						$responses = $this->eventsManager->dispatch(
 							iMSCP_Events::onBeforeUpdatePlugin,
 							array(
-								'pluginManager' => $this,
-								'pluginName' => $pluginName,
-								'fromVersion' => $pluginInfo['version'],
-								'toVersion' => $pluginInfo['__nversion__']
+								'pluginmanager' => $this,
+								'pluginname' => $pluginName,
+								'fromversion' => $pluginInfo['version'],
+								'toversion' => $pluginInfo['__nversion__']
 							)
 						);
 
@@ -982,10 +982,10 @@ class iMSCP_Plugin_Manager
 							$this->eventsManager->dispatch(
 								iMSCP_Events::onAfterUpdatePlugin,
 								array(
-									'pluginManager' => $this,
-									'pluginName' => $pluginName,
-									'fromVersion' => $pluginInfo['version'],
-									'toVersion' => $pluginInfo['__nversion__']
+									'pluginmanager' => $this,
+									'pluginname' => $pluginName,
+									'fromversion' => $pluginInfo['version'],
+									'toversion' => $pluginInfo['__nversion__']
 								)
 							);
 
@@ -1045,8 +1045,8 @@ class iMSCP_Plugin_Manager
 						$responses = $this->eventsManager->dispatch(
 							iMSCP_Events::onBeforeDeletePlugin,
 							array(
-								'pluginManager' => $this,
-								'pluginName' => $pluginName
+								'pluginmanager' => $this,
+								'pluginname' => $pluginName
 							)
 						);
 
@@ -1076,8 +1076,8 @@ class iMSCP_Plugin_Manager
 							$this->eventsManager->dispatch(
 								iMSCP_Events::onAfterDeletePlugin,
 								array(
-									'pluginManager' => $this,
-									'pluginName' => $pluginName
+									'pluginmanager' => $this,
+									'pluginname' => $pluginName
 								)
 							);
 
@@ -1142,7 +1142,7 @@ class iMSCP_Plugin_Manager
 	{
 		if ($this->isPluginEnabled($pluginName) && !$this->isPluginProtected($pluginName)) {
 			$responses = $this->eventsManager->dispatch(
-				iMSCP_Events::onBeforeProtectPlugin, array('pluginManager' => $this, 'pluginName' => $pluginName)
+				iMSCP_Events::onBeforeProtectPlugin, array('pluginmanager' => $this, 'pluginName' => $pluginName)
 			);
 
 			if (!$responses->isStopped()) {
@@ -1151,7 +1151,7 @@ class iMSCP_Plugin_Manager
 
 				if ($this->updateProtectFile()) {
 					$this->eventsManager->dispatch(
-						iMSCP_Events::onAfterProtectPlugin, array('pluginManager' => $this, 'pluginName' => $pluginName)
+						iMSCP_Events::onAfterProtectPlugin, array('pluginmanager' => $this, 'pluginName' => $pluginName)
 					);
 
 					return self::ACTION_SUCCESS;

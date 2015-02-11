@@ -70,7 +70,7 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onBeforeDeleteDomainAlias,
-			array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
+			array('domainaliasid' => $alsId, 'domainaliasname' => $alsName)
 		);
 
 		/** @var $cfg iMSCP_Config_Handler_File */
@@ -211,7 +211,7 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 		}
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
-			iMSCP_Events::onAfterDeleteDomainAlias, array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
+			iMSCP_Events::onAfterDeleteDomainAlias, array('domainaliasid' => $alsId, 'domainaliasname' => $alsName)
 		);
 
 		send_request();

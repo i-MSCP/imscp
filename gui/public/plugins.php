@@ -39,7 +39,7 @@ if (!empty($plugins)) {
 
 	if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) !== false) {
 		$responses = $eventsManager->dispatch(
-			iMSCP_Events::onBeforePluginsRoute, array('pluginManager' => $pluginManager)
+			iMSCP_Events::onBeforePluginsRoute, array('pluginmanager' => $pluginManager)
 		);
 
 		if (!$responses->isStopped()) {
@@ -63,7 +63,7 @@ if (!empty($plugins)) {
 
 			$eventsManager->dispatch(
 				iMSCP_Events::onAfterPluginsRoute,
-				array('pluginManager' => $pluginManager, 'controllerPath' => $controllerPath)
+				array('pluginmanager' => $pluginManager, 'controllerpath' => $controllerPath)
 			);
 
 			if ($controllerPath) {

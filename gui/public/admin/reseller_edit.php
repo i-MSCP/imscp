@@ -441,7 +441,7 @@ function admin_checkAndUpdateData($resellerId)
 {
 	$cfg = iMSCP_Registry::get('config');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $resellerId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userid' => $resellerId));
 
 	$errFieldsStack = array();
 
@@ -773,7 +773,7 @@ function admin_checkAndUpdateData($resellerId)
 
 			$db->commit();
 
-			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $resellerId));
+			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userid' => $resellerId));
 
 			// Send mail to reseller for new password
 			if ($data['password'] != '') {
@@ -905,7 +905,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateengine' => $tpl));
 
 $tpl->prnt();
 

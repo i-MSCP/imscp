@@ -114,7 +114,13 @@ function admin_clearLogs()
 	}
 
 	try {
+		$eventManager = iMSCP_Events_Aggregator::getInstance();
+
+		$eventManager->dispatch(iMSCP_Events::onBeforeClearAdminLog);
+
 		$stmt = execute_query($query);
+
+		$eventManager->dispatch(iMSCP_Events::onAfterClearAdminLog);
 
 		if($stmt->rowCount()) {
 			write_log($msg, E_USER_NOTICE);
@@ -343,7 +349,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateengine' => $tpl));
 
 $tpl->prnt();
 

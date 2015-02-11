@@ -187,11 +187,17 @@ function admin_sendCircular()
 		$body = clean_input($_POST['body'], false);
 
 		if (admin_isValidCircular($senderName, $senderEmail, $subject, $body)) {
+			$eventManager = iMSCP_Events_Aggregator::getInstance();
 			$responses = iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onBeforeSendCircular,
-				array(
-					'sender_name' => $senderName, 'sender_email' => $senderEmail, 'rcpt_to' => $rcptTo,
-					'subject' => $subject, 'body' => $body
+				$eventManager->prepareArgs(
+					array(
+						'sender_name' => $senderName,
+						'sender_email' => $senderEmail,
+						'rcpt_to' => $rcptTo,
+						'subject' => $subject,
+						'body' => $body
+					)
 				)
 			);
 
@@ -217,11 +223,14 @@ function admin_sendCircular()
 					admin_sendToCustomers($senderName, $senderEmail, $subject, $body);
 				}
 
-				iMSCP_Events_Aggregator::getInstance()->dispatch(
+				$eventManager->dispatch(
 					iMSCP_Events::onAfterSendCircular,
 					array(
-						'sender_name' => $senderName, 'sender_email' => $senderEmail, 'rcpt_to' => $rcptTo,
-						'subject' => $subject, 'body' => $body
+						'sender_name' => $senderName,
+						'sender_email' => $senderEmail,
+						'rcpt_to' => $rcptTo,
+						'subject' => $subject,
+						'body' => $body
 					)
 				);
 
@@ -378,7 +387,7 @@ if (!(!empty($_POST) && admin_sendCircular())) {
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+		iMSCP_Events::onAdminScriptEnd, array('templateengine' => $tpl)
 	);
 
 	$tpl->prnt();

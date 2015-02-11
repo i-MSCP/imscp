@@ -82,8 +82,8 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onBeforeAddDomainAlias,
 					array(
-						'domainId' => $mainDmnId,
-						'domainAliasName' => $alsName
+						'domainid' => $mainDmnId,
+						'domainaliasname' => $alsName
 					)
 				);
 
@@ -122,9 +122,9 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onAfterAddDomainAlias,
 					array(
-						'domainId' => $mainDmnId,
-						'domainAliasName' => $alsName,
-						'domainAliasId' => $alsId
+						'domainid' => $mainDmnId,
+						'domainaliasname' => $alsName,
+						'domainaliasid' => $alsId
 					)
 				);
 			

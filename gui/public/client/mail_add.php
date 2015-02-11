@@ -265,7 +265,7 @@ function client_addMailAccount()
 			$db = iMSCP_Registry::get('db');
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onBeforeAddMail, array('mailUsername' => $username, 'MailAddress' => $mailAddr)
+				iMSCP_Events::onBeforeAddMail, array('mailusername' => $username, 'mailaddress' => $mailAddr)
 			);
 
 			$query = '
@@ -285,7 +285,7 @@ function client_addMailAccount()
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onAfterAddMail,
-				array('mailUsername' => $username, 'mailAddress' => $mailAddr, 'mailId' => $db->insertId())
+				array('mailusername' => $username, 'mailaddress' => $mailAddr, 'mailid' => $db->insertId())
 			);
 
 			// Schedule mail account addition
@@ -434,6 +434,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateengine' => $tpl));
 
 $tpl->prnt();

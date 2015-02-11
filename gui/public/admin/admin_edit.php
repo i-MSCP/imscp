@@ -47,9 +47,7 @@
  */
 function admin_updateUserData($userId)
 {
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeEditUser, array('userId' => $userId)
-	);
+	$eventManager = iMSCP_Events_Aggregator::getInstance();
 
 	$fname = isset($_POST['fname']) ? clean_input($_POST['fname']) : '';
 	$lname = isset($_POST['lname']) ? clean_input($_POST['lname']) : '';
@@ -65,8 +63,30 @@ function admin_updateUserData($userId)
 	$street1 = isset($_POST['street1']) ? clean_input($_POST['street1']) : '';
 	$street2 = isset($_POST['street2']) ? clean_input($_POST['street2']) : '';
 	$userName = get_user_name($userId);
+	$password = clean_input($_POST['password']);
 
-	if(empty($_POST['password'])) {
+	$eventManager->dispatch(
+		iMSCP_Events::onBeforeEditUser,
+		$eventManager->prepareArgs(
+			array(
+				'userid' => $userId,
+				'password' => $password,
+				'firstname' => $fname,
+				'lastname' => $lname,
+				'gender' => $gender,
+				'firm' => $firm,
+				'state' => $state,
+				'country' => $country,
+				'email' => $email,
+				'phone' => $phone,
+				'fax' => $fax,
+				'street1' => $street1,
+				'street2' => $street2
+			)
+		)
+	);
+
+	if(empty($password)) {
 		$query = "
 			UPDATE
 				`admin`
@@ -96,7 +116,7 @@ function admin_updateUserData($userId)
 		exec_query(
 			$query,
 			array(
-				cryptPasswordWithSalt($_POST['password']), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
+				cryptPasswordWithSalt($password), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
 				$phone, $fax, $street1, $street2, $gender, $userId
 			)
 		);
@@ -109,8 +129,23 @@ function admin_updateUserData($userId)
 		}
 	}
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onAfterEditUser, array('userId' => $userId)
+	$eventManager->dispatch(
+		iMSCP_Events::onAfterEditUser, array(
+			'userid' => $userId,
+			'username' => $userName,
+			'password' => $password,
+			'firstName' => $fname,
+			'lastName' => $lname,
+			'gender' => $gender,
+			'firm' => $firm,
+			'state' => $state,
+			'country' => $country,
+			'email' => $email,
+			'phone' => $phone,
+			'fax' => $fax,
+			'street1' => $street1,
+			'street2' => $street2
+		)
 	);
 
 	if (isset($_POST['send_data']) && !empty($_POST['password'])) {
@@ -274,7 +309,7 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(
-	iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+	iMSCP_Events::onAdminScriptEnd, array('templateengine' => $tpl)
 );
 
 $tpl->prnt();

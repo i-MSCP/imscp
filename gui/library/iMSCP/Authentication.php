@@ -225,7 +225,7 @@ class iMSCP_Authentication
 			);
 		}
 
-		$em->dispatch(iMSCP_Events::onAfterAuthentication, array('context' => $this, 'authResult' => $resultAuth));
+		$em->dispatch(iMSCP_Events::onAfterAuthentication, array('context' => $this, 'authresult' => $resultAuth));
 
 		return $resultAuth;
 	}

@@ -70,11 +70,11 @@ function add_user($tpl)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
+	$eventManager = iMSCP_Events_Aggregator::getInstance();
 
+	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
 		if (check_user_data()) {
-			$upass = cryptPasswordWithSalt(clean_input($_POST['password']));
+			$upass = clean_input($_POST['password']);
 			$user_id = $_SESSION['user_id'];
 			$username = clean_input($_POST['username']);
 			$fname = clean_input($_POST['fname']);
@@ -95,6 +95,27 @@ function add_user($tpl)
 				$gender = '';
 			}
 
+			$eventManager->dispatch(
+				iMSCP_Events::onBeforeAddUser,
+				$eventManager->prepareArgs(
+					array(
+						'username' => $username,
+						'password' => $upass,
+						'firstName' => $fname,
+						'lastName' => $lname,
+						'gender' => $gender,
+						'firm' => $firm,
+						'state' => $state,
+						'country' => $country,
+						'email' => $email,
+						'phone' => $phone,
+						'fax' => $fax,
+						'street1' => $street1,
+						'street2' => $street2
+					)
+				)
+			);
+
 			$query = "
 				INSERT INTO `admin` (
 					`admin_name`, `admin_pass`, `admin_type`, `domain_created`, `created_by`, `fname`, `lname`, `firm`,
@@ -107,8 +128,8 @@ function add_user($tpl)
 			exec_query(
 				$query,
 				array(
-					$username, $upass, $user_id, $fname, $lname, $firm, $zip, $city, $state, $country, $email,
-					$phone, $fax, $street1, $street2, $gender
+					$username, cryptPasswordWithSalt($upass), $user_id, $fname, $lname, $firm, $zip, $city, $state,
+					$country, $email, $phone, $fax, $street1, $street2, $gender
 				)
 			);
 
@@ -122,17 +143,30 @@ function add_user($tpl)
 			$user_def_lang = $cfg->USER_INITIAL_LANG;
 			$user_theme_color = $cfg->USER_INITIAL_THEME;
 
-			$query = "
-				REPLACE INTO `user_gui_props` (
-					`user_id`, `lang`, `layout`
-				) VALUES (
-					?, ?, ?
+			exec_query(
+				'REPLACE INTO `user_gui_props` (`user_id`, `lang`, `layout`) VALUES (?, ?, ?)',
+				array($new_admin_id, $user_def_lang, $user_theme_color)
+			);
+
+			$eventManager->dispatch(
+				iMSCP_Events::onAfterAddUser,
+				array(
+					'userId' => $new_admin_id,
+					'username' => $username,
+					'password' => $upass,
+					'firstName' => $fname,
+					'lastName' => $lname,
+					'gender' => $gender,
+					'firm' => $firm,
+					'state' => $state,
+					'country' => $country,
+					'email' => $email,
+					'phone' => $phone,
+					'fax' => $fax,
+					'street1' => $street1,
+					'street2' => $street2
 				)
-			";
-
-			exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color));
-
-			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
+			);
 
 			send_add_user_auto_msg(
 				$user_id,
@@ -144,11 +178,10 @@ function add_user($tpl)
 				tr('Administrator', true)
 			);
 
-			//$_SESSION['user_added'] = 1;
 			set_page_message(tr('Admin account successfully created.'), 'success');
 
 			redirectTo('manage_users.php');
-		} else { // check user data
+		} else {
 			$tpl->assign(
 				array(
 					'EMAIL' => clean_input($_POST['email'], true),
@@ -268,7 +301,7 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(
-	iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+	iMSCP_Events::onAdminScriptEnd, array('templateengine' => $tpl)
 );
 
 $tpl->prnt();

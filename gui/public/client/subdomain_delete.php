@@ -100,7 +100,7 @@ if (customerHasFeature('subdomains') && isset($_GET['id'])) {
 
 		if (!$ret) {
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onBeforeDeleteSubdomain, array('subdomainId' => $subId, 'type' => 'sub')
+				iMSCP_Events::onBeforeDeleteSubdomain, array('subdomainid' => $subId, 'type' => 'sub')
 			);
 
 			/** @var $cfg iMSCP_Config_Handler_File */
@@ -125,7 +125,7 @@ if (customerHasFeature('subdomains') && isset($_GET['id'])) {
 			}
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterDeleteSubdomain, array('subdomainId' => $subId, 'type' => 'sub')
+				iMSCP_Events::onAfterDeleteSubdomain, array('subdomainid' => $subId, 'type' => 'sub')
 			);
 
 			send_request();

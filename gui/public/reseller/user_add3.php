@@ -192,10 +192,10 @@ function reseller_addCustomer()
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onBeforeAddDomain,
 			array(
-				'domainName' => $dmnName,
-				'createdBy' => $resellerId,
-				'customerId' => $customerId,
-				'customerEmail' => $email
+				'domainname' => $dmnName,
+				'createdby' => $resellerId,
+				'customerid' => $customerId,
+				'customeremail' => $email
 			)
 		);
 
@@ -289,11 +289,11 @@ function reseller_addCustomer()
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onAfterAddDomain,
 			array(
-				'domainName' => $dmnName,
-				'createdBy' => $resellerId,
-				'customerId' => $recordId,
-				'customerEmail' => $email,
-				'domainId' => $dmnId
+				'domainname' => $dmnName,
+				'createdby' => $resellerId,
+				'customerid' => $recordId,
+				'customeremail' => $email,
+				'domainid' => $dmnId
 			)
 		);
 
@@ -392,6 +392,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateengine' => $tpl));
 
 $tpl->prnt();

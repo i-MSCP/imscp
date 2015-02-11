@@ -148,7 +148,7 @@ function client_addExternalMailServerEntries($item)
 		$data['host'] = (isset($_POST['host'])) ? $_POST['host'] : array();
 
 		$responses = iMSCP_Events_Aggregator::getInstance()->dispatch(
-			iMSCP_Events::onBeforeAddExternalMailServer, array('externalMailServerEntries' => $data)
+			iMSCP_Events::onBeforeAddExternalMailServer, array('externalmailserverentries' => $data)
 		);
 
 		if(!$responses->isStopped()) {
@@ -254,7 +254,7 @@ function client_addExternalMailServerEntries($item)
 					$db->commit(); // Commit the transaction - All data will be now added into the database
 
 					iMSCP_Events_Aggregator::getInstance()->dispatch(
-						iMSCP_Events::onAfterAddExternalMailServer, array('externalMailServerEntries' => $data)
+						iMSCP_Events::onAfterAddExternalMailServer, array('externalmailserverentries' => $data)
 					);
 
 					send_request(); // Ask the daemon to trigger backend dispatcher
@@ -401,7 +401,7 @@ if (customerHasFeature('external_mail')) {
 		client_addExternalMailServerEntries($item);
 		generatePageMessage($tpl);
 		$tpl->parse('LAYOUT_CONTENT', 'page');
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateengine' => $tpl));
 		$tpl->prnt();
 		unsetMessages();
 	} else {

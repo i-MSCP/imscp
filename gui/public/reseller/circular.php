@@ -273,7 +273,7 @@ if (!(!empty($_POST) && reseller_sendCircular())) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateengine' => $tpl));
 
 	$tpl->prnt();
 

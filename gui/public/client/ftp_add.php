@@ -300,13 +300,13 @@ function ftp_addAccount($mainDmnName)
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onBeforeAddFtp,
 				array(
-					'ftpUserId' => $userid,
-					'ftpPassword' => $encryptedPassword,
-					'ftpRawPassword' => $passwd,
-					'ftpUserUid' => $uid,
-					'ftpUserGid' => $gid,
-					'ftpUserShell' => $shell,
-					'ftpUserHome' => $homeDir
+					'ftpuserid' => $userid,
+					'ftppassword' => $encryptedPassword,
+					'ftprawpassword' => $passwd,
+					'ftpuseruid' => $uid,
+					'ftpusergid' => $gid,
+					'ftpusershell' => $shell,
+					'ftpuserhome' => $homeDir
 				)
 			);
 
@@ -372,13 +372,13 @@ function ftp_addAccount($mainDmnName)
 				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onAfterAddFtp,
 					array(
-						'ftpUserId' => $userid,
-						'ftpPassword' => $encryptedPassword,
-						'ftpRawPassword' => $passwd,
-						'ftpUserUid' => $uid,
-						'ftpUserGid' => $gid,
-						'ftpUserShell' => $shell,
-						'ftpUserHome' => $homeDir
+						'ftpuserid' => $userid,
+						'ftppassword' => $encryptedPassword,
+						'ftprawpassword' => $passwd,
+						'ftpuseruid' => $uid,
+						'ftpusergid' => $gid,
+						'ftpusershell' => $shell,
+						'ftpuserhome' => $homeDir
 					)
 				);
 
@@ -468,7 +468,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateengine' => $tpl));
 
 $tpl->prnt();
 

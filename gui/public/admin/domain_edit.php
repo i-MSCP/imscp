@@ -898,8 +898,14 @@ function admin_checkAndUpdateData($domainId)
 				return true;
 			}
 
+			$god = array_merge($newValues, $phpEditorNew);
+			print_r($god);
+			exit;
+
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onBeforeEditDomain, array('domainId' => $domainId)
+				iMSCP_Events::onBeforeEditDomain, array(
+					'domainid' => $domainId
+				)
 			);
 
 			// Start transaction
@@ -1047,7 +1053,7 @@ function admin_checkAndUpdateData($domainId)
 			$db->commit();
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterEditDomain, array('domainId' => $domainId)
+				iMSCP_Events::onAfterEditDomain, array('domainid' => $domainId)
 			);
 
 			if ($daemonRequest) {
@@ -1198,6 +1204,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateengine' => $tpl));
 
 $tpl->prnt();

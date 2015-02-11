@@ -96,10 +96,14 @@ $cfg = iMSCP_Registry::get('config');
 $dbUpdate = iMSCP_Update_Database::getInstance();
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDatabaseUpdate);
+
 	// Execute all available db updates
 	if (!$dbUpdate->applyUpdates()) {
 		throw new iMSCP_Exception($dbUpdate->getError());
 	}
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDatabaseUpdate);
 
 	// Set success page message
 	set_page_message('Database update successfully applied.', 'success');
@@ -143,7 +147,7 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(
-	iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+	iMSCP_Events::onAdminScriptEnd, array('templateengine' => $tpl)
 );
 
 $tpl->prnt();

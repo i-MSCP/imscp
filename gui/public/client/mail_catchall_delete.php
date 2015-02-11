@@ -60,13 +60,13 @@ if(isset($_GET['id'])) {
 	}
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeleteMailCatchall, array('mailCatchallId' => $catchallId)
+		iMSCP_Events::onBeforeDeleteMailCatchall, array('mailcatchallid' => $catchallId)
 	);
 
 	exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $catchallId));
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onafterDeleteMailCatchall, array('mailCatchallId' => $catchallId)
+		iMSCP_Events::onafterDeleteMailCatchall, array('mailcatchallid' => $catchallId)
 	);
 
 	send_request();

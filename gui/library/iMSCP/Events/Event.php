@@ -115,6 +115,8 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	 */
 	public function getParam($name, $default = null)
 	{
+		$name = strtolower($name); // normalize
+
 		// Check in params that are arrays or implement array access
 		if (is_array($this->params) || $this->params instanceof ArrayAccess) {
 			if (!isset($this->params[$name])) {

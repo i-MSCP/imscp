@@ -202,7 +202,7 @@ function client_editMailAccount()
 		// Update mail account into database
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
-			iMSCP_Events::onBeforeEditMail, array('mailId' => $mailData['mail_id'])
+			iMSCP_Events::onBeforeEditMail, array('mailid' => $mailData['mail_id'])
 		);
 
 		$query = '
@@ -218,7 +218,7 @@ function client_editMailAccount()
 		);
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(
-			iMSCP_Events::onAfterEditMail, array('mailId' => $mailData['mail_id'])
+			iMSCP_Events::onAfterEditMail, array('mailid' => $mailData['mail_id'])
 		);
 
 		// Schedule mail account addition
@@ -353,7 +353,7 @@ if (isset($_GET['id']) && customerHasFeature('mail')) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateengine' => $tpl));
 
 	$tpl->prnt();
 } else {

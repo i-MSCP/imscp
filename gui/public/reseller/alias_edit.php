@@ -174,7 +174,7 @@ function reseller_editDomainAlias()
 			}
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onBeforeEditDomainAlias, array('domainAliasId' => $domainAliasId)
+				iMSCP_Events::onBeforeEditDomainAlias, array('domainaliasid' => $domainAliasId)
 			);
 
 			exec_query(
@@ -183,7 +183,7 @@ function reseller_editDomainAlias()
 			);
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterEditDomainALias, array('domainAliasId' => $domainAliasId)
+				iMSCP_Events::onAfterEditDomainALias, array('domainaliasid' => $domainAliasId)
 			);
 
 			send_request();
@@ -253,7 +253,7 @@ if (!empty($_POST) && reseller_editDomainAlias()) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateengine' => $tpl));
 
 	$tpl->prnt();
 

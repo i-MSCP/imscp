@@ -132,7 +132,7 @@ function reseller_generatePage($tpl)
  */
 function reseller_updateUserData($adminId)
 {
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $adminId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userid' => $adminId));
 
 	global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
 		$street1, $street2, $phone, $fax, $password, $passwordRepeat;
@@ -192,7 +192,7 @@ function reseller_updateUserData($adminId)
 		exec_query('DELETE FROM login WHERE user_name = ?', $adminName);
 	}
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $adminId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userid' => $adminId));
 
 	set_page_message(tr('User data successfully updated'), 'success');
 	write_log("{$_SESSION['user_logged']} updated data for $adminName.", E_USER_NOTICE);
@@ -275,7 +275,7 @@ if(isset($_REQUEST['edit_id'])) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateengine' => $tpl));
 
 	$tpl->prnt();
 } else {

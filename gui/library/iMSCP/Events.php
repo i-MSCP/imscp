@@ -1276,4 +1276,11 @@ class iMSCP_Events
 	 * @see i18n_getJsTranslations() for more details
 	 */
 	const onGetJsTranslations = 'onGetJsTranslations';
+
+	const onBeforeClearAdminLog = 'onBeforeClearAdminLog';
+	const onAfterClearAdminLog = 'onAfterClearAdminLog';
+	const onBeforeAddCustomMenu = 'onBeforeAddCustomMenu';
+	const onAfterAddCustomMenu = 'onAfterAddCustomMenu';
+	const onBeforeDatabaseUpdate = 'onBeforeDatabaseUpdate';
+	const onAfterDatabaseUpdate = 'onAfterDatabaseUpdate';
 }
