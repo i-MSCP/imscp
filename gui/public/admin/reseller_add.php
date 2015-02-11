@@ -375,7 +375,28 @@ function admin_generateForm($tpl, &$data)
  */
 function admin_checkAndCreateResellerAccount()
 {
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
+	$eventManager->dispatch(
+		iMSCP_Events::onBeforeAddUser,
+		$eventManager->prepareArgs(
+			array(
+				'username' => $data['admin_name'],
+				'password' => $data['password'],
+				'firstName' => $data['fname'],
+				'lastName' => $data['lname'],
+				'gender' => $data['gender'],
+				'firm' => $data['firm'],
+				'zip' => $data['zip']
+				'city' => $data['city'],
+				'state' => $data['state'],
+				'country' => $data['country'],
+				'email' => $email,
+				'phone' => $data['phone'],
+				'fax' => $data['fax'],
+				'street1' => $data['street1'],
+				'street2' => $data['street2']
+			)
+		)
+	);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -608,7 +629,26 @@ function admin_checkAndCreateResellerAccount()
 				write_log("System was unable to create the '{$cfg->GUI_APS_DIR}/{$resellerId} directory for reseller software repository", E_USER_ERROR);
 			}
 
-			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
+				iMSCP_Events::onAfterAddUser,
+				arra(
+				  'resellerid' => $resellerId,
+				  'username' => $data['admin_name'],
+					'password' => $data['password'],
+					'firstName' => $data['fname'],
+					'lastName' => $data['lname'],
+					'gender' => $data['gender'],
+					'firm' => $data['firm'],
+					'zip' => $data['zip'],
+					'city' => $data['city'],
+					'state' => $data['state'],
+					'country' => $data['country'],
+					'email' => $data['email'],
+					'phone' => $data['phone'],
+					'fax' => $data['fax'],
+					'street1' => $data['street1'],
+					'street2' => $data['street2']
+				)
+			);
 
 			// Send welcome mail to the new reseller
 			send_add_user_auto_msg(
