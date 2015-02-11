@@ -22,6 +22,9 @@ PACKAGES
 	Fixed: Several event listeners are registered too late ( regression fix )
 	Fixed: Awstats section not added in vhost files
 
+PLUGINS:
+	Updated: API to version 0.2.17
+
 TICKETS
 	Fixed #IP-1259: Layout - Text goes out of statistic bar
 	Fixed #IP-1263: Access to statistics ( Awstats ) is broken - 404 error
