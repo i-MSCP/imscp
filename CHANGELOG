@@ -7,6 +7,7 @@ Git 1.2.x
 BACKEND
 	Fixed: Invalid argument at /usr/share/perl5/MIME/Entity.pm line 1878 ( autoreply script )
 	Fixed: Wrong sqld server name
+	Fixed: Vlogger - High CPU usage
 
 FRONTEND
 	Fixed: Wrong URL in default email templates ( Missing port )

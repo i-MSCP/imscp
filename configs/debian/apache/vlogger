@@ -31,10 +31,10 @@
 # 1.4    version by i-MSCP Team
 # 1.5    version by i-MSCP Team (bugfix release)
 # 1.6    version by i-MSCP Team (bugfix release - See #IP-1247 )
-
+# 1.7    version by i-MSCP Team (bugfix release)
 $ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin';
 
-my $VERSION = '1.6';
+my $VERSION = '1.7';
 
 =head1 NAME
 
@@ -145,8 +145,8 @@ WWW: http://n0rp.chemlab.org/vlogger
 use strict;
 no strict 'refs';
 use warnings;
+use POSIX qw(:signal_h);
 use sigtrap qw( handler shutdown HUP USR1 TERM INT PIPE );
-use POSIX ':signal_h';
 use Date::Format;
 use Getopt::Std;
 use IO::Handle;
@@ -267,10 +267,11 @@ if ( $OPTS{'d'} ) {
 						$dbh->disconnect();
 
 						# SIGALRM dumps the tracker hash
-						POSIX::sigaction(
-							SIGALRM, POSIX::SigAction->new( \&dump_tracker, POSIX::SigSet->new( SIGALRM ) )
-						);
-						POSIX::alarm( $DBI_DUMP );
+						my $mask = POSIX::SigSet->new( SIGALRM );
+						my $action = POSIX::SigAction->new( \&dump_tracker, $mask );
+						my $oldaction = POSIX::SigAction->new();
+						sigaction( SIGALRM, $action, $oldaction );
+						alarm( $DBI_DUMP );
 					} else {
 						logs( 'alert', "unable to connect to MySQL server: $DBI::errstr" );
 						delete( $OPTS{'d'} );
@@ -333,8 +334,8 @@ if ( $OPTS{'s'} ) {
 }
 
 # chroot to the logdir
-chdir( $LOGDIR );
-chroot('.');
+#chdir( $LOGDIR );
+#chroot('.');
 
 my %logs = ();
 my %tracker = ();
@@ -499,9 +500,9 @@ sub logs
 {
 	my ($priority, $message) = @_;
 
-	my $date = POSIX::strftime "%a %b %e %H:%M:%S %Y", localtime;
+	my $localtime = localtime;
 
-	print STDERR "[$date] [$priority] vlogger: $message\n";
+	print STDERR "[$localtime] [$priority] vlogger: $message\n";
 }
 
 sub close_files
@@ -592,7 +593,7 @@ sub dump_tracker
 		}
 	}
 
-	POSIX::alarm( $DBI_DUMP );
+	alarm( $DBI_DUMP );
 }
 
 # print usage info
