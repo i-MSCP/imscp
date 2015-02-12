@@ -334,7 +334,7 @@ if ( $OPTS{'s'} ) {
 }
 
 # chroot to the logdir
-#chdir( $LOGDIR );
+chdir( $LOGDIR );
 #chroot('.');
 
 my %logs = ();
