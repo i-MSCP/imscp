@@ -441,24 +441,29 @@ function admin_checkAndUpdateData($resellerId)
 {
 	$cfg = iMSCP_Registry::get('config');
 
+	$eventManager = iMSCP_Events_Aggregator::getInstance();
+
 	$eventManager->dispatch(
-		iMSCP_Events::onBeforeEditUser, array(
-			'userid' => $resellerId,
-			'username' => $data['admin_name'],
-			'password' => $data['password'],
-			'firstName' => $data['fname'],
-			'lastName' => $data['lname'],
-			'gender' => $data['gender'],
-			'firm' => $data['firm'],
-			'zip' => $data['zip'],
-			'city' => $data['city'],
-			'state' => $data['state'],
-			'country' => $data['country'],
-			'email' => $data['email'],
-			'phone' => $data['phone'],
-			'fax' => $data['fax'],
-			'street1' => $data['street1'],
-			'street2' => $data['street2']
+		iMSCP_Events::onBeforeEditUser,
+		$eventManager->prepareArgs(
+			array(
+			  'userid' => $resellerId,
+			  'username' => $data['admin_name'],
+			  'password' => $data['password'],
+			  'firstName' => $data['fname'],
+			  'lastName' => $data['lname'],
+			  'gender' => $data['gender'],
+			  'firm' => $data['firm'],
+			  'zip' => $data['zip'],
+			  'city' => $data['city'],
+			  'state' => $data['state'],
+			  'country' => $data['country'],
+			  'email' => $data['email'],
+			  'phone' => $data['phone'],
+			  'fax' => $data['fax'],
+			  'street1' => $data['street1'],
+			  'street2' => $data['street2']
+		  )
 		)
 	);
 
