@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-02-06 02:28+0100\n"
-"PO-Revision-Date: 2015-02-06 01:30+0000\n"
+"POT-Creation-Date: 2015-02-12 12:11+0100\n"
+"PO-Revision-Date: 2015-02-12 11:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -33,57 +33,34 @@ msgid ""
 "\n"
 "Dear {NAME},\n"
 "\n"
-"This is an automatic confirmation for the order of the domain:\n"
-"\n"
-"{DOMAIN}\n"
-"\n"
-"You have to click the following link to confirm your order.\n"
-"\n"
-"{ACTIVATION_LINK}\n"
-"\n"
-"If you do not confirm it before the {EXPIRE_DATE}, it will be\n"
-"automatically canceled.\n"
-"\n"
-"Thank you for using i-MSCP services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nBeste {NAME},\n\nDit is een automatische bevestiging voor uw bestelling van het domein:\n\n{DOMAIN}\n\nU dient op de volgende link klikken om uw bestelling te bevestigen.\n\n{ACTIVATION_LINK}\n\nIndien u uw bestelling niet bevestigt voor {EXPIRE_DATE} zal hij automatisch geannuleerd worden.\n\nHartelijk dank voor het gebruiken van de service van i-MSCP\n\n___________________________\nHet i-MSCP-team\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
 "Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nBeste {NAME},\n\nGebruik deze link om uw nieuwe wachtwoord voor i-MSCP te activeren:\n\n{LINK}\n\nHartelijk dank voor het gebruiken van de service van i-MSCP.\n\n___________________________\nHet i-MSCP-team\n\n"
+msgstr ""
 
 msgid ""
 "\n"
 "\n"
 "Dear {RESELLER},\n"
 "\n"
-"Your customer {CUSTOMER} is awaiting for the approval of his new domain alias:\n"
+"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nBeste {RESELLER},\n\nUw klant {CUSTOMER} wacht op de goedkeuring van zijn nieuwe domeinalias:\n\n{ALIAS}\n\nAls u ingelogd bent kunt u zijn nieuwe alias op {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php bevestigen.\n\nHartelijk dank voor het gebruiken van de service van i-MSCP.\n\n___________________________\nHet i-MSCP-team\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -93,14 +70,14 @@ msgid ""
 "Your user name is: {USERNAME}\n"
 "Your password is: {PASSWORD}\n"
 "\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nHallo {NAME},\n\nUw gebruikersnaam is: {USERNAME}\nUw wachtwoord is: {PASSWORD}\n\nU kunt inloggen op {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nHartelijk dank voor het gebruiken van de service van i-MSCP.\n\n___________________________\nHet i-MSCP-team\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -116,13 +93,13 @@ msgid ""
 "\n"
 "Remember to change your password often and the first time you login.\n"
 "\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
 "Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\nBeste {NAME},\n\nEr is een nieuw account voor u aangemaakt.\n\nUw accountgegevens:\n\nGebruikerstype: {USERTYPE}\nGebruikersnaam: {USERNAME}\nWachtwoord: {PASSWORD}\n\nVergeet niet uw wachtwoord regelmatig en als u voor het eerst inlogt te veranderen.\n\nU kunt nu inloggen op {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatistieken: http://{USERNAME}/{WEBSTATS_RPATH}\n(Zelfde gebruikersnaam en wachtwoord als hierboven)\n\nHartelijk dank voor het gebruiken van onze service.\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -138,10 +115,10 @@ msgid ""
 "\n"
 "Remember to change your password often and the first time you login.\n"
 "\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\nBeste {NAME},\n\nEr is een nieuw account voor u aangemaakt.\n\nUw accountgegevens:\n\nGebruikerstype: {USERTYPE}\nGebruikersnaam: {USERNAME}\nWachtwoord: {PASSWORD}\n\nVergeet niet uw wachtwoord regelmatig en als u voor het eerst inlogt te veranderen.\n\nU kunt nu inloggen op {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nHartelijk dank voor het gebruiken van onze service.\n"
+msgstr ""
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Beheerder / Ondersteuning / Open tickets"
@@ -321,7 +298,7 @@ msgstr "%s record"
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
+msgstr "%s webmail"
 
 #, php-format
 msgid ""
@@ -701,7 +678,7 @@ msgid "Added by"
 msgstr "Toegevoegd door"
 
 msgid "Addition in progress..."
-msgstr ""
+msgstr "Toevoegen bezig"
 
 msgid "Additional data"
 msgstr "Extra gegevens"
@@ -998,14 +975,14 @@ msgid "An error occurred during authentication."
 msgstr "Er is een aanmeldfout opgetreden"
 
 msgid "An unexpected error occured"
-msgstr ""
+msgstr "Er is een onverwachte fout opgetreden"
 
 msgid ""
 "An unexpected error occured. Go to the debugger interface for more details."
-msgstr ""
+msgstr "Er is een onverwachte fout opgetreden. Ga naar de debug-interface voor meer informatie."
 
 msgid "An unexpected error occured. Please contact your administrator."
-msgstr ""
+msgstr "Er is een onverwachte fout opgetreden. Neem contact op met de beheerder."
 
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Er heeft zich een onverwachte fout voorgedaan. Neem contact op met uw wederverkoper."
@@ -1146,7 +1123,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "U dient eerst een databank met minimaal 1 gebruiker aan te maken."
 
 msgid "At least one intermediate certificate is invalid or missing."
-msgstr ""
+msgstr "Minimaal 1 intermediate-certificaat mist of is niet geldig."
 
 msgid "Auto (Browser language)"
 msgstr "Automatisch (Browsertaal)"
@@ -1179,7 +1156,7 @@ msgid "Awaiting activation"
 msgstr "Wacht op activering"
 
 msgid "Awaiting for approval"
-msgstr ""
+msgstr "Wachtend op goedkeuring"
 
 msgid "B"
 msgstr "B"
@@ -1362,10 +1339,10 @@ msgid ""
 msgstr "Klik de \"Herstel\"-knop en het systeem zal uw laatste dagelijkse back-up herstellen"
 
 msgid "Click to activate"
-msgstr ""
+msgstr "Klik om te activeren"
 
 msgid "Click to deactivate"
-msgstr ""
+msgstr "Klik om te deactiveren"
 
 msgid "Client / Choose Directory"
 msgstr "Klant / Kies map"
@@ -1547,9 +1524,6 @@ msgstr "Bedrijf"
 
 msgid "Compress HTML output"
 msgstr "Compressie toepassen op HTML-output"
-
-msgid "Confirmation for domain order {DOMAIN}"
-msgstr "Bevestiging voor uw domeinbestelling {DOMAIN}"
 
 #, php-format
 msgid "Conflict with an existent %s record."
@@ -1894,7 +1868,7 @@ msgid "Deletion in progress"
 msgstr "Verwijderen bezig"
 
 msgid "Deletion in progress..."
-msgstr ""
+msgstr "Verwijderen bezig..."
 
 msgid "Depot import"
 msgstr "Depot import"
@@ -1916,7 +1890,7 @@ msgstr "Mappen"
 
 #, php-format
 msgid "Directory %s doesn't exists."
-msgstr ""
+msgstr "Map %s bestaat niet."
 
 msgid "Directory tree"
 msgstr "Mappenboom"
@@ -2425,15 +2399,15 @@ msgstr "Bestand %s bestaat niet of kan niet benaderd worden!"
 
 #, php-format
 msgid "File %s doesn't look like a migration file."
-msgstr ""
+msgstr "Het bestand %s lijkt niet op een migratiebestand."
 
 #, php-format
 msgid "File %s has not been found in plugin archive."
-msgstr ""
+msgstr "Het bestand %s is niet gevonden in het pluginarchief."
 
 #, php-format
 msgid "File %s is missing in plugin archive."
-msgstr ""
+msgstr "Het bestand %s mist uit het pluginarchief."
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2549,7 +2523,7 @@ msgid "Generate"
 msgstr "Genereren"
 
 msgid "Generate a self-signed certificate"
-msgstr ""
+msgstr "Genereer een zelf-getekend SSL-certificaat"
 
 msgid "Get a new image"
 msgstr "Haal een nieuw plaatje op."
@@ -2768,7 +2742,7 @@ msgid "Incorrect email length or syntax."
 msgstr "Foutieve emaillengte of emailsyntaxis."
 
 msgid "Incorrect email quota."
-msgstr ""
+msgstr "Foutieve e-mailquota."
 
 #, php-format
 msgid "Incorrect limit for %s."
@@ -2832,7 +2806,7 @@ msgid "Instructions to download today's backup"
 msgstr "Instructies om de back-up van vandaag te downloaden"
 
 msgid "Intermediate certificate(s)"
-msgstr ""
+msgstr "Intermediate certificaat (certificaten)"
 
 msgid "Internal Server Error"
 msgstr "Interne serverfout"
@@ -2869,7 +2843,7 @@ msgid "Invalid URL."
 msgstr "Ongeldige URL."
 
 msgid "Invalid certificate."
-msgstr ""
+msgstr "Foutieve certificaten"
 
 msgid "Invalid domain name."
 msgstr "Ongeldige domeinnaam."
@@ -2878,7 +2852,7 @@ msgid "Invalid email address."
 msgstr "Ongeldig e-mailadres."
 
 msgid "Invalid email username."
-msgstr ""
+msgstr "Foutieve emailgebruikersnaam"
 
 msgid "Invalid expiration date."
 msgstr "Ongeldige verloopdatum."
@@ -3167,7 +3141,7 @@ msgid "Message template"
 msgstr "Berichttemplate"
 
 msgid "Message template info"
-msgstr "Berichttemplateinformatie"
+msgstr "Berichttemplate"
 
 msgid "Message to reseller before deleting the software"
 msgstr "Stuur een bericht aan de wederverkoper voor het verwijderen van de software"
@@ -3180,7 +3154,7 @@ msgstr "MB"
 
 #, php-format
 msgid "Migration file %s is not readable."
-msgstr ""
+msgstr "Migratiebestand %s is niet leesbaar."
 
 msgid "Minute"
 msgstr "Minuut"
@@ -3195,7 +3169,7 @@ msgid "Model"
 msgstr "Model"
 
 msgid "Modification in progress..."
-msgstr ""
+msgstr "Bezig met bewerken..."
 
 msgid "Month"
 msgstr "Maand"
@@ -3748,7 +3722,7 @@ msgstr "Invoegtoepassing %s geactiveerd"
 
 #, php-format
 msgid "Plugin %s cannot be activated."
-msgstr ""
+msgstr "Plugin %s kan niet worden geactiveerd."
 
 #, php-format
 msgid "Plugin %s cannot be changed."
@@ -3756,23 +3730,23 @@ msgstr "Invoegtoepassing %s kon niet worden aangepast."
 
 #, php-format
 msgid "Plugin %s cannot be deactivated."
-msgstr ""
+msgstr "Plugin %s kan niet worden geadectiveerd."
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr ""
+msgstr "Plugin %s kan niet worden verwijderd."
 
 #, php-format
 msgid "Plugin %s cannot be installed."
-msgstr ""
+msgstr "Plugin %s kan niet worden geïnstalleerd."
 
 #, php-format
 msgid "Plugin %s cannot be protected."
-msgstr ""
+msgstr "Plugin %s kan niet worden beveiligd."
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
-msgstr ""
+msgstr "Plugin %s kan niet worden gedeïnstalleerd."
 
 #, php-format
 msgid "Plugin %s cannot be updated."
@@ -4194,7 +4168,7 @@ msgid "Reseller data"
 msgstr "Gegevens van wederverkoper"
 
 msgid "Reseller level"
-msgstr "Nivieau van wederverkoper"
+msgstr "Niveau van wederverkoper"
 
 msgid "Reseller list"
 msgstr "Lijst van wederverkopers"
@@ -4348,13 +4322,13 @@ msgid "SSL certificate"
 msgstr "SSL-certificaat"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr "SL-certificaat is succesvol ingepland op toegevoegd te worden."
+msgstr "SSL-certificaat is succesvol ingepland op toegevoegd te worden."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr "SL-certificaat is succesvol ingepland op verwijderd te worden."
+msgstr "SSL-certificaat is succesvol ingepland op verwijderd te worden."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr "SL-certificaat is succesvol ingepland op bijgewerkt te worden."
+msgstr "SSL-certificaat is succesvol ingepland op bijgewerkt te worden."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-certificaat ingepland om toegevoegd of bijgewerkt te worden."
@@ -4902,7 +4876,7 @@ msgid "The password field is empty."
 msgstr "Het wachtwoordveld is leeg."
 
 msgid "The private key doesn't belong to the provided certificate."
-msgstr ""
+msgstr "De ingegeven private key komt niet overeen met het ingegeven certificaat."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
@@ -4914,7 +4888,7 @@ msgstr "Het account van de wederverkoper dat u probeert te bewerken is niet gevo
 msgid ""
 "The reseller you want to remove has one or more customers "
 "accounts.<br>Remove them first."
-msgstr ""
+msgstr "De wederverkoper die u wilt verwijderen heeft nog een of meerdere gebruikers<br>Verwijder deze eerst."
 
 msgid "The software installer feature requires PHP."
 msgstr "Deze functie van de software-installer vereist PHP."
@@ -4984,7 +4958,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
-msgstr ""
+msgstr "Dit is de host waarvan deze SQL-gebruiker moet kunnen verbinden met de SQL-server. Gebruik de %s wildcard om deze gebruiker vanaf alle hosts te kunnen laten verbinden."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Dit pakket bestaat al in de softwareberging voor beheerders."
@@ -5099,6 +5073,9 @@ msgstr "Open"
 msgid "URL forwarding"
 msgstr "URL doorsturen"
 
+msgid "URL port"
+msgstr ""
+
 msgid "URL protocol"
 msgstr "URL-protocol"
 
@@ -5151,7 +5128,7 @@ msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr "Geen nieuwe netwerkinterface gevonden. U kunt geen nieuw IP-adres toevoegen "
 
 msgid "Unable to find plugin root directory withing archive."
-msgstr ""
+msgstr "Kan root-map van invoegtoepassing niet vinden."
 
 #, php-format
 msgid "Unable to get stats for file %s."
@@ -5171,7 +5148,7 @@ msgid "Unable to move file."
 msgstr "Kan bestand niet verplaatsen."
 
 msgid "Unable to open plugin archive."
-msgstr ""
+msgstr "Kon plugin-archief niet openen."
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
@@ -5182,11 +5159,11 @@ msgstr "Kan index-bestand van softwareberging niet uitlezen."
 
 #, php-format
 msgid "Unable to read the $%s file. Please, check file permissions"
-msgstr ""
+msgstr "Kon het $%s-bestand niet lezen. Controleer de bestandrechten."
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
-msgstr ""
+msgstr "Kon het $%s-pluginbestand niet lezen. Controleer de bestandrechten."
 
 msgid "Unable to read xml file for web software."
 msgstr "Kan XML-bestand niet uit websoftware lezen."
@@ -5564,10 +5541,10 @@ msgstr "Wildcard: Het instellen van een DNS-MX-record om berichten te kunnen ont
 
 #, php-format
 msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr ""
+msgstr "Wildcards zoals '%s' en '%s' mogen niet in een gebruikersnaam gebruikt worden."
 
 msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr ""
+msgstr "Wildcards zoals '%s' en '%s' mogen niet gebruikt worden."
 
 msgid "Wrong IP address."
 msgstr "Fout IP-adres."
@@ -5672,7 +5649,7 @@ msgstr "U kunt deze software niet installeren buiten de htdocs-map van het gesel
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
+msgstr "U kunt geen nieuwe e-mailaccounts meer maken. U heeft al uw e-mailquota al aan andere mailaccounts toegewezen. Controleert u deze eerst."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "U kunt een wederverkoper die klantenaccounts heeft niet verwijderen."
@@ -5814,7 +5791,7 @@ msgstr "U heeft het maximale aantal domeinaliassen bereikt conform uw abonnement
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
 "subscription."
-msgstr ""
+msgstr "U heeft het maximale aantal email accounts bereikt conform uw abbonnement"
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
@@ -5877,7 +5854,7 @@ msgid "You must select a network interface."
 msgstr "U dient een netwerkinterface te selecteren."
 
 msgid "You must select at least one plugin."
-msgstr ""
+msgstr "Selecteer minimaal 1 plugin."
 
 msgid "You must specify a message."
 msgstr "U dient een bericht te specificeren."
@@ -6174,4 +6151,4 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} heeft een nieuw softwarepakket geüpload"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2015 i-MSCP Team<br/>Alle rechten voorbehouden"

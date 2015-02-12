@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# kazuo <kazu.nito@gmail.com>, 2014
+# kazuo <kazu.nito@gmail.com>, 2014-2015
 # kazuo <kazu.nito@gmail.com>, 2013
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-02-06 02:28+0100\n"
-"PO-Revision-Date: 2015-02-06 01:30+0000\n"
+"POT-Creation-Date: 2015-02-12 12:11+0100\n"
+"PO-Revision-Date: 2015-02-12 11:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -25,57 +25,34 @@ msgid ""
 "\n"
 "Dear {NAME},\n"
 "\n"
-"This is an automatic confirmation for the order of the domain:\n"
-"\n"
-"{DOMAIN}\n"
-"\n"
-"You have to click the following link to confirm your order.\n"
-"\n"
-"{ACTIVATION_LINK}\n"
-"\n"
-"If you do not confirm it before the {EXPIRE_DATE}, it will be\n"
-"automatically canceled.\n"
-"\n"
-"Thank you for using i-MSCP services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\n親愛なる {NAME}様\n\nドメインのオーダーの自動確認メールです：\n\n{DOMAIN}\n\nあなたのオーダーを確認するため、次のリンクをクリックする必要があります。\n\n{ACTIVATION_LINK}\n\nあなたが、{EXPIRE_DATE}より前に上記リンクをクリックして確認しないと、自動的にオーダーはキャンセルされます。\n.\n\ni-MSCPサービスをご利用いただきありがとうございます。.\n\n___________________________\ni-MSCP チーム\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
 "Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\n親愛なる {NAME}様\n\n新しいi-MSCPパスワードを有効にするには、以下のリンクをクリックしてください。\n\n{LINK}\n\ni-MSCPサービスをご利用いただきありがとうございます。\n\n___________________________\ni-MSCP チーム\n"
+msgstr ""
 
 msgid ""
 "\n"
 "\n"
 "Dear {RESELLER},\n"
 "\n"
-"Your customer {CUSTOMER} is awaiting for the approval of his new domain alias:\n"
+"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\n親愛なる {RESELLER}様,\n\nあなたの顧客{CUSTOMER}は彼の新しいドメインエイリアスの承認を待っています：\n\n{ALIAS}\n\nログインしたら、あなたは{BASE_SERVER_VHOST_PREFIX}で新しいエイリアスを有効にすることができます{BASE_SERVER_VHOST}/reseller/alias.php\n\ni-MSCPサービスをご利用いただきありがとうございます。\n\n___________________________\ni-MSCP チーム\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -85,14 +62,14 @@ msgid ""
 "Your user name is: {USERNAME}\n"
 "Your password is: {PASSWORD}\n"
 "\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nこんにちは {NAME} 様\n\nあなたのユーザ名： {USERNAME}\nあなたのパスワード： {PASSWORD}\n\nあなたは、{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}でログインできます。\n\ni-MSCP サービスをご利用いただきありがとうございます。\n\n___________________________\ni-MSCP チーム\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -108,13 +85,13 @@ msgid ""
 "\n"
 "Remember to change your password often and the first time you login.\n"
 "\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
 "Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\n親愛なる {NAME}様,\n\n新しいアカウントが作成されました。\n\nアカウント情報：\n\nユーザ種別: {USERTYPE}\nユーザ名: {USERNAME}\nパスワード: {PASSWORD}\n\n最初にログイン時にパスワードを変更するのを忘れないでください。\n\n今、ログインできます {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\n統計: http://{USERNAME}/{WEBSTATS_RPATH}\n(上記と同じ、ユーザ名とパスワード)\n\nサービスをご利用いただきありがとうございます。\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -130,10 +107,10 @@ msgid ""
 "\n"
 "Remember to change your password often and the first time you login.\n"
 "\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\n親愛なる {NAME}様,\n\n新しいアカウントが作成されました。\n\nアカウント情報：\n\nユーザ種別: {USERTYPE}\nユーザ名: {USERNAME}\nパスワード: {PASSWORD}\n\n最初にログイン時にパスワードを変更するのを忘れないでください。\n\n今、ログインできます {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nサービスをご利用いただきありがとうございます。\n"
+msgstr ""
 
 msgid " Admin / Support / Open Tickets"
 msgstr "管理者 / サポート / オープンチケット"
@@ -313,7 +290,7 @@ msgstr "%s レコード"
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
+msgstr "%s webメール"
 
 #, php-format
 msgid ""
@@ -693,7 +670,7 @@ msgid "Added by"
 msgstr "追加しました"
 
 msgid "Addition in progress..."
-msgstr ""
+msgstr "追加の処理中..."
 
 msgid "Additional data"
 msgstr "追加データ"
@@ -990,14 +967,14 @@ msgid "An error occurred during authentication."
 msgstr "認証中にエラーが発生した。"
 
 msgid "An unexpected error occured"
-msgstr ""
+msgstr "予期しないエラーが発生しました"
 
 msgid ""
 "An unexpected error occured. Go to the debugger interface for more details."
-msgstr ""
+msgstr "予期しないエラーが発生しました。詳細については、デバッガインタフェースに進んでください。"
 
 msgid "An unexpected error occured. Please contact your administrator."
-msgstr ""
+msgstr "予期しないエラーが発生しました。管理者に連絡してください。"
 
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "予期しないエラーが発生しました。代理店にお問い合わせください。"
@@ -1138,7 +1115,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "最初に、少なくとも1つのSQLユーザを持つデータベースを作成する必要があります。"
 
 msgid "At least one intermediate certificate is invalid or missing."
-msgstr ""
+msgstr "少なくとも一つの中間証明書が無効か、または存在しません。"
 
 msgid "Auto (Browser language)"
 msgstr "自動（ブラウザの言語）"
@@ -1171,7 +1148,7 @@ msgid "Awaiting activation"
 msgstr "アクティベーション待ち"
 
 msgid "Awaiting for approval"
-msgstr ""
+msgstr "承認待ち"
 
 msgid "B"
 msgstr "B"
@@ -1354,10 +1331,10 @@ msgid ""
 msgstr "復元ボタンをクリックすると、その日の最後にバックアップした状態にシステムを復元します。"
 
 msgid "Click to activate"
-msgstr ""
+msgstr "有効にするためにクリック"
 
 msgid "Click to deactivate"
-msgstr ""
+msgstr "無効にするためにクリック"
 
 msgid "Client / Choose Directory"
 msgstr "クライアント / ディレクトリ選択"
@@ -1539,9 +1516,6 @@ msgstr "会社"
 
 msgid "Compress HTML output"
 msgstr "圧縮HTML出力"
-
-msgid "Confirmation for domain order {DOMAIN}"
-msgstr "{DOMAIN} ドメインオーダーの確認"
 
 #, php-format
 msgid "Conflict with an existent %s record."
@@ -1886,7 +1860,7 @@ msgid "Deletion in progress"
 msgstr "削除中"
 
 msgid "Deletion in progress..."
-msgstr ""
+msgstr "削除中..."
 
 msgid "Depot import"
 msgstr "デポットのインポート"
@@ -2541,7 +2515,7 @@ msgid "Generate"
 msgstr "生成する"
 
 msgid "Generate a self-signed certificate"
-msgstr ""
+msgstr "自己署名証明書を生成します"
 
 msgid "Get a new image"
 msgstr "新しいイメージを取得"
@@ -2760,7 +2734,7 @@ msgid "Incorrect email length or syntax."
 msgstr "Eメールの長さか構文が誤っています。"
 
 msgid "Incorrect email quota."
-msgstr ""
+msgstr "間違ったEメール容量です。"
 
 #, php-format
 msgid "Incorrect limit for %s."
@@ -2824,7 +2798,7 @@ msgid "Instructions to download today's backup"
 msgstr "今日のバックアップをダウンロードする指示"
 
 msgid "Intermediate certificate(s)"
-msgstr ""
+msgstr "中間証明書"
 
 msgid "Internal Server Error"
 msgstr "内部サーバエラー"
@@ -2861,7 +2835,7 @@ msgid "Invalid URL."
 msgstr "無効なURL。"
 
 msgid "Invalid certificate."
-msgstr ""
+msgstr "証明書が無効です。"
 
 msgid "Invalid domain name."
 msgstr "無効なドメイン名。"
@@ -2870,7 +2844,7 @@ msgid "Invalid email address."
 msgstr "無効なメールアドレスです。"
 
 msgid "Invalid email username."
-msgstr ""
+msgstr "無効なEメールユーザ名です。"
 
 msgid "Invalid expiration date."
 msgstr "無効な有効期限。"
@@ -3187,7 +3161,7 @@ msgid "Model"
 msgstr "モデル"
 
 msgid "Modification in progress..."
-msgstr ""
+msgstr "修正中..."
 
 msgid "Month"
 msgstr "月"
@@ -3752,7 +3726,7 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr ""
+msgstr "プラグイン%sは削除することはできません。"
 
 #, php-format
 msgid "Plugin %s cannot be installed."
@@ -4894,7 +4868,7 @@ msgid "The password field is empty."
 msgstr "パスワードの項目が空です。"
 
 msgid "The private key doesn't belong to the provided certificate."
-msgstr ""
+msgstr "秘密鍵は、提供された証明書に属していません。"
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
@@ -4906,7 +4880,7 @@ msgstr "編集しようとしている代理店アカウントが見つかりま
 msgid ""
 "The reseller you want to remove has one or more customers "
 "accounts.<br>Remove them first."
-msgstr ""
+msgstr "削除する代理店は、1つ又は複数の顧客アカウントを持っています。<br/>それを最初に削除します。"
 
 msgid "The software installer feature requires PHP."
 msgstr "ソフトウェアのインストーラの機能は、PHPが必要です。"
@@ -4976,7 +4950,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
-msgstr ""
+msgstr "このSQLユーザーがSQLサーバに接続しなければならないホストです。このSQLユーザーがどんなホストからでも接続を許すために %sワイルドカード文字を入力してください。"
 
 msgid "This package already exists in the administrator software repository."
 msgstr "パッケージには、管理者のソフトウェアリポジトリに既に存在しています。"
@@ -5091,6 +5065,9 @@ msgstr "UP"
 msgid "URL forwarding"
 msgstr "URL転送"
 
+msgid "URL port"
+msgstr ""
+
 msgid "URL protocol"
 msgstr "URLプロトコル"
 
@@ -5143,7 +5120,7 @@ msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr "ネットワークインターフェイスが見つかりません。新しいIPアドレスを追加することはできません。"
 
 msgid "Unable to find plugin root directory withing archive."
-msgstr ""
+msgstr "アーカイブ内のプラグインのルートディレクトリが見つかりません。"
 
 #, php-format
 msgid "Unable to get stats for file %s."
@@ -5163,7 +5140,7 @@ msgid "Unable to move file."
 msgstr "ファイルを移動することができません。"
 
 msgid "Unable to open plugin archive."
-msgstr ""
+msgstr "プラグインアーカイブを開くことができません。"
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
@@ -5664,7 +5641,7 @@ msgstr "選択したドメインのhtdocsディレクトリ外にソフトウェ
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
+msgstr "新しいEメールアカウントを追加することはできません。既に他のメールボックスに全てのEメールの容量を割り当てている。まず、あなたの容量の割り当てを確認してください。"
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "顧客アカウントを持っている代理店は削除できません。"
@@ -5806,7 +5783,7 @@ msgstr "サブスクリプションによって許可されたドメインエイ
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
 "subscription."
-msgstr ""
+msgstr "サブスクリプションで許可されたEメールアカウントの最大数に達しました。"
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
@@ -5869,7 +5846,7 @@ msgid "You must select a network interface."
 msgstr "ネットワークインターフェイスを選択する必要があります。"
 
 msgid "You must select at least one plugin."
-msgstr ""
+msgstr "少なくとも一つのプラグインを選択する必要があります。"
 
 msgid "You must specify a message."
 msgstr "メッセージを指定する必要があります。"
@@ -6166,4 +6143,4 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 新しいソフトウェアパッケージをアップロード"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

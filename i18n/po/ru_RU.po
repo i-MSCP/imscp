@@ -6,13 +6,13 @@
 # 9 Beliy <9beliy@gmail.com>, 2012
 # hosterdev <rwer353453534@mail.ru>, 2011
 # Oleg Olegov <>, 2012
-# Vitaliy Zhukov <DragonZX@yandex.ru>, 2014
+# Vitaliy Zhukov <DragonZX@yandex.ru>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-02-06 02:28+0100\n"
-"PO-Revision-Date: 2015-02-06 01:30+0000\n"
+"POT-Creation-Date: 2015-02-12 12:11+0100\n"
+"PO-Revision-Date: 2015-02-12 11:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -26,57 +26,34 @@ msgid ""
 "\n"
 "Dear {NAME},\n"
 "\n"
-"This is an automatic confirmation for the order of the domain:\n"
-"\n"
-"{DOMAIN}\n"
-"\n"
-"You have to click the following link to confirm your order.\n"
-"\n"
-"{ACTIVATION_LINK}\n"
-"\n"
-"If you do not confirm it before the {EXPIRE_DATE}, it will be\n"
-"automatically canceled.\n"
-"\n"
-"Thank you for using i-MSCP services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nУважаемый {NAME}, \n\nЭто автоматическое подтверждение заказа домена: \n{DOMAIN} \n\nВы должны щелкнуть на ссылку ниже, чтобы подтвердить Ваш заказ. \n\n{ACTIVATION_LINK} \n\nЕсли Вы не подтвердите заказ до {EXPIRE_DATE}, он будет автоматически отменен. \n\nСпасибо за использование сервисов i-MSCP.\n___________________________ \nКоманда i-MSCP\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
 "Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nУважаемый {NAME},\n\nИспользуйте эту ссылку для активации нового пароля для i-MSCP:\n\n{LINK}\n\nБлагодарим за использование сервисов i-MSCP.\n\n___________________________\nКоманда i-MSCP\n\n"
+msgstr ""
 
 msgid ""
 "\n"
 "\n"
 "Dear {RESELLER},\n"
 "\n"
-"Your customer {CUSTOMER} is awaiting for the approval of his new domain alias:\n"
+"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nУважаемый {RESELLER}, \n\nВаш клиент {CUSTOMER} ожидает подтверждения для своего нового алиаса: \n\n{ALIAS} \n\nВойдя в панель управления, вы можете подтвердить его, пройдя по ссылке {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php \n\nБлагодарим за использование сервисов i-MSCP.\n___________________________ \nКоманда i-MSCP \n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -86,14 +63,14 @@ msgid ""
 "Your user name is: {USERNAME}\n"
 "Your password is: {PASSWORD}\n"
 "\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nЗдравствуйте {NAME},\n\nВаше имя пользователя: {USERNAME}\nВаш пароль: {PASSWORD}\n\nВы можейте войти через {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nБлагодарим за использование сервисов i-MSCP.\n\n___________________________\nКоманда i-MSCP\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -109,13 +86,13 @@ msgid ""
 "\n"
 "Remember to change your password often and the first time you login.\n"
 "\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
 "Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\n\nУважаемый {NAME},\n\nНовая учетная запись i-MSCP была создана для Вас.\n\nИнформация по учетной записи:\n\nТип пользователя: {USERTYPE}\nИмя пользователя: {USERNAME}\nПароль: {PASSWORD}\n\nНе забудьте сменить Ваш пароль после первого входа в учетную запись.\n\nВы можете войти по адресу {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nСтатистика: http://{USERNAME}/{WEBSTATS_RPATH}\n(С теми же учетными данными)\n\nСпасибо за использование наших сервисов.\n\n___________________________\nКоманда i-MSCP\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -131,10 +108,10 @@ msgid ""
 "\n"
 "Remember to change your password often and the first time you login.\n"
 "\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\n\nУважаемый {NAME},\n\nНовая учетная запись i-MSCP была создана для Вас.\n\nИнформация о Вашей учетной записи:\n\nТип пользователя: {USERTYPE}\nИмя пользователя: {USERNAME}\nПароль: {PASSWORD}\n\nПожалуйста, для Вашей безопасности, измените Ваш пароль при первом входе.\n\nВы можете войти прямо сейчас {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nСпасибо за использование наших сервисов .\n\n___________________________\nКоманда i-MSCP\n\n"
+msgstr ""
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Администратор / Служба поддержки / Открытые тикеты"
@@ -314,7 +291,7 @@ msgstr "%s запись"
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
+msgstr "%s веб-почта"
 
 #, php-format
 msgid ""
@@ -694,7 +671,7 @@ msgid "Added by"
 msgstr "Добавил"
 
 msgid "Addition in progress..."
-msgstr ""
+msgstr "Добавление в действии"
 
 msgid "Additional data"
 msgstr "Дополнительные данные"
@@ -991,14 +968,14 @@ msgid "An error occurred during authentication."
 msgstr "При попытке аутентификации обнаружена ошибка."
 
 msgid "An unexpected error occured"
-msgstr ""
+msgstr "Произошла неожиданная ошибка."
 
 msgid ""
 "An unexpected error occured. Go to the debugger interface for more details."
-msgstr ""
+msgstr "Произошла неожиданная ошибка. Перейдите в отладчик, чтобы получить подробности"
 
 msgid "An unexpected error occured. Please contact your administrator."
-msgstr ""
+msgstr "Обнаружена непредвиденная ошибка. Пожалуйста свяжитесь с Вашим администратором."
 
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Произошла неизвестная ошибка, пожалуйста, свяжитесь с Вашим реселлером."
@@ -1139,7 +1116,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "Сначала Вам нужно создать базу данный SQL имеющую хотябы одного пользователя."
 
 msgid "At least one intermediate certificate is invalid or missing."
-msgstr ""
+msgstr "По крайней мере один сертефикат не валидный или отсутствует."
 
 msgid "Auto (Browser language)"
 msgstr "Автоматически (язык браузера)"
@@ -1172,7 +1149,7 @@ msgid "Awaiting activation"
 msgstr "Ожидает активации"
 
 msgid "Awaiting for approval"
-msgstr ""
+msgstr "В ожидании утверждения"
 
 msgid "B"
 msgstr "В"
@@ -1355,10 +1332,10 @@ msgid ""
 msgstr "Нажмите на кнопку Восстановить и система восстановит последнюю резервную копию"
 
 msgid "Click to activate"
-msgstr ""
+msgstr "Щелкните для активации"
 
 msgid "Click to deactivate"
-msgstr ""
+msgstr "Щелкните для деактивации"
 
 msgid "Client / Choose Directory"
 msgstr "Клиент / Выбрать каталог"
@@ -1540,9 +1517,6 @@ msgstr "Компания"
 
 msgid "Compress HTML output"
 msgstr "Сжать вывод HTML"
-
-msgid "Confirmation for domain order {DOMAIN}"
-msgstr "Подтверждение заказа домена {DOMAIN}"
 
 #, php-format
 msgid "Conflict with an existent %s record."
@@ -1887,7 +1861,7 @@ msgid "Deletion in progress"
 msgstr "Удаление в процессе"
 
 msgid "Deletion in progress..."
-msgstr ""
+msgstr "Удаление в процессе..."
 
 msgid "Depot import"
 msgstr "Импорт репозитория"
@@ -1909,7 +1883,7 @@ msgstr "Папки"
 
 #, php-format
 msgid "Directory %s doesn't exists."
-msgstr ""
+msgstr "Каталог %s не существует."
 
 msgid "Directory tree"
 msgstr "Дерево папок"
@@ -2418,15 +2392,15 @@ msgstr "Файл %s не существует или недоступен!"
 
 #, php-format
 msgid "File %s doesn't look like a migration file."
-msgstr ""
+msgstr "Файл %s не соответствует файлу миграции."
 
 #, php-format
 msgid "File %s has not been found in plugin archive."
-msgstr ""
+msgstr "Файл %s не был найден в архиве плагина."
 
 #, php-format
 msgid "File %s is missing in plugin archive."
-msgstr ""
+msgstr "Файл %s отсутствует в архиве плагина."
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2542,7 +2516,7 @@ msgid "Generate"
 msgstr "Генерировать"
 
 msgid "Generate a self-signed certificate"
-msgstr ""
+msgstr "Создать самоподписанный сертификат"
 
 msgid "Get a new image"
 msgstr "Взять новое изображение"
@@ -2761,7 +2735,7 @@ msgid "Incorrect email length or syntax."
 msgstr "Неверная длина или синтаксис почтового ящика."
 
 msgid "Incorrect email quota."
-msgstr ""
+msgstr "Неверное значение почтовой квоты."
 
 #, php-format
 msgid "Incorrect limit for %s."
@@ -2825,7 +2799,7 @@ msgid "Instructions to download today's backup"
 msgstr "Инструкции для загрузки сегодняшней резервной копии"
 
 msgid "Intermediate certificate(s)"
-msgstr ""
+msgstr "Промежуточные сертификаты"
 
 msgid "Internal Server Error"
 msgstr "Внутренняя ошибка сервера"
@@ -2862,7 +2836,7 @@ msgid "Invalid URL."
 msgstr "Неверный URL"
 
 msgid "Invalid certificate."
-msgstr ""
+msgstr "Неверный сертификат."
 
 msgid "Invalid domain name."
 msgstr "Неправильное имя домена."
@@ -2871,7 +2845,7 @@ msgid "Invalid email address."
 msgstr "Неверный Email адрес"
 
 msgid "Invalid email username."
-msgstr ""
+msgstr "Неверное имя пользователя почтового ящика"
 
 msgid "Invalid expiration date."
 msgstr "Неверная дата истечения."
@@ -3173,7 +3147,7 @@ msgstr "МБ"
 
 #, php-format
 msgid "Migration file %s is not readable."
-msgstr ""
+msgstr "Файл миграции %s нечитаем."
 
 msgid "Minute"
 msgstr "Минута"
@@ -3188,7 +3162,7 @@ msgid "Model"
 msgstr "Модель"
 
 msgid "Modification in progress..."
-msgstr ""
+msgstr "Процесс модификации..."
 
 msgid "Month"
 msgstr "Месяц"
@@ -3741,7 +3715,7 @@ msgstr "Плагин %s активирован."
 
 #, php-format
 msgid "Plugin %s cannot be activated."
-msgstr ""
+msgstr "Плагин %s не может быть активирован."
 
 #, php-format
 msgid "Plugin %s cannot be changed."
@@ -3749,23 +3723,23 @@ msgstr "Плагин %s не может быть изменен."
 
 #, php-format
 msgid "Plugin %s cannot be deactivated."
-msgstr ""
+msgstr "Плагин %s не может быть деактивирован."
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr ""
+msgstr "Плагин %s не может быть удален."
 
 #, php-format
 msgid "Plugin %s cannot be installed."
-msgstr ""
+msgstr "Плагин %s не может быть инсталлирован."
 
 #, php-format
 msgid "Plugin %s cannot be protected."
-msgstr ""
+msgstr "Плагин %s не может быть защищен."
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
-msgstr ""
+msgstr "Плагин %s не может быть деинсталлирован."
 
 #, php-format
 msgid "Plugin %s cannot be updated."
@@ -4895,7 +4869,7 @@ msgid "The password field is empty."
 msgstr "Поле пароля пусто."
 
 msgid "The private key doesn't belong to the provided certificate."
-msgstr ""
+msgstr "Приватный ключ не принадлежит предоставленному сертификату."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
@@ -4907,7 +4881,7 @@ msgstr "Учетная запись реселлера, которыю Вы пы
 msgid ""
 "The reseller you want to remove has one or more customers "
 "accounts.<br>Remove them first."
-msgstr ""
+msgstr "Реселлер имеет одину или более учетную запись клиента.<br /> Сначала удалите их."
 
 msgid "The software installer feature requires PHP."
 msgstr "Установщику ПО требуется поддержка PHP."
@@ -4977,7 +4951,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
-msgstr ""
+msgstr "Это хост, с которого данный пользователь SQL lДолжен иметь доступ на подключение. Введите спецсимвол %s для того, чтобы данный пользователь мог подключиться с любого хоста."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Этот пакет уже существует в репозитории администратора."
@@ -5092,6 +5066,9 @@ msgstr "РАБОТАЕТ"
 msgid "URL forwarding"
 msgstr "Перенаправление URL"
 
+msgid "URL port"
+msgstr ""
+
 msgid "URL protocol"
 msgstr "Протокол ссылки"
 
@@ -5144,7 +5121,7 @@ msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr "Невозможно найти сетевой интерфейс. Форма добавления IP адресов была отключена."
 
 msgid "Unable to find plugin root directory withing archive."
-msgstr ""
+msgstr "Невозможно найти корневой каталог плагина в архиве"
 
 #, php-format
 msgid "Unable to get stats for file %s."
@@ -5164,7 +5141,7 @@ msgid "Unable to move file."
 msgstr "Не удалось переместить файл."
 
 msgid "Unable to open plugin archive."
-msgstr ""
+msgstr "Невозможно открыть архив плагина."
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
@@ -5175,11 +5152,11 @@ msgstr "Невозможно прочесть индексный файл Web-р
 
 #, php-format
 msgid "Unable to read the $%s file. Please, check file permissions"
-msgstr ""
+msgstr "Невозможно прочесть файл $%s. Пожалуйста, проверьте права доступа."
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
-msgstr ""
+msgstr "Невозможно прочесть файл плагина %s. Пожалуйста, проверьте права доступа."
 
 msgid "Unable to read xml file for web software."
 msgstr "Невозможно прочесть xml файл Web-репозитория"
@@ -5557,10 +5534,10 @@ msgstr "Групповой символ: Настройте записи MX дл
 
 #, php-format
 msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr ""
+msgstr "Специальные символы, такие как '%s' и '%s' не разрешены в имени пользователя."
 
 msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr ""
+msgstr "Специальные символы, такие как 's%' и 's%' не разрешены."
 
 msgid "Wrong IP address."
 msgstr "Неверный IP адрес."
@@ -5665,7 +5642,7 @@ msgstr "Вы не можете устанавливать ПО вне катал
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
+msgstr "Вы не можете добавить новый почтовый ящик. Вы уже исчерпали всё доступное для ящиков пространство. Пожалуйста, пересмотрите Вашу политику использования почтовых ящиков."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Вы не можете удалить реселлера, имеющего клиентов. Пожалуйста, сначала удалите их."
@@ -5807,7 +5784,7 @@ msgstr "Вы достигли максимального числа алиасо
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
 "subscription."
-msgstr ""
+msgstr "Вы достигли максимального числа почтовых ящиков, доступного Вашей подписке. "
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
@@ -5870,7 +5847,7 @@ msgid "You must select a network interface."
 msgstr "Вы должны выбрать сетевой интерфейс."
 
 msgid "You must select at least one plugin."
-msgstr ""
+msgstr "Вы должны выбрать по крайней мере один плагин."
 
 msgid "You must specify a message."
 msgstr "Вы должны написать сообщение."
@@ -6167,4 +6144,4 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} загрузил новый пакет ПО"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2015 i-MSCP Team<br/>Все права защищены"

@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Cool <barni@telia.com>, 2014
+# Cool <barni@telia.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-02-06 02:28+0100\n"
-"PO-Revision-Date: 2015-02-06 01:30+0000\n"
+"POT-Creation-Date: 2015-02-12 12:11+0100\n"
+"PO-Revision-Date: 2015-02-12 11:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -23,57 +23,34 @@ msgid ""
 "\n"
 "Dear {NAME},\n"
 "\n"
-"This is an automatic confirmation for the order of the domain:\n"
-"\n"
-"{DOMAIN}\n"
-"\n"
-"You have to click the following link to confirm your order.\n"
-"\n"
-"{ACTIVATION_LINK}\n"
-"\n"
-"If you do not confirm it before the {EXPIRE_DATE}, it will be\n"
-"automatically canceled.\n"
-"\n"
-"Thank you for using i-MSCP services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nDear {NAME},\n\nThis is an automatic confirmation for the order of the domain:\n\n{DOMAIN}\n\nYou have to click the following link to confirm your order.\n\n{ACTIVATION_LINK}\n\nIf you do not confirm it before the {EXPIRE_DATE}, it will be\nautomatically canceled.\n\nThank you for using i-MSCP services.\n\n___________________________\nThe i-MSCP Team\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
 "Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nDear {NAME},\n\nUse this link to activate your new i-MSCP password:\n\n{LINK}\n\nThank you for using i-MSCP services.\n\n___________________________\nThe i-MSCP Team\n\n"
+msgstr ""
 
 msgid ""
 "\n"
 "\n"
 "Dear {RESELLER},\n"
 "\n"
-"Your customer {CUSTOMER} is awaiting for the approval of his new domain alias:\n"
+"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nDear {RESELLER},\n\nYour customer {CUSTOMER} is awaiting for the approval of his new domain alias:\n\n{ALIAS}\n\nOnce logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nThank you for using i-MSCP services.\n\n___________________________\nThe i-MSCP Team\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -83,14 +60,14 @@ msgid ""
 "Your user name is: {USERNAME}\n"
 "Your password is: {PASSWORD}\n"
 "\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Thank you for using i-MSCP services.\n"
+"Thank you for using our services.\n"
 "\n"
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nHello {NAME},\n\nYour user name is: {USERNAME}\nYour password is: {PASSWORD}\n\nYou can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nThank you for using i-MSCP services.\n\n___________________________\nThe i-MSCP Team\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -106,13 +83,13 @@ msgid ""
 "\n"
 "Remember to change your password often and the first time you login.\n"
 "\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
 "Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\n\nDear {NAME},\n\nA new i-MSCP account has been created for you.\n\nYour account information:\n\nUser type: {USERTYPE}\nUser name: {USERNAME}\nPassword: {PASSWORD}\n\nRemember to change your password often and the first time you login.\n\nYou can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatistics: http://{USERNAME}/{WEBSTATS_RPATH}\n(Same username and password than above)\n\nThank you for using i-MSCP services.\n\n\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -128,10 +105,10 @@ msgid ""
 "\n"
 "Remember to change your password often and the first time you login.\n"
 "\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\n\nDear {NAME},\n\nA new i-MSCP account has been created for you.\n\nYour account information:\n\nUser type: {USERTYPE}\nUser name: {USERNAME}\nPassword: {PASSWORD}\n\nRemember to change your password often and the first time you login.\n\nYou can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nThank you for using i-MSCP services.\n\n\n"
+msgstr ""
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Admin / Support Ticket System / Open Tickets"
@@ -311,7 +288,7 @@ msgstr "%s post"
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
+msgstr "%s webmail"
 
 #, php-format
 msgid ""
@@ -691,7 +668,7 @@ msgid "Added by"
 msgstr "Inlagd av"
 
 msgid "Addition in progress..."
-msgstr ""
+msgstr "Addition pågår ..."
 
 msgid "Additional data"
 msgstr "Ytterligare information"
@@ -988,14 +965,14 @@ msgid "An error occurred during authentication."
 msgstr "Ett fel uppstod vid autentisering."
 
 msgid "An unexpected error occured"
-msgstr ""
+msgstr "Ett oväntat fel uppstod"
 
 msgid ""
 "An unexpected error occured. Go to the debugger interface for more details."
-msgstr ""
+msgstr "Ett oväntat fel uppstod. Gå till debugger gränssnittet för mer information."
 
 msgid "An unexpected error occured. Please contact your administrator."
-msgstr ""
+msgstr "Ett oväntat fel uppstod. Vänligen kontakta administratören."
 
 msgid "An unexpected error occured. Please contact your reseller."
 msgstr "Ett oväntat fel inträffade. Kontakta din återförsäljare."
@@ -1136,7 +1113,7 @@ msgid "At first you must create a database which have at least one SQL user."
 msgstr "Först måste du skapa en databas som har minst en SQL-användare."
 
 msgid "At least one intermediate certificate is invalid or missing."
-msgstr ""
+msgstr "Minst en mellanliggande certifikat är ogiltigt eller saknas."
 
 msgid "Auto (Browser language)"
 msgstr "Auto (Browser språk)"
@@ -1169,7 +1146,7 @@ msgid "Awaiting activation"
 msgstr "Väntar på aktivering"
 
 msgid "Awaiting for approval"
-msgstr ""
+msgstr "Väntar på godkännande"
 
 msgid "B"
 msgstr "B"
@@ -1352,10 +1329,10 @@ msgid ""
 msgstr "Klicka på knappen Återställ så kommer systemet att återställa den sista dagliga backupen"
 
 msgid "Click to activate"
-msgstr ""
+msgstr "Klicka för att aktivera"
 
 msgid "Click to deactivate"
-msgstr ""
+msgstr "Klicka för att avaktivera"
 
 msgid "Client / Choose Directory"
 msgstr "Kund / Välj katalog"
@@ -1537,9 +1514,6 @@ msgstr "Företag"
 
 msgid "Compress HTML output"
 msgstr "Komprimera HTML-utdata"
-
-msgid "Confirmation for domain order {DOMAIN}"
-msgstr "Confirmation for domain order {DOMAIN}"
 
 #, php-format
 msgid "Conflict with an existent %s record."
@@ -1884,7 +1858,7 @@ msgid "Deletion in progress"
 msgstr "Radering pågår"
 
 msgid "Deletion in progress..."
-msgstr ""
+msgstr "Deletion in progress..."
 
 msgid "Depot import"
 msgstr "Depå import"
@@ -1906,7 +1880,7 @@ msgstr "Kataloger"
 
 #, php-format
 msgid "Directory %s doesn't exists."
-msgstr ""
+msgstr "Katalog %s inte existerar."
 
 msgid "Directory tree"
 msgstr "Katalogträd"
@@ -2415,15 +2389,15 @@ msgstr "Fil %s existerar eller kan inte nås!"
 
 #, php-format
 msgid "File %s doesn't look like a migration file."
-msgstr ""
+msgstr "Filen %s ser inte ut som ett migreringsfil."
 
 #, php-format
 msgid "File %s has not been found in plugin archive."
-msgstr ""
+msgstr "Filen %s har inte hittats i plugin-arkiv."
 
 #, php-format
 msgid "File %s is missing in plugin archive."
-msgstr ""
+msgstr "Filen %s saknas i plugin-arkiv."
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2539,7 +2513,7 @@ msgid "Generate"
 msgstr "Generera"
 
 msgid "Generate a self-signed certificate"
-msgstr ""
+msgstr "Generera ett självsignerat certifikat"
 
 msgid "Get a new image"
 msgstr "Tar fram ett nytt bild"
@@ -2758,7 +2732,7 @@ msgid "Incorrect email length or syntax."
 msgstr "Felaktig e-mail-längd eller syntax."
 
 msgid "Incorrect email quota."
-msgstr ""
+msgstr "Felaktig e-mail kvot."
 
 #, php-format
 msgid "Incorrect limit for %s."
@@ -2822,7 +2796,7 @@ msgid "Instructions to download today's backup"
 msgstr "Instruktioner för att hämta dagens backup"
 
 msgid "Intermediate certificate(s)"
-msgstr ""
+msgstr "Mellan certifikat"
 
 msgid "Internal Server Error"
 msgstr "Internal Server Error"
@@ -2859,7 +2833,7 @@ msgid "Invalid URL."
 msgstr "Invalid URL."
 
 msgid "Invalid certificate."
-msgstr ""
+msgstr "Invalid certificate."
 
 msgid "Invalid domain name."
 msgstr "Ogiltigt domännamn."
@@ -2868,7 +2842,7 @@ msgid "Invalid email address."
 msgstr "Ogiltig e-postadress."
 
 msgid "Invalid email username."
-msgstr ""
+msgstr "Ogiltig e-mail användarnamn."
 
 msgid "Invalid expiration date."
 msgstr "Ogiltigt förfallodatum."
@@ -3170,7 +3144,7 @@ msgstr "MiB"
 
 #, php-format
 msgid "Migration file %s is not readable."
-msgstr ""
+msgstr "Migrations filen %s är inte läsbar."
 
 msgid "Minute"
 msgstr "Minut"
@@ -3185,7 +3159,7 @@ msgid "Model"
 msgstr "Model"
 
 msgid "Modification in progress..."
-msgstr ""
+msgstr "Ändring pågår ..."
 
 msgid "Month"
 msgstr "Månad"
@@ -3738,7 +3712,7 @@ msgstr "Plugin %s activated."
 
 #, php-format
 msgid "Plugin %s cannot be activated."
-msgstr ""
+msgstr "Plugin %s kan inte aktiveras."
 
 #, php-format
 msgid "Plugin %s cannot be changed."
@@ -3746,23 +3720,23 @@ msgstr "Plugin %s cannot be changed."
 
 #, php-format
 msgid "Plugin %s cannot be deactivated."
-msgstr ""
+msgstr "Plugin %s kan inte stängas av."
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr ""
+msgstr "Plugin %s cannot be deleted."
 
 #, php-format
 msgid "Plugin %s cannot be installed."
-msgstr ""
+msgstr "Plugin %s kan inte installeras."
 
 #, php-format
 msgid "Plugin %s cannot be protected."
-msgstr ""
+msgstr "Plugin %s kan inte skyddas."
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
-msgstr ""
+msgstr "Plugin %s kan inte avinstalleras."
 
 #, php-format
 msgid "Plugin %s cannot be updated."
@@ -4892,7 +4866,7 @@ msgid "The password field is empty."
 msgstr "Fältet för lösenord är tomt."
 
 msgid "The private key doesn't belong to the provided certificate."
-msgstr ""
+msgstr "Den privata nyckeln tillhör inte den medföljande certifikatet."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
@@ -4904,7 +4878,7 @@ msgstr "Återförsäljarens konto som du försöker redigera har inte hittats."
 msgid ""
 "The reseller you want to remove has one or more customers "
 "accounts.<br>Remove them first."
-msgstr ""
+msgstr "Återförsäljaren du vill ta bort har en eller flera kunders konton. Tar bort dem först."
 
 msgid "The software installer feature requires PHP."
 msgstr "Installationsprogrammet kräver PHP."
@@ -4974,7 +4948,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
-msgstr ""
+msgstr "Detta är den värd från vilken denna SQL användaren måste tillåtas att ansluta till SQL-server. Ange %s jokertecken för att tilllåta den här SQL användare att ansluta från valfri värd."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "This package already exists in the administrator software repository."
@@ -5089,6 +5063,9 @@ msgstr "UPP"
 msgid "URL forwarding"
 msgstr "URL vidarebefordran"
 
+msgid "URL port"
+msgstr ""
+
 msgid "URL protocol"
 msgstr "URL-protokoll"
 
@@ -5141,7 +5118,7 @@ msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr "Kan inte hitta något nätverk att har kontakt med. Du kan inte lägga till nya IP-adress."
 
 msgid "Unable to find plugin root directory withing archive."
-msgstr ""
+msgstr "Kan inte hitta plugin rotkatalogen innom arkiv."
 
 #, php-format
 msgid "Unable to get stats for file %s."
@@ -5161,7 +5138,7 @@ msgid "Unable to move file."
 msgstr "Det gick inte att flytta filen."
 
 msgid "Unable to open plugin archive."
-msgstr ""
+msgstr "Det går inte att öppna plugin arkivet."
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
@@ -5172,11 +5149,11 @@ msgstr "Det går inte att läsa index-fil för Web mjukvaran."
 
 #, php-format
 msgid "Unable to read the $%s file. Please, check file permissions"
-msgstr ""
+msgstr "Det går inte att läsa $%s fil. Vänligen, kolla filrättigheter"
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
-msgstr ""
+msgstr "Det går inte att läsa plugin %s fil. Kontrollera filrättigheter"
 
 msgid "Unable to read xml file for web software."
 msgstr "Unable to read xml file for web software."
@@ -5554,10 +5531,10 @@ msgstr "Jokertecken: Setup en DNS-MX-post till reläet post för obefintligt und
 
 #, php-format
 msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr ""
+msgstr "Jokertecken som \"%s\" och \"%s\" är inte tillåtna i användarnamn."
 
 msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr ""
+msgstr "Jokertecken som \"s%\" och \"s%\" är inte tillåtna."
 
 msgid "Wrong IP address."
 msgstr "Fel IP adr."
@@ -5662,7 +5639,7 @@ msgstr "Det går inte att installera programvaran utanför htdocs katalogen för
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
+msgstr "Du kan inte lägga till nya e-postkonto. Du har redan tilldelats hela din e-mail kvot till andra brevlådor. Vänligen först, granska dina kvot."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Du kan inte radera en återförsäljare som har kund konton."
@@ -5804,7 +5781,7 @@ msgstr "Du har nått maximalt antal domän aliasses tillåts av din prenumeratio
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
 "subscription."
-msgstr ""
+msgstr "Du har uppnått det maximala antal e-postkonton som tillåts av din prenumeration."
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
@@ -5867,7 +5844,7 @@ msgid "You must select a network interface."
 msgstr "Du måste välja ett nätverkskort."
 
 msgid "You must select at least one plugin."
-msgstr ""
+msgstr "Du måste välja minst ett plugin."
 
 msgid "You must specify a message."
 msgstr "Du måste ange ett meddelande."
@@ -6164,4 +6141,4 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{ÅTERFÖRSÄLJARE} överfört en ny programvarupaket"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2015 i-MSCP Team <br/> All Rights Reserved"
