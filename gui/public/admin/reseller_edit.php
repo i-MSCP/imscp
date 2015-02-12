@@ -441,7 +441,31 @@ function admin_checkAndUpdateData($resellerId)
 {
 	$cfg = iMSCP_Registry::get('config');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userid' => $resellerId));
+	$eventManager = iMSCP_Events_Aggregator::getInstance();
+
+	$eventManager->dispatch(
+		iMSCP_Events::onBeforeEditUser,
+		$eventManager->prepareArgs(
+			array(
+			  'userid' => $resellerId,
+			  'username' => $data['admin_name'],
+			  'password' => $data['password'],
+			  'firstName' => $data['fname'],
+			  'lastName' => $data['lname'],
+			  'gender' => $data['gender'],
+			  'firm' => $data['firm'],
+			  'zip' => $data['zip'],
+			  'city' => $data['city'],
+			  'state' => $data['state'],
+			  'country' => $data['country'],
+			  'email' => $data['email'],
+			  'phone' => $data['phone'],
+			  'fax' => $data['fax'],
+			  'street1' => $data['street1'],
+			  'street2' => $data['street2']
+		  )
+		)
+	);
 
 	$errFieldsStack = array();
 
@@ -773,7 +797,26 @@ function admin_checkAndUpdateData($resellerId)
 
 			$db->commit();
 
-			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userid' => $resellerId));
+			$eventManager->dispatch(
+				iMSCP_Events::onAfterEditUser, array(
+					'userid' => $resellerId,
+					'username' => $data['admin_name'],
+					'password' => $data['password'],
+					'firstName' => $data['fname'],
+					'lastName' => $data['lname'],
+					'gender' => $data['gender'],
+					'firm' => $data['firm'],
+					'zip' => $data['zip'],
+					'city' => $data['city'],
+					'state' => $data['state'],
+					'country' => $data['country'],
+					'email' => $data['email'],
+					'phone' => $data['phone'],
+					'fax' => $data['fax'],
+					'street1' => $data['street1'],
+					'street2' => $data['street2']
+				)
+			);
 
 			// Send mail to reseller for new password
 			if ($data['password'] != '') {
