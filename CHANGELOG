@@ -7,6 +7,12 @@ Git 1.2.x
 BACKEND
 	Fixed: Apache access.log file are put in wrong directory (vlogger)
 
+INSTALLER
+	Fixed: iMSCP::Requirements::_modules: Modules [Email::Simple] were not found on your system
+
+TICKETS
+	Fixed #IP-1275: Apache access log are created in /<domain.tld>
+
 ------------------------------------------------------------------------------------------------------------------------
 1.2.2
 ------------------------------------------------------------------------------------------------------------------------

@@ -479,7 +479,7 @@ sub _processDistroPackages
 
 sub _testRequirements
 {
-	iMSCP::Requirements->new()->test('all');
+	iMSCP::Requirements->new()->all();
 }
 
 =item _processDistroLayoutFile()

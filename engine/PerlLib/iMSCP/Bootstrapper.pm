@@ -76,9 +76,10 @@ sub boot
 	# Set debug mode
 	setDebug(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
-	iMSCP::Requirements->new()->test(
-		$mode eq 'setup' ? 'all' : 'user'
-	) unless($options->{'norequirements'} && $options->{'norequirements'} eq 'yes');
+	unless($options->{'norequirements'} && $options->{'norequirements'} eq 'yes') {
+		my $test = ($mode eq 'setup') ? 'all' : 'user';
+		iMSCP::Requirements->new()->$test();
+	}
 
 	$self->lock() unless($options->{'nolock'} && $options->{'nolock'} eq 'yes');
 

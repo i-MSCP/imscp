@@ -33,7 +33,6 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVe
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Bootstrapper;
-use iMSCP::Requirements;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
 use iMSCP::Database;
@@ -50,10 +49,6 @@ use version;
 
 $ENV{'LC_MESSAGES'} = 'C';
 use open ':locale';
-
-########################################################################################################################
-# Subroutines
-#
 
 # Re-encrypt the given password with i-MSCP database key
 sub _reencryptPassword($$$$$)
@@ -868,13 +863,6 @@ EOF
 
 	0;
 }
-
-########################################################################################################################
-# Main
-#
-
-# Turn off localisation features to force any command output to be in English
-$ENV{'LANG'} = 'C';
 
 newDebug('imscp-migrate-from-ispcp.log');
 

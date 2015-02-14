@@ -18,14 +18,9 @@
 # @category    i-MSCP
 # @copyright   2010-2015 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
-
-#####################################################################################
-# Package description:
-#
-# Package that is responsible to check requirements for i-MSCP (such as perl modules
-# availability, program availability and their versions, user that run the script...)
 
 package iMSCP::Requirements;
 
@@ -38,16 +33,93 @@ use iMSCP::ProgramFinder;
 use version;
 use parent 'Common::Object';
 
-# Initializer.
-#
-# @param self $self iMSCP::Requirements instance
-# @return void
+=head1 DESCRIPTION
+
+ Requirement library
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item all
+
+ Process all requirements checks
+
+ Return undef on success, die on failure
+
+=cut
+
+sub all
+{
+	my $self = $_[0];
+
+	$self->user();
+	$self->_perlModules();
+	$self->_externalPrograms();
+
+	undef;
+}
+
+=item user
+
+ Check user under which the script is running
+
+ Return undef on success, die on failure
+
+=cut
+
+sub user
+{
+	die("This script must be run as root user.") if $< != 0;
+
+	undef;
+}
+
+=item checkVersion($version, $minVersion [, $maxVersion])
+
+ Checks for version
+
+ Param string $version Version to match
+ Param string $minVersion Min required version
+ Param string $maxVersion Max required version
+ Return undef on success, die on failure
+
+=cut
+
+sub checkVersion
+{
+	my ($self, $version, $minVersion, $maxVersion) = @_;
+
+	if(version->parse("v$version") < version->parse("v$minVersion")) {
+		die("$version is older then required version $minVersion");
+	}
+
+	if($maxVersion && version->parse("v$version") > version->parse("v$maxVersion")) {
+		die("$version is newer then required max version v$maxVersion");
+	}
+
+	undef;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize instance
+
+ Return iMSCP::Requirements
+
+=cut
 
 sub _init
 {
 	my $self = $_[0];
 
-	# Required perl modules
+	# Required Perl modules
 	$self->{'perl_modules'} = {
 		'Crypt::Blowfish' => '',
 		'Crypt::CBC' => '',
@@ -56,7 +128,6 @@ sub _init
 		'DBD::mysql' => '',
 		'DateTime' => '',
 		'Data::Validate::Domain' => 'qw(is_domain)',
-		'Email::Simple' => '',
 		'Email::Valid' => '',
 		'File::Basename' => '',
 		'File::Path' => '',
@@ -71,21 +142,27 @@ sub _init
 		'PHP' => {
 			'version_command' => "$main::imscpConfig{'CMD_PHP'} -v",
 			'version_regexp' => qr/PHP\s([\d.]+)/,
-			'minimum_version' => '5.3.2'
+			'min_version' => '5.3.2'
 		},
 		'Perl' => {
 			'version_command' => "$main::imscpConfig{'CMD_PERL'} -v",
 			'version_regexp' => qr/v([\d.]+)/,
-			'minimum_version' => '5.10.1'
+			'min_version' => '5.10.1'
 		}
 	};
+
+	$self;
 }
 
-# Checks for test availability.
-#
-# @throws fatal error if a test is not available
-# @param self $self iMSCP::Requirements instance
-# @return void
+=item test($test)
+
+ Run the given test if available
+
+ Param string $test Test name
+ Return undef on success, die on failure
+
+=cut
+
 sub test
 {
 	my ($self, $test) = @_;
@@ -93,65 +170,57 @@ sub test
 	if($self->can($test)) {
 		$self->$test();
 	} else {
-		fatal("The test '$test' is not available.", 1);
+		die(sprintf("The test '%s' is not available.", $test));
 	}
-}
-
-# Process all tests for requirements.
-#
-# @param self $self iMSCP::Requirements instance
-# @return undef
-sub all
-{
-	my $self = $_[0];
-
-	$self->user();
-	$self->_modules();
-	$self->_externalProgram();
 
 	undef;
 }
 
-# Checks for user that run the imscp-autoinstaller script.
-#
-# @throws fatal error if the script is not run as root user
-# @param self $self iMSCP::Requirements instance
-# @return void
-sub user
-{
-	fatal('This script must be run as root user.') if $< != 0;
-}
+=item _perlModules()
 
-# Checks for perl module availability.
-#
-# @throws fatal error if a Perl module is missing
-# @param self $self iMSCP::Requirements instance
-# @return void
-sub _modules
+ Checks for perl module availability
+
+ Return undef on success, die on failure
+
+=cut
+
+sub _perlModules
 {
 	my $self = $_[0];
 
-	my @mod_missing = ();
+	my @mods = ();
 
 	for my $mod (keys %{$self->{'perl_modules'}}) {
 		if (eval "require $mod") {
 			eval "use $mod $self->{'perl_modules'}->{$mod}";
-			push(@mod_missing, $mod) if(@$);
+			push(@mods, $mod) if $@;
 		} else {
-			push(@mod_missing, $mod);
+			push(@mods, $mod);
 		}
 	}
 
-	fatal("Modules [@mod_missing] were not found on your system.") if @mod_missing;
+	if(@mods) {
+		if(@mods > 1) {
+			die(sprintf(
+				"The following Perl modules are missing or don't provide the required functions: %s", join ', ', @mods
+			));
+		} else {
+			die("The following Perl module is missing doesn't provides the required functions: @mods");
+		}
+	}
+
+	undef;
 }
 
-# Checks for external program availability and their versions.
-#
-# @throws fatal error if a program is not found on the system
-# @throws fatal error if a program version is older than required
-# @param self $self iMSCP::Requirements instance
-# @return undef
-sub _externalProgram
+=item _externalPrograms()
+
+ Checks for external program availability and their versions
+
+ Return undef on success, die on failure
+
+=cut
+
+sub _externalPrograms
 {
 	my $self = $_[0];
 
@@ -159,79 +228,67 @@ sub _externalProgram
 		my $lcProgram = lc($program);
 
 		unless(iMSCP::ProgramFinder::find($lcProgram)) {
-			fatal("Unable to find the $program command in current executable path");
+			die(sprintf("Unable to find the %s command in search path", $program));
 		}
 
-		if(exists $self->{'programs'}->{$program}->{'version_command'}) {
-			my $result = $self->_programVersions(
-				$program,
-				$self->{'programs'}->{$program}->{'version_command'},
-				$self->{'programs'}->{$program}->{'version_regexp'},
-				$self->{'programs'}->{$program}->{'minimum_version'}
-			);
+		if($self->{'programs'}->{$program}->{'version_command'}) {
+			eval {
+				my $result = $self->_programVersions(
+					$self->{'programs'}->{$program}->{'version_command'},
+					$self->{'programs'}->{$program}->{'version_regexp'},
+					$self->{'programs'}->{$program}->{'min_version'}
+				);
+			};
 
-			fatal "$program $result" if $result;
+			die(sprintf('%s: %s', $program, $@)) if $@;
 		}
 	}
 
 	undef;
 }
 
-# Check for program version.
-#
-# @throws fatal error if a program is not found on the system
-# @access private
-# @param self $self iMSCP::Requirements instance
-# @param string $program Program name
-# @param string $command Command to run to retrieve program version
-# @param string $regexp Regular expression to find the program version
-# @param string $minversion Program minimum version required
-# @return mixed 0 on success, error string on error
+=item _programVersions($versionCommand, $versionRegexp, $minVersion [, $maxVersion])
+
+ Check for program version
+
+ Param string $versionCommand Command to execute to find program version
+ Param regexp $versionRegexp Regexp to find version in command version output string
+ Param $minVersion Min required version
+ Param $maxVersion Max required version
+ Return undef on success, die on failure
+
+=cut
+
 sub _programVersions
 {
-	my ($self, $program, $command, $regexp, $minversion) = @_;
+	my ($self, $versionCommand, $versionRegexp, $minversion, $maxVersion) = @_;
 
 	my ($stdout, $stderr);
-	execute($command, \$stdout, \$stderr);
+	execute($versionCommand, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr;
 
-	fatal("Unable to find $program version: No output") if ! $stdout;
+	die('Unable to find version. No output') unless $stdout;
 
-	if($regexp) {
-		if($stdout =~ /$regexp/m) {
+	if($versionRegexp) {
+		if($stdout =~ /$versionRegexp/m) {
 			$stdout = $1;
 		} else {
-			fatal("Unable to find $program version. Output was: $stdout");
+			die(sprintf('Unable to find version. Output was: %s', $stdout));
 		}
 	}
 
-	$self->checkVersion($stdout, $minversion);
+	$self->checkVersion($stdout, $minversion, $maxVersion);
 }
 
-# Checks for version.
-#
-# @param self $self iMSCP::Requirements instance
-# @param string $version version to be checked
-# @param string $minversion minimum accepted version
-# @param string $maxversion OPTIONAL maximum accepted version
-# @return mixed 0 on success, error string on failure
-sub checkVersion
-{
-	my ($self, $version, $minversion, $maxversion) = @_;
+=back
 
-	$maxversion ||= '';
+=head1 AUTHORS
 
-	if(qv("v$version") < qv("v$minversion")) {
-		return "$version is older then required version $minversion";
-	}
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
-	if($maxversion && qv("v$version") > qv("v$maxversion")) {
-		return "$version is newer then required version $minversion";
-	}
-
-	0;
-}
+=cut
 
 1;
 __END__
