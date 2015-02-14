@@ -471,13 +471,13 @@ sub setupAskSqlDsn
 	if(iMSCP::Getopt->preseed) {
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD');
 	} else {
-		$dbPass = setupGetQuestion('DATABASE_PASSWORD', undef);
-		$dbPass = (defined $dbPass) ? iMSCP::Crypt->getInstance()->decrypt_db_password($dbPass) : '';
+		$dbPass = setupGetQuestion('DATABASE_PASSWORD');
+		$dbPass = ($dbPass) ? iMSCP::Crypt->getInstance()->decrypt_db_password($dbPass) : '';
 	}
 
 	my $rs = 0;
 
-	my %options = (domain_private_tld => qr /^(?:bogus|test)$/);
+	my %options = (domain_private_tld => qr /.*/);
 
 	if(
 		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
@@ -534,9 +534,12 @@ sub setupAskSqlDsn
 			if($rs != 30) {
 				do {
 					($rs, $dbPass) = $dialog->passwordbox(
-						"\nPlease, enter a password for the '$dbUser' SQL user:", $dbPass
+						"\nPlease, enter a password for the '$dbUser' SQL user:$msg", $dbPass
 					);
+
+					$msg = "\n\n\\Z1Password cannot be empty.\\Zn\n\nPlease, try again:"
 				} while($rs != 30 && $dbPass eq '');
+				$msg = '';
 
 				if(($dbError = setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))) {
 
@@ -544,12 +547,12 @@ sub setupAskSqlDsn
 "
 \\Z1Connection to SQL server failed\\Zn
 
-i-MSCP was unable to connect to the SQL server with the following data:
+i-MSCP was unable to connect to the SQL server using the following data:
 
-\\Z4Host:\\Zn		$dbHost
-\\Z4Port:\\Zn		$dbPort
-\\Z4Username:\\Zn	$dbUser
-\\Z4Password:\\Zn	$dbPass
+\\Z4Host:\\Zn $dbHost
+\\Z4Port:\\Zn $dbPort
+\\Z4Username:\\Zn $dbUser
+\\Z4Password:\\Zn $dbPass
 
 Error was: $dbError
 

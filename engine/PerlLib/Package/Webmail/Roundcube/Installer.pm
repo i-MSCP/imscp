@@ -320,7 +320,7 @@ sub _backupConfigFile
 {
 	my ($self, $cfgFile) = @_;
 
-	if(-f $cfgFile) {
+	if(-f $cfgFile && -d $self->{'bkpDir'}) {
 		my $filename = fileparse($cfgFile);
 		my $file = iMSCP::File->new( filename => $cfgFile );
 		my $rs = $file->copyFile("$self->{'bkpDir'}/$filename" . time);

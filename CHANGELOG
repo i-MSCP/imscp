@@ -9,6 +9,7 @@ BACKEND
 
 INSTALLER
 	Fixed: iMSCP::Requirements::_modules: Modules [Email::Simple] were not found on your system
+	Fixed: Use of uninitialized value $dbPass in string ( imscp/engine/setup/imscp-setup-methods.pl line 482 )
 
 TICKETS
 	Fixed #IP-1275: Apache access log are created in /<domain.tld>
