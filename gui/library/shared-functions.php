@@ -574,10 +574,7 @@ function change_domain_status($customerId, $action)
 				',
 				array($newStatus, $domainId)
 			);
-			exec_query(
-				'UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ?',
-				array(($newStatus == 'todisable') ? 'disabled' : 'toenable', $domainId)
-			);
+			exec_query('UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ?', array($newStatus, $domainId));
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onAfterChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
