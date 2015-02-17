@@ -386,7 +386,7 @@ sub _getNamedData
 			}
 
 			($self->{'named'}->{'MAIL_DATA'}->{$_} = $rdata->{$_}->{'domain_text'}) =~ s/(.*)\.$/$1./ for keys %{$rdata};
-		} elsif(not $self->{'external_mail'} ~~ [ 'domain', 'filter' ]) {
+		} elsif($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) {
 				$self->{'named'}->{'MAIL_ENABLED'} = 1;
 				$self->{'named'}->{'MAIL'}->{1} = "10\tmail.$self->{'alias_name'}.";
 		} else {
