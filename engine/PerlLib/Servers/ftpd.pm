@@ -90,15 +90,15 @@ sub can
 END
 {
 	unless(!$Servers::ftpd::instance || ( $main::execmode && $main::execmode eq 'setup' )) {
-		my $rs = 0;
+		my $rs = $?;
 
 		if($Servers::ftpd::instance->{'start'}) {
-			$rs = $Servers::ftpd::instance->start();
+			$rs ||= $Servers::ftpd::instance->start();
 		} elsif($Servers::ftpd::instance->{'restart'}) {
-			$rs = $Servers::ftpd::instance->restart();
+			$rs ||= $Servers::ftpd::instance->restart();
 		}
 
-		$? ||= $rs;
+		$? = $rs;
 	}
 }
 

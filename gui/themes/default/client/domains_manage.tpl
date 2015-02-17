@@ -1,14 +1,5 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
-	function action_delete(url, subject) {
-		return (url != '#' && confirm(sprintf("{TR_MESSAGE_DELETE}", subject)));
-	}
-	/*]]>*/
-</script>
-
 <h3 class="domains"><span>{TR_DOMAINS}</span></h3>
-
 <!-- BDP: domain_list -->
 <table class="firstColFixed">
 	<thead>
@@ -46,11 +37,9 @@
 
 <!-- BDP: domain_aliases_block -->
 <h3 class="domains"><span>{TR_DOMAIN_ALIASES}</span></h3>
-
 <!-- BDP: als_message -->
 <div class="static_info">{ALS_MSG}</div>
 <!-- EDP: als_message -->
-
 <!-- BDP: als_list -->
 <table class="firstColFixed">
 	<thead>
@@ -80,24 +69,20 @@
 		<td><a href="{CERT_SCRIPT}" class="icon i_edit" title="{VIEW_CERT}">{VIEW_CERT}</a></td>
 		<td>
 			<a class="icon i_edit" href="{ALS_EDIT_LINK}" title="{ALS_EDIT}">{ALS_EDIT}</a>
-			<a class="icon i_delete" href="{ALS_ACTION_SCRIPT}"
-			   onclick="return action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}');"
-			   title="{ALS_ACTION}">{ALS_ACTION}</a>
+			<a class="icon i_delete" href="{ALS_ACTION_SCRIPT}" onclick="return action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}');" title="{ALS_ACTION}">{ALS_ACTION}</a>
 		</td>
 	</tr>
 	<!-- EDP: als_item -->
 	</tbody>
 </table>
 <!-- EDP: als_list -->
-
 <!-- EDP: domain_aliases_block -->
+
 <!-- BDP: subdomains_block -->
 <h3 class="domains"><span>{TR_SUBDOMAINS}</span></h3>
-
 <!-- BDP: sub_message -->
 <div class="static_info">{SUB_MSG}</div>
 <!-- EDP: sub_message -->
-
 <!-- BDP: sub_list -->
 <table class="firstColFixed">
 	<thead>
@@ -136,15 +121,13 @@
 	</tbody>
 </table>
 <!-- EDP: sub_list -->
-
 <!-- EDP: subdomains_block -->
+
 <!-- BDP: custom_dns_records_block -->
 <h3 class="domains"><span>{TR_DNS}</span></h3>
-
 <!-- BDP: dns_message -->
 <div class="static_info">{DNS_MSG}</div>
 <!-- EDP: dns_message -->
-
 <!-- BDP: dns_list -->
 <table class="firstColFixed">
 	<thead>
@@ -170,9 +153,7 @@
 			<a class="icon i_edit" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a>
 			<!-- EDP: dns_edit_link -->
 			<!-- BDP: dns_delete_link -->
-			<a href="{DNS_ACTION_SCRIPT_DELETE}" class="icon i_delete"
-			   onclick="return action_delete('{DNS_ACTION_SCRIPT_DELETE}', '{DNS_TYPE_RECORD}');"
-			   title="{DNS_ACTION_DELETE}">{DNS_ACTION_DELETE}</a>
+			<a href="{DNS_ACTION_SCRIPT_DELETE}" class="icon i_delete" onclick="return action_delete('{DNS_ACTION_SCRIPT_DELETE}', '{DNS_TYPE_RECORD}');" title="{DNS_ACTION_DELETE}">{DNS_ACTION_DELETE}</a>
 			<!-- EDP: dns_delete_link -->
 		</td>
 	</tr>
@@ -181,3 +162,9 @@
 </table>
 <!-- EDP: dns_list -->
 <!-- EDP: custom_dns_records_block -->
+
+<script>
+	function action_delete(url, subject) {
+		return (url != '#' && confirm(sprintf("{TR_MESSAGE_DELETE}", subject)));
+	}
+</script>

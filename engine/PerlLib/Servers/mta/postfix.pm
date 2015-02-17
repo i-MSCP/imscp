@@ -1418,13 +1418,13 @@ sub _deleteCatchAll
 END
 {
 	my $self = __PACKAGE__->getInstance();
-	my $rs = 0;
+	my $rs = $?;
 
 	for(keys %{$self->{'postmap'}}) {
-		$rs |= $self->postmap($_);
+		$rs ||= $self->postmap($_);
 	}
 
-	$? ||= $rs;
+	$? = $rs;
 }
 
 =back

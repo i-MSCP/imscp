@@ -522,19 +522,18 @@ sub _buildConf
 END
 {
 	unless($main::execmode && $main::execmode eq 'setup') {
-		my $exitCode = $?;
 		my $self = Package::FrontEnd->getInstance();
-		my $rs = 0;
+		my $rs = $?;
 
 		if($self->{'start'}) {
-			$rs = $self->start();
+			$rs ||= $self->start();
 		} elsif($self->{'restart'}) {
-			$rs = $self->restart();
+			$rs ||= $self->restart();
 		} elsif($self->{'reload'}) {
-			$rs = $self->reload();
+			$rs ||= $self->reload();
 		}
 
-		$? = $exitCode || $rs;
+		$? = $rs;
 	}
 }
 

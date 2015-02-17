@@ -39,107 +39,129 @@
  */
 function client_deleteExternalMailServers($items, $postRequest)
 {
-    if (isset($items['normal']) || isset($items['alias'])) {
-        $domainId = get_user_domain_id($_SESSION['user_id']);
+	if(isset($items['normal']) || isset($items['alias'])) {
+		$domainId = get_user_domain_id($_SESSION['user_id']);
 
 		/** @var $db iMSCP_Database */
 		$db = iMSCP_Database::getInstance();
 
-        try {
+		try {
 			$db->beginTransaction();
 
-            $numberDeletedEntries = 0;
+			$numberDeletedEntries = 0;
 
-            if (!empty($items['normal'])) {
-                $itemId = array_shift($items['normal']);
+			if(!empty($items['normal'])) {
+				$itemId = array_shift($items['normal']);
 
-                if ($itemId === $domainId) {
-                    $query = 'SELECT `external_mail_dns_ids` FROM `domain` WHERE `domain_id` = ?';
-                    $stmt = exec_query($query, $domainId);
+				if($itemId == $domainId) {
+					$stmt = exec_query('SELECT external_mail_dns_ids FROM domain WHERE domain_id = ?', $domainId);
 
-                    if ($stmt->rowCount() && $stmt->fields['external_mail_dns_ids'] != '') {
-                        $query = '
-                            DELETE FROM
-                                `domain_dns`
-                            WHERE
-                                `domain_dns_id` IN(' . $stmt->fields['external_mail_dns_ids'] . ')
-                        ';
-                        exec_query($query);
+					if($stmt->rowCount()) {
+						$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-                        $query = '
-                          UPDATE
-                            `domain`
-                          SET
-                            `external_mail` = ?, `domain_status` = ?, `external_mail_dns_ids` = ?
-                          WHERE
-                            `domain_id` = ?
-					    ';
-                        exec_query($query, array('off', 'tochange', null, $itemId));
+						if($row['external_mail_dns_ids'] != '') {
+							exec_query(
+								'
+									UPDATE
+										domain_dns
+									SET
+										domain_dns_status = ?
+									WHERE
+										domain_dns_id IN(' . $row['external_mail_dns_ids'] . ')
+								',
+								'todelete'
+							);
 
-                        $numberDeletedEntries++;
-                    }
-                }
-            }
+							exec_query(
+								'
+									UPDATE
+										domain
+									SET
+										external_mail = ?, domain_status = ?, external_mail_dns_ids = ?
+									WHERE
+										domain_id = ?
+								',
+								array('off', 'tochange', null, $itemId)
+							);
 
-            if (!empty($items['alias'])) {
-                foreach ((array)$items['alias'] as $itemId) {
-                    $query = '
-                      SELECT
-                        `alias_name`, `external_mail_dns_ids`
-                      FROM
-                        `domain_aliasses`
-                      WHERE
-                        `alias_id` = ?
-                      AND
-                        `domain_id` = ?
-                    ';
-                    $stmt = exec_query($query, array($itemId, $domainId));
+							$numberDeletedEntries++;
+						}
+					}
+				}
+			}
 
-                    if ($stmt->rowCount() && $stmt->fields['external_mail_dns_ids'] != '') {
-                        $query = '
-                            DELETE FROM
-                                `domain_dns`
-                            WHERE
-                                `domain_dns_id` IN(' . $stmt->fields['external_mail_dns_ids'] . ')
-                        ';
-                        exec_query($query);
+			if(!empty($items['alias'])) {
+				foreach((array)$items['alias'] as $itemId) {
+					$stmt = exec_query(
+						'
+							SELECT
+								alias_name, external_mail_dns_ids
+							FROM
+								domain_aliasses
+							WHERE
+								alias_id = ?
+							AND
+								domain_id = ?
+						',
+						array($itemId, $domainId)
+					);
 
-                        $query = '
-                          UPDATE
-                            `domain_aliasses`
-                          SET
-                            `external_mail` = ?, `alias_status` = ?, `external_mail_dns_ids` = ?
-                          WHERE
-                            `alias_id` = ?
-                          AND
-                            `domain_id` = ?
-    					';
-                        exec_query($query, array('off', 'tochange', null, $itemId, $domainId));
+					if($stmt->rowCount()) {
+						$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-                        $numberDeletedEntries++;
-                    }
-                }
-            }
+						if($row['external_mail_dns_ids'] != '') {
+							exec_query(
+								'
+									UPDATE
+										domain_dns
+									SET
+										domain_dns_status = ?
+									WHERE
+										domain_dns_id IN(' . $row['external_mail_dns_ids'] . ')
+								',
+								'todelete'
+							);
 
-            $db->commit();
-            send_request(); // Ask the daemon to trigger the backend dispatcher
+							exec_query(
+								'
+									UPDATE
+										domain_aliasses
+									SET
+										external_mail = ?, alias_status = ?, external_mail_dns_ids = ?
+									WHERE
+										alias_id = ?
+									AND
+										domain_id = ?
+								',
+								array('off', 'tochange', null, $itemId, $domainId)
+							);
 
-            if ($numberDeletedEntries > 0) {
-                set_page_message(tr('External mail server successfully scheduled for deactivation.'), 'success');
-            } else {
-                set_page_message(tr('Nothing has been scheduled for deactivation.'), 'error');
-            }
-        } catch (iMSCP_Exception_Database $e) {
-            $db->rollBack();
-            throw $e;
-        }
-    } else {
-        if ($postRequest) {
-            set_page_message(tr('You must select a least one item to deactivate.'), 'warning');
-        } else {
+							$numberDeletedEntries++;
+						}
+					}
+				}
+			}
+
+			$db->commit();
+
+			send_request();
+
+			if($numberDeletedEntries > 0) {
+				set_page_message(tr('External mail server successfully scheduled for deactivation.'), 'success');
+			} else {
+				set_page_message(tr('Nothing has been scheduled for deactivation.'), 'error');
+			}
+		} catch(iMSCP_Exception_Database $e) {
+			$db->rollBack();
+			throw $e;
+		}
+	} else {
+		if($postRequest) {
+			set_page_message(tr('You must select a least one item to deactivate.'), 'warning');
+		} else {
 			showBadRequestErrorPage();
-        }
-    }
+		}
+	}
 }
 
 /***********************************************************************************************************************
@@ -154,21 +176,21 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptSta
 check_login('user');
 
 // If the feature is disabled, redirects in silent way
-if (customerHasFeature('external_mail')) {
-    if (!empty($_POST)) {
-        $items['normal'] = (isset($_POST['normal'])) ? $_POST['normal'] : null;
-        $items['alias'] = (isset($_POST['alias'])) ? $_POST['alias'] : null;
-        $postRequest = true;
-    } else if (isset($_GET['item']) && count($item = explode(';', $_GET['item'], 2)) == 2) {
-        $items[$item[1]][] = $item[0];
-        $postRequest = false;
-    } else {
+if(customerHasFeature('external_mail')) {
+	if(!empty($_POST)) {
+		$items['normal'] = (isset($_POST['normal'])) ? $_POST['normal'] : null;
+		$items['alias'] = (isset($_POST['alias'])) ? $_POST['alias'] : null;
+		$postRequest = true;
+	} else if(isset($_GET['item']) && count($item = explode(';', $_GET['item'], 2)) == 2) {
+		$items[$item[1]][] = $item[0];
+		$postRequest = false;
+	} else {
 		showBadRequestErrorPage();
 		exit;
-    }
+	}
 
-    client_deleteExternalMailServers($items, $postRequest);
-    redirectTo('mail_external.php');
+	client_deleteExternalMailServers($items, $postRequest);
+	redirectTo('mail_external.php');
 } else {
 	showBadRequestErrorPage();
 }

@@ -512,7 +512,6 @@ function client_saveDnsRecord($dnsRecordId)
 		if ($_POST['domain_id'] == 0) {
 			$domainName = $mainDmnProps['domain_name'];
 			$domainId = 0;
-			$domainType = 'dmn';
 		} else {
 			$query = "SELECT `alias_id`, `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?";
 			$stmt = exec_query($query, array($_POST['domain_id'], $mainDmnId));
@@ -523,7 +522,6 @@ function client_saveDnsRecord($dnsRecordId)
 
 			$domainName = $stmt->fields['alias_name'];
 			$domainId = $stmt->fields['alias_id'];
-			$domainType = 'als';
 		}
 	} else {
 		$query = "
@@ -551,7 +549,6 @@ function client_saveDnsRecord($dnsRecordId)
 		$domainId = ($stmt->fields['alias_id']) ? $stmt->fields['alias_id'] : $stmt->fields['domain_id'];
 		$domainName = $stmt->fields['domain_name'];
 		$dnsRecordName = $stmt->fields['domain_dns'];
-		$domainType = ($stmt->fields['alias_id']) ? 'als' : 'dmn';
 	}
 
 	$nameValidationError = '';
@@ -649,62 +646,47 @@ function client_saveDnsRecord($dnsRecordId)
 		}
 
 		if (!Zend_Session::namespaceIsset('pageMessages')) {
-			/** @var $db iMSCP_Database */
-			$db = iMSCP_Database::getInstance();
-
 			try {
-				$db->beginTransaction();
-
 				if (!$dnsRecordId) {
-					$query = '
-						INSERT INTO `domain_dns` (
-							`domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`,
-							`owned_by`
-						) VALUES (
-							?, ?, ?, ?, ?, ?, ?
-						)
-					';
 					exec_query(
-						$query,
+						'
+							INSERT INTO domain_dns (
+								domain_id, alias_id, domain_dns, domain_class, domain_type, domain_text, owned_by,
+								domain_dns_status
+							) VALUES (
+								?, ?, ?, ?, ?, ?, ?, ?
+							)
+						',
 						array(
 							$mainDmnId, $domainId, $dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordData,
-							'custom_dns_feature'
+							'custom_dns_feature', 'toadd'
 						)
 					);
 				} else {
-					$query = '
-						UPDATE
-							`domain_dns`
-						SET
-							`domain_dns` = ?, `domain_class` = ?, `domain_type` = ?, `domain_text` = ?
-						WHERE
-							`domain_dns_id` = ?
-					';
 					exec_query(
-						$query,
-						array($dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordData, $dnsRecordId)
+						'
+						UPDATE
+							domain_dns
+						SET
+							domain_dns = ?, domain_class = ?, domain_type = ?, domain_text = ?, domain_dns_status = ?
+						WHERE
+							domain_dns_id = ?
+					',
+						array($dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordData, 'tochange', $dnsRecordId)
 					);
 				}
-
-				if ($domainType == 'dmn') {
-					$query = 'UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?';
-					exec_query($query, array('tochange', $mainDmnId));
-				} else {
-					$query = 'UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ? AND `alias_id` = ?';
-					exec_query($query, array('tochange', $mainDmnId, $domainId));
-				}
-
-				$db->commit();
 
 				send_request();
 
 				write_log(
-					"{$_SESSION['user_logged']} scheduled ". ((!$dnsRecordId) ? 'addition' : 'update') .
-					' of custom DNS record', E_USER_NOTICE
+					sprintf(
+						'Custom DNS record has been scheduled for %s by %s', 
+						($dnsRecordId) ? tr('update') : tr('addition'),
+						$_SESSION['user_logged']
+					),
+					E_USER_NOTICE
 				);
 			} catch (iMSCP_Exception_Database $e) {
-				$db->rollBack();
-
 				if ($e->getCode() == 23000) { // Duplicate entries
 					set_page_message(tr('DNS record already exist.'), 'error');
 					return false;

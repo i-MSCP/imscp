@@ -109,13 +109,13 @@ END
 		!$Servers::sqld::instance || $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ||
 		( $main::execmode && $main::execmode eq 'setup' )
 	) {
-		my $rs = 0;
+		my $rs = $?;
 
 		if($Servers::sqld::instance->{'restart'}) {
-			$rs = $Servers::sqld::instance->restart();
+			$rs ||= $Servers::sqld::instance->restart();
 		}
 
-		$? ||= $rs;
+		$? = $rs;
 	}
 }
 

@@ -271,6 +271,50 @@ sub run
 		\$ipsModule
 	);
 
+	# Process toadd|tochange|toenable||todisable|todelete custom DNS records which belong to domains
+	# (for each entitty, process only if the parent entity is in a consistent state)
+	$rs ||= _process(
+		'CustomDNS',
+		"
+			SELECT
+				CONCAT('domain_', domain_id) AS id, domain_name AS name, domain_dns_status AS status
+			FROM
+				domain_dns
+			INNER JOIN
+				domain USING(domain_id)
+			WHERE
+				domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
+			AND
+				alias_id = '0'
+			AND
+				domain_status IN('ok', 'disabled')
+			LIMIT
+				1
+		"
+	);
+
+	# Process toadd|tochange|toenable|todisable|todelete custom DNS records which belong to domains or domain aliases
+	# (for each entitty, process only if the parent entity is in a consistent state)
+	$rs ||= _process(
+		'CustomDNS',
+		"
+			SELECT
+				CONCAT('alias_', alias_id) AS id, alias_name AS name, domain_dns_status AS status
+			FROM
+				domain_dns
+			INNER JOIN
+				domain_aliasses USING(alias_id)
+			WHERE
+				domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
+			AND
+				alias_id <> '0'
+			AND
+				alias_status IN('ok', 'disabled')
+			LIMIT
+				1
+		"
+	);
+
 	# Process toadd|tochange|toenable|todisable|todelete mail tasks
 	# (for each entitty, process only if the parent entity is in a consistent state)
 	$rs ||= _process(
@@ -463,7 +507,6 @@ sub run
 				ip_status <> 'ok'
 			LIMIT
 				1
-				
 		"
 	);
 
@@ -511,7 +554,7 @@ sub run
 
 			newDebug('imscp_sw_mngr_engine') if $count;
 
-			for (keys %$rdata) {
+			for (keys %{$rdata}) {
 				my (
 					$sw_domain_id, $sw_aliasdomain_id, $sw_subdomain_id, $sw_aliassubdomain_id, $sw_software_id,
 					$sw_path, $sw_software_prefix, $sw_database, $sw_database_user, $sw_database_tmp_pwd,

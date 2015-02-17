@@ -42,7 +42,10 @@ var iMSCP = function () {
             $("a").tooltip(
                 {
                     tooltipClass: "ui-tooltip-notice",
-                    track: true
+                    track: true,
+                    content: function() {
+                        return $(this).attr('title');
+                    }
                 }
             );
         } else {
@@ -50,7 +53,11 @@ var iMSCP = function () {
             $(".body a,.body span,.body input,.dataTables_paginate div").tooltip(
                 {
                     tooltipClass: "ui-tooltip-notice",
-                    track: true
+                    track: true,
+                    content: function() {
+                        var title = $( this ).attr( "title" ) || "";
+                        return $(this).attr('title');
+                    }
                 }
             );
         }

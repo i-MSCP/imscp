@@ -91,13 +91,13 @@ sub can
 END
 {
 	unless(!$Servers::po::instance || ( $main::execmode && $main::execmode eq 'setup' )) {
-		my $rs = 0;
+		my $rs = $?;
 
 		if($Servers::po::instance->{'restart'}) {
-			$rs = $Servers::po::instance->restart();
+			$rs ||= $Servers::po::instance->restart();
 		}
 
-		$? ||= $rs;
+		$? = $rs;
 	}
 }
 

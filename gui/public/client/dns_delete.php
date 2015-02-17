@@ -48,44 +48,22 @@ if (isset($_GET['id'])) {
 	$dnsRecordId = $_GET['id'];
 	$mainDomainId = get_user_domain_id($_SESSION['user_id']);
 
-	$query = "SELECT `alias_id` FROM `domain_dns` WHERE `domain_dns_id` = ? AND domain_id = ? AND `owned_by` = ?";
-	$stmt = exec_query($query, array($dnsRecordId, $mainDomainId, 'custom_dns_feature'));
+	$stmt = exec_query(
+		'UPDATE domain_dns SET domain_dns_status = ? WHERE domain_dns_id = ? AND domain_id = ?',
+		array('todelete', $dnsRecordId, $mainDomainId)
+	);
 
-	if (!$stmt->rowCount()) {
-		showBadRequestErrorPage();
-	}
-
-	$aliasId = $stmt->fields['alias_id'];
-
-	/** @var $db iMSCP_Database */
-	$db = iMSCP_Database::getInstance();
-
-	try {
-		$db->beginTransaction();
-
-		// Delete DNS record from the database
-		$query = "DELETE FROM `domain_dns` WHERE `domain_dns_id` = ?";
-		exec_query($query, $dnsRecordId);
-
-		if ($aliasId == 0) {
-			$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
-			exec_query($query, array('tochange', $mainDomainId));
-		} else {
-			$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ? AND `alias_id` = ?";
-			exec_query($query, array('tochange', $mainDomainId, $aliasId));
-		}
-
-		$db->commit();
-
+	if($stmt->rowCount()) {
 		send_request();
-		write_log($_SESSION['user_logged'] . ": deleted custom DNS record with ID $dnsRecordId", E_USER_NOTICE);
-		set_page_message(tr('Custom DNS record successfully scheduled for deletion.'), 'success');
-	} catch (iMSCP_Exception_Database $e) {
-		$db->rollBack();
-		throw new $e;
-	}
 
-	redirectTo('domains_manage.php');
+		write_log(
+			$_SESSION['user_logged'] . ": scheduled deletion of custom DNS record with ID $dnsRecordId", E_USER_NOTICE
+		);
+
+		set_page_message(tr('Custom DNS record successfully scheduled for deletion.'), 'success');
+
+		redirectTo('domains_manage.php');
+	}
 }
 
 showBadRequestErrorPage();

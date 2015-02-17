@@ -90,13 +90,13 @@ sub can
 END
 {
 	unless(!$Servers::mta::instance || ( $main::execmode && $main::execmode eq 'setup' )) {
-		my $rs = 0;
+		my $rs = $?;
 
 		if($Servers::mta::instance->{'restart'}) {
-			$rs = $Servers::mta::instance->restart();
+			$rs ||= $Servers::mta::instance->restart();
 		}
 
-		$? ||= $rs;
+		$? = $rs;
 	}
 }
 

@@ -535,9 +535,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 	$stmt = exec_query(
 		"
 			SELECT
-				t1.*,
-				IFNULL(t3.alias_name, t2.domain_name) domain_name,
-				IFNULL(t3.alias_status, t2.domain_status) domain_status
+				t1.*, IFNULL(t3.alias_name, t2.domain_name) zone_name
 			FROM
 				domain_dns AS t1
 			LEFT JOIN
@@ -556,18 +554,16 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 	if ($stmt->rowCount()) {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			list(
-				$actionEdit,
-				$actionScriptEdit
-				) = _client_generateCustomDnsRecordAction(
+				$actionEdit, $actionScriptEdit
+			) = _client_generateCustomDnsRecordAction(
 				'edit',
 				($row['owned_by'] === 'custom_dns_feature')
 					? $row['domain_dns_id']
 					: (
-				($row['owned_by'] === 'ext_mail_feature')
-					? $row['domain_id'] . ';' . ($row['alias_id'] ? 'alias' : 'normal')
-					: null // FIXME Allow any component to provide it id for edit link
-				),
-				$row['domain_status'],
+						($row['owned_by'] === 'ext_mail_feature')
+							? $row['domain_id'] . ';' . ($row['alias_id'] ? 'alias' : 'normal') : null
+					),
+				$row['domain_dns_status'],
 				$row['owned_by']
 			);
 
@@ -577,9 +573,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 				list(
 					$actionDelete,
 					$actionScriptDelete
-					) = _client_generateCustomDnsRecordAction(
-					'Delete', $row['domain_dns_id'], $row['domain_status']
-				);
+				) = _client_generateCustomDnsRecordAction('Delete', $row['domain_dns_id'], $row['domain_dns_status']);
 
 				$tpl->assign(
 					array(
@@ -603,7 +597,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 
 			$tpl->assign(
 				array(
-					'DNS_DOMAIN' => tohtml(decode_idna($row['domain_name'])),
+					'DNS_DOMAIN' => tohtml(decode_idna($row['zone_name'])),
 					'DNS_NAME' => tohtml(decode_idna($dnsName)),
 					'DNS_CLASS' => tohtml($row['domain_class']),
 					'DNS_TYPE' => tohtml($row['domain_type']),
@@ -632,7 +626,6 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 		} else {
 			$tpl->assign('CUSTOM_DNS_RECORDS_BLOCK', '');
 		}
-
 	}
 }
 

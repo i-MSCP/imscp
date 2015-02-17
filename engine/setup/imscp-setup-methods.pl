@@ -1847,6 +1847,7 @@ sub setupRebuildCustomerFiles
 		domain_aliasses => 'alias_status',
 		subdomain => 'subdomain_status',
 		subdomain_alias => 'subdomain_alias_status',
+		domain_dns => 'domain_dns_status',
 		mail_users => 'status',
 		htaccess => 'status',
 		htaccess_groups => 'status',

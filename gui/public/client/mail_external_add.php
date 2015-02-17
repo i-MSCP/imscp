@@ -102,15 +102,15 @@ function _client_getVerifiedData($itemId, $itemType)
 	$domainProps = get_domain_default_props($_SESSION['user_id']);
 	$domainId = $domainProps['domain_id'];
 
-	if ($itemType === 'normal') {
-		$stmt = exec_query('SELECT `domain_id`, `domain_name` AS `name` FROM `domain` WHERE `domain_id` = ?', $domainId);
+	if ($itemType == 'normal') {
+		$stmt = exec_query('SELECT domain_id, domain_name AS name FROM domain WHERE domain_id = ?', $domainId);
 
 		if (!$stmt->rowCount() || $stmt->fields['domain_id'] !== $itemId) {
 			showBadRequestErrorPage();
 		}
-	} elseif ($itemType === 'alias') {
+	} elseif ($itemType == 'alias') {
 		$stmt = exec_query(
-			'SELECT `domain_id`, `alias_name` AS `name` FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?',
+			'SELECT domain_id, alias_name AS name FROM domain_aliasses WHERE alias_id = ? AND domain_id = ?',
 			array($itemId, $domainId)
 		);
 
@@ -155,7 +155,7 @@ function client_addExternalMailServerEntries($item)
 			$entriesCount = count($data['type']);
 			$error = false;
 
-			# Spam Filter (filter) MX type has highter precedence
+			# Spam Filter ( filter ) MX type has highter precedence
 			$spamFilterMX = false;
 			$wildcardMxOnly = true;
 
@@ -194,14 +194,14 @@ function client_addExternalMailServerEntries($item)
 					$dnsEntriesIds = '';
 
 					for ($index = 0; $index < $entriesCount; $index++) {
-						// Try to insert MX record into the domain_dns database table
+						// Add MX record
 						exec_query(
 							'
-								INSERT INTO `domain_dns` (
-									`domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`,
-									`owned_by`
+								INSERT INTO domain_dns (
+									domain_id, alias_id, domain_dns, domain_class, domain_type, domain_text, owned_by,
+									domain_dns_status
 								) VALUES (
-									?, ?, ?, ?, ?, ?, ?
+									?, ?, ?, ?, ?, ?, ?, ?
 								)
 							',
 							array(
@@ -212,7 +212,8 @@ function client_addExternalMailServerEntries($item)
 								'IN',
 								'MX',
 								"{$data['priority'][$index]}\t" . encode_idna($data['host'][$index]) . '.',
-								'ext_mail_feature'
+								'ext_mail_feature',
+								'toadd'
 							)
 						);
 
@@ -223,25 +224,24 @@ function client_addExternalMailServerEntries($item)
 						exec_query(
 							'
 								UPDATE
-									`domain` SET `external_mail` = ?, `domain_status` = ?, `external_mail_dns_ids` = ?
+									domain SET external_mail = ?, domain_status = ?, external_mail_dns_ids = ?
 								WHERE
-									`domain_id` = ?
+									domain_id = ?
 							',
 							array(
 								($spamFilterMX) ? 'filter' : (($wildcardMxOnly) ? 'wildcard' : 'domain'),
 								'tochange',
 								ltrim($dnsEntriesIds, ','),
-								$verifiedData['item_id']
+								$verifiedData['domain_id']
 							)
 						);
 					} else {
 						exec_query(
 							'
-					  			UPDATE
-									`domain_aliasses` SET `external_mail` = ?, `alias_status` = ?,
-									`external_mail_dns_ids` = ?
-					  			WHERE
-									`alias_id` = ?
+								UPDATE
+									domain_aliasses SET external_mail = ?, alias_status = ?, external_mail_dns_ids = ?
+								WHERE
+									alias_id = ?
 							',
 							array(
 								($spamFilterMX) ? 'filter' : (($wildcardMxOnly) ? 'wildcard' : 'domain'),
@@ -251,21 +251,21 @@ function client_addExternalMailServerEntries($item)
 						);
 					}
 
-					$db->commit(); // Commit the transaction - All data will be now added into the database
+					$db->commit();
 
 					iMSCP_Events_Aggregator::getInstance()->dispatch(
 						iMSCP_Events::onAfterAddExternalMailServer, array('externalMailServerEntries' => $data)
 					);
 
-					send_request(); // Ask the daemon to trigger backend dispatcher
+					send_request();
 					set_page_message(tr('External mail server successfully scheduled for addition.'), 'success');
 					redirectTo('mail_external.php');
 				} catch (iMSCP_Exception_Database $e) {
 					$db->rollBack();
 
-					if ($e->getCode() == '23000') { // Entry already exists in domain_dns table or is defined twice in entries stack?
-						set_page_message(tr('An entry is defined twice below.'), 'error');
-					} else { // Another error?
+					if ($e->getCode() === 23000) {
+						set_page_message(tr('An entry is defined twice.'), 'error');
+					} else {
 						throw $e;
 					}
 				}
@@ -303,7 +303,7 @@ function client_generateView($verifiedData, $data)
 
 	$mxTypes = array(
 		tr('Domain') => 'domain',
-		tr('wildcard') => 'wildcard'
+		tr('Wildcard') => 'wildcard'
 	);
 
 	if(customerHasFeature('mail')) {
@@ -325,15 +325,15 @@ function client_generateView($verifiedData, $data)
 			'TR_CANCEL' => tr('Cancel'),
 			'TR_ADD' => tr('Add'),
 			'TR_MX_TYPE_TOOLTIP' =>
-				tr('Domain: Setup a DNS MX record to relay mail of your entire domain, including subdomains.') .
-				'<br /><br />' .
+				tr('Domain: Setup a DNS MX record to relay mail of your entire domain, including subdomains.', true) .
+				'<br><br>' .
 				(
 					(customerHasFeature('mail'))
-						? tr('Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains.') . '<br /><br />'
+						? tr('Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains.', true) . '<br><br>'
 						: ''
 				) .
-				tr('Spam Filter: Setup a DNS MX record to relay mail of your entire domain, including subdomains, but retains our server as final mailhost.') .
-				'<br /><br />' .
+				tr('Spam Filter: Setup a DNS MX record to relay mail of your entire domain, including subdomains, but retains our server as final mailhost.', true) .
+				'<br><br>' .
 				tr('Note: You cannot mix Spam filter and domain options'),
 			'ITEM' => $verifiedData['item_id'] . ';' . $verifiedData['item_type']
 		)

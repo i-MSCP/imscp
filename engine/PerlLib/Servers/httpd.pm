@@ -90,15 +90,15 @@ sub can
 END
 {
 	unless(!$Servers::httpd::instance || ( $main::execmode && $main::execmode eq 'setup' )) {
-		my $rs = 0;
+		my $rs = $?;
 
 		if($Servers::httpd::instance->{'start'}) {
-			$rs = $Servers::httpd::instance->start();
+			$rs ||= $Servers::httpd::instance->start();
 		} elsif($Servers::httpd::instance->{'restart'}) {
-			$rs = $Servers::httpd::instance->restart();
+			$rs ||= $Servers::httpd::instance->restart();
 		}
 
-		$? ||= $rs;
+		$? = $rs;
 	}
 }
 

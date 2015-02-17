@@ -41,7 +41,6 @@ use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::Database;
 use iMSCP::Rights;
-use iMSCP::Database;
 use iMSCP::OpenSSL;
 use iMSCP::Ext2Attributes qw(clearImmutable);
 use Net::LibIDN qw/idn_to_unicode/;
@@ -552,53 +551,58 @@ sub _getNamedData
 			USER_NAME => $userName,
 			MAIL_ENABLED => (
 				($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) &&
-				($self->{'external_mail'} ~~ ['wildcard', 'off'])
-			) ? 1 : 0
+				($self->{'external_mail'} ~~ [ 'wildcard', 'off' ])
+			) ? 1 : 0,
+			SPF_RECORDS => []
 		};
 
-		if($action =~ /add/) {
-			# Get DNS resource records added by 3rd party components (custom DNS feature, mail feature, plugins...)
+		if($action =~ /add/ && $self->{'external_mail'} ~~ [ 'domain', 'filter', 'wildcard' ]) {
 			my $db = iMSCP::Database->factory();
-
 			my $rdata = $db->doQuery(
 				'domain_dns_id',
-				'SELECT * FROM domain_dns WHERE domain_id = ? AND alias_id = ?',
+				'
+					SELECT
+						domain_dns_id, domain_dns, domain_text
+					FROM
+						domain_dns
+					WHERE
+						domain_id = ?
+					AND
+						alias_id = ?
+					AND
+						owned_by = ?
+					AND
+						domain_dns_status <> ?
+				',
 				$self->{'domain_id'},
-				0
+				0,
+				'ext_mail_feature',
+				'todelete'
 			);
 			unless(ref $rdata eq 'HASH') {
 				fatal($rdata);
 			}
 
-			$self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_} = $rdata->{$_} for keys %{$rdata};
+			if(%{$rdata}) {
+				my (@domainHosts, @wildcardHosts);
 
-			# Add SPF records for external MX if needed
-			if($self->{'external_mail'} ~~ ['domain', 'filter', 'wildcard']) {
-				my $hosts = { 'domain' => [], 'wildcard' => [] };
+				# Add SPF records for external MX
+				for(keys %{$rdata}) {
+					(my $host = $rdata->{$_}->{'domain_text'}) =~ s/\d+\s+(.*)\.$/$1/;
 
-				for(keys %{$self->{'named'}->{'CUSTOM_DNS_RECORD'}}) {
-					if($self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'owned_by'} eq 'ext_mail_feature') {
-						(my $host = $self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_text'}) =~ s/\d+\s+(.*)\.$/$1/;
-
-						if(index($self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_dns'}, '*') != 0) {
-							push @{$hosts->{'domain'}}, "a:$host";
-						} else {
-							push @{$hosts->{'wildcard'}}, "a:$host";
-						}
+					if((index($rdata->{$_}->{'domain_dns'}, '*') != 0)) {
+						push @domainHosts, "a:$host";
+					} else {
+						push @wildcardHosts, "a:$host";
 					}
 				}
 
-				for my $type (keys %{$hosts}) {
-					if(@{$hosts->{$type}}) {
-						for('TXT', 'SPF') {
-							$self->{'named'}->{'CUSTOM_DNS_RECORD'}->{"$_$type"} = {
-								'domain_dns' => ($type eq 'domain') ? '@' : '*',
-								'domain_class' => 'IN',
-								'domain_type' => $_,
-								'domain_text' => "\"v=spf1 @{$hosts->{$type}} mx -all\""
-							}
-						}
-					}
+				if(@domainHosts) {
+					push @{$self->{'named'}->{'SPF_RECORDS'}}, "@\tIN\tTXT\t\"v=spf1 mx @domainHosts ~all\""
+				}
+
+				if(@wildcardHosts) {
+					push @{$self->{'named'}->{'SPF_RECORDS'}}, "*\tIN\tTXT\t\"v=spf1 mx @wildcardHosts ~all\""
 				}
 			}
 

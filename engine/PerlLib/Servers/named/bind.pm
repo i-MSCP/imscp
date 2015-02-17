@@ -67,6 +67,7 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	require Servers::named::bind::installer;
+
 	Servers::named::bind::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
@@ -81,6 +82,7 @@ sub registerSetupListeners
 sub install
 {
 	require Servers::named::bind::installer;
+
 	Servers::named::bind::installer->getInstance()->install();
 }
 
@@ -122,6 +124,7 @@ sub uninstall
 	return $rs if $rs;
 
 	require Servers::named::bind::uninstaller;
+
 	$rs = Servers::named::bind::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
@@ -203,7 +206,7 @@ sub postaddDmn
 	$rs = $self->{'eventManager'}->trigger('afterNamedPostAddDmn', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 1;
+	$self->{'reload'} = 1;
 
 	0;
 }
@@ -326,7 +329,7 @@ sub postdeleteDmn
 	$rs = $self->{'eventManager'}->trigger('afterNamedPostDelDmn', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 1;
+	$self->{'reload'} = 1;
 
 	0;
 }
@@ -529,7 +532,7 @@ sub postaddSub
 	$rs = $self->{'eventManager'}->trigger('afterNamedPostAddSub', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 1;
+	$self->{'reload'} = 1;
 
 	0;
 }
@@ -707,7 +710,104 @@ sub postdeleteSub
 	$rs = $self->{'eventManager'}->trigger('afterNamedPostDelSub', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 1;
+	$self->{'reload'} = 1;
+
+	0;
+}
+
+=item addCustomDNS
+
+ Process addCustomDNS tasks
+
+ Param hash \%data Custom DNS data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addCustomDNS
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedAddCustomDNS', $data);
+	return $rs if $rs;
+
+	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
+		my $wrkDbFile = "$self->{'wrkDir'}/$data->{'ZONE_NAME'}.db";
+
+		if(-f $wrkDbFile) {
+			$wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
+
+			# Saving current working file
+			my $rs = $wrkDbFile->copyFile( $self->{'bkpDir'} . '/' . basename($wrkDbFile->{'filename'}) . '.' . time );
+			return $rs if $rs;
+
+			# Loading current working db file
+			my $wrkDbFileContent = $wrkDbFile->get();
+			unless(defined $wrkDbFileContent) {
+				error("Unable to read $wrkDbFile->{'filename'}");
+				return 1;
+			}
+
+			# Updating timestamp entry
+			$wrkDbFileContent = $self->_generateSoalSerialNumber($wrkDbFileContent);
+			unless(defined $wrkDbFileContent) {
+				error('Unable to update SOA Serial');
+				return 1;
+			}
+
+			my $customDnsEntries = '';
+			for (@{$data->{'DNS_RECORDS'}}) {
+				my ($name, $class, $type, $data) = @{$_};
+
+				debug("Adding custom DNS record: $name $class $type $data");
+
+				$customDnsEntries .= "$name\t$class\t$type\t$data\n";
+			}
+
+			$wrkDbFileContent = replaceBloc(
+				"; custom DNS entries BEGIN\n",
+				"; custom DNS entries ENDING\n",
+				"; custom DNS entries BEGIN\n" . $customDnsEntries . "; custom DNS entries ENDING\n",
+				$wrkDbFileContent
+			);
+
+			# Updating working file content
+			$rs = $wrkDbFile->set($wrkDbFileContent);
+			return $rs if $rs;
+
+			$rs = $wrkDbFile->save();
+			return $rs if $rs;
+
+			# Installing new working file in production directory
+			my ($stdout, $stderr);
+			$rs = execute(
+				"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
+					"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'ZONE_NAME'}.db " .
+					"$data->{'ZONE_NAME'} $wrkDbFile->{'filename'}",
+				\$stdout, \$stderr
+			);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			error("Unable to install $data->{'ZONE_NAME'}.db") if $rs && ! $stderr;
+			return $rs if $rs;
+
+			my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'ZONE_NAME'}.db" );
+
+			$rs = $prodFile->mode(0640);
+			return $rs if $rs;
+
+			$rs = $prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
+			return $rs if $rs;
+		} else {
+			error("File $wrkDbFile not found. Please run the i-MSCP setup script.");
+			return 1;
+		}
+	}
+
+	$rs = $self->{'eventManager'}->trigger('afterNamedAddCustomDNS', $data);
+	return $rs if $rs;
+
+	$self->{'reload'} = 1;
 
 	0;
 }
@@ -734,6 +834,28 @@ sub restart
 	$self->{'eventManager'}->trigger('afterNamedRestart');
 }
 
+=item reload()
+
+ Reload Bind9
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub reload
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedReload');
+	return $rs if $rs;
+
+	$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'NAMED_SNAME'}, 'named');
+	error("Unable to reload $self->{'config'}->{'NAMED_SNAME'} service") if $rs;
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterNamedReload');
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -753,6 +875,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'restart'} = 0;
+	$self->{'reload'} = 0;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
@@ -1086,27 +1209,10 @@ sub _addDmnDb
 		"; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, $tplDbFileContent
 	);
 
-	# Process custom DNS records entries
-
-	my $customDnsEntries = '';
-
-	if ($data->{'CUSTOM_DNS_RECORD'}) {
-		for(keys %{$data->{'CUSTOM_DNS_RECORD'}}) {
-			$customDnsEntries .= process(
-				{
-					NAME => $data->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_dns'},
-					CLASS => $data->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_class'},
-					TYPE => $data->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_type'},
-					DATA => $data->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_text'}
-				},
-				"{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
-			);
-		}
+	# Custom SPF records
+	for(@{$data->{'SPF_RECORDS'}}) {
+		$tplDbFileContent .= $_ . "\n";
 	}
-
-	$tplDbFileContent = replaceBloc(
-		"; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $customDnsEntries, $tplDbFileContent
-	);
 
 	# Process customer als entries if any
 

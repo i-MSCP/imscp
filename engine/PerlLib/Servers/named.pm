@@ -117,13 +117,15 @@ END
 		!$Servers::named::instance || $main::imscpConfig{'NAMED_SERVER'} eq 'external_server' ||
 		( $main::execmode && $main::execmode eq 'setup' )
 	) {
-		my $rs = 0;
+		my $rs = $?;
 
 		if($Servers::named::instance->{'restart'}) {
-			$rs = $Servers::named::instance->restart();
+			$rs ||= $Servers::named::instance->restart();
+		} elsif($Servers::named::instance->{'reload'}) {
+			$rs ||= $Servers::named::instance->reload();
 		}
 
-		$? ||= $rs;
+		$? = $rs;
 	}
 }
 

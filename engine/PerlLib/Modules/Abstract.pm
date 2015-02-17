@@ -183,7 +183,7 @@ sub _runAction
 					$package = $package->factory();
 
 					if ($package->can($action)) {
-						debug("Calling action $action on $package");
+						debug("Calling action $action on Servers::$item");
 						my $rs = $package->$action(\%moduleData);
 						return $rs if $rs;
 					}
@@ -206,7 +206,7 @@ sub _runAction
 					$package = $package->getInstance();
 
 					if ($package->can($action)) {
-						debug("Calling action $action on $package");
+						debug("Calling action $action on Package::$item");
 						my $rs = $package->$action(\%moduleData);
 						return $rs if $rs;
 					}

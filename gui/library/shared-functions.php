@@ -557,7 +557,7 @@ function change_domain_status($customerId, $action)
 			}
 
 			# TODO implements customer deactivation
-			#exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($newStatus, $customerId));
+			# exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($newStatus, $customerId));
 			exec_query("UPDATE domain SET domain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
 			exec_query("UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
 			exec_query("UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
@@ -573,6 +573,10 @@ function change_domain_status($customerId, $action)
 						domain_id = ?
 				',
 				array($newStatus, $domainId)
+			);
+			exec_query(
+				'UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ?',
+				array(($newStatus == 'todisable') ? 'disabled' : 'toenable', $domainId)
 			);
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
@@ -2786,37 +2790,37 @@ if (!function_exists('http_build_url')) {
 /**
  * Returns translation for jQuery DataTables plugin.
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @return string
+ * @param bool $json Does the data must be encoded to JSON?
+ * @return string|array
  */
-function getDataTablesPluginTranslations()
+function getDataTablesPluginTranslations($json = true)
 {
-	return json_encode(
-		array(
-			'sLengthMenu'=> tr(
-				'Show %s records per page',
-				true,
-				'
-					<select>
-					<option value="5">5</option>
-					<option value="10">10</option>
-					<option value="15">15</option>
-					<option value="20">20</option>
-					<option value="50">50</option>
-					<option value="-1">'. tr('All', true) . '</option>
-					</select>
-				'
-			),
-			//'sLengthMenu' => tr('Show %s records per page', true, '_MENU_'),
-			'sZeroRecords' => tr('Nothing found - sorry', true),
-			'sInfo' => tr('Showing %s to %s of %s records', true, '_START_', '_END_', '_TOTAL_'),
-			'sInfoEmpty' => tr('Showing 0 to 0 of 0 records', true),
-			'sInfoFiltered' => tr('(filtered from %s total records)', true, '_MAX_'),
-			'sSearch' => tr('Search', true),
-			'oPaginate' => array('sPrevious' => tr('Previous', true), 'sNext' => tr('Next', true)),
-			'sProcessing' => tr('Processing...', true),
-		)
+	$tr = array(
+		'sLengthMenu'=> tr(
+			'Show %s records per page',
+			true,
+			'
+				<select>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="15">15</option>
+				<option value="20">20</option>
+				<option value="50">50</option>
+				<option value="-1">'. tr('All', true) . '</option>
+				</select>
+			'
+		),
+		//'sLengthMenu' => tr('Show %s records per page', true, '_MENU_'),
+		'sZeroRecords' => tr('Nothing found - sorry', true),
+		'sInfo' => tr('Showing %s to %s of %s records', true, '_START_', '_END_', '_TOTAL_'),
+		'sInfoEmpty' => tr('Showing 0 to 0 of 0 records', true),
+		'sInfoFiltered' => tr('(filtered from %s total records)', true, '_MAX_'),
+		'sSearch' => tr('Search', true),
+		'oPaginate' => array('sPrevious' => tr('Previous', true), 'sNext' => tr('Next', true)),
+		'sProcessing' => tr('Processing...', true)
 	);
+
+	return ($json) ? json_encode($tr) : $tr;
 }
 
 /**
