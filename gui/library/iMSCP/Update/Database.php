@@ -59,7 +59,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 198;
+	protected $lastUpdate = 199;
 
 	/**
 	 * Singleton - Make new unavailable
