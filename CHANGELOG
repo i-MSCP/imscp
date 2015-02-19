@@ -16,6 +16,7 @@ DATABASE
 
 FRONTEND
 	Fixed: Html in title attribute must not be auto-escaped by jQueryUI tooltip
+	Improved: Translations strings entries can now be accessed as properties ( i18n_getJsTranslations() )
 
 PLUGINS
 	Updated: API to version 0.2.18

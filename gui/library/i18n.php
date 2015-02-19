@@ -350,13 +350,12 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
  * Get JS translations strings
  *
  * Note: Plugins can register their own JS translation strings by listening on the onGetJsTranslations event, and add
- * them to the translations array which is a parameter of that event.
+ * them to the translations ArrayObject which is a parameter of that event.
  *
  * For instance:
  *
  * iMSCP_Events_Aggregator::getInstance()->register('onGetJsTranslations', function($e) {
- *    $translations = $e->getParam('translations');
- *    $translations['my_namespace'] = array(
+ *    $e->getParam('translations')->my_namespace = array(
  *        'first_translation_string_identifier' => tr('my first translation string', true),
  *        'second_translation_string_identifier' => tr('my second translation string', true)
  *    )
@@ -383,12 +382,11 @@ function i18n_getJsTranslations()
 				'your_new_password' => tr('Your new password', true),
 				'password_generate_alert' => tr('You must first generate a password by clicking on the generate button.', true),
 			)
-		)
+		),
+		ArrayObject::ARRAY_AS_PROPS
 	);
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		'onGetJsTranslations', array('translations' => $translations)
-	);
+	iMSCP_Events_Aggregator::getInstance()->dispatch('onGetJsTranslations', array('translations' => $translations));
 
 	return json_encode($translations, JSON_FORCE_OBJECT);
 }
