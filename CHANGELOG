@@ -18,12 +18,15 @@ FRONTEND
 	Fixed: Html in title attribute must not be auto-escaped by jQueryUI tooltip
 	Improved: Translations strings entries can now be accessed as properties ( i18n_getJsTranslations() )
 
-PLUGINS
-	Updated: API to version 0.2.18
-
 INSTALLER
 	Fixed: iMSCP::Requirements::_modules: Modules [Email::Simple] were not found on your system
 	Fixed: Use of uninitialized value $dbPass in string ( imscp/engine/setup/imscp-setup-methods.pl line 482 )
+
+PLUGINS
+	Updated: API to version 0.2.18
+
+SERVICES
+	Fixed: Log summary message on TLS handshake completion ( Postfix )
 
 TICKETS
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
