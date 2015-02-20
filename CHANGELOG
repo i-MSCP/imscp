@@ -7,7 +7,7 @@ Git 1.2.x
 BACKEND
 	Added: Custom DNS module ( Modules::CustomDNS )
 	Fixed: Any task which belongs to the custom DNS records layer must not involve any HTTPD configuration change
-	Fixed: Apache access.log file are put in wrong directory (vlogger)
+	Fixed: Apache access.log file are put in wrong directory ( vlogger )
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload should be sufficient
 	Fixed: Some errors are not trapped
 
@@ -16,7 +16,7 @@ DATABASE
 
 FRONTEND
 	Fixed: Html in title attribute must not be auto-escaped by jQueryUI tooltip
-	Improved: Translations strings entries can now be accessed as properties ( i18n_getJsTranslations() )
+	Improved: Translations strings entries can now be accessed as object properties ( i18n_getJsTranslations() )
 
 INSTALLER
 	Fixed: iMSCP::Requirements::_modules: Modules [Email::Simple] were not found on your system
