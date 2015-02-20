@@ -30,6 +30,7 @@ SERVICES
 
 TICKETS
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
+	Fixed #IP-1279: Autoresponder - Unable to get message body
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.2
