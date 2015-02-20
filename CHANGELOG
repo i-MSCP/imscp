@@ -7,7 +7,6 @@ Git 1.2.x
 BACKEND
 	Added: Custom DNS module ( Modules::CustomDNS )
 	Fixed: Any task which belongs to the custom DNS records layer must not involve any HTTPD configuration change
-	Fixed: Apache access.log file are put in wrong directory ( vlogger )
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload should be sufficient
 	Fixed: Some errors are not trapped
 
@@ -26,9 +25,10 @@ PLUGINS
 	Updated: API to version 0.2.18
 
 SERVICES
+	Fixed: Apache access.log file are put in wrong directory ( vlogger )
 	Fixed: Log summary message on TLS handshake completion ( Postfix )
 
-TICKETS
+YOUTRACK
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
 	Fixed #IP-1279: Autoresponder - Unable to get message body
 
@@ -60,7 +60,7 @@ PACKAGES
 PLUGINS
 	Updated: API to version 0.2.17
 
-TICKETS
+YOUTRACK
 	Fixed #IP-1259: Layout - Text goes out of statistic bar
 	Fixed #IP-1263: Access to statistics ( Awstats ) is broken - 404 error
 	Fixed #IP-1267: Double-quotes in the Dovecot SQL user's password must be escaped
@@ -130,7 +130,7 @@ PLUGINS
 	Fixed: Plugin uninstall() method must stay optional, even if the install() method is implemented
 	Updated: API to version 0.2.16
 
-TICKETS
+YOUTRACK
 	Fixed #IP-1205: Good practices - Use "-h" as abbrev for "--help" (instead of "-?")
 	Fixed #IP-1206: Good practices - Install resolvconf only when bind9 is also installed
 	Fixed #IP-1207: Defect - DataTable - Sorting not functional for data strings containing numeric values
@@ -209,7 +209,7 @@ PACKAGES
 UNINSTALLER
 	Added: Backend exec mode ( uninstall )
 
-TICKETS
+YOUTRACK
 	Fixed #IP-1123: Review - PHP session handling
 	Fixed #IP-1122: Defect - Network traffic passing through the loopback interface shouldn't be monitored
 	Fixed #IP-1146: Bug - Server statistics script is broken
