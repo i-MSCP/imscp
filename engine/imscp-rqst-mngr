@@ -288,8 +288,8 @@ sub run
 				alias_id = '0'
 			AND
 				domain_status IN('ok', 'disabled')
-			LIMIT
-				1
+			GROUP BY
+				domain_id
 		"
 	);
 
@@ -310,8 +310,8 @@ sub run
 				alias_id <> '0'
 			AND
 				alias_status IN('ok', 'disabled')
-			LIMIT
-				1
+			GROUP BY
+				alias_id
 		"
 	);
 

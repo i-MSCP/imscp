@@ -653,7 +653,7 @@ class iMSCP_Events
 	/**
 	 * The onBeforeUpdatePlugin event is triggered before a plugin update.
 	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
