@@ -2036,7 +2036,7 @@ sub setupPreInstallPackages
 			if($package->can('preinstall')) {
 				$rs = step(
 					sub { $package->preinstall() },
-					sprintf("Running %s package preinstall tasks...", ref $package),
+					sprintf("Running %s preinstall tasks...", ref $package),
 					$nbPackages,
 					$step
 				);
@@ -2130,7 +2130,7 @@ sub setupInstallPackages
 			if($package->can('install')) {
 				$rs = step(
 					sub { $package->install() },
-					sprintf("Running %s package install tasks...", ref $package),
+					sprintf("Running %s install tasks...", ref $package),
 					$nbPackages,
 					$step
 				);
@@ -2224,7 +2224,7 @@ sub setupPostInstallPackages
 			if($package->can('postinstall')) {
 				$rs = step(
 					sub { $package->postinstall() },
-					sprintf("Running %s package postinstall tasks...", ref $package),
+					sprintf("Running %s postinstall tasks...", ref $package),
 					$nbPackages,
 					$step
 				);

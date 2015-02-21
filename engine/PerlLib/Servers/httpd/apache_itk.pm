@@ -835,69 +835,77 @@ sub addIps
 {
 	my ($self, $data) = @_;
 
-	my $wrkFile = "$self->{'apacheWrkDir'}/00_nameserver.conf";
-
-	# Backup current working file if any
-	my $rs = iMSCP::File->new(
-		'filename' => $wrkFile
-	)->copyFile(
-		"$self->{'apacheBkpDir'}/00_nameserver.conf.". time
-	) if -f $wrkFile;
-	return $rs if $rs;
-
-	my $wrkFileH = iMSCP::File->new('filename' => $wrkFile);
-
-	my $content = $wrkFileH->get();
-	unless(defined $content) {
-		error("Unable to read $wrkFile");
-		return 1;
-	}
-
-	$rs = $self->{'eventManager'}->trigger('beforeHttpdAddIps', \$content, $data);
-	return $rs if $rs;
-
 	unless(qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0')) {
-		$content =~ s/NameVirtualHost[^\n]+\n//gi;
+		my $file = "$self->{'apacheWrkDir'}/00_nameserver.conf";
+
+		if(-f $file) {
+			my $rs = iMSCP::File->new(
+				filename => $file
+			)->copyFile(
+				"$self->{'apacheBkpDir'}/00_nameserver.conf." . time
+			);
+			return $rs if $rs;
+		}
+
+		$file = iMSCP::File->new( filename => $file );
+		my $fileContent = $file->get();
+		unless(defined $fileContent) {
+			error("Unable to read $file->{'filename'} file");
+			return 1;
+		}
+
+		my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddIps', \$fileContent, $data);
+		return $rs if $rs;
 
 		my $ipMngr = iMSCP::Net->getInstance();
+		my $confSnippet = '';
 
 		for(@{$data->{'SSL_IPS'}}) {
 			if($ipMngr->getAddrVersion($_) eq 'ipv4') {
-				$content .= "NameVirtualHost $_:443\n";
+				$confSnippet .= "NameVirtualHost $_:443\n";
 			} else {
-				$content .= "NameVirtualHost [$_]:443\n";
+				$confSnippet .= "NameVirtualHost [$_]:443\n";
 			}
 		}
 
 		for(@{$data->{'IPS'}}) {
 			if($ipMngr->getAddrVersion($_) eq 'ipv4') {
-				$content .= "NameVirtualHost $_:80\n";
+				$confSnippet .= "NameVirtualHost $_:80\n";
 			} else {
-				$content .= "NameVirtualHost [$_]:80\n";
+				$confSnippet .= "NameVirtualHost [$_]:80\n";
 			}
 		}
-	} else {
-		$content =~ s/\n# NameVirtualHost\n//;
+
+		$fileContent = replaceBloc("# NameVirtualHost - Begin\n", "# NameVirtualHost - Ending\n", '', $fileContent);
+		$fileContent = replaceBloc(
+			"# SECTION custom BEGIN.\n",
+			"# SECTION custom END.\n",
+			"# SECTION custom BEGIN.\n" .
+				getBloc("# SECTION custom BEGIN.\n", "# SECTION custom END.\n", $fileContent) .
+				"# NameVirtualHost - Begin\n" .
+				$confSnippet .
+				"# NameVirtualHost - Ending\n" .
+			"# SECTION custom END.\n",
+			$fileContent
+		);
+
+		$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$fileContent, $data);
+		return $rs if $rs;
+
+		$rs = $file->set($fileContent);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $self->installConfFile('00_nameserver.conf');
+		return $rs if $rs;
+
+		$rs = $self->enableSites('00_nameserver.conf');
+		return $rs if $rs;
+
+		$self->{'restart'} = 1;
 	}
-
-	$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$content, $data);
-	return $rs if $rs;
-
-	$rs = $wrkFileH->set($content);
-	return $rs if $rs;
-
-	$rs = $wrkFileH->save();
-	return $rs if $rs;
-
-	$rs = $self->installConfFile('00_nameserver.conf');
-	return $rs if $rs;
-
-	$rs = $self->enableSites('00_nameserver.conf');
-	return $rs if $rs;
-
-	$self->{'restart'} = 1;
-
-	delete $self->{'data'};
 
 	0;
 }

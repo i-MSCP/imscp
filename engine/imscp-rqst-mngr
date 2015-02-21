@@ -27,8 +27,6 @@
 use strict;
 use warnings;
 
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use FindBin;
 use lib "$FindBin::Bin", "$FindBin::Bin/PerlLib", "$FindBin::Bin/PerlVendor";
 
@@ -86,13 +84,13 @@ sub _process
 	}
 
 	if(@{$rows}) {
+		$$ipModule++ if defined $ipModule;
+
 		my $i = 1;
 		my $totalItems = scalar @{$rows};
 
 		for my $row(@{$rows}) {
 			my ($id, $name, $status) = ($row->{'id'}, $row->{'name'}, $row->{'status'});
-
-			$$ipModule++ if $moduleName ~~ ['Domain', 'Subdomain', 'Alias', 'SubAlias'];
 
 			debug("Processing $id, $name, $status");
 
