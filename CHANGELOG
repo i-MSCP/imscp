@@ -11,7 +11,8 @@ BACKEND
 	Fixed: Some errors are not trapped
 
 DATABASE
-	Added: Status field in domain_dns table ( Custom DNS record status field )
+	Added: domain_dns_status field in domain_dns table ( Custom DNS record status field )
+	Added: plugin_config_prev column in plugin table
 
 FRONTEND
 	Fixed: Html in title attribute must not be auto-escaped by jQueryUI tooltip
@@ -22,7 +23,8 @@ INSTALLER
 	Fixed: Use of uninitialized value $dbPass in string ( imscp/engine/setup/imscp-setup-methods.pl line 482 )
 
 PLUGINS
-	Updated: API to version 0.2.18
+	Added: iMSCP_Plugin::getConfigPrev() and iMSCP_Plugin::getConfigPrevParam() methods
+	Updated: API to version 1.0.0
 
 SERVICES
 	Fixed: Apache access.log file are put in wrong directory ( vlogger )

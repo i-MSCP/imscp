@@ -59,7 +59,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 199;
+	protected $lastUpdate = 200;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3148,5 +3148,25 @@ class iMSCP_Update_Database extends iMSCP_Update
 			'domain_dns_status',
 			"VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'ok'"
 		);
+	}
+
+	/**
+	 * Add plugin.plugin_config_prev column
+	 *
+	 * @return array|null SQL statements to be executed
+	 */
+	protected function r200()
+	{
+		$sql = $this->addColumn(
+			'plugin',
+			'plugin_config_prev',
+			"VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL AFTER plugin_config"
+		);
+
+		if($sql !== null) {
+			return array($sql, 'UPDATE plugin SET plugin_config_prev = plugin_config');
+		}
+
+		return null;
 	}
 }

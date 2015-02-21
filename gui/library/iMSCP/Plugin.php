@@ -37,6 +37,9 @@ abstract class iMSCP_Plugin
 	/** @var array Plugin configuration parameters */
 	private $config = array();
 
+	/** @var array Plugin previous configuration parameters */
+	private $configPrev = array();
+
 	/** @var bool TRUE if plugin configuration is loaded, FALSE otherwise */
 	private $isLoadedConfig = false;
 
@@ -181,6 +184,20 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
+	 * Return previous plugin configuration
+	 *
+	 * @return array An associative array which contain plugin previous configuration
+	 */
+	final public function getConfigPrev()
+	{
+		if (!$this->isLoadedConfig) {
+			$this->loadConfig();
+		}
+
+		return $this->configPrev;
+	}
+
+	/**
 	 * Return plugin configuration from file
 	 *
 	 * @throws iMSCP_Plugin_Exception in case plugin configuration file is not readable
@@ -242,19 +259,40 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
+	 * Returns the given previous plugin configuration
+	 *
+	 * @param string $paramName Configuration parameter name
+	 * @param mixed $default Default value returned in case $paramName is not found
+	 * @return mixed Configuration parameter value or $default if $paramName not found
+	 */
+	final public function getConfigPrevParam($paramName, $default = null)
+	{
+		if (!$this->isLoadedConfig) {
+			$this->loadConfig();
+		}
+
+		return (isset($this->configPrev[$paramName])) ? $this->configPrev[$paramName] : $default;
+	}
+
+	/**
 	 * Load plugin configuration from database
 	 *
 	 * @return void
 	 */
 	final protected function loadConfig()
 	{
-		$stmt = exec_query('SELECT plugin_config FROM plugin WHERE plugin_name = ?', $this->getName());
+		$stmt = exec_query(
+			'SELECT plugin_config, plugin_config_prev FROM plugin WHERE plugin_name = ?', $this->getName()
+		);
 
 		if ($stmt->rowCount()) {
-			$this->config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);
+			$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+			$this->config = json_decode($row['plugin_config'], true);
+			$this->configPrev = json_decode($row['plugin_config_prev'], true);
 			$this->isLoadedConfig = true;
 		} else {
 			$this->config = array();
+			$this->configPrev = array();
 		}
 	}
 
