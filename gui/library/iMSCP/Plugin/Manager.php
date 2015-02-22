@@ -1445,7 +1445,7 @@ class iMSCP_Plugin_Manager
 						plugin_name, plugin_type, plugin_info, plugin_config, plugin_config_prev, plugin_priority,
 						plugin_status, plugin_backend
 					) VALUE (
-						:name, :type, :info, :config, :config_prev :priority, :status, :backend
+						:name, :type, :info, :config, :config_prev, :priority, :status, :backend
 					)
 				',
 				$pluginData
