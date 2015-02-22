@@ -192,11 +192,8 @@ sub _loadData
 				domain_aliasses AS t3 USING(alias_id)
 			WHERE
 				t1.$typeField = ?
-			AND
-				domain_dns_status <> ?
 		",
-		$domainId,
-		'todelete'
+		$domainId
 	);
 
 	unless(ref $rows eq 'ARRAY') {
@@ -213,7 +210,7 @@ sub _loadData
 
 	# Filter DNS records which must be disabled or deleted
 	for(@{$rows}) {
-		push @{$self->{'dns_records'}}, $_ if not $_->[4] ~~ [ 'todelete', 'todisable' ];
+		push @{$self->{'dns_records'}}, $_ if not $_->[4] ~~ [ 'todisable', 'todelete' ];
 	}
 
 	0;
