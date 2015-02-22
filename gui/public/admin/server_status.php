@@ -85,11 +85,12 @@ $services = new iMSCP_Services();
 foreach ($services as $service) {
 	if ($services->isVisible()) {
 		$serviceState = $services->isRunning();
+		$ip = $services->getIp();
 
 		$tpl->assign(
 			array(
 				'SERVICE' => tohtml($services->getName()),
-				'IP' => tohtml($services->getIp()),
+				'IP' => ($ip === '0.0.0.0') ? tr('Any') : tohtml($ip),
 				'PORT' => tohtml($services->getPort()),
 				'STATUS' => $serviceState ? "<b>$running</b>" : $down,
 				'CLASS' => $serviceState ? 'up' : 'down'

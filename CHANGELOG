@@ -16,6 +16,7 @@ DATABASE
 
 FRONTEND
 	Fixed: Html in title attribute must not be auto-escaped by jQueryUI tooltip
+	Fixed: Translate 0.0.0.0 IP address to 'Any' ( Services status )
 	Improved: Translations strings entries can now be accessed as object properties ( i18n_getJsTranslations() )
 
 INSTALLER
