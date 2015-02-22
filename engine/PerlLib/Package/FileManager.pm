@@ -105,7 +105,7 @@ sub showDialog
 			$package = $package->getInstance();
 
 			if($package->can('showDialog')) {
-				debug("Calling action showDialog on $package");
+				debug(sprintf('Calling action showDialog on %s', ref $package));
 				$rs = $package->showDialog($dialog);
 				return $rs if $rs;
 			}
@@ -153,7 +153,7 @@ sub preinstallListener
 		$package = $package->getInstance();
 
 		if($package->can('preinstall')) {
-			debug("Calling action preinstall on $package");
+			debug(sprintf('Calling action preinstall on %s', ref $package));
 			my $rs = $package->preinstall();
 			return $rs if $rs;
 		}
@@ -186,7 +186,7 @@ sub installListener
 		$package = $package->getInstance();
 
 		if($package->can('install')) {
-			debug("Calling action install on $package");
+			debug(sprintf('Calling action install on %s', ref $package));
 			my $rs = $package->install();
 			return $rs if $rs;
 		}
@@ -226,7 +226,7 @@ sub uninstall
 			$package = $package->getInstance();
 
 			if($package->can('uninstall')) {
-				debug("Calling action uninstall on $package");
+				debug(sprintf('Calling action uninstall on %s', ref $package));
 				my $rs = $package->uninstall();
 				return $rs if $rs;
 			}
@@ -261,7 +261,7 @@ sub setPermissionsListener
 			$package = $package->getInstance();
 
 			if($package->can('setGuiPermissions')) {
-				debug("Calling action setGuiPermissions on $package");
+				debug(sprintf('Calling action setGuiPermissions on %s', ref $package));
 				my $rs = $package->setGuiPermissions();
 				return $rs if $rs;
 			}

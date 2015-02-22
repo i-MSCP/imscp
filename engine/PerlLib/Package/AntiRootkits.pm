@@ -107,7 +107,7 @@ sub showDialog
 					$package = $package->getInstance();
 
 					if($package->can('showDialog')) {
-						debug("Calling action showDialog on $package");
+						debug(sprintf('Calling action showDialog on %s', ref $package));
 						$rs = $package->showDialog($dialog);
 						return $rs if $rs;
 					}
@@ -152,13 +152,13 @@ sub preinstall
 				$package = $package->getInstance();
 
 				if($package->can('uninstall')) {
-					debug("Calling action uninstall on $package");
+					debug(sprintf('Calling action uninstall on %s', ref $package));
 					$rs = $package->uninstall();
 					return $rs if $rs;
 				}
 
 				if($package->can('getDistroPackages')) {
-					debug("Calling action getDistroPackages on $package");
+					debug(sprintf('Calling action getDistroPackages on %s', ref $package));
 					@{$packages} = (@{$packages}, @{$package->getDistroPackages()});
 				}
 			} else {
@@ -184,13 +184,13 @@ sub preinstall
 				$package = $package->getInstance();
 
 				if($package->can('preinstall')) {
-					debug("Calling action preinstall on $package");
+					debug(sprintf('Calling action preinstall on %s', ref $package));
 					$rs = $package->preinstall();
 					return $rs if $rs;
 				}
 
 				if($package->can('getDistroPackages')) {
-					debug("Calling action getDistroPackages on $package");
+					debug(sprintf('Calling action getDistroPackages on %s', ref $package));
 					@{$packages} = (@{$packages}, @{$package->getDistroPackages()});
 				}
 			} else {
@@ -229,7 +229,7 @@ sub install
 				$package = $package->getInstance();
 
 				if($package->can('install')) {
-					debug("Calling action install on $package");
+					debug(sprintf('Calling action install on %s', ref $package));
 					my $rs = $package->install();
 					return $rs if $rs;
 				}
@@ -269,13 +269,13 @@ sub uninstall
 				$package = $package->getInstance();
 
 				if($package->can('uninstall')) {
-					debug("Calling action uninstall on $package");
+					debug(sprintf('Calling action uninstall on %s', ref $package));
 					$rs = $package->uninstall();
 					return $rs if $rs;
 				}
 
 				if($package->can('getDistroPackages')) {
-					debug("Calling action getDistroPackages on $package");
+					debug(sprintf('Calling action getDistroPackages on %s', ref $package));
 					@{$packages} = (@{$packages}, @{$package->getDistroPackages()});
 				}
 			} else {
@@ -315,7 +315,7 @@ sub setEnginePermissions
 				$package = $package->getInstance();
 
 				if($package->can('setEnginePermissions')) {
-					debug("Calling action setEnginePermissions on $package");
+					debug(sprintf('Calling action setEnginePermissions on %s', ref $package));
 					my $rs = $package->setEnginePermissions();
 					return $rs if $rs;
 				}
