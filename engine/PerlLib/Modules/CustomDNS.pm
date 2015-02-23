@@ -216,6 +216,7 @@ sub _loadData
 	}
 
 	$self->{'domain_name'} = $rows->[0]->[5];
+	$self->{'domain_ip'} = $rows->[0]->[6];
 
 	# Filter DNS records which must be disabled or deleted
 	for(@{$rows}) {
@@ -241,7 +242,7 @@ sub _getNamedData
 	unless($self->{'named'}) {
 		$self->{'named'} = {
 			DOMAIN_NAME => $self->{'domain_name'},
-			DOMAIN_IP => $self->{'ip_number'},
+			DOMAIN_IP => $self->{'domain_ip'},
 			DNS_RECORDS => [ @{$self->{'dns_records'}} ]
 		};
 	}

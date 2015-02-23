@@ -757,8 +757,8 @@ sub addCustomDNS
 
 			my $customDnsEntries = '';
 			for (@{$data->{'DNS_RECORDS'}}) {
-				my ($name, $class, $type, $data) = @{$_};
-				$customDnsEntries .= "$name\t$class\t$type\t$data\n";
+				my ($name, $class, $type, $rdata) = @{$_};
+				$customDnsEntries .= "$name\t$class\t$type\t$rdata\n";
 			}
 
 			$wrkDbFileContent = replaceBloc(
