@@ -191,7 +191,7 @@ sub _loadData
 		"
 			SELECT
 				t1.domain_dns, t1.domain_class, t1.domain_type, t1.domain_text, t1.domain_dns_status,
-				IFNULL(t3.alias_name, t2.domain_name) AS domain_name, ip_number
+				IFNULL(t3.alias_name, t2.domain_name) AS domain_name, t4.ip_number
 			FROM
 				domain_dns AS t1
 			LEFT JOIN
