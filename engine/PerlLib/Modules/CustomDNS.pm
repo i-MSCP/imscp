@@ -69,7 +69,7 @@ sub process
 	(my $domainType, $domainId) = split '_', $domainId;
 
 	if($domainType && $domainId) {
-		my $typeField = ($domainType eq 'domain') ? 'domain_id' : 'alias_id';
+		my $condition = ($domainType eq 'domain') ? "domain_id = $domainId AND alias_id = 0" : "alias_id = $domainId";
 
 		my $rs = $self->_loadData($domainType, $domainId);
 		return $rs if $rs;
@@ -80,9 +80,8 @@ sub process
 			my $errorStr = scalar getMessageByType('error');
 			my $qrs = $self->{'db'}->doQuery(
 				'dummy',
-				"UPDATE domain_dns SET domain_dns_status = ? WHERE $typeField = ?",
+				"UPDATE domain_dns SET domain_dns_status = ? WHERE $condition",
 				(($errorStr) ? $errorStr : 'Unknown error'),
-				$domainId
 			);
 			unless(ref $qrs eq 'HASH') {
 				error($qrs);
@@ -95,25 +94,32 @@ sub process
 
 			eval {
 				$dbh->do(
-					"UPDATE domain_dns SET domain_dns_status = ? WHERE $typeField = ? AND domain_dns_status NOT IN(?, ?)",
-					undef,
-					'ok',
-					$domainId,
-					'todisable',
-					'todelete'
+					"
+						UPDATE
+							domain_dns
+						SET
+							domain_dns_status = 'ok'
+						WHERE
+							$condition
+						AND
+							domain_dns_status NOT IN('todisable', 'todelete')
+					"
 				);
 
 				$dbh->do(
-					"UPDATE domain_dns SET domain_dns_status = ? WHERE $typeField = ? AND domain_dns_status = ?",
-					undef,
-					'disabled',
-					$domainId,
-					'todisable'
+					"
+						UPDATE
+							domain_dns
+						SET
+							domain_dns_status = 'disabled'
+						WHERE
+							$condition
+						AND
+							domain_dns_status = 'todisable'
+					",
 				);
 
-				$dbh->do(
-					"DELETE FROM domain_dns WHERE $typeField = ? AND domain_dns_status = ?", undef, $domainId, 'todelete'
-				);
+				$dbh->do("DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'");
 
 				$dbh->commit();
 			};
@@ -174,7 +180,9 @@ sub _init
 sub _loadData
 {
 	my ($self, $domainType, $domainId) = @_;
-	my $typeField = ($domainType eq 'domain') ? 'domain_id' : 'alias_id';
+
+	my $condition = ($domainType eq 'domain')
+		? "t1.domain_id = $domainId AND t1.alias_id = 0" : "t1.alias_id = $domainId";
 
 	$self->{'db'}->set('FETCH_MODE', 'arrayref');
 
@@ -191,9 +199,8 @@ sub _loadData
 			LEFT JOIN
 				domain_aliasses AS t3 USING(alias_id)
 			WHERE
-				t1.$typeField = ?
-		",
-		$domainId
+				$condition
+		"
 	);
 
 	unless(ref $rows eq 'ARRAY') {
