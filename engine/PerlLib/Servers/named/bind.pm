@@ -729,7 +729,7 @@ sub addCustomDNS
 	my ($self, $data) = @_;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
-		my $wrkDbFile = "$self->{'wrkDir'}/$data->{'ZONE_NAME'}.db";
+		my $wrkDbFile = "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db";
 
 		if(-f $wrkDbFile) {
 			$wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
@@ -782,16 +782,18 @@ sub addCustomDNS
 			my ($stdout, $stderr);
 			$rs = execute(
 				"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
-					"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'ZONE_NAME'}.db " .
-					"$data->{'ZONE_NAME'} $wrkDbFile->{'filename'}",
+					"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db " .
+					"$data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}",
 				\$stdout, \$stderr
 			);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
-			error("Unable to install $data->{'ZONE_NAME'}.db") if $rs && ! $stderr;
+			error("Unable to install $data->{'DOMAIN_NAME'}.db") if $rs && ! $stderr;
 			return $rs if $rs;
 
-			my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'ZONE_NAME'}.db" );
+			my $prodFile = iMSCP::File->new(
+				filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db"
+			);
 
 			$rs = $prodFile->mode(0640);
 			return $rs if $rs;

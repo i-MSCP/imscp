@@ -191,13 +191,15 @@ sub _loadData
 		"
 			SELECT
 				t1.domain_dns, t1.domain_class, t1.domain_type, t1.domain_text, t1.domain_dns_status,
-				IFNULL(t3.alias_name, t2.domain_name) AS zone_name
+				IFNULL(t3.alias_name, t2.domain_name) AS domain_name, ip_number
 			FROM
 				domain_dns AS t1
 			LEFT JOIN
 				domain AS t2 USING(domain_id)
 			LEFT JOIN
 				domain_aliasses AS t3 USING(alias_id)
+			LEFT JOIN
+				server_ips AS t4 ON (IFNULL(t3.alias_ip_id, t2.domain_ip_id) = t4.ip_id)
 			WHERE
 				$condition
 		"
@@ -213,7 +215,7 @@ sub _loadData
 		return 1;
 	}
 
-	$self->{'zone_name'} = $rows->[0]->[5];
+	$self->{'domain_name'} = $rows->[0]->[5];
 
 	# Filter DNS records which must be disabled or deleted
 	for(@{$rows}) {
@@ -238,8 +240,9 @@ sub _getNamedData
 
 	unless($self->{'named'}) {
 		$self->{'named'} = {
-			ZONE_NAME => $self->{'zone_name'},
-			DNS_RECORDS => [@{$self->{'dns_records'}}]
+			DOMAIN_NAME => $self->{'domain_name'},
+			DOMAIN_IP => $self->{'ip_number'},
+			DNS_RECORDS => [ @{$self->{'dns_records'}} ]
 		};
 	}
 
