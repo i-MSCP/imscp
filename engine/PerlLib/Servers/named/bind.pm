@@ -728,9 +728,6 @@ sub addCustomDNS
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedAddCustomDNS', $data);
-	return $rs if $rs;
-
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
 		my $wrkDbFile = "$self->{'wrkDir'}/$data->{'ZONE_NAME'}.db";
 
@@ -755,12 +752,12 @@ sub addCustomDNS
 				return 1;
 			}
 
+			$rs = $self->{'eventManager'}->trigger('beforeNamedAddCustomDNS', \$wrkDbFileContent, $data);
+			return $rs if $rs;
+
 			my $customDnsEntries = '';
 			for (@{$data->{'DNS_RECORDS'}}) {
 				my ($name, $class, $type, $data) = @{$_};
-
-				debug("Adding custom DNS record: $name $class $type $data");
-
 				$customDnsEntries .= "$name\t$class\t$type\t$data\n";
 			}
 
@@ -770,6 +767,9 @@ sub addCustomDNS
 				"; custom DNS entries BEGIN\n" . $customDnsEntries . "; custom DNS entries ENDING\n",
 				$wrkDbFileContent
 			);
+
+			$rs = $self->{'eventManager'}->trigger('afterNamedAddCustomDNS', \$wrkDbFileContent, $data);
+			return $rs if $rs;
 
 			# Updating working file content
 			$rs = $wrkDbFile->set($wrkDbFileContent);
@@ -803,9 +803,6 @@ sub addCustomDNS
 			return 1;
 		}
 	}
-
-	$rs = $self->{'eventManager'}->trigger('afterNamedAddCustomDNS', $data);
-	return $rs if $rs;
 
 	$self->{'reload'} = 1;
 
