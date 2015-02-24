@@ -87,7 +87,8 @@ abstract class iMSCP_Plugin
 	 * date: Last modified date of the plugin in YYYY-MM-DD format
 	 * name: Plugin name
 	 * desc: Plugin short description (text only)
-	 * url: Website in which it's possible to found more information about the plugin.
+	 * url: Website in which it's possible to found more information about the plugin
+	 * priority: OPTIONAL priority which define priority for plugin backend processing
 	 *
 	 * A plugin can provide any other info for its own needs. However, the following keywords are reserved for internal
 	 * use:
@@ -103,7 +104,7 @@ abstract class iMSCP_Plugin
 	 */
 	public function getInfo()
 	{
-		$infoFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $this->getName() . '/info.php';
+		$infoFile = $this->getPluginManager()->getPluginDirectory() . '/' . $this->getName() . '/info.php';
 
 		$info = array();
 
@@ -122,7 +123,7 @@ abstract class iMSCP_Plugin
 				);
 			} else {
 				throw new iMSCP_Plugin_Exception(
-					tr("Unable to read the $%s file. Please, check file permissions", $infoFile)
+					tr("Unable to read the %s file. Please, check file permissions", $infoFile)
 				);
 			}
 		}
@@ -208,8 +209,7 @@ abstract class iMSCP_Plugin
 		$this->isLoadedConfig = false;
 
 		$pluginName = $this->getName();
-
-		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . "/$pluginName/config.php";
+		$configFile = $this->getPluginManager()->getPluginDirectory() . "/$pluginName/config.php";
 		$config = array();
 
 		if (@file_exists($configFile)) {
@@ -499,7 +499,7 @@ abstract class iMSCP_Plugin
 	protected function migrateDb($migrationMode = 'up')
 	{
 		$pluginName = $this->getName();
-		$pluginManager = $this->pluginManager;
+		$pluginManager = $this->getPluginManager();
 		$sqlDir = $pluginManager->getPluginDirectory() . '/' . $pluginName . '/sql';
 
 		if (is_dir($sqlDir)) {
