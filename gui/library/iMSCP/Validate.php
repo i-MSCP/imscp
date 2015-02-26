@@ -159,7 +159,7 @@ class iMSCP_Validate
      * @see Zend_Validate_Hostname for available options
      * @param string $hostname Hostname to be validated
      * @param array $options Validator options OPTIONAL
-     * @return bool TRUE if email address is valid, FALSE otherwise
+     * @return bool TRUE if hostname is valid, FALSE otherwise
      */
     public function hostname($hostname, $options = array())
     {

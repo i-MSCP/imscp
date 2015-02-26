@@ -59,7 +59,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 200;
+	protected $lastUpdate = 201;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3168,5 +3168,21 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		return null;
+	}
+
+	/**
+	 * Fixed: Wrong field type for the plugin.plugin_config_prev column
+	 * @return array SQL statements to be executed
+	 */
+	protected function r201()
+	{
+		return array(
+			$this->changeColumn(
+				'plugin',
+				'plugin_config_prev',
+				'plugin_config_prev TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+			),
+			'UPDATE plugin SET plugin_config_prev = plugin_config'
+		);
 	}
 }
