@@ -27,6 +27,9 @@ PLUGINS
 	Added: iMSCP_Plugin::getConfigPrev() and iMSCP_Plugin::getConfigPrevParam() methods
 	Updated: API to version 1.0.0
 
+SKELETON
+	Removed: Link to the panel default index.html files ( Panel must not be publicly exposed )
+
 SERVICES
 	Fixed: Apache access.log file are put in wrong directory ( vlogger )
 	Fixed: Log summary message on TLS handshake completion ( Postfix )
