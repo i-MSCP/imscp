@@ -99,7 +99,7 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_REQUEST['admin'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Maintenance'),
-			'CONTEXT_CLASS' => ' no_header',
+			'HEADER_BLOCK' => '',
 			'BOX_MESSAGE_TITLE' => tr('System under maintenance'),
 			'BOX_MESSAGE' => (isset($cfg['MAINTENANCEMODE_MESSAGE']))
 				? preg_replace('/\s\s+/', '', nl2br(tohtml($cfg['MAINTENANCEMODE_MESSAGE'])))
@@ -120,7 +120,6 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_REQUEST['admin'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Login'),
-			'CONTEXT_CLASS' => '',
 			'TR_LOGIN' => tr('Login'),
 			'TR_USERNAME' => tr('Username'),
 			'UNAME' => isset($_REQUEST['uname']) ? stripslashes($_REQUEST['uname']) : '',

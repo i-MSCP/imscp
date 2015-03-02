@@ -106,49 +106,35 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>i-MSCP - internet Multi Server Control Panel - Fatal Error</title>
-		<meta charset="UTF-8">
-		<meta name="robots" content="nofollow, noindex">
-		<style>
-			h1 {
-				font-size: 1.5em;
-				letter-spacing: .1em;
-				text-align: center;
-				padding: 0;
-				margin: 0;
-			}
-
-			#message_container {
-				background: transparent url('/themes/default/assets/images/black/box/message_top.jpg') no-repeat top left;
-				position: absolute;
-				top:170px;
-				left:0;
-				right:0;
-				width:453px;
-				margin: 0 auto 0 auto;
-				padding-top: 80px;
-				border: 1px solid #ededed;
-				border-top: none;
-				-webkit-border-radius: 4px;
-				-moz-border-radius: 4px;
-				border-radius: 4px;
-			}
-
-			#message_container pre {
-				margin-top: 1em;
-				padding: 0 .5em;
-				white-space: -moz-pre-wrap;
-				white-space: -pre-wrap;
-				white-space: -o-pre-wrap;
-				white-space: pre-wrap;
-				word-wrap: break-word;
-			}
-		</style>
+	<title>i-MSCP - internet Multi Server Control Panel - Fatal Error</title>
+	<meta charset="UTF-8">
+	<meta name="robots" content="nofollow, noindex">
+	<link rel="icon" href="/themes/default/assets/images/favicon.ico">
+	<link rel="stylesheet" href="/themes/default/assets/css/jquery-ui-black.css">
+	<link rel="stylesheet" href="/themes/default/assets/css/simple.css">
+	<!--[if (IE 7)|(IE 8)]>
+		<link href="/themes/default/assets/css/ie78overrides.css?v=1425280612" rel="stylesheet">
+	<![endif]-->
+	<script src="/themes/default/assets/js/jquery/jquery.js"></script>
+	<script src="/themes/default/assets/js/jquery/jquery-ui.js"></script>
+	<script src="/themes/default/assets/js/imscp.js"></script>
+	<script>
+		$(document).ready(function () {
+			iMSCP.initApplication('simple');
+		});
+	</script>
 	</head>
-	<body>
-		<div id="message_container">
-			<h1>An unexpected error occured</h1>
-			<pre>{$this->message}</pre>
+	<body class="black">
+		<div class="wrapper">
+			<div id="content">
+				<div id="message_container">
+					<h1>An unexpected error occured</h1>
+					<pre>{$this->message}</pre>
+					<div class="buttons">
+						<a class="link_as_button" href="javascript:history.go(-1)" target="_self">Back</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
@@ -187,7 +173,7 @@ HTML;
 		$tpl->assign(
 			array(
 				'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Fatal Error',
-				'CONTEXT_CLASS' => ' no_header',
+				'HEADER_BLOCK' => '',
 				'BOX_MESSAGE_TITLE' => 'An unexpected error occured',
 				'PAGE_MESSAGE' => '',
 				'BOX_MESSAGE' => $this->message,

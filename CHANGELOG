@@ -20,7 +20,7 @@ FRONTEND
 	Improved: Translations strings entries can now be accessed as object properties ( i18n_getJsTranslations() )
 
 INSTALLER
-	Fixed: iMSCP::Requirements::_modules: Modules [Email::Simple] were not found on your system
+	Fixed: Missing Email::Simple Perl module ( no longer required )
 	Fixed: Use of uninitialized value $dbPass in string ( imscp/engine/setup/imscp-setup-methods.pl line 482 )
 
 PLUGINS

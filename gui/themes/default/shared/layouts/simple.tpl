@@ -23,11 +23,13 @@ imscp_i18n = {JS_TRANSLATIONS};
 </script>
 </head>
 <body class="{THEME_COLOR}">
-<div class="wrapper{CONTEXT_CLASS}">
+<div class="wrapper">
+	<!-- BDP: header_block -->
 	<div id="header">
 		<div id="logo"><span>{productLongName}</span></div>
 		<div id="copyright"><span><a href="{productLink}" target="blank">{productCopyright}</a></span></div>
 	</div>
+	<!-- EDP: header_block -->
 	<div id="content">
 		<!-- BDP: page_message -->
 		<div id="notice" class="{MESSAGE_CLS}">{MESSAGE}</div>
