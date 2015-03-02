@@ -36,7 +36,7 @@ All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
 
 	# apt-get update && apt-get dist-upgrade
 
-2. Install the required packages
+2. Install the pre-required packages
 
 	# apt-get update && apt-get install whiptail tasksel
 	# tasksel install standard
