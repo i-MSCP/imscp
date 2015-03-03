@@ -1195,6 +1195,30 @@ class iMSCP_Plugin_Manager
 	}
 
 	/**
+	 * Check plugin compatibility
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param string $pluginName Plugin name
+	 * @param array $pluginInfo Plugin info
+	 * @return void
+	 */
+	public function pluginCheckCompat($pluginName, array $pluginInfo)
+	{
+		if(isset($pluginInfo['require_api'])) {
+			if(version_compare($this->getPluginApiVersion(), $pluginInfo['require_api'], '>=')) {
+				return;
+			}
+		}
+
+		throw new iMSCP_Plugin_Exception(
+			tr('The %s plugin version %s is not compatible with your i-MSCP version.',
+				$pluginName,
+				$pluginInfo['version']
+			)
+		);
+	}
+
+	/**
 	 * Update plugin list
 	 *
 	 * This method is responsible to update the plugin list and trigger plugin update, change and deletion.
@@ -1220,6 +1244,8 @@ class iMSCP_Plugin_Manager
 			if ($fileInfo->isDir() && $fileInfo->isReadable()) {
 				$pluginName = $fileInfo->getBasename();
 				$pluginInstance = $this->loadPlugin($pluginName);
+				$pluginNeedChange = false;
+				$pluginNeedUpdate = false;
 
 				if ($pluginInstance) {
 					$seenPlugins[] = $pluginName;
@@ -1300,8 +1326,6 @@ class iMSCP_Plugin_Manager
 								$toChangePlugins[] = $pluginName;
 								$returnInfo['changed']++;
 							}
-						} elseif(! $pluginNeedUpdate && ! $pluginNeedChange) {
-							continue;
 						}
 					}
 
@@ -1312,7 +1336,8 @@ class iMSCP_Plugin_Manager
 							'type' => $pluginInstance->getType(),
 							'info' => json_encode($pluginInfo),
 							'config' => json_encode($pluginConfig),
-							'config_prev' => json_encode($pluginConfigPrev),
+							'config_prev' => ($pluginNeedUpdate || $pluginNeedChange)
+								? json_encode($pluginConfigPrev) : json_encode($pluginConfig),
 							'priority' => (isset($pluginInfo['priority'])) ? intval($pluginInfo['priority']) : 0,
 							'status' => $pluginStatus,
 							'backend' => (

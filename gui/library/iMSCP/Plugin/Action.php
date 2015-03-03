@@ -41,7 +41,6 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
 	 */
 	public function register(iMSCP_Events_Manager_Interface $eventsManager)
 	{
-		//trigger_error(sprintf('register() not implemented in %s', get_class($this)), E_USER_WARNING);
 	}
 
 	/**

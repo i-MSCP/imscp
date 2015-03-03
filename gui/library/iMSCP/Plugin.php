@@ -84,6 +84,7 @@ abstract class iMSCP_Plugin
 	 * author: Plugin author name(s)
 	 * email: Plugin author email
 	 * version: Plugin version
+	 * require_api: Required i-MSCP plugin API version
 	 * date: Last modified date of the plugin in YYYY-MM-DD format
 	 * name: Plugin name
 	 * desc: Plugin short description (text only)
@@ -133,6 +134,7 @@ abstract class iMSCP_Plugin
 				'author' => tr('Unknown'),
 				'email' => '',
 				'version' => '0.0.0',
+				'require_api' => '99.0.0',
 				'date' => '0000-00-00',
 				'name' => $this->getName(),
 				'desc' => tr('Not provided'),

@@ -15,7 +15,7 @@
 		</thead>
 		<tfoot>
 		<tr>
-			<td><label><input type="checkbox"/></label></td>
+			<td><label><input type="checkbox"></label></td>
 			<td>{TR_PLUGIN}</td>
 			<td>{TR_DESCRIPTION}</td>
 			<td>{TR_STATUS}</td>
@@ -30,30 +30,24 @@
 			<td>
 				<p>{PLUGIN_DESCRIPTION}</p>
 				<span class="bold italic">
-					<small>{TR_VERSION} {PLUGIN_VERSION} | <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a>
-						| <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a></small>
+					<small>{TR_VERSION} {PLUGIN_VERSION} | <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> | <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a></small>
 				</span>
 			</td>
 			<td>
 				{PLUGIN_STATUS}
 				<!-- BDP: plugin_status_details_block -->
-				<span id="{PLUGIN_NAME}" style="vertical-align: middle;" class="plugin_error icon i_help"
-					  title="{TR_CLICK_FOR_MORE_DETAILS}">{PLUGIN_STATUS_DETAILS}</span>
+				<span id="{PLUGIN_NAME}" style="vertical-align: middle;" class="plugin_error icon i_help" title="{TR_CLICK_FOR_MORE_DETAILS}">{PLUGIN_STATUS_DETAILS}</span>
 				<!-- EDP: plugin_status_details_block -->
 			</td>
 			<td>
 				<!-- BDP: plugin_activate_link -->
-				<a style="vertical-align: middle;" class="icon i_open"
-				   href="settings_plugins.php?{ACTIVATE_ACTION}={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}"></a>
-				<a style="vertical-align: middle;" class="icon i_close"
-				   href="settings_plugins.php?{UNINSTALL_ACTION}={PLUGIN_NAME}" title="{TR_UNINSTALL_TOOLTIP}"></a>
+				<a style="vertical-align: middle;" class="icon i_open" href="settings_plugins.php?{ACTIVATE_ACTION}={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}"></a>
+				<a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?{UNINSTALL_ACTION}={PLUGIN_NAME}" title="{TR_UNINSTALL_TOOLTIP}"></a>
 				<!-- EDP: plugin_activate_link -->
 
 				<!-- BDP: plugin_deactivate_link -->
-				<a style="vertical-align: middle;" class="icon i_close"
-				   href="settings_plugins.php?disable={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>
-				<a style="vertical-align: middle;" class="icon i_lock"
-				   href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}"></a>
+				<a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?disable={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>
+				<a style="vertical-align: middle;" class="icon i_lock" href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}"></a>
 				<!-- EDP: plugin_deactivate_link -->
 
 				<!-- BDP: plugin_protected_link -->
@@ -97,8 +91,8 @@
 				<span class="tips icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}"></span>
 			</td>
 			<td>
-				<input type="file" name="plugin_archive"/>
-				<input type="submit" value="{TR_UPLOAD}"/>
+				<input type="file" name="plugin_archive">
+				<input type="submit" value="{TR_UPLOAD}">
 			</td>
 		</tr>
 		</tbody>
@@ -110,10 +104,10 @@
 
 		$dataTable = $(".datatable").dataTable(
 			{
-				"language": {DATATABLE_TRANSLATIONS},
-				"displayLength": 5,
-				"stateSave": true,
-				"pagingType": "simple"
+				language: imscp_i18n.admin.datatable,
+				displayLength: 5,
+				stateSave: true,
+				pagingType: "simple"
 			}
 		);
 
@@ -125,7 +119,7 @@
 			function () { $("table :checkbox").prop('checked', $(this).is(':checked')); }
 		);
 
-		$("button[name=update_plugin_list]").click(function () { window.location.replace("?update_plugin_list=all"); });
+		$("button[name=update_plugin_list]").click(function () { window.location.replace("?update_plugin_list=step1"); });
 
 		$dataTable.on("click", ".plugin_error", function() {
 			var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');
@@ -134,19 +128,21 @@
 			errDialog.dialog(
 				{
 					modal: true,
-					title: pluginName + " - {TR_ERROR_DETAILS}",
+					title: pluginName + " " + imscp_i18n.admin.error_details,
 					show: "clip",
 					hide: "clip",
 					minHeight: 200,
 					minWidth: 500,
 					buttons: [
 						{
-							text: "{TR_FORCE_RETRY}", click: function () {
+							text: imscp_i18n.admin.force_retry,
+							click: function () {
 								window.location.replace("?retry=" + pluginName)
 							}
 						},
 						{
-							text: "{TR_CLOSE}", click: function () {
+							text: imscp_i18n.admin.close,
+							click: function () {
 								$(this).dialog("close").dialog("destroy")
 							}
 						}
