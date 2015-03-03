@@ -199,11 +199,9 @@ sub build
 		}
 	}
 
-	# Backup current config if any
+	# Backup current configuration file if any
 	if(-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
-		$rs = iMSCP::File->new(
-			'filename' => "$main::imscpConfig{'CONF_DIR'}/imscp.conf"
-		)->copyFile(
+		$rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
 			"$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
 		);
 		return $rs if $rs;
@@ -339,7 +337,7 @@ sub _showReadmeFile
 {
 	my $dialog = $_[0];
 
-	my $file = iMSCP::File->new('filename' => $FindBin::Bin . '/README');
+	my $file = iMSCP::File->new( filename => $FindBin::Bin . '/README');
 	my $content = $file->get() or fatal("Unable to read $FindBin::Bin/README");
 
 	$dialog->msgbox(<<EOF);
@@ -370,7 +368,10 @@ sub _askDistro()
 	my $description = $lsbRelease->getDescription(1);
 	my $packagesFile = "$FindBin::Bin/docs/$distribution/packages-$codename.xml";
 
-	if($distribution ne 'n/a' && (lc($distribution) eq 'debian' || lc($distribution) eq 'ubuntu') && $codename ne 'n/a') {
+	if(
+		$distribution ne 'n/a' && (lc($distribution) eq 'debian' || lc($distribution) eq 'ubuntu') &&
+		$codename ne 'n/a'
+	) {
 		unless(-f $packagesFile) {
 			iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
@@ -436,7 +437,7 @@ sub _askInstallMode
 
 	$dialog->set('cancel-label', 'Abort');
 
-	my ($rs, $mode) = $dialog->radiolist(<<EOF, ['Install', 'Build'], 'Install');
+	my ($rs, $mode) = $dialog->radiolist(<<EOF, [ 'Install', 'Build' ], 'Install');
 
 \\Z4\\Zb\\ZuInstaller Options\\Zn
 
@@ -529,7 +530,7 @@ sub _processDistroInstallFiles
 	return $rs if $rs;
 
 	# Get list of sub config dir from default config directory (debian)
-	my $dirDH = iMSCP::Dir->new('dirname' => $defaultConfigDir);
+	my $dirDH = iMSCP::Dir->new( dirname => $defaultConfigDir );
 	my @configDirs = $dirDH->getDirs();
 
 	for(@configDirs) {
@@ -577,11 +578,11 @@ sub _compileDaemon
 	return $rs if $rs;
 
 
-	my $dir = iMSCP::Dir->new('dirname' => "$main::{'SYSTEM_ROOT'}/daemon");
+	my $dir = iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" );
 	$rs = $dir->make();
 	return $rs if $rs;
 
-	my $file = iMSCP::File->new('filename' => 'imscp_daemon');
+	my $file = iMSCP::File->new( filename => 'imscp_daemon' );
 	$rs = $file->copyFile("$main::{'SYSTEM_ROOT'}/daemon");
 	return $rs if $rs;
 
@@ -611,7 +612,7 @@ sub _buildEngineFiles
 	my $rs = _processXmlFile("$FindBin::Bin/engine/install.xml");
 	return $rs if $rs;
 
-	my $dir = iMSCP::Dir->new('dirname' => "$FindBin::Bin/engine");
+	my $dir = iMSCP::Dir->new( dirname => "$FindBin::Bin/engine" );
 
 	my @configDirs = $dir->getDirs();
 
@@ -947,9 +948,9 @@ sub _processXmlFile
 	eval "use XML::Simple; 1";
 	fatal('Unable to load the XML::Simple perl module') if $@;
 
-	my $xml = XML::Simple->new('ForceArray' => 1, 'ForceContent' => 1);
+	my $xml = XML::Simple->new( ForceArray => 1, ForceContent => 1 );
 
-	my $data = eval { $xml->XMLin($file, 'VarAttr' => 'export') };
+	my $data = eval { $xml->XMLin($file, VarAttr => 'export') };
 
 	if ($@) {
 		error($@);
@@ -1048,7 +1049,7 @@ sub _processFolder
 {
 	my $data = $_[0];
 
-	my $dir = iMSCP::Dir->new('dirname' => $data->{'content'});
+	my $dir = iMSCP::Dir->new( dirname => $data->{'content'} );
 
 	# Needed to be sure to not keep any file from a previous build that has failed
 	if(defined $main::{'INST_PREF'} && $main::{'INST_PREF'} eq $data->{'content'}) {
@@ -1108,7 +1109,7 @@ sub _copyConfig
 	if($data->{'user'} || $data->{'group'} || $data->{'mode'}) {
 		my $filename = -e "$path/$name" ? "$path/$name" : $path;
 
-		my $file = iMSCP::File->new('filename' => $filename);
+		my $file = iMSCP::File->new( filename => $filename );
 		$rs = $file->mode(oct($data->{'mode'})) if $data->{'mode'};
 		return $rs if $rs;
 
@@ -1148,7 +1149,7 @@ sub _copy
 	if($data->{'user'} || $data->{'group'} || $data->{'mode'}) {
 		my $filename = -e "$path/$name" ? "$path/$name" : $path;
 
-		my $file = iMSCP::File->new('filename' => $filename);
+		my $file = iMSCP::File->new( filename => $filename );
 		$rs = $file->mode(oct($data->{'mode'})) if $data->{'mode'};
 		return $rs if $rs;
 
@@ -1172,7 +1173,7 @@ sub _copy
 
 sub _createFile
 {
-	iMSCP::File->new('filename' => $_[0]->{'content'})->save();
+	iMSCP::File->new( filename => $_[0]->{'content'} )->save();
 }
 
 =item _chownFile()

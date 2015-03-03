@@ -112,7 +112,7 @@ sub preBuild
 	return $rs if $rs;
 
 	unless($main::skippackages) {
-		if($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && not $main::reconfigure ~~ ['sql', 'servers', 'all']) {
+		if($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && not $main::reconfigure ~~ [ 'sql', 'servers', 'all' ]) {
 			$ENV{'DEBIAN_PRIORITY'} = 'critical';
 		}
 
@@ -231,7 +231,7 @@ sub uninstallPackages
 	# Remove any duplicate entry
 	# Do not try to remove any packages which were scheduled for installation
 	@{$self->{'packagesToUninstall'}} = grep {
-		not $_ ~~ [@{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}}]
+		not $_ ~~ [ @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}} ]
 	} uniq(@{$self->{'packagesToUninstall'}});
 
 	# Do not try to remove packages which are no longer available on the system or not installed
