@@ -444,82 +444,81 @@ function checkAction($pluginManager, $pluginName, $action)
 function doAction($pluginManager, $pluginName, $action)
 {
 	if($pluginManager->isPluginKnown($pluginName)) {
-		if(in_array($action, array('install', 'update', 'enable'))) {
-			try {
+		try {
+			if(in_array($action, array('install', 'update', 'enable'))) {
 				$pluginManager->pluginCheckCompat($pluginName, $pluginManager->getPluginInfo($pluginName));
-
-				if(checkAction($pluginManager, $pluginName, $action)) {
-					$ret = call_user_func(array($pluginManager, 'plugin' . $action), $pluginName);
-
-					if($ret !== false) {
-						if($ret == PluginManager::ACTION_FAILURE || $ret == PluginManager::ACTION_STOPPED) {
-							$msg = ($ret == PluginManager::ACTION_FAILURE)
-								? tr('Action has failed.') : tr('Action has been stopped.');
-
-							set_page_message(tr('Unable to %s the %s plugin: %s', $action, $pluginName, $msg), 'error');
-						} else {
-							$msg = '';
-
-							if($action != 'delete' && $pluginManager->hasPluginBackend($pluginName)) {
-								switch($action) {
-									case 'install':
-										$msg = tr('Plugin %s scheduled for installation.', $pluginName);
-										break;
-									case 'uninstall':
-										$msg = tr('Plugin %s scheduled for uninstallation.', $pluginName);
-										break;
-									case 'update':
-										$msg = tr('Plugin %s scheduled for update.', $pluginName);
-										break;
-									case 'change':
-										$msg = tr('Plugin %s scheduled for change.', $pluginName);
-										break;
-									case 'enable':
-										$msg = tr('Plugin %s scheduled for activation.', $pluginName);
-										break;
-									case 'disable':
-										$msg = tr('Plugin %s scheduled for deactivation.', $pluginName);
-										break;
-									case 'protect':
-										$msg = tr('Plugin %s protected.', $pluginName);
-								}
-
-								set_page_message($msg, 'success');
-							} else {
-								switch($action) {
-									case 'install':
-										$msg = tr('Plugin %s installed.', $pluginName);
-										break;
-									case 'uninstall':
-										$msg = tr('Plugin %s uninstalled.', $pluginName);
-										break;
-									case 'update':
-										$msg = tr('Plugin %s updated.', $pluginName);
-										break;
-									case 'change':
-										$msg = tr('Plugin %s changed.', $pluginName);
-										break;
-									case 'enable':
-										$msg = tr('Plugin %s activated.', $pluginName);
-										break;
-									case 'disable':
-										$msg = tr('Plugin %s deactivated.', $pluginName);
-										break;
-									case 'delete':
-										$msg = tr('Plugin %s deleted.', $pluginName);
-								}
-
-								set_page_message($msg, 'success');
-							}
-						}
-					} else {
-						set_page_message(tr('An unexpected error occured'));
-					}
-				}
-
-			} catch(iMSCPException $e) {
-				set_page_message($e->getMessage(), 'error');
 			}
+
+			if(checkAction($pluginManager, $pluginName, $action)) {
+				$ret = call_user_func(array($pluginManager, 'plugin' . $action), $pluginName);
+
+				if($ret !== false) {
+					if($ret == PluginManager::ACTION_FAILURE || $ret == PluginManager::ACTION_STOPPED) {
+						$msg = ($ret == PluginManager::ACTION_FAILURE)
+							? tr('Action has failed.') : tr('Action has been stopped.');
+
+						set_page_message(tr('Unable to %s the %s plugin: %s', $action, $pluginName, $msg), 'error');
+					} else {
+						$msg = '';
+
+						if($action != 'delete' && $pluginManager->hasPluginBackend($pluginName)) {
+							switch($action) {
+								case 'install':
+									$msg = tr('Plugin %s scheduled for installation.', $pluginName);
+									break;
+								case 'uninstall':
+									$msg = tr('Plugin %s scheduled for uninstallation.', $pluginName);
+									break;
+								case 'update':
+									$msg = tr('Plugin %s scheduled for update.', $pluginName);
+									break;
+								case 'change':
+									$msg = tr('Plugin %s scheduled for change.', $pluginName);
+									break;
+								case 'enable':
+									$msg = tr('Plugin %s scheduled for activation.', $pluginName);
+									break;
+								case 'disable':
+									$msg = tr('Plugin %s scheduled for deactivation.', $pluginName);
+									break;
+								case 'protect':
+									$msg = tr('Plugin %s protected.', $pluginName);
+							}
+
+							set_page_message($msg, 'success');
+						} else {
+							switch($action) {
+								case 'install':
+									$msg = tr('Plugin %s installed.', $pluginName);
+									break;
+								case 'uninstall':
+									$msg = tr('Plugin %s uninstalled.', $pluginName);
+									break;
+								case 'update':
+									$msg = tr('Plugin %s updated.', $pluginName);
+									break;
+								case 'change':
+									$msg = tr('Plugin %s changed.', $pluginName);
+									break;
+								case 'enable':
+									$msg = tr('Plugin %s activated.', $pluginName);
+									break;
+								case 'disable':
+									$msg = tr('Plugin %s deactivated.', $pluginName);
+									break;
+								case 'delete':
+									$msg = tr('Plugin %s deleted.', $pluginName);
+							}
+
+							set_page_message($msg, 'success');
+						}
+					}
+				} else {
+					set_page_message(tr('An unexpected error occured'));
+				}
+			}
+		} catch(iMSCPException $e) {
+			set_page_message($e->getMessage(), 'error');
 		}
 	} else {
 		showBadRequestErrorPage();
