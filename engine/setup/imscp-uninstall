@@ -83,11 +83,10 @@ sub process
 		[\&_removeFiles, 'Removing i-MSCP files'],
 	);
 
-	my $rs = 0;
 	my $step = 1;
 
 	for (@steps){
-		$rs = step($_->[0], $_->[1], scalar @steps, $step);
+		my $rs = step($_->[0], $_->[1], scalar @steps, $step);
 		return $rs if $rs;
 		$step++;
 	}
@@ -297,7 +296,7 @@ sub _uninstallDaemons
 	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_NETWORK_SNAME'}") {
 		my $rs = $serviceMngr->stop($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'retval');
 		error("Unable to stop i-MSCP Network service") if $rs;
-        return $rs if $rs;
+		return $rs if $rs;
 
 		my ($stdout, $stderr);
 		$rs = execute(
@@ -317,7 +316,7 @@ sub _uninstallDaemons
 
 	if(-x '/bin/systemctl') { # Make systemd aware of the changes above
 		my ($stdout, $stderr);
-		$rs = execute("/bin/systemctl daemon-reload", \$stdout, \$stderr);
+		my $rs = execute("/bin/systemctl daemon-reload", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -328,29 +327,29 @@ sub _uninstallDaemons
 
 sub _removeCrontabFile
 {
-	my $rs = 0;
+	if(-f '/etc/cron.d/imscp') {
+		return iMSCP::File->new( filename => '/etc/cron.d/imscp' )->delFile();
+	}
 
-	$rs = iMSCP::File->new('filename' =>'/etc/cron.d/imscp')->delFile() if -f '/etc/cron.d/imscp';
-
-	$rs;
+	0;
 }
 
 sub _removeLogrotateFile
 {
-	my $rs = 0;
+	if(-f '/etc/logrotate.d/imscp') {
+		return iMSCP::File->new( filename => '/etc/logrotate.d/imscp' )->delFile();
+	}
 
-	iMSCP::File->new('filename' =>'/etc/logrotate.d/imscp')->delFile() if -f '/etc/logrotate.d/imscp';
-
-	$rs;
+	0;
 }
 
 sub _removeSysctlFile
 {
-	my $rs = 0;
+	if(-f '/etc/sysctl.d/imscp.conf') {
+		return iMSCP::File->new( filename => '/etc/sysctl.d/imscp.conf' )->delFile();
+	}
 
-	iMSCP::File->new('filename' =>'/etc/sysctl.d/imscp.conf')->delFile() if -f '/etc/sysctl.d/imscp.conf';
-
-	$rs;
+	0;
 }
 
 # FIXME: localhost is not always the correct value
@@ -405,15 +404,13 @@ sub _removeiMSCPSystemGroup
 
 sub _removeFiles
 {
-	my $rs = 0;
-
 	chdir('/');
 
 	for (
 		$main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
 		$main::imscpConfig{'ROOT_DIR'}, $main::imscpConfig{'CACHE_DATA_DIR'}, $main::imscpConfig{'VARIABLE_DATA_DIR'},
 	) {
-		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
+		my $rs = iMSCP::Dir->new('dirname' => $_)->remove();
 		return $rs if $rs;
 	}
 
