@@ -126,8 +126,7 @@ function uploadPlugin($pluginManager)
 						}
 
 						if($arch->extractTo($tmpDirectory, "$pluginName/info.php")) {
-							$pluginInfo = include("$tmpDirectory/$pluginName/info.php");
-							$pluginManager->pluginCheckCompat($pluginName, $pluginInfo);
+							$pluginManager->pluginCheckCompat($pluginName, include("$tmpDirectory/$pluginName/info.php"));
 						} else {
 							throw new iMSCPException(tr('Unable to extract info.php file'));
 						}
