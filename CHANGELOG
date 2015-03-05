@@ -32,7 +32,7 @@ PLUGINS
 	Added: require_api info field ( field which allows the plugins to define the required i-MSCP plugin API )
 	Fixed: Force reload of newest plugin info file ( iMSCP_Plugin::getInfo() )
 	Fixed: Force reload of newest plugin configuration file ( iMSCP_Plugin::getConfigFromFile() )
-	Fixed: Opcode cache is not correctly reseted on plugin list update
+	Fixed: Opcode cache is not correctly resetted on plugin list update
 	Updated: API to version 1.0.0
 
 SKELETON
