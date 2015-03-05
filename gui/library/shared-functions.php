@@ -1561,7 +1561,7 @@ function utils_removeDir($directory)
 {
 	$directory = rtrim($directory, '/');
 
-	if (! file_exists($directory) || ! is_dir($directory)) {
+	if (! is_dir($directory)) {
 		return false;
 	} elseif (is_readable($directory)) {
 		$handle = opendir($directory);
@@ -3262,29 +3262,6 @@ function getLastDayOfMonth($month = null, $year = null)
 	$year = $year ? : date('y');
 
 	return mktime(23, 59, 59, $month + 1, 0, $year);
-}
-
-/**
- * Delete the given file from the opcode cache
- *
- * Note: If the opcache doesn't implement file clearing, the full opcode cache is cleared.
- *
- * @param string $filepath filepath
- * @return void
- */
-function imscp_delete_opcode_file($filepath)
-{
-	iMSCP_Utility_OpcodeCache::clearAllActive($filepath);
-}
-
-/**
- * Clear the opcode cache
- *
- * @return void
- */
-function imscp_clear_opcode_cache()
-{
-	iMSCP_Utility_OpcodeCache::clearAllActive();
 }
 
 /**

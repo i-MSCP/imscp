@@ -59,7 +59,7 @@ class iMSCP_Utility_OpcodeCache
 				'error' => false,
 				'clearCallback' => function ($fileAbsPath) {
 					if($fileAbsPath !== null && function_exists('opcache_invalidate')) {
-						opcache_invalidate($fileAbsPath);
+						opcache_invalidate($fileAbsPath, true);
 					} else {
 						opcache_reset();
 					}
@@ -92,7 +92,7 @@ class iMSCP_Utility_OpcodeCache
 			),
 
 			// http://www.php.net/manual/de/book.wincache.php
-			'WinCache' => array(
+			/*'WinCache' => array(
 				'active' => extension_loaded('wincache') && ini_get('wincache.ocenabled') === '1',
 				'version' => phpversion('wincache'),
 				'canReset' => false,
@@ -107,6 +107,7 @@ class iMSCP_Utility_OpcodeCache
 					}
 				}
 			),
+			*/
 
 			// http://xcache.lighttpd.net/
 			'XCache' => array(
@@ -120,17 +121,17 @@ class iMSCP_Utility_OpcodeCache
 				'clearCallback' => (
 				$xcVersion && version_compare($xcVersion, '3.0.0', '<')
 					?
-						function () {
-							if(!ini_get('xcache.admin.enable_auth')) {
-								xcache_clear_cache(XC_TYPE_PHP, 0);
-							}
+					function () {
+						if(!ini_get('xcache.admin.enable_auth')) {
+							xcache_clear_cache(XC_TYPE_PHP, 0);
 						}
+					}
 					:
-						function () {
-							if(!ini_get('xcache.admin.enable_auth')) {
-								xcache_clear_cache(XC_TYPE_PHP);
-							}
+					function () {
+						if(!ini_get('xcache.admin.enable_auth')) {
+							xcache_clear_cache(XC_TYPE_PHP);
 						}
+					}
 				)
 			),
 

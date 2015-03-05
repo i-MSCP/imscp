@@ -35,6 +35,7 @@ use iMSCP_Plugin_Manager as PluginManager;
 use iMSCP_Events as Events;
 use iMSCP_Events_Listener_ResponseCollection as EventCollection;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Utility_OpcodeCache as OpcodeCacheUtils;
 use PharData;
 use ZipArchive;
 use iMSCP_Exception as iMSCPException;
@@ -82,75 +83,51 @@ function uploadPlugin($pluginManager)
 			return $tmpDirectory . '/' . $_FILES['plugin_archive']['name'];
 		};
 
-		if(($archPath = utils_uploadFile('plugin_archive', array($beforeMove, $tmpDirectory))) !== false) {
-			$zipArch = (substr($archPath, -3) === 'zip');
+		# Upload plugin archive into gui/data/tmp directory ( eg. gui/data/tmp/PluginName.zip )
+		$tmpArchPath = utils_uploadFile('plugin_archive', array($beforeMove, $tmpDirectory));
+
+		if($tmpArchPath !== false) {
+			$zipArch = (strtolower(pathinfo($tmpArchPath, PATHINFO_EXTENSION)) == 'zip');
 
 			try {
 				if(!$zipArch) {
-					$arch = new PharData($archPath);
-					$name = $arch->getBasename();
+					$arch = new PharData($tmpArchPath);
+					$pluginName = $arch->getBasename();
 
-					if(!isset($arch["$name/$name.php"])) {
-						throw new iMSCPException(tr('File %s is missing in plugin archive.', "$name.php"));
+					if(!isset($arch["$pluginName/$pluginName.php"])) {
+						throw new iMSCPException(tr('File %s is missing in plugin archive.', "$pluginName.php"));
 					}
 
-					$arch->extractTo($tmpDirectory, "$name/info.php", true);
-
-					imscp_delete_opcode_file("$tmpDirectory/$name/info.php");
-
-					$pluginInfo = include("$tmpDirectory/$name/info.php");
-
-					if(
-						isset($pluginInfo['require_api']) &&
-						version_compare($pluginManager->getPluginApiVersion(), $pluginInfo['require_api'], '<')
-					) {
-						imscp_delete_opcode_file("$tmpDirectory/$name/info.php");
-						utils_removeDir("$tmpDirectory/$name");
-
-						throw new iMSCPException(tr('Your i-MSCP version is not compatible with this plugin.'));
-					}
-
-					imscp_delete_opcode_file("$tmpDirectory/$name/info.php");
-					utils_removeDir("$tmpDirectory/$name");
+					$arch->extractTo($tmpDirectory, "$pluginName/info.php", true);
+					$pluginManager->pluginCheckCompat($pluginName, include("$tmpDirectory/$pluginName/info.php"));
 				} else {
 					$arch = new ZipArchive;
 
-					if($arch->open($archPath) === true) {
-						if(($name = $arch->getNameIndex(0, ZIPARCHIVE::FL_UNCHANGED)) !== false) {
-							$name = rtrim($name, '/');
-
-							$index = $arch->locateName("$name.php", ZipArchive::FL_NODIR);
+					if($arch->open($tmpArchPath) === true) {
+						if(($pluginName = $arch->getNameIndex(0, ZIPARCHIVE::FL_UNCHANGED)) !== false) {
+							$pluginName = rtrim($pluginName, '/');
+							$index = $arch->locateName("$pluginName.php", ZipArchive::FL_NODIR);
 
 							if($index !== false) {
 								if(($stats = $arch->statIndex($index))) {
-									if($stats['name'] != "$name/$name.php") {
+									if($stats['name'] != "$pluginName/$pluginName.php") {
 										throw new iMSCPException(
-											tr('File %s has not been found in plugin archive.', "$name.php")
+											tr('File %s is missing in plugin archive.', "$pluginName.php")
 										);
 									}
 								} else {
-									throw new iMSCPException(tr('Unable to get stats for file %s.', "$name.php"));
+									throw new iMSCPException(tr('Unable to get stats for file %s.', "$pluginName.php"));
 								}
 							} else {
-								throw new iMSCPException(tr('File %s has not been found in plugin archive.', "$name.php"));
+								throw new iMSCPException(tr('File %s is missing in plugin archive.', "$pluginName.php"));
 							}
 						} else {
 							throw new iMSCPException(tr('Unable to find plugin root directory withing archive.'));
 						}
 
-						if($arch->extractTo($tmpDirectory, "$name/info.php")) {
-							imscp_delete_opcode_file("$tmpDirectory/$name/info.php");
-
-							try {
-								$pluginManager->pluginCheckCompat($name, include("$tmpDirectory/$name/info.php"));
-							} catch(\iMSCP_Exception $e) {
-								imscp_delete_opcode_file("$tmpDirectory/$name/info.php");
-								utils_removeDir("$tmpDirectory/$name");
-								throw $e;
-							}
-
-							imscp_delete_opcode_file("$tmpDirectory/$name/info.php");
-							utils_removeDir("$tmpDirectory/$name");
+						if($arch->extractTo($tmpDirectory, "$pluginName/info.php")) {
+							$pluginInfo = include("$tmpDirectory/$pluginName/info.php");
+							$pluginManager->pluginCheckCompat($pluginName, $pluginInfo);
 						} else {
 							throw new iMSCPException(tr('Unable to extract info.php file'));
 						}
@@ -159,14 +136,14 @@ function uploadPlugin($pluginManager)
 					}
 				}
 
-				if($pluginManager->isPluginKnown($name) && $pluginManager->isPluginProtected($name)) {
+				if($pluginManager->isPluginKnown($pluginName) && $pluginManager->isPluginProtected($pluginName)) {
 					throw new iMSCPException(tr('You are not allowed to update a protected plugin.'));
 				}
 
 				# Backup current plugin directory in temporary directory if exists
-				if(is_dir("$pluginDirectory/$name")) {
-					if(!@rename("$pluginDirectory/$name", "$tmpDirectory/$name")) {
-						throw new iMSCPException(tr('Unable to backup %s plugin directory.', $name));
+				if(is_dir("$pluginDirectory/$pluginName")) {
+					if(!@rename("$pluginDirectory/$pluginName", "$tmpDirectory/$pluginName" . '-old')) {
+						throw new iMSCPException(tr('Unable to backup %s plugin directory.', $pluginName));
 					}
 				}
 
@@ -184,16 +161,22 @@ function uploadPlugin($pluginManager)
 					set_page_message(tr('Unable to extract plugin archive: %s', $e->getMessage()), 'error');
 				}
 
-				if(isset($name) && is_dir("$tmpDirectory/$name")) {
-					// Restore previous plugin directory on error
-					if(!@rename("$tmpDirectory/$name", "$pluginDirectory/$name")) {
-						set_page_message(tr('Unable to restore %s plugin directory', $name), 'error');
+				if(!empty($pluginName) && is_dir("$tmpDirectory/$pluginName" . '-old')) {
+					// Try to restore previous plugin directory on error
+					if(!@rename("$tmpDirectory/$pluginName" . '-old', "$pluginDirectory/$pluginName")) {
+						set_page_message(tr('Unable to restore %s plugin directory', $pluginName), 'error');
 					}
 				}
 			}
 
-			@unlink($archPath); // Cleanup
-			if(isset($name)) utils_removeDir("$tmpDirectory/$name"); // cleanup
+			// Cleanup
+			@unlink($tmpArchPath);
+			if(!empty($pluginName)) {
+				utils_removeDir("$tmpDirectory/$pluginName");
+				utils_removeDir("$tmpDirectory/$pluginName" . '-old');
+			}
+		} else {
+			redirectTo('settings_plugins.php');
 		}
 	} else {
 		showBadRequestErrorPage();
@@ -555,8 +538,8 @@ function doBulkAction($pluginManager)
  */
 function updatePluginList($pluginManager)
 {
-	if($_GET['update_plugin_list'] === 'step1') {
-		imscp_clear_opcode_cache();
+	if($_GET['update_plugin_list'] === 'step1' && OpcodeCacheUtils::getAllActive()) {
+		OpcodeCacheUtils::clearAllActive();
 		redirectTo('settings_plugins.php?update_plugin_list=step2');
 	} else {
 		$eventManager = $pluginManager->getEventManager();
@@ -585,6 +568,8 @@ function updatePluginList($pluginManager)
 
 // Include core library
 require 'imscp-lib.php';
+
+opcache_invalidate(__FILE__, true);
 
 EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
@@ -648,11 +633,9 @@ if(!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
 		}
 	} elseif(isset($_POST['bulk_actions'])) {
 		doBulkAction($pluginManager);
-	} elseif(!empty($_FILES)) {
-		if(uploadPlugin($pluginManager)) {
-			// set_page_message(tr('Plugin has been uploaded.'), 'success');
-			redirectTo('settings_plugins.php?update_plugin_list=step1');
-		}
+	} elseif(!empty($_FILES) && uploadPlugin($pluginManager)) {
+		set_page_message(tr('Plugin has been successfully uploaded.'), 'success');
+		redirectTo('settings_plugins.php?update_plugin_list=step1');
 	}
 
 	redirectTo('settings_plugins.php');

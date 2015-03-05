@@ -105,27 +105,26 @@ abstract class iMSCP_Plugin
 	 */
 	public function getInfo()
 	{
-		$infoFile = $this->getPluginManager()->getPluginDirectory() . '/' . $this->getName() . '/info.php';
+		$file = $this->getPluginManager()->getPluginDirectory() . '/' . $this->getName() . '/info.php';
 
 		$info = array();
 
-		if (@is_readable($infoFile)) {
-			$info = include $infoFile;
+		if (@is_readable($file)) {
+			$info = include($file);
+			iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next run
 		} else {
-			if (!file_exists($infoFile)) {
+			if (!file_exists($file)) {
 				set_page_message(
 					tr(
 						'%s::getInfo() not implemented and %s not found. This is a bug in the %s plugin which must be reported to the author(s).',
 						get_class($this),
-						$infoFile,
+						$file,
 						$this->getName()
 					),
 					'warning'
 				);
 			} else {
-				throw new iMSCP_Plugin_Exception(
-					tr("Unable to read the %s file. Please, check file permissions", $infoFile)
-				);
+				throw new iMSCP_Plugin_Exception(tr("Unable to read the %s file.", $file));
 			}
 		}
 
@@ -211,20 +210,19 @@ abstract class iMSCP_Plugin
 		$this->isLoadedConfig = false;
 
 		$pluginName = $this->getName();
-		$configFile = $this->getPluginManager()->getPluginDirectory() . "/$pluginName/config.php";
+		$file = $this->getPluginManager()->getPluginDirectory() . "/$pluginName/config.php";
 		$config = array();
 
-		if (@file_exists($configFile)) {
-			if (@is_readable($configFile)) {
-				imscp_delete_opcode_file($configFile);
+		if (@file_exists($file)) {
+			if (@is_readable($file)) {
+				$config = include($file);
+				iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next run
 
-				$config = include $configFile;
-				$localConfigFile = PERSISTENT_PATH . "/plugins/$pluginName.php";
+				$file = PERSISTENT_PATH . "/plugins/$pluginName.php";
 
-				if (@is_readable($localConfigFile)) {
-					imscp_delete_opcode_file($localConfigFile);
-
-					$localConfig = include $localConfigFile;
+				if (@is_readable($file)) {
+					$localConfig = include($file);
+					iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next run
 
 					if (array_key_exists('__REMOVE__', $localConfig) && is_array($localConfig['__REMOVE__'])) {
 						$config = utils_arrayDiffRecursive($config, $localConfig['__REMOVE__']);
@@ -236,7 +234,7 @@ abstract class iMSCP_Plugin
 				}
 			} else {
 				throw new iMSCP_Plugin_Exception(
-					tr('Unable to read the plugin %s file. Please check file permissions', $configFile)
+					tr('Unable to read the plugin %s file. Please check file permissions', $file)
 				);
 			}
 		}

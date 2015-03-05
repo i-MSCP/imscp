@@ -58,7 +58,7 @@ function admin_generatePage($tpl)
 
 		if ($updateVersion->isAvailableUpdate()) {
 			if (($updateInfo = $updateVersion->getUpdateInfo())) {
-				$date = new DateTime($updateInfo['created_at']);
+				$date = new DateTime($updateInfo['published_at']);
 
 				$tpl->assign(
 					array(
