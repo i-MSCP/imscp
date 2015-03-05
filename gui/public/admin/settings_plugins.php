@@ -569,8 +569,6 @@ function updatePluginList($pluginManager)
 // Include core library
 require 'imscp-lib.php';
 
-opcache_invalidate(__FILE__, true);
-
 EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 check_login('admin');
