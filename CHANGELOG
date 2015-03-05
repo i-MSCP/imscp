@@ -15,6 +15,7 @@ DATABASE
 	Added: plugin_config_prev column in plugin table
 
 FRONTEND
+	Added custom DNS items in debugger interface ( admin level )
 	Changed: Stores the Github payload as json file instead of PHP file ( iMSCP_Update_Version::getUpdateInfo() )
 	Fixed: Do not fetch more data than needed from GitHub ( iMSCP_Update_Version::getUpdateInfo() )
 	Fixed: Force reload of newest mail body footprint file ( iMSCP_Exception_Writer_Mail::onUncaughtException() )

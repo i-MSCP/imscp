@@ -10,7 +10,7 @@
 		<td>{TR_USER_MESSAGE}</td>
 	</tr>
 	<!-- EDP: user_message -->
-	<!-- BDP: user_list -->
+	<!-- BDP: user_item -->
 	<tr>
 		<td>
 			<p>
@@ -21,7 +21,7 @@
 			<span style="color:red;">{USER_ERROR}</span>
 		</td>
 	</tr>
-	<!-- EDP: user_list -->
+	<!-- EDP: user_item -->
 	</tbody>
 </table>
 <table>
@@ -36,7 +36,7 @@
 		<td>{TR_DMN_MESSAGE}</td>
 	</tr>
 	<!-- EDP: dmn_message -->
-	<!-- BDP: dmn_list -->
+	<!-- BDP: dmn_item -->
 	<tr>
 		<td>
 			<p>
@@ -47,7 +47,7 @@
 			<span style="color:red;">{DMN_ERROR}</span>
 		</td>
 	</tr>
-	<!-- EDP: dmn_list -->
+	<!-- EDP: dmn_item -->
 	</tbody>
 </table>
 <table>
@@ -62,7 +62,7 @@
 		<td>{TR_ALS_MESSAGE}</td>
 	</tr>
 	<!-- EDP: als_message -->
-	<!-- BDP: als_list -->
+	<!-- BDP: als_item -->
 	<tr>
 		<td>
 			<span class="bold">{ALS_NAME}</span> - <a
@@ -71,7 +71,7 @@
 			<span style="color:red;">{ALS_ERROR}</span>
 		</td>
 	</tr>
-	<!-- EDP: als_list -->
+	<!-- EDP: als_item -->
 	</tbody>
 </table>
 <table>
@@ -86,7 +86,7 @@
 		<td>{TR_SUB_MESSAGE}</td>
 	</tr>
 	<!-- EDP: sub_message -->
-	<!-- BDP: sub_list -->
+	<!-- BDP: sub_item -->
 	<tr>
 		<td>
 			<p>
@@ -97,7 +97,7 @@
 			<span style="color:red;">{SUB_ERROR}</span>
 		</td>
 	</tr>
-	<!-- EDP: sub_list -->
+	<!-- EDP: sub_item -->
 	</tbody>
 </table>
 <table>
@@ -112,7 +112,7 @@
 		<td>{TR_ALSSUB_MESSAGE}</td>
 	</tr>
 	<!-- EDP: alssub_message -->
-	<!-- BDP: alssub_list -->
+	<!-- BDP: alssub_item -->
 	<tr>
 		<td>
 			<p>
@@ -123,10 +123,35 @@
 			<span style="color:red;">{ALSSUB_ERROR}</span>
 		</td>
 	</tr>
-	<!-- EDP: alssub_list -->
+	<!-- EDP: alssub_item -->
 	</tbody>
 </table>
-
+<table>
+	<thead>
+	<tr>
+		<th>{TR_CUSTOM_DNS_ERRORS}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<!-- BDP: custom_dns_message -->
+	<tr>
+		<td>{TR_CUSTOM_DNS_MESSAGE}</td>
+	</tr>
+	<!-- EDP: custom_dns_message -->
+	<!-- BDP: custom_dns_item -->
+	<tr>
+		<td>
+			<p>
+				<span class="bold">{CUSTOM_DNS_NAME}</span> - <a
+					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+					class="link">{TR_CHANGE_STATUS}</a>
+			</p>
+			<span style="color:red;">{CUSTOM_DNS_ERROR}</span>
+		</td>
+	</tr>
+	<!-- EDP: custom_dns_item -->
+	</tbody>
+</table>
 <table>
 	<thead>
 	<tr>
@@ -139,7 +164,7 @@
 		<td>{TR_HTACCESS_MESSAGE}</td>
 	</tr>
 	<!-- EDP: htaccess_message -->
-	<!-- BDP: htaccess_list -->
+	<!-- BDP: htaccess_item -->
 	<tr>
 		<td>
 			<p>
@@ -149,7 +174,7 @@
 			</p>
 			<span style="color:red;">{HTACCESS_ERROR}</span></td>
 	</tr>
-	<!-- EDP: htaccess_list -->
+	<!-- EDP: htaccess_item -->
 	</tbody>
 </table>
 <table>
@@ -164,7 +189,7 @@
 		<td>{TR_MAIL_MESSAGE}</td>
 	</tr>
 	<!-- EDP: mail_message -->
-	<!-- BDP: mail_list -->
+	<!-- BDP: mail_item -->
 	<tr>
 		<td>
 			<p>
@@ -174,7 +199,7 @@
 			</p>
 			<span style="color:red;">{MAIL_ERROR}</span></td>
 	</tr>
-	<!-- EDP: mail_list -->
+	<!-- EDP: mail_item -->
 	</tbody>
 </table>
 
@@ -190,7 +215,7 @@
 		<td>{TR_PLUGIN_ITEM_MESSAGE}</td>
 	</tr>
 	<!-- EDP: plugin_item_message -->
-	<!-- BDP: plugin_item_list -->
+	<!-- BDP: plugin_item_item -->
 	<tr>
 		<td>
 			<p>
@@ -200,7 +225,7 @@
 			</p>
 			<span style="color:red;">{PLUGIN_ITEM_ERROR}</span></td>
 	</tr>
-	<!-- EDP: plugin_item_list -->
+	<!-- EDP: plugin_item_item -->
 	</tbody>
 </table>
 

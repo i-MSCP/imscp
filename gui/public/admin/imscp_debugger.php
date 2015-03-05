@@ -63,7 +63,7 @@ function debugger_getUserErrors($tpl)
 	);
 
 	if (!$stmt->rowCount()) {
-		$tpl->assign(array('USER_LIST' => '', 'TR_USER_MESSAGE' => tr('No errors')));
+		$tpl->assign(array('USER_ITEM' => '', 'TR_USER_MESSAGE' => tr('No errors')));
 		$tpl->parse('USER_MESSAGE', 'user_message');
 	} else {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -77,7 +77,7 @@ function debugger_getUserErrors($tpl)
 				)
 			);
 
-			$tpl->parse('USER_LIST', '.user_list');
+			$tpl->parse('USER_ITEM', '.user_item');
 		}
 	}
 }
@@ -103,7 +103,7 @@ function debugger_getDmnErrors($tpl)
 	);
 
 	if (!$stmt->rowCount()) {
-		$tpl->assign(array('DMN_LIST' => '', 'TR_DMN_MESSAGE' => tr('No errors')));
+		$tpl->assign(array('DMN_ITEM' => '', 'TR_DMN_MESSAGE' => tr('No errors')));
 		$tpl->parse('DMN_MESSAGE', 'dmn_message');
 	} else {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -117,7 +117,7 @@ function debugger_getDmnErrors($tpl)
 				)
 			);
 
-			$tpl->parse('DMN_LIST', '.dmn_list');
+			$tpl->parse('DMN_ITEM', '.dmn_item');
 		}
 	}
 }
@@ -143,7 +143,7 @@ function debugger_getAlsErrors($tpl)
 	);
 
 	if (!$stmt->rowCount()) {
-		$tpl->assign(array('ALS_LIST' => '', 'TR_ALS_MESSAGE' => tr('No errors')));
+		$tpl->assign(array('ALS_ITEM' => '', 'TR_ALS_MESSAGE' => tr('No errors')));
 		$tpl->parse('ALS_MESSAGE', 'als_message');
 	} else {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -157,7 +157,7 @@ function debugger_getAlsErrors($tpl)
 				)
 			);
 
-			$tpl->parse('ALS_LIST', '.als_list');
+			$tpl->parse('ALS_ITEM', '.als_item');
 		}
 	}
 }
@@ -186,7 +186,7 @@ function debugger_getSubErrors($tpl)
 	);
 
 	if (!$stmt->rowCount()) {
-		$tpl->assign(array('SUB_LIST' => '', 'TR_SUB_MESSAGE' => tr('No errors')));
+		$tpl->assign(array('SUB_ITEM' => '', 'TR_SUB_MESSAGE' => tr('No errors')));
 		$tpl->parse('SUB_MESSAGE', 'sub_message');
 	} else {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -200,7 +200,7 @@ function debugger_getSubErrors($tpl)
 				)
 			);
 
-			$tpl->parse('SUB_LIST', '.sub_list');
+			$tpl->parse('SUB_ITEM', '.sub_item');
 		}
 	}
 }
@@ -228,7 +228,7 @@ function debugger_getAlssubErrors($tpl)
 	);
 
 	if (!$stmt->rowCount()) {
-		$tpl->assign(array('ALSSUB_LIST' => '', 'TR_ALSSUB_MESSAGE' => tr('No errors')));
+		$tpl->assign(array('ALSSUB_ITEM' => '', 'TR_ALSSUB_MESSAGE' => tr('No errors')));
 		$tpl->parse('ALSSUB_MESSAGE', 'alssub_message');
 	} else {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -242,7 +242,47 @@ function debugger_getAlssubErrors($tpl)
 				)
 			);
 
-			$tpl->parse('ALSSUB_LIST', '.alssub_list');
+			$tpl->parse('ALSSUB_ITEM', '.alssub_item');
+		}
+	}
+}
+
+/**
+ * Get custom dns errors
+ *
+ * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @return void
+ */
+function debugger_getCustomDNSErrors($tpl)
+{
+	$query = "
+		SELECT
+			`domain_dns`, `domain_dns_status`, `domain_dns_id`
+		FROM
+			`domain_dns`
+		WHERE
+			`domain_dns_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?)
+	";
+	$stmt = exec_query(
+		$query, array('ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete')
+	);
+
+	if (!$stmt->rowCount()) {
+		$tpl->assign(array('CUSTOM_DNS_ITEM' => '', 'TR_CUSTOM_DNS_MESSAGE' => tr('No errors')));
+		$tpl->parse('CUSTOM_DNS_MESSAGE', 'custom_dns_message');
+	} else {
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$tpl->assign(
+				array(
+					'CUSTOM_DNS_MESSAGE' => '',
+					'CUSTOM_DNS_NAME' => tohtml(decode_idna($row['domain_dns'])),
+					'CUSTOM_DNS_ERROR' => tohtml($row['domain_dns_status']),
+					'CHANGE_ID' => tohtml($row['domain_dns_id']),
+					'CHANGE_TYPE' => 'custom_dns'
+				)
+			);
+
+			$tpl->parse('CUSTOM_DNS_ITEM', '.custom_dns_item');
 		}
 	}
 }
@@ -292,7 +332,7 @@ function debugger_getHtaccessErrors($tpl)
 	);
 
 	if (!$stmt->rowCount()) {
-		$tpl->assign(array('HTACCESS_LIST' => '', 'TR_HTACCESS_MESSAGE' => tr('No errors')));
+		$tpl->assign(array('HTACCESS_ITEM' => '', 'TR_HTACCESS_MESSAGE' => tr('No errors')));
 		$tpl->parse('HTACCESS_MESSAGE', 'htaccess_message');
 	} else {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -307,7 +347,7 @@ function debugger_getHtaccessErrors($tpl)
 				)
 			);
 
-			$tpl->parse('HTACCESS_LIST', '.htaccess_list');
+			$tpl->parse('HTACCESS_ITEM', '.htaccess_item');
 		}
 	}
 }
@@ -334,7 +374,7 @@ function debugger_getMailsErrors($tpl)
 	);
 
 	if (!$stmt->rowCount()) {
-		$tpl->assign(array('MAIL_LIST' => '', 'TR_MAIL_MESSAGE' => tr('No errors')));
+		$tpl->assign(array('MAIL_ITEM' => '', 'TR_MAIL_MESSAGE' => tr('No errors')));
 		$tpl->parse('MAIL_MESSAGE', 'mail_message');
 	} else {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -419,7 +459,7 @@ function debugger_getMailsErrors($tpl)
 				)
 			);
 
-			$tpl->parse('MAIL_LIST', '.mail_list');
+			$tpl->parse('MAIL_ITEM', '.mail_item');
 		}
 	}
 }
@@ -457,13 +497,13 @@ function debugger_getPluginItemErrors($tpl)
 					)
 				);
 
-				$tpl->parse('PLUGIN_ITEM_LIST', '.plugin_item_list');
+				$tpl->parse('PLUGIN_ITEM_ITEM', '.plugin_item_item');
 			}
 		}
 	}
 
 	if (!$itemFound) {
-		$tpl->assign(array('PLUGIN_ITEM_LIST' => '', 'TR_PLUGIN_ITEM_MESSAGE' => tr('No errors')));
+		$tpl->assign(array('PLUGIN_ITEM_ITEM' => '', 'TR_PLUGIN_ITEM_MESSAGE' => tr('No errors')));
 		$tpl->parse('PLUGIN_ITEM_MESSAGE', 'plugin_item_message');
 	}
 }
@@ -553,6 +593,7 @@ $rqstCount += debugger_countRequests('domain_status', 'domain');
 $rqstCount += debugger_countRequests('alias_status', 'domain_aliasses');
 $rqstCount += debugger_countRequests('subdomain_status', 'subdomain');
 $rqstCount += debugger_countRequests('subdomain_alias_status', 'subdomain_alias');
+$rqstCount += debugger_countRequests('domain_dns_status', 'domain_dns');
 $rqstCount += debugger_countRequests('status', 'mail_users');
 $rqstCount += debugger_countRequests('status', 'htaccess');
 $rqstCount += debugger_countRequests('status', 'htaccess_groups');
@@ -590,6 +631,9 @@ if (isset($_GET['action'])) {
 				break;
 			case 'subdomain_alias':
 				$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?";
+				break;
+			case 'custom_dns':
+				$query = "UPDATE `domain_dns` SET `domain_dns_status` = ? WHERE `domain_dns_id` = ?";
 				break;
 			case 'mail':
 				$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
@@ -637,23 +681,25 @@ $tpl->define_dynamic(
 		'page' => 'admin/imscp_debugger.tpl',
 		'page_message' => 'layout',
 		'user_message' => 'page',
-		'user_list' => 'page',
+		'user_item' => 'page',
 		'dmn_message' => 'page',
-		'dmn_list' => 'page',
+		'dmn_item' => 'page',
 		'als_message' => 'page',
-		'als_list' => 'page',
+		'als_item' => 'page',
 		'sub_message' => 'page',
-		'sub_list' => 'page',
+		'sub_item' => 'page',
 		'alssub_message' => 'page',
-		'alssub_list' => 'page',
+		'alssub_item' => 'page',
+		'custom_dns_message' => 'page',
+		'custom_dns_item' => 'page',
 		'htaccess_message' => 'page',
-		'htaccess_list' => 'page',
+		'htaccess_item' => 'page',
 		'mail_message' => 'page',
-		'mail_list' => 'page',
+		'mail_item' => 'page',
 		'plugin_message' => 'page',
-		'plugin_list' => 'page',
+		'plugin_item' => 'page',
 		'plugin_item_message' => 'page',
-		'plugin_item_list' => 'page'
+		'plugin_item_item' => 'page'
 	)
 );
 
@@ -662,6 +708,7 @@ debugger_getDmnErrors($tpl);
 debugger_getAlsErrors($tpl);
 debugger_getSubErrors($tpl);
 debugger_getAlssubErrors($tpl);
+debugger_getCustomDNSErrors($tpl);
 debugger_getMailsErrors($tpl);
 debugger_getHtaccessErrors($tpl);
 debugger_getPluginItemErrors($tpl);
@@ -675,6 +722,7 @@ $tpl->assign(
 		'TR_ALS_ERRORS' => tr('Domain alias errors'),
 		'TR_SUB_ERRORS' => tr('Subdomain errors'),
 		'TR_ALSSUB_ERRORS' => tr('Subdomain alias errors'),
+		'TR_CUSTOM_DNS_ERRORS' => tr('Custom DNS errors'),
 		'TR_MAIL_ERRORS' => tr('Email account errors'),
 		'TR_HTACCESS_ERRORS' => tr('Htaccess errors'),
 		'TR_PLUGINS_ERRORS' => tr('Plugin errors'),
