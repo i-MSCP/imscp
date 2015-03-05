@@ -37,6 +37,7 @@ PLUGINS
 
 SKELETON
 	Removed: Link to the panel in default index.html files ( Panel must not be publicly exposed )
+	Fixed: Wrong link for favicon in error pages
 
 SERVICES
 	Fixed: Apache access.log file are put in wrong directory ( vlogger )
