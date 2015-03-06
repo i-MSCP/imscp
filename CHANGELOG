@@ -13,7 +13,7 @@ BACKEND
 DAEMON
 	Added: End child syslog message
 	Fixed: warning: ignoring return value of ‘chdir’... ( daemon_init.c )
-	Fixed: Avoid useless fork and wait by using execl instead of system ( lr_syntax.c )
+	Fixed: Avoid useless fork and wait by using execl() instead of system() ( lr_syntax.c )
 	Updated: Version to 1.2.3
 
 DATABASE
