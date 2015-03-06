@@ -406,6 +406,8 @@
 			<label for="backup_dmn">{TR_BACKUP_DOMAIN}</label>
 			<input type="radio" id="backup_sql" name="allowbackup" value="sql" {BACKUP_SQL} />
 			<label for="backup_sql">{TR_BACKUP_SQL}</label>
+			<input type="radio" id="backup_mail" name="allowbackup" value="mail" {BACKUP_MAIL} />
+			<label for="backup_mail">{TR_BACKUP_MAIL}</label>			
 			<input type="radio" id="backup_full" name="allowbackup" value="full" {BACKUP_FULL} />
 			<label for="backup_full">{TR_BACKUP_FULL}</label>
 			<input type="radio" id="backup_no" name="allowbackup" value="no" {BACKUP_NO} />
