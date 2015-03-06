@@ -110,6 +110,7 @@ function get_init_au2_page($tpl, $phpini)
 	if(resellerHasFeature('backup')) {
 		$tplVars['VL_BACKUPD'] = ($backup == '_dmn_') ? $htmlChecked : '';
 		$tplVars['VL_BACKUPS'] = ($backup == '_sql_') ? $htmlChecked : '';
+		$tplVars['VL_BACKUPS'] = ($backup == '_mail_') ? $htmlChecked : ''; 		
 		$tplVars['VL_BACKUPF'] = ($backup == '_full_') ? $htmlChecked : '';
 		$tplVars['VL_BACKUPN'] = ($backup == '_no_') ? $htmlChecked : '';
 	}
@@ -563,6 +564,7 @@ $tpl->assign(
 		'TR_BACKUP' => tr('Backup'),
 		'TR_BACKUP_DOMAIN' => tr('Domain'),
 		'TR_BACKUP_SQL' => tr('SQL'),
+		'TR_BACKUP_MAIL' => tr('MAIL'),		
 		'TR_BACKUP_FULL' => tr('Full'),
 		'TR_BACKUP_NO' => tr('No'),
 		'TR_DNS' => tr('Custom DNS records'),
