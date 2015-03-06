@@ -35,16 +35,20 @@ use warnings;
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-use iMSCP::Debug;
-use iMSCP::EventManager;
 use iMSCP::Config;
-use iMSCP::Net;
-use iMSCP::File;
+use iMSCP::Debug;
 use iMSCP::Dir;
-use File::Basename;
-use iMSCP::TemplateParser;
+use iMSCP::EventManager;
 use iMSCP::Execute;
+use iMSCP::File;
+use iMSCP::Net;
+use iMSCP::TemplateParser;
+
 use Servers::named::bind;
+
+use File::Basename;
+use version;
+
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -468,6 +472,16 @@ sub _buildConf
 		} elsif($_ eq 'BIND_OPTIONS_CONF_FILE') {
 			$cfgTpl =~ s/listen-on-v6 { any; };/listen-on-v6 { none; };/ if $self->{'config'}->{'BIND_IPV6'} eq 'no';
 
+			my $namedVersion = $self->_getVersion();
+			unless(defined $namedVersion) {
+				error('Unable to retrieve named version');
+				return 1;
+			}
+
+			if(version->parse("v$namedVersion") >= version->parse('v9.9.3')) {
+				$cfgTpl =~ s%//\s+(check-spf\s+ignore;)%$1%;
+			}
+
 			if($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} && -f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
 				my $filename = fileparse($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'});
 
@@ -589,6 +603,32 @@ sub _checkIps
 	}
 
 	1;
+}
+
+=item _getVersion()
+
+ Get named version
+
+ Return string on success, undef on failure
+
+=cut
+
+sub _getVersion
+{
+	my $self = $_[0];
+
+	my ($stdout, $stderr);
+	my $rs = execute("$self->{'config'}->{'CMD_NAMED'} -v", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $rs && $stderr;
+
+	unless($rs) {
+		if($stdout =~ /^BIND\s+([0-9.]+)/i) {
+			return $1;
+		}
+	}
+
+	undef;
 }
 
 =item _oldEngineCompatibility()

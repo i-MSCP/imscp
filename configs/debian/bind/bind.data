@@ -9,6 +9,7 @@ BIND_OPTIONS_CONF_FILE = /etc/bind/named.conf.options
 BIND_DB_DIR = /var/cache/bind
 
 NAMED_SNAME = bind9
+CMD_NAMED = /usr/sbin/named
 CMD_NAMED_COMPILEZONE = /usr/sbin/named-compilezone
 
 # Mode in which the server should acts (master|slave)
