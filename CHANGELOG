@@ -18,7 +18,7 @@ DAEMON
 
 DATABASE
 	Added: domain_dns_status field in domain_dns table ( Custom DNS record status field )
-	Added: plugin_config_prev column in plugin table ( Plugin previous configuration field )
+	Added: plugin_config_prev field in plugin table ( Plugin previous configuration field )
 
 FRONTEND
 	Added Custom DNS items in debugger interface ( admin level )
@@ -48,7 +48,7 @@ SKELETON
 
 SERVICES
 	Added: Log summary message on TLS handshake completion ( Postfix )
-	Fixed: Apache access.log file are put in wrong directory ( vlogger )
+	Fixed: Apache access.log files are put in wrong directory ( vlogger )
 	Fixed: Disable warnings about missing SPF DNS record ( As per RFC 7208, SPF DNS record is deprecated ) ( Bind9 )
 
 YOUTRACK
