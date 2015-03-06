@@ -590,6 +590,8 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 		$tplVars['TR_BACKUP_DOMAIN'] = tr('Domain');
 		$tplVars['BACKUP_DOMAIN'] = ($data['allowbackup'] == 'dmn') ? $htmlChecked : '';
 		$tplVars['TR_BACKUP_SQL'] = tr('SQL');
+		$tplVars['BACKUP_MAIL'] = ($data['allowbackup'] == 'mail') ? $htmlChecked : '';
+		$tplVars['TR_BACKUP_MAIL'] = tr('MAIL');		
 		$tplVars['BACKUP_SQL'] = ($data['allowbackup'] == 'sql') ? $htmlChecked : '';
 		$tplVars['TR_BACKUP_FULL'] = tr('Full');
 		$tplVars['BACKUP_FULL'] = ($data['allowbackup'] == 'full') ? $htmlChecked : '';
@@ -879,7 +881,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 			? $data['domain_external_mail'] : $data['fallback_domain_external_mail'];
 
 		// Check for backup support (we are safe here)
-		$data['allowbackup'] = (in_array($data['allowbackup'], array('dmn', 'sql', 'full', 'no')))
+		$data['allowbackup'] = (in_array($data['allowbackup'], array('dmn', 'mail', 'sql', 'full', 'no')))
 			? $data['allowbackup'] : $data['fallback_allowbackup'];
 
 		// Check for Web folder protection support (we are safe here)
