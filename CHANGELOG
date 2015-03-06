@@ -10,6 +10,12 @@ BACKEND
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload should be sufficient
 	Fixed: Some errors are not trapped
 
+DAEMON
+	Added: End child syslog message
+	Fixed: warning: ignoring return value of ‘chdir’... ( daemon_init.c )
+	Fixed: Avoid useless fork and wait by using execl instead of system ( lr_syntax.c )
+	Updated: Version to 1.2.3
+
 DATABASE
 	Added: domain_dns_status field in domain_dns table ( Custom DNS record status field )
 	Added: plugin_config_prev column in plugin table

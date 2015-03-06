@@ -28,7 +28,8 @@ void daemonInit(const char *pname, int facility)
 
 	umask(0);
 
-	chdir("/");
+	if(chdir("/") < 0)
+		exit(EXIT_FAILURE);
 
 	for (i = sysconf(_SC_OPEN_MAX); i > 0; i--) {
 		close (i);

@@ -15,9 +15,9 @@ int lrSyntax(int fd, char *buffer)
 			close(fd);
 
 			#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
-			system("perl /var/www/imscp/engine/imscp-rqst-mngr");
+			execl("/var/www/imscp/engine/imscp-rqst-mngr", "imscp-rqst-mngr", (char*)NULL);
 			#else
-			system("perl /usr/local/www/imscp/engine/imscp-rqst-mngr");
+			execl("/usr/local/www/imscp/engine/imscp-rqst-mngr", "imscp-rqst-mngr", (char*)NULL);
 			#endif
 
 			exit(0);

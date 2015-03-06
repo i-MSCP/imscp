@@ -98,6 +98,9 @@ int main(int argc, char *argv[])
 			say(message(MSG_START_CHILD), nmb);
 
 			takeConnection(connfd);
+
+			say(message(MSG_END_CHILD), nmb);
+
 			free(nmb);
 
 			exit(0);

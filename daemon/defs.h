@@ -16,12 +16,12 @@
 #define MAX_MSG_SIZE            1026
 
 /* Messages */
-#define MSG_MAX_COUNT           19
+#define MSG_MAX_COUNT           20
 
 #define MSG_WELCOME             101
-#define MSG_WELCOME_TXT             "i-MSCP Daemon v1.2.2\n"
+#define MSG_WELCOME_TXT             "i-MSCP Daemon v1.2.3\n"
 #define MSG_DAEMON_STARTED      102
-#define MSG_DAEMON_STARTED_TXT      "i-MSCP daemon v1.2.2 started."
+#define MSG_DAEMON_STARTED_TXT      "i-MSCP daemon v1.2.3 started."
 #define MSG_DAEMON_NAME         103
 #define MSG_DAEMON_NAME_TXT         "imscp_daemon"
 #define MSG_ERROR_LISTEN        104
@@ -32,29 +32,31 @@
 #define MSG_ERROR_ACCEPT_TXT        "accept() error: %s"
 #define MSG_START_CHILD         107
 #define MSG_START_CHILD_TXT         "child %s started."
-#define MSG_ERROR_SOCKET_WR     108
+#define MSG_END_CHILD           108
+#define MSG_END_CHILD_TXT           "child %s ended."
+#define MSG_ERROR_SOCKET_WR     109
 #define MSG_ERROR_SOCKET_WR_TXT     "sendLine(): socket write error: %s"
-#define MSG_ERROR_SOCKET_RD     109
+#define MSG_ERROR_SOCKET_RD     110
 #define MSG_ERROR_SOCKET_RD_TXT     "readLine(): socket read error: %s"
-#define MSG_ERROR_SOCKET_EOF    110
+#define MSG_ERROR_SOCKET_EOF    111
 #define MSG_ERROR_SOCKET_EOF_TXT    "readLine(): socket EOF! other end closed the connection."
-#define MSG_HELO_CMD            111
+#define MSG_HELO_CMD            112
 #define MSG_HELO_CMD_TXT            "helo "
-#define MSG_BAD_SYNTAX          112
+#define MSG_BAD_SYNTAX          113
 #define MSG_BAD_SYNTAX_TXT          "999 ERR Incorrect Syntax\n"
-#define MSG_CMD_OK              113
+#define MSG_CMD_OK              114
 #define MSG_CMD_OK_TXT              "250 OK "
-#define MSG_BYE_CMD             114
+#define MSG_BYE_CMD             115
 #define MSG_BYE_CMD_TXT             "bye"
-#define MSG_EQ_CMD              115
+#define MSG_EQ_CMD              116
 #define MSG_EQ_CMD_TXT              "execute query"
-#define MSG_CMD_ANSWER          116
+#define MSG_CMD_ANSWER          117
 #define MSG_CMD_ANSWER_TXT          "Query is being processed\n"
-#define MSG_ERROR_BIND          117
+#define MSG_ERROR_BIND          118
 #define MSG_ERROR_BIND_TXT          "bind() error: %s"
-#define MSG_ERROR_SOCKET_CREATE 118
+#define MSG_ERROR_SOCKET_CREATE 119
 #define MSG_ERROR_SOCKET_CREATE_TXT "socket() error: %s"
-#define MSG_GOOD_BYE            119
+#define MSG_GOOD_BYE            120
 #define MSG_GOOD_BYE_TXT            "Good bye\n"
 
 #endif
