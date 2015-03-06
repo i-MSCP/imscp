@@ -872,7 +872,7 @@ function admin_checkAndUpdateData($domainId)
 			? $data['domain_external_mail'] : $data['fallback_domain_external_mail'];
 
 		// Check for backup support (we are safe here)
-		$data['allowbackup'] = (in_array($data['allowbackup'], array('dmn', 'sql', 'full', 'no')))
+		$data['allowbackup'] = (in_array($data['allowbackup'], array('dmn', 'mail', 'sql', 'full', 'no')))
 			? $data['allowbackup'] : $data['fallback_allowbackup'];
 
 		// Check for Web folder protection support (we are safe here)
