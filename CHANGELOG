@@ -37,6 +37,7 @@ INSTALLER
 PLUGINS
 	Added: iMSCP_Plugin::getConfigPrev() and iMSCP_Plugin::getConfigPrevParam() methods
 	Added: require_api info field ( field which allows the plugins to define the required i-MSCP plugin API )
+	Changed: info, config and config_prev fields are now automatically decoded and set as plugin properties ( backend )
 	Fixed: Force reload of newest plugin info file ( iMSCP_Plugin::getInfo() )
 	Fixed: Force reload of newest plugin configuration file ( iMSCP_Plugin::getConfigFromFile() )
 	Fixed: Opcode cache is not correctly resetted on plugin list update

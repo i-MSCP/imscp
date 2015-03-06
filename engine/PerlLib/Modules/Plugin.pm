@@ -156,20 +156,32 @@ sub _loadData
 {
 	my ($self, $pluginId) = @_;
 
-	my $rdata = $self->{'db'}->doQuery(
+	my $row = $self->{'db'}->doQuery(
 		'plugin_id',
-		'SELECT plugin_id, plugin_name, plugin_info, plugin_status FROM plugin WHERE plugin_id = ?',
+		'
+			SELECT
+		 		plugin_id, plugin_name, plugin_info AS info, plugin_config AS config, plugin_config_prev AS config_prev,
+		 		plugin_status
+		 	FROM
+		 		plugin
+		 	WHERE
+		 		plugin_id = ?
+		 ',
 		$pluginId
 	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
+	unless(ref $row eq 'HASH') {
+		error($row);
 		return 1;
-	} elsif(! exists $rdata->{$pluginId}) {
+	} elsif(! exists $row->{$pluginId}) {
 		error("Data for plugin with ID $pluginId were not found in database");
 		return 1
 	}
 
-	%{$self} = (%{$self}, %{$rdata->{$pluginId}});
+	%{$self} = (%{$self}, %{$row->{$pluginId}});
+
+	$self->{'info'} = decode_json($self->{'info'});
+	$self->{'config'} = decode_json($self->{'config'});
+	$self->{'config_prev'} = decode_json($self->{'config_prev'});
 
 	0;
 }
@@ -284,13 +296,13 @@ sub _change
 	$rs ||= $self->_call($pluginName, 'change');
 
 	unless($rs) {
-		my $info = decode_json($self->{'plugin_info'});
+		my %info = %{$self->{'info'}};
 
-		if($info->{'__need_change__'}) {
-			$info->{'__need_change__'} = JSON::false;
+		if($info{'__need_change__'}) {
+			$info{'__need_change__'} = JSON::false;
 
 			my $qrs = $self->{'db'}->doQuery(
-				'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
+				'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json(\%info), $pluginName
 			);
 			unless(ref $qrs eq 'HASH') {
 				error($qrs);
@@ -411,7 +423,10 @@ sub _call
 			$pluginInstance = $pluginClass->getInstance(
 				'hooksManager' => $self->{'eventManager'}, # Only to ensure backward compatibility
 				'eventManager' => $self->{'eventManager'},
-				'action' => $self->{'action'}
+				'action' => $self->{'action'},
+				'info' => $self->{'info'},
+				'config' => $self->{'config'},
+				'config_prev' => $self->{'config_prev'}
 			);
 		}
 	};
