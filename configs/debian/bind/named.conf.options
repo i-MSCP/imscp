@@ -33,7 +33,7 @@ options {
         version "i-MSCP DNS Server";
 
         // As per RFC 7208, SPF DNS record are deprecated
-        check-spf ignore;
+        // check-spf ignore;
 
         // imscp [{ENTRY_ID}] entry BEGIN
         // imscp [{ENTRY_ID}] entry ENDING
