@@ -184,14 +184,14 @@ sub run
 					}
 
 					for (keys %{$dbData}) {
-						$rs = $db->dumpdb($_, "$bkpDir/$_.sql");
+						$rs = $db->dumpdb($_, "$bkpDir/$_-$date.sql");
 
 						if($rs) {
 							$ret ||= $rs;
 							next;
 						}
 
-						my $file = iMSCP::File->new(filename => "$bkpDir/$_.sql");
+						my $file = iMSCP::File->new(filename => "$bkpDir/$_-$date.sql");
 
 						$rs = $file->mode(0644);
 						$ret ||= $rs;
@@ -203,7 +203,7 @@ sub run
 							my @cmd = (
 								$main::imscpConfig{$command->{$algorithm}->{'command'}},
 								 '--force',
-								escapeShell("$bkpDir/$_.sql")
+								escapeShell("$bkpDir/$_-$date.sql")
 							);
 
 							$rs = execute("@cmd", \$stdout, \$stderr);
@@ -215,6 +215,85 @@ sub run
 					}
 				}
 			}
+			###### Backup all the mail folders
+			if ($rdata->{$_}->{'allowbackup'} ne 'no') {
+				my $backuphomedir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
+				my $mailhomeDir = "/var/mail/virtual/$rdata->{$_}->{'domain_name'}";
+				my $mailbkpDir = "$backuphomedir/backups";
+				my $maildomainname = "$rdata->{$_}->{'domain_name'}";
+				my $userName = $rdata->{$_}->{'admin_sys_name'};
+				my $groupName = $rdata->{$_}->{'admin_sys_gname'};
+
+				if(! -d $mailhomeDir) { # Skip backup if home directory doesn't exist
+					warning("Home directory $mailhomeDir doesn't exist. Skipping backup...");
+					next;
+				} elsif(! -d $mailbkpDir) { # Create backups directory if doesn't already exists
+					my $isProtectedHomedir = 0;
+				
+					# Unprotect parent directory if needed
+					if(isImmutable($mailhomeDir)) {
+						$isProtectedHomedir = 1;
+						clearImmutable($mailhomeDir);
+					}
+
+					$rs = iMSCP::Dir->new('dirname' => $mailbkpDir)->make(
+						{ 'user' => $userName, 'group' => $groupName, 'mode' => 0750 }
+					);
+
+					setImmutable($mailhomeDir) if $isProtectedHomedir;
+
+					if($rs) {
+						$ret ||= $rs;
+						next;
+					}
+				}
+
+				# Remove any previous backup file
+				$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $mailbkpDir/$_-backup-mail-*", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+
+				if($rs) {
+					$ret ||= $rs;
+					next;
+				}
+
+				my $ext = ($algorithm ne 'no') ? ('.' . $command->{$algorithm}->{'extension'}) : '';
+				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
+
+				if ($rdata->{$_}->{'allowbackup'} ~~ ['full', 'mail']) {
+					my @cmd = (
+						$cmdTar,
+						"--create",										# Create new archive
+						"--directory=$mailhomeDir",							# Change to directory
+						($algorithm ne 'no')
+							? "--use-compress-program=$algorithm"		# Compress archive with given program
+							: '',										# No compression
+						"--file=$mailbkpDir/$_-backup-mail-$date.tar$ext",		# use archive file
+						'.'												# pathname
+					);
+
+					my $rs = execute("@cmd", \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+
+					# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+					if($rs > 1) {
+						error($stderr) if $stderr;
+						error("Unable to backup $mailhomeDir") if ! $stderr;
+						$ret |= $rs;
+					}
+
+					my $file = iMSCP::File->new('filename' => "$mailbkpDir/$_-backup-mail-$date.tar$ext");
+					$rs = $file->mode(0644);
+					$ret ||= $rs;
+
+					$rs = $file->owner($userName, $groupName);
+					$ret ||= $rs;
+				}
+
+			}
+			####### Close backup all mail folders
+			
 		}
 	}
 
