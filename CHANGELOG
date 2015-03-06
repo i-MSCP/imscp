@@ -49,6 +49,7 @@ SKELETON
 SERVICES
 	Added: Log summary message on TLS handshake completion ( Postfix )
 	Fixed: Apache access.log file are put in wrong directory ( vlogger )
+	Fixed: Disable warnings about missing SPF DNS record ( As per RFC 7208, SPF DNS record is deprecated ) ( Bind9 )
 
 YOUTRACK
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
