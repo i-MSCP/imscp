@@ -10,6 +10,9 @@ BACKEND
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload should be sufficient
 	Fixed: Some errors are not trapped
 
+CONFIGS:
+	Added imscp_daemon, imscp_network and imscp_panel upstart jobs
+
 DAEMON
 	Added: End child syslog message
 	Fixed: warning: ignoring return value of ‘chdir’... ( daemon_init.c )
@@ -19,6 +22,10 @@ DAEMON
 DATABASE
 	Added: domain_dns_status field in domain_dns table ( Custom DNS record status field )
 	Added: plugin_config_prev field in plugin table ( Plugin previous configuration field )
+
+DISTRIBUTIONS
+	Removed: Support for Debian Squeeze ( 6.x )
+	Removed: Support for Ubuntu Lucid Lynx ( 10.04 LTS )
 
 FRONTEND
 	Added Custom DNS items in debugger interface ( admin level )
@@ -55,6 +62,7 @@ SERVICES
 YOUTRACK
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
 	Fixed #IP-1279: Autoresponder - Unable to get message body
+	Fixed #IP-1286: IP attachment fails
 	Fixed #IP-1292: Files from a previous plugin version must be kept if the new plugin version is not compatible
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -120,7 +128,7 @@ DAEMON
 	Fixed: Restart of some services fail when the backend ( imscp-rqst-mngr ) is run through the daemon
 	Updated: Version to 1.2.2
 
-DISTRO
+DISTRIBUTIONS
 	Changed: Dovecot is now installed using packages from backports repository ( Squeeze, Wheezy )
 	Changed: Postfix is now installed using package from backports repository ( Squeeze, Wheezy )
 
@@ -210,7 +218,7 @@ CONFIGS
 DAEMON
 	Fixed: The server traffic must be collected before any stopping attempt ( imscp_network )
 
-DISTROS
+DISTRIBUTIONS
 	Removed: Support for obsolete Ubuntu versions ( Quantal Quetzal, Raring Ringtail, Saucy Salamander )
 
 DOCS

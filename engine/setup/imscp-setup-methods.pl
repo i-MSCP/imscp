@@ -1739,6 +1739,13 @@ sub setupInitScripts
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupInitScripts');
 	return $rs if $rs;
 
+	# Be sure that legacy boot ordering is not enabled
+	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/.legacy-bootordering") {
+		my $file = iMSCP::File->new( filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/.legacy-bootordering");
+		$rs = $file->delFile();
+		return $rs if $rs;
+	}
+
 	for my $initScript(
 		$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'},
 		$main::imscpConfig{'IMSCP_PANEL_SNAME'}

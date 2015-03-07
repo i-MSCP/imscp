@@ -1,18 +1,18 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          imscp_panel
-# Required-Start:    $nginx
-# Required-Stop:     $nginx
+# Required-Start:    $remote_fs $network imscp_network nginx
+# Required-Stop:     $remote_fs $network imscp_network nginx
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: starts imscp_panel
-# Description:       Starts The i-MSCP Control Panel (FCGI)
+# Short-Description: Starts imscp_panel
+# Description:       i-MSCP control panel FCGI processes
 ### END INIT INFO
 
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="i-MSCP Control Panel"
+DESC="i-MSCP control panel FCGI processes"
 NAME=imscp_panel
 STARTER=/var/www/fcgi/master/php5-fcgi-starter
 DAEMON=/usr/bin/php5-cgi
@@ -36,6 +36,11 @@ MASTER_WEB_USER=vu2000
 # Define LSB log_* functions.
 # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
 . /lib/lsb/init-functions
+
+# Don't run if we are running upstart
+if init_is_upstart 2>/dev/null; then
+	exit 1
+fi
 
 #
 # Function that starts the daemon/service

@@ -1,8 +1,8 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          imscp_network
-# Required-Start:    $local_fs $remote_fs $network
-# Required-Stop:     $local_fs $remote_fs $network
+# Required-Start:    $remote_fs $network
+# Required-Stop:     $remote_fs $network
 # Should-Start:      mysql
 # Should-Stop:       mysql
 # Default-Start:     2 3 4 5
@@ -23,6 +23,11 @@ TOOLSDIR="/var/www/imscp/engine/tools"
 # Read config file if present.
 if [ -r /etc/default/$NAME ]; then
 	. /etc/default/$NAME
+fi
+
+# Don't run if we are running upstart
+if init_is_upstart 2>/dev/null; then
+	exit 1
 fi
 
 do_start()

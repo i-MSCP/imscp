@@ -314,6 +314,17 @@ sub _uninstallDaemons
 		return $rs if $rs;
 	}
 
+	# Upstart jobs
+	# TODO remove hardcoded paths
+	if(-d '/etc/init') {
+		for('imscp_daemon', 'imscp_network', 'imscp_panel') {
+			if(-f "/etc/init/$_.conf") {
+				$rs = iMSCP::File->new( filename => "/etc/init/$_.conf" )->delFile();
+				return $rs if $rs;
+			}
+		}
+	}
+
 	if(-x '/bin/systemctl') { # Make systemd aware of the changes above
 		my ($stdout, $stderr);
 		my $rs = execute("/bin/systemctl daemon-reload", \$stdout, \$stderr);
