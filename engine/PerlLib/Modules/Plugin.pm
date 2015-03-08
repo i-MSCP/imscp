@@ -110,9 +110,9 @@ sub process
 		$rs ? (scalar getMessageByType('error') || 'unknown error') : $actionStatusToNextStatus{$status},
 		$pluginId
 	);
-	my $rdata = $self->{'db'}->doQuery('dummy', @sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
+	my $qrs = $self->{'db'}->doQuery('dummy', @sql);
+	unless(ref $qrs eq 'HASH') {
+		error($qrs);
 		return 1;
 	}
 

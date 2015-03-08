@@ -7,13 +7,13 @@
 # Should-Stop:       mysql
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: i-MSCP Network Manager
+# Short-Description: i-MSCP network manager
 ### END INIT INFO
 
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
-DESC="i-MSCP Network Manager"
+DESC="i-MSCP network manager"
 NAME=imscp_network
 LFILE=/var/run/$NAME
 TOOLSDIR="/var/www/imscp/engine/tools"

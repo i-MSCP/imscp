@@ -1,15 +1,15 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          imscp_daemon
-# Required-Start:    $remote_fs $network $syslog imscp_network
-# Required-Stop:     $remote_fs $network $syslog imscp_network
+# Required-Start:    $remote_fs $network $syslog
+# Required-Stop:     $remote_fs $network $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: i-MSCP GUI-Backend communication Daemon
+# Short-Description: i-MSCP communication daemon
 ### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="i-MSCP GUI-Backend communication Daemon"
+DESC="i-MSCP communication daemon"
 NAME=imscp_daemon
 DAEMON=/var/www/imscp/daemon/$NAME
 PIDFILE=/var/run/$NAME.pid
