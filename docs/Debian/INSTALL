@@ -14,7 +14,7 @@ Table of Content
 ---------------
 
 i-MSCP Version:  <version>
-Distros:         Debian Squeeze, Wheezy (recommended), Jessie
+Distros:         Debian Wheezy ( recommended ), Jessie
 
 2) Requirements
 ---------------
@@ -53,7 +53,7 @@ All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
 
 5. Run the imscp-autoinstall script
 
-	# perl ./imscp-autoinstall -d
+	# perl imscp-autoinstall -d
 
 6. Install i-MSCP step-by-step
 

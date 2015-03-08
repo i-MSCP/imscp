@@ -14,7 +14,7 @@ Table of Content
 ---------------
 
 i-MSCP Version:  <version>
-Distros:         Any LTS version
+Distros:         Any LTS version >= Precise Pangolin ( 12.04 )
 
 2) Requirements
 ---------------
@@ -49,11 +49,11 @@ All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
 
 4. Change to the newly created directory
 
-	# cd ./imscp-<version>
+	# cd imscp-<version>
 
 5. Install by running the imscp-autoinstall script
 
-	# sudo perl imscp-autoinstall -d
+	# perl imscp-autoinstall -d
 
 6. Install i-MSCP step-by-step
 

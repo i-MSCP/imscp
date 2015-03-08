@@ -62,7 +62,7 @@ SERVICES
 YOUTRACK
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
 	Fixed #IP-1279: Autoresponder - Unable to get message body
-	Fixed #IP-1286: IP attachment fails
+	Fixed #IP-1286: IP attachment fails on reboot ( Ubuntu )
 	Fixed #IP-1292: Files from a previous plugin version must be kept if the new plugin version is not compatible
 
 ------------------------------------------------------------------------------------------------------------------------
