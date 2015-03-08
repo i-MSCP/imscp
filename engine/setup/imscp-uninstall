@@ -319,7 +319,7 @@ sub _uninstallDaemons
 	if(-d '/etc/init') {
 		for('imscp_daemon', 'imscp_network', 'imscp_panel') {
 			if(-f "/etc/init/$_.conf") {
-				$rs = iMSCP::File->new( filename => "/etc/init/$_.conf" )->delFile();
+				my $rs = iMSCP::File->new( filename => "/etc/init/$_.conf" )->delFile();
 				return $rs if $rs;
 			}
 		}
