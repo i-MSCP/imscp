@@ -1,6 +1,6 @@
-# i-MSCP - internet Multi Server Control Panel
+## i-MSCP - internet Multi Server Control Panel
 
-## Introduction
+### Introduction
 
 i-MSCP software appliance provides complete hosting automation for Linux platforms. It offers an easy-to-use graphical
 interface for administrators, resellers and customers, and complete functionality to manage the server and its
@@ -12,14 +12,14 @@ few point-and-click operations that take less than a minute.
 
 There is no limit to the number of administrators, resellers, customers and domains that can be created.
 
-## Installation
+### Installation
 
 See the **INSTALL** file of distribution you are using inside the docs directory.
 
 * For Debian: **./docs/Debian/INSTALL**
 * For Ubuntu: **./docs/Ubuntu/INSTALL**
 
-## License
+### License
 
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
@@ -33,7 +33,7 @@ Please have a look at these Licenses. They are shipped with this release in the 
 * **./docs/LICENSE-GPL2**
 * **./docs/LICENSE-LGPL2.1**
 
-## Credits
+### Credits
 
 i-MSCP is a Project of i-MSCP | internet Multi Server Control Panel. i-MSCP and the i-MSCP logo are trademarks of the
 i-MSCP | internet Multi Server Control Panel project team.
