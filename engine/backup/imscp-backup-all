@@ -184,14 +184,14 @@ sub run
 					}
 
 					for (keys %{$dbData}) {
-						$rs = $db->dumpdb($_, "$bkpDir/$_-$date.sql");
+						$rs = $db->dumpdb($_, "$bkpDir/$_.sql");
 
 						if($rs) {
 							$ret ||= $rs;
 							next;
 						}
 
-						my $file = iMSCP::File->new(filename => "$bkpDir/$_-$date.sql");
+						my $file = iMSCP::File->new(filename => "$bkpDir/$_.sql");
 
 						$rs = $file->mode(0644);
 						$ret ||= $rs;
@@ -203,7 +203,7 @@ sub run
 							my @cmd = (
 								$main::imscpConfig{$command->{$algorithm}->{'command'}},
 								 '--force',
-								escapeShell("$bkpDir/$_-$date.sql")
+								escapeShell("$bkpDir/$_.sql")
 							);
 
 							$rs = execute("@cmd", \$stdout, \$stderr);
