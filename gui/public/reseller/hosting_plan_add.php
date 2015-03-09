@@ -203,6 +203,7 @@ function reseller_generatePage($tpl, $phpini)
 			array(
 				'VL_BACKUPD' => '',
 				'VL_BACKUPS' => '',
+				'VL_BACKUPM' => '',				
 				'VL_BACKUPF' => '',
 				'VL_BACKUPN' => $checked,
 			)
@@ -275,6 +276,7 @@ function reseller_generateErrorPage($tpl, $phpini)
 			array(
 				'VL_BACKUPD' => ($backup == '_dmn_') ? $checked : '',
 				'VL_BACKUPS' => ($backup == '_sql_') ? $checked : '',
+				'VL_BACKUPM' => ($backup == '_mail_') ? $checked : '',				
 				'VL_BACKUPF' => ($backup == '_full_') ? $checked : '',
 				'VL_BACKUPN' => ($backup == '_no_') ? $checked : '',
 			)
@@ -589,6 +591,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'reseller')
 			'TR_BACKUP' => tr('Backup'),
 			'TR_BACKUP_DOMAIN' => tr('Domain'),
 			'TR_BACKUP_SQL' => tr('SQL'),
+			'TR_BACKUP_MAIL' => tr('MAIL'),
 			'TR_BACKUP_FULL' => tr('Full'),
 			'TR_BACKUP_NO' => tr('No'),
 			'TR_SOFTWARE_SUPP' => tr('Software installer'),
