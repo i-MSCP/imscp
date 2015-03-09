@@ -143,8 +143,8 @@ sub build
 	$dialog->set('cancel-label', 'Back');
 
 	unless($main::noprompt || $main::reconfigure ne 'none') {
-		$rs = _showReadmeFile($dialog);
-		return $rs if $rs;
+		#$rs = _showReadmeFile($dialog);
+		#return $rs if $rs;
 
 		$rs = _askDistro($dialog);
 		return $rs if $rs;
@@ -324,27 +324,27 @@ sub _installPreRequiredPackages
 	_getDistroAdapter()->installPreRequiredPackages();
 }
 
-=item showReadmeFile(\%dialog)
-
- Show readme file
-
- Param iMSCP::Dialog \%dialog
- Return int 0 on success, other otherwise
-
-=cut
-
-sub _showReadmeFile
-{
-	my $dialog = $_[0];
-
-	my $file = iMSCP::File->new( filename => $FindBin::Bin . '/README');
-	my $content = $file->get() or fatal("Unable to read $FindBin::Bin/README");
-
-	$dialog->msgbox(<<EOF);
-
-$content
-EOF
-}
+#=item showReadmeFile(\%dialog)
+#
+# Show readme file
+#
+# Param iMSCP::Dialog \%dialog
+# Return int 0 on success, other otherwise
+#
+#=cut
+#
+#sub _showReadmeFile
+#{
+#	my $dialog = $_[0];
+#
+#	my $file = iMSCP::File->new( filename => $FindBin::Bin . '/README');
+#	my $content = $file->get() or fatal("Unable to read $FindBin::Bin/README");
+#
+#	$dialog->msgbox(<<EOF);
+#
+#$content
+#EOF
+#}
 
 =item _askDistro(\%dialog)
 
