@@ -357,7 +357,7 @@
 			<label for="hp_backup_dmn">{TR_BACKUP_DOMAIN}</label>
 			<input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{VL_BACKUPS}/>
 			<label for="hp_backup_sql">{TR_BACKUP_SQL}</label>
-			<input type="radio" name="hp_backup" value="_mail_" id="hp_backup_mail"{VL_BACKUPS}/>
+			<input type="radio" name="hp_backup" value="_mail_" id="hp_backup_mail"{VL_BACKUPM}/>
 			<label for="hp_backup_mail">{TR_BACKUP_MAIL}</label>
 			<input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{VL_BACKUPF}/>
 			<label for="hp_backup_full">{TR_BACKUP_FULL}</label>
