@@ -42,8 +42,7 @@ use JSON;
 # Set umask ( default is 0 when this script is run through the i-MSCP daemon, which leads to some problems )
 umask 0022;
 
-$ENV{'LC_MESSAGES'} = 'C';
-use open ':locale';
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-rqst-mngr.log');
 

@@ -37,8 +37,7 @@ use iMSCP::Packages;
 use iMSCP::Getopt;
 use File::Basename;
 
-$ENV{'LC_MESSAGES'} = 'C';
-use open ':locale';
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-set-engine-permissions.log');
 

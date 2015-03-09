@@ -42,8 +42,7 @@ use iMSCP::Getopt;
 use File::Basename;
 use autoinstaller::Functions qw/loadConfig build install/;
 
-$ENV{'LC_MESSAGES'} = 'C';
-use open ':locale';
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-autoinstall.log');
 

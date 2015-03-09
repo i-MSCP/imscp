@@ -40,8 +40,7 @@ use XML::Parser;
 use warnings;
 use JSON;
 
-$ENV{'LC_MESSAGES'} = 'C';
-use open ':locale';
+$ENV{'LANG'} = 'C.UTF-8';
 
 # Decoding data which pushed from another script
 my (

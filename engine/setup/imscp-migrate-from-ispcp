@@ -47,8 +47,7 @@ use File::Basename;
 use Data::Dumper;
 use version;
 
-$ENV{'LC_MESSAGES'} = 'C';
-use open ':locale';
+$ENV{'LANG'} = 'C.UTF-8';
 
 # Re-encrypt the given password with i-MSCP database key
 sub _reencryptPassword($$$$$)

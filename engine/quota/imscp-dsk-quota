@@ -38,8 +38,7 @@ use iMSCP::Getopt;
 use Servers::mta;
 use File::Basename;
 
-$ENV{'LC_MESSAGES'} = 'C';
-use open ':locale';
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-dsk-quota.log');
 

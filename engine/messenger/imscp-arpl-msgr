@@ -36,7 +36,7 @@ use MIME::Parser;
 use MIME::Entity;
 use Encode;
 
-$ENV{'LC_MESSAGES'} = 'C';
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-arpl-msgr/imscp-arpl-msgr.log');
 

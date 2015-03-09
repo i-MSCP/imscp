@@ -36,8 +36,7 @@ use iMSCP::Getopt;
 use File::Basename;
 use Crypt::PasswdMD5;
 
-$ENV{'LC_MESSAGES'} = 'C';
-use open ':locale';
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-disable-accounts.log');
 

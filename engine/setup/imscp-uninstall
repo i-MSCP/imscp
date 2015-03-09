@@ -53,8 +53,7 @@ use iMSCP::Service;
 	$main::execmode = 'uninstall';
 }
 
-# Turn off localisation features to force any command output to be in english
-$ENV{'LANG'} = 'C';
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-uninstall.log');
 

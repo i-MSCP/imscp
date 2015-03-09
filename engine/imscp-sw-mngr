@@ -34,8 +34,7 @@ use XML::Parser;
 use warnings;
 use JSON;
 
-$ENV{'LC_MESSAGES'} = 'C';
-use open ':locale';
+$ENV{'LANG'} = 'C.UTF-8';
 
 # Decoding received data
 my (
