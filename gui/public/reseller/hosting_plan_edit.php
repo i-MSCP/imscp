@@ -247,6 +247,7 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 			array(
 				'BACKUPD' => ($backup == '_dmn_') ? $checked : '',
 				'BACKUPS' => ($backup == '_sql_') ? $checked : '',
+				'BACKUPM' => ($backup == '_mail_') ? $checked : '',
 				'BACKUPF' => ($backup == '_full_') ? $checked : '',
 				'BACKUPN' => ($backup == '_no_') ? $checked : '',
 			)
@@ -310,6 +311,7 @@ function reseller_generateErrorPage($tpl, $phpini)
 			array(
 				'BACKUPD' => ($backup == '_dmn_') ? $checked : '',
 				'BACKUPS' => ($backup == '_sql_') ? $checked : '',
+				'BACKUPM' => ($backup == '_mail_') ? $checked : '',
 				'BACKUPF' => ($backup == '_full_') ? $checked : '',
 				'BACKUPN' => ($backup == '_no_') ? $checked : '',
 			)
@@ -363,7 +365,7 @@ function reseller_checkData($phpini)
 	$php = ($php == '_yes_') ? '_yes_' : '_no_';
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
-	$backup = (resellerHasFeature('backup') && in_array($backup, array('_full_', '_dmn_', '_sql_'))) ? $backup : '_no_';
+	$backup = (resellerHasFeature('backup') && in_array($backup, array('_full_', '_dmn_', '_sql_', '_mail_')) ? $backup : '_no_';
 	$aps = (resellerHasFeature('aps') && $aps == '_yes_') ? '_yes_' : '_no_';
 	$hpExtMail = ($hpExtMail == '_yes_') ? '_yes_' : '_no_';
 	$hpWebFolderProtection = ($hpWebFolderProtection == '_yes_') ? '_yes_' : '_no_';
@@ -628,6 +630,7 @@ if (isset($_GET['id'])) {
 			'TR_BACKUP' => tr('Backup'),
 			'TR_BACKUP_DOMAIN' => tr('Domain'),
 			'TR_BACKUP_SQL' => tr('SQL'),
+			'TR_BACKUP_MAIL' => tr('MAIL'),
 			'TR_BACKUP_FULL' => tr('Full'),
 			'TR_BACKUP_NO' => tr('No'),
 
