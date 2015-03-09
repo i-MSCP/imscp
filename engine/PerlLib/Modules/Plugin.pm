@@ -79,30 +79,37 @@ sub process
 	my $status = $self->{'plugin_status'};
 	my $pluginName = $self->{'plugin_name'};
 
-	if($status eq 'enabled') {
-		$self->{'action'} = 'run';
-		$rs = $self->_run($pluginName);
-	} elsif($status eq 'toinstall') {
-		$self->{'action'} = 'install';
-		$rs = $self->_install($pluginName);
-	} elsif($status eq 'tochange') {
-		$self->{'action'} = 'change';
-		$rs = $self->_change($pluginName);
-	} elsif($status eq 'toupdate') {
-		$self->{'action'} = 'update';
-		$rs = $self->_update($pluginName);
-	} elsif($status eq 'touninstall') {
-		$self->{'action'} = 'uninstall';
-		$rs = $self->_uninstall($pluginName);
-	} elsif($status eq 'toenable') {
-		$self->{'action'} = 'enable';
-		$rs = $self->_enable($pluginName);
-	} elsif($status eq 'todisable') {
-		$self->{'action'} = 'disable';
-		$rs = $self->_disable($pluginName);
+	eval { $self->{$_} = decode_json($self->{$_}) for qw/info config config_prev/; };
+
+	unless($@) {
+		if($status eq 'enabled') {
+			$self->{'action'} = 'run';
+			$rs = $self->_run($pluginName);
+		} elsif($status eq 'toinstall') {
+			$self->{'action'} = 'install';
+			$rs = $self->_install($pluginName);
+		} elsif($status eq 'tochange') {
+			$self->{'action'} = 'change';
+			$rs = $self->_change($pluginName);
+		} elsif($status eq 'toupdate') {
+			$self->{'action'} = 'update';
+			$rs = $self->_update($pluginName);
+		} elsif($status eq 'touninstall') {
+			$self->{'action'} = 'uninstall';
+			$rs = $self->_uninstall($pluginName);
+		} elsif($status eq 'toenable') {
+			$self->{'action'} = 'enable';
+			$rs = $self->_enable($pluginName);
+		} elsif($status eq 'todisable') {
+			$self->{'action'} = 'disable';
+			$rs = $self->_disable($pluginName);
+		} else {
+			error("$pluginName plugin status is corrupted.");
+			return 1;
+		}
 	} else {
-		error("$pluginName plugin status is corrupted.");
-		return 1;
+		error("Unable to decode plugin property: $@");
+		$rs = 1;
 	}
 
 	my @sql = (
@@ -113,7 +120,7 @@ sub process
 	my $qrs = $self->{'db'}->doQuery('dummy', @sql);
 	unless(ref $qrs eq 'HASH') {
 		error($qrs);
-		return 1;
+		$rs ||= 1;
 	}
 
 	$rs;
@@ -178,10 +185,6 @@ sub _loadData
 	}
 
 	%{$self} = (%{$self}, %{$row->{$pluginId}});
-
-	$self->{'info'} = decode_json($self->{'info'});
-	$self->{'config'} = decode_json($self->{'config'});
-	$self->{'config_prev'} = decode_json($self->{'config_prev'});
 
 	0;
 }
