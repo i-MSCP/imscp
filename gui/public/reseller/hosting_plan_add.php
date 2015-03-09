@@ -328,7 +328,7 @@ function reseller_checkData($phpini)
 	$php = ($php == '_yes_') ? '_yes_' : '_no_';
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
-	$backup = (resellerHasFeature('backup') && in_array($backup, array('_full_', '_dmn_', '_sql_'))) ? $backup : '_no_';
+	$backup = (resellerHasFeature('backup') && in_array($backup, array('_full_', '_dmn_', '_sql_', '_mail_'))) ? $backup : '_no_';
 	$aps = (resellerHasFeature('aps') && $aps == '_yes_') ? '_yes_' : '_no_';
 	$extMail = ($extMail == '_yes_') ? '_yes_' : '_no_';
 	$webFolderProtection = ($webFolderProtection == '_yes_') ? '_yes_' : '_no_';
