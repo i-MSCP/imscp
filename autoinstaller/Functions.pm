@@ -143,10 +143,10 @@ sub build
 	$dialog->set('cancel-label', 'Back');
 
 	unless($main::noprompt || $main::reconfigure ne 'none') {
-		#$rs = _showReadmeFile($dialog);
-		#return $rs if $rs;
+		$rs = _showWelcomeMsg($dialog);
+		return $rs if $rs;
 
-		$rs = _askDistro($dialog);
+		$rs = _confirmDistro($dialog);
 		return $rs if $rs;
 	}
 
@@ -324,38 +324,57 @@ sub _installPreRequiredPackages
 	_getDistroAdapter()->installPreRequiredPackages();
 }
 
-#=item showReadmeFile(\%dialog)
-#
-# Show readme file
-#
-# Param iMSCP::Dialog \%dialog
-# Return int 0 on success, other otherwise
-#
-#=cut
-#
-#sub _showReadmeFile
-#{
-#	my $dialog = $_[0];
-#
-#	my $file = iMSCP::File->new( filename => $FindBin::Bin . '/README');
-#	my $content = $file->get() or fatal("Unable to read $FindBin::Bin/README");
-#
-#	$dialog->msgbox(<<EOF);
-#
-#$content
-#EOF
-#}
+=item _showWelcomeMsg(\%dialog)
 
-=item _askDistro(\%dialog)
+ Show welcome message
 
- Ask for distribution
+ Param iMSCP::Dialog \%dialog
+ Return int 0 on success, other otherwise
+
+=cut
+
+sub _showWelcomeMsg
+{
+	my $dialog = $_[0];
+
+	$dialog->msgbox(<<EOF);
+
+\\Zb\\Z4i-MSCP - internet Multi Server Control Panel
+============================================\\Zn\\ZB
+
+Welcome to the i-MSCP setup dialog.
+
+i-MSCP software appliance provides complete hosting automation for Linux platforms. It offers an easy-to-use graphical interface for administrators, resellers and customers, and complete functionality to manage a server and its components.
+
+i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT professionals.
+
+With i-MSCP you can configure your server and applications, create customers with domains with a few point-and-click operations that take less than a minute.
+
+There is no limit to the number of administrators, resellers, customers and domains that can be created.
+
+\\Zb\\Z4License\\Zn\\ZB
+
+Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
+
+        \\ZbCopyright 2010-2015 by i-MSCP Team - All rights reserved\\ZB
+
+\\Zb\\Z4Credits\\Zn\\ZB
+
+i-MSCP is a project of i-MSCP | internet Multi Server Control Panel.
+i-MSCP and the i-MSCP logo are trademarks of the i-MSCP | internet Multi Server Control Panel project team.
+EOF
+}
+
+=item _confirmDistro(\%dialog)
+
+ Distribution confirmation dialog
 
  Param iMSCP::Dialog \%dialog
  Return int 0 on success, 50 otherwise
 
 =cut
 
-sub _askDistro()
+sub _confirmDistro()
 {
 	my $dialog = $_[0];
 
