@@ -458,8 +458,6 @@ sub _askInstallMode
 
 	my ($rs, $mode) = $dialog->radiolist(<<EOF, [ 'Install', 'Build' ], 'Install');
 
-\\Z4\\Zb\\ZuInstaller Options\\Zn
-
 Please, choose an option:
 
 \\Z4Install:\\Zn Choose this option if you want install or update i-MSCP.
