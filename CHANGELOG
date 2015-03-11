@@ -12,6 +12,7 @@ BACKEND
 
 CONFIGS
 	Added imscp_daemon, imscp_network and imscp_panel upstart jobs
+	Fixed: Wrong TMPDIR path ( php5-fpm )
 
 DAEMON
 	Added: End child syslog message
