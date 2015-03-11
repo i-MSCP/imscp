@@ -407,7 +407,7 @@ sub _showUpdateNotices
 				}
 			}
 		} else {
-			my $noticeBody .= iMSCP::File->new( filename => "$noticesDir/$noticeFiles[$#noticeFiles]" )->get();
+			my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFiles[$#noticeFiles]" )->get();
 			unless(defined $noticeBody) {
 				error("Unable to read $noticeFiles[$#noticeFiles] file");
 				return 1;
