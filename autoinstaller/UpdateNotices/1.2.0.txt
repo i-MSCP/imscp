@@ -1,0 +1,17 @@
+\Zb\Z1Update to version 1.2.0
+=======================\Zn\ZB
+
+\Zb\Z4# Pre-update tasks\Zn\ZB
+
+Prior to any update attempt, it is greatly recommended to deactivate all plugins through the plugin interface. Once the update is done, you must re-activate the plugins one at a time.
+
+If something goes wrong with a plugin, you can post in the plugins support section, and our development team will fix the issue as soon as possible.
+
+\Zb\Z4# i-MSCP frontEnd access\Zn\ZB
+
+i-MSCP 1.2.0 introduces support for the Nginx Web server which is currently used only by the i-MSCP frontEnd. From now, the i-MSCP frontEnd is run through a dedicated httpd instance, and is reachable through the following http(s) ports:
+
+        \Zb8080 ( http )
+        4443 ( https )\ZB
+
+If you want keep access to the panel though these ports, you can install the PanelRedirect plugin which will act as a proxy.

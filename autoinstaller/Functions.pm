@@ -48,6 +48,7 @@ use iMSCP::File;
 use iMSCP::Stepper;
 use File::Find;
 use Cwd;
+use version;
 
 use iMSCP::Getopt;
 
@@ -145,6 +146,11 @@ sub build
 	unless($main::noprompt || $main::reconfigure ne 'none') {
 		$rs = _showWelcomeMsg($dialog);
 		return $rs if $rs;
+
+		if(%main::imscpOldConfig) {
+			$rs = _showUpdateNotices($dialog);
+			return $rs if $rs;
+		}
 
 		$rs = _confirmDistro($dialog);
 		return $rs if $rs;
@@ -365,16 +371,81 @@ i-MSCP and the i-MSCP logo are trademarks of the i-MSCP | internet Multi Server 
 EOF
 }
 
+=item _showUpdateNotices(\%dialog)
+
+ Show update notices
+
+ Return 0 on success, other on failre on when user is aborting
+
+=cut
+
+sub _showUpdateNotices
+{
+	my $dialog = $_[0];
+
+	my $noticesDir = "$FindBin::Bin/autoinstaller/UpdateNotices";
+	my $imscpVersion = $main::imscpOldConfig{'Version'};
+	my $notices = '';
+
+	my @noticeFiles = iMSCP::Dir->new( dirname => $noticesDir )->getFiles();
+
+	if(@noticeFiles) {
+		@noticeFiles = sort @noticeFiles;
+
+		if($imscpVersion !~ /Git/i) {
+			for my $noticeFile(@noticeFiles) {
+				(my $noticeVersion = $noticeFile) =~ s/\.txt//;
+
+				if(version->parse("v$noticeVersion") < version->parse("v$imscpVersion")) {
+					my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
+					unless(defined $noticeBody) {
+						error($noticeBody);
+						return 1;
+					}
+
+					$notices .= "\n$noticeBody";
+				}
+			}
+		} else {
+			my $noticeBody .= iMSCP::File->new( filename => "$noticesDir/$noticeFiles[$#noticeFiles]" )->get();
+			unless(defined $noticeBody) {
+				error($noticeBody);
+				return 1;
+			}
+
+			$notices .= "\n$noticeBody";
+		}
+
+		if($notices ne '') {
+			$dialog->set('yes-label', 'Continue');
+			$dialog->set('no-label', 'Abort');
+			my $rs =  $dialog->yesno(<<EOF);
+
+Please read carefully before continue:
+$notices
+You can now either continue the update or abort if needed.
+
+\\Zbi-MSCP Team\\Zn
+EOF
+
+			$dialog->resetLabels();
+			return 50 if $rs;
+		}
+	}
+
+	0;
+}
+
 =item _confirmDistro(\%dialog)
 
  Distribution confirmation dialog
 
  Param iMSCP::Dialog \%dialog
- Return int 0 on success, 50 otherwise
+ Return 0 on success, other on failure on when user is aborting
 
 =cut
 
-sub _confirmDistro()
+sub _confirmDistro
 {
 	my $dialog = $_[0];
 
@@ -392,7 +463,7 @@ sub _confirmDistro()
 		$codename ne 'n/a'
 	) {
 		unless(-f $packagesFile) {
-			iMSCP::Dialog->getInstance()->msgbox(<<EOF);
+			$dialog->msgbox(<<EOF);
 
 \\Z1$distribution $release ($codename) not supported yet\\Zn
 
@@ -411,7 +482,7 @@ EOF
 $distribution $release ($codename) has been detected. Is this ok?
 EOF
 
-		iMSCP::Dialog->getInstance()->msgbox(<<EOF) if $rs;
+		$dialog->msgbox(<<EOF) if $rs;
 
 \\Z1Distribution not supported\\Zn
 

@@ -1,0 +1,22 @@
+\Zb\Z1Update to version 1.2.3
+=======================\Zn\ZB
+
+\Zb\Z# Pre-update tasks\Zn\ZB
+
+\Zb\Z4## Plugins\Zn\ZB
+
+Major changes were made in the plugin API, which break compatibility with old plugins versions. Therefore, before updating to this new version, you must disable all plugins.
+
+Once that the update is done, you must update each plugin by uploading the last version available from our plugin store.
+
+Be aware that some plugins are not yet ready for use with this new version, such as the \ZbMailman\ZB and \ZbOwnDDNS\ZB plugins which require further works.
+
+Plugin which are known to work with this new version clearly states that they are compatible with i-MSCP version >= \Zb1.2.3\ZB.
+
+\Zb\Z4## Services\Zn\ZB
+
+Before updating to this new version, it is recommended to stop the i-MSCP services manually as follow:
+
+        \Zb# service imscp_panel stop
+        # service imscp_daemon stop
+        # service imscp_network stop\ZB
