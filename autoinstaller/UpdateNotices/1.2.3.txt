@@ -1,7 +1,7 @@
 \Zb\Z1Update to version 1.2.3
 =======================\Zn\ZB
 
-\Zb\Z# Pre-update tasks\Zn\ZB
+\Zb\Z4# Pre-update tasks\Zn\ZB
 
 \Zb\Z4## Plugins\Zn\ZB
 
