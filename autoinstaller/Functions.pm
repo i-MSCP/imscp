@@ -419,7 +419,7 @@ sub _showUpdateNotices
 		if($notices ne '') {
 			$dialog->set('yes-label', 'Continue');
 			$dialog->set('no-label', 'Abort');
-			my $rs =  $dialog->yesno(<<EOF);
+			my $rs = $dialog->yesno(<<EOF);
 
 Please read carefully before continue:
 $notices
