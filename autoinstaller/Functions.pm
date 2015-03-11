@@ -399,7 +399,7 @@ sub _showUpdateNotices
 				if(version->parse("v$imscpVersion") < version->parse("v$noticeVersion")) {
 					my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
 					unless(defined $noticeBody) {
-						error($noticeBody);
+						error("Unable to read $noticesDir/$noticeFile file");
 						return 1;
 					}
 
@@ -409,7 +409,7 @@ sub _showUpdateNotices
 		} else {
 			my $noticeBody .= iMSCP::File->new( filename => "$noticesDir/$noticeFiles[$#noticeFiles]" )->get();
 			unless(defined $noticeBody) {
-				error($noticeBody);
+				error("Unable to read $noticeFiles[$#noticeFiles] file");
 				return 1;
 			}
 
