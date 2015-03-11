@@ -425,7 +425,7 @@ Please read carefully before continue:
 $notices
 You can now either continue the update or abort if needed.
 
-\\Zbi-MSCP Team\\Zn
+\\Zbi-MSCP Team\\ZB
 EOF
 
 			$dialog->resetLabels();
