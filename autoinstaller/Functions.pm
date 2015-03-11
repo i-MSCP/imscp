@@ -396,7 +396,7 @@ sub _showUpdateNotices
 			for my $noticeFile(@noticeFiles) {
 				(my $noticeVersion = $noticeFile) =~ s/\.txt//;
 
-				if(version->parse("v$noticeVersion") < version->parse("v$imscpVersion")) {
+				if(version->parse("v$imscpVersion") < version->parse("v$noticeVersion")) {
 					my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
 					unless(defined $noticeBody) {
 						error($noticeBody);
