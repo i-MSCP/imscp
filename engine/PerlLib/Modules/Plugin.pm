@@ -338,24 +338,28 @@ sub _update
 
 	$rs ||= $self->{'eventManager'}->trigger('onBeforeUpdatePlugin', $pluginName);
 
-	my $info = decode_json($self->{'plugin_info'});
-
-	$rs ||= $self->_call($pluginName, 'update', $info->{'version'}, $info->{'__nversion__'});
+	$rs ||= $self->_call($pluginName, 'update', $self->{'info'}->{'version'}, $self->{'info'}->{'__nversion__'});
 
 	unless($rs) {
-		$info->{'version'} = $info->{'__nversion__'};
+		$self->{'info'}->{'version'} = $self->{'info'}->{'__nversion__'};
 
-		if($info->{'__need_change__'}) {
+		if($self->{'info'}->{'__need_change__'}) {
 			$rs = $self->_call($pluginName, 'change');
-			$info->{'__need_change__'} = JSON::false unless $rs;
-		}
 
-		my $qrs = $self->{'db'}->doQuery(
-			'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
-		);
-		unless(ref $qrs eq 'HASH') {
-			error($qrs);
-			$rs ||= $qrs;
+			unless($rs) {
+				$self->{'info'}->{'__need_change__'} = JSON::false;
+
+				my $qrs = $self->{'db'}->doQuery(
+					'dummy',
+					'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?',
+					encode_json($self->{'info'}),
+					$pluginName
+				);
+				unless(ref $qrs eq 'HASH') {
+					error($qrs);
+					$rs ||= $qrs;
+				}
+			}
 		}
 	}
 
