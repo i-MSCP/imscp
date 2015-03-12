@@ -428,7 +428,7 @@ function doAction($pluginManager, $pluginName, $action)
 	if($pluginManager->isPluginKnown($pluginName)) {
 		try {
 			if(in_array($action, array('install', 'update', 'enable'))) {
-				$pluginManager->pluginCheckCompat($pluginName, $pluginManager->getPluginInfo($pluginName));
+				$pluginManager->pluginCheckCompat($pluginName);
 			}
 
 			if(checkAction($pluginManager, $pluginName, $action)) {

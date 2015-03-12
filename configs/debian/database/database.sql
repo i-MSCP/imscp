@@ -87,7 +87,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
 ('PHPINI_POST_MAX_SIZE', '10'),
-('PHPINI_MEMORY_LIMIT', '128'),
+('PHPINI_MEMORY_LIMIT', '64'),
 ('PHPINI_OPEN_BASEDIR', ''),
 ('PHPINI_MAX_INPUT_TIME', '60'),
 ('PHPINI_MAX_EXECUTION_TIME', '30'),
@@ -415,7 +415,7 @@ CREATE TABLE IF NOT EXISTS `php_ini` (
   `upload_max_filesize` int(11) NOT NULL DEFAULT '10',
   `max_execution_time` int(11) NOT NULL DEFAULT '30',
   `max_input_time` int(11) NOT NULL DEFAULT '60',
-  `memory_limit` int(11) NOT NULL DEFAULT '128',
+  `memory_limit` int(11) NOT NULL DEFAULT '64',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

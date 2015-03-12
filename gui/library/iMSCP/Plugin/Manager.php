@@ -1198,11 +1198,15 @@ class iMSCP_Plugin_Manager
 	 *
 	 * @throws iMSCP_Plugin_Exception
 	 * @param string $pluginName Plugin name
-	 * @param array $pluginInfo Plugin info
+	 * @param array  $pluginInfo OPTIONAL Plugin info
 	 * @return void
 	 */
-	public function pluginCheckCompat($pluginName, array $pluginInfo)
+	public function pluginCheckCompat($pluginName, array $pluginInfo = array())
 	{
+		if(empty($pluginInfo)) {
+			$pluginInfo = $this->getPluginInfo($pluginName);
+		}
+
 		if(isset($pluginInfo['require_api'])) {
 			if(version_compare($this->getPluginApiVersion(), $pluginInfo['require_api'], '>=')) {
 				return;

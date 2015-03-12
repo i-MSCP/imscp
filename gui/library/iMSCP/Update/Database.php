@@ -973,7 +973,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$dbConfig['PHPINI_REGISTER_GLOBALS'] = 'off';
 		$dbConfig['PHPINI_UPLOAD_MAX_FILESIZE'] = '2';
 		$dbConfig['PHPINI_POST_MAX_SIZE'] = '8';
-		$dbConfig['PHPINI_MEMORY_LIMIT'] = '128';
+		$dbConfig['PHPINI_MEMORY_LIMIT'] = '64';
 		$dbConfig['PHPINI_MAX_INPUT_TIME'] = '60';
 		$dbConfig['PHPINI_MAX_EXECUTION_TIME'] = '30';
 		$dbConfig['PHPINI_ERROR_REPORTING'] = 'E_ALL & ~E_NOTICE';
@@ -1042,7 +1042,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$this->addColumn(
 				'reseller_props',
 				'php_ini_max_memory_limit',
-				"int(11) NOT NULL DEFAULT '128' AFTER php_ini_max_max_input_time"
+				"int(11) NOT NULL DEFAULT '64' AFTER php_ini_max_max_input_time"
 			),
 
 			// Domain permissions columns for PHP directives
@@ -1096,7 +1096,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				upload_max_filesize INT(11) NOT NULL DEFAULT '2',
 				max_execution_time INT(11) NOT NULL DEFAULT '30',
 				max_input_time INT(11) NOT NULL DEFAULT '60',
-				memory_limit INT(11) NOT NULL DEFAULT '128',
+				memory_limit INT(11) NOT NULL DEFAULT '64',
 				PRIMARY KEY (ID)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
@@ -1122,7 +1122,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 						UPDATE
 							hosting_plans
 						SET
-							props = ';no;no;no;no;no;8;2;30;60;128'
+							props = ';no;no;no;no;no;8;2;30;60;64'
 						WHERE
 							id = {$data['id']}
 					";
@@ -1161,7 +1161,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'upload_max_filesize' => '2',
 				'max_execution_time' => '30',
 				'max_input_time' => '60',
-				'memory_limit' => '128'
+				'memory_limit' => '64'
 			) as $directive => $defaultValue
 		) {
 			$sqlUpd[] = "UPDATE reseller_props SET php_ini_max_{$directive} = '$defaultValue'";

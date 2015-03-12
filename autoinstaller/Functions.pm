@@ -375,7 +375,7 @@ EOF
 
  Show update notices
 
- Return 0 on success, other on failre on when user is aborting
+ Return 0 on success, other on failure on when user is aborting
 
 =cut
 
