@@ -283,7 +283,10 @@ sub postBuild
 {
 	# Needed to fix #IP-1246
 	if(iMSCP::ProgramFinder::find('php5dismod')) {
-		for ('curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd', 'mysqli', 'mysql', 'pdo', 'pdo_mysql') {
+		for (
+			'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd', 'mysqli', 'mysql', 'opcache', 'pdo',
+			'pdo_mysql'
+		) {
 			my($stdout, $stderr);
 			my $rs = execute("php5dismod $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
@@ -294,9 +297,12 @@ sub postBuild
 		}
 	}
 
-	# Enable needed PHP modules
+	# Enable needed PHP modules ( only if they are available )
 	if(iMSCP::ProgramFinder::find('php5enmod')) {
-		for ('curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'pdo/10', 'pdo_mysql') {
+		for (
+			'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
+			'pdo_mysql'
+		) {
 			my($stdout, $stderr);
 			my $rs = execute("php5enmod $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;

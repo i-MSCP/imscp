@@ -11,7 +11,8 @@ BACKEND
 	Fixed: Some errors are not trapped
 
 CONFIGS
-	Added imscp_daemon, imscp_network and imscp_panel upstart jobs
+	Added: imscp_daemon, imscp_network and imscp_panel upstart jobs
+	Added: php-apc ( enabled for i-MSCP frontEnd only - Debian < Jessie / Ubuntu < Trusty Thar )
 	Fixed: Wrong TMPDIR path ( php5-fpm )
 
 DAEMON

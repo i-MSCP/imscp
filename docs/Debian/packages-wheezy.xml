@@ -168,6 +168,7 @@
         <package>php5-intl</package>
         <package>php5-mcrypt</package>
         <package>php5-mysqlnd</package>
+        <package>php-apc</package>
     </php>
     <perl>
         <package>perl</package>

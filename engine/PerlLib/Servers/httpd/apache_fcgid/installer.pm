@@ -449,7 +449,10 @@ sub _buildFastCgiConfFiles
 
 	# Make sure that PHP modules are enabled
 	if(iMSCP::ProgramFinder::find('php5enmod')) {
-		for ('curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'pdo/10', 'pdo_mysql') {
+		for (
+			'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
+			'pdo_mysql'
+		) {
 			my($stdout, $stderr);
 			$rs = execute("php5enmod $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
