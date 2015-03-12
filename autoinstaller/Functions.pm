@@ -392,28 +392,20 @@ sub _showUpdateNotices
 	if(@noticeFiles) {
 		@noticeFiles = sort @noticeFiles;
 
-		if($imscpVersion !~ /Git/i) {
-			for my $noticeFile(@noticeFiles) {
-				(my $noticeVersion = $noticeFile) =~ s/\.txt$//;
+		for my $noticeFile(@noticeFiles) {
+			(my $noticeVersion = $noticeFile) =~ s/\.txt$//;
 
-				if(version->parse("v$imscpVersion") < version->parse("v$noticeVersion")) {
-					my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
-					unless(defined $noticeBody) {
-						error("Unable to read $noticesDir/$noticeFile file");
-						return 1;
-					}
-
-					$notices .= "\n$noticeBody";
+			# If Git version is detected, show all notices since we don't know the target version, else show only the
+			# relevant notices.
+			if($imscpVersion ~~ /git/i || version->parse("v$imscpVersion") < version->parse("v$noticeVersion")) {
+				my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
+				unless(defined $noticeBody) {
+					error("Unable to read $noticesDir/$noticeFile file");
+					return 1;
 				}
-			}
-		} else {
-			my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFiles[$#noticeFiles]" )->get();
-			unless(defined $noticeBody) {
-				error("Unable to read $noticeFiles[$#noticeFiles] file");
-				return 1;
-			}
 
-			$notices .= "\n$noticeBody";
+				$notices .= "\n$noticeBody";
+			}
 		}
 
 		if($notices ne '') {
@@ -421,7 +413,9 @@ sub _showUpdateNotices
 			$dialog->set('no-label', 'Abort');
 			my $rs = $dialog->yesno(<<EOF);
 
-Please read carefully before continue:
+Please read carefully before continue.
+
+\\ZbNote:\\ZB Use the \\ZbPage Down\\ZB key from your keyboard to scroll down.
 $notices
 You can now either continue the update or abort if needed.
 
