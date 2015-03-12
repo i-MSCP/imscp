@@ -390,7 +390,7 @@ sub _showUpdateNotices
 	my @noticeFiles = iMSCP::Dir->new( dirname => $noticesDir )->getFiles();
 
 	if(@noticeFiles) {
-		@noticeFiles = sort @noticeFiles;
+		@noticeFiles = reverse sort @noticeFiles;
 
 		for my $noticeFile(@noticeFiles) {
 			(my $noticeVersion = $noticeFile) =~ s/\.txt$//;
