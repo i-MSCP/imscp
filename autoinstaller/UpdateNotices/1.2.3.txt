@@ -13,10 +13,22 @@ Be aware that some plugins are not yet ready for use with this new version, such
 
 Plugin which are known to work with this new version clearly states that they are compatible with i-MSCP version >= \Zb1.2.3\ZB.
 
+\Zb\Z4## PHP version in use\Zn\ZB
+
+If you're using, either \ZbDebian Wheezy\ZB or \ZbUbuntu Precise\ZB with a PHP version that is not provided by official repositories, you must be aware that the \Zbphp-apc\ZB package has been added in the list of package to install.
+
+Because that package is no longer provided for PHP versions > \Zb5.4\ZB, you must remove the package from the packages file before upgrading, else, packages installation will fail.
+
+You can find the packages file inside the i-MSCP archive, under the \Zbdocs/<distro>\ZB directory.
+
 \Zb\Z4## Services\Zn\ZB
 
-Before updating to this new version, it is recommended to stop the i-MSCP services manually as follow:
+Because upstart jobs were added in the new version, you must stop all i-MSCP services manually before updating, else, some of them will be unable to restart at the end of process.
+
+You can stop the i-MSCP services as follow:
 
         \Zb# service imscp_panel stop
         # service imscp_daemon stop
         # service imscp_network stop\ZB
+
+\ZbNote:\ZB The imscp_panel service is only available if you're upgrading from a version released under the i-MSCP serie \Zb1.2.x\ZB
