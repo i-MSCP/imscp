@@ -17,13 +17,6 @@
  * The Initial Developer of the Original Code is i-MSCP Team.
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
- * @package     iMSCP_Services
- * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://i-mscp.net i-MSCP Home Site
- * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**

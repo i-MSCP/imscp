@@ -20,13 +20,6 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
- * @package     iMSCP_VirtualFileSystem
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
- * @link        http://i-mscp.net i-MSCP Home Site
- * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**

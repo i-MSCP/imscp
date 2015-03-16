@@ -23,20 +23,11 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
  */
 
 /**
  * Creates a ticket and informs the recipient
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $userId User unique identifier
  * @param int $adminId Creator unique identifier
  * @param int $urgency The ticket's urgency
@@ -80,8 +71,6 @@ function createTicket($userId, $adminId, $urgency, $subject, $message, $userLeve
 /**
  * Gets the content of the selected ticket and generates its output
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $ticketId Id of the ticket to display
  * @param int $userId Id of the user
@@ -148,8 +137,6 @@ function showTicketContent($tpl, $ticketId, $userId)
 /**
  * Updates a ticket with a new answer and informs the recipient
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId id of the ticket's parent ticket
  * @param int $userId User unique identifier
  * @param int $urgency The parent ticket's urgency
@@ -249,8 +236,6 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
 /**
  * Deletes a ticket
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket unique identifier
  * @return void
  */
@@ -262,8 +247,6 @@ function deleteTicket($ticketId)
 /**
  * Deletes all open/closed tickets that are belong to a user.
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param string $status Ticket status ('open' or 'closed')
  * @param int $userId The user's ID
  * @return void
@@ -278,8 +261,6 @@ function deleteTickets($status, $userId)
 /**
  * Generates a ticket list
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $userId User unique identifier
  * @param int $start First ticket to show (pagination)
@@ -310,19 +291,18 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
 
 	if ($recordsCount != 0) {
 		$query = "
-            SELECT
-                `ticket_id`, `ticket_status`, `ticket_urgency`, `ticket_level`,
-                `ticket_date`, `ticket_subject`
-            FROM
-                `tickets`
-            WHERE
-                (`ticket_from` = ? OR `ticket_to` = ?)
-            AND
-                `ticket_reply` = 0
-            AND
-                {$condition}
-            ORDER BY
-                `ticket_date` DESC LIMIT {$start}, {$count}
+			SELECT
+				`ticket_id`, `ticket_status`, `ticket_urgency`, `ticket_level`, `ticket_date`, `ticket_subject`
+			FROM
+				`tickets`
+			WHERE
+				(`ticket_from` = ? OR `ticket_to` = ?)
+			AND
+				`ticket_reply` = 0
+			AND
+				{$condition}
+			ORDER BY
+				`ticket_date` DESC LIMIT {$start}, {$count}
         ";
 		$stmt = exec_query($query, array($userId, $userId));
 
@@ -411,8 +391,6 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
 /**
  * Closes the given ticket.
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket id
  * @return bool TRUE on success, FALSE otherwise
  */
@@ -430,10 +408,8 @@ function closeTicket($ticketId)
 }
 
 /**
- * Reopens the given ticket.
+ * Reopens the given ticket
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket id
  * @return bool TRUE on success, FALSE otherwise
  */
@@ -451,7 +427,7 @@ function reopenTicket($ticketId)
 }
 
 /**
- * Returns ticket status.
+ * Returns ticket status
  *
  * Possible status values are:
  *  0 - closed
@@ -460,8 +436,6 @@ function reopenTicket($ticketId)
  *  3 - read (if status was 2 or 4)
  *  4 - answered by client
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket unique identifier
  * @return int ticket status identifier
  */
@@ -476,7 +450,7 @@ function getTicketStatus($ticketId)
 }
 
 /**
- * Changes ticket status.
+ * Changes ticket status
  *
  * Possible status values are:
  *
@@ -486,8 +460,6 @@ function getTicketStatus($ticketId)
  *    3 - read (if status was 2 or 4)
  *    4 - answered by client
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket unique identifier
  * @param int $ticketStatus New status identifier
  * @return bool TRUE if ticket status was changed, FALSE otherwise (eg. if ticket was
@@ -498,17 +470,17 @@ function changeTicketStatus($ticketId, $ticketStatus)
 	$userId = $_SESSION['user_id'];
 
 	$query = "
-        UPDATE
-            `tickets`
-        SET
-            `ticket_status` = ?
-        WHERE
-            `ticket_id` = ?
-        OR
-            `ticket_reply` = ?
-        AND
-            (`ticket_from` = ? OR `ticket_to` = ?)
-    ";
+		UPDATE
+			`tickets`
+		SET
+			`ticket_status` = ?
+		WHERE
+			`ticket_id` = ?
+		OR
+			`ticket_reply` = ?
+		AND
+			(`ticket_from` = ? OR `ticket_to` = ?)
+	";
 	$stmt = exec_query($query, array($ticketStatus, $ticketId, $ticketId, $userId, $userId));
 
 	if (!$stmt->rowCount()) {
@@ -519,10 +491,8 @@ function changeTicketStatus($ticketId, $ticketStatus)
 }
 
 /**
- * Reads the user's level from ticket info.
+ * Reads the user's level from ticket info
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket id
  * @return int User's level (1 = user, 2 = super) or FALSE if ticket is not found
  */
@@ -540,10 +510,8 @@ function getUserLevel($ticketId)
 }
 
 /**
- * Returns translated ticket priority.
+ * Returns translated ticket priority
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketUrgency Values from 1 to 4
  * @return string Translated priority string
  */
@@ -563,10 +531,8 @@ function getTicketUrgency($ticketUrgency)
 }
 
 /**
- * Returns ticket'ssender of a ticket answer.
+ * Returns ticket'ssender of a ticket answer
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @usedby showTicketContent
  * @usedby generateTicketList
@@ -608,10 +574,8 @@ function _getTicketSender($ticketId)
 }
 
 /**
- * Returns the last modification date of a ticket.
+ * Returns the last modification date of a ticket
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @usedby generateTicketList
  * @param int $ticketId Ticket to get last date for
@@ -633,14 +597,12 @@ function _ticketGetLastDate($ticketId)
 }
 
 /**
- * Checks if the support ticket system is globally enabled and (optionaly) if a
- * specific reseller has permissions to access to it.
+ * Checks if the support ticket system is globally enabled and (optionaly) if a specific reseller has permissions to
+ * access to it
  *
  * Note: If a reseller has not access to the support ticket system, it's means that
  * all his customers have not access to it too.
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $userId OPTIONAL Id of the user created the current user or null if admin
  * @return bool TRUE if support ticket system is available, FALSE otherwise
  * @Todo: Allows to provides support ticket system as hosting plan option for clients
@@ -666,8 +628,6 @@ function hasTicketSystem($userId = null)
 /**
  * Gets the answers of the selected ticket and generates its output.
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @usedby showTicketContent()
  * @param iMSCP_pTemplate $tpl The Template object
@@ -710,10 +670,8 @@ function _showTicketReplies($tpl, $ticketId)
 }
 
 /**
- * Informs a user about a ticket creation/update and writes a line to the log.
+ * Informs a user about a ticket creation/update and writes a line to the log
  *
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @usedby updateTicket()
  * @usedby createTicket()
