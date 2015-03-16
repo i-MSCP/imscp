@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,15 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category	iMSCP
- * @package
- * @subpackage
- * @copyright	2010-2015 by Laurent Declercq
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
@@ -42,18 +33,20 @@ class iMSCP_Authentication_Result
 	 */
 	const FAILURE_IDENTITY_NOT_FOUND = -1;
 
-    /**
-     * @const int Failure due to identity being ambiguous.
-     */
-    const FAILURE_IDENTITY_AMBIGUOUS = -2;
+	/**
+	 * @const int Failure due to identity being ambiguous.
+	 */
+	const FAILURE_IDENTITY_AMBIGUOUS = -2;
 
 	/**
 	 * @const int Failure due to invalid credential being supplied
 	 */
 	const FAILURE_CREDENTIAL_INVALID = -3;
 
-
-    const FAILURE_CREDENTIAL_EMPTY = -4;
+	/**
+	 * @const int Failure due to empty credential
+	 */
+	const FAILURE_CREDENTIAL_EMPTY = -4;
 
 	/**
 	 * @const int Failure due to uncategorized reasons
@@ -97,15 +90,15 @@ class iMSCP_Authentication_Result
 	{
 		$code = (int)$code;
 
-		if ($code < self::FAILURE_UNCATEGORIZED) {
+		if($code < self::FAILURE_UNCATEGORIZED) {
 			$code = self::FAILURE;
-		} elseif ($code > self::SUCCESS) {
+		} elseif($code > self::SUCCESS) {
 			$code = 1;
 		}
 
 		$this->_code = $code;
 		$this->_identity = $identity;
-		$this->_messages = (array) $messages;
+		$this->_messages = (array)$messages;
 	}
 
 	/**
@@ -138,15 +131,15 @@ class iMSCP_Authentication_Result
 		return $this->_identity;
 	}
 
-    /**
-     * Set error messages
-     *
-     * @param array|string $messages Message(s)
-     */
-    public function setMessage($messages)
-    {
-        $this->_messages = (array)$messages;
-    }
+	/**
+	 * Set error messages
+	 *
+	 * @param array|string $messages Message(s)
+	 */
+	public function setMessage($messages)
+	{
+		$this->_messages = (array)$messages;
+	}
 
 	/**
 	 * Returns an array of string reasons why the authentication attempt was unsuccessful

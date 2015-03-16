@@ -16,30 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category	iMSCP
- * @package		iMSCP_Authentication
- * @subpackage	Bruteforce
- * @copyright	2010-2015 by i-MSCP team
- * @author		Daniel Andreca <sci2tech@gmail.com>
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
- * Bruteforce detection plugin
+ * Class iMSCP_Plugin_Bruteforce
  *
- * This plugin allows to increase system security by detecting any dictionary attacks and blocking them according a set
- * of configuration parameters.
+ * This plugin improve security by preventing dictionnary attacks. It can be used in two different ways:
  *
- * This plugin can be used in two different ways:
- *
- * - As an action plugin that listen to some events triggered in i-MSCP core code and that doing some specific actions
- *   related to bruteforce detection
- * - As a simple object queried by hand in external components.
+ * - As an action plugin that listen to some events triggered in i-MSCP core code
+ * - As a simple component
  */
-class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
+class iMSCP_Plugin_Bruteforce extends iMSCP_Plugin_Action
 {
 	/**
 	 * @var int Tells whether or not bruteforce detection is enabled
@@ -87,8 +74,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	protected $isWaitingFor = 0;
 	
 	/**
-	 * 
-	 * @var int Max attemps before IP is forced to wait.
+	 * @var int Max attemps before IP is forced to wait
 	 */
 	protected $maxAttemptsBeforeWait = 0;
 
@@ -110,9 +96,12 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	/**
 	 * Constructor
 	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
 	 * @param string $type Bruteforce detection type (login|captcha) (defaulted to login)
+	 * @çeturn void
 	 */
-	public function __construct($type = 'login')
+	public function __construct(iMSCP_Plugin_Manager $pluginManager, $type = 'login')
 	{
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
@@ -123,18 +112,19 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 
 		if ($type == 'login') {
 			$this->maxAttempts = $cfg['BRUTEFORCE_MAX_LOGIN'];
-		} else {
+		} elseif($type == 'captcha') {
 			$this->maxAttempts = $cfg['BRUTEFORCE_MAX_CAPTCHA'];
+		} else {
+			throw new iMSCP_Plugin_Exception(tr('Unknown bruteforce detection type: %s', $type));
 		}
 
 		$this->blockTime = $cfg['BRUTEFORCE_BLOCK_TIME'];
 		$this->waitTime = $cfg['BRUTEFORCE_BETWEEN_TIME'];
 		$this->maxAttemptsBeforeWait = $cfg['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'];
-		
+
 		$this->unblock();
 
-		// Plugin initialization
-		parent::__construct(iMSCP_Registry::get('pluginManager'));
+		parent::__construct($pluginManager);
 	}
 
 	/**
@@ -175,11 +165,12 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	{
 		return array(
 			'author' => array('Daniel Andreca', 'Laurent Declercq'),
-			'email' => 'sci2tech@gmail.com',
-			'version' => '0.0.4',
-			'date' => '2012-03-20',
+			'email' => 'team@i-mscp.net',
+			'version' => '0.0.5',
+			'require_api' => '1.0.0',
+			'date' => '2015-03-15',
 			'name' => 'Bruteforce',
-			'desc' => 'Allow to improve system security by detecting any dictionary attacks and blocking them according a set of configuration parameters',
+			'desc' => 'Improve security by preventing dictionary attacks.',
 			'url' => 'http://www.i-mscp.net'
 		);
 	}
@@ -192,15 +183,14 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	public function register(iMSCP_Events_Manager_Interface $eventsManager)
 	{
 		$eventsManager->registerListener(
-			array(iMSCP_Events::onBeforeAuthentication, iMSCP_Events::onBeforeSetIdentity), $this, -999
+			array(iMSCP_Events::onBeforeAuthentication, iMSCP_Events::onBeforeSetIdentity), $this, -99
 		);
 	}
 
 	/**
-	 * Implements the onBeforeAuthentication listener method
+	 * onBeforeAuthentication event listener
 	 *
-	 * @param iMSCP_Events_Event $event Represent an onBeforeAuthentication event that is triggered in the
-	 *									iMSCP_Authentication component.
+	 * @param iMSCP_Events_Event $event
 	 * @return null|string
 	 */
 	public function onBeforeAuthentication($event)
@@ -210,15 +200,13 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 			return $this->getLastMessage();
 		}
 
-		if($event->getParam('context')->getUsername()) {
-			$this->recordAttempt();
-		}
+		$this->recordAttempt();
 
 		return null;
 	}
 
 	/**
-	 * Implement the onBeforeSetIdentity listener method
+	 * onBeforeSetIdentity event listener
 	 *
 	 * @return void
 	 */
@@ -230,12 +218,12 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	/**
 	 * Is blocked IP address?
 	 *
-	 * @return bool TRUE if $_ipAddr is blocked, FALSE otherwise
+	 * @return bool TRUE if IP address is blocked, FALSE otherwise
 	 */
 	public function isBlocked()
 	{
 		if ($this->isBlockedFor - time() > 0) {
-			$this->message = tr('Ip %s is blocked for %s minutes.', $this->ipAddr, $this->isBlockedFor());
+			$this->message = tr('%s IP address is blocked for %s minutes.', $this->ipAddr, $this->isBlockedFor());
 			return true;
 		}
 
@@ -245,12 +233,12 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	/**
 	 * Is waiting IP address?
 	 *
-	 * @return bool TRUE if $_ipAddr is waiting, FALSE otherwise
+	 * @return bool TRUE if IP address is waiting, FALSE otherwise
 	 */
 	public function isWaiting()
 	{
 		if ($this->isWaitingFor - time() > 0) {
-			$this->message = tr('Ip %s is waiting %s seconds.', $this->ipAddr, $this->isWaitingFor());
+			$this->message = tr('%s IP address is waiting %s seconds.', $this->ipAddr, $this->isWaitingFor());
 			return true;
 		}
 
@@ -258,7 +246,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	}
 
 	/**
-	 * Create/Update bruteforce detection record for $_ipAddr
+	 * Create/Update bruteforce detection record for IP address
 	 *
 	 * @return void
 	 */

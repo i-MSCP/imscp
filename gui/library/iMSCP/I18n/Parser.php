@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_I18n
- * @subpackage  Parser
- * @copyright   2010-2015 i-MSCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
@@ -34,35 +26,35 @@
 abstract class iMSCP_I18n_Parser
 {
 	/**
-	 * Headers.
+	 * Headers
 	 *
 	 * @var int
 	 */
 	const HEADERS = 1;
 
 	/**
-	 * Translation table.
+	 * Translation table
 	 *
 	 * @var int
 	 */
 	const TRANSLATION_TABLE = 2;
 
 	/**
-	 * File handle.
+	 * File handle
 	 *
 	 * @var resource
 	 */
 	protected $fh;
 
 	/**
-	 * Path to the gettext file.
+	 * Path to the gettext file
 	 *
 	 * @var string
 	 */
 	protected $filePath;
 
 	/**
-	 * Headers from gettext file.
+	 * Headers from gettext file
 	 *
 	 * A string that contains headers, each of them separated by EOL.
 	 *
@@ -71,7 +63,7 @@ abstract class iMSCP_I18n_Parser
 	protected $headers = '';
 
 	/**
-	 * Translation table.
+	 * Translation table
 	 *
 	 * An array of pairs key/value where the keys are the original strings (msgid)
 	 * and the values, the translated strings (msgstr).
@@ -81,7 +73,7 @@ abstract class iMSCP_I18n_Parser
 	protected $translationTable = array();
 
 	/**
-	 * Constructor.
+	 * Constructor
 	 *
 	 * @throws iMSCP_i18n_Exception When file is not readable
 	 * @param string $filePath Path to gettext file
@@ -91,7 +83,7 @@ abstract class iMSCP_I18n_Parser
 		$filePath = (string)$filePath;
 
 		if (!is_readable($filePath)) {
-			require_once 'iMSCP/I18n/Parser/Exception.php';
+			//require_once 'iMSCP/I18n/Parser/Exception.php';
 			throw new iMSCP_i18n_Parser_Exception("$filePath is not readable");
 		}
 
@@ -99,7 +91,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns headers.
+	 * Returns headers
 	 *
 	 * @return string A string that contains gettext file headers, each separed by EOL
 	 */
@@ -113,7 +105,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns translation table.
+	 * Returns translation table
 	 *
 	 * @return array An array of pairs key/value where the keys are the original strings (msgid) and the values, the
 	 *               translated strings (msgstr)
@@ -128,7 +120,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Retruns project id version header value.
+	 * Retruns project id version header value
 	 *
 	 * @return string Project id version header value
 	 */
@@ -138,7 +130,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns report msgid bugs value header value.
+	 * Returns report msgid bugs value header value
 	 *
 	 * @return string R eport msgid bugs header value
 	 */
@@ -148,7 +140,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns pot creation date header value.
+	 * Returns pot creation date header value
 	 *
 	 * @return string POT creation date header value
 	 */
@@ -158,7 +150,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns po creation date header value.
+	 * Returns po creation date header value
 	 *
 	 * @return string PO creation date header value
 	 */
@@ -168,7 +160,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns last translator header value.
+	 * Returns last translator header value
 	 *
 	 * @return string Last translator header value
 	 */
@@ -178,7 +170,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns language team header value.
+	 * Returns language team header value
 	 *
 	 * @return string language team header value
 	 */
@@ -188,7 +180,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns mime version header value.
+	 * Returns mime version header value
 	 *
 	 * @return string Mime version header value
 	 */
@@ -198,7 +190,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns content type header value.
+	 * Returns content type header value
 	 *
 	 * @return string Content type header value
 	 */
@@ -208,7 +200,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns content transfer encoding header value.
+	 * Returns content transfer encoding header value
 	 *
 	 * @return string Content transfer encoding header value
 	 */
@@ -218,7 +210,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns language header value.
+	 * Returns language header value
 	 *
 	 * @return string Language header value
 	 */
@@ -228,7 +220,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns plural forms header value.
+	 * Returns plural forms header value
 	 *
 	 * @return string Plural forms header value
 	 */
@@ -238,7 +230,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns number of translated strings.
+	 * Returns number of translated strings
 	 *
 	 * @abstract
 	 * @return int Number of translated strings
@@ -246,7 +238,7 @@ abstract class iMSCP_I18n_Parser
 	abstract public function getNumberOfTranslatedStrings();
 
 	/**
-	 * Parse file.
+	 * Parse file
 	 *
 	 * @abstract
 	 * @param int $part Part file to parse {@link self::HEADER} or {@link self::TRANSLATION_TABLE}
@@ -257,7 +249,7 @@ abstract class iMSCP_I18n_Parser
 	abstract protected function _parse($part);
 
 	/**
-	 * Returns given header value.
+	 * Returns given header value
 	 *
 	 * @param string $header header name
 	 * @return string header value
@@ -273,7 +265,7 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Destructor.
+	 * Destructor
 	 */
 	public function __destruct()
 	{

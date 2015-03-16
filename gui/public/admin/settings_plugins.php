@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,11 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @copyright   2010-2015 by i-MSCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /***********************************************************************************************************************
@@ -51,7 +46,7 @@ use Exception;
  */
 function uploadPlugin($pluginManager)
 {
-	$pluginDirectory = $pluginManager->getPluginDirectory();
+	$pluginDirectory = $pluginManager->pluginGetDirectory();
 	$tmpDirectory = GUI_ROOT_DIR . '/data/tmp';
 	$ret = false;
 
@@ -135,7 +130,7 @@ function uploadPlugin($pluginManager)
 					}
 				}
 
-				if($pluginManager->isPluginKnown($pluginName) && $pluginManager->isPluginProtected($pluginName)) {
+				if($pluginManager->pluginIsKnown($pluginName) && $pluginManager->pluginIsProtected($pluginName)) {
 					throw new iMSCPException(tr('You are not allowed to update a protected plugin.'));
 				}
 
@@ -202,7 +197,7 @@ function translateStatus($rawPluginStatus)
 		case 'toupdate':
 			return tr('Update in progress...');
 		case 'tochange':
-			return tr('Change in progress...');
+			return tr('Reconfiguration in progress...');
 		case 'toenable':
 			return tr('Activation in progress...');
 		case 'todisable':
@@ -225,7 +220,7 @@ function translateStatus($rawPluginStatus)
  */
 function generatePage($tpl, $pluginManager)
 {
-	$pluginList = $pluginManager->getPluginList('Action', false);
+	$pluginList = $pluginManager->pluginGetList('Action', false);
 
 	if(empty($pluginList)) {
 		$tpl->assign('PLUGINS_BLOCK', '');
@@ -235,8 +230,8 @@ function generatePage($tpl, $pluginManager)
 		$cacheFile = PERSISTENT_PATH . '/protected_plugins.php';
 
 		foreach($pluginList as $pluginName) {
-			$pluginInfo = $pluginManager->getPluginInfo($pluginName);
-			$pluginStatus = $pluginManager->getPluginStatus($pluginName);
+			$pluginInfo = $pluginManager->pluginGetInfo($pluginName);
+			$pluginStatus = $pluginManager->pluginGetStatus($pluginName);
 
 			if(is_array($pluginInfo['author'])) {
 				if(count($pluginInfo['author']) == 2) {
@@ -251,7 +246,7 @@ function generatePage($tpl, $pluginManager)
 			$tpl->assign(array(
 				'PLUGIN_NAME' => tohtml($pluginName),
 				'PLUGIN_DESCRIPTION' => tr($pluginInfo['desc']),
-				'PLUGIN_STATUS' => ($pluginManager->hasPluginError($pluginName))
+				'PLUGIN_STATUS' => ($pluginManager->pluginHasError($pluginName))
 					? tr('Unexpected error') : translateStatus($pluginStatus),
 				'PLUGIN_VERSION' => (isset($pluginInfo['__nversion__']))
 					? tohtml($pluginInfo['__nversion__']) : tr('Unknown'),
@@ -260,10 +255,10 @@ function generatePage($tpl, $pluginManager)
 				'PLUGIN_SITE' => tohtml($pluginInfo['url'])
 			));
 
-			if($pluginManager->hasPluginError($pluginName)) {
+			if($pluginManager->pluginHasError($pluginName)) {
 				$tpl->assign(
 					'PLUGIN_STATUS_DETAILS',
-					tr('An unexpected error occurred: %s', '<br><br>' . $pluginManager->getPluginError($pluginName))
+					tr('An unexpected error occurred: %s', '<br><br>' . $pluginManager->pluginGetError($pluginName))
 				);
 				$tpl->parse('PLUGIN_STATUS_DETAILS_BLOCK', 'plugin_status_details_block');
 				$tpl->assign(array(
@@ -274,7 +269,7 @@ function generatePage($tpl, $pluginManager)
 			} else {
 				$tpl->assign('PLUGIN_STATUS_DETAILS_BLOCK', '');
 
-				if($pluginManager->isPluginProtected($pluginName)) { // Protected plugin
+				if($pluginManager->pluginIsProtected($pluginName)) { // Protected plugin
 					$tpl->assign(array(
 						'PLUGIN_ACTIVATE_LINK' => '',
 						'PLUGIN_DEACTIVATE_LINK' => '',
@@ -282,7 +277,7 @@ function generatePage($tpl, $pluginManager)
 					));
 
 					$tpl->parse('PLUGIN_PROTECTED_LINK', 'plugin_protected_link');
-				} elseif($pluginManager->isPluginUninstalled($pluginName)) { // Uninstalled plugin
+				} elseif($pluginManager->pluginIsUninstalled($pluginName)) { // Uninstalled plugin
 					$tpl->assign(array(
 						'PLUGIN_DEACTIVATE_LINK' => '',
 						'ACTIVATE_ACTION' => 'install',
@@ -293,20 +288,20 @@ function generatePage($tpl, $pluginManager)
 					));
 
 					$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
-				} elseif($pluginManager->isPluginDisabled($pluginName)) { // Disabled plugin
+				} elseif($pluginManager->pluginIsDisabled($pluginName)) { // Disabled plugin
 					$tpl->assign(array(
 						'PLUGIN_DEACTIVATE_LINK' => '',
 						'ACTIVATE_ACTION' => 'enable',
 						'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin'),
-						'UNINSTALL_ACTION' => $pluginManager->isPluginUninstallable($pluginName)
+						'UNINSTALL_ACTION' => $pluginManager->pluginIsUninstallable($pluginName)
 							? 'uninstall' : 'delete',
-						'TR_UNINSTALL_TOOLTIP' => $pluginManager->isPluginUninstallable($pluginName)
+						'TR_UNINSTALL_TOOLTIP' => $pluginManager->pluginIsUninstallable($pluginName)
 							? tr('Uninstall this plugin') : tr('Delete this plugin'),
 						'PLUGIN_PROTECTED_LINK' => ''
 					));
 
 					$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
-				} elseif($pluginManager->isPluginEnabled($pluginName)) { // Enabled plugin
+				} elseif($pluginManager->pluginIsEnabled($pluginName)) { // Enabled plugin
 					$tpl->assign(array(
 						'PLUGIN_ACTIVATE_LINK' => '',
 						'PLUGIN_PROTECTED_LINK' => ''
@@ -337,25 +332,31 @@ function generatePage($tpl, $pluginManager)
  */
 function checkAction($pluginManager, $pluginName, $action)
 {
-	if($pluginManager->isPluginProtected($pluginName)) {
+	if($pluginManager->pluginIsProtected($pluginName)) {
 		set_page_message(tr('Plugin %s is protected.', $pluginName), 'warning');
 		return false;
 	}
 
 	$ret = true;
 
-	$pluginStatus = $pluginManager->getPluginStatus($pluginName);
+	$pluginStatus = $pluginManager->pluginGetStatus($pluginName);
 
 	switch($action) {
 		case 'install':
-			if(!in_array($pluginStatus, array('toinstall', 'uninstalled'))) {
+			if(
+				!in_array($pluginStatus, array('toinstall', 'uninstalled')) ||
+				!$pluginManager->pluginIsInstallable($pluginName)
+			) {
 				set_page_message(tr('Plugin %s cannot be installed.', $pluginName), 'warning');
 				$ret = false;
 			}
 
 			break;
 		case 'uninstall':
-			if(!in_array($pluginStatus, array('touninstall', 'disabled'))) {
+			if(
+				!in_array($pluginStatus, array('touninstall', 'disabled')) ||
+				!$pluginManager->pluginIsUninstallable($pluginName)
+			) {
 				set_page_message(tr('Plugin %s cannot be uninstalled.', $pluginName), 'warning');
 				$ret = false;
 			}
@@ -370,7 +371,7 @@ function checkAction($pluginManager, $pluginName, $action)
 			break;
 		case 'change':
 			if(!in_array($pluginStatus, array('tochange'))) {
-				set_page_message(tr('Plugin %s cannot be changed.', $pluginName), 'warning');
+				set_page_message(tr('Plugin %s cannot be reconfigured.', $pluginName), 'warning');
 				$ret = false;
 			}
 
@@ -392,7 +393,7 @@ function checkAction($pluginManager, $pluginName, $action)
 		case 'delete':
 			if(!in_array($pluginStatus, array('todelete'))) {
 				if(
-					($pluginManager->isPluginUninstallable($pluginName) && $pluginStatus != 'uninstalled') &&
+					($pluginManager->pluginIsUninstallable($pluginName) && $pluginStatus != 'uninstalled') &&
 					$pluginStatus != 'disabled'
 				) {
 					set_page_message(tr('Plugin %s cannot be deleted.', $pluginName), 'warning');
@@ -425,14 +426,14 @@ function checkAction($pluginManager, $pluginName, $action)
  */
 function doAction($pluginManager, $pluginName, $action)
 {
-	if($pluginManager->isPluginKnown($pluginName)) {
+	if($pluginManager->pluginIsKnown($pluginName)) {
 		try {
 			if(in_array($action, array('install', 'update', 'enable'))) {
-				$pluginManager->pluginCheckCompat($pluginName);
+				$pluginManager->pluginCheckCompat($pluginName, $pluginManager->pluginLoad($pluginName)->getInfo());
 			}
 
 			if(checkAction($pluginManager, $pluginName, $action)) {
-				$ret = call_user_func(array($pluginManager, 'plugin' . $action), $pluginName);
+				$ret = call_user_func(array($pluginManager, 'plugin' . ucfirst($action)), $pluginName);
 
 				if($ret !== false) {
 					if($ret == PluginManager::ACTION_FAILURE || $ret == PluginManager::ACTION_STOPPED) {
@@ -443,7 +444,7 @@ function doAction($pluginManager, $pluginName, $action)
 					} else {
 						$msg = '';
 
-						if($action != 'delete' && $pluginManager->hasPluginBackend($pluginName)) {
+						if($action != 'delete' && $pluginManager->pluginHasBackend($pluginName)) {
 							switch($action) {
 								case 'install':
 									$msg = tr('Plugin %s scheduled for installation.', $pluginName);
@@ -480,7 +481,7 @@ function doAction($pluginManager, $pluginName, $action)
 									$msg = tr('Plugin %s updated.', $pluginName);
 									break;
 								case 'change':
-									$msg = tr('Plugin %s changed.', $pluginName);
+									$msg = tr('Plugin %s reconfigured.', $pluginName);
 									break;
 								case 'enable':
 									$msg = tr('Plugin %s activated.', $pluginName);
@@ -547,12 +548,12 @@ function updatePluginList($pluginManager)
 		$responses = $eventManager->dispatch(Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager));
 
 		if(!$responses->isStopped()) {
-			$updateInfo = $pluginManager->updatePluginList();
+			$updateInfo = $pluginManager->pluginUpdateList();
 			$eventManager->dispatch(Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager));
 
 			set_page_message(
 				tr(
-					'Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s plugin(s) deleted.',
+					'Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated, %s plugin(s) reconfigured, and %s plugin(s) deleted.',
 					$updateInfo['new'], $updateInfo['updated'], $updateInfo['changed'], $updateInfo['deleted']
 				),
 				'success'
@@ -594,8 +595,8 @@ if(!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
 	} elseif(isset($_GET['retry'])) {
 		$pluginName = clean_input($_GET['retry']);
 
-		if($pluginManager->isPluginKnown($pluginName)) {
-			switch($pluginManager->getPluginStatus($pluginName)) {
+		if($pluginManager->pluginIsKnown($pluginName)) {
+			switch($pluginManager->pluginGetStatus($pluginName)) {
 				case 'toinstall':
 					$action = 'install';
 					break;
@@ -620,7 +621,7 @@ if(!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
 				default:
 					// Handle case where the error field is not NULL and status field is in unexpected state
 					// Should never occurs...
-					$pluginManager->setPluginStatus($pluginName, 'todisable');
+					$pluginManager->pluginSetStatus($pluginName, 'todisable');
 					$action = 'disable';
 			}
 

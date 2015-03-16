@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_I18n
- * @subpackage  Parser
- * @copyright   2010-2015 i-MSCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
@@ -92,7 +84,6 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 	{
 		if ($this->fh === null) {
 			if (!($this->fh = fopen($this->filePath, 'rb'))) {
-				require_once 'iMSCP/I18n/Parser/Exception.php';
 				throw new iMSCP_i18n_Parser_Exception('Unable to open ' . $this->filePath);
 			}
 		}
@@ -107,7 +98,6 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 			} elseif($magicNumber == (int)0x0de120495) {
 				$this->order = 'N'; // Big endian
 			} else {
-				require_once 'iMSCP/I18n/Parser/Exception.php';
 				throw new iMSCP_i18n_Parser_Exception('Bad magic number in ' . $this->filePath);
 			}
 
@@ -169,7 +159,6 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 				return $parseResult;
 				break;
 			default:
-				require_once 'iMSCP/I18n/Parser/Exception.php';
 				throw new iMSCP_i18n_Parser_Exception('Unknown part type to parse');
 		}
 	}

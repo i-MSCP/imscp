@@ -23,16 +23,6 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
- * @package     iMSCP_Core
- * @subpackage  Admin
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
  */
 
 /***********************************************************************************************************************
@@ -476,7 +466,7 @@ function debugger_getPluginItemErrors($tpl)
 	$pluginManager = iMSCP_Registry::get('pluginManager');
 
 	/** @var iMSCP_Plugin[] $plugins */
-	$plugins = $pluginManager->getLoadedPlugins();
+	$plugins = $pluginManager->pluginGetLoaded();
 
 	$itemFound = false;
 	foreach ($plugins as $plugin) {
@@ -522,8 +512,8 @@ function debugger_setPluginItemToChange($pluginName, $table, $field, $itemId)
 	/** @var iMSCP_Plugin_Manager $pluginManager */
 	$pluginManager = iMSCP_Registry::get('pluginManager');
 
-	if ($pluginManager->isLoadedPlugin($pluginName)) {
-		$pluginManager->getPlugin($pluginName)->changeItemStatus($table, $field, $itemId);
+	if ($pluginManager->pluginIsLoaded($pluginName)) {
+		$pluginManager->pluginGet($pluginName)->changeItemStatus($table, $field, $itemId);
 
 		return true;
 	}
@@ -558,7 +548,7 @@ function debugger_countRequests($statusField = null, $tableName = null)
 		$pluginManager = iMSCP_Registry::get('pluginManager');
 
 		/** @var iMSCP_Plugin[] $plugins */
-		$plugins = $pluginManager->getLoadedPlugins();
+		$plugins = $pluginManager->pluginGetLoaded();
 		$nbRequests = 0;
 
 		if (!empty($plugins)) {

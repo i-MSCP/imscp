@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2015 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -161,7 +161,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'db'} = iMSCP::Database->factory();
-	$self->{'zone_name'} = undef;
+	$self->{'domain_name'} = undef;
 	$self->{'dns_records'} = [];
 
 	$self;

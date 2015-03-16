@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2013-2015 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,12 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
-# @category    i-MSCP
-# @copyright   2010-2015 by i-MSCP | http://i-mscp.net
-# @author      Laurent Declercq <l.declercq@nuxwin.com>
-# @link        http://i-mscp.net i-MSCP Home Site
-# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Modules::Plugin;
 
@@ -37,8 +31,8 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::EventManager;
-use version;
 use JSON;
+use version;
 use parent 'Common::Object';
 
 # Map action status to next status
@@ -54,7 +48,7 @@ my %actionStatusToNextStatus = (
 
 =head1 DESCRIPTION
 
- This module provide the backend part of the i-MSCP plugin manager.
+ This module provide the backend side of the i-MSCP plugin manager.
 
 =head1 PUBLIC METHODS
 
@@ -108,7 +102,7 @@ sub process
 			return 1;
 		}
 	} else {
-		error("Unable to decode plugin property: $@");
+		error("Unable to decode plugin JSON property: $@");
 		$rs = 1;
 	}
 
@@ -209,8 +203,6 @@ sub _install
 	$rs ||= $self->{'eventManager'}->trigger('onAfterInstallPlugin', $pluginName);
 
 	$rs ||= $self->_enable($pluginName);
-
-	$rs;
 }
 
 =item _uninstall($pluginName)
@@ -230,9 +222,7 @@ sub _uninstall
 
 	$rs ||= $self->_call($pluginName, 'uninstall');
 
-	$rs ||= $self->{'eventManager'}->trigger('onAfterUninstallPlugin', $pluginName);
-
-	$rs;
+	$rs ||= $self->{'eventManager'}->trigger('onAfterUninstallPlugin', $pluginName);;
 }
 
 =item _enable($pluginName)
@@ -253,8 +243,6 @@ sub _enable
 	$rs ||= $self->_call($pluginName, 'enable');
 
 	$rs ||= $self->{'eventManager'}->trigger('onAfterEnablePlugin', $pluginName);
-
-	$rs;
 }
 
 =item _disable($pluginName)
@@ -275,8 +263,6 @@ sub _disable
 	$rs ||= $self->_call($pluginName, 'disable');
 
 	$rs ||= $self->{'eventManager'}->trigger('onAfterDisablePlugin', $pluginName);
-
-	$rs;
 }
 
 =item _change($pluginName)
@@ -298,14 +284,18 @@ sub _change
 
 	$rs ||= $self->_call($pluginName, 'change');
 
-	unless($rs) {
-		my %info = %{$self->{'info'}};
+	$rs ||= $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
 
-		if($info{'__need_change__'}) {
-			$info{'__need_change__'} = JSON::false;
+	unless($rs) {
+		if($self->{'info'}->{'__need_change__'}) {
+			$self->{'info'}->{'__need_change__'} = JSON::false;
 
 			my $qrs = $self->{'db'}->doQuery(
-				'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json(\%info), $pluginName
+				'dummy',
+				'UPDATE plugin SET plugin_info = ?, plugin_config_prev = ? WHERE plugin_name = ?',
+				encode_json($self->{'info'}),
+				encode_json($self->{'config'}),
+				$pluginName
 			);
 			unless(ref $qrs eq 'HASH') {
 				error($qrs);
@@ -314,11 +304,7 @@ sub _change
 		}
 	}
 
-	$rs ||= $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
-
 	$rs ||= $self->_enable($pluginName);
-
-	$rs;
 }
 
 =item _update($pluginName)
@@ -343,29 +329,46 @@ sub _update
 	unless($rs) {
 		$self->{'info'}->{'version'} = $self->{'info'}->{'__nversion__'};
 
-		if($self->{'info'}->{'__need_change__'}) {
-			$rs = $self->_call($pluginName, 'change');
+		my $qrs = $self->{'db'}->doQuery(
+			'dummy',
+			'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?',
+			encode_json($self->{'info'}),
+			$pluginName
+		);
+		unless(ref $qrs eq 'HASH') {
+			error($qrs);
+			return 1;
+		}
 
-			unless($rs) {
-				$self->{'info'}->{'__need_change__'} = JSON::false;
+		$rs = $self->{'eventManager'}->trigger('onAfterUpdatePlugin', $pluginName);
 
-				my $qrs = $self->{'db'}->doQuery(
-					'dummy',
-					'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?',
-					encode_json($self->{'info'}),
-					$pluginName
-				);
-				unless(ref $qrs eq 'HASH') {
-					error($qrs);
-					$rs ||= $qrs;
+		unless($rs) {
+			if($self->{'info'}->{'__need_change__'}) {
+				$rs ||= $self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
+
+				$rs ||= $self->_call($pluginName, 'change');
+
+				unless($rs) {
+					$self->{'info'}->{'__need_change__'} = JSON::false;
+
+					$qrs = $self->{'db'}->doQuery(
+						'dummy',
+						'UPDATE plugin SET  plugin_config_prev = ? WHERE plugin_name = ?',
+						encode_json($self->{'config'}),
+						$pluginName
+					);
+					unless(ref $qrs eq 'HASH') {
+						error($qrs);
+						return 1
+					}
 				}
+
+				$rs ||= $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
 			}
+
+			$rs ||= $self->_enable($pluginName);
 		}
 	}
-
-	$rs ||= $self->{'eventManager'}->trigger('onAfterUpdatePlugin', $pluginName);
-
-	$rs ||= $self->_enable($pluginName);
 
 	$rs;
 }
@@ -388,16 +391,14 @@ sub _run
 	$rs ||= $self->_call($pluginName, 'run');
 
 	$rs ||= $self->{'eventManager'}->trigger('onAfterRunPlugin', $pluginName);
-
-	$rs;
 }
 
-=item _call($pluginName, $pluginMethod [, $fromVersion = undef [, $toVersion = undef ]])
+=item _call($name, $method [, $fromVersion = undef [, $toVersion = undef ]])
 
  Execute the given plugin method
 
- Param string $pluginName Plugin name
- Param string $pluginMethod Name of the method to call on the plugin
+ Param string $name Plugin name
+ Param string $method Name of the method to call on the plugin
  Param string OPTIONAL $fromVersion Version from which the plugin is being updated
  Param string OPTIONAL $toVersion Version to which the plugin is being updated
  Return int 0 on success, other on failure
@@ -406,12 +407,11 @@ sub _run
 
 sub _call
 {
-	my ($self, $pluginName, $pluginMethod, $fromVersion, $toVersion) = @_;
+	my ($self, $name, $method, $fromVersion, $toVersion) = @_;
 
-	my $rs = 0;
-	my $backendPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$pluginName/backend/$pluginName.pm";
+	my $backendPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$name/backend/$name.pm";
 
-	# We trap any compile time error(s)
+	# Catch any compile time error
 	eval { require $backendPluginFile; };
 
 	if($@) { # We got an error due to a compile time error or missing file
@@ -419,15 +419,14 @@ sub _call
 		return 1;
 	}
 
-	my $pluginClass = "Plugin::$pluginName";
-	my $pluginInstance;
+	my $plugin = "Plugin::$name";
 
 	eval {
 		# Turn any warning from plugin into exception
 		local $SIG{__WARN__} = sub { die shift };
 
-		if($pluginClass->can($pluginMethod)) {
-			$pluginInstance = $pluginClass->getInstance(
+		if($plugin->can($method)) {
+			$plugin = $plugin->getInstance(
 				'hooksManager' => $self->{'eventManager'}, # Only to ensure backward compatibility
 				'eventManager' => $self->{'eventManager'},
 				'action' => $self->{'action'},
@@ -435,6 +434,8 @@ sub _call
 				'config' => $self->{'config'},
 				'config_prev' => $self->{'config_prev'}
 			);
+		} else {
+			$plugin = undef;
 		}
 	};
 
@@ -443,21 +444,20 @@ sub _call
 		return 1;
 	}
 
-	if($pluginInstance) {
-		debug("Executing ${pluginClass}::${pluginMethod}() action");
-		$rs = $pluginInstance->$pluginMethod($fromVersion, $toVersion);
+	if($plugin) {
+		debug(sprintf("Executing %s::%s() action", ref $plugin, $method));
+
+		my $rs = $plugin->$method($fromVersion, $toVersion);
 
 		# Return value from the run() action is ignored by default because it's the responsability of the plugins to set
-		# error status for their items. In case a plugin doesn't manage any item, it can force return value by
-		# defining the FORCE_RETVAL attribute and set it value to 'yes'
-		if($pluginMethod ne 'run' || ($pluginInstance->{'FORCE_RETVAL'} && $pluginInstance->{'FORCE_RETVAL'} eq 'yes')) {
-			return $rs if $rs;
-		} else {
-			$rs = 0;
+		# error status for their items. In case a plugin doesn't manage any item, it can force return value by defining
+		# the FORCE_RETVAL attribute and set it value to 'yes'
+		if($method ne 'run' || ($plugin->{'FORCE_RETVAL'} && $plugin->{'FORCE_RETVAL'} eq 'yes')) {
+			return $rs;
 		}
 	}
 
-	$rs;
+	0;
 }
 
 =back

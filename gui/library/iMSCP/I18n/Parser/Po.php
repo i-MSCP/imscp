@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,37 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_I18n
- * @subpackage  Parser
- * @copyright   2010-2015 i-MSCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
- * Class to parse gettext portable object files.
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * Class iMSCP_I18n_Parser_Po
  */
 class iMSCP_I18n_Parser_Po extends iMSCP_I18n_Parser
 {
 	/**
-	 * Returns number of translated strings.
+	 * Returns number of translated strings
 	 *
 	 * @throws iMSCP_I18n_Parser_Exception
 	 * @return void
 	 */
 	public function getNumberOfTranslatedStrings()
 	{
-		require_once 'iMSCP/I18n/Parser/Exception.php';
 		throw new iMSCP_I18n_Parser_Exception('Not Yet Implemented');
 	}
 
 	/**
-	 * Parse a portable object file.
+	 * Parse a portable object file
 	 *
 	 * @param int $part Part to parse (default to iMSCP_I18n_Parser::ALL)
 	 * @return array|string
@@ -54,7 +43,6 @@ class iMSCP_I18n_Parser_Po extends iMSCP_I18n_Parser
 	 */
 	protected function _parse($part)
 	{
-		require_once 'iMSCP/I18n/Parser/Exception.php';
 		throw new iMSCP_i18n_Exception('Not Yet Implemented');
 	}
 }

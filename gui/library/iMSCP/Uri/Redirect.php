@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2011-2011 by i-MSCP Team
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Uri
- * @copyright   2010-2015 by by i-MSCP team
- * @author      Laurent Declercq <l.declercq@i-mscp.net>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license	    http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
@@ -42,7 +34,6 @@ class iMSCP_Uri_Redirect extends Zend_Uri_Http
 	public static function fromString($uri)
 	{
 		if (is_string($uri) === false) {
-			require_once 'iMSCP/Uri/Exception.php';
 			throw new Zend_Uri_Exception('$uri is not a string');
 		}
 
@@ -51,7 +42,6 @@ class iMSCP_Uri_Redirect extends Zend_Uri_Http
 		$schemeSpecific = isset($uri[1]) === true ? $uri[1] : '';
 
 		if (in_array($scheme, array('http', 'https', 'ftp')) === false) {
-			require_once 'iMSCP/Uri/Exception.php';
 			throw new iMSCP_Uri_Exception("Invalid scheme: '$scheme'");
 		}
 

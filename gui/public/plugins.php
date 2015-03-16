@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Plugin
- * @copyright   2010-2015 by i-MSCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 // Include core library
@@ -31,8 +23,8 @@ require_once 'imscp-lib.php';
 
 /** @var iMSCP_Plugin_Manager $pluginManager */
 $pluginManager = iMSCP_Registry::get('pluginManager');
-$plugins = $pluginManager->getLoadedPlugins('Action');
-$controllerPath = null;
+$plugins = $pluginManager->pluginGetLoaded('Action');
+$scriptPath = null;
 
 if (!empty($plugins)) {
 	$eventsManager = iMSCP_Events_Aggregator::getInstance();
@@ -44,30 +36,30 @@ if (!empty($plugins)) {
 
 		if (!$responses->isStopped()) {
 			foreach ($plugins as $plugin) {
-				if (($controllerPath = $plugin->route($urlComponents))) {
+				if (($scriptPath = $plugin->route($urlComponents))) {
 					break;
 				}
 
 				foreach ($plugin->getRoutes() as $pluginRoute => $pluginControllerPath) {
 					if ($pluginRoute == $urlComponents['path']) {
-						$controllerPath = $pluginControllerPath;
+						$scriptPath = $pluginControllerPath;
 						$_SERVER['SCRIPT_NAME'] = $pluginRoute;
 						break;
 					}
 				}
 
-				if ($controllerPath) {
+				if ($scriptPath) {
 					break;
 				}
 			}
 
 			$eventsManager->dispatch(
 				iMSCP_Events::onAfterPluginsRoute,
-				array('pluginManager' => $pluginManager, 'controllerPath' => $controllerPath)
+				array('pluginManager' => $pluginManager, 'scriptPath' => $scriptPath)
 			);
 
-			if ($controllerPath) {
-				include_once $controllerPath;
+			if ($scriptPath) {
+				include_once $scriptPath;
 				exit;
 			}
 		}

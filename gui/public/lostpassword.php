@@ -23,20 +23,11 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
  */
 
 // Include core library
 require_once 'imscp-lib.php';
-require_once 'lostpassword-functions.php';
+require_once LIBRARY_PATH . '/Functions/LostPassword.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptStart);
 
@@ -47,7 +38,7 @@ do_session_timeout();
 $cfg = iMSCP_Registry::get('config');
 
 // Lost password feature is disabled ?
-if (!$cfg->LOSTPASSWORD) {
+if (!$cfg['LOSTPASSWORD']) {
 	redirectTo('/index.php');
 }
 
@@ -56,40 +47,35 @@ if (!check_gd()) {
 	throw new iMSCP_Exception(tr("PHP GD extension not loaded."));
 }
 
-// Check for font files availability
-if (!captcha_fontfile_exists()) {
-	throw new iMSCP_Exception(tr('Captcha fontfile not found.'));
-}
-
 // Remove old unique keys
-removeOldKeys($cfg->LOSTPASSWORD_TIMEOUT);
+removeOldKeys($cfg['LOSTPASSWORD_TIMEOUT']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/simple.tpl',
-		'page' => 'lostpassword.tpl',
-		'page_message' => 'layout'));
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/simple.tpl',
+	'page' => 'lostpassword.tpl',
+	'page_message' => 'layout'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Lost Password'),
-		'CONTEXT_CLASS' => '',
-		'productLongName' => tr('internet Multi Server Control Panel'),
-		'productLink' => 'http://www.i-mscp.net',
-		'productCopyright' => tr('© 2010-2015 i-MSCP Team<br/>All Rights Reserved'),
-		'TR_CAPCODE' => tr('Security code'),
-		'GET_NEW_IMAGE' => tr('Get a new image'),
-		'TR_IMGCAPCODE' => '<img id="captcha" src="imagecode.php" width="' . $cfg->LOSTPASSWORD_CAPTCHA_WIDTH .
-			'" height="' . $cfg->LOSTPASSWORD_CAPTCHA_HEIGHT . '" alt="captcha image" />',
-		'TR_USERNAME' => tr('Username'),
-		'TR_SEND' => tr('Send'),
-		'TR_CANCEL' => tr('Cancel')));
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Lost Password'),
+	'CONTEXT_CLASS' => '',
+	'productLongName' => tr('internet Multi Server Control Panel'),
+	'productLink' => 'http://www.i-mscp.net',
+	'productCopyright' => tr('© 2010-2015 i-MSCP Team<br/>All Rights Reserved'),
+	'TR_CAPCODE' => tr('Security code'),
+	'GET_NEW_IMAGE' => tr('Get a new image'),
+	'TR_IMGCAPCODE' => '<img id="captcha" src="imagecode.php" width="' . $cfg['LOSTPASSWORD_CAPTCHA_WIDTH'] .
+		'" height="' . $cfg['LOSTPASSWORD_CAPTCHA_HEIGHT'] . '" alt="captcha image" />',
+	'TR_USERNAME' => tr('Username'),
+	'TR_SEND' => tr('Send'),
+	'TR_CANCEL' => tr('Cancel')
+));
 
-// A request for new password was validated (User clicked on the link he has received by mail)
+// A request for new password was validated ( User clicked on the link he has received by mail )
 if (isset($_GET['key']) && $_GET['key'] != '') {
 	// Check key
-	check_input($_GET['key']);
+	clean_input($_GET['key']);
 
 	// Sending new password
 	if (sendPassword($_GET['key'])) {
@@ -99,8 +85,8 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
 	}
 } elseif (!empty($_POST)) { // Request for new password
+	$bruteForce = new iMSCP_Plugin_Bruteforce(iMSCP_Registry::get('pluginManager'), 'captcha');
 
-	$bruteForce = new iMSCP_Authentication_Bruteforce('captcha');
 	if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
 		set_page_message($bruteForce->getLastMessage(), 'error');
 		redirectTo('lostpassword.php');
@@ -109,8 +95,8 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 	}
 
 	if (!empty($_POST['uname']) && isset($_SESSION['image']) && isset($_POST['capcode'])) {
-		check_input(trim($_POST['uname']));
-		check_input($_POST['capcode']);
+		clean_input($_POST['uname']);
+		clean_input($_POST['capcode']);
 
 		if ($_SESSION['image'] != $_POST['capcode']) {
 			set_page_message(tr('Wrong security code'), 'error');
@@ -124,11 +110,8 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 	}
 }
 
-// Generate page messages
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();

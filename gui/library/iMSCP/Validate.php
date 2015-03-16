@@ -1,6 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,14 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Validate
- * @copyright   2010-2015 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
@@ -193,10 +186,8 @@ class iMSCP_Validate
     public function setDefaultTranslator($translator = null)
     {
         if (null === $translator) {
-            require_once 'iMSCP/I18n/Adapter/Zend.php';
             $translator = new iMSCP_I18n_Adapter_Zend();
         } elseif (!$translator instanceof Zend_Translate_Adapter) {
-            require_once 'iMSCP/Exception.php';
             throw new iMSCP_Exception('$translator must be an instance of Zend_Translate_Adapter.');
         }
 
@@ -214,8 +205,6 @@ class iMSCP_Validate
     {
         if (!array_key_exists($validatorName, $this->_validators)) {
             $validator = 'Zend_Validate_' . $validatorName;
-
-            require_once "Zend/Validate/$validatorName.php";
 
             $this->_validators[$validatorName] = new $validator($options);
 

@@ -349,7 +349,7 @@ class iMSCP_Initializer
 	 *
 	 * This function retrieves all the parameters from the database and merge them with the basis configuration object.
 	 *
-	 * Parameters that exists in the basis configuration object will be replaced by them that come from the database.
+	 * Parameters that exists in the basis configuration object will be replaced by those that come from the database.
 	 * The basis configuration object contains parameters that come from the i-mscp.conf configuration file or any
 	 * parameter defined in the {@link environment.php} file.
 	 *
@@ -583,11 +583,11 @@ class iMSCP_Initializer
 	protected function initializePlugins()
 	{
 		/** @var iMSCP_Plugin_Manager $pluginManager */
-		$pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager(PLUGINS_PATH));
+		$pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager(GUI_ROOT_DIR . '/plugins'));
 
-		foreach($pluginManager->getPluginList() as $pluginName) {
-			if(!$pluginManager->hasPluginError($pluginName)) {
-				if(!$pluginManager->loadPlugin($pluginName)) {
+		foreach($pluginManager->pluginGetList() as $pluginName) {
+			if(!$pluginManager->pluginHasError($pluginName)) {
+				if(!$pluginManager->pluginLoad($pluginName)) {
 					throw new iMSCP_Exception(sprintf('Unable to load plugin: %s', $pluginName));
 				}
 			}

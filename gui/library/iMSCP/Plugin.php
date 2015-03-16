@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Plugin
- * @copyright   2010-2015 by i-MSCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
@@ -103,15 +95,14 @@ abstract class iMSCP_Plugin
 	 * @throws iMSCP_Plugin_Exception in case plugin info file cannot be read
 	 * @return array An array containing information about plugin
 	 */
-	public function getInfo()
+	function getInfo()
 	{
-		$file = $this->getPluginManager()->getPluginDirectory() . '/' . $this->getName() . '/info.php';
-
+		$file = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName() . '/info.php';
 		$info = array();
 
-		if (@is_readable($file)) {
+		if(@is_readable($file)) {
 			$info = include($file);
-			iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next run
+			iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
 		} else {
 			if (!file_exists($file)) {
 				set_page_message(
@@ -210,19 +201,19 @@ abstract class iMSCP_Plugin
 		$this->isLoadedConfig = false;
 
 		$pluginName = $this->getName();
-		$file = $this->getPluginManager()->getPluginDirectory() . "/$pluginName/config.php";
+		$file = $this->getPluginManager()->pluginGetDirectory() . "/$pluginName/config.php";
 		$config = array();
 
 		if (@file_exists($file)) {
 			if (@is_readable($file)) {
 				$config = include($file);
-				iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next run
+				iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
 
 				$file = PERSISTENT_PATH . "/plugins/$pluginName.php";
 
 				if (@is_readable($file)) {
 					$localConfig = include($file);
-					iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next run
+					iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
 
 					if (array_key_exists('__REMOVE__', $localConfig) && is_array($localConfig['__REMOVE__'])) {
 						$config = utils_arrayDiffRecursive($config, $localConfig['__REMOVE__']);
@@ -500,10 +491,10 @@ abstract class iMSCP_Plugin
 	{
 		$pluginName = $this->getName();
 		$pluginManager = $this->getPluginManager();
-		$sqlDir = $pluginManager->getPluginDirectory() . '/' . $pluginName . '/sql';
+		$sqlDir = $pluginManager->pluginGetDirectory() . '/' . $pluginName . '/sql';
 
 		if (is_dir($sqlDir)) {
-			$pluginInfo = $pluginManager->getPluginInfo($pluginName);
+			$pluginInfo = $pluginManager->pluginGetInfo($pluginName);
 			$dbSchemaVersion = (isset($pluginInfo['db_schema_version'])) ? $pluginInfo['db_schema_version'] : '000';
 			$migrationFiles = array();
 
@@ -547,10 +538,10 @@ abstract class iMSCP_Plugin
 				}
 
 				$pluginInfo['db_schema_version'] = ($migrationMode == 'up') ? $dbSchemaVersion : '000';
-				$pluginManager->updatePluginInfo($pluginName, $pluginInfo);
+				$pluginManager->pluginUpdateInfo($pluginName, $pluginInfo);
 			} catch (iMSCP_Exception $e) {
 				$pluginInfo['db_schema_version'] = $dbSchemaVersion;
-				$pluginManager->updatePluginInfo($pluginName, $pluginInfo);
+				$pluginManager->pluginUpdateInfo($pluginName, $pluginInfo);
 
 				throw new iMSCP_Plugin_Exception($e->getMessage(), $e->getCode(), $e);
 			}

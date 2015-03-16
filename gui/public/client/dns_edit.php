@@ -708,8 +708,6 @@ function client_saveDnsRecord($dnsRecordId)
 // Include core library
 require_once 'imscp-lib.php';
 
-require_once 'vendor/Net/DNS2.php';
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
