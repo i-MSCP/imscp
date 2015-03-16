@@ -1860,36 +1860,37 @@ function calc_bar_value($value, $value_max, $bar_width)
  */
 function write_log($msg, $logLevel = E_USER_WARNING)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	if(!defined('IMSCP_SETUP')) {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
 
-	$clientIp = getIpAddr() ? getIpAddr() : 'unknown';
+		$clientIp = getIpAddr() ? getIpAddr() : 'unknown';
 
-	$msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>', ENT_COMPAT, 'UTF-8');
+		$msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>', ENT_COMPAT, 'UTF-8');
 
-	exec_query("INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)", $msg);
+		exec_query("INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)", $msg);
 
-	$msg = strip_tags(str_replace('<br />', "\n", $msg));
-	$to = isset($cfg->DEFAULT_ADMIN_ADDRESS) ? $cfg->DEFAULT_ADMIN_ADDRESS : '';
+		$msg = strip_tags(str_replace('<br />', "\n", $msg));
+		$to = isset($cfg->DEFAULT_ADMIN_ADDRESS) ? $cfg->DEFAULT_ADMIN_ADDRESS : '';
 
-	if ($to != '' && $logLevel <= $cfg->LOG_LEVEL) {
-		$hostname = isset($cfg->SERVER_HOSTNAME) ? $cfg->SERVER_HOSTNAME : 'unknown';
-		$baseServerIp = isset($cfg->BASE_SERVER_IP) ? $cfg->BASE_SERVER_IP : 'unknown';
-		$version = isset($cfg->Version) ? $cfg->Version : 'unknown';
-		$buildDate = !empty($cfg->BuildDate) ? $cfg->BuildDate : 'unavailable';
-		$subject = "i-MSCP $version on $hostname ($baseServerIp)";
+		if($to != '' && $logLevel <= $cfg->LOG_LEVEL) {
+			$hostname = isset($cfg->SERVER_HOSTNAME) ? $cfg->SERVER_HOSTNAME : 'unknown';
+			$baseServerIp = isset($cfg->BASE_SERVER_IP) ? $cfg->BASE_SERVER_IP : 'unknown';
+			$version = isset($cfg->Version) ? $cfg->Version : 'unknown';
+			$buildDate = !empty($cfg->BuildDate) ? $cfg->BuildDate : 'unavailable';
+			$subject = "i-MSCP $version on $hostname ($baseServerIp)";
 
-		if ($logLevel == E_USER_NOTICE) {
-			$severity = 'Notice (You can ignore this message)';
-		} elseif ($logLevel == E_USER_WARNING) {
-			$severity = 'Warning';
-		} elseif ($logLevel == E_USER_ERROR) {
-			$severity = 'Error';
-		} else {
-			$severity = 'Unknown';
-		}
+			if($logLevel == E_USER_NOTICE) {
+				$severity = 'Notice (You can ignore this message)';
+			} elseif($logLevel == E_USER_WARNING) {
+				$severity = 'Warning';
+			} elseif($logLevel == E_USER_ERROR) {
+				$severity = 'Error';
+			} else {
+				$severity = 'Unknown';
+			}
 
-		$message = <<<AUTO_LOG_MSG
+			$message = <<<AUTO_LOG_MSG
 
 i-MSCP Log
 
@@ -1912,14 +1913,15 @@ level, you can change it via the settings page.
 
 AUTO_LOG_MSG;
 
-		$headers = "From: \"i-MSCP Logging Mailer\" <" . $to . ">\n";
-		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
-		$headers .= "Content-Transfer-Encoding: 7bit\n";
-		$headers .= "X-Mailer: i-MSCP Mailer";
+			$headers = "From: \"i-MSCP Logging Mailer\" <" . $to . ">\n";
+			$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
+			$headers .= "Content-Transfer-Encoding: 7bit\n";
+			$headers .= "X-Mailer: i-MSCP Mailer";
 
-		if (!mail($to, $subject, $message, $headers)) {
-			$log_message = "Logging Mailer Mail To: |$to|, From: |$to|, Status: |NOT OK|!";
-			exec_query("INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)", $log_message, false);
+			if(!mail($to, $subject, $message, $headers)) {
+				$log_message = "Logging Mailer Mail To: |$to|, From: |$to|, Status: |NOT OK|!";
+				exec_query("INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)", $log_message, false);
+			}
 		}
 	}
 }
@@ -3278,4 +3280,35 @@ function getWebmailList()
 	}
 
 	return array();
+}
+
+/**
+ * Returns the user Ip address
+ *
+ * @return string User's Ip address
+ */
+function getIpAddr()
+{
+	$ipAddr = (!empty($_SERVER['HTTP_CLIENT_IP'])) ? $_SERVER['HTTP_CLIENT_IP'] : false;
+
+	if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		$ipAddrs = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR']);
+
+		if ($ipAddr) {
+			array_unshift($ipAddrs, $ipAddr);
+			$ipAddr = false;
+		}
+
+		$countIpAddrs = count($ipAddrs);
+
+		// Loop over ip stack as long an ip out of private range is not found
+		for ($i = 0; $i < $countIpAddrs; $i++) {
+			if (filter_var($ipAddrs[$i], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
+				$ipAddr = $ipAddrs[$i];
+				break;
+			}
+		}
+	}
+
+	return ($ipAddr ? $ipAddr : $_SERVER['REMOTE_ADDR']);
 }

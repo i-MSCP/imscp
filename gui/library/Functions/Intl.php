@@ -153,11 +153,7 @@ function i18n_buildLanguageIndex()
 				}
 			} else {
 				set_page_message(
-					tr(
-						'The %s translation file has been ignored: Translation table is empty.',
-						"<strong>$basename</strong>"
-					),
-					'warning'
+					tr('The %s translation file has been ignored: Translation table is empty.', $basename), 'warning'
 				);
 			}
 		}
@@ -330,16 +326,14 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
 
 	$locale = $primaryTranslator->getLocale();
 
-	$pluginTranslator = new Zend_Translate(
-		array(
-			'adapter' => $type,
-			'content' => $dirpath,
-			'scan' => $scan,
-			'locale' => $locale,
-			'disableNotices' => true,
-			'tag' => $tag
-		)
-	);
+	$pluginTranslator = new Zend_Translate(array(
+		'adapter' => $type,
+		'content' => $dirpath,
+		'scan' => $scan,
+		'locale' => $locale,
+		'disableNotices' => true,
+		'tag' => $tag
+	));
 
 	if($pluginTranslator->getAdapter()->isAvailable($locale)) {
 		$primaryTranslator->addTranslation(array('content' => $pluginTranslator));
@@ -372,17 +366,15 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
  */
 function i18n_getJsTranslations()
 {
-	$translations = new ArrayObject(
-		array(
-			// Core translation strings
-			'core' => array(
-				'close' => tr('Close'),
-				'generate' => tr('Generate', true),
-				'show' => tr('Show', true),
-				'your_new_password' => tr('Your new password', true),
-				'password_generate_alert' => tr('You must first generate a password by clicking on the generate button.', true),
-			)
-		),
+	$translations = new ArrayObject(array(
+		// Core translation strings
+		'core' => array(
+			'close' => tr('Close'),
+			'generate' => tr('Generate', true),
+			'show' => tr('Show', true),
+			'your_new_password' => tr('Your new password', true),
+			'password_generate_alert' => tr('You must first generate a password by clicking on the generate button.', true),
+		)),
 		ArrayObject::ARRAY_AS_PROPS
 	);
 

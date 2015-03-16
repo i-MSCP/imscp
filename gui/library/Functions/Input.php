@@ -33,39 +33,7 @@
  * @author      i-MSCP Team
  */
 
-/**
- * Checks an input value.
- *
- * check_input checks HTML fields of type <input> for content that could be
- * related to cross site scripting. The function will call die() if any of the
- * defined commands is entered in a protected <input> field. An additional
- * information is displayed to the user.
- *
- * @throws iMSCP_Exception
- * @param string $value
- */
-function check_input($value = '')
-{
-	// possible commands for XSS are stored in $CHECK_VARS
-	$checkVariables = array(
-		"/wget /i", "/chmod /i", "/chown /i", "/lnyx /i", "/curl /i", "/fopen /i",
-		"/mkdir /i", "/passwd /i", "/http:/i", "/ftp:/i", "/content-type:/i",
-		"/content-transfer-encoding:/i", "/mime-version:/i", "/subject:/i", "/to:/i",
-		"/cc:/i", "/bcc:/i", "/\r/", "/\n/", "/%0a/", "/%0d/"
-	);
-
-	if (!empty($value)) {
-		$value = strtolower($value);
-
-		foreach ($checkVariables as $variable) {
-			if (preg_match($variable, $value) > 0) {
-				$message = 'Possible hacking attempt. Script terminated.';
-				write_log($message, E_USER_ERROR);
-				throw new iMSCP_Exception(tr($message));
-			}
-		}
-	}
-}
+$ESCAPER = new Zend_Escaper_Escaper('UTF-8');
 
 /**
  * clean_html replaces up defined inputs.
@@ -92,12 +60,8 @@ function clean_html($text)
 		'@&#(\d+);@e'*/
 	); // handle as php
 
-	$replace = array(
-		'', '', '\1', '"', "'", '&', '<', '>', ' ', chr(161), chr(162), chr(163),
-		chr(169),);
-
+	$replace = array('', '', '\1', '"', "'", '&', '<', '>', ' ', chr(161), chr(162), chr(163), chr(169),);
 	$text = preg_replace($search, $replace, $text);
-	// and second one...
 	$text = strip_tags($text);
 
 	return $text;
@@ -116,47 +80,40 @@ function clean_input($input, $htmlencode = false)
 	$input = trim($input, "\x20");
 	$input = trim($input, '{..}');
 
-	if (get_magic_quotes_gpc()) {
+	if(get_magic_quotes_gpc()) {
 		$input = stripslashes($input);
 	}
 
-	if ($htmlencode) {
-		return htmlentities($input, ENT_QUOTES, 'UTF-8', false);
+	if($htmlencode) {
+		global $ESCAPER;
+		return $ESCAPER->escapeHtml($input);
 	} else {
 		return $input;
 	}
 }
 
 /**
- * Convert any text to HTML.
+ * Escape a string for the HTML Body context
  *
- * @param string $text Text to be converted
+ * @param string $string String to be converted
  * @return string HTML entitied text
  */
-function tohtml($text)
+function tohtml($string)
 {
-	return htmlentities($text, ENT_QUOTES, 'UTF-8', false);
+	global $ESCAPER;
+	return $ESCAPER->escapeHtml($string);
 }
 
 /**
- * Convert any text to JavaScript text
- * @param  $text
- * @return string JavaScript text
+ * Escape a string for the Javascript context
+ *
+ * @param string $string String to be converted
+ * @return string
  */
-function tojs($text)
+function tojs($string)
 {
-	$result = strtr(
-		$text,
-		array(
-			'\\' => '\\\\',
-			"'" => "\\'",
-			'"' => '\\"',
-			"\r" => '\\r',
-			"\n" => '\\n',
-			'</' => '<\/'
-		));
-
-	return $result;
+	global $ESCAPER;
+	return $ESCAPER->escapeJs($string);
 }
 
 /**
@@ -174,15 +131,15 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
 	$ret = true;
 	$passwordLength = strlen($password);
 
-	if($cfg->PASSWD_CHARS < 6) {
-		$cfg->PASSWD_CHARS = 6;
-	} elseif($cfg->PASSWD_CHARS > 30) {
-		$cfg->PASSWD_CHARS = 30;
+	if($cfg['PASSWD_CHARS'] < 6) {
+		$cfg['PASSWD_CHARS'] = 6;
+	} elseif($cfg['PASSWD_CHARS'] > 30) {
+		$cfg['PASSWD_CHARS'] = 30;
 	}
 
-	if ($passwordLength < $cfg->PASSWD_CHARS) {
+	if($passwordLength < $cfg['PASSWD_CHARS']) {
 		if(!$noErrorMsg) {
-			set_page_message(tr('Password is shorter than %s characters.', $cfg->PASSWD_CHARS), 'error');
+			set_page_message(tr('Password is shorter than %s characters.', $cfg['PASSWD_CHARS']), 'error');
 		}
 
 		$ret = false;
@@ -194,7 +151,7 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
 		$ret = false;
 	}
 
-	if (!empty($unallowedChars) && preg_match($unallowedChars, $password)) {
+	if(!empty($unallowedChars) && preg_match($unallowedChars, $password)) {
 		if(!$noErrorMsg) {
 			set_page_message(tr('Password contains unallowed characters.'), 'error');
 		}
@@ -202,12 +159,12 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
 		$ret = false;
 	}
 
-	if ($cfg->PASSWD_STRONG && ! (preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password))) {
+	if($cfg['PASSWD_STRONG'] && !(preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password))) {
 		if(!$noErrorMsg) {
 			set_page_message(
 				tr(
 					'Password must be at least %s characters long and contain letters and numbers to be valid.',
-					$cfg->PASSWD_CHARS
+					$cfg['PASSWD_CHARS']
 				),
 				'error'
 			);
@@ -217,21 +174,16 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
 	}
 
 	return $ret;
-
 }
 
 /**
  * Validates a username
  *
- * This function validates syntax of usernames.
- * The characters allowed are all alphanumeric in
- * upper or lower case, the hyphen , the low dash
- * and  the dot, the three latter  being banned at
- * the beginning and end of string.
+ * This function validates syntax of usernames. The characters allowed are all alphanumeric in upper or lower case, the
+ * hyphen , the low dash and  the dot, the three latter  being banned at the beginning and end of string.
  *
  * Successive instances of a dot or underscore are prohibited
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param string $username the username to be checked
  * @param int $min_char number of min. chars
  * @param int $max_char number min. chars
@@ -241,8 +193,7 @@ function validates_username($username, $min_char = 2, $max_char = 30)
 {
 	$pattern = '@^[[:alnum:]](:?(?<![-_])(:?-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$@';
 
-	return (bool)(preg_match($pattern, $username) && strlen($username) >= $min_char &&
-		strlen($username) <= $max_char);
+	return (bool)(preg_match($pattern, $username) && strlen($username) >= $min_char && strlen($username) <= $max_char);
 }
 
 /**
@@ -276,15 +227,15 @@ function isValidDomainName($domainName)
 	if(strpos($domainName, '.') === 0 || substr($domainName, -1) == '.') {
 		$dmnNameValidationErrMsg = tr('Domain name cannot start nor end with dot.');
 		return false;
-	} elseif (($asciiDomainName = encode_idna($domainName)) !== false) {
+	} elseif(($asciiDomainName = encode_idna($domainName)) !== false) {
 		$asciiDomainName = strtolower($asciiDomainName);
 
-		if (strlen($asciiDomainName) > 255) {
+		if(strlen($asciiDomainName) > 255) {
 			$dmnNameValidationErrMsg = tr('Domain name (ASCII form) cannot be greater than 255 characters.');
 			return false;
 		}
 
-		if (preg_match('/([^a-z0-9\-\.])/', $asciiDomainName, $m)) {
+		if(preg_match('/([^a-z0-9\-\.])/', $asciiDomainName, $m)) {
 			$dmnNameValidationErrMsg = tr('Domain name contains an invalid character: %s', $m[1]);
 			return false;
 		} elseif(strpos($asciiDomainName, '..') !== false) {
@@ -294,17 +245,17 @@ function isValidDomainName($domainName)
 
 		$labels = explode('.', $asciiDomainName);
 
-		if (sizeof($labels) > 1) {
-			foreach ($labels as $label) {
-				if (strlen($label) > 63) {
+		if(sizeof($labels) > 1) {
+			foreach($labels as $label) {
+				if(strlen($label) > 63) {
 					$dmnNameValidationErrMsg = tr('Domain name labels cannot be greater than 63 characters.');
 					return false;
-				} elseif (preg_match('/([^a-z0-9\-])/', $label, $m)) {
+				} elseif(preg_match('/([^a-z0-9\-])/', $label, $m)) {
 					$dmnNameValidationErrMsg = tr(
 						"Domain name label '%s' contain an invalid character: %s", $label, $m[1]
 					);
 					return false;
-				} elseif (preg_match('/^[\-]|[\-]$/', $label)) {
+				} elseif(preg_match('/^[\-]|[\-]$/', $label)) {
 					$dmnNameValidationErrMsg = tr('Domain name labels cannot start nor end with hyphen.');
 					return false;
 				}
@@ -330,12 +281,12 @@ function isValidDomainName($domainName)
  */
 function imscp_limit_check($data, $extra = -1)
 {
-	if ($extra !== null && !is_bool($extra)) {
-		if (is_array($extra)) {
+	if($extra !== null && !is_bool($extra)) {
+		if(is_array($extra)) {
 			$nextra = '';
 			$max = count($extra);
 
-			foreach ($extra as $n => $element) {
+			foreach($extra as $n => $element) {
 				$nextra = $element . ($n < $max) ? '|' : '';
 			}
 
@@ -363,7 +314,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 {
 	$who = null;
 	// Fix $type according to type or by alias
-	switch ($type) {
+	switch($type) {
 		case 'dmn_id':
 			$type = 'domain_id';
 			break;
@@ -413,7 +364,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 		case 'dmn':
 		case 'normal':
 		case 'domain':
-			if (!is_numeric($id)) {
+			if(!is_numeric($id)) {
 				$type = 'domain';
 			} else {
 				$type = 'domain_id';
@@ -422,7 +373,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 		case 'als':
 		case 'alias':
 		case 'domain_alias':
-			if (!is_numeric($id)) {
+			if(!is_numeric($id)) {
 				$type = 'alias';
 			} else {
 				$type = 'alias_id';
@@ -431,14 +382,14 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 		case 'sub':
 		case 'subdom':
 		case 'subdomain':
-			if (!is_numeric($id)) {
+			if(!is_numeric($id)) {
 				$type = 'subdomain';
 			} else {
 				$type = 'subdomain_id';
 			}
 			break;
 		case 'alssub':
-			if (!is_numeric($id)) {
+			if(!is_numeric($id)) {
 				$type = 'subdomain_alias';
 			} else {
 				$type = 'subdomain_alias_id';
@@ -580,21 +531,21 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 	$resolvers['hosting_plan_id']['query'] = 'SELECT `reseller_id` FROM `hosting_plans` WHERE `id` = ? LIMIT 1;';
 	$resolvers['hosting_plan_id']['is_final'] = true;
 
-	if (isset($resolvers[$type])) {
+	if(isset($resolvers[$type])) {
 		$r = $resolvers[$type];
 
-		if ($r['query']) {
+		if($r['query']) {
 			$matches = array();
 
-			if (!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
+			if(!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
 				throw new iMSCP_Exception(tr('Malformed resolver SQL query'));
 			}
 
 			$select = $matches[1];
 			$stmt = exec_query($r['query'], $id);
 
-			if ($stmt->rowCount()) {
-				if ($r['is_final'] || $forcefinal) {
+			if($stmt->rowCount()) {
+				if($r['is_final'] || $forcefinal) {
 					$who = $stmt->fields[$select];
 				} else {
 					$who = who_owns_this($stmt->fields[$select], $r['next']);
@@ -603,7 +554,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 		} else {
 			$ex = explode($r['separator'], $id);
 
-			if (!$r['is_final'] && !$forcefinal) {
+			if(!$r['is_final'] && !$forcefinal) {
 				$who = who_owns_this($r['pos'], $r['next']);
 			} else {
 				$who = $ex[$r['pos']];
@@ -611,7 +562,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 		}
 	}
 
-	if ($type != 'admin' && (empty($who) || $who <= 0)) {
+	if($type != 'admin' && (empty($who) || $who <= 0)) {
 		$who = null;
 	}
 
@@ -619,9 +570,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 }
 
 /**
- * Checks if a file match the given mimetype(s).
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * Checks if a file match the given mimetype(s)
  * @throws iMSCP_Exception When magicfile cannot be found or is not valid
  * @throws iMSCP_Exception When the PHP finfo extension is not available
  * @param  string $pathFile File to check for mimetype
@@ -632,14 +581,14 @@ function checkMimeType($pathFile, $mimeTypes)
 {
 	static $finfo = null;
 
-	if (null == $finfo) {
+	if(null == $finfo) {
 		$const = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
 		$finfo = @finfo_open($const);
 	}
 
 	$mimeType = finfo_file($finfo, $pathFile);
 
-	if (!in_array($mimeType, (array)$mimeTypes)) {
+	if(!in_array($mimeType, (array)$mimeTypes)) {
 		return false;
 	}
 

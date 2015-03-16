@@ -1,73 +1,120 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2015 by i-MSCP Team <team@i-mscp.net>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Login
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
-/**
- * Session garbage collector
- *
- * @return void
- */
-function do_session_timeout()
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	// We must not remove bruteforce plugin data (AND `user_name` IS NOT NULL)
-	$query = "DELETE FROM login WHERE lastaccess < ? AND user_name IS NOT NULL";
-	exec_query($query, time() - $cfg->SESSION_TIMEOUT * 60);
-}
 
 /**
  * Initialize login
  *
- * @param iMSCP_Events_Manager_Interface $events Events Manager
+ * @param iMSCP_Events_Manager_Interface $eventManager Events Manager
  * @return void
  */
-function init_login($events)
+function init_login($eventManager)
 {
+	// Purge expired sessions
+	do_session_timeout();
+
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($cfg['BRUTEFORCE']) {
-		$bruteforce = new iMSCP_Authentication_Bruteforce();
-		$bruteforce->register($events);
+		$bruteforce = new iMSCP_Plugin_Bruteforce(iMSCP_Registry::get('pluginManager'));
+		$bruteforce->register($eventManager);
 	}
 
-	// Register listener method to check domain status and expire date when the onBeforeSetIdentity event is triggered
-	$events->registerListener(iMSCP_Events::onBeforeSetIdentity, 'login_checkDomainAccount');
+	// Register default authentication handler with lower priority
+	$eventManager->registerListener(iMSCP_Events::onAuthentication, 'login_credentials', -99);
+
+	// Register listener that is responsible to check domain status and expire date
+	$eventManager->registerListener(iMSCP_Events::onBeforeSetIdentity, 'login_checkDomainAccount');
+}
+
+/**
+ * Credentials authentication handler
+ *
+ * @param iMSCP_Events_Event $event
+ * @return iMSCP_Authentication_Result
+ * @throws iMSCP_Exception_Database
+ */
+function login_credentials($event)
+{
+	$username = (!empty($_POST['uname'])) ? encode_idna(clean_input($_POST['uname'])) : '';
+	$password =  (!empty($_POST['upass'])) ? clean_input($_POST['upass']) : '';
+
+	if(empty($username) || empty($password)) {
+		if(empty($username)) {
+			$message[] = tr('The username field is empty.');
+		}
+
+		if(empty($password)) {
+			$message[] = tr('The password field is empty.');
+		}
+	}
+
+	if(!isset($message)) {
+		$stmt = exec_query(
+			'SELECT admin_id, admin_name, admin_pass, admin_type, email, created_by FROM admin WHERE admin_name = ?',
+			$username
+		);
+
+		if(!$stmt->rowCount()) {
+			$result = new iMSCP_Authentication_Result(
+				iMSCP_Authentication_Result::FAILURE_IDENTITY_NOT_FOUND, null, tr('Unknown username.')
+			);
+		} else {
+			$identity = $stmt->fetchRow(PDO::FETCH_OBJ);
+			$dbPassword = $identity->admin_pass;
+
+			if($dbPassword != md5($password) && crypt($password, $dbPassword) != $dbPassword) {
+				$result = new iMSCP_Authentication_Result(
+					iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, null, tr('Bad password.')
+				);
+			} else {
+				if(strpos($dbPassword, '$') !== 0) { # Not a password encrypted with crypt(), then re-encrypt it
+					exec_query(
+						'UPDATE admin SET admin_pass = ? WHERE admin_id = ?',
+						array(cryptPasswordWithSalt($password), $identity->admin_id)
+					);
+					write_log(
+						sprintf(
+							'Info: Password for user %s has been re-encrypted using the best available algorithm',
+							$identity->admin_name
+						),
+						E_USER_NOTICE
+					);
+				}
+
+				$result = new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $identity);
+				$event->stopPropagation();
+			}
+		}
+	} else {
+		$result = new iMSCP_Authentication_Result(
+			(count($message) == 2)
+				? iMSCP_Authentication_Result::FAILURE_CREDENTIAL_EMPTY
+				: iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID
+			,
+			null,
+			$message
+		);
+	}
+
+	return $result;
 }
 
 /**
@@ -116,6 +163,22 @@ function login_checkDomainAccount($event)
 			redirectTo('index.php');
 		}
 	}
+}
+
+/**
+ * Session garbage collector
+ *
+ * @return void
+ */
+function do_session_timeout()
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	// We must not remove bruteforce plugin data (AND `user_name` IS NOT NULL)
+	exec_query(
+		'DELETE FROM login WHERE lastaccess < ? AND user_name IS NOT NULL', time() - $cfg['SESSION_TIMEOUT'] * 60
+	);
 }
 
 /**
@@ -243,7 +306,10 @@ function change_user_interface($fromId, $toId)
 				$toActionScript = $fromToMap[$to->admin_type]['BACK'];
 			} else {
 				set_page_message(tr('Wrong request.'), 'error');
-				write_log(sprintf("%s tried to switch onto %s's interface", $from->admin_name, decode_idna($to->admin_name)), E_USER_WARNING);
+				write_log(
+					sprintf("%s tried to switch onto %s's interface", $from->admin_name, decode_idna($to->admin_name)),
+					E_USER_WARNING
+				);
 				break;
 			}
 		}
@@ -261,9 +327,15 @@ function change_user_interface($fromId, $toId)
 			$_SESSION['logged_from'] = $from->admin_name;
 			$_SESSION['logged_from_id'] = $from->admin_id;
 
-			write_log(sprintf("%s switched onto %s's interface", $from->admin_name, decode_idna($to->admin_name)), E_USER_NOTICE);
+			write_log(
+				sprintf("%s switched onto %s's interface", $from->admin_name, decode_idna($to->admin_name)),
+				E_USER_NOTICE
+			);
 		} else {
-			write_log(sprintf("%s switched back from %s's interface", $to->admin_name, decode_idna($from->admin_name)), E_USER_NOTICE);
+			write_log(
+				sprintf("%s switched back from %s's interface", $to->admin_name, decode_idna($from->admin_name)),
+				E_USER_NOTICE
+			);
 		}
 
 		break;
@@ -297,37 +369,4 @@ function redirectToUiLevel($actionScript = 'index.php')
 				throw new iMSCP_Exception('Unknown UI level');
 		}
 	}
-}
-
-/**
- * Returns the user Ip address
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @return string User's Ip address
- * @todo move this function
- */
-function getIpAddr()
-{
-	$ipAddr = (!empty($_SERVER['HTTP_CLIENT_IP'])) ? $_SERVER['HTTP_CLIENT_IP'] : false;
-
-	if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-		$ipAddrs = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR']);
-
-		if ($ipAddr) {
-			array_unshift($ipAddrs, $ipAddr);
-			$ipAddr = false;
-		}
-
-		$countIpAddrs = count($ipAddrs);
-
-		// Loop over ip stack as long an ip out of private range is not found
-		for ($i = 0; $i < $countIpAddrs; $i++) {
-			if (filter_var($ipAddrs[$i], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
-				$ipAddr = $ipAddrs[$i];
-				break;
-			}
-		}
-	}
-
-	return ($ipAddr ? $ipAddr : $_SERVER['REMOTE_ADDR']);
 }
