@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2015 by internet Multi Server Control Panel
 #
@@ -19,11 +19,8 @@
 #  Portions created by Initial Developer are Copyright (C) 2010
 #  i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
 #
-# Copyright: (C) 2010-2015 by i-MSCP | http://i-mscp.net
-# Author: Sacha Bay <sascha.bay@i-mscp.net>
-# Project Site: http://i-mscp.net
-# License http://www.mozilla.org/MPL/ MPL 1.1
-#
+# Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+# internet Multi Server Control Panel. All Rights Reserved.
 
 use FindBin;
 use lib "$FindBin::Bin";
