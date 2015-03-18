@@ -61,7 +61,7 @@ sub start
 		$self->_runCommand("$commands->{'start'} $serviceName");
 		$self->status($serviceName);
 	} else {
-		shift @_;
+		shift;
 		$self->SUPER::start(@_);
 	}
 }
@@ -83,7 +83,7 @@ sub stop
 		$self->_runCommand("$commands->{'stop'} $serviceName");
 		! $self->status($serviceName);
 	} else {
-		shift @_;
+		shift;
 		$self->SUPER::stop(@_);
 	}
 }
@@ -103,14 +103,14 @@ sub restart
 
 	if($self->_isUpstart($serviceName)) {
 		if($self->status($serviceName)) {
-			shift @_;
+			shift;
 			$self->start(@_);
 		} else {
 			$self->_runCommand("$commands->{'restart'} $serviceName");
 			$self->status($serviceName);
 		}
 	} else {
-		shift @_;
+		shift;
 		$self->SUPER::restart(@_);
 	}
 }
@@ -130,14 +130,14 @@ sub reload
 
 	if($self->_isUpstart($serviceName)) {
 		if($self->status($serviceName)) {
-			shift @_;
+			shift;
 			$self->start(@_);
 		} else {
 			$self->_runCommand("$commands->{'reload'} $serviceName");
 			$self->status($serviceName);
 		}
 	} else {
-		shift @_;
+		shift;
 		$self->SUPER::reload(@_);
 	}
 }
@@ -161,7 +161,7 @@ sub status
 		return 1 if $rs || $stdout !~ m%start/%;
 		0;
 	} else {
-		shift @_;
+		shift;
 		$self->SUPER::status(@_);
 	}
 }
