@@ -44,7 +44,7 @@ use parent 'Common::SingletonClass';
 
  Param string $serviceName Service name
  Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 on succcess, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -61,7 +61,7 @@ sub start
 
  Param string $serviceName Service name
  Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 on succcess, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -78,7 +78,7 @@ sub stop
 
  Param string $serviceName Service name
  Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 on succcess, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -95,7 +95,7 @@ sub restart
 
  Param string $serviceName Service name
  Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 on succcess, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 

@@ -62,7 +62,7 @@ sub start
  Stop the given service
 
  Param string $serviceName Service name
- Return int 0 on succcess, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -79,7 +79,7 @@ sub stop
  Restart the given service
 
  Param string $serviceName Service name
- Return int 0 on succcess, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -88,12 +88,11 @@ sub restart
 	my ($self, $serviceName) = @_;
 
 	if($self->status($serviceName)) {
-		$self->_runCommand("$commands->{'systemctl'} start $serviceName");
+		$self->start($serviceName);
 	} else {
 		$self->_runCommand("$commands->{'restart'} restart $serviceName");
+		$self->status($serviceName);
 	}
-
-	$self->status($serviceName);
 }
 
 =item reload($serviceName)
@@ -101,7 +100,7 @@ sub restart
  Reload the given service
 
  Param string $serviceName Service name
- Return int 0 on succcess, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -110,12 +109,11 @@ sub reload
 	my ($self, $serviceName) = @_;
 
 	if($self->status($serviceName)) {
-		$self->_runCommand("$commands->{'systemctl'} start $serviceName");
+		$self->start($serviceName);
 	} else {
 		$self->_runCommand("$commands->{'systemctl'} reload $serviceName");
+		$self->status($serviceName);
 	}
-
-	$self->status($serviceName);
 }
 
 =item status($serviceName)
