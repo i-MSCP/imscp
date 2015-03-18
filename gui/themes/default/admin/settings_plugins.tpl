@@ -73,7 +73,7 @@
 </form>
 <!-- EDP: plugins_block -->
 <div class="buttons">
-	<button type="button" name="update_plugin_list">{TR_UPDATE_PLUGIN_LIST}</button>
+	<a href="settings_plugins.php?update_plugin_list=1" class="link_as_button">{TR_UPDATE_PLUGIN_LIST}</a>
 </div>
 <br>
 <h2 class="plugin"><span>{TR_PLUGIN_UPLOAD}</span></h2>
@@ -118,8 +118,6 @@
 		$("thead :checkbox, tfoot :checkbox").change(
 			function () { $("table :checkbox").prop('checked', $(this).is(':checked')); }
 		);
-
-		$("button[name=update_plugin_list]").click(function () { window.location.replace("?update_plugin_list=step1"); });
 
 		$dataTable.on("click", ".plugin_error", function() {
 			var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');

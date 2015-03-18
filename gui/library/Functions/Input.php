@@ -564,26 +564,20 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 
 /**
  * Checks if a file match the given mimetype(s)
- * @throws iMSCP_Exception When magicfile cannot be found or is not valid
- * @throws iMSCP_Exception When the PHP finfo extension is not available
+ *
  * @param  string $pathFile File to check for mimetype
  * @param  array|string $mimeTypes Accepted mimetype(s)
- * @return bool|string The file mimetype on success, FALSE otherwise
+ * @return bool TRUE if the file match the givem mimetype(s), FALSE otherwise
  */
-function checkMimeType($pathFile, $mimeTypes)
+function checkMimeType($pathFile, array $mimeTypes)
 {
-	static $finfo = null;
+	$mimeTypes['headerCheck'] = true;
 
-	if(null == $finfo) {
-		$const = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
-		$finfo = @finfo_open($const);
+	$validator = new Zend_Validate_File_MimeType($mimeTypes);
+
+	if($validator->isValid($pathFile)) {
+		return true;
 	}
 
-	$mimeType = finfo_file($finfo, $pathFile);
-
-	if(!in_array($mimeType, (array)$mimeTypes)) {
-		return false;
-	}
-
-	return $mimeType;
+	return false;
 }

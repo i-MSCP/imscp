@@ -322,7 +322,6 @@ class iMSCP_Plugin_Manager
 	 */
 	public function pluginGetStatus($name)
 	{
-
 		return ($this->pluginIsKnown($name)) ? $this->pluginData[$name]['status'] : 'uninstalled';
 	}
 
@@ -1217,7 +1216,7 @@ class iMSCP_Plugin_Manager
 					}
 
 					$config = $plugin->getConfigFromFile();
-					$configPrev = $plugin->getConfigPrev();
+					$configPrev = ($this->pluginIsKnown($name)) ? $plugin->getConfigPrev() : $config;
 
 					$r = new ReflectionMethod($plugin, 'install');
 					$info['__installable__'] = ('iMSCP_Plugin' !== $r->getDeclaringClass()->getName());

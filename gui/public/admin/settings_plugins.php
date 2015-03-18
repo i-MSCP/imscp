@@ -538,27 +538,22 @@ function doBulkAction($pluginManager)
  */
 function updatePluginList($pluginManager)
 {
-	if($_GET['update_plugin_list'] === 'step1' && OpcodeCacheUtils::getAllActive()) {
-		OpcodeCacheUtils::clearAllActive();
-		redirectTo('settings_plugins.php?update_plugin_list=step2');
-	} else {
-		$eventManager = $pluginManager->getEventManager();
+	$eventManager = $pluginManager->getEventManager();
 
-		/** @var EventCollection $responses */
-		$responses = $eventManager->dispatch(Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager));
+	/** @var EventCollection $responses */
+	$responses = $eventManager->dispatch(Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager));
 
-		if(!$responses->isStopped()) {
-			$updateInfo = $pluginManager->pluginUpdateList();
-			$eventManager->dispatch(Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager));
+	if(!$responses->isStopped()) {
+		$updateInfo = $pluginManager->pluginUpdateList();
+		$eventManager->dispatch(Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager));
 
-			set_page_message(
-				tr(
-					'Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated, %s plugin(s) reconfigured, and %s plugin(s) deleted.',
-					$updateInfo['new'], $updateInfo['updated'], $updateInfo['changed'], $updateInfo['deleted']
-				),
-				'success'
-			);
-		}
+		set_page_message(
+			tr(
+				'Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated, %s plugin(s) reconfigured, and %s plugin(s) deleted.',
+				$updateInfo['new'], $updateInfo['updated'], $updateInfo['changed'], $updateInfo['deleted']
+			),
+			'success'
+		);
 	}
 }
 
@@ -632,8 +627,9 @@ if(!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
 	} elseif(isset($_POST['bulk_actions'])) {
 		doBulkAction($pluginManager);
 	} elseif(!empty($_FILES) && uploadPlugin($pluginManager)) {
+		OpcodeCacheUtils::clearAllActive(); // Force newest files to be loaded on next run
 		set_page_message(tr('Plugin has been successfully uploaded.'), 'success');
-		redirectTo('settings_plugins.php?update_plugin_list=step1');
+		redirectTo('settings_plugins.php?update_plugin_list');
 	}
 
 	redirectTo('settings_plugins.php');
