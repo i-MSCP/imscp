@@ -28,6 +28,8 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Execute;
+use iMSCP::ProgramFinder;
+
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -52,23 +54,7 @@ sub start
 {
 	my ($self, $serviceName, $pattern) = @_;
 
-	$pattern ||= $serviceName;
-
-	my $ret = $self->_runCommand("$self->{'service_provider'} $serviceName start");
-
-	unless($pattern eq 'retval') {
-		my $loopCount = 0;
-
-		do {
-			return 0 unless $self->status($serviceName, $pattern);
-			sleep 1;
-			$loopCount++;
-		} while ($loopCount < 5);
-
-		$self->status($serviceName, $pattern);
-	} else {
-		$ret;
-	}
+	$self->{'provider'}->start($serviceName, $pattern);
 }
 
 =item stop($serviceName [, $pattern = $serviceName ])
@@ -85,35 +71,7 @@ sub stop
 {
 	my ($self, $serviceName, $pattern) = @_;
 
-	$pattern ||= $serviceName;
-
-	my $ret = $self->_runCommand("$self->{'service_provider'} $serviceName stop");
-
-	unless($pattern eq 'retval') {
-		my $loopCount = 0;
-
-		do {
-			return 0 if $self->status($serviceName, $pattern);
-			sleep 1;
-			$loopCount++;
-		} while ($loopCount < 5);
-
-		# Try by sending TERM signal (soft way)
-		$self->_runCommand("$main::imscpConfig{'CMD_PKILL'} -TERM $pattern");
-
-		sleep 3;
-
-		return 0 if $self->status($serviceName, $pattern);
-
-		# Try by sending KILL signal (hard way)
-		$self->_runCommand("$main::imscpConfig{'CMD_PKILL'} -KILL $pattern");
-
-		sleep 2;
-
-		! $self->status($serviceName, $pattern);
-	} else {
-		$ret;
-	}
+	$self->{'provider'}->stop($serviceName, $pattern);
 }
 
 =item restart($serviceName [, $pattern = $serviceName ])
@@ -130,27 +88,7 @@ sub restart
 {
 	my ($self, $serviceName, $pattern) = @_;
 
-	$pattern ||= $serviceName;
-
-	unless($pattern eq 'retval') {
-		if($self->status($pattern)) { # In case the service is not running, we start it
-			$self->_runCommand("$self->{'service_provider'} $serviceName start");
-		} else {
-			$self->_runCommand("$self->{'service_provider'} $serviceName restart");
-		}
-
-		my $loopCount = 0;
-
-		do {
-			return 0 unless $self->status($serviceName, $pattern);
-			sleep 1;
-			$loopCount++;
-		} while ($loopCount < 5);
-
-		$self->status($serviceName, $pattern);
-	} else {
-		$self->_runCommand("$self->{'service_provider'} $serviceName restart");
-	}
+	$self->{'provider'}->restart($serviceName, $pattern);
 }
 
 =item reload($serviceName [, $pattern = $serviceName ])
@@ -167,27 +105,7 @@ sub reload
 {
 	my ($self, $serviceName, $pattern) = @_;
 
-	$pattern ||= $serviceName;
-
-	unless($pattern eq 'retval') {
-		if($self->status($pattern)) { # In case the service is not running, we start it
-			$self->_runCommand("$self->{'service_provider'} $serviceName start");
-		} else {
-			$self->_runCommand("$self->{'service_provider'} $serviceName reload");
-		}
-
-		my $loopCount = 0;
-
-		do {
-			return 0 unless $self->status($serviceName, $pattern);
-			sleep 1;
-			$loopCount++;
-		} while ($loopCount < 5);
-
-		$self->status($serviceName, $pattern);
-	} else {
-		$self->_runCommand("$self->{'service_provider'} $serviceName reload");
-	}
+	$self->{'provider'}->reload($serviceName, $pattern);
 }
 
 =item status($serviceName [, $pattern = $serviceName ])
@@ -204,13 +122,7 @@ sub status
 {
 	my ($self, $serviceName, $pattern) = @_;
 
-	$pattern ||= $serviceName;
-
-	unless($pattern eq 'retval') {
-		$self->_runCommand("$self->{'service_status_provider'} $pattern");
-	} else {
-		$self->_runCommand("$self->{'service_provider'} $serviceName status");
-	}
+	$self->{'provider'}->status($serviceName, $pattern);
 }
 
 =back
@@ -231,29 +143,18 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'service_provider'} = $main::imscpConfig{'SERVICE_MNGR'};
-	$self->{'service_status_provider'} = $main::imscpConfig{'CMD_PGREP'};
+	if(iMSCP::ProgramFinder::find('systemctl')) {
+		require iMSCP::Service::Systemd;
+		$self->{'provider'} = iMSCP::Service::Systemd->getInstance();
+	} elsif(iMSCP::ProgramFinder::find('initctl')) {
+		require iMSCP::Service::Upstart;
+		$self->{'provider'} = iMSCP::Service::Upstart->getInstance();
+	} else {
+		require iMSCP::Service::Init;
+		$self->{'provider'} = iMSCP::Service::Init->getInstance();
+	}
 
 	$self;
-}
-
-=item _runCommand($command)
-
- Run the given command
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _runCommand
-{
-	my ($self, $command) = @_;
-
-	my ($stdout, $stderr);
-	my $rs = execute($command, \$stdout, \$stderr);
-	debug($stderr) if $stderr;
-
-	$rs;
 }
 
 =back

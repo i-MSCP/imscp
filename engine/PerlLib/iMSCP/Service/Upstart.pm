@@ -181,7 +181,7 @@ sub status
  Does the given service is managed by an upstart job?
 
  Param string $serviceName Service name
- Return 1 if the given service is managed by an upstart job, 0 otherwise
+ Return bool TRUE if the given service is managed by an upstart job, FALSE otherwise
 
 =cut
 
@@ -189,7 +189,7 @@ sub _isUpstart
 {
 	my ($self, $serviceName) = @_;
 
-	(-f "/etc/init/$serviceName.conf") ? 1 : 0;
+	(-f "/etc/init/$serviceName.conf");
 }
 
 =back
