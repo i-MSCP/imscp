@@ -40,7 +40,7 @@ my $commands = {
 
 =head1 DESCRIPTION
 
- This provider manages `upstart` jobs.
+ This provider manages `systemd` units.
 
 =head1 PUBLIC METHODS
 
