@@ -172,6 +172,8 @@ sub status
 
 =item isUpstart($serviceName)
 
+ Does the given service is managed by an upstart job?
+
  Param string $serviceName Service name
  Return 1 if the given service is managed by an upstart job, 0 otherwise
 
