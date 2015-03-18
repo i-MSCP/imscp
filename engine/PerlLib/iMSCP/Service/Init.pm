@@ -25,8 +25,6 @@ package iMSCP::Service::Init;
 
 use strict;
 use warnings;
-
-use iMSCP::Debug;
 use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
@@ -244,10 +242,7 @@ sub _runCommand
 	my ($self, $command) = @_;
 
 	my ($stdout, $stderr);
-	my $rs = execute($command, \$stdout, \$stderr);
-	debug($stderr) if $stderr;
-
-	$rs;
+	execute($command, \$stdout, \$stderr);
 }
 
 =back

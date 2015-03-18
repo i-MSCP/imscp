@@ -25,10 +25,7 @@ package iMSCP::Service::Upstart;
 
 use strict;
 use warnings;
-
-use iMSCP::Debug;
 use iMSCP::Execute;
-
 use parent 'iMSCP::Service::Init';
 
 my $commands = {
