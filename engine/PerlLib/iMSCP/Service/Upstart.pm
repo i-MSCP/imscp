@@ -35,6 +35,7 @@ my $commands = {
 	start => '/sbin/start',
 	stop => '/sbin/stop',
 	restart => '/sbin/restart',
+	reload => '/sbin/reload',
 	status => '/sbin/status'
 }
 
