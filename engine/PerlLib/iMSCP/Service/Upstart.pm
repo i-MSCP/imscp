@@ -181,9 +181,9 @@ sub status
 
 sub isUpstart
 {
-	my ($self, $service) = @_;
+	my ($self, $serviceName) = @_;
 
-	(-f "/etc/init/$service.conf") ? 1 : 0;
+	(-f "/etc/init/$serviceName.conf") ? 1 : 0;
 }
 
 =back
