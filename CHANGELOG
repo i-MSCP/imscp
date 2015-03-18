@@ -5,6 +5,7 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+	Added: Init, Upstart and Systemd service providers
 	Added: Custom DNS module ( Modules::CustomDNS )
 	Fixed: Any task which belongs to the custom DNS records layer must not involve HTTPD configuration change
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload should be sufficient
