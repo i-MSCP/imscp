@@ -36,7 +36,7 @@ use parent 'iMSCP::Service::Init';
 
 my $commands = {
 	systemctl => 'systemctl'
-}
+};
 
 =head1 DESCRIPTION
 

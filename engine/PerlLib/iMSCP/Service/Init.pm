@@ -34,7 +34,7 @@ my $commands = {
 	pkill => 'pkill',
 	pgrep => 'pgrep',
 	service => 'service'
-}
+};
 
 =head1 DESCRIPTION
 

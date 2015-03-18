@@ -37,7 +37,7 @@ my $commands = {
 	restart => 'restart',
 	reload => 'reload',
 	status => 'status'
-}
+};
 
 =head1 DESCRIPTION
 
@@ -60,11 +60,12 @@ sub start
 {
 	my ($self, $serviceName) = @_;
 
-	if($self->_isUpstart()) {
+	if($self->_isUpstart($serviceName)) {
 		$self->_runCommand("$commands->{'start'} $serviceName");
 		$self->status($serviceName);
 	} else {
-		$self->SUPER::stop(@_);
+		shift @_;
+		$self->SUPER::start(@_);
 	}
 }
 
@@ -81,11 +82,12 @@ sub stop
 {
 	my ($self, $serviceName) = @_;
 
-	if($self->_isUpstart()) {
+	if($self->_isUpstart($serviceName)) {
 		$self->_runCommand("$commands->{'stop'} $serviceName");
 		! $self->status($serviceName);
 	} else {
-		! $self->SUPER::start(@_);
+		shift @_;
+		$self->SUPER::stop(@_);
 	}
 }
 
@@ -102,7 +104,7 @@ sub restart
 {
 	my ($self, $serviceName) = @_;
 
-	if($self->_isUpstart()) {
+	if($self->_isUpstart($serviceName)) {
 		if($self->status($serviceName)) {
 			$self->_runCommand("$commands->{'start'} $serviceName");
 		} else {
@@ -111,6 +113,7 @@ sub restart
 
 		$self->status($serviceName);
 	} else {
+		shift @_;
 		$self->SUPER::restart(@_);
 	}
 }
@@ -128,7 +131,7 @@ sub reload
 {
 	my ($self, $serviceName) = @_;
 
-	if($self->_isUpstart()) {
+	if($self->_isUpstart($serviceName)) {
 		if($self->status($serviceName)) {
 			$self->_runCommand("$commands->{'start'} $serviceName");
 		} else {
@@ -137,6 +140,7 @@ sub reload
 
 		$self->status($serviceName);
 	} else {
+		shift @_;
 		$self->SUPER::reload(@_);
 	}
 }
@@ -154,12 +158,14 @@ sub status
 {
 	my ($self, $serviceName) = @_;
 
-	if($self->isUpstart($serviceName)) {
+	if($self->_isUpstart($serviceName)) {
 		my ($stdout, $stderr);
 		my $rs = execute("$commands->{'status'} $serviceName", \$stdout, \$stderr);
 		return 1 if $rs || $stdout !~ m%start/%;
 		0;
 	} else {
+		shift @_;
+		debug ("nuxwin $serviceName");
 		$self->SUPER::status(@_);
 	}
 }
@@ -170,7 +176,7 @@ sub status
 
 =over 4
 
-=item isUpstart($serviceName)
+=item _isUpstart($serviceName)
 
  Does the given service is managed by an upstart job?
 
@@ -179,7 +185,7 @@ sub status
 
 =cut
 
-sub isUpstart
+sub _isUpstart
 {
 	my ($self, $serviceName) = @_;
 
