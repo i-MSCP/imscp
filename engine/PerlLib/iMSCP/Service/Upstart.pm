@@ -165,7 +165,6 @@ sub status
 		0;
 	} else {
 		shift @_;
-		debug ("nuxwin $serviceName");
 		$self->SUPER::status(@_);
 	}
 }
