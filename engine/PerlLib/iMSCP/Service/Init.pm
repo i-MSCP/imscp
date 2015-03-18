@@ -38,7 +38,7 @@ my $commands = {
 
 =head1 DESCRIPTION
 
- This provider manages `sysinit` scripts..
+ This provider manages `sysvinit` scripts.
 
 =head1 PUBLIC METHODS
 
@@ -69,7 +69,7 @@ sub start
 			return 0 unless $self->status($serviceName, $pattern);
 			sleep 1;
 			$loopCount++;
-		} while ($loopCount < 5);
+		} while ($loopCount < 30);
 
 		$self->status($serviceName, $pattern);
 	} else {
@@ -102,19 +102,25 @@ sub stop
 			return 0 if $self->status($serviceName, $pattern);
 			sleep 1;
 			$loopCount++;
-		} while ($loopCount < 5);
+		} while ($loopCount < 30);
 
-		# Try by sending TERM signal (soft way)
+		# Try by sending TERM signal ( soft way )
 		$self->_runCommand("$commands->{'pkill'} -TERM $pattern");
 
-		sleep 3;
+		do {
+			return 0 if $self->status($serviceName, $pattern);
+			sleep 1;
+			$loopCount++;
+		} while ($loopCount < 5);
 
-		return 0 if $self->status($serviceName, $pattern);
-
-		# Try by sending KILL signal (hard way)
+		# Try by sending KILL signal ( hard way )
 		$self->_runCommand("$commands->{'pkill'} -KILL $pattern");
 
-		sleep 2;
+		do {
+			return 0 if $self->status($serviceName, $pattern);
+			sleep 1;
+			$loopCount++;
+		} while ($loopCount < 3);
 
 		! $self->status($serviceName, $pattern);
 	} else {
@@ -151,7 +157,7 @@ sub restart
 			return 0 unless $self->status($serviceName, $pattern);
 			sleep 1;
 			$loopCount++;
-		} while ($loopCount < 5);
+		} while ($loopCount < 30);
 
 		$self->status($serviceName, $pattern);
 	} else {
@@ -188,7 +194,7 @@ sub reload
 			return 0 unless $self->status($serviceName, $pattern);
 			sleep 1;
 			$loopCount++;
-		} while ($loopCount < 5);
+		} while ($loopCount < 30);
 
 		$self->status($serviceName, $pattern);
 	} else {

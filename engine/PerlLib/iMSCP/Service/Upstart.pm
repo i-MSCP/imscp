@@ -32,11 +32,11 @@ use iMSCP::Execute;
 use parent 'iMSCP::Service::Init';
 
 my $commands = {
-	start => '/sbin/start',
-	stop => '/sbin/stop',
-	restart => '/sbin/restart',
-	reload => '/sbin/reload',
-	status => '/sbin/status'
+	start => 'start',
+	stop => 'stop',
+	restart => 'restart',
+	reload => 'reload',
+	status => 'status'
 }
 
 =head1 DESCRIPTION
