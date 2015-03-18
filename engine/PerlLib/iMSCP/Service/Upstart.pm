@@ -55,14 +55,13 @@ my $commands = {
 
 sub start
 {
-	my ($self, $serviceName) = @_;
+	my ($self, $serviceName) = (shift, shift);
 
 	if($self->_isUpstart($serviceName)) {
 		$self->_runCommand("$commands->{'start'} $serviceName");
 		$self->status($serviceName);
 	} else {
-		shift;
-		$self->SUPER::start(@_);
+		$self->SUPER::start($serviceName, @_);
 	}
 }
 
@@ -77,14 +76,13 @@ sub start
 
 sub stop
 {
-	my ($self, $serviceName) = @_;
+	my ($self, $serviceName) = (shift, shift);
 
 	if($self->_isUpstart($serviceName)) {
 		$self->_runCommand("$commands->{'stop'} $serviceName");
 		! $self->status($serviceName);
 	} else {
-		shift;
-		$self->SUPER::stop(@_);
+		$self->SUPER::stop($serviceName, @_);
 	}
 }
 
@@ -99,19 +97,17 @@ sub stop
 
 sub restart
 {
-	my ($self, $serviceName) = @_;
+	my ($self, $serviceName) = (shift, shift);
 
 	if($self->_isUpstart($serviceName)) {
 		if($self->status($serviceName)) {
-			shift;
-			$self->start(@_);
+			$self->start($serviceName);
 		} else {
 			$self->_runCommand("$commands->{'restart'} $serviceName");
 			$self->status($serviceName);
 		}
 	} else {
-		shift;
-		$self->SUPER::restart(@_);
+		$self->SUPER::restart($serviceName, @_);
 	}
 }
 
@@ -126,19 +122,17 @@ sub restart
 
 sub reload
 {
-	my ($self, $serviceName) = @_;
+	my ($self, $serviceName) = (shift, shift);
 
 	if($self->_isUpstart($serviceName)) {
 		if($self->status($serviceName)) {
-			shift;
-			$self->start(@_);
+			$self->start($serviceName);
 		} else {
 			$self->_runCommand("$commands->{'reload'} $serviceName");
 			$self->status($serviceName);
 		}
 	} else {
-		shift;
-		$self->SUPER::reload(@_);
+		$self->SUPER::reload($serviceName, @_);
 	}
 }
 
@@ -153,7 +147,7 @@ sub reload
 
 sub status
 {
-	my ($self, $serviceName) = @_;
+	my ($self, $serviceName) = (shift, shift);
 
 	if($self->_isUpstart($serviceName)) {
 		my ($stdout, $stderr);
@@ -161,8 +155,7 @@ sub status
 		return 1 if $rs || $stdout !~ m%start/%;
 		0;
 	} else {
-		shift;
-		$self->SUPER::status(@_);
+		$self->SUPER::status($serviceName, @_);
 	}
 }
 
