@@ -105,6 +105,8 @@ sub stop
 		# Try by sending TERM signal ( soft way )
 		$self->_runCommand("$commands->{'pkill'} -TERM $pattern");
 
+		$loopCount = 0;
+
 		do {
 			return 0 if $self->status($serviceName, $pattern);
 			sleep 1;
@@ -113,6 +115,8 @@ sub stop
 
 		# Try by sending KILL signal ( hard way )
 		$self->_runCommand("$commands->{'pkill'} -KILL $pattern");
+
+		$loopCount = 0;
 
 		do {
 			return 0 if $self->status($serviceName, $pattern);
@@ -239,10 +243,8 @@ sub status
 
 sub _runCommand
 {
-	my ($self, $command) = @_;
-
 	my ($stdout, $stderr);
-	execute($command, \$stdout, \$stderr);
+	execute($_[1], \$stdout, \$stderr);
 }
 
 =back
