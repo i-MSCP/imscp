@@ -103,12 +103,12 @@ sub restart
 
 	if($self->_isUpstart($serviceName)) {
 		if($self->status($serviceName)) {
-			$self->_runCommand("$commands->{'start'} $serviceName");
+			shift @_;
+			$self->start(@_);
 		} else {
 			$self->_runCommand("$commands->{'restart'} $serviceName");
+			$self->status($serviceName);
 		}
-
-		$self->status($serviceName);
 	} else {
 		shift @_;
 		$self->SUPER::restart(@_);
@@ -130,12 +130,12 @@ sub reload
 
 	if($self->_isUpstart($serviceName)) {
 		if($self->status($serviceName)) {
-			$self->_runCommand("$commands->{'start'} $serviceName");
+			shift @_;
+			$self->start(@_);
 		} else {
 			$self->_runCommand("$commands->{'reload'} $serviceName");
+			$self->status($serviceName);
 		}
-
-		$self->status($serviceName);
 	} else {
 		shift @_;
 		$self->SUPER::reload(@_);
