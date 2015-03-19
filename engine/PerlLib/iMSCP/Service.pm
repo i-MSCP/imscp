@@ -123,6 +123,32 @@ sub status
 	$self->{'provider'}->status($serviceName, $pattern);
 }
 
+=item isSystemd()
+
+ Does upstart is used as init system?
+
+ Return TRUE if systemd is used as init system, FALSE otherwise
+
+=cut
+
+sub isUpstart
+{
+	iMSCP::ProgramFinder::find('initctl');
+}
+
+=item isSystemd()
+
+ Does systemd is used as init system?
+
+ Return TRUE if systemd is used as init system, FALSE otherwise
+
+=cut
+
+sub isSystemd
+{
+	iMSCP::ProgramFinder::find('systemctl');
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -141,10 +167,10 @@ sub _init
 {
 	my $self = $_[0];
 
-	if(iMSCP::ProgramFinder::find('systemctl')) {
+	if(isSystemd()) {
 		require iMSCP::Service::Systemd;
 		$self->{'provider'} = iMSCP::Service::Systemd->getInstance();
-	} elsif(iMSCP::ProgramFinder::find('initctl')) {
+	} elsif(isUpstart()) {
 		require iMSCP::Service::Upstart;
 		$self->{'provider'} = iMSCP::Service::Upstart->getInstance();
 	} else {

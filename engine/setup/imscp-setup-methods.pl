@@ -1733,47 +1733,66 @@ sub setupInitScripts
 	return $rs if $rs;
 
 	# Be sure that legacy boot ordering is not enabled
-	#if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/.legacy-bootordering") {
-	#	my $file = iMSCP::File->new( filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/.legacy-bootordering");
-	#	$rs = $file->delFile();
-	#	return $rs if $rs;
-	#}
-
-	for my $initScript(
-		$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'},
-		$main::imscpConfig{'IMSCP_PANEL_SNAME'}
-	) {
-		if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript") {
-			my $file = iMSCP::File->new('filename' => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript");
-
-			$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-			return $rs if $rs;
-
-			$rs = $file->mode(0755);
-			return $rs if $rs;
-
-			my ($stdout, $stderr);
-			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $initScript remove", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-
-			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} $initScript defaults", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		} else {
-			error("Unable to setup the $initScript init script: File is missing.");
-			return 1;
-		}
+	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/.legacy-bootordering") {
+		my $file = iMSCP::File->new(filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/.legacy-bootordering")->delFile();
+		return $rs if $rs;
 	}
 
-	if(-x '/bin/systemctl') { # Make systemd aware of the changes above
-		my ($stdout, $stderr);
-		my $rs = execute('/bin/systemctl daemon-reload', \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+	unless(iMSCP::Service::isUpstart()) {
+		for my $initScript(
+			$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'},
+			$main::imscpConfig{'IMSCP_PANEL_SNAME'}
+		) {
+			if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript") {
+				my $file = iMSCP::File->new( filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript");
+
+				$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+				return $rs if $rs;
+
+				$rs = $file->mode(0755);
+				return $rs if $rs;
+
+				my ($stdout, $stderr);
+				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $initScript remove", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+
+				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} $initScript defaults", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+			} else {
+				error("Unable to setup the $initScript init script: File is missing.");
+				return 1;
+			}
+		}
+
+		if(iMSCP::Service::isSystemd()) { # Make systemd aware of the changes above
+			my ($stdout, $stderr);
+			my $rs = execute('systemctl daemon-reload', \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+		}
+	} else {
+		# Fix for https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=780641
+		# ( eg. imscp_network upstart job script is not compatible with imscp_network sysvinit script )
+		for my $initScript(
+			$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'},
+			$main::imscpConfig{'IMSCP_PANEL_SNAME'}
+		) {
+			if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript") {
+				my ($stdout, $stderr);
+				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $initScript remove", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+			}
+
+			$rs = iMSCP::File->new( filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript" )->delFile();
+			return $rs if $rs;
+		}
 	}
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupInitScripts');
