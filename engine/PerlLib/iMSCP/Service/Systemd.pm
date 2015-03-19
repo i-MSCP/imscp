@@ -87,12 +87,8 @@ sub restart
 {
 	my ($self, $serviceName) = @_;
 
-	if($self->status($serviceName)) {
-		$self->start($serviceName);
-	} else {
-		$self->_runCommand("$commands->{'restart'} restart $serviceName");
-		$self->status($serviceName);
-	}
+	$self->_runCommand("$commands->{'systemctl'} restart $serviceName");
+	$self->status($serviceName);
 }
 
 =item reload($serviceName)
@@ -121,7 +117,7 @@ sub reload
  Get status of the given service
 
  Param string $serviceName Service name
- Return int 0 if the service is running, 1 if the service is not running
+ Return int 0 if the service is running, other if the service is not running
 
 =cut
 
@@ -129,14 +125,8 @@ sub status
 {
 	my ($self, $serviceName) = @_;
 
-	if($self->isUpstart($serviceName)) {
-		my ($stdout, $stderr);
-		my $rs = execute("$commands->{'systemctl'} is-active $serviceName", \$stdout, \$stderr);
-		return 1 if $rs;
-		0;
-	} else {
-		$self->SUPER::status(@_);
-	}
+	my ($stdout, $stderr);
+	execute("$commands->{'systemctl'} is-active $serviceName", \$stdout, \$stderr);
 }
 
 =back

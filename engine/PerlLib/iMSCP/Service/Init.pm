@@ -210,7 +210,7 @@ sub reload
 
  Param string $serviceName Service name
  Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 if the service is running, 1 if the service is not running
+ Return int 0 if the service is running, other if the service is not running
 
 =cut
 

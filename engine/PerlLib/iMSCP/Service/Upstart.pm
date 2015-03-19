@@ -141,7 +141,7 @@ sub reload
  Get status of the given service
 
  Param string $serviceName Service name
- Return int 0 if the service is running, 1 if the service is not running
+ Return int 0 if the service is running, other if the service is not running
 
 =cut
 
