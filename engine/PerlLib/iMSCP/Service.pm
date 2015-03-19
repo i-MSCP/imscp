@@ -123,11 +123,11 @@ sub status
 	$self->{'provider'}->status($serviceName, $pattern);
 }
 
-=item isSystemd()
+=item isUpstart()
 
  Does upstart is used as init system?
 
- Return TRUE if systemd is used as init system, FALSE otherwise
+ Return TRUE if upstart is used as init system, FALSE otherwise
 
 =cut
 
