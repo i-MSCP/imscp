@@ -26,9 +26,9 @@ package iMSCP::Service;
 use strict;
 use warnings;
 use iMSCP::Execute;
-use iMSCP::ProgramFinder;
-
 use parent 'Common::SingletonClass';
+
+my $initSystem = _detectInitSystem();
 
 =head1 DESCRIPTION
 
@@ -123,30 +123,43 @@ sub status
 	$self->{'provider'}->status($serviceName, $pattern);
 }
 
+=item isSysvinit()
+
+ Does sysvinit is used as init system?
+
+ Return bool TRUE if sysvinit is used as init system, FALSE otherwise
+
+=cut
+
+sub isSysvinit
+{
+	($initSystem eq 'sysvinit');
+}
+
 =item isUpstart()
 
  Does upstart is used as init system?
 
- Return TRUE if upstart is used as init system, FALSE otherwise
+ Return bool TRUE if upstart is used as init system, FALSE otherwise
 
 =cut
 
 sub isUpstart
 {
-	iMSCP::ProgramFinder::find('initctl');
+	($initSystem eq 'upstart');
 }
 
 =item isSystemd()
 
  Does systemd is used as init system?
 
- Return TRUE if systemd is used as init system, FALSE otherwise
+ Return bool TRUE if systemd is used as init system, FALSE otherwise
 
 =cut
 
 sub isSystemd
 {
-	iMSCP::ProgramFinder::find('systemctl');
+	($initSystem eq 'systemd');
 }
 
 =back
@@ -167,18 +180,53 @@ sub _init
 {
 	my $self = $_[0];
 
-	if(isSystemd()) {
+	if($self->isSystemd()) {
 		require iMSCP::Service::Systemd;
 		$self->{'provider'} = iMSCP::Service::Systemd->getInstance();
-	} elsif(isUpstart()) {
+	} elsif($self->isUpstart()) {
 		require iMSCP::Service::Upstart;
 		$self->{'provider'} = iMSCP::Service::Upstart->getInstance();
 	} else {
-		require iMSCP::Service::Init;
-		$self->{'provider'} = iMSCP::Service::Init->getInstance();
+		require iMSCP::Service::Sysvinit;
+		$self->{'provider'} = iMSCP::Service::Sysvinit->getInstance();
 	}
 
 	$self;
+}
+
+=item _detectInitSystem()
+
+ Detect init system in use
+
+ Return string init system in use
+
+=cut
+
+sub _detectInitSystem
+{
+	my $initSystem = 'sysvinit';
+
+	my %initSystems = (
+		upstart => { command => '/sbin/init --version', regexp => qr/upstart/ },
+		systemd => { command => 'systemctl', regexp => qr/-\.mount/ }
+	);
+
+	local $@;
+
+	for(keys %initSystems) {
+		eval {
+			my ($stdout, $stderr);
+			execute($initSystems{$_}->{'command'}, \$stdout, \$stderr);
+
+			if($stdout =~ /$initSystems{$_}->{'regexp'}/) {
+				$initSystem = $_;
+			}
+		};
+
+		last if $initSystem ne 'sysvinit';
+	}
+
+	$initSystem;
 }
 
 =back

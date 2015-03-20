@@ -387,44 +387,53 @@ sub _showUpdateNotices
 	my $imscpVersion = $main::imscpOldConfig{'Version'};
 	my $notices = '';
 
-	my @noticeFiles = iMSCP::Dir->new( dirname => $noticesDir )->getFiles();
+	unless($imscpVersion =~ /git/i) {
+		my @noticeFiles = iMSCP::Dir->new( dirname => $noticesDir )->getFiles();
 
-	if(@noticeFiles) {
-		@noticeFiles = reverse sort @noticeFiles;
+		if(@noticeFiles) {
+			@noticeFiles = reverse sort @noticeFiles;
 
-		for my $noticeFile(@noticeFiles) {
-			(my $noticeVersion = $noticeFile) =~ s/\.txt$//;
+			for my $noticeFile(@noticeFiles) {
+				(my $noticeVersion = $noticeFile) =~ s/\.txt$//;
 
-			# If Git version is detected, show all notices since we don't know the target version, else show only the
-			# relevant notices.
-			if($imscpVersion ~~ /git/i || version->parse("v$imscpVersion") < version->parse("v$noticeVersion")) {
-				my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
-				unless(defined $noticeBody) {
-					error("Unable to read $noticesDir/$noticeFile file");
-					return 1;
+				if(version->parse("v$imscpVersion") < version->parse("v$noticeVersion")) {
+					my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
+					unless(defined $noticeBody) {
+						error("Unable to read $noticesDir/$noticeFile file");
+						return 1;
+					}
+
+					$notices .= "\n$noticeBody";
 				}
-
-				$notices .= "\n$noticeBody";
 			}
 		}
+	} else {
+		$notices = <<EOF;
 
-		if($notices ne '') {
-			$dialog->set('yes-label', 'Continue');
-			$dialog->set('no-label', 'Abort');
-			my $rs = $dialog->yesno(<<EOF);
+The installer detected that you're using the \\ZbGit\\ZB version of i-MSCP. Before continue, be sure to have read the errata file:
+
+    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.2.x/docs/1.2.x_errata.md\\ZB
+
+Be aware that the Git version of i-MSCP can be unstable and that no support is provided for it.
+EOF
+	}
+
+	unless($notices eq '') {
+		$dialog->set('yes-label', 'Continue');
+		$dialog->set('no-label', 'Abort');
+		my $rs = $dialog->yesno(<<EOF);
 
 Please read carefully before continue.
 
 \\ZbNote:\\ZB Use the \\ZbPage Down\\ZB key from your keyboard to scroll down.
 $notices
-You can now either continue the update or abort if needed.
+You can now either continue or abort if needed.
 
 \\Zbi-MSCP Team\\ZB
 EOF
 
-			$dialog->resetLabels();
-			return 50 if $rs;
-		}
+		$dialog->resetLabels();
+		return 50 if $rs;
 	}
 
 	0;

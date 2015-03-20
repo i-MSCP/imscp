@@ -58,7 +58,7 @@ our @EXPORT = qw/execute escapeShell getExitCode/;
  Param string $command Ccommand to execute
  Param string \$stdout OPTIONAL Command stdout
  Param string \$stderr OPTIONAL Command stderr
- Return int External command exit code
+ Return int External command exit code or die on failure
 
 =cut
 
@@ -89,8 +89,7 @@ sub execute($;$$)
 		$$stderr = capture_stderr { system($command); };
 		chomp($stderr);
 	} else {
-		fatal("Unable to execute command: $!") if system($command) == -1;
-		return getExitCode($?);
+		die("Unable to execute command: $!") if system($command) == -1;
 	}
 
 	getExitCode();
@@ -119,7 +118,7 @@ sub escapeShell($)
  Return human exit code
 
  Param int $exitValue Raw exit code (default to $?)
- Return int exit code
+ Return int exit code or die on failure
 
 =cut
 
@@ -128,12 +127,11 @@ sub getExitCode(;$)
 	my $exitValue = $_[0] // $?;
 
 	if ($exitValue == -1) {
-		error("Failed to execute external command: $!");
+		die("Failed to execute external command: $!");
 	} elsif ($exitValue & 127) {
-		error(''.
-			(
-				sprintf "External command died with signal %d, %s coredump",
-				($exitValue & 127), ($? & 128) ? 'with' : 'without'
+		die(
+			sprintf(
+				"External command died with signal %d, %s coredump", ($exitValue & 127), ($? & 128) ? 'with' : 'without'
 			)
 		);
 	} else {

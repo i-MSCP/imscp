@@ -26,7 +26,7 @@ package iMSCP::Service::Systemd;
 use strict;
 use warnings;
 use iMSCP::Execute;
-use parent 'iMSCP::Service::Init';
+use parent 'iMSCP::Service::Sysvinit';
 
 my $commands = {
 	systemctl => 'systemctl'
@@ -53,7 +53,7 @@ sub start
 {
 	my ($self, $serviceName) = @_;
 
-	$self->_runCommand("$commands->{'systemctl'} start $serviceName");
+	$self->_runCommand("$commands->{'systemctl'} start $serviceName.service");
 	$self->status($serviceName);
 }
 
@@ -70,7 +70,7 @@ sub stop
 {
 	my ($self, $serviceName) = @_;
 
-	$self->_runCommand("$commands->{'systemctl'} stop $serviceName");
+	$self->_runCommand("$commands->{'systemctl'} stop $serviceName.service");
 	! $self->status($serviceName);
 }
 
@@ -87,7 +87,7 @@ sub restart
 {
 	my ($self, $serviceName) = @_;
 
-	$self->_runCommand("$commands->{'systemctl'} restart $serviceName");
+	$self->_runCommand("$commands->{'systemctl'} restart $serviceName.service");
 	$self->status($serviceName);
 }
 
@@ -107,7 +107,7 @@ sub reload
 	if($self->status($serviceName)) {
 		$self->start($serviceName);
 	} else {
-		$self->_runCommand("$commands->{'systemctl'} reload $serviceName");
+		$self->_runCommand("$commands->{'systemctl'} reload $serviceName.service");
 		$self->status($serviceName);
 	}
 }
@@ -126,7 +126,7 @@ sub status
 	my ($self, $serviceName) = @_;
 
 	my ($stdout, $stderr);
-	execute("$commands->{'systemctl'} is-active $serviceName", \$stdout, \$stderr);
+	execute("$commands->{'systemctl'} is-active $serviceName.service", \$stdout, \$stderr);
 }
 
 =back

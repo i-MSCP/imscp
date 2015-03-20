@@ -26,7 +26,7 @@ package iMSCP::Service::Upstart;
 use strict;
 use warnings;
 use iMSCP::Execute;
-use parent 'iMSCP::Service::Init';
+use parent 'iMSCP::Service::Sysvinit';
 
 my $commands = {
 	start => 'start',

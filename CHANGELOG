@@ -5,10 +5,10 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-	Added: Init, Upstart and Systemd service providers
+	Added: SysVinit, Upstart and Systemd service providers
 	Added: Custom DNS module ( Modules::CustomDNS )
 	Fixed: Any task which belongs to the custom DNS records layer must not involve HTTPD configuration change
-	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload should be sufficient
+	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload is sufficient
 	Fixed: Some errors are not trapped
 
 CONFIGS
@@ -19,7 +19,7 @@ CONFIGS
 DAEMON
 	Added: End child syslog message
 	Fixed: warning: ignoring return value of ‘chdir’... ( daemon_init.c )
-	Fixed: Avoid useless fork and wait by using execl() instead of system() ( lr_syntax.c )
+	Fixed: Avoid useless 'fork' and 'wait' by using execl() instead of system() ( lr_syntax.c )
 	Updated: Version to 1.2.3
 
 DATABASE
@@ -47,7 +47,7 @@ INSTALLER
 
 PLUGINS
 	Added: iMSCP_Plugin::getConfigPrev() and iMSCP_Plugin::getConfigPrevParam() methods
-	Added: require_api info field ( field which allows the plugins to define the required i-MSCP plugin API )
+	Added: require_api info field ( field which allows the plugins to define the required i-MSCP plugin API version )
 	Changed: info, config and config_prev fields are now automatically decoded and set as plugin properties ( backend )
 	Fixed: Force reload of newest plugin info file ( iMSCP_Plugin::getInfo() )
 	Fixed: Force reload of newest plugin configuration file ( iMSCP_Plugin::getConfigFromFile() )
@@ -55,13 +55,13 @@ PLUGINS
 	Updated: API to version 1.0.0
 
 SKELETON
-	Removed: Link to the panel in default index.html files ( Panel must not be publicly exposed )
+	Removed: Link to the panel in default index.html file ( Panel must not be publicly exposed )
 	Fixed: Wrong link for favicon in error pages
 
 SERVICES
 	Added: Log summary message on TLS handshake completion ( Postfix )
 	Fixed: Apache access.log files are put in wrong directory ( vlogger )
-	Fixed: Disable warnings about missing SPF DNS record ( As per RFC 7208, SPF DNS record is deprecated ) ( Bind9 )
+	Fixed: Disable warnings about missing SPF DNS record ( As per RFC 7208, SPF DNS record is deprecated - Bind9 )
 
 YOUTRACK
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
