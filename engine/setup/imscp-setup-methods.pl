@@ -60,7 +60,7 @@ sub setupBoot
 	# We do not try to establish connection to the database since needed data can be unavailable
 	iMSCP::Bootstrapper->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
 
-	if(! %main::imscpOldConfig) {
+	unless(%main::imscpOldConfig) {
 		%main::imscpOldConfig = ();
 
 		my $oldConfig = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
@@ -173,15 +173,16 @@ sub setupTasks
 	return $rs if $rs;
 
 	my @steps = (
-		[\&setupSaveOldConfig,              'Saving old i-MSCP main configuration file'],
-		[\&setupWriteNewConfig,             'Writing new i-MSCP main configuration file'],
-		[\&setupCreateMasterGroup,          'Creating i-MSCP system master group'],
+		[\&setupSaveOldConfig,              'Saving old configuration file'],
+		[\&setupWriteNewConfig,             'Writing new configuration file'],
+		[\&setupCreateMasterGroup,          'Creating system master group'],
 		[\&setupCreateSystemDirectories,    'Creating system directories'],
 		[\&setupServerHostname,             'Setting server hostname'],
 		[\&setupCreateDatabase,             'Creating/updating i-MSCP database'],
 		[\&setupSecureSqlInstallation,      'Securing SQL installation'],
 		[\&setupServerIps,                  'Setting server IP addresses'],
-		[\&setupDefaultAdmin,               'Creating default admin'],
+		[\&setupDefaultAdmin,               'Creating/updating default admin account'],
+		[\&setupServices,                   'Setup i-MSCP services'],
 		[\&setupServiceSsl,                 'Setup SSL for i-MSCP services'],
 		[\&setupCron,                       'Setup cron tasks'],
 		[\&setupPreInstallServers,          'Servers pre-installation'],
@@ -190,7 +191,6 @@ sub setupTasks
 		[\&setupInstallPackages,            'Packages installation'],
 		[\&setupPostInstallServers,         'Servers post-installation'],
 		[\&setupPostInstallPackages,        'Packages post-installation'],
-		[\&setupInitScripts,                'Setting i-MSCP init scripts'],
 		[\&setupRebuildCustomerFiles,       'Rebuilding customers files'],
 		[\&setupSetPermissions,             'Setting permissions'],
 		[\&setupRestartServices,            'Restarting services']
@@ -276,7 +276,7 @@ sub setupAskServerIps
 
 	# Retrieve list of all configured IP addresses
 	my @serverIps = $net->getAddresses();
-	if(! @serverIps) {
+	unless(@serverIps) {
 		error('Unable to retrieve servers IPs');
 		return 1;
 	}
@@ -338,7 +338,7 @@ Please enter your public IP:$msg
 					);
 
 					if($baseServerPublicIp) {
-						if(!$net->isValidAddr($baseServerPublicIp)) {
+						unless($net->isValidAddr($baseServerPublicIp)) {
 							$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
 						} elsif($net->getAddrType($baseServerPublicIp) ne 'PUBLIC') {
 							$msg = "\n\n\\Z1Unallowed IP address. The IP address must be public.\\Zn\n\nPlease, try again:";
@@ -625,7 +625,7 @@ sub setupAskImscpDbName
 			($rs, $dbName) = $dialog->inputbox("\nPlease, enter a database name for i-MSCP: $msg", $dbName);
 			$msg = '';
 
-			if(! $dbName) {
+			unless($dbName) {
 				$msg = "\n\n\\Z1Database name cannot be empty.\\Zn\n\nPlease, try again:";
 			} elsif($dbName =~ /[:;]/) {
 				$msg = "\n\n\\Z1Database name contain illegal characters ':' and/or ';'.\\Zn\n\nPlease, try again:";
@@ -936,7 +936,7 @@ sub setupAskServicesSsl
 					$ENV{'DIALOG_CANCEL'} = 1;
 					$rs = $dialog->yesno("\nDo you have any SSL intermediate certificate(s) (CA Bundle)?");
 
-					if(! $rs) { # backup feature still available through ESC
+					unless($rs) { # backup feature still available through ESC
 						do {
 							($rs, $caBundlePath) = $dialog->fselect($caBundlePath);
 						} while($rs != 30 && ! ($caBundlePath && -f $caBundlePath));
@@ -1231,7 +1231,7 @@ sub setupServerIps
 	execute("$main::imscpConfig{'CMD_SYSCTL'} -q -w net.ipv4.conf.all.promote_secondaries=1", \$stdout, \$stderr);
 
 	my ($database, $errstr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-	if(! $database) {
+	unless($database) {
 		error("Unable to connect to the SQL database: $errstr");
 		return 1;
 	}
@@ -1367,10 +1367,10 @@ sub setupCreateDatabase
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupCreateDatabase', \$dbName);
 	return $rs if $rs;
 
-	if(! setupIsImscpDb($dbName)) {
+	unless(setupIsImscpDb($dbName)) {
 		my ($database, $errStr) = setupGetSqlConnect();
 
-		if(! $database) {
+		unless($database) {
 			error("Unable to connect to SQL server: $errStr");
 			return 1;
 		}
@@ -1485,7 +1485,7 @@ sub setupSecureSqlInstallation
 
 	my ($database, $errStr) = setupGetSqlConnect();
 
-	if(! $database) {
+	unless($database) {
 		error("Unable to connect to SQL server: $errStr");
 		return 1;
 	}
@@ -1561,7 +1561,7 @@ sub setupDefaultAdmin
 		$adminPassword = iMSCP::Crypt->getInstance()->crypt_md5_data($adminPassword);
 
 		my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-		if(! $database) {
+		unless($database) {
 			error("Unable to connect to SQL server: $errStr");
 			return 1;
 		}
@@ -1576,7 +1576,7 @@ sub setupDefaultAdmin
 			return 1;
 		}
 
-		if(! %{$rs}) {
+		unless(%{$rs}) {
 			$rs = $database->doQuery(
 				'dummy',
 				'INSERT INTO `admin` (`admin_name`, `admin_pass`, `admin_type`, `email`) VALUES (?, ?, ?, ?)',
@@ -1726,76 +1726,25 @@ sub setupCron
 	0;
 }
 
-# Setup i-MSCP init scripts
-sub setupInitScripts
+# Setup i-MSCP services
+sub setupServices
 {
-	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupInitScripts');
-	return $rs if $rs;
-
 	# Be sure that legacy boot ordering is not enabled
-	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/.legacy-bootordering") {
-		my $file = iMSCP::File->new(filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/.legacy-bootordering")->delFile();
-		return $rs if $rs;
+	#if(-f "/etc/init.d/.legacy-bootordering") {
+	#	my $rs = iMSCP::File->new( filename => '/etc/init.d/.legacy-bootordering' )->delFile();
+	#	return $rs if $rs;
+	#}
+
+	my $serviceMngr = iMSCP::Service->getInstance();
+
+	if($serviceMngr->isUpstart()) {
+		# Work around https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=780641
+		$serviceMngr->getProvider('sysvinit')->remove('imscp_network');
 	}
 
-	unless(iMSCP::Service::isUpstart()) {
-		for my $initScript(
-			$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'},
-			$main::imscpConfig{'IMSCP_PANEL_SNAME'}
-		) {
-			if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript") {
-				my $file = iMSCP::File->new( filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript");
+	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_network', 'imscp_panel';
 
-				$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-				return $rs if $rs;
-
-				$rs = $file->mode(0755);
-				return $rs if $rs;
-
-				my ($stdout, $stderr);
-				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $initScript remove", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
-
-				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} $initScript defaults", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
-			} else {
-				error("Unable to setup the $initScript init script: File is missing.");
-				return 1;
-			}
-		}
-
-		if(iMSCP::Service::isSystemd()) { # Make systemd aware of the changes above
-			my ($stdout, $stderr);
-			my $rs = execute('systemctl daemon-reload', \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
-	} else {
-		# Fix for https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=780641
-		# ( eg. imscp_network upstart job script is not compatible with imscp_network sysvinit script )
-		for my $initScript(
-			$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'},
-			$main::imscpConfig{'IMSCP_PANEL_SNAME'}
-		) {
-			if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript") {
-				my ($stdout, $stderr);
-				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $initScript remove", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
-			}
-
-			$rs = iMSCP::File->new( filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript" )->delFile();
-			return $rs if $rs;
-		}
-	}
-
-	iMSCP::EventManager->getInstance()->trigger('afterSetupInitScripts');
+	0;
 }
 
 # Set Permissions
@@ -1874,7 +1823,7 @@ sub setupRebuildCustomerFiles
 	};
 
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-	if(! $database) {
+	unless($database) {
 		error("Unable to connect to SQL server: $errStr");
 		return 1;
 	}
@@ -2277,8 +2226,8 @@ sub setupRestartServices
 	my $serviceMngr = iMSCP::Service->getInstance();
 
 	unshift @services, (
-		[ sub { $serviceMngr->restart($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'retval'); }, 'i-MSCP Network' ],
-		[ sub { $serviceMngr->restart($main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'imscp_daemon'); }, 'i-MSCP Daemon' ]
+		[ sub { $serviceMngr->restart('imscp_network'); 0; }, 'i-MSCP Network' ],
+		[ sub { $serviceMngr->restart('imscp_daemon'); 0; }, 'i-MSCP Daemon' ]
 	);
 
 	my $nbSteps = @services;
@@ -2288,7 +2237,6 @@ sub setupRestartServices
 
 	for (@services) {
 		$rs = step($_->[0], "Restarting $_->[1] service...", $nbSteps, $step);
-		error("Unable to restart $_->[1] service") if $rs;
 		return $rs if $rs;
 		$step++;
 	}

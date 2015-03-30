@@ -205,9 +205,7 @@ sub start
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdStart');
 	return $rs if $rs;
 
-	$rs =  iMSCP::Service->getInstance()->start($self->{'config'}->{'FTPD_SNAME'});
-	error("Unable to start $self->{'config'}->{'FTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
+	iMSCP::Service->getInstance()->start($self->{'config'}->{'FTPD_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterFtpdStart');
 }
@@ -227,9 +225,7 @@ sub stop
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdStop');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'FTPD_SNAME'});
-	error("Unable to stop $self->{'config'}->{'FTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
+	iMSCP::Service->getInstance()->stop($self->{'config'}->{'FTPD_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterFtpdStop');
 }
@@ -249,9 +245,7 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdRestart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'FTPD_SNAME'});
-	error("Unable to restart $self->{'config'}->{'FTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
+	iMSCP::Service->getInstance()->restart($self->{'config'}->{'FTPD_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterFtpdRestart');
 }

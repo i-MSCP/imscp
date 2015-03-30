@@ -37,8 +37,9 @@ use iMSCP::SystemGroup;
 use iMSCP::Execute;
 use iMSCP::Servers;
 use iMSCP::Packages;
-use File::Basename;
 use iMSCP::Service;
+
+use File::Basename;
 
 # Set backend mode
 {
@@ -66,7 +67,7 @@ sub process
 		[\&_removeCustomers, 'Removing i-MSCP customers'],
 		[\&_uninstallPackages, 'Uninstalling i-MSCP packages'],
 		[\&_uninstallServers, 'Uninstalling i-MSCP servers'],
-		[\&_uninstallDaemons, 'Uninstalling i-MSCP daemons'],
+		[\&_uninstallServices, 'Uninstalling i-MSCP services'],
 		[\&_removeCrontabFile, 'Removing i-MSCP crontab file'],
 		[\&_removeLogrotateFile, 'Removing i-MSCP logrotate file'],
 		[\&_removeSysctlFile, 'Removing i-MSCP sysctl file'],
@@ -264,65 +265,21 @@ sub _uninstallServers
 	$rs;
 }
 
-sub _uninstallDaemons
+sub _uninstallServices
 {
 	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->remove($_) for 'imscp_daemon', 'imscp_network', , 'imscp_panel';
 
-	for my $initScript($main::imscpConfig{'IMSCP_PANEL_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'}) {
-		if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript") {
-			my $rs = $serviceMngr->stop($initScript, $initScript);
-			error("Unable to stop $initScript service") if $rs;
-			return $rs if $rs;
+	# Be sure to remove all service files (sysvinit scripts, upstart job scripts and systemd unit files)
+	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override', '/lib/systemd/system/%s.service') {
+		for my $service('imscp_network', 'imscp_daemon', 'imscp_panel') {
+			my $file = sprintf($pFormat, $service);
 
-			my ($stdout, $stderr);
-			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $initScript remove", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-
-			$rs = iMSCP::File->new( filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$initScript" )->delFile();
-			return $rs if $rs;
-		}
-	}
-
-	if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_NETWORK_SNAME'}") {
-		my $rs = $serviceMngr->stop($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'retval');
-		error("Unable to stop i-MSCP Network service") if $rs;
-		return $rs if $rs;
-
-		my ($stdout, $stderr);
-		$rs = execute(
-			"$main::imscpConfig{'SERVICE_INSTALLER'} -f $main::imscpConfig{'IMSCP_NETWORK_SNAME'} remove",
-			\$stdout,
-			\$stderr
-		);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$rs = iMSCP::File->new(
-		 	filename => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_NETWORK_SNAME'}"
-		 )->delFile();
-		return $rs if $rs;
-	}
-
-	# Upstart jobs
-	# TODO remove hardcoded paths
-	if(-d '/etc/init') {
-		for('imscp_daemon', 'imscp_network', 'imscp_panel') {
-			if(-f "/etc/init/$_.conf") {
-				my $rs = iMSCP::File->new( filename => "/etc/init/$_.conf" )->delFile();
+			if(-f $file) {
+				my $rs = iMSCP::File->new( filename => $file )->delFile();
 				return $rs if $rs;
 			}
 		}
-	}
-
-	if(-x '/bin/systemctl') { # Make systemd aware of the changes above
-		my ($stdout, $stderr);
-		my $rs = execute("/bin/systemctl daemon-reload", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
 	}
 
 	0;

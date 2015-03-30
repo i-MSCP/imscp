@@ -76,7 +76,14 @@ sub step
 	$self->{'dialog'}->startGauge($msg, int($index * 100 / $steps));
 	$self->{'dialog'}->setGauge(int($index * 100 / $steps), $msg);
 
-	my $rs = &{$code}() if ref $code eq 'CODE';
+	my $rs = 0;
+	local $@;
+	eval { $rs = &{$code}() if ref $code eq 'CODE'; };
+
+	if($@) {
+		error($@) if $@;
+		$rs = 1;
+	}
 
 	if($rs) {
 		return $rs if $rs == 50; # 50 is returned when ESC is preseed (dialog)

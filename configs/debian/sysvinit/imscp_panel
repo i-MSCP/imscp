@@ -5,14 +5,13 @@
 # Required-Stop:     $remote_fs $network
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Starts imscp_panel
-# Description:       i-MSCP control panel PHP processes
+# Short-Description: i-MSCP frontEnd PHP processes
 ### END INIT INFO
 
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="i-MSCP control panel FCGI processes"
+DESC="i-MSCP frontEnd PHP FCGI processes"
 NAME=imscp_panel
 STARTER=/var/www/fcgi/master/php5-fcgi-starter
 DAEMON=/usr/bin/php5-cgi
@@ -39,7 +38,7 @@ MASTER_WEB_USER=vu2000
 
 # Don't run if we are running upstart
 if init_is_upstart 2>/dev/null; then
-	exit 1
+    exit 1
 fi
 
 #
@@ -88,49 +87,49 @@ do_stop()
 }
 
 case "$1" in
-    start)
-        [ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+  start)
+    log_daemon_msg "Starting $DESC" "$NAME"
+    do_start
+    case "$?" in
+        0|1) log_end_msg 0 ;;
+        2) log_end_msg 1 ;;
+    esac
+    ;;
+  stop)
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    do_stop
+    case "$?" in
+        0|1) log_end_msg 0 ;;
+        2) log_end_msg 1 ;;
+    esac
+    ;;
+  reload|force-reload)
+    log_warning_msg "Reloading not supported"
+    ;;
+  restart)
+    log_daemon_msg "Restarting $DESC" "$NAME"
+    do_stop
+    case "$?" in
+      0|1)
         do_start
-         case "$?" in
-                 0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-                 2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-         esac
-         ;;
-    stop)
-        [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
-        do_stop
         case "$?" in
-                0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-                2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+            0) log_end_msg 0 ;;
+            1) log_end_msg 1 ;; # Old process is still running
+            *) log_end_msg 1 ;; # Failed to start
         esac
         ;;
-    status)
-        status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
+      *)
+        # Failed to stop
+        log_end_msg 1
         ;;
-    reload|force-reload)
-        log_warning_msg "Reloading not supported"
-        ;;
-    restart)
-        log_daemon_msg "Restarting $DESC" "$NAME"
-        do_stop
-        case "$?" in
-          0|1)
-                do_start
-                case "$?" in
-                        0) log_end_msg 0 ;;
-                        1) log_end_msg 1 ;; # Old process is still running
-                        *) log_end_msg 1 ;; # Failed to start
-                esac
-                ;;
-          *)
-                # Failed to stop
-                log_end_msg 1
-                ;;
-        esac
-        ;;
-    *)
-        echo "Usage: $SCRIPTNAME {start|stop|status|restart|reload|force-reload}" >&2
- exit 1
+    esac
+    ;;
+  status)
+    status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
+    ;;
+  *)
+    echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload|status}" >&2
+    exit 3
     ;;
 esac
 

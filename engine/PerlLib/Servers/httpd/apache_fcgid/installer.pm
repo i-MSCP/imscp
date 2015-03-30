@@ -363,7 +363,8 @@ sub _buildFastCgiConfFiles
 
 	# Build, store and install new files
 
-	my $apache24 = (qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'));
+	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+	my $apache24 = (version->parse(version) >= version->parse('2.4.0'));
 
 	# Set needed data
 	$self->{'httpd'}->setData(
@@ -371,7 +372,7 @@ sub _buildFastCgiConfFiles
 			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
 			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
-			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all'
+			AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all'
 		}
 	);
 
@@ -425,7 +426,7 @@ sub _buildFastCgiConfFiles
 
 	my @toEnableModules = ('actions', 'fcgid_imscp',);
 
-	if(qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0')) {
+	if(version->parse($version) >= version->parse('2.4.0')) {
 		push (@toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork'));
 		push (@toEnableModules, 'mpm_worker', 'authz_groupfile');
 	}
@@ -541,23 +542,24 @@ sub _buildApacheConfFiles
 		return $rs if $rs;
 	}
 
+	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+
 	# Using alternative syntax for piped logs scripts when possible
 	# The alternative syntax does not involve the shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
-
-	if(qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.2.12')) {
+	if(version->parse($version) >= version->parse('2.2.12')) {
 		$pipeSyntax .= '|';
 	}
 
-	my $apache24 = (qv("v$self->{'httpd'}->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'));
+	my $apache24 = (version->parse($version) >= version->parse('2.4.0'));
 
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
 			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
 			HTTPD_ROOT_DIR => $self->{'config'}->{'HTTPD_ROOT_DIR'},
-			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
-			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
+			AUTHZ_DENY_ALL => ($apache24) ? 'Require all denied' : 'Deny from all',
+			AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all',
 			CMD_VLOGGER => $self->{'config'}->{'CMD_VLOGGER'},
 			PIPE => $pipeSyntax,
 			VLOGGER_CONF => "$self->{'apacheWrkDir'}/vlogger.conf"

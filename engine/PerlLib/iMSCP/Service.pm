@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Service - Package providing a set of functions for service management
+ iMSCP::Service - High-level interface for service providers.
 
 =cut
 
@@ -25,102 +25,265 @@ package iMSCP::Service;
 
 use strict;
 use warnings;
+use iMSCP::Debug qw/debug getMessageByType/;
+use iMSCP::EventManager;
 use iMSCP::Execute;
+use iMSCP::LsbRelease;
+use iMSCP::ProgramFinder;
+use Module::Load::Conditional qw/check_install can_load/;
 use parent 'Common::SingletonClass';
+
+$Module::Load::Conditional::FIND_VERSION = 0;
 
 my $initSystem = _detectInitSystem();
 
 =head1 DESCRIPTION
 
- Package providing a set of functions for service management.
+ High-level interface for service providers.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item start($serviceName [, $pattern = $serviceName ])
+=item isEnabled($service)
+
+ Does the given service is enabled?
+
+ Return TRUE if the given service is enabled, FALSE otherwise
+
+=cut
+
+sub isEnabled
+{
+	my ($self, $service) = @_;
+
+	$self->{'provider'}->isEnabled($service);
+}
+
+=item enable($service)
+
+ Enable the given service
+
+ Param string $service Service name
+ Return bool TRUE on success, die on failure
+
+=cut
+
+sub enable
+{
+	my ($self, $service) = @_;
+
+	local $@;
+
+	my $ret = eval {
+		(
+			$self->{'eventManager'}->trigger('onBeforeEnableService', $service) == 0 &&
+			$self->{'provider'}->enable($service) &&
+			$self->{'eventManager'}->trigger('onAfterEnableService', $service) == 0
+		);
+	};
+
+	die(
+		sprintf('Could not enable the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
+	) unless $ret && !$@;
+
+	$ret;
+}
+
+=item disable($service)
+
+ Disable the given service
+
+ Param string $service Service name
+ Return bool TRUE on success, die on failure
+
+=cut
+
+sub disable
+{
+	my ($self, $service) = @_;
+
+	local $@;
+
+	my $ret = eval {
+		(
+			$self->{'eventManager'}->trigger('onBeforeDisableService', $service) == 0 &&
+			$self->{'provider'}->disable($service) &&
+			$self->{'eventManager'}->trigger('onAfterDisableService', $service) == 0
+		);
+	};
+
+	die(
+		sprintf('Could not disable the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
+	) unless $ret && !$@;
+}
+
+=item remove($service)
+
+ Remove the given service
+
+ Param string $service Service name
+ Return bool TRUE on success, die on failure
+
+=cut
+
+sub remove
+{
+	my ($self, $service) = @_;
+
+	local $@;
+
+	my $ret = eval {
+		(
+			$self->{'eventManager'}->trigger('onBeforeRemoveService', $service) == 0 &&
+			$self->{'provider'}->remove($service) &&
+			$self->{'eventManager'}->trigger('onAfterRemoveService', $service)
+		);
+	};
+
+	die(
+		sprintf('Could not remove the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
+	) unless $ret && !$@;
+
+	$ret;
+}
+
+=item start($service)
 
  Start the given service
 
- Param string $serviceName Service name
- Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 on success, other on failure
+ Param string $service Service name
+ Return bool TRUE on success, die on failure
 
 =cut
 
 sub start
 {
-	my ($self, $serviceName, $pattern) = @_;
+	my ($self, $service) = @_;
 
-	$self->{'provider'}->start($serviceName, $pattern);
+	local $@;
+
+	my $ret = eval {
+		(
+			$self->{'eventManager'}->trigger('onBeforeStartService', $service) == 0 &&
+			$self->{'provider'}->start($service) &&
+			$self->{'eventManager'}->trigger('onAfterStartService', $service) == 0
+		);
+	};
+
+	die(
+		sprintf('Could not start the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
+	) unless $ret && !$@;
+
+	$ret;
 }
 
-=item stop($serviceName [, $pattern = $serviceName ])
+=item stop($service)
 
  Stop the given service
 
- Param string $serviceName Service name
- Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 on success, other on failure
+ Param string $service Service name
+ Return bool TRUE on success, die on failure
 
 =cut
 
 sub stop
 {
-	my ($self, $serviceName, $pattern) = @_;
+	my ($self, $service) = @_;
 
-	$self->{'provider'}->stop($serviceName, $pattern);
+	local $@;
+
+	my $ret = eval {
+		(
+			$self->{'eventManager'}->trigger('onBeforeStopService', $service) == 0 &&
+			$self->{'provider'}->stop($service) &&
+			$self->{'eventManager'}->trigger('onAfterStopService', $service) == 0
+		);
+	};
+
+	die(
+		sprintf('Could not stop the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
+	) if !$ret || $@;
+
+	$ret;
 }
 
-=item restart($serviceName [, $pattern = $serviceName ])
+=item restart($service)
 
  Restart the given service
 
- Param string $serviceName Service name
- Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 on success, other on failure
+ Param string $service Service name
+ Return bool TRUE on success, die on failure
 
 =cut
 
 sub restart
 {
-	my ($self, $serviceName, $pattern) = @_;
+	my ($self, $service) = @_;
 
-	$self->{'provider'}->restart($serviceName, $pattern);
+	local $@;
+
+	my $ret = eval {
+		(
+			$self->{'eventManager'}->trigger('onBeforeRestartService', $service) == 0 &&
+			$self->{'provider'}->restart($service) &&
+			$self->{'eventManager'}->trigger('onAfterRestartService', $service) == 0
+		);
+	};
+
+	die(
+		sprintf('Could not restart the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
+	) unless $ret && !$@;
+
+	$ret;
 }
 
-=item reload($serviceName [, $pattern = $serviceName ])
+=item reload($service)
 
  Reload the given service
 
- Param string $serviceName Service name
- Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 on success, other on failure
+ Param string $service Service name
+ Return bool TRUE on success, die on failure
 
 =cut
 
 sub reload
 {
-	my ($self, $serviceName, $pattern) = @_;
+	my ($self, $service) = @_;
 
-	$self->{'provider'}->reload($serviceName, $pattern);
+	local $@;
+
+	my $ret = eval {
+		(
+			$self->{'eventManager'}->trigger('onBeforeReloadService', $service) == 0 &&
+			$self->{'provider'}->reload($service) &&
+			$self->{'eventManager'}->trigger('onAfterReloadService', $service) == 0
+		);
+	};
+
+	die(
+		sprintf('Could not reload the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
+	) unless $ret && !$@;
+
+	$ret;
 }
 
-=item status($serviceName [, $pattern = $serviceName ])
+=item isRunning($service)
 
  Get status of the given service
 
- Param string $serviceName Service name
- Param string $pattern OPTIONAL Pattern as expected by the pgrep/pkill commands or 'retval' (default to service name)
- Return int 0 if the service is running, 1 if the service is not running
+ Param string $service Service name
+ Return bool TRUE if the given service is running, FALSE otherwise
 
 =cut
 
-sub status
+sub isRunning
 {
-	my ($self, $serviceName, $pattern) = @_;
+	my ($self, $service) = @_;
 
-	$self->{'provider'}->status($serviceName, $pattern);
+	local $@;
+
+	(eval { $self->{'provider'}->isRunning($service); });
 }
 
 =item isSysvinit()
@@ -133,7 +296,7 @@ sub status
 
 sub isSysvinit
 {
-	($initSystem eq 'sysvinit');
+	($initSystem eq 'Sysvinit');
 }
 
 =item isUpstart()
@@ -146,7 +309,7 @@ sub isSysvinit
 
 sub isUpstart
 {
-	($initSystem eq 'upstart');
+	($initSystem eq 'Upstart');
 }
 
 =item isSystemd()
@@ -159,7 +322,38 @@ sub isUpstart
 
 sub isSystemd
 {
-	($initSystem eq 'systemd');
+	($initSystem eq 'Systemd');
+}
+
+=item getProvider($providerName)
+
+ Get a particular service provider instance
+
+ Param string Provider name (sysvinit|upstart|systemd)
+ Return iMSCP::Provider::Service::Sysvinit
+
+=cut
+
+sub getProvider
+{
+	my ($self, $providerName) = @_;
+
+	$providerName = ucfirst(lc($providerName));
+
+	my $id = iMSCP::LsbRelease->getInstance->getId('short');
+	$id = 'Debian' if $id eq 'Ubuntu';
+
+	my $provider = "iMSCP::Provider::Service::${id}::${providerName}";
+
+	unless(check_install(module => $provider)) {
+		$provider = "iMSCP::Provider::Service::${providerName}"; # Fallback to the base provider
+	}
+
+	can_load(modules => { $provider => undef}) or die(
+		sprintf("Unable to load the %s service provider: %s", $provider, $Module::Load::Conditional::ERROR)
+	);
+
+	$provider->getInstance();
 }
 
 =back
@@ -180,16 +374,8 @@ sub _init
 {
 	my $self = $_[0];
 
-	if($self->isSystemd()) {
-		require iMSCP::Service::Systemd;
-		$self->{'provider'} = iMSCP::Service::Systemd->getInstance();
-	} elsif($self->isUpstart()) {
-		require iMSCP::Service::Upstart;
-		$self->{'provider'} = iMSCP::Service::Upstart->getInstance();
-	} else {
-		require iMSCP::Service::Sysvinit;
-		$self->{'provider'} = iMSCP::Service::Sysvinit->getInstance();
-	}
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
+	$self->{'provider'} = $self->getProvider($initSystem);
 
 	$self;
 }
@@ -204,29 +390,53 @@ sub _init
 
 sub _detectInitSystem
 {
-	my $initSystem = 'sysvinit';
+	my $initSystem = 'Sysvinit';
+
+	my $initCmd = iMSCP::ProgramFinder::find('init');
+	my $systemctlCmd = iMSCP::ProgramFinder::find('systemctl');
 
 	my %initSystems = (
-		upstart => { command => '/sbin/init --version', regexp => qr/upstart/ },
-		systemd => { command => 'systemctl', regexp => qr/-\.mount/ }
+		Upstart => {
+			command => (defined $initCmd) ? "$initCmd --version" : undef,
+			regexp => qr/upstart/
+		},
+		Systemd => {
+			command => (defined $systemctlCmd) ? "$systemctlCmd list-units --full --no-legend" : undef,
+			regexp => qr/-\.mount/
+		}
 	);
 
 	local $@;
 
 	for(keys %initSystems) {
 		eval {
-			my ($stdout, $stderr);
-			execute($initSystems{$_}->{'command'}, \$stdout, \$stderr);
+			if(defined $initSystems{$_}->{'command'}) {
+				my ($stdout, $stderr);
+				execute($initSystems{$_}->{'command'}, \$stdout, \$stderr);
 
-			if($stdout =~ /$initSystems{$_}->{'regexp'}/) {
-				$initSystem = $_;
+				$initSystem = $_ if $stdout =~ /$initSystems{$_}->{'regexp'}/;
 			}
 		};
 
-		last if $initSystem ne 'sysvinit';
+		last if $initSystem ne 'Sysvinit';
 	}
 
+	debug(sprintf('%s init system has been detected', $initSystem));
+
 	$initSystem;
+}
+
+=item _getLastError()
+
+ Get last error
+
+ Return string
+
+=cut
+
+sub _getLastError
+{
+	getMessageByType('error', { amount => 1, remove => 1 }) || 'An unexpected error occurred';
 }
 
 =back

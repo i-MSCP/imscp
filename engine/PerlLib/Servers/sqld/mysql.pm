@@ -132,9 +132,7 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldRestart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->restart('mysql', 'mysqld');
-	error("Unable to restart mysql service") if $rs;
-	return $rs if $rs;
+	iMSCP::Service->getInstance()->restart('mysql');
 
 	$self->{'eventManager'}->trigger('afterSqldRestart');
 }

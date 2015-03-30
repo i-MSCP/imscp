@@ -5,16 +5,19 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-	Added: SysVinit, Upstart and Systemd service providers
 	Added: Custom DNS module ( Modules::CustomDNS )
+	Added: Service providers ( Sysvinit, Upstart and Systemd )
+	Changed: Perl version >= 5.14.2 is now required
 	Fixed: Any task which belongs to the custom DNS records layer must not involve HTTPD configuration change
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload is sufficient
 	Fixed: Some errors are not trapped
 
 CONFIGS
 	Added: imscp_daemon, imscp_network and imscp_panel upstart jobs
-	Added: php-apc ( enabled for i-MSCP frontEnd only - Debian < Jessie / Ubuntu < Trusty Thar )
+	Added: php-apc package ( enabled for i-MSCP frontEnd only - Debian < Jessie / Ubuntu < Trusty Thar )
 	Fixed: Wrong TMPDIR path ( php5-fpm )
+	Removed: INIT_SCRIPTS_DIR, SERVICE_INSTALLER, SERVICE_MNGR, IMSCP_DAEMON_SNAME, IMSCP_NETWORK_SNAME and
+		IMSCP_PANEL_SNAME main configuration parameters
 
 DAEMON
 	Added: End child syslog message
@@ -55,7 +58,7 @@ PLUGINS
 	Updated: API to version 1.0.0
 
 SKELETON
-	Removed: Link to the panel in default index.html file ( Panel must not be publicly exposed )
+	Removed: Link to the panel in default index.html files ( Panel must not be publicly exposed )
 	Fixed: Wrong link for favicon in error pages
 
 SERVICES
@@ -209,7 +212,7 @@ BACKEND
 	Added: pigz ( Parallel Implementation of GZip ) algorithm for backups compression
 	Added: Standard directory which allow to load apache conffiles prior any other vhost file ( Apache )
 	Added: --verbose command line options for all scripts
-	Changed: i-MSCP is now run through a dedicated httpd instance by using the nginx Web server
+	Changed: i-MSCP frontEnd is now run through a dedicated httpd instance by using the nginx Web server
 	Changed: Logfiles are now written as soon as possible ( allows to mitigate memory consumption )
 	Changed: The quota accounting script is now run every 30 minutes
 	Fixed: Backend logs which are older than 7 days are never removed

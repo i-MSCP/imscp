@@ -192,7 +192,7 @@ sub _createGlobalConfFile
 
 			my $version = $1 if($main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/);
 
-			if(version->parse("v$version") >= version->parse('v5.5')) {
+			if(version->parse($version) >= version->parse('5.5')) {
 				$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
 			} else {
 				# The innodb_use_native_aio parameter is not available in MySQL < 5.5

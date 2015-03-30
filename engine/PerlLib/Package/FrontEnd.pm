@@ -290,15 +290,9 @@ sub start
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndStart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'});
-	error("Unable to start $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-	$rs = iMSCP::Service->getInstance()->start($main::imscpConfig{'IMSCP_PANEL_SNAME'}, "-u $panelUName php5-cgi");
-	error("Unable to start imscp_panel (FCGI manager) service") if $rs;
-	return $rs if $rs;
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->start($self->{'config'}->{'HTTPD_SNAME'});
+	$serviceMngr->start('imscp_panel');
 
 	$self->{'eventManager'}->trigger('afterFrontEndStart');
 }
@@ -318,15 +312,9 @@ sub stop
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndStop');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->stop("$self->{'config'}->{'HTTPD_SNAME'}");
-	error("Unable to stop $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-	$rs = iMSCP::Service->getInstance()->stop($main::imscpConfig{'IMSCP_PANEL_SNAME'}, "-u $panelUName php5-cgi");
-	error("Unable to stop imscp_panel (FCGI manager) service") if $rs;
-	return $rs if $rs;
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->stop("$self->{'config'}->{'HTTPD_SNAME'}");
+	$serviceMngr->stop('imscp_panel');
 
 	$self->{'eventManager'}->trigger('afterFrontEndStop');
 }
@@ -346,9 +334,7 @@ sub reload
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndReload');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'});
-	error("Unable to reload $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
+	iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterFrontEndReload');
 }
@@ -368,15 +354,9 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndRestart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'HTTPD_SNAME'});
-	error("Unable to restart $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-	$rs = iMSCP::Service->getInstance()->restart($main::imscpConfig{'IMSCP_PANEL_SNAME'}, "-u $panelUName php5-cgi");
-	error("Unable to restart imscp_panel (FCGI manager) service") if $rs;
-	return $rs if $rs;
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->restart($self->{'config'}->{'HTTPD_SNAME'});
+	$serviceMngr->restart('imscp_panel');
 
 	$self->{'eventManager'}->trigger('afterFrontEndRestart');
 }

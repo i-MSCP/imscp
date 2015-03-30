@@ -285,9 +285,11 @@ sub disableDmn
 
 	my $ipMngr = iMSCP::Net->getInstance();
 
+	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+
 	$self->setData(
 		{
-			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'))
+			AUTHZ_ALLOW_ALL => (version->parse($version) >= version->parse('2.4.0'))
 				? 'Require all granted' : 'Allow from all',
 			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
 			DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
@@ -834,7 +836,9 @@ sub addIps
 {
 	my ($self, $data) = @_;
 
-	unless(qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0')) {
+	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+
+	unless(version->parse($version) >= version->parse('2.4.0')) {
 		my $file = "$self->{'apacheWrkDir'}/00_nameserver.conf";
 
 		if(-f $file) {
@@ -900,8 +904,8 @@ sub addIps
 		$rs = $self->installConfFile('00_nameserver.conf');
 		return $rs if $rs;
 
-		$rs = $self->enableSites('00_nameserver.conf');
-		return $rs if $rs;
+		#$rs = $self->enableSites('00_nameserver.conf');
+		#return $rs if $rs;
 
 		$self->{'restart'} = 1;
 	}
@@ -1387,9 +1391,7 @@ sub start
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
-	error("Unable to start $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
+	iMSCP::Service->getInstance()->start($self->{'config'}->{'HTTPD_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterHttpdStart');
 }
@@ -1409,9 +1411,7 @@ sub stop
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStop');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
-	error("Unable to stop $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
-	return $rs if $rs;
+	iMSCP::Service->getInstance()->stop($self->{'config'}->{'HTTPD_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterHttpdStop');
 }
@@ -1447,13 +1447,9 @@ sub restart
 	return $rs if $rs;
 
 	if($self->{'forceRestart'}) {
-		$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
-		error("Unable to restart $self->{'config'}->{'HTTPD_SNAME'}") if $rs;
-		return $rs if $rs;
+		iMSCP::Service->getInstance()->restart($self->{'config'}->{'HTTPD_SNAME'});
 	} else {
-		$rs = iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'}, '-f apache2');
-		error("Unable to reload $self->{'config'}->{'HTTPD_SNAME'} service") if $rs;
-		return $rs if $rs;
+		iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'});
 	}
 
 	$self->{'eventManager'}->trigger('afterHttpdRestart');
@@ -1579,7 +1575,8 @@ sub _addCfg
 		}
 	}
 
-	my $apache24 = (qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'));
+	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+	my $apache24 = (version->parse($version) >= version->parse('2.4.0'));
 
 	my $ipMngr = iMSCP::Net->getInstance();
 
@@ -1588,8 +1585,8 @@ sub _addCfg
 			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
 			HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
-			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
-			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
+			AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all',
+			AUTHZ_DENY_ALL => ($apache24) ? 'Require all denied' : 'Deny from all',
 			DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
 				? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
 			FCGID_NAME => $fcgidName,

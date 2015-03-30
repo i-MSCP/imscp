@@ -351,6 +351,8 @@ sub _addAwstatsSection
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
 
+		my $version = $httpd->{'config'}->{'HTTPD_VERSION'};
+
 		$$cfgTpl = replaceBloc(
 			"# SECTION addons BEGIN.\n",
 			"# SECTION addons END.\n",
@@ -363,7 +365,7 @@ sub _addAwstatsSection
 			) .
 			process(
 				{
-					AUTHZ_ALLOW_ALL => (qv("v$httpd->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'))
+					AUTHZ_ALLOW_ALL => (version->parse($version) >= version->parse('2.4.0'))
 						? 'Require all granted' : 'Allow from all',
 					AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
 					DOMAIN_NAME => $data->{'DOMAIN_NAME'},

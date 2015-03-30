@@ -201,15 +201,16 @@ sub _createGlobalAwstatsVhost
 {
 	my $self = $_[0];
 
-	my $apache24 = (qv("v$self->{'httpd'}->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'));
+	my $version = $self->{'httpd'}->{'config'}->{'HTTPD_VERSION'};;
+	my $apache24 = (version->parse($version) >= version->parse('2.4.0'));
 
 	$self->{'httpd'}->setData(
 		{
-			NAMEVIRTUALHOST => $apache24 ? '' : 'NameVirtualHost 127.0.0.1:80',
+			NAMEVIRTUALHOST => ($apache24) ? '' : 'NameVirtualHost 127.0.0.1:80',
 			AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
 			AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
 			WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
-			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all'
+			AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all'
 		}
 	);
 

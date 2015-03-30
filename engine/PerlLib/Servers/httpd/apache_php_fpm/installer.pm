@@ -339,7 +339,9 @@ sub _buildHttpdModules
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildModules');
 	return $rs if $rs;
 
-	if(qv("v$self->{'config'}->{'HTTPD_VERSION'}") == qv('v2.4.9')) {
+	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+
+	if(version->parse($version) == version->parse('2.4.9')) {
 		my $prevDir = getcwd();
 		my $buildDir = File::Temp->newdir();
 
@@ -389,10 +391,12 @@ sub _buildFastCgiConfFiles
 
 	# Backup, build, store and install the php_fpm_imscp.conf file
 
+	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
-			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'))
+			AUTHZ_ALLOW_ALL => (version->parse($version) >= version->parse('2.4.0'))
 				? 'Require env REDIRECT_STATUS' : "Order allow,deny\n        Allow from env=REDIRECT_STATUS"
 		}
 	);
@@ -437,14 +441,15 @@ sub _buildFastCgiConfFiles
 	my @toDisableModules = (
 		'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter'
 	);
+
 	my @toEnableModules = ('actions', 'suexec', 'version');
 
-	if(qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0')) {
+	if(version->parse($version) >= version->parse('2.4.0')) {
 		push @toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork');
 		push @toEnableModules, ('mpm_worker', 'authz_groupfile');
 	}
 
-	if(qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.9')) {
+	if(version->parse($version) >= version->parse('2.4.9')) {
 		push @toDisableModules, ('php_fpm_imscp');
 		push @toEnableModules, ('setenvif', 'proxy_fcgi', 'proxy_handler');
 	} else {
@@ -633,23 +638,24 @@ sub _buildApacheConfFiles
 	$rs = $self->{'httpd'}->apacheBkpConfFile("$self->{'apacheWrkDir'}/00_nameserver.conf");
 	return $rs if $rs;
 
+	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+
 	# Using alternative syntax for piped logs scripts when possible
 	# The alternative syntax does not involve the shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
-
-	if(qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.2.12')) {
+	if(version->parse($version) >= version->parse('2.2.12')) {
 		$pipeSyntax .= '|';
 	}
 
-	my $apache24 = (qv("v$self->{'config'}->{'HTTPD_VERSION'}") >= qv('v2.4.0'));
+	my $apache24 = (version->parse($version) >= version->parse('2.4.0'));
 
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
 			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
 			HTTPD_ROOT_DIR => $self->{'config'}->{'HTTPD_ROOT_DIR'},
-			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
-			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
+			AUTHZ_DENY_ALL => ($apache24) ? 'Require all denied' : 'Deny from all',
+			AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all',
 			CMD_VLOGGER => $self->{'config'}->{'CMD_VLOGGER'},
 			PIPE => $pipeSyntax,
 			VLOGGER_CONF => "$self->{'apacheWrkDir'}/vlogger.conf"

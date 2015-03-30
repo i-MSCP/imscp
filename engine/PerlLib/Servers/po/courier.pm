@@ -271,25 +271,12 @@ sub start
 	my $rs = $self->{'eventManager'}->trigger('beforePoStart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'AUTHDAEMON_SNAME'}, 'authdaemon');
-	error("Unable to start $self->{'config'}->{'AUTHDAEMON_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'POPD_SNAME'}, '-f pop3d.pid');
-	error("Unable to start $self->{'config'}->{'POPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'POPD_SSL_SNAME'}, '-f pop3d-ssl.pid');
-	error("Unable to start $self->{'config'}->{'POPD_SSL_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'IMAPD_SNAME'}, '-f imapd.pid');
-	error("Unable to start $self->{'config'}->{'IMAPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->start($self->{'config'}->{'IMAPD_SSL_SNAME'}, '-f imapd-ssl.pid');
-	error("Unable to start $self->{'config'}->{'IMAPD_SSL_SNAME'} service") if $rs;
-	return $rs if $rs;
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->start($self->{'config'}->{'AUTHDAEMON_SNAME'});
+	$serviceMngr->start($self->{'config'}->{'POPD_SNAME'});
+	$serviceMngr->start($self->{'config'}->{'POPD_SSL_SNAME'});
+	$serviceMngr->start($self->{'config'}->{'IMAPD_SNAME'});
+	$serviceMngr->start($self->{'config'}->{'IMAPD_SSL_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterPoStart');
 }
@@ -309,25 +296,12 @@ sub stop
 	my $rs = $self->{'eventManager'}->trigger('beforePoStop');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'AUTHDAEMON_SNAME'}, 'authdaemon');
-	error("Unable to stop $self->{'config'}->{'AUTHDAEMON_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'POPD_SNAME'}, '-f pop3d.pid');
-	error("Unable to stop $self->{'config'}->{'POPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'POPD_SSL_SNAME'}, '-f pop3d-ssl.pid');
-	error("Unable to stop $self->{'config'}->{'POPD_SSL_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'IMAPD_SNAME'}, '-f imapd.pid');
-	error("Unable to stop $self->{'config'}->{'IMAPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->stop($self->{'config'}->{'IMAPD_SSL_SNAME'}, '-f imapd-ssl.pid');
-	error("Unable to stop $self->{'config'}->{'IMAPD_SSL_SNAME'} service") if $rs;
-	return $rs if $rs;
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->stop($self->{'config'}->{'AUTHDAEMON_SNAME'});
+	$serviceMngr->stop($self->{'config'}->{'POPD_SNAME'});
+	$serviceMngr->stop($self->{'config'}->{'POPD_SSL_SNAME'});
+	$serviceMngr->stop($self->{'config'}->{'IMAPD_SNAME'});
+	$serviceMngr->stop($self->{'config'}->{'IMAPD_SSL_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterPoStop');
 }
@@ -347,25 +321,13 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'AUTHDAEMON_SNAME'}, 'authdaemon');
-	error("Unable to restart $self->{'config'}->{'AUTHDAEMON_SNAME'} service") if $rs;
-	return $rs if $rs;
+	my $serviceMngr = iMSCP::Service->getInstance();
 
-	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'POPD_SNAME'}, '-f pop3d.pid');
-	error("Unable to restart $self->{'config'}->{'POPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'POPD_SSL_SNAME'}, '-f pop3d-ssl.pid');
-	error("Unable to restart $self->{'config'}->{'POPD_SSL_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'IMAPD_SNAME'}, '-f imapd.pid');
-	error("Unable to restart $self->{'config'}->{'IMAPD_SNAME'} service") if $rs;
-	return $rs if $rs;
-
-	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'IMAPD_SSL_SNAME'}, '-f imapd-ssl.pid');
-	error("Unable to restart $self->{'config'}->{'IMAPD_SSL_SNAME'} service") if $rs;
-	return $rs if $rs;
+	$serviceMngr->restart($self->{'config'}->{'AUTHDAEMON_SNAME'});
+	$serviceMngr->restart($self->{'config'}->{'POPD_SNAME'});
+	$serviceMngr->restart($self->{'config'}->{'POPD_SSL_SNAME'});
+	$serviceMngr->restart($self->{'config'}->{'IMAPD_SNAME'});
+	$serviceMngr->restart($self->{'config'}->{'IMAPD_SSL_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterPoRestart');
 }

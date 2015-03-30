@@ -395,6 +395,8 @@ sub _buildConfigFile
 
 	# Define data
 
+	my $version = $self->{'config'}->{'PROFTPD_VERSION'};
+
 	my $data = {
 		HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
@@ -407,7 +409,7 @@ sub _buildConfigFile
 		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 		SSL => (main::setupGetQuestion('SERVICES_SSL_ENABLED') eq 'yes') ? '' : '#',
 		CERTIFICATE => 'imscp_services',
-		TLSOPTIONS => (qv("v$self->{'config'}->{'PROFTPD_VERSION'}") >= qv('v1.3.3'))
+		TLSOPTIONS => (version->parse($version) >= version->parse('1.3.3'))
 			? 'NoCertRequest NoSessionReuseRequired' : 'NoCertRequest'
 	};
 

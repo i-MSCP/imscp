@@ -396,7 +396,7 @@ sub _showUpdateNotices
 			for my $noticeFile(@noticeFiles) {
 				(my $noticeVersion = $noticeFile) =~ s/\.txt$//;
 
-				if(version->parse("v$imscpVersion") < version->parse("v$noticeVersion")) {
+				if(version->parse($imscpVersion) < version->parse($noticeVersion)) {
 					my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
 					unless(defined $noticeBody) {
 						error("Unable to read $noticesDir/$noticeFile file");
@@ -967,11 +967,11 @@ EOF
 
 sub _installFiles
 {
+	my $serviceMngr = iMSCP::Service->getInstance();
+
 	# i-MSCP daemon must be stopped before changing any file on the files system
-	if(-x "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}") {
-		my $rs = iMSCP::Service->getInstance()->stop($main::imscpConfig{'IMSCP_DAEMON_SNAME'});
-		error("Unable to stop $main::imscpConfig{'IMSCP_DAEMON_SNAME'} service") if $rs;
-		return $rs if $rs ;
+	if($serviceMngr->isRunning('imscp_daemon')) {
+		$serviceMngr->stop('imscp_daemon');
 	}
 
 	# Process cleanup to avoid any security risks and conflicts

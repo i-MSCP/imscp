@@ -23,6 +23,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::ProgramFinder;
+use Module::Load::Conditional 'check_install';
 use version;
 use parent 'Common::Object';
 
@@ -83,12 +84,12 @@ sub checkVersion
 {
 	my ($self, $version, $minVersion, $maxVersion) = @_;
 
-	if(version->parse("v$version") < version->parse("v$minVersion")) {
+	if(version->parse($version) < version->parse($minVersion)) {
 		die("$version is older then required version $minVersion");
 	}
 
-	if($maxVersion && version->parse("v$version") > version->parse("v$maxVersion")) {
-		die("$version is newer then required max version v$maxVersion");
+	if($maxVersion && version->parse($version) > version->parse($maxVersion)) {
+		die("$version is newer then required max version $maxVersion");
 	}
 
 	undef;
@@ -113,22 +114,11 @@ sub _init
 	my $self = $_[0];
 
 	# Required Perl modules
-	$self->{'perl_modules'} = {
-		'Crypt::Blowfish' => '',
-		'Crypt::CBC' => '',
-		'Crypt::PasswdMD5' => '',
-		'DBI' => '',
-		'DBD::mysql' => '',
-		'DateTime' => '',
-		'Data::Validate::Domain' => 'qw(is_domain)',
-		'Email::Valid' => '',
-		'File::Basename' => '',
-		'File::Path' => '',
-		'MIME::Base64' => '',
-		'MIME::Entity' => '',
-		'Net::LibIDN' => 'qw/idn_to_ascii idn_to_unicode/',
-		'XML::Simple' => ''
-	};
+	# TODO add required version
+	$self->{'perl_modules'} = [
+		'Crypt::Blowfish', 'Crypt::CBC', 'Crypt::PasswdMD5', 'DBI', 'DBD::mysql', 'DateTime', 'Data::Validate::Domain',
+		'Email::Valid', 'File::Basename', 'File::Path', 'MIME::Base64', 'MIME::Entity', 'Net::LibIDN', 'XML::Simple'
+	];
 
 	# Required programs
 	$self->{'programs'} = {
@@ -140,7 +130,7 @@ sub _init
 		'Perl' => {
 			'version_command' => "$main::imscpConfig{'CMD_PERL'} -v",
 			'version_regexp' => qr/v([\d.]+)/,
-			'min_version' => '5.10.1'
+			'min_version' => '5.14.2'
 		}
 	};
 
@@ -181,24 +171,17 @@ sub _perlModules
 {
 	my $self = $_[0];
 
-	my @mods = ();
+	my @moduleNames = ();
 
-	for my $mod (keys %{$self->{'perl_modules'}}) {
-		if (eval "require $mod") {
-			eval "use $mod $self->{'perl_modules'}->{$mod}";
-			push(@mods, $mod) if $@;
-		} else {
-			push(@mods, $mod);
-		}
+	for my $moduleName (@{$self->{'perl_modules'}}) {
+		push(@moduleNames, $moduleName) unless check_install(module => $moduleName);
 	}
 
-	if(@mods) {
-		if(@mods > 1) {
-			die(sprintf(
-				"The following Perl modules are missing or don't provide the required functions: %s", join ', ', @mods
-			));
+	if(@moduleNames) {
+		if(@moduleNames > 1) {
+			die(sprintf("The following Perl modules are not installed: %s", join ', ', @moduleNames));
 		} else {
-			die("The following Perl module is missing doesn't provides the required functions: @mods");
+			die(sprintf("The following Perl module is not installed: %s", "@moduleNames"));
 		}
 	}
 

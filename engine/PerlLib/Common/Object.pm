@@ -47,11 +47,11 @@ sub new
 {
 	my $class = shift;
 
-	my $self = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $class;
+	my $self = { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ };
+
+	bless $self, $class;
 
 	$self->_init();
-
-	$self;
 }
 
 =back

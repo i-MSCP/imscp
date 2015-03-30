@@ -38,8 +38,10 @@ use File::Spec;
 
 =item find($program)
 
+ Find full program path in $PATH
+
  Param string $program Progran to find
- Return string program path if the given program is found and is executable, undef otherwise
+ Return string program path if the given program is found in $PATH and is executable, undef otherwise
 
 =cut
 

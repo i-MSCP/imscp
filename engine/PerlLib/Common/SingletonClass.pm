@@ -49,7 +49,7 @@ sub getInstance
 	return $self if ref $self;
 
 	no strict 'refs';
-	my $instance = \${"$self\::_instance"};
+	my $instance = \${"${self}::_instance"};
 
 	unless(defined $$instance) {
 		$$instance = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $self;
@@ -74,7 +74,7 @@ sub hasInstance
 	$self = ref $self || $self;
 	no strict 'refs';
 
-	${"$self\::_instance"};
+	${"${self}::_instance"};
 }
 
 =back

@@ -165,9 +165,7 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaRestart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'MTA_SNAME'}, '-f postfix/master');
-	error("Unable to restart $self->{'config'}->{'MTA_SNAME'} service") if $rs;
-	return $rs if $rs;
+	iMSCP::Service->getInstance()->restart($self->{'config'}->{'MTA_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterMtaRestart');
 }

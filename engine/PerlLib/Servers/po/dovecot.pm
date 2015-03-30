@@ -219,9 +219,7 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
 
-	$rs = iMSCP::Service->getInstance()->restart($self->{'config'}->{'DOVECOT_SNAME'}, 'retval');
-	error("Unable to restart $self->{'config'}->{'DOVECOT_SNAME'} service") if $rs;
-	return $rs if $rs;
+	iMSCP::Service->getInstance()->restart($self->{'config'}->{'DOVECOT_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterPoRestart');
 }

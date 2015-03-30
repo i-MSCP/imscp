@@ -471,7 +471,7 @@ sub _buildConf
 				return 1;
 			}
 
-			if(version->parse("v$namedVersion") >= version->parse('v9.9.3')) {
+			if(version->parse($namedVersion) >= version->parse('9.9.3')) {
 				$cfgTpl =~ s%//\s+(check-spf\s+ignore;)%$1%;
 			}
 

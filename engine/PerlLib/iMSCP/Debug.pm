@@ -25,9 +25,7 @@ package iMSCP::Debug;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Log;
 use parent 'Exporter';
 
@@ -46,13 +44,13 @@ BEGIN
 }
 
 my $self = {
-	'debug' => 0,
-	'verbose' => 0,
-	'debugCallBacks' => [],
-	'targets' => [ iMSCP::Log->new('id' => 'screen') ]
+	debug => 0,
+	verbose => 0,
+	debugCallBacks => [],
+	targets => [ iMSCP::Log->new( id => 'default' ) ]
 };
 
-$self->{'screen'} = $self->{'target'} = $self->{'targets'}->[0];
+$self->{'default'} = $self->{'target'} = $self->{'targets'}->[0];
 
 =head1 DESCRIPTION
 
@@ -129,7 +127,7 @@ sub newDebug
 
 	fatal("logfile name expected") if ref $logfile || $logfile eq '';
 
-	$self->{'target'} = iMSCP::Log->new('id' => $logfile);
+	$self->{'target'} = iMSCP::Log->new( id => $logfile);
 
 	push @{$self->{'targets'}}, $self->{'target'};
 
@@ -149,12 +147,12 @@ sub endDebug
 	my $target = pop @{$self->{'targets'}};
 	my $targetId = $target->getId();
 
-	if($targetId ne 'screen') {
-		my @firstItems = (@{$self->{'targets'}} == 1) ? $self->{'screen'}->flush() : ();
+	if($targetId ne 'default') {
+		my @firstItems = (@{$self->{'targets'}} == 1) ? $self->{'default'}->flush() : ();
 
-		# Retrieve any log which must be printed to screen and store them in the appropriate log object
+		# Retrieve any log which must be printed to default and store them in the appropriate log object
 		for my $item($target->retrieve( tag => qr/^(?:warn|error|fatal)/i ), @firstItems) {
-			$self->{'screen'}->store( when => $item->{'when'}, message => $item->{'message'}, tag => $item->{'tag'} );
+			$self->{'default'}->store( when => $item->{'when'}, message => $item->{'message'}, tag => $item->{'tag'} );
 		}
 
 		my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
@@ -162,9 +160,9 @@ sub endDebug
 			require iMSCP::Dir;
 			my $rs = iMSCP::Dir->new('dirname', $logDir)->make(
 				{
-					'user' => $main::imscpConfig{'ROOT_USER'},
-					'group' => $main::imscpConfig{'ROOT_GROUP'},
-					'mode' => 0750
+					user => $main::imscpConfig{'ROOT_USER'},
+					group => $main::imscpConfig{'ROOT_GROUP'},
+					mode => 0750
 				}
 			);
 			$logDir = '/tmp' if $rs;
@@ -177,7 +175,7 @@ sub endDebug
 		$self->{'target'} = @{$self->{'targets'}}[$#{$self->{'targets'}}];
 	} else {
 		push @{$self->{'targets'}}, $target;
-		$self->{'target'} = $self->{'screen'};
+		$self->{'target'} = $self->{'default'};
 	}
 
 	0;
@@ -291,10 +289,10 @@ sub getMessageByType
 	my %options = (@_ && ref $_[0] eq 'HASH') ? %{$_[0]} : @_;
 
 	my @messages = map { $_->{'message'} } $self->{'target'}->retrieve(
-		'tag' => (ref $type eq 'Regexp') ? $type : qr/^$type$/i,
-		'amount' => $options{'amount'},
-		'chrono' => $options{'chrono'} // 1,
-		'remove' => $options{'remove'} // 0
+		tag => (ref $type eq 'Regexp') ? $type : qr/^$type$/i,
+		amount => $options{'amount'},
+		chrono => $options{'chrono'} // 1,
+		remove => $options{'remove'} // 0
 	);
 
 	wantarray ? @messages : join "\n", @messages;
@@ -327,7 +325,7 @@ sub output
 			$output = "$text\n";
 		}
 	} else {
-		$output = "\n$text\n\n";
+		$output = "\n$text\n";
 	}
 
 	$output;
@@ -398,7 +396,7 @@ sub _getMessages
 {
 	my $logObject = shift;
 
-	my $bf;
+	my $bf = '';
 
 	for($logObject->flush()) {
 		$bf .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
@@ -413,24 +411,16 @@ END
 
 	&$_ for @{$self->{'debugCallBacks'}};
 
-	if($exitCode && $exitCode ne 50) { # 50 is returned when ESC is pressed (dialog)
-		$self->{'target'}->store( message => "Exit code: $exitCode", tag => 'fatal' );
-	}
-
 	endDebug() for @{$self->{'targets'}};
 
-	my @logs = $self->{'screen'}->retrieve( tag => qr/^(?:warn|error|fatal)$/ );
-
-	if(@logs) {
+	my @output;
+	for my $logLevel('warn', 'error', 'fatal') {
 		my @messages;
-		for my $level('warn', 'error', 'fatal') {
-			my @wrkLogs = @logs;
-			my @items = grep { ($_->{'tag'} eq $level) ? $_ = $_->{'message'} : 0 } @wrkLogs;
-			push @messages, output(join("\n", @items), $level) if @items;
-		}
-
-		print STDERR "@messages";
+		push @messages, $_->{'message'} for $self->{'default'}->retrieve( tag => qr/^$logLevel/ );
+		push @output, output(join("\n", @messages), $logLevel) if @messages;
 	}
+
+	print STDERR "@output" if @output;
 
 	$? = $exitCode;
 }

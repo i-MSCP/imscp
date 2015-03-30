@@ -91,10 +91,10 @@ sub _restoreConfFile
 	if(-f "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system") {
 		my $file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system");
 
-		my $rs = $file->copyFile("$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}");
+		my $rs = $file->copyFile("/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}");
 		return $rs if $rs;
 
-		$file->{'filename'} = "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}";
+		$file->{'filename'} = "/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}";
 
 		$rs = $file->mode(0755);
 		return $rs if $rs;

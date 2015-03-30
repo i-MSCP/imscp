@@ -242,7 +242,7 @@ sub _restorePhpfpmConfig
 
 	if(-f "/etc/init/php5-fpm.override") {
 		my $rs = iMSCP::File->new('filename' => "/etc/init/php5-fpm.override")->delFile();
-		return$rs if $rs;
+		return $rs if $rs;
 	}
 
 	0;

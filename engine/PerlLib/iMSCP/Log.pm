@@ -111,8 +111,8 @@ Return true upon success and undef upon failure, as well as issue a warning as t
 
 sub store
 {
-    my $self = shift;
-    my %hash = ();
+	my $self = shift;
+	my %hash = ();
 
 	my $tmpl = {
 		'when' => {
@@ -198,7 +198,7 @@ sub retrieve
 		'chrono' => { 'default' => 1 }
 	};
 
-    # single arg means just the amount otherwise, they are named
+	# single arg means just the amount otherwise, they are named
 	if( @_ == 1 ) {
 		$hash{'amount'} = shift;
 	} else {
