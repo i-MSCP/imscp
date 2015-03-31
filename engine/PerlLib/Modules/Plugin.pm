@@ -427,7 +427,6 @@ sub _call
 
 		if($plugin->can($method)) {
 			$plugin = $plugin->getInstance(
-				'hooksManager' => $self->{'eventManager'}, # Only to ensure backward compatibility
 				'eventManager' => $self->{'eventManager'},
 				'action' => $self->{'action'},
 				'info' => $self->{'info'},
