@@ -13,6 +13,10 @@ Be aware that some plugins are not yet ready for use with this new version, such
 
 Plugin which are known to work with this new version clearly states that they are compatible with i-MSCP version >= \Zb1.2.3\ZB.
 
+\Zb\Z4## Event listeners\Zn\ZB
+
+Be aware that the transitional \ZbiMSCP::HooksManager\ZB package, which was an alias of the \ZbiMSCP::EventManager\ZB package since i-MSCP version \Zb1.1.14\ZB, has been removed. Thus, if you're using that package name in one of your listeners, you must change it to \ZbiMSCP::EventManager\ZB, which is the real package name.
+
 \Zb\Z4## PHP version in use\Zn\ZB
 
 If you're using, either \ZbDebian Wheezy\ZB or \ZbUbuntu Precise\ZB with a PHP version that is not provided by official repositories, you must be aware that the \Zbphp-apc\ZB package has been added in the list of package to install.
