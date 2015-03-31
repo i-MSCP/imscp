@@ -127,14 +127,13 @@ sub trigger
 
 		for my $listener(@{$events{$self}->{$event}}) {
 			if($rs = $listener->(@_)) {
-				my $caller = (caller(1))[3] || 'main';
 				require Data::Dumper;
 				Data::Dumper->import();
 				local $Data::Dumper::Terse = 1;
 				local $Data::Dumper::Deparse = 1;
 				error(sprintf(
 					"A listener registered on the %s event and triggered in %s has failed.\n\nListener code was: %s\n\n",
-					$event, $caller, Dumper($listener)
+					$event, (caller(1))[3] || 'main', Dumper($listener)
 				));
 				last;
 			}
