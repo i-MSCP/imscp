@@ -364,7 +364,7 @@ sub _buildFastCgiConfFiles
 	# Build, store and install new files
 
 	my $version = $self->{'config'}->{'HTTPD_VERSION'};
-	my $apache24 = (version->parse(version) >= version->parse('2.4.0'));
+	my $apache24 = (version->parse($version) >= version->parse('2.4.0'));
 
 	# Set needed data
 	$self->{'httpd'}->setData(
