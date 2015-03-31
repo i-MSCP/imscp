@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use Hash::Util::FieldHash 'fieldhash';
 use iMSCP::Debug;
-use parent 'Common::SingletonClass';
 
 fieldhash my %events;
 
@@ -41,6 +40,29 @@ fieldhash my %events;
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item getInstance()
+
+ Get instance
+
+ Return iMSCP::EventManager
+
+=cut
+
+sub getInstance
+{
+	my $self = $_[0];
+
+	no strict 'refs';
+	my $instance = \${"${self}::_instance"};
+
+	unless(defined $$instance) {
+		$$instance = bless (\ my $this, $self);
+		$$instance->_init();
+	}
+
+	$$instance;
+}
 
 =item register($event, $callback)
 
