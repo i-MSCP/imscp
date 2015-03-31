@@ -14,7 +14,6 @@ BACKEND
 
 CONFIGS
 	Added: imscp_daemon, imscp_network and imscp_panel upstart jobs
-	Added: php-apc package ( enabled for i-MSCP frontEnd only - Debian < Jessie / Ubuntu < Trusty Thar )
 	Fixed: Wrong TMPDIR path ( php5-fpm )
 	Removed: INIT_SCRIPTS_DIR, SERVICE_INSTALLER, SERVICE_MNGR, IMSCP_DAEMON_SNAME, IMSCP_NETWORK_SNAME and
 		IMSCP_PANEL_SNAME main configuration parameters
@@ -65,6 +64,10 @@ SERVICES
 	Added: Log summary message on TLS handshake completion ( Postfix )
 	Fixed: Apache access.log files are put in wrong directory ( vlogger )
 	Fixed: Disable warnings about missing SPF DNS record ( As per RFC 7208, SPF DNS record is deprecated - Bind9 )
+
+PACKAGES
+	Added: libbit-vector-perl package in list of pre-required packages ( Debian / Ubuntu )
+	Added: php-apc package ( Debian < Jessie / Ubuntu < Trusty Thar )
 
 YOUTRACK
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>

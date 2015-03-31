@@ -29,9 +29,10 @@ package iMSCP::Ext2Attributes;
 use strict;
 use warnings;
 
+use Bit::Vector;
+use File::Find 'finddepth';
 use iMSCP::Debug;
 use iMSCP::Execute;
-use File::Find qw( finddepth );
 no warnings 'File::Find';
 use Fcntl qw/O_RDONLY O_NONBLOCK O_LARGEFILE/;
 use parent qw( Exporter );
@@ -52,12 +53,12 @@ my $isSupported = undef;
 
 BEGIN
 {
-	chomp(my $bitness = `getconf LONG_BIT`);
+	my $bitness = Bit::Vector->Long_Bits();
 	my $module = "iMSCP::Ext2Attributes::Ext2Fs$bitness";
 
-	eval "require $module";
+	local $@;
 
-	unless($@) {
+	if(eval "require $module") {
 		$module->import();
 	} else {
 		$isSupported = 0;
@@ -66,16 +67,16 @@ BEGIN
 
 		my $dummy = sub { 'dummy' };
 
-		*{__PACKAGE__.'::EXT2_SECRM_FL'} = $dummy;
-		*{__PACKAGE__.'::EXT2_UNRM_FL'} = $dummy;
-		*{__PACKAGE__.'::EXT2_COMPR_FL'} = $dummy;
-		*{__PACKAGE__.'::EXT2_SYNC_FL'} = $dummy;
-		*{__PACKAGE__.'::EXT2_IMMUTABLE_FL'} = $dummy;
-		*{__PACKAGE__.'::EXT2_APPEND_FL'} = $dummy;
-		*{__PACKAGE__.'::EXT2_NODUMP_FL'} = $dummy;
-		*{__PACKAGE__.'::EXT2_NOATIME_FL'} = $dummy;
-		*{__PACKAGE__.'::EXT2_IOC_GETFLAGS'} = $dummy;
-		*{__PACKAGE__.'::EXT2_IOC_SETFLAGS'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_SECRM_FL'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_UNRM_FL'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_COMPR_FL'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_SYNC_FL'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_IMMUTABLE_FL'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_APPEND_FL'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_NODUMP_FL'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_NOATIME_FL'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_IOC_GETFLAGS'} = $dummy;
+		*{__PACKAGE__ . '::EXT2_IOC_SETFLAGS'} = $dummy;
 	}
 }
 

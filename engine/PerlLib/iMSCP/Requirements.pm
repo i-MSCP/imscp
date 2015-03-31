@@ -114,11 +114,24 @@ sub _init
 	my $self = $_[0];
 
 	# Required Perl modules
-	# TODO add required version
-	$self->{'perl_modules'} = [
-		'Crypt::Blowfish', 'Crypt::CBC', 'Crypt::PasswdMD5', 'DBI', 'DBD::mysql', 'DateTime', 'Data::Validate::Domain',
-		'Email::Valid', 'File::Basename', 'File::Path', 'MIME::Base64', 'MIME::Entity', 'Net::LibIDN', 'XML::Simple'
-	];
+	# TODO add required min versions
+	$self->{'perl_modules'} = {
+		'Bit::Vector' => undef,
+		'Crypt::Blowfish' => undef,
+		'Crypt::CBC' => undef,
+		'Crypt::PasswdMD5' => undef,
+		'DBI' => undef,
+		'DBD::mysql' => undef,
+		'DateTime' => undef,
+		'Data::Validate::Domain' => undef,
+		'Email::Valid' => undef,
+		'File::Basename' => undef,
+		'File::Path' => undef,
+		'MIME::Base64' => undef,
+		'MIME::Entity' => undef,
+		'Net::LibIDN' => undef,
+		'XML::Simple' => undef
+	};
 
 	# Required programs
 	$self->{'programs'} = {
@@ -173,8 +186,8 @@ sub _perlModules
 
 	my @moduleNames = ();
 
-	for my $moduleName (@{$self->{'perl_modules'}}) {
-		push(@moduleNames, $moduleName) unless check_install(module => $moduleName);
+	while ( my ($moduleName, $moduleVersion) = each %{$self->{'perl_modules'}}) {
+		push(@moduleNames, $moduleName) unless check_install(module => $moduleName, version => $moduleVersion);
 	}
 
 	if(@moduleNames) {

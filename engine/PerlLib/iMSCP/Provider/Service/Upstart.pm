@@ -400,7 +400,7 @@ sub _versionIsPost090
 
 =item _isEnabledPre067($jobFileContent)
 
- Does the given job is enabled for upstart versions pre 0.6.7?
+ Does the given job is enabled for upstart versions < 0.6.7?
 
  Param string $jobFileContent job file content
  Return bool TRUE if the given job is enabled, FALSE otherwise
@@ -417,7 +417,7 @@ sub _isEnabledPre067
 
 =item _isEnabledPre090($jobFileContent)
 
- Does the given job is enabled for upstart versions pre 0.9.0?
+ Does the given job is enabled for upstart versions < 0.9.0?
 
  Param string $jobFileContent job file content
  Return bool TRUE if the given job is enabled, FALSE otherwise
@@ -428,7 +428,7 @@ sub _isEnabledPre090
 {
 	my ($self, $jobFileContent) = @_;
 
-	# Upstart version < 0.9.0 means no override files. Thus, we check to see if an uncommented `start on` or `manual`
+	# Upstart versions < 0.9.0 means no override files. Thus, we check to see if an uncommented `start on` or `manual`
 	# stanza is the last one in the file. The last one in the file wins.
 	my $enabled = 0;
 
@@ -445,7 +445,7 @@ sub _isEnabledPre090
 
 =item _isEnabledPost090($jobFileContent, $jobOverrideFileContent)
 
- Does the given job is enabled for upstart versions post 0.9.0?
+ Does the given job is enabled for upstart versions >= 0.9.0?
 
  Param string $jobFileContent job file content
  Param string $jobOverrideFileContent job override file content
@@ -457,7 +457,7 @@ sub _isEnabledPost090
 {
 	my ($self, $jobFileContent, $jobOverrideFileContent) = @_;
 
-	# This version has manual stanzas and override files. Thus, we check to see if an uncommented `start on` or `manual`
+	# Upstart versions >= 0.9.0 has `manual` stanzas and override files. Thus, we check to see if an uncommented `start on` or `manual`
 	# stanza is the last one in the conf file and any override files. The last one in the file wins.
 	my $enabled = 0;
 
@@ -478,7 +478,7 @@ sub _isEnabledPost090
 
 =item _enablePre090($service, $jobFileContent)
 
- Enable the given service for upstart versions pre 0.9.0
+ Enable the given service for upstart versions < 0.9.0
 
  Param string $service Service name
  Param string $jobFileContent job file content
@@ -505,7 +505,7 @@ sub _enablePre090
 
 =item _enablePost090($service, $jobFileContent, $jobOverrideFileContent)
 
- Enable the given service for upstart versions post 0.9.0
+ Enable the given service for upstart versions >= 0.9.0
 
  Param string $service Service name
  Param string $jobFileContent job file content
@@ -535,7 +535,7 @@ sub _enablePost090
 
 =item _disablePre067($service, $jobFileContent)
 
- Disable the given service for upstart versions pre 0.6.7
+ Disable the given service for upstart versions < 0.6.7
 
  Param string $service Service name
  Param string $jobFileContent job file content
@@ -554,7 +554,7 @@ sub _disablePre067
 
 =item _disablePre090($service, $jobFileContent)
 
- Disable the given service for upstart versions pre 0.9.0
+ Disable the given service for upstart versions < 0.9.0
 
  Param string $service Service name
  Param string $jobFileContent job file content
@@ -571,7 +571,7 @@ sub _disablePre090
 
 =item _disablePost090($service, $jobOverrideFileContent)
 
- Disable the given service for upstart versions post 0.9.0
+ Disable the given service for upstart versions >= 0.9.0
 
  Param string $service Service name
  Param string $jobOverrideFileContent job $jobOverrideFileContent file content
