@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Upstart - Base service provider for `upstart` jobs.
+ iMSCP::Provider::Service::Upstart - Base service provider for `upstart` jobs
 
 =cut
 

@@ -41,7 +41,7 @@ my %commands = (
 # Compatibility mode
 my $compat = 0;
 
-# Paths cache to avoid too many IO operations
+# Paths cache
 my %pathsCache = ();
 
 =head1 DESCRIPTION

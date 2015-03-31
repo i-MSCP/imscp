@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Service - High-level interface for service providers.
+ iMSCP::Service - High-level interface for service providers
 
 =cut
 

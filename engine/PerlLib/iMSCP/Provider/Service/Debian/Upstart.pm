@@ -85,7 +85,7 @@ sub enable
 	if($self->_isSysvinit($service)) {
 		$self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service);
 	} else {
-		1
+		1;
 	}
 }
 
