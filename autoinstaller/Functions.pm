@@ -414,7 +414,7 @@ The installer detected that you're using the \\ZbGit\\ZB version of i-MSCP. Befo
 
     \\Zbhttps://github.com/i-MSCP/imscp/blob/1.2.x/docs/1.2.x_errata.md\\ZB
 
-Be aware that the Git version of i-MSCP can be unstable and that no support is provided for it.
+We would remind you that the Git version can be highly unstable and that we do not provide any support for it..
 EOF
 	}
 
