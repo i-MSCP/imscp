@@ -234,16 +234,20 @@ sub uninstallPackages
 		not $_ ~~ [ @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}} ]
 	} uniq(@{$self->{'packagesToUninstall'}});
 
-	# Do not try to remove packages which are no longer available on the system or not installed
+	# Do not try to remove packages which are no longer available
 	if(@{$self->{'packagesToUninstall'}}) {
 		my ($stdout, $stderr);
 		my $rs = execute(
-			"LANG=C dpkg-query -W -f='\${Package}/\${Status}\n' @{$self->{'packagesToUninstall'}}", \$stdout, \$stderr
+			#"LANG=C dpkg-query -W -f='\${Package}/\${Status}\n' @{$self->{'packagesToUninstall'}}",
+			"LANG=C dpkg-query -W -f='\${Package}\n' @{$self->{'packagesToUninstall'}} 2>/dev/null",
+			\$stdout,
+			\$stderr
 		);
 		error($stderr) if $stderr && $rs > 1;
 		return $rs if $rs > 1;
 
-		@{$self->{'packagesToUninstall'}} = grep { m%^(.*?)/install% && ($_ =  $1) } split /\n/, $stdout;
+		#@{$self->{'packagesToUninstall'}} = grep { m%^(.*?)/install% && ($_ =  $1) } split /\n/, $stdout;
+		@{$self->{'packagesToUninstall'}} = split /\n/, $stdout;
 	}
 
 	my $rs = $self->{'eventManager'}->trigger('beforeUninstallPackages', $self->{'packagesToUninstall'});
