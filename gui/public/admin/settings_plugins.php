@@ -438,7 +438,7 @@ function doAction($pluginManager, $pluginName, $action)
 				if($ret !== false) {
 					if($ret == PluginManager::ACTION_FAILURE || $ret == PluginManager::ACTION_STOPPED) {
 						$msg = ($ret == PluginManager::ACTION_FAILURE)
-							? tr('Action has failed.') : tr('Action has been stopped.');
+							? tr('Action has failed.', true) : tr('Action has been stopped.', true);
 
 						set_page_message(tr('Unable to %s the %s plugin: %s', $action, $pluginName, $msg), 'error');
 					} else {
