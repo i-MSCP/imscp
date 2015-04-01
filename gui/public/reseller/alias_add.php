@@ -440,7 +440,6 @@ if ($resellerProps['max_als_cnt'] != 0 && $resellerProps['current_als_cnt'] >= $
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Reseller / Domains / Add Domain Alias'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_CUSTOMER_ACCOUNT' => tr('Customer account'),
 			'TR_DOMAIN_ALIAS' => tr('Domain alias'),
 			'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),

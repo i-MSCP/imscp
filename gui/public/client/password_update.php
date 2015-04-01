@@ -101,7 +101,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Profile / Password'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_PASSWORD_DATA' => tr('Password data'),
 		'TR_CURRENT_PASSWORD' => tr('Current password'),
 		'TR_PASSWORD' => tr('Password'),

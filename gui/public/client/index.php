@@ -347,12 +347,7 @@ $tpl->define_dynamic(
 		 'traffic_warning' => 'page',
 		 'disk_warning' => 'page'));
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Client / General / Overview'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+$tpl->assign( 'TR_PAGE_TITLE', tr('Client / General / Overview'));
 
 generateNavigation($tpl);
 

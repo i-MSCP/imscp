@@ -142,7 +142,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Settings / Server Traffic'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
 		'TR_MAX_TRAFFIC' => tr('Max traffic'),
 		'TR_WARNING' => tr('Warning traffic'),

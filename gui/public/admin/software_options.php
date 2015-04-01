@@ -34,10 +34,7 @@ $tpl->define_dynamic(
 		'page' => 'admin/software_options.tpl',
 		'page_message' => 'layout'));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Software Options'),
-		'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE', tr('Admin / Settings / Software Options'));
 
 if(isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
     $error = "";

@@ -247,7 +247,6 @@ if (!(!empty($_POST) && reseller_sendCircular())) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Reseller / Customers / Circular'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_CIRCULAR' => tr('Circular'),
 			'TR_SEND_TO' => tr('Send to'),
 			'TR_SUBJECT' => tr('Subject'),

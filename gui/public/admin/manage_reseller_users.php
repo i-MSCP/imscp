@@ -485,7 +485,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Users / Customers Assignment'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'TR_USER_ASSIGNMENT' => tr('User assignment'),
 		'TR_RESELLER_USERS' => tr('Users'),

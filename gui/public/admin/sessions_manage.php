@@ -157,7 +157,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Users / Sessions'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_USERNAME' => tr('Username'),
 		'TR_USERTYPE' => tr('User type'),
 		'TR_LOGIN_ON' => tr('Last access'),

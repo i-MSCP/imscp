@@ -414,7 +414,7 @@ The installer detected that you're using the \\ZbGit\\ZB version of i-MSCP. Befo
 
     \\Zbhttps://github.com/i-MSCP/imscp/blob/1.2.x/docs/1.2.x_errata.md\\ZB
 
-We would remind you that the Git version can be highly unstable and that we do not provide any support for it.
+We would remind you that the Git version can be highly unstable and that the i-MSCP team do not provides any support for it.
 EOF
 	}
 
@@ -428,8 +428,6 @@ Please read carefully before continue.
 \\ZbNote:\\ZB Use the \\ZbPage Down\\ZB key from your keyboard to scroll down.
 $notices
 You can now either continue or abort if needed.
-
-\\Zbi-MSCP Team\\ZB
 EOF
 
 		$dialog->resetLabels();
@@ -558,7 +556,10 @@ EOF
 
 sub _processDistroPackages
 {
-	_getDistroAdapter()->installPackages() || _getDistroAdapter()->uninstallPackages();
+	my $rs = _getDistroAdapter()->installPackages();
+	$rs ||= _getDistroAdapter()->uninstallPackages();
+
+	$rs;
 }
 
 =item _testRequirements()

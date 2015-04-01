@@ -74,7 +74,6 @@ if (!empty($_POST)) {
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Admin / Profile / Language'),
-		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_LANGUAGE' => tr('Language'),
 		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
 		 'TR_UPDATE' => tr('Update')));

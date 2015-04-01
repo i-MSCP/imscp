@@ -262,10 +262,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 	$tpl->assign(array('VAL_WGET' => ''));
 }
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Software Management'),
-		'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE', tr('Admin / Settings / Software Management'));
 
 $sw_cnt = get_avail_software($tpl);
 $swdepot_cnt = get_avail_softwaredepot($tpl);

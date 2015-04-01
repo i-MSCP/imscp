@@ -661,7 +661,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Admin / Users / Add Reseller'),
-		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_ADD_RESELLER' => tr('Add reseller'),
 		 'TR_NOTICE' => tr('i-MSCP Notice'),
 		 'TR_EVENT_NOTICE' => tojs(tr('The `Enter` key is disabled for performance reasons.', true)),

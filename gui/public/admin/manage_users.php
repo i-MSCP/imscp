@@ -76,8 +76,9 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Users / Overview'),
 		'TR_NEXT' => tr('Next'),
-		'TR_PREVIOUS' => tr('Previous'),
-		'ISP_LOGO' => layout_getUserLogo()));
+		'TR_PREVIOUS' => tr('Previous')
+	)
+);
 
 if (isset($_POST['details']) && !empty($_POST['details'])) {
 	$_SESSION['details'] = $_POST['details'];

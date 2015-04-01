@@ -706,7 +706,6 @@ debugger_getPluginItemErrors($tpl);
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / System Tools / Debugger'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_USER_ERRORS' => tr('User errors'),
 		'TR_DMN_ERRORS' => tr('Domain errors'),
 		'TR_ALS_ERRORS' => tr('Domain alias errors'),

@@ -162,7 +162,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Statistics / Reseller Statistics / Customer Statistics'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
 		'TR_TRAFF' => tr('Traffic usage'),
 		'TR_DISK' => tr('Disk usage'),

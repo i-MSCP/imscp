@@ -351,7 +351,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Settings / {TR_DYNAMIC_TITLE}'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_CUSTOM_MENU_PROPERTIES' => tr('Custom menu properties'),
 		'TR_MENU_NAME' => tr('Name'),
 		'TR_MENU_LINK' => tr('Link'),

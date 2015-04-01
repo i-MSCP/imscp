@@ -85,7 +85,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr(' Client / Webtools / Custom Error Pages / Edit Custom Error Page'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ERROR_EDIT_PAGE' => tr('Edit error page'),
 		'TR_SAVE' => tr('Save'),
 		'TR_CANCEL' => tr('Cancel'),

@@ -311,7 +311,6 @@ if ($mainDmnProps['domain_alias_limit'] != 0 && $domainAliasesCount >= $mainDmnP
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Domains / Add Domain Alias'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_DOMAIN_ALIAS' => tr('Domain alias'),
 			'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
 			'TR_DOMAIN_ALIAS_NAME_TOOLTIP' => tr("You must omit 'www'. It will be added automatically."),

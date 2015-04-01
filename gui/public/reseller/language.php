@@ -83,10 +83,11 @@ gen_def_language($tpl, $resellerCurrentLanguage);
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Reseller / Profile / Language'),
-		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_LANGUAGE' => tr('Language'),
 		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
-		 'TR_UPDATE' => tr('Update')));
+		 'TR_UPDATE' => tr('Update')
+	)
+);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

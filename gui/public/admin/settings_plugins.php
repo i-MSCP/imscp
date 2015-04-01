@@ -660,7 +660,6 @@ EventManager::getInstance()->registerListener(Events::onGetJsTranslations, funct
 
 $tpl->assign(array(
 	'TR_PAGE_TITLE' => tr('Admin / Settings / Plugin Management'),
-	'ISP_LOGO' => layout_getUserLogo(),
 	'TR_BULK_ACTIONS' => tr('Bulk Actions'),
 	'TR_PLUGIN' => tr('Plugin'),
 	'TR_DESCRIPTION' => tr('Description'),

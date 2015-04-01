@@ -380,7 +380,6 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Webtools / Software / Software Installation'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'SOFTWARE_ID' => tohtml($softwareId),
 			'TR_NAME' => tr('Software'),
 			'TR_TYPE' => tr('Type'),

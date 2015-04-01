@@ -95,7 +95,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Client / Support / New Ticket'),
-		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_NEW_TICKET' => tr('New ticket'),
 		 'TR_LOW' => tr('Low'),
 		 'TR_MEDIUM' => tr('Medium'),

@@ -1168,7 +1168,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Edit Domain'),
-		 'ISP_LOGO' => layout_getUserLogo(),
 		 'EDIT_ID' => tohtml($domainId),
 		 'TR_DOMAIN_OVERVIEW' => tr('Domain overview'),
 		 'TR_DOMAIN_NAME' => tr('Domain name'),

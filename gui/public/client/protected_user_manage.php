@@ -190,7 +190,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / Manage Users and Groups'),
-		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_HTACCESS' => tr('Protected areas'),
 		 'TR_ACTIONS' => tr('Actions'),
 		 'TR_USERS_GROUPS_MANAGE' => tr('Manage users and groups'),

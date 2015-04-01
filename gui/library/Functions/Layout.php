@@ -332,6 +332,7 @@ function layout_init($event)
 			'THEME_ASSETS_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME . '/assets',
 			'THEME_ASSETS_VERSION' => $themesAssetsVersion,
 			'THEME_COLOR' => $color,
+			'ISP_LOGO' => (isset($_SESSION['user_id'])) ? layout_getUserLogo() : '',
 			'JS_TRANSLATIONS' => i18n_getJsTranslations()
 		)
 	);

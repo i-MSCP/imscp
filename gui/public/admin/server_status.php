@@ -53,7 +53,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / General / Services Status'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_SERVICE' => tr('Service Name'),
 		'TR_IP' => tr('IP Address'),
 		'TR_PORT' => tr('Port'),

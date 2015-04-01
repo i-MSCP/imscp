@@ -404,7 +404,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Email / Add Email Account'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MAIl_ACCOUNT_DATA' => tr('Email account data'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_DOMAIN_NAME' => tr('Domain name'),

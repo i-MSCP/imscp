@@ -69,7 +69,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Support / Closed Tickets'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_TICKET_STATUS' => tr('Status'),
 		'TR_TICKET_FROM' => tr('From'),
 		'TR_TICKET_SUBJECT' => tr('Subject'),

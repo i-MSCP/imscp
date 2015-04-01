@@ -368,7 +368,6 @@ if ($mainDmnProps['domain_subd_limit'] != 0 && $subdomainsCount >= $mainDmnProps
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Domains / Add Subdomain'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_SUBDOMAIN' => tr('Subdomain'),
 			'TR_SUBDOMAIN_NAME' => tr('Subdomain name'),
 			'TR_SHARED_MOUNT_POINT' => tr('Shared mount point'),

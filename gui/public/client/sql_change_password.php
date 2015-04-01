@@ -174,7 +174,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Update SQL User Password'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DB_USER' => tr('User'),
 		'TR_PASSWORD' => tr('Password'),
 		'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),

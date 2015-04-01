@@ -73,7 +73,6 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Delete Customer'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_ACCOUNT_SUMMARY' => tr('Customer account summary'),
 			'TR_EMAILS' => tr('Emails'),
 			'TR_FTP_ACCOUNTS' => tr('Ftp accounts'),

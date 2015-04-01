@@ -224,7 +224,6 @@ if(isset($_REQUEST['edit_id'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Edit Customer'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_CORE_DATA' => tr('Core data'),
 			'TR_USERNAME' => tr('Username'),
 			'TR_PASSWORD' => tr('Password'),

@@ -270,7 +270,6 @@ if (!empty($_POST) && client_editSubdomain()) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Domains / Edit Subdomain'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_SUBDOMAIN' => tr('Subdomain'),
 			'TR_SUBDOMAIN_NAME' => tr('Subdomain name'),
 			'TR_URL_FORWARDING' => tr('URL forwarding'),

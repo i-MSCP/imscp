@@ -342,7 +342,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer - Next Step'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADD_USER' => tr('Add user'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),

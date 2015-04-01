@@ -158,7 +158,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Overview'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MANAGE_SQL' => tr('Manage SQL'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_DATABASE' => tr('Database Name and Users'),

@@ -309,7 +309,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / General / Admin Log'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'TR_CLEAR_LOG' => tr('Clear log'),
 		'ROWS_PER_PAGE' => json_encode($cfg['DOMAIN_ROWS_PER_PAGE']),

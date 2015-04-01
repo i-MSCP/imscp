@@ -227,7 +227,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Add SQL Database'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DATABASE' => tr('Database'),
 		'TR_DB_NAME' => tr('Database name'),
 		'TR_USE_DMN_ID' => tr('Database prefix/suffix'),

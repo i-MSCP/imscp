@@ -104,12 +104,7 @@ $tpl->define_dynamic(
 	)
 );
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / System Tools / i-MSCP Updates'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+$tpl->assign('TR_PAGE_TITLE', tr('Admin / System Tools / i-MSCP Updates'));
 
 generateNavigation($tpl);
 admin_generatePage($tpl);

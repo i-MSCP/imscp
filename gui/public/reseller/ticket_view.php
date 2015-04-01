@@ -91,7 +91,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Support / View Ticket'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_OPEN_TICKETS' => tr('Open tickets'),
 		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
 		'TR_VIEW_SUPPORT_TICKET' => tr('View Support Ticket'),

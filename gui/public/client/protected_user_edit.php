@@ -185,7 +185,6 @@ if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / Manage Users and Groups / Edit User'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_HTACCESS_USER' => tr('Htaccess user'),
 		'TR_USERS' => tr('User'),
 		'TR_USERNAME' => tr('Username'),

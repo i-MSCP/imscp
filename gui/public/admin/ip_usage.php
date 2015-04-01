@@ -116,7 +116,6 @@ if (systemHasCustomers()) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Admin / Statistics / IP Usage'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_SERVER_STATISTICS' => tr('Server statistics'),
 			'TR_IP_ADMIN_USAGE_STATISTICS' => tr('Admin/IP usage statistics'),
 			'TR_DOMAIN_NAME' => tr('Domain Name'),

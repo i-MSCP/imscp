@@ -223,7 +223,6 @@ if (!empty($_POST) && client_editDomainAlias()) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Domains / Edit Domain Alias'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_DOMAIN_ALIAS' => tr('Domain alias'),
 			'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
 			'TR_URL_FORWARDING' => tr('URL forwarding'),

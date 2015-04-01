@@ -696,7 +696,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Domains'),
-		'ISP_LOGO' => layout_getUserLogo(),
 
 		'TR_DOMAINS' => tr('Domains'),
 		'TR_CREATE_DATE' => tr('Creation date'),

@@ -49,10 +49,7 @@ $tpl->define_dynamic(
 	)
 );
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas'),
-		'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE', tr('Client / Webtools / Protected Areas'));
 
 /**
  * @param iMSCP_pTemplate $tpl

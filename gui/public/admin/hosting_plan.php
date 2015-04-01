@@ -116,12 +116,7 @@ if ($cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		)
 	);
 
-	$tpl->assign(
-		array(
-			'TR_PAGE_TITLE' => tr('Admin / Hosting Plans / Overview'),
-			'ISP_LOGO' => layout_getUserLogo()
-		)
-	);
+	$tpl->assign('TR_PAGE_TITLE', tr('Admin / Hosting Plans / Overview'));
 
 	generateNavigation($tpl);
 	admin_generatePage($tpl);

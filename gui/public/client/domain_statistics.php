@@ -170,7 +170,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Statistics'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
 		'TR_MONTH' => tr('Month'),
 		'TR_YEAR' => tr('Year'),

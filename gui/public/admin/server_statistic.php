@@ -196,7 +196,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Statistics / Server Statistics'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MONTH' => tr('Month'),
 		'TR_YEAR' => tr('Year'),
 		'TR_SHOW' => tr('Show'),

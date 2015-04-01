@@ -328,7 +328,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_USER_STATUS' => tr('Status'),
 		'TR_DETAILS' => tr('Details'),
 		'TR_SEARCH' => tr('Search'),

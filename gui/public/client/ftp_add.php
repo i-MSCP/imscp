@@ -438,7 +438,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / FTP / Add FTP Account'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
 		'TR_CLOSE' => tojs(tr('Close')),
 		'TR_FTP_ACCOUNT_DATA' => tr('Ftp account data'),

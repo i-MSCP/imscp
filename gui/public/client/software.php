@@ -77,7 +77,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Client / Webtools / Software'),
-		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_SOFTWARE' => tr('Software'),
 		 'TR_VERSION' => tr('Version'),
 		 'TR_LANGUAGE' => tr('Language'),

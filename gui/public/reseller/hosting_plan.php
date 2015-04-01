@@ -134,12 +134,7 @@ $tpl->define_dynamic(
 	)
 );
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Hosting Plans / Overview'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+$tpl->assign('TR_PAGE_TITLE', tr('Reseller / Hosting Plans / Overview'));
 
 generateNavigation($tpl);
 client_generatePage($tpl);

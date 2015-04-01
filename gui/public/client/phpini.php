@@ -127,7 +127,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Client / Domains / PHP Settings'),
-		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_MENU_PHPINI' => tr('PHP Editor'),
 		 'TR_PAGE_TEXT' => tr("In this page, you can configure some of the aspects of PHP's behavior. You must note that for now, the directives defined here apply to your entire domain account (including subdomains and domain aliases). Of course some values can be modified through the PHP ini_set() function."),
 		 'TR_UPDATE_DATA' => tr('Update'),

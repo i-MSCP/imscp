@@ -69,7 +69,6 @@ if ($cfg->MAINTENANCEMODE) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / System Tools / Maintenance Settings'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 		'TR_MESSAGE' => tr('Message'),
 		'MESSAGE_VALUE' => (isset($cfg['MAINTENANCEMODE_MESSAGE']))

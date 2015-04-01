@@ -530,7 +530,6 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$tpl->assign(
 			array(
 				'TR_PAGE_TITLE' => tr('Admin / Hosting Plans / Overview / Edit Hosting Plan'),
-				'ISP_LOGO' => layout_getUserLogo(),
 
 				'TR_HOSTING_PLAN' => tr('Hosting plan'),
 				'TR_NAME' => tr('Name'),

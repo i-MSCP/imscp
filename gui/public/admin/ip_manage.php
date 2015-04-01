@@ -255,8 +255,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Settings / IP Addresses Management'),
-		'ISP_LOGO' => layout_getUserLogo(),
-		#'MANAGE_IPS' => tr('Manage IP Addresses'),
 		'TR_IP' => tr('IP Address'),
 		'TR_ACTION' => tr('Action'),
 		'TR_NETWORK_CARD' => tr('Network interface'),

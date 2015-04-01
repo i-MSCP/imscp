@@ -86,8 +86,9 @@ $domain = "http://www." . $domain;
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Webtools / Custom Error Pages'),
-		'ISP_LOGO' => layout_getUserLogo(),
-		'DOMAIN' => $domain));
+		'DOMAIN' => $domain
+	)
+);
 
 update_error_page($_SESSION['user_id']);
 generateNavigation($tpl);

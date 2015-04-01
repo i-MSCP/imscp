@@ -569,7 +569,6 @@ if(customerHasFeature('mail') && isset($_REQUEST['id'])) {
 	$tpl->assign(
 		array(
 			'TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE' => tr('i-MSCP - Client/Create CatchAll Mail Account'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_PAGE_TITLE' => tr('Client / Email / Catchall / Add Catchall'),
 			'TR_MAIL_LIST' => tr('Email account list'),
 			'TR_CATCHALL' => tr('Catchall'),

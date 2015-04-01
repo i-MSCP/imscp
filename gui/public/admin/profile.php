@@ -64,10 +64,7 @@ $tpl->define_dynamic(
 		'page' => 'admin/profile.tpl',
 		'page_message' => 'layout'));
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Admin / Profile / Account Summary'),
-		 'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE', tr('Admin / Profile / Account Summary'));
 
 generateNavigation($tpl);
 admin_generatePage($tpl);

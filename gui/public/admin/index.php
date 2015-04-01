@@ -224,7 +224,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / General / Overview'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_PROPERTIES' => tr('Properties'),
 		'TR_VALUES' => tr('Values'),
 		'TR_ACCOUNT_NAME' => tr('Account name'),

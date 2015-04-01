@@ -306,7 +306,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Email / Catchall'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_STATUS' => tr('Status'),
 		'TR_ACTION' => tr('Action'),
 		'TR_TITLE_CATCHALL_MAIL_USERS' => tr('Catch all'),

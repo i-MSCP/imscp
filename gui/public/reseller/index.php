@@ -270,7 +270,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Reseller / General / Overview'),
-		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_SAVE' => tr('Save'),
 		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
 		 'TR_DISK_USAGE' => tr('Disk usage')));

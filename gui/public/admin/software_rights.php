@@ -54,10 +54,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	redirectTo('software_manage.php');
 }
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Application Management (Permissions)'),
-		'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE', tr('i-MSCP - Application Management (Permissions)'));
 
 $res_cnt = get_reseller_rights($tpl, $software_id);
 get_reseller_list($tpl, $software_id);

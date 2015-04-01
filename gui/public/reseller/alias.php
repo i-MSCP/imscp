@@ -234,7 +234,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ALIAS_NAME' => tr('Domain alias name'),
 		'TR_MOUNT_POINT' => tr('Mount point'),
 		'TR_FORWARD_URL' => tr('Forward URL'),

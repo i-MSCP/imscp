@@ -522,7 +522,6 @@ if(
 
 	$tpl->assign(
 		array(
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_PAGE_TITLE' => tr('Client / Domains / SSL Certificate'),
 			'TR_CERTIFICATE_DATA' => tr('Certificate data'),
 			'TR_CERT_FOR' => tr('Common name'),

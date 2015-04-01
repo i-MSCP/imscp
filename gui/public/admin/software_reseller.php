@@ -55,10 +55,7 @@ if (isset($_GET['id'])){
 	redirectTo('software_manage.php');
 }
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Software Management / Reseller Software'),
-		'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE', tr('Admin / Software Management / Reseller Software'));
 
 $software_cnt = get_installed_res_software($tpl, $_GET['id']);
 $res_cnt = get_reseller_software($tpl, $_GET['id']);

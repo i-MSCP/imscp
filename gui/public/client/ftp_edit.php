@@ -173,7 +173,6 @@ if (isset($_GET['id'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / FTP / Overview / Edit FTP Account'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
 			'TR_CLOSE' => tojs(tr('Close')),
 			'TR_FTP_USER_DATA' => tr('Ftp account data'),

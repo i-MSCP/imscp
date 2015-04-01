@@ -44,12 +44,7 @@ $tpl->define_dynamic(
 	)
 );
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Users / Add Admin'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+$tpl->assign('TR_PAGE_TITLE', tr('Admin / Users / Add Admin'));
 
 /**
  * @param  $tpl iMSCP_pTemplate

@@ -145,13 +145,12 @@ if (layout_isUserLogo($ispLogo)) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Profile / Layout'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'OWN_LOGO' => $ispLogo,
 		'TR_LAYOUT_SETTINGS' => tr('Layout'),
 		'TR_UPLOAD_LOGO' => tr('Upload logo'),
 		'TR_LOGO_FILE' => tr('Logo file'),
-        'TR_ENABLED' => tr('Enabled'),
-        'TR_DISABLED' => tr('Disabled'),
+		'TR_ENABLED' => tr('Enabled'),
+		'TR_DISABLED' => tr('Disabled'),
 		'TR_UPLOAD' => tr('Upload'),
 		'TR_REMOVE' => tr('Remove'),
 		'TR_LAYOUT_COLOR' => tr('Layout color'),

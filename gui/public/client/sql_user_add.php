@@ -411,7 +411,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Add SQL User'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADD_SQL_USER' => tr('Add SQL user'),
 		'TR_USER_NAME' => tr('SQL user name'),
 		'TR_USER_HOST' => tr('SQL user host'),

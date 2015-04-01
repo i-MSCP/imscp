@@ -614,7 +614,6 @@ switch ($cfg['LOG_LEVEL']) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Settings'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_UPDATES' => tr('Updates'),
 		'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg['LOSTPASSWORD_TIMEOUT'],
 		'PASSWD_CHARS' => $cfg['PASSWD_CHARS'],

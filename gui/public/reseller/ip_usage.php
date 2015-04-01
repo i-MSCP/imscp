@@ -125,7 +125,6 @@ if (resellerHasCustomers()) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Reseller / Statistics / IP Usage'),
-			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
 			'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
 			'TR_DOMAIN_NAME' => tr('Domain Name'),

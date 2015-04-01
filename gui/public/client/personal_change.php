@@ -40,10 +40,7 @@ $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', 'client/personal_change.tpl');
 $tpl->define_dynamic('page_message', 'layout');
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Client / Profile / Personal Data'),
-		'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE', tr('Client / Profile / Personal Data'));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 	update_user_personal_data($_SESSION['user_id']);

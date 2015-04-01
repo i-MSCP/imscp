@@ -105,12 +105,7 @@ $tpl->define_dynamic(
 		'database_updates' => 'page',
 		'database_update' => 'database_updates'));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / System Tools / Database Update'),
-		'ISP_LOGO' => layout_getUserLogo(),
-	)
-);
+$tpl->assign('TR_PAGE_TITLE', tr('Admin / System Tools / Database Update'));
 
 generateNavigation($tpl);
 

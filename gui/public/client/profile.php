@@ -80,10 +80,7 @@ $tpl->define_dynamic(
 		'page' => 'client/profile.tpl',
 		'page_message' => 'layout'));
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Client / Profile / Account Summary'),
-		 'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE', tr('Client / Profile / Account Summary'));
 
 generateNavigation($tpl);
 client_generatePage($tpl);

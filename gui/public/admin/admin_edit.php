@@ -211,7 +211,6 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_PAGE_TITLE' => tr('Admin / Users / Overview / Edit Admin'),
 		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
 		'TR_PASSWORD_NOT_MATCH' => tr("Passwords do not match."),

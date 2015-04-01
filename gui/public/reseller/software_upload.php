@@ -266,12 +266,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 	$tpl->assign('VAL_WGET', '');
 }
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Reseller / General / Software Upload'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+$tpl->assign('TR_PAGE_TITLE', tr('Reseller / General / Software Upload'));
 
 $sw_cnt = get_avail_software_reseller($tpl, $_SESSION['user_id']);
 

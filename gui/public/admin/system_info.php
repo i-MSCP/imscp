@@ -88,7 +88,6 @@ foreach ($devices as $device) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / System Tools / System Information'),
-		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_SYSTEM_INFO' => tr('System data'),
 		'TR_KERNEL' => tr('Kernel Version'),
 		'TR_UPTIME' => tr('Uptime'),

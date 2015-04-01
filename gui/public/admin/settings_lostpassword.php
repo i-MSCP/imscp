@@ -74,10 +74,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	}
 }
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Lost Password Email'),
-		'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE', tr('Admin / Settings / Lost Password Email'));
 
 generateNavigation($tpl);
 generateLoggedFrom($tpl);

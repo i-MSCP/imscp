@@ -39,10 +39,7 @@ $tpl->define_dynamic(
 		'page' => 'reseller/personal_change.tpl',
 		'page_message' => 'layout'));
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Reseller / Profile / Personal Data'),
-		 'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign('TR_PAGE_TITLE',  tr('Reseller / Profile / Personal Data'));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 	update_reseller_personal_data($_SESSION['user_id']);
