@@ -543,7 +543,7 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/nginx.old.data";
 
 	if(-f $oldConf) {
-		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', fileName => $oldConf, 'noerrors' => 1;
 
 		for(keys %{$self->{'oldConfig'}}) {
 			if(exists $self->{'config'}->{$_}) {

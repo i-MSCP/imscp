@@ -793,7 +793,7 @@ sub processMigration
 	}
 
 	# Load ispCP configuration file
-	tie %main::ispcpConfig, 'iMSCP::Config', 'fileName' => "$configDir/ispcp/ispcp.conf";
+	tie %main::ispcpConfig, 'iMSCP::Config', fileName => "$configDir/ispcp/ispcp.conf";
 
 	my @steps = (
 		[\&welcomeMessage, 'Welcome message'],

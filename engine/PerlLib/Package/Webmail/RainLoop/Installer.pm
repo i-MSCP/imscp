@@ -371,7 +371,7 @@ sub _mergeConfig
 	if(%{$self->{'rainloop'}->{'config'}}) {
 		my %oldConfig = %{$self->{'rainloop'}->{'config'}};
 
-		tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
+		tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
 
 		for(keys %oldConfig) {
 			if(exists $self->{'rainloop'}->{'config'}->{$_}) {
@@ -379,7 +379,7 @@ sub _mergeConfig
 			}
 		}
 	} else {
-		tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
+		tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
 	}
 
 	0;

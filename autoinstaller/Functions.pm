@@ -81,7 +81,7 @@ sub loadConfig
 	my $defaultConffile = "$FindBin::Bin/configs/debian/imscp.conf";
 
 	# Load new imscp.conf conffile from i-MSCP upstream source
-	tie my %imscpNewConfig, 'iMSCP::Config', 'fileName' => (-f $distroConffile) ? $distroConffile : $defaultConffile;
+	tie my %imscpNewConfig, 'iMSCP::Config', fileName => (-f $distroConffile) ? $distroConffile : $defaultConffile;
 
 	%main::imscpConfig = %imscpNewConfig;
 
@@ -89,9 +89,9 @@ sub loadConfig
 	if (-f "$imscpNewConfig{'CONF_DIR'}/imscp.conf") {
 		tie %main::imscpOldConfig,
 			'iMSCP::Config',
-			'fileName' => "$imscpNewConfig{'CONF_DIR'}/imscp.conf",
-			'readonly' => 1,
-			'nowarn' => 1;
+			fileName => "$imscpNewConfig{'CONF_DIR'}/imscp.conf",
+			readonly => 1,
+			nowarn => 1;
 
 		# Merge old config with the new but do not write anything yet.
 		for(keys %main::imscpOldConfig) {
@@ -212,7 +212,7 @@ sub build
 
 	# Write new config file
 	my %imscpConf = %main::imscpConfig;
-	tie %main::imscpConfig, 'iMSCP::Config', 'fileName' => "$main::{'SYSTEM_CONF'}/imscp.conf";
+	tie %main::imscpConfig, 'iMSCP::Config', fileName => "$main::{'SYSTEM_CONF'}/imscp.conf";
 	$main::imscpConfig{$_} = $imscpConf{$_} for keys %imscpConf;
 
 	# Clean build directory (remove any .gitignore|empty-file)

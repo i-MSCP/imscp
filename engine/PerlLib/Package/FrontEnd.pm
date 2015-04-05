@@ -32,6 +32,7 @@ use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
 use File::Basename;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -449,7 +450,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/nginx.data";
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/nginx.data"; \%c; };
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 

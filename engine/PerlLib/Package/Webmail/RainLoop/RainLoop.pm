@@ -29,6 +29,7 @@ use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Database;
 use iMSCP::Dir;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 my $dbInitialized = undef;
@@ -230,7 +231,7 @@ sub _init
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/rainloop";
 
 	if(-f "$self->{'cfgDir'}/rainloop.data") {
-		tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/rainloop.data";
+		$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data"; \%c; };
 	} else {
 		$self->{'config'} = { };
 	}

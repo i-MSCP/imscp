@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -133,7 +134,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/phpmyadmin.data";
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data"; \%c; };
 
 	iMSCP::EventManager->getInstance()->register(
 		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(); }

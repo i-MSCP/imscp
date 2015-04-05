@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Database;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -187,7 +188,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
 	if(-f "$self->{'cfgDir'}/roundcube.data") {
-		tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
+		$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data"; \%c; };
 	} else {
 		$self->{'config'} = { };
 	}

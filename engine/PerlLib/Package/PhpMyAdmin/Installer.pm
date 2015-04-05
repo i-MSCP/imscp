@@ -330,7 +330,7 @@ sub _init
 
 	my $oldConf = "$self->{'cfgDir'}/phpmyadmin.old.data";
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
+		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
 
 		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {

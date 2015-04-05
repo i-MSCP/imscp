@@ -378,7 +378,7 @@ sub _mergeConfig
 	if(%{$self->{'config'}}) {
 		my %oldConfig = %{$self->{'config'}};
 
-		tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
+		tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data";
 
 		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
@@ -386,7 +386,7 @@ sub _mergeConfig
 			}
 		}
 	} else {
-		tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
+		tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data";
 	}
 
 	0;

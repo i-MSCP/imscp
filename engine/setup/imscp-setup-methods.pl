@@ -62,7 +62,7 @@ sub setupBoot
 		%main::imscpOldConfig = ();
 
 		my $oldConfig = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
-		tie %main::imscpOldConfig, 'iMSCP::Config', 'fileName' => $oldConfig, 'readonly' => 1 if -f $oldConfig;
+		tie %main::imscpOldConfig, 'iMSCP::Config', fileName => $oldConfig, readonly => 1 if -f $oldConfig;
 	}
 
 	0;

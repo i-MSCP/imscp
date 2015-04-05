@@ -239,7 +239,7 @@ sub getTraffic
 	my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
 
 	# Load traffic database
-	tie my %trafficDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/po_traffic.db", 'nowarn' => 1;
+	tie my %trafficDb, 'iMSCP::Config', fileName => "$variableDataDir/po_traffic.db", nowarn => 1;
 
 	# Data source file
 	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
@@ -248,7 +248,7 @@ sub getTraffic
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 
 		# We are using a small file to memorize the number of the last line that has been read and his content
-		tie my %indexDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/traffic_index.db", 'nowarn' => 1;
+		tie my %indexDb, 'iMSCP::Config', fileName => "$variableDataDir/traffic_index.db", nowarn => 1;
 
 		$indexDb{'po_lineNo'} = 0 unless $indexDb{'po_lineNo'};
 		$indexDb{'po_lineContent'} = '' unless $indexDb{'po_lineContent'};

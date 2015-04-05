@@ -264,7 +264,7 @@ sub getTraffic
 	my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/ftp_traffic.db";
 
 	# Load traffic database
-	tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'nowarn' => 1;
+	tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nowarn => 1;
 
 	# Data source file
 	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}";

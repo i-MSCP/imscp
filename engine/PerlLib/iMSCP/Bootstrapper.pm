@@ -60,10 +60,10 @@ sub boot
 	tie
 		%main::imscpConfig,
 		'iMSCP::Config',
-		'fileName' => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'imscp/imscp.conf',
-		'nocreate' => 1, # Do not create file if it doesn't exist (raise error instead)
-		'nofail' => $options->{'nofail'} && $options->{'nofail'} eq 'yes' ? 1 : 0,
-		'readonly' => $options->{'config_readonly'} && $options->{'config_readonly'} eq 'yes' ? 1 : 0;
+		fileName => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'imscp/imscp.conf',
+		nocreate => 1, # Do not create file if it doesn't exist (raise error instead)
+		nofail => $options->{'nofail'} && $options->{'nofail'} eq 'yes' ? 1 : 0,
+		readonly => $options->{'config_readonly'} && $options->{'config_readonly'} eq 'yes' ? 1 : 0;
 
 	# Set debug mode
 	setDebug(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);

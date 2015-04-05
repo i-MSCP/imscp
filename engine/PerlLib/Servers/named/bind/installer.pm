@@ -332,7 +332,7 @@ sub _init
 	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/bind.old.data";
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf;
+		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
 
 		for(keys %oldConfig) {
 			if(exists $self->{'config'}->{$_}) {
