@@ -68,9 +68,9 @@ iMSCP::Getopt->parse(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
  'skip-distro-packages|s' => \$main::skippackages
 );
 
-# Set debug mode
-setDebug(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
-setVerbose(iMSCP::Getopt->noprompt && (iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0));
+# Set debug and verbose mode
+setDebug(iMSCP::Getopt->debug);
+setVerbose(iMSCP::Getopt->noprompt && iMSCP::Getopt->debug);
 
 # Getting reconfigure option value
 $main::reconfigure = iMSCP::Getopt->reconfigure;
