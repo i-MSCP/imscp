@@ -28,7 +28,6 @@ package iMSCP::Ext2Attributes;
 
 use strict;
 use warnings;
-
 use Bit::Vector;
 use File::Find 'finddepth';
 use iMSCP::Debug;

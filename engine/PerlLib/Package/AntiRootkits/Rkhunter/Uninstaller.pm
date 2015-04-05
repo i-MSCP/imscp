@@ -25,7 +25,6 @@ package Package::AntiRootkits::Rkhunter::Uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::File;
 use parent 'Common::SingletonClass';
 

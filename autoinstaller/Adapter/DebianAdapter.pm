@@ -31,9 +31,7 @@ package autoinstaller::Adapter::DebianAdapter;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -345,8 +343,8 @@ sub _init
 
 	$self->{'repositorySections'} = ['main', 'non-free'];
 	$self->{'preRequiredPackages'} = [
-		'aptitude', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'liblist-moreutils-perl', 'libxml-simple-perl',
-		'wget', 'rsync'
+		'aptitude', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'liblist-moreutils-perl',
+		 'libscalar-defer-perl', 'libxml-simple-perl', 'wget', 'rsync'
 	];
 	$self->{'aptRepositoriesToRemove'} = { };
 	$self->{'aptRepositoriesToAdd'} = { };

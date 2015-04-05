@@ -25,17 +25,16 @@ package Package::FileManager;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP FileManager package. This is a wrapper that handle all available FileManager packages found in the FileManager
-directory.
+ i-MSCP FileManager package.
+
+ Wrapper that handles all available FileManager packages found in the FileManager directory.
 
 =head1 PUBLIC METHODS
 

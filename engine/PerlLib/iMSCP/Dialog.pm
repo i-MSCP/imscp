@@ -25,7 +25,6 @@ package iMSCP::Dialog;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::ProgramFinder;

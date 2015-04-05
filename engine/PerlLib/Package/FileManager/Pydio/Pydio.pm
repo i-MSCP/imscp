@@ -25,7 +25,6 @@ package Package::FileManager::Pydio::Pydio;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 

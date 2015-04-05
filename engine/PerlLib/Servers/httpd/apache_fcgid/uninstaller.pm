@@ -19,7 +19,6 @@ package Servers::httpd::apache_fcgid::uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Dir;

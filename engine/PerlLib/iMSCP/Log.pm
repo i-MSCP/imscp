@@ -25,7 +25,6 @@ package iMSCP::Log;
 
 use strict;
 use warnings;
-
 use Params::Check qw[check];
 
 local $Params::Check::VERBOSE = 1;

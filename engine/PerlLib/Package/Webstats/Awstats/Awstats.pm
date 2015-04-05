@@ -25,7 +25,6 @@ package Package::Webstats::Awstats::Awstats;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;

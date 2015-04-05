@@ -25,9 +25,7 @@ package Servers::httpd::apache_itk;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Config;
@@ -41,6 +39,7 @@ use iMSCP::Net;
 use iMSCP::Service;
 use File::Temp;
 use File::Basename;
+use Scalar::Defer;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -1480,7 +1479,7 @@ sub _init
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'apacheCfgDir'}/parts";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'apacheCfgDir'}/apache.data";
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data"; \%c; };
 
 	$self->{'eventManager'}->trigger(
 		'afterHttpdInit', $self, 'apache_itk'

@@ -25,7 +25,6 @@ package iMSCP::ProgramFinder;
 
 use strict;
 use warnings;
-
 use File::Spec;
 
 =head1 DESCRIPTION

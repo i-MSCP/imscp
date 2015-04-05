@@ -25,7 +25,6 @@ package Package::Webmail::Roundcube::Uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;

@@ -25,7 +25,6 @@ package iMSCP::Servers;
 
 use strict;
 use warnings;
-
 use iMSCP::Dir;
 use parent 'Common::SingletonClass';
 

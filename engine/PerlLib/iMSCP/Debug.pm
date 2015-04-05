@@ -313,19 +313,23 @@ sub output
 	my $output = '';
 
 	if($level) {
-		if ($level eq 'fatal') {
-			$output = "\n[\033[0;31mFATAL\033[0m]\n\n$text\n";
-		} elsif ($level eq 'error') {
-			$output = "\n[\033[0;31mERROR\033[0m]\n\n$text\n";
-		} elsif ($level eq 'warn'){
-			$output = "\n[\033[0;33mWARN\033[0m]\n\n$text\n";
+		if($level eq 'debug') {
+			$output = "[\033[0;34mDEBUG\033[0m] $text\n";
+		} elsif ($level eq 'info'){
+			$output = "[\033[0;34mINFO\033[0m]  $text\n";
+		} elsif($level eq 'warn'){
+			$output = "[\033[0;33mWARN\033[0m]  $text\n";
+		} elsif($level eq 'error') {
+			$output = "[\033[0;31mERROR\033[0m] $text\n";
+		} elsif ($level eq 'fatal') {
+			$output = "[\033[0;31mFATAL\033[0m] $text\n";
 		} elsif ($level eq 'ok'){
-			$output = "\n[\033[0;32mOK\033[0m] $text\n";
+			$output = "[\033[0;32mDONE\033[0m]  $text\n";
 		} else {
 			$output = "$text\n";
 		}
 	} else {
-		$output = "\n$text\n";
+		$output = "$text\n";
 	}
 
 	$output;

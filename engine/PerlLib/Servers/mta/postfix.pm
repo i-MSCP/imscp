@@ -25,7 +25,6 @@ package Servers::mta::postfix;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Config;
@@ -34,6 +33,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Service;
 use File::Basename;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -695,7 +695,7 @@ sub _init
 
 	$self->{'commentChar'} = '#';
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/postfix.data";
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data"; \%c; };
 
 	$self->{'eventManager'}->trigger(
 		'afterMtaInit', $self, 'postfix'

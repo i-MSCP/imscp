@@ -25,7 +25,6 @@ package iMSCP::File;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use FileHandle;
 use File::Copy;

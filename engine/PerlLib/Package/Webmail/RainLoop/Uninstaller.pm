@@ -25,7 +25,6 @@ package Package::Webmail::RainLoop::Uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -37,7 +36,7 @@ use parent 'Common::SingletonClass';
 =head1 DESCRIPTION
 
  i-MSCP RainLoop package uninstaller.
-
+.
 =head1 PUBLIC METHODS
 
 =over 4

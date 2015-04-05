@@ -25,7 +25,6 @@ package iMSCP::TemplateParser;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use parent 'Common::SingletonClass', 'Exporter';
 

@@ -21,11 +21,10 @@ Package::AntiRootkits::Chkrootkit::Chkrootkit - i-MSCP Chkrootkit package
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-use strict;
-use warnings;
-
 package Package::AntiRootkits::Chkrootkit::Chkrootkit;
 
+use strict;
+use warnings;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

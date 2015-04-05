@@ -83,7 +83,7 @@ if($main::noprompt) {
 		}
 	);
 
-	print STDOUT output("Installation in progress... Please wait.");
+	print STDOUT output("Installation in progress... Please wait.", 'info');
 }
 
 # Run setup

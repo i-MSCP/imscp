@@ -31,11 +31,12 @@ use iMSCP::Execute;
 use iMSCP::LsbRelease;
 use iMSCP::ProgramFinder;
 use Module::Load::Conditional qw/check_install can_load/;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 $Module::Load::Conditional::FIND_VERSION = 0;
 
-my $initSystem = _detectInitSystem();
+my $initSystem = lazy { _detectInitSystem() };
 
 =head1 DESCRIPTION
 

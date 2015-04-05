@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Bootstrapper - Boot i-MSCP
+ iMSCP::Bootstrapper - i-MSCP Bootstrapper
 
 =cut
 
@@ -25,7 +25,6 @@ package iMSCP::Bootstrapper;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Requirements;
@@ -37,7 +36,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Bootstrap class for i-MSCP.
+ Bootstrap class for i-MSCP
 
 =head1 PUBLIC METHODS
 
@@ -45,7 +44,7 @@ use parent 'Common::SingletonClass';
 
 =item boot()
 
- Boot i-MSCP
+ i-MSCP Bootstrapper
 
  Return iMSCP::Bootstrapper
 

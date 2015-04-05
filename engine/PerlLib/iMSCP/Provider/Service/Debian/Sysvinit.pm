@@ -143,7 +143,7 @@ sub remove
 		(
 			$self->stop($service) &&
 			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
-			iMSCP::File->new( filename => $self->getInitscriptPath($service, 'nocache') )->delFile() == 0
+			iMSCP::File->new( filename => $self->getInitscriptPath($service) )->delFile() == 0
 		);
 	} else {
 		1;

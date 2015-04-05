@@ -25,7 +25,6 @@ package iMSCP::Config;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use Fcntl 'O_RDWR', 'O_CREAT', 'O_RDONLY';
 use Tie::File;

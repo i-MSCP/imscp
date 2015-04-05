@@ -19,7 +19,6 @@ package iMSCP::Mail;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use POSIX;
 use Net::LibIDN qw/idn_to_ascii/;

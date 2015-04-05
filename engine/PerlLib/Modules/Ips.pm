@@ -25,7 +25,6 @@ package Modules::Ips;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Database;
 use parent 'Modules::Abstract';

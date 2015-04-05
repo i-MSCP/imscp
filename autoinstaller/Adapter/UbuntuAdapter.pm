@@ -31,7 +31,6 @@ package autoinstaller::Adapter::UbuntuAdapter;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::LsbRelease;
@@ -67,8 +66,8 @@ sub _init
 
 	$self->{'repositorySections'} = ['main', 'universe', 'multiverse'];
 	$self->{'preRequiredPackages'} = [
-		'aptitude', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'liblist-moreutils-perl', 'libxml-simple-perl',
-		'wget', 'rsync'
+		'aptitude', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'liblist-moreutils-perl',
+		'libscalar-defer-perl', 'libxml-simple-perl', 'wget', 'rsync'
 	];
 
 	if(iMSCP::LsbRelease->getInstance()->getRelease(1) < 12.10) {

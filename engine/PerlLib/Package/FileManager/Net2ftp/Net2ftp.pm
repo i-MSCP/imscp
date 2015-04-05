@@ -25,7 +25,6 @@ package Package::FileManager::Net2ftp::Net2ftp;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 

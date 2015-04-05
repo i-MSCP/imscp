@@ -25,9 +25,7 @@ package Package::AntiRootkits;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Dir;
@@ -40,7 +38,7 @@ use parent 'Common::SingletonClass';
 
  i-MSCP Anti-Rootkits package.
 
- This is a wrapper that handle all available Anti-Rootkits packages found in the AntiRootkits directory.
+ Wrapper that handles all available Anti-Rootkits packages found in the AntiRootkits directory.
 
 =head1 PUBLIC METHODS
 

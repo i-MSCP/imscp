@@ -19,12 +19,9 @@
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
-
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;

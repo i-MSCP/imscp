@@ -25,7 +25,6 @@ package iMSCP::Database;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 
 my %adapterInstances;

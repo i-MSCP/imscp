@@ -19,7 +19,6 @@ package iMSCP::Stepper;
 
 use strict;
 use warnings;
-
 use iMSCP::Dialog;
 use iMSCP::Debug;
 use parent 'Common::SingletonClass', 'Exporter';

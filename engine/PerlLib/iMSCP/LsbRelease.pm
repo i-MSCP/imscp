@@ -25,7 +25,6 @@ package iMSCP::LsbRelease;
 
 use strict;
 use warnings;
-
 use IPC::Open3;
 use POSIX;
 use Symbol;
@@ -84,7 +83,6 @@ sub getInstance
 
 	unless(defined $$instance) {
 		$$instance = bless { }, $self;
-
 		%{$$instance->{'lsbInfo'}} = $$instance->getDistroInformation();
 	}
 
@@ -214,20 +212,18 @@ sub getDistroInformation
 {
 	my $self = $_[0];
 
-	unless($self->{'lsbInfo'}) {
-		# Try to retrieve information from /etc/lsb-release first
-		%{$self->{'lsbInfo'}} = $self->_getLsbInformation();
+	# Try to retrieve information from /etc/lsb-release first
+	my %lsbInfo = $self->_getLsbInformation();
 
-		for ('ID', 'RELEASE', 'CODENAME', 'DESCRIPTION') {
-			unless(exists $self->{'lsbInfo'}->{$_}) {
-				my %distInfo = $self->_guessDebianRelease();
-				%{$self->{'lsbInfo'}} = (%distInfo, %{$self->{'lsbInfo'}});
-				last;
-			}
+	for ('ID', 'RELEASE', 'CODENAME', 'DESCRIPTION') {
+		unless(exists $lsbInfo{$_}) {
+			my %distInfo = $self->_guessDebianRelease();
+			%lsbInfo = (%distInfo, %lsbInfo);
+			last;
 		}
 	}
 
-	%{$self->{'lsbInfo'}};
+	%lsbInfo;
 }
 
 =back

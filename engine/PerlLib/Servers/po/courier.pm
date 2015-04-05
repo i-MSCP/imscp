@@ -25,9 +25,7 @@ package Servers::po::courier;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Config;
@@ -35,6 +33,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::Service;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -466,7 +465,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/courier.data";
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data"; \%c; };
 
 	$self->{'eventManager'}->trigger(
 		'afterPoInit', $self, 'courier'

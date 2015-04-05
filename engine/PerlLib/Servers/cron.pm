@@ -25,7 +25,6 @@ package Servers::cron;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 
 our $instance;

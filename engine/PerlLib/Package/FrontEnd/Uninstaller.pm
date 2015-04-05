@@ -25,7 +25,6 @@ package Package::FrontEnd::Uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;

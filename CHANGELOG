@@ -8,6 +8,7 @@ BACKEND
 	Added: Custom DNS module ( Modules::CustomDNS )
 	Added: Service providers ( Sysvinit, Upstart and Systemd )
 	Changed: Perl version >= 5.14.2 is now required
+	Changed: Service configuration files are now lazy-loaded
 	Fixed: Any task which belongs to the custom DNS records layer must not involve HTTPD configuration change
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload is sufficient
 	Fixed: Some errors are not trapped
@@ -67,6 +68,7 @@ SERVICES
 
 PACKAGES
 	Added: libbit-vector-perl package in list of pre-required packages ( Debian / Ubuntu )
+	Added: libclass-insideout-perl and libscalar-defer-perl in list of pre-required packages ( Debian / Ubuntu )
 	Added: php-apc package ( Debian < Jessie / Ubuntu < Trusty Thar )
 
 YOUTRACK

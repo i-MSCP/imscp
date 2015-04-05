@@ -25,7 +25,6 @@ package Package::Webstats::Awstats::Uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Dir;

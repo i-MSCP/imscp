@@ -32,9 +32,7 @@ package autoinstaller::Functions;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Bootstrapper;
@@ -49,10 +47,9 @@ use iMSCP::Stepper;
 use File::Find;
 use Cwd;
 use version;
-
 use iMSCP::Getopt;
-
 use parent 'Exporter';
+
 our @EXPORT_OK = qw/loadConfig build install/;
 
 my $autoinstallerAdapterInstance;

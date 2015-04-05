@@ -25,19 +25,17 @@ package iMSCP::Getopt;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug qw/ debugRegisterCallBack /;
-
 use Text::Wrap;
+use fields qw / reconfigure noprompt preseed listener cleanPackagesCache skipPackagesUpdate debug /;
+
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
 
-use fields qw / reconfigure noprompt preseed listener cleanPackagesCache skipPackagesUpdate debug /;
 our $options = fields::new('iMSCP::Getopt');
-
 our $optionHelp = '';
+
 my $showUsage;
 
 =head1 DESCRIPTION

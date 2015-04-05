@@ -25,7 +25,6 @@ package Package::AntiRootkits::Chkrootkit::Installer;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;

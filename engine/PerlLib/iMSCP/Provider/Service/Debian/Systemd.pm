@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Execute;
 use iMSCP::File;
+use Scalar::Defer;
 use parent qw(
 	iMSCP::Provider::Service::Systemd
 	iMSCP::Provider::Service::Debian::Sysvinit
@@ -207,9 +208,11 @@ sub _init
 	my $self = $_[0];
 
 	# Sets compatibility mode according systemd version in use
-	$compat = $self->_exec(
-		$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' systemd)', 'ge', '204-3'
-	);
+	$compat = lazy {
+		$self->_exec(
+			$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' systemd)', 'ge', '204-3'
+		);
+	};
 
 	$self->SUPER::_init();
 }

@@ -25,9 +25,7 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
-
 use File::Basename ();
 use Cwd ();
 
@@ -36,9 +34,7 @@ my $vendorLibDir;
 BEGIN { $vendorLibDir = Cwd::realpath(File::Basename::dirname(__FILE__) . '/../../PerlVendor'); }
 
 use lib $vendorLibDir;
-
 use Capture::Tiny ':all';
-
 use parent 'Exporter';
 
 our @EXPORT = qw/execute escapeShell getExitCode/;

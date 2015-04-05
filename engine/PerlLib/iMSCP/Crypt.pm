@@ -19,7 +19,6 @@ package iMSCP::Crypt;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use Crypt::CBC;
 use MIME::Base64;

@@ -31,7 +31,6 @@ package autoinstaller::Adapter::AbstractAdapter;
 
 use strict;
 use warnings;
-
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

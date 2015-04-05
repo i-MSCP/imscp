@@ -25,7 +25,6 @@ package Servers::po::dovecot;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Config;
@@ -34,6 +33,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Service;
 use Tie::File;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -260,7 +260,6 @@ sub getTraffic
 		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $wrkLogFile, { 'preserve' => 'no' } );
 		die(iMSCP::Debug::getLastError()) if $rs;
 
-		require Tie::File;
 		tie my @content, 'Tie::File', $wrkLogFile or die("Unable to tie file $wrkLogFile: $!");
 
 		# Saving last line number and line date content from the current working file
@@ -354,7 +353,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/dovecot.data";
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config',fileName => "$self->{'cfgDir'}/dovecot.data"; \%c; };
 
 	$self->{'eventManager'}->trigger(
 		'afterPoInit', $self, 'dovecot'

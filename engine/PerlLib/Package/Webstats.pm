@@ -25,9 +25,7 @@ package Package::Webstats;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Dir;
@@ -38,9 +36,11 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Webstats package for i-MSCP.
+ Webstats package for i-MSCP
 
- i-MSCP Webstats package. This is a wrapper that handle all available Webstats packages found in the Webstats directory.
+ i-MSCP Webstats package.
+
+ Wrapper that handles all available Webstats packages found in the Webstats directory.
 
 =head1 PUBLIC METHODS
 

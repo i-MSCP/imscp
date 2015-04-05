@@ -19,7 +19,6 @@ package iMSCP::Rights;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Execute;
 use parent 'Common::SingletonClass', 'Exporter';

@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Database::mysql iMSCP MySQL database adapter
+ iMSCP::Database::mysql - iMSCP MySQL database adapter
 
 =cut
 
@@ -35,7 +35,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- iMSCP database adapter factory.
+ iMSCP MySQL database adapter
 
 =cut
 
@@ -43,12 +43,6 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item factory($adapterName)
-
- Param string $adapterName Adapter name
- Return an instance of the specified database adapter
-
-=cut
 
 =item($prop, $value)
 

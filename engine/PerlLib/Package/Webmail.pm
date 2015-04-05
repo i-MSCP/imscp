@@ -25,16 +25,16 @@ package Package::Webmail;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Webmail package. This is a wrapper that handle all available Webmail packages found in the Webmail directory.
+ i-MSCP Webmail package.
+
+ Wrapper that handles all available Webmail packages found in the Webmail directory.
 
 =head1 PUBLIC METHODS
 

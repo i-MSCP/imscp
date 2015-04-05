@@ -25,7 +25,6 @@ package Servers::sqld::mysql::installer;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::File;

@@ -25,7 +25,6 @@ package Package::FileManager::Net2ftp::Uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;

@@ -25,15 +25,14 @@ package Servers::ftpd::proftpd;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Service;
 use File::Basename;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
-
 
 =head1 DESCRIPTION
 
@@ -328,7 +327,7 @@ sub _init
 
 	$self->{'commentChar'} = '#';
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/proftpd.data";
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data"; \%c; };
 
 	$self->{'eventManager'}->trigger(
 		'afterFtpdInit', $self, 'proftpd'

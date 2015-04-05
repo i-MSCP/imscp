@@ -27,7 +27,6 @@ package iMSCP::Net;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Execute;
 use Net::IP qw(:PROC);

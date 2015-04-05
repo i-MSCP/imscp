@@ -19,7 +19,6 @@ package iMSCP::Dir;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::File;
 use File::Path qw/mkpath remove_tree/;

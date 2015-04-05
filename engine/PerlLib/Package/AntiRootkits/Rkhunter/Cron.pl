@@ -19,16 +19,14 @@
 
 use strict;
 use warnings;
-
 use lib '{IMSCP_PERLLIB_PATH}';
-
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::File;
 
-$ENV{'LC_MESSAGES'} = 'C';
-use open ':locale';
+$ENV{'LANG'} = 'C.UTF-8';
+#use open ':locale';
 
 newDebug('imscp-rkhunter-package.log');
 

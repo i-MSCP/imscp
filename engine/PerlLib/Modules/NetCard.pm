@@ -25,7 +25,6 @@ package Modules::NetCard;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::Execute;

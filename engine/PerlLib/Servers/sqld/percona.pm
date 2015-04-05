@@ -23,6 +23,8 @@
 
 package Servers::sqld::percona;
 
+use strict;
+use warnings;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION

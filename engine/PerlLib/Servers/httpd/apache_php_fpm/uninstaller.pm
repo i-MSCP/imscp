@@ -25,14 +25,12 @@ package Servers::httpd::apache_php_fpm::uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Database;
 use File::Basename;
 use Servers::httpd::apache_php_fpm;
-
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

@@ -25,7 +25,6 @@ package Package::AntiRootkits::Rkhunter::Installer;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::TemplateParser;

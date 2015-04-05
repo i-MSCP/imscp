@@ -25,7 +25,6 @@ package Servers::named::bind;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::EventManager;
@@ -35,7 +34,7 @@ use iMSCP::TemplateParser;
 use iMSCP::Net;
 use iMSCP::Service;
 use File::Basename;
-
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -876,7 +875,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data";
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data"; \%c; };
 
 	$self->{'eventManager'}->trigger(
 		'afterNamedInit', $self, 'bind'

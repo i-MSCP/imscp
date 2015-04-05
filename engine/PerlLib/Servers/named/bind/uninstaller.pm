@@ -25,7 +25,6 @@ package Servers::named::bind::uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use File::Basename;
 use iMSCP::File;
