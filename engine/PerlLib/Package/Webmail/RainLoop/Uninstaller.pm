@@ -36,7 +36,7 @@ use parent 'Common::SingletonClass';
 =head1 DESCRIPTION
 
  i-MSCP RainLoop package uninstaller.
-.
+
 =head1 PUBLIC METHODS
 
 =over 4
