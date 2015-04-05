@@ -44,6 +44,7 @@ FRONTEND
 	Removed: imscp_delete_opcode_file() and imscp_clear_opcode_cache() functions
 
 INSTALLER
+	Added: Debug output when installer is run with --noprompt and --debug options
 	Added: Update notices
 	Fixed: Missing Email::Simple Perl module ( no longer required )
 	Fixed: Use of uninitialized value $dbPass in string ( imscp/engine/setup/imscp-setup-methods.pl line 482 )
