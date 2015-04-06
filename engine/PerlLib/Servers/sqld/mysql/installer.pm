@@ -216,7 +216,7 @@ sub _createGlobalConfFile
 			$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 			return $rs if $rs;
 		} elsif(-f "$confDir/imscp.cnf") {
-			$rs = iMSCP::File->new( filename => "$confDir/imscp.cnf" )->defFile;
+			$rs = iMSCP::File->new( filename => "$confDir/imscp.cnf" )->delFile;
 			return $rs if $rs;
 		}
 	}
