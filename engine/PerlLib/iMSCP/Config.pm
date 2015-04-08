@@ -206,7 +206,7 @@ sub STORE
 {
 	my ($self, $paramName, $value) = @_;
 
-	unless($self->{'readonly'} && ! $self->{'temporary'}) {
+	if(! $self->{'readonly'} || $self->{'temporary'}) {
 		unless(exists $self->{'configValues'}->{$paramName}) {
 			$self->_insertConfig($paramName, $value);
 		} else {
