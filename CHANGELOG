@@ -5,7 +5,10 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+
 	Added: Custom DNS module ( Modules::CustomDNS )
+	Added: New 'temporary' attributes which allow to override configuration values temporarily
+	Added: onBeforeSetPluginStatus event in Modules::Plugin
 	Added: Service providers ( Sysvinit, Upstart and Systemd )
 	Changed: Perl version >= 5.14.2 is now required
 	Changed: Service configuration files are now lazy-loaded
@@ -48,6 +51,8 @@ INSTALLER
 	Added: Update notices
 	Fixed: Missing Email::Simple Perl module ( no longer required )
 	Fixed: Use of uninitialized value $dbPass in string ( imscp/engine/setup/imscp-setup-methods.pl line 482 )
+
+
 
 PLUGINS
 	Added: iMSCP_Plugin::getConfigPrev() and iMSCP_Plugin::getConfigPrevParam() methods

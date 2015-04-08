@@ -104,6 +104,8 @@ sub process
 		$rs = 1;
 	}
 
+	$self->{'eventManager'}->trigger('onBeforeSetPluginStatus', $pluginName, \$status);
+
 	my @sql = (
 		"UPDATE plugin SET " . ($rs ? 'plugin_error' : 'plugin_status') . " = ? WHERE plugin_id = ?",
 		$rs ? (scalar getMessageByType('error') || 'unknown error') : $actionStatusToNextStatus{$status},
