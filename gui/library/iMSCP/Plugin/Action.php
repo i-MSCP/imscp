@@ -38,7 +38,7 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
 	/**
 	 * Get routes
 	 *
-	 * This method allow the plugin to provide it own routes. For instance:
+	 * This method allow the plugin to provide its routes. For instance:
 	 *
 	 * <code>
 	 * $pluginDir = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName();

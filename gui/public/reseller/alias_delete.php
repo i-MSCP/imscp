@@ -164,7 +164,7 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 				array('todelete', $alsId, '%alias_%', $alsId, '%alssub_%')
 			);
 
-			# Schedule deletion of any SSL certificat linked to subdomain, which have $alsId as parent
+			# Schedule deletion of any SSL certificate linked to subdomain, which have $alsId as parent
 			exec_query(
 				'
 					UPDATE

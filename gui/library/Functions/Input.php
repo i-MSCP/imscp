@@ -78,8 +78,7 @@ function clean_input($input, $htmlencode = false)
 	}
 
 	if($htmlencode) {
-		global $ESCAPER;
-		return $ESCAPER->escapeHtml($input);
+		return tohtml($input, 'htmlAttr');
 	} else {
 		return $input;
 	}
@@ -88,13 +87,22 @@ function clean_input($input, $htmlencode = false)
 /**
  * Escape a string for the HTML Body context
  *
+ * @throws iMSCP_Exception
  * @param string $string String to be converted
+ * @param string $escapeType Escape type ( html|htmlAttr )
  * @return string HTML entitied text
  */
-function tohtml($string)
+function tohtml($string, $escapeType = 'html')
 {
 	global $ESCAPER;
-	return $ESCAPER->escapeHtml($string);
+
+	if($escapeType == 'html') {
+		return $ESCAPER->escapeHtml($string);
+	} elseif($escapeType == 'htmlAttr') {
+		return $ESCAPER->escapeHtmlAttr($string);
+	} else {
+		throw new iMSCP_Exception('Unknown escape type');
+	}
 }
 
 /**
