@@ -51,8 +51,7 @@ INSTALLER
 	Added: Update notices
 	Fixed: Missing Email::Simple Perl module ( no longer required )
 	Fixed: Use of uninitialized value $dbPass in string ( imscp/engine/setup/imscp-setup-methods.pl line 482 )
-
-
+	Fixed: Wrong package name in preseed file ( RainLoop )
 
 PLUGINS
 	Added: iMSCP_Plugin::getConfigPrev() and iMSCP_Plugin::getConfigPrevParam() methods

@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2015.02.07
+# Last update: 2015.04.12
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -191,7 +191,7 @@ $main::questions{'PHPMYADMIN_SQL_PASSWORD'} = 'password'; # Password must not be
 # Webmmail packages
 # List of webmail packages to install such as ( RainLoop,Roundcube )
 # Set the value to 'No' if you do not want install any webmail
-$main::questions{'WEBMAIL_PACKAGES'} = 'Rainloop,Roundcube';
+$main::questions{'WEBMAIL_PACKAGES'} = 'RainLoop,Roundcube';
 
 # Roundcube package restricted SQL user
 # Only relevant if the Roundcube package is listed in the WEBMAIL_PACKAGES parameter
