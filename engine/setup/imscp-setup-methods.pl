@@ -1811,8 +1811,8 @@ sub setupRebuildCustomerFiles
 		admin => ['admin_status', "AND `admin_type` = 'user'"],
 		domain => 'domain_status',
 		domain_aliasses => 'alias_status',
-		subdomain => 'subdomain_status',
-		subdomain_alias => 'subdomain_alias_status',
+		#subdomain => 'subdomain_status', # This is now automatically done by the domain module
+		#subdomain_alias => 'subdomain_alias_status', # This is now automatically done by the alias module
 		domain_dns => 'domain_dns_status',
 		mail_users => 'status',
 		htaccess => 'status',
@@ -1846,7 +1846,7 @@ sub setupRebuildCustomerFiles
 					SET
 						$field = 'tochange'
 					WHERE
-						$field NOT IN('toadd', 'tochange', 'torestore', 'todisable', 'disabled', 'ordered', 'todelete')
+						$field NOT IN('toadd', 'torestore', 'todisable', 'disabled', 'ordered', 'todelete')
 					$aditionalCondition
 				"
 			);

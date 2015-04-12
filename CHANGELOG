@@ -14,6 +14,7 @@ BACKEND
 	Changed: Service configuration files are now lazy-loaded
 	Fixed: Any task which belongs to the custom DNS records layer must not involve HTTPD configuration change
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload is sufficient
+	Fixed: In some contexts, configuration files which belongs to subdomains are not regenerated
 	Fixed: Some errors are not trapped
 
 CONFIGS

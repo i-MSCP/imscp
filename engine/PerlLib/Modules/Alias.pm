@@ -59,7 +59,7 @@ sub process
 
 	my @sql;
 
-	if($self->{'alias_status'} ~~ ['toadd', 'tochange', 'toenable']) {
+	if($self->{'alias_status'} ~~ [ 'toadd', 'tochange', 'toenable' ]) {
 		$rs = $self->add();
 
 		@sql = (
@@ -104,6 +104,39 @@ sub process
 	}
 
 	$rs;
+}
+
+=item add()
+
+ Add domain
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub add
+{
+	my $self = $_[0];
+
+	if($self->{'alias_status'} eq 'tochange') {
+		# Sets the status of any subdomain that belongs to this domain alias to 'tochange'.
+		# This is needed, else, the DNS resource records for the subdomains are not re-added in DNS zone files.
+		# FIXME: This reflect a bad implementation in the way that entities are managed. This will be solved
+		# in version 2.0.0.
+		my $rs = iMSCP::Database->factory()->doQuery(
+			'dummy',
+			'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ? AND subdomain_alias_status <> ?',
+			'tochange',
+			$self->{'alias_id'},
+			'todelete'
+		);
+		unless(ref $rs eq 'HASH') {
+			error($rs);
+			return 1;
+		}
+	}
+
+	$self->SUPER::add();
 }
 
 =item restore()
