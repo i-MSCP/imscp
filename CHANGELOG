@@ -83,6 +83,7 @@ YOUTRACK
 	Fixed #IP-1286: IP attachment fails on reboot ( Ubuntu )
 	Fixed #IP-1292: Files from a previous plugin version must be kept if the new plugin version is not compatible
 	Fixed #IP-1314: Custom DNS SRV record - Missing TLS protocol
+	Fixed #IP-1323: Invalid query result column used in change_domain_status() function
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.2

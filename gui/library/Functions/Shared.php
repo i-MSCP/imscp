@@ -515,7 +515,7 @@ function change_domain_status($customerId, $action)
 	if($stmt->rowCount()) {
 		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 		$domainId = $row['domain_id'];
-		$adminName = decode_idna($row['domain_name']);
+		$adminName = decode_idna($row['admin_name']);
 
 		/** @var $db iMSCP_Database */
 		$db = iMSCP_Database::getInstance();
