@@ -26,8 +26,11 @@ CMD_VLOGGER = /usr/local/sbin/vlogger
 # PHP variables
 
 ITK_PHP5_PATH = /etc/php5/apache2/php.ini
-PHP_STARTER_DIR = /var/www/fcgi
 PHP_CGI_BIN = /usr/bin/php5-cgi
+PHP_FCGI_CHILDREN = 0
+PHP_FCGI_MAX_REQUESTS = 1000
+PHP_STARTER_DIR = /var/www/fcgi
+PHP_VERSION = 5
 
 # Htaccess variables
 

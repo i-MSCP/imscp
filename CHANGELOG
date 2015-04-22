@@ -5,10 +5,10 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-
 	Added: Custom DNS module ( Modules::CustomDNS )
 	Added: New 'temporary' attributes which allow to override configuration values temporarily
 	Added: onBeforeSetPluginStatus event in Modules::Plugin
+	Added: PHP_FCGI_CHILDREN, PHP_FCGI_MAX_REQUESTS and PHP_VERSION configuration parameter ( Httpd server conffile )
 	Added: Service providers ( Sysvinit, Upstart and Systemd )
 	Changed: Perl version >= 5.14.2 is now required
 	Changed: Service configuration files are now lazy-loaded
@@ -16,6 +16,7 @@ BACKEND
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload is sufficient
 	Fixed: In some contexts, configuration files which belongs to subdomains are not regenerated
 	Fixed: Some errors are not trapped
+	Renamed: Fcgid starter template to php-fcgid-starter ( was php5-fcgid-starter )
 
 CONFIGS
 	Added: imscp_daemon, imscp_network and imscp_panel upstart jobs

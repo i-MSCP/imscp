@@ -1837,22 +1837,26 @@ sub _buildPHPConfig
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildPhpConf', $data);
 	return $rs if $rs;
 
-	my $fcgiRootDir = $self->{'config'}->{'PHP_STARTER_DIR'};
+	my $phpCgiBin = $self->{'config'}->{'PHP_CGI_BIN'};
+	my $phpFcgiChildren = $self->{'config'}->{'PHP_FCGI_CHILDREN'};
+	my $phpFcgiMaxRequest = $self->{'config'}->{'PHP_FCGI_MAX_REQUESTS'};
+	my $phpStarterDir = $self->{'config'}->{'PHP_STARTER_DIR'};
+	my $phpVersion = $self->{'config'}->{'PHP_VERSION'};
 	my $iniLevel = $self->{'config'}->{'INI_LEVEL'};
 	my $domainType = $data->{'DOMAIN_TYPE'};
-	my ($fcgiDir, $tmpDir, $emailDomain);
 
+	my ($fcgiDir, $tmpDir, $emailDomain);
 	if($iniLevel eq 'per_user') {
-		$fcgiDir = "$fcgiRootDir/$data->{'ROOT_DOMAIN_NAME'}";
+		$fcgiDir = "$phpStarterDir/$data->{'ROOT_DOMAIN_NAME'}";
 		$tmpDir = $data->{'HOME_DIR'} . '/phptmp';
 		$emailDomain = $data->{'ROOT_DOMAIN_NAME'};
 	} elsif ($iniLevel eq 'per_domain') {
-		$fcgiDir = "$fcgiRootDir/$data->{'PARENT_DOMAIN_NAME'}";
+		$fcgiDir = "$phpStarterDir/$data->{'PARENT_DOMAIN_NAME'}";
 		$tmpDir = ($domainType ~~ [ 'dmn', 'sub' ])
 			? $data->{'HOME_DIR'} . '/phptmp' : $data->{'HOME_DIR'} . '/' . $data->{'PARENT_DOMAIN_NAME'} . '/phptmp';
 		$emailDomain = $data->{'PARENT_DOMAIN_NAME'};
 	} elsif($iniLevel eq 'per_site') {
-		$fcgiDir = "$fcgiRootDir/$data->{'DOMAIN_NAME'}";
+		$fcgiDir = "$phpStarterDir/$data->{'DOMAIN_NAME'}";
 		$tmpDir = $data->{'WEB_DIR'} . '/phptmp';
 		$emailDomain = $data->{'DOMAIN_NAME'};
 	} else {
@@ -1861,20 +1865,16 @@ sub _buildPHPConfig
 	}
 
 	if($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
-		# Ensure that the FCGI root directory exists
-		$rs = iMSCP::Dir->new(
-			'dirname' => $fcgiRootDir
-		)->make(
+		# Ensure that the FCGI starter directory exists
+		$rs = iMSCP::Dir->new( dirname => $phpStarterDir )->make(
 			{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0555 }
 		);
 		return $rs if $rs;
 
 		# Create FCGI tree
-		for ($fcgiDir, "$fcgiDir/php5") {
-			$rs = iMSCP::Dir->new(
-				'dirname' => $_
-			)->make(
-				{ 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => 0550 }
+		for my $dir ($fcgiDir, "$fcgiDir/php$phpVersion") {
+			$rs = iMSCP::Dir->new( dirname => $dir )->make(
+				{ user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0550 }
 			);
 			return $rs if $rs;
 		}
@@ -1884,19 +1884,22 @@ sub _buildPHPConfig
 		$self->setData(
 			{
 				FCGI_DIR => $fcgiDir,
-				PHP_CGI_BIN => $self->{'config'}->{'PHP_CGI_BIN'},
+				PHP_VERSION => $phpVersion,
+				PHP_FCGI_MAX_REQUESTS => $phpFcgiMaxRequest,
+				PHP_FCGI_CHILDREN => $phpFcgiChildren,
+				PHP_CGI_BIN => $phpCgiBin,
 				TMPDIR => $tmpDir,
 				EMAIL_DOMAIN => $emailDomain
 			}
 		);
 
-		# Build Fcgid wrapper
+		# Build Fcgid starter script
 
 		$rs = $self->buildConfFile(
-			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fcgid-starter.tpl",
+			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php-fcgid-starter.tpl",
 			$data,
 			{
-				destination => "$fcgiDir/php5-fcgid-starter",
+				destination => "$fcgiDir/php-fcgid-starter",
 				user => $data->{'USER'},
 				group => $data->{'GROUP'},
 				mode => 0550
@@ -1907,10 +1910,10 @@ sub _buildPHPConfig
 		# Build php.ini file
 
 		$rs = $self->buildConfFile(
-			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5/php.ini",
+			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php$phpVersion/php.ini",
 			$data,
 			{
-				destination => "$fcgiDir/php5/php.ini",
+				destination => "$fcgiDir/php$phpVersion/php.ini",
 				user => $data->{'USER'},
 				group => $data->{'GROUP'},
 				mode => 0440
@@ -1920,11 +1923,11 @@ sub _buildPHPConfig
 	} elsif(
 		$data->{'PHP_SUPPORT'} ne 'yes' || (
 			($iniLevel eq 'per_user' && $domainType ne 'dmn') ||
-			($iniLevel eq 'per_domain' && not $domainType ~~ ['dmn', 'als']) ||
+			($iniLevel eq 'per_domain' && not $domainType ~~ [ 'dmn', 'als' ]) ||
 			$iniLevel eq 'per_site'
 		)
 	) {
-		$rs = iMSCP::Dir->new( 'dirname' => "$fcgiRootDir/$data->{'DOMAIN_NAME'}" )->remove();
+		$rs = iMSCP::Dir->new( dirname => "$phpStarterDir/$data->{'DOMAIN_NAME'}" )->remove();
 		return $rs if $rs;
 	}
 
