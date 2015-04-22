@@ -1871,6 +1871,10 @@ sub _buildPHPConfig
 		);
 		return $rs if $rs;
 
+		# Remove previous FCGI tree if any ( needed to avoid any garbage from plugins )
+		$rs = iMSCP::Dir->new( dirname => $fcgiDir )->remove();
+		return $rs if $rs;
+
 		# Create FCGI tree
 		for my $dir ($fcgiDir, "$fcgiDir/php$phpVersion") {
 			$rs = iMSCP::Dir->new( dirname => $dir )->make(
