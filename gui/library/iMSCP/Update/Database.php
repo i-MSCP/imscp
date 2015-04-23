@@ -850,10 +850,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r76()
 	{
-		$quries = $this->dropIndexByColumn('user_gui_props', 'user_id');
+		$queries = $this->dropIndexByColumn('user_gui_props', 'user_id');
 
-		if(!empty($quries)) {
-			foreach($quries as $query) {
+		if(!empty($queries)) {
+			foreach($queries as $query) {
 				execute_query($query);
 			}
 		}
@@ -3183,7 +3183,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds unique index for mail_users.mail_addr column
+	 * Adds unique constraint for mail user entities
 	 *
 	 * @return array SQL statements to be executed
 	 */
