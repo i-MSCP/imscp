@@ -244,48 +244,46 @@ function client_addMailAccount()
 				}
 			}
 
-			// Check for mail account existence
-			$stmt = exec_query("SELECT `mail_id` FROM `mail_users` WHERE `mail_addr` = ?", $mailAddr);
-
-			if ($stmt->rowCount()) {
-				set_page_message(tr('Email account already exists.'), 'error');
-				return false;
-			}
-
 			// Add mail account into database
+			try {
+				/** @var $db iMSCP_Database */
+				$db = iMSCP_Registry::get('db');
 
-			/** @var $db iMSCP_Database */
-			$db = iMSCP_Registry::get('db');
+				iMSCP_Events_Aggregator::getInstance()->dispatch(
+					iMSCP_Events::onBeforeAddMail, array('mailUsername' => $username, 'MailAddress' => $mailAddr)
+				);
 
-			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onBeforeAddMail, array('mailUsername' => $username, 'MailAddress' => $mailAddr)
-			);
+				$query = '
+					INSERT INTO `mail_users` (
+						`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
+						`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`
+					) VALUES
+						(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+				';
+				exec_query(
+					$query,
+					array(
+						$username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType, $subId,
+						'toadd', '0', NULL, $quota, $mailAddr
+					)
+				);
 
-			$query = '
-				INSERT INTO `mail_users` (
-					`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
-					`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`
-				) VALUES
-					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-			';
-			exec_query(
-				$query,
-				array(
-					$username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType, $subId,
-					'toadd', '0', NULL, $quota, $mailAddr
-				)
-			);
+				iMSCP_Events_Aggregator::getInstance()->dispatch(
+					iMSCP_Events::onAfterAddMail,
+					array('mailUsername' => $username, 'mailAddress' => $mailAddr, 'mailId' => $db->insertId())
+				);
 
-			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterAddMail,
-				array('mailUsername' => $username, 'mailAddress' => $mailAddr, 'mailId' => $db->insertId())
-			);
+				// Schedule mail account addition
+				send_request();
 
-			// Schedule mail account addition
-			send_request();
-
-			write_log("{$_SESSION['user_logged']}: added new Email account: $mailAddr", E_USER_NOTICE);
-			set_page_message(tr('Email account successfully scheduled for addition.'), 'success');
+				write_log("{$_SESSION['user_logged']}: added new Email account: $mailAddr", E_USER_NOTICE);
+				set_page_message(tr('Email account successfully scheduled for addition.'), 'success');
+			} catch (iMSCP_Exception_Database $e) {
+				if ($e->getCode() == 23000) {
+					set_page_message(tr('Email account already exists.'), 'error');
+					return false;
+				}
+			}
 		} else {
 			showBadRequestErrorPage();
 		}

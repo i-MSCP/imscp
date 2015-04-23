@@ -293,7 +293,7 @@ class iMSCP_Database
 			} else {
 				$rs = $stmt->execute((array)$parameters);
 			}
-		} else {
+		} elseif(is_string($stmt)) {
 			$this->events()->dispatch(
 				new iMSCP_Database_Events_Database(
 					iMSCP_Events::onBeforeQueryExecute, array('context' => $this, 'query' => $stmt)
@@ -306,6 +306,8 @@ class iMSCP_Database
 				$parameters = func_get_args();
 				$rs = call_user_func_array(array($this->_db, 'query'), $parameters);
 			}
+		} else {
+			throw new iMSCP_Exception_Database('Wrong parameter. Expects either a string or PDOStatement object');
 		}
 
 		if ($rs) {

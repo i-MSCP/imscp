@@ -13,7 +13,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="i-MSCP frontEnd PHP FCGI processes"
 NAME=imscp_panel
-STARTER=/var/www/fcgi/master/php5-fcgi-starter
+STARTER=/var/www/fcgi/master/php-fcgi-starter
 DAEMON=/usr/bin/php5-cgi
 PIDFILE=/var/run/$NAME.pid
 TIMEOUT=30

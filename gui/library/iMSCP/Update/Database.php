@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 201;
+	protected $lastUpdate = 202;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -850,10 +850,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r76()
 	{
-		$sqlUpd = $this->dropIndexByColumn('user_gui_props', 'user_id');
-		array_push($sqlUpd, $this->addIndex('user_gui_props', 'user_id', 'unique'));
+		$quries = $this->dropIndexByColumn('user_gui_props', 'user_id');
 
-		return $sqlUpd;
+		if(!empty($quries)) {
+			foreach($quries as $query) {
+				execute_query($query);
+			}
+		}
+
+		return $this->addIndex('user_gui_props', 'user_id', 'unique');
 	}
 
 	/**
@@ -2275,17 +2280,21 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds unique index for sqld_name columns
+	 * Adds unique index for sql_user.sqld_name columns
 	 *
 	 * @return array SQL statements to be executed
 	 */
 	protected function r149()
 	{
-		$sqlUdp = $this->dropIndexByColumn('sql_user', 'sqlu_name');
+		$queries = $this->dropIndexByColumn('sql_user', 'sqlu_name');
 
-		array_unshift($sqlUdp, $this->addIndex('sql_database', 'sqld_name', 'unique'));
+		if(!empty($queries)) {
+			foreach($queries as $query) {
+				execute_query($query);
+			}
+		}
 
-		return $sqlUdp;
+		return $this->addIndex('sql_database', 'sqld_name', 'unique');
 	}
 
 	/**
@@ -3171,5 +3180,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 			),
 			'UPDATE plugin SET plugin_config_prev = plugin_config'
 		);
+	}
+
+	/**
+	 * Adds unique index for mail_users.mail_addr column
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function r202()
+	{
+		if (($q = $this->dropIndexByName('mail_users', 'mail_addr')) != '') {
+			execute_query($q);
+		}
+
+		return $this->addIndex('mail_users', 'mail_addr', 'UNIQUE');
 	}
 }

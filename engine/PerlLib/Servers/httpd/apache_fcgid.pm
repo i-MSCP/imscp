@@ -1900,10 +1900,10 @@ sub _buildPHPConfig
 		# Build Fcgid starter script
 
 		$rs = $self->buildConfFile(
-			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php-fcgid-starter.tpl",
+			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php-fcgi-starter.tpl",
 			$data,
 			{
-				destination => "$fcgiDir/php-fcgid-starter",
+				destination => "$fcgiDir/php-fcgi-starter",
 				user => $data->{'USER'},
 				group => $data->{'GROUP'},
 				mode => 0550
