@@ -24,7 +24,8 @@
  * CSV file entries must be as follow:
  *
  * user@domain.tld,password
- * user2@domain.tkd,password
+ * user2@domain.tld,password
+ * ...
  */
 
 /***********************************************************************************************************************
