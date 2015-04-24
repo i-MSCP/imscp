@@ -442,13 +442,13 @@ sub setEnginePermissions
 	return $rs if $rs;
 
 	$rs = setRights(
-		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5-fcgi-starter",
+		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter",
 		{ 'user' => $panelUName, 'group' => $panelGName, 'mode' => '550' }
 	);
 	return $rs if $rs;
 
 	$rs = setRights(
-		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5-fcgi-starter",
+		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter",
 		{ 'user' => $panelUName, 'group' => $panelGName, 'mode' => '550' }
 	);
 
@@ -774,16 +774,26 @@ sub _makeDirs
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $phpdir = $self->{'config'}->{'PHP_STARTER_DIR'};
+	my $phpStarterDir = $self->{'config'}->{'PHP_STARTER_DIR'};
+
+	# Ensure that the FCGI starter directory exists
+	$rs = iMSCP::Dir->new( dirname => $phpStarterDir )->make(
+		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0555 }
+	);
+	return $rs if $rs;
+
+	# Remove previous FCGI tree if any ( needed to avoid any garbage from plugins )
+	$rs = iMSCP::Dir->new( dirname => "$phpStarterDir/master" )->remove();
+	return $rs if $rs;
 
 	for (
-		[$self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootUName, 0755],
-		[$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootUName, 0755],
-		[$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootUName, 0755],
-		[$self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755],
-		[$phpdir, $rootUName, $rootGName, 0555],
-		["$phpdir/master", $panelUName, $panelGName, 0550],
-		["$phpdir/master/php5", $panelUName, $panelGName, 0550]
+		[ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootUName, 0755 ],
+		[ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootUName, 0755 ],
+		[ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootUName, 0755 ],
+		[ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ],
+		[ $phpStarterDir, $rootUName, $rootGName, 0555 ],
+		[ "$phpStarterDir/master", $panelUName, $panelGName, 0550 ],
+		[ "$phpStarterDir/master/php5", $panelUName, $panelGName, 0550 ]
 	) {
 		$rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3] } );
 		return $rs if $rs;
@@ -811,18 +821,6 @@ sub _buildPhpConfig
 	my $cfgDir = $self->{'cfgDir'};
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
-
-	my $timestamp = time;
-
-	for ('php5-fcgi-starter', 'php5/php.ini') {
-		if(-f "$self->{'config'}->{'PHP_STARTER_DIR'}/master/$_") {
-			my $fileName = basename($_);
-			my $file = iMSCP::File->new( filename => "$self->{'config'}->{'PHP_STARTER_DIR'}/master/$_" );
-			$rs = $file->copyFile("$bkpDir/$fileName.$timestamp");
-			return $rs if $rs;
-		}
-	}
-
 	my $user = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
@@ -839,14 +837,14 @@ sub _buildPhpConfig
 	};
 
 	$rs = $self->{'frontend'}->buildConfFile(
-		"$cfgDir/parts/master/php5-fcgi-starter.tpl",
+		"$cfgDir/parts/master/php-fcgi-starter.tpl",
 		$tplVars,
-		{ 'destination' => "$wrkDir/master.php5-fcgi-starter", 'mode' => 0550, 'user' => $user, 'group' => $group }
+		{ 'destination' => "$wrkDir/master.php-fcgi-starter", 'mode' => 0550, 'user' => $user, 'group' => $group }
 	);
 	return $rs if $rs;
 
-	$rs = iMSCP::File->new( filename => "$wrkDir/master.php5-fcgi-starter" )->copyFile(
-		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5-fcgi-starter"
+	$rs = iMSCP::File->new( filename => "$wrkDir/master.php-fcgi-starter" )->copyFile(
+		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter"
 	);
 	return $rs if $rs;
 
