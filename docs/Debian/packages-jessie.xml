@@ -73,29 +73,16 @@
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
         </mysql_5.5>
-        <mariadb_5.5
+        <mariadb_10.0
                 pinning_package="*"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
-                >
-            <package>mariadb-client-5.5</package>
-            <package>mariadb-server-5.5</package>
-            <package>mariadb-common</package>
-            <package>mysql-common</package>
-        </mariadb_5.5>
-        <mariadb_10.0
-                pinning_package="*"
-                pinning_pin="origin mirror.netcologne.de"
-                pinning_pin_priority="1001"
-                repository="deb http://mirror.netcologne.de/mariadb/repo/10.0/debian sid main"
-                repository_origin="MariaDB"
-                repository_key_srv="keyserver.ubuntu.com"
-                repository_key_id="0xcbcb082a1bb943db"
                 allow_switch_to="remote_server"
                 >
             <package>mariadb-client-10.0</package>
             <package>mariadb-server-10.0</package>
             <package>mariadb-common</package>
+            <package>mysql-common</package>
         </mariadb_10.0>
         <remote_server
                 pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient16 libmysqlclient18"

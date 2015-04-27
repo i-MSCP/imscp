@@ -26,6 +26,7 @@ CONFIGS
 	Fixed: Wrong TMPDIR path ( php5-fpm )
 	Removed: INIT_SCRIPTS_DIR, SERVICE_INSTALLER, SERVICE_MNGR, IMSCP_DAEMON_SNAME, IMSCP_NETWORK_SNAME and
 		IMSCP_PANEL_SNAME main configuration parameters
+	Removed: mariadb 5.5 from Debian Jessie package file ( replaced by mariadb 10.0 )
 
 DAEMON
 	Added: End child syslog message
