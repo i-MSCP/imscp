@@ -14,7 +14,7 @@ Table of Content
 ---------------
 
 i-MSCP Version:  <version>
-Distros:         Debian Wheezy ( recommended ), Jessie
+Distros:         Debian Wheezy, Jessie ( recommended )
 
 2) Requirements
 ---------------
@@ -27,7 +27,7 @@ Distros:         Debian Wheezy ( recommended ), Jessie
 
 * See http://wiki.i-mscp.net/doku.php?id=start:howto:reiserfs
 
-All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
+All packages are listed in ./docs/Debian/packages-<codename>.xml
 
 3) Installation
 ---------------
