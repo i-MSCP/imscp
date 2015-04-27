@@ -65,7 +65,7 @@
     </named>
     <sql default="mysql_5.5">
         <mysql_5.5
-                pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient16 libmysqlclient18"
+                pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
                 >
@@ -74,7 +74,7 @@
             <package>mysql-common</package>
         </mysql_5.5>
         <mariadb_10.0
-                pinning_package="*"
+                pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common mysql-common libmysqlclient18"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
                 allow_switch_to="remote_server"
@@ -85,7 +85,7 @@
             <package>mysql-common</package>
         </mariadb_10.0>
         <remote_server
-                pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient16 libmysqlclient18"
+                pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
                 >
