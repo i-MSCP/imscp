@@ -46,7 +46,7 @@
             <label>Domains</label>
             <uri>/client/domains_manage.php</uri>
             <class>domains</class>
-            <privilege_callback name="customerHasFeature" param="domain"/>
+            <!--<privilege_callback name="customerHasFeature" param="domain"/>-->
             <pages>
                 <overview>
                     <label>Overview</label>

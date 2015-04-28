@@ -280,15 +280,16 @@ function customerHasFeature($featureNames, $forceReload = false)
 	if (null === $availableFeatures || $forceReload) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
-		$debug = (bool)$cfg->DEBUG;
+		$debug = (bool)$cfg['DEBUG'];
 		$dmnProps = get_domain_default_props($_SESSION['user_id']);
 
 		$availableFeatures = array(
-			'domain' => ($dmnProps['domain_alias_limit'] != '-1'
+			/*'domain' => ($dmnProps['domain_alias_limit'] != '-1'
 				|| $dmnProps['domain_subd_limit'] != '-1'
 				|| $dmnProps['domain_dns'] == 'yes'
 				|| $dmnProps['phpini_perm_system'] == 'yes'
 				|| $cfg['ENABLE_SSL']) ? true : false,
+			*/
 			'external_mail' => ($dmnProps['domain_external_mail'] == 'yes') ? true : false,
 			'php' => ($dmnProps['domain_php'] == 'yes') ? true : false,
 			'php_editor' => ($dmnProps['phpini_perm_system'] == 'yes' &&
@@ -303,19 +304,20 @@ function customerHasFeature($featureNames, $forceReload = false)
 			'domain_aliases' => ($dmnProps['domain_alias_limit'] != '-1') ? true : false,
 			'custom_dns_records' =>
 				($dmnProps['domain_dns'] != 'no' && $cfg['NAMED_SERVER'] != 'external_server') ? true : false,
-			'webstats' => ($cfg->WEBSTATS_PACKAGES != 'No') ? true : false,
-			'backup' => ($cfg->BACKUP_DOMAINS != 'no' && $dmnProps['allowbackup'] != 'no') ? true : false,
+			'webstats' => ($cfg['WEBSTATS_PACKAGES'] != 'No') ? true : false,
+			'backup' => ($cfg['BACKUP_DOMAINS'] != 'no' && $dmnProps['allowbackup'] != 'no') ? true : false,
 			'protected_areas' => true,
 			'custom_error_pages' => true,
-			'aps' => ($dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1')
-					? true : false,
+			'aps' => ($dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1') ? true : false,
             'ssl' => ($cfg['ENABLE_SSL']) ? true : false
 		);
 
-		if (($cfg->IMSCP_SUPPORT_SYSTEM)) {
-			$query = "SELECT support_system FROM reseller_props WHERE reseller_id = ?";
-			$stmt = exec_query($query, $_SESSION['user_created_by']);
-			$availableFeatures['support'] = ($stmt->fields['support_system'] == 'yes') ? true : false;
+		if (($cfg['IMSCP_SUPPORT_SYSTEM'])) {
+			$stmt = exec_query(
+				'SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']
+			);
+			$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+			$availableFeatures['support'] = ($row['support_system'] == 'yes') ? true : false;
 		} else {
 			$availableFeatures['support'] = false;
 		}

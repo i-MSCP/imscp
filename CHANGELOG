@@ -48,6 +48,7 @@ DISTRIBUTIONS
 FRONTEND
 	Added Custom DNS items in debugger interface ( admin level )
 	Changed: Stores the Github payload as json file instead of PHP file ( iMSCP_Update_Version::getUpdateInfo() )
+	Fixed: Client domain management page must not be hidden even if customer cannot add domain aliases and subdomains
 	Fixed: Do not fetch more data than needed from GitHub ( iMSCP_Update_Version::getUpdateInfo() )
 	Fixed: Force reload of newest mail body footprint file ( iMSCP_Exception_Writer_Mail::onUncaughtException() )
 	Fixed: Html in title attribute must not be auto-escaped by jQueryUI tooltip

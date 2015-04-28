@@ -658,7 +658,7 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptSta
 check_login('user');
 
 // If the feature is disabled, redirects in silent way
-customerHasFeature('domain') or showBadRequestErrorPage();
+//customerHasFeature('domain') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(

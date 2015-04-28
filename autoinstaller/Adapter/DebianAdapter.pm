@@ -68,9 +68,7 @@ sub installPreRequiredPackages
 	my $command = 'apt-get';
 	my $preseed = iMSCP::Getopt->preseed;
 
-	unless(iMSCP::ProgramFinder::find($command)) {
-		fatal('Not a Debian like system');
-	}
+	fatal('Not a Debian like system') unless iMSCP::ProgramFinder::find($command);
 
 	# Ensure packages index is up to date
 	my $rs = $self->_updatePackagesIndex();
@@ -171,12 +169,9 @@ if [ "\$action" = "start" ] && { [ "\$initscript" = "apache2" ] || [ "\$initscri
 fi
 exit 0
 EOF
-	return $rs if $rs;
 
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0755);
+	$rs ||= $file->save();
+	$rs ||= $file->mode(0755);
 	return $rs if $rs;
 
 	my $preseed = iMSCP::Getopt->preseed;
@@ -219,7 +214,7 @@ EOF
 
  Uninstall Debian packages
 
- Param \@packages OPTIONAL List of packages to uninstall ( default is list from the packagesToUninstall attribute )
+ Param array \@packages OPTIONAL List of packages to uninstall ( default is list from the packagesToUninstall attribute )
  Return int 0 on success, other on failure
 
 =cut

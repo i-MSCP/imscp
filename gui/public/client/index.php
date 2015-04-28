@@ -179,16 +179,17 @@ function client_generateFeatureStatus($tpl)
 
 	$tpl->assign(
 		array(
-			 'DOMAIN_FEATURE_STATUS' =>  customerHasFeature('domain') ? $trYes : $trNo,
-			 'PHP_FEATURE_STATUS' => customerHasFeature('php') ? $trYes : $trNo,
-			 'PHP_DIRECTIVES_EDITOR_STATUS' => customerHasFeature('php_editor') ? $trYes : $trNo,
-			 'CGI_FEATURE_STATUS' => customerHasFeature('cgi') ? $trYes : $trNo,
-			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => customerHasFeature('custom_dns_records') ? $trYes : $trNo,
-             'EXTERNAL_MAIL_SERVERS_FEATURE_STATUS' => customerHasFeature('external_mail') ? $trYes : $trNo,
-			 'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo,
-             'WEBSTATS_FEATURE_STATUS' => customerHasFeature('webstats') ? $trYes : $trNo
-        )
-    );
+			//'DOMAIN_FEATURE_STATUS' =>  customerHasFeature('domain') ? $trYes : $trNo,
+			'DOMAIN_FEATURE_STATUS' => $trYes,
+			'PHP_FEATURE_STATUS' => customerHasFeature('php') ? $trYes : $trNo,
+			'PHP_DIRECTIVES_EDITOR_STATUS' => customerHasFeature('php_editor') ? $trYes : $trNo,
+			'CGI_FEATURE_STATUS' => customerHasFeature('cgi') ? $trYes : $trNo,
+			'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => customerHasFeature('custom_dns_records') ? $trYes : $trNo,
+			'EXTERNAL_MAIL_SERVERS_FEATURE_STATUS' => customerHasFeature('external_mail') ? $trYes : $trNo,
+			'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo,
+			'WEBSTATS_FEATURE_STATUS' => customerHasFeature('webstats') ? $trYes : $trNo
+		)
+	);
 
 	if (customerHasFeature('backup')) {
 		$domainProperties = get_domain_default_props($_SESSION['user_id']);
