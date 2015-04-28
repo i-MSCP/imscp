@@ -19,7 +19,7 @@ Be aware that the transitional \ZbiMSCP::HooksManager\ZB package, which was an a
 
 \Zb\Z4## PHP version in use\Zn\ZB
 
-If you're using, either \ZbDebian Wheezy\ZB, \ZbDebian Jessie\ZB or \ZbUbuntu Precise\ZB with a PHP version that is not provided by official repositories, you must be aware that the \Zbphp-apc\ZB package has been added in the list of package to install.
+If you're using, either \ZbDebian Wheezy\ZB or \ZbUbuntu Precise\ZB with a PHP version that is not provided by official repositories, you must be aware that the \Zbphp-apc\ZB package has been added in the list of package to install.
 
 Because that package is no longer provided for PHP versions > \Zb5.4\ZB, you must remove the package from the packages file before upgrading, else, packages installation will fail.
 

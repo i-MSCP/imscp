@@ -5,12 +5,13 @@
                 pinning_pin="origin nginx.org"
                 pinning_pin_priority="1001"
                 repository="deb http://nginx.org/packages/debian wheezy nginx"
-                repository_origin="nginx"
                 repository_key_uri="http://nginx.org/keys/nginx_signing.key"
                 >
             <package>nginx</package>
             <package>spawn-fcgi</package>
             <package>php5-cgi</package>
+            <package_conflict>nginx-full</package_conflict>
+            <package_conflict>nginx-light</package_conflict>
         </nginx>
     </frontend>
     <httpd default="apache_php_fpm">
@@ -84,7 +85,7 @@
     </named>
     <sql default="mysql_5.5">
         <mysql_5.5
-                pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient16 libmysqlclient18"
+                pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
                 pinning_pin="release o=Debian,n=wheezy"
                 pinning_pin_priority="1001"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -99,7 +100,6 @@
                 pinning_pin="origin mirror.netcologne.de"
                 pinning_pin_priority="1001"
                 repository="deb http://mirror.netcologne.de/mariadb/repo/5.5/debian wheezy main"
-                repository_origin="MariaDB"
                 repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0xcbcb082a1bb943db"
                 >
@@ -113,7 +113,6 @@
                 pinning_pin="origin mirror.netcologne.de"
                 pinning_pin_priority="1001"
                 repository="deb http://mirror.netcologne.de/mariadb/repo/10.0/debian wheezy main"
-                repository_origin="MariaDB"
                 repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0xcbcb082a1bb943db"
                 allow_switch_to="percona_5.6,remote_server"
@@ -128,7 +127,6 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 repository="deb http://repo.percona.com/apt wheezy main"
-                repository_origin="Percona"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 >
@@ -140,7 +138,6 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 repository="deb http://repo.percona.com/apt wheezy main"
-                repository_origin="Percona"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 allow_switch_to="mariadb_10.0,remote_server"
@@ -149,7 +146,7 @@
             <package>percona-server-server-5.6</package>
         </percona_5.6>
         <remote_server
-                pinning_package="mysql-client-5.5 mysql-common libmysqlclient16 libmysqlclient18"
+                pinning_package="mysql-client-5.5 mysql-common libmysqlclient18"
                 pinning_pin="release o=Debian,n=wheezy"
                 pinning_pin_priority="1001"
                 >

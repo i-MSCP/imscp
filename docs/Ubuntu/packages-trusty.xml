@@ -72,7 +72,7 @@
     </named>
     <sql default="mysql_5.5">
         <mysql_5.5
-                pinning_package="mysql-server-5.5 mysql-server-5.5 mysql-common libmysqlclient16 libmysqlclient18"
+                pinning_package="mysql-server-5.5 mysql-client-5.5 mysql-common libmysqlclient18"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
                 >
@@ -81,7 +81,7 @@
             <package>mysql-common</package>
         </mysql_5.5>
         <mariadb_5.5
-                pinning_package="*"
+                pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common mysql-common libmysqlclient18"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
                 >
@@ -95,7 +95,6 @@
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
                 repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu trusty main"
-                repository_origin="MariaDB"
                 repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0xcbcb082a1bb943db"
                 allow_switch_to="percona_5.6,remote_server"
@@ -110,7 +109,6 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 repository="deb http://repo.percona.com/apt trusty main"
-                repository_origin="Percona"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 >
@@ -122,7 +120,6 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 repository="deb http://repo.percona.com/apt trusty main"
-                repository_origin="Percona"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 allow_switch_to="mariadb_10.0,remote_server"
@@ -131,7 +128,7 @@
             <package>percona-server-server-5.6</package>
         </percona_5.6>
         <remote_server
-                pinning_package="mysql-server-5.5 mysql-server-5.5 mysql-common libmysqlclient16 libmysqlclient18"
+                pinning_package="mysql-server-5.5 mysql-common libmysqlclient18"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
                 >
@@ -152,6 +149,8 @@
         <package>php5-json</package>
         <package>php5-mcrypt</package>
         <package>php5-mysqlnd</package>
+        <package_conflict>php-apc</package_conflict>
+        <package_conflict>php5-suhosin</package_conflict>
     </php>
     <perl>
         <package>perl</package>

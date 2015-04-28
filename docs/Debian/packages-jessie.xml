@@ -1,9 +1,10 @@
 <packages>
     <frontend default="nginx">
-        <nginx>
-            <package>nginx</package>
+        <nginx repository_conflict="deb http://nginx.org/.*">
+            <package>nginx-light</package>
             <package>spawn-fcgi</package>
             <package>php5-cgi</package>
+            <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>
     <httpd default="apache_php_fpm">
@@ -85,7 +86,7 @@
             <package>mysql-common</package>
         </mariadb_10.0>
         <remote_server
-                pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
+                pinning_package="mysql-client-5.5 mysql-common libmysqlclient18"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
                 >
@@ -105,6 +106,8 @@
         <package>php5-json</package>
         <package>php5-mcrypt</package>
         <package>php5-mysqlnd</package>
+        <package_conflict>php-apc</package_conflict>
+        <package_conflict>php5-suhosin</package_conflict>
     </php>
     <perl>
         <package>perl</package>

@@ -35,6 +35,7 @@ use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::LsbRelease;
 use iMSCP::Execute;
+use version;
 use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =head1 DESCRIPTION
@@ -64,23 +65,24 @@ sub _init
 	delete $ENV{'DEBCONF_FORCE_DIALOG'};
 	$ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt;
 
-	$self->{'repositorySections'} = ['main', 'universe', 'multiverse'];
+	$self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
 	$self->{'preRequiredPackages'} = [
 		'aptitude', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'liblist-moreutils-perl',
 		'libscalar-defer-perl', 'libxml-simple-perl', 'wget', 'rsync'
 	];
 
-	if(iMSCP::LsbRelease->getInstance()->getRelease(1) < 12.10) {
+	if(version->parse(iMSCP::LsbRelease->getInstance()->getRelease(1)) < version->parse('12.10')) {
 		push @{$self->{'preRequiredPackages'}}, 'python-software-properties';
 	} else {
 		push @{$self->{'preRequiredPackages'}}, 'software-properties-common';
 	}
 
-	$self->{'aptRepositoriesToRemove'} = { };
-	$self->{'aptRepositoriesToAdd'} = { };
+	$self->{'aptRepositoriesToRemove'} = [];
+	$self->{'aptRepositoriesToAdd'} = [];
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
 	$self->{'packagesToInstallDelayed'} = [];
+	$self->{'packagesToPreUninstall'} = [];
 	$self->{'packagesToUninstall'} = [];
 
 	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') unless $main::skippackages;
@@ -100,36 +102,42 @@ sub _processAptRepositories
 {
 	my $self = $_[0];
 
-	if(%{$self->{'aptRepositoriesToRemove'}} || %{$self->{'aptRepositoriesToAdd'}}) {
+	if(@{$self->{'aptRepositoriesToRemove'}} || @{$self->{'aptRepositoriesToAdd'}}) {
 		my ($stdout, $stderr);
 		my @cmd = ();
 
-		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
+		my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
 
 		my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 		return $rs if $rs;
 
 		my $fileContent = $file->get();
-
 		unless (defined $fileContent) {
 			error('Unable to read /etc/apt/sources.list file');
 			return 1;
 		}
 
-		delete $self->{'aptRepositoriesToRemove'}->{$_} for keys %{$self->{'aptRepositoriesToAdd'}};
+		# Filter list of repositories which must not be removed
+		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
+			@{$self->{'aptRepositoriesToRemove'}} = grep {
+				not exists $repository->{'repository'}->{$_}
+			} @{$self->{'aptRepositoriesToRemove'}};
+		}
 
 		my $distroRelease = iMSCP::LsbRelease->getInstance()->getRelease(1);
 
-		for(keys %{$self->{'aptRepositoriesToRemove'}}) {
-			if(/^ppa:/ || $fileContent =~ /^$_/m) {
-				if($distroRelease > 10.04) {
-					@cmd = ('add-apt-repository -y -r', escapeShell($_));
+		for my $repository(@{$self->{'aptRepositoriesToRemove'}}) {
+			my $isPPA = ($repository->{'repository'} =~ /^ppa:/);
+
+			if($isPPA || $fileContent =~ /^$repository->{'repository'}/m) {
+				if($isPPA && version->parse($distroRelease) > version->parse('10.04')) {
+					@cmd = ('add-apt-repository -y -r', escapeShell($repository->{'repository'}));
 					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
-				} else {
-					if(m%^ppa:(.*)/(.*)%) { # PPA repository
+				} elsif($isPPA) {
+					if($repository->{'repository'} =~ m%^ppa:(.*)/(.*)%) { # PPA repository
 						my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
 
 						if(glob $ppaFile) {
@@ -138,39 +146,40 @@ sub _processAptRepositories
 							error($stderr) if $stderr && $rs;
 							return $rs if $rs;
 						}
-					} else { # Normal repository
-						# Remove the repository from the sources.list file
-						$fileContent = $file->get();
-						$fileContent =~ s/\n?$_\n?//gm;
-
-						$rs = $file->set($fileContent);
-						return $rs if $rs;
-
-						$rs = $file->save();
-						return $rs if $rs;
+					} else {
+						error(sprintf('Unable to remove the %s APT repository'), $repository->{'repository'});
+						return 1;
 					}
+				} else {
+					# Remove the repository from the sources.list file
+					$fileContent =~ s/^\n?$repository->{'repository'}\n$//gm;
 				}
 			}
 		}
 
-		# Add needed APT repositories
-		for(keys %{$self->{'aptRepositoriesToAdd'}}) {
-			if(/^ppa:/ || $fileContent !~ /^$_/m) {
-				my $repository = $self->{'aptRepositoriesToAdd'}->{$_};
+		# Save new sources.list file
+		$rs = $file->set($fileContent);
+		$rs ||= $file->save();
+		return $rs if $rs;
 
-				if(/^ppa:/) { # PPA repository
-					if($distroRelease > 10.4) {
+		# Add needed APT repositories
+		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
+			my $isPPA = ($repository->{'repository'} =~ /^ppa:/);
+
+			if($isPPA || $fileContent !~ /^$repository->{'repository'}/m) {
+				if($isPPA) { # PPA repository
+					if(version->parse($distroRelease) > version->parse('10.4')) {
 						if($repository->{'repository_key_srv'}) {
 							@cmd = (
 								'add-apt-repository -y -k',
 								escapeShell($repository->{'repository_key_srv'}),
-								escapeShell($_)
+								escapeShell($repository->{'repository'})
 							);
 						} else {
-							@cmd = ('add-apt-repository -y', escapeShell($_));
+							@cmd = ('add-apt-repository -y', escapeShell($repository->{'repository'}));
 						}
 				 	} else {
-						@cmd = ('add-apt-repository', escapeShell($_));
+						@cmd = ('add-apt-repository', escapeShell($repository->{'repository'}));
 				 	}
 
 					$rs = execute("@cmd", \$stdout, \$stderr);
@@ -178,11 +187,11 @@ sub _processAptRepositories
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs
 				} else { # Normal repository
-					if($distroRelease > 10.4) {
-						@cmd = ('add-apt-repository -y ', escapeShell($_));
+					if(version->parse($distroRelease) > version->parse('10.4')) {
+						@cmd = ('add-apt-repository -y ', escapeShell($repository->{'repository'}));
 						$rs = execute("@cmd", \$stdout, \$stderr);
 					} else {
-						@cmd = ('add-apt-repository ', escapeShell($_));
+						@cmd = ('add-apt-repository ', escapeShell($repository->{'repository'}));
 						$rs = execute("@cmd", \$stdout, \$stderr);
 					}
 
@@ -200,7 +209,7 @@ sub _processAptRepositories
 								escapeShell($repository->{'repository_key_id'})
 							);
 						} else {
-							error("The repository_key_id entry for the '$_' repository was not found");
+							error("The repository_key_id entry for the '$repository->{'repository'}' repository was not found");
 							return 1;
 						}
 					} elsif($repository->{'repository_key_uri'}) {

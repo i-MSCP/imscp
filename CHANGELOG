@@ -23,6 +23,8 @@ CONFIGS
 	Added: libbit-vector-perl package in list of pre-required packages ( Debian / Ubuntu )
 	Added: libclass-insideout-perl and libscalar-defer-perl in list of pre-required packages ( Debian / Ubuntu )
 	Added: php-apc package ( Debian < Jessie / Ubuntu < Trusty Thar )
+	Added: Support for Debian Strech ( testing )
+	Changed: Install nginx-light package instead of nginx package when possible
 	Fixed: Wrong TMPDIR path ( php5-fpm )
 	Removed: INIT_SCRIPTS_DIR, SERVICE_INSTALLER, SERVICE_MNGR, IMSCP_DAEMON_SNAME, IMSCP_NETWORK_SNAME and
 		IMSCP_PANEL_SNAME main configuration parameters
@@ -55,6 +57,8 @@ FRONTEND
 
 INSTALLER
 	Added: Debug output when installer is run with --noprompt and --debug options
+	Added: package_conflict field which allows to declare conflicting package that must be pre-removed
+	Added: repository_conflict attribute which allows to declare a conflicting repository that must be removed
 	Added: Update notices
 	Fixed: Missing Email::Simple Perl module ( no longer required )
 	Fixed: Use of uninitialized value $dbPass in string ( imscp/engine/setup/imscp-setup-methods.pl line 482 )
