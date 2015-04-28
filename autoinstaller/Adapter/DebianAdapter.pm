@@ -385,36 +385,36 @@ sub _buildPackageList
 
 	unless($@) {
 		# For each package section found in package list
-		for (sort keys %{$pkgList}) {
-			if(exists $pkgList->{$_}->{'package'} || exists $pkgList->{$_}->{'package_delayed'}) {
+		for my $section(sort keys %{$pkgList}) {
+			if(exists $pkgList->{$section}->{'package'} || exists $pkgList->{$section}->{'package_delayed'}) {
 				# Simple list of packages to install
 
-				if(exists $pkgList->{$_}->{'package'}) {
-					push @{$self->{'packagesToInstall'}}, @{$pkgList->{$_}->{'package'}};
+				if(exists $pkgList->{$section}->{'package'}) {
+					push @{$self->{'packagesToInstall'}}, @{$pkgList->{$section}->{'package'}};
 				}
 
-				if(exists $pkgList->{$_}->{'package_delayed'}) {
-					push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$_}->{'package_delayed'}};
+				if(exists $pkgList->{$section}->{'package_delayed'}) {
+					push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$section}->{'package_delayed'}};
 				}
 			} else {
 				# List of alternative services
 
-				my $dAlt = delete $pkgList->{$_}->{'default'};
-				my $sAlt = $main::questions{ uc($_) . '_SERVER' } || $main::imscpConfig{ uc($_) . '_SERVER' };
+				my $dAlt = delete $pkgList->{$section}->{'default'};
+				my $sAlt = $main::questions{ uc($section) . '_SERVER' } || $main::imscpConfig{ uc($section) . '_SERVER' };
 				my $forceDialog = ($sAlt) ? 0 : 1;
 				$sAlt = $dAlt if $forceDialog;
 
-				my @alts = keys %{$pkgList->{$_}};
+				my @alts = keys %{$pkgList->{$section}};
 
 				if(not $sAlt ~~ @alts) { # Handle wrong or deprecated entry case
 					$sAlt = $dAlt;
 					$forceDialog = 1;
 				}
 
-				if(exists $pkgList->{$_}->{$sAlt}->{'allow_switch_to'}) {
-					if($pkgList->{$_}->{$sAlt}->{'allow_switch_to'} ne '') {
-						my @allowedAlts = (split(',', $pkgList->{$_}->{$sAlt}->{'allow_switch_to'}), $sAlt);
-						@alts = grep { $_ ~~ @allowedAlts } @alts;
+				if(exists $pkgList->{$section}->{$sAlt}->{'allow_switch_to'}) {
+					if($pkgList->{$section}->{$sAlt}->{'allow_switch_to'} ne '') {
+						my @allowedAlts = (split(',', $pkgList->{$section}->{$sAlt}->{'allow_switch_to'}), $sAlt);
+						@alts = grep { $section ~~ @allowedAlts } @alts;
 					} else {
 						@alts = ($sAlt);
 					}
@@ -423,18 +423,18 @@ sub _buildPackageList
 				@alts = sort @alts;
 
 				# Ask user service to install if needed
-				if(@alts > 1 && ($forceDialog || $main::reconfigure ~~ [$_, 'servers', 'all'])) {
+				if(@alts > 1 && ($forceDialog || $main::reconfigure ~~ [ $section, 'servers', 'all' ])) {
 					iMSCP::Dialog->getInstance()->set('no-cancel', '');
 					(my $ret, $sAlt) = iMSCP::Dialog->getInstance()->radiolist(<<EOF, [@alts], $sAlt);
 
-Please, choose the i-MSCP server implementation you want use for the $_ service:
+Please, choose the i-MSCP server implementation you want use for the $section service:
 EOF
 					return $ret if $ret; # Handle ESC case
 
 					iMSCP::Dialog->getInstance()->set('no-cancel');
 				}
 
-				if($_ eq 'sql') {
+				if($section eq 'sql') {
 					my ($stdout, $stderr);
 					my $rs = execute("$main::imscpConfig{'CMD_RM'} -f /var/lib/mysql/debian-*.flag", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
@@ -445,63 +445,63 @@ EOF
 				for my $alt(@alts) {
 					if($alt ne $sAlt) {
 						# APT repository to remove
-						if(exists $pkgList->{$_}->{$alt}->{'repository'}) {
-							push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$_}->{$alt}->{'repository'};
+						if(exists $pkgList->{$section}->{$alt}->{'repository'}) {
+							push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$alt}->{'repository'};
 						}
 
 						# Packages to uninstall
 
-						if(exists $pkgList->{$_}->{$alt}->{'package'}) {
-							push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$_}->{$alt}->{'package'}};
+						if(exists $pkgList->{$section}->{$alt}->{'package'}) {
+							push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$section}->{$alt}->{'package'}};
 						}
 
-						if(exists $pkgList->{$_}->{$alt}->{'package_delayed'}) {
-							push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$_}->{$alt}->{'package_delayed'}};
+						if(exists $pkgList->{$section}->{$alt}->{'package_delayed'}) {
+							push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$section}->{$alt}->{'package_delayed'}};
 						}
 					}
 				}
 
 				# APT preferences to add
-				if(exists $pkgList->{$_}->{$sAlt}->{'pinning_package'}) {
+				if(exists $pkgList->{$section}->{$sAlt}->{'pinning_package'}) {
 					push @{$self->{'aptPreferences'}}, {
-						'pinning_package' => $pkgList->{$_}->{$sAlt}->{'pinning_package'},
-						'pinning_pin' => $pkgList->{$_}->{$sAlt}->{'pinning_pin'} || undef,
-						'pinning_pin_priority' => $pkgList->{$_}->{$sAlt}->{'pinning_pin_priority'} || undef,
+						'pinning_package' => $pkgList->{$section}->{$sAlt}->{'pinning_package'},
+						'pinning_pin' => $pkgList->{$section}->{$sAlt}->{'pinning_pin'} || undef,
+						'pinning_pin_priority' => $pkgList->{$section}->{$sAlt}->{'pinning_pin_priority'} || undef,
 					};
 				}
 
 				# Conflicting repository which must be removed
-				if(exists $pkgList->{$_}->{$sAlt}->{'repository_conflict'}) {
-					push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$_}->{$sAlt}->{'repository_conflict'};
+				if(exists $pkgList->{$section}->{$sAlt}->{'repository_conflict'}) {
+					push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$sAlt}->{'repository_conflict'};
 				}
 
 				# APT repository to add
-				if(exists $pkgList->{$_}->{$sAlt}->{'repository'}) {
+				if(exists $pkgList->{$section}->{$sAlt}->{'repository'}) {
 					push @{$self->{'aptRepositoriesToAdd'}}, {
-						'repository' => $pkgList->{$_}->{$sAlt}->{'repository'},
-						'repository_key_uri' => $pkgList->{$_}->{$sAlt}->{'repository_key_uri'} || undef,
-						'repository_key_id' => $pkgList->{$_}->{$sAlt}->{'repository_key_id'} || undef,
-						'repository_key_srv' => $pkgList->{$_}->{$sAlt}->{'repository_key_srv'} || undef
+						'repository' => $pkgList->{$section}->{$sAlt}->{'repository'},
+						'repository_key_uri' => $pkgList->{$section}->{$sAlt}->{'repository_key_uri'} || undef,
+						'repository_key_id' => $pkgList->{$section}->{$sAlt}->{'repository_key_id'} || undef,
+						'repository_key_srv' => $pkgList->{$section}->{$sAlt}->{'repository_key_srv'} || undef
 					};
 				}
 
 				# Conflicting packages which must be pre-removed
-				if(exists $pkgList->{$_}->{$sAlt}->{'package_conflict'}) {
-					push @{$self->{'packagesToPreUninstall'}}, @{$pkgList->{$_}->{$sAlt}->{'package_conflict'}};
+				if(exists $pkgList->{$section}->{$sAlt}->{'package_conflict'}) {
+					push @{$self->{'packagesToPreUninstall'}}, @{$pkgList->{$section}->{$sAlt}->{'package_conflict'}};
 				}
 
 				# Packages to install
 
-				if(exists $pkgList->{$_}->{$sAlt}->{'package'}) {
-					push @{$self->{'packagesToInstall'}}, @{$pkgList->{$_}->{$sAlt}->{'package'}};
+				if(exists $pkgList->{$section}->{$sAlt}->{'package'}) {
+					push @{$self->{'packagesToInstall'}}, @{$pkgList->{$section}->{$sAlt}->{'package'}};
 				}
 
-				if(exists $pkgList->{$_}->{$sAlt}->{'package_delayed'}) {
-					push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$_}->{$sAlt}->{'package_delayed'}};
+				if(exists $pkgList->{$section}->{$sAlt}->{'package_delayed'}) {
+					push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$section}->{$sAlt}->{'package_delayed'}};
 				}
 
 				# Set server implementation to use
-				$main::questions{ uc($_) . '_SERVER' } = $sAlt;
+				$main::questions{ uc($section) . '_SERVER' } = $sAlt;
 			}
 		}
 	} else {
