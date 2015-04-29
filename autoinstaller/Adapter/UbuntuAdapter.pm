@@ -31,6 +31,7 @@ package autoinstaller::Adapter::UbuntuAdapter;
 
 use strict;
 use warnings;
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::LsbRelease;
@@ -119,8 +120,8 @@ sub _processAptRepositories
 
 		# Filter list of repositories which must not be removed
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
-			@{$self->{'aptRepositoriesToRemove'}} = grep {
-				not exists $repository->{'repository'}->{$_}
+			@{$self->{'aptRepositoriesToRemove'}} = grep {
+				 $repository->{'repository'} !~ /^$_/
 			} @{$self->{'aptRepositoriesToRemove'}};
 		}
 

@@ -606,7 +606,7 @@ sub _processAptRepositories
 		# Filter list of repositories which must not be removed
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
 			@{$self->{'aptRepositoriesToRemove'}} = grep {
-				not exists $repository->{'repository'}->{$_}
+				 $repository->{'repository'} !~ /^$_/
 			} @{$self->{'aptRepositoriesToRemove'}};
 		}
 
