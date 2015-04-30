@@ -688,7 +688,7 @@ $tpl->assign(
 		'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the %s directive', true, '<b>max_input_time</b>'),
 		'TR_PHPINI_MEMORY_LIMIT' => tr('Value for the %s directive', true, '<b>memory_limit</b>'),
 		'TR_PHPINI_OPEN_BASEDIR' => tr('Value for the %s directive', true, '<b>open_basedir</b>'),
-		'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('Paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
+		'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => tohtml(tr('Paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.', true), 'htmlAttr'),
 		'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the %s directive', true, '<b>disable_functions</b>'),
 		'TR_MIB' => tr('MiB'),
 		'TR_SEC' => tr('Sec.')
