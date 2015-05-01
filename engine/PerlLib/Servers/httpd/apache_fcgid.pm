@@ -386,7 +386,7 @@ sub deleteDmn
 				}
 			}
 
-			if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
+			if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes' && $parentDir ne $userWebDir) {
 				do {
 					setImmutable($parentDir) if -d $parentDir;
 				} while (($parentDir = dirname($parentDir)) ne $userWebDir);
