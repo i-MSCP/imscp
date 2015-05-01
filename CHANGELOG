@@ -6,8 +6,8 @@ Git 1.2.x
 
 BACKEND
 	Added: Custom DNS module ( Modules::CustomDNS )
-	Added: New 'temporary' attributes which allow to override configuration values temporarily
-	Added: onBeforeSetPluginStatus event in Modules::Plugin
+	Added: New 'temporary' attribute which allow to override configuration values temporarily ( iMSCP::Config )
+	Added: onBeforeSetPluginStatus event ( Modules::Plugin )
 	Added: PHP_FCGI_CHILDREN, PHP_FCGI_MAX_REQUESTS and PHP_VERSION configuration parameters ( apache_fcgid )
 	Added: Service providers ( Sysvinit, Upstart and Systemd )
 	Changed: Perl version >= 5.14.2 is now required
@@ -16,7 +16,6 @@ BACKEND
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload is sufficient
 	Fixed: In some contexts, configuration files which belongs to subdomains are not regenerated
 	Fixed: Some errors are not trapped
-	Renamed: FCGI starter template to php-fcgi-starter ( was php5-fcgid-starter )
 
 CONFIGS
 	Added: imscp_daemon, imscp_network and imscp_panel upstart jobs
@@ -27,8 +26,9 @@ CONFIGS
 	Changed: Install nginx-light package instead of nginx package when possible
 	Fixed: Wrong TMPDIR path ( php5-fpm )
 	Removed: INIT_SCRIPTS_DIR, SERVICE_INSTALLER, SERVICE_MNGR, IMSCP_DAEMON_SNAME, IMSCP_NETWORK_SNAME and
-		IMSCP_PANEL_SNAME main configuration parameters
+		IMSCP_PANEL_SNAME configuration parameters
 	Removed: mariadb 5.5 from Debian Jessie package file ( replaced by mariadb 10.0 )
+	Renamed: FCGI starter template to php-fcgi-starter ( apache_fcgid server impl. )
 
 DAEMON
 	Added: End child syslog message
@@ -43,7 +43,7 @@ DATABASE
 
 DISTRIBUTIONS
 	Removed: Support for Debian Squeeze ( 6.x ) - Do not fit with new i-MSCP requirements ( Perl version is too old )
-	Removed: Support for Ubuntu Lucid Lynx ( 10.04 LTS ) - EOL as per April 30, 2015 (Server version)
+	Removed: Support for Ubuntu Lucid Lynx ( 10.04 LTS ) - EOL as per April 30, 2015 ( Server version )
 
 FRONTEND
 	Added Custom DNS items in debugger interface ( admin level )
@@ -66,7 +66,7 @@ INSTALLER
 	Fixed: Wrong package name in preseed file ( RainLoop )
 
 PACKAGES
-	Renamed: Fcgid starter template to php-fcgi-starter ( was php5-fcgi-starter ) ( FrontEnd )
+	Renamed: Fcgid starter template to php-fcgi-starter ( FrontEnd )
 
 PLUGINS
 	Added: iMSCP_Plugin::getConfigPrev() and iMSCP_Plugin::getConfigPrevParam() methods
