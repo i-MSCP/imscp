@@ -127,17 +127,17 @@ sub _processAptRepositories
 		my $distroRelease = iMSCP::LsbRelease->getInstance()->getRelease(1);
 
 		for my $repository(@{$self->{'aptRepositoriesToRemove'}}) {
-			my $isPPA = ($repository->{'repository'} =~ /^ppa:/);
+			my $isPPA = ($repository =~ /^ppa:/);
 
-			if($isPPA || $fileContent =~ /^$repository->{'repository'}/m) {
+			if($isPPA || $fileContent =~ /^$repository/m) {
 				if($isPPA && version->parse($distroRelease) > version->parse('10.04')) {
-					@cmd = ('add-apt-repository -y -r', escapeShell($repository->{'repository'}));
+					@cmd = ('add-apt-repository -y -r', escapeShell($repository));
 					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
 				} elsif($isPPA) {
-					if($repository->{'repository'} =~ m%^ppa:(.*)/(.*)%) { # PPA repository
+					if($repository =~ m%^ppa:(.*)/(.*)%) {
 						my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
 
 						if(glob $ppaFile) {
@@ -147,12 +147,12 @@ sub _processAptRepositories
 							return $rs if $rs;
 						}
 					} else {
-						error(sprintf('Unable to remove the %s APT repository'), $repository->{'repository'});
+						error(sprintf('Unable to remove the %s PPA repository'), $repository);
 						return 1;
 					}
 				} else {
-					# Remove the repository from the sources.list file
-					$fileContent =~ s/^\n?$repository->{'repository'}\n$//gm;
+					(my $regexp = $repository) =~ s/deb/(?:#\\s*)?(?:deb|deb-src)/;
+					$fileContent =~ s/^\n?$regexp\n//gm;
 				}
 			}
 		}
@@ -178,9 +178,9 @@ sub _processAptRepositories
 						} else {
 							@cmd = ('add-apt-repository -y', escapeShell($repository->{'repository'}));
 						}
-				 	} else {
+					} else {
 						@cmd = ('add-apt-repository', escapeShell($repository->{'repository'}));
-				 	}
+					}
 
 					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
@@ -194,7 +194,6 @@ sub _processAptRepositories
 						@cmd = ('add-apt-repository ', escapeShell($repository->{'repository'}));
 						$rs = execute("@cmd", \$stdout, \$stderr);
 					}
-
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;

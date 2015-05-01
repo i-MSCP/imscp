@@ -357,7 +357,7 @@ sub _init
 
 =item _buildPackageList()
 
- Build lists of Debian packages to uninstalle and install
+ Build lists of Debian packages to uninstall and install
 
  Return int 0 on success, other on failure
 
@@ -612,8 +612,8 @@ sub _processAptRepositories
 
 		for my $repository(@{$self->{'aptRepositoriesToRemove'}}) {
 			# Remove the repository from the sources.list file
-			(my $regexp = $repository) =~ s/deb/(?:deb|deb-src)/; # Ensure backward compatibility (deb-src)
-			$fileContent =~ s/^\n?$regexp\n$//gm;
+			(my $regexp = $repository) =~ s/deb/(?:#\\s*)?(?:deb|deb-src)/;
+			$fileContent =~ s/^\n?$regexp\n//gm;
 		}
 
 		# Add needed APT repositories
