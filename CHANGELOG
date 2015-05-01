@@ -94,6 +94,7 @@ YOUTRACK
 	Fixed #IP-1314: Custom DNS SRV record - Missing TLS protocol
 	Fixed #IP-1315: Defect - Statistics overview with special characters breaks view
 	Fixed #IP-1323: Invalid query result column used in change_domain_status() function
+	Fixed #IP-1327: Unable to add subdomain (subals) - An error occurred while reading flags on ...
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.2

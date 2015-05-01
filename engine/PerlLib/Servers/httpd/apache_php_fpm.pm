@@ -367,16 +367,31 @@ sub deleteDmn
 	# Remove Web folder directory ( only if it is not shared with another domain )
 	if(-d $data->{'WEB_DIR'}) {
 		if($data->{'DOMAIN_TYPE'} eq 'dmn' || ($data->{'MOUNT_POINT'} ne '/' && ! @{$data->{'SHARED_MOUNT_POINTS'}})) {
+			(my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'}) =~ s%/+$%%;
 			my $parentDir = dirname($data->{'WEB_DIR'});
-			my $isProtectedParentDir = isImmutable($parentDir);
 
-			clearImmutable($parentDir) if $isProtectedParentDir;
+			clearImmutable($parentDir);
 			clearImmutable($data->{'WEB_DIR'}, 'recursive');
 
-			$rs = iMSCP::Dir->new('dirname' => $data->{'WEB_DIR'})->remove();
+			$rs = iMSCP::Dir->new( dirname => $data->{'WEB_DIR'} )->remove();
 			return $rs if $rs;
 
-			setImmutable($parentDir) if $isProtectedParentDir;
+			if($parentDir ne $userWebDir) {
+				my $dir = iMSCP::Dir->new( dirname => $parentDir );
+
+				if($dir->isEmpty()) {
+					clearImmutable(dirname($parentDir));
+
+					$rs = $dir->remove();
+					return $rs if $rs;
+				}
+			}
+
+			if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
+				do {
+					setImmutable($parentDir) if -d $parentDir;
+				} while (($parentDir = dirname($parentDir)) ne $userWebDir);
+			}
 		}
 	}
 
@@ -1775,7 +1790,7 @@ sub _addFiles
 		return $rs if $rs;
 	}
 
-	# Create Web folder tree only if th domain is not forwarded
+	# Create Web folder tree only if the domain is not forwarded
 	if($data->{'FORWARD'} eq 'no') {
 		# Build Web directory tree using skeleton from /etc/imscp/apache/skel - BEGIN
 
@@ -1838,12 +1853,25 @@ sub _addFiles
 
 		my $parentDir = dirname($webDir);
 
-		clearImmutable($parentDir);
+		# Fix #1327 - Ensure that parent Web folder exists
+		unless(-d $parentDir) {
+			clearImmutable(dirname($parentDir));
+
+			# Create parent Web folder
+			$rs = iMSCP::Dir->new(
+				dirname => $parentDir
+			)->make(
+				{ 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => 0750 }
+			);
+			return $rs if $rs;
+		} else {
+			clearImmutable($parentDir);
+		}
 
 		if(-d $webDir) {
 			clearImmutable($webDir);
 		} else {
-			# Create Web directory
+			# Create Web folder
 			$rs = iMSCP::Dir->new(
 				'dirname' => $webDir
 			)->make(
@@ -1903,8 +1931,8 @@ sub _addFiles
 		}
 
 		if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
-			setImmutable($webDir);
-			setImmutable($parentDir) if $parentDir ne $main::imscpConfig{'USER_WEB_DIR'};
+			(my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'}) =~ s%/+$%%;
+			do { setImmutable($webDir); } while (($webDir = dirname($webDir)) ne $userWebDir);
 		}
 
 		# Permissions, owner and group - Ending
