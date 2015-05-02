@@ -81,7 +81,7 @@ sub process
 
 		@sql = (
 			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'),
 			$domainId
 		);
 	} elsif($self->{'domain_status'} eq 'todelete') {
@@ -90,7 +90,7 @@ sub process
 		if($rs) {
 			@sql = (
 				'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-				scalar getMessageByType('error'),
+				scalar getMessageByType('error') || 'Unknown error',
 				$domainId
 			);
 		} else {
@@ -101,7 +101,7 @@ sub process
 
 		@sql = (
 			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-			($rs ? scalar getMessageByType('error') : 'disabled'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'disabled'),
 			$domainId
 		);
 	} elsif($self->{'domain_status'} eq 'torestore') {
@@ -109,7 +109,7 @@ sub process
 
 		@sql = (
 			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'),
 			$domainId
 		);
 	}

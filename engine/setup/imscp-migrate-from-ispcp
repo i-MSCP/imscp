@@ -175,7 +175,7 @@ sub removeIspcpFiles
 
 \\Z1\\ZuErrors were detected\\Zn
 
-The following errors occured:
+The following errors occurred:
 
 $errors
 
@@ -223,7 +223,7 @@ sub saveIspLogo
 
 \\Z1\\ZuErrors were detected\\Zn
 
-The following errors occured:
+The following errors occurred:
 
 $errors
 
@@ -272,7 +272,7 @@ sub dbUpgrade
 
 \\Z1\\ZuErrors were detected\\Zn
 
-The following errors occured while database upgrade:
+The following errors occurred while database upgrade:
 
 $errors
 

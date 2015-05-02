@@ -78,7 +78,7 @@ sub process
 
 		@sql = (
 			'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'), $subdomainId
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $subdomainId
 		);
 	} elsif($self->{'subdomain_status'} eq 'todelete') {
 		$rs = $self->delete();
@@ -86,7 +86,7 @@ sub process
 		if($rs) {
 			@sql = (
 				'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?',
-				scalar getMessageByType('error'), $subdomainId
+				scalar getMessageByType('error') || 'Unknown error', $subdomainId
 			);
 		} else {
 			@sql = ('DELETE FROM subdomain WHERE subdomain_id = ?', $subdomainId);
@@ -96,14 +96,14 @@ sub process
 
 		@sql = (
 			'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?',
-			($rs ? scalar getMessageByType('error') : 'disabled'), $subdomainId
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'disabled'), $subdomainId
 		);
 	} elsif($self->{'subdomain_status'} eq 'torestore') {
 		$rs = $self->restore();
 
 		@sql = (
 			'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'), $subdomainId
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $subdomainId
 		);
 	}
 

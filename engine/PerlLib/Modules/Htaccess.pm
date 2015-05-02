@@ -80,7 +80,9 @@ sub process
 
 		if($rs) {
 			@sql = (
-				'UPDATE htaccess SET status = ? WHERE id = ?', scalar getMessageByType('error'), $htaccessId
+				'UPDATE htaccess SET status = ? WHERE id = ?',
+				scalar getMessageByType('error') || 'Unknown error',
+				$htaccessId
 			);
 		} else {
 			@sql = ('DELETE FROM htaccess WHERE id = ?', $htaccessId);

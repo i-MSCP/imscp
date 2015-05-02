@@ -113,7 +113,7 @@ function admin_clearLogs()
 			admin_sendJsonResponse(202, array('message' => tr('Nothing has been deleted.', true)));
 		}
 	} catch(iMSCP_Exception_Database $e) {
-		admin_sendJsonResponse(500, array('message' => tr('An unexpected error occured: %s', true, $e->getMessage())));
+		admin_sendJsonResponse(500, array('message' => tr('An unexpected error occurred: %s', true, $e->getMessage())));
 	}
 }
 

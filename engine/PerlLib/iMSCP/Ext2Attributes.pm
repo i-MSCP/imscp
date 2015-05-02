@@ -214,7 +214,7 @@ for my $fname (keys %constants) {
 					my $flags;
 
 					if(_getAttributes($_, \$flags) == -1) {
-						error(sprintf('An error occured while reading flags on %s: %s', $name, $!));
+						error(sprintf('An error occurred while reading flags on %s: %s', $name, $!));
 					}
 
 					_setAttributes($_, $flags | $constants{$fname}) if defined $flags;
@@ -227,7 +227,7 @@ for my $fname (keys %constants) {
 			my $flags;
 
 			if(_getAttributes($name, \$flags) == -1) {
-				error(sprintf('An error occured while reading flags on %s: %s', $name, $!));
+				error(sprintf('An error occurred while reading flags on %s: %s', $name, $!));
 			}
 
 			_setAttributes($name, $flags | $constants{$fname}) if defined $flags;
@@ -249,7 +249,7 @@ for my $fname (keys %constants) {
 					my $flags;
 
 					if(_getAttributes($_, \$flags) == -1) {
-						error(sprintf('An error occured while reading flags on %s:', $name, $!));
+						error(sprintf('An error occurred while reading flags on %s:', $name, $!));
 					}
 
 					_setAttributes($_, $flags & ~$constants{$fname}) if defined $flags;
@@ -262,7 +262,7 @@ for my $fname (keys %constants) {
 			my $flags;
 
 			if(_getAttributes($name, \$flags) == -1) {
-				error(sprintf('An error occured while reading flags on %s: %s', $name, $!));
+				error(sprintf('An error occurred while reading flags on %s: %s', $name, $!));
 			}
 
 			_setAttributes($name, $flags & ~$constants{$fname}) if defined $flags;
@@ -279,7 +279,7 @@ for my $fname (keys %constants) {
 		my $flags;
 
 		if(_getAttributes($name, \$flags) == -1) {
-			error(sprintf('An error occured while reading flags on %s: %s', $name, $!));
+			error(sprintf('An error occurred while reading flags on %s: %s', $name, $!));
 		}
 
 		(defined $flags && $flags & $constants{$fname});

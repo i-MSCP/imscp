@@ -497,7 +497,7 @@ function doAction($pluginManager, $pluginName, $action)
 						}
 					}
 				} else {
-					set_page_message(tr('An unexpected error occured'));
+					set_page_message(tr('An unexpected error occurred'));
 				}
 			}
 		} catch(iMSCPException $e) {

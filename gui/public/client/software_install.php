@@ -42,7 +42,7 @@ function client_generatePage($tpl, $softwareId)
 			$tpl, $domainProperties['domain_id'], $softwareId, $row['created_by'], $domainProperties['domain_sqld_limit']
 		);
 	} else {
-		throw new iMSCP_Exception('An unexpected error occured. Please contact your reseller.');
+		throw new iMSCP_Exception('An unexpected error occurred. Please contact your reseller.');
 	}
 }
 

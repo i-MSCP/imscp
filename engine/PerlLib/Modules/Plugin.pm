@@ -108,7 +108,7 @@ sub process
 
 	my @sql = (
 		"UPDATE plugin SET " . ($rs ? 'plugin_error' : 'plugin_status') . " = ? WHERE plugin_id = ?",
-		$rs ? (scalar getMessageByType('error') || 'unknown error') : $actionStatusToNextStatus{$status},
+		$rs ? (scalar getMessageByType('error') || 'Unknown error') : $actionStatusToNextStatus{$status},
 		$pluginId
 	);
 	my $qrs = $self->{'db'}->doQuery('dummy', @sql);
@@ -439,7 +439,7 @@ sub _call
 	};
 
 	if($@) {
-		error("An unexpected error occured: $@");
+		error("An unexpected error occurred: $@");
 		return 1;
 	}
 
@@ -451,7 +451,7 @@ sub _call
 		# Return value from the run() action is ignored by default because it's the responsability of the plugins to set
 		# error status for their items. In case a plugin doesn't manage any item, it can force return value by defining
 		# the FORCE_RETVAL attribute and set it value to 'yes'
-		if($method ne 'run' || ($plugin->{'FORCE_RETVAL'} && $plugin->{'FORCE_RETVAL'} eq 'yes')) {
+		if($method ne 'run' || (defined $plugin->{'FORCE_RETVAL'} && $plugin->{'FORCE_RETVAL'} eq 'yes')) {
 			return $rs;
 		}
 	}

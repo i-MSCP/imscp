@@ -127,7 +127,7 @@ if (customerHasFeature('mail') && isset($_REQUEST['id'])) {
 			} elseif ($e->getCode() == 400) {
 				showBadRequestErrorPage();
 			} else {
-				set_page_message(tr('An unexpected error occured. Please contact your reseller.'), 'error');
+				set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
 			}
 		}
 	} else {

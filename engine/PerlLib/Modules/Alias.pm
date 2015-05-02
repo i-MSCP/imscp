@@ -64,7 +64,7 @@ sub process
 
 		@sql = (
 			"UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
-			($rs ? scalar getMessageByType('error') : 'ok'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'),
 			$aliasId
 		);
 	} elsif($self->{'alias_status'} eq 'todelete') {
@@ -73,7 +73,7 @@ sub process
 		if($rs) {
 			@sql = (
 				"UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
-				scalar getMessageByType('error'),
+				scalar getMessageByType('error') || 'Unknown error',
 				$aliasId
 			);
 		} else {
@@ -84,7 +84,7 @@ sub process
 
 		@sql = (
 			"UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
-			($rs ? scalar getMessageByType('error') : 'disabled'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'disabled'),
 			$aliasId
 		);
 	} elsif($self->{'alias_status'} eq 'torestore') {
@@ -92,7 +92,7 @@ sub process
 
 		@sql = (
 			"UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
-			($rs ? scalar getMessageByType('error') : 'ok'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'),
 			$aliasId
 		);
 	}

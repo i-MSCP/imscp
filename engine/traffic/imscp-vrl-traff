@@ -209,7 +209,7 @@ sub run
 		}
 	}
 
-	# Event triggered only if no error occured for the whole process
+	# Event triggered only if no error occurred for the whole process
 	$rs ||= iMSCP::EventManager->getInstance()->trigger('afterVrlTraffic');
 
 	if($rs) {

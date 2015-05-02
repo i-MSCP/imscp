@@ -268,7 +268,7 @@ sub getTraffic
 
 		# Test for logrotation
 		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastlineContent) {
-			# No logrotation occured. We want parse only new lines so we skip those already processed
+			# No logrotation occurred. We want parse only new lines so we skip those already processed
 			(tied @content)->defer;
 			@content = @content[$lastLineNo + 1 .. $#content];
 			(tied @content)->flush;

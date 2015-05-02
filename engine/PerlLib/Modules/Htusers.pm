@@ -74,7 +74,7 @@ sub process
 
 		@sql = (
 			'UPDATE htaccess_users SET status = ? WHERE id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'),
 			$htuserId
 		);
 	} elsif($self->{'status'} eq 'todelete') {

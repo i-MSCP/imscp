@@ -121,7 +121,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
 		<div class="wrapper">
 			<div id="content">
 				<div id="message_container">
-					<h1>An unexpected error occured</h1>
+					<h1>An unexpected error occurred</h1>
 					<pre>{$this->message}</pre>
 					<div class="buttons">
 						<a class="link_as_button" href="javascript:history.go(-1)" target="_self">Back</a>
@@ -167,7 +167,7 @@ HTML;
 			array(
 				'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Fatal Error',
 				'HEADER_BLOCK' => '',
-				'BOX_MESSAGE_TITLE' => 'An unexpected error occured',
+				'BOX_MESSAGE_TITLE' => 'An unexpected error occurred',
 				'PAGE_MESSAGE' => '',
 				'BOX_MESSAGE' => $this->message,
 				'BACK_BUTTON_DESTINATION' => $backButtonDestination,

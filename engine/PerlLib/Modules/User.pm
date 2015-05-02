@@ -81,7 +81,7 @@ sub process
 
 		@sql = (
 			'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'), $userId
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $userId
 		);
 	} elsif($self->{'admin_status'} eq 'todelete') {
 		$rs = $self->delete();

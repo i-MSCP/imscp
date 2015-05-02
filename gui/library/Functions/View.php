@@ -862,7 +862,7 @@ function gen_user_list($tpl)
 				$canChange = false;
 			} else {
 				$status = 'error';
-				$statusTooltip = tr('An unexpected error occured. Go to the debugger interface for more details.');
+				$statusTooltip = tr('An unexpected error occurred. Go to the debugger interface for more details.');
 				$statusTxt = translate_dmn_status(
 					($row['admin_status'] != 'ok') ? $row['admin_status'] : $row['domain_status']
 				);

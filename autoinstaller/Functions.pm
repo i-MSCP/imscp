@@ -181,7 +181,7 @@ sub build
 
 	for (@steps) {
 		$rs = step($_->[0], $_->[1], $nbSteps, $step);
-		error('An error occured while performing build steps') if $rs;
+		error('An error occurred while performing build steps') if $rs;
 		return $rs if $rs;
 		$step++;
 	}
@@ -279,7 +279,7 @@ EOF
 
 	for (@steps) {
 		$rs = step($_->[0], $_->[1], $nbSteps, $step);
-		error('An error occured while performing installation steps') if $rs;
+		error('An error occurred while performing installation steps') if $rs;
 		return $rs if $rs;
 
 		$step++;

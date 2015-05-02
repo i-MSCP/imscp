@@ -59,12 +59,12 @@ sub process
 
 	my @sql;
 
-	if($self->{'subdomain_alias_status'} ~~ ['toadd', 'tochange', 'toenable']) {
+	if($self->{'subdomain_alias_status'} ~~ [ 'toadd', 'tochange', 'toenable' ]) {
 		$rs = $self->add();
 
 		@sql = (
 			'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'),
 			$subAliasId
 		);
 	} elsif($self->{'subdomain_alias_status'} eq 'todelete') {
@@ -73,7 +73,7 @@ sub process
 		if($rs) {
 			@sql = (
 				'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?',
-				scalar getMessageByType('error'),
+				scalar getMessageByType('error') || 'Unknown error',
 				$subAliasId
 			);
 		} else {
@@ -84,7 +84,7 @@ sub process
 
 		@sql = (
 			'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?',
-			($rs ? scalar getMessageByType('error') : 'disabled'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'disabled'),
 			$subAliasId
 		);
 	} elsif($self->{'subdomain_alias_status'} eq 'torestore') {
@@ -92,7 +92,7 @@ sub process
 
 		@sql = (
 			'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'),
 			$subAliasId
 		);
 	}

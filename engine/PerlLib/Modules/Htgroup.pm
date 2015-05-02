@@ -74,7 +74,7 @@ sub process
 
 		@sql = (
 			"UPDATE htaccess_groups SET status = ? WHERE id = ?",
-			($rs ? scalar getMessageByType('error') : 'ok'),
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'),
 			$htgroupId
 		);
 	} elsif($self->{'status'} eq 'todelete') {

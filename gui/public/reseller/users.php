@@ -189,7 +189,7 @@ function generate_users_list($tpl, $resellerId)
 				$statusDomain = translate_dmn_status(
 					($row['admin_status'] != 'ok')  ? $row['admin_status'] : $row['domain_status']
 				);
-				$domainStatusTooltip = tr('An unexpected error occured. Please contact your administrator.');
+				$domainStatusTooltip = tr('An unexpected error occurred. Please contact your administrator.');
 				$statusBool = false;
 				$canChange = false;
 			}

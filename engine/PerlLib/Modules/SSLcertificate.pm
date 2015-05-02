@@ -77,7 +77,7 @@ sub process
 
 		@sql = (
 			'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
-			($rs ? scalar getMessageByType('error') : 'ok'), $certificateId
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $certificateId
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
