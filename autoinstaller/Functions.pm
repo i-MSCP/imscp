@@ -347,13 +347,9 @@ sub _showWelcomeMsg
 
 Welcome to the i-MSCP setup dialog.
 
-i-MSCP software appliance provides complete hosting automation for Linux platforms. It offers an easy-to-use graphical interface for administrators, resellers and customers, and complete functionality to manage a server and its components.
+i-MSCP ( internet Multi Server Control Panel ) is an open-source software which allows to manage shared hosting environments on Linux servers. i-MSCP aims to provide an easy-to-use Web interface for end-users, and to manage servers without any manual intervention on the filesystem.
 
 i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT professionals.
-
-With i-MSCP you can configure your server and applications, create customers with domains with a few point-and-click operations that take less than a minute.
-
-There is no limit to the number of administrators, resellers, customers and domains that can be created.
 
 \\Zb\\Z4License\\Zn\\ZB
 
