@@ -23,7 +23,7 @@ CONFIGS
 	Added: libclass-insideout-perl and libscalar-defer-perl in list of pre-required packages ( Debian / Ubuntu )
 	Added: php-apc package ( Debian < Jessie / Ubuntu < Trusty Thar )
 	Added: Support for Debian Strech ( testing )
-	Changed: Install nginx-light package instead of nginx package when possible
+	Changed: Install nginx-light package instead of nginx package
 	Fixed: Wrong TMPDIR path ( php5-fpm )
 	Removed: INIT_SCRIPTS_DIR, SERVICE_INSTALLER, SERVICE_MNGR, IMSCP_DAEMON_SNAME, IMSCP_NETWORK_SNAME and
 		IMSCP_PANEL_SNAME configuration parameters

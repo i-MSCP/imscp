@@ -1,16 +1,10 @@
 <packages>
     <frontend default="nginx">
-        <nginx
-                pinning_package="nginx"
-                pinning_pin="origin nginx.org"
-                pinning_pin_priority="1001"
-                repository="deb http://nginx.org/packages/ubuntu precise nginx"
-                repository_origin="nginx"
-                repository_key_uri="http://nginx.org/keys/nginx_signing.key"
-                >
-            <package>nginx</package>
+        <nginx repository_conflict="deb http://nginx.org/.*">
+            <package>nginx-light</package>
             <package>spawn-fcgi</package>
             <package>php5-cgi</package>
+            <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>
     <httpd default="apache_php_fpm">

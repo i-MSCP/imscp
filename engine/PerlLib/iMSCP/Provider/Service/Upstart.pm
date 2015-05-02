@@ -42,9 +42,6 @@ my $MANUAL = qr/^\s*manual\s*$/;
 # Paths where job files must be searched
 fieldhash my %paths;
 
-# Paths cache
-my %pathsCache = ();
-
 # Commands used in that package
 my %commands = (
 	'start' => '/sbin/start',
@@ -779,16 +776,12 @@ sub _searchJobFile
 
 	$jobFileType ||= 'conf';
 
-	unless(exists $pathsCache{$service}) {
-		for my $path(@{$paths{$self}}) {
-			my $filepath = File::Spec->join($path, $service . '.' . $jobFileType);
-			return $pathsCache{$service} = $filepath if -f $filepath;
-		}
-
-		die(sprintf('Could not find the upstart job %s file for the %s service', $jobFileType, $service));
+	for my $path(@{$paths{$self}}) {
+		my $filepath = File::Spec->join($path, $service . '.' . $jobFileType);
+		return $filepath if -f $filepath;
 	}
 
-	$pathsCache{$service};
+	die(sprintf('Could not find the upstart job %s file for the %s service', $jobFileType, $service));
 }
 
 =item _readJobFile($service)

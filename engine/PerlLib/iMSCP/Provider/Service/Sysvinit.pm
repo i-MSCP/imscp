@@ -35,9 +35,6 @@ use Hash::Util::FieldHash 'fieldhash';
 # Paths where sysvinit script must be searched
 fieldhash my %paths;
 
-# Paths cache
-my %pathsCache = ();
-
 =head1 DESCRIPTION
 
  Base service provider for `sysvinit` scripts.
@@ -220,16 +217,15 @@ sub isRunning
  Get full path of init script which belongs to the given service
 
  Param string $service Service name
- Param bool $uncache Wheter or not path must be cached (if TRUE and the path is already cached, it will be removed)
  Return string Init script path on success, die on failure
 
 =cut
 
 sub getInitscriptPath
 {
-	my ($self, $service, $uncache) = @_;
+	my ($self, $service) = @_;
 
-	$self->_searchInitScript($service, $uncache);
+	$self->_searchInitScript($service);
 }
 
 =back
@@ -268,41 +264,28 @@ sub _init
 	$self;
 }
 
-=item searchInitScript($service [, $nocache = false ])
+=item searchInitScript($service)
 
  Search the init script which belongs to the given service in all available paths
 
  Param string $service Service name
- Param bool $nocache Whether or not path must be cached ( if TRUE and the path is already cached, it will be removed )
  Return string Init script path on success, die on failure
 
 =cut
 
 sub _searchInitScript
 {
-	my ($self, $service, $nocache) = @_;
+	my ($self, $service, $flush) = @_;
 
-	unless($pathsCache{$service}) {
-		for my $path(@{$paths{$self}}) {
-			my $filepath = File::Spec->join($path, $service);
+	for my $path(@{$paths{$self}}) {
+		my $filepath = File::Spec->join($path, $service);
+		return $filepath if -f $filepath;
 
-			$pathsCache{$service} = $filepath if -f $filepath;
-			last if $pathsCache{$service};
-
-			$filepath .= '.sh';
-
-			$pathsCache{$service} = $filepath if -f $filepath;
-			last if $pathsCache{$service};
-		}
-
-		die(sprintf('Could not find sysvinit script for the %s service', $service)) unless $pathsCache{$service};
+		$filepath .= '.sh';
+		return $filepath if -f $filepath;
 	}
 
-	if($nocache) {
-		delete $pathsCache{$service};
-	} else {
-		$pathsCache{$service};
-	}
+	die(sprintf('Could not find sysvinit script for the %s service', $service));
 }
 
 =item _exec($command)

@@ -38,9 +38,6 @@ my %commands = (
 	'systemctl' => '/bin/systemctl'
 );
 
-# Paths cache
-my %pathsCache = ();
-
 =head1 DESCRIPTION
 
  Base service provider for `systemd` system service units.
@@ -262,16 +259,12 @@ sub _searchUnitFile
 {
 	my ($self, $service) = @_;
 
-	unless(exists $pathsCache{$service}) {
-		for my $path(@{$paths{$self}}) {
-			my $filepath = File::Spec->join($path, $service);
-			return $pathsCache{$service} = $filepath if -f $filepath;
-		}
-
-		die(sprintf('Could not find systemd system service unit file for the %s service', $service));
+	for my $path(@{$paths{$self}}) {
+		my $filepath = File::Spec->join($path, $service);
+		return $filepath if -f $filepath;
 	}
 
-	$pathsCache{$service};
+	die(sprintf('Could not find systemd system service unit file for the %s service', $service));
 }
 
 =back

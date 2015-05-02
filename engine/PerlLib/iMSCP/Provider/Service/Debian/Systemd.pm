@@ -42,9 +42,6 @@ my %commands = (
 # Compatibility mode
 my $compat = 0;
 
-# Paths cache
-my %pathsCache = ();
-
 =head1 DESCRIPTION
 
  Service provider for Debian `systemd` system service units.

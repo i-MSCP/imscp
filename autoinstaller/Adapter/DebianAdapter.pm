@@ -188,10 +188,10 @@ EOF
 
 			if($main::forcereinstall) {
 				push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-					"--reinstall --auto-remove --purge --no-install-recommends install @{$packages}";
+					"--reinstall --auto-remove --purge --no-install-recommends --force-yes install @{$packages}";
 			} else {
 				push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-					"--auto-remove --purge --no-install-recommends install @{$packages}";
+					"--auto-remove --purge --no-install-recommends --force-yes install @{$packages}";
 			}
 
 			my ($stdout, $stderr);
