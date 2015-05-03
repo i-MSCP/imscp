@@ -82,8 +82,8 @@ sub showDialog
 
 	if(
 		$main::reconfigure ~~ ['ftpd', 'servers', 'all', 'forced'] ||
-		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
-		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
+		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x7e]+$/) ||
+		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x7e]+$/)
 	) {
 		# Ask for the proftpd restricted SQL username
 		do{
@@ -100,8 +100,8 @@ sub showDialog
 			} elsif(length $dbUser < 6) {
 				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
 				$dbUser = '';
-			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+			} elsif($dbUser !~ /^[\x21-\x7e]+$/) {
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
@@ -119,8 +119,8 @@ sub showDialog
 					if(length $dbPass < 6) {
 						$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
 						$dbPass = '';
-					} elsif($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-						$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+					} elsif($dbPass !~ /^[\x21-\x7e]+$/) {
+						$msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease try again:";
 						$dbPass = '';
 					} else {
 						$msg = '';
@@ -131,8 +131,8 @@ sub showDialog
 			} while($rs != 30 && $msg);
 
 			if($rs != 30) {
-				if(! $dbPass) {
-					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
+				unless($dbPass) {
+					my @allowedChr = map { chr } (0x21..0x7e);
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
@@ -395,13 +395,17 @@ sub _buildConfigFile
 
 	my $version = $self->{'config'}->{'PROFTPD_VERSION'};
 
+	# Escape any double-quotes and backslash in password ( see #IP-1330 )
+	(my $dbUser = $self->{'config'}->{'DATABASE_USER'}) =~ s%("|\\)%\\$1%g;
+	(my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'}) =~ s%("|\\)%\\$1%g;
+
 	my $data = {
 		HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
-		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
-		DATABASE_PASS => $self->{'config'}->{'DATABASE_PASSWORD'},
+		DATABASE_USER => '"' . $dbUser . '"',
+		DATABASE_PASS => '"' . $dbPass . '"',
 		FTPD_MIN_UID => $self->{'config'}->{'MIN_UID'},
 		FTPD_MIN_GID => $self->{'config'}->{'MIN_GID'},
 		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
