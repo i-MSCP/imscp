@@ -971,6 +971,162 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 }
 
 /**
+ * Delete the given domain alias (including any related entities)
+ *
+ * @throws iMSCP_Exception_Database
+ * @param int $aliasId Domain alias unique identifier
+ * @param string $aliasName Domain alias name
+ * @throws iMSCP_Exception
+ */
+function deleteDomainAlias($aliasId, $aliasName)
+{
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
+		iMSCP_Events::onBeforeDeleteDomainAlias, array('domainAliasId' => $aliasId, 'domainAliasName' => $aliasName)
+	);
+
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Database::getInstance();
+
+	try {
+		$db->beginTransaction();
+
+		// Delete any FTP account that belongs to the domain alias
+
+		$stmt = exec_query(
+			"
+				SELECT
+					t1.groupname, t1.gid, t1.members
+				FROM
+					ftp_group AS t1
+				LEFT JOIN
+					domain_aliasses AS t3 ON(alias_id = ?)
+				LEFT JOIN
+					subdomain_alias AS t4 ON(t4.alias_id = t3.alias_id)
+				LEFT JOIN
+					ftp_users AS t2 ON(
+						userid LIKE CONCAT('%@', t4.subdomain_alias_name, '.', t3.alias_name)
+						OR
+						userid LIKE CONCAT('%@', t3.alias_name)
+					)
+				WHERE
+					t1.gid = t2.gid
+				LIMIT
+					1
+			",
+			$aliasId
+		);
+
+		if ($stmt->rowCount()) {
+			$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+			$ftpGname = $row['groupname'];
+			$ftpGgid = $row['gid'];
+			$ftpMembers = preg_split('/,/', $row['members'], -1, PREG_SPLIT_NO_EMPTY);
+
+			$nFtpMembers = array();
+			foreach ($ftpMembers as $ftpMember) {
+				if (!preg_match("/@(?:.+?\\.)*$aliasName$/", $ftpMember)) {
+					$nFtpMembers[] = $ftpMember;
+				}
+			}
+
+			if (!empty($nFtpMembers)) {
+				exec_query('UPDATE ftp_group SET members = ? WHERE gid = ?', array(implode(',', $nFtpMembers), $ftpGgid));
+			} else {
+				exec_query('DELETE FROM ftp_group WHERE groupname = ?', $ftpGname);
+				exec_query('DELETE FROM quotalimits WHERE name = ?', $ftpGname);
+				exec_query('DELETE FROM quotatallies WHERE name = ?', $ftpGname);
+			}
+		}
+
+		exec_query(
+			"
+				DELETE
+					ftp_users
+				FROM
+					ftp_users
+				LEFT JOIN
+					domain_aliasses AS t2 ON(alias_id = ?)
+				LEFT JOIN
+					subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
+				WHERE
+					(
+						userid LIKE CONCAT('%@', t3.subdomain_alias_name, '.', t2.alias_name)
+					OR
+						userid LIKE CONCAT('%@', t2.alias_name)
+					)
+			",
+			$aliasId
+		);
+
+		// Delete any custom DNS and external mail server record that belongs to the domain alias
+		exec_query('DELETE FROM domain_dns WHERE alias_id = ?', $aliasId);
+
+		// Schedule deletion of any mail account that belongs to the domain alias
+		exec_query(
+			"
+				UPDATE
+					mail_users
+				SET
+					status = ?
+				WHERE
+					(sub_id = ? AND mail_type LIKE ?)
+				OR (
+					sub_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?)
+				AND
+					mail_type LIKE ?
+				)
+			",
+			array('todelete', $aliasId, '%alias_%', $aliasId, '%alssub_%')
+		);
+
+		# Schedule deletion of any SSL certificate that belongs to the domain alias
+
+		exec_query(
+			'
+				UPDATE
+					ssl_certs
+				SET
+					status = ?
+				WHERE
+					domain_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?)
+				AND
+					domain_type = ?
+			',
+			array('todelete', 'alssub', $aliasId)
+		);
+
+		exec_query(
+			'UPDATE ssl_certs SET status = ? WHERE domain_id = ? and domain_type = ?', array('todelete', $aliasId, 'als')
+		);
+
+		# Schedule deletion of any subdomain that belongs to the domain alias
+		exec_query(
+			'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ?', array('todelete', $aliasId)
+		);
+
+		# Schedule deletion of the domain alias
+		exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', array('todelete', $aliasId));
+
+		iMSCP_Events_Aggregator::getInstance()->dispatch(
+			iMSCP_Events::onAfterDeleteDomainAlias,
+			array('domainAliasId' => $aliasId, 'domainAliasName' => $aliasName)
+		);
+
+		$db->commit();
+
+		send_request();
+		write_log(
+			sprintf('%s scheduled deletion of the %s domain alias', decode_idna($_SESSION['user_logged']), $aliasName),
+			E_USER_NOTICE
+		);
+		set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
+	} catch (iMSCP_Exception_Database $e) {
+		$db->rollBack();
+		throw $e;
+	}
+}
+
+/**
  * Returns number of items in a database table with optional search criterias
  *
  * @param string $field

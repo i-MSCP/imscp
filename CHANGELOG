@@ -87,6 +87,7 @@ SERVICES
 	Fixed: Disable warnings about missing SPF DNS record ( As per RFC 7208, SPF DNS record is deprecated - Bind9 )
 
 YOUTRACK
+	Fixed #IP-0321: When a customer deletes a domain alias, all related entities must be automatically deleted
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
 	Fixed #IP-1279: Autoresponder - Unable to get message body
 	Fixed #IP-1286: IP attachment fails on reboot ( Ubuntu )
