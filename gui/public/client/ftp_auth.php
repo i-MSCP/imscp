@@ -29,7 +29,7 @@
  * @param  int $userId FTP User
  * @return array Array that contains login credentials or FALSE on failure
  */
-function _getLoginCredentials($userId)
+function _client_pydioGetLoginCredentials($userId)
 {
 	$query = "
 		SELECT
@@ -55,7 +55,7 @@ function _getLoginCredentials($userId)
  * @param  array|string $cookies Array or string which contains cookies definitions for Pydio
  * @return void
  */
-function _ajaxplorerCreateCookies($cookies)
+function _client_pydioCreateCookies($cookies)
 {
 	foreach ((array)$cookies as $cookie) {
 		header("Set-Cookie: $cookie", false);
@@ -68,13 +68,13 @@ function _ajaxplorerCreateCookies($cookies)
  * @param  int $userId ftp username
  * @return bool FALSE on failure
  */
-function _ajaxplorerAuth($userId)
+function client_pydioAuth($userId)
 {
 	if (file_exists(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log')) {
 		@unlink(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log');
 	}
 
-	$credentials = _getLoginCredentials($userId);
+	$credentials = _client_pydioGetLoginCredentials($userId);
 
 	if (!$credentials) {
 		set_page_message(tr('Unknown FTP user.'), 'error');
@@ -84,20 +84,17 @@ function _ajaxplorerAuth($userId)
 	$contextOptions = array();
 
 	// Prepares Pydio absolute Uri to use
-	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
-		$ajaxplorerUri = "https://{$_SERVER['SERVER_NAME']}$port/ftp/";
-
+	if (isSecureRequest()) {
 		$contextOptions = array(
 			'ssl' => array(
 				'verify_peer' => false,
 				'allow_self_signed' => true
 			)
 		);
-	} else {
-		$port = ($_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '';
-		$ajaxplorerUri = "http://{$_SERVER['SERVER_NAME']}$port/ftp/";
 	}
+
+	$pydioBaseUrl = getBaseUrl() . '/ftp/';
+	$port = getUriPort();
 
 	// Pydio authentication
 
@@ -116,7 +113,7 @@ function _ajaxplorerAuth($userId)
 	);
 
 	# Getting secure token
-	$secureToken = file_get_contents("$ajaxplorerUri/index.php?action=get_secure_token", false, $context);
+	$secureToken = file_get_contents("$pydioBaseUrl/index.php?action=get_secure_token", false, $context);
 
 	$postData = http_build_query(
 		array(
@@ -148,11 +145,11 @@ function _ajaxplorerAuth($userId)
 	stream_context_set_default($contextOptions);
 
 	# TODO Parse the full response and display error message on authentication failure
-	$headers = get_headers("{$ajaxplorerUri}?secure_token={$secureToken}", true);
+	$headers = get_headers("{$pydioBaseUrl}?secure_token={$secureToken}", true);
 
-	_ajaxplorerCreateCookies($headers['Set-Cookie']);
+	_client_pydioCreateCookies($headers['Set-Cookie']);
 
-	redirectTo($ajaxplorerUri);
+	redirectTo($pydioBaseUrl);
 
 	exit;
 }
@@ -176,7 +173,7 @@ if (!customerHasFeature('ftp') || !(isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['
 }
 
 if (isset($_GET['id'])) {
-	if (!_ajaxplorerAuth(clean_input($_GET['id']))) {
+	if (!client_pydioAuth(clean_input($_GET['id']))) {
 		redirectTo('ftp_accounts.php');
 	}
 } else {

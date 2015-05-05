@@ -1825,7 +1825,7 @@ function is_basicString($string)
 }
 
 /**
- * Is a XMLHttpRequest request?
+ * Is the request a Javascript XMLHttpRequest?
  *
  * Returns true if the request‘s "X-Requested-With" header contains "XMLHttpRequest".
  *
@@ -1882,6 +1882,53 @@ function isJson($string)
 {
 	json_decode($string);
 	return (json_last_error() == JSON_ERROR_NONE);
+}
+
+/**
+ * Is https secure request
+ *
+ * @return boolean TRUE if is https secure request, FALSE otherwise
+ */
+function isSecureRequest()
+{
+	if (
+		(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
+		(!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+	) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Get URI scheme
+ *
+ * @return string
+ */
+function getUriScheme()
+{
+	return isSecureRequest() ? 'https://' : 'http://';
+}
+
+/**
+ * Get URI port
+ *
+ * @return string
+ */
+function getUriPort()
+{
+	return (!in_array($_SERVER['SERVER_PORT'], array(80, 443))) ? ':' . $_SERVER['SERVER_PORT'] : '';
+}
+
+/**
+ * Get base URL
+ *
+ * @return string
+ */
+function getBaseUrl()
+{
+	return getUriScheme() . $_SERVER['SERVER_NAME'] . getUriPort();
 }
 
 /***********************************************************************************************************************

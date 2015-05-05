@@ -91,7 +91,7 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Login'),
 		'TR_LOGIN' => tr('Login'),
 		'TR_USERNAME' => tr('Username'),
-		'UNAME' => isset($_POST['uname']) ? tohtml($_POST['uname']) : '',
+		'UNAME' => isset($_POST['uname']) ? tohtml($_POST['uname'], 'htmlAttr') : '',
 		'TR_PASSWORD' => tr('Password')
 	));
 
@@ -99,25 +99,20 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 		$cfg->exists('PANEL_SSL_ENABLED') && $cfg['PANEL_SSL_ENABLED'] == 'yes' &&
 		$cfg['BASE_SERVER_VHOST_PREFIX'] != 'https://'
 	) {
-		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-			$isSSL = true;
-		} else {
-			$isSSL = false;
-		}
-
+		$isSecure = isSecureRequest() ? true : false;
 		$uri = array(
-			'scheme' => ($isSSL) ? 'https://' : 'http://',
-			'host' => $_SERVER['SERVER_NAME'],
-			'port' => ($isSSL)
-				? (($cfg['BASE_SERVER_VHOST_HTTP_PORT'] == 80 ) ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTP_PORT'])
-				: (($cfg['BASE_SERVER_VHOST_HTTPS_PORT'] == 443 ) ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTPS_PORT'])
+			($isSecure) ? 'http://' : 'https://',
+			$_SERVER['SERVER_NAME'],
+			':' . (($isSecure) ? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'])
 		);
 
 		$tpl->assign(array(
-			'SSL_LINK' => tohtml($uri['scheme'] . $uri['host']. $uri['port']),
-			'SSL_IMAGE_CLASS' => ($isSSL) ? 'i_unlock' : 'i_lock',
-			'TR_SSL' => ($isSSL) ? tr('Normal connection') : tr('Secure connection'),
-			'TR_SSL_DESCRIPTION' => ($isSSL) ? tr('Use normal connection (No SSL)') : tr('Use secure connection (SSL)')
+			'SSL_LINK' => tohtml(implode('', $uri), 'htmlAttr'),
+			'SSL_IMAGE_CLASS' => ($isSecure) ? 'i_unlock' : 'i_lock',
+			'TR_SSL' => ($isSecure) ? tr('Normal connection') : tr('Secure connection'),
+			'TR_SSL_DESCRIPTION' => ($isSecure)
+				? tohtml(tr('Use normal connection (No SSL)', true), 'htmlAttr')
+				: tohtml(tr('Use secure connection (SSL)', true), 'htmlAttr')
 		));
 	} else {
 		$tpl->assign('SSL_SUPPORT', '');

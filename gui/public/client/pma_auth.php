@@ -114,20 +114,17 @@ function client_pmaAuth($dbUserId)
 	$contextOptions = array();
 
 	// Prepares PhpMyadmin absolute Uri to use
-	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
-		$pmaUri = "https://{$_SERVER['SERVER_NAME']}$port/pma/";
-
+	if (isSecureRequest()) {
 		$contextOptions = array(
 			'ssl' => array(
 				'verify_peer' => false,
 				'allow_self_signed' => true
 			)
 		);
-	} else {
-		$port = ($_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '';
-		$pmaUri = "http://{$_SERVER['SERVER_NAME']}$port/pma/";
 	}
+
+	$pmaBaseUrl = getBaseUrl() . '/pma/';
+	$port = getUriPort();
 
 	$contextOptions = array_merge($contextOptions, array(
 		'http' => array(
@@ -148,7 +145,7 @@ function client_pmaAuth($dbUserId)
 	stream_context_set_default($contextOptions);
 
 	// Gets the headers from PhpMyAdmin
-	$headers = get_headers($pmaUri, true);
+	$headers = get_headers($pmaBaseUrl, true);
 
 	if ($headers && isset($headers['Location'])) {
 		_client_pmaCreateCookies($headers['Set-Cookie']);
