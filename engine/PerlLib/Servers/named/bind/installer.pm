@@ -34,12 +34,10 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Net;
 use iMSCP::TemplateParser;
-
+use iMSCP::Service;
 use Servers::named::bind;
-
 use File::Basename;
 use version;
-
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -246,11 +244,9 @@ sub askLocalDnsResolver
 	my $localDnsResolver = main::setupGetQuestion('LOCAL_DNS_RESOLVER') || $self->{'config'}->{'LOCAL_DNS_RESOLVER'};
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['resolver', 'named', 'all', 'forced'] || $localDnsResolver !~ /^yes|no$/) {
+	if($main::reconfigure ~~ [ 'resolver', 'named', 'all', 'forced' ] || $localDnsResolver !~ /^yes|no$/) {
 		($rs, $localDnsResolver) = $dialog->radiolist(
-			"\nDo you want allow the system resolver to use the local nameserver?",
-			['yes', 'no'],
-			$localDnsResolver ne 'no' ? 'yes' : 'no'
+			"\nDo you want use the local DNS resolver?", ['yes', 'no'], $localDnsResolver ne 'no' ? 'yes' : 'no'
 		);
 	}
 
@@ -282,19 +278,12 @@ sub install
 		return $rs if $rs;
 	}
 
-	$rs = $self->_switchTasks();
-	return $rs if $rs;
+	$rs ||= $self->_switchTasks();
+	$rs ||= $self->_buildConf();
+	$rs ||= $self->_saveConf();
+	$rs ||= $self->_oldEngineCompatibility();
 
-	$rs = $self->_buildConf();
-	return $rs if $rs;
-
-	$rs = $self->_saveConf();
-	return $rs if $rs;
-
-	$rs = $self->_oldEngineCompatibility();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterNamedInstall', 'bind');
+	$rs ||= $self->{'eventManager'}->trigger('afterNamedInstall', 'bind');
 }
 
 =back
@@ -495,8 +484,38 @@ sub _buildConf
 				$rs = $self->{'eventManager'}->trigger('beforeNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
 
-				# Enable or disable local DNS resolver
+				# Enable or disable local DNS resolver - Begin
+
 				$fileContent =~ s/RESOLVCONF=(?:no|yes)/RESOLVCONF=$self->{'config'}->{'LOCAL_DNS_RESOLVER'}/i;
+
+				my $serviceMngr = iMSCP::Service->getInstance();
+
+				if($serviceMngr->isSystemd() && -f '/lib/systemd/system/bind9-resolvconf.service') {
+					if($self->{'config'}->{'LOCAL_DNS_RESOLVER'} eq 'yes') {
+						# Work around #IP-1333 ( related to https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=744304 )
+						# Note: This systemd system service units file is provided by bind9 package
+						my $file = iMSCP::File->new( filename => '/lib/systemd/system/bind9-resolvconf.service' );
+						my $fileContent = $file->get();
+						unless(defined $fileContent) {
+							error(sprintf('Unable to read %s', $file->{'filename'}));
+							return 1;
+						} elsif($fileContent !~ /RemainAfterExit=yes/) {
+							$fileContent =~ s%(ExecStop.*\n)%$1RemainAfterExit=yes\n%;
+							$rs = $file->set($fileContent);
+							$rs ||= $file->save();
+							return $rs if $rs;
+						}
+
+						$serviceMngr->enable('bind9-resolvconf');
+					} else {
+						$serviceMngr->stop('bind9-resolvconf');
+						$serviceMngr->disable('bind9-resolvconf');
+					}
+				}
+
+				undef $serviceMngr;
+
+				# Enable or disable local DNS resolver - Ending
 
 				# Enable or disable IPV6 support
 				if($fileContent =~/OPTIONS="(.*)"/) {

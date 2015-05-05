@@ -100,6 +100,7 @@ YOUTRACK
 	Fixed #IP-1327: Unable to add subdomain (subals) - An error occurred while reading flags on ...
 	Fixed #IP-1330: Proftpd - Unable to connect to i-MSCP database
 	Fixed #IP-1332: nginx / nginx-light package configuration fail which result to i-MSCP installation failure
+	Fixed #IP-1333: Local resolver not added into resolv.conf file
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.2
