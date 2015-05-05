@@ -156,24 +156,6 @@ sub installPackages
 	);
 	return $rs if $rs;
 
-	# Prevent the package manager to start some services itself using the policy layer interface.
-	# Apache2: This prevents failures such as when nginx is installed after Apache2 which is already listening on port 80...
-	# Bind9: This avoid error when resolvconf is not configured yet
-	my $file = iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' );
-	$rs = $file->set(<<EOF);
-#/bin/sh
-initscript=\$1
-action=\$2
-if [ "\$action" = "start" ] && { [ "\$initscript" = "apache2" ] || [ "\$initscript" = "bind9" ] ; } then
-        exit 101;
-fi
-exit 0
-EOF
-
-	$rs ||= $file->save();
-	$rs ||= $file->mode(0755);
-	return $rs if $rs;
-
 	my $preseed = iMSCP::Getopt->preseed;
 
 	for my $packages($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
@@ -202,10 +184,6 @@ EOF
 			return $rs if $rs;
 		}
 	}
-
-	# Delete '/usr/sbin/policy-rc.d file
-	$rs = $file->delFile();
-	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterInstallPackages');
 }
@@ -279,6 +257,8 @@ sub uninstallPackages
 
 sub postBuild
 {
+	my $self = shift;
+
 	# Needed to fix #IP-1246
 	if(iMSCP::ProgramFinder::find('php5dismod')) {
 		for (
@@ -311,7 +291,7 @@ sub postBuild
 		}
 	}
 
-	0;
+	$self->_setupInitScriptPolicyLayer('disable');
 }
 
 =back
@@ -350,9 +330,62 @@ sub _init
 	$self->{'packagesToPreUninstall'} = [];
 	$self->{'packagesToUninstall'} = [];
 
-	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') unless $main::skippackages;
+	unless($main::skippackages) {
+		($self->_setupInitScriptPolicyLayer('enable') == 0 ) or die('Unable to setup initscriptpolicy layer');
+		($self->_updateAptSourceList() == 0) or die('Unable to configure APT packages manager');
+	}
 
 	$self;
+}
+
+=item _setupInitScriptPolicyLayer($action)
+
+ Enable or disable initscript policy layer
+
+ See https://people.debian.org/~hmh/invokerc.d-policyrc.d-specification.txt
+ See man invoke-rc.d
+
+ param string $action Action ( enable|disable )
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setupInitScriptPolicyLayer
+{
+	my $action = $_[1];
+	my $rs = 0;
+
+	if($action eq 'enable') {
+		# Prevents invoke-rc.d ( which is invoked by package maintainer scripts ) to start some services
+		# apache2 and nginx: This prevents failures such as "bind() to 0.0.0.0:80 failed (98: Address already in use"
+		# bind9: This avoid error when resolvconf is not configured yet
+		my $file = iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' );
+		my $rs = $file->set(<<EOF);
+#/bin/sh
+initscript=\$1
+action=\$2
+
+if [ "\$action" = "start" ] || [ "\$action" = "restart" ]; then
+	for i in apache2 bind9 nginx; do
+		if [ "\$initscript" = "\$i" ]; then
+			exit 101;
+		fi
+	done
+fi
+EOF
+
+		$rs ||= $file->save();
+		$rs ||= $file->mode(0755);
+	} elsif($action eq 'disable') {
+		if(-f '/usr/sbin/policy-rc.d') {
+			$rs = iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' )->delFile();
+		}
+	} else {
+		error('Unknown action');
+		$rs = 1;
+	}
+
+	$rs;
 }
 
 =item _buildPackageList()

@@ -85,7 +85,10 @@ sub _init
 	$self->{'packagesToPreUninstall'} = [];
 	$self->{'packagesToUninstall'} = [];
 
-	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') unless $main::skippackages;
+	unless($main::skippackages) {
+		($self->_setupInitScriptPolicyLayer('enable') == 0) or die('Unable to setup initscript policy layer');
+		($self->_updateAptSourceList() == 0) or die('Unable to configure APT packages manager');
+	}
 
 	$self;
 }
