@@ -95,6 +95,7 @@ YOUTRACK
 	Fixed #IP-1314: Custom DNS SRV record - Missing TLS protocol
 	Fixed #IP-1315: Defect - Statistics overview with special characters breaks view
 	Fixed #IP-1323: Invalid query result column used in change_domain_status() function
+	Fixed #IP-1325: phpMyAdmin 4.4.4 released
 	Fixed #IP-1327: Unable to add subdomain (subals) - An error occurred while reading flags on ...
 	Fixed #IP-1330: Proftpd - Unable to connect to i-MSCP database
 	Fixed #IP-1332: nginx / nginx-light package configuration fail which result to i-MSCP installation failure

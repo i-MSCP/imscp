@@ -109,8 +109,8 @@ sub showDialog
 			} elsif(length $dbUser < 6) {
 				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
 				$dbUser = '';
-			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+			} elsif($dbUser !~ /^[\x21-\x7e]+$/) {
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
@@ -127,8 +127,8 @@ sub showDialog
 					if(length $dbPass < 6) {
 						$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
 						$dbPass = '';
-					} elsif($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-						$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+					} elsif($dbPass !~ /^[x21-\x7e]+$/) {
+						$msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease try again:";
 						$dbPass = '';
 					} else {
 						$msg = '';
@@ -140,7 +140,7 @@ sub showDialog
 
 			if($rs != 30) {
 				unless($dbPass) {
-					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
+					my @allowedChr = map { chr } (0x21..0x7e);
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
@@ -189,7 +189,7 @@ sub preinstall
 		return 1;
 	}
 
-	my $pmaBranch = (version->parse($version) >= version->parse('5.5')) ? '0.3.0' : '0.2.0';
+	my $pmaBranch = (version->parse($version) >= version->parse('5.5')) ? '0.4.0' : '0.2.0';
 
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', "$pmaBranch.*\@dev");
 	return $rs if $rs;
@@ -574,7 +574,7 @@ sub _setupDatabase
 	($db, $errStr) = main::setupGetSqlConnect($phpmyadminDbName);
 	fatal("Unable to connect to SQL server: $errStr") if ! $db;
 
-	my $schemaFile = iMSCP::File->new( filename => "$phpmyadminDir/examples/create_tables.sql" )->get();
+	my $schemaFile = iMSCP::File->new( filename => "$phpmyadminDir/sql/create_tables.sql" )->get();
 	unless(defined $schemaFile) {
 		error("Unable to read $phpmyadminDir/examples/create_tables.sql");
 		return 1;
@@ -654,9 +654,8 @@ sub _setVersion
 
 sub _generateBlowfishSecret
 {
-	my $blowfishSecret = '';
-	$blowfishSecret .= ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~')[rand(70)] for 1..56;
-
+	my $blowfishSecret;
+	$blowfishSecret .= (map { chr } (0x21..0x7e))[rand(70)] for 1..56;
 	$_[0]->{'config'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
 
 	0;
@@ -679,10 +678,11 @@ sub _buildConfig
 	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}";
 
 	my $dbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
-	(my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER')) =~ s%(')%\\$1%g;
+	(my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER')) =~ s%('|\\)%\\$1%g;
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
-	(my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD')) =~ s%(')%\\$1%g;
+	(my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD')) =~ s%('|\\)%\\$1%g;
+	(my $blowfishSecret = $self->{'config'}->{'BLOWFISH_SECRET'}) =~ s%('|\\)%\\$1%g;
 
 	my $data = {
 		PMA_DATABASE => $dbName,
@@ -692,7 +692,7 @@ sub _buildConfig
 		PORT => $dbPort,
 		UPLOADS_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
 		TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-		BLOWFISH => $self->{'config'}->{'BLOWFISH_SECRET'}
+		BLOWFISH => $blowfishSecret
 	};
 
 	my $cfgTpl;
