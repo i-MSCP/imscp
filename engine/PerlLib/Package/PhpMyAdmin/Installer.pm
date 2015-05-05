@@ -574,7 +574,12 @@ sub _setupDatabase
 	($db, $errStr) = main::setupGetSqlConnect($phpmyadminDbName);
 	fatal("Unable to connect to SQL server: $errStr") if ! $db;
 
-	my $schemaFile = iMSCP::File->new( filename => "$phpmyadminDir/sql/create_tables.sql" )->get();
+	my $schemaFile = "$phpmyadminDir/sql/create_tables.sql";
+	unless(-f $schemaFile) {
+		$schemaFile = "$phpmyadminDir/examples/create_tables.sql";
+	}
+
+	$schemaFile = iMSCP::File->new( filename => $schemaFile )->get();
 	unless(defined $schemaFile) {
 		error("Unable to read $phpmyadminDir/examples/create_tables.sql");
 		return 1;
