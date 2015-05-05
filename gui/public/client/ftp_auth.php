@@ -84,7 +84,7 @@ function _ajaxplorerAuth($userId)
 	$contextOptions = array();
 
 	// Prepares Pydio absolute Uri to use
-	if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) {
+	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
 		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$ajaxplorerUri = "https://{$_SERVER['SERVER_NAME']}$port/ftp/";
 

@@ -36,7 +36,7 @@ use iMSCP::File;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
-our $VERSION = '0.1.0';
+our $VERSION = '0.1.1';
 
 =head1 DESCRIPTION
 

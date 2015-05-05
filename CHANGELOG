@@ -88,6 +88,7 @@ SERVICES
 
 YOUTRACK
 	Fixed #IP-0321: When a customer deletes a domain alias, all related entities must be automatically deleted
+	Fixed #IP-1082: net2ftp SSL Bug - http scheme badly detected - Missing HTTPS server variable
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
 	Fixed #IP-1279: Autoresponder - Unable to get message body
 	Fixed #IP-1286: IP attachment fails on reboot ( Ubuntu )

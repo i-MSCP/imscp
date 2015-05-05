@@ -114,7 +114,7 @@ function client_pmaAuth($dbUserId)
 	$contextOptions = array();
 
 	// Prepares PhpMyadmin absolute Uri to use
-	if (!empty($_SERVER['HTTPS'])) {
+	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
 		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$pmaUri = "https://{$_SERVER['SERVER_NAME']}$port/pma/";
 
