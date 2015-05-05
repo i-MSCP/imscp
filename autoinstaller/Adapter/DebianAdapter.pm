@@ -345,7 +345,7 @@ sub _init
  See https://people.debian.org/~hmh/invokerc.d-policyrc.d-specification.txt
  See man invoke-rc.d
 
- param string $action Action ( enable|disable )
+ Param string $action Action ( enable|disable )
  Return int 0 on success, other on failure
 
 =cut
