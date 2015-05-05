@@ -331,7 +331,7 @@ sub _init
 	$self->{'packagesToUninstall'} = [];
 
 	unless($main::skippackages) {
-		($self->_setupInitScriptPolicyLayer('enable') == 0 ) or die('Unable to setup initscriptpolicy layer');
+		($self->_setupInitScriptPolicyLayer('enable') == 0 ) or die('Unable to setup initscript policy layer');
 		($self->_updateAptSourceList() == 0) or die('Unable to configure APT packages manager');
 	}
 
