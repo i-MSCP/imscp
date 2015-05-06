@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Debian::Systemd - Service provider for Debian `systemd` system service units
+ iMSCP::Provider::Service::Debian::Systemd - Service provider for Debian `systemd` service units
 
 =cut
 
@@ -44,7 +44,7 @@ my $compat = 0;
 
 =head1 DESCRIPTION
 
- Service provider for Debian `systemd` system service units.
+ Service provider for Debian `systemd` service units.
 
  The only differences with the base `systemd` provider are support for enabling, disabling and removing underlying
  sysvinit scripts. This provider also provides backware compatibility mode for older Debian systemd package versions.

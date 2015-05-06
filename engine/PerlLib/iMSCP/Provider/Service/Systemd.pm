@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Systemd - Base service provider for `systemd` system service units
+ iMSCP::Provider::Service::Systemd - Base service provider for `systemd` service units
 
 =cut
 
@@ -40,7 +40,7 @@ my %commands = (
 
 =head1 DESCRIPTION
 
- Base service provider for `systemd` system service units.
+ Base service provider for `systemd` service units.
 
  See:
   http://www.freedesktop.org/wiki/Software/systemd/
@@ -55,7 +55,7 @@ my %commands = (
  Does the given service is enabled?
 
  Param string $service Service name
- Return TRUE if the given service is enabled, FALSE otherwise
+ Return bool TRUE if the given service is enabled, FALSE otherwise
 
 =cut
 
