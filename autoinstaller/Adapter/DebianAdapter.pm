@@ -477,6 +477,10 @@ EOF
 							push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$alt}->{'repository'};
 						}
 
+						if(exists $pkgList->{$section}->{$alt}->{'repository_conflict'}) {
+							push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$alt}->{'repository_conflict'};
+						}
+
 						# Packages to uninstall
 
 						if(exists $pkgList->{$section}->{$alt}->{'package'}) {

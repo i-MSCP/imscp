@@ -79,7 +79,7 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0);
+	($self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0);
 }
 
 =item disable($service)
@@ -260,7 +260,7 @@ sub _searchUnitFile
 	my ($self, $service) = @_;
 
 	for my $path(@{$paths{$self}}) {
-		my $filepath = File::Spec->join($path, $service);
+		my $filepath = File::Spec->join($path, $service . '.service');
 		return $filepath if -f $filepath;
 	}
 

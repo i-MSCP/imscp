@@ -93,7 +93,9 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	if($compat) {
+	# compat mode is forced here due to https://bugs.launchpad.net/ubuntu/wily/+source/systemd/+bug/1447807
+
+	#if($compat) {
 		if($self->_isSystemd($service)) {
 			return unless $self->SUPER::enable($service);
 		}
@@ -111,12 +113,12 @@ sub enable
 		} else {
 			1;
 		}
-	} else {
-		(
-			$self->SUPER::enable($service) &&
-			( $self->_isSystemd($service) || $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0)
-		);
-	}
+	#} else {
+	#	(
+	#		$self->SUPER::enable($service) &&
+	#		( $self->_isSystemd($service) || $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0)
+	#	);
+	#}
 }
 
 =item disable($service)

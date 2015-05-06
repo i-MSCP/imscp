@@ -1,0 +1,160 @@
+<packages>
+	<frontend default="nginx">
+		<nginx repository_conflict="deb http://nginx.org/.*">
+			<package>nginx-light</package>
+			<package>spawn-fcgi</package>
+			<package>php5-cgi</package>
+			<package_conflict>nginx</package_conflict>
+		</nginx>
+	</frontend>
+	<httpd default="apache_php_fpm">
+		<apache_fcgid>
+			<package>apache2</package>
+			<package>apache2-suexec-custom</package>
+			<package>libapache2-mod-fcgid</package>
+			<package>php5-cgi</package>
+		</apache_fcgid>
+		<apache_itk>
+			<package>apache2</package>
+			<package>libapache2-mod-php5</package>
+			<package_delayed>libapache2-mpm-itk</package_delayed>
+		</apache_itk>
+		<apache_php_fpm>
+			<package>apache2</package>
+			<package>apache2-suexec-custom</package>
+			<package>libapache2-mod-fastcgi</package>
+			<package>php5-fpm</package>
+		</apache_php_fpm>
+	</httpd>
+	<po default="dovecot">
+		<courier>
+			<package>courier-authlib-mysql</package>
+			<package>courier-imap</package>
+			<package>courier-imap-ssl</package>
+			<package>courier-pop</package>
+			<package>courier-pop-ssl</package>
+			<package>libgamin0</package>
+			<package>maildrop</package>
+		</courier>
+		<dovecot>
+			<package>dovecot-core</package>
+			<package>dovecot-imapd</package>
+			<package>dovecot-pop3d</package>
+			<package>dovecot-mysql</package>
+		</dovecot>
+	</po>
+	<mta default="postfix">
+		<postfix>
+			<package>postfix</package>
+			<package>libsasl2-modules</package>
+			<package>libsasl2-modules-sql</package>
+			<package>sasl2-bin</package>
+		</postfix>
+	</mta>
+	<ftpd default="proftpd">
+		<proftpd>
+			<package>proftpd-basic</package>
+			<package>proftpd-mod-mysql</package>
+		</proftpd>
+	</ftpd>
+	<named default="bind">
+		<bind>
+			<package>resolvconf</package>
+			<package>bind9</package>
+		</bind>
+		<external_server/>
+	</named>
+	<sql default="mysql_5.6">
+		<mysql_5.6
+				pinning_package="mysql-server-5.6 mysql-client-5.6 mysql-common libmysqlclient18"
+				pinning_pin="release o=Ubuntu,n=vivid"
+				pinning_pin_priority="1001"
+				>
+			<package>mysql-server-5.6</package>
+			<package>mysql-client-5.6</package>
+			<package>mysql-common</package>
+		</mysql_5.6>
+		<mariadb_10.0
+				repository_conflict="deb http://.*/mariadb/.*"
+				pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common mysql-common libmysqlclient18"
+				pinning_pin="release o=Ubuntu,n=vivid"
+				pinning_pin_priority="1001"
+				allow_switch_to="remote_server"
+				>
+			<package>mariadb-client-10.0</package>
+			<package>mariadb-server-10.0</package>
+			<package>mariadb-common</package>
+			<package>mysql-common</package>
+		</mariadb_10.0>
+		<remote_server
+				pinning_package="mysql-server-5.6 mysql-common libmysqlclient18"
+				pinning_pin="release o=Ubuntu,n=vivid"
+				pinning_pin_priority="1001"
+				>
+			<package>mysql-client-5.6</package>
+			<package>mysql-common</package>
+		</remote_server>
+	</sql>
+	<php>
+		<package>php5</package>
+		<package>php5-cli</package>
+		<package>php5-curl</package>
+		<package>php-pear</package>
+		<package>php5</package>
+		<package>php5-gd</package>
+		<package>php-gettext</package>
+		<package>php5-imap</package>
+		<package>php5-intl</package>
+		<package>php5-json</package>
+		<package>php5-mcrypt</package>
+		<package>php5-mysqlnd</package>
+		<package_conflict>php-apc</package_conflict>
+		<package_conflict>php5-suhosin</package_conflict>
+	</php>
+	<perl>
+		<package>perl</package>
+		<package>libcrypt-blowfish-perl</package>
+		<package>libcrypt-cbc-perl</package>
+		<package>libcrypt-passwdmd5-perl</package>
+		<package>libdata-validate-domain-perl</package>
+		<package>libdatetime-perl</package>
+		<package>libdbd-mysql-perl</package>
+		<package>libdbi-perl</package>
+		<package>libemail-valid-perl</package>
+		<package>libfile-copy-recursive-perl</package>
+		<package>libfile-homedir-perl</package>
+		<package>libmailtools-perl</package>
+		<package>libmime-tools-perl</package>
+		<package>libnet-ip-perl</package>
+		<package>libnet-dns-perl</package>
+		<package>libnet-libidn-perl</package>
+		<package>libtimedate-perl</package>
+		<package>libxml-parser-perl</package>
+		<package>libxml-simple-perl</package>
+		<package>libjson-perl</package>
+	</perl>
+	<other>
+		<package>at</package>
+		<package>bash</package>
+		<package>bash-completion</package>
+		<package>bzip2</package>
+		<package>ca-certificates</package>
+		<package>curl</package>
+		<package>dnsutils</package>
+		<package>gcc</package>
+		<package>git</package>
+		<package>gzip</package>
+		<package>iptables</package>
+		<package>iproute</package>
+		<package>ispell</package>
+		<package>libc6-dev</package>
+		<package>locales</package>
+		<package>lzma</package>
+		<package>make</package>
+		<package>openssl</package>
+		<package>pbzip2</package>
+		<package>pigz</package>
+		<package>ssh</package>
+		<package>tar</package>
+	</other>
+</packages>

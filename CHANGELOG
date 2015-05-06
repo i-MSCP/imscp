@@ -18,6 +18,7 @@ BACKEND
 	Fixed: Some errors are not trapped
 
 CONFIGS
+	Added: bind9.service and bind9-resolve.service systemd unit files ( Allows to fix #IP-1333 and #IP-1334 )
 	Added: imscp_daemon, imscp_network and imscp_panel upstart jobs
 	Added: libbit-vector-perl package in list of pre-required packages ( Debian / Ubuntu )
 	Added: libclass-insideout-perl and libscalar-defer-perl in list of pre-required packages ( Debian / Ubuntu )
@@ -42,6 +43,7 @@ DATABASE
 	Fixed: Missing unique constraint for mail_users entities ( added unique constraint on mail_users.mail_addr )
 
 DISTRIBUTIONS
+	Added: Support for Ubuntu Vivid Vervet ( Not an LTS but this is first Ubuntu with full systemd support )
 	Removed: Support for Debian Squeeze ( 6.x ) - Do not fit with new i-MSCP requirements ( Perl version is too old )
 	Removed: Support for Ubuntu Lucid Lynx ( 10.04 LTS ) - EOL as per April 30, 2015 ( Server version )
 
@@ -66,7 +68,7 @@ INSTALLER
 	Fixed: Wrong package name in preseed file ( RainLoop )
 
 PACKAGES
-	Renamed: Fcgid starter template to php-fcgi-starter ( FrontEnd )
+	Renamed: Fcgid starter template to php-fcgi-starter (FrontEnd)
 
 PLUGINS
 	Added: iMSCP_Plugin::getConfigPrev() and iMSCP_Plugin::getConfigPrevParam() methods
@@ -96,11 +98,12 @@ YOUTRACK
 	Fixed #IP-1314: Custom DNS SRV record - Missing TLS protocol
 	Fixed #IP-1315: Defect - Statistics overview with special characters breaks view
 	Fixed #IP-1323: Invalid query result column used in change_domain_status() function
-	Fixed #IP-1325: phpMyAdmin 4.4.4 released
+	Fixed #IP-1325: phpMyAdmin 4.4.5 released
 	Fixed #IP-1327: Unable to add subdomain (subals) - An error occurred while reading flags on ...
 	Fixed #IP-1330: Proftpd - Unable to connect to i-MSCP database
 	Fixed #IP-1332: nginx / nginx-light package configuration fail which result to i-MSCP installation failure
 	Fixed #IP-1333: Local resolver not added into resolv.conf file
+	Fixed #IP-1334: Jessie - Bind9 options from /etc/default/bind9 file are ignored
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.2

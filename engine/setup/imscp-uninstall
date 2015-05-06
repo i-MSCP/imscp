@@ -266,10 +266,9 @@ sub _uninstallServers
 sub _uninstallServices
 {
 	my $serviceMngr = iMSCP::Service->getInstance();
-	$serviceMngr->remove($_) for 'imscp_daemon', 'imscp_network', , 'imscp_panel';
+	$serviceMngr->remove($_) for 'imscp_daemon', 'imscp_network', 'imscp_panel';
 
-	# Be sure to remove all service files (sysvinit scripts, upstart job scripts and systemd unit files)
-	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override', '/lib/systemd/system/%s.service') {
+	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override', '/etc/systemd/system/%s.service') {
 		for my $service('imscp_network', 'imscp_daemon', 'imscp_panel') {
 			my $file = sprintf($pFormat, $service);
 
@@ -277,6 +276,19 @@ sub _uninstallServices
 				my $rs = iMSCP::File->new( filename => $file )->delFile();
 				return $rs if $rs;
 			}
+		}
+	}
+
+	for my $service('bind9', 'bind9-resolvconf') {
+		$serviceMngr->disable($service) if $serviceMngr->isSystemd();
+
+		if(-f "/etc/systemd/system/$service.service") {
+			my $rs = iMSCP::File->new( filename => "/etc/systemd/system/$service.service" )->delFile();
+			return $rs if $rs;
+		}
+
+		if("/lib/systemd/system/$service.service") {
+			$serviceMngr->enable($service) if $serviceMngr->isSystemd();
 		}
 	}
 

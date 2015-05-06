@@ -490,22 +490,9 @@ sub _buildConf
 
 				my $serviceMngr = iMSCP::Service->getInstance();
 
-				if($serviceMngr->isSystemd() && -f '/lib/systemd/system/bind9-resolvconf.service') {
+				# Fix for #IP-1333
+				if($serviceMngr->isSystemd()) {
 					if($self->{'config'}->{'LOCAL_DNS_RESOLVER'} eq 'yes') {
-						# Work around #IP-1333 ( related to https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=744304 )
-						# Note: This systemd system service units file is provided by bind9 package
-						my $file = iMSCP::File->new( filename => '/lib/systemd/system/bind9-resolvconf.service' );
-						my $fileContent = $file->get();
-						unless(defined $fileContent) {
-							error(sprintf('Unable to read %s', $file->{'filename'}));
-							return 1;
-						} elsif($fileContent !~ /RemainAfterExit=yes/) {
-							$fileContent =~ s%(ExecStop.*\n)%$1RemainAfterExit=yes\n%;
-							$rs = $file->set($fileContent);
-							$rs ||= $file->save();
-							return $rs if $rs;
-						}
-
 						$serviceMngr->enable('bind9-resolvconf');
 					} else {
 						$serviceMngr->stop('bind9-resolvconf');

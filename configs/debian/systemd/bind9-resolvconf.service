@@ -1,0 +1,14 @@
+[Unit]
+Description=local BIND via resolvconf
+Documentation=man:named(8) man:resolvconf(8)
+Requires=bind9.service
+After=bind9.service
+ConditionFileIsExecutable=/sbin/resolvconf
+
+[Service]
+ExecStart=/bin/sh -c 'echo nameserver 127.0.0.1 | /sbin/resolvconf -a lo.named'
+ExecStop=/sbin/resolvconf -d lo.named
+RemainAfterExit=yes
+
+[Install]
+WantedBy=bind9.service

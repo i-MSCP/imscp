@@ -92,10 +92,19 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	(
-		$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
-		$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
-	);
+	if($self->_exec(
+		$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)', 'ge', '2.88'
+	)) {
+		(
+			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
+			$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
+		);
+	} else {
+		(
+			$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0 &&
+			$self->_exec($commands{'update-rc.d'}, $service, 'enable') == 0
+		);
+	}
 }
 
 =item disable($service)
