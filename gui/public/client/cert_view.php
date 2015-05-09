@@ -123,6 +123,41 @@ function _client_updateDomainStatus($domainType, $domainId)
 }
 
 /**
+ * Generate temporary openssl coonfiguration file
+ *
+ * @throws iMSCP_Exception_Database
+ * @param string $data User data
+ * @return bool|string Path to generate openssl temporary file, FALSE on failure
+ */
+function client_generateOpenSSLConfFile($data)
+{
+	$config = iMSCP_Registry::get('config');
+
+	$sslTpl = new iMSCP_pTemplate(false);
+	$sslTpl->setRootDir(LIBRARY_PATH . '/Resources/ssl');
+	$sslTpl->define('tpl', 'openssl.cnf.tpl');
+	$sslTpl->assign(array(
+		'DOMAIN_NAME' => $data['domain_name'],
+		'ADMIN_SYS_NAME' => $data['admin_sys_name'],
+		'BASE_SERVER_VHOST' => $config['BASE_SERVER_VHOST']
+	));
+	$sslTpl->parse('TPL', 'tpl');
+
+	if ($opensslConfFile = @tempnam(sys_get_temp_dir(), (intval($_SESSION['user_id']) . '-openssl.cnf'))) {
+		if (@file_put_contents($opensslConfFile, $sslTpl->getLastParseResult())) {
+			register_shutdown_function(function ($file) { @unlink($file); }, $opensslConfFile);
+			return $opensslConfFile;
+		} else {
+			write_log(sprintf('Unable to write in %s temporary file', $opensslConfFile), E_USER_ERROR);
+		}
+	} else {
+		write_log('Unable to create temporary file', E_USER_ERROR);
+	}
+
+	return false;
+}
+
+/**
  * Generate self-signed certificate
  *
  * @param string $domainName Domain name
@@ -130,48 +165,72 @@ function _client_updateDomainStatus($domainType, $domainId)
  */
 function client_generateSelfSignedCert($domainName)
 {
-	$privateKey = @openssl_pkey_new();
-	if(!is_resource($privateKey)) {
-		write_log(sprintf('Unable to generate private key'), E_USER_ERROR);
-		return false;
-	}
-
-	$csr = @openssl_csr_new(
-		array(
-			"organizationName" => "iMSCP CA",
-			"commonName" => $domainName,
-			"emailAddress" => $_SESSION['user_email']
-		),
-		$privateKey
+	$stmt = exec_query(
+		'SELECT admin_sys_name, firm, city, state, country, email FROM admin WHERE admin_id = ?',
+		intval($_SESSION['user_id'])
 	);
 
-	if(!is_resource($csr)) {
-		write_log(sprintf('Unable to generate certificate signing request'), E_USER_ERROR);
-		return false;
+	if ($stmt->rowCount()) {
+		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+		$row['domain_name'] = $domainName;
+
+		if (!($sslConfigFilePath = client_generateOpenSSLConfFile($row))) {
+			return false;
+		}
+
+		$distinguishedName = array(
+			'countryName' => 'US', //  TODO map of country names to ISO-3166 codes
+			'stateOrProvinceName' => (!empty($row['state'])) ? $row['state'] : 'N/A',
+			'localityName' => (!empty($row['city'])) ? $row['city'] : 'N/A',
+			'organizationName' => (!empty($row['firm'])) ? $row['firm'] : 'N/A',
+			'commonName' => $domainName,
+			'emailAddress' => $row['email']
+		);
+
+		$sslConfig = array('config' => $sslConfigFilePath);
+
+		$csr = openssl_csr_new($distinguishedName, $pkey, $sslConfig);
+		if (!is_resource($csr)) {
+			write_log(
+				sprintf('Unable to generate certificate signing request: %s', openssl_error_string()), E_USER_ERROR
+			);
+			return false;
+		}
+
+		# Export certificate private key
+		if (@openssl_pkey_export($pkey, $pkeyStr, null, $sslConfig) !== true) {
+			write_log(sprintf('Unable to export private key: %s', openssl_error_string()), E_USER_ERROR);
+			return false;
+		}
+
+		# Generate certificate
+		#unset($sslConfig['req_extensions']);
+		$cert = openssl_csr_sign($csr, null, $pkeyStr, 365, $sslConfig, intval($_SESSION['user_id']) . time());
+		if (!is_resource($cert)) {
+			write_log(sprintf('Unable to generate certificate: %s', openssl_error_string()));
+			return false;
+		}
+
+		# Export certificate
+		if (@openssl_x509_export($cert, $certStr, true) !== true) {
+			write_log(sprintf('Unable to export CA certificate: %s', openssl_error_string()), E_USER_ERROR);
+			return false;
+		}
+
+		# Free resources
+		openssl_pkey_free($pkey);
+		openssl_x509_free($cert);
+		unset($pkey, $certCsr, $cert);
+
+		$_POST['passphrase'] = '';
+		$_POST['private_key'] = $pkeyStr;
+		$_POST['certificate'] = $certStr;
+		$_POST['ca_bundle'] = '';
+
+		return true;
 	}
 
-	$certificate = @openssl_csr_sign($csr, null, $privateKey, 365);
-	if(!is_resource($certificate)) {
-		write_log(sprintf('Unable to generate certificate'));
-		return false;
-	}
-
-	if(@openssl_pkey_export($privateKey, $privateKeyStr) !== true) {
-		write_log(sprintf('Unable to export private key'), E_USER_ERROR);
-		return false;
-	}
-
-	if(@openssl_x509_export($certificate, $certificateStr) !== true) {
-		write_log(sprintf('Unable to export certificate'), E_USER_ERROR);
-		return false;
-	}
-
-	$_POST['passphrase'] = '';
-	$_POST['private_key'] = $privateKeyStr;
-	$_POST['certificate'] = $certificateStr;
-	$_POST['ca_bundle'] = '';
-
-	return true;
+	return false;
 }
 
 /**
@@ -188,9 +247,10 @@ function client_addSslCert($domainId, $domainType)
 	$config = iMSCP_Registry::get('config');
 
 	$domainName = _client_getDomainName($domainId, $domainType);
+	$selfSigned = isset($_POST['selfsigned']);
 
 	if($domainName !== false) {
-		if(isset($_POST['selfsigned'])) {
+		if($selfSigned) {
 			if(!client_generateSelfSignedCert($domainName)) {
 				set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
 				redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
@@ -207,48 +267,50 @@ function client_addSslCert($domainId, $domainType)
 			$caBundle = clean_input($_POST['ca_bundle']);
 			$certId = intval($_POST['cert_id']);
 
-			// Validating certificate ( private key, certificate and certificate chain )
+			if(!$selfSigned) {
+				// Validating certificate ( private key, certificate and certificate chain )
 
-			$privateKey = @openssl_pkey_get_private($privateKey, $passPhrase);
-			if(!is_resource($privateKey)) {
-				set_page_message(tr('Invalid private key or passphrase.'), 'error');
-			}
-
-			$certificateStr = $certificate;
-			$certificate = @openssl_x509_read($certificate);
-			if(!is_resource($certificate)) {
-				set_page_message(tr('Invalid certificate.'), 'error');
-			} elseif(@openssl_x509_check_private_key($certificate, $privateKey) !== true) {
-				set_page_message(tr("The private key doesn't belong to the provided certificate."), 'error');
-			}
-
-			if($caBundle !== '') {
-				$tmpfname = @tempnam(sys_get_temp_dir(), 'ssl-ca');
-				if(!@file_put_contents($tmpfname, $caBundle)) {
-					write_log(sprintf('Unable to export customer CA bundle in tmp file'), E_USER_ERROR);
-					set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
+				$privateKey = @openssl_pkey_get_private($privateKey, $passPhrase);
+				if (!is_resource($privateKey)) {
+					set_page_message(tr('Invalid private key or passphrase.'), 'error');
 				}
 
-				// Note: Here we also are the ca bundle in the trusted chain to support self-signed certificates
-				if(@openssl_x509_checkpurpose(
-					$certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname), $tmpfname) !== true
-				) {
-					set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
+				$certificateStr = $certificate;
+				$certificate = @openssl_x509_read($certificate);
+				if (!is_resource($certificate)) {
+					set_page_message(tr('Invalid certificate.'), 'error');
+				} elseif (@openssl_x509_check_private_key($certificate, $privateKey) !== true) {
+					set_page_message(tr("The private key doesn't belong to the provided certificate."), 'error');
 				}
 
-				@unlink($tmpfname);
-			} else {
-				$tmpfname = @tempnam(sys_get_temp_dir(), 'ssl-ca');
-				file_put_contents($tmpfname, $certificateStr);
+				if(($tmpfname = @tempnam(sys_get_temp_dir(), (intval($_SESSION['user_id']) . 'ssl-ca')))) {
+					register_shutdown_function(function($file) { @unlink($file); }, $tmpfname);
 
-				// Note: Here we also are the certificate in the trusted chain to support self-signed certificates
-				if(@openssl_x509_checkpurpose(
-					$certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname)) !== true
-				) {
-					set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
+					if ($caBundle !== '') {
+						if (!@file_put_contents($tmpfname, $caBundle)) {
+							write_log(sprintf('Unable to export customer CA bundle in tmp file'), E_USER_ERROR);
+							set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
+						}
+
+						// Note: Here we also add the ca bundle in the trusted chain to support self-signed certificates
+						if (@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array(
+								$config['DISTRO_CA_BUNDLE'], $tmpfname), $tmpfname) !== true
+						) {
+							set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
+						}
+					} else {
+						file_put_contents($tmpfname, $certificateStr);
+
+						// Note: Here we also add the certificate in the trusted chain to support self-signed certificates
+						if (@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array(
+								$config['DISTRO_CA_BUNDLE'], $tmpfname)) !== true
+						) {
+							set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
+						}
+					}
+				} else {
+					write_log(sprintf('Unable to create temporary file'), E_USER_ERROR);
 				}
-
-				@unlink($tmpfname);
 			}
 
 			// TODO validate CN / ALT subject
@@ -256,21 +318,27 @@ function client_addSslCert($domainId, $domainType)
 			if(!Zend_Session::namespaceIsset('pageMessages')) {
 				// Preparing data for insertion in database
 
-				if(@openssl_pkey_export($privateKey, $privateKeyStr) !== true) {
-					write_log(sprintf('Unable to export private key'), E_USER_ERROR);
-					set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
+				if(!$selfSigned) {
+					if (@openssl_pkey_export($privateKey, $privateKeyStr) !== true) {
+						write_log(sprintf('Unable to export private key'), E_USER_ERROR);
+						set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
+					}
+
+					@openssl_pkey_free($privateKey);
+
+					if (@openssl_x509_export($certificate, $certificateStr) !== true) {
+						write_log(sprintf('Unable to export certificate'), E_USER_ERROR);
+						set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
+					}
+
+					@openssl_x509_free($certificate);
+
+					$caBundleStr = str_replace("\r\n", "\n", $caBundle);
+				} else {
+					$privateKeyStr = $privateKey;
+					$certificateStr = $certificate;
+					$caBundleStr = $caBundle;
 				}
-
-				@openssl_pkey_free($privateKey);
-
-				if(@openssl_x509_export($certificate, $certificateStr) !== true) {
-					write_log(sprintf('Unable to export certificate'), E_USER_ERROR);
-					set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
-				}
-
-				@openssl_x509_free($certificate);
-
-				$caBundleStr = str_replace("\r\n", "\n", $caBundle);
 
 				if(!Zend_Session::namespaceIsset('pageMessages')) {
 					# Inserting/updating data into database
@@ -456,19 +524,17 @@ function client_generatePage($tpl, $domainId, $domainType)
 			$caBundle = $_POST['ca_bundle'];
 		}
 
-		$tpl->assign(
-			array(
-				'TR_DYNAMIC_TITLE' => $dynTitle,
-				'DOMAIN_NAME' => tohtml(encode_idna($domainName)),
-				'KEY_CERT' => tohtml(trim($privateKey)),
-				'CERTIFICATE' => tohtml(trim($certificate)),
-				'CA_BUNDLE' => tohtml(trim($caBundle)),
-				'CERT_ID' => tohtml(trim($certId)),
-				'TR_ACTION' => $trAction
-			)
-		);
+		$tpl->assign(array(
+			'TR_DYNAMIC_TITLE' => $dynTitle,
+			'DOMAIN_NAME' => tohtml(encode_idna($domainName)),
+			'KEY_CERT' => tohtml(trim($privateKey)),
+			'CERTIFICATE' => tohtml(trim($certificate)),
+			'CA_BUNDLE' => tohtml(trim($caBundle)),
+			'CERT_ID' => tohtml(trim($certId)),
+			'TR_ACTION' => $trAction
+		));
 
-		if(!customerHasFeature('ssl') || (isset($status) && $status !== 'ok')) {
+		if(!customerHasFeature('ssl') || (isset($status) && in_array($status, array('toadd', 'tochange', 'todelete')))) {
 			$tpl->assign('SSL_CERTIFICATE_ACTIONS', '');
 			if(!customerHasFeature('ssl')) {
 				set_page_message(
@@ -493,15 +559,13 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptSta
 check_login('user');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'client/cert_view.tpl',
-		'page_message' => 'layout',
-		'ssl_certificate_status' => 'page',
-		'ssl_certificate_actions' => 'page'
-	)
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'client/cert_view.tpl',
+	'page_message' => 'layout',
+	'ssl_certificate_status' => 'page',
+	'ssl_certificate_actions' => 'page'
+));
 
 if(
 	isset($_GET['domain_id']) && isset($_GET['domain_type']) &&
@@ -520,32 +584,28 @@ if(
 		}
 	}
 
-	$tpl->assign(
-		array(
-			'TR_PAGE_TITLE' => tr('Client / Domains / SSL Certificate'),
-			'TR_CERTIFICATE_DATA' => tr('Certificate data'),
-			'TR_CERT_FOR' => tr('Common name'),
-			'TR_STATUS' => tr('Status'),
-			'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
-			'TR_PASSWORD' => tr('Private key passphrase if any'),
-			'TR_PRIVATE_KEY' => tr('Private key'),
-			'TR_CERTIFICATE' => tr('Certificate'),
-			'TR_CA_BUNDLE' => tr('Intermediate certificate(s)'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_CANCEL' => tr('Cancel'),
-			'DOMAIN_ID' => tohtml($domainId),
-			'DOMAIN_TYPE' => tohtml($domainType)
-		)
-	);
+	$tpl->assign(array(
+		'TR_PAGE_TITLE' => tr('Client / Domains / SSL Certificate'),
+		'TR_CERTIFICATE_DATA' => tr('Certificate data'),
+		'TR_CERT_FOR' => tr('Common name'),
+		'TR_STATUS' => tr('Status'),
+		'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
+		'TR_PASSWORD' => tr('Private key passphrase if any'),
+		'TR_PRIVATE_KEY' => tr('Private key'),
+		'TR_CERTIFICATE' => tr('Certificate'),
+		'TR_CA_BUNDLE' => tr('Intermediate certificate(s)'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_CANCEL' => tr('Cancel'),
+		'DOMAIN_ID' => tohtml($domainId),
+		'DOMAIN_TYPE' => tohtml($domainType)
+	));
 
 	generateNavigation($tpl);
 	client_generatePage($tpl, $domainId, $domainType);
 	generatePageMessage($tpl);
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
-
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
 	$tpl->prnt();
 } else {
 	showBadRequestErrorPage();

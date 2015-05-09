@@ -73,7 +73,7 @@ sub validatePrivateKey
 		"$self->{'openssl_path'} rsa",
 		'-in', escapeShell($self->{'private_key_container_path'}),
 		'-noout',
-		'-passin', ($passphraseFile)  ? escapeShell("file:$passphraseFile") : 'pass:dummypass'
+		($passphraseFile) ? ('-passin', escapeShell("file:$passphraseFile")) : ''
 	);
 
 	my ($stdout, $stderr);
@@ -179,7 +179,7 @@ sub importPrivateKey
 		"$self->{'openssl_path'} rsa",
 		'-in', escapeShell($self->{'private_key_container_path'}),
 		'-out', escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem"),
-		'-passin', ($passphraseFile)  ? escapeShell("file:$passphraseFile") : 'pass:dummypass'
+		($passphraseFile) ? ('-passin', escapeShell("file:$passphraseFile")) : ''
 	);
 
 	my ($stdout, $stderr);

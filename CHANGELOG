@@ -50,12 +50,14 @@ DISTRIBUTIONS
 
 FRONTEND
 	Added Custom DNS items in debugger interface ( admin level )
+	Added: Path to openssl.cnf file into php.ini file
 	Changed: Stores the Github payload as json file instead of PHP file ( iMSCP_Update_Version::getUpdateInfo() )
 	Fixed: Client domain management page must not be hidden even if customer cannot add domain aliases and subdomains
 	Fixed: Do not fetch more data than needed from GitHub ( iMSCP_Update_Version::getUpdateInfo() )
 	Fixed: Force reload of newest mail body footprint file ( iMSCP_Exception_Writer_Mail::onUncaughtException() )
 	Fixed: Html in title attribute must not be auto-escaped by jQueryUI tooltip
 	Fixed: Translate the INADDR_ANY ( 0.0.0.0 ) IP address to 'Any' ( Services status )
+	Fixed: Self-signed SSL certificates - serial numbers must be unique
 	Improved: Translations strings entries can now be accessed as object properties ( i18n_getJsTranslations() )
 	Removed: imscp_delete_opcode_file() and imscp_clear_opcode_cache() functions
 
@@ -92,6 +94,7 @@ SERVICES
 YOUTRACK
 	Fixed #IP-0321: When a customer deletes a domain alias, all related entities must be automatically deleted
 	Fixed #IP-1082: net2ftp SSL Bug - http scheme badly detected - Missing HTTPS server variable
+	Fixed #IP-1257: Self-signed SSL certificate - SHA256 should be used in place of SHA1
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
 	Fixed #IP-1279: Autoresponder - Unable to get message body
 	Fixed #IP-1286: IP attachment fails on reboot ( Ubuntu )
