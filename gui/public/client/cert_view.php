@@ -129,7 +129,7 @@ function _client_updateDomainStatus($domainType, $domainId)
  * @param array $data User data
  * @return bool|string Path to generate openssl temporary file, FALSE on failure
  */
-function client_generateOpenSSLConfFile($data)
+function _client_generateOpenSSLConfFile($data)
 {
 	$config = iMSCP_Registry::get('config');
 
@@ -174,7 +174,7 @@ function client_generateSelfSignedCert($domainName)
 		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 		$row['domain_name'] = $domainName;
 
-		if (!($sslConfigFilePath = client_generateOpenSSLConfFile($row))) {
+		if (!($sslConfigFilePath = _client_generateOpenSSLConfFile($row))) {
 			return false;
 		}
 
@@ -197,14 +197,13 @@ function client_generateSelfSignedCert($domainName)
 			return false;
 		}
 
-		# Export certificate private key
+		# Export private key
 		if (@openssl_pkey_export($pkey, $pkeyStr, null, $sslConfig) !== true) {
 			write_log(sprintf('Unable to export private key: %s', openssl_error_string()), E_USER_ERROR);
 			return false;
 		}
 
 		# Generate certificate
-		#unset($sslConfig['req_extensions']);
 		$cert = openssl_csr_sign($csr, null, $pkeyStr, 365, $sslConfig, intval($_SESSION['user_id']) . time());
 		if (!is_resource($cert)) {
 			write_log(sprintf('Unable to generate certificate: %s', openssl_error_string()));
@@ -213,14 +212,13 @@ function client_generateSelfSignedCert($domainName)
 
 		# Export certificate
 		if (@openssl_x509_export($cert, $certStr, true) !== true) {
-			write_log(sprintf('Unable to export CA certificate: %s', openssl_error_string()), E_USER_ERROR);
+			write_log(sprintf('Unable to export certificate: %s', openssl_error_string()), E_USER_ERROR);
 			return false;
 		}
 
 		# Free resources
 		openssl_pkey_free($pkey);
 		openssl_x509_free($cert);
-		unset($pkey, $certCsr, $cert);
 
 		$_POST['passphrase'] = '';
 		$_POST['private_key'] = $pkeyStr;
