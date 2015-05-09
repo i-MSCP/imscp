@@ -126,14 +126,14 @@ function _client_updateDomainStatus($domainType, $domainId)
  * Generate temporary openssl coonfiguration file
  *
  * @throws iMSCP_Exception_Database
- * @param string $data User data
+ * @param array $data User data
  * @return bool|string Path to generate openssl temporary file, FALSE on failure
  */
 function client_generateOpenSSLConfFile($data)
 {
 	$config = iMSCP_Registry::get('config');
 
-	$sslTpl = new iMSCP_pTemplate(false);
+	$sslTpl = new iMSCP_pTemplate();
 	$sslTpl->setRootDir(LIBRARY_PATH . '/Resources/ssl');
 	$sslTpl->define('tpl', 'openssl.cnf.tpl');
 	$sslTpl->assign(array(
