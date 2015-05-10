@@ -152,8 +152,8 @@ sub add
 	} else {
 		# Modifying existents i-MSCP unix user
 		my @cmd = (
-			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($oldUserName), ';',
-			"$main::imscpConfig{'CMD_USERMOD'}",
+			'pkill -KILL -u', escapeShell($oldUserName), ';',
+			'usermod',
 			'-c', escapeShell($comment), # New comment
 			'-d', escapeShell($homedir), # New homedir
 			'-l', escapeShell($userName), # New login
@@ -169,7 +169,7 @@ sub add
 
 		# Modifying existents i-MSCP unix group
 		@cmd = (
-			$main::imscpConfig{'CMD_GROUPMOD'},
+			'groupmod',
 			'-n', escapeShell($groupName), # New group name
 			escapeShell($self->{'admin_sys_gname'}) # Current group name
 		);

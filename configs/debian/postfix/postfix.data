@@ -21,11 +21,6 @@ MTA_MAILBOX_UID_NAME = vmail
 MTA_MAILBOX_GID_NAME = mail
 MTA_SASL_CONF_DIR = /etc/postfix/sasl
 
-CMD_PFLOGSUM = /usr/sbin/maillogconvert.pl
-CMD_POSTCONF = /usr/sbin/postconf
-CMD_POSTMAP = /usr/sbin/postmap
-CMD_NEWALIASES = /usr/bin/newaliases
-
 # Possible value: yes or no
 # (Not implemented yet)
 #IPV6_SUPPORT =

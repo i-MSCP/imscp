@@ -315,11 +315,7 @@ sub _isMysqldInsideCt
 
 	if(-f '/proc/user_beancounters') {
 		my ($stdout, $stderr);
-		$rs = execute(
-			"$main::imscpConfig{'CMD_CAT'} /proc/1/status | $main::imscpConfig{'CMD_GREP'} --color=never envID",
-			\$stdout,
-			\$stderr
-		);
+		$rs = execute('cat /proc/1/status | grep --color=never envID', \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		warning($stderr) if $rs && $stderr;
 		return $rs if $rs;

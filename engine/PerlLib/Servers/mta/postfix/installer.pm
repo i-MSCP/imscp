@@ -269,9 +269,7 @@ sub setEnginePermissions
 	return $rs if $rs;
 
 	# eg. /usr/sbin/maillogconvert.pl
-	$rs = setRights(
-		$self->{'config'}->{'CMD_PFLOGSUM'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
-	);
+	$rs = setRights('/usr/sbin/maillogconvert.pl', { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' });
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
@@ -608,10 +606,10 @@ sub _buildAliasesDb
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute($self->{'config'}->{'CMD_NEWALIASES'}, \$stdout, \$stderr);
+	$rs = execute('newaliases', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Error while executing $self->{'config'}->{'CMD_NEWALIASES'}") if ! $stderr && $rs;
+	error("Error while executing newaliases command") if ! $stderr && $rs;
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterMtaBuildAliases');
@@ -739,7 +737,7 @@ sub _buildMainCfFile
 
 	# Fix for #790
 	my ($stdout, $stderr);
-	execute("$self->{'config'}->{'CMD_POSTCONF'} -h mail_version", \$stdout, \$stderr);
+	execute("postconf -h mail_version", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;

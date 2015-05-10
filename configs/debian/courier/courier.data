@@ -17,15 +17,7 @@ IMAPD_SNAME = courier-imap
 IMAPD_SSL_SNAME = courier-imap-ssl
 POPD_SNAME = courier-pop
 POPD_SSL_SNAME = courier-pop-ssl
-CMD_MAILDIRMAKE = /usr/bin/maildirmake
 
 # Maildrop
 
-MAILDROP_MDA_PATH = /usr/bin/maildrop
 QUOTA_WARN_MSG_PATH = /etc/quotawarnmsg
-
-## Deprecated
-
-# Only used for transition
-# We are now using the authmysql module
-CMD_MAKEUSERDB = /usr/sbin/makeuserdb

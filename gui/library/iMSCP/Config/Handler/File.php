@@ -68,7 +68,6 @@
  * @property bool PREVENT_EXTERNAL_LOGIN_RESELLER If TRUE, login from external site is prevented for resellers
  * @property bool PREVENT_EXTERNAL_LOGIN_CLIENT
  * @property bool CHECK_FOR_UPDATES If TRUE, update cheching is enabled
- * @property string IMSCP_SUPPORT_SYSTEM_TARGET
  * @property string BASE_SERVER_VHOST_PREFIX
  * @property string DATE_FORMAT Date format
  * @property string BASE_SERVER_VHOST Base server vhost
@@ -76,7 +75,6 @@
  * @property string APS_MAX_REMOTE_FILESIZE Max size for remote application package
  * @property int DATABASE_REVISION Last database revision
  * @property int CRITICAL_UPDATE_REVISION Last critical update revision
- * @property string WEBSTATS_GROUP_AUTH Webstats group authentication
  * @property string BASE_SERVER_IP Base server IP
  * @property int BuildDate i-MSCP package Build date
  * @property string PHP_TIMEZONE PHP timezone
@@ -88,16 +86,8 @@
  * @property string DATABASE_TYPE Database type
  * @property string DATABASE_HOST Database hostname
  * @property string DATABASE_NAME Database name
- * @property string CMD_IFCONFIG Path to ifconfig
- * @property string CMD_DF Path to df
- * @property string CMD_VMSTAT Path to vmstat
- * @property string CMD_SWAPCTL Path to swapctl
- * @property string CMD_SYSCTL path to sysctl
  * @property string GUI_ROOT_DIR path to GUI
- * @property string CMD_SHELL Path to shell interpreter
- * @property string FTP_HOMEDIR Ftp home directory
  * @property string SERVER_HOSTNAME Server hostname
- * @property string IMSCP_SUPPORT_SYSTEM_PATH
  * @property string Version
  * @property string CodeName
  * @property string GUI_APS_DIR Directory for software repositories
@@ -106,10 +96,6 @@
  * @property bool MAIN_MENU_SHOW_LABELS Tells whether or not labels must be showed for main menu links
  * @property string PHPINI_OPEN_BASEDIR paths appended to the default PHP open_basedir directive of customers
  * @property string FTP_USERNAME_SEPARATOR Ftp username separator
- * @property string FILEMANAGER_PATH Filenamager path
- * @property string PMA_PATH PhpMyAdmin path
- * @property string WEBMAIL_PATH Webmail path
- * @property string WEBSTATS_RPATH Web statistics path
  * @property string BACKUP_DOMAINS (yes|no)
  * @property string WEBSTATS_PACKAGES (No|<webstats_package_name>)
  * @property string CONF_DIR i-MSCP configuration directory (eg. /etc/imscp)

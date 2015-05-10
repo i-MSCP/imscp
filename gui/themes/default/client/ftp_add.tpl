@@ -21,7 +21,7 @@
 			<td><label for="username">{TR_USERNAME}</label></td>
 			<td>
 				<input type="text" id="username" name="username" value="{USERNAME}"/>
-				<label for="domain">{FTP_USERNAME_SEPARATOR}
+				<label for="domain">@
 					<select id="domain_name" name="domain_name">
 						<!-- BDP: domain_list -->
 						<option value="{DOMAIN_NAME_VAL}"{DOMAIN_NAME_SELECTED}>{DOMAIN_NAME}</option>

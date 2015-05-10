@@ -143,7 +143,7 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 			$tpl->assign(
 				array(
 					'FTP_USER' => tohtml($username[0] . '@' . decode_idna($username[1])),
-					'FTP_HOME' => tohtml(substr($data['homedir'], strlen($cfg->FTP_HOMEDIR)))
+					'FTP_HOME' => tohtml(substr($data['homedir'], strlen($cfg->USER_WEB_DIR)))
 				)
 			);
 

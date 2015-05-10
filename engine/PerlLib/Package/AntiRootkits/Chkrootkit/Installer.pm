@@ -129,8 +129,7 @@ sub _addCronTask
 			MONTH => '',
 			DWEEK => '',
 			USER => $main::imscpConfig{'ROOT_USER'},
-			COMMAND => "$main::imscpConfig{'CMD_NICE'} -n 10 $main::imscpConfig{'CMD_CHKROOTKIT'} " .
-				"1> $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
+			COMMAND => "nice -n 10 chkrootkit 1> $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
 		}
 	);
 }
@@ -156,13 +155,7 @@ sub _scheduleCheck
 		return $rs if $rs;
 
 		my ($stdout, $stderr);
-		$rs = execute(
-			"$main::imscpConfig{'CMD_ECHO'} " .
-			"'$main::imscpConfig{'CMD_CHKROOTKIT'} 1> $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' " .
-			"| $main::imscpConfig{'CMD_BATCH'}",
-			\$stdout,
-			\$stderr
-		);
+		$rs = execute("echo 'chkrootkit 1> $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | batch", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error("Unable to schedule Chkrootkit check") if $rs && ! $stderr;

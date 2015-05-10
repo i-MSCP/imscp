@@ -77,7 +77,7 @@ sub addAddr
 				my $cidr = (ip_is_ipv4($addr)) ? 32 : 64; # TODO should be configurable
 
 				my ($stdout, $stderr);
-				my $rs = execute("$main::imscpConfig{'CMD_IP'} addr add $addr/$cidr dev $dev", \$stdout, \$stderr);
+				my $rs = execute("ip addr add $addr/$cidr dev $dev", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				error("Unable to add IP $addr to network device $dev") if $rs && ! $stderr;
@@ -123,7 +123,7 @@ sub delAddr
 			my $cidr = $self->{'addresses'}->{$addr}->{'prefix_length'};
 
 			my ($stdout, $stderr);
-			my $rs = execute("$main::imscpConfig{'CMD_IP'} addr del $addr/$cidr dev $dev", \$stdout, \$stderr);
+			my $rs = execute("ip addr del $addr/$cidr dev $dev", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			error("Unable to delete IP $addr from network device $dev") if $rs && ! $stderr;
@@ -312,7 +312,7 @@ sub upDevice
 
 	if($self->isKnownDevice($dev)) {
 		my ($stdout, $stderr);
-		my $rs = execute("$main::imscpConfig{'CMD_IP'} link set dev $dev up", \$stdout, \$stderr);
+		my $rs = execute("ip link set dev $dev up", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error("Unable to bring the network device up: $dev") if $rs && ! $stderr;
@@ -341,7 +341,7 @@ sub downDevice
 
 	if($self->isKnownDevice) {
 		my ($stdout, $stderr);
-		my $rs = execute("$main::imscpConfig{'CMD_IP'} link set dev $dev down", \$stdout, \$stderr);
+		my $rs = execute("ip link set dev $dev down", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error("Unable to bring the network device down: $dev") if $rs && ! $stderr;
@@ -422,7 +422,7 @@ sub _extractDevices
 	my $self = $_[0];
 
 	my ($stdout, $stderr);
-	my $rs = execute("$main::imscpConfig{'CMD_IP'} -o link show", \$stdout, \$stderr);
+	my $rs = execute('ip -o link show', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	fatal('Unable to get network devices data') if $rs;
@@ -447,7 +447,7 @@ sub _extractAddresses
 	my $self = $_[0];
 
 	my ($stdout, $stderr);
-	my $rs = execute("$main::imscpConfig{'CMD_IP'} -o addr show scope global", \$stdout, \$stderr);
+	my $rs = execute("ip -o addr show scope global", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	fatal('Unable to get network devices data') if $rs;

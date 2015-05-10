@@ -165,9 +165,7 @@ sub _removeCustomers
 	iMSCP::Bootstrapper->getInstance()->unlock();
 
 	my ($rs, $stdout, $stderr);
-	$rs = execute(
-		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr
-	);
+	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Error while deleting customers") if $rs && ! $stderr;

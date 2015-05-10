@@ -572,7 +572,7 @@ sub run
 
 				my ($stdout, $stderr);
 				$rs = execute(
-					"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " .
+					"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " .
 						"\"$imscp_sw_mngr_pushstring\"",
 					\$stdout,
 					\$stderr
@@ -581,9 +581,7 @@ sub run
 				error($stderr) if $stderr && $rs;
 				last if $rs;
 
-				$rs = execute(
-					"$main::imscpConfig{'CMD_RM'} -fR /tmp/sw-$sw_domain_id-$sw_software_id", \$stdout, \$stderr
-				);
+				$rs = execute("rm -fR /tmp/sw-$sw_domain_id-$sw_software_id", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				last if $rs;
@@ -635,8 +633,7 @@ sub run
 
 						my ($stdout, $stderr);
 						$rs = execute(
-							"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " .
-								"\"$pushstring\"",
+							"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . "\"$pushstring\"",
 							\$stdout,
 							\$stderr
 						);
@@ -644,11 +641,7 @@ sub run
 						error($stderr) if $stderr && $rs;
 						last if $rs;
 
-						$rs = execute(
-							"$main::imscpConfig{'CMD_RM'} -fR /tmp/sw-$sw_software_archive-$sw_software_id",
-							\$stdout,
-							\$stderr
-						);
+						$rs = execute("rm -fR /tmp/sw-$sw_software_archive-$sw_software_id", \$stdout, \$stderr);
 						debug($stdout) if $stdout;
 						error($stderr) if $stderr && $rs;
 						last if $rs;

@@ -191,7 +191,7 @@ sub postmap
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_POSTMAP'} $filetype:$filename", \$stdout, \$stderr);
+	$rs = execute("postmap $filetype:$filename", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -632,11 +632,7 @@ sub getTraffic
 
 		# Extract postfix data
 		my ($stdout, $stderr);
-		$rs = execute(
-			"$main::imscpConfig{'CMD_GREP'} 'postfix' $wrkLogFile | $self->{'config'}->{'CMD_PFLOGSUM'} standard",
-			\$stdout,
-			\$stderr
-		);
+		$rs = execute("grep 'postfix' $wrkLogFile | maillogconvert.pl standard", \$stdout, \$stderr);
 
 		# Extract traffic data
 		#

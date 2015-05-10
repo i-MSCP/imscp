@@ -227,7 +227,7 @@ sub setupAskServerHostname
 		unless($hostname) {
 			my $err = undef;
 
-			if (execute("$main::imscpConfig{'CMD_HOSTNAME'} -f", \$hostname, \$err)) {
+			if (execute('hostname -f', \$hostname, \$err)) {
 				error("Unable to find server hostname (server misconfigured?): $err");
 			} else {
 				chomp($hostname);
@@ -873,7 +873,7 @@ sub setupAskServicesSsl
 	my $certificatPath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH', "/root/");
 	my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', '/root/');
 
-	my $openSSL = iMSCP::OpenSSL->new('openssl_path' => $main::imscpConfig{'CMD_OPENSSL'});
+	my $openSSL = iMSCP::OpenSSL->new();
 
 	my $rs = 0;
 
@@ -1194,7 +1194,7 @@ sub setupServerHostname
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'CMD_HOSTNAME'} $host", \$stdout, \$stderr);
+	$rs = execute("hostname $host", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if ! $rs && $stderr;
 	error($stderr) if $rs && $stderr;
@@ -1226,7 +1226,7 @@ sub setupServerIps
 	# Ensure promoting of secondary IP addresses in case a PRIMARY addresse is being deleted
 	# Note we are ignoring return value here (eg for vps)
 	my ($stdout, $stderr);
-	execute("$main::imscpConfig{'CMD_SYSCTL'} -q -w net.ipv4.conf.all.promote_secondaries=1", \$stdout, \$stderr);
+	execute("sysctl -q -w net.ipv4.conf.all.promote_secondaries=1", \$stdout, \$stderr);
 
 	my ($database, $errstr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 	unless($database) {
@@ -1459,9 +1459,7 @@ sub setupUpdateDatabase
 	}
 
 	my ($stdout, $stderr);
-	$rs = execute(
-		"$main::imscpConfig{'CMD_PHP'} $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr
-	);
+	$rs = execute("php $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	return $rs if $rs;
@@ -1630,14 +1628,12 @@ sub setupServiceSsl
 	if($sslEnabled eq 'yes' && setupGetQuestion('SERVICES_SSL_SETUP', 'yes') eq 'yes') {
 		if($selfSignedCertificate) {
 			my $rs = iMSCP::OpenSSL->new(
-				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
 				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 				'certificate_chain_name' => 'imscp_services'
 			)->createSelfSignedCertificate($domainName);
 			return $rs if $rs;
 		} else {
 			my $rs = iMSCP::OpenSSL->new(
-				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
 				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 				'certificate_chain_name' => 'imscp_services',
 				'private_key_container_path' => $privateKeyPath,
@@ -1684,9 +1680,6 @@ sub setupCron
 	# Building the new file
 	$cfgTpl = process(
 		{
-			'CMD_NICE' => $main::imscpConfig{'CMD_NICE'},
-			'CMD_FIND' => $main::imscpConfig{'CMD_FIND'},
-			'CMD_RM' => $main::imscpConfig{'CMD_RM'},
 			'QUOTA_ROOT_DIR' => $main::imscpConfig{'QUOTA_ROOT_DIR'},
 			'LOG_DIR' => $main::imscpConfig{'LOG_DIR'},
 			'TRAFF_ROOT_DIR' => $main::imscpConfig{'TRAFF_ROOT_DIR'},
@@ -1759,15 +1752,7 @@ sub setupSetPermissions
 
 		my $pid;
 
-		eval {
-			$pid = open3(
-				*FHIN,
-				*FHOUT,
-				*FHERR,
-				"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script --setup"
-			);
-		};
-
+		eval { $pid = open3(*FHIN, *FHOUT, *FHERR, "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script --setup"); };
 		if($@) {
 			error("Unable to set permissions: $@");
 			return 1;
@@ -1888,15 +1873,7 @@ sub setupRebuildCustomerFiles
 
 	my $pid;
 
-	eval {
-	 	$pid = open3(
-			*FHIN,
-			*FHOUT,
-			*FHERR,
-			"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup"
-		);
-	};
-
+	eval { $pid = open3(*FHIN, *FHOUT, *FHERR, "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup"); };
 	if($@) {
 		error("Unable to rebuild customers files: $@");
 		return 1;

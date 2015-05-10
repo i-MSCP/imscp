@@ -50,12 +50,12 @@ exit unless $bootstrapper->lock('/tmp/imscp-backup-imscp.lock', 'nowait');
 $bootstrapper->boot({ 'norequirements' => 'yes', 'nofail' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 
 our $command = {
-	'pbzip2' => { 'extension' => 'bz2', 'command' => 'CMD_PBZIP'},
-	'bzip2' => { 'extension' => 'bz2', 'command' => 'CMD_BZIP'},
-	'gzip' => { 'extension' => 'gz', 'command' => 'CMD_GZIP'},
-	'pigz' => { 'extension' => 'gz', 'command' => 'CMD_PIGZ' },
-	'lzma' => { 'extension' => 'lzma', 'command' => 'CMD_LZMA'},
-	'xz' => { 'extension' => 'xz', 'command' => 'CMD_XZ' }
+	'pbzip2' => { 'extension' => 'bz2', 'command' => 'pbzip2'},
+	'bzip2' => { 'extension' => 'bz2', 'command' => 'bzip2'},
+	'gzip' => { 'extension' => 'gz', 'command' => 'gzip'},
+	'pigz' => { 'extension' => 'gz', 'command' => 'pigz' },
+	'lzma' => { 'extension' => 'lzma', 'command' => 'lzma'},
+	'xz' => { 'extension' => 'xz', 'command' => 'xz' }
 };
 
 sub run
@@ -86,9 +86,9 @@ sub run
 	# Remove any backup older than 7 days
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$main::imscpConfig{'CMD_FIND'} $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 " .
-			"-print | xargs -r $main::imscpConfig{'CMD_RM'}",
-		\$stdout, \$stderr
+		"find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r rm",
+		\$stdout,
+		\$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -124,11 +124,7 @@ sub _backupDatabase
 
 		if($algorithm ne 'no') {
 			my ($stdout, $stderr);
-			$rs = execute(
-				"$main::imscpConfig{$command->{$algorithm}->{'command'}} --force " . escapeShell($sqlFName),
-				\$stdout,
-				\$stderr
-			);
+			$rs = execute("$command->{$algorithm}->{'command'} --force " . escapeShell($sqlFName), \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
 				error($stderr) if $stderr;
@@ -152,7 +148,7 @@ sub _backupConfig
 	}
 
 	my @backupCommand = (
-		"$main::imscpConfig{'CMD_TAR'}",
+		'tar',
 		'--create',															# Create new archive
 		"--directory=$main::imscpConfig{'CONF_DIR'}",						# Change to directory
 		($algorithm ne 'no')

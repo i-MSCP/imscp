@@ -36,6 +36,7 @@ use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Rights;
 use iMSCP::Net;
+use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use File::Temp;
 use File::Basename;
@@ -1211,7 +1212,7 @@ sub enableSites
 
 	for(split(' ', $sites)){
 		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
-			$rs = execute("$self->{'config'}->{'CMD_A2ENSITE'} $_", \$stdout, \$stderr);
+			$rs = execute("a2ensite $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1245,7 +1246,7 @@ sub disableSites
 
 	for(split(' ', $sites)) {
 		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
-			$rs = execute("$self->{'config'}->{'CMD_A2DISSITE'} $_", \$stdout, \$stderr);
+			$rs = execute("a2dissite $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1276,7 +1277,7 @@ sub enableModules
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_A2ENMOD'} $modules", \$stdout, \$stderr);
+	$rs = execute("a2enmod $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -1303,7 +1304,7 @@ sub disableModules
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_A2DISMOD'} $modules", \$stdout, \$stderr);
+	$rs = execute("a2dismod $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -1329,12 +1330,12 @@ sub enableConfs
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdEnableConfs', \$confs);
 	return $rs if $rs;
 
-	if(-x $self->{'config'}->{'CMD_A2ENCONF'}) {
+	if(iMSCP::ProgramFinder::find('a2enconf')) {
 		if(-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
 			for(split(' ', $confs)) {
 				if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
 					my ($stdout, $stderr);
-					my $rs = execute("$self->{'config'}->{'CMD_A2ENCONF'} $_", \$stdout, \$stderr);
+					my $rs = execute("a2enconf $_", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
@@ -1366,12 +1367,12 @@ sub disableConfs
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdDisableConfs', \$confs);
 	return $rs if $rs;
 
-	if(-x $self->{'config'}->{'CMD_A2DISCONF'}) {
+	if(iMSCP::ProgramFinder::find('a2disconf')) {
 		if(-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
 			for(split(' ', $confs)) {
 				if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
 					my ($stdout, $stderr);
-					my $rs = execute("$self->{'config'}->{'CMD_A2DISCONF'} $_", \$stdout, \$stderr);
+					my $rs = execute("a2disconf $_", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
@@ -1810,7 +1811,7 @@ sub _addFiles
 		if(-d $skelDir) {
 			$tmpDir = File::Temp->newdir();
 
-			$rs = execute("$main::imscpConfig{'CMD_CP'} -RT $skelDir $tmpDir", \$stdout, \$stderr);
+			$rs = execute("cp -RT $skelDir $tmpDir", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1881,7 +1882,7 @@ sub _addFiles
 		}
 
 		# Copy Web directory tree to the Web directory
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -nRT $tmpDir $webDir", \$stdout, \$stderr);
+		$rs = execute("cp -nRT $tmpDir $webDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;

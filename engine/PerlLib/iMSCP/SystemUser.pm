@@ -52,7 +52,7 @@ sub addSystemUser
 
 	unless(getpwnam($userName)) { # Creating new user
 		@cmd = (
-			$main::imscpConfig{'CMD_USERADD'},
+			'useradd',
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
 			$password,										# Password
 			'-c', escapeShell($comment),					# comment
@@ -67,8 +67,8 @@ sub addSystemUser
 		);
 	} else { # Modify existent user
 		@cmd = (
-			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($userName), ';',
-			$main::imscpConfig{'CMD_USERMOD'},
+			'pkill -KILL -u', escapeShell($userName), ';',
+			'usermod',
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
 			$password,										# Password
 			'-c', escapeShell($comment),					# comment
@@ -104,8 +104,8 @@ sub delSystemUser
 
 	if(getpwnam($userName)) {
 		my  @cmd = (
-			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($userName), ';',
-			$main::imscpConfig{'CMD_USERDEL'},
+			'pkill -KILL -u', escapeShell($userName), ';',
+			'userdel',
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),
 			($self->{'keepHome'} ? '' : '-r'),
 			(($self->{'force'} && ! $self->{'keepHome'}) ? '-f' : ''),
@@ -155,7 +155,7 @@ sub addToGroup
 				my $newGroups = join(',', keys %{$self->{'userGroups'}});
 				$newGroups = ($newGroups ne '') ? "$newGroups,$groupName" : $groupName;
 
-				@cmd = ($main::imscpConfig{'CMD_USERMOD'}, escapeShell($userName), '-G', escapeShell($newGroups));
+				@cmd = ('usermod', escapeShell($userName), '-G', escapeShell($newGroups));
 				$rs = execute("@cmd", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
@@ -163,7 +163,7 @@ sub addToGroup
 				return $rs if $rs;
 			}
 		} else { # Linux way
-			@cmd = ($main::imscpConfig{'CMD_GPASSWD'}, '-a', escapeShell($userName), escapeShell($groupName));
+			@cmd = ('gpasswd', '-a', escapeShell($userName), escapeShell($groupName));
 			$rs = execute("@cmd", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs && $rs != 3;
@@ -206,14 +206,14 @@ sub removeFromGroup
 
 			my $newGroups =  join(',', keys %{$self->{'userGroups'}});
 
-			@cmd = ($main::imscpConfig{'CMD_USERMOD'}, escapeShell($userName), '-G', escapeShell($newGroups));
+			@cmd = ('usermod', escapeShell($userName), '-G', escapeShell($newGroups));
 			$rs = execute("@cmd", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			debug($stderr) if $stderr && ! $rs;
 			return $rs if $rs;
 		} else {
-			@cmd = ($main::imscpConfig{'CMD_GPASSWD'}, '-d', escapeShell($userName), escapeShell($groupName));
+			@cmd = ('gpasswd', '-d', escapeShell($userName), escapeShell($groupName));
 			$rs = execute("@cmd", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs && $rs != 3;
@@ -239,7 +239,7 @@ sub getUserGroups
 	$self->{'username'} = $userName;
 
 	my ($rs, $stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'CMD_ID'} -nG " . escapeShell($userName), \$stdout, \$stderr);
+	$rs = execute('id -nG ' . escapeShell($userName), \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	debug($stderr) if $stderr && ! $rs;

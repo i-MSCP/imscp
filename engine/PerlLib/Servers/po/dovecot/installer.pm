@@ -628,7 +628,7 @@ sub _migrateFromCourier
 	# Converting all mailboxes to dovecot format
 
 	my @cmd = (
-		$main::imscpConfig{'CMD_PERL'},
+		'perl',
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl",
 		'--to-dovecot',
 		'--convert',

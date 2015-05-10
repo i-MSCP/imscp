@@ -13,16 +13,6 @@ HTTPD_CUSTOM_SITES_DIR = /etc/apache2/imscp
 HTTPD_ROOT_DIR = /var/www
 HTTPD_LOG_DIR = /var/log/apache2
 
-CMD_A2ENSITE = /usr/sbin/a2ensite
-CMD_A2DISSITE = /usr/sbin/a2dissite
-CMD_A2ENMOD = /usr/sbin/a2enmod
-CMD_A2DISMOD = /usr/sbin/a2dismod
-CMD_A2ENCONF = /usr/sbin/a2enconf
-CMD_A2DISCONF = /usr/sbin/a2disconf
-CMD_APACHE2CTL = /usr/sbin/apache2ctl
-CMD_APXS2 = /usr/bin/apxs2
-CMD_VLOGGER = /usr/local/sbin/vlogger
-
 # PHP variables
 
 ITK_PHP5_PATH = /etc/php5/apache2/php.ini

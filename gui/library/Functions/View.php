@@ -229,13 +229,7 @@ function generateNavigation($tpl)
 	if(isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'user') {
 		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
-		$tpl->assign(
-			array(
-				'FILEMANAGER_PATH' => $cfg['FILEMANAGER_PATH'],
-				'PMA_PATH' => $cfg['PMA_PATH'],
-				'WEBSTATS_RPATH' => 'http://' . decode_idna($domainProperties['domain_name']) . '/' . $cfg['WEBSTATS_RPATH']
-			)
-		);
+		$tpl->assign('WEBSTATS_PATH', 'http://' . decode_idna($domainProperties['domain_name']) . '/stats');
 
 		if(customerHasFeature('mail')) {
 			$webmails = getWebmailList();
@@ -269,8 +263,8 @@ function generateNavigation($tpl)
 	// Dynamic links (All levels)
 	$tpl->assign(
 		array(
-			'SUPPORT_SYSTEM_PATH' => $cfg['IMSCP_SUPPORT_SYSTEM_PATH'],
-			'SUPPORT_SYSTEM_TARGET' => $cfg['IMSCP_SUPPORT_SYSTEM_TARGET']
+			'SUPPORT_SYSTEM_PATH' => 'ticket_system.php',
+			'SUPPORT_SYSTEM_TARGET' => '_self'
 		)
 	);
 

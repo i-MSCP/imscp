@@ -135,12 +135,12 @@ sub _init
 	# Required programs
 	$self->{'programs'} = {
 		'PHP' => {
-			'version_command' => "$main::imscpConfig{'CMD_PHP'} -v",
+			'version_command' => 'php -v',
 			'version_regexp' => qr/PHP\s([\d.]+)/,
 			'min_version' => '5.3.2'
 		},
 		'Perl' => {
-			'version_command' => "$main::imscpConfig{'CMD_PERL'} -v",
+			'version_command' => 'perl -v',
 			'version_regexp' => qr/v([\d.]+)/,
 			'min_version' => '5.14.2'
 		}

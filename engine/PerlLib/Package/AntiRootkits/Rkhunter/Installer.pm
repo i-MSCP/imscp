@@ -218,7 +218,7 @@ sub _addCronTask
 			DWEEK => '',
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND =>
-				"$main::imscpConfig{'CMD_NICE'} -n 10 $main::imscpConfig{'CMD_PERL'} " .
+				'nice -n 10 perl ' .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl " .
 				">/dev/null 2>&1"
 		}
@@ -247,9 +247,8 @@ sub _scheduleCheck
 
 		my ($stdout, $stderr);
 		$rs = execute(
-			"$main::imscpConfig{'CMD_ECHO'} '$main::imscpConfig{'CMD_PERL'} " .
-			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl >/dev/null 2>&1' " .
-			"| $main::imscpConfig{'CMD_BATCH'}",
+			"echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl >/dev/null 2>&1' " .
+			"| batch",
 			\$stdout,
 			\$stderr
 		);

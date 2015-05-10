@@ -47,60 +47,53 @@ iMSCP::Bootstrapper->getInstance()->boot(
 
 sub start
 {
-	my $iptablesCmd = $main::imscpConfig{'CMD_IPTABLES'} || 'no';
+	# Create the IMSCP_INPUT and iMSCP_OUTPUT chains
+	# Pipe the input/output traffic from all interfaces (excluding lo) through the i-MSCP chains
+	for (
+		'-N IMSCP_INPUT', '-N IMSCP_OUTPUT', '-I INPUT ! -i lo -j IMSCP_INPUT', '-I OUTPUT ! -o lo -j IMSCP_OUTPUT'
+	) {
+		my ($stdout, $stderr);
+		my $rs = execute("iptables $_", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-	unless($iptablesCmd eq 'no') {
-		# Create the IMSCP_INPUT and iMSCP_OUTPUT chains
-		# Pipe the input/output traffic from all interfaces (excluding lo) through the i-MSCP chains
-		for (
-			'-N IMSCP_INPUT',
-			'-N IMSCP_OUTPUT',
-			'-I INPUT ! -i lo -j IMSCP_INPUT',
-			'-I OUTPUT ! -o lo -j IMSCP_OUTPUT'
-		) {
-			my ($stdout, $stderr);
-			my $rs = execute("$iptablesCmd $_", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# Monitor the traffic for the given ports
+	for my $port(qw(80 443 110 143 25 465 587 995 993)) {
+		my ($stdout, $stderr);
+		my $rs = execute("iptables -I IMSCP_INPUT -p tcp --dport $port", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 
-		# Monitor the traffic for the given ports
-		for my $port(qw(80 443 110 143 25 465 587 995 993)) {
-			my ($stdout, $stderr);
-			my $rs = execute("$iptablesCmd -I IMSCP_INPUT -p tcp --dport $port", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
+		$rs = execute("iptables -I IMSCP_OUTPUT -p tcp --sport $port", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-			$rs = execute("$iptablesCmd -I IMSCP_OUTPUT -p tcp --sport $port", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# Monitor the traffic for the given ports
+	for my $port(qw(25 465 587)) {
+		my ($stdout, $stderr);
+		my $rs = execute("iptables -I IMSCP_INPUT -p tcp --sport $port", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 
-		# Monitor the traffic for the given ports
-		for my $port(qw(25 465 587)) {
-			my ($stdout, $stderr);
-			my $rs = execute("$iptablesCmd -I IMSCP_INPUT -p tcp --sport $port", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
+		$rs = execute("iptables -I IMSCP_OUTPUT -p tcp --dport $port", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-			$rs = execute("$iptablesCmd -I IMSCP_OUTPUT -p tcp --dport $port", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
-
-		# Monitor all traffic passing through the i-MSCP chains
-		for my $chain('IMSCP_INPUT', 'IMSCP_OUTPUT') {
-			my ($stdout, $stderr);
-			my $rs = execute("$iptablesCmd -A $chain -j RETURN", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# Monitor all traffic passing through the i-MSCP chains
+	for my $chain('IMSCP_INPUT', 'IMSCP_OUTPUT') {
+		my ($stdout, $stderr);
+		my $rs = execute("iptables -A $chain -j RETURN", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 	}
 
 	0;
@@ -108,51 +101,39 @@ sub start
 
 sub stop
 {
-	my $iptablesCmd = $main::imscpConfig{'CMD_IPTABLES'} || 'no';
+	# Get list of defined rules
+	my ($stdout, $stderr);
+	my $rs = execute('iptables -S', \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
-	unless($iptablesCmd eq 'no') {
-		# Get list of defined rules
-		my ($stdout, $stderr);
-		my $rs = execute("$iptablesCmd -S", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+	unless($rs) {
+		# Retrieve rules defined by i-MSCP on both INPUT and OUTPUT chains
+		my %chains = ();
+		$chains{$2} = $1 while($stdout =~ /^.*?((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))$/gm);
 
-		unless($rs) {
-			# Retrieve rules defined by i-MSCP on both INPUT and OUTPUT chains
-			my %chains = ();
-			$chains{$2} = $1 while($stdout =~ /^.*?((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))$/gm);
+		if(%chains) {
+			# Collect traffic data
+			my $rs = execute("perl $main::imscpConfig{'TRAFF_ROOT_DIR'}/imscp-srv-traff", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			warning($stderr) if $stderr && $rs;
 
-			if(%chains) {
-				# Collect traffic data
-				my $rs = execute(
-					"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'TRAFF_ROOT_DIR'}/imscp-srv-traff",
-					\$stdout,
-					\$stderr
-				);
-				debug($stdout) if $stdout;
-				warning($stderr) if $stderr && $rs;
-
-				for my $chain(keys %chains) {
-					# Remove any rule from the chain and remove the chain
-					for my $cmd('-D', '-F', '-X') {
-						$rs = execute(
-							($cmd ne '-D') ? "$iptablesCmd $cmd $chain" : "$iptablesCmd $cmd $chains{$chain}",
-							\$stdout,
-							\$stderr
-						);
-						debug($stdout) if $stdout;
-						error($stderr) if $stderr && $rs;
-						return $rs if $rs;
-					}
+			for my $chain(keys %chains) {
+				# Remove any rule from the chain and remove the chain
+				for my $cmd('-D', '-F', '-X') {
+					$rs = execute(
+						($cmd ne '-D') ? "iptables $cmd $chain" : "iptables $cmd $chains{$chain}", \$stdout, \$stderr
+					);
+					debug($stdout) if $stdout;
+					error($stderr) if $stderr && $rs;
+					return $rs if $rs;
 				}
 			}
 		}
-
-		$rs;
-	} else {
-		0;
 	}
+
+	$rs;
 }
 
 sub run

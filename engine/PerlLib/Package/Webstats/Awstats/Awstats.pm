@@ -177,12 +177,12 @@ sub addDmn
 		unless(-f "$userStatisticsDir/awstats.$data->{'DOMAIN_NAME'}.html") {
 			my ($stdout, $stderr);
 			$rs = execute(
-				"$main::imscpConfig{'CMD_ECHO'} " .
-				"'$main::imscpConfig{'CMD_PERL'} " .
+				"echo " .
+				"'perl " .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl " .
 				"-config=$data->{'DOMAIN_NAME'} " .
 				"-update -awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl -dir=$userStatisticsDir' " .
-				"| $main::imscpConfig{'CMD_BATCH'}",
+				"| batch",
 				\$stdout,
 				\$stderr
 			);
@@ -370,9 +370,7 @@ sub _addAwstatsSection
 					DOMAIN_NAME => $data->{'DOMAIN_NAME'},
 					HOME_DIR => $data->{'HOME_DIR'},
 					HTACCESS_USERS_FILENAME => $httpd->{'config'}->{'HTACCESS_USERS_FILENAME'},
-					HTACCESS_GROUPS_FILENAME => $httpd->{'config'}->{'HTACCESS_GROUPS_FILENAME'},
-					WEBSTATS_GROUP_AUTH => $main::imscpConfig{'WEBSTATS_GROUP_AUTH'},
-					WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'}
+					HTACCESS_GROUPS_FILENAME => $httpd->{'config'}->{'HTACCESS_GROUPS_FILENAME'}
 				},
 				$self->_getApacheConfSnippet()
 			) .
@@ -398,7 +396,7 @@ sub _getApacheConfSnippet
 	if($main::imscpConfig{'AWSTATS_MODE'}) { # static mode
 		<<EOF;
     Alias /awstatsicons "{AWSTATS_WEB_DIR}/icon/"
-    Alias /{WEBSTATS_RPATH} "{HOME_DIR}/statistics/"
+    Alias /stats "{HOME_DIR}/statistics/"
 
     <Directory "{HOME_DIR}/statistics">
         AllowOverride AuthConfig
@@ -406,28 +404,28 @@ sub _getApacheConfSnippet
         {AUTHZ_ALLOW_ALL}
     </Directory>
 
-    <Location /{WEBSTATS_RPATH}>
+    <Location /stats>
         AuthType Basic
         AuthName "Statistics for domain {DOMAIN_NAME}"
         AuthUserFile {HOME_DIR}/{HTACCESS_USERS_FILENAME}
         AuthGroupFile {HOME_DIR}/{HTACCESS_GROUPS_FILENAME}
-        Require group {WEBSTATS_GROUP_AUTH}
+        Require group statistics
     </Location>
 EOF
 	} else { # Dynamic mode
 		<<EOF;
     ProxyRequests Off
-    ProxyPass /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
-    ProxyPassReverse /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
+    ProxyPass /stats http://localhost/stats/{DOMAIN_NAME}
+    ProxyPassReverse /stats http://localhost/stats/{DOMAIN_NAME}
 
-    <Location /{WEBSTATS_RPATH}>
+    <Location /stats>
         RewriteEngine on
         RewriteRule ^(.+)\?config=([^\?\&]+)(.*) \$1\?config={DOMAIN_NAME}&\$3 [NC,L]
         AuthType Basic
         AuthName "Statistics for domain {DOMAIN_NAME}"
         AuthUserFile {HOME_DIR}/{HTACCESS_USERS_FILENAME}
         AuthGroupFile {HOME_DIR}/{HTACCESS_GROUPS_FILENAME}
-        Require group {WEBSTATS_GROUP_AUTH}
+        Require group statistics
     </Location>
 EOF
 	}
@@ -462,7 +460,7 @@ sub _addAwstatsConfig
 		AWSTATS_CACHE_DIR => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
 		AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
 		AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-		CMD_LOGRESOLVEMERGE => "$main::imscpConfig{'CMD_PERL'} $awstatsPackageRootDir/Scripts/logresolvemerge.pl",
+		CMD_LOGRESOLVEMERGE => "perl $awstatsPackageRootDir/Scripts/logresolvemerge.pl",
 		DOMAIN_NAME => $data->{'DOMAIN_NAME'},
 		LOG_DIR => "$httpd->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
 	};
@@ -513,7 +511,7 @@ sub _addAwstatsCronTask
 			DWEEK => '*',
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND =>
-				"$main::imscpConfig{'CMD_PERL'} " .
+				'perl ' .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl " .
 				"-config=$data->{'DOMAIN_NAME'} -update " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl " .

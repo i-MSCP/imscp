@@ -233,10 +233,6 @@ if(is_readable(CONFIG_CACHE_FILE_PATH)) {
 	$config['CHECK_FOR_UPDATES'] = false;
 	$config['ENABLE_SSL'] = false;
 
-	if(!$config['IMSCP_SUPPORT_SYSTEM_TARGET']) {
-		$config['IMSCP_SUPPORT_SYSTEM_TARGET'] = '_self';
-	}
-
 	// Converting some possible IDN to ACE
 	$config['DEFAULT_ADMIN_ADDRESS'] = encode_idna($config->get('DEFAULT_ADMIN_ADDRESS'));
 	$config['SERVER_HOSTNAME'] = encode_idna($config->get('SERVER_HOSTNAME'));

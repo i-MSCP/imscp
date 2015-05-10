@@ -238,7 +238,7 @@ sub _setApacheVersion
 	my $self = $_[0];
 
 	my ($stdout, $stderr);
-	my $rs = execute("$self->{'config'}->{'CMD_APACHE2CTL'} -v", \$stdout, \$stderr);
+	my $rs = execute('apache2ctl -v', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to find Apache version') if $rs && ! $stderr;
@@ -488,7 +488,6 @@ sub _buildApacheConfFiles
 			HTTPD_ROOT_DIR => $self->{'config'}->{'HTTPD_ROOT_DIR'},
 			AUTHZ_DENY_ALL => ($apache24) ? 'Require all denied' : 'Deny from all',
 			AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all',
-			CMD_VLOGGER => $self->{'config'}->{'CMD_VLOGGER'},
 			PIPE => $pipeSyntax,
 			VLOGGER_CONF => "$self->{'apacheWrkDir'}/vlogger.conf"
 		}
@@ -736,7 +735,7 @@ sub _fixPhpErrorReportingValues
 	}
 
 	my ($stdout, $stderr);
-	my $rs = execute("$main::imscpConfig{'CMD_PHP'} -v", \$stdout, \$stderr);
+	my $rs = execute('php -v', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;

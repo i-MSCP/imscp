@@ -70,7 +70,7 @@ sub validatePrivateKey
 	}
 
 	my @cmd = (
-		"$self->{'openssl_path'} rsa",
+		'openssl rsa',
 		'-in', escapeShell($self->{'private_key_container_path'}),
 		'-noout',
 		($passphraseFile) ? ('-passin', escapeShell("file:$passphraseFile")) : ''
@@ -118,7 +118,7 @@ sub validateCertificate
 	}
 
 	my @cmd = (
-		"$self->{'openssl_path'} verify",
+		'openssl verify',
 		($caBundle) ? ('-CAfile', escapeShell($self->{'ca_bundle_container_path'})) : '',
 		escapeShell($self->{'certificate_container_path'})
 	);
@@ -176,7 +176,7 @@ sub importPrivateKey
 	}
 
 	my @cmd = (
-		"$self->{'openssl_path'} rsa",
+		'openssl rsa',
 		'-in', escapeShell($self->{'private_key_container_path'}),
 		'-out', escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem"),
 		($passphraseFile) ? ('-passin', escapeShell("file:$passphraseFile")) : ''
@@ -219,7 +219,7 @@ sub importCertificate
 	return $rs if $rs;
 
 	my @cmd = (
-		$main::imscpConfig{'CMD_CAT'},
+		'cat',
 		escapeShell($self->{'certificate_container_path'}),
 		'>>', escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem")
 	);
@@ -263,7 +263,7 @@ sub ImportCaBundle
 		return $rs if $rs;
 
 		my @cmd = (
-			$main::imscpConfig{'CMD_CAT'},
+			'cat',
 			escapeShell($self->{'ca_bundle_container_path'}),
 			'>>', escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem")
 		);
@@ -296,7 +296,7 @@ sub createSelfSignedCertificate
 	$commonName = ($wildcardSSL) ? '*.' . $commonName : $commonName;
 
 	my @cmd = (
-		"$self->{'openssl_path'} req -x509 -nodes -days 365 ",
+		'openssl req -x509 -nodes -days 365',
 		'-subj', escapeShell("/C=/ST=/L=/CN=$commonName"),
 		'-newkey rsa:2048',
 		'-keyout',  escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem"),
@@ -346,9 +346,6 @@ sub createCertificateChain
 sub _init
 {
 	my $self = $_[0];
-
-	# Path to the openssl binary
-	$self->{'openssl_path'} = '' unless defined $self->{'openssl_path'};
 
 	# Full path to the certificate chains storage directory
 	$self->{'certificate_chains_storage_dir'} = '' unless defined $self->{'certificate_chains_storage_dir'};

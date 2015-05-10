@@ -75,7 +75,7 @@ sub quotaFiles
 			if ($bsdSystem) { # BSD specific
 				push @cmd, {
 					'webdir' => [
-						$main::imscpConfig{'CMD_DU'},
+						'du',
 						'-I backups/*',
 						'-I domain_disable_page/*',
 						'-I logs/*.log',
@@ -88,14 +88,14 @@ sub quotaFiles
 				if(-d "$virtualMailDir/$domainName") {
 					push @cmd, {
 						'maildir' => [
-							$main::imscpConfig{'CMD_DU'}, '-d 0', escapeShell("$virtualMailDir/$domainName")
+							'du', '-d 0', escapeShell("$virtualMailDir/$domainName")
 						]
 					};
 				}
 			} else {
 				push @cmd, {
 					'webdir' => [
-						$main::imscpConfig{'CMD_DU'},
+						'du',
 						'--exclude=backups/*',
 						'--exclude=domain_disable_page/*',
 						'--exclude=logs/*.log',
@@ -108,7 +108,7 @@ sub quotaFiles
 				if(-d "$virtualMailDir/$domainName") {
 					push @cmd, {
 						'maildir' => [
-							$main::imscpConfig{'CMD_DU'}, '-s', '-B1', escapeShell("$virtualMailDir/$domainName")
+							'du', '-s', '-B1', escapeShell("$virtualMailDir/$domainName")
 						]
 					};
 				}
@@ -162,11 +162,11 @@ sub quotaFiles
 					if (-d $domainMailDir) {
 						if ($bsdSystem) { # BSD specific
 							push @cmd, {
-								'maildir' => [ $main::imscpConfig{'CMD_DU'},  '-d 0 ', escapeShell($domainMailDir) ]
+								'maildir' => [ 'du',  '-d 0 ', escapeShell($domainMailDir) ]
 							};
 						} else {
 							push @cmd, {
-								'maildir' => [ $main::imscpConfig{'CMD_DU'}, '-s', '-B1', escapeShell($domainMailDir) ]
+								'maildir' => [ 'du', '-s', '-B1', escapeShell($domainMailDir) ]
 							};
 						}
 					}

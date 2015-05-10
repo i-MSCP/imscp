@@ -453,7 +453,7 @@ sub addSub
 			# Installing new working file in production directory
 			my ($stdout, $stderr);
 			$rs = execute(
-				"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
+				'named-compilezone -i none -s relative ' .
 					"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db " .
 					"$data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}",
 				\$stdout, \$stderr
@@ -641,7 +641,7 @@ sub deleteSub
 			# Compiling new production file from working file
 			my ($stdout, $stderr);
 			$rs = execute(
-				"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
+				'named-compilezone -i none -s relative ' .
 					"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db " .
 					"$data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}",
 				\$stdout,
@@ -773,7 +773,7 @@ sub addCustomDNS
 			# Installing new working file in production directory
 			my ($stdout, $stderr);
 			$rs = execute(
-				"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
+				'named-compilezone -i none -s relative ' .
 					"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db " .
 					"$data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}",
 				\$stdout, \$stderr
@@ -1266,7 +1266,7 @@ sub _addDmnDb
 	# Installing new working file in production directory
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
+		'named-compilezone -i none -s relative ' .
 		"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db $data->{'DOMAIN_NAME'} " .
 		$wrkDbFile->{'filename'},
 		\$stdout, \$stderr

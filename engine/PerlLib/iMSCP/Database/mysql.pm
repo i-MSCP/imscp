@@ -291,7 +291,7 @@ sub dumpdb
 
 	if(defined $rootHomeDir && -f "$rootHomeDir/.my.cnf") {
 		@cmd = (
-			$main::imscpConfig{'CMD_MYSQLDUMP'}, '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
+			'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
 			'--compress', '--default-character-set=utf8', '--quote-names', "--result-file=$filename", $dbName
 		);
 	} else {
@@ -301,7 +301,7 @@ sub dumpdb
 		my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
 
 		@cmd = (
-			$main::imscpConfig{'CMD_MYSQLDUMP'}, '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
+			'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
 			'--compress', '--default-character-set=utf8', '--quote-names', "-h $dbHost", "-P $dbPort", "-u $dbUser",
 			"-p$dbPass", "--result-file=$filename", $dbName
 		);

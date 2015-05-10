@@ -160,11 +160,7 @@ sub removeIspcpFiles
 	}
 
 	# Remmove ispCP PHP starter directory content
-	$rs = execute(
-		"$main::imscpConfig{'CMD_RM'} -fR $main::ispcpConfig{'PHP_STARTER_DIR'}/*",
-		\$stdout,
-		\$stderr
-	);
+	$rs = execute("rm -fR $main::ispcpConfig{'PHP_STARTER_DIR'}/*", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	push @errors, $stderr if $stderr && $rs;
 
@@ -315,9 +311,7 @@ sub saveIspcpConfigFiles
 {
 	my ($stdout, $stderr, @errors);
 
-	my $rs = execute(
-		"$main::imscpConfig{'CMD_FIND'} $main::ispcpConfig{'CONF_DIR'} -type f -name '*.system'", \$stdout, \$stderr
-	);
+	my $rs = execute("find $main::ispcpConfig{'CONF_DIR'} -type f -name '*.system'", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	push  @errors, $stderr if $stderr && $rs;
 
@@ -325,7 +319,7 @@ sub saveIspcpConfigFiles
 
 	for (@files){
 		my $fileName = fileparse($_);
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -f $_ $main::imscpConfig{'CONF_DIR'}/$fileName", \$stdout, \$stderr);
+		$rs = execute("cp -f $_ $main::imscpConfig{'CONF_DIR'}/$fileName", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		push @errors, $stderr if $stderr && $rs;
 	}
@@ -346,8 +340,7 @@ sub saveIspcpConfigFiles
 		for (values %{$result}){
 			if (-f "$main::ispcpConfig{'BIND_DB_DIR'}/$_->{'name'}.db") {
 				$rs = execute(
-					"$main::imscpConfig{'CMD_CP'} -f $main::ispcpConfig{'BIND_DB_DIR'}/$_->{'name'}.db " .
-					"$main::imscpConfig{'CONF_DIR'}/bind/working/",
+					"cp -f $main::ispcpConfig{'BIND_DB_DIR'}/$_->{'name'}.db $main::imscpConfig{'CONF_DIR'}/bind/working/",
 					\$stdout,
 					\$stderr
 				);

@@ -87,10 +87,10 @@ sub _buildAliasses
 
 	# Rebuilding the database for the mail aliases file - Begin
 	my ($stdout, $stderr);
-	my $rs = execute("$self->{'config'}->{'CMD_NEWALIASES'}", \$stdout, \$stderr);
+	my $rs = execute("newaliases", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Error while executing $self->{'config'}->{'CMD_NEWALIASES'}") if ! $stderr && $rs;
+	error("Error while executing newaliases command") if ! $stderr && $rs;
 
 	$rs;
 }

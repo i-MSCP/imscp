@@ -125,7 +125,7 @@ class iMSCP_SystemInfo
 
 		$pipes = array(); // satisfy warning
 
-		$proc = proc_open($cfg->CMD_DF . ' -TP ' . escapeshellarg($file), $descriptorSpec, $pipes);
+		$proc = proc_open('df -TP ' . escapeshellarg($file), $descriptorSpec, $pipes);
 
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)
@@ -342,7 +342,7 @@ class iMSCP_SystemInfo
 		 *	P: Show in POSIX format
 		 */
 		$pipes = array(); // satisfy warning
-		$proc = proc_open($cfg->CMD_DF . ' -TP', $descriptorSpec, $pipes);
+		$proc = proc_open('df -TP', $descriptorSpec, $pipes);
 
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)
@@ -463,7 +463,7 @@ class iMSCP_SystemInfo
 				);
 
 				$pipes = array();
-				$proc = proc_open($cfg->CMD_VMSTAT, $descriptorSpec, $pipes);
+				$proc = proc_open('vmstat', $descriptorSpec, $pipes);
 
 				if (is_resource($proc)) {
 					// Read data from stream (Pipe 1)
@@ -549,7 +549,7 @@ class iMSCP_SystemInfo
 
 			$pipes = array(); // satisfy warning
 
-			$proc = proc_open($cfg->CMD_SWAPCTL . $args, $descriptorSpec, $pipes);
+			$proc = proc_open('swapctl ' . $args, $descriptorSpec, $pipes);
 
 			if (is_resource($proc)) {
 				// Read data from stream (Pipe 1)
@@ -710,7 +710,7 @@ class iMSCP_SystemInfo
 
 		$stdout = '';
 		$pipes = array(); // satisfy warning
-		$proc = proc_open($cfg->CMD_SYSCTL . ' -n ' . $args, $descriptorSpec, $pipes);
+		$proc = proc_open('sysctl -n ' . $args, $descriptorSpec, $pipes);
 
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)

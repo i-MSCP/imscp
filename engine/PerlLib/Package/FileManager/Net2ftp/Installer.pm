@@ -182,12 +182,12 @@ sub _installFiles
 		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp";
 
 		my ($stdout, $stderr);
-		my $rs = execute("$main::imscpConfig{'CMD_RM'} -fR $destDir", \$stdout, \$stderr);
+		my $rs = execute("rm -fR $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -fR $packageDir $destDir", \$stdout, \$stderr);
+		$rs = execute("cp -fR $packageDir $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;

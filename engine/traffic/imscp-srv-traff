@@ -48,57 +48,53 @@ $bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_read
 
 sub run
 {
-	my $cmdIptables = $main::imscpConfig{'CMD_IPTABLES'} || 'no';
+	my ($inputTraffic, $outputTraffic, $stdout, $stderr);
+	my %hash = ('IMSCP_INPUT' => \$inputTraffic, 'IMSCP_OUTPUT' => \$outputTraffic);
 
-	unless ($cmdIptables eq 'no') {
-		my ($inputTraffic, $outputTraffic, $stdout, $stderr);
-		my %hash = ('IMSCP_INPUT' => \$inputTraffic, 'IMSCP_OUTPUT' => \$outputTraffic);
+	# Getting input and output traffic data
+	while(my ($src, $target) = each %hash) {
+		my $rs = execute("iptables -nvxL $src", $target, \$stderr);
+		debug($$target) if $$target;
+  		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-		# Getting input and output traffic data
-		while(my ($src, $target) = each %hash) {
-			my $rs = execute("$cmdIptables -nvxL $src", $target, \$stderr);
-			debug($$target) if $$target;
-  			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# Parse input traffic data
+	my ($smtpIn, $poIn, $httpIn, $allIn) = _parseTrafficData($inputTraffic);
 
-		# Parse input traffic data
-		my ($smtpIn, $poIn, $httpIn, $allIn) = _parseTrafficData($inputTraffic);
+	# Parse output traffic data
+	my ($smtpOut, $poOut, $httpOut, $allOut) = _parseTrafficData($outputTraffic);
 
-		# Parse output traffic data
-		my ($smtpOut, $poOut, $httpOut, $allOut) = _parseTrafficData($outputTraffic);
+	# Update traffic data in database
 
-		# Update traffic data in database
+	# Floor down for the last half'n hour to make timestamps in server_traffic and domain_traffic identical
+	my $timestamp = time;
+	$timestamp -= ($timestamp % 1800);
 
-		# Floor down for the last half'n hour to make timestamps in server_traffic and domain_traffic identical
-		my $timestamp = time;
-		$timestamp -= ($timestamp % 1800);
+	my $qrs = iMSCP::Database->factory()->doQuery(
+		'dummy',
+		'
+			INSERT INTO server_traffic (
+				traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
+				bytes_web_in, bytes_web_out
+			) VALUES (
+				?, ?, ?, ?, ?, ?, ?, ?, ?
+			)
+		',
+		$timestamp, $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
+	);
+	unless(ref $qrs eq 'HASH') {
+		error($qrs);
+		return 1;
+	}
 
-		my $qrs = iMSCP::Database->factory()->doQuery(
-			'dummy',
-			'
-				INSERT INTO server_traffic (
-					traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
-					bytes_web_in, bytes_web_out
-				) VALUES (
-					?, ?, ?, ?, ?, ?, ?, ?, ?
-				)
-			',
-			$timestamp, $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
-		);
-		unless(ref $qrs eq 'HASH') {
-			error($qrs);
-			return 1;
-		}
+	# Reset traffic data for next run
 
-		# Reset traffic data for next run
-
-		for(keys %hash) {
-			my $rs = execute("$cmdIptables -Z $_", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	for(keys %hash) {
+		my $rs = execute("iptables -Z $_", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 	}
 
 	0;

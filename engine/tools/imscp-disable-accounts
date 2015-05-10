@@ -159,11 +159,7 @@ sub run
 		# Run request manager to process all scheduled tasks
 		if(!$rs) {
 			my ($stdout, $stderr);
-			$rs = execute(
-				"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr",
-				\$stdout,
-				\$stderr
-			);
+			$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
 			debug $stdout if $stdout;
 			error($stderr) if $stderr && $rs;
 			warning($stderr) if $stderr && !$rs;

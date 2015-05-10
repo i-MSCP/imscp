@@ -136,12 +136,12 @@ sub _deleteDbFiles
 	my $self = $_[0];
 
 	my ($stdout, $stderr);
-	my $rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
+	my $rs = execute("rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'wrkDir'}/*", \$stdout, \$stderr);
+	$rs = execute("rm -f $self->{'wrkDir'}/*", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;

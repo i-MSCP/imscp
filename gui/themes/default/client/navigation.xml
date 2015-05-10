@@ -132,7 +132,7 @@
                 </add_ftp_account>
                 <file_manager>
                     <label>Filemanager</label>
-                    <uri>{FILEMANAGER_PATH}</uri>
+                    <uri>/ftp/</uri>
                     <target>_blank</target>
                 </file_manager>
             </pages>
@@ -170,7 +170,7 @@
                 </add_sql_database>
                 <phpmyadmin>
                     <label>PhpMyAdmin</label>
-                    <uri>{PMA_PATH}</uri>
+                    <uri>/pma/</uri>
                     <target>_blank</target>
                 </phpmyadmin>
             </pages>
@@ -268,7 +268,7 @@
                 </overview>
                 <webstats>
                     <label>Web statistics</label>
-                    <uri>{WEBSTATS_RPATH}/</uri>
+                    <uri>WEBSTATS_PATH/</uri>
                     <target>_blank</target>
                     <privilege_callback name="customerHasFeature" param="webstats"/>
                 </webstats>
@@ -373,19 +373,19 @@
                 </daily_backup>
                 <file_manager>
                     <label>Filemanager</label>
-                    <uri>{FILEMANAGER_PATH}</uri>
+                    <uri>/ftp/</uri>
                     <target>_blank</target>
                     <privilege_callback name="customerHasFeature" param="ftp"/>
                 </file_manager>
                 <phpmyadmin>
                     <label>PhpMyAdmin</label>
-                    <uri>{PMA_PATH}</uri>
+                    <uri>/pma/</uri>
                     <target>_blank</target>
                     <privilege_callback name="customerHasFeature" param="sql"/>
                 </phpmyadmin>
                 <webstats>
                     <label>Web statistics</label>
-                    <uri>{WEBSTATS_RPATH}</uri>
+                    <uri>{WEBSTATS_PATH}</uri>
                     <target>_blank</target>
                     <privilege_callback name="customerHasFeature" param="webstats"/>
                 </webstats>

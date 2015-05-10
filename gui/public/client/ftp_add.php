@@ -262,10 +262,10 @@ function ftp_addAccount($mainDmnName)
 			/** @var $cfg iMSCP_Config_Handler_File */
 			$cfg = iMSCP_Registry::get('config');
 
-			$userid = $username . $cfg->FTP_USERNAME_SEPARATOR . decode_idna($dmnName);
+			$userid = $username . '@' . decode_idna($dmnName);
 			$encryptedPassword = cryptPasswordWithSalt($passwd);
-			$shell = $cfg->CMD_SHELL;
-			$homeDir = rtrim(str_replace('//', '/', $cfg->FTP_HOMEDIR . '/' . $mainDmnName . '/' . $homeDir), '/');
+			$shell = '/bin/sh';
+			$homeDir = rtrim(str_replace('//', '/', $cfg->USER_WEB_DIR . '/' . $mainDmnName . '/' . $homeDir), '/');
 
 			// Retrieve customer uid/gid
 			$query = '
@@ -443,7 +443,6 @@ $tpl->assign(
 		'TR_FTP_ACCOUNT_DATA' => tr('Ftp account data'),
 		'TR_DOMAIN_TYPE_LABEL' => tr('Domain type'),
 		'TR_USERNAME' => tr('Username'),
-		'FTP_USERNAME_SEPARATOR' => $cfg->FTP_USERNAME_SEPARATOR,
 		'TR_PASSWORD' => tr('Password'),
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 		'TR_HOME_DIR' => tr('Home directory'),

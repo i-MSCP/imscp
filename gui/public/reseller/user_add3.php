@@ -256,7 +256,7 @@ function reseller_addCustomer()
 
 		exec_query(
 			'INSERT INTO htaccess_groups (dmn_id, ugroup, members, status) VALUES (?, ?, ?, ?)',
-			array($dmnId, $cfg['WEBSTATS_GROUP_AUTH'], $user_id, 'toadd')
+			array($dmnId, 'statistics', $user_id, 'toadd')
 		);
 
 		// Create default addresses if needed

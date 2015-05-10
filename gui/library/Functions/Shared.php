@@ -2182,9 +2182,6 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 	$replace[] = ($baseServerVhostPrefix == 'http://')
 		? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'] ;
 
-	$search[] = '{WEBSTATS_RPATH}';
-	$replace[] = $cfg->WEBSTATS_RPATH;
-
 	$data['subject'] = str_replace($search, $replace, $data['subject']);
 	$message = str_replace($search, $replace, $data['message']);
 

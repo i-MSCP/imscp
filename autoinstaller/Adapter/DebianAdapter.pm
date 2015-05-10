@@ -464,7 +464,7 @@ EOF
 
 				if($section eq 'sql') {
 					my ($stdout, $stderr);
-					my $rs = execute("$main::imscpConfig{'CMD_RM'} -f /var/lib/mysql/debian-*.flag", \$stdout, \$stderr);
+					my $rs = execute('rm -f /var/lib/mysql/debian-*.flag', \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $rs && $stderr;
 					return $rs if $rs;

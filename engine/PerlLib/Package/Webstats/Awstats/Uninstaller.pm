@@ -101,7 +101,7 @@ sub _deleteFiles
 
 	if(-d $main::imscpConfig{'AWSTATS_CACHE_DIR'}) {
 		my ($stdout, $stderr);
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*",  \$stdout, \$stderr);
+		$rs = execute("rm -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*",  \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -109,11 +109,7 @@ sub _deleteFiles
 
 	if(-d $main::imscpConfig{'AWSTATS_CONFIG_DIR'}) {
 		my ($stdout, $stderr);
-		$rs = execute(
-			"$main::imscpConfig{'CMD_RM'} -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf",
-			\$stdout,
-			\$stderr
-		);
+		$rs = execute("rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 	}

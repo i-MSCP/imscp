@@ -99,9 +99,7 @@ sub _init
 	# We discard any change made in vendor
 	$ENV{'COMPOSER_DISCARD_CHANGES'} = 'true';
 
-	$self->{'phpCmd'} = $main::imscpConfig{'CMD_PHP'} .
-		' -d allow_url_fopen=1' .
-		' -d suhosin.executor.include.whitelist=phar';
+	$self->{'phpCmd'} = 'php -d allow_url_fopen=1 -d suhosin.executor.include.whitelist=phar';
 
 	iMSCP::EventManager->getInstance()->register(
 		'afterSetupPreInstallPackages', sub {
@@ -223,11 +221,7 @@ Please wait, depending on your connection, this may take few seconds...
 EOF
 
 		my ($stdout, $stderr);
-		$rs = execute(
-			"$main::imscpConfig{'CMD_CURL'} -s http://getcomposer.org/installer | $self->{'phpCmd'}",
-			\$stdout,
-			\$stderr
-		);
+		$rs = execute("curl -s http://getcomposer.org/installer | $self->{'phpCmd'}", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error($stdout) if ! $stderr && $stdout && $rs;
@@ -305,7 +299,7 @@ sub _clearLocalRepository
 
 	if(-d $self->{'wrkDir'}) {
 		my ($stdout, $stderr);
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $self->{'wrkDir'}", \$stdout, \$stderr);
+		$rs = execute("rm -fR $self->{'wrkDir'}", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error('Unable to clear local repository') if $rs && ! $stderr;

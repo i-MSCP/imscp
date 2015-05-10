@@ -45,9 +45,9 @@ function client_hideDisabledFeatures($tpl)
 		$tpl->assign('MAIL_FEATURE', '');
 	} else {
 		if(in_array('Roundcube', $webmails)) {
-			$tpl->assign('WEBMAIL_PATH', '/webmail');
+			$tpl->assign('WEBMAIL_RPATH', '/webmail');
 		} else {
-			$tpl->assign('WEBMAIL_PATH', '/'. strtolower($webmails[0]));
+			$tpl->assign('WEBMAIL_RPATH', '/'. strtolower($webmails[0]));
 		}
 	}
 

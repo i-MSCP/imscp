@@ -55,10 +55,7 @@ function _client_generateUserAction($status)
  */
 function _client_generateHtgroupAction($status, $group)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($status == 'ok' && $group != $cfg->WEBSTATS_GROUP_AUTH) {
+	if ($status == 'ok' && $group != 'statistics') {
 		return array(tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')");
 	} else {
 		return array(tr('N/A'), '');

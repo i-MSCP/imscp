@@ -129,7 +129,6 @@ sub add
 
 	# Create OpenSSL object
 	my $openSSL = iMSCP::OpenSSL->new(
-		'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
 		'certificate_chains_storage_dir' => $self->{'certsDir'},
 		'certificate_chain_name' => $self->{'domain_name'},
 		'private_key_container_path' => $privateKeyContainer,

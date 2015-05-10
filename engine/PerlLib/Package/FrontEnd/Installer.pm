@@ -134,7 +134,7 @@ sub askSsl
 	my $caBundlePath = main::setupGetQuestion('PANEL_SSL_CA_BUNDLE_PATH', '/root/');
 	my $baseServerVhostPrefix = main::setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
 
-	my $openSSL = iMSCP::OpenSSL->new('openssl_path' => $main::imscpConfig{'CMD_OPENSSL'});
+	my $openSSL = iMSCP::OpenSSL->new();
 
 	my $rs = 0;
 
@@ -577,14 +577,12 @@ sub _setupSsl
 	if($sslEnabled eq 'yes' && main::setupGetQuestion('PANEL_SSL_SETUP', 'yes') eq 'yes') {
 		if($selfSignedCertificate) {
 			my $rs = iMSCP::OpenSSL->new(
-				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
 				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 				'certificate_chain_name' => $domainName
 			)->createSelfSignedCertificate($domainName);
 			return $rs if $rs;
 		} else {
 			my $rs = iMSCP::OpenSSL->new(
-				'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
 				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 				'certificate_chain_name' => $domainName,
 				'private_key_container_path' => $privateKeyPath,
@@ -612,7 +610,7 @@ sub _setHttpdVersion()
 	my $self = $_[0];
 
 	my ($stderr);
-	my $rs = execute("$self->{'config'}->{'CMD_NGINX'} -v", undef, \$stderr);
+	my $rs = execute('nginx -v', undef, \$stderr);
 	debug($stderr) if $stderr;
 	error($stderr) if $stderr && $rs;
 	error('Unable to find Nginx version') if $rs;
@@ -699,8 +697,8 @@ sub _addMasterWebUser
 		$userGid = getgrnam($groupName);
 	} else {
 		my @cmd = (
-			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($oldUserName), ';',
-			"$main::imscpConfig{'CMD_USERMOD'}",
+			'pkill -KILL -u', escapeShell($oldUserName), ';',
+			'usermod',
 			'-c', escapeShell('i-MSCP Master Web User'),
 			'-d', escapeShell($main::imscpConfig{'GUI_ROOT_DIR'}),
 			'-l', escapeShell($userName),
@@ -713,11 +711,7 @@ sub _addMasterWebUser
 		debug($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
-		@cmd = (
-			$main::imscpConfig{'CMD_GROUPMOD'},
-			'-n', escapeShell($groupName),
-			escapeShell($adminSysGname)
-		);
+		@cmd = ('groupmod', '-n', escapeShell($groupName), escapeShell($adminSysGname));
 		debug($stdout) if $stdout;
 		debug($stderr) if $stderr && $rs;
 		$rs = execute("@cmd", \$stdout, \$stderr);
@@ -906,9 +900,7 @@ sub _buildHttpdConfig
 
 	if($nbCPUcores eq 'auto') {
 		my ($stdout, $stderr);
-		$rs = execute(
-			"$main::imscpConfig{'CMD_GREP'} processor /proc/cpuinfo | $main::imscpConfig{'CMD_WC'} -l", \$stdout
-		);
+		$rs = execute('grep processor /proc/cpuinfo | wc -l', \$stdout);
 		debug($stdout) if $stdout;
 		debug('Unable to detect number of CPU cores. nginx worker_processes value set to 2') if $rs;
 

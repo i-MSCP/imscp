@@ -218,7 +218,7 @@ sub enableSites
 		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
 			my $siteName = basename($_, '.conf');
 			$rs = execute(
-				"$main::imscpConfig{'CMD_LN'} -fs $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_ " .
+				"ln -fs $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_ " .
 					"$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName",
 				\$stdout,
 				\$stderr
@@ -259,11 +259,7 @@ sub disableSites
 		my $siteName = basename($_, '.conf');
 
 		if(-s "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName") {
-			$rs = execute(
-				"$main::imscpConfig{'CMD_RM'} -f $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName",
-				\$stdout,
-				\$stderr
-			);
+			$rs = execute("rm -f $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;

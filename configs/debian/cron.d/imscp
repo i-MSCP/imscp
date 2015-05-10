@@ -9,16 +9,16 @@
 @daily root {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
 
 # Backup customers' data depending of the domain properties
-{BACKUP_MINUTE} {BACKUP_HOUR} * * * root {CMD_NICE} -n 10 {BACKUP_ROOT_DIR}/imscp-backup-all &>{LOG_DIR}/imscp-backup-all-mngr.log
+{BACKUP_MINUTE} {BACKUP_HOUR} * * * root nice -n 10 {BACKUP_ROOT_DIR}/imscp-backup-all &>{LOG_DIR}/imscp-backup-all-mngr.log
 
 # Backup i-MSCP configuration files and database
-@daily root {CMD_NICE} -n 10 {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
+@daily root nice -n 10 {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
 
 # Remove configuration backups older than 7 days
-@weekly root {CMD_FIND} {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec {CMD_RM} -- {} +
+@weekly root find {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec rm -- {} +
 
 # Remove backend Logs older than 7 days
-@weekly root {CMD_FIND} {LOG_DIR} -type f -mtime +7 -exec {CMD_RM} -- {} +
+@weekly root find {LOG_DIR} -type f -mtime +7 -exec rm -- {} +
 
 # Disable expired accounts
 @daily root {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1

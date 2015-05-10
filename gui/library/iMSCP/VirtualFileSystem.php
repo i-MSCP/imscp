@@ -365,8 +365,8 @@ class iMSCP_VirtualFileSystem
 		";
 
 		$stmt = exec_query($query, array(
-			$user, $password, $stmt->fields['admin_sys_uid'], $stmt->fields['admin_sys_gid'], $cfg->CMD_SHELL,
-			"{$cfg->FTP_HOMEDIR}/{$this->_domain}"));
+			$user, $password, $stmt->fields['admin_sys_uid'], $stmt->fields['admin_sys_gid'], '/bin/sh',
+			"{$cfg->USER_WEB_DIR}/{$this->_domain}"));
 
 		if (!$stmt) {
 			return false;

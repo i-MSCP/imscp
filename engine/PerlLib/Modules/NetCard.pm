@@ -51,11 +51,7 @@ sub process
 	$ENV{'IMSCP_BACKEND'} = 1; # Tells to the imscp-net-interfaces-mngr script that we are running from the backend
 
 	my ($stdour, $stderr);
-	my $rs = execute(
-		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'TOOLS_ROOT_DIR'}/imscp-net-interfaces-mngr restart",
-		\$stdour,
-		\$stderr
-	);
+	my $rs = execute("perl $main::imscpConfig{'TOOLS_ROOT_DIR'}/imscp-net-interfaces-mngr restart", \$stdour, \$stderr);
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;

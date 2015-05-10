@@ -42,7 +42,7 @@ function generatePageData($tpl, $ftpUserId, $mainDomainName)
 	$stmt = exec_query($query, $ftpUserId);
 
 	$ftpHomeDir = $stmt->fields['homedir'];
-	$customerHomeDir = $cfg->FTP_HOMEDIR . '/' . $mainDomainName;
+	$customerHomeDir = $cfg->USER_WEB_DIR . '/' . $mainDomainName;
 
 	if ($ftpHomeDir == $customerHomeDir) {
 		$customFtpHomeDir = '/';
@@ -117,7 +117,7 @@ function updateFtpAccount($userid, $mainDomainName)
 
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
-		$homeDir = rtrim(str_replace('//', '/', $cfg->FTP_HOMEDIR . '/' . $mainDomainName . '/' . $homeDir), '/');
+		$homeDir = rtrim(str_replace('//', '/', $cfg->USER_WEB_DIR . '/' . $mainDomainName . '/' . $homeDir), '/');
 
 		if (isset($rawPassword) && isset($password) && isset($homeDir)) {
 			$query = "UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ? WHERE `userid` = ?";

@@ -24,7 +24,7 @@
 	<!-- BDP: mail_feature -->
 	<tr>
 		<td>
-			<a href="{WEBMAIL_PATH}" target="_blank" class="icon_big icon_center i_webmailicon"
+			<a href="{WEBMAIL_RPATH}" target="_blank" class="icon_big icon_center i_webmailicon"
 			   title="{TR_WEBMAIL}"></a>
 		</td>
 		<td>{TR_WEBMAIL_TXT}</td>
@@ -33,8 +33,7 @@
 	<!-- BDP: ftp_feature -->
 	<tr>
 		<td>
-			<a href="{FILEMANAGER_PATH}" target="_blank" class="icon_big icon_center i_filemanagericon"
-			   title="{TR_FILEMANAGER}"></a>
+			<a href="/ftp/" target="_blank" class="icon_big icon_center i_filemanagericon" title="{TR_FILEMANAGER}"></a>
 		</td>
 		<td>{TR_FILEMANAGER_TXT}</td>
 	</tr>
@@ -48,7 +47,7 @@
 	<!-- BDP: webstats_feature -->
 	<tr>
 		<td>
-			<a href="{WEBSTATS_RPATH}" target="_blank" class="icon_big icon_center i_awstatsicon"
+			<a href="{WEBSTATS_PATH}" target="_blank" class="icon_big icon_center i_awstatsicon"
 			   title="{TR_WEBSTATS}"></a>
 		</td>
 		<td>{TR_WEBSTATS_TXT}</td>

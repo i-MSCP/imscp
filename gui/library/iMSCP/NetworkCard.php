@@ -178,11 +178,8 @@ class iMSCP_NetworkCard
 	 */
 	private function _populateInterfaces()
 	{
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		$err = '';
-		$message = $this->executeExternal($cfg['CMD_IFCONFIG'] . ' -a', $err);
+		$message = $this->executeExternal('ifconfig -a', $err);
 
 		if(!$message) {
 			$this->_errors .= tr('Error while trying to obtain list of network cards.') . $err;
@@ -235,7 +232,7 @@ class iMSCP_NetworkCard
 	 * Should be documented
 	 *
 	 * @param  string $ip
-	 * @return array
+	 * @return mixed
 	 */
 	public function ip2NetworkCard($ip)
 	{

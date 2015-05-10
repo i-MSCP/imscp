@@ -341,17 +341,17 @@ sub _installFiles
 		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 
 		my ($stdout, $stderr);
-		my $rs = execute("$main::imscpConfig{'CMD_RM'} -fR $destDir", \$stdout, \$stderr);
+		my $rs = execute("rm -fR $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -fRT $packageDir/iMSCP/config $self->{'cfgDir'}", \$stdout, \$stderr);
+		$rs = execute("cp -fRT $packageDir/iMSCP/config $self->{'cfgDir'}", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -fR $packageDir/src $destDir", \$stdout, \$stderr);
+		$rs = execute("cp -fR $packageDir/src $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
@@ -600,8 +600,8 @@ sub _updateDatabase
 	# See http://trac.roundcube.net/ticket/1489044
 	my ($stdout, $stderr);
 	my $rs = execute(
-		"$main::imscpConfig{'CMD_PHP'} -d suhosin.session.encrypt=off $roundcubeDir/bin/updatedb.sh " .
-		"--version=$fromVersion --dir=$roundcubeDir/SQL --package=roundcube 2>/dev/null",
+		"php -d suhosin.session.encrypt=off $roundcubeDir/bin/updatedb.sh --version=$fromVersion " .
+			"--dir=$roundcubeDir/SQL --package=roundcube 2>/dev/null",
 		\$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;

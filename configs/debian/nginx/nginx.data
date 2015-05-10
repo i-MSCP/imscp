@@ -22,8 +22,6 @@ HTTPD_TMP_ROOT_DIR_NGINX = /var/cache/nginx
 
 HTTPD_PID_FILE = /var/run/nginx.pid
 
-CMD_NGINX = /usr/sbin/nginx
-
 # PHP / FASTCGI variables
 
 PHP_STARTER_DIR = /var/www/fcgi

@@ -38,12 +38,12 @@ sub run
 	return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
 	my $command = {
-	    'bzip2' => { 'extension' => 'bz2', 'command' => 'CMD_BZIP' },
-		'pbzip2' => { 'extension' => 'bz2', 'command' => 'CMD_PBZIP' },
-		'gzip' => { 'extension' => 'gz', 'command' => 'CMD_GZIP' },
-		'pigz' => { 'extension' => 'gz', 'command' => 'CMD_PIGZ' },
-		'lzma' => { 'extension' => 'lzma', 'command' => 'CMD_LZMA' },
-		'xz' => { 'extension' => 'xz', 'command' => 'CMD_XZ' }
+	    'bzip2' => { 'extension' => 'bz2', 'command' => 'bzip2' },
+		'pbzip2' => { 'extension' => 'bz2', 'command' => 'pbzip2' },
+		'gzip' => { 'extension' => 'gz', 'command' => 'gzip' },
+		'pigz' => { 'extension' => 'gz', 'command' => 'pigz' },
+		'lzma' => { 'extension' => 'lzma', 'command' => 'lzma' },
+		'xz' => { 'extension' => 'xz', 'command' => 'xz' }
 	};
 
 	my $algorithm = lc($main::imscpConfig{'ZIP'});
@@ -57,7 +57,6 @@ sub run
 	my ($rdata, $stdout, $stderr);
 	my $db = iMSCP::Database->factory();
 	my $canDumpDatabases = $db->can('dumpdb');
-	my $cmdTar = $main::imscpConfig{'CMD_TAR'};
 
 	$rdata = $db->doQuery(
 		'domain_name',
@@ -113,7 +112,7 @@ sub run
 				}
 
 				# Remove any previous backup file
-				$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $bkpDir/*", \$stdout, \$stderr);
+				$rs = execute("rm -fR $bkpDir/*", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 
@@ -127,7 +126,7 @@ sub run
 
 				if ($rdata->{$_}->{'allowbackup'} ~~ ['full', 'dmn']) {
 					my @cmd = (
-						$cmdTar,
+						'tar',
 						"--create",										# Create new archive
 						"--directory=$homeDir",							# Change to directory
 						($algorithm ne 'no')
@@ -189,12 +188,7 @@ sub run
 						$ret ||= $rs;
 
 						if($algorithm ne 'no') {
-							my @cmd = (
-								$main::imscpConfig{$command->{$algorithm}->{'command'}},
-								 '--force',
-								escapeShell("$bkpDir/$_.sql")
-							);
-
+							my @cmd = ($command->{$algorithm}->{'command'}, '--force', escapeShell("$bkpDir/$_.sql"));
 							$rs = execute("@cmd", \$stdout, \$stderr);
 							debug($stdout) if $stdout;
 							error($stderr) if $stderr && $rs;

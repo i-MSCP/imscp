@@ -148,8 +148,7 @@ Remember to change your password often and the first time you login.
 
 You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}
 
-Statistics: http://{USERNAME}/{WEBSTATS_RPATH}
-(Same username and password than above)
+Statistics: http://{USERNAME}/stats/ (Same username and password than above)
 
 Thank you for using our services.
 ', true);

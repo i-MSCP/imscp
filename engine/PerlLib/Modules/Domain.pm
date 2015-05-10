@@ -229,20 +229,20 @@ sub restore
 
 				if(defined $2) {
 					if($2 eq 'bz2') {
-						$cmd = "$main::imscpConfig{'CMD_BZCAT'} -d ";
+						$cmd = 'bzcat -d ';
 					} elsif($2 eq 'gz') {
-						$cmd = "$main::imscpConfig{'CMD_GZCAT'} -d ";
+						$cmd = 'zcat -d ';
 					} elsif($2 eq 'lzma') {
-						$cmd = "$main::imscpConfig{'CMD_LZMA'} -dc ";
+						$cmd = 'lzma -dc ';
 					} elsif($2 eq 'xz') {
-						$cmd = "$main::imscpConfig{'CMD_XZ'} -dc ";
+						$cmd = 'xz -dc ';
 					}
 				} else {
-					$cmd = "$main::imscpConfig{'CMD_CAT'} ";
+					$cmd = 'cat ';
 				}
 
 				$cmd .=
-					escapeShell("$bkpDir/$_") . " | $main::imscpConfig{'CMD_MYSQL'} " .
+					escapeShell("$bkpDir/$_") . " | mysql " .
 					"-h $dbHostname " .
 					"-P $dbPort " .
 					"-u $sqlUsername " .
@@ -327,15 +327,9 @@ sub restore
 				clearImmutable($dmnDir, 1);
 
 				if($typeOption ne '') {
-					$cmd =
-						"$main::imscpConfig{'CMD_TAR'} -x -p --$typeOption" .
-						' -C ' . escapeShell($dmnDir) .
-						' -f ' . escapeShell("$bkpDir/$_");
+					$cmd = "tar -x -p --$typeOption -C " . escapeShell($dmnDir) . ' -f ' . escapeShell("$bkpDir/$_");
 				} else {
-					$cmd =
-						"$main::imscpConfig{'CMD_TAR'} -x -p" .
-					 	' -C ' . escapeShell($dmnDir) .
-						' -f ' . escapeShell("$bkpDir/$_");
+					$cmd = 'tar -x -p -C ' . escapeShell($dmnDir) . ' -f ' . escapeShell("$bkpDir/$_");
 				}
 
 				$rs = execute($cmd, \$stdout, \$stderr);
@@ -699,7 +693,6 @@ sub isValidCertificate
 	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainName.pem";
 
 	my $openSSL = iMSCP::OpenSSL->new(
-		'openssl_path' => $main::imscpConfig{'CMD_OPENSSL'},
 		'private_key_container_path' => $certFile,
 		'certificate_container_path' => $certFile,
 		'ca_bundle_container_path' => $certFile

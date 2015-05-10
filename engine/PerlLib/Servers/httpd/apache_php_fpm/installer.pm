@@ -271,7 +271,7 @@ sub _setApacheVersion
 	my $self = $_[0];
 
 	my ($stdout, $stderr);
-	my $rs = execute("$self->{'config'}->{'CMD_APACHE2CTL'} -v", \$stdout, \$stderr);
+	my $rs = execute('apache2ctl -v', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to find Apache version') if $rs && ! $stderr;
@@ -313,11 +313,7 @@ sub _makeDirs
 
 	# Cleanup pools directory ( prevent possible orphaned pool file when switching to other pool level)
 	my ($stdout, $stderr);
-	$rs = execute(
-		"$main::imscpConfig{'CMD_RM'} -f $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/*",
-		\$stdout,
-		\$stderr
-	);
+	$rs = execute("rm -f $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/*", \$stdout, \$stderr);
 
 	$self->{'eventManager'}->trigger('afterHttpdMakeDirs');
 }
@@ -356,7 +352,7 @@ sub _buildHttpdModules
 
 		unless($rs) {
 			my($stdout, $stderr);
-			$rs = execute("$self->{'config'}->{'CMD_APXS2'} -i -a -c mod_proxy_handler.c", \$stdout, \$stderr);
+			$rs = execute("apxs2 -i -a -c mod_proxy_handler.c", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 		}
@@ -654,7 +650,6 @@ sub _buildApacheConfFiles
 			HTTPD_ROOT_DIR => $self->{'config'}->{'HTTPD_ROOT_DIR'},
 			AUTHZ_DENY_ALL => ($apache24) ? 'Require all denied' : 'Deny from all',
 			AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all',
-			CMD_VLOGGER => $self->{'config'}->{'CMD_VLOGGER'},
 			PIPE => $pipeSyntax,
 			VLOGGER_CONF => "$self->{'apacheWrkDir'}/vlogger.conf"
 		}
@@ -947,7 +942,7 @@ sub _fixPhpErrorReportingValues
 	}
 
 	my ($stdout, $stderr);
-	my $rs = execute("$main::imscpConfig{'CMD_PHP'} -v", \$stdout, \$stderr);
+	my $rs = execute('php -v', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;

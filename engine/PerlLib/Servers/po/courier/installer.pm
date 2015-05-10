@@ -280,15 +280,14 @@ EOF
 		my $configSnippet = <<EOF;
 
 maildrop  unix  -       n       n       -       -       pipe
- flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={MAILDROP_MDA_PATH} -w 90 -d \${user}@\${nexthop} \${extension} \${recipient}
+ flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv=maildrop -w 90 -d \${user}@\${nexthop} \${extension} \${recipient}
  \${user} \${nexthop} \${sender}
 EOF
 
 		$$fileContent .= iMSCP::TemplateParser::process(
 			{
 				MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_UID_NAME'},
-				MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_GID_NAME'},
-				MAILDROP_MDA_PATH => $self->{'config'}->{'MAILDROP_MDA_PATH'}
+				MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_GID_NAME'}
 			},
 			$configSnippet
 		);
@@ -800,7 +799,7 @@ sub _migrateFromDovecot
 	# Converting all mailboxes to courier format
 
 	my @cmd = (
-		$main::imscpConfig{'CMD_PERL'},
+		'perl',
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl",
 		'--to-courier',
 		'--convert',
@@ -849,11 +848,7 @@ sub _oldEngineCompatibility
 		return $rs if $rs;
 
 		my ($stdout, $stderr);
-		$rs = execute(
-			"$self->{'config'}->{'CMD_MAKEUSERDB'} -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb",
-			\$stdout,
-			\$stderr
-		);
+		$rs = execute("makeuserdb -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;

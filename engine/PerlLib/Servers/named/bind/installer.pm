@@ -33,6 +33,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Net;
+use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
 use Servers::named::bind;
@@ -395,12 +396,12 @@ sub _switchTasks
 
 		my ($stdout, $stderr);
 
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'wrkDir'}/*.db", \$stdout, \$stderr);
+		$rs = execute("rm -f $self->{'wrkDir'}/*.db", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
+		$rs = execute("rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs;
@@ -615,7 +616,7 @@ sub _getVersion
 	my $self = $_[0];
 
 	my ($stdout, $stderr);
-	my $rs = execute("$self->{'config'}->{'CMD_NAMED'} -v", \$stdout, \$stderr);
+	my $rs = execute("named -v", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 
@@ -643,9 +644,9 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'eventManager'}->trigger('beforeNamedOldEngineCompatibility');
 	return $rs if $rs;
 
-	if(-x $self->{'config'}->{'CMD_RESOLVCONF'}) {
+	if(iMSCP::ProgramFinder::find('resolvconf')) {
 		my ($stdout, $stderr);
-		my $rs = execute("$self->{'config'}->{'CMD_RESOLVCONF'} -d lo.imscp", \$stdout, \$stderr);
+		my $rs = execute("resolvconf -d lo.imscp", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;

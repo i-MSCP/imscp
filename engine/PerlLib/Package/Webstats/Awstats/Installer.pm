@@ -207,7 +207,6 @@ sub _createGlobalAwstatsVhost
 			NAMEVIRTUALHOST => ($apache24) ? '' : 'NameVirtualHost 127.0.0.1:80',
 			AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
 			AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-			WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
 			AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all'
 		}
 	);
@@ -274,7 +273,7 @@ sub _addAwstatsCronTask
 			MONTH => '*',
 			DWEEK => '*',
 			USER => $main::imscpConfig{'ROOT_USER'},
-			COMMAND => "$main::imscpConfig{'CMD_PERL'} " .
+			COMMAND => 'perl ' .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl >/dev/null 2>&1"
 		}

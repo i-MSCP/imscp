@@ -144,7 +144,7 @@ sub _processAptRepositories
 						my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
 
 						if(glob $ppaFile) {
-							$rs = execute("$main::imscpConfig{'CMD_RM'} $ppaFile", \$stdout, \$stderr);
+							$rs = execute("rm $ppaFile", \$stdout, \$stderr);
 							debug($stdout) if $stdout;
 							error($stderr) if $stderr && $rs;
 							return $rs if $rs;

@@ -302,19 +302,19 @@ sub _installFiles
 
 		if(-d $destDir) {
 			my ($stdout, $stderr);
-			my $rs = execute("$main::imscpConfig{'CMD_MV'} $destDir ${destDir}-old", \$stdout, \$stderr);
+			my $rs = execute("mv $destDir ${destDir}-old", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $rs && $stderr;
 			return $rs if $rs;
 		}
 
 		my ($stdout, $stderr);
-		my $rs = execute("$main::imscpConfig{'CMD_CP'} -fR $packageDir/src $destDir", \$stdout, \$stderr);
+		my $rs = execute("cp -fR $packageDir/src $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -fRT $packageDir/iMSCP/src $destDir", \$stdout, \$stderr);
+		$rs = execute("cp -fRT $packageDir/iMSCP/src $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
@@ -324,27 +324,19 @@ sub _installFiles
 			my $dataDestDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
 
 			if(-d "$dataSrcDir/storage") {
-				$rs = execute(
-					"$main::imscpConfig{'CMD_CP'} -fR $dataSrcDir/storage $dataDestDir/",
-					\$stdout,
-					\$stderr
-				);
+				$rs = execute("cp -fR $dataSrcDir/storage $dataDestDir/", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $rs && $stderr;
 				return $rs if $rs;
 			}
 		}
 
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR ${destDir}-old", \$stdout, \$stderr);
+		$rs = execute("rm -fR ${destDir}-old", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fRT $packageDir/iMSCP/config $self->{'rainloop'}->{'cfgDir'}",
-			\$stdout,
-			\$stderr
-		);
+		$rs = execute("cp -fRT $packageDir/iMSCP/config $self->{'rainloop'}->{'cfgDir'}", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;

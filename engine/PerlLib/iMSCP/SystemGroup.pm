@@ -57,7 +57,7 @@ sub addSystemGroup
 		$systemGroup = ($systemGroup) ? '-r' : '';
 
 		my  @cmd = (
-			"$main::imscpConfig{'CMD_GROUPADD'}",
+			'groupadd',
 			($^O !~ /bsd$/ ? $systemGroup : ''), # System group
 			escapeShell($groupName) # Group name
 		);
@@ -87,7 +87,7 @@ sub delSystemGroup
 
 	if(getgrnam($groupName)) {
 		my ($stdout, $stderr);
-		my $rs = execute("$main::imscpConfig{'CMD_GROUPDEL'} " . escapeShell($groupName), \$stdout, \$stderr);
+		my $rs = execute('groupdel ' . escapeShell($groupName), \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		warning($stderr) if $stderr && ! $rs;
