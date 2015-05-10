@@ -5,11 +5,11 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-	Added: Custom DNS module ( Modules::CustomDNS )
-	Added: New 'temporary' attribute which allow to override configuration values temporarily ( iMSCP::Config )
-	Added: onBeforeSetPluginStatus event ( Modules::Plugin )
-	Added: PHP_FCGI_CHILDREN, PHP_FCGI_MAX_REQUESTS and PHP_VERSION configuration parameters ( apache_fcgid )
-	Added: Service providers ( Sysvinit, Upstart and Systemd )
+	Added: Custom DNS module (Modules::CustomDNS)
+	Added: New 'temporary' attribute which allow to override configuration values temporarily (iMSCP::Config)
+	Added: onBeforeSetPluginStatus event (Modules::Plugin)
+	Added: PHP_FCGI_CHILDREN, PHP_FCGI_MAX_REQUESTS and PHP_VERSION configuration parameters (apache_fcgid)
+	Added: Service providers (Sysvinit, Upstart and Systemd)
 	Changed: Perl version >= 5.14.2 is now required
 	Changed: Service configuration files are now lazy-loaded
 	Fixed: Any task which belongs to the custom DNS records layer must not involve HTTPD configuration change
@@ -19,47 +19,47 @@ BACKEND
 	Fixed: Some errors are not trapped
 
 CONFIGS
-	Added: bind9.service and bind9-resolve.service systemd unit files ( Allows to fix #IP-1333 and #IP-1334 )
+	Added: bind9.service and bind9-resolve.service systemd unit files (Allows to fix #IP-1333 and #IP-1334)
 	Added: imscp_daemon, imscp_network and imscp_panel upstart jobs
-	Added: libbit-vector-perl package in list of pre-required packages ( Debian / Ubuntu )
-	Added: libclass-insideout-perl and libscalar-defer-perl in list of pre-required packages ( Debian / Ubuntu )
-	Added: php-apc package ( Debian < Jessie / Ubuntu < Trusty Thar )
-	Added: Support for Debian Strech ( testing )
+	Added: libbit-vector-perl package in list of pre-required packages (Debian / Ubuntu)
+	Added: libclass-insideout-perl and libscalar-defer-perl in list of pre-required packages (Debian / Ubuntu)
+	Added: php-apc package (Debian < Jessie / Ubuntu < Trusty Thar)
+	Added: Support for Debian Strech (testing)
 	Changed: Install nginx-light package instead of nginx package
 	Fixed: Merged apache2 logrotate definitions to mitigate segfault on reload
-	Fixed: Wrong TMPDIR path ( php5-fpm )
+	Fixed: Wrong TMPDIR path (php5-fpm)
 	Removed: INIT_SCRIPTS_DIR, SERVICE_INSTALLER, SERVICE_MNGR, IMSCP_DAEMON_SNAME, IMSCP_NETWORK_SNAME and
 		IMSCP_PANEL_SNAME configuration parameters
-	Removed: mariadb 5.5 from Debian Jessie package file ( replaced by mariadb 10.0 )
-	Renamed: FCGI starter template to php-fcgi-starter ( apache_fcgid server impl. )
+	Removed: mariadb 5.5 from Debian Jessie package file (replaced by mariadb 10.0)
+	Renamed: FCGI starter template to php-fcgi-starter (apache_fcgid server impl.)
 
 DAEMON
 	Added: End child syslog message
-	Fixed: warning: ignoring return value of ‘chdir’... ( daemon_init.c )
-	Fixed: Avoid useless 'fork' and 'wait' by using execl() instead of system() ( lr_syntax.c )
+	Fixed: warning: ignoring return value of ‘chdir’... (daemon_init.c)
+	Fixed: Avoid useless 'fork' and 'wait' by using execl() instead of system() (lr_syntax.c)
 	Updated: Version to 1.2.3
 
 DATABASE
-	Added: domain_dns_status field in domain_dns table ( Custom DNS record status field )
-	Added: plugin_config_prev field in plugin table ( Plugin previous configuration field )
-	Fixed: Missing unique constraint for mail_users entities ( added unique constraint on mail_users.mail_addr )
+	Added: domain_dns_status field in domain_dns table (Custom DNS record status field)
+	Added: plugin_config_prev field in plugin table (Plugin previous configuration field)
+	Fixed: Missing unique constraint for mail_users entities (added unique constraint on mail_users.mail_addr)
 
 DISTRIBUTIONS
-	Added: Support for Ubuntu Vivid Vervet ( Not an LTS but this is first Ubuntu with full systemd support )
-	Removed: Support for Debian Squeeze ( 6.x ) - Do not fit with new i-MSCP requirements ( Perl version is too old )
-	Removed: Support for Ubuntu Lucid Lynx ( 10.04 LTS ) - EOL as per April 30, 2015 ( Server version )
+	Added: Support for Ubuntu Vivid Vervet (Not an LTS but this is first Ubuntu with full systemd support)
+	Removed: Support for Debian Squeeze (6.x) - Do not fit with new i-MSCP requirements (Perl version is too old)
+	Removed: Support for Ubuntu Lucid Lynx (10.04 LTS) - EOL as per April 30, 2015 (Server version)
 
 FRONTEND
-	Added Custom DNS items in debugger interface ( admin level )
+	Added Custom DNS items in debugger interface (admin level)
 	Added: Path to openssl.cnf file into php.ini file
-	Changed: Stores the Github payload as json file instead of PHP file ( iMSCP_Update_Version::getUpdateInfo() )
+	Changed: Stores the Github payload as json file instead of PHP file (iMSCP_Update_Version::getUpdateInfo())
 	Fixed: Client domain management page must not be hidden even if customer cannot add domain aliases and subdomains
-	Fixed: Do not fetch more data than needed from GitHub ( iMSCP_Update_Version::getUpdateInfo() )
-	Fixed: Force reload of newest mail body footprint file ( iMSCP_Exception_Writer_Mail::onUncaughtException() )
+	Fixed: Do not fetch more data than needed from GitHub (iMSCP_Update_Version::getUpdateInfo())
+	Fixed: Force reload of newest mail body footprint file (iMSCP_Exception_Writer_Mail::onUncaughtException())
 	Fixed: Html in title attribute must not be auto-escaped by jQueryUI tooltip
-	Fixed: Translate the INADDR_ANY ( 0.0.0.0 ) IP address to 'Any' ( Services status )
+	Fixed: Translate the INADDR_ANY (0.0.0.0) IP address to 'Any' (Services status)
 	Fixed: Self-signed SSL certificates - serial numbers must be unique
-	Improved: Translations strings entries can now be accessed as object properties ( i18n_getJsTranslations() )
+	Improved: Translations strings entries can now be accessed as object properties (i18n_getJsTranslations())
 	Removed: imscp_delete_opcode_file() and imscp_clear_opcode_cache() functions
 
 INSTALLER
@@ -67,30 +67,30 @@ INSTALLER
 	Added: package_conflict field which allows to declare conflicting package that must be pre-removed
 	Added: repository_conflict attribute which allows to declare a conflicting repository that must be removed
 	Added: Update notices
-	Fixed: Missing Email::Simple Perl module ( no longer required )
-	Fixed: Use of uninitialized value $dbPass in string ( imscp/engine/setup/imscp-setup-methods.pl line 482 )
-	Fixed: Wrong package name in preseed file ( RainLoop )
+	Fixed: Missing Email::Simple Perl module (no longer required)
+	Fixed: Use of uninitialized value $dbPass in string (imscp/engine/setup/imscp-setup-methods.pl line 482)
+	Fixed: Wrong package name in preseed file (RainLoop)
 
 PACKAGES
 	Renamed: Fcgid starter template to php-fcgi-starter (FrontEnd)
 
 PLUGINS
 	Added: iMSCP_Plugin::getConfigPrev() and iMSCP_Plugin::getConfigPrevParam() methods
-	Added: require_api info field ( field which allows the plugins to define the required i-MSCP plugin API version )
-	Changed: info, config and config_prev fields are now automatically decoded and set as plugin properties ( backend )
-	Fixed: Force reload of newest plugin info file ( iMSCP_Plugin::getInfo() )
-	Fixed: Force reload of newest plugin configuration file ( iMSCP_Plugin::getConfigFromFile() )
+	Added: require_api info field (field which allows the plugins to define the required i-MSCP plugin API version)
+	Changed: info, config and config_prev fields are now automatically decoded and set as plugin properties (backend)
+	Fixed: Force reload of newest plugin info file (iMSCP_Plugin::getInfo())
+	Fixed: Force reload of newest plugin configuration file (iMSCP_Plugin::getConfigFromFile())
 	Fixed: Opcode cache is not correctly resetted on plugin list update
 	Updated: API to version 1.0.0
 
 SKELETON
-	Removed: Link to the panel in default index.html files ( panel must not be publicly exposed )
+	Removed: Link to the panel in default index.html files (panel must not be publicly exposed)
 	Fixed: Wrong link for favicon in error pages
 
 SERVICES
-	Added: Log summary message on TLS handshake completion ( Postfix )
-	Fixed: Apache access.log files are put in wrong directory ( vlogger )
-	Fixed: Disable warnings about missing SPF DNS record ( As per RFC 7208, SPF DNS record is deprecated - Bind9 )
+	Added: Log summary message on TLS handshake completion (Postfix)
+	Fixed: Apache access.log files are put in wrong directory (vlogger)
+	Fixed: Disable warnings about missing SPF DNS record (As per RFC 7208, SPF DNS record is deprecated - Bind9)
 
 YOUTRACK
 	Fixed #IP-0321: When a customer deletes a domain alias, all related entities must be automatically deleted
@@ -98,7 +98,7 @@ YOUTRACK
 	Fixed #IP-1257: Self-signed SSL certificate - SHA256 should be used in place of SHA1
 	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
 	Fixed #IP-1279: Autoresponder - Unable to get message body
-	Fixed #IP-1286: IP attachment fails on reboot ( Ubuntu )
+	Fixed #IP-1286: IP attachment fails on reboot (Ubuntu)
 	Fixed #IP-1292: Files from a previous plugin version must be kept if the new plugin version is not compatible
 	Fixed #IP-1314: Custom DNS SRV record - Missing TLS protocol
 	Fixed #IP-1315: Defect - Statistics overview with special characters breaks view
@@ -119,12 +119,12 @@ YOUTRACK
 	RELEASE i-MSCP 1.2.2
 
 BACKEND
-	Fixed: Invalid argument at /usr/share/perl5/MIME/Entity.pm line 1878 ( autoreply script )
+	Fixed: Invalid argument at /usr/share/perl5/MIME/Entity.pm line 1878 (autoreply script)
 	Fixed: Wrong sqld server name
 	Fixed: Vlogger - High CPU usage
 
 FRONTEND
-	Fixed: Wrong URL in default email templates ( Missing port )
+	Fixed: Wrong URL in default email templates (Missing port)
 	Updated: Logo and CSS
 
 INSTALLER
@@ -132,8 +132,8 @@ INSTALLER
 	Fixed: Encoding issue when running installer through SSH with PuTTY
 
 PACKAGES
-	Added: Ports dialog ( FrontEnd package )
-	Fixed: Several event listeners are registered too late ( regression fix )
+	Added: Ports dialog (FrontEnd package)
+	Fixed: Several event listeners are registered too late (regression fix)
 	Fixed: Awstats section not added in vhost files
 
 PLUGINS
@@ -141,7 +141,7 @@ PLUGINS
 
 YOUTRACK
 	Fixed #IP-1259: Layout - Text goes out of statistic bar
-	Fixed #IP-1263: Access to statistics ( Awstats ) is broken - 404 error
+	Fixed #IP-1263: Access to statistics (Awstats) is broken - 404 error
 	Fixed #IP-1267: Double-quotes in the Dovecot SQL user's password must be escaped
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -153,56 +153,56 @@ YOUTRACK
 
 BACKEND
 	Added: Checks for a2enconf/a2disconf command availability
-	Added: -h ( help ) short option ( iMSCP::Getopt module )
+	Added: -h (help) short option (iMSCP::Getopt module)
 	Fixed: Composer cache is not cleared correctly
 	Fixed: LC_MESSAGES has not expected effect in backend's scripts
 	Fixed: Module's actions are called twice
-	Fixed: Postfix not restarted in some contexts ( Missing iMSCP::Service module )
+	Fixed: Postfix not restarted in some contexts (Missing iMSCP::Service module)
 	Fixed: Useless instantiation of servers
 	Fixed: Wrong umask when the imscp-rqst-mngr script is run through the i-MSCP Daemon
 	Moved: Local DNS resolver question into bind9 installer
 	Removed: Deprecated IMSCP_CLEAR_SCREEN environment variable
-	Removed: imscp-local-dns-resolver script ( The bind9 initscript invokes resolvconf itself )
-	Removed: policyd-weight and postgrey ( Postfix SMTP access policy delegation )
+	Removed: imscp-local-dns-resolver script (The bind9 initscript invokes resolvconf itself)
+	Removed: policyd-weight and postgrey (Postfix SMTP access policy delegation)
 
 CONFIGS
-	Added php5-json package ( Debian Jessie )
+	Added php5-json package (Debian Jessie)
 	Moved: Local DNS resolver parameters from the imscp.conf file to the bind.data configuration file
 
 DAEMON
 	Fixed: Messages must not be hardcoded in functions
-	Fixed: Restart of some services fail when the backend ( imscp-rqst-mngr ) is run through the daemon
+	Fixed: Restart of some services fail when the backend (imscp-rqst-mngr) is run through the daemon
 	Updated: Version to 1.2.2
 
 DISTRIBUTIONS
-	Changed: Dovecot is now installed using packages from backports repository ( Squeeze, Wheezy )
-	Changed: Postfix is now installed using package from backports repository ( Squeeze, Wheezy )
+	Changed: Dovecot is now installed using packages from backports repository (Squeeze, Wheezy)
+	Changed: Postfix is now installed using package from backports repository (Squeeze, Wheezy)
 
 FRONTEND
 	Added: Support for eAccelerator, XCache and ZendOptimizerPlus opcode caches
 	Fixed: Usage of autoloader instead of require_once
-	Fixed: Wrong classname iMSCP_Listener ( should be iMSCP_Events_Listener )
-	Fixed: Wrong classname iMSCP_Listener_PriorityQueue ( should be iMSCP_Events_Listener_PriorityQueue )
+	Fixed: Wrong classname iMSCP_Listener (should be iMSCP_Events_Listener)
+	Fixed: Wrong classname iMSCP_Listener_PriorityQueue (should be iMSCP_Events_Listener_PriorityQueue)
 
 INSTALLER
 	Fixed: Dovecot packages installation fail when no SSL certificate is generated
-	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )
-	Fixed: Migration from Courier to Dovecot is broken ( courier-dovecot-migrate.pl is run with a wrong option )
-	Fixed: php5enmod command throws an error when a PHP module is missing ( PHP5.4 )
+	Fixed: Length of SQL's usernames and passwords is not validated (they must be at least 6 characters long)
+	Fixed: Migration from Courier to Dovecot is broken (courier-dovecot-migrate.pl is run with a wrong option)
+	Fixed: php5enmod command throws an error when a PHP module is missing (PHP5.4)
 	Fixed: rsync: failed to set times on "/var/www/virtual": Operation not permitted (1)
-	Fixed: Unable to define custom APT repository without key ( Debian, Ubuntu )
-	Removed: 'resolver' configuration item ( local DNS resolver question is now part of 'named' configuration item )
-	Renamed: 'webmail' configuration item to 'webmails' ( --reconfigure command line option )
+	Fixed: Unable to define custom APT repository without key (Debian, Ubuntu)
+	Removed: 'resolver' configuration item (local DNS resolver question is now part of 'named' configuration item)
+	Renamed: 'webmail' configuration item to 'webmails' (--reconfigure command line option)
 
 PACKAGES
-	Added: RainLoop package ( alternative webmail )
+	Added: RainLoop package (alternative webmail)
 	Changed: Installation of webmail package is now optional
-	Fixed: Length of SQL's usernames and passwords is not validated ( they must be at least 6 characters long )
-	Fixed: Single quotes in sql usernames must be escaped in configuration files ( PhpMyAdmin, Roundcube )
+	Fixed: Length of SQL's usernames and passwords is not validated (they must be at least 6 characters long)
+	Fixed: Single quotes in sql usernames must be escaped in configuration files (PhpMyAdmin, Roundcube)
 	Fixed: The force-reinstall installer command line option shouldn't be ignored by package installers
 	Fixed: The skip-distro-packages installer command line option shouldn't be ignored by package installers
-	Updated: logresolvmerge.pl script from Awstats package to version 1.2 ( build 20140126 )
-	Updated: Pydio (formely AjaxPlorer) package installer according new upstream release ( 6.x )
+	Updated: logresolvmerge.pl script from Awstats package to version 1.2 (build 20140126)
+	Updated: Pydio (formely AjaxPlorer) package installer according new upstream release (6.x)
 
 PLUGINS
 	Fixed: Plugins that don't implement an API method which is being executed must not be instantiated
@@ -223,7 +223,7 @@ YOUTRACK
 	Fixed #IP-1228: Adding SSL-certificate causes undefined index warning
 	Fixed #IP-1229: Courier - CRAM-MD5 authentication not enabled by default
 	Fixed #IP-1230: RFC 7208 states that DNS SPF shoudln't be used anymore
-	Fixed #IP-1233: Autoresponder script ( imscp-arpl-msgr ) cannot write in /var/log/imscp/imscp-arpl-msgr
+	Fixed #IP-1233: Autoresponder script (imscp-arpl-msgr) cannot write in /var/log/imscp/imscp-arpl-msgr
 	Fixed #IP-1234: IPv6 addresses causes exception
 	Fixed #IP-1235: Cosmetics - Reseller overview - Exception in domain status breaks the layout
 	Fixed #IP-1238: Question mark information box not functioning when switching page
@@ -246,33 +246,33 @@ YOUTRACK
 BACKEND
 	Added: FETCH_MODE option in iMSCP::Database::mysql
 	Added: iMSCP::ProgramFinder module which allow to test whether programs are available on the executable search path
-	Added: iMSCP::Service module for service management ( start, stop, restart, reload, status )
-	Added: Methods which allow to enable/disable apache conffiles from the conf-available directory ( Apache 2.4.x )
-	Added: pigz ( Parallel Implementation of GZip ) algorithm for backups compression
-	Added: Standard directory which allow to load apache conffiles prior any other vhost file ( Apache )
+	Added: iMSCP::Service module for service management (start, stop, restart, reload, status)
+	Added: Methods which allow to enable/disable apache conffiles from the conf-available directory (Apache 2.4.x)
+	Added: pigz (Parallel Implementation of GZip) algorithm for backups compression
+	Added: Standard directory which allow to load apache conffiles prior any other vhost file (Apache)
 	Added: --verbose command line options for all scripts
 	Changed: i-MSCP frontEnd is now run through a dedicated httpd instance by using the nginx Web server
-	Changed: Logfiles are now written as soon as possible ( allows to mitigate memory consumption )
+	Changed: Logfiles are now written as soon as possible (allows to mitigate memory consumption)
 	Changed: The quota accounting script is now run every 30 minutes
 	Fixed: Backend logs which are older than 7 days are never removed
 
 CONFIGS
 	Fixed: The time at which the backup script must be run is no configurable
 	Renamed: /etc/imscp/hooks.d directory to /etc/imscp/listeners.d
-	Removed: Roundcube configuration directory ( now shipped with the roundcube package )
+	Removed: Roundcube configuration directory (now shipped with the roundcube package)
 
 DAEMON
-	Fixed: The server traffic must be collected before any stopping attempt ( imscp_network )
+	Fixed: The server traffic must be collected before any stopping attempt (imscp_network)
 
 DISTRIBUTIONS
-	Removed: Support for obsolete Ubuntu versions ( Quantal Quetzal, Raring Ringtail, Saucy Salamander )
+	Removed: Support for obsolete Ubuntu versions (Quantal Quetzal, Raring Ringtail, Saucy Salamander)
 
 DOCS
 	Updated: INSTALL files
 
 FRONTEND
-	Changed: The frontEnd is now reachable through dedicated Web server ( Nginx )
-	Changed: The frontEnd is now reachable through dedicated http ports ( default is 8080 for http and 4443 for https )
+	Changed: The frontEnd is now reachable through dedicated Web server (Nginx)
+	Changed: The frontEnd is now reachable through dedicated http ports (default is 8080 for http and 4443 for https)
 
 INSTALLER
 	Added: panel_hostname, system_hostname, panel_ssl and services_ssl reconfiguration items
@@ -280,13 +280,13 @@ INSTALLER
 	Renamed: hostname configuration item to hostnames
 	Renamed: Option --hook-file to --listener
 	Fixed: Prevent start of apache2 service by package manager using policy layer interface
-	Fixed: Unable to handle i-MSCP services ( start/restart/stop... ) on systems using systemd ( e.g Jessie )
+	Fixed: Unable to handle i-MSCP services (start/restart/stop...) on systems using systemd (e.g Jessie)
 
 PACKAGES
-	Updated: Roundcube installer according new roundcube version ( 1.0.3 )
+	Updated: Roundcube installer according new roundcube version (1.0.3)
 
 UNINSTALLER
-	Added: Backend exec mode ( uninstall )
+	Added: Backend exec mode (uninstall)
 
 YOUTRACK
 	Fixed #IP-1123: Review - PHP session handling

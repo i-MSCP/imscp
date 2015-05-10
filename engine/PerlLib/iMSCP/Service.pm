@@ -117,6 +117,8 @@ sub disable
 	die(
 		sprintf('Could not disable the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
 	) unless $ret && !$@;
+
+	$ret;
 }
 
 =item remove($service)
