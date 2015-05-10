@@ -23,9 +23,8 @@ package Listener::Postfix::BCC::Map;
  
 use strict;
 use warnings;
-
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 
 #
@@ -64,7 +63,7 @@ sub onAfterMtaBuildPostfixBccMap($)
 	0;
 }
 
-iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixBccMap);
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixBccMap);
 
 1;
 __END__

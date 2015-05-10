@@ -68,7 +68,7 @@ sub onAfterMtaBuildPolicydWhitelist
 	0;
 }
 
-iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPolicydWhitelist);
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPolicydWhitelist);
 
 1;
 __END__

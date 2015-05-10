@@ -22,7 +22,7 @@
 package Listener::Postfix::Smarthost;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use Servers::mta;

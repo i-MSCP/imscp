@@ -19,9 +19,9 @@
 ## Listener file that allows to setup Bind9 for local network.
 #
 
-package Hooks::Bind9::Localnets;
+package Listener::Bind9::Localnets;
 
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 
 sub onBeforeNamedBuildConf
 {
@@ -37,7 +37,7 @@ sub onBeforeNamedBuildConf
 	0;
 }
 
-iMSCP::HooksManager->getInstance()->register('beforeNamedBuildConf', \&onBeforeNamedBuildConf);
+iMSCP::EventManager->getInstance()->register('beforeNamedBuildConf', \&onBeforeNamedBuildConf);
 
 1;
 __END__

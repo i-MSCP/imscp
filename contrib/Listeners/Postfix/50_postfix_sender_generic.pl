@@ -24,7 +24,7 @@ package Listener::Postfix::Sender::Generic::Map;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 
 #
@@ -55,7 +55,7 @@ sub onAfterMtaBuildPostfixSmtpGenericMap($)
 	0;
 }
 
-iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixSmtpGenericMap);
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixSmtpGenericMap);
 
 1;
 __END__

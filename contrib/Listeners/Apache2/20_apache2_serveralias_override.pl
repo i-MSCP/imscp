@@ -24,7 +24,7 @@ package Listener::Apache2::ServerAlias::Override;
 use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 
 #
 ## Configuration variables
@@ -53,7 +53,7 @@ sub overrideServerAlias
 	0;
 }
 
-iMSCP::HooksManager->getInstance()->register('afterHttpdBuildConf', \&overrideServerAlias);
+iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', \&overrideServerAlias);
 
 1;
 __END__

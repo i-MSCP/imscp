@@ -24,7 +24,7 @@ package Listener::Postfix::Sender::Canonical;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::HooksManager;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 
 #
@@ -55,7 +55,7 @@ sub onAfterMtaBuildPostfixSenderCanoncial
 	0;
 }
 
-iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixSenderCanoncial);
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixSenderCanoncial);
 
 1;
 __END__
