@@ -881,18 +881,26 @@ sub _savePersistentData
 		return $rs if $rs;
 	}
 
+	# Quick fix for #IP-1340 ( Removes old filemanager directory which is no longer used )
+	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager") {
+		$rs = execute("rm -rf $main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
+
 	# Save tools
-	#if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools") {
-	#	$rs = execute(
-	#		"cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/public/tools " .
-	#			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools",
-	#		\$stdout,
-	#		\$stderr
-	#	);
-	#	debug($stdout) if $stdout;
-	#	error($stderr) if $stderr && $rs;
-	#	return $rs if $rs;
-	#}
+	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools") {
+		$rs = execute(
+			"cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/public/tools " .
+				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools",
+			\$stdout,
+			\$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
 	# Move old package cache directory to new location
 	if(-d  "$main::imscpConfig{'CACHE_DATA_DIR'}/addons") {
