@@ -38,7 +38,7 @@ sub run
 	return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
 	my $command = {
-	    'bzip2' => { 'extension' => 'bz2', 'command' => 'bzip2' },
+		'bzip2' => { 'extension' => 'bz2', 'command' => 'bzip2' },
 		'pbzip2' => { 'extension' => 'bz2', 'command' => 'pbzip2' },
 		'gzip' => { 'extension' => 'gz', 'command' => 'gzip' },
 		'pigz' => { 'extension' => 'gz', 'command' => 'pigz' },

@@ -147,19 +147,6 @@ if (isset($argv[1])) {
 $csvDelimiter = ',';
 
 if (($handle = fopen($csvFilePath, 'r')) !== false) {
-	// Backport fix from the 1.2.x branch to avoid duplicate entries
-	try {
-		execute_query(
-			'
-				ALTER TABLE mail_users DROP INDEX mail_addr;
-				ALTER IGNORE TABLE mail_users ADD UNIQUE (mail_addr);
-			'
-		);
-	} catch (iMSCP_Exception_Database $e) {
-		fwrite(STDERR, sprintf("ERROR: Unable to apply fix from i-MSCP 1.2.x branch: %s\n", $e->getMessage()));
-		exit(1);
-	}
-
 	$db = iMSCP_Database::getRawInstance();
 	$stmt = $db->prepare(
 		'
