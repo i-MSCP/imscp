@@ -40,7 +40,7 @@ iMSCP::Bootstrapper->getInstance()->boot(
 
 my $rs = 0;
 
-if(-x iMSCP::ProgramFinder::find('rkhunter')) {
+if(iMSCP::ProgramFinder::find('rkhunter')) {
 	my $rkhunterLogFile =  $main::imscpConfig{'RKHUNTER_LOG'} || '/var/log/rkhunter.log';
 
 	# Error handling is specific with rkhunter. Therefore, we do not handle the exit code, but we write the output
