@@ -193,6 +193,7 @@ function reseller_generatePage($tpl, $phpini)
 			array(
 				'VL_BACKUPD' => '',
 				'VL_BACKUPS' => '',
+				'VL_BACKUPM' => '',				
 				'VL_BACKUPF' => '',
 				'VL_BACKUPN' => $checked,
 			)
@@ -265,6 +266,7 @@ function reseller_generateErrorPage($tpl, $phpini)
 			array(
 				'VL_BACKUPD' => ($backup == '_dmn_') ? $checked : '',
 				'VL_BACKUPS' => ($backup == '_sql_') ? $checked : '',
+				'VL_BACKUPM' => ($backup == '_mail_') ? $checked : '',				
 				'VL_BACKUPF' => ($backup == '_full_') ? $checked : '',
 				'VL_BACKUPN' => ($backup == '_no_') ? $checked : '',
 			)
@@ -316,7 +318,7 @@ function reseller_checkData($phpini)
 	$php = ($php == '_yes_') ? '_yes_' : '_no_';
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
-	$backup = (resellerHasFeature('backup') && in_array($backup, array('_full_', '_dmn_', '_sql_'))) ? $backup : '_no_';
+	$backup = (resellerHasFeature('backup') && in_array($backup, array('_full_', '_dmn_', '_sql_', '_mail_'))) ? $backup : '_no_';
 	$aps = (resellerHasFeature('aps') && $aps == '_yes_') ? '_yes_' : '_no_';
 	$extMail = ($extMail == '_yes_') ? '_yes_' : '_no_';
 	$webFolderProtection = ($webFolderProtection == '_yes_') ? '_yes_' : '_no_';
@@ -578,6 +580,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'reseller')
 			'TR_BACKUP' => tr('Backup'),
 			'TR_BACKUP_DOMAIN' => tr('Domain'),
 			'TR_BACKUP_SQL' => tr('SQL'),
+			'TR_BACKUP_MAIL' => tr('MAIL'),
 			'TR_BACKUP_FULL' => tr('Full'),
 			'TR_BACKUP_NO' => tr('No'),
 			'TR_SOFTWARE_SUPP' => tr('Software installer'),
