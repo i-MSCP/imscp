@@ -124,6 +124,7 @@ sub run
 				my $ext = ($algorithm ne 'no') ? ('.' . $command->{$algorithm}->{'extension'}) : '';
 				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
+                # Backup customers webspace
 				if ($rdata->{$_}->{'allowbackup'} ~~ ['full', 'dmn']) {
 					my @cmd = (
 						'tar',
@@ -197,86 +198,90 @@ sub run
 						}
 					}
 				}
-			}
-			###### Backup all the mail folders
-			if ($rdata->{$_}->{'allowbackup'} ne 'no') {
-				my $backuphomedir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
-				my $mailhomeDir = "/var/mail/virtual/$rdata->{$_}->{'domain_name'}";
-				my $mailbkpDir = "$backuphomedir/backups";
-				my $maildomainname = "$rdata->{$_}->{'domain_name'}";
-				my $userName = $rdata->{$_}->{'admin_sys_name'};
-				my $groupName = $rdata->{$_}->{'admin_sys_gname'};
 
-				if(! -d $mailhomeDir) { # Skip backup if home directory doesn't exist
-					warning("Home directory $mailhomeDir doesn't exist. Skipping backup...");
-					next;
-				} elsif(! -d $mailbkpDir) { # Create backups directory if doesn't already exists
-					my $isProtectedHomedir = 0;
-				
-					# Unprotect parent directory if needed
-					if(isImmutable($mailhomeDir)) {
-						$isProtectedHomedir = 1;
-						clearImmutable($mailhomeDir);
-					}
-
-					$rs = iMSCP::Dir->new('dirname' => $mailbkpDir)->make(
-						{ 'user' => $userName, 'group' => $groupName, 'mode' => 0750 }
-					);
-
-					setImmutable($mailhomeDir) if $isProtectedHomedir;
-
-					if($rs) {
-						$ret ||= $rs;
-						next;
-					}
-				}
-
-				# Remove any previous backup file
-				$rs = execute("rm -fR $mailbkpDir/$_-backup-mail-*", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-
-				if($rs) {
-					$ret ||= $rs;
-					next;
-				}
-
-				my $ext = ($algorithm ne 'no') ? ('.' . $command->{$algorithm}->{'extension'}) : '';
-				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
-
+                # Backup all customer mails
 				if ($rdata->{$_}->{'allowbackup'} ~~ ['full', 'mail']) {
-					my @cmd = (
-						'tar',
-						"--create",										# Create new archive
-						"--directory=$mailhomeDir",							# Change to directory
-						($algorithm ne 'no')
-							? "--use-compress-program=$algorithm"		# Compress archive with given program
-							: '',										# No compression
-						"--file=$mailbkpDir/$_-backup-mail-$date.tar$ext",		# use archive file
-						'.'												# pathname
-					);
+                    my $mailhomeDir = "/var/mail/virtual";
 
-					my $rs = execute("@cmd", \$stdout, \$stderr);
-					debug($stdout) if $stdout;
+                    my $mailData = $db->doQuery(
+                        'name',
+                        "
+                            SELECT
+                                CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `name`, `t1`.`subdomain_id` AS `id`,
+                                'sub' AS `type`
+                            FROM
+                                `subdomain` AS `t1`
+                            INNER JOIN
+                                `domain` AS `t2` USING(`domain_id`)
+                            WHERE
+                                `t1`.`domain_id` = ?
+                            AND
+                                `t1`.`subdomain_status` = 'ok'
+                            UNION
+                            SELECT
+                                `alias_name` AS `name`, `alias_id` AS `id`, 'als' AS `type`
+                            FROM
+                                `domain_aliasses`
+                            WHERE
+                                `domain_id` = ?
+                            AND
+                                `alias_status` = 'ok'
+                            UNION
+                            SELECT
+                                CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `name`, `t1`.`subdomain_alias_id` AS `id`,
+                                'alssub' AS `type`
+                            FROM
+                                `subdomain_alias` AS `t1`
+                            INNER JOIN
+                                `domain_aliasses` AS `t2` USING(`alias_id`)
+                            WHERE
+                                `t2`.`domain_id` = ?
+                            AND
+                                `subdomain_alias_status` = 'ok'
+                        ",
+                        $rdata->{$_}->{'domain_id'},
+                        $rdata->{$_}->{'domain_id'},
+                        $rdata->{$_}->{'domain_id'}
+                    );
+                    unless (ref $mailData eq 'HASH') {
+                        error($mailData);
+                        $ret ||= 1;
+                        next;
+                    }
 
-					# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
-					if($rs > 1) {
-						error($stderr) if $stderr;
-						error("Unable to backup $mailhomeDir") if ! $stderr;
-						$ret |= $rs;
-					}
+                    for (keys %{$mailData}) {
+                        my $mailFolder = "$mailhomeDir/$_";
 
-					my $file = iMSCP::File->new('filename' => "$mailbkpDir/$_-backup-mail-$date.tar$ext");
-					$rs = $file->mode(0644);
-					$ret ||= $rs;
+                        my @cmd = (
+                            'tar',
+                            "--create",                                     # Create new archive
+                            "--directory=$mailFolder",                      # Change to directory
+                            ($algorithm ne 'no')
+                                ? "--use-compress-program=$algorithm"       # Compress archive with given program
+                                : '',                                       # No compression
+                            "--file=$bkpDir/$_-mail-$date.tar$ext",         # use archive file
+                            '.'                                             # pathname
+                        );
 
-					$rs = $file->owner($userName, $groupName);
-					$ret ||= $rs;
+                        my $rs = execute("@cmd", \$stdout, \$stderr);
+                        debug($stdout) if $stdout;
+
+                        # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+                        if($rs > 1) {
+                            error($stderr) if $stderr;
+                            error("Unable to backup $mailFolder") if ! $stderr;
+                            $ret |= $rs;
+                        }
+
+                        my $file = iMSCP::File->new('filename' => "$bkpDir/$_-mail-$date.tar$ext");
+                        $rs = $file->mode(0644);
+                        $ret ||= $rs;
+
+                        $rs = $file->owner($userName, $groupName);
+                        $ret ||= $rs;
+                    }
 				}
-
 			}
-			####### Close backup all mail folders
-			
 		}
 	}
 
