@@ -45,7 +45,7 @@ DATABASE
 	Fixed: Missing unique constraint for mail_users entities (added unique constraint on mail_users.mail_addr)
 
 DISTRIBUTIONS
-	Added: Support for Ubuntu Vivid Vervet (Not an LTS but this is first Ubuntu with full systemd support)
+	Added: Support for Ubuntu Vivid Vervet (Not an LTS version but this is the first with full systemd support)
 	Removed: Support for Debian Squeeze (6.x) - Do not fit with new i-MSCP requirements (Perl version is too old)
 	Removed: Support for Ubuntu Lucid Lynx (10.04 LTS) - EOL as per April 30, 2015 (Server version)
 
