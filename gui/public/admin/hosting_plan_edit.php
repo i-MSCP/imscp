@@ -196,6 +196,7 @@ function admin_generatePage($tpl, $id, $phpini)
 			array(
 				'BACKUPD' => ($backup == '_dmn_') ? $checked : '',
 				'BACKUPS' => ($backup == '_sql_') ? $checked : '',
+				'BACKUPM' => ($backup == '_mail_') ? $checked : '',
 				'BACKUPF' => ($backup == '_full_') ? $checked : '',
 				'BACKUPN' => ($backup == '_no_') ? $checked : ''
 			)
@@ -263,6 +264,7 @@ function admin_generateErrorPage($tpl, $phpini)
 			array(
 				'BACKUPD' => ($backup == '_dmn_') ? $checked : '',
 				'BACKUPS' => ($backup == '_sql_') ? $checked : '',
+				'BACKUPM' => ($backup == '_mail_') ? $checked : '',
 				'BACKUPF' => ($backup == '_full_') ? $checked : '',
 				'BACKUPN' => ($backup == '_no_') ? $checked : '',
 			)
@@ -316,7 +318,7 @@ function admin_checkData($phpini)
 	$php = ($php == '_yes_') ? '_yes_' : '_no_';
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
-	$backup = ($cfg->BACKUP_DOMAINS != 'no' && in_array($backup, array('_full_', '_dmn_', '_sql_'))) ? $backup : '_no_';
+	$backup = ($cfg->BACKUP_DOMAINS != 'no' && in_array($backup, array('_full_', '_dmn_', '_sql_', '_mail_'))) ? $backup : '_no_';
 	$aps = ($aps == '_yes_') ? '_yes_' : '_no_';
 	$hpExtMail = ($hpExtMail == '_yes_') ? '_yes_' : '_no_';
 	$hpProtectedWebFolders = ($hpProtectedWebFolders == '_yes_') ? '_yes_' : '_no_';
@@ -553,6 +555,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 				'TR_BACKUP' => tr('Backup'),
 				'TR_BACKUP_DOMAIN' => tr('Domain'),
 				'TR_BACKUP_SQL' => tr('SQL'),
+				'TR_BACKUP_MAIL' => tr('MAIL'),
 				'TR_BACKUP_FULL' => tr('Full'),
 				'TR_BACKUP_NO' => tr('No'),
 				'TR_SOFTWARE_SUPP' => tr('Software installer'),
