@@ -246,7 +246,7 @@ sub run
 
 				if ($rdata->{$_}->{'allowbackup'} ~~ ['full', 'mail']) {
 					my @cmd = (
-						$cmdTar,
+						'tar',
 						"--create",										# Create new archive
 						"--directory=$mailhomeDir",							# Change to directory
 						($algorithm ne 'no')
