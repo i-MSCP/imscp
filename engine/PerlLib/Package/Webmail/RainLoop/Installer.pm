@@ -316,12 +316,12 @@ sub _installFiles
 		return $rs if $rs;
 
 		if(-d $destDir) {
-			my $dataSrcDir = "${destDir}-old/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
-			my $dataDestDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
+			my $dataSrcDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
+			my $dataDestDir = "${destDir}-new/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
 
 			# Copy files from previous installation
 			if(-d "$dataSrcDir/storage") {
-				$rs = execute("cp -fR $dataSrcDir/storage $dataDestDir/", \$stdout, \$stderr);
+				$rs = execute("cp -fR $dataSrcDir/storage ${destDir}-new/", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $rs && $stderr;
 				return $rs if $rs;
@@ -329,7 +329,7 @@ sub _installFiles
 
 			# Remove files from previous installation
 
-			execute("rm -fR $destDir", \$stdout, \$stderr);
+			$rs = execute("rm -fR $destDir", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $rs && $stderr;
 			return $rs if $rs;
