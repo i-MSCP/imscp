@@ -28,6 +28,7 @@ use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw/isImmutable setImmutable clearImmutable/;
 use iMSCP::Getopt;
+use Servers::mta::postfix;
 use File::Basename;
 use POSIX qw/strftime/;
 
@@ -56,6 +57,7 @@ sub run
 	my ($rs, $ret) = (0, 0);
 	my ($rdata, $stdout, $stderr);
 	my $db = iMSCP::Database->factory();
+	my $mta = Servers::mta::postfix->getInstance();
 	my $canDumpDatabases = $db->can('dumpdb');
 
 	$rdata = $db->doQuery(
@@ -201,11 +203,19 @@ sub run
 
                 # Backup all customer mails
 				if ($rdata->{$_}->{'allowbackup'} ~~ ['full', 'mail']) {
-                    my $mailhomeDir = "/var/mail/virtual";
-
                     my $mailData = $db->doQuery(
                         'name',
                         "
+                            SELECT
+                               `t1`.`domain_name` AS `name`, `t1`.`domain_id` AS `id`,
+                                'dmn' AS `type`
+                            FROM
+                                `domain` AS `t1`
+                            WHERE
+                                `t1`.`domain_id` = ?
+                            AND
+                                `t1`.`domain_status` = 'ok'
+                            UNION
                             SELECT
                                 CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `name`, `t1`.`subdomain_id` AS `id`,
                                 'sub' AS `type`
@@ -241,6 +251,7 @@ sub run
                         ",
                         $rdata->{$_}->{'domain_id'},
                         $rdata->{$_}->{'domain_id'},
+                        $rdata->{$_}->{'domain_id'},
                         $rdata->{$_}->{'domain_id'}
                     );
                     unless (ref $mailData eq 'HASH') {
@@ -250,16 +261,16 @@ sub run
                     }
 
                     for (keys %{$mailData}) {
-                        my $mailFolder = "$mailhomeDir/$_";
+                        my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$_";
 
                         my @cmd = (
                             'tar',
                             "--create",                                     # Create new archive
-                            "--directory=$mailFolder",                      # Change to directory
+                            "--directory=$mailDir",                      # Change to directory
                             ($algorithm ne 'no')
                                 ? "--use-compress-program=$algorithm"       # Compress archive with given program
                                 : '',                                       # No compression
-                            "--file=$bkpDir/$_-mail-$date.tar$ext",         # use archive file
+                            "--file=$bkpDir/mail-$_-backup-$date.tar$ext",         # use archive file
                             '.'                                             # pathname
                         );
 
@@ -269,11 +280,11 @@ sub run
                         # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
                         if($rs > 1) {
                             error($stderr) if $stderr;
-                            error("Unable to backup $mailFolder") if ! $stderr;
+                            error("Unable to backup $mailDir") if ! $stderr;
                             $ret |= $rs;
                         }
 
-                        my $file = iMSCP::File->new('filename' => "$bkpDir/$_-mail-$date.tar$ext");
+                        my $file = iMSCP::File->new('filename' => "$bkpDir/mail-$_-backup-$date.tar$ext");
                         $rs = $file->mode(0644);
                         $ret ||= $rs;
 
