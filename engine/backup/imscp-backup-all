@@ -232,6 +232,7 @@ sub run
 				}
 
 				# Remove any previous backup file
+				$rs = execute("rm -fR $mailbkpDir/$_-backup-mail-*", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 
