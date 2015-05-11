@@ -39,7 +39,6 @@ use Package::FrontEnd;
 use File::Basename;
 use JSON;
 use version;
-
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -189,9 +188,9 @@ sub preinstall
 		return 1;
 	}
 
-	my $pmaBranch = (version->parse($version) >= version->parse('5.5')) ? '0.4.0' : '0.2.0';
+	$version = (version->parse($version) >= version->parse('5.5')) ? '0.4.0.*@dev' : '0.2.0.*@dev';
 
-	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', "$pmaBranch.*\@dev");
+	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', $version);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);

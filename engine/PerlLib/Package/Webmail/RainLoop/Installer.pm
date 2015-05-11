@@ -40,6 +40,8 @@ use JSON;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
+our $VERSION = '0.1.0.*@dev';
+
 =head1 DESCRIPTION
 
  This is the installer for the i-MSCP RainLoop package.
@@ -117,7 +119,7 @@ sub showDialog
 			} while($rs != 30 && $msg);
 
 			if($rs != 30) {
-				if(! $dbPass) {
+				unless($dbPass) {
 					my @allowedChr = map { chr } (0x21, 0x23..0x5b, 0x5d..0x7e);
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
@@ -148,7 +150,7 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/rainloop');
+	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/rainloop', $VERSION);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
@@ -175,7 +177,7 @@ sub install
 	$rs = $self->_setupDatabase();
 	return $rs if $rs;
 
-	$rs = $self->_buildRainLoopConfig();
+	$rs = $self->_buildConfig();
 	return $rs if $rs;
 
 	$rs = $self->_buildHttpdConfig();
@@ -205,13 +207,13 @@ sub setGuiPermissions
 
 		my $rs = setRights(
 			"$guiPublicDir/tools/rainloop",
-			{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
+			{ user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
 		);
 		return $rs if $rs;
 
 		$rs = setRights(
 			"$guiPublicDir/tools/rainloop/data",
-			{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
+			{ user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
 		);
 		return $rs if $rs;
 	}
@@ -239,7 +241,7 @@ sub afterFrontEndBuildConfFile
 {
 	my ($tplContent, $tplName) = @_;
 
-	if($tplName ~~ ['00_master.conf', '00_master_ssl.conf']) {
+	if($tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ]) {
 		$$tplContent = replaceBloc(
 			"# SECTION custom BEGIN.\n",
 			"# SECTION custom END.\n",
@@ -300,48 +302,59 @@ sub _installFiles
 	if(-d $packageDir) {
 		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
 
-		if(-d $destDir) {
-			my ($stdout, $stderr);
-			my $rs = execute("mv $destDir ${destDir}-old", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $rs && $stderr;
-			return $rs if $rs;
-		}
-
+		# Install upstream files
 		my ($stdout, $stderr);
-		my $rs = execute("cp -fR $packageDir/src $destDir", \$stdout, \$stderr);
+		my $rs = execute("cp -fR $packageDir/src ${destDir}-new", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute("cp -fRT $packageDir/iMSCP/src $destDir", \$stdout, \$stderr);
+		# Copy i-MSCP files
+		$rs = execute("cp -fRT $packageDir/iMSCP/src ${destDir}-new", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		if(-d "${destDir}-old") {
+		if(-d $destDir) {
 			my $dataSrcDir = "${destDir}-old/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
 			my $dataDestDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
 
+			# Copy files from previous installation
 			if(-d "$dataSrcDir/storage") {
 				$rs = execute("cp -fR $dataSrcDir/storage $dataDestDir/", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $rs && $stderr;
 				return $rs if $rs;
 			}
+
+			# Remove files from previous installation
+
+			execute("rm -fR $destDir", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $rs && $stderr;
+			return $rs if $rs;
+
+			# Remove file which are no longer needed
+			for my $file('application.ini', 'plugin-imscp-change-password.ini') {
+				$rs = execute("rm -fR $self->{'rainloop'}->{'cfgDir'}/$file", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $rs && $stderr;
+				return $rs if $rs;
+			}
 		}
 
-		$rs = execute("rm -fR ${destDir}-old", \$stdout, \$stderr);
+		$rs = execute("mv ${destDir}-new $destDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
+		# Copy configuration files
 		$rs = execute("cp -fRT $packageDir/iMSCP/config $self->{'rainloop'}->{'cfgDir'}", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 	} else {
-		error("Couldn't find the imscp/rainloop package into the packages cache directory");
+		error("Couldn't find the imscp/rainloop package in the packages cache directory");
 		return 1;
 	}
 
@@ -462,7 +475,7 @@ sub _setupDatabase
 	0;
 }
 
-=item _buildRainLoopConfig()
+=item _buildConfig()
 
  Build RainLoop configuration file
 
@@ -470,7 +483,7 @@ sub _setupDatabase
 
 =cut
 
-sub _buildRainLoopConfig
+sub _buildConfig
 {
 	my $self = $_[0];
 
@@ -492,13 +505,13 @@ sub _buildRainLoopConfig
 		};
 
 		my $cfgTpl;
-		my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'rainloop', $confFile, \$cfgTpl, $data);
+		my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'rainloop', $confFile, \$cfgTpl, $data );
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
-			$cfgTpl = iMSCP::File->new( filename => "$self->{'rainloop'}->{'cfgDir'}/$confFile" )->get();
+			$cfgTpl = iMSCP::File->new( filename => "$confDir/$confFile" )->get();
 			unless(defined $cfgTpl) {
-				error("Unable to read file $self->{'rainloop'}->{'cfgDir'}/$confFile");
+				error("Unable to read file $confDir/$confFile");
 				return 1;
 			}
 		}
@@ -508,15 +521,9 @@ sub _buildRainLoopConfig
 		my $file = iMSCP::File->new( filename => "$confDir/$confFile" );
 
 		$rs = $file->set($cfgTpl);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0640);
-		return $rs if $rs;
-
-		$file->owner($panelUName, $panelGName);
+		$rs ||= $file->save();
+		$rs ||= $file->mode(0640);
+		$rs ||= $file->owner($panelUName, $panelGName);
 		return $rs if $rs;
 	}
 
