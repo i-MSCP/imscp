@@ -40,7 +40,7 @@ use JSON;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
-our $VERSION = '0.6.0';
+our $VERSION = '0.6.0.*@dev';
 
 =head1 DESCRIPTION
 
@@ -150,7 +150,7 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/roundcube', "$VERSION.*\@dev");
+	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/roundcube', $VERSION);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);

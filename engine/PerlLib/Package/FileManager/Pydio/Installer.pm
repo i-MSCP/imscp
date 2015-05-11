@@ -35,7 +35,7 @@ use iMSCP::TemplateParser;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
-our $VERSION = '0.2.0';
+our $VERSION = '0.2.0.*@dev';
 
 =head1 DESCRIPTION
 
@@ -57,7 +57,7 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/ajaxplorer', "$VERSION.*\@dev");
+	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/ajaxplorer', $VERSION);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);

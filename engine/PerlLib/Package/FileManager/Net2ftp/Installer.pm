@@ -36,7 +36,7 @@ use iMSCP::File;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
-our $VERSION = '0.1.1';
+our $VERSION = '0.1.1.*@dev';
 
 =head1 DESCRIPTION
 
@@ -58,7 +58,7 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/net2ftp', "$VERSION.*\@dev");
+	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/net2ftp', $VERSION);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
