@@ -232,7 +232,6 @@ sub run
 				}
 
 				# Remove any previous backup file
-				$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $mailbkpDir/$_-backup-mail-*", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 
