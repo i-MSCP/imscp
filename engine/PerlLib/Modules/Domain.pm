@@ -252,7 +252,7 @@ sub restore
 				$rs = execute($cmd, \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				warning(sprintf('Unable to restore SQL database: %s', $stderr)) if $stderr && $rs;
-			} elsif(/^.+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) { # Restore domain files
+			} elsif(/^(?!mail-).+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) { # Restore domain files
 				# Since we are now using immutable bit to protect some folders, we must in order do the following
 				# to restore a backup archive:
 				#
