@@ -619,7 +619,7 @@ if (isset($_GET['id'])) {
 			'TR_BACKUP' => tr('Backup'),
 			'TR_BACKUP_DOMAIN' => tr('Domain'),
 			'TR_BACKUP_SQL' => tr('SQL'),
-			'TR_BACKUP_MAIL' => tr('MAIL'),
+			'TR_BACKUP_MAIL' => tr('Mail'),
 			'TR_BACKUP_FULL' => tr('Full'),
 			'TR_BACKUP_NO' => tr('No'),
 

@@ -581,7 +581,7 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 		$tplVars['BACKUP_DOMAIN'] = ($data['allowbackup'] == 'dmn') ? $htmlChecked : '';
 		$tplVars['TR_BACKUP_SQL'] = tr('SQL');
 		$tplVars['BACKUP_MAIL'] = ($data['allowbackup'] == 'mail') ? $htmlChecked : '';
-		$tplVars['TR_BACKUP_MAIL'] = tr('MAIL');		
+		$tplVars['TR_BACKUP_MAIL'] = tr('Mail');		
 		$tplVars['BACKUP_SQL'] = ($data['allowbackup'] == 'sql') ? $htmlChecked : '';
 		$tplVars['TR_BACKUP_FULL'] = tr('Full');
 		$tplVars['BACKUP_FULL'] = ($data['allowbackup'] == 'full') ? $htmlChecked : '';
