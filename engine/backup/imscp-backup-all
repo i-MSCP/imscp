@@ -129,7 +129,7 @@ sub run
 				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
                 # Backup customers webspace
-				if (@allowbackup ~~ 'dmn') {
+				if ('dmn' ~~ @allowbackup) {
 					my @cmd = (
 						'tar',
 						"--create",										# Create new archive
@@ -164,7 +164,7 @@ sub run
 				}
 
 				# Backup all customer databases
-				if ($canDumpDatabases && @allowbackup ~~ 'sql') {
+				if ($canDumpDatabases && 'sql' ~~ @allowbackup) {
 					my $dbData = $db->doQuery(
 						'sqld_name',
 						"SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?",
@@ -204,7 +204,7 @@ sub run
 				}
 
                 # Backup all customer mails
-				if (@allowbackup ~~ 'mail') {
+				if ('mail' ~~ @allowbackup) {
                     my $mailData = $db->doQuery(
                         'name',
                         "

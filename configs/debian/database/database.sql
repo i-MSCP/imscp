@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `domain_disk_sql` bigint(20) unsigned DEFAULT NULL,
   `domain_php` varchar(15) collate utf8_unicode_ci DEFAULT NULL,
   `domain_cgi` varchar(15) collate utf8_unicode_ci DEFAULT NULL,
-  `allowbackup` varchar(8) collate utf8_unicode_ci NOT NULL DEFAULT 'dmn|sql|mail',
+  `allowbackup` varchar(12) collate utf8_unicode_ci NOT NULL DEFAULT 'dmn|sql|mail',
   `domain_dns` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `domain_software_allowed` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `phpini_perm_system` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
