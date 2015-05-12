@@ -3195,4 +3195,24 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		return $this->addIndex('mail_users', 'mail_addr', 'UNIQUE');
 	}
+
+    /**
+     * Change allowed length of allowbackup column
+     * Replace old param of allowbackup with new one
+     * @return array SQL statements to be executed
+     */
+    protected function r203()
+    {
+        return array(
+            $this->changeColumn(
+                'domain',
+                'allowbackup',
+                "allowbackup varchar(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn|sql|mail'"
+            ),
+            "UPDATE domain SET allowbackup = REPLACE(allowbackup, 'full', 'dmn|sql|mail')",
+            "UPDATE domain SET allowbackup = REPLACE(allowbackup, 'no', '')",
+            "UPDATE hosting_plans SET props = REPLACE(props, '_full_', '_dmn_|_sql_|_mail_')",
+            "UPDATE hosting_plans SET props = REPLACE(props, '_no_', '')"
+        );
+    }
 }
