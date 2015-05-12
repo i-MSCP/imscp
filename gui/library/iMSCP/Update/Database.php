@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 202;
+	protected $lastUpdate = 203;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3168,6 +3168,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 	/**
 	 * Fixed: Wrong field type for the plugin.plugin_config_prev column
+     *
 	 * @return array SQL statements to be executed
 	 */
 	protected function r201()
@@ -3197,8 +3198,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
     /**
-     * Change allowed length of allowbackup column
-     * Replace old param of allowbackup with new one
+     * Change the value length of the allowbackup column for domain backup feature and replace the old values with the new ones
+     *
      * @return array SQL statements to be executed
      */
     protected function r203()
