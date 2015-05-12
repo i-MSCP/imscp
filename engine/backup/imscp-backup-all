@@ -72,7 +72,7 @@ sub run
 			WHERE
 				domain_status = 'ok'
 			AND
-				allowbackup <> 'no'
+				allowbackup <> ''
 		"
 	);
 
@@ -83,7 +83,9 @@ sub run
 		for (keys %{$rdata}) {
 			$ret = 0;
 
-			if ($rdata->{$_}->{'allowbackup'} ne 'no') {
+            my @allowbackup = ();
+            @allowbackup = split /\|/, $rdata->{$_}->{'allowbackup'};
+            if (@allowbackup) {
 				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
 				my $bkpDir = "$homeDir/backups";
 				my $userName = $rdata->{$_}->{'admin_sys_name'};
@@ -127,7 +129,7 @@ sub run
 				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
                 # Backup customers webspace
-				if ($rdata->{$_}->{'allowbackup'} ~~ ['full', 'dmn']) {
+				if (@allowbackup ~~ 'dmn') {
 					my @cmd = (
 						'tar',
 						"--create",										# Create new archive
@@ -162,7 +164,7 @@ sub run
 				}
 
 				# Backup all customer databases
-				if ($canDumpDatabases && $rdata->{$_}->{'allowbackup'} ~~ ['full', 'sql']) {
+				if ($canDumpDatabases && @allowbackup ~~ 'sql') {
 					my $dbData = $db->doQuery(
 						'sqld_name',
 						"SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?",
@@ -202,7 +204,7 @@ sub run
 				}
 
                 # Backup all customer mails
-				if ($rdata->{$_}->{'allowbackup'} ~~ ['full', 'mail']) {
+				if (@allowbackup ~~ 'mail') {
                     my $mailData = $db->doQuery(
                         'name',
                         "
