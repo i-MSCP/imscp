@@ -199,6 +199,6 @@ class iMSCP_Update_Version extends iMSCP_Update
 			return $cfg['Version'];
 		}
 
-		return '99'; // Case where the version in use has not been officialy released (eg. git branch).
+		return '99'; // Case where the version in use has not been officially released (eg. git branch).
 	}
 }
