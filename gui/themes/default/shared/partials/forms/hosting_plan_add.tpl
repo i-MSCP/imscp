@@ -352,17 +352,13 @@
 <tr>
 	<td>{TR_BACKUP}</td>
 	<td>
-		<div class="radio">
-			<input type="radio" name="hp_backup" value="_dmn_" id="hp_backup_dmn"{VL_BACKUPD}/>
+		<div class="checkbox">
+			<input type="checkbox" name="hp_backup[]" value="_dmn_" id="hp_backup_dmn"{VL_BACKUPD}/>
 			<label for="hp_backup_dmn">{TR_BACKUP_DOMAIN}</label>
-			<input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{VL_BACKUPS}/>
+			<input type="checkbox" name="hp_backup[]" value="_sql_" id="hp_backup_sql"{VL_BACKUPS}/>
 			<label for="hp_backup_sql">{TR_BACKUP_SQL}</label>
-			<input type="radio" name="hp_backup" value="_mail_" id="hp_backup_mail"{VL_BACKUPM}/>
+			<input type="checkbox" name="hp_backup[]" value="_mail_" id="hp_backup_mail"{VL_BACKUPM}/>
 			<label for="hp_backup_mail">{TR_BACKUP_MAIL}</label>
-			<input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{VL_BACKUPF}/>
-			<label for="hp_backup_full">{TR_BACKUP_FULL}</label>
-			<input type="radio" name="hp_backup" value="_no_" id="hp_backup_none"{VL_BACKUPN}/>
-			<label for="hp_backup_none">{TR_BACKUP_NO}</label>
 		</div>
 	</td>
 </tr>

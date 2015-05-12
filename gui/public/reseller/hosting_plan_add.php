@@ -193,9 +193,7 @@ function reseller_generatePage($tpl, $phpini)
 			array(
 				'VL_BACKUPD' => '',
 				'VL_BACKUPS' => '',
-				'VL_BACKUPM' => '',				
-				'VL_BACKUPF' => '',
-				'VL_BACKUPN' => $checked,
+				'VL_BACKUPM' => ''
 			)
 		);
 	}
@@ -264,11 +262,9 @@ function reseller_generateErrorPage($tpl, $phpini)
 	if (resellerHasFeature('backup')) {
 		$tpl->assign(
 			array(
-				'VL_BACKUPD' => ($backup == '_dmn_') ? $checked : '',
-				'VL_BACKUPS' => ($backup == '_sql_') ? $checked : '',
-				'VL_BACKUPM' => ($backup == '_mail_') ? $checked : '',				
-				'VL_BACKUPF' => ($backup == '_full_') ? $checked : '',
-				'VL_BACKUPN' => ($backup == '_no_') ? $checked : '',
+				'VL_BACKUPD' => in_array('_dmn_', $backup) ? $checked : '',
+				'VL_BACKUPS' => in_array('_sql_', $backup) ? $checked : '',
+				'VL_BACKUPM' => in_array('_mail_', $backup) ? $checked : ''
 			)
 		);
 	}
@@ -306,7 +302,7 @@ function reseller_checkData($phpini)
 	$php = isset($_POST['hp_php']) ? clean_input($_POST['hp_php']) : '_no_';
 	$cgi = isset($_POST['hp_cgi']) ? clean_input($_POST['hp_cgi']) : '_no_';
 	$dns = isset($_POST['hp_dns']) ? clean_input($_POST['hp_dns']) : '_no_';
-	$backup = isset($_POST['hp_backup']) ? clean_input($_POST['hp_backup']) : '_no_';
+    $backup = isset($_POST['hp_backup']) && is_array($_POST['hp_backup']) ? $_POST['hp_backup'] : array();
 	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$extMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
 
@@ -318,7 +314,7 @@ function reseller_checkData($phpini)
 	$php = ($php == '_yes_') ? '_yes_' : '_no_';
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
-	$backup = (resellerHasFeature('backup') && in_array($backup, array('_full_', '_dmn_', '_sql_', '_mail_'))) ? $backup : '_no_';
+	$backup = resellerHasFeature('backup') ? array_intersect($backup, array('_dmn_', '_sql_', '_mail_')) : array();
 	$aps = (resellerHasFeature('aps') && $aps == '_yes_') ? '_yes_' : '_no_';
 	$extMail = ($extMail == '_yes_') ? '_yes_' : '_no_';
 	$webFolderProtection = ($webFolderProtection == '_yes_') ? '_yes_' : '_no_';
@@ -470,7 +466,7 @@ function reseller_addHostingPlan($resellerId, $phpini)
 		set_page_message(tr('A hosting plan with same name already exists.'), 'error');
 		return false;
 	} else {
-		$hpProps = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$traffic;$diskSpace;$backup;$dns;$aps";
+		$hpProps = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$traffic;$diskSpace;" . implode('|', $backup) . ";$dns;$aps";
 		$hpProps .= ';' . $phpini->getClPermVal('phpiniSystem') . ';' . $phpini->getClPermVal('phpiniAllowUrlFopen');
 		$hpProps .= ';' . $phpini->getClPermVal('phpiniDisplayErrors') . ';' . $phpini->getClPermVal('phpiniDisableFunctions');
 		$hpProps .= ';' . $phpini->getDataVal('phpiniPostMaxSize') . ';' . $phpini->getDataVal('phpiniUploadMaxFileSize');
@@ -581,8 +577,6 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'reseller')
 			'TR_BACKUP_DOMAIN' => tr('Domain'),
 			'TR_BACKUP_SQL' => tr('SQL'),
 			'TR_BACKUP_MAIL' => tr('Mail'),
-			'TR_BACKUP_FULL' => tr('Full'),
-			'TR_BACKUP_NO' => tr('No'),
 			'TR_SOFTWARE_SUPP' => tr('Software installer'),
 			'TR_EXTMAIL' => tr('External mail server'),
 			'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),

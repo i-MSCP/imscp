@@ -98,11 +98,9 @@ function get_init_au2_page($tpl, $phpini)
 	}
 
 	if(resellerHasFeature('backup')) {
-		$tplVars['VL_BACKUPD'] = ($backup == '_dmn_') ? $htmlChecked : '';
-		$tplVars['VL_BACKUPS'] = ($backup == '_sql_') ? $htmlChecked : '';
-		$tplVars['VL_BACKUPS'] = ($backup == '_mail_') ? $htmlChecked : ''; 		
-		$tplVars['VL_BACKUPF'] = ($backup == '_full_') ? $htmlChecked : '';
-		$tplVars['VL_BACKUPN'] = ($backup == '_no_') ? $htmlChecked : '';
+		$tplVars['VL_BACKUPD'] = in_array('_dmn_', $backup) ? $htmlChecked : '';
+		$tplVars['VL_BACKUPS'] = in_array('_sql_', $backup) ? $htmlChecked : '';
+		$tplVars['VL_BACKUPS'] = in_array('_mail_', $backup) ? $htmlChecked : '';
 	}
 
 	$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($webFolderProtection == '_yes_') ? $htmlChecked : '';
@@ -221,6 +219,7 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 				$extMailServer, $webFolderProtection, $mailQuota
 			) = explode(';', $props);
 
+            $backup = explode('|', $backup);
 			$mailQuota = ($mailQuota != '0') ? $mailQuota / 1048576 : '0';
 
 			$hpName = $data['name'];
@@ -244,7 +243,8 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 	} else {
 		$hpName = 'Custom';
 		$sub = $als = $mail = $mailQuota = $ftp = $sqlDb = $sqlUser = $traffic = $diskSpace = '0';
-		$php = $cgi = $backup = $dns = $aps = $extMailServer = '_no_';
+		$php = $cgi = $dns = $aps = $extMailServer = '_no_';
+        $backup = array();
 		$webFolderProtection = '_yes_';
 	}
 }
@@ -452,11 +452,12 @@ function check_user_data($phpini)
 
 	// Backup feature
 
-	if (isset($_POST['backup']) && resellerHasFeature('backup')) {
-		$backup = $_POST['backup'];
-	} else {
-		$backup = '_no_';
-	}
+    if(resellerHasFeature('backup')) {
+        $backup = isset($_POST['backup']) && is_array($_POST['backup'])
+            ? array_intersect($_POST['backup'], array('dmn', 'sql', 'mail')) : array();
+    } else {
+        $backup = array();
+    }
 
 	// APS feature
 
@@ -553,9 +554,7 @@ $tpl->assign(
 		'TR_BACKUP' => tr('Backup'),
 		'TR_BACKUP_DOMAIN' => tr('Domain'),
 		'TR_BACKUP_SQL' => tr('SQL'),
-		'TR_BACKUP_MAIL' => tr('Mail'),		
-		'TR_BACKUP_FULL' => tr('Full'),
-		'TR_BACKUP_NO' => tr('No'),
+		'TR_BACKUP_MAIL' => tr('Mail')
 		'TR_DNS' => tr('Custom DNS records'),
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
@@ -583,7 +582,7 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) && (!isse
 	if (check_user_data($phpini)) {
 		$_SESSION['step_two_data'] = "$dmnName;0";
 		$_SESSION['ch_hpprops'] =
-			"$php;$cgi;$sub;$als;$mail;$ftp;$sqlDb;$sqlUser;$traffic;$diskSpace;$backup;$dns;$aps;" .
+			"$php;$cgi;$sub;$als;$mail;$ftp;$sqlDb;$sqlUser;$traffic;$diskSpace;" . implode('|', $backup) . ";$dns;$aps;" .
 			$phpini->getClPermVal('phpiniSystem') . ';' .
 			$phpini->getClPermVal('phpiniAllowUrlFopen') . ';' .
 			$phpini->getClPermVal('phpiniDisplayErrors') . ';' .
