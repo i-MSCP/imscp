@@ -3218,7 +3218,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Updated hosting_plans.props values for backup feature
 	 *
-	 * @return void
+	 * @return array SQL statements to be executed
 	 */
 	protected function r204()
 	{
