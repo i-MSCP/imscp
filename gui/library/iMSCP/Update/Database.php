@@ -3243,7 +3243,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 				if($needUpdate) {
 					$props = quoteValue(implode(';', $props));
-					$sqlUpd[] = "UPDATE hosting_plans SET props = $props WHERE id = $id";
+					$sqlUpd[] = "UPDATE hosting_plans SET props = $props WHERE id = $row['id']";
 				}
 			}
 		}
