@@ -3210,8 +3210,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'allowbackup',
 				"allowbackup varchar(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn|sql|mail'"
 			),
-			//"UPDATE domain SET allowbackup = REPLACE(allowbackup, 'full', 'dmn|sql|mail')",
-			//"UPDATE domain SET allowbackup = REPLACE(allowbackup, 'no', '')"
+			"UPDATE domain SET allowbackup = REPLACE(allowbackup, 'full', 'dmn|sql|mail')",
+			"UPDATE domain SET allowbackup = REPLACE(allowbackup, 'no', '')"
 		);
 	}
 
@@ -3227,16 +3227,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if($stmt->rowCount()) {
 			while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$needUpdate = false;
+				$needUpdate = true;
 				$props = explode(';', $row['props']);
 
-				if($props[10] == '_full_') {
-					$props[10] = '_dmn_|_sql_|_mail_';
-					$needUpdate = true;
-				} elseif($props[10] == '_no_') {
-					$props[10] == '';
-					$needUpdate = true;
-				}
+                switch ($props[10]) {
+                    case '_full_':
+                        $props[10] = '_dmn_|_sql_|_mail_';
+                        break;
+                    case '_no_':
+                        $props[10] = '';
+                        break;
+                    default:
+                        $needUpdate = false;
+                }
 
 				if($needUpdate) {
 					$props = quoteValue(implode(';', $props));
