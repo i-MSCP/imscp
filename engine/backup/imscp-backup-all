@@ -83,7 +83,7 @@ sub run
 		for (keys %{$rdata}) {
 			$ret = 0;
 
-			my @allowbackup = split '|', $rdata->{$_}->{'allowbackup'};
+			my @allowbackup = split '\|', $rdata->{$_}->{'allowbackup'};
 
 			if (@allowbackup) {
 				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
