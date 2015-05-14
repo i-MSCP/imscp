@@ -3229,6 +3229,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$needUpdate = true;
 				$props = explode(';', $row['props']);
+                $id = quoteValue($row['id'], PDO::PARAM_INT);
 
                 switch ($props[10]) {
                     case '_full_':
@@ -3243,7 +3244,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 				if($needUpdate) {
 					$props = quoteValue(implode(';', $props));
-					$sqlUpd[] = "UPDATE hosting_plans SET props = $props WHERE id = $row['id']";
+					$sqlUpd[] = "UPDATE hosting_plans SET props = $props WHERE id = $id";
 				}
 			}
 		}
