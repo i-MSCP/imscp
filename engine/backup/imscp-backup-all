@@ -39,12 +39,12 @@ sub run
 	return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
 	my $command = {
-		'bzip2' => { 'extension' => 'bz2', 'command' => 'bzip2' },
-		'pbzip2' => { 'extension' => 'bz2', 'command' => 'pbzip2' },
-		'gzip' => { 'extension' => 'gz', 'command' => 'gzip' },
-		'pigz' => { 'extension' => 'gz', 'command' => 'pigz' },
-		'lzma' => { 'extension' => 'lzma', 'command' => 'lzma' },
-		'xz' => { 'extension' => 'xz', 'command' => 'xz' }
+		bzip2 => { extension => 'bz2', command => 'bzip2' },
+		pbzip2 => { extension => 'bz2', command => 'pbzip2' },
+		gzip => { extension => 'gz', command => 'gzip' },
+		pigz => { extension => 'gz', command => 'pigz' },
+		lzma => { extension => 'lzma', command => 'lzma' },
+		xz => { extension => 'xz', command => 'xz' }
 	};
 
 	my $algorithm = lc($main::imscpConfig{'ZIP'});
@@ -83,9 +83,9 @@ sub run
 		for (keys %{$rdata}) {
 			$ret = 0;
 
-            my @allowbackup = ();
-            @allowbackup = split /\|/, $rdata->{$_}->{'allowbackup'};
-            if (@allowbackup) {
+			my @allowbackup = split '|', $rdata->{$_}->{'allowbackup'};
+
+			if (@allowbackup) {
 				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
 				my $bkpDir = "$homeDir/backups";
 				my $userName = $rdata->{$_}->{'admin_sys_name'};
@@ -103,8 +103,8 @@ sub run
 						clearImmutable($homeDir);
 					}
 
-					$rs = iMSCP::Dir->new('dirname' => $bkpDir)->make(
-						{ 'user' => $userName, 'group' => $groupName, 'mode' => 0750 }
+					$rs = iMSCP::Dir->new( dirname => $bkpDir )->make(
+						{ user => $userName, group => $groupName, mode => 0750 }
 					);
 
 					setImmutable($homeDir) if $isProtectedHomedir;
@@ -155,7 +155,7 @@ sub run
 						$ret |= $rs;
 					}
 
-					my $file = iMSCP::File->new('filename' => "$bkpDir/$_-backup-$date.tar$ext");
+					my $file = iMSCP::File->new( filename => "$bkpDir/$_-backup-$date.tar$ext" );
 					$rs = $file->mode(0644);
 					$ret ||= $rs;
 
@@ -167,7 +167,7 @@ sub run
 				if ($canDumpDatabases && 'sql' ~~ @allowbackup) {
 					my $dbData = $db->doQuery(
 						'sqld_name',
-						"SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?",
+						'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?',
 						$rdata->{$_}->{'domain_id'}
 					);
 					unless (ref $dbData eq 'HASH') {
@@ -203,96 +203,95 @@ sub run
 					}
 				}
 
-                # Backup all customer mails
+				# Backup all customer mails
 				if ('mail' ~~ @allowbackup) {
-                    my $mailData = $db->doQuery(
-                        'name',
-                        "
-                            SELECT
-                               `t1`.`domain_name` AS `name`, `t1`.`domain_id` AS `id`,
-                                'dmn' AS `type`
-                            FROM
-                                `domain` AS `t1`
-                            WHERE
-                                `t1`.`domain_id` = ?
-                            AND
-                                `t1`.`domain_status` = 'ok'
-                            UNION
-                            SELECT
-                                CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `name`, `t1`.`subdomain_id` AS `id`,
-                                'sub' AS `type`
-                            FROM
-                                `subdomain` AS `t1`
-                            INNER JOIN
-                                `domain` AS `t2` USING(`domain_id`)
-                            WHERE
-                                `t1`.`domain_id` = ?
-                            AND
-                                `t1`.`subdomain_status` = 'ok'
-                            UNION
-                            SELECT
-                                `alias_name` AS `name`, `alias_id` AS `id`, 'als' AS `type`
-                            FROM
-                                `domain_aliasses`
-                            WHERE
-                                `domain_id` = ?
-                            AND
-                                `alias_status` = 'ok'
-                            UNION
-                            SELECT
-                                CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `name`, `t1`.`subdomain_alias_id` AS `id`,
-                                'alssub' AS `type`
-                            FROM
-                                `subdomain_alias` AS `t1`
-                            INNER JOIN
-                                `domain_aliasses` AS `t2` USING(`alias_id`)
-                            WHERE
-                                `t2`.`domain_id` = ?
-                            AND
-                                `subdomain_alias_status` = 'ok'
-                        ",
-                        $rdata->{$_}->{'domain_id'},
-                        $rdata->{$_}->{'domain_id'},
-                        $rdata->{$_}->{'domain_id'},
-                        $rdata->{$_}->{'domain_id'}
-                    );
-                    unless (ref $mailData eq 'HASH') {
-                        error($mailData);
-                        $ret ||= 1;
-                        next;
-                    }
+					my $mailData = $db->doQuery(
+						'name',
+						"
+							SELECT
+								t1.domain_name AS name, t1.domain_id AS id, 'dmn' AS type
+							FROM
+								domain AS t1
+							WHERE
+								t1.domain_id = ?
+							AND
+								t1.domain_status = 'ok'
+							UNION
+							SELECT
+								CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name, t1.subdomain_id AS id,
+								'sub' AS type
+							FROM
+								subdomain AS t1
+							INNER JOIN
+								domain AS t2 USING(domain_id)
+							WHERE
+								t1.domain_id = ?
+							AND
+								t1.subdomain_status = 'ok'
+							UNION
+							SELECT
+								alias_name AS name, alias_id AS id, 'als' AS type
+							FROM
+								domain_aliasses
+							WHERE
+								domain_id = ?
+							AND
+								alias_status = 'ok'
+							UNION
+							SELECT
+								CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name, t1.subdomain_alias_id AS id,
+								'alssub' AS type
+							FROM
+								subdomain_alias AS t1
+							INNER JOIN
+								domain_aliasses AS t2 USING(alias_id)
+							WHERE
+								t2.domain_id = ?
+							AND
+								subdomain_alias_status = 'ok'
+						",
+						$rdata->{$_}->{'domain_id'},
+						$rdata->{$_}->{'domain_id'},
+						$rdata->{$_}->{'domain_id'},
+						$rdata->{$_}->{'domain_id'}
+					);
+					unless (ref $mailData eq 'HASH') {
+						error($mailData);
+						$ret ||= 1;
+						next;
+					}
 
-                    for (keys %{$mailData}) {
-                        my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$_";
+					for (keys %{$mailData}) {
+						my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$_";
 
-                        my @cmd = (
-                            'tar',
-                            "--create",                                     # Create new archive
-                            "--directory=$mailDir",                      # Change to directory
-                            ($algorithm ne 'no')
-                                ? "--use-compress-program=$algorithm"       # Compress archive with given program
-                                : '',                                       # No compression
-                            "--file=$bkpDir/mail-$_-backup-$date.tar$ext",         # use archive file
-                            '.'                                             # pathname
-                        );
+						my @cmd = (
+							'tar',
+							"--create",                                     # Create new archive
+							"--directory=$mailDir",                         # Change to directory
+							($algorithm ne 'no')
+								? "--use-compress-program=$algorithm"       # Compress archive with given program
+								: '',                                       # No compression
+							"--file=$bkpDir/mail-$_-backup-$date.tar$ext",  # use archive file
+							'.'                                             # pathname
+						);
 
-                        my $rs = execute("@cmd", \$stdout, \$stderr);
-                        debug($stdout) if $stdout;
+						my $rs = execute("@cmd", \$stdout, \$stderr);
+						debug($stdout) if $stdout;
 
-                        # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
-                        if($rs > 1) {
-                            error($stderr) if $stderr;
-                            error("Unable to backup $mailDir") if ! $stderr;
-                            $ret |= $rs;
-                        }
+						# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+						if($rs > 1) {
+							error($stderr) if $stderr;
+							error("Unable to backup $mailDir") unless $stderr;
+							$ret |= $rs;
+						}
 
-                        my $file = iMSCP::File->new('filename' => "$bkpDir/mail-$_-backup-$date.tar$ext");
-                        $rs = $file->mode(0644);
-                        $ret ||= $rs;
+						my $file = iMSCP::File->new( filename => "$bkpDir/mail-$_-backup-$date.tar$ext" );
+						$rs = $file->mode(0644);
+						$ret ||= $rs;
 
-                        $rs = $file->owner($userName, $groupName);
-                        $ret ||= $rs;
-                    }
+						$rs = $file->owner($userName, $groupName);
+						$ret ||= $rs;
+					}
 				}
 			}
 		}
@@ -316,7 +315,7 @@ newDebug('imscp-backup-all.log');
 # Parse command line options
 iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
-Script which backup i-MSCP customers's data (Web files an databases).
+Script which backup i-MSCP customers's data.
 
 OPTIONS:
  -v,    --verbose       Enable verbose mode.},
@@ -325,7 +324,7 @@ OPTIONS:
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-backup-all.lock', 'nowait');
-$bootstrapper->boot({ 'norequirements' => 'yes', 'nofail' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
+$bootstrapper->boot({ norequirements => 'yes', nofail => 'yes', nolock => 'yes', config_readonly => 'yes' });
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-backup-all.lock');

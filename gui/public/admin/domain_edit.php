@@ -575,8 +575,8 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		$tplVars['BACKUP_DOMAIN'] = in_array('dmn', $data['allowbackup']) ? $htmlChecked : '';
 		$tplVars['TR_BACKUP_SQL'] = tr('SQL');
 		$tplVars['BACKUP_SQL'] = in_array('sql', $data['allowbackup']) ? $htmlChecked : '';
-		$tplVars['TR_BACKUP_MAIL'] = tr('Mail'); 		
-		$tplVars['BACKUP_MAIL'] = in_array('mail', $data['allowbackup']) ? $htmlChecked : ''
+		$tplVars['TR_BACKUP_MAIL'] = tr('Mail');
+		$tplVars['BACKUP_MAIL'] = in_array('mail', $data['allowbackup']) ? $htmlChecked : '';
 	} else {
 		$tplVars['BACKUP_BLOCK'] = '';
 	}

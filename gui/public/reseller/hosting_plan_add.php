@@ -302,7 +302,7 @@ function reseller_checkData($phpini)
 	$php = isset($_POST['hp_php']) ? clean_input($_POST['hp_php']) : '_no_';
 	$cgi = isset($_POST['hp_cgi']) ? clean_input($_POST['hp_cgi']) : '_no_';
 	$dns = isset($_POST['hp_dns']) ? clean_input($_POST['hp_dns']) : '_no_';
-    $backup = isset($_POST['hp_backup']) && is_array($_POST['hp_backup']) ? $_POST['hp_backup'] : array();
+	$backup = isset($_POST['hp_backup']) && is_array($_POST['hp_backup']) ? $_POST['hp_backup'] : array();
 	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$extMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
 

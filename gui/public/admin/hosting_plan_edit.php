@@ -303,7 +303,7 @@ function admin_checkData($phpini)
 	$php = isset($_POST['hp_php']) ? clean_input($_POST['hp_php']) : '_no_';
 	$cgi = isset($_POST['hp_cgi']) ? clean_input($_POST['hp_cgi']) : '_no_';
 	$dns = isset($_POST['hp_dns']) ? clean_input($_POST['hp_dns']) : '_no_';
-    $backup = isset($_POST['hp_backup']) && is_array($_POST['hp_backup']) ? $_POST['hp_backup'] : array();
+	$backup = isset($_POST['hp_backup']) && is_array($_POST['hp_backup']) ? $_POST['hp_backup'] : array();
 	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$hpExtMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
 
@@ -315,7 +315,7 @@ function admin_checkData($phpini)
 	$php = ($php == '_yes_') ? '_yes_' : '_no_';
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
-    $backup = ($cfg->BACKUP_DOMAINS != 'no') ? array_intersect($backup, array('_dmn_', '_sql_', '_mail_')) : array();
+	$backup = ($cfg->BACKUP_DOMAINS != 'no') ? array_intersect($backup, array('_dmn_', '_sql_', '_mail_')) : array();
 	$aps = ($aps == '_yes_') ? '_yes_' : '_no_';
 	$hpExtMail = ($hpExtMail == '_yes_') ? '_yes_' : '_no_';
 	$hpProtectedWebFolders = ($hpProtectedWebFolders == '_yes_') ? '_yes_' : '_no_';

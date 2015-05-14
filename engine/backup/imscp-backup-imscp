@@ -47,15 +47,15 @@ OPTIONS:
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-backup-imscp.lock', 'nowait');
-$bootstrapper->boot({ 'norequirements' => 'yes', 'nofail' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
+$bootstrapper->boot({ norequirements => 'yes', nofail => 'yes', nolock => 'yes', config_readonly => 'yes' });
 
 our $command = {
-	'pbzip2' => { 'extension' => 'bz2', 'command' => 'pbzip2'},
-	'bzip2' => { 'extension' => 'bz2', 'command' => 'bzip2'},
-	'gzip' => { 'extension' => 'gz', 'command' => 'gzip'},
-	'pigz' => { 'extension' => 'gz', 'command' => 'pigz' },
-	'lzma' => { 'extension' => 'lzma', 'command' => 'lzma'},
-	'xz' => { 'extension' => 'xz', 'command' => 'xz' }
+	pbzip2 => { extension => 'bz2', command => 'pbzip2' },
+	bzip2 => { extension => 'bz2', command => 'bzip2' },
+	gzip => { extension => 'gz', command => 'gzip' },
+	pigz => { extension => 'gz', command => 'pigz' },
+	lzma => { extension => 'lzma', command => 'lzma' },
+	xz => { extension => 'xz', command => 'xz' }
 };
 
 sub run
@@ -70,8 +70,8 @@ sub run
 	}
 
 	# Make sure that backup directory exists
-	my $rs = iMSCP::Dir->new('dirname' => $main::imscpConfig{'BACKUP_FILE_DIR'})->make(
-		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0750 }
+	my $rs = iMSCP::Dir->new( dirname => $main::imscpConfig{'BACKUP_FILE_DIR'} )->make(
+		{ user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0750 }
 	);
 	return $rs if $rs;
 

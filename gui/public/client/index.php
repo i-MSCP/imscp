@@ -195,29 +195,32 @@ function client_generateFeatureStatus($tpl)
 		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 		// Backup feature for customer can also be disabled by reseller via GUI
-        $domainProperties['allowbackup'] = explode('|', $domainProperties['allowbackup']);
-        $bkTranslation = array();
-        foreach( $domainProperties['allowbackup'] as $bkvalue ) {
-            switch ($bkvalue) {
-                case 'dmn':
-                    $bkTranslation[] = tr('domain data');
-                    break;
-                case 'sql':
-                    $bkTranslation[] = tr('SQL databases');
-                    break;
-                case 'mail':
-                    $bkTranslation[] = tr('mail accounts');
-                    break;
-                default:
-            }
-        }
-        if( count($bkTranslation) > 0 ) {
-            $tpl->assign(
-                'BACKUP_FEATURE_STATUS', '<span style="color: green;">' . sprintf(tr('Enabled for: %s'), implode(', ', $bkTranslation)) . '</span>');
-        }
-        else {
-            $tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
-        }
+		$domainProperties['allowbackup'] = explode('|', $domainProperties['allowbackup']);
+
+		$bkTranslation = array();
+		foreach ($domainProperties['allowbackup'] as $bkvalue) {
+			switch ($bkvalue) {
+				case 'dmn':
+					$bkTranslation[] = tr('domain data');
+					break;
+				case 'sql':
+					$bkTranslation[] = tr('SQL databases');
+					break;
+				case 'mail':
+					$bkTranslation[] = tr('mail accounts');
+					break;
+				default:
+			}
+		}
+
+		if (count($bkTranslation) > 0) {
+			$tpl->assign(
+				'BACKUP_FEATURE_STATUS',
+				'<span style="color: green;">' . sprintf(tr('Enabled for: %s'), implode(', ', $bkTranslation)) . '</span>'
+			);
+		} else {
+			$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
+		}
 	} else {
 		$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
 	}

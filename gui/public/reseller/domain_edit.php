@@ -230,8 +230,8 @@ function &reseller_getData($domainId, $forUpdate = false)
 		$data['fallback_domain_cgi'] = $data['domain_cgi'];
 		$data['fallback_domain_dns'] = $data['domain_dns'];
 		$data['fallback_domain_software_allowed'] = $data['domain_software_allowed'];
-        $data['fallback_allowbackup'] = $data['allowbackup'] = explode('|', $data['allowbackup']);
-        $data['fallback_domain_external_mail'] = $data['domain_external_mail'];
+		$data['fallback_allowbackup'] = $data['allowbackup'] = explode('|', $data['allowbackup']);
+		$data['fallback_domain_external_mail'] = $data['domain_external_mail'];
 		$data['fallback_web_folder_protection'] = $data['web_folder_protection'];
 		$data['fallback_mail_quota'] = $data['mail_quota'];
 
@@ -295,15 +295,15 @@ function &reseller_getData($domainId, $forUpdate = false)
 				$data['domain_software_allowed'] = 'no';
 			}
 
-            if($cfg->BACKUP_DOMAINS == 'yes') {
-                $data['allowbackup'] = isset($_POST['allowbackup']) && is_array($_POST['allowbackup'])
-                    ? array_intersect($_POST['allowbackup'], array('dmn', 'sql', 'mail')) : $data['allowbackup'];
-            } else {
-                $data['allowbackup'] = array();
-            }
+			if ($cfg->BACKUP_DOMAINS == 'yes') {
+				$data['allowbackup'] = isset($_POST['allowbackup']) && is_array($_POST['allowbackup'])
+					? array_intersect($_POST['allowbackup'], array('dmn', 'sql', 'mail')) : $data['allowbackup'];
+			} else {
+				$data['allowbackup'] = array();
+			}
 
-            $data['domain_external_mail'] = isset($_POST['domain_external_mail'])
-                ? clean_input($_POST['domain_external_mail']) : $data['domain_external_mail'];
+			$data['domain_external_mail'] = isset($_POST['domain_external_mail'])
+				? clean_input($_POST['domain_external_mail']) : $data['domain_external_mail'];
 
 			$data['web_folder_protection'] = isset($_POST['web_folder_protection'])
 				? clean_input($_POST['web_folder_protection']) : $data['web_folder_protection'];

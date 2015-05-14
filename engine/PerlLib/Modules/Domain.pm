@@ -272,10 +272,10 @@ sub restore
 					$typeOption = $1;
 
 					if($typeOption eq 'bz2') {
-					    $typeOption = 'bzip2';
-				    } elsif($typeOption eq 'gz') {
-					    $typeOption = 'gzip';
-				    }
+						$typeOption = 'bzip2';
+					} elsif($typeOption eq 'gz') {
+						$typeOption = 'gzip';
+					}
 				}
 
 				# TODO: Should we also update status of htuser, htgroup and htaccess entities?

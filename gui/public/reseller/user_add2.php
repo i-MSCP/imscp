@@ -219,7 +219,7 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 				$extMailServer, $webFolderProtection, $mailQuota
 			) = explode(';', $props);
 
-            $backup = explode('|', $backup);
+			$backup = explode('|', $backup);
 			$mailQuota = ($mailQuota != '0') ? $mailQuota / 1048576 : '0';
 
 			$hpName = $data['name'];
@@ -244,7 +244,7 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 		$hpName = 'Custom';
 		$sub = $als = $mail = $mailQuota = $ftp = $sqlDb = $sqlUser = $traffic = $diskSpace = '0';
 		$php = $cgi = $dns = $aps = $extMailServer = '_no_';
-        $backup = array();
+		$backup = array();
 		$webFolderProtection = '_yes_';
 	}
 }
@@ -452,12 +452,12 @@ function check_user_data($phpini)
 
 	// Backup feature
 
-    if(resellerHasFeature('backup')) {
-        $backup = isset($_POST['backup']) && is_array($_POST['backup'])
-            ? array_intersect($_POST['backup'], array('dmn', 'sql', 'mail')) : array();
-    } else {
-        $backup = array();
-    }
+	if (resellerHasFeature('backup')) {
+		$backup = isset($_POST['backup']) && is_array($_POST['backup'])
+			? array_intersect($_POST['backup'], array('dmn', 'sql', 'mail')) : array();
+	} else {
+		$backup = array();
+	}
 
 	// APS feature
 
@@ -554,7 +554,7 @@ $tpl->assign(
 		'TR_BACKUP' => tr('Backup'),
 		'TR_BACKUP_DOMAIN' => tr('Domain'),
 		'TR_BACKUP_SQL' => tr('SQL'),
-		'TR_BACKUP_MAIL' => tr('Mail')
+		'TR_BACKUP_MAIL' => tr('Mail'),
 		'TR_DNS' => tr('Custom DNS records'),
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),

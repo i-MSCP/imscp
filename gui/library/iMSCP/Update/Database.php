@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 203;
+	protected $lastUpdate = 204;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3197,23 +3197,54 @@ class iMSCP_Update_Database extends iMSCP_Update
 		return $this->addIndex('mail_users', 'mail_addr', 'UNIQUE');
 	}
 
-    /**
-     * Change the value length of the allowbackup column for domain backup feature and replace the old values with the new ones
-     *
-     * @return array SQL statements to be executed
-     */
-    protected function r203()
-    {
-        return array(
-            $this->changeColumn(
-                'domain',
-                'allowbackup',
-                "allowbackup varchar(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn|sql|mail'"
-            ),
-            "UPDATE domain SET allowbackup = REPLACE(allowbackup, 'full', 'dmn|sql|mail')",
-            "UPDATE domain SET allowbackup = REPLACE(allowbackup, 'no', '')",
-            "UPDATE hosting_plans SET props = REPLACE(props, '_full_', '_dmn_|_sql_|_mail_')",
-            "UPDATE hosting_plans SET props = REPLACE(props, '_no_', '')"
-        );
-    }
+	/**
+	 * Change domain.allowbackup column length and update values for backup feature
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function r203()
+	{
+		return array(
+			$this->changeColumn(
+				'domain',
+				'allowbackup',
+				"allowbackup varchar(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn|sql|mail'"
+			),
+			//"UPDATE domain SET allowbackup = REPLACE(allowbackup, 'full', 'dmn|sql|mail')",
+			//"UPDATE domain SET allowbackup = REPLACE(allowbackup, 'no', '')"
+		);
+	}
+
+	/**
+	 * Updated hosting_plans.props values for backup feature
+	 *
+	 * @return void
+	 */
+	protected function r204()
+	{
+		$sqlUpd = array();
+		$stmt = exec_query('SELECT id, props FROM hosting_plans');
+
+		if($stmt->rowCount()) {
+			while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$needUpdate = false;
+				$props = explode(';', $row['props']);
+
+				if($props[10] == '_full_') {
+					$props[10] = '_dmn_|_sql_|_mail_';
+					$needUpdate = true;
+				} elseif($props[10] == '_no_') {
+					$props[10] == '';
+					$needUpdate = true;
+				}
+
+				if($needUpdate) {
+					$props = quoteValue(implode(';', $props));
+					$sqlUpd[] = "UPDATE hosting_plans SET props = $props WHERE id = $id";
+				}
+			}
+		}
+
+		return $sqlUpd;
+	}
 }
