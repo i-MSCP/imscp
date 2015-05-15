@@ -1,2 +1,5 @@
-[mysqld]
-innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}
+[mysqldump]
+host={DATABASE_HOST}
+port={DATABASE_PORT}
+user={DATABASE_USER}
+password={DATABASE_PASSWORD}

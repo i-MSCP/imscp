@@ -287,25 +287,10 @@ sub dumpdb
 
 	my $rootHomeDir = File::HomeDir->users_home($main::imscpConfig{'ROOT_USER'});
 
-	my @cmd;
-
-	if(defined $rootHomeDir && -f "$rootHomeDir/.my.cnf") {
-		@cmd = (
-			'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
-			'--compress', '--default-character-set=utf8', '--quote-names', "--result-file=$filename", $dbName
-		);
-	} else {
-		my $dbHost = escapeShell($self->{'db'}->{'DATABASE_HOST'});
-		my $dbPort = escapeShell($self->{'db'}->{'DATABASE_PORT'});
-		my $dbUser = escapeShell($self->{'db'}->{'DATABASE_USER'});
-		my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
-
-		@cmd = (
-			'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords',
-			'--compress', '--default-character-set=utf8', '--quote-names', "-h $dbHost", "-P $dbPort", "-u $dbUser",
-			"-p$dbPass", "--result-file=$filename", $dbName
-		);
-	}
+	my @cmd = (
+		'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
+		'--default-character-set=utf8', '--quote-names', "--result-file=$filename", $dbName
+	);
 
 	my ($stdout, $stderr);
 	my $rs = execute("@cmd", \$stdout, \$stderr);

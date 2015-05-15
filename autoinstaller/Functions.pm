@@ -262,7 +262,6 @@ EOF
 	}
 
 	my @steps = (
-		[\&_doImscpBackup,               'Backup existing installation if any'],
 		[\&_installFiles,                'Installing files'],
 		[\&main::setupBoot,              'Setup bootstrapping'],
 		[\&main::setupRegisterListeners, 'Registering servers/packages event listeners'],
@@ -915,39 +914,6 @@ sub _savePersistentData
 	}
 
 	0;
-}
-
-=item _doImscpBackup()
-
- Backup current i-MSCP installation (database and conffiles) if any
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _doImscpBackup
-{
-	if(-x "$main::imscpConfig{'ROOT_DIR'}/engine/backup/imscp-backup-imscp" && -f "$main::{'SYSTEM_CONF'}/imscp.conf") {
-		iMSCP::Bootstrapper->getInstance()->unlock('/tmp/imscp-backup-imscp.lock');
-
-		my ($stdout, $stderr);
-		my $rs = execute("$main::imscpConfig{'ROOT_DIR'}/engine/backup/imscp-backup-imscp", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-
-		iMSCP::Bootstrapper->getInstance()->lock('/tmp/imscp-backup-imscp.lock');
-
-		iMSCP::Dialog->getInstance()->yesno(<<EOF) if $rs;
-
-\\Z1Unable to create backups\\Zn
-
-This is not a fatal error, and thus, the setup may continue. However, you'll not have recent backup.
-
-Do you want to continue?
-EOF
-	} else {
-		0;
-	}
 }
 
 =item _installFiles()

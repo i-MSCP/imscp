@@ -61,10 +61,7 @@ sub install
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldInstall', 'mysql');
 	return $rs if $rs;
 
-	$rs = $self->_createGlobalConfFile();
-	return $rs if $rs;
-
-	$rs = $self->_createRootUserConfFile();
+	$rs = $self->_createConfig();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterSqldInstall', 'mysql');
@@ -85,23 +82,12 @@ sub setEnginePermissions
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldSetEnginePermissions');
 	return $rs if $rs;
 
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $homeDir = File::HomeDir->users_home($rootUName);
 	my $confDir = '/etc/mysql/conf.d';
 
-	if(defined $homeDir) {
-		if(-f "$homeDir/.my.cnf") {
-			$rs = setRights( "$homeDir/.my.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0600' } );
-			return $rs if $rs;
-		}
-	} else {
-		error('Unable to find root user homedir');
-		return 1;
-	}
-
 	if(-f "$confDir/imscp.cnf") {
-		$rs = setRights( "$confDir/imscp.cnf", { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0644' } );
+		$rs = setRights( "$confDir/imscp.cnf", {
+			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
+		);
 		return $rs if $rs;
 	}
 
@@ -145,19 +131,19 @@ sub _init
 	$self;
 }
 
-=item _createGlobalConfFile()
+=item _createConfig()
 
- Create global configuration file
+ Create configuration file
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _createGlobalConfFile
+sub _createConfig
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMysqlCreateGlobalConfFile');
+	my $rs = $self->{'eventManager'}->trigger('beforeMysqlCreateConfig');
 	return $rs if $rs;
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
@@ -165,140 +151,67 @@ sub _createGlobalConfFile
 	my $confDir = '/etc/mysql/conf.d';
 
 	if(-d $confDir) {
-		if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
-			# Load template
-			my $cfgTpl;
-			$rs = $self->{'eventManager'}->trigger(
-				'onLoadTemplate',
-				'mysql',
-				'imscp.cnf',
-				\$cfgTpl,
-				{ 'USER' => $rootUName, 'GROUP' => $rootGName, 'CONFDIR' => $confDir }
-			);
-			return $rs if $rs;
-
-			unless(defined $cfgTpl) {
-				$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
-				unless(defined $cfgTpl) {
-					error("Unable to read $self->{'cfgDir'}/imscp.cnf");
-					return 1;
-				}
-			}
-
-			# Build file
-
-			my $variables = { };
-
-			my $version = $1 if($main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/);
-
-			if(version->parse($version) >= version->parse('5.5')) {
-				$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
-			} else {
-				# The innodb_use_native_aio parameter is not available in MySQL < 5.5
-				$cfgTpl =~ s/^innodb_use_native_aio.*\n//m;
-			}
-
-			$cfgTpl = process($variables, $cfgTpl);
-
-			# Store file
-
-			my $file = iMSCP::File->new( filename => "$confDir/imscp.cnf" );
-
-			$rs = $file->set($cfgTpl);
-			return $rs if $rs;
-
-			$rs = $file->save();
-			return $rs if $rs;
-
-			$rs = $file->mode(0644);
-			return $rs if $rs;
-
-			$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-			return $rs if $rs;
-		} elsif(-f "$confDir/imscp.cnf") {
-			$rs = iMSCP::File->new( filename => "$confDir/imscp.cnf" )->delFile;
-			return $rs if $rs;
-		}
-	}
-
-	$self->{'eventManager'}->trigger('afterMysqlCreateGlobalConfFile');
-}
-
-=item _createRootUserConfFile()
-
- Create root user configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _createRootUserConfFile
-{
-	my $self = $_[0];
-
-	my $rs = $self->{'eventManager'}->trigger('beforeMysqlCreateRootUserConfFile');
-	return $rs if $rs;
-
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $homeDir = File::HomeDir->users_home($rootUName);
-
-	if(defined $homeDir) {
 		# Load template
+
 		my $cfgTpl;
 		$rs = $self->{'eventManager'}->trigger(
 			'onLoadTemplate',
 			'mysql',
-			'.my.cnf',
+			'imscp.cnf',
 			\$cfgTpl,
-			{ 'USER' => $rootUName, 'GROUP' => $rootGName, 'HOMEDIR' => $homeDir }
+			{ USER => $rootUName, GROUP => $rootGName, CONFDIR => $confDir }
 		);
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
-			$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/.my.cnf" )->get();
+			$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
 			unless(defined $cfgTpl) {
-				error("Unable to read $self->{'cfgDir'}/.my.cnf");
+				error("Unable to read $self->{'cfgDir'}/imscp.cnf");
 				return 1;
 			}
 		}
 
 		# Build file
 
-		$cfgTpl = process(
-			{
-				DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
-				DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
-				DATABASE_PASSWORD => escapeShell(
-					iMSCP::Crypt->getInstance()->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'})
-				),
-				DATABASE_USER => $main::imscpConfig{'DATABASE_USER'},
+		my $variables = {
+			DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
+			DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
+			DATABASE_PASSWORD => escapeShell(
+				iMSCP::Crypt->getInstance()->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'})
+			),
+			DATABASE_USER => $main::imscpConfig{'DATABASE_USER'},
+		};
+
+		if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
+			(my $version) = $main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/;
+			unless($version) {
+				error('Unable to parse MySQL version');
+				return 1;
 			}
-			,
-			$cfgTpl
-		);
+
+			if(version->parse($version) >= version->parse('5.5')) {
+				$cfgTpl .= <<EOF;
+[mysqld]
+innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}
+EOF
+
+				$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
+			}
+		}
+
+		$cfgTpl = process($variables, $cfgTpl);
 
 		# Store file
 
-		my $file = iMSCP::File->new( filename => "$homeDir/.my.cnf" );
-
-		$rs = $file->set($cfgTpl);
+		my $file = iMSCP::File->new( filename => "$confDir/imscp.cnf" );
+		$rs ||= $file->set($cfgTpl);
+		$rs ||= $file->save();
+		$rs ||= $file->mode(0640);
+		$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0600);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-	} else {
-		error('Unable to find root user homedir');
-		return 1;
 	}
 
-	$self->{'eventManager'}->trigger('afterMysqlCreateRootUserConfFile');
+	$self->{'eventManager'}->trigger('afterMysqlCreateConfig');
 }
 
 =item _isMysqldInsideCt()

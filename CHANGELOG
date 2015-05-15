@@ -111,6 +111,7 @@ YOUTRACK
 	Fixed #IP-1333: Local resolver not added into resolv.conf file
 	Fixed #IP-1334: Jessie - Bind9 options from /etc/default/bind9 file are ignored
 	Fixed #IP-1340: The public/tools/filemanager folder is not removed
+	Fixed #IP-1345: MySQL - Do not touch the local /root/.my.cnf file
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.2
