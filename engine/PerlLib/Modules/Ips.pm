@@ -63,7 +63,7 @@ sub process
 	my $self = $_[0];
 
 	my $rs = $self->_loadData();
-    return $rs if $rs;
+	return $rs if $rs;
 
 	$self->add();
 }
@@ -115,8 +115,6 @@ sub _loadData
 		return 1;
 	}
 
-	# The Base server IP must always be here because even if not used by any domain,
-	# the panel use it
 	$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
 
 	@{$self->{'ipaddrs'}} = keys %{$rdata};
@@ -185,8 +183,6 @@ sub _loadData
 	}
 
 	if($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
-		# The Base server IP must always be here because even if not used by any domain,
-		# the panel use it
 		$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
 	}
 

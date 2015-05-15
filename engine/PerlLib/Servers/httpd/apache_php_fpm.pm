@@ -889,18 +889,7 @@ sub addIps
 			}
 		}
 
-		$fileContent = replaceBloc("# NameVirtualHost - Begin\n", "# NameVirtualHost - Ending\n", '', $fileContent);
-		$fileContent = replaceBloc(
-			"# SECTION custom BEGIN.\n",
-			"# SECTION custom END.\n",
-			"# SECTION custom BEGIN.\n" .
-				getBloc("# SECTION custom BEGIN.\n", "# SECTION custom END.\n", $fileContent) .
-				"# NameVirtualHost - Begin\n" .
-				$confSnippet .
-				"# NameVirtualHost - Ending\n" .
-			"# SECTION custom END.\n",
-			$fileContent
-		);
+		$fileContent .= $confSnippet;
 
 		$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$fileContent, $data);
 		return $rs if $rs;
@@ -914,8 +903,8 @@ sub addIps
 		$rs = $self->installConfFile('00_nameserver.conf');
 		return $rs if $rs;
 
-		#$rs = $self->enableSites('00_nameserver.conf');
-		#return $rs if $rs;
+		$rs = $self->enableSites('00_nameserver.conf');
+		return $rs if $rs;
 
 		$self->{'restart'} = 1;
 	}
@@ -1005,8 +994,6 @@ sub buildConfFile
 	return $rs if $rs;
 
 	$cfgTpl = $self->buildConf($cfgTpl, $filename, $data);
-
-	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
 	$rs = $self->{'eventManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options);
 	return $rs if $rs;
@@ -2052,6 +2039,10 @@ sub _cleanTemplate
 		$$cfgTpl = replaceBloc("# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', $$cfgTpl);
 		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
 	}
+
+	# Remove tags
+	$$cfgTpl =~ s/^[ \t]+#.*?(?:BEGIN|END)\.\n//gmi;
+	$$cfgTpl =~ s/\n{3}/\n\n/g;
 
 	0;
 }
