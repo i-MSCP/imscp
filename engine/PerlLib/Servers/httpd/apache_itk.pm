@@ -1788,7 +1788,7 @@ sub _addFiles
 					'filemode' => '0640',
 					'recursive' => ($_ eq '00_private' || $_ eq 'cgi-bin' || $_ eq 'htdocs') ? 0 : 1
 				}
-			) if -d _;
+			) if -d "$webDir/$_";
 			return $rs if $rs;
 		}
 
