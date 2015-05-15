@@ -3229,18 +3229,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 			while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$needUpdate = true;
 				$props = explode(';', $row['props']);
-                $id = quoteValue($row['id'], PDO::PARAM_INT);
+				$id = quoteValue($row['id'], PDO::PARAM_INT);
 
-                switch ($props[10]) {
-                    case '_full_':
-                        $props[10] = '_dmn_|_sql_|_mail_';
-                        break;
-                    case '_no_':
-                        $props[10] = '';
-                        break;
-                    default:
-                        $needUpdate = false;
-                }
+				switch ($props[10]) {
+					case '_full_':
+						$props[10] = '_dmn_|_sql_|_mail_';
+						break;
+					case '_no_':
+						$props[10] = '';
+						break;
+					default:
+						$needUpdate = false;
+				}
 
 				if($needUpdate) {
 					$props = quoteValue(implode(';', $props));
