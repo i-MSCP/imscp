@@ -1679,11 +1679,7 @@ sub _addFiles
 
 	# Create directories as returned by the dmnFolders() method
 	for ($self->_dmnFolders($data)) {
-		$rs = iMSCP::Dir->new(
-			'dirname' => $_->[0]
-		)->make(
-			{ 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3] }
-		);
+		$rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] });
 		return $rs if $rs;
 	}
 
@@ -1716,12 +1712,12 @@ sub _addFiles
 		}
 
 		# Build default page if needed ( if htdocs doesn't exist or is empty )
-		if(! -d "$webDir/htdocs" || iMSCP::Dir->new('dirname' => "$webDir/htdocs")->isEmpty()) {
+		if(! -d "$webDir/htdocs" || iMSCP::Dir->new( dirname => "$webDir/htdocs" )->isEmpty()) {
 			if(-d "$tmpDir/htdocs") {
 				# Test needed in case admin removed the index.html file from the skeleton
 				if(-f "$tmpDir/htdocs/index.html") {
 					my $fileSource = "$tmpDir/htdocs/index.html";
-					$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $fileSource });
+					$rs = $self->buildConfFile($fileSource, $data, { destination => $fileSource });
 					return $rs if $rs;
 				}
 			} else {
@@ -1729,16 +1725,16 @@ sub _addFiles
 				return 1;
 			}
 		} else {
-			$rs = iMSCP::Dir->new('dirname' => "$tmpDir/htdocs")->remove();
+			$rs = iMSCP::Dir->new( dirname => "$tmpDir/htdocs" )->remove();
 			return $rs if $rs;
 		}
 
 		if(
 			$data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/errors" &&
-			! iMSCP::Dir->new('dirname' => "$webDir/errors")->isEmpty()
+			! iMSCP::Dir->new( dirname => "$webDir/errors" )->isEmpty()
 		) {
 			if(-d "$tmpDir/errors") {
-				$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove();
+				$rs = iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove();
 				return $rs if $rs;
 			} else {
 				warning("Web folder skeleton $skelDir should provide the 'errors' directory.");
@@ -1754,10 +1750,8 @@ sub _addFiles
 			clearImmutable(dirname($parentDir));
 
 			# Create parent Web folder
-			$rs = iMSCP::Dir->new(
-				dirname => $parentDir
-			)->make(
-				{ 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => 0750 }
+			$rs = iMSCP::Dir->new( dirname => $parentDir )->make(
+				{ user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0750 }
 			);
 			return $rs if $rs;
 		} else {
@@ -1768,10 +1762,8 @@ sub _addFiles
 			clearImmutable($webDir);
 		} else {
 			# Create Web folder
-			$rs = iMSCP::Dir->new(
-				'dirname' => $webDir
-			)->make(
-				{ 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => 0750 }
+			$rs = iMSCP::Dir->new( dirname => $webDir )->make(
+				{ user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0750 }
 			);
 			return $rs if $rs;
 		}
@@ -1785,45 +1777,43 @@ sub _addFiles
 		# Permissions, owner and group - Begin
 
 		# Sets permissions for root of Web folder
-		$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0750' });
+		$rs = setRights($webDir, { user => $data->{'USER'}, group => $data->{'GROUP'}, mode => '0750' });
 		return $rs if $rs;
 
 		# Get list of directories/files for which permissions, owner and group must be set
-		my @files = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
+		my @files = iMSCP::Dir->new( dirname => $skelDir )->getAll();
 
 		# Set default owner and group recursively
 		for(@files) {
-			$rs = setRights(
-				"$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 }
-			) if -e "$webDir/$_";
-			return $rs if $rs;
+			if(-e "$webDir/$_") {
+				$rs = setRights( "$webDir/$_", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => 1 } );
+				return $rs if $rs;
+			}
 		}
 
 		# Sets default permissions recursively, excepted for directories for which permissions of directories and files
 		# they contain should be preserved
 		for(@files) {
-			$rs = setRights(
-				"$webDir/$_",
-				{
-					'dirmode' => '0750',
-					'filemode' => '0640',
-					'recursive' => ($_ eq '00_private' || $_ eq 'cgi-bin' || $_ eq 'htdocs') ? 0 : 1
-				}
-			) if -d "$webDir/$_";
-			return $rs if $rs;
+			if(-d "$webDir/$_") {
+				$rs = setRights("$webDir/$_", {
+					dirmode => '0750',
+					filemode => '0640',
+					recursive => ($_ eq '00_private' || $_ eq 'cgi-bin' || $_ eq 'htdocs') ? 0 : 1
+				});
+				return $rs if $rs;
+			}
 		}
 
 		# Sets owner and group for files that should be hidden to user
 		for('domain_disable_page', '.htgroup', '.htpasswd') {
-			$rs = setRights(
-			"$webDir/$_",
-				{
-					'user' => $main::imscpConfig{'ROOT_USER'},
-					'group' => $self->getRunningGroup(),
-					'recursive' => 1
-				}
-			) if -e "$webDir/$_";
-			return $rs if $rs;
+			if(-e "$webDir/$_") {
+				$rs = setRights("$webDir/$_", {
+					user => $main::imscpConfig{'ROOT_USER'},
+					group => $self->getRunningGroup(),
+					recursive => 1
+				});
+				return $rs if $rs;
+			}
 		}
 
 		if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
