@@ -91,8 +91,8 @@ sub run
 				my $userName = $rdata->{$_}->{'admin_sys_name'};
 				my $groupName = $rdata->{$_}->{'admin_sys_gname'};
 
-				if(! -d $homeDir) { # Skip backup if home directory doesn't exist
-					warning("Home directory $homeDir doesn't exist. Skipping backup...");
+				unless(-d $homeDir) { # Skip backup if home directory doesn't exist
+					warning(sprintf("The %s home directory doesn't exist. Skipping backup...", $homeDir));
 					next;
 				} elsif(! -d $bkpDir) { # Create backups directory if doesn't already exists
 					my $isProtectedHomedir = 0;
@@ -184,7 +184,7 @@ sub run
 							next;
 						}
 
-						my $file = iMSCP::File->new(filename => "$bkpDir/$_.sql");
+						my $file = iMSCP::File->new( filename => "$bkpDir/$_.sql" );
 
 						$rs = $file->mode(0644);
 						$ret ||= $rs;
@@ -197,7 +197,7 @@ sub run
 							$rs = execute("@cmd", \$stdout, \$stderr);
 							debug($stdout) if $stdout;
 							error($stderr) if $stderr && $rs;
-							error("Unable to compress the $_ database dump file") if $rs && ! $stderr;
+							error(sprintf('Unable to compress the %s database dump file', $_)) if $rs && ! $stderr;
 							$ret ||= $rs;
 						}
 					}
@@ -264,33 +264,37 @@ sub run
 					for (keys %{$mailData}) {
 						my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$_";
 
-						my @cmd = (
-							'tar',
-							"--create",                                     # Create new archive
-							"--directory=$mailDir",                         # Change to directory
-							($algorithm ne 'no')
-								? "--use-compress-program=$algorithm"       # Compress archive with given program
-								: '',                                       # No compression
-							"--file=$bkpDir/mail-$_-backup-$date.tar$ext",  # use archive file
-							'.'                                             # pathname
-						);
+						if(-d $mailDir) {
+							my @cmd = (
+								'tar',
+								"--create",                                     # Create new archive
+								"--directory=$mailDir",                         # Change to directory
+								($algorithm ne 'no')
+									? "--use-compress-program=$algorithm"       # Compress archive with given program
+									: '',                                       # No compression
+								"--file=$bkpDir/mail-$_-backup-$date.tar$ext",  # use archive file
+								'.'                                             # pathname
+							);
 
-						my $rs = execute("@cmd", \$stdout, \$stderr);
-						debug($stdout) if $stdout;
+							my $rs = execute("@cmd", \$stdout, \$stderr);
+							debug($stdout) if $stdout;
 
-						# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
-						if($rs > 1) {
-							error($stderr) if $stderr;
-							error("Unable to backup $mailDir") unless $stderr;
-							$ret |= $rs;
+							# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+							if($rs > 1) {
+								error($stderr) if $stderr;
+								error("Unable to backup $mailDir") unless $stderr;
+								$ret |= $rs;
+							}
+
+							my $file = iMSCP::File->new( filename => "$bkpDir/mail-$_-backup-$date.tar$ext" );
+							$rs = $file->mode(0644);
+							$ret ||= $rs;
+
+							$rs = $file->owner($userName, $groupName);
+							$ret ||= $rs;
+						} else {
+							warning(sprintf"The %s mail directory doesn't exist. Skipping backup...", $mailDir);
 						}
-
-						my $file = iMSCP::File->new( filename => "$bkpDir/mail-$_-backup-$date.tar$ext" );
-						$rs = $file->mode(0644);
-						$ret ||= $rs;
-
-						$rs = $file->owner($userName, $groupName);
-						$ret ||= $rs;
 					}
 				}
 			}
