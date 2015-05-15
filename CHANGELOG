@@ -6,6 +6,7 @@ Git 1.2.x
 
 BACKEND
 	Added: Custom DNS module (Modules::CustomDNS)
+	Added: Mail support in backup feature
 	Added: New 'temporary' attribute which allow to override configuration values temporarily (iMSCP::Config)
 	Added: onBeforeSetPluginStatus event (Modules::Plugin)
 	Added: PHP_FCGI_CHILDREN, PHP_FCGI_MAX_REQUESTS and PHP_VERSION configuration parameters (apache_fcgid)
@@ -51,6 +52,7 @@ DISTRIBUTIONS
 
 FRONTEND
 	Added Custom DNS items in debugger interface (admin level)
+	Added: Mail support in backup feature
 	Added: Path to openssl.cnf file into php.ini file
 	Changed: Stores the Github payload as json file instead of PHP file (iMSCP_Update_Version::getUpdateInfo())
 	Fixed: Client domain management page must not be hidden even if customer cannot add domain aliases and subdomains

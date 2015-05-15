@@ -186,6 +186,7 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 		$hpWebFolderProtection, $mailQuota
 	) = explode(';', $data['props']);
 
+	$backup = explode('|', $backup);
 	$mailQuota = $mailQuota / 1048576;
 
 	$phpini->setClPerm('phpiniSystem', $phpEditor);
@@ -235,10 +236,9 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 	if (resellerHasFeature('backup')) {
 		$tpl->assign(
 			array(
-				'BACKUPD' => ($backup == '_dmn_') ? $checked : '',
-				'BACKUPS' => ($backup == '_sql_') ? $checked : '',
-				'BACKUPF' => ($backup == '_full_') ? $checked : '',
-				'BACKUPN' => ($backup == '_no_') ? $checked : '',
+				'BACKUPD' => in_array('_dmn_', $backup) ? $checked : '',
+				'BACKUPS' => in_array('_sql_', $backup) ? $checked : '',
+				'BACKUPM' => in_array('_mail_', $backup) ? $checked : ''
 			)
 		);
 	} else {
@@ -298,10 +298,9 @@ function reseller_generateErrorPage($tpl, $phpini)
 	if (resellerHasFeature('backup')) {
 		$tpl->assign(
 			array(
-				'BACKUPD' => ($backup == '_dmn_') ? $checked : '',
-				'BACKUPS' => ($backup == '_sql_') ? $checked : '',
-				'BACKUPF' => ($backup == '_full_') ? $checked : '',
-				'BACKUPN' => ($backup == '_no_') ? $checked : '',
+				'BACKUPD' => in_array('_dmn_', $backup) ? $checked : '',
+				'BACKUPS' => in_array('_sql_', $backup) ? $checked : '',
+				'BACKUPM' => in_array('_mail_', $backup) ? $checked : ''
 			)
 		);
 	} else {
@@ -341,7 +340,7 @@ function reseller_checkData($phpini)
 	$php = isset($_POST['hp_php']) ? clean_input($_POST['hp_php']) : '_no_';
 	$cgi = isset($_POST['hp_cgi']) ? clean_input($_POST['hp_cgi']) : '_no_';
 	$dns = isset($_POST['hp_dns']) ? clean_input($_POST['hp_dns']) : '_no_';
-	$backup = isset($_POST['hp_backup']) ? clean_input($_POST['hp_backup']) : '_no_';
+	$backup = isset($_POST['hp_backup']) && is_array($_POST['hp_backup']) ? $_POST['hp_backup'] : array();
 	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$hpExtMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
 
@@ -353,7 +352,7 @@ function reseller_checkData($phpini)
 	$php = ($php == '_yes_') ? '_yes_' : '_no_';
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
-	$backup = (resellerHasFeature('backup') && in_array($backup, array('_full_', '_dmn_', '_sql_'))) ? $backup : '_no_';
+	$backup = resellerHasFeature('backup') ? array_intersect($backup, array('_dmn_', '_sql_', '_mail_')) : array();
 	$aps = (resellerHasFeature('aps') && $aps == '_yes_') ? '_yes_' : '_no_';
 	$hpExtMail = ($hpExtMail == '_yes_') ? '_yes_' : '_no_';
 	$hpWebFolderProtection = ($hpWebFolderProtection == '_yes_') ? '_yes_' : '_no_';
@@ -497,7 +496,7 @@ function reseller_UpdateHostingPlan($phpini)
 	global $id, $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace,
 		   $php, $cgi, $dns, $backup, $aps, $hpExtMail, $hpWebFolderProtection, $status;
 
-	$hpProps = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$monthlyTraffic;$diskspace;$backup;$dns;$aps";
+	$hpProps = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$monthlyTraffic;$diskspace;" . implode('|', $backup) . ";$dns;$aps";
 	$hpProps .= ';' . $phpini->getClPermVal('phpiniSystem') . ';' . $phpini->getClPermVal('phpiniAllowUrlFopen');
 	$hpProps .= ';' . $phpini->getClPermVal('phpiniDisplayErrors') . ';' . $phpini->getClPermVal('phpiniDisableFunctions');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniPostMaxSize') . ';' . $phpini->getDataVal('phpiniUploadMaxFileSize');
@@ -617,8 +616,7 @@ if (isset($_GET['id'])) {
 			'TR_BACKUP' => tr('Backup'),
 			'TR_BACKUP_DOMAIN' => tr('Domain'),
 			'TR_BACKUP_SQL' => tr('SQL'),
-			'TR_BACKUP_FULL' => tr('Full'),
-			'TR_BACKUP_NO' => tr('No'),
+			'TR_BACKUP_MAIL' => tr('Mail'),
 
 			'TR_AVAILABILITY' => tr('Hosting plan availability'),
 			'TR_STATUS' => tr('Available'),

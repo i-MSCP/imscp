@@ -225,7 +225,7 @@ function &admin_getData($domainId, $forUpdate = false)
 		$data['fallback_domain_cgi'] = $data['domain_cgi'];
 		$data['fallback_domain_dns'] = $data['domain_dns'];
 		$data['fallback_domain_software_allowed'] = $data['domain_software_allowed'];
-		$data['fallback_allowbackup'] = $data['allowbackup'];
+		$data['fallback_allowbackup'] = $data['allowbackup'] = explode('|', $data['allowbackup']);
 		$data['fallback_domain_external_mail'] = $data['domain_external_mail'];
 		$data['fallback_web_folder_protection'] = $data['web_folder_protection'];
 		$data['fallback_mail_quota'] = $data['mail_quota'];
@@ -291,10 +291,10 @@ function &admin_getData($domainId, $forUpdate = false)
 			}
 
 			if($cfg->BACKUP_DOMAINS == 'yes') {
-				$data['allowbackup'] = isset($_POST['allowbackup'])
-					? clean_input($_POST['allowbackup']) : $data['allowbackup'];
+				$data['allowbackup'] = isset($_POST['allowbackup']) && is_array($_POST['allowbackup'])
+					? array_intersect($_POST['allowbackup'], array('dmn', 'sql', 'mail')) : $data['allowbackup'];
 			} else {
-				$data['allowbackup'] = 'no';
+				$data['allowbackup'] = array();
 			}
 
 			$data['domain_external_mail'] = isset($_POST['domain_external_mail'])
@@ -572,13 +572,11 @@ function _admin_generateFeaturesForm($tpl, &$data)
 	if ($cfg->BACKUP_DOMAINS == 'yes') {
 		$tplVars['TR_BACKUP'] = tr('Backup');
 		$tplVars['TR_BACKUP_DOMAIN'] = tr('Domain');
-		$tplVars['BACKUP_DOMAIN'] = ($data['allowbackup'] == 'dmn') ? $htmlChecked : '';
+		$tplVars['BACKUP_DOMAIN'] = in_array('dmn', $data['allowbackup']) ? $htmlChecked : '';
 		$tplVars['TR_BACKUP_SQL'] = tr('SQL');
-		$tplVars['BACKUP_SQL'] = ($data['allowbackup'] == 'sql') ? $htmlChecked : '';
-		$tplVars['TR_BACKUP_FULL'] = tr('Full');
-		$tplVars['BACKUP_FULL'] = ($data['allowbackup'] == 'full') ? $htmlChecked : '';
-		$tplVars['TR_BACKUP_NO'] = tr('No');
-		$tplVars['BACKUP_NO'] = ($data['allowbackup'] == 'no') ? $htmlChecked : '';
+		$tplVars['BACKUP_SQL'] = in_array('sql', $data['allowbackup']) ? $htmlChecked : '';
+		$tplVars['TR_BACKUP_MAIL'] = tr('Mail');
+		$tplVars['BACKUP_MAIL'] = in_array('mail', $data['allowbackup']) ? $htmlChecked : '';
 	} else {
 		$tplVars['BACKUP_BLOCK'] = '';
 	}
@@ -862,8 +860,8 @@ function admin_checkAndUpdateData($domainId)
 			? $data['domain_external_mail'] : $data['fallback_domain_external_mail'];
 
 		// Check for backup support (we are safe here)
-		$data['allowbackup'] = (in_array($data['allowbackup'], array('dmn', 'sql', 'full', 'no')))
-			? $data['allowbackup'] : $data['fallback_allowbackup'];
+		$data['allowbackup'] = is_array($data['allowbackup'])
+            ? (array_intersect($data['allowbackup'], array('dmn', 'sql', 'mail'))) : $data['fallback_allowbackup'];
 
 		// Check for Web folder protection support (we are safe here)
 		$data['web_folder_protection'] = (in_array($data['web_folder_protection'], array('no', 'yes')))
@@ -983,7 +981,7 @@ function admin_checkAndUpdateData($domainId)
 					($daemonRequest) ? 'tochange' : 'ok',
 					$data['domain_alias_limit'], $data['domain_subd_limit'], $data['domain_ip_id'],
 					$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
-					$data['allowbackup'], $data['domain_dns'],
+					implode('|',$data['allowbackup']), $data['domain_dns'],
 					$data['domain_software_allowed'], $phpEditor->getClPermVal('phpiniSystem'),
 					$phpEditor->getClPermVal('phpiniAllowUrlFopen'),
 					$phpEditor->getClPermVal('phpiniDisplayErrors'),
