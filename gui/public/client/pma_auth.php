@@ -125,7 +125,6 @@ function client_pmaAuth($dbUserId)
 
 	$pmaBaseUrl = getBaseUrl() . '/pma/';
 	$port = getUriPort();
-	//print $port; exit;
 
 	$contextOptions = array_merge($contextOptions, array(
 		'http' => array(

@@ -1921,8 +1921,8 @@ function getUriPort()
 	$config = iMSCP_Registry::get('config');
 
 	return (isSecureRequest())
-		? (($config['BASE_SERVER_VHOST_HTTPS_PORT'] == 443 ) ? '' : ':' . $config['BASE_SERVER_VHOST_HTTPS_PORT'])
-		: (($config['BASE_SERVER_VHOST_HTTP_PORT'] == 80 ) ? '' : ':' . $config['BASE_SERVER_VHOST_HTTP_PORT']);
+		? (($config['BASE_SERVER_VHOST_HTTPS_PORT'] == 443 ) ? '' : $config['BASE_SERVER_VHOST_HTTPS_PORT'])
+		: (($config['BASE_SERVER_VHOST_HTTP_PORT'] == 80 ) ? '' : $config['BASE_SERVER_VHOST_HTTP_PORT']);
 }
 
 /**
