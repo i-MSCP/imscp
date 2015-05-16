@@ -103,7 +103,9 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 		$uri = array(
 			($isSecure) ? 'http://' : 'https://',
 			$_SERVER['SERVER_NAME'],
-			':' . (($isSecure) ? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'])
+			($isSecure)
+				? (($cfg['BASE_SERVER_VHOST_HTTP_PORT'] == 80 ) ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTP_PORT'])
+				: (($cfg['BASE_SERVER_VHOST_HTTPS_PORT'] == 443 ) ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTPS_PORT'])
 		);
 
 		$tpl->assign(array(
