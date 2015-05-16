@@ -78,7 +78,7 @@ function _client_pmaCreateCookies($cookies)
  */
 function _client_pmaSetLanguage($location)
 {
-	/** @var Zend_Translate_Adapter $primaryTranslator */
+	/** @var Zend_Translate_Adapter $translator */
 	$translator = iMSCP_Registry::get('translator')->getAdapter();
 
 	$uriComponents = parse_url($location);
@@ -125,13 +125,14 @@ function client_pmaAuth($dbUserId)
 
 	$pmaBaseUrl = getBaseUrl() . '/pma/';
 	$port = getUriPort();
+	//print $port; exit;
 
 	$contextOptions = array_merge($contextOptions, array(
 		'http' => array(
 			'method' => 'POST',
 			'protocol_version' => '1.1',
 			'header' => array(
-				'Host: ' . $_SERVER['SERVER_NAME'] . $port,
+				'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
 				'Content-Type: application/x-www-form-urlencoded',
 				'Content-Length: ' . strlen($postData),
 				'User-Agent: i-MSCP',

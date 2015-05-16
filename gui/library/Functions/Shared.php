@@ -1918,7 +1918,11 @@ function getUriScheme()
  */
 function getUriPort()
 {
-	return (!in_array($_SERVER['SERVER_PORT'], array(80, 443))) ? ':' . $_SERVER['SERVER_PORT'] : '';
+	$config = iMSCP_Registry::get('config');
+
+	return (isSecureRequest())
+		? (($config['BASE_SERVER_VHOST_HTTPS_PORT'] == 443 ) ? '' : ':' . $config['BASE_SERVER_VHOST_HTTPS_PORT'])
+		: (($config['BASE_SERVER_VHOST_HTTP_PORT'] == 80 ) ? '' : ':' . $config['BASE_SERVER_VHOST_HTTP_PORT']);
 }
 
 /**
@@ -1928,7 +1932,8 @@ function getUriPort()
  */
 function getBaseUrl()
 {
-	return getUriScheme() . $_SERVER['SERVER_NAME'] . getUriPort();
+	$port = getUriPort();
+	return getUriScheme() . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : '');
 }
 
 /***********************************************************************************************************************

@@ -104,7 +104,7 @@ function client_pydioAuth($userId)
 				'method' => 'GET',
 				'protocol_version' => '1.1',
 				'header' => array(
-					'Host: ' . $_SERVER['SERVER_NAME'] . $port,
+					'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
 					'User-Agent: i-MSCP',
 					'Connection: close'
 				)
@@ -131,7 +131,7 @@ function client_pydioAuth($userId)
 			'method' => 'POST',
 			'protocol_version' => '1.1',
 			'header' => array(
-				'Host: ' . $_SERVER['SERVER_NAME'] . $port,
+				'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
 				'Content-Type: application/x-www-form-urlencoded',
 				'X-Requested-With: XMLHttpRequest',
 				'Content-Length: ' . strlen($postData),
