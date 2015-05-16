@@ -2014,7 +2014,7 @@ sub _cleanTemplate
 {
 	my ($self, $cfgTpl, $filename, $data) = @_;
 
-	if($filename =~ /(?:domain\.tpl|domain_ssl\.tpl|00_master\.conf|00_master_ssl\.conf)/) {
+	if($filename =~ /^domain(?:_ssl)?\.tpl$/) {
 		unless($data->{'CGI_SUPPORT'} eq 'yes') {
 			$$cfgTpl = replaceBloc("# SECTION suexec BEGIN.\n", "# SECTION suexec END.\n", '', $$cfgTpl);
 			$$cfgTpl = replaceBloc("# SECTION cgi_support BEGIN.\n", "# SECTION cgi_support END.\n", '', $$cfgTpl);
@@ -2028,6 +2028,12 @@ sub _cleanTemplate
 
 		$$cfgTpl = replaceBloc("# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', $$cfgTpl);
 		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
+
+		if((version->parse("$self->{'config'}->{'HTTPD_VERSION'}") < version->parse('2.4.10'))) {
+			$$cfgTpl = replaceBloc("SECTION mod_proxy_fcgi BEGIN.\n", "SECTION mod_proxy_fcgi END.\n", '', $$cfgTpl);
+		} else {
+			$$cfgTpl = replaceBloc("# SECTION mod_fastcgi BEGIN.\n", "# SECTION mod_fastcgi END.\n", '', $$cfgTpl);
+		}
 	}
 
 	# Remove tags

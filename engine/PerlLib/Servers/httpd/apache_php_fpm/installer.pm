@@ -138,9 +138,6 @@ sub install
 	$rs = $self->_makeDirs();
 	return $rs if $rs;
 
-	$rs = $self->_buildHttpdModules();
-	return $rs if $rs;
-
 	$rs = $self->_buildFastCgiConfFiles();
 	return $rs if $rs;
 
@@ -318,56 +315,6 @@ sub _makeDirs
 	$self->{'eventManager'}->trigger('afterHttpdMakeDirs');
 }
 
-=item _buildHttpdModules()
-
- Build modules for Apache
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _buildHttpdModules
-{
-	my $self = $_[0];
-
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildModules');
-	return $rs if $rs;
-
-	my $version = $self->{'config'}->{'HTTPD_VERSION'};
-
-	if(version->parse($version) == version->parse('2.4.9')) {
-		my $prevDir = getcwd();
-		my $buildDir = File::Temp->newdir();
-
-		unless(chdir $buildDir) {
-			error("Unable to change dir to $buildDir");
-			return 1;
-		}
-
-		$rs = iMSCP::File->new(
-			'filename' => "$self->{'apacheCfgDir'}/modules/proxy_handler/mod_proxy_handler.c"
-		)->copyFile(
-			$buildDir
-		);
-
-		unless($rs) {
-			my($stdout, $stderr);
-			$rs = execute("apxs2 -i -a -c mod_proxy_handler.c", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-		}
-
-		unless(chdir $prevDir) {
-			error("Unable to change dir to $prevDir");
-			$rs |= 1;
-		}
-
-		return $rs if $rs;
-	}
-
-	$self->{'eventManager'}->trigger('afterHttpdBuildModules');
-}
-
 =item _buildFastCgiConfFiles()
 
  Build FastCGI configuration files
@@ -443,7 +390,7 @@ sub _buildFastCgiConfFiles
 		push @toEnableModules, ('mpm_worker', 'authz_groupfile');
 	}
 
-	if(version->parse($version) >= version->parse('2.4.9')) {
+	if(version->parse($version) >= version->parse('2.4.10')) {
 		push @toDisableModules, ('php_fpm_imscp');
 		push @toEnableModules, ('setenvif', 'proxy_fcgi', 'proxy_handler');
 	} else {

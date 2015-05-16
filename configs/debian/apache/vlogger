@@ -1,10 +1,10 @@
 #!/usr/bin/perl -T
 #
 # vlogger - smarter logging for apache
-# laurent declercq <l.declercq@nuxwin.com>
+# Laurent Declercq <l.declercq@nuxwin.com>
 # steve j. kondik  <shade@chemlab.org>
 #
-# this script will take piped logs in STDIN, break off the first component
+# This script will take piped logs in STDIN, break off the first component
 # and log the line into the proper directory under $LOGDIR. it will roll the
 # logs over at midnight on-the-fly and maintain a symlink to the most recent log.
 #
@@ -32,9 +32,10 @@
 # 1.5    version by i-MSCP Team (bugfix release)
 # 1.6    version by i-MSCP Team (bugfix release - See #IP-1247 )
 # 1.7    version by i-MSCP Team (bugfix release)
+# 1.8    version by i-MSCP Team (maintenance release)
 $ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin';
 
-my $VERSION = '1.7';
+my $VERSION = '1.8';
 
 =head1 NAME
 
@@ -48,12 +49,12 @@ vlogger [OPTIONS]... [LOGDIR]
 
 Vlogger is designed to make webserver log rotation simple and easy to manage.
 It deals with VirtualHost logs automatically, so only one directive is required
-to manage all hosts on a webserver.  Vlogger takes piped output from Apache or
+to manage all hosts on a webserver. Vlogger takes piped output from Apache or
 another webserver, splits off the first field, and writes the logs to logfiles
-in subdirectories.  It uses a filehandle cache to avoid resource limitations.
+in subdirectories. It uses a filehandle cache to avoid resource limitations.
 It will start a new logfile at the beginning of a new day, and optionally start
-new files when a certain filesize is reached.  It can maintain a symlink to
-the most recent log for easy access.  Optionally, host parsing can be disabled
+new files when a certain filesize is reached. It can maintain a symlink to
+the most recent log for easy access. Optionally, host parsing can be disabled
 for use in ErrorLog directives.
 
 To use vlogger, you need to add a "%v" to the first part of your LogFormat:
@@ -80,7 +81,7 @@ written out using the template under the specified LOGDIR.
 	Disables rotation. This option disables rotation altogether.
 
 -f MAXFILES
-	Maximum number of filehandles to keep open. Defaults to 50. Setting this
+	Maximum number of filehandles to keep open. Defaults to 70. Setting this
 value too high may result in the system running out of file descriptors.
 Setting it too low may affect performance.
 
@@ -91,7 +92,7 @@ Setting it too low may affect performance.
 	Change group to GID when running as root.
 
 -t TEMPLATE
-	Filename template using Date::Format codes.  Default is "%m%d%Y-access.log",
+	Filename template using Date::Format codes. Default is "%m%d%Y-access.log",
 or "%m%d%Y-error.log".  When using the -r option, the default becomes
 "%m%d%Y-%T-access.log" or "%m%d%Y-%T-error.log".
 
@@ -106,9 +107,9 @@ or "%m%d%Y-error.log".  When using the -r option, the default becomes
 
 -i
 	Extract mod_logio instead of filesize. For this to work, you must add the
-mod_logio variables after the "%v" variable in your LogFormat:
+mod_logio variables at the end in your LogFormat:
 
-	LogFormat "%v %I %O %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+	LogFormat "%v %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combined
 
 -h
 	Displays help.
@@ -119,11 +120,11 @@ mod_logio variables after the "%v" variable in your LogFormat:
 =head1 DBI USAGE TRACKER
 
 	Vlogger can automatically keep track of per-virtualhost usage statistics in a
-database. DBI and the relevant drivers ( eg. DBD::mysql ) needs to be installed for
+database. DBI and the relevant drivers (eg. DBD::mysql) needs to be installed for
 this to work. Create a table in your database to hold the data. A "mysql_create.sql"
 script is provided for using this feature with MySQL. Configure the dsn, user, pass
 and dump values in the vlogger-dbi.conf file. The "dump" parameter controls how often
-vlogger will dump its stats into the database ( the default is 30 seconds ). Copy this
+vlogger will dump its stats into the database (the default is 30 seconds). Copy this
 file to somewhere convienient on your filesystem ( like /etc/apache/vlogger-dbi.conf ) and
 start vlogger with "-d /etc/apache/vlogger-dbi.conf". You might want to use this feature
 to easily bill customers on a daily/weekly/monthly basis for bandwidth usage.
@@ -141,7 +142,6 @@ WWW: http://n0rp.chemlab.org/vlogger
 
 =cut
 
-# a couple modules we need
 use strict;
 no strict 'refs';
 use warnings;
@@ -153,10 +153,10 @@ use IO::Handle;
 
 # get command line options
 our %OPTS;
-getopts( 'f:t:s:hu:g:aeivr:d:n', \%OPTS );
+getopts('f:t:s:hu:g:aeivr:d:n', \%OPTS);
 
 # print out version
-if ( $OPTS{'v'} ) {
+if ($OPTS{'v'}) {
 	print "VLogger $VERSION (apache logfile parser)\n";
 	print "Written by Steve J. Kondik <shade\@chemlab.org>\n\n";
 	print "Re-written by Laurent Declercq <l.declercq\@nuxwin.com> for i-MSCP project.\n\n";
@@ -166,16 +166,16 @@ if ( $OPTS{'v'} ) {
 }
 
 # print help
-if ( $OPTS{'h'} || !$ARGV[0] ) {
+if ($OPTS{'h'} || !$ARGV[0]) {
 	usage();
 	exit;
 }
 
 # log directory
 my $LOGDIR;
-if ( $ARGV[0] ) {
-	unless ( -d $ARGV[0] ) {
-		logs( 'fatal', "target directory $ARGV[0] does not exist" );
+if ($ARGV[0]) {
+	unless (-d $ARGV[0]) {
+		logs('fatal', sprintf("target directory does not exist", $ARGV[0]));
 		exit 1;
 	}
 
@@ -185,37 +185,37 @@ $LOGDIR =~ /(.*)/;
 $LOGDIR = $1;
 
 # change uid/gid if requested (and running as root)
-if ( $> == '0' ) {
-	if ( $OPTS{'g'} ) {
-		my $guid = getgrnam( $OPTS{'g'} );
+if ($> == '0') {
+	if ($OPTS{'g'}) {
+		my $guid = getgrnam($OPTS{'g'});
 
-		unless ( defined $guid && $guid != 0 ) {
-			logs( 'fatal', 'cannot run as root or nonexistant group' );
+		unless (defined $guid && $guid != 0) {
+			logs('fatal', 'cannot run as root or nonexistant group');
 			exit 1;
 		}
 
 		$) = $guid;
 		$( = $guid;
 
-		if ( $) != $guid and $) != ($guid - 2**32 ) ) {
-			logs( 'fatal', 'setgid to gid $guid failed' );
+		if ($) != $guid and $) != ($guid - 2**32)) {
+			logs('fatal', 'setgid to gid $guid failed');
 			exit 1;
 		}
 	}
 
-	if ( $OPTS{'u'} ) {
-		my $uuid = getpwnam( $OPTS{'u'} );
+	if ($OPTS{'u'}) {
+		my $uuid = getpwnam($OPTS{'u'});
 
-		unless ( defined $uuid && $uuid != 0 ) {
-			logs( 'fatal', 'cannot run as root or nonexistant user' );
+		unless (defined $uuid && $uuid != 0) {
+			logs('fatal', 'cannot run as root or nonexistant user');
 			exit 1;
 		}
 
 		$> = $uuid;
 		$< = $uuid;
 
-		if ( $> != $uuid and $> != ( $uuid - 2**32 ) ) {
-			logs( 'fatal', 'setuid to uid $uuid failed' );
+		if ($> != $uuid and $> != ($uuid - 2**32)) {
+			logs('fatal', 'setuid to uid $uuid failed');
 			exit 1;
 		}
 	}
@@ -225,102 +225,102 @@ if ( $> == '0' ) {
 my $DBI_DSN;
 my $DBI_USER;
 my $DBI_PASS;
-my $DBI_DUMP = 30;
-if ( $OPTS{'d'} ) {
-	if ( $OPTS{'e'} ) {
-		logs( 'fatal', '-d option not valid with -e option' );
+my $DBI_DUMP = 60;
+if ($OPTS{'d'}) {
+	if ($OPTS{'e'}) {
+		logs('fatal', '-d option not valid with -e option');
 		exit 1;
 	}
 
 	eval "use DBI";
 
-	unless ( $@ ) {
-		if( -f $OPTS{'d'} ) {
-			if( open CONF, '<', $OPTS{'d'} ) {
-				while ( <CONF> ) {
+	unless ($@) {
+		if(-f $OPTS{'d'}) {
+			if(open CONF, '<', $OPTS{'d'}) {
+				while (<CONF>) {
 					chomp;
 					my @conf = split;
 
-					if ( $conf[0] eq 'dsn' ) {
+					if ($conf[0] eq 'dsn') {
 						$DBI_DSN = $conf[1];
-					} elsif ( $conf[0] eq 'user' ) {
+					} elsif ($conf[0] eq 'user') {
 						$DBI_USER = $conf[1];
-					} elsif ( $conf[0] eq 'pass' ) {
+					} elsif ($conf[0] eq 'pass') {
 						$DBI_PASS = $conf[1];
-					} elsif ( $conf[0] eq 'dump' ) {
+					} elsif ($conf[0] eq 'dump') {
 						$DBI_DUMP = $conf[1];
 					}
 				}
 
 				close CONF;
 
-				unless ( $DBI_DSN && $DBI_USER && $DBI_PASS ) {
-					logs( 'alert', 'all values for DBI configuration are not properly defined' );
-					delete( $OPTS{'d'} );
+				unless ($DBI_DSN && $DBI_USER && $DBI_PASS) {
+					logs('alert', 'all values for DBI configuration are not properly defined');
+					delete $OPTS{'d'};
 				} else {
 					no warnings qw(once);
 
 					# test DB connection
-					my $dbh = DBI->connect( $DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0 } );
+					my $dbh = DBI->connect($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0 });
 
-					if( $dbh ) {
+					if($dbh) {
 						$dbh->disconnect();
 
 						# SIGALRM dumps the tracker hash
-						my $mask = POSIX::SigSet->new( SIGALRM );
-						my $action = POSIX::SigAction->new( \&dump_tracker, $mask );
+						my $mask = POSIX::SigSet->new(SIGALRM);
+						my $action = POSIX::SigAction->new(\&dumpTracker, $mask);
 						my $oldaction = POSIX::SigAction->new();
-						sigaction( SIGALRM, $action, $oldaction );
-						alarm( $DBI_DUMP );
+						sigaction(SIGALRM, $action, $oldaction);
+						alarm($DBI_DUMP);
 					} else {
-						logs( 'alert', "unable to connect to MySQL server: $DBI::errstr" );
-						delete( $OPTS{'d'} );
+						logs('alert', sprintf("unable to connect to MySQL server: %s", $DBI::errstr));
+						delete $OPTS{'d'};
 					}
 				}
 			} else {
-				logs( 'alert', "unable to open $OPTS{'d'} file. Tracker feature turned off" );
-				delete( $OPTS{'d'} );
+				logs('alert', sprintf("unable to open %s file. Tracker feature turned off", $OPTS{'d'}));
+				delete $OPTS{'d'};
 			}
 		} else {
-			logs( 'alert', "file $OPTS{'d'} not found" );
-			delete( $OPTS{'d'} );
+			logs('alert', "file $OPTS{'d'} not found");
+			delete $OPTS{'d'};
 		}
 	} else {
-		logs( 'alert', "unable to load DBI module: $@" );
-		delete( $OPTS{'d'} );
+		logs('alert', sprintf("unable to load DBI module: %s", $@));
+		delete $OPTS{'d'};
 	}
 
-	logs( 'alert', 'Tracker feature turned off' ) unless ( $OPTS{'d'} );
+	logs('alert', 'Tracker feature turned off') unless $OPTS{'d'};
 }
 
 # max files to keep open
 my $MAXFILES;
-if ( $OPTS{'f'} ) {
+if ($OPTS{'f'}) {
 	$MAXFILES = $OPTS{'f'};
 } else {
-	$MAXFILES = '50';
+	$MAXFILES = '70';
 }
 
 # filesize rotation
 my $MAXSIZE;
-if ( $OPTS{'r'} ) {
+if ($OPTS{'r'}) {
 	$MAXSIZE = $OPTS{'r'};
 }
 
 # filename template
 my $TEMPLATE;
-if ( $OPTS{'t'} ) {
+if ($OPTS{'t'}) {
 	$TEMPLATE = $OPTS{'t'};
 	$TEMPLATE =~ /(.*)/;
 	$TEMPLATE = $1;
-} elsif ( $OPTS{'e'} ) {
-	if ( $OPTS{'r'} ) {
+} elsif ($OPTS{'e'}) {
+	if ($OPTS{'r'}) {
 		$TEMPLATE = '%m%d%Y-%T-error.log';
 	} else {
 		$TEMPLATE = '%m%d%Y-error.log';
 	}
 } else {
-	if ( $OPTS{'r'} ) {
+	if ($OPTS{'r'}) {
 		$TEMPLATE = '%m%d%Y-%T-access.log';
 	} else {
 		$TEMPLATE = '%m%d%Y-access.log';
@@ -328,63 +328,50 @@ if ( $OPTS{'t'} ) {
 }
 
 # symlink
-if ( $OPTS{'s'} ) {
+if ($OPTS{'s'}) {
 	$OPTS{'s'} =~ /(.*)/;
 	$OPTS{'s'} = $1;
 }
 
-# chroot to the logdir
-chdir( $LOGDIR );
-#chroot('.');
+chdir($LOGDIR);
+chroot('.');
 
 my %logs = ();
 my %tracker = ();
 
 # pick a mode
-if ( $OPTS{'e'} ) {
+if ($OPTS{'e'}) {
 	my $initLogTime = time();
-	$0 = 'vlogger ( error log )';
+	$0 = 'vlogger (error log)';
 
-	# errorlog mode
-	if( open ELOG, '>>' . time2str( $TEMPLATE, $initLogTime ) ) {
-		unless ( $OPTS{'a'} ) {
-			ELOG->autoflush( 1 );
-		}
+	if(open ELOG, '>>' . time2str($TEMPLATE, $initLogTime)) {
+		ELOG->autoflush(1) unless $OPTS{'a'};
 
-		if ( $OPTS{'s'} ) {
-			if ( -l $OPTS{'s'} ) {
-				unlink( $OPTS{'s'} );
-			}
-
-			symlink( time2str( $TEMPLATE, $initLogTime ), $OPTS{'s'} );
+		if ($OPTS{'s'}) {
+			unlink($OPTS{'s'}) if -l $OPTS{'s'};
+			symlink(time2str($TEMPLATE, $initLogTime), $OPTS{'s'});
 		}
 
 		my $LASTWRITE = $initLogTime;
 
-		logs( 'notice', 'started ErrorLog Handler -- resuming normal operations' );
+		logs('notice', 'started ErrorLog Handler -- resuming normal operations');
 
-		while ( my $logLine = <STDIN> ) {
+		while (my $logLine = <STDIN>) {
 			my $logTime = time();
 
-			unless ( $OPTS{'n'} ) {
-				if ( time2str( '%Y%m%d', $logTime ) > time2str( '%Y%m%d', $LASTWRITE ) ) {
+			unless ($OPTS{'n'}) {
+				if (time2str( '%Y%m%d', $logTime) > time2str('%Y%m%d', $LASTWRITE)) {
 					# open a new file
 					close ELOG;
-
-					unless ( open_errorlog( $logTime ) ) {
-						next;
-					}
-				} elsif ( $OPTS{'r'} ) {
+					next unless openErrorLog($logTime);
+				} elsif ($OPTS{'r'}) {
 					# check the size
 					my @filesize = ELOG->stat;
 					print $filesize[7] . "\n";
 
-					if ( $filesize[7] > $MAXSIZE ) {
+					if ($filesize[7] > $MAXSIZE) {
 						close ELOG;
-
-						unless( open_errorlog( $logTime ) ) {
-							next;
-						}
+						next unless openErrorLog($logTime);
 					}
 				}
 
@@ -395,208 +382,147 @@ if ( $OPTS{'e'} ) {
 			print ELOG $logLine;
 		}
 	} else {
-		logs( 'alert', "can't open $LOGDIR/" . time2str($TEMPLATE, $initLogTime) );
+		logs('alert', sprintf("can't open $LOGDIR/%s", time2str($TEMPLATE, $initLogTime)));
 	}
 } else {
-	# accesslog mode
-	$0 = 'vlogger ( access log )';
+	$0 = 'vlogger (access log)';
 
-	logs( 'notice', 'started CustomLog Handler -- resuming normal operations' );
+	logs('notice', 'started CustomLog Handler -- resuming normal operations');
 
-	while ( my $logLine = <STDIN> ) {
+	while (<STDIN>) {
 		my $logTime = time();
-		# parse out the first word ( the vhost )
-		my @thisLogLine = split ( /\s/, $logLine );
-		my ($vhost) = $thisLogLine[0];
-		my $reqSize = $thisLogLine[10];
-		$vhost = lc( $vhost ) || 'default';
-
-		if ( $vhost =~ m%[/\\]% ) {
-			$vhost = 'default';
-		}
-
+		my @logLine = split /\s/;
+		my $vhost = shift @logLine;
+		$vhost = lc($vhost) || 'default';
+		$vhost = 'default' if $vhost =~ m%[/\\]%;
 		$vhost =~ /(.*)/o;
 		$vhost = $1;
-		$vhost = 'default' unless ( $vhost );
 
-		if ( $OPTS{'i'} ) {
-			$reqSize = $thisLogLine[1] + $thisLogLine[2];
-		}
+		my $reqSize = $OPTS{'i'} ? pop(@logLine) + pop(@logLine) : $logLine[9];
 
-		# if we're writing to a log, and it rolls to a new day, close all files.
-		unless ( $OPTS{'n'} ) {
-			if ( $logs{$vhost} && ( time2str('%Y%m%d', $logTime ) > time2str( '%Y%m%d', $logs{$vhost} )) ) {
-				for my $key ( keys %logs ) {
-					close $key;
-				}
-
+		if (!$OPTS{'n'} && $logs{$vhost}) {
+			# if we're writing to a log, and it rolls to a new day, close all files.
+			if (time2str('%Y%m%d', $logTime) > time2str('%Y%m%d', $logs{$vhost})) {
+				close $_ for keys %logs;
 				%logs = ();
-			} elsif ( $OPTS{'r'} && $logs{$vhost} ) {
-				# check the size
-				my @filesize = $vhost->stat;
-
-				if ( $filesize[7] > $MAXSIZE ) {
+			} elsif ($OPTS{'r'}) {
+				if (($vhost->stat)[7] > $MAXSIZE) {
 					close $vhost;
-					delete( $logs{$vhost} );
+					delete $logs{$vhost};
 				}
 			}
 		}
 
-		# open a new log
-		unless ( $logs{$vhost} ) {
+		# open a new log if needed
+		unless ($logs{$vhost}) {
 			# check how many files we have open, close the oldest one
-			if ( keys(%logs) > $MAXFILES ) {
+			if (keys(%logs) > $MAXFILES) {
 				my ($key, $value) = sort { $logs{$a} <=> $logs{$b} } (keys(%logs));
 				close $key;
-				delete( $logs{$key} );
+				delete $logs{$key};
 			}
 
-			# check if directory is there
-			unless ( -d "${vhost}" ) {
-				mkdir( "${vhost}" );
-			}
+			mkdir("${vhost}") unless -d "${vhost}";
 
-			# open the file using the template
-			if( open $vhost, '>>', "${vhost}/" . time2str( $TEMPLATE, $logTime ) ) {
-				# autoflush the handle unless -a
-				unless ( $OPTS{'a'} ) {
-					$vhost->autoflush(1);
-				}
+			if(open $vhost, '>>', "${vhost}/" . time2str($TEMPLATE, $logTime)) {
+				$vhost->autoflush(1) unless $OPTS{'a'};
 
-				# make a symlink if -s
-				if ( $OPTS{'s'} ) {
-					chdir( "${vhost}" );
-
-					if ( -l $OPTS{'s'} ) {
-						unlink( $OPTS{'s'} );
-					}
-
-					symlink( time2str( $TEMPLATE, $logTime ), $OPTS{'s'} );
+				if ($OPTS{'s'}) {
+					chdir("${vhost}");
+					unlink($OPTS{'s'}) if -l $OPTS{'s'};
+					symlink(time2str($TEMPLATE, $logTime), $OPTS{'s'});
 					chdir('..');
 				}
 			} else {
-				logs( 'alert', "can't open $LOGDIR/${vhost}/" . time2str( $TEMPLATE, $logTime ) );
+				logs('alert', sprintf("can't open $LOGDIR/${vhost}/%s", time2str($TEMPLATE, $logTime)));
 			}
 		}
 
-		# update the timestamp and write the line
 		$logs{$vhost} = time();
-
-		if ( $OPTS{'i'} ) {
-			$logLine =~ s/^\S*\s+\S*\s+\S*\s+//o;
-		} else {
-			$logLine =~ s/^\S*\s+//o;
-		}
-
-		if ( $reqSize =~ m/^\d*$/ && $reqSize > 0 ) {
-			$tracker{$vhost} += $reqSize;
-		}
-
-		print $vhost $logLine;
+		$tracker{$vhost} += $reqSize if $reqSize =~ m/^\d*$/ && $reqSize > 0;
+		print $vhost "@logLine\n";
 	}
 }
 
 sub logs
 {
-	my ($priority, $message) = @_;
-
-	my $localtime = localtime;
-
-	print STDERR "[$localtime] [$priority] vlogger: $message\n";
+	print STDERR sprintf("[%s] [%s] i-MSCP Vlogger: %s\n", scalar localtime, shift, shift);
 }
 
-sub close_files
+sub closeFiles
 {
-	if ( $OPTS{'e'} ) {
+	if ($OPTS{'e'}) {
 		close ELOG;
 	} else {
-		for my $key (keys %logs) {
-			close $key;
-		}
-
+		close $_ for keys %logs;
 		%logs = ();
 	}
 }
 
 sub shutdown
 {
-	logs( 'notice', "caught $_[0], shutting down" );
-
-	close_files();
-	dump_tracker() if $OPTS{'d'};
+	logs('notice', sprintf("caught %s, shutting down", shift));
+	closeFiles();
+	dumpTracker() if $OPTS{'d'};
 	exit;
 }
 
-sub open_errorlog
+sub openErrorLog
 {
 	my $logTime = $_[0];
 
-	if( open ELOG, '>>', time2str( $TEMPLATE, $logTime ) ) {
-		if ( $OPTS{'s'} ) {
-			if ( -l $OPTS{'s'} ) {
-				unlink( $OPTS{'s'} );
-			}
-
-			symlink( time2str( $TEMPLATE, $logTime ), $OPTS{'s'} );
+	if(open ELOG, '>>', time2str($TEMPLATE, $logTime)) {
+		if ($OPTS{'s'}) {
+			unlink($OPTS{'s'}) if -l $OPTS{'s'};
+			symlink(time2str($TEMPLATE, $logTime), $OPTS{'s'});
 		}
 
-		# autoflush it unless -a
-		unless ( $OPTS{'a'} ) {
-			ELOG->autoflush( 1 );
-		}
-
+		ELOG->autoflush(1) unless $OPTS{'a'};
 		return 1;
 	}
 
-	logs( 'alert', "can't open $LOGDIR/" . time2str( $TEMPLATE, $logTime ) );
+	logs('alert', sprintf("can't open $LOGDIR/%s", time2str($TEMPLATE, $logTime)));
 
-	return 0;
+	0;
 }
 
-sub dump_tracker
+sub dumpTracker
 {
-	if ( keys %tracker > 0 ) {
+	if (keys %tracker > 0) {
 		eval {
 			my $dbh = DBI->connect(
 				$DBI_DSN, $DBI_USER, $DBI_PASS, { AutoCommit => 1, PrintError => 0, RaiseError => 1 }
 			);
 
 			for my $vhost (keys %tracker) {
-				next unless ( defined $tracker{$vhost} );
-
+				next unless defined $tracker{$vhost};
 				eval {
-					my $ts = time2str( '%Y%m%d', time() );
-					my $sth = $dbh->prepare( 'SELECT vhost FROM httpd_vlogger WHERE vhost = ? AND ldate = ?' );
-					$sth->execute( $vhost, $ts );
+					my $ts = time2str('%Y%m%d', time());
+					my $sth = $dbh->prepare('SELECT vhost FROM httpd_vlogger WHERE vhost = ? AND ldate = ?');
+					$sth->execute($vhost, $ts);
 
-					if ( $sth->rows ) {
-						$sth = $dbh->prepare( 'UPDATE httpd_vlogger SET bytes = bytes + ? WHERE vhost = ? AND ldate = ?' );
-						$sth->execute( $tracker{$vhost}, $vhost, $ts );
+					if ($sth->rows) {
+						$sth = $dbh->prepare('UPDATE httpd_vlogger SET bytes = bytes + ? WHERE vhost = ? AND ldate = ?');
+						$sth->execute($tracker{$vhost}, $vhost, $ts);
 					} else {
-						$sth = $dbh->prepare( 'INSERT INTO httpd_vlogger (vhost, ldate, bytes) VALUE (?, ?, ?)' );
-						$sth->execute( $vhost, $ts, $tracker{$vhost} );
+						$sth = $dbh->prepare('INSERT INTO httpd_vlogger (vhost, ldate, bytes) VALUE (?, ?, ?)');
+						$sth->execute($vhost, $ts, $tracker{$vhost});
 					}
 				};
 
-				if( $@ ) {
-					logs( 'alert', "Unable to dump tracker: $@" );
-				}
+				logs('alert', sprintf('Unable to dump tracker: %s', $@)) if $@;
 			}
 
 			$dbh->disconnect();
-
 			%tracker = ();
 		};
 
-		if( $@ ) {
-			logs( 'alert', "Unable to dump tracker: $@" );
-		}
+		logs('alert', sprintf('Unable to dump tracker: %s', $@)) if $@;
 	}
 
-	alarm( $DBI_DUMP );
+	alarm($DBI_DUMP);
 }
 
-# print usage info
 sub usage
 {
 	print "Usage: vlogger [OPTIONS]... [LOGDIR]\n";
@@ -629,3 +555,4 @@ sub usage
 }
 
 1;
+__END__

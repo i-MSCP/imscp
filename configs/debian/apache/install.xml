@@ -7,7 +7,6 @@
     <folders>${SYSTEM_CONF}/apache</folders>
     <folders>${SYSTEM_CONF}/apache/backup</folders>
     <folders>${SYSTEM_CONF}/apache/working</folders>
-    <copy_config>${SYSTEM_CONF}/apache/modules</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_imscp.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>

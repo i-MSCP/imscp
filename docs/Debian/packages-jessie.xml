@@ -21,7 +21,6 @@
         </apache_itk>
         <apache_php_fpm>
             <package>apache2</package>
-            <package>apache2-dev</package>
             <package>apache2-suexec-custom</package>
             <package>php5-fpm</package>
         </apache_php_fpm>
