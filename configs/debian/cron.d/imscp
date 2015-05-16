@@ -1,6 +1,6 @@
 # Traffic accounting
-@hourly * * * * root {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
-@hourly * * * * root {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
+@hourly root {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
+@hourly root {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
 
 # Quota accounting
 @hourly root {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
