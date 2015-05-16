@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -87,11 +87,10 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\nKære {NAME},\n\nEn ny konto er blevet oprettet for dig.\n\nDine kontooplysninger:\n\nBrugertype: {USERTYPE}\nBrugernavn: {USERNAME}\nPassword: {PASSWORD}\n\nHusk at ændre din adgangskode ofte og første gang du logger ind.\n\nDu kan logge ind lige nu på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n\nStatistik: http://{USERNAME}/{WEBSTATS_RPATH}\n(Samme brugernavn og password som ovenfor)\n\nTak fordi du bruger vores tjenester.\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -2259,14 +2258,9 @@ msgstr "Aktiver auto responder"
 msgid "Enabled"
 msgstr "Aktiveret"
 
-msgid "Enabled for SQL databases"
-msgstr "Aktiveret for SQL-databaser"
-
-msgid "Enabled for domain data"
-msgstr "Aktiveret for domæne data"
-
-msgid "Enabled for domain data and databases"
-msgstr "Aktiveret for domæne data og databaser"
+#, php-format
+msgid "Enabled for: %s"
+msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2478,9 +2472,6 @@ msgstr "Ftp-konto med samme navn findes allerede."
 
 msgid "Ftp accounts"
 msgstr "Ftp konti"
-
-msgid "Full"
-msgstr "Fuld"
 
 msgid "GB"
 msgstr "GB"
@@ -5504,7 +5495,7 @@ msgid ""
 msgstr "Når tilladt, kan scripts kalde PHP exec() funktion. Denne funktion er nødvendig for mange programmer, men kan medføre nogle sikkerhedsproblemer"
 
 msgid "Wildcard"
-msgstr ""
+msgstr "Jokertegn"
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
@@ -5953,6 +5944,9 @@ msgstr "domæne alias"
 msgid "domain aliases"
 msgstr "domæne aliases"
 
+msgid "domain data"
+msgstr ""
+
 msgid "domains"
 msgstr "domæner"
 
@@ -6040,6 +6034,9 @@ msgstr "kiB"
 msgid "mail"
 msgstr "mail"
 
+msgid "mail accounts"
+msgstr ""
+
 msgid "missing alias"
 msgstr "manglende alias"
 
@@ -6111,7 +6108,7 @@ msgid "unlimited"
 msgstr "ubegrænset"
 
 msgid "update"
-msgstr ""
+msgstr "opdater"
 
 msgid "view aliases"
 msgstr "Se Aliaser"

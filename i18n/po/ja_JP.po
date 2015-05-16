@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\n親愛なる {NAME}様,\n\n新しいI-MSCPパスワードを有効にするには、このリンクを使用します。\n\n{LINK}\n\nサービスをご利用いただき、ありがとうございます。\n\n___________________________\ni-MSCP チーム\n\n"
 
 msgid ""
 "\n"
@@ -69,7 +69,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nこんにちは {NAME}様,\n\nユーザー名は次のとおりです: {USERNAME}\nパスワードは次のとおりです: {PASSWORD}\n\nあなたは、 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT} でログインできます。\n\nサービスをご利用いただき、ありがとうございます。\n\n___________________________\ni-MSCP チーム\n\n"
 
 msgid ""
 "\n"
@@ -87,8 +87,7 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
 msgstr ""
@@ -1002,7 +1001,7 @@ msgid "Anti-Rootkits Logs"
 msgstr "アンチルートキットログ"
 
 msgid "Any"
-msgstr ""
+msgstr "Any"
 
 msgid "Application installer"
 msgstr "アプリケーションインストーラー"
@@ -2259,14 +2258,9 @@ msgstr "自動応答を有効"
 msgid "Enabled"
 msgstr "有効"
 
-msgid "Enabled for SQL databases"
-msgstr "SQLデータベースが有効にされました"
-
-msgid "Enabled for domain data"
-msgstr "ドメインデータが有効にされました"
-
-msgid "Enabled for domain data and databases"
-msgstr "ドメインデータやデータベースが有効にされました"
+#, php-format
+msgid "Enabled for: %s"
+msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2478,9 +2472,6 @@ msgstr "同じユーザー名でFTPアカウントは既に存在します。"
 
 msgid "Ftp accounts"
 msgstr "FTPアカウント"
-
-msgid "Full"
-msgstr "全て"
 
 msgid "GB"
 msgstr "GB"
@@ -5057,7 +5048,7 @@ msgid "URL forwarding"
 msgstr "URL転送"
 
 msgid "URL port"
-msgstr ""
+msgstr "URLポート"
 
 msgid "URL protocol"
 msgstr "URLプロトコル"
@@ -5089,10 +5080,10 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "言語ファイルのための\"LC_MESSAGES\"ディレクトリを作成できません。"
 
 msgid "Unable to delete i-MSCP info file."
-msgstr ""
+msgstr "i-MSCP情報ファイルを削除することができません。"
 
 msgid "Unable to extract info.php file"
-msgstr ""
+msgstr "info.phpファイルを抽出することができません"
 
 msgid "Unable to extract plugin archive."
 msgstr "プラグインのアーカイブを解凍することができません。"
@@ -5118,7 +5109,7 @@ msgid "Unable to get update info from Github"
 msgstr "GitHubからの更新情報を取得できません"
 
 msgid "Unable to load i-MSCP info file."
-msgstr ""
+msgstr "i-MSCP情報ファイルを読み込むことができません。"
 
 msgid "Unable to move file."
 msgstr "ファイルを移動することができません。"
@@ -5504,7 +5495,7 @@ msgid ""
 msgstr "許可されている場合は、スクリプトはPHPのexec（）関数を呼び出すことができます。この関数は、多くのアプリケーションで必要とされていますが、いくつかのセキュリティ問題を引き起こす可能性があります"
 
 msgid "Wildcard"
-msgstr ""
+msgstr "ワイルドカード"
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
@@ -5924,7 +5915,7 @@ msgid "activated (Softwaredepot)"
 msgstr "有効 (ソフトウェアデポット)"
 
 msgid "addition"
-msgstr ""
+msgstr "追加"
 
 msgid "and"
 msgstr "と"
@@ -5952,6 +5943,9 @@ msgstr "ドメインエイリアス"
 
 msgid "domain aliases"
 msgstr "ドメインエイリアス"
+
+msgid "domain data"
+msgstr ""
 
 msgid "domains"
 msgstr "ドメイン"
@@ -6040,6 +6034,9 @@ msgstr "KiB"
 msgid "mail"
 msgstr "メール"
 
+msgid "mail accounts"
+msgstr ""
+
 msgid "missing alias"
 msgstr "エイリアスが見つからない"
 
@@ -6111,7 +6108,7 @@ msgid "unlimited"
 msgstr "無制限"
 
 msgid "update"
-msgstr ""
+msgstr "更新"
 
 msgid "view aliases"
 msgstr "エイリアス確認"

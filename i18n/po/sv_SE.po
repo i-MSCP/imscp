@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -85,11 +85,10 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\n\nDear {NAME},\n\nA new account has been created for you.\n\nYour account information:\n\nUser type: {USERTYPE}\nUser name: {USERNAME}\nPassword: {PASSWORD}\n\nRemember to change your password often and the first time you login.\n\nYou can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n\nStatistics: http://{USERNAME}/{WEBSTATS_RPATH}\n(Same username and password than above)\n\nThank you for using our services.\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -240,11 +239,11 @@ msgstr "%s / obegränsad"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr ""
+msgstr "%s IP-adress är blockerad för %s minuter."
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
-msgstr ""
+msgstr "%s IP-adress väntar %s sekunder."
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -967,26 +966,26 @@ msgid "An email addresse is not valid in mail forward list."
 msgstr "Ett e-post adr. är inte giltigt i post framåt listan."
 
 msgid "An entry is defined twice."
-msgstr ""
+msgstr "En post definierades två gånger."
 
 msgid "An error occurred during authentication."
 msgstr "Ett fel uppstod vid autentisering."
 
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "Ett oväntat fel inträffade"
 
 msgid "An unexpected error occurred."
 msgstr "Ett oväntat fel inträffade."
 
 msgid ""
 "An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
+msgstr "Ett oväntat fel inträffade. Gå till felsökningsgränssnittet för mer information."
 
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr "Ett oväntat fel inträffade. Vänligen kontakta administratören."
 
 msgid "An unexpected error occurred. Please contact your reseller."
-msgstr ""
+msgstr "Ett oväntat fel inträffade. Vänligen kontakta din återförsäljare."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1000,7 +999,7 @@ msgid "Anti-Rootkits Logs"
 msgstr "Anti-Rootkits Logs"
 
 msgid "Any"
-msgstr ""
+msgstr "någon"
 
 msgid "Application installer"
 msgstr "Programinstallerare"
@@ -1070,7 +1069,7 @@ msgstr "Är du säker på att du vill radera %s domain-alias?"
 msgid ""
 "Are you sure you want to delete the %s domain alias? Be aware that any "
 "related entity will be also removed."
-msgstr ""
+msgstr "Är du säker på att du vill radera %s domänalias? Var medveten om att varje anknuten enhet också kommer att tas bort."
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1568,7 +1567,7 @@ msgid "Current password is invalid."
 msgstr "Det nuvarande lösenordet är felaktigt!"
 
 msgid "Custom DNS errors"
-msgstr ""
+msgstr "Anpassad DNS fel"
 
 msgid "Custom DNS record"
 msgstr "Anpassad DNS-post"
@@ -2070,7 +2069,7 @@ msgid ""
 msgstr "Domän: Setup en DNS-MX-post till reläet post för hela din domän, inklusive underdomäner."
 
 msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr ""
+msgstr "Domän: Konfigurera en extern MX värd att vidarebefordra e-post på hela domänen."
 
 msgid "Domains"
 msgstr "Domäner"
@@ -2257,14 +2256,9 @@ msgstr "Aktiverar auto. svar"
 msgid "Enabled"
 msgstr "Aktiv"
 
-msgid "Enabled for SQL databases"
-msgstr "Aktiverad för SQL-databaser"
-
-msgid "Enabled for domain data"
-msgstr "Aktiverad för domänen uppgifter"
-
-msgid "Enabled for domain data and databases"
-msgstr "Aktiverad för domänen data och databaser"
+#, php-format
+msgid "Enabled for: %s"
+msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2476,9 +2470,6 @@ msgstr "FTP-konto med samma namn finns redan."
 
 msgid "Ftp accounts"
 msgstr "Ftp-konton"
-
-msgid "Full"
-msgstr "Full"
 
 msgid "GB"
 msgstr "GB"
@@ -2849,7 +2840,7 @@ msgid "Invalid name."
 msgstr "Invalid name."
 
 msgid "Invalid payload received from GitHub"
-msgstr ""
+msgstr "Ogiltigt nyttolast som mottas från GitHub"
 
 msgid "Invalid private key or passphrase."
 msgstr "Ogiltig privat nyckel eller lösenordsfras."
@@ -3341,7 +3332,7 @@ msgid "Not used"
 msgstr "Inte i bruk."
 
 msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr ""
+msgstr "Obs: Du kan inte blanda \"Spamfilter\" och \"Domain\" alternativ"
 
 msgid "Note: You cannot mix Spam filter and domain options"
 msgstr "Obs! Du kan inte blanda Spam-filter och domän alternativ"
@@ -3713,7 +3704,7 @@ msgstr "Plugin %s kan inte skyddas."
 
 #, php-format
 msgid "Plugin %s cannot be reconfigured."
-msgstr ""
+msgstr "Plugin %s kan inte konfigureras."
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
@@ -3745,7 +3736,7 @@ msgstr "Plugin %s protected."
 
 #, php-format
 msgid "Plugin %s reconfigured."
-msgstr ""
+msgstr "Plugin %s omkonfigureras."
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
@@ -3781,7 +3772,7 @@ msgstr "Plugin %s updated."
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
-msgstr ""
+msgstr "Plugin Manager: nedgradering av %s plugin är inte tillåtet."
 
 #, php-format
 msgid "Plugin Manager: Unable to change the %s plugin: %s"
@@ -3791,7 +3782,7 @@ msgstr "Plugin Manager: Unable to change the %s plugin: %s"
 msgid ""
 "Plugin Manager: Unable to delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
-msgstr ""
+msgstr "Plugin Manager: Det går inte att ta bort %s plugin-filer. Du bör köra set-gui-permissions.pl skriptet och försök igen."
 
 #, php-format
 msgid ""
@@ -3823,7 +3814,7 @@ msgid "Plugin errors"
 msgstr "Plugin errors"
 
 msgid "Plugin has been successfully uploaded."
-msgstr ""
+msgstr "Plugin har laddats upp."
 
 msgid "Plugin item errors"
 msgstr "Plugin item errors"
@@ -3849,7 +3840,7 @@ msgstr "Plugins hook into i-MSCP to extend its functionality with custom feature
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) reconfigured, and %s plugin(s) deleted."
-msgstr ""
+msgstr "Plugins listan har uppdaterats: %s nya plugin (s) hittades, %s plugin (s) uppdateras %s plugin (s) konfigureras och %s plugin (s) raderas."
 
 msgid "Port"
 msgstr "Port"
@@ -3954,7 +3945,7 @@ msgid "Rebuild languages index"
 msgstr "Nytt språk index"
 
 msgid "Reconfiguration in progress..."
-msgstr ""
+msgstr "Omkonfigurering pågår ..."
 
 msgid "Record data"
 msgstr "Postdata"
@@ -4581,7 +4572,7 @@ msgstr "Spam-filtrar: Setup en DNS-MX-post till reläet post för hela din domä
 msgid ""
 "Spam Filter: Setup an external MX host to relay mail of your entire domain "
 "but retains our server as final mailhost."
-msgstr ""
+msgstr "Spam Filter: Konfigurera en extern MX värd att vidarebefordra e-post av hela din domän men behåller vår server som slutlig mailhost."
 
 msgid "Sql user successfully deleted."
 msgstr "SQL användare raderades."
@@ -4807,7 +4798,7 @@ msgstr "The %s limit for this customer cannot be unlimited because your are limi
 
 #, php-format
 msgid "The %s plugin version %s is not compatible with your i-MSCP version."
-msgstr ""
+msgstr "%s plugin version %s är inte kompatibel med din i-MSCP version."
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
@@ -5065,7 +5056,7 @@ msgstr "URL till denna administratörspanel"
 
 #, php-format
 msgid "Unable to %s the %s plugin: %s"
-msgstr ""
+msgstr "Det går inte att %s ??? %s plugin: %s"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5087,10 +5078,10 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Det går inte att skapa 'LC_MESSAGES' katalog för språk-fil."
 
 msgid "Unable to delete i-MSCP info file."
-msgstr ""
+msgstr "Det går inte att ta bort i-MSCP info fil."
 
 msgid "Unable to extract info.php file"
-msgstr ""
+msgstr "Det gick inte att extrahera info.php fil"
 
 msgid "Unable to extract plugin archive."
 msgstr "Unable to extract plugin archive."
@@ -5116,7 +5107,7 @@ msgid "Unable to get update info from Github"
 msgstr "Unable to get update info from Github"
 
 msgid "Unable to load i-MSCP info file."
-msgstr ""
+msgstr "Det gick inte att läsa i-MSCP info fil."
 
 msgid "Unable to move file."
 msgstr "Det gick inte att flytta filen."
@@ -5129,7 +5120,7 @@ msgstr "Det går inte att läsa index-fil för Web mjukvaran."
 
 #, php-format
 msgid "Unable to read the %s file."
-msgstr ""
+msgstr "Det går inte att läsa %s filen."
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
@@ -5216,7 +5207,7 @@ msgstr "Okänd åtgärd:%s"
 
 #, php-format
 msgid "Unknown bruteforce detection type: %s"
-msgstr ""
+msgstr "Okänd typ bruteforce upptäckt: %s"
 
 msgid "Unknown language name."
 msgstr "Okänt språk namn."
@@ -5502,7 +5493,7 @@ msgid ""
 msgstr "When allowed, scripts can call the PHP exec() function. This function is needed by many applications but can cause some security issues"
 
 msgid "Wildcard"
-msgstr ""
+msgstr "Jokertecken"
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
@@ -5510,7 +5501,7 @@ msgstr "Jokertecken: Setup en DNS-MX-post till reläet post för obefintligt und
 
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr ""
+msgstr "Jokertecken: Konfigurera en extern MX värd att vidarebefordra e-post för obefintliga domäner."
 
 #, php-format
 msgid "Wildcards such as '%s' and '%s' are not allowed in username."
@@ -5922,7 +5913,7 @@ msgid "activated (Softwaredepot)"
 msgstr "activated (Softwaredepot)"
 
 msgid "addition"
-msgstr ""
+msgstr "tillsats"
 
 msgid "and"
 msgstr "och"
@@ -5950,6 +5941,9 @@ msgstr "domain alias"
 
 msgid "domain aliases"
 msgstr "domänalias"
+
+msgid "domain data"
+msgstr ""
 
 msgid "domains"
 msgstr "domains"
@@ -6038,6 +6032,9 @@ msgstr "kiB"
 msgid "mail"
 msgstr "mail"
 
+msgid "mail accounts"
+msgstr ""
+
 msgid "missing alias"
 msgstr "saknas alias"
 
@@ -6109,7 +6106,7 @@ msgid "unlimited"
 msgstr "obegränsad"
 
 msgid "update"
-msgstr ""
+msgstr "update"
 
 msgid "view aliases"
 msgstr "visa alias"

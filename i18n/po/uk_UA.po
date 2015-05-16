@@ -7,13 +7,13 @@
 # hosterdev <rwer353453534@mail.ru>, 2011
 # Oleg Olegov <>, 2012
 # Plastilin <alexey.blinkov@gmail.com>, 2013
-# Vitaliy Zhukov <DragonZX@yandex.ru>, 2013
+# Vitaliy Zhukov <DragonZX@yandex.ru>, 2013,2015
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -89,8 +89,7 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
 msgstr ""
@@ -144,7 +143,7 @@ msgstr "%1$d / %2$d из %3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr "%1$d / %2$d из не ограничено"
+msgstr "%1$d / %2$d із не обмежено"
 
 #, php-format
 msgid "%1$d of %2$d"
@@ -180,7 +179,7 @@ msgstr "%1$s / %2$s из %3$s"
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr "%1$s / %2$s из не ограничено"
+msgstr "%1$s / %2$s із не обмежено"
 
 #, php-format
 msgid "%1$s of %2$s"
@@ -200,7 +199,7 @@ msgstr "%1$s%% [%2$s из %3$s]"
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s из не ограничено]"
+msgstr "%1$s%% [%2$s із не обмежено]"
 
 #, php-format
 msgid "%1$s`s - Software"
@@ -236,7 +235,7 @@ msgstr "Переведено %d строк "
 
 #, php-format
 msgid "%s / %s of %s"
-msgstr ""
+msgstr "%s / %s iз %s"
 
 #, php-format
 msgid "%s / unlimited"
@@ -2261,14 +2260,9 @@ msgstr "Включить автоответчик"
 msgid "Enabled"
 msgstr "Увімкнено"
 
-msgid "Enabled for SQL databases"
-msgstr "Включено для баз данных"
-
-msgid "Enabled for domain data"
-msgstr "Включено для данных домена"
-
-msgid "Enabled for domain data and databases"
-msgstr "Включено для данных домена и баз данных"
+#, php-format
+msgid "Enabled for: %s"
+msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2480,9 +2474,6 @@ msgstr ""
 
 msgid "Ftp accounts"
 msgstr "Учетные записи FTP"
-
-msgid "Full"
-msgstr "Повний"
 
 msgid "GB"
 msgstr "Гб"
@@ -5506,7 +5497,7 @@ msgid ""
 msgstr "Когда разрешено, скрипт может вызывать функцию PHP exec(). Функция требуется многими приложениями, но может вызвать некоторые проблемы безопасности"
 
 msgid "Wildcard"
-msgstr ""
+msgstr "Групповой символ"
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
@@ -5955,6 +5946,9 @@ msgstr "алиас домена"
 msgid "domain aliases"
 msgstr "алиасы домена"
 
+msgid "domain data"
+msgstr ""
+
 msgid "domains"
 msgstr "домены"
 
@@ -6042,6 +6036,9 @@ msgstr "Кб"
 msgid "mail"
 msgstr "почта"
 
+msgid "mail accounts"
+msgstr ""
+
 msgid "missing alias"
 msgstr "відсутній аліас"
 
@@ -6122,7 +6119,7 @@ msgid "waiting for activation"
 msgstr "ожидание активации"
 
 msgid "wildcard"
-msgstr ""
+msgstr "Групповой символ"
 
 msgid "yes"
 msgstr "так"

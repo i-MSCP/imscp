@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP <version>\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,8 +88,8 @@ msgid ""
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:"
 "{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than "
+"above)\n"
 "\n"
 "Thank you for using our services.\n"
 msgstr ""
@@ -2260,13 +2260,8 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-msgid "Enabled for SQL databases"
-msgstr ""
-
-msgid "Enabled for domain data"
-msgstr ""
-
-msgid "Enabled for domain data and databases"
+#, php-format
+msgid "Enabled for: %s"
 msgstr ""
 
 msgid ""
@@ -2478,9 +2473,6 @@ msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
-msgstr ""
-
-msgid "Full"
 msgstr ""
 
 msgid "GB"
@@ -5951,6 +5943,9 @@ msgstr ""
 msgid "domain aliases"
 msgstr ""
 
+msgid "domain data"
+msgstr ""
+
 msgid "domains"
 msgstr ""
 
@@ -6036,6 +6031,9 @@ msgid "kiB"
 msgstr ""
 
 msgid "mail"
+msgstr ""
+
+msgid "mail accounts"
 msgstr ""
 
 msgid "missing alias"

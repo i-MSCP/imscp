@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -95,11 +95,10 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\nBeste {NAME},\n\nEr is een nieuw account voor u aangemaakt.\n\nUw accountgegevens:\n\nGebruikerstype: {USERTYPE}\nGebruikersnaam: {USERNAME}\nWachtwoord: {PASSWORD}\n\nVergeet niet uw wachtwoord regelmatig en als u voor het eerst inlogt te veranderen.\n\nU kunt nu inloggen op {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n\nStatistieken: http://{USERNAME}/{WEBSTATS_RPATH}\n(Zelfde gebruikersnaam en wachtwoord als hierboven.)\n\nHartelijk dank voor het gebruik van onze service.\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -250,11 +249,11 @@ msgstr "%s / ongelimiteerd"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr ""
+msgstr "IPadres %s is voor %s minuten geblokkeerd."
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
-msgstr ""
+msgstr "IPadres %s is voor %s minuten wachtende."
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -977,26 +976,26 @@ msgid "An email addresse is not valid in mail forward list."
 msgstr "Een e-mailadres is niet geldig in de maildoorstuurlijst."
 
 msgid "An entry is defined twice."
-msgstr ""
+msgstr "Een invoer is tweemaal ingegeven."
 
 msgid "An error occurred during authentication."
 msgstr "Er is een aanmeldfout opgetreden"
 
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "Er is een onbekende fout opgetreden"
 
 msgid "An unexpected error occurred."
 msgstr "Er is een onverwachte fout opgetreden."
 
 msgid ""
 "An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
+msgstr "Er is een onbekende fout opgetreden. Ga naar de debuginterface voor meer informatie."
 
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr "Er is een onbekende fout opgetreden. Neem contact op met uw beheerder."
 
 msgid "An unexpected error occurred. Please contact your reseller."
-msgstr ""
+msgstr "Er is een onbekende fout opgetreden. Neem contact op met uw wederverkoper."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1010,7 +1009,7 @@ msgid "Anti-Rootkits Logs"
 msgstr "Anti-Rootkitlogboek"
 
 msgid "Any"
-msgstr ""
+msgstr "Alle"
 
 msgid "Application installer"
 msgstr "Applicatie-installer"
@@ -1080,7 +1079,7 @@ msgstr "Weet u zeker dat u de domein-alias voor adres %s wilt verwijderen?"
 msgid ""
 "Are you sure you want to delete the %s domain alias? Be aware that any "
 "related entity will be also removed."
-msgstr ""
+msgstr "Weet u zeker dat u het domeinalias %s wilt verwijderen? Let op dat alle bijbehorende accounts en gegevens tevens worden verwijderd."
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1578,7 +1577,7 @@ msgid "Current password is invalid."
 msgstr "Huidig wachtwoord niet correct."
 
 msgid "Custom DNS errors"
-msgstr ""
+msgstr "Eigen DNS-fouten"
 
 msgid "Custom DNS record"
 msgstr "Eigen DNS-instellingen"
@@ -2080,7 +2079,7 @@ msgid ""
 msgstr "Domein: Maak een DNS-MX-record aan om mail te kunnen ontvangen op het gehele domein, inclusief subdomeinen."
 
 msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr ""
+msgstr "Domein: Stel een eigen externe MX-host in om mail te relayen voor het gehele domein."
 
 msgid "Domains"
 msgstr "Domeinen"
@@ -2267,14 +2266,9 @@ msgstr "Auto-antwoorder aanzetten"
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-msgid "Enabled for SQL databases"
-msgstr "Aangezet voor SQL-databanken"
-
-msgid "Enabled for domain data"
-msgstr "Aan voor domeingegevens"
-
-msgid "Enabled for domain data and databases"
-msgstr "Aan voor domeindata en databanken"
+#, php-format
+msgid "Enabled for: %s"
+msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2486,9 +2480,6 @@ msgstr "FTP-account met zelfde gebruikersnaam bestaat al."
 
 msgid "Ftp accounts"
 msgstr "FTP-accounts"
-
-msgid "Full"
-msgstr "Allen"
 
 msgid "GB"
 msgstr "GB"
@@ -2859,7 +2850,7 @@ msgid "Invalid name."
 msgstr "Ongeldige naam."
 
 msgid "Invalid payload received from GitHub"
-msgstr ""
+msgstr "Ongeldige informatie ontvangen van GitHub"
 
 msgid "Invalid private key or passphrase."
 msgstr "Ongeldige private-key of wachtwoordsleutel."
@@ -3351,7 +3342,7 @@ msgid "Not used"
 msgstr "Niet gebruikt"
 
 msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr ""
+msgstr "Let op: U kunt Spam filter niet mixen met domeinopties."
 
 msgid "Note: You cannot mix Spam filter and domain options"
 msgstr "Notitie: U kunt uw spam filter en domein opties niet mixen"
@@ -3723,7 +3714,7 @@ msgstr "Plugin %s kan niet worden beveiligd."
 
 #, php-format
 msgid "Plugin %s cannot be reconfigured."
-msgstr ""
+msgstr "Invoegtoepassing %s kan niet opnieuw geconfigureerd worden."
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
@@ -3755,7 +3746,7 @@ msgstr "Invoegtoepassing %s beveiligd."
 
 #, php-format
 msgid "Plugin %s reconfigured."
-msgstr ""
+msgstr "Invoegtoepassing %s is opnieuw geconfigureerd."
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
@@ -3791,7 +3782,7 @@ msgstr "Invoegtoepassing %s bijgewerkt."
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: Downgrade van de %s plugin is niet toegestaan."
 
 #, php-format
 msgid "Plugin Manager: Unable to change the %s plugin: %s"
@@ -3801,7 +3792,7 @@ msgstr "Invoegtoepassingsbeheer: Kon de %s invoegtoepassing niet aanpassen: %s"
 msgid ""
 "Plugin Manager: Unable to delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: Kon de bestanden voor de %s plugin niet verwijderen. Draai het set-gui-permissions.pl-script en probeer het opnieuw."
 
 #, php-format
 msgid ""
@@ -3833,7 +3824,7 @@ msgid "Plugin errors"
 msgstr "Invoegtoepassingsfouten"
 
 msgid "Plugin has been successfully uploaded."
-msgstr ""
+msgstr "Invoegtoepassing succesvol geüpload."
 
 msgid "Plugin item errors"
 msgstr "Pluginfout"
@@ -3859,7 +3850,7 @@ msgstr "Invoegtoepassingen haken in i-MSCP om de functionaliteit uit te breiden 
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) reconfigured, and %s plugin(s) deleted."
-msgstr ""
+msgstr "Invoegtoepassingslijst is bijgewerkt: %s nieuwe invoegtoepassing(en) gevonden, %s bijgewerkt, %s opnieuw geconfigureerd en %s verwijderd."
 
 msgid "Port"
 msgstr "Poort"
@@ -3964,7 +3955,7 @@ msgid "Rebuild languages index"
 msgstr "Hernieuw taalindex"
 
 msgid "Reconfiguration in progress..."
-msgstr ""
+msgstr "Opnieuw configureren bezig..."
 
 msgid "Record data"
 msgstr "Record-gegevens"
@@ -4591,7 +4582,7 @@ msgstr "Maak een DNS-MX-record aan om mail te kunnen ontvangen op het gehele dom
 msgid ""
 "Spam Filter: Setup an external MX host to relay mail of your entire domain "
 "but retains our server as final mailhost."
-msgstr ""
+msgstr "Spamfilter: Stel een externe MX-host in om de e-mail voor het gehele domein te relayen, maar houd deze server als uiteindelijke mailhost."
 
 msgid "Sql user successfully deleted."
 msgstr "SQL-gebruiker succesvol verwijderd."
@@ -4817,7 +4808,7 @@ msgstr "Het limiet %s voor deze klant kan niet ongelimiteerd zijn, omdat u gelim
 
 #, php-format
 msgid "The %s plugin version %s is not compatible with your i-MSCP version."
-msgstr ""
+msgstr "De %s-pluginversie %s is niet compatibel met de gebruikte i-MSCP-versie."
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
@@ -5075,7 +5066,7 @@ msgstr "URL voor dit beheerderspaneel"
 
 #, php-format
 msgid "Unable to %s the %s plugin: %s"
-msgstr ""
+msgstr "De actie %s voor de %s-plugin lukte niet: %s"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5097,10 +5088,10 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Kan de map 'LC_MESSAGES' voor taalbestand niet aanmaken."
 
 msgid "Unable to delete i-MSCP info file."
-msgstr ""
+msgstr "Kon het i-MSCP-informatiebestand niet verwijderen."
 
 msgid "Unable to extract info.php file"
-msgstr ""
+msgstr "Kon het info.php-bestand niet uitpakken"
 
 msgid "Unable to extract plugin archive."
 msgstr "Kan archief van invoegtoepassing niet uitpakken."
@@ -5126,7 +5117,7 @@ msgid "Unable to get update info from Github"
 msgstr "Kan update-informatie niet uit Github verkrijgen"
 
 msgid "Unable to load i-MSCP info file."
-msgstr ""
+msgstr "Kon het i-MSCP-informatiebestand niet laden"
 
 msgid "Unable to move file."
 msgstr "Kan bestand niet verplaatsen."
@@ -5139,7 +5130,7 @@ msgstr "Kan index-bestand van softwareberging niet uitlezen."
 
 #, php-format
 msgid "Unable to read the %s file."
-msgstr ""
+msgstr "Kon het %s-bestand niet lezen"
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
@@ -5226,7 +5217,7 @@ msgstr "Onbekende handeling: %s"
 
 #, php-format
 msgid "Unknown bruteforce detection type: %s"
-msgstr ""
+msgstr "Onbekend bruteforce detectietype: %s"
 
 msgid "Unknown language name."
 msgstr "Onbekende naam van taal."
@@ -5512,7 +5503,7 @@ msgid ""
 msgstr "Wanneer toegestaan kunnen scrips de 'PHP exec()'-functie oproepen. Deze functie is nodig voor veel toepassingen, maar kan enkele beveiligingsissues veroorzaken."
 
 msgid "Wildcard"
-msgstr ""
+msgstr "Wildcard"
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
@@ -5520,7 +5511,7 @@ msgstr "Wildcard: Het instellen van een DNS-MX-record om berichten te kunnen ont
 
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr ""
+msgstr "Wildcard: Stel een externe MX-host in om e-mail te verwerken voor niet-bestaande subdomeinen."
 
 #, php-format
 msgid "Wildcards such as '%s' and '%s' are not allowed in username."
@@ -5932,7 +5923,7 @@ msgid "activated (Softwaredepot)"
 msgstr "geactiveerd (in softwaredepot)"
 
 msgid "addition"
-msgstr ""
+msgstr "toevoegen"
 
 msgid "and"
 msgstr "en"
@@ -5960,6 +5951,9 @@ msgstr "domeinalias"
 
 msgid "domain aliases"
 msgstr "domeinaliassen"
+
+msgid "domain data"
+msgstr ""
 
 msgid "domains"
 msgstr "domeinen"
@@ -6048,6 +6042,9 @@ msgstr "kB"
 msgid "mail"
 msgstr "E-mail"
 
+msgid "mail accounts"
+msgstr ""
+
 msgid "missing alias"
 msgstr "ontbrekende alias"
 
@@ -6119,7 +6116,7 @@ msgid "unlimited"
 msgstr "ongelimiteerd"
 
 msgid "update"
-msgstr ""
+msgstr "bijwerken"
 
 msgid "view aliases"
 msgstr "aliassen bekijken"

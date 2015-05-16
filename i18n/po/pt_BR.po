@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -90,8 +90,7 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
 msgstr ""
@@ -2262,14 +2261,9 @@ msgstr "Habilitar auto resposta"
 msgid "Enabled"
 msgstr "Ativado"
 
-msgid "Enabled for SQL databases"
-msgstr "Habilitado para bancos de dados SQL"
-
-msgid "Enabled for domain data"
-msgstr "Habilitado para dados de domínio"
-
-msgid "Enabled for domain data and databases"
-msgstr "Habilitado para dados de domínio e bancos de dados"
+#, php-format
+msgid "Enabled for: %s"
+msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2481,9 +2475,6 @@ msgstr "Já existe conta FTP com o mesmo nome de usuário."
 
 msgid "Ftp accounts"
 msgstr "contas de Ftp"
-
-msgid "Full"
-msgstr "Completo"
 
 msgid "GB"
 msgstr "GB"
@@ -5956,6 +5947,9 @@ msgstr "alias de domínio"
 msgid "domain aliases"
 msgstr "alias de domínio"
 
+msgid "domain data"
+msgstr ""
+
 msgid "domains"
 msgstr "domínios"
 
@@ -6042,6 +6036,9 @@ msgstr "kB"
 
 msgid "mail"
 msgstr "e-mail"
+
+msgid "mail accounts"
+msgstr ""
 
 msgid "missing alias"
 msgstr "alias faltando"

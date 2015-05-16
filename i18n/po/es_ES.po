@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -90,8 +90,7 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
 msgstr ""
@@ -2262,14 +2261,9 @@ msgstr "Activar auto respuesta"
 msgid "Enabled"
 msgstr "Habilitado"
 
-msgid "Enabled for SQL databases"
-msgstr "Habilitado para Bases de Datos SQL"
-
-msgid "Enabled for domain data"
-msgstr "Habilitado para datos de dominio"
-
-msgid "Enabled for domain data and databases"
-msgstr "Habilitado para datos de dominio y Bases de Datos"
+#, php-format
+msgid "Enabled for: %s"
+msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2481,9 +2475,6 @@ msgstr "Ya existe una cuenta FTP con el mismo nombre de usuario."
 
 msgid "Ftp accounts"
 msgstr "Cuentas FTP"
-
-msgid "Full"
-msgstr "Completo"
 
 msgid "GB"
 msgstr "GB"
@@ -5507,7 +5498,7 @@ msgid ""
 msgstr "Cuando está permitido, los scripts pueden llamar a la función de PHP exec(). Esta función es necesaria para muchas aplicaciones, pero puede causar algunos problemas de seguridad"
 
 msgid "Wildcard"
-msgstr ""
+msgstr "Comodín"
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
@@ -5956,6 +5947,9 @@ msgstr "Alias del dominio"
 msgid "domain aliases"
 msgstr "Los álias de los dominios"
 
+msgid "domain data"
+msgstr ""
+
 msgid "domains"
 msgstr "Dominios"
 
@@ -6043,6 +6037,9 @@ msgstr "kiB"
 msgid "mail"
 msgstr "correo"
 
+msgid "mail accounts"
+msgstr ""
+
 msgid "missing alias"
 msgstr "falta el álias"
 
@@ -6114,7 +6111,7 @@ msgid "unlimited"
 msgstr "ilimitado"
 
 msgid "update"
-msgstr ""
+msgstr "actualizar"
 
 msgid "view aliases"
 msgstr "Ver los alias"

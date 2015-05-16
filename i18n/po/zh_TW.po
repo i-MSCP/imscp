@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -87,11 +87,10 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\n親愛的 {NAME},\n\n新的帳號已經為您建立好了。\n\n您的帳號資訊:\n\n使用者身份: {USERTYPE}\n使用者名稱: {USERNAME}\n密碼: {PASSWORD}\n\n記得要經常變更密碼以及在您第一次登入時也要變更。\n\n您可以登入到這 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n\n狀態: http://{USERNAME}/{WEBSTATS_RPATH}\n(相同的帳號和密碼)\n\n感謝您使用我們的服務。\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -142,7 +141,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr ""
+msgstr "%1$d / %2$d 無限制"
 
 #, php-format
 msgid "%1$d of %2$d"
@@ -158,11 +157,11 @@ msgstr "%1$d%% [%2$s 的 無限制]"
 
 #, php-format
 msgid "%1$s (%2$s)"
-msgstr ""
+msgstr "%1$s (%2$s)"
 
 #, php-format
 msgid "%1$s - (Softwaredepot)"
-msgstr ""
+msgstr "%1$s - (軟體庫)"
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
@@ -170,7 +169,7 @@ msgstr "%1$s - (版本: %2$s, 語系: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
@@ -178,7 +177,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr ""
+msgstr "%1$s / %2$s 無限制"
 
 #, php-format
 msgid "%1$s of %2$s"
@@ -206,7 +205,7 @@ msgstr "%1$s`s - 軟體"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
-msgstr ""
+msgstr "%d %s 當帳號到期時通知"
 
 #, php-format
 msgid "%d / unlimited"
@@ -242,11 +241,11 @@ msgstr "%s / 無限制"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr ""
+msgstr "%s IP 位址已被封鎖 %s 分鐘。"
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
-msgstr ""
+msgstr "%s IP 位址要等 %s 秒鐘。"
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -282,7 +281,7 @@ msgstr "%s 不是網域的一部份 %s."
 
 #, php-format
 msgid "%s of %s"
-msgstr ""
+msgstr "%s of %s"
 
 #, php-format
 msgid "%s of unlimited"
@@ -314,7 +313,7 @@ msgstr ""
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr ""
+msgstr "%s: 這個經銷商有無限制的客戶。"
 
 #, php-format
 msgid ""
@@ -2259,14 +2258,9 @@ msgstr "啟用自動回覆"
 msgid "Enabled"
 msgstr "啟用"
 
-msgid "Enabled for SQL databases"
-msgstr "啟用 SQL 資料庫"
-
-msgid "Enabled for domain data"
-msgstr "啟用網域資料"
-
-msgid "Enabled for domain data and databases"
-msgstr "啟用網域資料和 SQL 資料庫"
+#, php-format
+msgid "Enabled for: %s"
+msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2478,9 +2472,6 @@ msgstr "Ftp 帳號已經存在相當使用者名稱。"
 
 msgid "Ftp accounts"
 msgstr "FTP 帳號"
-
-msgid "Full"
-msgstr "全部"
 
 msgid "GB"
 msgstr "GB"
@@ -3715,7 +3706,7 @@ msgstr "外掛 %s 無法保護。"
 
 #, php-format
 msgid "Plugin %s cannot be reconfigured."
-msgstr ""
+msgstr "外掛 %s 不能重新設置。"
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
@@ -3747,7 +3738,7 @@ msgstr "外掛 %s 已保護。"
 
 #, php-format
 msgid "Plugin %s reconfigured."
-msgstr ""
+msgstr "外掛 %s 重新設置。"
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
@@ -3783,7 +3774,7 @@ msgstr "外掛 %s 已經更新。"
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
-msgstr ""
+msgstr "外掛管理: 不允許降外掛 %s 的版本。"
 
 #, php-format
 msgid "Plugin Manager: Unable to change the %s plugin: %s"
@@ -5067,7 +5058,7 @@ msgstr "轉到管理員面板的 URL"
 
 #, php-format
 msgid "Unable to %s the %s plugin: %s"
-msgstr ""
+msgstr "無法到 %s 此 %s 外掛: %s"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5089,10 +5080,10 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "無法建立 'LC_MESSAGES' 語言檔的目錄。"
 
 msgid "Unable to delete i-MSCP info file."
-msgstr ""
+msgstr "無法刪除 i-MSCP 資訊檔案。"
 
 msgid "Unable to extract info.php file"
-msgstr ""
+msgstr "無法解開 info.php 檔案"
 
 msgid "Unable to extract plugin archive."
 msgstr "無法解開外掛的壓縮檔"
@@ -5118,7 +5109,7 @@ msgid "Unable to get update info from Github"
 msgstr "無法從 Github 取得更新資訊"
 
 msgid "Unable to load i-MSCP info file."
-msgstr ""
+msgstr "無法讀取 i-MSCP 資訊檔案。"
 
 msgid "Unable to move file."
 msgstr "無法移動檔案"
@@ -5131,7 +5122,7 @@ msgstr "無法讀取網站軟體庫索引檔。"
 
 #, php-format
 msgid "Unable to read the %s file."
-msgstr ""
+msgstr "無法讀取 %s 檔案。"
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
@@ -5218,7 +5209,7 @@ msgstr "未知的動作: %s"
 
 #, php-format
 msgid "Unknown bruteforce detection type: %s"
-msgstr ""
+msgstr "未知入侵偵測類型: %s"
 
 msgid "Unknown language name."
 msgstr "未知的語言名稱"
@@ -5504,7 +5495,7 @@ msgid ""
 msgstr "當允許時，程式可以呼叫 PHP exec() 功能。這個功能很多應用程式需要但是也會造成一些安全問題"
 
 msgid "Wildcard"
-msgstr ""
+msgstr "萬用字元"
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
@@ -5512,7 +5503,7 @@ msgstr "萬用字元: 設定 DNS MX 紀錄來轉送到不存在的子網域。"
 
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr ""
+msgstr "萬用字元: 設定外部 MX 主機來轉送郵件到不存在的子網域。"
 
 #, php-format
 msgid "Wildcards such as '%s' and '%s' are not allowed in username."
@@ -5608,10 +5599,10 @@ msgid "You are exceeding your subdomain limit."
 msgstr "您已經超出您的子網域數量限制。"
 
 msgid "You are not allowed to act on your own session."
-msgstr ""
+msgstr "您不被允許在您目前的連線上動作。"
 
 msgid "You are not allowed to update a protected plugin."
-msgstr ""
+msgstr "您不被允許上傳已保護的外掛。"
 
 msgid "You can only upload images."
 msgstr "您僅能上傳圖片"
@@ -5619,12 +5610,12 @@ msgstr "您僅能上傳圖片"
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
 "domain."
-msgstr ""
+msgstr "您不可以在選擇的網域中安裝軟體到htdocs 目錄以外的地方。"
 
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
+msgstr "您不可以新增電子郵件帳號。您已經分配您的郵件配額到其他信箱中。請先檢視您的配額分配。"
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "您不能刪除已經有任何客戶帳號的代理商。"
@@ -5634,13 +5625,13 @@ msgstr "您不能刪除最後一個可用的 IP位址"
 
 #, php-format
 msgid "You cannot forward %s on itself."
-msgstr ""
+msgstr "您不可以轉送 %s 到自己。"
 
 #, php-format
 msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
 " for the <b>%2$s</b> service."
-msgstr ""
+msgstr "您不可以移動 <b>%1$s</b> 到目標經銷商，<br />這已經有限制在 <b>%2$s</b> 服務中。"
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr ""
@@ -5891,13 +5882,13 @@ msgid ""
 msgstr "您要新密碼的需求已設定完成。您將會收到含有說明的電子郵件來完成這個動作。"
 
 msgid "ZB"
-msgstr ""
+msgstr "ZB"
 
 msgid "ZiB"
-msgstr ""
+msgstr "ZiB"
 
 msgid "Zip"
-msgstr ""
+msgstr "Zip"
 
 msgid "Zip code"
 msgstr "郵遞區號"
@@ -5924,7 +5915,7 @@ msgid "activated (Softwaredepot)"
 msgstr "已啟用 (軟體區)"
 
 msgid "addition"
-msgstr ""
+msgstr "新增"
 
 msgid "and"
 msgstr "和"
@@ -5952,6 +5943,9 @@ msgstr "網域別名"
 
 msgid "domain aliases"
 msgstr "網域別名"
+
+msgid "domain data"
+msgstr ""
 
 msgid "domains"
 msgstr "網域"
@@ -6040,6 +6034,9 @@ msgstr "kiB"
 msgid "mail"
 msgstr "郵件"
 
+msgid "mail accounts"
+msgstr ""
+
 msgid "missing alias"
 msgstr "遺失別名"
 
@@ -6111,7 +6108,7 @@ msgid "unlimited"
 msgstr "無限制"
 
 msgid "update"
-msgstr ""
+msgstr "更新"
 
 msgid "view aliases"
 msgstr "檢視網域別名"
@@ -6126,10 +6123,10 @@ msgid "yes"
 msgstr "是"
 
 msgid "{ADMIN} activated your software package"
-msgstr ""
+msgstr "{ADMIN} 已啟用您的軟體套件"
 
 msgid "{RESELLER} uploaded a new software package"
-msgstr ""
+msgstr "{RESELLER} 已上傳新的軟體套件"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

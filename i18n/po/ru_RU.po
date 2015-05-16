@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -88,11 +88,10 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr "\n\nУважаемый {NAME},\n\nНовая учетная запись i-MSCP была создана для Вас.\n\nИнформация по учетной записи:\n\nТип пользователя: {USERTYPE}\nИмя пользователя: {USERNAME}\nПароль: {PASSWORD}\n\nНе забудьте сменить Ваш пароль после первого входа в учетную запись.\n\nВы можете войти по адресу {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n\nСтатистика: http://{USERNAME}/{WEBSTATS_RPATH}\n(С теми же учетными данными)\n\nСпасибо за использование наших сервисов.\n\n___________________________\nКоманда i-MSCP\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -243,11 +242,11 @@ msgstr "%s / не ограничено"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr ""
+msgstr " IP адрес %s заблокирован на %s минут."
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
-msgstr ""
+msgstr " IP адрес %s ожидает %s секунд."
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -970,26 +969,26 @@ msgid "An email addresse is not valid in mail forward list."
 msgstr "Неверный синтаксис почтового адреса в списке перенаправления."
 
 msgid "An entry is defined twice."
-msgstr ""
+msgstr "Вхождение указано дважды."
 
 msgid "An error occurred during authentication."
 msgstr "При попытке аутентификации обнаружена ошибка."
 
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "Произошла неожиданная ошибка."
 
 msgid "An unexpected error occurred."
 msgstr "Произошла неожиданная ошибка."
 
 msgid ""
 "An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
+msgstr "Произошла неожиданная ошибка. Перейдите в отладчик, чтобы получить подробности"
 
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr "Обнаружена непредвиденная ошибка. Пожалуйста свяжитесь с Вашим администратором."
 
 msgid "An unexpected error occurred. Please contact your reseller."
-msgstr ""
+msgstr "Произошла непредвиденная ошибка. Пожалуйста свяжитесь с Вашим реселлером."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1003,7 +1002,7 @@ msgid "Anti-Rootkits Logs"
 msgstr "Логи антируткита"
 
 msgid "Any"
-msgstr ""
+msgstr "Любой"
 
 msgid "Application installer"
 msgstr "Установка приложений"
@@ -1073,7 +1072,7 @@ msgstr "Вы уверены, что хотите удалить %s алиас д
 msgid ""
 "Are you sure you want to delete the %s domain alias? Be aware that any "
 "related entity will be also removed."
-msgstr ""
+msgstr "Вы действительно хотите удалить алиас домена %s? Убедитесь, что все зависимости также будут удалены."
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1571,7 +1570,7 @@ msgid "Current password is invalid."
 msgstr "Текущий пароль неверен."
 
 msgid "Custom DNS errors"
-msgstr ""
+msgstr "Ошибки внешних DNS"
 
 msgid "Custom DNS record"
 msgstr "Пользовательские DNS"
@@ -2073,7 +2072,7 @@ msgid ""
 msgstr "Домен: Установите запись DNS MX для переадресации с Вашего текущего домена, включая поддомены."
 
 msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr ""
+msgstr "Домен: Настройте внешний МХ-хост, чтобы перенести почту вашего домена."
 
 msgid "Domains"
 msgstr "Домены"
@@ -2260,14 +2259,9 @@ msgstr "Включить автоответчик"
 msgid "Enabled"
 msgstr "Включено"
 
-msgid "Enabled for SQL databases"
-msgstr "Включено для баз данных"
-
-msgid "Enabled for domain data"
-msgstr "Включено для данных домена"
-
-msgid "Enabled for domain data and databases"
-msgstr "Включено для данных домена и баз данных"
+#, php-format
+msgid "Enabled for: %s"
+msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2479,9 +2473,6 @@ msgstr "Учетная запись FTP с таким именем уже сущ
 
 msgid "Ftp accounts"
 msgstr "Учетные записи FTP"
-
-msgid "Full"
-msgstr "Домен + SQL"
 
 msgid "GB"
 msgstr "Гб"
@@ -2852,7 +2843,7 @@ msgid "Invalid name."
 msgstr "Неверное имя."
 
 msgid "Invalid payload received from GitHub"
-msgstr ""
+msgstr "Неверный запрос получен из GitHub"
 
 msgid "Invalid private key or passphrase."
 msgstr "Неверный приватный ключ или пароль."
@@ -3344,7 +3335,7 @@ msgid "Not used"
 msgstr "Не используется"
 
 msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr ""
+msgstr "Замечание: Вы не можете смешивать настройки 'Спам-фильтра' и 'Домена'"
 
 msgid "Note: You cannot mix Spam filter and domain options"
 msgstr "Замечание: Вы не можете совмещать фильтр спама и настройки домена"
@@ -3716,7 +3707,7 @@ msgstr "Плагин %s не может быть защищен."
 
 #, php-format
 msgid "Plugin %s cannot be reconfigured."
-msgstr ""
+msgstr "Плагин %s не может быть перенастроен."
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
@@ -3748,7 +3739,7 @@ msgstr "Плагин %s защищен"
 
 #, php-format
 msgid "Plugin %s reconfigured."
-msgstr ""
+msgstr "Плагин %s перенастроен."
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
@@ -3784,7 +3775,7 @@ msgstr "Плагин %s обновлен."
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
-msgstr ""
+msgstr "Менеджер плагинов: Откат плагина %s не разрешен."
 
 #, php-format
 msgid "Plugin Manager: Unable to change the %s plugin: %s"
@@ -3794,7 +3785,7 @@ msgstr "Менеджер плагинов: Невозможно изменить
 msgid ""
 "Plugin Manager: Unable to delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно удалить файлы плагина %s. Вы должны запустить скрипт set-gui-permissions.pl и попробовать снова."
 
 #, php-format
 msgid ""
@@ -3826,7 +3817,7 @@ msgid "Plugin errors"
 msgstr "Ошибки плагинов"
 
 msgid "Plugin has been successfully uploaded."
-msgstr ""
+msgstr "Плагин был успешно загружен."
 
 msgid "Plugin item errors"
 msgstr "Ошибки плагинов"
@@ -3852,7 +3843,7 @@ msgstr "Плагины подключаются в i-MSCP для расшире�
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) reconfigured, and %s plugin(s) deleted."
-msgstr ""
+msgstr "Список плагинов обновлен: %s новый(ых) плагин(ов) найден(о), %s плагин(ов) обновлен(о), %s плагин(ов) перенастроен(о), и %s плагин(ов) удален(о)."
 
 msgid "Port"
 msgstr "Порт"
@@ -3957,7 +3948,7 @@ msgid "Rebuild languages index"
 msgstr "Перестроить языковой индекс"
 
 msgid "Reconfiguration in progress..."
-msgstr ""
+msgstr "Происходит настройка..."
 
 msgid "Record data"
 msgstr "Данные записи"
@@ -4584,7 +4575,7 @@ msgstr "Фильтр спама: Установите запись MX для п�
 msgid ""
 "Spam Filter: Setup an external MX host to relay mail of your entire domain "
 "but retains our server as final mailhost."
-msgstr ""
+msgstr "Фильтр спама: Настройте внешний MX-хост, чтобы получат почту для вашего существующего домена, но сохранять наш сервер в качестве конечного почтового шлюза."
 
 msgid "Sql user successfully deleted."
 msgstr "SQL пользователь успешно удален."
@@ -4810,7 +4801,7 @@ msgstr "Лимит %s для этого клиента не может быть 
 
 #, php-format
 msgid "The %s plugin version %s is not compatible with your i-MSCP version."
-msgstr ""
+msgstr "Ваша версия i-MSCP несовместима с %s плагином версии %s."
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
@@ -5068,7 +5059,7 @@ msgstr "Ссылка на панель управления"
 
 #, php-format
 msgid "Unable to %s the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно %s плагин %s: %s"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5090,10 +5081,10 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Невозможно создать каталог 'LC_MESSAGES' для языкового файла."
 
 msgid "Unable to delete i-MSCP info file."
-msgstr ""
+msgstr "Невозможно удалить файл информации i-MSCP."
 
 msgid "Unable to extract info.php file"
-msgstr ""
+msgstr "Невозможно извлечь файл info.php"
 
 msgid "Unable to extract plugin archive."
 msgstr "Невозможно извлечь архив с плагином."
@@ -5119,7 +5110,7 @@ msgid "Unable to get update info from Github"
 msgstr "Невозможно получить информацию об обновлении из Github"
 
 msgid "Unable to load i-MSCP info file."
-msgstr ""
+msgstr "Невозможно загрузить файл информации i-MSCP."
 
 msgid "Unable to move file."
 msgstr "Не удалось переместить файл."
@@ -5132,7 +5123,7 @@ msgstr "Невозможно прочесть индексный файл Web-р
 
 #, php-format
 msgid "Unable to read the %s file."
-msgstr ""
+msgstr "Невозможно прочесть файл %s"
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
@@ -5219,7 +5210,7 @@ msgstr "Неизвестное действие: %s"
 
 #, php-format
 msgid "Unknown bruteforce detection type: %s"
-msgstr ""
+msgstr "Неизвесный тип обнаружения атаки перебором: %s"
 
 msgid "Unknown language name."
 msgstr "Неизвестное имя языкового файла."
@@ -5505,7 +5496,7 @@ msgid ""
 msgstr "Когда разрешено, скрипт может вызывать функцию PHP exec(). Функция требуется многими приложениями, но может вызвать некоторые проблемы безопасности"
 
 msgid "Wildcard"
-msgstr ""
+msgstr "Групповой символ"
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
@@ -5513,7 +5504,7 @@ msgstr "Групповой символ: Настройте записи MX дл
 
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr ""
+msgstr "Спецсимволы: Настройте внешний MX-хост, чтобы получать почту для ваших несуществующих поддоменов."
 
 #, php-format
 msgid "Wildcards such as '%s' and '%s' are not allowed in username."
@@ -5925,7 +5916,7 @@ msgid "activated (Softwaredepot)"
 msgstr "активирован (Репозиторий)"
 
 msgid "addition"
-msgstr ""
+msgstr "добавить"
 
 msgid "and"
 msgstr "и"
@@ -5953,6 +5944,9 @@ msgstr "алиас домена"
 
 msgid "domain aliases"
 msgstr "алиасы домена"
+
+msgid "domain data"
+msgstr ""
 
 msgid "domains"
 msgstr "домены"
@@ -6041,6 +6035,9 @@ msgstr "Кб"
 msgid "mail"
 msgstr "почта"
 
+msgid "mail accounts"
+msgstr ""
+
 msgid "missing alias"
 msgstr "отсутствующий алиас"
 
@@ -6112,7 +6109,7 @@ msgid "unlimited"
 msgstr "не ограничено"
 
 msgid "update"
-msgstr ""
+msgstr "обновить"
 
 msgid "view aliases"
 msgstr "показать алиасы"

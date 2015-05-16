@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-04 23:39+0200\n"
-"PO-Revision-Date: 2015-05-04 21:42+0000\n"
+"POT-Creation-Date: 2015-05-16 17:03+0200\n"
+"PO-Revision-Date: 2015-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/i-MSCP/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -85,8 +85,7 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
-"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
-"(Same username and password than above)\n"
+"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
 msgstr ""
@@ -2257,13 +2256,8 @@ msgstr ""
 msgid "Enabled"
 msgstr "مفعّل"
 
-msgid "Enabled for SQL databases"
-msgstr ""
-
-msgid "Enabled for domain data"
-msgstr ""
-
-msgid "Enabled for domain data and databases"
+#, php-format
+msgid "Enabled for: %s"
 msgstr ""
 
 msgid ""
@@ -2476,9 +2470,6 @@ msgstr ""
 
 msgid "Ftp accounts"
 msgstr "حسابات الاف تى بى"
-
-msgid "Full"
-msgstr ""
 
 msgid "GB"
 msgstr ""
@@ -5951,6 +5942,9 @@ msgstr ""
 msgid "domain aliases"
 msgstr ""
 
+msgid "domain data"
+msgstr ""
+
 msgid "domains"
 msgstr "النطاقات"
 
@@ -6036,6 +6030,9 @@ msgid "kiB"
 msgstr ""
 
 msgid "mail"
+msgstr ""
+
+msgid "mail accounts"
 msgstr ""
 
 msgid "missing alias"
