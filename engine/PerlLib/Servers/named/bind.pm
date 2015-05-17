@@ -74,10 +74,10 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedPreInstall', 'bind9');
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedPreInstall', 'bind');
 	return $rs if $rs;
 
-	$self->{'eventManager'}->trigger('afterNamedPreInstall', 'bind9');
+	$self->{'eventManager'}->trigger('afterNamedPreInstall', 'bind');
 }
 
 =item install()
@@ -142,7 +142,6 @@ sub uninstall
 	return $rs if $rs;
 
 	require Servers::named::bind::uninstaller;
-
 	$rs = Servers::named::bind::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
