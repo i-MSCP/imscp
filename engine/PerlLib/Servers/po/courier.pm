@@ -125,7 +125,7 @@ sub postinstall
 	$serviceMngr->enable($self->{'config'}->{'IMAPD_SSL_SNAME'});
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Courier' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Courier' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterPoPostinstall', 'courier');

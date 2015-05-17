@@ -129,7 +129,7 @@ sub postinstall
 	$serviceMngr->enable($self->{'config'}->{'HTTPD_SNAME'});
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Httpd (Apache/php5-fpm)' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Httpd (Apache/php5-fpm)' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterHttpdPostInstall', 'apache_php_fpm');

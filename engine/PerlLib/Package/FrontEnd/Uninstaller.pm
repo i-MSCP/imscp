@@ -26,8 +26,10 @@ package Package::FrontEnd::Uninstaller;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::File;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
+use iMSCP::Service;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
@@ -187,6 +189,17 @@ sub _removePhpConfig
 sub _removeInitScript
 {
 	my $self = $_[0];
+
+	iMSCP::Service->getInstance()->remove('imscp_panel');
+
+	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override') {
+		my $file = sprintf($pFormat, 'imscp_panel');
+
+		if(-f $file) {
+			my $rs = iMSCP::File->new( filename => $file )->delFile();
+			return $rs if $rs;
+		}
+	}
 
 	0;
 }

@@ -120,7 +120,7 @@ sub postinstall
 	$serviceMngr->enable('imscp_panel');
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Frontend (Nginx)' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Frontend (Nginx)' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterFrontEndPostInstall');
