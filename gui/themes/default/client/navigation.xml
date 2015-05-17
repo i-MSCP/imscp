@@ -268,7 +268,7 @@
                 </overview>
                 <webstats>
                     <label>Web statistics</label>
-                    <uri>WEBSTATS_PATH/</uri>
+                    <uri>{WEBSTATS_PATH}</uri>
                     <target>_blank</target>
                     <privilege_callback name="customerHasFeature" param="webstats"/>
                 </webstats>
