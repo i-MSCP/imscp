@@ -84,9 +84,6 @@ sub preinstall
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdPreInstall', 'apache_itk');
 	return $rs if $rs;
 
-	$rs = $self->stop();
-	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterHttpdPreInstall', 'apache_itk');
 }
 
@@ -102,8 +99,14 @@ sub install
 {
 	my $self = $_[0];
 
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstall', 'apache_itk');
+	return $rs if $rs;
+
 	require Servers::httpd::apache_itk::installer;
-	Servers::httpd::apache_itk::installer->getInstance()->install();
+	$rs = Servers::httpd::apache_itk::installer->getInstance()->install();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterHttpdInstall', 'apache_itk');
 }
 
 =item postinstall()
@@ -120,6 +123,8 @@ sub postinstall
 
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdPostInstall', 'apache_itk');
 	return $rs if $rs;
+
+	iMSCP::Service->getInstance()->enable($self->{'config'}->{'HTTPD_SNAME'});
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Httpd (Apache)' ]; 0; }
@@ -140,10 +145,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->stop();
-	return $rs if $rs;
-
-	$rs = $self->{'eventManager'}->trigger('beforeHttpdUninstall', 'apache_itk');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdUninstall', 'apache_itk');
 	return $rs if $rs;
 
 	require Servers::httpd::apache_itk::uninstaller;
@@ -153,7 +155,29 @@ sub uninstall
 	$rs = $self->{'eventManager'}->trigger('afterHttpdUninstall', 'apache_itk');
 	return $rs if $rs;
 
-	$self->start();
+	$self->restart();
+}
+
+=item setEnginePermissions()
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdSetEnginePermissions');
+	return $rs if $rs;
+
+	require Servers::httpd::apache_itk::installer;
+	$rs = Servers::httpd::apache_itk::installer->getInstance()->setEnginePermissions();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterHttpdSetEnginePermissions');
 }
 
 =item addUser(\%data)
@@ -909,20 +933,6 @@ sub addIps
 	}
 
 	0;
-}
-
-=item setEnginePermissions()
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions
-{
-	require Servers::httpd::apache_itk::installer;
-	Servers::httpd::apache_itk::installer->getInstance()->setEnginePermissions();
 }
 
 =item buildConf($cfgTpl, $filename [, \%data ])

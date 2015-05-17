@@ -49,8 +49,16 @@ use parent 'Common::SingletonClass';
 
 sub install
 {
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldInstall', 'mysql');
+	return $rs if $rs;
+
 	require Servers::sqld::mysql::installer;
-	Servers::sqld::mysql::installer->getInstance()->install();
+	$rs = Servers::sqld::mysql::installer->getInstance()->install();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterSqldInstall', 'mysql');
 }
 
 =item postinstall()
@@ -111,9 +119,16 @@ sub uninstall
 
 sub setEnginePermissions
 {
-	require Servers::sqld::mysql::installer;
+	my $self = $_[0];
 
-	Servers::sqld::mysql::installer->getInstance()->setEnginePermissions();
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldSetEnginePermissions');
+	return $rs if $rs;
+
+	require Servers::sqld::mysql::installer;
+	$rs = Servers::sqld::mysql::installer->getInstance()->setEnginePermissions();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterSqldSetEnginePermissions');
 }
 
 =item restart()

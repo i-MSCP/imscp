@@ -126,16 +126,13 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstall', 'apache_fcgid');
-	return $rs if $rs;
-
 	# Saving all system configuration files if they exists
 	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
-		$rs = $self->_bkpConfFile($_);
+		my $rs = $self->_bkpConfFile($_);
 		return $rs if $rs;
 	}
 
-	$rs = $self->_setApacheVersion();
+	my $rs = $self->_setApacheVersion();
 	return $rs if $rs;
 
 	$rs = $self->_makeDirs();
@@ -156,10 +153,7 @@ sub install
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
-	$rs = $self->_oldEngineCompatibility();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdInstall', 'apache_fcgid');
+	$self->_oldEngineCompatibility();
 }
 
 =item setEnginePermissions
@@ -178,16 +172,10 @@ sub setEnginePermissions
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 	my $fcgiDir = $self->{'config'}->{'PHP_STARTER_DIR'};
 
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdSetEnginePermissions');
+	my $rs = setRights($fcgiDir, { user => $rootUName, group => $rootGName, mode => '0555' });
 	return $rs if $rs;
 
-	$rs = setRights($fcgiDir, { 'user' => $rootUName, 'group' => $rootGName, mode => '0555' });
-	return $rs if $rs;
-
-	$rs = setRights('/usr/local/sbin/vlogger', { 'user' => $rootUName, 'group' => $rootGName, mode => '0750' });
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdSetEnginePermissions');
+	setRights('/usr/local/sbin/vlogger', { user => $rootUName, group => $rootGName, mode => '0750' });
 }
 
 =back

@@ -58,13 +58,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldInstall', 'mysql');
-	return $rs if $rs;
-
-	$rs = $self->_createConfig();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterSqldInstall', 'mysql');
+	$self->_createConfig();
 }
 
 =item setEnginePermissions()
@@ -79,19 +73,16 @@ sub setEnginePermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldSetEnginePermissions');
-	return $rs if $rs;
-
 	my $confDir = '/etc/mysql/conf.d';
 
 	if(-f "$confDir/imscp.cnf") {
-		$rs = setRights( "$confDir/imscp.cnf", {
+		my $rs = setRights( "$confDir/imscp.cnf", {
 			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
 		);
 		return $rs if $rs;
 	}
 
-	$self->{'eventManager'}->trigger('afterSqldSetEnginePermissions');
+	0;
 }
 
 =back

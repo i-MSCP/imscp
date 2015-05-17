@@ -176,10 +176,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'dovecot');
-	return $rs if $rs;
-
-	$rs = $self->_bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
+	my $rs = $self->_bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
 	return $rs if $rs;
 
 	$rs = $self->_setupSqlUser();
@@ -197,10 +194,7 @@ sub install
 		return $rs if $rs;
 	}
 
-	$rs = $self->_oldEngineCompatibility();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoInstall', 'dovecot');
+	$self->_oldEngineCompatibility();
 }
 
 =back

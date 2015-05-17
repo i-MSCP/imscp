@@ -72,8 +72,16 @@ sub registerSetupListeners
 
 sub preinstall
 {
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaPreInstall', 'postfix');
+	return $rs if $rs;
+
 	require Servers::mta::postfix::installer;
-	Servers::mta::postfix::installer->getInstance()->preinstall();
+	$rs = Servers::mta::postfix::installer->getInstance()->preinstall();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterMtaPreInstall', 'postfix');
 }
 
 =item install()
@@ -86,8 +94,16 @@ sub preinstall
 
 sub install
 {
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaInstall', 'postfix');
+	return $rs if $rs;
+
 	require Servers::mta::postfix::installer;
-	Servers::mta::postfix::installer->getInstance()->install();
+	$rs = Servers::mta::postfix::installer->getInstance()->install();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterMtaInstall', 'postfix');
 }
 
 =item uninstall()
@@ -130,6 +146,8 @@ sub postinstall
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaPostinstall', 'postfix');
 	return $rs if $rs;
 
+	iMSCP::Service->getInstance()->enable($self->{'config'}->{'MTA_SNAME'});
+
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Postfix' ]; 0; }
 	);
@@ -147,8 +165,16 @@ sub postinstall
 
 sub setEnginePermissions
 {
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaSetEnginePermissions');
+	return $rs if $rs;
+
 	require Servers::mta::postfix::installer;
-	Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
+	$rs = Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
 }
 
 =item restart()

@@ -268,23 +268,24 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedInstall', 'bind');
-	return $rs if $rs;
-
 	for('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
 		# Handle case where the file is not provided by specfic distribution
 		next unless defined $self->{'config'}->{$_} && $self->{'config'}->{$_} ne '';
 
-		$rs = $self->_bkpConfFile($self->{'config'}->{$_});
+		my $rs = $self->_bkpConfFile($self->{'config'}->{$_});
 		return $rs if $rs;
 	}
 
-	$rs ||= $self->_switchTasks();
-	$rs ||= $self->_buildConf();
-	$rs ||= $self->_saveConf();
-	$rs ||= $self->_oldEngineCompatibility();
+	my $rs = $self->_switchTasks();
+	return $rs if $rs;
 
-	$rs ||= $self->{'eventManager'}->trigger('afterNamedInstall', 'bind');
+	$rs = $self->_buildConf();
+	return $rs if $rs;
+
+	$rs = $self->_saveConf();
+	return $rs if $rs;
+
+	$self->_oldEngineCompatibility();
 }
 
 =back

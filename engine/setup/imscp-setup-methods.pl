@@ -1733,7 +1733,7 @@ sub setupServices
 		$serviceMngr->getProvider('sysvinit')->remove('imscp_network');
 	}
 
-	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_network', 'imscp_panel';
+	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_network';
 
 	0;
 }

@@ -57,7 +57,6 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	require Package::FrontEnd::Installer;
-
 	Package::FrontEnd::Installer->getInstance()->registerSetupListeners($eventManager);
 }
 
@@ -74,9 +73,6 @@ sub preinstall
 	my $self = $_[0];
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndPreInstall');
-	return $rs if $rs;
-
-	$rs = $self->stop();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterFrontEndPreInstall');
@@ -98,7 +94,6 @@ sub install
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
-
 	$rs = Package::FrontEnd::Installer->getInstance()->install();
 	return $rs if $rs;
 
@@ -119,6 +114,10 @@ sub postinstall
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndPostInstall');
 	return $rs if $rs;
+
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->enable($self->{'config'}->{'HTTPD_SNAME'});
+	$serviceMngr->enable('imscp_panel');
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Frontend (Nginx)' ]; 0; }
@@ -143,7 +142,6 @@ sub uninstall
 	return $rs if $rs;
 
 	require Package::FrontEnd::Uninstaller;
-
 	$rs = Package::FrontEnd::Uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
@@ -166,7 +164,6 @@ sub setGuiPermissions
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
-
 	$rs = Package::FrontEnd::Installer->getInstance()->setGuiPermissions();
 	return $rs if $rs;
 
@@ -189,7 +186,6 @@ sub setEnginePermissions
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
-
 	$rs = Package::FrontEnd::Installer->getInstance()->setEnginePermissions();
 	return $rs if $rs;
 

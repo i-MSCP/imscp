@@ -178,9 +178,6 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'courier');
-	return $rs if $rs;
-
 	for(
 		"/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}",
 		"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authdaemonrc",
@@ -188,11 +185,11 @@ sub install
 		"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/self->{'config'}->{'COURIER_IMAP_SSL'}",
 		"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$self->{'config'}->{'COURIER_POP_SSL'}"
 	) {
-		$rs = $self->_bkpConfFile($_);
+		my $rs = $self->_bkpConfFile($_);
 		return $rs if $rs;
 	}
 
-	$rs = $self->_setupSqlUser();
+	my $rs = $self->_setupSqlUser();
 	return $rs if $rs;
 
 	$rs = $self->_overrideAuthdaemonInitScript();
@@ -210,10 +207,7 @@ sub install
 		return $rs if $rs;
 	}
 
-	$rs = $self->_oldEngineCompatibility();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoInstall', 'courier');
+	$self->_oldEngineCompatibility();
 }
 
 =item setEnginePermissions()
@@ -228,10 +222,7 @@ sub setEnginePermissions
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoSetEnginePermissions');
-	return $rs if $rs;
-
-	$rs = setRights(
+	setRights(
 		$self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
 		{
 			'user' => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
@@ -239,9 +230,6 @@ sub setEnginePermissions
 			'mode' => '0750'
 		}
 	);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoSetEnginePermissions');
 }
 
 =head1 EVENT LISTENERS

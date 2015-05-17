@@ -74,9 +74,6 @@ sub preinstall
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdPreinstall');
 	return $rs if $rs;
 
-	$rs = $self->stop();
-	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterFtpdPreinstall');
 }
 
@@ -90,8 +87,16 @@ sub preinstall
 
 sub install
 {
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdInstall', 'proftpd');
+	return $rs if $rs;
+
 	require Servers::ftpd::proftpd::installer;
-	Servers::ftpd::proftpd::installer->getInstance()->install();
+	$rs = Servers::ftpd::proftpd::installer->getInstance()->install();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterFtpdInstall', 'proftpd');
 }
 
 =item postinstall()
@@ -108,6 +113,8 @@ sub postinstall
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdPostInstall', 'proftpd');
 	return $rs if $rs;
+
+	iMSCP::Service->getInstance()->enable($self->{'config'}->{'FTPD_SNAME'});
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Proftpd' ]; 0; }
@@ -135,12 +142,9 @@ sub uninstall
 	$rs = Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
-	$rs = $self->{'eventManager'}->trigger('afterFtpdUninstall', 'proftpd');
-	return $rs if $rs;
-
 	$self->{'restart'} = 1;
 
-	0;
+	$self->{'eventManager'}->trigger('afterFtpdUninstall', 'proftpd');
 }
 
 =item addUser(\%data)

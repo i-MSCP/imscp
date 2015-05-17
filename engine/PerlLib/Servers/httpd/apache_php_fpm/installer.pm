@@ -129,10 +129,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
-	return $rs if $rs;
-
-	$rs = $self->_setApacheVersion();
+	my $rs = $self->_setApacheVersion();
 	return $rs if $rs;
 
 	$rs = $self->_makeDirs();
@@ -156,10 +153,7 @@ sub install
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
-	$rs = $self->_oldEngineCompatibility();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
+	$self->_oldEngineCompatibility();
 }
 
 =item setEnginePermissions
@@ -172,18 +166,9 @@ sub install
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
-
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdSetEnginePermissions');
-	return $rs if $rs;
-
-	$rs = setRights('/usr/local/sbin/vlogger', { 'user' => $rootUName, 'group' => $rootGName, mode => '0750' });
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdSetEnginePermissions');
+	setRights('/usr/local/sbin/vlogger', {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
+	);
 }
 
 =back

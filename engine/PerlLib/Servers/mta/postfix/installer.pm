@@ -165,15 +165,10 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaPreInstall', 'postfix');
-
-	$rs = $self->_addUsersAndGroups();
+	my $rs = $self->_addUsersAndGroups();
 	return $rs if $rs;
 
-	$rs = $self->_makeDirs();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaPreInstall', 'postfix');
+	$self->_makeDirs();
 }
 
 =item install()
@@ -188,10 +183,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaInstall', 'postfix');
-	return $rs if $rs;
-
-	$rs = $self->_setupSqlUser();
+	my $rs = $self->_setupSqlUser();
 	return $rs if $rs;
 
 	$rs = $self->_buildConf();
@@ -206,10 +198,7 @@ sub install
 	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
-	$rs = $self->_saveConf();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaInstall', 'postfix');
+	$self->_saveConf();
 }
 
 =item setEnginePermissions()
@@ -230,11 +219,8 @@ sub setEnginePermissions
 	my $mtaUName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
 	my $mtaGName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaSetEnginePermissions');
-	return $rs if $rs;
-
 	# eg. /etc/postfix/imscp
-	$rs = setRights(
+	my $rs = setRights(
 		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
 		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0755', 'filemode' => '0644', 'recursive' => 1 }
 	);
@@ -269,10 +255,7 @@ sub setEnginePermissions
 	return $rs if $rs;
 
 	# eg. /usr/sbin/maillogconvert.pl
-	$rs = setRights('/usr/sbin/maillogconvert.pl', { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' });
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
+	setRights('/usr/sbin/maillogconvert.pl', { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' });
 }
 
 =back

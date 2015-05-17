@@ -69,6 +69,7 @@ INSTALLER
 	Added: package_conflict field which allows to declare conflicting package that must be pre-removed
 	Added: repository_conflict attribute which allows to declare a conflicting repository that must be removed
 	Added: Update notices
+	Fixed: Ensure that all required services are enabled
 	Fixed: Missing Email::Simple Perl module (no longer required)
 	Fixed: Use of uninitialized value $dbPass in string (imscp/engine/setup/imscp-setup-methods.pl line 482)
 	Fixed: Wrong package name in preseed file (RainLoop)

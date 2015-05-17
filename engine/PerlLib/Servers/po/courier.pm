@@ -77,9 +77,6 @@ sub preinstall
 	my $rs = $self->{'eventManager'}->trigger('beforePoPreinstall', 'courier');
 	return $rs if $rs;
 
-	$rs = $self->stop();
-	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterPoPreinstall', 'courier');
 }
 
@@ -93,8 +90,16 @@ sub preinstall
 
 sub install
 {
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'courier');
+	return $rs if $rs;
+
 	require Servers::po::courier::installer;
-	Servers::po::courier::installer->getInstance()->install();
+	$rs = Servers::po::courier::installer->getInstance()->install();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterPoInstall', 'courier');
 }
 
 =item postinstall()
@@ -111,6 +116,13 @@ sub postinstall
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'courier');
 	return $rs if $rs;
+
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->enable($self->{'config'}->{'AUTHDAEMON_SNAME'});
+	$serviceMngr->enable($self->{'config'}->{'POPD_SNAME'});
+	$serviceMngr->enable($self->{'config'}->{'POPD_SSL_SNAME'});
+	$serviceMngr->enable($self->{'config'}->{'IMAPD_SNAME'});
+	$serviceMngr->enable($self->{'config'}->{'IMAPD_SSL_SNAME'});
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Courier' ]; 0; }
@@ -155,8 +167,16 @@ sub uninstall
 
 sub setEnginePermissions
 {
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforePoSetEnginePermissions');
+	return $rs if $rs;
+
 	require Servers::po::courier::installer;
-	Servers::po::courier::installer->getInstance()->setEnginePermissions();
+	$rs = Servers::po::courier::installer->getInstance()->setEnginePermissions();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterPoSetEnginePermissions');
 }
 
 =item postaddMail(\%data)

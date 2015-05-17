@@ -162,10 +162,7 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdInstall', 'proftpd');
-	return $rs if $rs;
-
-	$rs = $self->_bkpConfFile($self->{'config'}->{'FTPD_CONF_FILE'});
+	my $rs = $self->_bkpConfFile($self->{'config'}->{'FTPD_CONF_FILE'});
 	return $rs if $rs;
 
 	$rs = $self->_setVersion();
@@ -183,10 +180,7 @@ sub install
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
-	$rs = $self->_oldEngineCompatibility();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterFtpdInstall', 'proftpd');
+	$self->_oldEngineCompatibility();
 }
 
 =back

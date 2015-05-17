@@ -61,6 +61,24 @@ sub registerSetupListeners
 	Servers::po::dovecot::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
+=item preinstall()
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforePoPreinstall', 'dovecot');
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterPoPreinstall', 'dovecot');
+}
+
 =item install()
 
  Process install tasks
@@ -71,8 +89,16 @@ sub registerSetupListeners
 
 sub install
 {
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'dovecot');
+	return $rs if $rs;
+
 	require Servers::po::dovecot::installer;
-	Servers::po::dovecot::installer->getInstance()->install();
+	$rs = Servers::po::dovecot::installer->getInstance()->install();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterPoInstall', 'dovecot');
 }
 
 =item postinstall()
@@ -89,6 +115,8 @@ sub postinstall
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'dovecot');
 	return $rs if $rs;
+
+	iMSCP::Service->getInstance()->enable($self->{'config'}->{'DOVECOT_SNAME'});
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Dovecot' ]; 0; }

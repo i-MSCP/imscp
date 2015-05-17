@@ -84,9 +84,6 @@ sub preinstall
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdPreInstall', 'apache_php_fpm');
 	return $rs if $rs;
 
-	$rs = $self->stop();
-	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterHttpdPreInstall', 'apache_php_fpm');
 }
 
@@ -100,8 +97,16 @@ sub preinstall
 
 sub install
 {
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstall', 'apache_php_fpm');
+	return $rs if $rs;
+
 	require Servers::httpd::apache_php_fpm::installer;
-	Servers::httpd::apache_php_fpm::installer->getInstance()->install();
+	$rs = Servers::httpd::apache_php_fpm::installer->getInstance()->install();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
 }
 
 =item postinstall()
@@ -118,6 +123,10 @@ sub postinstall
 
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdPostInstall', 'apache_php_fpm');
 	return $rs if $rs;
+
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->enable($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+	$serviceMngr->enable($self->{'config'}->{'HTTPD_SNAME'});
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Httpd (Apache/php5-fpm)' ]; 0; }
@@ -138,10 +147,7 @@ sub uninstall
 {
 	my $self = $_[0];
 
-	my $rs = $self->stop();
-	return $rs if $rs;
-
-	$rs = $self->{'eventManager'}->trigger('beforeHttpdUninstall', 'apache_php_fpm');
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdUninstall', 'apache_php_fpm');
 	return $rs if $rs;
 
 	require Servers::httpd::apache_php_fpm::uninstaller;
@@ -151,7 +157,29 @@ sub uninstall
 	$rs = $self->{'eventManager'}->trigger('afterHttpdUninstall', 'apache_php_fpm');
 	return $rs if $rs;
 
-	$self->start();
+	$self->restart();
+}
+
+=item setEnginePermissions()
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdSetEnginePermissions');
+	return $rs if $rs;
+
+	require Servers::httpd::apache_php_fpm::installer;
+	$rs = Servers::httpd::apache_php_fpm::installer->getInstance()->setEnginePermissions();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterHttpdSetEnginePermissions');
 }
 
 =item addUser(\%data)
@@ -910,20 +938,6 @@ sub addIps
 	}
 
 	0;
-}
-
-=item setEnginePermissions()
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions
-{
-	require Servers::httpd::apache_php_fpm::installer;
-	Servers::httpd::apache_php_fpm::installer->getInstance()->setEnginePermissions();
 }
 
 =item buildConf($cfgTpl, $filename [, \%data ])

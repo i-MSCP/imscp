@@ -59,8 +59,25 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	require Servers::named::bind::installer;
-
 	Servers::named::bind::installer->getInstance()->registerSetupListeners($eventManager);
+}
+
+=item preinstall()
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedPreInstall', 'bind9');
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterNamedPreInstall', 'bind9');
 }
 
 =item install()
@@ -73,9 +90,16 @@ sub registerSetupListeners
 
 sub install
 {
-	require Servers::named::bind::installer;
+	my $self = $_[0];
 
-	Servers::named::bind::installer->getInstance()->install();
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedInstall', 'bind');
+	return $rs if $rs;
+
+	require Servers::named::bind::installer;
+	$rs = Servers::named::bind::installer->getInstance()->install();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterNamedInstall', 'bind');
 }
 
 =item postinstall()
@@ -92,6 +116,8 @@ sub postinstall
 
 	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostInstall');
 	return $rs if $rs;
+
+	iMSCP::Service->getInstance()->enable($self->{'config'}->{'NAMED_SNAME'});
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Bind9' ]; 0; }

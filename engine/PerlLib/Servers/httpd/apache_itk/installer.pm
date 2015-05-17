@@ -80,16 +80,13 @@ sub install
 {
 	my $self = $_[0];
 
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstall', 'apache_itk');
-	return $rs if $rs;
-
 	# Saving all system configuration files if they exists
 	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
-		$rs = $self->_bkpConfFile($_);
+		my $rs = $self->_bkpConfFile($_);
 		return $rs if $rs;
 	}
 
-	$rs = $self->_setApacheVersion();
+	my $rs = $self->_setApacheVersion();
 	return $rs if $rs;
 
 	$rs = $self->_makeDirs();
@@ -111,9 +108,6 @@ sub install
 	return $rs if $rs;
 
 	$self->_oldEngineCompatibility();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdInstall', 'apache_itk');
 }
 
 =item setEnginePermissions
@@ -126,18 +120,9 @@ sub install
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
-
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-
-	my $rs = $self->{'eventManager'}->trigger('beforeHttpdSetEnginePermissions');
-	return $rs if $rs;
-
-	$rs = setRights('/usr/local/sbin/vlogger', { 'user' => $rootUName, 'group' => $rootGName, mode => '0750' });
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdSetEnginePermissions');
+	setRights('/usr/local/sbin/vlogger', {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
+	);
 }
 
 =back
