@@ -97,6 +97,8 @@ sub preinstall
 
 sub install
 {
+	my $self = $_[0];
+
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstall', 'apache_fcgid');
 	return $rs if $rs;
 
