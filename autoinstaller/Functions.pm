@@ -576,7 +576,7 @@ sub _buildDistributionFiles
 	$rs = _buildEngineFiles();
 	return $rs if $rs;
 
-	_buildFrontendFiles()
+	_buildFrontendFiles();
 }
 
 =item _buildLayout()
