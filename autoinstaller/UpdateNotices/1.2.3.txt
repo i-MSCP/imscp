@@ -37,6 +37,6 @@ You can stop the i-MSCP services as follow:
 
 \ZbNote:\ZB The imscp_panel service is only available if you're upgrading from a version released under the i-MSCP serie \Zb1.2.x\ZB
 
-\Zb\Z4 /root/.my.cnf file\Zn\ZB
+\Zb\Z4## /root/.my.cnf file\Zn\ZB
 
 The \Zb/root/.my.cnf\ZB file is no longer used by i-MSCP. Because this is a local file, the i-MSCP installer will not remove it during update. Thus, if you have a database connection problem with the i-MSCP backup scripts after update, just remove the mysqldump section from this file.
