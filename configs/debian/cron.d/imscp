@@ -17,7 +17,7 @@
 # Remove configuration backups older than 7 days
 @weekly root find {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec rm -- {} +
 
-# Remove i-MSCP backup older than 7days
+# Remove i-MSCP backups older than 7 days
 @weekly root find {BACKUP_FILE_DIR} -type f -mtime +7 -exec rm -- {} +
 
 # Remove backend Logs older than 7 days
