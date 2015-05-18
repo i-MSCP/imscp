@@ -243,12 +243,9 @@ sub _disableDefaultConfig
 		return $rs if $rs;
 	}
 
-	if(-f "$main::imscpConfig{'CRON_D_DIR'}/awstats") {
-		$rs = iMSCP::File->new(
-			filename => "$main::imscpConfig{'CRON_D_DIR'}/awstats"
-		)->moveFile(
-			"$main::imscpConfig{'CRON_D_DIR'}/awstats.disable"
-		);
+	my $cronDir = Servers::cron->factory()->{'config'}->{'CRON_D_DIR'};
+	if(-f "$cronDir/awstats") {
+		$rs = iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile("$cronDir/awstats.disable");
 	}
 
 	$rs;

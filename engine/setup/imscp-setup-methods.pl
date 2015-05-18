@@ -182,7 +182,6 @@ sub setupTasks
 		[\&setupDefaultAdmin,               'Creating/updating default admin account'],
 		[\&setupServices,                   'Setup i-MSCP services'],
 		[\&setupServiceSsl,                 'Setup SSL for i-MSCP services'],
-		[\&setupCron,                       'Setup cron tasks'],
 		[\&setupPreInstallServers,          'Servers pre-installation'],
 		[\&setupPreInstallPackages,         'Packages pre-installation'],
 		[\&setupInstallServers,             'Servers installation'],
@@ -1644,75 +1643,6 @@ sub setupServiceSsl
 			return $rs if $rs;
 		}
 	}
-
-	0;
-}
-
-# Setup crontab
-sub setupCron
-{
-	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupCron');
-	return $rs if $rs;
-
-	my ($cfgTpl, $err);
-
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/cron.d";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-	my $prodDir = "$main::imscpConfig{'CRON_D_DIR'}";
-
-	# Saving current production file if it exists
-	if(-f "$prodDir/imscp") {
-		$rs = iMSCP::File->new('filename' => "$prodDir/imscp")->copyFile("$bkpDir/imscp." . time);
-		return $rs if $rs;
-	}
-
-	# Building new configuration file
-
-	# Loading the template from /etc/imscp/cron.d/imscp
-	$cfgTpl = iMSCP::File->new('filename' => "$cfgDir/imscp")->get();
-	unless(defined $cfgTpl) {
-		error("Unable to read $cfgDir/imscp file");
-		return 1;
-	}
-
-	# Building the new file
-	$cfgTpl = process(
-		{
-			'QUOTA_ROOT_DIR' => $main::imscpConfig{'QUOTA_ROOT_DIR'},
-			'LOG_DIR' => $main::imscpConfig{'LOG_DIR'},
-			'TRAFF_ROOT_DIR' => $main::imscpConfig{'TRAFF_ROOT_DIR'},
-			'TOOLS_ROOT_DIR' => $main::imscpConfig{'TOOLS_ROOT_DIR'},
-			'BACKUP_MINUTE' => $main::imscpConfig{'BACKUP_MINUTE'},
-			'BACKUP_HOUR' => $main::imscpConfig{'BACKUP_HOUR'},
-			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'},
-			'CONF_DIR' => $main::imscpConfig{'CONF_DIR'}
-		},
-		$cfgTpl
-	);
-	return 1 unless defined $cfgTpl;
-
-	# Store new file in working directory
-	my $file = iMSCP::File->new('filename' => "$wrkDir/imscp");
-
-	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	# Install new file in production directory
-	$rs = $file->copyFile("$prodDir/imscp");
-	return $rs if $rs;
-
-	iMSCP::EventManager->getInstance()->trigger('afterSetupCron');
 
 	0;
 }

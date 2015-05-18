@@ -12,10 +12,13 @@
 @daily root {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
 
 # Backup i-MSCP configuration files and database
-@weekly root nice -n 10 {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
+@daily root nice -n 10 {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
 
 # Remove configuration backups older than 7 days
 @weekly root find {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec rm -- {} +
+
+# Remove i-MSCP backup older than 7days
+@weekly root find {BACKUP_FILE_DIR} -type f -mtime +7 -exec rm -- {} +
 
 # Remove backend Logs older than 7 days
 @weekly root find {LOG_DIR} -type f -mtime +7 -exec rm -- {} +

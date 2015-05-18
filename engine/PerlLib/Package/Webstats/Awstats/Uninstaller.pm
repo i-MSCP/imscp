@@ -30,6 +30,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use Servers::httpd;
+use Servers::cron;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use parent 'Common::SingletonClass';
 
@@ -168,12 +169,9 @@ sub _restoreDebianConfig
 		return $rs if $rs;
 	}
 
-	if(-f "$main::imscpConfig{'CRON_D_DIR'}/awstats.disable") {
-		$rs = iMSCP::File->new(
-			filename => "$main::imscpConfig{'CRON_D_DIR'}/awstats.disable"
-		)->moveFile(
-			"$main::imscpConfig{'CRON_D_DIR'}/awstats"
-		);
+	my $cronDir = Servers::cron->factory()->{'config'}->{'CRON_D_DIR'};
+	if(-f "$cronDir/awstats.disable") {
+		$rs = iMSCP::File->new( filename => "$cronDir/awstats.disable" )->moveFile("$cronDir/awstats");
 	}
 
 	$rs;

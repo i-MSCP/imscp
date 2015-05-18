@@ -1,0 +1,2 @@
+CRON_SNAME = cron
+CRON_D_DIR = /etc/cron.d

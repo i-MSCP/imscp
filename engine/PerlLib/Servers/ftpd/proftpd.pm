@@ -26,6 +26,7 @@ package Servers::ftpd::proftpd;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::Config;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;

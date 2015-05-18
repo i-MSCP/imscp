@@ -25,15 +25,15 @@ package Servers::cron::cron;
 
 use strict;
 use warnings;
-
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
-
 use iMSCP::Debug;
+use iMSCP::Config;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser;
+use iMSCP::Service;
 use File::Basename;
-
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -43,6 +43,125 @@ use parent 'Common::SingletonClass';
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item preinstall()
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeCronPreinstall', 'cron');
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterCronPreinstall', 'cron');
+}
+
+=item install()
+
+ Process install tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeCronInstall', 'cron');
+	return $rs if $rs;
+
+	# Backup current file if any
+	if(-f "$self->{'config'}->{'CRON_D_DIR'}/imscp") {
+		$rs = iMSCP::File->new( filename => "$self->{'config'}->{'CRON_D_DIR'}/imscp" )->copyFile(
+			"$self->{'bkpDir'}/imscp." . time
+		);
+		return $rs if $rs;
+	}
+
+	# Load template
+
+	my $cfgTpl;
+	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'cron', 'imscp', \$cfgTpl, { });
+	return $rs if $rs;
+
+	unless(defined $cfgTpl) {
+		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp" )->get();
+		unless(defined $cfgTpl) {
+			error("Unable to read $self->{'cfgDir'}/imscp");
+			return 1;
+		}
+	}
+
+	# Build new file
+	$cfgTpl = process(
+		{
+			'QUOTA_ROOT_DIR' => $main::imscpConfig{'QUOTA_ROOT_DIR'},
+			'LOG_DIR' => $main::imscpConfig{'LOG_DIR'},
+			'TRAFF_ROOT_DIR' => $main::imscpConfig{'TRAFF_ROOT_DIR'},
+			'TOOLS_ROOT_DIR' => $main::imscpConfig{'TOOLS_ROOT_DIR'},
+			'BACKUP_MINUTE' => $main::imscpConfig{'BACKUP_MINUTE'},
+			'BACKUP_HOUR' => $main::imscpConfig{'BACKUP_HOUR'},
+			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'},
+			'CONF_DIR' => $main::imscpConfig{'CONF_DIR'},
+			'BACKUP_FILE_DIR' => $main::imscpConfig{'BACKUP_FILE_DIR'}
+		},
+		$cfgTpl
+	);
+	return 1 unless defined $cfgTpl;
+
+	# Store new file in working directory
+	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp" );
+
+	$rs = $file->set($cfgTpl);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$rs = $file->mode(0644);
+	return $rs if $rs;
+
+	# Install new file in production directory
+	$rs = $file->copyFile("$self->{'config'}->{'CRON_D_DIR'}/imscp");
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterCronInstall', 'cron');
+}
+
+=item postinstall()
+
+ Process postinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'eventManager'}->trigger('beforeCronPostInstall', 'cron');
+	return $rs if $rs;
+
+	my $srvMngr = iMSCP::Service->getInstance();
+	$srvMngr->enable($self->{'config'}->{'CRON_SNAME'});
+
+	unless($srvMngr->isRunning($self->{'config'}->{'CRON_SNAME'})) {
+		$srvMngr->start($self->{'config'}->{'CRON_SNAME'});
+	}
+
+	$self->{'eventManager'}->trigger('afterCronPostInstall', 'cron');
+}
 
 =item addTask(\%data, $filepath)
 
@@ -74,7 +193,7 @@ sub addTask
 		return 1;
 	}
 
-	$file ||= "$main::imscpConfig{'CRON_D_DIR'}/imscp";
+	$file ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
 	if(-f $file) {
 		$data->{'MINUTE'} = '@daily' unless exists $data->{'MINUTE'};
@@ -179,7 +298,7 @@ sub deleteTask
 		return 1;
 	}
 
-	$file ||= "$main::imscpConfig{'CRON_D_DIR'}/imscp";
+	$file ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
 	if(-f $file) {
 		my $filename = fileparse($file);
@@ -243,12 +362,14 @@ sub deleteTask
 
 sub setEnginePermissions
 {
-	if(-f "$main::imscpConfig{'CRON_D_DIR'}/imscp") {
+	my $self = $_[0];
+
+	if(-f "$self->{'config'}->{'CRON_D_DIR'}/imscp") {
 		require iMSCP::Rights;
 		iMSCP::Rights->import();
 
 		setRights(
-			"$main::imscpConfig{'CRON_D_DIR'}/imscp",
+			" $self->{'config'}->{'CRON_D_DIR'}/imscp",
 			{
 				'user' => $main::imscpConfig{'ROOT_USER'},
 				'group' => $main::imscpConfig{'ROOT_GROUP'},
@@ -285,7 +406,8 @@ sub _init
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
+
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data"; \%c; };
 
 	$self->{'eventManager'}->trigger('afterCronInit', $self, 'cron') and fatal('cron - afterCronInit has failed');
 
