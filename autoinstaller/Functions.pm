@@ -922,14 +922,17 @@ sub _installFiles
 	}
 
 	# Process cleanup to avoid any security risks and conflicts
-	my ($stdout, $stderr);
-	my $rs = execute("rm -fR $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+	for(qw/daemon engine gui/) {
+		my ($stdout, $stderr);
+		my $rs = execute("rm -fR $main::imscpConfig{'ROOT_DIR'}/$_", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
 	# Install new i-MSCP files on the files system
-	$rs = execute("rsync -OKa $main::{'INST_PREF'}/* /", \$stdout, \$stderr);
+	my ($stdout, $stderr);
+	my $rs = execute("rsync -OKa $main::{'INST_PREF'}/* /", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	$rs;
