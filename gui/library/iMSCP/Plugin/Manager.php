@@ -433,63 +433,6 @@ class iMSCP_Plugin_Manager
 	}
 
 	/**
-	 * Does the given plugin is locked for deletion?
-	 *
-	 * @throws iMSCP_Plugin_Exception When $name is not known
-	 * @param string $name Plugin name
-	 * @return bool TRUE if the given plugin is locked, false otherwise
-	 */
-	public function pluginIsLocked($name)
-	{
-		if($this->pluginIsKnown($name)) {
-			return (bool)$this->pluginData[$name]['locked'];
-		} else {
-			write_log(sprintf('Plugin Manager: Unknown plugin %s', $name), E_USER_ERROR);
-			throw new iMSCP_Plugin_Exception(sprintf('Plugin Manager: Unknown plugin %s', $name));
-		}
-	}
-
-	/**
-	 * Lock the given plugin for deletion
-	 *
-	 * @throws iMSCP_Plugin_Exception When $name is not known
-	 * @param string $name Plugin name
-	 * @return void
-	 */
-	public function pluginLock($name)
-	{
-		if($this->pluginIsKnown($name)) {
-			if(!$this->pluginIsLocked($name)) {
-				exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(1, $name));
-				$this->pluginData[$name]['locked'] = 1;
-			}
-		} else {
-			write_log(sprintf('Plugin Manager: Unknown plugin %s', $name), E_USER_ERROR);
-			throw new iMSCP_Plugin_Exception(sprintf('Plugin Manager: Unknown plugin %s', $name));
-		}
-	}
-
-	/**
-	 * Unlock the given plugin for deletion
-	 *
-	 * @throws iMSCP_Plugin_Exception When $name is not known
-	 * @param string $name Plugin name
-	 * @return void
-	 */
-	public function pluginUnlock($name)
-	{
-		if($this->pluginIsKnown($name)) {
-			if($this->pluginIsLocked($name)) {
-				exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(0, $name));
-				$this->pluginData[$name]['locked'] = 0;
-			}
-		} else {
-			write_log(sprintf('Plugin Manager: Unknown plugin %s', $name), E_USER_ERROR);
-			throw new iMSCP_Plugin_Exception(sprintf('Plugin Manager: Unknown plugin %s', $name));
-		}
-	}
-
-	/**
 	 * Does the given plugin is installable?
 	 *
 	 * @throws iMSCP_Plugin_Exception When $name is not known
@@ -996,64 +939,54 @@ class iMSCP_Plugin_Manager
 		if($this->pluginIsKnown($name)) {
 			$pluginStatus = $this->pluginGetStatus($name);
 
-			if(in_array($pluginStatus, array('todelete', 'uninstalled', 'disabled'))) {
-				if(!$this->pluginIsLocked($name)) {
-					try {
-						$pluginInstance = $this->pluginLoad($name);
+			if (in_array($pluginStatus, array('todelete', 'uninstalled', 'disabled'))) {
+				try {
+					$pluginInstance = $this->pluginLoad($name);
 
-						$this->pluginSetStatus($name, 'todelete');
-						$this->pluginSetError($name, null);
+					$this->pluginSetStatus($name, 'todelete');
+					$this->pluginSetError($name, null);
 
-						$responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeDeletePlugin, array(
+					$responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeDeletePlugin, array(
+						'pluginManager' => $this,
+						'pluginName' => $name
+					));
+
+					if (!$responses->isStopped()) {
+						$pluginInstance->delete($this);
+
+						$this->pluginDeleteData($name);
+
+						$pluginDir = $this->pluginsDirectory . '/' . $name;
+
+						if (is_dir($pluginDir)) {
+							if (!utils_removeDir($pluginDir)) {
+								set_page_message(
+									tr(
+										'Plugin Manager: Unable to delete %s plugin files. You should run the set-gui-permissions.pl script and try again.',
+										$name
+									),
+									'warning'
+								);
+								write_log(
+									sprintf('Plugin Manager: Unable to delete %s plugin files', $name),
+									E_USER_WARNING
+								);
+							}
+						}
+
+						$this->eventsManager->dispatch(iMSCP_Events::onAfterDeletePlugin, array(
 							'pluginManager' => $this,
 							'pluginName' => $name
 						));
 
-						if(!$responses->isStopped()) {
-							$pluginInstance->delete($this);
-
-							$this->pluginDeleteData($name);
-
-							$pluginDir = $this->pluginsDirectory . '/' . $name;
-
-							if(is_dir($pluginDir)) {
-								if(!utils_removeDir($pluginDir)) {
-									set_page_message(
-										tr(
-											'Plugin Manager: Unable to delete %s plugin files. You should run the set-gui-permissions.pl script and try again.',
-											$name
-										),
-										'warning'
-									);
-									write_log(
-										sprintf('Plugin Manager: Unable to delete %s plugin files', $name),
-										E_USER_WARNING
-									);
-								}
-							}
-
-							$this->eventsManager->dispatch(iMSCP_Events::onAfterDeletePlugin, array(
-								'pluginManager' => $this,
-								'pluginName' => $name
-							));
-
-							return self::ACTION_SUCCESS;
-						}
-
-						$this->pluginSetStatus($name, $pluginStatus);
-						return self::ACTION_STOPPED;
-					} catch(iMSCP_Plugin_Exception $e) {
-						$this->pluginSetError($name, sprintf('Plugin deletion has failed: %s', $e->getMessage()));
-						write_log(sprintf('Plugin Manager: %s plugin deletion has failed', $name), E_USER_ERROR);
+						return self::ACTION_SUCCESS;
 					}
-				} else {
-					set_page_message(
-						tr(
-							'Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by another plugin.',
-							$name
-						),
-						'warning'
-					);
+
+					$this->pluginSetStatus($name, $pluginStatus);
+					return self::ACTION_STOPPED;
+				} catch (iMSCP_Plugin_Exception $e) {
+					$this->pluginSetError($name, sprintf('Plugin deletion has failed: %s', $e->getMessage()));
+					write_log(sprintf('Plugin Manager: %s plugin deletion has failed', $name), E_USER_ERROR);
 				}
 			}
 		}
@@ -1330,8 +1263,7 @@ class iMSCP_Plugin_Manager
 				'info' => json_decode($plugin['plugin_info'], true),
 				'status' => $plugin['plugin_status'],
 				'error' => $plugin['plugin_error'],
-				'backend' => $plugin['plugin_backend'],
-				'locked' => $plugin['plugin_locked']
+				'backend' => $plugin['plugin_backend']
 			);
 
 			$this->pluginsByType[$plugin['plugin_type']][] = $plugin['plugin_name'];

@@ -197,12 +197,15 @@ sub _install
 	my ($self, $pluginName) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeInstallPlugin', $pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->_call($pluginName, 'install');
+	$rs = $self->_call($pluginName, 'install');
+	return $rs if $rs;
 
-	$rs ||= $self->{'eventManager'}->trigger('onAfterInstallPlugin', $pluginName);
+	$rs = $self->{'eventManager'}->trigger('onAfterInstallPlugin', $pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->_enable($pluginName);
+	$self->_enable($pluginName);
 }
 
 =item _uninstall($pluginName)
@@ -219,10 +222,12 @@ sub _uninstall
 	my ($self, $pluginName) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeUninstallPlugin', $pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->_call($pluginName, 'uninstall');
+	$rs = $self->_call($pluginName, 'uninstall');
+	return $rs if $rs;
 
-	$rs ||= $self->{'eventManager'}->trigger('onAfterUninstallPlugin', $pluginName);;
+	$self->{'eventManager'}->trigger('onAfterUninstallPlugin', $pluginName);;
 }
 
 =item _enable($pluginName)
@@ -239,10 +244,12 @@ sub _enable
 	my ($self, $pluginName) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeEnablePlugin', $pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->_call($pluginName, 'enable');
+	$rs = $self->_call($pluginName, 'enable');
+	return $rs if $rs;
 
-	$rs ||= $self->{'eventManager'}->trigger('onAfterEnablePlugin', $pluginName);
+	$self->{'eventManager'}->trigger('onAfterEnablePlugin', $pluginName);
 }
 
 =item _disable($pluginName)
@@ -259,10 +266,12 @@ sub _disable
 	my ($self, $pluginName) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeDisablePlugin', $pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->_call($pluginName, 'disable');
+	$rs = $self->_call($pluginName, 'disable');
+	return $rs if $rs;
 
-	$rs ||= $self->{'eventManager'}->trigger('onAfterDisablePlugin', $pluginName);
+	$self->{'eventManager'}->trigger('onAfterDisablePlugin', $pluginName);
 }
 
 =item _change($pluginName)
@@ -279,32 +288,34 @@ sub _change
 	my ($self, $pluginName) = @_;
 
 	my $rs = $self->_disable($pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
+	$rs = $self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->_call($pluginName, 'change');
+	$rs = $self->_call($pluginName, 'change');
+	return $rs if $rs;
 
-	$rs ||= $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
+	$rs = $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
+	return $rs if $rs;
 
-	unless($rs) {
-		if($self->{'info'}->{'__need_change__'}) {
-			$self->{'info'}->{'__need_change__'} = JSON::false;
+	if($self->{'info'}->{'__need_change__'}) {
+		$self->{'info'}->{'__need_change__'} = JSON::false;
 
-			my $qrs = $self->{'db'}->doQuery(
-				'dummy',
-				'UPDATE plugin SET plugin_info = ?, plugin_config_prev = ? WHERE plugin_name = ?',
-				encode_json($self->{'info'}),
-				encode_json($self->{'config'}),
-				$pluginName
-			);
-			unless(ref $qrs eq 'HASH') {
-				error($qrs);
-				$rs ||= $qrs;
-			}
+		my $qrs = $self->{'db'}->doQuery(
+			'dummy',
+			'UPDATE plugin SET plugin_info = ?, plugin_config_prev = ? WHERE plugin_name = ?',
+			encode_json($self->{'info'}),
+			encode_json($self->{'config'}),
+			$pluginName
+		);
+		unless(ref $qrs eq 'HASH') {
+			error($qrs);
+			return 1;
 		}
 	}
 
-	$rs ||= $self->_enable($pluginName);
+	$self->_enable($pluginName);
 }
 
 =item _update($pluginName)
@@ -321,56 +332,52 @@ sub _update
 	my ($self, $pluginName) = @_;
 
 	my $rs = $self->_disable($pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->{'eventManager'}->trigger('onBeforeUpdatePlugin', $pluginName);
+	$rs = $self->{'eventManager'}->trigger('onBeforeUpdatePlugin', $pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->_call($pluginName, 'update', $self->{'info'}->{'version'}, $self->{'info'}->{'__nversion__'});
+	$rs = $self->_call($pluginName, 'update', $self->{'info'}->{'version'}, $self->{'info'}->{'__nversion__'});
+	return $rs if $rs;
 
-	unless($rs) {
-		$self->{'info'}->{'version'} = $self->{'info'}->{'__nversion__'};
+	$self->{'info'}->{'version'} = $self->{'info'}->{'__nversion__'};
 
-		my $qrs = $self->{'db'}->doQuery(
+	my $qrs = $self->{'db'}->doQuery(
+		'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($self->{'info'}), $pluginName
+	);
+	unless(ref $qrs eq 'HASH') {
+		error($qrs);
+		return 1;
+	}
+
+	$rs = $self->{'eventManager'}->trigger('onAfterUpdatePlugin', $pluginName);
+	return $rs if $rs;
+
+	if($self->{'info'}->{'__need_change__'}) {
+		$rs = $self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
+		return $rs if $rs;
+
+		$rs = $self->_call($pluginName, 'change');
+		return $rs if $rs;
+
+		$self->{'info'}->{'__need_change__'} = JSON::false;
+
+		$qrs = $self->{'db'}->doQuery(
 			'dummy',
-			'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?',
-			encode_json($self->{'info'}),
+			'UPDATE plugin SET  plugin_config_prev = ? WHERE plugin_name = ?',
+			encode_json($self->{'config'}),
 			$pluginName
 		);
 		unless(ref $qrs eq 'HASH') {
 			error($qrs);
-			return 1;
+			return 1
 		}
 
-		$rs = $self->{'eventManager'}->trigger('onAfterUpdatePlugin', $pluginName);
-
-		unless($rs) {
-			if($self->{'info'}->{'__need_change__'}) {
-				$rs ||= $self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
-
-				$rs ||= $self->_call($pluginName, 'change');
-
-				unless($rs) {
-					$self->{'info'}->{'__need_change__'} = JSON::false;
-
-					$qrs = $self->{'db'}->doQuery(
-						'dummy',
-						'UPDATE plugin SET  plugin_config_prev = ? WHERE plugin_name = ?',
-						encode_json($self->{'config'}),
-						$pluginName
-					);
-					unless(ref $qrs eq 'HASH') {
-						error($qrs);
-						return 1
-					}
-				}
-
-				$rs ||= $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
-			}
-
-			$rs ||= $self->_enable($pluginName);
-		}
+		$rs = $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
+		return $rs if $rs;
 	}
 
-	$rs;
+	$self->_enable($pluginName);
 }
 
 =item _run($pluginName)
@@ -387,10 +394,12 @@ sub _run
 	my ($self, $pluginName) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('onBeforeRunPlugin', $pluginName);
+	return $rs if $rs;
 
-	$rs ||= $self->_call($pluginName, 'run');
+	$rs = $self->_call($pluginName, 'run');
+	return $rs if $rs;
 
-	$rs ||= $self->{'eventManager'}->trigger('onAfterRunPlugin', $pluginName);
+	$self->{'eventManager'}->trigger('onAfterRunPlugin', $pluginName);
 }
 
 =item _call($name, $method [, $fromVersion = undef [, $toVersion = undef ]])

@@ -180,14 +180,14 @@ function uploadPlugin($pluginManager)
 }
 
 /**
- * Translate plugin status
+ * Translate the given plugin status
  *
- * @param string $rawPluginStatus Raw plugin status
+ * @param string $pluginStatus Plugin status to translate
  * @return string Translated plugin status
  */
-function translateStatus($rawPluginStatus)
+function translateStatus($pluginStatus)
 {
-	switch($rawPluginStatus) {
+	switch($pluginStatus) {
 		case 'uninstalled':
 			return tr('Uninstalled');
 		case 'toinstall':
@@ -417,6 +417,35 @@ function checkAction($pluginManager, $pluginName, $action)
 }
 
 /**
+ * Translate the given action
+ *
+ * @param string $action Action to translate
+ * @return string Stranslated action
+ * @throws iMSCPException
+ */
+function translateAction($action)
+{
+	switch ($action) {
+		case 'install':
+			return tr('install');
+		case 'uninstall':
+			return tr('uninstall');
+		case 'update':
+			return tr('update');
+		case 'change':
+			return tr('change');
+		case 'enable':
+			return tr('enable');
+		case 'disable':
+			return tr('disable');
+		case 'protect':
+			return tr('protect');
+	}
+
+	throw new iMSCPException('Unknown action');
+}
+
+/**
  * Do the given action for the given plugin
  *
  * @param PluginManager $pluginManager
@@ -440,7 +469,9 @@ function doAction($pluginManager, $pluginName, $action)
 						$msg = ($ret == PluginManager::ACTION_FAILURE)
 							? tr('Action has failed.', true) : tr('Action has been stopped.', true);
 
-						set_page_message(tr('Unable to %s the %s plugin: %s', $action, $pluginName, $msg), 'error');
+						set_page_message(
+							tr('Unable to %s the %s plugin: %s', translateAction($action), $pluginName, $msg), 'error'
+						);
 					} else {
 						$msg = '';
 
