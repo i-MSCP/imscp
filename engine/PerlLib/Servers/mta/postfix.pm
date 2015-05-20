@@ -149,8 +149,19 @@ sub postinstall
 	iMSCP::Service->getInstance()->enable($self->{'config'}->{'MTA_SNAME'});
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Postfix' ]; 0; }
-	);
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [
+			sub {
+				my $rs = 0;
+
+				for(keys %{$self->{'postmap'}}) {
+					$rs ||= $self->postmap($_);
+				}
+
+				$rs ||= $self->restart();
+			},
+			'Postfix'
+		]; 0;
+	});
 
 	$self->{'eventManager'}->trigger('afterMtaPostinstall', 'postfix');
 }
@@ -1433,8 +1444,10 @@ END
 	my $self = __PACKAGE__->getInstance();
 	my $rs = $?;
 
-	for(keys %{$self->{'postmap'}}) {
-		$rs ||= $self->postmap($_);
+	unless($main::execmode && $main::execmode eq 'setup') {
+		for(keys %{$self->{'postmap'}}) {
+			$rs ||= $self->postmap($_);
+		}
 	}
 
 	$? = $rs;

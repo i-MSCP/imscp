@@ -25,13 +25,10 @@ use iMSCP::EventManager;
 
 sub onBeforeNamedBuildConf
 {
-	my $tplContent = shift;
-	my $tplName = shift;
+	my ($tplContent, $tplName) = @_;
 
 	if($tplName eq 'named.conf.options') {
-		$$tplContent =~ s/^(\s*allow-recursion).*$/$1 { localnets; };/m;
-		$$tplContent =~ s/^(\s*allow-query-cache).*$/$1 { localnets; };/m;
-		$$tplContent =~ s/^(\s*allow-transfer).*$/$1 { localnets; };/m;
+		$$tplContent =~ s/^(\s*allow-(?:recursion|query-cache|transfer)).*$/$1 { localnets; };/gm;
 	}
 
 	0;
