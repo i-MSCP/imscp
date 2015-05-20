@@ -12,7 +12,7 @@
 
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 DESC="i-MSCP network manager"
 NAME=imscp_network
 LFILE=/var/run/$NAME
