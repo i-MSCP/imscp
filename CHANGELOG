@@ -18,6 +18,7 @@ BACKEND
 	Fixed: In some contexts, configuration files which belongs to subdomains are not regenerated
 	Fixed: Force usage of search path when executing external command
 	Fixed: Some errors are not trapped
+	Fixed: When the backend is invoked by the i-MSCP daemon, some paths are missing (iMSCP::ProgramFinder)
 
 CONFIGS
 	Added: bind9.service and bind9-resolve.service systemd unit files (Allows to fix #IP-1333 and #IP-1334)
@@ -36,8 +37,8 @@ CONFIGS
 
 DAEMON
 	Added: End child syslog message
-	Fixed: warning: ignoring return value of ‘chdir’... (daemon_init.c)
 	Fixed: Avoid useless 'fork' and 'wait' by using execl() instead of system() (lr_syntax.c)
+	Fixed: warning: ignoring return value of ‘chdir’... (daemon_init.c)
 	Updated: Version to 1.2.3
 
 DATABASE
