@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 19:50+0200\n"
-"PO-Revision-Date: 2015-05-21 17:52+0000\n"
+"POT-Creation-Date: 2015-05-21 20:01+0200\n"
+"PO-Revision-Date: 2015-05-21 18:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -5058,12 +5058,12 @@ msgid "URL to this admin panel"
 msgstr "Ссылка на панель управления"
 
 #, php-format
-msgid "Unable to %s the %s plugin: %s"
-msgstr "Невозможно %s плагин %s: %s"
-
-#, php-format
 msgid "Unable to backup %s plugin directory."
 msgstr "Невозможно сделать резервную копию плагина %s ."
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5082,6 +5082,14 @@ msgstr "Невозможно создать каталог 'LC_MESSAGES' для 
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "Невозможно удалить файл информации i-MSCP."
+
+#, php-format
+msgid "Unable to disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to enable the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to extract info.php file"
 msgstr "Невозможно извлечь файл info.php"
@@ -5109,6 +5117,10 @@ msgstr "Невозможно создать список IP адресов. По
 msgid "Unable to get update info from Github"
 msgstr "Невозможно получить информацию об обновлении из Github"
 
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to load i-MSCP info file."
 msgstr "Невозможно загрузить файл информации i-MSCP."
 
@@ -5117,6 +5129,10 @@ msgstr "Не удалось переместить файл."
 
 msgid "Unable to open plugin archive."
 msgstr "Невозможно открыть архив плагина."
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "Невозможно прочесть индексный файл Web-репозитория"
@@ -5163,6 +5179,14 @@ msgstr "Невозможно включить опцию sslallowselfsigned"
 
 msgid "Unable to set sslverifypeer option"
 msgstr "Невозможно включить опцию sslverifypeer"
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5921,9 +5945,6 @@ msgstr "добавить"
 msgid "and"
 msgstr "и"
 
-msgid "change"
-msgstr ""
-
 msgid "day"
 msgstr "день"
 
@@ -5932,9 +5953,6 @@ msgstr "дней"
 
 msgid "deleting"
 msgstr "Удаление"
-
-msgid "disable"
-msgstr ""
 
 msgid "disabled"
 msgstr "отключено"
@@ -5962,9 +5980,6 @@ msgstr "почтовый ящик"
 
 msgid "email accounts"
 msgstr "почтовые ящики"
-
-msgid "enable"
-msgstr ""
 
 msgid "enabled"
 msgstr "Включено"
@@ -6025,9 +6040,6 @@ msgstr "Обновления i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "Проверка обновлений отключена!"
-
-msgid "install"
-msgstr ""
 
 msgid "installed"
 msgstr "установлено"
@@ -6099,9 +6111,6 @@ msgstr "одинарный вход"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-msgid "protect"
-msgstr ""
-
 msgid "required"
 msgstr "требуется"
 
@@ -6119,9 +6128,6 @@ msgstr "трафик"
 
 msgid "udp"
 msgstr "udp"
-
-msgid "uninstall"
-msgstr ""
 
 msgid "unlimited"
 msgstr "не ограничено"

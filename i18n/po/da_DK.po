@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 19:50+0200\n"
-"PO-Revision-Date: 2015-05-21 17:52+0000\n"
+"POT-Creation-Date: 2015-05-21 20:01+0200\n"
+"PO-Revision-Date: 2015-05-21 18:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -5057,12 +5057,12 @@ msgid "URL to this admin panel"
 msgstr "URL til dette admin panel"
 
 #, php-format
-msgid "Unable to %s the %s plugin: %s"
-msgstr ""
-
-#, php-format
 msgid "Unable to backup %s plugin directory."
 msgstr "Kan ikke sikkerhedskopiere %s plugin mappe."
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5080,6 +5080,14 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Kan ikke skabe 'LC_MESSAGES' mappe for sprog-fil."
 
 msgid "Unable to delete i-MSCP info file."
+msgstr ""
+
+#, php-format
+msgid "Unable to disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to enable the %s plugin: %s"
 msgstr ""
 
 msgid "Unable to extract info.php file"
@@ -5108,6 +5116,10 @@ msgstr "Kan ikke hente IP adresse listen. Venligst løs dette problem."
 msgid "Unable to get update info from Github"
 msgstr "Kunne ikke få update info fra Github"
 
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to load i-MSCP info file."
 msgstr ""
 
@@ -5116,6 +5128,10 @@ msgstr "Kan ikke flytte fil."
 
 msgid "Unable to open plugin archive."
 msgstr "Kan ikke åbne plugin arkivet."
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "Kan ikke læse web softwarearkiv index-fil."
@@ -5162,6 +5178,14 @@ msgstr "Kunne ikke indstille sslallowselfsigned option"
 
 msgid "Unable to set sslverifypeer option"
 msgstr "Kan ikke indstille sslverifypeer option"
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5920,9 +5944,6 @@ msgstr ""
 msgid "and"
 msgstr "og"
 
-msgid "change"
-msgstr ""
-
 msgid "day"
 msgstr "dag"
 
@@ -5931,9 +5952,6 @@ msgstr "dage"
 
 msgid "deleting"
 msgstr "sletning"
-
-msgid "disable"
-msgstr ""
 
 msgid "disabled"
 msgstr "deaktiveret"
@@ -5961,9 +5979,6 @@ msgstr "E-mail konto"
 
 msgid "email accounts"
 msgstr "E-mail konti"
-
-msgid "enable"
-msgstr ""
 
 msgid "enabled"
 msgstr "aktiveret"
@@ -6024,9 +6039,6 @@ msgstr "i-MSCP opdateringer"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP version opdaterings kontrol er deaktiveret"
-
-msgid "install"
-msgstr ""
 
 msgid "installed"
 msgstr "installeret"
@@ -6098,9 +6110,6 @@ msgstr "orphan indtastning"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-msgid "protect"
-msgstr ""
-
 msgid "required"
 msgstr "kræves"
 
@@ -6118,9 +6127,6 @@ msgstr "trafik"
 
 msgid "udp"
 msgstr "udp"
-
-msgid "uninstall"
-msgstr ""
 
 msgid "unlimited"
 msgstr "ubegrænset"

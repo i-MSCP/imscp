@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 19:50+0200\n"
-"PO-Revision-Date: 2015-05-21 17:52+0000\n"
+"POT-Creation-Date: 2015-05-21 20:01+0200\n"
+"PO-Revision-Date: 2015-05-21 18:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -5056,11 +5056,11 @@ msgid "URL to this admin panel"
 msgstr "URL tohoto administračního panelu"
 
 #, php-format
-msgid "Unable to %s the %s plugin: %s"
+msgid "Unable to backup %s plugin directory."
 msgstr ""
 
 #, php-format
-msgid "Unable to backup %s plugin directory."
+msgid "Unable to change the %s plugin: %s"
 msgstr ""
 
 #, php-format
@@ -5079,6 +5079,14 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr ""
 
 msgid "Unable to delete i-MSCP info file."
+msgstr ""
+
+#, php-format
+msgid "Unable to disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to enable the %s plugin: %s"
 msgstr ""
 
 msgid "Unable to extract info.php file"
@@ -5107,6 +5115,10 @@ msgstr ""
 msgid "Unable to get update info from Github"
 msgstr ""
 
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to load i-MSCP info file."
 msgstr ""
 
@@ -5114,6 +5126,10 @@ msgid "Unable to move file."
 msgstr ""
 
 msgid "Unable to open plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
 msgstr ""
 
 msgid "Unable to read Web software repository index file."
@@ -5160,6 +5176,14 @@ msgid "Unable to set sslallowselfsigned option"
 msgstr ""
 
 msgid "Unable to set sslverifypeer option"
+msgstr ""
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
 msgstr ""
 
 #, php-format
@@ -5919,9 +5943,6 @@ msgstr ""
 msgid "and"
 msgstr "a"
 
-msgid "change"
-msgstr ""
-
 msgid "day"
 msgstr "den"
 
@@ -5929,9 +5950,6 @@ msgid "days"
 msgstr "dny"
 
 msgid "deleting"
-msgstr ""
-
-msgid "disable"
 msgstr ""
 
 msgid "disabled"
@@ -5960,9 +5978,6 @@ msgstr "poštovní účet"
 
 msgid "email accounts"
 msgstr "poštovní účty"
-
-msgid "enable"
-msgstr ""
 
 msgid "enabled"
 msgstr "povoleno"
@@ -6023,9 +6038,6 @@ msgstr "i-MSCP aktualizace"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "Kontrola aktualizací nových verzí i-MSCP je zakázána"
-
-msgid "install"
-msgstr ""
 
 msgid "installed"
 msgstr "nainstalovaný"
@@ -6097,9 +6109,6 @@ msgstr ""
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-msgid "protect"
-msgstr ""
-
 msgid "required"
 msgstr "požadováno"
 
@@ -6117,9 +6126,6 @@ msgstr "provoz"
 
 msgid "udp"
 msgstr "udp"
-
-msgid "uninstall"
-msgstr ""
 
 msgid "unlimited"
 msgstr "bez omezení"

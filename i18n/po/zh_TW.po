@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 19:50+0200\n"
-"PO-Revision-Date: 2015-05-21 17:52+0000\n"
+"POT-Creation-Date: 2015-05-21 20:01+0200\n"
+"PO-Revision-Date: 2015-05-21 18:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -5057,12 +5057,12 @@ msgid "URL to this admin panel"
 msgstr "轉到管理員面板的 URL"
 
 #, php-format
-msgid "Unable to %s the %s plugin: %s"
-msgstr "無法到 %s 此 %s 外掛: %s"
-
-#, php-format
 msgid "Unable to backup %s plugin directory."
 msgstr "無法備份 %s 外掛目錄。"
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5081,6 +5081,14 @@ msgstr "無法建立 'LC_MESSAGES' 語言檔的目錄。"
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "無法刪除 i-MSCP 資訊檔案。"
+
+#, php-format
+msgid "Unable to disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to enable the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to extract info.php file"
 msgstr "無法解開 info.php 檔案"
@@ -5108,6 +5116,10 @@ msgstr "無法取得 IP 地址，請修復這個問題。"
 msgid "Unable to get update info from Github"
 msgstr "無法從 Github 取得更新資訊"
 
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to load i-MSCP info file."
 msgstr "無法讀取 i-MSCP 資訊檔案。"
 
@@ -5116,6 +5128,10 @@ msgstr "無法移動檔案"
 
 msgid "Unable to open plugin archive."
 msgstr "無法開啟外掛壓縮檔。"
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "無法讀取網站軟體庫索引檔。"
@@ -5162,6 +5178,14 @@ msgstr "無法設定 sslallowselfsigned 選項"
 
 msgid "Unable to set sslverifypeer option"
 msgstr "無法設定 sslverifypeer 選項"
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5920,9 +5944,6 @@ msgstr "新增"
 msgid "and"
 msgstr "和"
 
-msgid "change"
-msgstr ""
-
 msgid "day"
 msgstr "日"
 
@@ -5931,9 +5952,6 @@ msgstr "日"
 
 msgid "deleting"
 msgstr "刪除中"
-
-msgid "disable"
-msgstr ""
 
 msgid "disabled"
 msgstr "停用"
@@ -5961,9 +5979,6 @@ msgstr "Email 帳號"
 
 msgid "email accounts"
 msgstr "Email 帳號"
-
-msgid "enable"
-msgstr ""
 
 msgid "enabled"
 msgstr "啟用"
@@ -6024,9 +6039,6 @@ msgstr "i-MSCP 更新"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP 版本檢查已停用"
-
-msgid "install"
-msgstr ""
 
 msgid "installed"
 msgstr "已安裝"
@@ -6098,9 +6110,6 @@ msgstr ""
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-msgid "protect"
-msgstr ""
-
 msgid "required"
 msgstr "必須的"
 
@@ -6118,9 +6127,6 @@ msgstr "流量"
 
 msgid "udp"
 msgstr "udp"
-
-msgid "uninstall"
-msgstr ""
 
 msgid "unlimited"
 msgstr "無限制"

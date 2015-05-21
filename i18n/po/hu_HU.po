@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 19:50+0200\n"
-"PO-Revision-Date: 2015-05-21 17:52+0000\n"
+"POT-Creation-Date: 2015-05-21 20:01+0200\n"
+"PO-Revision-Date: 2015-05-21 18:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -5059,12 +5059,12 @@ msgid "URL to this admin panel"
 msgstr "Kezelőfelület webcíme"
 
 #, php-format
-msgid "Unable to %s the %s plugin: %s"
-msgstr "Nem lehet %s a(z) %s bővítményt: %s"
-
-#, php-format
 msgid "Unable to backup %s plugin directory."
 msgstr "Nem sikerült a(z) %s bővítmény könyvtáráról biztonsági mentést csinálni."
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5083,6 +5083,14 @@ msgstr "Nem hozható létre a 'LC_MESSAGES' könyvtár a nyelvi fájl számára"
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "Nem lehet törölni az i-MSCP infó fájlját. "
+
+#, php-format
+msgid "Unable to disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to enable the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to extract info.php file"
 msgstr "Nem lehet kitömöríteni az info.php fájlt"
@@ -5110,6 +5118,10 @@ msgstr "IP-cím lista nem érhető el. Kérjük javítsd a problémát."
 msgid "Unable to get update info from Github"
 msgstr "Nem sikerült beszerezni a frissítési információkat a Githubról"
 
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to load i-MSCP info file."
 msgstr "Nem lehet betölteni az i-MSCP infó fájlt."
 
@@ -5118,6 +5130,10 @@ msgstr "Nem lehet áthelyezni a fájlt"
 
 msgid "Unable to open plugin archive."
 msgstr "Nem sikerült megnyitni a bővítmény archívumát."
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "Nem olvasható a webes alkalmazásokhoz tartozó index fájl."
@@ -5164,6 +5180,14 @@ msgstr "Nem sikerült beállítani a sslallowselfsigned opciót"
 
 msgid "Unable to set sslverifypeer option"
 msgstr "Nem sikerült beállítani a sslverifypeer opciót"
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5922,9 +5946,6 @@ msgstr "hozzáadás"
 msgid "and"
 msgstr "és"
 
-msgid "change"
-msgstr ""
-
 msgid "day"
 msgstr "nap"
 
@@ -5933,9 +5954,6 @@ msgstr "nap"
 
 msgid "deleting"
 msgstr "törlés"
-
-msgid "disable"
-msgstr ""
 
 msgid "disabled"
 msgstr "tiltva"
@@ -5963,9 +5981,6 @@ msgstr "postafiók"
 
 msgid "email accounts"
 msgstr "postafiókok"
-
-msgid "enable"
-msgstr ""
 
 msgid "enabled"
 msgstr "engedélyezett"
@@ -6026,9 +6041,6 @@ msgstr "i-MSCP frissítések"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP verzió frissítésének keresése kikapcsolva"
-
-msgid "install"
-msgstr ""
 
 msgid "installed"
 msgstr "telepített"
@@ -6100,9 +6112,6 @@ msgstr "árva bejegyzés"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-msgid "protect"
-msgstr ""
-
 msgid "required"
 msgstr "szükséges"
 
@@ -6120,9 +6129,6 @@ msgstr "Forgalom"
 
 msgid "udp"
 msgstr "UDP"
-
-msgid "uninstall"
-msgstr ""
 
 msgid "unlimited"
 msgstr "korlátlan"

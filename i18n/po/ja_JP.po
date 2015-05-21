@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 19:50+0200\n"
-"PO-Revision-Date: 2015-05-21 17:52+0000\n"
+"POT-Creation-Date: 2015-05-21 20:01+0200\n"
+"PO-Revision-Date: 2015-05-21 18:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -5057,12 +5057,12 @@ msgid "URL to this admin panel"
 msgstr "管理パネルへのURL"
 
 #, php-format
-msgid "Unable to %s the %s plugin: %s"
-msgstr ""
-
-#, php-format
 msgid "Unable to backup %s plugin directory."
 msgstr "%sプラグインディレクトリをバックアップすることができません。"
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5081,6 +5081,14 @@ msgstr "言語ファイルのための\"LC_MESSAGES\"ディレクトリを作成
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "i-MSCP情報ファイルを削除することができません。"
+
+#, php-format
+msgid "Unable to disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to enable the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to extract info.php file"
 msgstr "info.phpファイルを抽出することができません"
@@ -5108,6 +5116,10 @@ msgstr "IPアドレスリストを取得できません。この問題を修正�
 msgid "Unable to get update info from Github"
 msgstr "GitHubからの更新情報を取得できません"
 
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to load i-MSCP info file."
 msgstr "i-MSCP情報ファイルを読み込むことができません。"
 
@@ -5116,6 +5128,10 @@ msgstr "ファイルを移動することができません。"
 
 msgid "Unable to open plugin archive."
 msgstr "プラグインアーカイブを開くことができません。"
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "Webソフトウェアリポジトリのインデックスファイルを読み込むことができません。"
@@ -5162,6 +5178,14 @@ msgstr "自己署名オプションを許可するSSLを設定できません"
 
 msgid "Unable to set sslverifypeer option"
 msgstr "SSL verifypeerオプションを設定することができません"
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5920,9 +5944,6 @@ msgstr "追加"
 msgid "and"
 msgstr "と"
 
-msgid "change"
-msgstr ""
-
 msgid "day"
 msgstr "日"
 
@@ -5931,9 +5952,6 @@ msgstr "日"
 
 msgid "deleting"
 msgstr "削除中"
-
-msgid "disable"
-msgstr ""
 
 msgid "disabled"
 msgstr "無効"
@@ -5961,9 +5979,6 @@ msgstr "Eメールアカウント"
 
 msgid "email accounts"
 msgstr "Eメールアカウント"
-
-msgid "enable"
-msgstr ""
 
 msgid "enabled"
 msgstr "有効"
@@ -6024,9 +6039,6 @@ msgstr "i-MSCP 更新"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCPバージョンの更新チェックが無効になっています"
-
-msgid "install"
-msgstr ""
 
 msgid "installed"
 msgstr "インストールされました"
@@ -6098,9 +6110,6 @@ msgstr "親のないエントリ"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-msgid "protect"
-msgstr ""
-
 msgid "required"
 msgstr "必須"
 
@@ -6118,9 +6127,6 @@ msgstr "トラフィック"
 
 msgid "udp"
 msgstr "udp"
-
-msgid "uninstall"
-msgstr ""
 
 msgid "unlimited"
 msgstr "無制限"

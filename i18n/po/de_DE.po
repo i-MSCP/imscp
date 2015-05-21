@@ -37,8 +37,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 19:50+0200\n"
-"PO-Revision-Date: 2015-05-21 17:52+0000\n"
+"POT-Creation-Date: 2015-05-21 20:01+0200\n"
+"PO-Revision-Date: 2015-05-21 18:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -5084,12 +5084,12 @@ msgid "URL to this admin panel"
 msgstr "URL zu dieser Administrationsoberfläche"
 
 #, php-format
-msgid "Unable to %s the %s plugin: %s"
-msgstr "Funktion %s bei Plugin %s nicht möglich: %s"
-
-#, php-format
 msgid "Unable to backup %s plugin directory."
 msgstr "Backup von %s Plugin-Verzeichnis unmöglich."
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5108,6 +5108,14 @@ msgstr "Kann 'LC_MESSAGES' Verzeichnis für Sprachdatei nicht erstellen."
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "Fehler beim Löschen der i-MSCP Info Datei"
+
+#, php-format
+msgid "Unable to disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to enable the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to extract info.php file"
 msgstr "Fehler beim extrahieren der info.php Datei"
@@ -5135,6 +5143,10 @@ msgstr "Die Liste der IP-Adressen kann nicht abgerufen werden. Bitte beheben Sie
 msgid "Unable to get update info from Github"
 msgstr "Es konnten keine Information von GitHub geladen werden"
 
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to load i-MSCP info file."
 msgstr "Fehler beim laden der i-MSCP Info Datei"
 
@@ -5143,6 +5155,10 @@ msgstr "Datei konnte nicht verschoben werden."
 
 msgid "Unable to open plugin archive."
 msgstr "Konnte das Plugin-Archiv nicht öffnen."
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "Lesen der Web Software Repository Index Datei ist nicht möglich."
@@ -5189,6 +5205,14 @@ msgstr "Die sslallowselfsigned-Option konnte nicht gesetzt werden"
 
 msgid "Unable to set sslverifypeer option"
 msgstr "Die sslverifypeer-Option konnte nicht gesetzt werden"
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5947,9 +5971,6 @@ msgstr "Zusätzlich"
 msgid "and"
 msgstr "und"
 
-msgid "change"
-msgstr ""
-
 msgid "day"
 msgstr "Tag"
 
@@ -5958,9 +5979,6 @@ msgstr "Tage"
 
 msgid "deleting"
 msgstr "löscht"
-
-msgid "disable"
-msgstr ""
 
 msgid "disabled"
 msgstr "deaktiviert"
@@ -5988,9 +6006,6 @@ msgstr "E-Mail Konto"
 
 msgid "email accounts"
 msgstr "E-Mail Konten"
-
-msgid "enable"
-msgstr ""
 
 msgid "enabled"
 msgstr "aktiviert"
@@ -6051,9 +6066,6 @@ msgstr "i-MSCP Updates"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP Versionsaktualisierungsüberprüfung ist deaktiviert"
-
-msgid "install"
-msgstr ""
 
 msgid "installed"
 msgstr "installiert"
@@ -6125,9 +6137,6 @@ msgstr "verwaister Eintrag"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-msgid "protect"
-msgstr ""
-
 msgid "required"
 msgstr "erforderlich"
 
@@ -6145,9 +6154,6 @@ msgstr "Traffic"
 
 msgid "udp"
 msgstr "UDP"
-
-msgid "uninstall"
-msgstr ""
 
 msgid "unlimited"
 msgstr "unbegrenzt"

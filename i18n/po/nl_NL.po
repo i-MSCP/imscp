@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 19:50+0200\n"
-"PO-Revision-Date: 2015-05-21 17:52+0000\n"
+"POT-Creation-Date: 2015-05-21 20:01+0200\n"
+"PO-Revision-Date: 2015-05-21 18:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -5065,12 +5065,12 @@ msgid "URL to this admin panel"
 msgstr "URL voor dit beheerderspaneel"
 
 #, php-format
-msgid "Unable to %s the %s plugin: %s"
-msgstr "De actie %s voor de %s-plugin lukte niet: %s"
-
-#, php-format
 msgid "Unable to backup %s plugin directory."
 msgstr "Kan geen back-up voor de map van de invoegtoepassing %s maken."
+
+#, php-format
+msgid "Unable to change the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5089,6 +5089,14 @@ msgstr "Kan de map 'LC_MESSAGES' voor taalbestand niet aanmaken."
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "Kon het i-MSCP-informatiebestand niet verwijderen."
+
+#, php-format
+msgid "Unable to disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to enable the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to extract info.php file"
 msgstr "Kon het info.php-bestand niet uitpakken"
@@ -5116,6 +5124,10 @@ msgstr "Kon de lijst met IP-adressen niet verkrijgen, verhelp dit probleem."
 msgid "Unable to get update info from Github"
 msgstr "Kan update-informatie niet uit Github verkrijgen"
 
+#, php-format
+msgid "Unable to install the %s plugin: %s"
+msgstr ""
+
 msgid "Unable to load i-MSCP info file."
 msgstr "Kon het i-MSCP-informatiebestand niet laden"
 
@@ -5124,6 +5136,10 @@ msgstr "Kan bestand niet verplaatsen."
 
 msgid "Unable to open plugin archive."
 msgstr "Kon plugin-archief niet openen."
+
+#, php-format
+msgid "Unable to protect the %s plugin: %s"
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "Kan index-bestand van softwareberging niet uitlezen."
@@ -5170,6 +5186,14 @@ msgstr "Kan optie sslallowselfsigned niet toepassen"
 
 msgid "Unable to set sslverifypeer option"
 msgstr "Kan optie sslverifypeer niet toepassen"
+
+#, php-format
+msgid "Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Unable to update the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5928,9 +5952,6 @@ msgstr "toevoegen"
 msgid "and"
 msgstr "en"
 
-msgid "change"
-msgstr ""
-
 msgid "day"
 msgstr "dag"
 
@@ -5939,9 +5960,6 @@ msgstr "dagen"
 
 msgid "deleting"
 msgstr "aan het verwijderen"
-
-msgid "disable"
-msgstr ""
 
 msgid "disabled"
 msgstr "uitgeschakeld"
@@ -5969,9 +5987,6 @@ msgstr "E-mailaccount"
 
 msgid "email accounts"
 msgstr "E-mailaccounts"
-
-msgid "enable"
-msgstr ""
 
 msgid "enabled"
 msgstr "ingeschakeld"
@@ -6032,9 +6047,6 @@ msgstr "i-MSCP Updates"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "Zoeken naar versie-updates van i-MSCP is uitgeschakeld"
-
-msgid "install"
-msgstr ""
 
 msgid "installed"
 msgstr "geïnstalleerd"
@@ -6106,9 +6118,6 @@ msgstr "orphan-invoer"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-msgid "protect"
-msgstr ""
-
 msgid "required"
 msgstr "verplicht"
 
@@ -6126,9 +6135,6 @@ msgstr "Verkeer"
 
 msgid "udp"
 msgstr "UDP"
-
-msgid "uninstall"
-msgstr ""
 
 msgid "unlimited"
 msgstr "ongelimiteerd"
