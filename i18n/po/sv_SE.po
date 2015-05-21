@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 20:01+0200\n"
-"PO-Revision-Date: 2015-05-21 18:04+0000\n"
+"POT-Creation-Date: 2015-05-22 01:01+0200\n"
+"PO-Revision-Date: 2015-05-21 23:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -3785,14 +3785,14 @@ msgid ""
 msgstr "Plugin Manager: Det går inte att ta bort %s plugin-filer. Du bör köra set-gui-permissions.pl skriptet och försök igen."
 
 #, php-format
-msgid ""
-"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
-"another plugin."
-msgstr "Plugin Manager: Det går inte att ta bort %s plugin. Plugin har låsts av ett annat plugin."
-
-#, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
 msgstr "Plugin Manager: Det gick inte att hämta plugin %s"
+
+#, php-format
+msgid ""
+"Plugin Manager: Unable to uninsntall the %s plugin. Plugin has been locked "
+"by another plugin."
+msgstr ""
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -5060,7 +5060,7 @@ msgstr "Unable to backup %s plugin directory."
 
 #, php-format
 msgid "Unable to change the %s plugin: %s"
-msgstr ""
+msgstr "Unable to change the %s plugin: %s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5082,11 +5082,11 @@ msgstr "Det går inte att ta bort i-MSCP info fil."
 
 #, php-format
 msgid "Unable to disable the %s plugin: %s"
-msgstr ""
+msgstr "Det går inte att stänga av %s plugin: %s"
 
 #, php-format
 msgid "Unable to enable the %s plugin: %s"
-msgstr ""
+msgstr "Det går inte att göra det möjligt för %s plugin: %s"
 
 msgid "Unable to extract info.php file"
 msgstr "Det gick inte att extrahera info.php fil"
@@ -5116,7 +5116,7 @@ msgstr "Unable to get update info from Github"
 
 #, php-format
 msgid "Unable to install the %s plugin: %s"
-msgstr ""
+msgstr "Unable to install the %s plugin: %s"
 
 msgid "Unable to load i-MSCP info file."
 msgstr "Det gick inte att läsa i-MSCP info fil."
@@ -5129,7 +5129,7 @@ msgstr "Det går inte att öppna plugin arkivet."
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
-msgstr ""
+msgstr "Unable to protect the %s plugin: %s"
 
 msgid "Unable to read Web software repository index file."
 msgstr "Det går inte att läsa index-fil för Web mjukvaran."
@@ -5179,11 +5179,11 @@ msgstr "Unable to set sslverifypeer option"
 
 #, php-format
 msgid "Unable to uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Unable to uninstall the %s plugin: %s"
 
 #, php-format
 msgid "Unable to update the %s plugin: %s"
-msgstr ""
+msgstr "Unable to update the %s plugin: %s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"

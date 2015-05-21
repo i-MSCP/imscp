@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 20:01+0200\n"
-"PO-Revision-Date: 2015-05-21 18:04+0000\n"
+"POT-Creation-Date: 2015-05-22 01:01+0200\n"
+"PO-Revision-Date: 2015-05-21 23:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -3790,14 +3790,14 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid ""
-"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
-"another plugin."
-msgstr "Gerenciador de plugin: Não é possível excluir o plug-in %s. O plugin foi bloqueado por outro plugin."
-
-#, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
 msgstr "Gerenciador de Plugin:  Não foi possível carregar o plugin %s"
+
+#, php-format
+msgid ""
+"Plugin Manager: Unable to uninsntall the %s plugin. Plugin has been locked "
+"by another plugin."
+msgstr ""
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -5065,7 +5065,7 @@ msgstr "Incapaz de fazer backup do diretório da pasta %s do plugin."
 
 #, php-format
 msgid "Unable to change the %s plugin: %s"
-msgstr ""
+msgstr "Não é possível alterar o plugin %s: %s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5121,7 +5121,7 @@ msgstr "Não foi possível obter informações de atualização do Github"
 
 #, php-format
 msgid "Unable to install the %s plugin: %s"
-msgstr ""
+msgstr "Não é possível instalar o plugin %s: %s"
 
 msgid "Unable to load i-MSCP info file."
 msgstr ""
@@ -5134,7 +5134,7 @@ msgstr "Não foi possível extrair os arquivos do plugin."
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
-msgstr ""
+msgstr "Incapaz de proteger o %s plugin: %s"
 
 msgid "Unable to read Web software repository index file."
 msgstr "Não é possível ler arquivo de índice do repositório de software web."
@@ -5184,11 +5184,11 @@ msgstr "Não é possível definir opção de SSL Peer Verification"
 
 #, php-format
 msgid "Unable to uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Não foi possível desinstalar o plugin%s: %s"
 
 #, php-format
 msgid "Unable to update the %s plugin: %s"
-msgstr ""
+msgstr "Não é possível atualizar o plugin %s: %s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"

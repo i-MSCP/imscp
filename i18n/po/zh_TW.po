@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 20:01+0200\n"
-"PO-Revision-Date: 2015-05-21 18:04+0000\n"
+"POT-Creation-Date: 2015-05-22 01:01+0200\n"
+"PO-Revision-Date: 2015-05-21 23:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -3787,14 +3787,14 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid ""
-"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
-"another plugin."
-msgstr "外掛管理: 無法刪除 %s 外掛。外掛已被其他的外掛鎖定了。"
-
-#, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
 msgstr "外掛管理: 無法讀取外掛 %s"
+
+#, php-format
+msgid ""
+"Plugin Manager: Unable to uninsntall the %s plugin. Plugin has been locked "
+"by another plugin."
+msgstr ""
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -5062,7 +5062,7 @@ msgstr "無法備份 %s 外掛目錄。"
 
 #, php-format
 msgid "Unable to change the %s plugin: %s"
-msgstr ""
+msgstr "無法變更 %s 外掛: %s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5118,7 +5118,7 @@ msgstr "無法從 Github 取得更新資訊"
 
 #, php-format
 msgid "Unable to install the %s plugin: %s"
-msgstr ""
+msgstr "無法安裝 %s 外掛: %s"
 
 msgid "Unable to load i-MSCP info file."
 msgstr "無法讀取 i-MSCP 資訊檔案。"
@@ -5131,7 +5131,7 @@ msgstr "無法開啟外掛壓縮檔。"
 
 #, php-format
 msgid "Unable to protect the %s plugin: %s"
-msgstr ""
+msgstr "無法保護 %s 外掛: %s"
 
 msgid "Unable to read Web software repository index file."
 msgstr "無法讀取網站軟體庫索引檔。"
@@ -5181,11 +5181,11 @@ msgstr "無法設定 sslverifypeer 選項"
 
 #, php-format
 msgid "Unable to uninstall the %s plugin: %s"
-msgstr ""
+msgstr "無法移除 %s 插件: %s"
 
 #, php-format
 msgid "Unable to update the %s plugin: %s"
-msgstr ""
+msgstr "無法升級 %s 插件: %s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP <version>\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 20:01+0200\n"
+"POT-Creation-Date: 2015-05-22 01:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3789,13 +3789,13 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid ""
-"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
-"another plugin."
+msgid "Plugin Manager: Unable to load plugin %s"
 msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Unable to load plugin %s"
+msgid ""
+"Plugin Manager: Unable to uninsntall the %s plugin. Plugin has been locked "
+"by another plugin."
 msgstr ""
 
 #, php-format

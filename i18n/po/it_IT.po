@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-21 20:01+0200\n"
-"PO-Revision-Date: 2015-05-21 18:04+0000\n"
+"POT-Creation-Date: 2015-05-22 01:01+0200\n"
+"PO-Revision-Date: 2015-05-21 23:04+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -3790,13 +3790,13 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid ""
-"Plugin Manager: Unable to delete the %s plugin. Plugin has been locked by "
-"another plugin."
+msgid "Plugin Manager: Unable to load plugin %s"
 msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Unable to load plugin %s"
+msgid ""
+"Plugin Manager: Unable to uninsntall the %s plugin. Plugin has been locked "
+"by another plugin."
 msgstr ""
 
 #, php-format
@@ -5188,7 +5188,7 @@ msgstr ""
 
 #, php-format
 msgid "Unable to update the %s plugin: %s"
-msgstr ""
+msgstr "Il gestore plugin non è riuscito ad aggiornare il plugin %s: %s."
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
