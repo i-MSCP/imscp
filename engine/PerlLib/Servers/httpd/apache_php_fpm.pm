@@ -899,7 +899,7 @@ sub addIps
 		return $rs if $rs;
 
 		my $ipMngr = iMSCP::Net->getInstance();
-		my $confSnippet = '';
+		my $confSnippet = "\n";
 
 		for(@{$data->{'SSL_IPS'}}) {
 			if($ipMngr->getAddrVersion($_) eq 'ipv4') {
@@ -1404,14 +1404,16 @@ sub start
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
 
-	# In case no pool file is available we must no try to start the PHP-FPM service because it will fail
-	# TODO find a better way
-	my @poolFiles = iMSCP::Dir->new(
-		'dirname' => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}, 'fileType' => '.conf'
-	)->getFiles();
-
+	# In case no pool file is available we must no try to reload the PHP-FPM service because it will fail
+	my $isEmptyPoolDir = iMSCP::Dir->new( dirname => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'})->isEmpty();
 	my $serviceMngr = iMSCP::Service->getInstance();
-	$serviceMngr->start($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}) if @poolFiles;
+
+	unless($isEmptyPoolDir) {
+		$serviceMngr->start($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+	} else {
+		$serviceMngr->stop($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+	}
+
 	$serviceMngr->start($self->{'config'}->{'HTTPD_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterHttpdStart');
@@ -1470,18 +1472,24 @@ sub restart
 	return $rs if $rs;
 
 	# In case no pool file is available we must no try to reload the PHP-FPM service because it will fail
-	# TODO fin a better way
-	my @poolFiles = iMSCP::Dir->new(
-		'dirname' => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}, 'fileType' => '.conf'
-	)->getFiles();
-
+	my $isEmptyPoolDir = iMSCP::Dir->new( dirname => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'})->isEmpty();
 	my $serviceMngr = iMSCP::Service->getInstance();
 
 	if($self->{'forceRestart'}) {
-		$serviceMngr->restart($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}) if @poolFiles;
+		unless($isEmptyPoolDir) {
+			$serviceMngr->restart($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+		} else {
+			$serviceMngr->stop($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+		}
+
 		$serviceMngr->restart($self->{'config'}->{'HTTPD_SNAME'});
 	} else {
-		$serviceMngr->reload($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}) if @poolFiles;
+		unless($isEmptyPoolDir) {
+			$serviceMngr->reload($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+		} else {
+			$serviceMngr->stop($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
+		}
+
 		$serviceMngr->reload($self->{'config'}->{'HTTPD_SNAME'});
 	}
 

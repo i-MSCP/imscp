@@ -26,11 +26,12 @@
         -idle-timeout 900 \
         -pass-header Authorization
     # SECTION mod_fastcgi END.
+
     # SECTION mod_proxy_fcgi BEGIN.
     <FilesMatch "\.php5?$">
         SetHandler "proxy:unix:/var/run/php5-fpm-{POOL_NAME}.socket|fcgi://{POOL_NAME}"
     </FilesMatch>
-    # SECTION mod_proxy_fcgi BEGIN.
+    # SECTION mod_proxy_fcgi END.
     # SECTION php_fpm END.
     # SECTION php_enabled END.
 

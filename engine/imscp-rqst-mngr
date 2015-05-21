@@ -59,7 +59,6 @@ my $dbh = iMSCP::Database->factory()->getRawDb();
 sub _process
 {
 	my ($moduleName, $sql, $ipModule) = @_;
-	my $rs = 0;
 
 	debug("Processing $moduleName module items");
 
@@ -80,7 +79,7 @@ sub _process
 		my $totalItems = scalar @{$rows};
 
 		for my $row(@{$rows}) {
-			my ($id, $name, $status) = ($row->{'id'}, $row->{'name'}, $row->{'status'});
+			my ($id, $name, $status, $rs) = ($row->{'id'}, $row->{'name'}, $row->{'status'}, 0);
 
 			debug("Processing $id, $name, $status");
 
@@ -106,9 +105,8 @@ sub _process
 			if($rs) {
 				error("Error while processing $id, $name, $status.");
 				error("See $main::imscpConfig{'LOG_DIR'}/${moduleName}_module_$name.log for more details.");
+				return $rs;
 			}
-
-			return $rs if $rs;
 		}
 	} else {
 		debug("No item to process for the $moduleName module.");
@@ -119,9 +117,12 @@ sub _process
 
 sub run
 {
+
+	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeDispatchRequest');
+
 	# Process plugins
 	# Must always be processed first to allow plugins to register their listeners on the event manager
-	my $rs = _process(
+	$rs ||= _process(
 		'Plugin',
 		"
 			SELECT
@@ -138,8 +139,6 @@ sub run
 				plugin_priority DESC
 		"
 	);
-
-	$rs ||= iMSCP::EventManager->getInstance()->trigger('beforeDispatchRequest');
 
 	# Process toadd|tochange SSL certificates tasks
 	$rs ||= _process(
@@ -654,8 +653,6 @@ sub run
 	}
 
 	iMSCP::EventManager->getInstance()->trigger('afterDispatchRequest', $rs);
-
-	$rs;
 }
 
 exit run();

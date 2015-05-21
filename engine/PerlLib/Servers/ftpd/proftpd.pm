@@ -118,7 +118,7 @@ sub postinstall
 	iMSCP::Service->getInstance()->enable($self->{'config'}->{'FTPD_SNAME'});
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Proftpd' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Proftpd' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterFtpdPostInstall', 'proftpd');

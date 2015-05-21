@@ -894,7 +894,7 @@ sub addIps
 		return $rs if $rs;
 
 		my $ipMngr = iMSCP::Net->getInstance();
-		my $confSnippet = '';
+		my $confSnippet = "\n";
 
 		for(@{$data->{'SSL_IPS'}}) {
 			if($ipMngr->getAddrVersion($_) eq 'ipv4') {
