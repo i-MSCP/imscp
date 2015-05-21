@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-16 17:03+0200\n"
-"PO-Revision-Date: 2015-05-16 15:06+0000\n"
+"POT-Creation-Date: 2015-05-21 19:50+0200\n"
+"PO-Revision-Date: 2015-05-21 17:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -5919,6 +5919,9 @@ msgstr ""
 msgid "and"
 msgstr "a"
 
+msgid "change"
+msgstr ""
+
 msgid "day"
 msgstr "den"
 
@@ -5926,6 +5929,9 @@ msgid "days"
 msgstr "dny"
 
 msgid "deleting"
+msgstr ""
+
+msgid "disable"
 msgstr ""
 
 msgid "disabled"
@@ -5954,6 +5960,9 @@ msgstr "poštovní účet"
 
 msgid "email accounts"
 msgstr "poštovní účty"
+
+msgid "enable"
+msgstr ""
 
 msgid "enabled"
 msgstr "povoleno"
@@ -6014,6 +6023,9 @@ msgstr "i-MSCP aktualizace"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "Kontrola aktualizací nových verzí i-MSCP je zakázána"
+
+msgid "install"
+msgstr ""
 
 msgid "installed"
 msgstr "nainstalovaný"
@@ -6085,6 +6097,9 @@ msgstr ""
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
+msgid "protect"
+msgstr ""
+
 msgid "required"
 msgstr "požadováno"
 
@@ -6102,6 +6117,9 @@ msgstr "provoz"
 
 msgid "udp"
 msgstr "udp"
+
+msgid "uninstall"
+msgstr ""
 
 msgid "unlimited"
 msgstr "bez omezení"

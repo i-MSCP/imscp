@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-16 17:03+0200\n"
-"PO-Revision-Date: 2015-05-16 15:06+0000\n"
+"POT-Creation-Date: 2015-05-21 19:50+0200\n"
+"PO-Revision-Date: 2015-05-21 17:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/i-MSCP/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -5921,6 +5921,9 @@ msgstr ""
 msgid "and"
 msgstr ""
 
+msgid "change"
+msgstr ""
+
 msgid "day"
 msgstr ""
 
@@ -5928,6 +5931,9 @@ msgid "days"
 msgstr ""
 
 msgid "deleting"
+msgstr ""
+
+msgid "disable"
 msgstr ""
 
 msgid "disabled"
@@ -5955,6 +5961,9 @@ msgid "email account"
 msgstr ""
 
 msgid "email accounts"
+msgstr ""
+
+msgid "enable"
 msgstr ""
 
 msgid "enabled"
@@ -6015,6 +6024,9 @@ msgid "i-MSCP updates"
 msgstr "i-MSCP actualizari"
 
 msgid "i-MSCP version update checking is disabled"
+msgstr ""
+
+msgid "install"
 msgstr ""
 
 msgid "installed"
@@ -6087,6 +6099,9 @@ msgstr ""
 msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
+msgid "protect"
+msgstr ""
+
 msgid "required"
 msgstr ""
 
@@ -6104,6 +6119,9 @@ msgstr "Trafic"
 
 msgid "udp"
 msgstr "udp"
+
+msgid "uninstall"
+msgstr ""
 
 msgid "unlimited"
 msgstr "nelimitat"

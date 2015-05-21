@@ -4,7 +4,7 @@
 # 
 # Translators:
 # FlorianJ <flo_jung@web.de>, 2012
-# Laurent Declercq <l.declercq@nuxwin.com>, 2011,2014
+# Laurent Declercq <l.declercq@nuxwin.com>, 2011,2014-2015
 # Peter Wyss <peter@obanax.ch>, 2013
 # Thom Heemstra <thom@heemstra.us>, 2015
 # Torsten Widmann <info@goover.de>, 2011-2012
@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-16 17:03+0200\n"
-"PO-Revision-Date: 2015-05-16 15:06+0000\n"
+"POT-Creation-Date: 2015-05-21 19:50+0200\n"
+"PO-Revision-Date: 2015-05-21 17:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgid ""
 "Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nDear {NAME},\n\nA new account has been created for you.\n\nYour account information:\n\nUser type: {USERTYPE}\nUser name: {USERNAME}\nPassword: {PASSWORD}\n\nRemember to change your password often and the first time you login.\n\nYou can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n\nStatistics: http://{USERNAME}/stats/ (Same username and password than above)\n\nThank you for using our services.\n"
 
 msgid ""
 "\n"
@@ -2263,7 +2263,7 @@ msgstr "Enabled"
 
 #, php-format
 msgid "Enabled for: %s"
-msgstr ""
+msgstr "Enabled for: %s"
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -5923,6 +5923,9 @@ msgstr "addition"
 msgid "and"
 msgstr "and"
 
+msgid "change"
+msgstr ""
+
 msgid "day"
 msgstr "day"
 
@@ -5931,6 +5934,9 @@ msgstr "days"
 
 msgid "deleting"
 msgstr "deleting"
+
+msgid "disable"
+msgstr ""
 
 msgid "disabled"
 msgstr "disabled"
@@ -5948,7 +5954,7 @@ msgid "domain aliases"
 msgstr "domain aliases"
 
 msgid "domain data"
-msgstr ""
+msgstr "domain data"
 
 msgid "domains"
 msgstr "domains"
@@ -5958,6 +5964,9 @@ msgstr "email account"
 
 msgid "email accounts"
 msgstr "email accounts"
+
+msgid "enable"
+msgstr ""
 
 msgid "enabled"
 msgstr "enabled"
@@ -6019,6 +6028,9 @@ msgstr "i-MSCP updates"
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP version update checking is disabled"
 
+msgid "install"
+msgstr ""
+
 msgid "installed"
 msgstr "installed"
 
@@ -6038,7 +6050,7 @@ msgid "mail"
 msgstr "mail"
 
 msgid "mail accounts"
-msgstr ""
+msgstr "mail accounts"
 
 msgid "missing alias"
 msgstr "missing alias"
@@ -6089,6 +6101,9 @@ msgstr "orphan entry"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
+msgid "protect"
+msgstr ""
+
 msgid "required"
 msgstr "required"
 
@@ -6106,6 +6121,9 @@ msgstr "traffic"
 
 msgid "udp"
 msgstr "udp"
+
+msgid "uninstall"
+msgstr ""
 
 msgid "unlimited"
 msgstr "unlimited"

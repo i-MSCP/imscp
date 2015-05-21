@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-16 17:03+0200\n"
-"PO-Revision-Date: 2015-05-16 15:06+0000\n"
+"POT-Creation-Date: 2015-05-21 19:50+0200\n"
+"PO-Revision-Date: 2015-05-21 17:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -5923,6 +5923,9 @@ msgstr ""
 msgid "and"
 msgstr ""
 
+msgid "change"
+msgstr ""
+
 msgid "day"
 msgstr "giorno"
 
@@ -5931,6 +5934,9 @@ msgstr "giorni"
 
 msgid "deleting"
 msgstr "eliminazione"
+
+msgid "disable"
+msgstr ""
 
 msgid "disabled"
 msgstr "disabilitato"
@@ -5958,6 +5964,9 @@ msgstr "account di posta"
 
 msgid "email accounts"
 msgstr "account di posta"
+
+msgid "enable"
+msgstr ""
 
 msgid "enabled"
 msgstr "abilitato"
@@ -6019,6 +6028,9 @@ msgstr "Aggiornamenti i-MSCP"
 msgid "i-MSCP version update checking is disabled"
 msgstr "La ricerca degli aggiornamenti di i-MSCP è disabilitata."
 
+msgid "install"
+msgstr ""
+
 msgid "installed"
 msgstr "installato"
 
@@ -6038,7 +6050,7 @@ msgid "mail"
 msgstr "mail"
 
 msgid "mail accounts"
-msgstr ""
+msgstr "accounts email"
 
 msgid "missing alias"
 msgstr "alias mancanti"
@@ -6089,6 +6101,9 @@ msgstr "ingresso orfano"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
+msgid "protect"
+msgstr ""
+
 msgid "required"
 msgstr "richiesto"
 
@@ -6106,6 +6121,9 @@ msgstr "traffico"
 
 msgid "udp"
 msgstr "udp"
+
+msgid "uninstall"
+msgstr ""
 
 msgid "unlimited"
 msgstr "illimitato"

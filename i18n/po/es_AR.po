@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-16 17:03+0200\n"
-"PO-Revision-Date: 2015-05-16 15:06+0000\n"
+"POT-Creation-Date: 2015-05-21 19:50+0200\n"
+"PO-Revision-Date: 2015-05-21 17:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -88,7 +88,7 @@ msgid ""
 "Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nEstimado {NAME},\n\nTe ha sido creada una nueva cuenta.\n\nInformación de tu cuenta:\n\nTipo de usuario: {USERTYPE}\nNombre de usuario: {USERNAME}\nContraseña: {PASSWORD}\n\nRecordá cambiar tu contraseña cuando inicies sesión por primera vez.\n\nPodés iniciar sesión ahora en {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n\nEstadísticas: http://{USERNAME}/stats/ (Con el mismo nombre de usuario y contraseña ya indicados)\n\nGracias por usar nuestros servicios.\n"
 
 msgid ""
 "\n"
@@ -2258,7 +2258,7 @@ msgstr "Habilitado"
 
 #, php-format
 msgid "Enabled for: %s"
-msgstr ""
+msgstr "Habilitado por: %s"
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -5918,6 +5918,9 @@ msgstr "adición"
 msgid "and"
 msgstr "y"
 
+msgid "change"
+msgstr ""
+
 msgid "day"
 msgstr "día"
 
@@ -5926,6 +5929,9 @@ msgstr "días"
 
 msgid "deleting"
 msgstr "borrando"
+
+msgid "disable"
+msgstr ""
 
 msgid "disabled"
 msgstr "desactivado"
@@ -5943,7 +5949,7 @@ msgid "domain aliases"
 msgstr "Aliases de dominio"
 
 msgid "domain data"
-msgstr ""
+msgstr "datos del dominio"
 
 msgid "domains"
 msgstr "Dominios"
@@ -5953,6 +5959,9 @@ msgstr "Cuenta de correo"
 
 msgid "email accounts"
 msgstr "Cuentas de correo"
+
+msgid "enable"
+msgstr ""
 
 msgid "enabled"
 msgstr "Habilitado"
@@ -6014,6 +6023,9 @@ msgstr "Actualizaciones i-MSCP"
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP comprobación de actualizaciones está desactivada"
 
+msgid "install"
+msgstr ""
+
 msgid "installed"
 msgstr "instalado"
 
@@ -6033,7 +6045,7 @@ msgid "mail"
 msgstr "correo"
 
 msgid "mail accounts"
-msgstr ""
+msgstr "cuentas de correo"
 
 msgid "missing alias"
 msgstr "Alias faltante"
@@ -6084,6 +6096,9 @@ msgstr "Entrada huerfana"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
+msgid "protect"
+msgstr ""
+
 msgid "required"
 msgstr "requerido"
 
@@ -6101,6 +6116,9 @@ msgstr "Tráfico"
 
 msgid "udp"
 msgstr "udp"
+
+msgid "uninstall"
+msgstr ""
 
 msgid "unlimited"
 msgstr "ilimitado"
