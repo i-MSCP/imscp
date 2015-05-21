@@ -2052,7 +2052,7 @@ sub _cleanTemplate
 		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
 
 		if((version->parse("$self->{'config'}->{'HTTPD_VERSION'}") < version->parse('2.4.10'))) {
-			$$cfgTpl = replaceBloc("SECTION mod_proxy_fcgi BEGIN.\n", "SECTION mod_proxy_fcgi END.\n", '', $$cfgTpl);
+			$$cfgTpl = replaceBloc("# SECTION mod_proxy_fcgi BEGIN.\n", "# SECTION mod_proxy_fcgi END.\n", '', $$cfgTpl);
 		} else {
 			$$cfgTpl = replaceBloc("# SECTION mod_fastcgi BEGIN.\n", "# SECTION mod_fastcgi END.\n", '', $$cfgTpl);
 		}
