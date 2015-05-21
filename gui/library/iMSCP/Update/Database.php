@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 205;
+	protected $lastUpdate = 206;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3243,12 +3243,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Drop plugin.plugin_lock column
+	 * Add plugin.plugin_lock field
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function r205()
+	protected function r206()
 	{
-		return $this->dropColumn('plugin', 'plugin_locked');
+		return $this->addColumn('plugin', 'plugin_locked', "TINYINT UNSIGNED NOT NULL DEFAULT '0'");
 	}
 }

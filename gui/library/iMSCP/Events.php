@@ -744,6 +744,50 @@ class iMSCP_Events
 	const onAfterProtectPlugin = 'onAfterProtectPlugin';
 
 	/**
+	 * The onBeforeLockPlugin event is triggered before a plugin is locked
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onBeforeLockPlugin = 'onBeforeLockPlugin';
+
+	/**
+	 * The onAfterLockPlugin event is triggered after a plugin is locked
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onAfterLockPlugin = 'onAfterLockPlugin';
+
+	/**
+	 * The onBeforeUnlockPlugin event is triggered before a plugin is unlocked
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onBeforeUnlockPlugin = 'onBeforeUnlockPlugin';
+
+	/**
+	 * The onAfternlockPlugin event is triggered after a plugin is unlocked
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onAfterUnlockPlugin = 'onAfterUnlockPlugin';
+
+	/**
 	 * The onBeforeAddDomain event is triggered before a domain is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
