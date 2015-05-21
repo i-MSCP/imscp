@@ -417,35 +417,6 @@ function checkAction($pluginManager, $pluginName, $action)
 }
 
 /**
- * Translate the given action
- *
- * @param string $action Action to translate
- * @return string Stranslated action
- * @throws iMSCPException
- */
-function translateAction($action)
-{
-	switch ($action) {
-		case 'install':
-			return tr('install');
-		case 'uninstall':
-			return tr('uninstall');
-		case 'update':
-			return tr('update');
-		case 'change':
-			return tr('change');
-		case 'enable':
-			return tr('enable');
-		case 'disable':
-			return tr('disable');
-		case 'protect':
-			return tr('protect');
-	}
-
-	throw new iMSCPException('Unknown action');
-}
-
-/**
  * Do the given action for the given plugin
  *
  * @param PluginManager $pluginManager
@@ -469,9 +440,30 @@ function doAction($pluginManager, $pluginName, $action)
 						$msg = ($ret == PluginManager::ACTION_FAILURE)
 							? tr('Action has failed.', true) : tr('Action has been stopped.', true);
 
-						set_page_message(
-							tr('Unable to %s the %s plugin: %s', translateAction($action), $pluginName, $msg), 'error'
-						);
+						switch ($action) {
+							case 'install':
+								$msg = tr('Unable to install the %s plugin: %s', $pluginName, $msg);
+								break;
+							case 'uninstall':
+								$msg = tr('Unable to uninstall the %s plugin: %s', $pluginName, $msg);
+								break;
+							case 'update':
+								$msg = tr('Unable to update the %s plugin: %s', $pluginName, $msg);
+								break;
+							case 'change':
+								$msg = tr('Unable to change the %s plugin: %s', $pluginName, $msg);
+								break;
+							case 'enable':
+								$msg = tr('Unable to enable the %s plugin: %s', $pluginName, $msg);
+								break;
+							case 'disable':
+								$msg = tr('Unable to disable the %s plugin: %s', $pluginName, $msg);
+								break;
+							default:
+								$msg = tr('Unable to protect the %s plugin: %s', $pluginName, $msg);
+						}
+
+						set_page_message($msg, 'error');
 					} else {
 						$msg = '';
 
