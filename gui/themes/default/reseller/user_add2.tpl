@@ -349,11 +349,11 @@
 	<td>{TR_BACKUP}</td>
 	<td>
 		<div class="checkbox">
-			<input type="checkbox" id="backup_dmn" name="backup[]" value="_dmn_" {VL_BACKUPD} />
+			<input type="checkbox" id="backup_dmn" name="backup[]" value="dmn" {VL_BACKUPD} />
 			<label for="backup_dmn">{TR_BACKUP_DOMAIN}</label>
-			<input type="checkbox" id="backup_sql" name="backup[]" value="_sql_" {VL_BACKUPS} />
+			<input type="checkbox" id="backup_sql" name="backup[]" value="sql" {VL_BACKUPS} />
 			<label for="backup_sql">{TR_BACKUP_SQL}</label>
-			<input type="checkbox" id="backup_mail" name="backup[]" value="_mail_" {VL_BACKUPM} />
+			<input type="checkbox" id="backup_mail" name="backup[]" value="mail" {VL_BACKUPM} />
 			<label for="backup_mail">{TR_BACKUP_MAIL}</label>
 		</div>
 	</td>

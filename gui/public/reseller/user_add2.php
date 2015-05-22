@@ -98,9 +98,9 @@ function get_init_au2_page($tpl, $phpini)
 	}
 
 	if(resellerHasFeature('backup')) {
-		$tplVars['VL_BACKUPD'] = in_array('_dmn_', $backup) ? $htmlChecked : '';
-		$tplVars['VL_BACKUPS'] = in_array('_sql_', $backup) ? $htmlChecked : '';
-		$tplVars['VL_BACKUPS'] = in_array('_mail_', $backup) ? $htmlChecked : '';
+		$tplVars['VL_BACKUPD'] = in_array('dmn', $backup) ? $htmlChecked : '';
+		$tplVars['VL_BACKUPS'] = in_array('sql', $backup) ? $htmlChecked : '';
+		$tplVars['VL_BACKUPM'] = in_array('mail', $backup) ? $htmlChecked : '';
 	}
 
 	$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($webFolderProtection == '_yes_') ? $htmlChecked : '';
@@ -219,7 +219,7 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 				$extMailServer, $webFolderProtection, $mailQuota
 			) = explode(';', $props);
 
-			$backup = explode('|', $backup);
+			$backup = explode('|', str_replace('_', '', $backup));
 			$mailQuota = ($mailQuota != '0') ? $mailQuota / 1048576 : '0';
 
 			$hpName = $data['name'];
