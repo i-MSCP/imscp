@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 01:01+0200\n"
-"PO-Revision-Date: 2015-05-21 23:04+0000\n"
+"POT-Creation-Date: 2015-05-22 20:00+0200\n"
+"PO-Revision-Date: 2015-05-22 18:03+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -187,7 +187,7 @@ msgstr "%1$s de <b>ilimitado</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s está ahora logueado como %2$s"
+msgstr "%1$s estás ahora logueado como %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -3790,8 +3790,8 @@ msgstr "Administrador de plugin: No se puede cargar el plugin %s"
 
 #, php-format
 msgid ""
-"Plugin Manager: Unable to uninsntall the %s plugin. Plugin has been locked "
-"by another plugin."
+"Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
+" another plugin."
 msgstr ""
 
 #, php-format
@@ -5082,11 +5082,11 @@ msgstr "Incapaz de borrar el archivo de información i-MSCP."
 
 #, php-format
 msgid "Unable to disable the %s plugin: %s"
-msgstr ""
+msgstr "No se puede desactivar el plugin: %s: %s"
 
 #, php-format
 msgid "Unable to enable the %s plugin: %s"
-msgstr ""
+msgstr "No se puede activar el plugin %s: %s"
 
 msgid "Unable to extract info.php file"
 msgstr "Incapaz de extraer el archivo info.php"
