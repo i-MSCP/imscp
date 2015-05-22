@@ -700,7 +700,7 @@ class iMSCP_Plugin_Manager
 				} else {
 					set_page_message(
 						tr(
-							'Plugin Manager: Unable to uninsntall the %s plugin. Plugin has been locked by another plugin.',
+							'Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by another plugin.',
 							$name
 						),
 						'warning'
