@@ -129,7 +129,7 @@ sub add
 	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($self->{'admin_sys_uid'});
 
 	my $rs = $self->{'eventManager'}->trigger(
-        'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$homedir,
+		'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$homedir,
 		\$skeletonPath, \$shell, $userUid, $userGid
 	);
 	return $rs if $rs;

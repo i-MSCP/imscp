@@ -44,10 +44,9 @@ function tr($messageId, $substitution = null)
 	$message = $translator->translate($messageId);
 
 	// Process included parameter
-	if (func_num_args() > 1) {
+	if ($substitution !== null) {
 		$argv = func_get_args();
 		unset($argv[0]);
-
 		$message = vsprintf($message, $argv);
 	}
 

@@ -49,7 +49,7 @@ OPTIONS
 );
 
 iMSCP::Bootstrapper->getInstance()->boot(
-	{ 'norequirements' => 'yes', 'nolock' => 'yes', 'nodatabase' => 'yes', 'nokeys' => 'yes' }
+	{ norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes' }
 );
 
 my $rs = 0;
@@ -86,15 +86,9 @@ my $counter = 1;
 
 for(@toProcess) {
 	my ($package, $instance) = @{$_};
-
-	debug("Setting $package ( frontEnd ) permissions");
-
-	if ($main::execmode eq 'setup') {
-		print "Setting $package ( frontEnd ) permissions\t$totalItems\t$counter\n";
-	}
-
+	debug("Setting $package (frontEnd) permissions");
+	print "Setting $package (frontEnd) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
 	$rs |= $instance->setGuiPermissions();
-
 	$counter++;
 }
 

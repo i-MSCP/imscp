@@ -49,9 +49,8 @@ OPTIONS:
 );
 
 iMSCP::Bootstrapper->getInstance()->boot(
-	{ 'norequirements' => 'yes', 'nolock' => 'yes', 'nodatabase' => 'yes', 'nokeys' => 'yes' }
+	{ norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes' }
 );
-
 
 my $rs = 0;
 my @toProcess = ();
@@ -59,7 +58,6 @@ my @toProcess = ();
 for(iMSCP::Servers->getInstance()->get()) {
 	my $package = "Servers::$_";
 	eval "require $package";
-
 	unless($@) {
 		my $instance = $package->factory();
 		push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
@@ -72,7 +70,6 @@ for(iMSCP::Servers->getInstance()->get()) {
 for(iMSCP::Packages->getInstance()->get()) {
 	my $package = "Package::$_";
 	eval "require $package";
-
 	unless($@) {
 		my $instance = $package->getInstance();
 		push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
@@ -86,62 +83,32 @@ my $totalItems = @toProcess + 1;
 my $counter = 1;
 
 # Set base permissions - begin
-debug('Setting base ( backend ) permissions');
-print "Setting base ( backend ) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
+debug('Setting base (backend) permissions');
+print "Setting base (backend) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
 
 my $rootUName = $main::imscpConfig{'ROOT_USER'};
 my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
 my $confDir = $main::imscpConfig{'CONF_DIR'};
 my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'};
-my $logDir = $main::imscpConfig{'LOG_DIR'};
 
-# eg. /etc/imscp/*
-$rs = setRights(
-	$confDir,
-	{ 'user' => $rootUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
-);
-
-# eg ./var/www/imscp
-$rs |= setRights($rootDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0755' });
-
-# eg. /var/www/imscp/engine
-$rs |= setRights(
-	"$rootDir/engine", { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750', 'recursive' => 1 }
-);
-
-# eg ./var/www/virtual
-$rs |= setRights($userWebDir, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0755' });
-
-# eg. /var/log/imscp
-$rs |= setRights($logDir, { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750'} );
-
-# eg. /var/cache/imscp
-$rs |= setRights(
-	$main::imscpConfig{'CACHE_DATA_DIR'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
-);
-
-# eg. /var/local/imscp
-$rs |= setRights(
-	$main::imscpConfig{'VARIABLE_DATA_DIR'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
-);
+$rs = setRights($main::imscpConfig{'CONF_DIR'}, {
+	user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0640', recursive => 1
+});
+$rs |= setRights($rootDir, { user => $rootUName, group => $rootGName, mode => '0755' });
+$rs |= setRights("$rootDir/engine", { user => $rootUName, group => $imscpGName, mode => '0750', recursive => 1 });
+$rs |= setRights($main::imscpConfig{'USER_WEB_DIR'}, { user => $rootUName, group => $rootGName, mode => '0755' });
+$rs |= setRights($main::imscpConfig{'LOG_DIR'}, { user => $rootUName, group => $imscpGName, mode => '0750'} );
+$rs |= setRights($main::imscpConfig{'CACHE_DATA_DIR'}, { user => $rootUName, group => $rootGName, mode => '0750' });
+$rs |= setRights($main::imscpConfig{'VARIABLE_DATA_DIR'}, { user => $rootUName, group => $rootGName, mode => '0750' });
 
 $counter++;
 
-# Set base permissions - ending
-
 for(@toProcess) {
 	my ($package, $instance) = @{$_};
-
-	debug("Setting $package ( backend ) permissions");
-
-	if ($main::execmode eq 'setup') {
-		print "Setting $package ( backend ) permissions\t$totalItems\t$counter\n";
-	}
-
+	debug("Setting $package (backend) permissions");
+	print "Setting $package (backend) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
 	$rs |= $instance->setEnginePermissions();
-
 	$counter++;
 }
 
