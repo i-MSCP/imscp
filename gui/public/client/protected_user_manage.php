@@ -201,7 +201,7 @@ $tpl->assign(
 		 'TR_PASSWORD' => tr('Password'),
 		 'TR_STATUS' => tr('Status'),
 		 'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'),
 		 'TR_HTACCESS_USER' => tr('Manage users and groups')));
 
 generateNavigation($tpl);

@@ -465,7 +465,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		$tplVars['TR_PERMISSIONS'] = tr('Permissions');
 		$tplVars['TR_DIRECTIVES_VALUES'] = tr('PHP directives values');
 		$tplVars['TR_FIELDS_OK'] = tr('All fields seem to be valid.');
-		$tplVars['TR_VALUE_ERROR'] = tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.', true);
+		$tplVars['TR_VALUE_ERROR'] = tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.');
 		$tplVars['TR_CLOSE'] = tr('Close');
 		$tplVars['TR_MIB'] = tr('MiB');
 		$tplVars['TR_SEC'] = tr('Sec.');
@@ -478,7 +478,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		if (!$phpEditor->checkRePerm('phpiniAllowUrlFopen')) {
 			$tplVars['PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK'] = '';
 		} else {
-			$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>');
+			$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', '<b>allow_url_fopen</b>');
 			$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpEditor->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $htmlChecked : '';
 			$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpEditor->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $htmlChecked : '';
 			$permissionsBlock = true;
@@ -487,7 +487,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		if (!$phpEditor->checkRePerm('phpiniDisplayErrors')) {
 			$tplVars['PHP_EDITOR_DISPLAY_ERRORS_BLOCK'] = '';
 		} else {
-			$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', true, '<b>display_errors</b>');
+			$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', '<b>display_errors</b>');
 			$tplVars['DISPLAY_ERRORS_YES'] = ($phpEditor->getClPermVal('phpiniDisplayErrors') == 'yes') ? $htmlChecked : '';
 			$tplVars['DISPLAY_ERRORS_NO'] = ($phpEditor->getClPermVal('phpiniDisplayErrors') == 'no') ? $htmlChecked : '';
 			$permissionsBlock = true;
@@ -496,7 +496,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		if (!$phpEditor->checkRePerm('phpiniDisableFunctions') || PHP_SAPI == 'apache2handler') {
 			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 		} else {
-			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');
+			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', '<b>disable_functions</b>');
 			$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpEditor->getClPermVal('phpiniDisableFunctions') == 'yes') ? $htmlChecked : '';
 			$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpEditor->getClPermVal('phpiniDisableFunctions') == 'no') ? $htmlChecked : '';
 			$tplVars['TR_ONLY_EXEC'] = tr('Only exec');
@@ -508,19 +508,19 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			$tplVars['PHP_EDITOR_PERMISSIONS_BLOCK'] = '';
 		}
 
-		$tplVars['TR_PHP_POST_MAX_SIZE_DIRECTIVE'] = tr('PHP %s directive', true, '<b>post_max_size</b>');
+		$tplVars['TR_PHP_POST_MAX_SIZE_DIRECTIVE'] = tr('PHP %s directive', '<b>post_max_size</b>');
 		$tplVars['POST_MAX_SIZE'] = tohtml($phpEditor->getDataVal('phpiniPostMaxSize'));
 
-		$tplVars['PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE'] = tr('PHP %s directive', true, '<b>upload_max_filezize</b>');
+		$tplVars['PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE'] = tr('PHP %s directive', '<b>upload_max_filezize</b>');
 		$tplVars['UPLOAD_MAX_FILESIZE'] = tohtml($phpEditor->getDataVal('phpiniUploadMaxFileSize'));
 
-		$tplVars['TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<b>max_execution_time</b>');
+		$tplVars['TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE'] = tr('PHP %s directive', '<b>max_execution_time</b>');
 		$tplVars['MAX_EXECUTION_TIME'] = tohtml($phpEditor->getDataVal('phpiniMaxExecutionTime'));
 
-		$tplVars['TR_PHP_MAX_INPUT_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<b>max_input_time</b>');
+		$tplVars['TR_PHP_MAX_INPUT_TIME_DIRECTIVE'] = tr('PHP %s directive', '<b>max_input_time</b>');
 		$tplVars['MAX_INPUT_TIME'] = tohtml($phpEditor->getDataVal('phpiniMaxInputTime'));
 
-		$tplVars['TR_PHP_MEMORY_LIMIT_DIRECTIVE'] = tr('PHP %s directive', true, '<b>memory_limit</b>');
+		$tplVars['TR_PHP_MEMORY_LIMIT_DIRECTIVE'] = tr('PHP %s directive', '<b>memory_limit</b>');
 		$tplVars['MEMORY_LIMIT'] = tohtml($phpEditor->getDataVal('phpiniMemoryLimit'));
 
 

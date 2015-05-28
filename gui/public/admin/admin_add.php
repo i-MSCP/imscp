@@ -126,7 +126,7 @@ function add_user($tpl)
 				clean_input($_POST['email']),
 				clean_input($_POST['fname']),
 				clean_input($_POST['lname']),
-				tr('Administrator', true)
+				tr('Administrator')
 			);
 
 			//$_SESSION['user_added'] = 1;

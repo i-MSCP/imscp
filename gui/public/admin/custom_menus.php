@@ -365,7 +365,7 @@ $tpl->assign(
 		'TR_TH_LEVEL' => tr('Level'),
 		'TR_TH_ORDER' => tr('Order'),
 		'TR_CANCEL' => tr('Cancel'),
-		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete the %s menu?', true, '%s')),
+		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete the %s menu?', '%s')),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'ERR_FIELDS_STACK' => iMSCP_Registry::isRegistered('errorFieldsStack')
 			? json_encode(iMSCP_Registry::get('errorFieldsStack')) : '[]'

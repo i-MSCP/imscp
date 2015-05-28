@@ -438,7 +438,7 @@ function doAction($pluginManager, $pluginName, $action)
 				if($ret !== false) {
 					if($ret == PluginManager::ACTION_FAILURE || $ret == PluginManager::ACTION_STOPPED) {
 						$msg = ($ret == PluginManager::ACTION_FAILURE)
-							? tr('Action has failed.', true) : tr('Action has been stopped.', true);
+							? tr('Action has failed.') : tr('Action has been stopped.');
 
 						switch ($action) {
 							case 'install':
@@ -675,9 +675,9 @@ EventManager::getInstance()->registerListener(Events::onGetJsTranslations, funct
 	/** @var $event \iMSCP_Events_Event $translations */
 	$event->getParam('translations')->admin = array(
 		'datatable' => getDataTablesPluginTranslations(false),
-		'force_retry' => tr('Force retry', true),
-		'close' => tr('Close', true),
-		'error_details' => tr('Error details', true)
+		'force_retry' => tr('Force retry'),
+		'close' => tr('Close'),
+		'error_details' => tr('Error details')
 	);
 });
 
@@ -705,7 +705,7 @@ $tpl->assign(array(
 	'TR_UPLOAD' => tr('Upload'),
 	'TR_PLUGIN_ARCHIVE' => tr('Plugin archive'),
 	'TR_PLUGIN_ARCHIVE_TOOLTIP' => tr('Only tar.gz, tar.bz2 and zip archives are accepted.'),
-	'TR_PLUGIN_HINT' => tr('Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s.', true, '<a style="text-decoration: underline" href="http://i-mscp.net/filebase/index.php/Filebase/" target="_blank">' . tr('i-MSCP plugin store') . '</a></u>'),
+	'TR_PLUGIN_HINT' => tr('Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s.', '<a style="text-decoration: underline" href="http://i-mscp.net/filebase/index.php/Filebase/" target="_blank">' . tr('i-MSCP plugin store') . '</a></u>'),
 	'TR_CLICK_FOR_MORE_DETAILS' => tr('Click here for more details')
 ));
 

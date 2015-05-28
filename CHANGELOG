@@ -55,6 +55,7 @@ FRONTEND
 	Added Custom DNS items in debugger interface (admin level)
 	Added: Mail support in backup feature
 	Added: Path to openssl.cnf file into php.ini file
+	Added: ntr() function for plural support (i18n)
 	Changed: Stores the Github payload as json file instead of PHP file (iMSCP_Update_Version::getUpdateInfo())
 	Fixed: Client domain management page must not be hidden even if customer cannot add domain aliases and subdomains
 	Fixed: Do not fetch more data than needed from GitHub (iMSCP_Update_Version::getUpdateInfo())

@@ -1,6 +1,6 @@
 #!/bin/sh
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by i-MSCP Team
+# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -15,10 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
-# @aythor    Laurent Declercq <l.declercq@nuxwin.com>
-# @link      http://www.i-mscp.net i-MSCP Home Site
-# @license   http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 set -e
 
@@ -34,8 +30,8 @@ GUI_DIR=$(readlink -f ../../gui)
 # PHP files
 find ${GUI_DIR} -type f -name '*.php' -print > php.lst
 /usr/bin/xgettext --copyright-holder='i-MSCP Team - All rights reserved' --package-name='i-MSCP' \
---package-version="<version>" --msgid-bugs-address='i18n@i-mscp.net' --language=PHP --keyword='tr' --from-code=utf-8 \
---files-from=php.lst --no-location --sort-output --output=${i18N_DIR}/iMSCP.pot
+--package-version="<version>" --msgid-bugs-address='i18n@i-mscp.net' --language=PHP --keyword='tr' --keyword='ntr:1,2' \
+--from-code=utf-8 --files-from=php.lst --no-location --sort-output --output=${i18N_DIR}/iMSCP.pot \
 rm -f php.lst
 
 # XML files

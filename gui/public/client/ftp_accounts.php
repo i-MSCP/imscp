@@ -104,7 +104,7 @@ $tpl->assign(
 		'TR_LOGINAS' => tr('Login As'),
 		'TR_EDIT' => tr('Edit'),
 		'TR_DELETE' => tr('Delete'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', true, '%s'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', '%s'),
 	)
 );
 

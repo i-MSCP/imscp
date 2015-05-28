@@ -325,8 +325,8 @@ if (customerHasMailOrExtMailFeatures()) {
 			'TR_ACTIONS' => tr('Actions'),
 			'TR_AUTORESPOND' => tr('Auto responder'),
 			'TR_DELETE' => tr('Delete'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
-			'TR_MESSAGE_DELETE_SELECTED_ITEMS' => tr('Are you sure you want to delete all selected items?', true),
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'),
+			'TR_MESSAGE_DELETE_SELECTED_ITEMS' => tr('Are you sure you want to delete all selected items?'),
 			'TR_DELETE_SELECTED_ITEMS' => tr('Delete selected items'),
 			'TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR' => tr('You must select a least one item to delete')
 		)

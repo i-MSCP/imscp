@@ -311,7 +311,7 @@ $tpl->assign(
 		'TR_TITLE_CATCHALL_MAIL_USERS' => tr('Catch all'),
 		'TR_DOMAIN' => tr('Domain'),
 		'TR_CATCHALL' => tr('Catch all'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s catch all?', true, '%s'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s catch all?', '%s'),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'TR_CANCEL' => tr('Cancel')
 	)

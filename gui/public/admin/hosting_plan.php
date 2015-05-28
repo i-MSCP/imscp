@@ -69,7 +69,7 @@ function admin_generatePage($tpl)
 				'TR_ACTIONS' => tr('Actions'),
 				'TR_EDIT' => tr('Edit'),
 				'TR_DELETE' => tr('Delete'),
-				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s hosting plan?', true, '%s')
+				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s hosting plan?', '%s')
 			)
 		);
 

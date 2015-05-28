@@ -385,7 +385,7 @@ $tpl->assign(
 		'TR_PROTOCOL' => tr('Protocol'),
 		'TR_SHOW' => tr('Show'),
 		'TR_DELETE' => tr('Delete'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s service port ?', true, '%s'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s service port ?', '%s'),
 		'TR_ADD_NEW_SERVICE_PORT' => tr('Add new service port'),
 		'VAL_FOR_SUBMIT_ON_UPDATE' => tr('Update'),
 		'VAL_FOR_SUBMIT_ON_ADD' => tr('Add'),

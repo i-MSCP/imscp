@@ -282,37 +282,37 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'TR_PERMISSIONS' => tr('Permissions'),
 			'TR_DIRECTIVES_VALUES' => tr('PHP directives values'),
 			'TR_FIELDS_OK' => tr('All fields seem to be valid.'),
-			'TR_VALUE_ERROR' => tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.', true),
+			'TR_VALUE_ERROR' => tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.'),
 			'TR_CLOSE' => tr('Close'),
 
 			'PHP_INI_SYSTEM_YES' => ($data['php_ini_system'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_SYSTEM_NO' => ($data['php_ini_system'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>'),
+			'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', '<b>allow_url_fopen</b>'),
 			'PHP_INI_AL_ALLOW_URL_FOPEN_YES' => ($data['php_ini_al_allow_url_fopen'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_AL_ALLOW_URL_FOPEN_NO' => ($data['php_ini_al_allow_url_fopen'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', true, '<b>display_errors</b>'),
+			'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', '<b>display_errors</b>'),
 			'PHP_INI_AL_DISPLAY_ERRORS_YES' => ($data['php_ini_al_display_errors'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_AL_DISPLAY_ERRORS_NO' => ($data['php_ini_al_display_errors'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>'),
+			'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', '<b>disable_functions</b>'),
 			'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => ($data['php_ini_al_disable_functions'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => ($data['php_ini_al_disable_functions'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_MAX_MEMORY_LIMIT' => tr('Max value for the %s PHP directive', true, '<b>memory_limit</b>'),
+			'TR_PHP_INI_MAX_MEMORY_LIMIT' => tr('Max value for the %s PHP directive', '<b>memory_limit</b>'),
 			'PHP_INI_MAX_MEMORY_LIMIT' => tohtml($data['php_ini_max_memory_limit']),
 
-			'TR_PHP_INI_MAX_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive', true, '<b>upload_max_filesize</b>'),
+			'TR_PHP_INI_MAX_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive', '<b>upload_max_filesize</b>'),
 			'PHP_INI_MAX_UPLOAD_MAX_FILESIZE' => tohtml($data['php_ini_max_upload_max_filesize']),
 
-			'TR_PHP_INI_MAX_POST_MAX_SIZE' => tr('Max value for the %s PHP directive', true, '<b>post_max_size</b>'),
+			'TR_PHP_INI_MAX_POST_MAX_SIZE' => tr('Max value for the %s PHP directive', '<b>post_max_size</b>'),
 			'PHP_INI_MAX_POST_MAX_SIZE' => tohtml($data['php_ini_max_post_max_size']),
 
-			'TR_PHP_INI_MAX_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive', true, '<b>max_execution_time</b>'),
+			'TR_PHP_INI_MAX_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive', '<b>max_execution_time</b>'),
 			'PHP_INI_MAX_MAX_EXECUTION_TIME' => tohtml($data['php_ini_max_max_execution_time']),
 
-			'TR_PHP_INI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', true, '<b>max_input_time</b>'),
+			'TR_PHP_INI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', '<b>max_input_time</b>'),
 			'PHP_INI_MAX_MAX_INPUT_TIME' => tohtml($data['php_ini_max_max_input_time']),
 
 			'TR_SOFTWARES_INSTALLER' => tr('Software installer'),
@@ -342,7 +342,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 	if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
 		$tpl->assign(
 			array(
-				'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>'),
+				'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', '<b>disable_functions</b>'),
 				'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => ($data['php_ini_al_disable_functions'] == 'yes') ? $htmlChecked : '',
 				'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => ($data['php_ini_al_disable_functions'] != 'yes') ? $htmlChecked : ''
 			)
@@ -769,7 +769,7 @@ function admin_checkAndUpdateData($resellerId)
 			if ($data['password'] != '') {
 				send_add_user_auto_msg(
 					$_SESSION['user_id'], $data['admin_name'], $data['password'], $data['email'], $data['fname'],
-					$data['lname'], tr('Reseller', true)
+					$data['lname'], tr('Reseller')
 				);
 			}
 
@@ -810,24 +810,24 @@ function admin_checkResellerLimit($newLimit, $assignedByReseller, $consumedByCus
 		if ($unlimitedService == false) {
 			// If the new limit is lower than the already consomed item by customer
 			if ($newLimit < $consumedByCustomers && $newLimit != -1) {
-				set_page_message(tr("%s: The clients consumption (%s) for this reseller is greater than the new limit.", true, '<b>' . ucfirst($serviceName) . '</b>', $consumedByCustomers), 'error');
+				set_page_message(tr("%s: The clients consumption (%s) for this reseller is greater than the new limit.", '<b>' . ucfirst($serviceName) . '</b>', $consumedByCustomers), 'error');
 				$retVal = false;
 				// If the new limit is lower than the items already assigned by the reseller
 			} elseif ($newLimit < $assignedByReseller && $newLimit != -1) {
-				set_page_message(tr('%s: The total of items (%s) already assigned by the reseller is greater than the new limit.', true, '<b>' . ucfirst($serviceName) . '</b>', $assignedByReseller), 'error');
+				set_page_message(tr('%s: The total of items (%s) already assigned by the reseller is greater than the new limit.', '<b>' . ucfirst($serviceName) . '</b>', $assignedByReseller), 'error');
 				$retVal = false;
 				// If the new limit is -1 (disabled) and assigned items are already consumed by customer
 			} elseif ($newLimit == -1 && $consumedByCustomers > 0) {
-				set_page_message(tr("%s: You cannot disable a service already consumed by reseller's customers", true, '<b>' . ucfirst($serviceName) . '</b>'), 'error');
+				set_page_message(tr("%s: You cannot disable a service already consumed by reseller's customers", '<b>' . ucfirst($serviceName) . '</b>'), 'error');
 				$retVal = false;
 				// If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
 			} elseif ($newLimit == -1 && $assignedByReseller > 0) {
-				set_page_message(tr("%s: You cannot disable a service already sold to reseller's customers.", true, '<b>' . ucfirst($serviceName) . '</b>'), 'error');
+				set_page_message(tr("%s: You cannot disable a service already sold to reseller's customers.", '<b>' . ucfirst($serviceName) . '</b>'), 'error');
 				$retVal = false;
 			}
 			// One or more reseller's customers have unlimited items
 		} elseif ($newLimit != 0) {
-			set_page_message(tr('%s: This reseller has customer(s) with unlimited items.', true, '<b>' . ucfirst($serviceName) . '</b>'), 'error');
+			set_page_message(tr('%s: This reseller has customer(s) with unlimited items.', '<b>' . ucfirst($serviceName) . '</b>'), 'error');
 			set_page_message(tr('If you want to limit the reseller, you must first limit its customers.'), 'error');
 			$retVal = false;
 		}
@@ -882,7 +882,7 @@ $tpl->assign(
 		'EDIT_ID' => $resellerId,
 		'TR_EDIT_RESELLER' => tr('Edit reseller'),
 		'TR_NOTICE' => tr('i-MSCP Notice'),
-		'TR_EVENT_NOTICE' => tojs(tr('The `Enter` key is disabled for performance reasons.', true)),
+		'TR_EVENT_NOTICE' => tojs(tr('The `Enter` key is disabled for performance reasons.')),
 		'TR_UPDATE' => tr('Update'),
 		'TR_CANCEL' => tr('Cancel'),
 		'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))

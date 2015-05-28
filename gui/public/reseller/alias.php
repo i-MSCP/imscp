@@ -241,8 +241,8 @@ $tpl->assign(
 		'TR_CUSTOMER' => tr('Customer'),
 		'TR_ACTIONS' => tr('Actions'),
 		'TR_ADD_DOMAIN_ALIAS' => tr('Add domain alias'),
-		'TR_MESSAGE_DELETE_ALIAS' => tr('Are you sure you want to delete the %s domain alias?', true, '%s'),
-		'TR_MESSAGE_DELETE_ALIAS_ORDER' => tr('Are you sure you want to delete the %s domain alias order?', true, '%s'),
+		'TR_MESSAGE_DELETE_ALIAS' => tr('Are you sure you want to delete the %s domain alias?', '%s'),
+		'TR_MESSAGE_DELETE_ALIAS_ORDER' => tr('Are you sure you want to delete the %s domain alias order?', '%s'),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'TR_PROCESSING_DATA' => tr('Processing...')
 	)

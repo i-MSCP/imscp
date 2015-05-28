@@ -263,8 +263,8 @@ $tpl->assign(
 		'TR_CONFIGURED_IPS' => tr('IP addresses under control of i-MSCP'),
 		'TR_ADD_NEW_IP' => tr('Add new IP address'),
 		'TR_IP_DATA' => tr('IP address data'),
-		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete this IP: %s?', true, '%s')),
-		'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', true, '%s')),
+		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete this IP: %s?', '%s')),
+		'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', '%s')),
 		'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
 			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]',
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),

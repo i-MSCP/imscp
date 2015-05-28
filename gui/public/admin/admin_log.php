@@ -99,7 +99,7 @@ function admin_clearLogs()
 			$msg = sprintf('%s deleted the admin log older than one year.', $_SESSION['user_logged']);
 			break;
 		default:
-			admin_sendJsonResponse(400, array('message' => tr('Bad request.', true)));
+			admin_sendJsonResponse(400, array('message' => tr('Bad request.')));
 			exit;
 	}
 
@@ -108,12 +108,12 @@ function admin_clearLogs()
 
 		if($stmt->rowCount()) {
 			write_log($msg, E_USER_NOTICE);
-			admin_sendJsonResponse(200, array('message' => tr('Log entries successfully deleted.', true)));
+			admin_sendJsonResponse(200, array('message' => tr('Log entries successfully deleted.')));
 		} else {
-			admin_sendJsonResponse(202, array('message' => tr('Nothing has been deleted.', true)));
+			admin_sendJsonResponse(202, array('message' => tr('Nothing has been deleted.')));
 		}
 	} catch(iMSCP_Exception_Database $e) {
-		admin_sendJsonResponse(500, array('message' => tr('An unexpected error occurred: %s', true, $e->getMessage())));
+		admin_sendJsonResponse(500, array('message' => tr('An unexpected error occurred: %s', $e->getMessage())));
 	}
 }
 
@@ -257,11 +257,11 @@ function admin_getLogs()
 		write_log(sprintf('Unable to get logs: %s', $e->getMessage()), E_USER_ERROR);
 
 		admin_sendJsonResponse(
-			500, array('message' => tr('An unexpected error occurred: %s', true, $e->getMessage()))
+			500, array('message' => tr('An unexpected error occurred: %s', $e->getMessage()))
 		);
 	}
 
-	admin_sendJsonResponse(400, array('message' => tr('Bad request.', true)));
+	admin_sendJsonResponse(400, array('message' => tr('Bad request.')));
 }
 
 /***********************************************************************************************************************
@@ -287,7 +287,7 @@ if(isset($_REQUEST['action'])) {
 				admin_clearLogs();
 				break;
 			default:
-				admin_sendJsonResponse(400, array('message' => tr('Bad request.', true)));
+				admin_sendJsonResponse(400, array('message' => tr('Bad request.')));
 		}
 	}
 
@@ -322,8 +322,8 @@ $tpl->assign(
 		'TR_CLEAR_LOG_LAST26' => tr('older than 6 months'),
 		'TR_CLEAR_LOG_LAST52' => tr('older than 12 months'),
 		'TR_LOADING_DATA' => tr('Loading data...'),
-		'TR_TIMEOUT_ERROR' => json_encode(tr('Request Timeout: The server took too long to send the data.', true)),
-		'TR_UNEXPECTED_ERROR' => json_encode(tr('An unexpected error occurred.', true))
+		'TR_TIMEOUT_ERROR' => json_encode(tr('Request Timeout: The server took too long to send the data.')),
+		'TR_UNEXPECTED_ERROR' => json_encode(tr('An unexpected error occurred.'))
 	)
 );
 

@@ -113,8 +113,8 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 			'SSL_IMAGE_CLASS' => ($isSecure) ? 'i_unlock' : 'i_lock',
 			'TR_SSL' => ($isSecure) ? tr('Normal connection') : tr('Secure connection'),
 			'TR_SSL_DESCRIPTION' => ($isSecure)
-				? tohtml(tr('Use normal connection (No SSL)', true), 'htmlAttr')
-				: tohtml(tr('Use secure connection (SSL)', true), 'htmlAttr')
+				? tohtml(tr('Use normal connection (No SSL)'), 'htmlAttr')
+				: tohtml(tr('Use secure connection (SSL)'), 'htmlAttr')
 		));
 	} else {
 		$tpl->assign('SSL_SUPPORT', '');

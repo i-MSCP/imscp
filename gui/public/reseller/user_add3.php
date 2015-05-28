@@ -265,7 +265,7 @@ function reseller_addCustomer()
 		}
 
 		// let's send mail to user
-		send_add_user_auto_msg($resellerId, $adminName, $password, $email, $firstName, $lastName, tr('Customer', true));
+		send_add_user_auto_msg($resellerId, $adminName, $password, $email, $firstName, $lastName, tr('Customer'));
 
 		exec_query(
 			'INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)',

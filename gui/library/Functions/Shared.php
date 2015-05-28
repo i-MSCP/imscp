@@ -328,28 +328,27 @@ function shared_getCustomerProps($domainId)
  * Returns translated item status
  *
  * @param string $status Item status to translate
- * @param bool $escapeHtml OPTIONAL Does string must be HTML escaped (default: true)
  * @return string Translated status
  */
-function translate_dmn_status($status, $escapeHtml = true)
+function translate_dmn_status($status)
 {
 	switch ($status) {
 		case 'ok':
-			return tr('Ok', $escapeHtml);
+			return tr('Ok');
 		case 'toadd':
-			return tr('Addition in progress...', $escapeHtml);
+			return tr('Addition in progress...');
 		case 'tochange':
-			return tr('Modification in progress...', $escapeHtml);
+			return tr('Modification in progress...');
 		case 'todelete':
-			return tr('Deletion in progress...', $escapeHtml);
+			return tr('Deletion in progress...');
 		case 'disabled':
-			return tr('Deactivated', $escapeHtml);
+			return tr('Deactivated');
 		case 'toenable':
-			return tr('Activation in progress...', $escapeHtml);
+			return tr('Activation in progress...');
 		case 'todisable':
-			return tr('Deactivation in progress...', $escapeHtml);
+			return tr('Deactivation in progress...');
 		case 'ordered':
-			return tr('Awaiting for approval', $escapeHtml);
+			return tr('Awaiting for approval');
 		default:
 			return tr('Unexpected error');
 	}
@@ -2468,7 +2467,7 @@ function get_webdepot_software_list($tpl, $userId)
 					array(
 						'PACKAGE_HTTP_URL' => $stmt->fields['package_download_link'],
 						'TR_PACKAGE_INSTALL' => tr('Start installation'),
-						'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?', true)
+						'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?')
 					)
 				);
 
@@ -2995,7 +2994,6 @@ function getDataTablesPluginTranslations($json = true)
 	$tr = array(
 		'sLengthMenu'=> tr(
 			'Show %s records per page',
-			true,
 			'
 				<select>
 				<option value="5">5</option>
@@ -3003,18 +3001,18 @@ function getDataTablesPluginTranslations($json = true)
 				<option value="15">15</option>
 				<option value="20">20</option>
 				<option value="50">50</option>
-				<option value="-1">'. tr('All', true) . '</option>
+				<option value="-1">'. tr('All') . '</option>
 				</select>
 			'
 		),
-		//'sLengthMenu' => tr('Show %s records per page', true, '_MENU_'),
-		'sZeroRecords' => tr('Nothing found - sorry', true),
-		'sInfo' => tr('Showing %s to %s of %s records', true, '_START_', '_END_', '_TOTAL_'),
-		'sInfoEmpty' => tr('Showing 0 to 0 of 0 records', true),
-		'sInfoFiltered' => tr('(filtered from %s total records)', true, '_MAX_'),
-		'sSearch' => tr('Search', true),
-		'oPaginate' => array('sPrevious' => tr('Previous', true), 'sNext' => tr('Next', true)),
-		'sProcessing' => tr('Processing...', true)
+		//'sLengthMenu' => tr('Show %s records per page', '_MENU_'),
+		'sZeroRecords' => tr('Nothing found - sorry'),
+		'sInfo' => tr('Showing %s to %s of %s records', '_START_', '_END_', '_TOTAL_'),
+		'sInfoEmpty' => tr('Showing 0 to 0 of 0 records'),
+		'sInfoFiltered' => tr('(filtered from %s total records)', '_MAX_'),
+		'sSearch' => tr('Search'),
+		'oPaginate' => array('sPrevious' => tr('Previous'), 'sNext' => tr('Next')),
+		'sProcessing' => tr('Loading data...')
 	);
 
 	return ($json) ? json_encode($tr) : $tr;

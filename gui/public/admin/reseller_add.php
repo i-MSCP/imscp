@@ -227,33 +227,33 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'TR_PERMISSIONS' => tr('Permissions'),
 			'TR_DIRECTIVES_VALUES' => tr('PHP directives values'),
 			'TR_FIELDS_OK' => tr('All fields seem to be valid.'),
-			'TR_VALUE_ERROR' => tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.', true),
+			'TR_VALUE_ERROR' => tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.'),
 			'TR_CLOSE' => tr('Close'),
 
 			'PHP_INI_SYSTEM_YES' => ($data['php_ini_system'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_SYSTEM_NO' => ($data['php_ini_system'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>'),
+			'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', '<b>allow_url_fopen</b>'),
 			'PHP_INI_AL_ALLOW_URL_FOPEN_YES' => ($data['php_ini_al_allow_url_fopen'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_AL_ALLOW_URL_FOPEN_NO' => ($data['php_ini_al_allow_url_fopen'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', true, '<b>display_errors</b>'),
+			'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', '<b>display_errors</b>'),
 			'PHP_INI_AL_DISPLAY_ERRORS_YES' => ($data['php_ini_al_display_errors'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_AL_DISPLAY_ERRORS_NO' => ($data['php_ini_al_display_errors'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_MAX_MEMORY_LIMIT' => tr('Max value for the %s PHP directive', true, '<b>memory_limit</b>'),
+			'TR_PHP_INI_MAX_MEMORY_LIMIT' => tr('Max value for the %s PHP directive', '<b>memory_limit</b>'),
 			'PHP_INI_MAX_MEMORY_LIMIT' => tohtml($data['php_ini_max_memory_limit']),
 
-			'TR_PHP_INI_MAX_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive', true, '<b>upload_max_filesize</b>'),
+			'TR_PHP_INI_MAX_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive', '<b>upload_max_filesize</b>'),
 			'PHP_INI_MAX_UPLOAD_MAX_FILESIZE' => tohtml($data['php_ini_max_upload_max_filesize']),
 
-			'TR_PHP_INI_MAX_POST_MAX_SIZE' => tr('Max value for the %s PHP directive', true, '<b>post_max_size</b>'),
+			'TR_PHP_INI_MAX_POST_MAX_SIZE' => tr('Max value for the %s PHP directive', '<b>post_max_size</b>'),
 			'PHP_INI_MAX_POST_MAX_SIZE' => tohtml($data['php_ini_max_post_max_size']),
 
-			'TR_PHP_INI_MAX_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive', true, '<b>max_execution_time</b>'),
+			'TR_PHP_INI_MAX_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive', '<b>max_execution_time</b>'),
 			'PHP_INI_MAX_MAX_EXECUTION_TIME' => tohtml($data['php_ini_max_max_execution_time']),
 
-			'TR_PHP_INI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', true, '<b>max_input_time</b>'),
+			'TR_PHP_INI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', '<b>max_input_time</b>'),
 			'PHP_INI_MAX_MAX_INPUT_TIME' => tohtml($data['php_ini_max_max_input_time']),
 
 			'TR_SOFTWARES_INSTALLER' => tr('Software installer'),
@@ -281,7 +281,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		if($cfg['HTTPD_SERVER'] != 'apache_itk') {
 			$tpl->assign(
 				array(
-					'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>'),
+					'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', '<b>disable_functions</b>'),
 					'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => ($data['php_ini_al_disable_functions'] == 'yes') ? $htmlChecked : '',
 					'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => ($data['php_ini_al_disable_functions'] != 'yes') ? $htmlChecked : ''));
 		} else {
@@ -387,7 +387,7 @@ function admin_checkAndCreateResellerAccount()
 		$stmt = exec_query($query, $data['admin_name']);
 
 		if ($stmt->fields['usernameExist']) {
-			set_page_message(tr("The username %s is not available.", true, '<b>' . $data['admin_name'] . '</b>'), 'error');
+			set_page_message(tr("The username %s is not available.", '<b>' . $data['admin_name'] . '</b>'), 'error');
 			$errFieldsStack[] = 'admin_name';
 		} elseif(!validates_username($data['admin_name'])) {
 			set_page_message(tr('Incorrect username length or syntax.'), 'error');
@@ -603,7 +603,7 @@ function admin_checkAndCreateResellerAccount()
 			// Send welcome mail to the new reseller
 			send_add_user_auto_msg(
 				$_SESSION['user_id'], $data['admin_name'], $data['password'],
-				$data['email'], $data['fname'], $data['lname'], tr('Reseller', true)
+				$data['email'], $data['fname'], $data['lname'], tr('Reseller')
 			);
 
 			write_log("A new reseller account (<b>{$data['admin_name']}</b>) has been created by {$_SESSION['user_logged']}", E_USER_NOTICE);
@@ -663,7 +663,7 @@ $tpl->assign(
 		 'TR_PAGE_TITLE' => tr('Admin / Users / Add Reseller'),
 		 'TR_ADD_RESELLER' => tr('Add reseller'),
 		 'TR_NOTICE' => tr('i-MSCP Notice'),
-		 'TR_EVENT_NOTICE' => tojs(tr('The `Enter` key is disabled for performance reasons.', true)),
+		 'TR_EVENT_NOTICE' => tojs(tr('The `Enter` key is disabled for performance reasons.')),
 		 'TR_CREATE' => tr('Create'),
 		 'TR_CANCEL' => tr('Cancel'),
 		 'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack')) ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));

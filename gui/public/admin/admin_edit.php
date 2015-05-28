@@ -108,11 +108,11 @@ function admin_updateUserData($userId)
 		$stmt = exec_query($query, $userId);
 
 		if ($stmt->fields['admin_type'] == 'admin') {
-			$admin_type = tr('Administrator', true);
+			$admin_type = tr('Administrator');
 		} elseif ($stmt->fields['admin_type'] == 'reseller') {
-			$admin_type = tr('Reseller', true);
+			$admin_type = tr('Reseller');
 		} else {
-			$admin_type = tr('Customer', true);
+			$admin_type = tr('Customer');
 		}
 
 		send_add_user_auto_msg(

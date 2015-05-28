@@ -395,24 +395,25 @@ function get_avail_softwaredepot($tpl)
 			} else {
 				if ($rs->fields['swstatus'] == 'toadd') {
 					$del_url = 'software_delete.php?id=' . $rs->fields['id'];
-					$tpl->assign(array(
-									  'TR_NAME' => tr('Installing your uploaded package. Please refresh this page.'),
-									  'LINK_COLOR' => '#FF0000',
-									  'TR_VERSION' => '',
-									  'TR_LANGUAGE' => '',
-									  'TR_TOOLTIP' => tr(
-										  'The package will be installed automaticly to your system after upload.<br />Refresh your site to see the new status!'
-									  ),
-									  'TR_DOWNLOAD' => '',
-									  'DOWNLOAD_LINK' => '',
-									  'DELETE_LINK' => $del_url,
-									  'TR_DELETE' => tr('Delete'),
-									  'TR_TYPE' => '<font color="#FF0000">' . tr('installing') . '</font>',
-									  'TR_ADMIN' => $rs->fields['admin'],
-									  'SOFTWARE_ICON' => 'disabled',
-									  'RIGHTS_LINK' => '',
-									  'TR_SOFTWARE_RIGHTS' => '',
-									  'SOFTWARE_RIGHTS_LINK' => ''));
+					$tpl->assign(
+						array(
+							'TR_NAME' => tr('Installing your uploaded package. Please refresh this page.'),
+							'LINK_COLOR' => '#FF0000',
+							'TR_VERSION' => '',
+							'TR_LANGUAGE' => '',
+							'TR_TOOLTIP' => tr('The package will be installed automaticly to your system after upload.<br />Refresh your site to see the new status!'),
+							'TR_DOWNLOAD' => '',
+							'DOWNLOAD_LINK' => '',
+							'DELETE_LINK' => $del_url,
+							'TR_DELETE' => tr('Delete'),
+							'TR_TYPE' => '<font color="#FF0000">' . tr('installing') . '</font>',
+							'TR_ADMIN' => $rs->fields['admin'],
+							'SOFTWARE_ICON' => 'disabled',
+							'RIGHTS_LINK' => '',
+							'TR_SOFTWARE_RIGHTS' => '',
+							'SOFTWARE_RIGHTS_LINK' => ''
+						)
+					);
 				} else {
 					if ($rs->fields['swstatus'] == 'todelete') {
 						$tpl->assign(array(
@@ -492,8 +493,7 @@ function get_avail_softwaredepot($tpl)
 
 						set_page_message(
 							tr(
-								'This package already exists in the depot of the reseller "%1$s"!',
-								$rs_res->fields['resellername']
+								'This package already exists in the depot of the reseller "%1$s"!', $rs_res->fields['resellername']
 							), 'warning');
 					}
 
@@ -615,8 +615,8 @@ function get_installed_res_software($tpl, $reseller_id)
 							  'TR_SOFTWARE_DELETE' => tr('Delete'),
 							  'TR_DELETE' => tr('Delete'),
 							  'IS_IN_SOFTWAREDEPOT' => tr('N/A'),
-							  'TR_MESSAGE_IMPORT' => tr('Are you sure you want to import this package into the software depot?', true),
-							  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true)));
+							  'TR_MESSAGE_IMPORT' => tr('Are you sure you want to import this package into the software depot?'),
+							  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?')));
 
 			$tpl->parse('LIST_SOFTWAREDEPOT', '.list_softwaredepot');
 			$rs->moveNext();
@@ -820,7 +820,7 @@ function get_reseller_rights($tpl, $software_id)
 							  'RESELLER' => $rs->fields['reseller'],
 							  'ADMINISTRATOR' => $added_by,
 							  'TR_REMOVE_RIGHT' => tr('Remove'),
-							  'TR_MESSAGE_REMOVE' => tr('Are you sure to remove the permissions ?', true),
+							  'TR_MESSAGE_REMOVE' => tr('Are you sure to remove the permissions ?'),
 							  'REMOVE_RIGHT_LINK' => $remove_rights_url));
 
 			$tpl->parse('LIST_RESELLER', '.list_reseller');
@@ -1283,14 +1283,14 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
 	} elseif ($software_status == 'installed') {
 		$tpl->assign(
 			array(
-				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
+				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?'),
 				'SOFTWARE_ACTION_INSTALL' => ''));
 
 		return array(tr('Uninstall'), 'software_delete.php?id=' . $software_id, 'software_view.php?id=' . $software_id, $software_status, $software_icon);
 	} else {
 		$tpl->assign(
 			array(
-				'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package?', true),
+				'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package?'),
 				'SOFTWARE_ACTION_DELETE' => ''));
 
 		return array(tr('Install'), 'software_install.php?id=' . $software_id, 'software_view.php?id=' . $software_id, $software_status, $software_icon);
@@ -1337,8 +1337,7 @@ function gen_software_list($tpl, $domainId, $resellerId)
 				$tpl->assign(
 					array(
 						'DEL_SOFTWARE_ACTION' => tr('Uninstall'),
-						'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true
-						)
+						'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?')
 					)
 				);
 			} elseif ($stmt->fields['software_status'] == 'toadd') {
@@ -1347,7 +1346,7 @@ function gen_software_list($tpl, $domainId, $resellerId)
 				$tpl->assign(
 					array(
 						'DEL_SOFTWARE_ACTION' => tr('Uninstall'),
-						'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true)
+						'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?')
 					)
 				);
 			} elseif ($stmt->fields['software_status'] == 'todelete') {

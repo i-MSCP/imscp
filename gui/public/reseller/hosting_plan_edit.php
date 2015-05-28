@@ -52,13 +52,13 @@ function _reseller_generatePhpBlock($tpl, $phpini)
 		$tplVars['TR_SETTINGS'] = tr('Settings');
 		$tplVars['TR_DIRECTIVES_VALUES'] = tr('Directive values');
 		$tplVars['TR_FIELDS_OK'] = tr('All fields seem to be valid.');
-		$tplVars['TR_VALUE_ERROR'] = tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.', true);
+		$tplVars['TR_VALUE_ERROR'] = tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.');
 		$tplVars['TR_CLOSE'] = tr('Close');
-		$tplVars['TR_PHP_POST_MAX_SIZE_DIRECTIVE'] = tr('PHP %s directive', true, '<b>post_max_size</b>');
-		$tplVars['TR_PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE'] = tr('PHP %s directive', true, '<b>upload_max_filezize</b>');
-		$tplVars['TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<b>max_execution_time</b>');
-		$tplVars['TR_PHP_MAX_INPUT_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<b>max_input_time</b>');
-		$tplVars['TR_PHP_MEMORY_LIMIT_DIRECTIVE'] = tr('PHP %s directive', true, '<b>memory_limit</b>');
+		$tplVars['TR_PHP_POST_MAX_SIZE_DIRECTIVE'] = tr('PHP %s directive', '<b>post_max_size</b>');
+		$tplVars['TR_PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE'] = tr('PHP %s directive', '<b>upload_max_filezize</b>');
+		$tplVars['TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE'] = tr('PHP %s directive', '<b>max_execution_time</b>');
+		$tplVars['TR_PHP_MAX_INPUT_TIME_DIRECTIVE'] = tr('PHP %s directive', '<b>max_input_time</b>');
+		$tplVars['TR_PHP_MEMORY_LIMIT_DIRECTIVE'] = tr('PHP %s directive', '<b>memory_limit</b>');
 		$tplVars['TR_MIB'] = tr('MiB');
 		$tplVars['TR_SEC'] = tr('Sec.');
 
@@ -67,7 +67,7 @@ function _reseller_generatePhpBlock($tpl, $phpini)
 		if (!$phpini->checkRePerm('phpiniAllowUrlFopen')) {
 			$tplVars['PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK'] = '';
 		} else {
-			$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>');
+			$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', '<b>allow_url_fopen</b>');
 			$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $checked : '';
 			$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $checked : '';
 			$permissionsBlock = true;
@@ -76,7 +76,7 @@ function _reseller_generatePhpBlock($tpl, $phpini)
 		if (!$phpini->checkRePerm('phpiniDisplayErrors')) {
 			$tplVars['PHP_EDITOR_DISPLAY_ERRORS_BLOCK'] = '';
 		} else {
-			$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', true, '<b>display_errors</b>');
+			$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', '<b>display_errors</b>');
 			$tplVars['DISPLAY_ERRORS_YES'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $checked : '';
 			$tplVars['DISPLAY_ERRORS_NO'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') ? $checked : '';
 			$permissionsBlock = true;
@@ -85,7 +85,7 @@ function _reseller_generatePhpBlock($tpl, $phpini)
 		if ($cfg['HTTPD_SERVER'] == 'apache_itk' || !$phpini->checkRePerm('phpiniDisableFunctions')) {
 			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 		} else {
-			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');
+			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', '<b>disable_functions</b>');
 			$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $checked : '';
 			$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $checked : '';
 			$tplVars['TR_ONLY_EXEC'] = tr('Only exec');

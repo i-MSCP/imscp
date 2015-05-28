@@ -317,14 +317,14 @@ function client_generateView($verifiedData, $data)
 			'TR_CANCEL' => tr('Cancel'),
 			'TR_ADD' => tr('Add'),
 			'TR_MX_TYPE_TOOLTIP' =>
-				tr('Domain: Setup a DNS MX record to relay mail of your entire domain, including subdomains.', true) .
+				tr('Domain: Setup a DNS MX record to relay mail of your entire domain, including subdomains.') .
 				'<br><br>' .
 				(
 					(customerHasFeature('mail'))
-						? tr('Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains.', true) . '<br><br>'
+						? tr('Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains.') . '<br><br>'
 						: ''
 				) .
-				tr('Spam Filter: Setup a DNS MX record to relay mail of your entire domain, including subdomains, but retains our server as final mailhost.', true) .
+				tr('Spam Filter: Setup a DNS MX record to relay mail of your entire domain, including subdomains, but retains our server as final mailhost.') .
 				'<br><br>' .
 				tr('Note: You cannot mix Spam filter and domain options'),
 			'ITEM' => $verifiedData['item_id'] . ';' . $verifiedData['item_type']

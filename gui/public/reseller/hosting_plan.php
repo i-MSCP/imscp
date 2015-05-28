@@ -82,7 +82,7 @@ function client_generatePage($tpl)
 				'TR_EDIT' => $trEdit,
 				'TR_ACTION' => tr('Actions'),
 				'TR_DELETE' => tr('Delete'),
-				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
+				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s')
 			)
 		);
 

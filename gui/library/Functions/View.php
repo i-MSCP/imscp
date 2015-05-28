@@ -916,7 +916,7 @@ function gen_user_list($tpl)
 					'USR_CREATED_BY' => tohtml($createdByName),
 					'USR_OPTIONS' => '',
 					'URL_EDIT_USR' => 'admin_edit.php?edit_id=' . $row['domain_admin_id'],
-					'TR_MESSAGE_DELETE' => tojs(tr('Are you sure you want to delete %s?', true, '%s'))
+					'TR_MESSAGE_DELETE' => tojs(tr('Are you sure you want to delete %s?', '%s'))
 				)
 			);
 
@@ -947,7 +947,7 @@ function get_admin_manage_users($tpl)
 			'TR_SEARCH' => tr('Search'),
 			'TR_CREATED_ON' => tr('Creation date'),
 			'TR_EXPIRES_ON' => tr('Expire date'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'),
 			'TR_EDIT' => tr('Edit')
 		)
 	);

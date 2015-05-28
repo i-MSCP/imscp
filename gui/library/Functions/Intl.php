@@ -26,14 +26,13 @@
  */
 
 /**
- * Translates the given message
+ * Translates the given string
  *
- * @param string|array $msgid tring|array  Translation string, or Array for plural translations
- * @param mixed $substitution,... If second parameter is bool (true), prevent the returned string from being replaced
- *                                with html entities. If not considere the parameter(s) as simple substitution value(s)
- * @return string Translated or original message
+ * @param string $messageId Translation string, or Array for plural translations
+ * @param mixed $substitution,... Substitution value(s)
+ * @return string
  */
-function tr($msgid, $substitution = false)
+function tr($messageId, $substitution = null)
 {
 	static $translator = null;
 
@@ -42,31 +41,41 @@ function tr($msgid, $substitution = false)
 		$translator = iMSCP_Registry::get('translator');
 	}
 
-	$msgstr = $translator->translate($msgid);
-
-	// Detect whether $substitution is really a substitution or just a value to
-	// be replaced in $msgstr
-	if (!is_bool($substitution)) {
-		$substitution = false;
-	}
+	$message = $translator->translate($messageId);
 
 	// Process included parameter
 	if (func_num_args() > 1) {
 		$argv = func_get_args();
 		unset($argv[0]);
 
-		if (is_bool($argv[1])) {
-			unset($argv[1]);
-		}
-
-		$msgstr = vsprintf($msgstr, $argv);
+		$message = vsprintf($message, $argv);
 	}
 
-	if (!$substitution) {
-		$msgstr = replace_html(tohtml($msgstr));
+	return $message;
+}
+
+/**
+ * Translates the given string using plural notations
+ *
+ * @param string $singular Singular translation string
+ * @param string $plural Plural translation string
+ * @param integer $number Number for detecting the correct plural
+ * @internal param mixed $substitution Substitution value(s)
+ * @return string
+ */
+function ntr($singular, $plural, $number)
+{
+	static $translator = null;
+
+	if(null == $translator) {
+		/** @var Zend_Translate_Adapter $translator */
+		$translator = iMSCP_Registry::get('translator');
 	}
 
-	return $msgstr;
+	$message = $translator->plural($singular, $plural, $number);
+	$argv = func_get_args();
+
+	return vsprintf($message, array_splice($argv, 2));
 }
 
 /**
@@ -343,8 +352,8 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
  *
  * iMSCP_Events_Aggregator::getInstance()->register('onGetJsTranslations', function($e) {
  *    $e->getParam('translations')->my_namespace = array(
- *        'first_translation_string_identifier' => tr('my first translation string', true),
- *        'second_translation_string_identifier' => tr('my second translation string', true)
+ *        'first_translation_string_identifier' => tr('my first translation string'),
+ *        'second_translation_string_identifier' => tr('my second translation string')
  *    )
  * });
  *
@@ -363,10 +372,10 @@ function i18n_getJsTranslations()
 		// Core translation strings
 		'core' => array(
 			'close' => tr('Close'),
-			'generate' => tr('Generate', true),
-			'show' => tr('Show', true),
-			'your_new_password' => tr('Your new password', true),
-			'password_generate_alert' => tr('You must first generate a password by clicking on the generate button.', true),
+			'generate' => tr('Generate'),
+			'show' => tr('Show'),
+			'your_new_password' => tr('Your new password'),
+			'password_generate_alert' => tr('You must first generate a password by clicking on the generate button.'),
 		)),
 		ArrayObject::ARRAY_AS_PROPS
 	);

@@ -293,8 +293,8 @@ $tpl->assign(
 		'TR_SOFTWARE_URL' => tr('or remote file (Max: %s)', bytesHuman($cfg->APS_MAX_REMOTE_FILESIZE)),
 		'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
 		'TR_UPLOAD_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Sofware Management'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
-		'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package from the webdepot?', true)
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?'),
+		'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package from the webdepot?')
 	)
 );
 

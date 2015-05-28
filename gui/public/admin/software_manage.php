@@ -300,10 +300,10 @@ $tpl->assign(
 		'TR_RESELLER_COUNT_WAITING' => tr('Awaiting activation'),
 		'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated software'),
 		'TR_RESELLER_SOFTWARE_IN_USE' => tr('Total installations'),
-		'TR_MESSAGE_ACTIVATE' => tr('Are you sure you want to activate this package?', true),
-		'TR_MESSAGE_IMPORT' => tr('Are you sure you want to import this package into the local software repository?', true),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
-		'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?', true),
+		'TR_MESSAGE_ACTIVATE' => tr('Are you sure you want to activate this package?'),
+		'TR_MESSAGE_IMPORT' => tr('Are you sure you want to import this package into the local software repository?'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?'),
+		'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?'),
 		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP / Software Installer / Management'),
 		'TR_SOFTWARE_UPDLOAD' => tr('Software upload')
 	)

@@ -188,7 +188,7 @@ function reseller_updateUserData($adminId)
 	write_log("{$_SESSION['user_logged']} updated data for $adminName.", E_USER_NOTICE);
 
 	if(isset($_POST['send_data']) && $password !== '') {
-		send_add_user_auto_msg($resellerId, $adminName, $password, $email, $firstName, $lastName, tr('Customer', true));
+		send_add_user_auto_msg($resellerId, $adminName, $password, $email, $firstName, $lastName, tr('Customer'));
 	}
 
 	redirectTo('users.php');

@@ -163,10 +163,7 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
 	if($cfg['PASSWD_STRONG'] && !(preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password))) {
 		if(!$noErrorMsg) {
 			set_page_message(
-				tr(
-					'Password must be at least %s characters long and contain letters and numbers to be valid.',
-					$cfg['PASSWD_CHARS']
-				),
+				tr('Password must be at least %s characters long and contain letters and numbers to be valid.', $cfg['PASSWD_CHARS']),
 				'error'
 			);
 		}
@@ -252,9 +249,7 @@ function isValidDomainName($domainName)
 					$dmnNameValidationErrMsg = tr('Domain name labels cannot be greater than 63 characters.');
 					return false;
 				} elseif(preg_match('/([^a-z0-9\-])/', $label, $m)) {
-					$dmnNameValidationErrMsg = tr(
-						"Domain name label '%s' contain an invalid character: %s", $label, $m[1]
-					);
+					$dmnNameValidationErrMsg = tr("Domain name label '%s' contain an invalid character: %s", $label, $m[1]);
 					return false;
 				} elseif(preg_match('/^[\-]|[\-]$/', $label)) {
 					$dmnNameValidationErrMsg = tr('Domain name labels cannot start nor end with hyphen.');

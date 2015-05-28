@@ -710,7 +710,7 @@ $tpl->assign(
 		'TR_STATUS' => tr('Status'),
 		'TR_CERT' => tr('SSL certificate'),
 		'TR_ACTIONS' => tr('Actions'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s domain alias? Be aware that any related entity will be also removed.', true, '%s'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s domain alias? Be aware that any related entity will be also removed.', '%s'),
 
 		'TR_DNS' => tr('DNS resource records'),
 		'TR_DNS_NAME' => tr('Name'),
