@@ -104,7 +104,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function __destruct()
 	{
-		if ($this->fh) {
+		if (is_resource($this->fh)) {
 			fclose($this->fh);
 		}
 	}

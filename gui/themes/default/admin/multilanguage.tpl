@@ -17,7 +17,6 @@
 		})
 	});
 </script>
-
 <form name="i18nFrm" action="multilanguage.php" method="post" enctype="multipart/form-data">
 	<table>
 		<thead>
@@ -35,7 +34,6 @@
 		</tr>
 		</tbody>
 	</table>
-
 	<!-- BDP: languages_block -->
 	<table class="datatable firstColFixed">
 		<thead>
