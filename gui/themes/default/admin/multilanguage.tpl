@@ -19,7 +19,6 @@
 </script>
 
 <form name="i18nFrm" action="multilanguage.php" method="post" enctype="multipart/form-data">
-	<!-- EDP: languages_block -->
 	<table>
 		<thead>
 		<tr>
@@ -36,7 +35,7 @@
 		</tr>
 		</tbody>
 	</table>
-	<br>
+
 	<!-- BDP: languages_block -->
 	<table class="datatable firstColFixed">
 		<thead>
@@ -64,6 +63,6 @@
 			</td>
 		</tr>
 	</table>
-
+	<!-- EDP: languages_block -->
 	<input type="hidden" name="uaction" id="uaction" value=""/>
 </form>
