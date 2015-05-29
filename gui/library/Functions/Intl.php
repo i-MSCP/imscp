@@ -133,7 +133,7 @@ function i18n_buildLanguageIndex()
 		}
 
 		if ($item->isReadable()) {
-			$parser = new iMSCP_I18n_Parser_Mo($item->getPathname());
+			$parser = new iMSCP_I18n_Parser_Gettext($item->getPathname());
 			$translationTable = $parser->getTranslationTable();
 
 			if(!empty($translationTable)) {
@@ -210,11 +210,10 @@ function i18n_importMachineObjectFile()
 		}
 
 		try {
-			$parser = new iMSCP_I18n_Parser_Mo($filePath);
+			$parser = new iMSCP_I18n_Parser_Gettext($filePath);
 			$encoding = $parser->getContentType();
 			$locale = $parser->getLanguage();
 			$revision = $parser->getPoRevisionDate();
-			$lastTranslator = $parser->getLastTranslator();
 			$translationTable = $parser->getTranslationTable();
 		} catch (iMSCP_Exception $e) {
 			set_page_message(tr('Only gettext Machine Object files (MO files) are accepted.'), 'error');
@@ -349,7 +348,7 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
  *
  * For instance:
  *
- * iMSCP_Events_Aggregator::getInstance()->register('onGetJsTranslations', function($e) {
+ * iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function($e) {
  *    $e->getParam('translations')->my_namespace = array(
  *        'first_translation_string_identifier' => tr('my first translation string'),
  *        'second_translation_string_identifier' => tr('my second translation string')

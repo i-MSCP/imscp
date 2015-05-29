@@ -24,28 +24,24 @@
 /**
  * Generate page
  *
- * @param  iMSCP_pTemplate $tpl Template engine
+ * @param iMSCP_pTemplate $tpl Template engine
  * @return void
  */
 function admin_generateLanguagesList($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-	$htmlChecked = $cfg->HTML_CHECKED;
-
-	$defaultLanguage = $cfg->USER_INITIAL_LANG;
+	$defaultLanguage = $cfg['USER_INITIAL_LANG'];
 	$availableLanguages = i18n_getAvailableLanguages();
 
 	if (!empty($availableLanguages)) {
 		foreach ($availableLanguages as $languageDefinition) {
-			$tpl->assign(
-				array(
-					'LANGUAGE_NAME' => tohtml($languageDefinition['language']),
-					'NUMBER_TRANSLATED_STRINGS' => tr('%d strings translated', $languageDefinition['translatedStrings']),
-					'LANGUAGE_REVISION' => $languageDefinition['revision'],
-					'LAST_TRANSLATOR' => preg_replace('/\s<.*>/', '', $languageDefinition['lastTranslator']),
-					'LOCALE_CHECKED' => ($languageDefinition['locale'] == $defaultLanguage) ? $htmlChecked : '',
-					'LOCALE' => $languageDefinition['locale']));
+			$tpl->assign(array(
+				'LANGUAGE_NAME' => tohtml($languageDefinition['language']),
+				'NUMBER_TRANSLATED_STRINGS' => tohtml(tr('%d strings translated', $languageDefinition['translatedStrings'])),
+				'LANGUAGE_REVISION' => tohtml($languageDefinition['revision']),
+				'LOCALE_CHECKED' => ($languageDefinition['locale'] == $defaultLanguage) ? 'checked' : '',
+				'LOCALE' => tohtml($languageDefinition['locale'], 'htmlAttr')
+			));
 
 			$tpl->parse('LANGUAGE_BLOCK', '.language_block');
 		}
@@ -61,7 +57,8 @@ function admin_generateLanguagesList($tpl)
 // Include needed libraries
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+$eventManager = iMSCP_Events_Aggregator::getInstance();
+$eventManager->dispatch(iMSCP_Events::onAdminScriptStart);
 
 // Check for login
 check_login('admin');
@@ -90,43 +87,38 @@ if (isset($_POST['uaction'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/multilanguage.tpl',
-		'page_message' => 'layout',
-		'languages_block' => 'page',
-		'language_block' => 'languages_block')
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'admin/multilanguage.tpl',
+	'page_message' => 'layout',
+	'languages_block' => 'page',
+	'language_block' => 'languages_block'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Languages'),
-		'TR_MULTILANGUAGE' => tr('Internationalization'),
-		'TR_LANGUAGE_NAME' => tr('Language'),
-		'TR_NUMBER_TRANSLATED_STRINGS' => tr('Translated strings'),
-		'TR_LANGUAGE_REVISION' => tr('Revision date'),
-		'TR_LAST_TRANSLATOR' => tr('Last translator'),
-		'TR_DEFAULT_LANGUAGE' => tr('Default language'),
-		'TR_SAVE' => tr('Save'),
-		'TR_INSTALL_NEW_LANGUAGE' => tr('Install'),
-		'TR_LANGUAGE_FILE' => tr('Language file'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
-		'TR_REBUILD_INDEX' => tr('Rebuild languages index'),
-		'TR_UPLOAD_HELP' => tr('Only gettext Machine Object files (MO files) are accepted.'),
-		'TR_INSTALL' => tr('Install'),
-		'TR_CANCEL' => tr('Cancel')
-	)
-);
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tohtml(tr('Admin / Settings / Languages')),
+	'TR_MULTILANGUAGE' => tohtml(tr('Internationalization')),
+	'TR_LANGUAGE_NAME' => tohtml(tr('Language')),
+	'TR_NUMBER_TRANSLATED_STRINGS' => tohtml(tr('Translated strings')),
+	'TR_LANGUAGE_REVISION' => tohtml(tr('Revision date')),
+	'TR_DEFAULT_LANGUAGE' => tohtml(tr('Default language')),
+	'TR_SAVE' => tohtml(tr('Save'), 'htmlAttr'),
+	'TR_IMPORT_NEW_LANGUAGE' => tohtml(tr('Import new language file')),
+	'TR_LANGUAGE_FILE' => tohtml(tr('Language file')),
+	'TR_REBUILD_INDEX' => tohtml(tr('Rebuild languages index'), 'htmlAttr'),
+	'TR_UPLOAD_HELP' => tohtml(tr('Only gettext Machine Object files (MO files) are accepted.'), 'htmlAttr'),
+	'TR_IMPORT' => tohtml(tr('Import'), 'htmlAttr')
+));
+
+$eventManager->registerListener('onGetJsTranslations', function($e) {
+	/* @var $e iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations();
+});
 
 generateNavigation($tpl);
 admin_generateLanguagesList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
-
+$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-
-unsetMessages();

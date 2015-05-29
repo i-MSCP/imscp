@@ -75,9 +75,9 @@ class iMSCP_I18n_Adapter_Zend extends Zend_Translate_Adapter
 	/**
 	 * Load translation data
 	 *
-	 * @param  mixed			  $data
+	 * @param  mixed $data
 	 * @param  string|Zend_Locale $locale
-	 * @param  array			  $options (optional)
+	 * @param  array $options (optional)
 	 * @return array
 	 */
 	protected function _loadTranslationData($data, $locale, array $options = array())
