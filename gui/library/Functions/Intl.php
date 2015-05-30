@@ -59,7 +59,7 @@ function tr($messageId, $substitution = null)
  * @param string $singular Singular translation string
  * @param string $plural Plural translation string
  * @param integer $number Number for detecting the correct plural
- * @internal param mixed $substitution Substitution value(s)
+ * @param mixed $substitution... Substitution value(s)
  * @return string
  */
 function ntr($singular, $plural, $number)
