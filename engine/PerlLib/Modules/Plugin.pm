@@ -33,8 +33,8 @@ use JSON;
 use version;
 use parent 'Common::Object';
 
-# Map action status to next status
-my %actionStatusToNextStatus = (
+# Map current status to new status
+my %STATUS_TO_NEW_STATUS = (
 	'enabled' => 'enabled',
 	'toinstall' => 'enabled',
 	'toenable' => 'enabled',
@@ -108,7 +108,7 @@ sub process
 
 	my @sql = (
 		"UPDATE plugin SET " . ($rs ? 'plugin_error' : 'plugin_status') . " = ? WHERE plugin_id = ?",
-		$rs ? (scalar getMessageByType('error') || 'Unknown error') : $actionStatusToNextStatus{$status},
+		$rs ? (scalar getMessageByType('error') || 'Unknown error') : $STATUS_TO_NEW_STATUS{$status},
 		$pluginId
 	);
 	my $qrs = $self->{'db'}->doQuery('dummy', @sql);
@@ -303,7 +303,7 @@ sub _change
 		$self->{'info'}->{'__need_change__'} = JSON::false;
 
 		my $qrs = $self->{'db'}->doQuery(
-			'dummy',
+			'u',
 			'UPDATE plugin SET plugin_info = ?, plugin_config_prev = ? WHERE plugin_name = ?',
 			encode_json($self->{'info'}),
 			encode_json($self->{'config'}),
@@ -343,7 +343,7 @@ sub _update
 	$self->{'info'}->{'version'} = $self->{'info'}->{'__nversion__'};
 
 	my $qrs = $self->{'db'}->doQuery(
-		'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($self->{'info'}), $pluginName
+		'u', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($self->{'info'}), $pluginName
 	);
 	unless(ref $qrs eq 'HASH') {
 		error($qrs);
@@ -363,8 +363,9 @@ sub _update
 		$self->{'info'}->{'__need_change__'} = JSON::false;
 
 		$qrs = $self->{'db'}->doQuery(
-			'dummy',
-			'UPDATE plugin SET  plugin_config_prev = ? WHERE plugin_name = ?',
+			'u',
+			'UPDATE plugin SET plugin_info = ?, plugin_config_prev = ? WHERE plugin_name = ?',
+			encode_json($self->{'info'}),
 			encode_json($self->{'config'}),
 			$pluginName
 		);

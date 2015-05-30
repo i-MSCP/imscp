@@ -1248,14 +1248,15 @@ class iMSCP_Plugin_Manager
 					} else {
 						$status = $this->pluginGetStatus($name);
 						$needUpdate = (version_compare($info['version'], $info['__nversion__'], '<'));
+						$needChange = $infoPrev['__need_change__'];
 
-						if (
-							!in_array($status, array('uninstalled', 'toinstall', 'touninstall', 'tochange', 'todelete')) &&
-							($config !== $configPrev)
+						if(
+							!$needChange && !in_array(
+								$status, array('uninstalled', 'toinstall', 'touninstall', 'tochange', 'todelete')
+							) &&
+							($config != $configPrev)
 						) {
 							$needChange = true;
-						} else {
-							$needChange = false;
 						}
 					}
 
