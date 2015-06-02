@@ -600,9 +600,9 @@ sub _updateDatabase
 	# See http://trac.roundcube.net/ticket/1489044
 	my ($stdout, $stderr);
 	my $rs = execute(
-		"php -d suhosin.session.encrypt=off $roundcubeDir/bin/updatedb.sh --version=$fromVersion " .
-			"--dir=$roundcubeDir/SQL --package=roundcube 2>/dev/null",
-		\$stdout, \$stderr
+		"php $roundcubeDir/bin/updatedb.sh --version=$fromVersion --dir=$roundcubeDir/SQL --package=roundcube",
+		\$stdout,
+		\$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
