@@ -607,58 +607,6 @@ sub _updateDatabase
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to update roundcube database schema.') if $rs && ! $stderr;
-	return $rs if $rs;
-
-	# Since the updatedb.sh script can exit with 0 on error, we made additional checks to be sure the db schema has been
-	# correctly updated (These checks will be removed when http://trac.roundcube.net/ticket/1489044 will be fixed)
-
-	my ($database, $errStr) = main::setupGetSqlConnect($roundcubeDbName);
-	unless($database) {
-		error("Unable to connect to SQL database: $errStr");
-		return 1;
-	}
-
-	my $rdata = $database->doQuery('1', 'SHOW TABLES LIKE ?', 'system');
-	unless(ref $rdata eq 'HASH') {
-		error("SQL query failed: $rs");
-		return 1;
-	}
-
-	unless(%{$rdata}) {
-		error("Database schema update failed: 'system' table not found.");
-		return 1
-	}
-
-	$rdata = $database->doQuery('name', 'SELECT * FROM `system` WHERE `name` = ?', 'roundcube-version');
-	unless(ref $rdata eq 'HASH') {
-		error("SQL query failed: $rdata");
-		return 1;
-	}
-
-	if(%{$rdata}) {
-		my @updateFiles = iMSCP::Dir->new( dirname => "$roundcubeDir/SQL/mysql", 'fileType' => '.sql' )->getFiles();
-		unless(@updateFiles) {
-			error('Unable to get list of available database updates.');
-			return 1;
-		}
-
-		s/.sql// for @updateFiles;
-		@updateFiles = sort { $a <=> $b } @updateFiles;
-		my $lastAvailableUpdate = pop @updateFiles;
-
-		if($rdata->{'roundcube-version'}->{'value'} < $lastAvailableUpdate) {
-			error(
-				'Database schema update failed: ' .
-				"roundcube-version value ($rs->{'roundcube-version'}->{'value'}) is smaller than the last available " .
-				"database update version ($lastAvailableUpdate)"
-			);
-			return 1
-		}
-	} else {
-		error("Database schema update failed: roundcube-version value not found in 'system' table.");
-		return 1
-	}
-
 	$rs;
 }
 
