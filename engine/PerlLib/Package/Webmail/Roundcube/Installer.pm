@@ -596,8 +596,6 @@ sub _updateDatabase
 	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
 	my $fromVersion = $self->{'config'}->{'ROUNDCUBE_VERSION'} || '0.8.4';
 
-	# Check on suhosin.session.encrypt=off will be removed in next roundcube version
-	# See http://trac.roundcube.net/ticket/1489044
 	my ($stdout, $stderr);
 	my $rs = execute(
 		"php $roundcubeDir/bin/updatedb.sh --version=$fromVersion --dir=$roundcubeDir/SQL --package=roundcube",
