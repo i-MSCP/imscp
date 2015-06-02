@@ -607,6 +607,7 @@ sub _updateDatabase
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to update roundcube database schema.') if $rs && ! $stderr;
+	return $rs if $rs;
 
 	# Since the updatedb.sh script can exit with 0 on error, we made additional checks to be sure the db schema has been
 	# correctly updated (These checks will be removed when http://trac.roundcube.net/ticket/1489044 will be fixed)

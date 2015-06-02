@@ -77,6 +77,7 @@ INSTALLER
 	Fixed: Wrong package name in preseed file (RainLoop)
 
 PACKAGES
+	Fixed: Missing return statement on database update error (Package::Webmail::Roundcube::Installer)
 	Renamed: Fcgid starter template to php-fcgi-starter (FrontEnd)
 
 PLUGINS
