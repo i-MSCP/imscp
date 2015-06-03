@@ -35,6 +35,7 @@ use File::Basename;
 use autoinstaller::Functions qw/loadConfig build install/;
 
 $ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 newDebug('imscp-autoinstall.log');
 

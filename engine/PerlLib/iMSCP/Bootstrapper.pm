@@ -34,6 +34,9 @@ use iMSCP::Database;
 use Fcntl ":flock";
 use parent 'Common::SingletonClass';
 
+$ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
 =head1 DESCRIPTION
 
  Bootstrap class for i-MSCP

@@ -28,8 +28,6 @@ use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Getopt;
 use File::Basename;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-httpd-logs-mngr.log');
 
 # Parse command line options
@@ -44,7 +42,7 @@ OPTIONS:
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-httpd-logs-mngr.lock', 'nowait');
-$bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
+$bootstrapper->boot({ norequirements => 'yes', nolock => 'yes', config_readonly => 'yes' });
 
 sub run
 {

@@ -28,8 +28,6 @@ use iMSCP::Getopt;
 use File::Basename;
 use Crypt::PasswdMD5;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-disable-accounts.log');
 
 # Parse command line options
@@ -42,9 +40,7 @@ OPTIONS:
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot(
-	{ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' }
-);
+iMSCP::Bootstrapper->getInstance()->boot({ nolock => 'yes', norequirements => 'yes', config_readonly => 'yes' });
 
 sub run
 {

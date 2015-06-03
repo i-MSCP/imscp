@@ -45,8 +45,6 @@ use File::Basename;
 	$main::execmode = 'uninstall';
 }
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-uninstall.log');
 
 sub startUp

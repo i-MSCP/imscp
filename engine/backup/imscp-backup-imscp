@@ -31,8 +31,6 @@ use iMSCP::Getopt;
 use File::Basename;
 use POSIX qw/strftime/;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-backup-imscp.log');
 
 # Parse command line options

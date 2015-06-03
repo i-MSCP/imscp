@@ -27,8 +27,6 @@ use iMSCP::Execute;
 use iMSCP::Getopt;
 use File::Basename;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-net-traffic-logger.log');
 
 # Parse command line options
@@ -42,15 +40,18 @@ OPTIONS:
 );
 
 iMSCP::Bootstrapper->getInstance()->boot(
-	{ 'norequirements' => 'yes', 'nodatabase' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' }
+	{ norequirements => 'yes', nodatabase => 'yes', nolock => 'yes', config_readonly => 'yes' }
 );
 
 sub start
 {
-	# Create the IMSCP_INPUT and iMSCP_OUTPUT chains
+	# Create the IMSCP_INPUT and iMSCP_OUTPUT chains and pass
 	# Pipe the input/output traffic from all interfaces (excluding lo) through the i-MSCP chains
 	for (
-		'-N IMSCP_INPUT', '-N IMSCP_OUTPUT', '-I INPUT ! -i lo -j IMSCP_INPUT', '-I OUTPUT ! -o lo -j IMSCP_OUTPUT'
+		'-N IMSCP_INPUT',
+		'-N IMSCP_OUTPUT',
+		'-I INPUT ! -i lo -j IMSCP_INPUT',
+		'-I OUTPUT ! -o lo -j IMSCP_OUTPUT'
 	) {
 		my ($stdout, $stderr);
 		my $rs = execute("iptables $_", \$stdout, \$stderr);
@@ -59,9 +60,14 @@ sub start
 		return $rs if $rs;
 	}
 
+	my $httpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
+	my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+
 	# Monitor the traffic for the given ports
-	for my $port(qw(80 443 110 143 25 465 587 995 993)) {
+	for my $port($httpPort, $httpsPort, 80, 443, 110, 143, 25, 465, 587, 995, 993, 20, 21) {
+		next if $port eq '';
 		my ($stdout, $stderr);
+
 		my $rs = execute("iptables -I IMSCP_INPUT -p tcp --dport $port", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -111,7 +117,7 @@ sub stop
 	unless($rs) {
 		# Retrieve rules defined by i-MSCP on both INPUT and OUTPUT chains
 		my %chains = ();
-		$chains{$2} = $1 while($stdout =~ /^.*?((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))$/gm);
+		$chains{$2} = $1 while($stdout =~ /.*?((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))/g);
 
 		if(%chains) {
 			# Collect traffic data

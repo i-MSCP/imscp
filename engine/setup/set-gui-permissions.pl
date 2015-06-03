@@ -28,8 +28,6 @@ use iMSCP::Packages;
 use iMSCP::Getopt;
 use File::Basename;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-set-gui-permissions.log');
 
 # Initialize command line options

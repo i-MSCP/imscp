@@ -19,6 +19,7 @@
 
 use strict;
 use warnings;
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Debug;
@@ -28,18 +29,19 @@ use iMSCP::Database;
 use iMSCP::Getopt;
 use File::Basename;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 sub run
 {
 	my ($inputTraffic, $outputTraffic, $stdout, $stderr);
-	my %hash = ('IMSCP_INPUT' => \$inputTraffic, 'IMSCP_OUTPUT' => \$outputTraffic);
+	my %hash = (
+		'IMSCP_INPUT' => \$inputTraffic,
+		'IMSCP_OUTPUT' => \$outputTraffic
+	);
 
 	# Getting input and output traffic data
 	while(my ($src, $target) = each %hash) {
 		my $rs = execute("iptables -nvxL $src", $target, \$stderr);
 		debug($$target) if $$target;
-  		error($stderr) if $stderr && $rs;
+		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 	}
 
@@ -83,20 +85,23 @@ sub run
 	0;
 }
 
-sub _parseTrafficData($)
+sub _parseTrafficData
 {
 	my $data = shift;
 
 	my ($smtp, $po, $http, $all) = (0, 0, 0, 0);
+
+	my $frontEndHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
+	my $frontEndHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
 	if($data) {
 		while($data =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm) {
 			my ($bytes, $port) = ($1, $2 // 0);
 
 			if($port > 0) {
-				$smtp += $bytes if $port == 587 || $port == 25 || $port == 465;
-				$po += $bytes if $port == 110 || $port == 995 || $port == 143 || $port == 993;
-				$http += $bytes if $port == 80 || $port == 443;
+				$smtp += $bytes if $port ~~ [ 587, 25, 465 ];
+				$po += $bytes if $port ~~ [ 110, 995, 143, 993 ];
+				$http += $bytes if $port ~~ [ 80, 443, $frontEndHttpPort, $frontEndHttpsPort ];
 			} else {
 				$all = $bytes;
 			}

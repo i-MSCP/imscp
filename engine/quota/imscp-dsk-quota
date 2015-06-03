@@ -29,8 +29,6 @@ use iMSCP::Getopt;
 use Servers::mta;
 use File::Basename;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-dsk-quota.log');
 
 # Parse command line options
@@ -45,7 +43,7 @@ OPTIONS:
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-dsk-quota.lock', 'nowait');
-$bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
+$bootstrapper->boot({ norequirements => 'yes', nolock => 'yes', config_readonly => 'yes' });
 
 sub quotaFiles
 {

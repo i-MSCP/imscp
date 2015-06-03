@@ -28,8 +28,6 @@ use iMSCP::Net;
 use iMSCP::Getopt;
 use File::Basename;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-net-interfaces-mngr.log');
 
 # Parse command line options
@@ -42,9 +40,7 @@ OPTIONS:
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot(
-	{ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' }
-);
+iMSCP::Bootstrapper->getInstance()->boot({ nolock => 'yes', norequirements => 'yes', config_readonly => 'yes' });
 
 sub _addAddresses
 {

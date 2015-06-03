@@ -1,18 +1,18 @@
 # Traffic accounting
-@hourly root {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
-@hourly root {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
+0,30 * * * * root perl {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
+0,30 * * * * root perl {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
 
 # Quota accounting
-@hourly root {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
+@hourly root perl {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
 
 # Customer logs
-@daily root {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
+@daily root perl {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
 
 # Disable expired accounts
-@daily root {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
+@daily root perl {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
 
 # Backup i-MSCP configuration files and database
-@daily root nice -n 10 {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
+@daily root nice -n 10 perl {BACKUP_ROOT_DIR}/imscp-backup-imscp &>{LOG_DIR}/imscp-backup-imscp-mngr.log
 
 # Remove configuration backups older than 7 days
 @weekly root find {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec rm -- {} +
@@ -24,7 +24,7 @@
 @weekly root find {LOG_DIR} -type f -mtime +7 -exec rm -- {} +
 
 # Backup customers' data depending of the domain properties
-{BACKUP_MINUTE} {BACKUP_HOUR} * * * root nice -n 10 {BACKUP_ROOT_DIR}/imscp-backup-all &>{LOG_DIR}/imscp-backup-all-mngr.log
+{BACKUP_MINUTE} {BACKUP_HOUR} * * * root nice -n 10 perl  {BACKUP_ROOT_DIR}/imscp-backup-all &>{LOG_DIR}/imscp-backup-all-mngr.log
 
 # imscp [{ENTRY_ID}] entry BEGIN
 # imscp [{ENTRY_ID}] entry ENDING

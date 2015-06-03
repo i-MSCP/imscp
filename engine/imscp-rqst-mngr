@@ -33,8 +33,6 @@ use JSON;
 # Set umask ( default is 0 when this script is run through the i-MSCP daemon, which leads to some problems )
 umask 0022;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-rqst-mngr.log');
 
 # Initialize command line options
@@ -52,7 +50,7 @@ OPTIONS:
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot({ 'norequirements' => 'yes' });
+iMSCP::Bootstrapper->getInstance()->boot({ norequirements => 'yes' });
 
 my $dbh = iMSCP::Database->factory()->getRawDb();
 

@@ -56,7 +56,7 @@ use iMSCP::Service;
 sub setupBoot
 {
 	# We do not try to establish connection to the database since needed data can be unavailable
-	iMSCP::Bootstrapper->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
+	iMSCP::Bootstrapper->getInstance()->boot({ mode => 'setup', nodatabase => 'yes' });
 
 	unless(%main::imscpOldConfig) {
 		%main::imscpOldConfig = ();

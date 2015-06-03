@@ -28,11 +28,9 @@ use MIME::Parser;
 use MIME::Entity;
 use Encode;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-arpl-msgr/imscp-arpl-msgr.log');
 
-iMSCP::Bootstrapper->getInstance()->boot({ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' });
+iMSCP::Bootstrapper->getInstance()->boot({ nolock => 'yes', norequirements => 'yes', config_readonly => 'yes' });
 
 eval {
 	my $dbh = iMSCP::Database->factory()->getRawDb();

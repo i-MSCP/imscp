@@ -32,8 +32,6 @@ use Servers::mta::postfix;
 use File::Basename;
 use POSIX qw/strftime/;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 sub run
 {
 	return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
@@ -310,9 +308,6 @@ sub run
 
 	$ret;
 }
-
-# Turn off localisation features to force any command output to be in english
-$ENV{'LANG'} = 'C';
 
 newDebug('imscp-backup-all.log');
 

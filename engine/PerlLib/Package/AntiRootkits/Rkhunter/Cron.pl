@@ -26,16 +26,10 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
 
-$ENV{'LANG'} = 'C.UTF-8';
-#use open ':locale';
-
 newDebug('imscp-rkhunter-package.log');
 
 iMSCP::Bootstrapper->getInstance()->boot(
-	{
-		'nolock' => 'yes', 'norequirements' => 'yes', 'nokeys' => 'yes', 'nodatabase' => 'yes',
-		'config_readonly' => 'yes'
-	}
+	{ nolock => 'yes', norequirements => 'yes', nokeys => 'yes', nodatabase => 'yes', config_readonly => 'yes' }
 );
 
 my $rs = 0;

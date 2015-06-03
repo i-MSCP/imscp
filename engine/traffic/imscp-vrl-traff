@@ -159,10 +159,10 @@ sub run
 				$rs = 1;
 			} else {
 				# Remove data from traffic database
-				delete $trafficDb{'httpd'}->{$domainName} = 0;
-				delete $trafficDb{'ftpd'}->{$domainName} = 0;
-				delete $trafficDb{'mta'}->{$domainName} = 0;
-				delete $trafficDb{'po'}->{$domainName} = 0;
+				$trafficDb{'httpd'}->{$domainName} = 0;
+				$trafficDb{'ftpd'}->{$domainName} = 0;
+				$trafficDb{'mta'}->{$domainName} = 0;
+				$trafficDb{'po'}->{$domainName} = 0;
 			}
 		}
 	}
