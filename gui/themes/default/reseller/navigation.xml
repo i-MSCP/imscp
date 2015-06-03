@@ -2,6 +2,7 @@
 <!--
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Reseller
- * @copyright   2010-2015 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
  -->
 
@@ -47,7 +40,6 @@
                 </software_upload>
             </pages>
         </general>
-
         <customers>
             <label>Customers</label>
             <uri>/reseller/users.php</uri>
@@ -148,7 +140,6 @@
                 </circular>
             </pages>
         </customers>
-
         <hosting_plans>
             <label>Hosting plans</label>
             <uri>/reseller/hosting_plan.php</uri>
@@ -175,34 +166,32 @@
                 </add_hosting_plan>
             </pages>
         </hosting_plans>
-
         <statistics>
             <label>Statistics</label>
             <uri>/reseller/user_statistics.php</uri>
             <class>statistics</class>
             <privilege_callback name="resellerHasCustomers"/>
             <pages>
-                <customer_statistics>
-                    <label>Overview</label>
+                <user_statistics>
+                    <label>User statistics</label>
                     <uri>/reseller/user_statistics.php</uri>
                     <title_class>stats</title_class>
                     <pages>
-                        <domain_statistics>
-                            <label>Domain statistics - {DOMAIN_NAME}</label>
-                            <uri>/reseller/domain_statistics.php</uri>
+                        <user_statistics_details>
+                            <label>{USERNAME} user statistics</label>
+                            <uri>/reseller/user_statistics_details.php</uri>
                             <visible>0</visible>
                             <title_class>stats</title_class>
-                        </domain_statistics>
+                        </user_statistics_details>
                     </pages>
-                </customer_statistics>
+                </user_statistics>
                 <ip_usage>
-                    <label>IP usage</label>
+                    <label>IP assignments</label>
                     <uri>/reseller/ip_usage.php</uri>
                     <title_class>stats</title_class>
                 </ip_usage>
             </pages>
         </statistics>
-
         <supports>
             <label>Support</label>
             <uri>{SUPPORT_SYSTEM_PATH}</uri>
@@ -234,7 +223,6 @@
                 </view_ticket>
             </pages>
         </supports>
-
         <profile>
             <label>Profile</label>
             <uri>/reseller/profile.php</uri>

@@ -1135,8 +1135,7 @@ sub getTraffic
 	my $dbh = $db->startTransaction();
 	my $sth = $dbh->prepare('SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE');
 
-	die("Couldn't prepare SQL statement: " . $dbh->errstr) unless $sth;
-	die("Couldn't execute prepared statement: " . $dbh->errstr) unless $sth->execute($ldate);
+	($sth && $sth->execute($ldate)) or die(sprintf("Couldn't execute prepared statement: %s",$dbh->errstr));
 
 	# Collect traffic data
 	while (my $row = $sth->fetchrow_hashref()) {
@@ -1157,12 +1156,11 @@ sub getTraffic
 
 	$db->endTransaction();
 
-	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept in
-	# place for later processing. In such case, data already processed (put in database) are zeroed by the traffic
-	# processor script.
+	# Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
+	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
 	$self->{'eventManager'}->register(
 		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
-	) and die(iMSCP::Debug::getLastError());
+	);
 
 	\%trafficDb;
 }

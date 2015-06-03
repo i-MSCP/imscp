@@ -236,38 +236,39 @@ function get_user_domain_id($customeId)
 }
 
 /**
- * Returns the total number of consumed and max available items for the given customer
+ * Get the total number of consumed and max available items for the given customer
  *
- * @param  int $domainId Domain unique identifier
+ * @param  int $userId Domain unique identifier
  * @return array
  */
-function shared_getCustomerProps($domainId)
+function shared_getCustomerProps($userId)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$rs = exec_query("SELECT * FROM domain WHERE domain_id = ?", $domainId);
+	$stmt = exec_query("SELECT * FROM domain WHERE domain_admin_id = ?", $userId);
 
-	if (!$rs->recordCount()) {
+	if (!$stmt->rowCount()) {
 		return array_fill(0, 14, 0);
 	}
 
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
 	// Retrieves total number of subdomains already consumed by the customer
-	$subConsumed = records_count('subdomain', 'domain_id', $domainId);
+	$subConsumed = records_count('subdomain', 'domain_id', $row['domain_id']);
 
 	// Retrieves max available number of subdomains for the customer
-	$subMax = $rs->fields['domain_subd_limit'];
+	$subMax = $row['domain_subd_limit'];
 
 	// Retrieves total number of domain aliases already consumed by the customer
-	$alsConsumed = records_count('domain_aliasses', 'domain_id', $domainId);
+	$alsConsumed = records_count('domain_aliasses', 'domain_id', $row['domain_id']);
 
 	// Retrieves max available number of domain aliases for the customer
-	$alsMax = $rs->fields['domain_alias_limit'];
+	$alsMax = $row['domain_alias_limit'];
 
 	// Retrieves total number of mail accounts already consumed by the customer
 	// This works with the admin option (Count default email addresses)
-	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
-		$mailConsumed = records_count('mail_users', "mail_type NOT RLIKE '_catchall' AND domain_id", $domainId);
+	if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+		$mailConsumed = records_count('mail_users', "mail_type NOT RLIKE '_catchall' AND domain_id", $row['domain_id']);
 	} else {
 		$where = "
 				`mail_acc` != 'abuse'
@@ -281,42 +282,42 @@ function shared_getCustomerProps($domainId)
 				`domain_id`
 		";
 
-		$mailConsumed = records_count('mail_users', $where, $domainId);
+		$mailConsumed = records_count('mail_users', $where, $row['domain_id']);
 	}
 
 	// Retrieves max available number of mail accounts for the customer
-	$mailMax = $rs->fields['domain_mailacc_limit'];
+	$mailMax = $row['domain_mailacc_limit'];
 
 	// Retrieve total number of ftp accounts already consumed by the customer
 	$ftpConsumed = sub_records_rlike_count(
-		'domain_name', 'domain', 'domain_id', $domainId, 'userid', 'ftp_users', 'userid', '@', ''
+		'domain_name', 'domain', 'domain_id', $row['domain_id'], 'userid', 'ftp_users', 'userid', '@', ''
 	);
 	$ftpConsumed += sub_records_rlike_count(
-		'alias_name', 'domain_aliasses', 'domain_id', $domainId, 'userid', 'ftp_users', 'userid', '@', ''
+		'alias_name', 'domain_aliasses', 'domain_id', $row['domain_id'], 'userid', 'ftp_users', 'userid', '@', ''
 	);
 
 	// Retrieves max available number of mail accounts for the customer
-	$ftpMax = $rs->fields['domain_ftpacc_limit'];
+	$ftpMax = $row['domain_ftpacc_limit'];
 
 	// Retrieves total number of SQL databases already consumed by the customer
-	$sqlDbConsumed = records_count('sql_database', 'domain_id', $domainId);
+	$sqlDbConsumed = records_count('sql_database', 'domain_id', $row['domain_id']);
 
 	// Retrieves max available number of SQL databases for the customer
-	$sqlDbMax = $rs->fields['domain_sqld_limit'];
+	$sqlDbMax = $row['domain_sqld_limit'];
 
 	// Retrieves total number of SQL user already consumed by the customer
 	$sqlUserConsumed = sub_records_count(
-		'sqld_id', 'sql_database', 'domain_id', $domainId, 'sqlu_id', 'sql_user', 'sqld_id', 'sqlu_name', ''
+		'sqld_id', 'sql_database', 'domain_id', $row['domain_id'], 'sqlu_id', 'sql_user', 'sqld_id', 'sqlu_name', ''
 	);
 
 	// Retrieves max number of SQL user for the customer
-	$sqlUserMax = $rs->fields['domain_sqlu_limit'];
+	$sqlUserMax = $row['domain_sqlu_limit'];
 
 	// Retrieves max available montly traffic volume for the customer
-	$trafficMax = $rs->fields['domain_traffic_limit'];
+	$trafficMax = $row['domain_traffic_limit'];
 
 	// Retrieve max available diskspace limit for the customer
-	$diskMax = $rs->fields['domain_disk_limit'];
+	$diskMax = $row['domain_disk_limit'];
 
 	return array(
 		$subConsumed, $subMax, $alsConsumed, $alsMax, $mailConsumed, $mailMax, $ftpConsumed, $ftpMax, $sqlDbConsumed,
@@ -1253,15 +1254,13 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
 	static $properties = null;
 
 	if (null === $properties || $forceReload) {
-		$resellerId = (int)$resellerId;
-		$query = 'SELECT * FROM `reseller_props` WHERE `reseller_id` = ? LIMIT 1';
-		$stmt = exec_query($query, $resellerId);
+		$stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ? LIMIT 1', $resellerId);
 
 		if (!$stmt->rowCount()) {
 			throw new iMSCP_Exception(tr('Properties for reseller with ID %d were not found in database.', $resellerId));
 		}
 
-		$properties = $stmt->fetchRow();
+		$properties = $stmt->fetchRow(PDO::FETCH_ASSOC);
 	}
 
 	return $properties;
@@ -1270,40 +1269,36 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
 /**
  * Update reseller properties
  *
- * @param  int $reseller_id Reseller unique identifier.
+ * @param  int $resellerId Reseller unique identifier.
  * @param  array $props Array that contain new properties values
  * @return iMSCP_Database_ResultSet|null
  */
-function update_reseller_props($reseller_id, $props)
+function update_reseller_props($resellerId, $props)
 {
 	if (empty($props)) {
 		return null;
 	}
 
 	list(
-		$dmn_current, $dmn_max, $sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current,
-		$ftp_max, $sql_db_current, $sql_db_max, $sql_user_current, $sql_user_max, $traff_current, $traff_max,
-		$disk_current, $disk_max
+		$dmnCur, $dmnMax, $subCur, $subMax, $alsCur, $alsMax, $mailCur, $mailMax, $ftpCur, $ftpMax, $sqlDbCur,
+		$sqlDbMax, $sqlUserCur, $sqlUserMax, $traffCur, $traffMax, $diskCur, $diskMax
 	) = explode(';', $props);
 
-	$query = "
-		UPDATE
-			`reseller_props`
-		SET
-			`current_dmn_cnt` = ?, `max_dmn_cnt` = ?, `current_sub_cnt` = ?, `max_sub_cnt` = ?, `current_als_cnt` = ?,
-			`max_als_cnt` = ?, `current_mail_cnt` = ?, `max_mail_cnt` = ?, `current_ftp_cnt` = ?, `max_ftp_cnt` = ?,
-			`current_sql_db_cnt` = ?, `max_sql_db_cnt` = ?, `current_sql_user_cnt` = ?, `max_sql_user_cnt` = ?,
-			`current_traff_amnt` = ?, `max_traff_amnt` = ?, `current_disk_amnt` = ?, `max_disk_amnt` = ?
-		WHERE
-			`reseller_id` = ?
-	";
-
 	$stmt = exec_query(
-		$query,
+		'
+			UPDATE
+				reseller_props
+			SET
+				current_dmn_cnt = ?, max_dmn_cnt = ?, current_sub_cnt = ?, max_sub_cnt = ?, current_als_cnt = ?,
+				max_als_cnt = ?, current_mail_cnt = ?, max_mail_cnt = ?, current_ftp_cnt = ?, max_ftp_cnt = ?,
+				current_sql_db_cnt = ?, max_sql_db_cnt = ?, current_sql_user_cnt = ?, max_sql_user_cnt = ?,
+				current_traff_amnt = ?, max_traff_amnt = ?, current_disk_amnt = ?, max_disk_amnt = ?
+			WHERE
+				reseller_id = ?
+		',
 		array(
-			$dmn_current, $dmn_max, $sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current,
-			$ftp_max, $sql_db_current, $sql_db_max, $sql_user_current, $sql_user_max, $traff_current, $traff_max,
-			$disk_current, $disk_max, $reseller_id
+			$dmnCur, $dmnMax, $subCur, $subMax, $alsCur, $alsMax, $mailCur, $mailMax, $ftpCur, $ftpMax, $sqlDbCur,
+			$sqlDbMax, $sqlUserCur, $sqlUserMax, $traffCur, $traffMax, $diskCur, $diskMax, $resellerId
 		)
 	);
 
@@ -1952,16 +1947,15 @@ function make_usage_vals($amount, $total)
 }
 
 /**
- * Generates customer statistiques
+ * Get statistiques for the given user
  *
- * @param int $domainId Domain unique identifier
- * @return array An array that contains traffic usage information
+ * @param int $adminId User unique identifier
+ * @return array
  */
-function shared_getCustomerStats($domainId)
+function shared_getCustomerStats($adminId)
 {
 	$curMonth = date('m');
 	$curYear = date('Y');
-
 	$fromTimestamp = mktime(0, 0, 0, $curMonth, 1, $curYear);
 
 	if ($curMonth == 12) {
@@ -1976,56 +1970,58 @@ function shared_getCustomerStats($domainId)
 				domain_id, IFNULL(domain_disk_usage, 0) AS diskspace_usage,
 				IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit,
 				IFNULL(domain_disk_limit, 0) AS diskspace_limit,
-				domain_name
+				admin_name
 			FROM
 				domain
+			INNER JOIN
+				admin on(admin_id = domain_admin_id)
 			WHERE
-				domain_id = ?
+				domain_admin_id = ?
 			ORDER BY
 				domain_name
 		',
-		$domainId
+		$adminId
 	);
 
 	if (!$stmt->rowCount()) {
 		showBadRequestErrorPage();
-		exit;
-	} else {
-		$data = $stmt->fetchRow(PDO::FETCH_ASSOC);
-
-		$diskspaceUsage = $data['diskspace_usage'];
-		$monthlyTrafficLimit = $data['monthly_traffic_limit'];
-		$diskspaceLimit = $data['diskspace_limit'];
-		$domainName = $data['domain_name'];
-
-		$stmt = exec_query(
-			'
-				SELECT
-					IFNULL(SUM(dtraff_web), 0) AS webTraffic,
-					IFNULL(SUM(dtraff_ftp), 0) AS ftpTraffic,
-					IFNULL(SUM(dtraff_mail), 0) AS smtpTraffic,
-					IFNULL(SUM(dtraff_pop), 0) AS popTraffic,
-					IFNULL(SUM(dtraff_web), 0) + IFNULL(SUM(dtraff_ftp), 0) +
-					IFNULL(SUM(dtraff_mail), 0) + IFNULL(SUM(dtraff_pop), 0) AS totalTraffic
-				FROM
-					domain_traffic
-				WHERE
-					domain_id = ?
-				AND
-					dtraff_time >= ?
-				AND
-					dtraff_time < ?
-			',
-			array($domainId, $fromTimestamp, $toTImestamp)
-		);
-
-		$data = $stmt->fetchRow(PDO::FETCH_ASSOC);
-
-		return array(
-			$domainName, $domainId, $data['webTraffic'], $data['ftpTraffic'], $data['smtpTraffic'], $data['popTraffic'],
-			$data['totalTraffic'], $diskspaceUsage, $monthlyTrafficLimit, $diskspaceLimit
-		);
 	}
+
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+	$diskspaceUsage = $row['diskspace_usage'];
+	$monthlyTrafficLimit = $row['monthly_traffic_limit'];
+	$diskspaceLimit = $row['diskspace_limit'];
+	$adminName = $row['admin_name'];
+	$domainId = $row['domain_id'];
+
+	$stmt = exec_query(
+		'
+			SELECT
+				IFNULL(SUM(dtraff_web), 0) AS webTraffic,
+				IFNULL(SUM(dtraff_ftp), 0) AS ftpTraffic,
+				IFNULL(SUM(dtraff_mail), 0) AS smtpTraffic,
+				IFNULL(SUM(dtraff_pop), 0) AS popTraffic,
+				IFNULL(SUM(dtraff_web), 0) + IFNULL(SUM(dtraff_ftp), 0) +
+				IFNULL(SUM(dtraff_mail), 0) + IFNULL(SUM(dtraff_pop), 0) AS totalTraffic
+			FROM
+				domain_traffic
+			WHERE
+				domain_id = ?
+			AND
+				dtraff_time >= ?
+			AND
+				dtraff_time < ?
+		',
+		array($domainId, $fromTimestamp, $toTImestamp)
+	);
+
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+	return array(
+		$adminName, $domainId, $row['webTraffic'], $row['ftpTraffic'], $row['smtpTraffic'], $row['popTraffic'],
+		$row['totalTraffic'], $diskspaceUsage, $monthlyTrafficLimit, $diskspaceLimit
+	);
 }
 
 /**
@@ -2813,32 +2809,12 @@ function records_count($table, $where = '', $bind = '')
  */
 function unsetMessages()
 {
-	$glToUnset = array();
-	$glToUnset[] = 'user_updated';
-	$glToUnset[] = 'dmn_tpl';
-	$glToUnset[] = 'chtpl';
-	$glToUnset[] = 'step_one';
-	$glToUnset[] = 'step_two_data';
-	$glToUnset[] = 'ch_hpprops';
-	$glToUnset[] = 'user_add3_added';
-	$glToUnset[] = 'user_has_domain';
-	$glToUnset[] = 'local_data';
-	$glToUnset[] = 'reseller_added';
-	$glToUnset[] = 'user_added';
-	$glToUnset[] = 'aladd';
-	$glToUnset[] = 'edit_ID';
-	$glToUnset[] = 'aldel';
-	$glToUnset[] = 'hpid';
-	$glToUnset[] = 'user_deleted';
-	$glToUnset[] = 'hdomain';
-	$glToUnset[] = 'aledit';
-	$glToUnset[] = 'acreated_by';
-	$glToUnset[] = 'dhavesub';
-	$glToUnset[] = 'ddel';
-	$glToUnset[] = 'dhavealias';
-	$glToUnset[] = 'dhavealias';
-	$glToUnset[] = 'dadel';
-	$glToUnset[] = 'local_data';
+	$glToUnset = array(
+		'user_updated', 'dmn_tpl', 'chtpl', 'step_one', 'step_two_data', 'ch_hpprops', 'user_add3_added',
+		'user_has_domain', 'local_data', 'reseller_added', 'user_added', 'aladd', 'edit_ID', 'aldel', 'hpid',
+		'user_deleted', 'hdomain', 'aledit', 'acreated_by', 'dhavesub', 'ddel', 'dhavealias', 'dhavealias', 'dadel',
+		'local_data',
+	);
 
 	foreach ($glToUnset as $toUnset) {
 		if (array_key_exists($toUnset, $GLOBALS)) {
@@ -2846,30 +2822,11 @@ function unsetMessages()
 		}
 	}
 
-	$sessToUnset = array();
-	$sessToUnset[] = 'reseller_added';
-	$sessToUnset[] = 'dmn_name';
-	$sessToUnset[] = 'dmn_tpl';
-	$sessToUnset[] = 'chtpl';
-	$sessToUnset[] = 'step_one';
-	$sessToUnset[] = 'step_two_data';
-	$sessToUnset[] = 'ch_hpprops';
-	$sessToUnset[] = 'user_add3_added';
-	$sessToUnset[] = 'user_has_domain';
-	$sessToUnset[] = 'user_added';
-	$sessToUnset[] = 'aladd';
-	$sessToUnset[] = 'edit_ID';
-	$sessToUnset[] = 'aldel';
-	$sessToUnset[] = 'hpid';
-	$sessToUnset[] = 'user_deleted';
-	$sessToUnset[] = 'hdomain';
-	$sessToUnset[] = 'aledit';
-	$sessToUnset[] = 'acreated_by';
-	$sessToUnset[] = 'dhavesub';
-	$sessToUnset[] = 'ddel';
-	$sessToUnset[] = 'dhavealias';
-	$sessToUnset[] = 'dadel';
-	$sessToUnset[] = 'local_data';
+	$sessToUnset = array(
+		'reseller_added', 'dmn_name', 'dmn_tpl', 'chtpl', 'step_one', 'step_two_data', 'ch_hpprops', 'user_add3_added',
+		'user_has_domain', 'user_added', 'aladd', 'edit_ID', 'aldel', 'hpid', 'user_deleted', 'hdomain', 'aledit',
+		'acreated_by', 'dhavesub', 'ddel', 'dhavealias', 'dadel', 'local_data',
+	);
 
 	foreach ($sessToUnset as $toUnset) {
 		if (array_key_exists($toUnset, $_SESSION)) {

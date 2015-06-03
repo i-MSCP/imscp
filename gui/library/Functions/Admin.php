@@ -36,7 +36,7 @@ function get_sql_user_count()
 }
 
 /**
- * Returns the total number of consumed and assigned items for the given reseller.
+ * Returns the total number of consumed and assigned items for the given reseller
  *
  * @param  int $resellerId Reseller unique indentifier
  * @return array
@@ -47,13 +47,10 @@ function generate_reseller_users_props($resellerId)
 	$rmailAssigned = $rftpConsumed = $rftpAssigned = $rsqlDbConsumed = $rsqlDbAssigned = $rsqlUserConsumed =
 	$rsqlUserAssigned = $rtraffConsumed = $rtraffAssigned = $rdiskConsumed = $rdiskAssigned = 0;
 
-	$stmt = exec_query(
-		'SELECT domain_id FROM domain INNER JOIN admin ON(admin_id = domain_admin_id) WHERE created_by = ?', $resellerId
-	);
+	$stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $resellerId);
 
 	$rdmnUnlimited = $rsubUnlimited = $ralsUnlimited = $rmailUnlimited = $rftpUnlimited = $rsqlDbUnlimited =
 	$rsqlUserUnlimited = $rtraffUnlimited = $rdiskUnlimited = false;
-
 
 	if (!$stmt->rowCount()) { // Case in reseller has not customer yet
 		return array(
@@ -73,9 +70,9 @@ function generate_reseller_users_props($resellerId)
 		list(
 			$subConsumed, $subAssigned, $alsConsumed, $alsAssigned, $mailConsumed, $mailAssigned, $ftpConsumed,
 			$ftpAssigned, $sqlDbConsumed, $sqlDbAssigned, $sqlUserConsumed, $sqlUserAssigned, $traffAssigned, $diskAssigned
-			) = shared_getCustomerProps($row['domain_id']);
+		) = shared_getCustomerProps($row['admin_id']);
 
-		list(, , , , , , $traffConsumed, $diskConsumed) = shared_getCustomerStats($row['domain_id']);
+		list(, , , , , , $traffConsumed, $diskConsumed) = shared_getCustomerStats($row['admin_id']);
 
 		$rdmnConsumed += 1;
 

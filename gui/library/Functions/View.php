@@ -149,7 +149,7 @@ function gen_def_language($tpl, $userDefinedLanguage)
  * @param  int $numberYears
  * @return void
  */
-function generateSelectListForMonthsAndYears($tpl, $fromMonth = null, $fromYear = null, $numberYears = 3)
+function generateMonthsAndYearsHtmlList($tpl, $fromMonth = null, $fromYear = null, $numberYears = 3)
 {
 	$fromMonth = intval($fromMonth);
 	$fromYear = intval($fromYear);
@@ -171,7 +171,7 @@ function generateSelectListForMonthsAndYears($tpl, $fromMonth = null, $fromYear 
 		$tpl->assign(
 			array(
 				'OPTION_SELECTED' => ($month == $fromMonth) ? $cfg['HTML_SELECTED'] : '',
-				'MONTH_VALUE' => $month
+				'MONTH_VALUE' => tohtml($month)
 			)
 		);
 
@@ -184,8 +184,8 @@ function generateSelectListForMonthsAndYears($tpl, $fromMonth = null, $fromYear 
 		$tpl->assign(
 			array(
 				'OPTION_SELECTED' => ($fromYearTwoDigit == $year) ? $cfg['HTML_SELECTED'] : '',
-				'VALUE' => $year,
-				'HUMAN_VALUE' => date('Y', mktime(0, 0, 0, 1, 1, $year))
+				'VALUE' => tohtml($year, 'htmlAttr'),
+				'HUMAN_VALUE' => tohtml(date('Y', mktime(0, 0, 0, 1, 1, $year)))
 			)
 		);
 

@@ -2,6 +2,7 @@
 <!--
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Client
- * @copyright   2010-2015 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
  -->
 
@@ -41,12 +34,10 @@
                 </overview>
             </pages>
         </general>
-
         <domains>
             <label>Domains</label>
             <uri>/client/domains_manage.php</uri>
             <class>domains</class>
-            <!--<privilege_callback name="customerHasFeature" param="domain"/>-->
             <pages>
                 <overview>
                     <label>Overview</label>
@@ -105,7 +96,6 @@
                 </php_settings>
             </pages>
         </domains>
-
         <ftp>
             <label>Ftp</label>
             <uri>/client/ftp_accounts.php</uri>
@@ -137,7 +127,6 @@
                 </file_manager>
             </pages>
         </ftp>
-
         <databases>
             <label>Databases</label>
             <uri>/client/sql_manage.php</uri>
@@ -175,7 +164,6 @@
                 </phpmyadmin>
             </pages>
         </databases>
-
         <mail>
             <label>Mail</label>
             <uri>/client/mail_accounts.php</uri>
@@ -255,15 +243,14 @@
                 </external_mail_servers>
             </pages>
         </mail>
-
         <statistics>
             <label>Statistics</label>
-            <uri>/client/domain_statistics.php</uri>
+            <uri>/client/traffic_statistics.php</uri>
             <class>statistics</class>
             <pages>
                 <overview>
-                    <label>Overview</label>
-                    <uri>/client/domain_statistics.php</uri>
+                    <label>Traffic statistics</label>
+                    <uri>/client/traffic_statistics.php</uri>
                     <title_class>stats</title_class>
                 </overview>
                 <webstats>
@@ -274,7 +261,6 @@
                 </webstats>
             </pages>
         </statistics>
-
         <webtools>
             <label>Webtools</label>
             <uri>/client/webtools.php</uri>
@@ -391,7 +377,6 @@
                 </webstats>
             </pages>
         </webtools>
-
         <support>
             <label>Support</label>
             <uri>{SUPPORT_SYSTEM_PATH}</uri>
@@ -422,7 +407,6 @@
                 </view_ticket>
             </pages>
         </support>
-
         <profile>
             <label>Profile</label>
             <uri>/client/profile.php</uri>

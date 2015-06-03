@@ -1,5 +1,5 @@
 
-<form name="domain_statistics_frm" method="post" action="domain_statistics.php">
+<form name="user_statistics_details" method="post" action="user_statistics_details.php?user_id={USER_ID}">
 	<label for="month">{TR_MONTH}</label>
 	<select id="month" name="month">
 		<!-- BDP: month_list -->
@@ -12,12 +12,9 @@
 		<option value="{VALUE}" {OPTION_SELECTED}>{HUMAN_VALUE}</option>
 		<!-- EDP: year_list -->
 	</select>
-	<input name="Submit" type="submit" value="{TR_SHOW}"/>
-	<input name="uaction" type="hidden" value="show_traff"/>
-	<input type="hidden" name="domain_id" value="{DOMAIN_ID}"/>
+	<input name="submit" type="submit" value="{TR_SHOW}"/>
 </form>
-
-<!-- BDP: domain_statistics_block -->
+<!-- BDP: user_statistics_details_block -->
 <table>
 	<thead>
 	<tr>
@@ -52,4 +49,4 @@
 	<!-- EDP: traffic_table_item -->
 	</tbody>
 </table>
-<!-- EDP: domain_statistics_block -->
+<!-- EDP: user_statistics_details_block -->

@@ -73,14 +73,13 @@ function generate_reseller_user_props($resellerId)
 
 	while($data = $stmt->fetchRow()) {
 		$adminId = $data['admin_id'];
-		$domainId = $data['domain_id'];
 
 		list(
 			$subCurrent, $subMax, $alsCurrent, $alsMax, $mailCurrent, $mailMax, $ftpCurrent, $ftpMax, $sqlDbCurrent,
 			$sqlDbMax, $sqlUserCurrent, $sqlUserMax, $traffMax, $diskMax
 		) = get_user_props($adminId);
 
-		list(, , , , , , $traffCurrent, $diskCurrent) = shared_getCustomerStats($domainId);
+		list(, , , , , , $traffCurrent, $diskCurrent) = shared_getCustomerStats($adminId);
 
 		$rdmnCurrent += 1;
 
@@ -221,14 +220,14 @@ function get_user_trafficAndDiskUsage($customerId)
 		}
 
 		return array(
-			$data['web'], //
+			$data['web'],
 			$data['ftp'],
 			$data['smtp'],
 			$data['pop'],
 			$data['total'],
 			$diskspaceUsage, // Total diskspace usage
 			$monthlyTrafficLimit, // Monthly traffic limit
-			$diskspaceLimit,		// diskspace limit
+			$diskspaceLimit, // diskspace limit
 			$maxMonthlyTraffic
 		);
 	}
@@ -714,15 +713,15 @@ function update_reseller_c_props($resellerId)
 					IFNULL(SUM(IF(domain_sqlu_limit >= 0, domain_sqlu_limit, 0)), 0) AS sqluLimit,
 					IFNULL(SUM(domain_disk_limit), 0) AS diskLimit,
 					IFNULL(SUM(domain_traffic_limit), 0) AS trafficLimit,
-    				created_by
-    			FROM
-        			domain
-    			INNER JOIN
-        			admin ON(admin_id = domain_admin_id)
-    			GROUP BY created_by
+					created_by
+				FROM
+					domain
+				INNER JOIN
+					admin ON(admin_id = domain_admin_id)
+				GROUP BY created_by
 			) t2 ON t1.reseller_id = t2.created_by
 			SET
-    			t1.current_dmn_cnt = t2.dmnCount,
+				t1.current_dmn_cnt = t2.dmnCount,
 				t1.current_sub_cnt = t2.subCount,
 				t1.current_als_cnt = t2.alsLimit,
 				t1.current_mail_cnt = t2.mailLimit,
@@ -732,8 +731,8 @@ function update_reseller_c_props($resellerId)
 				t1.current_disk_amnt = t2.diskLimit,
 				t1.current_traff_amnt = t2.trafficLimit
 			WHERE
-    			t1.reseller_id = ?
-    	',
+				t1.reseller_id = ?
+		',
 		$resellerId
 	);
 }
@@ -741,8 +740,6 @@ function update_reseller_c_props($resellerId)
 /**
  * Convert datepicker date to Unix-Timestamp
  *
- * @author Peter Ziergoebel <info@fisa4.de>
- * @since 1.0.0 (i-MSCP)
  * @param string $time A date/time string
  * @return mixed
  */

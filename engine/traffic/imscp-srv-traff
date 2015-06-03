@@ -20,7 +20,7 @@
 use strict;
 use warnings;
 use FindBin;
-use lib "$FindBin::Bin/../PerlLib";
+use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;
@@ -29,22 +29,6 @@ use iMSCP::Getopt;
 use File::Basename;
 
 $ENV{'LANG'} = 'C.UTF-8';
-
-newDebug('imscp-srv-traff.log');
-
-# Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
-
-Script which collects i-MSCP server' traffic data.
-
-OPTIONS:
- -v,    --verbose       Enable verbose mode.},
- 'verbose|v' => sub { setVerbose(@_); }
-);
-
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock('/tmp/imscp-srv-traff.lock', 'nowait');
-$bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 
 sub run
 {
@@ -72,7 +56,7 @@ sub run
 	$timestamp -= ($timestamp % 1800);
 
 	my $qrs = iMSCP::Database->factory()->doQuery(
-		'dummy',
+		'd',
 		'
 			INSERT INTO server_traffic (
 				traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
@@ -89,7 +73,6 @@ sub run
 	}
 
 	# Reset traffic data for next run
-
 	for(keys %hash) {
 		my $rs = execute("iptables -Z $_", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
@@ -122,6 +105,22 @@ sub _parseTrafficData($)
 
 	($smtp, $po, $http, $all);
 }
+
+newDebug('imscp-srv-traff.log');
+
+# Parse command line options
+iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+
+Script which collects i-MSCP server' traffic data.
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+ 'verbose|v' => sub { setVerbose(@_); }
+);
+
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+exit unless $bootstrapper->lock('/tmp/imscp-srv-traff.lock', 'nowait');
+$bootstrapper->boot({ norequirements => 'yes', nolock => 'yes', config_readonly => 'yes' });
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-srv-traff.lock');

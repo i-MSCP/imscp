@@ -2,6 +2,7 @@
 <!--
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Admin
- * @copyright   2010-2015 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
  -->
 
@@ -38,7 +31,6 @@
                     <label>Overview</label>
                     <uri>/admin/index.php</uri>
                     <title_class>general</title_class>
-
                 </overview>
                 <server_status>
                     <label>Services status</label>
@@ -52,7 +44,6 @@
                 </admin_log>
             </pages>
         </general>
-
         <users>
             <label>Users</label>
             <uri>/admin/manage_users.php</uri>
@@ -106,14 +97,14 @@
                     <title_class>user_green</title_class>
                 </add_reseller>
                 <resellers_assignment>
-                    <label>Resellers assignment</label>
+                    <label>Reseller assignments</label>
                     <uri>/admin/manage_reseller_owners.php</uri>
                     <title_class>users2</title_class>
                     <privilege_callback name="systemHasManyAdmins"/>
                     <privilege_callback name="systemHasResellers"/>
                 </resellers_assignment>
                 <customers_assignment>
-                    <label>Customers assignment</label>
+                    <label>Customer assignments</label>
                     <uri>/admin/manage_reseller_users.php</uri>
                     <title_class>users2</title_class>
                     <privilege_callback name="systemHasResellers" param="2"/>
@@ -131,7 +122,6 @@
                 </sessions_management>
             </pages>
         </users>
-
         <hosting_plans>
             <label>Hosting plans</label>
             <uri>/admin/hosting_plan.php</uri>
@@ -157,7 +147,6 @@
                 </add_hosting_plan>
             </pages>
         </hosting_plans>
-
         <system_tools>
             <label>System tools</label>
             <uri>/admin/system_info.php</uri>
@@ -196,7 +185,6 @@
                 </rootkits_log>
             </pages>
         </system_tools>
-
         <statistics>
             <label>Statistics</label>
             <uri>/admin/server_statistic.php</uri>
@@ -222,19 +210,18 @@
                     <privilege_callback name="systemHasResellers"/>
                     <pages>
                         <reseller_user_statistics_link>
-                            <label>Customer statistics</label>
+                            <label>User statistics</label>
                             <uri>/admin/reseller_user_statistics.php</uri>
                             <visible>0</visible>
                             <title_class>stats</title_class>
                             <pages>
-                                <domain_statistics_link>
-                                    <label>Domain statistics</label>
-                                    <uri>/admin/domain_statistics.php</uri>
+                                <reseller_user_statistics_detail_link>
+                                    <label>{USERNAME} user statistics</label>
+                                    <uri>/admin/reseller_user_statistics_details.php</uri>
                                     <visible>0</visible>
                                     <title_class>stats</title_class>
-                                </domain_statistics_link>
+                                </reseller_user_statistics_detail_link>
                             </pages>
-                            <privilege_callback name="systemHasCustomers"/>
                         </reseller_user_statistics_link>
                     </pages>
                 </resellers_statistics>
@@ -246,7 +233,6 @@
                 </ip_usage>
             </pages>
         </statistics>
-
         <support>
             <label>Support</label>
             <uri>/admin/ticket_system.php</uri>
@@ -271,7 +257,6 @@
                 </view_ticket>
             </pages>
         </support>
-
         <settings>
             <label>Settings</label>
             <uri>/admin/settings.php</uri>
@@ -343,7 +328,6 @@
                 </plugins_management>
             </pages>
         </settings>
-
         <profile>
             <label>Profile</label>
             <uri>/admin/profile.php</uri>

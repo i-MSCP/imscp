@@ -1,21 +1,8 @@
 
-<script type="text/javascript">
-	$(document).ready(function () {
-		$('.datatable').dataTable(
-			{
-				oLanguage: {DATATABLE_TRANSLATIONS},
-				bStateSave: true,
-				"pagingType": "simple"
-			}
-		);
-	});
-</script>
-
-<!-- BDP: domain_statistics_entries_block -->
-<table class="datatable" style="text-align: center;">
+<table class="datatable">
 	<thead>
 	<tr>
-		<th>{TR_DOMAIN_NAME}</th>
+		<th>{TR_USERNAME}</th>
 		<th>{TR_TRAFF}</th>
 		<th>{TR_DISK}</th>
 		<th>{TR_WEB}</th>
@@ -32,7 +19,7 @@
 	</thead>
 	<tfoot>
 	<tr>
-		<td>{TR_DOMAIN_NAME}</td>
+		<td>{TR_USERNAME}</td>
 		<td>{TR_TRAFF}</td>
 		<td>{TR_DISK}</td>
 		<td>{TR_WEB}</td>
@@ -48,11 +35,10 @@
 	</tr>
 	</tfoot>
 	<tbody>
-	<!-- BDP: domain_statistics_entry_block -->
+	<!-- BDP: reseller_user_statistics_block -->
 	<tr>
 		<td>
-			<a href="domain_statistics.php?domain_id={DOMAIN_ID}"
-			   class="icon i_domain_icon" title="{TR_DOMAIN_TOOLTIP}">{DOMAIN_NAME}</a>
+			<a href="reseller_user_statistics_detail.php?user_id={USER_ID}" class="icon i_domain_icon" title="{TR_DETAILED_STATS_TOOLTIP}">{USER_NAME}</a>
 		</td>
 		<td>
 			<div class="graph">
@@ -79,7 +65,16 @@
 		<td>{SQL_DB_MSG}</td>
 		<td>{SQL_USER_MSG}</td>
 	</tr>
-	<!-- EDP: domain_statistics_entry_block -->
+	<!-- EDP: reseller_user_statistics_block -->
 	</tbody>
 </table>
-<!-- EDP: domain_statistics_entries_block -->
+
+<script>
+	$(function () {
+		$('.datatable').dataTable({
+			oLanguage: imscp_i18n.core.dataTable,
+			bStateSave: true,
+			"pagingType": "simple"
+		});
+	});
+</script>

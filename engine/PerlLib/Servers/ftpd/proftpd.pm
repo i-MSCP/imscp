@@ -278,7 +278,7 @@ sub getTraffic
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/" . basename($trafficDataSrc);
 
 		# Creating working file from current state of data source
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc)->moveFile($wrkLogFile );
+		my $rs = iMSCP::File->new( filename => $trafficDataSrc)->moveFile($wrkLogFile);
 		die(iMSCP::Debug::getLastError()) if $rs;
 
 		# Getting working file content
@@ -289,12 +289,11 @@ sub getTraffic
 		$trafficDb{$2} += $1 while($wrkLogContent =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
 	}
 
-	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
-	# in place for later processing. In such case, data already processed ( put in database ) are zeroed by the traffic
-	# processor script.
+	# Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
+	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
 	$self->{'eventManager'}->register(
 		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
-	) and die(iMSCP::Debug::getLastError());
+	);
 
 	\%trafficDb;
 }

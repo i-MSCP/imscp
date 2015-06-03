@@ -157,20 +157,17 @@ function admin_generateCustomersTable($tpl)
  */
 function check_user_data()
 {
-	$query = 'SELECT `admin_id` FROM `admin` WHERE `admin_type` = ? ORDER BY `admin_name`';
-	$stmt = exec_query($query, 'user');
+	$stmt = exec_query('SELECT admin_id FROM admin WHERE admin_type = ? ORDER BY admin_name', 'user');
 
 	$selectedUsers = '';
 
-	while (!$stmt->EOF) {
-		$adminId = $stmt->fields['admin_id'];
+	while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		$adminId = $row['admin_id'];
 		$adminIdVarname = 'admin_id_' . $adminId;
 
 		if (isset($_POST[$adminIdVarname]) && $_POST[$adminIdVarname] === 'on') {
 			$selectedUsers .= $adminId . ';';
 		}
-
-		$stmt->Movenext();
 	}
 
 	if ($selectedUsers == '') {
@@ -181,10 +178,9 @@ function check_user_data()
 		return false;
 	}
 
-	$toReseller = $_POST['dst_reseller'];
+	$toReseller = intval($_POST['dst_reseller']);
 
-	$query = 'SELECT `reseller_ips` FROM `reseller_props` WHERE `reseller_id` = ?';
-	$stmt = exec_query($query, $toReseller);
+	$stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $toReseller);
 
 	$errorsStack = '_off_';
 
@@ -205,11 +201,12 @@ function check_user_data()
 }
 
 /**
- * Update resellers limit.
+ * Update resellers limit
  *
+ * @throws iMSCP_Exception_Database
  * @param int $toReseller Reseller for which the givens customer are moved to
  * @param int $fromReseller Reseller for wich the givens customers are moved from
- * @param int[] $users List of user to move
+ * @param array $users List of user to move
  * @param array $errorsStack Error stack
  * @return bool
  */
@@ -221,73 +218,75 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 	$usersList = explode(';', $users);
 
 	for ($i = 0, $countUsersList = count($usersList) - 1; $i < $countUsersList; $i++) {
-		$query = 'SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_admin_id` = ?';
-		$stmt = exec_query($query, $usersList[$i]);
+		$stmt = exec_query('SELECT domain_name FROM domain WHERE domain_admin_id = ?', $usersList[$i]);
 
-		$domainName = $stmt->fields['domain_name'];
-		$domainId = $stmt->fields['domain_id'];
+		if($stmt->rowCount()) {
+			$domainName = $stmt->fields['domain_name'];
 
-		list(
-			$subdomainsLimit, , $domainAliasesLimit, , $mailAccountsLimit, , $ftpAccountsLimit, , $sqlDatabasesLimit, ,
-			$sqlUsersLimit, , $trafficLimit, $diskspaceLimit
-			) = shared_getCustomerProps($domainId);
-
-		calculate_reseller_dvals(
-			$toResellerProperties['current_dmn_cnt'], $toResellerProperties['max_dmn_cnt'], $src_dmn_current,
-			$fromResellerProperties['max_dmn_cnt'], 1, $errorsStack, 'Domain', $domainName);
-
-		if ($errorsStack == '_off_') {
-			calculate_reseller_dvals(
-				$toResellerProperties['current_sub_cnt'], $toResellerProperties['max_sub_cnt'],
-				$fromResellerProperties['current_sub_cnt'], $fromResellerProperties['max_sub_cnt'],
-				$subdomainsLimit, $errorsStack, 'Subdomain', $domainName
-			);
+			list(
+				$subdomainsLimit, , $domainAliasesLimit, , $mailAccountsLimit, , $ftpAccountsLimit, , $sqlDatabasesLimit, ,
+				$sqlUsersLimit, , $trafficLimit, $diskspaceLimit
+			) = shared_getCustomerProps($usersList[$i]);
 
 			calculate_reseller_dvals(
-				$toResellerProperties['current_als_cnt'], $toResellerProperties['max_als_cnt'],
-				$fromResellerProperties['current_als_cnt'], $fromResellerProperties['max_als_cnt'],
-				$domainAliasesLimit, $errorsStack, 'Alias', $domainName
-			);
+				$toResellerProperties['current_dmn_cnt'], $toResellerProperties['max_dmn_cnt'], $src_dmn_current,
+				$fromResellerProperties['max_dmn_cnt'], 1, $errorsStack, 'Domain', $domainName);
 
-			calculate_reseller_dvals(
-				$toResellerProperties['current_mail_cnt'], $toResellerProperties['max_mail_cnt'],
-				$fromResellerProperties['current_mail_cnt'], $fromResellerProperties['max_mail_cnt'],
-				$mailAccountsLimit, $errorsStack, 'Mail', $domainName
-			);
+			if ($errorsStack == '_off_') {
+				calculate_reseller_dvals(
+					$toResellerProperties['current_sub_cnt'], $toResellerProperties['max_sub_cnt'],
+					$fromResellerProperties['current_sub_cnt'], $fromResellerProperties['max_sub_cnt'],
+					$subdomainsLimit, $errorsStack, 'Subdomain', $domainName
+				);
 
-			calculate_reseller_dvals(
-				$toResellerProperties['current_ftp_cnt'], $toResellerProperties['max_ftp_cnt'],
-				$fromResellerProperties['current_ftp_cnt'], $fromResellerProperties['max_ftp_cnt'],
-				$ftpAccountsLimit, $errorsStack, 'FTP', $domainName
-			);
+				calculate_reseller_dvals(
+					$toResellerProperties['current_als_cnt'], $toResellerProperties['max_als_cnt'],
+					$fromResellerProperties['current_als_cnt'], $fromResellerProperties['max_als_cnt'],
+					$domainAliasesLimit, $errorsStack, 'Alias', $domainName
+				);
 
-			calculate_reseller_dvals(
-				$toResellerProperties['current_sql_db_cnt'], $toResellerProperties['max_sql_db_cnt'],
-				$fromResellerProperties['current_sql_db_cnt'], $fromResellerProperties['max_sql_db_cnt'],
-				$sqlDatabasesLimit, $errorsStack, 'SQL Database', $domainName
-			);
+				calculate_reseller_dvals(
+					$toResellerProperties['current_mail_cnt'], $toResellerProperties['max_mail_cnt'],
+					$fromResellerProperties['current_mail_cnt'], $fromResellerProperties['max_mail_cnt'],
+					$mailAccountsLimit, $errorsStack, 'Mail', $domainName
+				);
 
-			calculate_reseller_dvals(
-				$toResellerProperties['current_sql_user_cnt'], $toResellerProperties['max_sql_user_cnt'],
-				$fromResellerProperties['current_sql_user_cnt'], $fromResellerProperties['max_sql_user_cnt'],
-				$sqlUsersLimit, $errorsStack, 'SQL User', $domainName
-			);
+				calculate_reseller_dvals(
+					$toResellerProperties['current_ftp_cnt'], $toResellerProperties['max_ftp_cnt'],
+					$fromResellerProperties['current_ftp_cnt'], $fromResellerProperties['max_ftp_cnt'],
+					$ftpAccountsLimit, $errorsStack, 'FTP', $domainName
+				);
 
-			calculate_reseller_dvals(
-				$toResellerProperties['current_traff_amnt'], $toResellerProperties['max_traff_amnt'],
-				$fromResellerProperties['current_traff_amnt'], $fromResellerProperties['max_traff_amnt'],
-				$trafficLimit, $errorsStack, 'Traffic', $domainName
-			);
+				calculate_reseller_dvals(
+					$toResellerProperties['current_sql_db_cnt'], $toResellerProperties['max_sql_db_cnt'],
+					$fromResellerProperties['current_sql_db_cnt'], $fromResellerProperties['max_sql_db_cnt'],
+					$sqlDatabasesLimit, $errorsStack, 'SQL Database', $domainName
+				);
 
-			calculate_reseller_dvals(
-				$toResellerProperties['current_disk_amnt'], $toResellerProperties['max_disk_amnt'],
-				$fromResellerProperties['current_disk_amnt'], $fromResellerProperties['max_disk_amnt'],
-				$diskspaceLimit, $errorsStack, 'Disk', $domainName
-			);
-		}
+				calculate_reseller_dvals(
+					$toResellerProperties['current_sql_user_cnt'], $toResellerProperties['max_sql_user_cnt'],
+					$fromResellerProperties['current_sql_user_cnt'], $fromResellerProperties['max_sql_user_cnt'],
+					$sqlUsersLimit, $errorsStack, 'SQL User', $domainName
+				);
 
-		if ($errorsStack != '_off_') {
-			return false;
+				calculate_reseller_dvals(
+					$toResellerProperties['current_traff_amnt'], $toResellerProperties['max_traff_amnt'],
+					$fromResellerProperties['current_traff_amnt'], $fromResellerProperties['max_traff_amnt'],
+					$trafficLimit, $errorsStack, 'Traffic', $domainName
+				);
+
+				calculate_reseller_dvals(
+					$toResellerProperties['current_disk_amnt'], $toResellerProperties['max_disk_amnt'],
+					$fromResellerProperties['current_disk_amnt'], $fromResellerProperties['max_disk_amnt'],
+					$diskspaceLimit, $errorsStack, 'Disk', $domainName
+				);
+			}
+
+			if ($errorsStack != '_off_') {
+				return false;
+			}
+		} else {
+
 		}
 	}
 

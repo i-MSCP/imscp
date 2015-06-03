@@ -1118,7 +1118,7 @@ sub getTraffic
 
 	my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/http_traffic.db";
 
-	# Load traffic database
+	# Load traffic database (create it if doesn't exist)
 	tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nowarn => 1;
 
 	require Date::Format;
@@ -1151,12 +1151,11 @@ sub getTraffic
 
 	$db->endTransaction();
 
-	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept in
-	# place for later processing. In such case, data already processed (put in database) are zeroed by the traffic
-	# processor script.
+	# Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
+	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
 	$self->{'eventManager'}->register(
 		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
-	) and die(iMSCP::Debug::getLastError());
+	);
 
 	\%trafficDb;
 }

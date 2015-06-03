@@ -1,5 +1,5 @@
 
-<form name="domain_statistics_frm" method="post" action="domain_statistics.php">
+<form name="reseller_user_statistics_detailed" method="post" action="reseller_user_statistics_detail.php?user_id={USER_ID}">
 	<label for="month">{TR_MONTH}</label>
 	<select id="month" name="month">
 		<!-- BDP: month_list -->
@@ -13,42 +13,41 @@
 		<!-- EDP: year_list -->
 	</select>
 	<input name="Submit" type="submit" value="{TR_SHOW}"/>
-	<input name="uaction" type="hidden" value="show_traff"/>
 </form>
 
-<!-- BDP: domain_statistics_block -->
+<!-- BDP: reseller_user_statistics_detail_block -->
 <table>
 	<thead>
 	<tr>
-		<th>{TR_DATE}</th>
-		<th>{TR_WEB_TRAFF}</th>
-		<th>{TR_FTP_TRAFF}</th>
-		<th>{TR_SMTP_TRAFF}</th>
-		<th>{TR_POP_TRAFF}</th>
-		<th>{TR_SUM}</th>
+		<th>{TR_DAY}</th>
+		<th>{TR_WEB_TRAFFIC}</th>
+		<th>{TR_FTP_TRAFFIC}</th>
+		<th>{TR_SMTP_TRAFFIC}</th>
+		<th>{TR_POP3_TRAFFIC}</th>
+		<th>{TR_ALL_TRAFFIC}</th>
 	</tr>
 	</thead>
 	<tfoot>
 	<tr>
 		<td>{TR_ALL}</td>
-		<td>{WEB_ALL}</td>
-		<td>{FTP_ALL}</td>
-		<td>{SMTP_ALL}</td>
-		<td>{POP_ALL}</td>
-		<td>{SUM_ALL}</td>
+		<td>{ALL_WEB_TRAFFIC}</td>
+		<td>{ALL_FTP_TRAFFIC}</td>
+		<td>{ALL_SMTP_TRAFFIC}</td>
+		<td>{ALL_POP3_TRAFFIC}</td>
+		<td>{ALL_ALL_TRAFFIC}</td>
 	</tr>
 	</tfoot>
 	<tbody>
 	<!-- BDP: traffic_table_item -->
 	<tr>
 		<td>{DATE}</td>
-		<td>{WEB_TRAFF}</td>
-		<td>{FTP_TRAFF}</td>
-		<td>{SMTP_TRAFF}</td>
-		<td>{POP_TRAFF}</td>
-		<td>{SUM_TRAFF}</td>
+		<td>{WEB_TRAFFIC}</td>
+		<td>{FTP_TRAFFIC}</td>
+		<td>{SMTP_TRAFFIC}</td>
+		<td>{POP3_TRAFFIC}</td>
+		<td>{ALL_TRAFFIC}</td>
 	</tr>
 	<!-- EDP: traffic_table_item -->
 	</tbody>
 </table>
-<!-- EDP: domain_statistics_block -->
+<!-- EDP: reseller_user_statistics_detail_block -->

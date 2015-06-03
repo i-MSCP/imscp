@@ -53,7 +53,7 @@
 	<tbody>
 	<!-- BDP: day_server_statistics_block -->
 	<tr>
-		<td><a href="server_statistic_day.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></td>
+		<td><a href="server_statistic_day.php?{DAY_STATS_QSTRING}" class="link">{DAY}</a></td>
 		<td>{WEB_IN}</td>
 		<td>{WEB_OUT}</td>
 		<td>{SMTP_IN}</td>
