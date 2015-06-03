@@ -20,7 +20,7 @@
 /**
  * Description:
  *
- * Script which allow to import mail account into i-MSCP using a CSV file as source.
+ * Script which allow to import mail accounts into i-MSCP using a CSV file as source.
  * CSV file entries must be as follow:
  *
  * user@domain.tld,password
@@ -143,7 +143,7 @@ if (isset($argv[1])) {
 	exit(1);
 }
 
-// csv column delimiter ( default is comma )
+// csv column delimiter
 $csvDelimiter = ',';
 
 if (($handle = fopen($csvFilePath, 'r')) !== false) {
@@ -161,10 +161,10 @@ if (($handle = fopen($csvFilePath, 'r')) !== false) {
 	);
 
 	// Create i-MSCP mail accounts using entries from CSV file
-	while (($cvsEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
-		$mailAddr = trim($cvsEntry[0]);
-		$asciiMailAddr = decode_idna($mailAddr);
-		$mailPassword = trim($cvsEntry[1]);
+	while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
+		$mailAddr = trim($csvEntry[0]);
+		$asciiMailAddr = encode_idna($mailAddr);
+		$mailPassword = trim($csvEntry[1]);
 
 		try {
 			if (!chk_email($asciiMailAddr)) {
@@ -207,7 +207,6 @@ if (($handle = fopen($csvFilePath, 'r')) !== false) {
 		}
 	}
 
-	// Send request to i-MSCP daemon
 	if (send_request()) {
 		print "Request has been successfully sent to i-MSCP daemon.\n";
 	} else {
