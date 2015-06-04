@@ -262,90 +262,89 @@ sub restart
 
 sub getTraffic
 {
-	my $self = $_[0];
+	my ($self, $trafficDataSrc, $trafficDb) = @_;
 
 	my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
+	my $trafficDbPath = "$variableDataDir/po_traffic.db";
+	my $selfCall = 1;
+	my %trafficDb;
 
 	# Load traffic database
-	tie my %trafficDb, 'iMSCP::Config', fileName => "$variableDataDir/po_traffic.db", nowarn => 1;
+	unless(ref $trafficDb eq 'HASH') {
+		tie %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nowarn => 1;
+		$selfCall = 0;
+	} else {
+		%trafficDb = %{$trafficDb};
+	}
 
 	# Data source file
-	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+	$trafficDataSrc ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-	if(-f $trafficDataSrc && -s _) {
-		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
-
+	if(-f $trafficDataSrc) {
 		# We are using a small file to memorize the number of the last line that has been read and his content
 		tie my %indexDb, 'iMSCP::Config', fileName => "$variableDataDir/traffic_index.db", nowarn => 1;
 
-		$indexDb{'po_lineNo'} = 0 unless $indexDb{'po_lineNo'};
-		$indexDb{'po_lineContent'} = '' unless $indexDb{'po_lineContent'};
+		my $lastParsedLineNo = $indexDb{'po_lineNo'} || 0;
+		my $lastParsedLineContent = $indexDb{'po_lineContent'} || '';
 
-		my $lastLineNo = $indexDb{'po_lineNo'};
-		my $lastlineContent = $indexDb{'po_lineContent'};
-
-		# Creating working file from current state of upstream data source
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $wrkLogFile, { 'preserve' => 'no' } );
+		# Create a snapshot of log file to process
+		my $tpmFile1 = File::Temp->new();
+		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tpmFile1, { preserve => 'no' } );
 		die(iMSCP::Debug::getLastError()) if $rs;
 
-		tie my @content, 'Tie::File', $wrkLogFile or die("Unable to tie file $wrkLogFile: $!");
+		tie my @content, 'Tie::File', $tpmFile1 or die("Unable to tie $tpmFile1");
 
-		# Saving last line number and line date content from the current working file
-		$indexDb{'po_lineNo'} = $#content;
-		$indexDb{'po_lineContent'} = $content[$#content];
-
-		# Test for logrotation
-		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastlineContent) {
-			# No logrotation occurred. We want parse only new lines so we skip those already processed
-			(tied @content)->defer;
-			@content = @content[$lastLineNo + 1 .. $#content];
-			(tied @content)->flush;
+		unless($selfCall) {
+			# Saving last processed line number and line content
+			$indexDb{'po_lineNo'} = $#content;
+			$indexDb{'po_lineContent'} = $content[$#content];
 		}
 
-		# TODO: Parse the last rotated mail.log (i.e mail.log.1) file to cover the case where a rotation has been made.
-		# This should allow to retrieve traffic data logged between the last collect and the log rotation. Those data
-		# are currently lost because they are never collected.
+		if($content[$lastParsedLineNo] && $content[$lastParsedLineNo] eq $lastParsedLineContent) {
+			(tied @content)->defer;
+			@content = @content[$lastParsedLineNo + 1 .. $#content];
+			(tied @content)->flush;
+		} elsif(!$selfCall) {
+			debug(sprintf('Log rotation has been detected. Processing %s first...', "$trafficDataSrc.1"));
+			%trafficDb = %{$self->getTraffic("$trafficDataSrc.1", \%trafficDb)};
+			$lastParsedLineNo = 0;
+		}
 
-		my $wrkLogContent = iMSCP::File->new('filename' => $wrkLogFile)->get();
-		die(iMSCP::Debug::getLastError()) unless defined $wrkLogContent;
+		debug(sprintf('Processing lines from %s, starting at line %d', $trafficDataSrc, $lastParsedLineNo));
 
-		# Getting IMAP traffic
-		#
-		# IMAP traffic line sample (< Dovecot 1.2.1)
-		#
-		# Sep 13 20:11:27 imscp dovecot: IMAP(user@domain.tld): Disconnected: Logged out bytes=244/850
-		#
-		# IMAP traffic line sample (>= Dovecot 1.2.1)
-		#
-		# Sep 13 22:06:09 imscp dovecot: imap(user@domain.tld): Disconnected: Logged out in=244 out=858
-		#
-		$trafficDb{$1} += $2 + $3 while(
-			$wrkLogContent =~ /^.*imap\([^\@]+\@([^\)]+)\):\sDisconnected:.*(?:bytes|in)=(\d+)(?:\/|\sout=)(\d+)$/gimo
-		);
+		if(@content) {
+			untie @content;
 
-		# Getting POP traffic
-		#
-		# POP traffic Line sample
-		#
-		# Sep 13 20:14:16 imscp dovecot: POP3(user@domain.tld): Disconnected: Logged out top=1/3214, retr=0/0, del=0/1, size=27510
-		#
-		$trafficDb{$1} += $2 + $3 while(
-			$wrkLogContent =~ /^.*pop3\([^\@]+\@([^\)]+)\):\sDisconnected:.*retr=(\d+)\/(\d+).*$/gimo
-		);
+			# Read and imap/pop traffic source file (line by line)
+			while(<$tpmFile1>) {
+				# IMAP traffic (< Dovecot 1.2.1)
+				# Sep 13 20:11:27 imscp dovecot: IMAP(user@domain.tld): Disconnected: Logged out bytes=244/850
+				#
+				# IMAP traffic (>= Dovecot 1.2.1)
+				# Sep 13 22:06:09 imscp dovecot: imap(user@domain.tld): Disconnected: Logged out in=244 out=858
+				if(/^.*imap\([^\@]+\@([^\)]+)\):\sDisconnected:.*(?:bytes|in)=(\d+)(?:\/|\sout=)(\d+)$/gimo) {
+					$trafficDb{$1} += $2 + $3;
+					next;
+				}
+
+				# POP traffic
+				# Sep 13 20:14:16 imscp dovecot: POP3(user@domain.tld): Disconnected: Logged out top=1/3214, retr=0/0, del=0/1, size=27510
+				$trafficDb{$1} += $2 + $3 if /^.*pop3\([^\@]+\@([^\)]+)\):\sDisconnected:.*retr=(\d+)\/(\d+).*$/gimo;
+			}
+		} else {
+			debug(sprintf('No new content found in %s - Skipping', $trafficDataSrc));
+			untie @content;
+		}
+	} elsif(!$selfCall) {
+		debug(sprintf('Log rotation has been detected. Processing %s...', "$trafficDataSrc.1"));
+		%trafficDb = %{$self->getTraffic("$trafficDataSrc.1", \%trafficDb)};
 	}
 
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
 	$self->{'eventManager'}->register(
-		'afterVrlTraffic',
-		sub {
-			if(-f "$variableDataDir/po_traffic.db") {
-				iMSCP::File->new( filename => "$variableDataDir/po_traffic.db" )->delFile();
-			} else {
-				0;
-			}
-		}
-	);
+		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
+	) unless $selfCall;;
 
 	\%trafficDb;
 }

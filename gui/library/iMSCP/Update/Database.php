@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 206;
+	protected $lastUpdate = 207;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3250,5 +3250,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r206()
 	{
 		return $this->addColumn('plugin', 'plugin_locked', "TINYINT UNSIGNED NOT NULL DEFAULT '0'");
+	}
+
+	/**
+	 * Add unique constraint on server_traffic.traff_time column to avoid duplicate time periods
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r207()
+	{
+		return 'ALTER IGNORE TABLE server_traffic DROP INDEX traff_time, ADD UNIQUE traff_time (traff_time)';
 	}
 }

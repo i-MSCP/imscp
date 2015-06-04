@@ -15,9 +15,12 @@ BACKEND
 	Changed: Service configuration files are now lazy-loaded
 	Fixed: Any task which belongs to the custom DNS records layer must not involve HTTPD configuration change
 	Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload is sufficient
+	Fixed: Force usage of search path when executing external commands
 	Fixed: Frontend http port must be added in server traffic accounting
 	Fixed: In some contexts, configuration files which belongs to subdomains are not regenerated
-	Fixed: Force usage of search path when executing external command
+	Fixed: Last rotated log file must be processed when log rotation is detected (Servers::mta::postfix::getTraffic())
+	Fixed: Last rotated log file must be processed when log rotation is detected (Servers::po::courier::getTraffic())
+	Fixed: Last rotated log file must be processed when log rotation is detected (Servers::po::dovecot::getTraffic())
 	Fixed: Some errors are not trapped
 	Fixed: When the backend is invoked by the i-MSCP daemon, some paths are missing (iMSCP::ProgramFinder)
 
@@ -45,6 +48,7 @@ DAEMON
 DATABASE
 	Added: domain_dns_status field in domain_dns table (Custom DNS record status field)
 	Added: plugin_config_prev field in plugin table (Plugin previous configuration field)
+	Added: Unique constraint on server_traffic.traff_time column to avoid duplicate time periods
 	Fixed: Missing unique constraint for mail_users entities (added unique constraint on mail_users.mail_addr)
 
 DISTRIBUTIONS

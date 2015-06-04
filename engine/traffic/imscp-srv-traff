@@ -57,20 +57,26 @@ sub run
 	my $timestamp = time;
 	$timestamp -= ($timestamp % 1800);
 
-	my $qrs = iMSCP::Database->factory()->doQuery(
-		'd',
+	my $dbh = iMSCP::Database->factory()->getRawDb();
+	my $qrs = $dbh->do(
 		'
 			INSERT INTO server_traffic (
 				traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
 				bytes_web_in, bytes_web_out
 			) VALUES (
 				?, ?, ?, ?, ?, ?, ?, ?, ?
-			)
+			) ON DUPLICATE KEY UPDATE
+				bytes_in = bytes_in + ?, bytes_out = bytes_out + ?, bytes_mail_in = bytes_mail_in + ?,
+				bytes_mail_out = bytes_mail_out + ?, bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?,
+				bytes_web_in = bytes_web_in + ?, bytes_web_out = bytes_web_out + ?
 		',
-		$timestamp, $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
+		undef,
+		$timestamp,
+		$allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut,
+		$allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
 	);
-	unless(ref $qrs eq 'HASH') {
-		error($qrs);
+	if($dbh->err) {
+		error($dbh->errstr);
 		return 1;
 	}
 

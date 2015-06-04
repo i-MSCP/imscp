@@ -281,12 +281,10 @@ sub getTraffic
 		my $rs = iMSCP::File->new( filename => $trafficDataSrc)->moveFile($wrkLogFile);
 		die(iMSCP::Debug::getLastError()) if $rs;
 
-		# Getting working file content
-		my $wrkLogContent = iMSCP::File->new( filename => $wrkLogFile )->get();
-		die(iMSCP::Debug::getLastError()) unless defined $wrkLogContent;
-
-		# Collect traffic data
-		$trafficDb{$2} += $1 while($wrkLogContent =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
+		# Read and parse file (line by line)
+		open my $file, '<', $wrkLogFile or die("Unable to open $wrkLogFile: $!");
+		$trafficDb{$2} += $1 while(<$file> =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
+		close $file;
 	}
 
 	# Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept

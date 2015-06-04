@@ -1113,15 +1113,15 @@ sub flushData
 
  Get httpd traffic data
 
- Param string $timestamp Timestamp
  Return hash Traffic data or die on failure
 
 =cut
 
 sub getTraffic
 {
-	my ($self, $timestamp) = @_;
+	my $self = shift;
 
+	my $timestamp = time();
 	my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/http_traffic.db";
 
 	# Load traffic database
@@ -1133,19 +1133,18 @@ sub getTraffic
 
 	my $db = iMSCP::Database->factory();
 	my $dbh = $db->startTransaction();
-	my $sth = $dbh->prepare('SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE');
 
-	($sth && $sth->execute($ldate)) or die(sprintf("Couldn't execute prepared statement: %s",$dbh->errstr));
+	eval {
+		# Collect traffic data
+		my $sth = $dbh->prepare('SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE');
+		$sth->execute($ldate);
+		$trafficDb{$_->{'vhost'}} += $_->{'bytes'} while ($sth->fetchrow_hashref());
 
-	# Collect traffic data
-	while (my $row = $sth->fetchrow_hashref()) {
-		$trafficDb{$row->{'vhost'}} += $row->{'bytes'};
-	}
+		# Delete traffic data source
+		$dbh->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
 
-	# Delete traffic data source
-	$dbh->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
-
-	$dbh->commit();
+		$dbh->commit();
+	};
 
 	if($@) {
 		$dbh->rollback();

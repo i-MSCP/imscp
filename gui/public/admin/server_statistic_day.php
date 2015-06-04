@@ -80,6 +80,8 @@ function generatePage($tpl, $year, $month, $day)
 			$all[5] += $row['spbout'];
 			$all[6] += $row['sbin'];
 			$all[7] += $row['sbout'];
+
+			$tpl->parse('HOUR_LIST', '.hour_list');
 		}
 
 		$allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
@@ -148,7 +150,7 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])) {
 		'TR_ALL' => tohtml(tr('All')),
 		'MONTH' => tohtml($month),
 		'YEAR' => tohtml(date('Y', mktime(0, 0, 0, $month, $day, $year))),
-		'DAY' => tohtml($day),
+		'DAY' => tohtml($day)
 	));
 
 	generateNavigation($tpl);

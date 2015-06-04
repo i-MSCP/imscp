@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '206'),
+('DATABASE_REVISION', '207'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -559,7 +559,7 @@ CREATE TABLE IF NOT EXISTS `server_traffic` (
   `bytes_web_in` bigint(20) unsigned DEFAULT NULL,
   `bytes_web_out` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`straff_id`),
-  KEY `traff_time` (`traff_time`)
+  UNIQUE `traff_time` (`traff_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

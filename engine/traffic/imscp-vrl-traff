@@ -29,8 +29,6 @@ use iMSCP::EventManager;
 use iMSCP::Getopt;
 use File::Basename;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 sub run
 {
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeVrlTraffic');
@@ -46,12 +44,11 @@ sub run
 		my $package = "Servers::$service";
 		eval "require $package";
 		unless($@) {
-			my $instance = $package->factory();
-
-			if ($instance->can('getTraffic')) {
+			if ($package->can('getTraffic')) {
+				my $instance = $package->factory();
 				eval {
 					debug("Calling Servers::${service}::getTraffic()");
-					$trafficDb{$service} = $instance->getTraffic($timestamp);
+					$trafficDb{$service} = $instance->getTraffic();
 				};
 
 				if ($@) {
@@ -131,8 +128,8 @@ sub run
 						UPDATE
 							domain_traffic
 						SET
-							dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?,
-							dtraff_mail = dtraff_mail + ?, dtraff_pop = dtraff_pop + ?, dtraff_time = ?
+							dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?,
+							dtraff_pop = dtraff_pop + ?, dtraff_time = ?
 						WHERE
 							domain_id = ?
 						AND
@@ -155,10 +152,9 @@ sub run
 			}
 
 			if($dbh->err) {
-				error($dbh->err);
+				error($dbh->errstr);
 				$rs = 1;
 			} else {
-				# Remove data from traffic database
 				$trafficDb{'httpd'}->{$domainName} = 0;
 				$trafficDb{'ftpd'}->{$domainName} = 0;
 				$trafficDb{'mta'}->{$domainName} = 0;
@@ -167,7 +163,6 @@ sub run
 		}
 	}
 
-	# Event triggered only if no error occurred for the whole process
 	$rs ||= iMSCP::EventManager->getInstance()->trigger('afterVrlTraffic');
 
 	if($rs) {
