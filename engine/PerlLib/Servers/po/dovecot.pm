@@ -264,6 +264,8 @@ sub getTraffic
 {
 	my ($self, $trafficDataSrc, $trafficDb) = @_;
 
+	require File::Temp;
+
 	my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
 	my $trafficDbPath = "$variableDataDir/po_traffic.db";
 	my $selfCall = 1;
