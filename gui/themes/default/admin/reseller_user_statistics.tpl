@@ -38,7 +38,7 @@
 	<!-- BDP: reseller_user_statistics_block -->
 	<tr>
 		<td>
-			<a href="reseller_user_statistics_detail.php?user_id={USER_ID}" class="icon i_domain_icon" title="{TR_DETAILED_STATS_TOOLTIP}">{USER_NAME}</a>
+			<a href="reseller_user_statistics_details.php?user_id={USER_ID}" class="icon i_domain_icon" title="{TR_DETAILED_STATS_TOOLTIP}">{USER_NAME}</a>
 		</td>
 		<td>
 			<div class="graph">
