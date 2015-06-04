@@ -5,15 +5,16 @@
 # Translators:
 # 9 Beliy <9beliy@gmail.com>, 2012
 # hosterdev <rwer353453534@mail.ru>, 2011
+# Laurent Declercq <l.declercq@nuxwin.com>, 2015
 # Oleg Olegov <>, 2012
 # Vitaliy Zhukov <DragonZX@yandex.ru>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -298,7 +299,7 @@ msgstr "%s запись"
 
 #, php-format
 msgid "%s webmail"
-msgstr "%s веб-почта"
+msgstr "Веб-почта %s "
 
 #, php-format
 msgid ""
@@ -621,7 +622,7 @@ msgid "Add custom menu"
 msgstr "Добавить пользовательское меню"
 
 msgid "Add customer"
-msgstr "Добавить пользователя"
+msgstr "Добавить клиента"
 
 msgid "Add customer - Next step"
 msgstr "Добавить клиента - Следующий шаг"
@@ -687,153 +688,153 @@ msgid "Admin"
 msgstr "Администратор"
 
 msgid "Admin / General / Admin Log"
-msgstr "Админ / Основные / Лог администратора"
+msgstr "Администратор / Основное / Журнал администратора"
 
 msgid "Admin / General / Overview"
-msgstr "Админ / Основное / Обзор"
+msgstr "Администратор / Основное / Обзор"
 
 msgid "Admin / General / Services Status"
-msgstr "Админ / Основное / Статус служб"
+msgstr "Администратор / Основное / Статус служб"
 
 msgid "Admin / Hosting Plans / Add Hosting Plan"
-msgstr "Админ / Хостинг-планы / Добавить хостинг-план"
+msgstr "Администратор / Хостинг-планы / Добавить хостинг-план"
 
 msgid "Admin / Hosting Plans / Overview"
-msgstr "Админ / Хостинг-планы / Обзор"
+msgstr "Администратор / Хостинг-планы / Обзор"
 
 msgid "Admin / Hosting Plans / Overview / Edit Hosting Plan"
-msgstr "Админ / Хостинг-планы / Обзор / Изменить хостинг-план"
+msgstr "Администратор / Хостинг-планы / Обзор / Изменить хостинг-план"
 
 msgid "Admin / Profile / Account Summary"
-msgstr "Админ / Профиль / Учетная запись"
+msgstr "Администратор / Профиль / Учетная запись"
 
 msgid "Admin / Profile / Language"
-msgstr "Админ / Профиль / Язык"
+msgstr "Администратор / Профиль / Язык"
 
 msgid "Admin / Profile / Layout"
-msgstr "Админ / Профиль / Обложка"
+msgstr "Администратор / Профиль / Обложка"
 
 msgid "Admin / Profile / Password"
-msgstr "Админ / Профиль / Пароль"
+msgstr "Администратор / Профиль / Пароль"
 
 msgid "Admin / Profile / Personal Data"
-msgstr "Админ / Профиль / Персональные данные"
+msgstr "Администратор / Профиль / Персональные данные"
 
 msgid "Admin / Settings"
-msgstr "Админ / Настройки"
+msgstr "Администратор / Настройки"
 
 msgid "Admin / Settings / IP Addresses Management"
-msgstr "Админ / Настройки / Управление IP адресами"
+msgstr "Администратор / Настройки / Управление IP адресами"
 
 msgid "Admin / Settings / Languages"
-msgstr "Админ / Настройки / Языки"
+msgstr "Администратор / Настройки / Языки"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr "Админ / Настройки / Письмо восстановления пароля"
+msgstr "Администратор / Настройки / Письмо восстановления пароля"
 
 msgid "Admin / Settings / Plugin Management"
-msgstr "Админ / Настройки / Управление плагинами"
+msgstr "Администратор / Настройки / Управление плагинами"
 
 msgid "Admin / Settings / Server Traffic"
-msgstr "Админ / Настройки / Трафик сервера"
+msgstr "Администратор / Настройки / Трафик сервера"
 
 msgid "Admin / Settings / Service Ports"
-msgstr "Админ / Настройки / Порты служб"
+msgstr "Администратор / Настройки / Порты служб"
 
 msgid "Admin / Settings / Software Management"
-msgstr "Админ / Настройки / Управление ПО"
+msgstr "Администратор / Настройки / Управление ПО"
 
 msgid "Admin / Settings / Software Options"
-msgstr "Админ / Настройки / Опции ПО"
+msgstr "Администратор / Настройки / Настройки ПО"
 
 msgid "Admin / Settings / Welcome Email"
-msgstr "Админ / Настройки / Приветственное письмо"
+msgstr "Администратор / Настройки / Приветственное письмо"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr "Админ / Настройки / {TR_DYNAMIC_TITLE}"
+msgstr "Администратор / Настройки / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr "Админ / Управление ПО / ПО реселлера"
+msgstr "Администратор / Управление ПО / ПО реселлера"
 
 msgid "Admin / Statistics / IP Usage"
-msgstr "Админ / Статистика / Использование IP"
+msgstr "Администратор / Статистика / Использование IP"
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr "Админ / Статистика / Статистика реселлера"
+msgstr "Администратор / Статистика / Статистика реселлеров"
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr "Админ / Статистика / Статистика реселлера / Статистика клиента"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
+msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
-msgstr "Админ / Статистика / Статистика реселлера / Статистика клиента / Статистика домена"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
+msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
-msgstr "Админ / Статистика / Статистика сервера"
+msgstr "Администратор / Статистика / Статистика сервера"
 
 msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr "Админ / Статистика / Статистика сервера / Статистика дня"
+msgstr "Администратор / Статистика / Статистика сервера / Статистика дня"
 
 msgid "Admin / Support / Closed Tickets"
-msgstr "Админ / Поддержка / Закрытые тикеты"
+msgstr "Администратор / Служба поддержки / Закрытые тикеты"
 
 msgid "Admin / Support / View Ticket"
-msgstr "Админ / Поддержка / Просмотр тикетов"
+msgstr "Администратор / Служба поддержки / Просмотр тикетов"
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
-msgstr "Админ / Системные инструменты / Логи антируткита"
+msgstr "Администратор / Системные инструменты / Логи антируткита"
 
 msgid "Admin / System Tools / Database Update"
-msgstr "Админ / Системные инструменты / Обновление базы данных"
+msgstr "Администратор / Системные инструменты / Обновление базы данных"
 
 msgid "Admin / System Tools / Debugger"
-msgstr "Админ / Системные инструменты / Отладчик"
+msgstr "Администратор / Системные инструменты / Отладчик"
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr "Админ / Системные инструменты / Настройки техобслуживания"
+msgstr "Администратор / Системные инструменты / Настройки техобслуживания"
 
 msgid "Admin / System Tools / System Information"
-msgstr "Админ / Системные инструменты / Системная информация"
+msgstr "Администратор / Системные инструменты / Системная информация"
 
 msgid "Admin / System Tools / i-MSCP Updates"
-msgstr "Админ / Системные инструменты / Обновления"
+msgstr "Администратор / Системные инструменты / Обновления i-MSCP"
 
 msgid "Admin / User / Overview / Domain Edit"
-msgstr "Админ / Пользователи / Обзор / Редактрировать домен"
+msgstr "Администратор / Пользователи / Обзор / Редактрировать домен"
 
 msgid "Admin / Users / Add Admin"
-msgstr "Админ / Пользователи / Добавить админа"
+msgstr "Администратор / Пользователи / Добавить администратора"
 
 msgid "Admin / Users / Add Reseller"
-msgstr "Админ / Пользователи / Добавить реселлера"
+msgstr "Администратор / Пользователи / Добавить реселлера"
 
 msgid "Admin / Users / Circular"
-msgstr "Админ / Пользователи / Циркуляр"
+msgstr "Администратор / Пользователи / Почтовая рассылка"
 
 msgid "Admin / Users / Customers Assignment"
-msgstr "Админ / Пользователи / Подтверждение пользователя"
+msgstr "Администратор / Пользователи / Подтверждение клиента"
 
 msgid "Admin / Users / Edit Reseller"
-msgstr "Админ / Пользователи / Изменить реселлера"
+msgstr "Администратор / Пользователи / Изменить реселлера"
 
 msgid "Admin / Users / Overview"
-msgstr "Админ / Пользователи / Обзор"
+msgstr "Администратор / Пользователи / Обзор"
 
 msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Админ / Пользователи / Обзор / Удалить клиента"
+msgstr "Администратор / Пользователи / Обзор / Удалить клиента"
 
 msgid "Admin / Users / Overview / Domain Details"
-msgstr "Админ / Пользователи / Обзор / Детали домена"
+msgstr "Администратор / Пользователи / Обзор / Детали домена"
 
 msgid "Admin / Users / Overview / Edit Admin"
-msgstr "Админ / Пользователи / Обзор / Редактировать домен"
+msgstr "Администратор / Пользователи / Обзор / Редактировать домен"
 
 msgid "Admin / Users / Resellers Assignment"
-msgstr "Админ / Пользователи / Подтверждение реселлера"
+msgstr "Администратор / Пользователи / Подтверждение реселлера"
 
 msgid "Admin / Users / Sessions"
-msgstr "Админ / Пользователи / Сессии"
+msgstr "Администратор / Пользователи / Сессии"
 
 msgid "Admin account successfully created."
 msgstr "Учетная запись администратора успешно создана."
@@ -848,7 +849,7 @@ msgid "Admin users"
 msgstr "Администраторы"
 
 msgid "Admin/IP usage statistics"
-msgstr "Администратор/Статистика использования IP"
+msgstr "Администратор / Статистика использования IP"
 
 msgid "Administrator"
 msgstr "Администратор"
@@ -1316,7 +1317,7 @@ msgid "Circular"
 msgstr "Почтовая рассылка"
 
 msgid "Circular successfully sent."
-msgstr "Циркуляр успешно отправлен."
+msgstr "Рассылка успешно отправлена."
 
 msgid "City"
 msgstr "Город / Населенный пункт"
@@ -1447,16 +1448,16 @@ msgid "Client / Statistics"
 msgstr "Клиент / Статистика"
 
 msgid "Client / Support / Closed Tickets"
-msgstr "Клиент / Поддержка / Закрытые тикеты"
+msgstr "Клиент / Служба поддержки / Закрытые тикеты"
 
 msgid "Client / Support / New Ticket"
-msgstr "Клиент / Поддержка / Новый тикет"
+msgstr "Клиент / Служба поддержки / Новый тикет"
 
 msgid "Client / Support / Open Tickets"
-msgstr "Клиент / Поддержка / Открытые тикеты"
+msgstr "Клиент / Служба поддержки / Открытые тикеты"
 
 msgid "Client / Support / View Ticket"
-msgstr "Клиент / Поддержка / Просмотреть тикет"
+msgstr "Клиент / Служба поддержки / Просмотреть тикет"
 
 msgid "Client / Webtools / Custom Error Pages"
 msgstr "Клиент / Инструменты / Пользовательские страницы ошибок"
@@ -1641,14 +1642,14 @@ msgstr "Учетная запись клиента успешно обновле
 msgid "Customer account summary"
 msgstr "Учетная запись клиента"
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr "Потребление клиента"
 
 msgid "Customer level"
 msgstr "Уровень клиента"
-
-msgid "Customer statistics"
-msgstr "Статистика клиента"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Клиент успешно помечен для добавления."
@@ -1664,9 +1665,6 @@ msgstr "Пользователь(и) успешно перемещены."
 
 msgid "Customers"
 msgstr "Клиенты"
-
-msgid "Customers assignment"
-msgstr "Назначение клиентов"
 
 msgid "Customize error pages for your domain."
 msgstr "Выберите страницы ошибок для Вашего домена."
@@ -1738,7 +1736,7 @@ msgid "Database with comma(s) in name is not accepted."
 msgstr "Имя базы данных не должно содержать запятые."
 
 msgid "Databases"
-msgstr "База данных"
+msgstr "Базы данных"
 
 msgid "Date"
 msgstr "Дата"
@@ -1956,7 +1954,7 @@ msgid "Domain account expired."
 msgstr "Учетная запись домена истекла."
 
 msgid "Domain accounts"
-msgstr "Учтные записи домена"
+msgstr "Учётные записи домена"
 
 msgid "Domain alias"
 msgstr "Алиасы доменов"
@@ -2042,9 +2040,6 @@ msgstr "Доменное имя не может начинаться и зака
 msgid "Domain new expiration date"
 msgstr "Новая дата истечения домена."
 
-msgid "Domain not found."
-msgstr "Домен не найден."
-
 msgid "Domain overview"
 msgstr "Посмотр домена"
 
@@ -2053,9 +2048,6 @@ msgstr "Домен помечен для обновления."
 
 msgid "Domain statistics"
 msgstr "Статистика домена"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "Статистика домена - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "Статус домена не в порядке."
@@ -2168,7 +2160,7 @@ msgid "EiB"
 msgstr "Эб"
 
 msgid "Email"
-msgstr "Email"
+msgstr "E-Mail"
 
 msgid "Email account already exists."
 msgstr "Почтовый ящик уже существует."
@@ -2195,10 +2187,10 @@ msgid "Email accounts"
 msgstr "Почтовые ящики"
 
 msgid "Email accounts are hard suspended"
-msgstr "Email аккаунты приостановлены"
+msgstr "Учетные записи почты приостановлены"
 
 msgid "Email address"
-msgstr "Email алрес"
+msgstr "Email адрес"
 
 msgid "Email address with comma(s) are not accepted."
 msgstr "Почтовый адрес не должен содержать запятые."
@@ -2630,6 +2622,9 @@ msgstr "IP адрес успешно помечен для удаления."
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP адреса под контролем i-MSCP."
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr "Управление IP"
 
@@ -2660,6 +2655,9 @@ msgstr "Импорт"
 msgid "Import in local repository"
 msgstr "Импортировать"
 
+msgid "Import new language file"
+msgstr ""
+
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
 "from today."
@@ -2669,7 +2667,7 @@ msgid "In front"
 msgstr "Спереди"
 
 msgid "In maintenance mode, only administrators can login."
-msgstr "Режим техобслуживания, только администратор может войти."
+msgstr "В режим техобслуживания, только администратор сможет войти."
 
 msgid ""
 "In this page, you can configure some of the aspects of PHP's behavior. You "
@@ -2899,9 +2897,6 @@ msgstr "Фамилия не может содержать более 200 сим�
 msgid "Last reply date"
 msgstr "Дата последнего ответа"
 
-msgid "Last translator"
-msgstr "Последний переводчик"
-
 msgid "Layout"
 msgstr "Макет"
 
@@ -2994,7 +2989,7 @@ msgid "MB"
 msgstr "МБ"
 
 msgid "Mail"
-msgstr "Email"
+msgstr "Почта"
 
 msgid "Mail Log Level"
 msgstr "Уровень логирования почты"
@@ -3226,12 +3221,6 @@ msgstr "Не найдено учетных записей клиентов."
 msgid "No database update available."
 msgstr "Нет обновлений базы данных."
 
-msgid "No domain statistics to display for this reseller."
-msgstr "Нет статистики доменов для отображения этому реселлеру."
-
-msgid "No domain statistics to display."
-msgstr "Нет статистики доменов для отображения."
-
 msgid "No errors"
 msgstr "Ошибок нет"
 
@@ -3258,9 +3247,6 @@ msgstr "Не найдено учетных записей реселлеров"
 
 msgid "No reseller available to add the permissions."
 msgstr "Нет доступного реселлера для добавления прав"
-
-msgid "No reseller statistics to display."
-msgstr "Нет статистики реселлера для отображения."
 
 msgid "No reseller with activated software installer found!"
 msgstr "Не найдено реселлеров с активированным установщиком ПО"
@@ -3308,10 +3294,10 @@ msgid "None"
 msgstr "Пусто"
 
 msgid "Normal"
-msgstr "Обычная"
+msgstr "Обычный"
 
 msgid "Normal + Forward"
-msgstr "Обычная + перенаправление"
+msgstr "Обычный + перенаправление"
 
 msgid "Normal connection"
 msgstr "Нешифрованное соединение"
@@ -3425,7 +3411,7 @@ msgid "Other settings"
 msgstr "Другие настройки"
 
 msgid "Overview"
-msgstr "Предпросмотр"
+msgstr "Обзор"
 
 msgid "Owner"
 msgstr "Владелец"
@@ -3466,6 +3452,9 @@ msgstr "PHP exec() function"
 
 msgid "PHP settings"
 msgstr "Настройки PHP"
+
+msgid "POP3/IMAP"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP вх"
@@ -3513,7 +3502,7 @@ msgid "Package type"
 msgstr "Тип пакета"
 
 msgid "Package vendor HP"
-msgstr "Продавец"
+msgstr "Разработчик"
 
 msgid "Package version"
 msgstr "Версия пакета"
@@ -3795,7 +3784,7 @@ msgstr "Менеджер плагинов: Невозможно загрузит
 msgid ""
 "Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно удалить плагин %s. Плагин заблокирован другим плагином."
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -3806,7 +3795,7 @@ msgid "Plugin Manager: Unable to write the %s file for protected plugins."
 msgstr "Менеджер плагинов: Невозможно записать %s для защищенных плагинов."
 
 msgid "Plugin archive"
-msgstr "Архив плагинов"
+msgstr "Архив с плагином"
 
 #, php-format
 msgid ""
@@ -4026,7 +4015,7 @@ msgid "Reseller / Customers / Add Customer - Next Step"
 msgstr "Реселлер / Клиенты / Добавить клиента - Следующий шаг"
 
 msgid "Reseller / Customers / Circular"
-msgstr "Реселлер / Клиенты / Циркуляр"
+msgstr "Реселлер / Клиенты / Почтовая рассылка"
 
 msgid "Reseller / Customers / Domain Aliases"
 msgstr "Реселлер / Клиенты / Алиасы домена"
@@ -4091,20 +4080,20 @@ msgstr "Реселлер / Статистика / Использование IP"
 msgid "Reseller / Statistics / Overview"
 msgstr "Реселлер / Статистика / Обзор"
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
-msgstr "Реселлер / Статистика / Обзор / Статистика домена - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
+msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
-msgstr "Реселлер / Поддержка / Закрытые тикеты"
+msgstr "Реселлер / Служба поддержки / Закрытые тикеты"
 
 msgid "Reseller / Support / New Ticket"
-msgstr "Реселлер / Поддержка / Новый тикет"
+msgstr "Реселлер / Служба поддержки / Новый тикет"
 
 msgid "Reseller / Support / Open Tickets"
 msgstr "Реселлер / Служба поддержки / Открытые тикеты"
 
 msgid "Reseller / Support / View Ticket"
-msgstr "Реселлер / Поддержка / Просмотреть тикет"
+msgstr "Реселлер / Служба поддержки / Просмотреть тикет"
 
 msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
 msgstr "Реселлер / Хостинг-планы / {TR_DYNAMIC_TITLE}"
@@ -4126,6 +4115,9 @@ msgstr "Реселлерский и клиентский уровень"
 
 msgid "Reseller assignment"
 msgstr "Назначение реселлера"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr "Затраты Реселлера"
@@ -4149,7 +4141,7 @@ msgid "Reseller software list"
 msgstr "Список ПО реселлеров."
 
 msgid "Reseller statistics"
-msgstr "Статистика реселлера"
+msgstr "Статистика реселлеров"
 
 msgid "Reseller successfully added."
 msgstr "Реселлер успешно добавлен."
@@ -4174,9 +4166,6 @@ msgstr "Реселлеры"
 
 msgid "Resellers and customers"
 msgstr "Реселлеры и клиенты"
-
-msgid "Resellers assignment"
-msgstr "Назначение реселлеров"
 
 msgid "Reset"
 msgstr "Сбросить"
@@ -4416,7 +4405,7 @@ msgid "Services status"
 msgstr "Статус служб"
 
 msgid "Sessions"
-msgstr "Сессия"
+msgstr "Сессии"
 
 msgid "Set status to 'tochange'"
 msgstr "Сменить статус на \"к изменению\""
@@ -4452,11 +4441,11 @@ msgid ""
 "(Development)"
 msgstr "Показывать все ошибки, предупреждения и замечания, включая стандарты кодирования (Разработчику)"
 
-msgid "Show detailed statistics for this domain"
-msgstr "Показать детальную статистику для этого домена"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "Показать детальную статистику для этого реселлера"
+
+msgid "Show detailed statistics for this user"
+msgstr ""
 
 msgid "Show in"
 msgstr "Показать в"
@@ -4529,7 +4518,7 @@ msgid "Software not found!"
 msgstr "Пакет не найден!"
 
 msgid "Software options"
-msgstr "Управление ПО"
+msgstr "Настройки ПО"
 
 msgid "Software permissions"
 msgstr "Разрешения программного обеспечения"
@@ -4556,7 +4545,7 @@ msgid "Software was deleted."
 msgstr "Программное обеспечение было удалено"
 
 msgid "Software-Synonym"
-msgstr "Синоним ПО"
+msgstr "Название ПО"
 
 msgid "Software-Version"
 msgstr "Версия ПО"
@@ -5033,6 +5022,9 @@ msgstr "Всего ПО"
 msgid "Traffic"
 msgstr "Трафик"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "Использование трафика"
 
@@ -5386,6 +5378,9 @@ msgstr "Сессия пользователя успешно уничтожен�
 
 msgid "User session successfully killed for password change."
 msgstr "Сессия пользователя успешно завершена для смены пароля."
+
+msgid "User statistics"
+msgstr ""
 
 msgid "User successfully disconnected."
 msgstr "Пользователь успешно отсоединен."
@@ -6033,7 +6028,7 @@ msgid "i-MSCP Web software repository"
 msgstr "i-MSCP - Web-репозиторий"
 
 msgid "i-MSCP plugin store"
-msgstr "i-MSCP магазин плагинов"
+msgstr "магазин плагинов i-MSCP "
 
 msgid "i-MSCP updates"
 msgstr "Обновления i-MSCP"
@@ -6152,6 +6147,9 @@ msgstr "{ADMIN} активировал Ваш пакет ПО"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} загрузил новый пакет ПО"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>Все права защищены"

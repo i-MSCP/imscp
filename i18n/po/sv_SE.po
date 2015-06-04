@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -758,13 +758,13 @@ msgstr "Admin / Statistics / IP Usage"
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr "Admin / Statistics / Reseller Statistics"
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr "Admin / Statistics / Reseller Statistics / Customer Statistics"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
+msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
-msgstr "Admin / Statistics / Reseller Statistics / Customer Statistics / Domain Statistics"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
+msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Admin / Statistics / Server Statistics"
@@ -1638,14 +1638,14 @@ msgstr "Kundkonto uppdaterats."
 msgid "Customer account summary"
 msgstr "Kundkonto sammandrag"
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr "Customer consumption"
 
 msgid "Customer level"
 msgstr "Customer level"
-
-msgid "Customer statistics"
-msgstr "Customer statistics"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Kund framgångsrikt planerad till tillägg."
@@ -1661,9 +1661,6 @@ msgstr "Customer(s) successfully moved."
 
 msgid "Customers"
 msgstr "Kunder"
-
-msgid "Customers assignment"
-msgstr "Customers assignment"
 
 msgid "Customize error pages for your domain."
 msgstr "Anpassa fel sidor för din domän."
@@ -2039,9 +2036,6 @@ msgstr "Domännamn etiketter får inte börja eller sluta med bindestreck."
 msgid "Domain new expiration date"
 msgstr "Domän nytt utgångsdatum"
 
-msgid "Domain not found."
-msgstr "Domain hittades inte."
-
 msgid "Domain overview"
 msgstr "Domain overview"
 
@@ -2050,9 +2044,6 @@ msgstr "Domain scheduled for update."
 
 msgid "Domain statistics"
 msgstr "Domänstatistik"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "Domain statistics - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "Domain status is not ok."
@@ -2627,6 +2618,9 @@ msgstr "IP planeras för radering."
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP-adresser under kontroll av i-MSCP"
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr "IP förwaltning"
 
@@ -2656,6 +2650,9 @@ msgstr "Import"
 
 msgid "Import in local repository"
 msgstr "Importera i lokalt arkiv"
+
+msgid "Import new language file"
+msgstr ""
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2895,9 +2892,6 @@ msgstr "Last name cannot have more than 200 characters."
 
 msgid "Last reply date"
 msgstr "Sista svarsdatum"
-
-msgid "Last translator"
-msgstr "Senaste översättare"
 
 msgid "Layout"
 msgstr "Utseende"
@@ -3223,12 +3217,6 @@ msgstr "Ingen kundkonto hittats."
 msgid "No database update available."
 msgstr "No database update available."
 
-msgid "No domain statistics to display for this reseller."
-msgstr "Ingen domän statistik för denna återförsäljare."
-
-msgid "No domain statistics to display."
-msgstr "Inga domain statistik att visa."
-
 msgid "No errors"
 msgstr "No errors"
 
@@ -3255,9 +3243,6 @@ msgstr "Inga återförsäljare konton hittats."
 
 msgid "No reseller available to add the permissions."
 msgstr "No Reseller available to add the permissions."
-
-msgid "No reseller statistics to display."
-msgstr "Ingen återförsäljare statistik för att visa."
 
 msgid "No reseller with activated software installer found!"
 msgstr "No reseller with activated software installer found!"
@@ -3463,6 +3448,9 @@ msgstr "PHP exec() function"
 
 msgid "PHP settings"
 msgstr "PHP settings"
+
+msgid "POP3/IMAP"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP inåt"
@@ -3792,7 +3780,7 @@ msgstr "Plugin Manager: Det gick inte att hämta plugin %s"
 msgid ""
 "Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "Plugin Manager: Det går inte att avinstallera %s plugin. Plugin har låsts av en annan plugin."
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -4088,8 +4076,8 @@ msgstr "Reseller / Statistics / IP Usage"
 msgid "Reseller / Statistics / Overview"
 msgstr "Reseller / Statistics / Overview"
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
-msgstr "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
+msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr "Reseller / Support / Closed Tickets"
@@ -4123,6 +4111,9 @@ msgstr "Återförsäljare och kund nivåer"
 
 msgid "Reseller assignment"
 msgstr "Återförsäljare tilldelning"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr "Reseller consumption"
@@ -4171,9 +4162,6 @@ msgstr "Återförsäljare"
 
 msgid "Resellers and customers"
 msgstr "Återförsäljare och kunder"
-
-msgid "Resellers assignment"
-msgstr "Resellers assignment"
 
 msgid "Reset"
 msgstr "Återställ"
@@ -4449,11 +4437,11 @@ msgid ""
 "(Development)"
 msgstr "Visa alla fel, varningar och meddelanden, inklusive kodning (Utveckling)"
 
-msgid "Show detailed statistics for this domain"
-msgstr "Visa detalj statistik för denna domain."
-
 msgid "Show detailed statistics for this reseller"
 msgstr "Visa detalj statistik för denna återförsäljare."
+
+msgid "Show detailed statistics for this user"
+msgstr ""
 
 msgid "Show in"
 msgstr "Visa i"
@@ -5030,6 +5018,9 @@ msgstr "Total software"
 msgid "Traffic"
 msgstr "Trafik"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "Trafikanvändning"
 
@@ -5383,6 +5374,9 @@ msgstr "Användarsessionen har förstörts."
 
 msgid "User session successfully killed for password change."
 msgstr "Användare sessionen avlivas för ändring av lösenord."
+
+msgid "User statistics"
+msgstr ""
 
 msgid "User successfully disconnected."
 msgstr "Användaren frånkopplad."
@@ -6149,6 +6143,9 @@ msgstr "{ADMIN} aktiverat ditt programpaket"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{ÅTERFÖRSÄLJARE} överfört en ny programvarupaket"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team <br/> All Rights Reserved"

@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -760,13 +760,13 @@ msgstr "管理 / 狀態 / IP 使用情形"
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr "管理 / 狀態 / 經銷商狀態"
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr "管理 / 狀態 / 經銷商狀態 / 客戶狀態"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
+msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
-msgstr "管理 / 狀態 / 經銷商狀態 / 客戶狀態 / 網域狀態"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
+msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "管理 / 狀態 / 伺服器狀態"
@@ -1640,14 +1640,14 @@ msgstr "更新客戶帳號已成功"
 msgid "Customer account summary"
 msgstr "客戶帳號摘要"
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr "客戶購買"
 
 msgid "Customer level"
 msgstr "客戶級別"
-
-msgid "Customer statistics"
-msgstr "客戶狀態"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "新增客戶的排程已成功"
@@ -1663,9 +1663,6 @@ msgstr "搬移客戶已成功"
 
 msgid "Customers"
 msgstr "客戶"
-
-msgid "Customers assignment"
-msgstr "客戶分配"
 
 msgid "Customize error pages for your domain."
 msgstr "為您的網域自訂錯誤訊息頁面"
@@ -2041,9 +2038,6 @@ msgstr "網域名稱標籤不可以在開頭或結尾用連字號\"-\"。"
 msgid "Domain new expiration date"
 msgstr "網域新的到期日"
 
-msgid "Domain not found."
-msgstr "找不到網域"
-
 msgid "Domain overview"
 msgstr "網域概要"
 
@@ -2052,9 +2046,6 @@ msgstr "更新網域排程"
 
 msgid "Domain statistics"
 msgstr "網域狀態"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "網域狀態 - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "網域狀態不正常。"
@@ -2629,6 +2620,9 @@ msgstr "刪除 IP 位址的排程已成功"
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP 位址在 i-MSCP 管理之下。"
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr "IP 管理"
 
@@ -2658,6 +2652,9 @@ msgstr "匯入"
 
 msgid "Import in local repository"
 msgstr "匯入到本機軟體庫"
+
+msgid "Import new language file"
+msgstr ""
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2897,9 +2894,6 @@ msgstr "姓氏不可以超過200個字元。"
 
 msgid "Last reply date"
 msgstr "最後回覆日期"
-
-msgid "Last translator"
-msgstr "修訂翻譯者"
 
 msgid "Layout"
 msgstr "版面設定"
@@ -3225,12 +3219,6 @@ msgstr "找不到客戶帳號。"
 msgid "No database update available."
 msgstr "沒有可用的資料庫更新"
 
-msgid "No domain statistics to display for this reseller."
-msgstr "沒有這個經銷商可顯示的網域狀態。"
-
-msgid "No domain statistics to display."
-msgstr "沒有網域狀態可顯示。"
-
 msgid "No errors"
 msgstr "沒有發現任何錯誤"
 
@@ -3257,9 +3245,6 @@ msgstr "找不到經銷商帳號。"
 
 msgid "No reseller available to add the permissions."
 msgstr "沒有經銷商可以新增權限。"
-
-msgid "No reseller statistics to display."
-msgstr "沒有經銷商狀態可顯示。"
 
 msgid "No reseller with activated software installer found!"
 msgstr ""
@@ -3465,6 +3450,9 @@ msgstr "PHP exec() 功能"
 
 msgid "PHP settings"
 msgstr "PHP 設定"
+
+msgid "POP3/IMAP"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP 接收"
@@ -4090,8 +4078,8 @@ msgstr "經銷商 / 狀態 / IP 使用情形"
 msgid "Reseller / Statistics / Overview"
 msgstr "經銷商 / 狀態 / 概要"
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
-msgstr "經銷商 / 狀態 / 概要 / 網域狀態 - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
+msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr "經銷商 / 支援 / 已關閉服務單"
@@ -4125,6 +4113,9 @@ msgstr "經銷商與客戶等級"
 
 msgid "Reseller assignment"
 msgstr "經銷商分配"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr "經銷商購買"
@@ -4173,9 +4164,6 @@ msgstr "經銷商"
 
 msgid "Resellers and customers"
 msgstr "經銷商與客戶"
-
-msgid "Resellers assignment"
-msgstr "經銷商分配"
 
 msgid "Reset"
 msgstr "重設"
@@ -4451,11 +4439,11 @@ msgid ""
 "(Development)"
 msgstr "顯示所有錯誤，警告和通知並包括標準碼 (開發)"
 
-msgid "Show detailed statistics for this domain"
-msgstr "顯示此網域的詳細統計"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "顯示這個經銷商的詳細狀態"
+
+msgid "Show detailed statistics for this user"
+msgstr ""
 
 msgid "Show in"
 msgstr "顯示在"
@@ -5032,6 +5020,9 @@ msgstr "軟體數量總計"
 msgid "Traffic"
 msgstr "流量"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "流量使用量"
 
@@ -5385,6 +5376,9 @@ msgstr "使用者連線已成功中斷了。"
 
 msgid "User session successfully killed for password change."
 msgstr "在密碼變更後使用者連線已成功刪除了。"
+
+msgid "User statistics"
+msgstr ""
 
 msgid "User successfully disconnected."
 msgstr "使用者已經成功中斷連線。"
@@ -6151,6 +6145,9 @@ msgstr "{ADMIN} 已啟用您的軟體套件"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 已上傳新的軟體套件"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

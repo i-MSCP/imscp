@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,7 +52,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\n親愛なる {RESELLER}。\n\nお客様 {CUSTOMER} は、新しいドメインエイリアスの認証を得るために待っています:\n\n{ALIAS}\n\nログイン後、 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}/reseller/alias.phpで新しいエイリアスを有効にすることができます。\n\nサービスをご利用いただきありがとうございます。\n\n___________________________\ni-MSCP チーム\n"
 
 msgid ""
 "\n"
@@ -90,7 +90,7 @@ msgid ""
 "Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\n親愛なる {NAME}様,\n\n新しいアカウントが作成されています。\n\nアカウント情報：\n\nユーザ種別： {USERTYPE}\nユーザ名： {USERNAME}\nパスワード： {PASSWORD}\n\n最初にログイン時にパスワードを変更するのを忘れないでください。\n\n今、{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}でログインすることができます。\n\n統計： http://{USERNAME}/stats/ (上記と同じユーザ名とパスワード)\n\nサービスをご利用いただきありがとうございます。\n"
 
 msgid ""
 "\n"
@@ -109,7 +109,7 @@ msgid ""
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\n親愛なる {NAME}様,\n\n新しいアカウントが作成されています。\n\nアカウント情報：\n\nユーザ種別： {USERTYPE}\nユーザ名： {USERNAME}\nパスワード： {PASSWORD}\n\n最初にログイン時にパスワードを変更するのを忘れないでください。\n\n今、{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}でログインすることができます。\n\nサービスをご利用いただきありがとうございます。\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "管理者 / サポート / オープンチケット"
@@ -241,11 +241,11 @@ msgstr "%s / 無制限"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr ""
+msgstr "%s のIPアドレス  は %s 分間ブロックされます。"
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
-msgstr ""
+msgstr "%s のIPアドレス  は %s 秒間待っています。"
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -760,13 +760,13 @@ msgstr "管理者 / 統計 / IPアドレス使用"
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr "管理者 / 統計 / 代理店統計"
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr "管理者 / 統計 / 代理店統計 / 顧客統計"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
+msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
-msgstr "管理者 / 統計 / 代理店統計 / 顧客統計 / ドメイン統計"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
+msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "管理者 / 統計 / サーバ統計"
@@ -968,26 +968,26 @@ msgid "An email addresse is not valid in mail forward list."
 msgstr "Eメールアドレスは、Eメールフォワードリストでは有効ではありません。"
 
 msgid "An entry is defined twice."
-msgstr ""
+msgstr "エントリが二重に定義されています。"
 
 msgid "An error occurred during authentication."
 msgstr "認証中にエラーが発生した。"
 
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "予期しないエラーが発生しました"
 
 msgid "An unexpected error occurred."
 msgstr "予期しないエラーが発生しました。"
 
 msgid ""
 "An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
+msgstr "予期しないエラーが発生しました。詳細については、デバッガインタフェースに進んでください。"
 
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr "予期せぬエラーが発生致しました。管理者に連絡してください。"
 
 msgid "An unexpected error occurred. Please contact your reseller."
-msgstr ""
+msgstr "予期しないエラーが発生しました。代理店にお問い合わせください。"
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1071,7 +1071,7 @@ msgstr "本当に%sドメインエイリアスを削除してもよろしいで�
 msgid ""
 "Are you sure you want to delete the %s domain alias? Be aware that any "
 "related entity will be also removed."
-msgstr ""
+msgstr "%s ドメインエイリアスを削除してもよろしいですか？任意の関連エンティティも削除されますので注意してください。"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1569,7 +1569,7 @@ msgid "Current password is invalid."
 msgstr "現在のパスワードは無効です。"
 
 msgid "Custom DNS errors"
-msgstr ""
+msgstr "カスタムDNSエラー"
 
 msgid "Custom DNS record"
 msgstr "カスタムDNSレコード"
@@ -1640,14 +1640,14 @@ msgstr "顧客アカウントを更新しました。"
 msgid "Customer account summary"
 msgstr "顧客アカウント要約"
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr "顧客の消費量"
 
 msgid "Customer level"
 msgstr "顧客レベル"
-
-msgid "Customer statistics"
-msgstr "顧客の統計情報"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "顧客の追加が予定されました。"
@@ -1663,9 +1663,6 @@ msgstr "顧客が移動しました。"
 
 msgid "Customers"
 msgstr "顧客"
-
-msgid "Customers assignment"
-msgstr "顧客の割り当て"
 
 msgid "Customize error pages for your domain."
 msgstr "ドメインのエラーページをカスタマイズする。"
@@ -1888,7 +1885,7 @@ msgstr "ディレクトリ"
 
 #, php-format
 msgid "Directory %s doesn't exists."
-msgstr ""
+msgstr "ディレクトリ%sは存在しません。"
 
 msgid "Directory tree"
 msgstr "ディレクトリツリー"
@@ -2041,9 +2038,6 @@ msgstr "ドメイン名のラベルは開始またはハイフンで終了する
 msgid "Domain new expiration date"
 msgstr "ドメインの新しい有効期限"
 
-msgid "Domain not found."
-msgstr "ドメインが見つかりません。"
-
 msgid "Domain overview"
 msgstr "ドメインの概要"
 
@@ -2052,9 +2046,6 @@ msgstr "ドメインは更新が予定されました。"
 
 msgid "Domain statistics"
 msgstr "ドメイン統計"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "ドメイン統計 - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "ドメイン状態がOKではありません。"
@@ -2071,7 +2062,7 @@ msgid ""
 msgstr "ドメイン：DNSのMXレコードに、サブドメインを含むドメイン全体のメールを中継を設定します。"
 
 msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr ""
+msgstr "ドメイン：外部MXホストは、ドメイン全体のメールを中継を設定\nします。"
 
 msgid "Domains"
 msgstr "ドメイン"
@@ -2260,7 +2251,7 @@ msgstr "有効"
 
 #, php-format
 msgid "Enabled for: %s"
-msgstr ""
+msgstr "有効なため：%s"
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2375,11 +2366,11 @@ msgstr "ファイル%sが存在しないか、到達できません！"
 
 #, php-format
 msgid "File %s doesn't look like a migration file."
-msgstr ""
+msgstr "%s ファイルは、移行ファイルのようには見えません。"
 
 #, php-format
 msgid "File %s is missing in plugin archive."
-msgstr ""
+msgstr "%s ファイルは、プラグインアーカイブにはありません。"
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2629,6 +2620,9 @@ msgstr "IPアドレスの削除が予定されました。"
 msgid "IP addresses under control of i-MSCP"
 msgstr " i-MSCPの制御下にあるIPアドレス"
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr "IP管理"
 
@@ -2658,6 +2652,9 @@ msgstr "インポート"
 
 msgid "Import in local repository"
 msgstr "ローカルリポジトリのインポート"
+
+msgid "Import new language file"
+msgstr ""
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2842,7 +2839,7 @@ msgid "Invalid name."
 msgstr "名前が無効です。"
 
 msgid "Invalid payload received from GitHub"
-msgstr ""
+msgstr "無効なペイロードを、GitHubのから受け取りました"
 
 msgid "Invalid private key or passphrase."
 msgstr "秘密鍵もしくはパスフレーズに誤りがあります。"
@@ -2897,9 +2894,6 @@ msgstr "姓は、200文字以内です。"
 
 msgid "Last reply date"
 msgstr "最終返信日"
-
-msgid "Last translator"
-msgstr "最後の翻訳者"
 
 msgid "Layout"
 msgstr "レイアウト"
@@ -3118,7 +3112,7 @@ msgstr "MiB"
 
 #, php-format
 msgid "Migration file %s is not readable."
-msgstr ""
+msgstr "移行ファイル %s は読み取り可能ではありません。"
 
 msgid "Minute"
 msgstr "分"
@@ -3225,12 +3219,6 @@ msgstr "顧客アカウントが見つかりません。"
 msgid "No database update available."
 msgstr "利用可能なデータベースの更新はありません。"
 
-msgid "No domain statistics to display for this reseller."
-msgstr "この代理店にはドメイン統計情報を表示しません。"
-
-msgid "No domain statistics to display."
-msgstr "ドメインの統計情報は表示しないようにする。"
-
 msgid "No errors"
 msgstr "エラーなし"
 
@@ -3257,9 +3245,6 @@ msgstr "代理店アカウントが見つかりません。"
 
 msgid "No reseller available to add the permissions."
 msgstr "代理店が追加できる権限はありません。"
-
-msgid "No reseller statistics to display."
-msgstr "代理店の統計は表示しないようにする。"
 
 msgid "No reseller with activated software installer found!"
 msgstr "有効なソフトウェアインストーラーを持った代理店は見つけられませんでした!"
@@ -3334,7 +3319,7 @@ msgid "Not used"
 msgstr "使用しない"
 
 msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr ""
+msgstr "注意：迷惑メールフィルタやドメインオプションを混在させることはできません"
 
 msgid "Note: You cannot mix Spam filter and domain options"
 msgstr "注：スパムフィルタやドメインオプションを混在させることはできません"
@@ -3465,6 +3450,9 @@ msgstr "PHPのexec（）関数"
 
 msgid "PHP settings"
 msgstr "PHPの設定"
+
+msgid "POP3/IMAP"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP in"
@@ -3686,11 +3674,11 @@ msgstr "プラグイン%sを有効化しました。"
 
 #, php-format
 msgid "Plugin %s cannot be activated."
-msgstr ""
+msgstr "%sプラグインを有効にすることができません。"
 
 #, php-format
 msgid "Plugin %s cannot be deactivated."
-msgstr ""
+msgstr "%sプラグインを無効にすることができません。"
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
@@ -3698,19 +3686,19 @@ msgstr "プラグイン%sは削除することはできません。"
 
 #, php-format
 msgid "Plugin %s cannot be installed."
-msgstr ""
+msgstr "%sプラグインをインストールすることができません。"
 
 #, php-format
 msgid "Plugin %s cannot be protected."
-msgstr ""
+msgstr "%sプラグインを保護することができません。"
 
 #, php-format
 msgid "Plugin %s cannot be reconfigured."
-msgstr ""
+msgstr "%sプラグインを再構成することができません。"
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
-msgstr ""
+msgstr "%sプラグインをアンインストールすることができません。"
 
 #, php-format
 msgid "Plugin %s cannot be updated."
@@ -3738,7 +3726,7 @@ msgstr "プラグイン%sは保護されています。"
 
 #, php-format
 msgid "Plugin %s reconfigured."
-msgstr ""
+msgstr "%sプラグインは再構成されました。"
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
@@ -3774,7 +3762,7 @@ msgstr "プラグイン%sを更新しました。"
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
-msgstr ""
+msgstr "プラグイン管理：%sプラグインのダウングレードは許可されていません。"
 
 #, php-format
 msgid "Plugin Manager: Unable to change the %s plugin: %s"
@@ -3784,7 +3772,7 @@ msgstr "プラグインマネージャ：%sのプラグインを変更できま�
 msgid ""
 "Plugin Manager: Unable to delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
-msgstr ""
+msgstr "プラグイン管理：%sプラグインファイルを削除することができません。set-gui-permissions.plスクリプトを実行して、再度試してみてください。"
 
 #, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
@@ -3794,7 +3782,7 @@ msgstr "プラグイン管理：プラグイン%sをロードできません"
 msgid ""
 "Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "プラグイン管理：%s プラグインをアンインストールすることができません。プラグインは別のプラグインによってロックされています。"
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -3816,7 +3804,7 @@ msgid "Plugin errors"
 msgstr "プラグインエラー"
 
 msgid "Plugin has been successfully uploaded."
-msgstr ""
+msgstr "プラグインがアップロードされました。"
 
 msgid "Plugin item errors"
 msgstr "プラグイン項目エラー"
@@ -3842,7 +3830,7 @@ msgstr "プラグインは、カスタム機能によりi-MSCPの機能を拡張
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) reconfigured, and %s plugin(s) deleted."
-msgstr ""
+msgstr "プラグインのリストが更新されました：%s プラグイン(複数)を再構成、%s プラグイン(複数)を更新、%s 新しいプラグイン(複数)を発見、%s プラグイン(複数)は削除されました。"
 
 msgid "Port"
 msgstr "ポート番号"
@@ -3947,7 +3935,7 @@ msgid "Rebuild languages index"
 msgstr "言語のインデックスを再構築"
 
 msgid "Reconfiguration in progress..."
-msgstr ""
+msgstr "再構成処理中..."
 
 msgid "Record data"
 msgstr "レコードデータ"
@@ -4090,8 +4078,8 @@ msgstr "代理店 / 統計 / IPアドレス使用"
 msgid "Reseller / Statistics / Overview"
 msgstr "代理店 / 統計 / 概要"
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
-msgstr "代理店 / 統計 / 概要 / ドメイン統計 - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
+msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr "代理店 / サポート / クローズチケット"
@@ -4125,6 +4113,9 @@ msgstr "代理店と顧客レベル"
 
 msgid "Reseller assignment"
 msgstr "代理店の割り当て"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr "代理店の消費量"
@@ -4173,9 +4164,6 @@ msgstr "代理店"
 
 msgid "Resellers and customers"
 msgstr "代理店や顧客"
-
-msgid "Resellers assignment"
-msgstr "代理店の割り当て"
 
 msgid "Reset"
 msgstr "リセット"
@@ -4451,11 +4439,11 @@ msgid ""
 "(Development)"
 msgstr "コーディング標準を含む、全ての誤り、警告、および通知を表示する(開発)"
 
-msgid "Show detailed statistics for this domain"
-msgstr "このドメインの詳細な統計情報を表示する"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "この代理店の詳細な統計情報を表示する"
+
+msgid "Show detailed statistics for this user"
+msgstr ""
 
 msgid "Show in"
 msgstr "表示レベル"
@@ -4574,7 +4562,7 @@ msgstr "スパムフィルタ：サブドメインを含むドメイン全体の
 msgid ""
 "Spam Filter: Setup an external MX host to relay mail of your entire domain "
 "but retains our server as final mailhost."
-msgstr ""
+msgstr "スパムフィルタ：外部MXホスト設定は、ドメイン全体のメールを中継するが、最終的なメールホストとして当社のサーバーを保持します。"
 
 msgid "Sql user successfully deleted."
 msgstr "SQLユーザが正常に削除されました。"
@@ -4800,7 +4788,7 @@ msgstr "顧客のための %s 制限は、サービスのために制限され�
 
 #, php-format
 msgid "The %s plugin version %s is not compatible with your i-MSCP version."
-msgstr ""
+msgstr "%s のプラグインバージョン %s は、i-MSCPバージョンと互換性がありません。"
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
@@ -5032,6 +5020,9 @@ msgstr "ソフトウェア合計"
 msgid "Traffic"
 msgstr "トラフィック"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "トラフィック量"
 
@@ -5084,11 +5075,11 @@ msgstr "i-MSCP情報ファイルを削除することができません。"
 
 #, php-format
 msgid "Unable to disable the %s plugin: %s"
-msgstr ""
+msgstr "%s プラグインを無効にすることができません： %s"
 
 #, php-format
 msgid "Unable to enable the %s plugin: %s"
-msgstr ""
+msgstr "%s プラグインを有効にすることができません： %s"
 
 msgid "Unable to extract info.php file"
 msgstr "info.phpファイルを抽出することができません"
@@ -5138,11 +5129,11 @@ msgstr "Webソフトウェアリポジトリのインデックスファイルを
 
 #, php-format
 msgid "Unable to read the %s file."
-msgstr ""
+msgstr "%s ファイルを読むことができません。"
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
-msgstr ""
+msgstr "プラグインの %sファイルを読み込むことができません。ファイルの権限を確認してください"
 
 msgid "Unable to read xml file for web software."
 msgstr "Webソフトウェア用のXMLファイルを読み取ることができません。"
@@ -5233,7 +5224,7 @@ msgstr "不明のアクション： %s"
 
 #, php-format
 msgid "Unknown bruteforce detection type: %s"
-msgstr ""
+msgstr "未知のブルートフォース検出型：%s"
 
 msgid "Unknown language name."
 msgstr "不明な言語名が指定されました。"
@@ -5386,6 +5377,9 @@ msgstr "ユーザーセッションが破棄に成功。"
 msgid "User session successfully killed for password change."
 msgstr "ユーザーセッションは、パスワード変更のため切断されました。"
 
+msgid "User statistics"
+msgstr ""
+
 msgid "User successfully disconnected."
 msgstr "ユーザーが正常に切断された。"
 
@@ -5527,14 +5521,14 @@ msgstr "ワイルドカード：存在しないサブドメインのメールを
 
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr ""
+msgstr "ワイルドカード：存在しないサブドメイン宛のメールを中継する外部のMXホストを設定。"
 
 #, php-format
 msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr ""
+msgstr "'%s' と'%s 'のようなワイルドカードはユーザ名では許可されません。"
 
 msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr ""
+msgstr "'%s' 及び ’%s' などのワイルドカードは使用できません。"
 
 msgid "Wrong IP address."
 msgstr "IPアドレスに誤りがあります"
@@ -5969,7 +5963,7 @@ msgid "domain aliases"
 msgstr "ドメインエイリアス"
 
 msgid "domain data"
-msgstr ""
+msgstr "ドメインデータ"
 
 msgid "domains"
 msgstr "ドメイン"
@@ -6151,6 +6145,9 @@ msgstr "{ADMIN} ソフトウェアパッケージを有効化"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 新しいソフトウェアパッケージをアップロード"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

@@ -4,15 +4,17 @@
 # 
 # Translators:
 # Husnu APAK <husnu.apak@yandex.com.tr>, 2013
+# U. Ozan Basar <software@nano.net.tr>, 2015
 # Tango <tango-net@freenet.de>, 2011-2012
+# U. Ozan Basar <software@nano.net.tr>, 2015
 # VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/i-MSCP/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -112,40 +114,40 @@ msgid ""
 msgstr ""
 
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr "Yönetici / Destek / Açık Talepler"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
-msgstr ""
+msgstr " Kullanıcı / Web Araçları / Özel Hata Sayfaları / Özel Hata Sayfasını Düzenle"
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
-msgstr ""
+msgstr "Kaldırılmış kod uyarıları dışındaki tüm hataları göster (Yayın)"
 
 msgid " Wrong IP address."
-msgstr ""
+msgstr "Hatalı IP adresi."
 
 msgid " was deleted by {ADMIN}!"
-msgstr ""
+msgstr "{ADMIN} tarafından silindi!"
 
 #, php-format
 msgid "%1$d / %2$d"
-msgstr ""
+msgstr "%1$d / %2$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
-msgstr ""
+msgstr "%1$d / %2$d / %3$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d</b>"
-msgstr ""
+msgstr "%1$d / %2$d / %3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr ""
+msgstr "%1$d / %2$d / Limitsiz"
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
+msgstr "%1$d / %2$d"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -153,43 +155,43 @@ msgstr "%1$d%% [%2$s / %3$s]"
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s / limitsiz]"
+msgstr "%1$d%% [%2$s / Limitsiz]"
 
 #, php-format
 msgid "%1$s (%2$s)"
-msgstr ""
+msgstr "%1$s (%2$s)"
 
 #, php-format
 msgid "%1$s - (Softwaredepot)"
-msgstr ""
+msgstr "%1$s - (Yazılım deposu)"
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
-msgstr ""
+msgstr "%1$s - (Sürüm: %2$s, Dil: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
-msgstr ""
+msgstr "%1$s / %2$s / %3$s"
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr ""
+msgstr "%1$s / %2$s / Limitsiz"
 
 #, php-format
 msgid "%1$s of %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr ""
+msgstr "%1$s / <b>Limitsiz</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s , şu anda %2$s olarak giriş yaptınız"
+msgstr "%1$s, şu anda %2$s olarak giriş yaptınız"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -197,59 +199,59 @@ msgstr "%1$s%% [%2$s / %3$s]"
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s / limitsiz]"
+msgstr "%1$s%% [%2$s / Limitsiz]"
 
 #, php-format
 msgid "%1$s`s - Software"
-msgstr ""
+msgstr "%1$s`s - Yazılım"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
-msgstr ""
+msgstr "Hesap bitişine %d %s"
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / Limitsiz"
 
 #, php-format
 msgid "%d Service(s) port successfully updateds"
-msgstr ""
+msgstr "%d hizmet portu güncellendi"
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
-msgstr ""
+msgstr "%d konfigürasyon parametresi güncellendi."
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
-msgstr ""
+msgstr "%d konfigürasyon parametresi güncellendi."
 
 #, php-format
 msgid "%d of %s"
-msgstr ""
+msgstr "%d / %s"
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
+msgstr "%d mesaj çevrilmiş"
 
 #, php-format
 msgid "%s / %s of %s"
-msgstr ""
+msgstr "%s / %s / %s"
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / limitsiz"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr ""
+msgstr "%s IP adresi %s dakika engellendi."
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
-msgstr ""
+msgstr "%s IP adresi %s saniye beklemelidir."
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr ""
+msgstr "%s hesabı silindi."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -257,39 +259,39 @@ msgstr "%s bulunamadı"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s yok veya boş!"
 
 #, php-format
 msgid "%s field is empty or invalid."
-msgstr ""
+msgstr "%s alanı boş veya geçersiz."
 
 #, php-format
 msgid "%s host field is empty or invalid."
-msgstr ""
+msgstr "%s sunucu alanı boş veya geçersiz."
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
-msgstr ""
+msgstr "%s geçersiz bir i-MSCP dil dosyası."
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
+msgstr "%s subdomain olarak kullanılamaz."
 
 #, php-format
 msgid "%s is not part of domain %s."
-msgstr ""
+msgstr "%s %s domaininin bir parçası değil."
 
 #, php-format
 msgid "%s of %s"
-msgstr ""
+msgstr "%s / %s"
 
 #, php-format
 msgid "%s of unlimited"
-msgstr ""
+msgstr "%s / limitsiz"
 
 #, php-format
 msgid "%s page"
-msgstr ""
+msgstr "%s sayfa"
 
 #, php-format
 msgid "%s record"
@@ -297,98 +299,98 @@ msgstr "%s kayıt"
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
+msgstr "%s webmail"
 
 #, php-format
 msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
-msgstr ""
+msgstr "%s: Aktif kullanım (%s) bayiye atanan yeni limitten daha fazla."
 
 #, php-format
 msgid ""
 "%s: The total of items (%s) already assigned by the reseller is greater than"
 " the new limit."
-msgstr ""
+msgstr "%s: Bayinin atadığı limitler (%s) yeni limitlerden daha fazla."
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr ""
+msgstr "%s: Bayinin limitsiz kullanıcı(ları) var."
 
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers"
-msgstr ""
+msgstr "%s: Bayinin müşterileri tarafından kullanılan bir hizmeti kapatamazsınız."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
-msgstr ""
+msgstr "%s: Bayinin daha önce müşterilerine sattığı bir hizmeti kapatamazsınız."
 
 #, php-format
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
-msgstr ""
+msgstr "%s::getInfo() uyarlanmamış ve %s bulunamadı. %s eklentisindeki sorunu geliştiricilere bildirmelisiniz."
 
 #, php-format
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' sunucusu '%%value%%' eposta adresi için geçerli bir MX kaydına sahip görünmüyor."
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' sunucu adı, '%%value%%' eposta adresi için geçerli bir sunucu değil."
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr ""
+msgstr "'%%hostname%%' sunucusu erişilebilir bir alt ağda değil. '%%value%%' eposta adresine genel ağdan erişilmemeli."
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%%localPart%%' dot-atom formatı ile eşleştirilemedi."
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%%localPart%%' quoted-string formatı ile eşleştirilemedi."
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
+msgstr "'%%localPart%%' alanı '%%value%%' eposta adresi için geçerli bir alan değil."
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' geçerli bir DNS adı gibi görünüyor ama TLD bölümü ayrıştırılamadı"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%' geçerli bir DNS sunucu adı gibi görünüyor ama bilinen TLD listesi ile eşleştirilemedi."
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' geçerli bir DNS sunucu adı gibi görünüyor ama TLD '%%tld%%' şemasına uymuyor"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' bir DNS sunucu adı gibi görünüyor ama hatalı bir yerde çizgi içeriyor"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' geçerli bir DNS sunucu adı gibi görünüyor ama punycode notasyonu çözülemedi"
 
 #, php-format
 msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' geçerli bir domain gibi görünüyor ama TLD bölümü ayrıştırılamadı"
 
 #, php-format
 msgid ""
@@ -406,7 +408,7 @@ msgstr ""
 msgid ""
 "'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' bir domain gibi görünüyor ama hatalı bir yerde çizgi içeriyor"
 
 #, php-format
 msgid ""
@@ -440,7 +442,7 @@ msgstr ""
 msgid ""
 "'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
 " position"
-msgstr ""
+msgstr "'%%value%%' bir subdomain gibi görünüyor ama hatalı bir yerde çizgi içeriyor"
 
 #, php-format
 msgid ""
@@ -521,31 +523,31 @@ msgid "A new i-MSCP version is available"
 msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
-msgstr ""
+msgstr "Domain istatistiklerini Web arayüzünde görüntüleyin."
 
 msgid "Access your files through the web interface."
-msgstr ""
+msgstr "Dosyalarınıza Web arayüzünden erişin."
 
 msgid "Access your mail through the web interface."
-msgstr ""
+msgstr "Eposta mesajlarınıza Web arayüzünden erişin."
 
 msgid "Account data"
-msgstr ""
+msgstr "Hesap verisi"
 
 msgid "Account limits"
-msgstr ""
+msgstr "Hesap limitleri"
 
 msgid "Account name"
 msgstr "Hesap adı"
 
 msgid "Account overview"
-msgstr ""
+msgstr "Hesap dökümü"
 
 msgid "Account summary"
-msgstr ""
+msgstr "Hesap özeti"
 
 msgid "Account type"
-msgstr ""
+msgstr "Hesap türü"
 
 msgid "Action"
 msgstr "Eylem"
@@ -566,34 +568,34 @@ msgid "Activate this plugin"
 msgstr ""
 
 msgid "Activated"
-msgstr ""
+msgstr "Etkinleştirildi"
 
 msgid "Activated software"
-msgstr ""
+msgstr "Etkinleştirilmiş yazılım"
 
 msgid "Activation email"
-msgstr ""
+msgstr "Etkinleştirme mesajı"
 
 msgid "Activation in progress..."
-msgstr ""
+msgstr "Etkinleştiriliyor..."
 
 msgid "Activation link expire time <small>(In minutes)</small>"
-msgstr ""
+msgstr "Etkinleştirme bağlantısı geçerlilik süresi <small>(dakika)</small>"
 
 msgid "Add"
 msgstr "Ekle"
 
 msgid "Add / Edit SSL certificate"
-msgstr ""
+msgstr "SSL Sertifikası Ekle / Düzenle"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "FTP hesabı ekle"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Htaccess grubu ekle"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Htaccess kullanıcısı ekle"
 
 msgid "Add SQL database"
 msgstr "SQL veritabanı ekle"
@@ -602,37 +604,37 @@ msgid "Add SQL user"
 msgstr "SQL kullanıcısı ekle"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "SSL setifikası ekle"
 
 msgid "Add a new entry"
-msgstr ""
+msgstr "Yeni giriş ekle"
 
 msgid "Add admin"
 msgstr "Yönetici ekle"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Tümünü Yakala ekle"
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "Özel DNS kaydı ekle"
 
 msgid "Add custom menu"
-msgstr ""
+msgstr "Özel menü ekle"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Müşteri ekle"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Müşteri ekle - Sonraki adım"
 
 msgid "Add domain alias"
 msgstr "Domain alias ekle"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Eposta hesabı ekle"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "{DOMAIN_UTF8} için dış eposta sunucusu ekle"
 
 msgid "Add group"
 msgstr "Grup ekle"
@@ -641,28 +643,28 @@ msgid "Add hosting plan"
 msgstr "Hosting planı ekle"
 
 msgid "Add new IP address"
-msgstr ""
+msgstr "Yeni IP adresi ekle"
 
 msgid "Add new database"
-msgstr ""
+msgstr "Yeni veritabanı ekle"
 
 msgid "Add new entry"
-msgstr ""
+msgstr "Yeni giriş ekle"
 
 msgid "Add new protected area"
-msgstr "Yeni korumalı alan ekle"
+msgstr "Yeni korunan alan ekle"
 
 msgid "Add new service port"
-msgstr "Yeni bir servis portu ekle"
+msgstr "Yeni bir hizmet portu ekle"
 
 msgid "Add permissions"
 msgstr "Yetki ekle"
 
 msgid "Add permissions for reseller to software:"
-msgstr ""
+msgstr "Bayiye yazılım için yetki ekle"
 
 msgid "Add protected area"
-msgstr ""
+msgstr "Korunan alan ekle"
 
 msgid "Add reseller"
 msgstr "Bayi ekle"
@@ -677,7 +679,7 @@ msgid "Added by"
 msgstr "Ekleyen"
 
 msgid "Addition in progress..."
-msgstr ""
+msgstr "Ekleniyor..."
 
 msgid "Additional data"
 msgstr "Ek veri"
@@ -760,12 +762,12 @@ msgstr ""
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr ""
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
 msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
 msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
@@ -835,13 +837,13 @@ msgid "Admin / Users / Sessions"
 msgstr ""
 
 msgid "Admin account successfully created."
-msgstr ""
+msgstr "Yönetici hesabı oluşturuldu."
 
 msgid "Admin log"
 msgstr "Yönetici logları"
 
 msgid "Admin not available"
-msgstr ""
+msgstr "Yönetici mevcut değil"
 
 msgid "Admin users"
 msgstr "Yönetici kullanıcılar"
@@ -853,16 +855,16 @@ msgid "Administrator"
 msgstr "Yönetici"
 
 msgid "Administrator and Reseller levels"
-msgstr ""
+msgstr "Yönetici ve Bayi seviyeleri"
 
 msgid "Administrator and customer"
-msgstr ""
+msgstr "Yönetici ve müşteri"
 
 msgid "Administrator and customer levels"
-msgstr ""
+msgstr "Yönetici ve müşteri seviyeleri"
 
 msgid "Administrator and reseller"
-msgstr ""
+msgstr "Yönetici ve bayi"
 
 msgid "Administrator level"
 msgstr "Yönetici seviyesi"
@@ -874,60 +876,60 @@ msgid "Administrators"
 msgstr "Yöneticiler"
 
 msgid "Administrators and customers"
-msgstr ""
+msgstr "Yöneticiler ve müşteriler"
 
 msgid "Administrators and resellers"
-msgstr ""
+msgstr "Yöneticiler ve bayiler"
 
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
 "/>Refresh your site to see the new status!"
-msgstr ""
+msgstr "Paketi yükledikten sonra sisteme kurulacaktır.<br />Yeni durumu görmek için sitenizi Tazeleyin!"
 
 msgid "Alias forward"
-msgstr ""
+msgstr "Alias yönlendir"
 
 msgid "Alias mail"
-msgstr ""
+msgstr "Alias epost"
 
 msgid "Alias subdomain forward"
-msgstr ""
+msgstr "Alias subdomain yönlendir"
 
 msgid "Alias subdomain mail"
-msgstr ""
+msgstr "Alias subdomain epost"
 
 msgid "Aliases"
 msgstr "Aliaslar"
 
 msgid "All"
-msgstr "Tümü"
+msgstr "Sınırsız"
 
 msgid "All closed tickets were successfully deleted."
-msgstr ""
+msgstr "Tüm kapatılmış talepler silindi."
 
 msgid "All fields are required."
 msgstr "Tüm alanlar gereklidir."
 
 msgid "All fields seem to be valid."
-msgstr ""
+msgstr "Tüm alanlar geçerli görünüyor."
 
 msgid "All in"
 msgstr "Tüm gelenler"
 
 msgid "All levels"
-msgstr ""
+msgstr "Tüm seviyeler"
 
 msgid "All open tickets were successfully deleted."
-msgstr ""
+msgstr "Tüm açık talepler silindi."
 
 msgid "All out"
 msgstr "Tüm gidenler"
 
 msgid "All reseller"
-msgstr ""
+msgstr "Tüm bayiler"
 
 msgid "All traffic"
-msgstr "Tüm trafik"
+msgstr "Tüm Trafik"
 
 msgid "All users"
 msgstr "Tüm kullanıcılar"
@@ -937,93 +939,93 @@ msgstr ""
 
 msgid ""
 "Allows to forward any request made to this domain alias to a specific URL."
-msgstr ""
+msgstr "Domain aliasına gelen tüm istekleri spesifik bir URL'ye yönlendirmeye izin verir."
 
 msgid ""
 "Allows to forward any request made to this domain alias to a specific URL. "
 "Be aware that when this option is in use, no Web folder is created for the "
 "domain alias."
-msgstr ""
+msgstr "Domain aliasına gelen tüm istekleri spesifik bir URL'ye yönlendirmeye izin verir. Seçenek kullanıldığında domain aliası için Web dizini oluşturulmaz."
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
-msgstr ""
+msgstr "Subdomaine gelen tüm istekleri spesifik bir URL'ye yönlendirmeye izin verir."
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL. Be "
 "aware that when this option is in use, no Web folder is created for the "
 "subdomain."
-msgstr ""
+msgstr "Subdomaine gelen tüm istekleri spesifik bir URL'ye yönlendirmeye izin verir. Seçenek kullanıldığında subdomain için Web dizini oluşturulmaz."
 
 msgid "Allows to share the mount point of another domain."
-msgstr ""
+msgstr "Bağlantı noktasını farklı bir domain ile paylaşmaya izin verir."
 
 msgid "Already in use"
-msgstr "Tamam"
+msgstr "Zaten kullanımda"
 
 msgid "Alternative URL to reach your website"
-msgstr ""
+msgstr "Alternatif URL"
 
 msgid "An email addresse is not valid in mail forward list."
-msgstr ""
+msgstr "Eposta yönlendirme listesindeki bir adres geçerli değil."
 
 msgid "An entry is defined twice."
-msgstr ""
+msgstr "Bir giriş iki kere tanımlanmış."
 
 msgid "An error occurred during authentication."
-msgstr ""
+msgstr "Doğrulama sırasında hata oluştu."
 
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "Beklenmeyen bir hata oluştu"
 
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Beklenmeyen bir hata oluştu."
 
 msgid ""
 "An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
+msgstr "Beklenmeyen bir hata oluştu. Detaylar için hata ayıklama arayüzüne bakın."
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr ""
+msgstr "Beklenmeyen bir hata oluştu. Yöneticiniz ile görüşün."
 
 msgid "An unexpected error occurred. Please contact your reseller."
-msgstr ""
+msgstr "Beklenmeyen bir hata oluştu. Bayiniz ile görüşün."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
-msgstr ""
+msgstr "Beklenmeyen bir hata oluştu: %s"
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
-msgstr ""
+msgstr "Dosya yükleme sırasında beklenmeyen bir hata oluştu: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Anti-Rootkit Kayıtları"
 
 msgid "Any"
-msgstr ""
+msgstr "Herhangi"
 
 msgid "Application installer"
-msgstr ""
+msgstr "Uygulama kurucusu"
 
 msgid "Apply"
-msgstr "Tamam"
+msgstr "Uygula"
 
 msgid "Apply changes"
 msgstr "Değişiklikleri kaydet"
 
 msgid "Are you sure to install this package from the webdepot?"
-msgstr ""
+msgstr "Web deposundan paketi kurmak istediğinize emin misiniz?"
 
 msgid "Are you sure to install this package?"
-msgstr ""
+msgstr "Paketi kurmak istediğinize min misiniz?"
 
 msgid "Are you sure to remove the permissions ?"
-msgstr ""
+msgstr "Yetkileri kaldırmak istediğinize emin misiniz?"
 
 #, php-format
 msgid "Are you sure you want delete the %s SQL user?"
-msgstr ""
+msgstr "%s SQL kullanıcısını silmek istediğinize emin misiniz?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Bu paketi etkinleştirmek istediğinize emin misiniz?"
@@ -1032,11 +1034,11 @@ msgstr "Bu paketi etkinleştirmek istediğinize emin misiniz?"
 msgid ""
 "Are you sure you want to deactivate the external mail server(s) for the '%s'"
 " domain?"
-msgstr ""
+msgstr "%s domaini için dış eposta sunucusunu devre dışı bırakmak istediğinize emin misiniz?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr "%s servis portunu silmek istediğinize emin misiniz?"
+msgstr "%s hizmet portunu silmek istediğinize emin misiniz?"
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
@@ -1046,14 +1048,14 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
 msgid "Are you sure you want to delete all selected items?"
-msgstr ""
+msgstr "Tüm seçilileri silmek istediğinizden emin misiniz?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
-msgstr ""
+msgstr "%s FTP kullanıcısını silmek istediğinize emin misiniz?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
@@ -1109,55 +1111,55 @@ msgid "Are you sure you want to restore the backup?"
 msgstr "Yedekleri yüklemek istediğinize emin misiniz?"
 
 msgid "Area name"
-msgstr "Alan adı"
+msgstr "Korunan alan adı"
 
 msgid "Assign"
 msgstr "Atama"
 
 msgid "Assign existing SQL user"
-msgstr ""
+msgstr "Varolan SQL kullanıcısını ata"
 
 msgid "Assign group"
-msgstr ""
+msgstr "Grup ata"
 
 msgid "At first you must create a database which have at least one SQL user."
-msgstr ""
+msgstr "Öncelikle kullanıcı hesabı olan bir veritabanı oluşturmalısınız."
 
 msgid "At least one intermediate certificate is invalid or missing."
-msgstr ""
+msgstr "Ara sertifika eksik veya geçersiz."
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Otomatik (Tarayıcı dili)"
 
 msgid "Auto email template data updated!"
 msgstr "Otomatik eposta görünüm verisi kaydedildi!"
 
 msgid "Auto responder"
-msgstr ""
+msgstr "Otomatik cevaplayıcı"
 
 msgid "Auto-responder message cannot be empty."
-msgstr ""
+msgstr "Oto-cevaplayıcı mesajı boş olamaz."
 
 msgid "Auto-responder successfully scheduled for activation."
-msgstr ""
+msgstr "Otomatik cevaplayıcı aktivasyon için işleme alındı."
 
 msgid "Auto-responder successfully scheduled for deactivation."
-msgstr ""
+msgstr "Otomatik cevaplayıcı durdurulmak için işleme alındı."
 
 msgid "Auto-responder successfully scheduled for update."
-msgstr ""
+msgstr "Otomatik cevaplayıcı güncellenmek için işleme alındı."
 
 msgid "Available"
-msgstr ""
+msgstr "Mevcut"
 
 msgid "Available software"
-msgstr ""
+msgstr "Mevcut yazılım"
 
 msgid "Awaiting activation"
-msgstr ""
+msgstr "Etkinleştirme bekleniyor"
 
 msgid "Awaiting for approval"
-msgstr ""
+msgstr "Onay bekleniyor"
 
 msgid "B"
 msgstr ""
@@ -1169,19 +1171,19 @@ msgid "Backup"
 msgstr "Yedek"
 
 msgid "Backup and restore settings."
-msgstr ""
+msgstr "Yedekleme ve geri yükleme ayarları"
 
 msgid "Backup has been successfully scheduled for restoration."
-msgstr ""
+msgstr "Yedek yüklenmek için işleme alındı."
 
 msgid "Bad password."
-msgstr ""
+msgstr "Geçersiz şifre"
 
 msgid "Bad request."
-msgstr ""
+msgstr "Geçersiz istek."
 
 msgid "Behind"
-msgstr ""
+msgstr "arkasına"
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1194,7 +1196,7 @@ msgid "Blocktime <small>(in minutes)</small>"
 msgstr ""
 
 msgid "Body"
-msgstr ""
+msgstr "İçerik"
 
 msgid "Body is missing."
 msgstr ""
@@ -1218,13 +1220,13 @@ msgid "CGI"
 msgstr ""
 
 msgid "CNAME field is empty or invalid."
-msgstr ""
+msgstr "CNAME alanı boş veya geçersiz."
 
 msgid "CPU Information"
-msgstr ""
+msgstr "CPU Bilgisi"
 
 msgid "Cache"
-msgstr ""
+msgstr "Önbellek"
 
 #, php-format
 msgid "Can edit the PHP %s directive"
@@ -1245,22 +1247,22 @@ msgid "Canonical name"
 msgstr "Kanonik isim"
 
 msgid "Catch all"
-msgstr "TümünüYakala"
+msgstr "Tümünü Yakala"
 
 msgid "Catch all successfully scheduled for addition."
-msgstr ""
+msgstr "Tümünü yakala hesabı eklenmek için işleme alındı."
 
 msgid "Catch all successfully scheduled for deletion."
-msgstr ""
+msgstr "Tümünü yakala hesabı silinmek için işleme alındı."
 
 msgid "Catchall"
-msgstr ""
+msgstr "Tümünü Yakala"
 
 msgid "Certificate"
-msgstr ""
+msgstr "Sertifika"
 
 msgid "Certificate data"
-msgstr ""
+msgstr "Sertifika bilgileri"
 
 msgid "Change"
 msgstr "Değiştir"
@@ -1300,19 +1302,19 @@ msgstr "Dizin seç"
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
-msgstr ""
+msgstr "Dosya seç (Max: %1$d MiB)"
 
 msgid "Choose hosting plan"
 msgstr "Hosting planı seç"
 
 msgid "Choose layout color"
-msgstr ""
+msgstr "Görünüm rengini seçin"
 
 msgid "Choose your language"
-msgstr ""
+msgstr "Dil seç"
 
 msgid "Circular"
-msgstr "Döngüsel"
+msgstr "Genel bilgilerndirme mesajı"
 
 msgid "Circular successfully sent."
 msgstr ""
@@ -1321,23 +1323,23 @@ msgid "City"
 msgstr "Şehir"
 
 msgid "Class"
-msgstr "Aliaslar"
+msgstr "Sınıflar"
 
 msgid "Clear log"
 msgstr "Kayıtları temizle"
 
 msgid "Click here for more details"
-msgstr ""
+msgstr "Detaylar için tıklayın"
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
-msgstr "Yükle buttonuna tıklayınız ve sistem en son alınan günlük yedeği yükleyecek"
+msgstr "Yükle düğmesine tıkladığınızda, sistem en son alınan günlük yedeği yükleyecek"
 
 msgid "Click to activate"
-msgstr ""
+msgstr "Etkinleştirmek için tıklayın"
 
 msgid "Click to deactivate"
-msgstr ""
+msgstr "Devre dışı bırakmak için tıklayın"
 
 msgid "Client / Choose Directory"
 msgstr ""
@@ -1443,7 +1445,7 @@ msgid "Client / Profile / Personal Data"
 msgstr ""
 
 msgid "Client / Statistics"
-msgstr ""
+msgstr "Kullanıcı / İstatistikler"
 
 msgid "Client / Support / Closed Tickets"
 msgstr ""
@@ -1497,10 +1499,10 @@ msgid "Client / Webtools / Software / View"
 msgstr ""
 
 msgid "Clock speed (MHz)"
-msgstr ""
+msgstr "Saat Hızı (MHz)"
 
 msgid "Close"
-msgstr "Tamam"
+msgstr "Kapat"
 
 msgid "Close the ticket"
 msgstr ""
@@ -1512,23 +1514,23 @@ msgid "Closed tickets"
 msgstr "Kapalı talepler"
 
 msgid "Common name"
-msgstr ""
+msgstr "Sertifika ismi"
 
 msgid "Company"
 msgstr "Şirket"
 
 msgid "Compress HTML output"
-msgstr ""
+msgstr "HTML çıktısını sıkıştır"
 
 #, php-format
 msgid "Conflict with an existent %s record."
 msgstr ""
 
 msgid "Core data"
-msgstr "Core verisi"
+msgstr "Çekirdek verisi"
 
 msgid "Cores"
-msgstr ""
+msgstr "Çekirdek"
 
 msgid "Could not upload file."
 msgstr ""
@@ -1551,7 +1553,7 @@ msgid "Create"
 msgstr "Tamam"
 
 msgid "Create catch all"
-msgstr "TümünüYakala oluştur"
+msgstr "Tümünü Yakala oluştur"
 
 msgid "Create default email addresses"
 msgstr ""
@@ -1566,25 +1568,25 @@ msgid "Current password"
 msgstr "Mevcut şifre"
 
 msgid "Current password is invalid."
-msgstr ""
+msgstr "Mevcut şifre hatalı."
 
 msgid "Custom DNS errors"
-msgstr ""
+msgstr "Özel DNS hataları"
 
 msgid "Custom DNS record"
-msgstr ""
+msgstr "Özel DNS kaydı"
 
 msgid "Custom DNS record successfully scheduled for addition."
-msgstr ""
+msgstr "Özel DNS kaydı eklenmek için işleme alındı."
 
 msgid "Custom DNS record successfully scheduled for deletion."
-msgstr ""
+msgstr "Özel DNS kaydı silinmek için işleme alındı."
 
 msgid "Custom DNS record successfully scheduled for update."
-msgstr ""
+msgstr "Özel DNS kaydı güncellenmek için işleme alındı."
 
 msgid "Custom DNS records"
-msgstr ""
+msgstr "Özel DNS kayıtları"
 
 msgid "Custom error page updated."
 msgstr ""
@@ -1611,7 +1613,7 @@ msgid "Custom menus"
 msgstr "Değiştirilebilir menüler"
 
 msgid "Customer"
-msgstr ""
+msgstr "Müşteri"
 
 msgid "Customer ID"
 msgstr "Müşteri ID"
@@ -1620,40 +1622,40 @@ msgid "Customer ID cannot have more than 200 characters"
 msgstr ""
 
 msgid "Customer account"
-msgstr ""
+msgstr "Müşteri hesabı"
 
 msgid "Customer account successfully scheduled for activation."
-msgstr ""
+msgstr "Müşteri hesabı aktivasyon için işleme alındı."
 
 msgid "Customer account successfully scheduled for creation."
-msgstr ""
+msgstr "Müşteri hesabı oluşturulmak için işleme alındı."
 
 msgid "Customer account successfully scheduled for deactivation."
-msgstr ""
+msgstr "Müşteri hesabı durdurulmak için işleme alındı."
 
 msgid "Customer account successfully scheduled for deletion."
-msgstr ""
+msgstr "Müşteri hesabı silinmek için işleme alındı."
 
 msgid "Customer account successfully updated."
-msgstr ""
+msgstr "Müşteri hesabı güncellendi."
 
 msgid "Customer account summary"
+msgstr "Müşteri hesabı özeti"
+
+msgid "Customer assignments"
 msgstr ""
 
 msgid "Customer consumption"
-msgstr ""
+msgstr "Müşteri kullanımı"
 
 msgid "Customer level"
 msgstr ""
 
-msgid "Customer statistics"
-msgstr ""
-
 msgid "Customer successfully scheduled for addition."
-msgstr ""
+msgstr "Müşteri eklenmek için işleme alındı."
 
 msgid "Customer successfully scheduled for deletion."
-msgstr ""
+msgstr "Müşteri silinmek için işleme alındı."
 
 msgid "Customer's layout color successfully updated."
 msgstr ""
@@ -1662,10 +1664,7 @@ msgid "Customer(s) successfully moved."
 msgstr ""
 
 msgid "Customers"
-msgstr ""
-
-msgid "Customers assignment"
-msgstr ""
+msgstr "Müşteriler"
 
 msgid "Customize error pages for your domain."
 msgstr ""
@@ -1695,7 +1694,7 @@ msgid "Data were been altered. Please try again."
 msgstr ""
 
 msgid "Database"
-msgstr "veritabanı"
+msgstr "Veritabanı"
 
 msgid "Database Name and Users"
 msgstr "Veritabanı adı ve kullanıcıları"
@@ -1719,16 +1718,16 @@ msgid "Database prefix"
 msgstr ""
 
 msgid "Database prefix/suffix"
-msgstr ""
+msgstr "Veritabanı ön/arka eki"
 
 msgid "Database required"
-msgstr "gerekli veritabanı"
+msgstr "Veritabanı gerekli"
 
 msgid "Database update"
 msgstr ""
 
 msgid "Database usage"
-msgstr ""
+msgstr "Veritabanı boyutu"
 
 msgid "Database users"
 msgstr "Veritabanı kullanıcıları"
@@ -1737,7 +1736,7 @@ msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
 msgid "Databases"
-msgstr "veritabanı"
+msgstr "Veritabanı"
 
 msgid "Date"
 msgstr "Tarih"
@@ -1746,7 +1745,7 @@ msgid "Day"
 msgstr "Gün"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Günlük istatistikler"
 
 msgid "Days"
 msgstr "Gün"
@@ -1833,7 +1832,7 @@ msgid "Delete"
 msgstr "Sil"
 
 msgid "Delete CatchAll"
-msgstr "TümünüYakala Sil"
+msgstr "Tümünü Yakalayı Sil"
 
 msgid "Delete all tickets"
 msgstr ""
@@ -1851,10 +1850,10 @@ msgid "Delete order"
 msgstr "Sipariş sil"
 
 msgid "Delete reseller software"
-msgstr "Bayi yazılımı sil"
+msgstr "Bayi yazılımını sil"
 
 msgid "Delete selected items"
-msgstr ""
+msgstr "Seçilileri sil"
 
 msgid "Delete this plugin"
 msgstr ""
@@ -1866,19 +1865,19 @@ msgid "Deletion in progress"
 msgstr ""
 
 msgid "Deletion in progress..."
-msgstr ""
+msgstr "Silinyor..."
 
 msgid "Depot import"
 msgstr ""
 
 msgid "Description"
-msgstr "Tanımlama"
+msgstr "Açıklama"
 
 msgid "Description cannot be empty."
 msgstr ""
 
 msgid "Details"
-msgstr "Ayrıntırlar"
+msgstr "Ayrıntılar"
 
 msgid "Directive values"
 msgstr ""
@@ -1897,10 +1896,10 @@ msgid "Disable"
 msgstr "Kapalı"
 
 msgid "Disabled"
-msgstr "Kapalı"
+msgstr "Devre Dışı"
 
 msgid "Disabled functions"
-msgstr ""
+msgstr "Devre dışı bırakılmış fonksiyonlar"
 
 msgid "Disconnect"
 msgstr ""
@@ -1912,13 +1911,13 @@ msgid "Disk space"
 msgstr ""
 
 msgid "Disk space limit [MiB]"
-msgstr ""
+msgstr "Disk kullanım limiti [MiB]"
 
 msgid "Disk usage"
 msgstr "Disk kullanımı"
 
 msgid "Disk usage detail"
-msgstr ""
+msgstr "Disk kullanım detayları"
 
 msgid "Display errors"
 msgstr ""
@@ -1943,10 +1942,10 @@ msgid "Domain IP"
 msgstr "Domain IP"
 
 msgid "Domain Limit"
-msgstr ""
+msgstr "Domain Limiti"
 
 msgid "Domain Name"
-msgstr "Alan Adı"
+msgstr "Domain Adı"
 
 msgid "Domain account"
 msgstr "Domain hesabı"
@@ -1968,28 +1967,28 @@ msgid "Domain alias errors"
 msgstr "Domain alias hataları"
 
 msgid "Domain alias limit"
-msgstr ""
+msgstr "Domain alias limiti"
 
 msgid "Domain alias name"
-msgstr ""
+msgstr "Domain alias ismi"
 
 msgid "Domain alias successfully ordered."
 msgstr ""
 
 msgid "Domain alias successfully scheduled for addition."
-msgstr ""
+msgstr "Domain alias eklenmek için işleme alındı."
 
 msgid "Domain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "Domain alias silinmek için işleme alındı."
 
 msgid "Domain alias successfully scheduled for update."
-msgstr ""
+msgstr "Domain alias güncellenmek için işleme alındı."
 
 msgid "Domain aliases"
-msgstr "Domain alias"
+msgstr "Domain aliasları"
 
 msgid "Domain and SQL databases"
-msgstr ""
+msgstr "Domain ve SQL veritabanı"
 
 msgid "Domain data were been altered. Please try again."
 msgstr ""
@@ -2001,16 +2000,16 @@ msgid "Domain errors"
 msgstr "Domain hataları"
 
 msgid "Domain expiration date"
-msgstr ""
+msgstr "Domain bitiş tarihi"
 
 msgid "Domain expiration date must be filled."
 msgstr ""
 
 msgid "Domain limit"
-msgstr ""
+msgstr "Domain limiti"
 
 msgid "Domain mail"
-msgstr ""
+msgstr "Domain epostası"
 
 msgid "Domain name"
 msgstr "Domain adı"
@@ -2026,7 +2025,7 @@ msgstr ""
 
 #, php-format
 msgid "Domain name contains an invalid character: %s"
-msgstr ""
+msgstr "Domain geçersiz karakter içeriyor: %s"
 
 #, php-format
 msgid "Domain name label '%s' contain an invalid character: %s"
@@ -2039,22 +2038,16 @@ msgid "Domain name labels cannot start nor end with hyphen."
 msgstr ""
 
 msgid "Domain new expiration date"
-msgstr ""
-
-msgid "Domain not found."
-msgstr ""
+msgstr "Domain yeni bitiş tarihi"
 
 msgid "Domain overview"
 msgstr ""
 
 msgid "Domain scheduled for update."
-msgstr ""
+msgstr "Domain güncellenmek için işleme alındı."
 
 msgid "Domain statistics"
 msgstr "Domain İstatistikleri"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr ""
 
 msgid "Domain status is not ok."
 msgstr ""
@@ -2063,7 +2056,7 @@ msgid "Domain successfully updated."
 msgstr ""
 
 msgid "Domain type"
-msgstr ""
+msgstr "Domain türü"
 
 msgid ""
 "Domain: Setup a DNS MX record to relay mail of your entire domain, including"
@@ -2104,10 +2097,10 @@ msgid "Edit"
 msgstr "Düzenle"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "FTP hesabını düzenle"
 
 msgid "Edit SSL certificate"
-msgstr ""
+msgstr "SSL sertifikasını düzenle"
 
 msgid "Edit admin"
 msgstr ""
@@ -2128,25 +2121,25 @@ msgid "Edit customer"
 msgstr ""
 
 msgid "Edit domain"
-msgstr "Domain düzenle"
+msgstr "Domaini düzenle"
 
 msgid "Edit domain alias"
-msgstr "Domain alias düzenle"
+msgstr "Domain aliasını düzenle"
 
 msgid "Edit error page"
-msgstr "Hata sayafası düzenle"
+msgstr "Hata sayafasını düzenle"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Edit hosting plan"
-msgstr "Hosting planı düzenle"
+msgstr "Hosting planını düzenle"
 
 msgid "Edit htaccess user"
 msgstr ""
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Eposta hesabını düzenle"
 
 msgid "Edit mail quota"
 msgstr ""
@@ -2155,13 +2148,13 @@ msgid "Edit protected area"
 msgstr ""
 
 msgid "Edit reseller"
-msgstr "Bayi düzenle"
+msgstr "Bayiyi düzenle"
 
 msgid "Edit subdomain"
 msgstr ""
 
 msgid "Edit user"
-msgstr "Kullanıcı düzenle"
+msgstr "Kullanıcıyı düzenle"
 
 msgid "EiB"
 msgstr ""
@@ -2173,25 +2166,25 @@ msgid "Email account already exists."
 msgstr ""
 
 msgid "Email account data"
-msgstr ""
+msgstr "Eposta hesap bilgileri"
 
 msgid "Email account errors"
 msgstr ""
 
 msgid "Email account limit"
-msgstr ""
+msgstr "Eposta hesabı limiti"
 
 msgid "Email account list"
 msgstr ""
 
 msgid "Email account successfully scheduled for addition."
-msgstr ""
+msgstr "Eposta hesabı eklenmek için işleme alındı."
 
 msgid "Email account successfully scheduled for update."
-msgstr ""
+msgstr "Eposta hesabı güncellenmek için işleme alındı."
 
 msgid "Email accounts"
-msgstr ""
+msgstr "Eposta hesapları"
 
 msgid "Email accounts are hard suspended"
 msgstr ""
@@ -2203,13 +2196,13 @@ msgid "Email address with comma(s) are not accepted."
 msgstr ""
 
 msgid "Email forward"
-msgstr ""
+msgstr "Eposta yönlendirmesi"
 
 msgid "Email quota"
-msgstr ""
+msgstr "Eposta kotası"
 
 msgid "Email quota [MiB]"
-msgstr ""
+msgstr "Eposta kotası [MiB]"
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
@@ -2247,16 +2240,16 @@ msgid "Empty data or wrong field."
 msgstr ""
 
 msgid "Enable"
-msgstr "Açık"
+msgstr "Aç"
 
 msgid "Enable SSL"
-msgstr ""
+msgstr "SSL Aktif"
 
 msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
-msgstr "Açık"
+msgstr "Açıldı"
 
 #, php-format
 msgid "Enabled for: %s"
@@ -2292,7 +2285,7 @@ msgid "Errors"
 msgstr "Hatalar"
 
 msgid "Excl. default mails"
-msgstr ""
+msgstr "Varsayılanlar hariç"
 
 msgid "Execute requests"
 msgstr "Talepleri çalıştır"
@@ -2307,46 +2300,46 @@ msgid "External Mail Host"
 msgstr ""
 
 msgid "External mail server"
-msgstr ""
+msgstr "Dış eposta sunucusu"
 
 msgid "External mail server successfully scheduled for addition."
-msgstr ""
+msgstr "Dış eposta sunucusu kaydı eklenmek için işleme alındı."
 
 msgid "External mail server successfully scheduled for deactivation."
-msgstr ""
+msgstr "Dış eposta sunucusu kaydı durdurulmak için işleme alındı."
 
 msgid "External mail server successfully scheduled for update."
-msgstr ""
+msgstr "DIş eposta sunucusu kaydı güncellenmek için işleme alındı."
 
 msgid "External mail servers"
-msgstr ""
+msgstr "Dış eposta sunucusu"
 
 msgid "FTP Users"
-msgstr ""
+msgstr "FTP Kullanıcıları"
 
 msgid "FTP account"
 msgstr "FTP hesabı"
 
 msgid "FTP account limit"
-msgstr ""
+msgstr "FTP hesap limiti"
 
 msgid "FTP account limit reached."
-msgstr ""
+msgstr "FTP hesap limitine ulaşıldı."
 
 msgid "FTP account successfully added."
-msgstr ""
+msgstr "FTP hesabı eklendi."
 
 msgid "FTP account successfully deleted."
-msgstr ""
+msgstr "FTP hesabı silindi."
 
 msgid "FTP account successfully updated."
-msgstr ""
+msgstr "FTP hesabı güncellendi."
 
 msgid "FTP accounts"
 msgstr "FTP hesapları"
 
 msgid "FTP traffic"
-msgstr "FTP trafiği"
+msgstr "FTP Trafiği"
 
 msgid "FTPs total"
 msgstr "Toplam FTP"
@@ -2364,7 +2357,7 @@ msgid "Feature"
 msgstr "Özellik"
 
 msgid "Features"
-msgstr ""
+msgstr "Özellikler"
 
 msgid "Female"
 msgstr "Kadın"
@@ -2401,7 +2394,7 @@ msgid "File successfully uploaded."
 msgstr ""
 
 msgid "File usage"
-msgstr ""
+msgstr "Dosya boyutu"
 
 msgid "FileManager"
 msgstr "Dosya yöneticisi"
@@ -2410,19 +2403,19 @@ msgid "Filemanager"
 msgstr "Dosya yöneticisi"
 
 msgid "Filesystem system Info"
-msgstr "Dosyasistemi sistem bilgisi"
+msgstr "Dosya sistemi sistem bilgisi"
 
 msgid "Fill out a message text."
 msgstr ""
 
 msgid "First name"
-msgstr "Ad"
+msgstr "İsim"
 
 msgid "First name cannot have more than 200 characters."
 msgstr ""
 
 msgid "Forbidden"
-msgstr ""
+msgstr "Yasaklanmış"
 
 msgid "Force retry"
 msgstr ""
@@ -2431,7 +2424,7 @@ msgid "Forward"
 msgstr "Yönlendir"
 
 msgid "Forward URL"
-msgstr ""
+msgstr "Yönlendirilen URL"
 
 #, php-format
 msgid "Forward URL %s is not valid."
@@ -2450,7 +2443,7 @@ msgid "Forward to URL"
 msgstr "URLye yönlendir"
 
 msgid "Free"
-msgstr "Boşta"
+msgstr "Boş"
 
 msgid "From"
 msgstr "Gönderen"
@@ -2459,19 +2452,19 @@ msgid "From reseller"
 msgstr "Bayiden"
 
 msgid "Ftp"
-msgstr ""
+msgstr "FTP"
 
 msgid "Ftp account"
-msgstr ""
+msgstr "FTP hesabı"
 
 msgid "Ftp account data"
-msgstr ""
+msgstr "FTP hesap bilgileri"
 
 msgid "Ftp account with same username already exists."
-msgstr ""
+msgstr "Bu isimde bir FTP kullancısı var."
 
 msgid "Ftp accounts"
-msgstr ""
+msgstr "FTP hesapları"
 
 msgid "GB"
 msgstr ""
@@ -2480,7 +2473,7 @@ msgid "Gender"
 msgstr "Cinsiyet"
 
 msgid "General"
-msgstr ""
+msgstr "Genel"
 
 msgid "General information"
 msgstr "Genel bilgi"
@@ -2489,10 +2482,10 @@ msgid "General settings"
 msgstr "Genel ayarlar"
 
 msgid "Generate"
-msgstr ""
+msgstr "Oluştur"
 
 msgid "Generate a self-signed certificate"
-msgstr ""
+msgstr "Yerel sunucu tarafından imzalanmış sertifika oluştur"
 
 msgid "Get a new image"
 msgstr ""
@@ -2504,7 +2497,7 @@ msgid "Group"
 msgstr "Grup"
 
 msgid "Group auth"
-msgstr "Oluşturan grup"
+msgstr "Grup yetkilendirmesi"
 
 msgid "Group members"
 msgstr "Grup üyeleri"
@@ -2516,7 +2509,7 @@ msgid "Groups"
 msgstr "Gruplar"
 
 msgid "HTTP traffic"
-msgstr ""
+msgstr "Web Trafiği"
 
 msgid "Hide aliases"
 msgstr ""
@@ -2525,23 +2518,23 @@ msgid "High"
 msgstr "Yüksek"
 
 msgid "Home directory"
-msgstr ""
+msgstr "Ev dizini"
 
 #, php-format
 msgid "Home directory '%s' doesn't exist"
-msgstr ""
+msgstr "Ev dizini '%s' yok"
 
 msgid "Homepage"
 msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
-msgstr ""
+msgstr "Veritabanı kullanıcısının, SQL sunucusuna bağlanmasına izin verilecek istemci"
 
 msgid "Hosting plan"
 msgstr "Hosting planı"
 
 msgid "Hosting plan availability"
-msgstr ""
+msgstr "Hosting planı durumu"
 
 msgid "Hosting plan has been successfully deleted."
 msgstr ""
@@ -2568,7 +2561,7 @@ msgid "Hosting plans"
 msgstr "Hosting planları"
 
 msgid "Hosting plans available for"
-msgstr "Kullanılabilir server planları"
+msgstr "Hosting planları geçerliliği"
 
 msgid "Hour"
 msgstr "Saat"
@@ -2580,16 +2573,16 @@ msgid "Htaccess errors"
 msgstr ""
 
 msgid "Htaccess group"
-msgstr ""
+msgstr "Htaccess grubu"
 
 msgid "Htaccess group successfully scheduled for addition."
-msgstr ""
+msgstr "Htaccess grubu eklenmek için işleme alındı."
 
 msgid "Htaccess group successfully scheduled for deletion."
-msgstr ""
+msgstr "Htaccess grubu silinmek için işleme alındı."
 
 msgid "Htaccess user"
-msgstr ""
+msgstr "Htaccess kullanıcısı"
 
 #, php-format
 msgid "Htaccess user successfully assigned to the %s htaccess group"
@@ -2600,16 +2593,16 @@ msgid "Htaccess user successfully deleted from the %s htaccess group "
 msgstr ""
 
 msgid "Htaccess user successfully scheduled for addition."
-msgstr ""
+msgstr "Htaccess kullanıcısı eklenmek için işleme alındı."
 
 msgid "Http traffic"
-msgstr ""
+msgstr "Web Trafiği"
 
 msgid "IP Address"
 msgstr ""
 
 msgid "IP address"
-msgstr "Adres giriniz"
+msgstr "IP adresi"
 
 msgid "IP address already under the control of i-MSCP."
 msgstr ""
@@ -2618,15 +2611,18 @@ msgid "IP address data"
 msgstr ""
 
 msgid "IP address field is empty or invalid."
-msgstr ""
+msgstr "IP adresi alanı boş veya geçersiz."
 
 msgid "IP address successfully scheduled for addition."
-msgstr ""
+msgstr "IP adresi eklenmek için işleme alındı."
 
 msgid "IP address successfully scheduled for deletion."
-msgstr ""
+msgstr "IP adresi silinmek için işleme alındı."
 
 msgid "IP addresses under control of i-MSCP"
+msgstr ""
+
+msgid "IP assignments"
 msgstr ""
 
 msgid "IP management"
@@ -2639,13 +2635,13 @@ msgid "IPv6 address"
 msgstr "IPv6 adresi"
 
 msgid "IPv6 address field is empty or invalid."
-msgstr ""
+msgstr "IPv6 alanı boş veya geçersiz."
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
 "against deletion using the immutable flag (only if supported by the file "
 "system)."
-msgstr ""
+msgstr "Eğer 'evet' olarak ayarlanırsa i-MSCP'nin oluşturduğu dizinler müşteri tarafından (dosya sistemi destekliyorsa) silinemez."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
@@ -2659,13 +2655,16 @@ msgstr ""
 msgid "Import in local repository"
 msgstr ""
 
+msgid "Import new language file"
+msgstr ""
+
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
 "from today."
 msgstr ""
 
 msgid "In front"
-msgstr ""
+msgstr "önüne"
 
 msgid "In maintenance mode, only administrators can login."
 msgstr ""
@@ -2678,7 +2677,7 @@ msgid ""
 msgstr ""
 
 msgid "Incl. default mails"
-msgstr ""
+msgstr "Varsayılanlar dahil"
 
 msgid "Incorrect Email quota"
 msgstr ""
@@ -2687,13 +2686,13 @@ msgid "Incorrect Email quota."
 msgstr ""
 
 msgid "Incorrect FTP account limit."
-msgstr ""
+msgstr "Hatalı FTP hesap limiti."
 
 msgid "Incorrect SQL database limit."
-msgstr ""
+msgstr "Hatalı SQL veritabanı limiti."
 
 msgid "Incorrect SQL user limit."
-msgstr ""
+msgstr "Hatalı SQL kullanıcı limiti."
 
 msgid "Incorrect alias limit."
 msgstr ""
@@ -2775,92 +2774,92 @@ msgid "Instructions to download today's backup"
 msgstr "Bugünün yedeğini indirme talimatları"
 
 msgid "Intermediate certificate(s)"
-msgstr ""
+msgstr "Ara sertifika"
 
 msgid "Internal Server Error"
-msgstr ""
+msgstr "İç Sunucu Hatası"
 
 msgid "Internationalization"
-msgstr "Uluslararasılaşma"
+msgstr "Yerelleştirme"
 
 msgid "Invalid CNAME"
-msgstr ""
+msgstr "Geçersiz CNAME"
 
 msgid "Invalid IPv4 address."
-msgstr ""
+msgstr "Geçersiz IPv4 adresi."
 
 msgid "Invalid IPv6 address."
-msgstr ""
+msgstr "Geçersiz IPv6 adresi."
 
 msgid "Invalid MX priority."
-msgstr ""
+msgstr "Geçersiz MX önceliği."
 
 msgid "Invalid MX type."
-msgstr ""
+msgstr "Geçersiz MX tipi."
 
 msgid "Invalid NAME."
-msgstr ""
+msgstr "Geçersiz NAME."
 
 #, php-format
 msgid "Invalid SQL user host: %s"
-msgstr ""
+msgstr "Geçersiz SQL kullanıcı sunucusu: %s"
 
 msgid "Invalid TXT data"
-msgstr ""
+msgstr "Geçersiz TXT verisi"
 
 msgid "Invalid URL."
-msgstr ""
+msgstr "Geçersiz URL."
 
 msgid "Invalid certificate."
-msgstr ""
+msgstr "Geçersiz sertifika"
 
 msgid "Invalid domain name."
-msgstr ""
+msgstr "Geçersiz domain."
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "Geçersiz eposta adresi."
 
 msgid "Invalid email username."
-msgstr ""
+msgstr "Geçersiz eposta kullanıcı adı."
 
 msgid "Invalid expiration date."
-msgstr ""
+msgstr "Geçersiz bitiş tarihi."
 
 msgid "Invalid group name!"
-msgstr "Geçersiz grup adı"
+msgstr "Geçersiz grup adı!"
 
 msgid "Invalid home directory."
-msgstr ""
+msgstr "Geçersiz ev dizini."
 
 msgid "Invalid htaccess group name."
-msgstr ""
+msgstr "Geçersiz htaccess grup adı."
 
 msgid "Invalid menu order."
-msgstr ""
+msgstr "Geçersiz menü sırası."
 
 msgid "Invalid name."
-msgstr ""
+msgstr "Geçersiz isim."
 
 msgid "Invalid payload received from GitHub"
-msgstr ""
+msgstr "GitHub'tan alınan veri geçersiz."
 
 msgid "Invalid private key or passphrase."
-msgstr ""
+msgstr "Geçersiz özel anahtar veya parola."
 
 msgid "Invalid target."
-msgstr ""
+msgstr "Geçersiz hedef."
 
 msgid "Invalid type given. String expected"
-msgstr ""
+msgstr "Geçersiz tip verildi. Dizi bekleniyordu"
 
 msgid "Invalid username."
-msgstr ""
+msgstr "Geçersiz kullanıcı adı."
 
 msgid "Kernel Version"
-msgstr "Kernel sürümü"
+msgstr "Çekirdek sürümü"
 
 msgid "Kill session"
-msgstr "Session sonlandır"
+msgstr "Oturumu sonlandır"
 
 msgid "Label"
 msgstr "Etiket"
@@ -2890,7 +2889,7 @@ msgid "Last access"
 msgstr "Son erişim"
 
 msgid "Last name"
-msgstr "Soyad"
+msgstr "Soyisim"
 
 msgid "Last name cannot have more than 200 characters."
 msgstr ""
@@ -2898,17 +2897,14 @@ msgstr ""
 msgid "Last reply date"
 msgstr ""
 
-msgid "Last translator"
-msgstr ""
-
 msgid "Layout"
-msgstr "Taslak"
+msgstr "Görünüm"
 
 msgid "Layout color"
-msgstr ""
+msgstr "Görünüm rengi"
 
 msgid "Layout color successfully updated."
-msgstr ""
+msgstr "Görünüm rengi güncellendi."
 
 msgid "Level"
 msgstr "Seviye"
@@ -2917,10 +2913,10 @@ msgid "Limit"
 msgstr "Limit"
 
 msgid "Limit value"
-msgstr ""
+msgstr "Limit değeri"
 
 msgid "Limits"
-msgstr ""
+msgstr "Limitler"
 
 msgid "Link"
 msgstr ""
@@ -2944,7 +2940,7 @@ msgid "Login"
 msgstr "Giriş"
 
 msgid "Login As"
-msgstr "Farklı Giriş"
+msgstr "Giriş yap"
 
 #, php-format
 msgid "Login data successfully sent to %s."
@@ -2978,7 +2974,7 @@ msgid "Lost password"
 msgstr "Kayıp şifre"
 
 msgid "Lost password email"
-msgstr ""
+msgstr "Kayıp şifre mesajı"
 
 msgid "Lost password link"
 msgstr "Kayıf şifre linki"
@@ -2996,23 +2992,23 @@ msgid "Mail"
 msgstr "Eposta"
 
 msgid "Mail Log Level"
-msgstr ""
+msgstr "Eposta Günlük Seviyesi"
 
 #, php-format
 msgid "Mail account %s successfully scheduled for deletion."
-msgstr ""
+msgstr "%s eposta hesabı silinmek için işleme alındı."
 
 msgid "Mail account type"
-msgstr ""
+msgstr "Eposta hesap türü"
 
 msgid "Mail accounts list is empty."
 msgstr ""
 
 msgid "Mail feature is disabled."
-msgstr ""
+msgstr "Eposta özelliği devre dışı."
 
 msgid "Mail usage"
-msgstr ""
+msgstr "Eposta boyutu"
 
 #, php-format
 msgid "Mailhost %s is not valid."
@@ -3047,16 +3043,16 @@ msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage SQL"
-msgstr "SQl Düzenle"
+msgstr "SQL Yönet"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Htaccess kullanıcılarını ve gruplarını yönet"
 
 msgid "Manage users"
-msgstr "Kullanıcıları Düzenle"
+msgstr "Kullanıcıları yönet"
 
 msgid "Manage users and groups"
-msgstr "Kullanıcı ve grupları düzenle"
+msgstr "Kullanıcı ve grupları yönet"
 
 msgid "Manage your protected areas, users and groups."
 msgstr ""
@@ -3093,7 +3089,7 @@ msgid "Medium"
 msgstr "Orta"
 
 msgid "Member of group"
-msgstr ""
+msgstr "Üyesi olduğu grup"
 
 msgid "Memory information"
 msgstr ""
@@ -3139,7 +3135,7 @@ msgid "Month"
 msgstr "Ay"
 
 msgid "Monthly traffic limit [MiB]"
-msgstr ""
+msgstr "Aylık trafik limiti [MiB]"
 
 msgid "Monthly traffic limit must be a number."
 msgstr ""
@@ -3154,10 +3150,10 @@ msgid "More Details"
 msgstr ""
 
 msgid "Mount"
-msgstr "Monte"
+msgstr "Bağlantı"
 
 msgid "Mount point"
-msgstr "Monte noktası"
+msgstr "Bağlantı noktası"
 
 msgid "Move"
 msgstr "Taşı"
@@ -3166,31 +3162,31 @@ msgid "Moving aborted."
 msgstr ""
 
 msgid "N/A"
-msgstr "Kullanılamaz"
+msgstr "Devre Dışı"
 
 msgid "NAME field is empty or invalid."
-msgstr ""
+msgstr "NAME alanı boş veya geçersiz."
 
 msgid "Name"
-msgstr "Ad"
+msgstr "İsim"
 
 msgid "Name cannot be empty."
 msgstr ""
 
 msgid "Network interface"
-msgstr "Kullanıcı arayüzüne geç"
+msgstr "Ağ arayüzü"
 
 msgid "Never"
-msgstr ""
+msgstr "Asla"
 
 msgid "New SQL user data"
-msgstr ""
+msgstr "Yeni SQL kullanıcısı bilgileri"
 
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New password has not been sent. Ask your administrator."
-msgstr "Yeni şifre gönderilemedi. Yöneticinize sorun."
+msgstr "Yeni şifre gönderilemedi. Yöneticinize danışın."
 
 msgid "New ticket"
 msgstr "Yeni destek talebi"
@@ -3225,12 +3221,6 @@ msgstr ""
 msgid "No database update available."
 msgstr ""
 
-msgid "No domain statistics to display for this reseller."
-msgstr ""
-
-msgid "No domain statistics to display."
-msgstr ""
-
 msgid "No errors"
 msgstr ""
 
@@ -3241,7 +3231,7 @@ msgid "No group found."
 msgstr ""
 
 msgid "No hosting plan available."
-msgstr ""
+msgstr "Hiç hosting planı yok."
 
 msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
@@ -3256,9 +3246,6 @@ msgid "No reseller accounts found."
 msgstr ""
 
 msgid "No reseller available to add the permissions."
-msgstr ""
-
-msgid "No reseller statistics to display."
 msgstr ""
 
 msgid "No reseller with activated software installer found!"
@@ -3283,7 +3270,7 @@ msgid "No software is waiting for activation"
 msgstr ""
 
 msgid "No statistics found for the given period. Try another period."
-msgstr ""
+msgstr "Verilen zaman aralığında istatistik yok. Farklı bir aralığı deneyin."
 
 msgid "No unassigned users were found in the database."
 msgstr ""
@@ -3310,7 +3297,7 @@ msgid "Normal"
 msgstr ""
 
 msgid "Normal + Forward"
-msgstr ""
+msgstr "Normal + Yönlendir"
 
 msgid "Normal connection"
 msgstr ""
@@ -3319,13 +3306,13 @@ msgid "Normal users"
 msgstr "Normal kullanıcı"
 
 msgid "Not Found"
-msgstr ""
+msgstr "Bulunamadı"
 
 msgid "Not Set"
-msgstr "belirlenmemiş"
+msgstr "Atanmamış"
 
 msgid "Not found."
-msgstr ""
+msgstr "Bulunamadı."
 
 msgid "Not provided"
 msgstr ""
@@ -3340,7 +3327,7 @@ msgid "Note: You cannot mix Spam filter and domain options"
 msgstr ""
 
 msgid "Nothing found - sorry"
-msgstr ""
+msgstr "Bulunamadı :("
 
 msgid "Nothing has been changed."
 msgstr ""
@@ -3349,7 +3336,7 @@ msgid "Nothing has been deleted."
 msgstr ""
 
 msgid "Nothing has been scheduled for deactivation."
-msgstr ""
+msgstr "Durdurulmak için işleme alınmış birşey yok."
 
 msgid "Nothing to do. Daemon request has been canceled."
 msgstr ""
@@ -3440,7 +3427,7 @@ msgid "PHP %s directive"
 msgstr ""
 
 msgid "PHP Editor"
-msgstr ""
+msgstr "PHP düzenleyici"
 
 msgid "PHP Editor Settings"
 msgstr ""
@@ -3455,7 +3442,7 @@ msgid "PHP Settings (system default)"
 msgstr ""
 
 msgid "PHP configuration scheduled for update."
-msgstr ""
+msgstr "PHP ayarları güncellenmek için işleme alındı."
 
 msgid "PHP directives values"
 msgstr ""
@@ -3466,6 +3453,9 @@ msgstr ""
 msgid "PHP settings"
 msgstr ""
 
+msgid "POP3/IMAP"
+msgstr ""
+
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP gelen"
 
@@ -3473,7 +3463,7 @@ msgid "POP3/IMAP out"
 msgstr "POP3/IMAP giden"
 
 msgid "POP3/IMAP traffic"
-msgstr "POP3/IMAP trafik"
+msgstr "POP3/IMAP Trafiği"
 
 msgid "Package actions"
 msgstr "Paket eylemleri"
@@ -3518,7 +3508,7 @@ msgid "Package version"
 msgstr "Paket sürümü"
 
 msgid "Panel default language"
-msgstr "Varsayılan Panel dilini seçiniz"
+msgstr "Varsayılan panel dili"
 
 msgid "Parent directory"
 msgstr ""
@@ -3536,7 +3526,7 @@ msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
 msgid "Password confirmation"
-msgstr ""
+msgstr "Şifre (tekrar)"
 
 msgid "Password contains unallowed characters."
 msgstr ""
@@ -3639,7 +3629,7 @@ msgid "Please enter a password."
 msgstr ""
 
 msgid "Please enter an SQL user host."
-msgstr ""
+msgstr "SQL kullanıcısı için istemci girin."
 
 msgid "Please enter an username."
 msgstr ""
@@ -3742,27 +3732,27 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
-msgstr ""
+msgstr "%s eklentisi aktivasyon için işleme alındı."
 
 #, php-format
 msgid "Plugin %s scheduled for change."
-msgstr ""
+msgstr "%s eklentisi değişiklik için işleme alındı."
 
 #, php-format
 msgid "Plugin %s scheduled for deactivation."
-msgstr ""
+msgstr "%s eklentisi durdurulmak için işleme alındı."
 
 #, php-format
 msgid "Plugin %s scheduled for installation."
-msgstr ""
+msgstr "%s eklentisi kurulum için işleme alındı."
 
 #, php-format
 msgid "Plugin %s scheduled for uninstallation."
-msgstr ""
+msgstr "%s eklentisi kaldırılmak için işleme alındı."
 
 #, php-format
 msgid "Plugin %s scheduled for update."
-msgstr ""
+msgstr "%s eklentisi güncellenmek için işleme alındı."
 
 #, php-format
 msgid "Plugin %s uninstalled."
@@ -3851,13 +3841,13 @@ msgid "Port must be a number."
 msgstr ""
 
 msgid "Prevent external login for admins"
-msgstr "Lütfen admin giriş bilgilerinizi giriniz"
+msgstr "Yöneticiler için dışardan girişi engelle"
 
 msgid "Prevent external login for clients"
-msgstr "Lütfen kullanıcı giriş bilgilerinizi giriniz"
+msgstr "Kullanıcılar için dışardan girişi engelle"
 
 msgid "Prevent external login for resellers"
-msgstr "Lütfen bayi giriş bilgilerinizi giriniz"
+msgstr "Bayiler için dışardan girişi engelle"
 
 msgid "Previous"
 msgstr ""
@@ -3873,10 +3863,10 @@ msgid "Priority: %s\n"
 msgstr ""
 
 msgid "Private key"
-msgstr ""
+msgstr "Özel anahtar"
 
 msgid "Private key passphrase if any"
-msgstr ""
+msgstr "Özel anahtar parolası (varsa)"
 
 msgid "Process update"
 msgstr ""
@@ -3888,7 +3878,7 @@ msgid "Processor data"
 msgstr ""
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Properties"
 msgstr ""
@@ -3901,7 +3891,7 @@ msgid "Protect"
 msgstr ""
 
 msgid "Protect it"
-msgstr "Koruma altına al"
+msgstr "Koru"
 
 msgid "Protect this plugin"
 msgstr ""
@@ -3913,13 +3903,13 @@ msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr ""
 
 msgid "Protected area successfully scheduled for addition."
-msgstr ""
+msgstr "Korunan alan eklenmek için işleme alındı."
 
 msgid "Protected area successfully scheduled for deletion."
-msgstr ""
+msgstr "Korunan alan silinmek için işleme alındı."
 
 msgid "Protected area successfully scheduled for update."
-msgstr ""
+msgstr "Korunan alan güncellenmek için işleme alındı."
 
 msgid "Protected areas"
 msgstr "Korunan alanlar"
@@ -3928,17 +3918,17 @@ msgid "Protocol"
 msgstr "Protokol"
 
 msgid "Quota"
-msgstr ""
+msgstr "Kota"
 
 msgid "Quota in MiB (0 for unlimited)"
-msgstr ""
+msgstr "MiB olarak kota (Limitsiz için 0)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
-msgstr ""
+msgstr "MiB olarak kota (En fazla: %s)"
 
 msgid "RAM"
-msgstr "RAM"
+msgstr "BELLEK"
 
 msgid "Read ticket"
 msgstr ""
@@ -3950,7 +3940,7 @@ msgid "Reconfiguration in progress..."
 msgstr ""
 
 msgid "Record data"
-msgstr "Core verisi"
+msgstr "Kayıt verisi"
 
 msgid "Redirect"
 msgstr ""
@@ -3959,7 +3949,7 @@ msgid "Redistribute unused quota across existing mailboxes"
 msgstr ""
 
 msgid "Registration date"
-msgstr ""
+msgstr "Kayıt tarihi"
 
 msgid "Relative weight"
 msgstr ""
@@ -3986,13 +3976,13 @@ msgid "Remove"
 msgstr "Kaldır"
 
 msgid "Remove IP"
-msgstr "IP kaldır"
+msgstr "IPyi kaldır"
 
 msgid "Remove last entry"
 msgstr ""
 
 msgid "Remove permissions"
-msgstr "yetkileri kaldırma"
+msgstr "Yetkileri kaldır"
 
 msgid "Reopen"
 msgstr ""
@@ -4001,7 +3991,7 @@ msgid "Reopen ticket"
 msgstr ""
 
 msgid "Repeat password"
-msgstr "Şifreyi tekrar girin"
+msgstr "Şifre (tekrar)"
 
 msgid "Reply"
 msgstr ""
@@ -4090,7 +4080,7 @@ msgstr ""
 msgid "Reseller / Statistics / Overview"
 msgstr ""
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
 msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
@@ -4126,8 +4116,11 @@ msgstr ""
 msgid "Reseller assignment"
 msgstr "Bayi atanması"
 
-msgid "Reseller consumption"
+msgid "Reseller assignments"
 msgstr ""
+
+msgid "Reseller consumption"
+msgstr "Bayi kullanımı"
 
 msgid "Reseller data"
 msgstr "Bayi verileri"
@@ -4148,13 +4141,13 @@ msgid "Reseller software list"
 msgstr "Bayi yazılım listesi"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Bayi istatistikleri"
 
 msgid "Reseller successfully added."
 msgstr ""
 
 msgid "Reseller total"
-msgstr "Bayi toplam"
+msgstr "Bayi toplamı"
 
 msgid "Reseller users"
 msgstr "Bayi kullanıcıları"
@@ -4166,15 +4159,12 @@ msgid "Reseller's layout color successfully updated."
 msgstr ""
 
 msgid "Reseller/IP usage statistics"
-msgstr ""
+msgstr "Bayi/IP kullanım istatistikleri"
 
 msgid "Resellers"
 msgstr "Bayiler"
 
 msgid "Resellers and customers"
-msgstr ""
-
-msgid "Resellers assignment"
 msgstr ""
 
 msgid "Reset"
@@ -4184,22 +4174,22 @@ msgid "Reset entries"
 msgstr ""
 
 msgid "Restore"
-msgstr "Geri Yükle (restore)"
+msgstr "Geri yükle"
 
 msgid "Restore backup"
-msgstr "Yedekleri yükle"
+msgstr "Yedeği yükle"
 
 msgid "Revision date"
 msgstr ""
 
 msgid "Rights"
-msgstr ""
+msgstr "İzinler"
 
 msgid "Rights successfully added."
-msgstr ""
+msgstr "İzinler eklendi."
 
 msgid "Rights successfully removed."
-msgstr ""
+msgstr "İzinler kaldırıldı."
 
 msgid "SMTP in"
 msgstr "SMTP gelen"
@@ -4208,92 +4198,92 @@ msgid "SMTP out"
 msgstr "SMTP giden"
 
 msgid "SMTP traffic"
-msgstr "SMTP trafik"
+msgstr "SMTP Trafiği"
 
 msgid "SQL"
 msgstr "SQL"
 
 msgid "SQL database"
-msgstr ""
+msgstr "SQL veritabanı"
 
 msgid "SQL database limit"
-msgstr ""
+msgstr "SQL veritabanı limiti"
 
 msgid "SQL database limit is disabled but SQL user limit is not."
-msgstr ""
+msgstr "SQL veritabanı limiti devre dışı ayarlanmış ama SQL kullanıcı limiti mevcut."
 
 msgid "SQL database limit is disabled."
-msgstr ""
+msgstr "SQL veritabanı limiti devre dışı."
 
 msgid "SQL database limit is not <i>disabled</i>."
-msgstr ""
+msgstr "SQL veritabanı limiti <i>devre dışı</i> değil."
 
 msgid "SQL database limit reached."
-msgstr ""
+msgstr "SQL veritabanı limitine ulaşıldı."
 
 msgid "SQL database successfully added."
-msgstr ""
+msgstr "SQL veritabanı eklendi."
 
 msgid "SQL database successfully deleted."
-msgstr ""
+msgstr "SQL veritabanı güncellendi."
 
 msgid "SQL databases"
 msgstr "SQL veritabanları"
 
 msgid "SQL databases only"
-msgstr ""
+msgstr "Sadece SQL veritabanı"
 
 msgid "SQL user"
-msgstr ""
+msgstr "SQl kullanıcısı"
 
 #, php-format
 msgid "SQL user %s already exits."
-msgstr ""
+msgstr "%s SQL kullanıcısı mevcut."
 
 msgid "SQL user host"
-msgstr ""
+msgstr "SQL kullanıcı istemcisi"
 
 msgid "SQL user limit"
-msgstr ""
+msgstr "SQL kullanıcı limiti"
 
 msgid "SQL user limit is <i>disabled</i>."
-msgstr ""
+msgstr "SQL kullanıcı limiti <i>devre dışı</i>."
 
 msgid "SQL user limit is disabled but SQL database limit is not."
-msgstr ""
+msgstr "SQL kullanıcı limiti devre dışı ayarlanmış ama SQL veritabanı limiti var."
 
 msgid "SQL user limit is disabled."
-msgstr ""
+msgstr "SQL kullanıcı limiti devre dışı."
 
 msgid "SQL user name"
 msgstr "SQL kullanıcı adı"
 
 msgid "SQL user password successfully updated."
-msgstr ""
+msgstr "SQL kullanıcı şifresi güncellendi."
 
 msgid "SQL user prefix/suffix"
-msgstr ""
+msgstr "SQL kullanıcısı ön/arka eki"
 
 msgid "SQL user successfully added."
-msgstr ""
+msgstr "SQL kullanıcısı eklendi."
 
 msgid "SQL user with comma(s) in name is not accepted."
-msgstr ""
+msgstr "SQL kullanıcısında virgül kullanılamaz."
 
 msgid "SQL users"
 msgstr "SQL kullanıcıları"
 
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL sertifikası"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr ""
+msgstr "SSL sertifikası eklenmek için işleme alındı."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "SSL sertifikası silinmek için işleme alındı."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr ""
+msgstr "SSL sertifikası güncellenmek için işleme alındı."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr ""
@@ -4328,7 +4318,7 @@ msgid ""
 msgstr ""
 
 msgid "Send"
-msgstr ""
+msgstr "Gönder"
 
 msgid "Send circular"
 msgstr ""
@@ -4337,13 +4327,13 @@ msgid "Send message"
 msgstr "Mesajı gönder"
 
 msgid "Send message to"
-msgstr "Mesaj gönder"
+msgstr "Mesaj alıcısı"
 
 msgid "Send new login data"
 msgstr "Yeni giriş bilgilerini gönder"
 
 msgid "Send new reply"
-msgstr "Yeni cevap gönderebilmesi"
+msgstr "Yeni cevap gönder"
 
 msgid "Send reply"
 msgstr "Yanıtla"
@@ -4352,13 +4342,13 @@ msgid "Send to"
 msgstr ""
 
 msgid "Sender email"
-msgstr ""
+msgstr "Gönderen eposta"
 
 msgid "Sender email is missing."
 msgstr ""
 
 msgid "Sender name"
-msgstr ""
+msgstr "Gönderen isim"
 
 msgid "Sender name is missing."
 msgstr ""
@@ -4367,22 +4357,22 @@ msgid "Separate multiple email addresses by comma or a line-break."
 msgstr ""
 
 msgid "Separate multiple email addresses with a line-break."
-msgstr "Çoklu eposta adreslerini alt alta yazınız."
+msgstr "Eposta adreslerini alt alta yazınız."
 
 msgid "Server ports"
-msgstr "Server portları"
+msgstr "Sunucu portları"
 
 msgid "Server statistics"
-msgstr "Server istatistikleri"
+msgstr "Sunucu istatistikleri"
 
 msgid "Server status"
-msgstr "Server durumu"
+msgstr "Sunucu durumu"
 
 msgid "Server traffic"
-msgstr "Server trafik"
+msgstr "Sunucu trafik"
 
 msgid "Server traffic settings"
-msgstr "Server trafik ayarları"
+msgstr "Sunucu trafik ayarları"
 
 msgid "Server traffic settings successfully updated."
 msgstr ""
@@ -4391,10 +4381,10 @@ msgid "Service Name"
 msgstr ""
 
 msgid "Service Unavailable"
-msgstr ""
+msgstr "Hizmet Kullanılamıyor"
 
 msgid "Service name"
-msgstr "Servis"
+msgstr "Hizmet ismi"
 
 msgid "Service name already exists."
 msgstr ""
@@ -4409,13 +4399,13 @@ msgid "Service ports"
 msgstr ""
 
 msgid "Service protocol"
-msgstr "Server portları"
+msgstr "Hizmet portları"
 
 msgid "Services status"
-msgstr "Servis statüsü"
+msgstr "Hizmet durumu"
 
 msgid "Sessions"
-msgstr ""
+msgstr "Oturumlar"
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4427,17 +4417,17 @@ msgid "Settings saved."
 msgstr ""
 
 msgid "Shared mount point"
-msgstr ""
+msgstr "Paylaşılan bağlantı noktası"
 
 msgid "Show"
 msgstr "Göster"
 
 #, php-format
 msgid "Show %s records per page"
-msgstr ""
+msgstr "Sayfa başına %s kayıt"
 
 msgid "Show HTML output compression size comment"
-msgstr ""
+msgstr "HTML çıktısı sıkıştırma boyutu açıklamasını göster"
 
 msgid "Show SSL certificate"
 msgstr ""
@@ -4451,24 +4441,24 @@ msgid ""
 "(Development)"
 msgstr ""
 
-msgid "Show detailed statistics for this domain"
-msgstr ""
-
 msgid "Show detailed statistics for this reseller"
+msgstr "Bayi için detaylı istatistikleri göster"
+
+msgid "Show detailed statistics for this user"
 msgstr ""
 
 msgid "Show in"
 msgstr "Şurada Göster"
 
 msgid "Show labels for main menu links"
-msgstr ""
+msgstr "Ana menü başlıklarında metni göster"
 
 #, php-format
 msgid "Showing %s to %s of %s records"
-msgstr ""
+msgstr "%s ile %s arası gösteriliyor. Toplam %s kayıt"
 
 msgid "Showing 0 to 0 of 0 records"
-msgstr ""
+msgstr "0 ile 0 arası gösteriliyor. Toplam 0 kayıt"
 
 msgid "Size"
 msgstr "Boyut"
@@ -4504,7 +4494,7 @@ msgid "Software installation"
 msgstr "Yazılım yükleme"
 
 msgid "Software installer"
-msgstr ""
+msgstr "Yazılım kurucusu"
 
 msgid "Software installer options"
 msgstr ""
@@ -4516,7 +4506,7 @@ msgid "Software installer requires PHP support."
 msgstr ""
 
 msgid "Software instance has been scheduled for installation"
-msgstr ""
+msgstr "Yazılım örneği kurulum için işleme alındı."
 
 msgid "Software management"
 msgstr ""
@@ -4540,7 +4530,7 @@ msgid "Software status"
 msgstr ""
 
 msgid "Software successfully scheduled for deletion."
-msgstr ""
+msgstr "Yazılım silinmek için işleme alındı."
 
 msgid "Software total"
 msgstr "Yazılım toplam"
@@ -4577,7 +4567,7 @@ msgid ""
 msgstr ""
 
 msgid "Sql user successfully deleted."
-msgstr ""
+msgstr "SQL kullanıcısı silindi."
 
 msgid "Start installation"
 msgstr ""
@@ -4586,7 +4576,7 @@ msgid "State"
 msgstr ""
 
 msgid "State/Province"
-msgstr "Servis"
+msgstr "Bölge/İlçe"
 
 msgid "Statistics"
 msgstr "İstatistikler"
@@ -4618,18 +4608,18 @@ msgid "Subdomain %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Subdomain alias"
-msgstr "Subdomain postaları"
+msgstr "Subdomain alias"
 
 msgid "Subdomain alias errors"
 msgstr ""
 
 msgid "Subdomain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "Subdomain alias silinmek için işleme alındı."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
 "them first."
-msgstr ""
+msgstr "Kaldırmaya çalıştığınız subdomain aliasında FTP hesabı var. Önce FTP hesabını kaldırmalısınız."
 
 msgid "Subdomain errors"
 msgstr "Subdomain hataları"
@@ -4638,7 +4628,7 @@ msgid "Subdomain forward"
 msgstr ""
 
 msgid "Subdomain limit"
-msgstr ""
+msgstr "Subdomain limiti"
 
 msgid "Subdomain mail"
 msgstr ""
@@ -4650,17 +4640,17 @@ msgid "Subdomain name is not valid."
 msgstr ""
 
 msgid "Subdomain successfully scheduled for addition."
-msgstr ""
+msgstr "Subdomain aklenmek için işleme alındı."
 
 msgid "Subdomain successfully scheduled for deletion."
-msgstr ""
+msgstr "Subdomain silinmek için işleme alındı."
 
 msgid "Subdomain successfully scheduled for update"
-msgstr ""
+msgstr "Subdomain güncellenmek için işleme alındı."
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
+msgstr "Kaldırmaya çalıştığınız subdomainde FTP hesabı var. Önce FTP hesabını kaldırmalısınız."
 
 msgid ""
 "Subdomain you are trying to remove has email accounts. Please remove them "
@@ -4672,7 +4662,7 @@ msgid ""
 msgstr ""
 
 msgid "Subdomains"
-msgstr "Subdomain"
+msgstr "Subdomainler"
 
 msgid "Subject"
 msgstr "Konu"
@@ -4690,13 +4680,13 @@ msgid "Support system"
 msgstr "Destek sistemi"
 
 msgid "Suspended"
-msgstr "Şüpheli"
+msgstr "Duraklatılmış"
 
 msgid "Swap"
 msgstr "Takas"
 
 msgid "Switch"
-msgstr "Geç"
+msgstr "Oturum Aç"
 
 msgid "Switch to the backups directory"
 msgstr ""
@@ -4730,7 +4720,7 @@ msgid "System under maintenance"
 msgstr ""
 
 msgid "TB"
-msgstr ""
+msgstr "TB"
 
 msgid "TTL"
 msgstr "TTL"
@@ -4742,7 +4732,7 @@ msgid "TXT data"
 msgstr ""
 
 msgid "TXT field is empty or invalid."
-msgstr ""
+msgstr "TXT alanı boş veya geçersiz."
 
 msgid "Target"
 msgstr ""
@@ -4751,10 +4741,10 @@ msgid "Target domain"
 msgstr ""
 
 msgid "Target host"
-msgstr "hedef host"
+msgstr "Hedef sunucu"
 
 msgid "Target port"
-msgstr "Server portları"
+msgstr "Hedef port"
 
 msgid "Template for Auto email successfully updated."
 msgstr ""
@@ -4784,7 +4774,7 @@ msgstr ""
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already <strong>%d</strong> %s."
-msgstr ""
+msgstr "Müşteri için %s limiti 'devre dışı' seçilemez çünkü müşteride <strong>%d</strong> %s mevcut."
 
 #, php-format
 msgid ""
@@ -4810,7 +4800,7 @@ msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr ""
 
 msgid "The `Enter` key is disabled for performance reasons."
-msgstr ""
+msgstr "`Enter` tuşu performans sebepleri ile devre dışıdır."
 
 #, php-format
 msgid ""
@@ -4896,7 +4886,7 @@ msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
-msgstr "Bu IP (%s) herhangi bir ağ kartına atanan değil!"
+msgstr "Bu IP (%s) herhangi bir ağ kartına atanmamış!"
 
 #, php-format
 msgid ""
@@ -4932,7 +4922,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
-msgstr ""
+msgstr "SQL kullanıcısının sunucuya bağlanacağı istemci adı. Tüm istemcilerden bağlanmak istiyorsanız %s joker karakterini kullanın."
 
 msgid "This package already exists in the administrator software repository."
 msgstr ""
@@ -4964,10 +4954,10 @@ msgid ""
 msgstr ""
 
 msgid "This user name already exist."
-msgstr "Bu kullanıcı adı kullanılmakta."
+msgstr "Kullanıcı adı mevcut."
 
 msgid "TiB"
-msgstr ""
+msgstr "TiB"
 
 msgid "Ticket Information"
 msgstr ""
@@ -4976,7 +4966,7 @@ msgid "Ticket information"
 msgstr ""
 
 msgid "Ticket not found."
-msgstr "."
+msgstr "Talep bulunamadı."
 
 msgid "Ticket successfully closed."
 msgstr ""
@@ -5005,20 +4995,20 @@ msgid "Total"
 msgstr "Toplam"
 
 msgid "Total Domains"
-msgstr "Toplam Alanlar"
+msgstr "Toplam Domain"
 
 msgid "Total Software"
-msgstr "Yazılım toplam"
+msgstr "Toplam Yazılım"
 
 msgid "Total Web software repositories"
 msgstr ""
 
 msgid "Total installations"
-msgstr "Toplam yüklü yazılımlar"
+msgstr "Toplam Kurulum"
 
 #, php-format
 msgid "Total mails: %s / %s %s"
-msgstr ""
+msgstr "Toplam eposta: %s / %s %s"
 
 msgid "Total packages in Web software repository"
 msgstr ""
@@ -5027,10 +5017,13 @@ msgid "Total reseller"
 msgstr ""
 
 msgid "Total software"
-msgstr "Yazılım toplam"
+msgstr "Toplam yazılım"
 
 msgid "Traffic"
 msgstr "Trafik"
+
+msgid "Traffic statistics"
+msgstr ""
 
 msgid "Traffic usage"
 msgstr "Trafik kullanımı"
@@ -5045,16 +5038,16 @@ msgid "UP"
 msgstr "ÇALIŞIYOR"
 
 msgid "URL forwarding"
-msgstr ""
+msgstr "URL yönlendirmesi"
 
 msgid "URL port"
-msgstr ""
+msgstr "Bağlantı portu"
 
 msgid "URL protocol"
-msgstr "Protokol"
+msgstr "Bağlantı protokolü"
 
 msgid "URL to this admin panel"
-msgstr "Bu yönetici paneline URL"
+msgstr "Yönetim paneli bağlantısı"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5070,7 +5063,7 @@ msgstr ""
 
 msgid ""
 "Unable to connect to the selected database using the selected SQL user."
-msgstr ""
+msgstr "Seçilen SQL kullanıcısı ile seçilen veritabanına bağlanılamadı."
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5192,7 +5185,7 @@ msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
 msgid "Unauthorized"
-msgstr ""
+msgstr "Yetkisiz"
 
 msgid "Unavailable"
 msgstr ""
@@ -5219,10 +5212,10 @@ msgid "Unknown Error"
 msgstr "Bilinmeyen hata"
 
 msgid "Unknown FTP user."
-msgstr ""
+msgstr "Bilinmeyen FTP kullanıcısı."
 
 msgid "Unknown SQL user"
-msgstr ""
+msgstr "Bilinmeyen SQL kullanıcısı"
 
 msgid "Unknown action requested."
 msgstr ""
@@ -5239,10 +5232,10 @@ msgid "Unknown language name."
 msgstr ""
 
 msgid "Unknown layout color."
-msgstr ""
+msgstr "Bilinmeyen görünüm rengi."
 
 msgid "Unknown reason."
-msgstr ""
+msgstr "Bilinmeyen sebep."
 
 #, php-format
 msgid "Unknown service name '%s'."
@@ -5252,37 +5245,37 @@ msgid "Unknown status"
 msgstr ""
 
 msgid "Unknown type."
-msgstr ""
+msgstr "Bilinmeyen tip."
 
 msgid "Unknown user type"
 msgstr ""
 
 msgid "Unknown username."
-msgstr ""
+msgstr "Bilinmeyen kullanıcı."
 
 msgid "Unlimited"
-msgstr ""
+msgstr "Limitsiz"
 
 msgid "Unprotect it"
-msgstr "Koruma alanını kaldır"
+msgstr "Korunan alanı kaldır"
 
 msgid "Update"
-msgstr "Güncelleme"
+msgstr "Güncelle"
 
 msgid "Update Plugins"
 msgstr ""
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "SQL kullanıcı şifresini güncelle"
 
 msgid "Update data"
-msgstr "Veri güncelle"
+msgstr "Veriyi güncelle"
 
 msgid "Update from Web software repository"
 msgstr ""
 
 msgid "Update from web depot"
-msgstr "Web depodan güncelleme"
+msgstr "Web depodan güncelle"
 
 msgid "Update in progress..."
 msgstr ""
@@ -5296,19 +5289,19 @@ msgid ""
 msgstr ""
 
 msgid "Update password"
-msgstr ""
+msgstr "Şifreyi güncelle"
 
 msgid "Updates"
-msgstr ""
+msgstr "Güncellemeler"
 
 msgid "Upload"
-msgstr "Gönder"
+msgstr "Yükle"
 
 msgid "Upload logo"
 msgstr "Logo yükle"
 
 msgid "Upload now"
-msgstr "Şimdi yükleyin"
+msgstr "Şimdi yükle"
 
 msgid "Uptime"
 msgstr ""
@@ -5317,7 +5310,7 @@ msgid "Usage of dot in domain name labels is prohibited."
 msgstr ""
 
 msgid "Usage status"
-msgstr ""
+msgstr "Kullanım durumu"
 
 msgid "Use normal connection (No SSL)"
 msgstr ""
@@ -5326,13 +5319,13 @@ msgid "Use secure connection (SSL)"
 msgstr ""
 
 msgid "Use strong Passwords"
-msgstr "Zor şifreler kullanınız"
+msgstr "Güçlü şifreler kullan"
 
 msgid "Used"
 msgstr "Kullanılan"
 
 msgid "Used database"
-msgstr ""
+msgstr "Kullanılan veritabanı"
 
 msgid "User"
 msgstr "Kullanıcı"
@@ -5341,10 +5334,10 @@ msgid "User (first and last) name"
 msgstr "Kullanıcı adı soyadı"
 
 msgid "User assignment"
-msgstr "Kullanıcı atanması"
+msgstr "Kullanıcı ataması"
 
 msgid "User auth"
-msgstr "Oluşturan kullanıcı"
+msgstr "Kullanıcı yetkilendirmesi"
 
 msgid "User data successfully updated"
 msgstr ""
@@ -5353,7 +5346,7 @@ msgid "User data successfully updated."
 msgstr ""
 
 msgid "User data were not updated."
-msgstr ""
+msgstr "Kullanıcı bilgisi güncellenemedi."
 
 msgid "User data were successfully updated."
 msgstr ""
@@ -5363,27 +5356,30 @@ msgid ""
 msgstr ""
 
 msgid "User errors"
-msgstr ""
+msgstr "Kullanıcı hataları"
 
 msgid "User has not been deleted."
 msgstr ""
 
 msgid "User login (system) name"
-msgstr "Kullanıcı giriş(sistem)adı"
+msgstr "Kullanıcı giriş (sistem) adı"
 
 msgid "User password"
 msgstr "Kullanıcı şifresi"
 
 msgid "User real (first and last) name"
-msgstr "Kullanıcı ad soyad"
+msgstr "Kullanıcı adı soyadı"
 
 msgid "User scheduled for deletion."
-msgstr ""
+msgstr "Kullanıcı silinmek için işleme alındı."
 
 msgid "User session successfully destroyed."
 msgstr ""
 
 msgid "User session successfully killed for password change."
+msgstr ""
+
+msgid "User statistics"
 msgstr ""
 
 msgid "User successfully disconnected."
@@ -5402,13 +5398,13 @@ msgid "Username and password for application login"
 msgstr ""
 
 msgid "Username is too long."
-msgstr ""
+msgstr "Kullanıcı adı çok uzun"
 
 msgid "Users"
 msgstr "Kullanıcılar"
 
 msgid "Users and groups"
-msgstr ""
+msgstr "Kullanıcılar ve gruplar"
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5425,7 +5421,7 @@ msgid ""
 msgstr ""
 
 msgid "Values"
-msgstr ""
+msgstr "Değerler"
 
 msgid "Vendor hompage"
 msgstr ""
@@ -5440,10 +5436,10 @@ msgid "View"
 msgstr "Görünüm"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "SSL sertifikasını göster"
 
 msgid "View Support Ticket"
-msgstr ""
+msgstr "Destek Talebini Göster"
 
 msgid "View aliases"
 msgstr "Aliasları göster"
@@ -5452,13 +5448,13 @@ msgid "View hosting plan"
 msgstr "Hosting planlarını göster"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Talebi göster"
 
 msgid "Visit plugin site"
 msgstr ""
 
 msgid "Warning traffic"
-msgstr ""
+msgstr "Trafik uyarısı"
 
 msgid "Warnings and Errors"
 msgstr "Uyarılar ve Hatalar"
@@ -5469,13 +5465,13 @@ msgid ""
 msgstr ""
 
 msgid "Web Statistics"
-msgstr ""
+msgstr "Web İstatistikleri"
 
 msgid "Web files only"
 msgstr ""
 
 msgid "Web folder protection"
-msgstr ""
+msgstr "Web klasörleri koruması"
 
 msgid "Web in"
 msgstr "Web gelen"
@@ -5499,7 +5495,7 @@ msgid "Web statistics"
 msgstr "Web istatistikleri"
 
 msgid "Web traffic"
-msgstr "Web trafiği"
+msgstr "Web Trafiği"
 
 msgid "Webmail"
 msgstr "Webposta"
@@ -5508,7 +5504,7 @@ msgid "Webtools"
 msgstr "Web araçları"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "Aktivasyon mesajı"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
@@ -5537,7 +5533,7 @@ msgid "Wildcards such as 's%' and 's%' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
-msgstr ""
+msgstr "Hatalı IP adresi."
 
 msgid "Wrong mail syntax in forward list."
 msgstr ""
@@ -5549,7 +5545,7 @@ msgid "Wrong reseller id."
 msgstr "Yanlış Bayi ID'si"
 
 msgid "Wrong security code"
-msgstr ""
+msgstr "Hatalı güvenlik kodu."
 
 msgid "Wrong software id."
 msgstr "Yanlış yazılım kimliği."
@@ -5568,7 +5564,7 @@ msgid "Wrong user level provided."
 msgstr ""
 
 msgid "Wrong username."
-msgstr ""
+msgstr "Hatalı kullanıcı adı."
 
 msgid "Wrong value for the PHP open_basedir directive."
 msgstr ""
@@ -5577,7 +5573,7 @@ msgid "XML file URL for the Web software repository"
 msgstr ""
 
 msgid "YB"
-msgstr ""
+msgstr "YB"
 
 msgid "Year"
 msgstr "Yıl"
@@ -5590,10 +5586,10 @@ msgid ""
 msgstr ""
 
 msgid "Yes, delete this account."
-msgstr ""
+msgstr "Evet, kullanıcıyı sil."
 
 msgid "YiB"
-msgstr ""
+msgstr "YiB"
 
 msgid "You are exceeding the monthly server traffic limit."
 msgstr ""
@@ -5602,16 +5598,16 @@ msgid "You are exceeding you domain alias limit."
 msgstr ""
 
 msgid "You are exceeding your FTP account limit."
-msgstr ""
+msgstr "FTP hesap limitini geçiyorsunuz."
 
 msgid "You are exceeding your SQL database limit."
-msgstr ""
+msgstr "SQL veritabanı limitini geçiyorsunuz."
 
 msgid "You are exceeding your SQL user limit."
-msgstr ""
+msgstr "SQL kullanıcı limitini geçiyorsunuz."
 
 msgid "You are exceeding your disk space limit."
-msgstr ""
+msgstr "Disk alanınızı aşıyorsunuz."
 
 msgid "You are exceeding your email account limit."
 msgstr ""
@@ -5629,7 +5625,7 @@ msgid "You are not allowed to update a protected plugin."
 msgstr ""
 
 msgid "You can only upload images."
-msgstr ""
+msgstr "Sadece resim yükleyebilirsiniz."
 
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
@@ -5649,7 +5645,7 @@ msgstr ""
 
 #, php-format
 msgid "You cannot forward %s on itself."
-msgstr ""
+msgstr "%s kendine yönlendirilemez."
 
 #, php-format
 msgid ""
@@ -5665,7 +5661,7 @@ msgstr ""
 
 #, php-format
 msgid "You cannot remove the %s IP address."
-msgstr ""
+msgstr "%s IP adresini kaldıramazsınız."
 
 msgid "You cannot remove this entry."
 msgstr ""
@@ -5680,7 +5676,7 @@ msgid "You do not have DNS resource records."
 msgstr ""
 
 msgid "You do not have FTP accounts."
-msgstr ""
+msgstr "FTP hesabınız yok."
 
 msgid "You do not have any software uploaded yet"
 msgstr ""
@@ -5689,10 +5685,10 @@ msgid "You do not have customers."
 msgstr ""
 
 msgid "You do not have databases."
-msgstr ""
+msgstr "Veritabanınız yok."
 
 msgid "You do not have domain aliases."
-msgstr ""
+msgstr "Domain aliasınız yok."
 
 msgid "You do not have permission to install software yet"
 msgstr ""
@@ -5701,10 +5697,10 @@ msgid "You do not have permissions to upload software"
 msgstr ""
 
 msgid "You do not have protected areas."
-msgstr ""
+msgstr "Korunan alan yok."
 
 msgid "You do not have subdomains."
-msgstr ""
+msgstr "Subdomaininiz yok."
 
 msgid "You do not have sufficient permissions to perform this operation."
 msgstr ""
@@ -5716,17 +5712,17 @@ msgstr ""
 msgid ""
 "You have a FTP account limit!<br />You cannot add a user with unlimited FTP "
 "accounts."
-msgstr ""
+msgstr "FTP hesap limitiniz var!<br />Limitsiz FTP hesabına sahip bir kullanıcı oluşturamazsınız."
 
 msgid ""
 "You have a SQL database limit.<br />You cannot add a user with unlimited SQL"
 " databases."
-msgstr ""
+msgstr "SQL veritabanı limitiniz var.<br />Limitsiz SQL veritabanı hakkı olan bir kullanıcı ekleyemezsiniz."
 
 msgid ""
 "You have a SQL user limit.<br />You cannot add a user with unlimited SQL "
 "users."
-msgstr ""
+msgstr "SQL kullanıcı limitiniz var.<br />Limitsiz SQL kullanıcısı hakkı olan bir kullanıcı ekleyemezsiniz."
 
 msgid ""
 "You have a disk space limit.<br />You cannot add a user with unlimited disk "
@@ -5754,21 +5750,21 @@ msgid ""
 msgstr ""
 
 msgid "You have been successfully logged out."
-msgstr ""
+msgstr "Çıkış yaptınız."
 
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
 "users here."
-msgstr ""
+msgstr "Kullanıcı için SQL veritabanını devre dışı bırakmışsınız. SQL kullanıcısı ekleyemezsiniz."
 
 msgid "You have no closed tickets."
-msgstr ""
+msgstr "Kapalı talebiniz yok."
 
 msgid "You have no groups."
 msgstr ""
 
 msgid "You have no open tickets."
-msgstr ""
+msgstr "Açık talebiniz yok."
 
 msgid "You have not service ports defined."
 msgstr ""
@@ -5789,17 +5785,17 @@ msgid ""
 msgstr ""
 
 msgid "You have reached your domain limit.<br />You cannot add more domains."
-msgstr ""
+msgstr "Domain limitinize ulaştınız.<br />Daha fazla domain ekleyemezsiniz."
 
 #, php-format
 msgid "You have received %s new support ticket(s)."
 msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
-msgstr "Dosya-upload veya wget-fonksiyon arasında seçim yapmak zorundasınız."
+msgstr "Dosya-yükle veya wget-fonksiyon arasında seçim yapmak zorundasınız."
 
 msgid "You must assign at least one IP per reseller."
-msgstr ""
+msgstr "Bayiye en az bir IP atamalısınız."
 
 msgid "You must choose between local and remote upload."
 msgstr ""
@@ -5811,16 +5807,16 @@ msgid "You must confirm your password."
 msgstr ""
 
 msgid "You must enter a domain alias name."
-msgstr ""
+msgstr "Domain alias ismini girmelisiniz."
 
 msgid "You must enter a subdomain name."
 msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
-msgstr ""
+msgstr "Öncelikle \"Oluştur\" düğmesine basarak bir şifre oluşturmalısınız."
 
 msgid "You must omit 'www'. It will be added automatically."
-msgstr ""
+msgstr "www olmadan yazmalısınız. Otomatik olarak eklenecektir."
 
 msgid "You must provide a password."
 msgstr ""
@@ -5829,7 +5825,7 @@ msgid "You must select a file to upload."
 msgstr ""
 
 msgid "You must select a file to upload/download."
-msgstr "Upload / download için bir dosya seçmelisiniz."
+msgstr "Yükleme/indirme için bir dosya seçmelisiniz."
 
 msgid "You must select a least one item to deactivate."
 msgstr ""
@@ -5868,10 +5864,10 @@ msgstr ""
 msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
-msgstr ""
+msgstr "Hesabınız bakım durumunda veya devre dışı. Bayiniz ile iletişime geçin."
 
 msgid "Your consumption"
-msgstr ""
+msgstr "Kullanımınız"
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
@@ -5882,13 +5878,13 @@ msgid "Your message"
 msgstr "Mesajınız"
 
 msgid "Your message has been successfully sent."
-msgstr ""
+msgstr "Mesajınız başarıyla gönderildi."
 
 msgid "Your new i-MSCP login"
-msgstr ""
+msgstr "Yeni i-MSCP kullanıcınız"
 
 msgid "Your new password"
-msgstr ""
+msgstr "Yeni şifreniz"
 
 msgid "Your new password has been sent. Check your email."
 msgstr ""
@@ -5906,34 +5902,34 @@ msgid ""
 msgstr ""
 
 msgid "ZB"
-msgstr ""
+msgstr "ZB"
 
 msgid "ZiB"
-msgstr ""
+msgstr "ZiB"
 
 msgid "Zip"
-msgstr ""
+msgstr "PK"
 
 msgid "Zip code"
-msgstr ""
+msgstr "Posta kodu"
 
 msgid "Zip/Postal code"
 msgstr "Posta kodu"
 
 msgid "[New]"
-msgstr ""
+msgstr "[Yeni]"
 
 msgid "[Re]"
-msgstr ""
+msgstr "[Ynt]"
 
 msgid "[Ticket]"
-msgstr ""
+msgstr "[Talep]"
 
 msgid "_: Localised language"
 msgstr "Türkçe - Turkish"
 
 msgid "activated"
-msgstr ""
+msgstr "aktif"
 
 msgid "activated (Softwaredepot)"
 msgstr ""
@@ -5942,19 +5938,19 @@ msgid "addition"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "ve"
 
 msgid "day"
-msgstr ""
+msgstr "gün"
 
 msgid "days"
-msgstr ""
+msgstr "gün"
 
 msgid "deleting"
-msgstr ""
+msgstr "siliniyor"
 
 msgid "disabled"
-msgstr ""
+msgstr "devre dışı"
 
 msgid "disk space"
 msgstr ""
@@ -5975,13 +5971,13 @@ msgid "domains"
 msgstr "Domain"
 
 msgid "email account"
-msgstr ""
+msgstr "eposta hesabı"
 
 msgid "email accounts"
 msgstr ""
 
 msgid "enabled"
-msgstr ""
+msgstr "aktif"
 
 msgid "everything"
 msgstr "hepsi"
@@ -6020,10 +6016,10 @@ msgid "i-MSCP / Software Installer / Management"
 msgstr ""
 
 msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP Daemon araçları"
+msgstr "i-MSCP Hizmet araçları"
 
 msgid "i-MSCP Notice"
-msgstr ""
+msgstr "i-MSCP Bilgi"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr ""
@@ -6038,37 +6034,37 @@ msgid "i-MSCP updates"
 msgstr "i-MSCP güncellemeleri"
 
 msgid "i-MSCP version update checking is disabled"
-msgstr ""
+msgstr "i-MSCP sürüm kontrolü devre dışı"
 
 msgid "installed"
-msgstr ""
+msgstr "kuruldu"
 
 msgid "installing"
-msgstr ""
+msgstr "kuruluyor"
 
 msgid "internet Multi Server Control Panel"
-msgstr "İnternet Multi Server Kontrol Paneli"
+msgstr "İnternet Çoklu Sunucu Kontrol Paneli"
 
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 msgid "kiB"
-msgstr ""
+msgstr "kiB"
 
 msgid "mail"
-msgstr ""
+msgstr "eposta"
 
 msgid "mail accounts"
-msgstr ""
+msgstr "eposta hesapları"
 
 msgid "missing alias"
 msgstr "eksik alias"
 
 msgid "missing domain"
-msgstr "Domain eksik"
+msgstr "eksik domain"
 
 msgid "n\\a"
-msgstr "Kullanılamaz"
+msgstr "devre dışı"
 
 msgid "no"
 msgstr "hayır"
@@ -6077,7 +6073,7 @@ msgid "not available"
 msgstr "mevcut değil"
 
 msgid "not required"
-msgstr ""
+msgstr "gerekli değil"
 
 msgid "older than 1 month"
 msgstr "1 aydan eski"
@@ -6099,19 +6095,19 @@ msgid "or remote file (Max: %s)"
 msgstr ""
 
 msgid "order"
-msgstr ""
+msgstr "sipariş"
 
 msgid "orders"
 msgstr ""
 
 msgid "orphan entry"
-msgstr "yetim giriş"
+msgstr "sahipsiz giriş"
 
 msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "required"
-msgstr ""
+msgstr "gerekli"
 
 msgid "subdomain"
 msgstr "Subdomain"
@@ -6123,7 +6119,7 @@ msgid "tcp"
 msgstr "tcp"
 
 msgid "traffic"
-msgstr "Trafik"
+msgstr "trafik"
 
 msgid "udp"
 msgstr "udp"
@@ -6132,7 +6128,7 @@ msgid "unlimited"
 msgstr "limitsiz"
 
 msgid "update"
-msgstr ""
+msgstr "güncelle"
 
 msgid "view aliases"
 msgstr "aliasları göster"
@@ -6150,6 +6146,9 @@ msgid "{ADMIN} activated your software package"
 msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
+msgstr ""
+
+msgid "{USERNAME} user statistics"
 msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

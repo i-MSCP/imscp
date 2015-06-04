@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/i-MSCP/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -759,12 +759,12 @@ msgstr ""
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr ""
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
 msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
 msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
@@ -1639,13 +1639,13 @@ msgstr ""
 msgid "Customer account summary"
 msgstr ""
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr ""
 
 msgid "Customer level"
-msgstr ""
-
-msgid "Customer statistics"
 msgstr ""
 
 msgid "Customer successfully scheduled for addition."
@@ -1661,9 +1661,6 @@ msgid "Customer(s) successfully moved."
 msgstr ""
 
 msgid "Customers"
-msgstr ""
-
-msgid "Customers assignment"
 msgstr ""
 
 msgid "Customize error pages for your domain."
@@ -2040,9 +2037,6 @@ msgstr ""
 msgid "Domain new expiration date"
 msgstr ""
 
-msgid "Domain not found."
-msgstr ""
-
 msgid "Domain overview"
 msgstr ""
 
@@ -2051,9 +2045,6 @@ msgstr ""
 
 msgid "Domain statistics"
 msgstr "Thống kê tên miền"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr ""
 
 msgid "Domain status is not ok."
 msgstr ""
@@ -2628,6 +2619,9 @@ msgstr ""
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr ""
 
@@ -2656,6 +2650,9 @@ msgid "Import"
 msgstr ""
 
 msgid "Import in local repository"
+msgstr ""
+
+msgid "Import new language file"
 msgstr ""
 
 msgid ""
@@ -2895,9 +2892,6 @@ msgid "Last name cannot have more than 200 characters."
 msgstr ""
 
 msgid "Last reply date"
-msgstr ""
-
-msgid "Last translator"
 msgstr ""
 
 msgid "Layout"
@@ -3224,12 +3218,6 @@ msgstr ""
 msgid "No database update available."
 msgstr ""
 
-msgid "No domain statistics to display for this reseller."
-msgstr ""
-
-msgid "No domain statistics to display."
-msgstr ""
-
 msgid "No errors"
 msgstr ""
 
@@ -3255,9 +3243,6 @@ msgid "No reseller accounts found."
 msgstr ""
 
 msgid "No reseller available to add the permissions."
-msgstr ""
-
-msgid "No reseller statistics to display."
 msgstr ""
 
 msgid "No reseller with activated software installer found!"
@@ -3463,6 +3448,9 @@ msgid "PHP exec() function"
 msgstr ""
 
 msgid "PHP settings"
+msgstr ""
+
+msgid "POP3/IMAP"
 msgstr ""
 
 msgid "POP3/IMAP in"
@@ -4089,7 +4077,7 @@ msgstr ""
 msgid "Reseller / Statistics / Overview"
 msgstr ""
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
 msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
@@ -4124,6 +4112,9 @@ msgstr ""
 
 msgid "Reseller assignment"
 msgstr "Phân công cho nhà phân phối"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr ""
@@ -4171,9 +4162,6 @@ msgid "Resellers"
 msgstr "Nhà phân phối"
 
 msgid "Resellers and customers"
-msgstr ""
-
-msgid "Resellers assignment"
 msgstr ""
 
 msgid "Reset"
@@ -4450,10 +4438,10 @@ msgid ""
 "(Development)"
 msgstr ""
 
-msgid "Show detailed statistics for this domain"
+msgid "Show detailed statistics for this reseller"
 msgstr ""
 
-msgid "Show detailed statistics for this reseller"
+msgid "Show detailed statistics for this user"
 msgstr ""
 
 msgid "Show in"
@@ -5031,6 +5019,9 @@ msgstr ""
 msgid "Traffic"
 msgstr "Băng thông"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr ""
 
@@ -5383,6 +5374,9 @@ msgid "User session successfully destroyed."
 msgstr ""
 
 msgid "User session successfully killed for password change."
+msgstr ""
+
+msgid "User statistics"
 msgstr ""
 
 msgid "User successfully disconnected."
@@ -6149,6 +6143,9 @@ msgid "{ADMIN} activated your software package"
 msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
+msgstr ""
+
+msgid "{USERNAME} user statistics"
 msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -762,12 +762,12 @@ msgstr ""
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr ""
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
 msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
 msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
@@ -1642,14 +1642,14 @@ msgstr "Учетная запись клиента успешно обновле
 msgid "Customer account summary"
 msgstr ""
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr "Потребление клиента"
 
 msgid "Customer level"
 msgstr "Уровень клиента"
-
-msgid "Customer statistics"
-msgstr "Статистика клиента"
 
 msgid "Customer successfully scheduled for addition."
 msgstr ""
@@ -1665,9 +1665,6 @@ msgstr "Пользователь(и) успешно перемещены."
 
 msgid "Customers"
 msgstr "Клиенты"
-
-msgid "Customers assignment"
-msgstr "Назначение клиентов"
 
 msgid "Customize error pages for your domain."
 msgstr "Выберите страницы ошибок для Вашего домена."
@@ -2043,9 +2040,6 @@ msgstr ""
 msgid "Domain new expiration date"
 msgstr "Новая дата истечения домена."
 
-msgid "Domain not found."
-msgstr "Домен не найден."
-
 msgid "Domain overview"
 msgstr "Посмотр домена"
 
@@ -2054,9 +2048,6 @@ msgstr "Домен помечен для обновления."
 
 msgid "Domain statistics"
 msgstr "Статистика домену"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "Статистика домена - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "Статус домена не в порядке."
@@ -2631,6 +2622,9 @@ msgstr ""
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr ""
 
@@ -2660,6 +2654,9 @@ msgstr "Импорт"
 
 msgid "Import in local repository"
 msgstr "Импортировать"
+
+msgid "Import new language file"
+msgstr ""
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2899,9 +2896,6 @@ msgstr ""
 
 msgid "Last reply date"
 msgstr "Дата последнего ответа"
-
-msgid "Last translator"
-msgstr "Последний переводчик"
 
 msgid "Layout"
 msgstr "Макет"
@@ -3227,12 +3221,6 @@ msgstr "Не найдено учетных записей клиентов."
 msgid "No database update available."
 msgstr ""
 
-msgid "No domain statistics to display for this reseller."
-msgstr "Нет статистики доменов для отображения этому реселлеру."
-
-msgid "No domain statistics to display."
-msgstr "Нет статистики доменов для отображения."
-
 msgid "No errors"
 msgstr ""
 
@@ -3259,9 +3247,6 @@ msgstr "Не найдено учетных записей реселлеров"
 
 msgid "No reseller available to add the permissions."
 msgstr ""
-
-msgid "No reseller statistics to display."
-msgstr "Нет статистики реселлера для отображения."
 
 msgid "No reseller with activated software installer found!"
 msgstr "Не найдено реселлеров с активированным установщиком ПО"
@@ -3467,6 +3452,9 @@ msgstr "PHP exec() function"
 
 msgid "PHP settings"
 msgstr "Настройки PHP"
+
+msgid "POP3/IMAP"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP вх"
@@ -4092,7 +4080,7 @@ msgstr ""
 msgid "Reseller / Statistics / Overview"
 msgstr ""
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
 msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
@@ -4127,6 +4115,9 @@ msgstr "Реселлерский и клиентский уровень"
 
 msgid "Reseller assignment"
 msgstr "Призначення реселлера"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr "Затраты Реселлера"
@@ -4175,9 +4166,6 @@ msgstr "Реселлери"
 
 msgid "Resellers and customers"
 msgstr ""
-
-msgid "Resellers assignment"
-msgstr "Назначение реселлеров"
 
 msgid "Reset"
 msgstr "Скинути"
@@ -4453,11 +4441,11 @@ msgid ""
 "(Development)"
 msgstr "Показывать все ошибки, предупреждения и замечания, включая стандарты кодирования (Разработчику)"
 
-msgid "Show detailed statistics for this domain"
-msgstr "Показать детальную статистику для этого домена"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "Показать детальную статистику для этого реселлера"
+
+msgid "Show detailed statistics for this user"
+msgstr ""
 
 msgid "Show in"
 msgstr "Показати в"
@@ -5034,6 +5022,9 @@ msgstr "Всього ПЗ"
 msgid "Traffic"
 msgstr "Трафік"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "Использование трафика"
 
@@ -5387,6 +5378,9 @@ msgstr ""
 
 msgid "User session successfully killed for password change."
 msgstr "Сессия пользователя успешно завершена для смены пароля."
+
+msgid "User statistics"
+msgstr ""
 
 msgid "User successfully disconnected."
 msgstr ""
@@ -6153,6 +6147,9 @@ msgstr "{ADMIN} активировал Ваш пакет ПО"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} загрузил новый пакет ПО"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""

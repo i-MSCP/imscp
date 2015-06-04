@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -762,13 +762,13 @@ msgstr "Admin / Statystyki / Użycie IP"
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr "Admin / Statystyki / Statystyki Resellera"
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr "Admin / Statystyki / Statystyki Resellera / Statystyki Klienta"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
+msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
-msgstr "Admin / Statystyki / Statystyki Resellera / Statystyki Klienta / Statystyki Domeny"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
+msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Admin / Statystyki / Statystyki Serwera"
@@ -1003,7 +1003,7 @@ msgid "Anti-Rootkits Logs"
 msgstr "Logi oprogramowania Anti-Rootkit"
 
 msgid "Any"
-msgstr ""
+msgstr "Każdy"
 
 msgid "Application installer"
 msgstr "Instalator aplikacji."
@@ -1571,7 +1571,7 @@ msgid "Current password is invalid."
 msgstr "Obecne hasło jest nieprawidłowe."
 
 msgid "Custom DNS errors"
-msgstr ""
+msgstr "Błędy niestandardowego DNS"
 
 msgid "Custom DNS record"
 msgstr "Niestandardowy rekord DNS"
@@ -1642,14 +1642,14 @@ msgstr "Zmodyfikowano konto klienta."
 msgid "Customer account summary"
 msgstr "Podsumowanie konta klienta"
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr "Wykorzystanie klienta"
 
 msgid "Customer level"
 msgstr "Poziom klienta"
-
-msgid "Customer statistics"
-msgstr "Statystyki klienta"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Klient został pomyślnie zaplanowany do dodania."
@@ -1665,9 +1665,6 @@ msgstr "Użytkownik(cy) poprawnie przeniesieni."
 
 msgid "Customers"
 msgstr "Klienci"
-
-msgid "Customers assignment"
-msgstr "Przypisanie klienta"
 
 msgid "Customize error pages for your domain."
 msgstr "Zmień strony błędów dla Twojej domeny."
@@ -2043,9 +2040,6 @@ msgstr "Nazwa etykiety domeny nie może rozpoczynać się lub kończyć kropką.
 msgid "Domain new expiration date"
 msgstr "Nowa data wygaśnięcia domeny"
 
-msgid "Domain not found."
-msgstr "Nie znaleziono domeny."
-
 msgid "Domain overview"
 msgstr "Przegląd domeny"
 
@@ -2054,9 +2048,6 @@ msgstr "Domena zaplanowana do zmiany."
 
 msgid "Domain statistics"
 msgstr "Statystyki domeny"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "Statystyki domeny - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "Status domeny jest błędny."
@@ -2262,7 +2253,7 @@ msgstr "Włączone"
 
 #, php-format
 msgid "Enabled for: %s"
-msgstr ""
+msgstr "Włączone: %s"
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2631,6 +2622,9 @@ msgstr "Adres IP został zaplanowany do usunięcia."
 msgid "IP addresses under control of i-MSCP"
 msgstr "Adresy IP pod kontrolą i-MSCP"
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr "Zarządzanie IP"
 
@@ -2660,6 +2654,9 @@ msgstr "Import"
 
 msgid "Import in local repository"
 msgstr "Importuj w repozytorium lokalnym"
+
+msgid "Import new language file"
+msgstr ""
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2899,9 +2896,6 @@ msgstr "Nazwisko nie może zawierać więcej niż 200 znaków."
 
 msgid "Last reply date"
 msgstr "Ostatnia odpowiedź"
-
-msgid "Last translator"
-msgstr "Ostatni tłumacz"
 
 msgid "Layout"
 msgstr "Wygląd"
@@ -3227,12 +3221,6 @@ msgstr "Nie znaleziono kont klienta."
 msgid "No database update available."
 msgstr "Brak aktualizacji bazy danych"
 
-msgid "No domain statistics to display for this reseller."
-msgstr "Brak statystyk domeny do wyświetlenia dla tego resellera."
-
-msgid "No domain statistics to display."
-msgstr "Brak statystyk do wyświetlenia"
-
 msgid "No errors"
 msgstr "Brak błędów"
 
@@ -3259,9 +3247,6 @@ msgstr "Nie znaleziono kont resellera."
 
 msgid "No reseller available to add the permissions."
 msgstr "Brak resellera aby dodać uprawnienia."
-
-msgid "No reseller statistics to display."
-msgstr "Brak statystyk resellera do wyświetlenia."
 
 msgid "No reseller with activated software installer found!"
 msgstr "Nie znaleziono resellera z aktywnym instalatorem oprogramowania!"
@@ -3467,6 +3452,9 @@ msgstr "Funkcja exec() w PHP"
 
 msgid "PHP settings"
 msgstr "Ustawienia PHP"
+
+msgid "POP3/IMAP"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP przychodzące"
@@ -3708,7 +3696,7 @@ msgstr "Rozszerzenie %s nie może zostać zabezpieczone."
 
 #, php-format
 msgid "Plugin %s cannot be reconfigured."
-msgstr ""
+msgstr "Rozszerzenie %s nie może zostać przekonfigurowane."
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
@@ -3740,7 +3728,7 @@ msgstr "Rozszerzenie %s jest zabezpieczone."
 
 #, php-format
 msgid "Plugin %s reconfigured."
-msgstr ""
+msgstr "Rozszerzenie %s przekonfigurowane."
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
@@ -3818,7 +3806,7 @@ msgid "Plugin errors"
 msgstr "Błedy rozszerzenia"
 
 msgid "Plugin has been successfully uploaded."
-msgstr ""
+msgstr "Rozszerzenie zostało pomyślnie załadowane."
 
 msgid "Plugin item errors"
 msgstr "Błędy rozszerzenia"
@@ -3949,7 +3937,7 @@ msgid "Rebuild languages index"
 msgstr "Przebuduj indeks języków."
 
 msgid "Reconfiguration in progress..."
-msgstr ""
+msgstr "Przekonfigurowywanie w trakcie..."
 
 msgid "Record data"
 msgstr "Dane rekordu"
@@ -4092,8 +4080,8 @@ msgstr "Reseller / Statystyki / Użycie IP "
 msgid "Reseller / Statistics / Overview"
 msgstr "Reseller / Statystyki / Przegląd"
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
-msgstr "Reseller / Statystyki / Przegląd / Statystyki Domeny - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
+msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr "Reseller / Wsparcie / Zamknięte Zgłoszenia"
@@ -4127,6 +4115,9 @@ msgstr "Poziom resellera i klienta"
 
 msgid "Reseller assignment"
 msgstr "Przypisanie resellera"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr "Wykorzystanie resellera"
@@ -4175,9 +4166,6 @@ msgstr "Resellerzy"
 
 msgid "Resellers and customers"
 msgstr "Resellerzy i klienci"
-
-msgid "Resellers assignment"
-msgstr "Przypisanie resellera"
 
 msgid "Reset"
 msgstr "Wyczyść"
@@ -4453,11 +4441,11 @@ msgid ""
 "(Development)"
 msgstr "Wyświetl wszystkie błędy, ostrzeżenia i informacje, a także ostrzeżenia odnośnie kodowania (Developer)"
 
-msgid "Show detailed statistics for this domain"
-msgstr "Pokaż szczegółowe statystyki dla tej domeny"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "Pokaż szczegółowe statystyki dla tego resellera"
+
+msgid "Show detailed statistics for this user"
+msgstr ""
 
 msgid "Show in"
 msgstr "Pokaż w"
@@ -5034,6 +5022,9 @@ msgstr "Ogółem programów"
 msgid "Traffic"
 msgstr "Transfer"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "Wykorzystanie transferu"
 
@@ -5387,6 +5378,9 @@ msgstr "Sesja użytkownika została pomyślnie usunięta."
 
 msgid "User session successfully killed for password change."
 msgstr "Sesja użytkownika została pomyślnie zabita do zmiany hasła."
+
+msgid "User statistics"
+msgstr ""
 
 msgid "User successfully disconnected."
 msgstr "Użytkownik został pomyślnie odłączony."
@@ -5941,7 +5935,7 @@ msgid "activated (Softwaredepot)"
 msgstr "aktywowano (Repozytorium oprogramowania)"
 
 msgid "addition"
-msgstr ""
+msgstr "dodanie"
 
 msgid "and"
 msgstr "i"
@@ -5971,7 +5965,7 @@ msgid "domain aliases"
 msgstr "aliasy domen"
 
 msgid "domain data"
-msgstr ""
+msgstr "dane domeny"
 
 msgid "domains"
 msgstr "domeny"
@@ -6134,7 +6128,7 @@ msgid "unlimited"
 msgstr "bez limitu"
 
 msgid "update"
-msgstr ""
+msgstr "aktualizacja"
 
 msgid "view aliases"
 msgstr "przeglądaj aliasy"
@@ -6153,6 +6147,9 @@ msgstr "{ADMIN} aktywował twój pakiet w repozytorium"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} przesłał nowy pakiet do repozytorium"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 Zespół i-MSCP<br/>Wszystkie Prawa Zastrzeżone"

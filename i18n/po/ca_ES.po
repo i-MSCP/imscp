@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -764,13 +764,13 @@ msgstr "Admin / Estadístiques / us de IPs"
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr "Admin / Estadístiques / Estadístiques de distribuïdor"
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr "Admin / Estadístiques / Estadístiques de distribuïdor / Estadístiques de client"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
+msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
-msgstr "Admin / Estadístiques / Estadístiques de distribuïdor / Estadístiques de client / Estadístiques de domini"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
+msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Admin / Estadístiques / Estadístiques de servidor"
@@ -1644,14 +1644,14 @@ msgstr "El compte de client s'ha actualitzat correctament."
 msgid "Customer account summary"
 msgstr ""
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr "Consum del client"
 
 msgid "Customer level"
 msgstr "Nivell del client"
-
-msgid "Customer statistics"
-msgstr "Estadístiques del client"
 
 msgid "Customer successfully scheduled for addition."
 msgstr ""
@@ -1667,9 +1667,6 @@ msgstr "Client(s) mogut(s) amb èxit."
 
 msgid "Customers"
 msgstr "Clients"
-
-msgid "Customers assignment"
-msgstr "Assignació de clients"
 
 msgid "Customize error pages for your domain."
 msgstr "Personalitzar les pàgines d'error del seu domini."
@@ -2045,9 +2042,6 @@ msgstr ""
 msgid "Domain new expiration date"
 msgstr ""
 
-msgid "Domain not found."
-msgstr "No s'ha trobat el domini."
-
 msgid "Domain overview"
 msgstr "Detall del domini"
 
@@ -2056,9 +2050,6 @@ msgstr "Domini programat per a ésser actualitzat."
 
 msgid "Domain statistics"
 msgstr "Estadístiques de domini"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "Estadístiques del domini - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "L'estat del domini NO és OK"
@@ -2633,6 +2624,9 @@ msgstr ""
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr ""
 
@@ -2662,6 +2656,9 @@ msgstr "Importar"
 
 msgid "Import in local repository"
 msgstr "Importar al repositori local"
+
+msgid "Import new language file"
+msgstr ""
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2901,9 +2898,6 @@ msgstr ""
 
 msgid "Last reply date"
 msgstr "Última resposta"
-
-msgid "Last translator"
-msgstr "Últim traductor"
 
 msgid "Layout"
 msgstr "Presentació"
@@ -3229,12 +3223,6 @@ msgstr "No s'han trobat comptes de client."
 msgid "No database update available."
 msgstr ""
 
-msgid "No domain statistics to display for this reseller."
-msgstr "No hi ha estadístiques de domini per mostrar d'aquest distribuidor."
-
-msgid "No domain statistics to display."
-msgstr "No hi ha estadístiques de domini per mostrar."
-
 msgid "No errors"
 msgstr ""
 
@@ -3260,9 +3248,6 @@ msgid "No reseller accounts found."
 msgstr "No s'han trobat comptes de distribuïdor."
 
 msgid "No reseller available to add the permissions."
-msgstr ""
-
-msgid "No reseller statistics to display."
 msgstr ""
 
 msgid "No reseller with activated software installer found!"
@@ -3469,6 +3454,9 @@ msgstr "Funció PHP exec()"
 
 msgid "PHP settings"
 msgstr "Configuració del PHP"
+
+msgid "POP3/IMAP"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP entrada"
@@ -4094,7 +4082,7 @@ msgstr ""
 msgid "Reseller / Statistics / Overview"
 msgstr ""
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
 msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
@@ -4129,6 +4117,9 @@ msgstr "Nivells Distribuidor i Client"
 
 msgid "Reseller assignment"
 msgstr "Assignació distribuïdors"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr "Consum del distribuïdor"
@@ -4177,9 +4168,6 @@ msgstr "Distribuïdors"
 
 msgid "Resellers and customers"
 msgstr ""
-
-msgid "Resellers assignment"
-msgstr "Assignació de distribuïdor"
 
 msgid "Reset"
 msgstr "Reset"
@@ -4455,11 +4443,11 @@ msgid ""
 "(Development)"
 msgstr "Mostrar tots els errors, advertències i avisos incloent les d'estil (Desenvolupament)"
 
-msgid "Show detailed statistics for this domain"
-msgstr "Mostrar estadístiques detallades per aquest domini"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "Mostrar estadístiques detallades per aquest distribuidor"
+
+msgid "Show detailed statistics for this user"
+msgstr ""
 
 msgid "Show in"
 msgstr "Mostrar a"
@@ -5036,6 +5024,9 @@ msgstr "Total d'aplicacions"
 msgid "Traffic"
 msgstr "Trànsit"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "Ús de trànsit"
 
@@ -5389,6 +5380,9 @@ msgstr ""
 
 msgid "User session successfully killed for password change."
 msgstr "La sessió d'usuari ha estat eliminada pel canvi de contrasenya."
+
+msgid "User statistics"
+msgstr ""
 
 msgid "User successfully disconnected."
 msgstr ""
@@ -6155,6 +6149,9 @@ msgstr "{ADMIN} ha activat el teu paquet de programari"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha carregat un nou paquet de programari"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""

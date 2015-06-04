@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Damian Axel Xavier <dax@barrio-maritimo.com.ar>, 2011-2012,2015
+# Laurent Declercq <l.declercq@nuxwin.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -758,13 +759,13 @@ msgstr "Administrador / Estadísticas / Uso de IP"
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr "Administrador / Estadísticas / Estadísticas de Revendedor"
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr "Administrador / Estadísticas / Estadísticas de Revendedor / Estadísticas de Cliente"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
+msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
-msgstr "Administrador / Estadísticas / Estadísticas de Cliente / Estadísticas de Dominio"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
+msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Administrador / Estadísticas / Estadísticas de Servidor"
@@ -1638,14 +1639,14 @@ msgstr "Cuenta del cliente actualizada satisfactoriamente."
 msgid "Customer account summary"
 msgstr "Sumario Cuenta del Cliente"
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr "Consumo del Cliente"
 
 msgid "Customer level"
 msgstr "Nivel Cliente"
-
-msgid "Customer statistics"
-msgstr "Estadísticas de Cliente"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Cliente programado para ser añadido."
@@ -1661,9 +1662,6 @@ msgstr "Cliente(s) movido(s) satisfactoriamente."
 
 msgid "Customers"
 msgstr "Clientes"
-
-msgid "Customers assignment"
-msgstr "Asignación de clientes"
 
 msgid "Customize error pages for your domain."
 msgstr "Personalizar páginas de error para tu dominio."
@@ -2039,9 +2037,6 @@ msgstr "Las etiquetas de nombre de dominio no pueden comenzar ni finalizar con g
 msgid "Domain new expiration date"
 msgstr "Nueva fecha de vencimiento del dominio."
 
-msgid "Domain not found."
-msgstr "Dominio no hallado."
-
 msgid "Domain overview"
 msgstr "Resumen del Dominio"
 
@@ -2050,9 +2045,6 @@ msgstr "Dominio programado para su actualización."
 
 msgid "Domain statistics"
 msgstr "Estadisticas de dominio"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "Estadísticas del Dominio - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "El estado del dominio no es ok."
@@ -2627,6 +2619,9 @@ msgstr "Dirección IP programada para ser eliminada."
 msgid "IP addresses under control of i-MSCP"
 msgstr "Dirección IP bajo el control de i-MSCP"
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr "Administrar IP"
 
@@ -2656,6 +2651,9 @@ msgstr "Importar"
 
 msgid "Import in local repository"
 msgstr "Importar a repositorio local"
+
+msgid "Import new language file"
+msgstr ""
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2895,9 +2893,6 @@ msgstr "El Apellido no puede tener mas de 200 caracteres."
 
 msgid "Last reply date"
 msgstr "Última fecha de respuesta"
-
-msgid "Last translator"
-msgstr "Último traductor"
 
 msgid "Layout"
 msgstr "Diseño"
@@ -3223,12 +3218,6 @@ msgstr "No se encontraron cuentas de clientes."
 msgid "No database update available."
 msgstr "No hay actualizaciones de bases de datos disponibles."
 
-msgid "No domain statistics to display for this reseller."
-msgstr "No existen estadísticas de dominio para mostrar para este revendedor."
-
-msgid "No domain statistics to display."
-msgstr "No existen estadísticas para mostrar."
-
 msgid "No errors"
 msgstr "Sin errores"
 
@@ -3255,9 +3244,6 @@ msgstr "No se encontraron cuentas de revendedores."
 
 msgid "No reseller available to add the permissions."
 msgstr "No hay un revendedor disponible para añadir permisos."
-
-msgid "No reseller statistics to display."
-msgstr "No hay estadísticas de revendedor para mostrar."
 
 msgid "No reseller with activated software installer found!"
 msgstr "¡No se ha encontrado un revendedor con Instalador de software activado!"
@@ -3463,6 +3449,9 @@ msgstr "Función PHP exec()"
 
 msgid "PHP settings"
 msgstr "Configuraciones PHP"
+
+msgid "POP3/IMAP"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP entrante"
@@ -3792,7 +3781,7 @@ msgstr "Administrador de plugin: No se puede cargar el plugin %s"
 msgid ""
 "Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "Administrador de plugin: No se puede desinstalar el plugin %s. El plugin ha sido bloqueado por otro plugin."
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -4088,8 +4077,8 @@ msgstr "Revendedor / Estadísticas / Utilización de IP"
 msgid "Reseller / Statistics / Overview"
 msgstr "Revendedor / Estadísticas / Resumen"
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
-msgstr "Revendedor / Estadíticas / Resumen / Estadísticas de Dominio - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
+msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr "Revendedor / Soporte / Tickets Cerrados"
@@ -4123,6 +4112,9 @@ msgstr "Niveles de Revendedor y Cliente"
 
 msgid "Reseller assignment"
 msgstr "Asignar revendedor"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr "Consumo del Revendedor"
@@ -4171,9 +4163,6 @@ msgstr "Revendedores"
 
 msgid "Resellers and customers"
 msgstr "Revendedores y Clientes"
-
-msgid "Resellers assignment"
-msgstr "Asignación Revendedores"
 
 msgid "Reset"
 msgstr "Limpiar"
@@ -4449,11 +4438,11 @@ msgid ""
 "(Development)"
 msgstr "Mostrar todos los errores, advertencias y avisos incluyendo estándares de codificación (Desarrollo)"
 
-msgid "Show detailed statistics for this domain"
-msgstr "Mostrar estadísticas detalladas para este dominio"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "Mostrar estadísticas detalladas para este revendedor"
+
+msgid "Show detailed statistics for this user"
+msgstr ""
 
 msgid "Show in"
 msgstr "Ver contenido"
@@ -5030,6 +5019,9 @@ msgstr "Total software"
 msgid "Traffic"
 msgstr "Trafico"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "Trafico (uso)"
 
@@ -5383,6 +5375,9 @@ msgstr "Sesión de usuario eliminada satisfactoriamente."
 
 msgid "User session successfully killed for password change."
 msgstr "Sesión de usuario eliminada por cambio de contraseña."
+
+msgid "User statistics"
+msgstr ""
 
 msgid "User successfully disconnected."
 msgstr "Usuario desconectado satisfactoriamente."
@@ -6149,6 +6144,9 @@ msgstr "{ADMIN} ha activado tu paquete de software"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha subido un nuevo paquete de software"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 Equipo i-MSCP<br/>Todos los Derechos Reservados"

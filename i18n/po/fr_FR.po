@@ -5,6 +5,7 @@
 # Translators:
 # Alexandre B. <0xfuture@gmail.com>, 2013
 # coolternet <coolternet@live.ca>, 2012
+# i-MSCP <team@i-mscp.net>, 2015
 # kevinus60 <kevinus60@gmail.com>, 2013
 # krok <krok@totalynet.fr>, 2011-2013
 # Laurent Declercq <l.declercq@nuxwin.com>, 2011,2015
@@ -19,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-05-22 20:00+0200\n"
-"PO-Revision-Date: 2015-05-22 18:03+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2015-06-04 21:18+0200\n"
+"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -258,7 +259,7 @@ msgstr "L'adresse IP %s est bloquée pour %s secondes."
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr "%s compte supprimé(s)."
+msgstr "Le compte %s a été supprimé."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -533,7 +534,7 @@ msgid "Access your domain statistics through the Web interface."
 msgstr "Accédez aux statistiques de votre domaine via l'interface Web."
 
 msgid "Access your files through the web interface."
-msgstr "Accédez à vos fichier via l'interface Web."
+msgstr "Accédez à vos fichiers via l'interface Web."
 
 msgid "Access your mail through the web interface."
 msgstr "Accédez à votre courrier via l'interface Web."
@@ -769,13 +770,13 @@ msgstr "Administrateur / Statistiques / Utilisation des IPs"
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr "Administrateur / Statistiques / Statistiques des revendeurs"
 
-msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr "Administrateur / Statistiques / Statistiques des revendeurs / Statistiques des clients"
+msgid "Admin / Statistics / Reseller Statistics / User Statistics"
+msgstr ""
 
 msgid ""
-"Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
-"Statistics"
-msgstr "Administrateur / Statistiques / Statistiques des revendeurs / Statistiques des clients / Statistiques des domaines"
+"Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
+" statistics"
+msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Administrateur / Statistiques / Statistiques du serveur"
@@ -1649,14 +1650,14 @@ msgstr "Compte client mise à jour."
 msgid "Customer account summary"
 msgstr "Récapitulatif du compte client"
 
+msgid "Customer assignments"
+msgstr ""
+
 msgid "Customer consumption"
 msgstr "Consommation du client"
 
 msgid "Customer level"
 msgstr "Niveau du client"
-
-msgid "Customer statistics"
-msgstr "Statistiques du client"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Le client va être ajouté."
@@ -1672,9 +1673,6 @@ msgstr "Le ou les clients ont bien été déplacés."
 
 msgid "Customers"
 msgstr "Clients"
-
-msgid "Customers assignment"
-msgstr "Assignation des utilisateurs"
 
 msgid "Customize error pages for your domain."
 msgstr "Personnalisez les pages d'erreurs pour votre domaine. "
@@ -2050,9 +2048,6 @@ msgstr "Les labels d'un nom de domaine ne peuvent pas commencer ou finir par un 
 msgid "Domain new expiration date"
 msgstr "Nouvelle date d'expiration du compte"
 
-msgid "Domain not found."
-msgstr "Domaine non trouvé."
-
 msgid "Domain overview"
 msgstr "Vue général du domaine"
 
@@ -2061,9 +2056,6 @@ msgstr "Le domaine va être mis à jour."
 
 msgid "Domain statistics"
 msgstr "Statistiques du domaine"
-
-msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr "Statistiques du domaine - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
 msgstr "L'état du domaine n'est pas correct."
@@ -2638,6 +2630,9 @@ msgstr "L'adresse IP va être supprimée."
 msgid "IP addresses under control of i-MSCP"
 msgstr "Adresses IP contrôlées par i-MSCP"
 
+msgid "IP assignments"
+msgstr ""
+
 msgid "IP management"
 msgstr "Gestion des adresses IP"
 
@@ -2667,6 +2662,9 @@ msgstr "Importer"
 
 msgid "Import in local repository"
 msgstr "Importer dans le dépôt local"
+
+msgid "Import new language file"
+msgstr ""
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2906,9 +2904,6 @@ msgstr "Le nom ne peut pas avoir plus de 200 caractères."
 
 msgid "Last reply date"
 msgstr "Date de la dernière réponse"
-
-msgid "Last translator"
-msgstr "Dernier traducteur"
 
 msgid "Layout"
 msgstr "Theme"
@@ -3234,12 +3229,6 @@ msgstr "Aucun comptes clients trouvés."
 msgid "No database update available."
 msgstr "Aucun mise à jour pour la base de données disponible."
 
-msgid "No domain statistics to display for this reseller."
-msgstr "Aucune statistique des domaines disponible pour ce revendeur."
-
-msgid "No domain statistics to display."
-msgstr "Aucun statistique des domaines disponibles."
-
 msgid "No errors"
 msgstr "Aucune erreur"
 
@@ -3266,9 +3255,6 @@ msgstr "Aucun comptes revendeurs ont été trouvés."
 
 msgid "No reseller available to add the permissions."
 msgstr "Aucun revendeur disponible pour ajouter des permissions."
-
-msgid "No reseller statistics to display."
-msgstr "Aucune statistique du revendeur à afficher."
 
 msgid "No reseller with activated software installer found!"
 msgstr "Aucun revendeur avec un installateur de logiciel trouvé."
@@ -3474,6 +3460,9 @@ msgstr "Fonction PHP exec()"
 
 msgid "PHP settings"
 msgstr "Paramètres PHP"
+
+msgid "POP3/IMAP"
+msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP entrant"
@@ -3803,7 +3792,7 @@ msgstr "Gestionnaire d'extensions: impossible de charger l'extension %s"
 msgid ""
 "Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "Gestionnaire d'extensions: Impossible de désinstaller l'extension %s. Cette extension est requise par une autre extension."
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -4099,8 +4088,8 @@ msgstr "Revendeur / Statistiques / Utilisation des IP"
 msgid "Reseller / Statistics / Overview"
 msgstr "Revendeur / Statistiques / Vue générale"
 
-msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
-msgstr "Revendeur / Statistiques / Statistiques de domaine - {DOMAIN_NAME}"
+msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
+msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr "Revendeur / Support / Tickets fermés"
@@ -4134,6 +4123,9 @@ msgstr "Niveau des revendeurs et des clients"
 
 msgid "Reseller assignment"
 msgstr "Assignation des revendeurs"
+
+msgid "Reseller assignments"
+msgstr ""
 
 msgid "Reseller consumption"
 msgstr "Consommation du revendeur"
@@ -4182,9 +4174,6 @@ msgstr "Revendeurs"
 
 msgid "Resellers and customers"
 msgstr "Revendeurs et clients"
-
-msgid "Resellers assignment"
-msgstr "Assignation des revendeurs"
 
 msgid "Reset"
 msgstr "Réinitialiser"
@@ -4460,11 +4449,11 @@ msgid ""
 "(Development)"
 msgstr "Afficher toutes les erreurs, incluant les avertissements et les notifications (Développement)"
 
-msgid "Show detailed statistics for this domain"
-msgstr "afficher les statistiques détaillées de ce domaine"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "Afficher des statistiques détaillées pour ce revendeur"
+
+msgid "Show detailed statistics for this user"
+msgstr ""
 
 msgid "Show in"
 msgstr "Afficher dans"
@@ -5041,6 +5030,9 @@ msgstr "Nombre total de logiciels"
 msgid "Traffic"
 msgstr "Trafic"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "Utilisation du trafic"
 
@@ -5394,6 +5386,9 @@ msgstr "La session de l'utilisateur a été détruite."
 
 msgid "User session successfully killed for password change."
 msgstr "La session de l'utilisateur a bien été supprimé pour le renouvellement du mot de passe."
+
+msgid "User statistics"
+msgstr ""
 
 msgid "User successfully disconnected."
 msgstr "L'utilisateur a été déconnecté."
@@ -6160,6 +6155,9 @@ msgstr "{ADMIN} a activé votre logiciel"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} a téléversé un nouveau logiciel"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 Équipe i-MSCP<br/>Tous droits réservés"
