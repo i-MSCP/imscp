@@ -303,6 +303,7 @@ sub getTraffic
 		}
 
 		if($content[$lastParsedLineNo] && $content[$lastParsedLineNo] eq $lastParsedLineContent) {
+			# Skip lines which were already processed
 			(tied @content)->defer;
 			@content = @content[$lastParsedLineNo + 1 .. $#content];
 			(tied @content)->flush;
@@ -317,7 +318,7 @@ sub getTraffic
 		if(@content) {
 			untie @content;
 
-			# Read and imap/pop traffic source file (line by line)
+			# Read and parse IMAP/POP traffic source file (line by line)
 			while(<$tpmFile1>) {
 				# IMAP traffic (< Dovecot 1.2.1)
 				# Sep 13 20:11:27 imscp dovecot: IMAP(user@domain.tld): Disconnected: Logged out bytes=244/850

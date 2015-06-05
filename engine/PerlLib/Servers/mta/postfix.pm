@@ -663,6 +663,7 @@ sub getTraffic
 		}
 
 		if($content[$lastParsedLineNo] && $content[$lastParsedLineNo] eq $lastParsedLineContent) {
+			# Skip lines which were already processed
 			(tied @content)->defer;
 			@content = @content[$lastParsedLineNo + 1 .. $#content];
 			(tied @content)->flush;
@@ -683,7 +684,7 @@ sub getTraffic
 			$rs = execute("grep postfix $tpmFile1 | maillogconvert.pl standard 1> $tpmFile2", undef, \$stderr);
 			die("Unable to extract postfix data: $stderr") if $rs;
 
-			# Read and parse smtp traffic source file (line by line)
+			# Read and parse SMTP traffic source file (line by line)
 			while(<$tpmFile2>) {
 				if(/^[^\s]+\s[^\s]+\s[^\s\@]+\@([^\s]+)\s[^\s\@]+\@([^\s]+)\s([^\s]+)\s([^\s]+)\s[^\s]+\s[^\s]+\s[^\s]+\s(\d+)$/gimo) {
 					if($4 !~ /virtual/ && !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)) {
