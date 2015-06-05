@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -32,14 +31,14 @@ use File::Basename;
 sub run
 {
 	my ($inputTraffic, $outputTraffic, $stdout, $stderr);
-	my %hash = (
+	my %chains = (
 		'IMSCP_INPUT' => \$inputTraffic,
 		'IMSCP_OUTPUT' => \$outputTraffic
 	);
 
-	# Getting input and output traffic data
-	while(my ($src, $target) = each %hash) {
-		my $rs = execute("iptables -nvxL $src", $target, \$stderr);
+	# Get traffic data from both input and output i-MSCP chains
+	while(my ($chain, $target) = each %chains) {
+		my $rs = execute("iptables -nvxL $chain", $target, \$stderr);
 		debug($$target) if $$target;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -52,11 +51,8 @@ sub run
 	my ($smtpOut, $poOut, $httpOut, $allOut) = _parseTrafficData($outputTraffic);
 
 	# Update traffic data in database
-
-	# Floor down for the last half'n hour to make timestamps in server_traffic and domain_traffic identical
-	my $timestamp = time;
-	$timestamp -= ($timestamp % 1800);
-
+	my $timestamp = time();
+	$timestamp -= ($timestamp % 1800); # Floor down for the last half'n hour
 	my $dbh = iMSCP::Database->factory()->getRawDb();
 	my $qrs = $dbh->do(
 		'
@@ -80,9 +76,9 @@ sub run
 		return 1;
 	}
 
-	# Reset traffic data for next run
-	for(keys %hash) {
-		my $rs = execute("iptables -Z $_", \$stdout, \$stderr);
+	# Reset both input and output i-MSCP chains
+	for my $chain(keys %chains) {
+		my $rs = execute("iptables -Z $chain", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -95,10 +91,9 @@ sub _parseTrafficData
 {
 	my $data = shift;
 
-	my ($smtp, $po, $http, $all) = (0, 0, 0, 0);
-
 	my $frontEndHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
 	my $frontEndHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+	my ($smtp, $po, $http, $all) = (0, 0, 0, 0);
 
 	if($data) {
 		while($data =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm) {

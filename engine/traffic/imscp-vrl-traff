@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -50,7 +49,6 @@ sub run
 					debug("Calling Servers::${service}::getTraffic()");
 					$trafficDb{$service} = $instance->getTraffic();
 				};
-
 				if ($@) {
 					error($@);
 					$rs = 1;
@@ -68,7 +66,7 @@ sub run
 	unless($rs) {
 		my $dbh = iMSCP::Database->factory()->getRawDb();
 
-		# Getting list of all domains (dmn|sub|als|alssub)
+		# Get domains list (dmn|sub|als|alssub)
 		my $sth = $dbh->prepare(
 			"
 				SELECT
@@ -101,28 +99,28 @@ sub run
 			$rs = 1;
 		}
 
-		while (my $row = $sth->fetchrow_hashref()) {
-			my $domainName = $row->{'domain_name'};
-			my $domainId = $row->{'domain_id'};
+		while (my $domainRow = $sth->fetchrow_hashref()) {
+			my $domainName = $domainRow->{'domain_name'};
+			my $domainId = $domainRow->{'domain_id'};
 
 			next unless $trafficDb{'httpd'}->{$domainName} || $trafficDb{'ftpd'}->{$domainName} ||
 				$trafficDb{'mta'}->{$domainName} || $trafficDb{'po'}->{$domainName};
 
-			my $httpdTraffic = $trafficDb{'httpd'}->{$domainName} ? $trafficDb{'httpd'}->{$domainName} : 0;
-			my $ftpdTraffic = $trafficDb{'ftpd'}->{$domainName} ? $trafficDb{'ftpd'}->{$domainName} : 0;
-			my $mtaTraffic = $trafficDb{'mta'}->{$domainName} ? $trafficDb{'mta'}->{$domainName} : 0;
-			my $poTraffic = $trafficDb{'po'}->{$domainName} ? $trafficDb{'po'}->{$domainName} : 0;
+			my $httpdTraffic = $trafficDb{'httpd'}->{$domainName} || 0;
+			my $ftpdTraffic = $trafficDb{'ftpd'}->{$domainName} || 0;
+			my $mtaTraffic = $trafficDb{'mta'}->{$domainName} || 0;
+			my $poTraffic = $trafficDb{'po'}->{$domainName} || 0;
 
-			my $rows = $dbh->selectall_arrayref(
+			my $domainTrafficRow = $dbh->selectrow_hashref(
 				'SELECT dtraff_id FROM domain_traffic WHERE domain_id = ? AND dtraff_time >= ? LIMIT 1',
-				{ Slice => { } }, $domainId, $timestamp
+				{ }, $domainId, $timestamp
 			);
 
-			if(!defined $rows || $dbh->err) {
+			if($dbh->err) {
 				error($dbh->errstr);
 				$rs = 1;
 				next;
-			} elsif(@{$rows}) {
+			} elsif($domainTrafficRow) {
 				$dbh->do(
 					'
 						UPDATE
@@ -136,7 +134,7 @@ sub run
 							dtraff_id = ?
 					',
 					undef, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic, $halfTimestamp, $domainId,
-					$rows->{'dtraff_id'}
+					$domainTrafficRow->{'dtraff_id'}
 				);
 			} else {
 				$dbh->do(

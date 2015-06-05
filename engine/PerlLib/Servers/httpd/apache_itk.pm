@@ -1132,7 +1132,10 @@ sub getTraffic
 		# Collect traffic data
 		my $sth = $dbh->prepare('SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE');
 		$sth->execute($ldate);
-		$trafficDb{$_->{'vhost'}} += $_->{'bytes'} while ($sth->fetchrow_hashref());
+
+		while (my $row = $sth->fetchrow_hashref()) {
+			$trafficDb{$row->{'vhost'}} += $row->{'bytes'}
+		}
 
 		# Delete traffic data source
 		$dbh->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
