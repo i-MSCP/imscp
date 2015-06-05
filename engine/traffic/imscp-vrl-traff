@@ -70,24 +70,24 @@ sub run
 		my $sth = $dbh->prepare(
 			"
 				SELECT
-					domain_id, domain_name
+					domain_id AS upper_domain_id, domain_name
 				FROM
 					domain
 				UNION
 				SELECT
-					domain_id, alias_name
+					domain_id AS upper_domain_id, alias_name
 				FROM
 					domain_aliasses
 				UNION
 				SELECT
-					domain_id, CONCAT(subdomain_name, '.', domain_name)
+					domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name)
 				FROM
 					subdomain
 				INNER JOIN
 					domain USING (domain_id)
 				UNION
 				SELECT
-					domain_id, CONCAT(subdomain_alias_name, '.', alias_name)
+					domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name)
 				FROM
 					subdomain_alias
 				INNER JOIN
@@ -101,7 +101,7 @@ sub run
 
 		while (my $domainRow = $sth->fetchrow_hashref()) {
 			my $domainName = $domainRow->{'domain_name'};
-			my $domainId = $domainRow->{'domain_id'};
+			my $upperDomainId = $domainRow->{'upper_domain_id'};
 
 			next unless $trafficDb{'httpd'}->{$domainName} || $trafficDb{'ftpd'}->{$domainName} ||
 				$trafficDb{'mta'}->{$domainName} || $trafficDb{'po'}->{$domainName};
@@ -113,7 +113,7 @@ sub run
 
 			my $domainTrafficRow = $dbh->selectrow_hashref(
 				'SELECT dtraff_id FROM domain_traffic WHERE domain_id = ? AND dtraff_time >= ? LIMIT 1',
-				{ }, $domainId, $timestamp
+				{ }, $upperDomainId, $timestamp
 			);
 
 			if($dbh->err) {
@@ -133,7 +133,7 @@ sub run
 						AND
 							dtraff_id = ?
 					',
-					undef, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic, $halfTimestamp, $domainId,
+					undef, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic, $halfTimestamp, $upperDomainId,
 					$domainTrafficRow->{'dtraff_id'}
 				);
 			} else {
@@ -145,7 +145,7 @@ sub run
 							?, ?, ?, ?, ?, ?
 						)
 					',
-					undef, $domainId, $halfTimestamp, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic
+					undef, $upperDomainId, $halfTimestamp, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic
 				);
 			}
 
