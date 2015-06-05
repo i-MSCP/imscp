@@ -1,5 +1,5 @@
 
-<form name="statistics_frm" method="post" action="statistics.php">
+<form name="statistics_frm" method="post" action="traffic_statistics.php">
 	<label for="month">{TR_MONTH}</label>
 	<select id="month" name="month">
 		<!-- BDP: month_list -->

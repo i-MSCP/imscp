@@ -1,5 +1,5 @@
 
-<form name="reseller_user_statistics_detailed" method="post" action="reseller_user_statistics_detail.php?user_id={USER_ID}">
+<form name="reseller_user_statistics_detailed" method="post" action="reseller_user_statistics_details.php?user_id={USER_ID}">
 	<label for="month">{TR_MONTH}</label>
 	<select id="month" name="month">
 		<!-- BDP: month_list -->
