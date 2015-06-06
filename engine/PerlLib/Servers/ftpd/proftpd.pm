@@ -118,7 +118,7 @@ sub postinstall
 	iMSCP::Service->getInstance()->enable($self->{'config'}->{'FTPD_SNAME'});
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Proftpd' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'ProFTPD' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterFtpdPostInstall', 'proftpd');
@@ -249,7 +249,16 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdRestart');
 	return $rs if $rs;
 
-	iMSCP::Service->getInstance()->restart($self->{'config'}->{'FTPD_SNAME'});
+	my $serviceMngr = iMSCP::Service->getInstance();
+
+	# Mitigate restart problems by waiting a bit before start
+	# For instance on Ubuntu Trusty, ProftPD stay is not running state when using restart command
+	$serviceMngr->stop($self->{'config'}->{'FTPD_SNAME'});
+
+	# Give ProFTPD sufficient time for stopping
+	sleep 2;
+
+	$serviceMngr->start($self->{'config'}->{'FTPD_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterFtpdRestart');
 }
