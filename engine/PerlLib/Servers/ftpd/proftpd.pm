@@ -275,6 +275,8 @@ sub getTraffic
 {
 	my $self = $_[0];
 
+	require File::Temp;
+
 	my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/ftp_traffic.db";
 
 	# Load traffic database
@@ -284,16 +286,14 @@ sub getTraffic
 	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}";
 
 	if(-f $trafficDataSrc && -s _) {
-		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/" . basename($trafficDataSrc);
+		my $tpmFile = File::Temp->new();
 
-		# Creating working file from current state of data source
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc)->moveFile($wrkLogFile);
+		# Create a snapshot of log file to process
+		my $rs = iMSCP::File->new( filename => $trafficDataSrc)->moveFile($tpmFile);
 		die(iMSCP::Debug::getLastError()) if $rs;
 
 		# Read and parse file (line by line)
-		open my $file, '<', $wrkLogFile or die("Unable to open $wrkLogFile: $!");
-		$trafficDb{$2} += $1 while(<$file> =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
-		close $file;
+		$trafficDb{$2} += $1 while(<$tpmFile> =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
 	}
 
 	# Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
