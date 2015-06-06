@@ -64,13 +64,12 @@ sub addCustomDNSrecord
 		push @formattedEntries, '; dualstack DNS entries BEGIN';
 
 		for my $ip(@ipList) {
-			
-			if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
-				push @formattedEntries, '@ IN AAAA ' . $ipMngr->normalizeAddr($ip);
-				push @formattedEntries, 'ftp IN	AAAA ' . $ipMngr->normalizeAddr($ip);
-			} else {
-				push @formattedEntries, '@ IN A ' . $ipMngr->normalizeAddr($ip);
-				push @formattedEntries, 'ftp IN	A ' . $ipMngr->normalizeAddr($ip);
+			for my $name('@', 'ftp') {
+				if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
+					push @formattedEntries, '$name IN AAAA ' . $ipMngr->normalizeAddr($ip);
+				} else {
+					push @formattedEntries, '$name IN A ' . $ipMngr->normalizeAddr($ip);
+				}
 			}
 		}
 
@@ -115,13 +114,12 @@ sub addCustomDNSrecordSub
 		push @formattedEntries, '; dualstack DNS entries BEGIN';
 
 		for my $ip(@ipList) {
-			
-			if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
-				push @formattedEntries, '@	IN	AAAA	' . $ipMngr->normalizeAddr($ip);
-				push @formattedEntries, 'ftp IN	AAAA	' . $ipMngr->normalizeAddr($ip);
-			} else {
-				push @formattedEntries, '@ IN	A	' . $ipMngr->normalizeAddr($ip);
-				push @formattedEntries, 'ftp IN	A	' . $ipMngr->normalizeAddr($ip);
+			for my $name('@', 'ftp') {
+				if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
+					push @formattedEntries, '$name IN AAAA ' . $ipMngr->normalizeAddr($ip);
+				} else {
+					push @formattedEntries, '$name IN A ' . $ipMngr->normalizeAddr($ip);
+				}
 			}
 		}
 
@@ -132,8 +130,8 @@ sub addCustomDNSrecordSub
 			"; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
 			"; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n" .
 				getBloc(
-					"; sub [$subdomainName] entry BEGIN\n",
-					"; sub [$subdomainName] entry ENDING\n",
+					"; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
+					"; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
 					$$wrkDbFileContent
 				) .
 				join("\n", @formattedEntries) . "\n" .
