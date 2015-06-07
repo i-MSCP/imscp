@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-04 21:18+0200\n"
-"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"POT-Creation-Date: 2015-06-07 14:15+0200\n"
+"PO-Revision-Date: 2015-06-07 12:12+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -585,18 +585,6 @@ msgstr "Добавяне"
 msgid "Add / Edit SSL certificate"
 msgstr "Добави / Редактирай SSL сертификат."
 
-msgid "Add FTP account"
-msgstr ""
-
-msgid "Add Htaccess group"
-msgstr ""
-
-msgid "Add Htaccess user"
-msgstr ""
-
-msgid "Add SQL database"
-msgstr "Добави SQL база данни"
-
 msgid "Add SQL user"
 msgstr "Добави SQL-потребител"
 
@@ -609,35 +597,14 @@ msgstr ""
 msgid "Add admin"
 msgstr "Добави админ"
 
-msgid "Add catchall"
-msgstr ""
-
-msgid "Add custom DNS record"
-msgstr "Добавяне на собствен DNS запис"
-
 msgid "Add custom menu"
-msgstr ""
-
-msgid "Add customer"
-msgstr "Добави клиент"
-
-msgid "Add customer - Next step"
 msgstr ""
 
 msgid "Add domain alias"
 msgstr "Добави псевдоним домейна"
 
-msgid "Add email account"
-msgstr ""
-
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Add group"
 msgstr "Добави група"
-
-msgid "Add hosting plan"
-msgstr "Добави хостинг-план"
 
 msgid "Add new IP address"
 msgstr "Добави нов IP адрес"
@@ -665,9 +632,6 @@ msgstr "Добавяне на защитен зона."
 
 msgid "Add reseller"
 msgstr "Добави риселър"
-
-msgid "Add subdomain"
-msgstr "Добави поддомейн"
 
 msgid "Add user"
 msgstr "Добави потребител"
@@ -836,9 +800,6 @@ msgstr ""
 msgid "Admin account successfully created."
 msgstr ""
 
-msgid "Admin log"
-msgstr "Админ Журнал"
-
 msgid "Admin not available"
 msgstr ""
 
@@ -996,9 +957,6 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Logs"
-msgstr ""
-
 msgid "Any"
 msgstr ""
 
@@ -1115,9 +1073,6 @@ msgstr "Назначи"
 
 msgid "Assign existing SQL user"
 msgstr "Присвояване на съществуващ SQL потребител"
-
-msgid "Assign group"
-msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
@@ -1606,9 +1561,6 @@ msgstr ""
 msgid "Custom menu successfully updated."
 msgstr ""
 
-msgid "Custom menus"
-msgstr "Персонално меню"
-
 msgid "Customer"
 msgstr ""
 
@@ -1637,9 +1589,6 @@ msgid "Customer account successfully updated."
 msgstr "Профила на клиента успешно обновен."
 
 msgid "Customer account summary"
-msgstr ""
-
-msgid "Customer assignments"
 msgstr ""
 
 msgid "Customer consumption"
@@ -1720,9 +1669,6 @@ msgstr ""
 msgid "Database required"
 msgstr "Изисква се база от данни"
 
-msgid "Database update"
-msgstr ""
-
 msgid "Database usage"
 msgstr ""
 
@@ -1732,17 +1678,11 @@ msgstr "Потребители на бази данни"
 msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
-msgid "Databases"
-msgstr "База данни"
-
 msgid "Date"
 msgstr "Дата"
 
 msgid "Day"
 msgstr "Ден"
-
-msgid "Day statistics"
-msgstr ""
 
 msgid "Days"
 msgstr "Дни"
@@ -1811,9 +1751,6 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-msgid "Debugger"
-msgstr ""
-
 msgid "Default language"
 msgstr "Език по подразбиране"
 
@@ -1833,12 +1770,6 @@ msgstr "Изтрий CatchAll"
 
 msgid "Delete all tickets"
 msgstr "Изтриване не всички билети"
-
-msgid "Delete customer"
-msgstr ""
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
 
 msgid "Delete from log:"
 msgstr "Изтрий от лога:"
@@ -2093,62 +2024,26 @@ msgstr ""
 msgid "Edit"
 msgstr "Редакция"
 
-msgid "Edit FTP account"
-msgstr ""
-
 msgid "Edit SSL certificate"
-msgstr ""
-
-msgid "Edit admin"
-msgstr ""
-
-msgid "Edit auto responder"
-msgstr ""
-
-msgid "Edit custom DNS record"
-msgstr "Промяна на потребителски DNS запис"
-
-msgid "Edit custom error page"
 msgstr ""
 
 msgid "Edit custom menu"
 msgstr ""
 
-msgid "Edit customer"
-msgstr ""
-
 msgid "Edit domain"
 msgstr "Промяна на Домейн"
-
-msgid "Edit domain alias"
-msgstr "Редактиране  на псевдоним на домейн"
 
 msgid "Edit error page"
 msgstr "Редактиране  на страницата с грешки"
 
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Edit hosting plan"
 msgstr "Промяна на хостинг-план"
-
-msgid "Edit htaccess user"
-msgstr ""
-
-msgid "Edit mail account"
-msgstr "Промяна на пощата"
-
-msgid "Edit mail quota"
-msgstr ""
 
 msgid "Edit protected area"
 msgstr "Промяна на защитен зона."
 
 msgid "Edit reseller"
 msgstr "Редакция на риселър"
-
-msgid "Edit subdomain"
-msgstr "Промяна на събдомейн "
 
 msgid "Edit user"
 msgstr "Проняна на потребител"
@@ -2240,9 +2135,6 @@ msgid "Enable"
 msgstr "Включи"
 
 msgid "Enable SSL"
-msgstr ""
-
-msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
@@ -2396,9 +2288,6 @@ msgstr ""
 msgid "FileManager"
 msgstr "Файлов Мениджър"
 
-msgid "Filemanager"
-msgstr "Файл Мениджър"
-
 msgid "Filesystem system Info"
 msgstr "Информация за файловата система"
 
@@ -2469,14 +2358,8 @@ msgstr ""
 msgid "Gender"
 msgstr "Пол"
 
-msgid "General"
-msgstr ""
-
 msgid "General information"
 msgstr "Обща информация"
-
-msgid "General settings"
-msgstr "Общи настройки"
 
 msgid "Generate"
 msgstr ""
@@ -2554,9 +2437,6 @@ msgstr "Хостинг-план  стойности надхвърлят Рис�
 msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
-msgid "Hosting plans"
-msgstr "Хостинг-планове"
-
 msgid "Hosting plans available for"
 msgstr "Хостинг планове на разположение са"
 
@@ -2618,15 +2498,6 @@ msgstr ""
 
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
-
-msgid "IP assignments"
-msgstr ""
-
-msgid "IP management"
-msgstr ""
-
-msgid "IP usage"
-msgstr "Използвани IP-та"
 
 msgid "IPv6 address"
 msgstr "IPv6 Адрес"
@@ -2873,9 +2744,6 @@ msgstr ""
 msgid "Language successfully updated."
 msgstr ""
 
-msgid "Languages"
-msgstr ""
-
 msgid "Languages index was successfully re-built."
 msgstr "Индекса на езиците бе успешно преконфигуриран"
 
@@ -3030,9 +2898,6 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr ""
 
-msgid "Maintenance settings"
-msgstr ""
-
 msgid "Male"
 msgstr "Мъж"
 
@@ -3041,9 +2906,6 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "Управление SQL"
-
-msgid "Manage htaccess users and groups"
-msgstr ""
 
 msgid "Manage users"
 msgstr "Управление на потребители"
@@ -3407,9 +3269,6 @@ msgstr "Други-изход"
 msgid "Other settings"
 msgstr "Други настройки"
 
-msgid "Overview"
-msgstr "Преглед"
-
 msgid "Owner"
 msgstr "Собственик"
 
@@ -3445,9 +3304,6 @@ msgid "PHP directives values"
 msgstr ""
 
 msgid "PHP exec() function"
-msgstr ""
-
-msgid "PHP settings"
 msgstr ""
 
 msgid "POP3/IMAP"
@@ -3594,9 +3450,6 @@ msgstr "Персонализирайте шаблон"
 
 msgid "Phone"
 msgstr "Телефон"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -3811,9 +3664,6 @@ msgstr ""
 msgid "Plugin list is empty."
 msgstr ""
 
-msgid "Plugin management"
-msgstr ""
-
 msgid "Plugins Upload"
 msgstr ""
 
@@ -3872,9 +3722,6 @@ msgid "Processing..."
 msgstr ""
 
 msgid "Processor data"
-msgstr ""
-
-msgid "Profile"
 msgstr ""
 
 msgid "Properties"
@@ -4113,9 +3960,6 @@ msgstr ""
 msgid "Reseller assignment"
 msgstr "Назначи риселър"
 
-msgid "Reseller assignments"
-msgstr ""
-
 msgid "Reseller consumption"
 msgstr ""
 
@@ -4136,9 +3980,6 @@ msgstr "Име на риселъра"
 
 msgid "Reseller software list"
 msgstr "Софтуерен списък на Риселър "
-
-msgid "Reseller statistics"
-msgstr ""
 
 msgid "Reseller successfully added."
 msgstr "Риселъра е успешно добавен."
@@ -4392,17 +4233,8 @@ msgstr ""
 msgid "Service port successfully removed."
 msgstr ""
 
-msgid "Service ports"
-msgstr ""
-
 msgid "Service protocol"
 msgstr "Протокол на услугата "
-
-msgid "Services status"
-msgstr "Статус на Услугите "
-
-msgid "Sessions"
-msgstr ""
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4505,16 +4337,10 @@ msgstr ""
 msgid "Software instance has been scheduled for installation"
 msgstr ""
 
-msgid "Software management"
-msgstr ""
-
 msgid "Software name"
 msgstr "Име на софтуер"
 
 msgid "Software not found!"
-msgstr ""
-
-msgid "Software options"
 msgstr ""
 
 msgid "Software permissions"
@@ -4670,9 +4496,6 @@ msgstr ""
 msgid "Submit changes"
 msgstr "Приеми промените"
 
-msgid "Support"
-msgstr "Поддръжка"
-
 msgid "Support system"
 msgstr "Служба за поддръжка"
 
@@ -4703,15 +4526,9 @@ msgstr ""
 msgid "System error - custom error page was not updated."
 msgstr "Системна грешка - личната  страница за грешки не е актуализирана."
 
-msgid "System information"
-msgstr ""
-
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
-
-msgid "System tools"
-msgstr "Системни инструменти"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5019,9 +4836,6 @@ msgstr "Всички Софуери"
 msgid "Traffic"
 msgstr "Трафик"
 
-msgid "Traffic statistics"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "Използван трафик"
 
@@ -5262,9 +5076,6 @@ msgstr "Промяна"
 msgid "Update Plugins"
 msgstr ""
 
-msgid "Update SQL user password"
-msgstr ""
-
 msgid "Update data"
 msgstr "Промяна данни"
 
@@ -5376,9 +5187,6 @@ msgstr ""
 msgid "User session successfully killed for password change."
 msgstr ""
 
-msgid "User statistics"
-msgstr ""
-
 msgid "User successfully disconnected."
 msgstr ""
 
@@ -5444,9 +5252,6 @@ msgstr "Преглед псевдоними"
 msgid "View hosting plan"
 msgstr "Преглед хостинг-план"
 
-msgid "View ticket"
-msgstr ""
-
 msgid "Visit plugin site"
 msgstr ""
 
@@ -5496,12 +5301,6 @@ msgstr "Web трафик"
 
 msgid "Webmail"
 msgstr "Имейли"
-
-msgid "Webtools"
-msgstr "Уеб-инструменти"
-
-msgid "Welcome email"
-msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
@@ -6027,9 +5826,6 @@ msgstr ""
 msgid "i-MSCP plugin store"
 msgstr ""
 
-msgid "i-MSCP updates"
-msgstr "Обновяване на i-MSCP"
-
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
 
@@ -6143,9 +5939,6 @@ msgid "{ADMIN} activated your software package"
 msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
-msgstr ""
-
-msgid "{USERNAME} user statistics"
 msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

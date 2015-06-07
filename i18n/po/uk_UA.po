@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-04 21:18+0200\n"
-"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"POT-Creation-Date: 2015-06-07 14:15+0200\n"
+"PO-Revision-Date: 2015-06-07 12:12+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -588,18 +588,6 @@ msgstr "Додати"
 msgid "Add / Edit SSL certificate"
 msgstr ""
 
-msgid "Add FTP account"
-msgstr ""
-
-msgid "Add Htaccess group"
-msgstr "Добавить группу Htaccess"
-
-msgid "Add Htaccess user"
-msgstr "Добавить пользователя Htaccess"
-
-msgid "Add SQL database"
-msgstr "Додати базу даних"
-
 msgid "Add SQL user"
 msgstr "Добавить пользователя SQL"
 
@@ -612,35 +600,14 @@ msgstr "Добавить новое вхождеие"
 msgid "Add admin"
 msgstr "Додати адміністратора"
 
-msgid "Add catchall"
-msgstr "Добавить переадресацию"
-
-msgid "Add custom DNS record"
-msgstr "Пользовательские DNS"
-
 msgid "Add custom menu"
 msgstr "Добавить пользовательское меню"
-
-msgid "Add customer"
-msgstr "Добавить пользователя"
-
-msgid "Add customer - Next step"
-msgstr "Добавить клиента - Следующий шаг"
 
 msgid "Add domain alias"
 msgstr "Додати аліас домена"
 
-msgid "Add email account"
-msgstr "Добавить почтовый ящик"
-
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Add group"
 msgstr "Добавить группу"
-
-msgid "Add hosting plan"
-msgstr "Додати хостинг-план"
 
 msgid "Add new IP address"
 msgstr "Добавить новый IP адрес"
@@ -668,9 +635,6 @@ msgstr "Добавить защищенную зону"
 
 msgid "Add reseller"
 msgstr "Додати реселлера"
-
-msgid "Add subdomain"
-msgstr "Додати піддомен"
 
 msgid "Add user"
 msgstr "Додати користувача"
@@ -839,9 +803,6 @@ msgstr ""
 msgid "Admin account successfully created."
 msgstr "Учетная запись администратора успешно создана."
 
-msgid "Admin log"
-msgstr "Журнал адміністратора"
-
 msgid "Admin not available"
 msgstr "Администратор недоступен"
 
@@ -999,9 +960,6 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Logs"
-msgstr ""
-
 msgid "Any"
 msgstr ""
 
@@ -1118,9 +1076,6 @@ msgstr "Назначити"
 
 msgid "Assign existing SQL user"
 msgstr "Назначит существующего SQL пользователя"
-
-msgid "Assign group"
-msgstr "Назначить группу"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
@@ -1609,9 +1564,6 @@ msgstr "Пользовательское меню успешно удалено.
 msgid "Custom menu successfully updated."
 msgstr "Пользовательское меню успешно обновлено."
 
-msgid "Custom menus"
-msgstr "Персональні меню"
-
 msgid "Customer"
 msgstr "Клиент"
 
@@ -1640,9 +1592,6 @@ msgid "Customer account successfully updated."
 msgstr "Учетная запись клиента успешно обновлена."
 
 msgid "Customer account summary"
-msgstr ""
-
-msgid "Customer assignments"
 msgstr ""
 
 msgid "Customer consumption"
@@ -1723,9 +1672,6 @@ msgstr "Префикс/постфикс БД"
 msgid "Database required"
 msgstr "Требуется база данных"
 
-msgid "Database update"
-msgstr ""
-
 msgid "Database usage"
 msgstr "Использование БД"
 
@@ -1735,17 +1681,11 @@ msgstr "Пользователи базы данных"
 msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
-msgid "Databases"
-msgstr "Базы данных"
-
 msgid "Date"
 msgstr "Дата"
 
 msgid "Day"
 msgstr "День"
-
-msgid "Day statistics"
-msgstr ""
 
 msgid "Days"
 msgstr "Дні"
@@ -1814,9 +1754,6 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr "Уважаемый {RESELLER},\n\tЗагруженное Вами ПО было успешно подтверждено администратором {ADMIN}.\n\n\tПодробности:\n\tНазвание пакета: {SOFTWARE}\n\tID Пакета: {SOFTWARE_ID}\n\n\tПожалуйста, войдите в вашу панель управления i-MSCP для получения подробностей."
 
-msgid "Debugger"
-msgstr "Отладчик"
-
 msgid "Default language"
 msgstr "Язык по умолчанию"
 
@@ -1836,12 +1773,6 @@ msgstr "Удалить Catch all"
 
 msgid "Delete all tickets"
 msgstr "Удалить все тикеты"
-
-msgid "Delete customer"
-msgstr "Удалить клиента"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
 
 msgid "Delete from log:"
 msgstr "Видалити із журналу дій:"
@@ -2096,62 +2027,26 @@ msgstr "ЭБ"
 msgid "Edit"
 msgstr "Змінити"
 
-msgid "Edit FTP account"
-msgstr ""
-
 msgid "Edit SSL certificate"
 msgstr "Изменить SSL сертификат"
-
-msgid "Edit admin"
-msgstr ""
-
-msgid "Edit auto responder"
-msgstr "Изменить автоответчик"
-
-msgid "Edit custom DNS record"
-msgstr "Изменить пользовательскую DNS запись"
-
-msgid "Edit custom error page"
-msgstr "Изменить пользовательскую страницу ошибок"
 
 msgid "Edit custom menu"
 msgstr "Изменить пользовательское меню"
 
-msgid "Edit customer"
-msgstr "Изменить клиента"
-
 msgid "Edit domain"
 msgstr "Редагувати домен"
-
-msgid "Edit domain alias"
-msgstr "Редагувати аліас домена"
 
 msgid "Edit error page"
 msgstr "Редагувати сторінку помилок"
 
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Edit hosting plan"
 msgstr "Редагувати хостинг-план"
-
-msgid "Edit htaccess user"
-msgstr "Изменить пользователя htaccess"
-
-msgid "Edit mail account"
-msgstr "Изменить учетную запись почты"
-
-msgid "Edit mail quota"
-msgstr "Редактировать почтовую квоту"
 
 msgid "Edit protected area"
 msgstr "Изменить защищенную зону"
 
 msgid "Edit reseller"
 msgstr "Редагувати реселлера"
-
-msgid "Edit subdomain"
-msgstr "Изменить поддомен"
 
 msgid "Edit user"
 msgstr "Редагувати користувача"
@@ -2244,9 +2139,6 @@ msgstr "Включити"
 
 msgid "Enable SSL"
 msgstr "Включить SSL"
-
-msgid "Enable auto responder"
-msgstr "Включить автоответчик"
 
 msgid "Enabled"
 msgstr "Увімкнено"
@@ -2399,9 +2291,6 @@ msgstr "Использование файлов"
 msgid "FileManager"
 msgstr "Файловий менеджер"
 
-msgid "Filemanager"
-msgstr "Менеджер файлів"
-
 msgid "Filesystem system Info"
 msgstr "Системна інформація - Файлова система"
 
@@ -2472,14 +2361,8 @@ msgstr "Гб"
 msgid "Gender"
 msgstr "Стать"
 
-msgid "General"
-msgstr ""
-
 msgid "General information"
 msgstr "Загальна інформація"
-
-msgid "General settings"
-msgstr "Загальні налаштування"
 
 msgid "Generate"
 msgstr "Генерировать"
@@ -2557,9 +2440,6 @@ msgstr "Настройки хостинг-плана превышают огра
 msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
-msgid "Hosting plans"
-msgstr "Хостинг-плани"
-
 msgid "Hosting plans available for"
 msgstr "Хостинг-плани доступні для"
 
@@ -2621,15 +2501,6 @@ msgstr ""
 
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
-
-msgid "IP assignments"
-msgstr ""
-
-msgid "IP management"
-msgstr ""
-
-msgid "IP usage"
-msgstr "Використання IP"
 
 msgid "IPv6 address"
 msgstr "IPv6 адреса"
@@ -2876,9 +2747,6 @@ msgstr "Языковой файл успешно установлен"
 msgid "Language successfully updated."
 msgstr "Язык успешно обновлен."
 
-msgid "Languages"
-msgstr "Языки"
-
 msgid "Languages index was successfully re-built."
 msgstr "Языковые индексы были успешно перестроены."
 
@@ -3033,9 +2901,6 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr ""
 
-msgid "Maintenance settings"
-msgstr ""
-
 msgid "Male"
 msgstr "Чоловіча"
 
@@ -3044,9 +2909,6 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "Управління SQL"
-
-msgid "Manage htaccess users and groups"
-msgstr "Управление htaccess пользователями и группами"
 
 msgid "Manage users"
 msgstr "Управлення користувачами"
@@ -3410,9 +3272,6 @@ msgstr "Інше вих"
 msgid "Other settings"
 msgstr "Інші налаштування"
 
-msgid "Overview"
-msgstr "Передперегляд"
-
 msgid "Owner"
 msgstr "Власник"
 
@@ -3449,9 +3308,6 @@ msgstr "Значения директив PHP"
 
 msgid "PHP exec() function"
 msgstr "PHP exec() function"
-
-msgid "PHP settings"
-msgstr "Настройки PHP"
 
 msgid "POP3/IMAP"
 msgstr ""
@@ -3597,9 +3453,6 @@ msgstr "Персонализировать шаблон"
 
 msgid "Phone"
 msgstr "Телефон"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr "Пб"
@@ -3814,9 +3667,6 @@ msgstr ""
 msgid "Plugin list is empty."
 msgstr ""
 
-msgid "Plugin management"
-msgstr "Управление плагинами"
-
 msgid "Plugins Upload"
 msgstr ""
 
@@ -3876,9 +3726,6 @@ msgstr ""
 
 msgid "Processor data"
 msgstr ""
-
-msgid "Profile"
-msgstr "Профиль"
 
 msgid "Properties"
 msgstr "Свойства"
@@ -4116,9 +3963,6 @@ msgstr "Реселлерский и клиентский уровень"
 msgid "Reseller assignment"
 msgstr "Призначення реселлера"
 
-msgid "Reseller assignments"
-msgstr ""
-
 msgid "Reseller consumption"
 msgstr "Затраты Реселлера"
 
@@ -4139,9 +3983,6 @@ msgstr "Ім'я реселлера"
 
 msgid "Reseller software list"
 msgstr "Список ПЗ реселерів"
-
-msgid "Reseller statistics"
-msgstr ""
 
 msgid "Reseller successfully added."
 msgstr "Реселлер успешно добавлен."
@@ -4395,17 +4236,8 @@ msgstr ""
 msgid "Service port successfully removed."
 msgstr ""
 
-msgid "Service ports"
-msgstr "Порты служб"
-
 msgid "Service protocol"
 msgstr "Протокол служби"
-
-msgid "Services status"
-msgstr "Статус сервісів"
-
-msgid "Sessions"
-msgstr "Сессия"
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4508,17 +4340,11 @@ msgstr ""
 msgid "Software instance has been scheduled for installation"
 msgstr ""
 
-msgid "Software management"
-msgstr ""
-
 msgid "Software name"
 msgstr "Название ПО"
 
 msgid "Software not found!"
 msgstr "Пакет не найден!"
-
-msgid "Software options"
-msgstr "Настройки ПО"
 
 msgid "Software permissions"
 msgstr "Права ПЗ"
@@ -4673,9 +4499,6 @@ msgstr ""
 msgid "Submit changes"
 msgstr "Застосувати зміни"
 
-msgid "Support"
-msgstr "Поддержка"
-
 msgid "Support system"
 msgstr "Служба підтримки"
 
@@ -4706,15 +4529,9 @@ msgstr ""
 msgid "System error - custom error page was not updated."
 msgstr "Системная ошибка - пользовательская  страница ошибки не обновлена."
 
-msgid "System information"
-msgstr "Системная информация"
-
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "Система не может удалить '%s' пользователя логотип. "
-
-msgid "System tools"
-msgstr "Системні інструменти"
 
 msgid "System under maintenance"
 msgstr "Система на отладке"
@@ -5022,9 +4839,6 @@ msgstr "Всього ПЗ"
 msgid "Traffic"
 msgstr "Трафік"
 
-msgid "Traffic statistics"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "Использование трафика"
 
@@ -5265,9 +5079,6 @@ msgstr "Змінити"
 msgid "Update Plugins"
 msgstr ""
 
-msgid "Update SQL user password"
-msgstr "Обновить пароль SQL"
-
 msgid "Update data"
 msgstr "Змінити дані"
 
@@ -5379,9 +5190,6 @@ msgstr ""
 msgid "User session successfully killed for password change."
 msgstr "Сессия пользователя успешно завершена для смены пароля."
 
-msgid "User statistics"
-msgstr ""
-
 msgid "User successfully disconnected."
 msgstr ""
 
@@ -5447,9 +5255,6 @@ msgstr "Показать алиасы"
 msgid "View hosting plan"
 msgstr "Перегляд хостінг-плану"
 
-msgid "View ticket"
-msgstr "Просмотр тикета"
-
 msgid "Visit plugin site"
 msgstr "Посетить сайт плагина"
 
@@ -5499,12 +5304,6 @@ msgstr "WEB трафік"
 
 msgid "Webmail"
 msgstr "Поштовий Веб-інтерфейс"
-
-msgid "Webtools"
-msgstr "Web-інструменти"
-
-msgid "Welcome email"
-msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "{USERNAME}, добро пожаловать в i-MSCP"
@@ -6030,9 +5829,6 @@ msgstr ""
 msgid "i-MSCP plugin store"
 msgstr ""
 
-msgid "i-MSCP updates"
-msgstr "Оновлення i-MSCP"
-
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
 
@@ -6147,9 +5943,6 @@ msgstr "{ADMIN} активировал Ваш пакет ПО"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} загрузил новый пакет ПО"
-
-msgid "{USERNAME} user statistics"
-msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""

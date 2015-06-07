@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-04 21:18+0200\n"
-"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"POT-Creation-Date: 2015-06-07 14:15+0200\n"
+"PO-Revision-Date: 2015-06-07 12:12+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -586,18 +586,6 @@ msgstr "Tilføj"
 msgid "Add / Edit SSL certificate"
 msgstr "Rediger SSL certifikat"
 
-msgid "Add FTP account"
-msgstr "Tilføj FTP konto"
-
-msgid "Add Htaccess group"
-msgstr "Tilføj Htaccess gruppe"
-
-msgid "Add Htaccess user"
-msgstr "Tilføj Htaccess bruger"
-
-msgid "Add SQL database"
-msgstr "Tilføj SQL database"
-
 msgid "Add SQL user"
 msgstr "Tilføj SQL bruger"
 
@@ -610,35 +598,14 @@ msgstr "Tilføj en ny post"
 msgid "Add admin"
 msgstr "Tilføj admin"
 
-msgid "Add catchall"
-msgstr "Tilføj catchall"
-
-msgid "Add custom DNS record"
-msgstr "Tilføj brugerdefineret DNS record"
-
 msgid "Add custom menu"
 msgstr "Tilføj brugerdefineret menu"
-
-msgid "Add customer"
-msgstr "Tilføj kunde"
-
-msgid "Add customer - Next step"
-msgstr "Tilføj kunde - Næste step"
 
 msgid "Add domain alias"
 msgstr "Tilføj domæne alias"
 
-msgid "Add email account"
-msgstr "Tilføj e-mail konto"
-
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Tilføj ekstern mailserver for {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Tilføj gruppe"
-
-msgid "Add hosting plan"
-msgstr "Tilføj hosting plan"
 
 msgid "Add new IP address"
 msgstr "Tilføj ny IP adresse"
@@ -666,9 +633,6 @@ msgstr "Tilføj beskyttet område"
 
 msgid "Add reseller"
 msgstr "Tilføj forhandlere"
-
-msgid "Add subdomain"
-msgstr "Tilføj Subdomæne"
 
 msgid "Add user"
 msgstr "Tilføj bruger"
@@ -837,9 +801,6 @@ msgstr "Admin / Brugere / Sessioner"
 msgid "Admin account successfully created."
 msgstr "Admin konto oprettet."
 
-msgid "Admin log"
-msgstr "Admin log"
-
 msgid "Admin not available"
 msgstr "Admin not available"
 
@@ -997,9 +958,6 @@ msgstr "En uventet fejl opstod: %s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "En ukendt fejl opstod under fil upload: %s"
 
-msgid "Anti-Rootkits Logs"
-msgstr "Anti-Rootkits Logs"
-
 msgid "Any"
 msgstr ""
 
@@ -1116,9 +1074,6 @@ msgstr "Tildel"
 
 msgid "Assign existing SQL user"
 msgstr "Tildel eksisterende SQL bruger"
-
-msgid "Assign group"
-msgstr "Tildel gruppe"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Først skal du oprette en database, der har mindst én SQL-bruger."
@@ -1607,9 +1562,6 @@ msgstr "Brugerdefineret menu slettet."
 msgid "Custom menu successfully updated."
 msgstr "Brugerdefinerede menu er blevet opdateret."
 
-msgid "Custom menus"
-msgstr "Kunde menuer"
-
 msgid "Customer"
 msgstr "Kunde"
 
@@ -1639,9 +1591,6 @@ msgstr "Kundekonto blevet opdateret."
 
 msgid "Customer account summary"
 msgstr "Kundekonto oversigt"
-
-msgid "Customer assignments"
-msgstr ""
 
 msgid "Customer consumption"
 msgstr "Kunde forbrug"
@@ -1721,9 +1670,6 @@ msgstr "Database præfiks/suffiks"
 msgid "Database required"
 msgstr "Database kræves"
 
-msgid "Database update"
-msgstr "Database opdatering"
-
 msgid "Database usage"
 msgstr "Database forbrug"
 
@@ -1733,17 +1679,11 @@ msgstr "Databasebrugere"
 msgid "Database with comma(s) in name is not accepted."
 msgstr "Database med komma(r) i navn accepteres ikke."
 
-msgid "Databases"
-msgstr "Databaser"
-
 msgid "Date"
 msgstr "Dato"
 
 msgid "Day"
 msgstr "Dag"
-
-msgid "Day statistics"
-msgstr "Daglig statistik"
 
 msgid "Days"
 msgstr "Dage"
@@ -1812,9 +1752,6 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr "Kære {RESELLER},\n\tDin uploadede softwarepakke blev succesfuld aktiveret af {ADMIN}.\n\n\tDetaljer:\n\tPakkenavn: {SOFTWARE}\n\tPakke ID: {SOFTWARE_ID}\n\n\tVenligst log ind i dit I-MSCP kontrolpanel for flere detaljer."
 
-msgid "Debugger"
-msgstr "Debugger"
-
 msgid "Default language"
 msgstr "Standard sprog"
 
@@ -1834,12 +1771,6 @@ msgstr "Slet FangAlle"
 
 msgid "Delete all tickets"
 msgstr "Slet alle fejlrapports"
-
-msgid "Delete customer"
-msgstr "Slet kunde"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Slet kunde - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Slet fra log:"
@@ -2094,62 +2025,26 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Rediger"
 
-msgid "Edit FTP account"
-msgstr "Rediger FTP konto"
-
 msgid "Edit SSL certificate"
 msgstr "Rediger SSL certifikat"
-
-msgid "Edit admin"
-msgstr "Rediger Admin"
-
-msgid "Edit auto responder"
-msgstr "Rediger auto responder"
-
-msgid "Edit custom DNS record"
-msgstr "Rediger brugerdefineret DNS record"
-
-msgid "Edit custom error page"
-msgstr "Rediger brugerdefineret fejlside"
 
 msgid "Edit custom menu"
 msgstr "Rediger brugerdefineret menu"
 
-msgid "Edit customer"
-msgstr "Rediger kunde"
-
 msgid "Edit domain"
 msgstr "Rediger domæne"
-
-msgid "Edit domain alias"
-msgstr "Rediger domænealias"
 
 msgid "Edit error page"
 msgstr "Rediger fejlside"
 
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Rediger ekatern mail server for {DOMAIN_UTF8}"
-
 msgid "Edit hosting plan"
 msgstr "Rediger hosting plan"
-
-msgid "Edit htaccess user"
-msgstr "Rediger htaccess bruger"
-
-msgid "Edit mail account"
-msgstr "Rediger mail-konto"
-
-msgid "Edit mail quota"
-msgstr "Rediger mail kvote"
 
 msgid "Edit protected area"
 msgstr "Rediger beskyttet område"
 
 msgid "Edit reseller"
 msgstr "Rediger forhandler"
-
-msgid "Edit subdomain"
-msgstr "Ret supdomæne"
 
 msgid "Edit user"
 msgstr "Rediger bruger"
@@ -2242,9 +2137,6 @@ msgstr "Aktiver"
 
 msgid "Enable SSL"
 msgstr "Aktivere SSL"
-
-msgid "Enable auto responder"
-msgstr "Aktiver auto responder"
 
 msgid "Enabled"
 msgstr "Aktiveret"
@@ -2397,9 +2289,6 @@ msgstr "Filanvendelse"
 msgid "FileManager"
 msgstr "Fil Håndtering"
 
-msgid "Filemanager"
-msgstr "Fil Håndtering"
-
 msgid "Filesystem system Info"
 msgstr "Filsystem info"
 
@@ -2470,14 +2359,8 @@ msgstr "GB"
 msgid "Gender"
 msgstr "Køn"
 
-msgid "General"
-msgstr "General"
-
 msgid "General information"
 msgstr "Generel information"
-
-msgid "General settings"
-msgstr "Generel indstillinger"
 
 msgid "Generate"
 msgstr "Generer"
@@ -2555,9 +2438,6 @@ msgstr "Hosting plan værdier overskrider forhandler maksimale værdier."
 msgid "Hosting plan values exceed your own limits."
 msgstr "Hosting plan værdier overskrider dine egne grænser."
 
-msgid "Hosting plans"
-msgstr "Hosting Planer"
-
 msgid "Hosting plans available for"
 msgstr "Hosting planer til rådighed for"
 
@@ -2619,15 +2499,6 @@ msgstr "IP-adresse succesfuldt planlagt til sletning."
 
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP-adresser under kontrol af i-MSCP"
-
-msgid "IP assignments"
-msgstr ""
-
-msgid "IP management"
-msgstr "IP administration"
-
-msgid "IP usage"
-msgstr "IP brug"
 
 msgid "IPv6 address"
 msgstr "IPv6 adresse"
@@ -2874,9 +2745,6 @@ msgstr "Sprog fil installeret."
 msgid "Language successfully updated."
 msgstr "Sprog korrekt opdateret."
 
-msgid "Languages"
-msgstr "Sprog"
-
 msgid "Languages index was successfully re-built."
 msgstr "Sprog-indekset blev succesfuldt genopbygget."
 
@@ -3031,9 +2899,6 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr "Vedligeholdelsestilstand er aktivt. Under denne tilstand kan kun administratorer logge ind."
 
-msgid "Maintenance settings"
-msgstr "Vedligeholdelses indstillinger"
-
 msgid "Male"
 msgstr "Mand"
 
@@ -3042,9 +2907,6 @@ msgstr "Forkert udformet resolver SQL query"
 
 msgid "Manage SQL"
 msgstr "Håndtér SQL"
-
-msgid "Manage htaccess users and groups"
-msgstr "Administrer htaccess brugere og grupper"
 
 msgid "Manage users"
 msgstr "Håndtér brugere"
@@ -3408,9 +3270,6 @@ msgstr "Andet ud"
 msgid "Other settings"
 msgstr "Andre indstillinger"
 
-msgid "Overview"
-msgstr "Overblik"
-
 msgid "Owner"
 msgstr "Ejer"
 
@@ -3447,9 +3306,6 @@ msgstr "PHP direktivernes værdier"
 
 msgid "PHP exec() function"
 msgstr "PHP exec() funktion"
-
-msgid "PHP settings"
-msgstr "PHP indstillinger"
 
 msgid "POP3/IMAP"
 msgstr ""
@@ -3595,9 +3451,6 @@ msgstr "Personligt tema"
 
 msgid "Phone"
 msgstr "Telefon"
-
-msgid "PhpMyAdmin"
-msgstr "PHPMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3812,9 +3665,6 @@ msgstr "Plugin element fejl"
 msgid "Plugin list is empty."
 msgstr "Plugin listen er tom."
 
-msgid "Plugin management"
-msgstr "Plugin administration"
-
 msgid "Plugins Upload"
 msgstr "Plugins Upload"
 
@@ -3874,9 +3724,6 @@ msgstr "Behandler ..."
 
 msgid "Processor data"
 msgstr "Processor data"
-
-msgid "Profile"
-msgstr "Profil"
 
 msgid "Properties"
 msgstr "Egenskaber"
@@ -4114,9 +3961,6 @@ msgstr "Forhandler og kunde niveauer"
 msgid "Reseller assignment"
 msgstr "Forhandler tildeling"
 
-msgid "Reseller assignments"
-msgstr ""
-
 msgid "Reseller consumption"
 msgstr "Forhandler forbrug"
 
@@ -4137,9 +3981,6 @@ msgstr "Forhandler navn"
 
 msgid "Reseller software list"
 msgstr "Forhandler softwareliste"
-
-msgid "Reseller statistics"
-msgstr "Forhandler Statistikker"
 
 msgid "Reseller successfully added."
 msgstr "Forhandler tilføjet."
@@ -4393,17 +4234,8 @@ msgstr "Service port blev succesfuldt tilføjet"
 msgid "Service port successfully removed."
 msgstr "Service port blev succesfuldt fjernet."
 
-msgid "Service ports"
-msgstr "Service porte"
-
 msgid "Service protocol"
 msgstr "Service protokol"
-
-msgid "Services status"
-msgstr "Services status"
-
-msgid "Sessions"
-msgstr "Sessions"
 
 msgid "Set status to 'tochange'"
 msgstr "Sæt status til 'ændrer'"
@@ -4506,17 +4338,11 @@ msgstr "Software installer kræver PHP support."
 msgid "Software instance has been scheduled for installation"
 msgstr "Software instans er planlagt til installation"
 
-msgid "Software management"
-msgstr "Software administration"
-
 msgid "Software name"
 msgstr "Software navn"
 
 msgid "Software not found!"
 msgstr "Software ikke fundet!"
-
-msgid "Software options"
-msgstr "Software valgmuligheder"
 
 msgid "Software permissions"
 msgstr "Software tilladelser"
@@ -4671,9 +4497,6 @@ msgstr "Emne mangler."
 msgid "Submit changes"
 msgstr "Tilføj ændringer"
 
-msgid "Support"
-msgstr "Support"
-
 msgid "Support system"
 msgstr "Support system"
 
@@ -4704,15 +4527,9 @@ msgstr "System data"
 msgid "System error - custom error page was not updated."
 msgstr "Systemfejl - brugerdefineret fejl side blev ikke opdateret."
 
-msgid "System information"
-msgstr "System information"
-
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "Systemet er ikke i stand til fjerne '%s' bruger logo."
-
-msgid "System tools"
-msgstr "System værktøjer"
 
 msgid "System under maintenance"
 msgstr "System under vedligeholdelse"
@@ -5020,9 +4837,6 @@ msgstr "Total software"
 msgid "Traffic"
 msgstr "Trafik"
 
-msgid "Traffic statistics"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "Trafik forbrug"
 
@@ -5263,9 +5077,6 @@ msgstr "Opdater"
 msgid "Update Plugins"
 msgstr "Opdater Plugins"
 
-msgid "Update SQL user password"
-msgstr "Opdater SQL bruger password"
-
 msgid "Update data"
 msgstr "Opdater data"
 
@@ -5377,9 +5188,6 @@ msgstr "Brugersession succesfuldt tilendebragt."
 msgid "User session successfully killed for password change."
 msgstr "Bruger session succesfuldt afbrudt for ændring af password."
 
-msgid "User statistics"
-msgstr ""
-
 msgid "User successfully disconnected."
 msgstr "Bruger succesfuldt afbrudt."
 
@@ -5445,9 +5253,6 @@ msgstr "Vis aliaser"
 msgid "View hosting plan"
 msgstr "Vis hosting plan"
 
-msgid "View ticket"
-msgstr "Se ticket"
-
 msgid "Visit plugin site"
 msgstr "Besøg plugin webstedet"
 
@@ -5497,12 +5302,6 @@ msgstr "Web trafik"
 
 msgid "Webmail"
 msgstr "Webmail"
-
-msgid "Webtools"
-msgstr "Webværktøjer"
-
-msgid "Welcome email"
-msgstr "Velkomst e-mail"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Velkommen {USERNAME} til i-MSCP"
@@ -6028,9 +5827,6 @@ msgstr "I-MSCP Web softwarearkiv"
 msgid "i-MSCP plugin store"
 msgstr "I-MSCP plugin opbevaring"
 
-msgid "i-MSCP updates"
-msgstr "i-MSCP opdateringer"
-
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP version opdaterings kontrol er deaktiveret"
 
@@ -6145,9 +5941,6 @@ msgstr "{ADMIN} aktiverede din softwarepakke"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{FORHANDLER} uploadede en ny softwarepakke"
-
-msgid "{USERNAME} user statistics"
-msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

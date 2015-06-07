@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-04 21:18+0200\n"
-"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"POT-Creation-Date: 2015-06-07 14:15+0200\n"
+"PO-Revision-Date: 2015-06-07 12:12+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -590,18 +590,6 @@ msgstr "Afegir"
 msgid "Add / Edit SSL certificate"
 msgstr ""
 
-msgid "Add FTP account"
-msgstr "Afegir un compte FTP"
-
-msgid "Add Htaccess group"
-msgstr "Afegir grup Htaccess"
-
-msgid "Add Htaccess user"
-msgstr "Afegir usuari Htaccess"
-
-msgid "Add SQL database"
-msgstr "Afegir base de dades SQL"
-
 msgid "Add SQL user"
 msgstr "Afegir usuari SQL"
 
@@ -614,35 +602,14 @@ msgstr "Afegir una nova entrada"
 msgid "Add admin"
 msgstr "Afegir administrador"
 
-msgid "Add catchall"
-msgstr "Afegir catchall"
-
-msgid "Add custom DNS record"
-msgstr "Afegir entrada personalitzada de DNS"
-
 msgid "Add custom menu"
 msgstr "Afegir menú personalitzat"
-
-msgid "Add customer"
-msgstr "Afegir client"
-
-msgid "Add customer - Next step"
-msgstr "Afegir client - Pas següent"
 
 msgid "Add domain alias"
 msgstr "Afegir àlies de domini"
 
-msgid "Add email account"
-msgstr "Afegir compte de correu"
-
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Afegir un servidor de correu extenr per {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Afegir grup"
-
-msgid "Add hosting plan"
-msgstr "Afegir pla de hosting"
 
 msgid "Add new IP address"
 msgstr "Afegir nova adreça IP"
@@ -670,9 +637,6 @@ msgstr "Afegir area protegida"
 
 msgid "Add reseller"
 msgstr "Afegir distribuïdor"
-
-msgid "Add subdomain"
-msgstr "Afegir subdomini"
 
 msgid "Add user"
 msgstr "Afegir usuari"
@@ -841,9 +805,6 @@ msgstr "Admin / Usuaris / Sessions"
 msgid "Admin account successfully created."
 msgstr "Compte d'admin creat satisfactòriament."
 
-msgid "Admin log"
-msgstr "Log d'Admin"
-
 msgid "Admin not available"
 msgstr "Administrador no disponible"
 
@@ -1001,9 +962,6 @@ msgstr "Hi ha hagut un error inesperat: %s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "Hi ha hagut un error durant la pujada del fitxer: %s"
 
-msgid "Anti-Rootkits Logs"
-msgstr ""
-
 msgid "Any"
 msgstr ""
 
@@ -1120,9 +1078,6 @@ msgstr "Assignar"
 
 msgid "Assign existing SQL user"
 msgstr "Assigna un usuari SQL existent."
-
-msgid "Assign group"
-msgstr "Assignar grup"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
@@ -1611,9 +1566,6 @@ msgstr "Entrada del menú eliminada correctament."
 msgid "Custom menu successfully updated."
 msgstr "Entrada del menú actualitzada correctament."
 
-msgid "Custom menus"
-msgstr "Personalitzar menús "
-
 msgid "Customer"
 msgstr "Client"
 
@@ -1642,9 +1594,6 @@ msgid "Customer account successfully updated."
 msgstr "El compte de client s'ha actualitzat correctament."
 
 msgid "Customer account summary"
-msgstr ""
-
-msgid "Customer assignments"
 msgstr ""
 
 msgid "Customer consumption"
@@ -1725,9 +1674,6 @@ msgstr "Prefix/sufix de la base de dades"
 msgid "Database required"
 msgstr "Base de dades requerida"
 
-msgid "Database update"
-msgstr ""
-
 msgid "Database usage"
 msgstr "Ús de la base de dades"
 
@@ -1737,17 +1683,11 @@ msgstr "Usuaris de base de dades"
 msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
-msgid "Databases"
-msgstr "Bases de dades"
-
 msgid "Date"
 msgstr "Data"
 
 msgid "Day"
 msgstr "Dia"
-
-msgid "Day statistics"
-msgstr ""
 
 msgid "Days"
 msgstr "Dies"
@@ -1816,9 +1756,6 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr "Benvolgut {RESELLER},\n\tEl paquet de prohramari que heu carregat ha estat activat per  {ADMIN}.\n\n\tDetalls:\n\tNom del Paquet: {SOFTWARE}\n\tPaquet ID: {SOFTWARE_ID}\n\n\tSiusplau inicia sessió al teu panell de control i-MSCP per a més detalls."
 
-msgid "Debugger"
-msgstr "Debugger"
-
 msgid "Default language"
 msgstr "Idioma per defecte"
 
@@ -1838,12 +1775,6 @@ msgstr "Esborrar CatchAll"
 
 msgid "Delete all tickets"
 msgstr "Eliminar tots els tiquets"
-
-msgid "Delete customer"
-msgstr "Eliminar client"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
 
 msgid "Delete from log:"
 msgstr "Esborrar del registre:"
@@ -2098,62 +2029,26 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Editar"
 
-msgid "Edit FTP account"
-msgstr ""
-
 msgid "Edit SSL certificate"
 msgstr "Editar certificat SSL"
-
-msgid "Edit admin"
-msgstr ""
-
-msgid "Edit auto responder"
-msgstr "Editar auto-resposta"
-
-msgid "Edit custom DNS record"
-msgstr "Modificar el registre DNS"
-
-msgid "Edit custom error page"
-msgstr "Editar pàgina d'error personalitzada"
 
 msgid "Edit custom menu"
 msgstr "Editar menú personalitzat"
 
-msgid "Edit customer"
-msgstr "Editar client"
-
 msgid "Edit domain"
 msgstr "Editar domini"
-
-msgid "Edit domain alias"
-msgstr "Editar àlies de domini"
 
 msgid "Edit error page"
 msgstr "Editar pàgina d'error"
 
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Edit hosting plan"
 msgstr "Editar pla de hosting"
-
-msgid "Edit htaccess user"
-msgstr "Editar usuari htaccess"
-
-msgid "Edit mail account"
-msgstr "Modificar compte de correu"
-
-msgid "Edit mail quota"
-msgstr "Editar quota de correu"
 
 msgid "Edit protected area"
 msgstr "Editar àrea protegida."
 
 msgid "Edit reseller"
 msgstr "Editar distribuïdor"
-
-msgid "Edit subdomain"
-msgstr "Editar subdomini"
 
 msgid "Edit user"
 msgstr "Editar usuari"
@@ -2246,9 +2141,6 @@ msgstr "Activar"
 
 msgid "Enable SSL"
 msgstr "Activar SSL"
-
-msgid "Enable auto responder"
-msgstr "Activar auto-resposta"
 
 msgid "Enabled"
 msgstr "Activat"
@@ -2401,9 +2293,6 @@ msgstr ""
 msgid "FileManager"
 msgstr "Gestor de fitxers"
 
-msgid "Filemanager"
-msgstr "Administrador de fitxers"
-
 msgid "Filesystem system Info"
 msgstr "Informació del sistema de fitxers"
 
@@ -2474,14 +2363,8 @@ msgstr "GB"
 msgid "Gender"
 msgstr "Gènere"
 
-msgid "General"
-msgstr ""
-
 msgid "General information"
 msgstr "Informació General"
-
-msgid "General settings"
-msgstr "Paràmetres generals"
 
 msgid "Generate"
 msgstr "Generar"
@@ -2559,9 +2442,6 @@ msgstr "Els límits del domini sobrepassen el màxim disponible per aquest distr
 msgid "Hosting plan values exceed your own limits."
 msgstr "Els valors del pla de hosting excedeixen els vostres límits."
 
-msgid "Hosting plans"
-msgstr "Plans de hosting"
-
 msgid "Hosting plans available for"
 msgstr "Plans de hosting disponibles per"
 
@@ -2623,15 +2503,6 @@ msgstr ""
 
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
-
-msgid "IP assignments"
-msgstr ""
-
-msgid "IP management"
-msgstr ""
-
-msgid "IP usage"
-msgstr "Ús de IPs"
 
 msgid "IPv6 address"
 msgstr "Adreça IPv6"
@@ -2878,9 +2749,6 @@ msgstr "Arxiu d'idioma instal·lat."
 msgid "Language successfully updated."
 msgstr "Arxiu d'idioma actualitzat."
 
-msgid "Languages"
-msgstr "Idiomes"
-
 msgid "Languages index was successfully re-built."
 msgstr "L'index de idiomes s'ha reconstruït correctament."
 
@@ -3035,9 +2903,6 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr ""
 
-msgid "Maintenance settings"
-msgstr ""
-
 msgid "Male"
 msgstr "Home"
 
@@ -3046,9 +2911,6 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "Administrar SQL"
-
-msgid "Manage htaccess users and groups"
-msgstr "Administrar usuaris i grups htaccess "
 
 msgid "Manage users"
 msgstr "Administrar Usuaris"
@@ -3412,9 +3274,6 @@ msgstr "Altres sortida"
 msgid "Other settings"
 msgstr "Altres paràmetres"
 
-msgid "Overview"
-msgstr "Vista general"
-
 msgid "Owner"
 msgstr "Propietari"
 
@@ -3451,9 +3310,6 @@ msgstr "Valors de les directives de PHP"
 
 msgid "PHP exec() function"
 msgstr "Funció PHP exec()"
-
-msgid "PHP settings"
-msgstr "Configuració del PHP"
 
 msgid "POP3/IMAP"
 msgstr ""
@@ -3599,9 +3455,6 @@ msgstr "Personalitzar plantilla"
 
 msgid "Phone"
 msgstr "Telèfon"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3816,9 +3669,6 @@ msgstr ""
 msgid "Plugin list is empty."
 msgstr ""
 
-msgid "Plugin management"
-msgstr "Administrador de plugins"
-
 msgid "Plugins Upload"
 msgstr ""
 
@@ -3878,9 +3728,6 @@ msgstr ""
 
 msgid "Processor data"
 msgstr ""
-
-msgid "Profile"
-msgstr "Perfil"
 
 msgid "Properties"
 msgstr "Propietats"
@@ -4118,9 +3965,6 @@ msgstr "Nivells Distribuidor i Client"
 msgid "Reseller assignment"
 msgstr "Assignació distribuïdors"
 
-msgid "Reseller assignments"
-msgstr ""
-
 msgid "Reseller consumption"
 msgstr "Consum del distribuïdor"
 
@@ -4141,9 +3985,6 @@ msgstr "Nom del distribuïdor"
 
 msgid "Reseller software list"
 msgstr "Llista d'aplicacions de distribuïdors"
-
-msgid "Reseller statistics"
-msgstr ""
 
 msgid "Reseller successfully added."
 msgstr "S'ha afegit el distribuïdor correctament."
@@ -4397,17 +4238,8 @@ msgstr ""
 msgid "Service port successfully removed."
 msgstr ""
 
-msgid "Service ports"
-msgstr "Ports dels serveis"
-
 msgid "Service protocol"
 msgstr "Protocol del servei"
-
-msgid "Services status"
-msgstr "Estat dels serveis"
-
-msgid "Sessions"
-msgstr "Sessions"
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4510,17 +4342,11 @@ msgstr ""
 msgid "Software instance has been scheduled for installation"
 msgstr ""
 
-msgid "Software management"
-msgstr ""
-
 msgid "Software name"
 msgstr "Nom del programa"
 
 msgid "Software not found!"
 msgstr "Programari no trobat!"
-
-msgid "Software options"
-msgstr "Opcions de software"
 
 msgid "Software permissions"
 msgstr "Permisos d'aplicacions"
@@ -4675,9 +4501,6 @@ msgstr ""
 msgid "Submit changes"
 msgstr "Enviar canvis"
 
-msgid "Support"
-msgstr "Suport"
-
 msgid "Support system"
 msgstr "Sistema de suport"
 
@@ -4708,15 +4531,9 @@ msgstr ""
 msgid "System error - custom error page was not updated."
 msgstr "No s'ha actualitzat la pàgina d'error personalitzada per un error de sistema. Toneu-ho a intentar o contacteu amb l'administrador."
 
-msgid "System information"
-msgstr "Informació del sistema"
-
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "El sistema no ha estat capaç d'eliminar '%s' logotip d'usuari."
-
-msgid "System tools"
-msgstr "Eines del sistema"
 
 msgid "System under maintenance"
 msgstr "Sistema en manteniment"
@@ -5024,9 +4841,6 @@ msgstr "Total d'aplicacions"
 msgid "Traffic"
 msgstr "Trànsit"
 
-msgid "Traffic statistics"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "Ús de trànsit"
 
@@ -5267,9 +5081,6 @@ msgstr "Actualitzar"
 msgid "Update Plugins"
 msgstr ""
 
-msgid "Update SQL user password"
-msgstr "Actualitzar contrasenya d'usuari de SQL."
-
 msgid "Update data"
 msgstr "Actualitzar dades"
 
@@ -5381,9 +5192,6 @@ msgstr ""
 msgid "User session successfully killed for password change."
 msgstr "La sessió d'usuari ha estat eliminada pel canvi de contrasenya."
 
-msgid "User statistics"
-msgstr ""
-
 msgid "User successfully disconnected."
 msgstr ""
 
@@ -5449,9 +5257,6 @@ msgstr "Veure àlies"
 msgid "View hosting plan"
 msgstr "Veure pla de hosting"
 
-msgid "View ticket"
-msgstr "Veure Ticket"
-
 msgid "Visit plugin site"
 msgstr "Visitar el lloc dels plugins"
 
@@ -5501,12 +5306,6 @@ msgstr "Trànsit web"
 
 msgid "Webmail"
 msgstr "Correu web"
-
-msgid "Webtools"
-msgstr "Eines Web"
-
-msgid "Welcome email"
-msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Benvingut {USERNAME} a i-MSCP"
@@ -6032,9 +5831,6 @@ msgstr ""
 msgid "i-MSCP plugin store"
 msgstr ""
 
-msgid "i-MSCP updates"
-msgstr "Actualitzacions i-MSCP"
-
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
 
@@ -6149,9 +5945,6 @@ msgstr "{ADMIN} ha activat el teu paquet de programari"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha carregat un nou paquet de programari"
-
-msgid "{USERNAME} user statistics"
-msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""

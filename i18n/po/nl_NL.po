@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-04 21:18+0200\n"
-"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"POT-Creation-Date: 2015-06-07 14:15+0200\n"
+"PO-Revision-Date: 2015-06-07 12:12+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -595,18 +595,6 @@ msgstr "Toevoegen"
 msgid "Add / Edit SSL certificate"
 msgstr "Toevoegen / Aanpassen SSL-certificaat"
 
-msgid "Add FTP account"
-msgstr "Voeg FTP-account toe"
-
-msgid "Add Htaccess group"
-msgstr "Voeg Htaccess-groep toe"
-
-msgid "Add Htaccess user"
-msgstr "Maak nieuwe Htaccess-gebruiker"
-
-msgid "Add SQL database"
-msgstr "MySQL-databank toevoegen"
-
 msgid "Add SQL user"
 msgstr "MySQL-gebruiker toevoegen"
 
@@ -619,35 +607,14 @@ msgstr "Nieuwe toevoegen"
 msgid "Add admin"
 msgstr "Beheerder toevoegen"
 
-msgid "Add catchall"
-msgstr "Voeg catch-all toe"
-
-msgid "Add custom DNS record"
-msgstr "Eigen DNS-record toevoegen"
-
 msgid "Add custom menu"
 msgstr "Voeg eigen menu toe"
-
-msgid "Add customer"
-msgstr "Klant toevoegen"
-
-msgid "Add customer - Next step"
-msgstr "Klant toevoegen - Volgende stap"
 
 msgid "Add domain alias"
 msgstr "Domeinalias toevoegen"
 
-msgid "Add email account"
-msgstr "E-mailaccount toevoegen"
-
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Voeg externe mailserver toe voor {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Groep toevoegen"
-
-msgid "Add hosting plan"
-msgstr "Hostingpakket toevoegen"
 
 msgid "Add new IP address"
 msgstr "Voeg nieuw IP-adres toe"
@@ -675,9 +642,6 @@ msgstr "Voeg een beschermd gedeelte toe"
 
 msgid "Add reseller"
 msgstr "Wederverkoper toevoegen"
-
-msgid "Add subdomain"
-msgstr "Subdomein toevoegen"
 
 msgid "Add user"
 msgstr "Gebruiker toevoegen"
@@ -770,12 +734,12 @@ msgid "Admin / Statistics / Reseller Statistics"
 msgstr "Beheerder / Statistieken / Wederverkopersstatistieken"
 
 msgid "Admin / Statistics / Reseller Statistics / User Statistics"
-msgstr ""
+msgstr "Beheerder / Statistieken / Statistieken wederverkopers / Gebruikersstatistieken"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
 " statistics"
-msgstr ""
+msgstr "Beheerder / Statistieken / Statistieken wederverkopers / Gebruikersstatistieken / {USERNAME} gebruikersstatistieken"
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Beheerder / Statistieken / Serverstatistieken"
@@ -845,9 +809,6 @@ msgstr "Beheerder / Gebruikers / Sessies"
 
 msgid "Admin account successfully created."
 msgstr "Beheerdersaccount succesvol aangemaakt."
-
-msgid "Admin log"
-msgstr "Beheerderslog"
 
 msgid "Admin not available"
 msgstr "Beheerder niet beschikbaar"
@@ -1006,9 +967,6 @@ msgstr "Een onverwachte fout opgetreden: %s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "Een onbekende fout is opgetreden tijdens het uploaden: %s"
 
-msgid "Anti-Rootkits Logs"
-msgstr "Anti-Rootkitlogboek"
-
 msgid "Any"
 msgstr "Alle"
 
@@ -1125,9 +1083,6 @@ msgstr "Toewijzen"
 
 msgid "Assign existing SQL user"
 msgstr "Bestaande SQL-gebruiker toewijzen"
-
-msgid "Assign group"
-msgstr "Groep toewijzen"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "U dient eerst een databank met minimaal 1 gebruiker aan te maken."
@@ -1616,9 +1571,6 @@ msgstr "Eigen menu succesvol verwijderd."
 msgid "Custom menu successfully updated."
 msgstr "Eigen menu succesvol bijgewerkt."
 
-msgid "Custom menus"
-msgstr "Standaard menu's"
-
 msgid "Customer"
 msgstr "Klant"
 
@@ -1648,9 +1600,6 @@ msgstr "Klantaccount succesvol bijgewerkt."
 
 msgid "Customer account summary"
 msgstr "Klantaccount-samenvatting"
-
-msgid "Customer assignments"
-msgstr ""
 
 msgid "Customer consumption"
 msgstr "Klantverbruik"
@@ -1730,9 +1679,6 @@ msgstr "Databank voor-/achtervoegsel"
 msgid "Database required"
 msgstr "Databank vereist"
 
-msgid "Database update"
-msgstr "Databankupdate"
-
 msgid "Database usage"
 msgstr "Databankgebruik"
 
@@ -1742,17 +1688,11 @@ msgstr "Databankgebruikers"
 msgid "Database with comma(s) in name is not accepted."
 msgstr "Databank met komma('s) in de naam is niet toegestaan."
 
-msgid "Databases"
-msgstr "Databanken"
-
 msgid "Date"
 msgstr "Datum"
 
 msgid "Day"
 msgstr "Dag"
-
-msgid "Day statistics"
-msgstr "Dagstatistieken"
 
 msgid "Days"
 msgstr "Dagen"
@@ -1821,9 +1761,6 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr "Beste {RESELLER},\n\tUw softwarepakket is succesvol geactiveerd door {ADMIN}.\n\n\tDetails:\n\tPakketnaam: {SOFTWARE}\n\tPakketnummer: {SOFTWARE_ID}\n\n\tLog in via i-MSCP voor meer informatie"
 
-msgid "Debugger"
-msgstr "Debugger"
-
 msgid "Default language"
 msgstr "Standaardtaal"
 
@@ -1843,12 +1780,6 @@ msgstr "Verwijder catch-all"
 
 msgid "Delete all tickets"
 msgstr "Verwijder alle tickets"
-
-msgid "Delete customer"
-msgstr "Verwijder klant"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Verwijder klant - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Verwijder uit log:"
@@ -2103,62 +2034,26 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Bewerken"
 
-msgid "Edit FTP account"
-msgstr "FTP-account aanpassen"
-
 msgid "Edit SSL certificate"
 msgstr "SSL-certificaat aanpassen"
-
-msgid "Edit admin"
-msgstr "Bewerk beheerder"
-
-msgid "Edit auto responder"
-msgstr "Auto-beantwoorder aanpassen"
-
-msgid "Edit custom DNS record"
-msgstr "Eigen DNS-instellingen"
-
-msgid "Edit custom error page"
-msgstr "Eigen foutpagina's aanpassen"
 
 msgid "Edit custom menu"
 msgstr "Eigen menu aanpassen"
 
-msgid "Edit customer"
-msgstr "Klant aanpasse"
-
 msgid "Edit domain"
 msgstr "Domein bewerken"
-
-msgid "Edit domain alias"
-msgstr "Domeinalias bewerken"
 
 msgid "Edit error page"
 msgstr "Foutpagina bewerken"
 
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Externe mailserver voor {DOMAIN_UTF8} aanpassen"
-
 msgid "Edit hosting plan"
 msgstr "Hostingpakket bewerken"
-
-msgid "Edit htaccess user"
-msgstr "Htaccess-gebruiker aanpassen"
-
-msgid "Edit mail account"
-msgstr "Mailaccount aanpassen"
-
-msgid "Edit mail quota"
-msgstr "Mailquota aanpassen"
 
 msgid "Edit protected area"
 msgstr "Bewerk beschermd gedeelte"
 
 msgid "Edit reseller"
 msgstr "Wederverkoper bewerken"
-
-msgid "Edit subdomain"
-msgstr "Subdomein aanpassen"
 
 msgid "Edit user"
 msgstr "Klant bewerken"
@@ -2251,9 +2146,6 @@ msgstr "Inschakelen"
 
 msgid "Enable SSL"
 msgstr "SSL gebruiken"
-
-msgid "Enable auto responder"
-msgstr "Auto-antwoorder aanzetten"
 
 msgid "Enabled"
 msgstr "Ingeschakeld"
@@ -2406,9 +2298,6 @@ msgstr "Bestandsgebruik"
 msgid "FileManager"
 msgstr "Bestandsbeheer"
 
-msgid "Filemanager"
-msgstr "Bestandsbeheer"
-
 msgid "Filesystem system Info"
 msgstr "Bestandssysteemsinformatie"
 
@@ -2479,14 +2368,8 @@ msgstr "GB"
 msgid "Gender"
 msgstr "Geslacht"
 
-msgid "General"
-msgstr "Algemeen"
-
 msgid "General information"
 msgstr "Algemene informatie"
-
-msgid "General settings"
-msgstr "Algemene instellingen"
 
 msgid "Generate"
 msgstr "Genereren"
@@ -2564,9 +2447,6 @@ msgstr "Hostingpakket overschrijdt limieten van wederverkoper."
 msgid "Hosting plan values exceed your own limits."
 msgstr "Hostingpakket overschrijdt jouw limieten."
 
-msgid "Hosting plans"
-msgstr "Hostingpakketten"
-
 msgid "Hosting plans available for"
 msgstr "Hosting pakketten  beschikbaar voor"
 
@@ -2629,15 +2509,6 @@ msgstr "IP-adres is succesvol ingepland om verwijderd te worden."
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP-adressen onder controle van i-MSCP"
 
-msgid "IP assignments"
-msgstr ""
-
-msgid "IP management"
-msgstr "IP-management"
-
-msgid "IP usage"
-msgstr "IP-verbruik"
-
 msgid "IPv6 address"
 msgstr "IPv6-adres"
 
@@ -2663,7 +2534,7 @@ msgid "Import in local repository"
 msgstr "Importeren in lokale softwareberging"
 
 msgid "Import new language file"
-msgstr ""
+msgstr "Importeer nieuw taalbestand"
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2883,9 +2754,6 @@ msgstr "Taalbestand succesvol geïnstalleerd."
 msgid "Language successfully updated."
 msgstr "Taal succesvol bijgewerkt."
 
-msgid "Languages"
-msgstr "Taalinstellingen"
-
 msgid "Languages index was successfully re-built."
 msgstr "Taalindex is succesvol herbouwd."
 
@@ -3040,9 +2908,6 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr "Onderhouds modus is geactiveerd. Alleen beheerders kunnen nog inloggen."
 
-msgid "Maintenance settings"
-msgstr "Onderhoudsinstellingen"
-
 msgid "Male"
 msgstr "Man"
 
@@ -3051,9 +2916,6 @@ msgstr "Ongeldige resolver-SQL-query"
 
 msgid "Manage SQL"
 msgstr "Beheer MySQL"
-
-msgid "Manage htaccess users and groups"
-msgstr "Beheer htaccess-gebruikers en -groepen"
 
 msgid "Manage users"
 msgstr "Beheer gebruikers"
@@ -3417,9 +3279,6 @@ msgstr "Overig uit"
 msgid "Other settings"
 msgstr "Andere instellingen"
 
-msgid "Overview"
-msgstr "Overzicht"
-
 msgid "Owner"
 msgstr "Eigenaar"
 
@@ -3457,11 +3316,8 @@ msgstr "PHP-optiewaarden"
 msgid "PHP exec() function"
 msgstr "PHP-exec()-functie"
 
-msgid "PHP settings"
-msgstr "PHP-instellingen"
-
 msgid "POP3/IMAP"
-msgstr ""
+msgstr "POP3/IMAP"
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP in"
@@ -3604,9 +3460,6 @@ msgstr "Personaliseer template"
 
 msgid "Phone"
 msgstr "Telefoon"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3821,9 +3674,6 @@ msgstr "Pluginfout"
 msgid "Plugin list is empty."
 msgstr "Invoegtoepassingslijst is leeg."
 
-msgid "Plugin management"
-msgstr "Invoegtoepassingsbeheer"
-
 msgid "Plugins Upload"
 msgstr "Invoegtoepassingsupload"
 
@@ -3883,9 +3733,6 @@ msgstr "Verwerken..."
 
 msgid "Processor data"
 msgstr "Verwerkingsinformatie"
-
-msgid "Profile"
-msgstr "Profiel"
 
 msgid "Properties"
 msgstr "Eigenschappen"
@@ -4088,7 +3935,7 @@ msgid "Reseller / Statistics / Overview"
 msgstr "Wederverkoper / Statistieken / Overzicht"
 
 msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
-msgstr ""
+msgstr "Wederverkoper / Statistieken / Overzicht / {USERNAME} Gebruikersstatistieken"
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr "Wederverkoper / Ondersteuning / Gesloten tickets"
@@ -4123,9 +3970,6 @@ msgstr "Niveaus van wederverkopers en klanten"
 msgid "Reseller assignment"
 msgstr "Toewijzing van wederverkoper"
 
-msgid "Reseller assignments"
-msgstr ""
-
 msgid "Reseller consumption"
 msgstr "Gebruik van wederverkoper"
 
@@ -4146,9 +3990,6 @@ msgstr "Naam van wederverkoper"
 
 msgid "Reseller software list"
 msgstr "Softwarelijst wederverkoper"
-
-msgid "Reseller statistics"
-msgstr "Statistieken wederverkoper"
 
 msgid "Reseller successfully added."
 msgstr "Wederverkoper succesvol toegevoegd."
@@ -4402,17 +4243,8 @@ msgstr "Serviceport succesvol verwijderd"
 msgid "Service port successfully removed."
 msgstr "Serviceport succesvol verwijderd."
 
-msgid "Service ports"
-msgstr "Serverpoorten"
-
 msgid "Service protocol"
 msgstr "Service protocol"
-
-msgid "Services status"
-msgstr "Servicestatus"
-
-msgid "Sessions"
-msgstr "Sessies"
 
 msgid "Set status to 'tochange'"
 msgstr "Verander status naar 'veranderen'"
@@ -4452,7 +4284,7 @@ msgid "Show detailed statistics for this reseller"
 msgstr "Gedetailleerde statistieken voor deze wederverkoper tonen"
 
 msgid "Show detailed statistics for this user"
-msgstr ""
+msgstr "Gedetailleerde statistieken voor deze gebruiker bekijken"
 
 msgid "Show in"
 msgstr "Toon in"
@@ -4515,17 +4347,11 @@ msgstr "Software-installatie heeft PHP nodig"
 msgid "Software instance has been scheduled for installation"
 msgstr "Software ingepland voor installatie"
 
-msgid "Software management"
-msgstr "Softwarebeheer"
-
 msgid "Software name"
 msgstr "Programmanaam"
 
 msgid "Software not found!"
 msgstr "Software niet gevonden!"
-
-msgid "Software options"
-msgstr "Softwareopties"
 
 msgid "Software permissions"
 msgstr "Softwarerechten"
@@ -4680,9 +4506,6 @@ msgstr "Onderwerp ontbreekt"
 msgid "Submit changes"
 msgstr "Aanpassen"
 
-msgid "Support"
-msgstr "Ondersteuning"
-
 msgid "Support system"
 msgstr "Ondersteuningssysteem"
 
@@ -4713,15 +4536,9 @@ msgstr "Systeemgegevens"
 msgid "System error - custom error page was not updated."
 msgstr "Systeemfout - eigen foutpagina is niet bijgewerkt."
 
-msgid "System information"
-msgstr "Systeem Informatie"
-
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "Systeem kan het logo van de gebruiker '%s' niet verwijderen."
-
-msgid "System tools"
-msgstr "Systeem tools"
 
 msgid "System under maintenance"
 msgstr "In onderhoudsmodus"
@@ -5029,9 +4846,6 @@ msgstr "Software totaal"
 msgid "Traffic"
 msgstr "Verkeer"
 
-msgid "Traffic statistics"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "Dataverbruik"
 
@@ -5272,9 +5086,6 @@ msgstr "Opslaan"
 msgid "Update Plugins"
 msgstr "Invoegtoepassingen bijwerken"
 
-msgid "Update SQL user password"
-msgstr "SQL-gebruikerswachtwoord bijwerken"
-
 msgid "Update data"
 msgstr "Gegevens bijwerken"
 
@@ -5386,9 +5197,6 @@ msgstr "Sessie van gebruiker succesvol afgebroken."
 msgid "User session successfully killed for password change."
 msgstr "Sessie van gebruiker succesvol afgesloten voor wachtwoordverandering."
 
-msgid "User statistics"
-msgstr ""
-
 msgid "User successfully disconnected."
 msgstr "Gebruiker succesvol afgemeld."
 
@@ -5454,9 +5262,6 @@ msgstr "Aliassen bekijken"
 msgid "View hosting plan"
 msgstr "Bekijk het hosting plan"
 
-msgid "View ticket"
-msgstr "Bekijk de ticket"
-
 msgid "Visit plugin site"
 msgstr "Bezoek de invoegtoepassingssite"
 
@@ -5506,12 +5311,6 @@ msgstr "Webverkeer"
 
 msgid "Webmail"
 msgstr "Webmail"
-
-msgid "Webtools"
-msgstr "Webtools"
-
-msgid "Welcome email"
-msgstr "Welkomste-mail"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Welkom bij i-MSCP, {USERNAME}"
@@ -6037,9 +5836,6 @@ msgstr "i-MSCP Softwareberging"
 msgid "i-MSCP plugin store"
 msgstr "i-MSCP invoegtoepassingwinkel"
 
-msgid "i-MSCP updates"
-msgstr "i-MSCP Updates"
-
 msgid "i-MSCP version update checking is disabled"
 msgstr "Zoeken naar versie-updates van i-MSCP is uitgeschakeld"
 
@@ -6154,9 +5950,6 @@ msgstr "{ADMIN} heeft uw softwarepakket geactiveerd"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} heeft een nieuw softwarepakket geüpload"
-
-msgid "{USERNAME} user statistics"
-msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>Alle rechten voorbehouden"

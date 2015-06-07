@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-04 21:18+0200\n"
-"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"POT-Creation-Date: 2015-06-07 14:15+0200\n"
+"PO-Revision-Date: 2015-06-07 12:12+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Basque (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/eu_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -585,18 +585,6 @@ msgstr "Gehitu"
 msgid "Add / Edit SSL certificate"
 msgstr ""
 
-msgid "Add FTP account"
-msgstr ""
-
-msgid "Add Htaccess group"
-msgstr ""
-
-msgid "Add Htaccess user"
-msgstr ""
-
-msgid "Add SQL database"
-msgstr "Gehitu SQL datubasea"
-
 msgid "Add SQL user"
 msgstr "Gehitu SQL erabiltzailea"
 
@@ -609,35 +597,14 @@ msgstr ""
 msgid "Add admin"
 msgstr "Administratzailea gehitu"
 
-msgid "Add catchall"
-msgstr ""
-
-msgid "Add custom DNS record"
-msgstr ""
-
 msgid "Add custom menu"
-msgstr ""
-
-msgid "Add customer"
-msgstr ""
-
-msgid "Add customer - Next step"
 msgstr ""
 
 msgid "Add domain alias"
 msgstr "Gehitu domeinu ezizena"
 
-msgid "Add email account"
-msgstr ""
-
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Add group"
 msgstr "Gehitu taldea"
-
-msgid "Add hosting plan"
-msgstr "Gehitu hostatze plana"
 
 msgid "Add new IP address"
 msgstr ""
@@ -665,9 +632,6 @@ msgstr ""
 
 msgid "Add reseller"
 msgstr "Gehitu bersaltzailea"
-
-msgid "Add subdomain"
-msgstr "Gehitu azpidomeinua"
 
 msgid "Add user"
 msgstr "Gehitu erabiltzailea"
@@ -836,9 +800,6 @@ msgstr ""
 msgid "Admin account successfully created."
 msgstr ""
 
-msgid "Admin log"
-msgstr "Administrariaren log-a"
-
 msgid "Admin not available"
 msgstr ""
 
@@ -996,9 +957,6 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Logs"
-msgstr ""
-
 msgid "Any"
 msgstr ""
 
@@ -1114,9 +1072,6 @@ msgid "Assign"
 msgstr "Ezarri"
 
 msgid "Assign existing SQL user"
-msgstr ""
-
-msgid "Assign group"
 msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
@@ -1606,9 +1561,6 @@ msgstr ""
 msgid "Custom menu successfully updated."
 msgstr ""
 
-msgid "Custom menus"
-msgstr "Menu pertsonalizatuak"
-
 msgid "Customer"
 msgstr ""
 
@@ -1637,9 +1589,6 @@ msgid "Customer account successfully updated."
 msgstr ""
 
 msgid "Customer account summary"
-msgstr ""
-
-msgid "Customer assignments"
 msgstr ""
 
 msgid "Customer consumption"
@@ -1720,9 +1669,6 @@ msgstr ""
 msgid "Database required"
 msgstr "Datu basea beharrezkoa"
 
-msgid "Database update"
-msgstr ""
-
 msgid "Database usage"
 msgstr ""
 
@@ -1732,17 +1678,11 @@ msgstr "Datubase erabiltzaileak"
 msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
-msgid "Databases"
-msgstr "Datu basea"
-
 msgid "Date"
 msgstr "Data"
 
 msgid "Day"
 msgstr "Eguna"
-
-msgid "Day statistics"
-msgstr ""
 
 msgid "Days"
 msgstr "Egunak"
@@ -1811,9 +1751,6 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-msgid "Debugger"
-msgstr ""
-
 msgid "Default language"
 msgstr "Lehenetsikato hizkuntza"
 
@@ -1832,12 +1769,6 @@ msgid "Delete CatchAll"
 msgstr "Ezabatu CatchAll"
 
 msgid "Delete all tickets"
-msgstr ""
-
-msgid "Delete customer"
-msgstr ""
-
-msgid "Delete customer - {DOMAIN_NAME}"
 msgstr ""
 
 msgid "Delete from log:"
@@ -2093,62 +2024,26 @@ msgstr ""
 msgid "Edit"
 msgstr "Aldatu"
 
-msgid "Edit FTP account"
-msgstr ""
-
 msgid "Edit SSL certificate"
-msgstr ""
-
-msgid "Edit admin"
-msgstr ""
-
-msgid "Edit auto responder"
-msgstr ""
-
-msgid "Edit custom DNS record"
-msgstr ""
-
-msgid "Edit custom error page"
 msgstr ""
 
 msgid "Edit custom menu"
 msgstr ""
 
-msgid "Edit customer"
-msgstr ""
-
 msgid "Edit domain"
 msgstr "Aldatu Domeinua"
-
-msgid "Edit domain alias"
-msgstr "Aldatu domeinu ezizenak"
 
 msgid "Edit error page"
 msgstr "Aldatu akats orria"
 
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Edit hosting plan"
 msgstr "Aldatu hostatze plana"
-
-msgid "Edit htaccess user"
-msgstr ""
-
-msgid "Edit mail account"
-msgstr ""
-
-msgid "Edit mail quota"
-msgstr ""
 
 msgid "Edit protected area"
 msgstr ""
 
 msgid "Edit reseller"
 msgstr "Aldatu bersaltzailea"
-
-msgid "Edit subdomain"
-msgstr "Aldatu azpidomeinua"
 
 msgid "Edit user"
 msgstr "Aldatu erabiltzailea"
@@ -2240,9 +2135,6 @@ msgid "Enable"
 msgstr "Gaitua"
 
 msgid "Enable SSL"
-msgstr ""
-
-msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
@@ -2396,9 +2288,6 @@ msgstr ""
 msgid "FileManager"
 msgstr "Fitxategi arakatzailea"
 
-msgid "Filemanager"
-msgstr "Artxibo kudeaketa"
-
 msgid "Filesystem system Info"
 msgstr "Sistema fitxategiaren sistema informazioa"
 
@@ -2469,14 +2358,8 @@ msgstr ""
 msgid "Gender"
 msgstr "Sexua"
 
-msgid "General"
-msgstr ""
-
 msgid "General information"
 msgstr "Infomazio orokorra"
-
-msgid "General settings"
-msgstr "Ezarpen orokorrak"
 
 msgid "Generate"
 msgstr ""
@@ -2554,9 +2437,6 @@ msgstr "Ostatze planaren balioak bersaltzailearen balioak gainditzen ditu."
 msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
-msgid "Hosting plans"
-msgstr "Hostatze planak"
-
 msgid "Hosting plans available for"
 msgstr "Hostatzen planak aukeran daude"
 
@@ -2618,15 +2498,6 @@ msgstr ""
 
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
-
-msgid "IP assignments"
-msgstr ""
-
-msgid "IP management"
-msgstr ""
-
-msgid "IP usage"
-msgstr "IP erabillera"
 
 msgid "IPv6 address"
 msgstr "IPv6 helbideak"
@@ -2873,9 +2744,6 @@ msgstr ""
 msgid "Language successfully updated."
 msgstr ""
 
-msgid "Languages"
-msgstr ""
-
 msgid "Languages index was successfully re-built."
 msgstr "Hizkuntzen indizea egokiro berregina."
 
@@ -3030,9 +2898,6 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr ""
 
-msgid "Maintenance settings"
-msgstr ""
-
 msgid "Male"
 msgstr "Gizonezkoa"
 
@@ -3041,9 +2906,6 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "SQL kudeatu"
-
-msgid "Manage htaccess users and groups"
-msgstr ""
 
 msgid "Manage users"
 msgstr "Erabiltzaile kudeaketa"
@@ -3407,9 +3269,6 @@ msgstr "Beste irteerak"
 msgid "Other settings"
 msgstr "Beste aukerak"
 
-msgid "Overview"
-msgstr "Orokorra"
-
 msgid "Owner"
 msgstr "Jabea"
 
@@ -3445,9 +3304,6 @@ msgid "PHP directives values"
 msgstr ""
 
 msgid "PHP exec() function"
-msgstr ""
-
-msgid "PHP settings"
 msgstr ""
 
 msgid "POP3/IMAP"
@@ -3594,9 +3450,6 @@ msgstr "Pertsonalizatu txantiloia"
 
 msgid "Phone"
 msgstr "Telefonoa"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin-a"
 
 msgid "PiB"
 msgstr ""
@@ -3811,9 +3664,6 @@ msgstr ""
 msgid "Plugin list is empty."
 msgstr ""
 
-msgid "Plugin management"
-msgstr ""
-
 msgid "Plugins Upload"
 msgstr ""
 
@@ -3872,9 +3722,6 @@ msgid "Processing..."
 msgstr ""
 
 msgid "Processor data"
-msgstr ""
-
-msgid "Profile"
 msgstr ""
 
 msgid "Properties"
@@ -4113,9 +3960,6 @@ msgstr ""
 msgid "Reseller assignment"
 msgstr "Bersaltzailea ezarri"
 
-msgid "Reseller assignments"
-msgstr ""
-
 msgid "Reseller consumption"
 msgstr ""
 
@@ -4136,9 +3980,6 @@ msgstr "Bersaltzailearen izena"
 
 msgid "Reseller software list"
 msgstr "Bersaltzailearen software zerrenda"
-
-msgid "Reseller statistics"
-msgstr ""
 
 msgid "Reseller successfully added."
 msgstr ""
@@ -4392,17 +4233,8 @@ msgstr ""
 msgid "Service port successfully removed."
 msgstr ""
 
-msgid "Service ports"
-msgstr ""
-
 msgid "Service protocol"
 msgstr "Zerbitzari protokoloa"
-
-msgid "Services status"
-msgstr "Zerbitzuaren egoera"
-
-msgid "Sessions"
-msgstr ""
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4505,16 +4337,10 @@ msgstr ""
 msgid "Software instance has been scheduled for installation"
 msgstr ""
 
-msgid "Software management"
-msgstr ""
-
 msgid "Software name"
 msgstr ""
 
 msgid "Software not found!"
-msgstr ""
-
-msgid "Software options"
 msgstr ""
 
 msgid "Software permissions"
@@ -4670,9 +4496,6 @@ msgstr ""
 msgid "Submit changes"
 msgstr "Bidali aldaketak"
 
-msgid "Support"
-msgstr ""
-
 msgid "Support system"
 msgstr "Euskarri sistema"
 
@@ -4703,15 +4526,9 @@ msgstr ""
 msgid "System error - custom error page was not updated."
 msgstr ""
 
-msgid "System information"
-msgstr ""
-
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
-
-msgid "System tools"
-msgstr "Sistema tresnak"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5019,9 +4836,6 @@ msgstr "Softwarea guztira"
 msgid "Traffic"
 msgstr "Trafikoa"
 
-msgid "Traffic statistics"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "Trafiko erabilera"
 
@@ -5262,9 +5076,6 @@ msgstr "Eguneratu"
 msgid "Update Plugins"
 msgstr ""
 
-msgid "Update SQL user password"
-msgstr ""
-
 msgid "Update data"
 msgstr "Datuak eguneratu"
 
@@ -5376,9 +5187,6 @@ msgstr ""
 msgid "User session successfully killed for password change."
 msgstr ""
 
-msgid "User statistics"
-msgstr ""
-
 msgid "User successfully disconnected."
 msgstr ""
 
@@ -5444,9 +5252,6 @@ msgstr "Ikusi ezizenal"
 msgid "View hosting plan"
 msgstr "Ikusi hostatze plana"
 
-msgid "View ticket"
-msgstr ""
-
 msgid "Visit plugin site"
 msgstr ""
 
@@ -5496,12 +5301,6 @@ msgstr "Web trafikoa"
 
 msgid "Webmail"
 msgstr "Webmail"
-
-msgid "Webtools"
-msgstr "Web tresnak"
-
-msgid "Welcome email"
-msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
@@ -6027,9 +5826,6 @@ msgstr ""
 msgid "i-MSCP plugin store"
 msgstr ""
 
-msgid "i-MSCP updates"
-msgstr "ispCp eguneraketak"
-
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
 
@@ -6143,9 +5939,6 @@ msgid "{ADMIN} activated your software package"
 msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
-msgstr ""
-
-msgid "{USERNAME} user statistics"
 msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-04 21:18+0200\n"
-"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"POT-Creation-Date: 2015-06-07 14:15+0200\n"
+"PO-Revision-Date: 2015-06-07 12:12+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/i-MSCP/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -585,18 +585,6 @@ msgstr "Pridať"
 msgid "Add / Edit SSL certificate"
 msgstr ""
 
-msgid "Add FTP account"
-msgstr "Pridať FTP konto"
-
-msgid "Add Htaccess group"
-msgstr ""
-
-msgid "Add Htaccess user"
-msgstr ""
-
-msgid "Add SQL database"
-msgstr "Pridať SQL databázu"
-
 msgid "Add SQL user"
 msgstr "Pridať SQL konto"
 
@@ -609,35 +597,14 @@ msgstr ""
 msgid "Add admin"
 msgstr "Pridať administrátora"
 
-msgid "Add catchall"
-msgstr "Pridať \"Zachytiť všetko\""
-
-msgid "Add custom DNS record"
-msgstr "Pridať DNS záznam"
-
 msgid "Add custom menu"
-msgstr ""
-
-msgid "Add customer"
-msgstr ""
-
-msgid "Add customer - Next step"
 msgstr ""
 
 msgid "Add domain alias"
 msgstr "Pridať alias domény"
 
-msgid "Add email account"
-msgstr "Pridať emailové konto"
-
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Add group"
 msgstr "Pridať skupinu"
-
-msgid "Add hosting plan"
-msgstr "Pridať hostingový plán"
 
 msgid "Add new IP address"
 msgstr ""
@@ -665,9 +632,6 @@ msgstr ""
 
 msgid "Add reseller"
 msgstr "Pridať predajcu"
-
-msgid "Add subdomain"
-msgstr "Pridať sub-doménu"
 
 msgid "Add user"
 msgstr "Pridať uživateľa"
@@ -836,9 +800,6 @@ msgstr ""
 msgid "Admin account successfully created."
 msgstr ""
 
-msgid "Admin log"
-msgstr "Admin log"
-
 msgid "Admin not available"
 msgstr ""
 
@@ -996,9 +957,6 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Logs"
-msgstr ""
-
 msgid "Any"
 msgstr ""
 
@@ -1114,9 +1072,6 @@ msgid "Assign"
 msgstr "Priradiť"
 
 msgid "Assign existing SQL user"
-msgstr ""
-
-msgid "Assign group"
 msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
@@ -1606,9 +1561,6 @@ msgstr ""
 msgid "Custom menu successfully updated."
 msgstr ""
 
-msgid "Custom menus"
-msgstr "Vlastné menu"
-
 msgid "Customer"
 msgstr "Zákazník"
 
@@ -1637,9 +1589,6 @@ msgid "Customer account successfully updated."
 msgstr "Zákazníkové konto bolo úspešne pridané."
 
 msgid "Customer account summary"
-msgstr ""
-
-msgid "Customer assignments"
 msgstr ""
 
 msgid "Customer consumption"
@@ -1720,9 +1669,6 @@ msgstr "Databáza prefix/suffix"
 msgid "Database required"
 msgstr "Potrebná databáza"
 
-msgid "Database update"
-msgstr "Aktualizácie databáze"
-
 msgid "Database usage"
 msgstr "Použitie databáze"
 
@@ -1732,17 +1678,11 @@ msgstr "Užívateľia databázy"
 msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
-msgid "Databases"
-msgstr "Databáze"
-
 msgid "Date"
 msgstr "Dátum"
 
 msgid "Day"
 msgstr "Deň"
-
-msgid "Day statistics"
-msgstr ""
 
 msgid "Days"
 msgstr "Dni"
@@ -1811,9 +1751,6 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-msgid "Debugger"
-msgstr ""
-
 msgid "Default language"
 msgstr "Východzí jazyk"
 
@@ -1832,12 +1769,6 @@ msgid "Delete CatchAll"
 msgstr "Vymazať \"zachytiť všetko\""
 
 msgid "Delete all tickets"
-msgstr ""
-
-msgid "Delete customer"
-msgstr ""
-
-msgid "Delete customer - {DOMAIN_NAME}"
 msgstr ""
 
 msgid "Delete from log:"
@@ -2093,62 +2024,26 @@ msgstr ""
 msgid "Edit"
 msgstr "Upraviť"
 
-msgid "Edit FTP account"
-msgstr ""
-
 msgid "Edit SSL certificate"
-msgstr ""
-
-msgid "Edit admin"
-msgstr ""
-
-msgid "Edit auto responder"
-msgstr ""
-
-msgid "Edit custom DNS record"
-msgstr ""
-
-msgid "Edit custom error page"
 msgstr ""
 
 msgid "Edit custom menu"
 msgstr ""
 
-msgid "Edit customer"
-msgstr ""
-
 msgid "Edit domain"
 msgstr "Upraviť doménu"
-
-msgid "Edit domain alias"
-msgstr "Zmeniť alias domény"
 
 msgid "Edit error page"
 msgstr "Upraviť chybovú stránku"
 
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Edit hosting plan"
 msgstr "Editovať hostingový plán"
-
-msgid "Edit htaccess user"
-msgstr ""
-
-msgid "Edit mail account"
-msgstr ""
-
-msgid "Edit mail quota"
-msgstr ""
 
 msgid "Edit protected area"
 msgstr ""
 
 msgid "Edit reseller"
 msgstr "Upraviť predajcu"
-
-msgid "Edit subdomain"
-msgstr "Upraviť doménu"
 
 msgid "Edit user"
 msgstr "Upraviť užívateľa"
@@ -2240,9 +2135,6 @@ msgid "Enable"
 msgstr "Zapnúť"
 
 msgid "Enable SSL"
-msgstr ""
-
-msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
@@ -2396,9 +2288,6 @@ msgstr ""
 msgid "FileManager"
 msgstr "Správca súborov"
 
-msgid "Filemanager"
-msgstr "Filemanager"
-
 msgid "Filesystem system Info"
 msgstr "Informácie o súborových systémoch"
 
@@ -2469,14 +2358,8 @@ msgstr ""
 msgid "Gender"
 msgstr "Pohlavie"
 
-msgid "General"
-msgstr "Všeobecné"
-
 msgid "General information"
 msgstr "Všeobecné informácie"
-
-msgid "General settings"
-msgstr "Všeobecné nastavenia"
 
 msgid "Generate"
 msgstr ""
@@ -2554,9 +2437,6 @@ msgstr ""
 msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
-msgid "Hosting plans"
-msgstr "Hostingový plán"
-
 msgid "Hosting plans available for"
 msgstr "Hostingové plány k dispozícii pre"
 
@@ -2618,15 +2498,6 @@ msgstr ""
 
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
-
-msgid "IP assignments"
-msgstr ""
-
-msgid "IP management"
-msgstr ""
-
-msgid "IP usage"
-msgstr "Využitie IP"
 
 msgid "IPv6 address"
 msgstr "IPv6 adresy"
@@ -2873,9 +2744,6 @@ msgstr ""
 msgid "Language successfully updated."
 msgstr ""
 
-msgid "Languages"
-msgstr "Jazyky"
-
 msgid "Languages index was successfully re-built."
 msgstr ""
 
@@ -3030,9 +2898,6 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr ""
 
-msgid "Maintenance settings"
-msgstr ""
-
 msgid "Male"
 msgstr "Muž"
 
@@ -3041,9 +2906,6 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "Spravovať SQL"
-
-msgid "Manage htaccess users and groups"
-msgstr ""
 
 msgid "Manage users"
 msgstr "Spravovať užívateľov"
@@ -3407,9 +3269,6 @@ msgstr "Ostatné prichádzajúce"
 msgid "Other settings"
 msgstr "Ostatné nastavenia"
 
-msgid "Overview"
-msgstr "Prehľad"
-
 msgid "Owner"
 msgstr "Vlastník"
 
@@ -3445,9 +3304,6 @@ msgid "PHP directives values"
 msgstr ""
 
 msgid "PHP exec() function"
-msgstr ""
-
-msgid "PHP settings"
 msgstr ""
 
 msgid "POP3/IMAP"
@@ -3594,9 +3450,6 @@ msgstr "Prispôsobiť šablónu"
 
 msgid "Phone"
 msgstr "Telefón"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -3811,9 +3664,6 @@ msgstr ""
 msgid "Plugin list is empty."
 msgstr ""
 
-msgid "Plugin management"
-msgstr ""
-
 msgid "Plugins Upload"
 msgstr ""
 
@@ -3873,9 +3723,6 @@ msgstr ""
 
 msgid "Processor data"
 msgstr ""
-
-msgid "Profile"
-msgstr "Profil"
 
 msgid "Properties"
 msgstr "Vlastnosti"
@@ -4113,9 +3960,6 @@ msgstr ""
 msgid "Reseller assignment"
 msgstr "Priradenie predajcu"
 
-msgid "Reseller assignments"
-msgstr ""
-
 msgid "Reseller consumption"
 msgstr ""
 
@@ -4136,9 +3980,6 @@ msgstr "Meno predajcu"
 
 msgid "Reseller software list"
 msgstr "Predajcov zoznam softwaru"
-
-msgid "Reseller statistics"
-msgstr ""
 
 msgid "Reseller successfully added."
 msgstr "Predajca úspešne pridaný."
@@ -4392,17 +4233,8 @@ msgstr ""
 msgid "Service port successfully removed."
 msgstr ""
 
-msgid "Service ports"
-msgstr ""
-
 msgid "Service protocol"
 msgstr "Porty servra"
-
-msgid "Services status"
-msgstr "Stav služby"
-
-msgid "Sessions"
-msgstr ""
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4505,16 +4337,10 @@ msgstr ""
 msgid "Software instance has been scheduled for installation"
 msgstr ""
 
-msgid "Software management"
-msgstr ""
-
 msgid "Software name"
 msgstr ""
 
 msgid "Software not found!"
-msgstr ""
-
-msgid "Software options"
 msgstr ""
 
 msgid "Software permissions"
@@ -4670,9 +4496,6 @@ msgstr ""
 msgid "Submit changes"
 msgstr "Odoslať zmeny"
 
-msgid "Support"
-msgstr "Podpora"
-
 msgid "Support system"
 msgstr "Podporný systém"
 
@@ -4703,15 +4526,9 @@ msgstr ""
 msgid "System error - custom error page was not updated."
 msgstr ""
 
-msgid "System information"
-msgstr ""
-
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
-
-msgid "System tools"
-msgstr "Systémové nástroje"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5019,9 +4836,6 @@ msgstr "Softwaru celkom"
 msgid "Traffic"
 msgstr "Prenesené dáta"
 
-msgid "Traffic statistics"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "Prenesené dáta"
 
@@ -5262,9 +5076,6 @@ msgstr "Aktualizovať"
 msgid "Update Plugins"
 msgstr ""
 
-msgid "Update SQL user password"
-msgstr ""
-
 msgid "Update data"
 msgstr "Aktualizovať údaje"
 
@@ -5376,9 +5187,6 @@ msgstr ""
 msgid "User session successfully killed for password change."
 msgstr ""
 
-msgid "User statistics"
-msgstr ""
-
 msgid "User successfully disconnected."
 msgstr ""
 
@@ -5444,9 +5252,6 @@ msgstr "Zobraziť aliasy"
 msgid "View hosting plan"
 msgstr "Zobraziť hostingový plán"
 
-msgid "View ticket"
-msgstr "Zobraziť tiket"
-
 msgid "Visit plugin site"
 msgstr ""
 
@@ -5496,12 +5301,6 @@ msgstr "Prenesené dáta cez web"
 
 msgid "Webmail"
 msgstr "Webmail"
-
-msgid "Webtools"
-msgstr "Web nástroje"
-
-msgid "Welcome email"
-msgstr "Uvítací email"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Vitajte {USERNAME} v i-MSCP"
@@ -6027,9 +5826,6 @@ msgstr ""
 msgid "i-MSCP plugin store"
 msgstr ""
 
-msgid "i-MSCP updates"
-msgstr "i-MSCP aktualizácie"
-
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
 
@@ -6143,9 +5939,6 @@ msgid "{ADMIN} activated your software package"
 msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
-msgstr ""
-
-msgid "{USERNAME} user statistics"
 msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

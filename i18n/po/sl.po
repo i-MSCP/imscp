@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-04 21:18+0200\n"
-"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"POT-Creation-Date: 2015-06-07 14:15+0200\n"
+"PO-Revision-Date: 2015-06-07 12:12+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Slovenian (http://www.transifex.com/projects/p/i-MSCP/language/sl/)\n"
 "MIME-Version: 1.0\n"
@@ -586,18 +586,6 @@ msgstr "Dodaj"
 msgid "Add / Edit SSL certificate"
 msgstr ""
 
-msgid "Add FTP account"
-msgstr ""
-
-msgid "Add Htaccess group"
-msgstr ""
-
-msgid "Add Htaccess user"
-msgstr ""
-
-msgid "Add SQL database"
-msgstr "Dodaj SQL bazo"
-
 msgid "Add SQL user"
 msgstr ""
 
@@ -610,35 +598,14 @@ msgstr ""
 msgid "Add admin"
 msgstr "Dodaj Administratorja"
 
-msgid "Add catchall"
-msgstr ""
-
-msgid "Add custom DNS record"
-msgstr ""
-
 msgid "Add custom menu"
-msgstr ""
-
-msgid "Add customer"
-msgstr ""
-
-msgid "Add customer - Next step"
 msgstr ""
 
 msgid "Add domain alias"
 msgstr ""
 
-msgid "Add email account"
-msgstr ""
-
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Add group"
 msgstr ""
-
-msgid "Add hosting plan"
-msgstr "Dodaj gostovanje"
 
 msgid "Add new IP address"
 msgstr ""
@@ -666,9 +633,6 @@ msgstr ""
 
 msgid "Add reseller"
 msgstr "Dodaj Prodajalca"
-
-msgid "Add subdomain"
-msgstr "Dodaj poddomeno"
 
 msgid "Add user"
 msgstr "Dodaj uporabnika"
@@ -837,9 +801,6 @@ msgstr ""
 msgid "Admin account successfully created."
 msgstr ""
 
-msgid "Admin log"
-msgstr "Administratorski log"
-
 msgid "Admin not available"
 msgstr ""
 
@@ -997,9 +958,6 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Logs"
-msgstr ""
-
 msgid "Any"
 msgstr ""
 
@@ -1115,9 +1073,6 @@ msgid "Assign"
 msgstr "Vpiši se"
 
 msgid "Assign existing SQL user"
-msgstr ""
-
-msgid "Assign group"
 msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
@@ -1607,9 +1562,6 @@ msgstr ""
 msgid "Custom menu successfully updated."
 msgstr ""
 
-msgid "Custom menus"
-msgstr "Meni po meri"
-
 msgid "Customer"
 msgstr ""
 
@@ -1638,9 +1590,6 @@ msgid "Customer account successfully updated."
 msgstr ""
 
 msgid "Customer account summary"
-msgstr ""
-
-msgid "Customer assignments"
 msgstr ""
 
 msgid "Customer consumption"
@@ -1721,9 +1670,6 @@ msgstr ""
 msgid "Database required"
 msgstr ""
 
-msgid "Database update"
-msgstr ""
-
 msgid "Database usage"
 msgstr ""
 
@@ -1733,17 +1679,11 @@ msgstr ""
 msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
-msgid "Databases"
-msgstr ""
-
 msgid "Date"
 msgstr "Datum"
 
 msgid "Day"
 msgstr "Dan"
-
-msgid "Day statistics"
-msgstr ""
 
 msgid "Days"
 msgstr "Dnevi"
@@ -1812,9 +1752,6 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-msgid "Debugger"
-msgstr ""
-
 msgid "Default language"
 msgstr ""
 
@@ -1833,12 +1770,6 @@ msgid "Delete CatchAll"
 msgstr ""
 
 msgid "Delete all tickets"
-msgstr ""
-
-msgid "Delete customer"
-msgstr ""
-
-msgid "Delete customer - {DOMAIN_NAME}"
 msgstr ""
 
 msgid "Delete from log:"
@@ -2094,52 +2025,19 @@ msgstr ""
 msgid "Edit"
 msgstr "Uredi"
 
-msgid "Edit FTP account"
-msgstr ""
-
 msgid "Edit SSL certificate"
-msgstr ""
-
-msgid "Edit admin"
-msgstr ""
-
-msgid "Edit auto responder"
-msgstr ""
-
-msgid "Edit custom DNS record"
-msgstr ""
-
-msgid "Edit custom error page"
 msgstr ""
 
 msgid "Edit custom menu"
 msgstr ""
 
-msgid "Edit customer"
-msgstr ""
-
 msgid "Edit domain"
 msgstr "Uredi domeno"
-
-msgid "Edit domain alias"
-msgstr ""
 
 msgid "Edit error page"
 msgstr ""
 
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Edit hosting plan"
-msgstr ""
-
-msgid "Edit htaccess user"
-msgstr ""
-
-msgid "Edit mail account"
-msgstr ""
-
-msgid "Edit mail quota"
 msgstr ""
 
 msgid "Edit protected area"
@@ -2147,9 +2045,6 @@ msgstr ""
 
 msgid "Edit reseller"
 msgstr "Uredi prodajnike"
-
-msgid "Edit subdomain"
-msgstr ""
 
 msgid "Edit user"
 msgstr "Uredi uporabnika"
@@ -2241,9 +2136,6 @@ msgid "Enable"
 msgstr "Omogoči"
 
 msgid "Enable SSL"
-msgstr ""
-
-msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
@@ -2397,9 +2289,6 @@ msgstr ""
 msgid "FileManager"
 msgstr "Raziskovalec"
 
-msgid "Filemanager"
-msgstr "Raziskovalec"
-
 msgid "Filesystem system Info"
 msgstr ""
 
@@ -2470,14 +2359,8 @@ msgstr ""
 msgid "Gender"
 msgstr "Spol"
 
-msgid "General"
-msgstr ""
-
 msgid "General information"
 msgstr "Splošne informacije"
-
-msgid "General settings"
-msgstr "Glavne nastavitve strežnika"
 
 msgid "Generate"
 msgstr ""
@@ -2555,9 +2438,6 @@ msgstr ""
 msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
-msgid "Hosting plans"
-msgstr ""
-
 msgid "Hosting plans available for"
 msgstr ""
 
@@ -2619,15 +2499,6 @@ msgstr ""
 
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
-
-msgid "IP assignments"
-msgstr ""
-
-msgid "IP management"
-msgstr ""
-
-msgid "IP usage"
-msgstr "Ip uporaba"
 
 msgid "IPv6 address"
 msgstr "IPv6 naslov"
@@ -2874,9 +2745,6 @@ msgstr ""
 msgid "Language successfully updated."
 msgstr ""
 
-msgid "Languages"
-msgstr ""
-
 msgid "Languages index was successfully re-built."
 msgstr ""
 
@@ -3031,9 +2899,6 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr ""
 
-msgid "Maintenance settings"
-msgstr ""
-
 msgid "Male"
 msgstr "Moški"
 
@@ -3042,9 +2907,6 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "Uredi SQL"
-
-msgid "Manage htaccess users and groups"
-msgstr ""
 
 msgid "Manage users"
 msgstr "Upravljavec uporabnikov"
@@ -3408,9 +3270,6 @@ msgstr ""
 msgid "Other settings"
 msgstr ""
 
-msgid "Overview"
-msgstr "Pregled"
-
 msgid "Owner"
 msgstr "Lastnik"
 
@@ -3446,9 +3305,6 @@ msgid "PHP directives values"
 msgstr ""
 
 msgid "PHP exec() function"
-msgstr ""
-
-msgid "PHP settings"
 msgstr ""
 
 msgid "POP3/IMAP"
@@ -3595,9 +3451,6 @@ msgstr ""
 
 msgid "Phone"
 msgstr "telefon"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -3812,9 +3665,6 @@ msgstr ""
 msgid "Plugin list is empty."
 msgstr ""
 
-msgid "Plugin management"
-msgstr ""
-
 msgid "Plugins Upload"
 msgstr ""
 
@@ -3873,9 +3723,6 @@ msgid "Processing..."
 msgstr ""
 
 msgid "Processor data"
-msgstr ""
-
-msgid "Profile"
 msgstr ""
 
 msgid "Properties"
@@ -4114,9 +3961,6 @@ msgstr ""
 msgid "Reseller assignment"
 msgstr "Prodajalčev odstop"
 
-msgid "Reseller assignments"
-msgstr ""
-
 msgid "Reseller consumption"
 msgstr ""
 
@@ -4136,9 +3980,6 @@ msgid "Reseller name"
 msgstr "Ime prodajnika"
 
 msgid "Reseller software list"
-msgstr ""
-
-msgid "Reseller statistics"
 msgstr ""
 
 msgid "Reseller successfully added."
@@ -4393,17 +4234,8 @@ msgstr ""
 msgid "Service port successfully removed."
 msgstr ""
 
-msgid "Service ports"
-msgstr ""
-
 msgid "Service protocol"
 msgstr "Protokol"
-
-msgid "Services status"
-msgstr "Status strežnika"
-
-msgid "Sessions"
-msgstr ""
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4506,16 +4338,10 @@ msgstr ""
 msgid "Software instance has been scheduled for installation"
 msgstr ""
 
-msgid "Software management"
-msgstr ""
-
 msgid "Software name"
 msgstr ""
 
 msgid "Software not found!"
-msgstr ""
-
-msgid "Software options"
 msgstr ""
 
 msgid "Software permissions"
@@ -4671,9 +4497,6 @@ msgstr ""
 msgid "Submit changes"
 msgstr "Pošlji spremembo"
 
-msgid "Support"
-msgstr ""
-
 msgid "Support system"
 msgstr "Podporni sistem"
 
@@ -4704,15 +4527,9 @@ msgstr ""
 msgid "System error - custom error page was not updated."
 msgstr ""
 
-msgid "System information"
-msgstr ""
-
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
-
-msgid "System tools"
-msgstr "Systemaska orodja"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5020,9 +4837,6 @@ msgstr ""
 msgid "Traffic"
 msgstr "Promet"
 
-msgid "Traffic statistics"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "Uporaba prometa"
 
@@ -5263,9 +5077,6 @@ msgstr "Posodobitev"
 msgid "Update Plugins"
 msgstr ""
 
-msgid "Update SQL user password"
-msgstr ""
-
 msgid "Update data"
 msgstr "Posodobi podatke"
 
@@ -5377,9 +5188,6 @@ msgstr ""
 msgid "User session successfully killed for password change."
 msgstr ""
 
-msgid "User statistics"
-msgstr ""
-
 msgid "User successfully disconnected."
 msgstr ""
 
@@ -5445,9 +5253,6 @@ msgstr ""
 msgid "View hosting plan"
 msgstr ""
 
-msgid "View ticket"
-msgstr ""
-
 msgid "Visit plugin site"
 msgstr ""
 
@@ -5497,12 +5302,6 @@ msgstr "Spletni promet"
 
 msgid "Webmail"
 msgstr "Spletna pošta"
-
-msgid "Webtools"
-msgstr "Spletna orodja"
-
-msgid "Welcome email"
-msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
@@ -6028,9 +5827,6 @@ msgstr ""
 msgid "i-MSCP plugin store"
 msgstr ""
 
-msgid "i-MSCP updates"
-msgstr "i-MSCP Posodobitve"
-
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
 
@@ -6144,9 +5940,6 @@ msgid "{ADMIN} activated your software package"
 msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
-msgstr ""
-
-msgid "{USERNAME} user statistics"
 msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

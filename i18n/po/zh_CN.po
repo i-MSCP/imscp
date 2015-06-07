@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-04 21:18+0200\n"
-"PO-Revision-Date: 2015-06-04 19:21+0000\n"
+"POT-Creation-Date: 2015-06-07 14:15+0200\n"
+"PO-Revision-Date: 2015-06-07 12:12+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/i-MSCP/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -585,18 +585,6 @@ msgstr "添加"
 msgid "Add / Edit SSL certificate"
 msgstr ""
 
-msgid "Add FTP account"
-msgstr ""
-
-msgid "Add Htaccess group"
-msgstr ""
-
-msgid "Add Htaccess user"
-msgstr ""
-
-msgid "Add SQL database"
-msgstr "添加 SQL 数据库"
-
 msgid "Add SQL user"
 msgstr "添加 SQL 用户"
 
@@ -609,35 +597,14 @@ msgstr ""
 msgid "Add admin"
 msgstr "添加管理员"
 
-msgid "Add catchall"
-msgstr ""
-
-msgid "Add custom DNS record"
-msgstr ""
-
 msgid "Add custom menu"
-msgstr ""
-
-msgid "Add customer"
-msgstr ""
-
-msgid "Add customer - Next step"
 msgstr ""
 
 msgid "Add domain alias"
 msgstr "添加域名别名"
 
-msgid "Add email account"
-msgstr ""
-
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Add group"
 msgstr "添加组"
-
-msgid "Add hosting plan"
-msgstr "添加主机项目"
 
 msgid "Add new IP address"
 msgstr ""
@@ -665,9 +632,6 @@ msgstr ""
 
 msgid "Add reseller"
 msgstr "添加代理商"
-
-msgid "Add subdomain"
-msgstr "添加子域名"
 
 msgid "Add user"
 msgstr "添加用户"
@@ -836,9 +800,6 @@ msgstr ""
 msgid "Admin account successfully created."
 msgstr ""
 
-msgid "Admin log"
-msgstr "管理员日志"
-
 msgid "Admin not available"
 msgstr ""
 
@@ -996,9 +957,6 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Logs"
-msgstr ""
-
 msgid "Any"
 msgstr ""
 
@@ -1114,9 +1072,6 @@ msgid "Assign"
 msgstr "指派"
 
 msgid "Assign existing SQL user"
-msgstr ""
-
-msgid "Assign group"
 msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
@@ -1606,9 +1561,6 @@ msgstr ""
 msgid "Custom menu successfully updated."
 msgstr ""
 
-msgid "Custom menus"
-msgstr "自定义菜单"
-
 msgid "Customer"
 msgstr ""
 
@@ -1637,9 +1589,6 @@ msgid "Customer account successfully updated."
 msgstr ""
 
 msgid "Customer account summary"
-msgstr ""
-
-msgid "Customer assignments"
 msgstr ""
 
 msgid "Customer consumption"
@@ -1720,9 +1669,6 @@ msgstr ""
 msgid "Database required"
 msgstr ""
 
-msgid "Database update"
-msgstr ""
-
 msgid "Database usage"
 msgstr ""
 
@@ -1732,17 +1678,11 @@ msgstr "数据库用户"
 msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
-msgid "Databases"
-msgstr ""
-
 msgid "Date"
 msgstr "日期"
 
 msgid "Day"
 msgstr "日"
-
-msgid "Day statistics"
-msgstr ""
 
 msgid "Days"
 msgstr "天"
@@ -1811,9 +1751,6 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-msgid "Debugger"
-msgstr ""
-
 msgid "Default language"
 msgstr ""
 
@@ -1832,12 +1769,6 @@ msgid "Delete CatchAll"
 msgstr "删除 CatchAll"
 
 msgid "Delete all tickets"
-msgstr ""
-
-msgid "Delete customer"
-msgstr ""
-
-msgid "Delete customer - {DOMAIN_NAME}"
 msgstr ""
 
 msgid "Delete from log:"
@@ -2093,62 +2024,26 @@ msgstr ""
 msgid "Edit"
 msgstr "编辑"
 
-msgid "Edit FTP account"
-msgstr ""
-
 msgid "Edit SSL certificate"
-msgstr ""
-
-msgid "Edit admin"
-msgstr ""
-
-msgid "Edit auto responder"
-msgstr ""
-
-msgid "Edit custom DNS record"
-msgstr ""
-
-msgid "Edit custom error page"
 msgstr ""
 
 msgid "Edit custom menu"
 msgstr ""
 
-msgid "Edit customer"
-msgstr ""
-
 msgid "Edit domain"
 msgstr "编辑域名"
-
-msgid "Edit domain alias"
-msgstr "编辑域名别名"
 
 msgid "Edit error page"
 msgstr "编辑错误页"
 
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
-
 msgid "Edit hosting plan"
 msgstr "编辑主机项目"
-
-msgid "Edit htaccess user"
-msgstr ""
-
-msgid "Edit mail account"
-msgstr ""
-
-msgid "Edit mail quota"
-msgstr ""
 
 msgid "Edit protected area"
 msgstr ""
 
 msgid "Edit reseller"
 msgstr "编辑代理商"
-
-msgid "Edit subdomain"
-msgstr ""
 
 msgid "Edit user"
 msgstr "编辑用户"
@@ -2240,9 +2135,6 @@ msgid "Enable"
 msgstr "有效"
 
 msgid "Enable SSL"
-msgstr ""
-
-msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
@@ -2396,9 +2288,6 @@ msgstr ""
 msgid "FileManager"
 msgstr ""
 
-msgid "Filemanager"
-msgstr "文件管理器"
-
 msgid "Filesystem system Info"
 msgstr "文件系统信息"
 
@@ -2469,14 +2358,8 @@ msgstr ""
 msgid "Gender"
 msgstr "性别"
 
-msgid "General"
-msgstr ""
-
 msgid "General information"
 msgstr "概要信息"
-
-msgid "General settings"
-msgstr "常规设置"
 
 msgid "Generate"
 msgstr ""
@@ -2554,9 +2437,6 @@ msgstr ""
 msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
-msgid "Hosting plans"
-msgstr "主机项目"
-
 msgid "Hosting plans available for"
 msgstr "可用的主机项目用于"
 
@@ -2617,15 +2497,6 @@ msgid "IP address successfully scheduled for deletion."
 msgstr ""
 
 msgid "IP addresses under control of i-MSCP"
-msgstr ""
-
-msgid "IP assignments"
-msgstr ""
-
-msgid "IP management"
-msgstr ""
-
-msgid "IP usage"
 msgstr ""
 
 msgid "IPv6 address"
@@ -2873,9 +2744,6 @@ msgstr ""
 msgid "Language successfully updated."
 msgstr ""
 
-msgid "Languages"
-msgstr ""
-
 msgid "Languages index was successfully re-built."
 msgstr ""
 
@@ -3030,9 +2898,6 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr ""
 
-msgid "Maintenance settings"
-msgstr ""
-
 msgid "Male"
 msgstr "男"
 
@@ -3041,9 +2906,6 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "管理 SQL"
-
-msgid "Manage htaccess users and groups"
-msgstr ""
 
 msgid "Manage users"
 msgstr "用户管理"
@@ -3407,9 +3269,6 @@ msgstr "其它发送"
 msgid "Other settings"
 msgstr "其它设置"
 
-msgid "Overview"
-msgstr "概览"
-
 msgid "Owner"
 msgstr "所有者"
 
@@ -3445,9 +3304,6 @@ msgid "PHP directives values"
 msgstr ""
 
 msgid "PHP exec() function"
-msgstr ""
-
-msgid "PHP settings"
 msgstr ""
 
 msgid "POP3/IMAP"
@@ -3594,9 +3450,6 @@ msgstr "人性化模板"
 
 msgid "Phone"
 msgstr "电话"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -3811,9 +3664,6 @@ msgstr ""
 msgid "Plugin list is empty."
 msgstr ""
 
-msgid "Plugin management"
-msgstr ""
-
 msgid "Plugins Upload"
 msgstr ""
 
@@ -3872,9 +3722,6 @@ msgid "Processing..."
 msgstr ""
 
 msgid "Processor data"
-msgstr ""
-
-msgid "Profile"
 msgstr ""
 
 msgid "Properties"
@@ -4113,9 +3960,6 @@ msgstr ""
 msgid "Reseller assignment"
 msgstr "代理商分配"
 
-msgid "Reseller assignments"
-msgstr ""
-
 msgid "Reseller consumption"
 msgstr ""
 
@@ -4135,9 +3979,6 @@ msgid "Reseller name"
 msgstr "代理商名称"
 
 msgid "Reseller software list"
-msgstr ""
-
-msgid "Reseller statistics"
 msgstr ""
 
 msgid "Reseller successfully added."
@@ -4392,17 +4233,8 @@ msgstr ""
 msgid "Service port successfully removed."
 msgstr ""
 
-msgid "Service ports"
-msgstr ""
-
 msgid "Service protocol"
 msgstr "协议"
-
-msgid "Services status"
-msgstr "服务器状态"
-
-msgid "Sessions"
-msgstr ""
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4505,16 +4337,10 @@ msgstr ""
 msgid "Software instance has been scheduled for installation"
 msgstr ""
 
-msgid "Software management"
-msgstr ""
-
 msgid "Software name"
 msgstr ""
 
 msgid "Software not found!"
-msgstr ""
-
-msgid "Software options"
 msgstr ""
 
 msgid "Software permissions"
@@ -4670,9 +4496,6 @@ msgstr ""
 msgid "Submit changes"
 msgstr "提交更改"
 
-msgid "Support"
-msgstr ""
-
 msgid "Support system"
 msgstr "系统支持"
 
@@ -4703,15 +4526,9 @@ msgstr ""
 msgid "System error - custom error page was not updated."
 msgstr ""
 
-msgid "System information"
-msgstr ""
-
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
-
-msgid "System tools"
-msgstr "系统工具"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5019,9 +4836,6 @@ msgstr ""
 msgid "Traffic"
 msgstr "流量"
 
-msgid "Traffic statistics"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "流量使用量"
 
@@ -5262,9 +5076,6 @@ msgstr "更新"
 msgid "Update Plugins"
 msgstr ""
 
-msgid "Update SQL user password"
-msgstr ""
-
 msgid "Update data"
 msgstr "更新资料"
 
@@ -5376,9 +5187,6 @@ msgstr ""
 msgid "User session successfully killed for password change."
 msgstr ""
 
-msgid "User statistics"
-msgstr ""
-
 msgid "User successfully disconnected."
 msgstr ""
 
@@ -5444,9 +5252,6 @@ msgstr "查看别名"
 msgid "View hosting plan"
 msgstr "查看主机项目"
 
-msgid "View ticket"
-msgstr ""
-
 msgid "Visit plugin site"
 msgstr ""
 
@@ -5496,12 +5301,6 @@ msgstr "Web 流量"
 
 msgid "Webmail"
 msgstr "网页邮件"
-
-msgid "Webtools"
-msgstr "Web工具"
-
-msgid "Welcome email"
-msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
@@ -6027,9 +5826,6 @@ msgstr ""
 msgid "i-MSCP plugin store"
 msgstr ""
 
-msgid "i-MSCP updates"
-msgstr "i-MSCP 更新"
-
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
 
@@ -6143,9 +5939,6 @@ msgid "{ADMIN} activated your software package"
 msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
-msgstr ""
-
-msgid "{USERNAME} user statistics"
 msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
