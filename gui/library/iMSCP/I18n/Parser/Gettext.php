@@ -145,7 +145,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getProjectIdVersion()
 	{
-		return $this->_getHeaderValue('Project-Id-Version');
+		return $this->_getHeaderValue('Project-Id-Version:');
 	}
 
 	/**
@@ -155,7 +155,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getReportMsgidBugs()
 	{
-		return $this->_getHeaderValue('Report-Msgid-Bugs-To');
+		return $this->_getHeaderValue('Report-Msgid-Bugs-To:');
 	}
 
 	/**
@@ -165,7 +165,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getPotCreationDate()
 	{
-		return $this->_getHeaderValue('POT-Creation-Date');
+		return $this->_getHeaderValue('POT-Creation-Date:');
 	}
 
 	/**
@@ -175,7 +175,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getPoRevisionDate()
 	{
-		return $this->_getHeaderValue('PO-Revision-Date');
+		return $this->_getHeaderValue('PO-Revision-Date:');
 	}
 
 	/**
@@ -185,7 +185,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getLastTranslator()
 	{
-		return $this->_getHeaderValue('Last-Translator');
+		return $this->_getHeaderValue('Last-Translator:');
 	}
 
 	/**
@@ -195,7 +195,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getLanguageTeam()
 	{
-		return $this->_getHeaderValue('Language-Team');
+		return $this->_getHeaderValue('Language-Team:');
 	}
 
 	/**
@@ -205,7 +205,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getMimeVersion()
 	{
-		return $this->_getHeaderValue('MIME-Version');
+		return $this->_getHeaderValue('MIME-Version:');
 	}
 
 	/**
@@ -215,7 +215,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getContentType()
 	{
-		return $this->_getHeaderValue('Content-Type');
+		return $this->_getHeaderValue('Content-Type:');
 	}
 
 	/**
@@ -225,7 +225,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getContentTransferEncoding()
 	{
-		return $this->_getHeaderValue('Content-Transfer-Encoding');
+		return $this->_getHeaderValue('Content-Transfer-Encoding:');
 	}
 
 	/**
@@ -235,7 +235,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getLanguage()
 	{
-		return $this->_getHeaderValue('Language');
+		return $this->_getHeaderValue('Language:');
 	}
 
 	/**
@@ -245,7 +245,7 @@ class iMSCP_I18n_Parser_Gettext
 	 */
 	public function getPluralForms()
 	{
-		return $this->_getHeaderValue('Plural-Forms');
+		return $this->_getHeaderValue('Plural-Forms:');
 	}
 
 	/**
