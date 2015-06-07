@@ -362,7 +362,7 @@ Please enter your public IP:$msg
 				@serverIps = grep $_ ne $baseServerIp, @serverIps; # Remove the base server IP from the list
 
 				# Retrieve IP to which the user is currently connected (SSH)
-				my $sshConnectIp = defined ($ENV{'SSH_CONNECTION'}) ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
+				my $sshConnectionIp = defined ($ENV{'SSH_CONNECTION'}) ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
 
 				$msg = '';
 
@@ -375,8 +375,8 @@ Please enter your public IP:$msg
 
 					$msg = '';
 
-					if(defined $sshConnectIp && $sshConnectIp ~~ @serverIps && not $sshConnectIp ~~ $serverIps) {
-						$msg = "\n\n\\Z1You cannot remove the $sshConnectIp IP to which you are currently connected " .
+					if(defined $sshConnectionIp && $sshConnectionIp ~~ @serverIps && not $sshConnectionIp ~~ $serverIps) {
+						$msg = "\n\n\\Z1You cannot remove the $sshConnectionIp IP to which you are currently connected " .
 						"through SSH.\\Zn\n\nPlease, try again:";
 					}
 				} while ($rs != 30 && $msg);
