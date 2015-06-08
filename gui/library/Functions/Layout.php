@@ -598,16 +598,16 @@ function layout_LoadNavigation($event)
 
 		switch ($_SESSION['user_type']) {
 			case 'admin':
-				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/admin/navigation.xml";
+				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/admin/navigation.php";
 				break;
 			case 'reseller':
-				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/reseller/navigation.xml";
+				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/reseller/navigation.php";
 				break;
 			default:
-				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/client/navigation.xml";
+				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/client/navigation.php";
 		}
 
-		iMSCP_Registry::set('navigation', new Zend_Navigation(new Zend_Config_Xml($menuPath, 'navigation')));
+		iMSCP_Registry::set('navigation', new Zend_Navigation(include($menuPath)));
 
 		// Set main menu labels visibility for the current environment
 		iMSCP_Events_Aggregator::getInstance()->registerListener(
