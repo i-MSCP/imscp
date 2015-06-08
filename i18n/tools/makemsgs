@@ -34,8 +34,8 @@ find ${GUI_DIR} -type f -name '*.php' -print > php.lst
 --from-code=utf-8 --files-from=php.lst --no-location --sort-output --output=${i18N_DIR}/iMSCP.pot
 rm -f php.lst
 
-# XML files
-find ${GUI_DIR} -type f -name '*.xml' -print > xml.lst
-/usr/bin/xgettext --language=Glade --omit-header --keyword='label' --files-from=xml.lst --no-location --sort-output \
---join-existing --output=${i18N_DIR}/iMSCP.pot
-rm -f xml.lst
+# XML files (No longer needed since 1.2.4)
+#find ${GUI_DIR} -type f -name '*.xml' -print > xml.lst
+#/usr/bin/xgettext --language=Glade --omit-header --keyword='label' --files-from=xml.lst --no-location --sort-output \
+#--join-existing --output=${i18N_DIR}/iMSCP.pot
+#rm -f xml.lst
