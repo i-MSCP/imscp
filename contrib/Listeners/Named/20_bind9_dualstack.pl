@@ -66,9 +66,9 @@ sub addCustomDNSrecord
 		for my $ip(@ipList) {
 			for my $name('@', 'ftp') {
 				if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
-					push @formattedEntries, '$name IN AAAA ' . $ipMngr->normalizeAddr($ip);
+					push @formattedEntries, $name . ' IN AAAA ' . $ipMngr->normalizeAddr($ip);
 				} else {
-					push @formattedEntries, '$name IN A ' . $ipMngr->normalizeAddr($ip);
+					push @formattedEntries, $name . ' IN A ' . $ipMngr->normalizeAddr($ip);
 				}
 			}
 		}
@@ -116,9 +116,9 @@ sub addCustomDNSrecordSub
 		for my $ip(@ipList) {
 			for my $name('@', 'ftp') {
 				if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
-					push @formattedEntries, '$name IN AAAA ' . $ipMngr->normalizeAddr($ip);
+					push @formattedEntries, $name . ' IN AAAA ' . $ipMngr->normalizeAddr($ip);
 				} else {
-					push @formattedEntries, '$name IN A ' . $ipMngr->normalizeAddr($ip);
+					push @formattedEntries, $name . ' IN A ' . $ipMngr->normalizeAddr($ip);
 				}
 			}
 		}
