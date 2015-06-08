@@ -23,12 +23,6 @@ Listener file that allows to override Apache2 ServerAlias directive value.
 
 Listener file that allows to change the domain redirect type in customers's vhost files from 302 to 301.
 
-## GitLab listeners
-
-###10_gitlab.pl
-
-Listener file that allows to start/stop GitLab when updating i-MSCP.
-
 ## Named listeners
 
 ### 10_bind9_localnets.pl

@@ -64,7 +64,7 @@ sub addCustomDNSrecord
 		push @formattedEntries, '; dualstack DNS entries BEGIN';
 
 		for my $ip(@ipList) {
-			for my $name('@', 'ftp') {
+			for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
 				if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
 					push @formattedEntries, $name . ' IN AAAA ' . $ipMngr->normalizeAddr($ip);
 				} else {
