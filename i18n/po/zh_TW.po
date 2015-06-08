@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-07 14:15+0200\n"
-"PO-Revision-Date: 2015-06-07 12:12+0000\n"
+"POT-Creation-Date: 2015-06-08 14:41+0200\n"
+"PO-Revision-Date: 2015-06-08 12:44+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -586,6 +586,18 @@ msgstr "增加"
 msgid "Add / Edit SSL certificate"
 msgstr "新增 / 編輯 SSL 證書"
 
+msgid "Add FTP account"
+msgstr "新增 FTP 帳號"
+
+msgid "Add Htaccess group"
+msgstr "新增 Htaccess 群組"
+
+msgid "Add Htaccess user"
+msgstr "新增 Htaccess 使用者"
+
+msgid "Add SQL database"
+msgstr "增加 SQL 資料庫"
+
 msgid "Add SQL user"
 msgstr "增加 SQL 使用者"
 
@@ -598,14 +610,35 @@ msgstr "新增"
 msgid "Add admin"
 msgstr "增加管理員"
 
+msgid "Add catchall"
+msgstr "新增外部信箱抓取"
+
+msgid "Add custom DNS record"
+msgstr "新增自訂DNS紀錄"
+
 msgid "Add custom menu"
 msgstr "新增自訂選單"
+
+msgid "Add customer"
+msgstr "新增客戶"
+
+msgid "Add customer - Next step"
+msgstr "新增客戶 - 下一步"
 
 msgid "Add domain alias"
 msgstr "增加網域別名"
 
+msgid "Add email account"
+msgstr "新增電子郵件帳號"
+
+msgid "Add external mail server for {DOMAIN_UTF8}"
+msgstr "新增外部郵件伺服器給 {DOMAIN_UTF8}"
+
 msgid "Add group"
 msgstr "增加群組"
+
+msgid "Add hosting plan"
+msgstr "增加代管方案"
 
 msgid "Add new IP address"
 msgstr "新增 IP 位址"
@@ -633,6 +666,9 @@ msgstr "新增保護區域"
 
 msgid "Add reseller"
 msgstr "增加代理商"
+
+msgid "Add subdomain"
+msgstr "增加子網域"
 
 msgid "Add user"
 msgstr "增加使用者"
@@ -801,6 +837,9 @@ msgstr "管理 / 使用者 / 連線數"
 msgid "Admin account successfully created."
 msgstr "管理員帳號已經成功建立"
 
+msgid "Admin log"
+msgstr "管理員日誌"
+
 msgid "Admin not available"
 msgstr "管理者無效"
 
@@ -958,6 +997,9 @@ msgstr "發生無法預期的錯誤: %s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "在您上傳檔案的過程中發生未知的錯誤: %s"
 
+msgid "Anti-Rootkits Logs"
+msgstr "Anti-Rootkits 紀錄"
+
 msgid "Any"
 msgstr ""
 
@@ -1074,6 +1116,9 @@ msgstr "指派"
 
 msgid "Assign existing SQL user"
 msgstr "指派已存在的的 SQL 使用者"
+
+msgid "Assign group"
+msgstr "指派群組"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "首先您必須建立資料庫及至少一個 SQL 使用者。"
@@ -1562,6 +1607,9 @@ msgstr "自訂選單已經成功刪除"
 msgid "Custom menu successfully updated."
 msgstr "自訂選單已經成功更新"
 
+msgid "Custom menus"
+msgstr "自訂選單"
+
 msgid "Customer"
 msgstr "客戶"
 
@@ -1591,6 +1639,9 @@ msgstr "更新客戶帳號已成功"
 
 msgid "Customer account summary"
 msgstr "客戶帳號摘要"
+
+msgid "Customer assignments"
+msgstr ""
 
 msgid "Customer consumption"
 msgstr "客戶購買"
@@ -1670,6 +1721,9 @@ msgstr "資料庫前置字串/字尾"
 msgid "Database required"
 msgstr "需要資料庫"
 
+msgid "Database update"
+msgstr "資料庫更新"
+
 msgid "Database usage"
 msgstr "資料庫使用量"
 
@@ -1679,11 +1733,17 @@ msgstr "資料庫使用者"
 msgid "Database with comma(s) in name is not accepted."
 msgstr "資料庫名稱是不允許使用逗號。"
 
+msgid "Databases"
+msgstr "資料庫"
+
 msgid "Date"
 msgstr "日期"
 
 msgid "Day"
 msgstr "日"
+
+msgid "Day statistics"
+msgstr "每日狀態"
 
 msgid "Days"
 msgstr "日"
@@ -1752,6 +1812,9 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr "親愛的 {RESELLER},\n\t您上傳的軟體套件已經成功被 {ADMIN} 啟用了。\n\n\t詳細資訊:\n\t套件名稱: {SOFTWARE}\n\t套件 ID: {SOFTWARE_ID}\n\n\t請登入您的 i-MSCP 控制台了解更多資訊。"
 
+msgid "Debugger"
+msgstr "除錯"
+
 msgid "Default language"
 msgstr "預設語系"
 
@@ -1771,6 +1834,12 @@ msgstr "刪除抓取外部信箱"
 
 msgid "Delete all tickets"
 msgstr "刪除所有服務單"
+
+msgid "Delete customer"
+msgstr "刪除客戶"
+
+msgid "Delete customer - {DOMAIN_NAME}"
+msgstr "刪除客戶 - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "刪除日誌:"
@@ -2025,26 +2094,62 @@ msgstr "EB"
 msgid "Edit"
 msgstr "編輯"
 
+msgid "Edit FTP account"
+msgstr "編輯 FTP 帳號"
+
 msgid "Edit SSL certificate"
 msgstr "編輯 SSL 憑證"
+
+msgid "Edit admin"
+msgstr "編輯管理員"
+
+msgid "Edit auto responder"
+msgstr "編輯自動回覆"
+
+msgid "Edit custom DNS record"
+msgstr "編輯自訂DNS紀錄"
+
+msgid "Edit custom error page"
+msgstr "編輯自訂錯誤頁面"
 
 msgid "Edit custom menu"
 msgstr "編輯自訂選單"
 
+msgid "Edit customer"
+msgstr "編輯客戶"
+
 msgid "Edit domain"
 msgstr "編輯網域"
+
+msgid "Edit domain alias"
+msgstr "編輯網域別名"
 
 msgid "Edit error page"
 msgstr "編輯錯誤頁"
 
+msgid "Edit external mail server for {DOMAIN_UTF8}"
+msgstr "編輯外部郵件伺服器到 {DOMAIN_UTF8}"
+
 msgid "Edit hosting plan"
 msgstr "編輯主機方案"
+
+msgid "Edit htaccess user"
+msgstr "編輯 htaccess 使用者"
+
+msgid "Edit mail account"
+msgstr "編輯郵件帳號"
+
+msgid "Edit mail quota"
+msgstr "編輯郵件配額"
 
 msgid "Edit protected area"
 msgstr "編輯已保護區域"
 
 msgid "Edit reseller"
 msgstr "編輯經銷商"
+
+msgid "Edit subdomain"
+msgstr "編輯子網域"
 
 msgid "Edit user"
 msgstr "編輯使用者"
@@ -2137,6 +2242,9 @@ msgstr "啟用"
 
 msgid "Enable SSL"
 msgstr "啟用 SSL"
+
+msgid "Enable auto responder"
+msgstr "啟用自動回覆"
 
 msgid "Enabled"
 msgstr "啟用"
@@ -2289,6 +2397,9 @@ msgstr "檔案使用量"
 msgid "FileManager"
 msgstr "文件管理器"
 
+msgid "Filemanager"
+msgstr "文件管理器"
+
 msgid "Filesystem system Info"
 msgstr "檔案系統資訊"
 
@@ -2359,8 +2470,14 @@ msgstr "GB"
 msgid "Gender"
 msgstr "性別"
 
+msgid "General"
+msgstr "一般"
+
 msgid "General information"
 msgstr "概要訊息"
+
+msgid "General settings"
+msgstr "一般設定"
 
 msgid "Generate"
 msgstr "產生"
@@ -2438,6 +2555,9 @@ msgstr "主機方案的值超過經銷商的最大值。"
 msgid "Hosting plan values exceed your own limits."
 msgstr "主機方案的值超過您的限制。"
 
+msgid "Hosting plans"
+msgstr "主機方案"
+
 msgid "Hosting plans available for"
 msgstr "主機方案可用於"
 
@@ -2499,6 +2619,15 @@ msgstr "刪除 IP 位址的排程已成功"
 
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP 位址在 i-MSCP 管理之下。"
+
+msgid "IP assignments"
+msgstr ""
+
+msgid "IP management"
+msgstr "IP 管理"
+
+msgid "IP usage"
+msgstr "IP 使用清單"
 
 msgid "IPv6 address"
 msgstr "IPv6 位址"
@@ -2745,6 +2874,9 @@ msgstr "語言檔已經成功安裝"
 msgid "Language successfully updated."
 msgstr "語言已經成功更新"
 
+msgid "Languages"
+msgstr "多國語言"
+
 msgid "Languages index was successfully re-built."
 msgstr "多國語言索引已經成功重建"
 
@@ -2899,6 +3031,9 @@ msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr "維護模式已啟用。在這個模式，只有管理員可以登入。"
 
+msgid "Maintenance settings"
+msgstr "維護設定"
+
 msgid "Male"
 msgstr "男"
 
@@ -2907,6 +3042,9 @@ msgstr "解析 SQL 佇列異常"
 
 msgid "Manage SQL"
 msgstr "管理 SQL"
+
+msgid "Manage htaccess users and groups"
+msgstr "管理 htaccess 使用者及群組"
 
 msgid "Manage users"
 msgstr "使用者管理"
@@ -3270,6 +3408,9 @@ msgstr "其他發送"
 msgid "Other settings"
 msgstr "其他設定"
 
+msgid "Overview"
+msgstr "概要"
+
 msgid "Owner"
 msgstr "擁有人"
 
@@ -3306,6 +3447,9 @@ msgstr "PHP directives 值"
 
 msgid "PHP exec() function"
 msgstr "PHP exec() 功能"
+
+msgid "PHP settings"
+msgstr "PHP 設定"
 
 msgid "POP3/IMAP"
 msgstr ""
@@ -3451,6 +3595,9 @@ msgstr "個人化範本"
 
 msgid "Phone"
 msgstr "電話"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3665,6 +3812,9 @@ msgstr "外掛項目錯誤"
 msgid "Plugin list is empty."
 msgstr "外掛列表是空的。"
 
+msgid "Plugin management"
+msgstr "外掛管理"
+
 msgid "Plugins Upload"
 msgstr "外掛上傳"
 
@@ -3724,6 +3874,9 @@ msgstr "執行中..."
 
 msgid "Processor data"
 msgstr "處理器資料"
+
+msgid "Profile"
+msgstr "個人"
 
 msgid "Properties"
 msgstr "內容"
@@ -3961,6 +4114,9 @@ msgstr "經銷商與客戶等級"
 msgid "Reseller assignment"
 msgstr "經銷商分配"
 
+msgid "Reseller assignments"
+msgstr ""
+
 msgid "Reseller consumption"
 msgstr "經銷商購買"
 
@@ -3981,6 +4137,9 @@ msgstr "經銷商名稱"
 
 msgid "Reseller software list"
 msgstr "經銷商軟體列表"
+
+msgid "Reseller statistics"
+msgstr "經銷商統計"
 
 msgid "Reseller successfully added."
 msgstr "經銷商已經成功新增。"
@@ -4234,8 +4393,17 @@ msgstr "服務連接埠已經成功新增"
 msgid "Service port successfully removed."
 msgstr "服務連接埠已經成功移除"
 
+msgid "Service ports"
+msgstr "通訊埠口"
+
 msgid "Service protocol"
 msgstr "協議"
+
+msgid "Services status"
+msgstr "伺服器狀態"
+
+msgid "Sessions"
+msgstr "工作階段"
 
 msgid "Set status to 'tochange'"
 msgstr "設定狀態為 '要變更'"
@@ -4338,11 +4506,17 @@ msgstr "軟體安裝器必須有 PHP 的支援。"
 msgid "Software instance has been scheduled for installation"
 msgstr "安裝軟體的動作已經排程。"
 
+msgid "Software management"
+msgstr "軟體管理"
+
 msgid "Software name"
 msgstr "軟體名稱"
 
 msgid "Software not found!"
 msgstr "找不到軟體"
+
+msgid "Software options"
+msgstr "軟體設定"
 
 msgid "Software permissions"
 msgstr "軟體權限"
@@ -4497,6 +4671,9 @@ msgstr "主旨遺失"
 msgid "Submit changes"
 msgstr "提出更改"
 
+msgid "Support"
+msgstr "支援"
+
 msgid "Support system"
 msgstr "系統支援"
 
@@ -4527,9 +4704,15 @@ msgstr "系統資料"
 msgid "System error - custom error page was not updated."
 msgstr "系統錯誤 - 自訂錯誤網頁沒更新。"
 
+msgid "System information"
+msgstr "系統資訊"
+
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "系統無法移除 '%s' 使用者標誌。"
+
+msgid "System tools"
+msgstr "系統工具"
 
 msgid "System under maintenance"
 msgstr "系統維護中"
@@ -4837,6 +5020,9 @@ msgstr "軟體數量總計"
 msgid "Traffic"
 msgstr "流量"
 
+msgid "Traffic statistics"
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "流量使用量"
 
@@ -5077,6 +5263,9 @@ msgstr "更新"
 msgid "Update Plugins"
 msgstr "更新外掛"
 
+msgid "Update SQL user password"
+msgstr "更新 SQL 使用者密碼"
+
 msgid "Update data"
 msgstr "更新資料"
 
@@ -5188,6 +5377,9 @@ msgstr "使用者連線已成功中斷了。"
 msgid "User session successfully killed for password change."
 msgstr "在密碼變更後使用者連線已成功刪除了。"
 
+msgid "User statistics"
+msgstr ""
+
 msgid "User successfully disconnected."
 msgstr "使用者已經成功中斷連線。"
 
@@ -5253,6 +5445,9 @@ msgstr "查看別名"
 msgid "View hosting plan"
 msgstr "查看主機方案"
 
+msgid "View ticket"
+msgstr "檢視服務單"
+
 msgid "Visit plugin site"
 msgstr "瀏覽插件網站"
 
@@ -5302,6 +5497,12 @@ msgstr "Web 流量"
 
 msgid "Webmail"
 msgstr "網頁郵件"
+
+msgid "Webtools"
+msgstr "Web工具"
+
+msgid "Welcome email"
+msgstr "歡迎郵件"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "歡迎 {USERNAME} 來到 i-MSCP"
@@ -5827,6 +6028,9 @@ msgstr "i-MSCP 網站軟體來源"
 msgid "i-MSCP plugin store"
 msgstr "i-MSCP 外掛商店"
 
+msgid "i-MSCP updates"
+msgstr "i-MSCP 更新"
+
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP 版本檢查已停用"
 
@@ -5941,6 +6145,9 @@ msgstr "{ADMIN} 已啟用您的軟體套件"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 已上傳新的軟體套件"
+
+msgid "{USERNAME} user statistics"
+msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
