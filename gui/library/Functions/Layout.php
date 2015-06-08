@@ -586,34 +586,66 @@ function layout_isUserLogo($logoPath)
 /**
  * Load navigation file for current UI level
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @param iMSCP_Events_Event $event
  * @return void
  */
-function layout_LoadNavigation($event)
+function layout_LoadNavigation()
 {
 	if (isset($_SESSION['user_type'])) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
+		$locale = iMSCP_Registry::get('translator') ->getLocale();
+
 		switch ($_SESSION['user_type']) {
 			case 'admin':
-				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/admin/navigation.php";
+				$userLevel = 'admin';
+				$filepath = CACHE_PATH . '/translations/navigation/admin_' . $locale . '.php';
 				break;
 			case 'reseller':
-				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/reseller/navigation.php";
+				$userLevel = 'reseller';
+				$filepath = CACHE_PATH . '/translations/navigation/reseller_' . $locale . '.php';
 				break;
 			default:
-				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/client/navigation.php";
+				$userLevel = 'client';
+				$filepath = CACHE_PATH . '/translations/navigation/client_' . $locale . '.php';
 		}
 
-		iMSCP_Registry::set('navigation', new Zend_Navigation(include($menuPath)));
+		if(!file_exists($filepath)) {
+			layout_createNavigationFile($cfg->ROOT_TEMPLATE_PATH . "/$userLevel/navigation.php", $locale, $userLevel);
+		}
+
+		iMSCP_Registry::set('navigation', new Zend_Navigation(include($filepath)));
 
 		// Set main menu labels visibility for the current environment
 		iMSCP_Events_Aggregator::getInstance()->registerListener(
 			iMSCP_Events::onBeforeGenerateNavigation, 'layout_setMainMenuLabelsVisibilityEvt'
 		);
 	}
+}
+
+/**
+ * Create cached version of navigation translations file for the give file and locale
+ *
+ * @param string $filepath Navigation translation file path Filepath
+ * @param string $locale Locale
+ * @param string $userLevel User level for which the file is created
+ * @throws Zend_Config_Exception
+ * @throws iMSCP_Exception
+ */
+function layout_createNavigationFile($filepath, $locale, $userLevel)
+{
+	$translationsCacheDir = CACHE_PATH . '/translations/navigation';
+
+	if(!is_dir($translationsCacheDir)) {
+		if(!@mkdir($translationsCacheDir)) {
+			throw new iMSCP_Exception('Unable to create cache directory for navigation translations');
+		}
+	}
+
+	$config = new Zend_Config(include($filepath));
+	$writter = new Zend_Config_Writer_Array();
+	$writter->setConfig($config);
+	$writter->write($translationsCacheDir . '/' . $userLevel . '_' . $locale . '.php');
 }
 
 /**
@@ -655,10 +687,9 @@ function layout_setMainMenuLabelsVisibility($userId, $visibility)
 /**
  * Sets main menu visibility for current environment
  *
- * @param $event iMSCP_Events_Event
  * @return void
  */
-function layout_setMainMenuLabelsVisibilityEvt($event)
+function layout_setMainMenuLabelsVisibilityEvt()
 {
 	if (!isset($_SESSION['show_main_menu_labels']) && isset($_SESSION['user_type'])) {
 		$userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];

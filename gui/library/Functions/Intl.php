@@ -105,6 +105,7 @@ function replace_html($string)
 /**
  * Build languages index from machine object files.
  *
+ * @throws iMSCP_Exception
  * @return void
  */
 function i18n_buildLanguageIndex()
@@ -115,9 +116,15 @@ function i18n_buildLanguageIndex()
 	// Clear translation cache
 	/** @var Zend_Translate $translator */
 	$translator = iMSCP_Registry::get('translator');
-
 	if($translator->hasCache()) {
 		$translator->clearCache('iMSCP');
+	}
+
+	# Remove all cached navigation translation files
+	if(@is_dir(CACHE_PATH . '/translations/navigation')) {
+		if(!utils_removeDir(CACHE_PATH . '/translations/navigation')) {
+			throw new iMSCP_Exception('Unable to remove directory for cached navigation translation files');
+		}
 	}
 
 	$iterator = new RecursiveIteratorIterator(

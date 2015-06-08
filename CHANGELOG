@@ -5,6 +5,7 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 FRONTEND
+	Added: Cache support for navigation translation files
 	Fixed: Unable to set language
 
 YOUTRACK
