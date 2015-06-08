@@ -20,119 +20,117 @@
  */
 
 return array(
-	'general' =>
-		array(
-			'label' => tr('General'),
-			'uri' => '/admin/index.php',
-			'class' => 'general',
-			'pages' => array(
-				'overview' => array(
-					'label' => tr('Overview'),
-					'uri' => '/admin/index.php',
-					'title_class' => 'general'
-				),
-				'server_status' => array(
-					'label' => tr('Services status'),
-					'uri' => '/admin/server_status.php',
-					'title_class' => 'serverstatus'
-				),
-				'admin_log' => array(
-					'label' => tr('Admin log'),
-					'uri' => '/admin/admin_log.php',
-					'title_class' => 'adminlog'
-				)
+	'general' => array(
+		'label' => tr('General'),
+		'uri' => '/admin/index.php',
+		'class' => 'general',
+		'pages' => array(
+			'overview' => array(
+				'label' => tr('Overview'),
+				'uri' => '/admin/index.php',
+				'title_class' => 'general'
+			),
+			'server_status' => array(
+				'label' => tr('Services status'),
+				'uri' => '/admin/server_status.php',
+				'title_class' => 'serverstatus'
+			),
+			'admin_log' => array(
+				'label' => tr('Admin log'),
+				'uri' => '/admin/admin_log.php',
+				'title_class' => 'adminlog'
 			)
-		),
-	'users' =>
-		array(
-			'label' => tr('Users'),
-			'uri' => '/admin/manage_users.php',
-			'class' => 'manage_users',
-			'pages' => array(
-				'overview' => array(
-					'label' => tr('Overview'),
-					'uri' => '/admin/manage_users.php',
-					'title_class' => 'users',
-					'pages' => array(
-						'reseller_edit_link' => array(
-							'label' => tr('Edit reseller'),
-							'uri' => '/admin/reseller_edit.php',
-							'title_class' => 'user_green',
-							'visible' => '0'
-						),
-						'domain_detail_link' => array(
-							'label' => tr('Domain details'),
-							'uri' => '/admin/domain_details.php',
-							'title_class' => 'general',
-							'visible' => '0'
-						),
-						'customer_edit_link' => array(
-							'label' => tr('Edit admin'),
-							'uri' => '/admin/admin_edit.php',
-							'title_class' => 'user_blue',
-							'visible' => '0'
-						),
-						'customer_delete_link' => array(
-							'label' => tr('Delete customer'),
-							'uri' => '/admin/user_delete.php',
-							'title_class' => 'user_blue',
-							'visible' => '0'
-						),
-						'domain_edit_link' => array(
-							'label' => tr('Edit domain'),
-							'uri' => '/admin/domain_edit.php',
-							'title_class' => 'domains',
-							'visible' => '0'
-						)
+		)
+	),
+	'users' => array(
+		'label' => tr('Users'),
+		'uri' => '/admin/manage_users.php',
+		'class' => 'manage_users',
+		'pages' => array(
+			'overview' => array(
+				'label' => tr('Overview'),
+				'uri' => '/admin/manage_users.php',
+				'title_class' => 'users',
+				'pages' => array(
+					'reseller_edit_link' => array(
+						'label' => tr('Edit reseller'),
+						'uri' => '/admin/reseller_edit.php',
+						'title_class' => 'user_green',
+						'visible' => '0'
+					),
+					'domain_detail_link' => array(
+						'label' => tr('Domain details'),
+						'uri' => '/admin/domain_details.php',
+						'title_class' => 'general',
+						'visible' => '0'
+					),
+					'customer_edit_link' => array(
+						'label' => tr('Edit admin'),
+						'uri' => '/admin/admin_edit.php',
+						'title_class' => 'user_blue',
+						'visible' => '0'
+					),
+					'customer_delete_link' => array(
+						'label' => tr('Delete customer'),
+						'uri' => '/admin/user_delete.php',
+						'title_class' => 'user_blue',
+						'visible' => '0'
+					),
+					'domain_edit_link' => array(
+						'label' => tr('Edit domain'),
+						'uri' => '/admin/domain_edit.php',
+						'title_class' => 'domains',
+						'visible' => '0'
 					)
-				),
-				'add_admin' => array(
-					'label' => tr('Add admin'),
-					'uri' => '/admin/admin_add.php',
-					'title_class' => 'user_yellow'
-				),
-				'add_reseller' => array(
-					'label' => tr('Add reseller'),
-					'uri' => '/admin/reseller_add.php',
-					'title_class' => 'user_green'
-				),
-				'resellers_assignment' => array(
-					'label' => tr('Reseller assignments'),
-					'uri' => '/admin/manage_reseller_owners.php',
-					'title_class' => 'users2',
-					'privilege_callback' => array(
-						array(
-							'name' => 'systemHasManyAdmins',
-						),
-						array(
-							'name' => 'systemHasResellers'
-						)
-					)
-				),
-				'customers_assignment' => array(
-					'label' => tr('Customer assignments'),
-					'uri' => '/admin/manage_reseller_users.php',
-					'title_class' => 'users2',
-					'privilege_callback' => array(
-						'name' => 'systemHasResellers',
-						'param' => '2'
-					)
-				),
-				'circular' => array(
-					'label' => tr('Circular'),
-					'uri' => '/admin/circular.php',
-					'title_class' => 'email',
-					'privilege_callback' => array(
-						'name' => 'systemHasAdminsOrResellersOrCustomers'
-					)
-				),
-				'sessions_management' => array(
-					'label' => tr('Sessions'),
-					'uri' => '/admin/sessions_manage.php',
-					'title_class' => 'users2'
 				)
+			),
+			'add_admin' => array(
+				'label' => tr('Add admin'),
+				'uri' => '/admin/admin_add.php',
+				'title_class' => 'user_yellow'
+			),
+			'add_reseller' => array(
+				'label' => tr('Add reseller'),
+				'uri' => '/admin/reseller_add.php',
+				'title_class' => 'user_green'
+			),
+			'resellers_assignment' => array(
+				'label' => tr('Reseller assignments'),
+				'uri' => '/admin/manage_reseller_owners.php',
+				'title_class' => 'users2',
+				'privilege_callback' => array(
+					array(
+						'name' => 'systemHasManyAdmins',
+					),
+					array(
+						'name' => 'systemHasResellers'
+					)
+				)
+			),
+			'customers_assignment' => array(
+				'label' => tr('Customer assignments'),
+				'uri' => '/admin/manage_reseller_users.php',
+				'title_class' => 'users2',
+				'privilege_callback' => array(
+					'name' => 'systemHasResellers',
+					'param' => '2'
+				)
+			),
+			'circular' => array(
+				'label' => tr('Circular'),
+				'uri' => '/admin/circular.php',
+				'title_class' => 'email',
+				'privilege_callback' => array(
+					'name' => 'systemHasAdminsOrResellersOrCustomers'
+				)
+			),
+			'sessions_management' => array(
+				'label' => tr('Sessions'),
+				'uri' => '/admin/sessions_manage.php',
+				'title_class' => 'users2'
 			)
-		),
+		)
+	),
 	'hosting_plans' => array(
 		'label' => tr('Hosting plans'),
 		'uri' => '/admin/hosting_plan.php',

@@ -31,81 +31,80 @@ return array(
 			)
 		)
 	),
-	'domains' =>
-		array(
-			'label' => tr('Domains'),
-			'uri' => '/client/domains_manage.php',
-			'class' => 'domains',
-			'pages' => array(
-				'overview' => array(
-					'label' => tr('Overview'),
-					'uri' => '/client/domains_manage.php',
-					'title_class' => 'domains',
-					'pages' => array(
-						'domain_alias_edit_link' => array(
-							'label' => tr('Edit domain alias'),
-							'uri' => '/client/alias_edit.php',
-							'title_class' => 'domains',
-							'visible' => '0'
-						),
-						'subdomain_edit_link' => array(
-							'label' => tr('Edit subdomain'),
-							'uri' => '/client/subdomain_edit.php',
-							'title_class' => 'domains',
-							'visible' => '0'
-						),
-						'custom_dns_record_edit_link' => array(
-							'label' => tr('Edit custom DNS record'),
-							'uri' => '/client/dns_edit.php',
-							'title_class' => 'domains',
-							'visible' => '0'
-						),
-						'cert_view_link' => array(
-							'dynamic_title' => '{TR_DYNAMIC_TITLE}',
-							'uri' => '/client/cert_view.php',
-							'title_class' => 'domains',
-							'visible' => '0'
-						)
-					)
-				),
-				'add_domain_alias' => array(
-					'label' => tr('Add domain alias'),
-					'uri' => '/client/alias_add.php',
-					'title_class' => 'domains',
-					'privilege_callback' => array(
-						'name' => 'customerHasFeature',
-						'param' => 'domain_aliases'
-					)
-				),
-				'add_subdomain' => array(
-					'label' => tr('Add subdomain'),
-					'uri' => '/client/subdomain_add.php',
-					'title_class' => 'domains',
-					'privilege_callback' => array(
-						'name' => 'customerHasFeature',
-						'param' => 'subdomains'
-					)
-				),
-				'add_custom_dns_record' => array(
-					'label' => tr('Add custom DNS record'),
-					'uri' => '/client/dns_add.php',
-					'title_class' => 'domains',
-					'privilege_callback' => array(
-						'name' => 'customerHasFeature',
-						'param' => 'custom_dns_records'
-					)
-				),
-				'php_settings' => array(
-					'label' => tr('PHP settings'),
-					'uri' => '/client/phpini.php',
-					'title_class' => 'domains',
-					'privilege_callback' => array(
-						'name' => 'customerHasFeature',
-						'param' => 'php_editor'
+	'domains' => array(
+		'label' => tr('Domains'),
+		'uri' => '/client/domains_manage.php',
+		'class' => 'domains',
+		'pages' => array(
+			'overview' => array(
+				'label' => tr('Overview'),
+				'uri' => '/client/domains_manage.php',
+				'title_class' => 'domains',
+				'pages' => array(
+					'domain_alias_edit_link' => array(
+						'label' => tr('Edit domain alias'),
+						'uri' => '/client/alias_edit.php',
+						'title_class' => 'domains',
+						'visible' => '0'
+					),
+					'subdomain_edit_link' => array(
+						'label' => tr('Edit subdomain'),
+						'uri' => '/client/subdomain_edit.php',
+						'title_class' => 'domains',
+						'visible' => '0'
+					),
+					'custom_dns_record_edit_link' => array(
+						'label' => tr('Edit custom DNS record'),
+						'uri' => '/client/dns_edit.php',
+						'title_class' => 'domains',
+						'visible' => '0'
+					),
+					'cert_view_link' => array(
+						'dynamic_title' => '{TR_DYNAMIC_TITLE}',
+						'uri' => '/client/cert_view.php',
+						'title_class' => 'domains',
+						'visible' => '0'
 					)
 				)
+			),
+			'add_domain_alias' => array(
+				'label' => tr('Add domain alias'),
+				'uri' => '/client/alias_add.php',
+				'title_class' => 'domains',
+				'privilege_callback' => array(
+					'name' => 'customerHasFeature',
+					'param' => 'domain_aliases'
+				)
+			),
+			'add_subdomain' => array(
+				'label' => tr('Add subdomain'),
+				'uri' => '/client/subdomain_add.php',
+				'title_class' => 'domains',
+				'privilege_callback' => array(
+					'name' => 'customerHasFeature',
+					'param' => 'subdomains'
+				)
+			),
+			'add_custom_dns_record' => array(
+				'label' => tr('Add custom DNS record'),
+				'uri' => '/client/dns_add.php',
+				'title_class' => 'domains',
+				'privilege_callback' => array(
+					'name' => 'customerHasFeature',
+					'param' => 'custom_dns_records'
+				)
+			),
+			'php_settings' => array(
+				'label' => tr('PHP settings'),
+				'uri' => '/client/phpini.php',
+				'title_class' => 'domains',
+				'privilege_callback' => array(
+					'name' => 'customerHasFeature',
+					'param' => 'php_editor'
+				)
 			)
-		),
+		)
+	),
 	'ftp' => array(
 		'label' => tr('Ftp'),
 		'uri' => '/client/ftp_accounts.php',
