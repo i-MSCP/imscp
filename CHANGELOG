@@ -12,6 +12,9 @@ FRONTEND
 	Added: Cache support for navigation translation files
 	Fixed: Unable to set language
 
+PACKAGES
+	Fixed: users.mail_host field must be set to 'localhost' (Package::Webmail::Roundcube::Installer)
+
 YOUTRACK
 	Fixed: #IP-1353: i18n issue - Admin / System information not translatable
 

@@ -148,7 +148,7 @@ sub showDialog
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/roundcube', $VERSION);
 	return $rs if $rs;
@@ -166,11 +166,9 @@ sub preinstall
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $rs = $self->_backupConfigFile(
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php"
-	);
+	my $rs = $self->_backupConfigFile("$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php");
 	return $rs if $rs;
 
 	$rs = $self->_installFiles();
@@ -284,7 +282,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'roundcube'} = Package::Webmail::Roundcube::Roundcube->getInstance();
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
@@ -333,7 +331,7 @@ sub _backupConfigFile
 
 sub _installFiles
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/roundcube";
 
@@ -373,7 +371,7 @@ sub _installFiles
 
 sub _mergeConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if(%{$self->{'config'}}) {
 		my %oldConfig = %{$self->{'config'}};
@@ -402,7 +400,7 @@ sub _mergeConfig
 
 sub _setupDatabase
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 
@@ -527,7 +525,7 @@ sub _generateDESKey
 
 sub _buildRoundcubeConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $panelUName =
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -590,7 +588,7 @@ sub _buildRoundcubeConfig
 
 sub _updateDatabase
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
@@ -605,7 +603,31 @@ sub _updateDatabase
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to update roundcube database schema.') if $rs && ! $stderr;
-	$rs;
+	return $rs if $rs;
+
+	# Ensure tha users.mail_host entries is set to localhost
+
+	my ($db, $errStr) = main::setupGetSqlConnect($roundcubeDbName);
+	unless($db) {
+		error("Unable to connect to SQL database: $errStr");
+		return 1;
+	}
+
+	$roundcubeDbName = $db->quoteIdentifier($roundcubeDbName);
+
+	$rs = $db->doQuery('u', "UPDATE IGNORE users SET mail_host = 'localhost'");
+	unless(ref $rs eq 'HASH') {
+		error($rs);
+		return 1;
+	}
+
+	$rs = $db->doQuery('d', "DELETE FROM users WHERE mail_host <> 'localhost'");
+	unless(ref $rs eq 'HASH') {
+		error($rs);
+		return 1;
+	}
+
+	0;
 }
 
 =item _setVersion()
@@ -618,7 +640,7 @@ sub _updateDatabase
 
 sub _setVersion
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $repoDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/roundcube";
 
@@ -680,7 +702,7 @@ sub _buildHttpdConfig
 
 sub _saveConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	iMSCP::File->new(
 		filename => "$self->{'cfgDir'}/roundcube.data"
