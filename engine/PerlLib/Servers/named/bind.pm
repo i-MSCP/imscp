@@ -778,10 +778,6 @@ sub addCustomDNS
 				$customDnsEntries .= "$name\t$class\t$type\t$rdata\n";
 			}
 
-			#if($customDnsEntries =~ /^.*IN\s+TXT\s+"v=spf1.*"/gm) {
-			#	$wrkDbFileContent =~ s/^.*IN\s+TXT\s+"v=spf1.*"//gm;
-			#}
-
 			$wrkDbFileContent = replaceBloc(
 				"; custom DNS entries BEGIN\n",
 				"; custom DNS entries ENDING\n",
