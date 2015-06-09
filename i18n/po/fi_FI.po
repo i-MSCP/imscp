@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# i-MSCP <team@i-mscp.net>, 2015
 # Jari <info@jkwebdesign.fi>, 2013
 # Laurent Declercq <l.declercq@nuxwin.com>, 2013
 # Toni Rissanen <toni.rissanen@arkku.net>, 2015
@@ -11,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-08 14:41+0200\n"
-"PO-Revision-Date: 2015-06-08 12:44+0000\n"
+"POT-Creation-Date: 2015-06-10 01:29+0200\n"
+"PO-Revision-Date: 2015-06-08 13:41+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -588,16 +589,16 @@ msgid "Add / Edit SSL certificate"
 msgstr "Lisää / Muokkaa SSL-sertifikaattia"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Lisää FTP tili"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Lisää htaccess -ryhmä"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Lisää htaccess -käyttäjä"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Lisää SQL-tietokanta"
 
 msgid "Add SQL user"
 msgstr "Lisää SQL-käyttäjä"
@@ -612,34 +613,34 @@ msgid "Add admin"
 msgstr "Lisää ylläpitäjä"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Lisää 'Nappaa kaikki'"
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "Lisää DNS tietue"
 
 msgid "Add custom menu"
 msgstr "Lisää kustomoitu valikko"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Lisää asiakas"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Lisää asiakas - Seuraava askel"
 
 msgid "Add domain alias"
 msgstr "Lisää domain-alias"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Lisää sähköpostitili"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Lisää ulkoinen sähköpostipalvelin domainille {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Lisää ryhmä"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Lisää hosting-paketti"
 
 msgid "Add new IP address"
 msgstr "Lisää uusi IP osoite"
@@ -669,7 +670,7 @@ msgid "Add reseller"
 msgstr "Lisää jälleenmyyjä"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Lisää alidomain"
 
 msgid "Add user"
 msgstr "Lisää käyttäjä"
@@ -839,7 +840,7 @@ msgid "Admin account successfully created."
 msgstr "Ylläpitäjän -tunnus luotu onnistuneesti."
 
 msgid "Admin log"
-msgstr ""
+msgstr "Ylläpitologi"
 
 msgid "Admin not available"
 msgstr "Admin ei tavoitettavissa"
@@ -999,7 +1000,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "Tiedoston latauksessa tapahtui odottamaton virhe: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Anti-Rootkit -lokit"
 
 msgid "Any"
 msgstr ""
@@ -1119,7 +1120,7 @@ msgid "Assign existing SQL user"
 msgstr "Valitse olemassaoleva SQL-käyttäjä"
 
 msgid "Assign group"
-msgstr ""
+msgstr "Aseta ryhmä"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Sinun täytyy luoda ensin tietokanta, jossa on vähintää yksi tietokantakäyttäjä."
@@ -1609,7 +1610,7 @@ msgid "Custom menu successfully updated."
 msgstr "Valinnainen valikko päivitetty onnistuneesti."
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Vaihtoehtoiset valikot"
 
 msgid "Customer"
 msgstr "Asiakas"
@@ -1723,7 +1724,7 @@ msgid "Database required"
 msgstr "Tietokanta vaaditaan"
 
 msgid "Database update"
-msgstr ""
+msgstr "Tietokantapäivitys"
 
 msgid "Database usage"
 msgstr "Tietokannat"
@@ -1735,7 +1736,7 @@ msgid "Database with comma(s) in name is not accepted."
 msgstr "Tietokannan nimessä ei voi esiintyä pilkku(j)a."
 
 msgid "Databases"
-msgstr ""
+msgstr "Tietokannat"
 
 msgid "Date"
 msgstr "Päivämäärä"
@@ -1744,7 +1745,7 @@ msgid "Day"
 msgstr "Päivä"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Päivätilastot"
 
 msgid "Days"
 msgstr "Päivää"
@@ -1814,7 +1815,7 @@ msgid ""
 msgstr ""
 
 msgid "Debugger"
-msgstr ""
+msgstr "Debugger"
 
 msgid "Default language"
 msgstr "Oletuskieli"
@@ -1837,10 +1838,10 @@ msgid "Delete all tickets"
 msgstr "Poista kaikki tukipyynnöt"
 
 msgid "Delete customer"
-msgstr ""
+msgstr "Poista asiakas"
 
 msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Poista asiakas - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Poista lokitiedoista:"
@@ -2096,34 +2097,34 @@ msgid "Edit"
 msgstr "Muokkaa"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "Muokkaa FTP-tiliä"
 
 msgid "Edit SSL certificate"
 msgstr "Muokkaa SSL-sertifikaattia"
 
 msgid "Edit admin"
-msgstr ""
+msgstr "Muokkaa ylläpitäjää"
 
 msgid "Edit auto responder"
-msgstr ""
+msgstr "Muokkaa automaattista vastaajaa"
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "Muokkaa itse määriteltyä DNS merkintää"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "Muokkaa kustomoituja virhesivuja"
 
 msgid "Edit custom menu"
 msgstr "Muokkaa kustomoituja valikoita"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "Muokkaa asiakasta"
 
 msgid "Edit domain"
 msgstr "Muokkaa Domainia"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Muokkaa domain-aliasta"
 
 msgid "Edit error page"
 msgstr "Muokkaa virhesivua"
@@ -2135,13 +2136,13 @@ msgid "Edit hosting plan"
 msgstr "Muokkaa palvelupakettia"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "Muokkaa htaccess käyttäjää"
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Muokkaa sähköpostitunnusta"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "Muokkaa sähköpostin levytilaa"
 
 msgid "Edit protected area"
 msgstr "Muokkaa suojattua aluetta"
@@ -2150,7 +2151,7 @@ msgid "Edit reseller"
 msgstr "Muokkaa jälleenmyyjää"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Muokkaa alidomainia"
 
 msgid "Edit user"
 msgstr "Muokkaa käyttäjää"
@@ -2245,7 +2246,7 @@ msgid "Enable SSL"
 msgstr "Aktivoi SSL"
 
 msgid "Enable auto responder"
-msgstr ""
+msgstr "Aktivoi automaattivastaaja"
 
 msgid "Enabled"
 msgstr "Käytössä"
@@ -2399,7 +2400,7 @@ msgid "FileManager"
 msgstr "Tiedostonhallinta"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Tiedostonhallinta"
 
 msgid "Filesystem system Info"
 msgstr "Tiedostojärjestelmän tiedot"
@@ -2472,13 +2473,13 @@ msgid "Gender"
 msgstr "Sukupuoli"
 
 msgid "General"
-msgstr ""
+msgstr "Yhteenveto"
 
 msgid "General information"
 msgstr "Yleistiedot"
 
 msgid "General settings"
-msgstr ""
+msgstr "Yleiset asetukset"
 
 msgid "Generate"
 msgstr "Generoi"
@@ -2557,7 +2558,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr "Palvelupaketin rajat ylittävät käytössä olevat resurssisi."
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Hosting-paketit"
 
 msgid "Hosting plans available for"
 msgstr "Tarjolla olevat palvelupaketit"
@@ -2625,10 +2626,10 @@ msgid "IP assignments"
 msgstr ""
 
 msgid "IP management"
-msgstr ""
+msgstr "IP-hallinta"
 
 msgid "IP usage"
-msgstr ""
+msgstr "IP käyttö"
 
 msgid "IPv6 address"
 msgstr "IPv6 osoite"
@@ -3033,7 +3034,7 @@ msgid ""
 msgstr "Huoltotila aktivoitu. Vain ylläpitäjät voivat kirjautua sisään."
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "Huoltotilan asetukset"
 
 msgid "Male"
 msgstr "Mies"
@@ -3045,7 +3046,7 @@ msgid "Manage SQL"
 msgstr "Hallitse tietokantoja"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Hallitse htaccess käyttäjiä ja ryhmiä"
 
 msgid "Manage users"
 msgstr "Hallitse käyttäjiä"
@@ -3410,7 +3411,7 @@ msgid "Other settings"
 msgstr "Muut asetukset"
 
 msgid "Overview"
-msgstr ""
+msgstr "Etusivu"
 
 msgid "Owner"
 msgstr "Omistaja"
@@ -3450,7 +3451,7 @@ msgid "PHP exec() function"
 msgstr ""
 
 msgid "PHP settings"
-msgstr ""
+msgstr "PHP asetukset"
 
 msgid "POP3/IMAP"
 msgstr ""
@@ -3598,7 +3599,7 @@ msgid "Phone"
 msgstr "Puhelin"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3877,7 +3878,7 @@ msgid "Processor data"
 msgstr "Prosessorin tiedot"
 
 msgid "Profile"
-msgstr ""
+msgstr "Profiili"
 
 msgid "Properties"
 msgstr "Ominaisuudet"
@@ -4140,7 +4141,7 @@ msgid "Reseller software list"
 msgstr "Jälleenmyyjien ohjelmistolista"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Jälleenmyyjätilastot"
 
 msgid "Reseller successfully added."
 msgstr "Jälleenmyyjä lisätty onnistuneesti"
@@ -4395,16 +4396,16 @@ msgid "Service port successfully removed."
 msgstr "Palveluportti poistettu onnistuneesti."
 
 msgid "Service ports"
-msgstr ""
+msgstr "Palveluportit"
 
 msgid "Service protocol"
 msgstr "Palvelun protolla"
 
 msgid "Services status"
-msgstr ""
+msgstr "Palvelun tila"
 
 msgid "Sessions"
-msgstr ""
+msgstr "Istunnot"
 
 msgid "Set status to 'tochange'"
 msgstr "Vaihda domainin tila 'tochange'"
@@ -4508,7 +4509,7 @@ msgid "Software instance has been scheduled for installation"
 msgstr ""
 
 msgid "Software management"
-msgstr ""
+msgstr "Ohjelmistojen hallinta"
 
 msgid "Software name"
 msgstr "Sovelluksen nimi"
@@ -4517,7 +4518,7 @@ msgid "Software not found!"
 msgstr "Ohjelmistoa ei löydy!"
 
 msgid "Software options"
-msgstr ""
+msgstr "Ohjelmiston asetukset"
 
 msgid "Software permissions"
 msgstr "Ohjelmiston oikeudet"
@@ -4673,7 +4674,7 @@ msgid "Submit changes"
 msgstr "Hyväksy muutokset"
 
 msgid "Support"
-msgstr ""
+msgstr "Tuki"
 
 msgid "Support system"
 msgstr "Tukijärjestelmä"
@@ -4706,14 +4707,14 @@ msgid "System error - custom error page was not updated."
 msgstr "Järjestelmävirhe - Itse määriteltyä virhesivua ei ole päivitetty."
 
 msgid "System information"
-msgstr ""
+msgstr "Järjestelmäntiedot"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Järjestelmätyökalut"
 
 msgid "System under maintenance"
 msgstr "Järjestelmä on huoltotilassa"
@@ -5265,7 +5266,7 @@ msgid "Update Plugins"
 msgstr "Päivitä liitännäiset"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "Vaihda SQL-käyttäjän salasana"
 
 msgid "Update data"
 msgstr "Päivitä tiedot"
@@ -5447,7 +5448,7 @@ msgid "View hosting plan"
 msgstr "Katsele palvelupakettia"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Katso tukipyyntö"
 
 msgid "Visit plugin site"
 msgstr "Vieraile lisäosan kotisivuilla"
@@ -5500,10 +5501,10 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Web-työkalut"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "Tervetuloviesti"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "{USERNAME}, Tervetuloa käyttämään i-MSCP:tä."
@@ -6030,7 +6031,7 @@ msgid "i-MSCP plugin store"
 msgstr "i-MSCP liitännäiset"
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP-päivitykset"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "Uusien i-MSCP päivityksien hakeminen on pois käytöstä."

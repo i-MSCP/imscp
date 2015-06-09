@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# i-MSCP <team@i-mscp.net>, 2015
 # kazuo <kazu.nito@gmail.com>, 2014-2015
 # kazuo <kazu.nito@gmail.com>, 2013
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
@@ -10,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-08 14:41+0200\n"
-"PO-Revision-Date: 2015-06-08 12:44+0000\n"
+"POT-Creation-Date: 2015-06-10 01:29+0200\n"
+"PO-Revision-Date: 2015-06-08 13:14+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -587,16 +588,16 @@ msgid "Add / Edit SSL certificate"
 msgstr "追加 / 編集 SSL証明書"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "FTPアカウント追加"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Htaccess グループ追加"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Htaccessユーザー追加"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "SQLデータベース追加"
 
 msgid "Add SQL user"
 msgstr "SQLユーザー追加"
@@ -611,34 +612,34 @@ msgid "Add admin"
 msgstr "管理者追加"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "ごみ箱の追加"
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "カスタムDNSレコードを追加"
 
 msgid "Add custom menu"
 msgstr "カスタムメニュー追加"
 
 msgid "Add customer"
-msgstr ""
+msgstr "顧客追加"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "顧客追加 - 次のステップ"
 
 msgid "Add domain alias"
 msgstr "ドメインエイリアス追加"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Eメールアカウント追加"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "{DOMAIN UTF8}の外部メールサーバー追加"
 
 msgid "Add group"
 msgstr "グループ追加"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "ホスティングプラン追加"
 
 msgid "Add new IP address"
 msgstr "新しいＩＰアドレス追加"
@@ -668,7 +669,7 @@ msgid "Add reseller"
 msgstr "代理店追加"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "サブドメイン追加"
 
 msgid "Add user"
 msgstr "ユーザー追加"
@@ -761,12 +762,12 @@ msgid "Admin / Statistics / Reseller Statistics"
 msgstr "管理者 / 統計 / 代理店統計"
 
 msgid "Admin / Statistics / Reseller Statistics / User Statistics"
-msgstr ""
+msgstr "管理者 / 統計 / 代理店統計 / 顧客統計"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
 " statistics"
-msgstr ""
+msgstr "管理者 / 統計 / 代理店統計 / 顧客統計 / ドメイン統計"
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "管理者 / 統計 / サーバ統計"
@@ -838,7 +839,7 @@ msgid "Admin account successfully created."
 msgstr "管理者アカウントの作成に成功しました。"
 
 msgid "Admin log"
-msgstr ""
+msgstr "管理者ログ"
 
 msgid "Admin not available"
 msgstr "管理者は使用できません"
@@ -998,7 +999,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "原因不明のエラーは、ファイルアップロードの間に発生しました： %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "アンチルートキットログ"
 
 msgid "Any"
 msgstr "Any"
@@ -1118,7 +1119,7 @@ msgid "Assign existing SQL user"
 msgstr "既存のSQLユーザーを割り当てます。"
 
 msgid "Assign group"
-msgstr ""
+msgstr "グループを割り当てる"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "最初に、少なくとも1つのSQLユーザを持つデータベースを作成する必要があります。"
@@ -1608,7 +1609,7 @@ msgid "Custom menu successfully updated."
 msgstr "カスタムメニューを更新しました。"
 
 msgid "Custom menus"
-msgstr ""
+msgstr "カスタムメニュー"
 
 msgid "Customer"
 msgstr "顧客"
@@ -1641,7 +1642,7 @@ msgid "Customer account summary"
 msgstr "顧客アカウント要約"
 
 msgid "Customer assignments"
-msgstr ""
+msgstr "顧客の割り当て"
 
 msgid "Customer consumption"
 msgstr "顧客の消費量"
@@ -1722,7 +1723,7 @@ msgid "Database required"
 msgstr "必要なデータベース"
 
 msgid "Database update"
-msgstr ""
+msgstr "データベース更新"
 
 msgid "Database usage"
 msgstr "データベースを使用"
@@ -1734,7 +1735,7 @@ msgid "Database with comma(s) in name is not accepted."
 msgstr "名前にカンマを持つデータベースは受け付けられません。"
 
 msgid "Databases"
-msgstr ""
+msgstr "データベース"
 
 msgid "Date"
 msgstr "日付"
@@ -1743,7 +1744,7 @@ msgid "Day"
 msgstr "日"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "日毎の統計"
 
 msgid "Days"
 msgstr "日"
@@ -1813,7 +1814,7 @@ msgid ""
 msgstr "親愛なる {RESELLER} 様\n\t{ADMIN} によって、ソフトウェアパッケージがアップロードされ有効になった。\n\n\t詳細：\n\tパッケージ名： {SOFTWARE}\n\tパッケージID： {SOFTWARE_ID}\n\n\t詳細は、i-MSCPコントロールパネルにログインしてください。"
 
 msgid "Debugger"
-msgstr ""
+msgstr "デバッガー"
 
 msgid "Default language"
 msgstr "既定の言語"
@@ -1836,10 +1837,10 @@ msgid "Delete all tickets"
 msgstr "全てのチケットを削除"
 
 msgid "Delete customer"
-msgstr ""
+msgstr "顧客削除"
 
 msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
+msgstr "顧客削除 - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "ログから削除："
@@ -2095,52 +2096,52 @@ msgid "Edit"
 msgstr "編集"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "FTPアカウント編集"
 
 msgid "Edit SSL certificate"
 msgstr "SSL証明書を編集"
 
 msgid "Edit admin"
-msgstr ""
+msgstr "管理者編集"
 
 msgid "Edit auto responder"
-msgstr ""
+msgstr "自動応答を編集"
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "カスタムDNSレコード編集"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "顧客エラーページの編集"
 
 msgid "Edit custom menu"
 msgstr "カスタムメニューの編集"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "顧客の編集"
 
 msgid "Edit domain"
 msgstr "ドメイン編集"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "ドメインエイリアスの編集"
 
 msgid "Edit error page"
 msgstr "エラーページの編集"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "{DOMAIN UTF8}の外部メールサーバー編集"
 
 msgid "Edit hosting plan"
 msgstr "ホスティングプランの編集"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "ｈtaccessユーザーの編集"
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "メールアカウント編集"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "メール容量制限の編集"
 
 msgid "Edit protected area"
 msgstr "アクセス制限領域を編集"
@@ -2149,7 +2150,7 @@ msgid "Edit reseller"
 msgstr "代理店変更"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "サブドメイン編集"
 
 msgid "Edit user"
 msgstr "ユーザーの編集"
@@ -2244,7 +2245,7 @@ msgid "Enable SSL"
 msgstr "SSLを有効にする"
 
 msgid "Enable auto responder"
-msgstr ""
+msgstr "自動応答を有効"
 
 msgid "Enabled"
 msgstr "有効"
@@ -2398,7 +2399,7 @@ msgid "FileManager"
 msgstr "ファイルマネージャー"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "ファイルマネージャー"
 
 msgid "Filesystem system Info"
 msgstr "ファイルシステム情報"
@@ -2471,13 +2472,13 @@ msgid "Gender"
 msgstr "性別"
 
 msgid "General"
-msgstr ""
+msgstr "一般"
 
 msgid "General information"
 msgstr "基本情報"
 
 msgid "General settings"
-msgstr ""
+msgstr "基本設定"
 
 msgid "Generate"
 msgstr "生成する"
@@ -2556,7 +2557,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr "ホスティングプランの値は、限界を超えています。"
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "ホスティングプラン"
 
 msgid "Hosting plans available for"
 msgstr "ホスティングプランで利用できる"
@@ -2621,13 +2622,13 @@ msgid "IP addresses under control of i-MSCP"
 msgstr " i-MSCPの制御下にあるIPアドレス"
 
 msgid "IP assignments"
-msgstr ""
+msgstr "ユーザーの割り当て"
 
 msgid "IP management"
-msgstr ""
+msgstr "IP管理"
 
 msgid "IP usage"
-msgstr ""
+msgstr "IPの使用状況"
 
 msgid "IPv6 address"
 msgstr "IPv6アドレス"
@@ -2654,7 +2655,7 @@ msgid "Import in local repository"
 msgstr "ローカルリポジトリのインポート"
 
 msgid "Import new language file"
-msgstr ""
+msgstr "言語ファイル"
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2875,7 +2876,7 @@ msgid "Language successfully updated."
 msgstr "言語が更新されました。"
 
 msgid "Languages"
-msgstr ""
+msgstr "言語"
 
 msgid "Languages index was successfully re-built."
 msgstr "言語のインデックスが再構築されました。"
@@ -3032,7 +3033,7 @@ msgid ""
 msgstr "メンテナンスモードが有効化されます。このモードでは、管理者のみがログインできます。"
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "メンテナンス設定"
 
 msgid "Male"
 msgstr "男性"
@@ -3044,7 +3045,7 @@ msgid "Manage SQL"
 msgstr "SQL管理"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "htaccessユーザーとグループの管理"
 
 msgid "Manage users"
 msgstr "ユーザー管理"
@@ -3409,7 +3410,7 @@ msgid "Other settings"
 msgstr "その他設定"
 
 msgid "Overview"
-msgstr ""
+msgstr "概要"
 
 msgid "Owner"
 msgstr "オーナー"
@@ -3449,10 +3450,10 @@ msgid "PHP exec() function"
 msgstr "PHPのexec（）関数"
 
 msgid "PHP settings"
-msgstr ""
+msgstr "PHPの設定"
 
 msgid "POP3/IMAP"
-msgstr ""
+msgstr "POP3/IMAP"
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP in"
@@ -3597,7 +3598,7 @@ msgid "Phone"
 msgstr "電話番号"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr "PB"
@@ -3813,7 +3814,7 @@ msgid "Plugin list is empty."
 msgstr "プラグインリストは空です。"
 
 msgid "Plugin management"
-msgstr ""
+msgstr "プラグインの管理"
 
 msgid "Plugins Upload"
 msgstr "プラグインアップロード"
@@ -3876,7 +3877,7 @@ msgid "Processor data"
 msgstr "プロセッサデータ"
 
 msgid "Profile"
-msgstr ""
+msgstr "プロファイル"
 
 msgid "Properties"
 msgstr "プロパティ"
@@ -4079,7 +4080,7 @@ msgid "Reseller / Statistics / Overview"
 msgstr "代理店 / 統計 / 概要"
 
 msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
-msgstr ""
+msgstr "代理店 / 統計 / 概要 / ドメイン統計 - {USERNAME}"
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr "代理店 / サポート / クローズチケット"
@@ -4115,7 +4116,7 @@ msgid "Reseller assignment"
 msgstr "代理店の割り当て"
 
 msgid "Reseller assignments"
-msgstr ""
+msgstr "リセラーの割り当て"
 
 msgid "Reseller consumption"
 msgstr "代理店の消費量"
@@ -4139,7 +4140,7 @@ msgid "Reseller software list"
 msgstr "代理店ソフトウェアリスト"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "代理店統計"
 
 msgid "Reseller successfully added."
 msgstr "代理店は追加されました。"
@@ -4394,16 +4395,16 @@ msgid "Service port successfully removed."
 msgstr "サービスポートを削除しました。"
 
 msgid "Service ports"
-msgstr ""
+msgstr "サービスポート"
 
 msgid "Service protocol"
 msgstr "サービスプロトコル"
 
 msgid "Services status"
-msgstr ""
+msgstr "サービス状態"
 
 msgid "Sessions"
-msgstr ""
+msgstr "セッション"
 
 msgid "Set status to 'tochange'"
 msgstr "ステータス '変更' を設定します。"
@@ -4443,7 +4444,7 @@ msgid "Show detailed statistics for this reseller"
 msgstr "この代理店の詳細な統計情報を表示する"
 
 msgid "Show detailed statistics for this user"
-msgstr ""
+msgstr "この代理店の詳細な統計情報を表示する"
 
 msgid "Show in"
 msgstr "表示レベル"
@@ -4507,7 +4508,7 @@ msgid "Software instance has been scheduled for installation"
 msgstr "ソフトウェアのインスタンスは、インストールのために予定されています"
 
 msgid "Software management"
-msgstr ""
+msgstr "ソフトウェア管理"
 
 msgid "Software name"
 msgstr "ソフトウェア名"
@@ -4516,7 +4517,7 @@ msgid "Software not found!"
 msgstr "ソフトウェアが見つかりません。"
 
 msgid "Software options"
-msgstr ""
+msgstr "ソフトウェアオプション"
 
 msgid "Software permissions"
 msgstr "ソフトウェアのアクセス権"
@@ -4672,7 +4673,7 @@ msgid "Submit changes"
 msgstr "変更を送信"
 
 msgid "Support"
-msgstr ""
+msgstr "サポート"
 
 msgid "Support system"
 msgstr "サポート"
@@ -4705,14 +4706,14 @@ msgid "System error - custom error page was not updated."
 msgstr "システムエラー - カスタムエラーページが更新されませんでした。"
 
 msgid "System information"
-msgstr ""
+msgstr "システム情報"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "システムは、 '%s' ユーザーロゴを削除することができません。"
 
 msgid "System tools"
-msgstr ""
+msgstr "システムツール"
 
 msgid "System under maintenance"
 msgstr "保守対象のシステム"
@@ -5021,7 +5022,7 @@ msgid "Traffic"
 msgstr "トラフィック"
 
 msgid "Traffic statistics"
-msgstr ""
+msgstr "統計情報"
 
 msgid "Traffic usage"
 msgstr "トラフィック量"
@@ -5264,7 +5265,7 @@ msgid "Update Plugins"
 msgstr "プラグイン更新"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "SQLユーザーパスワード更新"
 
 msgid "Update data"
 msgstr "データ更新"
@@ -5378,7 +5379,7 @@ msgid "User session successfully killed for password change."
 msgstr "ユーザーセッションは、パスワード変更のため切断されました。"
 
 msgid "User statistics"
-msgstr ""
+msgstr "Web統計"
 
 msgid "User successfully disconnected."
 msgstr "ユーザーが正常に切断された。"
@@ -5446,7 +5447,7 @@ msgid "View hosting plan"
 msgstr "ホスティングプラン表示"
 
 msgid "View ticket"
-msgstr ""
+msgstr "チケットを表示"
 
 msgid "Visit plugin site"
 msgstr "プラグインサイトの訪問"
@@ -5499,10 +5500,10 @@ msgid "Webmail"
 msgstr "Webメール"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Webツール"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "ウェルカムメール"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "{USERNAME} さんi-MSCPへようこそ！"
@@ -6029,7 +6030,7 @@ msgid "i-MSCP plugin store"
 msgstr "i-MSCP プラグインストア"
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP 更新"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCPバージョンの更新チェックが無効になっています"
@@ -6147,7 +6148,7 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 新しいソフトウェアパッケージをアップロード"
 
 msgid "{USERNAME} user statistics"
-msgstr ""
+msgstr "Web統計 - {USERNAME} "
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

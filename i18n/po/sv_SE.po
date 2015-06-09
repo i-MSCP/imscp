@@ -4,12 +4,13 @@
 # 
 # Translators:
 # Cool <barni@telia.com>, 2014-2015
+# i-MSCP <team@i-mscp.net>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-08 14:41+0200\n"
-"PO-Revision-Date: 2015-06-08 12:44+0000\n"
+"POT-Creation-Date: 2015-06-10 01:29+0200\n"
+"PO-Revision-Date: 2015-06-08 13:10+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -585,16 +586,16 @@ msgid "Add / Edit SSL certificate"
 msgstr "Lägg till / Ändra SSL cert."
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Lägg till ett ftp konto"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Lägg till ett Htaccess grupp"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Lägg till en Htaccess användare"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Lägg till SQL-databas"
 
 msgid "Add SQL user"
 msgstr "Lägg till SQL-användare"
@@ -609,34 +610,34 @@ msgid "Add admin"
 msgstr "Lägg till administratör"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Lägg till catchall"
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "Lägg till anpassade DNS-post"
 
 msgid "Add custom menu"
 msgstr "Lägg till ett eget meny"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Lägg till en kund"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Lägg till en kund - nästa steg"
 
 msgid "Add domain alias"
 msgstr "Lägg till domänalias"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Lägg till ett mail konto"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Lägg till externt mail servrar för {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Lägg till grupp"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Lägg till webbhotellsplan"
 
 msgid "Add new IP address"
 msgstr "Lägg till ett ip address"
@@ -666,7 +667,7 @@ msgid "Add reseller"
 msgstr "Lägg till återförsäljare"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Lägg till subdomän"
 
 msgid "Add user"
 msgstr "Lägg till användare"
@@ -836,7 +837,7 @@ msgid "Admin account successfully created."
 msgstr "Ett admin konto har lagds till."
 
 msgid "Admin log"
-msgstr ""
+msgstr "Administratörslogg"
 
 msgid "Admin not available"
 msgstr "Admin inte tillgänglig"
@@ -996,7 +997,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "An unknown error occured during file upload: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Anti-Rootkits Logs"
 
 msgid "Any"
 msgstr "någon"
@@ -1116,7 +1117,7 @@ msgid "Assign existing SQL user"
 msgstr "Tilldela befintlig SQL användare"
 
 msgid "Assign group"
-msgstr ""
+msgstr "Tilldela grupp"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Först måste du skapa en databas som har minst en SQL-användare."
@@ -1606,7 +1607,7 @@ msgid "Custom menu successfully updated."
 msgstr "Custom menu successfully updated."
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Egna menyer"
 
 msgid "Customer"
 msgstr "Kund"
@@ -1720,7 +1721,7 @@ msgid "Database required"
 msgstr "Databas krävs"
 
 msgid "Database update"
-msgstr ""
+msgstr "Database update"
 
 msgid "Database usage"
 msgstr "Database usage"
@@ -1732,7 +1733,7 @@ msgid "Database with comma(s) in name is not accepted."
 msgstr "Databas med kommatecken (er) i namn accepteras inte."
 
 msgid "Databases"
-msgstr ""
+msgstr "Databaser"
 
 msgid "Date"
 msgstr "Datum"
@@ -1741,7 +1742,7 @@ msgid "Day"
 msgstr "Dag"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Day statistics"
 
 msgid "Days"
 msgstr "Dagar"
@@ -1811,7 +1812,7 @@ msgid ""
 msgstr "Dear {RESELLER},\n\tYour uploaded a software package was succesful activated by {ADMIN}.\n\n\tDetails:\n\tPackage Name: {SOFTWARE}\n\tPackage ID: {SOFTWARE_ID}\n\n\tPlease login into your i-MSCP control panel for more details."
 
 msgid "Debugger"
-msgstr ""
+msgstr "Debugger"
 
 msgid "Default language"
 msgstr "Standardspråk"
@@ -1834,10 +1835,10 @@ msgid "Delete all tickets"
 msgstr "Ta bort alla tickets"
 
 msgid "Delete customer"
-msgstr ""
+msgstr "Raderar kund"
 
 msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Raderar kund - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Ta bort från logg:"
@@ -2093,52 +2094,52 @@ msgid "Edit"
 msgstr "Redigera"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "Ändra Ftp konto"
 
 msgid "Edit SSL certificate"
 msgstr "Ändra SSL cert."
 
 msgid "Edit admin"
-msgstr ""
+msgstr "Edit admin"
 
 msgid "Edit auto responder"
-msgstr ""
+msgstr "Ändra auto. svar"
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "Redigera anpassade DNS-post"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "Ändra eget fel sida"
 
 msgid "Edit custom menu"
 msgstr "Ändra eget meny"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "Ändra kund"
 
 msgid "Edit domain"
 msgstr "Redigera domän"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Redigera domänalias"
 
 msgid "Edit error page"
 msgstr "Redigera felsida"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Redigera externt mail server för {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Ändra webbhotellsplan"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "Ändra Htaccess användare"
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Redigera e-postkonto"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "Edit mail quota"
 
 msgid "Edit protected area"
 msgstr "Redigera skyddat område"
@@ -2147,7 +2148,7 @@ msgid "Edit reseller"
 msgstr "Ändra återförsäljare"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Redigera underdomän"
 
 msgid "Edit user"
 msgstr "Redigerar användare"
@@ -2242,7 +2243,7 @@ msgid "Enable SSL"
 msgstr "Aktiverar SSL"
 
 msgid "Enable auto responder"
-msgstr ""
+msgstr "Aktiverar auto. svar"
 
 msgid "Enabled"
 msgstr "Aktiv"
@@ -2396,7 +2397,7 @@ msgid "FileManager"
 msgstr "FileManager"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Filhanterare"
 
 msgid "Filesystem system Info"
 msgstr "Systeminfo för filsystemet"
@@ -2469,13 +2470,13 @@ msgid "Gender"
 msgstr "Kön"
 
 msgid "General"
-msgstr ""
+msgstr "General"
 
 msgid "General information"
 msgstr "Allmän information"
 
 msgid "General settings"
-msgstr ""
+msgstr "Allmänna inställningar"
 
 msgid "Generate"
 msgstr "Generera"
@@ -2554,7 +2555,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr "Webbkontos värden som överstiger dina egna begränsningar."
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Webbhotellsplaner"
 
 msgid "Hosting plans available for"
 msgstr "Webbhotellsplaner finns tillgängliga för"
@@ -2622,10 +2623,10 @@ msgid "IP assignments"
 msgstr "IP uppdrag"
 
 msgid "IP management"
-msgstr ""
+msgstr "IP förwaltning"
 
 msgid "IP usage"
-msgstr ""
+msgstr "IP-användning"
 
 msgid "IPv6 address"
 msgstr "IPv6-adress"
@@ -2873,7 +2874,7 @@ msgid "Language successfully updated."
 msgstr "Language successfully updated."
 
 msgid "Languages"
-msgstr ""
+msgstr "Languages"
 
 msgid "Languages index was successfully re-built."
 msgstr "Nytt språk index skapades."
@@ -3030,7 +3031,7 @@ msgid ""
 msgstr "Maintenance mode is activated. In this mode, only administrators can login."
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "Underhållsläge"
 
 msgid "Male"
 msgstr "Man"
@@ -3042,7 +3043,7 @@ msgid "Manage SQL"
 msgstr "Hantera SQL"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Manage htaccess users and groups"
 
 msgid "Manage users"
 msgstr "Hantera användare"
@@ -3407,7 +3408,7 @@ msgid "Other settings"
 msgstr "Övriga inställningar"
 
 msgid "Overview"
-msgstr ""
+msgstr "Översikt"
 
 msgid "Owner"
 msgstr "Ägare"
@@ -3447,7 +3448,7 @@ msgid "PHP exec() function"
 msgstr "PHP exec() function"
 
 msgid "PHP settings"
-msgstr ""
+msgstr "PHP settings"
 
 msgid "POP3/IMAP"
 msgstr "POP3/IMAP"
@@ -3595,7 +3596,7 @@ msgid "Phone"
 msgstr "Telefon"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3811,7 +3812,7 @@ msgid "Plugin list is empty."
 msgstr "Plugin list is empty."
 
 msgid "Plugin management"
-msgstr ""
+msgstr "Plugin management"
 
 msgid "Plugins Upload"
 msgstr "Plugins Upload"
@@ -3874,7 +3875,7 @@ msgid "Processor data"
 msgstr "Processor data"
 
 msgid "Profile"
-msgstr ""
+msgstr "Profile"
 
 msgid "Properties"
 msgstr "Egenskaper"
@@ -4137,7 +4138,7 @@ msgid "Reseller software list"
 msgstr "Återförsäljare programvara lista"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Reseller statistics"
 
 msgid "Reseller successfully added."
 msgstr "Återförsäljare lagts till."
@@ -4392,16 +4393,16 @@ msgid "Service port successfully removed."
 msgstr "Service port tagits bort."
 
 msgid "Service ports"
-msgstr ""
+msgstr "Service ports"
 
 msgid "Service protocol"
 msgstr "Tjänstprotokoll"
 
 msgid "Services status"
-msgstr ""
+msgstr "Tjänster status"
 
 msgid "Sessions"
-msgstr ""
+msgstr "Sessions"
 
 msgid "Set status to 'tochange'"
 msgstr "Set status to 'tochange'"
@@ -4505,7 +4506,7 @@ msgid "Software instance has been scheduled for installation"
 msgstr "Programvara instans har planerats för installation"
 
 msgid "Software management"
-msgstr ""
+msgstr "Software management"
 
 msgid "Software name"
 msgstr "Mjukvara namn"
@@ -4514,7 +4515,7 @@ msgid "Software not found!"
 msgstr "Programvara hittades inte!"
 
 msgid "Software options"
-msgstr ""
+msgstr "Software options"
 
 msgid "Software permissions"
 msgstr "Programvara behörigheter"
@@ -4670,7 +4671,7 @@ msgid "Submit changes"
 msgstr "Aktivera ändringar"
 
 msgid "Support"
-msgstr ""
+msgstr "Support"
 
 msgid "Support system"
 msgstr "Supportsystem"
@@ -4703,14 +4704,14 @@ msgid "System error - custom error page was not updated."
 msgstr "Systemfel - anpassad felsida uppdateras inte."
 
 msgid "System information"
-msgstr ""
+msgstr "System information"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "System is unable to remove '%s' user logo."
 
 msgid "System tools"
-msgstr ""
+msgstr "Systemverktyg"
 
 msgid "System under maintenance"
 msgstr "System är på underhåll"
@@ -5262,7 +5263,7 @@ msgid "Update Plugins"
 msgstr "Uppdatera Plugins"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "Update SQL user password"
 
 msgid "Update data"
 msgstr "Uppdatera information"
@@ -5444,7 +5445,7 @@ msgid "View hosting plan"
 msgstr "View hosting plan"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Visa ticket"
 
 msgid "Visit plugin site"
 msgstr "Visit plugin site"
@@ -5497,10 +5498,10 @@ msgid "Webmail"
 msgstr "Webbmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Webbverktyg"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "Welcome email"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Välkommen {USERNAME} i-MSCP"
@@ -6027,7 +6028,7 @@ msgid "i-MSCP plugin store"
 msgstr "i-MSCP plugin store"
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP-uppdateringar"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "Uppdateringskontroll är inaktiverad"

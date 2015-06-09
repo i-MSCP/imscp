@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-08 14:41+0200\n"
-"PO-Revision-Date: 2015-06-08 12:44+0000\n"
+"POT-Creation-Date: 2015-06-10 01:29+0200\n"
+"PO-Revision-Date: 2015-06-08 12:54+0000\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -597,16 +597,16 @@ msgid "Add / Edit SSL certificate"
 msgstr "Certificat SSL"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Ajouter un compte FTP"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Ajouter un groupe Htaccess"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Ajouter un utilisateur Htaccess"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Ajouter une base de données SQL"
 
 msgid "Add SQL user"
 msgstr "Ajouter un utilisateur SQL"
@@ -621,34 +621,34 @@ msgid "Add admin"
 msgstr "Ajouter un administrateur"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Ajouter collecteur"
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "Ajouter un enregistrement DNS personnalisé"
 
 msgid "Add custom menu"
 msgstr "Ajouter un menu personalisé"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Ajouter un client"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Ajouter un client - Prochaine étape"
 
 msgid "Add domain alias"
 msgstr "Ajouter un alias de domaine"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Ajouter un compte e-mail"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Ajouter un serveur e-mail externe pour {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Ajouter un groupe"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Ajouter un plan d'hébergement"
 
 msgid "Add new IP address"
 msgstr "Ajouter une nouvelle adresse IP"
@@ -678,7 +678,7 @@ msgid "Add reseller"
 msgstr "Ajouter un revendeur"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Ajouter un sous-domaine"
 
 msgid "Add user"
 msgstr "Ajouter un utilisateur"
@@ -848,7 +848,7 @@ msgid "Admin account successfully created."
 msgstr "Le compte administrateur a été créé."
 
 msgid "Admin log"
-msgstr ""
+msgstr "Journal de l'administrateur"
 
 msgid "Admin not available"
 msgstr "Administration non disponible"
@@ -1008,7 +1008,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "Une erreur inconnue est survenue durant le téléversement du fichier : %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Journaux anti-Rootkits"
 
 msgid "Any"
 msgstr "Toute"
@@ -1128,7 +1128,7 @@ msgid "Assign existing SQL user"
 msgstr "Utiliser un utilisateur SQL existant"
 
 msgid "Assign group"
-msgstr ""
+msgstr "Assigner le group"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Vous devez d'abord créer une base de donnée qui contient au moins un utilisateur SQL."
@@ -1618,7 +1618,7 @@ msgid "Custom menu successfully updated."
 msgstr "Le menu a été mise à jour."
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Menus personnalisés"
 
 msgid "Customer"
 msgstr "Client"
@@ -1651,7 +1651,7 @@ msgid "Customer account summary"
 msgstr "Récapitulatif du compte client"
 
 msgid "Customer assignments"
-msgstr ""
+msgstr "Assignation des clients"
 
 msgid "Customer consumption"
 msgstr "Consommation du client"
@@ -1732,7 +1732,7 @@ msgid "Database required"
 msgstr "Base de données requise"
 
 msgid "Database update"
-msgstr ""
+msgstr "Mise à jour pour la base de données"
 
 msgid "Database usage"
 msgstr "Utilisation des bases de données"
@@ -1744,7 +1744,7 @@ msgid "Database with comma(s) in name is not accepted."
 msgstr "Les virgules ne sont pas acceptées dans les noms de base de données."
 
 msgid "Databases"
-msgstr ""
+msgstr "Base de données"
 
 msgid "Date"
 msgstr "Date"
@@ -1753,7 +1753,7 @@ msgid "Day"
 msgstr "Jour"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Statistiques journalières"
 
 msgid "Days"
 msgstr "Jours"
@@ -1823,7 +1823,7 @@ msgid ""
 msgstr "Cher {RESELLER},\n\tVotre logiciel téléversé a été accepté par {ADMIN}.\n\n\tDétails :\n\tNom du paquet : {SOFTWARE}\n\tID du paquet : {SOFTWARE_ID}\n\n\tVeuillez vous connecter à votre panel i-MSCP pour plus de détails."
 
 msgid "Debugger"
-msgstr ""
+msgstr "Debogueur"
 
 msgid "Default language"
 msgstr "Langue par défaut"
@@ -1846,10 +1846,10 @@ msgid "Delete all tickets"
 msgstr "Supprimer tous les tickets"
 
 msgid "Delete customer"
-msgstr ""
+msgstr "Supprimer utilisateur"
 
 msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Supprimer le client - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Effacer les entrées:"
@@ -2105,52 +2105,52 @@ msgid "Edit"
 msgstr "Editer"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "Éditer le compte FTP"
 
 msgid "Edit SSL certificate"
 msgstr "Édition du certificat SSL:"
 
 msgid "Edit admin"
-msgstr ""
+msgstr "Editer l'administrateur"
 
 msgid "Edit auto responder"
-msgstr ""
+msgstr "Éditer la réponse automatique"
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "Edition des enrengistrements DNS personnalisés"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "Personalisation de la page d'erreur"
 
 msgid "Edit custom menu"
 msgstr "Personalisation du menu"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "Éditer le client"
 
 msgid "Edit domain"
 msgstr "Éditer le domaine"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Éditer l'alias de domaine"
 
 msgid "Edit error page"
 msgstr "Édition page d'erreur"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Éditer le serveur e-mail externe pour {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Édition plan d'hébergement"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "Éditer l'utilisateur htaccess"
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Editer le compte e-mail"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "Editer les quotas"
 
 msgid "Edit protected area"
 msgstr "Modifier la zone protégée"
@@ -2159,7 +2159,7 @@ msgid "Edit reseller"
 msgstr "Édition du revendeur"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Editer le sous-domaine"
 
 msgid "Edit user"
 msgstr "Éditer l'utilisateur"
@@ -2254,7 +2254,7 @@ msgid "Enable SSL"
 msgstr "Activer SSL"
 
 msgid "Enable auto responder"
-msgstr ""
+msgstr "Activer la réponse automatique"
 
 msgid "Enabled"
 msgstr "Activé"
@@ -2408,7 +2408,7 @@ msgid "FileManager"
 msgstr "Gestionnaire de fichiers"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Gestionnaire de fichiers"
 
 msgid "Filesystem system Info"
 msgstr "Informations sur le système de fichiers"
@@ -2481,13 +2481,13 @@ msgid "Gender"
 msgstr "Genre"
 
 msgid "General"
-msgstr ""
+msgstr "Général"
 
 msgid "General information"
 msgstr "Informations générales"
 
 msgid "General settings"
-msgstr ""
+msgstr "Paramètres généraux"
 
 msgid "Generate"
 msgstr "Génerer"
@@ -2566,7 +2566,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr "Des valeurs du plan d'hébergement dépassent vos propres limites."
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Plans d'hébergement"
 
 msgid "Hosting plans available for"
 msgstr "Rendre les plans d'hébergement disponibles pour les"
@@ -2631,13 +2631,13 @@ msgid "IP addresses under control of i-MSCP"
 msgstr "Adresses IP contrôlées par i-MSCP"
 
 msgid "IP assignments"
-msgstr ""
+msgstr "Assignation des adresses IP"
 
 msgid "IP management"
-msgstr ""
+msgstr "Gestion des adresses IP"
 
 msgid "IP usage"
-msgstr ""
+msgstr "Utilisation des adresses IP"
 
 msgid "IPv6 address"
 msgstr "Adresse IPv6"
@@ -2885,7 +2885,7 @@ msgid "Language successfully updated."
 msgstr "Langue mise à jour."
 
 msgid "Languages"
-msgstr ""
+msgstr "Langues"
 
 msgid "Languages index was successfully re-built."
 msgstr "L'index des langues a été reconstruit."
@@ -3042,7 +3042,7 @@ msgid ""
 msgstr "La maintenance est activée. Dans ce mode, seuls les administrateurs peuvent se connecter."
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "Paramètres de maintenance"
 
 msgid "Male"
 msgstr "Masculin"
@@ -3054,7 +3054,7 @@ msgid "Manage SQL"
 msgstr "Databases"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Gestion des groupe et utilisateurs htaccess"
 
 msgid "Manage users"
 msgstr "Utilisateurs"
@@ -3419,7 +3419,7 @@ msgid "Other settings"
 msgstr "Autres paramètres"
 
 msgid "Overview"
-msgstr ""
+msgstr "Vue d'ensemble"
 
 msgid "Owner"
 msgstr "Propriétaire"
@@ -3459,7 +3459,7 @@ msgid "PHP exec() function"
 msgstr "Fonction PHP exec()"
 
 msgid "PHP settings"
-msgstr ""
+msgstr "Paramètres PHP"
 
 msgid "POP3/IMAP"
 msgstr "POP3/IMAP"
@@ -3607,7 +3607,7 @@ msgid "Phone"
 msgstr "Téléphone"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3823,7 +3823,7 @@ msgid "Plugin list is empty."
 msgstr "La liste des extensions est vide."
 
 msgid "Plugin management"
-msgstr ""
+msgstr "Gestion des plugins"
 
 msgid "Plugins Upload"
 msgstr " Téléchargement d'extensions"
@@ -3886,7 +3886,7 @@ msgid "Processor data"
 msgstr "Données du processeur"
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Properties"
 msgstr "Propriétés"
@@ -4125,7 +4125,7 @@ msgid "Reseller assignment"
 msgstr "Assignation des revendeurs"
 
 msgid "Reseller assignments"
-msgstr ""
+msgstr "Assignation des revendeurs"
 
 msgid "Reseller consumption"
 msgstr "Consommation du revendeur"
@@ -4149,7 +4149,7 @@ msgid "Reseller software list"
 msgstr "Liste des logiciels du revendeur"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Statistiques des revendeurs"
 
 msgid "Reseller successfully added."
 msgstr "Le compte de revendeur a été créé."
@@ -4404,16 +4404,16 @@ msgid "Service port successfully removed."
 msgstr "Le port du service a été supprimé."
 
 msgid "Service ports"
-msgstr ""
+msgstr "Ports des services"
 
 msgid "Service protocol"
 msgstr "Protocole du service"
 
 msgid "Services status"
-msgstr ""
+msgstr "Statut des services"
 
 msgid "Sessions"
-msgstr ""
+msgstr "Sessions"
 
 msgid "Set status to 'tochange'"
 msgstr "Mettre le statut à 'à changer'"
@@ -4517,7 +4517,7 @@ msgid "Software instance has been scheduled for installation"
 msgstr "Le logiciel va être installé."
 
 msgid "Software management"
-msgstr ""
+msgstr "Gestion des logiciels"
 
 msgid "Software name"
 msgstr "Nom du logiciel"
@@ -4526,7 +4526,7 @@ msgid "Software not found!"
 msgstr "Logiciel non trouvé !"
 
 msgid "Software options"
-msgstr ""
+msgstr "Options des logiciels"
 
 msgid "Software permissions"
 msgstr "Permissions du logiciel"
@@ -4682,7 +4682,7 @@ msgid "Submit changes"
 msgstr "Appliquer les changements"
 
 msgid "Support"
-msgstr ""
+msgstr "Support"
 
 msgid "Support system"
 msgstr "Système de support"
@@ -4715,14 +4715,14 @@ msgid "System error - custom error page was not updated."
 msgstr "Erreur système - la page d'erreur personnalisée n'a pas été mise à jour."
 
 msgid "System information"
-msgstr ""
+msgstr "Informations sur le système"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "Le système n'a pas été capable de supprimer le logo de l'utilisateur '%s'."
 
 msgid "System tools"
-msgstr ""
+msgstr "Outils système"
 
 msgid "System under maintenance"
 msgstr "Système en maintenance"
@@ -5031,7 +5031,7 @@ msgid "Traffic"
 msgstr "Trafic"
 
 msgid "Traffic statistics"
-msgstr ""
+msgstr "Statistiques du trafic"
 
 msgid "Traffic usage"
 msgstr "Utilisation du trafic"
@@ -5274,7 +5274,7 @@ msgid "Update Plugins"
 msgstr "Mettre à jour les extensions"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "Mettre à jour le mot de passe SQL"
 
 msgid "Update data"
 msgstr "Mettre à jour les données"
@@ -5388,7 +5388,7 @@ msgid "User session successfully killed for password change."
 msgstr "La session de l'utilisateur a bien été supprimé pour le renouvellement du mot de passe."
 
 msgid "User statistics"
-msgstr ""
+msgstr "Statistics des utilisateurs"
 
 msgid "User successfully disconnected."
 msgstr "L'utilisateur a été déconnecté."
@@ -5456,7 +5456,7 @@ msgid "View hosting plan"
 msgstr "Afficher les plans d'hébergement"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Voir les tickets"
 
 msgid "Visit plugin site"
 msgstr "Visiter le site de l'extension"
@@ -5509,10 +5509,10 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Outils Internet"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "E-mail de bienvenue"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Bienvenue {USERNAME} dans i-MSCP"
@@ -6039,7 +6039,7 @@ msgid "i-MSCP plugin store"
 msgstr "Magazin d'extensions i-MSCP"
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Mise à jour d'i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "La vérification des mise à jour est désactivée."
@@ -6157,7 +6157,7 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} a téléversé un nouveau logiciel"
 
 msgid "{USERNAME} user statistics"
-msgstr ""
+msgstr "Statistiques de l'utilsateur {USERNAME}"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 Équipe i-MSCP<br/>Tous droits réservés"

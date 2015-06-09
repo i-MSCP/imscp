@@ -5,14 +5,15 @@
 # Translators:
 # Akong Wu <ak6783@gmail.com>, 2015
 # Cloudeasy <a9100a9957@gmail.com>, 2014-2015
+# i-MSCP <team@i-mscp.net>, 2015
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-08 14:41+0200\n"
-"PO-Revision-Date: 2015-06-08 12:44+0000\n"
-"Last-Translator: i-MSCP <team@i-mscp.net>\n"
+"POT-Creation-Date: 2015-06-10 01:29+0200\n"
+"PO-Revision-Date: 2015-06-09 06:33+0000\n"
+"Last-Translator: Akong Wu <ak6783@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -981,13 +982,13 @@ msgstr "發生無法預期的錯誤。"
 
 msgid ""
 "An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
+msgstr "發生無法預期的錯誤。請到除錯介面來找到更多資訊。"
 
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr "發生無法預期的錯誤，請連絡您的系統管理員。"
 
 msgid "An unexpected error occurred. Please contact your reseller."
-msgstr ""
+msgstr "發生無法預期的錯誤，請連絡您的經銷商。"
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1001,7 +1002,7 @@ msgid "Anti-Rootkits Logs"
 msgstr "Anti-Rootkits 紀錄"
 
 msgid "Any"
-msgstr ""
+msgstr "任何"
 
 msgid "Application installer"
 msgstr "應用程式安裝器"
@@ -1032,7 +1033,7 @@ msgstr "您確定要啟用這個 Package"
 msgid ""
 "Are you sure you want to deactivate the external mail server(s) for the '%s'"
 " domain?"
-msgstr ""
+msgstr "您確定要停用 '%s' 網域的外部郵件主機嗎?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1071,7 +1072,7 @@ msgstr "您確定要刪除 %s 這個網域別名?"
 msgid ""
 "Are you sure you want to delete the %s domain alias? Be aware that any "
 "related entity will be also removed."
-msgstr ""
+msgstr "您確定要刪除 %s 網域的別名嗎? 注意，任何實體設定也將移除。"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1321,7 +1322,7 @@ msgid "City"
 msgstr "城市"
 
 msgid "Class"
-msgstr ""
+msgstr "Class"
 
 msgid "Clear log"
 msgstr "刪除日誌"
@@ -1569,7 +1570,7 @@ msgid "Current password is invalid."
 msgstr "目前密碼無效。"
 
 msgid "Custom DNS errors"
-msgstr ""
+msgstr "自訂 DNS 錯誤"
 
 msgid "Custom DNS record"
 msgstr "自訂 DNS 紀錄"
@@ -1641,7 +1642,7 @@ msgid "Customer account summary"
 msgstr "客戶帳號摘要"
 
 msgid "Customer assignments"
-msgstr ""
+msgstr "客戶分配"
 
 msgid "Customer consumption"
 msgstr "客戶購買"
@@ -2062,7 +2063,7 @@ msgid ""
 msgstr "網域: 在您的網域中設定 DNS MX 紀錄來轉發郵件，包括子網域。"
 
 msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr ""
+msgstr "網域: 為您的網域設定可轉送的外部 MX 主機。"
 
 msgid "Domains"
 msgstr "網域"
@@ -2251,7 +2252,7 @@ msgstr "啟用"
 
 #, php-format
 msgid "Enabled for: %s"
-msgstr ""
+msgstr "啟用: %s"
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2283,7 +2284,7 @@ msgid "Errors"
 msgstr "錯誤"
 
 msgid "Excl. default mails"
-msgstr ""
+msgstr "預設郵件除外"
 
 msgid "Execute requests"
 msgstr "執行請求"
@@ -2621,7 +2622,7 @@ msgid "IP addresses under control of i-MSCP"
 msgstr "IP 位址在 i-MSCP 管理之下。"
 
 msgid "IP assignments"
-msgstr ""
+msgstr "IP 分配"
 
 msgid "IP management"
 msgstr "IP 管理"
@@ -2654,7 +2655,7 @@ msgid "Import in local repository"
 msgstr "匯入到本機軟體庫"
 
 msgid "Import new language file"
-msgstr ""
+msgstr "匯入新的語言檔"
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2800,7 +2801,7 @@ msgstr "無效的 NAME。"
 
 #, php-format
 msgid "Invalid SQL user host: %s"
-msgstr ""
+msgstr "無效資料庫使用者主機: %s"
 
 msgid "Invalid TXT data"
 msgstr "無效的 TXT 資料"
@@ -4772,7 +4773,7 @@ msgstr "這個客戶此 %s 限制不可以低於 <strong>%d</strong>，他總計
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already <strong>%d</strong> %s."
-msgstr "因為他已經 <strong>%d</strong> %s，所以這個客戶的 %s 限制不能改為 '停用'。"
+msgstr "The %s limit for this customer cannot be set to 'disabled' because he has already <strong>%d</strong> %s."
 
 #, php-format
 msgid ""
@@ -5021,7 +5022,7 @@ msgid "Traffic"
 msgstr "流量"
 
 msgid "Traffic statistics"
-msgstr ""
+msgstr "流量狀態"
 
 msgid "Traffic usage"
 msgstr "流量使用量"
@@ -5075,11 +5076,11 @@ msgstr "無法刪除 i-MSCP 資訊檔案。"
 
 #, php-format
 msgid "Unable to disable the %s plugin: %s"
-msgstr ""
+msgstr "無法停用 %s 外掛: %s"
 
 #, php-format
 msgid "Unable to enable the %s plugin: %s"
-msgstr ""
+msgstr "無法啟用 %s 外掛: %s"
 
 msgid "Unable to extract info.php file"
 msgstr "無法解開 info.php 檔案"
@@ -5378,7 +5379,7 @@ msgid "User session successfully killed for password change."
 msgstr "在密碼變更後使用者連線已成功刪除了。"
 
 msgid "User statistics"
-msgstr ""
+msgstr "使用者狀態"
 
 msgid "User successfully disconnected."
 msgstr "使用者已經成功中斷連線。"
@@ -5652,10 +5653,10 @@ msgid ""
 msgstr "您不可以移動 <b>%1$s</b> 到目標經銷商，<br />這已經有限制在 <b>%2$s</b> 服務中。"
 
 msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr ""
+msgstr "您不可以保護一個沒有選擇 htaccess 群組的區域。"
 
 msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr ""
+msgstr "您不可以保護一個沒有選擇 htaccess 使用者的區域。"
 
 #, php-format
 msgid "You cannot remove the %s IP address."
@@ -5963,7 +5964,7 @@ msgid "domain aliases"
 msgstr "網域別名"
 
 msgid "domain data"
-msgstr ""
+msgstr "網域日期"
 
 msgid "domains"
 msgstr "網域"
@@ -6053,7 +6054,7 @@ msgid "mail"
 msgstr "郵件"
 
 msgid "mail accounts"
-msgstr ""
+msgstr "郵件帳號"
 
 msgid "missing alias"
 msgstr "遺失別名"
