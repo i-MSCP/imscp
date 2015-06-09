@@ -115,7 +115,6 @@ sub _process
 
 sub run
 {
-
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeDispatchRequest');
 
 	# Process plugins

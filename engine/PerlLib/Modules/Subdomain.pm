@@ -506,10 +506,11 @@ sub _getSharedMountPoints
 	(values %{$rdata});
 }
 
-=item isValidCertificate()
+=item isValidCertificate($subdomainName)
 
- Does the subdomain SSL certificate is valid?
+ Does the SSL certificate which belong to the subdomain is valid?
 
+ Param string $subdomainName Subdomain name
  Return bool TRUE if the domain SSL certificate is valid, FALSE otherwise
 
 =cut

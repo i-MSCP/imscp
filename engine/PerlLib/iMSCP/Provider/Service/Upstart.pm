@@ -243,9 +243,9 @@ sub reload
 
 	if($self->_isUpstart($service)) {
 		if($self->isRunning($service)) {
-			$self->start($service);
-		} else {
 			($self->_exec($commands{'reload'}, $service) == 0);
+		} else {
+			$self->start($service);
 		}
 	} else {
 		$self->SUPER::reload($service);

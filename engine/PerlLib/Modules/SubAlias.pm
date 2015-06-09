@@ -30,8 +30,9 @@ use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::Execute;
 use iMSCP::Dir;
+use iMSCP::OpenSSL;
 use Net::LibIDN qw/idn_to_unicode/;
-use parent 'Modules::Subdomain';
+use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
 
@@ -40,6 +41,19 @@ use parent 'Modules::Subdomain';
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item getType()
+
+ Get module type
+
+ Return string Module type
+
+=cut
+
+sub getType
+{
+	'Sub';
+}
 
 =item process($subAliasId)
 
@@ -495,6 +509,30 @@ sub _getSharedMountPoints
 	}
 
 	(values %{$rdata});
+}
+
+=item isValidCertificate($subdomainAliasName)
+
+ Does the SSL certificate which belongs to the subdomain alias is valid?
+
+ Param string $subdomainAliasName Subdomain alias name
+ Return bool TRUE if the domain SSL certificate is valid, FALSE otherwise
+
+=cut
+
+sub isValidCertificate
+{
+	my ($self, $subdomainAliasName) = @_;
+
+	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$subdomainAliasName.pem";
+
+	my $openSSL = iMSCP::OpenSSL->new(
+		'private_key_container_path' => $certFile,
+		'certificate_container_path' => $certFile,
+		'ca_bundle_container_path' => $certFile
+	);
+
+	! $openSSL->validateCertificateChain();
 }
 
 =back

@@ -179,10 +179,10 @@ sub reload
 {
 	my ($self, $service) = @_;
 
-	unless($self->isRunning($service)) {
-		$self->start($service);
-	} else {
+	if($self->isRunning($service)) {
 		($self->_exec($commands{'systemctl'}, 'reload', "$service.service") == 0);
+	} else {
+		$self->start($service);
 	}
 }
 

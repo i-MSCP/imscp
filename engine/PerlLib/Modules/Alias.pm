@@ -30,8 +30,9 @@ use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::Execute;
 use iMSCP::Dir;
+use iMSCP::OpenSSL;
 use Net::LibIDN qw/idn_to_unicode/;
-use parent 'Modules::Domain';
+use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
 
@@ -40,6 +41,19 @@ use parent 'Modules::Domain';
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item getType()
+
+ Get module type
+
+ Return string Module type
+
+=cut
+
+sub getType
+{
+	'Dmn';
+}
 
 =item process($aliasId)
 
@@ -116,7 +130,7 @@ sub process
 
 sub add
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if($self->{'alias_status'} eq 'tochange') {
 		# Sets the status of any subdomain that belongs to this domain alias to 'tochange'.
@@ -137,19 +151,6 @@ sub add
 	}
 
 	$self->SUPER::add();
-}
-
-=item restore()
-
- Restore domain alias
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub restore
-{
-	$_[0]->Modules::Abstract::restore();
 }
 
 =back
@@ -516,7 +517,7 @@ sub _getPackagesData
 
 sub _getSharedMountPoints
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $regexp = "^$self->{'alias_mount'}(/.*|\$)";
 
@@ -571,6 +572,30 @@ sub _getSharedMountPoints
 	}
 
 	(values %{$rdata});
+}
+
+=item isValidCertificate($domainAliasName)
+
+ Does the SSL certificate which belongs to that the domain alias is valid?
+
+ Param string $domainAlias Domain alias name
+ Return bool TRUE if the domain SSL certificate is valid, FALSE otherwise
+
+=cut
+
+sub isValidCertificate
+{
+	my ($self, $domainAliasName) = @_;
+
+	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainAliasName.pem";
+
+	my $openSSL = iMSCP::OpenSSL->new(
+		'private_key_container_path' => $certFile,
+		'certificate_container_path' => $certFile,
+		'ca_bundle_container_path' => $certFile
+	);
+
+	! $openSSL->validateCertificateChain();
 }
 
 =back

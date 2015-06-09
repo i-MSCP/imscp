@@ -133,7 +133,7 @@ sub process
 
 sub add
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if($self->{'domain_status'} eq 'tochange') {
 		# Sets the status of any subdomain that belongs to this domain to 'tochange'.
@@ -166,7 +166,7 @@ sub add
 
 sub restore
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
 	my $bkpDir = "$dmnDir/backups";
@@ -678,10 +678,11 @@ sub _getPackagesData
 	%{$self->{'packages'}};
 }
 
-=item isValidCertificate()
+=item isValidCertificate($domainName)
 
- Does the domain SSL certificate is valid?
+ Does the SSL certificate which belongs to the domain is valid?
 
+ Param string $domainName Domain name
  Return bool TRUE if the domain SSL certificate is valid, FALSE otherwise
 
 =cut

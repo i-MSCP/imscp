@@ -4,6 +4,10 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND:
+	Fixed: Service is started instead of be reloaded when already running (iMSCP::Provider::Service::Upstart)
+	Fixed: domain_status field not defined (Modules::Domain)
+
 FRONTEND
 	Added: Cache support for navigation translation files
 	Fixed: Unable to set language
