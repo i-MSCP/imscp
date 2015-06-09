@@ -605,7 +605,7 @@ sub _updateDatabase
 	error('Unable to update roundcube database schema.') if $rs && ! $stderr;
 	return $rs if $rs;
 
-	# Ensure tha users.mail_host entries is set to localhost
+	# Ensure tha users.mail_host entries are set to 'localhost'
 
 	my ($db, $errStr) = main::setupGetSqlConnect($roundcubeDbName);
 	unless($db) {

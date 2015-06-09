@@ -309,7 +309,7 @@ sub getJobFilePath
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$paths{$self} = [ '/etc/init' ];
 
@@ -360,7 +360,7 @@ sub _isUpstart
 
 sub _versionIsPre067
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	(version->parse($self->_getVersion()) < version->parse('0.6.7'));
 }
@@ -375,7 +375,7 @@ sub _versionIsPre067
 
 sub _versionIsPre090
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	(version->parse($self->_getVersion()) < version->parse('0.9.0'));
 }
@@ -390,7 +390,7 @@ sub _versionIsPre090
 
 sub _versionIsPost090
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	(version->parse($self->_getVersion()) >= version->parse('0.9.0'));
 }

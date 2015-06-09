@@ -39,8 +39,8 @@ my %commands = (
 	'systemctl' => '/bin/systemctl'
 );
 
-# Compatibility mode
-my $compat = 0;
+# Compatibility mode for systemctl
+my $SYSTEMCTL_COMPAT_MODE;
 
 =head1 DESCRIPTION
 
@@ -95,7 +95,7 @@ sub enable
 
 	# compat mode is forced here due to https://bugs.launchpad.net/ubuntu/wily/+source/systemd/+bug/1447807
 
-	#if($compat) {
+	#if($SYSTEMCTL_COMPAT_MODE) {
 		if($self->_isSystemd($service)) {
 			return unless $self->SUPER::enable($service);
 		}
@@ -134,7 +134,7 @@ sub disable
 {
 	my ($self, $service) = @_;
 
-	if($compat) {
+	if($SYSTEMCTL_COMPAT_MODE) {
 		if($self->_isSystemd($service)) {
 			return unless $self->SUPER::disable($service);
 		}
@@ -204,15 +204,20 @@ sub remove
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	# Sets compatibility mode according systemd version in use
-	$compat = lazy {
-		$self->_exec(
-			$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' systemd)', 'ge', '204-3'
-		);
-	};
+	# Sets compatibility mode according systemctl version in use
+	unless(defined $SYSTEMCTL_COMPAT_MODE) {
+		$SYSTEMCTL_COMPAT_MODE = lazy {
+			$self->_exec(
+				$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' systemd)',
+				'ge',
+				'204-3'
+			);
+		};
+	}
 
+	$self->iMSCP::Provider::Service::Debian::Sysvinit::_init();
 	$self->SUPER::_init();
 }
 

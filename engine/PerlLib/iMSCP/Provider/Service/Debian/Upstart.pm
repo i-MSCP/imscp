@@ -141,6 +141,28 @@ sub remove
 
 =back
 
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize instance
+
+ Return iMSCP::Provider::Service::Debian::Systemd
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->iMSCP::Provider::Service::Debian::Sysvinit::_init();
+	$self->SUPER::_init();
+}
+
+=back
+
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

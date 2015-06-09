@@ -234,7 +234,7 @@ sub getUnitFilePath
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$paths{$self} = [
 		'/etc/systemd/system',

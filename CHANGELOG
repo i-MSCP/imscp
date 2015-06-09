@@ -4,9 +4,14 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
-BACKEND:
-	Fixed: Service is started instead of be reloaded when already running (iMSCP::Provider::Service::Upstart)
-	Fixed: domain_status field not defined (Modules::Domain)
+BACKEND
+	Fixed: Depending on the context, some service providers are not initialized correctly
+	Fixed: Service are started instead of be reloaded when already running (iMSCP::Provider::Service::Upstart)
+	Fixed: Undefined domain_status field (Modules::Domain)
+
+CONFIGS
+	Added: ProxyTimeout setting into 00_nameserver.conf Apache2 configuration file
+	Added: types_hash_max_size setting in nginx configuration file
 
 FRONTEND
 	Added: Cache support for navigation translation files

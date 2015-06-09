@@ -28,6 +28,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Execute;
 use iMSCP::File;
+use Scalar::Defer;
 use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
@@ -36,6 +37,9 @@ my %commands = (
 	'invoke-rc.d' => '/usr/sbin/invoke-rc.d',
 	'update-rc.d' => '/usr/sbin/update-rc.d'
 );
+
+# Compatibility mode for sysv-rc
+my $SYSVRC_COMPAT_MODE;
 
 =head1 DESCRIPTION
 
@@ -92,9 +96,7 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	if($self->_exec(
-		$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)', 'ge', '2.88'
-	)) {
+	if($SYSVRC_COMPAT_MODE) {
 		(
 			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
 			$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
@@ -120,9 +122,7 @@ sub disable
 {
 	my ($self, $service) = @_;
 
-	if($self->_exec(
-		$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)', 'ge', '2.88'
-	)) {
+	if($SYSVRC_COMPAT_MODE) {
 		(
 			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
 			$self->_exec($commands{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.') == 0
@@ -164,6 +164,32 @@ sub remove
 =head1 PRIVATE METHODS
 
 =over 4
+
+=item _init()
+
+ Initialize instance
+
+ Return iMSCP::Provider::Service::Debian::Sysvinit
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	# Sets compatibility mode according systemd version in use
+	unless(defined $SYSVRC_COMPAT_MODE) {
+		$SYSVRC_COMPAT_MODE = lazy {
+			$self->_exec(
+				$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)',
+				'ge',
+				'2.88'
+			);
+		};
+	}
+
+	$self->SUPER::_init();
+}
 
 =item _isSysvinit($service)
 

@@ -53,7 +53,7 @@ fieldhash my %paths;
 
 sub getInstance
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	no strict 'refs';
 	my $instance = \${"${self}::_instance"};
@@ -244,7 +244,7 @@ sub getInitscriptPath
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	# TODO (v2.0.0) Replace LsbRelease call by pfacter since LSB is something Linux specific
 	# http://search.cpan.org/dist/pfacter/
