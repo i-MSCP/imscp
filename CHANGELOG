@@ -8,6 +8,7 @@ BACKEND
 	Fixed: Depending on the context, some service providers are not initialized correctly
 	Fixed: Service are started instead of be reloaded when already running (iMSCP::Provider::Service::Upstart)
 	Fixed: Undefined domain_status field (Modules::Domain)
+	Fixed: Wrong return value on failure (request manager)
 
 CONFIGS
 	Added: ProxyTimeout setting into 00_nameserver.conf Apache2 configuration file

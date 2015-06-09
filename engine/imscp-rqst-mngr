@@ -649,7 +649,9 @@ sub run
 		}
 	}
 
-	iMSCP::EventManager->getInstance()->trigger('afterDispatchRequest', $rs);
+	$rs ||= iMSCP::EventManager->getInstance()->trigger('afterDispatchRequest', $rs);
+
+	$rs;
 }
 
 exit run();
