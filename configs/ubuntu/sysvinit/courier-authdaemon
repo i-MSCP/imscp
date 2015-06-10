@@ -1,0 +1,66 @@
+#! /bin/sh -e
+#
+### BEGIN INIT INFO
+# Provides:          courier-authdaemon
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+prefix="/usr"
+exec_prefix=${prefix}
+sysconfdir="/etc/courier"
+sbindir="${exec_prefix}/sbin"
+daemonscript="${sbindir}/authdaemond"
+rundir_courier="/var/run/courier"
+rundir="/var/run/courier/authdaemon"
+pidfile="${rundir}/pid"
+
+. /lib/lsb/init-functions
+
+# Check for a leftover init script
+if [ ! -x $daemonscript ]; then
+	exit 0
+fi
+
+case "$1" in
+start)
+	# Start daemon.
+	cd /
+	log_daemon_msg "Starting Courier authentication services" "authdaemond"
+	if [ ! -d "$rundir_courier" ]; then
+		mkdir -m 0775 $rundir_courier
+		chown daemon:daemon $rundir_courier
+        # set file context for SELinux (#668564)
+        [ -x /sbin/restorecon ] && /sbin/restorecon $rundir_courier
+	fi
+	if [ ! -d "$rundir" ]; then
+		mkdir -m 0750 $rundir
+		chown vmail:daemon $rundir
+        # set file context for SELinux (#668564)
+        [ -x /sbin/restorecon ] && /sbin/restorecon $rundir
+	fi
+	$daemonscript start
+	log_end_msg 0
+	;;
+stop)
+	# Stop daemon.
+	cd /
+	log_daemon_msg "Stopping Courier authentication services" "authdaemond"
+	$daemonscript stop
+	log_end_msg 0
+    ;;
+restart|force-reload)
+	$0 stop
+	$0 start
+    ;;
+status)
+	status_of_proc -p "$pidfile" "authdaemond" && exit 0 || exit $?
+    ;;
+*)
+	echo "Usage: $0 {start|stop|restart|force-reload|status}" >&2
+	exit 2
+	;;
+esac
+exit 0

@@ -11,6 +11,7 @@ BACKEND
 	Fixed: Wrong return value on failure (request manager)
 
 CONFIGS
+	Added: courier-authentication init script - Init script provided by Ubuntu do not work (Ubuntu only)
 	Added: ProxyTimeout setting into 00_nameserver.conf Apache2 configuration file
 	Added: types_hash_max_size setting in nginx.conf configuration file
 
