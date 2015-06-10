@@ -37,6 +37,14 @@ Listener file that allows to replace defaults **@ IN <IP>** DNS record with a cu
 
 Listener file that provides dual stack support for bind9.
 
+### 10_named_zonetransfer.pl
+
+Listener file that provides zone output for zone transfer to secondary nameserver (zone provisioning).
+
+### 10_named_tuning2.pl
+
+Listener file that modifies the zone files, removes default nameservers and adds custom out-of-zone nameservers.
+
 ## Postfix listeners
 
 ### 10_postfix_smarthost.pl
