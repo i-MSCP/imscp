@@ -222,6 +222,8 @@ sub restore
 				}
 
 				my @cmd = (
+					'nice', '-10',
+					'ionice', '-c2', '-n5',
 					$cmd,
 					escapeShell("$bkpDir/$_"), '|', 'mysql',
 					'-h', escapeShell($main::imscpConfig{'DATABASE_HOST'}),
