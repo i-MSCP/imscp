@@ -136,15 +136,15 @@ sub _backupConfig
 		'nice', '-10',
 		'ionice', '-c2', '-n7',
 		'tar',
-		'--create',															# Create new archive
-		"--directory=$main::imscpConfig{'CONF_DIR'}",						# Change to directory
+		'--create',                                                        # Create new archive
+		"--directory=$main::imscpConfig{'CONF_DIR'}",                      # Change to directory
 		($algorithm ne 'no')
-			? "--use-compress-program=$algorithm"							# Compress archive with given program
-			: '',															# No compression
-		'--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]',	# Exclude backup files
-		'--preserve-permissions',											# Preserve permissions
-		"--file=$archiveName",												# use archive file
-		'.'																	# pathname
+			? "--use-compress-program=$algorithm"                          # Compress archive with given program
+			: '',                                                          # No compression
+		'--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]',  # Exclude backup files
+		'--preserve-permissions',                                          # Preserve permissions
+		"--file=$archiveName",                                             # use archive file
+		'.'                                                                # pathname
 	);
 
 	my ($rs, $stdout, $stderr);

@@ -191,8 +191,8 @@ sub run
 
 						if($algorithm ne 'no') {
 							my @cmd = (
-								'nice', '-10',                                        # Reduce the CPU priority
-								'ionice', '-c2', '-n7',                               # Reduce the I/O priority
+								'nice', '-10',                                  # Reduce the CPU priority
+								'ionice', '-c2', '-n7',                         # Reduce the I/O priority
 								$command->{$algorithm}->{'command'}, '--force',
 								escapeShell("$bkpDir/$dbName.sql")
 							);
