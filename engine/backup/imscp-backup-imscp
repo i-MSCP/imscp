@@ -134,7 +134,7 @@ sub _backupConfig
 
 	my @backupCommand = (
 		'nice', '-10',
-		'ionice', '-c2', '-n7',
+		'ionice', '-c2', '-n5',
 		'tar',
 		'--create',                                                        # Create new archive
 		"--directory=$main::imscpConfig{'CONF_DIR'}",                      # Change to directory
