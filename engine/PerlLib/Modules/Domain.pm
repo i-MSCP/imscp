@@ -170,17 +170,17 @@ sub restore
 
 	my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
 	my $bkpDir = "$dmnDir/backups";
-	my ($cmd, $rdata, $stdout, $stderr);
-	my $rs = 0;
-
-	my @bkpFiles = iMSCP::Dir->new('dirname' => $bkpDir)->getFiles();
+	my @bkpFiles = iMSCP::Dir->new( dirname => $bkpDir )->getFiles();
 
 	return 0 unless @bkpFiles;
 
-	for (@bkpFiles) {
-		unless(-l "$bkpDir/$_") { # Doesn't follow any symlink (See #990)
-			if(/^(.+?)\.sql(?:\.(bz2|gz|lzma|xz))?$/) { # Restore SQL database
-				$rdata = iMSCP::Database->factory()->doQuery(
+	for my $bkpFile(@bkpFiles) {
+		unless(-l "$bkpDir/$bkpFile") { # Doesn't follow any symlink (See #990)
+			if($bkpFile =~ /^(.+?)\.sql(?:\.(bz2|gz|lzma|xz))?$/) { # Restore SQL database
+				my $sqldName = $1;
+				my $archType = $2 || '';
+
+				my $rdata = iMSCP::Database->factory()->doQuery(
 					'sqld_name',
 					'
 						SELECT
@@ -196,7 +196,7 @@ sub restore
 						LIMIT 1
 					',
 					$self->{'domain_id'},
-					$1
+					$sqldName
 				);
 				unless(ref $rdata eq 'HASH') {
 					error($rdata);
@@ -204,55 +204,39 @@ sub restore
 				}
 
 				unless(%{$rdata}) {
-					$rdata = iMSCP::Database->factory()->doQuery(
-						'dummy',
-						'INSERT INTO log (log_message) VALUES (?)',
-						sprintf(
-							'Unable to restore the <strong>%s</strong> SQL database which belong to the ' .
-							'%s account: Unknown database.', $1, $self->{'domain_name'}
-						)
-					);
-					unless(ref $rdata eq 'HASH') {
-						error($rdata);
-						return 1;
-					}
-
-					warning("Orphaned database ($1) or missing SQL user for this database. skipping...");
+					warning("Orphaned database ($sqldName) or missing SQL user for this database. skipping...");
 					next;
 				}
 
-				my $dbHostname = escapeShell($main::imscpConfig{'DATABASE_HOST'});
-				my $dbPort = escapeShell($main::imscpConfig{'DATABASE_PORT'});
-				my $sqlUsername = escapeShell($rdata->{$1}->{'sqlu_name'});
-				my $sqlUserpass = escapeShell($rdata->{$1}->{'sqlu_pass'});
-				my $dbName = escapeShell($rdata->{$1}->{'sqld_name'});
-
-				if(defined $2) {
-					if($2 eq 'bz2') {
-						$cmd = 'bzcat -d ';
-					} elsif($2 eq 'gz') {
-						$cmd = 'zcat -d ';
-					} elsif($2 eq 'lzma') {
-						$cmd = 'lzma -dc ';
-					} elsif($2 eq 'xz') {
-						$cmd = 'xz -dc ';
-					}
+				my $cmd;
+				if($archType eq 'bz2') {
+					$cmd = 'bzcat -d ';
+				} elsif($archType eq 'gz') {
+					$cmd = 'zcat -d ';
+				} elsif($archType eq 'lzma') {
+					$cmd = 'lzma -dc ';
+				} elsif($archType eq 'xz') {
+					$cmd = 'xz -dc ';
 				} else {
 					$cmd = 'cat ';
 				}
 
-				$cmd .=
-					escapeShell("$bkpDir/$_") . " | mysql " .
-					"-h $dbHostname " .
-					"-P $dbPort " .
-					"-u $sqlUsername " .
-					"-p$sqlUserpass " .
-					$dbName;
+				my @cmd = (
+					$cmd,
+					escapeShell("$bkpDir/$_"), '|', 'mysql',
+					'-h', escapeShell($main::imscpConfig{'DATABASE_HOST'}),
+					'-P', escapeShell($main::imscpConfig{'DATABASE_PORT'}),
+					'-u', escapeShell($rdata->{$sqldName}->{'sqlu_name'}),
+					'-p' . escapeShell($rdata->{$sqldName}->{'sqlu_pass'}),
+					escapeShell($rdata->{$sqldName}->{'sqld_name'})
+				);
 
-				$rs = execute($cmd, \$stdout, \$stderr);
+				my ($stdout, $stderr);
+				my $rs = execute("@cmd", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
-				warning(sprintf('Unable to restore SQL database: %s', $stderr)) if $stderr && $rs;
-			} elsif(/^(?!mail-).+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) { # Restore domain files
+				warning(sprintf('Could not to restore SQL database: %s', $stderr)) if $stderr && $rs;
+			} elsif($bkpFile =~ /^(?!mail-).+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) { # Restore domain files
+				my $archType = $1 || '';
 				# Since we are now using immutable bit to protect some folders, we must in order do the following
 				# to restore a backup archive:
 				#
@@ -266,23 +250,16 @@ sub restore
 				#
 				# Note: This is a bunch of works but this will be fixed when the backup feature will be rewritten
 
-				my $typeOption = '';
-
-				if(defined $1) {
-					$typeOption = $1;
-
-					if($typeOption eq 'bz2') {
-						$typeOption = 'bzip2';
-					} elsif($typeOption eq 'gz') {
-						$typeOption = 'gzip';
-					}
+				if($archType eq 'bz2') {
+					$archType = 'bzip2';
+				} elsif($archType eq 'gz') {
+					$archType = 'gzip';
 				}
 
-				# TODO: Should we also update status of htuser, htgroup and htaccess entities?
-				my $database = iMSCP::Database->factory();
+				my $db = iMSCP::Database->factory();
 
 				# Update status of any sub to 'torestore'
-				$rdata = $database->doQuery(
+				my $rdata = $db->doQuery(
 					'dummy',
 					'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?',
 					'torestore',
@@ -294,7 +271,7 @@ sub restore
 				}
 
 				# Update status of any als to 'torestore'
-				$rdata = $database->doQuery(
+				$rdata = $db->doQuery(
 					'dummy',
 					'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?',
 					'torestore',
@@ -306,7 +283,7 @@ sub restore
 				}
 
 				# Update status of any alssub to 'torestore'
-				$rdata = $database->doQuery(
+				$rdata = $db->doQuery(
 					'dummy',
 					"
 						UPDATE
@@ -326,13 +303,17 @@ sub restore
 				# Un-protect folders recursively
 				clearImmutable($dmnDir, 1);
 
-				if($typeOption ne '') {
-					$cmd = "tar -x -p --$typeOption -C " . escapeShell($dmnDir) . ' -f ' . escapeShell("$bkpDir/$_");
+				my $cmd;
+				if($archType ne '') {
+					$cmd = "nice -10 ionice -c2 -n5 tar -x -p --$archType -C " . escapeShell($dmnDir) . ' -f ' .
+						escapeShell("$bkpDir/$bkpFile");
 				} else {
-					$cmd = 'tar -x -p -C ' . escapeShell($dmnDir) . ' -f ' . escapeShell("$bkpDir/$_");
+					$cmd = 'nice -10 ionice -c2 -n5 tar -x -p -C ' . escapeShell($dmnDir) . ' -f ' .
+						escapeShell("$bkpDir/$bkpFile");
 				}
 
-				$rs = execute($cmd, \$stdout, \$stderr);
+				my ($stdout, $stderr);
+				my $rs = execute($cmd, \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
@@ -341,7 +322,7 @@ sub restore
 				my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 					($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-				$rs = setRights($dmnDir, { 'user' => $userName, 'group' => $groupName, 'recursive' => 1 });
+				$rs = setRights($dmnDir, { user => $userName, group => $groupName, recursive => 1 });
 				return $rs if $rs;
 
 				$rs = $self->SUPER::restore();
