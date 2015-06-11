@@ -28,7 +28,8 @@ use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw/isImmutable setImmutable clearImmutable/;
 use iMSCP::Getopt;
-use Servers::mta::postfix;
+use iMSCP::Mail;
+use Servers::mta;
 use File::Basename;
 use POSIX qw/strftime/;
 
@@ -48,18 +49,17 @@ sub run
 	my $algorithm = lc($main::imscpConfig{'ZIP'});
 
 	unless(exists $command->{$algorithm} || $algorithm eq 'no') {
-		error("Backup algorithm not supported: $algorithm");
+		error("Backup algorithm is not supported: $algorithm");
 		return 1;
 	}
 
-	my ($rs, $ret) = (0, 0);
-	my ($rdata, $stdout, $stderr);
+	my ($ret, $rs, $stdout, $stderr) = (0, 0);
 	my $db = iMSCP::Database->factory();
-	my $mta = Servers::mta::postfix->getInstance();
+	my $mta = Servers::mta->factory();
 	my $canDumpDatabases = $db->can('dumpdb');
 
-	$rdata = $db->doQuery(
-		'domain_name',
+	my $domainData = $db->doQuery(
+		'domain_id',
 		"
 			SELECT
 				domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
@@ -74,20 +74,19 @@ sub run
 		"
 	);
 
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
+	unless(ref $domainData eq 'HASH') {
+		error($domainData);
 		$ret = 1;
 	} else {
-		for (keys %{$rdata}) {
-			$ret = 0;
-
-			my @allowbackup = split '\|', $rdata->{$_}->{'allowbackup'};
+		for my $mainDomainId(keys %{$domainData}) {
+			my @allowbackup = split '\|', $domainData->{$mainDomainId}->{'allowbackup'};
 
 			if (@allowbackup) {
-				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
+				my $mainDomainName = $domainData->{$mainDomainId}->{'domain_name'};
+				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$mainDomainName";
 				my $bkpDir = "$homeDir/backups";
-				my $userName = $rdata->{$_}->{'admin_sys_name'};
-				my $groupName = $rdata->{$_}->{'admin_sys_gname'};
+				my $userName = $domainData->{$mainDomainId}->{'admin_sys_name'};
+				my $groupName = $domainData->{$mainDomainId}->{'admin_sys_gname'};
 
 				unless(-d $homeDir) { # Skip backup if home directory doesn't exist
 					warning(sprintf("The %s home directory doesn't exist. Skipping backup...", $homeDir));
@@ -101,7 +100,7 @@ sub run
 						clearImmutable($homeDir);
 					}
 
-					$rs = iMSCP::Dir->new( dirname => $bkpDir )->make(
+					my $rs = iMSCP::Dir->new( dirname => $bkpDir )->make(
 						{ user => $userName, group => $groupName, mode => 0750 }
 					);
 
@@ -114,7 +113,7 @@ sub run
 				}
 
 				# Remove any previous backup file
-				$rs = execute("rm -fR $bkpDir/*", \$stdout, \$stderr);
+				my $rs = execute("rm -fR $bkpDir/*", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 
@@ -126,24 +125,26 @@ sub run
 				my $ext = ($algorithm ne 'no') ? ('.' . $command->{$algorithm}->{'extension'}) : '';
 				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
-                # Backup customers webspace
+				# Backup customers webspace
 				if ('dmn' ~~ @allowbackup) {
 					my @cmd = (
+						'nice', '-10',                                         # Reduce the CPU priority
+						'ionice', '-c2', '-n7',                                # Reduce the I/O priority
 						'tar',
-						"--create",										# Create new archive
-						"--directory=$homeDir",							# Change to directory
+						"--create",                                            # Create new archive
+						"--directory=$homeDir",                                # Change to directory
 						($algorithm ne 'no')
-							? "--use-compress-program=$algorithm"		# Compress archive with given program
-							: '',										# No compression
-						"--file=$bkpDir/$_-backup-$date.tar$ext",		# use archive file
-						'--exclude=logs',								# exclude logs directory from archive
-						'--exclude=phptmp',								# exclude phptmp directory from archive
-						'--exclude=backups',							# exclude backup from archive/-
-						'--exclude=domain_disable_page',				# exclude domain_disable_page from archive/-
-						'.'												# pathname
+							? "--use-compress-program=$algorithm"              # Compress archive with given program
+							: '',                                              # No compression
+						"--file=$bkpDir/$mainDomainName-backup-$date.tar$ext", # use archive file
+						'--exclude=logs',                                      # exclude logs directory from archive
+						'--exclude=phptmp',                                    # exclude phptmp directory from archive
+						'--exclude=backups',                                   # exclude backup from archive/-
+						'--exclude=domain_disable_page',                       # exclude domain_disable_page from archive/-
+						'.'                                                    # pathname
 					);
 
-					my $rs = execute("@cmd", \$stdout, \$stderr);
+					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 
 					# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
@@ -153,7 +154,7 @@ sub run
 						$ret |= $rs;
 					}
 
-					my $file = iMSCP::File->new( filename => "$bkpDir/$_-backup-$date.tar$ext" );
+					my $file = iMSCP::File->new( filename => "$bkpDir/$mainDomainName-backup-$date.tar$ext" );
 					$rs = $file->mode(0644);
 					$ret ||= $rs;
 
@@ -164,9 +165,7 @@ sub run
 				# Backup all customer databases
 				if ($canDumpDatabases && 'sql' ~~ @allowbackup) {
 					my $dbData = $db->doQuery(
-						'sqld_name',
-						'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?',
-						$rdata->{$_}->{'domain_id'}
+						'sqld_name', 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', $mainDomainId
 					);
 					unless (ref $dbData eq 'HASH') {
 						error($dbData);
@@ -174,15 +173,15 @@ sub run
 						next;
 					}
 
-					for (keys %{$dbData}) {
-						$rs = $db->dumpdb($_, "$bkpDir/$_.sql");
+					for my $dbName(keys %{$dbData}) {
+						$rs = $db->dumpdb($dbName, "$bkpDir/$dbData.sql");
 
 						if($rs) {
 							$ret ||= $rs;
 							next;
 						}
 
-						my $file = iMSCP::File->new( filename => "$bkpDir/$_.sql" );
+						my $file = iMSCP::File->new( filename => "$bkpDir/$dbName.sql" );
 
 						$rs = $file->mode(0644);
 						$ret ||= $rs;
@@ -191,44 +190,48 @@ sub run
 						$ret ||= $rs;
 
 						if($algorithm ne 'no') {
-							my @cmd = ($command->{$algorithm}->{'command'}, '--force', escapeShell("$bkpDir/$_.sql"));
+							my @cmd = (
+								'nice', '-10',                                        # Reduce the CPU priority
+								'ionice', '-c2', '-n7',                               # Reduce the I/O priority
+								$command->{$algorithm}->{'command'}, '--force',
+								escapeShell("$bkpDir/$dbName.sql")
+							);
 							$rs = execute("@cmd", \$stdout, \$stderr);
 							debug($stdout) if $stdout;
 							error($stderr) if $stderr && $rs;
-							error(sprintf('Unable to compress the %s database dump file', $_)) if $rs && ! $stderr;
+							error(sprintf('Unable to compress the %s database dump file', "$dbName.sql")) if $rs && ! $stderr;
 							$ret ||= $rs;
 						}
 					}
 				}
 
-				# Backup all customer mails
+				# Backup all customer maildirs
 				if ('mail' ~~ @allowbackup) {
 					my $mailData = $db->doQuery(
-						'name',
+						'mail_dir',
 						"
 							SELECT
-								t1.domain_name AS name, t1.domain_id AS id, 'dmn' AS type
+								domain_name AS mail_dir, domain_id
 							FROM
-								domain AS t1
+								domain
 							WHERE
-								t1.domain_id = ?
+								domain_id = ?
 							AND
-								t1.domain_status = 'ok'
+								domain_status = 'ok'
 							UNION
 							SELECT
-								CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name, t1.subdomain_id AS id,
-								'sub' AS type
+								CONCAT(subdomain_name, '.', domain_name), subdomain_id
 							FROM
-								subdomain AS t1
+								subdomain
 							INNER JOIN
-								domain AS t2 USING(domain_id)
+								domain USING(domain_id)
 							WHERE
-								t1.domain_id = ?
+								domain_id = ?
 							AND
-								t1.subdomain_status = 'ok'
+								subdomain_status = 'ok'
 							UNION
 							SELECT
-								alias_name AS name, alias_id AS id, 'als' AS type
+								alias_name, alias_id
 							FROM
 								domain_aliasses
 							WHERE
@@ -237,21 +240,20 @@ sub run
 								alias_status = 'ok'
 							UNION
 							SELECT
-								CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name, t1.subdomain_alias_id AS id,
-								'alssub' AS type
+								CONCAT(subdomain_alias_name, '.', alias_name), subdomain_alias_id
 							FROM
-								subdomain_alias AS t1
+								subdomain_alias
 							INNER JOIN
-								domain_aliasses AS t2 USING(alias_id)
+								domain_aliasses USING(alias_id)
 							WHERE
-								t2.domain_id = ?
+								domain_id = ?
 							AND
 								subdomain_alias_status = 'ok'
 						",
-						$rdata->{$_}->{'domain_id'},
-						$rdata->{$_}->{'domain_id'},
-						$rdata->{$_}->{'domain_id'},
-						$rdata->{$_}->{'domain_id'}
+						$mainDomainId,
+						$mainDomainId,
+						$mainDomainId,
+						$mainDomainId
 					);
 					unless (ref $mailData eq 'HASH') {
 						error($mailData);
@@ -259,22 +261,24 @@ sub run
 						next;
 					}
 
-					for (keys %{$mailData}) {
-						my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$_";
+					for my $mailDir(keys %{$mailData}) {
+						my $mailDirPath = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$mailDir";
 
-						if(-d $mailDir) {
+						if(-d $mailDirPath) {
 							my @cmd = (
+								'nice', '-10',                                        # Reduce the CPU priority
+								'ionice', '-c2', '-n7',                               # Reduce the I/O priority
 								'tar',
-								"--create",                                     # Create new archive
-								"--directory=$mailDir",                         # Change to directory
+								"--create",                                           # Create new archive
+								"--directory=$mailDirPath",                           # Change to directory
 								($algorithm ne 'no')
-									? "--use-compress-program=$algorithm"       # Compress archive with given program
-									: '',                                       # No compression
-								"--file=$bkpDir/mail-$_-backup-$date.tar$ext",  # use archive file
-								'.'                                             # pathname
+									? "--use-compress-program=$algorithm"             # Compress archive with given program
+									: '',                                             # No compression
+								"--file=$bkpDir/mail-$mailDir-backup-$date.tar$ext",  # use archive file
+								'.'                                                   # pathname
 							);
 
-							my $rs = execute("@cmd", \$stdout, \$stderr);
+							$rs = execute("@cmd", \$stdout, \$stderr);
 							debug($stdout) if $stdout;
 
 							# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
@@ -284,7 +288,7 @@ sub run
 								$ret |= $rs;
 							}
 
-							my $file = iMSCP::File->new( filename => "$bkpDir/mail-$_-backup-$date.tar$ext" );
+							my $file = iMSCP::File->new( filename => "$bkpDir/mail-$mailDir-backup-$date.tar$ext" );
 							$rs = $file->mode(0644);
 							$ret ||= $rs;
 
@@ -298,17 +302,10 @@ sub run
 	}
 
 	my @warningMessages = getMessageByType('warn');
+	iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
+
 	my @errorMessages = getMessageByType('error');
-
-	if(@warningMessages) {
-		require iMSCP::Mail;
-		iMSCP::Mail->new()->warnMsg("@warningMessages");
-	}
-
-	if(@errorMessages) {
-		require iMSCP::Mail;
-		iMSCP::Mail->new()->errmsg("@errorMessages");
-	}
+	iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
 
 	$ret;
 }

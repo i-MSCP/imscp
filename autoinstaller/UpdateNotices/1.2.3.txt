@@ -5,9 +5,9 @@
 
 \Zb\Z4## Plugins\Zn\ZB
 
-Major changes were made in the plugin API, which break compatibility with old plugins versions. Therefore, before updating to this new version, you must disable all plugins.
+Major changes were made in the plugin API, which break compatibility with old plugins versions. Therefore, before updating to this new version, you must delete all plugins.
 
-Once the update is done, you must update each plugin by uploading the last version available from our plugin store.
+Once the update is done, you must reinstall each plugin by uploading the last version available from our plugin store.
 
 Be aware that some plugins are not yet ready for use with this new version, such as the \ZbMailman\ZB and \ZbOwnDDNS\ZB plugins which require further works.
 

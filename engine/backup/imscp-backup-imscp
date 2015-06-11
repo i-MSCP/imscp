@@ -31,22 +31,6 @@ use iMSCP::Getopt;
 use File::Basename;
 use POSIX qw/strftime/;
 
-newDebug('imscp-backup-imscp.log');
-
-# Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
-
-Script which backup i-MSCP configuration files and database.
-
-OPTIONS:
- -v,    --verbose       Enable verbose mode.},
- 'verbose|v' => sub { setVerbose(@_); }
-);
-
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock('/tmp/imscp-backup-imscp.lock', 'nowait');
-$bootstrapper->boot({ norequirements => 'yes', nofail => 'yes', nolock => 'yes', config_readonly => 'yes' });
-
 our $command = {
 	pbzip2 => { extension => 'bz2', command => 'pbzip2' },
 	bzip2 => { extension => 'bz2', command => 'bzip2' },
@@ -102,13 +86,9 @@ sub run
 	0;
 }
 
-# Private functions
-
 sub _backupDatabase
 {
 	my $db = iMSCP::Database->factory();
-
-	# TODO check if database exists
 
 	if($db->can('dumpdb')) {
 		my $date = strftime "%Y.%m.%d-%H-%M", localtime;
@@ -121,8 +101,15 @@ sub _backupDatabase
 		my $algorithm = lc($main::imscpConfig{'ZIP'});
 
 		if($algorithm ne 'no') {
+			my @cmd = (
+				'nice', '-10',
+				'ionice', '-c2', '-n7',
+				$command->{$algorithm}->{'command'}, '--force',
+				escapeShell($sqlFName)
+			);
+
 			my ($stdout, $stderr);
-			$rs = execute("$command->{$algorithm}->{'command'} --force " . escapeShell($sqlFName), \$stdout, \$stderr);
+			$rs = execute("@cmd", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
 				error($stderr) if $stderr;
@@ -146,6 +133,8 @@ sub _backupConfig
 	}
 
 	my @backupCommand = (
+		'nice', '-10',
+		'ionice', '-c2', '-n7',
 		'tar',
 		'--create',															# Create new archive
 		"--directory=$main::imscpConfig{'CONF_DIR'}",						# Change to directory
@@ -167,6 +156,22 @@ sub _backupConfig
 
 	0;
 }
+
+newDebug('imscp-backup-imscp.log');
+
+# Parse command line options
+iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+
+Script which backup i-MSCP configuration files and database.
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+ 'verbose|v' => sub { setVerbose(@_); }
+);
+
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+exit unless $bootstrapper->lock('/tmp/imscp-backup-imscp.lock', 'nowait');
+$bootstrapper->boot({ norequirements => 'yes', nofail => 'yes', nolock => 'yes', config_readonly => 'yes' });
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-backup-imscp.lock');

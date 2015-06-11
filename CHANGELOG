@@ -5,6 +5,7 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+	Fixed: Both CPU and I/O priorities must be reduced to mitigate high load and latencys (backup scripts)
 	Fixed: Depending on the context, some service providers are not initialized
 	Fixed: Removed warning for inexistent mail directories (backup script)
 	Fixed: Services are started instead of being reloaded when already running (iMSCP::Provider::Service::Upstart)
