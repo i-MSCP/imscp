@@ -288,6 +288,8 @@ sub dumpdb
 	my $rootHomeDir = File::HomeDir->users_home($main::imscpConfig{'ROOT_USER'});
 
 	my @cmd = (
+		'nice', '-10',
+		'ionice', '-c2', '-n7',
 		'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
 		'--default-character-set=utf8', '--quote-names', "--result-file=$filename", $dbName
 	);
