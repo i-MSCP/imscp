@@ -290,8 +290,6 @@ sub run
 
 							$rs = $file->owner($userName, $groupName);
 							$ret ||= $rs;
-						} else {
-							warning(sprintf"The %s mail directory doesn't exist. Skipping backup...", $mailDir);
 						}
 					}
 				}
@@ -299,7 +297,13 @@ sub run
 		}
 	}
 
-	my @errorMessages = (getMessageByType('warn'), getMessageByType('error'));
+	my @warningMessages = getMessageByType('warn');
+	my @errorMessages = getMessageByType('error');
+
+	if(@warningMessages) {
+		require iMSCP::Mail;
+		iMSCP::Mail->new()->warnMsg("@warningMessages");
+	}
 
 	if(@errorMessages) {
 		require iMSCP::Mail;
