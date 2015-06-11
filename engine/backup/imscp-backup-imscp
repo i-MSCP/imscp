@@ -103,7 +103,7 @@ sub _backupDatabase
 		if($algorithm ne 'no') {
 			my @cmd = (
 				'nice', '-10',
-				'ionice', '-c2', '-n7',
+				'ionice', '-c2', '-n5',
 				$command->{$algorithm}->{'command'}, '--force',
 				escapeShell($sqlFName)
 			);

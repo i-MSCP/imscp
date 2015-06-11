@@ -289,7 +289,7 @@ sub dumpdb
 
 	my @cmd = (
 		'nice', '-10',
-		'ionice', '-c2', '-n7',
+		'ionice', '-c2', '-n5',
 		'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
 		'--default-character-set=utf8', '--quote-names', "--result-file=$filename", $dbName
 	);
