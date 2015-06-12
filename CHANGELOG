@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.2.x
+1.2.4
 ------------------------------------------------------------------------------------------------------------------------
+
+2015-06-12: Laurent Declercq
+	RELEASE i-MSCP 1.2.4
 
 BACKEND
 	Fixed: Both CPU and I/O priorities must be reduced to mitigate high load and latencys (backup scripts)
