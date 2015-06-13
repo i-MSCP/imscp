@@ -4,6 +4,10 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+	Fixed: Bad SQL query which leads to orphaned entries in the admin table, and which is cause of several side effects
+		such as many bad request errors (e.g: when editing a reseller, or when accessing its statistics...)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.2.4
 ------------------------------------------------------------------------------------------------------------------------

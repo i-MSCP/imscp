@@ -467,7 +467,7 @@ sub run
 			FROM
 				admin
 			LEFT JOIN
-				domain ON(domain_id = admin_id)
+				domain ON(domain_admin_id = admin_id)
 			WHERE
 				admin_type = 'user'
 			AND
@@ -530,7 +530,7 @@ sub run
 					domain_id ASC
 			"
 		);
-		unless(ref $rdata eq 'HASH'){
+		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			$rs = 1;
 		} else {
