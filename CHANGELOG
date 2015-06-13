@@ -7,6 +7,7 @@ Git 1.2.x
 BACKEND
 	Fixed: Bad SQL query which leads to orphaned entries in the admin table, and which is cause of several side effects
 		such as many bad request errors (e.g: when editing a reseller, or when accessing its statistics...)
+	Fixed: Usage of portable syntax over Bash 4 syntax (I/O Redirection)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.4

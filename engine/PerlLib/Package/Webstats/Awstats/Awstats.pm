@@ -511,11 +511,11 @@ sub _addAwstatsCronTask
 			DWEEK => '*',
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND =>
-				'perl ' .
+				'nice -n 15 ionice -c2 -n5 perl ' .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl " .
 				"-config=$data->{'DOMAIN_NAME'} -update " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl " .
-				"-dir=$data->{'HOME_DIR'}/statistics >/dev/null 2>&1"
+				"-dir=$data->{'HOME_DIR'}/statistics > /dev/null 2>&1"
 		}
 	);
 }

@@ -128,7 +128,7 @@ sub run
 				# Backup customers webspace
 				if ('dmn' ~~ @allowbackup) {
 					my @cmd = (
-						'nice', '-10',                                         # Reduce the CPU priority
+						'nice', '-n', '15',                                    # Reduce the CPU priority
 						'ionice', '-c2', '-n5',                                # Reduce the I/O priority
 						'tar',
 						"--create",                                            # Create new archive
@@ -191,7 +191,7 @@ sub run
 
 						if($algorithm ne 'no') {
 							my @cmd = (
-								'nice', '-10',                                  # Reduce the CPU priority
+								'nice', '-n', '15',                             # Reduce the CPU priority
 								'ionice', '-c2', '-n5',                         # Reduce the I/O priority
 								$command->{$algorithm}->{'command'}, '--force',
 								escapeShell("$bkpDir/$dbName.sql")
@@ -266,7 +266,7 @@ sub run
 
 						if(-d $mailDirPath) {
 							my @cmd = (
-								'nice', '-10',                                        # Reduce the CPU priority
+								'nice', '-n', '15',                                   # Reduce the CPU priority
 								'ionice', '-c2', '-n5',                               # Reduce the I/O priority
 								'tar',
 								"--create",                                           # Create new archive

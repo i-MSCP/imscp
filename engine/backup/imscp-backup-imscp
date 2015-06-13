@@ -102,8 +102,8 @@ sub _backupDatabase
 
 		if($algorithm ne 'no') {
 			my @cmd = (
-				'nice', '-10',
-				'ionice', '-c2', '-n5',
+				'nice', '-n', '15',     # Reduce the CPU priority
+				'ionice', '-c2', '-n5', # Reduce the I/O priority
 				$command->{$algorithm}->{'command'}, '--force',
 				escapeShell($sqlFName)
 			);
@@ -133,8 +133,8 @@ sub _backupConfig
 	}
 
 	my @backupCommand = (
-		'nice', '-10',
-		'ionice', '-c2', '-n5',
+		'nice', '-n', '15',                                                # Reduce the CPU priority
+		'ionice', '-c2', '-n5',                                            # Reduce the I/O priority
 		'tar',
 		'--create',                                                        # Create new archive
 		"--directory=$main::imscpConfig{'CONF_DIR'}",                      # Change to directory

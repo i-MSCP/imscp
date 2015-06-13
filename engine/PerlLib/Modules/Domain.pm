@@ -222,8 +222,8 @@ sub restore
 				}
 
 				my @cmd = (
-					'nice', '-10',
-					'ionice', '-c2', '-n5',
+					'nice', '-n', '15',     # Reduce the CPU priority
+					'ionice', '-c2', '-n5', # Reduce the I/O priority
 					$cmd,
 					escapeShell("$bkpDir/$_"), '|', 'mysql',
 					'-h', escapeShell($main::imscpConfig{'DATABASE_HOST'}),
@@ -307,10 +307,10 @@ sub restore
 
 				my $cmd;
 				if($archType ne '') {
-					$cmd = "nice -10 ionice -c2 -n5 tar -x -p --$archType -C " . escapeShell($dmnDir) . ' -f ' .
+					$cmd = "nice -n 12 ionice -c2 -n5 tar -x -p --$archType -C " . escapeShell($dmnDir) . ' -f ' .
 						escapeShell("$bkpDir/$bkpFile");
 				} else {
-					$cmd = 'nice -10 ionice -c2 -n5 tar -x -p -C ' . escapeShell($dmnDir) . ' -f ' .
+					$cmd = 'nice -n 12 ionice -c2 -n5 tar -x -p -C ' . escapeShell($dmnDir) . ' -f ' .
 						escapeShell("$bkpDir/$bkpFile");
 				}
 
