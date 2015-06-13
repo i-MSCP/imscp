@@ -146,7 +146,7 @@ Password: {PASSWORD}
 
 Remember to change your password often and the first time you login.
 
-You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}
+You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}
 
 Statistics: http://{USERNAME}/stats/ (Same username and password than above)
 
@@ -167,7 +167,7 @@ Password: {PASSWORD}
 
 Remember to change your password often and the first time you login.
 
-You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}
+You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}
 
 Thank you for using our services.
 ');
@@ -263,7 +263,7 @@ Hello {NAME},
 Your user name is: {USERNAME}
 Your password is: {PASSWORD}
 
-You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}
+You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}
 
 Thank you for using our services.
 
@@ -314,7 +314,7 @@ Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:
 
 {ALIAS}
 
-Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_PORT}/reseller/alias.php
+Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php
 
 Thank you for using our services.
 

@@ -12,10 +12,13 @@ BACKEND
 
 FRONTEND
 	Fixed: ID mismatch when the created_by field of a reseller is unknown (edit and delete links)
-
+	Fixed: Don't add the default ports (80/443) in notifications when not needed (e.g: when using PanelRedirect plugin)
 i18N
 	Removed: Untranslated languages - Breton (br), Czech (cz), Galician (gl), Georgian (ka), Hebrew (he_IL),
 		Icelandic (is_IS), Serbian (sr) and Spanish (es)
+
+YOUTRACK
+	Fixed: #IP-1357: Built in Support Ticket shows wrong URL (missing Control Panel Port)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.4

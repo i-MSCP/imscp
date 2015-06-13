@@ -2156,31 +2156,33 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 	}
 
 	$baseServerVhostPrefix = $cfg['BASE_SERVER_VHOST_PREFIX'];
+	$port = ($baseServerVhostPrefix == 'http://')
+		? (($cfg['BASE_SERVER_VHOST_HTTP_PORT'] == '80') ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTP_PORT'])
+		: (($cfg['BASE_SERVER_VHOST_HTTPS_PORT'] == '443') ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTPS_PORT']);
 
 	$search = array();
 	$replace = array();
 
-	$search [] = '{USERNAME}';
+	$search[] = '{USERNAME}';
 	$replace[] = decode_idna($uname);
 
-	$search [] = '{USERTYPE}';
+	$search[] = '{USERTYPE}';
 	$replace[] = $utype;
 
-	$search [] = '{NAME}';
+	$search[] = '{NAME}';
 	$replace[] = decode_idna($name);
 
-	$search [] = '{PASSWORD}';
+	$search[] = '{PASSWORD}';
 	$replace[] = $upass;
 
-	$search [] = '{BASE_SERVER_VHOST}';
+	$search[] = '{BASE_SERVER_VHOST}';
 	$replace[] = $cfg['BASE_SERVER_VHOST'];
 
-	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
+	$search[] = '{BASE_SERVER_VHOST_PREFIX}';
 	$replace[] = $baseServerVhostPrefix;
 
-	$search [] = '{BASE_SERVER_VHOST_PORT}';
-	$replace[] = ($baseServerVhostPrefix == 'http://')
-		? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'] ;
+	$search[] = '{BASE_SERVER_VHOST_PORT}';
+	$replace[] = $port;
 
 	$data['subject'] = str_replace($search, $replace, $data['subject']);
 	$message = str_replace($search, $replace, $data['message']);

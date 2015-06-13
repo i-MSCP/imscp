@@ -249,7 +249,8 @@ function sendPassword($uniqueKey)
 		$baseServerVhostPrefix = $cfg['BASE_SERVER_VHOST_PREFIX'];
 		$baseServerVhost = $cfg['BASE_SERVER_VHOST'];
 		$baseServerVhostPort = ($baseServerVhostPrefix == 'http://')
-			? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'];
+			? (($cfg['BASE_SERVER_VHOST_HTTP_PORT'] == '80') ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTP_PORT'])
+			: (($cfg['BASE_SERVER_VHOST_HTTPS_PORT'] == '443') ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTPS_PORT']);
 
 		if($fromName) {
 			$from = '"' . $fromName . '" <' . $fromEmail . '>';
@@ -260,22 +261,22 @@ function sendPassword($uniqueKey)
 		$search = array();
 		$replace = array();
 
-		$search [] = '{USERNAME}';
+		$search[] = '{USERNAME}';
 		$replace[] = $adminName;
 
-		$search [] = '{NAME}';
+		$search[] = '{NAME}';
 		$replace[] = $adminFirstName . " " . $adminLastName;
 
-		$search [] = '{PASSWORD}';
+		$search[] = '{PASSWORD}';
 		$replace[] = $userPassword;
 
-		$search [] = '{BASE_SERVER_VHOST_PREFIX}';
+		$search[] = '{BASE_SERVER_VHOST_PREFIX}';
 		$replace[] = $baseServerVhostPrefix;
 
-		$search [] = '{BASE_SERVER_VHOST}';
+		$search[] = '{BASE_SERVER_VHOST}';
 		$replace[] = $baseServerVhost;
 
-		$search [] = '{BASE_SERVER_VHOST_PORT}';
+		$search[] = '{BASE_SERVER_VHOST_PORT}';
 		$replace[] = $baseServerVhostPort;
 
 		$subject = str_replace($search, $replace, $subject);

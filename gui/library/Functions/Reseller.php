@@ -604,19 +604,26 @@ function send_alias_order_email($aliasName)
 		$from = $userEmail;
 	}
 
+	$baseServerVhostPrefix = $cfg['BASE_SERVER_VHOST_PREFIX'];
+	$port = ($baseServerVhostPrefix == 'http://')
+		? (($cfg['BASE_SERVER_VHOST_HTTP_PORT'] == '80') ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTP_PORT'])
+		: (($cfg['BASE_SERVER_VHOST_HTTPS_PORT'] == '443') ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTPS_PORT']);
+
 	$search = array();
 	$replace = array();
 
 	$search [] = '{RESELLER}';
 	$replace[] = $toName;
-	$search [] = '{CUSTOMER}';
+	$search[] = '{CUSTOMER}';
 	$replace[] = $fromName;
-	$search [] = '{ALIAS}';
+	$search[] = '{ALIAS}';
 	$replace[] = $aliasName;
-	$search [] = '{BASE_SERVER_VHOST}';
+	$search[] = '{BASE_SERVER_VHOST_PREFIX}';
+	$replace[] = $baseServerVhostPrefix;
+	$search[] = '{BASE_SERVER_VHOST}';
 	$replace[] = $cfg->BASE_SERVER_VHOST;
-	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
-	$replace[] = $cfg->BASE_SERVER_VHOST_PREFIX;
+	$search[] = '{BASE_SERVER_VHOST_PORT}';
+	$replace[] = $port;
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
