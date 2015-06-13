@@ -13,6 +13,10 @@ BACKEND
 FRONTEND
 	Fixed: ID mismatch when the created_by field of a reseller is unknown (edit and delete links)
 
+i18N
+	Removed: Untranslated languages - Breton (br), Czech (cz), Galician (gl), Georgian (ka), Hebrew (he_IL),
+		Icelandic (is_IS), Serbian (sr) and Spanish (es)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.2.4
 ------------------------------------------------------------------------------------------------------------------------
