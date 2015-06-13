@@ -504,23 +504,19 @@ function gen_admin_list($tpl)
 	);
 
 	if(!$stmt->rowCount()) {
-		$tpl->assign(
-			array(
-				'ADMIN_MESSAGE' => tr('No administrator accounts found.'),
-				'ADMIN_LIST' => ''
-			)
-		);
+		$tpl->assign(array(
+			'ADMIN_MESSAGE' => tr('No administrator accounts found.'),
+			'ADMIN_LIST' => ''
+		));
 
 		$tpl->parse('ADMIN_MESSAGE', 'admin_message');
 	} else {
-		$tpl->assign(
-			array(
-				'TR_ADMIN_USERNAME' => tr('Username'),
-				'TR_ADMIN_CREATED_ON' => tr('Creation date'),
-				'TR_ADMIN_CREATED_BY' => tr('Created by'),
-				'TR_ADMIN_ACTIONS' => tr('Actions')
-			)
-		);
+		$tpl->assign(array(
+			'TR_ADMIN_USERNAME' => tr('Username'),
+			'TR_ADMIN_CREATED_ON' => tr('Creation date'),
+			'TR_ADMIN_CREATED_BY' => tr('Created by'),
+			'TR_ADMIN_ACTIONS' => tr('Actions')
+		));
 
 		while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			$adminCreated = $row['domain_created'];
@@ -532,31 +528,25 @@ function gen_admin_list($tpl)
 				$adminCreated = date($dateFormat, $adminCreated);
 			}
 
-			if($row['created_by'] == '' || $row['admin_id'] == $_SESSION['user_id']) {
-
+			if(empty($row['created_by']) || $row['admin_id'] == $_SESSION['user_id']) {
 				$tpl->assign('ADMIN_DELETE_LINK', '');
-				$tpl->parse('ADMIN_DELETE_SHOW', 'admin_delete_show');
 			} else {
-				$tpl->assign(
-					array(
-						'ADMIN_DELETE_SHOW' => '',
-						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE_ADMIN' => 'user_delete.php?delete_id=' . $row['admin_id'],
-						'ADMIN_USERNAME' => tohtml($row['admin_name'])
-					)
-				);
+				$tpl->assign(array(
+					'ADMIN_DELETE_SHOW' => '',
+					'TR_DELETE' => tr('Delete'),
+					'URL_DELETE_ADMIN' => 'user_delete.php?delete_id=' . $row['admin_id'],
+					'ADMIN_USERNAME' => tohtml($row['admin_name'])
+				));
 
 				$tpl->parse('ADMIN_DELETE_LINK', 'admin_delete_link');
 			}
 
-			$tpl->assign(
-				array(
-					'ADMIN_USERNAME' => tohtml($row['admin_name']),
-					'ADMIN_CREATED_ON' => tohtml($adminCreated),
-					'ADMIN_CREATED_BY' => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('System'),
-					'URL_EDIT_ADMIN' => 'admin_edit.php?edit_id=' . $row['admin_id']
-				)
-			);
+			$tpl->assign(array(
+				'ADMIN_USERNAME' => tohtml($row['admin_name']),
+				'ADMIN_CREATED_ON' => tohtml($adminCreated),
+				'ADMIN_CREATED_BY' => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('System'),
+				'URL_EDIT_ADMIN' => 'admin_edit.php?edit_id=' . $row['admin_id']
+			));
 
 			$tpl->parse('ADMIN_ITEM', '.admin_item');
 		}
@@ -593,47 +583,27 @@ function gen_reseller_list($tpl)
 	);
 
 	if(!$stmt->rowCount()) {
-		$tpl->assign(
-			array(
-				'RSL_MESSAGE' => tr('No reseller accounts found.'),
-				'RSL_LIST' => ''
-			)
-		);
+		$tpl->assign(array(
+			'RSL_MESSAGE' => tr('No reseller accounts found.'),
+			'RSL_LIST' => ''
+		));
 
 		$tpl->parse('RSL_MESSAGE', 'rsl_message');
 	} else {
-		$tpl->assign(
-			array(
-				'TR_RSL_USERNAME' => tr('Username'),
-				'TR_RSL_CREATED_BY' => tr('Created by'),
-				'TR_RSL_ACTIONS' => tr('Actions')
-			)
-		);
+		$tpl->assign(array(
+			'TR_RSL_USERNAME' => tr('Username'),
+			'TR_RSL_CREATED_BY' => tr('Created by'),
+			'TR_RSL_ACTIONS' => tr('Actions')
+		));
 
 		while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			if($row['created_by'] == '') {
-				$tpl->assign(
-					array(
-						'TR_DELETE' => tr('Delete'),
-						'RSL_DELETE_LINK' => ''
-					)
-				);
-
-				$tpl->parse('RSL_DELETE_SHOW', 'rsl_delete_show');
-			} else {
-				$tpl->assign(
-					array(
-						'RSL_DELETE_SHOW' => '',
-						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE_RSL' => 'user_delete.php?delete_id=' . $row['admin_id'],
-						'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
-						'GO_TO_USER_INTERFACE' => tr('Switch'),
-						'URL_CHANGE_INTERFACE' => 'change_user_interface.php?to_id=' . $row['admin_id']
-					)
-				);
-
-				$tpl->parse('RSL_DELETE_LINK', 'rsl_delete_link');
-			}
+			$tpl->assign(array(
+				'TR_DELETE' => tr('Delete'),
+				'URL_DELETE_RSL' => 'user_delete.php?delete_id=' . $row['admin_id'],
+				'TR_CHANGE_USER_INTERFACE' => tohtml(tr('Switch to user interface'), 'htmlAttr'),
+				'GO_TO_USER_INTERFACE' => tr('Switch'),
+				'URL_CHANGE_INTERFACE' => 'change_user_interface.php?to_id=' . $row['admin_id']
+			));
 
 			$resellerCreated = $row['domain_created'];
 
@@ -644,14 +614,12 @@ function gen_reseller_list($tpl)
 				$resellerCreated = date($date_formt, $resellerCreated);
 			}
 
-			$tpl->assign(
-				array(
-					'RSL_USERNAME' => tohtml($row['admin_name']),
-					'RESELLER_CREATED_ON' => tohtml($resellerCreated),
-					'RSL_CREATED_BY' => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('Unknown'),
-					'URL_EDIT_RSL' => 'reseller_edit.php?edit_id=' . $row['admin_id']
-				)
-			);
+			$tpl->assign(array(
+				'RSL_USERNAME' => tohtml($row['admin_name']),
+				'RESELLER_CREATED_ON' => tohtml($resellerCreated),
+				'RSL_CREATED_BY' => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('Unknown'),
+				'URL_EDIT_RSL' => 'reseller_edit.php?edit_id=' . $row['admin_id']
+			));
 
 			$tpl->parse('RSL_ITEM', '.rsl_item');
 		}
