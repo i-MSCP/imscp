@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.2.x
+1.2.5
 ------------------------------------------------------------------------------------------------------------------------
+
+2015-06-14: Laurent Declercq
+	RELEASE i-MSCP 1.2.5
 
 BACKEND
 	Fixed: Bad SQL query which leads to orphaned entries in the admin table, and which is the cause of several side
