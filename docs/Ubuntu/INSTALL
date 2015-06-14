@@ -20,10 +20,10 @@ Distros:         Any LTS version >= Precise Pangolin ( 12.04 )
 ---------------
 
  - 1 GHz or faster 32-bit (x86) or 64-bit (x64) processor
- - 1024 MiB RAM minimum - For heavily loaded servers or high flow is recommended at least 8 GiB
- - 2 GiB of available hard disk space (only for i-MSCP and related services)
- - Internet Access (100 Mbits/s recommended)
- - A file system supporting extended attributes (eg. immutable flag) such as ext2, ext3, ext4 and reiserfs*.
+ - 512 MO memory (minimum) - For heavily loaded servers or high flow is recommended at least 8 GB
+ - 1 GB of available hard disk space (only for i-MSCP and related services)
+ - Internet access (at least 100 Mbits/s recommended)
+ - A file system supporting extended attributes such as ext2, ext3, ext4 and reiserfs*.
 
 * See http://wiki.i-mscp.net/doku.php?id=start:howto:reiserfs
 
@@ -55,34 +55,36 @@ All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
 
 	# perl imscp-autoinstall -d
 
-6. Install i-MSCP step-by-step
+6. Resolve errors
 
-	If you get no error, all went good; if you get one, look at http://i-mscp.net to solve the problem.
+	If you get any error, you can look at http://www.i-mscp.net
 
 4) Update
 ----------
 
-1. Make sure that your system is up-to-date
+1. Enable maintenance mode in control panel interface (admin/settings_maintenance_mode.php)
+
+2. Make sure that your system is up-to-date
 
 	# apt-get update && apt-get dist-upgrade
 
-2. Download and untar the distribution files to a secure directory
+3. Download and untar the distribution files to a secure directory
 
 	# cd /usr/local/src
 	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
 	# tar xzf imscp-<version>.tar.gz
 
-3. Change to the newly created directory
+4. Change to the newly created directory
 
 	# cd ./imscp-<version>
 
-4. Update by running the imscp-autoinstall script
+5. Update by running the imscp-autoinstall script
 
 	# perl imscp-autoinstall -d
 
-5. Update i-MSCP step-by-step
+6. Resolve errors
 
-	If you get no error, all went good; if you get one, look at http://i-mscp.net to solve the problem.
+	If you get any error, you can look at http://www.i-mscp.net
 
 5) Uninstall
 ------------
