@@ -10,6 +10,9 @@ BACKEND
 	Fixed: Usage of portable syntax over Bash 4 syntax (I/O Redirection)
 	Fixed: Wrong syntax for the nice command (at several places)
 
+DATABASE
+	Fixed: Do not try to remove inexistent indexes +++
+
 FRONTEND
 	Fixed: Don't add the default ports (80/443) in notifications when not needed (e.g: when using PanelRedirect plugin)
 	Fixed: ID mismatch when the created_by field of a reseller is unknown (edit and delete links)

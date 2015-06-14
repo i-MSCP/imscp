@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 207;
+	protected $lastUpdate = 209;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -813,9 +813,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				"logo VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
 			),
 			$this->changeColumn(
-				'user_gui_props',
-				'lang',
-				'lang VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+				'user_gui_props', 'lang', 'lang VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
 			),
 			"UPDATE user_gui_props SET logo = '' WHERE logo = '0'"
 		);
@@ -985,9 +983,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		return array(
 			// Reseller permissions columns for PHP directives
 			$this->addColumn(
-				'reseller_props',
-				'php_ini_system',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER websoftwaredepot_allowed"
+				'reseller_props', 'php_ini_system', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER websoftwaredepot_allowed"
 			),
 			$this->addColumn(
 				'reseller_props',
@@ -1039,9 +1035,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 			// Domain permissions columns for PHP directives
 			$this->addColumn(
-				'domain',
-				'phpini_perm_system',
-				"VARCHAR(15) NOT NULL DEFAULT 'no' AFTER domain_software_allowed"
+				'domain', 'phpini_perm_system', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER domain_software_allowed"
 			),
 			$this->addColumn(
 				'domain',
@@ -1489,20 +1483,16 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r112()
 	{
 		return array(
-			"
-				ALTER TABLE
-					quotalimits
-				CHANGE
-					name name
-				VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
-			",
-			"
-				ALTER TABLE
-					quotatallies
-				CHANGE
-					name name
-				VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
-			"
+			$this->changeColumn(
+				'quotalimits',
+				'name',
+				"name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
+			),
+			$this->changeColumn(
+				'quotatallies',
+				'name',
+				"name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
+			)
 		);
 	}
 
@@ -1748,7 +1738,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$this->dropTable('roundcube_cache_messages'),
 			$this->dropTable('roundcube_cache_index'),
 			$this->dropTable('roundcube_cache'),
-			$this->dropTable('roundcube_users'),
+			$this->dropTable('roundcube_users')
 		);
 	}
 
@@ -2056,12 +2046,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r137()
 	{
-		return '
-			ALTER TABLE
-				plugin
-			CHANGE
-				plugin_status plugin_status TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
-		';
+		return $this->changeColumn(
+			'plugin', 'plugin_status', 'plugin_status TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL'
+		);
 	}
 
 	/**
@@ -2220,12 +2207,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r144()
 	{
-		return "
-			ALTER TABLE
-				sql_user
-			CHANGE
-				sqlu_name sqlu_name VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'n/a'
-		";
+		return $this->changeColumn(
+			'sql_user',
+			'sqlu_name',
+			"sqlu_name VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'n/a'"
+		);
 	}
 
 	/**
@@ -2304,12 +2290,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r150()
 	{
-		return '
-			ALTER TABLE
-				domain_dns
-			CHANGE
-				domain_text domain_text VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-		';
+		return $this->changeColumn(
+			'domain_dns', 'domain_text', "domain_text VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL"
+		);
 	}
 
 	/**
@@ -2349,12 +2332,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r152()
 	{
-		return '
-			ALTER TABLE
-				domain_dns
-			CHANGE
-				domain_dns domain_dns VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-		';
+		return $this->changeColumn(
+			'domain_dns', 'domain_dns', 'domain_dns VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL'
+		);
 	}
 
 	/**
@@ -2412,17 +2392,17 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		$stmt = execute_query(
 			"
-			SELECT
-				t1.id, t1.reseller_id, t1.props,
-				IFNULL(t2.php_ini_max_post_max_size, '99999999') AS post_max_size,
-				IFNULL(t2.php_ini_max_upload_max_filesize, '99999999') AS upload_max_filesize,
-				IFNULL(t2.php_ini_max_max_execution_time, '99999999') AS max_execution_time,
-				IFNULL(t2.php_ini_max_max_input_time, '99999999') AS max_input_time,
-				IFNULL(t2.php_ini_max_memory_limit, '99999999') AS memory_limit
-			FROM
-				hosting_plans AS t1
-			LEFT JOIN
-				reseller_props AS t2 ON(t2.reseller_id = t1.reseller_id)
+				SELECT
+					t1.id, t1.reseller_id, t1.props,
+					IFNULL(t2.php_ini_max_post_max_size, '99999999') AS post_max_size,
+					IFNULL(t2.php_ini_max_upload_max_filesize, '99999999') AS upload_max_filesize,
+					IFNULL(t2.php_ini_max_max_execution_time, '99999999') AS max_execution_time,
+					IFNULL(t2.php_ini_max_max_input_time, '99999999') AS max_input_time,
+					IFNULL(t2.php_ini_max_memory_limit, '99999999') AS memory_limit
+				FROM
+					hosting_plans AS t1
+				LEFT JOIN
+					reseller_props AS t2 ON(t2.reseller_id = t1.reseller_id)
 			"
 		);
 
@@ -2490,7 +2470,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r159()
 	{
-		return "ALTER TABLE mail_users CHANGE quota quota BIGINT(20) UNSIGNED NULL DEFAULT NULL";
+		return $this->changeColumn('mail_users', 'quota', 'quota BIGINT(20) UNSIGNED NULL DEFAULT NULL');
 	}
 
 	/**
@@ -3253,12 +3233,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
+	 * Remove index on server_traffic.traff_time column if any
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r208()
+	{
+		return $this->dropIndexByName('server_traffic', 'traff_time');
+	}
+
+	/**
 	 * Add unique constraint on server_traffic.traff_time column to avoid duplicate time periods
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function r207()
+	protected function r209()
 	{
-		return 'ALTER IGNORE TABLE server_traffic DROP INDEX traff_time, ADD UNIQUE traff_time (traff_time)';
+		return $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time');
 	}
 }
