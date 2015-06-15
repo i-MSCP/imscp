@@ -244,7 +244,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @throws iMSCP_Exception_Database
 	 * @param string $table Table name
 	 * @param string|array $columns Column(s)
-	 * @çeturn void
+	 * @return void
 	 */
 	function removeDuplicateRowsOnColumns($table, $columns)
 	{
