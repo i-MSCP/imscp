@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 209;
+	protected $lastUpdate = 210;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -239,6 +239,35 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
+	 * Remove any duplicate rows in the given table for the given column(s)
+	 *
+	 * @throws iMSCP_Exception_Database
+	 * @param string $table Table name
+	 * @param string|array $columns Column(s)
+	 * @çeturn void
+	 */
+	function removeDuplicateRowsOnColumns($table, $columns)
+	{
+		$tmpTable = quoteIdentifier($table . '_tmp_no_dup');
+		$table = quoteIdentifier($table);
+
+		if(is_array($columns)) {
+			$columns = implode(',', array_map('quoteIdentifier', $columns));
+		} else {
+			$columns = quoteIdentifier($columns);
+		}
+
+		$stmt = exec_query(
+			"
+				CREATE TABLE $tmpTable AS SELECT * FROM $table GROUP BY $columns;
+				DELETE FROM $table;
+				INSERT INTO $table SELECT * FROM $tmpTable;
+				DROP TABLE $tmpTable;
+			"
+		);
+	}
+
+	/**
 	 * Rename table
 	 *
 	 * @param string $table Table name
@@ -250,7 +279,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = exec_query('SHOW TABLES LIKE ?', $table);
 
 		if ($stmt->rowCount()) {
-			return sprintf('ALTER IGNORE TABLE %s RENAME TO %s', $table, quoteIdentifier($newTableName));
+			return sprintf('ALTER TABLE %s RENAME TO %s', $table, quoteIdentifier($newTableName));
 		}
 
 		return null;
@@ -280,7 +309,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
 
 		if (!$stmt->rowCount()) {
-			return sprintf('ALTER IGNORE TABLE %s ADD %s %s', $table, quoteIdentifier($column), $columnDefinition);
+			return sprintf('ALTER TABLE %s ADD %s %s', $table, quoteIdentifier($column), $columnDefinition);
 		}
 
 		return null;
@@ -300,7 +329,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
 
 		if ($stmt->rowCount()) {
-			return sprintf('ALTER IGNORE TABLE %s CHANGE %s %s', $table, quoteIdentifier($column), $columnDefinition);
+			return sprintf('ALTER TABLE %s CHANGE %s %s', $table, quoteIdentifier($column), $columnDefinition);
 		}
 
 		return null;
@@ -319,7 +348,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
 
 		if ($stmt->rowCount()) {
-			return sprintf('ALTER IGNORE TABLE %s DROP %s', $table, quoteIdentifier($column));
+			return sprintf('ALTER TABLE %s DROP %s', $table, quoteIdentifier($column));
 		}
 
 		return null;
@@ -327,6 +356,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 	/**
 	 * Add index
+	 *
+	 * Be aware that no check is made for duplicate rows. Thus, if you want to add an UNIQUE contraint, you must make
+	 * sure to remove duplicate rows first. We don't make usage of the IGNORE clause for the following reasons:
+	 *
+	 * - The IGNORE clause is no standard and do not work with Fast Index Creation (MySQL #Bug #40344)
+	 * - The IGNORE clause will be removed in MySQL 5.7
 	 *
 	 * @param string $table Database table name
 	 * @param array|string $columns Column name(s)
@@ -340,8 +375,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$indexType = strtoupper($indexType);
 
 		$indexName = ($indexType == 'PRIMARY KEY')
-			? 'PRIMARY'
-			: (($indexName == '') ? ((is_array($columns)) ? $columns[0] : $columns) : $indexName);
+			? 'PRIMARY' : (($indexName == '') ? ((is_array($columns)) ? $columns[0] : $columns) : $indexName);
 
 		$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
 
@@ -352,13 +386,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 				$columns = quoteIdentifier($columns);
 			}
 
-			return sprintf(
-				'ALTER IGNORE TABLE %s ADD %s %s (%s)',
-				$table,
-				$indexType,
-				($indexName == 'PRIMARY') ? '' : quoteIdentifier($indexName),
-				$columns
-			);
+			$indexName = ($indexName == 'PRIMARY') ? '' : quoteIdentifier($indexName);
+
+			return sprintf('ALTER TABLE %s ADD %s %s (%s)', $table,  $indexType, $indexName, $columns);
 		}
 
 		return null;
@@ -366,6 +396,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 	/**
 	 * Drop any index which belong to the given column in the given table
+	 *
+	 * Be aware that no check is made for duplicate rows. Thus, if by remove an index, this can result to du
 	 *
 	 * @param string $table Table name
 	 * @param string $column Column name
@@ -381,10 +413,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$row = array_change_key_case($row, CASE_UPPER);
-
-				$sqlUpd[] = sprintf(
-					'ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($row['KEY_NAME'])
-				);
+				$sqlUpd[] = sprintf('ALTER TABLE %s DROP INDEX %s', $table, quoteIdentifier($row['KEY_NAME']));
 			}
 		}
 
@@ -404,7 +433,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
 
 		if ($stmt->rowCount()) {
-			return sprintf('ALTER IGNORE TABLE %s DROP INDEX %s', $table, quoteIdentifier($indexName));
+			return sprintf('ALTER TABLE %s DROP INDEX %s', $table, quoteIdentifier($indexName));
 		}
 
 		return null;
@@ -778,7 +807,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		$sqlUpd = array();
 
-		$stmt = exec_query("SELECT ip_id, ip_card FROM server_ips");
+		$stmt = exec_query('SELECT ip_id, ip_card FROM server_ips');
 
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -838,7 +867,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r72()
 	{
-		return $this->addIndex('web_software_options', 'use_webdepot', 'unique');
+		$this->removeDuplicateRowsOnColumns('web_software_options', 'use_webdepot');
+
+		return $this->addIndex('web_software_options', 'use_webdepot', 'UNIQUE', 'use_webdepot');
 	}
 
 	/**
@@ -856,7 +887,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		return $this->addIndex('user_gui_props', 'user_id', 'unique');
+		$this->removeDuplicateRowsOnColumns('user_gui_props', 'user_id');
+
+		return $this->addIndex('user_gui_props', 'user_id', 'UNIQUE', 'user_id');
 	}
 
 	/**
@@ -1084,7 +1117,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				max_input_time INT(11) NOT NULL DEFAULT '60',
 				memory_limit INT(11) NOT NULL DEFAULT '64',
 				PRIMARY KEY (ID)
-			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 	}
 
@@ -1209,35 +1242,35 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r95()
 	{
 		return array(
-			$this->addIndex('domain', 'domain_id'), // Add primary key
-			$this->dropIndexByName('domain', 'domain_id'), // Remove unique index
+			$this->addIndex('domain', 'domain_id'), // Add PRIMARY KEY
+			$this->dropIndexByName('domain', 'domain_id'), // Remove UNIQUE index
 
-			$this->addIndex('email_tpls', 'id'), // Add primary key
-			$this->dropIndexByName('email_tpls', 'id'), // Remove unique index
+			$this->addIndex('email_tpls', 'id'), // Add PRIMARY KEY
+			$this->dropIndexByName('email_tpls', 'id'), // Remove UNIQUE index
 
-			$this->addIndex('hosting_plans', 'id'), // Add primary key
-			$this->dropIndexByName('hosting_plans', 'id'), // Remove unique index
+			$this->addIndex('hosting_plans', 'id'), // Add PRIMARY KEY
+			$this->dropIndexByName('hosting_plans', 'id'), // Remove UNIQUE index
 
-			$this->addIndex('htaccess', 'id'), // Add primary key
-			$this->dropIndexByName('htaccess', 'id'), // Remove unique index
+			$this->addIndex('htaccess', 'id'), // Add PRIMARY KEY
+			$this->dropIndexByName('htaccess', 'id'), // Remove UNIQUE index
 
-			$this->addIndex('htaccess_groups', 'id'), // Add primary key
-			$this->dropIndexByName('htaccess_groups', 'id'), // Remove unique index
+			$this->addIndex('htaccess_groups', 'id'), // Add PRIMARY KEY
+			$this->dropIndexByName('htaccess_groups', 'id'), // Remove UNIQUE index
 
-			$this->addIndex('htaccess_users', 'id'), // Add primary key
-			$this->dropIndexByName('htaccess_users', 'id'), // Remove unique index
+			$this->addIndex('htaccess_users', 'id'), // Add PRIMARY KEY
+			$this->dropIndexByName('htaccess_users', 'id'), // Remove UNIQUE index
 
-			$this->addIndex('reseller_props', 'id'), // Add primary key
-			$this->dropIndexByName('reseller_props', 'id'), // Remove unique index
+			$this->addIndex('reseller_props', 'id'), // Add PRIMARY KEY
+			$this->dropIndexByName('reseller_props', 'id'), // Remove UNIQUE index
 
-			$this->addIndex('server_ips', 'ip_id'), // Add primary key
-			$this->dropIndexByName('server_ips', 'ip_id'), // Remove unique index
+			$this->addIndex('server_ips', 'ip_id'), // Add PRIMARY KEY
+			$this->dropIndexByName('server_ips', 'ip_id'), // Remove UNIQUE index
 
-			$this->addIndex('sql_database', 'sqld_id'), // Add primary key
-			$this->dropIndexByName('sql_database', 'sqld_id'), // Remove unique index
+			$this->addIndex('sql_database', 'sqld_id'), // Add PRIMARY KEY
+			$this->dropIndexByName('sql_database', 'sqld_id'), // Remove UNIQUE index
 
-			$this->addIndex('sql_user', 'sqlu_id'), // Add primary key
-			$this->dropIndexByName('sql_user', 'sqlu_id') // Remove unique index
+			$this->addIndex('sql_user', 'sqlu_id'), // Add PRIMARY KEY
+			$this->dropIndexByName('sql_user', 'sqlu_id') // Remove UNIQUE index
 		);
 	}
 
@@ -1306,7 +1339,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				status VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
 				PRIMARY KEY (cert_id),
 				KEY id (id)
-			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 	}
 
@@ -1354,21 +1387,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return array(
 			// change to allows forward mail list
-			'
-				ALTER IGNORE TABLE
-					mail_users
-				CHANGE
-					mail_acc mail_acc
-				TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
-			',
-			// change to fix with RFC
-			'
-				ALTER IGNORE TABLE
-					mail_users
-				CHANGE
-					mail_addr mail_addr
-				VARCHAR(254) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
-			'
+			$this->changeColumn(
+				'mail_users', 'mail_acc', 'mail_acc TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+			),
+			$this->changeColumn(
+				'mail_users',
+				'mail_addr',
+				'mail_addr VARCHAR(254) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+			)
 		);
 	}
 
@@ -1397,14 +1423,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r106()
 	{
 		return array(
-			$this->addIndex('admin', 'created_by', 'index'),
-			$this->addIndex('domain_aliasses', 'domain_id', 'index'),
-			$this->addIndex('mail_users', 'domain_id', 'index'),
-			$this->addIndex('reseller_props', 'reseller_id', 'index'),
-			$this->addIndex('sql_database', 'domain_id', 'index'),
-			$this->addIndex('sql_user', 'sqld_id', 'index'),
-			$this->addIndex('subdomain', 'domain_id', 'index'),
-			$this->addIndex('subdomain_alias', 'alias_id', 'index')
+			$this->addIndex('admin', 'created_by', 'INDEX', 'created_by'),
+			$this->addIndex('domain_aliasses', 'domain_id', 'INDEX', 'domain_id'),
+			$this->addIndex('mail_users', 'domain_id', 'INDEX', 'domain_id'),
+			$this->addIndex('reseller_props', 'reseller_id', 'INDEX', 'reseller_id'),
+			$this->addIndex('sql_database', 'domain_id', 'INDEX', 'domain_id'),
+			$this->addIndex('sql_user', 'sqld_id', 'INDEX', 'sqld_id'),
+			$this->addIndex('subdomain', 'domain_id', 'INDEX', 'domain_id'),
+			$this->addIndex('subdomain_alias', 'alias_id', 'INDEX', 'alias_id')
 		);
 	}
 
@@ -2262,11 +2288,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r148()
 	{
-		return $this->addIndex('server_ips', 'ip_number', 'unique');
+		$this->removeDuplicateRowsOnColumns('server_ips', 'ip_number');
+
+		return $this->addIndex('server_ips', 'ip_number', 'UNIQUE', 'ip_number');
 	}
 
 	/**
-	 * Adds unique index for sql_user.sqld_name columns
+	 * Adds unique index for sql_user.sqld_name column
 	 *
 	 * @return array SQL statements to be executed
 	 */
@@ -2280,7 +2308,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		return $this->addIndex('sql_database', 'sqld_name', 'unique');
+		$this->removeDuplicateRowsOnColumns('sql_database', 'sqld_name');
+
+		return $this->addIndex('sql_database', 'sqld_name', 'UNIQUE', 'sqld_name');
 	}
 
 	/**
@@ -2363,16 +2393,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 				$props = explode(';', $data['props']);
 
 				if (count($props) == 24) {
-					list(, , , , , , , , , $diskspace) = $props;
-					$diskspace = $diskspace * 1048576; // MiB to bytes
+					$quota = $props[9] * 1048576; // MiB to bytes
 
 					$sqlUpd[] = "
 						UPDATE
 							hosting_plans
 						SET
-							props = CONCAT(props, ';$diskspace')
+							props = CONCAT(props, ';$quota')
 						WHERE
-							id = {$data['id']}
+							id = " . $data['id'] . "
 					";
 				}
 			}
@@ -2746,8 +2775,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'sqlu_host',
 				'VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER sqlu_name'
 			),
-			$this->addIndex('sql_user', 'sqlu_name', 'index'),
-			$this->addIndex('sql_user', 'sqlu_host', 'index')
+			$this->addIndex('sql_user', 'sqlu_name', 'INDEX', 'sqlu_name'),
+			$this->addIndex('sql_user', 'sqlu_host', 'INDEX', 'sqlu_host')
 		);
 	}
 
@@ -2941,7 +2970,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r186()
 	{
-		return $this->addIndex('ssl_certs', array('domain_id', 'domain_type'), 'unique', 'domain_id_domain_type');
+		return $this->addIndex('ssl_certs', array('domain_id', 'domain_type'), 'UNIQUE', 'domain_id_domain_type');
 	}
 
 	/**
@@ -3034,9 +3063,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r193()
 	{
 		return array(
-			$this->addIndex('mail_users', 'mail_addr', 'index'),
-			$this->addIndex('mail_users', 'status', 'index'),
-			$this->addIndex('mail_users', 'po_active', 'index')
+			$this->addIndex('mail_users', 'mail_addr', 'INDEX', 'mail_addr'),
+			$this->addIndex('mail_users', 'status', 'INDEX', 'status'),
+			$this->addIndex('mail_users', 'po_active', 'INDEX', 'po_active')
 		);
 	}
 
@@ -3164,7 +3193,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 			execute_query($q);
 		}
 
-		return $this->addIndex('mail_users', 'mail_addr', 'UNIQUE');
+		$this->removeDuplicateRowsOnColumns('mail_users', 'mail_addr');
+
+		return $this->addIndex('mail_users', 'mail_addr', 'UNIQUE', 'mail_addr');
 	}
 
 	/**
@@ -3247,8 +3278,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function r209()
+	protected function r210()
 	{
+		$this->removeDuplicateRowsOnColumns('server_traffic', 'traff_time');
+
 		return $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time');
 	}
 }
