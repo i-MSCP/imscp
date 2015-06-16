@@ -4,10 +4,25 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+	Changed: Primary phptmp directory is now used by all PHP sites
+	Fixed: Wrong TMPDIR set in fcgi starter script for domains which use mount point of another domain
+	Fixed: Wrong TMPDIR set in pool configuration files for domains which use mount point of another domain
+	Fixed: Wrong TMPDIR set in php.ini configuration files for domains which use mount point of another domain
+	Removed: BASE_SERVER_VHOST BASE_SERVER_VHOST_PREFIX and WWW_DIR data - Modules::Alias::_getHttpdData()
+	Removed: BASE_SERVER_VHOST BASE_SERVER_VHOST_PREFIX and WWW_DIR data - Modules::Domain::_getHttpdData()
+	Removed: BASE_SERVER_VHOST BASE_SERVER_VHOST_PREFIX and WWW_DIR data - Modules::SubAlias::_getHttpdData()
+	Removed: BASE_SERVER_VHOST BASE_SERVER_VHOST_PREFIX and WWW_DIR data - Modules::Subdomain::_getHttpdData()
+	Removed: Useless deletion of the vlogger entries by the HTTPD server impl. when a domain is deleted - Those entries
+		are automatically deleted by the imscp-vrl-traff script
+
 DATABASE
 	Fixed: Mysql IGNORE extension doesn't work with Fast Index Creation (MySQL Bug #40344)
 	Fixed: MySQL IGNORE extension is deprecated as of MySQL 5.6.17
 	Fixed: Possible duplicate entries when adding UNIQUE constraints
+
+YOUTRACK
+	Fixed: #IP-1358: Admin's tickets can't be deleted due to an additional quotation-mark in the template
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.5

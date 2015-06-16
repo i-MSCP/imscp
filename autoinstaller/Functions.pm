@@ -740,16 +740,22 @@ sub _compileDaemon
 
 sub _savePersistentData
 {
-	my ($stdout, $stderr);
+	my ($rs, $stdout, $stderr);
 	my $destdir = $main::{'INST_PREF'};
 
-	# Config files
+	## Config files
 
 	# Save Web directories skeletons
 
+	# Remove deprecated phptmp directories
+	for my $skelDir("alias", "subdomain") {
+		$rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel/$skelDir/phptmp" )->remove();
+		return $rs if $rs;
+	}
+
 	# Move old skel directory to new location
 	if(-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
-		my $rs = execute(
+		$rs = execute(
 			"mv $main::imscpConfig{'CONF_DIR'}/apache/skel $main::imscpConfig{'CONF_DIR'}/skel", \$stdout, \$stderr
 		);
 		debug($stdout) if $stdout;
@@ -758,9 +764,9 @@ sub _savePersistentData
 	}
 
 	if(-d "$main::imscpConfig{'CONF_DIR'}/skel") {
-		my $rs = execute(
+		$rs = execute(
 			"cp -fRT $main::imscpConfig{'CONF_DIR'}/skel " .
-				"$destdir$main::imscpConfig{'CONF_DIR'}/skel",
+			"$destdir$main::imscpConfig{'CONF_DIR'}/skel",
 			\$stdout,
 			\$stderr
 		);
@@ -771,7 +777,7 @@ sub _savePersistentData
 
 	# Move old listener files to new location
 	if(-d "$main::imscpConfig{'CONF_DIR'}/hooks.d") {
-		my $rs = execute(
+		$rs = execute(
 			"mv $main::imscpConfig{'CONF_DIR'}/hooks.d $main::imscpConfig{'CONF_DIR'}/listeners.d", \$stdout, \$stderr
 		);
 		debug($stdout) if $stdout;
@@ -781,17 +787,17 @@ sub _savePersistentData
 
 	# Remove old README file
 	if(-f "$main::imscpConfig{'CONF_DIR'}/listeners.d/README") {
-		my $rs = execute("rm -f $main::imscpConfig{'CONF_DIR'}/listeners.d/README", \$stdout, \$stderr);
+		$rs = execute("rm -f $main::imscpConfig{'CONF_DIR'}/listeners.d/README", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 	}
 
-	# Package files
+	## Package files
 
 	# Move old package cache directory to new location
 	if(-d  "$main::imscpConfig{'CACHE_DATA_DIR'}/addons") {
-		my $rs = execute(
+		$rs = execute(
 			"mv $main::imscpConfig{'CACHE_DATA_DIR'}/addons $main::imscpConfig{'CACHE_DATA_DIR'}/packages",
 			\$stdout,
 			\$stderr
@@ -801,11 +807,11 @@ sub _savePersistentData
 		return $rs if $rs;
 	}
 
-	# GUI files
+	## GUI files
 
 	# Save ISP logos (older location)
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos") {
-		my $rs = execute(
+		$rs = execute(
 			"cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos " .
 				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos",
 			\$stdout,
@@ -818,7 +824,7 @@ sub _savePersistentData
 
 	# Save ISP logos (new location)
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos") {
-		my $rs = execute(
+		$rs = execute(
 			"cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos " .
 				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos",
 			\$stdout,
@@ -831,7 +837,7 @@ sub _savePersistentData
 
 	# Save GUI logs
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs") {
-		my $rs = execute(
+		$rs = execute(
 			"cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/logs " .
 				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs",
 			\$stdout,
@@ -844,7 +850,7 @@ sub _savePersistentData
 
 	# Save persistent data
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent") {
-		my $rs = execute(
+		$rs = execute(
 			"cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/persistent " .
 				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent",
 			\$stdout,
@@ -857,7 +863,7 @@ sub _savePersistentData
 
 	# Save software (older path ./gui/data/softwares) to new path (./gui/data/persistent/softwares)
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares") {
-		my $rs = execute(
+		$rs = execute(
 			"cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/softwares " .
 				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares",
 			\$stdout,
@@ -870,7 +876,7 @@ sub _savePersistentData
 
 	# Save plugins
 	if(-d $main::imscpConfig{'PLUGINS_DIR'}) {
-		my $rs = execute(
+		$rs = execute(
 			"cp -fRT $main::imscpConfig{'PLUGINS_DIR'} $destdir$main::imscpConfig{'PLUGINS_DIR'}",
 			\$stdout,
 			\$stderr
@@ -882,7 +888,7 @@ sub _savePersistentData
 
 	# Quick fix for #IP-1340 ( Removes old filemanager directory which is no longer used )
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager") {
-		my $rs = execute("rm -rf $main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager", \$stdout, \$stderr);
+		$rs = execute("rm -rf $main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -890,7 +896,7 @@ sub _savePersistentData
 
 	# Save tools
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools") {
-		my $rs = execute(
+		$rs = execute(
 			"cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/public/tools " .
 				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools",
 			\$stdout,

@@ -238,20 +238,18 @@ sub _getHttpdData
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-			DOMAIN_TYPE => 'sub',
 			DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
 			DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'subdomain_name'} . '.' . $self->{'user_home'}, 'UTF-8'),
+			DOMAIN_IP => $self->{'ip_number'},
+			DOMAIN_TYPE => 'sub',
 			PARENT_DOMAIN_NAME => $self->{'user_home'},
 			ROOT_DOMAIN_NAME => $self->{'user_home'},
-			DOMAIN_IP => $self->{'ip_number'},
-			WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
 			HOME_DIR => $homeDir,
 			WEB_DIR => $webDir,
 			MOUNT_POINT => $self->{'subdomain_mount'},
+			SHARED_MOUNT_POINTS => $self->_sharedMountPoint(),
 			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 			PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
-			BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
-			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			USER => $userName,
 			GROUP => $groupName,
 			PHP_SUPPORT => $self->{'domain_php'},
@@ -294,7 +292,7 @@ sub _getHttpdData
 		};
 
 		if($self->{'subdomain_status'} eq 'todelete') {
-			$self->{'httpd'}->{'SHARED_MOUNT_POINTS'} = [$self->_getSharedMountPoints()];
+			$self->{'httpd'}->{'SHARED_MOUNT_POINTS'} = [ $self->_getSharedMountPoints() ];
 		}
 	}
 
@@ -439,58 +437,64 @@ sub _getPackagesData
 	%{$self->{'packages'}};
 }
 
-=item _getSharedMountPoints()
+=item _sharedMountPoint()
 
- Get shared mount points
+ Does this subdomain share mount point with another domain?
 
  Return array Array containing shared mount points
 
 =cut
 
-sub _getSharedMountPoints
+sub _sharedMountPoint
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $regexp = "^$self->{'subdomain_mount'}(/.*|\$)";
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
-		'mount_point',
+	my $db = iMSCP::Database->factory()->getRawDb();
+
+	my ($nbSharedMountPoints) = $db->selectrow_array(
 		"
 			SELECT
-				alias_mount AS mount_point
-			FROM
-				domain_aliasses
-			WHERE
-				domain_id = ?
-			AND
-				alias_status NOT IN ('todelete', 'ordered')
-			AND
-				alias_mount RLIKE ?
-			UNION
-			SELECT
-				subdomain_mount AS mount_point
-			FROM
-				subdomain
-			WHERE
-				subdomain_id <> ?
-			AND
-				domain_id = ?
-			AND
-				subdomain_status <> 'todelete'
-			AND
-				subdomain_mount RLIKE ?
-			UNION
-			SELECT
-				subdomain_alias_mount AS mount_point
-			FROM
-				subdomain_alias
-			WHERE
-				subdomain_alias_status <> 'todelete'
-			AND
-				alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-			AND
-				subdomain_alias_mount RLIKE ?
+				COUNT(mount_point) AS nb_mount_points
+			FROM (
+				SELECT
+					alias_mount AS mount_point
+				FROM
+					domain_aliasses
+				WHERE
+					domain_id = ?
+				AND
+					alias_status NOT IN ('todelete', 'ordered')
+				AND
+					alias_mount RLIKE ?
+				UNION
+				SELECT
+					subdomain_mount AS mount_point
+				FROM
+					subdomain
+				WHERE
+					subdomain_id <> ?
+				AND
+					domain_id = ?
+				AND
+					subdomain_status <> 'todelete'
+				AND
+					subdomain_mount RLIKE ?
+				UNION
+				SELECT
+					subdomain_alias_mount AS mount_point
+				FROM
+					subdomain_alias
+				WHERE
+					subdomain_alias_status <> 'todelete'
+				AND
+					alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+				AND
+					subdomain_alias_mount RLIKE ?
+			) AS tmp
 		",
+		undef,
 		$self->{'domain_id'},
 		$regexp,
 		$self->{'subdomain_id'},
@@ -499,11 +503,10 @@ sub _getSharedMountPoints
 		$self->{'domain_id'},
 		$regexp
 	);
-	unless(ref $rdata eq 'HASH') {
-		fatal($rdata);
-	}
 
-	(values %{$rdata});
+	fatal($db->errstr) if $db->err;
+
+	($nbSharedMountPoints || $self->{'subdomain_mount'} eq '/');
 }
 
 =item isValidCertificate($subdomainName)

@@ -443,20 +443,18 @@ sub _getHttpdData
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-			DOMAIN_TYPE => 'dmn',
 			DOMAIN_NAME => $self->{'domain_name'},
 			DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'domain_name'}, 'UTF-8'),
+			DOMAIN_IP => $self->{'ip_number'},
+			DOMAIN_TYPE => 'dmn',
 			PARENT_DOMAIN_NAME => $self->{'domain_name'},
 			ROOT_DOMAIN_NAME => $self->{'domain_name'},
-			DOMAIN_IP => $self->{'ip_number'},
-			WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
 			HOME_DIR => $homeDir,
 			WEB_DIR => $homeDir,
 			MOUNT_POINT => '/',
+			SHARED_MOUNT_POINT => 0,
 			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 			PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
-			BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
-			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			USER => $userName,
 			GROUP => $groupName,
 			PHP_SUPPORT => $self->{'domain_php'},
@@ -610,9 +608,9 @@ sub _getNamedData
 			# We must trigger the Subdomain module whatever the number of entries - See #503
 			$rdata = $db->doQuery(
 				'dummy',
-				'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_status = ? AND domain_id = ?',
+				'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_status <> ? AND domain_id = ?',
 				'tochange',
-				'ok',
+				'todelete',
 				$self->{'domain_id'}
 			);
 			unless(ref $rdata eq 'HASH') {

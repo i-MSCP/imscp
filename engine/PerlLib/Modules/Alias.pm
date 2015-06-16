@@ -272,20 +272,18 @@ sub _getHttpdData
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-			DOMAIN_TYPE => 'als',
 			DOMAIN_NAME => $self->{'alias_name'},
 			DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'alias_name'}, 'UTF-8'),
+			DOMAIN_IP => $self->{'ip_number'},
+			DOMAIN_TYPE => 'als',
 			PARENT_DOMAIN_NAME => $self->{'alias_name'},
 			ROOT_DOMAIN_NAME => $self->{'user_home'},
-			DOMAIN_IP => $self->{'ip_number'},
-			WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
 			HOME_DIR => $homeDir,
 			WEB_DIR => $webDir,
 			MOUNT_POINT => $self->{'alias_mount'},
+			SHARED_MOUNT_POINT => $self->_sharedMountPoint(),
 			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 			PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
-			BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
-			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			USER => $userName,
 			GROUP => $groupName,
 			PHP_SUPPORT => $self->{'domain_php'},
@@ -325,10 +323,6 @@ sub _getHttpdData
 			PHPINI_OPEN_BASEDIR => ($rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'})
 				? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 		};
-
-		if($self->{'alias_status'} eq 'todelete') {
-			$self->{'httpd'}->{'SHARED_MOUNT_POINTS'} = [$self->_getSharedMountPoints()];
-		}
 	}
 
 	%{$self->{'httpd'}};
@@ -449,12 +443,12 @@ sub _getNamedData
 					SET
 						subdomain_alias_status = ?
 					WHERE
-						subdomain_alias_status = ?
+						subdomain_alias_status <> ?
 					AND
 						alias_id = ?
 				',
 				'tochange',
-				'ok',
+				'todelete',
 				$self->{'alias_id'}
 			);
 			unless(ref $rdata eq 'HASH') {
@@ -507,58 +501,64 @@ sub _getPackagesData
 	%{$self->{'packages'}};
 }
 
-=item _getSharedMountPoints()
+=item _sharedMountPoint()
 
- Get shared mount points
+ Does this domain alias share mount point with another domain?
 
- Return array Array containing shared mount points
+ Return bool
 
 =cut
 
-sub _getSharedMountPoints
+sub _sharedMountPoint
 {
 	my $self = shift;
 
 	my $regexp = "^$self->{'alias_mount'}(/.*|\$)";
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
-		'mount_point',
+	my $db = iMSCP::Database->factory()->getRawDb();
+
+	my ($nbSharedMountPoints) = $db->selectrow_array(
 		"
 			SELECT
-				alias_mount AS mount_point
-			FROM
-				domain_aliasses
-			WHERE
-				alias_id <> ?
-			AND
-				domain_id = ?
-			AND
-				alias_status NOT IN ('todelete', 'ordered')
-			AND
-				alias_mount RLIKE ?
-			UNION
-			SELECT
-				subdomain_mount AS mount_point
-			FROM
-				subdomain
-			WHERE
-				domain_id = ?
-			AND
-				subdomain_status != 'todelete'
-			AND
-				subdomain_mount RLIKE ?
-			UNION
-			SELECT
-				subdomain_alias_mount AS mount_point
-			FROM
-				subdomain_alias
-			WHERE
-				subdomain_alias_status != 'todelete'
-			AND
-				alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-			AND
-				subdomain_alias_mount RLIKE ?
+				COUNT(mount_point) AS nb_mount_points
+			FROM (
+				SELECT
+					alias_mount AS mount_point
+				FROM
+					domain_aliasses
+				WHERE
+					alias_id <> ?
+				AND
+					domain_id = ?
+				AND
+					alias_status NOT IN ('todelete', 'ordered')
+				AND
+					alias_mount RLIKE ?
+				UNION
+				SELECT
+					subdomain_mount AS mount_point
+				FROM
+					subdomain
+				WHERE
+					domain_id = ?
+				AND
+					subdomain_status != 'todelete'
+				AND
+					subdomain_mount RLIKE ?
+				UNION
+				SELECT
+					subdomain_alias_mount AS mount_point
+				FROM
+					subdomain_alias
+				WHERE
+					subdomain_alias_status != 'todelete'
+				AND
+					alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+				AND
+					subdomain_alias_mount RLIKE ?
+			) AS tmp
 		",
+		undef,
 		$self->{'alias_id'},
 		$self->{'domain_id'},
 		$regexp,
@@ -567,18 +567,17 @@ sub _getSharedMountPoints
 		$self->{'domain_id'},
 		$regexp
 	);
-	unless(ref $rdata eq 'HASH') {
-		fatal($rdata);
-	}
 
-	(values %{$rdata});
+	fatal($db->errstr) if $db->err;
+
+	($nbSharedMountPoints || $self->{'alias_mount'} eq '/');
 }
 
 =item isValidCertificate($domainAliasName)
 
  Does the SSL certificate which belongs to that the domain alias is valid?
 
- Param string $domainAlias Domain alias name
+ Param string $domainAliasName Domain alias name
  Return bool TRUE if the domain SSL certificate is valid, FALSE otherwise
 
 =cut

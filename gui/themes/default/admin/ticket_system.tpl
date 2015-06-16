@@ -35,7 +35,7 @@
 		<td>{TICKET_URGENCY_VAL}</td>
 		<td>{TICKET_LAST_DATE_VAL}</td>
 		<td>
-			<a href="'ticket_delete.php?ticket_id={TICKET_ID_VAL}"
+			<a href="ticket_delete.php?ticket_id={TICKET_ID_VAL}"
 			   onclick="return action_delete('{TICKET_SUBJECT2_VAL}')"
 			   class="icon i_delete" title="{TR_TICKET_DELETE_LINK}">{TR_TICKET_DELETE}</a>
 
