@@ -1310,7 +1310,7 @@ sub disableModules
 
 sub enableConfs
 {
-	my ($self, $confs) = @_;
+	my ($self, $conffiles) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdEnableConfs', \$conffiles);
 	return $rs if $rs;
