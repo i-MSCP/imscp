@@ -37,6 +37,9 @@ BACKEND
 	Fixed: Usage of portable syntax over Bash 4 syntax (I/O Redirection)
 	Fixed: Wrong syntax for the nice command (at several places)
 
+CONFIG
+	Fixed: Missing paths in PATH environment variable for cron tasks
+
 DATABASE
 	Fixed: Do not try to remove inexistent indexes +++
 

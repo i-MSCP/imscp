@@ -1,3 +1,5 @@
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 # Traffic accounting
 0,30 * * * * root perl {TRAFF_ROOT_DIR}/imscp-srv-traff > {LOG_DIR}/imscp-srv-traff.log 2>&1
 0,30 * * * * root perl {TRAFF_ROOT_DIR}/imscp-vrl-traff > {LOG_DIR}/imscp-vrl-traff.log 2>&1
