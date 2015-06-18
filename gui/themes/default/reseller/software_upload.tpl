@@ -129,7 +129,7 @@
 			{
 				language: {DATATABLE_TRANSLATIONS},
 				displayLength: 10,
-				dtateSave: true,
+				stateSave: true,
 				pagingType: "simple"
 			}
 		);

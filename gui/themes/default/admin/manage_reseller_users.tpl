@@ -4,7 +4,7 @@
 		$('.datatable').dataTable(
 			{
 				Language: {DATATABLE_TRANSLATIONS},
-				StateSave: true,
+				stateSave: true,
 				pagingType: "simple"
 			}
 		);
