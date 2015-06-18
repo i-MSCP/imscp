@@ -316,6 +316,7 @@ sub disableDmn
 
 	$self->setData(
 		{
+			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			AUTHZ_ALLOW_ALL => (version->parse($version) >= version->parse('2.4.0'))
 				? 'Require all granted' : 'Allow from all',
 			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
@@ -1691,6 +1692,7 @@ sub _addCfg
 
 	$self->setData(
 		{
+			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
 			HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
 			AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all',
