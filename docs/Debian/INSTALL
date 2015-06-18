@@ -13,7 +13,7 @@ Table of Content
 1) Version Info
 ---------------
 
-i-MSCP Version:  <version>
+i-MSCP Version:  1.2.6
 Distros:         Debian Wheezy, Jessie ( recommended ), Stretch ( Experimental )
 
 2) Requirements
@@ -44,12 +44,12 @@ All packages are listed in ./docs/Debian/packages-<codename>.xml
 3. Download and untar or unzip the distribution files to a secure directory
 
 	# cd /usr/local/src
-	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-	# tar xzf imscp-<version>.tar.gz
+	# wget https://github.com/i-MSCP/imscp/archive/1.2.6.tar.gz
+	# tar xzf imscp-1.2.6.tar.gz
 
 4. Change to the newly created directory
 
-	# cd imscp-<version>
+	# cd imscp-1.2.6
 
 5. Run the imscp-autoinstall script
 
@@ -71,12 +71,12 @@ All packages are listed in ./docs/Debian/packages-<codename>.xml
 3. Download and untar the distribution files to a secure directory
 
 	# cd /usr/local/src
-	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-	# tar xzf imscp-<version>.tar.gz
+	# wget https://github.com/i-MSCP/imscp/archive/1.2.6.tar.gz
+	# tar xzf imscp-1.2.6.tar.gz
 
 4. Change to the newly created directory
 
-	# cd imscp-<version>
+	# cd imscp-1.2.6
 
 5. Update by running the imscp-autoinstall script
 
