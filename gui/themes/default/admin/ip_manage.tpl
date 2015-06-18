@@ -9,7 +9,7 @@
 
 		$('.datatable').dataTable(
 				{
-					language: {DATATABLE_TRANSLATIONS},
+					language: imscp_i18n.core.dataTable,
 					stateSave: true,
 					pagingType: "simple"
 				}

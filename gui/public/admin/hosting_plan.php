@@ -52,12 +52,10 @@ function admin_generatePage($tpl)
 	$stmt = exec_query($query, 'admin');
 
 	if (!$stmt->rowCount()) {
-		$tpl->assign(
-			array(
-				'HOSTING_PLANS_JS',
-				'HOSTING_PLANS' => ''
-			)
-		);
+		$tpl->assign(array(
+			'HOSTING_PLANS_JS' => '',
+			'HOSTING_PLANS' => ''
+		));
 
 		set_page_message(tr("No hosting plan available."), 'static_info');
 	} else {

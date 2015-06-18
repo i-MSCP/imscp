@@ -298,34 +298,34 @@ if(isset($_REQUEST['action'])) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/admin_log.tpl',
-		'page_message' => 'layout'
-	)
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'admin/admin_log.tpl',
+	'page_message' => 'layout'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / General / Admin Log'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
-		'TR_CLEAR_LOG' => tr('Clear log'),
-		'ROWS_PER_PAGE' => json_encode($cfg['DOMAIN_ROWS_PER_PAGE']),
-		'TR_DATE' => tr('Date'),
-		'TR_MESSAGE' => tr('Message'),
-		'TR_CLEAR_LOG_MESSAGE' => tr('Delete from log:'),
-		'TR_CLEAR_LOG_EVERYTHING' => tr('everything'),
-		'TR_CLEAR_LOG_LAST2' => tr('older than 2 weeks'),
-		'TR_CLEAR_LOG_LAST4' => tr('older than 1 month'),
-		'TR_CLEAR_LOG_LAST12' => tr('older than 3 months'),
-		'TR_CLEAR_LOG_LAST26' => tr('older than 6 months'),
-		'TR_CLEAR_LOG_LAST52' => tr('older than 12 months'),
-		'TR_LOADING_DATA' => tr('Loading data...'),
-		'TR_TIMEOUT_ERROR' => json_encode(tr('Request Timeout: The server took too long to send the data.')),
-		'TR_UNEXPECTED_ERROR' => json_encode(tr('An unexpected error occurred.'))
-	)
-);
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tr('Admin / General / Admin Log'),
+	'TR_CLEAR_LOG' => tr('Clear log'),
+	'ROWS_PER_PAGE' => json_encode($cfg['DOMAIN_ROWS_PER_PAGE']),
+	'TR_DATE' => tr('Date'),
+	'TR_MESSAGE' => tr('Message'),
+	'TR_CLEAR_LOG_MESSAGE' => tr('Delete from log:'),
+	'TR_CLEAR_LOG_EVERYTHING' => tr('everything'),
+	'TR_CLEAR_LOG_LAST2' => tr('older than 2 weeks'),
+	'TR_CLEAR_LOG_LAST4' => tr('older than 1 month'),
+	'TR_CLEAR_LOG_LAST12' => tr('older than 3 months'),
+	'TR_CLEAR_LOG_LAST26' => tr('older than 6 months'),
+	'TR_CLEAR_LOG_LAST52' => tr('older than 12 months'),
+	'TR_LOADING_DATA' => tr('Loading data...'),
+	'TR_TIMEOUT_ERROR' => json_encode(tr('Request Timeout: The server took too long to send the data.')),
+	'TR_UNEXPECTED_ERROR' => json_encode(tr('An unexpected error occurred.'))
+));
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e \iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

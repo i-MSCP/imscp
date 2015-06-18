@@ -153,19 +153,23 @@ function _admin_generateIpListForm($tpl, &$data)
 
 	$htmlChecked = $cfg->HTML_CHECKED;
 
-	$tpl->assign(
-		array(
-			 'TR_IP_ADDRESS' => tr('IP address'),
-			 'TR_IP_LABEL' => tr('Label'),
-			 'TR_ASSIGN' => tr('Assign'),
-			 'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()));
+	$tpl->assign(array(
+		 'TR_IP_ADDRESS' => tr('IP address'),
+		 'TR_IP_LABEL' => tr('Label'),
+		 'TR_ASSIGN' => tr('Assign')
+	));
+
+	iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+		/** @var $e \iMSCP_Events_Event */
+		$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+	});
 
 	foreach ($data['server_ips'] as $ipData) {
-		$tpl->assign(
-			array(
-				 'IP_ID' => tohtml($ipData['ip_id']),
-				 'IP_NUMBER' => tohtml($ipData['ip_number']),
-				 'IP_ASSIGNED' => in_array($ipData['ip_id'], $data['reseller_ips']) ? $htmlChecked : ''));
+		$tpl->assign(array(
+			 'IP_ID' => tohtml($ipData['ip_id']),
+			 'IP_NUMBER' => tohtml($ipData['ip_number']),
+			 'IP_ASSIGNED' => in_array($ipData['ip_id'], $data['reseller_ips']) ? $htmlChecked : ''
+		));
 
 		$tpl->parse('IP_BLOCK', '.ip_block');
 	}

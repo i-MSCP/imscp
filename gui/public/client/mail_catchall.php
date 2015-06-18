@@ -293,29 +293,29 @@ customerHasFeature('mail') or showBadRequestErrorPage();
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'client/mail_catchall.tpl',
-		'page_message' => 'layout',
-		'catchall_item' => 'page',
-		'del_icon' => 'catchall_item'
-	)
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'client/mail_catchall.tpl',
+	'page_message' => 'layout',
+	'catchall_item' => 'page',
+	'del_icon' => 'catchall_item'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Client / Email / Catchall'),
-		'TR_STATUS' => tr('Status'),
-		'TR_ACTION' => tr('Action'),
-		'TR_TITLE_CATCHALL_MAIL_USERS' => tr('Catch all'),
-		'TR_DOMAIN' => tr('Domain'),
-		'TR_CATCHALL' => tr('Catch all'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s catch all?', '%s'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
-		'TR_CANCEL' => tr('Cancel')
-	)
-);
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tr('Client / Email / Catchall'),
+	'TR_STATUS' => tr('Status'),
+	'TR_ACTION' => tr('Action'),
+	'TR_TITLE_CATCHALL_MAIL_USERS' => tr('Catch all'),
+	'TR_DOMAIN' => tr('Domain'),
+	'TR_CATCHALL' => tr('Catch all'),
+	'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s catch all?', '%s'),
+	'TR_CANCEL' => tr('Cancel')
+));
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e \iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 client_generatePage($tpl);
 generateNavigation($tpl);

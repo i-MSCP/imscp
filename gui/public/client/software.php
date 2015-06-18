@@ -54,40 +54,39 @@ customerHasFeature('aps') or showBadRequestErrorPage();
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'client/software.tpl',
-		'page_message' => 'layout',
-		'software_message' => 'page',
-		'software_item' => 'page',
-		'software_action_delete' => 'page',
-		'software_action_install' => 'page',
-		'software_total' => 'page',
-		'no_software' => 'page',
-		'no_software_support' => 'page',
-		'software_list' => 'page',
-		'del_software_support' => 'software_list',
-		'del_software_item' => 'software_list',
-		't_software_support' => 'software_list'
-	)
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'client/software.tpl',
+	'page_message' => 'layout',
+	'software_message' => 'page',
+	'software_item' => 'page',
+	'software_action_delete' => 'page',
+	'software_action_install' => 'page',
+	'software_total' => 'page',
+	'no_software' => 'page',
+	'no_software_support' => 'page',
+	'software_list' => 'page',
+	'del_software_support' => 'software_list',
+	'del_software_item' => 'software_list',
+	't_software_support' => 'software_list'
+));
 
+$tpl->assign(array(
+	 'TR_PAGE_TITLE' => tr('Client / Webtools / Software'),
+	 'TR_SOFTWARE' => tr('Software'),
+	 'TR_VERSION' => tr('Version'),
+	 'TR_LANGUAGE' => tr('Language'),
+	 'TR_TYPE' => tr('Type'),
+	 'TR_NEED_DATABASE' => tr('Database'),
+	 'TR_STATUS' => tr('Status'),
+	 'TR_ACTION' => tr('Action'),
+	 'TR_SOFTWARE_AVAILABLE' => tr('Available software')
+));
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Client / Webtools / Software'),
-		 'TR_SOFTWARE' => tr('Software'),
-		 'TR_VERSION' => tr('Version'),
-		 'TR_LANGUAGE' => tr('Language'),
-		 'TR_TYPE' => tr('Type'),
-		 'TR_NEED_DATABASE' => tr('Database'),
-		 'TR_STATUS' => tr('Status'),
-		 'TR_ACTION' => tr('Action'),
-		 'TR_SOFTWARE_AVAILABLE' => tr('Available software'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
-	)
-);
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e \iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 generateNavigation($tpl);
 client_generatePageLists($tpl);

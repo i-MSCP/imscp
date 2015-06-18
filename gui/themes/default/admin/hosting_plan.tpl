@@ -1,11 +1,11 @@
 
-<!-- BDP hosting_plans_js -->
+<!-- BDP: hosting_plans_js -->
 <script>
 	function action_delete(subject) {
 		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 	}
 </script>
-<!-- EDP hosting_plans_js -->
+<!-- EDP: hosting_plans_js -->
 
 <!-- BDP: hosting_plans -->
 <table class="firstColFixed">

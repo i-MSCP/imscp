@@ -65,38 +65,32 @@ function client_generatePage($tpl)
 	}
 
 	if (!$stmt->rowCount()) {
-		$tpl->assign(
-			array(
-				'HOSTING_PLANS_JS',
-				'HOSTING_PLANS' => ''
-			)
-		);
+		$tpl->assign(array(
+			'HOSTING_PLANS_JS' => '',
+			'HOSTING_PLANS' => ''
+		));
 
 		set_page_message(tr('No hosting plan available.'), 'static_info');
 	} else {
-		$tpl->assign(
-			array(
-				'TR_NUMBER' => tr('No.'),
-				'TR_NAME' => tr('Name'),
-				'TR_STATUS' => tr('Status'),
-				'TR_EDIT' => $trEdit,
-				'TR_ACTION' => tr('Actions'),
-				'TR_DELETE' => tr('Delete'),
-				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s')
-			)
-		);
+		$tpl->assign(array(
+			'TR_NUMBER' => tr('No.'),
+			'TR_NAME' => tr('Name'),
+			'TR_STATUS' => tr('Status'),
+			'TR_EDIT' => $trEdit,
+			'TR_ACTION' => tr('Actions'),
+			'TR_DELETE' => tr('Delete'),
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s')
+		));
 
 		$i = 1;
 
 		while ($data = $stmt->fetchRow()) {
-			$tpl->assign(
-				array(
-					'NUMBER' => $i++,
-					'NAME' => tohtml($data['name']),
-					'STATUS' => ($data['status']) ? tr('Available') : tr('Unavailable'),
-					'ID' => $data['id']
-				)
-			);
+			$tpl->assign(array(
+				'NUMBER' => $i++,
+				'NAME' => tohtml($data['name']),
+				'STATUS' => ($data['status']) ? tr('Available') : tr('Unavailable'),
+				'ID' => $data['id']
+			));
 
 			if ($hostingPlanLevel != 'reseller') {
 				$tpl->assign('HOSTING_PLAN_DELETE', '');

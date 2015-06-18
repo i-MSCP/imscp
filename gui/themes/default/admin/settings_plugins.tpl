@@ -104,7 +104,7 @@
 
 		$dataTable = $(".datatable").dataTable(
 			{
-				language: imscp_i18n.admin.datatable,
+				language: imscp_i18n.core.dataTable,
 				displayLength: 10,
 				stateSave: true,
 				pagingType: "simple"
@@ -126,20 +126,20 @@
 			errDialog.dialog(
 				{
 					modal: true,
-					title: pluginName + " " + imscp_i18n.admin.error_details,
+					title: pluginName + " " + imscp_i18n.core.error_details,
 					show: "clip",
 					hide: "clip",
 					minHeight: 200,
 					minWidth: 500,
 					buttons: [
 						{
-							text: imscp_i18n.admin.force_retry,
+							text: imscp_i18n.core.force_retry,
 							click: function () {
 								window.location.replace("?retry=" + pluginName)
 							}
 						},
 						{
-							text: imscp_i18n.admin.close,
+							text: imscp_i18n.core.close,
 							click: function () {
 								$(this).dialog("close").dialog("destroy")
 							}

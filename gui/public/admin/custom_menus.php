@@ -333,44 +333,44 @@ if (isset($_POST['uaction'])) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/custom_menus.tpl',
-		'page_message' => 'layout',
-		'hosting_plans' => 'page',
-		'menus_list_block' => 'page',
-		'menu_block' => 'menus_list_block',
-		'menu_target_block' => 'page',
-		'menu_level_block' => 'page',
-		'add_menu' => 'page',
-		'edit_menu' => 'page'
-	)
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'admin/custom_menus.tpl',
+	'page_message' => 'layout',
+	'hosting_plans' => 'page',
+	'menus_list_block' => 'page',
+	'menu_block' => 'menus_list_block',
+	'menu_target_block' => 'page',
+	'menu_level_block' => 'page',
+	'add_menu' => 'page',
+	'edit_menu' => 'page'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / {TR_DYNAMIC_TITLE}'),
-		'TR_CUSTOM_MENU_PROPERTIES' => tr('Custom menu properties'),
-		'TR_MENU_NAME' => tr('Name'),
-		'TR_MENU_LINK' => tr('Link'),
-		'TR_MENU_TARGET' => tr('Target'),
-		'TR_VIEW_FROM' => tr('Show in'),
-		'TR_MENU_NAME_AND_LINK' => tr('Custom menu name and link'),
-		'TR_MENU_ORDER' => tr('Order'),
-		'TR_OPTIONAL' => tr('Optional'),
-		'TR_ACTIONS' => tr('Actions'),
-		'TR_EDIT' => tr('Edit'),
-		'TR_DELETE' => tr('Delete'),
-		'TR_TH_LEVEL' => tr('Level'),
-		'TR_TH_ORDER' => tr('Order'),
-		'TR_CANCEL' => tr('Cancel'),
-		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete the %s menu?', '%s')),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
-		'ERR_FIELDS_STACK' => iMSCP_Registry::isRegistered('errorFieldsStack')
-			? json_encode(iMSCP_Registry::get('errorFieldsStack')) : '[]'
-	)
-);
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tr('Admin / Settings / {TR_DYNAMIC_TITLE}'),
+	'TR_CUSTOM_MENU_PROPERTIES' => tr('Custom menu properties'),
+	'TR_MENU_NAME' => tr('Name'),
+	'TR_MENU_LINK' => tr('Link'),
+	'TR_MENU_TARGET' => tr('Target'),
+	'TR_VIEW_FROM' => tr('Show in'),
+	'TR_MENU_NAME_AND_LINK' => tr('Custom menu name and link'),
+	'TR_MENU_ORDER' => tr('Order'),
+	'TR_OPTIONAL' => tr('Optional'),
+	'TR_ACTIONS' => tr('Actions'),
+	'TR_EDIT' => tr('Edit'),
+	'TR_DELETE' => tr('Delete'),
+	'TR_TH_LEVEL' => tr('Level'),
+	'TR_TH_ORDER' => tr('Order'),
+	'TR_CANCEL' => tr('Cancel'),
+	'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete the %s menu?', '%s')),
+	'ERR_FIELDS_STACK' => iMSCP_Registry::isRegistered('errorFieldsStack')
+		? json_encode(iMSCP_Registry::get('errorFieldsStack')) : '[]'
+));
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e \iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 generateNavigation($tpl);
 admin_generateMenusList($tpl);

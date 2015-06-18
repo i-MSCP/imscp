@@ -673,12 +673,12 @@ $tpl->define_dynamic(array(
 
 EventManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($event) {
 	/** @var $event \iMSCP_Events_Event $translations */
-	$event->getParam('translations')->admin = array(
-		'datatable' => getDataTablesPluginTranslations(false),
+	$event->getParam('translations')->core = array_merge($event->getParam('translations')->core, array(
+		'dataTable' => getDataTablesPluginTranslations(false),
 		'force_retry' => tr('Force retry'),
 		'close' => tr('Close'),
 		'error_details' => tr('Error details')
-	);
+	));
 });
 
 $tpl->assign(array(

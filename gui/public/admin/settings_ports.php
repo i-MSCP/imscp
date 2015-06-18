@@ -360,39 +360,39 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/settings_ports.tpl',
-		'page_message' => 'layout',
-		'service_ports' => 'page',
-		'port_delete_link' => 'service_ports'
-	)
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'admin/settings_ports.tpl',
+	'page_message' => 'layout',
+	'service_ports' => 'page',
+	'port_delete_link' => 'service_ports'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Service Ports'),
-		'TR_ACTION' => tr('Action'),
-		'TR_UDP' => tr('udp'),
-		'TR_TCP' => tr('tcp'),
-		'TR_ENABLED' => tr('Yes'),
-		'TR_DISABLED' => tr('No'),
-		'TR_SERVERPORTS' => tr('Server ports'),
-		'TR_SERVICE' => tr('Service Name'),
-		'TR_IP' => tr('IP address'),
-		'TR_PORT' => tr('Port'),
-		'TR_PROTOCOL' => tr('Protocol'),
-		'TR_SHOW' => tr('Show'),
-		'TR_DELETE' => tr('Delete'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s service port ?', '%s'),
-		'TR_ADD_NEW_SERVICE_PORT' => tr('Add new service port'),
-		'VAL_FOR_SUBMIT_ON_UPDATE' => tr('Update'),
-		'VAL_FOR_SUBMIT_ON_ADD' => tr('Add'),
-		'VAL_FOR_SUBMIT_ON_RESET' => tr('Reset'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
-	)
-);
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tr('Admin / Settings / Service Ports'),
+	'TR_ACTION' => tr('Action'),
+	'TR_UDP' => tr('udp'),
+	'TR_TCP' => tr('tcp'),
+	'TR_ENABLED' => tr('Yes'),
+	'TR_DISABLED' => tr('No'),
+	'TR_SERVERPORTS' => tr('Server ports'),
+	'TR_SERVICE' => tr('Service Name'),
+	'TR_IP' => tr('IP address'),
+	'TR_PORT' => tr('Port'),
+	'TR_PROTOCOL' => tr('Protocol'),
+	'TR_SHOW' => tr('Show'),
+	'TR_DELETE' => tr('Delete'),
+	'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s service port ?', '%s'),
+	'TR_ADD_NEW_SERVICE_PORT' => tr('Add new service port'),
+	'VAL_FOR_SUBMIT_ON_UPDATE' => tr('Update'),
+	'VAL_FOR_SUBMIT_ON_ADD' => tr('Add'),
+	'VAL_FOR_SUBMIT_ON_RESET' => tr('Reset')
+));
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e \iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 generateNavigation($tpl);
 admin_showServices($tpl);

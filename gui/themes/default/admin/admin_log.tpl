@@ -64,7 +64,7 @@
 		};
 
 		$dataTable = $(".datatable").dataTable({
-			language: {DATATABLE_TRANSLATIONS},
+			language: imscp_i18n.core.dataTable,
 			displayLength: parseInt({ROWS_PER_PAGE}),
 			processing: true,
 			serverSide: true,

@@ -3,7 +3,7 @@
 	$(function () {
 		$('.datatable').dataTable(
 			{
-				Language: {DATATABLE_TRANSLATIONS},
+				Language: imscp_i18n.core.dataTable,
 				stateSave: true,
 				pagingType: "simple"
 			}

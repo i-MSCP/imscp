@@ -222,31 +222,31 @@ if (is_xhr()) {
 /** @var $tpl iMSCP_pTemplate */
 $tpl = new iMSCP_pTemplate();
 
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/alias.tpl',
-		'page_message' => 'layout',
-		'als_add_button' => 'page'
-	)
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'reseller/alias.tpl',
+	'page_message' => 'layout',
+	'als_add_button' => 'page'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases'),
-		'TR_ALIAS_NAME' => tr('Domain alias name'),
-		'TR_MOUNT_POINT' => tr('Mount point'),
-		'TR_FORWARD_URL' => tr('Forward URL'),
-		'TR_STATUS' => tr('Status'),
-		'TR_CUSTOMER' => tr('Customer'),
-		'TR_ACTIONS' => tr('Actions'),
-		'TR_ADD_DOMAIN_ALIAS' => tr('Add domain alias'),
-		'TR_MESSAGE_DELETE_ALIAS' => tr('Are you sure you want to delete the %s domain alias?', '%s'),
-		'TR_MESSAGE_DELETE_ALIAS_ORDER' => tr('Are you sure you want to delete the %s domain alias order?', '%s'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
-		'TR_PROCESSING_DATA' => tr('Processing...')
-	)
-);
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases'),
+	'TR_ALIAS_NAME' => tr('Domain alias name'),
+	'TR_MOUNT_POINT' => tr('Mount point'),
+	'TR_FORWARD_URL' => tr('Forward URL'),
+	'TR_STATUS' => tr('Status'),
+	'TR_CUSTOMER' => tr('Customer'),
+	'TR_ACTIONS' => tr('Actions'),
+	'TR_ADD_DOMAIN_ALIAS' => tr('Add domain alias'),
+	'TR_MESSAGE_DELETE_ALIAS' => tr('Are you sure you want to delete the %s domain alias?', '%s'),
+	'TR_MESSAGE_DELETE_ALIAS_ORDER' => tr('Are you sure you want to delete the %s domain alias order?', '%s'),
+	'TR_PROCESSING_DATA' => tr('Processing...')
+));
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e \iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 $resellerId = $_SESSION['user_id'];
 

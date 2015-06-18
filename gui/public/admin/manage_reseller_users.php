@@ -467,32 +467,34 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'move_user' && check_user_d
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/manage_reseller_users.tpl',
-		'page_message' => 'layout',
-		'reseller_list' => 'page',
-		'reseller_item' => 'page',
-		'src_reseller' => 'page',
-		'src_reseller_option' => 'src_reseller',
-		'dst_reseller' => 'page',
-		'dst_reseller_option' => 'dst_reseller'
-	)
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'admin/manage_reseller_users.tpl',
+	'page_message' => 'layout',
+	'reseller_list' => 'page',
+	'reseller_item' => 'page',
+	'src_reseller' => 'page',
+	'src_reseller_option' => 'src_reseller',
+	'dst_reseller' => 'page',
+	'dst_reseller_option' => 'dst_reseller'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Users / Customers Assignment'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
-		'TR_USER_ASSIGNMENT' => tr('User assignment'),
-		'TR_RESELLER_USERS' => tr('Users'),
-		'TR_CUSTOMER_ID' => tr('Customer ID'),
-		'TR_MARK' => tr('Mark'),
-		'TR_USER_NAME' => tr('Username'),
-		'TR_FROM_RESELLER' => tr('From reseller'),
-		'TR_TO_RESELLER' => tr('To reseller'),
-		'TR_MOVE' => tr('Move')));
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tr('Admin / Users / Customers Assignment'),
+	'TR_USER_ASSIGNMENT' => tr('User assignment'),
+	'TR_RESELLER_USERS' => tr('Users'),
+	'TR_CUSTOMER_ID' => tr('Customer ID'),
+	'TR_MARK' => tr('Mark'),
+	'TR_USER_NAME' => tr('Username'),
+	'TR_FROM_RESELLER' => tr('From reseller'),
+	'TR_TO_RESELLER' => tr('To reseller'),
+	'TR_MOVE' => tr('Move')
+));
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e \iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 generateNavigation($tpl);
 admin_generateCustomersTable($tpl);

@@ -301,36 +301,36 @@ check_login('user');
 
 if (customerHasMailOrExtMailFeatures()) {
 	$tpl = new iMSCP_pTemplate();
-	$tpl->define_dynamic(
-		array(
-			'layout' => 'shared/layouts/ui.tpl',
-			'page' => 'client/mail_accounts.tpl',
-			'page_message' => 'layout',
-			'mail_feature' => 'page',
-			'mail_items' => 'mail_feature',
-			'mail_item' => 'mail_items',
-			'auto_respond_item' => 'mail_item',
-			'auto_respond_edit_link' => 'auto_respond_item'
-		)
-	);
+	$tpl->define_dynamic(array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/mail_accounts.tpl',
+		'page_message' => 'layout',
+		'mail_feature' => 'page',
+		'mail_items' => 'mail_feature',
+		'mail_item' => 'mail_items',
+		'auto_respond_item' => 'mail_item',
+		'auto_respond_edit_link' => 'auto_respond_item'
+	));
 
-	$tpl->assign(
-		array(
-			'TR_PAGE_TITLE' => tr('Client / Email / Overview'),
-			'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
-			'TR_MAIL' => tr('Mail'),
-			'TR_TYPE' => tr('Type'),
-			'TR_STATUS' => tr('Status'),
-			'TR_QUOTA' => tr('Quota'),
-			'TR_ACTIONS' => tr('Actions'),
-			'TR_AUTORESPOND' => tr('Auto responder'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'),
-			'TR_MESSAGE_DELETE_SELECTED_ITEMS' => tr('Are you sure you want to delete all selected items?'),
-			'TR_DELETE_SELECTED_ITEMS' => tr('Delete selected items'),
-			'TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR' => tr('You must select a least one item to delete')
-		)
-	);
+	$tpl->assign(array(
+		'TR_PAGE_TITLE' => tr('Client / Email / Overview'),
+		'TR_MAIL' => tr('Mail'),
+		'TR_TYPE' => tr('Type'),
+		'TR_STATUS' => tr('Status'),
+		'TR_QUOTA' => tr('Quota'),
+		'TR_ACTIONS' => tr('Actions'),
+		'TR_AUTORESPOND' => tr('Auto responder'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'),
+		'TR_MESSAGE_DELETE_SELECTED_ITEMS' => tr('Are you sure you want to delete all selected items?'),
+		'TR_DELETE_SELECTED_ITEMS' => tr('Delete selected items'),
+		'TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR' => tr('You must select a least one item to delete')
+	));
+
+	iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+		/** @var $e \iMSCP_Events_Event */
+		$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+	});
 
 	client_generatePage($tpl);
 	generateNavigation($tpl);

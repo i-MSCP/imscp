@@ -418,9 +418,9 @@
 
 		$('#reseller_ips_table').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"bStateSave": true,
-				"pagingType": "simple"
+				language: imscp_i18n.core.dataTable,
+				stateSave: true,
+				pagingType: "simple"
 			}
 		);
 	});

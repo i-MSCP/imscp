@@ -5,7 +5,10 @@
 
 		$.each(errFieldsStack, function () { $('#' + this).css('border-color', '#ca1d11'); });
 
-		$(".datatable").dataTable({ oLanguage:{DATATABLE_TRANSLATIONS}, "pagingType": "simple" });
+		$(".datatable").dataTable({
+			language: imscp_i18n.core.dataTable,
+			pagingType: "simple"
+		});
 	});
 
 	function action_delete(url, subject) {

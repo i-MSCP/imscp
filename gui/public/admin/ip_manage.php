@@ -105,9 +105,6 @@ function _client_generateIpsList($tpl)
  */
 function _client_generateIpAction($ipId, $status)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if ($status == 'ok') {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ipId);
 	} elseif($status == 'todelete') {
@@ -252,26 +249,27 @@ $tpl->define_dynamic(
 	)
 );
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / IP Addresses Management'),
-		'TR_IP' => tr('IP Address'),
-		'TR_ACTION' => tr('Action'),
-		'TR_NETWORK_CARD' => tr('Network interface'),
-		'TR_ADD' => tr('Add'),
-        'TR_CANCEL' => tr('Cancel'),
-		'TR_CONFIGURED_IPS' => tr('IP addresses under control of i-MSCP'),
-		'TR_ADD_NEW_IP' => tr('Add new IP address'),
-		'TR_IP_DATA' => tr('IP address data'),
-		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete this IP: %s?', '%s')),
-		'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', '%s')),
-		'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
-			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]',
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
-		'TR_TIP' => tr('This interface allow to add or remove IP addresses. IP addresses listed below are already under the control of i-MSCP. IP addresses which are added through this interface will be automatically added into the i-MSCP database, and will be available for assignment to one or many of your resellers. If an IP address is not already configured on the system, it will be attached to the selected network interface.')
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tr('Admin / Settings / IP Addresses Management'),
+	'TR_IP' => tr('IP Address'),
+	'TR_ACTION' => tr('Action'),
+	'TR_NETWORK_CARD' => tr('Network interface'),
+	'TR_ADD' => tr('Add'),
+	'TR_CANCEL' => tr('Cancel'),
+	'TR_CONFIGURED_IPS' => tr('IP addresses under control of i-MSCP'),
+	'TR_ADD_NEW_IP' => tr('Add new IP address'),
+	'TR_IP_DATA' => tr('IP address data'),
+	'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete this IP: %s?', '%s')),
+	'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', '%s')),
+	'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
+		? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]',
+	'TR_TIP' => tr('This interface allow to add or remove IP addresses. IP addresses listed below are already under the control of i-MSCP. IP addresses which are added through this interface will be automatically added into the i-MSCP database, and will be available for assignment to one or many of your resellers. If an IP address is not already configured on the system, it will be attached to the selected network interface.')
+));
 
-	)
-);
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e \iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 generateNavigation($tpl);
 client_generatePage($tpl);

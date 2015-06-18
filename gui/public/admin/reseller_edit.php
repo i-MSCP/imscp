@@ -196,29 +196,29 @@ function _admin_generateIpListForm($tpl, &$data)
 	$assignedTranslation = tr("Already in use");
 	$unusedTranslation = tr("Not used");
 
-	$tpl->assign(
-		array(
-			'TR_IP_ADDRESS' => tr('IP address'),
-			'TR_IP_LABEL' => tr('Label'),
-			'TR_ASSIGN' => tr('Assign'),
-			'TR_STATUS' => tr('Usage status'),
-			'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
-		)
-	);
+	$tpl->assign(array(
+		'TR_IP_ADDRESS' => tr('IP address'),
+		'TR_IP_LABEL' => tr('Label'),
+		'TR_ASSIGN' => tr('Assign'),
+		'TR_STATUS' => tr('Usage status')
+	));
+
+	iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+		/** @var $e \iMSCP_Events_Event */
+		$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+	});
 
 	foreach ($data['server_ips'] as $ipData) {
 		$resellerHasIp = in_array($ipData['ip_id'], $data['reseller_ips']);
 		$isUsedIp = in_array($ipData['ip_id'], $data['used_ips']);
 
-		$tpl->assign(
-			array(
-				'IP_ID' => tohtml($ipData['ip_id']),
-				'IP_NUMBER' => tohtml($ipData['ip_number']),
-				'IP_ASSIGNED' => ($resellerHasIp) ? $htmlChecked : '',
-				'IP_STATUS' => ($isUsedIp) ? $assignedTranslation : $unusedTranslation,
-				'IP_READONLY' => ($isUsedIp) ? $htmlDisabled : ''
-			)
-		);
+		$tpl->assign(array(
+			'IP_ID' => tohtml($ipData['ip_id']),
+			'IP_NUMBER' => tohtml($ipData['ip_number']),
+			'IP_ASSIGNED' => ($resellerHasIp) ? $htmlChecked : '',
+			'IP_STATUS' => ($isUsedIp) ? $assignedTranslation : $unusedTranslation,
+			'IP_READONLY' => ($isUsedIp) ? $htmlDisabled : ''
+		));
 
 		$tpl->parse('IP_BLOCK', '.ip_block');
 	}

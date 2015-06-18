@@ -68,28 +68,29 @@ if ($use_webdepot) {
 
 	$packages_cnt = get_webdepot_software_list($tpl, $_SESSION['user_id']);
 
-	$tpl->assign(
-		array(
-			'TR_WEBDEPOT' => tr('i-MSCP Web software repository'),
-			'TR_APPLY_CHANGES' => tr('Update from Web software repository'),
-			'TR_PACKAGE_TITLE' => tr('Package name'),
-			'TR_PACKAGE_INSTALL_TYPE' => tr('Package install type'),
-			'TR_PACKAGE_VERSION' => tr('Package version'),
-			'TR_PACKAGE_LANGUAGE' => tr('Package language'),
-			'TR_PACKAGE_TYPE' => tr('Package type'),
-			'TR_PACKAGE_VENDOR_HP' => tr('Package vendor HP'),
-			'TR_PACKAGE_ACTION' => tr('Package actions'),
-			'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Total packages in Web software repository'),
-			'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt,
-			'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
-		)
-	);
+	$tpl->assign(array(
+		'TR_WEBDEPOT' => tr('i-MSCP Web software repository'),
+		'TR_APPLY_CHANGES' => tr('Update from Web software repository'),
+		'TR_PACKAGE_TITLE' => tr('Package name'),
+		'TR_PACKAGE_INSTALL_TYPE' => tr('Package install type'),
+		'TR_PACKAGE_VERSION' => tr('Package version'),
+		'TR_PACKAGE_LANGUAGE' => tr('Package language'),
+		'TR_PACKAGE_TYPE' => tr('Package type'),
+		'TR_PACKAGE_VENDOR_HP' => tr('Package vendor HP'),
+		'TR_PACKAGE_ACTION' => tr('Package actions'),
+		'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Total packages in Web software repository'),
+		'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt
+	));
+
+	iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+		/** @var $e \iMSCP_Events_Event */
+		$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+	});
 
 	$tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
 } else {
 	$tpl->assign('WEBDEPOT_LIST', '');
 }
-
 
 if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['send_software_upload_token']) {
 	$success = 1;

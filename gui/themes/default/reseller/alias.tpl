@@ -26,7 +26,7 @@
 <script>
 	$(function() {
 		var oTable = $(".datatable").dataTable({
-			language: {DATATABLE_TRANSLATIONS},
+			language: imscp_i18n.core.dataTable,
 			displayLength: 10,
 			processing: true,
 			serverSide: true,

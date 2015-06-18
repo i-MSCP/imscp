@@ -41,26 +41,26 @@ check_login('admin');
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/server_status.tpl',
-		'page_message' => 'layout',
-		'service_status' => 'page'
-	)
-);
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'admin/server_status.tpl',
+	'page_message' => 'layout',
+	'service_status' => 'page'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Admin / General / Services Status'),
-		'TR_SERVICE' => tr('Service Name'),
-		'TR_IP' => tr('IP Address'),
-		'TR_PORT' => tr('Port'),
-		'TR_STATUS' => tr('Status'),
-		'TR_SERVER_STATUS' => tr('Server status'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
-	)
-);
+$tpl->assign(array(
+	'TR_PAGE_TITLE' => tr('Admin / General / Services Status'),
+	'TR_SERVICE' => tr('Service Name'),
+	'TR_IP' => tr('IP Address'),
+	'TR_PORT' => tr('Port'),
+	'TR_STATUS' => tr('Status'),
+	'TR_SERVER_STATUS' => tr('Server status')
+));
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e \iMSCP_Events_Event */
+	$e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

@@ -103,34 +103,28 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 check_login('reseller');
 
 if (resellerHasCustomers()) {
-
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	/** @var $tpl iMSCP_pTemplate */
 	$tpl = new iMSCP_pTemplate();
 
-	$tpl->define_dynamic(
-		array(
-			'layout' => 'shared/layouts/ui.tpl',
-			'page' => 'reseller/ip_usage.tpl',
-			'page_message' => 'layout',
-			'ip_row' => 'page',
-			'domain_row' => 'ip_row'
-		)
-	);
+	$tpl->define_dynamic(array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'reseller/ip_usage.tpl',
+		'page_message' => 'layout',
+		'ip_row' => 'page',
+		'domain_row' => 'ip_row'
+	));
 
 	$reseller_id = $_SESSION['user_id'];
 
-	$tpl->assign(
-		array(
-			'TR_PAGE_TITLE' => tr('Reseller / Statistics / IP Usage'),
-			'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
-			'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
-			'TR_DOMAIN_NAME' => tr('Domain Name'),
-			'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
-		)
-	);
+	$tpl->assign(array(
+		'TR_PAGE_TITLE' => tr('Reseller / Statistics / IP Usage'),
+		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
+		'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
+		'TR_DOMAIN_NAME' => tr('Domain Name')
+	));
 
 	generateNavigation($tpl);
 	generatePageMessage($tpl);
