@@ -22,7 +22,7 @@ DATABASE
 	Fixed: Possible duplicate entries when adding UNIQUE constraints
 
 FRONTEND
-	Changed: Increased number of items to display by default in data tables ( previous value was 5, it is now 10)
+	Changed: Increased number of items to display by default in data tables (previous value was 5, it is now 10)
 
 YOUTRACK
 	Fixed: #IP-1358: Admin's tickets can't be deleted due to an additional quotation-mark in the template
