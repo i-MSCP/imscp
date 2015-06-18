@@ -1,10 +1,8 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
+<script>
 	function action_delete(subject) {
 		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 	}
-	/* ]]> */
 </script>
 
 <h2>{TR_DOWNLOAD_DIRECTION}</h2>

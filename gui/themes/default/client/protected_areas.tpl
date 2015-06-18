@@ -1,10 +1,8 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
+<script>
 	function action_delete(url, subject) {
 		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 	}
-	/*]]>*/
 </script>
 
 <!-- BDP: protected_areas -->

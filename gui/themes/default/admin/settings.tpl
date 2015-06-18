@@ -365,7 +365,7 @@
 </form>
 
 <script>
-	$(document).ready(function () {
+	$(function () {
 		$("#lostpassword,#passwd_strong,#bruteforce").change(function () {
 			if($(this).val() == '1') {
 				$(this).parents().nextAll(".display").show();

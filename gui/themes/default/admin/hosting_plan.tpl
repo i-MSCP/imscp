@@ -1,11 +1,9 @@
 
 <!-- BDP hosting_plans_js -->
-<script type="text/javascript">
-	/* <![CDATA[ */
+<script>
 	function action_delete(subject) {
 		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 	}
-	/* ]]> */
 </script>
 <!-- EDP hosting_plans_js -->
 

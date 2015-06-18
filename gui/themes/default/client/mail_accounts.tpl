@@ -1,15 +1,14 @@
 
 <!-- BDP: mail_feature -->
-<script type="text/javascript">
-	/* <![CDATA[ */
-	$(document).ready(function () {
+<script>
+	$(function () {
 		var oTable = $('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true,
-				"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 5 ] } ],
-				"pagingType": "simple"
+				language: {DATATABLE_TRANSLATIONS},
+				displayLength: 10,
+				stateSave: true,
+				columnDefs: [ { sortable: false, targets: [ 5 ] } ],
+				pagingType: "simple"
 			}
 		);
 
@@ -55,7 +54,6 @@
 	function action_delete(subject) {
 		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 	}
-	/* ]]> */
 </script>
 
 <!-- BDP: mail_items -->

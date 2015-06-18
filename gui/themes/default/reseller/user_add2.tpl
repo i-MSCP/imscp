@@ -1,6 +1,6 @@
 
 <script>
-	$(document).ready(function () {
+	$(function () {
 		<!-- BDP: php_editor_js -->
 		// PHP Editor settings dialog
 		$.ui.dialog.prototype._focusTabbable = function(){ };

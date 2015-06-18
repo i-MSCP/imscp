@@ -24,22 +24,22 @@
 <!-- EDP: als_add_button -->
 
 <script>
-	$(document).ready(function() {
+	$(function() {
 		var oTable = $(".datatable").dataTable({
-			oLanguage: {DATATABLE_TRANSLATIONS},
-			iDisplayLength: 5,
-			bProcessing: true,
-			bServerSide: true,
-			sAjaxSource: "/reseller/alias.php?action=get_table",
-			bStateSave: true,
-			"pagingType": "simple",
-			aoColumnDefs: [
-				{ bSortable: false, bSearchable: false, aTargets: [ 4 ] },
-				{ bSortable: false, bSearchable: false, aTargets: [ 5 ] }
+			language: {DATATABLE_TRANSLATIONS},
+			displayLength: 10,
+			processing: true,
+			serverSide: true,
+			ajaxSource: "/reseller/alias.php?action=get_table",
+			stateSave: true,
+			pagingType: "simple",
+			columnDefs: [
+				{ sortable: false, searchable: false, targets: [ 4 ] },
+				{ sortable: false, searchable: false, targets: [ 5 ] }
 			],
-			aoColumns: [
-				{ mData: "alias_name" }, { mData: "alias_mount" }, { mData: "url_forward" }, { mData: "admin_name" },
-				{ mData: "alias_status" }, { mData: "actions" }
+			columns: [
+				{ data: "alias_name" }, { data: "alias_mount" }, { data: "url_forward" }, { data: "admin_name" },
+				{ data: "alias_status" }, { data: "actions" }
 			],
 			fnServerData: function (sSource, aoData, fnCallback) {
 				$.ajax( {

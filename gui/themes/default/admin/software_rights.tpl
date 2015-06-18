@@ -1,11 +1,10 @@
 
-<script language="JavaScript" type="text/JavaScript">
-	/*<![CDATA[*/
+<script>
 	function action_remove_right() {
 		return confirm("{TR_MESSAGE_REMOVE}");
 	}
-	/*]]>*/
 </script>
+
 <table>
 	<!-- BDP: no_select_reseller -->
 	<tr>

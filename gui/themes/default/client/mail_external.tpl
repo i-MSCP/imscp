@@ -56,7 +56,7 @@
 		$('.datatable').dataTable(
 			{
 				language: imscp_i18n.core.datatable,
-				displayLength: 5,
+				displayLength: 10,
 				stateSave: true,
 				pagingType: "simple"
 			}

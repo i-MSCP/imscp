@@ -1,7 +1,6 @@
 
-<script language="JavaScript" type="text/JavaScript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		$("input[name='shared_mount_point']").change(
 			function () {
 				if ($("#shared_mount_point_no").is(':checked')) {
@@ -22,7 +21,6 @@
 			}
 		).trigger('change');
 	});
-	/*]]>*/
 </script>
 
 <form name="add_subdomain_frm" method="post" action="subdomain_add.php">

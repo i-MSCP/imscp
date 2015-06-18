@@ -1,7 +1,6 @@
 
-<script language="JavaScript" type="text/JavaScript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		$("input[name='url_forwarding']").change(
 			function () {
 				if ($("#url_forwarding_no").is(':checked')) {
@@ -12,7 +11,6 @@
 			}
 		).trigger('change');
 	});
-	/*]]>*/
 </script>
 
 <form name="edit_subdomain_frm" method="post" action="subdomain_edit.php?id={SUBDOMAIN_ID}&amp;type={SUBDOMAIN_TYPE}">

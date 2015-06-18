@@ -1,7 +1,6 @@
 
-<script language="JavaScript" type="text/JavaScript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		$('#datepicker').datepicker().change(
 			function () {
 				if ($(this).val() != '') {
@@ -21,7 +20,6 @@
 			}
 		});
 	});
-	/*]]>*/
 </script>
 
 <!-- BDP: add_customer_block -->

@@ -1,7 +1,7 @@
 
 <!-- BDP: php_editor_js -->
 <script>
-	$(document).ready(function () {
+	$(function () {
 		$.ui.dialog.prototype._focusTabbable = function(){ };
 		$('#php_editor_dialog').dialog({
 			hide: 'blind',

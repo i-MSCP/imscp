@@ -1,7 +1,6 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-	$(document).ready(function () {
+<script>
+	$(function () {
 		$("#normal, #forward").on('change', function() {
 			if($(this).val() == 'normal' && $(this).is(':checked')) {
 				$("#mail_id").prop('disabled', false);
@@ -12,7 +11,6 @@
 			}
 		}).trigger('change');
 	});
-	/* ]]> */
 </script>
 
 <form name="create_catchall_frm" method="post" action="mail_catchall_add.php">

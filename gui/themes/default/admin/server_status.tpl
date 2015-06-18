@@ -1,12 +1,11 @@
-<script type="text/javascript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true,
-				"pagingType": "simple"
+				language: {DATATABLE_TRANSLATIONS},
+				displayLength: 10,
+				stateSave: true,
+				pagingType: "simple"
 			}
 		);
 
@@ -18,7 +17,6 @@
 			$('input[name=uaction]').val('reset');
 		});
 	});
-	/*]]>*/
 </script>
 
 <!-- BDP: props_list -->

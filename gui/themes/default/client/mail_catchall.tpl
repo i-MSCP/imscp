@@ -1,6 +1,5 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
+<script>
 	function action(action, mailacc) {
 		if (action == 'create') {
 			return true;
@@ -11,17 +10,16 @@
 		}
 	}
 
-	$(document).ready(function () {
+	$(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true,
-				"pagingType": "simple"
+				language: {DATATABLE_TRANSLATIONS},
+				displayLength: 10,
+				stateSave: true,
+				pagingType: "simple"
 			}
 		);
 	});
-	/* ]]> */
 </script>
 
 <table class="firstColFixed datatable">

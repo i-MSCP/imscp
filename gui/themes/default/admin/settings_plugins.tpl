@@ -105,7 +105,7 @@
 		$dataTable = $(".datatable").dataTable(
 			{
 				language: imscp_i18n.admin.datatable,
-				displayLength: 5,
+				displayLength: 10,
 				stateSave: true,
 				pagingType: "simple"
 			}

@@ -112,7 +112,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
 	<script src="/themes/default/assets/js/jquery/jquery-ui.js"></script>
 	<script src="/themes/default/assets/js/imscp.js"></script>
 	<script>
-		$(document).ready(function () {
+		$(function () {
 			iMSCP.initApplication('simple');
 		});
 	</script>

@@ -1,16 +1,14 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"bStateSave": true,
-				"pagingType": "simple"
+				Language: {DATATABLE_TRANSLATIONS},
+				StateSave: true,
+				pagingType: "simple"
 			}
 		);
 	});
-	/*]]>*/
 </script>
 
 <form action="manage_reseller_users.php" method="post" name="admin_user_assignment" id="admin_user_assignment">

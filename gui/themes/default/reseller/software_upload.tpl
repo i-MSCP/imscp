@@ -124,13 +124,13 @@
 <!-- EDP: webdepot_list -->
 
 <script>
-	$(document).ready(function () {
+	$(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true,
-				"pagingType": "simple"
+				language: {DATATABLE_TRANSLATIONS},
+				displayLength: 10,
+				dtateSave: true,
+				pagingType: "simple"
 			}
 		);
 	});

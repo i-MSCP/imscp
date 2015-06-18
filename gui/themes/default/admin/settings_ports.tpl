@@ -1,6 +1,5 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
+<script>
 	function action_delete(service) {
 		return confirm(sprintf("{TR_MESSAGE_DELETE}", service));
 	}
@@ -19,14 +18,14 @@
 
 	var error_fields_ids = {ERROR_FIELDS_IDS};
 
-	$(document).ready(function () {
+	$(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true,
-				"bFilter": false,
-				"pagingType": "simple"
+				language: {DATATABLE_TRANSLATIONS},
+				displayLength: 10,
+				stateSave: true,
+				filter: false,
+				pagingType: "simple"
 			}
 		);
 
@@ -36,7 +35,6 @@
 
 		$('input[name=submitForReset]').click( function () { $('input[name=uaction]').val('reset'); } );
 	});
-	/*]]>*/
 </script>
 
 <!-- start form edit -->

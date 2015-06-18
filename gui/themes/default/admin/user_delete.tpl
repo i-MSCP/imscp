@@ -1,6 +1,6 @@
 
 <script>
-	$(document).ready(function () {
+	$(function () {
 		$("#delete").on('change', function() {
 			if($(this).is(':checked')) {
 				$("#submit").show();

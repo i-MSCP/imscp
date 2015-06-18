@@ -1,7 +1,6 @@
 
-<script type="text/javascript">
-/* <![CDATA[ */
-$(document).ready(function () {
+<script>
+$(function () {
 	var extMailTable = $("#ext_mail_table");
 	var entries = extMailTable.find('.entry');
 	var initialEntries = entries.clone();
@@ -68,7 +67,6 @@ $(document).ready(function () {
 
 	});
 });
-/* ]]> */
 </script>
 
 <form name="edit_external_mail_server" method="post" action="mail_external_edit.php?item={ITEM}">

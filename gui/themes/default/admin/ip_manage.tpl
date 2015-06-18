@@ -1,16 +1,17 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		errFieldsStack = {ERR_FIELDS_STACK};
+
 		$.each(errFieldsStack, function () {
 			$("#" + this).css('border-color', '#ca1d11');
 		});
+
 		$('.datatable').dataTable(
 				{
-					"oLanguage": {DATATABLE_TRANSLATIONS},
-					"bStateSave": true,
-					"pagingType": "simple"
+					language: {DATATABLE_TRANSLATIONS},
+					stateSave: true,
+					pagingType: "simple"
 				}
 		);
 
@@ -27,7 +28,6 @@
 	function confirm_deletion(ip_address) {
 		return confirm(sprintf({TR_MESSAGE_DELETE}, ip_address));
 	}
-	/*]]>*/
 </script>
 
 <p class="hint" style="font-variant: small-caps;font-size: small;">{TR_TIP}</p>

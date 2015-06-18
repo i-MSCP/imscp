@@ -1,13 +1,12 @@
 
-<script language="JavaScript" type="text/JavaScript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true,
-				"pagingType": "simple"
+				language: {DATATABLE_TRANSLATIONS},
+				displayLength: 10,
+				stateSave: true,
+				pagingType: "simple"
 			}
 		);
 	});
@@ -34,8 +33,8 @@
 
 		return true;
 	}
-	/*]]>*/
 </script>
+
 <form action="software_manage.php" name="sw_upload_form" id="sw_upload_form" method="post"
 	  enctype="multipart/form-data">
 	<table class="firstColFixed">

@@ -1,7 +1,6 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
-	$(document).ready(function(){
+<script>
+	$(function(){
 		$("tbody tr:nth-child(odd)").removeClass('even').addClass('odd');
 		$("tbody tr:nth-child(even)").removeClass('odd').addClass('even');
 	});
@@ -11,7 +10,6 @@
 		window.parent.$("#dial_ftp_dir").dialog('close');
 		return false;
 	}
-	/*]]>*/
 </script>
 
 <!-- BDP: ftp_chooser -->

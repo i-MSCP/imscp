@@ -1,13 +1,12 @@
 
-<script language="JavaScript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true,
-				"pagingType": "simple"
+				language: {DATATABLE_TRANSLATIONS},
+				displayLength: 10,
+				stateSave: true,
+				pagingType: "simple"
 			}
 		);
 	});
@@ -41,7 +40,6 @@
 
 		return true;
 	}
-	/*]]>*/
 </script>
 
 <!-- BDP: no_software_support -->

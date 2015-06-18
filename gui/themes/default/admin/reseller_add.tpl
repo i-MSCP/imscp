@@ -350,7 +350,7 @@
 </form>
 
 <script>
-	$(document).ready(function () {
+	$(function () {
 		var errFieldsStack = {ERR_FIELDS_STACK};
 		$.each(errFieldsStack, function () { $('#' + this).css('border-color', '#ca1d11'); });
 

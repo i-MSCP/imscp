@@ -3,11 +3,11 @@
 	$(function() {
 		$('.datatable').dataTable(
 				{
-					"language": imscp_i18n.core.dataTable,
-					"stateSave": true,
-					"pagingType": "simple",
-					"columnDefs": [
-						{ "type": "natural", "targets": [ 1 ] }
+					language: imscp_i18n.core.dataTable,
+					stateSave: true,
+					pagingType: "simple",
+					columnDefs: [
+						{ type: "natural", targets: [ 1 ] }
 					]
 				}
 		);

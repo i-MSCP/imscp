@@ -1,7 +1,5 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
-
+<script>
 	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
 	var js_i18n_tr_close = '{TR_CLOSE}';
 
@@ -18,7 +16,6 @@
 		document.forms[0].elements["users[]"].disabled = wath != "user";
 		document.forms[0].elements["groups[]"].disabled = wath == "user";
 	}
-	/* ]]> */
 </script>
 
 <form name="addProtectedAreaFrm" method="post" action="protected_areas_add.php">

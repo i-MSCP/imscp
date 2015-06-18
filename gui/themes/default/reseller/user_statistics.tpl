@@ -72,9 +72,9 @@
 <script>
 	$(function () {
 		$('.datatable').dataTable({
-			"oLanguage": imscp_i18n.core.dataTable,
-			"bStateSave": true,
-			"pagingType": "simple"
+			language: imscp_i18n.core.dataTable,
+			stateSave: true,
+			pagingType: "simple"
 		});
 	});
 </script>

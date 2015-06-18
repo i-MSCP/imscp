@@ -60,7 +60,7 @@
 </form>
 
 <script>
-	$(document).ready(function () {
+	$(function () {
 		$("#normal, #forward, #normal_forward").on('change', function() {
 			if($(this).val() == '1') {
 				if($(this).is(':checked')) {

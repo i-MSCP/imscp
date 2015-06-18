@@ -1,6 +1,5 @@
 
-<script language="JavaScript" type="text/JavaScript">
-	/*<![CDATA[*/
+<script>
 	function action_import() {
 		return confirm("{TR_MESSAGE_IMPORT}");
 	}
@@ -8,8 +7,8 @@
 	function action_delete() {
 		return confirm("{TR_MESSAGE_DELETE}");
 	}
-	/*]]>*/
 </script>
+
 <table>
 	<thead>
 	<tr>

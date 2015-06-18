@@ -1,7 +1,6 @@
 
-<script language="JavaScript" type="text/JavaScript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		$("input[name='shared_mount_point']").change(
 			function () {
 				if ($("#shared_mount_point_no").is(':checked')) {
@@ -41,7 +40,6 @@
 			}
 		);
 	});
-	/*]]>*/
 </script>
 
 <form name="add_domain_alias_frm" method="post" action="alias_add.php">

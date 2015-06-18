@@ -1,6 +1,5 @@
 
-<script type="text/javascript">
-	/* <![CDATA[ */
+<script>
 	function action_delete(subject) {
 		if (subject == '#__all__#') {
 			return confirm("{TR_TICKETS_DELETE_ALL_MESSAGE}");
@@ -8,7 +7,6 @@
 			return confirm(sprintf("{TR_TICKETS_DELETE_MESSAGE}", subject));
 		}
 	}
-	/* ]]> */
 </script>
 
 <!-- BDP: tickets_list -->

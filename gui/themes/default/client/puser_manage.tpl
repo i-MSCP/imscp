@@ -1,5 +1,4 @@
-<script type="text/javascript">
-	/*<![CDATA[*/
+<script>
 	function action_delete(url, subject) {
 		if (confirm(sprintf("{TR_MESSAGE_DELETE}", subject))) {
 			location.href = url;
@@ -7,7 +6,6 @@
 
 		return false;
 	}
-	/*]]>*/
 </script>
 
 <h2 class="groups"><span>{TR_USERS}</span></h2>

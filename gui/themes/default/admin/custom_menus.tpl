@@ -1,7 +1,6 @@
 
-<script type="text/javascript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
+<script>
+	$(function () {
 		var errFieldsStack = {ERR_FIELDS_STACK};
 
 		$.each(errFieldsStack, function () { $('#' + this).css('border-color', '#ca1d11'); });
@@ -12,7 +11,6 @@
 	function action_delete(url, subject) {
 		return confirm(sprintf({TR_MESSAGE_DELETE}, subject));
 	}
-	/*]]>*/
 </script>
 
 <!-- BDP: menus_list_block -->
