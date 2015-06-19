@@ -295,10 +295,6 @@ sub _getHttpdData
 			PHPINI_OPEN_BASEDIR => ($rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'})
 				? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 		};
-
-		if($self->{'subdomain_alias_status'} eq 'todelete') {
-			$self->{'httpd'}->{'SHARED_MOUNT_POINTS'} = [ $self->_getSharedMountPoints() ];
-		}
 	}
 
 	%{$self->{'httpd'}};

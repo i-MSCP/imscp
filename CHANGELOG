@@ -6,6 +6,8 @@ Git 1.2.x
 
 BACKEND
 	Fixed: BASE_SERVER_VHOST placeholder is not replaced in vhost files (httpd server implementations)
+	Fixed: Unable to delete domain alias - Can't locate object method _getSharedMountPoints via package Modules::Alias
+	Fixed: Unable to delete subdomain - Can't locate object method _getSharedMountPoints via package Modules::Subdomain
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.6
