@@ -452,9 +452,7 @@ sub _confirmDistro
 
 \\Z1$distribution $release ($codename) not supported yet\\Zn
 
-We are sorry but the version of your distribution is not supported yet.
-
-You can try to provide your own packages file by putting it into the \\Z4docs/$distribution\\Zn directory.
+We are sorry but your $distribution version is not supported.
 
 Thanks for choosing i-MSCP.
 EOF
