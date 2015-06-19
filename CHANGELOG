@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.2.x
+1.2.7
 ------------------------------------------------------------------------------------------------------------------------
+
+2015-06-19: Laurent Declercq
+	RELEASE i-MSCP 1.2.7
 
 BACKEND
 	Fixed: BASE_SERVER_VHOST placeholder is not replaced in vhost files (httpd server implementations)
