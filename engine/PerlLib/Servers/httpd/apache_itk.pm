@@ -1485,7 +1485,7 @@ sub _init
 	$self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
-	$self->{'tplDir'} = "$self->{'apacheCfgDir'}/parts";
+	$self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
 
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data"; \%c; };
 
@@ -1583,7 +1583,7 @@ sub _addCfg
 
 	for my $template(@templates) {
 		$rs = $self->buildConfFile(
-			"$self->{'tplDir'}/$template->{'tplFile'}",
+			"$self->{'apacheTplDir'}/$template->{'tplFile'}",
 			$data,
 			{ destination => "$self->{'apacheWrkDir'}/$template->{'siteFile'}" }
 		);
@@ -1597,7 +1597,7 @@ sub _addCfg
 	# Build and install custom Apache configuration file
 	unless (-f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf") {
 		$rs = $self->buildConfFile(
-			"$self->{'tplDir'}/custom.conf.tpl",
+			"$self->{'apacheTplDir'}/custom.conf.tpl",
 			$data,
 			{ destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
 		);
