@@ -1520,7 +1520,7 @@ sub _addCfg
 	$self->setData($data);
 	$self->setData(
 		{
-			TMPDIR => $data->{'WEB_DIR'} . '/phptmp',
+			TMPDIR => $data->{'HOME_DIR'} . '/phptmp',
 			EMAIL_DOMAIN => $data->{'DOMAIN_NAME'}
 		}
 	);

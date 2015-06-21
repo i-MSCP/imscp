@@ -7,6 +7,10 @@ Git 1.2.x
 FRONTEND
 	Fixed: Domain limit is not updated when a domain is being deleted (reseller level)
 
+
+YOUTRACK
+	Fixed #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files
+
 ------------------------------------------------------------------------------------------------------------------------
 1.2.8
 ------------------------------------------------------------------------------------------------------------------------
