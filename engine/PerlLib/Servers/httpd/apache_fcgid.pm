@@ -323,22 +323,22 @@ sub disableDmn
 		}
 	);
 
-	my @configTpls = ('domain_disabled.tpl');
+	my %configTpls = ( '' => 'domain_disabled.tpl' );
 
 	if($data->{'SSL_SUPPORT'}) {
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
-		push @configTpls, 'domain_disabled_ssl.tpl';
+		$configTpls{'_ssl'} =  'domain_disabled_ssl.tpl';
 	}
 
-	for my $configTpl(@configTpls) {
-		my $conffile = basename($configTpl, '.tpl') . '.conf';
-
+	for my $configTplType(keys %configTpls) {
 		$rs = $self->buildConfFile(
-			"$self->{'apacheTplDir'}/$configTpl", $data, { destination => "$self->{'apacheWrkDir'}/$conffile" }
+			"$self->{'apacheTplDir'}/$configTpls{$configTplType}",
+			$data,
+			{ destination => "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}$configTplType.conf" }
 		);
 		return $rs if $rs;
 
-		$rs = $self->installConfFile($conffile);
+		$rs = $self->installConfFile("$data->{'DOMAIN_NAME'}$configTplType.conf");
 		return $rs if $rs;
 	}
 
