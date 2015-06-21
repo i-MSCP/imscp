@@ -356,6 +356,61 @@ function translate_dmn_status($status)
 }
 
 /**
+ * Recalculates limits for the given reseller
+ *
+ * Important:
+ *
+ * This is not based on the objects consumed by customers. This is based on objects assigned by the reseller to its
+ * customers.
+ *
+ * @param int $resellerId unique reseller identifier
+ * @return void
+ */
+function update_reseller_c_props($resellerId)
+{
+	exec_query(
+		"
+			UPDATE
+				reseller_props AS t1
+			INNER JOIN (
+				SELECT
+					COUNT(domain_id) AS dmn_count,
+					IFNULL(SUM(IF(domain_subd_limit >= 0, domain_subd_limit, 0)), 0) AS sub_count,
+					IFNULL(SUM(IF(domain_alias_limit >= 0, domain_alias_limit, 0)), 0) AS als_limit,
+					IFNULL(SUM(IF(domain_mailacc_limit >= 0, domain_mailacc_limit, 0)), 0) AS mail_limit,
+					IFNULL(SUM(IF(domain_ftpacc_limit >= 0, domain_ftpacc_limit, 0)), 0) AS ftp_limit,
+					IFNULL(SUM(IF(domain_sqld_limit >= 0, domain_sqld_limit, 0)), 0) AS sqld_limit,
+					IFNULL(SUM(IF(domain_sqlu_limit >= 0, domain_sqlu_limit, 0)), 0) AS sqlu_limit,
+					IFNULL(SUM(domain_disk_limit), 0) AS disk_limit,
+					IFNULL(SUM(domain_traffic_limit), 0) AS traffic_limit,
+					created_by
+				FROM
+					domain
+				LEFT JOIN
+					admin ON(domain_admin_id = admin_id)
+				WHERE
+					domain_status <> 'todelete'
+				AND
+					created_by = :reseller_id
+			) as t2
+			SET
+				t1.current_dmn_cnt = t2.dmn_count,
+				t1.current_sub_cnt = t2.sub_count,
+				t1.current_als_cnt = t2.als_limit,
+				t1.current_mail_cnt = t2.mail_limit,
+				t1.current_ftp_cnt = t2.ftp_limit,
+				t1.current_sql_db_cnt = t2.sqld_limit,
+				t1.current_sql_user_cnt = t2.sqlu_limit,
+				t1.current_disk_amnt = t2.disk_limit,
+				t1.current_traff_amnt = t2.traffic_limit
+			WHERE
+				t1.reseller_id = :reseller_id
+		",
+		array('reseller_id' => $resellerId)
+	);
+}
+
+/**
  * Updates customer limits/features
  *
  * @param int $domainId Domain unique identifier
@@ -460,20 +515,6 @@ function update_user_props($domainId, $props)
 			)
 		);
 	}
-}
-*/
-
-/**
- * Updates dommain expiration date
- *
- * @param  int $user_id User unique identifier
- * @param  int $domain_new_expire New expiration date
- * @return void
- */
-/*
-function update_expire_date($user_id, $domain_new_expire)
-{
-	exec_query("UPDATE `domain` SET `domain_expires` = ? WHERE `domain_id` = ?", array($domain_new_expire, $user_id));
 }
 */
 
@@ -883,7 +924,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
 		// Schedule Domain aliases deletion
 		exec_query(
-			'UPDATE domain_aliasses SET alias_status =  ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId)
+			'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId)
 		);
 
 		// Schedule domain's subdomains deletion

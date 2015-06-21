@@ -25,12 +25,12 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
 /**
- * Generates support questions notice for reseller.
+ * Generates support questions notice for reseller
  *
  * Notice reseller about any new support questions and answers.
  *
@@ -38,24 +38,25 @@
  */
 function reseller_generateSupportQuestionsMessage()
 {
-	$query = "
-        SELECT
-            count(`ticket_id`) `nbQuestions`
-        FROM
-            `tickets`
-        WHERE
-            `ticket_to` = ?
-        AND
-            `ticket_status` IN (1, 4)
-        AND
-            `ticket_reply` = 0
-    ";
-	$stmt = exec_query($query, $_SESSION['user_id']);
+	$stmt = exec_query(
+		'
+			SELECT
+				count(ticket_id) nb_tickets
+			FROM
+				tickets
+			WHERE
+				ticket_to = ?
+			AND
+				ticket_status IN (1, 4)
+			AND
+				ticket_reply = 0
+		',
+		$_SESSION['user_id']
+	);
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-	$nbQuestions = $stmt->fields['nbQuestions'];
-
-	if ($nbQuestions != 0) {
-		set_page_message(tr('You have received %s new support ticket(s).', '<strong>' . $nbQuestions . '</strong>'), 'info');
+	if ($row['nb_tickets'] > 0) {
+		set_page_message(tr('You have received %s new support ticket(s).', '<strong>' . $row['nb_tickets'] . '</strong>'), 'info');
 	}
 }
 
@@ -66,37 +67,32 @@ function reseller_generateSupportQuestionsMessage()
  */
 function reseller_generateOrdersAliasesMessage()
 {
-	$query = "
-		SELECT
-			COUNT(alias_id) AS nbOrdersAliases
-		FROM
-			domain_aliasses
-		INNER JOIN
-			domain USING(domain_id)
-		INNER JOIN
-			admin ON(admin_id = domain_admin_id)
-		WHERE
-			alias_status = ?
-		AND
-			created_by = ?
-	";
-	$stmt = exec_query($query, array('ordered', $_SESSION['user_id']));
+	$stmt = exec_query(
+		'
+			SELECT
+				COUNT(alias_id) AS nbOrdersAliases
+			FROM
+				domain_aliasses
+			INNER JOIN
+				domain USING(domain_id)
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
+			WHERE
+				alias_status = ?
+			AND
+				created_by = ?
+		',
+		array('ordered', $_SESSION['user_id']));
 
 	$nbOrdersAliases = $stmt->fields['nbOrdersAliases'];
 
 	if ($nbOrdersAliases) {
-		set_page_message(
-			tr(
-				'You have %d new domain alias %s.', $nbOrdersAliases,
-				($nbOrdersAliases > 1) ? tr('orders') : tr('order')
-			),
-			'info'
-		);
+		set_page_message(tr('You have %d new domain alias %s.', $nbOrdersAliases, ($nbOrdersAliases > 1) ? tr('orders') : tr('order')), 'info');
 	}
 }
 
 /**
- * Generates traffic usage bar.
+ * Generates traffic usage bar
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $trafficUsageBytes Current traffic usage
@@ -114,12 +110,10 @@ function reseller_generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimi
 		$trafficUsageData = tr('%1$s%% [%2$s of unlimited]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
 	}
 
-	$tpl->assign(
-		array(
-			 'TRAFFIC_USAGE_DATA' => $trafficUsageData,
-			 'TRAFFIC_PERCENT' => $trafficUsagePercent
-		)
-	);
+	$tpl->assign(array(
+		 'TRAFFIC_USAGE_DATA' => $trafficUsageData,
+		 'TRAFFIC_PERCENT' => $trafficUsagePercent
+	));
 }
 
 /**
@@ -141,16 +135,14 @@ function reseller_generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLim
 		$diskUsageData = tr('%1$s%% [%2$s of unlimited]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes));
 	}
 
-	$tpl->assign(
-		array(
-			 'DISK_USAGE_DATA' => $diskUsageData,
-			 'DISK_PERCENT' => $diskspaceUsagePercent
-		)
-	);
+	$tpl->assign(array(
+		 'DISK_USAGE_DATA' => $diskUsageData,
+		 'DISK_PERCENT' => $diskspaceUsagePercent
+	));
 }
 
 /**
- * Generates page data.
+ * Generates page data
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $resellerId Reseller unique identifier
@@ -165,7 +157,7 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 		$udmnCurrent, , , $usubCurrent, , , $ualsCurrent, , , $umailCurrent, , ,
 		$uftpCurrent, , , $usqlDbCurrent, , , $usqlUserCurrent, , , $utraffCurrent, , ,
 		$udiskCurrent
-		) = generate_reseller_user_props($resellerId);
+	) = generate_reseller_user_props($resellerId);
 
 	// Convert into Mib values
 	$rtraffMax = $resellerProperties['max_traff_amnt'] * 1024 * 1024;
@@ -186,62 +178,62 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 		$tpl->assign('DISK_WARNING_MESSAGE', '');
 	}
 
-	$tpl->assign(
-		array(
-			 'TR_ACCOUNT_OVERVIEW' => tr('Account overview'),
-			 'TR_ACCOUNT_LIMITS' => tr('Account limits'),
-			 'TR_FEATURES' => tr('Features'),
-			 'ACCOUNT_NAME' => tr('Account name'),
-			 'GENERAL_INFO' => tr('General information'),
-			 'DOMAINS' => tr('Domain accounts'),
-			 'SUBDOMAINS' => tr('Subdomains'),
-			 'ALIASES' => tr('Aliases'),
-			 'MAIL_ACCOUNTS' => tr('Email accounts'),
-			 'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-			 'SQL_DATABASES' => tr('SQL databases'),
-			 'SQL_USERS' => tr('SQL users'),
-			 'TRAFFIC' => tr("Traffic"),
-			 'DISK' => tr('Disk'),
-			 'RESELLER_NAME' => tohtml($resellerName),
-			 'DMN_MSG' => ($resellerProperties['max_dmn_cnt'])
-				 ? tr('%1$d / %2$d of %3$d', $udmnCurrent, $resellerProperties['current_dmn_cnt'], $resellerProperties['max_dmn_cnt'])
-				 : tr('%1$d / %2$d of unlimited', $udmnCurrent, $resellerProperties['current_dmn_cnt']),
-			 'SUB_MSG' => ($resellerProperties['max_sub_cnt'] > 0)
-				 ? tr('%1$d / %2$d of %3$d</b>', $usubCurrent, $resellerProperties['current_sub_cnt'], $resellerProperties['max_sub_cnt'])
-				 : (($resellerProperties['max_sub_cnt'] == '-1') ? tr('disabled')
-					 : tr('%1$d / %2$d of unlimited', $usubCurrent, $resellerProperties['current_sub_cnt'])),
-			 'ALS_MSG' => ($resellerProperties['max_als_cnt'] > 0)
-				 ? tr('%1$d / %2$d of %3$d', $ualsCurrent, $resellerProperties['current_als_cnt'], $resellerProperties['max_als_cnt'])
-				 : (($resellerProperties['max_als_cnt'] == '-1') ? tr('disabled')
-					 : tr('%1$d / %2$d of unlimited', $ualsCurrent, $resellerProperties['current_als_cnt'])),
-			 'MAIL_MSG' => ($resellerProperties['max_mail_cnt'] > 0)
-				 ? tr('%1$d / %2$d of %3$d', $umailCurrent, $resellerProperties['current_mail_cnt'], $resellerProperties['max_mail_cnt'])
-				 : (($resellerProperties['max_mail_cnt'] == '-1') ? tr('disabled')
-					 : tr('%1$d / %2$d of unlimited', $umailCurrent, $resellerProperties['current_mail_cnt'])),
-			 'FTP_MSG' => ($resellerProperties['max_ftp_cnt'] > 0)
-				 ? tr('%1$d / %2$d of %3$d', $uftpCurrent, $resellerProperties['current_ftp_cnt'], $resellerProperties['max_ftp_cnt'])
-				 : (($resellerProperties['max_ftp_cnt'] == '-1') ? tr('disabled')
-					 : tr('%1$d / %2$d of unlimited', $uftpCurrent, $resellerProperties['current_ftp_cnt'])),
-			 'SQL_DB_MSG' => ($resellerProperties['max_sql_db_cnt'] > 0)
-				 ? tr('%1$d / %2$d of %3$d', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'], $resellerProperties['max_sql_db_cnt'])
-				 : (($resellerProperties['max_sql_db_cnt'] == '-1') ? tr('disabled')
-					 : tr('%1$d / %2$d of unlimited', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'])),
-			 'SQL_USER_MSG' => ($resellerProperties['max_sql_db_cnt'] > 0)
-				 ? tr('%1$d / %2$d of %3$d', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'], $resellerProperties['max_sql_user_cnt'])
-				 : (($resellerProperties['max_sql_user_cnt'] == '-1') ? tr('disabled')
-					 : tr('%1$d / %2$d of unlimited', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'])),
-			 'TR_SUPPORT' => tr('Support system'),
-			 'SUPPORT_STATUS' => ($resellerProperties['support_system'] == 'yes')
-				 ? '<span style="color:green;">' . tr('Enabled') . '</span>'
-				 : '<span style="color:red;">' . tr('Disabled') . '</span>',
-			 'TR_PHP_EDITOR' => tr('PHP Editor'),
-			 'PHP_EDITOR_STATUS' => ($resellerProperties['php_ini_system'] == 'yes')
-				 ? '<span style="color:green;">' . tr('Enabled') . '</span>'
-				 : '<span style="color:red;">' . tr('Disabled') . '</span>',
-			 'TR_APS' => tr('Software installer'),
-			 'APS_STATUS' => ($resellerProperties['software_allowed'] == 'yes')
-				 ? '<span style="color:green;">' . tr('Enabled') . '</span>'
-				 : '<span style="color:red;">' . tr('Disabled') . '</span>'));
+	$tpl->assign(array(
+		'TR_ACCOUNT_OVERVIEW' => tr('Account overview'),
+		'TR_ACCOUNT_LIMITS' => tr('Account limits'),
+		'TR_FEATURES' => tr('Features'),
+		'ACCOUNT_NAME' => tr('Account name'),
+		'GENERAL_INFO' => tr('General information'),
+		'DOMAINS' => tr('Domain accounts'),
+		'SUBDOMAINS' => tr('Subdomains'),
+		'ALIASES' => tr('Aliases'),
+		'MAIL_ACCOUNTS' => tr('Email accounts'),
+		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
+		'SQL_DATABASES' => tr('SQL databases'),
+		'SQL_USERS' => tr('SQL users'),
+		'TRAFFIC' => tr("Traffic"),
+		'DISK' => tr('Disk'),
+		'RESELLER_NAME' => tohtml($resellerName),
+		'DMN_MSG' => ($resellerProperties['max_dmn_cnt'])
+			? tr('%1$d / %2$d of %3$d', $udmnCurrent, $resellerProperties['current_dmn_cnt'], $resellerProperties['max_dmn_cnt'])
+			: tr('%1$d / %2$d of unlimited', $udmnCurrent, $resellerProperties['current_dmn_cnt']),
+		'SUB_MSG' => ($resellerProperties['max_sub_cnt'] > 0)
+			? tr('%1$d / %2$d of %3$d</b>', $usubCurrent, $resellerProperties['current_sub_cnt'], $resellerProperties['max_sub_cnt'])
+			: (($resellerProperties['max_sub_cnt'] == '-1') ? tr('disabled')
+				: tr('%1$d / %2$d of unlimited', $usubCurrent, $resellerProperties['current_sub_cnt'])),
+		'ALS_MSG' => ($resellerProperties['max_als_cnt'] > 0)
+			? tr('%1$d / %2$d of %3$d', $ualsCurrent, $resellerProperties['current_als_cnt'], $resellerProperties['max_als_cnt'])
+			: (($resellerProperties['max_als_cnt'] == '-1') ? tr('disabled')
+				: tr('%1$d / %2$d of unlimited', $ualsCurrent, $resellerProperties['current_als_cnt'])),
+		'MAIL_MSG' => ($resellerProperties['max_mail_cnt'] > 0)
+			? tr('%1$d / %2$d of %3$d', $umailCurrent, $resellerProperties['current_mail_cnt'], $resellerProperties['max_mail_cnt'])
+			: (($resellerProperties['max_mail_cnt'] == '-1') ? tr('disabled')
+				: tr('%1$d / %2$d of unlimited', $umailCurrent, $resellerProperties['current_mail_cnt'])),
+		'FTP_MSG' => ($resellerProperties['max_ftp_cnt'] > 0)
+			? tr('%1$d / %2$d of %3$d', $uftpCurrent, $resellerProperties['current_ftp_cnt'], $resellerProperties['max_ftp_cnt'])
+			: (($resellerProperties['max_ftp_cnt'] == '-1') ? tr('disabled')
+				: tr('%1$d / %2$d of unlimited', $uftpCurrent, $resellerProperties['current_ftp_cnt'])),
+		'SQL_DB_MSG' => ($resellerProperties['max_sql_db_cnt'] > 0)
+			? tr('%1$d / %2$d of %3$d', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'], $resellerProperties['max_sql_db_cnt'])
+			: (($resellerProperties['max_sql_db_cnt'] == '-1') ? tr('disabled')
+				: tr('%1$d / %2$d of unlimited', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'])),
+		'SQL_USER_MSG' => ($resellerProperties['max_sql_db_cnt'] > 0)
+			? tr('%1$d / %2$d of %3$d', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'], $resellerProperties['max_sql_user_cnt'])
+			: (($resellerProperties['max_sql_user_cnt'] == '-1') ? tr('disabled')
+				: tr('%1$d / %2$d of unlimited', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'])),
+		'TR_SUPPORT' => tr('Support system'),
+		'SUPPORT_STATUS' => ($resellerProperties['support_system'] == 'yes')
+			? '<span style="color:green;">' . tr('Enabled') . '</span>'
+			: '<span style="color:red;">' . tr('Disabled') . '</span>',
+		'TR_PHP_EDITOR' => tr('PHP Editor'),
+		'PHP_EDITOR_STATUS' => ($resellerProperties['php_ini_system'] == 'yes')
+			? '<span style="color:green;">' . tr('Enabled') . '</span>'
+			: '<span style="color:red;">' . tr('Disabled') . '</span>',
+		'TR_APS' => tr('Software installer'),
+		'APS_STATUS' => ($resellerProperties['software_allowed'] == 'yes')
+			? '<span style="color:green;">' . tr('Enabled') . '</span>'
+			: '<span style="color:red;">' . tr('Disabled') . '</span>'
+	));
 }
 
 /************************************************************************************
@@ -251,28 +243,29 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+$eventManager = iMSCP_Events_Aggregator::getInstance();
+$eventManager->dispatch(iMSCP_Events::onResellerScriptStart);
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-check_login('reseller', $cfg->PREVENT_EXTERNAL_LOGIN_RESELLER);
+check_login('reseller', $cfg['PREVENT_EXTERNAL_LOGIN_RESELLER']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/index.tpl',
-		'page_message' => 'layout',
-		'traffic_warning_message' => 'page',
-		'disk_warning_message' => 'page'));
+$tpl->define_dynamic(array(
+	'layout' => 'shared/layouts/ui.tpl',
+	'page' => 'reseller/index.tpl',
+	'page_message' => 'layout',
+	'traffic_warning_message' => 'page',
+	'disk_warning_message' => 'page'
+));
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Reseller / General / Overview'),
-		 'TR_SAVE' => tr('Save'),
-		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
-		 'TR_DISK_USAGE' => tr('Disk usage')));
+$tpl->assign(array(
+	 'TR_PAGE_TITLE' => tr('Reseller / General / Overview'),
+	 'TR_SAVE' => tr('Save'),
+	 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
+	 'TR_DISK_USAGE' => tr('Disk usage')
+));
 
 generateNavigation($tpl);
 reseller_generateSupportQuestionsMessage();
@@ -281,9 +274,7 @@ reseller_generatePageData($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
-
+$eventManager->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
 
 unsetMessages();

@@ -693,58 +693,6 @@ function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType
 }
 
 /**
- * Recalculates the reseller's current properties
- *
- * Important:
- *
- * This is not based on the objects consumed by customers. This is based on objects assigned by the reseller to its
- * customers.
- *
- * @param int $resellerId unique reseller identifier
- * @return void
- */
-function update_reseller_c_props($resellerId)
-{
-	exec_query(
-		'
-			UPDATE
-    			reseller_props AS t1
-			INNER JOIN(
-    			SELECT
-					COUNT(domain_id) As dmnCount,
-					IFNULL(SUM(IF(domain_subd_limit >= 0, domain_subd_limit, 0)), 0) AS subCount,
-					IFNULL(SUM(IF(domain_alias_limit >= 0, domain_alias_limit, 0)), 0) AS alsLimit,
-					IFNULL(SUM(IF(domain_mailacc_limit >= 0, domain_mailacc_limit, 0)), 0) AS mailLimit,
-					IFNULL(SUM(IF(domain_ftpacc_limit >= 0, domain_ftpacc_limit, 0)), 0) AS ftpLimit,
-					IFNULL(SUM(IF(domain_sqld_limit >= 0, domain_sqld_limit, 0)), 0) AS sqldLimit,
-					IFNULL(SUM(IF(domain_sqlu_limit >= 0, domain_sqlu_limit, 0)), 0) AS sqluLimit,
-					IFNULL(SUM(domain_disk_limit), 0) AS diskLimit,
-					IFNULL(SUM(domain_traffic_limit), 0) AS trafficLimit,
-					created_by
-				FROM
-					domain
-				INNER JOIN
-					admin ON(admin_id = domain_admin_id)
-				GROUP BY created_by
-			) t2 ON t1.reseller_id = t2.created_by
-			SET
-				t1.current_dmn_cnt = t2.dmnCount,
-				t1.current_sub_cnt = t2.subCount,
-				t1.current_als_cnt = t2.alsLimit,
-				t1.current_mail_cnt = t2.mailLimit,
-				t1.current_ftp_cnt = t2.ftpLimit,
-				t1.current_sql_db_cnt = t2.sqldLimit,
-				t1.current_sql_user_cnt = t2.sqluLimit,
-				t1.current_disk_amnt = t2.diskLimit,
-				t1.current_traff_amnt = t2.trafficLimit
-			WHERE
-				t1.reseller_id = ?
-		',
-		$resellerId
-	);
-}
-
-/**
  * Convert datepicker date to Unix-Timestamp
  *
  * @param string $time A date/time string
