@@ -7,10 +7,10 @@ Git 1.2.x
 FRONTEND
 	Fixed: Domain limit is not updated when a domain is being deleted (reseller level)
 
-
 YOUTRACK
 	Fixed: #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.
 	Fixed: #IP-1363: Unable to suspend customer account
+	Fixed: #IP-1364: Custom DNS records are lost when editing domain properties
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.8

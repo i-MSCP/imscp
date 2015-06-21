@@ -821,9 +821,9 @@ sub addCustomDNS
 			error("File $wrkDbFile not found. Please run the i-MSCP setup script.");
 			return 1;
 		}
-	}
 
-	$self->{'reload'} = 1;
+		$self->{'reload'} = 1;
+	}
 
 	0;
 }

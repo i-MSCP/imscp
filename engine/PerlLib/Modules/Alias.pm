@@ -133,13 +133,27 @@ sub add
 	my $self = shift;
 
 	if($self->{'alias_status'} eq 'tochange') {
+		my $db = iMSCP::Database->factory();
+
 		# Sets the status of any subdomain that belongs to this domain alias to 'tochange'.
 		# This is needed, else, the DNS resource records for the subdomains are not re-added in DNS zone files.
 		# FIXME: This reflect a bad implementation in the way that entities are managed. This will be solved
 		# in version 2.0.0.
-		my $rs = iMSCP::Database->factory()->doQuery(
+		my $rs = $db->doQuery(
 			'dummy',
 			'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ? AND subdomain_alias_status <> ?',
+			'tochange',
+			$self->{'alias_id'},
+			'todelete'
+		);
+		unless(ref $rs eq 'HASH') {
+			error($rs);
+			return 1;
+		}
+
+		$rs = $db->doQuery(
+			'u',
+			'UPDATE domain_dns SET domain_dns_status = ? WHERE alias_id = ? AND domain_dns_status <> ?',
 			'tochange',
 			$self->{'alias_id'},
 			'todelete'
