@@ -140,7 +140,7 @@ sub add
 		# FIXME: This reflect a bad implementation in the way that entities are managed. This will be solved
 		# in version 2.0.0.
 		my $rs = $db->doQuery(
-			'dummy',
+			'u',
 			'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ? AND subdomain_alias_status <> ?',
 			'tochange',
 			$self->{'alias_id'},
