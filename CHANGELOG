@@ -9,8 +9,9 @@ FRONTEND
 
 
 YOUTRACK
-	Fixed: #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files
+	Fixed: #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.
 	Fixed: #IP-1363: Unable to suspend customer account
+
 ------------------------------------------------------------------------------------------------------------------------
 1.2.8
 ------------------------------------------------------------------------------------------------------------------------
