@@ -136,7 +136,7 @@ sub postinstall
 	}
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Httpd (Apache)' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Httpd (Apache)' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterHttpdPostInstall', 'apache_fcgid');

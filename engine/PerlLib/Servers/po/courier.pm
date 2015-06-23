@@ -118,12 +118,19 @@ sub postinstall
 	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'courier');
 	return $rs if $rs;
 
-	my $serviceMngr = iMSCP::Service->getInstance();
-	$serviceMngr->enable($self->{'config'}->{'AUTHDAEMON_SNAME'});
-	$serviceMngr->enable($self->{'config'}->{'POPD_SNAME'});
-	$serviceMngr->enable($self->{'config'}->{'POPD_SSL_SNAME'});
-	$serviceMngr->enable($self->{'config'}->{'IMAPD_SNAME'});
-	$serviceMngr->enable($self->{'config'}->{'IMAPD_SSL_SNAME'});
+	local $@
+	eval {
+		my $serviceMngr = iMSCP::Service->getInstance();
+		$serviceMngr->enable($self->{'config'}->{'AUTHDAEMON_SNAME'});
+		$serviceMngr->enable($self->{'config'}->{'POPD_SNAME'});
+		$serviceMngr->enable($self->{'config'}->{'POPD_SSL_SNAME'});
+		$serviceMngr->enable($self->{'config'}->{'IMAPD_SNAME'});
+		$serviceMngr->enable($self->{'config'}->{'IMAPD_SSL_SNAME'});
+	};
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Courier' ]; 0; }

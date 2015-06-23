@@ -117,7 +117,12 @@ sub postinstall
 	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'dovecot');
 	return $rs if $rs;
 
-	iMSCP::Service->getInstance()->enable($self->{'config'}->{'DOVECOT_SNAME'});
+	local $@;
+	eval { iMSCP::Service->getInstance()->enable($self->{'config'}->{'DOVECOT_SNAME'}); };
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Dovecot' ]; 0; }
