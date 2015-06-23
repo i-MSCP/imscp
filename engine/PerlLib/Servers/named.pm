@@ -25,7 +25,6 @@ package Servers::named;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 
 our $instance;
@@ -51,23 +50,21 @@ our $instance;
 sub factory
 {
 	unless(defined $instance) {
-		my $sName = $main::imscpConfig{'NAMED_SERVER'} || 'no';
+		my $sName = $main::imscpConfig{'NAMED_SERVER'};
 		my $package = undef;
 
-		if($sName eq 'no') {
-			$package = 'Servers::noserver';
-		} elsif($sName eq 'external_server') {
-			my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'} || 'no';
+		if($sName eq 'external_server') {
+			if(defined $main::imscpOldConfig) {
+				my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'};
 
-			unless($oldSname eq 'external_server' || $oldSname eq 'no') {
-				$package = "Servers::named::$oldSname";
+				if($oldSname ne 'external_server') {
+					$package = "Servers::named::$oldSname";
+					eval "require $package";
+					fatal($@) if $@;
 
-				eval "require $package";
-
-				fatal($@) if $@;
-
-				my $rs = $package->getInstance()->uninstall();
-				fatal("Unable to uninstall $oldSname server") if $rs;
+					my $rs = $package->getInstance()->uninstall();
+					fatal("Unable to uninstall $oldSname server") if $rs;
+				}
 			}
 
 			$package = 'Servers::noserver';
@@ -87,30 +84,21 @@ sub factory
 
  Checks if the named server class provide the given method
 
+ Param string $method Method name
  Return subref|undef
 
 =cut
 
 sub can
 {
-	my $sName = $main::imscpConfig{'NAMED_SERVER'} || undef;
+	my ($self, $method) = @_;
 
-	if($sName && $sName ne 'no' && $sName ne 'external_server') {
-		my $package = "Servers::named::$sName";
-		eval "require $package";
-		fatal($@) if $@;
-		$package->can($_[1]);
-	} else {
-		undef;
-	}
+	$self->factory()->can($method);
 }
 
 END
 {
-	unless(
-		!$Servers::named::instance || $main::imscpConfig{'NAMED_SERVER'} eq 'external_server' ||
-		( $main::execmode && $main::execmode eq 'setup' )
-	) {
+	unless(defined $main::execmode && $main::execmode eq 'setup') {
 		my $rs = $?;
 
 		if($Servers::named::instance->{'restart'}) {

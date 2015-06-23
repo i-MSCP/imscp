@@ -25,7 +25,6 @@ package Servers::sqld;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 
 our $instance;
@@ -49,7 +48,7 @@ our $instance;
 sub factory
 {
 	unless(defined $instance) {
-		my $sName = $main::imscpConfig{'SQL_SERVER'} || 'mysql';
+		my $sName = $main::imscpConfig{'SQL_SERVER'};
 
 		if($sName eq 'remote_server') {
 			$sName = 'mysql';
@@ -58,9 +57,7 @@ sub factory
 		}
 
 		my $package = "Servers::sqld::$sName";
-
 		eval "require $package";
-
 		fatal($@) if $@;
 
 		$instance = $package->getInstance();
@@ -73,36 +70,21 @@ sub factory
 
  Checks if the sqld server class provide the given method
 
+ Param string $method Method name
  Return subref|undef
 
 =cut
 
 sub can
 {
-	my $sName = $main::imscpConfig{'SQL_SERVER'} || undef;
+	my ($self, $method) = @_;
 
-	if($sName && $sName ne 'no') {
-		if($sName eq 'remote_server') {
-			$sName = 'mysql';
-		} else {
-			$sName =~ s/_\d+\.\d+$//;
-		}
-
-		my $package = "Servers::sqld::$sName";
-		eval "require $package";
-		fatal($@) if $@;
-		$package->can($_[1]);
-	} else {
-		undef;
-	}
+	$self->factory()->can($method);
 }
 
 END
 {
-	unless(
-		!$Servers::sqld::instance || $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ||
-		( $main::execmode && $main::execmode eq 'setup' )
-	) {
+	unless(defined $main::execmode && $main::execmode eq 'setup') {
 		my $rs = $?;
 
 		if($Servers::sqld::instance->{'restart'}) {

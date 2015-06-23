@@ -25,7 +25,6 @@ package Servers::noserver;
 
 use strict;
 use warnings;
-
 use vars qw/$AUTOLOAD/;
 use parent 'Common::SingletonClass';
 
@@ -51,9 +50,26 @@ sub factory
 {
 	unless(defined $instance) {
 		$instance = __PACKAGE__->getInstance();
+		$instance->{'start'} = 0;
+		$instance->{'restart'} = 0;
+		$instance->{'reload'} = 0;
 	}
 
 	$instance;
+}
+
+=item can($method)
+
+ Checks if the server class provide the given method
+
+ Param string $method Method name
+ Return undef
+
+=cut
+
+sub can
+{
+	undef;
 }
 
 =item AUTOLOAD()

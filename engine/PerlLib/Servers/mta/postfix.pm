@@ -1459,7 +1459,7 @@ END
 	my $self = __PACKAGE__->getInstance();
 	my $rs = $?;
 
-	unless($main::execmode && $main::execmode eq 'setup') {
+	unless(defined $main::execmode && $main::execmode eq 'setup') {
 		for(keys %{$self->{'postmap'}}) {
 			$rs ||= $self->postmap($_);
 		}

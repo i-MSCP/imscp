@@ -25,7 +25,6 @@ package Servers::httpd;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 
 our $instance;
@@ -63,27 +62,21 @@ sub factory
 
  Checks if the httpd server class provide the given method
 
+ Param string $method Method name
  Return subref|undef
 
 =cut
 
 sub can
 {
-	my $sName = $main::imscpConfig{'HTTPD_SERVER'} || undef;
+	my ($self, $method) = @_;
 
-	if($sName && $sName ne 'no') {
-		my $package = "Servers::httpd::$sName";
-		eval "require $package";
-		fatal($@) if $@;
-		$package->can($_[1]);
-	} else {
-		undef;
-	}
+	$self->factory()->can($method);
 }
 
 END
 {
-	unless(!$Servers::httpd::instance || ( $main::execmode && $main::execmode eq 'setup' )) {
+	unless(defined $main::execmode && $main::execmode eq 'setup') {
 		my $rs = $?;
 
 		if($Servers::httpd::instance->{'start'}) {

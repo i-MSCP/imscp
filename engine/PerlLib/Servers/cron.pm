@@ -61,16 +61,16 @@ sub factory
 
  Checks if the cron server class provide the given method
 
+ Param string $method Method name
  Return subref|undef
 
 =cut
 
 sub can
 {
-	my $package = 'Servers::cron::cron';
-	eval "require $package";
-	fatal($@) if $@;
-	$package->can($_[1]);
+	my ($self, $method) = @_;
+
+	$self->factory()->can($method);
 }
 
 =back

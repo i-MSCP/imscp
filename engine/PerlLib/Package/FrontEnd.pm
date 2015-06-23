@@ -487,7 +487,7 @@ sub _buildConf
 
 END
 {
-	unless($main::execmode && $main::execmode eq 'setup') {
+	unless(defined $main::execmode && $main::execmode eq 'setup') {
 		my $self = Package::FrontEnd->getInstance();
 		my $rs = $?;
 
