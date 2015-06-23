@@ -12,7 +12,7 @@
 $main::questions{'HTTPD_SERVER'} = 'apache_php_fpm';
 
 # apache_fcgid - Only relevant if the server for the http service is set to 'apache_fgcid'
-$main::questions{'INI_LEVEL'} = 'per_user'; # 'per_user', 'per_domain' or 'per_vhost'
+$main::questions{'INI_LEVEL'} = 'per_user'; # 'per_user', 'per_domain' or 'per_site'
 
 # apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'
 $main::questions{'PHP_FPM_POOLS_LEVEL'} = 'per_user'; # 'per_user', 'per_domain' or 'per_site'
