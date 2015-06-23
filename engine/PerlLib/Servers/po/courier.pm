@@ -308,7 +308,7 @@ sub start
 		my $serviceMngr = iMSCP::Service->getInstance();
 
 		for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
-			$serviceMngr->restart($self->{'config'}->{$service});
+			$serviceMngr->start($self->{'config'}->{$service});
 		}
 
 		if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
