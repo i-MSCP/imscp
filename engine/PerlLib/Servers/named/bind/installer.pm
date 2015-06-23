@@ -67,7 +67,6 @@ sub registerSetupListeners
 		sub {
 			push @{$_[0]}, sub { $self->askDnsServerMode(@_) }, sub { $self->askIPv6Support(@_) },
 				sub { $self->askLocalDnsResolver(@_) };
-
 			0;
 		}
 	);
@@ -90,9 +89,9 @@ sub askDnsServerMode
 
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || not $dnsServerMode ~~ ['master', 'slave']) {
+	if($main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || not $dnsServerMode ~~ [ 'master', 'slave' ]) {
 		($rs, $dnsServerMode) = $dialog->radiolist(
-			"\nSelect bind mode", ['master', 'slave'], $dnsServerMode eq 'slave' ? 'slave' : 'master'
+			"\nSelect bind mode", [ 'master', 'slave' ], $dnsServerMode eq 'slave' ? 'slave' : 'master'
 		);
 	}
 
@@ -131,11 +130,11 @@ sub askDnsServerIps
 
 	if($dnsServerMode eq 'master') {
 		if(
-			$main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || ! $slaveDnsIps ||
+			$main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || ! $slaveDnsIps ||
 			($slaveDnsIps ne 'no' && ! $self->_checkIps(\@slaveDnsIps))
 		) {
 			($rs, $answer) = $dialog->radiolist(
-				"\nDo you want add slave DNS servers?", ['no', 'yes'], ("@slaveDnsIps" ~~ ['', 'no']) ? 'no' : 'yes'
+				"\nDo you want add slave DNS servers?", [ 'no', 'yes' ], ("@slaveDnsIps" ~~ [ '', 'no' ]) ? 'no' : 'yes'
 			);
 
 			if($rs != 30 && $answer eq 'yes') {
@@ -154,7 +153,7 @@ sub askDnsServerIps
 						if("@slaveDnsIps" eq '') {
 							$msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease, try again:";
 						} elsif(! $self->_checkIps(\@slaveDnsIps)) {
-							$msg = "\n\n\\Z1Wrong IP address found.\\Zn\n\nPlease, try again:";
+							$msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease, try again:";
 						}
 					}
 				} while($rs != 30 && $msg);
@@ -163,7 +162,7 @@ sub askDnsServerIps
 			}
 		}
 	} elsif(
-		$main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || $masterDnsIps ~~ ['', 'no'] ||
+		$main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || $masterDnsIps ~~ [ '', 'no' ] ||
 		! $self->_checkIps(\@masterDnsIps)
 	) {
 		@masterDnsIps = () if $masterDnsIps eq 'no';
@@ -181,7 +180,7 @@ sub askDnsServerIps
 				if("@masterDnsIps" eq '') {
 					$msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease, try again:";
 				} elsif(! $self->_checkIps(\@masterDnsIps)) {
-					$msg = "\n\n\\Z1Wrong IP address found.\\Zn\n\nPlease, try again:";
+					$msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease, try again:";
 				}
 			}
 		} while($rs != 30 && $msg);
@@ -216,9 +215,9 @@ sub askIPv6Support
 	my $ipv6 = main::setupGetQuestion('BIND_IPV6') || $self->{'config'}->{'BIND_IPV6'};
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || $ipv6 !~ /^yes|no$/) {
+	if($main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || $ipv6 !~ /^yes|no$/) {
 		($rs, $ipv6) = $dialog->radiolist(
-			"\nDo you want enable IPv6 support for your DNS server?", ['yes', 'no'], $ipv6 eq 'yes' ? 'yes' : 'no'
+			"\nDo you want enable IPv6 support for your DNS server?", [ 'yes', 'no' ], $ipv6 eq 'yes' ? 'yes' : 'no'
 		);
 	}
 
@@ -245,9 +244,9 @@ sub askLocalDnsResolver
 	my $localDnsResolver = main::setupGetQuestion('LOCAL_DNS_RESOLVER') || $self->{'config'}->{'LOCAL_DNS_RESOLVER'};
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'resolver', 'named', 'all', 'forced' ] || $localDnsResolver !~ /^yes|no$/) {
+	if($main::reconfigure ~~ [ 'resolver', 'named', 'all', 'forced' ] || not $localDnsResolver ~~ [ 'yes', 'no' ]) {
 		($rs, $localDnsResolver) = $dialog->radiolist(
-			"\nDo you want use the local DNS resolver?", ['yes', 'no'], $localDnsResolver ne 'no' ? 'yes' : 'no'
+			"\nDo you want use the local DNS resolver?", [ 'yes', 'no' ], $localDnsResolver ne 'no' ? 'yes' : 'no'
 		);
 	}
 
@@ -266,14 +265,13 @@ sub askLocalDnsResolver
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	for('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
-		# Handle case where the file is not provided by specfic distribution
-		next unless defined $self->{'config'}->{$_} && $self->{'config'}->{$_} ne '';
-
-		my $rs = $self->_bkpConfFile($self->{'config'}->{$_});
-		return $rs if $rs;
+	for my $conffile('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
+		if ($self->{'config'}->{$conffile} ne '') {
+			my $rs = $self->_bkpConfFile($self->{'config'}->{$conffile});
+			return $rs if $rs;
+		}
 	}
 
 	my $rs = $self->_switchTasks();
@@ -304,10 +302,9 @@ sub install
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
 	$self->{'named'} = Servers::named::bind->getInstance();
 
 	$self->{'eventManager'}->trigger(
@@ -317,17 +314,15 @@ sub _init
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = $self->{'named'}->{'config'};
 
-	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/bind.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
 
-		for(keys %oldConfig) {
-			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $oldConfig{$_};
+		for my $param(keys %oldConfig) {
+			if(exists $self->{'config'}->{$param}) {
+				$self->{'config'}->{$param} = $oldConfig{$param};
 			}
 		}
 	}
@@ -356,10 +351,10 @@ sub _bkpConfFile
 	return $rs if $rs;
 
 	if(-f $cfgFile) {
-		my $file = iMSCP::File->new('filename' => $cfgFile);
+		my $file = iMSCP::File->new( filename => $cfgFile );
 		my $filename = fileparse($cfgFile);
 
-		if(! -f "$self->{'bkpDir'}/$filename.system") {
+		unless(-f "$self->{'bkpDir'}/$filename.system") {
 			$rs = $file->copyFile("$self->{'bkpDir'}/$filename.system");
 			return $rs if $rs;
 		} else {
@@ -381,22 +376,19 @@ sub _bkpConfFile
 
 sub _switchTasks
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $slaveDbDir = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'BIND_DB_DIR'}/slave");
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'slave') {
-		my $rs = $slaveDbDir->make(
-			{
-				'user' => $main::imscpConfig{'ROOT_USER'},
-				'group' => $self->{'config'}->{'BIND_GROUP'},
-				'mode' => '0775'
-			}
-		);
+		my $rs = $slaveDbDir->make({
+			user => $main::imscpConfig{'ROOT_USER'},
+			group => $self->{'config'}->{'BIND_GROUP'},
+			mode => '0775'
+		});
 		return $rs if $rs;
 
 		my ($stdout, $stderr);
-
 		$rs = execute("rm -f $self->{'wrkDir'}/*.db", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -406,8 +398,8 @@ sub _switchTasks
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs;
-	} else {
-		my $rs = $slaveDbDir->remove() if -d "$self->{'config'}->{'BIND_DB_DIR'}/slave";
+	} elsif(-d "$self->{'config'}->{'BIND_DB_DIR'}/slave") {
+		my $rs = $slaveDbDir->remove();
 		return $rs;
 	}
 }
@@ -422,41 +414,36 @@ sub _switchTasks
 
 sub _buildConf
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	for('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
-		# Handle case where the file is not provided by specfic distribution
-		next unless defined $self->{'config'}->{$_} && $self->{'config'}->{$_} ne '';
+	for my $conffile('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
+		next if $self->{'config'}->{$conffile} eq '';
 
-		my $filename = fileparse($self->{'config'}->{$_});
-
-		# Load template
+		my $filename = fileparse($self->{'config'}->{$conffile});
 
 		my $cfgTpl;
 		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \$cfgTpl, { });
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
-			$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$filename")->get();
+			$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$filename" )->get();
 			unless(defined $cfgTpl) {
 				error("Unable to read $self->{'cfgDir'}/$filename");
 				return 1;
 			}
 		}
 
-		# Build file
-
 		$rs = $self->{'eventManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
 		return $rs if $rs;
 
-		if($_ eq 'BIND_CONF_FILE' && ! -f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
+		if($conffile eq 'BIND_CONF_FILE' && ! -f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
 			$cfgTpl =~ s%include "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys";\n%%;
-		} elsif($_ eq 'BIND_OPTIONS_CONF_FILE') {
+		} elsif($conffile eq 'BIND_OPTIONS_CONF_FILE') {
 			$cfgTpl =~ s/listen-on-v6 { any; };/listen-on-v6 { none; };/ if $self->{'config'}->{'BIND_IPV6'} eq 'no';
 
 			my $namedVersion = $self->_getVersion();
 			unless(defined $namedVersion) {
-				error('Unable to retrieve named version');
+				error('Unable to retrieve named (Bind9) version');
 				return 1;
 			}
 
@@ -464,35 +451,30 @@ sub _buildConf
 				$cfgTpl =~ s%//\s+(check-spf\s+ignore;)%$1%;
 			}
 
-			if($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} && -f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
+			if($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ne '' && -f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
 				my $filename = fileparse($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'});
-
-				# Load template
 
 				my $fileContent;
 				my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \$fileContent, { });
 				return $rs if $rs;
 
 				unless(defined $fileContent) {
-					$fileContent = iMSCP::File->new('filename' => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'})->get();
+					$fileContent = iMSCP::File->new( filename => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} )->get();
 					unless(defined $fileContent) {
 						error("Unable to read $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}");
 						return 1;
 					}
 				}
 
-				# Build file
-
 				$rs = $self->{'eventManager'}->trigger('beforeNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
 
-				# Enable or disable local DNS resolver - Begin
+				# Enable/disable local DNS resolver
 
 				$fileContent =~ s/RESOLVCONF=(?:no|yes)/RESOLVCONF=$self->{'config'}->{'LOCAL_DNS_RESOLVER'}/i;
 
-				my $serviceMngr = iMSCP::Service->getInstance();
-
 				# Fix for #IP-1333
+				my $serviceMngr = iMSCP::Service->getInstance();
 				if($serviceMngr->isSystemd()) {
 					if($self->{'config'}->{'LOCAL_DNS_RESOLVER'} eq 'yes') {
 						$serviceMngr->enable('bind9-resolvconf');
@@ -502,11 +484,8 @@ sub _buildConf
 					}
 				}
 
-				undef $serviceMngr;
 
-				# Enable or disable local DNS resolver - Ending
-
-				# Enable or disable IPV6 support
+				# Enable/disable IPV6 support
 				if($fileContent =~/OPTIONS="(.*)"/) {
 					(my $options = $1) =~ s/\s*-[46]\s*//g;
 					$options = '-4 ' . $options unless $self->{'config'}->{'BIND_IPV6'} eq 'yes';
@@ -516,9 +495,7 @@ sub _buildConf
 				$rs = $self->{'eventManager'}->trigger('afterNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
 
-				# Store file
-
-				my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+				my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
 
 				$rs = $file->set($fileContent);
 				return $rs if $rs;
@@ -540,9 +517,7 @@ sub _buildConf
 		$rs = $self->{'eventManager'}->trigger('afterNamedBuildConf', \$cfgTpl, $filename);
 		return $rs if $rs;
 
-		# Store file
-
-		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
 
 		$rs = $file->set($cfgTpl);
 		return $rs if $rs;
@@ -556,7 +531,7 @@ sub _buildConf
 		$rs = $file->mode(0644);
 		return $rs if $rs;
 
-		$rs = $file->copyFile($self->{'config'}->{$_});
+		$rs = $file->copyFile($self->{'config'}->{$conffile});
 		return $rs if $rs;
 	}
 
@@ -573,13 +548,9 @@ sub _buildConf
 
 sub _saveConf
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	iMSCP::File->new(
-		'filename' => "$self->{'cfgDir'}/bind.data"
-	)->copyFile(
-		"$self->{'cfgDir'}/bind.old.data"
-	);
+	iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.data" )->copyFile("$self->{'cfgDir'}/bind.old.data");
 }
 
 =item _checkIps(\@ips)
@@ -587,7 +558,7 @@ sub _saveConf
  Check IP addresses
 
  Param array \@ips IP addresses to check
- Return int 1 if all IPs are valid, 0 otherwise
+ Return bool TRUE if all IPs are valid, FALSE otherwise
 
 =cut
 
@@ -597,8 +568,13 @@ sub _checkIps
 
 	my $net = iMSCP::Net->getInstance();
 
-	for(@{$ips}) {
-		return 0 if $_ eq '127.0.0.1' || ! $net->getInstance()->isValidAddr($_);
+	for my $ipAddr(@{$ips}) {
+		if($net->isValidAddr($ipAddr)) {
+			my $normalizedIp = $net->normalizeAddr($ipAddr);
+			return 0 if $normalizedIp ~~ [ '127.0.0.1', '::1' ];
+		} else {
+			return 0;
+		}
 	}
 
 	1;
@@ -614,17 +590,15 @@ sub _checkIps
 
 sub _getVersion
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my ($stdout, $stderr);
-	my $rs = execute("named -v", \$stdout, \$stderr);
+	my $rs = execute("$self->{'config'}->{'NAMED_BNAME'} -v", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 
 	unless($rs) {
-		if($stdout =~ /^BIND\s+([0-9.]+)/i) {
-			return $1;
-		}
+		return $1 if $stdout =~ /^BIND\s+([0-9.]+)/;
 	}
 
 	undef;
@@ -660,7 +634,6 @@ sub _oldEngineCompatibility
 
 =head1 AUTHORS
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

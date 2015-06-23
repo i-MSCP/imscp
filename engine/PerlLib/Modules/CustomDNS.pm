@@ -75,11 +75,11 @@ sub process
 		$rs = $self->add();
 
 		if($rs) {
-			my $errorStr = scalar getMessageByType('error');
+			my $errorStr = getMessageByType('error');
 			my $qrs = $self->{'db'}->doQuery(
-				'dummy',
+				'u',
 				"UPDATE domain_dns SET domain_dns_status = ? WHERE $condition",
-				(($errorStr) ? $errorStr : 'Unknown error'),
+				(($errorStr) ? $errorStr : 'Unknown error')
 			);
 			unless(ref $qrs eq 'HASH') {
 				error($qrs);
