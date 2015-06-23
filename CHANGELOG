@@ -5,7 +5,9 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+	Added: Dedicated package for remote SQL server
 	Added: NAMED_BNAME (named binary name) configuration parameter - Named (Bind9) server impl.
+	Fixed: The .my.cnf file is no longer used and thus, must be removed
 
 FRONTEND
 	Fixed: Domain limit is not updated when a domain is being deleted (reseller level)

@@ -29,7 +29,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_removeVloggerSqlUser();
 	return $rs if $rs;
@@ -48,14 +48,12 @@ sub uninstall
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance();
-
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
-
 	$self->{'config'} = $self->{'httpd'}->{'config'};
 
 	$self;
@@ -63,22 +61,22 @@ sub _init
 
 sub _removeVloggerSqlUser
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $db = iMSCP::Database->factory();
 
-	$db->doQuery('dummy', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
-	$db->doQuery('dummy', 'FLUSH PRIVILEGES');
+	$db->doQuery('d', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
+	$db->doQuery('f', 'FLUSH PRIVILEGES');
 
 	0;
 }
 
 sub _removeDirs
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	for ($self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'config'}->{'PHP_STARTER_DIR'}) {
-		my $rs = iMSCP::Dir->new('dirname' => $_)->remove();
+	for my $dir($self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'config'}->{'PHP_STARTER_DIR'}) {
+		my $rs = iMSCP::Dir->new( dirname => $dir )->remove();
 		return $rs if $rs;
 	}
 
@@ -87,13 +85,13 @@ sub _removeDirs
 
 sub _restoreConf
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
-		my $filename = fileparse($_);
+	for my $file("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
+		my $filename = fileparse($file);
 
 		if(-f "$self->{bkpDir}/$filename.system")
-			my $rs	= iMSCP::File->new('filename' => "$self->{bkpDir}/$filename.system")->copyFile($_) ;
+			my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system")->copyFile($file) ;
 			return $rs if $rs;
 		}
 	}
@@ -103,16 +101,18 @@ sub _restoreConf
 
 sub _fastcgiConf
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if (-l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/fcgid_imscp.load") {
-		my $rs = $self->{'httpd'}->disableModules($_)
+		my $rs = $self->{'httpd'}->disableModules('fcgid_imscp');
 		return $rs if $rs;
 	}
 
-	for ('fcgid_imscp.conf', 'fcgid_imscp.load') {
-		if(-f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_") {
-			my $rs = iMSCP::File->new('filename' => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_")->delFile()
+	for my $conffile('fcgid_imscp.conf', 'fcgid_imscp.load') {
+		if(-f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$conffile") {
+			my $rs = iMSCP::File->new(
+				filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$conffile"
+			)->delFile()
 			return $rs if $rs;
 		}
 	}
@@ -122,32 +122,34 @@ sub _fastcgiConf
 
 sub _vHostConf
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
 		my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
 		return $rs if $rs;
 
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
+			filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
 		)->delFile();
 		return $rs if $rs;
 	}
 
 	my $confDir = (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
-		? $self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
+		? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
 
     if(-f "$confDir/00_imscp.conf") {
 		my $rs = $self->{'httpd'}->disableConfs('00_imscp.conf');
 		return $rs if $rs;
 
-		$rs = iMSCP::File->new('filename' => "$confDir/00_imscp.conf")->delFile();
+		$rs = iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
 		return $rs if $rs;
 	}
 
-	for('000-default', 'default') {
-		my $rs = $self->{'httpd'}->enableSites($_) if -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-		return $rs if $rs;
+	for my $site('000-default', 'default') {
+		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
+			my $rs = $self->{'httpd'}->enableSites($site)
+			return $rs if $rs;
+		}
 	}
 
 	0;

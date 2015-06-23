@@ -56,7 +56,7 @@ use parent 'Common::SingletonClass';
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->_createConfig();
 }
@@ -71,7 +71,7 @@ sub install
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $confDir = '/etc/mysql/conf.d';
 
@@ -101,10 +101,9 @@ sub setEnginePermissions
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
 	$self->{'sqld'} = Servers::sqld::mysql->getInstance();
 
 	$self->{'eventManager'}->trigger(
@@ -132,7 +131,7 @@ sub _init
 
 sub _createConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMysqlCreateConfig');
 	return $rs if $rs;
@@ -142,15 +141,9 @@ sub _createConfig
 	my $confDir = '/etc/mysql/conf.d';
 
 	if(-d $confDir) {
-		# Load template
-
 		my $cfgTpl;
-		$rs = $self->{'eventManager'}->trigger(
-			'onLoadTemplate',
-			'mysql',
-			'imscp.cnf',
-			\$cfgTpl,
-			{ USER => $rootUName, GROUP => $rootGName, CONFDIR => $confDir }
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', \$cfgTpl, {
+			USER => $rootUName, GROUP => $rootGName, CONFDIR => $confDir }
 		);
 		return $rs if $rs;
 
@@ -162,8 +155,6 @@ sub _createConfig
 			}
 		}
 
-		# Build file
-
 		my $variables = {
 			DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 			DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
@@ -173,32 +164,35 @@ sub _createConfig
 			DATABASE_USER => $main::imscpConfig{'DATABASE_USER'},
 		};
 
-		if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
-			(my $version) = $main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/;
-			unless($version) {
-				error('Unable to parse MySQL version');
-				return 1;
-			}
+		(my $version) = $main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/;
+		unless($version) {
+			error('Unable to parse MySQL version');
+			return 1;
+		}
 
-			if(version->parse($version) >= version->parse('5.5')) {
-				$cfgTpl .= <<EOF;
+		if(version->parse($version) >= version->parse('5.5')) {
+			$cfgTpl .= <<EOF;
 [mysqld]
 innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}
 EOF
 
-				$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
-			}
+			$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
 		}
 
 		$cfgTpl = process($variables, $cfgTpl);
 
-		# Store file
-
 		my $file = iMSCP::File->new( filename => "$confDir/imscp.cnf" );
-		$rs ||= $file->set($cfgTpl);
-		$rs ||= $file->save();
-		$rs ||= $file->mode(0640);
-		$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+
+		$rs = $file->set($cfgTpl);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0640);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
 	}
 

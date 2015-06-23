@@ -378,7 +378,7 @@ sub _switchTasks
 {
 	my $self = shift;
 
-	my $slaveDbDir = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'BIND_DB_DIR'}/slave");
+	my $slaveDbDir = iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" );
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'slave') {
 		my $rs = $slaveDbDir->make({

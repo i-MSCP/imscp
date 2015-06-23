@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2015.04.12
+# Last update: 2015.06.23
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)

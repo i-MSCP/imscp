@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldInstall', 'mysql');
 	return $rs if $rs;
@@ -71,14 +71,14 @@ sub install
 
 sub postinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
 	return $rs if $rs;
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ]; 0; }
-	) if $main::imscpConfig{'SQL_SERVER'} ne 'remote_server';
+	);
 
 	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
@@ -93,7 +93,7 @@ sub postinstall
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldUninstall', 'mysql');
 	return $rs if $rs;
@@ -119,7 +119,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldSetEnginePermissions');
 	return $rs if $rs;
@@ -141,7 +141,7 @@ sub setEnginePermissions
 
 sub restart
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldRestart');
 	return $rs if $rs;
@@ -167,23 +167,14 @@ sub restart
 
 sub _init
 {
-	my $self = $_[0];
-
-	$self->{'restart'} = 0;
+	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
-	$self->{'eventManager'}->trigger(
-		'beforeSqldInit', $self, 'mysql'
-	) and fatal('mysql - beforeSqldInit has failed');
-
+	$self->{'eventManager'}->trigger('beforeSqldInit', $self, 'mysql') and fatal('mysql - beforeSqldInit has failed');
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
-	$self->{'eventManager'}->trigger(
-		'afterSqldInit', $self, 'mysql'
-	) and fatal('postfix - afterSqldInit has failed');
+	$self->{'eventManager'}->trigger('afterSqldInit', $self, 'mysql') and fatal('postfix - afterSqldInit has failed');
 
 	$self;
 }

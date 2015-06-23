@@ -81,11 +81,10 @@ sub showDialog
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['ftpd', 'servers', 'all', 'forced'] ||
+		$main::reconfigure ~~ [ 'ftpd', 'servers', 'all', 'forced' ] ||
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x7e]+$/) ||
 		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x7e]+$/)
 	) {
-		# Ask for the proftpd restricted SQL username
 		do{
 			($rs, $dbUser) = $dialog->inputbox(
 				"\nPlease enter an username for the ProFTPD SQL user:$msg", $dbUser
@@ -110,7 +109,6 @@ sub showDialog
 			$msg = '';
 
 			do {
-				# Ask for the proftpd restricted SQL user password
 				($rs, $dbPass) = $dialog->passwordbox(
 					"\nPlease, enter a password for the restricted proftpd SQL user (blank for autogenerate):$msg", $dbPass
 				);
@@ -160,7 +158,7 @@ sub showDialog
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_bkpConfFile($self->{'config'}->{'FTPD_CONF_FILE'});
 	return $rs if $rs;
@@ -199,10 +197,9 @@ sub install
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
 	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
 
 	$self->{'eventManager'}->trigger(
@@ -212,17 +209,15 @@ sub _init
 	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = $self->{'ftpd'}->{'config'};
 
-	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
 
-		for(keys %oldConfig) {
-			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $oldConfig{$_};
+		for my $param(keys %oldConfig) {
+			if(exists $self->{'config'}->{$param}) {
+				$self->{'config'}->{$param} = $oldConfig{$param};
 			}
 		}
 	}
@@ -250,10 +245,10 @@ sub _bkpConfFile
 	return $rs if $rs;
 
 	if(-f $cfgFile){
-		my $file = iMSCP::File->new('filename' => $cfgFile );
+		my $file = iMSCP::File->new( filename => $cfgFile );
 		my ($filename, $directories, $suffix) = fileparse($cfgFile);
 
-		if(! -f "$self->{'bkpDir'}/$filename$suffix.system") {
+		unless(-f "$self->{'bkpDir'}/$filename$suffix.system") {
 			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.system");
 			return $rs if $rs;
 		} else {
@@ -275,7 +270,7 @@ sub _bkpConfFile
 
 sub _setVersion
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my ($stdout, $stderr);
 	my $rs = execute("proftpd -v", \$stdout, \$stderr);
@@ -305,18 +300,16 @@ sub _setVersion
 
 sub _setupDatabase
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD');
-
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
 	return $rs if $rs;
 
-	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next unless $sqlUser;
 
@@ -333,15 +326,13 @@ sub _setupDatabase
 		}
 	}
 
-	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
-	# Adding new SQL user with needed privileges
-	for('ftp_users', 'ftp_group') {
+	for my $table('ftp_users', 'ftp_group') {
 		$rs = $db->doQuery(
 			'dummy',
-			"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_` TO ?@? IDENTIFIED BY ?",
+			"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`$table` TO ?@? IDENTIFIED BY ?",
 			$dbUser,
 			$dbUserHost,
 			$dbPass
@@ -352,10 +343,10 @@ sub _setupDatabase
 		}
 	}
 
-	for( 'quotalimits', 'quotatallies') {
+	for my $table('quotalimits', 'quotatallies') {
 		$rs = $db->doQuery(
 			'dummy',
-			"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_` TO ?@? IDENTIFIED BY ?",
+			"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$table` TO ?@? IDENTIFIED BY ?",
 			$dbUser,
 			$dbUserHost,
 			$dbPass
@@ -366,7 +357,6 @@ sub _setupDatabase
 		}
 	}
 
-	# Store database user and password in config file
 	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
 	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
@@ -383,9 +373,7 @@ sub _setupDatabase
 
 sub _buildConfigFile
 {
-	my $self = $_[0];
-
-	# Define data
+	my $self = shift;
 
 	my $version = $self->{'config'}->{'PROFTPD_VERSION'};
 
@@ -409,21 +397,17 @@ sub _buildConfigFile
 			? 'NoCertRequest NoSessionReuseRequired' : 'NoCertRequest'
 	};
 
-	# Load template
-
 	my $cfgTpl;
 	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'proftpd', 'proftpd.conf', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
-		$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.conf")->get();
+		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.conf" )->get();
 		unless(defined $cfgTpl) {
 			error("Unable to read $self->{'cfgDir'}/proftpd.conf");
 			return 1;
 		}
 	}
-
-	# Build file
 
 	$rs = $self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	return $rs if $rs;
@@ -433,9 +417,7 @@ sub _buildConfigFile
 	$rs = $self->{'eventManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	return $rs if $rs;
 
-	# Store file
-
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/proftpd.conf");
+	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/proftpd.conf" );
 
 	$rs = $file->set($cfgTpl);
 	return $rs if $rs;
@@ -467,19 +449,16 @@ sub _createTrafficLogFile
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdCreateTrafficLogFile');
 	return $rs if $rs;
 
-	# Creating proftpd traffic log directory if it doesn't already exists
 	unless (-d "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
-		$rs = iMSCP::Dir->new(
-			'dirname' => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"
-		)->make(
-			{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0755 }
+		$rs = iMSCP::Dir->new(dirname => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd")->make(
+			{ user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0755 }
 		);
 		return $rs if $rs;
 	}
 
 	unless(-f "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}") {
 		my $file = iMSCP::File->new(
-			'filename' => "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}"
+			filename => "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}"
 		);
 
 		$rs = $file->save();
@@ -505,13 +484,9 @@ sub _createTrafficLogFile
 
 sub _saveConf
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	iMSCP::File->new(
-		'filename' => "$self->{'cfgDir'}/proftpd.data"
-	)->copyFile(
-		"$self->{'cfgDir'}/proftpd.old.data"
-	);
+	iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.data" )->copyFile("$self->{'cfgDir'}/proftpd.old.data");
 }
 
 =item _oldEngineCompatibility()
@@ -524,7 +499,7 @@ sub _saveConf
 
 sub _oldEngineCompatibility
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeNamedOldEngineCompatibility');
 	return $rs if $rs;
@@ -536,7 +511,6 @@ sub _oldEngineCompatibility
 
 =head1 AUTHORS
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

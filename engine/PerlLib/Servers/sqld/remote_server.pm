@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld - i-MSCP Sqld Server implementation
+ Servers::sqld::remote_server - i-MSCP remote SQL server implementation
 
 =cut
 
@@ -21,59 +21,36 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::sqld;
+package Servers::sqld::remote_server;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-
-our $instance;
+use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
 
- i-MSCP sqld server implementation.
+ i-MSCP remote SQL server implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item factory()
+=item postinstall()
 
- Create and return sqld server instance
+ Process postinstall tasks
 
- Return Sqld server instance
-
-=cut
-
-sub factory
-{
-	unless(defined $instance) {
-		(my $sName = $main::imscpConfig{'SQL_SERVER'}) =~ s/_\d+\.\d+$//;
-
-		my $package = "Servers::sqld::$sName";
-		eval "require $package";
-		fatal($@) if $@;
-
-		$instance = $package->getInstance();
-	}
-
-	$instance;
-}
-
-=item can($method)
-
- Checks if the sqld server class provide the given method
-
- Param string $method Method name
- Return subref|undef
+ Return int 0 on success, other on failure
 
 =cut
 
-sub can
+sub postinstall
 {
-	my ($self, $method) = @_;
+	my $self = shift;
 
-	$self->factory()->can($method);
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
 
 =back

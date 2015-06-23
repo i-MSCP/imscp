@@ -54,7 +54,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeCronPreinstall', 'cron');
 	return $rs if $rs;
@@ -72,20 +72,10 @@ sub preinstall
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeCronInstall', 'cron');
 	return $rs if $rs;
-
-	# Backup current file if any
-	if(-f "$self->{'config'}->{'CRON_D_DIR'}/imscp") {
-		$rs = iMSCP::File->new( filename => "$self->{'config'}->{'CRON_D_DIR'}/imscp" )->copyFile(
-			"$self->{'bkpDir'}/imscp." . time
-		);
-		return $rs if $rs;
-	}
-
-	# Load template
 
 	my $cfgTpl;
 	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'cron', 'imscp', \$cfgTpl, { });
@@ -94,29 +84,26 @@ sub install
 	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp" )->get();
 		unless(defined $cfgTpl) {
-			error("Unable to read $self->{'cfgDir'}/imscp");
+			error(sprintf('Unable to read %s', "$self->{'cfgDir'}/imscp"));
 			return 1;
 		}
 	}
 
-	# Build new file
 	$cfgTpl = process(
 		{
-			'QUOTA_ROOT_DIR' => $main::imscpConfig{'QUOTA_ROOT_DIR'},
-			'LOG_DIR' => $main::imscpConfig{'LOG_DIR'},
-			'TRAFF_ROOT_DIR' => $main::imscpConfig{'TRAFF_ROOT_DIR'},
-			'TOOLS_ROOT_DIR' => $main::imscpConfig{'TOOLS_ROOT_DIR'},
-			'BACKUP_MINUTE' => $main::imscpConfig{'BACKUP_MINUTE'},
-			'BACKUP_HOUR' => $main::imscpConfig{'BACKUP_HOUR'},
-			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'},
-			'CONF_DIR' => $main::imscpConfig{'CONF_DIR'},
-			'BACKUP_FILE_DIR' => $main::imscpConfig{'BACKUP_FILE_DIR'}
+			QUOTA_ROOT_DIR => $main::imscpConfig{'QUOTA_ROOT_DIR'},
+			LOG_DIR => $main::imscpConfig{'LOG_DIR'},
+			TRAFF_ROOT_DIR => $main::imscpConfig{'TRAFF_ROOT_DIR'},
+			TOOLS_ROOT_DIR => $main::imscpConfig{'TOOLS_ROOT_DIR'},
+			BACKUP_MINUTE => $main::imscpConfig{'BACKUP_MINUTE'},
+			BACKUP_HOUR => $main::imscpConfig{'BACKUP_HOUR'},
+			BACKUP_ROOT_DIR => $main::imscpConfig{'BACKUP_ROOT_DIR'},
+			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
+			BACKUP_FILE_DIR => $main::imscpConfig{'BACKUP_FILE_DIR'}
 		},
 		$cfgTpl
 	);
-	return 1 unless defined $cfgTpl;
 
-	# Store new file in working directory
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp" );
 
 	$rs = $file->set($cfgTpl);
@@ -131,7 +118,6 @@ sub install
 	$rs = $file->mode(0644);
 	return $rs if $rs;
 
-	# Install new file in production directory
 	$rs = $file->copyFile("$self->{'config'}->{'CRON_D_DIR'}/imscp");
 	return $rs if $rs;
 
@@ -148,7 +134,7 @@ sub install
 
 sub postinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeCronPostInstall', 'cron');
 	return $rs if $rs;
@@ -169,14 +155,13 @@ sub postinstall
 
  Param hash \%data Cron task data:
   - TASKID Cron task unique identifier
-  - OPTIONAL MINUTE field: Minute time or shortcut such as @daily, @monthly... ( Default to @daily )
-  - OPTIONAL HOUR field: HOUR Hour time ( ignored if the MINUTE field define a shortcut ) ( Default to  emtpy)
-  - OPTIONAL DAY field: DAY Day of month date ( ignored if the MINUTE field define a shortcut ) ( Default to  emtpy)
-  - OPTIONAL MONTH field: MONTH Month date ( ignored if the MINUTE field define a shortcut ) ( Default to emtpy)
-  - OPTIONAL DWEEK field: DWEEK Day of week date ( ignored if the MINUTE field define a shortcut ) ( Default to  emtpy)
+  - OPTIONAL MINUTE field: Minute time or shortcut such as @daily, @monthly... - Default to @daily
+  - OPTIONAL HOUR field: HOUR Hour time - ignored if the MINUTE field define a shortcut - Default to *
+  - OPTIONAL DAY field: DAY Day of month date - ignored if the MINUTE field define a shortcut - Default to *
+  - OPTIONAL MONTH field: MONTH Month date - ignored if the MINUTE field define a shortcut - Default to *
+  - OPTIONAL DWEEK field: DWEEK Day of week date - ignored if the MINUTE field define a shortcut - Default to *
   - USER user under which the command must be run
   - COMMAND Command
-  See crontab(5) for more information about allowed values
   Param string $file OPTIONAL Absolute path to cron file (default: imscp cron file)
   Return int 0 on success, other on failure
 
@@ -184,7 +169,7 @@ sub postinstall
 
 sub addTask
 {
-	my ($self, $data, $file) = @_;
+	my ($self, $data, $filepath) = @_;
 
 	$data = { } unless ref $data eq 'HASH';
 
@@ -193,39 +178,30 @@ sub addTask
 		return 1;
 	}
 
-	$file ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
+	$filepath ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
-	if(-f $file) {
+	if(-f $filepath) {
 		$data->{'MINUTE'} = '@daily' unless exists $data->{'MINUTE'};
-		$data->{'HOUR'} = '' unless exists $data->{'HOUR'};
-		$data->{'DAY'} = '' unless exists $data->{'DAY'};
-		$data->{'MONTH'} = '' unless exists $data->{'MONTH'};
-		$data->{'DWEEK'} = '' unless exists $data->{'DWEEK'};
+		$data->{'HOUR'} = '*' unless exists $data->{'HOUR'};
+		$data->{'DAY'} = '*' unless exists $data->{'DAY'};
+		$data->{'MONTH'} = '*' unless exists $data->{'MONTH'};
+		$data->{'DWEEK'} = '*' unless exists $data->{'DWEEK'};
 		$data->{'USER'} = $main::imscpConfig{'ROOT_USER'} unless exists $data->{'USER'};
 
-		# Validate cron task
-		eval { $self->_validateCronTask($data) };
+		eval { $self->_validateCronTask($data); };
 		if($@) {
-			error("Invalid cron tasks: $@");
+			error(sprintf('Invalid cron tasks: %s', $@));
 			return 1;
 		}
 
-		my $filename = fileparse($file);
-
-		my $wrkFile = iMSCP::File->new( filename => $file );
-
-		# Backup current file
-		my $rs = $wrkFile->copyFile("$self->{'bkpDir'}/$filename." . time);
-		return $rs if $rs;
-
-		# Getting current working file content
-		my $wrkFileContent = $wrkFile->get();
+		my $filename = fileparse($filepath);
+		my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get();
 		unless(defined $wrkFileContent) {
-			error("Unable to read $file");
+			error("Unable to read $filepath");
 			return 1;
 		}
 
-		$rs = $self->{'eventManager'}->trigger('beforeCronAddTask', \$wrkFileContent, $data);
+		my $rs = $self->{'eventManager'}->trigger('beforeCronAddTask', \$wrkFileContent, $data);
 		return $rs if $rs;
 
 		my $cronEntryBegin = "# imscp [$data->{'TASKID'}] entry BEGIN\n";
@@ -238,11 +214,7 @@ sub addTask
 		);
 
 		$cronEntry =~ s/ +/ /;
-
-		# Remove previous task with same id if any
 		$wrkFileContent = replaceBloc($cronEntryBegin, $cronEntryEnding, '', $wrkFileContent);
-
-		# Adding new entry
 		$wrkFileContent = replaceBloc(
 			"# imscp [{ENTRY_ID}] entry BEGIN\n",
 			"# imscp [{ENTRY_ID}] entry ENDING\n",
@@ -253,43 +225,41 @@ sub addTask
 
 		$self->{'eventManager'}->trigger('afterCronAddTask', \$wrkFileContent, $data);
 
-		# Store file in working directory
-		my $fileH = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
+		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
 
-		$rs = $fileH->set($wrkFileContent);
+		$rs = $file->set($wrkFileContent);
 		return $rs if $rs;
 
-		$rs = $fileH->save();
+		$rs = $file->save();
 		return $rs if $rs;
 
-		$rs = $fileH->mode(0640);
+		$rs = $file->mode(0640);
 		return $rs if $rs;
 
-		$rs = $fileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
 
-		# Install file in production directory
-		$fileH->copyFile($file);
+		$file->copyFile($filepath);
 	} else {
-		error("Unable to add cron task: File $file not found.");
+		error("Unable to add cron task: File $filepath not found.");
 		1;
 	}
 }
 
-=item deleteTask(\%data, $file)
+=item deleteTask(\%data, $filepath)
 
  Delete a cron task
 
  Param hash \%data Cron task data:
   - TASKID Cron task unique identifier
- Param string $file OPTIONAL Absolute path to cron file (default: imscp cron file)
+ Param string $filepath OPTIONAL Absolute path to cron file (default: imscp cron file)
  Return int 0 on success, other on failure
 
 =cut
 
 sub deleteTask
 {
-	my ($self, $data, $file) = @_;
+	my ($self, $data, $filepath) = @_;
 
 	$data = { } unless ref $data eq 'HASH';
 
@@ -298,25 +268,17 @@ sub deleteTask
 		return 1;
 	}
 
-	$file ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
+	$filepath ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
-	if(-f $file) {
-		my $filename = fileparse($file);
-
-		my $wrkFile = iMSCP::File->new( filename => $file );
-
-		# Backup current file
-		my $rs = $wrkFile->copyFile("$self->{'bkpDir'}/$filename." . time);
-		return $rs if $rs;
-
-		# Getting current working file content
-		my $wrkFileContent = $wrkFile->get();
+	if(-f $filepath) {
+		my $filename = fileparse($filepath);
+		my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get;
 		unless(defined $wrkFileContent) {
-			error("Unable to read $file}");
+			error("Unable to read $filepath");
 			return 1;
 		}
 
-		$rs = $self->{'eventManager'}->trigger('beforeCronDelTask', \$wrkFileContent, $data);
+		my $rs = $self->{'eventManager'}->trigger('beforeCronDelTask', \$wrkFileContent, $data);
 		return $rs if $rs;
 
 		$wrkFileContent = replaceBloc(
@@ -329,25 +291,23 @@ sub deleteTask
 		$rs = $self->{'eventManager'}->trigger('afterCronDelTask', \$wrkFileContent, $data);
 		return $rs if $rs;
 
-		# Store file in working directory
-		my $fileH = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
+		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
 
-		$rs = $fileH->set($wrkFileContent);
+		$rs = $file->set($wrkFileContent);
 		return $rs if $rs;
 
-		$rs = $fileH->save();
+		$rs = $file->save();
 		return $rs if $rs;
 
-		$rs = $fileH->mode(0640);
+		$rs = $file->mode(0640);
 		return $rs if $rs;
 
-		$rs = $fileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
 
-		# Install file in production directory
-		$fileH->copyFile($file);
+		$file->copyFile($filepath);
 	} else {
-		error("Unable to remove cron task: File $file not found.");
+		error("Unable to remove cron task: File $filepath not found.");
 		1;
 	}
 }
@@ -362,20 +322,17 @@ sub deleteTask
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if(-f "$self->{'config'}->{'CRON_D_DIR'}/imscp") {
 		require iMSCP::Rights;
 		iMSCP::Rights->import();
 
-		setRights(
-			" $self->{'config'}->{'CRON_D_DIR'}/imscp",
-			{
-				'user' => $main::imscpConfig{'ROOT_USER'},
-				'group' => $main::imscpConfig{'ROOT_GROUP'},
-				'mode' => '0640'
-			}
-		);
+		setRights("$self->{'config'}->{'CRON_D_DIR'}/imscp", {
+			user => $main::imscpConfig{'ROOT_USER'},
+			group => $main::imscpConfig{'ROOT_GROUP'},
+			mode => '0640'
+		});
 	} else {
 		0;
 	}
@@ -397,18 +354,14 @@ sub setEnginePermissions
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
 	$self->{'eventManager'}->trigger('beforeCronInit', $self, 'cron') and fatal('cron - beforeCronInit has failed');
-
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data"; \%c; };
-
 	$self->{'eventManager'}->trigger('afterCronInit', $self, 'cron') and fatal('cron - afterCronInit has failed');
 
 	$self;
@@ -418,7 +371,7 @@ sub _init
 
  Validate cron task attributes
 
- Return undef ( die on failure )
+ Return undef or die if an attribute is not valid
 
 =cut
 
@@ -427,15 +380,13 @@ sub _validateCronTask
 	my ($self, $data) = @_;
 
 	if(
-		$data->{'MINUTE'} ~~ ['@reboot', '@yearly', '@annually', '@monthly', '@weekly', '@daily', '@midnight', '@hourly']
+		$data->{'MINUTE'} ~~ [ '@reboot', '@yearly', '@annually', '@monthly', '@weekly', '@daily', '@midnight', '@hourly' ]
 	) {
-		$data->{'HOUR'} = $data->{'DAY'} = $data->{'MONTH'} = $data->{'MONTH'} = $data->{'DWEEK'} = '';
+		$data->{'HOUR'} = $data->{'DAY'} = $data->{'MONTH'} = $data->{'DWEEK'} = '';
 	} else {
-		$self->_validateAttribute('minute', $data->{'MINUTE'});
-		$self->_validateAttribute('hour', $data->{'HOUR'});
-		$self->_validateAttribute('dmonth', $data->{'DAY'});
-		$self->_validateAttribute('month', $data->{'MONTH'});
-		$self->_validateAttribute('dweek', $data->{'DWEEK'});
+		for my $attribute('minute', 'hour', 'day', 'month', 'dweek') {
+			$self->_validateAttribute($attribute, $data->{ uc($attribute) });
+		}
 	}
 
 	undef;
@@ -445,7 +396,9 @@ sub _validateCronTask
 
  Validate the given cron task attribute value
 
- Return undef ( die on failure )
+ Param string $name Attribute name
+ Param string $value Attribute value
+ Return undef or die if an attribute is not valid
 
 =cut
 
@@ -468,7 +421,7 @@ sub _validateAttribute
 			$pattern = '[ ]*(\b[0-5]?[0-9]\b)[ ]*';
 		} elsif($name eq 'hour') {
 			$pattern = '[ ]*(\b[01]?[0-9]\b|\b2[0-3]\b)[ ]*';
-		} elsif ($name eq 'dmonth') {
+		} elsif ($name eq 'day') {
 			$pattern = '[ ]*(\b[01]?[1-9]\b|\b2[0-9]\b|\b3[01]\b)[ ]*';
 		} elsif ($name eq 'month') {
 			@namesArr = split '|', $months;

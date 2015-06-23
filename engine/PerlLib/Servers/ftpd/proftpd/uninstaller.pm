@@ -25,7 +25,6 @@ package Servers::ftpd::proftpd::uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Execute;
 use File::Basename;
@@ -51,37 +50,12 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->restoreConfFile();
 	return $rs if $rs;
 
-	$rs = $self->removeDB();
-	return $rs if $rs;
-
-	$self->removeDirs();
-}
-
-=item removeDirs()
-
- Remove directories
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub removeDirs
-{
-	my $self = $_[0];
-	my $rs = 0;
-
-	# TODO: if this is directory referenced in the restored conf file, it must not be removed. Otherwise proftpd WILL fail. For the time beeing, this is disabled
-	#for("$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"){
-	#	$rs = iMSCP::Dir->new('dirname' => $_)->remove();
-	#	return $rs if $rs;
-	#}
-
-	0;
+	$self->removeDB();
 }
 
 =item removeDB()
@@ -94,12 +68,12 @@ sub removeDirs
 
 sub removeDB
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $db = iMSCP::Database->factory();
 
-	$db->doQuery('dummy', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
-	$db->doQuery('dummy', 'FLUSH PRIVILEGES');
+	$db->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
+	$db->doQuery('f', 'FLUSH PRIVILEGES');
 
 	0;
 }
@@ -114,19 +88,18 @@ sub removeDB
 
 sub restoreConfFile
 {
-	my $self = $_[0];
-	my $rs = 0;
+	my $self = shift;
 
-	for ($self->{'config'}->{'FTPD_CONF_FILE'}) {
-		my ($filename, $directories, $suffix) = fileparse($_);
+	my ($filename, $directories, $suffix) = fileparse($self->{'config'}->{'FTPD_CONF_FILE'});
 
-		if(-f "$self->{bkpDir}/$filename$suffix.system") {
-			$rs	= iMSCP::File->new('filename' => "$self->{'bkpDir'}/$filename$suffix.system")->copyFile($_);
-			return $rs if $rs;
-		}
+	if(-f "$self->{bkpDir}/$filename$suffix.system") {
+		my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename$suffix.system" )->copyFile(
+			"$self->{bkpDir}/$filename$suffix.system"
+		);
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 =back
@@ -145,14 +118,12 @@ sub restoreConfFile
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
-
 	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = $self->{'ftpd'}->{'config'};
 
 	$self;
@@ -162,7 +133,6 @@ sub _init
 
 =head1 AUTHORS
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

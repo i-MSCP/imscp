@@ -32,6 +32,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Service;
+use Servers::mta;
 use Tie::File;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
@@ -71,7 +72,7 @@ sub registerSetupListeners
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoPreinstall', 'dovecot');
 	return $rs if $rs;
@@ -89,7 +90,7 @@ sub preinstall
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'dovecot');
 	return $rs if $rs;
@@ -111,7 +112,7 @@ sub install
 
 sub postinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'dovecot');
 	return $rs if $rs;
@@ -141,38 +142,30 @@ sub postaddMail
 	my $rs = 0;
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-		# Getting i-MSCP MTA server implementation instance
-		require Servers::mta;
 		my $mta = Servers::mta->factory();
-
 		my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 		my $mailUidName =  $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'};
 		my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-		for ("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-			# Creating maildir directory or only set its permissions if already exists
-			$rs = iMSCP::Dir->new('dirname' => $_)->make(
-				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0750 }
-			);
+		for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
+			my $rs = iMSCP::Dir->new( dirname => $dir)->make({
+				user => $mailUidName, group => $mailGidName , mode => 0750
+			});
 			return $rs if $rs;
 
-			# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
 			for my $subdir ('cur', 'new', 'tmp') {
-				$rs = iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
-					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0750 }
-				);
+				$rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make({
+					user => $mailUidName, group => $mailGidName, mode => 0750
+				});
 				return $rs if $rs;
 			}
 		}
 
-		# Creating/updating subscriptions file
-
 		my @subscribedFolders = ('Drafts', 'Junk', 'Sent', 'Trash');
-		my $subscriptionsFile = iMSCP::File->new('filename' => "$mailDir/subscriptions");
+		my $subscriptionsFile = iMSCP::File->new( filename => "$mailDir/subscriptions" );
 
 		if(-f "$mailDir/subscriptions") {
 			my $subscriptionsFileContent = $subscriptionsFile->get();
-
 			unless(defined $subscriptionsFileContent) {
 				error('Unable to read dovecot subscriptions file');
 				return 1;
@@ -185,7 +178,7 @@ sub postaddMail
 			}
 		}
 
-		$rs = $subscriptionsFile->set((join "\n", @subscribedFolders) . "\n");
+		my $rs = $subscriptionsFile->set((join "\n", @subscribedFolders) . "\n");
 		return $rs if $rs;
 
 		$rs = $subscriptionsFile->save();
@@ -198,7 +191,7 @@ sub postaddMail
 		return $rs if $rs;
 
 		if(-f "$mailDir/maildirsize") {
-			$rs = iMSCP::File->new('filename' => "$mailDir/maildirsize")->delFile();
+			$rs = iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile();
 			return $rs if $rs;
 		}
 	}
@@ -216,7 +209,7 @@ sub postaddMail
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoUninstall', 'dovecot');
 	return $rs if $rs;
@@ -242,7 +235,7 @@ sub uninstall
 
 sub restart
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
@@ -368,25 +361,16 @@ sub getTraffic
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'restart'} = 0;
-
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
-	$self->{'eventManager'}->trigger(
-		'beforePoInit', $self, 'dovecot'
-	) and fatal('dovecot - beforePoInit has failed');
-
+	$self->{'eventManager'}->trigger('beforePoInit', $self, 'dovecot') and fatal('dovecot - beforePoInit has failed');
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config',fileName => "$self->{'cfgDir'}/dovecot.data"; \%c; };
-
-	$self->{'eventManager'}->trigger(
-		'afterPoInit', $self, 'dovecot'
-	) and fatal('dovecot - afterPoInit has failed');
+	$self->{'eventManager'}->trigger('afterPoInit', $self, 'dovecot') and fatal('dovecot - afterPoInit has failed');
 
 	$self;
 }

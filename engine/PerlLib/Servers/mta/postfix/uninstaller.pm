@@ -31,15 +31,13 @@ use parent 'Common::SingletonClass';
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
-
 	$self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
-
 	$self->{'config'} = $self->{'mta'}->{'config'};
 
 	$self;
@@ -47,7 +45,7 @@ sub _init
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_restoreConfFile();
 	return $rs if $rs;
@@ -63,11 +61,10 @@ sub uninstall
 
 sub _removeDirs
 {
-	my $self = $_[0];
-	my $rs = 0;
+	my $self = shift;
 
-	for ($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
-		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
+	for my $file($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
+		my $rs = iMSCP::Dir->new( dirname => $file )->remove();
 		return $rs if $rs;
 	}
 
@@ -76,16 +73,15 @@ sub _removeDirs
 
 sub _removeUsers
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	iMSCP::SystemUser->new('force' => 'yes')->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
+	iMSCP::SystemUser->new( force => 'yes')->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 }
 
 sub _buildAliasses
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	# Rebuilding the database for the mail aliases file - Begin
 	my ($stdout, $stderr);
 	my $rs = execute("newaliases", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
@@ -97,24 +93,19 @@ sub _buildAliasses
 
 sub _restoreConfFile
 {
-	my $self = $_[0];
-	my $rs = 0;
+	my $self = shift;
 
-	for ($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
-		my $filename = fileparse($_);
+	for my $file($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
+		my $filename = fileparse($file);
 
 		if(-f "$self->{'bkpDir'}/$filename.system"){
-			$rs = iMSCP::File->new(
-				'filename' => "$self->{'bkpDir'}/$filename.system"
-			)->copyFile(
-				$_
-			);
+			my $rs = iMSCP::File->new(filename => "$self->{'bkpDir'}/$filename.system")->copyFile($file);
 			return $rs if $rs;
 		}
 	}
 
 	if(-f "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf") {
-		$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf")->delFile();
+		my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf" )->delFile();
 		return $rs if $rs;
 	}
 

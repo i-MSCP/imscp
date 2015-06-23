@@ -19,7 +19,6 @@ package Servers::po::courier::uninstaller;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
@@ -30,14 +29,12 @@ use parent 'Common::SingletonClass';
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'po'} = Servers::po::courier->getInstance();
-
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = $self->{'po'}->{'config'};
 
 	$self;
@@ -45,7 +42,7 @@ sub _init
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_removeSqlUser();
 	return $rs if $rs;
@@ -69,27 +66,29 @@ sub uninstall
 
 sub _removeSqlUser
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $database = iMSCP::Database->factory();
 
 	# We do not catch any error here - It's expected
-	for($main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%') {
-		next if ! $_;
-		$database->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $_);
+	for my $host(
+		$main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
+	) {
+		next unless $host;
+		$database->doQuery('d', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $host);
 	}
 
-	$database->doQuery('dummy', 'FLUSH PRIVILEGES');
+	$database->doQuery('f', 'FLUSH PRIVILEGES');
 
 	0;
 }
 
 sub _restoreConfFile
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if(-f "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system") {
-		my $file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system");
+		my $file = iMSCP::File->new( filename => "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system" );
 
 		my $rs = $file->copyFile("/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}");
 		return $rs if $rs;
@@ -103,18 +102,19 @@ sub _restoreConfFile
 		return $rs if $rs;
 	}
 
-	for ('authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
-		my $rs = iMSCP::File->new(
-			'filename' => "$self->{'bkpDir'}/$_.system"
-		)->copyFile(
-			"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_"
-		) if -f "$self->{'bkpDir'}/$_.system";
-		return $rs if $rs;
+	for my $filename(
+		'authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}
+	) {
+		if(-f "$self->{'bkpDir'}/$filename.system") {
+			my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+				"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$filename"
+			);
+			return $rs if $rs;
+		}
 	}
 
 	if(-f "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd") {
 		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
-
 		my $fileContent = $file->get();
 		unless(defined $fileContent) {
 			error("Unable to read $self->{'filename'}");
@@ -146,9 +146,9 @@ sub _restoreConfFile
 
 sub _authDaemon
 {
-	my $self= $_[0];
+	my $self= shift;
 
-	my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authdaemonrc");
+	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authdaemonrc" );
 
 	my $rs = $file->mode(0660);
 	return $rs if $rs;
@@ -158,10 +158,10 @@ sub _authDaemon
 
 sub _deleteQuotaWarning
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if(-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
-		iMSCP::File->new('filename' => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'})->delFile();
+		iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'})->delFile();
 	} else {
 		0;
 	}

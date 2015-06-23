@@ -72,7 +72,7 @@ sub registerSetupListeners
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaPreInstall', 'postfix');
 	return $rs if $rs;
@@ -94,7 +94,7 @@ sub preinstall
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaInstall', 'postfix');
 	return $rs if $rs;
@@ -116,7 +116,7 @@ sub install
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaUninstall', 'postfix');
 	return $rs if $rs;
@@ -141,20 +141,25 @@ sub uninstall
 
 sub postinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaPostinstall', 'postfix');
 	return $rs if $rs;
 
-	iMSCP::Service->getInstance()->enable($self->{'config'}->{'MTA_SNAME'});
+	local $@;
+	eval { iMSCP::Service->getInstance()->enable($self->{'config'}->{'MTA_SNAME'}); };
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [
 			sub {
 				my $rs = 0;
 
-				for(keys %{$self->{'postmap'}}) {
-					$rs ||= $self->postmap($_);
+				for my $map(keys %{$self->{'postmap'}}) {
+					$rs ||= $self->postmap($map);
 				}
 
 				$rs ||= $self->restart();
@@ -176,7 +181,7 @@ sub postinstall
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaSetEnginePermissions');
 	return $rs if $rs;
@@ -198,17 +203,22 @@ sub setEnginePermissions
 
 sub restart
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaRestart');
 	return $rs if $rs;
 
-	iMSCP::Service->getInstance()->restart($self->{'config'}->{'MTA_SNAME'});
+	local $@;
+	eval { iMSCP::Service->getInstance()->restart($self->{'config'}->{'MTA_SNAME'}); };
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->trigger('afterMtaRestart');
 }
 
-=item postmap($filename, [$filetype = 'hash'])
+=item postmap($filename [, $filetype = 'hash' ])
 
  Postmap the given file
 
@@ -323,13 +333,9 @@ sub disableDmn
 
 	my $domainsHashFile = fileparse($self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'});
 	my $wrkDomainsHashFile = "$self->{'wrkDir'}/$domainsHashFile";
-	my $bkpDomainsHashFile = "$self->{'bkpDir'}/$domainsHashFile." . time;
 	my $prodDomainsHashFile = $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'};
 
-	$rs = iMSCP::File->new('filename' => $wrkDomainsHashFile)->copyFile($bkpDomainsHashFile);
-	return $rs if $rs;
-
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/domains");
+	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/domains" );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -385,7 +391,7 @@ sub deleteDmn
 	$rs = $self->disableDmn($data);
 	return $rs if $rs;
 
-	$rs = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}")->remove();
+	$rs = iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
 	return $rs if $rs;
 
 	$rs = $self->{'eventManager'}->trigger('afterMtaDelDmn', $data);
@@ -473,20 +479,6 @@ sub addMail
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddMail', $data);
 	return $rs if $rs;
 
-	for(
-		$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-		$self->{'config'}->{'MTA_TRANSPORT_HASH'}
-	) {
-		my $hashFile = fileparse($_);
-		my $wrkHashFile = "$self->{'wrkDir'}/$hashFile";
-		my $bkpHashFile = "$self->{'bkpDir'}/$hashFile." . time;
-
-		if(-f $wrkHashFile) {
-			$rs = iMSCP::File->new('filename' => $wrkHashFile)->copyFile($bkpHashFile);
-			return $rs if $rs;
-		}
-	}
-
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 		$rs = $self->_addMailBox($data);
 		return $rs if $rs;
@@ -538,20 +530,6 @@ sub deleteMail
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelMail', $data);
 	return $rs if $rs;
 
-	for(
-		$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-		$self->{'config'}->{'MTA_TRANSPORT_HASH'}
-	) {
-		my $hashFile = fileparse($_);
-		my $wrkHashFile = "$self->{'wrkDir'}/$hashFile";
-		my $bkpHashFile = "$self->{'bkpDir'}/$hashFile." . time;
-
-		if(-f $wrkHashFile) {
-			$rs = iMSCP::File->new('filename' => $wrkHashFile)->copyFile($bkpHashFile);
-			return $rs if $rs;
-		}
-	}
-
 	$rs = $self->_deleteMailBox($data);
 	return $rs if $rs;
 
@@ -582,20 +560,6 @@ sub disableMail
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaDisableMail', $data);
 	return $rs if $rs;
-
-	for(
-		$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-		$self->{'config'}->{'MTA_TRANSPORT_HASH'}
-	) {
-		my $hashFile = fileparse($_);
-		my $wrkHashFile = "$self->{'wrkDir'}/$hashFile";
-		my $bkpHashFile = "$self->{'bkpDir'}/$hashFile." . time;
-
-		if(-f $wrkHashFile) {
-			$rs = iMSCP::File->new('filename' => $wrkHashFile)->copyFile($bkpHashFile);
-			return $rs if $rs;
-		}
-	}
 
 	$rs = $self->_disableMailBox($data);
 	return $rs if $rs;
@@ -727,27 +691,17 @@ sub getTraffic
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'restart'} = 0;
-
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
-	$self->{'eventManager'}->trigger(
-		'beforeMtaInit', $self, 'postfix'
-	) and fatal('postfix - beforeMtaInit has failed');
-
+	$self->{'eventManager'}->trigger('beforeMtaInit', $self, 'postfix') and fatal('postfix - beforeMtaInit has failed');
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'commentChar'} = '#';
-
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data"; \%c; };
-
-	$self->{'eventManager'}->trigger(
-		'afterMtaInit', $self, 'postfix'
-	) and fatal('postfix - afterMtaInit has failed');
+	$self->{'eventManager'}->trigger('afterMtaInit', $self, 'postfix') and fatal('postfix - afterMtaInit has failed');
 
 	$self;
 }
@@ -763,20 +717,16 @@ sub _init
 
 sub _addToRelayHash
 {
-	my ($self, $data) = @_;;
+	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddToRelayHash', $data);
 	return $rs if $rs;
 
 	my $relayHashFile = fileparse($self->{'config'}->{'MTA_RELAY_HASH'});
 	my $wrkRelayHashFile = "$self->{'wrkDir'}/$relayHashFile";
-	my $bkpRelayHashFile = "$self->{'bkpDir'}/$relayHashFile." . time;
 	my $prodRelayHashFile = $self->{'config'}->{'MTA_RELAY_HASH'};
 
-	$rs = iMSCP::File->new('filename' => $wrkRelayHashFile)->copyFile($bkpRelayHashFile);
-	return $rs if $rs;
-
-	my $file = iMSCP::File->new('filename' => $wrkRelayHashFile);
+	my $file = iMSCP::File->new( filename => $wrkRelayHashFile );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -830,13 +780,9 @@ sub _deleteFromRelayHash
 
 	my $relayHashFile = fileparse($self->{'config'}->{'MTA_RELAY_HASH'});
 	my $wrkRelayHashFile = "$self->{'wrkDir'}/$relayHashFile";
-	my $bkpRelayHashFile = "$self->{'bkpDir'}/$relayHashFile." . time;
 	my $prodRelayHashFile = $self->{'config'}->{'MTA_RELAY_HASH'};
 
-	$rs = iMSCP::File->new('filename' => $wrkRelayHashFile)->copyFile($bkpRelayHashFile);
-	return $rs if $rs;
-
-	my $file= iMSCP::File->new('filename' => $wrkRelayHashFile);
+	my $file= iMSCP::File->new( filename => $wrkRelayHashFile );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -886,13 +832,9 @@ sub _addToDomainsHash
 
 	my $domainsHashFile = fileparse($self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'});
 	my $wrkDomainsHashFile = "$self->{'wrkDir'}/$domainsHashFile";
-	my $bkpDomainsHashFile = "$self->{'bkpDir'}/$domainsHashFile." . time;
 	my $prodDomainsHashFile = $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'};
 
-	$rs = iMSCP::File->new('filename' => $wrkDomainsHashFile)->copyFile($bkpDomainsHashFile);
-	return $rs if $rs;
-
-	my $file = iMSCP::File->new('filename' => $wrkDomainsHashFile);
+	my $file = iMSCP::File->new( filename => $wrkDomainsHashFile );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -921,15 +863,11 @@ sub _addToDomainsHash
 
 	$self->{'postmap'}->{$prodDomainsHashFile} = 1;
 
-	$rs = iMSCP::Dir->new(
-		'dirname' => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}"
-	)->make(
-		{
-			'user' => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-			'group' => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-			'mode' => 0750
-		}
-	);
+	$rs = iMSCP::Dir->new(dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}")->make({
+		user => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+		group => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+		mode => 0750
+	});
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterMtaAddToDomainsHash', $data);
@@ -955,7 +893,7 @@ sub _addMailBox
 	my $wrkMailboxesFileHash = "$self->{'wrkDir'}/$mailboxesFileHash";
 	my $prodMailboxesFileHash = $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'};
 
-	my $file = iMSCP::File->new('filename' => $wrkMailboxesFileHash);
+	my $file = iMSCP::File->new( filename => $wrkMailboxesFileHash );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -990,24 +928,18 @@ sub _addMailBox
 	my $mailGidName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
 	# Creating maildir directory or only set its permissions if already exists
-	$rs = iMSCP::Dir->new(
-		'dirname' => $mailDir
-	)->make(
-		{
-			'user' => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-			'group' => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-			'mode' => 0750
-		}
-	);
+	$rs = iMSCP::Dir->new(dirname => $mailDir)->make({
+		user => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+		group => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+		mode => 0750
+	});
 	return $rs if $rs;
 
 	# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
-	for('cur', 'new', 'tmp') {
-		$rs = iMSCP::Dir->new(
-			'dirname' => "$mailDir/$_"
-		)->make(
-			{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0750 }
-		);
+	for my $dir('cur', 'new', 'tmp') {
+		$rs = iMSCP::Dir->new( dirname => "$mailDir/$dir")->make({
+			user => $mailUidName, group => $mailGidName, mode => 0750
+		});
 		return $rs if $rs;
 	}
 
@@ -1034,7 +966,7 @@ sub _disableMailBox
 	my $wrkMailboxesFileHash = "$self->{'wrkDir'}/$mailboxesFileHash";
 	my $prodMailboxesFileHash = $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'};
 
-	my $file = iMSCP::File->new('filename' => $wrkMailboxesFileHash);
+	my $file = iMSCP::File->new( filename => $wrkMailboxesFileHash );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -1089,7 +1021,7 @@ sub _deleteMailBox
 
 	my $mailDir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 
-	$rs = iMSCP::Dir->new('dirname' => $mailDir)->remove();
+	$rs = iMSCP::Dir->new( dirname => $mailDir )->remove();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterMtaDelMailbox', $data);
@@ -1115,7 +1047,7 @@ sub _addMailForward
 	my $wrkAliasesFileHash = "$self->{'wrkDir'}/$aliasesFileHash";
 	my $prodAliasesFileHash = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
 
-	my $file = iMSCP::File->new('filename' => $wrkAliasesFileHash);
+	my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -1180,7 +1112,7 @@ sub _deleteMailForward
 	my $wrkAliasesFileHash = "$self->{'wrkDir'}/$aliasesFileHash";
 	my $prodAliasesFileHash = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
 
-	my $file = iMSCP::File->new('filename' => $wrkAliasesFileHash);
+	my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -1246,7 +1178,7 @@ sub _addAutoRspnd
 	my $wrkTransportFileHash = "$self->{'wrkDir'}/$transportFileHash";
 	my $prodTransportFileHash = $self->{'config'}->{'MTA_TRANSPORT_HASH'};
 
-	my $file = iMSCP::File->new('filename' => $wrkTransportFileHash);
+	my $file = iMSCP::File->new( filename => $wrkTransportFileHash );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -1299,7 +1231,7 @@ sub _deleteAutoRspnd
 	my $wrkTransportFileHash = "$self->{'wrkDir'}/$transportFileHash";
 	my $prodTransportFileHash = $self->{'config'}->{'MTA_TRANSPORT_HASH'};
 
-	my $file = iMSCP::File->new('filename' => $wrkTransportFileHash);
+	my $file = iMSCP::File->new( filename => $wrkTransportFileHash );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -1351,7 +1283,7 @@ sub _addCatchAll
 	my $wrkAliasesFileHash = "$self->{'wrkDir'}/$aliasesFileHash";
 	my $prodAliasesFileHash = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
 
-	my $file = iMSCP::File->new('filename' => $wrkAliasesFileHash);
+	my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -1359,10 +1291,10 @@ sub _addCatchAll
 		return 1;
 	}
 
-	for(@{$data->{'MAIL_ON_CATCHALL'}}) {
-		my $mailbox = quotemeta($_);
+	for my $entry(@{$data->{'MAIL_ON_CATCHALL'}}) {
+		my $mailbox = quotemeta($entry);
 		$content =~ s/^$mailbox\s+$mailbox\n//gim;
-		$content .= "$_\t$_\n";
+		$content .= "$entry\t$entry\n";
 	}
 
 	if($data->{'MAIL_TYPE'} =~ /_catchall/) {
@@ -1411,7 +1343,7 @@ sub _deleteCatchAll
 	my $wrkAliasesFileHash = "$self->{'wrkDir'}/$aliasesFileHash";
 	my $prodAliasesFileHash = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
 
-	my $file = iMSCP::File->new('filename' => $wrkAliasesFileHash);
+	my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
 	my $content = $file->get();
 
 	unless(defined $content) {
@@ -1419,8 +1351,8 @@ sub _deleteCatchAll
 		return 1;
 	}
 
-	for(@{$data->{'MAIL_ON_CATCHALL'}}) {
-		my $mailbox = quotemeta($_);
+	for my $entry(@{$data->{'MAIL_ON_CATCHALL'}}) {
+		my $mailbox = quotemeta($entry);
 		$content =~ s/^$mailbox\s+$mailbox\n//gim;
 	}
 
@@ -1460,8 +1392,8 @@ END
 	my $rs = $?;
 
 	unless(defined $main::execmode && $main::execmode eq 'setup') {
-		for(keys %{$self->{'postmap'}}) {
-			$rs ||= $self->postmap($_);
+		for my $map(keys %{$self->{'postmap'}}) {
+			$rs ||= $self->postmap($map);
 		}
 	}
 

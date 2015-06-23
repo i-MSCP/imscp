@@ -95,7 +95,7 @@ sub showDialog
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] ||
+		$main::reconfigure ~~ [ 'po', 'servers', 'all', 'forced' ] ||
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser =~ /[^\x21-\x7e]+/) ||
 		(length $dbPass < 6 || $dbPass =~ /[^\x21-\x7e]+/)
 	) {
@@ -174,12 +174,14 @@ sub showDialog
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $rs = $self->_bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
-	return $rs if $rs;
+	for my $filename('dovecot.conf', 'dovecot-sql.conf') {
+		my $rs = $self->_bkpConfFile($filename);
+		return $rs if $rs;
+	}
 
-	$rs = $self->_setupSqlUser();
+	my $rs = $self->_setupSqlUser();
 	return $rs if $rs;
 
 	$rs = $self->_buildConf();
@@ -188,7 +190,6 @@ sub install
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
-	# Migrate from Courier if needed
 	if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'courier') {
 		$rs = $self->_migrateFromCourier();
 		return $rs if $rs;
@@ -224,15 +225,13 @@ sub buildPostfixConf
 	my ($self, $fileContent, $fileName) = @_;
 
 	if($fileName eq 'main.cf') {
-	# LDA part
-	$$fileContent .= <<EOF
+		$$fileContent .= <<EOF
 
 virtual_transport = dovecot
 dovecot_destination_recipient_limit = 1
 EOF
 
 	} elsif($fileName eq 'master.cf') {
-		# LDA part
 		my $configSnippet = <<EOF;
 
 dovecot   unix  -       n       n       -       -       pipe
@@ -269,7 +268,7 @@ EOF
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
@@ -283,17 +282,15 @@ sub _init
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = $self->{'po'}->{'config'};
 
-	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
 
-		for(keys %oldConfig) {
-			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $oldConfig{$_};
+		for my $param(keys %oldConfig) {
+			if(exists $self->{'config'}->{$param}) {
+				$self->{'config'}->{$param} = $oldConfig{$param};
 			}
 		}
 	}
@@ -317,7 +314,7 @@ sub _init
 
 sub _getVersion
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoGetVersion');
 	return $rs if $rs;
@@ -359,9 +356,9 @@ sub _bkpConfFile
 	return $rs if $rs;
 
 	if(-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile") {
-		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile");
+		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile" );
 
-		if(! -f "$self->{'bkpDir'}/$cfgFile.system") {
+		unless(-f "$self->{'bkpDir'}/$cfgFile.system") {
 			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.system");
 			return $rs if $rs;
 		} else {
@@ -384,18 +381,16 @@ sub _bkpConfFile
 
 sub _setupSqlUser
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD');
-
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
-	# Removing any SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next unless $sqlUser;
 
@@ -409,11 +404,8 @@ sub _setupSqlUser
 		}
 	}
 
-	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
-
-	# Adding new SQL user with needed privileges
 
 	$rs = $db->doQuery(
 		'dummy',
@@ -427,7 +419,6 @@ sub _setupSqlUser
 		return 1;
 	}
 
-	# Store database user and password in config file
 	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
 	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 
@@ -444,9 +435,7 @@ sub _setupSqlUser
 
 sub _buildConf
 {
-	my $self = $_[0];
-
-	# Define data
+	my $self = shift;
 
 	(my $dbName = main::setupGetQuestion('DATABASE_NAME')) =~ s%('|"|\\)%\\$1%g;
 	(my $dbUser = $self->{'config'}->{'DATABASE_USER'}) =~ s%('|"|\\)%\\$1%g;
@@ -479,7 +468,7 @@ sub _buildConf
 
 	# Transitional code (should be removed in later version
 	if(-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf") {
-		iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf")->delFile();
+		iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf")->delFile();
 	}
 
 	my %cfgFiles = (
@@ -508,36 +497,30 @@ sub _buildConf
 		]
 	);
 
-	for (keys %cfgFiles) {
-		# Load template
-
+	for my $conffile(keys %cfgFiles) {
 		my $cfgTpl;
-		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'dovecot', $_, \$cfgTpl, $data);
+		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'dovecot', $conffile, \$cfgTpl, $data);
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
-			$cfgTpl= iMSCP::File->new('filename' => "$self->{'cfgDir'}/$_")->get();
+			$cfgTpl= iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
 			unless(defined $cfgTpl) {
-				error("Unable to read $self->{'cfgDir'}/$_");
+				error("Unable to read $self->{'cfgDir'}/$conffile");
 				return 1;
 			}
 		}
 
-		# Build file
-
-		$rs = $self->{'eventManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
+		$rs = $self->{'eventManager'}->trigger('beforePoBuildConf', \$cfgTpl, $conffile);
 		return $rs if $rs;
 
 		$cfgTpl = process($data, $cfgTpl);
 
-		$rs = $self->{'eventManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
+		$rs = $self->{'eventManager'}->trigger('afterPoBuildConf', \$cfgTpl, $conffile);
 		return $rs if $rs;
 
-		# Store file
+		my $filename = fileparse($cfgFiles{$conffile}->[0]);
 
-		my $filename = fileparse($cfgFiles{$_}->[0]);
-
-		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
 
 		$rs = $file->set($cfgTpl);
 		return $rs if $rs;
@@ -545,15 +528,17 @@ sub _buildConf
 		$rs = $file->save();
 		return $rs if $rs;
 
-		$rs = $file->owner($cfgFiles{$_}->[1], $cfgFiles{$_}->[2]);
+		$rs = $file->owner($cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2]);
 		return $rs if $rs;
 
-		$rs = $file->mode($cfgFiles{$_}->[3]);
+		$rs = $file->mode($cfgFiles{$conffile}->[3]);
 		return $rs if $rs;
 
-		$rs = $file->copyFile($cfgFiles{$_}->[0]);
+		$rs = $file->copyFile($cfgFiles{$conffile}->[0]);
 		return $rs if $rs;
 	}
+
+	0;
 }
 
 =item _saveConf()
@@ -566,9 +551,9 @@ sub _buildConf
 
 sub _saveConf
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/dovecot.data");
+	my $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.data" );
 
 	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
@@ -585,7 +570,7 @@ sub _saveConf
 	$rs = $self->{'eventManager'}->trigger('beforePoSaveConf', \$cfg, 'dovecot.old.data');
 	return $rs if $rs;
 
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/dovecot.old.data");
+	$file = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" );
 
 	$rs = $file->set($cfg);
 	return $rs if $rs;
@@ -612,23 +597,16 @@ sub _saveConf
 
 sub _migrateFromCourier
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoMigrateFromCourier');
 	return $rs if $rs;
 
 	my $mailPath = "$self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}";
 
-	# Converting all mailboxes to dovecot format
-
 	my @cmd = (
-		'perl',
-		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl",
-		'--to-dovecot',
-		'--convert',
-		'--overwrite',
-		'--recursive',
-		$mailPath
+		'perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl", '--to-dovecot',
+		'--convert', '--overwrite', '--recursive', $mailPath
 	);
 
 	my ($stdout, $stderr);
@@ -652,7 +630,7 @@ sub _migrateFromCourier
 
 sub _oldEngineCompatibility
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoOldEngineCompatibility');
 	return $rs if $rs;

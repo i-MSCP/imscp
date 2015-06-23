@@ -29,7 +29,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_restoreConfFile();
 	return $rs if $rs;
@@ -39,15 +39,13 @@ sub uninstall
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'po'} = Servers::po::dovecot->getInstance();
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
-
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = $self->{'po'}->{'config'};
 
 	$self;
@@ -55,22 +53,20 @@ sub _init
 
 sub _restoreConfFile
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $rs = 0;
-
-	for ('dovecot.conf', 'dovecot-sql.conf') {
-		$rs = iMSCP::File->new(
-			'filename' => "$self->{bkpDir}/$_.system"
-		)->copyFile(
-			"$self->{'config'}->{'DOVECOT_CONF_DIR'}/$_"
-		) if -f "$self->{bkpDir}/$_.system";
-		return $rs if $rs;
+	for my $filename('dovecot.conf', 'dovecot-sql.conf') {
+		if(-f "$self->{bkpDir}/$filename.system") {
+			my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile(
+				"$self->{'config'}->{'DOVECOT_CONF_DIR'}/$filename"
+			);
+			return $rs if $rs;
+		}
 	}
 
-	my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf");
+	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
 
-	$rs = $file->mode(0644);
+	my $rs = $file->mode(0644);
 	return $rs if $rs;
 
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'MTA_MAILBOX_GID_NAME'});
@@ -78,17 +74,17 @@ sub _restoreConfFile
 
 sub _dropSqlUser
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if($self->{'config'}->{'DATABASE_USER'}) {
 		my $database = iMSCP::Database->factory();
 
-		$database->doQuery('delete', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, 'localhost');
-		$database->doQuery('delete', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, '%');
+		$database->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, 'localhost');
+		$database->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, '%');
 		$database->doQuery(
-			'delete', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
+			'd', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
 		);
-		$database->doQuery('dummy', 'FLUSH PRIVILEGES');
+		$database->doQuery('f', 'FLUSH PRIVILEGES');
 
 	}
 
