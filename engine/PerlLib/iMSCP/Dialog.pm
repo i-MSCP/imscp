@@ -499,7 +499,7 @@ sub _init
 
 	$self->_findBin($^O =~ /bsd$/ ? 'cdialog' : 'dialog');
 	#$self->_determineDialogVariant();
-	$self->_determineConsoleSize() unless $main::noprompt;
+	$self->_determineConsoleSize();
 
 	$self;
 }
