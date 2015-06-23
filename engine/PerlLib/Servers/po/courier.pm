@@ -118,14 +118,24 @@ sub postinstall
 	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'courier');
 	return $rs if $rs;
 
-	local $@
+	local $@;
 	eval {
 		my $serviceMngr = iMSCP::Service->getInstance();
-		$serviceMngr->enable($self->{'config'}->{'AUTHDAEMON_SNAME'});
-		$serviceMngr->enable($self->{'config'}->{'POPD_SNAME'});
-		$serviceMngr->enable($self->{'config'}->{'POPD_SSL_SNAME'});
-		$serviceMngr->enable($self->{'config'}->{'IMAPD_SNAME'});
-		$serviceMngr->enable($self->{'config'}->{'IMAPD_SSL_SNAME'});
+
+		for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
+			$serviceMngr->restart($self->{'config'}->{$service});
+		}
+
+		if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
+			for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
+				$serviceMngr->enable($self->{'config'}->{$service});
+			}
+		} else {
+			for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
+				$serviceMngr->stop($self->{'config'}->{$service});
+				$serviceMngr->disable($self->{'config'}->{$service});
+			}
+		}
 	};
 	if($@) {
 		error($@);
@@ -296,11 +306,16 @@ sub start
 	local $@;
 	eval {
 		my $serviceMngr = iMSCP::Service->getInstance();
-		$serviceMngr->start($self->{'config'}->{'AUTHDAEMON_SNAME'});
-		$serviceMngr->start($self->{'config'}->{'POPD_SNAME'});
-		$serviceMngr->start($self->{'config'}->{'POPD_SSL_SNAME'});
-		$serviceMngr->start($self->{'config'}->{'IMAPD_SNAME'});
-		$serviceMngr->start($self->{'config'}->{'IMAPD_SSL_SNAME'});
+
+		for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
+			$serviceMngr->restart($self->{'config'}->{$service});
+		}
+
+		if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
+			for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
+				$serviceMngr->start($self->{'config'}->{$service});
+			}
+		}
 	};
 	if($@) {
 		error($@);
@@ -328,11 +343,9 @@ sub stop
 	local $@;
 	eval {
 		my $serviceMngr = iMSCP::Service->getInstance();
-		$serviceMngr->stop($self->{'config'}->{'AUTHDAEMON_SNAME'});
-		$serviceMngr->stop($self->{'config'}->{'POPD_SNAME'});
-		$serviceMngr->stop($self->{'config'}->{'POPD_SSL_SNAME'});
-		$serviceMngr->stop($self->{'config'}->{'IMAPD_SNAME'});
-		$serviceMngr->stop($self->{'config'}->{'IMAPD_SSL_SNAME'});
+		for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SNAME', 'IMAPD_SSL_SNAME') {
+			$serviceMngr->stop($self->{'config'}->{$service});
+		}
 	};
 	if($@) {
 		error($@);
@@ -360,11 +373,16 @@ sub restart
 	local $@;
 	eval {
 		my $serviceMngr = iMSCP::Service->getInstance();
-		$serviceMngr->restart($self->{'config'}->{'AUTHDAEMON_SNAME'});
-		$serviceMngr->restart($self->{'config'}->{'POPD_SNAME'});
-		$serviceMngr->restart($self->{'config'}->{'POPD_SSL_SNAME'});
-		$serviceMngr->restart($self->{'config'}->{'IMAPD_SNAME'});
-		$serviceMngr->restart($self->{'config'}->{'IMAPD_SSL_SNAME'});
+
+		for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
+			$serviceMngr->restart($self->{'config'}->{$service});
+		}
+
+		if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
+			for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
+				$serviceMngr->restart($self->{'config'}->{$service});
+			}
+		}
 	};
 	if($@) {
 		error($@);

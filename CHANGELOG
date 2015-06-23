@@ -8,6 +8,7 @@ BACKEND
 	Added: Dedicated package for remote SQL server
 	Added: NAMED_BNAME (named binary name) configuration parameter - Named (Bind9) server impl.
 	Fixed: The .my.cnf file is no longer used and thus, must be removed
+	Fixed: POP3 SSL and IMAP SSL services must be disabled when SSL is disabled for the services - Courier server impl.
 
 FRONTEND
 	Fixed: Domain limit is not updated when a domain is being deleted (reseller level)
