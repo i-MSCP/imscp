@@ -127,6 +127,9 @@ function i18n_buildLanguageIndex()
 		}
 	}
 
+	# Clear opcode cache if any
+	iMSCP_Utility_OpcodeCache::clearAllActive();
+
 	$iterator = new RecursiveIteratorIterator(
 		new RecursiveDirectoryIterator($cfg->GUI_ROOT_DIR . '/i18n/locales/', FilesystemIterator::SKIP_DOTS)
 	);
