@@ -52,7 +52,7 @@ sub uninstall
 {
 	my $self = shift;
 
-	$self->_removeOptionsFile();
+	$self->_removeConfig();
 }
 
 =back
