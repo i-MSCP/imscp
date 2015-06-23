@@ -7,12 +7,15 @@ Git 1.2.x
 BACKEND
 	Added: Dedicated package for remote SQL server
 	Added: NAMED_BNAME (named binary name) configuration parameter - Named (Bind9) server impl.
-	Fixed: The .my.cnf file is no longer used and thus, must be removed
 	Fixed: POP3 SSL and IMAP SSL services must be disabled when SSL is disabled for the services - Courier server impl.
+	Fixed: The .my.cnf file is no longer used and thus, must be removed
 
 FRONTEND
 	Fixed: Domain limit is not updated when a domain is being deleted (reseller level)
 	Fixed: Opcode cache must be cleared when the languages index is rebuilt
+
+INSTALLER
+	Fixed: 'opening terminal: unknown' error when running installer with nopromp option via SSH command - iMSCP::Dialog
 
 YOUTRACK
 	Fixed: #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.

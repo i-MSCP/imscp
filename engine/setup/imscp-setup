@@ -114,12 +114,9 @@ Welcome to the \\Z1i-MSCP $main::imscpConfig{'Version'}\\Zn setup dialog.
 
 This program will install/update i-MSCP on your system.
 
-\\Z3Warning:\\Zn Make sure you have read and performed all steps from the
-         \\Zbdocs/$distribution/INSTALL\\Zn file.
+Make sure you have read and performed all steps from the \\Zbdocs/$distribution/INSTALL\\Zn file.
 
-   \\Z4Note:\\Zn During the setup process some or all services might require
-         to be shutdown or restarted. Only services that are not set as
-         '\\Zbno\\Zn' in your imscp.conf file will be processed by this program.
+During the setup process some or all services might require to be shutdown or restarted.
 EOF
 
 			$dialog->msgbox(<<EOF);
@@ -144,11 +141,17 @@ EOF
 	return $rs if $rs;
 
 	unless($main::noprompt) {
+		my $port = ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://')
+			? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
+			: $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+
 		iMSCP::Dialog->getInstance()->infobox(<<EOF);
 
 \\Z1Congratulations\\Zn
 
-i-MSCP has been successfully updated.
+i-MSCP has been successfully installed/updated.
+
+Please connect to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'}:$port and login with your administrator account.
 
 Thank you for choosing i-MSCP.
 EOF
