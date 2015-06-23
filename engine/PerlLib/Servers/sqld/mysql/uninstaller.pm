@@ -29,7 +29,6 @@ use iMSCP::Debug;
 use iMSCP::File;
 use File::HomeDir;
 use Servers::sqld::mysql;
-
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

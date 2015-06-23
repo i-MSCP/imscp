@@ -12,7 +12,7 @@ BACKEND
 
 FRONTEND
 	Fixed: Domain limit is not updated when a domain is being deleted (reseller level)
-	Fixed: Opcode cache must be cleared when the language index is rebuilt
+	Fixed: Opcode cache must be cleared when the languages index is rebuilt
 
 YOUTRACK
 	Fixed: #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.
