@@ -132,6 +132,7 @@
                 >
             <package>percona-server-client-5.5</package>
             <package>percona-server-server-5.5</package>
+            <package>mysql-common</package>
         </percona_5.5>
         <percona_5.6
                 pinning_package="*"
@@ -144,6 +145,7 @@
                 >
             <package>percona-server-client-5.6</package>
             <package>percona-server-server-5.6</package>
+            <package>mysql-common</package>
         </percona_5.6>
         <remote_server
                 pinning_package="mysql-client-5.5 mysql-common libmysqlclient18"
