@@ -216,7 +216,7 @@ sub _buildConf
 		DATABASE_USER => $main::imscpConfig{'DATABASE_USER'}
 	};
 
-	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.5')) {
+	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.5.0')) {
 		$cfgTpl .= <<EOF;
 [mysqld]
 innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}
