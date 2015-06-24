@@ -264,7 +264,7 @@ sub _bkpConfFile
 
  Set version
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -478,7 +478,7 @@ sub _createTrafficLogFile
 
  Save configuration file
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 

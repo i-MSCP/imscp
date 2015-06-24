@@ -265,7 +265,7 @@ sub _bkpConfFile
 
  Set Apache version
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -669,7 +669,7 @@ sub _setupVlogger
 
  Save configuration file
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 

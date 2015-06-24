@@ -337,7 +337,7 @@ sub startGauge
 
  Param int $percent New percentage to show in gauge dialog box
  Param string $text OPTIONAL New text to show in gauge dialog box
- Return in 0 on success, 1 on failure (eg. when SIGPIPE has been received for any reason)
+ Return int 0 on success, 1 on failure (eg. when SIGPIPE has been received for any reason)
 
 =cut
 

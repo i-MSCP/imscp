@@ -157,7 +157,7 @@ sub showDialog
 
  Process preinstall tasks
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -175,7 +175,7 @@ sub preinstall
 
  Process install tasks
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -205,7 +205,7 @@ sub install
 
  Set engine permissions
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -312,7 +312,7 @@ sub _init
 
  Add users and groups
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -384,7 +384,7 @@ sub _addUsersAndGroups
 
  Create directories
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -493,7 +493,7 @@ sub _setupSqlUser
 
  Build configuration file
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -520,7 +520,7 @@ sub _buildConf
 
  Build lookup tables
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -553,7 +553,7 @@ sub _buildLookupTables
 
  Build aliases database
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -578,7 +578,7 @@ sub _buildAliasesDb
 
  Save configuration file
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -594,7 +594,7 @@ sub _saveConf
  Backup configuration file
 
  Param string $cfgFile Configuration file path
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -626,7 +626,7 @@ sub _bkpConfFile
 
  Build main.cf file
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -725,7 +725,7 @@ sub _buildMainCfFile
 
  Build master.cf file
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -783,7 +783,7 @@ sub _buildMasterCfFile
 
  Build SASL configuration file
 
- Return in 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
