@@ -25,17 +25,16 @@ package Servers::sqld::mysql::installer;
 
 use strict;
 use warnings;
+use iMSCP::Crypt;
+use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::File;
 use iMSCP::Execute;
-use iMSCP::TemplateParser;
+use iMSCP::File;
 use iMSCP::Rights;
-use iMSCP::Crypt;
-use File::HomeDir;
+use iMSCP::TemplateParser;
 use Servers::sqld::mysql;
 use version;
-
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -45,6 +44,21 @@ use parent 'Common::SingletonClass';
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item preinstall()
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+	my $self = shift;
+
+	$self->_setVersion();
+}
 
 =item install()
 
@@ -58,7 +72,10 @@ sub install
 {
 	my $self = shift;
 
-	$self->_createConfig();
+	my $rs = $self->_buildConf();
+	return $rs if $rs;
+
+	$self->_saveConf();
 }
 
 =item setEnginePermissions()
@@ -73,16 +90,9 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	my $confDir = '/etc/mysql/conf.d';
-
-	if(-f "$confDir/imscp.cnf") {
-		my $rs = setRights( "$confDir/imscp.cnf", {
-			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
-		);
-		return $rs if $rs;
-	}
-
-	0;
+	setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/imscp.cnf", {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
+	);
 }
 
 =back
@@ -106,97 +116,147 @@ sub _init
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'sqld'} = Servers::sqld::mysql->getInstance();
 
-	$self->{'eventManager'}->trigger(
-		'beforeSqldInitInstaller', $self, 'mysql'
-	) and fatal('postfix - beforeSqldInitInstaller has failed');
+	$self->{'eventManager'}->trigger('beforeSqldInitInstaller', $self, 'mysql') and fatal(
+		'mysql - beforeSqldInitInstaller has failed'
+	);
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
+	$self->{'config'}= $self->{'sqld'}->{'config'};
 
-	$self->{'eventManager'}->trigger(
-		'afterSqldInitInstaller', $self, 'mysql'
-	) and fatal('postfix - afterSqldInitInstaller has failed');
+	my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
+	if(-f $oldConf) {
+		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
+
+		for my $param(keys %oldConfig) {
+			if(exists $self->{'config'}->{$param}) {
+				$self->{'config'}->{$param} = $oldConfig{$param};
+			}
+		}
+	}
+
+	$self->{'eventManager'}->trigger('afterSqldInitInstaller', $self, 'mysql') and fatal(
+		'mysql - afterSqldInitInstaller has failed'
+	);
 
 	$self;
 }
 
-=item _createConfig()
+=item _setVersion()
 
- Create configuration file
+ Set SQL server version
+
+ Return 0 on success, other on failure
+
+=cut
+
+sub _setVersion
+{
+	my $self = shift;
+
+	$self->{'eventManager'}->trigger('beforeSqldSetVersion');
+
+	my $version = iMSCP::Database->factory()->doQuery(1, 'SELECT VERSION()');
+	unless(ref $version eq 'HASH') {
+		error($version);
+		return 1;
+	}
+
+	($version) = ((keys %{$version})[0]) =~ /^([0-9]+(?:\.[0-9]+){1,2})/;
+
+	unless(defined $version) {
+		error('Unable to set SQL server version');
+		return 1;
+	}
+
+	debug("SQL server version set to: $version");
+	$self->{'config'}->{'SQLD_VERSION'} = $version;
+
+	$self->{'eventManager'}->trigger('afterSqldSetVersion');
+}
+
+=item _buildConf()
+
+ Build configuration file
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _createConfig
+sub _buildConf
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMysqlCreateConfig');
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldBuildConf');
 	return $rs if $rs;
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $confDir = '/etc/mysql/conf.d';
+	my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
-	if(-d $confDir) {
-		my $cfgTpl;
-		$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', \$cfgTpl, {
-			USER => $rootUName, GROUP => $rootGName, CONFDIR => $confDir }
-		);
-		return $rs if $rs;
+	my $cfgTpl;
+	$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', \$cfgTpl, {
+		USER => $rootUName, GROUP => $rootGName, CONFDIR => $confDir }
+	);
+	return $rs if $rs;
 
+	unless(defined $cfgTpl) {
+		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
 		unless(defined $cfgTpl) {
-			$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
-			unless(defined $cfgTpl) {
-				error("Unable to read $self->{'cfgDir'}/imscp.cnf");
-				return 1;
-			}
-		}
-
-		my $variables = {
-			DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
-			DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
-			DATABASE_PASSWORD => escapeShell(
-				iMSCP::Crypt->getInstance()->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'})
-			),
-			DATABASE_USER => $main::imscpConfig{'DATABASE_USER'},
-		};
-
-		(my $version) = $main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/;
-		unless($version) {
-			error('Unable to parse MySQL version');
+			error("Unable to read $self->{'cfgDir'}/imscp.cnf");
 			return 1;
 		}
+	}
 
-		if(version->parse($version) >= version->parse('5.5')) {
-			$cfgTpl .= <<EOF;
+	my $variables = {
+		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
+		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
+		DATABASE_PASSWORD => escapeShell(
+			iMSCP::Crypt->getInstance()->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'})
+		),
+		DATABASE_USER => $main::imscpConfig{'DATABASE_USER'}
+	};
+
+	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.5')) {
+		$cfgTpl .= <<EOF;
 [mysqld]
 innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}
 EOF
 
-			$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
-		}
-
-		$cfgTpl = process($variables, $cfgTpl);
-
-		my $file = iMSCP::File->new( filename => "$confDir/imscp.cnf" );
-
-		$rs = $file->set($cfgTpl);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0640);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
+		$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
 	}
 
-	$self->{'eventManager'}->trigger('afterMysqlCreateConfig');
+	$cfgTpl = process($variables, $cfgTpl);
+
+	my $file = iMSCP::File->new( filename => "$confDir/imscp.cnf" );
+
+	$rs = $file->set($cfgTpl);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterSqldBuildConf');
+}
+
+=item _saveConf()
+
+ Save configuration file
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _saveConf
+{
+	my $self = shift;
+
+	iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.data" )->copyFile("$self->{'cfgDir'}/mysql.old.data");
 }
 
 =item _isMysqldInsideCt()
@@ -209,21 +269,19 @@ EOF
 
 sub _isMysqldInsideCt
 {
-	my $rs = 0;
-
 	if(-f '/proc/user_beancounters') {
 		my ($stdout, $stderr);
-		$rs = execute('cat /proc/1/status | grep --color=never envID', \$stdout, \$stderr);
+		my $rs = execute('cat /proc/1/status | grep --color=never envID', \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		warning($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
 		if($stdout =~ /envID:\s+(\d+)/) {
-			$rs = ($1 > 0) ? 1 : 0;
+			return ($1 > 0) ? 1 : 0;
 		}
 	}
 
-	$rs;
+	0;
 }
 
 =back

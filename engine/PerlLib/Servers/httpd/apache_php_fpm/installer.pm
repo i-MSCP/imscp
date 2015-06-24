@@ -713,9 +713,9 @@ sub _setupVlogger
 
 =item _saveConf()
 
- Save configuration
+ Save configuration file
 
- Return int 0 on success, other on failure
+ Return in 0 on success, other on failure
 
 =cut
 
@@ -727,7 +727,7 @@ sub _saveConf
 	my $rs = 0;
 
 	for my $entry(keys %filesToDir) {
-		$rs |= iMSCP::File->new(filename => "$filesToDir{$entry}/$entry.data")->copyFile(
+		$rs |= iMSCP::File->new( filename => "$filesToDir{$entry}/$entry.data" )->copyFile(
 			"$filesToDir{$entry}/$entry.old.data"
 		);
 	}

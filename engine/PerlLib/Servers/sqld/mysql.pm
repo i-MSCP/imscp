@@ -25,10 +25,12 @@ package Servers::sqld::mysql;
 
 use strict;
 use warnings;
+use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Service;
+use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -38,6 +40,28 @@ use parent 'Common::SingletonClass';
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item preinstall()
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+	my $self = shift;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldPreinstall');
+	return $rs if $rs;
+
+	require Servers::sqld::mysql::installer;
+	$rs = Servers::sqld::mysql::installer->getInstance()->preinstall();
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterSqldPreinstall');
+}
 
 =item install()
 
@@ -151,6 +175,21 @@ sub restart
 	$self->{'eventManager'}->trigger('afterSqldRestart');
 }
 
+=item getVersion()
+
+ Get SQL server version
+
+ Return string MySQL server version
+
+=cut
+
+sub getVersion
+{
+	my $self = shift;
+
+	$self->{'config'}->{'SQLD_VERSION'};
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -172,9 +211,9 @@ sub _init
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'eventManager'}->trigger('beforeSqldInit', $self, 'mysql') and fatal('mysql - beforeSqldInit has failed');
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'eventManager'}->trigger('afterSqldInit', $self, 'mysql') and fatal('postfix - afterSqldInit has failed');
+	$self->{'config'}= $self->{'mysql'}->{'config'};
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data"; \%c; };
+	$self->{'eventManager'}->trigger('afterSqldInit', $self, 'mysql') and fatal('mysql - afterSqldInit has failed');
 
 	$self;
 }

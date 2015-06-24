@@ -36,6 +36,7 @@ use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::File;
 use Package::FrontEnd;
+use Servers::sqld;
 use File::Basename;
 use JSON;
 use version;
@@ -169,26 +170,8 @@ sub preinstall
 {
 	my $self = $_[0];
 
-	my $version = undef;
-
-	if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
-		$version = $1 if($main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/);
-	} else {
-		$version = iMSCP::Database->factory()->doQuery(1, 'SELECT VERSION()');
-		unless(ref $version eq 'HASH') {
-			error($version);
-			return 1;
-		}
-
-		$version = $1 if(((keys %{$version})[0]) =~ /^([0-9]+\.[0-9]+)/);
-	}
-
-	unless(defined $version) {
-		error('Unable to find MySQL server version');
-		return 1;
-	}
-
-	$version = (version->parse($version) >= version->parse('5.5')) ? '0.4.0.*@dev' : '0.2.0.*@dev';
+	my $sqldVersion = Servers::sqld->factory()->getVersion();
+	my $version = (version->parse($sqldVersion) >= version->parse('5.5.0')) ? '0.4.0.*@dev' : '0.2.0.*@dev';
 
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', $version);
 	return $rs if $rs;

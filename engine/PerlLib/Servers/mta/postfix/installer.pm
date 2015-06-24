@@ -576,7 +576,7 @@ sub _buildAliasesDb
 
 =item _saveConf()
 
- Save main configuration file
+ Save configuration file
 
  Return in 0 on success, other on failure
 

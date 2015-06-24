@@ -667,9 +667,9 @@ sub _setupVlogger
 
 =item _saveConf()
 
- Save configuration
+ Save configuration file
 
- Return int 0 on success, other on failure
+ Return in 0 on success, other on failure
 
 =cut
 
@@ -677,7 +677,7 @@ sub _saveConf
 {
 	my $self = shift;
 
-	iMSCP::File->new(filename => "$self->{'apacheCfgDir'}/apache.data")->copyFile(
+	iMSCP::File->new( filename => "$self->{'apacheCfgDir'}/apache.data" )->copyFile(
 		"$self->{'apacheCfgDir'}/apache.old.data"
 	);
 }

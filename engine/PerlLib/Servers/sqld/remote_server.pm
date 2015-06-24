@@ -53,6 +53,26 @@ sub postinstall
 	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
 
+=item restart()
+
+ Restart server
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub restart
+{
+	my $self = shift;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldRestart');
+	return $rs if $rs;
+
+	# Nothing to do there
+
+	$self->{'eventManager'}->trigger('afterSqldRestart');
+}
+
 =back
 
 =head1 AUTHOR

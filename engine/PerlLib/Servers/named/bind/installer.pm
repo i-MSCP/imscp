@@ -540,9 +540,9 @@ sub _buildConf
 
 =item _saveConf()
 
- Save bind.data configuration file
+ Save configuration file
 
- Return int 0 on success, other on failure
+ Return in 0 on success, other on failure
 
 =cut
 

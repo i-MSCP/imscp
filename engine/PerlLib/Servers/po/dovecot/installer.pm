@@ -543,9 +543,9 @@ sub _buildConf
 
 =item _saveConf()
 
- Save Dovecot configuration
+ Save configuration file
 
- Return int 0 on success, other on failure
+ Return in 0 on success, other on failure
 
 =cut
 
@@ -553,38 +553,7 @@ sub _saveConf
 {
 	my $self = shift;
 
-	my $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.data" );
-
-	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	my $cfg = $file->get();
-	unless (defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/dovecot.data");
-		return 1;
-	}
-
-	$rs = $self->{'eventManager'}->trigger('beforePoSaveConf', \$cfg, 'dovecot.old.data');
-	return $rs if $rs;
-
-	$file = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" );
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save;
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoSaveConf', 'dovecot.old.data');
+	iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.data" )->copyFile("$self->{'cfgDir'}/dovecot.old.data");
 }
 
 =item _migrateFromCourier()

@@ -476,9 +476,9 @@ sub _createTrafficLogFile
 
 =item _saveConf()
 
- Save configuration
+ Save configuration file
 
- Return int 0 on success, other on failure
+ Return in 0 on success, other on failure
 
 =cut
 
