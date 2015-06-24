@@ -11,6 +11,7 @@ BACKEND
 	Fixed: The .my.cnf file is no longer used and thus, must be removed
 
 CONFIGS
+	Added: courier-authdaemon init script - Init script provided by Debian/Ubuntu do not work
 	Added: mysql.data configuration file
 	Added: percona 5.5/5.6 in Debian Jessie package file
 	Added: percona 5.5/5.6 in Ubuntu Vivid Vervet package file
