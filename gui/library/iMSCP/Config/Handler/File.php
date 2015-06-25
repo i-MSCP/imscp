@@ -77,7 +77,7 @@
  * @property int CRITICAL_UPDATE_REVISION Last critical update revision
  * @property string BASE_SERVER_IP Base server IP
  * @property int BuildDate i-MSCP package Build date
- * @property string PHP_TIMEZONE PHP timezone
+ * @property string TIMEZONE timezone
  * @property int DEBUG Debug mode
  * @property string DEFAULT_ADMIN_ADDRESS Default mail address for administrator
  * @property string GUI_EXCEPTION_WRITERS Exception writer list

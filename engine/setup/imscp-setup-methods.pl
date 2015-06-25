@@ -129,7 +129,7 @@ sub setupDialog
 			\&setupAskDbPrefixSuffix,
 			\&setupAskDefaultAdmin,
 			\&setupAskAdminEmail,
-			\&setupAskPhpTimezone,
+			\&setupAskTimezone,
 			\&setupAskServicesSsl,
 			\&setupAskImscpBackup,
 			\&setupAskDomainBackup
@@ -835,26 +835,26 @@ sub setupAskAdminEmail
 	$rs;
 }
 
-# Ask for PHP timezone
-sub setupAskPhpTimezone
+# Ask for timezone
+sub setupAskTimezone
 {
 	my $dialog = $_[0];
 
 	my $defaultTimezone = DateTime->new(year => 0, time_zone => 'local')->time_zone->name;
-	my $timezone = setupGetQuestion('PHP_TIMEZONE');
+	my $timezone = setupGetQuestion('TIMEZONE');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['php', 'all', 'forced'] || ! ($timezone && DateTime::TimeZone->is_valid_name($timezone))) {
-		$timezone = $defaultTimezone if ! $timezone;
+	if($main::reconfigure ~~ [ 'timezone', 'all', 'forced' ] || ! ($timezone && DateTime::TimeZone->is_valid_name($timezone))) {
+		$timezone = $defaultTimezone unless $timezone;
 		my $msg = '';
 
 		do {
-			($rs, $timezone) = $dialog->inputbox("\nPlease enter a timezone for PHP: $msg", $timezone);
+			($rs, $timezone) = $dialog->inputbox("\nPlease enter your timezone: $msg", $timezone);
 			$msg = "\n\n\\Z1'$timezone' is not a valid timezone.\\Zn\n\nPlease, try again:";
 		} while($rs != 30 && ! DateTime::TimeZone->is_valid_name($timezone));
 	}
 
-	setupSetQuestion('PHP_TIMEZONE', $timezone) if $rs != 30;
+	setupSetQuestion('TIMEZONE', $timezone) if $rs != 30;
 
 	$rs;
 }

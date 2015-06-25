@@ -32,6 +32,7 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Database;
 use Fcntl ":flock";
+use POSIX qw(tzset);
 use parent 'Common::SingletonClass';
 
 $ENV{'LANG'} = 'C.UTF-8';
@@ -67,6 +68,12 @@ sub boot
 		nocreate => 1, # Do not create file if it doesn't exist (raise error instead)
 		nofail => $options->{'nofail'} && $options->{'nofail'} eq 'yes' ? 1 : 0,
 		readonly => $options->{'config_readonly'} && $options->{'config_readonly'} eq 'yes' ? 1 : 0;
+
+	# Set timezone unless we are in setup mode (needed to show current local timezone in setup dialog)
+	unless($mode eq 'setup') {
+		$ENV{'TZ'} = $main::imscpConfig{'TIMEZONE'} || 'UTC';
+		tzset;
+	}
 
 	# Set debug mode
 	setDebug(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);

@@ -9,13 +9,16 @@ BACKEND
 	Added: NAMED_BNAME (named binary name) configuration parameter - Named (Bind9) server impl.
 	Fixed: POP3 SSL and IMAP SSL services must be disabled when SSL is disabled for the services - Courier server impl.
 	Fixed: The .my.cnf file is no longer used and thus, must be removed
+	Fixed: Set timezone according TIMEZONE configuration parameter (iMSCP::Bootstrapper::boot())
 
 CONFIGS
 	Added: courier-authdaemon init script - Init script provided by Debian/Ubuntu do not work
 	Added: mysql.data configuration file
 	Added: percona 5.5/5.6 in Debian Jessie package file
 	Added: percona 5.5/5.6 in Ubuntu Vivid Vervet package file
+	Added: TIMEZONE configuration parameter
 	Removed: TLS cipher suite - Setting TLSProtocol TLSv1 is sufficient to protect against poodle attack (ProFTPD)
+	Removed: PHP_TIMEZONE parameter (replaced by global TIMEZONE parameter)
 
 CONTRIB
 	Added: Script which allow to test services for poodle vulnerability (poodle.sh)
@@ -23,6 +26,9 @@ CONTRIB
 FRONTEND
 	Fixed: Domain limit is not updated when a domain is being deleted (reseller level)
 	Fixed: Opcode cache must be cleared when the languages index is rebuilt
+
+INSTALLER:
+	Added: timezone item for the reconfigure command line option (Allow to setup global timezone)
 
 YOUTRACK
 	Fixed: #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.

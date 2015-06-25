@@ -321,17 +321,15 @@ class iMSCP_Initializer
 	 */
 	protected function setTimezone()
 	{
-		// Timezone is not set in the php.ini file ?
+		// Timezone is not set in the php.ini file?
 		if(ini_get('date.timezone') == '') {
-			$timezone = (isset($this->config->PHP_TIMEZONE) && $this->config->PHP_TIMEZONE != '')
-				? $this->config->PHP_TIMEZONE : 'UTC';
+			$timezone = (isset($this->config['TIMEZONE']) && $this->config['TIMEZONE'] != '')
+				? $this->config['TIMEZONE'] : 'UTC';
 
 			if(!date_default_timezone_set($timezone)) {
 				throw new iMSCP_Exception(
 					'Invalid timezone identifier set in your imscp.conf file. Please fix this error and re-run the ' .
-					'imscp-setup script to fix the value in all your customers\' php.ini files. The list of valid ' .
-					'identifiers is available at the <a href="http://www.php.net/manual/en/timezones.php" ' .
-					'target="_blank">PHP Homepage</a> .'
+					'imscp-setup script.'
 				);
 			}
 		}

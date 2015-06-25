@@ -866,7 +866,7 @@ sub _buildPhpConfig
 		CHKROOTKIT_LOG => $main::imscpConfig{'CHKROOTKIT_LOG'},
 		OTHER_ROOTKIT_LOG => ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '')
 			? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
-		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
+		TIMEZONE => $main::imscpConfig{'TIMEZONE'},
 		DISTRO_OPENSSL_CNF => $main::imscpConfig{'DISTRO_OPENSSL_CNF'},
 		DISTRO_CA_BUNDLE => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
 	};

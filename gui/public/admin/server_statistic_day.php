@@ -39,9 +39,9 @@ function generatePage($tpl, $year, $month, $day)
 	$stmt = exec_query(
 		'
 			SELECT
-				traff_time AS ttime, bytes_in AS sbin, bytes_out AS sbout, bytes_mail_in AS smbin,
-				bytes_mail_out AS smbout, bytes_pop_in AS spbin, bytes_pop_out AS spbout, bytes_web_in AS swbin,
-				bytes_web_out AS swbout
+				traff_time AS period, bytes_in AS all_in, bytes_out AS all_out, bytes_mail_in AS mail_in,
+				bytes_mail_out AS mail_out, bytes_pop_in AS pop_in, bytes_pop_out AS pop_out, bytes_web_in AS web_in,
+				bytes_web_out AS web_out
 			FROM
 				server_traffic
 			WHERE
@@ -54,32 +54,32 @@ function generatePage($tpl, $year, $month, $day)
 		$all = array_fill(0, 8, 0);
 
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			$otherIn = $row['sbin'] - ($row['swbin'] + $row['smbin'] + $row['spbin']);
-			$otherOut = $row['sbout'] - ($row['swbout'] + $row['smbout'] + $row['spbout']);
+			$otherIn = $row['all_in'] - ($row['mail_in'] + $row['pop_in'] + $row['web_in']);
+			$otherOut = $row['all_out'] - ($row['mail_out'] + $row['pop_out'] + $row['web_out']);
 
 			$tpl->assign(array(
-				'HOUR' => tohtml(date('H:i', $row['ttime'])),
-				'WEB_IN' => tohtml(bytesHuman($row['swbin'])),
-				'WEB_OUT' => tohtml(bytesHuman($row['swbout'])),
-				'SMTP_IN' => tohtml(bytesHuman($row['smbin'])),
-				'SMTP_OUT' => tohtml(bytesHuman($row['smbout'])),
-				'POP_IN' => tohtml(bytesHuman($row['spbin'])),
-				'POP_OUT' => tohtml(bytesHuman($row['spbout'])),
+				'HOUR' => tohtml(date('H:i', $row['period'])),
+				'WEB_IN' => tohtml(bytesHuman($row['web_in'])),
+				'WEB_OUT' => tohtml(bytesHuman($row['web_out'])),
+				'SMTP_IN' => tohtml(bytesHuman($row['mail_in'])),
+				'SMTP_OUT' => tohtml(bytesHuman($row['mail_out'])),
+				'POP_IN' => tohtml(bytesHuman($row['pop_in'])),
+				'POP_OUT' => tohtml(bytesHuman($row['pop_out'])),
 				'OTHER_IN' => tohtml(bytesHuman($otherIn)),
 				'OTHER_OUT' => tohtml(bytesHuman($otherOut)),
-				'ALL_IN' => tohtml(bytesHuman($row['sbin'])),
-				'ALL_OUT' => tohtml(bytesHuman($row['sbout'])),
-				'ALL' => tohtml(bytesHuman($row['sbin'] + $row['sbout']))
+				'ALL_IN' => tohtml(bytesHuman($row['all_in'])),
+				'ALL_OUT' => tohtml(bytesHuman($row['all_out'])),
+				'ALL' => tohtml(bytesHuman($row['all_in'] + $row['all_out']))
 			));
 
-			$all[0] += $row['swbin'];
-			$all[1] += $row['swbout'];
-			$all[2] += $row['smbin'];
-			$all[3] += $row['smbout'];
-			$all[4] += $row['spbin'];
-			$all[5] += $row['spbout'];
-			$all[6] += $row['sbin'];
-			$all[7] += $row['sbout'];
+			$all[0] += $row['web_in'];
+			$all[1] += $row['web_out'];
+			$all[2] += $row['mail_in'];
+			$all[3] += $row['mail_out'];
+			$all[4] += $row['pop_in'];
+			$all[5] += $row['pop_out'];
+			$all[6] += $row['all_in'];
+			$all[7] += $row['all_out'];
 
 			$tpl->parse('HOUR_LIST', '.hour_list');
 		}

@@ -254,7 +254,7 @@ sub _getHttpdData
 			MOUNT_POINT => $self->{'subdomain_alias_mount'},
 			SHARED_MOUNT_POINT => $self->_sharedMountPoint(),
 			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
-			PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
+			TIMEZONE => $main::imscpConfig{'TIMEZONE'},
 			USER => $userName,
 			GROUP => $groupName,
 			PHP_SUPPORT => $self->{'domain_php'},

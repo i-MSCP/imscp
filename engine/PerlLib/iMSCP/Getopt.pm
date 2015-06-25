@@ -186,11 +186,11 @@ sub showUsage
 	undef;
 }
 
-our $reconfigurationItems = [
+our @reconfigurationItems = sort(
 	'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostnames', 'system_hostname',
-	'panel_hostname', 'panel_ports', 'ips', 'admin', 'php', 'panel_ssl', 'services_ssl', 'ssl', 'backup', 'webstats',
-	'sqlmanager', 'webmails', 'filemanager', 'antirootkits'
-];
+	'panel_hostname', 'panel_ports', 'ips', 'admin', 'php', 'timezone', 'panel_ssl', 'services_ssl', 'ssl', 'backup',
+	'webstats', 'sqlmanager', 'webmails', 'filemanager', 'antirootkits'
+);
 
 =item reconfigure($value = 'none')
 
@@ -210,13 +210,13 @@ sub reconfigure
 			$optionHelp .= "Without any argument, the --reconfigure option allows to reconfigure all items.";
 			$optionHelp .= " You can reconfigure a specific item by passing it name as argument.\n\n";
 			$optionHelp .= " Available items are:\n\n";
-			$optionHelp .=  ' ' . (join '|', @{$reconfigurationItems});
+			$optionHelp .=  ' ' . (join '|', @reconfigurationItems);
 			die();
 		} elsif($value eq '') {
 			$value = 'all';
 		}
 
-		$value eq 'none' || $value ~~ $reconfigurationItems or die(
+		$value eq 'none' || $value ~~ @reconfigurationItems or die(
 			"Error: '$value' is not a valid argument for the --reconfigure option."
 		);
 

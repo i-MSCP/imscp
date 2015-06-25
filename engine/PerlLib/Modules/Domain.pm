@@ -469,7 +469,7 @@ sub _getHttpdData
 			MOUNT_POINT => '/',
 			SHARED_MOUNT_POINT => 0,
 			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
-			PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
+			TIMEZONE => $main::imscpConfig{'TIMEZONE'},
 			USER => $userName,
 			GROUP => $groupName,
 			PHP_SUPPORT => $self->{'domain_php'},

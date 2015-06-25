@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2015.06.23
+# Last update: 2015.06.25
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -126,8 +126,8 @@ $main::questions{'ADMIN_LOGIN_NAME'} = 'admin'; # Default admin name
 $main::questions{'ADMIN_PASSWORD'} = 'password'; # Default admin password
 $main::questions{'DEFAULT_ADMIN_ADDRESS'} = 'user@domain.tld'; # Default admin email address ( must be a valid email )
 
-# PHP Timzone
-$main::questions{'PHP_TIMEZONE'} = 'Europe/London'; # A valid PHP timezone ( see http://php.net/manual/en/timezones.php )
+# Timzone
+$main::questions{'TIMEZONE'} = 'Europe/London'; # A valid timezone ( see http://php.net/manual/en/timezones.php )
 
 # SSL for i-MSCP control panel
 $main::questions{'PANEL_SSL_ENABLED'} = 'no'; # 'yes' or 'no'

@@ -417,7 +417,7 @@ sub _buildPhpConfFiles
 
 	$self->{'httpd'}->setData({
 		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
-		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'}
+		TIMEZONE => $main::imscpConfig{'TIMEZONE'}
 	});
 
 	$rs = $self->{'httpd'}->buildConfFile(
