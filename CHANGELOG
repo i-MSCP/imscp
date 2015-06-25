@@ -15,6 +15,10 @@ CONFIGS
 	Added: mysql.data configuration file
 	Added: percona 5.5/5.6 in Debian Jessie package file
 	Added: percona 5.5/5.6 in Ubuntu Vivid Vervet package file
+	Removed: TLS cipher suite - Setting TLSProtocol TLSv1 is sufficient to protect against poodle attack (ProFTPD)
+
+CONTRIB
+	Added: Script which allow to test services for poodle vulnerability (poodle.sh)
 
 FRONTEND
 	Fixed: Domain limit is not updated when a domain is being deleted (reseller level)
