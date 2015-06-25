@@ -89,7 +89,7 @@ $main::questions{'BASE_SERVER_VHOST_HTTP_PORT'} = '8080';
 
 # Https port from which the control panel must be reachable
 # Must be a valid port greater than 1023
-# Only relevant if PANEL_SSL_ENABLED is set to 'yes' ( see below )
+# Only relevant if PANEL_SSL_ENABLED is set to 'yes' (see below)
 $main::questions{'BASE_SERVER_VHOST_HTTPS_PORT'} = '4443';
 
 # Base server IP - Accept both IPv4 and IPv6
@@ -105,9 +105,9 @@ $main::questions{'BASE_SERVER_PUBLIC_IP'} = '192.168.5.110';
 $main::questions{'SERVER_IPS'} = []; # ['192.168.5.115', '192.168.5.120']
 
 # SQL DSN
-$main::questions{'DATABASE_TYPE'} = 'mysql'; # Database type ( for now, only 'mysql' is supported )
+$main::questions{'DATABASE_TYPE'} = 'mysql'; # Database type (for now, only 'mysql' is supported)
 $main::questions{'DATABASE_HOST'} = 'localhost'; # Accept both hostname and IP
-$main::questions{'DATABASE_PORT'} = '3306'; # Only relevant for TCP ( eg: when DATABASE_HOST is not set to 'localhost' )
+$main::questions{'DATABASE_PORT'} = '3306'; # Only relevant for TCP (e.g: when DATABASE_HOST is not set to 'localhost')
 $main::questions{'DATABASE_NAME'} = 'imscp'; # Database name
 
 # i-MSCP SQL user
@@ -124,10 +124,10 @@ $main::questions{'MYSQL_PREFIX_TYPE'} = 'none'; # 'none' if MYSQL_PREFIX questio
 # Default admin
 $main::questions{'ADMIN_LOGIN_NAME'} = 'admin'; # Default admin name
 $main::questions{'ADMIN_PASSWORD'} = 'password'; # Default admin password
-$main::questions{'DEFAULT_ADMIN_ADDRESS'} = 'user@domain.tld'; # Default admin email address ( must be a valid email )
+$main::questions{'DEFAULT_ADMIN_ADDRESS'} = 'user@domain.tld'; # Default admin email address (must be a valid email)
 
 # Timzone
-$main::questions{'TIMEZONE'} = 'Europe/London'; # A valid timezone ( see http://php.net/manual/en/timezones.php )
+$main::questions{'TIMEZONE'} = 'UTC'; # A valid timezone (see http://php.net/manual/en/timezones.php)
 
 # SSL for i-MSCP control panel
 $main::questions{'PANEL_SSL_ENABLED'} = 'no'; # 'yes' or 'no'
@@ -189,7 +189,7 @@ $main::questions{'PHPMYADMIN_SQL_USER'} = 'pma_user';
 $main::questions{'PHPMYADMIN_SQL_PASSWORD'} = 'password'; # Password must not be empty at least 6 characters long
 
 # Webmmail packages
-# List of webmail packages to install such as ( RainLoop,Roundcube )
+# List of webmail packages to install such as (RainLoop,Roundcube)
 # Set the value to 'No' if you do not want install any webmail
 $main::questions{'WEBMAIL_PACKAGES'} = 'RainLoop,Roundcube';
 
@@ -204,7 +204,7 @@ $main::questions{'RAINLOOP_SQL_USER'} = 'rainloop_user';
 $main::questions{'RAINLOOP_SQL_PASSWORD'} = 'password'; # Password must not be empty at least 6 characters long
 
 # Anti-Rootkits packages
-# List of Anti-Rootkits packages to install such as ( Chkrootkit,Rkhunter )
+# List of Anti-Rootkits packages to install such as (Chkrootkit,Rkhunter)
 # Set the value to 'No' if you do not want install any Anti-Rootkit
 $main::questions{'ANTI_ROOTKITS_PACKAGES'} = 'Chkrootkit,Rkhunter';
 
