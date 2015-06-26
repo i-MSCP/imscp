@@ -100,7 +100,7 @@ sub execute($;$$)
 
  Param string $command Command to execute
  Param subref Callback responsible to process command stdout
- Param subref Callback responsible to process command sterrr
+ Param subref Callback responsible to process command sterr
  Return int External command exit code or die on failure
 
 =cut
@@ -140,9 +140,6 @@ sub executeNoWait($$$)
 	}
 
 	waitpid($pid, 0) if $pid > 0;
-
-	#close $stdout;
-	#close $stderr;
 
 	getExitCode();
 }
