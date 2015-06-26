@@ -79,7 +79,7 @@ sub _process
 		for my $row(@{$rows}) {
 			my ($id, $name, $status, $rs) = ($row->{'id'}, $row->{'name'}, $row->{'status'}, 0);
 
-			debug("$moduleName $status tasks for $name (ID $id)");
+			debug("$moduleName $status tasks for: $name (ID $id)");
 
 			if ($main::execmode eq 'setup') {
 				print STDOUT ("Processing $moduleName ($status) tasks for: $name (ID $id)\t$totalItems\t$i\n");
