@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
+    <copy>${SYSTEM_ENGINE_ROOT}/setup/composer.phar</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/setup/imscp*</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/setup/set*</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/setup/updDB.php</copy>

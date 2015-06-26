@@ -27,7 +27,9 @@ FRONTEND
 	Fixed: Domain limit is not updated when a domain is being deleted (reseller level)
 	Fixed: Opcode cache must be cleared when the languages index is rebuilt
 
-INSTALLER:
+INSTALLER
+	Added: Composer phar archive
+	Added: Progress info for i-MSCP composer packages ( Setup dialog)
 	Added: timezone item for the reconfigure command line option (Allow to setup global timezone)
 
 YOUTRACK
