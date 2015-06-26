@@ -377,7 +377,7 @@ sub deleteDmn
 
 	for my $conffile("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {
 		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$conffile") {
-			$rs = $self->disableSites("$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$conffile");
+			$rs = $self->disableSites($conffile);
 			return $rs if $rs;
 		}
 	}
@@ -1629,7 +1629,7 @@ sub _addCfg
 
 	for my $conffile("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {
 		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$conffile") {
-			$rs = $self->disableSites("$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$conffile");
+			$rs = $self->disableSites($conffile);
 			return $rs if $rs;
 		}
 	}

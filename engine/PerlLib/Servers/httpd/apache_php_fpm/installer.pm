@@ -755,7 +755,7 @@ sub _oldEngineCompatibility()
 			$rs = $self->{'httpd'}->disableSites($site);
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site")->delFile();
+			$rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site" )->delFile();
 			return $rs if $rs;
 		}
 	}
@@ -764,7 +764,7 @@ sub _oldEngineCompatibility()
 		$self->{'config'}->{'APACHE_BACKUP_LOG_DIR'}, $self->{'config'}->{'HTTPD_USERS_LOG_DIR'},
 		$self->{'config'}->{'APACHE_SCOREBOARDS_DIR'}
 	) {
-		$rs = iMSCP::Dir->new( dirname => $dir)->remove();
+		$rs = iMSCP::Dir->new( dirname => $dir )->remove();
 		return $rs if $rs;
 	}
 

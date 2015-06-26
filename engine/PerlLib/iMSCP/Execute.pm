@@ -26,6 +26,9 @@ package iMSCP::Execute;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use IO::Select;
+use IPC::Open3;
+use Symbol 'gensym';
 use File::Basename ();
 use Cwd ();
 
@@ -37,7 +40,7 @@ use lib $vendorLibDir;
 use Capture::Tiny ':all';
 use parent 'Exporter';
 
-our @EXPORT = qw/execute escapeShell getExitCode/;
+our @EXPORT = qw/execute executeNoWait escapeShell getExitCode/;
 
 =head1 DESCRIPTION
 
@@ -87,6 +90,59 @@ sub execute($;$$)
 	} else {
 		die("Unable to execute command: $!") if system($command) == -1;
 	}
+
+	getExitCode();
+}
+
+=item executeNoWait($command, $stdoutCallback, $stderrCallback)
+
+ Execute the given external command without wait
+
+ Param string $command Command to execute
+ Param subref Callback responsible to process command stdout
+ Param subref Callback responsible to process command sterrr
+ Return int External command exit code or die on failure
+
+=cut
+
+sub executeNoWait($$$)
+{
+	my ($command, $stdoutCallback, $stderrCallback) = @_;
+
+	my $stderr = gensym;
+	my $pid = open3(my $stdin, my $stdout, $stderr, $command);
+	close $stdin;
+
+	my $sel = new IO::Select();
+	$sel->add($stdout);
+	$sel->add($stderr);
+
+	my %buffers = ( $stdout => '', $stderr => '' );
+
+	while($sel->count()) {
+		for my $fh ($sel->can_read()) {
+			my $ret = sysread($fh, $buffers{$fh}, 4096, length($buffers{$fh}));
+
+			die $! unless defined $ret;
+
+			if ($ret == 0) {
+				$sel->remove($fh);
+				close($fh);
+				next;
+			}
+
+			if ($fh == $stderr) {
+				$stderrCallback->(\$buffers{$stderr});
+			} else {
+				$stdoutCallback->(\$buffers{$stdout});
+			}
+		}
+	}
+
+	waitpid($pid, 0) if $pid > 0;
+
+	#close $stdout;
+	#close $stderr;
 
 	getExitCode();
 }

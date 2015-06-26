@@ -25,8 +25,6 @@ use DateTime;
 use DateTime::TimeZone;
 use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
 use Data::Validate::Domain qw/is_domain/;
-use IPC::Open3;
-use IO::Select;
 use Scalar::Util qw(openhandle);
 use File::Basename;
 use iMSCP::LsbRelease;
@@ -1680,33 +1678,17 @@ sub setupSetPermissions
 	for my $script ('set-engine-permissions.pl', 'set-gui-permissions.pl') {
 		startDetail();
 
-		my $pid;
-
-		eval { $pid = open3(*FHIN, *FHOUT, *FHERR, "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script --setup"); };
-		if($@) {
-			error("Unable to set permissions: $@");
-			return 1;
-		}
-
-		close FHIN;
-
-		while(<FHOUT>) {
-			chomp;
-			step(undef, $1, $2, $3) if /^(.*)\t(.*)\t(.*)$/;
-		}
-
-		my $stderr = do { local $/; <FHERR> };
-
-		close FHOUT;
-		close FHERR;
-
-		waitpid($pid, 0) if $pid > 0;
-		$rs = getExitCode();
+		my $stderr;
+		$rs = executeNoWait(
+			"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script --setup",
+			sub { my $str = shift; while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//) { step(undef, $1, $2, $3); } },
+			sub { my $str = shift; while ($$str =~ s/^(.*\n)//) { $stderr .= $1; } }
+		);
 
 		endDetail();
 
-		error($stderr) if $stderr && $rs;
-		error("Error while setting permissions") if $rs && ! $stderr;
+		error("Error while setting permissions: $stderr") if $stderr && $rs;
+		error("Error while setting permissions: Unknown error") if $rs && ! $stderr;
 		return $rs if $rs;
 	}
 
@@ -1801,29 +1783,12 @@ sub setupRebuildCustomerFiles
 
 	startDetail();
 
-	my $pid;
-
-	eval { $pid = open3(*FHIN, *FHOUT, *FHERR, "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup"); };
-	if($@) {
-		error("Unable to rebuild customers files: $@");
-		return 1;
-	}
-
-	close FHIN;
-
-	while(<FHOUT>) {
-		# "$type\t$status\t$name\t$id\t$total\t$i\n"
-		chomp;
-		step(undef, "Processing $1 ($2) tasks: $3 (ID $4)", $5, $6) if /^(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)$/;
-	}
-
-	my $stderr = do { local $/; <FHERR> };
-
-	close FHOUT;
-	close FHERR;
-
-	waitpid($pid, 0) if $pid > 0;
-	$rs = getExitCode();
+	my $stderr;
+	$rs = executeNoWait(
+		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup",
+		sub { my $str = shift; while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//) { step(undef, $1, $2, $3); } },
+		sub { my $str = shift; while ($$str =~ s/^(.*\n)//) { $stderr .= $1; } }
+	);
 
 	endDetail();
 
@@ -1831,8 +1796,8 @@ sub setupRebuildCustomerFiles
 
 	$main::imscpConfig{'DEBUG'} = $debug;
 
-	error("\n$stderr") if $stderr && $rs;
-	error("Error while rebuilding customers files") if $rs && ! $stderr;
+	error("\nError while rebuilding customers files: $stderr") if $stderr && $rs;
+	error("Error while rebuilding customers files: Unknown error") if $rs && ! $stderr;
 	return $rs if $rs;
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');

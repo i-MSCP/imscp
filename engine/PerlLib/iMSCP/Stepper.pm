@@ -33,7 +33,7 @@ sub _init
 
 	$self->{'dialog'} = iMSCP::Dialog->getInstance();
 
-	$self->{'title'} = "\n\\ZbProcessing step %s of %s\\Zn\n\n%s";
+	$self->{'title'} = "\n\\ZbStep %s of %s\\Zn\n\n%s";
 	$self->{'all'} = [];
 	$self->{'last'} = '';
 
