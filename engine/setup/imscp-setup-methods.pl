@@ -1688,7 +1688,7 @@ sub setupSetPermissions
 		endDetail();
 
 		error("Error while setting permissions: $stderr") if $stderr && $rs;
-		error("Error while setting permissions: Unknown error") if $rs && ! $stderr;
+		error('Error while setting permissions: Unknown error') if $rs && ! $stderr;
 		return $rs if $rs;
 	}
 
@@ -1797,7 +1797,7 @@ sub setupRebuildCustomerFiles
 	$main::imscpConfig{'DEBUG'} = $debug;
 
 	error("\nError while rebuilding customers files: $stderr") if $stderr && $rs;
-	error("Error while rebuilding customers files: Unknown error") if $rs && ! $stderr;
+	error('Error while rebuilding customers files: Unknown error') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
