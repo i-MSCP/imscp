@@ -144,6 +144,11 @@ sub _installPackages
 	my $msgHeader = <<EOF;
 
 Installing/Updating i-MSCP composer packages from Github
+
+EOF
+	my $msgFooter = <<EOF;
+
+Please wait, depending on your connection, this may take few seconds...
 EOF
 
 	# The update option is used here but composer will automatically fallback to install mode when needed
@@ -151,9 +156,21 @@ EOF
 	$rs = executeNoWait(
 		"$self->{'phpCmd'} $self->{'composer_path'} --no-ansi -d=$self->{'wrkDir'} update --prefer-dist",
 		sub { my $str = shift; $$str = ''; },
-		sub { my $str = shift; ($$str =~ /^$/m) ? $$str = '' : $dialog->infobox(
-			"$msgHeader\n$$str\nPlease wait, depending on your connection, this may take few seconds..."
-		); }
+		sub {
+			my $str = shift;
+
+			if($$str =~ /^$/m) {
+				$$str = '';
+			} else {
+				my ($strBkp, $buff) = ($$str, '');
+				$buff .= $1 while($$str =~ s/^(.*\n)//);
+
+				if($buff ne '') {
+					$dialog->infobox("$msgHeader$buff$msgFooter");
+					$$str = $strBkp unless $strBkp =~ /^Updating dependencies.*\n/m;
+				}
+			}
+		}
 	);
 
 	error("Unable to install/update i-MSCP composer packages from GitHub: $stderr") if $stderr && $rs;

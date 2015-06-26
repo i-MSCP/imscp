@@ -29,7 +29,7 @@ FRONTEND
 
 INSTALLER
 	Added: Composer phar archive
-	Added: Progress info for i-MSCP composer packages ( Setup dialog)
+	Added: Progress info for i-MSCP composer packages (Setup dialog)
 	Added: timezone item for the reconfigure command line option (Allow to setup global timezone)
 
 YOUTRACK
