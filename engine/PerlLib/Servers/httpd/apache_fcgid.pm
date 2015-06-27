@@ -1463,6 +1463,7 @@ sub restart
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
+
 =cut
 
 sub mountLogsFolder
