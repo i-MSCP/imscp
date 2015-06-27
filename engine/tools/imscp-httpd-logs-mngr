@@ -17,6 +17,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+# Script responsible to mount httpd log folders into customers's log folder on reboot
+# We are doing that using an  @reboot cron job to avoid to edit /etc/fstab file
+
 use strict;
 use warnings;
 use FindBin;
@@ -24,9 +27,9 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVe
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Database;
-use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Getopt;
-use File::Basename;
+use iMSCP::Mail;
+use Servers::httpd;
 
 newDebug('imscp-httpd-logs-mngr.log');
 
@@ -47,115 +50,66 @@ $bootstrapper->boot({ norequirements => 'yes', nolock => 'yes', config_readonly 
 sub run
 {
 	my $rs = 0;
-
-	my $sql = "
-		SELECT
-			domain_name, domain_name AS mount_point, domain_admin_id AS admin_id
-		FROM
-			`domain`
-		WHERE
-			domain_status = 'ok'
-		UNION
-		SELECT
-			alias_name, domain_name, domain_admin_id AS admin_id
-		FROM
-			domain_aliasses
-		JOIN
-			domain using(domain_id)
-		WHERE
-			alias_status = 'ok'
-		UNION
-		SELECT
-			CONCAT(subdomain_name, '.', domain_name), domain_name AS mount_point, domain_admin_id AS admin_id
-		FROM
-			subdomain
-		JOIN
-			domain using(domain_id)
-		WHERE
-			subdomain_status = 'ok'
-		UNION
-		SELECT
-			CONCAT(subdomain_alias_name, '.', alias_name), domain_name AS mount_point, domain_admin_id AS admin_id
-		FROM
-			subdomain_alias
-		JOIN
-			domain_aliasses using(alias_id)
-		JOIN
-			domain using(domain_id)
-		WHERE
-			subdomain_alias_status = 'ok'
-	";
-	my $rdata = iMSCP::Database->factory()->doQuery('domain_name', $sql);
-
-	unless (ref $rdata eq 'HASH') {
-		error($rdata);
-		require iMSCP::Mail;
-		iMSCP::Mail->new()->errmsg($rdata);
+	my domainNames = iMSCP::Database->factory()->doQuery(
+		'domain_name',
+		"
+			SELECT domain_name, domain_name AS root_domain_name FROM domain WHERE domain_status = 'ok'
+			UNION
+			SELECT
+				alias_name, domain_name AS root_domain_name
+			FROM
+				domain_aliasses
+			INNER JOIN
+				domain USING(domain_id)
+			WHERE
+				alias_status = 'ok'
+			UNION
+			SELECT
+				CONCAT(subdomain_name, '.', domain_name), domain_name AS root_domain_name
+			FROM
+				subdomain
+			JOIN
+				domain USING(domain_id)
+			WHERE
+				subdomain_status = 'ok'
+			UNION
+			SELECT
+				CONCAT(subdomain_alias_name, '.', alias_name), domain_name AS root_domain_name
+			FROM
+				subdomain_alias
+			INNER JOIN
+				domain_aliasses USING(alias_id)
+			INNER JOIN
+				domain USING(domain_id)
+			WHERE
+				subdomain_alias_status = 'ok'
+		"
+	);
+	unless (ref domainNames eq 'HASH') {
+		error(domainNames);
 		$rs = 1;
 	} else {
 		require Servers::httpd;
-		my $logSrcDir = Servers::httpd->factory()->{'config'}->{'HTTPD_LOG_DIR'};
-		my $ret = 0;
 
-		for(keys %{$rdata}) {
-			my $groupName =
-			my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-				($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $rdata->{$_}->{'admin_id'});
+		if(Servers::httpd->can('mountLogsFolder')) {
+			my $httpd = Servers::httpd->factory();
+			my $ret = 0;
 
-			my $logDestDir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'mount_point'}/logs";
-
-			my $combinedLogSrc = "$logSrcDir/$_/access.log";
-			my $combinedLogDest = "$logDestDir/$_-access.log";
-
-			my $errorLogSrc = "$logSrcDir/$_/error.log";
-			my $errorLogDest = "$logDestDir/$_-error.log";
-
-			my $parentDir = dirname($logDestDir);
-			my $isImmutableParentDir = 0;
-
-			if(isImmutable($parentDir)) {
-				$isImmutableParentDir = 1;
-				clearImmutable($parentDir);
-			}
-
-			# Create customer logs directory if doesn't already exists or set its permissions
-			$rs = iMSCP::Dir->new( dirname => $logDestDir )->make(
-				{ user => $userName, group => $groupName, mode => 0750 }
-			) unless -d $logDestDir;
-
-			setImmutable($parentDir) if $isImmutableParentDir;
-
-			unless($rs) {
-				if(-f $combinedLogSrc) {
-					my $file = iMSCP::File->new('filename' => $combinedLogSrc);
-
-					$rs = $file->copyFile($combinedLogDest);
-
-					$file->{'filename'} = $combinedLogDest;
-
-					$rs ||= $file->owner($userName, $groupName);
-					$rs ||= $file->mode(0640);
-				}
-
-				$ret ||= $rs;
-
-				if (-f $errorLogSrc) {
-					my $file = iMSCP::File->new('filename' => $errorLogSrc);
-
-					$rs = $file->copyFile($errorLogDest);
-
-					$file->{'filename'} = $errorLogDest;
-
-					$rs ||= $file->owner($userName, $groupName);
-					$rs ||= $file->mode(0640);
-				}
-
-				$ret ||= $rs;
+			for my $domainName(keys %{domainNames}) {
+				$rs = $httpd->mountLogsFolder({
+					DOMAIN_NAME => $domainName,
+					HOME_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/$domainName->{$domainName}->{root_domain_name}"
+				});
+				$rs ||= $ret;
 			}
 		}
-
-		$rs = $ret;
 	}
+
+	my @warningMessages = getMessageByType('warn');
+	iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
+
+	my @errorMessages = getMessageByType('error');
+	iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
 
 	$rs;
 }

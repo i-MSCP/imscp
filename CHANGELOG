@@ -7,12 +7,16 @@ Git 1.2.x
 BACKEND
 	Added: Dedicated package for remote SQL server
 	Added: NAMED_BNAME (named binary name) configuration parameter - Named (Bind9) server impl.
+	Changed: Customers have now a full read access to their http logs, including those which were rotated
+	Changed: Domain's logs are now mounted in customer's logs folder using bind mount instead of being copied
+	Fixed: Due to logs rotation, some httpd logs are never copied into customer's log folders
 	Fixed: File /etc/mysql/conf.d/imscp.cnf not loaded when using Percona DB server due to missing /etc/mysql/my.cnf file
 	Fixed: POP3 SSL and IMAP SSL services must be disabled when SSL is disabled for the services - Courier server impl.
 	Fixed: The .my.cnf file is no longer used and thus, must be removed
 	Fixed: Set timezone according TIMEZONE configuration parameter (iMSCP::Bootstrapper::boot())
 
 CONFIGS
+	Added: ADM_GROUP configuration parameter
 	Added: courier-authdaemon init script - Init script provided by Debian/Ubuntu do not work
 	Added: mysql.data configuration file
 	Added: percona 5.5/5.6 in Debian Jessie package file
@@ -34,6 +38,7 @@ INSTALLER
 	Added: timezone item for the reconfigure command line option (Allow to setup global timezone)
 
 YOUTRACK
+	Fixed: #IP-0792: Allow customers to see real-time http access and error logs
 	Fixed: #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.
 	Fixed: #IP-1363: Unable to suspend customer account
 	Fixed: #IP-1364: Custom DNS records are lost when editing domain properties

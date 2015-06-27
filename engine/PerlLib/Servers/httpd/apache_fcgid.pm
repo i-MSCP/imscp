@@ -392,7 +392,9 @@ sub deleteDmn
 		}
 	}
 
-	# Remove Web folder directory (only if it is not shared with another domain)
+	$rs = $self->umountLogsFolder($data);
+	return $rs if $rs;
+
 	unless($data->{'SHARED_MOUNT_POINT'} || ! -d $data->{'WEB_DIR'}) {
 		(my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'}) =~ s%/+$%%;
 		my $parentDir = dirname($data->{'WEB_DIR'});
@@ -1455,6 +1457,82 @@ sub restart
 	$self->{'eventManager'}->trigger('afterHttpdRestart');
 }
 
+=item mountLogsFolder(\%data)
+
+ Mount logs folder which belong to the given domain into customer's logs folder
+
+ Param hash \%data Domain data
+ Return int 0 on success, other on failure
+=cut
+
+sub mountLogsFolder
+{
+	my ($self, $data) = @_;
+
+	my $srcLogsFolder = "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}";
+	my $targetLogsFolder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+
+	# We process only if:
+	#  - The source logs folder exists
+	#  - The target root logs folder exists (admin can have removed it from skel directory)
+	#  - If the source folder is not already mounted
+	if(
+		-d $srcLogsFolder && -d "$data->{'HOME_DIR'}/logs" &&
+		execute('mount 2>/dev/null | grep -q ' . escapeShell(" $targetLogsFolder "))
+	) {
+		my $rs = iMSCP::Dir->new( dirname => $targetLogsFolder )->make(
+			{ user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ADM_GROUP'}, mode => 0755 }
+		);
+		return $rs if $rs;
+
+		my ($stdout, $stderr);
+		$rs = execute('mount --bind ' . escapeShell($srcLogsFolder) . ' ' . $targetLogsFolder, \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
+	}
+
+	0;
+}
+
+=item umountLogsFolder(\%data)
+
+ Umount logs folder which belong to the given domain from customer's logs folder
+
+ Note: In case of a partial path, any file systems below this path will be umounted.
+
+ Param hash \%data Domain data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub umountLogsFolder
+{
+	my ($self, $data) = @_;
+
+	my $logsFolder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+
+	my($stdout, $stderr, $mountPoint);
+
+	do {
+		my $rs = execute(
+			"mount 2>/dev/null | grep ' $logsFolder\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \$stdout
+		);
+		return $rs if $rs;
+
+		$mountPoint = $stdout;
+
+		if($mountPoint) {
+			$rs = execute("umount -l $mountPoint", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+		}
+	} while($mountPoint);
+
+	0;
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -1633,8 +1711,8 @@ sub _dmnFolders
 	push(@folders, [
 		"$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
 		$main::imscpConfig{'ROOT_USER'},
-		$main::imscpConfig{'ROOT_GROUP'},
-		0750
+		$main::imscpConfig{'ADM_GROUP'},
+		0755
 	]);
 
 	$self->{'eventManager'}->trigger('afterHttpdDmnFolders', \@folders);
@@ -1757,7 +1835,9 @@ sub _addFiles
 
 		for my $file(@files) {
 			if(-e "$webDir/$file") {
-				$rs = setRights( "$webDir/$file", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => 1 } );
+				$rs = setRights(
+					"$webDir/$file", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => 1 }
+				);
 				return $rs if $rs;
 			}
 		}
@@ -1784,8 +1864,19 @@ sub _addFiles
 			}
 		}
 
+		if($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/logs") {
+			$rs = setRights("$webDir/logs", {
+				user => $main::imscpConfig{'ROOT_USER'},
+				group => $main::imscpConfig{'ADM_GROUP'},
+				dirmode => '0755',
+				filemode => '0644',
+				recursive => 1
+			});
+			return $rs if $rs;
+		}
+
 		if($data->{'DOMAIN_TYPE'} ne 'dmn' && ! $data->{'SHARED_MOUNT_POINT'}) {
-			$rs = iMSCP::Dir->new( dirname => "$webDir/phptmp")->remove();
+			$rs = iMSCP::Dir->new( dirname => "$webDir/phptmp" )->remove();
 			return $rs if $rs;
 		}
 
@@ -1796,6 +1887,9 @@ sub _addFiles
 			} while (($webDir = dirname($webDir)) ne $userWebDir);
 		}
 	}
+
+	$rs = $self->mountLogsFolder($data);
+	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterHttpdAddFiles', $data);
 }

@@ -120,9 +120,19 @@ sub install
 
 sub setEnginePermissions
 {
-	setRights('/usr/local/sbin/vlogger', {
+	my $self = shift;
+
+	my $rs = setRights('/usr/local/sbin/vlogger', {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
 	);
+
+	setRights($self->{'config'}->{'HTTPD_LOG_DIR'}, {
+		user => $main::imscpConfig{'ROOT_USER'},
+		group => $main::imscpConfig{'ADM_GROUP'},
+		dirmode => '0755',
+		filemode => '0644',
+		recursive => 1
+	});
 }
 
 =back
@@ -498,12 +508,18 @@ sub _installLogrotate
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
 	return $rs if $rs;
 
+	$self->{'httpd'}->setData({
+		ROOT_USER => $main::imscpConfig{'ROOT_USER'},
+		ADM_GROUP => $main::imscpConfig{'ADM_GROUP'},
+		HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'}
+	});
+
 	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf');
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->installConfFile(
-		'logrotate.conf', { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" }
-	);
+	$rs = $self->{'httpd'}->installConfFile( 'logrotate.conf', {
+		destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2"
+	});
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterHttpdInstallLogrotate', 'apache2');
@@ -556,7 +572,7 @@ sub _setupVlogger
 
 	my @dbUserHosts = ($dbUserHost);
 
-	if($dbUserHost ~~ ['localhost', '127.0.0.1']) {
+	if($dbUserHost ~~ [ 'localhost', '127.0.0.1' ]) {
 		push @dbUserHosts, ($dbUserHost eq '127.0.0.1') ? 'localhost' : '127.0.0.1';
 	}
 
@@ -636,6 +652,12 @@ sub _oldEngineCompatibility
 		$rs = iMSCP::Dir->new( dirname => $dir )->remove();
 		return $rs if $rs;
 	}
+
+	# Remove customers's logs file if any (no longer needed since we are now using bind mount)
+	my ($stdout, $stderr);
+	$rs = execute("rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \$stdout, $stderr);
+	error($stderr) if $rs && $stderr;
+	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterHttpdOldEngineCompatibility');
 }

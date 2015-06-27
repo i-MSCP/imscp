@@ -126,7 +126,7 @@ Note: FPM use a global php.ini configuration file but you can override any setti
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_setApacheVersion();
 	return $rs if $rs;
@@ -165,9 +165,19 @@ sub install
 
 sub setEnginePermissions
 {
-	setRights('/usr/local/sbin/vlogger', {
+	my $self = shift;
+
+	my $rs = setRights('/usr/local/sbin/vlogger', {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
 	);
+
+	setRights($self->{'config'}->{'HTTPD_LOG_DIR'}, {
+		user => $main::imscpConfig{'ROOT_USER'},
+		group => $main::imscpConfig{'ADM_GROUP'},
+		dirmode => '0755',
+		filemode => '0644',
+		recursive => 1
+	});
 }
 
 =back
@@ -289,7 +299,7 @@ sub _makeDirs
 		return $rs if $rs;
 	}
 
-	# Cleanup pools directory ( prevent possible orphaned pool file when switching to other pool level)
+	# Cleanup pools directory (prevent possible orphaned pool file when switching to other pool level)
 	my ($stdout, $stderr);
 	$rs = execute("rm -f $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/*", \$stdout, \$stderr);
 
@@ -443,16 +453,6 @@ sub _buildPhpConfFiles
 	);
 	return $rs if $rs;
 
-	# Disable default pool configuration file if exists
-	if(-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf") {
-		my $rs = iMSCP::File->new(
-			filename => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
-		)->moveFile(
-			"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled"
-		);
-		return $rs if $rs;
-	}
-
 	$self->{'eventManager'}->trigger('afterHttpdBuildPhpConfFiles');
 }
 
@@ -601,12 +601,18 @@ sub _installLogrotate
 	$rs = $self->{'httpd'}->apacheBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", '', 1);
 	return $rs if $rs;
 
+	$self->{'httpd'}->setData({
+		ROOT_USER => $main::imscpConfig{'ROOT_USER'},
+		ADM_GROUP => $main::imscpConfig{'ADM_GROUP'},
+		HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'}
+	});
+
 	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf');
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->installConfFile(
-		'logrotate.conf', { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" }
-	);
+	$rs = $self->{'httpd'}->installConfFile('logrotate.conf', {
+		destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2"
+	});
 	return $rs if $rs;
 
 	$rs = $self->{'eventManager'}->trigger('afterHttpdInstallLogrotate', 'apache2');
@@ -644,7 +650,6 @@ sub _setupVlogger
 	my $self = shift;
 
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
-	# vlogger is chrooted so we force connection to MySQL server through TCP
 	$dbHost = ($dbHost eq 'localhost') ? '127.0.0.1' : $dbHost;
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
@@ -668,7 +673,6 @@ sub _setupVlogger
 		return 1;
 	}
 
-	# Remove any old SQL user (including privileges)
 	for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
 		next unless $host;
 
@@ -680,7 +684,7 @@ sub _setupVlogger
 
 	my @dbUserHosts = ($dbUserHost);
 
-	if($dbUserHost ~~ ['localhost', '127.0.0.1']) {
+	if($dbUserHost ~~ [ 'localhost', '127.0.0.1' ]) {
 		push @dbUserHosts, ($dbUserHost eq '127.0.0.1') ? 'localhost' : '127.0.0.1';
 	}
 
@@ -743,9 +747,9 @@ sub _saveConf
 
 =cut
 
-sub _oldEngineCompatibility()
+sub _oldEngineCompatibility
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdOldEngineCompatibility');
 	return $rs if $rs;
@@ -774,6 +778,12 @@ sub _oldEngineCompatibility()
 		)->delFile();
 		return $rs if $rs;
 	}
+
+	# Remove customers's logs file if any (no longer needed since we are now using bind mount)
+	my ($stdout, $stderr);
+	$rs = execute("rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \$stdout, $stderr);
+	error($stderr) if $rs && $stderr;
+	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterHttpdOldEngineCompatibility');
 }
