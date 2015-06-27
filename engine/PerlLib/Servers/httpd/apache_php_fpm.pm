@@ -427,6 +427,9 @@ sub deleteDmn
 		}
 	}
 
+	$rs = iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}" )->remove();
+	return $rs if $rs;
+
 	$rs = iMSCP::Dir->new( dirname => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
 	return $rs if $rs;
 

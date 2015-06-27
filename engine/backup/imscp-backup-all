@@ -139,8 +139,8 @@ sub run
 						"--file=$bkpDir/$mainDomainName-backup-$date.tar$ext", # use archive file
 						'--exclude=logs',                                      # exclude logs directory from archive
 						'--exclude=phptmp',                                    # exclude phptmp directory from archive
-						'--exclude=backups',                                   # exclude backup from archive/-
-						'--exclude=domain_disable_page',                       # exclude domain_disable_page from archive/-
+						'--exclude=backups',                                   # exclude backup from archive
+						'--exclude=domain_disable_page',                       # exclude domain_disable_page from archive
 						'.'                                                    # pathname
 					);
 
