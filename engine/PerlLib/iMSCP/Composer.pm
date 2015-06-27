@@ -266,7 +266,7 @@ sub _checkRequirements
 	return 1 unless -d $self->{'wrkDir'};
 
 	for(@{$self->{'toInstall'}}) {
-		my ($package, $version) = $_ =~ /"(.*)":"(.*)"/;
+		my ($package, $version) = $_ =~ /"(.*)":\s*"(.*)"/;
 
 		my @cmd = (
 			$self->{'phpCmd'}, $self->{'composer_path'}, '--no-ansi', "-d=$self->{'wrkDir'}", 'show', '--installed',
