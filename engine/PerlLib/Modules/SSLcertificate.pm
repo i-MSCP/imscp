@@ -179,7 +179,7 @@ sub _init
 
 	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
 
-	my $rs = iMSCP::Dir->new('dirname' => $self->{'certsDir'})->make(
+	my $rs = iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make(
 		{ 'mode' => 0750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'} }
 	);
 	fatal('Unable to create SSL certificate directory') if $rs;

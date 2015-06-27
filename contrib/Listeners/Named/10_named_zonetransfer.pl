@@ -397,7 +397,7 @@ EOF
     }
     
     if(!(-e $transferScriptFolder)) {
-        my $scriptFolder =  iMSCP::Dir->new('dirname' => $transferScriptFolder);
+        my $scriptFolder =  iMSCP::Dir->new( dirname => $transferScriptFolder );
         $rs = $scriptFolder->make();
         return $rs if $rs;
         $rs = $scriptFolder->mode(0550);

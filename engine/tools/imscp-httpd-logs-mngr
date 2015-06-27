@@ -119,8 +119,8 @@ sub run
 			}
 
 			# Create customer logs directory if doesn't already exists or set its permissions
-			$rs = iMSCP::Dir->new('dirname' => $logDestDir)->make(
-				{ 'user' => $userName, 'group' => $groupName, 'mode' => 0750 }
+			$rs = iMSCP::Dir->new( dirname => $logDestDir )->make(
+				{ user => $userName, group => $groupName, mode => 0750 }
 			) unless -d $logDestDir;
 
 			setImmutable($parentDir) if $isImmutableParentDir;

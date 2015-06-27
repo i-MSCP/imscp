@@ -450,7 +450,7 @@ sub _createTrafficLogFile
 	return $rs if $rs;
 
 	unless (-d "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
-		$rs = iMSCP::Dir->new(dirname => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd")->make(
+		$rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd" )->make(
 			{ user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0755 }
 		);
 		return $rs if $rs;

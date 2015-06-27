@@ -141,7 +141,7 @@ sub removeIspcpFiles
 		$main::ispcpConfig{'MTA_VIRTUAL_CONF_DIR'} # eg. /etc/postfix/ispcp
 	) {
 		if(-d) {
-			my $dir = iMSCP::Dir->new('dirname' => $_);
+			my $dir = iMSCP::Dir->new( dirname => $_ );
 			push @errors, getLastError() if $dir->remove();
 		}
 	}
