@@ -94,10 +94,9 @@ sub run
 
 		if(Servers::httpd->can('mountLogsFolder')) {
 			my $httpd = Servers::httpd->factory();
-			my $ret = 0;
 
 			for my $domainName(keys %{$domainNames}) {
-				$rs = $httpd->mountLogsFolder({
+				my $ret = $httpd->mountLogsFolder({
 					DOMAIN_NAME => $domainName,
 					HOME_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/$domainNames->{$domainName}->{root_domain_name}"
 				});
