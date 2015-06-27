@@ -99,7 +99,7 @@ sub run
 			for my $domainName(keys %{$domainNames}) {
 				$rs = $httpd->mountLogsFolder({
 					DOMAIN_NAME => $domainName,
-					HOME_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/domainNames->{$domainName}->{root_domain_name}"
+					HOME_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/$domainNames->{$domainName}->{root_domain_name}"
 				});
 				$rs ||= $ret;
 			}
