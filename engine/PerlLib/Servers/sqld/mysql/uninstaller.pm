@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
-use File::HomeDir;
 use Servers::sqld::mysql;
 use parent 'Common::SingletonClass';
 
@@ -73,16 +72,13 @@ sub _init
 	my $self = shift;
 
 	$self->{'sqld'} = Servers::sqld->factory()->getInstance();
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
 	$self;
 }
 
 =item _removeConfig()
 
- Remove config file (e.g: /etc/mysql/conf.d/mscp.cnf)
+ Remove imscp configuration file
 
  Return int 0 on success, other on failure
 
@@ -92,8 +88,10 @@ sub _removeConfig
 {
 	my $self = shift;
 
-	if(-f '/etc/mysql/conf.d/imscp.cnf') {
-		return iMSCP::File->new( filename => '/etc/mysql/conf.d/imscp.cnf' )->delFile();
+	my $filepath = "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf";
+
+	if(-f $filepath) {
+		return iMSCP::File->new( filename => $filepath )->delFile();
 	}
 
 	0;

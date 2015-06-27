@@ -7,6 +7,7 @@ Git 1.2.x
 BACKEND
 	Added: Dedicated package for remote SQL server
 	Added: NAMED_BNAME (named binary name) configuration parameter - Named (Bind9) server impl.
+	Fixed: File /etc/mysql/conf.d/imscp.cnf not loaded when using Percona DB server due to missing /etc/mysql/my.cnf file
 	Fixed: POP3 SSL and IMAP SSL services must be disabled when SSL is disabled for the services - Courier server impl.
 	Fixed: The .my.cnf file is no longer used and thus, must be removed
 	Fixed: Set timezone according TIMEZONE configuration parameter (iMSCP::Bootstrapper::boot())

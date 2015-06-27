@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Crypt;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -90,7 +91,12 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/imscp.cnf", {
+	my $rs = setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0644' }
+	);
+	return $rs if $rs;
+
+	setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
 	);
 }
@@ -193,10 +199,39 @@ sub _buildConf
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 	my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
+	# Create the /etc/mysql/my.cnf file if missing
+	unless(-f "$confDir/my.cnf") {
+		my $cfgTpl;
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'my.cnf', \$cfgTpl, { });
+		return $rs if $rs;
+
+		unless(defined $cfgTpl) {
+			$cfgTpl = "!includedir $confDir/conf.d/\n";
+		} elsif($cfgTpl !~ m%^!includedir\s+$confDir/conf.d/\n%m) {
+			$cfgTpl .= "!includedir $confDir/conf.d/\n";
+		}
+
+		my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
+
+		$rs = $file->set($cfgTpl);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0644);
+		return $rs if $rs;
+
+		$rs = $file->owner($rootUName, $rootGName);
+		return $rs if $rs;
+	}
+
+	# Make sure that the conf.d directory exists
+	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
+	return $rs if $rs;
+
 	my $cfgTpl;
-	$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', \$cfgTpl, {
-		USER => $rootUName, GROUP => $rootGName, CONFDIR => $confDir }
-	);
+	$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', { });
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -227,7 +262,7 @@ EOF
 
 	$cfgTpl = process($variables, $cfgTpl);
 
-	my $file = iMSCP::File->new( filename => "$confDir/imscp.cnf" );
+	my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
 
 	$rs = $file->set($cfgTpl);
 	return $rs if $rs;
@@ -238,7 +273,7 @@ EOF
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs = $file->owner($rootUName, $rootGName);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterSqldBuildConf');
