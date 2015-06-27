@@ -21,7 +21,7 @@ Listener file that allows to override Apache2 ServerAlias directive value.
 
 ### 30_apache2_redirects_permanently.pl
 
-Listener file that allows to change the domain redirect type in customers's vhost files from 302 to 301.
+Listener file that allows to change the domain redirect type in customer's vhost files from 302 to 301.
 
 ## Named listeners
 

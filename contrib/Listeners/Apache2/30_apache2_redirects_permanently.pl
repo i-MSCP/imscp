@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 #
-## Listener file which changes the domain redirect type in customers's vhost files from 302 to 301.
+## Listener file which changes the domain redirect type in customer's vhost files from 302 to 301.
 #
 
 package Listener::Apache2::Redirect::Permanently;

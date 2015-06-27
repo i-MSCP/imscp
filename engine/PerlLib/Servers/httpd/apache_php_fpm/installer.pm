@@ -779,7 +779,7 @@ sub _oldEngineCompatibility
 		return $rs if $rs;
 	}
 
-	# Remove customers's logs file if any (no longer needed since we are now using bind mount)
+	# Remove customer's logs file if any (no longer needed since we are now using bind mount)
 	my ($stdout, $stderr);
 	$rs = execute("rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \$stdout, $stderr);
 	error($stderr) if $rs && $stderr;

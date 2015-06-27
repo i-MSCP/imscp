@@ -677,7 +677,7 @@ sub setupAskDbPrefixSuffix
 "
 \\Z4\\Zb\\ZuMySQL Database Prefix/Suffix\\Zn
 
-Do you want use a prefix or suffix for customers's SQL databases?
+Do you want use a prefix or suffix for customer's SQL databases?
 
 \\Z4Infront:\\Zn A numeric prefix such as '1_' will be added to each customer
          SQL user and database name.
@@ -1697,7 +1697,7 @@ sub setupSetPermissions
 	iMSCP::EventManager->getInstance()->trigger('afterSetupSetPermissions');
 }
 
-# Rebuild all customers's configuration files
+# Rebuild all customer's configuration files
 sub setupRebuildCustomerFiles
 {
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupRebuildCustomersFiles');
