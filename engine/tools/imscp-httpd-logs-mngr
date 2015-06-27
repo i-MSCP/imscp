@@ -30,6 +30,7 @@ use iMSCP::Database;
 use iMSCP::Getopt;
 use iMSCP::Mail;
 use Servers::httpd;
+use File::Basename;
 
 newDebug('imscp-httpd-logs-mngr.log');
 
@@ -50,10 +51,10 @@ $bootstrapper->boot({ norequirements => 'yes', nolock => 'yes', config_readonly 
 sub run
 {
 	my $rs = 0;
-	my domainNames = iMSCP::Database->factory()->doQuery(
+	my $domainNames = iMSCP::Database->factory()->doQuery(
 		'domain_name',
 		"
-			SELECT domain_name, domain_name AS root_domain_name FROM domain WHERE domain_status = 'ok'
+			SELECT domain_name, domain_name AS root_domain_name FROM domain WHERE domain_status IN('ok', 'disabled')
 			UNION
 			SELECT
 				alias_name, domain_name AS root_domain_name
@@ -62,7 +63,7 @@ sub run
 			INNER JOIN
 				domain USING(domain_id)
 			WHERE
-				alias_status = 'ok'
+				alias_status IN('ok', 'disabled')
 			UNION
 			SELECT
 				CONCAT(subdomain_name, '.', domain_name), domain_name AS root_domain_name
@@ -71,7 +72,7 @@ sub run
 			JOIN
 				domain USING(domain_id)
 			WHERE
-				subdomain_status = 'ok'
+				subdomain_status IN('ok', 'disabled')
 			UNION
 			SELECT
 				CONCAT(subdomain_alias_name, '.', alias_name), domain_name AS root_domain_name
@@ -82,11 +83,11 @@ sub run
 			INNER JOIN
 				domain USING(domain_id)
 			WHERE
-				subdomain_alias_status = 'ok'
+				subdomain_alias_status IN('ok', 'disabled')
 		"
 	);
-	unless (ref domainNames eq 'HASH') {
-		error(domainNames);
+	unless (ref $domainNames eq 'HASH') {
+		error($domainNames);
 		$rs = 1;
 	} else {
 		require Servers::httpd;
@@ -95,7 +96,7 @@ sub run
 			my $httpd = Servers::httpd->factory();
 			my $ret = 0;
 
-			for my $domainName(keys %{domainNames}) {
+			for my $domainName(keys %{$domainNames}) {
 				$rs = $httpd->mountLogsFolder({
 					DOMAIN_NAME => $domainName,
 					HOME_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/domainNames->{$domainName}->{root_domain_name}"
