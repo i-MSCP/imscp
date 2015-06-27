@@ -14,7 +14,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 @daily root perl {BACKUP_ROOT_DIR}/imscp-backup-imscp > {LOG_DIR}/imscp-backup-imscp-mngr.log 2>&1
 
 # Mount customer' apache logs at reboot
-#@reboot root perl {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr > {LOG_DIR}/imscp-httpd-logs-mngr.log 2>&1
+@reboot root perl {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr > {LOG_DIR}/imscp-httpd-logs-mngr.log 2>&1
 
 # Remove configuration backups older than 7 days
 @weekly root find {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec rm -- {} +
