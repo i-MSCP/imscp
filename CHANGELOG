@@ -41,6 +41,7 @@ YOUTRACK
 	Fixed: #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.
 	Fixed: #IP-1363: Unable to suspend customer account
 	Fixed: #IP-1364: Custom DNS records are lost when editing domain properties
+	Fixed: #IP-1371: Bug - When removing domain alias, the vhost link in /etc/apache2/sites-enabled is not removed
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.8
