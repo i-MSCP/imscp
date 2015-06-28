@@ -84,7 +84,6 @@ sub _init
 	my $self = shift;
 
 	$self->{'toInstall'} = [];
-	$self->{'composer_path'} = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/composer.phar";
 	$self->{'wrkDir'} = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages";
 
 	# Override default composer home directory
@@ -112,6 +111,11 @@ sub _init
 			$rs = iMSCP::Dir->new( dirname => $self->{'wrkDir'} )->make();
 			return $rs if $rs;
 
+			if(! iMSCP::Getopt->skipPackagesUpdate || ! -x "$self->{'wrkDir'}/composer.phar") {
+				$rs = $self->_getComposer();
+				return $rs if $rs;
+			}
+
 			# Skip packages update if asked by user but only if all requirements for package versions are meets
 			if(! iMSCP::Getopt->skipPackagesUpdate || $self->_checkRequirements()) {
 				$rs = $self->_installPackages();
@@ -122,6 +126,78 @@ sub _init
 	);
 
 	$self;
+}
+
+=item _getComposer()
+
+ Get composer.phar
+
+ Return 0 on success, other on failure
+
+=cut
+
+sub _getComposer
+{
+	my $self = shift;
+
+	my $curDir = getcwd();
+
+	unless (-f "$self->{'wrkDir'}/composer.phar") {
+		unless(chdir($self->{'wrkDir'})) {
+			error("Unable to change working directory to $self->{'wrkDir'}: $!");
+			return 1;
+		}
+
+		iMSCP::Dialog->getInstance()->infobox(<<EOF);
+
+Installing/Updating composer.phar from http://getcomposer.org
+
+Please wait, depending on your connection, this may take few seconds...
+EOF
+
+		my ($stdout, $stderr);
+		my $rs = execute("curl -s http://getcomposer.org/installer | $self->{'phpCmd'}", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		error($stdout) if ! $stderr && $stdout && $rs;
+		error('Unable to install/update composer.phar from http://getcomposer.org') if $rs && ! $stdout && ! $stderr;
+		return $rs if $rs;
+
+		unless(chdir($curDir)) {
+			error("Unable to change working directory to $curDir: $!");
+			return 1;
+		}
+	} else {
+		unless(chdir($self->{'wrkDir'})) {
+			error("Unable to change working directory to $self->{'wrkDir'}: $!");
+			return 1;
+		}
+
+		iMSCP::Dialog->getInstance()->infobox(<<EOF);
+
+Updating composer.phar from http://getcomposer.org.
+
+Please wait, depending on your connection, this may take few seconds...
+EOF
+
+		my ($stdout, $stderr);
+		my $rs = execute(
+			"$self->{'phpCmd'} $self->{'wrkDir'}/composer.phar --no-ansi -d=$self->{'wrkDir'} self-update",
+			\$stdout,
+			\$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		error('Unable to update composer installer') if $rs && ! $stderr;
+		return $rs if $rs;
+
+		unless(chdir($curDir)) {
+			error("Unable to change working directory to $curDir: $!");
+			return 1;
+		}
+	}
+
+	0;
 }
 
 =item _installPackages()
@@ -154,7 +230,7 @@ EOF
 	# The update option is used here but composer will automatically fallback to install mode when needed
 	# Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
 	$rs = executeNoWait(
-		"$self->{'phpCmd'} $self->{'composer_path'} --no-ansi -d=$self->{'wrkDir'} update --prefer-dist",
+		"$self->{'phpCmd'} $self->{'wrkDir'}/composer.phar --no-ansi -d=$self->{'wrkDir'} update --prefer-dist",
 		sub { my $str = shift; $$str = ''; },
 		sub {
 			my $str = shift;
@@ -269,8 +345,8 @@ sub _checkRequirements
 		my ($package, $version) = $_ =~ /"(.*)":\s*"(.*)"/;
 
 		my @cmd = (
-			$self->{'phpCmd'}, $self->{'composer_path'}, '--no-ansi', "-d=$self->{'wrkDir'}", 'show', '--installed',
-			escapeShell($package), escapeShell($version)
+			$self->{'phpCmd'}, "$self->{'wrkDir'}/composer.phar", '--no-ansi', "-d=$self->{'wrkDir'}", 'show',
+			'--installed', escapeShell($package), escapeShell($version)
 		);
 
 		my ($stdout, $stderr);
