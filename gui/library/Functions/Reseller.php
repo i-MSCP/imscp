@@ -674,13 +674,13 @@ function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType
 
 		foreach(
 			array(
-				'webmaster' => $userEmail, 'postmaster' => $resellerEmail, 'abuse' => $resellerEmail
+				'abuse' => $resellerEmail, 'hostmaster' => $resellerEmail, 'postmaster' => $resellerEmail,
+				'webmaster' => $userEmail
 			) as $umail => $forwardTo
 		) {
 			$stmt->execute(
 				array(
-					$umail, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 0, NULL,
-					$umail . '@' . $dmnName
+					$umail, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 0, null, $umail . '@' . $dmnName
 				)
 			);
 		}
