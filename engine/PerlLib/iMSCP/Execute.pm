@@ -25,7 +25,7 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw(debug);
 use IO::Select;
 use IPC::Open3;
 use Symbol 'gensym';
@@ -52,12 +52,12 @@ our @EXPORT = qw/execute executeNoWait escapeShell getExitCode/;
 
 =item execute($command [, \$stdout = undef [, \$stderr = undef]])
 
- Execute the given external command
+ Execute the given command
 
- Param string $command Ccommand to execute
- Param string \$stdout OPTIONAL Command stdout
- Param string \$stderr OPTIONAL Command stderr
- Return int External command exit code or die on failure
+ Param string $command Command to execute
+ Param string \$stdout OPTIONAL Variable for capture of STDOUT
+ Param string \$stderr OPTIONAL Variable for capture of STDERR
+ Return int Command exit code or die on failure
 
 =cut
 
@@ -66,21 +66,20 @@ sub execute($;$$)
 	my ($command, $stdout, $stderr) = @_;
 
 	if($stdout) {
-		fatal('$stdout must be a scalar reference') unless ref $stdout eq 'SCALAR';
+		ref $stdout eq 'SCALAR' or die("Expects a scalar reference as second parameter for capture of STDOUT");
 		$$stdout = '';
 	}
 
 	if($stderr) {
-		fatal('$stderr must be a scalar reference') unless ref $stderr eq 'SCALAR';
+		ref $stderr eq 'SCALAR' or die("Expects a scalar reference as third parameter for capture of STDERR");
 		$$stderr = '';
 	}
 
-	debug("Executing command: $command");
+	debug($command);
 
 	if($stdout && $stderr) {
 		($$stdout, $$stderr) = capture { system($command); };
-		chomp($$stdout);
-		chomp($$stderr);
+		chomp($$stdout, $$stderr);
 	} elsif ($stdout) {
 		$$stdout = capture_stdout { system($command); };
 		chomp($$stdout);
@@ -88,42 +87,42 @@ sub execute($;$$)
 		$$stderr = capture_stderr { system($command); };
 		chomp($stderr);
 	} else {
-		die("Unable to execute command: $!") if system($command) == -1;
+		die(sprintf('Could not execute command: %s', $!)) if system($command) == -1;
 	}
 
 	getExitCode();
 }
 
-=item executeNoWait($command, $stdoutCallback, $stderrCallback)
+=item executeNoWait($command, $stdoutSubref, $stderrSubref)
 
- Execute the given external command without wait
+ Execute the given command without wait
 
  Param string $command Command to execute
- Param subref Callback responsible to process command stdout
- Param subref Callback responsible to process command sterr
- Return int External command exit code or die on failure
+ Param subref Subroutine responsible to process command STDOUT
+ Param subref Subroutine responsible to process command STDERR
+ Return int Command exit code or die on failure
 
 =cut
 
 sub executeNoWait($$$)
 {
-	my ($command, $stdoutCallback, $stderrCallback) = @_;
+	my ($command, $stdoutSubref, $stderrSubref) = @_;
 
-	my $stderr = gensym;
-	my $pid = open3(my $stdin, my $stdout, $stderr, $command);
+	ref $stdoutSubref eq 'CODE' or die('Expects a subroutine reference for STDOUT processing');
+	ref $stderrSubref eq 'CODE' or die('Expects a subroutine reference for STDERR processing');
+
+	my $pid = open3(my $stdin, my $stdout, my $stderr = gensym, $command);
+
 	close $stdin;
 
-	my $sel = new IO::Select();
-	$sel->add($stdout);
-	$sel->add($stderr);
-
 	my %buffers = ( $stdout => '', $stderr => '' );
+	my $sel = new IO::Select($stdout, $stderr);
 
 	while($sel->count()) {
 		for my $fh ($sel->can_read()) {
 			my $ret = sysread($fh, $buffers{$fh}, 4096, length($buffers{$fh}));
 
-			die $! unless defined $ret;
+			defined $ret or die($!);
 
 			if ($ret == 0) {
 				$sel->remove($fh);
@@ -131,15 +130,11 @@ sub executeNoWait($$$)
 				next;
 			}
 
-			if ($fh == $stderr) {
-				$stderrCallback->(\$buffers{$stderr});
-			} else {
-				$stdoutCallback->(\$buffers{$stdout});
-			}
+			$fh == $stderr ? $stderrSubref->(\$buffers{$stderr}) : $stdoutSubref->(\$buffers{$stdout});
 		}
 	}
 
-	waitpid($pid, 0) if $pid > 0;
+	waitpid($pid, 0);
 
 	getExitCode();
 }
@@ -155,40 +150,37 @@ sub executeNoWait($$$)
 
 sub escapeShell($)
 {
-	return $_[0] if $_[0] eq '' || $_[0] =~ /^[a-zA-Z0-9_\-]+\z/;
-	my $s = $_[0];
-	$s =~ s/'/'\\''/g;
+	my $string = shift;
 
-	"'$s'";
+	return $string if $string eq '' || $string =~ /^[a-zA-Z0-9_\-]+\z/;
+	$string =~ s/'/'\\''/g;
+
+	"'$string'";
 }
 
-=item getExitCode([$exitValue = $?])
+=item getExitCode([ $ret = $? ])
 
  Return human exit code
 
- Param int $exitValue Raw exit code (default to $?)
+ Param int $ret Raw exit code (default to $?)
  Return int exit code or die on failure
 
 =cut
 
 sub getExitCode(;$)
 {
-	my $exitValue = $_[0] // $?;
+	my $ret = shift // $?;
 
-	if ($exitValue == -1) {
-		die("Failed to execute external command: $!");
-	} elsif ($exitValue & 127) {
-		die(
-			sprintf(
-				"External command died with signal %d, %s coredump", ($exitValue & 127), ($? & 128) ? 'with' : 'without'
-			)
-		);
+	if ($ret == -1) {
+		die(sprintf('Could not execute command: %s', $!));
+	} elsif ($ret & 127) {
+		die(sprintf('Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without'));
 	} else {
-		$exitValue = $exitValue >> 8;
-		debug("External command exited with value $exitValue");
+		$ret = $ret >> 8;
+		debug(sprintf('Command exited with value: %s', $ret));
 	}
 
-	$exitValue;
+	$ret;
 }
 
 =back

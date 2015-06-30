@@ -28,7 +28,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
-use fields qw / reconfigure noprompt preseed listener cleanPackagesCache skipPackagesUpdate debug /;
+use fields qw / reconfigure noprompt preseed listener cleanPackageCache skipPackageUpdate debug /;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -72,8 +72,8 @@ $usage
  -n,    --noprompt              Switch to non-interactive mode.
  -p,    --preseed <file>        Path to preseed file.
  -l,    --listener <file>       Path to listener file.
- -c     --clean-packages-cache  Cleanup i-MSCP packages cache.
- -a     --skip-packages-update  Skip i-MSCP packages update
+ -c     --clean-package-cache   Cleanup i-MSCP composer package cache.
+ -a     --skip-package-update   Skip i-MSCP composer packages update.
  -d,    --debug                 Force debug mode.
  -?,-h  --help                  Show this help.
 
@@ -102,8 +102,8 @@ EOF
 			'noprompt|n', sub { $options->{'noprompt'} = 1 },
 			'preseed|p=s', sub { $class->preseed($_[1]) },
 			'listener|l=s', sub { $class->listenerFile($_[1]) },
-			'clean-packages-cache|c', sub { $options->{'cleanPackagesCache'} = 1 },
-			'skip-packages-update|a', sub { $options->{'skipPackagesUpdate'} = 1 },
+			'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
+			'skip-package-update|a', sub { $options->{'skipPackageUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
 			'help|?|h', sub { $showUsage->() },
 			@_,

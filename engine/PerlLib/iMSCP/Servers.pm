@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 sub get
 {
-	@{$_[0]->{'items'}};
+	@{$_[0]->{'servers'}};
 }
 
 =back
@@ -65,10 +65,10 @@ sub get
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	$_ = substr($_, 0, -3) for @{$self->{'items'}} = iMSCP::Dir->new(
-		'dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers"
+	$_ = substr($_, 0, -3) for @{$self->{'servers'}} = iMSCP::Dir->new(
+		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers"
 	)->getFiles();
 
 	$self;
