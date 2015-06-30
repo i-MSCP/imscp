@@ -108,8 +108,8 @@ sub executeNoWait($$$)
 {
 	my ($command, $stdoutSubref, $stderrSubref) = @_;
 
-	ref $stdoutSubref eq 'CODE' or die('Expects a subroutine reference for STDOUT processing');
-	ref $stderrSubref eq 'CODE' or die('Expects a subroutine reference for STDERR processing');
+	ref $stdoutSubref eq 'CODE' or die('Expects a subroutine reference as second parameter for STDOUT processing');
+	ref $stderrSubref eq 'CODE' or die('Expects a subroutine reference as third parameter for STDERR processing');
 
 	my $pid = open3(my $stdin, my $stdout, my $stderr = gensym, $command);
 
