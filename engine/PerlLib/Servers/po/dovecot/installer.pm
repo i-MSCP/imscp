@@ -411,7 +411,7 @@ sub _setupSqlUser
 	fatal(sprintf('Unable to connect to SQL server: %s', $errStr)) unless $db;
 
 	# Create SQL user if not already created by another server/package installer
-	unless($dbUser ~~ @main::sqlUsers) {
+	unless($dbUser ~~ @main::sqlUsers) {
 		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
