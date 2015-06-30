@@ -43,6 +43,7 @@ YOUTRACK
 	Fixed: #IP-1364: Custom DNS records are lost when editing domain properties
 	Fixed: #IP-1371: Bug - When removing domain alias, the vhost link in /etc/apache2/sites-enabled is not removed
 	Fixed: #IP-1373: Compliance with RFC 2142 - Add a hostmaster address by default
+	Fixed: #IP-1374: Allows reuse of same SQL username for i-MSCP managed services such as phpmyadmin, proftpd...
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.8

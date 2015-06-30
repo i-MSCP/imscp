@@ -38,6 +38,8 @@ use Servers::ftpd::proftpd;
 use version;
 use parent 'Common::SingletonClass';
 
+@main::sqlUsers = () unless @main::sqlUsers;
+
 =head1 DESCRIPTION
 
  Installer for the i-MSCP Poftpd Server implementation.
@@ -302,6 +304,7 @@ sub _setupDatabase
 {
 	my $self = shift;
 
+	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD');
@@ -311,7 +314,7 @@ sub _setupDatabase
 	return $rs if $rs;
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next unless $sqlUser;
+		next unless $sqlUser || $sqlUser ~~ @main::sqlUsers;
 
 		for my $host(
 			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
@@ -320,39 +323,48 @@ sub _setupDatabase
 			next unless $host;
 
 			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error('Unable to remove SQL user or one of its privileges');
+				error(sprintf('Unable to remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
 				return 1;
 			}
 		}
 	}
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL server: $errStr") unless $db;
+	fatal(sprintf('Unable to connect to SQL server: %s', $errStr)) unless $db;
 
-	for my $table('ftp_users', 'ftp_group') {
-		$rs = $db->doQuery(
-			'dummy',
-			"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`$table` TO ?@? IDENTIFIED BY ?",
-			$dbUser,
-			$dbUserHost,
-			$dbPass
-		);
+	# Create SQL user if not already created by another server/package installer
+	unless($dbUser ~~ @main::sqlUsers) {
+		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
 		unless(ref $rs eq 'HASH') {
-			error("Unable to add privileges: $rs");
+			error(sprintf('Unable to create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
+			return 1;
+		}
+	} else { # Make any other installer aware of that SQL user
+		push @main::sqlUsers, $dbUser unless $dbUser ~~ @main::sqlUsers;
+	}
+
+	# Give needed privileges to this SQL user
+
+	my $quotedDbName = $db->quoteIdentifier($dbName);
+
+	for my $tableName('ftp_users', 'ftp_group') {
+		my $quotedTableName = $db->quoteIdentifier($tableName);
+
+		$rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost);
+		unless(ref $rs eq 'HASH') {
+			error(sprintf('Unable to add privilege: %s', $rs));
 			return 1;
 		}
 	}
 
-	for my $table('quotalimits', 'quotatallies') {
+	for my $tableName('quotalimits', 'quotatallies') {
+		my $quotedTableName = $db->quoteIdentifier($tableName);
+
 		$rs = $db->doQuery(
-			'dummy',
-			"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$table` TO ?@? IDENTIFIED BY ?",
-			$dbUser,
-			$dbUserHost,
-			$dbPass
+			'g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost
 		);
 		unless(ref $rs eq 'HASH') {
-			error("Unable to add privileges: $rs");
+			error(sprintf('Unable to add privilege: %s', $rs));
 			return 1;
 		}
 	}

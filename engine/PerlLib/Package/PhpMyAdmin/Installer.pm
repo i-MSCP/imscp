@@ -42,6 +42,8 @@ use JSON;
 use version;
 use parent 'Common::SingletonClass';
 
+@main::sqlUsers = () unless @main::sqlUsers;
+
 =head1 DESCRIPTION
 
  i-MSCP PhpMyAdmin package installer.
@@ -413,7 +415,6 @@ sub _setupSqlUser
 	my $self = $_[0];
 
 	my $phpmyadminDbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
-
 	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD');
@@ -421,7 +422,7 @@ sub _setupSqlUser
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next unless $sqlUser;
+		next unless $sqlUser || $sqlUser ~~ @main::sqlUsers;
 
 		for my $host(
 			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
@@ -430,41 +431,54 @@ sub _setupSqlUser
 			next unless $host;
 
 			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error('Unable to remove SQL user or one of its privileges.');
+				error(sprintf('Unable to remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
 				return 1;
 			}
 		}
 	}
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL server: $errStr") unless $db;
+	fatal(sprintf('Unable to connect to SQL server: %s', $errStr)) unless $db;
 
-	my $rs = $db->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+	# Create SQL user if not already created by another server/package installer
+	unless($dbUser ~~ @main::sqlUsers) {
+		my $rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		unless(ref $rs eq 'HASH') {
+			error(sprintf('Unable to create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
+			return 1;
+		}
+	} else { # Make any other server/package installer aware of that SQL user
+		push @main::sqlUsers, $dbUser unless $dbUser ~~ @main::sqlUsers;
+	}
+
+	# Give needed privileges to this SQL user
+
+	my $rs = $db->doQuery('g', 'GRANT USAGE ON mysql.* TO ?@?', $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privilege: $rs");
+		error(sprintf('Unable to add privilege: %s', $rs));
 		return 1;
 	}
 
-	$rs = $db->doQuery('dummy', 'GRANT SELECT ON `mysql`.`db` TO ?@?', $dbUser, $dbUserHost);
+	$rs = $db->doQuery('g', 'GRANT SELECT ON mysql.db TO ?@?', $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privilege: $rs");
+		error(sprintf('Unable to add privilege: %s', $rs));
 		return 1;
 	}
 
 	$rs = $db->doQuery(
-		'dummy',
+		'g',
 		'
 			GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv,
 				Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv,
 				Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv,
 				Repl_slave_priv, Repl_client_priv)
-			ON `mysql`.`user`
+			ON mysql.user
 			TO ?@?
 		',
 		$dbUser, $dbUserHost
 	);
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privilege: $rs");
+		error(sprintf('Unable to add privilege: %s', $rs));
 		return 1;
 	}
 
@@ -474,31 +488,29 @@ sub _setupSqlUser
 		error($rs);
 		return 1;
 	} elsif(%{$rs}) {
-		$rs = $db->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbUserHost);
+		$rs = $db->doQuery('g', 'GRANT SELECT ON mysql.user TO ?@?', $dbUser, $dbUserHost);
 		unless(ref $rs eq 'HASH') {
-			error("Unable to add privilege: $rs");
+			error(sprintf('Unable to add privilege: %s', $rs));
 			return 1;
 		}
 
 		$rs = $db->doQuery(
-			'dummy',
-			'
-				GRANT SELECT (`Host`, `Db`, `User`, `Table_name`, `Table_priv`, `Column_priv`)
-				ON `mysql`.`tables_priv`
-				TO?@?
-			',
+			'g',
+			'GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO?@?',
 			$dbUser,
 			$dbUserHost
 		);
 		unless(ref $rs eq 'HASH') {
-			error("Unable to add privilege: $rs");
+			error(sprintf('Unable to add privilege: %s', $rs));
 			return 1;
 		}
 	}
 
-	$rs = $db->doQuery('dummy', "GRANT ALL PRIVILEGES ON `$phpmyadminDbName`.* TO ?@?;",  $dbUser, $dbUserHost);
+	my $quotedDbName = $db->quoteIdentifier($phpmyadminDbName);
+
+	$rs = $db->doQuery('g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?",  $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privilege: $rs");
+		error(sprintf('Unable to add privilege: %s', $rs));
 		return 1;
 	}
 

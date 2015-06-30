@@ -39,6 +39,8 @@ use Servers::po::dovecot;
 use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
 
+@main::sqlUsers = () unless @main::sqlUsers;
+
 =head1 DESCRIPTION
 
  i-MSCP Dovecot IMAP/POP3 Server installer implementation.
@@ -383,6 +385,7 @@ sub _setupSqlUser
 {
 	my $self = shift;
 
+	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD');
@@ -392,30 +395,39 @@ sub _setupSqlUser
 	return $rs if $rs;
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next unless $sqlUser;
+		next unless $sqlUser || $sqlUser ~~ @main::sqlUsers;
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
 			next unless $host;
 
 			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error('Unable to remove SQL user or one of its privileges');
+				error(sprintf('Unable to remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
 				return 1;
 			}
 		}
 	}
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL server: $errStr") unless $db;
+	fatal(sprintf('Unable to connect to SQL server: %s', $errStr)) unless $db;
 
-	$rs = $db->doQuery(
-		'dummy',
-		"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` TO ?@? IDENTIFIED BY ?",
-		$dbUser,
-		$dbUserHost,
-		$dbPass
-	);
+	# Create SQL user if not already created by another server/package installer
+	unless($dbUser ~~ @main::sqlUsers) {
+		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		unless(ref $rs eq 'HASH') {
+			error(sprintf('Unable to create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
+			return 1;
+		}
+	} else { # Make any other installer aware of that SQL user
+		push @main::sqlUsers, $dbUser unless $dbUser ~~ @main::sqlUsers;
+	}
+
+	# Give needed privileges to this SQL user
+
+	my $quotedDbName = $db->quoteIdentifier($dbName);
+
+	$rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privileges: $rs");
+		error(sprintf('Unable to add privilege: %s', $rs));
 		return 1;
 	}
 

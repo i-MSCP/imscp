@@ -42,6 +42,8 @@ use parent 'Common::SingletonClass';
 
 our $VERSION = '0.1.0.*@dev';
 
+@main::sqlUsers = () unless @main::sqlUsers;
+
 =head1 DESCRIPTION
 
  This is the installer for the i-MSCP RainLoop package.
@@ -411,20 +413,18 @@ sub _setupDatabase
 	my $dbOldUser = $self->{'rainloop'}->{'config'}->{'DATABASE_USER'};
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL server: $errStr") unless $db;
+	fatal(sprintf('Unable to connect to SQL server: %s', $errStr)) unless $db;
 
-	my $quotedRainLoopDbName = $db->quoteIdentifier($rainLoopDbName);
+	my $quotedDbName = $db->quoteIdentifier($rainLoopDbName);
 
-	my $rs = $db->doQuery(
-		'dummy', "CREATE DATABASE IF NOT EXISTS $quotedRainLoopDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
-	);
+	my $rs = $db->doQuery('c', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci");
 	unless(ref $rs eq 'HASH') {
-		error("Unable to create SQL database: $rs");
+		error(sprintf('Unable to create SQL database: %s', $rs));
 		return 1;
 	}
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next unless $sqlUser;
+		next unless $sqlUser || $sqlUser ~~ @main::sqlUsers;
 
 		for my $host(
 			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
@@ -433,39 +433,41 @@ sub _setupDatabase
 			next unless $host;
 
 			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error('Unable to remove SQL user or one of its privileges');
+				error(sprintf('Unable to remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
 				return 1;
 			}
 		}
 	}
 
-	$rs = $db->doQuery(
-		'dummy', "GRANT ALL PRIVILEGES ON $quotedRainLoopDbName.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
-	);
+	# Create SQL user if not already created by another server/package installer
+	unless($dbUser ~~ @main::sqlUsers) {
+		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		unless(ref $rs eq 'HASH') {
+			error(sprintf('Unable to create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
+			return 1;
+		}
+	} else {
+		# Make any other installer aware of that SQL user
+		push @main::sqlUsers, $dbUser unless $dbUser ~~ @main::sqlUsers;
+	}
+
+	# Give needed privileges to this SQL user
+	$rs = $db->doQuery('g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?",  $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privileges: $rs");
+		error(sprintf('Unable to add privileges: %s', $rs));
 		return 1;
 	}
 
-	my $quotedImscpDbName = $db->quoteIdentifier($imscpDbName);
+	$quotedDbName = $db->quoteIdentifier($imscpDbName);
 
 	$rs = $db->doQuery(
-		'dummy',
-		"
-			GRANT
-				SELECT (`mail_addr`, `mail_pass`), UPDATE (`mail_pass`)
-			ON
-				$quotedImscpDbName.`mail_users`
-			TO
-				?@?
-			IDENTIFIED BY ?
-		",
+		'g',
+		"GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?@?",
 		$dbUser,
-		$dbUserHost,
-		$dbPass
+		$dbUserHost
 	);
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privileges: $rs");
+		error(sprintf('Unable to add privileges: %s', $rs));
 		return 1;
 	}
 

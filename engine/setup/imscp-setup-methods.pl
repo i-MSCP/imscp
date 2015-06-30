@@ -50,6 +50,8 @@ use iMSCP::Packages;
 use iMSCP::Getopt;
 use iMSCP::Service;
 
+@main::sqlUsers = () unless @main::sqlUsers;
+
 # Boot
 sub setupBoot
 {
