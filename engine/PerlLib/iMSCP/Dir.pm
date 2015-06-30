@@ -1,5 +1,11 @@
+=head1 NAME
+
+ iMSCP::Dir - Package which allow to perform operation on directories
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,136 +30,175 @@ use iMSCP::File;
 use File::Path qw/mkpath remove_tree/;
 use File::Copy;
 use parent 'Common::Object';
-use vars qw/$AUTOLOAD/;
+
+=head1 DESCRIPTION
+
+ Package which allow to perform operation on directories
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item getFiles([ $dirname ])
+
+ Get list of files inside directory
+
+ Param string $dirname OPTIONAL Directory - Default $self->{'dirname'}
+ Return array representing list files or die on failure
+
+=cut
 
 sub getFiles
 {
-	my $self = $_[0];
+	my $self = shift;
+	my $dirname = shift // $self->{'dirname'};
 
-	unless(defined $self->{'files'}) {
-		$self->{'files'} = [];
-		$self->_get();
+	defined $dirname or die("Missing 'dirname' parameter");
+	opendir my $dh, $dirname or die(sprintf('Could not open %s: %s', $dirname, $!));
+	my @files = grep { $_ ne '.' && $_ ne '..' && -f "$self->{'dirname'}/$_" } readdir $dh;
+	closedir $dh;
 
-		if($self->{'fileType'}) {
-			for (@{$self->{'dirContent'}}) {
-				push(@{$self->{'files'}}, $_) if -f "$self->{'dirname'}/$_" && /$self->{'fileType'}$/;
-			}
-		} else {
-			for (@{$self->{'dirContent'}}) {
-				push(@{$self->{'files'}}, $_) if -f "$self->{'dirname'}/$_";
-			}
-		}
-	}
-
-	wantarray ? @{$self->{'files'}} : join ' ', @{$self->{'files'}};
+	($self->{'fileType'}) ? grep(/$self->{'fileType'}$/, @files) : @files;
 }
+
+=item getDirs([ $dirname ])
+
+ Get list of directories inside directory
+
+ Param string $dirname OPTIONAL Directory - Default $self->{'dirname'}
+ Return array representing list of directories or die on failure
+
+=cut
 
 sub getDirs
 {
-	my $self = $_[0];
+	my $self = shift;
+	my $dirname = shift // $self->{'dirname'};
 
-	unless(defined $self->{'dirs'}) {
-		$self->{'dirs'} = [];
-		$self->_get();
+	defined $dirname or die("Missing 'dirname' parameter");
+	opendir my $dh, $dirname or die(sprintf('Could not open %s: %s', $dirname, $!));
+	my @files = grep { $_ ne '.' && $_ ne '..' && -d "$dirname/$_" } readdir $dh;
+	closedir $dh;
 
-		for (@{$self->{'dirContent'}}) {
-			if($_ ne '.' && $_ ne '..' && -d "$self->{'dirname'}/$_") {
-				push @{$self->{'dirs'}}, $_;
-			}
-		}
-	}
-
-	wantarray ? @{$self->{'dirs'}} : join ' ', @{$self->{'dirs'}};
+	@files;
 }
+
+=item getAll([ $dirname ])
+
+ Get list of files and directories inside directory
+
+ Param string $dirname OPTIONAL Directory - Default $self->{'dirname'}
+ Return list of files and directories or die on failure
+
+=cut
 
 sub getAll
 {
-	my $self = $_[0];
+	my $self = shift;
+	my $dirname = shift // $self->{'dirname'};
 
-	my @all = ($self->getDirs(), $self->getFiles());
+	defined $dirname or die("Missing 'dirname' parameter");
+	opendir my $dh, $dirname or die(sprintf('Could not open %s: %s', $dirname, $!));
+	my @files = grep { $_ ne '.' && $_ ne '..' } readdir $dh;
+	closedir $dh;
 
-	wantarray ? @all : join ' ', @all;
+	@files;
 }
+
+=item isEmpty([ $dirname ])
+
+ Is directory empty?
+
+ Param string $dirname OPTIONAL Directory - Default $self->{'dirname'}
+ Return bool TRUE if the given directory is empty, FALSE otherwise - die on failure
+
+=cut
 
 sub isEmpty
 {
 	my $self = shift;
-	my $dirname = shift || $self->{'dirname'};
+	my $dirname = shift // $self->{'dirname'};
 
-	unless(defined $dirname) {
-		error("Attribut 'dirname' is not set");
-		return 1;
-	}
+	defined $dirname or die("Missing 'dirname' parameter");
+	opendir my $dh, $dirname or die(sprintf('Could not open %s: %s', $dirname, $!));
 
-	$self->{'dirname'} = $dirname;
-
-	unless(opendir(DIRH, $self->{'dirname'})) {
-		fatal(sprintf('Unable to open %s directory: %s', $self->{'dirname'}, $!));
-	}
-
-	for (readdir DIRH) {
-		if($_ ne '.' && $_ ne '..') {
-			closedir(DIRH);
+	for my $file(readdir $dh) {
+		if($file ne '.' && $file ne '..') {
+			closedir $dh;
 			return 0;
 		}
 	}
 
-	closedir(DIRH);
+	closedir $dh;
 
 	1;
 }
+
+=item mode($mode [, $dirname ])
+
+ Set directory mode
+
+ Param string $mode Directory mode
+ Param string $dirname OPTIONAL Directory (default $self->{'dirname'})
+ Return int 0 on success or die on failure
+
+=cut
 
 sub mode
 {
 	my ($self, $mode, $dirname) = @_;
 
-	$dirname ||= $self->{'dirname'};
+	$dirname //= $self->{'dirname'};
 
-	unless(defined $dirname) {
-		error("Attribut 'dirname' is not set");
-		return 1;
-	}
-
-	$self->{'dirname'} = $dirname;
-
-	debug(sprintf('Changing mode for %s to %s', $self->{'dirname'}, $mode));
-
-	unless (chmod($mode, $self->{'dirname'})) {
-		error(sprintf('Unable to change mode for %s: %s', $self->{'dirname'}, $!));
-		return 1;
-	}
+	defined $mode or die("Missing 'mode' parameter");
+	defined $dirname or die("Missing 'dirname' parameter");
+	debug(sprintf('Changing mode for %s to %s', $dirname, $mode));
+	chmod $mode, $dirname or die(sprintf('Could not change mode for %s: %s', $dirname, $!));
 
 	0;
 }
+
+=item owner($owner, $group, [, $dirname ])
+
+ Set directory owner and group
+
+ Param string $owner Owner
+ Param string $group Group
+ Param string $dirname OPTIONAL Directory (default $self->{'dirname'})
+ Return int 0 on success, die on failure
+
+=cut
 
 sub owner
 {
 	my ($self, $owner, $group, $dirname) = @_;
 
-	$dirname ||= $self->{'dirname'};
+	$dirname //= $self->{'dirname'};
 
-	unless(defined $dirname) {
-		error("Attribut 'dirname' is not set");
-		return 1;
-	}
+	defined $owner or die("Mistting 'owner' parameter");
+	defined $group or die("Mistting 'group' parameter");
+	defined $dirname or die("Missing 'dirname' parameter");
 
-	$self->{'dirname'} = $dirname;
+	my $uid = ($owner =~ /^\d+$/) ? $owner : getpwnam($owner) // -1;
+	my $gid = ($group =~ /^\d+$/) ? $group : getgrnam($group) // -1;
 
-	my $uid = ($owner =~ /^\d+$/) ? $owner : getpwnam($owner);
-	$uid = -1 unless defined $uid;
-
-	my $gid = ($group =~ /^\d+$/) ? $group : getgrnam($group);
-	$gid = -1 unless defined $gid;
-
-	debug(sprintf('Changing owner and group for %s to %s:%s', $self->{'dirname'}, $uid, $gid));
-
-	unless (chown($uid, $gid, $self->{'dirname'})) {
-		error(sprintf('Unable to change owner and group for %s: %s', $self->{'dirname'}, $!));
-		return 1;
-	}
+	debug(sprintf('Changing owner and group for %s to %s: %s', $dirname, $uid, $gid));
+	chown $uid, $gid, $self->{'dirname'} or die(sprintf('Could not change owner and group for %s: %s', $dirname, $!));
 
 	0;
 }
+
+=item make([ \%options ])
+
+ Create directory
+
+ Param hash \%options OPTIONAL Options:
+    mode:  Directory mode
+    user:  Directory owner
+    group: Directory group
+ Return int 0 on success, die on failure
+
+=cut
 
 sub make
 {
@@ -161,201 +206,194 @@ sub make
 
 	$options = { } unless defined $options && ref $options eq 'HASH';
 
-	unless(defined $self->{'dirname'}) {
-		error("Attribut 'dirname' is not set");
-		return 1;
-	}
-
-	if (-f $self->{'dirname'}) {
-		error(sprintf('Unable to create directory: %s already exists as file.', $self->{'dirname'}));
-		return 1;
-	}
+	defined $self->{'dirname'} or die("Attribut 'dirname' is not defined");
+	! -f $self->{'dirname'} or die(sprintf('Could not create %s: Already exists as file.', $self->{'dirname'}));
 
 	unless(-d $self->{'dirname'}) {
-		debug(sprintf('Creating directory %s', $self->{'dirname'}));
+		debug($self->{'dirname'});
+		my @createdDirs = mkpath($self->{'dirname'}, { error => \my $errStack });
 
-		my $errors;
-		my @createdDirs = mkpath($self->{'dirname'}, { 'error' => \$errors});
+		if(@{$errStack}) {
+			my $errorStr = '';
 
-		if (@{$errors}) {
-			for my $diag (@{$errors}) {
-				my ($directory, $message) = %{$diag};
-
-				if ($directory eq '') {
-					error(sprintf('General error: %s', $message));
-				} else {
-					error(sprintf('Unable to create %s directory: %s', $directory, $message));
-				}
+			for my $diag (@{$errStack}) {
+				my ($file, $message) = %{$diag};
+				$errorStr .= ($file eq '') ? "general error: $message\n" : "problem unlinking $file: $message\n";
 			}
 
-			return 1;
+			die(sprintf('Could not create %s: %s', $errorStr));
 		}
 
-		for (@createdDirs) {
-			my $rs = $self->mode($options->{'mode'}, $_) if defined $options->{'mode'};
-			return $rs if $rs;
+		for my $dir(@createdDirs) {
+			if(defined $options->{'mode'}) {
+				$self->mode($options->{'mode'}, $dir);
+			}
 
 			if(defined $options->{'user'} || defined $options->{'group'}) {
-				$rs = $self->owner($options->{'user'} || -1, $options->{'group'} || -1, $_);
-				return $rs if $rs;
+				$self->owner($options->{'user'} // -1, $options->{'group'} // -1, $dir);
 			}
 		}
 	} else {
-		debug(sprintf('Directory %s already exists. Setting its permissions...', $self->{'dirname'}));
+		debug(sprintf('%s already exists. Setting its permissions...', $self->{'dirname'}));
 
 		if(defined $options->{'mode'}) {
-			my $rs = $self->mode($options->{'mode'});
-			return $rs if $rs;
+			$self->mode($options->{'mode'});
 		}
 
-		if(defined $options->{'user'} || defined $options->{'group'}) {
-			my $rs = $self->owner($options->{'user'} || -1, $options->{'group'} || -1, $self->{'dirname'});
-			return $rs if $rs;
+		if($options->{'user'} || $options->{'group'}) {
+			$self->owner($options->{'user'} // -1, $options->{'group'} // -1, $self->{'dirname'});
 		}
 	}
 
 	0;
 }
+
+=item remove([ $dirname ])
+
+ Remove directory recusively
+
+ Param string $dirname OPTIONAL Directory (default $self->{'dirname'})
+ Return int 0 on success, die on failure
+
+=cut
 
 sub remove
 {
-	my $self = $_[0];
+	my $self = shift;
+	my $dirname = shift // $self->{'dirname'};
 
-	unless(defined $self->{'dirname'}) {
-		error("Attribut 'dirname' is not set");
-		return 1;
-	}
+	defined $dirname or die("Missing 'dirname' parameter");
 
-	if (-d $self->{'dirname'}) {
-		debug(sprintf('Removing directory %s', $self->{'dirname'}));
+	if (-d $dirname) {
+		debug($dirname);
+		remove_tree($dirname, { error => \my $errStack });
 
-		my $err;
-		remove_tree($self->{'dirname'}, { 'error' => \$err });
+		if(@{$errStack}) {
+			my $errorStr = '';
 
-		if (@$err) {
-			for my $diag (@$err) {
-				my ($directory, $message) = %$diag;
-
-				if ($directory eq '') {
-					error(sprintf('General error: %s', $message));
-				} else {
-					error(sprintf('Unable to delete directory %s: %s', $directory, $message));
-				}
+			for my $diag (@{$errStack}) {
+				my ($file, $message) = %{$diag};
+				$errorStr .= ($file eq '') ? "general error: $message\n" : "problem unlinking $file: $message\n";
 			}
 
-			return 1;
+			die(sprintf('Could not delete %s: %s', $errorStr));
 		}
 	}
 
 	0;
 }
+
+=item rcopy($destDir [, \%options ])
+
+ Copy directory recusively
+
+ Note: Symlinks are not followed.
+
+ Param string $destDir Destination directory
+ Param hash \%options OPTIONAL Options:
+   excludeDir:  String representing a regexp for excluding a list of directories from copy
+   excludeFile: String representing a regexp for excluding a list of files from copy
+   preserve:    If true, copy file attributes (uid, gid and mode)
+ Return int 0 on success, die on failure
+
+=cut
 
 sub rcopy
 {
 	my ($self, $destDir, $options) = @_;
 
-	my $rs = 0;
-
 	$options = { } if ref $options ne 'HASH';
 
-	unless(defined $self->{'dirname'}) {
-		error("Attribut 'dirname' is not set");
-		return 1;
-	}
+	defined $self->{'dirname'} or die("Attribute 'dirname' is not defined");
 
-	unless(opendir DIRH, $self->{'dirname'}) {
-		error(sprintf('Unable to open directory %s:', $self->{'dirname'}, $!));
-		return 1;
-	}
+	my $excludeDir = (defined $options->{'excludeDir'}) ? qr/$options->{'excludeDir'}/ : undef;
+	my $excludeFile = (defined $options->{'excludeFile'}) ? qr/$options->{'excludeFile'}/ : undef;
 
-	my $excludeDir = ($options->{'excludeDir'}) ? qr/$options->{'excludeDir'}/ : undef;
-	my $excludeFile = ($options->{'excludeFile'}) ? qr/$options->{'excludeFile'}/ : undef;
+	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open: %s', $self->{'dirname'}, $!));
 
-	for my $entry (readdir DIRH) {
+	for my $entry (readdir $dh) {
 		if($entry ne '.' && $entry ne '..') {
-			my $source = "$self->{'dirname'}/$entry";
-			my $destination = "$destDir/$entry";
+			my $src = "$self->{'dirname'}/$entry";
+			my $dst = "$destDir/$entry";
 
-			if (-d $source) {
-				unless($excludeDir && $source =~ /$excludeDir/) {
-					my $opts = { };
+			if (-d $src) {
+				unless($excludeDir && $src =~ /$excludeDir/) {
+					my $opts = {};
 
-					unless($options->{'preserve'} && $options->{'preserve'} eq 'no') {
-						my (undef, undef, $mode, undef, $uid, $gid) = lstat($source);
-						$mode = $mode & 07777;
-						$opts = { 'user' => $uid, 'mode' => $mode, 'group' => $gid }
+					if($options->{'preserve'}) {
+						my (undef, undef, $mode, undef, $uid, $gid) = lstat($src);
+						$opts = { user => $uid, mode => $mode & 07777, group => $gid }
 					}
 
-					debug(sprintf('Copying directory %s to %s', $source, $destination));
-
-					my $directory = iMSCP::Dir->new();
-					$directory->{'dirname'} = $destination;
-
-					$rs = $directory->make($opts);
-					return $rs if $rs;
-
-					$directory->{'dirname'} = $source;
-
-					$rs = $directory->rcopy($destination, $options);
-					return $rs if $rs;
+					debug(sprintf('%s to %s', $src, $dst));
+					iMSCP::Dir->new( dirname => $dst )->make($opts);
+					iMSCP::Dir->new( dirname => $src )->rcopy($dst, $options);
 				}
-			} elsif(! $excludeFile || $source !~ /$excludeFile}/) {
-				debug(sprintf('Copying file %s to %s', "$self->{'dirname'}/$entry", "$destDir/$entry"));
-
-				my $file = iMSCP::File->new('filename' => $source);
-				$rs = $file->copyFile($destination, $options);
-				return $rs if $rs;
+			} elsif(!$excludeFile || $src !~ /$excludeFile}/) {
+				debug(sprintf('%s to %s', "$self->{'dirname'}/$entry", "$destDir/$entry"));
+				(iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0) or die(sprintf(
+					'Could not copy file %s into %s: %s', $src, $dst, getLastError()
+				));
 			}
 		}
 	}
 
-	closedir DIRH;
+	closedir $dh;
 
 	0;
 }
+
+=item moveDir($destDir)
+
+ Move directory
+
+ Param string $destDir Destination directory
+ Return int 0 on success, die on failure
+
+=cut
 
 sub moveDir
 {
-	my ($self, $dest) = @_;
+	my ($self, $destDir) = @_;
 
-	unless(defined $self->{'dirname'}) {
-		error("Attribut 'dirname' is not set");
-		return 1;
-	}
-
-	unless(-d $self->{'dirname'}) {
-		error(sprintf("Directory %s doesn't exits", $self->{'dirname'}));
-		return 1;
-	}
-
-	debug(sprintf('Moving directory %s to %s', $self->{'dirname'}, $dest));
-
-	unless(move($self->{'dirname'}, $dest)) {
-		error(sprintf('Unable to move %s to %s: %s', $self->{'dirname'}, $dest, $!));
-		return 1;
-	}
+	defined $self->{'dirname'} or die("Attribut 'dirname' is not defined");
+	-d $self->{'dirname'} or die(sprintf("Directory %s doesn't exits", $self->{'dirname'}));
+	debug(sprintf('%s to %s', $self->{'dirname'}, $destDir));
+	move $self->{'dirname'}, $destDir or die(sprintf('Could not move %s to %s: %s', $self->{'dirname'}, $destDir, $!));
 
 	0;
 }
 
-sub _get
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize object
+
+ iMSCP::Dir
+
+=cut
+
+sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	unless(defined $self->{'dirContent'}) {
-		debug(sprintf('Opening directory %s', $self->{'dirname'}));
+	$self->{'dirname'} //= undef;
 
-		$self->{'dirContent'} = ();
-
-		unless(opendir(DIRH, $self->{'dirname'})) {
-			fatal(sprintf('Unable to open directory %s: %s', $self->{'dirname'}, $!));
-		}
-
-		@{$self->{'dirContent'}} = readdir(DIRH);
-
-		closedir(DIRH);
-	}
+	$self;
 }
+
+=back
+
+=head1 AUTHOR
+
+Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;
 __END__
