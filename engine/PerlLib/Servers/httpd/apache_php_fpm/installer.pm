@@ -653,7 +653,6 @@ sub _setupVlogger
 	$dbHost = ($dbHost eq 'localhost') ? '127.0.0.1' : $dbHost;
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
-	my $tableName = 'httpd_vlogger';
 	my $dbUser = 'vlogger_user';
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	$dbUserHost = ($dbUserHost eq '127.0.0.1') ? 'localhost' : $dbUserHost;
@@ -688,16 +687,18 @@ sub _setupVlogger
 		push @dbUserHosts, ($dbUserHost eq '127.0.0.1') ? 'localhost' : '127.0.0.1';
 	}
 
+	my $quotedDbName = $db->quoteIdentifier($dbName);
+
 	for my $host(@dbUserHosts) {
 		my $rs = $db->doQuery(
-			'dummy',
-			"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$tableName` TO ?@? IDENTIFIED BY ?",
+			'g',
+			"GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@? IDENTIFIED BY ?",
 			$dbUser,
 			$host,
 			$dbPassword
 		);
 		unless(ref $rs eq 'HASH') {
-			error("Unable to add privileges: $rs");
+			error(sprintf('Unable to add SQL privileges: %s', $rs));
 			return 1;
 		}
 	}

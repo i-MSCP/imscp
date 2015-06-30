@@ -480,7 +480,7 @@ sub _setupDatabase
 
 	$rs = $db->doQuery('g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?",  $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add privileges: %s', $rs));
+		error(sprintf('Unable to add SQL privileges: %s', $rs));
 		return 1;
 	}
 
@@ -493,7 +493,7 @@ sub _setupDatabase
 		$dbUserHost
 	);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add privileges: %s', $rs));
+		error(sprintf('Unable to add SQL privileges: %s', $rs));
 		return 1;
 	}
 

@@ -455,13 +455,13 @@ sub _setupSqlUser
 
 	my $rs = $db->doQuery('g', 'GRANT USAGE ON mysql.* TO ?@?', $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add privilege: %s', $rs));
+		error(sprintf('Unable to add SQL privileges: %s', $rs));
 		return 1;
 	}
 
 	$rs = $db->doQuery('g', 'GRANT SELECT ON mysql.db TO ?@?', $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add privilege: %s', $rs));
+		error(sprintf('Unable to add SQL privileges: %s', $rs));
 		return 1;
 	}
 
@@ -478,7 +478,7 @@ sub _setupSqlUser
 		$dbUser, $dbUserHost
 	);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add privilege: %s', $rs));
+		error(sprintf('Unable to add SQL privileges: %s', $rs));
 		return 1;
 	}
 
@@ -490,7 +490,7 @@ sub _setupSqlUser
 	} elsif(%{$rs}) {
 		$rs = $db->doQuery('g', 'GRANT SELECT ON mysql.user TO ?@?', $dbUser, $dbUserHost);
 		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to add privilege: %s', $rs));
+			error(sprintf('Unable to add SQL privileges: %s', $rs));
 			return 1;
 		}
 
@@ -501,7 +501,7 @@ sub _setupSqlUser
 			$dbUserHost
 		);
 		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to add privilege: %s', $rs));
+			error(sprintf('Unable to add SQL privileges: %s', $rs));
 			return 1;
 		}
 	}
@@ -510,7 +510,7 @@ sub _setupSqlUser
 
 	$rs = $db->doQuery('g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?",  $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add privilege: %s', $rs));
+		error(sprintf('Unable to add SQL privileges: %s', $rs));
 		return 1;
 	}
 
