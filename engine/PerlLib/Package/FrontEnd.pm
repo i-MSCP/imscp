@@ -118,9 +118,16 @@ sub postinstall
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndPostInstall');
 	return $rs if $rs;
 
-	my $serviceMngr = iMSCP::Service->getInstance();
-	$serviceMngr->enable($self->{'config'}->{'HTTPD_SNAME'});
-	$serviceMngr->enable('imscp_panel');
+	local $@;
+	eval {
+		my $serviceMngr = iMSCP::Service->getInstance();
+		$serviceMngr->enable($self->{'config'}->{'HTTPD_SNAME'});
+		$serviceMngr->enable('imscp_panel');
+	};
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Frontend (Nginx/PHP)' ]; 0; }
@@ -285,9 +292,16 @@ sub start
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndStart');
 	return $rs if $rs;
 
-	my $serviceMngr = iMSCP::Service->getInstance();
-	$serviceMngr->start($self->{'config'}->{'HTTPD_SNAME'});
-	$serviceMngr->start('imscp_panel');
+	local $@;
+	eval {
+		my $serviceMngr = iMSCP::Service->getInstance();
+		$serviceMngr->start($self->{'config'}->{'HTTPD_SNAME'});
+		$serviceMngr->start('imscp_panel');
+	};
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->trigger('afterFrontEndStart');
 }
@@ -307,9 +321,16 @@ sub stop
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndStop');
 	return $rs if $rs;
 
-	my $serviceMngr = iMSCP::Service->getInstance();
-	$serviceMngr->stop("$self->{'config'}->{'HTTPD_SNAME'}");
-	$serviceMngr->stop('imscp_panel');
+	local $@;
+	eval {
+		my $serviceMngr = iMSCP::Service->getInstance();
+		$serviceMngr->stop("$self->{'config'}->{'HTTPD_SNAME'}");
+		$serviceMngr->stop('imscp_panel');
+	};
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->trigger('afterFrontEndStop');
 }
@@ -329,7 +350,12 @@ sub reload
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndReload');
 	return $rs if $rs;
 
-	iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'});
+	local $@;
+	eval { iMSCP::Service->getInstance()->reload($self->{'config'}->{'HTTPD_SNAME'}); };
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->trigger('afterFrontEndReload');
 }
@@ -349,9 +375,16 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndRestart');
 	return $rs if $rs;
 
-	my $serviceMngr = iMSCP::Service->getInstance();
-	$serviceMngr->restart($self->{'config'}->{'HTTPD_SNAME'});
-	$serviceMngr->restart('imscp_panel');
+	local $@;
+	eval {
+		my $serviceMngr = iMSCP::Service->getInstance();
+		$serviceMngr->restart($self->{'config'}->{'HTTPD_SNAME'});
+		$serviceMngr->restart('imscp_panel');
+	};
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->trigger('afterFrontEndRestart');
 }
