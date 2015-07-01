@@ -39,7 +39,8 @@ use Servers::po::courier;
 use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
 
-@main::sqlUsers = () unless @main::sqlUsers;
+%main::sqlUsers = () unless %main::sqlUsers;
+@main::createdSqlUsers = () unless @main::createdSqlUsers;
 
 =head1 DESCRIPTION
 
@@ -127,35 +128,40 @@ sub showDialog
 		if($rs != 30) {
 			$msg = '';
 
-			do {
-				# Ask for the authdaemon restricted SQL user password
-				($rs, $dbPass) = $dialog->passwordbox(
-					"\nPlease, enter a password for the restricted authdaemon SQL user (blank for autogenerate):$msg", $dbPass
-				);
+			# Ask for the authdaemon SQL user password unless we reuses existent SQL user
+			unless($dbUser ~~ [ keys %main::sqlUsers ]) {
+				do {
+					# Ask for the authdaemon restricted SQL user password
+					($rs, $dbPass) = $dialog->passwordbox(
+						"\nPlease, enter a password for the authdaemon SQL user (blank for autogenerate):$msg", $dbPass
+					);
 
-				if($dbPass ne '') {
-					if(length $dbPass < 6) {
-						$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
-						$dbPass = '';
-					} elsif($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-						$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
-						$dbPass = '';
+					if($dbPass ne '') {
+						if(length $dbPass < 6) {
+							$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
+							$dbPass = '';
+						} elsif($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+							$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+							$dbPass = '';
+						} else {
+							$msg = '';
+						}
 					} else {
 						$msg = '';
 					}
-				} else {
-					$msg = '';
-				}
-			} while($rs != 30 && $msg);
+				} while($rs != 30 && $msg);
+			} else {
+				$dbPass = $main::sqlUsers{$dbUser};
+			}
 
 			if($rs != 30) {
-				if(! $dbPass) {
+				unless($dbPass) {
 					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
 					$dbPass = '';
 					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 				}
 
-				$dialog->msgbox("\nPassword for the restricted authdaemon SQL user set to: $dbPass");
+				$dialog->msgbox("\nPassword for the authdaemon SQL user set to: $dbPass");
 			}
 		}
 	}
@@ -163,6 +169,7 @@ sub showDialog
 	if($rs != 30) {
 		main::setupSetQuestion('AUTHDAEMON_SQL_USER', $dbUser);
 		main::setupSetQuestion('AUTHDAEMON_SQL_PASSWORD', $dbPass);
+		$main::sqlUsers{$dbUser} = $dbPass;
 	}
 
 	$rs;
@@ -388,7 +395,7 @@ sub _setupSqlUser
 	return $rs if $rs;
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next unless $sqlUser || $sqlUser ~~ @main::sqlUsers;
+		next if ! $sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
 			next unless $host;
@@ -404,14 +411,16 @@ sub _setupSqlUser
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
 
 	# Create SQL user if not already created by another server/package installer
-	unless($dbUser ~~ @main::sqlUsers) {
+	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
+		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
+
 		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 			return 1;
 		}
-	} else { # Make any other installer aware of that SQL user
-		push @main::sqlUsers, $dbUser unless $dbUser ~~ @main::sqlUsers;
+
+		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
 	}
 
 	# Give needed privileges to this SQL user
