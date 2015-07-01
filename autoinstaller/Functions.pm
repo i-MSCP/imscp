@@ -359,7 +359,7 @@ EOF
 
  Show update notices
 
- Return 0 on success, other on failure on when user is aborting
+ Return 0 on success, other on failure or when user is aborting
 
 =cut
 
@@ -371,25 +371,32 @@ sub _showUpdateNotices
 	my $imscpVersion = $main::imscpOldConfig{'Version'};
 	my $notices = '';
 
-	unless($imscpVersion =~ /git/i) {
-		my @noticeFiles = iMSCP::Dir->new( dirname => $noticesDir )->getFiles();
+	if($imscpVersion !~ /git/i) {
+		if($imscpVersion =~ /^\d+\.\d+\.\d+/) {
+			$imscpVersion = $1;
 
-		if(@noticeFiles) {
-			@noticeFiles = reverse sort @noticeFiles;
+			my @noticeFiles = iMSCP::Dir->new( dirname => $noticesDir )->getFiles();
 
-			for my $noticeFile(@noticeFiles) {
-				(my $noticeVersion = $noticeFile) =~ s/\.txt$//;
+			if(@noticeFiles) {
+				@noticeFiles = reverse sort @noticeFiles;
 
-				if(version->parse($imscpVersion) < version->parse($noticeVersion)) {
-					my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
-					unless(defined $noticeBody) {
-						error("Unable to read $noticesDir/$noticeFile file");
-						return 1;
+				for my $noticeFile(@noticeFiles) {
+					(my $noticeVersion = $noticeFile) =~ s/\.txt$//;
+
+					if(version->parse($imscpVersion) < version->parse($noticeVersion)) {
+						my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
+						unless(defined $noticeBody) {
+							error("Unable to read $noticesDir/$noticeFile file");
+							return 1;
+						}
+
+						$notices .= "\n$noticeBody";
 					}
-
-					$notices .= "\n$noticeBody";
 				}
 			}
+		} else {
+			error('Could not parse i-MSCP version from your imscp.conf file.');
+			return 1;
 		}
 	} else {
 		$notices = <<EOF;

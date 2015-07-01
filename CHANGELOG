@@ -37,6 +37,7 @@ FRONTEND
 INSTALLER
 	Added: Progress info for i-MSCP composer packages (Setup dialog)
 	Added: timezone item for the reconfigure command line option (Allow to setup global timezone)
+	Fixed: Invalid version format (non-numeric data) when updating from an RC release
 
 YOUTRACK
 	Fixed: #IP-0792: Allow customers to see real-time http access and error logs
