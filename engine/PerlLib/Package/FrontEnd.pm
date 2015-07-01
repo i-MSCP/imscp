@@ -70,9 +70,12 @@ sub registerSetupListeners
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndPreInstall');
+	return $rs if $rs;
+
+	$rs = $self->stop();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterFrontEndPreInstall');
@@ -88,7 +91,7 @@ sub preinstall
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndInstall');
 	return $rs if $rs;
@@ -110,7 +113,7 @@ sub install
 
 sub postinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndPostInstall');
 	return $rs if $rs;
@@ -120,7 +123,7 @@ sub postinstall
 	$serviceMngr->enable('imscp_panel');
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Frontend (Nginx)' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Frontend (Nginx/PHP)' ]; 0; }
 	);
 
 	$self->{'eventManager'}->trigger('afterFrontEndPostInstall');
@@ -136,7 +139,7 @@ sub postinstall
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndUninstall');
 	return $rs if $rs;
@@ -158,7 +161,7 @@ sub uninstall
 
 sub setGuiPermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontendSetGuiPermissions');
 	return $rs if $rs;
@@ -180,7 +183,7 @@ sub setGuiPermissions
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndSetEnginePermissions');
 	return $rs if $rs;
@@ -277,7 +280,7 @@ sub disableSites
 
 sub start
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndStart');
 	return $rs if $rs;
@@ -299,7 +302,7 @@ sub start
 
 sub stop
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndStop');
 	return $rs if $rs;
@@ -321,7 +324,7 @@ sub stop
 
 sub reload
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndReload');
 	return $rs if $rs;
@@ -341,7 +344,7 @@ sub reload
 
 sub restart
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndRestart');
 	return $rs if $rs;
@@ -432,7 +435,7 @@ sub buildConfFile
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'start'} = 0;
 	$self->{'reload'} = 0;

@@ -23,6 +23,7 @@ CONFIGS
 	Added: mysql.data configuration file
 	Added: percona 5.5/5.6 in Debian Jessie package file
 	Added: percona 5.5/5.6 in Ubuntu Vivid Vervet package file
+	Added: Respawn limit for imscp_daemon and imscp_panel upstart jobs
 	Added: TIMEZONE configuration parameter
 	Removed: TLS cipher suite - Setting TLSProtocol TLSv1 is sufficient to protect against poodle attack (ProFTPD)
 	Removed: PHP_TIMEZONE parameter (replaced by global TIMEZONE parameter)
