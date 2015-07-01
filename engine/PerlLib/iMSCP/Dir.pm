@@ -302,7 +302,7 @@ sub rcopy
 {
 	my ($self, $destDir, $options) = @_;
 
-	$options = { } if ref $options ne 'HASH';
+	$options = { } unless defined $options && ref $options eq 'HASH';
 
 	defined $self->{'dirname'} or die("Attribute 'dirname' is not defined");
 
