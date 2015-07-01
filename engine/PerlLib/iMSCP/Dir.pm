@@ -240,7 +240,7 @@ sub make
 			$self->mode($options->{'mode'});
 		}
 
-		if($options->{'user'} || $options->{'group'}) {
+		if(defined $options->{'user'} || defined $options->{'group'}) {
 			$self->owner($options->{'user'} // -1, $options->{'group'} // -1, $self->{'dirname'});
 		}
 	}
