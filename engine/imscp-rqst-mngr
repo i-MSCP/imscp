@@ -174,7 +174,7 @@ sub run
 	my $ipsModule = 0;
 
 	# Process toadd|tochange|torestore|toenable|todisable domain tasks
-	# (for each entitty, process only if the parent entity is in a consistent state)
+	# For each entitty, process only if the parent entity is in a consistent state
 	$rs ||= _process(
 		'Domain',
 		"
@@ -195,12 +195,12 @@ sub run
 	);
 
 	# Process toadd|tochange|torestore|toenable|todisable subdomains tasks
-	# (for each entitty, process only if the parent entity is in a consistent state)
+	# For each entitty, process only if the parent entity is in a consistent state
 	$rs ||= _process(
 		'Subdomain',
 		"
 			SELECT
-				subdomain_id AS id, subdomain_name AS name, subdomain_status AS status
+				subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name, subdomain_status AS status
 			FROM
 				subdomain
 			INNER JOIN
@@ -237,12 +237,13 @@ sub run
 	);
 
 	# Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
-	# (for each entitty, process only if the parent entity is in a consistent state)
+	# For each entitty, process only if the parent entity is in a consistent state
 	$rs ||= _process(
 		'SubAlias',
 		"
 			SELECT
-				subdomain_alias_id AS id, subdomain_alias_name AS name, subdomain_alias_status AS status
+				subdomain_alias_id AS id, CONCAT(subdomain_alias_name, '.', alias_name) AS name,
+				subdomain_alias_status AS status
 			FROM
 				subdomain_alias
 			INNER JOIN
@@ -258,7 +259,7 @@ sub run
 	);
 
 	# Process toadd|tochange|toenable||todisable|todelete custom DNS records which belong to domains
-	# (for each entitty, process only if the parent entity is in a consistent state)
+	# For each entitty, process only if the parent entity is in a consistent state
 	$rs ||= _process(
 		'CustomDNS',
 		"
@@ -280,7 +281,7 @@ sub run
 	);
 
 	# Process toadd|tochange|toenable|todisable|todelete custom DNS records which belong to domains or domain aliases
-	# (for each entitty, process only if the parent entity is in a consistent state)
+	# For each entitty, process only if the parent entity is in a consistent state
 	$rs ||= _process(
 		'CustomDNS',
 		"
@@ -302,7 +303,7 @@ sub run
 	);
 
 	# Process toadd|tochange|toenable|todisable|todelete mail tasks
-	# (for each entitty, process only if the parent entity is in a consistent state)
+	# For each entitty, process only if the parent entity is in a consistent state
 	$rs ||= _process(
 		'Mail',
 		"
@@ -322,7 +323,7 @@ sub run
 	);
 
 	# Process toadd|tochange|todelete Htusers tasks
-	# (for each entitty, process only if the parent entity is in a consistent state)
+	# For each entitty, process only if the parent entity is in a consistent state
 	$rs ||= _process(
 		'Htusers',
 		"
@@ -342,7 +343,7 @@ sub run
 	);
 
 	# Process toadd|tochange|todelete Htgroups tasks
-	# (for each entitty, process only if the parent entity is in a consistent state)
+	# For each entitty, process only if the parent entity is in a consistent state
 	$rs ||= _process(
 		'Htgroup',
 		"
@@ -362,7 +363,7 @@ sub run
 	);
 
 	# Process toadd|tochange|todelete Htaccess tasks
-	# (for each entitty, process only if the parent entity is in a consistent state)
+	# For each entitty, process only if the parent entity is in a consistent state
 	$rs ||= _process(
 		'Htaccess',
 		"
@@ -386,9 +387,12 @@ sub run
 		'SubAlias',
 		"
 			SELECT
-				subdomain_alias_id AS id, subdomain_alias_name AS name, subdomain_alias_status AS status
+				subdomain_alias_id AS id, concat(subdomain_alias_name, '.', alias_name) AS name,
+				subdomain_alias_status AS status
 			FROM
 				subdomain_alias
+			INNER JOIN
+				domain_aliasses USING(alias_id)
 			WHERE
 				subdomain_alias_status = 'todelete'
 			ORDER BY
@@ -398,7 +402,7 @@ sub run
 	);
 
 	# Process todelete domain aliases tasks
-	# (For each entity, process only if the entity do not have any direct children)
+	# For each entity, process only if the entity do not have any direct children
 	$rs ||= _process(
 		'Alias',
 		"
@@ -423,9 +427,11 @@ sub run
 		'Subdomain',
 		"
 			SELECT
-				subdomain_id AS id, subdomain_name AS name, subdomain_status AS status
+				subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name, subdomain_status AS status
 			FROM
 				subdomain
+			INNER JOIN
+				domain USING(domain_id)
 			WHERE
 				subdomain_status = 'todelete'
 			ORDER BY
@@ -435,7 +441,7 @@ sub run
 	);
 
 	# Process todelete domains tasks
-	# (For each entity, process only if the entity do not have any direct children)
+	# For each entity, process only if the entity do not have any direct children
 	$rs ||= _process(
 		'Domain',
 		"
@@ -460,7 +466,7 @@ sub run
 	);
 
 	# Process todelete users tasks
-	# (For each entity, process only if the entity do not have any direct children)
+	# For each entity, process only if the entity do not have any direct children
 	$rs ||= _process(
 		'User',
 		"
@@ -486,7 +492,7 @@ sub run
 		'NetCard',
 		"
 			SELECT
-				ip_id AS id, ip_status AS name, ip_status AS status
+				ip_id AS id, CONCAT(ip_card, ':', ip_number) AS name, ip_status AS status
 			FROM
 				server_ips
 			WHERE

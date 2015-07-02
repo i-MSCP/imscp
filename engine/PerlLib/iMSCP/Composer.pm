@@ -240,6 +240,7 @@ EOF
 				$buff .= $1 while($$str =~ s/^(.*\n)//);
 
 				if($buff ne '') {
+					debug($buff);
 					$dialog->infobox("$msgHeader$buff$msgFooter");
 					$$str = $strBkp unless $strBkp =~ /^Updating dependencies.*\n/m;
 				}
