@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-06-20 10:56+0200\n"
-"PO-Revision-Date: 2015-06-14 07:12+0000\n"
-"Last-Translator: i-MSCP <team@i-mscp.net>\n"
+"POT-Creation-Date: 2015-07-03 03:07+0200\n"
+"PO-Revision-Date: 2015-06-30 18:49+0000\n"
+"Last-Translator: Thom Heemstra <thom@heemstra.us>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -132,7 +132,7 @@ msgid ""
 msgstr "Laat alle fouten zien, behalve fouten voor verouderde code (Productiegebruik)"
 
 msgid " Wrong IP address."
-msgstr "Fout IP-adres."
+msgstr "IP-adres incorrect."
 
 msgid " was deleted by {ADMIN}!"
 msgstr "is verwijderd door {ADMIN}!"
@@ -597,16 +597,16 @@ msgid "Add / Edit SSL certificate"
 msgstr "Toevoegen / Aanpassen SSL-certificaat"
 
 msgid "Add FTP account"
-msgstr "Voeg FTP account toe"
+msgstr "Voeg FTP-account toe"
 
 msgid "Add Htaccess group"
-msgstr "Voeg Htaccess-groep toe"
+msgstr "Voeg htaccess-groep toe"
 
 msgid "Add Htaccess user"
-msgstr "Maak nieuwe Htaccess-gebruiker"
+msgstr "Maak nieuwe htaccess-gebruiker"
 
 msgid "Add SQL database"
-msgstr "MySQL databank toevoegen"
+msgstr "MySQL-databank toevoegen"
 
 msgid "Add SQL user"
 msgstr "MySQL-gebruiker toevoegen"
@@ -621,34 +621,34 @@ msgid "Add admin"
 msgstr "Beheerder toevoegen"
 
 msgid "Add catchall"
-msgstr "Voeg catch-all toe"
+msgstr "Voeg catch-all aan domein toe"
 
 msgid "Add custom DNS record"
-msgstr "Eigen DNS-record toevoegen"
+msgstr "Voeg eigen DNS-record toe"
 
 msgid "Add custom menu"
 msgstr "Voeg eigen menu toe"
 
 msgid "Add customer"
-msgstr "Klant toevoegen"
+msgstr "Voeg klant toe"
 
 msgid "Add customer - Next step"
-msgstr "Klant toevoegen - Volgende stap"
+msgstr "Voeg klant toe - Volgende stap"
 
 msgid "Add domain alias"
 msgstr "Domeinalias toevoegen"
 
 msgid "Add email account"
-msgstr "E-mailaccount toevoegen"
+msgstr "Voeg E-mailaccount toe"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Voeg externe mailserver toe voor {DOMAIN_UTF8}"
+msgstr "Voeg externe mailserver toe voor domein {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Groep toevoegen"
 
 msgid "Add hosting plan"
-msgstr "hostingpakket toevoegen"
+msgstr "Voeg hostingpakket toe"
 
 msgid "Add new IP address"
 msgstr "Voeg nieuw IP-adres toe"
@@ -678,7 +678,7 @@ msgid "Add reseller"
 msgstr "Wederverkoper toevoegen"
 
 msgid "Add subdomain"
-msgstr "Subdomein toevoegen"
+msgstr "Voeg subdomein toe"
 
 msgid "Add user"
 msgstr "Gebruiker toevoegen"
@@ -848,7 +848,7 @@ msgid "Admin account successfully created."
 msgstr "Beheerdersaccount succesvol aangemaakt."
 
 msgid "Admin log"
-msgstr "Beheerders Log"
+msgstr "Beheerderslog"
 
 msgid "Admin not available"
 msgstr "Beheerder niet beschikbaar"
@@ -1008,7 +1008,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "Een onbekende fout is opgetreden tijdens het uploaden: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr "Anti-Rootkitlogboek"
+msgstr "Anti-rootkitlogboek"
 
 msgid "Any"
 msgstr "Alle"
@@ -1128,7 +1128,7 @@ msgid "Assign existing SQL user"
 msgstr "Bestaande SQL-gebruiker toewijzen"
 
 msgid "Assign group"
-msgstr "Groep toewijzen"
+msgstr "Wijs groep toe"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "U dient eerst een databank met minimaal 1 gebruiker aan te maken."
@@ -1149,13 +1149,13 @@ msgid "Auto-responder message cannot be empty."
 msgstr "Automatische beantwoorderbericht mag niet leeg zijn."
 
 msgid "Auto-responder successfully scheduled for activation."
-msgstr "Auto-beantwoorder succesvol ingepland om geactiveerd te worden."
+msgstr "Auto-beantwoorder wordt geactiveerd."
 
 msgid "Auto-responder successfully scheduled for deactivation."
-msgstr "Auto-beantwoorder succesvol ingepland om gedeactiveerd te worden."
+msgstr "Auto-beantwoorder wordt gedeactiveerd."
 
 msgid "Auto-responder successfully scheduled for update."
-msgstr "Auto-beantwoorder succesvol ingepland om bijgewerkt te worden."
+msgstr "Auto-beantwoorder wordt bijgewerkt."
 
 msgid "Available"
 msgstr "Beschikbaar"
@@ -1182,7 +1182,7 @@ msgid "Backup and restore settings."
 msgstr "Back-up en herstel uw instellingen."
 
 msgid "Backup has been successfully scheduled for restoration."
-msgstr "Back-up succesvol ingepland om teruggezet te worden."
+msgstr "Back-up wordt teruggezet."
 
 msgid "Bad password."
 msgstr "Wachtwoord niet correct."
@@ -1258,10 +1258,10 @@ msgid "Catch all"
 msgstr "Catch-all"
 
 msgid "Catch all successfully scheduled for addition."
-msgstr "Catch-all succesvol ingepland om toegevoegd te worden."
+msgstr "Catch-all wordt toegevoegd."
 
 msgid "Catch all successfully scheduled for deletion."
-msgstr "Catch-all succesvol ingepland om verwijderd te worden."
+msgstr "Catch-all wordt verwijderd."
 
 msgid "Catchall"
 msgstr "Catch-all"
@@ -1585,13 +1585,13 @@ msgid "Custom DNS record"
 msgstr "Eigen DNS-instellingen"
 
 msgid "Custom DNS record successfully scheduled for addition."
-msgstr "Eigen DNS-record succesvol ingepland om toegevoegd te worden."
+msgstr "Eigen DNS-record wordt toegevoegd."
 
 msgid "Custom DNS record successfully scheduled for deletion."
-msgstr "Eigen DNS-record succesvol ingepland om verwijderd te worden."
+msgstr "Eigen DNS-record wordt verwijderd."
 
 msgid "Custom DNS record successfully scheduled for update."
-msgstr "Eigen DNS-record succesvol ingepland om bijgewerkt te worden."
+msgstr "Eigen DNS-record wordt bijgewerkt."
 
 msgid "Custom DNS records"
 msgstr "Eigen DNS-instellingen"
@@ -1618,7 +1618,7 @@ msgid "Custom menu successfully updated."
 msgstr "Eigen menu succesvol bijgewerkt."
 
 msgid "Custom menus"
-msgstr "Standaard menus"
+msgstr "Standaardmenus"
 
 msgid "Customer"
 msgstr "Klant"
@@ -1633,16 +1633,16 @@ msgid "Customer account"
 msgstr "Klantaccount"
 
 msgid "Customer account successfully scheduled for activation."
-msgstr "Klantaccount succesvol ingepland om geactiveerd te worden"
+msgstr "Klantaccount wordt geactiveerd."
 
 msgid "Customer account successfully scheduled for creation."
-msgstr "Klantaccount succesvol ingepland om aangemaakt te worden"
+msgstr "Klantaccount wordt aangemaakt."
 
 msgid "Customer account successfully scheduled for deactivation."
-msgstr "Klantaccount succesvol ingepland om gedeactiveerd te worden"
+msgstr "Klantaccount wordt gedeactiveerd."
 
 msgid "Customer account successfully scheduled for deletion."
-msgstr "Klantaccount succesvol ingepland om verwijderd te worden"
+msgstr "Klantaccount wordt verwijderd."
 
 msgid "Customer account successfully updated."
 msgstr "Klantaccount succesvol bijgewerkt."
@@ -1660,10 +1660,10 @@ msgid "Customer level"
 msgstr "Klantniveau"
 
 msgid "Customer successfully scheduled for addition."
-msgstr "Klant succesvol ingepland om te worden toegevoegd."
+msgstr "Klant wordt toegevoegd."
 
 msgid "Customer successfully scheduled for deletion."
-msgstr "Klant succesvol ingepland om te worden verwijderd."
+msgstr "Klant wordt verwijderd."
 
 msgid "Customer's layout color successfully updated."
 msgstr "Lay-outkleur van klant succesvol aangepast."
@@ -1984,13 +1984,13 @@ msgid "Domain alias successfully ordered."
 msgstr "Domeinalias succesvol besteld."
 
 msgid "Domain alias successfully scheduled for addition."
-msgstr "Domeinalias succesvol ingepland om toegevoegd te worden."
+msgstr "Domeinalias wordt toegevoegd."
 
 msgid "Domain alias successfully scheduled for deletion."
-msgstr "Domeinalias succesvol ingepland om verwijderd te worden."
+msgstr "Domeinalias wordt verwijderd."
 
 msgid "Domain alias successfully scheduled for update."
-msgstr "Domeinalias succesvol ingepland om bijgewerkt te worden."
+msgstr "Domeinalias wordt bijgewerkt."
 
 msgid "Domain aliases"
 msgstr "Domeinaliassen"
@@ -2052,7 +2052,7 @@ msgid "Domain overview"
 msgstr "Domeinoverzicht"
 
 msgid "Domain scheduled for update."
-msgstr "Domein ingepland om bijgewerkt te worden."
+msgstr "Domein wordt bijgewerkt."
 
 msgid "Domain statistics"
 msgstr "Domeinstatistieken"
@@ -2117,28 +2117,28 @@ msgid "Edit auto responder"
 msgstr "Auto-beantwoorder aanpassen"
 
 msgid "Edit custom DNS record"
-msgstr "Eigen DNS-instellingen"
+msgstr "Pas eigen DNS-instellingen aan"
 
 msgid "Edit custom error page"
-msgstr "Eigen foutpagina's aanpassen"
+msgstr "Pas eigen foutpagina's aan"
 
 msgid "Edit custom menu"
 msgstr "Eigen menu aanpassen"
 
 msgid "Edit customer"
-msgstr "Klant aanpasse"
+msgstr "Pas klant aan"
 
 msgid "Edit domain"
 msgstr "Domein bewerken"
 
 msgid "Edit domain alias"
-msgstr "Domeinalias bewerken"
+msgstr "Bewerk domeinalias"
 
 msgid "Edit error page"
 msgstr "Foutpagina bewerken"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Externe mailserver voor {DOMAIN_UTF8} aanpassen"
+msgstr "Pas externe mailserver voor {DOMAIN_UTF8} aan"
 
 msgid "Edit hosting plan"
 msgstr "Hostingpakket bewerken"
@@ -2147,10 +2147,10 @@ msgid "Edit htaccess user"
 msgstr "Htaccess-gebruiker aanpassen"
 
 msgid "Edit mail account"
-msgstr "Mailaccount aanpassen"
+msgstr "Pas mailaccount aan"
 
 msgid "Edit mail quota"
-msgstr "Mailquota aanpassen"
+msgstr "Pas mailquota aan"
 
 msgid "Edit protected area"
 msgstr "Bewerk beschermd gedeelte"
@@ -2159,7 +2159,7 @@ msgid "Edit reseller"
 msgstr "Wederverkoper bewerken"
 
 msgid "Edit subdomain"
-msgstr "Subdomein aanpassen"
+msgstr "Pas subdomein aan"
 
 msgid "Edit user"
 msgstr "Klant bewerken"
@@ -2186,10 +2186,10 @@ msgid "Email account list"
 msgstr "E-mailaccountlijst"
 
 msgid "Email account successfully scheduled for addition."
-msgstr "E-mailaccount succesvol ingepland om toegevoegd te worden."
+msgstr "E-mailaccount wordt toegevoegd"
 
 msgid "Email account successfully scheduled for update."
-msgstr "E-mailaccount succesvol ingepland om bijgewerkt te worden."
+msgstr "E-mailaccount wordt bijgewerkt."
 
 msgid "Email accounts"
 msgstr "E-mailaccounts"
@@ -2254,7 +2254,7 @@ msgid "Enable SSL"
 msgstr "SSL gebruiken"
 
 msgid "Enable auto responder"
-msgstr "Auto-antwoorder aanzetten"
+msgstr "Zet auto-antwoorder aan"
 
 msgid "Enabled"
 msgstr "Ingeschakeld"
@@ -2266,7 +2266,7 @@ msgstr "Ingeschakeld voor: %s"
 msgid ""
 "Entries associated to your external mail servers were not found. A "
 "Resynchronization has been scheduled."
-msgstr "Invoer in combinatie met uw externe mailservers zijn niet gevonden, een hersynchronisatie is ingepland."
+msgstr "Invoer in combinatie met uw externe mailservers zijn niet gevonden, een hersynchronisatie wordt zo snel mogelijk uitgevoerd. Even geduld."
 
 msgid "Error"
 msgstr "Fout"
@@ -2311,13 +2311,13 @@ msgid "External mail server"
 msgstr "Externe mailserver"
 
 msgid "External mail server successfully scheduled for addition."
-msgstr "Externe mailserver succesvol ingepland om toegevoegd te worden."
+msgstr "Externe mailserver wordt toegevoegd."
 
 msgid "External mail server successfully scheduled for deactivation."
-msgstr "Externe mailserver succesvol ingepland om gedeactiveerd te worden."
+msgstr "Externe mailserver wordt gedeactiveerd."
 
 msgid "External mail server successfully scheduled for update."
-msgstr "Externe mailserver succesvol ingepland om bijgewerkt te worden."
+msgstr "Externe mailserver wordt bijgewerkt."
 
 msgid "External mail servers"
 msgstr "Externe mailservers"
@@ -2566,7 +2566,7 @@ msgid "Hosting plan values exceed your own limits."
 msgstr "Hostingpakket overschrijdt jouw limieten."
 
 msgid "Hosting plans"
-msgstr "hostingpakketten"
+msgstr "Hostingpakketten"
 
 msgid "Hosting plans available for"
 msgstr "Hosting pakketten  beschikbaar voor"
@@ -2584,10 +2584,10 @@ msgid "Htaccess group"
 msgstr "Htaccess-groep"
 
 msgid "Htaccess group successfully scheduled for addition."
-msgstr "Htaccess-groep is succesvol ingepland om toegevoegd te worden."
+msgstr "De htaccess-groep wordt toegevoegd."
 
 msgid "Htaccess group successfully scheduled for deletion."
-msgstr "Htaccess-groep is succesvol ingepland om verwijderd te worden."
+msgstr "De htaccess-groep wordt verwijderd."
 
 msgid "Htaccess user"
 msgstr "Htaccess-gebruiker"
@@ -2601,7 +2601,7 @@ msgid "Htaccess user successfully deleted from the %s htaccess group "
 msgstr "Htaccess-gebruiker succesvol verwijderd uit de %s htaccess groep"
 
 msgid "Htaccess user successfully scheduled for addition."
-msgstr "Htaccess-gebruikers succesvol ingepland om toegevoegd te worden"
+msgstr "De htaccess-gebruiker wordt toegevoegd."
 
 msgid "Http traffic"
 msgstr "HTTP-verkeer"
@@ -2622,10 +2622,10 @@ msgid "IP address field is empty or invalid."
 msgstr "IP-adresveld is leeg of ongeldig."
 
 msgid "IP address successfully scheduled for addition."
-msgstr "IP-adres is succesvol ingepland om toegevoegd te worden."
+msgstr "IP-adres wordt toegevoegd."
 
 msgid "IP address successfully scheduled for deletion."
-msgstr "IP-adres is succesvol ingepland om verwijderd te worden."
+msgstr "IP-adres wordt verwijderd."
 
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP-adressen onder controle van i-MSCP"
@@ -2637,7 +2637,7 @@ msgid "IP management"
 msgstr "IP-management"
 
 msgid "IP usage"
-msgstr "IP gebruik"
+msgstr "IP-gebruik"
 
 msgid "IPv6 address"
 msgstr "IPv6-adres"
@@ -2885,7 +2885,7 @@ msgid "Language successfully updated."
 msgstr "Taal succesvol bijgewerkt."
 
 msgid "Languages"
-msgstr "Taal Instelling"
+msgstr "Taalinstellingen"
 
 msgid "Languages index was successfully re-built."
 msgstr "Taalindex is succesvol herbouwd."
@@ -3004,7 +3004,7 @@ msgstr "E-maillogboekniveau"
 
 #, php-format
 msgid "Mail account %s successfully scheduled for deletion."
-msgstr "E-mailaccount %s succesvol ingepland om verwijderd te worden."
+msgstr "E-mailaccount %s wordt verwijderd."
 
 msgid "Mail account type"
 msgstr "E-mailaccounttype"
@@ -3450,7 +3450,7 @@ msgid "PHP Settings (system default)"
 msgstr "PHP-instellingen (systeemstandaard)"
 
 msgid "PHP configuration scheduled for update."
-msgstr "PHP-configuratie ingepland om bijgewerkt te worden."
+msgstr "PHP-configuratie wordt bijgewerkt."
 
 msgid "PHP directives values"
 msgstr "PHP-optiewaarden"
@@ -3607,7 +3607,7 @@ msgid "Phone"
 msgstr "Telefoon"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr "PHPMyAdmin"
 
 msgid "PiB"
 msgstr "PiB"
@@ -3740,27 +3740,27 @@ msgstr "Invoegtoepassing %s is opnieuw geconfigureerd."
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
-msgstr "Invoegtoepassing %s ingepland om te worden geactiveerd."
+msgstr "Invoegtoepassing %s wordt gedeactiveerd."
 
 #, php-format
 msgid "Plugin %s scheduled for change."
-msgstr "Invoegtoepassing %s ingepland om te worden aangepast."
+msgstr "Invoegtoepassing %s wordt aangepast."
 
 #, php-format
 msgid "Plugin %s scheduled for deactivation."
-msgstr "Invoegtoepassing %s ingepland om gedeactiveerd te worden."
+msgstr "Invoegtoepassing %s wordt gedeactiveerd."
 
 #, php-format
 msgid "Plugin %s scheduled for installation."
-msgstr "Invoegtoepassing %s ingepland om geïnstalleerd te worden."
+msgstr "Invoegtoepassing %s wordt geïnstalleerd."
 
 #, php-format
 msgid "Plugin %s scheduled for uninstallation."
-msgstr "Invoegtoepassing %s ingepland om te worden verwijderd."
+msgstr "Invoegtoepassing %s wordt verwijderd."
 
 #, php-format
 msgid "Plugin %s scheduled for update."
-msgstr "Invoegtoepassing %s ingepland om te worden bijgewerkt."
+msgstr "Invoegtoepassing %s wordt bijgewerkt."
 
 #, php-format
 msgid "Plugin %s uninstalled."
@@ -3911,13 +3911,13 @@ msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr "Beveiligde mappen dienen de status 'Oké' te hebben als u ze wilt verwijderen"
 
 msgid "Protected area successfully scheduled for addition."
-msgstr "Beveiligde map succesvol ingepland om toegevoegd te worden"
+msgstr "Beveiligde wordt  toegevoegd."
 
 msgid "Protected area successfully scheduled for deletion."
-msgstr "Beveiligde map succesvol ingepland om verwijderd te worden."
+msgstr "Beveiligde map wordt verwijderd."
 
 msgid "Protected area successfully scheduled for update."
-msgstr "Beveiligde map succesvol ingepland om bijgewerkt te worden"
+msgstr "Beveiligde map wordt bijgewerkt."
 
 msgid "Protected areas"
 msgstr "Beveiligde mappen"
@@ -4276,7 +4276,7 @@ msgid "SQL user successfully added."
 msgstr "SQL-gebruiker succesvol toegevoegd."
 
 msgid "SQL user with comma(s) in name is not accepted."
-msgstr "SQL-gebruiker met komma('s) in naam is niet geaccepteerd."
+msgstr "SQL-gebruikersnamen met komma('s) worden niet geaccepteerd."
 
 msgid "SQL users"
 msgstr "MySQL-gebruikers"
@@ -4285,16 +4285,16 @@ msgid "SSL certificate"
 msgstr "SSL-certificaat"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr "SSL-certificaat is succesvol ingepland op toegevoegd te worden."
+msgstr "SSL-certificaat wordt toegevoegd."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr "SSL-certificaat is succesvol ingepland op verwijderd te worden."
+msgstr "SSL-certificaat wordt verwijderd."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr "SSL-certificaat is succesvol ingepland op bijgewerkt te worden."
+msgstr "SSL-certificaat wordt bijgewerkt."
 
 msgid "SSL feature is not available. You can only view your certificate."
-msgstr "SSL-certificaat ingepland om toegevoegd of bijgewerkt te worden."
+msgstr "Het is niet mogelijk om SSL-certificaten aan te passen. U kunt slechts uw certificaat bekijken."
 
 msgid "Save"
 msgstr "Opslaan"
@@ -4410,7 +4410,7 @@ msgid "Service protocol"
 msgstr "Service protocol"
 
 msgid "Services status"
-msgstr "Server status"
+msgstr "Serverstatus"
 
 msgid "Sessions"
 msgstr "Sessies"
@@ -4514,7 +4514,7 @@ msgid "Software installer requires PHP support."
 msgstr "Software-installatie heeft PHP nodig"
 
 msgid "Software instance has been scheduled for installation"
-msgstr "Software ingepland voor installatie"
+msgstr "Software wordt geïnstalleerd."
 
 msgid "Software management"
 msgstr "Softwarebeheer"
@@ -4538,7 +4538,7 @@ msgid "Software status"
 msgstr "Softwarestatus"
 
 msgid "Software successfully scheduled for deletion."
-msgstr "Software ingepland voor verwijdering."
+msgstr "Software wordt verwijderd."
 
 msgid "Software total"
 msgstr "Software totaal"
@@ -4622,7 +4622,7 @@ msgid "Subdomain alias errors"
 msgstr "Fouten bij subdomeinalias"
 
 msgid "Subdomain alias successfully scheduled for deletion."
-msgstr "Subdomeinalias succesvol ingepland voor verwijdering"
+msgstr "Subdomeinalias wordt verwijderd."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4648,13 +4648,13 @@ msgid "Subdomain name is not valid."
 msgstr "Subdomeinnaam is geen geldige naam"
 
 msgid "Subdomain successfully scheduled for addition."
-msgstr "Subdomein is ingepland om toegevoegd te worden."
+msgstr "Subdomein wordt toegevoegd."
 
 msgid "Subdomain successfully scheduled for deletion."
-msgstr "Subdomein succesvol ingepland voor verwijdering"
+msgstr "Subdomein wordt verwijderd."
 
 msgid "Subdomain successfully scheduled for update"
-msgstr "Subdomein succesvol ingepland voor bijwerken"
+msgstr "Subdomein wordt bijgewerkt"
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
@@ -4715,14 +4715,14 @@ msgid "System error - custom error page was not updated."
 msgstr "Systeemfout - eigen foutpagina is niet bijgewerkt."
 
 msgid "System information"
-msgstr "Systeem Informatie"
+msgstr "Systeeminformatie"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr "Systeem kan het logo van de gebruiker '%s' niet verwijderen."
 
 msgid "System tools"
-msgstr "Systeem tools"
+msgstr "Systeemtools"
 
 msgid "System under maintenance"
 msgstr "In onderhoudsmodus"
@@ -5271,13 +5271,13 @@ msgid "Update"
 msgstr "Opslaan"
 
 msgid "Update Plugins"
-msgstr "Invoegtoepassingen bijwerken"
+msgstr "Werk invoegtoepassingen bij"
 
 msgid "Update SQL user password"
-msgstr "SQL-gebruikerswachtwoord bijwerken"
+msgstr "Werk SQL-gebruikerswachtwoord bij"
 
 msgid "Update data"
-msgstr "Gegevens bijwerken"
+msgstr "Werk gegevens bij"
 
 msgid "Update from Web software repository"
 msgstr "Bijwerken vanuit softwareberging"
@@ -5289,15 +5289,15 @@ msgid "Update in progress..."
 msgstr "Bijwerken wordt uitgevoerd..."
 
 msgid "Update info"
-msgstr "Informatie bijwerken"
+msgstr "Werk informatie bij"
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
-msgstr "Bijwerken van de index van het softwareberging is afgebroken. Lege of ontbrekende velden."
+msgstr "Bijwerken van de index van het softwareberging is afgebroken. Er zijn lege of ontbrekende velden."
 
 msgid "Update password"
-msgstr "Wachtwoord bijwerken"
+msgstr "Werk wachtwoord bij"
 
 msgid "Updates"
 msgstr "Updates"
@@ -5330,7 +5330,7 @@ msgid "Use strong Passwords"
 msgstr "Gebruik sterkere wachtwoorden"
 
 msgid "Used"
-msgstr "In gebruik"
+msgstr "Gebruikt"
 
 msgid "Used database"
 msgstr "Gebruikte databank"
@@ -5429,7 +5429,7 @@ msgid ""
 msgstr "Waarde voor de PHP-configuratievariabele <strong>%%s</strong> dient zich tussen %%d en %%d te bevinden."
 
 msgid "Values"
-msgstr "Waardes"
+msgstr "Waarden"
 
 msgid "Vendor hompage"
 msgstr "Website van ontwikkelaar"
@@ -5456,7 +5456,7 @@ msgid "View hosting plan"
 msgstr "Bekijk het hosting plan"
 
 msgid "View ticket"
-msgstr "Bekijk de ticket"
+msgstr "Bekijk het ticket"
 
 msgid "Visit plugin site"
 msgstr "Bezoek de invoegtoepassingssite"
@@ -5678,7 +5678,7 @@ msgid "You cannot set expire date in past."
 msgstr "U kunt geen vervaldatum in het verleden instellen."
 
 msgid "You cannot unassign an IP address already in use."
-msgstr "U kunt geen IP-adres welke in gebruik is intrekken."
+msgstr "IP-adressen welke zijn toegewezen aan wederverkopers kunt u niet intrekken."
 
 msgid "You do not have DNS resource records."
 msgstr "U heeft geen DNS-records."
@@ -6039,7 +6039,7 @@ msgid "i-MSCP plugin store"
 msgstr "i-MSCP invoegtoepassingwinkel"
 
 msgid "i-MSCP updates"
-msgstr "i-MSCP Updates"
+msgstr "Updates voor i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "Zoeken naar versie-updates van i-MSCP is uitgeschakeld"
@@ -6157,7 +6157,7 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} heeft een nieuw softwarepakket geüpload"
 
 msgid "{USERNAME} user statistics"
-msgstr "{USERNAME} gebruikersstatistieken"
+msgstr "Gebruikersstatistieken voor {USERNAME} "
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>Alle rechten voorbehouden"
