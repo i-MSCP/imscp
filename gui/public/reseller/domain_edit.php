@@ -305,7 +305,7 @@ function &reseller_getData($domainId, $forUpdate = false)
 
 			if ($cfg['BACKUP_DOMAINS'] == 'yes') {
 				$data['allowbackup'] = isset($_POST['allowbackup']) && is_array($_POST['allowbackup'])
-					? array_intersect($_POST['allowbackup'], array('dmn', 'sql', 'mail')) : $data['allowbackup'];
+					? array_intersect($_POST['allowbackup'], array('dmn', 'sql', 'mail')) : array();
 			} else {
 				$data['allowbackup'] = array();
 			}
