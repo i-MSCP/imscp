@@ -206,7 +206,7 @@ sub make
 
 	$options = { } unless defined $options && ref $options eq 'HASH';
 
-	defined $self->{'dirname'} or die("Attribut 'dirname' is not defined");
+	defined $self->{'dirname'} or die("Attribute 'dirname' is not defined");
 	! -f $self->{'dirname'} or die(sprintf('Could not create %s: Already exists as file.', $self->{'dirname'}));
 
 	unless(-d $self->{'dirname'}) {
@@ -250,7 +250,7 @@ sub make
 
 =item remove([ $dirname ])
 
- Remove directory recusively
+ Remove directory recursively
 
  Param string $dirname OPTIONAL Directory (default $self->{'dirname'})
  Return int 0 on success, die on failure
