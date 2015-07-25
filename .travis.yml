@@ -8,6 +8,7 @@ perl:
 
 before_install:
 install:
+  - cpanm -v --installdeps --notest --mirror http://cpan.mirrors.travis-ci.org .
 
 notifications:
   irc: "irc.freenode.org#i-mscp-dev"
