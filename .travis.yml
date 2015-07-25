@@ -6,9 +6,11 @@ perl:
   - "5.18"
   - "5.20"
 
+env: PERL_CPANM_OPT="--notest --force --skip-satisfied"
+
 before_install:
+
 install:
-  - cpanm -v --installdeps --notest --mirror http://cpan.mirrors.travis-ci.org .
 
 notifications:
   irc: "irc.freenode.org#i-mscp-dev"
