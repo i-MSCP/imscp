@@ -21,7 +21,7 @@ sub getFilesDieOnMissingDirnameParameter
 sub getFilesDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => "$assetsDir/tmp/inexistent" )->getFiles() };
+	eval { iMSCP::Dir->new( dirname => "$assetsDir/tmp/d1" )->getFiles() };
 	$@ && $@ =~ /Could not open/;
 }
 
@@ -53,7 +53,7 @@ sub getDirsDieOnMissingDirnameParameter
 sub getDirsDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '$assetsDir/tmp/inexistent' )->getDirs() };
+	eval { iMSCP::Dir->new( dirname => '$assetsDir/tmp/d1' )->getDirs() };
 	$@ && $@ =~ /Could not open/;
 }
 
@@ -76,7 +76,7 @@ sub getAllDieOnMissingDirnameParameter
 sub getAllDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '$assetsDir/tmp/inexistent' )->getAll() };
+	eval { iMSCP::Dir->new( dirname => '$assetsDir/tmp/d1' )->getAll() };
 	$@ && $@ =~ /Could not open/;
 }
 
@@ -101,7 +101,7 @@ sub isEmptyDieOnMissingDirnameParameter
 sub isEmptyDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '$assetsDir/tmp/inexistent' )->isEmpty() };
+	eval { iMSCP::Dir->new( dirname => '$assetsDir/tmp/d1' )->isEmpty() };
 	$@ && $@ =~ /Could not open/;
 }
 
@@ -124,28 +124,33 @@ sub makeDieOnMissingDirnameAttribute
 sub makeDieIfDirnameAlreadyExistsAsFile
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => "$assetsDir/tmp/dummy" )->make() };
+	eval { iMSCP::Dir->new( dirname => "$assetsDir/tmp/f1" )->make() };
 	$@ && $@ =~ /Already exists as file/;
 }
 
 sub makeCanCreateDir
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test' )->make() };
-	! $@
+	eval { iMSCP::Dir->new( dirname => '/tmp/d1' )->make() };
+	unless($@) {
+		@dirnames = iMSCP::Dir->new( dirname => '/tmp' )->getDirs();
+		grep { 'd1' eq $_ } @dirnames ;
+	} else {
+		0;
+	}
 }
 
 sub makeCanCreatePath
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test/sub1/sub2' )->make() };
+	eval { iMSCP::Dir->new( dirname => '/tmp/d1/d2/d3' )->make() };
 	unless($@) {
-		@expectedDirnames = ('sub1');
-		@dirnames = iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test' )->getDirs();
+		@expectedDirnames = ( 'd1' );
+		@dirnames = iMSCP::Dir->new( dirname => '/tmp/d1' )->getDirs();
 
 		if(@dirnames == @expectedDirnames) {
-			@expectedDirnames = ('sub2');
-			@dirnames = iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test/sub1' )->getDirs();
+			@expectedDirnames = ( 'd2' );
+			@dirnames = iMSCP::Dir->new( dirname => '/tmp/d1/d2' )->getDirs();
 			@dirnames == @expectedDirnames;
 		} else {
 			0;
@@ -169,15 +174,24 @@ sub removeDieOnMissingDirnameParameter
 sub removeCanRemoveDir
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test/sub1/sub2' )->remove() };
-	! $@
+	eval { iMSCP::Dir->new( dirname => '/tmp/d1/d2/d3' )->remove() };
+	unless($@) {
+		iMSCP::Dir->new( dirname => '/tmp/d1/d2' )->isEmpty();
+	} else {
+		0;
+	}
 }
 
 sub removeCanRemovePath
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test' )->remove() };
-	! $@
+	eval { iMSCP::Dir->new( dirname => '/tmp/d1' )->remove() };
+	unless($@) {
+		@dirnames = iMSCP::Dir->new( dirname => '/tmp' )->getDirs();
+		not grep { 'd1' eq $_ } @dirnames ;
+	} else {
+		0;
+	}
 }
 
 #
@@ -214,7 +228,7 @@ sub runTests
 	ok( getFilesDieOnMissingDirnameParameter(), 'iMSCP::Dir::getFiles() die on missing dirname parameter' );
 	ok( getFilesDieIfCannotOpenDirname(), 'iMSCP::Dir::getFiles() die if cannot open dirname' );
 	ok( getFilesReturnExpectedFilenames(), 'iMSCP::Dir::getFiles() return expected filenames' );
-	ok(getFilesReturnExpectedFilteredFileType(), 'iMSCP::Dir::getFiles() return expected filtered file type' );
+	ok( getFilesReturnExpectedFilteredFileType(), 'iMSCP::Dir::getFiles() return expected filtered file type' );
 
 	ok( getDirsDieOnMissingDirnameParameter(), 'iMSCP::Dir::getDirs() die on missing dirname parameter' );
 	ok( getDirsDieIfCannotOpenDirname(), 'iMSCP::Dir::getDirs() die if cannot open dirname' );
@@ -238,7 +252,7 @@ sub runTests
 	ok( removeCanRemovePath(), 'iMSCP::Dir::remove() can remove path' );
 }
 
-# TODO Should be run from test executor
+# TODO Should be run from test processor
 runTests();
 
 1;
