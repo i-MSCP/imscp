@@ -27,14 +27,14 @@ sub getFilesDieIfCannotOpenDirname
 
 sub getFilesReturnExpectedFilenames
 {
-	@expectedFileNames = ('f1.php', 'f2.txt', 'f3.txt');
+	@expectedFileNames = ( 'f1.php', 'f2.txt', 'f3.txt' );
 	@fileNames = iMSCP::Dir->new( dirname => "$assetsDir/files" )->getFiles();
 	@fileNames == @expectedFileNames;
 }
 
 sub getFilesReturnExpectedFilteredFileType
 {
-	@expectedFileNames = ('f2.txt', 'f3.txt');
+	@expectedFileNames = ( 'f2.txt', 'f3.txt' );
 	@fileNames = iMSCP::Dir->new( dirname => "$assetsDir/files", fileType => '.txt' )->getFiles();
 	@fileNames == @expectedFileNames;
 }
@@ -59,7 +59,7 @@ sub getDirsDieIfCannotOpenDirname
 
 sub getDirsReturnExpectedDirnames
 {
-	@expectedDirnames = ('d1', 'd2', 'd3');
+	@expectedDirnames = ( 'd1', 'd2', 'd3' );
 	@dirnames = iMSCP::Dir->new( dirname => "$assetsDir/files" )->getDirs();
 	@dirnames == @expectedDirnames;
 }
@@ -82,7 +82,7 @@ sub getAllDieIfCannotOpenDirname
 
 sub getAllReturnExpectedDirnames
 {
-	@expectedDirnames = ('f2.txt', 'd1', 'd3', 'f1.php', 'd2', 'f3.txt');
+	@expectedDirnames = ( 'f2.txt', 'd1', 'd3', 'f1.php', 'd2', 'f3.txt' );
 	@dirnames = iMSCP::Dir->new( dirname => "$assetsDir/files" )->getAll();
 	@dirnames == @expectedDirnames;
 }
@@ -117,7 +117,7 @@ sub isEmptyReturnFalseIfDirnameIsNotEmpty
 sub makeDieOnMissingDirnameAttribute
 {
 	local $@;
-	eval { iMSCP::Dir->new()->make(); };
+	eval { iMSCP::Dir->new()->make() };
 	$@ && $@ =~ /Attribute 'dirname' is not defined/;
 }
 
@@ -131,21 +131,21 @@ sub makeDieIfDirnameAlreadyExistsAsFile
 sub makeCanCreateDir
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test')->make() };
+	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test' )->make() };
 	! $@
 }
 
 sub makeCanCreatePath
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test/sub1/sub2')->make() };
+	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test/sub1/sub2' )->make() };
 	unless($@) {
 		@expectedDirnames = ('sub1');
-		@dirnames = iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test')->getDirs();
+		@dirnames = iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test' )->getDirs();
 
 		if(@dirnames == @expectedDirnames) {
 			@expectedDirnames = ('sub2');
-			@dirnames = iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test/sub1')->getDirs();
+			@dirnames = iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test/sub1' )->getDirs();
 			@dirnames == @expectedDirnames;
 		} else {
 			0;
@@ -169,14 +169,14 @@ sub removeDieOnMissingDirnameParameter
 sub removeCanRemoveDir
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test/sub1/sub2')->remove() };
+	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test/sub1/sub2' )->remove() };
 	! $@
 }
 
 sub removeCanRemovePath
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test')->remove() };
+	eval { iMSCP::Dir->new( dirname => '/tmp/imscp_dir_test' )->remove() };
 	! $@
 }
 
@@ -234,8 +234,8 @@ sub runTests
 	ok( makeCanCreatePath(), 'iMSCP::Dir::make() can create path' );
 
 	ok( removeDieOnMissingDirnameParameter(), 'iMSCP::Dir::remove() die on missing dirname parameter' );
-	ok( removeCanRemoveDir(), 'iMSCP::Dir::make() can remove dir' );
-	ok( removeCanRemovePath(), 'iMSCP::Dir::make() can remove path' );
+	ok( removeCanRemoveDir(), 'iMSCP::Dir::remove() can remove dir' );
+	ok( removeCanRemovePath(), 'iMSCP::Dir::remove() can remove path' );
 }
 
 # TODO Should be run from test executor
