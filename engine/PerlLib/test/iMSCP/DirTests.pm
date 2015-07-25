@@ -29,14 +29,32 @@ sub getFilesReturnExpectedFilenames
 {
 	@expectedFileNames = ( 'f1.php', 'f2.txt', 'f3.txt' );
 	@fileNames = iMSCP::Dir->new( dirname => "$assetsDir/files" )->getFiles();
-	@fileNames == @expectedFileNames;
+
+	return 0 unless @fileNames == 3;
+
+	for $file(@expectedFileNames) {
+		if(not grep { $file eq $_ } @fileNames) {
+			return 0;
+		}
+	}
+
+	1;
 }
 
 sub getFilesReturnExpectedFilteredFileType
 {
 	@expectedFileNames = ( 'f2.txt', 'f3.txt' );
 	@fileNames = iMSCP::Dir->new( dirname => "$assetsDir/files", fileType => '.txt' )->getFiles();
-	@fileNames == @expectedFileNames;
+
+	return 0 unless @fileNames == 2;
+
+	for $file(@expectedFileNames) {
+		if(not grep { $file eq $_ } @fileNames) {
+			return 0;
+		}
+	}
+
+	1;
 }
 
 #
@@ -61,7 +79,16 @@ sub getDirsReturnExpectedDirnames
 {
 	@expectedDirnames = ( 'd1', 'd2', 'd3' );
 	@dirnames = iMSCP::Dir->new( dirname => "$assetsDir/files" )->getDirs();
-	@dirnames == @expectedDirnames;
+
+	return 0 unless @dirnames == 3;
+
+	for $dir(@expectedDirnames) {
+		if(not grep { $dir eq $_ } @dirnames) {
+			return 0;
+		}
+	}
+
+	1;
 }
 
 ## iMSCP::Dir::getAll() tests
@@ -84,7 +111,16 @@ sub getAllReturnExpectedDirnames
 {
 	@expectedDirnames = ( 'f2.txt', 'd1', 'd3', 'f1.php', 'd2', 'f3.txt' );
 	@dirnames = iMSCP::Dir->new( dirname => "$assetsDir/files" )->getAll();
-	@dirnames == @expectedDirnames;
+
+	return 0 unless @dirnames == 6;
+
+	for $dir(@expectedDirnames) {
+		if(not grep { $dir eq $_ } @dirnames) {
+			return 0;
+		}
+	}
+
+	1;
 }
 
 #
@@ -133,8 +169,7 @@ sub makeCanCreateDir
 	local $@;
 	eval { iMSCP::Dir->new( dirname => '/tmp/d1' )->make() };
 	unless($@) {
-		@dirnames = iMSCP::Dir->new( dirname => '/tmp' )->getDirs();
-		grep { 'd1' eq $_ } @dirnames ;
+		grep { 'd1' eq $_ } iMSCP::Dir->new( dirname => '/tmp' )->getDirs();
 	} else {
 		0;
 	}
@@ -145,13 +180,8 @@ sub makeCanCreatePath
 	local $@;
 	eval { iMSCP::Dir->new( dirname => '/tmp/d1/d2/d3' )->make() };
 	unless($@) {
-		@expectedDirnames = ( 'd1' );
-		@dirnames = iMSCP::Dir->new( dirname => '/tmp/d1' )->getDirs();
-
-		if(@dirnames == @expectedDirnames) {
-			@expectedDirnames = ( 'd2' );
-			@dirnames = iMSCP::Dir->new( dirname => '/tmp/d1/d2' )->getDirs();
-			@dirnames == @expectedDirnames;
+		if(grep { 'd2' eq $_ } iMSCP::Dir->new( dirname => '/tmp/d1' )->getDirs()) {
+			grep { 'd3' eq $_ } iMSCP::Dir->new( dirname => '/tmp/d1/d2' )->getDirs();
 		} else {
 			0;
 		}
