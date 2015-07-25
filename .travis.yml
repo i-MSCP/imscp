@@ -6,6 +6,10 @@ perl:
   - "5.18"
   - "5.20"
 
+before_install:
+  - git clone git://github.com/travis-perl/helpers ~/travis-perl-helpers
+  - source ~/travis-perl-helpers/init --auto
+
 notifications:
   irc: "irc.freenode.org#i-mscp-dev"
   email: false
