@@ -1,11 +1,7 @@
 package iMSCP::DirTests;
 
-use lib '/usr/local/src/imscp/engine/PerlLib';
 use Test::Simple tests => 20;
 use iMSCP::Dir;
-
-# TODO make this configurable
-my $assetsDir = '/usr/local/src/imscp/engine/PerlLib/test/TestAsset';
 
 #
 ## iMSCP::Dir::getFiles() tests
@@ -21,14 +17,14 @@ sub getFilesDieOnMissingDirnameParameter
 sub getFilesDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => "$assetsDir/tmp/d1" )->getFiles() };
+	eval { iMSCP::Dir->new( dirname => "$main::assetDir/tmp/d1" )->getFiles() };
 	$@ && $@ =~ /Could not open/;
 }
 
 sub getFilesReturnExpectedFilenames
 {
 	@expectedFileNames = ( 'f1.php', 'f2.txt', 'f3.txt' );
-	@fileNames = iMSCP::Dir->new( dirname => "$assetsDir/files" )->getFiles();
+	@fileNames = iMSCP::Dir->new( dirname => "$main::assetDir/files" )->getFiles();
 
 	return 0 unless @fileNames == 3;
 
@@ -44,7 +40,7 @@ sub getFilesReturnExpectedFilenames
 sub getFilesReturnExpectedFilteredFileType
 {
 	@expectedFileNames = ( 'f2.txt', 'f3.txt' );
-	@fileNames = iMSCP::Dir->new( dirname => "$assetsDir/files", fileType => '.txt' )->getFiles();
+	@fileNames = iMSCP::Dir->new( dirname => "$main::assetDir/files", fileType => '.txt' )->getFiles();
 
 	return 0 unless @fileNames == 2;
 
@@ -71,14 +67,14 @@ sub getDirsDieOnMissingDirnameParameter
 sub getDirsDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '$assetsDir/tmp/d1' )->getDirs() };
+	eval { iMSCP::Dir->new( dirname => '$main::assetDir/tmp/d1' )->getDirs() };
 	$@ && $@ =~ /Could not open/;
 }
 
 sub getDirsReturnExpectedDirnames
 {
 	@expectedDirnames = ( 'd1', 'd2', 'd3' );
-	@dirnames = iMSCP::Dir->new( dirname => "$assetsDir/files" )->getDirs();
+	@dirnames = iMSCP::Dir->new( dirname => "$main::assetDir/files" )->getDirs();
 
 	return 0 unless @dirnames == 3;
 
@@ -103,14 +99,14 @@ sub getAllDieOnMissingDirnameParameter
 sub getAllDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '$assetsDir/tmp/d1' )->getAll() };
+	eval { iMSCP::Dir->new( dirname => '$main::assetDir/tmp/d1' )->getAll() };
 	$@ && $@ =~ /Could not open/;
 }
 
 sub getAllReturnExpectedDirnames
 {
 	@expectedDirnames = ( 'f2.txt', 'd1', 'd3', 'f1.php', 'd2', 'f3.txt' );
-	@dirnames = iMSCP::Dir->new( dirname => "$assetsDir/files" )->getAll();
+	@dirnames = iMSCP::Dir->new( dirname => "$main::assetDir/files" )->getAll();
 
 	return 0 unless @dirnames == 6;
 
@@ -137,13 +133,13 @@ sub isEmptyDieOnMissingDirnameParameter
 sub isEmptyDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '$assetsDir/tmp/d1' )->isEmpty() };
+	eval { iMSCP::Dir->new( dirname => '$main::assetDir/tmp/d1' )->isEmpty() };
 	$@ && $@ =~ /Could not open/;
 }
 
 sub isEmptyReturnFalseIfDirnameIsNotEmpty
 {
-	! iMSCP::Dir->new( dirname => "$assetsDir/files" )->isEmpty();
+	! iMSCP::Dir->new( dirname => "$main::assetDir/files" )->isEmpty();
 }
 
 #
@@ -160,7 +156,7 @@ sub makeDieOnMissingDirnameAttribute
 sub makeDieIfDirnameAlreadyExistsAsFile
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => "$assetsDir/tmp/f1" )->make() };
+	eval { iMSCP::Dir->new( dirname => "$main::assetDir/tmp/f1" )->make() };
 	$@ && $@ =~ /Already exists as file/;
 }
 
@@ -281,9 +277,6 @@ sub runTests
 	ok( removeCanRemoveDir(), 'iMSCP::Dir::remove() can remove dir' );
 	ok( removeCanRemovePath(), 'iMSCP::Dir::remove() can remove path' );
 }
-
-# TODO Should be run from test processor
-runTests();
 
 1;
 __END__

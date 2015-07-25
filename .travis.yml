@@ -17,4 +17,4 @@ notifications:
   irc: "irc.freenode.org#i-mscp-dev"
   email: false
 
-script: perl ./engine/PerlLib/test/iMSCP/DirTests.pm
+script: perl ./tests/execute.pl
