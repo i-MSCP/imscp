@@ -11,7 +11,7 @@ env: PERL_CPANM_OPT="--notest --force --skip-satisfied"
 before_install:
 
 install:
- - cpanm --notest --metacpan --skip-satisfied
+ - perl -v
 
 notifications:
   irc: "irc.freenode.org#i-mscp-dev"
