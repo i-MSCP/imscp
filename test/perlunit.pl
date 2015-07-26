@@ -43,7 +43,7 @@ find { wanted => sub {
 					print STDOUT sprintf("Running unit tests from %s...\n", $_);
 					my $rs = $function->($assetDir);
 					if(!$rs || $rs =~ /[^\d]/) {
-						print STDERR sprintf("%s::runTests() must return the number of tests that must be run.\n", $_);
+						print STDERR sprintf("%s::runTests() must return number of tests that must be run.\n", $_);
 						exit 1;
 					}
 					$nbTests += $rs;
