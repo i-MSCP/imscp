@@ -1,5 +1,9 @@
 ## i-MSCP - internet Multi Server Control Panel
 
+[![Build Status](https://travis-ci.org/i-MSCP/imscp.svg?branch=1.2.x)](https://travis-ci.org/i-MSCP/imscp)
+
+### Introduction
+
 i-MSCP ( internet Multi Server Control Panel ) is an open-source software which allows to manage shared hosting
 environments on Linux servers.
 
