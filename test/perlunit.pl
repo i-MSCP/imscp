@@ -41,17 +41,18 @@ find { wanted => sub {
 			unless($@) {
 				if(my $function = $_->can('runTests')) {
 					print STDOUT sprintf("Running unit tests from %s...\n", $_);
-					my $rs = $function->($assetDir);
-					if(!$rs || $rs =~ /[^\d]/) {
+					my $ret = $function->($assetDir);
+					if(!$ret || $ret =~ /[^\d]/) {
 						print STDERR sprintf("%s::runTests() must return number of tests that must be run.\n", $_);
 						exit 1;
 					}
-					$nbTests += $rs;
+					$nbTests += $ret;
 				} else {
-					print STDERR sprintf("%s package must implement the runTests() function.\n", $_);
+					print STDERR sprintf("%s must implement the runTests() function.\n", $_);
+					exit 1;
 				}
 			} else {
-				print STDERR sprintf('Could not load %s package: %s.', $_, $@);
+				print STDERR sprintf('Could not load %s: %s.', $_, $@);
 				exit 1;
 			}
 
@@ -60,7 +61,6 @@ find { wanted => sub {
 	},
 	no_chdir => 1
 }, 'Test';
-
 done_testing($nbTests);
 
 1;
