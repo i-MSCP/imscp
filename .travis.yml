@@ -11,7 +11,9 @@ install:
   - perl -v
 
 notifications:
-  irc: "irc.freenode.org#i-mscp-dev"
+  irc:
+    - "irc.freenode.org#i-mscp-dev"
+    - "irc.freenode.org#i-mscp"
   email: false
 
 script:
