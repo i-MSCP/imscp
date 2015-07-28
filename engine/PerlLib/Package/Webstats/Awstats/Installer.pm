@@ -118,31 +118,28 @@ sub setEnginePermissions
 	my $rs = setRights(
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl",
 		{
-			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $main::imscpConfig{'ROOT_USER'},
-			'mode' => '0700'
+			user => $main::imscpConfig{'ROOT_USER'},
+			group => $main::imscpConfig{'ROOT_USER'},
+			mode => '0700'
 		}
 	);
 
 	$rs = setRights(
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
 		{
-			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $main::imscpConfig{'ROOT_USER'},
-			'mode' => '0700'
+			user => $main::imscpConfig{'ROOT_USER'},
+			group => $main::imscpConfig{'ROOT_USER'},
+			mode => '0700'
 		}
 	);
 
-	$rs = setRights(
-		$main::imscpConfig{'AWSTATS_CACHE_DIR'},
-		{
-			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => Servers::httpd->factory()->getRunningGroup(),
-			'dirmode' => '02750',
-			'filemode' => '0640',
-			'recursive' => 1
-		}
-	);
+	$rs = setRights($main::imscpConfig{'AWSTATS_CACHE_DIR'}, {
+		user => $main::imscpConfig{'ROOT_USER'},
+		group => Servers::httpd->factory()->getRunningGroup(),
+		dirmode => '02750',
+		filemode => '0640',
+		recursive => 1
+	});
 
 	$rs;
 }
@@ -182,9 +179,9 @@ sub _createCacheDir
 {
 	iMSCP::Dir->new(
 		dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
-	)->make(
-		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $_[0]->{'httpd'}->getRunningGroup(), 'mode' => 02750 }
-	);
+	)->make({
+		user => $main::imscpConfig{'ROOT_USER'}, group => $_[0]->{'httpd'}->getRunningGroup(), mode => 02750
+	});
 }
 
 =item _createGlobalAwstatsVhost()

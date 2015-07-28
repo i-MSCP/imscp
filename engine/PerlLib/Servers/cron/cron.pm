@@ -329,9 +329,7 @@ sub setEnginePermissions
 		iMSCP::Rights->import();
 
 		setRights("$self->{'config'}->{'CRON_D_DIR'}/imscp", {
-			user => $main::imscpConfig{'ROOT_USER'},
-			group => $main::imscpConfig{'ROOT_GROUP'},
-			mode => '0640'
+			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640'
 		});
 	} else {
 		0;

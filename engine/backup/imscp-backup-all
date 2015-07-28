@@ -100,9 +100,9 @@ sub run
 						clearImmutable($homeDir);
 					}
 
-					my $rs = iMSCP::Dir->new( dirname => $bkpDir )->make(
-						{ user => $userName, group => $groupName, mode => 0750 }
-					);
+					my $rs = iMSCP::Dir->new( dirname => $bkpDir )->make({
+						user => $userName, group => $groupName, mode => 0750
+					});
 
 					setImmutable($homeDir) if $isProtectedHomedir;
 

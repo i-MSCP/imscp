@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Dir - Package which allow to perform operation on directories
+ iMSCP::Dir - Package providing basic utilities for filesystem (directories handling).
 
 =cut
 
@@ -25,25 +25,70 @@ package iMSCP::Dir;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::File;
-use File::Path qw/mkpath remove_tree/;
-use File::Copy;
+use File::Copy qw/copy cp move/;
+use File::Path qw/make_path remove_tree/;
+use File::Spec;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- Package which allow to perform operation on directories
+ Package providing basic utilities for filesystem (directories handling).
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item getFiles([ $dirname ])
+=item mode($mode)
 
- Get list of files inside directory
+ Set directory mode
 
- Param string $dirname OPTIONAL Directory - Default $self->{'dirname'}
+ Param dirmode $mode
+ Return int 0 on success or die on failure
+
+=cut
+
+sub mode
+{
+	my ($self, $mode) = @_;
+	defined $mode or die('Missing mode parameter');
+	chmod $mode, $self->{'dirname'} or die(sprintf('Could not set mode on %s: %s', $self->{'dirname'}, $!));
+
+	0;
+}
+
+=item owner($owner, $group)
+
+ Set directory owner and group
+
+ Param string $owner Owner
+ Param string $group Group
+ Return int 0 on success, die on failure
+
+=cut
+
+sub owner
+{
+	my ($self, $owner, $group) = @_;
+	defined $owner or die('Missing owner parameter');
+	defined $group or die('Missing group parameter');
+
+	my $uid = -1;
+	my $gid = -1;
+	$uid = scalar getpwnam($owner) unless $owner eq -1;
+	$gid = scalar getgrnam($group) unless $group eq -1;
+
+	defined $uid or die(sprintf('Owner parameter refers to an inexistent user: %s', $owner));
+	defined $gid or die(sprintf('Group parameter refers to an inexistent group: %s', $group));
+
+	chown $uid, $gid, $self->{'dirname'} or die(sprintf('Could not set owner/group on %s: %s', $self->{'dirname'}, $!));
+
+	0;
+}
+
+=item getFiles()
+
+ Get list of files inside directory (only one depth)
+
  Return array representing list files or die on failure
 
 =cut
@@ -51,21 +96,15 @@ use parent 'Common::Object';
 sub getFiles
 {
 	my $self = shift;
-	my $dirname = shift // $self->{'dirname'};
-
-	defined $dirname or die("Missing 'dirname' parameter");
-	opendir my $dh, $dirname or die(sprintf('Could not open %s: %s', $dirname, $!));
-	my @files = grep { $_ ne '.' && $_ ne '..' && -f "$self->{'dirname'}/$_" } readdir $dh;
-	closedir $dh;
-
+	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open %s: %s', $self->{'dirname'}, $!));
+	my @files = grep { -f "$self->{'dirname'}/$_" } File::Spec->no_upwards(readdir($dh));
 	($self->{'fileType'}) ? grep(/$self->{'fileType'}$/, @files) : @files;
 }
 
-=item getDirs([ $dirname ])
+=item getDirs()
 
- Get list of directories inside directory
+ Get list of directories inside directory (only one depth)
 
- Param string $dirname OPTIONAL Directory - Default $self->{'dirname'}
  Return array representing list of directories or die on failure
 
 =cut
@@ -73,21 +112,14 @@ sub getFiles
 sub getDirs
 {
 	my $self = shift;
-	my $dirname = shift // $self->{'dirname'};
-
-	defined $dirname or die("Missing 'dirname' parameter");
-	opendir my $dh, $dirname or die(sprintf('Could not open %s: %s', $dirname, $!));
-	my @files = grep { $_ ne '.' && $_ ne '..' && -d "$dirname/$_" } readdir $dh;
-	closedir $dh;
-
-	@files;
+	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open %s: %s', $self->{'dirname'}, $!));
+	grep (-d "$self->{'dirname'}/$_", File::Spec->no_upwards(readdir($dh)));
 }
 
-=item getAll([ $dirname ])
+=item getAll()
 
- Get list of files and directories inside directory
+ Get list of files and directories inside directory (only one depth)
 
- Param string $dirname OPTIONAL Directory - Default $self->{'dirname'}
  Return list of files and directories or die on failure
 
 =cut
@@ -95,21 +127,14 @@ sub getDirs
 sub getAll
 {
 	my $self = shift;
-	my $dirname = shift // $self->{'dirname'};
-
-	defined $dirname or die("Missing 'dirname' parameter");
-	opendir my $dh, $dirname or die(sprintf('Could not open %s: %s', $dirname, $!));
-	my @files = grep { $_ ne '.' && $_ ne '..' } readdir $dh;
-	closedir $dh;
-
-	@files;
+	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open %s: %s', $self->{'dirname'}, $!));
+	File::Spec->no_upwards(readdir($dh));
 }
 
-=item isEmpty([ $dirname ])
+=item isEmpty()
 
  Is directory empty?
 
- Param string $dirname OPTIONAL Directory - Default $self->{'dirname'}
  Return bool TRUE if the given directory is empty, FALSE otherwise - die on failure
 
 =cut
@@ -117,75 +142,15 @@ sub getAll
 sub isEmpty
 {
 	my $self = shift;
-	my $dirname = shift // $self->{'dirname'};
-
-	defined $dirname or die("Missing 'dirname' parameter");
-	opendir my $dh, $dirname or die(sprintf('Could not open %s: %s', $dirname, $!));
+	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open %s: %s', $self->{'dirname'}, $!));
 
 	for my $file(readdir $dh) {
 		if($file ne '.' && $file ne '..') {
-			closedir $dh;
 			return 0;
 		}
 	}
 
-	closedir $dh;
-
 	1;
-}
-
-=item mode($mode [, $dirname ])
-
- Set directory mode
-
- Param string $mode Directory mode
- Param string $dirname OPTIONAL Directory (default $self->{'dirname'})
- Return int 0 on success or die on failure
-
-=cut
-
-sub mode
-{
-	my ($self, $mode, $dirname) = @_;
-
-	$dirname //= $self->{'dirname'};
-
-	defined $mode or die("Missing 'mode' parameter");
-	defined $dirname or die("Missing 'dirname' parameter");
-	debug(sprintf('Changing mode for %s to %s', $dirname, $mode));
-	chmod $mode, $dirname or die(sprintf('Could not change mode for %s: %s', $dirname, $!));
-
-	0;
-}
-
-=item owner($owner, $group, [, $dirname ])
-
- Set directory owner and group
-
- Param string $owner Owner
- Param string $group Group
- Param string $dirname OPTIONAL Directory (default $self->{'dirname'})
- Return int 0 on success, die on failure
-
-=cut
-
-sub owner
-{
-	my ($self, $owner, $group, $dirname) = @_;
-
-	$dirname //= $self->{'dirname'};
-
-	defined $owner or die("Mistting 'owner' parameter");
-	defined $group or die("Mistting 'group' parameter");
-	defined $dirname or die("Missing 'dirname' parameter");
-
-	my $uid = ($owner =~ /^\d+$/) ? $owner : getpwnam($owner) // -1;
-	my $gid = ($group =~ /^\d+$/) ? $group : getgrnam($group) // -1;
-
-	debug(sprintf('Changing owner and group for %s to %s: %s', $dirname, $uid, $gid));
-	chown $uid, $gid, $self->{'dirname'} or die(sprintf('Could not change owner and group for %s: %s', $dirname, $!));
-
-	0;
 }
 
 =item make([ \%options ])
@@ -193,9 +158,9 @@ sub owner
  Create directory
 
  Param hash \%options OPTIONAL Options:
-    mode:  Directory mode
-    user:  Directory owner
-    group: Directory group
+    mode: Directory octal mode (default: 0755)
+    user: Directory owner (default: root)
+    group: Directory group (default: root)
  Return int 0 on success, die on failure
 
 =cut
@@ -203,56 +168,45 @@ sub owner
 sub make
 {
 	my ($self, $options) = @_;
-
 	$options = { } unless defined $options && ref $options eq 'HASH';
 
-	defined $self->{'dirname'} or die("Attribute 'dirname' is not defined");
-	! -f $self->{'dirname'} or die(sprintf('Could not create %s: Already exists as file.', $self->{'dirname'}));
-
 	unless(-d $self->{'dirname'}) {
-		debug($self->{'dirname'});
-		my @createdDirs = mkpath($self->{'dirname'}, { error => \my $errStack });
+		my @dirs = make_path($self->{'dirname'}, {
+			error => \my $errStack,
+			owner => $options->{'user'},
+			group => $options->{'group'},
+			mode => 0755
+		});
 
 		if(@{$errStack}) {
 			my $errorStr = '';
-
 			for my $diag (@{$errStack}) {
-				my ($file, $message) = %{$diag};
-				$errorStr .= ($file eq '') ? "general error: $message\n" : "problem unlinking $file: $message\n";
+				my ($dir, $message) = %{$diag};
+				$errorStr .= ($dir eq '') ? "general error: $message\n" : "problem creating $dir: $message\n";
 			}
 
-			die(sprintf('Could not create %s: %s', $errorStr));
+			die(sprintf('Could not create %s: %s', $self->{'dirname'}, $errorStr));
 		}
-
-		for my $dir(@createdDirs) {
-			if(defined $options->{'mode'}) {
-				$self->mode($options->{'mode'}, $dir);
-			}
-
-			if(defined $options->{'user'} || defined $options->{'group'}) {
-				$self->owner($options->{'user'} // -1, $options->{'group'} // -1, $dir);
-			}
-		}
-	} else {
-		debug(sprintf('%s already exists. Setting its permissions...', $self->{'dirname'}));
 
 		if(defined $options->{'mode'}) {
-			$self->mode($options->{'mode'});
+			# We set mode separately because make_path doesn't allow to set special modes (e.g: setgid)
+			iMSCP::Dir->new( dirname => $_ )->mode($options->{'mode'}) for @dirs;
+		}
+	} else {
+		if(defined $options->{'user'} || defined $options->{'group'}) {
+			$self->owner($options->{'user'} // -1, $options->{'group'} // -1);
 		}
 
-		if(defined $options->{'user'} || defined $options->{'group'}) {
-			$self->owner($options->{'user'} // -1, $options->{'group'} // -1, $self->{'dirname'});
-		}
+		$self->mode($options->{'mode'}) if defined $options->{'mode'};
 	}
 
 	0;
 }
 
-=item remove([ $dirname ])
+=item remove()
 
- Remove directory recursively
+ Remove directory
 
- Param string $dirname OPTIONAL Directory (default $self->{'dirname'})
  Return int 0 on success, die on failure
 
 =cut
@@ -260,106 +214,86 @@ sub make
 sub remove
 {
 	my $self = shift;
-	my $dirname = shift // $self->{'dirname'};
 
-	defined $dirname or die("Missing 'dirname' parameter");
-
-	if (-d $dirname) {
-		debug($dirname);
-		remove_tree($dirname, { error => \my $errStack });
+	if (-d $self->{'dirname'}) {
+		remove_tree($self->{'dirname'}, { error => \my $errStack });
 
 		if(@{$errStack}) {
 			my $errorStr = '';
-
 			for my $diag (@{$errStack}) {
 				my ($file, $message) = %{$diag};
 				$errorStr .= ($file eq '') ? "general error: $message\n" : "problem unlinking $file: $message\n";
 			}
 
-			die(sprintf('Could not delete %s: %s', $errorStr));
+			die(sprintf('Could not delete %s: %s', $self->{'dirname'}, $errorStr));
 		}
 	}
 
 	0;
 }
 
-=item rcopy($destDir [, \%options ])
+=item rcopy($destdir [, \%options ])
 
- Copy directory recusively
+ Copy content of the directory recursively
 
  Note: Symlinks are not followed.
 
- Param string $destDir Destination directory
+ Param string $destdir Destination directory
  Param hash \%options OPTIONAL Options:
-   excludeDir:  String representing a regexp for excluding a list of directories from copy
-   excludeFile: String representing a regexp for excluding a list of files from copy
-   preserve:    If true, copy file attributes (uid, gid and mode)
+   preserve: If true, copy file attributes (uid, gid and mode)
  Return int 0 on success, die on failure
 
 =cut
 
 sub rcopy
 {
-	my ($self, $destDir, $options) = @_;
-
+	my ($self, $destdir, $options) = @_;
 	$options = { } unless defined $options && ref $options eq 'HASH';
+	defined $destdir or die("Missing destdir parameter");
+	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open %s', $self->{'dirname'}));
 
-	defined $self->{'dirname'} or die("Attribute 'dirname' is not defined");
-
-	my $excludeDir = (defined $options->{'excludeDir'}) ? qr/$options->{'excludeDir'}/ : undef;
-	my $excludeFile = (defined $options->{'excludeFile'}) ? qr/$options->{'excludeFile'}/ : undef;
-
-	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open: %s', $self->{'dirname'}, $!));
-
-	for my $entry (readdir $dh) {
-		if($entry ne '.' && $entry ne '..') {
-			my $src = "$self->{'dirname'}/$entry";
-			my $dst = "$destDir/$entry";
+	while (readdir $dh) {
+		if($_ ne '.' && $_ ne '..') {
+			my $src = "$self->{'dirname'}/$_";
+			my $target = "$destdir/$_";
 
 			if (-d $src) {
-				unless($excludeDir && $src =~ /$excludeDir/) {
-					my $opts = {};
-
-					if($options->{'preserve'}) {
-						my (undef, undef, $mode, undef, $uid, $gid) = lstat($src);
-						$opts = { user => $uid, mode => $mode & 07777, group => $gid }
-					}
-
-					debug(sprintf('%s to %s', $src, $dst));
-					iMSCP::Dir->new( dirname => $dst )->make($opts);
-					iMSCP::Dir->new( dirname => $src )->rcopy($dst, $options);
+				my $opts = {};
+				if($options->{'preserve'}) {
+					my (undef, undef, $mode, undef, $uid, $gid) = lstat($src);
+					$opts = { user => scalar getpwuid($uid), mode => $mode & 07777, group => scalar getgrgid($gid) }
 				}
-			} elsif(!$excludeFile || $src !~ /$excludeFile}/) {
-				debug(sprintf('%s to %s', "$self->{'dirname'}/$entry", "$destDir/$entry"));
-				(iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0) or die(sprintf(
-					'Could not copy file %s into %s: %s', $src, $dst, getLastError()
-				));
+
+				iMSCP::Dir->new( dirname => $target )->make($opts);
+				iMSCP::Dir->new( dirname => $src )->rcopy($target, $options);
+			} else {
+				if($options->{'preserve'}) {
+					cp($src, $target) or die(sprintf('Could not copy %s to %s: %s', $src, $target, $!));
+				} else {
+					copy($src, $target) or die(sprintf('Could not copy %s to %s: %s', $src, $target, $!));
+				}
 			}
 		}
 	}
 
-	closedir $dh;
-
 	0;
 }
 
-=item moveDir($destDir)
+=item moveDir($destdir)
 
  Move directory
 
- Param string $destDir Destination directory
+ Param string $destdir Destination directory
  Return int 0 on success, die on failure
 
 =cut
 
 sub moveDir
 {
-	my ($self, $destDir) = @_;
-
-	defined $self->{'dirname'} or die("Attribut 'dirname' is not defined");
+	my ($self, $destdir) = @_;
+	defined $destdir or die('Missing destdir parameter');
 	-d $self->{'dirname'} or die(sprintf("Directory %s doesn't exits", $self->{'dirname'}));
-	debug(sprintf('%s to %s', $self->{'dirname'}, $destDir));
-	move $self->{'dirname'}, $destDir or die(sprintf('Could not move %s to %s: %s', $self->{'dirname'}, $destDir, $!));
+	move $self->{'dirname'}, $destdir or die(sprintf('Could not move %s to %s: %s', $self->{'dirname'}, $destdir, $!));
 
 	0;
 }
@@ -381,9 +315,7 @@ sub moveDir
 sub _init
 {
 	my $self = shift;
-
-	$self->{'dirname'} //= undef;
-
+	defined $self->{'dirname'} or die('Option dirname is not defined');
 	$self;
 }
 

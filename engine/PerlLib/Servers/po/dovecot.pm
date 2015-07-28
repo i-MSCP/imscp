@@ -153,7 +153,7 @@ sub postaddMail
 		my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
 		for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-			my $rs = iMSCP::Dir->new( dirname => $dir)->make({
+			my $rs = iMSCP::Dir->new( dirname => $dir )->make({
 				user => $mailUidName, group => $mailGidName , mode => 0750
 			});
 			return $rs if $rs;

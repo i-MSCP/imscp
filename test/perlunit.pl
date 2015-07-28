@@ -25,43 +25,34 @@ use strict;
 use warnings;
 use FindBin;
 use lib "$FindBin::Bin/Perl", "$FindBin::Bin/../engine/PerlLib", "$FindBin::Bin/../engine/PerlVendor";
-use Test::More import => [ 'done_testing' ];
+use Test::More import => ['diag', 'done_testing', 'fail', 'subtest'];
 use File::Find;
+use POSIX qw(locale_h);
+use locale;
+setlocale(LC_MESSAGES, 'C.UTF-8');
 
-my $assetDir = "$FindBin::Bin/Perl/TestAsset";
-my $nbTests = 0;
+$ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
-chdir($FindBin::Bin . '/Perl');
+chdir "$FindBin::Bin/Perl";
+
 find { wanted => sub {
-		if(-f) {
-			s%/%::%g;
-			$_ = substr($_, 0, -3);
+	if(-f) {
+		(my $package = substr($_, 0, -3)) =~ s|/|::|g;
 
-			eval "require $_";
-			unless($@) {
-				if(my $function = $_->can('runTests')) {
-					print STDOUT sprintf("Running unit tests from %s...\n", $_);
-					my $ret = $function->($assetDir);
-					if(!$ret || $ret =~ /[^\d]/) {
-						print STDERR sprintf("%s::runTests() must return number of tests that must be run.\n", $_);
-						exit 1;
-					}
-					$nbTests += $ret;
-				} else {
-					print STDERR sprintf("%s must implement the runTests() function.\n", $_);
-					exit 1;
-				}
-			} else {
-				print STDERR sprintf('Could not load %s: %s.', $_, $@);
-				exit 1;
-			}
+		local $@;
+		eval { require $_; 1 } or do { fail sprintf("%s: Could not run unit tests\n%s", $package, $@); return; };
 
-			chdir($FindBin::Bin . '/Perl'); # Cover case where a unit tests package run chdir
+		if(my $function = $package->can('runUnitTests')) {
+			diag "\nRunning unit tests from $package package...\n\n";
+			subtest "$package unit tests", sub { $function->("$FindBin::Bin/Perl/TestAsset") };
+		} else {
+			fail sprintf('%s::runUnitTests() not implemented.', $package);
 		}
-	},
+
+		chdir "FindBin::Bin/Perl";
+	}},
 	no_chdir => 1
 }, 'Test';
-done_testing($nbTests);
 
-1;
-__END__
+done_testing;

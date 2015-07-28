@@ -937,7 +937,7 @@ sub _addMailBox
 
 	# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
 	for my $dir('cur', 'new', 'tmp') {
-		$rs = iMSCP::Dir->new( dirname => "$mailDir/$dir")->make({
+		$rs = iMSCP::Dir->new( dirname => "$mailDir/$dir" )->make({
 			user => $mailUidName, group => $mailGidName, mode => 0750
 		});
 		return $rs if $rs;

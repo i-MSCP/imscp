@@ -83,7 +83,7 @@ sub setupRegisterListeners
 			$rs = $instance->registerSetupListeners($eventManager) if $instance->can('registerSetupListeners');
 		} else {
 			error($@);
-        	$rs = 1;
+			$rs = 1;
 		}
 
 		return $rs if $rs;
@@ -1121,7 +1121,7 @@ sub setupCreateSystemDirectories
 	return $rs if $rs;
 
 	for (@systemDirectories) {
-		$rs = iMSCP::Dir->new( dirname => $_->[0] )->make({ 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3]});
+		$rs = iMSCP::Dir->new( dirname => $_->[0] )->make({ user => $_->[1], group => $_->[2], mode => $_->[3] });
 		return $rs if $rs;
 	}
 

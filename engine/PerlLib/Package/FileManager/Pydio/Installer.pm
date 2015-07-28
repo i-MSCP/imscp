@@ -95,16 +95,14 @@ sub setGuiPermissions
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
-	my $rs = setRights(
-		"$guiPublicDir/tools/ftp",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
-	);
+	my $rs = setRights("$guiPublicDir/tools/ftp", {
+		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
+	});
 	return $rs if $rs;
 
-	setRights(
-		"$guiPublicDir/tools/ftp/data",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 1 }
-	);
+	setRights("$guiPublicDir/tools/ftp/data", {
+		user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
+	});
 }
 
 =back

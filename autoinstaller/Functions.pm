@@ -628,11 +628,7 @@ sub _buildConfigFiles
 	my $rs = _processXmlFile($file);
 	return $rs if $rs;
 
-	# Get list of sub config dir from default config directory (debian)
-	my $dirDH = iMSCP::Dir->new( dirname => $defaultConfigDir );
-	my @configDirs = $dirDH->getDirs();
-
-	for(@configDirs) {
+	for(iMSCP::Dir->new( dirname => $defaultConfigDir )->getDirs()) {
 		# Override sub config dir path if it is available in selected distro, else set it to default path
 		$confDir = (-d "$distroConfigDir/$_") ? "$distroConfigDir/$_" : "$defaultConfigDir/$_";
 
@@ -671,11 +667,7 @@ sub _buildEngineFiles
 	my $rs = _processXmlFile("$FindBin::Bin/engine/install.xml");
 	return $rs if $rs;
 
-	my $dir = iMSCP::Dir->new( dirname => "$FindBin::Bin/engine" );
-
-	my @configDirs = $dir->getDirs();
-
-	for(@configDirs) {
+	for(iMSCP::Dir->new( dirname => "$FindBin::Bin/engine" )->getDirs()) {
 		if (-f "$FindBin::Bin/engine/$_/install.xml") {
 			unless(chdir "$FindBin::Bin/engine/$_") {
 				error(sprintf('Unable to change dir to %s', "$FindBin::Bin/engine/$_"));
@@ -1094,9 +1086,9 @@ sub _processFolder
 
 	my $options = { };
 
-	$options->{'mode'} = oct($data->{'mode'}) if exists $data->{'mode'};
 	$options->{'user'} = _expandVars($data->{'owner'}) if exists $data->{'owner'};
 	$options->{'group'} = _expandVars($data->{'group'}) if exists $data->{'group'};
+	$options->{'mode'} = oct($data->{'mode'}) if exists $data->{'mode'};
 
 	$dir->make($options);
 }

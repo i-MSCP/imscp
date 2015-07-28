@@ -1487,9 +1487,9 @@ sub mountLogsFolder
 		-d $srcLogsFolder && -d "$data->{'HOME_DIR'}/logs" &&
 		execute('mount 2>/dev/null | grep -q ' . escapeShell(" $targetLogsFolder "))
 	) {
-		my $rs = iMSCP::Dir->new( dirname => $targetLogsFolder )->make(
-			{ user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ADM_GROUP'}, mode => 0755 }
-		);
+		my $rs = iMSCP::Dir->new( dirname => $targetLogsFolder )->make({
+			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ADM_GROUP'}, mode => 0755
+		});
 		return $rs if $rs;
 
 		my ($stdout, $stderr);
@@ -1727,9 +1727,9 @@ sub _addFiles
 	return $rs if $rs;
 
 	for my $folderDef($self->_dmnFolders($data)) {
-		$rs = iMSCP::Dir->new( dirname => $folderDef->[0] )->make(
-			{ user => $folderDef->[1], group => $folderDef->[2], mode => $folderDef->[3] }
-		);
+		$rs = iMSCP::Dir->new( dirname => $folderDef->[0] )->make({
+			user => $folderDef->[1], group => $folderDef->[2], mode => $folderDef->[3]
+		});
 		return $rs if $rs;
 	}
 
@@ -1795,9 +1795,9 @@ sub _addFiles
 		unless(-d $parentDir) {
 			clearImmutable(dirname($parentDir));
 
-			$rs = iMSCP::Dir->new( dirname => $parentDir )->make(
-				{ user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0750 }
-			);
+			$rs = iMSCP::Dir->new( dirname => $parentDir )->make({
+				user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0750
+			});
 			return $rs if $rs;
 		} else {
 			clearImmutable($parentDir);
@@ -1806,9 +1806,9 @@ sub _addFiles
 		if(-d $webDir) {
 			clearImmutable($webDir);
 		} else {
-			$rs = iMSCP::Dir->new( dirname => $webDir )->make(
-				{ user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0750 }
-			);
+			$rs = iMSCP::Dir->new( dirname => $webDir )->make({
+				user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0750
+			});
 			return $rs if $rs;
 		}
 
@@ -1824,7 +1824,9 @@ sub _addFiles
 
 		for my $file(@files) {
 			if(-e "$webDir/$file") {
-				$rs = setRights( "$webDir/$file", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => 1 } );
+				$rs = setRights("$webDir/$file", {
+					user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => 1
+				});
 				return $rs if $rs;
 			}
 		}

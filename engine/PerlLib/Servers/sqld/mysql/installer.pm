@@ -227,7 +227,9 @@ sub _buildConf
 	}
 
 	# Make sure that the conf.d directory exists
-	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
+	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({
+		user => $rootUName, group => $rootGName, mode => 0755
+	});
 	return $rs if $rs;
 
 	my $cfgTpl;

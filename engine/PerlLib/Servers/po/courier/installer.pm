@@ -230,8 +230,7 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	setRights(
-		$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}, {
+	setRights($self->{'config'}->{'AUTHLIB_SOCKET_DIR'}, {
 		user => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
 		group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
 		mode => '0750'

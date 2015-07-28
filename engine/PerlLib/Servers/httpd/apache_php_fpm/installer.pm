@@ -294,8 +294,8 @@ sub _makeDirs
 
 	for my $dir([ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ]) {
 		$rs = iMSCP::Dir->new( dirname => $dir->[0])->make({
-			user => $dir->[1], group => $dir->[2], mode => $dir->[3] }
-		);
+			user => $dir->[1], group => $dir->[2], mode => $dir->[3]
+		});
 		return $rs if $rs;
 	}
 

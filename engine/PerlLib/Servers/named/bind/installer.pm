@@ -382,9 +382,7 @@ sub _switchTasks
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'slave') {
 		my $rs = $slaveDbDir->make({
-			user => $main::imscpConfig{'ROOT_USER'},
-			group => $self->{'config'}->{'BIND_GROUP'},
-			mode => '0775'
+			user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'BIND_GROUP'}, mode => 0775
 		});
 		return $rs if $rs;
 

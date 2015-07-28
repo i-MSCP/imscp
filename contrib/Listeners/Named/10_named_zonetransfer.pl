@@ -384,26 +384,28 @@ EOF
         0;
 
         my $transferScriptFile;
-        $transferScriptFile = iMSCP::File->new('filename' => $transferScriptFilePath);
-
+        $transferScriptFile = iMSCP::File->new( filename => $transferScriptFilePath );
         $transferScriptFile->set($$fileContent);
 
         $rs = $transferScriptFile->save();
         return $rs if $rs;
-        $rs = $transferScriptFile->mode(0640);
+
+        $rs = $transferScriptFile->owner(
+            "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+            "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
+        );
         return $rs if $rs;
-        $rs = $transferScriptFile->owner("$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}","$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}");
+
+        $rs = $transferScriptFile->mode(0640);
         return $rs if $rs;
     }
     
     if(!(-e $transferScriptFolder)) {
-        my $scriptFolder =  iMSCP::Dir->new( dirname => $transferScriptFolder );
-        $rs = $scriptFolder->make();
-        return $rs if $rs;
-        $rs = $scriptFolder->mode(0550);
-        return $rs if $rs;
-        $rs = $scriptFolder->owner("$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}","$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}");
-        return $rs if $rs;
+        my $scriptFolder =  iMSCP::Dir->new( dirname => $transferScriptFolder )->make({
+            user => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+            group => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+            mode => 0550
+        });
     }
     
     if(!(-f $transferScriptFilePath) || $overwriteFileIfTransferScriptExists) {

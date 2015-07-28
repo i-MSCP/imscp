@@ -151,23 +151,17 @@ sub addDmn
 		unless(-d $userStatisticsDir) {
 			$rs = iMSCP::Dir->new(
 				dirname => $userStatisticsDir
-			)->make(
-				{ 'mode' => 02750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $data->{'GROUP'} }
-			);
+			)->make({
+				user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, mode => 02750
+			});
 			return $rs if $rs;
 		} else {
 			require iMSCP::Rights;
 			iMSCP::Rights->import();
 
-			$rs = setRights(
-				$userStatisticsDir,
-				{
-					'filemode' => '0640',
-					'user' => $main::imscpConfig{'ROOT_USER'},
-					'group' => $data->{'GROUP'},
-					'recursive' => 1
-				}
-			);
+			$rs = setRights($userStatisticsDir, {
+				filemode => '0640', user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, recursive => 1
+			});
 			return $rs if $rs;
 		}
 

@@ -241,13 +241,11 @@ sub setGuiPermissions
 {
 	if(-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma") {
 		my $panelUName =
-		my $panelGName =
-			$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+		my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-		my $rs = setRights(
-			"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
-			{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
-		);
+		my $rs = setRights("$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", {
+			user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
+		});
 		return $rs if $rs;
 	}
 

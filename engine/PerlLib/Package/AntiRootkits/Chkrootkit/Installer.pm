@@ -84,7 +84,7 @@ sub setEnginePermissions()
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
 
-	setRights($main::imscpConfig{'CHKROOTKIT_LOG'}, { 'user' => $rootUName, 'group' => $imscpGName, mode => '0640' });
+	setRights($main::imscpConfig{'CHKROOTKIT_LOG'}, { user => $rootUName, group => $imscpGName, mode => '0640' });
 }
 
 =back

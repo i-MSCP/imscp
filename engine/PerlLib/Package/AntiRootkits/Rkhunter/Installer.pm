@@ -84,24 +84,14 @@ sub setEnginePermissions
 	require iMSCP::Rights;
 	iMSCP::Rights->import();
 
-	my $rs = setRights(
-		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl",
-		{
-			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $main::imscpConfig{'ROOT_USER'},
-			'mode' => '0700'
-		}
-	);
+	my $rs = setRights("$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl", {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_USER'}, mode => '0700'
+	});
 
 	if(-f $main::imscpConfig{'RKHUNTER_LOG'}) {
-		$rs = setRights(
-			$main::imscpConfig{'RKHUNTER_LOG'},
-			{
-				'user' => $main::imscpConfig{'ROOT_USER'},
-				'group' => $main::imscpConfig{'IMSCP_GROUP'},
-				'mode' => '0640'
-			}
-		);
+		$rs = setRights($main::imscpConfig{'RKHUNTER_LOG'}, {
+			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => '0640'
+		});
 	}
 
 	$rs;
