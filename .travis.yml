@@ -1,4 +1,4 @@
-sudo: false
+sudo: true
 
 language: perl
 
@@ -17,4 +17,4 @@ notifications:
   email: false
 
 script:
-  - perl ./test/perlunit.pl
+  - sudo perl ./test/perlunit.pl
