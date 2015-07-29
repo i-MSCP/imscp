@@ -240,7 +240,7 @@ sub rcopyDieOnMissingDestdirParameter
 sub rcopyDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge' )->rcopy('/tmp/foo') };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge' )->rcopy( '/tmp/foo' ) };
 	$@ && $@ =~ /Could not open/;
 }
 
@@ -248,14 +248,22 @@ sub rcopyCanCopyDirnameToDestdir
 {
 	setupTestEnv();
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy('/tmp/foo/quux') };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/foo/quux' ) };
+	!$@;
+}
+
+sub rcopyCanCopyDirnameToDestdirWithPreserveOption
+{
+	setupTestEnv();
+	local $@;
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/foo/quux', { preserve => 1 } ) };
 	!$@;
 }
 
 sub rcopyPreserveFileAttributes
 {
 	setupTestEnv();
-	iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy('/tmp/foo/quux', { preserve => 1 });
+	iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/foo/quux', { preserve => 1 } );
 	my (undef, undef, $mode, undef, $uid, $gid) = lstat('/tmp/foo/quux/bar');
 	getpwuid($uid) eq 'nobody' && getgrgid($gid) eq 'nogroup' && sprintf('%o', $mode & 07777) eq 2555;
 }
@@ -263,7 +271,7 @@ sub rcopyPreserveFileAttributes
 sub rcopyDoNotPreserveFileAttributes
 {
 	setupTestEnv();
-	iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy('/tmp/foo/quux');
+	iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/foo/quux' );
 	my (undef, undef, $mode, undef, $uid, $gid) = lstat('/tmp/foo/quux/bar');
 	getpwuid($uid) ne 'nobody' && getgrgid($gid) ne 'nogroup' && sprintf('%o', $mode & 07777) ne 2555;
 }
@@ -278,7 +286,7 @@ sub moveDirDieOnMissingDestdirParameter
 sub moveDirDieOnInexistentDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge')->moveDir('/tmp/foo/corge') };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge' )->moveDir( '/tmp/foo/corge' ) };
 	$@ && $@ =~ /doesn't exits/;
 }
 
@@ -286,7 +294,7 @@ sub moveDirCanMoveDirnameToDestDir
 {
 	setupTestEnv();
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/bar')->moveDir('/tmp/foo/quux') };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo/bar' )->moveDir( '/tmp/foo/quux' ) };
 	!$@;
 }
 
@@ -312,7 +320,7 @@ sub runUnitTests
 
 	cleanupTestEnv();
 
-	plan tests => 40;  # Number of tests planned for execution
+	plan tests => 41;  # Number of tests planned for execution
 
 	if(require_ok('iMSCP::Dir')) {
 		# new()
@@ -373,6 +381,7 @@ sub runUnitTests
 		ok rcopyDieOnMissingDestdirParameter, 'iMSCP::Dir::rcopy() die on missing destdir parameter';
 		ok rcopyDieIfCannotOpenDirname, 'iMSCP::Dir::rcopy() die if cannot open dirname';
 		ok rcopyCanCopyDirnameToDestdir, 'iMSCP::Dir::rcopy() can copy dirname to destdir';
+		ok rcopyCanCopyDirnameToDestdirWithPreserveOption, 'iMSCP::Dir::rcopy can copy dirname to destdir with preserve option';
 		ok rcopyPreserveFileAttributes, 'iMSCP::Dir::rcopy() preserve file attributes';
 		ok rcopyDoNotPreserveFileAttributes, 'iMSCP::Dir::rcopy() do not preserve file attributes';
 
