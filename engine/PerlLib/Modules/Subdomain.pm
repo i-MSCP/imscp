@@ -238,7 +238,7 @@ sub _getHttpdData
 
 		my $allowHSTS =
 			$haveCert &&
-            $certData->{$self->{'allow_hsts'}} eq 'on';
+            $certData->{$self->{'subdomain_id'}}{'allow_hsts'} eq 'on';
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
