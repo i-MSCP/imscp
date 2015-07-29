@@ -97,5 +97,9 @@
     SSLCertificateFile {CERTIFICATE}
     SSLCertificateChainFile {CERTIFICATE}
 
+    # SECTION hsts_enabled BEGIN.
+    Header always set Strict-Transport-Security "max-age=31536000"
+    # SECTION hsts_enabled END.
+
     Include {HTTPD_CUSTOM_SITES_DIR}/{DOMAIN_NAME}.conf
 </VirtualHost>

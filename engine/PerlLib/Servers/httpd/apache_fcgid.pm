@@ -2025,6 +2025,12 @@ sub _cleanTemplate
 		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
 	}
 
+	if($filename =~ /^domain_ssl?\.tpl$/) {
+		unless($data->{'HSTS_SUPPORT'}) {
+			$$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
+		}
+	}
+
 	$$cfgTpl =~ s/^[ \t]*#.*?(?:BEGIN|END)\.\n//gmi;
 	$$cfgTpl =~ s/\n{3}/\n\n/g;
 

@@ -548,7 +548,7 @@ sub _buildApacheConfFiles
 	});
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->enableModules('cgid proxy proxy_http rewrite ssl suexec');
+	$rs = $self->{'httpd'}->enableModules('cgid proxy proxy_http rewrite ssl headers suexec');
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->enableSites('00_nameserver.conf');

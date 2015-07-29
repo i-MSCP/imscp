@@ -236,6 +236,10 @@ sub _getHttpdData
 			exists $certData->{$self->{'subdomain_id'}} &&
 			$self->isValidCertificate($self->{'subdomain_name'} . '.' . $self->{'user_home'});
 
+		my $allowHSTS =
+			$haveCert &&
+            $certData->{$self->{'allow_hsts'}} eq 'on';
+
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 			DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
@@ -256,6 +260,7 @@ sub _getHttpdData
 			CGI_SUPPORT => $self->{'domain_cgi'},
 			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'},
 			SSL_SUPPORT => $haveCert,
+			HSTS_SUPPORT => $allowHSTS,
 			BWLIMIT => $self->{'domain_traffic_limit'},
 			ALIAS => $userName . 'sub' . $self->{'subdomain_id'},
 			FORWARD => defined $self->{'subdomain_url_forward'} && $self->{'subdomain_url_forward'} ne ''
