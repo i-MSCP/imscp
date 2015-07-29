@@ -5,6 +5,7 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+	Rewritten: iMSCP::SetRights library (usage of chown and chmod perl-functions instead of calling external commands)
 	Removed: Optional dirname parameter for all iMSCP::Dir::* methods (iMSCP::Dir object = One directory)
 	Removed: Support for file/dir exclusion - iMSCP::Dir::rcopy()
 
