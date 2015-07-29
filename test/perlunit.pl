@@ -50,7 +50,7 @@ find { wanted => sub {
 			fail sprintf('%s::runUnitTests() not implemented.', $package);
 		}
 
-		chdir "FindBin::Bin/Perl";
+		chdir "$FindBin::Bin/Perl";
 	}},
 	no_chdir => 1
 }, 'Test';
