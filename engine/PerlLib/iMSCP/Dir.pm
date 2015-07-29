@@ -255,7 +255,9 @@ sub rcopy
 	while (readdir $dh) {
 		if($_ ne '.' && $_ ne '..') {
 			my $src = "$self->{'dirname'}/$_";
+			print "Src: $src\n";
 			my $target = "$destdir/$_";
+			print "Target: $target\n";
 
 			if (-d $src) {
 				my $opts = {};
