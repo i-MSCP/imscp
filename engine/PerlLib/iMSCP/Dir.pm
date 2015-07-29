@@ -250,14 +250,13 @@ sub rcopy
 	my ($self, $destdir, $options) = @_;
 	$options = { } unless defined $options && ref $options eq 'HASH';
 	defined $destdir or die("Missing destdir parameter");
+	-d $destdir or die(sprintf('Could not copy %s to %s: %s must exist', $self->{'dirname'}, $destdir, $destdir));
 	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open %s', $self->{'dirname'}));
 
 	while (readdir $dh) {
 		if($_ ne '.' && $_ ne '..') {
 			my $src = "$self->{'dirname'}/$_";
-			print "Src: $src\n";
 			my $target = "$destdir/$_";
-			print "Target: $target\n";
 
 			if (-d $src) {
 				my $opts = {};

@@ -87,7 +87,7 @@ sub ownerSetExpectedOwnerAndGroup
 sub getFilesDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge' )->getFiles() };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo/quux' )->getFiles() };
 	$@ && $@ =~ /Could not open/;
 }
 
@@ -106,7 +106,7 @@ sub getFilesReturnExpectedFilteredFiletypes
 sub getDirsDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge' )->getDirs() };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo/quux' )->getDirs() };
 	$@ && $@ =~ /Could not open/;
 }
 
@@ -119,7 +119,7 @@ sub getDirsReturnExpectedDirnames
 sub getAllDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge' )->getAll() };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foor/quux' )->getAll() };
 	$@ && $@ =~ /Could not open/;
 }
 
@@ -132,7 +132,7 @@ sub getAllReturnExpectedDirnamesAndFilenames
 sub isEmptyDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge' )->isEmpty() };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo/quux' )->isEmpty() };
 	$@ && $@ =~ /Could not open/;
 }
 
@@ -240,15 +240,22 @@ sub rcopyDieOnMissingDestdirParameter
 sub rcopyDieIfCannotOpenDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge' )->rcopy( '/tmp/foo' ) };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo/quux' )->rcopy( '/tmp/bar' ) };
 	$@ && $@ =~ /Could not open/;
+}
+
+sub rcopyDieIfDestDirDoNotExists
+{
+	local $@;
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/baz' ) };
+	$@ && $@ =~ /Could not copy/;
 }
 
 sub rcopyCanCopyDirnameToDestdir
 {
 	setupTestEnv();
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/foo/quux' ) };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/bar' ) };
 	!$@;
 }
 
@@ -256,23 +263,23 @@ sub rcopyCanCopyDirnameToDestdirWithPreserveOption
 {
 	setupTestEnv();
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/foo/quux', { preserve => 1 } ) };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/bar', { preserve => 1 } ) };
 	!$@;
 }
 
 sub rcopyPreserveFileAttributes
 {
 	setupTestEnv();
-	iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/foo/quux', { preserve => 1 } );
-	my (undef, undef, $mode, undef, $uid, $gid) = lstat('/tmp/foo/quux/bar');
+	iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/bar', { preserve => 1 } );
+	my (undef, undef, $mode, undef, $uid, $gid) = lstat('/tmp/bar/bar');
 	getpwuid($uid) eq 'nobody' && getgrgid($gid) eq 'nogroup' && sprintf('%o', $mode & 07777) eq 2555;
 }
 
 sub rcopyDoNotPreserveFileAttributes
 {
 	setupTestEnv();
-	iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/foo/quux' );
-	my (undef, undef, $mode, undef, $uid, $gid) = lstat('/tmp/foo/quux/bar');
+	iMSCP::Dir->new( dirname => '/tmp/foo' )->rcopy( '/tmp/bar' );
+	my (undef, undef, $mode, undef, $uid, $gid) = lstat('/tmp/bar/bar');
 	getpwuid($uid) ne 'nobody' && getgrgid($gid) ne 'nogroup' && sprintf('%o', $mode & 07777) ne 2555;
 }
 
@@ -286,7 +293,7 @@ sub moveDirDieOnMissingDestdirParameter
 sub moveDirDieOnInexistentDirname
 {
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/corge' )->moveDir( '/tmp/foo/corge' ) };
+	eval { iMSCP::Dir->new( dirname => '/tmp/baz' )->moveDir( '/tmp/bar/foo' ) };
 	$@ && $@ =~ /doesn't exits/;
 }
 
@@ -294,7 +301,7 @@ sub moveDirCanMoveDirnameToDestDir
 {
 	setupTestEnv();
 	local $@;
-	eval { iMSCP::Dir->new( dirname => '/tmp/foo/bar' )->moveDir( '/tmp/foo/quux' ) };
+	eval { iMSCP::Dir->new( dirname => '/tmp/foo' )->moveDir( '/tmp/bar/foo' ) };
 	!$@;
 }
 
@@ -302,7 +309,7 @@ my $assetDir;
 
 sub cleanupTestEnv
 {
-	system 'rm', '-Rf', '/tmp/foo';
+	system 'rm', '-Rf', '/tmp/foo', '/tmp/bar';
 }
 
 sub setupTestEnv
@@ -310,6 +317,7 @@ sub setupTestEnv
 	cleanupTestEnv();
 	system 'cp', '-R', '-f', $assetDir, '/tmp/foo';
 	mkdir '/tmp/foo/qux';
+	mkdir '/tmp/bar';
 	chown scalar getpwnam('nobody'), scalar getgrnam('nogroup'), '/tmp/foo/bar';
 	chmod 02555, '/tmp/foo/bar';
 }
@@ -317,79 +325,81 @@ sub setupTestEnv
 sub runUnitTests
 {
 	$assetDir = shift . '/foo';
-
 	cleanupTestEnv();
-
-	plan tests => 41;  # Number of tests planned for execution
+	plan tests => 42;  # Number of tests planned for execution
 
 	if(require_ok('iMSCP::Dir')) {
-		# new()
-		new_ok 'iMSCP::Dir', [ { dirname => '/tmp/foo' } ], 'iMSCP::Dir::new()';
-		ok newDieOnMissingDirnameOption, 'iMSCP::Dir::new() die on missing dirname option';
+		eval {
+			# new()
+			new_ok 'iMSCP::Dir', [ { dirname => '/tmp/foo' } ], 'iMSCP::Dir::new()';
+			ok newDieOnMissingDirnameOption, 'iMSCP::Dir::new() die on missing dirname option';
 
-		# mode()
-		ok modeDieOnMissingModeParameter, 'iMSCP::Dir::mode() die on missing mode parameter';
-		ok modeDieOnInexistentDirname, 'iMSCP::Dir::mode() die on inexistent dirname';
-		ok modeSetExpectedModeOnDirname, 'iMSCP::Dir::mode() set expected mode on dirname';
+			# mode()
+			ok modeDieOnMissingModeParameter, 'iMSCP::Dir::mode() die on missing mode parameter';
+			ok modeDieOnInexistentDirname, 'iMSCP::Dir::mode() die on inexistent dirname';
+			ok modeSetExpectedModeOnDirname, 'iMSCP::Dir::mode() set expected mode on dirname';
 
-		# owner()
-		ok ownerDieOnMissingOwnerParameter, 'iMSCP::Dir::owner() die on missing owner parameter';
-		ok ownerDieOnMissingGroupParameter, 'iMSCP::Dir::owner() die on missing group parameter';
-		ok ownerDieOnInexistentUser, 'iMSCP::Dir::owner() die on inexistent user';
-		ok ownerDieOnInexistentGroup, 'iMSCP::Dir::owner() die on inexistent group';
-		ok ownerSetExpectedOwnerAndGroup, 'iMSCP::Dir::owner() set expected owner and group on dirname';
+			# owner()
+			ok ownerDieOnMissingOwnerParameter, 'iMSCP::Dir::owner() die on missing owner parameter';
+			ok ownerDieOnMissingGroupParameter, 'iMSCP::Dir::owner() die on missing group parameter';
+			ok ownerDieOnInexistentUser, 'iMSCP::Dir::owner() die on inexistent user';
+			ok ownerDieOnInexistentGroup, 'iMSCP::Dir::owner() die on inexistent group';
+			ok ownerSetExpectedOwnerAndGroup, 'iMSCP::Dir::owner() set expected owner and group on dirname';
 
-		# getFiles()
-		ok getFilesDieIfCannotOpenDirname, 'iMSCP::Dir::getFiles() die if cannot open dirname';
-		is_deeply getFilesReturnExpectedFilenames, [ sort 'bar.txt', 'baz.txt', 'foo.php' ],
-			'iMSCP::Dir::getFiles() return expected filenames';
-		is_deeply getFilesReturnExpectedFilteredFiletypes, [ 'foo.php' ],
-			'iMSCP::Dir::getFiles() return expected filtered file type';
+			# getFiles()
+			ok getFilesDieIfCannotOpenDirname, 'iMSCP::Dir::getFiles() die if cannot open dirname';
+			is_deeply getFilesReturnExpectedFilenames, [ sort 'bar.txt', 'baz.txt', 'foo.php' ],
+				'iMSCP::Dir::getFiles() return expected filenames';
+			is_deeply getFilesReturnExpectedFilteredFiletypes, [ 'foo.php' ],
+				'iMSCP::Dir::getFiles() return expected filtered file type';
 
-		# getDirs()
-		ok getDirsDieIfCannotOpenDirname, 'iMSCP::Dir::getDirs() die if cannot open dirname';
-		is_deeply getDirsReturnExpectedDirnames, [ sort 'bar', 'baz', 'foo', 'qux' ],
-			'iMSCP::Dir::getDirs() return expected dirnames';
+			# getDirs()
+			ok getDirsDieIfCannotOpenDirname, 'iMSCP::Dir::getDirs() die if cannot open dirname';
+			is_deeply getDirsReturnExpectedDirnames, [ sort 'bar', 'baz', 'foo', 'qux' ],
+				'iMSCP::Dir::getDirs() return expected dirnames';
 
-		# getAll()
-		ok getAllDieIfCannotOpenDirname, 'iMSCP::Dir::getAll() die if cannot open dirname';
-		is_deeply getAllReturnExpectedDirnamesAndFilenames,
-			[ sort 'bar', 'baz', 'foo', 'qux', 'bar.txt', 'baz.txt', 'foo.php' ],
-			'iMSCP::Dir::getAll() return expected dirnames and filenames';
+			# getAll()
+			ok getAllDieIfCannotOpenDirname, 'iMSCP::Dir::getAll() die if cannot open dirname';
+			is_deeply getAllReturnExpectedDirnamesAndFilenames,
+				[ sort 'bar', 'baz', 'foo', 'qux', 'bar.txt', 'baz.txt', 'foo.php' ],
+				'iMSCP::Dir::getAll() return expected dirnames and filenames';
 
-		# isEmpty()
-		ok isEmptyDieIfCannotOpenDirname, 'iMSCP::Dir::isEmpty() die if cannot open dirname';
-		ok isEmptyReturnTrueIfDirnameIsEmpty, 'iMSCP::Dir::isEmpty() return true if dirname is empty';
-		ok isEmptyReturnFalseIfDirnameIsNotEmpty, 'iMSCP::Dir::isEmpty() return false if dirname is not empty';
+			# isEmpty()
+			ok isEmptyDieIfCannotOpenDirname, 'iMSCP::Dir::isEmpty() die if cannot open dirname';
+			ok isEmptyReturnTrueIfDirnameIsEmpty, 'iMSCP::Dir::isEmpty() return true if dirname is empty';
+			ok isEmptyReturnFalseIfDirnameIsNotEmpty, 'iMSCP::Dir::isEmpty() return false if dirname is not empty';
 
-		# make()
-		ok makeDieIfDirnameAlreadyExistsAsFile, 'iMSCP::Dir::make() die if dirname already exists as file';
-		ok makeCanCreateDir, 'iMSCP::Dir::make() can create dirname';
-		ok makeCanCreatePath, 'iMSCP::Dir::make() can create dirpath';
-		ok makeSetExpectedOwnerOnNewlyCreatedDirname, 'iMSCP::Dir::make() set expected owner on newly created dirname';
-		ok makeSetExpectedGroupOnNewlyCreatedDirname, 'iMSCP::Dir::make() set expected group on newly created dirname';
-		ok makeSetExpectedModeOnNewlyCreatedDirname, 'iMSCP::Dir::make() set expected mode on newly created dirname';
-		ok makeSetExpectedOwnerOnExistentDirname, 'iMSCP::Dir::make() set expected owner on existent dirname';
-		ok makeSetExpectedGroupOnExistentDirname, 'iMSCP::Dir::Make() set expected group on existent dirname';
-		ok makeSetExpectedModeOnExistentDirname, 'iMSCP::Dir::make() set expected mode on existent dirname';
+			# make()
+			ok makeDieIfDirnameAlreadyExistsAsFile, 'iMSCP::Dir::make() die if dirname already exists as file';
+			ok makeCanCreateDir, 'iMSCP::Dir::make() can create dirname';
+			ok makeCanCreatePath, 'iMSCP::Dir::make() can create dirpath';
+			ok makeSetExpectedOwnerOnNewlyCreatedDirname, 'iMSCP::Dir::make() set expected owner on newly created dirname';
+			ok makeSetExpectedGroupOnNewlyCreatedDirname, 'iMSCP::Dir::make() set expected group on newly created dirname';
+			ok makeSetExpectedModeOnNewlyCreatedDirname, 'iMSCP::Dir::make() set expected mode on newly created dirname';
+			ok makeSetExpectedOwnerOnExistentDirname, 'iMSCP::Dir::make() set expected owner on existent dirname';
+			ok makeSetExpectedGroupOnExistentDirname, 'iMSCP::Dir::Make() set expected group on existent dirname';
+			ok makeSetExpectedModeOnExistentDirname, 'iMSCP::Dir::make() set expected mode on existent dirname';
 
-		# remove()
-		ok removeCanRemoveDir, 'iMSCP::Dir::remove() can remove dirname';
-		ok removeCanRemovePath, 'iMSCP::Dir::remove() can remove dirpath';
+			# remove()
+			ok removeCanRemoveDir, 'iMSCP::Dir::remove() can remove dirname';
+			ok removeCanRemovePath, 'iMSCP::Dir::remove() can remove dirpath';
 
-		# rcopy()
-		ok rcopyDieOnMissingDestdirParameter, 'iMSCP::Dir::rcopy() die on missing destdir parameter';
-		ok rcopyDieIfCannotOpenDirname, 'iMSCP::Dir::rcopy() die if cannot open dirname';
-		ok rcopyCanCopyDirnameToDestdir, 'iMSCP::Dir::rcopy() can copy dirname to destdir';
-		ok rcopyCanCopyDirnameToDestdirWithPreserveOption, 'iMSCP::Dir::rcopy can copy dirname to destdir with preserve option';
-		ok rcopyPreserveFileAttributes, 'iMSCP::Dir::rcopy() preserve file attributes';
-		ok rcopyDoNotPreserveFileAttributes, 'iMSCP::Dir::rcopy() do not preserve file attributes';
+			# rcopy()
+			ok rcopyDieOnMissingDestdirParameter, 'iMSCP::Dir::rcopy() die on missing destdir parameter';
+			ok rcopyDieIfCannotOpenDirname, 'iMSCP::Dir::rcopy() die if cannot open dirname';
+			ok rcopyDieIfDestDirDoNotExists, 'iMSCP::Dir::rcopy() die if destdir do not exists';
+			ok rcopyCanCopyDirnameToDestdir, 'iMSCP::Dir::rcopy() can copy dirname to destdir';
+			ok rcopyCanCopyDirnameToDestdirWithPreserveOption, 'iMSCP::Dir::rcopy can copy dirname to destdir with preserve option';
+			ok rcopyPreserveFileAttributes, 'iMSCP::Dir::rcopy() preserve file attributes';
+			ok rcopyDoNotPreserveFileAttributes, 'iMSCP::Dir::rcopy() do not preserve file attributes';
 
-		# moveDir()
-		ok moveDirDieOnMissingDestdirParameter, 'iMSCP::Dir::moveDir() die on missing destdir parameter';
-		ok moveDirDieOnInexistentDirname, 'iMSCP::Dir::moveDir() die on inexistent dirname';
-		ok moveDirCanMoveDirnameToDestDir, 'iMSCP::Dir::moveDir() can move dirname to destdir';
+			# moveDir()
+			ok moveDirDieOnMissingDestdirParameter, 'iMSCP::Dir::moveDir() die on missing destdir parameter';
+			ok moveDirDieOnInexistentDirname, 'iMSCP::Dir::moveDir() die on inexistent dirname';
+			ok moveDirCanMoveDirnameToDestDir, 'iMSCP::Dir::moveDir() can move dirname to destdir';
+		};
 
+		diag sprintf('A test failed unexpectedly: %s', $@) if $@;
 		cleanupTestEnv;
 	}
 }

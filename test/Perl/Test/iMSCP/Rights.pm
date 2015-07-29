@@ -148,26 +148,27 @@ sub setupTestEnv
 sub runUnitTests
 {
 	$assetDir = shift . '/foo';
-
 	cleanupTestEnv();
-
 	plan tests => 14; # Number of tests planned for execution
 
 	if(require_ok('iMSCP::Rights')) {
-		ok setRightsDieOnMissingOptions, 'iMSCP::Rights::setRights() die on missing option';
-		ok setRightsDieOnUnallowedMixedOptions, 'iMSCP::Rights::setRights() die on unallowed mixed options';
-		ok setRightsDieOnInexistentTarget, 'iMSCP::Rights() die on inexistent target';
-		ok setRightsDieOnInexistentUser, 'iMSCP::Rights::setRights() die on inexistent user';
-		ok setRightsDieOnInexistentGroup, 'iMSCP::Rights::setRights() die on inexistent group';
-		ok setRightsSetExpectedMode, 'iMSCP::Rights::setRights() set expected mode';
-		ok setRightsSetExpectedModeRecursively, 'iMSCP::Rights::setRights() set exepcted mode recursively';
-		ok setRightsSetExpectedDirmode, 'iMSCP::Rights::setRights() set expected dirmode';
-		ok setRightsSetExpectedFilemode, 'iMSCP::Rights::setRights() set expected filemode';
-		ok setRightsSetExpectedUser, 'iMSCP::Rights::setRights() set expected user';
-		ok setRightsSetExpectedUserRecursively, 'iMSCP::Rights::setRights() set expected user recursively';
-		ok setRightsSetExpectedGroup, 'iMSCP::Rights::setRights() set expected group';
-		ok setRightsSetExpectedGroupRecursively, 'iMSCP::Rights::setRights() set expected group recursively';
+		eval {
+			ok setRightsDieOnMissingOptions, 'iMSCP::Rights::setRights() die on missing option';
+			ok setRightsDieOnUnallowedMixedOptions, 'iMSCP::Rights::setRights() die on unallowed mixed options';
+			ok setRightsDieOnInexistentTarget, 'iMSCP::Rights() die on inexistent target';
+			ok setRightsDieOnInexistentUser, 'iMSCP::Rights::setRights() die on inexistent user';
+			ok setRightsDieOnInexistentGroup, 'iMSCP::Rights::setRights() die on inexistent group';
+			ok setRightsSetExpectedMode, 'iMSCP::Rights::setRights() set expected mode';
+			ok setRightsSetExpectedModeRecursively, 'iMSCP::Rights::setRights() set exepcted mode recursively';
+			ok setRightsSetExpectedDirmode, 'iMSCP::Rights::setRights() set expected dirmode';
+			ok setRightsSetExpectedFilemode, 'iMSCP::Rights::setRights() set expected filemode';
+			ok setRightsSetExpectedUser, 'iMSCP::Rights::setRights() set expected user';
+			ok setRightsSetExpectedUserRecursively, 'iMSCP::Rights::setRights() set expected user recursively';
+			ok setRightsSetExpectedGroup, 'iMSCP::Rights::setRights() set expected group';
+			ok setRightsSetExpectedGroupRecursively, 'iMSCP::Rights::setRights() set expected group recursively';
+		};
 
+		diag sprintf('A test failed unexpectedly: %s', $@) if $@;
 		cleanupTestEnv;
 	}
 }
