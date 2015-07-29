@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 210;
+	protected $lastUpdate = 211;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3283,5 +3283,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$this->removeDuplicateRowsOnColumns('server_traffic', 'traff_time');
 
 		return $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time');
+	}
+
+	/**
+	 * Add column for HSTS feature
+	 *
+	 * @return null|string SQL statement to be executed
+	 */
+	protected function r211()
+	{
+		return $this->addColumn(
+			'ssl_certs',
+			'allow_hsts',
+			"VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off' AFTER ca_bundle"
+		);
 	}
 }
