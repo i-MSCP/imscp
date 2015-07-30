@@ -8,7 +8,7 @@ addons:
     - fakeroot
 
 install:
-	- true # bypass default install process
+    - true # bypass default install process
 
 notifications:
   irc:
