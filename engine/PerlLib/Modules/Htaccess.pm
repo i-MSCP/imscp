@@ -28,6 +28,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
+use File::Spec;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -219,11 +220,8 @@ sub _getHttpdData
 	unless($self->{'httpd'}) {
 		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-		my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-		my $pathDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}";
-		$pathDir =~ s~/+~/~g;
-		$hDir =~ s~/+~/~g;
+		my $hDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}");
+		my $pathDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}");
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},

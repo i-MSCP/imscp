@@ -35,6 +35,7 @@ use iMSCP::Rights;
 use iMSCP::OpenSSL;
 use iMSCP::Ext2Attributes qw(clearImmutable);
 use Net::LibIDN qw/idn_to_unicode/;
+use File::Spec;
 use Scalar::Defer;
 use parent 'Modules::Abstract';
 
@@ -434,10 +435,7 @@ sub _getHttpdData
 	unless($self->{'httpd'}) {
 		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-		my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-		$homeDir =~ s~/+~/~g;
-		$homeDir =~ s~/$~~g;
+		my $homeDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}");
 
 		my $db = iMSCP::Database->factory();
 
@@ -658,10 +656,7 @@ sub _getPackagesData
 	unless($self->{'packages'}) {
 		my $userName = my $groupName  = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-		my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-		$homeDir =~ s~/+~/~g;
-		$homeDir =~ s~/$~~g;
+		my $homeDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}");
 
 		$self->{'packages'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},

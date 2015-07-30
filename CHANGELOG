@@ -6,6 +6,7 @@ Git 1.2.x
 
 BACKEND
 	Added: HSTS (HTTP Strict Transport Security) feature
+	Fixed: Cleanup paths using File::Spec::canonpath() instead of dedicated regexps
 	Fixed: Default phpini data must be lazy loaded (only once per domain module) to save SQL queries
 	Rewritten: iMSCP::SetRights library (usage of chown and chmod perl-functions instead of calling external commands)
 	Removed: Optional dirname parameter for all iMSCP::Dir::* methods (iMSCP::Dir object = One directory)
