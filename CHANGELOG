@@ -22,6 +22,7 @@ TESTS
 
 YOUTRACK
 	Fixed: #IP-1393 Unable to disable backup feature for existing domains
+	Fixed: #IP-1399 Add Auto-Submitted Header to Autoreply Emails
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.9

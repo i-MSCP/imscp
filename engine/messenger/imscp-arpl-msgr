@@ -89,6 +89,7 @@ eval {
 					'From' => $from,
 					'To' => $to,
 					'Subject' => '[Auto-Reply] ' . $oHead->get('Subject'),
+					'Auto-Submitted' => 'auto-generated',
 					'X-Autoresponse-From' => $from,
 					'X-Mailer' => "i-MSCP Auto-Reply Mailer"
 				);
