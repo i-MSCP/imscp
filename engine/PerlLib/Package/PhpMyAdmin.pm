@@ -108,7 +108,7 @@ sub uninstall
 sub setPermissionsListener
 {
 	require Package::PhpMyAdmin::Installer;
-
+	debug(sprintf('Calling action setGuiPermissions on Package::PhpMyAdmin::Installer'));
 	Package::PhpMyAdmin::Installer->getInstance()->setGuiPermissions();
 }
 

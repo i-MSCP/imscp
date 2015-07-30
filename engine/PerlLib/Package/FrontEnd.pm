@@ -174,6 +174,7 @@ sub setGuiPermissions
 	return $rs if $rs;
 
 	require Package::FrontEnd::Installer;
+	debug(sprintf('Calling action setGuiPermissions on Package::FrontEnd::Installer'));
 	$rs = Package::FrontEnd::Installer->getInstance()->setGuiPermissions();
 	return $rs if $rs;
 

@@ -332,7 +332,7 @@ sub askPorts
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_setupSsl();
 	return $rs if $rs;
@@ -371,7 +371,7 @@ sub install
 
 sub setGuiPermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -422,7 +422,7 @@ sub setGuiPermissions
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -520,7 +520,7 @@ sub setEnginePermissions
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
 	$self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
@@ -596,9 +596,9 @@ sub _setupSsl
 
 =cut
 
-sub _setHttpdVersion()
+sub _setHttpdVersion
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my ($stderr);
 	my $rs = execute('nginx -v', undef, \$stderr);
@@ -628,7 +628,7 @@ sub _setHttpdVersion()
 
 sub _addMasterWebUser
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndAddUser');
 	return $rs if $rs;
@@ -750,7 +750,7 @@ sub _addMasterWebUser
 
 sub _makeDirs
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndMakeDirs');
 	return $rs if $rs;
@@ -771,11 +771,16 @@ sub _makeDirs
 	$rs = iMSCP::Dir->new( dirname => "$phpStarterDir/master" )->remove();
 	return $rs if $rs;
 
+	# Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
+	$rs = iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CACHE_DIR'} )->remove();
+	return $rs if $rs;
+
 	for (
+		[ $self->{'config'}->{'HTTPD_CACHE_DIR'}, $rootUName, $rootUName, 0755 ],
 		[ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootUName, 0755 ],
+		[ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ],
 		[ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootUName, 0755 ],
 		[ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootUName, 0755 ],
-		[ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ],
 		[ $phpStarterDir, $rootUName, $rootGName, 0555 ],
 		[ "$phpStarterDir/master", $panelUName, $panelGName, 0550 ],
 		[ "$phpStarterDir/master/php5", $panelUName, $panelGName, 0550 ]
@@ -797,7 +802,7 @@ sub _makeDirs
 
 sub _buildPhpConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEnddBuildPhpConfig');
 	return $rs if $rs;
@@ -875,7 +880,7 @@ sub _buildPhpConfig
 
 sub _buildHttpdConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildHttpdConfig');
 	return $rs if $rs;
@@ -1059,7 +1064,7 @@ sub _buildHttpdConfig
 
 sub _buildInitDefaultFile
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildInitDefaultFile');
 	return $rs if $rs;
@@ -1103,7 +1108,7 @@ sub _buildInitDefaultFile
 
 sub _addDnsZone
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeNamedAddMasterZone');
 	return $rs if $rs;
@@ -1130,7 +1135,7 @@ sub _addDnsZone
 
 sub _saveConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rootUname = $main::imscpConfig{'ROOT_USER'};
 	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};

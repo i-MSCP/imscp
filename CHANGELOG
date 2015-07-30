@@ -14,6 +14,7 @@ BACKEND
 
 FRONTEND
 	Added: HSTS (HTTP Strict Transport Security) feature
+	Fixed: Possible ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx cache directory
 
 TESTS
 	Added: Travis CI support for Unit testing
