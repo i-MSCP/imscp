@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '210'),
+('DATABASE_REVISION', '211'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -608,6 +608,7 @@ CREATE TABLE IF NOT EXISTS `ssl_certs` (
   `private_key` text COLLATE utf8_unicode_ci NOT NULL,
   `certificate` text COLLATE utf8_unicode_ci NOT NULL,
   `ca_bundle` text COLLATE utf8_unicode_ci,
+  `allow_hsts` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
   `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`cert_id`),
   UNIQUE `domain_id_domain_type` (`domain_id`, `domain_type`)

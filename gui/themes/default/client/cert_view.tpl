@@ -18,6 +18,10 @@
 		</tr>
 		<!-- EDP: ssl_certificate_status -->
 		<tr>
+			<td><label for="allow_hsts">{TR_ALLOW_HSTS}</label></td>
+			<td><input type="checkbox" id="allow_hsts" name="allow_hsts"{HSTS_CHECKED}></td>
+		</tr>
+		<tr>
 			<td><label for="selfsigned">{TR_GENERATE_SELFSIGNED_CERTIFICAT}</label></td>
 			<td><input type="checkbox" id="selfsigned" name="selfsigned"></td>
 		</tr>

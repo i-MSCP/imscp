@@ -245,6 +245,7 @@ function client_addSslCert($domainId, $domainType)
 	$config = iMSCP_Registry::get('config');
 
 	$domainName = _client_getDomainName($domainId, $domainType);
+	$allowHSTS = isset($_POST['allow_hsts']) ? 'on' : 'off';
 	$selfSigned = isset($_POST['selfsigned']);
 
 	if($domainName !== false) {
@@ -350,12 +351,12 @@ function client_addSslCert($domainId, $domainType)
 							exec_query(
 								'
 									INSERT INTO ssl_certs (
-										domain_id, domain_type, private_key, certificate, ca_bundle, status
+										domain_id, domain_type, private_key, certificate, ca_bundle, allow_hsts, status
 									) VALUES (
-										?, ?, ?, ?, ?, ?
+										?, ?, ?, ?, ?, ?, ?
 									)
 								',
-								array($domainId, $domainType, $privateKeyStr, $certificateStr, $caBundleStr, 'toadd')
+								array($domainId, $domainType, $privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, 'toadd')
 							);
 						} else { // Update existing certificate
 							exec_query(
@@ -363,7 +364,7 @@ function client_addSslCert($domainId, $domainType)
 									UPDATE
 										ssl_certs
 									SET
-										private_key = ?, certificate = ?, ca_bundle = ?, status = ?
+										private_key = ?, certificate = ?, ca_bundle = ?, allow_hsts = ?, status = ?
 									WHERE
 										cert_id = ?
 									AND
@@ -372,7 +373,7 @@ function client_addSslCert($domainId, $domainType)
 										domain_type = ?
 								',
 								array(
-									$privateKeyStr, $certificateStr, $caBundleStr, 'tochange', $certId, $domainId,
+									$privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, 'tochange', $certId, $domainId,
 									$domainType
 								)
 							);
@@ -493,6 +494,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 			$privateKey = $row['private_key'];
 			$certificate = $row['certificate'];
 			$caBundle = $row['ca_bundle'];
+			$allowHSTS = ($row['allow_hsts'] == 'on') ? true : false;
 			$trAction = tr('Update');
 			$status = $row['status'];
 			$tpl->assign('STATUS', translate_dmn_status($status));
@@ -504,6 +506,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 				$privateKey = '';
 				$certificate = '';
 				$caBundle = '';
+				$allowHSTS = false;
 				$tpl->assign('SSL_CERTIFICATE_STATUS', '');
 			} else {
 				set_page_message('SSL feature is currently disabled.', 'static_warning');
@@ -520,11 +523,18 @@ function client_generatePage($tpl, $domainId, $domainType)
 			$privateKey = $_POST['private_key'];
 			$certificate = $_POST['certificate'];
 			$caBundle = $_POST['ca_bundle'];
+			$allowHSTS = isset($_POST['allow_hsts']);
 		}
+
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+
+		$checked = $cfg->HTML_CHECKED;
 
 		$tpl->assign(array(
 			'TR_DYNAMIC_TITLE' => $dynTitle,
 			'DOMAIN_NAME' => tohtml(encode_idna($domainName)),
+			'HSTS_CHECKED' => $allowHSTS ? $checked : '',
 			'KEY_CERT' => tohtml(trim($privateKey)),
 			'CERTIFICATE' => tohtml(trim($certificate)),
 			'CA_BUNDLE' => tohtml(trim($caBundle)),
@@ -587,6 +597,7 @@ if(
 		'TR_CERTIFICATE_DATA' => tr('Certificate data'),
 		'TR_CERT_FOR' => tr('Common name'),
 		'TR_STATUS' => tr('Status'),
+		'TR_ALLOW_HSTS' => tr('Allow HTTP Strict Transport Security'),
 		'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
 		'TR_PASSWORD' => tr('Private key passphrase if any'),
 		'TR_PRIVATE_KEY' => tr('Private key'),
