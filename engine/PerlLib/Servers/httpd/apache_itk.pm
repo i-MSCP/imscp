@@ -1915,10 +1915,8 @@ sub _cleanTemplate
 		$$cfgTpl = replaceBloc("# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', $$cfgTpl);
 	}
 
-	if($filename =~ /^domain_ssl?\.tpl$/) {
-		unless($data->{'HSTS_SUPPORT'}) {
-			$$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
-		}
+	if($filename =~ /^domain_ssl?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
+		$$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
 	}
 
 	$$cfgTpl =~ s/^[ \t]+#.*?(?:BEGIN|END)\.\n//gmi;
