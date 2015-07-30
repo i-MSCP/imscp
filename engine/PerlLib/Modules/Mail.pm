@@ -176,8 +176,7 @@ sub _getMtaData
 	my $self = $_[0];
 
 	unless($self->{'mta'}) {
-		my $mail = $self->{'mail_addr'};
-		$mail =~ s/^\s+//;
+		(my $mail = $self->{'mail_addr'}) =~ s/^\s+//;
 
 		$self->{'mta'} = {
 			DOMAIN_NAME => (split('@', $mail))[1],
@@ -238,8 +237,7 @@ sub _getPoData
 	my $self = $_[0];
 
 	unless($self->{'po'}) {
-		my $mail = $self->{mail_addr};
-		$mail =~ s/^\s+//;
+		(my $mail = $self->{'mail_addr'}) =~ s/^\s+//;
 
 		$self->{'po'} = {
 			DOMAIN_NAME => (split('@', $mail))[1],
@@ -268,8 +266,7 @@ sub _getPackagesData
 	my ($self, $action) = @_;
 
 	unless($self->{'packages'}) {
-		my $mail = $self->{'mail_addr'};
-		$mail =~ s/^\s+//;
+		(my $mail = $self->{'mail_addr'}) =~ s/^\s+//;
 
 		$self->{'packages'} = {
 			DOMAIN_NAME => (split('@', $mail))[1],
