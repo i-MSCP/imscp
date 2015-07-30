@@ -16,7 +16,7 @@ addons:
     - fakeroot
 
 install:
-  - echo "Nothing to do there..."
+  - true # bypass default install process
 
 notifications:
   irc:
