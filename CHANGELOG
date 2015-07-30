@@ -21,7 +21,7 @@ TESTS
 	Added: Unit tests for the iMSCP::SetRights library
 
 YOUTRACK
-	Fixed: #IP-1393: Unable to disable backup feature for existing domains
+	Fixed: #IP-1393 Unable to disable backup feature for existing domains
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.9
@@ -67,13 +67,13 @@ INSTALLER
 	Fixed: Invalid version format (non-numeric data) when updating from an RC release
 
 YOUTRACK
-	Fixed: #IP-0792: Allow customers to see real-time http access and error logs
-	Fixed: #IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.
-	Fixed: #IP-1363: Unable to suspend customer account
-	Fixed: #IP-1364: Custom DNS records are lost when editing domain properties
-	Fixed: #IP-1371: Bug - When removing domain alias, the vhost link in /etc/apache2/sites-enabled is not removed
-	Fixed: #IP-1373: Compliance with RFC 2142 - Add a hostmaster address by default
-	Fixed: #IP-1374: Allows reuse of same SQL username for i-MSCP managed services such as phpmyadmin, proftpd...
+	Fixed: #IP-0792 Allow customers to see real-time http access and error logs
+	Fixed: #IP-1362 Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.
+	Fixed: #IP-1363 Unable to suspend customer account
+	Fixed: #IP-1364 Custom DNS records are lost when editing domain properties
+	Fixed: #IP-1371 Bug - When removing domain alias, the vhost link in /etc/apache2/sites-enabled is not removed
+	Fixed: #IP-1373 Compliance with RFC 2142 - Add a hostmaster address by default
+	Fixed: #IP-1374 Allows reuse of same SQL username for i-MSCP managed services such as phpmyadmin, proftpd...
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.8
@@ -125,7 +125,7 @@ FRONTEND
 	Changed: Increased number of items to display by default in data tables (previous value was 5, it is now 10)
 
 YOUTRACK
-	Fixed: #IP-1358: Admin's tickets can't be deleted due to an additional quotation-mark in the template
+	Fixed: #IP-1358 Admin's tickets can't be deleted due to an additional quotation-mark in the template
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.5
@@ -155,7 +155,7 @@ i18N
 		Icelandic (is_IS), Spanish (es), and Serbian (sr)
 
 YOUTRACK
-	Fixed: #IP-1357: Built in Support Ticket shows wrong URL (missing Control Panel Port)
+	Fixed: #IP-1357 Built in Support Ticket shows wrong URL (missing Control Panel Port)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.4
@@ -186,7 +186,7 @@ PACKAGES
 	Fixed: users.mail_host field must be set to 'localhost' (Package::Webmail::Roundcube::Installer)
 
 YOUTRACK
-	Fixed: #IP-1353: i18n issue - Admin / System information not translatable
+	Fixed: #IP-1353 i18n issue - Admin / System information not translatable
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.3
@@ -295,23 +295,23 @@ SERVICES
 	Fixed: Disable warnings about missing SPF DNS record (As per RFC 7208, SPF DNS record is deprecated - Bind9)
 
 YOUTRACK
-	Fixed #IP-0321: When a customer deletes a domain alias, all related entities must be automatically deleted
-	Fixed #IP-1082: net2ftp SSL Bug - http scheme badly detected - Missing HTTPS server variable
-	Fixed #IP-1257: Self-signed SSL certificate - SHA256 should be used in place of SHA1
-	Fixed #IP-1275: Apache access logs are created in /<domain.tld>
-	Fixed #IP-1279: Autoresponder - Unable to get message body
-	Fixed #IP-1286: IP attachment fails on reboot (Ubuntu)
-	Fixed #IP-1292: Files from a previous plugin version must be kept if the new plugin version is not compatible
-	Fixed #IP-1314: Custom DNS SRV record - Missing TLS protocol
-	Fixed #IP-1315: Defect - Statistics overview with special characters breaks view
-	Fixed #IP-1323: Invalid query result column used in change_domain_status() function
-	Fixed #IP-1327: Unable to add subdomain (subals) - An error occurred while reading flags on ...
-	Fixed #IP-1330: Proftpd - Unable to connect to i-MSCP database
-	Fixed #IP-1332: nginx / nginx-light package configuration fail which result to i-MSCP installation failure
-	Fixed #IP-1333: Local resolver not added into resolv.conf file
-	Fixed #IP-1334: Jessie - Bind9 options from /etc/default/bind9 file are ignored
-	Fixed #IP-1340: The public/tools/filemanager folder is not removed
-	Fixed #IP-1345: MySQL - Do not touch the local /root/.my.cnf file
+	Fixed #IP-0321 When a customer deletes a domain alias, all related entities must be automatically deleted
+	Fixed #IP-1082 net2ftp SSL Bug - http scheme badly detected - Missing HTTPS server variable
+	Fixed #IP-1257 Self-signed SSL certificate - SHA256 should be used in place of SHA1
+	Fixed #IP-1275 Apache access logs are created in /<domain.tld>
+	Fixed #IP-1279 Autoresponder - Unable to get message body
+	Fixed #IP-1286 IP attachment fails on reboot (Ubuntu)
+	Fixed #IP-1292 Files from a previous plugin version must be kept if the new plugin version is not compatible
+	Fixed #IP-1314 Custom DNS SRV record - Missing TLS protocol
+	Fixed #IP-1315 Defect - Statistics overview with special characters breaks view
+	Fixed #IP-1323 Invalid query result column used in change_domain_status() function
+	Fixed #IP-1327 Unable to add subdomain (subals) - An error occurred while reading flags on ...
+	Fixed #IP-1330 Proftpd - Unable to connect to i-MSCP database
+	Fixed #IP-1332 nginx / nginx-light package configuration fail which result to i-MSCP installation failure
+	Fixed #IP-1333 Local resolver not added into resolv.conf file
+	Fixed #IP-1334 Jessie - Bind9 options from /etc/default/bind9 file are ignored
+	Fixed #IP-1340 The public/tools/filemanager folder is not removed
+	Fixed #IP-1345 MySQL - Do not touch the local /root/.my.cnf file
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.2
@@ -342,9 +342,9 @@ PLUGINS
 	Updated: API to version 0.2.17
 
 YOUTRACK
-	Fixed #IP-1259: Layout - Text goes out of statistic bar
-	Fixed #IP-1263: Access to statistics (Awstats) is broken - 404 error
-	Fixed #IP-1267: Double-quotes in the Dovecot SQL user's password must be escaped
+	Fixed: #IP-1259 Layout - Text goes out of statistic bar
+	Fixed: #IP-1263 Access to statistics (Awstats) is broken - 404 error
+	Fixed: #IP-1267 Double-quotes in the Dovecot SQL user's password must be escaped
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.1
@@ -412,31 +412,31 @@ PLUGINS
 	Updated: API to version 0.2.16
 
 YOUTRACK
-	Fixed #IP-1205: Good practices - Use "-h" as abbrev for "--help" (instead of "-?")
-	Fixed #IP-1206: Good practices - Install resolvconf only when bind9 is also installed
-	Fixed #IP-1207: Defect - DataTable - Sorting not functional for data strings containing numeric values
-	Fixed #IP-1208: Task - Untranslatable string
-	Fixed #IP-1209: Cosmetics - Data usage bar glitches on 4k screens
-	Fixed #IP-1217: Defect - Faulty cron for removing old backend logs
-	Fixed #IP-1223: Bug - Admin log shows server IP instead of user IP
-	Fixed #IP-1225: iMSCP::Service - Dovecot take more than 5 seconds to start in some contexts
-	Fixed #IP-1226: Panel maintenance mode: text message error
-	Fixed #IP-1227: Page reseller statistics shows the same max/curr traffic/disk for all resellers
-	Fixed #IP-1228: Adding SSL-certificate causes undefined index warning
-	Fixed #IP-1229: Courier - CRAM-MD5 authentication not enabled by default
-	Fixed #IP-1230: RFC 7208 states that DNS SPF shoudln't be used anymore
-	Fixed #IP-1233: Autoresponder script (imscp-arpl-msgr) cannot write in /var/log/imscp/imscp-arpl-msgr
-	Fixed #IP-1234: IPv6 addresses causes exception
-	Fixed #IP-1235: Cosmetics - Reseller overview - Exception in domain status breaks the layout
-	Fixed #IP-1238: Question mark information box not functioning when switching page
-	Fixed #IP-1239: SSL Certificate - Usage of CA certificates as provided by OS for validation
-	Fixed #IP-1240: Statistics wrong (too high) - only admin values
-	Fixed #IP-1241: Allow customers to generate self-signed SSL certificate for their domains through the frontEnd
-	Fixed #IP-1246: PHP modules - Priority order - Priority is not honored in some contexts
-	Fixed #IP-1247: Apache2 - vlogger - failed unexpectedly
-	Fixed #IP-1251: Bug - per_user/per_domain settings - wrong domains/paths in php.ini
-	Fixed #IP-1252: Unable to add SSL certificate in some contexts
-	Fixed #IP-1256: Backup script - The SQL root password is shown in processes table
+	Fixed: #IP-1205 Good practices - Use "-h" as abbrev for "--help" (instead of "-?")
+	Fixed: #IP-1206 Good practices - Install resolvconf only when bind9 is also installed
+	Fixed: #IP-1207 Defect - DataTable - Sorting not functional for data strings containing numeric values
+	Fixed: #IP-1208 Task - Untranslatable string
+	Fixed: #IP-1209 Cosmetics - Data usage bar glitches on 4k screens
+	Fixed: #IP-1217 Defect - Faulty cron for removing old backend logs
+	Fixed: #IP-1223 Bug - Admin log shows server IP instead of user IP
+	Fixed: #IP-1225 iMSCP::Service - Dovecot take more than 5 seconds to start in some contexts
+	Fixed: #IP-1226 Panel maintenance mode: text message error
+	Fixed: #IP-1227 Page reseller statistics shows the same max/curr traffic/disk for all resellers
+	Fixed: #IP-1228 Adding SSL-certificate causes undefined index warning
+	Fixed: #IP-1229 Courier - CRAM-MD5 authentication not enabled by default
+	Fixed: #IP-1230 RFC 7208 states that DNS SPF shoudln't be used anymore
+	Fixed: #IP-1233 Autoresponder script (imscp-arpl-msgr) cannot write in /var/log/imscp/imscp-arpl-msgr
+	Fixed: #IP-1234 IPv6 addresses causes exception
+	Fixed: #IP-1235 Cosmetics - Reseller overview - Exception in domain status breaks the layout
+	Fixed: #IP-1238 Question mark information box not functioning when switching page
+	Fixed: #IP-1239 SSL Certificate - Usage of CA certificates as provided by OS for validation
+	Fixed: #IP-1240 Statistics wrong (too high) - only admin values
+	Fixed: #IP-1241 Allow customers to generate self-signed SSL certificate for their domains through the frontEnd
+	Fixed: #IP-1246 PHP modules - Priority order - Priority is not honored in some contexts
+	Fixed: #IP-1247 Apache2 - vlogger - failed unexpectedly
+	Fixed: #IP-1251 Bug - per_user/per_domain settings - wrong domains/paths in php.ini
+	Fixed: #IP-1252 Unable to add SSL certificate in some contexts
+	Fixed: #IP-1256 Backup script - The SQL root password is shown in processes table
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.0
@@ -491,9 +491,9 @@ UNINSTALLER
 	Added: Backend exec mode (uninstall)
 
 YOUTRACK
-	Fixed #IP-1123: Review - PHP session handling
-	Fixed #IP-1122: Defect - Network traffic passing through the loopback interface shouldn't be monitored
-	Fixed #IP-1146: Bug - Server statistics script is broken
+	Fixed: #IP-1123 Review - PHP session handling
+	Fixed: #IP-1122 Defect - Network traffic passing through the loopback interface shouldn't be monitored
+	Fixed: #IP-1146 Bug - Server statistics script is broken
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
