@@ -234,7 +234,7 @@ sub _getHttpdData
 
 		my $haveCert = exists $certData->{$self->{'subdomain_id'}} &&
 			$self->isValidCertificate($self->{'subdomain_name'} . '.' . $self->{'user_home'});
-		my $allowHSTS = $haveCert && $certData->{$self->{'subdomain_id'}}{'allow_hsts'} eq 'on';
+		my $allowHSTS = $haveCert && $certData->{$self->{'subdomain_id'}}->{'allow_hsts'} eq 'on';
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},

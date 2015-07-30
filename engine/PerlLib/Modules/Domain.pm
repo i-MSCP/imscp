@@ -455,7 +455,7 @@ sub _getHttpdData
 		}
 
 		my $haveCert = exists $certData->{$self->{'domain_id'}} && $self->isValidCertificate($self->{'domain_name'});
-		my $allowHSTS = $haveCert && $certData->{$self->{'domain_id'}}{'allow_hsts'} eq 'on';
+		my $allowHSTS = $haveCert && $certData->{$self->{'domain_id'}}->{'allow_hsts'} eq 'on';
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
