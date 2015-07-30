@@ -7,8 +7,8 @@ addons:
     packages:
     - fakeroot
 
-before_install:
-  - cd test
+install:
+	- true # bypass default install process
 
 notifications:
   irc:
