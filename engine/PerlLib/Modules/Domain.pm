@@ -35,7 +35,15 @@ use iMSCP::Rights;
 use iMSCP::OpenSSL;
 use iMSCP::Ext2Attributes qw(clearImmutable);
 use Net::LibIDN qw/idn_to_unicode/;
+use Scalar::Defer;
 use parent 'Modules::Abstract';
+
+# Lazy-load default phpini data (only once)
+my $phpiniDefaultData = lazy {
+	my $rows = iMSCP::Database->factory()->doQuery('name', 'SELECT * FROM config WHERE name LIKE ?', 'PHPINI%');
+	(ref $rows eq 'HASH') or die($rows);
+	$rows;
+};
 
 =head1 DESCRIPTION
 
@@ -433,11 +441,6 @@ sub _getHttpdData
 
 		my $db = iMSCP::Database->factory();
 
-		my $rdata = $db->doQuery('name', 'SELECT * FROM config WHERE name LIKE ?', 'PHPINI%');
-		unless(ref $rdata eq 'HASH') {
-			fatal($rdata);
-		}
-
 		my $phpiniData = $db->doQuery('domain_id', "SELECT * FROM php_ini WHERE domain_id = ?", $self->{'domain_id'});
 		unless(ref $phpiniData eq 'HASH') {
 			fatal($phpiniData);
@@ -483,33 +486,33 @@ sub _getHttpdData
 			FORWARD => 'no',
 			DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
 			 	? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
-			 	: $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
+			 	: $phpiniDefaultData->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
 			MAX_EXECUTION_TIME => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'max_execution_time'}
-				: $rdata->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
+				: $phpiniDefaultData->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
 			MAX_INPUT_TIME => (exists $phpiniData->{$self->{'domain_id'}})
 			 	? $phpiniData->{$self->{'domain_id'}}->{'max_input_time'}
-			 	: $rdata->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
+			 	: $phpiniDefaultData->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
 			MEMORY_LIMIT => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'memory_limit'}
-				: $rdata->{'PHPINI_MEMORY_LIMIT'}->{'value'},
+				: $phpiniDefaultData->{'PHPINI_MEMORY_LIMIT'}->{'value'},
 			ERROR_REPORTING => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'error_reporting'}
-				: $rdata->{'PHPINI_ERROR_REPORTING'}->{'value'},
+				: $phpiniDefaultData->{'PHPINI_ERROR_REPORTING'}->{'value'},
 			DISPLAY_ERRORS => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'display_errors'}
-				: $rdata->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
+				: $phpiniDefaultData->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
 			POST_MAX_SIZE => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'post_max_size'}
-				: $rdata->{'PHPINI_POST_MAX_SIZE'}->{'value'},
+				: $phpiniDefaultData->{'PHPINI_POST_MAX_SIZE'}->{'value'},
 			UPLOAD_MAX_FILESIZE => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'upload_max_filesize'}
-				: $rdata->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
+				: $phpiniDefaultData->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
 			ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
-				: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{value},
-			PHPINI_OPEN_BASEDIR => ($rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'})
-				? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
+				: $phpiniDefaultData->{'PHPINI_ALLOW_URL_FOPEN'}->{value},
+			PHPINI_OPEN_BASEDIR => ($phpiniDefaultData->{'PHPINI_OPEN_BASEDIR'}->{'value'})
+				? ':' . $phpiniDefaultData->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 		};
 	}
 
