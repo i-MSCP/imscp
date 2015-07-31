@@ -26,6 +26,7 @@ YOUTRACK
 	Fixed: #IP-1393 Unable to disable backup feature for existing domains
 	Fixed: #IP-1394 httpd-logs-mngr starts before mysql.server started
 	Fixed: #IP-1395 Domain redirect feature - Missing URL path separator
+	Fixed: #IP-1396 Deletion of a subdomain which has '/' as mount point deletes all web folders
 	Fixed: #IP-1399 Add Auto-Submitted Header to Autoreply Emails
 
 ------------------------------------------------------------------------------------------------------------------------

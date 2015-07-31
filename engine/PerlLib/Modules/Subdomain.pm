@@ -245,7 +245,7 @@ sub _getHttpdData
 			HOME_DIR => $homeDir,
 			WEB_DIR => $webDir,
 			MOUNT_POINT => $self->{'subdomain_mount'},
-			SHARED_MOUNT_POINTS => $self->_sharedMountPoint(),
+			SHARED_MOUNT_POINT => $self->_sharedMountPoint(),
 			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 			TIMEZONE => $main::imscpConfig{'TIMEZONE'},
 			USER => $userName,
