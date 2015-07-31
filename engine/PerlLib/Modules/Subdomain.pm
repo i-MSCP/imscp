@@ -430,7 +430,7 @@ sub _getPackagesData
 
  Does this subdomain share mount point with another domain?
 
- Return array Array containing shared mount points
+ Return bool
 
 =cut
 
