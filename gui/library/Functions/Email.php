@@ -37,8 +37,8 @@ define('MT_SUBDOM_FORWARD', 'subdom_forward');
 define('MT_ALSSUB_FORWARD', 'alssub_forward');
 
 define('MT_NORMAL_CATCHALL', 'normal_catchall');
-define('MT_SUBDOM_CATCHALL', 'subdom_catchall');
 define('MT_ALIAS_CATCHALL', 'alias_catchall');
+define('MT_SUBDOM_CATCHALL', 'subdom_catchall');
 define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 
 /**
