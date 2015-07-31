@@ -175,6 +175,9 @@ function client_editSubdomain()
 
 						$uri->setHost(encode_idna($uri->getHost()));
 
+						$uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
+						$uri->setPath($uriPath);
+
 						if ($uri->getHost() == $subdomainData['subdomain_name'] && $uri->getPath() == '/') {
 							throw new iMSCP_Exception(
 								tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .

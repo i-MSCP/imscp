@@ -19,7 +19,7 @@
  */
 
 /**
- * Redirect URI handler ( Like supported in i-MSCP engine )
+ * HTTP(S)/Ftp URI handler
  */
 class iMSCP_Uri_Redirect extends Zend_Uri_Http
 {
@@ -34,7 +34,7 @@ class iMSCP_Uri_Redirect extends Zend_Uri_Http
 	public static function fromString($uri)
 	{
 		if (is_string($uri) === false) {
-			throw new Zend_Uri_Exception('$uri is not a string');
+			throw new Zend_Uri_Exception(sprintf('%s is not a string', $uri));
 		}
 
 		$uri = explode(':', $uri, 2);
@@ -42,7 +42,7 @@ class iMSCP_Uri_Redirect extends Zend_Uri_Http
 		$schemeSpecific = isset($uri[1]) === true ? $uri[1] : '';
 
 		if (in_array($scheme, array('http', 'https', 'ftp')) === false) {
-			throw new iMSCP_Uri_Exception("Invalid scheme: '$scheme'");
+			throw new iMSCP_Uri_Exception(sprintf('Invalid scheme: %s', $scheme));
 		}
 
 		$schemeHandler = new iMSCP_Uri_Redirect($scheme, $schemeSpecific);

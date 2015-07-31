@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 211;
+	protected $lastUpdate = 212;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3297,5 +3297,63 @@ class iMSCP_Update_Database extends iMSCP_Update
 			'allow_hsts',
 			"VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off' AFTER ca_bundle"
 		);
+	}
+
+	/**
+	 * #IP-1395: Domain redirect feature - Missing URL path separator
+	 *
+	 * @throws Zend_Uri_Exception
+	 * @throws iMSCP_Exception_Database
+	 * @throws iMSCP_Uri_Exception
+	 */
+	protected function r212()
+	{
+		$stmt = exec_query("SELECT alias_id, url_forward FROM domain_aliasses WHERE url_forward <> 'no'");
+
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$uri = iMSCP_Uri_Redirect::fromString($row['url_forward']);
+			$uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
+			$uri->setPath($uriPath);
+
+			exec_query(
+				'UPDATE domain_aliasses SET url_forward = ? WHERE alias_id = ?', array($uri->getUri(), $row['alias_id'])
+			);
+		}
+
+		$stmt = exec_query(
+			"SELECT subdomain_id, subdomain_url_forward FROM subdomain WHERE subdomain_url_forward <> 'no'"
+		);
+
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$uri = iMSCP_Uri_Redirect::fromString($row['subdomain_url_forward']);
+			$uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
+			$uri->setPath($uriPath);
+
+			exec_query(
+				'UPDATE subdomain SET subdomain_url_forward = ? WHERE subdomain_id = ?',
+				array($uri->getUri(), $row['subdomain_id'])
+			);
+		}
+
+		$stmt = exec_query(
+			"
+				SELECT
+					subdomain_alias_id, subdomain_alias_url_forward
+				FROM
+					subdomain_alias
+				WHERE
+					subdomain_alias_url_forward <> 'no'
+			"
+		);
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$uri = iMSCP_Uri_Redirect::fromString($row['subdomain_alias_url_forward']);
+			$uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
+			$uri->setPath($uriPath);
+
+			exec_query(
+				'UPDATE subdomain_alias SET subdomain_alias_url_forward = ? WHERE subdomain_alias_id = ?',
+				array($uri->getUri(), $row['subdomain_alias_id'])
+			);
+		}
 	}
 }

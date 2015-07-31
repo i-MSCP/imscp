@@ -15,6 +15,7 @@ BACKEND
 FRONTEND
 	Added: HSTS (HTTP Strict Transport Security) feature
 	Fixed: Possible ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx cache directory
+	Fixed: Wrong issue tracker links in admin/database_update.php
 
 TESTS
 	Added: Travis CI support for Unit testing
@@ -24,6 +25,7 @@ TESTS
 YOUTRACK
 	Fixed: #IP-1393 Unable to disable backup feature for existing domains
 	Fixed: #IP-1394 httpd-logs-mngr starts before mysql.server started
+	Fixed: #IP-1395 Domain redirect feature - Missing URL path separator
 	Fixed: #IP-1399 Add Auto-Submitted Header to Autoreply Emails
 
 ------------------------------------------------------------------------------------------------------------------------

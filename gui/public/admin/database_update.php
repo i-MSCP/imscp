@@ -61,8 +61,8 @@ function admin_generateDatabaseUpdateDetail($tpl)
 function _admin_generateIssueTrackerLink($detail)
 {
 	return preg_replace(
-		'/#([0-9]+)/',
-		'<a href="http://trac.i-mscp.net/ticket/\1" target="_blank" title="' . tr('More Details') . '">#\1</a>',
+		'/#(IP-[0-9]+)/',
+		'<a href="https://youtrack.i-mscp.net/issue/\1" target="_blank" title="' . tr('More Details') . '">\1</a>',
 		$detail
 	);
 }
