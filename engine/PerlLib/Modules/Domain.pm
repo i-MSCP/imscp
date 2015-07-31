@@ -534,7 +534,7 @@ sub _getMtaData
 		$self->{'mta'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 			DOMAIN_NAME => $self->{'domain_name'},
-			DOMAIN_TYPE => $self->getType(),
+			DOMAIN_TYPE => 'dmn',
 			TYPE => 'vdmn_entry',
 			EXTERNAL_MAIL => $self->{'external_mail'},
 			MAIL_ENABLED => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0

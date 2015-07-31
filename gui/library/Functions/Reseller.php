@@ -25,20 +25,6 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-// Available mail types
-define('MT_NORMAL_MAIL', 'normal_mail');
-define('MT_NORMAL_FORWARD', 'normal_forward');
-define('MT_ALIAS_MAIL', 'alias_mail');
-define('MT_ALIAS_FORWARD', 'alias_forward');
-define('MT_SUBDOM_MAIL', 'subdom_mail');
-define('MT_SUBDOM_FORWARD', 'subdom_forward');
-define('MT_ALSSUB_MAIL', 'alssub_mail');
-define('MT_ALSSUB_FORWARD', 'alssub_forward');
-define('MT_NORMAL_CATCHALL', 'normal_catchall');
-define('MT_SUBDOM_CATCHALL', 'subdom_catchall');
-define('MT_ALIAS_CATCHALL', 'alias_catchall');
-define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
-
 /**
  * Generates user's properties
  *

@@ -25,6 +25,7 @@ package Servers::mta::postfix;
 
 use strict;
 use warnings;
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Config;
@@ -267,7 +268,7 @@ sub addDmn
 		$rs = $self->disableDmn($data);
 		return $rs if $rs;
 
-		if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
+		if($data->{'DOMAIN_TYPE'} ~~ [ 'dmn', 'als' ]) {
 			# Remove any previous entry of this domain from the Postfix relay_domains map
 			$rs = $self->_deleteFromRelayHash($data);
 			return $rs if $rs;
@@ -283,7 +284,7 @@ sub addDmn
 			return $rs if $rs;
 		}
 
-		if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
+		if($data->{'DOMAIN_TYPE'} ~~ [ 'dmn', 'als' ]) {
 			# Remove any previous entry of this domain from the Postfix relay_domains map
 			$rs = $self->_deleteFromRelayHash($data);
 			return $rs if $rs;
@@ -297,7 +298,7 @@ sub addDmn
 		$rs = $self->_addToDomainsHash($data);
 		return $rs if $rs;
 
-		if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
+		if($data->{'DOMAIN_TYPE'} ~~ [ 'dmn', 'als' ]) {
 			# Remove any previous entry of this domain from the Postfix relay_domains map
 			$rs = $self->_deleteFromRelayHash($data);
 			return $rs if $rs;
@@ -364,7 +365,7 @@ sub disableDmn
 
 	$self->{'postmap'}->{$prodDomainsHashFile} = 1;
 
-	if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
+	if($data->{'DOMAIN_TYPE'} ~~ [ 'dmn', 'als' ]) {
 		$rs = $self->_deleteFromRelayHash($data);
 		return $rs if $rs;
 	}
