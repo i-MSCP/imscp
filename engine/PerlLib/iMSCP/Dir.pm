@@ -255,8 +255,8 @@ sub rcopy
 
 	while (readdir $dh) {
 		if($_ ne '.' && $_ ne '..') {
-			my $src = "$self->{'dirname'}/$_";
-			my $target = "$destdir/$_";
+			my $src = File::Spec->canonpath("$self->{'dirname'}/$_");
+			my $target = File::Spec->canonpath("$destdir/$_");
 
 			if (-d $src) {
 				my $opts = {};
