@@ -32,8 +32,11 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Database;
 use Fcntl ":flock";
-use POSIX qw(tzset);
+use POSIX qw(tzset locale_h);
+use locale;
 use parent 'Common::SingletonClass';
+
+setlocale(LC_MESSAGES, 'C.UTF-8');
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';

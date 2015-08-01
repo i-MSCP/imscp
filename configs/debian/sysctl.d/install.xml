@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <install>
-    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/sysctl.d</folders>
-    <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/sysctl.d/imscp.conf</copy_config>
+    <create_dir mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/sysctl.d</create_dir>
+    <copy_conffile mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/sysctl.d/imscp.conf</copy_conffile>
 </install>

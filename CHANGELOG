@@ -11,6 +11,7 @@ BACKEND
 	Fixed: Domain aliases are not processed correctly in Servers::mta::postfix::addDmn()
 	Fixed: phptmp directory is deleted by mistake in some contexts (Fixed by #IP-1396)
 	Fixed: Wrong domain type set in module data providers
+	Moved: vlogger script into i-MSCP engine tools directory
 	Rewritten: iMSCP::SetRights library (usage of chown and chmod perl-functions instead of calling external commands)
 	Removed: Optional dirname parameter for all iMSCP::Dir::* methods (iMSCP::Dir object = One directory)
 	Removed: Support for file/dir exclusion - iMSCP::Dir::rcopy()
@@ -19,6 +20,10 @@ FRONTEND
 	Added: HSTS (HTTP Strict Transport Security) feature
 	Fixed: Possible ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx cache directory
 	Fixed: Wrong issue tracker links in admin/database_update.php
+
+INSTALLER:
+	Fixed: Avoid call of external commands whenever possible
+	Fixed: Update notices are always show even when not needed
 
 TESTS
 	Added: Travis CI support for Unit testing

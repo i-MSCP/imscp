@@ -122,9 +122,10 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	my $rs = setRights('/usr/local/sbin/vlogger', {
-		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
+	my $rs = setRights("$main::imscpConfig{'TOOLS_ROOT_DIR'}/vlogger", {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ADM_GROUP'}, mode => '0750' }
 	);
+	return $rs if $rs;
 
 	setRights($self->{'config'}->{'HTTPD_LOG_DIR'}, {
 		user => $main::imscpConfig{'ROOT_USER'},
@@ -449,6 +450,7 @@ sub _buildApacheConfFiles
 		AUTHZ_DENY_ALL => ($apache24) ? 'Require all denied' : 'Deny from all',
 		AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all',
 		PIPE => $pipeSyntax,
+		TOOLS_ROOT_DIR => $main::imscpConfig{'TOOLS_ROOT_DIR'},
 		VLOGGER_CONF => "$self->{'apacheWrkDir'}/vlogger.conf"
 	});
 
@@ -655,10 +657,14 @@ sub _oldEngineCompatibility
 	}
 
 	# Remove customer's logs file if any (no longer needed since we are now using bind mount)
-	my ($stdout, $stderr);
-	$rs = execute("rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \$stdout, $stderr);
+	$rs = execute("rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \my $stdout, \my $stderr);
 	error($stderr) if $rs && $stderr;
 	return $rs if $rs;
+
+	if(-f '/usr/local/sbin/vlogger') {
+		$rs = iMSCP::File->new( filename => '/usr/local/sbin/vlogger')->delFile();
+		return $rs if $rs;
+	}
 
 	$self->{'eventManager'}->trigger('afterHttpdOldEngineCompatibility');
 }

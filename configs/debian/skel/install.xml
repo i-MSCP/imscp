@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/skel</folders>
-    <copy_config>${SYSTEM_CONF}/skel/alias</copy_config>
-    <copy_config>${SYSTEM_CONF}/skel/domain</copy_config>
-    <copy_config>${SYSTEM_CONF}/skel/subdomain</copy_config>
-    <copy_config>${SYSTEM_CONF}/skel/README</copy_config>
+    <copy_confdir>${SYSTEM_CONF}/skel/alias</copy_confdir>
+    <copy_confdir>${SYSTEM_CONF}/skel/domain</copy_confdir>
+    <copy_confdir>${SYSTEM_CONF}/skel/subdomain</copy_confdir>
+    <copy_conffile>${SYSTEM_CONF}/skel/README</copy_conffile>
 </install>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/courier</folders>
-    <folders>${SYSTEM_CONF}/courier/backup</folders>
-    <folders>${SYSTEM_CONF}/courier/working</folders>
-    <copy_config>${SYSTEM_CONF}/courier/authmysqlrc</copy_config>
-    <copy_config>${SYSTEM_CONF}/courier/courier.data</copy_config>
-    <copy_config>${SYSTEM_CONF}/courier/imapd.local</copy_config>
-    <copy_config>${SYSTEM_CONF}/courier/quota-warning</copy_config>
+    <create_dir>${SYSTEM_CONF}/courier/backup</create_dir>
+    <create_dir>${SYSTEM_CONF}/courier/working</create_dir>
+    <copy_conffile>${SYSTEM_CONF}/courier/authmysqlrc</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/courier/courier.data</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/courier/imapd.local</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/courier/quota-warning</copy_conffile>
 </install>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders export="INST_PREF">/tmp/imscp</folders>
-    <folders export="ROOT_CONF">${INST_PREF}/etc</folders>
-    <folders export="SYSTEM_CONF">${INST_PREF}/etc/imscp</folders>
-    <folders export="SYSTEM_ROOT">${INST_PREF}/var/www/imscp</folders>
-    <folders export="SYSTEM_VIRTUAL">${INST_PREF}/var/www/virtual</folders>
-    <folders export="SYSTEM_LOG">${INST_PREF}/var/log/imscp</folders>
-    <folders export="SYSTEM_MAIL_VIRTUAL">${INST_PREF}/var/mail/virtual</folders>
-    <folders exrpot="CACHE_DATA_DIR">${INST_PREF}/var/cache/imscp</folders>
-    <folders export="VARIABLE_DATA_DIR">${INST_PREF}/var/local/imscp</folders>
+    <create_dir export="INST_PREF">/tmp/imscp</create_dir>
+    <create_dir export="ROOT_CONF">${INST_PREF}/etc</create_dir>
+    <create_dir export="SYSTEM_CONF">${INST_PREF}/etc/imscp</create_dir>
+    <create_dir export="SYSTEM_ROOT">${INST_PREF}/var/www/imscp</create_dir>
+    <create_dir export="SYSTEM_VIRTUAL">${INST_PREF}/var/www/virtual</create_dir>
+    <create_dir export="SYSTEM_LOG">${INST_PREF}/var/log/imscp</create_dir>
+    <create_dir export="SYSTEM_MAIL_VIRTUAL">${INST_PREF}/var/mail/virtual</create_dir>
+    <create_dir export="CACHE_DATA_DIR">${INST_PREF}/var/cache/imscp</create_dir>
+    <create_dir export="VARIABLE_DATA_DIR">${INST_PREF}/var/local/imscp</create_dir>
 </install>

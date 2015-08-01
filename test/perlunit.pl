@@ -17,18 +17,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-# This script is automatically run on every commit and/or pull request. Any pull request causing a build failure won't
-# be accepted. You can run this script manually as follow: perl ./test/perlunit.pl
+# This script is automatically run by Travis CI on every commit and/or pull request made on our GitHub repository.
+# Any pull request causing a build failure won't be accepted.
+#
+# You can run this script manually as follow: perl ./test/perlunit.pl
 #
 
 use strict;
 use warnings;
 use FindBin;
 use lib "$FindBin::Bin/Perl", "$FindBin::Bin/../engine/PerlLib", "$FindBin::Bin/../engine/PerlVendor";
-use Test::More import => ['diag', 'done_testing', 'fail', 'subtest'];
+use Test::More import => [ 'diag', 'done_testing', 'fail', 'subtest' ];
 use File::Find;
 use POSIX qw(locale_h);
 use locale;
+
 setlocale(LC_MESSAGES, 'C.UTF-8');
 
 $ENV{'LANG'} = 'C.UTF-8';

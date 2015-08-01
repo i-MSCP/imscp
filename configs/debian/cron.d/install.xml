@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/cron.d</folders>
-    <folders>${SYSTEM_CONF}/cron.d/backup</folders>
-    <folders>${SYSTEM_CONF}/cron.d/working</folders>
-    <copy_config>${SYSTEM_CONF}/cron.d/imscp</copy_config>
-    <copy_config>${SYSTEM_CONF}/cron.d/cron.data</copy_config>
+    <create_dir>${SYSTEM_CONF}/cron.d/backup</create_dir>
+    <create_dir>${SYSTEM_CONF}/cron.d/working</create_dir>
+    <copy_conffile>${SYSTEM_CONF}/cron.d/imscp</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/cron.d/cron.data</copy_conffile>
 </install>

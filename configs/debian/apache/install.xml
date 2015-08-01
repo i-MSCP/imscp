@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders export="ROOT_APACHE_CONF" mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/apache2</folders>
-    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_APACHE_CONF}/imscp</folders>
-    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_APACHE_CONF}/imscp/before</folders>
-    <folders>${INST_PREF}/var/log/apache2/backup</folders>
-    <folders>${SYSTEM_CONF}/apache</folders>
-    <folders>${SYSTEM_CONF}/apache/backup</folders>
-    <folders>${SYSTEM_CONF}/apache/working</folders>
-    <copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/00_imscp.conf</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/apache.data</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/logrotate.conf</copy_config>
-    <copy_config mode="0750" user="${ROOT_USER}" group="${ROOT_GROUP}">/usr/local/sbin/vlogger</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/vlogger.conf.tpl</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/vlogger.sql</copy_config>
+    <create_dir export="ROOT_APACHE_CONF" mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/apache2</create_dir>
+    <create_dir mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_APACHE_CONF}/imscp/before</create_dir>
+    <create_dir>${INST_PREF}/var/log/apache2/backup</create_dir>
+    <create_dir>${SYSTEM_CONF}/apache/backup</create_dir>
+    <create_dir>${SYSTEM_CONF}/apache/working</create_dir>
+    <copy_confdir>${SYSTEM_CONF}/apache/parts</copy_confdir>
+    <copy_conffile>${SYSTEM_CONF}/apache/00_imscp.conf</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/apache/apache.data</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/apache/logrotate.conf</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/apache/vlogger.conf.tpl</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/apache/vlogger.sql</copy_conffile>
 </install>

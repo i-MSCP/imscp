@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/dovecot</folders>
-    <folders>${SYSTEM_CONF}/dovecot/backup</folders>
-    <folders>${SYSTEM_CONF}/dovecot/working</folders>
-    <copy_config>${SYSTEM_CONF}/dovecot/dovecot.data</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.1.x</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.2.0</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.2.1</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/quota-warning.1</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/quota-warning.2</copy_config>
+    <create_dir>${SYSTEM_CONF}/dovecot</create_dir>
+    <create_dir>${SYSTEM_CONF}/dovecot/backup</create_dir>
+    <create_dir>${SYSTEM_CONF}/dovecot/working</create_dir>
+    <copy_conffile>${SYSTEM_CONF}/dovecot/dovecot.data</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/dovecot/dovecot.conf.1.x</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/dovecot/dovecot.conf.2.0</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/dovecot/dovecot.conf.2.1</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/dovecot/quota-warning.1</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/dovecot/quota-warning.2</copy_conffile>
 </install>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/proftpd</folders>
-    <folders>${SYSTEM_CONF}/proftpd/backup</folders>
-    <folders>${SYSTEM_CONF}/proftpd/working</folders>
-    <copy_config>${SYSTEM_CONF}/proftpd/proftpd.conf</copy_config>
-    <copy_config>${SYSTEM_CONF}/proftpd/proftpd.data</copy_config>
+    <create_dir>${SYSTEM_CONF}/proftpd/backup</create_dir>
+    <create_dir>${SYSTEM_CONF}/proftpd/working</create_dir>
+    <copy_conffile>${SYSTEM_CONF}/proftpd/proftpd.conf</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/proftpd/proftpd.data</copy_conffile>
 </install>

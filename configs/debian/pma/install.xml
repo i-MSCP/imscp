@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/pma</folders>
-    <folders>${SYSTEM_CONF}/pma/backup</folders>
-    <folders>${SYSTEM_CONF}/pma/working</folders>
-    <copy_config>${SYSTEM_CONF}/pma/phpmyadmin.data</copy_config>
+    <create_dir>${SYSTEM_CONF}/pma/backup</create_dir>
+    <create_dir>${SYSTEM_CONF}/pma/working</create_dir>
+    <copy_conffile>${SYSTEM_CONF}/pma/phpmyadmin.data</copy_conffile>
 </install>

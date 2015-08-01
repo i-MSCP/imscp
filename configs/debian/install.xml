@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <copy_config>${SYSTEM_CONF}/imscp.conf</copy_config>
+    <copy_conffile>${SYSTEM_CONF}/imscp.conf</copy_conffile>
 </install>

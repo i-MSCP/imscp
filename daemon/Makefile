@@ -39,7 +39,6 @@ helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o
 $(EXEC): clean $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 	strip -s $@
-	@echo "Compilation done"
 
 %.o : %.c
 	$(CC) -c $(CFLAGS) $<

@@ -25,7 +25,7 @@ package iMSCP::Dir;
 
 use strict;
 use warnings;
-use File::Copy qw/copy cp move/;
+use File::Copy qw/copy move/;
 use File::Path qw/make_path remove_tree/;
 use File::Spec;
 use parent 'Common::Object';
@@ -261,17 +261,27 @@ sub rcopy
 			if (-d $src) {
 				my $opts = {};
 				if($options->{'preserve'}) {
-					my (undef, undef, $mode, undef, $uid, $gid) = lstat($src);
-					$opts = { user => scalar getpwuid($uid), mode => $mode & 07777, group => scalar getgrgid($gid) }
+					my @srcStat = lstat($src);
+					$opts = {
+						user => scalar getpwuid($srcStat[4]),
+						group => scalar getgrgid($srcStat[5]),
+						mode => $srcStat[2] & 07777
+					};
 				}
 
 				iMSCP::Dir->new( dirname => $target )->make($opts);
 				iMSCP::Dir->new( dirname => $src )->rcopy($target, $options);
 			} else {
+				copy($src, $target) or die(sprintf('Could not copy %s to %s: %s', $src, $target, $!));
+
 				if($options->{'preserve'}) {
-					cp($src, $target) or die(sprintf('Could not copy %s to %s: %s', $src, $target, $!));
-				} else {
-					copy($src, $target) or die(sprintf('Could not copy %s to %s: %s', $src, $target, $!));
+					my @srcStat = lstat($src);
+
+					chown $srcStat[4], $srcStat[5], $target or die(
+						sprintf('Could not set user/group on %s: %s', $target, $!)
+					);
+
+					chmod $srcStat[2] & 07777, $target or die(sprintf('Could not set mode on %s: %s', $target, $!));
 				}
 			}
 		}

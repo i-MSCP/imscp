@@ -63,7 +63,7 @@ LogFormat "%v %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" comb
 
 Then call it from a customlog:
 
-CustomLog "| /usr/local/sbin/vlogger -s access.log -u www-logs -g www-logs /var/log/apache" combined
+CustomLog "| <path>/vlogger -s access.log -u www-logs -g www-logs /var/log/apache" combined
 
 =head1 OPTIONS
 

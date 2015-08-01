@@ -33,6 +33,10 @@ use iMSCP::Dialog;
 use iMSCP::Getopt;
 use File::Basename;
 use autoinstaller::Functions qw/loadConfig build install/;
+use POSIX qw(locale_h);
+use locale;
+
+setlocale(LC_MESSAGES, 'C.UTF-8');
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -41,12 +45,8 @@ newDebug('imscp-autoinstall.log');
 
 # Set backend mode
 # Init variable that holds questions
-  %main::questions = () unless %main::questions;
-{
-	no warnings qw/once/;
-	$main::execmode = 'setup';
-	%main::questions = ();
-}
+%main::questions = () unless %main::questions;
+$main::execmode = 'setup' unless $main::execmode;
 
 # Load config
 loadConfig();
@@ -80,6 +80,7 @@ $main::reconfigure = iMSCP::Getopt->reconfigure;
 my $preseedFile = iMSCP::Getopt->preseed;
 if($preseedFile) {
 	require $preseedFile;
+
 	# The preseed option supersede the reconfigure option
 	iMSCP::Getopt->reconfigure('none');
 	$main::reconfigure = 'none';
@@ -95,6 +96,7 @@ if($listenerFile) {
 
 # Handle noprompt option
 $main::noprompt = iMSCP::Getopt->noprompt;
+
 if($main::noprompt) {
 	debugRegisterCallBack(
 		sub {

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <install>
-    <folders export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/backup</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/messenger</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/quota</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/traffic</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/setup</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/tools</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/traffic</folders>
-    <copy>${SYSTEM_ENGINE_ROOT}/imscp*</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/PerlLib</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/PerlVendor</copy>
+    <create_dir export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</create_dir>
+    <copy_dir>${SYSTEM_ENGINE_ROOT}/messenger</copy_dir>
+    <copy_dir>${SYSTEM_ENGINE_ROOT}/PerlLib</copy_dir>
+    <copy_dir>${SYSTEM_ENGINE_ROOT}/PerlVendor</copy_dir>
+    <copy_dir>${SYSTEM_ENGINE_ROOT}/quota</copy_dir>
+    <copy_dir>${SYSTEM_ENGINE_ROOT}/setup</copy_dir>
+    <copy_dir>${SYSTEM_ENGINE_ROOT}/tools</copy_dir>
+    <copy_file>${SYSTEM_ENGINE_ROOT}/imscp-pkt-mngr</copy_file>
+    <copy_file>${SYSTEM_ENGINE_ROOT}/imscp-rqst-mngr</copy_file>
+    <copy_file>${SYSTEM_ENGINE_ROOT}/imscp-sw-mngr</copy_file>
+    <copy_file>${SYSTEM_ENGINE_ROOT}/imscp_common_code.pl</copy_file>
+    <copy_file>${SYSTEM_ENGINE_ROOT}/imscp_common_methods.pl</copy_file>
 </install>

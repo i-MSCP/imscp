@@ -26,18 +26,17 @@ use iMSCP::Dialog;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
 use File::Basename;
+use POSIX qw(locale_h);
+use locale;
+
+setlocale(LC_MESSAGES, 'C.UTF-8');
 
 $ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-setup.log');
 
-# Set backend mode
-# Init variable that holds questions
-{
-	no warnings qw/once/;
-	$main::execmode = 'setup';
-	%main::questions = ();
-}
+$main::execmode = 'setup' unless $main::execmode;
+%main::questions = () unless %main::questions;
 
 # Parse command line options
 iMSCP::Getopt->parse(sprintf('Usage: perl %s [OPTION]...', basename($0)));
