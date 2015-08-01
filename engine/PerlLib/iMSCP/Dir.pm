@@ -145,9 +145,7 @@ sub isEmpty
 	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open %s: %s', $self->{'dirname'}, $!));
 
 	for my $file(readdir $dh) {
-		if($file ne '.' && $file ne '..') {
-			return 0;
-		}
+		return 0 if File::Spec->no_upwards($file);
 	}
 
 	1;
@@ -254,7 +252,7 @@ sub rcopy
 	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open %s', $self->{'dirname'}));
 
 	while (readdir $dh) {
-		if($_ ne '.' && $_ ne '..') {
+		if(File::Spec->no_upwards($_)) {
 			my $src = File::Spec->canonpath("$self->{'dirname'}/$_");
 			my $target = File::Spec->canonpath("$destdir/$_");
 
