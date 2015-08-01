@@ -155,7 +155,7 @@ EOF
 			$msg .= <<EOF;
 
 	# rm -fR $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
-	# cp -fR $main::{'INST_PREF'}/* /
+	# cp -fRp $main::{'INST_PREF'}/* /
 	# rm -fR $main::{'INST_PREF'}
 	# perl $main::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-setup -d
 EOF
