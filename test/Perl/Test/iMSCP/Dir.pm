@@ -83,7 +83,7 @@ sub ownerSetExpectedOwnerAndGroup
 	setupTestEnv();
 
 	iMSCP::Dir->new( dirname => '/tmp/foo' )->owner( 'nobody', 'nogroup' );
-	(lstat('/tmp/foo'))[4] == 65534 && (lstat('/tmp/foo'))[5] == 65534;
+	(stat('/tmp/foo'))[4] == 65534 && (stat('/tmp/foo'))[5] == 65534;
 }
 
 sub getFilesDieIfCannotOpenDirname
