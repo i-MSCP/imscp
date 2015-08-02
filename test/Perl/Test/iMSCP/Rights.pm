@@ -73,6 +73,7 @@ sub setRightsDieOnInexistentGroup
 sub setRightsSetExpectedMode
 {
 	setupTestEnv();
+
 	iMSCP::Rights::setRights( '/tmp/foo', { mode => '02555' } );
 	sprintf('%o', (lstat('/tmp/foo'))[2] & 07777) == 2555;
 }
@@ -80,6 +81,7 @@ sub setRightsSetExpectedMode
 sub setRightsSetExpectedModeRecursively
 {
 	setupTestEnv();
+
 	iMSCP::Rights::setRights( '/tmp/foo', { mode => '0555', recursive => 1 } );
 	sprintf('%o', (lstat('/tmp/foo'))[2] & 07777) == 555 &&
 	sprintf('%o', (lstat('/tmp/foo/bar'))[2] & 07777) == 555 &&
@@ -89,6 +91,7 @@ sub setRightsSetExpectedModeRecursively
 sub setRightsSetExpectedDirmode
 {
 	setupTestEnv();
+
 	iMSCP::Rights::setRights( '/tmp/foo', { dirmode => '02555' } );
 	sprintf('%o', (lstat('/tmp/foo'))[2] & 07777) == 2555 &&
 	sprintf('%o', (lstat('/tmp/foo/bar'))[2] & 07777) == 2555 &&
@@ -98,6 +101,7 @@ sub setRightsSetExpectedDirmode
 sub setRightsSetExpectedFilemode
 {
 	setupTestEnv();
+
 	iMSCP::Rights::setRights( '/tmp/foo', { filemode => '0400' } );
 	sprintf('%o', (lstat('/tmp/foo/bar.txt'))[2] & 07777) == 400 &&
 	sprintf('%o', (lstat('/tmp/foo/baz.txt'))[2] & 07777) == 400 &&
@@ -107,29 +111,33 @@ sub setRightsSetExpectedFilemode
 sub setRightsSetExpectedUser
 {
 	setupTestEnv();
+
 	iMSCP::Rights::setRights( '/tmp/foo', { user => 'nobody' } );
-	getpwuid((lstat('/tmp/foo'))[4]) eq 'nobody';
+	(lstat('/tmp/foo'))[4] == 65534;
 }
 
 sub setRightsSetExpectedUserRecursively
 {
 	setupTestEnv();
+
 	iMSCP::Rights::setRights( '/tmp/foo', { user => 'nobody', recursive => 1 } );
-	getpwuid((lstat('/tmp/foo'))[4]) eq 'nobody' && getpwuid((lstat('/tmp/foo/bar/foo.txt'))[4]) eq 'nobody';
+	(lstat('/tmp/foo'))[4] == 65534 && (lstat('/tmp/foo/bar/foo.txt'))[4] == 65534;
 }
 
 sub setRightsSetExpectedGroup
 {
 	setupTestEnv();
+
 	iMSCP::Rights::setRights( '/tmp/foo', { group => 'nogroup' } );
-	getgrgid((lstat('/tmp/foo'))[5]) eq 'nogroup';
+	(lstat('/tmp/foo'))[5] == 65534;
 }
 
 sub setRightsSetExpectedGroupRecursively
 {
 	setupTestEnv();
+
 	iMSCP::Rights::setRights( '/tmp/foo', { group => 'nogroup', recursive => 1 } );
-	getgrgid((lstat('/tmp/foo'))[5]) eq 'nogroup' && getgrgid((lstat('/tmp/foo/bar/foo.txt'))[5]) eq 'nogroup';
+	(lstat('/tmp/foo'))[5] == 65534 && (lstat('/tmp/foo/bar/foo.txt'))[5] == 65534;
 }
 
 my $assetDir;

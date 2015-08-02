@@ -668,7 +668,6 @@ sub _buildEngineFiles
 
 sub _buildFrontendFiles
 {
-	iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/gui" )->make();
 	iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy("$main::{'SYSTEM_ROOT'}/gui");
 }
 
@@ -721,6 +720,7 @@ sub _savePersistentData
 		);
 	}
 
+	# Save skel directory
 	if(-d "$main::imscpConfig{'CONF_DIR'}/skel") {
 		iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/skel" )->rcopy(
 			"$main::{'INST_PREF'}$main::imscpConfig{'CONF_DIR'}/skel"
@@ -823,7 +823,7 @@ sub _installFiles
 	iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/$_" )->remove() for qw/daemon engine gui/;
 
 	# Install new files
-	iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->rcopy('/', { preserve => 1 });
+	iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->rcopy('/', 1);
 }
 
 =item _deleteBuildDir()
@@ -975,7 +975,6 @@ sub _copyConfdirFromXmlElement
 		$source = "$defaultConfigFolder/$targetBasename";
 	}
 
-	iMSCP::Dir->new( dirname => $target )->make();
 	iMSCP::Dir->new( dirname => $source )->rcopy($target);
 }
 
@@ -1041,7 +1040,6 @@ sub _copyDirFromXmlElement
 	my $targetBasename = basename($target);
 	my $source = "$workingDir/$targetBasename";
 
-	iMSCP::Dir->new( dirname => $target )->make();
 	iMSCP::Dir->new( dirname => $source )->rcopy($target);
 }
 
