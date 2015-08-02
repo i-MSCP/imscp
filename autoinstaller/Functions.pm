@@ -155,13 +155,12 @@ sub build
 	return $rs if $rs;
 
 	my @steps = (
-		[ \&_processDistroPackages,  'Processing distro packages' ],
 		[ \&_testRequirements,       'Checking in requirements' ],
 		[ \&_buildDistributionFiles, 'Building distribution files' ]
 	);
 
 	# Remove the distro packages step in case the --skippackages is set
-	shift @steps if $main::skippackages;
+	unshift @steps, [ \&_processDistroPackages,  'Processing distro packages' ] unless $main::skippackages;
 
 	$rs = $eventManager->trigger('beforeBuild', \@steps);
 	return $rs if $rs;
@@ -206,10 +205,11 @@ sub build
 	$main::imscpConfig{$_} = $imscpConf{$_} for keys %imscpConf;
 
 	# Clean build directory (remove any .gitignore|empty-file)
-	find(
-		sub { unlink or die("Unable to remove $File::Find::name: $!") if $_ eq '.gitignore' || $_ eq 'empty-file'; },
-		$main::{'INST_PREF'}
-	);
+	find { wanted => sub {
+		unlink or die("Unable to remove $File::Find::name: $!") if $_ eq '.gitignore' || $_ eq 'empty-file';
+		},
+		no_chdir => 1
+	}, $main::{'INST_PREF'};
 
 	$rs = $eventManager->trigger('afterPostBuild');
 	return $rs if $rs;

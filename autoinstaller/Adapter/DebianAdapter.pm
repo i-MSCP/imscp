@@ -113,13 +113,13 @@ sub preBuild
 			[ sub { $self->_updatePackagesIndex(); },    'Updating packages index' ]
 		);
 
-		my $step = 1;
+		my $cStep = 1;
 		my $nbSteps = scalar @steps;
 
 		for my $step(@steps) {
-			$rs = step($step->[0], $step->[1], $nbSteps, $step);
+			$rs = step($step->[0], $step->[1], $nbSteps, $cStep);
 			return $rs if $rs;
-			$step++;
+			$cStep++;
 		}
 	}
 
