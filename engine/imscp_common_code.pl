@@ -32,10 +32,6 @@ BEGIN {
 		Crypt::CBC => '',
 		Crypt::PasswdMD5 => '',
 		MIME::Base64 => '',
-		File::Basename => '',
-		File::Path => '',
-		File::Temp => 'qw(tempdir)',
-		File::Copy::Recursive => 'qw(rcopy)',
 		Net::LibIDN => 'qw/idn_to_ascii idn_to_unicode/'
 	);
 

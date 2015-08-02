@@ -119,7 +119,6 @@
         <package>libdbi-perl</package>
         <package>libdigest-md5-perl</package>
         <package>libemail-valid-perl</package>
-        <package>libfile-copy-recursive-perl</package>
         <package>libfile-homedir-perl</package>
         <package>libmailtools-perl</package>
         <package>libmime-tools-perl</package>
