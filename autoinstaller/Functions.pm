@@ -836,8 +836,7 @@ sub _installFiles
 
 sub _deleteBuildDir
 {
-	#iMSCP::Dir->new( dirname => $main::{'INST_PREF'})->remove() if $main::{'INST_PREF'};
-	0;
+	iMSCP::Dir->new( dirname => $main::{'INST_PREF'})->remove() if $main::{'INST_PREF'};
 }
 
 =item _processXmlFile($xmlFilePath)
