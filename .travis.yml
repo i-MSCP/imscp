@@ -12,8 +12,8 @@ perl:
 addons:
   apt:
     packages:
-    - fakeroot
-    - whiptail
+      - fakeroot
+      - whiptail
 
 install:
     - cpanm --quiet --notest Expect

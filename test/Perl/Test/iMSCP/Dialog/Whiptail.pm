@@ -27,7 +27,7 @@ my $assetDir;
 sub whiptailYesnoReturnExpectedYesResult
 {
 	my $exp = Expect->spawn('perl', "$assetDir/Dialog/yesno.pl", 'Whiptail') or die "Cannot spawn command: $!\n";
-	$exp->log_stdout(0);
+	#$exp->log_stdout(0);
 	$exp->expect(1) ;
 	$exp->send("\r");
 	$exp->expect(undef);
@@ -37,7 +37,7 @@ sub whiptailYesnoReturnExpectedYesResult
 sub whiptailYesnoReturnExpectedNoResult
 {
 	my $exp = Expect->spawn('perl', "$assetDir/Dialog/yesno.pl", 'Whiptail') or die "Cannot spawn command: $!\n";
-	$exp->log_stdout(0);
+	#$exp->log_stdout(0);
 	$exp->expect(1) ;
 	$exp->send("\t");
 	$exp->expect(1) ;
