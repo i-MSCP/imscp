@@ -13,6 +13,7 @@ addons:
   apt:
     packages:
     - fakeroot
+    - whiptail
 
 install:
     - cpanm --quiet --notest Expect
