@@ -2,7 +2,7 @@ sudo: false
 
 language: perl
 
-perl
+perl:
   - "5.14"
   - "5.16"
   - "5.18"
