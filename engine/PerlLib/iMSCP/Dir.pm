@@ -25,7 +25,6 @@ package iMSCP::Dir;
 
 use strict;
 use warnings;
-use Cwd ();
 use File::Copy qw/copy move/;
 use File::Find;
 use File::Path qw/make_path remove_tree/;
@@ -257,6 +256,7 @@ sub rcopy
 	find { wanted => sub {
 		my @stat = lstat($_) or die(sprintf('Could not stat %s: %s', $_, $!));
 		(my $target = $_) =~ s/$self->{'dirname'}/$targetdir/;
+		$target = File::Spec->canonpath($target);
 
 		if(-d _) {
 			iMSCP::Dir->new( dirname => $target )->make(
@@ -270,7 +270,7 @@ sub rcopy
 				chmod $stat[2] & 07777, $target or die(sprintf('Could not set mode on %s: %s', $target, $!));
 			}
 		} elsif(-l _) {
-			symlink(Cwd::abs_path($_), $target) or die(sprintf('Could not copy symlink %s to %s: %s', $_, $target, $!));
+			symlink(readlink, $target) or die(sprintf('Could not copy symlink %s to %s: %s', $_, $target, $!));
 		}},
 		no_chdir => 1
 	}, $self->{'dirname'};
