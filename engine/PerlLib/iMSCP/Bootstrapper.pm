@@ -128,9 +128,9 @@ sub lock
 	unless(defined $self->{'locks'}->{$lockFile}) {
 		debug("Acquire exclusive lock on $lockFile");
 
-		fatal('Unable to open lock file') unless open($self->{'locks'}->{$lockFile}, '>', $lockFile);
+		open($self->{'locks'}->{$lockFile}, '>', $lockFile) or die(sprintf('Unable to open %s: %s', $lockFile, $!));
 		$rs = flock($self->{'locks'}->{$lockFile}, $nowait ? LOCK_EX | LOCK_NB : LOCK_EX);
-		fatal('Unable to acquire lock') unless $rs || $nowait;
+		die('Unable to acquire lock') unless $rs || $nowait;
 	}
 
 	$rs;
@@ -152,7 +152,7 @@ sub unlock
 	if(defined $self->{'locks'}->{$lockFile}) {
 		debug("Release exclusive lock on $lockFile");
 
-		fatal('Unable to release lock') if ! flock($self->{'locks'}->{$lockFile}, LOCK_UN);
+		die('Unable to release lock') unless flock($self->{'locks'}->{$lockFile}, LOCK_UN);
 		close $self->{'locks'}->{$lockFile};
 		delete $self->{'locks'}->{$lockFile};
 	}
@@ -176,7 +176,7 @@ sub unlock
 
 sub _genKeys
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $keyFile = "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys";
 	our $db_pass_key = '{KEY}';
@@ -218,7 +218,6 @@ sub _genKeys
 
 =head1 AUTHORS
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

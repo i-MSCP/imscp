@@ -46,10 +46,10 @@ use File::Spec;
 
 sub find
 {
-	my $program = $_[0];
+	my $program = shift;
 
-	for (File::Spec->path()) {
-		my $file = File::Spec->catfile($_, $program);
+	for my $file (File::Spec->path()) {
+		$file = File::Spec->catfile($file, $program);
 		return $file if -x $file;
 	}
 
