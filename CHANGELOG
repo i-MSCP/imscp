@@ -26,7 +26,7 @@ CONTRIB
 
 FRONTEND
 	Added: HSTS (HTTP Strict Transport Security) feature
-	Fixed: Possible ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx cache directory
+	Fixed: Possible ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx tmp (fastcgi) directory
 	Fixed: Wrong issue tracker links in admin/database_update.php
 
 INSTALLER
