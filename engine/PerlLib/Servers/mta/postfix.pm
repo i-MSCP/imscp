@@ -78,6 +78,9 @@ sub preinstall
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaPreInstall', 'postfix');
 	return $rs if $rs;
 
+	$rs = $self->stop();
+	return $rs if $rs;
+
 	require Servers::mta::postfix::installer;
 	$rs = Servers::mta::postfix::installer->getInstance()->preinstall();
 	return $rs if $rs;
@@ -163,7 +166,7 @@ sub postinstall
 					$rs ||= $self->postmap($map);
 				}
 
-				$rs ||= $self->restart();
+				$rs ||= $self->start();
 			},
 			'Postfix'
 		]; 0;
@@ -194,6 +197,31 @@ sub setEnginePermissions
 	$self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
 }
 
+=item start()
+
+ Start server
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub start
+{
+	my $self = shift;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaStart');
+	return $rs if $rs;
+
+	local $@;
+	eval { iMSCP::Service->getInstance()->start($self->{'config'}->{'MTA_SNAME'}); };
+	if($@) {
+		error($@);
+		return 1;
+	}
+
+	$self->{'eventManager'}->trigger('afterMtaStart');
+}
+
 =item restart()
 
  Restart server
@@ -219,32 +247,29 @@ sub restart
 	$self->{'eventManager'}->trigger('afterMtaRestart');
 }
 
-=item postmap($filename [, $filetype = 'hash' ])
+=item stop()
 
- Postmap the given file
+ Stop server
 
- Param string $filename Filename
- Param string $filetype Filetype
  Return int 0 on success, other on failure
 
 =cut
 
-sub postmap
+sub stop
 {
-	my ($self, $filename, $filetype) = @_;
+	my $self = shift;
 
-	$filetype ||= 'hash';
-
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaPostmap', \$filename, \$filetype);
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaStop');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("postmap $filetype:$filename", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+	local $@;
+	eval { iMSCP::Service->getInstance()->stop($self->{'config'}->{'MTA_SNAME'}); };
+	if($@) {
+		error($@);
+		return 1;
+	}
 
-	$self->{'eventManager'}->trigger('afterMtaPostmap', $filename, $filetype);
+	$self->{'eventManager'}->trigger('afterMtaStop');
 }
 
 =item addDmn(\%data)
@@ -674,6 +699,33 @@ sub getTraffic
 	) unless $selfCall;
 
 	\%trafficDb;
+}
+
+=item postmap($filename [, $filetype = 'cdb' ])
+
+ Postmap the given file
+
+ Param string $filename Filename
+ Param string $filetype Filetype
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postmap
+{
+	my ($self, $filename, $filetype) = @_;
+
+	$filetype ||= 'cdb';
+
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaPostmap', \$filename, \$filetype);
+	return $rs if $rs;
+
+	$rs = execute("postmap $filetype:$filename", \my $stdout, \my $stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
+	$self->{'eventManager'}->trigger('afterMtaPostmap', $filename, $filetype);
 }
 
 =back

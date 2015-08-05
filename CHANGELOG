@@ -6,24 +6,32 @@ Git 1.2.x
 
 BACKEND
 	Added: HSTS (HTTP Strict Transport Security) feature
+	Changed: Default database type for the Servers::mta::postfix::postmap() is now cdb
 	Fixed: Cleanup paths using File::Spec::canonpath() instead of dedicated regexps
 	Fixed: Default phpini data must be lazy loaded (only once per domain module) to save SQL queries
 	Fixed: Domain aliases are not processed correctly in Servers::mta::postfix::addDmn()
 	Fixed: phptmp directory is deleted by mistake in some contexts (Fixed by #IP-1396)
 	Fixed: Wrong domain type set in module data providers
 	Moved: vlogger script into i-MSCP engine tools directory
-	Rewritten: iMSCP::SetRights library (usage of chown and chmod perl-functions instead of calling external commands)
+	Rewritten: iMSCP::SetRights library (usage of chown and chmod perl-functions instead of system commands)
 	Removed: Optional dirname parameter for all iMSCP::Dir::* methods (iMSCP::Dir object = One directory)
 	Removed: Support for file/dir exclusion - iMSCP::Dir::rcopy()
+
+CONFIGS
+	Added: postfix-cdb package (Debian/Ubuntu)
+	Changed: Usage of cdb maps instead of hash maps (Postfix)
+
+CONTRIB
+	Updated: Listener::Postfix::Smarthost listener file - Usage of cdb map instead of hash map
 
 FRONTEND
 	Added: HSTS (HTTP Strict Transport Security) feature
 	Fixed: Possible ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx cache directory
 	Fixed: Wrong issue tracker links in admin/database_update.php
 
-INSTALLER:
+INSTALLER
 	Fixed: Avoid call of external commands whenever possible
-	Fixed: Update notices are always show even when not needed
+	Fixed: Update notices are always show even when out-dated
 
 TESTS
 	Added: Travis CI support for Unit testing
@@ -32,11 +40,11 @@ TESTS
 
 YOUTRACK
 	Fixed: #IP-1393 Unable to disable backup feature for existing domains
-	Fixed: #IP-1394 httpd-logs-mngr starts before mysql.server started
+	Fixed: #IP-1394 httpd-logs-mngr starts before mysql server on reboot
 	Fixed: #IP-1395 Domain redirect feature - Missing URL path separator
 	Fixed: #IP-1396 Deletion of a subdomain which has '/' as mount point deletes all web folders
 	Fixed: #IP-1399 Add Auto-Submitted Header to Autoreply Emails
-	Fixed: #IP-1401 Courier pop3-ssl and imap-ssl don't work with Windows 10
+	Fixed: #IP-1401 Courier pop3/imap SSL don't work with some clients - Diffie-Hellman parameters length is too small
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.9

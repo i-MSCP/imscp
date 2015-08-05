@@ -885,6 +885,13 @@ sub _oldEngineCompatibility
 		return $rs if $rs;
 	}
 
+	for my $file(
+		iMSCP::Dir->new( dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, fileType => '\.db' )->getFiles()
+	) {
+		$rs = iMSCP::File->new( filename => "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$file" )->delFile();
+		return $rs if $rs;
+	}
+
 	$self->{'eventManager'}->trigger('afterMtadOldEngineCompatibility');
 }
 

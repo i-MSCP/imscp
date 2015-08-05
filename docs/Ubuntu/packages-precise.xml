@@ -48,6 +48,7 @@
     <mta default="postfix">
         <postfix>
             <package>postfix</package>
+            <package>postfix-cdb</package>
             <package>libsasl2-modules</package>
             <package>libsasl2-modules-sql</package>
             <package>sasl2-bin</package>

@@ -20,10 +20,10 @@ mydestination = $myhostname, $mydomain
 append_dot_mydomain = no
 append_at_myorigin = yes
 local_transport = local
-transport_maps = hash:{MTA_TRANSPORT_HASH}
-relay_domains = hash:{MTA_RELAY_HASH}
-alias_maps = hash:{MTA_LOCAL_ALIAS_HASH}
-alias_database = hash:{MTA_LOCAL_ALIAS_HASH}
+transport_maps = cdb:{MTA_TRANSPORT_HASH}
+relay_domains = cdb:{MTA_RELAY_HASH}
+alias_maps = cdb:{MTA_LOCAL_ALIAS_HASH}
+alias_database = cdb:{MTA_LOCAL_ALIAS_HASH}
 
 # Delivering local messages parameters
 mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
@@ -52,10 +52,10 @@ imscp-arpl_destination_recipient_limit = 1
 virtual_mailbox_base = {MTA_VIRTUAL_MAIL_DIR}
 virtual_mailbox_limit = 0
 
-virtual_mailbox_domains = hash:{MTA_VIRTUAL_DMN_HASH}
-virtual_mailbox_maps = hash:{MTA_VIRTUAL_MAILBOX_HASH}
+virtual_mailbox_domains = cdb:{MTA_VIRTUAL_DMN_HASH}
+virtual_mailbox_maps = cdb:{MTA_VIRTUAL_MAILBOX_HASH}
 
-virtual_alias_maps = hash:{MTA_VIRTUAL_ALIAS_HASH}
+virtual_alias_maps = cdb:{MTA_VIRTUAL_ALIAS_HASH}
 
 virtual_minimum_uid = {MTA_MAILBOX_MIN_UID}
 virtual_uid_maps = static:{MTA_MAILBOX_UID}

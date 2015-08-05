@@ -104,7 +104,7 @@ sub getFilesReturnExpectedFilteredFiletypes
 {
 	setupTestEnv();
 
-	[ sort iMSCP::Dir->new( dirname => '/tmp/foo', fileType => '.php' )->getFiles() ];
+	[ sort iMSCP::Dir->new( dirname => '/tmp/foo', fileType => '\.php' )->getFiles() ];
 }
 
 sub getDirsDieIfCannotOpenDirname
