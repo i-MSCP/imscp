@@ -783,8 +783,7 @@ sub _migrateFromDovecot
 		'--convert', '--overwrite', '--recursive', $mailPath
 	);
 
-	my ($stdout, $stderr);
-	$rs = execute("@cmd", \$stdout, \$stderr);
+	$rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
@@ -821,8 +820,7 @@ sub _oldEngineCompatibility
 		$rs = $file->mode(0600);
 		return $rs if $rs;
 
-		my ($stdout, $stderr);
-		$rs = execute("makeuserdb -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb", \$stdout, \$stderr);
+		$rs = execute("makeuserdb -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
