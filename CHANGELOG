@@ -31,7 +31,7 @@ FRONTEND
 
 INSTALLER
 	Fixed: Avoid call of external commands whenever possible
-	Fixed: Update notices are always show even when out-dated
+	Fixed: The update notices are always shown even when they are out-dated
 
 TESTS
 	Added: Travis CI support for Unit testing
