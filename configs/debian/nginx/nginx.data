@@ -14,12 +14,12 @@ HTTPD_SITES_AVAILABLE_DIR = /etc/nginx/sites-available
 HTTPD_SITES_ENABLED_DIR = /etc/nginx/sites-enabled
 HTTPD_ROOT_DIR = /var/www
 HTTPD_LOG_DIR = /var/log/nginx
-HTTPD_CACHE_DIR = /var/cache/nginx
 
-# Tmp root directory as provided by nginx package (from debian Team)
-HTTPD_TMP_ROOT_DIR_DEBIAN = /var/lib/nginx
-# Tmp root directory as provided by nginx package (from nginx Team)
-HTTPD_TMP_ROOT_DIR_NGINX = /var/cache/nginx
+# TMP root directory as provided by nginx package (from debian Team)
+HTTPD_TMP_DIR_DEBIAN = /var/lib/nginx
+
+# TMP root directory as provided by nginx package (from nginx Team)
+HTTPD_TMP_DIR_NGINX = /var/cache/nginx
 
 HTTPD_PID_FILE = /var/run/nginx.pid
 
