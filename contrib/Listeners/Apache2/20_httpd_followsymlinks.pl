@@ -1,5 +1,5 @@
 # i-MSCP Listener::Apache2::FollowSymlinks
-# Copyright (C) 2015 Christoph Keﬂler <info@it-kessler.de>
+# Copyright (C) 2015 Christoph Ke√üler <info@it-kessler.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
