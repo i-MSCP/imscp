@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers - Package which allow to retrieve i-MSCP server list
+ iMSCP::Servers - Library that allows to get list of available i-MSCP servers.
 
 =cut
 
@@ -30,7 +30,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Package which allow servers list retrieval.
+ Library that allows to get list of available i-MSCP servers.
 
 =head1 PUBLIC METHODS
 
@@ -46,7 +46,20 @@ use parent 'Common::SingletonClass';
 
 sub get
 {
-	@{$_[0]->{'servers'}};
+	@{ (shift)->{'servers'} };
+}
+
+=item getFull()
+
+ Get service list with full names
+
+ Return server list
+
+=cut
+
+sub getFull
+{
+	map { 'Servers::' . $_ } @{ (shift)->{'servers'} };
 }
 
 =back
@@ -59,7 +72,7 @@ sub get
 
  Initialize instance
 
- Return iMSCP::Servers
+ Return iMSCP::Servers, die on failure
 
 =cut
 
@@ -67,7 +80,7 @@ sub _init
 {
 	my $self = shift;
 
-	$_ = substr($_, 0, -3) for @{$self->{'servers'}} = iMSCP::Dir->new(
+	$_ = substr($_, 0, -3) for @{$self->{'servers'}} = grep { $_ ne 'noserver.pm' } iMSCP::Dir->new(
 		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers"
 	)->getFiles();
 

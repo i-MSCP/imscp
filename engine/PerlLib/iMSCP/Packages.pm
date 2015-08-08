@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Packages - Package which allow to retrieve i-MSCP package list
+ iMSCP::Packages - Library that allows to get list of available i-MSCP packages.
 
 =cut
 
@@ -30,7 +30,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Package which allow to retrieve i-MSCP package list
+ Library that allows to get list of available i-MSCP packages.
 
 =head1 PUBLIC METHODS
 
@@ -46,7 +46,20 @@ use parent 'Common::SingletonClass';
 
 sub get
 {
-	@{$_[0]->{'packages'}};
+	@{ (shift)->{'packages'} };
+}
+
+=item getFull()
+
+ Get package list with full names
+
+ Return package list
+
+=cut
+
+sub getFull
+{
+	map { 'Package::' . $_ } @{ (shift)->{'packages'} };
 }
 
 =back
@@ -59,7 +72,7 @@ sub get
 
  Initialize instance
  
- Return iMSCP::Packages
+ Return iMSCP::Packages, die on failure
 
 =cut
 
