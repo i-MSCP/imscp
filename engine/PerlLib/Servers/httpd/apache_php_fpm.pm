@@ -1743,10 +1743,6 @@ sub _addCfg
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
-	if($data->{'HSTS_SUPPORT'}) {
-		$data->{'FORWARD'} = "https://$data->{'DOMAIN_NAME'}/";
-	}
-
 	my $poolLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 	my $poolName;
 
@@ -2115,7 +2111,9 @@ sub _cleanTemplate
 		}
 	}
 
-	if($filename =~ /^domain(?:_(?:disabled|redirect))_ssl\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
+	if($data->{'HSTS_SUPPORT'}) {
+		$$cfgTpl = replaceBloc("# SECTION hsts_disabled BEGIN.\n", "# SECTION hsts_disabled END.\n", '', $$cfgTpl);
+	} else {
 		$$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
 	}
 

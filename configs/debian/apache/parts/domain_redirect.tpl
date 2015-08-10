@@ -6,5 +6,10 @@
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
+    # SECTION hsts_disabled BEGIN.
     Redirect / {FORWARD}
+    # SECTION hsts_disabled END.
+    # SECTION hsts_enabled BEGIN.
+    Redirect / https://{DOMAIN_NAME}/
+    # SECTION hsts_enabled END.
 </VirtualHost>
