@@ -1625,7 +1625,7 @@ sub _addCfg
 	}
 
 	my @templates = ({
-		tplFile => ($data->{'FORWARD'} eq 'no') ? 'domain.tpl' : 'domain_redirect.tpl',
+		tplFile => ($data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'}) ? 'domain.tpl' : 'domain_redirect.tpl',
 		siteFile => "$data->{'DOMAIN_NAME'}.conf"
 	});
 
@@ -1636,6 +1636,10 @@ sub _addCfg
 		};
 
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
+	}
+
+	if($data->{'HSTS_SUPPORT'}) {
+		$data->{'FORWARD'} = "https://$data->{'DOMAIN_NAME'}/";
 	}
 
 	my $version = $self->{'config'}->{'HTTPD_VERSION'};
@@ -1915,7 +1919,7 @@ sub _cleanTemplate
 		$$cfgTpl = replaceBloc("# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', $$cfgTpl);
 	}
 
-	if($filename =~ /^domain_ssl\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
+	if($filename =~ /^domain(?:_(?:disabled|redirect))_ssl\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
 		$$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
 	}
 
