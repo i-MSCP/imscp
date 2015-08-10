@@ -333,7 +333,7 @@ sub disableDmn
 			? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
 	});
 
-	my %configTpls = ( '' => 'domain_disabled.tpl' );
+	my %configTpls = ( '' => (!$data->{'HSTS_SUPPORT'}) ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
 
 	if($data->{'SSL_SUPPORT'}) {
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
