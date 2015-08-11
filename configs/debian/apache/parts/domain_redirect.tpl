@@ -10,6 +10,6 @@
     Redirect 301 / {FORWARD}
     # SECTION hsts_disabled END.
     # SECTION hsts_enabled BEGIN.
-    Redirect 301 / https://{DOMAIN_NAME}/
+    Redirect 307 / https://{DOMAIN_NAME}/
     # SECTION hsts_enabled END.
 </VirtualHost>
