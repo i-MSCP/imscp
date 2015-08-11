@@ -15,8 +15,14 @@ addons:
       - fakeroot
       - whiptail
 
+env: PERL_CPANM_OPT="--quiet --notest --force --skip-satisfied"
+
 install:
-    - cpanm --quiet --notest Expect
+  - cpanm Expect
+  - cpanm Crypt::Blowfish
+  - cpanm Crypt::CBC
+  - cpanm Crypt::PasswdMD5
+  - cpanm Crypt::Rijndael
 
 notifications:
   irc:

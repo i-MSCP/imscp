@@ -44,7 +44,7 @@ find { wanted => sub {
 		(my $package = substr($_, 0, -3)) =~ s|/|::|g;
 
 		local $@;
-		eval { require $_; 1 } or do { fail sprintf("%s: Could not run unit tests\n%s", $package, $@); return; };
+		eval { require $_ } or do { fail sprintf("%s: Could not run unit tests\n%s", $package, $@); return };
 
 		if(my $function = $package->can('runUnitTests')) {
 			diag "\nRunning unit tests from $package package...\n\n";
