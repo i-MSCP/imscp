@@ -11,4 +11,8 @@
     SSLEngine On
     SSLCertificateFile {CERTIFICATE}
     SSLCertificateChainFile {CERTIFICATE}
+
+    # SECTION hsts_enabled BEGIN.
+    Header always set Strict-Transport-Security "max-age=31536000"
+    # SECTION hsts_enabled END.
 </VirtualHost>

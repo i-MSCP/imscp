@@ -330,7 +330,7 @@ sub disableDmn
 		}
 	);
 
-	my %configTpls = ( '' => 'domain_disabled.tpl' );
+	my %configTpls = ( '' => (!$data->{'HSTS_SUPPORT'}) ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
 
 	if($data->{'SSL_SUPPORT'}) {
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
@@ -1618,7 +1618,7 @@ sub _addCfg
 	}
 
 	my @templates = ({
-		tplFile => ($data->{'FORWARD'} eq 'no') ? 'domain.tpl' : 'domain_redirect.tpl',
+		tplFile => ($data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'}) ? 'domain.tpl' : 'domain_redirect.tpl',
 		siteFile => "$data->{'DOMAIN_NAME'}.conf"
 	});
 
@@ -2025,7 +2025,9 @@ sub _cleanTemplate
 		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
 	}
 
-	if($filename =~ /^domain_ssl\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
+	if($data->{'HSTS_SUPPORT'}) {
+		$$cfgTpl = replaceBloc("# SECTION hsts_disabled BEGIN.\n", "# SECTION hsts_disabled END.\n", '', $$cfgTpl);
+	} else {
 		$$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
 	}
 

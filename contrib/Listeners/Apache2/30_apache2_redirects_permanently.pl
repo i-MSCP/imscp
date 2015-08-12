@@ -25,9 +25,9 @@ use iMSCP::EventManager;
 
 sub changeRedirectType
 {
-	my ($cfgTpl, $tplName) = @_;
+	my ($cfgTpl, $tplName, $data) = @_;
 
-	if($tplName =~ /^domain_redirect(?:_ssl)?\.tpl$/) {
+	if($tplName =~ /^domain_redirect(?:_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
 		my $search = "Redirect / {FORWARD}\n";
 		my $replace = "Redirect 301 / {FORWARD}\n";
 
