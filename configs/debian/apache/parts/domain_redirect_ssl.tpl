@@ -6,7 +6,7 @@
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
-    Redirect 301 / {FORWARD}
+    Redirect / {FORWARD}
 
     SSLEngine On
     SSLCertificateFile {CERTIFICATE}

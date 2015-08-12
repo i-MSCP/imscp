@@ -7,7 +7,7 @@
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
     # SECTION hsts_disabled BEGIN.
-    Redirect 301 / {FORWARD}
+    Redirect / {FORWARD}
     # SECTION hsts_disabled END.
     # SECTION hsts_enabled BEGIN.
     Redirect 307 / https://{DOMAIN_NAME}/

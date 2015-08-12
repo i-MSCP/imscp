@@ -1,4 +1,4 @@
-# i-MSCP Listener::Apache2::Redirect::Temporarily listener file
+# i-MSCP Listener::Apache2::Redirect::Permanently listener file
 # Copyright (C) 2015 Ninos Ego <me@ninosego.de>
 #
 # This library is free software; you can redistribute it and/or
@@ -16,10 +16,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 #
-## Listener file which changes the domain redirect type in customer's vhost files from 301 to 302.
+## Listener file which changes the domain redirect type in customer's vhost files from 302 to 301.
 #
 
-package Listener::Apache2::Redirect::Temporarily;
+package Listener::Apache2::Redirect::Permanently;
 
 use iMSCP::EventManager;
 
@@ -28,8 +28,8 @@ sub changeRedirectType
 	my ($cfgTpl, $tplName, $data) = @_;
 
 	if($tplName =~ /^domain_redirect(?:_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
-		my $search = "Redirect 301 / {FORWARD}\n";
-		my $replace = "Redirect / {FORWARD}\n";
+		my $search = "Redirect / {FORWARD}\n";
+		my $replace = "Redirect 301 / {FORWARD}\n";
 
 		$$cfgTpl =~ s/$search/$replace/;
 	}
