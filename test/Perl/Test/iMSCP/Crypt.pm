@@ -20,173 +20,446 @@ package Test::iMSCP::Crypt;
 use strict;
 use warnings;
 use Test::More;
+my $salt2Bytes = '12';
+my $salt8Bytes = '12345678';
+my $salt16Bytes = '1234567890123456';
+my $cost = 10;
+my $rounds = 3000;
+my $password = 'test';
+my $md5Hash = '$1$12345678$oEitTZYQtRHfNGmsFvTBA/';
+my $sha256Hash = '$5$rounds=3000$1234567890123456$QbKVVusZIUPuF5/r2gGBHnXuEMJWdx41RydQzYgodo8';
+my $sha512Hash = '$6$rounds=3000$1234567890123456$61O.usmUiHWRQULRqkGw6rK988RdV2jq2g64x13QpIhWd3K/OW6Z1.rfwlErRN0GI.UbksyypY8u1wTitsWG7/';
+my $bcryptHash = '$2a$10$KRGxLBS0Lxe3KBCwKxOzLexLDeu0ZfqJAKTubOfy7O/yL2hjimw3u';
 
-my $md5 = '$1$foo$rkx5AsSJuhMbYgao0AOra.';
-my $salt = 'foo';
-my $key = 'C4zLDj6"E%^Qf/ZQm](?@\\63$R@[8yP#'; # 256 bits long
-my $ivBlowfish = 'lKJpi/i@'; # 8 bytes long
-my $ivRijndael = 'lKJpi/i@sCv+A^,l'; # 16 bytes long
-my $plainData = 'foo bar baz';
-my $dataBlowfish = 'Bo7vO8yyrlwVbKVYRkf+1A==';
-my $dataRijndael = 'NelcblDKROjOPANXvLEO+g==';
+my $htpasswdCryptHash = '126D8rSh5sjUE';
+my $htpasswdMD5hash = '$apr1$12345678$e74Lvsv64yfuPhXCxCD7n1';
+my $htpasswdSHA1hash = '{SHA}qUqP5cyxm6YcTAhz05Hph5gvu9M=';
 
-sub randomStrDieOnMissingLengthParameter
+my $key32Bytes = '12345678901234561234567890123456';
+my $key56Bytes = '12345678901234123456789012341234567890123412345678901234';
+my $iv8bytes = '12345678'; # 8 bytes long
+my $iv16Bytes = '1234567890123456'; # 16 bytes long
+my $data = 'test';
+my $encDataBlowfish = '';
+my $encDataRijndael = '';
+
+sub randomStrCroakOnBadLengthParameter
 {
 	local $@;
-	eval { iMSCP::Crypt::randomStr() };
-	$@ && $@ =~ /\$length parameter is not defined/;
+
+	eval { randomStr('foo') };
+	my $err1 = $@;
+	undef $@;
+
+	eval { randomStr(0) };
+	my $err2 = $@;
+
+	($err1 && $err1 =~ /Bad length parameter. Numeric value expected/) &&
+	($err2 && $err2 =~ /Length parameter value must be >= 1/);
 }
 
 sub randomStrReturnExpectedStringLength
 {
-	length iMSCP::Crypt::randomStr(8) == 8;
+	my $ret = 1;
+	for(my $length = 1; $length < 512; $length++) {
+		my $rand = randomStr($length);
+		length $rand == $length or $ret = 0, last;
+	}
+
+	$ret;
 }
 
-sub randomStrDoNotReturnUnexpectedChars
+sub randomStrReturnExpectedBase64String
 {
-	iMSCP::Crypt::randomStr(10000) =~ /^[\x22-\x7E]+$/; # Testing 10 000 characters should be sufficient...
+	my $ret = 1;
+	for(my $length = 1; $length < 512; $length++) {
+		my $rand = randomStr($length);
+		$rand =~ /^[0-9a-zA-Z+\/]+$/ or $ret = 0, last;
+	}
+
+	$ret;
 }
 
-sub md5WithSaltReturnExpectedHash
+sub randomStrReturnExpectedStringWithCharlist
 {
-	iMSCP::Crypt::md5($plainData, $salt) eq $md5;
+	my $ret = 1;
+	for(my $length = 1; $length < 512; $length++) {
+		my $rand = randomStr($length, '0123456789abcdef');
+		$rand =~ /^[0-9a-f]+$/ or $ret = 0, last;
+	}
+
+	$ret;
 }
 
-sub encryptBlowfishDieOnMissingKeyParameter
+sub md5ReturnExpectedHashWithRandomSalt
 {
-	local $@;
-	eval { iMSCP::Crypt::encryptBlowfish() };
-	$@ && $@ =~ /\$key parameter is not defined/;
+	my $hash = md5($password);
+	length $hash == 34;
 }
 
-sub encryptBlowfishDieOnMissingIvParameter
-{
-	local $@;
-	eval { iMSCP::Crypt::encryptBlowfish($key) };
-	$@ && $@ =~ /\$iv parameter is not defined/;
-}
-
-sub encryptBlowfishDieOnMissingDataParameter
-{
-	local $@;
-	eval { iMSCP::Crypt::encryptBlowfish($key, $ivBlowfish) };
-	$@ && $@ =~ /\$data parameter is not defined/;
-}
-
-sub encryptBlowfishReturnExpectedString
-{
-	iMSCP::Crypt::encryptBlowfish($key, $ivBlowfish, $plainData) eq $dataBlowfish;
-}
-
-sub decryptBlowfishDieOnMissingKeyParameter
+sub md5CroakOnBadSaltLength
 {
 	local $@;
-	eval { iMSCP::Crypt::decryptBlowfish() };
-	$@ && $@ =~ /\$key parameter is not defined/;
+	eval { md5($password, 'foo') };
+	$@ && $@ =~ /The salt length must be at least 8 bytes/;
 }
 
-sub decryptBlowfishDieOnMissingIvParameter
+sub md5ReturnExpectedHashWithSalt
+{
+	my $hash = md5($password, $salt8Bytes);
+	$hash eq $md5Hash;
+}
+
+sub md5ReturnExpectedHashWith8bitCharacter
+{
+	my $password = $password . chr(128);
+	my $hash = md5($password, $salt8Bytes);
+	$hash eq '$1$12345678$xiaxUDAWDux.jVGj0HOhg0';
+}
+
+sub sha256ReturnExpectedHashWithRandomSalt
+{
+	my $hash = sha256($password);
+	length $hash == 75;
+}
+
+sub sha256CroakOnBadRoundsParameter
 {
 	local $@;
-	eval { iMSCP::Crypt::decryptBlowfish($key) };
-	$@ && $@ =~ /\$iv parameter is not defined/;
+
+	eval { sha256($password, 'foo') };
+	my $err1 = $@;
+	undef $@;
+
+	eval { sha256($password, 500) };
+	my $err2 = $@;
+	undef $@;
+
+	eval { sha256($password, 6000) };
+	my $err3 = $@;
+	undef $@;
+
+	($err1 && $err1 =~ /Bad rounds parameter. Numeric value expected/) &&
+	($err2 && $err2 =~ /The rounds parameter must be in range 1000-5000/) &&
+	($err3 && $err3 =~ /The rounds parameter must be in range 1000-5000/);
 }
 
-sub decryptBlowfishDieOnMissingDataParameter
+sub sha256CroakOnBadSaltLength
 {
 	local $@;
-	eval { iMSCP::Crypt::decryptBlowfish($key, $ivBlowfish) };
-	$@ && $@ =~ /\$data parameter is not defined/;
+	eval { sha256($password, $rounds, 'foo') };
+	$@ && $@ =~ /The salt length must be at least 16 bytes/;
 }
 
-sub decryptBlowfishReturnExpectedString
+sub sha256ReturnExpectedHashWithSalt
 {
-	iMSCP::Crypt::decryptBlowfish($key, $ivBlowfish, $dataBlowfish) eq $plainData;
+	my $hash = sha256($password, $rounds, $salt16Bytes);
+	$hash eq $sha256Hash;
 }
 
-sub encryptRijndaelDieOnMissingKeyParameter
+sub sha256ReturnExpectedHashWith8bitCharacter
 {
-	local $@;
-	eval { iMSCP::Crypt::encryptRijndael() };
-	$@ && $@ =~ /\$key parameter is not defined/;
+	my $password = $password . chr(128);
+	my $hash = sha256($password, $rounds, $salt16Bytes);
+	$hash eq '$5$rounds=3000$1234567890123456$Xt0Bcg4pHAVBQ15O1Coma83wOBMinqRUe6PZbv6nUD0';
 }
 
-sub encryptRijndaelDieOnMissingIvParameter
+sub sha512ReturnExpectedHashWithRandomSalt
 {
-	local $@;
-	eval { iMSCP::Crypt::encryptRijndael($key) };
-	$@ && $@ =~ /\$iv parameter is not defined/
+	my $hash = sha512($password);
+	length $hash == 118;
 }
 
-sub encryptRijndaelDieOnMissingDataParameter
-{
-	local $@;
-	eval { iMSCP::Crypt::encryptRijndael($key, $ivRijndael) };
-	$@ && $@ =~ /\$data parameter is not defined/
-}
-
-sub encryptRijndaelReturnExpectedString
-{
-	iMSCP::Crypt::encryptRijndael($key, $ivRijndael, $plainData) eq $dataRijndael;
-}
-
-sub decryptRijndaelDieOnMissingKeyParameter
+sub sha512CroakOnBadRoundsParameter
 {
 	local $@;
-	eval { iMSCP::Crypt::decryptRijndael() };
-	$@ && $@ =~ /\$key parameter is not defined/;
+
+	eval { sha512($password, 'foo') };
+	my $err1 = $@;
+	undef $@;
+
+	eval { sha512($password, 500) };
+	my $err2 = $@;
+	undef $@;
+
+	eval { sha512($password, 6000) };
+	my $err3 = $@;
+	undef $@;
+
+	($err1 && $err1 =~ /Bad rounds parameter. Numeric value expected/) &&
+	($err2 && $err2 =~ /The rounds parameter must be in range 1000-5000/) &&
+	($err3 && $err3 =~ /The rounds parameter must be in range 1000-5000/);
 }
 
-sub decryptRijndaelDieOnMissingIvParameter
+sub sha512CroakOnBadSaltLength
 {
 	local $@;
-	eval { iMSCP::Crypt::decryptRijndael($key) };
-	$@ && $@ =~ /\$iv parameter is not defined/;
+	eval { sha512($password, $rounds, 'foo') };
+	$@ && $@ =~ /The salt length must be at least 16 bytes/;
 }
 
-sub decryptRijndaelDieOnMissingDataParameter
+sub sha512ReturnExpectedHashWithSalt
+{
+	my $hash = sha512($password, $rounds, $salt16Bytes);
+	$hash eq $sha512Hash;
+}
+
+sub sha512ReturnExpectedHashWith8bitCharacter
+{
+	my $password = $password . chr(128);
+	my $hash = sha512($password, $rounds, $salt16Bytes);
+	$hash eq '$6$rounds=3000$1234567890123456$Daeo5V0dnI.vz0fRgV3wC2a1SU2GQ6AMO5oJujsf2Bb2cJy6ZY9kgNSwWcSBYCS64wtzAtWJSvRhM/yCo9mTT0';
+}
+
+sub bcryptReturnExpectedHashWithRandomSalt
+{
+	my $hash = bcrypt($password);
+	length $hash == 60;
+}
+
+sub bcryptCroakOnBadCostParameter
 {
 	local $@;
-	eval { iMSCP::Crypt::decryptRijndael($key, $ivRijndael) };
-	$@ && $@ =~ /\$data parameter is not defined/;
+
+	eval { bcrypt($password, 'foo') };
+	my $err1 = $@;
+	undef $@;
+
+	eval { bcrypt($password, 500) };
+	my $err2 = $@;
+	undef $@;
+
+	eval { bcrypt($password, 6000) };
+	my $err3 = $@;
+	undef $@;
+
+	($err1 && $err1 =~ /Bad cost parameter. Numeric value expected/) &&
+	($err2 && $err2 =~ /The cost parameter must be in range 04-31/) &&
+	($err3 && $err3 =~ /The cost parameter must be in range 04-31/);
 }
 
-sub decryptRijndaelReturnExpectedString
+sub bcryptCroakOnBadSaltLength
 {
-	iMSCP::Crypt::decryptRijndael($key, $ivRijndael, $dataRijndael) eq $plainData;
+	local $@;
+	eval { bcrypt($password, $cost, 'foo') };
+	$@ && $@ =~ /The salt length must be at least 16 bytes/;
+}
+
+sub bcryptReturnExpectedHashWithSalt
+{
+	my $hash = bcrypt($password, $cost, $salt16Bytes);
+	$hash eq $bcryptHash;
+}
+
+sub bcryptReturnExpectedHashWith8bitCharacter
+{
+	my $password = $password . chr(128);
+	my $hash = bcrypt($password, $cost, $salt16Bytes);
+	$hash eq '$2a$10$KRGxLBS0Lxe3KBCwKxOzLe7OpCtUspJHS1/R2zlIYxO75iTJyxTyu';
+}
+
+sub htpasswdCroakOnBadFormat
+{
+	local $@;
+	eval { htpasswd('foo', undef, undef, 'bar') };
+	$@ && $@ =~ /The .*? format is not valid. The supported formats are:/;
+}
+
+sub htpasswdReturnExpectedHashWithDefaultFormat
+{
+	my $hash = htpasswd($password, undef, $salt8Bytes);
+	$hash eq $htpasswdMD5hash;
+}
+
+sub htpasswdMD5returnExpectedHashWithRandomSalt
+{
+	my $hash = htpasswd($password, undef, undef, 'md5');
+	length $hash == 37;
+}
+
+sub htpasswdCryptReturnExpectedHashWithRandomSalt
+{
+	my $hash = htpasswd($password, undef, undef, 'crypt');
+	length $hash == 13;
+}
+
+sub htpasswdSHA1returnExpectedHash
+{
+	my $hash = htpasswd($password, undef, undef, 'sha1');
+	$hash eq $htpasswdSHA1hash;
+}
+
+sub htpasswdMD5croakOnBadSaltLength
+{
+	local $@;
+
+	eval { htpasswd($password, undef, 'foobar', 'md5') };
+	my $ret1 = $@;
+	undef $@;
+
+	eval { htpasswd($password, undef, 'foobarbaz', 'md5') };
+	my $ret2 = $@;
+	undef $@;
+
+	$ret1 && $ret1 =~ /\QThe salt length for md5 (APR1) algorithm must be 8 bytes long/ &&
+	$ret2 && $ret2 =~ /\QThe salt length for md5 (APR1) algorithm must be 8 bytes long/;
+}
+
+sub htpasswdMD5croakOnBadSalt
+{
+	local $@;
+	eval { htpasswd($password, undef, 'foo#bar%', 'md5') };
+	$@ && $@ =~ m%The salt must be a string in the alphabet "./0-9A-Za-z"%;
+}
+
+sub htpasswdMD5returnExpectedHashWithSalt
+{
+	my $hash = htpasswd($password, undef, $salt8Bytes, 'md5');
+	$hash eq $htpasswdMD5hash;
+}
+
+sub htpasswdCryptCroakOnBadSaltLength
+{
+	local $@;
+
+	eval { htpasswd($password, undef, 'f', 'crypt') };
+	my $ret1 = $@;
+	undef $@;
+
+	eval { htpasswd($password, undef, 'foo', 'crypt') };
+	my $ret2 = $@;
+	undef $@;
+
+	$ret1 && $ret1 =~ /The salt length must be 2 bytes long/ &&
+	$ret2 && $ret2 =~ /The salt length must be 2 bytes long/;
+}
+
+sub htpasswdCryptCroakOnBadSalt
+{
+	local $@;
+	eval { htpasswd($password, undef, 'f%', 'crypt') };
+	$@ && $@ =~ m%The salt must be a string in the alphabet "./0-9A-Za-z"%;
+}
+
+sub htpasswdCryptreturnExpectedHashWithSalt
+{
+	my $hash = htpasswd($password, undef, $salt2Bytes, 'crypt');
+	$hash eq $htpasswdCryptHash;
+}
+
+sub htpasswdMD5returnExpectedHashWith8bitCharacter
+{
+	my $password = $password . chr(128);
+	my $hash = htpasswd($password, undef, $salt8Bytes, 'md5');
+	$hash eq '$apr1$12345678$jfOZlcRz4A7AlodxzmxOE1';
+}
+
+sub htpasswdCryptreturnExpectedHashWith8bitCharacter
+{
+	my $password = $password . chr(128);
+	my $hash = htpasswd($password, undef, $salt2Bytes, 'crypt');
+	$hash eq '126D8rSh5sjUE';
+}
+
+sub htpasswdSHA1returnExpectedHashWith8bitCharacter
+{
+	my $password = $password . chr(128);
+	my $hash = htpasswd($password, undef, undef, 'sha1');
+	$hash eq '{SHA}kHlMOJM25c8L7Q4gfioFJXzKURc=';
+}
+
+sub hashEqualResults
+{
+	hashEqual($md5Hash, $md5Hash) && ! hashEqual($md5Hash, $sha256Hash) && ! hashEqual($md5Hash, undef);
+}
+
+sub verifyReturnExpectedResults
+{
+	verify($password, $md5Hash) && ! verify($password, substr($md5Hash, 0, -1)) &&
+	verify($password, $sha256Hash) && ! verify($password, substr($sha256Hash, 0,  -1)) &&
+	verify($password, $sha512Hash) && ! verify($password, substr($sha512Hash, 0, -1)) &&
+	verify($password, $bcryptHash) && ! verify($password, substr($bcryptHash, 0, -1)) &&
+	verify($password, $htpasswdMD5hash) && ! verify($password, substr($htpasswdMD5hash, 0, -1)) &&
+	verify($password, $htpasswdCryptHash) && ! verify($password, substr($htpasswdCryptHash, 0, -1)) &&
+	verify($password, $htpasswdSHA1hash) && ! verify($password, substr($htpasswdSHA1hash, 0, -1));
 }
 
 sub runUnitTests
 {
-	plan tests => 21;  # Number of tests planned for execution
+	plan tests => 41;  # Number of tests planned for execution
 
 	if(require_ok('iMSCP::Crypt')) {
+		iMSCP::Crypt->import(qw(
+			randomStr md5 sha256 sha512 bcrypt htpasswd verify hashEqual encryptBlowfishCBC decryptBlowfishCBC
+			encryptRijndaelCBC decryptRijndaelCBC
+		));
+
 		eval {
-			ok randomStrDieOnMissingLengthParameter, 'iMSCP::Crypt::randomStr die on missing $length parameter';
-			ok randomStrReturnExpectedStringLength, 'iMSCP::Crypt::randomStr return expected string length';
-			ok randomStrDoNotReturnUnexpectedChars, 'iMSCP::Crypt::randomStr do not return unexpected characters';
+			# iMSCP::Crypt::randomStr() tests
+			ok randomStrCroakOnBadLengthParameter, 'randomStr() croak on bad length parameter';
+			ok randomStrReturnExpectedStringLength, 'randomStr() return expected string length';
+			ok randomStrReturnExpectedBase64String, 'randomStr() return expected base64 string';
+			ok randomStrReturnExpectedStringWithCharlist, 'randomStr() return expected string with charlist';
 
-			ok md5WithSaltReturnExpectedHash, 'iMSCP::Crypt::md5 return expected hash';
+			# iMSCP::Crypt::md5() tests
+			ok md5ReturnExpectedHashWithRandomSalt, 'md5() return expected hash with random salt';
+			ok md5CroakOnBadSaltLength, 'md5() croak on bad salt length';
+			ok md5ReturnExpectedHashWithSalt, 'md5() return expected hash with salt';
+			ok md5ReturnExpectedHashWith8bitCharacter, 'md5() return expected hash with 8 bit character';
 
-			ok encryptBlowfishDieOnMissingKeyParameter, 'iMSCP::Crypt::encryptBlowfish die on missing $key parameter';
-			ok encryptBlowfishDieOnMissingIvParameter, 'iMSCP::Crypt::encryptBlowfish die on missing $iv parameter';
-			ok encryptBlowfishDieOnMissingDataParameter, 'iMSCP::Crypt::encryptBlowfish die on missing $data parameter';
-			ok encryptBlowfishReturnExpectedString, 'iMSCP::Crypt::encryptBlowfish return expected string';
+			# iMSCP::Crypt::sha256 tests
+			ok sha256ReturnExpectedHashWithRandomSalt, 'sha256() return expected hash with random salt';
+			ok sha256CroakOnBadRoundsParameter, 'sha256() croak on bad rounds parameter';
+			ok sha256CroakOnBadSaltLength, 'sha256() croak on bad salt length';
+			ok sha256ReturnExpectedHashWithSalt, 'sha256() return expected hash with salt';
+			ok sha256ReturnExpectedHashWith8bitCharacter, 'sha256() return expected hash with 8 bit character';
 
-			ok decryptBlowfishDieOnMissingKeyParameter, 'iMSCP::Crypt::decryptBlowfish die on missing $key parameter';
-			ok decryptBlowfishDieOnMissingIvParameter, 'iMSCP::Crypt::decryptBlowfish die on missing $iv parameter';
-			ok decryptBlowfishDieOnMissingDataParameter, 'iMSCP::Crypt::decryptBlowfish die on missing $data parameter';
-			ok decryptBlowfishReturnExpectedString, 'iMSCP::Crypt::decryptBlowfish return expected string';
+			# iMSCP::Crypt::sha512 tests
+			ok sha512ReturnExpectedHashWithRandomSalt, 'sha512() return expected hash with random salt';
+			ok sha512CroakOnBadRoundsParameter, 'sha512() croak on bad rounds parameter';
+			ok sha512CroakOnBadSaltLength, 'sha512() croak on bad salt length';
+			ok sha512ReturnExpectedHashWithSalt, 'sha512() return expected hash with salt';
+			ok sha512ReturnExpectedHashWith8bitCharacter, 'sha512() return expected hash with 8 bit character';
 
-			ok encryptRijndaelDieOnMissingKeyParameter, 'iMSCP::Crypt::encryptRijndael die on missing $key parameter';
-			ok encryptRijndaelDieOnMissingIvParameter, 'iMSCP::Crypt::encryptRijndael die on missing $iv parameter';
-			ok encryptRijndaelDieOnMissingDataParameter, 'iMSCP::Crypt::encryptRijndael die on missing $data parameter';
-			ok encryptRijndaelReturnExpectedString, 'iMSCP::Crypt::encryptRijndael return expected string';
+			# iMSCP::Crypt::bcrypt tests
+			ok bcryptReturnExpectedHashWithRandomSalt, 'bcrypt() return expected hash with random salt';
+			ok bcryptCroakOnBadCostParameter, 'bcrypt() croak on bad cost parameter';
+			ok bcryptCroakOnBadSaltLength, 'bcrypt() croak on bad salt length';
+			ok bcryptReturnExpectedHashWithSalt, 'bcrypt() return expected hash with salt';
+			ok bcryptReturnExpectedHashWith8bitCharacter, 'bcrypt() return expected hash with 8 bit character';
 
-			ok decryptRijndaelDieOnMissingKeyParameter, 'iMSCP::Crypt::decryptRijndael die on missing $key parameter';
-			ok decryptRijndaelDieOnMissingIvParameter, 'iMSCP::Crypt::decryptRijndael die on missing $iv parameter';
-			ok decryptRijndaelDieOnMissingDataParameter, 'iMSCP::Crypt::decryptRijndael die on missing $data parameter';
-			ok decryptRijndaelReturnExpectedString, 'iMSCP::Crypt::decryptRijndael return expected string';
+			# iMSCP::Crypt::htpasswd tests
+			ok htpasswdCroakOnBadFormat, 'htpasswd() croak on bad format';
+			ok htpasswdReturnExpectedHashWithDefaultFormat, 'htpasswd() return expected hash with default format';
+			ok htpasswdMD5returnExpectedHashWithRandomSalt, 'htpasswd() return expected hash with md5 (APR1) format and random salt';
+			ok htpasswdCryptReturnExpectedHashWithRandomSalt, 'htpasswd() return expected hash with crypt format and random salt';
+			ok htpasswdSHA1returnExpectedHash, 'htpasswd() return expected hash with sha1 format';
+
+			ok htpasswdMD5croakOnBadSaltLength, 'htpasswd() croak on bad salt length with md5 (APR1) format';
+			ok htpasswdMD5croakOnBadSalt, 'htpasswd() croak on bad salt with md5 (APR1) format';
+			ok htpasswdMD5returnExpectedHashWithSalt, 'htpasswd() return expected hash with md5 (APR1) format and salt';
+
+			ok htpasswdCryptCroakOnBadSaltLength, 'htpasswd() croak on bad salt length with crypt format';
+			ok htpasswdCryptCroakOnBadSalt, 'htpasswd() croak on bad salt with crypt format';
+			ok htpasswdCryptreturnExpectedHashWithSalt, 'htpasswd() return expected hash with crypt format and salt';
+
+			ok htpasswdMD5returnExpectedHashWith8bitCharacter, 'htpasswd() return expected hash with md5 (APR1) format and 8 bit character';
+			ok htpasswdCryptreturnExpectedHashWith8bitCharacter, 'htpasswd() return expected hash with crypt format and 8 bit character';
+			ok htpasswdSHA1returnExpectedHashWith8bitCharacter, 'htpasswd() return expected hash with sha1 format and 8 bit character';
+
+			# iMSCP::Crypt::hashEqual tests
+			ok hashEqualResults, 'hashEqual() return expected results';
+
+			# iMSCP::Crypt::verify tests
+			ok verifyReturnExpectedResults, 'verify() return expected results';
+
+			# TODO iMSCP::Crypt::encryptBlowfishCBC tests
+
+			# TODO iMSCP::Crypt::decryptBlowfishCBC tests
+
+			# TODO iMSCP::Crypt::encryptRijndaelCBC tests
+
+			# TODO iMSCP::Crypt::decryptRijndaelCBC tests
 		};
 
 		diag sprintf('A test failed unexpectedly: %s', $@) if $@;

@@ -21,7 +21,7 @@ install:
   - cpanm Expect
   - cpanm Crypt::Blowfish
   - cpanm Crypt::CBC
-  - cpanm Crypt::PasswdMD5
+  - cpanm Crypt::Eksblowfish::Bcrypt
   - cpanm Crypt::Rijndael
 
 notifications:

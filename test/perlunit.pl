@@ -30,6 +30,7 @@ use lib "$FindBin::Bin/Perl", "$FindBin::Bin/../engine/PerlLib", "$FindBin::Bin/
 use Test::More import => [ 'diag', 'done_testing', 'fail', 'subtest' ];
 use File::Find;
 use POSIX qw(locale_h);
+use Symbol 'delete_package';
 use locale;
 
 setlocale(LC_MESSAGES, 'C.UTF-8');
@@ -49,6 +50,7 @@ find { wanted => sub {
 		if(my $function = $package->can('runUnitTests')) {
 			diag "\nRunning unit tests from $package package...\n\n";
 			subtest "$package unit tests", sub { $function->("$FindBin::Bin/Perl/TestAsset") };
+			delete_package $package; # Mitigate memory consumption by wiping out the whole test package namespace
 		} else {
 			fail sprintf('%s::runUnitTests() not implemented.', $package);
 		}
