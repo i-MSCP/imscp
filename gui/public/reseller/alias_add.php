@@ -192,7 +192,15 @@ function reseller_generatePage($tpl)
 				? $selected : '',
 			'FTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'ftp://')
 				? $selected : '',
-			'FORWARD_URL' => (isset($_POST['forward_url'])) ? tohtml(decode_idna($_POST['forward_url'])) : ''
+			'FORWARD_URL' => (isset($_POST['forward_url'])) ? tohtml(decode_idna($_POST['forward_url'])) : '',
+			'FORWARD_TYPE_301' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '301')
+				? $checked : '',
+			'FORWARD_TYPE_302' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '302')
+				? $checked : '',
+			'FORWARD_TYPE_303' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '303')
+				? $checked : '',
+			'FORWARD_TYPE_307' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '307')
+				? $checked : ''
 		)
 	);
 
@@ -317,6 +325,13 @@ function reseller_addDomainAlias()
 				set_page_message($e->getMessage(), 'error');
 				return false;
 			}
+
+			if (!isset($_POST['forward_type']) || !in_array($_POST['forward_type'], array('301', '302', '303', '307'))) {
+				set_page_message(tr('Please select the type of forward.'), 'error');
+				return false;
+			}
+
+			$forwardType = clean_input($_POST['forward_type']);
 		} else {
 			showBadRequestErrorPage();
 		}
@@ -344,14 +359,14 @@ function reseller_addDomainAlias()
 		exec_query(
 			'
 				INSERT INTO domain_aliasses (
-					domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward
+					domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward, type_forward
 				) VALUES (
-					?, ?, ?, ?, ?, ?
+					?, ?, ?, ?, ?, ?, ?
 				)
 			',
 			array(
 				$domainId, $domainAliasNameAscii, $mountPoint, 'toadd', $mainDmnProps['domain_ip_id'],
-				$forwardUrl
+				$forwardUrl, $forwardType
 			)
 		);
 
@@ -457,6 +472,11 @@ if ($resellerProps['max_als_cnt'] != 0 && $resellerProps['current_als_cnt'] >= $
 			'TR_HTTP' => 'http://',
 			'TR_HTTPS' => 'https://',
 			'TR_FTP' => 'ftp://',
+			'TR_FORWARD_TYPE' => tr('Type of forward'),
+			'TR_301' => tr('301'),
+			'TR_302' => tr('302'),
+			'TR_303' => tr('303'),
+			'TR_307' => tr('307'),
 			'TR_ADD' => tr('Add'),
 			'TR_CANCEL' => tr('Cancel')
 		)

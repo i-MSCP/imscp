@@ -482,6 +482,7 @@ sub _getHttpdData
 			BWLIMIT => $self->{'domain_traffic_limit'},
 			ALIAS => $userName,
 			FORWARD => 'no',
+			FORWARD_TYPE => '',
 			DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
 			 	? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
 			 	: $phpiniDefaultData->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
@@ -667,6 +668,7 @@ sub _getPackagesData
 			HOME_DIR => $homeDir,
 			WEB_DIR => $homeDir,
 			FORWARD => 'no',
+			FORWARD_TYPE => '',
 			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 		};
 	}

@@ -42,7 +42,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 		if ($subdomainType == 'dmn') {
 			$query = '
 				SELECT
-					`subdomain_name` AS `subdomain_name` , `subdomain_url_forward` AS `forward_url`
+					`subdomain_name` AS `subdomain_name`, `subdomain_url_forward` AS `forward_url`, `subdomain_type_forward` AS `forward_type`
 				FROM
 					`subdomain`
 				WHERE
@@ -55,7 +55,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 		} else {
 			$query = '
 				SELECT
-					`t1`.`subdomain_alias_name` AS `subdomain_name`, `t1`.`subdomain_alias_url_forward` AS `forward_url`,
+					`t1`.`subdomain_alias_name` AS `subdomain_name`, `t1`.`subdomain_alias_url_forward` AS `forward_url`,, `t1`.`subdomain_alias_type_forward` AS `forward_type`,
 					`t2`.`alias_name` `aliasName`
 				FROM
 					`subdomain_alias` AS `t1`
@@ -112,15 +112,18 @@ function client_generatePage($tpl)
 				$uri = iMSCP_Uri_Redirect::fromString($subdomainData['forward_url']);
 				$forwardUrlScheme = $uri->getScheme();
 				$forwardUrl = substr($uri->getUri(), strlen($forwardUrlScheme) + 3);
+				$forwardType = $subdomainData['forward_type'];
 			} else {
 				$urlForwarding = false;
 				$forwardUrlScheme = 'http://';
 				$forwardUrl = '';
+				$forwardType = '';
 			}
 		} else {
 			$urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
 			$forwardUrlScheme = (isset($_POST['forward_url_scheme'])) ? $_POST['forward_url_scheme'] : 'http://';
 			$forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
+			$forwardType = isset($_POST['forward_type']) ? $_POST['forward_type'] : '';
 		}
 
 		/** @var iMSCP_Config_Handler_File $cfg */
@@ -139,7 +142,11 @@ function client_generatePage($tpl)
 				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? $selected : '',
 				'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? $selected : '',
 				'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? $selected : '',
-				'FORWARD_URL' => tohtml(decode_idna($forwardUrl))
+				'FORWARD_URL' => tohtml(decode_idna($forwardUrl)),
+				'FORWARD_TYPE_301' => ($forwardType == '301') ? $checked : '',
+				'FORWARD_TYPE_302' => ($forwardType == '302') ? $checked : '',
+				'FORWARD_TYPE_303' => ($forwardType == '303') ? $checked : '',
+				'FORWARD_TYPE_307' => ($forwardType == '307') ? $checked : ''
 			)
 		);
 	} else {
@@ -193,6 +200,13 @@ function client_editSubdomain()
 						set_page_message($e->getMessage(), 'error');
 						return false;
 					}
+
+					if (!isset($_POST['forward_type']) || !in_array($_POST['forward_type'], array('301', '302', '303', '307'))) {
+						set_page_message(tr('Please select the type of forward.'), 'error');
+						return false;
+					}
+
+					$forwardType = clean_input($_POST['forward_type']);
 				} else {
 					showBadRequestErrorPage();
 				}
@@ -207,7 +221,7 @@ function client_editSubdomain()
 					UPDATE
 						`subdomain`
 					SET
-						`subdomain_url_forward` = ?, `subdomain_status` = ?
+						`subdomain_url_forward` = ?, `subdomain_type_forward` = ?, `subdomain_status` = ?
 					WHERE
 						`subdomain_id` = ?
 				';
@@ -216,13 +230,13 @@ function client_editSubdomain()
 					UPDATE
 						`subdomain_alias`
 					SET
-						`subdomain_alias_url_forward` = ?, `subdomain_alias_status` = ?
+						`subdomain_alias_url_forward` = ?, `subdomain_alias_type_forward` = ?, `subdomain_alias_status` = ?
 					WHERE
 						`subdomain_alias_id` = ?
 				';
 			}
 
-			exec_query($query, array($forwardUrl, 'tochange', $subdomainId));
+			exec_query($query, array($forwardUrl, $forwardType, 'tochange', $subdomainId));
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onAfterEditSubdomain, array('subdomainId' => $subdomainId)
@@ -283,6 +297,11 @@ if (!empty($_POST) && client_editSubdomain()) {
 			'TR_HTTP' => 'http://',
 			'TR_HTTPS' => 'https://',
 			'TR_FTP' => 'ftp://',
+			'TR_FORWARD_TYPE' => tr('Type of forward'),
+			'TR_301' => tr('301'),
+			'TR_302' => tr('302'),
+			'TR_303' => tr('303'),
+			'TR_307' => tr('307'),
 			'TR_UPDATE' => tr('Update'),
 			'TR_CANCEL' => tr('Cancel')
 		)

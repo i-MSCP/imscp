@@ -308,6 +308,7 @@ sub _getHttpdData
 			BWLIMIT => $self->{'domain_traffic_limit'},
 			ALIAS => $userName . 'als' . $self->{'alias_id'},
 			FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '') ? $self->{'url_forward'} : 'no',
+			FORWARD_TYPE => (defined $self->{'type_forward'} && $self->{'type_forward'} ne '') ? $self->{'type_forward'} : '',
 			DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
 				: $phpiniDefaultData->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
@@ -503,6 +504,7 @@ sub _getPackagesData
 			HOME_DIR => $homeDir,
 			WEB_DIR => $webDir,
 			FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '') ? $self->{'url_forward'} : 'no',
+			FORWARD_TYPE => (defined $self->{'type_forward'} && $self->{'type_forward'} ne '') ? $self->{'type_forward'} : '',
 			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 		};
 	}

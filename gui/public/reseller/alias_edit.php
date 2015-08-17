@@ -36,7 +36,7 @@ function _reseller_getAliasData($domainAliasId)
 	if (null === $domainAliasData) {
 		$query = "
 			SELECT
-				alias_name, url_forward AS forward_url
+				alias_name, url_forward AS forward_url, type_forward AS forward_type
 			FROM
 				domain_aliasses
 			INNER JOIN
@@ -84,15 +84,18 @@ function reseller_generatePage($tpl)
 				$uri = iMSCP_Uri_Redirect::fromString($domainAliasData['forward_url']);
 				$forwardUrlScheme = $uri->getScheme();
 				$forwardUrl = substr($uri->getUri(), strlen($forwardUrlScheme) + 3);
+				$forwardType = $domainAliasData['forward_type'];
 			} else {
 				$urlForwarding = false;
 				$forwardUrlScheme = 'http://';
 				$forwardUrl = '';
+				$forwardType = '';
 			}
 		} else {
 			$urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
 			$forwardUrlScheme = (isset($_POST['forward_url_scheme'])) ? $_POST['forward_url_scheme'] : 'http://';
 			$forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
+			$forwardType = isset($_POST['forward_type']) ? $_POST['forward_type'] : '';
 		}
 
 		/** @var iMSCP_Config_Handler_File $cfg */
@@ -110,7 +113,11 @@ function reseller_generatePage($tpl)
 				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? $selected : '',
 				'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? $selected : '',
 				'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? $selected : '',
-				'FORWARD_URL' => tohtml(decode_idna($forwardUrl))
+				'FORWARD_URL' => tohtml(decode_idna($forwardUrl)),
+				'FORWARD_TYPE_301' => ($forwardType == '301') ? $checked : '',
+				'FORWARD_TYPE_302' => ($forwardType == '302') ? $checked : '',
+				'FORWARD_TYPE_303' => ($forwardType == '303') ? $checked : '',
+				'FORWARD_TYPE_307' => ($forwardType == '307') ? $checked : ''
 			)
 		);
 	} else {
@@ -164,6 +171,13 @@ function reseller_editDomainAlias()
 						set_page_message($e->getMessage(), 'error');
 						return false;
 					}
+
+					if (!isset($_POST['forward_type']) || !in_array($_POST['forward_type'], array('301', '302', '303', '307'))) {
+						set_page_message(tr('Please select the type of forward.'), 'error');
+						return false;
+					}
+
+					$forwardType = clean_input($_POST['forward_type']);
 				} else {
 					showBadRequestErrorPage();
 				}
@@ -174,8 +188,8 @@ function reseller_editDomainAlias()
 			);
 
 			exec_query(
-				'UPDATE `domain_aliasses` SET `url_forward` = ?, `alias_status` = ? WHERE `alias_id` = ?',
-				array($forwardUrl, 'tochange', $domainAliasId)
+				'UPDATE `domain_aliasses` SET `url_forward` = ?, `type_forward` = ?, `alias_status` = ? WHERE `alias_id` = ?',
+				array($forwardUrl, $forwardType, 'tochange', $domainAliasId)
 			);
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
@@ -237,6 +251,11 @@ if (!empty($_POST) && reseller_editDomainAlias()) {
 			'TR_HTTP' => 'http://',
 			'TR_HTTPS' => 'https://',
 			'TR_FTP' => 'ftp://',
+			'TR_FORWARD_TYPE' => tr('Type of forward'),
+			'TR_301' => tr('301'),
+			'TR_302' => tr('302'),
+			'TR_303' => tr('303'),
+			'TR_307' => tr('307'),
 			'TR_UPDATE' => tr('Update'),
 			'TR_CANCEL' => tr('Cancel')
 		)

@@ -119,7 +119,15 @@ function client_generatePage($tpl)
 				? $selected : '',
 			'FTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'ftp://')
 				? $selected : '',
-			'FORWARD_URL' => (isset($_POST['forward_url'])) ? tohtml(decode_idna($_POST['forward_url'])) : ''
+			'FORWARD_URL' => (isset($_POST['forward_url'])) ? tohtml(decode_idna($_POST['forward_url'])) : '',
+			'FORWARD_TYPE_301' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '301')
+				? $checked : '',
+			'FORWARD_TYPE_302' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '302')
+				? $checked : '',
+			'FORWARD_TYPE_303' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '303')
+				? $checked : '',
+			'FORWARD_TYPE_307' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '307')
+				? $checked : ''
 		)
 	);
 
@@ -274,6 +282,13 @@ function client_addSubdomain()
 				set_page_message($e->getMessage(), 'error');
 				return false;
 			}
+
+			if (!isset($_POST['forward_type']) || !in_array($_POST['forward_type'], array('301', '302', '303', '307'))) {
+				set_page_message(tr('Please select the type of forward.'), 'error');
+				return false;
+			}
+
+			$forwardType = clean_input($_POST['forward_type']);
 		} else {
 			showBadRequestErrorPage();
 		}
@@ -289,6 +304,7 @@ function client_addSubdomain()
 			'parentDomainId' => $domainId,
 			'mountPoint' => $mountPoint,
 			'forwardUrl' => $forwardUrl,
+			'forwardType' => $forwardType,
 			'customerId' => $_SESSION['user_id']
 		)
 	);
@@ -297,22 +313,23 @@ function client_addSubdomain()
 		$query = "
 			INSERT INTO `subdomain_alias` (
 			    `alias_id`, `subdomain_alias_name`, `subdomain_alias_mount`, `subdomain_alias_url_forward`,
-			    `subdomain_alias_status`
+			    `subdomain_alias_type_forward`, `subdomain_alias_status`
 			) VALUES (
-			    ?, ?, ?, ?, ?
+			    ?, ?, ?, ?, ?, ?
 			)
 		";
 	} else {
 		$query = "
 			INSERT INTO `subdomain` (
-			    `domain_id`, `subdomain_name`, `subdomain_mount`, `subdomain_url_forward`, `subdomain_status`
+			    `domain_id`, `subdomain_name`, `subdomain_mount`, `subdomain_url_forward`, `subdomain_type_forward`,
+			    `subdomain_status`
 			) VALUES (
-			    ?, ?, ?, ?, ?
+			    ?, ?, ?, ?, ?, ?
 			)
 		";
 	}
 
-	exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, 'toadd'));
+	exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, $forwardType, 'toadd'));
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
 		iMSCP_Events::onAfterAddSubdomain,
@@ -322,6 +339,7 @@ function client_addSubdomain()
 			'parentDomainId' => $domainId,
 			'mountPoint' => $mountPoint,
 			'forwardUrl' => $forwardUrl,
+			'forwardType' => $forwardType,
 			'customerId' => $_SESSION['user_id'],
 			'subdomainId' => $db->insertId()
 		)
@@ -383,6 +401,11 @@ if ($mainDmnProps['domain_subd_limit'] != 0 && $subdomainsCount >= $mainDmnProps
 			'TR_HTTP' => 'http://',
 			'TR_HTTPS' => 'https://',
 			'TR_FTP' => 'ftp://',
+			'TR_FORWARD_TYPE' => tr('Type of forward'),
+			'TR_301' => tr('301'),
+			'TR_302' => tr('302'),
+			'TR_303' => tr('303'),
+			'TR_307' => tr('307'),
 			'TR_ADD' => tr('Add'),
 			'TR_CANCEL' => tr('Cancel')
 		)

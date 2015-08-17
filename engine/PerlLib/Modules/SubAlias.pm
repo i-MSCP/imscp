@@ -265,6 +265,8 @@ sub _getHttpdData
 			ALIAS => $userName . 'subals' . $self->{'subdomain_alias_id'},
 			FORWARD => (defined $self->{'subdomain_alias_url_forward'} && $self->{'subdomain_alias_url_forward'} ne '')
 				? $self->{'subdomain_alias_url_forward'} : 'no',
+			FORWARD_TYPE => (defined $self->{'subdomain_alias_type_forward'} && $self->{'subdomain_alias_type_forward'} ne '')
+				? $self->{'subdomain_alias_type_forward'} : '',
 			DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
 				: $phpiniDefaultData->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
@@ -425,6 +427,8 @@ sub _getPackagesData
 			WEB_DIR => $webDir,
 			FORWARD => (defined $self->{'subdomain_alias_url_forward'} && $self->{'subdomain_alias_url_forward'} ne '')
 				? $self->{'subdomain_alias_url_forward'} : 'no',
+			FORWARD_TYPE => (defined $self->{'subdomain_alias_type_forward'} && $self->{'subdomain_alias_type_forward'} ne '')
+				? $self->{'subdomain_alias_type_forward'} : '',
 			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 		};
 	}
