@@ -386,7 +386,7 @@ sub verifyReturnExpectedResults
 
 sub runUnitTests
 {
-	plan tests => 41;  # Number of tests planned for execution
+	plan tests => 40;  # Number of tests planned for execution
 
 	if(require_ok('iMSCP::Crypt')) {
 		iMSCP::Crypt->import(qw(
@@ -434,15 +434,12 @@ sub runUnitTests
 			ok htpasswdMD5returnExpectedHashWithRandomSalt, 'htpasswd() return expected hash with md5 (APR1) format and random salt';
 			ok htpasswdCryptReturnExpectedHashWithRandomSalt, 'htpasswd() return expected hash with crypt format and random salt';
 			ok htpasswdSHA1returnExpectedHash, 'htpasswd() return expected hash with sha1 format';
-
 			ok htpasswdMD5croakOnBadSaltLength, 'htpasswd() croak on bad salt length with md5 (APR1) format';
 			ok htpasswdMD5croakOnBadSalt, 'htpasswd() croak on bad salt with md5 (APR1) format';
 			ok htpasswdMD5returnExpectedHashWithSalt, 'htpasswd() return expected hash with md5 (APR1) format and salt';
-
 			ok htpasswdCryptCroakOnBadSaltLength, 'htpasswd() croak on bad salt length with crypt format';
 			ok htpasswdCryptCroakOnBadSalt, 'htpasswd() croak on bad salt with crypt format';
 			ok htpasswdCryptreturnExpectedHashWithSalt, 'htpasswd() return expected hash with crypt format and salt';
-
 			ok htpasswdMD5returnExpectedHashWith8bitCharacter, 'htpasswd() return expected hash with md5 (APR1) format and 8 bit character';
 			ok htpasswdCryptreturnExpectedHashWith8bitCharacter, 'htpasswd() return expected hash with crypt format and 8 bit character';
 			ok htpasswdSHA1returnExpectedHashWith8bitCharacter, 'htpasswd() return expected hash with sha1 format and 8 bit character';

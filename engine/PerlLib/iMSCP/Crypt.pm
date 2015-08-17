@@ -254,11 +254,11 @@ sub verify($$)
 {
 	my ($password, $hash) = @_;
 
-	if (substr($hash, 0, 5) eq '{SHA}') { # htpasswd sha1 hashed pasword
+	if (substr($hash, 0, 5) eq '{SHA}') { # htpasswd sha1 hashed password
 		return hashEqual($hash, '{SHA}' . encode_base64(Digest::SHA::sha1($password), ''));
 	}
 
-	if (substr($hash, 0, 6) eq '$apr1$') { # htpasswd md5 (APR1) hashed pasword
+	if (substr($hash, 0, 6) eq '$apr1$') { # htpasswd md5 (APR1) hashed password
 		my @token = split /\$/, $hash;
 		$token[2] or die('APR1 password format is not valid');
 		return hashEqual($hash, _apr1Md5($password, $token[2]));
