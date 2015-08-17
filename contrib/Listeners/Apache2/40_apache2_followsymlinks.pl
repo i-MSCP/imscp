@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file to edit the Symlinks OPtions in domain config files
+## Listener file to edit the Symlinks options in domain config files
 #
 
 package Listener::Apache2::FollowSymlinks;

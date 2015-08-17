@@ -21,7 +21,17 @@ Listener file that allows to override Apache2 ServerAlias directive value.
 
 ### 30_apache2_redirects_permanently.pl
 
-Listener file that allows to change the domain redirect type in customer's vhost files from 302 to 301.
+Listener file which changes the domain redirect type in customer's vhost files from 302 to 301.
+
+### 40_apache2_followsymlinks.pl
+
+Listener file to edit the Symlinks options in domain config files
+
+## Dovecot listeners
+
+### 10_dovecot_prefix.pl
+
+Listener file to edit the prefix in dovecot.conf
 
 ## Named listeners
 
