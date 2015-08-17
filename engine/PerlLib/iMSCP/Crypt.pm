@@ -391,8 +391,8 @@ sub _encryptCBC($$$$)
 	encode_base64(Crypt::CBC->new(
 		-cipher => $algorihtm,
 		-key => $key,
-		#-keysize => length $key, # FIXME: Should we  allow arbitrary keysizes?
-		-literal_key => 1,
+		#-keysize => length $key, # FIXME: Should we  allow arbitrary keysizes? Currently
+		-literal_key => 1, # PHP mcrypt_encrypt compliant
 		-iv => $iv,
 		-header => 'none',
 		-padding => 'null' # PHP mcrypt_encrypt compliant padding
@@ -419,9 +419,10 @@ sub _decryptCBC($$$$)
 		-cipher => $algorihtm,
 		-key => $key,
 		#-keysize => length $key, # FIXME: Should we  allow arbitrary keysizes?
-		-literal_key => 1,
+		-literal_key => 1, # PHP mcrypt_encrypt compliant
 		-iv => $iv,
-		-header => 'none'
+		-header => 'none',
+		-padding => 'null' # PHP mcrypt_encrypt compliant padding
 	)->decrypt(decode_base64($data));
 }
 
