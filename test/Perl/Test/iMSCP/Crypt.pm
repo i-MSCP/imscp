@@ -101,7 +101,7 @@ sub md5CroakOnBadSaltLength
 {
 	local $@;
 	eval { md5($password, 'foo') };
-	$@ && $@ =~ /The salt length must be at least 8 bytes/;
+	$@ && $@ =~ /The salt length must be at least 8 bytes long/;
 }
 
 sub md5ReturnExpectedHashWithSalt
@@ -148,7 +148,7 @@ sub sha256CroakOnBadSaltLength
 {
 	local $@;
 	eval { sha256($password, $rounds, 'foo') };
-	$@ && $@ =~ /The salt length must be at least 16 bytes/;
+	$@ && $@ =~ /The salt length must be at least 16 bytes long/;
 }
 
 sub sha256ReturnExpectedHashWithSalt
@@ -195,7 +195,7 @@ sub sha512CroakOnBadSaltLength
 {
 	local $@;
 	eval { sha512($password, $rounds, 'foo') };
-	$@ && $@ =~ /The salt length must be at least 16 bytes/;
+	$@ && $@ =~ /The salt length must be at least 16 bytes long/;
 }
 
 sub sha512ReturnExpectedHashWithSalt
@@ -242,7 +242,7 @@ sub bcryptCroakOnBadSaltLength
 {
 	local $@;
 	eval { bcrypt($password, $cost, 'foo') };
-	$@ && $@ =~ /The salt length must be at least 16 bytes/;
+	$@ && $@ =~ /The salt length must be at least 16 bytes long/;
 }
 
 sub bcryptReturnExpectedHashWithSalt

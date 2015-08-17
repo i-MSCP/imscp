@@ -100,7 +100,7 @@ sub md5($;$)
 	my ($password, $salt) = @_;
 
 	if(defined $salt) {
-		length $salt >= 8 or croak(sprintf('The salt length must be at least %d bytes', 8));
+		length $salt >= 8 or croak('The salt length must be at least 8 bytes long');
 	} else {
 		$salt = randomStr(8);
 	}
@@ -130,7 +130,7 @@ sub sha256($;$$)
 	$rounds = sprintf('%1$04d', $rounds);
 
 	if (defined $salt) {
-		length $salt >= 16 or croak(sprintf('The salt length must be at least %d bytes', 16));
+		length $salt >= 16 or croak('The salt length must be at least 16 bytes long');
 	} else {
 		$salt = randomStr(16);
 	}
@@ -160,7 +160,7 @@ sub sha512($;$$)
 	$rounds = sprintf('%1$04d', $rounds);
 
 	if (defined $salt) {
-		length $salt >= 16 or croak(sprintf('The salt length must be at least %d bytes', 16));
+		length $salt >= 16 or croak('The salt length must be at least 16 bytes long');
 	} else {
 		$salt = randomStr(16);
 	}
@@ -189,7 +189,7 @@ sub bcrypt($;$$)
 	$cost = sprintf('%1$02d', $cost);
 
 	if (defined $salt) {
-		length $salt >= 16 or croak(sprintf('The salt length must be at least %d bytes', 16));
+		length $salt >= 16 or croak('The salt length must be at least 16 bytes long');
 	} else {
 		$salt = randomStr(16);
 	}
@@ -260,7 +260,7 @@ sub verify($$)
 
 	if (substr($hash, 0, 6) eq '$apr1$') { # htpasswd md5 (APR1) hashed password
 		my @token = split /\$/, $hash;
-		$token[2] or die('APR1 password format is not valid');
+		$token[2] or croak('APR1 password format is not valid');
 		return hashEqual($hash, _apr1Md5($password, $token[2]));
 	}
 
