@@ -9,13 +9,24 @@ perl:
   - "5.20"
   - "5.21"
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 addons:
   apt:
     packages:
+      - curl
       - fakeroot
+      - php5-cli
+      - php5-intl
+      - php5-mcrypt
       - whiptail
 
 env: PERL_CPANM_OPT="--quiet --notest --force --skip-satisfied"
+
+before_install:
+ - curl -sS https://getcomposer.org/installer | php
 
 install:
   - cpanm Expect
@@ -23,6 +34,7 @@ install:
   - cpanm Crypt::CBC
   - cpanm Crypt::Eksblowfish::Bcrypt
   - cpanm Crypt::Rijndael
+  - travis_retry composer install --no-interaction --ignore-platform-reqs --prefer-source
 
 notifications:
   irc:
@@ -32,3 +44,4 @@ notifications:
 
 script:
   - fakeroot perl ./test/perlunit.pl
+  - ./vendor/bin/phpunit
