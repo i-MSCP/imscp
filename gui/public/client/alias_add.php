@@ -101,49 +101,37 @@ function client_generatePage($tpl)
 	/** @var iMSCP_Config_Handler_File $cfg */
 	$cfg = iMSCP_Registry::get('config');
 
-	$checked = $cfg->HTML_CHECKED;
-	$selected = $cfg->HTML_SELECTED;
+	$checked = $cfg['HTML_CHECKED'];
+	$selected = $cfg['HTML_SELECTED'];
 
-	$tpl->assign(
-		array(
-			'DOMAIN_ALIAS_NAME' => (isset($_POST['domain_alias_name'])) ? tohtml($_POST['domain_alias_name']) : '',
-			'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes')
-				? $checked : '',
-			'SHARED_MOUNT_POINT_NO' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes')
-				? '' : $checked,
-			'FORWARD_URL_YES' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes')
-				? $checked : '',
-			'FORWARD_URL_NO' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : $checked,
-			'HTTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://')
-				? $selected : '',
-			'HTTPS_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://')
-				? $selected : '',
-			'FTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'ftp://')
-				? $selected : '',
-			'FORWARD_URL' => (isset($_POST['forward_url'])) ? tohtml(decode_idna($_POST['forward_url'])) : '',
-			'FORWARD_TYPE_301' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '301')
-				? $checked : '',
-			'FORWARD_TYPE_302' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '302')
-				? $checked : '',
-			'FORWARD_TYPE_303' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '303')
-				? $checked : '',
-			'FORWARD_TYPE_307' => (isset($_POST['forward_type']) && $_POST['forward_type'] == '307')
-				? $checked : ''
+	$forwardType = isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
+		? $_POST['forward_type'] : '302';
+
+	$tpl->assign(array(
+		'DOMAIN_ALIAS_NAME' => (isset($_POST['domain_alias_name'])) ? tohtml($_POST['domain_alias_name']) : '',
+		'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? $checked : '',
+		'SHARED_MOUNT_POINT_NO' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? '' : $checked,
+		'FORWARD_URL_YES' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? $checked : '',
+		'FORWARD_URL_NO' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : $checked,
+		'HTTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://') ? $selected : '',
+		'HTTPS_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://') ? $selected : '',
+		'FTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'ftp://') ? $selected : '',
+		'FORWARD_URL' => (isset($_POST['forward_url'])) ? tohtml(decode_idna($_POST['forward_url'])) : '',
+		'FORWARD_TYPE_301' => ($forwardType == '301') ? $checked : '',
+		'FORWARD_TYPE_302' => ($forwardType == '302') ? $checked : '',
+		'FORWARD_TYPE_303' => ($forwardType == '303') ? $checked : '',
+		'FORWARD_TYPE_307' => ($forwardType == '307') ? $checked : ''
 		)
 	);
 
 	$domainList = _client_getDomainsList();
 
 	foreach ($domainList as $domain) {
-		$tpl->assign(
-			array(
-				'DOMAIN_NAME' => tohtml($domain['name']),
-				'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domain['name'])),
-				'SHARED_MOUNT_POINT_DOMAIN_SELECTED' =>
-				(isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name'])
-					? $selected : ''
-			)
-		);
+		$tpl->assign(array(
+			'DOMAIN_NAME' => tohtml($domain['name']),
+			'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domain['name'])),
+			'SHARED_MOUNT_POINT_DOMAIN_SELECTED' => (isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name']) ? $selected : ''
+		));
 
 		$tpl->parse('SHARED_MOUNT_POINT_DOMAIN', '.shared_mount_point_domain');
 	}
@@ -156,17 +144,12 @@ function client_generatePage($tpl)
  */
 function client_addDomainAlias()
 {
-	// Basic check
-
 	if (empty($_POST['domain_alias_name'])) {
 		set_page_message(tr('You must enter a domain alias name.'), 'error');
 		return false;
 	}
 
 	$domainAliasName = clean_input(strtolower($_POST['domain_alias_name']));
-
-	// Check for domain alias name syntax
-
 	global $dmnNameValidationErrMsg;
 
 	if (!isValidDomainName($domainAliasName)) {
@@ -179,8 +162,6 @@ function client_addDomainAlias()
 		$domainAliasName = substr($domainAliasName, 4);
 	}
 
-	// Check for domain alias existence
-
 	if(imscp_domain_exists($domainAliasName, $_SESSION['user_created_by'])) {
 		set_page_message(tr('Domain %s is unavailable.', "<strong>$domainAliasName</strong>"), 'error');
 		return false;
@@ -192,7 +173,6 @@ function client_addDomainAlias()
 	$mountPoint = "/$domainAliasNameAscii";
 
 	// Check for shared mount point option
-
 	if (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') { // We are safe here
 		if (isset($_POST['shared_mount_point_domain'])) {
 			$sharedMountPointDomain = clean_input($_POST['shared_mount_point_domain']);
@@ -210,12 +190,16 @@ function client_addDomainAlias()
 	}
 
 	// Check for URL forwarding option
-
 	$forwardUrl = 'no';
+	$forwardType = null;
 
-	if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') { // We are safe here
+	if (
+		isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
+		isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
+	) {
 		if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {
 			$forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
+			$forwardType = clean_input($_POST['forward_type']);
 
 			try {
 				try {
@@ -225,7 +209,6 @@ function client_addDomainAlias()
 				}
 
 				$uri->setHost(encode_idna($uri->getHost()));
-
 				$uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
 				$uri->setPath($uriPath);
 
@@ -243,11 +226,9 @@ function client_addDomainAlias()
 			}
 
 			if (!isset($_POST['forward_type']) || !in_array($_POST['forward_type'], array('301', '302', '303', '307'))) {
-				set_page_message(tr('Please select the type of forward.'), 'error');
+				set_page_message(tr('Please select the forward type.'), 'error');
 				return false;
 			}
-
-			$forwardType = clean_input($_POST['forward_type']);
 		} else {
 			showBadRequestErrorPage();
 		}
@@ -255,17 +236,12 @@ function client_addDomainAlias()
 
 	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 	$domainId = $mainDmnProps['domain_id'];
-
-	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeAddDomainAlias,
-		array(
-			'domainId' => $domainId,
-			'domainAliasName' => $domainAliasNameAscii
-		)
-	);
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, array(
+		'domainId' => $domainId,
+		'domainAliasName' => $domainAliasNameAscii
+	));
 
 	exec_query(
 		'
@@ -281,14 +257,11 @@ function client_addDomainAlias()
 		)
 	);
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onAfterAddDomainAlias,
-		array(
-			'domainId' => $domainId,
-			'domainAliasName' => $domainAliasNameAscii,
-			'domainAliasId' => $db->insertId()
-		)
-	);
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array(
+		'domainId' => $domainId,
+		'domainAliasName' => $domainAliasNameAscii,
+		'domainAliasId' => $db->insertId()
+	));
 
 	send_alias_order_email($domainAliasName); // // Notify the reseller
 	write_log("{$_SESSION['user_logged']}: ordered new domain alias: $domainAliasName.", E_USER_NOTICE);
@@ -301,13 +274,10 @@ function client_addDomainAlias()
  * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
-
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -320,50 +290,43 @@ if ($mainDmnProps['domain_alias_limit'] != 0 && $domainAliasesCount >= $mainDmnP
 	redirectTo('domains_manage.php');
 } else {
 	$tpl = new iMSCP_pTemplate();
-	$tpl->define_dynamic(
-		array(
-			'layout' => 'shared/layouts/ui.tpl',
-			'page' => 'client/alias_add.tpl',
-			'page_message' => 'layout',
-			'shared_mount_point_domain' => 'page'
-		)
-	);
+	$tpl->define_dynamic(array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/alias_add.tpl',
+		'page_message' => 'layout',
+		'shared_mount_point_domain' => 'page'
+	));
 
-	$tpl->assign(
-		array(
-			'TR_PAGE_TITLE' => tr('Client / Domains / Add Domain Alias'),
-			'TR_DOMAIN_ALIAS' => tr('Domain alias'),
-			'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
-			'TR_DOMAIN_ALIAS_NAME_TOOLTIP' => tr("You must omit 'www'. It will be added automatically."),
-			'TR_SHARED_MOUNT_POINT' => tr('Shared mount point'),
-			'TR_SHARED_MOUNT_POINT_TOOLTIP' => tr('Allows to share the mount point of another domain.'),
-			'TR_URL_FORWARDING' => tr('URL forwarding'),
-			'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain alias to a specific URL. Be aware that when this option is in use, no Web folder is created for the domain alias.'),
-			'TR_FORWARD_TO_URL' => tr('Forward to URL'),
-			'TR_YES' => tr('Yes'),
-			'TR_NO' => tr('No'),
-			'TR_HTTP' => 'http://',
-			'TR_HTTPS' => 'https://',
-			'TR_FTP' => 'ftp://',
-			'TR_FORWARD_TYPE' => tr('Type of forward'),
-			'TR_301' => tr('301'),
-			'TR_302' => tr('302'),
-			'TR_303' => tr('303'),
-			'TR_307' => tr('307'),
-			'TR_ADD' => tr('Add'),
-			'TR_CANCEL' => tr('Cancel')
-		)
-	);
+	$tpl->assign(array(
+		'TR_PAGE_TITLE' => tr('Client / Domains / Add Domain Alias'),
+		'TR_DOMAIN_ALIAS' => tr('Domain alias'),
+		'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
+		'TR_DOMAIN_ALIAS_NAME_TOOLTIP' => tr("You must omit 'www'. It will be added automatically."),
+		'TR_SHARED_MOUNT_POINT' => tr('Shared mount point'),
+		'TR_SHARED_MOUNT_POINT_TOOLTIP' => tr('Allows to share the mount point of another domain.'),
+		'TR_URL_FORWARDING' => tr('URL forwarding'),
+		'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain alias to a specific URL. Be aware that when this option is in use, no Web folder is created for the domain alias.'),
+		'TR_FORWARD_TO_URL' => tr('Forward to URL'),
+		'TR_YES' => tr('Yes'),
+		'TR_NO' => tr('No'),
+		'TR_HTTP' => 'http://',
+		'TR_HTTPS' => 'https://',
+		'TR_FTP' => 'ftp://',
+		'TR_FORWARD_TYPE' => tr('Forward type'),
+		'TR_301' => '301',
+		'TR_302' => '302',
+		'TR_303' => '303',
+		'TR_307' => '307',
+		'TR_ADD' => tr('Add'),
+		'TR_CANCEL' => tr('Cancel')
+	));
 
 	generateNavigation($tpl);
 	client_generatePage($tpl);
 	generatePageMessage($tpl);
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
-
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
 	$tpl->prnt();
-
 	unsetMessages();
 }
