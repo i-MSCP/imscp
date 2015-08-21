@@ -31,9 +31,8 @@ use File::Basename;
 newDebug('imscp-set-gui-permissions.log');
 
 # Initialize command line options
-$main::execmode = '';
+$main::execmode = 'backend';
 
-# Parse command line options
 iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
 PURPOSE
@@ -46,44 +45,32 @@ OPTIONS
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot(
-	{ norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes' }
-);
+iMSCP::Bootstrapper->getInstance()->boot({ norequirements => 1, nolock => 1, nodatabase => 1, nokeys => 1 });
 
-my $rs = 0;
 my @toProcess = ();
 
-for(iMSCP::Servers->getInstance()->get()) {
-	my $package = "Servers::$_";
-	eval "require $package";
-
-	unless($@) {
-		my $package = $package->factory();
-		push @toProcess, [ $_, $package ] if $package->can('setGuiPermissions');;
-	} else {
-		error($@);
-		$rs = 1;
+for my $srv(iMSCP::Servers->getInstance()->getFull()) {
+	eval "require $srv" or die(sprintf('Could not load %s package: %s', $srv, $@));
+	my $obj = $srv->factory();
+	if($obj->can('setGuiPermissions')) {
+		push @toProcess, [ $srv, $obj ];
 	}
 }
 
-for(iMSCP::Packages->getInstance()->get()) {
-	my $package = "Package::$_";
-	eval "require $package";
-
-	unless($@) {
-		my $package = $package->getInstance();
-		push @toProcess, [ $_, $package ] if $package->can('setGuiPermissions');
-	} else {
-		error($@);
-		$rs = 1;
+for my $pkg(iMSCP::Packages->getInstance()->getFull()) {
+	eval "require $pkg" or die(sprintf('Could not load %s package: %s', $pkg, $@));
+	my $obj = $pkg->getInstance();
+	if($obj->can('setGuiPermissions')) {
+		push @toProcess, [ $pkg, $obj ];
 	}
 }
 
 my $totalItems = @toProcess;
 my $counter = 1;
+my $rs = 0;
 
-for(@toProcess) {
-	my ($package, $instance) = @{$_};
+for my $item(@toProcess) {
+	my ($package, $instance) = @{$item};
 	debug("Setting $package (frontEnd) permissions");
 	print "Setting $package (frontEnd) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
 	$rs |= $instance->setGuiPermissions();
@@ -95,10 +82,9 @@ unless($main::execmode eq 'setup') {
 	my @errors = getMessageByType('error');
 	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
 	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
-
 	if($msg) {
 		require iMSCP::Mail;
-		$rs |= iMSCP::Mail->new()->errmsg($msg);
+		iMSCP::Mail->new()->errmsg($msg);
 	}
 }
 

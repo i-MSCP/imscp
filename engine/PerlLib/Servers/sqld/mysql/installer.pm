@@ -25,7 +25,7 @@ package Servers::sqld::mysql::installer;
 
 use strict;
 use warnings;
-use iMSCP::Crypt;
+use iMSCP::Crypt 'decryptRijndaelCBC';
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -34,7 +34,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
-use Servers::sqld::mysql;
+use Servers::sqld;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -91,11 +91,9 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	my $rs = setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
+	setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0644' }
 	);
-	return $rs if $rs;
-
 	setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
 	);
@@ -119,30 +117,20 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self->{'sqld'} = Servers::sqld::mysql->getInstance();
-
-	$self->{'eventManager'}->trigger('beforeSqldInitInstaller', $self, 'mysql') and fatal(
-		'mysql - beforeSqldInitInstaller has failed'
-	);
-
+	$self->{'sqld'} = Servers::sqld->factory();
+	$self->{'eventManager'} = $self->{'sqld'}->{'eventManager'};
 	$self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
 	$self->{'config'}= $self->{'sqld'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
 		for my $param(keys %oldConfig) {
 			if(exists $self->{'config'}->{$param}) {
 				$self->{'config'}->{$param} = $oldConfig{$param};
 			}
 		}
 	}
-
-	$self->{'eventManager'}->trigger('afterSqldInitInstaller', $self, 'mysql') and fatal(
-		'mysql - afterSqldInitInstaller has failed'
-	);
 
 	$self;
 }
@@ -192,8 +180,7 @@ sub _buildConf
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldBuildConf');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeSqldBuildConf');
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
@@ -201,9 +188,7 @@ sub _buildConf
 
 	# Create the /etc/mysql/my.cnf file if missing
 	unless(-f "$confDir/my.cnf") {
-		my $cfgTpl;
-		$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'my.cnf', \$cfgTpl, { });
-		return $rs if $rs;
+		$self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'my.cnf', \my $cfgTpl, { });
 
 		unless(defined $cfgTpl) {
 			$cfgTpl = "!includedir $confDir/conf.d/\n";
@@ -212,44 +197,27 @@ sub _buildConf
 		}
 
 		my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
-
-		$rs = $file->set($cfgTpl);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-
-		$rs = $file->owner($rootUName, $rootGName);
-		return $rs if $rs;
+		$file->set($cfgTpl);
+		$file->save();
+		$file->mode(0644);
+		$file->owner($rootUName, $rootGName);
 	}
 
 	# Make sure that the conf.d directory exists
-	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({
-		user => $rootUName, group => $rootGName, mode => 0755
-	});
-	return $rs if $rs;
+	iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
 
-	my $cfgTpl;
-	$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', { });
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('onLoadTemplate', 'mysql', 'imscp.cnf', \my $cfgTpl, { });
 
 	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
-		unless(defined $cfgTpl) {
-			error("Unable to read $self->{'cfgDir'}/imscp.cnf");
-			return 1;
-		}
 	}
 
 	my $variables = {
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
-		DATABASE_PASSWORD => escapeShell(
-			iMSCP::Crypt->getInstance()->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'})
-		),
+		DATABASE_PASSWORD => escapeShell(decryptRijndaelCBC(
+			$main::imscpConfig{'DB_KEY'}, $main::imscpConfig{'DB_IV'}, $main::imscpConfig{'DATABASE_PASSWORD'}
+		)),
 		DATABASE_USER => $main::imscpConfig{'DATABASE_USER'}
 	};
 
@@ -265,18 +233,10 @@ EOF
 	$cfgTpl = process($variables, $cfgTpl);
 
 	my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
-
-	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$rs = $file->owner($rootUName, $rootGName);
-	return $rs if $rs;
+	$file->set($cfgTpl);
+	$file->save();
+	$file->mode(0640);
+	$file->owner($rootUName, $rootGName);
 
 	$self->{'eventManager'}->trigger('afterSqldBuildConf');
 }
@@ -307,8 +267,7 @@ sub _saveConf
 sub _isMysqldInsideCt
 {
 	if(-f '/proc/user_beancounters') {
-		my ($stdout, $stderr);
-		my $rs = execute('cat /proc/1/status | grep --color=never envID', \$stdout, \$stderr);
+		my $rs = execute('cat /proc/1/status | grep --color=never envID', \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		warning($stderr) if $rs && $stderr;
 		return $rs if $rs;

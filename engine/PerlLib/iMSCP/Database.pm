@@ -25,7 +25,7 @@ package iMSCP::Database;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use Carp;
 
 my %adapterInstances;
 
@@ -39,26 +39,27 @@ my %adapterInstances;
 
 =over 4
 
-=item factory($adapterName)
+=item factory([ $adapter = $main::imscpConfig{'DATABASE_TYPE'} ])
 
  Create and return a database adapter instance. Instance is created once
 
- Param string $adapterName Adapter name
+ Param string $adapter Adapter
  Return an instance of the specified database adapter
 
 =cut
 
 sub factory
 {
-	my $adapterName = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
+	my $adapter = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
 
-	unless(defined $adapterInstances{$adapterName}) {
-		my $adapter = "iMSCP::Database::${adapterName}";
-		eval "require $adapter" or fatal("Unable to load database adapter $adapter: $@");
-		$adapterInstances{$adapterName} = $adapter->getInstance();
+	$adapter = "iMSCP::Database::${adapter}";
+
+	unless(defined $adapterInstances{$adapter}) {
+		eval "require $adapter" or croak(sprintf('Could not load %s database adapter: %s', $adapter, $@));
+		$adapterInstances{$adapter} = $adapter->getInstance();
 	}
 
-	$adapterInstances{$adapterName};
+	$adapterInstances{$adapter};
 }
 
 =back

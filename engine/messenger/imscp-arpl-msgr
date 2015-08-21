@@ -30,16 +30,14 @@ use Encode;
 
 newDebug('imscp-arpl-msgr/imscp-arpl-msgr.log');
 
-iMSCP::Bootstrapper->getInstance()->boot({ nolock => 'yes', norequirements => 'yes', config_readonly => 'yes' });
+iMSCP::Bootstrapper->getInstance()->boot({ nolock => 1, norequirements => 1, config_readonly => 1 });
 
 eval {
 	my $dbh = iMSCP::Database->factory()->getRawDb();
 	$dbh->{'RaiseError'} = 1;
-
 	$dbh->do("DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()");
 
 	(my $from = $ARGV[0]) =~ s/imscp-arpl\.//;
-
 	my $message = do { local $/; <STDIN> };
 
 	my $parser = new MIME::Parser;
@@ -116,5 +114,3 @@ eval {
 		}
 	}
 };
-
-fatal($@) if $@;

@@ -25,9 +25,8 @@ package iMSCP::Database::mysql;
 
 use strict;
 use warnings;
-
-use iMSCP::Debug;
 use DBI;
+use iMSCP::Debug;
 use iMSCP::Execute;
 use File::HomeDir;
 use POSIX ':signal_h';
@@ -75,7 +74,7 @@ sub set
 
 sub connect
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $dsn =
 		"dbi:mysql:database=$self->{'db'}->{'DATABASE_NAME'}" .
@@ -107,7 +106,6 @@ sub connect
 				)
 			);
 			alarm 0;
-
 			$self->{'connection'}->do('SET NAMES utf8');
 		};
 
@@ -133,13 +131,11 @@ sub connect
 
 sub startTransaction
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rawDb = $self->getRawDb();
-
 	$rawDb->{'AutoCommit'} = 0;
 	$rawDb->{'RaiseError'} = 1;
-
 	$rawDb;
 }
 
@@ -151,14 +147,12 @@ sub startTransaction
 
 sub endTransaction
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rawDb = $self->getRawDb();
-
 	$rawDb->{'AutoCommit'} = 1;
 	$rawDb->{'RaiseError'} = 0;
 	$rawDb->{'mysql_auto_reconnect'} = 1;
-
 	$self->{'connection'};
 }
 
@@ -170,9 +164,9 @@ sub endTransaction
 
 sub getRawDb
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	if(! $self->{'connection'}) {
+	unless($self->{'connection'}) {
 		my $rs = $self->connect();
 		fatal("Unable to connect: $rs") if $rs;
 	}
@@ -224,7 +218,7 @@ sub doQuery
 
 sub getDBTables
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'sth'} = $self->{'connection'}->prepare(
 		'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', $self->{'db'}->{'DATABASE_NAME'}
@@ -233,9 +227,7 @@ sub getDBTables
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 
 	my $href = $self->{'sth'}->fetchall_hashref('TABLE_NAME');
-
 	my @tables = keys %{$href};
-
 	\@tables;
 }
 
@@ -260,9 +252,7 @@ sub getTableColumns
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 
 	my $href = $self->{'sth'}->fetchall_hashref('COLUMN_NAME');
-
 	my @columns = keys %{$href};
-
 	\@columns;
 }
 
@@ -302,12 +292,10 @@ sub dumpdb
 		$dbName
 	);
 
-	my ($stdout, $stderr);
-	my $rs = execute("@cmd", \$stdout, \$stderr);
+	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Unable to dump $dbName") if $rs && ! $stderr;
-
 	$rs;
 }
 
@@ -324,7 +312,6 @@ sub quoteIdentifier
 	my ($self, $identifier) = @_;
 
 	$identifier = join(', ', $identifier) if ref $identifier eq 'ARRAY';
-
 	$self->{'connection'}->quote_identifier($identifier);
 }
 
@@ -355,7 +342,7 @@ sub quote
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'db'}->{'DATABASE_NAME'} = '';
 	$self->{'db'}->{'DATABASE_HOST'} = '';
@@ -377,15 +364,13 @@ sub _init
 	$self->{'_dsn'} = '';
 	$self->{'_currentUser'} = '';
 	$self->{'_currentPassword'} = '';
-
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

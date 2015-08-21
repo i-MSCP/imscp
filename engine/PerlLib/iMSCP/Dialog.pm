@@ -390,7 +390,7 @@ sub hasGauge
 {
 	return 0 if $main::noprompt;
 
-	($_[0]->{'gauge'}) ? 1 : 0;
+	((shift)->{'gauge'});
 }
 
 =item set($option, $value)

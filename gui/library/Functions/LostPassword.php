@@ -170,8 +170,7 @@ function setPassword($uniqueKey, $userPassword)
 	}
 
 	exec_query(
-		'UPDATE `admin` SET `admin_pass` = ? WHERE `uniqkey` = ?',
-		array(cryptPasswordWithSalt($userPassword), $uniqueKey)
+		'UPDATE `admin` SET `admin_pass` = ? WHERE `uniqkey` = ?', array(\iMSCP\Crypt::bcrypt($userPassword), $uniqueKey)
 	);
 }
 
@@ -185,7 +184,7 @@ function uniqueKeyExists($uniqueKey)
 {
 	$stmt = exec_query('SELECT `uniqkey` FROM `admin` WHERE `uniqkey` = ?', $uniqueKey);
 
-	return (bool)$stmt->recordCount();
+	return (bool)$stmt->rowCount();
 }
 
 /**
@@ -226,7 +225,7 @@ function sendPassword($uniqueKey)
 		$adminLastName = $stmt->fields['lname'];
 		$to = $stmt->fields['email'];
 
-		$userPassword = passgen();
+		$userPassword = \iMSCP\Crypt::randomStr($cfg['PASSWD_CHARS']);
 		setPassword($uniqueKey, $userPassword);
 
 		write_log('Lostpassword: ' . $adminName . ': password updated', E_USER_NOTICE);

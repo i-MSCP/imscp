@@ -54,7 +54,6 @@ sub mode
 
 	defined $mode or die('Missing mode parameter');
 	chmod $mode, $self->{'dirname'} or die(sprintf('Could not set mode on %s: %s', $self->{'dirname'}, $!));
-
 	0;
 }
 
@@ -74,15 +73,11 @@ sub owner
 
 	defined $owner or die('Missing owner parameter');
 	defined $group or die('Missing group parameter');
-
 	my $uid = ($owner =~ /^\d|-1$/) ? $owner : scalar getpwnam($owner);
 	my $gid = ($group =~ /^\d|-1$/) ? $group : scalar getgrnam($group);
-
 	defined $uid or die(sprintf('Owner parameter refers to an inexistent user: %s', $owner));
 	defined $gid or die(sprintf('Group parameter refers to an inexistent group: %s', $group));
-
 	chown $uid, $gid, $self->{'dirname'} or die(sprintf('Could not set owner/group on %s: %s', $self->{'dirname'}, $!));
-
 	0;
 }
 
@@ -148,7 +143,6 @@ sub isEmpty
 	my $self = shift;
 
 	opendir my $dh, $self->{'dirname'} or die(sprintf('Could not open %s: %s', $self->{'dirname'}, $!));
-
 	for my $file(readdir $dh) {
 		return 0 if File::Spec->no_upwards($file);
 	}
@@ -250,7 +244,6 @@ sub rcopy
 	my ($self, $targetdir, $preserve) = @_;
 
 	defined $targetdir or die('Missing targetdir parameter');
-
 	local $SIG{'__WARN__'} = sub { die @_ }; # Turn warnings from File::Find into exception
 
 	find { wanted => sub {

@@ -32,6 +32,7 @@ use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Composer;
 use iMSCP::TemplateParser;
+use iMSCP::Dir;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
@@ -49,17 +50,15 @@ our $VERSION = '0.2.0.*@dev';
 
  Process preinstall tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/ajaxplorer', $VERSION);
-	return $rs if $rs;
-
+	iMSCP::Composer->getInstance()->registerPackage('imscp/ajaxplorer', $VERSION);
 	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
 }
 
@@ -67,13 +66,13 @@ sub preinstall
 
  Process install tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_installFiles();
 	return $rs if $rs;
@@ -85,7 +84,7 @@ sub install
 
  Set gui permissions
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -95,11 +94,9 @@ sub setGuiPermissions
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
-	my $rs = setRights("$guiPublicDir/tools/ftp", {
+	setRights("$guiPublicDir/tools/ftp", {
 		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
 	});
-	return $rs if $rs;
-
 	setRights("$guiPublicDir/tools/ftp/data", {
 		user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
 	});
@@ -117,7 +114,7 @@ sub setGuiPermissions
 
  Param string \$tplContent Template file tplContent
  Param string $tplName Template name
- Return int 0 on success, other on failure
+ Return int 0
 
 =cut
 
@@ -160,10 +157,9 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
 	$self;
 }
 
@@ -171,40 +167,22 @@ sub _init
 
  Install files in production directory
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
 sub _installFiles
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer";
 
-	if(-d $packageDir) {
-		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp";
+	-d $packageDir or die('Could not find the imscp/ajaxplorer (Pydio) package at %s', $packageDir);
 
-		my ($stdout, $stderr);
-		my $rs = execute("rm -fR $destDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
-
-		$rs = execute("cp -fR $packageDir/src $destDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
-
-		$rs = execute("cp -fRT $packageDir/iMSCP/src $destDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
-	} else {
-		error("Couldn't find the imscp/ajaxplorer ( Pydio ) package into the packages cache directory");
-		return 1;
-	}
-
-	0;
+	my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp";
+	iMSCP::Dir->new( dirname => $destDir )->remove();
+	iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy($destDir);
+	iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy($destDir);
 }
 
 =item _buildHttpdConfig()

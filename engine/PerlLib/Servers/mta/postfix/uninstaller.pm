@@ -23,23 +23,20 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
 use File::Basename;
-use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::SystemUser;
-use Servers::mta::postfix;
+use Servers::mta;
 use parent 'Common::SingletonClass';
 
 sub _init
 {
 	my $self = shift;
 
-	$self->{'mta'} = Servers::mta::postfix->getInstance();
+	$self->{'mta'} = Servers::mta->factory();
 	$self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
 	$self->{'config'} = $self->{'mta'}->{'config'};
-
 	$self;
 }
 
@@ -64,8 +61,7 @@ sub _removeDirs
 	my $self = shift;
 
 	for my $file($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
-		my $rs = iMSCP::Dir->new( dirname => $file )->remove();
-		return $rs if $rs;
+		iMSCP::Dir->new( dirname => $file )->remove();
 	}
 
 	0;
@@ -82,12 +78,10 @@ sub _buildAliasses
 {
 	my $self = shift;
 
-	my ($stdout, $stderr);
-	my $rs = execute("newaliases", \$stdout, \$stderr);
+	my $rs = execute("newaliases", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Error while executing newaliases command") if ! $stderr && $rs;
-
+	error("Error while executing newaliases command") if $rs && !$stderr;
 	$rs;
 }
 
@@ -99,14 +93,12 @@ sub _restoreConfFile
 		my $filename = fileparse($file);
 
 		if(-f "$self->{'bkpDir'}/$filename.system"){
-			my $rs = iMSCP::File->new(filename => "$self->{'bkpDir'}/$filename.system")->copyFile($file);
-			return $rs if $rs;
+			iMSCP::File->new(filename => "$self->{'bkpDir'}/$filename.system")->copyFile($file);
 		}
 	}
 
 	if(-f "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf") {
-		my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf" )->delFile();
-		return $rs if $rs;
+		iMSCP::File->new( filename => "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf" )->delFile();
 	}
 
 	0;

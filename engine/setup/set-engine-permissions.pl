@@ -29,14 +29,11 @@ use iMSCP::Packages;
 use iMSCP::Getopt;
 use File::Basename;
 
-$ENV{'LANG'} = 'C.UTF-8';
-
 newDebug('imscp-set-engine-permissions.log');
 
 # Initialize command line options
-$main::execmode = '';
+$main::execmode = 'backend';
 
-# Parse command line options
 iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
 Script which set i-MSCP backend permissions.
@@ -44,45 +41,34 @@ Script which set i-MSCP backend permissions.
 OPTIONS:
  -s,    --setup         Setup mode.
  -v,    --verbose       Enable verbose mode.},
- 'setup|s' => sub { $main::execmode =  'setup'; },
+ 'setup|s' => sub { $main::execmode = 'setup'; },
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot(
-	{ norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes' }
-);
+iMSCP::Bootstrapper->getInstance()->boot({ norequirements => 1, nolock => 1, nodatabase => 1, nokeys => 1 });
 
-my $rs = 0;
 my @toProcess = ();
 
-for(iMSCP::Servers->getInstance()->get()) {
-	my $package = "Servers::$_";
-	eval "require $package";
-	unless($@) {
-		my $instance = $package->factory();
-		push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
-	} else {
-		error($@);
-		$rs = 1;
+for my $srv(iMSCP::Servers->getInstance()->getFull()) {
+	eval "require $srv" or die(sprintf('Could not load %s package: %s', $srv, $@));
+	my $obj = $srv->factory();
+	if($obj->can('setEnginePermissions')) {
+		push @toProcess, [ $srv, $obj ];
 	}
 }
 
-for(iMSCP::Packages->getInstance()->get()) {
-	my $package = "Package::$_";
-	eval "require $package";
-	unless($@) {
-		my $instance = $package->getInstance();
-		push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
-	} else {
-		error($@);
-		$rs = 1;
+for my $pkg(iMSCP::Packages->getInstance()->getFull()) {
+	eval "require $pkg" or die(sprintf('Could not load %s package: %s', $pkg, $@));
+	my $obj = $pkg->getInstance();
+	if($obj->can('setEnginePermissions')) {
+		push @toProcess, [ $pkg, $obj ];
 	}
 }
 
 my $totalItems = @toProcess + 1;
 my $counter = 1;
+my $rs = 0;
 
-# Set base permissions - begin
 debug('Setting base (backend) permissions');
 print "Setting base (backend) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
 
@@ -92,20 +78,20 @@ my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
 my $confDir = $main::imscpConfig{'CONF_DIR'};
 my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 
-$rs = setRights($main::imscpConfig{'CONF_DIR'}, {
+setRights($main::imscpConfig{'CONF_DIR'}, {
 	user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0640', recursive => 1
 });
-$rs |= setRights($rootDir, { user => $rootUName, group => $rootGName, mode => '0755' });
-$rs |= setRights("$rootDir/engine", { user => $rootUName, group => $imscpGName, mode => '0750', recursive => 1 });
-$rs |= setRights($main::imscpConfig{'USER_WEB_DIR'}, { user => $rootUName, group => $rootGName, mode => '0755' });
-$rs |= setRights($main::imscpConfig{'LOG_DIR'}, { user => $rootUName, group => $imscpGName, mode => '0750'} );
-$rs |= setRights($main::imscpConfig{'CACHE_DATA_DIR'}, { user => $rootUName, group => $rootGName, mode => '0750' });
-$rs |= setRights($main::imscpConfig{'VARIABLE_DATA_DIR'}, { user => $rootUName, group => $rootGName, mode => '0750' });
+setRights($rootDir, { user => $rootUName, group => $rootGName, mode => '0755' });
+setRights("$rootDir/engine", { user => $rootUName, group => $imscpGName, mode => '0750', recursive => 1 });
+setRights($main::imscpConfig{'USER_WEB_DIR'}, { user => $rootUName, group => $rootGName, mode => '0755' });
+setRights($main::imscpConfig{'LOG_DIR'}, { user => $rootUName, group => $imscpGName, mode => '0750'} );
+setRights($main::imscpConfig{'CACHE_DATA_DIR'}, { user => $rootUName, group => $rootGName, mode => '0750' });
+setRights($main::imscpConfig{'VARIABLE_DATA_DIR'}, { user => $rootUName, group => $rootGName, mode => '0750' });
 
 $counter++;
 
-for(@toProcess) {
-	my ($package, $instance) = @{$_};
+for my $item(@toProcess) {
+	my ($package, $instance) = @{$item};
 	debug("Setting $package (backend) permissions");
 	print "Setting $package (backend) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
 	$rs |= $instance->setEnginePermissions();
@@ -120,7 +106,7 @@ unless($main::execmode eq 'setup') {
 
 	if($msg) {
 		require iMSCP::Mail;
-		$rs |= iMSCP::Mail->new()->errmsg($msg);
+		iMSCP::Mail->new()->errmsg($msg);
 	}
 }
 

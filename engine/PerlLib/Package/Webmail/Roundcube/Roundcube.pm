@@ -61,7 +61,6 @@ sub showDialog
 	my ($self, $dialog) = @_;
 
 	require Package::Webmail::Roundcube::Installer;
-
 	Package::Webmail::Roundcube::Installer->getInstance()->showDialog($dialog);
 }
 
@@ -76,7 +75,6 @@ sub showDialog
 sub preinstall
 {
 	require Package::Webmail::Roundcube::Installer;
-
 	Package::Webmail::Roundcube::Installer->getInstance()->preinstall();
 }
 
@@ -91,7 +89,6 @@ sub preinstall
 sub install
 {
 	require Package::Webmail::Roundcube::Installer;
-
 	Package::Webmail::Roundcube::Installer->getInstance()->install();
 }
 
@@ -106,7 +103,6 @@ sub install
 sub uninstall
 {
 	require Package::Webmail::Roundcube::Uninstaller;
-
 	Package::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
 }
 
@@ -121,7 +117,6 @@ sub uninstall
 sub setGuiPermissions
 {
 	require Package::Webmail::Roundcube::Installer;
-
 	Package::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
 }
 
@@ -158,7 +153,6 @@ sub deleteMail
 		}
 
 		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
-
 		fatal("Unable to restore connection to i-MSCP database: $rs") if $database->connect();
 	}
 
@@ -181,7 +175,7 @@ sub deleteMail
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";

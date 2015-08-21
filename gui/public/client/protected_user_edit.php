@@ -51,7 +51,8 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 				return;
 			}
 
-			$nadmin_password = cryptPasswordWithSalt($_POST['pass'], generateRandomSalt(true));
+			#$nadmin_password = cryptPasswordWithSalt($_POST['pass'], generateRandomSalt(true));
+			$nadmin_password = \iMSCP\Crypt::sha512($_POST['pass']);
 
 			$change_status = 'tochange';
 

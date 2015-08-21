@@ -100,10 +100,7 @@ sub run
 						clearImmutable($homeDir);
 					}
 
-					my $rs = iMSCP::Dir->new( dirname => $bkpDir )->make({
-						user => $userName, group => $groupName, mode => 0750
-					});
-
+					iMSCP::Dir->new( dirname => $bkpDir )->make({ user => $userName, group => $groupName, mode => 0750 });
 					setImmutable($homeDir) if $isProtectedHomedir;
 
 					if($rs) {
@@ -155,11 +152,8 @@ sub run
 					}
 
 					my $file = iMSCP::File->new( filename => "$bkpDir/$mainDomainName-backup-$date.tar$ext" );
-					$rs = $file->mode(0644);
-					$ret ||= $rs;
-
-					$rs = $file->owner($userName, $groupName);
-					$ret ||= $rs;
+					$file->mode(0644);
+					$file->owner($userName, $groupName);
 				}
 
 				# Backup all customer databases
@@ -182,12 +176,8 @@ sub run
 						}
 
 						my $file = iMSCP::File->new( filename => "$bkpDir/$dbName.sql" );
-
-						$rs = $file->mode(0644);
-						$ret ||= $rs;
-
-						$rs = $file->owner($userName, $groupName);
-						$ret ||= $rs;
+						$file->mode(0644);
+						$file->owner($userName, $groupName);
 
 						if($algorithm ne 'no') {
 							my @cmd = (
@@ -289,11 +279,8 @@ sub run
 							}
 
 							my $file = iMSCP::File->new( filename => "$bkpDir/mail-$mailDir-backup-$date.tar$ext" );
-							$rs = $file->mode(0644);
-							$ret ||= $rs;
-
-							$rs = $file->owner($userName, $groupName);
-							$ret ||= $rs;
+							$file->mode(0644);
+							$file->owner($userName, $groupName);
 						}
 					}
 				}
@@ -324,7 +311,7 @@ OPTIONS:
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-backup-all.lock', 'nowait');
-$bootstrapper->boot({ norequirements => 'yes', nofail => 'yes', nolock => 'yes', config_readonly => 'yes' });
+$bootstrapper->boot({ norequirements => 1, nofail => 1, nolock => 1, config_readonly => 1 });
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-backup-all.lock');

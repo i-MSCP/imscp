@@ -550,10 +550,11 @@ function admin_checkAndCreateResellerAccount()
 				)
 			";
 			exec_query($query, array(
-									$data['admin_name'], cryptPasswordWithSalt($data['password']), 'reseller', time(),
-									$_SESSION['user_id'], $data['fname'], $data['lname'], $data['firm'],
-									$data['zip'], $data['city'], $data['state'], $data['country'], $data['email'],
-									$data['phone'], $data['fax'], $data['street1'], $data['street2'], $data['gender']));
+				$data['admin_name'], \iMSCP\Crypt::bcrypt($data['password']), 'reseller', time(), $_SESSION['user_id'],
+				$data['fname'], $data['lname'], $data['firm'], $data['zip'], $data['city'], $data['state'],
+				$data['country'], $data['email'], $data['phone'], $data['fax'], $data['street1'], $data['street2'],
+				$data['gender']
+			));
 
 			// Get new reseller unique identifier
 			$resellerId = $db->insertId();

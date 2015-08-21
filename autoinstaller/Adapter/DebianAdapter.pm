@@ -97,8 +97,7 @@ sub preBuild
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePreBuild');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePreBuild');
 
 	unless($main::skippackages) {
 		if($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && not $main::reconfigure ~~ [ 'sql', 'servers', 'all' ]) {
@@ -113,14 +112,8 @@ sub preBuild
 			[ sub { $self->_updatePackagesIndex(); },    'Updating packages index' ]
 		);
 
-		my $cStep = 1;
-		my $nbSteps = scalar @steps;
-
-		for my $step(@steps) {
-			$rs = step($step->[0], $step->[1], $nbSteps, $cStep);
-			return $rs if $rs;
-			$cStep++;
-		}
+		my ($nStep, $nSteps) = (0, scalar @steps);
+		step(@{ $steps[$nStep] }, $nSteps, ++$nStep) for @steps;
 	}
 
 	$self->{'eventManager'}->trigger('afterPreBuild');
@@ -144,10 +137,9 @@ sub installPackages
 	my $rs = $self->uninstallPackages($self->{'packagesToPreUninstall'});
 	return $rs if $rs;
 
-	$rs = $self->{'eventManager'}->trigger(
+	$self->{'eventManager'}->trigger(
 		'beforeInstallPackages', $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}
 	);
-	return $rs if $rs;
 
 	my $preseed = iMSCP::Getopt->preseed;
 
@@ -214,8 +206,7 @@ sub uninstallPackages
 		@{$packages} = split /\n/, $stdout;
 	}
 
-	my $rs = $self->{'eventManager'}->trigger('beforeUninstallPackages', @{$packages});
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeUninstallPackages', @{$packages});
 
 	if(@{$packages}) {
 		my $preseed = iMSCP::Getopt->preseed;
@@ -266,7 +257,7 @@ sub postBuild
 		}
 	}
 
-	# Enable needed PHP modules ( only if they are available )
+	# Enable needed PHP modules (only if they are available)
 	if(iMSCP::ProgramFinder::find('php5enmod')) {
 		for my $module(
 			'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
@@ -349,7 +340,7 @@ sub _setupInitScriptPolicyLayer
 		# apache2 and nginx: This prevents failures such as "bind() to 0.0.0.0:80 failed (98: Address already in use"
 		# bind9: This avoid error when resolvconf is not configured yet
 		my $file = iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' );
-		my $rs = $file->set(<<EOF);
+		$file->set(<<EOF);
 #/bin/sh
 initscript=\$1
 action=\$2
@@ -363,15 +354,11 @@ if [ "\$action" = "start" ] || [ "\$action" = "restart" ]; then
 fi
 EOF
 
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0755);
-		return $rs if $rs;
+		$file->save();
+		$file->mode(0755);
 	} elsif($action eq 'disable') {
 		if(-f '/usr/sbin/policy-rc.d') {
-			my $rs = iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' )->delFile();
-			return $rs if $rs;
+			iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' )->delFile();
 		}
 	} else {
 		error('Unknown action');
@@ -457,8 +444,7 @@ EOF
 
 			if($section eq 'sql') {
 				while(my $filepath = </var/lib/mysql/debian-*.flag>) {
-					my $rs = iMSCP::File->new( filename => $filepath )->delFile();
-					return $rs if $rs;
+					iMSCP::File->new( filename => $filepath )->delFile();
 				}
 			}
 
@@ -546,14 +532,9 @@ sub _updateAptSourceList
 
 	my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
 
-	my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
-	return $rs if $rs;
+	$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 
 	my $fileContent = $file->get();
-	unless (defined $fileContent) {
-		error('Unable to read /etc/apt/sources.list file');
-		return 1;
-	}
 
 	my $foundSection = 0;
 	for(@{$self->{'repositorySections'}}) {
@@ -572,7 +553,7 @@ sub _updateAptSourceList
 
 			unless($fileContent =~ /^deb\s+$repository{'uri'}\s+\b$repository{'distrib'}\b\s+.*\b$section\b/m) {
 				my $uri = "$repository{'uri'}/dists/$repository{'distrib'}/$section/";
-				$rs = execute("wget --spider $uri", \my $stdout, \my $stderr);
+				my $rs = execute("wget --spider $uri", \my $stdout, \my $stderr);
 				debug($stdout) if $stdout;
 				debug($stderr) if $rs && $stderr;
 
@@ -595,8 +576,8 @@ sub _updateAptSourceList
 		}
 	}
 
-	$rs = $file->set($fileContent);
-	$rs ||= $file->save();
+	$file->set($fileContent);
+	$file->save();
 }
 
 =item _processAptRepositories()
@@ -614,14 +595,9 @@ sub _processAptRepositories
 	if(@{$self->{'aptRepositoriesToRemove'}} || @{$self->{'aptRepositoriesToAdd'}}) {
 		my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
 
-		my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
-		return $rs if $rs;
+		$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 
 		my $fileContent = $file->get();
-		unless (defined $fileContent) {
-			error('Unable to read /etc/apt/sources.list file');
-			return 1;
-		}
 
 		# Filter list of repositories which must not be removed
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
@@ -658,7 +634,7 @@ sub _processAptRepositories
 				}
 
 				if(@cmd) {
-					$rs = execute("@cmd", \my $stdout, \my $stderr);
+					my $rs = execute("@cmd", \my $stdout, \my $stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
@@ -667,11 +643,8 @@ sub _processAptRepositories
 		}
 
 		# Save new sources.list file
-		$rs = $file->set($fileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
+		$file->set($fileContent);
+		$file->save();
 	}
 
 	0;
@@ -705,17 +678,11 @@ sub _processAptPreferences
 	my $file = iMSCP::File->new( filename => '/etc/apt/preferences.d/imscp' );
 
 	if($fileContent ne '') {
-		my $rs = $file->set($fileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
+		$file->set($fileContent);
+		$file->save();
+		$file->mode(0644);
 	} elsif(-f '/etc/apt/preferences.d/imscp') {
-		my $rs = $file->delFile();
-		return $rs if $rs;
+		$file->delFile();
 	}
 
 	0;
@@ -746,7 +713,6 @@ sub _updatePackagesIndex
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to update package index from remote repository') if $rs && !$stderr;
-
 	$rs
 }
 
@@ -835,7 +801,6 @@ EOF
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	error('Unable to pre-fill debconf database') if $rs && !$stderr;
-
 	$rs;
 }
 

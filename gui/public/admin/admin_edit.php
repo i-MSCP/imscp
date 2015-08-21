@@ -83,13 +83,10 @@ function admin_updateUserData($userId)
 			WHERE
 				`admin_id` = ?
 		";
-		exec_query(
-			$query,
-			array(
-				cryptPasswordWithSalt($_POST['password']), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
-				$phone, $fax, $street1, $street2, $gender, $userId
-			)
-		);
+		exec_query($query, array(
+			\iMSCP\Crypt::bcrypt($_POST['password']), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
+			$phone, $fax, $street1, $street2, $gender, $userId
+		));
 
 		$query = "DELETE FROM `login` WHERE `user_name` = ?";
 		$stmt = exec_query($query, $userName);

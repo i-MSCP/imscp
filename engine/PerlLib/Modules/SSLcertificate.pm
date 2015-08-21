@@ -110,7 +110,7 @@ sub process
 
 sub add
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	# Private key
 	my $privateKeyContainer = File::Temp->new();
@@ -154,12 +154,12 @@ sub add
 
 sub delete
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $certFile = "$self->{'certsDir'}/$self->{'domain_name'}.pem";
 
 	if(-f $certFile) {
-		iMSCP::File->new('filename' => $certFile)->delFile();
+		iMSCP::File->new( filename => $certFile)->delFile();
 	} else {
 		0;
 	}
@@ -175,15 +175,12 @@ sub delete
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
-
-	my $rs = iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make({
+	iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make({
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0750
 	});
-	fatal('Unable to create SSL certificate directory') if $rs;
-
 	$self;
 }
 
@@ -263,9 +260,8 @@ sub _loadData
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

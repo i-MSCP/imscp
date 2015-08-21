@@ -348,8 +348,7 @@ sub restore
 				my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 					($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-				$rs = setRights($dmnDir, { user => $userName, group => $groupName, recursive => 1 });
-				return $rs if $rs;
+				setRights($dmnDir, { user => $userName, group => $groupName, recursive => 1 });
 
 				$rs = $self->SUPER::restore();
 				return $rs if $rs;
@@ -379,42 +378,41 @@ sub _loadData
 {
 	my ($self, $domainId) = @_;
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
+	my $row = iMSCP::Database->factory()->doQuery(
 		'domain_id',
-		'
+		"
 			SELECT
-				domain.*, ip_number, IFNULL(mail_on_domain, 0) AS mail_on_domain
+				domain.*, ip_number, mail_on_domain
 			FROM
 				domain
 			INNER JOIN
 				server_ips ON (domain_ip_id = ip_id)
-			LEFT JOIN
-				(
-					SELECT
-						domain_id, COUNT(domain_id) AS mail_on_domain
-					FROM
-						mail_users WHERE sub_id = 0
-					GROUP BY
-						domain_id
-				) AS mail_count
-			USING
-				(domain_id)
+			LEFT JOIN (
+				SELECT
+					domain_id, COUNT(domain_id) AS mail_on_domain
+				FROM
+					mail_users
+				WHERE
+					sub_id = 0
+				AND
+					status <> 'todelete'
+			) AS mail_count USING (domain_id)
 			WHERE
 				domain_id = ?
-		',
-		$domainId
+		",
+		$domainId,
 	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
+	unless(ref $row eq 'HASH') {
+		error($row);
 		return 1;
 	}
 
-	unless(exists $rdata->{$domainId}) {
+	unless(exists $row->{$domainId}) {
 		error("Domain with ID $domainId has not been found or is in an inconsistent state");
 		return 1;
 	}
 
-	%{$self} = (%{$self}, %{$rdata->{$domainId}});
+	%{$self} = (%{$self}, %{$row->{$domainId}});
 
 	0;
 }
@@ -536,7 +534,6 @@ sub _getMtaData
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 			DOMAIN_NAME => $self->{'domain_name'},
 			DOMAIN_TYPE => 'dmn',
-			TYPE => 'vdmn_entry',
 			EXTERNAL_MAIL => $self->{'external_mail'},
 			MAIL_ENABLED => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
 		};

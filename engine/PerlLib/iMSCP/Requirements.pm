@@ -119,6 +119,7 @@ sub _init
 		'Crypt::Blowfish' => undef,
 		'Crypt::CBC' => undef,
 		'Crypt::PasswdMD5' => undef,
+		'Crypt::Rijndael' => undef,
 		'DBI' => undef,
 		'DBD::mysql' => undef,
 		'DateTime' => undef,

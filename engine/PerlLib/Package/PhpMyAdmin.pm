@@ -69,7 +69,7 @@ use parent 'Common::SingletonClass';
  Register setup event listeners
 
  Param iMSCP::EventManager \%eventManager
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -78,7 +78,6 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	require Package::PhpMyAdmin::Installer;
-
 	Package::PhpMyAdmin::Installer->getInstance()->registerSetupListeners($eventManager);
 }
 
@@ -86,14 +85,13 @@ sub registerSetupListeners
 
  Process uninstall tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
 sub uninstall
 {
 	require Package::PhpMyAdmin::Uninstaller;
-
 	Package::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
 }
 
@@ -101,7 +99,7 @@ sub uninstall
 
  Set gui permissions
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -122,24 +120,19 @@ sub setPermissionsListener
 
  Initialize instance
 
- Return Package::PhpMyAdmin
+ Return Package::PhpMyAdmin, die on failure
 
 =cut
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data"; \%c; };
-
 	iMSCP::EventManager->getInstance()->register(
 		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(); }
 	);
-
 	$self;
 }
 

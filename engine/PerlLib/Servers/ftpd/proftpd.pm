@@ -27,8 +27,6 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Service;
 use File::Basename;
@@ -64,7 +62,7 @@ sub registerSetupListeners
 
  Process preinstall tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -72,12 +70,8 @@ sub preinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdPreinstall');
-	return $rs if $rs;
-
-	$rs = $self->stop();
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeFtpdPreinstall');
+	$self->stop();
 	$self->{'eventManager'}->trigger('afterFtpdPreinstall');
 }
 
@@ -85,7 +79,7 @@ sub preinstall
 
  Process install tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -93,13 +87,10 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdInstall', 'proftpd');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeFtpdInstall', 'proftpd');
 	require Servers::ftpd::proftpd::installer;
-	$rs = Servers::ftpd::proftpd::installer->getInstance()->install();
+	my $rs = Servers::ftpd::proftpd::installer->getInstance()->install();
 	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterFtpdInstall', 'proftpd');
 }
 
@@ -107,7 +98,7 @@ sub install
 
  Process postinstall tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -115,20 +106,11 @@ sub postinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdPostInstall', 'proftpd');
-	return $rs if $rs;
-
-	local $@;
-	eval { iMSCP::Service->getInstance()->enable($self->{'config'}->{'FTPD_SNAME'}); };
-	if($@) {
-		error($@);
-		return 1;
-	}
-
+	$self->{'eventManager'}->trigger('beforeFtpdPostInstall', 'proftpd');
+	iMSCP::Service->getInstance()->enable($self->{'config'}->{'FTPD_SNAME'});
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'ProFTPD' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'ProFTPD server' ]; 0; }
 	);
-
 	$self->{'eventManager'}->trigger('afterFtpdPostInstall', 'proftpd');
 }
 
@@ -136,7 +118,7 @@ sub postinstall
 
  Process uninstall tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -144,15 +126,11 @@ sub uninstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdUninstall', 'proftpd');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeFtpdUninstall', 'proftpd');
 	require Servers::ftpd::proftpd::uninstaller;
-	$rs = Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
+	my $rs = Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
-
 	$self->{'restart'} = 1;
-
 	$self->{'eventManager'}->trigger('afterFtpdUninstall', 'proftpd');
 }
 
@@ -161,7 +139,7 @@ sub uninstall
  Process addUser tasks
 
  Param hash \%data User data
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -169,11 +147,9 @@ sub addUser
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdAddUser', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFtpdAddUser', $data);
 
 	my $db = iMSCP::Database->factory();
-
 	my $rdata = $db->doQuery(
 		'u',
 		'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?',
@@ -181,21 +157,12 @@ sub addUser
 		$data->{'USER_SYS_GID'},
 		$data->{'USER_ID'}
 	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+	ref $rdata eq 'HASH' or die($rdata);
 
 	$rdata = $db->doQuery(
-		'u',
-		'UPDATE ftp_group SET gid = ? WHERE groupname = ?',
-		$data->{'USER_SYS_GID'},
-		$data->{'USERNAME'}
+		'u', 'UPDATE ftp_group SET gid = ? WHERE groupname = ?', $data->{'USER_SYS_GID'}, $data->{'USERNAME'}
 	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+	ref $rdata eq 'HASH' or die($rdata);
 
 	$self->{'eventManager'}->trigger('AfterFtpdAddUser', $data);
 }
@@ -204,7 +171,7 @@ sub addUser
 
  Start Proftpd
 
- Return int 0, other on failure
+ Return int 0, die on failure
 
 =cut
 
@@ -212,16 +179,8 @@ sub start
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdStart');
-	return $rs if $rs;
-
-	local $@;
-	eval { iMSCP::Service->getInstance()->start($self->{'config'}->{'FTPD_SNAME'}); };
-	if($@) {
-		error($@);
-		return 1;
-	}
-
+	$self->{'eventManager'}->trigger('beforeFtpdStart');
+	iMSCP::Service->getInstance()->start($self->{'config'}->{'FTPD_SNAME'});
 	$self->{'eventManager'}->trigger('afterFtpdStart');
 }
 
@@ -229,7 +188,7 @@ sub start
 
  Stop Proftpd
 
- Return int 0, other on failure
+ Return int 0, die on failure
 
 =cut
 
@@ -237,16 +196,8 @@ sub stop
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdStop');
-	return $rs if $rs;
-
-	local $@;
-	eval { iMSCP::Service->getInstance()->stop($self->{'config'}->{'FTPD_SNAME'}); };
-	if($@) {
-		error($@);
-		return 1;
-	}
-
+	$self->{'eventManager'}->trigger('beforeFtpdStop');
+	iMSCP::Service->getInstance()->stop($self->{'config'}->{'FTPD_SNAME'});
 	$self->{'eventManager'}->trigger('afterFtpdStop');
 }
 
@@ -254,7 +205,7 @@ sub stop
 
  Restart Proftpd
 
- Return int 0, other on failure
+ Return int 0, die on failure
 
 =cut
 
@@ -262,26 +213,16 @@ sub restart
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdRestart');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFtpdRestart');
 
-	local $@;
-	eval {
-		my $serviceMngr = iMSCP::Service->getInstance();
+	my $serviceMngr = iMSCP::Service->getInstance();
 
-		# Mitigate restart problems by waiting a bit before start
-		# For instance on Ubuntu Trusty, ProftPD stay is not running state when using restart command
-		$serviceMngr->stop($self->{'config'}->{'FTPD_SNAME'});
-
-		# Give ProFTPD sufficient time for stopping
-		sleep 2;
-
-		$serviceMngr->start($self->{'config'}->{'FTPD_SNAME'});
-	};
-	if($@) {
-		error($@);
-		return 1;
-	}
+	# Mitigate restart problems by waiting a bit before start
+	# For instance on Ubuntu Trusty, ProftPD stay is not running state when using restart command
+	$serviceMngr->stop($self->{'config'}->{'FTPD_SNAME'});
+	# Give ProFTPD sufficient time for stopping
+	sleep 2;
+	$serviceMngr->start($self->{'config'}->{'FTPD_SNAME'});
 
 	$self->{'eventManager'}->trigger('afterFtpdRestart');
 }
@@ -290,15 +231,13 @@ sub restart
 
  Get ftpd traffic data
 
- Return hash Traffic data or die on failure
+ Return hash Traffic data, die on failure
 
 =cut
 
 sub getTraffic
 {
 	my $self = shift;
-
-	require File::Temp;
 
 	my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/ftp_traffic.db";
 
@@ -309,11 +248,11 @@ sub getTraffic
 	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}";
 
 	if(-f $trafficDataSrc && -s _) {
+		require File::Temp;
 		my $tpmFile = File::Temp->new();
 
 		# Create a snapshot of log file to process
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc)->moveFile($tpmFile);
-		die(iMSCP::Debug::getLastError()) if $rs;
+		iMSCP::File->new( filename => $trafficDataSrc)->moveFile($tpmFile);
 
 		# Read and parse file (line by line)
 		$trafficDb{$2} += $1 while(<$tpmFile> =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
@@ -338,7 +277,7 @@ sub getTraffic
 
  Initialize instance
 
- Return Servers::ftpd::proftpd
+ Return Servers::ftpd::proftpd, die on failure
 
 =cut
 
@@ -346,30 +285,22 @@ sub _init
 {
 	my $self = shift;
 
+	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s: %s', ref $self));
+	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
+
 	$self->{'start'} = 0;
 	$self->{'restart'} = 0;
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
-	$self->{'eventManager'}->trigger(
-		'beforeFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - beforeFtpdInit has failed');
-
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
+	$self->{'cfgDir'} .= '/proftpd';
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'commentChar'} = '#';
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data"; \%c; };
-
-	$self->{'eventManager'}->trigger(
-		'afterFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - afterFtpdInit has failed');
-
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

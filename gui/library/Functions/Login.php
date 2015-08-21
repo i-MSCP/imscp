@@ -80,21 +80,17 @@ function login_credentials($event)
 			$identity = $stmt->fetchRow(PDO::FETCH_OBJ);
 			$dbPassword = $identity->admin_pass;
 
-			if($dbPassword != md5($password) && crypt($password, $dbPassword) != $dbPassword) {
+			if(! \iMSCP\Crypt::verify($password, $dbPassword)) {
 				$result = new iMSCP_Authentication_Result(
 					iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, null, tr('Bad password.')
 				);
 			} else {
-				if(strpos($dbPassword, '$') !== 0) { # Not a password encrypted with crypt(), then re-encrypt it
-					exec_query(
-						'UPDATE admin SET admin_pass = ? WHERE admin_id = ?',
-						array(cryptPasswordWithSalt($password), $identity->admin_id)
-					);
+				if(strpos($dbPassword, '$2a$') !== 0) { # Not a password encrypted with Bcrypt, then re-encrypt it
+					exec_query('UPDATE admin SET admin_pass = ? WHERE admin_id = ?', array(
+						\iMSCP\Crypt::bcrypt($password), $identity->admin_id
+					));
 					write_log(
-						sprintf(
-							'Info: Password for user %s has been re-encrypted using the best available algorithm',
-							$identity->admin_name
-						),
+						sprintf('Info: Password for user %s has been re-encrypted using bcrypt', $identity->admin_name),
 						E_USER_NOTICE
 					);
 				}

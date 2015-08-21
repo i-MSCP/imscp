@@ -173,7 +173,7 @@ function reseller_addCustomer()
 	$aps = str_replace('_', '', $aps);
 	$extMailServer = str_replace('_', '', $extMailServer);
 	$webFolderProtection = str_replace('_', '', $webFolderProtection);
-	$encryptedPassword = cryptPasswordWithSalt($password);
+	$encryptedPassword = \iMSCP\Crypt::bcrypt($password);
 
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Database::getInstance();

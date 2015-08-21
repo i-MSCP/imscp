@@ -161,19 +161,19 @@ sub runUnitTests
 
 	if(require_ok('iMSCP::Rights')) {
 		eval {
-			ok setRightsDieOnMissingOptions, 'iMSCP::Rights::setRights() die on missing option';
-			ok setRightsDieOnUnallowedMixedOptions, 'iMSCP::Rights::setRights() die on unallowed mixed options';
-			ok setRightsDieOnInexistentTarget, 'iMSCP::Rights() die on inexistent target';
-			ok setRightsDieOnInexistentUser, 'iMSCP::Rights::setRights() die on inexistent user';
-			ok setRightsDieOnInexistentGroup, 'iMSCP::Rights::setRights() die on inexistent group';
-			ok setRightsSetExpectedMode, 'iMSCP::Rights::setRights() set expected mode';
-			ok setRightsSetExpectedModeRecursively, 'iMSCP::Rights::setRights() set exepcted mode recursively';
-			ok setRightsSetExpectedDirmode, 'iMSCP::Rights::setRights() set expected dirmode';
-			ok setRightsSetExpectedFilemode, 'iMSCP::Rights::setRights() set expected filemode';
-			ok setRightsSetExpectedUser, 'iMSCP::Rights::setRights() set expected user';
-			ok setRightsSetExpectedUserRecursively, 'iMSCP::Rights::setRights() set expected user recursively';
-			ok setRightsSetExpectedGroup, 'iMSCP::Rights::setRights() set expected group';
-			ok setRightsSetExpectedGroupRecursively, 'iMSCP::Rights::setRights() set expected group recursively';
+			ok setRightsDieOnMissingOptions, 'setRights() die on missing option';
+			ok setRightsDieOnUnallowedMixedOptions, 'setRights() die on unallowed mixed options';
+			ok setRightsDieOnInexistentTarget, 'setRights() die on inexistent target';
+			ok setRightsDieOnInexistentUser, 'setRights() die on inexistent user';
+			ok setRightsDieOnInexistentGroup, 'setRights() die on inexistent group';
+			ok setRightsSetExpectedMode, 'setRights() set expected mode';
+			ok setRightsSetExpectedModeRecursively, 'setRights() set exepcted mode recursively';
+			ok setRightsSetExpectedDirmode, 'setRights() set expected dirmode';
+			ok setRightsSetExpectedFilemode, 'setRights() set expected filemode';
+			ok setRightsSetExpectedUser, 'setRights() set expected user';
+			ok setRightsSetExpectedUserRecursively, 'setRights() set expected user recursively';
+			ok setRightsSetExpectedGroup, 'setRights() set expected group';
+			ok setRightsSetExpectedGroupRecursively, 'setRights() set expected group recursively';
 		};
 
 		diag sprintf('A test failed unexpectedly: %s', $@) if $@;

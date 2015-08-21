@@ -63,11 +63,9 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->register(
-		'beforeSetupDialog', sub {
-			push @{$_[0]}, sub { $self->askHostname(@_) }, sub { $self->askSsl(@_) }, sub { $self->askPorts(@_) }; 0;
-		}
-	);
+	$eventManager->register('beforeSetupDialog', sub {
+		push @{$_[0]}, sub { $self->askHostname(@_) }, sub { $self->askSsl(@_) }, sub { $self->askPorts(@_) }; 0;
+	});
 }
 
 =item askDomain(\%dialog)
@@ -89,7 +87,7 @@ sub askHostname
 	my ($rs, @labels) = (0, $vhost ? split(/\./, $vhost) : ());
 
 	if(
-		$main::reconfigure ~~ ['panel_hostname', 'hostnames', 'all', 'forced'] ||
+		$main::reconfigure ~~ [ 'panel_hostname', 'hostnames', 'all', 'forced' ] ||
 		! (@labels >= 3 && is_domain($vhost, \%options))
 	) {
 		$vhost = 'admin.' . main::setupGetQuestion('SERVER_HOSTNAME') unless $vhost;
@@ -108,7 +106,6 @@ sub askHostname
 	}
 
 	main::setupSetQuestion('BASE_SERVER_VHOST', $vhost) if $rs != 30;
-
 	$rs;
 }
 
@@ -135,10 +132,9 @@ sub askSsl
 	my $baseServerVhostPrefix = main::setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
 
 	my $openSSL = iMSCP::OpenSSL->new();
-
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['panel_ssl', 'ssl', 'all', 'forced'] || not $sslEnabled ~~ ['yes', 'no']) {
+	if($main::reconfigure ~~ [ 'panel_ssl', 'ssl', 'all', 'forced' ] || not $sslEnabled ~~ [ 'yes', 'no' ]) {
 		SSL_DIALOG:
 
 		($rs, $sslEnabled) = $dialog->radiolist(
@@ -148,8 +144,8 @@ sub askSsl
 		if($sslEnabled eq 'yes' && $rs != 30) {
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
 				"\nDo you have an SSL certificate for the $domainName domain?",
-				['yes', 'no'],
-				($selfSignedCertificate ~~ ['yes', 'no']) ? (($selfSignedCertificate eq 'yes') ? 'no' : 'yes') : 'no'
+				[ 'yes', 'no' ],
+				($selfSignedCertificate ~~ [ 'yes', 'no' ]) ? (($selfSignedCertificate eq 'yes') ? 'no' : 'yes') : 'no'
 			);
 
 			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
@@ -220,8 +216,7 @@ sub askSsl
 
 			if($rs != 30 && $sslEnabled eq 'yes') {
 				($rs, $baseServerVhostPrefix) = $dialog->radiolist(
-					"\nPlease, choose the default HTTP access mode for the control panel",
-					['https', 'http'],
+					"\nPlease, choose the default HTTP access mode for the control panel", [ 'https', 'http' ],
 					$baseServerVhostPrefix eq 'https://' ? 'https' : 'http'
 				);
 
@@ -275,7 +270,7 @@ sub askPorts
 	my $rs = 0;
 
 	if(
-		$main::reconfigure ~~ ['panel_ports', 'all', 'forced'] ||
+		$main::reconfigure ~~ [ 'panel_ports', 'all', 'forced' ] ||
 		(! $httpPort || $httpPort =~ /[^\d]/ || $httpPort < 1023 || $httpPort > 65535)
 	) {
 		my $msg = '';
@@ -291,7 +286,7 @@ sub askPorts
 
 	if($rs != 30 && $ssl eq 'yes') {
 		if(
-			$main::reconfigure ~~ ['panel_ports', 'all', 'forced'] || ! $httpsPort ||
+			$main::reconfigure ~~ [ 'panel_ports', 'all', 'forced' ] || ! $httpsPort ||
 			(! $httpsPort || $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535 || $httpsPort == $httpPort)
 		) {
 			my $msg = '';
@@ -365,7 +360,7 @@ sub install
 
  Set gui permissions
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -377,46 +372,38 @@ sub setGuiPermissions
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $guiRootDir = $main::imscpConfig{'GUI_ROOT_DIR'};
 
-	my $rs = setRights($guiRootDir, {
+	setRights($guiRootDir, {
 		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
 	});
-	return $rs if $rs;
 
-	$rs = setRights("$guiRootDir/themes", {
+	setRights("$guiRootDir/themes", {
 		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
 	});
-	return $rs if $rs;
 
-	$rs = setRights("$guiRootDir/data", {
+	setRights("$guiRootDir/data", {
 		user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
 	});
-	return $rs if $rs;
 
-	$rs = setRights("$guiRootDir/data/persistent", {
-		user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1
-	});
-	return $rs if $rs;
-
-	$rs = setRights("$guiRootDir/data", { user => $panelUName, group => $panelGName, mode => '0550' });
-	return $rs if $rs;
-
-	$rs = setRights("$guiRootDir/i18n", {
-		user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
-	});
-	return $rs if $rs;
-
-	$rs = setRights("$guiRootDir/plugins", {
+	setRights("$guiRootDir/data/persistent", {
 		user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1
 	});
 
-	$rs;
+	setRights("$guiRootDir/data", { user => $panelUName, group => $panelGName, mode => '0550' });
+
+	setRights("$guiRootDir/i18n", {
+		user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
+	});
+
+	setRights("$guiRootDir/plugins", {
+		user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1
+	});
 }
 
 =item setEnginePermissions()
 
  Set engine permissions
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -431,30 +418,25 @@ sub setEnginePermissions
 	my $httpdUser = $self->{'config'}->{'HTTPD_USER'};
 	my $httpdGroup = $self->{'config'}->{'HTTPD_GROUP'};
 
-	my $rs = setRights($self->{'config'}->{'HTTPD_CONF_DIR'}, {
+	setRights($self->{'config'}->{'HTTPD_CONF_DIR'}, {
 		user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 1
 	});
-	return $rs if $rs;
 
-	$rs = setRights($self->{'config'}->{'HTTPD_LOG_DIR'}, {
+	setRights($self->{'config'}->{'HTTPD_LOG_DIR'}, {
 		user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0640', recursive => 1
 	});
-	return $rs if $rs;
 
-	$rs = setRights("$self->{'config'}->{'PHP_STARTER_DIR'}/master", {
+	setRights("$self->{'config'}->{'PHP_STARTER_DIR'}/master", {
 		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0640', recursive => 1
 	});
-	return $rs if $rs;
-
-	$rs = setRights("$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter", {
-		user => $panelUName, group => $panelGName, mode => '550'
-	});
-	return $rs if $rs;
 
 	setRights("$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter", {
 		user => $panelUName, group => $panelGName, mode => '550'
 	});
 
+	setRights("$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter", {
+		user => $panelUName, group => $panelGName, mode => '550'
+	});
 }
 
 =back
@@ -477,21 +459,17 @@ sub _init
 
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
 	$self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
-
 	$self->{'cfgDir'} = $self->{'frontend'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = $self->{'frontend'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/nginx.old.data";
-
 	if(-f $oldConf) {
 		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', fileName => $oldConf, 'noerrors' => 1;
-
-		for(keys %{$self->{'oldConfig'}}) {
-			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $self->{'oldConfig'}->{$_};
+		for my $param(keys %{$self->{'oldConfig'}}) {
+			if(exists $self->{'config'}->{$param}) {
+				$self->{'config'}->{$param} = $self->{'oldConfig'}->{$param};
 			}
 		}
 	}
@@ -553,8 +531,7 @@ sub _setHttpdVersion
 {
 	my $self = shift;
 
-	my ($stderr);
-	my $rs = execute('nginx -v', undef, \$stderr);
+	my $rs = execute('nginx -v', undef, \my $stderr);
 	debug($stderr) if $stderr;
 	error($stderr) if $stderr && $rs;
 	error('Unable to find Nginx version') if $rs;
@@ -583,17 +560,13 @@ sub _addMasterWebUser
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndAddUser');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFrontEndAddUser');
 
 	my $userName =
 	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
 	my ($db, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
-	unless($db) {
-		error("Unable to connect to SQL server: $errStr");
-		return 1;
-	}
+	$db or die(sprintf('Could not connect to SQL server: %s', $errStr));
 
 	my $rdata = $db->doQuery(
 		'admin_sys_uid',
@@ -612,14 +585,8 @@ sub _addMasterWebUser
 		'admin',
 		'0'
 	);
-
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	} elsif(! %{$rdata}) {
-		error('Unable to find admin user in database');
-		return 1;
-	}
+	ref $rdata eq 'HASH' or die($rdata);
+	%{$rdata} or die('Could not find admin user in database');
 
 	my $adminSysName = $rdata->{(%{$rdata})[0]}->{'admin_sys_name'};
 	my $adminSysUid = $rdata->{(%{$rdata})[0]}->{'admin_sys_uid'};
@@ -629,11 +596,11 @@ sub _addMasterWebUser
 
 	if(! $oldUserName || $userUid == 0) {
 		# Creating i-MSCP Master Web user
-		$rs = iMSCP::SystemUser->new(
-			'username' => $userName,
-			'comment' => 'i-MSCP Master Web User',
-			'home' => $main::imscpConfig{'GUI_ROOT_DIR'},
-			'skipCreateHome' => 1
+		my $rs = iMSCP::SystemUser->new(
+			username => $userName,
+			comment => 'i-MSCP Master Web User',
+			home => $main::imscpConfig{'GUI_ROOT_DIR'},
+			skipCreateHome => 1
 		)->addSystemUser();
 		return $rs if $rs;
 
@@ -649,8 +616,7 @@ sub _addMasterWebUser
 			'-m',
 			escapeShell($adminSysName)
 		);
-		my($stdout, $stderr);
-		$rs = execute("@cmd", \$stdout, \$stderr);
+		my $rs = execute("@cmd", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		debug($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -664,7 +630,7 @@ sub _addMasterWebUser
 
 	# Update the admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
 	$rdata = $db->doQuery(
-		'dummy',
+		'u',
 		'
 			UPDATE
 				admin
@@ -684,10 +650,10 @@ sub _addMasterWebUser
 		return 1;
 	}
 
-	$rs = iMSCP::SystemUser->new('username' => $userName)->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
+	my $rs = iMSCP::SystemUser->new( username => $userName )->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
 	return $rs if $rs;
 
-	$rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'HTTPD_USER'})->addToGroup($groupName);
+	$rs = iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup($groupName);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterHttpdAddUser');
@@ -697,7 +663,7 @@ sub _addMasterWebUser
 
  Create directories
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -705,8 +671,7 @@ sub _makeDirs
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndMakeDirs');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFrontEndMakeDirs');
 
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -715,14 +680,12 @@ sub _makeDirs
 	my $phpStarterDir = $self->{'config'}->{'PHP_STARTER_DIR'};
 
 	# Ensure that the FCGI starter directory exists
-	$rs = iMSCP::Dir->new( dirname => $phpStarterDir )->make({
+	iMSCP::Dir->new( dirname => $phpStarterDir )->make({
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0555
 	});
-	return $rs if $rs;
 
 	# Remove previous FCGI tree if any ( needed to avoid any garbage from plugins )
-	$rs = iMSCP::Dir->new( dirname => "$phpStarterDir/master" )->remove();
-	return $rs if $rs;
+	iMSCP::Dir->new( dirname => "$phpStarterDir/master" )->remove();
 
 	my $nginxTmpDir = $self->{'config'}->{'HTTPD_TMP_DIR_DEBIAN'};
 	unless(-d $nginxTmpDir) {
@@ -730,8 +693,7 @@ sub _makeDirs
 	}
 
 	# Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
-	$rs = iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
-	return $rs if $rs;
+	iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
 
 	for (
 		[ $nginxTmpDir, $rootUName, $rootUName, 0755 ],
@@ -743,8 +705,7 @@ sub _makeDirs
 		[ "$phpStarterDir/master", $panelUName, $panelGName, 0550 ],
 		[ "$phpStarterDir/master/php5", $panelUName, $panelGName, 0550 ]
 	) {
-		$rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
-		return $rs if $rs;
+		iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
 	}
 
 	$self->{'eventManager'}->trigger('afterFrontEndMakeDirs');
@@ -762,8 +723,7 @@ sub _buildPhpConfig
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFrontEnddBuildPhpConfig');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFrontEnddBuildPhpConfig');
 
 	my ($cfgTpl, $file);
 	my $cfgDir = $self->{'cfgDir'};
@@ -784,17 +744,16 @@ sub _buildPhpConfig
 		PHP_CGI_BIN => $self->{'config'}->{'PHP_CGI_BIN'}
 	};
 
-	$rs = $self->{'frontend'}->buildConfFile(
+	my $rs = $self->{'frontend'}->buildConfFile(
 		"$cfgDir/parts/master/php-fcgi-starter.tpl",
 		$tplVars,
 		{ 'destination' => "$wrkDir/master.php-fcgi-starter", 'mode' => 0550, 'user' => $user, 'group' => $group }
 	);
 	return $rs if $rs;
 
-	$rs = iMSCP::File->new( filename => "$wrkDir/master.php-fcgi-starter" )->copyFile(
+	iMSCP::File->new( filename => "$wrkDir/master.php-fcgi-starter" )->copyFile(
 		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter"
 	);
-	return $rs if $rs;
 
 	$tplVars = {
 		HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
@@ -811,19 +770,14 @@ sub _buildPhpConfig
 		DISTRO_CA_BUNDLE => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
 	};
 
-	$rs = $self->{'frontend'}->buildConfFile(
-		"$cfgDir/parts/master/php5/php.ini",
-		$tplVars,
-		{ 'destination' => "$wrkDir/master.php.ini", 'mode' => 0440, 'user' => $user, 'group' => $group }
-	);
+	$rs = $self->{'frontend'}->buildConfFile("$cfgDir/parts/master/php5/php.ini", $tplVars, {
+		destination => "$wrkDir/master.php.ini", mode => 0440, user => $user, group => $group
+	});
 	return $rs if $rs;
 
-	$rs = iMSCP::File->new(
-		filename => "$wrkDir/master.php.ini"
-	)->copyFile(
+	iMSCP::File->new( filename => "$wrkDir/master.php.ini" )->copyFile(
 		"$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5/php.ini"
 	);
-	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterFrontEndBuildPhpConfig');
 }
@@ -840,21 +794,16 @@ sub _buildHttpdConfig
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildHttpdConfig');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFrontEndBuildHttpdConfig');
 
 	if(-f "$self->{'wrkDir'}/nginx.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'wrkDir'}/nginx.conf"
-		)->copyFile("$self->{'bkpDir'}/nginx.conf." . time);
-		return $rs if $rs;
+		iMSCP::File->new( filename => "$self->{'wrkDir'}/nginx.conf" )->copyFile("$self->{'bkpDir'}/nginx.conf." . time);
 	}
 
 	my $nbCPUcores = $self->{'config'}->{'HTTPD_WORKER_PROCESSES'};
 
 	if($nbCPUcores eq 'auto') {
-		my ($stdout, $stderr);
-		$rs = execute('grep processor /proc/cpuinfo | wc -l', \$stdout);
+		my $rs = execute('grep processor /proc/cpuinfo | wc -l', \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		debug('Unable to detect number of CPU cores. nginx worker_processes value set to 2') if $rs;
 
@@ -867,57 +816,48 @@ sub _buildHttpdConfig
 		}
 	}
 
-	$rs = $self->{'frontend'}->buildConfFile(
-		"$self->{'cfgDir'}/nginx.conf",
-		{
-			'HTTPD_USER' => $self->{'config'}->{'HTTPD_USER'},
-			'HTTPD_WORKER_PROCESSES' => $nbCPUcores,
-			'HTTPD_WORKER_CONNECTIONS' => $self->{'config'}->{'HTTPD_WORKER_CONNECTIONS'},
-			'HTTPD_RLIMIT_NOFILE' => $self->{'config'}->{'HTTPD_RLIMIT_NOFILE'},
-			'HTTPD_LOG_DIR' => $self->{'config'}->{'HTTPD_LOG_DIR'},
-			'HTTPD_PID_FILE' => $self->{'config'}->{'HTTPD_PID_FILE'},
-			'HTTPD_CONF_DIR' => $self->{'config'}->{'HTTPD_CONF_DIR'},
-			'HTTPD_LOG_DIR' => $self->{'config'}->{'HTTPD_LOG_DIR'},
-			'HTTPD_SITES_ENABLED_DIR' => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
-		}
-	);
+	my $rs = $self->{'frontend'}->buildConfFile("$self->{'cfgDir'}/nginx.conf", {
+		HTTPD_USER => $self->{'config'}->{'HTTPD_USER'},
+		HTTPD_WORKER_PROCESSES => $nbCPUcores,
+		HTTPD_WORKER_CONNECTIONS => $self->{'config'}->{'HTTPD_WORKER_CONNECTIONS'},
+		HTTPD_RLIMIT_NOFILE => $self->{'config'}->{'HTTPD_RLIMIT_NOFILE'},
+		HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
+		HTTPD_PID_FILE => $self->{'config'}->{'HTTPD_PID_FILE'},
+		HTTPD_CONF_DIR => $self->{'config'}->{'HTTPD_CONF_DIR'},
+		HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
+		HTTPD_SITES_ENABLED_DIR => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
+	});
 	return $rs if $rs;
 
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/nginx.conf" );
-	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}");
+	$file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}");
 
 	if(-f "$self->{'wrkDir'}/imscp_fastcgi.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'wrkDir'}/imscp_fastcgi.conf"
-		)->copyFile("$self->{'bkpDir'}/imscp_fastcgi.conf." . time);
-		return $rs if $rs;
+		iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_fastcgi.conf" )->copyFile(
+			"$self->{'bkpDir'}/imscp_fastcgi.conf." . time
+		);
 	}
 
 	$rs = $self->{'frontend'}->buildConfFile("$self->{'cfgDir'}/imscp_fastcgi.conf");
 	return $rs if $rs;
 
 	$file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_fastcgi.conf");
-	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}");
-	return $rs if $rs;
+	$file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}");
 
 	if(-f "$self->{'wrkDir'}/imscp_php.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'wrkDir'}/imscp_php.conf"
-		)->copyFile("$self->{'bkpDir'}/imscp_php.conf." . time);
-		return $rs if $rs;
+		iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_php.conf" )->copyFile(
+			"$self->{'bkpDir'}/imscp_php.conf." . time
+		);
 	}
 
 	$rs = $self->{'frontend'}->buildConfFile("$self->{'cfgDir'}/imscp_php.conf");
 	return $rs if $rs;
 
 	$file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_php.conf" );
-	$rs = $file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d");
-	return $rs if $rs;
+	$file->copyFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d");
 
 	$self->{'eventManager'}->trigger('afterFrontEndBuildHttpdConfig');
-
-	$rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildHttpdVhosts');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFrontEndBuildHttpdVhosts');
 
 	my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
@@ -931,43 +871,35 @@ sub _buildHttpdConfig
 	};
 
 	if($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
-		$rs = $self->{'eventManager'}->register(
-			'afterFrontEndBuildConf',
-			sub {
-				my ($cfgTpl, $tplName) = @_;
+		$self->{'eventManager'}->register('afterFrontEndBuildConf', sub {
+			my ($cfgTpl, $tplName) = @_;
 
-				if($tplName eq '00_master.conf') {
-					$$cfgTpl = replaceBloc(
+			if($tplName eq '00_master.conf') {
+				$$cfgTpl = replaceBloc(
+					"# SECTION custom BEGIN.\n",
+					"# SECTION custom END.\n",
+					"    # SECTION custom BEGIN.\n" .
+					getBloc(
 						"# SECTION custom BEGIN.\n",
 						"# SECTION custom END.\n",
-
-						"    # SECTION custom BEGIN.\n" .
-						getBloc(
-							"# SECTION custom BEGIN.\n",
-							"# SECTION custom END.\n",
-							$$cfgTpl
-						) .
-						"    rewrite .* https://\$host:$httpsPort\$request_uri redirect;\n" .
-						"    # SECTION custom END.\n",
 						$$cfgTpl
-					);
-				}
-
-				0;
+					) .
+					"    rewrite .* https://\$host:$httpsPort\$request_uri redirect;\n" .
+					"    # SECTION custom END.\n",
+					$$cfgTpl
+				);
 			}
-		);
-		return $rs if $rs;
+
+			0;
+		});
 	}
 
 	$rs = $self->{'frontend'}->buildConfFile('00_master.conf', $tplVars);
 	return $rs if $rs;
 
-	$rs = iMSCP::File->new(
-		filename => "$self->{'wrkDir'}/00_master.conf"
-	)->copyFile(
+	iMSCP::File->new( filename => "$self->{'wrkDir'}/00_master.conf" )->copyFile(
 		"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
 	);
-	return $rs if $rs;
 
 	$rs = $self->{'frontend'}->enableSites('00_master.conf');
 	return $rs if $rs;
@@ -976,12 +908,9 @@ sub _buildHttpdConfig
 		$rs = $self->{'frontend'}->buildConfFile('00_master_ssl.conf', $tplVars);
 		return $rs if $rs;
 
-		iMSCP::File->new(
-			filename => "$self->{'wrkDir'}/00_master_ssl.conf"
-		)->copyFile(
+		iMSCP::File->new( filename => "$self->{'wrkDir'}/00_master_ssl.conf" )->copyFile(
 			"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
 		);
-		return $rs if $rs;
 
 		$rs = $self->{'frontend'}->enableSites('00_master_ssl.conf');
 		return $rs if $rs;
@@ -993,8 +922,7 @@ sub _buildHttpdConfig
 			"$self->{'wrkDir'}/00_master_ssl.conf",
 			"$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
 		) {
-			$rs = iMSCP::File->new( filename => $_)->delFile() if -f $_;
-			return $rs if $rs;
+			iMSCP::File->new( filename => $_)->delFile() if -f $_;
 		}
 	}
 
@@ -1002,11 +930,9 @@ sub _buildHttpdConfig
 	return $rs if $rs;
 
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf") { # Nginx package as provided by Nginx Team
-		$rs = iMSCP::File->new(
-			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf"
-		)->moveFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled");
-		return $rs if $rs;
-	} else {
+		iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf")->moveFile(
+			"$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled"
+		);
 	}
 
 	$self->{'eventManager'}->trigger('afterFrontEndBuildHttpdVhosts');
@@ -1024,33 +950,29 @@ sub _buildInitDefaultFile
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFrontEndBuildInitDefaultFile');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFrontEndBuildInitDefaultFile');
 
 	my $imscpInitdConfDir = "$main::imscpConfig{'CONF_DIR'}/init.d";
 
 	if(-f "$imscpInitdConfDir/imscp_panel.default") {
 		if(-f "$imscpInitdConfDir/working/imscp_panel") {
-			$rs = iMSCP::File->new(
-				filename => "$imscpInitdConfDir/working/imscp_panel"
-			)->copyFile("$imscpInitdConfDir/backup/imscp_panel." . time);
-			return $rs if $rs;
+			iMSCP::File->new( filename => "$imscpInitdConfDir/working/imscp_panel")->copyFile(
+				"$imscpInitdConfDir/backup/imscp_panel." . time
+			);
 		}
 
-		$rs = $self->{'frontend'}->buildConfFile(
+		my $rs = $self->{'frontend'}->buildConfFile(
 			"$imscpInitdConfDir/imscp_panel.default",
 			{
-				'MASTER_WEB_USER' => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+				MASTER_WEB_USER => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 			},
 			{
-				'destination' =>  "$imscpInitdConfDir/working/imscp_panel"
+				destination =>  "$imscpInitdConfDir/working/imscp_panel"
 			}
 		);
 		return $rs if $rs;
 
-		my $file = iMSCP::File->new( filename => "$imscpInitdConfDir/working/imscp_panel" );
-		$rs = $file->copyFile('/etc/default');
-		return $rs if $rs;
+		iMSCP::File->new( filename => "$imscpInitdConfDir/working/imscp_panel" )->copyFile('/etc/default');
 	}
 
 	$self->{'eventManager'}->trigger('afterFrontEndBuildInitDefaultFile');
@@ -1068,16 +990,13 @@ sub _addDnsZone
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedAddMasterZone');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedAddMasterZone');
 
-	$rs = Servers::named->factory()->addDmn(
-		{
-			'DOMAIN_NAME' => $main::imscpConfig{'BASE_SERVER_VHOST'},
-			'DOMAIN_IP' => $main::imscpConfig{'BASE_SERVER_IP'},
-			'MAIL_ENABLED' => 1
-		}
-	);
+	my $rs = Servers::named->factory()->addDmn({
+		DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
+		DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
+		MAIL_ENABLED => 1
+	});
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterNamedAddMasterZone');
@@ -1099,36 +1018,21 @@ sub _saveConfig
 	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
 
 	my $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/nginx.data" );
-
-	my $rs = $file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
+	$file->owner($rootUname, $rootGname);
+	$file->mode(0640);
 
 	my $cfg = $file->get();
-	unless(defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/nginx.data");
-		return 1;
-	}
 
 	$file = iMSCP::File->new( filename => "$self->{'cfgDir'}/nginx.old.data" );
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
+	$file->set($cfg);
+	$file->save();
 	$file->owner($rootUname, $rootGname);
-	return $rs if $rs;
-
 	$file->mode(0640);
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
 Laurent Declercq <l.declercq@nuxwin.com>
 

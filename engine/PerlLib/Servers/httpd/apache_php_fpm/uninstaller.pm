@@ -30,7 +30,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Database;
 use File::Basename;
-use Servers::httpd::apache_php_fpm;
+use Servers::httpd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -81,7 +81,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
+	$self->{'httpd'} = Servers::httpd->factory();
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
@@ -147,21 +147,16 @@ sub _restoreApacheConfig
 	}
 
 	for my $filename('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
-		if -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$filename";
-			my $rs = iMSCP::File->new(
-				filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$filename"
-			)->delFile();
-			return $rs if $rs;
+		if -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$filename" {
+			iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$filename")->delFile();
+		}
 	}
 
 	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
 		my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
 		return $rs if $rs;
 
-		$rs = iMSCP::File->new(
-			filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
-		)->delFile();
-		return $rs if $rs;
+		iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf")->delFile();
 	}
 
 	my $confDir = (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
@@ -171,25 +166,22 @@ sub _restoreApacheConfig
 		my $rs = $self->{'httpd'}->disableConfs('00_imscp.conf');
 		return $rs if $rs;
 
-		$rs = iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
-		return $rs if $rs;
+		iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
 	}
 
 	for my $file("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
 		my $filename = fileparse($file);
 
 		if (-f "$self->{'apacheBkpDir'}/$filename.system") {
-			my $rs = iMSCP::File->new( filename => "$self->{'apacheBkpDir'}/$filename.system" )->copyFile($file)
-			return $rs if $rs;
+			iMSCP::File->new( filename => "$self->{'apacheBkpDir'}/$filename.system" )->copyFile($file)
 		}
 	}
 
-	my $rs = iMSCP::Dir->new(dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
-	return $rs if $rs;
+	iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
 
 	for my $site('000-default', 'default') {
 		if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site") {
-			$rs = $self->{'httpd'}->enableSites($site);
+			my $rs = $self->{'httpd'}->enableSites($site);
 			return $rs if $rs;
 		}
 	}
@@ -212,10 +204,9 @@ sub _restorePhpfpmConfig
 	my $filename = fileparse("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm");
 
 	if(-f "$self->{'phpfpmBkpDir'}/logrotate.$filename.system") {
-		my $rs = iMSCP::File->new(
-			filename => "$self->{'phpfpmBkpDir'}/logrotate.$filename.system"
-		)->copyFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/$filename");
-		return $rs if $rs;
+		iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/logrotate.$filename.system")->copyFile(
+			"$main::imscpConfig{'LOGROTATE_CONF_DIR'}/$filename"
+		);
 	}
 
 	for my $file(
@@ -225,23 +216,18 @@ sub _restorePhpfpmConfig
 		$filename = fileparse($file);
 
 		if (-f "$self->{'phpfpmBkpDir'}/$filename.system") {
-			my $rs = iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/$filename.system" )->copyFile($_)
-			return $rs if $rs;
+			iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/$filename.system" )->copyFile($_)
 		}
 	}
 
 	if (-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled") {
-		my $rs = iMSCP::File->new(
-			filename => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled"
-		)->moveFile(
+		iMSCP::File->new(filename => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled")->moveFile(
 			"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
-		)
-		return $rs if $rs;
+		);
 	}
 
 	if(-f "/etc/init/php5-fpm.override") {
-		my $rs = iMSCP::File->new( filename => "/etc/init/php5-fpm.override" )->delFile();
-		return $rs if $rs;
+		iMSCP::File->new( filename => "/etc/init/php5-fpm.override" )->delFile();
 	}
 
 	0;

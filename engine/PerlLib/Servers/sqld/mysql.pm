@@ -27,8 +27,6 @@ use strict;
 use warnings;
 use iMSCP::Config;
 use iMSCP::Debug;
-use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::Service;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
@@ -53,14 +51,13 @@ sub preinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldPreinstall');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeSqldPreinstall', 'mysql');
 
 	require Servers::sqld::mysql::installer;
-	$rs = Servers::sqld::mysql::installer->getInstance()->preinstall();
+	my $rs = Servers::sqld::mysql::installer->getInstance()->preinstall();
 	return $rs if $rs;
 
-	$self->{'eventManager'}->trigger('afterSqldPreinstall');
+	$self->{'eventManager'}->trigger('afterSqldPreinstall', 'mysql');
 }
 
 =item install()
@@ -75,11 +72,10 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldInstall', 'mysql');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeSqldInstall', 'mysql');
 
 	require Servers::sqld::mysql::installer;
-	$rs = Servers::sqld::mysql::installer->getInstance()->install();
+	my $rs = Servers::sqld::mysql::installer->getInstance()->install();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterSqldInstall', 'mysql');
@@ -97,13 +93,10 @@ sub postinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'MySQL SQL server' ]; 0 }
 	);
-
 	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
 
@@ -119,17 +112,13 @@ sub uninstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldUninstall', 'mysql');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeSqldUninstall', 'mysql');
 
 	require Servers::sqld::mysql::uninstaller;
-
-	$rs = Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
+	my $rs = Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
-	$rs = $self->restart();
-	return $rs if $rs;
-
+	$self->restart();
 	$self->{'eventManager'}->trigger('afterSqldUninstall', 'mysql');
 }
 
@@ -145,11 +134,10 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldSetEnginePermissions');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeSqldSetEnginePermissions');
 
 	require Servers::sqld::mysql::installer;
-	$rs = Servers::sqld::mysql::installer->getInstance()->setEnginePermissions();
+	my $rs = Servers::sqld::mysql::installer->getInstance()->setEnginePermissions();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterSqldSetEnginePermissions');
@@ -167,11 +155,8 @@ sub restart
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldRestart');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeSqldRestart');
 	iMSCP::Service->getInstance()->restart('mysql');
-
 	$self->{'eventManager'}->trigger('afterSqldRestart');
 }
 
@@ -208,13 +193,11 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self->{'eventManager'}->trigger('beforeSqldInit', $self, 'mysql') and fatal('mysql - beforeSqldInit has failed');
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
-	$self->{'config'}= $self->{'mysql'}->{'config'};
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data"; \%c; };
-	$self->{'eventManager'}->trigger('afterSqldInit', $self, 'mysql') and fatal('mysql - afterSqldInit has failed');
+	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s', ref $self));
+	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
 
+	$self->{'cfgDir'} .= '/mysql';
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data"; \%c; };
 	$self;
 }
 

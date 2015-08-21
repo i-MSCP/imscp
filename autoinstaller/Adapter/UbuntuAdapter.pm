@@ -102,14 +102,9 @@ sub _processAptRepositories
 	if(@{$self->{'aptRepositoriesToRemove'}} || @{$self->{'aptRepositoriesToAdd'}}) {
 		my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
 
-		my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
-		return $rs if $rs;
+		$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 
 		my $fileContent = $file->get();
-		unless (defined $fileContent) {
-			error('Unable to read /etc/apt/sources.list file');
-			return 1;
-		}
 
 		# Filter list of repositories which must not be removed
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
@@ -126,7 +121,7 @@ sub _processAptRepositories
 			if($isPPA || $fileContent =~ /^$repository/m) {
 				if($isPPA && version->parse($distroRelease) > version->parse('10.04')) {
 					my @cmd = ('add-apt-repository -y -r', escapeShell($repository));
-					$rs = execute("@cmd", \my $stdout, \my $stderr);
+					my $rs = execute("@cmd", \my $stdout, \my $stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
@@ -135,7 +130,7 @@ sub _processAptRepositories
 						my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
 
 						if(glob $ppaFile) {
-							$rs = execute("rm $ppaFile", \my $stdout, \my $stderr);
+							my $rs = execute("rm $ppaFile", \my $stdout, \my $stderr);
 							debug($stdout) if $stdout;
 							error($stderr) if $stderr && $rs;
 							return $rs if $rs;
@@ -152,9 +147,8 @@ sub _processAptRepositories
 		}
 
 		# Save new sources.list file
-		$rs = $file->set($fileContent);
-		$rs ||= $file->save();
-		return $rs if $rs;
+		$file->set($fileContent);
+		$file->save();
 
 		# Add needed APT repositories
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
@@ -178,12 +172,13 @@ sub _processAptRepositories
 						@cmd = ('add-apt-repository', escapeShell($repository->{'repository'}));
 					}
 
-					$rs = execute("@cmd", \my $stdout, \my $stderr);
+					my $rs = execute("@cmd", \my $stdout, \my $stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs
 				} else { # Normal repository
 					my @cmd = ();
+					my $rs = 0;
 					my ($stdout, $stderr);
 
 					if(version->parse($distroRelease) > version->parse('10.4')) {
@@ -215,7 +210,7 @@ sub _processAptRepositories
 					}
 
 					if(@cmd) {
-						$rs = execute("@cmd", \my $stdout, \my $stderr);
+						my $rs = execute("@cmd", \my $stdout, \my $stderr);
 						debug($stdout) if $stdout;
 						error($stderr) if $stderr && $rs;
 						return $rs if $rs

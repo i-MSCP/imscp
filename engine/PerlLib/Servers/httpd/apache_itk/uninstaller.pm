@@ -24,7 +24,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Database;
 use File::Basename;
-use Servers::httpd::apache_itk;
+use Servers::httpd;
 use parent 'Common::SingletonClass';
 
 sub uninstall
@@ -47,7 +47,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'httpd'} = Servers::httpd::apache_itk->getInstance();
+	$self->{'httpd'} = Servers::httpd->factory();
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
@@ -83,10 +83,7 @@ sub _vHostConf
 		my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
     	return $rs if $rs;
 
-		$rs = iMSCP::File->new(
-			filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
-		)->delFile();
-		return $rs if $rs;
+		iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf")->delFile();
 	}
 
 	my $confDir = (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
@@ -96,8 +93,7 @@ sub _vHostConf
 		my $rs = $self->{'httpd'}->disableConfs('00_imscp.conf');
 		return $rs if $rs;
 
-		$rs = iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
-		return $rs if $rs;
+		iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
 	}
 
 	for my $site('000-default', 'default') {
@@ -118,8 +114,7 @@ sub _restoreConf
 		my $filename = fileparse($file);
 
 		if (-f "$self->{bkpDir}/$filename.system") {
-			my $rs	= iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile($file)
-			return $rs if $rs;
+			iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile($file)
 		}
 	}
 

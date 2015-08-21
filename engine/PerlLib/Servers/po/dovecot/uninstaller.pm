@@ -21,10 +21,9 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
-use iMSCP::Execute;
 use iMSCP::Database;
-use Servers::po::dovecot;
-use Servers::mta::postfix;
+use Servers::po;
+use Servers::mta;
 use parent 'Common::SingletonClass';
 
 sub uninstall
@@ -41,8 +40,8 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'po'} = Servers::po::dovecot->getInstance();
-	$self->{'mta'} = Servers::mta::postfix->getInstance();
+	$self->{'po'} = Servers::po->factory();
+	$self->{'mta'} = Servers::mta->factory();
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -57,18 +56,14 @@ sub _restoreConfFile
 
 	for my $filename('dovecot.conf', 'dovecot-sql.conf') {
 		if(-f "$self->{bkpDir}/$filename.system") {
-			my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile(
+			iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile(
 				"$self->{'config'}->{'DOVECOT_CONF_DIR'}/$filename"
 			);
-			return $rs if $rs;
 		}
 	}
 
 	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
-
-	my $rs = $file->mode(0644);
-	return $rs if $rs;
-
+	$file->mode(0644);
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'MTA_MAILBOX_GID_NAME'});
 }
 

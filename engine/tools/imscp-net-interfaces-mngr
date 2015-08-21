@@ -40,7 +40,7 @@ OPTIONS:
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot({ nolock => 'yes', norequirements => 'yes', config_readonly => 'yes' });
+iMSCP::Bootstrapper->getInstance()->boot({ nolock => 1, norequirements => 1, config_readonly => 1 });
 
 sub _addAddresses
 {

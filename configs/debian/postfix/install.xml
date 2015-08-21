@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
     <create_dir>${SYSTEM_CONF}/postfix/backup</create_dir>
-    <create_dir>${SYSTEM_CONF}/postfix/parts</create_dir>
-    <create_dir>${SYSTEM_CONF}/postfix/working</create_dir>
-    <copy_confdir>${SYSTEM_CONF}/postfix/imscp</copy_confdir>
-    <copy_confdir>${SYSTEM_CONF}/postfix/sasl</copy_confdir>
     <copy_conffile>${SYSTEM_CONF}/postfix/main.cf</copy_conffile>
-    <copy_conffile>${SYSTEM_CONF}/postfix/postfix.data</copy_conffile>
     <copy_conffile>${SYSTEM_CONF}/postfix/master.cf</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/postfix/postfix.data</copy_conffile>
+    <copy_conffile>${SYSTEM_CONF}/postfix/smtpd.conf</copy_conffile>
 </install>

@@ -26,9 +26,7 @@ package Servers::po::dovecot;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::EventManager;
 use iMSCP::Config;
-use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Service;
@@ -74,9 +72,7 @@ sub preinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoPreinstall', 'dovecot');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforePoPreinstall', 'dovecot');
 	$self->{'eventManager'}->trigger('afterPoPreinstall', 'dovecot');
 }
 
@@ -92,11 +88,10 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'dovecot');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoInstall', 'dovecot');
 
 	require Servers::po::dovecot::installer;
-	$rs = Servers::po::dovecot::installer->getInstance()->install();
+	my $rs = Servers::po::dovecot::installer->getInstance()->install();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterPoInstall', 'dovecot');
@@ -114,20 +109,13 @@ sub postinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'dovecot');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoPostinstall', 'dovecot');
 
-	local $@;
-	eval { iMSCP::Service->getInstance()->enable($self->{'config'}->{'DOVECOT_SNAME'}); };
-	if($@) {
-		error($@);
-		return 1;
-	}
+	iMSCP::Service->getInstance()->enable($self->{'config'}->{'DOVECOT_SNAME'});
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Dovecot' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Dovecot IMAP/POP3 servers' ]; 0; }
 	);
-
 	$self->{'eventManager'}->trigger('afterPoPostinstall', 'dovecot');
 }
 
@@ -144,8 +132,6 @@ sub postaddMail
 {
 	my ($self, $data) = @_;
 
-	my $rs = 0;
-
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 		my $mta = Servers::mta->factory();
 		my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
@@ -153,16 +139,14 @@ sub postaddMail
 		my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
 		for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-			my $rs = iMSCP::Dir->new( dirname => $dir )->make({
+			iMSCP::Dir->new( dirname => $dir )->make({
 				user => $mailUidName, group => $mailGidName , mode => 0750
 			});
-			return $rs if $rs;
 
 			for my $subdir ('cur', 'new', 'tmp') {
-				$rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make({
+				iMSCP::Dir->new( dirname => "$dir/$subdir" )->make({
 					user => $mailUidName, group => $mailGidName, mode => 0750
 				});
-				return $rs if $rs;
 			}
 		}
 
@@ -183,21 +167,13 @@ sub postaddMail
 			}
 		}
 
-		my $rs = $subscriptionsFile->set((join "\n", @subscribedFolders) . "\n");
-		return $rs if $rs;
-
-		$rs = $subscriptionsFile->save();
-		return $rs if $rs;
-
-		$rs = $subscriptionsFile->mode(0640);
-		return $rs if $rs;
-
-		$rs = $subscriptionsFile->owner($mailUidName, $mailGidName);
-		return $rs if $rs;
+		$subscriptionsFile->set((join "\n", @subscribedFolders) . "\n");
+		$subscriptionsFile->save();
+		$subscriptionsFile->mode(0640);
+		$subscriptionsFile->owner($mailUidName, $mailGidName);
 
 		if(-f "$mailDir/maildirsize") {
-			$rs = iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile();
-			return $rs if $rs;
+			iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile();
 		}
 	}
 
@@ -216,12 +192,10 @@ sub uninstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoUninstall', 'dovecot');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoUninstall', 'dovecot');
 
 	require Servers::po::dovecot::uninstaller;
-
-	$rs = Servers::po::dovecot::uninstaller->getInstance()->uninstall();
+	my $rs = Servers::po::dovecot::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
 	$rs = $self->restart();
@@ -242,11 +216,8 @@ sub restart
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoRestart');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforePoRestart');
 	iMSCP::Service->getInstance()->restart($self->{'config'}->{'DOVECOT_SNAME'});
-
 	$self->{'eventManager'}->trigger('afterPoRestart');
 }
 
@@ -261,8 +232,6 @@ sub restart
 sub getTraffic
 {
 	my ($self, $trafficDataSrc, $trafficDb) = @_;
-
-	require File::Temp;
 
 	my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
 	my $trafficDbPath = "$variableDataDir/po_traffic.db";
@@ -288,9 +257,9 @@ sub getTraffic
 		my $lastParsedLineContent = $indexDb{'po_lineContent'} || '';
 
 		# Create a snapshot of log file to process
+		require File::Temp;
 		my $tpmFile1 = File::Temp->new();
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tpmFile1, { preserve => 'no' } );
-		die(iMSCP::Debug::getLastError()) if $rs;
+		iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tpmFile1, { preserve => 'no' } );
 
 		tie my @content, 'Tie::File', $tpmFile1 or die("Unable to tie $tpmFile1");
 
@@ -345,7 +314,7 @@ sub getTraffic
 	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
 	$self->{'eventManager'}->register(
 		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
-	) unless $selfCall;;
+	) unless $selfCall;
 
 	\%trafficDb;
 }
@@ -368,23 +337,21 @@ sub _init
 {
 	my $self = shift;
 
+	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s', ref $self));
+	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
+
 	$self->{'restart'} = 0;
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self->{'eventManager'}->trigger('beforePoInit', $self, 'dovecot') and fatal('dovecot - beforePoInit has failed');
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
+	$self->{'cfgDir'} .= '/dovecot';
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config',fileName => "$self->{'cfgDir'}/dovecot.data"; \%c; };
-	$self->{'eventManager'}->trigger('afterPoInit', $self, 'dovecot') and fatal('dovecot - afterPoInit has failed');
-
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

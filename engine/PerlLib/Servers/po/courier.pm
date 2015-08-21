@@ -27,7 +27,6 @@ use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
-use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -75,9 +74,7 @@ sub preinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoPreinstall', 'courier');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforePoPreinstall', 'courier');
 	$self->{'eventManager'}->trigger('afterPoPreinstall', 'courier');
 }
 
@@ -93,11 +90,10 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'courier');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoInstall', 'courier');
 
 	require Servers::po::courier::installer;
-	$rs = Servers::po::courier::installer->getInstance()->install();
+	my $rs = Servers::po::courier::installer->getInstance()->install();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterPoInstall', 'courier');
@@ -115,37 +111,28 @@ sub postinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoPostinstall', 'courier');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoPostinstall', 'courier');
 
-	local $@;
-	eval {
-		my $serviceMngr = iMSCP::Service->getInstance();
+	my $serviceMngr = iMSCP::Service->getInstance();
 
-		for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
-			$serviceMngr->restart($self->{'config'}->{$service});
+	for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
+		$serviceMngr->restart($self->{'config'}->{$service});
+	}
+
+	if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
+		for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
+			$serviceMngr->enable($self->{'config'}->{$service});
 		}
-
-		if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
-			for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-				$serviceMngr->enable($self->{'config'}->{$service});
-			}
-		} else {
-			for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-				$serviceMngr->stop($self->{'config'}->{$service});
-				$serviceMngr->disable($self->{'config'}->{$service});
-			}
+	} else {
+		for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
+			$serviceMngr->stop($self->{'config'}->{$service});
+			$serviceMngr->disable($self->{'config'}->{$service});
 		}
-	};
-	if($@) {
-		error($@);
-		return 1;
 	}
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Courier' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Courier IMAP/POP3 servers' ]; 0; }
 	);
-
 	$self->{'eventManager'}->trigger('afterPoPostinstall', 'courier');
 }
 
@@ -161,17 +148,13 @@ sub uninstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoUninstall', 'courier');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoUninstall', 'courier');
 
 	require Servers::po::courier::uninstaller;
-
-	$rs = Servers::po::courier::uninstaller->getInstance()->uninstall();
+	my $rs = Servers::po::courier::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
-	$rs = $self->restart();
-	return $rs if $rs;
-
+	$self->restart();
 	$self->{'eventManager'}->trigger('afterPoUninstall', 'courier');
 }
 
@@ -187,11 +170,10 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoSetEnginePermissions');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoSetEnginePermissions');
 
 	require Servers::po::courier::installer;
-	$rs = Servers::po::courier::installer->getInstance()->setEnginePermissions();
+	my $rs = Servers::po::courier::installer->getInstance()->setEnginePermissions();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterPoSetEnginePermissions');
@@ -212,22 +194,17 @@ sub postaddMail
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 		my $mta = Servers::mta->factory();
-
 		my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 		my $mailUidName =  $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'};
 		my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
 		for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-			my $rs = iMSCP::Dir->new( dirname => $dir )->make({
-				user => $mailUidName, group => $mailGidName , mode => 0750
-			});
-			return $rs if $rs;
+			iMSCP::Dir->new( dirname => $dir )->make({user => $mailUidName, group => $mailGidName , mode => 0750});
 
 			for my $subdir ('cur', 'new', 'tmp') {
-				my $rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make({
+				iMSCP::Dir->new( dirname => "$dir/$subdir" )->make({
 					user => $mailUidName, group => $mailGidName, mode => 0750
 				});
-				return $rs if $rs;
 			}
 		}
 
@@ -249,23 +226,15 @@ sub postaddMail
 			}
 		}
 
-		my $rs = $courierimapsubscribedFile->set((join "\n", @subscribedFolders) . "\n");
-		return $rs if $rs;
-
-		$rs = $courierimapsubscribedFile->save();
-		return $rs if $rs;
-
-		$rs = $courierimapsubscribedFile->mode(0640);
-		return $rs if $rs;
-
-		$rs = $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
-		return $rs if $rs;
+		$courierimapsubscribedFile->set((join "\n", @subscribedFolders) . "\n");
+		$courierimapsubscribedFile->save();
+		$courierimapsubscribedFile->mode(0640);
+		$courierimapsubscribedFile->owner($mailUidName, $mailGidName);
 
 		if(defined($data->{'MAIL_QUOTA'}) && $data->{'MAIL_QUOTA'} != 0) {
 			my @maildirmakeCmdArgs = (escapeShell("$data->{'MAIL_QUOTA'}S"), escapeShell("$mailDir"));
 
-			my($stdout, $stderr);
-			$rs = execute("maildirmake -q @maildirmakeCmdArgs", \$stdout, \$stderr);
+			my $rs = execute("maildirmake -q @maildirmakeCmdArgs", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -273,15 +242,11 @@ sub postaddMail
 			if(-f "$mailDir/maildirsize") {
 				my $file = iMSCP::File->new( filename => "$mailDir/maildirsize" );
 
-				$rs = $file->owner($mailUidName, $mailGidName);
-				return $rs if $rs;
-
-				$rs = $file->mode(0640);
-				return $rs if $rs;
+				$file->owner($mailUidName, $mailGidName);
+				$file->mode(0640);
 			}
 		} elsif(-f "$mailDir/maildirsize") {
-			$rs = iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile();
-			return $rs if $rs;
+			iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile();
 		}
 	}
 
@@ -300,26 +265,18 @@ sub start
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoStart');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoStart');
 
-	local $@;
-	eval {
-		my $serviceMngr = iMSCP::Service->getInstance();
+	my $serviceMngr = iMSCP::Service->getInstance();
 
-		for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
+	for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
+		$serviceMngr->start($self->{'config'}->{$service});
+	}
+
+	if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
+		for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
 			$serviceMngr->start($self->{'config'}->{$service});
 		}
-
-		if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
-			for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-				$serviceMngr->start($self->{'config'}->{$service});
-			}
-		}
-	};
-	if($@) {
-		error($@);
-		return 1;
 	}
 
 	$self->{'eventManager'}->trigger('afterPoStart');
@@ -337,19 +294,11 @@ sub stop
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoStop');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoStop');
 
-	local $@;
-	eval {
-		my $serviceMngr = iMSCP::Service->getInstance();
-		for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SNAME', 'IMAPD_SSL_SNAME') {
-			$serviceMngr->stop($self->{'config'}->{$service});
-		}
-	};
-	if($@) {
-		error($@);
-		return 1;
+	my $serviceMngr = iMSCP::Service->getInstance();
+	for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SNAME', 'IMAPD_SSL_SNAME') {
+		$serviceMngr->stop($self->{'config'}->{$service});
 	}
 
 	$self->{'eventManager'}->trigger('afterPoStop');
@@ -367,26 +316,18 @@ sub restart
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoRestart');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoRestart');
 
-	local $@;
-	eval {
-		my $serviceMngr = iMSCP::Service->getInstance();
+	my $serviceMngr = iMSCP::Service->getInstance();
 
-		for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
+	for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
+		$serviceMngr->restart($self->{'config'}->{$service});
+	}
+
+	if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
+		for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
 			$serviceMngr->restart($self->{'config'}->{$service});
 		}
-
-		if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
-			for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-				$serviceMngr->restart($self->{'config'}->{$service});
-			}
-		}
-	};
-	if($@) {
-		error($@);
-		return 1;
 	}
 
 	$self->{'eventManager'}->trigger('afterPoRestart');
@@ -403,8 +344,6 @@ sub restart
 sub getTraffic
 {
 	my ($self, $trafficDataSrc, $trafficDb) = @_;
-
-	require File::Temp;
 
 	my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
 	my $trafficDbPath = "$variableDataDir/po_traffic.db";
@@ -430,9 +369,9 @@ sub getTraffic
 		my $lastParsedLineContent = $indexDb{'po_lineContent'} || '';
 
 		# Create a snapshot of log file to process
+		require File::Temp;
 		my $tpmFile1 = File::Temp->new();
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tpmFile1, { preserve => 'no' } );
-		die(iMSCP::Debug::getLastError()) if $rs;
+		iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tpmFile1, { preserve => 'no' } );
 
 		tie my @content, 'Tie::File', $tpmFile1 or die("Unable to tie $tpmFile1");
 
@@ -522,23 +461,21 @@ sub _init
 {
 	my $self = shift;
 
+	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s', ref $self));
+	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
+
 	$self->{'restart'} = 0;
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self->{'eventManager'}->trigger('beforePoInit', $self, 'courier') and fatal('courier - beforePoInit has failed');
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{'cfgDir'} .= '/courier';
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data"; \%c; };
-	$self->{'eventManager'}->trigger('afterPoInit', $self, 'courier') and fatal('courier - afterPoInit has failed');
-
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

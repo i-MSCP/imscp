@@ -1,6 +1,5 @@
 POSTFIX_USER = postfix
 POSTFIX_GROUP = postfix
-
 POSTFIX_CONF_DIR = /etc/postfix
 POSTFIX_CONF_FILE = /etc/postfix/main.cf
 POSTFIX_MASTER_CONF_FILE = /etc/postfix/master.cf
@@ -10,13 +9,12 @@ MTA_VIRTUAL_CONF_DIR = /etc/postfix/imscp
 MTA_SNAME = postfix
 MTA_LOCAL_MAIL_DIR = /var/mail
 MTA_VIRTUAL_MAIL_DIR = /var/mail/virtual
-MTA_LOCAL_ALIAS_HASH = /etc/aliases
-MTA_VIRTUAL_ALIAS_HASH = /etc/postfix/imscp/aliases
-MTA_VIRTUAL_DMN_HASH = /etc/postfix/imscp/domains
-MTA_VIRTUAL_MAILBOX_HASH = /etc/postfix/imscp/mailboxes
-MTA_TRANSPORT_HASH = /etc/postfix/imscp/transport
-MTA_RELAY_HASH = /etc/postfix/imscp/relay_domains
-MTA_SENDER_ACCESS_HASH = /etc/postfix/imscp/sender-access
+MTA_LOCAL_ALIAS_MAP = /etc/aliases
+MTA_VIRTUAL_ALIAS_MAP = /etc/postfix/imscp/aliases
+MTA_VIRTUAL_DMN_MAP = /etc/postfix/imscp/domains
+MTA_VIRTUAL_MAILBOX_MAP = /etc/postfix/imscp/mailboxes
+MTA_TRANSPORT_MAP = /etc/postfix/imscp/transport
+MTA_RELAY_MAP = /etc/postfix/imscp/relay_domains
 MTA_MAILBOX_UID_NAME = vmail
 MTA_MAILBOX_GID_NAME = mail
 MTA_SASL_CONF_DIR = /etc/postfix/sasl
@@ -37,6 +35,6 @@ MTA_SASL_CONF_DIR = /etc/postfix/sasl
 # (Not implemented yet)
 #SMTP_BIND_ADDRESS6 =
 
-# SASL SQL user (since 1.1.12)
+# SASL SQL user
 DATABASE_USER =
 DATABASE_PASSWORD =

@@ -47,6 +47,9 @@ Zend_Loader_AutoloaderFactory::factory(
 	array(
 		'Zend_Loader_StandardAutoloader' => array(
 			'autoregister_zf' => true,
+			'namespaces' => array(
+				'iMSCP' => LIBRARY_PATH . '/iMSCP'
+			),
 			'prefixes' => array(
 				'iMSCP_' => LIBRARY_PATH . '/iMSCP',
 				'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',

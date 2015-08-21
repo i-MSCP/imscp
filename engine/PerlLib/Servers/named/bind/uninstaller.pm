@@ -29,7 +29,7 @@ use iMSCP::Debug;
 use File::Basename;
 use iMSCP::File;
 use iMSCP::Execute;
-use Servers::named::bind;
+use Servers::named;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -76,7 +76,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'named'} = Servers::named::bind->getInstance();
+	$self->{'named'} = Servers::named->factory();
 	$self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -104,12 +104,11 @@ sub _restoreConfFiles
 				my $filename = fileparse($self->{'config'}->{$conffile});
 
 				if(-f "$self->{'bkpDir'}/$filename.system") {
-					my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+					iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
 						$self->{'config'}->{$conffile}
 					);
 
-					$rs = iMSCP::File->new( filename => $self->{'config'}->{$conffile} )->mode(0644);
-					return $rs if $rs;
+					iMSCP::File->new( filename => $self->{'config'}->{$conffile} )->mode(0644);
 				}
 			}
 		}
@@ -130,8 +129,7 @@ sub _deleteDbFiles
 {
 	my $self = shift;
 
-	my ($stdout, $stderr);
-	my $rs = execute("rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
+	my $rs = execute("rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;

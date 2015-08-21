@@ -23,13 +23,34 @@
 
 package Servers::sqld::percona;
 
-use strict;
-use warnings;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
 
  i-MSCP Percona server implementation.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item postinstall()
+
+ Process postinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+	my $self = shift;
+
+	$self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
+	$self->{'eventManager'}->register(
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Percona SQL server' ]; 0 }
+	);
+	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
+}
 
 =back
 

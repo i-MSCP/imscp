@@ -42,7 +42,7 @@ function reseller_updatePassword()
 			set_page_message(tr("Passwords do not match."), 'error');
 		} elseif (checkPasswordSyntax($_POST['password'])) {
 			$query = 'UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?';
-			exec_query($query, array(cryptPasswordWithSalt($_POST['password']), $userId));
+			exec_query($query, array(\iMSCP\Crypt::bcrypt($_POST['password']), $userId));
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $userId));
 
@@ -66,7 +66,7 @@ function _reseller_checkCurrentPassword($password)
 	if (!$stmt->rowCount()) {
 		set_page_message(tr('Unable to retrieve your password from the database.'), 'error');
 		return false;
-	} elseif (cryptPasswordWithSalt($password, $stmt->fields['admin_pass']) !== $stmt->fields['admin_pass']) {
+	} elseif (!\iMSCP\Crypt::verify($password, $stmt->fields['admin_pass'])) {
 		return false;
 	}
 

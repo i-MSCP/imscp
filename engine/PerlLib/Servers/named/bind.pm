@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
@@ -75,9 +74,7 @@ sub preinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedPreInstall', 'bind');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeNamedPreInstall', 'bind');
 	$self->{'eventManager'}->trigger('afterNamedPreInstall', 'bind');
 }
 
@@ -93,11 +90,10 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedInstall', 'bind');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedInstall', 'bind');
 
 	require Servers::named::bind::installer;
-	$rs = Servers::named::bind::installer->getInstance()->install();
+	my $rs = Servers::named::bind::installer->getInstance()->install();
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterNamedInstall', 'bind');
@@ -115,20 +111,13 @@ sub postinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostInstall');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedPostInstall');
 
-	local $@;
-	eval { iMSCP::Service->getInstance()->enable($self->{'config'}->{'NAMED_SNAME'}); };
-	if($@) {
-		error($@);
-		return 1;
-	}
+	iMSCP::Service->getInstance()->enable($self->{'config'}->{'NAMED_SNAME'});
 
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Bind9' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Bind9 DNS server' ]; 0 }
 	);
-
 	$self->{'eventManager'}->trigger('afterNamedPostInstall');
 }
 
@@ -144,11 +133,10 @@ sub uninstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedUninstall', 'bind');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedUninstall', 'bind');
 
 	require Servers::named::bind::uninstaller;
-	$rs = Servers::named::bind::uninstaller->getInstance()->uninstall();
+	my $rs = Servers::named::bind::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
 	if(iMSCP::ProgramFinder::find($self->{'config'}->{'NAMED_BNAME'})) {
@@ -172,10 +160,9 @@ sub addDmn
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedAddDmn', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedAddDmn', $data);
 
-	$rs = $self->_addDmnConfig($data);
+	my $rs = $self->_addDmnConfig($data);
 	return $rs if $rs;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
@@ -199,14 +186,13 @@ sub postaddDmn
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostAddDmn', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedPostAddDmn', $data);
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
 		my $domainIp = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
 			? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
 
-		$rs = $self->addDmn({
+		my $rs = $self->addDmn({
 			DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			MAIL_ENABLED => 1,
@@ -221,7 +207,6 @@ sub postaddDmn
 	}
 
 	$self->{'reload'} = 1;
-
 	$self->{'eventManager'}->trigger('afterNamedPostAddDmn', $data);
 }
 
@@ -241,10 +226,9 @@ sub disableDmn
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedDisableDmn', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedDisableDmn', $data);
 
-	$rs = $self->addDmn($data);
+	my $rs = $self->addDmn($data);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterNamedDisableDmn', $data);
@@ -265,10 +249,9 @@ sub postdisableDmn
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDisableDmn', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedPostDisableDmn', $data);
 
-	$rs = $self->postaddDmn($data);
+	my $rs = $self->postaddDmn($data);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterNamedPostDisableDmn', $data);
@@ -287,10 +270,9 @@ sub deleteDmn
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedDelDmn', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedDelDmn', $data);
 
-	$rs = $self->_deleteDmnConfig($data);
+	my $rs = $self->_deleteDmnConfig($data);
 	return $rs if $rs;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
@@ -299,8 +281,7 @@ sub deleteDmn
 			"$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db"
 		) {
 			if(-f $file) {
-				$rs = iMSCP::File->new( filename => $file )->delFile();
-				return $rs if $rs;
+				iMSCP::File->new( filename => $file )->delFile();
 			}
 		}
 	}
@@ -321,11 +302,10 @@ sub postdeleteDmn
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDelDmn', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedPostDelDmn', $data);
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
-		$rs = $self->addDmn({
+		my $rs = $self->addDmn({
 			DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			MAIL_ENABLED => 1,
@@ -335,7 +315,6 @@ sub postdeleteDmn
 	}
 
 	$self->{'reload'} = 1;
-
 	$self->{'eventManager'}->trigger('afterNamedPostDelDmn', $data);
 }
 
@@ -359,14 +338,8 @@ sub addSub
 			$wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
 
 			my $wrkDbFileContent = $wrkDbFile->get();
-			unless(defined $wrkDbFileContent) {
-				error("Unable to read $wrkDbFile->{'filename'}");
-				return 1;
-			}
 
-			my $subEntry;
-			my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', 'db_sub.tpl', \$subEntry, $data);
-			return $rs if $rs;
+			$self->{'eventManager'}->trigger('onLoadTemplate', 'bind', 'db_sub.tpl', \my $subEntry, $data);
 
 			unless(defined $subEntry) {
 				$subEntry = iMSCP::File->new( filename => "$self->{'tplDir'}/db_sub.tpl" )->get();
@@ -376,8 +349,7 @@ sub addSub
 				}
 			}
 
-			$rs = $self->{'eventManager'}->trigger('beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data);
-			return $rs if $rs;
+			$self->{'eventManager'}->trigger('beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data);
 
 			$wrkDbFileContent = $self->_generateSoalSerialNumber($wrkDbFileContent);
 			unless(defined $wrkDbFileContent) {
@@ -440,21 +412,16 @@ sub addSub
 				'preserve'
 			);
 
-			$rs = $self->{'eventManager'}->trigger('afterNamedAddSub', \$wrkDbFileContent, $data);
-			return $rs if $rs;
+			$self->{'eventManager'}->trigger('afterNamedAddSub', \$wrkDbFileContent, $data);
 
-			$rs = $wrkDbFile->set($wrkDbFileContent);
-			return $rs if $rs;
+			$wrkDbFile->set($wrkDbFileContent);
+			$wrkDbFile->save();
 
-			$rs = $wrkDbFile->save();
-			return $rs if $rs;
-
-			my ($stdout, $stderr);
-			$rs = execute(
+			my $rs = execute(
 				'named-compilezone -i none -s relative ' .
 					"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db " .
 					"$data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}",
-				\$stdout, \$stderr
+				\my $stdout, \my $stderr
 			);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
@@ -464,12 +431,8 @@ sub addSub
 			my $prodFile = iMSCP::File->new(
 				filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
 			);
-
-			$rs = $prodFile->mode(0640);
-			return $rs if $rs;
-
-			$rs = $prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
-			return $rs if $rs;
+			$prodFile->mode(0640);
+			$prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 		} else {
 			error("File $wrkDbFile not found. Please run the i-MSCP setup script.");
 			return 1;
@@ -492,14 +455,13 @@ sub postaddSub
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostAddSub', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedPostAddSub', $data);
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
 		my $domainIp = (($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}))
 			? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
 
-		$rs = $self->addDmn({
+		my $rs = $self->addDmn({
 			DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			MAIL_ENABLED => 1,
@@ -514,7 +476,6 @@ sub postaddSub
 	}
 
 	$self->{'reload'} = 1;
-
 	$self->{'eventManager'}->trigger('afterNamedPostAddSub', $data);
 }
 
@@ -534,10 +495,9 @@ sub disableSub
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedDisableSub', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedDisableSub', $data);
 
-	$rs = $self->addSub($data);
+	my $rs = $self->addSub($data);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterNamedDisableSub', $data);
@@ -558,10 +518,9 @@ sub postdisableSub
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDisableSub', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedPostDisableSub', $data);
 
-	$rs = $self->postaddSub($data);
+	my $rs = $self->postaddSub($data);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterNamedPostDisableSub', $data);
@@ -588,13 +547,7 @@ sub deleteSub
 
 			my $wrkDbFileContent = $wrkDbFile->get();
 
-			unless(defined $wrkDbFileContent) {
-				error("Unable to read $wrkDbFile->{'filename'}");
-				return 1;
-			}
-
-			my $rs = $self->{'eventManager'}->trigger('beforeNamedDelSub', \$wrkDbFileContent, $data);
-			return $rs if $rs;
+			$self->{'eventManager'}->trigger('beforeNamedDelSub', \$wrkDbFileContent, $data);
 
 			$wrkDbFileContent = $self->_generateSoalSerialNumber($wrkDbFileContent);
 			unless(defined $wrkDbFileContent) {
@@ -609,22 +562,17 @@ sub deleteSub
 				$wrkDbFileContent
 			);
 
-			$rs = $self->{'eventManager'}->trigger('afterNamedDelSub', \$wrkDbFileContent, $data);
-			return $rs if $rs;
+			$self->{'eventManager'}->trigger('afterNamedDelSub', \$wrkDbFileContent, $data);
 
-			$rs = $wrkDbFile->set($wrkDbFileContent);
-			return $rs if $rs;
+			$wrkDbFile->set($wrkDbFileContent);
+			$wrkDbFile->save();
 
-			$rs = $wrkDbFile->save();
-			return $rs if $rs;
-
-			my ($stdout, $stderr);
-			$rs = execute(
+			my $rs = execute(
 				'named-compilezone -i none -s relative ' .
 					"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db " .
 					"$data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}",
-				\$stdout,
-				\$stderr
+				\my $stdout,
+				\my $stderr
 			);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
@@ -634,12 +582,8 @@ sub deleteSub
 			my $prodFile = iMSCP::File->new(
 				filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
 			);
-
-			$rs = $prodFile->mode(0640);
-			return $rs if $rs;
-
-			$rs = $prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
-			return $rs if $rs;
+			$prodFile->mode(0640);
+			$prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 		} else {
 			error("File $wrkDbFile not found. Please run the i-MSCP setup script.");
 			return 1;
@@ -662,11 +606,10 @@ sub postdeleteSub
 {
 	my ($self, $data) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedPostDelSub', $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedPostDelSub', $data);
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
-		$rs = $self->addDmn({
+		my $rs = $self->addDmn({
 			DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			MAIL_ENABLED => 1,
@@ -676,7 +619,6 @@ sub postdeleteSub
 	}
 
 	$self->{'reload'} = 1;
-
 	$self->{'eventManager'}->trigger('afterNamedPostDelSub', $data);
 }
 
@@ -700,10 +642,6 @@ sub addCustomDNS
 			$wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
 
 			my $wrkDbFileContent = $wrkDbFile->get();
-			unless(defined $wrkDbFileContent) {
-				error("Unable to read $wrkDbFile->{'filename'}");
-				return 1;
-			}
 
 			$wrkDbFileContent = $self->_generateSoalSerialNumber($wrkDbFileContent);
 			unless(defined $wrkDbFileContent) {
@@ -711,8 +649,7 @@ sub addCustomDNS
 				return 1;
 			}
 
-			my $rs = $self->{'eventManager'}->trigger('beforeNamedAddCustomDNS', \$wrkDbFileContent, $data);
-			return $rs if $rs;
+			$self->{'eventManager'}->trigger('beforeNamedAddCustomDNS', \$wrkDbFileContent, $data);
 
 			my $customDnsEntries = '';
 			for my $record(@{$data->{'DNS_RECORDS'}}) {
@@ -727,35 +664,28 @@ sub addCustomDNS
 				$wrkDbFileContent
 			);
 
-			$rs = $self->{'eventManager'}->trigger('afterNamedAddCustomDNS', \$wrkDbFileContent, $data);
-			return $rs if $rs;
+			$self->{'eventManager'}->trigger('afterNamedAddCustomDNS', \$wrkDbFileContent, $data);
 
-			$rs = $wrkDbFile->set($wrkDbFileContent);
-			return $rs if $rs;
+			$wrkDbFile->set($wrkDbFileContent);
+			$wrkDbFile->save();
 
-			$rs = $wrkDbFile->save();
-			return $rs if $rs;
-
-			my ($stdout, $stderr);
-			$rs = execute(
+			my $rs = execute(
 				'named-compilezone -i none -s relative ' .
 					"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db " .
 					"$data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}",
-				\$stdout,
-				\$stderr
+				\my $stdout,
+				\my $stderr
 			);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			error("Unable to install $data->{'DOMAIN_NAME'}.db") if $rs && ! $stderr;
 			return $rs if $rs;
 
-			my $prodFile = iMSCP::File->new(filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db");
-
-			$rs = $prodFile->mode(0640);
-			return $rs if $rs;
-
-			$rs = $prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
-			return $rs if $rs;
+			my $prodFile = iMSCP::File->new(
+				filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db"
+			);
+			$prodFile->mode(0640);
+			$prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 
 			$self->{'reload'} = 1;
 		} else {
@@ -779,16 +709,8 @@ sub restart
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedRestart');
-	return $rs if $rs;
-
-	local $@;
-	eval { iMSCP::Service->getInstance()->restart($self->{'config'}->{'NAMED_SNAME'}); };
-	if($@) {
-		error($@);
-		return 1;
-	}
-
+	$self->{'eventManager'}->trigger('beforeNamedRestart');
+	iMSCP::Service->getInstance()->restart($self->{'config'}->{'NAMED_SNAME'});
 	$self->{'eventManager'}->trigger('afterNamedRestart');
 }
 
@@ -804,16 +726,8 @@ sub reload
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedReload');
-	return $rs if $rs;
-
-	local $@;
-	eval { iMSCP::Service->getInstance()->reload($self->{'config'}->{'NAMED_SNAME'}); };
-	if($@) {
-		error($@);
-		return 1;
-	}
-
+	$self->{'eventManager'}->trigger('beforeNamedReload');
+	iMSCP::Service->getInstance()->reload($self->{'config'}->{'NAMED_SNAME'});
 	$self->{'eventManager'}->trigger('afterNamedReload');
 }
 
@@ -835,17 +749,16 @@ sub _init
 {
 	my $self = shift;
 
+	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s', ref $self));
+	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
+
 	$self->{'restart'} = 0;
 	$self->{'reload'} = 0;
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self->{'eventManager'}->trigger('beforeNamedInit', $self, 'bind') and fatal('bind - beforeNamedInit has failed');
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
+	$self->{'cfgDir'} .= '/bind';
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data"; \%c; };
-	$self->{'eventManager'}->trigger('afterNamedInit', $self, 'bind') and fatal('bind - afterNamedInit has failed');
-
 	$self;
 }
 
@@ -868,21 +781,12 @@ sub _addDmnConfig
 
 	if(-f "$self->{'wrkDir'}/$cfgFileName") {
 		my $cfgFile = iMSCP::File->new( filename => "$self->{'wrkDir'}/$cfgFileName" );
-
 		my $cfgWrkFileContent = $cfgFile->get();
-		unless(defined $cfgWrkFileContent) {
-			error("Unable to read $self->{'wrkDir'}/$cfgFileName");
-			return 1;
-		}
 
 		if(defined $self->{'config'}->{'BIND_MODE'}) {
 			my $tplFileName = "cfg_$self->{'config'}->{'BIND_MODE'}.tpl";
-
 			my $tplCfgEntryContent;
-			my $rs = $self->{'eventManager'}->trigger(
-				'onLoadTemplate', 'bind', $tplFileName, \$tplCfgEntryContent, $data
-			);
-			return $rs if $rs;
+			$self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $tplFileName, \$tplCfgEntryContent, $data);
 
 			unless(defined $tplCfgEntryContent) {
 				$tplCfgEntryContent = iMSCP::File->new( filename => "$self->{'tplDir'}/$tplFileName" )->get();
@@ -892,10 +796,9 @@ sub _addDmnConfig
 				}
 			}
 
-			$rs = $self->{'eventManager'}->trigger(
+			$self->{'eventManager'}->trigger(
 				'beforeNamedAddDmnConfig', \$cfgWrkFileContent, \$tplCfgEntryContent, $data
 			);
-			return $rs if $rs;
 
 			my $tags = {
 				DB_DIR => $self->{'config'}->{'BIND_DB_DIR'},
@@ -934,23 +837,13 @@ sub _addDmnConfig
 				'preserve'
 			);
 
-			$rs = $self->{'eventManager'}->trigger('afterNamedAddDmnConfig', \$cfgWrkFileContent, $data);
-			return $rs if $rs;
+			$self->{'eventManager'}->trigger('afterNamedAddDmnConfig', \$cfgWrkFileContent, $data);
 
-			$rs = $cfgFile->set($cfgWrkFileContent);
-			return $rs if $rs;
-
-			$rs = $cfgFile->save();
-			return $rs if $rs;
-
-			$rs = $cfgFile->mode(0644);
-			return $rs if $rs;
-
-			$rs = $cfgFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
-			return $rs if $rs;
-
-			$rs = $cfgFile->copyFile("$cfgFileDir$cfgFileName");
-			return $rs if $rs;
+			$cfgFile->set($cfgWrkFileContent);
+			$cfgFile->save();
+			$cfgFile->mode(0644);
+			$cfgFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
+			$cfgFile->copyFile("$cfgFileDir$cfgFileName");
 		} else {
 			error('Bind mode is not defined. Please rerun the i-MSCP setup script.');
 			return 1;
@@ -982,40 +875,22 @@ sub _deleteDmnConfig
 
 	if(-f "$self->{'wrkDir'}/$cfgFileName") {
 		my $cfgFile = iMSCP::File->new( filename => "$self->{'wrkDir'}/$cfgFileName" );
-
 		my $cfgWrkFileContent = $cfgFile->get();
-		unless(defined $cfgWrkFileContent) {
-			error("Unable to read $self->{'wrkDir'}/$cfgFileName");
-			return 1;
-		}
 
-		my $rs = $self->{'eventManager'}->trigger('beforeNamedDelDmnConfig', \$cfgWrkFileContent, $data);
-		return $rs if $rs;
-
+		$self->{'eventManager'}->trigger('beforeNamedDelDmnConfig', \$cfgWrkFileContent, $data);
 		$cfgWrkFileContent = replaceBloc(
 			"// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
 			"// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n",
 			'',
 			$cfgWrkFileContent
 		);
+		$self->{'eventManager'}->trigger('afterNamedDelDmnConfig', \$cfgWrkFileContent, $data);
 
-		$rs = $self->{'eventManager'}->trigger('afterNamedDelDmnConfig', \$cfgWrkFileContent, $data);
-		return $rs if $rs;
-
-		$rs = $cfgFile->set($cfgWrkFileContent);
-		return $rs if $rs;
-
-		$rs = $cfgFile->save();
-		return $rs if $rs;
-
-		$rs = $cfgFile->mode(0644);
-		return $rs if $rs;
-
-		$rs = $cfgFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
-		return $rs if $rs;
-
-		$rs = $cfgFile->copyFile("$cfgFileDir$cfgFileName");
-		return $rs if $rs;
+		$cfgFile->set($cfgWrkFileContent);
+		$cfgFile->save();
+		$cfgFile->mode(0644);
+		$cfgFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
+		$cfgFile->copyFile("$cfgFileDir$cfgFileName");
 	} else {
 		error("File $self->{'wrkDir'}/$cfgFileName not found. Please rerun the i-MSCP setup script.");
 		return 1;
@@ -1040,30 +915,18 @@ sub _addDmnDb
 
 	if(-f $wrkDbFile) {
 		$wrkDbFile = iMSCP::File->new( filename => $wrkDbFile);
-
 		$wrkDbFileContent = $wrkDbFile->get();
-		unless(defined $wrkDbFileContent) {
-			error("Unable to read $wrkDbFile->{'filename'}");
-			return 1;
-		}
 	} else {
 		$wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
 	}
 
-	my $tplDbFileContent;
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'bind', 'db.tpl', \$tplDbFileContent, $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('onLoadTemplate', 'bind', 'db.tpl', \my $tplDbFileContent, $data);
 
 	unless(defined $tplDbFileContent) {
 		$tplDbFileContent = iMSCP::File->new( filename => "$self->{'tplDir'}/db.tpl" )->get();
-		unless(defined $tplDbFileContent) {
-			error("Unable to read $self->{'tplDir'}/db.tpl");
-			return 1;
-		}
 	}
 
-	$rs = $self->{'eventManager'}->trigger('beforeNamedAddDmnDb', \$tplDbFileContent, $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeNamedAddDmnDb', \$tplDbFileContent, $data);
 
 	$tplDbFileContent = $self->_generateSoalSerialNumber(
 		$tplDbFileContent, (defined $wrkDbFileContent) ? $wrkDbFileContent : undef
@@ -1084,7 +947,6 @@ sub _addDmnDb
 	);
 
 	my $ipMngr = iMSCP::Net->getInstance();
-
 	my ($dmnNsEntries, $dmnNsAentries, $nsNumber) = (undef, undef, 1);
 
 	for my $ipAddr(@nsIPs) {
@@ -1175,22 +1037,17 @@ sub _addDmnDb
 		$tplDbFileContent
 	);
 
-	$rs = $self->{'eventManager'}->trigger('afterNamedAddDmnDb', \$tplDbFileContent, $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('afterNamedAddDmnDb', \$tplDbFileContent, $data);
 
-	$rs = $wrkDbFile->set($tplDbFileContent);
-	return $rs if $rs;
+	$wrkDbFile->set($tplDbFileContent);
+	$wrkDbFile->save();
 
-	$rs = $wrkDbFile->save();
-	return $rs if $rs;
-
-	my ($stdout, $stderr);
-	$rs = execute(
+	my $rs = execute(
 		'named-compilezone -i none -s relative ' .
 			"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db $data->{'DOMAIN_NAME'} " .
 			$wrkDbFile->{'filename'},
-		\$stdout,
-		\$stderr
+		\my $stdout,
+		\my $stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -1198,10 +1055,7 @@ sub _addDmnDb
 	return $rs if $rs;
 
 	my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
-
-	$rs = $prodFile->mode(0640);
-	return $rs if $rs;
-
+	$prodFile->mode(0640);
 	$prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 }
 

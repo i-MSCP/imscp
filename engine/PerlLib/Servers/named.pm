@@ -25,7 +25,7 @@ package Servers::named;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::EventManager;
 
 our $instance;
 
@@ -43,7 +43,7 @@ our $instance;
 
  Also trigger uninstallation of old named server when needed.
 
- Return Named server instance
+ Return Named server instance or die on failure
 
 =cut
 
@@ -59,11 +59,12 @@ sub factory
 
 				if($oldSname ne 'external_server') {
 					$package = "Servers::named::$oldSname";
-					eval "require $package";
-					fatal($@) if $@;
+					eval "require $package" or die(sprintf('Could not load %s package: %s', $package, $@));
 
-					my $rs = $package->getInstance()->uninstall();
-					fatal("Unable to uninstall $oldSname server") if $rs;
+					my $rs = $package->getInstance(
+						cfgDir => $main::imscpConfig{'CONF_DIR'}, eventManager => iMSCP::EventManager->getInstance()
+					)->uninstall();
+					die("Unable to uninstall $oldSname server") if $rs;
 				}
 			}
 
@@ -72,9 +73,10 @@ sub factory
 			$package = "Servers::named::$sName";
 		}
 
-		eval "require $package";
-		fatal($@) if $@;
-		$instance = $package->getInstance();
+		eval "require $package" or die(sprintf('Could not load %s package: %s', $package, $@));
+		$instance = $package->getInstance(
+			cfgDir => $main::imscpConfig{'CONF_DIR'}, eventManager => iMSCP::EventManager->getInstance()
+		);
 	}
 
 	$instance;

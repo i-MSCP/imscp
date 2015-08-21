@@ -37,7 +37,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item addSystemGroup($groupname, [$systemGroup = 0])
+=item addSystemGroup($groupname [, $systemGroup = 0 ])
 
  Add group
 
@@ -49,9 +49,8 @@ use parent 'Common::SingletonClass';
 
 sub addSystemGroup
 {
-	my $self = shift;
-	my $groupName = shift;
-	my $systemGroup = shift || 0;
+	my ($self, $groupName, $systemGroup) = @_;
+	$systemGroup ||= 0;
 
 	unless(getgrnam($groupName)) {
 		$systemGroup = ($systemGroup) ? '-r' : '';
@@ -61,8 +60,7 @@ sub addSystemGroup
 			($^O !~ /bsd$/ ? $systemGroup : ''), # System group
 			escapeShell($groupName) # Group name
 		);
-		my ($stdout, $stderr);
-		my $rs = execute("@cmd", \$stdout, \$stderr);
+		my $rs = execute("@cmd", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		warning($stderr) if $stderr && ! $rs;
@@ -86,8 +84,7 @@ sub delSystemGroup
 	my ($self, $groupName) = @_;
 
 	if(getgrnam($groupName)) {
-		my ($stdout, $stderr);
-		my $rs = execute('groupdel ' . escapeShell($groupName), \$stdout, \$stderr);
+		my $rs = execute('groupdel ' . escapeShell($groupName), \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		warning($stderr) if $stderr && ! $rs;

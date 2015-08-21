@@ -15,17 +15,15 @@ myorigin = $myhostname
 
 smtpd_banner = $myhostname ESMTP i-MSCP {MTA_VERSION} Managed
 
-# Receiving messages parameters
 mydestination = $myhostname, $mydomain
 append_dot_mydomain = no
 append_at_myorigin = yes
 local_transport = local
-transport_maps = cdb:{MTA_TRANSPORT_HASH}
-relay_domains = cdb:{MTA_RELAY_HASH}
-alias_maps = cdb:{MTA_LOCAL_ALIAS_HASH}
-alias_database = cdb:{MTA_LOCAL_ALIAS_HASH}
+transport_maps = cdb:{MTA_TRANSPORT_MAP}
+relay_domains = cdb:{MTA_RELAY_MAP}
+alias_maps = cdb:{MTA_LOCAL_ALIAS_MAP}
+alias_database = cdb:{MTA_LOCAL_ALIAS_MAP}
 
-# Delivering local messages parameters
 mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
 
 # Mailboxquota
@@ -52,10 +50,9 @@ imscp-arpl_destination_recipient_limit = 1
 virtual_mailbox_base = {MTA_VIRTUAL_MAIL_DIR}
 virtual_mailbox_limit = 0
 
-virtual_mailbox_domains = cdb:{MTA_VIRTUAL_DMN_HASH}
-virtual_mailbox_maps = cdb:{MTA_VIRTUAL_MAILBOX_HASH}
-
-virtual_alias_maps = cdb:{MTA_VIRTUAL_ALIAS_HASH}
+virtual_mailbox_domains = cdb:{MTA_VIRTUAL_DMN_MAP}
+virtual_mailbox_maps = cdb:{MTA_VIRTUAL_MAILBOX_MAP}
+virtual_alias_maps = cdb:{MTA_VIRTUAL_ALIAS_MAP}
 
 virtual_minimum_uid = {MTA_MAILBOX_MIN_UID}
 virtual_uid_maps = static:{MTA_MAILBOX_UID}

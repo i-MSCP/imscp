@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
-use Servers::sqld::mysql;
+use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -71,8 +71,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'sqld'} = Servers::sqld->factory()->getInstance();
-
+	$self->{'sqld'} = Servers::sqld->factory();
 	$self;
 }
 
@@ -91,7 +90,7 @@ sub _removeConfig
 	my $filepath = "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf";
 
 	if(-f $filepath) {
-		return iMSCP::File->new( filename => $filepath )->delFile();
+		iMSCP::File->new( filename => $filepath )->delFile();
 	}
 
 	0;

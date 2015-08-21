@@ -61,9 +61,9 @@ sub new
 		'stack' => { 'default'  => [] }
 	};
 
-	my $args = check($tmpl, \%hash) or die(
-		sprintf('Could not create a new iMSCP::Log object: %s1', Params::Check->last_error)
-	);
+	my $args = check($tmpl, \%hash) or die(sprintf(
+		'Could not create a new iMSCP::Log object: %s1', Params::Check->last_error
+	));
 
 	bless $args, $class
 }
@@ -78,7 +78,7 @@ sub new
 
 sub getId
 {
-	$_[0]->{'id'};
+	(shift)->{'id'};
 }
 
 =item store()
@@ -133,8 +133,7 @@ sub store
 	}
 
 	my $args = check( $tmpl, \%hash ) or (
-		warn(sprintf('Could not store error: %s', Params::Check->last_error)),
-		return
+		warn(sprintf('Could not store error: %s', Params::Check->last_error)), return
 	);
 
 	my $item = {

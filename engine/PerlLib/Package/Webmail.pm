@@ -45,7 +45,7 @@ use parent 'Common::SingletonClass';
  Register setup event listeners
 
  Param iMSCP::EventManager \%eventManager
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -53,12 +53,8 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
-	return $rs if $rs;
-
-	$rs = $eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
-	return $rs if $rs;
-
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
+	$eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
 	$eventManager->register('afterFrontEndInstall', sub { $self->installListener(); });
 }
 
@@ -128,7 +124,7 @@ sub showDialog
 
 sub preinstallListener
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my @packages = split ',', main::setupGetQuestion('WEBMAIL_PACKAGES');
 
@@ -246,7 +242,7 @@ sub uninstall
 
 sub setPermissionsListener
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my @packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'};
 
@@ -327,16 +323,14 @@ sub deleteMail
 
 sub _init()
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
 		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webmail"
 	)->getDirs();
-
 	iMSCP::EventManager->getInstance()->register(
 		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_); }
 	);
-
 	$self;
 }
 

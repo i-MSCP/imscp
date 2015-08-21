@@ -32,9 +32,8 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::TemplateParser;
-use iMSCP::EventManager;
 use File::Basename;
-use Servers::ftpd::proftpd;
+use Servers::ftpd;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -54,7 +53,7 @@ use parent 'Common::SingletonClass';
  Register setup event listeners
 
  Param iMSCP::EventManager \%eventManager
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -161,7 +160,7 @@ sub showDialog
 
  Process install tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -200,7 +199,7 @@ sub install
 
  Initialize instance
 
- Return Servers::ftpd::proftpd::installer
+ Return Servers::ftpd::proftpd::installer, die on failure
 
 =cut
 
@@ -208,13 +207,8 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
-
-	$self->{'eventManager'}->trigger(
-		'beforeFtpdInitInstaller', $self, 'proftpd'
-	) and fatal('proftpd - beforeFtpdInitInstaller has failed');
-
+	$self->{'ftpd'} = Servers::ftpd->factory();
+	$self->{'eventManager'} = $self->{'ftpd'} ->{'eventManager'};
 	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -223,17 +217,12 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
 		for my $param(keys %oldConfig) {
 			if(exists $self->{'config'}->{$param}) {
 				$self->{'config'}->{$param} = $oldConfig{$param};
 			}
 		}
 	}
-
-	$self->{'eventManager'}->trigger(
-		'afterFtpdInitInstaller', $self, 'proftpd'
-	) and fatal('proftpd - afterFtpdInitInstaller has failed');
 
 	$self;
 }
@@ -242,7 +231,7 @@ sub _init
 
  Backup file
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -250,19 +239,16 @@ sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdBkpConfFile', $cfgFile);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFtpdBkpConfFile', $cfgFile);
 
 	if(-f $cfgFile){
 		my $file = iMSCP::File->new( filename => $cfgFile );
 		my ($filename, $directories, $suffix) = fileparse($cfgFile);
 
 		unless(-f "$self->{'bkpDir'}/$filename$suffix.system") {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.system");
-			return $rs if $rs;
+			$file->copyFile("$self->{'bkpDir'}/$filename$suffix.system");
 		} else {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix." . time);
-			return $rs if $rs;
+			$file->copyFile("$self->{'bkpDir'}/$filename$suffix." . time);
 		}
 	}
 
@@ -281,8 +267,7 @@ sub _setVersion
 {
 	my $self = shift;
 
-	my ($stdout, $stderr);
-	my $rs = execute("proftpd -v", \$stdout, \$stderr);
+	my $rs = execute("proftpd -v", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to find ProFTPD version') if $rs && ! $stderr;
@@ -303,7 +288,7 @@ sub _setVersion
 
  Setup database
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -317,8 +302,7 @@ sub _setupDatabase
 	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD');
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if ! $sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
@@ -330,25 +314,19 @@ sub _setupDatabase
 			next unless $host;
 
 			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error(sprintf('Unable to remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
-				return 1;
+				die(sprintf('Could not remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
 			}
 		}
 	}
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal(sprintf('Unable to connect to SQL server: %s', $errStr)) unless $db;
+	$db or die(sprintf('Could not connect to SQL server: %s', $errStr));
 
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
-
-		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
-			return 1;
-		}
-
+		my $rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		ref $rs eq 'HASH' or die(sprintf('Could not create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
 	}
 
@@ -358,29 +336,20 @@ sub _setupDatabase
 
 	for my $tableName('ftp_users', 'ftp_group') {
 		my $quotedTableName = $db->quoteIdentifier($tableName);
-
-		$rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to add SQL privileges: %s', $rs));
-			return 1;
-		}
+		my $rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost);
+		ref $rs eq 'HASH' or die(sprintf('Could not add SQL privileges: %s', $rs));
 	}
 
 	for my $tableName('quotalimits', 'quotatallies') {
 		my $quotedTableName = $db->quoteIdentifier($tableName);
-
-		$rs = $db->doQuery(
+		my $rs = $db->doQuery(
 			'g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost
 		);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to add SQL privileges: %s', $rs));
-			return 1;
-		}
+		ref $rs eq 'HASH' or die(sprintf('Could not to add SQL privileges: %s', $rs));
 	}
 
 	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
 	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-
 	$self->{'eventManager'}->trigger('afterFtpSetupDb', $dbUser, $dbPass);
 }
 
@@ -388,7 +357,7 @@ sub _setupDatabase
 
  Build configuration file
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -418,40 +387,17 @@ sub _buildConfigFile
 			? 'NoCertRequest NoSessionReuseRequired' : 'NoCertRequest'
 	};
 
-	my $cfgTpl;
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'proftpd', 'proftpd.conf', \$cfgTpl, $data);
-	return $rs if $rs;
-
-	unless(defined $cfgTpl) {
-		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.conf" )->get();
-		unless(defined $cfgTpl) {
-			error("Unable to read $self->{'cfgDir'}/proftpd.conf");
-			return 1;
-		}
-	}
-
-	$rs = $self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('onLoadTemplate', 'proftpd', 'proftpd.conf', \my $cfgTpl, $data);
+	$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.conf" )->get() unless defined $cfgTpl;
+	$self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	$cfgTpl = process($data, $cfgTpl);
-
-	$rs = $self->{'eventManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/proftpd.conf" );
-
-	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
+	$file->set($cfgTpl);
+	$file->save();
+	$file->mode(0640);
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$file->copyFile($self->{'config'}->{'FTPD_CONF_FILE'});
 }
 
@@ -459,37 +405,27 @@ sub _buildConfigFile
 
  Create traffic log file
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
 sub _createTrafficLogFile
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdCreateTrafficLogFile');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeFtpdCreateTrafficLogFile');
 
-	unless (-d "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
-		$rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd" )->make({
-			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0755
-		});
-		return $rs if $rs;
-	}
+	iMSCP::Dir->new( dirname => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd" )->make({
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0755
+	});
 
 	unless(-f "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}") {
 		my $file = iMSCP::File->new(
 			filename => "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}"
 		);
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
+		$file->save();
+		$file->mode(0644);
+		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	}
 
 	$self->{'eventManager'}->trigger('afterFtpdCreateTrafficLogFile');
@@ -499,7 +435,7 @@ sub _createTrafficLogFile
 
  Save configuration file
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -514,7 +450,7 @@ sub _saveConf
 
  Remove old files
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -522,15 +458,13 @@ sub _oldEngineCompatibility
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeNamedOldEngineCompatibility');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeNamedOldEngineCompatibility');
 	$self->{'eventManager'}->trigger('afterNameddOldEngineCompatibility');
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

@@ -149,7 +149,7 @@ sub remove
 
 	for my $jobFileType('conf', 'override') {
 		if((my $filepath = eval { $self->getJobFilePath($service, $jobFileType); })) {
-			return if iMSCP::File->new( filename => $filepath )->delFile();
+			iMSCP::File->new( filename => $filepath )->delFile();
 		}
 	}
 
@@ -798,8 +798,7 @@ sub _readJobFile
 	my ($self, $service) = @_;
 
 	my $filepath = $self->getJobFilePath($service);
-
-	iMSCP::File->new( filename => $filepath )->get() or die(sprintf('Unable to read %s file', $filepath));
+	iMSCP::File->new( filename => $filepath )->get();
 }
 
 =item _readJobOverrideFile($service)
@@ -816,7 +815,7 @@ sub _readJobOverrideFile
 	my ($self, $service) = @_;
 
 	if((my $filepath = eval { $self->getJobFilePath($service, 'override'); })) {
-		iMSCP::File->new( filename => $filepath )->get() or die(sprintf('Unable to read %s file', $filepath));
+		iMSCP::File->new( filename => $filepath )->get();
 	} else {
 		'';
 	}
@@ -840,9 +839,9 @@ sub _writeFile
 	my $filepath = File::Spec->join($jobDir, $filename);
 	my $file = iMSCP::File->new( filename => $filepath );
 
-	($file->set($fileContent) == 0 && $file->save() == 0 && $file->mode(0644) == 0) or die(
-		die("Unable to write $filepath file")
-	);
+	$file->set($fileContent);
+	$file->save();
+	$file->mode(0644);
 }
 
 =back

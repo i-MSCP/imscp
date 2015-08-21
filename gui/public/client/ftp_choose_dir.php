@@ -73,7 +73,6 @@ function isAllowedDir($domainId, $directory)
 	}
 
 	foreach ($mountPoints as $mountPoint) {
-		#if (preg_match("%^$mountPoint/?(?:backups|disabled|errors|logs|phptmp|statistics)$%", "$directory")) {
 		if (preg_match("%^$mountPoint/?(?:disabled|errors|phptmp|statistics|domain_disable_page)$%", "$directory")) {
 			return false;
 		}
@@ -83,21 +82,17 @@ function isAllowedDir($domainId, $directory)
 }
 
 /**
- * Generates directories list.
+ * Generates directories list
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
  */
 function client_generateDirectoriesList($tpl)
 {
-	// Initialize variables
 	$path = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
 	$domain = $_SESSION['user_logged'];
 
-	// Create the virtual file system and open it so it can be used
 	$vfs = new iMSCP_VirtualFileSystem($domain);
-
-	// Get the directory listing
 	$list = $vfs->ls($path);
 
 	if (!$list) {
@@ -105,24 +100,21 @@ function client_generateDirectoriesList($tpl)
 		$tpl->assign('FTP_CHOOSER', '');
 		return;
 	}
-	// Show parent directory link
+
 	$parent = explode('/', $path);
 	array_pop($parent);
 	$parent = implode('/', $parent);
 
-	$tpl->assign(
-		array(
-			'ACTION_LINK' => '',
-			'ACTION' => '',
-			'ICON' => 'parent',
-			'DIR_NAME' => tr('Parent directory'),
-			'LINK' => "ftp_choose_dir.php?cur_dir=$parent"
-		)
-	);
+	$tpl->assign(array(
+		'ACTION_LINK' => '',
+		'ACTION' => '',
+		'ICON' => 'parent',
+		'DIR_NAME' => tr('Parent directory'),
+		'LINK' => tohtml("ftp_choose_dir.php?cur_dir=$parent", 'htmlAttr')
+	));
 
 	$tpl->parse('DIR_ITEM', '.dir_item');
 
-	// Show directories only
 	foreach ($list as $entry) {
 		$directory = $path . '/' . $entry['file'];
 
@@ -134,14 +126,11 @@ function client_generateDirectoriesList($tpl)
 			continue;
 		}
 
-		// Create the directory link
-		$tpl->assign(
-			array(
-				'DIR_NAME' => tohtml($entry['file']),
-				'CHOOSE_IT' => $directory,
-				'LINK' => 'ftp_choose_dir.php?cur_dir=' . $directory
-			)
-		);
+		$tpl->assign(array(
+			'DIR_NAME' => tohtml($entry['file']),
+			'DIRECTORY' => tohtml($directory, 'htmlAttr'),
+			'LINK' => tohtml('ftp_choose_dir.php?cur_dir=' . $directory, 'htmlAttr')
+		));
 
 		$tpl->parse('ACTION_LINK', 'action_link');
 		$tpl->parse('DIR_ITEM', '.dir_item');
@@ -152,7 +141,6 @@ function client_generateDirectoriesList($tpl)
  * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
@@ -163,39 +151,30 @@ if (!customerHasFeature('ftp') && !customerHasFeature('protected_areas')) {
 	showBadRequestErrorPage();
 }
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/simple.tpl',
-		'page' => 'client/ftp_choose_dir.tpl',
-		'page_message' => 'layout',
-		'ftp_chooser' => 'page',
-		'dir_item' => 'ftp_chooser',
-		'list_item' => 'dir_item',
-		'action_link' => 'list_item'
-	)
-);
+$cfg = iMSCP_Registry::get('config');
+iMSCP_pTemplate::setRootDir($cfg['ROOT_TEMPLATE_PATH']);
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Client / Choose Directory'),
-		'CONTEXT_CLASS' => ' no_header',
-		'productLongName' => tr('internet Multi Server Control Panel'),
-		'productLink' => 'http://www.i-mscp.net',
-		'productCopyright' => tr('© 2010-2015 i-MSCP Team<br/>All Rights Reserved'),
-		'TR_DIRECTORY_TREE' => tr('Directory tree'),
-		'TR_DIRECTORIES' => tr('Directories'),
-		'CHOOSE' => tr('Choose')
-	)
-);
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(array(
+	'partial' => 'client/ftp_choose_dir.tpl',
+	'page_message' => 'partial',
+	'ftp_chooser' => 'partial',
+	'dir_item' => 'ftp_chooser',
+	'list_item' => 'dir_item',
+	'action_link' => 'list_item'
+));
+
+$tpl->assign(array(
+	'TR_DIRECTORY_TREE' => tr('Directory tree'),
+	'TR_DIRECTORIES' => tr('Directories'),
+	'CHOOSE' => tr('Choose')
+));
 
 client_generateDirectoriesList($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
+$tpl->parse('PARTIAL', 'partial');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
 
 unsetMessages();

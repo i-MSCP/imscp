@@ -516,7 +516,7 @@ class iMSCP_pTemplate
 			$fileContent = preg_replace_callback($this->tpl_include, array($this, 'get_file'), $fileContent);
 			$parentTplDir = $prevParentTplDir;
 		} else {
-			throw new iMSCP_Exception(sprintf('Unable to find the %s template file', $fname));
+			throw new iMSCP_Exception(sprintf('Unable to find the %s template file', self::$_root_dir . $fname));
 		}
 
 		$this->eventManager->dispatch(

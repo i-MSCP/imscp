@@ -99,7 +99,7 @@ sub md5($;$)
 {
 	my ($password, $salt) = @_;
 
-	if(defined $salt) {
+	if (defined $salt) {
 		length $salt >= 8 or croak('The salt length must be at least 8 bytes long');
 	} else {
 		$salt = randomStr(8);
@@ -194,7 +194,7 @@ sub bcrypt($;$$)
 		$salt = randomStr(16);
 	}
 
-	# FIXME Add support for new $2y$ prefix by re-implementing bcrypt using the underlying Crypt::Eksblowfish package
+	# FIXME Add support for new $2y$ prefix by re-implementing bcrypt
 	Crypt::Eksblowfish::Bcrypt::bcrypt($password, '$2a$' . $cost . '$' . Crypt::Eksblowfish::Bcrypt::en_base64($salt));
 }
 
@@ -207,7 +207,7 @@ sub bcrypt($;$$)
  Param string $password The password to be hashed
  Param int $cost Base-2 logarithm of the iteration count (only relevant for bcrypt format)
  Param string $salt An optional salt string to base the hashing on (only relevant for bcrypt, crypt and md5 formats)
- Param string $format Format in which the password must be hashed (bcrypt|crypt|sha1|dm5) -  Default is md5 (APR1)
+ Param string $format Format in which the password must be hashed (bcrypt|crypt|sha1|md5) -  Default is md5 (APR1)
  Return string, croak on failure
 
 =cut
@@ -217,9 +217,9 @@ sub htpasswd($;$$)
 	my ($password, $cost, $salt, $format) = @_;
 	$format //= 'md5';
 
-	if($format eq 'bcrypt') {
+	if ($format eq 'bcrypt') {
 		bcrypt($password, $cost, $salt);
-	} elsif($format eq 'crypt') {
+	} elsif ($format eq 'crypt') {
 		if($salt) {
 			length $salt == 2 or croak('The salt length must be 2 bytes long');
 			my @salt = split //, $salt;
@@ -236,7 +236,7 @@ sub htpasswd($;$$)
 	} elsif ($format eq 'md5') {
 		_apr1Md5($password, $salt);
 	} else {
-		croak(sprintf('The %s format is not valid. The supported formats are: %s', $format, 'bcrypt, crypt, sha1, md5'));
+		croak(sprintf('The %s format is not valid. The supported formats are: %s', $format, 'bcrypt, crypt, md5, sha1'));
 	}
 }
 
@@ -264,7 +264,7 @@ sub verify($$)
 		return hashEqual($hash, _apr1Md5($password, $token[2]));
 	}
 
-	if(substr($hash, 0, 4) eq '$2a$') { # bcrypt hashed password
+	if (substr($hash, 0, 4) eq '$2a$') { # bcrypt hashed password
 		hashEqual($hash, Crypt::Eksblowfish::Bcrypt::bcrypt($password, $hash));
 	} else {
 		hashEqual($hash, crypt($password, $hash));
@@ -338,8 +338,8 @@ sub decryptBlowfishCBC($$$)
 
  Returns a base64 string representation of the given data encrypted in CBC mode using the AES (Rijndael) algorithm
 
- Param string $key Encryption key
- Param string $iv Initialization vector
+ Param string $key Encryption key (32 bytes long)
+ Param string $iv Initialization vector (16 bytes long)
  Param string $data Data to encrypt
  Return A string base64 encoded string representing encrypted data, croak on failure
 
@@ -354,8 +354,8 @@ sub encryptRijndaelCBC($$$)
 
  Decrypt the given data in CBC mode using AES (Rijndael) algorithm
 
- Param string $key Decryption key
- Param string $iv Initialization vector
+ Param string $key Decryption key (32 bytes long)
+ Param string $iv Initialization vector (16 bytes long)
  Param string $data A base64 encoded string representing encrypted data
  Return string, croak on failure
 
@@ -372,11 +372,11 @@ sub decryptRijndaelCBC($$$)
 
 =over 4
 
-=item _encryptCBC($algorihtm, $key, $iv, $data)
+=item _encryptCBC($algorithm, $key, $iv, $data)
 
  Returns a base64 string representation of the given data encrypted in CBC mode using the given algorithm
 
- Param string $algorihtm Algorithm
+ Param string $algorithm Algorithm
  Param string $key Encryption key
  Param string $iv Initialization vector
  Param string $data Data to encrypt
@@ -386,16 +386,16 @@ sub decryptRijndaelCBC($$$)
 
 sub _encryptCBC($$$$)
 {
-	my ($algorihtm, $key, $iv, $data) = @_;
+	my ($algorithm, $key, $iv, $data) = @_;
 
 	encode_base64(Crypt::CBC->new(
-		-cipher => $algorihtm,
+		-cipher => $algorithm,
 		-key => $key,
-		#-keysize => length $key, # FIXME: Should we  allow arbitrary keysizes? Currently
+		#-keysize => length $key, # FIXME: Should we allow arbitrary keysizes? Currently
 		-literal_key => 1, # PHP mcrypt_encrypt compliant
 		-iv => $iv,
 		-header => 'none',
-		-padding => 'null' # PHP mcrypt_encrypt compliant padding
+		-padding => 'null' # PHP mcrypt_encrypt compliant
 	)->encrypt($data), '');
 }
 
@@ -413,16 +413,16 @@ sub _encryptCBC($$$$)
 
 sub _decryptCBC($$$$)
 {
-	my ($algorihtm, $key, $iv, $data) = @_;
+	my ($algorithm, $key, $iv, $data) = @_;
 
 	Crypt::CBC->new(
-		-cipher => $algorihtm,
+		-cipher => $algorithm,
 		-key => $key,
-		#-keysize => length $key, # FIXME: Should we  allow arbitrary keysizes?
+		#-keysize => length $key, # FIXME: Should we allow arbitrary keysizes?
 		-literal_key => 1, # PHP mcrypt_encrypt compliant
 		-iv => $iv,
 		-header => 'none',
-		-padding => 'null' # PHP mcrypt_encrypt compliant padding
+		-padding => 'null' # PHP mcrypt_encrypt compliant
 	)->decrypt(decode_base64($data));
 }
 

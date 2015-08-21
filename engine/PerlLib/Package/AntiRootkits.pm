@@ -126,7 +126,7 @@ sub showDialog
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = 0;
 	my @packages = split ',', main::setupGetQuestion('ANTI_ROOTKITS_PACKAGES');
@@ -245,10 +245,9 @@ sub install
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my @packages = split ',', $main::imscpConfig{'ANTI_ROOTKITS_PACKAGES'};
-
 	my $packages = [];
 	my $rs = 0;
 
@@ -294,7 +293,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my @packages = split ',', $main::imscpConfig{'ANTI_ROOTKITS_PACKAGES'};
 
@@ -331,13 +330,13 @@ sub setEnginePermissions
 
  Initialize instance
 
- Return Package::AntiRootkits
+ Return Package::AntiRootkits, die on failure
 
 =cut
 
 sub _init()
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	# Find list of available AntiRootkits packages
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
@@ -383,7 +382,6 @@ sub _installPackages
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to install anti-rootkits distro packages') if $rs && !$stderr;
-
 	$rs;
 }
 
@@ -401,8 +399,7 @@ sub _removePackages
 	my ($self, $packages) = @_;
 
 	# Do not try to remove packages which are no longer available on the system or not installed
-	my ($stdout, $stderr);
-	my $rs = execute("LANG=C dpkg-query -W -f='\${Package}/\${Status}\n' @{$packages}", \$stdout, \$stderr);
+	my $rs = execute("LANG=C dpkg-query -W -f='\${Package}/\${Status}\n' @{$packages}", \my $stdout, \my $stderr);
 	error($stderr) if $stderr && $rs > 1;
 	return $rs if $rs > 1;
 

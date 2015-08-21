@@ -52,7 +52,7 @@ Package providing basic utilities for filesystem (permissions handling).
     recursive : Whether or not mode, owner and group operations should be processed recursively
 
     Note: Mixe of mode and dirmode/filemode options is not allowed
- Return int 0 on success or die on failure
+ Return int 0 on success, die on failure
 
 =cut
 

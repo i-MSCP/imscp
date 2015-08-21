@@ -50,7 +50,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-	$_[0]->_disableDebianConfig();
+	(shift)->_disableDebianConfig();
 }
 
 =item install()
@@ -63,7 +63,7 @@ sub preinstall
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_addCronTask();
 	return $rs if $rs;
@@ -75,7 +75,7 @@ sub install
 
  Set engine permissions
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -83,7 +83,6 @@ sub setEnginePermissions()
 {
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
-
 	setRights($main::imscpConfig{'CHKROOTKIT_LOG'}, { user => $rootUName, group => $imscpGName, mode => '0640' });
 }
 
@@ -120,18 +119,16 @@ sub _disableDebianConfig
 
 sub _addCronTask
 {
-	Servers::cron->factory()->addTask(
-		{
-			TASKID => 'Package::AntiRootkits::Chkrootkit',
-			MINUTE => '@weekly',
-			HOUR => '',
-			DAY => '',
-			MONTH => '',
-			DWEEK => '',
-			USER => $main::imscpConfig{'ROOT_USER'},
-			COMMAND => "nice -n 15 ionice -c2 -n5 bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
-		}
-	);
+	Servers::cron->factory()->addTask({
+		TASKID => 'Package::AntiRootkits::Chkrootkit',
+		MINUTE => '@weekly',
+		HOUR => '',
+		DAY => '',
+		MONTH => '',
+		DWEEK => '',
+		USER => $main::imscpConfig{'ROOT_USER'},
+		COMMAND => "nice -n 15 ionice -c2 -n5 bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
+	});
 }
 
 =item _scheduleCheck()
@@ -147,15 +144,12 @@ sub _scheduleCheck
 	unless(-f -s $main::imscpConfig{'CHKROOTKIT_LOG'}) {
 		# Create an emtpy file to avoid planning multiple check if installer is run many time
 		my $file = iMSCP::File->new( filename => $main::imscpConfig{'CHKROOTKIT_LOG'} );
+		$file->set('Check scheduled...');
+		$file->save();
 
-		my $rs = $file->set('Check scheduled...');
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		my ($stdout, $stderr);
-		$rs = execute("echo 'bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | batch", \$stdout, \$stderr);
+		my $rs = execute(
+			"echo 'bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | batch", \my $stdout, \my $stderr
+		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error("Unable to schedule Chkrootkit check") if $rs && ! $stderr;

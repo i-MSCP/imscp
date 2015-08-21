@@ -93,7 +93,6 @@ EOF
 	};
 
 	require Getopt::Long;
-
 	Getopt::Long::Configure('bundling');
 
 	eval {
@@ -107,7 +106,7 @@ EOF
 			'debug|d', sub { $options->{'debug'} = 1 },
 			'help|?|h', sub { $showUsage->() },
 			@_,
-		) || $showUsage->(1);
+		) || $showUsage->(1)
 	};
 
 	undef;
@@ -126,6 +125,7 @@ to GetOptions.
 
 sub parseNoDefault
 {
+
 	my ($class, $usage) = (shift, shift);
 
 	$showUsage = sub {
@@ -149,16 +149,8 @@ EOF
 	};
 
 	require Getopt::Long;
-
 	Getopt::Long::Configure('bundling');
-
-	eval {
-		Getopt::Long::GetOptions(
-			'help|?|h', sub { $showUsage->() },
-			@_,
-		) || $showUsage->(1);
-	};
-
+	eval { Getopt::Long::GetOptions('help|?|h', sub { $showUsage->() }, @_) || $showUsage->(1) };
 	undef;
 }
 
@@ -176,13 +168,8 @@ sub showUsage
 	my ($class, $exitCode) = @_;
 
 	$exitCode //= 1;
-
-	if(ref $showUsage eq 'CODE') {
-		$showUsage->($exitCode);
-	} else {
-		die('ShowUsage() is not defined');
-	}
-
+	ref $showUsage eq 'CODE' or die('ShowUsage() is not defined');
+	$showUsage->($exitCode);
 	undef;
 }
 
@@ -216,9 +203,9 @@ sub reconfigure
 			$value = 'all';
 		}
 
-		$value eq 'none' || $value ~~ @reconfigurationItems or die(
-			"Error: '$value' is not a valid argument for the --reconfigure option."
-		);
+		$value eq 'none' || $value ~~ @reconfigurationItems or die(sprintf(
+			"Error: '%s' is not a valid argument for the --reconfigure option.", $value
+		));
 
 		$options->{'reconfigure'} = $value;
 	}
@@ -257,7 +244,7 @@ sub preseed
 	my ($class, $value) = @_;
 
 	if(defined $value) {
-		if( -f $value) {
+		if(-f $value) {
 			$options->{'preseed'} = $value;
 		} else {
 			die("Preseed file not found: $value");
@@ -281,7 +268,7 @@ sub listener
 	my ($class, $value) = @_;
 
 	if(defined $value) {
-		if( -f $value) {
+		if(-f $value) {
 			$options->{'listener'} = $value;
 		} else {
 			die("Listener file not found: $value")
@@ -307,7 +294,6 @@ sub AUTOLOAD
 	my $class = shift;
 
 	$options->{$field} = shift if @_;
-
 	$options->{$field} // '';
 }
 

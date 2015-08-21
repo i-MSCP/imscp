@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_removeSqlUser();
 	return $rs if $rs;
@@ -81,18 +81,13 @@ sub uninstall
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance();
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
 	$self->{'db'} = iMSCP::Database->factory();
-
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
-
 	$self;
 }
 
@@ -106,11 +101,12 @@ sub _init
 
 sub _removeSqlUser
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	$self->{'db'}->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
-	$self->{'db'}->doQuery('dummy', 'FLUSH PRIVILEGES');
-
+	$self->{'db'}->doQuery(
+		'd', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
+	);
+	$self->{'db'}->doQuery('d', 'FLUSH PRIVILEGES');
 	0;
 }
 
@@ -124,12 +120,10 @@ sub _removeSqlUser
 
 sub _removeSqlDatabase
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $dbName = $self->{'db'}->quoteIdentifier($main::imscpConfig{'DATABASE_NAME'} . '_pma');
-
-	$self->{'db'}->doQuery('dummy', "DROP DATABASE IF EXISTS $dbName");
-
+	$self->{'db'}->doQuery('d', "DROP DATABASE IF EXISTS $dbName");
 	0;
 }
 
@@ -143,32 +137,21 @@ sub _removeSqlDatabase
 
 sub _unregisterConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	for my $vhostFile('00_master.conf', '00_master_ssl.conf') {
 		if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile") {
 			my $file = iMSCP::File->new(
 				filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile"
 			);
-
 			my $fileContent = $file->get();
-			unless(defined $fileContent) {
-				error("Unable to read file $file->{'filename'}");
-				return 1;
-			}
-
 			$fileContent =~ s/[\t ]*include imscp_pma.conf;\n//;
-
-			my $rs = $file->set($fileContent);
-			return $rs if $rs;
-
-			$rs = $file->save();
-			return $rs if $rs;
+			$file->set($fileContent);
+			$file->save();
 		}
 	}
 
 	$self->{'frontend'}->{'reload'} = 1;
-
 	0;
 }
 
@@ -182,19 +165,13 @@ sub _unregisterConfig
 
 sub _removeFiles
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove();
-	return $rs if $rs;
-
-	$rs = iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
-	return $rs if $rs;
+	iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove();
+	iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
 
 	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf"
-		)->delFile();
-		return $rs if $rs;
+		iMSCP::File->new(filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf")->delFile();
 	}
 
 	0;

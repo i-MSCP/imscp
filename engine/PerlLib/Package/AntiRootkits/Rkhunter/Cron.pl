@@ -29,7 +29,7 @@ use iMSCP::ProgramFinder;
 newDebug('imscp-rkhunter-package.log');
 
 iMSCP::Bootstrapper->getInstance()->boot(
-	{ nolock => 'yes', norequirements => 'yes', nokeys => 'yes', nodatabase => 'yes', config_readonly => 'yes' }
+	{ nolock => 1, norequirements => 1, nokeys => 1, nodatabase => 1, config_readonly => 1 }
 );
 
 my $rs = 0;
@@ -40,15 +40,14 @@ if(iMSCP::ProgramFinder::find('rkhunter')) {
 	# Error handling is specific with rkhunter. Therefore, we do not handle the exit code, but we write the output
 	# into the imscp-rkhunter-package.log file. This is calqued on the cron task as provided by the Rkhunter Debian
 	# package except that instead of sending an email on error or warning, we write in log file.
-	my ($stdout, $stderr);
-	execute("rkhunter --cronjob --logfile $rkhunterLogFile", \$stdout, \$stderr);
+	execute("rkhunter --cronjob --logfile $rkhunterLogFile", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr;
 
 	if(-f $rkhunterLogFile) {
 		my $file = iMSCP::File->new( filename => $rkhunterLogFile );
-		$rs = $file->mode(0640);
-		$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'IMSCP_GROUP'});
+		$file->mode(0640);
+		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'IMSCP_GROUP'});
 	}
 }
 

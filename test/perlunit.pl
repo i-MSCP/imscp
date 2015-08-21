@@ -36,7 +36,7 @@ use locale;
 setlocale(LC_MESSAGES, 'C.UTF-8');
 
 $ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+$ENV{'PATH'} = '/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/sbin:/usr/local/bin';
 
 chdir "$FindBin::Bin/Perl";
 
@@ -50,12 +50,12 @@ find { wanted => sub {
 		if(my $function = $package->can('runUnitTests')) {
 			diag "\nRunning unit tests from $package package...\n\n";
 			subtest "$package unit tests", sub { $function->("$FindBin::Bin/Perl/TestAsset") };
-			delete_package $package; # Mitigate memory consumption by wiping out the whole test package namespace
+			delete_package $package; # Mitigates memory consumption by wiping out the whole package namespace
 		} else {
-			fail sprintf('%s::runUnitTests() not implemented.', $package);
+			fail sprintf('%s::runUnitTests() not implemented', $package);
 		}
 
-		chdir "$FindBin::Bin/Perl";
+		chdir "$FindBin::Bin/Perl"; # Covers case where a test package call chdir()
 	}},
 	no_chdir => 1
 }, 'Test';

@@ -162,8 +162,7 @@ sub _removeCustomers
 
 	iMSCP::Bootstrapper->getInstance()->unlock();
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
+	my $rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Error while deleting customers") if $rs && ! $stderr;
@@ -186,18 +185,14 @@ sub _uninstallPackages
 
 	for(@packages) {
 		my $package = "Package::$_";
-
 		eval "require $package";
-
 		unless($@) {
 			my $package = $package->getInstance();
 
 			if($package->can('uninstall')) {
 				$rs = step(
-					sub { $package->uninstall }, sprintf("Running %s uninstall tasks...", ref $package),
-					$nbPackages,
-					$step
-            	);
+					sub { $package->uninstall }, sprintf("Running %s uninstall tasks...", ref $package), $nbPackages, $step
+				);
 
 				last if $rs;
 			}
@@ -226,21 +221,14 @@ sub _uninstallServers
 	my $step = 1;
 
 	for(@servers) {
-		next if $_ eq 'noserver';
-
 		my $package = "Servers::$_";
-
 		eval "require $package";
-
 		unless($@) {
 			my $server = $package->factory();
 
 			if($server->can('uninstall')) {
 				$rs = step(
-					sub { $server->uninstall },
-					sprintf("Running %s uninstall tasks...", ref $server),
-					$nbServers,
-					$step
+					sub { $server->uninstall }, sprintf("Running %s uninstall tasks...", ref $server), $nbServers $step
 				);
 
 				last if $rs;
@@ -269,8 +257,7 @@ sub _uninstallServices
 			my $file = sprintf($pFormat, $service);
 
 			if(-f $file) {
-				my $rs = iMSCP::File->new( filename => $file )->delFile();
-				return $rs if $rs;
+				iMSCP::File->new( filename => $file )->delFile();
 			}
 		}
 	}
@@ -279,8 +266,7 @@ sub _uninstallServices
 		$serviceMngr->disable($service) if $serviceMngr->isSystemd();
 
 		if(-f "/etc/systemd/system/$service.service") {
-			my $rs = iMSCP::File->new( filename => "/etc/systemd/system/$service.service" )->delFile();
-			return $rs if $rs;
+			iMSCP::File->new( filename => "/etc/systemd/system/$service.service" )->delFile();
 		}
 
 		if("/lib/systemd/system/$service.service") {
@@ -294,7 +280,7 @@ sub _uninstallServices
 sub _removeCrontabFile
 {
 	if(-f '/etc/cron.d/imscp') {
-		return iMSCP::File->new( filename => '/etc/cron.d/imscp' )->delFile();
+		iMSCP::File->new( filename => '/etc/cron.d/imscp' )->delFile();
 	}
 
 	0;
@@ -303,7 +289,7 @@ sub _removeCrontabFile
 sub _removeLogrotateFile
 {
 	if(-f '/etc/logrotate.d/imscp') {
-		return iMSCP::File->new( filename => '/etc/logrotate.d/imscp' )->delFile();
+		iMSCP::File->new( filename => '/etc/logrotate.d/imscp' )->delFile();
 	}
 
 	0;
@@ -312,7 +298,7 @@ sub _removeLogrotateFile
 sub _removeSysctlFile
 {
 	if(-f '/etc/sysctl.d/imscp.conf') {
-		return iMSCP::File->new( filename => '/etc/sysctl.d/imscp.conf' )->delFile();
+		iMSCP::File->new( filename => '/etc/sysctl.d/imscp.conf' )->delFile();
 	}
 
 	0;
@@ -370,14 +356,13 @@ sub _removeiMSCPSystemGroup
 
 sub _removeFiles
 {
-	chdir('/');
+	chdir('/') or die('Could not change dir to /');
 
 	for (
 		$main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
 		$main::imscpConfig{'ROOT_DIR'}, $main::imscpConfig{'CACHE_DATA_DIR'}, $main::imscpConfig{'VARIABLE_DATA_DIR'},
 	) {
-		my $rs = iMSCP::Dir->new( dirname => $_ )->remove();
-		return $rs if $rs;
+		iMSCP::Dir->new( dirname => $_ )->remove();
 	}
 
 	0;
@@ -385,7 +370,6 @@ sub _removeFiles
 }
 
 my $rs = 0;
-
 $rs ||= startUp();
 $rs ||= process();
 $rs ||= shutDown();

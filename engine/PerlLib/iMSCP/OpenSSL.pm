@@ -49,7 +49,7 @@ use parent 'Common::Object';
 
 sub validatePrivateKey
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if ($self->{'private_key_container_path'} eq '') {
 		error('Path to SSL private key container file is not set');
@@ -76,11 +76,9 @@ sub validatePrivateKey
 		($passphraseFile) ? ('-passin', escapeShell("file:$passphraseFile")) : ''
 	);
 
-	my ($stdout, $stderr);
-	my $rs = execute("@cmd", \$stdout, \$stderr);
+	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr;
-
 	$rs;
 }
 
@@ -96,7 +94,7 @@ sub validatePrivateKey
 
 sub validateCertificate
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if ($self->{'certificate_container_path'} eq '') {
 		error('Path to SSL certificate container file is not set');
@@ -123,8 +121,7 @@ sub validateCertificate
 		escapeShell($self->{'certificate_container_path'})
 	);
 
-	my ($stdout, $stderr);
-	my $rs = execute("@cmd", \$stdout, \$stderr);
+	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr;
 	return 1 if $rs || $stderr;
@@ -147,7 +144,7 @@ sub validateCertificate
 
 sub validateCertificateChain
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->validatePrivateKey();
 	$rs ||= $self->validateCertificate();
@@ -163,7 +160,7 @@ sub validateCertificateChain
 
 sub importPrivateKey
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $passphraseFile;
 
@@ -182,11 +179,9 @@ sub importPrivateKey
 		($passphraseFile) ? ('-passin', escapeShell("file:$passphraseFile")) : ''
 	);
 
-	my ($stdout, $stderr);
-	my $rs = execute("@cmd", \$stdout, \$stderr);
+	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error("Unable to import SSL private key" . (($stderr) ? ": $stderr" : '')) if $rs;
-
 	$rs;
 }
 
@@ -200,23 +195,15 @@ sub importPrivateKey
 
 sub importCertificate
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $file = iMSCP::File->new('filename' => $self->{'certificate_container_path'});
+	my $file = iMSCP::File->new( filename => $self->{'certificate_container_path'} );
 
 	my $certificate = $file->get();
-	unless(defined $certificate) {
-		error("Unable to read $self->{'certificate_container_path'}");
-		return 1;
-	}
-
 	$certificate =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
 
-	my $rs = $file->set("$certificate\n");
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
+	$file->set("$certificate\n");
+	$file->save();
 
 	my @cmd = (
 		'cat',
@@ -224,12 +211,10 @@ sub importCertificate
 		'>>', escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem")
 	);
 
-	my ($stdout, $stderr);
-	$rs = execute("@cmd", \$stdout, \$stderr);
+	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error("Unable to import SSL certificate" . (($stderr) ? ": $stderr" : '')) if $rs;
-
 	$rs;
 }
 
@@ -243,24 +228,16 @@ sub importCertificate
 
 sub ImportCaBundle
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	if($self->{'ca_bundle_container_path'} ne '') {
-		my $file = iMSCP::File->new('filename' => $self->{'ca_bundle_container_path'});
+		my $file = iMSCP::File->new( filename => $self->{'ca_bundle_container_path'} );
 
 		my $caBundle = $file->get();
-		unless(defined $caBundle) {
-			error("Unable to read $self->{'ca_bundle_container_path'}");
-			return 1;
-		}
-
 		$caBundle =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
 
-		my $rs = $file->set("$caBundle\n");
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
+		$file->set("$caBundle\n");
+		$file->save();
 
 		my @cmd = (
 			'cat',
@@ -268,8 +245,7 @@ sub ImportCaBundle
 			'>>', escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem")
 		);
 
-		my ($stdout, $stderr);
-		$rs = execute("@cmd", \$stdout, \$stderr);
+		my $rs = execute("@cmd", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		warning($stderr) if $stderr && ! $rs;
 		error("Unable to import CA Bundle" . (($stderr) ? ": $stderr" : '')) if $rs;
@@ -303,8 +279,7 @@ sub createSelfSignedCertificate
 		'-out', escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem")
 	);
 
-	my ($stdout, $stderr);
-	my $rs = execute("@cmd", \$stdout, \$stderr);
+	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error('Unable to generate self-signed certificate' . (($stderr) ? ": $stderr" : '')) if $rs;
@@ -322,7 +297,7 @@ sub createSelfSignedCertificate
 
 sub createCertificateChain
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->importPrivateKey();
 	$rs ||= $self->importCertificate();
@@ -345,32 +320,26 @@ sub createCertificateChain
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	# Full path to the certificate chains storage directory
 	$self->{'certificate_chains_storage_dir'} = '' unless defined $self->{'certificate_chains_storage_dir'};
-
 	# Certificate chain name
 	$self->{'certificate_chain_name'} = '' unless defined $self->{'certificate_chain_name'};
-
 	# Full path to the private key container
 	$self->{'private_key_container_path'} = '' unless defined $self->{'private_key_container_path'};
-
 	# Private key passphrase if any
 	$self->{'private_key_passphrase'} = '' unless defined $self->{'private_key_passphrase'};
-
 	# Full path to the SSL certificate container
 	$self->{'certificate_container_path'} = '' unless defined $self->{'certificate_container_path'};;
-
 	# Full path to the CA Bundle container (Container which contain one or many intermediate certificates)
 	$self->{'ca_bundle_container_path'} = '' unless defined $self->{'ca_bundle_container_path'};;
-
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

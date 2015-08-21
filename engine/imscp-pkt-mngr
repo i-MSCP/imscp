@@ -33,7 +33,7 @@ $ENV{'LANG'} = 'C.UTF-8';
 # Decoding data which pushed from another script
 my (
 	$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_status, $sw_software_depot
-) = @{decode_json(decode_base64($ARGV[0]))};
+) = @{decode_json($ARGV[0])};
 
 sub pkt_mngr_start_up
 {

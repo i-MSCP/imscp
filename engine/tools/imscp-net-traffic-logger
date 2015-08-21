@@ -155,8 +155,6 @@ OPTIONS:
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot(
-	{ norequirements => 'yes', nodatabase => 'yes', nolock => 'yes', config_readonly => 'yes' }
-);
+iMSCP::Bootstrapper->getInstance()->boot({ norequirements => 1, nodatabase => 1, nolock => 1, config_readonly => 1 });
 
 exit run();

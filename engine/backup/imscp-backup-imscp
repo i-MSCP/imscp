@@ -25,7 +25,6 @@ use POSIX;
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;
-use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Getopt;
 use File::Basename;
@@ -52,13 +51,12 @@ sub run
 	}
 
 	# Make sure that backup directory exists
-	my $rs = iMSCP::Dir->new( dirname => $main::imscpConfig{'BACKUP_FILE_DIR'} )->make({
+	iMSCP::Dir->new( dirname => $main::imscpConfig{'BACKUP_FILE_DIR'} )->make({
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0750
 	});
-	return $rs if $rs;
 
 	# Backup i-MSCP database
-	$rs = _backupDatabase();
+	my $rs = _backupDatabase();
 	return $rs if $rs;
 
 	# Backup configuration files
@@ -66,11 +64,10 @@ sub run
 	return $rs if $rs;
 
 	# Remove any backup older than 7 days
-	my ($stdout, $stderr);
 	$rs = execute(
 		"find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r rm",
-		\$stdout,
-		\$stderr
+		\my $stdout,
+		\my $stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -108,8 +105,7 @@ sub _backupDatabase
 				escapeShell($sqlFName)
 			);
 
-			my ($stdout, $stderr);
-			$rs = execute("@cmd", \$stdout, \$stderr);
+			$rs = execute("@cmd", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
 			if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
 				error($stderr) if $stderr;
@@ -147,8 +143,7 @@ sub _backupConfig
 		'.'                                                                # pathname
 	);
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute("@backupCommand", \$stdout, \$stderr);
+	$rs = execute("@backupCommand", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Unable to create i-MSCP configuration backup") if $rs && ! $stderr;
@@ -171,7 +166,7 @@ OPTIONS:
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-backup-imscp.lock', 'nowait');
-$bootstrapper->boot({ norequirements => 'yes', nofail => 'yes', nolock => 'yes', config_readonly => 'yes' });
+$bootstrapper->boot({ norequirements => 1, nofail => 1, nolock => 1, config_readonly => 1 });
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-backup-imscp.lock');

@@ -148,53 +148,50 @@ sub _loadData
 {
 	my ($self, $subAliasId) = @_;
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
+	my $row = iMSCP::Database->factory()->doQuery(
 		'subdomain_alias_id',
 		"
 			SELECT
-				sub.*, domain_name AS user_home, alias_name, alias.external_mail, domain_admin_id, domain_php, domain_cgi,
-				domain_traffic_limit, domain_mailacc_limit, domain_dns, domain.domain_id, web_folder_protection,
-				ips.ip_number, mail_count.mail_on_domain
+				subdomain_alias.*, domain_name AS user_home, alias_name, domain_aliasses.external_mail, domain_admin_id,
+				domain_php, domain_cgi, domain_traffic_limit, domain_mailacc_limit, domain_dns, domain.domain_id,
+				web_folder_protection, ip_number, mail_on_domain
 			FROM
-				subdomain_alias AS sub
+				subdomain_alias
 			INNER JOIN
-				domain_aliasses AS alias ON (sub.alias_id = alias.alias_id)
+				domain_aliasses USING (alias_id)
 			INNER JOIN
-				domain ON (alias.domain_id = domain.domain_id)
+				domain USING (domain_id)
 			INNER JOIN
-				server_ips AS ips ON (alias.alias_ip_id = ips.ip_id)
-			LEFT JOIN
-				(
-					SELECT
-						sub_id AS id, COUNT(sub_id) AS mail_on_domain
-					FROM
-						mail_users
-					WHERE
-						sub_id= ?
-					AND
-						mail_type IN ('alssub_mail', 'alssub_forward', 'alssub_mail,alssub_forward', 'alssub_catchall')
-					GROUP BY
-						sub_id
-				) AS mail_count
-			ON
-				(sub.subdomain_alias_id = mail_count.id)
+				server_ips ON (alias_ip_id = ip_id)
+			LEFT JOIN (
+				SELECT
+					sub_id AS subdomain_alias_id, COUNT(sub_id) AS mail_on_domain
+				FROM
+					mail_users
+				WHERE
+					sub_id= ?
+				AND
+					mail_type LIKE 'alssub%'
+				AND
+					status <> 'todelete'
+			) AS mail_count USING(subdomain_alias_id)
 			WHERE
-				sub.subdomain_alias_id = ?
+				subdomain_alias_id = ?
 		",
 		$subAliasId,
 		$subAliasId
 	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
+	unless(ref $row eq 'HASH') {
+		error($row);
 		return 1;
 	}
 
-	unless(exists $rdata->{$subAliasId}) {
+	unless(exists $row->{$subAliasId}) {
 		error("Subdomain alias with ID $subAliasId has not been found or is in an inconsistent state");
 		return 1;
 	}
 
-	%{$self} = (%{$self}, %{$rdata->{$subAliasId}});
+	%{$self} = (%{$self}, %{$row->{$subAliasId}});
 
 	0;
 }
@@ -320,7 +317,6 @@ sub _getMtaData
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 			DOMAIN_NAME => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
 			DOMAIN_TYPE => 'alssub',
-			TYPE => 'valssub_entry',
 			EXTERNAL_MAIL => $self->{'external_mail'},
 			MAIL_ENABLED => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
 		};

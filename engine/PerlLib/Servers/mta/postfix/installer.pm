@@ -27,7 +27,6 @@ use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
-use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::Dir;
@@ -37,7 +36,7 @@ use iMSCP::Rights;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
 use File::Basename;
-use Servers::mta::postfix;
+use Servers::mta;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -177,7 +176,10 @@ sub preinstall
 	my $rs = $self->_addUsersAndGroups();
 	return $rs if $rs;
 
-	$self->_makeDirs();
+	$rs = $self->_makeDirs();
+	return $rs if $rs;
+
+	$self->_createLookupTables();
 }
 
 =item install()
@@ -196,9 +198,6 @@ sub install
 	return $rs if $rs;
 
 	$rs = $self->_buildConf();
-	return $rs if $rs;
-
-	$rs = $self->_buildLookupTables();
 	return $rs if $rs;
 
 	$rs = $self->_buildAliasesDb();
@@ -227,41 +226,47 @@ sub setEnginePermissions
 	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
 	my $mtaUName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
 	my $mtaGName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
+	my $postfixGrp = $self->{'config'}->{'POSTFIX_GROUP'};
+
+	# eg. /etc/postfix/main.cf file
+	setRights(
+		$self->{'config'}->{'POSTFIX_CONF_FILE'}, { user => $rootUName, group => $rootGName, mode => '0644' }
+	);
+
+	# eg. /etc/postfix/master.cf file
+	setRights(
+		$self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}, { user => $rootUName, group => $rootGName, mode => '0644' }
+	);
 
 	# eg. /etc/postfix/imscp
-	my $rs = setRights(
+	setRights(
 		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, {
-		user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 1
+		user => $rootUName, group => $postfixGrp, dirmode => '0750', filemode => '0640', recursive => 1
 	});
-	return $rs if $rs;
 
-	# eg. /etc/postfix/sasl (since 1.1.12)
-	$rs = setRights(
+	# eg. /etc/postfix/sasl
+	setRights(
 		$self->{'config'}->{'MTA_SASL_CONF_DIR'}, {
-		user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0640', recursive => 1
+		user => $rootUName, group => $postfixGrp, dirmode => '0750', filemode => '0640', recursive => 1
 	});
-	return $rs if $rs;
 
 	# eg. /var/www/imscp/engine/messenger
-	$rs = setRights(
+	setRights(
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger", {
 		user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0750', recursive => 1
 	});
-	return $rs if $rs;
 
 	# eg. /var/log/imscp/imscp-arpl-msgr
-	$rs = setRights(
+	setRights(
 		"$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr", {
 		user => $mtaUName, group => $imscpGName, dirmode => '0750', filemode => '0600', recursive => 1
 	});
-	return $rs if $rs;
 
 	# eg. /var/mail/virtual
-	$rs = setRights(
+	setRights(
 		$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, {
 		user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 1
 	});
-	return $rs if $rs;
 
 	# eg. /usr/sbin/maillogconvert.pl
 	setRights('/usr/sbin/maillogconvert.pl', { user => $rootUName, group => $rootGName, mode => '0750' });
@@ -285,34 +290,22 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self->{'mta'} = Servers::mta::postfix->getInstance();
-
-	$self->{'eventManager'}->trigger(
-		'beforeMtaInitInstaller', $self, 'postfix'
-	) and fatal('postfix - beforeMtaInitInstaller has failed');
-
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'lkptsDir'} = "$self->{'cfgDir'}/imscp";
+	$self->{'mta'} = Servers::mta->factory();
+	$self->{'eventManager'} = $self->{'mta'}->{'eventManager'};
+	$self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
+	$self->{'bkpDir'} = $self->{'mta'}->{'bkpDir'};
 	$self->{'config'} = $self->{'mta'}->{'config'};
 
 	# Merge old config file with new config file
 	my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
 		for my $param(keys %oldConfig) {
 			if(exists $self->{'config'}->{$param}) {
 				$self->{'config'}->{$param} = $oldConfig{$param};
 			}
 		}
 	}
-
-	$self->{'eventManager'}->trigger(
-		'afterMtaInitInstaller', $self, 'postfix'
-	) and fatal('postfix - afterMtaInitInstaller has failed');
 
 	$self;
 }
@@ -340,19 +333,18 @@ sub _addUsersAndGroups
 		'vmail_user', # Comment
 		$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # User homedir
 		'yes', # Whether it's a system user
-		[$main::imscpConfig{'IMSCP_GROUP'}] # Additional user group(s)
+		[ $main::imscpConfig{'IMSCP_GROUP'} ] # Additional user group(s)
 	]);
 
 	my @userToGroups = ();
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups);
 
 	# Create groups
 	my $systemGroup = iMSCP::SystemGroup->getInstance();
 
 	for my $group(@groups) {
-		$rs = $systemGroup->addSystemGroup($group->[0], ($group->[1] eq 'yes') ? 1 : 0);
+		my $rs = $systemGroup->addSystemGroup($group->[0], ($group->[1] eq 'yes') ? 1 : 0);
 		return $rs if $rs;
 	}
 
@@ -364,7 +356,7 @@ sub _addUsersAndGroups
 		$systemUser->{'home'} = $user->[3];
 		$systemUser->{'system'} = 'yes' if $user->[4] eq 'yes';
 
-		$rs = $systemUser->addSystemUser($user->[0]);
+		my $rs = $systemUser->addSystemUser($user->[0]);
 		return $rs if $rs;
 
 		if(defined $user->[5]) {
@@ -381,7 +373,7 @@ sub _addUsersAndGroups
 		my $user = $entry->[0];
 
 		for my $group(@{$entry->[1]}) {
-			$rs = $systemUser->addToGroup($group, $user);
+			my $rs = $systemUser->addToGroup($group, $user);
 			return $rs if $rs;
 		}
 	}
@@ -404,15 +396,15 @@ sub _makeDirs
 	my @directories = ([
 		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, # eg. /etc/postfix/imscp
 		$main::imscpConfig{'ROOT_USER'},
-		$main::imscpConfig{'ROOT_GROUP'},
-		0755
+		$self->{'CONFIG'}->{'POSTFIX_GROUP'},
+		0750
 	],
 	# Since 1.1.12
 	[
 		$self->{'config'}->{'MTA_SASL_CONF_DIR'}, # eg. /etc/postfix/sasl
 		$main::imscpConfig{'ROOT_USER'},
-		$main::imscpConfig{'ROOT_GROUP'},
-		0755
+		$self->{'CONFIG'}->{'POSTFIX_GROUP'},
+		0750
 	],
 	[
 		$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # eg. /var/mail/virtual
@@ -427,17 +419,37 @@ sub _makeDirs
 		0750
 	]);
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaMakeDirs', \@directories);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeMtaMakeDirs', \@directories);
 
 	for my $dir(@directories) {
-		$rs = iMSCP::Dir->new( dirname => $dir->[0] )->make({
-			user => $dir->[1], group => $dir->[2], mode => $dir->[3]
-		});
-		return $rs if $rs;
+		iMSCP::Dir->new( dirname => $dir->[0] )->make({ user => $dir->[1], group => $dir->[2], mode => $dir->[3] });
 	}
 
 	$self->{'eventManager'}->trigger('afterMtaMakeDirs');
+}
+
+=item _createLookupTables()
+
+ Create lookupTables
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _createLookupTables
+{
+	my $self = shift;
+
+	my @lookupTables = ('aliases', 'domains', 'mailboxes', 'relay_domains', 'transport');
+
+	$self->{'eventManager'}->trigger('beforeMtaCreatedLookupTables', \@lookupTables);
+
+	for my $table(@lookupTables) {
+		iMSCP::File->new( filename => "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table" )->save();
+		$self->{'mta'}->{'postmap'}->{"$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table"} = 'cdb';
+	}
+
+	$self->{'eventManager'}->trigger('afterMtaCreatedLookupTables', \@lookupTables);
 }
 
 =item _setupSqlUser()
@@ -459,8 +471,7 @@ sub _setupSqlUser
 	my $dbPass = main::setupGetQuestion('SASL_SQL_PASSWORD');
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeMtaSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if ! $sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
@@ -485,7 +496,7 @@ sub _setupSqlUser
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user with password: %s', $dbUser, $dbUserHost, $dbPass));
 
-		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		my $rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 			return 1;
@@ -496,7 +507,7 @@ sub _setupSqlUser
 
 	my $quotedDbName = $db->quoteIdentifier($dbName);
 
-	$rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
+	my $rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
 		error(sprintf('Unable to add SQL privileges: %s', $rs));
 		return 1;
@@ -504,7 +515,6 @@ sub _setupSqlUser
 
 	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
 	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-
 	$self->{'eventManager'}->trigger('afterMtaSetupDb');
 }
 
@@ -520,10 +530,9 @@ sub _buildConf
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaBuildConf');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeMtaBuildConf');
 
-	$rs = $self->_buildMainCfFile();
+	my $rs = $self->_buildMainCfFile();
 	return $rs if $rs;
 
 	$rs = $self->_buildMasterCfFile();
@@ -533,39 +542,6 @@ sub _buildConf
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterMtaBuildConf');
-}
-
-=item _buildLookupTables()
-
- Build lookup tables
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _buildLookupTables
-{
-	my $self = shift;
-
-	my $dir = iMSCP::Dir->new( dirname => $self->{'lkptsDir'});
-	my @lookupTables = $dir->getFiles();
-
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaBuildLookupTables', \@lookupTables);
-	return $rs if $rs;
-
-	for my $table(@lookupTables) {
-		my $file = iMSCP::File->new( filename => "$self->{'lkptsDir'}/$table" );
-
-		$rs = $file->copyFile($self->{'wrkDir'});
-		return $rs if $rs;
-
-		$rs = $file->copyFile("$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}");
-		return $rs if $rs;
-
-		$self->{'mta'}->{'postmap'}->{"$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table"} = 1;
-	}
-
-	$self->{'eventManager'}->trigger('afterMtaBuildLookupTables', \@lookupTables);
 }
 
 =item _buildAliasesDb()
@@ -580,14 +556,12 @@ sub _buildAliasesDb
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaBuildAliases');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeMtaBuildAliases');
 
-	my ($stdout, $stderr);
-	$rs = execute('newaliases', \$stdout, \$stderr);
+	my $rs = execute("newaliases -oAcdb:$self->{'config'}->{'MTA_LOCAL_ALIAS_MAP'}", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Error while executing newaliases command") if ! $stderr && $rs;
+	error("Error while executing newaliases command") if $rs && !$stderr;
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterMtaBuildAliases');
@@ -621,21 +595,15 @@ sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaBkpConfFile', $cfgFile);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeMtaBkpConfFile', $cfgFile);
 
 	if(-f $cfgFile) {
-		my $file = iMSCP::File->new( filename => $cfgFile );
 		my $filename = fileparse($cfgFile);
-		my $timestamp = time;
 
-		if(! -f "$self->{'bkpDir'}/$filename.system") {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename.system");
-			return $rs if $rs;
-		} else {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename.$timestamp");
-			return $rs if $rs;
-		}
+		iMSCP::File->new( filename => $cfgFile )->copyFile(
+			(-f "$self->{'bkpDir'}/$filename.system")
+				? "$self->{'bkpDir'}/$filename.system" : "$self->{'bkpDir'}/$filename." . time()
+		);
 	}
 
 	$self->{'eventManager'}->trigger('afterMtaBkpConfFile', $cfgFile);
@@ -653,7 +621,7 @@ sub _buildMainCfFile
 {
 	my $self = shift;
 
-	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/main.cf");
+	my $rs = $self->_bkpConfFile($self->{'config'}->{'POSTFIX_CONF_FILE'});
 	return $rs if $rs;
 
 	my $baseServerIpType = iMSCP::Net->getInstance->getAddrVersion($main::imscpConfig{'BASE_SERVER_IP'});
@@ -668,14 +636,14 @@ sub _buildMainCfFile
 		MTA_HOSTNAME => $hostname,
 		MTA_LOCAL_DOMAIN => "$hostname.local",
 		MTA_VERSION => $main::imscpConfig{'Version'},
-		MTA_TRANSPORT_HASH => $self->{'config'}->{'MTA_TRANSPORT_HASH'},
+		MTA_TRANSPORT_MAP => $self->{'config'}->{'MTA_TRANSPORT_MAP'},
 		MTA_LOCAL_MAIL_DIR => $self->{'config'}->{'MTA_LOCAL_MAIL_DIR'},
-		MTA_LOCAL_ALIAS_HASH => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'},
+		MTA_LOCAL_ALIAS_MAP => $self->{'config'}->{'MTA_LOCAL_ALIAS_MAP'},
 		MTA_VIRTUAL_MAIL_DIR => $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
-		MTA_VIRTUAL_DMN_HASH => $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'},
-		MTA_VIRTUAL_MAILBOX_HASH => $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
-		MTA_VIRTUAL_ALIAS_HASH => $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-		MTA_RELAY_HASH => $self->{'config'}->{'MTA_RELAY_HASH'},
+		MTA_VIRTUAL_DMN_MAP => $self->{'config'}->{'MTA_VIRTUAL_DMN_MAP'},
+		MTA_VIRTUAL_MAILBOX_MAP => $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_MAP'},
+		MTA_VIRTUAL_ALIAS_MAP => $self->{'config'}->{'MTA_VIRTUAL_ALIAS_MAP'},
+		MTA_RELAY_MAP => $self->{'config'}->{'MTA_RELAY_MAP'},
 		MTA_MAILBOX_MIN_UID => $uid,
 		MTA_MAILBOX_UID => $uid,
 		MTA_MAILBOX_GID => $gid,
@@ -684,28 +652,20 @@ sub _buildMainCfFile
 		CERTIFICATE => 'imscp_services'
 	};
 
-	my $cfgTpl;
-	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'main.cf', \$cfgTpl, $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'main.cf', \my $cfgTpl, $data);
 
 	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/main.cf" )->get();
-		unless(defined $cfgTpl) {
-			error("Unable to read $self->{'cfgDir'}/main.cf");
-			return 1;
-		}
 	}
 
-	$rs = $self->{'eventManager'}->trigger('beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 
 	$cfgTpl = process($data, $cfgTpl);
 
 	# Fix for #790
-	my ($stdout, $stderr);
-	execute("postconf -h mail_version", \$stdout, \$stderr);
+	$rs = execute("postconf -h mail_version", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
+	warning($stderr) if $stderr && !$rs;
 	error($stderr) if $stderr && $rs;
 	return 1 if $rs;
 
@@ -720,24 +680,11 @@ sub _buildMainCfFile
 		$cfgTpl =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
 	}
 
-	$rs = $self->{'eventManager'}->trigger('afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 
-	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/main.cf" );
-
-	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$file->copyFile($self->{'config'}->{'POSTFIX_CONF_FILE'});
+	my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
+	$file->set($cfgTpl);
+	$file->save();
 }
 
 =item _buildMasterCfFile()
@@ -752,7 +699,7 @@ sub _buildMasterCfFile
 {
 	my $self = shift;
 
-	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/master.cf");
+	my $rs = $self->_bkpConfFile($self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'});
 	return $rs if $rs;
 
 	my $data = {
@@ -761,41 +708,19 @@ sub _buildMasterCfFile
 		ARPL_PATH => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
 	};
 
-	my $cfgTpl;
-	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'master.cf', \$cfgTpl, $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'master.cf', \my $cfgTpl, $data);
 
 	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/master.cf" )->get();
-		unless(defined $cfgTpl) {
-			error("Unable to read $self->{'cfgDir'}/master.cf");
-			return 1;
-		}
 	}
 
-	$rs = $self->{'eventManager'}->trigger('beforeMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
 	$cfgTpl = process($data, $cfgTpl);
+	$self->{'eventManager'}->trigger('afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
 
-	$rs = $self->{'eventManager'}->trigger('afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
-	return $rs if $rs;
-
-	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/master.cf" );
-
-	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$file->copyFile($self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'});
+	my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'} );
+	$file->set($cfgTpl);
+	$file->save();
 }
 
 =item _buildSaslConfFile()
@@ -810,7 +735,7 @@ sub _buildSaslConfFile
 {
 	my $self = shift;
 
-	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf");
+	my $rs = $self->_bkpConfFile("$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf");
 	return $rs if $rs;
 
 	my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
@@ -823,41 +748,19 @@ sub _buildSaslConfFile
 		DATABASE_PASSWORD => $self->{'config'}->{'DATABASE_PASSWORD'}
 	};
 
-	my $cfgTpl;
-	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'smtpd.conf', \$cfgTpl, $data);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'smtpd.conf', \my $cfgTpl, $data);
 
 	unless(defined $cfgTpl) {
-		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/sasl/smtpd.conf")->get();
-		unless(defined $cfgTpl) {
-			error("Unable to read $self->{'cfgDir'}/sasl/smtpd.conf");
-			return 1;
-		}
+		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/smtpd.conf")->get();
 	}
 
-	$rs = $self->{'eventManager'}->trigger('beforeMtaBuildSaslConfFile', \$cfgTpl, 'smtpd.conf');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeMtaBuildSaslConfFile', \$cfgTpl, 'smtpd.conf');
 	$cfgTpl = process($data, $cfgTpl);
+	$self->{'eventManager'}->trigger('afterMtaBuildaslConfFil', \$cfgTpl, 'smtpd.conf');
 
-	$rs = $self->{'eventManager'}->trigger('afterMtaBuildaslConfFil', \$cfgTpl, 'smtpd.conf');
-	return $rs if $rs;
-
-	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/smtpd.conf");
-
-	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$file->copyFile("$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf");
+	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf");
+	$file->set($cfgTpl);
+	$file->save();
 }
 
 =item _oldEngineCompatibility()
@@ -872,24 +775,29 @@ sub _oldEngineCompatibility
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaOldEngineCompatibility');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforeMtaOldEngineCompatibility');
+	# Remove file no longer needed
 
-	if(-f '/etc/sasldb2') {
-		$rs = iMSCP::File->new( filename => '/etc/sasldb2' )->delFile();
-		return $rs if $rs;
-	}
-
-	if(-f '/var/spool/postfix/etc/sasldb2') {
-		$rs = iMSCP::File->new( filename => '/var/spool/postfix/etc/sasldb2' )->delFile();
-		return $rs if $rs;
+	for my $file(
+		'/etc/sasldb2', '/var/spool/postfix/etc/sasldb2', "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/sender-access",
+		"$self->{'config'}->{'MTA_LOCAL_ALIAS_MAP'}.db"
+	) {
+		if(-f $file) {
+			iMSCP::File->new( filename => $file )->delFile();
+		}
 	}
 
 	for my $file(
 		iMSCP::Dir->new( dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, fileType => '\.db' )->getFiles()
 	) {
-		$rs = iMSCP::File->new( filename => "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$file" )->delFile();
-		return $rs if $rs;
+		if($file ~~ [ 'aliases', 'domains', 'mailboxes', 'relay_domains', 'sender-access', 'transport' ]) {
+			iMSCP::File->new( filename => "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$file" )->delFile();
+		}
+	}
+
+	# Remove directories which are no longer needed
+	for my $dir('working', 'imscp', 'parts', 'sasl') {
+		iMSCP::Dir->new( dirname => "$self->{'cfgDir'}/$dir" )->remove();
 	}
 
 	$self->{'eventManager'}->trigger('afterMtadOldEngineCompatibility');
@@ -897,9 +805,8 @@ sub _oldEngineCompatibility
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

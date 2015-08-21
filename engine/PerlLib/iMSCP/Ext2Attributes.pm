@@ -30,7 +30,6 @@ use strict;
 use warnings;
 use Bit::Vector;
 use File::Find 'finddepth';
-use iMSCP::Debug;
 use iMSCP::Execute;
 no warnings 'File::Find';
 use Fcntl qw/O_RDONLY O_NONBLOCK O_LARGEFILE/;
@@ -61,11 +60,8 @@ BEGIN
 		$module->import();
 	} else {
 		$isSupported = 0;
-
 		no strict 'refs';
-
 		my $dummy = sub { 'dummy' };
-
 		*{__PACKAGE__ . '::EXT2_SECRM_FL'} = $dummy;
 		*{__PACKAGE__ . '::EXT2_UNRM_FL'} = $dummy;
 		*{__PACKAGE__ . '::EXT2_COMPR_FL'} = $dummy;
@@ -207,14 +203,12 @@ for my $fname (keys %constants) {
 		return 0 unless _isSupported();
 
 		if($recursive) {
-			debug(sprintf('Adding %s flag on %s recursively', $fname, $name));
-
 			File::Find::finddepth(
 				sub {
 					my $flags;
 
 					if(_getAttributes($_, \$flags) == -1) {
-						error(sprintf('An error occurred while reading flags on %s: %s', $name, $!));
+						die(sprintf('An error occurred while reading flags on %s: %s', $name, $!));
 					}
 
 					_setAttributes($_, $flags | $constants{$fname}) if defined $flags;
@@ -222,12 +216,10 @@ for my $fname (keys %constants) {
 				$name
 			);
 		} else {
-			debug(sprintf('Adding %s flag on %s', $fname, $name));
-
 			my $flags;
 
 			if(_getAttributes($name, \$flags) == -1) {
-				error(sprintf('An error occurred while reading flags on %s: %s', $name, $!));
+				die(sprintf('An error occurred while reading flags on %s: %s', $name, $!));
 			}
 
 			_setAttributes($name, $flags | $constants{$fname}) if defined $flags;
@@ -242,14 +234,12 @@ for my $fname (keys %constants) {
 		return 0 unless _isSupported();
 
 		if($recursive) {
-			debug(sprintf('Removing %s flag on %s recursively', $fname, $name));
-
 			File::Find::finddepth(
 				sub {
 					my $flags;
 
 					if(_getAttributes($_, \$flags) == -1) {
-						error(sprintf('An error occurred while reading flags on %s:', $name, $!));
+						die(sprintf('An error occurred while reading flags on %s:', $name, $!));
 					}
 
 					_setAttributes($_, $flags & ~$constants{$fname}) if defined $flags;
@@ -257,8 +247,6 @@ for my $fname (keys %constants) {
 				$name
 			);
 		} else {
-			debug(sprintf('Removing %s flag on %s', $fname, $name));
-
 			my $flags;
 
 			if(_getAttributes($name, \$flags) == -1) {
@@ -286,7 +274,6 @@ for my $fname (keys %constants) {
 	};
 
 	no strict 'refs';
-
 	*{__PACKAGE__ . '::set' . $fname } = $set;
 	*{__PACKAGE__ . '::clear' . $fname } = $clear;
 	*{__PACKAGE__ . '::is' . $fname } = $is;
@@ -311,15 +298,10 @@ sub _getAttributes
 	return -1 unless sysopen($fd, $name, O_RDONLY|O_NONBLOCK|O_LARGEFILE);
 
 	$r = sprintf '%d', ioctl($fd, EXT2_IOC_GETFLAGS, $f) || -1;
-
 	$errno = $! if $r == -1;
-
 	$$flags = unpack 'i', $f;
-
 	close $fd;
-
 	$! = $errno if $errno;
-
 	$r;
 }
 
@@ -342,13 +324,9 @@ sub _setAttributes
 	return -1 unless sysopen($fd, $name, O_RDONLY|O_NONBLOCK|O_LARGEFILE);
 
 	$r = sprintf '%d', ioctl($fd, EXT2_IOC_SETFLAGS, $f) || -1;
-
 	$errno = $! if $r == -1;
-
 	close $fd;
-
 	$! = $errno if $errno;
-
 	$r;
 }
 

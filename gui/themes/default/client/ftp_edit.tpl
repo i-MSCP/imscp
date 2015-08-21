@@ -23,7 +23,7 @@
 			<td><label for="ftp_directory">{TR_HOME_DIR}</label></td>
 			<td>
 				<input type="text" id="ftp_directory" name="home_dir" value="{HOME_DIR}"/>
-				<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
+				<a href="ftp_choose_dir.php" class="icon i_bc_folder ftp_choose_dir">{CHOOSE_DIR}</a>
 			</td>
 		</tr>
 		</tbody>

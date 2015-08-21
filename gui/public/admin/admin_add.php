@@ -59,7 +59,7 @@ function add_user($tpl)
 		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
 
 		if (check_user_data()) {
-			$upass = cryptPasswordWithSalt(clean_input($_POST['password']));
+			$upass = \iMSCP\Crypt::bcrypt(clean_input($_POST['password']));
 			$user_id = $_SESSION['user_id'];
 			$username = clean_input($_POST['username']);
 			$fname = clean_input($_POST['fname']);

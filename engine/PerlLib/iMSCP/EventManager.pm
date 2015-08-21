@@ -25,8 +25,9 @@ package iMSCP::EventManager;
 
 use strict;
 use warnings;
+use Carp;
 use Hash::Util::FieldHash 'fieldhash';
-use iMSCP::Debug;
+use parent 'Common::SingletonClass';
 
 fieldhash my %events;
 
@@ -35,57 +36,29 @@ fieldhash my %events;
  The i-MSCP event manager is the central point of the engine event system.
 
  Event listeners are registered on the event manager and events are triggered through the event manager. The event
- listeners are references to subroutines that listen to one or many events.
+ listeners are CODE references that listen to one or many events.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item getInstance()
+=item register($event, $listener)
 
- Get instance
+ Register an event listener on the given event
 
- Return iMSCP::EventManager
-
-=cut
-
-sub getInstance
-{
-	my $self = $_[0];
-
-	no strict 'refs';
-	my $instance = \${"${self}::_instance"};
-
-	unless(defined $$instance) {
-		$$instance = bless (\ my $this, $self);
-		$$instance->_init();
-	}
-
-	$$instance;
-}
-
-=item register($event, $callback)
-
- Register an event listener for the given event
-
- Param string $event Name of event that the listener listen
- Param code $callback Callback which represent the event listener
- Return int 0 on success, 1 on failure
+ Param string $event Event name
+ Param coderef $listener Listener
+ Return int 0 on success, croak on failure
 
 =cut
 
 sub register
 {
-	my ($self, $event, $callback) = @_;
+	my ($self, $event, $listener) = @_;
 
-	if (ref $callback eq 'CODE') {
-		debug(sprintf('Registering listener on the %s event from %s', $event, (caller(1))[3] || 'main'));
-		push @{ $events{$self}->{$event} }, $callback;
-		0;
-	} else {
-		error(sprintf('Invalid listener provided for the %s event', $event));
-		1;
-	}
+	ref $listener eq 'CODE' or croak(sprintf('Invalid listener provided for the %s event', $event));
+	push @{ $events{$self}->{$event} }, $listener;
+	0;
 }
 
 =item unregister($event)
@@ -93,7 +66,7 @@ sub register
  Unregister any listener which listen to the given event
 
  Param string $event Event name
- Return int 0
+ Return  hash|undef
 
 =cut
 
@@ -102,17 +75,15 @@ sub unregister
 	my ($self, $event) = @_;
 
 	delete $events{$self}->{$event};
-
-	0;
 }
 
-=item trigger($event, [$param], [$paramN])
+=item trigger($event [, $param [ $paramN ]])
 
  Trigger the given event
 
  Param string $event Event name
  Param mixed OPTIONAL parameters to pass to the listeners
- Return int 0 on success, other on failure
+ Return int 0 on success, croak on failure
 
 =cut
 
@@ -120,27 +91,24 @@ sub trigger
 {
 	my ($self, $event) = (shift, shift);
 
-	my $rs = 0;
-
-	if(exists $events{$self}->{$event}) {
-		debug(sprintf('Triggering %s event', $event));
-
+	if($events{$self}->{$event}) {
 		for my $listener(@{$events{$self}->{$event}}) {
-			if($rs = $listener->(@_)) {
+			local $@;
+			eval { $listener->(@_) == 0 } or do {
+				my $errorStr = $@ ? $@ : getMessageByType('error', { amount => 1, remove => 1 }) || 'Unknown error';
 				require Data::Dumper;
 				Data::Dumper->import();
 				local $Data::Dumper::Terse = 1;
 				local $Data::Dumper::Deparse = 1;
-				error(sprintf(
-					"A listener registered on the %s event and triggered in %s has failed.\n\nListener code was: %s\n\n",
-					$event, (caller(1))[3] || 'main', Dumper($listener)
+				croak(sprintf(
+					"A listener registered on the '%s' event has failed: %s\nListener was:\n\n%s\n",
+					$event, $errorStr, Dumper($listener)
 				));
-				last;
-			}
+			};
 		}
 	}
 
-	$rs;
+	0;
 }
 
 =back
@@ -159,16 +127,11 @@ sub trigger
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$events{$self} = { };
 
-	# Load listener files
-	#
-	# We try to load listeners from the hooks.d directory first (old location) to be sure that the listeners are loaded
-	# even on upgrade
 	my $listenersDir;
-
 	if(-d "$main::imscpConfig{'CONF_DIR'}/hooks.d") {
 		$listenersDir = "$main::imscpConfig{'CONF_DIR'}/hooks.d";
 	} elsif(-d "$main::imscpConfig{'CONF_DIR'}/listeners.d") {
@@ -184,15 +147,9 @@ sub _init
 
 =back
 
-=head1 TODO
-
- Listener priorities support
-
-=cut
-
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

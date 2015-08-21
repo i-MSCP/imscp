@@ -5,7 +5,11 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2015.06.25
+# Last update: 2015.08.15
+
+# Httpd server to use for the frontEnd
+# (nginx)
+$main::questions{'FRONTEND_SERVER'} = 'nginx';
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -23,7 +27,7 @@ $main::questions{'PO_SERVER'} = 'dovecot';
 
 # Authdaemon restricted SQL user -only relevant if you set PO_SERVER to 'courier'
 $main::questions{'AUTHDAEMON_SQL_USER'} = 'authdaemon_user';
-$main::questions{'AUTHDAEMON_SQL_PASSWORD'} = 'password'; # Password must not be empty  at least 6 characters long
+$main::questions{'AUTHDAEMON_SQL_PASSWORD'} = 'password'; # Password must not be empty and at least 6 characters long
 
 # SASL restricted SQL user
 $main::questions{'SASL_SQL_USER'} = 'sasl_user';
@@ -31,7 +35,7 @@ $main::questions{'SASL_SQL_PASSWORD'} = 'password'; # Password must not be empty
 
 # Dovecot restricted SQL user - only relevant if you set PO_SERVER to 'dovecot'
 $main::questions{'DOVECOT_SQL_USER'} = 'dovecot_user';
-$main::questions{'DOVECOT_SQL_PASSWORD'} = 'password'; # Password must not be empty  at least 6 characters long
+$main::questions{'DOVECOT_SQL_PASSWORD'} = 'password'; # Password must not be empty and at least 6 characters long
 
 # Server to use for the Ftp service
 # (proftpd)
@@ -71,10 +75,7 @@ $main::questions{'LOCAL_DNS_RESOLVER'} = 'yes'; # 'yes' or 'no'
 
 # Server to use for the SQL service
 # Depending of your distro:
-#  - mysql_5.1 or mysql_5.5
-#  - mariadb_5.3 or mariadb_5.5 or mariadb_10.0
-#  - percona_5.5 or percona_5.6
-#  - remote_server
+#  - mysql_5.1, mysql_5.5, mariadb_5.3, mariadb_5.5, mariadb_10.0, percona_5.5 or percona_5.6, remote_server
 $main::questions{'SQL_SERVER'} = 'mysql_5.5';
 
 # Server hostname
@@ -87,22 +88,20 @@ $main::questions{'BASE_SERVER_VHOST'} = 'panel.domain.tld'; # Fully qualified do
 # Must be a valid port greater than 1023
 $main::questions{'BASE_SERVER_VHOST_HTTP_PORT'} = '8080';
 
-# Https port from which the control panel must be reachable
+# Https port from which the control panel must be reachable (Only relevant if PANEL_SSL_ENABLED is set to 'yes')
 # Must be a valid port greater than 1023
-# Only relevant if PANEL_SSL_ENABLED is set to 'yes' (see below)
 $main::questions{'BASE_SERVER_VHOST_HTTPS_PORT'} = '4443';
 
 # Base server IP - Accept both IPv4 and IPv6
 # IP must be already configured (see ifconfig)
 $main::questions{'BASE_SERVER_IP'} = '192.168.5.110';
 
-# Base server public IP
-# Only relevant if the base server IP is in private range
+# Base server public IP (Only relevant if the base server IP is in private range)
 $main::questions{'BASE_SERVER_PUBLIC_IP'} = '192.168.5.110';
 
 # IPs to add in the i-MSCP database - Accept both IPv4 and IPv6
 # Any unconfigured IPs will be added to the first network device found (eg: eth0, p2p1 ...)
-$main::questions{'SERVER_IPS'} = []; # ['192.168.5.115', '192.168.5.120']
+$main::questions{'SERVER_IPS'} = []; # [ '192.168.5.115', '192.168.5.120' ]
 
 # SQL DSN
 $main::questions{'DATABASE_TYPE'} = 'mysql'; # Database type (for now, only 'mysql' is supported)
@@ -135,7 +134,7 @@ $main::questions{'PANEL_SSL_ENABLED'} = 'no'; # 'yes' or 'no'
 # Only relevant if PANEL_SSL_ENABLED is set to 'yes'
 $main::questions{'PANEL_SSL_SELFSIGNED_CERTIFICATE'} = 'no'; # 'yes' for selfsigned, 'no' for own certificate
 
-# Only relevant if PANEL_SSL_ENABLED is set to 'yes' and  PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
+# Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
 $main::questions{'PANEL_SSL_PRIVATE_KEY_PATH'} = ''; # Path to private key
 
 # Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
@@ -186,7 +185,7 @@ $main::questions{'FILEMANAGER_PACKAGE'} = 'Pydio'; # Pydio or Net2ftp
 
 # Phpmyadmin package restricted SQL user
 $main::questions{'PHPMYADMIN_SQL_USER'} = 'pma_user';
-$main::questions{'PHPMYADMIN_SQL_PASSWORD'} = 'password'; # Password must not be empty at least 6 characters long
+$main::questions{'PHPMYADMIN_SQL_PASSWORD'} = 'password'; # Password must not be empty and at least 6 characters long
 
 # Webmmail packages
 # List of webmail packages to install such as (RainLoop,Roundcube)
@@ -198,10 +197,9 @@ $main::questions{'WEBMAIL_PACKAGES'} = 'RainLoop,Roundcube';
 $main::questions{'ROUNDCUBE_SQL_USER'} = 'roundcube_user';
 $main::questions{'ROUNDCUBE_SQL_PASSWORD'} = 'password'; # Password must not be empty and at least 6 characters long
 
-# Rainloop package restricted SQL user
-# Only relevant if the RainLoop package is listed in the WEBMAIL_PACKAGES parameter
+# Rainloop package restricted SQL user (Only relevant if the RainLoop package is listed in the WEBMAIL_PACKAGES parameter)
 $main::questions{'RAINLOOP_SQL_USER'} = 'rainloop_user';
-$main::questions{'RAINLOOP_SQL_PASSWORD'} = 'password'; # Password must not be empty at least 6 characters long
+$main::questions{'RAINLOOP_SQL_PASSWORD'} = 'password'; # Password must not be empty and at least 6 characters long
 
 # Anti-Rootkits packages
 # List of Anti-Rootkits packages to install such as (Chkrootkit,Rkhunter)

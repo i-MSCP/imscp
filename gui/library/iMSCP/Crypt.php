@@ -197,35 +197,38 @@ class Crypt
 	/**
 	 * Create an htpasswd password hash of the given password using the given algorithm
 	 *
+	 * See http://httpd.apache.org/docs/2.4/misc/password_encryptions.html
+	 *
 	 * @throws \InvalidArgumentException
 	 * @param string $password The password to be hashed
 	 * @param int $cost Base-2 logarithm of the iteration count (only relevant for bcrypt format)
 	 * @param string $salt An optional salt string to base the hashing on (only relevant for bcrypt, crypt and md5 formats)
-	 * @param string $format Format in which the password must be hashed (bcrypt|crypt|sha1|dm5) -  Default is md5 (APR1)
+	 * @param string $format Format in which the password must be hashed (bcrypt|crypt|md5|sha1) -  Default is md5 (APR1)
 	 * @return string
 	 */
 	static public function htpasswd($password, $cost = null, $salt = null, $format = 'md5')
 	{
-		$salt = (string) $salt;
+		$salt = (string)$salt;
 		switch ($format) {
 			case 'bcrypt':
-				return static::bcrypt($password,$cost, $salt);
+				return static::bcrypt($password, $cost, $salt);
 			case 'crypt':
 				if ($salt !== '') {
 					if (strlen($salt) != 2) {
-						throw new \InvalidArgumentException(sprintf('The salt length must be 2 bytes long'));
+						throw new \InvalidArgumentException('The salt length must be 2 bytes long');
 					}
 
 					for ($i = 0; $i < 8; $i++) {
 						if (strpos(static::ALPHA64, $salt[$i]) === false) {
 							throw new \InvalidArgumentException(
-								'The salt value must be a string in the alphabet "./0-9A-Za-z"'
+								'The salt must be a string in the alphabet "./0-9A-Za-z"'
 							);
 						}
 					}
 				} else {
 					$salt = static::randomStr(2, static::ALPHA64);
 				}
+
 				return crypt($password, $salt);
 			case 'sha1':
 				return '{SHA}' . base64_encode(sha1($password, true));
@@ -233,7 +236,7 @@ class Crypt
 				return static::apr1Md5($password, $salt);
 			default:
 				throw new \InvalidArgumentException(sprintf(
-					'The %s format is not valid. The supported formats are: %s', $format, 'crypt, sha1, md5'
+					'The %s format is not valid. The supported formats are: %s', $format, 'bcrypt, crypt, md5, sha1'
 				));
 		}
 	}
@@ -351,16 +354,16 @@ class Crypt
 	 * Encrypt the given data in CBC mode using the given algorithm
 	 *
 	 * @throws \InvalidArgumentException
-	 * @param int $algorihtm Algorithm
+	 * @param int $algorithm Algorithm
 	 * @param string $key Encryption key
 	 * @param string $iv Initialization vector
 	 * @param string $data Data to encrypt
 	 * @return string A base64 encoded string representing encrypted data
 	 */
-	static protected function encryptCBC($algorihtm, $key, $iv, $data)
+	static protected function encryptCBC($algorithm, $key, $iv, $data)
 	{
 		if (extension_loaded('mcrypt')) {
-			return base64_encode(mcrypt_encrypt($algorihtm, $key, $data, MCRYPT_MODE_CBC, $iv));
+			return base64_encode(mcrypt_encrypt($algorithm, $key, $data, MCRYPT_MODE_CBC, $iv));
 		}
 
 		throw new \RuntimeException('Mcrypt extension is not available');
@@ -370,16 +373,16 @@ class Crypt
 	 * Decrypt the given data in CBC mode using the given algorithm
 	 *
 	 * @throws \RuntimeException
-	 * @param int $algorihtm Algorithm
+	 * @param int $algorithm Algorithm
 	 * @param string $key Decryption key
 	 * @param string $iv Initialization vector
 	 * @param string $data A base64 encoded string representing encrypted data
 	 * @return string
 	 */
-	static protected function decryptCBC($algorihtm, $key, $iv, $data)
+	static protected function decryptCBC($algorithm, $key, $iv, $data)
 	{
 		if (extension_loaded('mcrypt')) {
-			return mcrypt_decrypt($algorihtm, $key, base64_decode($data), MCRYPT_MODE_CBC, $iv);
+			return mcrypt_decrypt($algorithm, $key, base64_decode($data), MCRYPT_MODE_CBC, $iv);
 		}
 
 		throw new \RuntimeException('Mcrypt extension is not available');
@@ -397,10 +400,10 @@ class Crypt
 	}
 
 	/**
-	 * APR1 MD5 algorithm
+	 * APR1 MD5 algorithm (see http://svn.apache.org/viewvc/apr/apr/trunk/crypto/apr_md5.c?view=markup)
 	 *
-	 * @param string $password
-	 * @param null $salt Salt
+	 * @param string $password The password to be hashed
+	 * @param null $salt Salt An optional salt string to base the hashing on
 	 * @return string
 	 */
 	static protected function apr1Md5($password, $salt = null)
@@ -409,12 +412,12 @@ class Crypt
 			$salt = static::randomStr(8, static::ALPHA64);
 		} else {
 			if (strlen($salt) !== 8) {
-				throw new \InvalidArgumentException('The salt value for APR1 algorithm must be 8 characters long');
+				throw new \InvalidArgumentException('The salt for APR1 algorithm must be 8 characters long');
 			}
 
 			for ($i = 0; $i < 8; $i++) {
 				if (strpos(static::ALPHA64, $salt[$i]) === false) {
-					throw new \InvalidArgumentException('The salt value must be a string in the alphabet "./0-9A-Za-z"');
+					throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
 				}
 			}
 		}
@@ -445,7 +448,7 @@ class Crypt
 			}
 
 			$new .= ($i & 1) ? $bin : $password;
-			$bin = pack("H32", md5($new));
+			$bin = pack('H32', md5($new));
 		}
 
 		$tmp = '';

@@ -658,6 +658,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$sqlUpd = array();
 
 		// Decrypt all mail passwords
+		$key = iMSCP_Registry::get('MCRYPT_KEY');
+		$iv = iMSCP_Registry::get('MCRYPT_IV');
 
 		$stmt = execute_query(
 			"
@@ -672,7 +674,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$password = quoteValue(decryptBlowfishCbcPassword($row['mail_pass']));
+				$password = quoteValue(\iMSCP\Crypt::decryptRijndaelCBC($key, $iv, $row['mail_pass']));
 				$status = quoteValue('tochange');
 				$mailId = quoteValue($row['mail_id'], PDO::PARAM_INT);
 				$sqlUpd[] = "UPDATE mail_users SET mail_pass = $password, status = $status WHERE mail_id = $mailId";
@@ -685,7 +687,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$password = quoteValue(decryptBlowfishCbcPassword($row['sqlu_pass']));
+				$password = quoteValue(\iMSCP\Crypt::decryptRijndaelCBC($key, $iv, $row['sqlu_pass']));
 				$id = quoteValue($row['sqlu_id'], PDO::PARAM_INT);
 				$sqlUpd[] = "UPDATE sql_user SET sqlu_pass = $password WHERE sqlu_id = $id";
 			}
@@ -697,7 +699,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$password = quoteValue(decryptBlowfishCbcPassword($row['passwd']));
+				$password = quoteValue(\iMSCP\Crypt::decryptRijndaelCBC($key, $iv, $row['passwd']));
 				$userId = quoteValue($row['userid']);
 				$sqlUpd[] = "UPDATE ftp_users SET rawpasswd = $password WHERE userid = $userId";
 			}

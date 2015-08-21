@@ -1,11 +1,11 @@
 =head1 NAME
 
- iMSCP::Execute - Allows to execute external commands
+ iMSCP::Execute - Library that provides functions for executing external commands and capturing output.
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,12 +25,17 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
+use Carp;
 use iMSCP::Debug qw(debug);
 use IO::Select;
 use IPC::Open3;
 use Symbol 'gensym';
 use File::Basename ();
+use IO::Handle;
 use Cwd ();
+
+autoflush STDOUT 1;
+autoflush STDERR 1;
 
 my $vendorLibDir;
 
@@ -44,20 +49,20 @@ our @EXPORT = qw/execute executeNoWait escapeShell getExitCode/;
 
 =head1 DESCRIPTION
 
- This package provides a set of functions allowing to execute external commands.
+ Library that provides functions for executing external commands and capturing output.
 
 =head1 FUNCTIONS
 
 =over 4
 
-=item execute($command [, \$stdout = undef [, \$stderr = undef]])
+=item execute($command [, \$stdout = undef [, \$stderr = undef ] ])
 
  Execute the given command
 
  Param string $command Command to execute
  Param string \$stdout OPTIONAL Variable for capture of STDOUT
  Param string \$stderr OPTIONAL Variable for capture of STDERR
- Return int Command exit code or die on failure
+ Return int Command exit code or croak on failure
 
 =cut
 
@@ -66,12 +71,12 @@ sub execute($;$$)
 	my ($command, $stdout, $stderr) = @_;
 
 	if($stdout) {
-		ref $stdout eq 'SCALAR' or die("Expects a scalar reference as second parameter for capture of STDOUT");
+		ref $stdout eq 'SCALAR' or croak('Expects a scalar reference as second parameter for capture of STDOUT');
 		$$stdout = '';
 	}
 
 	if($stderr) {
-		ref $stderr eq 'SCALAR' or die("Expects a scalar reference as third parameter for capture of STDERR");
+		ref $stderr eq 'SCALAR' or croak('Expects a scalar reference as third parameter for capture of STDERR');
 		$$stderr = '';
 	}
 
@@ -87,55 +92,56 @@ sub execute($;$$)
 		$$stderr = capture_stderr { system($command); };
 		chomp($stderr);
 	} else {
-		die(sprintf('Could not execute command: %s', $!)) if system($command) == -1;
+		croak(sprintf('Could not execute command: %s', $!)) if system($command) == -1;
 	}
 
 	getExitCode();
 }
 
-=item executeNoWait($command, $stdoutSubref, $stderrSubref)
+=item executeNoWait($command, $stdoutHandler, $stderrHandler)
 
  Execute the given command without wait
 
  Param string $command Command to execute
- Param subref Subroutine responsible to process command STDOUT
- Param subref Subroutine responsible to process command STDERR
- Return int Command exit code or die on failure
+ Param coderef $stdoutHandler STDOUT handler
+ Param coderef $stderrHandler STDERR handler
+ Return int Command exit code or croak or die on failure
 
 =cut
 
 sub executeNoWait($$$)
 {
-	my ($command, $stdoutSubref, $stderrSubref) = @_;
+	my ($command, $stdoutHandler, $stderrHandler) = @_;
 
-	ref $stdoutSubref eq 'CODE' or die('Expects a subroutine reference as second parameter for STDOUT processing');
-	ref $stderrSubref eq 'CODE' or die('Expects a subroutine reference as third parameter for STDERR processing');
+	ref $stdoutHandler eq 'CODE' or croak('Wrong STDOUT handler: Not a code reference');
+	ref $stderrHandler eq 'CODE' or croak('Wrong STDERR handler: Not a code reference');
+
+	debug($command);
 
 	my $pid = open3(my $stdin, my $stdout, my $stderr = gensym, $command);
-
 	close $stdin;
+	$stdout->autoflush(1);
+	$stderr->autoflush(1);
 
 	my %buffers = ( $stdout => '', $stderr => '' );
-	my $sel = new IO::Select($stdout, $stderr);
+	my $select = new IO::Select($stdout, $stderr);
 
-	while($sel->count()) {
-		for my $fh ($sel->can_read()) {
+	while($select->count()) {
+		for my $fh ($select->can_read()) {
 			my $ret = sysread($fh, $buffers{$fh}, 4096, length($buffers{$fh}));
 
 			defined $ret or die($!);
-
 			if ($ret == 0) {
-				$sel->remove($fh);
+				$select->remove($fh);
 				close($fh);
 				next;
 			}
 
-			$fh == $stderr ? $stderrSubref->(\$buffers{$stderr}) : $stdoutSubref->(\$buffers{$stdout});
+			$fh == $stderr ? $stderrHandler->(\$buffers{$stderr}) : $stdoutHandler->(\$buffers{$stdout});
 		}
 	}
 
 	waitpid($pid, 0);
-
 	getExitCode();
 }
 
@@ -154,7 +160,6 @@ sub escapeShell($)
 
 	return $string if $string eq '' || $string =~ /^[a-zA-Z0-9_\-]+\z/;
 	$string =~ s/'/'\\''/g;
-
 	"'$string'";
 }
 
@@ -163,7 +168,7 @@ sub escapeShell($)
  Return human exit code
 
  Param int $ret Raw exit code (default to $?)
- Return int exit code or die on failure
+ Return int exit code or croak on failure
 
 =cut
 
@@ -172,12 +177,11 @@ sub getExitCode(;$)
 	my $ret = shift // $?;
 
 	if ($ret == -1) {
-		die(sprintf('Could not execute command: %s', $!));
+		croak(sprintf('Could not execute command: %s', $!));
 	} elsif ($ret & 127) {
-		die(sprintf('Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without'));
+		croak(sprintf('Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without'));
 	} else {
 		$ret = $ret >> 8;
-		debug(sprintf('Command exited with value: %s', $ret));
 	}
 
 	$ret;
@@ -185,7 +189,7 @@ sub getExitCode(;$)
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

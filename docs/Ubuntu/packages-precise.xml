@@ -156,7 +156,8 @@
         <package>perl</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
-        <package>libcrypt-passwdmd5-perl</package>
+        <package>libcrypt-eksblowfish-perl</package>
+        <package>libcrypt-rijndael-perl</package>
         <package>libdata-validate-domain-perl</package>
         <package>libdatetime-perl</package>
         <package>libdbd-mysql-perl</package>
@@ -180,6 +181,7 @@
         <package>bzip2</package>
         <package>ca-certificates</package>
         <package>curl</package>
+        <package>cron</package>
         <package>dnsutils</package>
         <package>gcc</package>
         <package>git</package>

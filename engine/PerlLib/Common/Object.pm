@@ -70,7 +70,7 @@ sub new
 
 sub _init
 {
-	$_[0];
+	shift;
 }
 
 =back

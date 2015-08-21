@@ -270,41 +270,37 @@ class iMSCP_Initializer
 	protected function initializeDatabase()
 	{
 		try {
-			$db_pass_key = $db_pass_iv = '';
+			$imscpDbKeys = new iMSCP_Config_Handler_File($this->config['CONF_DIR'] . '/imscp-db-keys');
 
-			eval(@file_get_contents($this->config->CONF_DIR . '/imscp-db-keys'));
-
-			if(!empty($db_pass_key) && !empty($db_pass_iv)) {
-				iMSCP_Registry::set('MCRYPT_KEY', $db_pass_key);
-				iMSCP_Registry::set('MCRYPT_IV', $db_pass_iv);
+			if(isset($imscpDbKeys['KEY']) && isset($imscpDbKeys['IV'])) {
+				iMSCP_Registry::set('MCRYPT_KEY', $imscpDbKeys['KEY']);
+				iMSCP_Registry::set('MCRYPT_IV', $imscpDbKeys['IV']);
 
 				$connection = iMSCP_Database::connect(
-					$this->config->DATABASE_USER,
-					decryptBlowfishCbcPassword($this->config->DATABASE_PASSWORD),
-					$this->config->DATABASE_TYPE,
-					$this->config->DATABASE_HOST,
-					$this->config->DATABASE_NAME
+					$this->config['DATABASE_USER'],
+					\iMSCP\Crypt::decryptRijndaelCBC(
+						$imscpDbKeys['KEY'], $imscpDbKeys['IV'], $this->config['DATABASE_PASSWORD']
+					),
+					$this->config['DATABASE_TYPE'],
+					$this->config['DATABASE_HOST'],
+					$this->config['DATABASE_NAME']
 				);
 
 				if(!$connection->execute('SET NAMES `utf8`')) {
-					throw new iMSCP_Exception(
-						sprintf(
-							'Unable to set charset for database communication. SQL returned: %s',
-							$connection->errorMsg()
-						)
-					);
+					throw new iMSCP_Exception(sprintf(
+						'Unable to set charset for database communication. SQL returned: %s', $connection->errorMsg()
+					));
 				}
+
+				iMSCP_Registry::set('db', $connection);
 			} else {
-				throw new iMSCP_Exception('Database key and/or initialization vector was not generated.');
+				throw new iMSCP_Exception('imscp-db-keys file is corrupted.');
 			}
 		} catch(PDOException $e) {
 			throw new iMSCP_Exception_Database(
 				'Unable to establish the connection to the database. SQL returned: ' . $e->getMessage()
 			);
 		}
-
-		// Register Database instance in registry for further usage.
-		iMSCP_Registry::set('db', $connection);
 	}
 
 	/**

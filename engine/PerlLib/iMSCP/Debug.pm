@@ -26,6 +26,7 @@ package iMSCP::Debug;
 use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+use iMSCP::Dir;
 use iMSCP::Log;
 use parent 'Exporter';
 
@@ -127,7 +128,7 @@ sub newDebug
 
 	fatal("logfile name expected") if ref $logfile || $logfile eq '';
 
-	$self->{'target'} = iMSCP::Log->new( id => $logfile);
+	$self->{'target'} = iMSCP::Log->new( id => $logfile );
 
 	push @{$self->{'targets'}}, $self->{'target'};
 
@@ -156,18 +157,15 @@ sub endDebug
 		}
 
 		my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
-		if($logDir ne '/tmp' && ! -d $logDir) {
-			require iMSCP::Dir;
-			my $rs = iMSCP::Dir->new( dirname => $logDir )->make({
-				user => $main::imscpConfig{'ROOT_USER'},
-				group => $main::imscpConfig{'ROOT_GROUP'},
-				mode => 0750
+
+		unless ($logDir eq '/tmp' || -d $main::imscpConfig{'LOG_DIR'}) {
+			iMSCP::Dir->new( dirname => $main::imscpConfig{'LOG_DIR'} )->make({
+				user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0750
 			});
-			$logDir = '/tmp' if $rs;
 		}
 
 		# Write logfile
-		_writeLogfile($target, "$logDir/$targetId");
+		_writeLogfile($target, "$main::imscpConfig{'LOG_DIR'}/$targetId");
 
 		# Set previous log object as target for new messages
 		$self->{'target'} = @{$self->{'targets'}}[$#{$self->{'targets'}}];

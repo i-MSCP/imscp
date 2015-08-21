@@ -224,60 +224,10 @@ class iMSCP_Database
 	/**
 	 * Executes a SQL Statement or a prepared statement
 	 *
-	 * <b>SQL Statement:</b>
-	 *
-	 * For a SQL statement, the first argument should be a string that represents SQL statement to prepare and execute.
-	 * All data inside the query should be properly escaped for prevent any SQL code injection.
-	 *
-	 * For a SQL statement, you may also pass additional arguments. They will be treated as though you called
-	 * PDOStatement::setFetchMode() on the resultant PDOStatement object that is wrapped by the DatabaseResult object.
-	 *
-	 * <i>example:</i>
-	 * <code>
-	 * $db->execute('SELECT * FROM `config`;', PDO::FETCH_INTO, new stdClass);
-	 * </code>
-	 *
-	 * <b>Prepared statement:</b>
-	 *
-	 * For a prepared statement, the first argument should be a PDOStatement object that represents a prepared statement.
-	 * As second argument, and only if the prepared statement has parameter markers, you must pass an array, an integer
-	 * or a string that represents data to bind to the placeholders.
-	 *
-	 * <b>Note:</b> string or integer can only be used when only one parameter marker is present in the prepared
-	 * statement and only for question mark placeholder. For named placeholders you must always pass data in an array.
-	 *
-	 * Important:
-	 *  You cannot mix both parameters markers type in the same SQL statement.
-	 *
-	 * <i>example:</i>
-	 * <code>
-	 * // With only one question mark:
-	 * $db->execute('SELECT * FROM `config` WHERE `name` = ?;', 'NAME'));
-	 *
-	 * // With many question marks:
-	 * $db->execute(
-	 *         'SELECT * FROM `config` WHERE `name` = ? AND `value` = ?;',
-	 *         array('NAME', 'VALUE')
-	 * );
-	 *
-	 * // With named placeholders:
-	 * $db->execute(
-	 *         'SELECT * FROM `config` WHERE `name` = :name;',
-	 *         array(':name' => 'NAME')
-	 * );
-	 * </code>
-	 *
-	 * @param  string|PDOStatement $stmt A PDOStatement objet or a string that represents an SQL statement.
-	 * @param null|string|array $parameters OPTIONAL data to bind to the placeholders, or an integer that represents the
-	 *                                      Fetch mode for SQL statement. The fetch mode must be one of the PDO::FETCH_*
-	 *                                      constants.
-	 *
-	 * @internal param mixed $colno OPTIONAL parameter for SQL statement only. Can be a colum number, an object, a
-	 *                              classname (depending of the Fetch mode used).
-	 *
-	 * @internal param array $object OPTIONAL parameter for SQL statements only. Can be an array that contains
-	 *                               constructor arguments. (See PDO::FETCH_CLASS)
+	 * @param mixed $stmt
+	 * @param null $parameters
 	 * @return bool|iMSCP_Database_ResultSet
+	 * @throws iMSCP_Exception_Database
 	 */
 	public function execute($stmt, $parameters = null)
 	{

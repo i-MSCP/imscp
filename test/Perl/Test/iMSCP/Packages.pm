@@ -37,19 +37,19 @@ sub runUnitTests
 	if(require_ok('iMSCP::Packages')) {
 		eval {
 			$main::imscpConfig{'ENGINE_ROOT_DIR'} = '/tmp/foo';
-			ok getInstanceDieIfCannotReadDir, 'iMSCP::Package::getInstance die if cannot read directory';
+			ok getInstanceDieIfCannotReadDir, 'getInstance() die if cannot read directory';
 			$main::imscpConfig{'ENGINE_ROOT_DIR'} = abs_path('../../engine');
 			is_deeply
 				[ sort iMSCP::Packages->getInstance()->get() ],
 				[ sort qw/Webmail FrontEnd PhpMyAdmin FileManager Webstats AntiRootkits/ ],
-				'iMSCP::Packages::get() return expected package list';
+				'iget() return expected package list';
 			is_deeply
 				[ sort iMSCP::Packages->getInstance()->getFull() ],
 				[
 					sort 'Package::Webmail', 'Package::FrontEnd', 'Package::PhpMyAdmin', 'Package::FileManager',
 					'Package::Webstats', 'Package::AntiRootkits'
 				],
-				'iMSCP::Packages::getFull() return expected package list';
+				'getFull() return expected package list';
 		};
 
 		diag sprintf('A test failed unexpectedly: %s', $@) if $@;

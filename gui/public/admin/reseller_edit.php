@@ -673,7 +673,7 @@ function admin_checkAndUpdateData($resellerId)
 
 			if ($data['password'] != '') {
 				$setPassword = '`admin_pass` = ?,';
-				array_unshift($bindParams, cryptPasswordWithSalt($data['password']));
+				array_unshift($bindParams, \iMSCP\Crypt::bcrypt($data['password']));
 			} else {
 				$setPassword = '';
 			}

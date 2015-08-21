@@ -52,7 +52,6 @@ alternative to mainstream cloud storage providers.
 sub preinstall
 {
 	require Package::FileManager::Pydio::Installer;
-
 	Package::FileManager::Pydio::Installer->getInstance()->preinstall();
 }
 
@@ -67,7 +66,6 @@ sub preinstall
 sub install
 {
 	require Package::FileManager::Pydio::Installer;
-
 	Package::FileManager::Pydio::Installer->getInstance()->install();
 }
 
@@ -82,7 +80,6 @@ sub install
 sub uninstall
 {
 	require Package::FileManager::Pydio::Uninstaller;
-
 	Package::FileManager::Pydio::Uninstaller->getInstance()->uninstall();
 }
 
@@ -97,7 +94,6 @@ sub uninstall
 sub setGuiPermissions
 {
 	require Package::FileManager::Pydio::Installer;
-
 	Package::FileManager::Pydio::Installer->getInstance()->setGuiPermissions();
 }
 

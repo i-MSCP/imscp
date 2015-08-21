@@ -24,6 +24,7 @@
 package Common::SingletonClass;
 
 use strict;
+no strict 'refs';
 use warnings;
 
 =head1 DESCRIPTION
@@ -34,7 +35,7 @@ use warnings;
 
 =over 4
 
-=item getInstance([%args])
+=item getInstance([ %args ])
 
  Implement singleton design pattern. Return instance of this class
 
@@ -45,18 +46,17 @@ use warnings;
 
 sub getInstance
 {
-	my $self = shift;
-	return $self if ref $self;
+	my $class = shift;
+	return $class if ref $class;
 
-	no strict 'refs';
-	my $instance = \${"${self}::_instance"};
+	my $self = \${"${class}::_instance"};
 
-	unless(defined $$instance) {
-		$$instance = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $self;
-		$$instance->_init();
+	unless(defined $$self) {
+		$$self = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $class;
+		$$self->_init();
 	}
 
-	$$instance;
+	$$self;
 }
 
 =item hasInstance()
@@ -69,11 +69,9 @@ sub getInstance
 
 sub hasInstance
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self = ref $self || $self;
-	no strict 'refs';
-
 	${"${self}::_instance"};
 }
 
@@ -93,7 +91,7 @@ sub hasInstance
 
 sub _init
 {
-	$_[0];
+	shift;
 }
 
 =back

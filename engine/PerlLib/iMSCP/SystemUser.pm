@@ -29,7 +29,7 @@ sub addSystemUser
 	my $self = shift;
 	my $userName = shift || $self->{'username'};
 
-	if(! $userName) {
+	unless($userName) {
 		error('Username is missing');
 		return 1;
 	}
@@ -79,8 +79,7 @@ sub addSystemUser
 		);
 	}
 
-	my ($stdout, $stderr);
-	my $rs = execute("@cmd", \$stdout, \$stderr);
+	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs && $rs != 12;
 	debug($stderr) if $stderr && ! $rs;
@@ -112,8 +111,7 @@ sub delSystemUser
 			($^O !~ /bsd$/ ? escapeShell($userName) : '')
 		);
 
-		my ($stdout, $stderr);
-		my $rs = execute("@cmd", \$stdout, \$stderr);
+		my $rs = execute("@cmd", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs && $rs != 12;
 		debug($stderr) if $stderr && ! $rs;
@@ -144,8 +142,6 @@ sub addToGroup
 	$self->{'username'} = $userName;
 
 	if(getgrnam($groupName) && getpwnam($userName)) {
-		my (@cmd, $rs, $stdout, $stderr);
-
 		if($^O =~ /bsd$/) { # bsd way
 			$self->getUserGroups($userName);
 
@@ -155,16 +151,16 @@ sub addToGroup
 				my $newGroups = join(',', keys %{$self->{'userGroups'}});
 				$newGroups = ($newGroups ne '') ? "$newGroups,$groupName" : $groupName;
 
-				@cmd = ('usermod', escapeShell($userName), '-G', escapeShell($newGroups));
-				$rs = execute("@cmd", \$stdout, \$stderr);
+				my @cmd = ('usermod', escapeShell($userName), '-G', escapeShell($newGroups));
+				my $rs = execute("@cmd", \my $stdout, \my $stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				debug($stderr) if $stderr && ! $rs;
 				return $rs if $rs;
 			}
 		} else { # Linux way
-			@cmd = ('gpasswd', '-a', escapeShell($userName), escapeShell($groupName));
-			$rs = execute("@cmd", \$stdout, \$stderr);
+			my @cmd = ('gpasswd', '-a', escapeShell($userName), escapeShell($groupName));
+			my $rs = execute("@cmd", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs && $rs != 3;
 			debug($stderr) if $stderr && ! $rs;
@@ -196,25 +192,21 @@ sub removeFromGroup
 	$self->{'username'} = $userName;
 
 	if(getpwnam($userName) && getgrnam($groupName)) {
-		my (@cmd, $rs, $stdout, $stderr);
-
 		if($^O =~ /bsd$/) { # bsd way
 			$self->getUserGroups($userName);
-
 			delete $self->{'userGroups'}->{$groupName};
 			delete $self->{'userGroups'}->{$userName};
 
 			my $newGroups =  join(',', keys %{$self->{'userGroups'}});
-
-			@cmd = ('usermod', escapeShell($userName), '-G', escapeShell($newGroups));
-			$rs = execute("@cmd", \$stdout, \$stderr);
+			my @cmd = ('usermod', escapeShell($userName), '-G', escapeShell($newGroups));
+			my $rs = execute("@cmd", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			debug($stderr) if $stderr && ! $rs;
 			return $rs if $rs;
 		} else {
-			@cmd = ('gpasswd', '-d', escapeShell($userName), escapeShell($groupName));
-			$rs = execute("@cmd", \$stdout, \$stderr);
+			my @cmd = ('gpasswd', '-d', escapeShell($userName), escapeShell($groupName));
+			my $rs = execute("@cmd", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs && $rs != 3;
 			debug($stderr) if $stderr && ! $rs;
@@ -238,8 +230,7 @@ sub getUserGroups
 
 	$self->{'username'} = $userName;
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute('id -nG ' . escapeShell($userName), \$stdout, \$stderr);
+	my $rs = execute('id -nG ' . escapeShell($userName), \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	debug($stderr) if $stderr && ! $rs;

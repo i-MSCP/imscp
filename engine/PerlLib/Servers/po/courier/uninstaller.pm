@@ -21,17 +21,16 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
-use iMSCP::Execute;
 use iMSCP::Database;
 use iMSCP::TemplateParser;
-use Servers::po::courier;
+use Servers::po;
 use parent 'Common::SingletonClass';
 
 sub _init
 {
 	my $self = shift;
 
-	$self->{'po'} = Servers::po::courier->getInstance();
+	$self->{'po'} = Servers::po->factory();
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -90,36 +89,25 @@ sub _restoreConfFile
 	if(-f "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system") {
 		my $file = iMSCP::File->new( filename => "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system" );
 
-		my $rs = $file->copyFile("/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}");
-		return $rs if $rs;
-
+		$file->copyFile("/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}");
 		$file->{'filename'} = "/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}";
-
-		$rs = $file->mode(0755);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
+		$file->mode(0755);
+		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	}
 
 	for my $filename(
 		'authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}
 	) {
 		if(-f "$self->{'bkpDir'}/$filename.system") {
-			my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+			iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
 				"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$filename"
 			);
-			return $rs if $rs;
 		}
 	}
 
 	if(-f "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd") {
 		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
 		my $fileContent = $file->get();
-		unless(defined $fileContent) {
-			error("Unable to read $self->{'filename'}");
-			return 1;
-		}
 
 		$fileContent = replaceBloc(
 			"\n# Servers::po::courier::installer - BEGIN\n",
@@ -128,17 +116,10 @@ sub _restoreConfFile
 			$fileContent
 		);
 
-		my $rs = $file->set($fileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
+		$file->set($fileContent);
+		$file->save();
+		$file->mode(0644);
+		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	}
 
 	0;
@@ -149,10 +130,7 @@ sub _authDaemon
 	my $self= shift;
 
 	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authdaemonrc" );
-
-	my $rs = $file->mode(0660);
-	return $rs if $rs;
-
+	$file->mode(0660);
 	$file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
 }
 

@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
  Register setup event listeners
 
  Param iMSCP::EventManager \%eventManager
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -128,7 +128,7 @@ sub showDialog
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = 0;
 	my @packages = split ',', main::setupGetQuestion('WEBSTATS_PACKAGES');
@@ -247,10 +247,9 @@ sub install
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my @packages = split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'};
-
 	my $packages = [];
 	my $rs = 0;
 
@@ -296,7 +295,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my @packages = split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'};
 
@@ -507,12 +506,11 @@ sub deleteSub
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
 		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats"
 	)->getDirs();
-
 	$self;
 }
 
@@ -570,8 +568,7 @@ sub _removePackages
 	my ($self, $packages) = @_;
 
 	# Do not try to remove packages which are no longer available on the system or not installed
-	my ($stdout, $stderr);
-	my $rs = execute("LANG=C dpkg-query -W -f='\${Package}/\${Status}\n' @{$packages}", \$stdout, \$stderr);
+	my $rs = execute("LANG=C dpkg-query -W -f='\${Package}/\${Status}\n' @{$packages}", \my $stdout, \my $stderr);
 	error($stderr) if $stderr && $rs > 1;
 	return $rs if $rs > 1;
 

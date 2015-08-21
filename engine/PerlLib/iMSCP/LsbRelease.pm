@@ -185,10 +185,7 @@ sub getAll
 	my ($self, $short) = @_;
 
 	sprintf(
-		"%s\n%s\n%s\n%s",
-		$self->getId($short),
-		$self->getDescription($short),
-		$self->getRelease($short),
+		"%s\n%s\n%s\n%s", $self->getId($short), $self->getDescription($short), $self->getRelease($short),
 		$self->getCodename($short)
 	);
 }
@@ -392,7 +389,6 @@ sub _guessReleaseFromApt
 
 	@releases = grep { $_->[0] == $maxPriority } @releases;
 	@releases = sort { $self->_releaseIndex($a->[1]) cmp $self->_releaseIndex($b->[1]) } @releases;
-
 	%{$releases[0]->[1]};
 }
 

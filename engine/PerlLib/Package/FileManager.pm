@@ -53,12 +53,8 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
-	return $rs if $rs;
-
-	$rs = $eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
-	return $rs if $rs;
-
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
+	$eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
 	$eventManager->register('afterFrontEndInstall', sub { $self->installListener(); });
 }
 
@@ -123,7 +119,7 @@ sub showDialog
 
 sub preinstallListener
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $oldPackage = $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
 
@@ -168,7 +164,7 @@ sub preinstallListener
 
 sub installListener
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $package = main::setupGetQuestion('FILEMANAGER_PACKAGE');
 
@@ -242,7 +238,7 @@ sub uninstall
 
 sub setPermissionsListener
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
 
@@ -277,20 +273,20 @@ sub setPermissionsListener
 
  Initialize insance
 
- Return Package::AntiRootkits
+ Return Package::AntiRootkits, die on failure
 
 =cut
 
 sub _init()
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
 		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager"
 	)->getDirs();
 
 	iMSCP::EventManager->getInstance()->register(
-		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_); }
+		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_) }
 	);
 
 	$self;

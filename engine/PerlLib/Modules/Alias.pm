@@ -195,50 +195,47 @@ sub _loadData
 {
 	my ($self, $aliasId) = @_;
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
+	my $row = iMSCP::Database->factory()->doQuery(
 		'alias_id',
 		"
 			SELECT
-				alias.*, domain_name AS user_home, domain_admin_id, domain_php, domain_cgi, domain_traffic_limit,
-				domain_mailacc_limit, domain_dns, web_folder_protection, ips.ip_number, mail_count.mail_on_domain
+				domain_aliasses.*, domain_name AS user_home, domain_admin_id, domain_php, domain_cgi,
+				domain_traffic_limit, domain_mailacc_limit, domain_dns, web_folder_protection, ip_number, mail_on_domain
 			FROM
-				domain_aliasses AS alias
+				domain_aliasses
 			INNER JOIN
-				domain ON (alias.domain_id = domain.domain_id)
+				domain USING (domain_id)
 			INNER JOIN
-				server_ips AS ips ON (alias.alias_ip_id = ips.ip_id)
-			LEFT JOIN
-				(
-					SELECT
-						sub_id AS id, COUNT( sub_id ) AS mail_on_domain
-					FROM
-						mail_users
-					WHERE
-						sub_id= ?
-					AND
-						mail_type IN ('alias_forward', 'alias_mail', 'alias_mail,alias_forward', 'alias_catchall')
-					GROUP BY
-						sub_id
-				) AS mail_count
-			ON
-				(alias.alias_id = mail_count.id)
+				server_ips ON (alias_ip_id = ip_id)
+			LEFT JOIN (
+				SELECT
+					sub_id AS alias_id, COUNT(sub_id) AS mail_on_domain
+				FROM
+					mail_users
+				WHERE
+					sub_id = ?
+				AND
+					mail_type LIKE 'alias%'
+				AND
+					status <> 'todelete'
+			) AS mail_count USING (alias_id)
 			WHERE
-				alias.alias_id = ?
+				alias_id = ?
 		",
 		$aliasId,
 		$aliasId
 	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
+	unless(ref $row eq 'HASH') {
+		error($row);
 		return 1;
 	}
 
-	unless(exists $rdata->{$aliasId}) {
+	unless(exists $row->{$aliasId}) {
 		error("Domain with ID $aliasId has not been found or is in an inconsistent state");
 		return 1;
 	}
 
-	%{$self} = (%{$self}, %{$rdata->{$aliasId}});
+	%{$self} = (%{$self}, %{$row->{$aliasId}});
 
 	0;
 }
@@ -362,7 +359,6 @@ sub _getMtaData
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 			DOMAIN_NAME => $self->{'alias_name'},
 			DOMAIN_TYPE => 'als',
-			TYPE => 'vals_entry',
 			EXTERNAL_MAIL => $self->{'external_mail'},
 			MAIL_ENABLED => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
 		};

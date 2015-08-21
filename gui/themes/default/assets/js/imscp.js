@@ -14,17 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Layout
- * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
- * @link        http://i-mscp.net
- * @author      iMSCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 
-var iMSCP = function () {
+var iMSCP = function ($) {
     // Function to initialize page messages
     var initPageMessages = function () {
         $("body").on("message_timeout", ".success,.info,.warning,.error", function () {
@@ -44,7 +36,7 @@ var iMSCP = function () {
                     tooltipClass: "ui-tooltip-notice",
                     track: true,
                     content: function() {
-                        return $(this).attr('title');
+                        return $(this).attr("title");
                     }
                 }
             );
@@ -56,7 +48,7 @@ var iMSCP = function () {
                     track: true,
                     content: function() {
                         var title = $( this ).attr( "title" ) || "";
-                        return $(this).attr('title');
+                        return $(this).attr("title");
                     }
                 }
             );
@@ -77,7 +69,7 @@ var iMSCP = function () {
     // Function to initialize tables
     var initTables = function () {
         // Override some built-in jQuery method to trigger the i-MSCP updateTable event
-        (function ($) {
+        (function () {
             var origShow = $.fn.show;
             var origHide = $.fn.hide;
             var origAppendTo = $.fn.appendTo;
@@ -100,7 +92,7 @@ var iMSCP = function () {
                 $("tbody").trigger("updateTable");
                 return ret;
             };
-        })(jQuery);
+        })();
 
         $("body").on("updateTable", "tbody", function () {
             $(this).find("tr:visible:odd").removeClass("odd").addClass("even");
@@ -157,6 +149,62 @@ var iMSCP = function () {
         }
     };
 
+    // Initialize FTP chooser feature
+    var initFtpChooser = function() {
+        $("body").on("click", "a.ftp_choose_dir", function(e) {
+            var href = $(this).attr("href");
+            var $dialog = $("#ftp_choose_dir_dialog");
+
+            if($dialog.length) {
+                if(href == "#") { // # href means that we want set directory. Then, we remove the dialog and set the dir
+                    $("#ftp_directory").val($(this).data("directory"));
+                    $dialog.dialog("close");
+                } else { // We have already a dialog. We just update it content
+                    $.get(href, function( data ) {
+                        $dialog.html(data);
+                    }).fail(function() {
+                        alert("Request failed");
+                    });
+                }
+            } else { // No dialog yet. We create one
+                $.get(href, function(data) {
+                    $dialog = $('<div id="ftp_choose_dir_dialog"/>').html(data).dialog({
+                        hide: "blind",
+                        show: "slide",
+                        focus: false,
+                        width: 650,
+                        height: 650,
+                        autoOpen: false,
+                        modal: true,
+                        title: js_i18n_tr_ftp_directories,
+                        buttons: [{
+                            text: js_i18n_tr_close, click: function () {
+                                $(this).dialog("close");
+                            }
+                        }],
+                        close: function () {
+                            $(this).remove();
+                        }
+                    });
+
+                    $(window).resize(function () {
+                        $dialog.dialog("option", "position", { my: "center", at: "center", of: window });
+                    });
+
+                    $(window).scroll(function () {
+                        $dialog.dialog("option", "position", { my: "center", at: "center", of: window });
+                    });
+
+                    $dialog.dialog("open");
+                }).fail(function() {
+                    alert("Request failed")
+                });
+            }
+
+            e.preventDefault(); // Cancel default action (navigation) on the click
+        });
+    };
+
     // Function to fix bad jQuery UI behaviors
     var fixJqueryUI = function () {
         // Dirty fix for http://bugs.jqueryui.com/ticket/7856
@@ -181,6 +229,7 @@ var iMSCP = function () {
         } else {
             initTables();
             passwordGenerator();
+            initFtpChooser();
         }
 
         initButtons(context);
@@ -193,7 +242,7 @@ var iMSCP = function () {
             fixJqueryUI();
         }
     };
-}();
+}(jQuery);
 
 function sbmt(form, uaction) {
     form.uaction.value = uaction;
@@ -299,74 +348,4 @@ function sprintf() {
     }
 
     return str;
-}
-
-/**
- * Display dialog box allowing to choose ftp directory
- *
- * @return false
- */
-function chooseFtpDir() {
-    var dialog1 = $('<div id="dial_ftp_dir" style="overflow: hidden;"/>').append($('<iframe scrolling="auto" height="100%"/>').
-        attr("src", "ftp_choose_dir.php")).dialog(
-        {
-            hide: 'blind',
-            show: 'slide',
-            focus: false,
-            width: 650,
-            height: 650,
-            autoOpen: false,
-            modal: true,
-            title: js_i18n_tr_ftp_directories,
-            buttons: [{
-                text: js_i18n_tr_close, click: function () {
-                    $(this).dialog('close');
-                }
-            }],
-            close: function (e, ui) {
-                $(this).remove();
-            }
-        }
-    );
-
-    $(window).resize(function () {
-        dialog1.dialog("option", "position", { my: "center", at: "center", of: window });
-    });
-
-    $(window).scroll(function () {
-        dialog1.dialog("option", "position", { my: "center", at: "center", of: window });
-    });
-
-    dialog1.dialog('open');
-
-    return false;
-}
-
-/*******************************************************************************
- *
- * Ajax related functions
- *
- * Note: require JQUERY
- */
-
-/**
- * Jquery XMLHttpRequest Error Handling
- */
-
-/**
- * Must be documented
- *
- * Note: Should be used as error callback funct of the jquery ajax request
- * @since r2587
- */
-function iMSCPajxError(xhr, settings, exception) {
-
-    switch (xhr.status) {
-        // We receive this status when the session is expired
-        case 403:
-            window.location = '/index.php';
-            break;
-        default:
-            alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');
-    }
 }

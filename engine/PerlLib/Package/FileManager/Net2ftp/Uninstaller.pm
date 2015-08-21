@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_unregisterConfig();
 	return $rs if $rs;
@@ -73,10 +73,9 @@ sub uninstall
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
-
 	$self;
 }
 
@@ -84,13 +83,13 @@ sub _init
 
  Remove include directive from frontEnd vhost files
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
 sub _unregisterConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	for my $vhostFile('00_master.conf', '00_master_ssl.conf') {
 		if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile") {
@@ -99,18 +98,9 @@ sub _unregisterConfig
 			);
 
 			my $fileContent = $file->get();
-			unless(defined $fileContent) {
-				error("Unable to read file $file->{'filename'}");
-				return 1;
-			}
-
 			$fileContent =~ s/[\t ]*include imscp_net2ftp.conf;\n//;
-
-			my $rs = $file->set($fileContent);
-			return $rs if $rs;
-
-			$rs = $file->save();
-			return $rs if $rs;
+			$file->set($fileContent);
+			$file->save();
 		}
 	}
 
@@ -123,22 +113,18 @@ sub _unregisterConfig
 
  Remove files
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
 sub _removeFiles
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $rs = iMSCP::Dir->new( dirname =>  "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-	return $rs if $rs;
+	iMSCP::Dir->new( dirname =>  "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
 
 	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf"
-		)->delFile();
-		return $rs if $rs;
+		iMSCP::File->new(filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf")->delFile();
 	}
 
 	0;

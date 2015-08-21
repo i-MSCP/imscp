@@ -25,7 +25,6 @@ package iMSCP::TemplateParser;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use parent 'Common::SingletonClass', 'Exporter';
 
 use vars qw/@EXPORT/;
@@ -59,7 +58,6 @@ sub process
 
 	for (keys %{$data}) {
 		next unless defined $data->{$_};
-
 		my $regexp = sprintf('\\{%s\\}', quotemeta($_));
 		$tplContent =~ s/$regexp/$data->{$_}/gim
 	}
@@ -123,9 +121,8 @@ sub replaceBloc
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

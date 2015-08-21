@@ -25,7 +25,7 @@ package Servers::po;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::EventManager;
 
 our $instance;
 
@@ -42,7 +42,7 @@ our $instance;
  Create and return po server instance
 
  Param string $sName OPTIONAL Name of PO server implementation to instantiate
- Return PO server instance
+ Return PO server instance or die on failure
 
 =cut
 
@@ -51,9 +51,10 @@ sub factory
 	unless(defined $instance) {
 		my $sName = $main::imscpConfig{'PO_SERVER'} || 'no';
 		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::po::$sName";
-		eval "require $package";
-		fatal($@) if $@;
-		$instance = $package->getInstance();
+		eval "require $package" or die(sprintf('Could not load %s package: %s', $package, $@));
+		$instance = $package->getInstance(
+			cfgDir => $main::imscpConfig{'CONF_DIR'}, eventManager => iMSCP::EventManager->getInstance()
+		);
 	}
 
 	$instance;

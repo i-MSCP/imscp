@@ -27,7 +27,6 @@ use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
-use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -35,8 +34,8 @@ use iMSCP::Execute;
 use iMSCP::TemplateParser;
 use File::Basename;
 use version;
-use Servers::po::dovecot;
-use Servers::mta::postfix;
+use Servers::po;
+use Servers::mta;
 use parent 'Common::SingletonClass';
 
 %main::sqlUsers = () unless %main::sqlUsers;
@@ -64,17 +63,12 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
-		my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
-		return $rs if $rs;
-
-		$rs = $eventManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
-		return $rs if $rs;
-
+		$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0 });
+		$eventManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
 		$eventManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
 	} else {
 		$main::imscpConfig{'PO_SERVER'} = 'no';
 		warning('i-MSCP Dovecot PO server require the Postfix MTA. Installation skipped...');
-
 		0;
 	}
 }
@@ -278,15 +272,9 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
-	$self->{'po'} = Servers::po::dovecot->getInstance();
-	$self->{'mta'} = Servers::mta::postfix->getInstance();
-
-	$self->{'eventManager'}->trigger(
-		'beforePodInitInstaller', $self, 'dovecot'
-	) and fatal('dovecot - beforePoInitInstaller has failed');
-
+	$self->{'po'} = Servers::po->factory();
+	$self->{'mta'} = Servers::mta->factory();
+	$self->{'eventManager'} = $self->{'po'}->{'eventManager'};
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -295,7 +283,6 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
 		for my $param(keys %oldConfig) {
 			if(exists $self->{'config'}->{$param}) {
 				$self->{'config'}->{$param} = $oldConfig{$param};
@@ -303,11 +290,7 @@ sub _init
 		}
 	}
 
-	$self->_getVersion() and fatal('Unable to get Dovecot version');
-
-	$self->{'eventManager'}->trigger(
-		'afterPodInitInstaller', $self, 'dovecot'
-	) and fatal('dovecot - afterPoInitInstaller has failed');
+	($self->_getVersion() == 0) or die('Unable to get Dovecot version');
 
 	$self;
 }
@@ -324,11 +307,9 @@ sub _getVersion
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoGetVersion');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoGetVersion');
 
-	my ($stdout, $stderr);
-	$rs = execute('/usr/sbin/dovecot --version', \$stdout, \$stderr);
+	my $rs = execute('/usr/sbin/dovecot --version', \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
 	error('Unable to get dovecot version') if $rs && ! $stderr;
@@ -360,19 +341,15 @@ sub _bkpConfFile
 {
 	my ($self, $cfgFile) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoBkpConfFile', $cfgFile);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoBkpConfFile', $cfgFile);
 
 	if(-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile") {
 		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile" );
 
 		unless(-f "$self->{'bkpDir'}/$cfgFile.system") {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.system");
-			return $rs if $rs;
+			$file->copyFile("$self->{'bkpDir'}/$cfgFile.system");
 		} else {
-			my $timestamp = time;
-			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.$timestamp");
-			return $rs if $rs;
+			$file->copyFile("$self->{'bkpDir'}/$cfgFile" . time());
 		}
 	}
 
@@ -397,8 +374,7 @@ sub _setupSqlUser
 	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD');
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if ! $sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
@@ -420,7 +396,7 @@ sub _setupSqlUser
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 
-		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		my $rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 			return 1;
@@ -433,7 +409,7 @@ sub _setupSqlUser
 
 	my $quotedDbName = $db->quoteIdentifier($dbName);
 
-	$rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
+	my $rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
 		error(sprintf('Unable to add SQL privilege: %s', $rs));
 		return 1;
@@ -449,7 +425,7 @@ sub _setupSqlUser
 
  Build dovecot configuration files
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -518,44 +494,24 @@ sub _buildConf
 	);
 
 	for my $conffile(keys %cfgFiles) {
-		my $cfgTpl;
-		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'dovecot', $conffile, \$cfgTpl, $data);
-		return $rs if $rs;
+		$self->{'eventManager'}->trigger('onLoadTemplate', 'dovecot', $conffile, \my $cfgTpl, $data);
 
 		unless(defined $cfgTpl) {
 			$cfgTpl= iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
-			unless(defined $cfgTpl) {
-				error("Unable to read $self->{'cfgDir'}/$conffile");
-				return 1;
-			}
 		}
 
-		$rs = $self->{'eventManager'}->trigger('beforePoBuildConf', \$cfgTpl, $conffile);
-		return $rs if $rs;
-
+		$self->{'eventManager'}->trigger('beforePoBuildConf', \$cfgTpl, $conffile, $data);
 		$cfgTpl = process($data, $cfgTpl);
-
-		$rs = $self->{'eventManager'}->trigger('afterPoBuildConf', \$cfgTpl, $conffile);
-		return $rs if $rs;
+		$self->{'eventManager'}->trigger('afterPoBuildConf', \$cfgTpl, $conffile, $data);
 
 		my $filename = fileparse($cfgFiles{$conffile}->[0]);
 
 		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-
-		$rs = $file->set($cfgTpl);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->owner($cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2]);
-		return $rs if $rs;
-
-		$rs = $file->mode($cfgFiles{$conffile}->[3]);
-		return $rs if $rs;
-
-		$rs = $file->copyFile($cfgFiles{$conffile}->[0]);
-		return $rs if $rs;
+		$file->set($cfgTpl);
+		$file->save();
+		$file->owner($cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2]);
+		$file->mode($cfgFiles{$conffile}->[3]);
+		$file->copyFile($cfgFiles{$conffile}->[0]);
 	}
 
 	0;
@@ -588,18 +544,15 @@ sub _migrateFromCourier
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoMigrateFromCourier');
-	return $rs if $rs;
+	$self->{'eventManager'}->trigger('beforePoMigrateFromCourier');
 
 	my $mailPath = "$self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}";
-
 	my @cmd = (
 		'perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl", '--to-dovecot',
 		'--convert', '--overwrite', '--recursive', $mailPath
 	);
 
-	my ($stdout, $stderr);
-	$rs = execute("@cmd", \$stdout, \$stderr);
+	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
@@ -621,17 +574,14 @@ sub _oldEngineCompatibility
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforePoOldEngineCompatibility');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforePoOldEngineCompatibility');
 	$self->{'eventManager'}->trigger('afterPodOldEngineCompatibility');
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

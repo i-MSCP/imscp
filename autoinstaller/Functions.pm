@@ -117,8 +117,9 @@ sub build
 
 	if($main::skippackages && !iMSCP::Getopt->preseed) {
 		unless(
-			$main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'PO_SERVER'} && $main::imscpConfig{'MTA_SERVER'} &&
-			$main::imscpConfig{'FTPD_SERVER'} && $main::imscpConfig{'NAMED_SERVER'} && $main::imscpConfig{'SQL_SERVER'}
+			$main::imscpConfig{'FTPD_SERVER'} && $main::imscpConfig{'FRONTEND_SERVER'} &&
+			$main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'MTA_SERVER'} &&
+			$main::imscpConfig{'NAMED_SERVER'} && $main::imscpConfig{'PO_SERVER'} && $main::imscpConfig{'SQL_SERVER'}
 		) {
 			$main::noprompt = 0;
 			$main::skippackages = 0;
@@ -162,41 +163,29 @@ sub build
 	# Remove the distro packages step in case the --skippackages is set
 	unshift @steps, [ \&_processDistroPackages,  'Processing distro packages' ] unless $main::skippackages;
 
-	$rs = $eventManager->trigger('beforeBuild', \@steps);
-	return $rs if $rs;
+	$eventManager->trigger('beforeBuild', \@steps);
 
-	my $cStep = 1;
-	my $nbSteps = scalar @steps;
+	my ($nStep, $nSteps) = (0, scalar @steps);
+	step(@{ $steps[$nStep] }, $nSteps, ++$nStep) for @steps;
 
-	for my $step(@steps) {
-		$rs = step($step->[0], $step->[1], $nbSteps, $cStep);
-		error('An error occurred while performing build steps') if $rs;
-		return $rs if $rs;
-		$cStep++;
-	}
-
-	$rs = $eventManager->trigger('afterBuild');
-	return $rs if $rs;
-
-	$rs = $eventManager->trigger('beforePostBuild');
-	return $rs if $rs;
+	$eventManager->trigger('afterBuild');
+	$eventManager->trigger('beforePostBuild');
 
 	$rs = _getDistroAdapter()->postBuild();
 	return $rs if $rs;
 
 	unless($main::skippackages) {
 		# Add/update servers selection in imscp.conf file
-		for my $server('HTTPD', 'PO', 'MTA', 'FTPD', 'NAMED', 'SQL') {
+		for my $server('FTPD', 'FRONTEND', 'HTTPD', 'MTA', 'NAMED', 'PO', 'SQL') {
 			$main::imscpConfig{ $server . '_SERVER' } = $main::questions{ $server . '_SERVER' };
 		}
 	}
 
 	# Backup current configuration file if any
 	if(-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
-		$rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
+		iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
 			"$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
 		);
-		return $rs if $rs;
 	}
 
 	# Write new config file
@@ -211,8 +200,7 @@ sub build
 		no_chdir => 1
 	}, $main::{'INST_PREF'};
 
-	$rs = $eventManager->trigger('afterPostBuild');
-	return $rs if $rs;
+	$eventManager->trigger('afterPostBuild');
 
 	endDebug();
 }
@@ -256,24 +244,14 @@ EOF
 		[ \&_deleteBuildDir,              'Deleting Build directory' ]
 	);
 
-	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeInstall', \@steps);
-	return $rs if $rs;
+	iMSCP::EventManager->getInstance()->trigger('beforeInstall', \@steps);
 
-	my $cStep = 1;
-	my $nbSteps = scalar @steps;
-
-	for my $step(@steps) {
-		$rs = step($step->[0], $step->[1], $nbSteps, $cStep);
-		error('An error occurred while performing installation steps') if $rs;
-		return $rs if $rs;
-
-		$cStep++;
-	}
+	my ($nStep, $nSteps) = (0, scalar @steps);
+	step(@{ $steps[$nStep] }, $nSteps, ++$nStep) for @steps;
 
 	iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Dialog->getInstance()->hasGauge();
 
-	$rs = iMSCP::EventManager->getInstance()->trigger('afterInstall');
-	return $rs if $rs;
+	iMSCP::EventManager->getInstance()->trigger('afterInstall');
 
 	my $port = ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://')
 		? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
@@ -381,11 +359,6 @@ sub _showUpdateNotices
 
 					if(version->parse($imscpVersion) < version->parse($noticeVersion)) {
 						my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
-						unless(defined $noticeBody) {
-							error("Unable to read $noticesDir/$noticeFile file");
-							return 1;
-						}
-
 						$notices .= "\n$noticeBody";
 					}
 				}
@@ -682,14 +655,14 @@ sub _buildFrontendFiles
 sub _buildDaemon
 {
 	unless(chdir "$FindBin::Bin/daemon") {
-		error(sprintf('Unable to change dir to %s', "$FindBin::Bin/daemon"));
+		error(sprintf('Could not change dir to %s', "$FindBin::Bin/daemon"));
 		return 1;
 	}
 
 	my $rs = execute('make clean imscp_daemon', \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Could not to build i-MSCP daemon') if $rs && !$stderr;
+	error('Could not build i-MSCP daemon') if $rs && !$stderr;
 	return $rs if $rs;
 
 	iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" )->make();
@@ -736,8 +709,7 @@ sub _savePersistentData
 
 	# Remove old README file
 	if(-f "$main::imscpConfig{'CONF_DIR'}/listeners.d/README") {
-		my $rs = iMSCP::file->new( filename => "$main::imscpConfig{'CONF_DIR'}/listeners.d/README" )->delFile();
-		return $rs if $rs;
+		iMSCP::file->new( filename => "$main::imscpConfig{'CONF_DIR'}/listeners.d/README" )->delFile();
 	}
 
 	# Move package cache directory to new location
@@ -935,11 +907,11 @@ sub _createDirFromXmlElement
 {
 	my $element = shift;
 
-	my $dirH = iMSCP::Dir->new( dirname => $element->{'content'} );
+	my $dir = iMSCP::Dir->new( dirname => $element->{'content'} );
 
 	# Needed to be sure to not keep any file from a previous build that has failed
 	if(defined $main::{'INST_PREF'} && $main::{'INST_PREF'} eq $element->{'content'}) {
-		$dirH->remove();
+		$dir->remove();
 	}
 
 	my $options = { };
@@ -947,7 +919,7 @@ sub _createDirFromXmlElement
 	$options->{'group'} = _expandVars($element->{'group'}) if $element->{'group'};
 	$options->{'mode'} = oct($element->{'mode'}) if $element->{'mode'};
 
-	$dirH->make($options);
+	$dir->make($options);
 }
 
 =item _copyConfdirFromXmlElement($workingDir, $distribution, \%element)
@@ -1001,20 +973,20 @@ sub _copyConffileFromXmlElement
 		$source = "$defaultConfigFolder/$targetBasename";
 	}
 
-	my $rs = iMSCP::File->new( filename => $source )->copyFile($target, { preserve => 'no' });
-	return $rs if $rs;
+	iMSCP::File->new( filename => $source )->copyFile($target, { preserve => 'no' });
 
 	if($element->{'user'} || $element->{'group'} || $element->{'mode'}) {
 		my $file = iMSCP::File->new( filename => $target );
-		$rs = $file->mode(oct($element->{'mode'})) if $element->{'mode'};
-		return $rs if $rs;
+
+		if($element->{'mode'}) {
+			$file->mode(oct($element->{'mode'}));
+		}
 
 		if($element->{'user'} || $element->{'group'}) {
-			$rs = $file->owner(
+			$file->owner(
 				$element->{'user'} ? _expandVars($element->{'user'}) : -1,
 				$element->{'group'} ? _expandVars($element->{'group'}) : -1
 			);
-			return $rs if $rs;
 		}
 	}
 
@@ -1061,20 +1033,20 @@ sub _copyFileFromXmlElement
 	my $targetBasename = basename($target);
 	my $source = "$workingDir/$targetBasename";
 
-	my $rs = iMSCP::File->new( filename => $source )->copyFile($target, { preserve => 'no' });
-	return $rs if $rs;
+	iMSCP::File->new( filename => $source )->copyFile($target, { preserve => 'no' });
 
 	if($element->{'user'} || $element->{'group'} || $element->{'mode'}) {
 		my $file = iMSCP::File->new( filename => $target );
-		$rs = $file->mode(oct($element->{'mode'})) if $element->{'mode'};
-		return $rs if $rs;
+
+		if($file->{'mode'}) {
+			$file->mode(oct($element->{'mode'}));
+		}
 
 		if($element->{'user'} || $element->{'group'}) {
-			$rs = $file->owner(
+			$file->owner(
 				$element->{'user'} ? _expandVars($element->{'user'}) : -1,
 				$element->{'group'} ? _expandVars($element->{'group'}) : -1
 			);
-			return $rs if $rs;
 		}
 	}
 

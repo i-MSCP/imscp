@@ -26,10 +26,9 @@ package Servers::ftpd::proftpd::uninstaller;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::Execute;
 use File::Basename;
 use iMSCP::File;
-use Servers::ftpd::proftpd;
+use Servers::ftpd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -74,7 +73,6 @@ sub removeDB
 
 	$db->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
 	$db->doQuery('f', 'FLUSH PRIVILEGES');
-
 	0;
 }
 
@@ -82,7 +80,7 @@ sub removeDB
 
  Restore system configuration file
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -93,10 +91,9 @@ sub restoreConfFile
 	my ($filename, $directories, $suffix) = fileparse($self->{'config'}->{'FTPD_CONF_FILE'});
 
 	if(-f "$self->{bkpDir}/$filename$suffix.system") {
-		my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename$suffix.system" )->copyFile(
+		iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename$suffix.system" )->copyFile(
 			"$self->{bkpDir}/$filename$suffix.system"
 		);
-		return $rs if $rs;
 	}
 
 	0;
@@ -120,18 +117,17 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
+	$self->{'ftpd'} = Servers::ftpd->factory();
 	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = $self->{'ftpd'}->{'config'};
-
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

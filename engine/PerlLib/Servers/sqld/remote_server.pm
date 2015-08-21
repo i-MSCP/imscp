@@ -47,9 +47,7 @@ sub postinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
-	return $rs if $rs;
-
+	$self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
 	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
 
@@ -65,11 +63,7 @@ sub restart
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldRestart');
-	return $rs if $rs;
-
-	# Nothing to do there
-
+	$self->{'eventManager'}->trigger('beforeSqldRestart');
 	$self->{'eventManager'}->trigger('afterSqldRestart');
 }
 

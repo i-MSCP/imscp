@@ -42,12 +42,11 @@
 			<td><label for="ftp_directory">{TR_HOME_DIR}</label></td>
 			<td>
 				<input type="text" id="ftp_directory" name="home_dir" value="{HOME_DIR}"/>
-				<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{TR_CHOOSE_DIR}</a>
+				<a href="ftp_choose_dir.php" class="icon i_bc_folder ftp_choose_dir">{TR_CHOOSE_DIR}</a>
 			</td>
 		</tr>
 		</tbody>
 	</table>
-
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_ADD}"/>
 		<a class="link_as_button" href="ftp_accounts.php">{TR_CANCEL}</a>

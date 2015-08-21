@@ -46,7 +46,7 @@ OPTIONS:
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-httpd-logs-mngr.lock', 'nowait');
-$bootstrapper->boot({ norequirements => 'yes', nolock => 'yes', config_readonly => 'yes' });
+$bootstrapper->boot({ norequirements => 1, nolock => 1, config_readonly => 1 });
 
 sub run
 {
