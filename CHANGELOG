@@ -40,6 +40,7 @@ FRONTEND
 	Introduced: HSTS (HTTP Strict Transport Security) feature
 
 INSTALLER
+	Changed: Minimum PHP required PHP version is now 5.3.7
 	Fixed: Avoid call of external commands whenever possible
 	Fixed: The update notices are always shown even when they are out-dated
 

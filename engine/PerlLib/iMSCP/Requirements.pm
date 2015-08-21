@@ -138,7 +138,7 @@ sub _init
 		'PHP' => {
 			'version_command' => 'php -v',
 			'version_regexp' => qr/PHP\s([\d.]+)/,
-			'min_version' => '5.3.2'
+			'min_version' => '5.3.10'
 		},
 		'Perl' => {
 			'version_command' => 'perl -v',

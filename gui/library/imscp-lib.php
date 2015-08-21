@@ -64,6 +64,11 @@ Zend_Loader_AutoloaderFactory::factory(
 // Set handler for uncaught exceptions
 iMSCP_Registry::set('exceptionHandler', new iMSCP_Exception_Handler());
 
+// Check for PHP version
+if (version_compare(phpversion(), '5.3.10', '<')) {
+	throw new RuntimeException('i-MSCP require PHP version >= 5.3.10');
+}
+
 /**
  * Include core functions
  */
