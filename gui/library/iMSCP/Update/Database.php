@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 213;
+	protected $lastUpdate = 214;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3374,7 +3374,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL AFTER url_forward"
 		);
 
-		if($sql !== null) {
+		if ($sql !== null) {
 			$sqlUpd[] = $sql;
 			$sqlUpd[] = "UPDATE domain_aliasses SET type_forward = '302' WHERE url_forward <> 'no'";
 		}
@@ -3385,7 +3385,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL AFTER subdomain_url_forward"
 		);
 
-		if($sql !== null) {
+		if ($sql !== null) {
 			$sqlUpd[] = $sql;
 			$sqlUpd[] = "UPDATE subdomain SET subdomain_type_forward = '302' WHERE subdomain_url_forward <> 'no'";
 		}
@@ -3396,11 +3396,23 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL AFTER subdomain_alias_url_forward"
 		);
 
-		if($sql !== null) {
+		if ($sql !== null) {
 			$sqlUpd[] = $sql;
 			$sqlUpd[] = "UPDATE subdomain_alias SET subdomain_alias_type_forward = '302' WHERE subdomain_alias_url_forward <> 'no'";
 		}
 
 		return $sqlUpd;
+	}
+
+	/**
+	 * Add SMTP submission port in config table
+	 *
+	 * @return null
+	 */
+	protected function r214()
+	{
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+		$dbConfig['PORT_SMTP_SUBMISSION'] = '587;tcp;SMTP-SUBMISSION;1;0.0.0.0';
+		return null;
 	}
 }

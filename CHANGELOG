@@ -35,6 +35,7 @@ CONTRIB
 	Updated: Listener::Postfix::Smarthost listener file - Usage of cdb map instead of hash map
 
 FRONTEND
+	Added: SMTP submission port in list of service ports
 	Fixed: Possible ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx tmp (fastcgi) directory
 	Fixed: Wrong issue tracker links in admin/database_update.php
 	Introduced: HSTS (HTTP Strict Transport Security) feature
