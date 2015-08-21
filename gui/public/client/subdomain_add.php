@@ -260,11 +260,6 @@ function client_addSubdomain()
 				set_page_message($e->getMessage(), 'error');
 				return false;
 			}
-
-			if (!isset($_POST['forward_type']) || !in_array($_POST['forward_type'], array('301', '302', '303', '307'))) {
-				set_page_message(tr('Please select the forward type.'), 'error');
-				return false;
-			}
 		} else {
 			showBadRequestErrorPage();
 		}
