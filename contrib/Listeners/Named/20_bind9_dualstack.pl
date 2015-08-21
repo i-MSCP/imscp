@@ -21,6 +21,8 @@
 
 package Listener::Bind9::DualStack;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use List::MoreUtils qw(uniq);
@@ -44,8 +46,9 @@ my @additionalIPs = ( '<IP1>', '<IP2>' );
 ## Please, don't edit anything below this line
 #
 
-sub addCustomDNSrecord
-{
+my $eventManager = iMSCP::EventManager->getInstance();
+
+$eventManager->register('afterNamedAddDmnDb', sub {
 	my ($tplDbFileContent, $data) = @_;
 
 	# All dns IPs
@@ -92,10 +95,9 @@ sub addCustomDNSrecord
 	}
 
 	0;
-}
+});
 
-sub addCustomDNSrecordSub
-{
+$eventManager->register('afterNamedAddSub', sub {
 	my ($wrkDbFileContent, $data) = @_;
 
 	# All dns IPs
@@ -142,11 +144,7 @@ sub addCustomDNSrecordSub
 	}
 
 	0;
-}
-
-my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('afterNamedAddDmnDb', \&addCustomDNSrecord);
-$eventManager->register('afterNamedAddSub', \&addCustomDNSrecordSub);
+});
 
 1;
 __END__

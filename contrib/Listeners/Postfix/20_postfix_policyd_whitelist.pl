@@ -23,9 +23,8 @@ package Listener::Postfix::Policyd::Whitelist;
  
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventMaanger;
-use iMSCP::Execute;
+use Servers::mta;
 
 #
 ## Configuration variables
@@ -40,21 +39,13 @@ my $checkRecipientAccess = "\n check_recipient_access hash:/etc/postfix/imscp/po
 ## Please, don't edit anything below this line
 #
 
-sub onAfterMtaBuildPolicydWhitelist
-{
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
 	my $tplContent = shift;
 
 	if (-f $policydWeightClientWhitelist && -f $policydWeightRecipientWhitelist) {
-		my ($stdout, $stderr);
-		my $rs = execute("postmap $policydWeightClientWhitelist", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$rs = execute("postmap $policydWeightRecipientWhitelist", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		my $mta = Servers::mta->factory();
+		$mta->{'postmap'}->{$policydWeightClientWhitelist} = 'hash';
+		$mta->{'postmap'}->{$policydWeightRecipientWhitelist} = 'hash';
 
 		if ($$tplContent !~ /check_client_access/m) {
 			$$tplContent =~ s/(reject_non_fqdn_recipient,)/$1$checkClientAccess/;
@@ -66,9 +57,7 @@ sub onAfterMtaBuildPolicydWhitelist
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPolicydWhitelist);
+});
 
 1;
 __END__

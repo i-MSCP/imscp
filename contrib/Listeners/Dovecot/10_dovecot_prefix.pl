@@ -16,36 +16,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file to edit the prefix in dovecot.conf
+## Listener file that remove the INBOX. prefix in the dovecot configuration file
 #
 
 package Listener::Dovecot::Prefix;
 
-use iMSCP::File;
+use strict;
+use warnings;
 use iMSCP::EventManager;
 
-sub removePrefix
-{
-	my $dovecotConfig = '/etc/dovecot/dovecot.conf';
+iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
+	my ($cfgTpl, $tplName) = @_;
 
-	my $file = iMSCP::File->new( filename => $dovecotConfig );
-
-	my $fileContent = $file->get();
-	unless (defined $fileContent) {
-		error("Unable to read $dovecotConfig");
-		return 1;
-	}
-
-	$fileContent =~ s/prefix = INBOX\./prefix =/;
-	
-	$rs = $file->set($fileContent);
-	return $rs if $rs;
-
-	$file->save();
-
-}
-
-iMSCP::EventManager->getInstance()->register('beforePoRestart', \&removePrefix);
+	$$cfgTpl =~ s/(prefix\s=)\sINBOX\./$1/ if index($tplName, 'dovecot.conf') != -1;
+});
 
 1;
 __END__

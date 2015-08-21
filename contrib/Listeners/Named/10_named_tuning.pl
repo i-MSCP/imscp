@@ -21,10 +21,11 @@
 
 package Listener::Named::Tuning;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 
-sub beforeNamedAddCustomDNS
-{
+iMSCP::EventManager->getInstance()->register('beforeNamedAddCustomDNS', sub {
 	my ($wrkDbFileContent, $data) = @_;
 
 	if (@{$data->{'DNS_RECORDS'}}) {
@@ -42,9 +43,7 @@ sub beforeNamedAddCustomDNS
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('beforeNamedAddCustomDNS', \&beforeNamedAddCustomDNS);
+});
 
 1;
 __END__

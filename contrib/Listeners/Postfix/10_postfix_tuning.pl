@@ -21,6 +21,8 @@
 
 package Listener::Postfix::Tuning;
 
+use strict;
+use warnings;
 use iMSCP::Debug;
 use iMSCP::ProgramFinder;
 use iMSCP::EventManager;
@@ -33,7 +35,7 @@ use iMSCP::Execute;
 # Path to Postfix configuration directory
 my $postfixConfigDir = '/etc/postfix';
 
-## Postfix main.cf ( see http://www.postfix.org/postconf.5.html )
+# Postfix main.cf ( see http://www.postfix.org/postconf.5.html )
 # Hash where each pair of key/value correspond to a postfix parameter
 # Please replace the entries below by your own entries
 my %mainCfParameters = (
@@ -44,7 +46,7 @@ my %mainCfParameters = (
 	'relayhost' => '192.168.1.5:125'
 );
 
-## Postfix master.cf ( see http://www.postfix.org/master.5.html )
+# Postfix master.cf ( see http://www.postfix.org/master.5.html )
 # Array where each entry correspond to a postfix service. Entries are added at bottom.
 # Please replace the entries below by your own entries
 my @masterCfParameters = (
@@ -55,44 +57,31 @@ my @masterCfParameters = (
 ## Please, don't edit anything below this line
 #
 
-# Listener responsible to tune Postfix main.cf file, once it was built by i-MSCP
-sub setupMainCf
-{
-	if(%mainCfParameters && iMSCP::ProgramFinder::find('postconf')) {
-		my @cmd = (
-			'postconf',
-			'-e', # Needed for Postfix < 2.8
-			'-c', escapeShell($postfixConfigDir)
-		);
+my $eventManager = iMSCP::EventManager->getInstance();
 
+$eventManager->register('afterMtaBuildConf', sub {
+	if(%mainCfParameters && iMSCP::ProgramFinder::find('postconf')) {
+		my @cmd = ('postconf', '-e', '-c', escapeShell($postfixConfigDir));
 		push @cmd, ($_ . '=' . escapeShell($mainCfParameters{$_})) for keys %mainCfParameters;
 
-		my ($stdout, $stderr);
-		my $rs = execute("@cmd", \$stdout, \$stderr);
+		my $rs = execute("@cmd", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 	}
 
 	0;
-}
+});
 
-# Listener responsible to add entries at bottom of Postfix master.cf file, once it was built by i-MSCP
-sub setupMasterCf
-{
-	my $cfgTpl = $_[0];
+$eventManager->register('afterMtaBuildMasterCfFile', sub {
+	my $cfgTpl = shift;
 
 	if(@masterCfParameters) {
 		$$cfgTpl .= join("\n", @masterCfParameters) . "\n";
 	}
 
 	0;
-}
-
-# Register event listeners on the event manager
-my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('afterMtaBuildConf', \&setupMainCf);
-$eventManager->register('afterMtaBuildMasterCfFile', \&setupMasterCf);
+});
 
 1;
 __END__

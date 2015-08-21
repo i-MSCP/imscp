@@ -20,12 +20,11 @@
 #
 
 package Listener::Postfix::BCC::Map;
- 
+
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use Servers::mta;
 
 #
 ## Configuration variables
@@ -40,30 +39,21 @@ my $addSenderBccMap = "sender_bcc_maps = hash:/etc/postfix/imscp/sender_bcc_map\
 ## Please, don't edit anything below this line
 #
 
-sub onAfterMtaBuildPostfixBccMap($)
-{
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
 	my $tplContent = shift;
 
 	if (-f $postfixRecipientBccMap && -f $postfixSenderBccMap) {
-		my ($stdout, $stderr);
-		my $rs = execute("postmap $postfixRecipientBccMap", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		my $mta = Servers::mta->factory();
 
-		$rs = execute("postmap $postfixSenderBccMap", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		$mta->{'postmap'}->{$postfixRecipientBccMap} = 'hash';
+		$$tplContent .= $addRecipientBccMap;
 
-		$$tplContent .= "$addRecipientBccMap";
-		$$tplContent .= "$addSenderBccMap";
+		$mta->{'postmap'}->{$postfixSenderBccMap} = 'hash';
+		$$tplContent .= $addSenderBccMap;
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixBccMap);
+});
 
 1;
 __END__

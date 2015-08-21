@@ -21,6 +21,8 @@
 
 package Listener::Apache2::DualStack;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 use iMSCP::Net;
 use List::MoreUtils qw(uniq);
@@ -53,9 +55,9 @@ my @additionalIPs = ( '<IP1>', '<IP2>' );
 my @IPS = ();
 my @SSL_IPS = ();
 
-# Listener responsible to add additional IPs in Apache2 vhost files, once they was built by i-MSCP
-sub addIPs
-{
+my $eventManager = iMSCP::EventManager->getInstance();
+
+$eventManager->register('afterHttpdBuildConfFile', sub {
 	my ($cfgTpl, $tplName, $data) = @_;
 
 	if(exists $data->{'DOMAIN_NAME'} && $tplName =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/) {
@@ -99,23 +101,16 @@ sub addIPs
 	}
 
 	0;
-}
+});
 
-# Listener responsible to make the Httpd server implementation aware of additional IPs
-sub addIPList
-{
+$eventManager->register('beforeHttpdAddIps', sub {
 	my $data = $_[1];
 
 	@{$data->{'IPS'}} = uniq( @{$data->{'IPS'}}, @IPS );
 	@{$data->{'SSL_IPS'}} = uniq( @{$data->{'SSL_IPS'}}, @SSL_IPS );
 
 	0;
-}
-
-# Register event listeners on the event manager
-my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('afterHttpdBuildConfFile', \&addIPs);
-$eventManager->register('beforeHttpdAddIps', \&addIPList);
+});
 
 1;
 __END__

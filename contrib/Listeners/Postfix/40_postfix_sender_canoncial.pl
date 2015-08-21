@@ -20,12 +20,11 @@
 #
 
 package Listener::Postfix::Sender::Canonical;
- 
+
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use Servers::mta;
 
 #
 ## Configuration variables
@@ -38,24 +37,16 @@ my $addSenderCanoncial = "sender_canonical_maps = hash:/etc/postfix/imscp/sender
 ## Please, don't edit anything below this line
 #
 
-sub onAfterMtaBuildPostfixSenderCanoncial
-{
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
 	my $tplContent = shift;
 
 	if (-f $postfixSenderCanoncial) {
-		my ($stdout, $stderr);
-		my $rs = execute("postmap $postfixSenderCanoncial", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$$tplContent .= "$addSenderCanoncial";
+		Servers::mta->factory()->{'postmap'}->{$postfixSenderCanoncial} = 'hash';
+		$$tplContent .= $addSenderCanoncial;
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixSenderCanoncial);
+});
 
 1;
 __END__

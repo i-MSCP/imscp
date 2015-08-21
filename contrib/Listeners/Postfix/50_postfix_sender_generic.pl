@@ -20,12 +20,11 @@
 #
 
 package Listener::Postfix::Sender::Generic::Map;
- 
+
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use Servers::mta;
 
 #
 ## Configuration variables
@@ -38,24 +37,16 @@ my $addSmtpGenericMap = "smtp_generic_maps = hash:/etc/postfix/imscp/smtp_outgoi
 ## Please, don't edit anything below this line
 #
 
-sub onAfterMtaBuildPostfixSmtpGenericMap($)
-{
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
 	my $tplContent = shift;
 
 	if (-f $postfixSmtpGenericMap) {
-		my ($stdout, $stderr);
-		my $rs = execute("postmap $postfixSmtpGenericMap", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$$tplContent .= "$addSmtpGenericMap";
+		Servers::mta->factory()->{'postmap'}->{$postfixSmtpGenericMap} = 'hash';
+		$$tplContent .= $addSmtpGenericMap;
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixSmtpGenericMap);
+});
 
 1;
 __END__

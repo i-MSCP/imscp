@@ -21,33 +21,41 @@
 
 package Listener::Named::Tuning2;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 
-sub replaceDefaultNameservers
-{
-        # Define here your out-of-zone nameservers
-        my @nameservers = ("ns1.mycompany.tld", "ns2.mycompany.tld", "ns3.mycompany.tld");
+#
+## Configuration variables
+#
 
-        my ($wrkFile, $data) = @_;
+# Below, add the list of nameservers for which this listener must operate. For instance:
+# my @nameservers = ( 'ns1.mycompany.tld', 'ns2.mycompany.tld', 'ns3.mycompany.tld' );
+# Note: Domain names must be in ASCII form.
+my @nameservers = ();
 
-        # Remove default nameservers (IN A and IN NS section)
-        $$wrkFile =~ s/ns[0-9]\tIN\tA\t([0-9]{1,3}[\.]){3}[0-9]{1,3}\n//g;
-        $$wrkFile =~ s/\@\t\tIN\tNS\tns[0-9]\n//g;
+#
+## Please, don't edit anything below this line
+#
 
-        # Add out-of-zone nameservers
-        foreach my $nameserver(@nameservers) {
-                $$wrkFile .= "@         IN      NS      $nameserver.\n";
-        }
+iMSCP::EventManager->getInstance()->register('afterNamedAddDmnDb', sub {
+	my ($wrkFile, $data) = @_;
 
-        # Fix SOA record according new nameservers
-        $$wrkFile =~ s/IN\tSOA\tns1\.$data->{'DOMAIN_NAME'}\. hostmaster\.$data->{'DOMAIN_NAME'}\./IN\tSOA\t$nameservers[0]\. hostmaster\.$data->{'DOMAIN_NAME'}\./g;
+	# Remove default nameservers (IN A and IN NS section)
+	$$wrkFile =~ s/ns[0-9]\tIN\tA\t([0-9]{1,3}[\.]){3}[0-9]{1,3}\n//g;
+	$$wrkFile =~ s/\@\t\tIN\tNS\tns[0-9]\n//g;
 
-        0;
-}
+	# Add out-of-zone nameservers
+	for my $nameserver(@nameservers) {
+		$$wrkFile .= "@\tIN\tNS\t$nameserver.\n";
+	}
 
-my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('afterNamedAddDmnDb', \&replaceDefaultNameservers);
+	# Fix SOA record according new nameservers
+	$$wrkFile =~ s/SOA\s+ns1\Q.$data->{'DOMAIN_NAME'}.\E/SOA\t$nameservers[0]./;
+
+	0;
+});
 
 1;
 __END__

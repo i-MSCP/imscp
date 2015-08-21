@@ -19,6 +19,11 @@ Listener file that provides dual stack support for Apache2.
 
 Listener file that allows to override Apache2 ServerAlias directive value.
 
+### 20_apache2_followsymlinks.pl
+
+Listener file that allow to replace the SymLinksIfOwnerMatch option by the FollowSymlinks option in the vhost files of
+the specified domain(s)
+
 ### 30_apache2_redirects_permanently.pl
 
 Listener file which changes the domain redirect type in customer's vhost files from 302 to 301.
@@ -38,6 +43,12 @@ Listener file to edit the prefix in dovecot.conf
 ### 10_phpfpm_maxchildren.pl
 
 Listener file which changes the max-children value
+
+## Dovecot listeners
+
+### 10_dovecot_prefix.pl
+
+Listener file that remove the INBOX. prefix in the dovecot configuration file
 
 ## Named listeners
 

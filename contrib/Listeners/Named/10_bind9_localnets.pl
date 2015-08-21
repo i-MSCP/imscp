@@ -21,10 +21,11 @@
 
 package Listener::Bind9::Localnets;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 
-sub onBeforeNamedBuildConf
-{
+iMSCP::EventManager->getInstance()->register('beforeNamedBuildConf', sub {
 	my ($tplContent, $tplName) = @_;
 
 	if($tplName eq 'named.conf.options') {
@@ -32,9 +33,7 @@ sub onBeforeNamedBuildConf
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('beforeNamedBuildConf', \&onBeforeNamedBuildConf);
+});
 
 1;
 __END__

@@ -21,23 +21,21 @@
 
 package Listener::Apache2::Redirect::Permanently;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 
-sub changeRedirectType
-{
+iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
 	my ($cfgTpl, $tplName, $data) = @_;
 
 	if($tplName =~ /^domain_redirect(?:_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
-		my $search = "Redirect / {FORWARD}\n";
-		my $replace = "Redirect 301 / {FORWARD}\n";
-
-		$$cfgTpl =~ s/$search/$replace/;
+		$$cfgTpl =~ s%(Redirect)\s+/\s+(\{FORWARD\}\n)%$1 301 / $2%;
 	}
 
 	0;
 }
 
-iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', \&changeRedirectType);
+});
 
 1;
 __END__

@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2014 by Laurent Declercq
+# Copyright (C) 2013-2015 by Laurent Declercq
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,14 +16,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Listener file that allows to configure the Postfix as smarthost with SASL authentication.
+## Listener file that allows to configure Postfix as smarthost with SASL authentication.
 #
 
 package Listener::Postfix::Smarthost;
 
-use iMSCP::Debug;
+use strict;
+use warnings;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::File;
 use Servers::mta;
 
@@ -35,28 +35,22 @@ my $relayhost = 'smtp.host.tld';
 my $relayport = '587';
 my $saslAuthUser = '';
 my $saslAuthPasswd = '';
-my $saslPasswdMapsPath = '/etc/postfix/relay_passwd';
 
 #
 ## Please, don't edit anything below this line
 #
 
-sub createSaslPasswdMaps
-{
-	my $saslPasswdMapsFile = iMSCP::File->new('filename' => $saslPasswdMapsPath);
-	$saslPasswdMapsFile->set("$relayhost:$relayport\t$saslAuthUser:$saslAuthPasswd");
+my $eventManager = iMSCP::EventManager->getInstance();
 
-	my $rs = $saslPasswdMapsFile->save();
-	$rs ||= $saslPasswdMapsFile->mode(0600);
-	return $rs if $rs;
+$eventManager->register('afterMtaBuildMainCfFile', sub createRelayPasswdTable {
+	my $mta = Servers::mta->factory();
+	my $relayPasswdTable = "$mta->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/relay_passwd";
 
-	Servers::mta->factory()->{'postmap'}->{$saslPasswdMapsPath} = 1;
+	iMSCP::File->new( filename => $relayPasswdTable )->save();
+	$mta->addTableEntry("$relayhost:$relayport", "$saslAuthUser:$saslAuthPasswd", $relayPasswdTable, 'cdb');
+});
 
-	0;
-}
-
-sub configureSmartHost
-{
+$eventManager->register('afterMtaBuildMainCfFile', sub {
 	my $fileContent = shift;
 
 	$$fileContent .= <<EOF;
@@ -64,16 +58,12 @@ sub configureSmartHost
 # Added by Listener::Postfix::Smarthost
 relayhost=$relayhost:$relayport
 smtp_sasl_auth_enable=yes
-smtp_sasl_password_maps=cdb:$saslPasswdMapsPath
+smtp_sasl_password_maps=cdb:$saslPwdTable
 smtp_sasl_security_options=noanonymous
 EOF
 
 	0;
-}
-
-my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('afterMtaBuildMainCfFile', \&createSaslPasswdMaps);
-$eventManager->register('afterMtaBuildMainCfFile', \&configureSmartHost);
+});
 
 1;
 __END__

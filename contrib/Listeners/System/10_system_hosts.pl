@@ -16,14 +16,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file which allow to add host entries in the system hosts file
+## i-MSCP listener file that allows to add host entries in the system hosts file
 #
 
 package Listener::System::Hosts;
 
+use strict;
+use warnings;
 use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::File;
 
 #
 ## Configuration variables
@@ -43,27 +44,13 @@ my @hostsFileEntries = (
 ## Please, don't edit anything below this line
 #
 
-# Listener responsible to add host entries in the system hosts file, once it was built by i-MSCP
-sub addHostEntries
-{
-	if(-f $hostsFilePath) {
-		my $file = iMSCP::File->new( filename => $hostsFilePath );
+iMSCP::EventManager->getInstance()->register('afterSetupServerHostsFile', sub addHostEntries {
+	my $hostFileContent = shift;
 
-		my $fileContent = $file->get();
-		unless(defined $fileContent) {
-			error("Unable to read $hostsFilePath");
-			return 1;
-		}
-
-		my $rs = $file->set( $fileContent . ( join "\n", @hostsFileEntries ) . "\n" );
-		$rs ||= $file->save();
-		return $rs if $rs;
-	}
+	$$hostFileContent .= ( join "\n", @hostsFileEntries ) . "\n" );
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterSetupServerHostname', \&addHostEntries);
+});
 
 1;
 __END__
