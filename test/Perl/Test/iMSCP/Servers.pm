@@ -26,7 +26,7 @@ sub getInstanceDieIfCannotReadDir
 {
 	local $@;
 	eval { iMSCP::Servers->getInstance(); };
-	undef $iMSCP::Servers::_instance; # Destroy singleton
+	undef $iMSCP::Servers::_instance;
 	$@;
 }
 
@@ -52,10 +52,9 @@ sub runUnitTests
 				'getFull() return expected server list';
 		};
 
+		undef $main::imscpConfig{'ENGINE_ROOT_DIR'};
 		diag sprintf('A test failed unexpectedly: %s', $@) if $@;
 	}
-
-	undef $main::imscpConfig{'ENGINE_ROOT_DIR'};
 }
 
 1;

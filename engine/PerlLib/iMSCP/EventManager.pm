@@ -25,6 +25,7 @@ package iMSCP::EventManager;
 
 use strict;
 use warnings;
+use iMSCP::Debug;
 use Carp;
 use Hash::Util::FieldHash 'fieldhash';
 use parent 'Common::SingletonClass';
@@ -56,28 +57,15 @@ sub register
 {
 	my ($self, $event, $listener) = @_;
 
-	ref $listener eq 'CODE' or croak(sprintf('Invalid listener provided for the %s event', $event));
+	defined $event or croak('The $event parameter is not defined');
+	defined $listener or croak('The $listener parameter is not defined');
+
+	ref $listener eq 'CODE' or croak(sprintf('Invalid $listener parameter. Code reference expected.', $event));
 	push @{ $events{$self}->{$event} }, $listener;
 	0;
 }
 
-=item unregister($event)
-
- Unregister any listener which listen to the given event
-
- Param string $event Event name
- Return  hash|undef
-
-=cut
-
-sub unregister
-{
-	my ($self, $event) = @_;
-
-	delete $events{$self}->{$event};
-}
-
-=item trigger($event [, $param [ $paramN ]])
+=item trigger($event [, $param [ $paramN ] ])
 
  Trigger the given event
 
@@ -90,6 +78,8 @@ sub unregister
 sub trigger
 {
 	my ($self, $event) = (shift, shift);
+
+	defined $event or croak('The $event parameter is not defined');
 
 	if($events{$self}->{$event}) {
 		for my $listener(@{$events{$self}->{$event}}) {

@@ -46,8 +46,14 @@ INSTALLER
 	Fixed: The update notices are always shown even when they are out-dated
 
 TESTS
-	Added: Travis CI support for Unit testing
-	Added: Unit tests for the iMSCP::Dir, iMSCP::Crypt, iMSCP::Packages, iMSCP::Servers and iMSCP::SetRights libraries
+	Added: Travis CI support for Unit testing (Perl only)
+	Added: Unit tests for the following libraries:
+	  - iMSCP::Crypt
+	  - iMSCP::Dir
+	  - iMSCP::EventManager
+	  - iMSCP::Packages
+	  - iMSCP::Servers
+	  - iMSCP::SetRights libraries
 
 YOUTRACK
 	Fixed: #IP-1388 phptmp removed on client update
