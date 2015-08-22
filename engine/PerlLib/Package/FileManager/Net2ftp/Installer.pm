@@ -26,6 +26,7 @@ package Package::FileManager::Net2ftp::Installer;
 use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -182,21 +183,6 @@ sub _installFiles
 	iMSCP::Dir->new( dirname => $packageDir )->rcopy($destDir);
 }
 
-=item _generateMd5SaltString()
-
- Generate MD5 salt string
-
- Return string Salt string
-
-=cut
-
-sub _generateMd5SaltString
-{
-	my $saltString = '';
-	$saltString .= ('A'..'Z', '0'..'9')[rand(35)] for 1..38;
-	$saltString;
-}
-
 =item _buildHttpdConfig()
 
  Build Httpd configuration
@@ -234,7 +220,7 @@ sub _buildConfig
 
 	my $data = {
 		ADMIN_EMAIL => ($main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}) ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
-		MD5_SALT_STRING => $self->_generateMd5SaltString()
+		MD5_SALT_STRING => randomStr(38, join('', A..Z , 0..9));
 	};
 
 	$self->{'eventManager'}->trigger('onLoadTemplate', 'net2ftp', 'settings.inc.php', \my $cfgTpl, $data);

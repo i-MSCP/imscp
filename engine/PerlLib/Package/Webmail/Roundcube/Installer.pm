@@ -26,6 +26,7 @@ package Package::Webmail::Roundcube::Installer;
 use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::EventManager;
@@ -457,21 +458,6 @@ sub _setupDatabase
 	0;
 }
 
-=item _generateDESKey()
-
- Generate DES key
-
- Return string DES key
-
-=cut
-
-sub _generateDESKey
-{
-	my $desKey = '';
-	$desKey .= ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~')[rand(70)] for 1..24;
-	$desKey;
-}
-
 =item _buildRoundcubeConfig()
 
  Build roundcube configuration file
@@ -500,7 +486,7 @@ sub _buildRoundcubeConfig
 		DB_USER => $dbUser,
 		DB_PASS => $dbPass,
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-		DES_KEY => $self->_generateDESKey()
+		DES_KEY => randomStr(24)
 	};
 
 	$self->{'eventManager'}->trigger('onLoadTemplate', 'roundcube', 'config.inc.php', \my $cfgTpl, $data);

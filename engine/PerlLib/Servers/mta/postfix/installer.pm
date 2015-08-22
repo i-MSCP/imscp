@@ -26,6 +26,7 @@ package Servers::mta::postfix::installer;
 use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Execute;
@@ -141,12 +142,7 @@ sub showDialog
 			}
 
 			if($rs != 30) {
-				unless($dbPass) {
-					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
-					$dbPass = '';
-					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
-				}
-
+				$dbPass = randomStr(16) unless $dbPass;
 				$dialog->msgbox("\nPassword for the SASL SQL user set to: $dbPass");
 			}
 		}

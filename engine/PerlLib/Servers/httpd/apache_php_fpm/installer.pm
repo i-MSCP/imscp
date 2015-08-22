@@ -26,6 +26,7 @@ package Servers::httpd::apache_php_fpm::installer;
 use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Execute;
@@ -599,10 +600,7 @@ sub _setupVlogger
 	my $dbUser = 'vlogger_user';
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	$dbUserHost = ($dbUserHost eq '127.0.0.1') ? 'localhost' : $dbUserHost;
-
-	my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
-	my $dbPassword = '';
-	$dbPassword .= $allowedChr[rand @allowedChr] for 1..16;
+	my $dbPass = randomStr(16);
 
 	my ($db, $errStr) = main::setupGetSqlConnect($dbName);
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
@@ -638,7 +636,7 @@ sub _setupVlogger
 			"GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@? IDENTIFIED BY ?",
 			$dbUser,
 			$host,
-			$dbPassword
+			$dbPass
 		);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to add SQL privileges: %s', $rs));
@@ -651,7 +649,7 @@ sub _setupVlogger
 		DATABASE_HOST => $dbHost,
 		DATABASE_PORT => $dbPort,
 		DATABASE_USER => $dbUser,
-		DATABASE_PASSWORD => $dbPassword
+		DATABASE_PASSWORD => $dbPass
 	});
 
 	$self->{'httpd'}->buildConfFile(
