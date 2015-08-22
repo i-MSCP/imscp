@@ -1,0 +1,38 @@
+/var/log/proftpd/proftpd.log
+/var/log/proftpd/ftp_ssl.log
+/var/log/proftpd/controls.log
+{
+	weekly
+	missingok
+	rotate 7
+	compress
+	delaycompress
+	notifempty
+	create 640 root adm
+	sharedscripts
+	postrotate
+		# reload could be not sufficient for all logs, a restart is safer
+		invoke-rc.d proftpd restart 2>/dev/null >/dev/null || true
+	endscript
+}
+
+/var/log/proftpd/xferlog
+/var/log/proftpd/xferreport
+{
+	monthly
+	missingok
+	rotate 7
+	compress
+	delaycompress
+	notifempty
+	create 640 root adm
+	sharedscripts
+	prerotate
+	endscript
+	postrotate
+		# reload could be not sufficient for all logs, a restart is safer
+		invoke-rc.d proftpd restart 2>/dev/null >/dev/null || true
+		# run ftpstats on past transfer log
+		ftpstats -a -r -l 2 -d -h -f /var/log/proftpd/xferlog.0 2>/dev/null >/var/log/proftpd/xferreport || true
+	endscript
+}

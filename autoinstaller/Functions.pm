@@ -160,7 +160,7 @@ sub build
 		[ \&_buildDistributionFiles, 'Building distribution files' ]
 	);
 
-	# Remove the distro packages step in case the --skippackages is set
+	# Add the distro packages step in case the --skippackages is not set
 	unshift @steps, [ \&_processDistroPackages,  'Processing distro packages' ] unless $main::skippackages;
 
 	$eventManager->trigger('beforeBuild', \@steps);
@@ -237,6 +237,7 @@ EOF
 
 	my @steps = (
 		[ \&_installFiles,                'Installing files' ],
+		[ \&_systemCleanup,               'Cleaning system' ],
 		[ \&main::setupBoot,              'Setup bootstrapping' ],
 		[ \&main::setupRegisterListeners, 'Registering servers/packages event listeners' ],
 		[ \&main::setupDialog,            'Processing setup dialog' ],
@@ -681,11 +682,6 @@ sub _savePersistentData
 {
 	# Save Web directories skeletons
 
-	# Remove deprecated phptmp directories
-	for my $skelDir('alias', 'subdomain') {
-		iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel/$skelDir/phptmp" )->remove();
-	}
-
 	# Move skel directory to new location
 	if(-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
 		iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel" )->moveDir(
@@ -705,11 +701,6 @@ sub _savePersistentData
 		iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/hooks.d")->moveDir(
 			"$main::imscpConfig{'CONF_DIR'}/listeners.d"
 		);
-	}
-
-	# Remove old README file
-	if(-f "$main::imscpConfig{'CONF_DIR'}/listeners.d/README") {
-		iMSCP::file->new( filename => "$main::imscpConfig{'CONF_DIR'}/listeners.d/README" )->delFile();
 	}
 
 	# Move package cache directory to new location
@@ -796,6 +787,42 @@ sub _installFiles
 
 	# Install new files
 	iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->rcopy('/', 1);
+}
+
+=item _systemCleanup
+
+ Cleanup system
+
+ Return int 0 on success, die on failure
+
+=cut
+
+sub _systemCleanup
+{
+
+	# TODO Look at git hystory for any garbage from older releases
+
+	for my $skelDir('alias', 'subdomain') {
+		iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel/$skelDir/phptmp" )->remove();
+	}
+
+	if(-f '/etc/logrotate.d/imscp') {
+		iMSCP::File->new( filename => '/etc/logrotate.d/imscp' )->delFile();
+	}
+
+	if(-f "$main::imscpConfig{'CONF_DIR'}/apache/logrotate.conf" ) {
+		iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/apache/logrotate.conf" )->delFile();
+	}
+
+	if(-f "$main::imscpConfig{'CONF_DIR'}/php-fpm/logrotate.conf" ) {
+		iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/php-fpm/logrotate.conf" )->delFile();
+	}
+
+	if(-f "$main::imscpConfig{'CONF_DIR'}/listeners.d/README") {
+		iMSCP::file->new( filename => "$main::imscpConfig{'CONF_DIR'}/listeners.d/README" )->delFile();
+	}
+
+	0;
 }
 
 =item _deleteBuildDir()

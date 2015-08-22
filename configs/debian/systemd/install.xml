@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <create_dir>${ROOT_CONF}/systemd/system</create_dir>
+    <create_dir mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system</create_dir>
     <copy_conffile mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/bind9.service</copy_conffile>
     <copy_conffile mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/bind9-resolvconf.service</copy_conffile>
 </install>

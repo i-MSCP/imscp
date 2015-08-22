@@ -1,11 +1,11 @@
-{HTTPD_LOG_DIR}/*.log {HTTPD_LOG_DIR}/*/*.log {
+/var/log/apache2/*.log /var/log/apache2/*/*.log {
   daily
   missingok
   rotate 365
   compress
   delaycompress
   notifempty
-  create 644 {ROOT_USER} {ADM_GROUP}
+  create 644 root adm
   sharedscripts
   postrotate
     invoke-rc.d apache2 reload > /dev/null

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <create_dir>${INST_PREF}/var/www/fcgi</create_dir>
+    <create_dir mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${INST_PREF}/var/www/fcgi</create_dir>
     <create_dir>${SYSTEM_CONF}/fcgi/backup</create_dir>
     <create_dir>${SYSTEM_CONF}/fcgi/working</create_dir>
     <copy_confdir>${SYSTEM_CONF}/fcgi/parts</copy_confdir>

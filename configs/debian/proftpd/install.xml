@@ -2,6 +2,8 @@
 <install>
     <create_dir>${SYSTEM_CONF}/proftpd/backup</create_dir>
     <create_dir>${SYSTEM_CONF}/proftpd/working</create_dir>
+    <create_dir mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/logrotate.d</create_dir>
+    <copy_conffile mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/logrotate.d/proftpd-basic</copy_conffile>
     <copy_conffile>${SYSTEM_CONF}/proftpd/proftpd.conf</copy_conffile>
     <copy_conffile>${SYSTEM_CONF}/proftpd/proftpd.data</copy_conffile>
 </install>

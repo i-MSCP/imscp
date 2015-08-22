@@ -28,7 +28,9 @@ CONFIGS
 	Added: libcrypt-rijndael-perl package (Debian/Ubuntu)
 	Added: postfix-cdb package (Debian/Ubuntu)
 	Changed: Usage of cdb maps instead of hash maps (Postfix)
+	Fixed: ftp_ssl.log log file is not rotated (proftpd logrotate configuration file)
 	Removed: Unless lookup table templates (Postfix)
+	Removed: Unused imscp logrotate configuration file
 	Removed: Working directory (Postfix)
 
 CONTRIB

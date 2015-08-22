@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <create_dir>${ROOT_CONF}/init</create_dir>
+    <create_dir mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init</create_dir>
     <copy_conffile mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init/imscp_daemon.conf</copy_conffile>
     <copy_conffile mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init/imscp_network.conf</copy_conffile>
     <copy_conffile mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init/imscp_panel.conf</copy_conffile>

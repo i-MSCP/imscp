@@ -123,13 +123,8 @@ sub install
 {
 	my $self = shift;
 
-	# Saving all system configuration files if they exists
-	for my $file(
-		"$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf"
-	) {
-		my $rs = $self->_bkpConfFile($file);
-		return $rs if $rs;
-	}
+	my $rs = $self->_bkpConfFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf");
+	return $rs if $rs;
 
 	my $rs = $self->_setApacheVersion();
 	return $rs if $rs;
@@ -141,9 +136,6 @@ sub install
 	return $rs if $rs;
 
 	$rs = $self->_buildApacheConfFiles();
-	return $rs if $rs;
-
-	$rs = $self->_installLogrotate();
 	return $rs if $rs;
 
 	$rs = $self->_setupVlogger();
@@ -508,37 +500,6 @@ sub _buildApacheConfFiles
 	}
 
 	$self->{'eventManager'}->trigger('afterHttpdBuildApacheConfFiles');
-}
-
-=item _installLogrotate()
-
- Install Apache logrotate file
-
- Return int 0 on success, other or die on failure
-
-=cut
-
-sub _installLogrotate
-{
-	my $self = shift;
-
-	$self->{'eventManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
-
-	$self->{'httpd'}->setData({
-		ROOT_USER => $main::imscpConfig{'ROOT_USER'},
-		ADM_GROUP => $main::imscpConfig{'ADM_GROUP'},
-		HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'}
-	});
-
-	my $rs = $self->{'httpd'}->buildConfFile('logrotate.conf');
-	return $rs if $rs;
-
-	$rs = $self->{'httpd'}->installConfFile('logrotate.conf', {
-		destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2"
-	});
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdInstallLogrotate', 'apache2');
 }
 
 =item _setupVlogger()

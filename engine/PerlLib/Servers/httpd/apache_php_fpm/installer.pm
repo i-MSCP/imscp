@@ -141,9 +141,6 @@ sub install
 	$rs = $self->_buildApacheConfFiles();
 	return $rs if $rs;
 
-	$rs = $self->_installLogrotate();
-	return $rs if $rs;
-
 	$rs = $self->_setupVlogger();
 	return $rs if $rs;
 
@@ -529,56 +526,6 @@ sub _buildApacheConfFiles
 	}
 
 	$self->{'eventManager'}->trigger('afterHttpdBuildApacheConfFiles');
-}
-
-=item _installLogrotate()
-
- Install logrotate files
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _installLogrotate
-{
-	my $self = shift;
-
-	$self->{'eventManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
-
-	my $rs = $self->{'httpd'}->apacheBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", '', 1);
-	return $rs if $rs;
-
-	$self->{'httpd'}->setData({
-		ROOT_USER => $main::imscpConfig{'ROOT_USER'},
-		ADM_GROUP => $main::imscpConfig{'ADM_GROUP'},
-		HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'}
-	});
-
-	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf');
-	return $rs if $rs;
-
-	$rs = $self->{'httpd'}->installConfFile('logrotate.conf', {
-		destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2"
-	});
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdInstallLogrotate', 'apache2');
-	$self->{'eventManager'}->trigger('beforeHttpdInstallLogrotate', 'php5-fpm');
-
-	$rs = $self->{'httpd'}->phpfpmBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm", 'logrotate.', 1);
-	return $rs if $rs;
-
-	$rs = $self->{'httpd'}->buildConfFile(
-		"$self->{'phpfpmCfgDir'}/logrotate.conf", { }, { destination => "$self->{'phpfpmWrkDir'}/logrotate.conf" }
-	);
-	return $rs if $rs;
-
-	$rs = $self->{'httpd'}->installConfFile(
-		"$self->{'phpfpmWrkDir'}/logrotate.conf", { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" }
-	);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterHttpdInstallLogrotate', 'php5-fpm');
 }
 
 =item _setupVlogger()
