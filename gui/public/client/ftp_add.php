@@ -263,7 +263,7 @@ function ftp_addAccount($mainDmnName)
 			$cfg = iMSCP_Registry::get('config');
 
 			$userid = $username . '@' . decode_idna($dmnName);
-			$encryptedPassword = \iMSCP\Crypt::bcrypt($passwd);
+			$encryptedPassword = \iMSCP\Crypt::sha512($passwd);
 			$shell = '/bin/sh';
 			$homeDir = rtrim(str_replace('//', '/', $cfg->USER_WEB_DIR . '/' . $mainDmnName . '/' . $homeDir), '/');
 
