@@ -458,15 +458,15 @@ sub _apr1Md5($;$)
 {
 	my ($password, $salt) = @_;
 
-	unless (defined $salt) {
-		$salt = randomStr(8, ALPHA64);
-	} else {
+	if($salt) {
 		length $salt == 8 or croak('The salt length for md5 (APR1) algorithm must be 8 bytes long');
 
 		my @salt = split //, $salt;
 		for (my $i = 0; $i < 8; $i++) {
 			index(ALPHA64, $salt[$i]) != -1 or croak('The salt must be a string in the alphabet "./0-9A-Za-z"');
 		}
+	} else {
+		$salt = randomStr(8, ALPHA64);
 	}
 
 	my $len = length $password;

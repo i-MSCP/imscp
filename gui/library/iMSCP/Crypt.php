@@ -209,6 +209,7 @@ class Crypt
 	static public function htpasswd($password, $cost = null, $salt = null, $format = 'md5')
 	{
 		$salt = (string)$salt;
+
 		switch ($format) {
 			case 'bcrypt':
 				return static::bcrypt($password, $cost, $salt);
@@ -408,9 +409,9 @@ class Crypt
 	 */
 	static protected function apr1Md5($password, $salt = null)
 	{
-		if (null === $salt) {
-			$salt = static::randomStr(8, static::ALPHA64);
-		} else {
+		$salt = (string)$salt;
+
+		if ($salt !== '') {
 			if (strlen($salt) !== 8) {
 				throw new \InvalidArgumentException('The salt for APR1 algorithm must be 8 characters long');
 			}
@@ -420,6 +421,8 @@ class Crypt
 					throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
 				}
 			}
+		} else {
+			$salt = static::randomStr(8, static::ALPHA64);
 		}
 
 		$len = strlen($password);

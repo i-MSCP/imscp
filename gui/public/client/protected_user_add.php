@@ -30,10 +30,11 @@
  */
 
 /**
- * Add Htaccess user.
+ * Add htuser
  *
- * @param int $domainId Domain unique identifier
- * @return
+ * @param int $domainId
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_addHtaccessUser($domainId)
 {

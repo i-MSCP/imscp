@@ -31,11 +31,12 @@
  */
 
 /**
- * Updates htaccess user.
+ * Edit htuser
  *
- * @param int $dmn_id Domain unique identifier
- * @param int $uuser_id Htaccess user unique identifier
- * @return
+ * @param int $dmn_id
+ * @param int $uuser_id
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 {
@@ -51,8 +52,7 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 				return;
 			}
 
-			#$nadmin_password = cryptPasswordWithSalt($_POST['pass'], generateRandomSalt(true));
-			$nadmin_password = \iMSCP\Crypt::sha512($_POST['pass']);
+			$nadmin_password = \iMSCP\Crypt::htpasswd($_POST['pass']);
 
 			$change_status = 'tochange';
 
