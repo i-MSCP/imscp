@@ -814,8 +814,16 @@ sub _systemCleanup
 		iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/apache/logrotate.conf" )->delFile();
 	}
 
+	if(-f "$main::imscpConfig{'CONF_DIR'}/apache/working/logrotate.conf" ) {
+		iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/apache/working/logrotate.conf" )->delFile();
+	}
+
 	if(-f "$main::imscpConfig{'CONF_DIR'}/php-fpm/logrotate.conf" ) {
 		iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/php-fpm/logrotate.conf" )->delFile();
+	}
+
+	if(-f "$main::imscpConfig{'CONF_DIR'}/php-fpm/working/logrotate.conf" ) {
+		iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/php-fpm/working/logrotate.conf" )->delFile();
 	}
 
 	if(-f "$main::imscpConfig{'CONF_DIR'}/listeners.d/README") {
