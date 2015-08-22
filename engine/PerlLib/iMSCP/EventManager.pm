@@ -60,7 +60,7 @@ sub register
 	defined $event or croak('The $event parameter is not defined');
 	defined $listener or croak('The $listener parameter is not defined');
 
-	ref $listener eq 'CODE' or croak(sprintf('Invalid $listener parameter. Code reference expected.', $event));
+	ref $listener eq 'CODE' or croak('Invalid $listener parameter. Code reference expected.');
 	push @{ $events{$self}->{$event} }, $listener;
 	0;
 }
