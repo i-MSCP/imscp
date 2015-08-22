@@ -143,7 +143,7 @@ sub _backupConfig
 		'.'                                                                # pathname
 	);
 
-	$rs = execute("@backupCommand", \my $stdout, \my $stderr);
+	my $rs = execute("@backupCommand", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Unable to create i-MSCP configuration backup") if $rs && ! $stderr;

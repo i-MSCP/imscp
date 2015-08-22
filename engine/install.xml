@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
     <create_dir export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</create_dir>
+    <copy_dir>${SYSTEM_ENGINE_ROOT}/backup</copy_dir>
     <copy_dir>${SYSTEM_ENGINE_ROOT}/messenger</copy_dir>
     <copy_dir>${SYSTEM_ENGINE_ROOT}/PerlLib</copy_dir>
     <copy_dir>${SYSTEM_ENGINE_ROOT}/PerlVendor</copy_dir>

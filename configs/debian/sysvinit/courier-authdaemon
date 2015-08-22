@@ -32,14 +32,14 @@ start)
 	if [ ! -d "$rundir_courier" ]; then
 		mkdir -m 0775 $rundir_courier
 		chown daemon:daemon $rundir_courier
-        # set file context for SELinux (#668564)
-        [ -x /sbin/restorecon ] && /sbin/restorecon $rundir_courier
+		# set file context for SELinux (#668564)
+		[ -x /sbin/restorecon ] && /sbin/restorecon $rundir_courier
 	fi
 	if [ ! -d "$rundir" ]; then
 		mkdir -m 0750 $rundir
 		chown vmail:daemon $rundir
-        # set file context for SELinux (#668564)
-        [ -x /sbin/restorecon ] && /sbin/restorecon $rundir
+		# set file context for SELinux (#668564)
+		[ -x /sbin/restorecon ] && /sbin/restorecon $rundir
 	fi
 	$daemonscript start
 	log_end_msg 0
@@ -54,10 +54,10 @@ stop)
 restart|force-reload)
 	$0 stop
 	$0 start
-    ;;
+	;;
 status)
 	status_of_proc -p "$pidfile" "authdaemond" && exit 0 || exit $?
-    ;;
+	;;
 *)
 	echo "Usage: $0 {start|stop|restart|force-reload|status}" >&2
 	exit 2
