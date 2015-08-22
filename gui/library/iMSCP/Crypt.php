@@ -206,7 +206,7 @@ class Crypt
 	 * @param string $format Format in which the password must be hashed (bcrypt|crypt|md5|sha1) -  Default is md5 (APR1)
 	 * @return string
 	 */
-	static public function htpasswd($password, $cost = null, $salt = null, $format = 'md5')
+	static public function htpasswd($password, $cost = 10, $salt = null, $format = 'md5')
 	{
 		$salt = (string)$salt;
 
