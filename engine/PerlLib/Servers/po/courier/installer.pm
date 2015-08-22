@@ -392,7 +392,7 @@ sub _setupSqlUser
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 
-		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		my $rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 			return 1;
@@ -405,7 +405,7 @@ sub _setupSqlUser
 
 	my $quotedDbName = $db->quoteIdentifier($dbName);
 
-	$rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
+	my $rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
 		error(sprintf('Unable to add SQL privileges: %s', $rs));
 		return 1;
@@ -623,7 +623,7 @@ sub _buildSslConfFiles
 
 			my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$conffile" );
 			$file->set($cfgTpl);
-			file->save();
+			$file->save();
 			$file->mode(0644);
 			$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 			$file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
