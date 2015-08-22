@@ -1526,7 +1526,7 @@ sub _addFiles
 				# Test needed in case admin removed the index.html file from the skeleton
 				if(-f "$tmpDir/htdocs/index.html") {
 					my $fileSource = "$tmpDir/htdocs/index.html";
-					$rs = $self->buildConfFile($fileSource, $data, { destination => $fileSource });
+					my $rs = $self->buildConfFile($fileSource, $data, { destination => $fileSource });
 					return $rs if $rs;
 				}
 			} else {
@@ -1568,7 +1568,7 @@ sub _addFiles
 			});
 		}
 
-		$rs = execute("cp -nRT $tmpDir $webDir", \my $stdout, \my $stderr);
+		my $rs = execute("cp -nRT $tmpDir $webDir", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
