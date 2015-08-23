@@ -101,7 +101,7 @@ sub getWFileHandle
  Set file content
 
  Param string $content New file content
- Return string
+ Return int 0
 
 =cut
 
