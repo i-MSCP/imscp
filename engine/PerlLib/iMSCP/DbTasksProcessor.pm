@@ -591,7 +591,7 @@ sub _process
 		my ($id, $name, $status) = ($row->{'id'}, $row->{'name'}, $row->{'status'});
 
 		debug(sprintf('Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id));
-		newDebug("${moduleName}_module_$name.log");
+		newDebug("${module}_module_$name.log");
 
 		my $module = "Modules::$module";
 		eval "require $module" or die(sprintf('Could not load the %s module: %s', $module, $@));

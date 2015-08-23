@@ -110,6 +110,7 @@ sub set
 	my ($self, $content) = @_;
 
 	$self->{'fileContent'} = $content // '';
+	0;
 }
 
 =item save()

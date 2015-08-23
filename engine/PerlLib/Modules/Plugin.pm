@@ -69,46 +69,46 @@ sub process
 	my $rs = $self->_loadData($pluginId);
 	return $rs if $rs;
 
+	my $pluginName = $self->{'plugin_name'};
+	my $pluginStatus = $self->{'plugin_status'};
+
 	local $@;
 	eval {
-		my $status = $self->{'plugin_status'};
-		my $pluginName = $self->{'plugin_name'};
-
 		$self->{$_} = decode_json($self->{$_}) for qw/info config config_prev/;
 
-		if($status eq 'enabled') {
+		if($pluginStatus eq 'enabled') {
 			$self->{'action'} = 'run';
-		} elsif($status eq 'toinstall') {
+		} elsif($pluginStatus eq 'toinstall') {
 			$self->{'action'} = 'install';
-		} elsif($status eq 'tochange') {
+		} elsif($pluginStatus eq 'tochange') {
 			$self->{'action'} = 'change';
-		} elsif($status eq 'toupdate') {
+		} elsif($pluginStatus eq 'toupdate') {
 			$self->{'action'} = 'update';
-		} elsif($status eq 'touninstall') {
+		} elsif($pluginStatus eq 'touninstall') {
 			$self->{'action'} = 'uninstall';
-		} elsif($status eq 'toenable') {
+		} elsif($pluginStatus eq 'toenable') {
 			$self->{'action'} = 'enable';
-		} elsif($status eq 'todisable') {
+		} elsif($pluginStatus eq 'todisable') {
 			$self->{'action'} = 'disable';
 		} else {
-			croak(sprintf('Unknown status %s', $pluginName $status));
+			croak(sprintf('Unknown status %s', $pluginName, $pluginStatus));
 		}
 
 		my $method = '_' . $self->{'action'};
 		$self->$method($pluginName);
-		$self->{'eventManager'}->trigger('onBeforeSetPluginStatus', $pluginName, \$status);
+		$self->{'eventManager'}->trigger('onBeforeSetPluginStatus', $pluginName, \$pluginStatus);
 	};
 
 	if($@) {
-		error('Could not process the %s plugin: %s', $pluginName, $@);
+		error(sprintf('Could not process the %s plugin: %s', $pluginName, $@));
 		$rs = 1;
 	}
 
 	my @sql = (
 		'UPDATE plugin SET ' . ($rs ? 'plugin_error' : 'plugin_status') . ' = ? WHERE plugin_id = ?',
-		$rs ? getMessageByType('error') : $STATUS_TO_NEW_STATUS{$status}, $pluginId
+		$rs ? getMessageByType('error') : $STATUS_TO_NEW_STATUS{$pluginStatus}, $pluginId
 	);
-	my $qrs = $self->{'db'}->doQuery('dummy', @sql);
+	my $qrs = $self->{'db'}->doQuery('u', @sql);
 	unless(ref $qrs eq 'HASH') {
 		error($qrs);
 		$rs ||= 1;
@@ -368,11 +368,8 @@ sub _call
 
 		if($plugin->can($method)) {
 			$plugin = $plugin->getInstance(
-				'eventManager' => $self->{'eventManager'},
-				'action' => $self->{'action'},
-				'info' => $self->{'info'},
-				'config' => $self->{'config'},
-				'config_prev' => $self->{'config_prev'}
+				'eventManager' => $self->{'eventManager'}, 'action' => $self->{'action'}, 'info' => $self->{'info'},
+				'config' => $self->{'config'}, 'config_prev' => $self->{'config_prev'}
 			);
 
 			debug(sprintf('Executing %s::%s() action', ref $plugin, $method));
