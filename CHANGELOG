@@ -66,7 +66,7 @@ YOUTRACK
 	Fixed: #IP-1399 Add Auto-Submitted Header to Autoreply Emails
 	Fixed: #IP-1401 Courier pop3/imap SSL don't work with some clients - Diffie-Hellman parameters length is too small
 	Fixed: #IP-1410 Feature - Possibility to change redirection type
-	Fixed: IP-1417 Bug - When changing hostname using the panel_hostname reconfiguration option, The SSL dialog should be triggered
+	Fixed: #IP-1417 Bug - When changing hostname using the panel_hostname reconfiguration option, The SSL dialog should be triggered
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.9
