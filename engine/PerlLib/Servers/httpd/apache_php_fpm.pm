@@ -1357,7 +1357,7 @@ sub phpfpmBkpConfFile
  Mount logs folder which belong to the given domain into customer's logs folder
 
  Param hash \%data Domain data
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -1367,6 +1367,8 @@ sub mountLogsFolder
 
 	my $srcLogsFolder = "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}";
 	my $targetLogsFolder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+
+	$self->{'eventManager'}->trigger('onMountLogsFolder', $data);
 
 	# We process only if:
 	#  - The source logs folder exists
@@ -1380,7 +1382,9 @@ sub mountLogsFolder
 			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ADM_GROUP'}, mode => 0755
 		});
 
-		my $rs = execute('mount --bind ' . escapeShell($srcLogsFolder) . ' ' . $targetLogsFolder, \my $stdout, \my $stderr);
+		my $rs = execute(
+			'mount --bind ' . escapeShell($srcLogsFolder) . ' ' . $targetLogsFolder, \my $stdout, \my $stderr
+		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
@@ -1396,7 +1400,7 @@ sub mountLogsFolder
  Note: In case of a partial path, any file systems below this path will be umounted.
 
  Param hash \%data Domain data
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -1405,14 +1409,17 @@ sub umountLogsFolder
 	my ($self, $data) = @_;
 
 	my $logsFolder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
-	my $mountPoint;
 
+	$self->{'eventManager'}->trigger('onUmountLogsFolder', $data);
+
+	my $mountPoint;
 	do {
-		my $rs = execute("mount 2>/dev/null | grep ' $logsFolder\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \my $stdout);
+		my $rs = execute(
+			"mount 2>/dev/null | grep ' $logsFolder\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \my $stdout
+		);
 		return $rs if $rs;
 
 		$mountPoint = $stdout;
-
 		if($mountPoint) {
 			$rs = execute("umount -l $mountPoint", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
