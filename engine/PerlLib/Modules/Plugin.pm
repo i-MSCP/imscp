@@ -29,13 +29,12 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::EventManager;
-use Carp;
 use JSON;
 use version;
 use parent 'Common::Object';
 
 # Map current status to new status
-my %STATUS_TO_NEW_STATUS = (
+my %STATUS_MAP = (
 	'enabled' => 'enabled',
 	'toinstall' => 'enabled',
 	'toenable' => 'enabled',
@@ -76,22 +75,22 @@ sub process
 	eval {
 		$self->{$_} = decode_json($self->{$_}) for qw/info config config_prev/;
 
-		if($pluginStatus eq 'enabled') {
+		if ($pluginStatus eq 'enabled') {
 			$self->{'action'} = 'run';
-		} elsif($pluginStatus eq 'toinstall') {
+		} elsif ($pluginStatus eq 'toinstall') {
 			$self->{'action'} = 'install';
-		} elsif($pluginStatus eq 'tochange') {
+		} elsif ($pluginStatus eq 'tochange') {
 			$self->{'action'} = 'change';
-		} elsif($pluginStatus eq 'toupdate') {
+		} elsif ($pluginStatus eq 'toupdate') {
 			$self->{'action'} = 'update';
-		} elsif($pluginStatus eq 'touninstall') {
+		} elsif ($pluginStatus eq 'touninstall') {
 			$self->{'action'} = 'uninstall';
-		} elsif($pluginStatus eq 'toenable') {
+		} elsif ($pluginStatus eq 'toenable') {
 			$self->{'action'} = 'enable';
-		} elsif($pluginStatus eq 'todisable') {
+		} elsif ($pluginStatus eq 'todisable') {
 			$self->{'action'} = 'disable';
 		} else {
-			croak(sprintf('Unknown status %s', $pluginName, $pluginStatus));
+			die(sprintf('Unknown status %s', $pluginName, $pluginStatus));
 		}
 
 		my $method = '_' . $self->{'action'};
@@ -106,10 +105,10 @@ sub process
 
 	my @sql = (
 		'UPDATE plugin SET ' . ($rs ? 'plugin_error' : 'plugin_status') . ' = ? WHERE plugin_id = ?',
-		$rs ? getMessageByType('error') : $STATUS_TO_NEW_STATUS{$pluginStatus}, $pluginId
+		$rs ? getMessageByType('error') : $STATUS_MAP{$pluginStatus}, $pluginId
 	);
 	my $qrs = $self->{'db'}->doQuery('u', @sql);
-	unless(ref $qrs eq 'HASH') {
+	unless (ref $qrs eq 'HASH') {
 		error($qrs);
 		$rs ||= 1;
 	}
@@ -166,10 +165,10 @@ sub _loadData
 		 ',
 		$pluginId
 	);
-	unless(ref $row eq 'HASH') {
+	unless (ref $row eq 'HASH') {
 		error($row);
 		return 1;
-	} elsif(! exists $row->{$pluginId}) {
+	} elsif (!$row->{$pluginId}) {
 		error(sprintf('Data for plugin with ID %s were not found in database', $pluginId));
 		return 1;
 	}
@@ -184,7 +183,7 @@ sub _loadData
  Install the given plugin
 
  Param string Plugin name
- Croak on failure
+ die on failure
 
 =cut
 
@@ -203,7 +202,7 @@ sub _install
  Uninstall the given plugin
 
  Param string Plugin name
- Croak on failure
+ die on failure
 
 =cut
 
@@ -221,7 +220,7 @@ sub _uninstall
  Enable the given plugin
 
  Param string Plugin name
- Croak on failure
+ die on failure
 
 =cut
 
@@ -239,7 +238,7 @@ sub _enable
  Disable the given plugin
 
  Param string Plugin name
- Croak on failure
+ die on failure
 
 =cut
 
@@ -257,7 +256,7 @@ sub _disable
  Change the given plugin
 
  Param string Plugin name
- Croak on failure
+ die on failure
 
 =cut
 
@@ -270,7 +269,7 @@ sub _change
 	$self->_call($pluginName, 'change');
 	$self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
 
-	if($self->{'info'}->{'__need_change__'}) {
+	if ($self->{'info'}->{'__need_change__'}) {
 		$self->{'info'}->{'__need_change__'} = JSON::false;
 		my $qrs = $self->{'db'}->doQuery(
 			'u', 'UPDATE plugin SET plugin_info = ?, plugin_config_prev = ? WHERE plugin_name = ?',
@@ -287,7 +286,7 @@ sub _change
  Update the given plugin
 
  Param string Plugin name
- Croak on failure
+ die on failure
 
 =cut
 
@@ -303,11 +302,11 @@ sub _update
 	my $qrs = $self->{'db'}->doQuery(
 		'u', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($self->{'info'}), $pluginName
 	);
-	ref $qrs eq 'HASH' or croak($qrs);
+	ref $qrs eq 'HASH' or die($qrs);
 
 	$self->{'eventManager'}->trigger('onAfterUpdatePlugin', $pluginName);
 
-	if($self->{'info'}->{'__need_change__'}) {
+	if ($self->{'info'}->{'__need_change__'}) {
 		$self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
 		$self->_call($pluginName, 'change');
 		$self->{'info'}->{'__need_change__'} = JSON::false;
@@ -315,7 +314,7 @@ sub _update
 			'u', 'UPDATE plugin SET plugin_info = ?, plugin_config_prev = ? WHERE plugin_name = ?',
 			encode_json($self->{'info'}), encode_json($self->{'config'}), $pluginName
 		);
-		ref $qrs eq 'HASH' or croak($qrs);
+		ref $qrs eq 'HASH' or die($qrs);
 		$self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
 	}
 
@@ -327,7 +326,7 @@ sub _update
  Run the given plugin
 
  Param string Plugin name
- Croak on failure
+ die on failure
 
 =cut
 
@@ -346,9 +345,9 @@ sub _run
 
  Param string $name Plugin name
  Param string $method Name of the method to call on the plugin
- Param string OPTIONAL $fromVersion Version from which the plugin is being updated
- Param string OPTIONAL $toVersion Version to which the plugin is being updated
- Croak on failure
+ Param string $fromVersion OPTIONAL Version from which the plugin is being updated
+ Param string $toVersion OPTIONAL Version to which the plugin is being updated
+ die on failure
 
 =cut
 
@@ -364,27 +363,27 @@ sub _call
 		require $backendPluginFile;
 
 		# Turn any warning from plugin into exception
-		local $SIG{__WARN__} = sub { croak shift };
+		local $SIG{__WARN__} = sub { die shift };
 
-		if($plugin->can($method)) {
+		if ($plugin->can($method)) {
 			$plugin = $plugin->getInstance(
-				'eventManager' => $self->{'eventManager'}, 'action' => $self->{'action'}, 'info' => $self->{'info'},
-				'config' => $self->{'config'}, 'config_prev' => $self->{'config_prev'}
+				eventManager => $self->{'eventManager'}, action => $self->{'action'}, info => $self->{'info'},
+				config => $self->{'config'}, config_prev => $self->{'config_prev'}
 			);
 
 			debug(sprintf('Executing %s::%s() action', ref $plugin, $method));
 			my $rs = $plugin->$method($fromVersion, $toVersion);
 
-			# Return value from the run() action is ignored by default because it's the responsability of the plugins to set
-			# error status for their items. In case a plugin doesn't manage any item, it can force return value by defining
-			# the FORCE_RETVAL attribute with a TRUE value
-			if($method ne 'run' || $plugin->{'FORCE_RETVAL'}) {
-				!$rs or croak(getMessageByType('error', { amount => 1, remove => 1 }) || 'Unknown error');
+			# Return value from the run() action is ignored by default because it's the responsability of the plugins to
+			# set error status for their items. In case a plugin doesn't manage any item, it can force return value by
+			# defining the FORCE_RETVAL attribute with a TRUE value
+			if ($method ne 'run' || $plugin->{'FORCE_RETVAL'}) {
+				!$rs or die(getMessageByType('error', { amount => 1, remove => 1 }) || 'Unknown error');
 			}
 		}
 	};
 
-	!$@ or croak($@);
+	!$@ or die($@);
 }
 
 =back
