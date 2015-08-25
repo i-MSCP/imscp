@@ -27,7 +27,7 @@ use iMSCP::Mail;
 use Servers::httpd;
 use File::Basename;
 
-sub mountLogsFolder
+sub mountLogFolders
 {
 	my $httpd = Servers::httpd->factory();
 	my $dbh = iMSCP::Database->factory()->getRawDb();
@@ -90,7 +90,7 @@ OPTIONS:
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 if($bootstrapper->lock('/tmp/imscp-httpd-logs-mngr.lock', 'nowait')) {
 	$bootstrapper->boot({ norequirements => 1, nolock => 1, config_readonly => 1 });
-	mountLogsFolder() if Servers::httpd->can('mountLogsFolder');
+	mountLogFolders() if Servers::httpd->can('mountLogsFolder');
 	my @errorMessages = getMessageByType('error');
 	iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
 	$bootstrapper->unlock('/tmp/imscp-httpd-logs-mngr.lock');
