@@ -29,7 +29,6 @@ use Carp;
 use Fcntl ':flock';
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::Crypt qw/randomStr decryptRijndaelCBC/;
 use iMSCP::Requirements;
 use iMSCP::Getopt;
 use iMSCP::Database;
@@ -97,12 +96,14 @@ sub boot
 
 	unless ($options->{'nodatabase'}) {
 		if(exists $main::imscpConfig{'DB_KEY'} && exists $main::imscpConfig{'DB_IV'}) {
+			require iMSCP::Crypt;
+
 			my $db = iMSCP::Database->factory();
 			$db->set('DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'});
 			$db->set('DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'});
 			$db->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
 			$db->set('DATABASE_USER', $main::imscpConfig{'DATABASE_USER'});
-			$db->set('DATABASE_PASSWORD', decryptRijndaelCBC(
+			$db->set('DATABASE_PASSWORD', iMSCP::Crypt::decryptRijndaelCBC(
 				$main::imscpConfig{'DB_KEY'}, $main::imscpConfig{'DB_IV'}, $main::imscpConfig{'DATABASE_PASSWORD'}
 			));
 
@@ -188,10 +189,12 @@ sub loadDbKeyAndIv
 		defined $imscpDbKeys{'KEY'} && length $imscpDbKeys{'KEY'} == 32 &&
 		defined $imscpDbKeys{'IV'} && length $imscpDbKeys{'IV'} == 16
 	) {
+		require iMSCP::Crypt;
+
 		$main::imscpConfig{'DATABASE_PASSWORD'} = ''; # Force SQL password dialog
 		%imscpDbKeys = (); # Clear any content (covers update from old imscp-db-keys file format)
-		$imscpDbKeys{'KEY'} = randomStr(32); # Generate new key
-		$imscpDbKeys{'IV'} = randomStr(16); # Generate new initialization vector
+		$imscpDbKeys{'KEY'} = iMSCP::Crypt::randomStr(32); # Generate new key
+		$imscpDbKeys{'IV'} = iMSCP::Crypt::randomStr(16); # Generate new initialization vector
 	}
 
 	my $imscpConfigObj = tied %main::imscpConfig;
