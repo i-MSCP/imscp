@@ -194,10 +194,11 @@ sub build
 	$main::imscpConfig{$_} = $imscpConf{$_} for keys %imscpConf;
 
 	# Clean build directory (remove any .gitignore|empty-file)
-	find { wanted => sub {
+	find {
+		wanted => sub {
 			my $basename = basename($_);
 			if ($basename eq '.gitignore' || $basename eq 'empty-file') {
-				unlink or die("Could not remove $_: $!")
+				unlink or die(sprintf('Could not remove %s: %s', $_, $!));
 			}
 		},
 		no_chdir => 1
