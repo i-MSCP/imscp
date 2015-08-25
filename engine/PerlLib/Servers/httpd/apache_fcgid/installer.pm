@@ -126,7 +126,7 @@ sub install
 	my $rs = $self->_bkpConfFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf");
 	return $rs if $rs;
 
-	my $rs = $self->_setApacheVersion();
+	$rs = $self->_setApacheVersion();
 	return $rs if $rs;
 
 	$rs = $self->_makeDirs();
