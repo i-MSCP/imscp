@@ -195,7 +195,10 @@ sub build
 
 	# Clean build directory (remove any .gitignore|empty-file)
 	find { wanted => sub {
-		unlink or die("Unable to remove $File::Find::name: $!") if $_ eq '.gitignore' || $_ eq 'empty-file';
+			my $basename = basename($_);
+			if ($basename eq '.gitignore' || $basename eq 'empty-file') {
+				unlink or die("Could not remove $_: $!")
+			}
 		},
 		no_chdir => 1
 	}, $main::{'INST_PREF'};
