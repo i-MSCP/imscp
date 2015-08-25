@@ -119,7 +119,6 @@
         <package>libdatetime-perl</package>
         <package>libdbd-mysql-perl</package>
         <package>libdbi-perl</package>
-        <package>libdigest-md5-perl</package>
         <package>libemail-valid-perl</package>
         <package>libfile-homedir-perl</package>
         <package>libmailtools-perl</package>

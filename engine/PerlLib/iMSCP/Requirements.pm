@@ -118,7 +118,7 @@ sub _init
 		'Bit::Vector' => undef,
 		'Crypt::Blowfish' => undef,
 		'Crypt::CBC' => undef,
-		'Crypt::PasswdMD5' => undef,
+		'Crypt::Eksblowfish::Bcrypt', undef,
 		'Crypt::Rijndael' => undef,
 		'DBI' => undef,
 		'DBD::mysql' => undef,
@@ -138,7 +138,7 @@ sub _init
 		'PHP' => {
 			'version_command' => 'php -v',
 			'version_regexp' => qr/PHP\s([\d.]+)/,
-			'min_version' => '5.3.10'
+			'min_version' => '5.3.7'
 		},
 		'Perl' => {
 			'version_command' => 'perl -v',
