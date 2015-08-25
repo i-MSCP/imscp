@@ -1265,32 +1265,30 @@ sub mountLogsFolder
 {
 	my ($self, $data) = @_;
 
-	my $srcLogsFolder = "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}";
-	my $targetLogsFolder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
-
-	$self->{'eventManager'}->trigger('onMountLogsFolder', $data);
+	my $srcFolder = "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}";
+	my $targetFolder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
 
 	# We process only if:
 	#  - The source logs folder exists
 	#  - The target root logs folder exists (admin can have removed it from skel directory)
 	#  - If the source folder is not already mounted
 	if(
-		-d $srcLogsFolder && -d "$data->{'HOME_DIR'}/logs" &&
-		execute('mount 2>/dev/null | grep -q ' . escapeShell(" $targetLogsFolder "))
+		-d $srcFolder && -d "$data->{'HOME_DIR'}/logs" &&
+		execute('mount 2>/dev/null | grep -q ' . escapeShell(" $targetFolder "))
 	) {
-		iMSCP::Dir->new( dirname => $targetLogsFolder )->make({
+		iMSCP::Dir->new( dirname => $targetFolder )->make({
 			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ADM_GROUP'}, mode => 0755
 		});
 
 		my $rs = execute(
-			'mount --bind ' . escapeShell($srcLogsFolder) . ' ' . $targetLogsFolder, \my $stdout, \my $stderr
+			'mount -t auto -o slave,bind' . escapeShell($srcFolder) . ' ' . $targetFolder, \my $stdout, \my $stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 	}
 
-	0;
+	$self->{'eventManager'}->trigger('onMountLogsFolder', $data);
 }
 
 =item umountLogsFolder(\%data)
@@ -1308,25 +1306,24 @@ sub umountLogsFolder
 {
 	my ($self, $data) = @_;
 
-	my $logsFolder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+	my $folder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
 
 	$self->{'eventManager'}->trigger('onUmountLogsFolder', $data);
 
-	my $mountPoint;
+	my $mount;
 	do {
-		my $rs = execute(
-			"mount 2>/dev/null | grep ' $logsFolder\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \my $stdout
+		execute("mount 2>/dev/null | grep ' $folder\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \my $stdout) or die(
+			'Could not run mount command'
 		);
-		return $rs if $rs;
 
-		$mountPoint = $stdout;
-		if($mountPoint) {
-			$rs = execute("umount -l $mountPoint", \my $stdout, \my $stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
+		$mount = $stdout;
+		if($mount) {
+			my ($stdout, $stderr);
+			! execute("umount -l $mount", \$stdout, \$stderr) or die(sprintf(
+				'Could not umount %s: %s', $mount, $stderr || 'Unknown error'
+			));
 		}
-	} while($mountPoint);
+	} while($mount);
 
 	0;
 }
