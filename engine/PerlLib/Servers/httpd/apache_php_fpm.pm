@@ -1365,25 +1365,19 @@ sub mountLogsFolder
 {
 	my ($self, $data) = @_;
 
-	my $srcFolder = "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}";
-	my $targetFolder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+	my $fsSpec = "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}";
+	my $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
 
-	# We process only if:
-	#  - The source logs folder exists
-	#  - The target root logs folder exists (admin can have removed it from skel directory)
-	#  - If the source folder is not already mounted
 	if(
-		-d $srcFolder && -d "$data->{'HOME_DIR'}/logs" &&
-		execute('mount 2>/dev/null | grep -q ' . escapeShell(" $targetFolder "))
+		-d $fsSpec && -d "$data->{'HOME_DIR'}/logs" && execute('mount 2>/dev/null | grep -q ' . escapeShell(" $fsFile "))
 	) {
-		iMSCP::Dir->new( dirname => $targetFolder )->make({
+		iMSCP::Dir->new( dirname => $fsFile )->make({
 			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ADM_GROUP'}, mode => 0755
 		});
 
 		my $rs = execute(
-			'mount -t auto -o slave,bind ' . escapeShell($srcFolder) . ' ' . $targetFolder, \my $stdout, \my $stderr
+			'mount -t auto -o slave,bind ' . escapeShell($fsSpec) . ' ' . $fsFile, \my $stdout, \my $stderr
 		);
-		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 	}
@@ -1410,20 +1404,18 @@ sub umountLogsFolder
 
 	$self->{'eventManager'}->trigger('onUmountLogsFolder', $data);
 
-	my $mount;
+	my $fsFile;
 	do {
-		execute("mount 2>/dev/null | grep ' $folder\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \my $stdout) or die(
-			'Could not run mount command'
+		my ($stdout, $stderr);
+		execute("mount | grep ' $folder\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \$stdout, \$stderr) or die(
+			sprintf('Could not run mount command: %s', $stderr || 'Unknown error')
 		);
 
-		$mount = $stdout;
-		if($mount) {
-			my ($stdout, $stderr);
-			! execute("umount -l $mount", \$stdout, \$stderr) or die(sprintf(
-				'Could not umount %s: %s', $mount, $stderr || 'Unknown error'
-			));
+		$fsFile = $stdout;
+		if($fsFile) { # We do not trap errors here (expected for dangling mounts)
+			execute("umount -l $fsFile", \$stdout, \$stderr);
 		}
-	} while($mount);
+	} while($fsFile);
 
 	0;
 }
