@@ -5,9 +5,12 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+	Added: beforeMountHomedir and afterMountHomedir
+	Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
 	Added: imscp-mountall-mngr script - Mount homedirs and httpd logs folders
 	Added: iMSCP::DbTasksProcessor - Allows to process tasks from installer without calling the imscp-rqst-mngr script
 	Added: iMSCP::Mount library - Library for mounting/unmounting file systems
+	Added: onBoot event - Triggered once the backend library has been initialized. Receive boot mode as parameter
 	Changed: Default database type for the Servers::mta::postfix::postmap() method is now cdb
 	Changed: imscp-db-keys file is now a conffile (same format as the imscp.conf conffile)
 	Changed: Usage of AES (Rijndael) instead of Blowfish for i-MSCP data encryption

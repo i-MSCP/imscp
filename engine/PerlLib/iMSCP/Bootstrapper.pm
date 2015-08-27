@@ -27,8 +27,9 @@ use strict;
 use warnings;
 use Carp;
 use Fcntl ':flock';
-use iMSCP::Debug;
 use iMSCP::Config;
+use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::Requirements;
 use iMSCP::Getopt;
 use iMSCP::Database;
@@ -68,7 +69,8 @@ sub boot
 	my ($self, $options) = @_;
 
 	my $mode = $options->{'mode'} || 'backend';
-	debug("Booting $mode...");
+
+	debug(sprintf('Booting in %s mode...', $mode));
 
 	tie
 		%main::imscpConfig,
@@ -87,7 +89,7 @@ sub boot
 	setDebug(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
 	unless($options->{'norequirements'}) {
-		my $test = ($mode eq 'setup') ? 'all' : 'user';
+		my $test = $mode eq 'setup' ? 'all' : 'user';
 		iMSCP::Requirements->new()->$test();
 	}
 
@@ -114,6 +116,7 @@ sub boot
 		}
 	}
 
+	iMSCP::EventManager->getInstance()->trigger('onBoot', $mode);
 	$self;
 }
 
@@ -138,10 +141,10 @@ sub lock
 		open($self->{'locks'}->{$file}, '>', $file) or die(sprintf('Could not open %s for locking: %s', $file, $!));
 		my $rs = flock($self->{'locks'}->{$file}, $nowait ? LOCK_EX|LOCK_NB : LOCK_EX);
 		$rs || $nowait or die(sprintf( 'Unable to acquire lock on %s', $file));
-		$rs;
-	} else {
-		1;
+		return $rs;
 	}
+
+	1;
 }
 
 =item unlock([ $file = '/tmp/imscp.lock' ])

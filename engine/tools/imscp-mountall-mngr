@@ -41,10 +41,10 @@ sub mountHomedirs
 
 	while (my $row = $sth->fetchrow_hashref()) {
 		my $homedir = "$main::imscpConfig{'USER_WEB_DIR'}/$row->{'domain_name'}";
-		my $options = { fs_spec => $homedir, fs_file => $homedir, fs_vfstype => 'none', fs_mntops => 'shared,bind' };
-		$eventManager->trigger('beforeMountHomedir', $options);
-		mount($options);
-		$eventManager->trigger('afterMountHomedir', $options);
+		my $mountOptions = { fs_spec => $homedir, fs_file => $homedir, fs_vfstype => 'none', fs_mntops => 'shared,bind' };
+		$eventManager->trigger('beforeMountHomedir', $mountOptions);
+		mount($mountOptions);
+		$eventManager->trigger('afterMountHomedir', $mountOptions);
 	}
 }
 
@@ -109,7 +109,7 @@ OPTIONS:
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot({ norequirements => 1, nolock => 1, config_readonly => 1 });
+iMSCP::Bootstrapper->getInstance()->boot({ norequirements => 1, nolock => 1, config_readonly => 1, mode => 'reboot' });
 
 eval {
 	mountHomedirs();
