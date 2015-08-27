@@ -35,6 +35,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Rights;
+use iMSCP::Mount qw /mount umount/;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
@@ -1257,7 +1258,7 @@ sub restart
  Mount logs folder which belong to the given domain into customer's logs folder
 
  Param hash \%data Domain data
- Return int 0 on success, other or die on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -1265,34 +1266,24 @@ sub mountLogsFolder
 {
 	my ($self, $data) = @_;
 
-	my $fsSpec = "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}";
-	my $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+	my $mountOptions = {
+		fs_spec => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
+		fs_file => "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}",
+		fs_vfstype => 'none',
+		fs_mntops => 'bind'
+	};
 
-	if(
-		-d $fsSpec && -d "$data->{'HOME_DIR'}/logs" && execute('mount 2>/dev/null | grep -q ' . escapeShell(" $fsFile "))
-	) {
-		iMSCP::Dir->new( dirname => $fsFile )->make({
-			user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ADM_GROUP'}, mode => 0755
-		});
-
-		my $rs = execute(
-			'mount -t auto -o slave,bind ' . escapeShell($fsSpec) . ' ' . $fsFile, \my $stdout, \my $stderr
-		);
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
-	}
-
-	$self->{'eventManager'}->trigger('onMountLogsFolder', $data);
+	$self->{'eventManager'}->trigger('beforeMountLogsFolder', $mountOptions);
+	mount($mountOptions);
+	$self->{'eventManager'}->trigger('afterMountLogsFolder', $mountOptions);
 }
 
 =item umountLogsFolder(\%data)
 
  Umount logs folder which belong to the given domain from customer's logs folder
 
- Note: In case of a partial path, any file systems below this path will be umounted.
-
  Param hash \%data Domain data
- Return int 0 on success, other or die on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -1300,24 +1291,10 @@ sub umountLogsFolder
 {
 	my ($self, $data) = @_;
 
-	my $folder = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
-
-	$self->{'eventManager'}->trigger('onUmountLogsFolder', $data);
-
-	my $fsFile;
-	do {
-		my ($stdout, $stderr);
-		execute("mount | grep ' $folder\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \$stdout, \$stderr) or die(
-			sprintf('Could not run mount command: %s', $stderr || 'Unknown error')
-		);
-
-		$fsFile = $stdout;
-		if($fsFile) { # We do not trap errors here (expected for dangling mounts)
-			execute("umount -l $fsFile", \$stdout, \$stderr);
-		}
-	} while($fsFile);
-
-	0;
+	my $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+	$self->{'eventManager'}->trigger('beforeUnmountLogsFolder', $fsFile);
+	umount($fsFile);
+	$self->{'eventManager'}->trigger('afterUmountMountLogsFolder', $fsFile);
 }
 
 =back

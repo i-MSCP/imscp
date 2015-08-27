@@ -6,6 +6,7 @@
     <copy_conffile mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/courier-authdaemon</copy_conffile>
     <copy_conffile mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_daemon</copy_conffile>
     <copy_conffile mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_network</copy_conffile>
+    <copy_conffile mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_mountall</copy_conffile>
     <copy_conffile mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_panel</copy_conffile>
     <copy_conffile mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${SYSTEM_CONF}/init.d/imscp_panel.default</copy_conffile>
 </install>

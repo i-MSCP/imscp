@@ -1,0 +1,51 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          imscp_mountall
+# Required-Start:    imscp_network
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Description: Mount homedirs and httpd logs folders
+# Short-Description:
+### END INIT INFO
+
+# Note: do not modify any of these vars here, use /etc/default/$NAME instead
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+TOOLSDIR="/var/www/imscp/engine/tools"
+
+. /lib/lsb/init-functions
+
+# Read config file if present.
+if [ -r /etc/default/$NAME ]; then
+    . /etc/default/$NAME
+fi
+
+# Don't run if we are running upstart
+if init_is_upstart 2>/dev/null; then
+    exit 1
+fi
+
+do_start()
+{
+    ${TOOLSDIR}/imscp-mountall-mngr 2>/dev/null
+}
+
+case "$1" in
+  start|"")
+        do_start
+        ;;
+  restart|reload|force-reload)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+  stop)
+        # No-op
+        ;;
+  *)
+        echo "Usage: imscp_mountall.sh [start|stop]" >&2
+        exit 3
+        ;;
+esac
+
+:

@@ -112,9 +112,6 @@ class iMSCP_SystemInfo
 	 */
 	public static function getFilePartitionInfo($file)
 	{
-		/** @var  $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		$filePartitionInfo = array();
 
 		$descriptorSpec = array(
@@ -323,11 +320,6 @@ class iMSCP_SystemInfo
 	 */
 	private function _getFileSystemInfo()
 	{
-		/**
-		 * @var $cfg iMSCP_Config_Handler_File
-		 */
-		$cfg = iMSCP_Registry::get('config');
-
 		$filesystem = array();
 
 		$descriptorSpec = array(
@@ -449,9 +441,6 @@ class iMSCP_SystemInfo
 	 */
 	private function _getRAMInfo()
 	{
-		/* @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		$ram = array('total' => 0, 'free' => 0, 'used' => 0);
 
 		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
@@ -529,9 +518,6 @@ class iMSCP_SystemInfo
 	 */
 	private function _getSwapInfo()
 	{
-		 /* @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		$swap = array('total' => 0, 'free' => 0, 'used' => 0);
 
 		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
@@ -699,9 +685,6 @@ class iMSCP_SystemInfo
 	 */
 	protected function sysctl($args)
 	{
-		/* @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		$descriptorSpec = array(
 			0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 			1 => array('pipe', 'w'), // stdout is a pipe that the child will write to

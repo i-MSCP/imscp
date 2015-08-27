@@ -17,18 +17,40 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+# Script that mount homedirs and httpd logs folders on reboot
+
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Database;
+use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Mail;
+use iMSCP::Mount qw/mount umount/;
 use Servers::httpd;
 use File::Basename;
 
+sub mountHomedirs
+{
+	my $eventManager = iMSCP::EventManager->getInstance();
+	my $dbh = iMSCP::Database->factory()->getRawDb();
+	my $sth = $dbh->prepare("SELECT domain_name FROM domain WHERE domain_status IN('ok', 'disabled')");
+	$sth or die(sprintf('Could not prepare SQL statement: %s' , $dbh->errstr));
+	$sth->execute() or die(sprintf('Could not execute prepared statement: %s', $dbh->errstr));
+
+	while (my $row = $sth->fetchrow_hashref()) {
+		my $homedir = "$main::imscpConfig{'USER_WEB_DIR'}/$row->{'domain_name'}";
+		my $options = { fs_spec => $homedir, fs_file => $homedir, fs_vfstype => 'none', fs_mntops => 'shared,bind' };
+		$eventManager->trigger('beforeMountHomedir', $options);
+		mount($options);
+		$eventManager->trigger('afterMountHomedir', $options);
+	}
+}
+
 sub mountLogFolders
 {
+	my $eventManager = iMSCP::EventManager->getInstance();
 	my $httpd = Servers::httpd->factory();
 	my $dbh = iMSCP::Database->factory()->getRawDb();
 	my $sth = $dbh->prepare(
@@ -76,22 +98,27 @@ sub mountLogFolders
 	}
 }
 
-newDebug('imscp-httpd-logs-mngr.log');
+newDebug('imscp-mountall-mngr.log');
 
 iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
-Script that mounts the httpd log folders in client log folders
+Mounts the customer home directories and their httpd log folders
 
 OPTIONS:
  -v,    --verbose       Enable verbose mode.},
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-if($bootstrapper->lock('/tmp/imscp-httpd-logs-mngr.lock', 'nowait')) {
-	$bootstrapper->boot({ norequirements => 1, nolock => 1, config_readonly => 1 });
+iMSCP::Bootstrapper->getInstance()->boot({ norequirements => 1, nolock => 1, config_readonly => 1 });
+
+eval {
+	mountHomedirs();
 	mountLogFolders() if Servers::httpd->can('mountLogsFolder');
 	my @errorMessages = getMessageByType('error');
-	iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
-	$bootstrapper->unlock('/tmp/imscp-httpd-logs-mngr.lock');
-}
+};
+
+if($@) {
+	my $error = $@;
+	iMSCP::Mail->new()->errmsg($error);
+	die($error);
+};

@@ -34,7 +34,6 @@ do_start()
 {
     ${TOOLSDIR}/imscp-net-interfaces-mngr start 2>/dev/null
     ${TOOLSDIR}/imscp-net-traffic-logger start 2>/dev/null
-    ${TOOLSDIR}/imscp-httpd-logs-mngr 2>/dev/null
 
     # Touch lock file
     touch $LFILE

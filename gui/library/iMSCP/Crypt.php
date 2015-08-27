@@ -48,7 +48,7 @@ class Crypt
 		}
 
 		$length = (int)$length;
-		if ($length <= 0) {
+		if ($length < 1) {
 			throw new \InvalidArgumentException('Length parameter value must be >= 1');
 		}
 

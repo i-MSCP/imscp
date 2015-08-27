@@ -39,6 +39,7 @@ use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Execute;
 use iMSCP::EventManager;
+use iMSCP::Mount 'umount';
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use iMSCP::SystemGroup;
@@ -145,6 +146,9 @@ sub setupDialog
 sub setupTasks
 {
 	iMSCP::EventManager->getInstance()->trigger('beforeSetupTasks');
+
+	# Umount any filesystem under /var/www/virtual for safety reasons (they will be automatically remounted
+	umount($main::imscpConfig{'USER_WEB_DIR'});
 
 	my @steps = (
 		[ \&setupSaveOldConfig,           'Saving old configuration file' ],
@@ -1436,10 +1440,11 @@ sub setupServices
 
 	if($serviceMngr->isUpstart()) {
 		# Work around https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=780641
+		$serviceMngr->getProvider('sysvinit')->remove('imscp_mountall');
 		$serviceMngr->getProvider('sysvinit')->remove('imscp_network');
 	}
 
-	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_network';
+	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_mountall', 'imscp_network';
 
 	0;
 }
