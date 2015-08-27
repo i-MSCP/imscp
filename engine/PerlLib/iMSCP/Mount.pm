@@ -81,7 +81,7 @@ sub mount
 
 		my ($stdout, $stderr);
 		execute("mount @cmdArgs", \$stdout, \$stderr) == 0 or die(sprintf(
-			'Could not mount %s on %s: %s', $options->{'fs_spec'}, $fsFile, $stderr || 'Unknown error'
+			'Could not mount %s on %s: %s', $fsFile, $fsFile, $stderr || 'Unknown error'
 		));
 	}
 
