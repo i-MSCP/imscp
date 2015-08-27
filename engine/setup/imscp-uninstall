@@ -253,7 +253,7 @@ sub _uninstallServices
 	$serviceMngr->remove($_) for 'imscp_daemon', 'imscp_network';
 
 	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override', '/etc/systemd/system/%s.service') {
-		for my $service('imscp_network', 'imscp_daemon') {
+		for my $service('imscp_mountall', 'imscp_network', 'imscp_daemon') {
 			my $file = sprintf($pFormat, $service);
 
 			if(-f $file) {

@@ -391,7 +391,7 @@ sub _encryptCBC($$$$)
 	encode_base64(Crypt::CBC->new(
 		-cipher => $algorithm,
 		-key => $key,
-		#-keysize => length $key, # FIXME: Should we allow arbitrary keysizes? Currently
+		#-keysize => length $key, # FIXME: Should we allow arbitrary keysizes?
 		-literal_key => 1, # PHP mcrypt_encrypt compliant
 		-iv => $iv,
 		-header => 'none',

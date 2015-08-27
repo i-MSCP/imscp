@@ -132,7 +132,7 @@ Error was:
 Please have a look at http://i-mscp.net/forum if you need help.
 EOF
 
-		croak($errorMessage);
+		confess($errorMessage);
 	}
 
 	0;

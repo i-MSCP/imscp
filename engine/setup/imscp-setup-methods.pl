@@ -716,9 +716,9 @@ sub setupAskDefaultAdmin
 					'SELECT admin_id FROM admin WHERE admin_name = ? AND created_by <> 0 LIMIT 1',
 					$adminLoginName
 				);
-				unless(ref $rdata eq 'HASH') {
-					die($rdata);
-				} elsif(%{$rdata}) {
+				ref $rdata eq 'HASH' or die($rdata);
+
+				if(%{$rdata}) {
 					$msg = '\n\n\\Z1This login name already exists.\\Zn\n\nPlease, try again:'
 				}
 			}
@@ -1361,7 +1361,7 @@ sub setupDefaultAdmin
 		my $rs = $db->doQuery(
 			'admin_name', 'SELECT admin_id, admin_name FROM admin WHERE admin_name = ? LIMIT 1', $adminOldLoginName
 		);
-		$rs eq 'HASH' or die($rs);
+		ref $rs eq 'HASH' or die($rs);
 
 		unless(%{$rs}) {
 			$rs = $db->doQuery(
@@ -1444,7 +1444,8 @@ sub setupServices
 		$serviceMngr->getProvider('sysvinit')->remove('imscp_network');
 	}
 
-	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_mountall', 'imscp_network';
+	# Service imscp_network has to be enabled first to enable service imscp_mountall
+	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_network', 'imscp_mountall';
 
 	0;
 }
