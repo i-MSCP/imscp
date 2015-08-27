@@ -45,10 +45,10 @@ our @EXPORT_OK = qw( mount umount );
  Mount the file system as specified in the given mount options
 
  Param hash \%options Hash describing mount option:
-   fs_spec: This field describes the block special device or remote filesystem to be mounted.
-   fs_file: This  field  describes the mount point for the filesystem.
-   fs_vfstype: This field describes the type of the filesystem.
-   fs_mntops: This field describes the mount options associated with the filesystem.
+   fs_spec: This option describes the block special device or remote filesystem to be mounted.
+   fs_file: This  option  describes the mount point for the filesystem.
+   fs_vfstype: This option describes the type of the filesystem.
+   fs_mntops: This option describes the mount options associated with the filesystem.
  Return int 0 on success, die on failure
 
 =cut
