@@ -29,7 +29,7 @@ use File::Spec;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::File;
-
+use parent 'Exporter';
 our @EXPORT_OK = qw( mount umount );
 
 =head1 DESCRIPTION
@@ -73,7 +73,7 @@ sub mount
 		}
 
 		my @cmdArgs = (
-			'-t', $options->{'fs_vsftype'},
+			'-t', $options->{'fs_vfstype'},
 			'-o', escapeShell($options->{'fs_mntops'}),
 			escapeShell($fsSpec),
 			escapeShell($fsFile)
@@ -85,7 +85,7 @@ sub mount
 		));
 	}
 
-	if($options->{'fs_mntops'} =~ /(r(?:shared|private|slave|unbindable))/) { # handle shared subtrees operations
+	if($options->{'fs_mntops'} =~ /(r?(?:shared|private|slave|unbindable))/) { # handle shared subtrees operations
 		my ($stdout, $stderr);
 		execute("mount --make-$1 $fsFile", \$stdout, \$stderr) == 0 or die(sprintf(
 			'Could not make %s a %s subtree: %s', $fsFile, $1, $stderr || 'Unknown error'
@@ -122,7 +122,7 @@ sub umount
 
 		$fsFileFound = $stdout;
 		if ($fsFileFound) { # We do not trap errors here (expected for dangling mounts)
-			execute("umount -l $fsFileFound 2>/dev/null", \$stdout, \$stderr);
+			execute("umount -l $fsFileFound 2>/dev/null", \$stdout);
 		}
 	} while ($fsFileFound);
 
