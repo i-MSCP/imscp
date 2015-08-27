@@ -68,7 +68,7 @@ sub mount
 	if (execute("mount 2>/dev/null | grep -q " . escapeShell(" on $fsFile "))) {
 		if (-f $fsSpec) {
 			iMSCP::File->new( filename => $fsFile )->save();
-		} elsif (! -d $options->{'fs_file'}) {
+		} elsif (! -d $fsFile) {
 			iMSCP::Dir->new( dirname => $fsFile )->make();
 		}
 
@@ -81,14 +81,14 @@ sub mount
 
 		my ($stdout, $stderr);
 		execute("mount @cmdArgs", \$stdout, \$stderr) == 0 or die(sprintf(
-			'Could not mount %s on %s: %s', $options->{'fs_spec'}, $options->{'fs_file'}, $stderr || 'Unknown error'
+			'Could not mount %s on %s: %s', $options->{'fs_spec'}, $fsFile, $stderr || 'Unknown error'
 		));
 	}
 
 	if($options->{'fs_mntops'} =~ /(r(?:shared|private|slave|unbindable))/) { # handle shared subtrees operations
 		my ($stdout, $stderr);
-		execute("mount --make-$1 $options->{'fs_file'}", \$stdout, \$stderr) == 0 or die(sprintf(
-			'Could not make %s a %s subtree: %s', $options->{'fs_file'}, $1, $stderr || 'Unknown error'
+		execute("mount --make-$1 $fsFile", \$stdout, \$stderr) == 0 or die(sprintf(
+			'Could not make %s a %s subtree: %s', $fsFile, $1, $stderr || 'Unknown error'
 		));
 	}
 
