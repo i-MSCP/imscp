@@ -42,11 +42,11 @@ our @EXPORT_OK = qw( mount umount );
 
 =item mount(\%options)
 
- Mount the file system as specified in the given mount options
+ Mount a file system according the given options
 
  Param hash \%options Hash describing mount option:
    fs_spec: This option describes the block special device or remote filesystem to be mounted.
-   fs_file: This  option  describes the mount point for the filesystem.
+   fs_file: This option describes the mount point for the filesystem.
    fs_vfstype: This option describes the type of the filesystem.
    fs_mntops: This option describes the mount options associated with the filesystem.
  Return int 0 on success, die on failure

@@ -147,7 +147,7 @@ sub setupTasks
 {
 	iMSCP::EventManager->getInstance()->trigger('beforeSetupTasks');
 
-	# Umount any filesystem under /var/www/virtual for safety reasons (they will be automatically remounted
+	# Umount any filesystem under /var/www/virtual for safety reasons
 	umount($main::imscpConfig{'USER_WEB_DIR'});
 
 	my @steps = (
