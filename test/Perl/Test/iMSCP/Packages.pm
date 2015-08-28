@@ -42,7 +42,7 @@ sub runUnitTests
 			is_deeply
 				[ sort iMSCP::Packages->getInstance()->get() ],
 				[ sort qw/Webmail FrontEnd PhpMyAdmin FileManager Webstats AntiRootkits/ ],
-				'iget() return expected package list';
+				'get() return expected package list';
 			is_deeply
 				[ sort iMSCP::Packages->getInstance()->getFull() ],
 				[
