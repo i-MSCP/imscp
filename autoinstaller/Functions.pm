@@ -546,22 +546,20 @@ sub _testRequirements
 
 sub _buildDistributionFiles
 {
-	my $rs = _buildLayout();
-	return $rs if $rs;
+	my @steps = (
+		[ \&_buildLayout,        'Building layout' ],
+		[ \&_buildConfigFiles,   'Building configuration files' ],
+		[ \&_buildEngineFiles,   'Building engine files' ],
+		[ \&_buildFrontendFiles, 'Building Building frontEnd files' ],
+		[ \&_buildDaemon,        'Building communication daemon' ]
+	);
 
-	$rs = _buildConfigFiles();
-	return $rs if $rs;
+	push @steps, [ \&_savePersistentData, 'Saving persistent data' ] if -d "$main::imscpConfig{'ROOT_DIR'}/gui";
 
-	$rs = _buildEngineFiles();
-	return $rs if $rs;
-
-	$rs = _buildDaemon();
-	return $rs if $rs;
-
-	$rs = _buildFrontendFiles();
-	return $rs if $rs;
-
-	_savePersistentData();
+	startDetail();
+	my ($nStep, $nSteps) = (0, scalar @steps);
+	step(@{ $steps[$nStep] }, $nSteps, ++$nStep) for @steps;
+	endDetail();
 }
 
 =item _buildLayout()
