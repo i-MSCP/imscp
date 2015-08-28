@@ -1,11 +1,13 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          imscp_mountall
-# Required-Start:    imscp_network
-# Required-Stop:
-# Default-Start:     S
+# Required-Start:    $remote_fs $network
+# Required-Stop:     $remote_fs $network
+# Should-Start:      mysql
+# Should-Stop:
+# Default-Start:     2 3 4 5
 # Default-Stop:
-# Description: Mount homedirs and httpd logs folders
+# Description: Mount i-MSCP homedirs and httpd logs folders
 # Short-Description:
 ### END INIT INFO
 
@@ -43,7 +45,7 @@ case "$1" in
         # No-op
         ;;
   *)
-        echo "Usage: imscp_mountall.sh [start|stop]" >&2
+        echo "Usage: imscp_mountall [start|stop]" >&2
         exit 3
         ;;
 esac
