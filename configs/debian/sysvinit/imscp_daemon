@@ -5,7 +5,8 @@
 # Required-Stop:     $remote_fs $network $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: i-MSCP communication daemon
+# Description: i-MSCP communication daemon
+# Short-Description:
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

@@ -124,7 +124,6 @@ sub uninstall
 	return $rs if $rs;
 
 	$self->restart();
-
 	$self->{'eventManager'}->trigger('afterMtaUninstall', 'postfix');
 }
 
@@ -402,7 +401,6 @@ sub addMail
 		);
 	} else {
 		$self->deleteTableEntry(qr/\Q$data->{'MAIL_ADDR'}\E/, $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_MAP'});
-
 		iMSCP::Dir->new(
 			dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}"
 		)->remove();

@@ -352,7 +352,7 @@ sub getProvider
 		$provider = "iMSCP::Provider::Service::${providerName}"; # Fallback to the base provider
 	}
 
-	can_load(modules => { $provider => undef}) or die(
+	can_load(modules => { $provider => undef }) or die(
 		sprintf("Unable to load the %s service provider: %s", $provider, $Module::Load::Conditional::ERROR)
 	);
 
