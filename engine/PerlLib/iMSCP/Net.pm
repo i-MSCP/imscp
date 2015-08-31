@@ -25,6 +25,7 @@ package iMSCP::Net;
 
 use strict;
 use warnings;
+use Carp;
 use iMSCP::Execute;
 use Net::IP qw(:PROC);
 use parent 'Common::SingletonClass';
@@ -66,19 +67,17 @@ sub addAddr
 	my ($self, $addr, $dev) = @_;
 
 	$self->isValidAddr($addr) or croak(sprintf('Invalid IP address: %s', $addr));
-	$self->isKnownAddr($addr) or croak(sprintf('Unknown network device: %s', $dev));
+	$self->isKnownDevice($dev) or croak(sprintf('Unknown network device: %s', $dev));
 
-	if($self->isKnownDevice($dev)) {
-		$addr = $self->normalizeAddr($addr);
-		my $cidr = (ip_is_ipv4($addr)) ? 32 : 64; # TODO should be configurable
-		my($stdout, $stderr);
-		execute("ip addr add $addr/$cidr dev $dev", \$stdout, \$stderr) == 0 or croak(sprintf(
-			'Could not add the %s IP address to the %s network device: %s', $addr, $dev, $stderr || 'Unknown error'
-		));
-		$self->{'addresses'}->{$addr} = {
-			'prefix_length' => $cidr, 'version' => $self->getAddrVersion($addr), 'device' => $dev
-		};
-	}
+	$addr = $self->normalizeAddr($addr);
+	my $cidr = (ip_is_ipv4($addr)) ? 32 : 64; # TODO should be configurable
+	my($stdout, $stderr);
+	execute("ip addr add $addr/$cidr dev $dev", \$stdout, \$stderr) == 0 or croak(sprintf(
+		'Could not add the %s IP address to the %s network device: %s', $addr, $dev, $stderr || 'Unknown error'
+	));
+	$self->{'addresses'}->{$addr} = {
+		'prefix_length' => $cidr, 'version' => $self->getAddrVersion($addr), 'device' => $dev
+	};
 
 	0;
 }
@@ -346,6 +345,10 @@ sub _init
 
 	$self->{'devices'} = $self->_extractDevices();
 	$self->{'addresses'} = $self->_extractAddresses();
+
+	use Data::Dumper;
+	print Dumper($self);
+
 	$self;
 }
 
