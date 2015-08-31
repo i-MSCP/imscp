@@ -323,8 +323,8 @@ Please enter your public IP:$msg
 
 				do {
 					($rs, $serverIps) = $dialog->checkbox(
-						"\nPlease, select additional IP addresses to add into the database and deselect those to delete: $msg",
-						[@serverIps],
+						"\nPlease, select IP addresses that you want use with i-MSCP and deselect others: $msg",
+						[ @serverIps ],
 						@{$serverIpsToAdd}
 					);
 
@@ -397,7 +397,7 @@ The  $serverIpsToDelete{$ipAddr} IP address is already in use. Please, choose an
 		setupSetQuestion('BASE_SERVER_PUBLIC_IP', $baseServerPublicIp);
 		setupSetQuestion('SERVER_IPS', $serverIpsToAdd);
 		setupSetQuestion('SERVER_IPS_TO_REPLACE', {%serverIpsReplMap});
-		setupSetQuestion('SERVER_IPS_TO_DELETE', [values %serverIpsToDelete]);
+		setupSetQuestion('SERVER_IPS_TO_DELETE', [ values %serverIpsToDelete ]);
 	}
 
 	$rs;
@@ -1144,17 +1144,12 @@ sub setupServerIps
 
 	for my $ipAddr (@serverIps) {
 		next if exists $serverIpsToReplace->{$ipAddr};
-		my $netCard = ($net->isKnownAddr($ipAddr)) ? $net->getAddrDevice($ipAddr) || $defaultNetcard : $defaultNetcard;
-
-		if($netCard) {
-			my $rs = $db->doQuery(
-				'i', 'INSERT IGNORE INTO server_ips (ip_number, ip_card, ip_status) VALUES(?, ?, ?)', $ipAddr, $netCard,
-				'toadd'
-			);
-			ref $rs eq 'HASH' or die(sprintf('Could not add/update the %s IP address: %s', $ipAddr, $rs));
-		} else {
-			die(sprintf('Could not add the %s IP address into database: Unknown network card', $ipAddr));
-		}
+		my $netCard = $net->isKnownAddr($ipAddr) ? $net->getAddrDevice($ipAddr) : $defaultNetcard;
+		my $rs = $db->doQuery(
+			'i', 'INSERT IGNORE INTO server_ips (ip_number, ip_card, ip_status) VALUES(?, ?, ?)', $ipAddr, $netCard,
+			'toadd'
+		);
+		ref $rs eq 'HASH' or die(sprintf('Could not add/update the %s IP address: %s', $ipAddr, $rs));
 	}
 
 	# Server IPs replacement
@@ -1201,7 +1196,7 @@ sub setupServerIps
 		}
 	}
 
-	# Process IP deletion
+	# Schedule IP deletion
 	if(@{$serverIpsToDelete}) {
 		my $serverIpsToDelete = join q{,}, map $db->quote($_), @{$serverIpsToDelete};
 		my $rs = $db->doQuery(
@@ -1438,14 +1433,7 @@ sub setupServices
 
 	my $serviceMngr = iMSCP::Service->getInstance();
 
-#	if($serviceMngr->isUpstart()) {
-#		# Work around https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=780641
-#		$serviceMngr->getProvider('sysvinit')->remove('imscp_mountall');
-#		$serviceMngr->getProvider('sysvinit')->remove('imscp_network');
-#	}
-
-	# Service imscp_network has to be enabled first to enable service imscp_mountall
-	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_network', 'imscp_mountall';
+	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
 
 	0;
 }
@@ -1493,7 +1481,8 @@ sub setupRebuildCustomerFiles
 		mail_users => 'status',
 		htaccess => 'status',
 		htaccess_groups => 'status',
-		htaccess_users => 'status'
+		htaccess_users => 'status',
+		server_ips => 'ip_status'
 	};
 
 	my ($db, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
@@ -1604,7 +1593,7 @@ sub setupRestartServices
 	my $serviceMngr = iMSCP::Service->getInstance();
 
 	unshift @services, (
-		[ sub { $serviceMngr->restart('imscp_network'); 0 }, 'i-MSCP Network' ],
+		[ sub { $serviceMngr->restart('imscp_traffic'); 0 }, 'i-MSCP Traffic Logger' ],
 		[ sub { $serviceMngr->restart('imscp_daemon'); 0 }, 'i-MSCP Daemon' ]
 	);
 

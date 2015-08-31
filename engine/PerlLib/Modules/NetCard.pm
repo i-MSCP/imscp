@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,20 +14,21 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package Modules::NetCard;
 
 use strict;
 use warnings;
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
-use iMSCP::Execute;
+use iMSCP::Provider::NetworkInterface;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -42,44 +43,54 @@ use parent 'Common::Object';
 
  Process module
 
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
 sub process
 {
-	$ENV{'IMSCP_BACKEND'} = 1; # Tells to the imscp-net-interfaces-mngr script that we are running from the backend
+	my $niProvider = iMSCP::Provider::NetworkInterface->getInstance();
+	my $dbh = iMSCP::Database->factory()->getRawDb();
 
-	my ($stdour, $stderr);
-	my $rs = execute("perl $main::imscpConfig{'TOOLS_ROOT_DIR'}/imscp-net-interfaces-mngr restart", \$stdour, \$stderr);
-	debug($stdour) if $stdour;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+	my $sth = $dbh->prepare('SELECT * FROM server_ips WHERE ip_status <> ?');
+	$sth or die(sprintf('Could not prepare SQL statement: %s' , $dbh->errstr));
+	$sth->execute('ok') or die(sprintf('Could not execute prepared statement: %s', $dbh->errstr));
 
-	delete $ENV{'IMSCP_BACKEND'};
+	while (my $row = $sth->fetchrow_hashref()) {
+		my ($sth2, @params);
+		local $@;
+		eval {
+			if($row->{'ip_status'} ~~ [ 'toadd', 'tochange' ]) {
+				$niProvider->addIpAddr({
+					id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
+				});
+				$sth2 = $dbh->prepare('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?');
+				@params = ('ok', $row->{'ip_id'});
+			} else {
+				$niProvider->removeIpAddr({
+					id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
+				});
+				$sth2 = $dbh->prepare('DELETE FROM server_ips WHERE ip_id = ?');
+				@params = ($row->{'ip_id'});
+			}
 
-	my $db = iMSCP::Database->factory();
-
-	my $rdata = $db->doQuery('dummy', "DELETE FROM server_ips WHERE ip_status = 'todelete'");
-	unless (ref $rdata eq 'HASH') {
-		error($rdata);
-		$rs = 1;
+			$sth2 or die(sprintf('Could not prepare SQL statement: %s' , $dbh->errstr));
+			$sth2->execute(@params) or die(sprintf('Could not execute prepared statement: %s', $dbh->errstr));
+		};
+		if($@) {
+			my $error = $@;
+			$sth2 = $dbh->prepare('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', $error || 'Unknown error');
+			$sth2->execute($row->{'ip_id'}) or die(sprintf('Could not execute prepared statement: %s', $dbh->errstr));
+		}
 	}
 
-	$rdata = $db->doQuery('dummy', "UPDATE server_ips SET ip_status = 'ok'");
-	unless (ref $rdata eq 'HASH') {
-		error($rdata);
-		$rs |= 1;
-	}
-
-	$rs;
+	0;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

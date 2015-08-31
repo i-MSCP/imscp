@@ -63,7 +63,7 @@ sub isEnabled
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service") == 0);
+	! $self->_exec($commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service");
 }
 
 =item enable($service)
@@ -79,7 +79,7 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	($self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0);
+	! $self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service");
 }
 
 =item disable($service)
@@ -95,7 +95,7 @@ sub disable
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0);
+	! $self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service");
 }
 
 =item remove($service)
@@ -111,11 +111,8 @@ sub remove
 {
 	my ($self, $service) = @_;
 
-	(
-		$self->stop($service) &&
-		$self->disable($service) &&
-		iMSCP::File->new->( filename => $self->getUnitFilePath($service) )->delFile() == 0
-	);
+	$self->stop($service) && $self->disable($service) &&
+	! iMSCP::File->new->( filename => $self->getUnitFilePath($service) )->delFile();
 }
 
 =item start($service)
@@ -131,7 +128,7 @@ sub start
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0);
+	! $self->_exec($commands{'systemctl'}, 'start', "$service.service");
 }
 
 =item stop($service)
@@ -147,7 +144,7 @@ sub stop
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, 'stop', "$service.service") == 0);
+	! $self->_exec($commands{'systemctl'}, 'stop', "$service.service");
 }
 
 =item restart($service)
@@ -163,7 +160,7 @@ sub restart
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, 'restart', "$service.service") == 0);
+	! $self->_exec($commands{'systemctl'}, 'restart', "$service.service");
 }
 
 =item reload($service)
@@ -180,7 +177,7 @@ sub reload
 	my ($self, $service) = @_;
 
 	if($self->isRunning($service)) {
-		($self->_exec($commands{'systemctl'}, 'reload', "$service.service") == 0);
+		! $self->_exec($commands{'systemctl'}, 'reload', "$service.service");
 	} else {
 		$self->start($service);
 	}
@@ -199,7 +196,7 @@ sub isRunning
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, 'is-active', "$service.service") == 0);
+	! $self->_exec($commands{'systemctl'}, 'is-active', "$service.service");
 }
 
 =item getUnitFilePath($service)
@@ -237,10 +234,7 @@ sub _init
 	my $self = shift;
 
 	$paths{$self} = [
-		'/etc/systemd/system',
-		'/lib/systemd/system',
-		'/usr/local/lib/systemd/system',
-		'/usr/lib/systemd/system'
+		'/etc/systemd/system', '/lib/systemd/system', '/usr/local/lib/systemd/system', '/usr/lib/systemd/system'
 	];
 
 	$self->SUPER::_init();

@@ -5,38 +5,40 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-	Added: beforeMountHomedir and afterMountHomedir
+	Added: beforeMountHomedir and afterMountHomedir events
 	Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
 	Added: imscp-mountall-mngr script - Mount homedirs and httpd logs folders
 	Added: iMSCP::DbTasksProcessor - Allows to process tasks from installer without calling the imscp-rqst-mngr script
-	Added: iMSCP::Mount library - Library for mounting/unmounting file systems
-	Added: onBoot event - Triggered once the backend library has been initialized. Receive boot mode as parameter
+	Added: iMSCP::Mount - Library for mounting/unmounting file systems
+	Added: iMSCP::Provider::NetworkInterface - Provider for adding/removing IP addresses
+	Added: onBoot event - Triggered once the backend library has been initialized
 	Changed: Default database type for the Servers::mta::postfix::postmap() method is now cdb
 	Changed: imscp-db-keys file is now a conffile (same format as the imscp.conf conffile)
 	Changed: Usage of AES (Rijndael) instead of Blowfish for i-MSCP data encryption
 	Fixed: Cleanup paths using File::Spec::canonpath() instead of dedicated regexps
 	Fixed: Default phpini data must be lazy loaded (only once per domain module) to save SQL queries
+	Fixed: Could not remove service
 	Fixed: Domain aliases are not processed correctly in Servers::mta::postfix::addDmn()
 	Fixed: phptmp directory is deleted by mistake in some contexts (Fixed by #IP-1396)
 	Fixed: Wrong domain type set in module data providers
 	Introduced: HSTS (HTTP Strict Transport Security) feature
 	Moved: vlogger script into i-MSCP engine tools directory
+	Removed: beforeDispatchRequest and afterDispatchRequest events
 	Removed: imscp-httpd-logs-mngr script
 	Removed: Optional dirname parameter for all iMSCP::Dir::* methods (iMSCP::Dir object = One directory)
 	Removed: Support for file/dir exclusion in the iMSCP::Dir::rcopy() method
-	Removed: beforeDispatchRequest and afterDispatchRequest events
+	Rewritten: iMSCP::Crypt library
 	Rewritten: iMSCP::SetRights library (usage of chown and chmod perl-functions instead of system commands)
 	Rewritten: Servers::mta::postfix
-	Rewritten: iMSCP::Crypt library
 
 CONFIGS
+	Added: cron package (Debian/Ubuntu)
 	Added: imscp_mountall init script - Mount homedirs and httpd logs folders on reboot
 	Added: imscp_mountall upstart job - Mount homedirs and httpd logs folders on reboot
-	Added: cron package (Debian/Ubuntu)
 	Added: libcrypt-rijndael-perl package (Debian/Ubuntu)
 	Added: postfix-cdb package (Debian/Ubuntu)
 	Changed: Usage of cdb maps instead of hash maps (Postfix)
-	Fixed: ftp_ssl.log log file is not rotated (proftpd logrotate configuration file)
+	Fixed: ftp_ssl.log log file is not rotated (proftpd logrotate conffile)
 	Removed: Unless lookup table templates (Postfix)
 	Removed: Unused imscp logrotate configuration file
 	Removed: Working directory (Postfix)
@@ -51,12 +53,16 @@ FRONTEND
 	Introduced: HSTS (HTTP Strict Transport Security) feature
 
 INSTALLER
-	Changed: Minimum PHP required PHP version is now 5.3.7
+	Changed: Required minimum PHP version is now 5.3.7
 	Fixed: Avoid call of external commands whenever possible
 	Fixed: The update notices are always shown even when they are out-dated
 
-PLUGINS:
+PLUGINS
 	Updated: API to version 1.0.1
+
+SERVICES
+	Added: imscp_traffic service (imscp traffic logger - iptables rules)
+	Removed: imscp_network service - IP addresses are now added into network interface conffile
 
 TESTS
 	Added: Travis CI support for Unit testing (Perl only)
@@ -77,7 +83,7 @@ YOUTRACK
 	Fixed: #IP-1399 Add Auto-Submitted Header to Autoreply Emails
 	Fixed: #IP-1401 Courier pop3/imap SSL don't work with some clients - Diffie-Hellman parameters length is too small
 	Fixed: #IP-1410 Feature - Possibility to change redirection type
-	Fixed: #IP-1417 Bug - When changing hostname using the panel_hostname reconfiguration option, The SSL dialog should be triggered
+	Fixed: #IP-1417 When changing hostname using the panel_hostname option, SSL dialog must be triggered
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

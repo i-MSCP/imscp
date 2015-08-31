@@ -146,9 +146,8 @@ sub remove
 	return unless $self->stop($service);
 
 	local $@;
-
 	for my $jobFileType('conf', 'override') {
-		if((my $filepath = eval { $self->getJobFilePath($service, $jobFileType); })) {
+		if((my $filepath = eval { $self->getJobFilePath($service, $jobFileType)})) {
 			iMSCP::File->new( filename => $filepath )->delFile();
 		}
 	}
@@ -171,7 +170,7 @@ sub start
 
 	if($self->_isUpstart($service)) {
 		unless($self->isRunning($service)) {
-			($self->_exec($commands{'start'}, $service) == 0);
+			! $self->_exec($commands{'start'}, $service);
 		} else {
 			1;
 		}
@@ -195,7 +194,7 @@ sub stop
 
 	if($self->_isUpstart($service)) {
 		if($self->isRunning($service)) {
-			($self->_exec($commands{'stop'}, $service) == 0);
+			! $self->_exec($commands{'stop'}, $service);
 		} else {
 			1;
 		}
@@ -219,7 +218,7 @@ sub restart
 
 	if($self->_isUpstart($service)) {
 		if($self->isRunning($service)) {
-			($self->_exec($commands{'restart'}, $service) == 0);
+			! $self->_exec($commands{'restart'}, $service);
 		} else {
 			$self->start($service);
 		}
@@ -243,7 +242,7 @@ sub reload
 
 	if($self->_isUpstart($service)) {
 		if($self->isRunning($service)) {
-			($self->_exec($commands{'reload'}, $service) == 0);
+			! $self->_exec($commands{'reload'}, $service);
 		} else {
 			$self->start($service);
 		}
@@ -266,9 +265,8 @@ sub isRunning
 	my ($self, $service) = @_;
 
 	if($self->_isUpstart($service)) {
-		my ($stdout, $stderr);
-		execute("$commands{'status'} $service", \$stdout, \$stderr);
-		($stdout =~ m%start/%);
+		execute("$commands{'status'} $service", \my $stdout, \my $stderr);
+		$stdout =~ m%start/%;
 	} else {
 		$self->SUPER::isRunning($service);
 	}
@@ -289,7 +287,6 @@ sub getJobFilePath
 	my ($self, $service, $jobFileType) = @_;
 
 	$jobFileType ||= 'conf';
-
 	$self->_searchJobFile($service, $jobFileType);
 }
 
@@ -312,7 +309,6 @@ sub _init
 	my $self = shift;
 
 	$paths{$self} = [ '/etc/init' ];
-
 	$self->SUPER::_init();
 }
 
@@ -347,7 +343,7 @@ sub _isUpstart
 	my ($self, $service) = @_;
 
 	local $@;
-	eval { $self->getJobFilePath($service); };
+	eval { $self->getJobFilePath($service) };
 }
 
 =item _versionIsPre067()
@@ -362,7 +358,7 @@ sub _versionIsPre067
 {
 	my $self = shift;
 
-	(version->parse($self->_getVersion()) < version->parse('0.6.7'));
+	version->parse($self->_getVersion()) < version->parse('0.6.7');
 }
 
 =item _versionIsPre090()
@@ -377,7 +373,7 @@ sub _versionIsPre090
 {
 	my $self = shift;
 
-	(version->parse($self->_getVersion()) < version->parse('0.9.0'));
+	version->parse($self->_getVersion()) < version->parse('0.9.0');
 }
 
 =item _versionIsPost090()
@@ -392,7 +388,7 @@ sub _versionIsPost090
 {
 	my $self = shift;
 
-	(version->parse($self->_getVersion()) >= version->parse('0.9.0'));
+	version->parse($self->_getVersion()) >= version->parse('0.9.0');
 }
 
 =item _isEnabledPre067($jobFileContent)
@@ -545,7 +541,6 @@ sub _disablePre067
 	my ($self, $service, $jobFileContent) = @_;
 
 	$jobFileContent = $self->_commentStartOnStanza($jobFileContent);
-
 	$self->_writeFile("$service.conf", $jobFileContent);
 }
 
@@ -814,7 +809,7 @@ sub _readJobOverrideFile
 {
 	my ($self, $service) = @_;
 
-	if((my $filepath = eval { $self->getJobFilePath($service, 'override'); })) {
+	if((my $filepath = eval { $self->getJobFilePath($service, 'override') })) {
 		iMSCP::File->new( filename => $filepath )->get();
 	} else {
 		'';
@@ -838,7 +833,6 @@ sub _writeFile
 	my $jobDir = dirname($self->getJobFilePath(fileparse($filename, qr/\.[^.]*/)));
 	my $filepath = File::Spec->join($jobDir, $filename);
 	my $file = iMSCP::File->new( filename => $filepath );
-
 	$file->set($fileContent);
 	$file->save();
 	$file->mode(0644);

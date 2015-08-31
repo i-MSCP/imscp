@@ -105,17 +105,15 @@ sub enable
 		# the sysvinit script is not enabled. We must also make call of `systemctl daemon-reload` to make systemd aware
 		# of changes.
 		if($self->_isSysvinit($service)) {
-			(
-				$self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service) &&
-				$self->_exec($commands{'systemctl'}, 'daemon-reload') == 0
-			);
+			$self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service) &&
+			! $self->_exec($commands{'systemctl'}, 'daemon-reload');
 		} else {
 			1;
 		}
 	#} else {
 	#	(
 	#		$self->SUPER::enable($service) &&
-	#		( $self->_isSystemd($service) || $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0)
+	#		($self->_isSystemd($service) || ! $self->_exec($commands{'systemctl'}, 'daemon-reload'))
 	#	);
 	#}
 }
@@ -144,18 +142,14 @@ sub disable
 		# the sysvinit script is not disabled. We must also make call of `systemctl daemon-reload` to make systemd aware
 		# of changes.
 		if($self->_isSysvinit($service)) {
-			(
-				$self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service) &&
-				$self->_exec($commands{'systemctl'}, 'daemon-reload') == 0
-			);
+			$self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service) &&
+			! $self->_exec($commands{'systemctl'}, 'daemon-reload');
 		} else {
 			1;
 		}
 	} else {
-		(
-			$self->SUPER::disable($service) &&
-			( $self->_isSystemd($service) || $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0)
-		);
+		$self->SUPER::disable($service) &&
+		($self->_isSystemd($service) || ! $self->_exec($commands{'systemctl'}, 'daemon-reload'));
 	}
 }
 
@@ -178,10 +172,8 @@ sub remove
 
 	if($self->_isSysvinit($service)) {
 		# Remove the underlying sysvinit script if any and make systemd aware of changes
-		(
-			$self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service) &&
-			$self->_exec($commands{'systemctl'}, 'daemon-reload')
-		);
+		$self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service) &&
+		! $self->_exec($commands{'systemctl'}, 'daemon-reload');
 	} else {
 		1;
 	}
@@ -234,7 +226,7 @@ sub _isSystemd
 	my ($self, $service) = @_;
 
 	local $@;
-	eval { $self->getUnitFilePath($service); };
+	eval { $self->getUnitFilePath($service) };
 }
 
 =back

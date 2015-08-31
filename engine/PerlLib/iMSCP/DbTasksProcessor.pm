@@ -23,6 +23,8 @@
 
 package iMSCP::DbTasksProcessor;
 
+use strict;
+use warnings;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;

@@ -77,7 +77,7 @@ sub isEnabled
 		# The debian policy states that the initscript should support methods of query
 		# For those that do not, peform the checks manually
 		# http://www.debian.org/doc/debian-policy/ch-opersys.html
-		((my @count = glob("/etc/rc*.d/S??$service")) >= 4);
+		(my @count = glob("/etc/rc*.d/S??$service")) >= 4;
 	} else {
 		0;
 	}
@@ -97,15 +97,11 @@ sub enable
 	my ($self, $service) = @_;
 
 	if($SYSVRC_COMPAT_MODE) {
-		(
-			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
-			$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
-		);
+		! $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') &&
+		! $self->_exec($commands{'update-rc.d'}, $service, 'defaults');
 	} else {
-		(
-			$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0 &&
-			$self->_exec($commands{'update-rc.d'}, $service, 'enable') == 0
-		);
+		! $self->_exec($commands{'update-rc.d'}, $service, 'defaults') &&
+		! $self->_exec($commands{'update-rc.d'}, $service, 'enable');
 	}
 }
 
@@ -123,15 +119,11 @@ sub disable
 	my ($self, $service) = @_;
 
 	if($SYSVRC_COMPAT_MODE) {
-		(
-			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
-			$self->_exec($commands{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.') == 0
-		);
+		! $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') &&
+		! $self->_exec($commands{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.');
 	} else {
-		(
-			$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0 &&
-			$self->_exec($commands{'update-rc.d'}, $service, 'disable') == 0
-		);
+		! $self->_exec($commands{'update-rc.d'}, $service, 'defaults') &&
+		! $self->_exec($commands{'update-rc.d'}, $service, 'disable');
 	}
 }
 
@@ -149,11 +141,8 @@ sub remove
 	my ($self, $service) = @_;
 
 	if($self->_isSysvinit($service)) {
-		(
-			$self->stop($service) &&
-			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
-			iMSCP::File->new( filename => $self->getInitscriptPath($service) )->delFile() == 0
-		);
+		$self->stop($service) && ! $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') &&
+		! iMSCP::File->new( filename => $self->getInitscriptPath($service) )->delFile();
 	} else {
 		1;
 	}
@@ -205,7 +194,7 @@ sub _isSysvinit
 	my ($self, $service) = @_;
 
 	local $@;
-	eval { $self->getInitscriptPath($service); };
+	eval { $self->getInitscriptPath($service) };
 }
 
 =back

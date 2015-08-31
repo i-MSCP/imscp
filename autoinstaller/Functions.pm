@@ -221,6 +221,18 @@ sub install
 {
 	newDebug('imscp-setup.log');
 
+	# Not really the right place to do that job but we have not really choice because this must be done before
+	# installation of new files
+	require iMSCP::Service;
+	iMSCP::Service->getInstance()->remove('imscp_network');
+
+	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf') {
+		my $file = sprintf($pFormat, 'imscp_network');
+		if(-f $file) {
+			iMSCP::File->new( filename => $file )->delFile();
+		}
+	}
+
 	my $runningProcess = 0;
 	my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 

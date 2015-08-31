@@ -121,7 +121,7 @@ sub removeIspcpFiles
 	# Removing ispCP services
 	my $serviceMngr = iMSCP::Service->getInstance();
 
-	for my $service('imscp_daemon', 'imscp_network') {
+	for my $service('ispcp_daemon', 'ispcp_network') {
 		local $@;
 		eval { $serviceMngr->remove(); };
 		push @errors, sprintf('Could not remove %s service init script: %s', $service, $@) if $@;

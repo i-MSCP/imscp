@@ -166,6 +166,24 @@ sub getAddrDevice
 	$self->{'addresses'}->{$addr}->{'device'};
 }
 
+=item getAddrDeviceLabel($addr)
+
+ Return the network device label to which the given IP belong to
+
+ Param string $addr IP address
+ Return string Network device label, croak if the given IP is either invalid or not known by this module
+
+=cut
+
+sub getAddrDeviceLabel
+{
+	my ($self, $addr) = @_;
+
+	$self->isValidAddr($addr) or croak(sprintf('Invalid IP address: %s', $addr));
+	$self->isKnownAddr($addr) or croak(sprintf('Unknown IP address: %S', $addr));
+	$self->{'addresses'}->{$addr}->{'device_label'};
+}
+
 =item isKnownAddr($addr)
 
  Is the given IP known?
@@ -325,6 +343,22 @@ sub isDeviceDown
 	($self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/) ? 0 : 1;
 }
 
+=item resetInstance
+
+ Reset instance
+
+ Return int 0 on success, die on failure
+
+=cut
+
+sub resetInstance
+{
+	my $self = shift;
+
+	$self->_init();
+	0;
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -388,9 +422,12 @@ sub _extractAddresses
 	));
 
 	my $addresses = { };
-	while($stdout =~ m%^[^\s]+\s+([^\s]+)\s+([^\s]+)\s+([^/\s]+).*?/(\d+)%gm) {
+	while($stdout =~ m%^[^\s]+\s+([^\s]+)\s+([^\s]+)\s+([^/\s]+).*?/(\d+).*?\s+(\1:.*|\1)$%gm) {
 		$addresses->{$self->normalizeAddr($3)} = {
-			'prefix_length' => $4, 'version' => ($2 eq 'inet') ? 'ipv4' : 'ipv6', 'device' => $1
+			'device' => $1,
+			'version' => ($2 eq 'inet') ? 'ipv4' : 'ipv6',
+			'prefix_length' => $4,
+			'device_label' => $5
 		};
 	}
 
