@@ -26,7 +26,7 @@ Thus, any IP addresses added through the i-MSCP control panel will have an entry
 
 \Zb\Z4## IP addresses manually configured\Zn\ZB
 
-If an IP address is already configured by the administrator (added manually in the network interface configuration file), it is always possible to add it in the control panel for use with i-MSCP.
+If some IP addresses were already configured by the administrator (added manually in the network interface configuration file), it is always possible to add them in the control panel for use with i-MSCP.
 In such case, the i-MSCP network interface provider will simply skip the configuration step. Be aware that i-MSCP will not manage those IP addresses.
 
 \Zb\Z4## Netmask, Broadcast and Gateway
