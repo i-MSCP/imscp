@@ -59,7 +59,7 @@
     </po>
     <mta default="postfix">
         <postfix
-                pinning_package="postfix"
+                pinning_package="postfix postfix-cdb postfix-pcre"
                 repository="deb http://http.debian.net/debian wheezy-backports main"
                 pinning_pin="release a=wheezy-backports"
                 pinning_pin_priority="1001"
