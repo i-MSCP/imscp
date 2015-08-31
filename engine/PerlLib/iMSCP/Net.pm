@@ -345,10 +345,6 @@ sub _init
 
 	$self->{'devices'} = $self->_extractDevices();
 	$self->{'addresses'} = $self->_extractAddresses();
-
-	use Data::Dumper;
-	print Dumper($self);
-
 	$self;
 }
 
