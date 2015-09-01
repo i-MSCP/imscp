@@ -72,7 +72,7 @@ sub addIpAddr
 	defined $data->{$_} or croak(sprintf('The %s parameter is not defined', $_)) for qw/ id ip_card ip_address /;
 	$data->{'id'} =~ /^\d+$/ or croak('id parameter must be an integer');
 	$self->{'net'}->isKnownDevice($data->{'ip_card'}) or croak(sprintf(
-		'The %s network interface is unknown', data->{'ip_card'}
+		'The %s network interface is unknown', $data->{'ip_card'}
 	));
 	$self->{'net'}->isValidAddr($data->{'ip_address'}) or croak(sprintf(
 		'The %s IP address is not valid', $data->{'ip_address'}
@@ -183,7 +183,8 @@ sub _updateInterfaces
 		$fileContent
 	);
 
-	if($action eq 'add') {
+	# If the IP is already configured we skip the configuration step
+	if($action eq 'add' && ! $self->{'net'}->isKnownAddr($data->{'ip_address'})) {
 		my $normalizedAddr = $self->{'net'}->normalizeAddr($data->{'ip_address'});
 
 		# Add IP only if the IP has not been already added manually by the administrator

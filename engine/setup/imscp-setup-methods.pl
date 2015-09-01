@@ -264,7 +264,7 @@ sub setupAskServerIps
 			# Ask user for the server base IP
 			($rs, $baseServerIp) = $dialog->radiolist(
 				"\nPlease, select the base server IP for i-MSCP:",
-				[@serverIps],
+				[ @serverIps ],
 				($baseServerIp && $baseServerIp ~~ @serverIps) ? $baseServerIp : $serverIps[0]
 			);
 		} while($rs != 30 && ! $baseServerIp);

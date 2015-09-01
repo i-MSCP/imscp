@@ -66,7 +66,7 @@ sub process
 				});
 				$sth2 = $dbh->prepare('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?');
 				@params = ('ok', $row->{'ip_id'});
-			} else {
+			} elsif($row->{'ip_status'} eq 'todelete') {
 				$niProvider->removeIpAddr({
 					id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
 				});
@@ -80,9 +80,10 @@ sub process
 		if($@) {
 			my $error = $@;
 			$sth2 = $dbh->prepare('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?');
-			$sth2->execute($row->{'ip_id'}, $error || 'Unknown error') or die(sprintf(
+			$sth2->execute($error || 'Unknown error', $row->{'ip_id'}) or die(sprintf(
 				'Could not execute prepared statement: %s', $dbh->errstr
 			));
+			die($@);
 		}
 	}
 
