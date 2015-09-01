@@ -127,12 +127,7 @@ sub showDialog
 			}
 
 			if($rs != 30) {
-				unless($dbPass) {
-					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
-					$dbPass = '';
-					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
-				}
-
+				$dbPass = randomStr(16) unless $dbPass;
 				$dialog->msgbox("\nPassword for the roundcube SQL user set to: $dbPass");
 			}
 		}

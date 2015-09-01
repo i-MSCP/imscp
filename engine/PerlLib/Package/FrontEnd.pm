@@ -319,7 +319,7 @@ sub restart
 	$self->{'eventManager'}->trigger('afterFrontEndRestart');
 }
 
-=item buildConfFile($file, [\%tplVars = { }, [\%options = { }]])
+=item buildConfFile($file, [\%tplVars = { }, [ \%options = { } ] ])
 
  Build the given configuration file
 
@@ -351,15 +351,12 @@ sub buildConfFile
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 	$self->{'eventManager'}->trigger('afterFrontEndBuildConfFile', \$cfgTpl, $filename, $tplVars, $options);
 
-	my $fileHandler = iMSCP::File->new(
-		filename => ($options->{'destination'}) ? $options->{'destination'} : "$self->{'wrkDir'}/$filename"
-	);
-	$fileHandler->set($cfgTpl);
-	$fileHandler->save();
-	$fileHandler->mode($options->{'mode'} ? $options->{'mode'} : 0644);
-	$fileHandler->owner(
-		($options->{'user'}) ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
-		($options->{'group'}) ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
+	$file = iMSCP::File->new( filename => $options->{'destination'} || "$self->{'wrkDir'}/$filename" );
+	$file->set($cfgTpl);
+	$file->save();
+	$file->mode($options->{'mode'} // 0644);
+	$file->owner(
+		$options->{'user'} || $main::imscpConfig{'ROOT_USER'}, $options->{'group'} || $main::imscpConfig{'ROOT_GROUP'}
 	);
 }
 

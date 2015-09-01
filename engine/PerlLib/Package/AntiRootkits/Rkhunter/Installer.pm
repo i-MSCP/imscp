@@ -156,8 +156,8 @@ sub _addCronTask
 
 	$file->set($fileContent);
 	$file->save();
-	$file->mode(0700);
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$file->mode(0700);
 
 	Servers::cron->factory()->addTask({
 		TASKID => 'Package::AntiRootkits::Rkhunter',

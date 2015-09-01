@@ -750,7 +750,7 @@ sub _buildPhpConfig
 	my $rs = $self->{'frontend'}->buildConfFile(
 		"$cfgDir/parts/master/php-fcgi-starter.tpl",
 		$tplVars,
-		{ 'destination' => "$wrkDir/master.php-fcgi-starter", 'mode' => 0550, 'user' => $user, 'group' => $group }
+		{ destination => "$wrkDir/master.php-fcgi-starter", mode => 0550, user => $user, group => $group }
 	);
 	return $rs if $rs;
 
@@ -865,12 +865,12 @@ sub _buildHttpdConfig
 	my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
 	my $tplVars = {
-		'BASE_SERVER_VHOST' => $main::imscpConfig{'BASE_SERVER_VHOST'},
-		'BASE_SERVER_IP' => $main::imscpConfig{'BASE_SERVER_IP'},
-		'BASE_SERVER_VHOST_HTTP_PORT' => $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'},
-		'BASE_SERVER_VHOST_HTTPS_PORT' => $httpsPort,
-		'WEB_DIR' => $main::imscpConfig{'GUI_ROOT_DIR'},
-		'CONF_DIR' => $main::imscpConfig{'CONF_DIR'}
+		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
+		BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'},
+		BASE_SERVER_VHOST_HTTP_PORT => $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'},
+		BASE_SERVER_VHOST_HTTPS_PORT => $httpsPort,
+		WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
+		CONF_DIR => $main::imscpConfig{'CONF_DIR'}
 	};
 
 	if($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {

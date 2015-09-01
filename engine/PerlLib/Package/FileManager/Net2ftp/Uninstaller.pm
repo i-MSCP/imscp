@@ -124,7 +124,7 @@ sub _removeFiles
 	iMSCP::Dir->new( dirname =>  "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
 
 	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf") {
-		iMSCP::File->new(filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf")->delFile();
+		iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf" )->delFile();
 	}
 
 	0;

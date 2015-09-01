@@ -46,8 +46,8 @@ if(iMSCP::ProgramFinder::find('rkhunter')) {
 
 	if(-f $rkhunterLogFile) {
 		my $file = iMSCP::File->new( filename => $rkhunterLogFile );
-		$file->mode(0640);
 		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'IMSCP_GROUP'});
+		$file->mode(0640);
 	}
 }
 
