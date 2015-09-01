@@ -421,13 +421,14 @@ sub _extractAddresses
 		'Could not extract network devices data: %s', $stderr || 'Unknown error'
 	));
 
+	my $regexp = qr/[\d]+\:\s+([^\s:]+)\s+([^\s]+).*?([^\s]+)\/([\d]+).*?(\1(?:\:[^\s]+)?|)/;
 	my $addresses = { };
-	while($stdout =~ m%^[^\s]+\s+([^\s]+)\s+([^\s]+)\s+([^/\s]+).*?/(\d+).*?\s+(\1:.*|\1)$%gm) {
+	while($stdout =~ /^$regexp/gmo) {
 		$addresses->{$self->normalizeAddr($3)} = {
 			'device' => $1,
 			'version' => ($2 eq 'inet') ? 'ipv4' : 'ipv6',
 			'prefix_length' => $4,
-			'device_label' => $5
+			'device_label' => $5 // $1
 		};
 	}
 
