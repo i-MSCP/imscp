@@ -17,8 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-# Script that mount i-MSCP filesystems on server reboot
-
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Bootstrapper;
@@ -33,7 +31,7 @@ newDebug('imscp-mountall-mngr.log');
 
 iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
-Mountall filesystems as configured by i-MSCP
+Mountall i-MSCP filesystems by reading /etc/imscp/mounts/mounts.conf
 
 OPTIONS:
  -v,    --verbose       Enable verbose mode.},
