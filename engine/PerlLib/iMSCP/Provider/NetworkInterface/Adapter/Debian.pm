@@ -71,8 +71,12 @@ sub addIpAddr
 	$data = { } unless defined $data && ref $data eq 'HASH';
 	defined $data->{$_} or croak(sprintf('The %s parameter is not defined', $_)) for qw/ id ip_card ip_address /;
 	$data->{'id'} =~ /^\d+$/ or croak('id parameter must be an integer');
-	$self->{'net'}->isKnownDevice($data->{'ip_card'}) or croak(sprintf('The %s network interface is unknown'));
-	$self->{'net'}->isValidAddr($data->{'ip_address'}) or croak(sprintf('The %s IP address is not valid'));
+	$self->{'net'}->isKnownDevice($data->{'ip_card'}) or croak(sprintf(
+		'The %s network interface is unknown', data->{'ip_card'}
+	));
+	$self->{'net'}->isValidAddr($data->{'ip_address'}) or croak(sprintf(
+		'The %s IP address is not valid', $data->{'ip_address'}
+	));
 	$data->{'id'} += 1000;
 	$data->{'netmask'} = $self->{'net'}->getAddrVersion($data->{'ip_address'}) eq 'ipv4' ? '255.255.255.255' : '64';
 	# TODO guess netmask broadcast and gateway if not defined
@@ -84,9 +88,9 @@ sub addIpAddr
 	# If the IP is already configured we skip the configuration step
 	unless($self->{'net'}->isKnownAddr($data->{'ip_address'})) {
 		my ($stdout, $stderr);
-		execute("$commands{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(
-			sprintf('Could not bring up the %s network interface', $stderr || 'Unknown error')
-		);
+		execute("$commands{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(sprintf(
+			'Could not bring up the %s network interface', $stderr || 'Unknown error'
+		));
 
 		$self->{'net'}->resetInstance();
 	}
@@ -114,14 +118,16 @@ sub removeIpAddr
 	defined $data->{$_} or croak(sprintf('The %s parameter is not defined', $_)) for qw/ id ip_card ip_address /;
 	$data->{'id'} =~ /^\d+$/ or croak('id parameter must be an integer');
 	$data->{'id'} += 1000;
-	$self->{'net'}->isKnownDevice($data->{'ip_card'}) or croak(sprintf('The %s network interface is unknown'));
+	$self->{'net'}->isKnownDevice($data->{'ip_card'}) or croak(sprintf(
+		'The %s network interface is unknown', $data->{'ip_card'}
+	));
 
 	# Process only if the IP address is configured
 	if($self->{'net'}->isKnownAddr($data->{'ip_address'})) {
 		my ($stdout, $stderr);
-		execute("$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(
-			sprintf('Could not bring down the %s network interface', $stderr || 'Unknown error')
-		);
+		execute("$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(sprintf(
+			'Could not bring down the %s network interface', $stderr || 'Unknown error'
+		));
 
 		$self->{'net'}->resetInstance();
 	}

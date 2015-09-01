@@ -79,8 +79,10 @@ sub process
 		};
 		if($@) {
 			my $error = $@;
-			$sth2 = $dbh->prepare('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', $error || 'Unknown error');
-			$sth2->execute($row->{'ip_id'}) or die(sprintf('Could not execute prepared statement: %s', $dbh->errstr));
+			$sth2 = $dbh->prepare('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?');
+			$sth2->execute($row->{'ip_id'}, $error || 'Unknown error') or die(sprintf(
+				'Could not execute prepared statement: %s', $dbh->errstr
+			));
 		}
 	}
 
