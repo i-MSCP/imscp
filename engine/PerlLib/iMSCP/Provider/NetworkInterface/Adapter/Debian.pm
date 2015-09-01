@@ -173,17 +173,17 @@ sub _updateInterfaces
 
 	my $file = iMSCP::File->new( filename => $interfacesFilePath );
 	$file->copyFile($interfacesFilePath . '.bak'); # backup the current working file
-
-	# In any case we remove the entry if any
 	my $fileContent = $file->get();
-	$fileContent = iMSCP::TemplateParser::replaceBloc(
-		"\n# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry BEGIN\n",
-		"# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry ENDING\n",
-		'',
-		$fileContent
-	);
 
-	# If the IP is already configured we skip the configuration step
+	if($action eq 'remove' || ! $self->{'net'}->isKnownAddr($data->{'ip_address'})) {
+		$fileContent = iMSCP::TemplateParser::replaceBloc(
+			"\n# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry BEGIN\n",
+			"# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry ENDING\n",
+			'',
+			$fileContent
+		);
+	}
+
 	if($action eq 'add' && ! $self->{'net'}->isKnownAddr($data->{'ip_address'})) {
 		my $normalizedAddr = $self->{'net'}->normalizeAddr($data->{'ip_address'});
 
