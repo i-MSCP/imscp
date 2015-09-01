@@ -562,7 +562,7 @@ sub _buildDistributionFiles
 		[ \&_buildLayout,        'Building layout' ],
 		[ \&_buildConfigFiles,   'Building configuration files' ],
 		[ \&_buildEngineFiles,   'Building engine files' ],
-		[ \&_buildFrontendFiles, 'Building Building frontEnd files' ],
+		[ \&_buildFrontendFiles, 'Building frontEnd files' ],
 		[ \&_buildDaemon,        'Building communication daemon' ]
 	);
 
