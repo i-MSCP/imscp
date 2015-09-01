@@ -220,7 +220,7 @@ sub _buildConfig
 
 	my $data = {
 		ADMIN_EMAIL => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || '',
-		MD5_SALT_STRING => randomStr(38, join('', A..Z , 0..9))
+		MD5_SALT_STRING => randomStr(38, join('', 'A'..'Z', '0'..'9'))
 	};
 
 	$self->{'eventManager'}->trigger('onLoadTemplate', 'net2ftp', 'settings.inc.php', \my $cfgTpl, $data);
