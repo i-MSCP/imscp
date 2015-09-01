@@ -33,9 +33,9 @@ use iMSCP::Execute;
 use iMSCP::TemplateParser;
 use iMSCP::File;
 use iMSCP::Dir;
-use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
+use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable isImmutable /;
 use iMSCP::Rights;
-use iMSCP::Mount qw /mount umount/;
+use iMSCP::Mount qw / mount umount addMountEntry removeMountEntry /;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
@@ -1366,15 +1366,12 @@ sub mountLogsFolder
 {
 	my ($self, $data) = @_;
 
-	my $mountOptions = {
-		fs_spec => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
-		fs_file => "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}",
-		fs_vfstype => 'none',
-		fs_mntops => 'bind'
-	};
-
+	my $fsSpec = "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}";
+	my $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+	my $mountOptions = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'bind' };
 	$self->{'eventManager'}->trigger('beforeMountLogsFolder', $mountOptions);
 	mount($mountOptions);
+	addMountEntry("$fsSpec $fsFile none bind");
 	$self->{'eventManager'}->trigger('afterMountLogsFolder', $mountOptions);
 }
 
@@ -1394,6 +1391,7 @@ sub umountLogsFolder
 	my $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
 	$self->{'eventManager'}->trigger('beforeUnmountLogsFolder', $fsFile);
 	umount($fsFile);
+	removeMountEntry(qr%.*?\s$fsFile(?:/|\s).*%);
 	$self->{'eventManager'}->trigger('afterUmountMountLogsFolder', $fsFile);
 
 	0;

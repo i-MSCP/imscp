@@ -33,7 +33,7 @@ use iMSCP::Database;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::Rights;
-use iMSCP::Mount qw/mount umount/;
+use iMSCP::Mount qw/ mount umount addMountEntry removeMountEntry /;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
 use parent 'Modules::Abstract';
 
@@ -207,8 +207,9 @@ sub add
 
 	# Remount user homedir on himself as a shared subtree
 	my $mountOptions = { fs_spec => $homedir, fs_file => $homedir, fs_vfstype => 'none', fs_mntops => 'shared,bind' };
-	$self->{'eventManager'}->trigger('beforeMountHomedir', $mountOptions);
+	$self->{'eventManager'}->trigger('beforeMountdir', $mountOptions);
 	mount($mountOptions);
+	addMountEntry("$homedir $homedir none shared,bind");
 	$self->{'eventManager'}->trigger('afterMountHomedir', $mountOptions);
 
 	# Run the preaddUser(), addUser() and postaddUser() methods on servers/packages that implement them
@@ -235,6 +236,7 @@ sub delete
 
 	$self->{'eventManager'}->trigger('beforeUnmountHomedir', $homeDir);
 	umount($homeDir);
+	removeMountEntry(qr%.*?\s$homeDir(?:/|\s).*%);
 	$self->{'eventManager'}->trigger('afterUnmountHomedir', $homeDir);
 
 	# Run the predeleteUser(), deleteUser() and postdeleteUser() methods on servers/packages that implement them

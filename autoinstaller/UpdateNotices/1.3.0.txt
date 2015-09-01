@@ -43,6 +43,21 @@ Be aware that for safety reasons, the hashes created manually in database using 
 If you need to put a password hash manually in the database, you must generate it using the bcrypt algorithm.
 For instance, you could use an online bcrypt generator such as: http://www.bcrypt-generator.com/
 
+\Zb\Z4# Services\Zn\ZB
+
+\Zb\Z4## imscp_mountall service\Zn\ZB
+
+This new service allows to mount i-MSCP filesystems when the server is rebooted. This service reads the entries in the /etc/imscp/mounts/mounts.conf fstab-like file and processes them.
+Unlike the entries that are added in the system fstab file, the entries added in this file are processed in sequential order.
+
+\Zb\Z4## imscp_network service\Zn\ZB
+
+This service, which was responsible to configure IP addresses on the fly and set iptables rules for the traffic logger, has been removed.
+
+\Zb\Z4## imscp_traffic service\Zn\ZB
+
+This new service come in replacement of the imscp_network service. It sets iptables rules for the traffic logger when the server is rebooted.
+
 \Zb\Z4# Shared subtree (homedir)\Zn\ZB
 
 The customer's home directories are now automatically remounted on themselves as shared subtree.

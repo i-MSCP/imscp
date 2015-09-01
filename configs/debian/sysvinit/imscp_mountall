@@ -3,11 +3,11 @@
 # Provides:          imscp_mountall
 # Required-Start:    $remote_fs $network
 # Required-Stop:     $remote_fs $network
-# Should-Start:      mysql
+# Should-Start:
 # Should-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:
-# Description: Mount i-MSCP homedirs and httpd logs folders
+# Description: Mounts i-MSCP filesystems
 # Short-Description:
 ### END INIT INFO
 

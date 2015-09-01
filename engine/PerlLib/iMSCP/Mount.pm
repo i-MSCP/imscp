@@ -30,7 +30,7 @@ use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::File;
 use parent 'Exporter';
-our @EXPORT_OK = qw( mount umount );
+our @EXPORT_OK = qw/ mount umount addMountEntry removeMountEntry /;
 
 =head1 DESCRIPTION
 
@@ -127,6 +127,49 @@ sub umount
 	} while ($fsFileFound);
 
 	0;
+}
+
+=item addMountEntry($entry)
+
+ Add the given mount entry in the i-MSCP fstab-like file
+
+ Param string $entry Fstab entry to add
+ Return int 0 on success, die on failure
+
+=cut
+
+sub addMountEntry
+{
+	my $entry = shift;
+
+	my $file = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
+	my $fileContent = $file->get();
+	my $entryReg = quotemeta($entry);
+	$fileContent =~ s/^$entryReg\n//gm;
+	$fileContent .= "$entry\n";
+	$file->set($fileContent);
+	$file->save();
+}
+
+=item removeMountEntry($entry)
+
+ Remove the given mount entry from the i-MSCP fstab-like file
+
+ Param string|regexp $entry Fstab entry to remove as a string or regexp
+ Return int 0 on success, die on failure
+
+=cut
+
+sub removeMountEntry
+{
+	my $entry = shift;
+
+	my $file = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
+	my $fileContent = $file->get();
+	my $regexp = ref $entry eq 'Regexp' ? $entry : quotemeta($entry);
+	$fileContent =~ s/^$regexp\n//gm;
+	$file->set($fileContent);
+	$file->save();
 }
 
 =back

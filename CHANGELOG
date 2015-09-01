@@ -6,8 +6,8 @@ Git 1.3.x
 
 BACKEND
 	Added: beforeMountHomedir and afterMountHomedir events
+	Added: imscp-mountall-mngr script - Mount i-MSCP filesystems on server reboot
 	Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
-	Added: imscp-mountall-mngr script - Mount homedirs and httpd logs folders
 	Added: iMSCP::DbTasksProcessor - Allows to process tasks from installer without calling the imscp-rqst-mngr script
 	Added: iMSCP::Mount - Library for mounting/unmounting file systems
 	Added: iMSCP::Provider::NetworkInterface - Provider for adding/removing IP addresses
@@ -33,8 +33,8 @@ BACKEND
 
 CONFIGS
 	Added: cron package (Debian/Ubuntu)
-	Added: imscp_mountall init script - Mount homedirs and httpd logs folders on reboot
-	Added: imscp_mountall upstart job - Mount homedirs and httpd logs folders on reboot
+	Added: mounts.conf file - fstab-like file which holds filesystems that must be mounted in sequential order on reboot
+	Added: imscp_mountall sysvinit script an imscp_mountall upstart job - Mount i-MSCP filesystems on server reboot
 	Added: libcrypt-rijndael-perl package (Debian/Ubuntu)
 	Added: postfix-cdb package (Debian/Ubuntu)
 	Changed: Usage of cdb maps instead of hash maps (Postfix)
@@ -84,6 +84,7 @@ YOUTRACK
 	Fixed: #IP-1401 Courier pop3/imap SSL don't work with some clients - Diffie-Hellman parameters length is too small
 	Fixed: #IP-1410 Feature - Possibility to change redirection type
 	Fixed: #IP-1417 When changing hostname using the panel_hostname option, SSL dialog must be triggered
+	Fixed: #IP-1428 i-MSCP services such as imscp_network should not depend on the mysql service
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
