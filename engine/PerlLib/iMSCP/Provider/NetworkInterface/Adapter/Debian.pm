@@ -73,16 +73,15 @@ sub addIpAddr
 	$data->{'id'} =~ /^\d+$/ or croak('id parameter must be an integer');
 	$self->{'net'}->isKnownDevice($data->{'ip_card'}) or croak(sprintf('The %s network interface is unknown'));
 	$self->{'net'}->isValidAddr($data->{'ip_address'}) or croak(sprintf('The %s IP address is not valid'));
-	$data->{'id'} += 1000; # Avoid collision with IP that are not managed through i-MSCP
+	$data->{'id'} += 1000;
 	$data->{'netmask'} = $self->{'net'}->getAddrVersion($data->{'ip_address'}) eq 'ipv4' ? '255.255.255.255' : '64';
 	# TODO guess netmask broadcast and gateway if not defined
 
 	# Make sure that the network device is UP
 	$self->{'net'}->upDevice($data->{'ip_card'}) unless $self->{'net'}->isDeviceUp($data->{'ip_card'});
+	$self->_updateInterfaces('add', $data);
 
-	$self->_updateInterfaces('add', $data); # Updating network interface file
-
-	# In that the IP is already configured we skip the configuration step
+	# If the IP is already configured we skip the configuration step
 	unless($self->{'net'}->isKnownAddr($data->{'ip_address'})) {
 		my ($stdout, $stderr);
 		execute("$commands{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(
@@ -117,11 +116,8 @@ sub removeIpAddr
 	$data->{'id'} += 1000;
 	$self->{'net'}->isKnownDevice($data->{'ip_card'}) or croak(sprintf('The %s network interface is unknown'));
 
-	# Process only if the IP address is configured on the expected device
-	if(
-		$self->{'net'}->isKnownAddr($data->{'ip_address'}) &&
-		$self->{'net'}->getAddrDeviceLabel($data->{'ip_address'}) eq "$data->{'ip_card'}:$data->{'id'}"
-	) {
+	# Process only if the IP address is configured
+	if($self->{'net'}->isKnownAddr($data->{'ip_address'})) {
 		my ($stdout, $stderr);
 		execute("$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(
 			sprintf('Could not bring down the %s network interface', $stderr || 'Unknown error')
@@ -130,7 +126,6 @@ sub removeIpAddr
 		$self->{'net'}->resetInstance();
 	}
 
-	# Updating network interface file
 	$self->_updateInterfaces('remove', $data);
 }
 
