@@ -26,7 +26,7 @@ Be aware that IP addresses which are not present in the network interface config
 
 \Zb\Z4## Netmask, Broadcast and Gateway\Zn\ZB
 
-At this time, it's still not possible to setup the netmask, the broadcast and the gateway through the i-*MSCP control panel. This is a feature that will be implemented in a near future. However you should note that both options, the broadcast and the gateway, are normally not needed when configuring virtual interfaces.
+At this time, it's still not possible to setup the netmask, the broadcast and the gateway through the i-MSCP control panel. This is a feature that will be implemented in a near future. However you should note that both options, the broadcast and the gateway, are normally not needed when configuring virtual interfaces.
 
 \Zb\Z4# Panel's user passwords\Zn\ZB
 
