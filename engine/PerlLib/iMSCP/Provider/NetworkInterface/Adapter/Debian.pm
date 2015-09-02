@@ -34,8 +34,9 @@ use parent 'iMSCP::Provider::NetworkInterface::Adapter::Abstract';
 
 # Commands used in that package
 my %commands = (
-	'ifup' => '/sbin/ifup',
-	'ifdown' => '/sbin/ifdown'
+	ifup => '/sbin/ifup',
+	ifdown => '/sbin/ifdown',
+	ifquery => '/sbin/ifquery'
 );
 
 #  Network interface configuration file for ifup and ifdown
@@ -53,7 +54,7 @@ my $interfacesFilePath = '/etc/network/interfaces';
 
  Add an IP address
 
- Param hash \%data IP address data:
+ Param hash \%data IP address parameters:
    id: int IP address unique identifier
    ip_card: Network card to which the IP address must be added
    ip_address: string Either an IPv4 or IPv6 address
@@ -82,11 +83,12 @@ sub addIpAddr
 	# TODO guess netmask broadcast and gateway if not defined
 
 	# Make sure that the network device is UP
-	$self->{'net'}->upDevice($data->{'ip_card'}) unless $self->{'net'}->isDeviceUp($data->{'ip_card'});
+	#$self->{'net'}->upDevice($data->{'ip_card'}) unless $self->{'net'}->isDeviceUp($data->{'ip_card'});
+
 	$self->_updateInterfaces('add', $data);
 
-	# If the IP is already configured we skip the configuration step
-	unless($self->{'net'}->isKnownAddr($data->{'ip_address'})) {
+	# We process only if the IP has been added by us
+	if($self->_isDefinedInterface("$data->{'ip_card'}:$data->{'id'}")) {
 		my ($stdout, $stderr);
 		execute("$commands{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(sprintf(
 			'Could not bring up the %s network interface', $stderr || 'Unknown error'
@@ -102,7 +104,7 @@ sub addIpAddr
 
  Remove an IP address
 
- Param hash \%data IP address data:
+ Param hash \%data IP address parameters:
    id: int IP address unique identifier
    ip_card: string Network card from which the IP address must be removed
    ip_address: string Either an IPv4 or IPv6 address
@@ -122,17 +124,18 @@ sub removeIpAddr
 		'The %s network interface is unknown', $data->{'ip_card'}
 	));
 
-	# Process only if the IP address is configured
-	if($self->{'net'}->isKnownAddr($data->{'ip_address'})) {
+	# We process only if the IP has been added by us
+	if($self->_isDefinedInterface("$data->{'ip_card'}:$data->{'id'}")) {
 		my ($stdout, $stderr);
 		execute("$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(sprintf(
 			'Could not bring down the %s network interface', $stderr || 'Unknown error'
 		));
 
 		$self->{'net'}->resetInstance();
+		$self->_updateInterfaces('remove', $data);
 	}
 
-	$self->_updateInterfaces('remove', $data);
+	0;
 }
 
 =back
@@ -159,7 +162,7 @@ sub _init
 
 =item _updateInterfaces($action, \%data)
 
- Add or remove IP address in the network interfaces file.
+ Add or remove IP address in the network interfaces file
 
  Param string $action Action to perform (add|remove)
  Param string $data Template data
@@ -172,23 +175,21 @@ sub _updateInterfaces
 	my ($self, $action, $data) = @_;
 
 	my $file = iMSCP::File->new( filename => $interfacesFilePath );
-	$file->copyFile($interfacesFilePath . '.bak'); # backup the current working file
+	$file->copyFile($interfacesFilePath . '.bak');
+
 	my $fileContent = $file->get();
+	$fileContent = iMSCP::TemplateParser::replaceBloc(
+		"\n# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry BEGIN\n",
+		"# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry ENDING\n",
+		'',
+		$fileContent
+	);
 
-	if($action eq 'remove' || ! $self->{'net'}->isKnownAddr($data->{'ip_address'})) {
-		$fileContent = iMSCP::TemplateParser::replaceBloc(
-			"\n# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry BEGIN\n",
-			"# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry ENDING\n",
-			'',
-			$fileContent
-		);
-	}
-
-	if($action eq 'add' && ! $self->{'net'}->isKnownAddr($data->{'ip_address'})) {
+	if($action eq 'add') {
 		my $normalizedAddr = $self->{'net'}->normalizeAddr($data->{'ip_address'});
 
-		# Add IP only if the IP has not been already added manually by the administrator
-		if($fileContent !~ /(?:address|ip\s+addr.*?)\s+(?:$data->{'ip_address'}|$normalizedAddr)/) {
+		# Add IP addresse only if not already present (e.g: manually configured IP addresses)
+		if($fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$data->{'ip_address'}|$normalizedAddr)/gm) {
 			$fileContent .= iMSCP::TemplateParser::process(
 				{
 					id => $data->{'id'},
@@ -212,6 +213,22 @@ TPL
 
 	$file->set($fileContent);
 	$file->save();
+}
+
+=item _isDefinedInterface($interface)
+
+ Does the given interface is defined in the network configuration file
+
+ Param string $interface Logical interface name
+ Return bool TRUE if the given interface is defined in the network interface file, false otherwise
+
+=cut
+
+sub _isDefinedInterface
+{
+	my ($self, $interface) = @_;
+
+	execute("$commands{'ifquery'} --list | grep -q " . escapeShell('^' . $interface . '$')) == 0;
 }
 
 =back

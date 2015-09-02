@@ -428,7 +428,7 @@ sub _extractAddresses
 
 	my $regexp = qr/[\d]+\:\s+([^\s:]+)\s+([^\s]+).*?([^\s]+)\/([\d]+).*?(\1(?:\:[^\s]+)?|)/;
 	my $addresses = { };
-	while($stdout =~ /^$regexp/gmo) {
+	while($stdout =~ /^$regexp$/gmo) {
 		$addresses->{$self->normalizeAddr($3)} = {
 			'device' => $1,
 			'version' => ($2 eq 'inet') ? 'ipv4' : 'ipv6',

@@ -5,15 +5,11 @@
 
 Because i-MSCP now uses the AES (Rijndael) algorithm in CBC mode to encrypt data (was Blowfish in CBC mode previously),the database keys file will be automatically regenerated and you'll be asked again for the SQL data.
 
-\Zb\Z4# New IP addresses management\Zn\ZB
+\Zb\Z4# IP addresses management\Zn\ZB
 
-IP addresses that are added via the control panel are now automatically added into the network interface configuration file (e.g: /etc/network/interfaces).
-Doing this allow us to no longer depend on the MySQL server when the server is rebooted (the possibility of the MySQL server being unavailable for unknown reasons), and also, this provides a better integration with the system (standard approach).
-To resume, IP addresses are now configured using interface definitions in the network interface configuration file, instead of being configured on the fly using data pulled from the i-MSCP database.
+IP addresses that are added via the i-MSCP control panel are now added into the network interface configuration file. Doing this allow us to no longer depend on the MySQL server when the server is rebooted (the possibility of the MySQL server being unavailable for unknown reasons), and also, this provides a better integration with the system. To resume, IP addresses are now configured using interface definitions in the network interface configuration file, instead of being configured on the fly using data pulled from the i-MSCP database.
 
-IP addresses are added in the network interface file using aliased (virtual) interfaces. Those types of interfaces have names of the form interface:integer.
-To avoid collisions with manually configured interfaces, the i-MSCP network interface provider uses integers starting at 1000.
-Thus, any IP addresses added through the i-MSCP control panel will have an entry such as:
+IP addresses are added in the network interface file using aliased (virtual) interfaces. Those types of interfaces have names of the form interface:integer. To avoid collisions with manually configured interfaces, i-MSCP uses integers starting at 1000. Thus, any IP addresses added through the i-MSCP control panel will have an entry such as:
 
         # i-MSCP [eth0:1001] entry BEGIN
         auto eth0:1001
@@ -22,33 +18,37 @@ Thus, any IP addresses added through the i-MSCP control panel will have an entry
                 netmask 255.255.255.255
         # i-MSCP [eth0:1001] entry ENDING
 
-**Warning:** You should never edit nor manually remove an entry from the network configuration file which has been added by i-MSCP.
-
 \Zb\Z4## IP addresses manually configured\Zn\ZB
 
-If some IP addresses were already configured by the administrator, it is always possible to add them in the control panel for use with i-MSCP. In such case, the i-MSCP network interface provider will simply skip the configuration step.
-Be aware that i-MSCP will not manage those IP addresses.
+IP addresses that are already present in the network interface configuration file can also be added in the i-MSCP control panel for use with i-MSCP. In such case, i-MSCP simply skip the configuration step for them. In other words, i-MSCP doesn't manage those IP addresses.
+
+Be aware that IP addresses which are not present in the network interface configuration file will be added by i-MSCP, using virtual interfaces. If you want to avoid this, you must add them in your network interface configuration file, even if that is not really needed due to your environment (e.g: LXC containers).
+
+        auto eth0
+        iface eth0 inet static
+                address 192.168.1.131
+                netmask 255.255.255.0
+                network 192.168.1.0
+                broadcast 192.168.1.255
+                gateway 192.168.1.1
 
 \Zb\Z4## Netmask, Broadcast and Gateway
 
-At this time, it's still not possible to setup the netmask, the broadcast and the gateway through the control panel.
-This is a feature that will be implemented in a near future. However you should note that both options, the broadcast and the gateway, are normally not needed when configuring virtual interfaces.
+At this time, it's still not possible to setup the netmask, the broadcast and the gateway through the i-*MSCP control panel. This is a feature that will be implemented in a near future. However you should note that both options, the broadcast and the gateway, are normally not needed when configuring virtual interfaces.
 
 \Zb\Z4# Panel's user passwords\Zn\ZB
 
-Panel's user passwords are now hashed using the bcrypt algorithm. Previously, this was either md5-crypt, sha256-crypt or sha512-crypt, depending on the system capabilities. The update is fully automatic.
-The password hashes are updated on next successfull login.
+Panel's user passwords are now hashed using the bcrypt algorithm. Previously, this was either md5-crypt, sha256-crypt or sha512-crypt, depending on the system capabilities. The update is fully automatic. The password hashes are updated on next successfull login.
 
-Be aware that for safety reasons, the hashes created manually in database using the MD5() function are no longer accepted by the panel.
-If you need to put a password hash manually in the database, you must generate it using the bcrypt algorithm.
-For instance, you could use an online bcrypt generator such as: http://www.bcrypt-generator.com/
+Be aware that for safety reasons, the hashes created manually in database using the MD5() function are no longer accepted by the i-MSCP control panel. If you need to put a password hash manually in the database, you must generate it using the bcrypt algorithm. For instance, you could use an online bcrypt generator such as: http://www.bcrypt-generator.com/
 
 \Zb\Z4# Services\Zn\ZB
 
 \Zb\Z4## imscp_mountall service\Zn\ZB
 
-This new service allows to mount i-MSCP filesystems when the server is rebooted. This service reads the entries in the /etc/imscp/mounts/mounts.conf fstab-like file and processes them.
-Unlike the entries that are added in the system fstab file, the entries added in this file are processed in sequential order.
+This new service allows to mount i-MSCP filesystems when the server is rebooted. This service reads the entries in a fstab-like file located at /etc/imscp/mounts/mounts.conf, and processes them. Unlike the entries that are added in the system fstab file, the entries added in this file are processed in sequential order.
+
+Plugins or listeners which want add entries in that file must use the API provided by the iMSCP::Mounts library.
 
 \Zb\Z4## imscp_network service\Zn\ZB
 
@@ -56,13 +56,11 @@ This service, which was responsible to configure IP addresses on the fly and set
 
 \Zb\Z4## imscp_traffic service\Zn\ZB
 
-This new service come in replacement of the imscp_network service. It sets iptables rules for the traffic logger when the server is rebooted.
+This new service sets iptables rules for the traffic logger when the server is rebooted.
 
 \Zb\Z4# Shared subtree (homedir)\Zn\ZB
 
-The customer's home directories are now automatically remounted on themselves as shared subtree.
-Doing this allows the third-party softwares, such as the InstantSSH plugin, to replicate those subtrees where they want, such as in a jailed environment.
-Then, a directory that is mounted later on in the shared subtree, such as an httpd log folder, will be automatically propagated in the replicated subtree.
+The customer's home directories are now automatically remounted on themselves as shared subtree. Doing this allows the third-party softwares, such as the InstantSSH plugin, to replicate those subtrees where they want, such as in a jailed environment. Then, a directory that is mounted later on in a shared subtree, such as an httpd log folder, will be automatically propagated in the replicated subtree.
 
 For more information about this feature, you can consult:
 
