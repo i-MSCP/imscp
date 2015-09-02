@@ -6,8 +6,8 @@ Git 1.3.x
 
 BACKEND
 	Added: beforeMountHomedir and afterMountHomedir events
-	Added: imscp-mountall-mngr script - Mount i-MSCP filesystems on server reboot
 	Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
+	Added: imscp-mountall-mngr script - Mount i-MSCP filesystems on server reboot
 	Added: iMSCP::DbTasksProcessor - Allows to process tasks from installer without calling the imscp-rqst-mngr script
 	Added: iMSCP::Mount - Library for mounting/unmounting file systems
 	Added: iMSCP::Provider::NetworkInterface - Provider for adding/removing IP addresses
@@ -76,6 +76,7 @@ TESTS
 
 YOUTRACK
 	Fixed: #IP-1388 phptmp removed on client update
+	Fixed: #IP-1391 imscp_panel service can fail to start/restart when the APCU PHP extension is installed
 	Fixed: #IP-1393 Unable to disable backup feature for existing domains
 	Fixed: #IP-1394 httpd-logs-mngr starts before mysql server on reboot
 	Fixed: #IP-1395 Domain redirect feature - Missing URL path separator

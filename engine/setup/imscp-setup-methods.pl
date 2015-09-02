@@ -163,8 +163,8 @@ sub setupTasks
 		[ \&setupServices,                'Setup services' ],
 		[ \&setupServiceSsl,              'Setup SSL for i-MSCP services' ],
 		[ \&setupServersAndPackages,      'Setup servers/packages' ],
-		[ \&setupRebuildCustomerFiles,    'Rebuilding customers files' ],
 		[ \&setupSetPermissions,          'Setting permissions' ],
+		[ \&setupRebuildCustomerFiles,    'Rebuilding customers files' ],
 		[ \&setupRestartServices,         'Restarting services' ]
 	);
 
