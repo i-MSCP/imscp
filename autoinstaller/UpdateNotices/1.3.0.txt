@@ -24,15 +24,7 @@ IP addresses that are already present in the network interface configuration fil
 
 Be aware that IP addresses which are not present in the network interface configuration file will be added by i-MSCP, using virtual interfaces. If you want to avoid this, you must add them in your network interface configuration file, even if that is not really needed due to your environment (e.g: LXC containers).
 
-        auto eth0
-        iface eth0 inet static
-                address 192.168.1.131
-                netmask 255.255.255.0
-                network 192.168.1.0
-                broadcast 192.168.1.255
-                gateway 192.168.1.1
-
-\Zb\Z4## Netmask, Broadcast and Gateway
+\Zb\Z4## Netmask, Broadcast and Gateway\Zn\ZB
 
 At this time, it's still not possible to setup the netmask, the broadcast and the gateway through the i-*MSCP control panel. This is a feature that will be implemented in a near future. However you should note that both options, the broadcast and the gateway, are normally not needed when configuring virtual interfaces.
 
