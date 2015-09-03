@@ -33,6 +33,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::TemplateParser;
+use iMSCP::ProgramFinder;
 use File::Basename;
 use version;
 use Servers::po;
@@ -190,6 +191,13 @@ sub install
 
 	if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'courier') {
 		$rs = $self->_migrateFromCourier();
+		return $rs if $rs;
+	}
+
+	# Dovecot shall ignore mounts in Web folders
+	if(iMSCP::ProgramFinder::find('doveadm')) {
+		$rs = execute("doveadm mount add $main::imscpConfig{'USER_WEB_DIR'}/* ignore", \my $stdout, \my $stderr);
+		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 	}
 

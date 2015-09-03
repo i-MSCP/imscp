@@ -22,6 +22,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Database;
+use iMSCP::ProgramFinder;
 use Servers::po;
 use Servers::mta;
 use parent 'Common::SingletonClass';
@@ -34,6 +35,12 @@ sub uninstall
 	return $rs if $rs;
 
 	$self->_dropSqlUser();
+
+	if(iMSCP::ProgramFinder::find('doveadm')) {
+		$rs = execute("doveadm mount remove $main::imscpConfig{'USER_WEB_DIR'}/*", \my $stdout, \my $stderr);
+		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
+	}
 }
 
 sub _init
@@ -46,7 +53,6 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = $self->{'po'}->{'config'};
-
 	$self;
 }
 

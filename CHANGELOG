@@ -16,9 +16,10 @@ BACKEND
 	Changed: imscp-db-keys file is now a conffile (same format as the imscp.conf conffile)
 	Changed: Usage of AES (Rijndael) instead of Blowfish for i-MSCP data encryption
 	Fixed: Cleanup paths using File::Spec::canonpath() instead of dedicated regexps
-	Fixed: Default phpini data must be lazy loaded (only once per domain module) to save SQL queries
 	Fixed: Could not remove service
+	Fixed: Default phpini data must be lazy loaded (only once per domain module) to save SQL queries
 	Fixed: Domain aliases are not processed correctly in Servers::mta::postfix::addDmn()
+	Fixed: Dovecot shall ignore mounts in Web folders
 	Fixed: phptmp directory is deleted by mistake in some contexts (Fixed by #IP-1396)
 	Fixed: Wrong domain type set in module data providers
 	Introduced: HSTS (HTTP Strict Transport Security) feature
