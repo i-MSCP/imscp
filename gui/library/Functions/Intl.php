@@ -376,6 +376,8 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
  */
 function i18n_getJsTranslations()
 {
+	$cfg = iMSCP_Registry::get('config');
+
 	$translations = new ArrayObject(array(
 		// Core translation strings
 		'core' => array(
@@ -384,6 +386,7 @@ function i18n_getJsTranslations()
 			'show' => tr('Show'),
 			'your_new_password' => tr('Your new password'),
 			'password_generate_alert' => tr('You must first generate a password by clicking on the generate button.'),
+			'password_length' => $cfg['PASSWD_CHARS']
 		)),
 		ArrayObject::ARRAY_AS_PROPS
 	);

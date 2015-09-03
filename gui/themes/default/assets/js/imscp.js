@@ -116,7 +116,7 @@ var iMSCP = function ($) {
                 html: [
                     $("<button>", { id: "pwd_generate", type: "button", text: imscp_i18n.core.generate }).pGenerator({
                         'passwordElement': $pwdElements,
-                        'passwordLength': 8
+                        'passwordLength': imscp_i18n.core.password_length
                     }),
                     $("<button>", { id: "pwd_show", type: "button", text: imscp_i18n.core.show }).click(function() {
                         var password = $pwdElements.first().val();
