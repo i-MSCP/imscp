@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::ftpd::vsftpd::uninstaller - i-MSCP vsftpd Server implementation
+ Servers::ftpd::vsftpd::uninstaller - i-MSCP VsFTPd Server implementation
 
 =cut
 
@@ -34,7 +34,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Uninstaller for the i-MSCP vsftpd Server implementation.
+ Uninstaller for the i-MSCP VsFTPd Server implementation.
 
 =head1 PUBLIC METHODS
 

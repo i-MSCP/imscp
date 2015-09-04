@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::ftpd::vsftpd::installer - i-MSCP vsftpd Server implementation
+ Servers::ftpd::vsftpd::installer - i-MSCP VsFTPd Server implementation
 
 =cut
 
@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Installer for the i-MSCP Poftpd Server implementation.
+ Installer for the i-MSCP VsFTPd Server implementation.
 
 =head1 PUBLIC METHODS
 

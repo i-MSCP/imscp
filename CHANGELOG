@@ -79,7 +79,7 @@ TESTS
 	  - iMSCP::SetRights libraries
 
 YOUTRACK
-	Fixed: #IP-1367 Support for the vsftpd FTP server
+	Fixed: #IP-1367 Support for the VsFTPd server
 	Fixed: #IP-1386 Length of password generator is hardcoded
 	Fixed: #IP-1388 phptmp removed on client update
 	Fixed: #IP-1391 imscp_panel service can fail to start/restart when the APCU PHP extension is installed
