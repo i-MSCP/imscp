@@ -69,6 +69,7 @@
                 >
             <package>vsftpd/precise</package>
             <package>libpam-mysql</package>
+            <package>libpam-ldap</package>
         </vsftpd>
     </ftpd>
     <named default="bind">
