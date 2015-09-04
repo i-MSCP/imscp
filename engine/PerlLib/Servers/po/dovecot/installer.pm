@@ -196,7 +196,7 @@ sub install
 
 	# Dovecot shall ignore mounts in Web folders
 	if(iMSCP::ProgramFinder::find('doveadm')) {
-		$rs = execute("doveadm mount add $main::imscpConfig{'USER_WEB_DIR'}/* ignore", \my $stdout, \my $stderr);
+		$rs = execute("doveadm mount add '$main::imscpConfig{'USER_WEB_DIR'}/*' ignore", \my $stdout, \my $stderr);
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 	}
