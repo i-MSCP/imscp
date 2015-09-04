@@ -209,8 +209,8 @@ sub deleteFtpUser
 
 	$self->{'eventManager'}->trigger('beforeFtpdDelFtpUser', $data);
 
-	if(-f $self->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}) {
-		iMSCP::File->new( filename => "$self->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}" )->delFile();
+	if(-f "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}") {
+		iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}" )->delFile();
 		$self->{'reload'} = 1;
 	}
 
