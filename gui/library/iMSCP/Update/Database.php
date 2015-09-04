@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 214;
+	protected $lastUpdate = 215;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3414,5 +3414,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 		$dbConfig['PORT_SMTP_SUBMISSION'] = '587;tcp;SMTP-SUBMISSION;1;0.0.0.0';
 		return null;
+	}
+
+	/**
+	 * Add status column in ftp_users table
+	 *
+	 * @return string SQL statements to be executed
+	 */
+	protected function r215()
+	{
+		return $this->addColumn('ftp_users', 'status', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok'");
 	}
 }

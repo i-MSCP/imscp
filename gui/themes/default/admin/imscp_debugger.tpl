@@ -129,6 +129,32 @@
 <table>
 	<thead>
 	<tr>
+		<th>{TR_FTP_ERRORS}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<!-- BDP: ftp_message -->
+	<tr>
+		<td>{TR_FTP_MESSAGE}</td>
+	</tr>
+	<!-- EDP: ftp_message -->
+	<!-- BDP: ftp_item -->
+	<tr>
+		<td>
+			<p>
+				<span class="bold">{FTP_NAME}</span> - <a
+						href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+						class="link">{TR_CHANGE_STATUS}</a>
+			</p>
+			<span style="color:red;">{FTP_ERROR}</span>
+		</td>
+	</tr>
+	<!-- EDP: ftp_item -->
+	</tbody>
+</table>
+<table>
+	<thead>
+	<tr>
 		<th>{TR_CUSTOM_DNS_ERRORS}</th>
 	</tr>
 	</thead>

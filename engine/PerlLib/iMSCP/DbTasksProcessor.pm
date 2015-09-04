@@ -236,6 +236,26 @@ sub process
 		"
 	);
 
+	# Process toadd|tochange|toenable|todisable|todelete ftp users tasks
+	# For each entitty, process only if the parent entity is in a consistent state
+	$self->_process(
+		'FtpUser',
+		"
+			SELECT
+				userid AS id, userid AS name, status AS status
+			FROM
+				ftp_users
+			INNER JOIN
+				domain ON(domain_admin_id = admin_id)
+			WHERE
+				status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+			AND
+				domain_status IN('ok', 'todelete', 'disabled')
+			ORDER BY
+				userid ASC
+		"
+	);
+
 	# Process toadd|tochange|toenable|todisable|todelete mail tasks
 	# For each entitty, process only if the parent entity is in a consistent state
 	$self->_process(

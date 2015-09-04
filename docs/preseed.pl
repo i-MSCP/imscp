@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2015.08.15
+# Last update: 2015.09.04
 
 # Httpd server to use for the frontEnd
 # (nginx)
@@ -14,6 +14,10 @@ $main::questions{'FRONTEND_SERVER'} = 'nginx';
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
 $main::questions{'HTTPD_SERVER'} = 'apache_php_fpm';
+
+# Server to use for the FTP service
+# (proftpd|vsftpd)
+$main::questions{'FTPD_SERVER'} = 'proftpd';
 
 # apache_fcgid - Only relevant if the server for the http service is set to 'apache_fgcid'
 $main::questions{'INI_LEVEL'} = 'per_user'; # 'per_user', 'per_domain' or 'per_site'

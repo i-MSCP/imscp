@@ -90,7 +90,7 @@ function isAllowedDir($domainId, $directory)
 function client_generateDirectoriesList($tpl)
 {
 	$path = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
-	$domain = $_SESSION['user_logged'];
+	$domain = encode_idna($_SESSION['user_logged']);
 
 	$vfs = new iMSCP_VirtualFileSystem($domain);
 	$list = $vfs->ls($path);

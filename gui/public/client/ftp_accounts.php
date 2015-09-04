@@ -30,13 +30,14 @@
  */
 function ftp_generatePageData($tpl)
 {
-	$query = "SELECT `userid` FROM `ftp_users` WHERE `admin_id` = ? ORDER BY LENGTH(`userid`) DESC";
+	$query = "SELECT userid, status FROM ftp_users WHERE admin_id = ? ORDER BY LENGTH(userid) DESC";
 	$stmt = exec_query($query, $_SESSION['user_id']);
 
 	if (!$stmt->rowCount()) {
 		set_page_message(tr('You do not have FTP accounts.'), 'static_info');
 		$tpl->assign('FTP_ACCOUNTS', '');
 	} else {
+
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
@@ -46,19 +47,25 @@ function ftp_generatePageData($tpl)
 
 		$nbFtpAccounts = 0;
 
-		while(!$stmt->EOF) {
-			$userid = $stmt->fields['userid'];
+		while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$userid = $row['userid'];
 
-			$tpl->assign(
-				array(
-					'FTP_ACCOUNT' => tohtml($userid),
-					'UID' => urlencode($userid)
-				)
-			);
+			$tpl->assign(array(
+				'FTP_ACCOUNT' => tohtml($userid),
+				'UID' => urlencode($userid),
+				'FTP_ACCOUNT_STATUS' => translate_dmn_status($row['status'])
+			));
+
+			if($row['status'] != 'ok') {
+				$tpl->assign('FTP_ACTIONS', '');
+			}
+
 
 			$tpl->parse('FTP_ITEM', '.ftp_item');
-			$stmt->moveNext();
-			$nbFtpAccounts++;
+
+			if($row['status'] != 'todelete') {
+				$nbFtpAccounts++;
+			}
 		}
 
 		$tpl->assign('TOTAL_FTP_ACCOUNTS', $nbFtpAccounts);
@@ -90,6 +97,7 @@ $tpl->define_dynamic(
 		'ftp_message' => 'page',
 		'ftp_accounts' => 'page',
 		'ftp_item' => 'ftp_accounts',
+		'ftp_actions' => 'ftp_item',
 		'ftp_easy_login' => 'ftp_item'
 	)
 );
@@ -101,6 +109,7 @@ $tpl->assign(
 		'TR_FTP_USERS' => tr('FTP Users'),
 		'TR_FTP_ACCOUNT' => tr('FTP account'),
 		'TR_FTP_ACTION' => tr('Actions'),
+		'TR_FTP_ACCOUNT_STATUS' => tr('Status'),
 		'TR_LOGINAS' => tr('Login As'),
 		'TR_EDIT' => tr('Edit'),
 		'TR_DELETE' => tr('Delete'),

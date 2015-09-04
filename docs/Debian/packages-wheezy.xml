@@ -76,6 +76,17 @@
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
         </proftpd>
+        <vsftpd
+                pinning_package="*"
+                pinning_pin="release o=IceMan,n=wheezy"
+                pinning_pin_priority="100"
+                repository="deb http://www.tataranovich.com/debian wheezy backports"
+                repository_key_srv="keyserver.ubuntu.com"
+                repository_key_id="0x836cc41976fb442e"
+                >
+            <package>vsftpd/wheezy</package>
+            <package>libpam-mysql</package>
+        </vsftpd>
     </ftpd>
     <named default="bind">
         <bind>

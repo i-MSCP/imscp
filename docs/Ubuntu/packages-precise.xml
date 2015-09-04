@@ -59,6 +59,17 @@
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
         </proftpd>
+        <vsftpd
+                pinning_package="*"
+                pinning_pin="release o=LP-PPA-thefrontiergroup-vsftpd,n=precise"
+                pinning_pin_priority="100"
+                repository="deb http://ppa.launchpad.net/thefrontiergroup/vsftpd/ubuntu precise main"
+                repository_key_srv="keyserver.ubuntu.com"
+                repository_key_id="0xe80b8ab9c855587c"
+                >
+            <package>vsftpd/precise</package>
+            <package>libpam-mysql</package>
+        </vsftpd>
     </ftpd>
     <named default="bind">
         <bind>

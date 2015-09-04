@@ -1,0 +1,21 @@
+# i-MSCP vsftpd configuration data
+
+FTPD_SNAME = vsftpd
+FTPD_CONF_FILE = /etc/vsftpd.conf
+FTPD_PAM_CONF_FILE = /etc/pam.d/vsftpd
+FTPD_USER_CONF_DIR = /etc/vsftpd/imscp
+FTPD_TRAFF_LOG_PATH = /var/log/xferlog
+
+# You can edit the parameters bellow
+# See vsftpd.conf(5)
+FTPD_BANNER = Welcome to i-MSCP Ftp server
+PASSV_ENABLE = YES
+PASSV_MIN_PORT = 30000
+PASSV_MAX_PORT = 30999
+FTP_MAX_CLIENTS = 30
+MAX_PER_IP = 3
+LOCAL_MAX_RATE = 0
+
+VSFTPD_VERSION =
+DATABASE_USER =
+DATABASE_PASSWORD =

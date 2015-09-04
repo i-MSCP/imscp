@@ -811,6 +811,8 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 {
 	$customerId = (int)$customerId;
 
+	$cfg = iMSCP_Registry::get('config');
+
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
 		iMSCP_Events::onBeforeDeleteCustomer, array('customerId' => $customerId)
 	);
@@ -885,7 +887,13 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		exec_query('DELETE FROM domain_dns WHERE domain_id = ?', $mainDomainId);
 
 		// Deletes FTP accounts (users and groups)
-		exec_query('DELETE FROM ftp_users WHERE admin_id = ?', $customerId);
+
+		if($cfg['FTPD_SERVER'] == 'vsftpd') {
+			exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array('todelete', $customerId));
+		} else {
+			exec_query('DELETE FROM ftp_users WHERE admin_id = ?', $customerId);
+		}
+
 		exec_query('DELETE FROM ftp_group WHERE groupname = ?', $customerName);
 
 		// Deletes quota entries

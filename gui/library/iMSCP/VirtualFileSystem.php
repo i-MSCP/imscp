@@ -279,7 +279,15 @@ class iMSCP_VirtualFileSystem
 		}
 
 		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-		$this->user = uniqid('tmp_') . '@' . $this->domain;
+
+		if($cfg['FTPD_SERVER'] == 'vsftpd') {
+			# For vsftpd, we use the domain name as userid.
+			# This matches default local_root (e.g: /var/www/virtual/$USER)
+			$this->user = $this->domain;
+		} else {
+			$this->user = uniqid('tmp_') . '@' . $this->domain;
+		}
+
 		$this->password = \iMSCP\Crypt::randomStr(16);
 
 		exec_query(

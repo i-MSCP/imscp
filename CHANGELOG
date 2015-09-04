@@ -12,6 +12,7 @@ BACKEND
 	Added: iMSCP::Mount - Library for mounting/unmounting file systems
 	Added: iMSCP::Provider::NetworkInterface - Provider for adding/removing IP addresses
 	Added: onBoot event - Triggered once the backend library has been initialized
+	Added: support for VsFTPD (Very secure FTP daemon)
 	Changed: Default database type for the Servers::mta::postfix::postmap() method is now cdb
 	Changed: imscp-db-keys file is now a conffile (same format as the imscp.conf conffile)
 	Changed: Usage of AES (Rijndael) instead of Blowfish for i-MSCP data encryption
@@ -38,6 +39,8 @@ CONFIGS
 	Added: imscp_mountall sysvinit script an imscp_mountall upstart job - Mount i-MSCP filesystems on server reboot
 	Added: libcrypt-rijndael-perl package (Debian/Ubuntu)
 	Added: postfix-cdb package (Debian/Ubuntu)
+	Added: vsftpd and libpam-mysql packages (Debian/Ubuntu) for VsFTPd support
+	Added: vsftpd configuration files for VsFTPd support
 	Changed: Usage of cdb maps instead of hash maps (Postfix)
 	Fixed: ftp_ssl.log log file is not rotated (proftpd logrotate conffile)
 	Removed: Unless lookup table templates (Postfix)
@@ -76,6 +79,7 @@ TESTS
 	  - iMSCP::SetRights libraries
 
 YOUTRACK
+	Fixed: #IP-1367 Support for the vsftpd FTP server
 	Fixed: #IP-1386 Length of password generator is hardcoded
 	Fixed: #IP-1388 phptmp removed on client update
 	Fixed: #IP-1391 imscp_panel service can fail to start/restart when the APCU PHP extension is installed

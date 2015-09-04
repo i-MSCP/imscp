@@ -238,6 +238,36 @@ function debugger_getAlssubErrors($tpl)
 }
 
 /**
+ * Get ftp users errors
+ *
+ * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @return void
+ */
+function debugger_getFtpErrors($tpl)
+{
+	$stmt = exec_query('SELECT userid, status FROM ftp_users', array(
+		'ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete'
+	));
+
+	if (!$stmt->rowCount()) {
+		$tpl->assign(array('FTP_ITEM' => '', 'TR_FTP_MESSAGE' => tr('No errors')));
+		$tpl->parse('FTP_MESSAGE', 'ftp_message');
+	} else {
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$tpl->assign(array(
+				'FTP_MESSAGE' => '',
+				'FTP_NAME' => tohtml(decode_idna($row['userid'])),
+				'FTP_ERROR' => tohtml($row['subdomain_alias_status']),
+				'CHANGE_ID' => $row['userid'],
+				'CHANGE_TYPE' => 'ftp_user'
+			));
+
+			$tpl->parse('FTP_ITEM', '.ftp_item');
+		}
+	}
+}
+
+/**
  * Get custom dns errors
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
@@ -622,6 +652,9 @@ if (isset($_GET['action'])) {
 			case 'subdomain_alias':
 				$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?";
 				break;
+			case 'ftp_user':
+				$query = "UPDATE ftp_users SET status = ? WHERE userid = ?";
+				break;
 			case 'custom_dns':
 				$query = "UPDATE `domain_dns` SET `domain_dns_status` = ? WHERE `domain_dns_id` = ?";
 				break;
@@ -680,6 +713,8 @@ $tpl->define_dynamic(
 		'sub_item' => 'page',
 		'alssub_message' => 'page',
 		'alssub_item' => 'page',
+		'ftp_message' => 'page',
+		'ftp_item' => 'page',
 		'custom_dns_message' => 'page',
 		'custom_dns_item' => 'page',
 		'htaccess_message' => 'page',
@@ -698,6 +733,7 @@ debugger_getDmnErrors($tpl);
 debugger_getAlsErrors($tpl);
 debugger_getSubErrors($tpl);
 debugger_getAlssubErrors($tpl);
+debugger_getFtpErrors($tpl);
 debugger_getCustomDNSErrors($tpl);
 debugger_getMailsErrors($tpl);
 debugger_getHtaccessErrors($tpl);
@@ -709,6 +745,7 @@ $tpl->assign(
 		'TR_USER_ERRORS' => tr('User errors'),
 		'TR_DMN_ERRORS' => tr('Domain errors'),
 		'TR_ALS_ERRORS' => tr('Domain alias errors'),
+		'TR_FTP_ERRORS' => tr('Ftp user errors'),
 		'TR_SUB_ERRORS' => tr('Subdomain errors'),
 		'TR_ALSSUB_ERRORS' => tr('Subdomain alias errors'),
 		'TR_CUSTOM_DNS_ERRORS' => tr('Custom DNS errors'),
