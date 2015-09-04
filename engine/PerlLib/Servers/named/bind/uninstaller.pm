@@ -82,7 +82,6 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
 	$self->{'config'} = $self->{'named'}->{'config'};
-
 	$self;
 }
 
@@ -101,10 +100,10 @@ sub _restoreConfFiles
 	if(-d $self->{'config'}->{'BIND_CONF_DIR'}) {
 		for my $conffile('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
 			if(defined $self->{'config'}->{$conffile}) {
-				my $filename = fileparse($self->{'config'}->{$conffile});
+				my $basename = basename($self->{'config'}->{$conffile});
 
-				if(-f "$self->{'bkpDir'}/$filename.system") {
-					iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+				if(-f "$self->{'bkpDir'}/$basename.system") {
+					iMSCP::File->new( filename => "$self->{'bkpDir'}/$basename.system" )->copyFile(
 						$self->{'config'}->{$conffile}
 					);
 

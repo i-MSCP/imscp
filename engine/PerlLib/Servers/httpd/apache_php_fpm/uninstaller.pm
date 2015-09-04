@@ -90,7 +90,6 @@ sub _init
 	$self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
 	$self->{'phpfpmWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
 	$self->{'phpfpmConfig'} = $self->{'httpd'}->{'phpfpmConfig'};
-
 	$self;
 }
 
@@ -201,11 +200,11 @@ sub _restorePhpfpmConfig
 {
 	my $self = shift;
 
-	my $filename = fileparse("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm");
+	my $basename = basename("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm");
 
-	if(-f "$self->{'phpfpmBkpDir'}/logrotate.$filename.system") {
-		iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/logrotate.$filename.system")->copyFile(
-			"$main::imscpConfig{'LOGROTATE_CONF_DIR'}/$filename"
+	if(-f "$self->{'phpfpmBkpDir'}/logrotate.$basename.system") {
+		iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/logrotate.$basename.system")->copyFile(
+			"$main::imscpConfig{'LOGROTATE_CONF_DIR'}/$basename"
 		);
 	}
 
@@ -213,10 +212,10 @@ sub _restorePhpfpmConfig
 		"$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php-fpm.conf",
 		"$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini"
 	) {
-		$filename = fileparse($file);
+		$basename = basename($file);
 
-		if (-f "$self->{'phpfpmBkpDir'}/$filename.system") {
-			iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/$filename.system" )->copyFile($_)
+		if (-f "$self->{'phpfpmBkpDir'}/$basename.system") {
+			iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/$basename.system" )->copyFile($_)
 		}
 	}
 

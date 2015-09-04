@@ -295,7 +295,6 @@ sub _init
 	}
 
 	($self->_getVersion() == 0) or die('Unable to get Dovecot version');
-
 	$self;
 }
 

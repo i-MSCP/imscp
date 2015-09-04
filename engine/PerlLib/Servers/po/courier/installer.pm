@@ -341,14 +341,14 @@ sub _bkpConfFile
 	$self->{'eventManager'}->trigger('beforePoBkpConfFile', $filePath);
 
 	if(-f $filePath) {
-		my $fileName = fileparse($filePath);
+		my $basename = basename($filePath);
 		my $file = iMSCP::File->new( filename => $filePath );
 
-		unless(-f "$self->{'bkpDir'}/$fileName.system") {
-			$file->copyFile("$self->{'bkpDir'}/$fileName.system");
+		unless(-f "$self->{'bkpDir'}/$basename.system") {
+			$file->copyFile("$self->{'bkpDir'}/$basename.system");
 		} else {
 			my $timestamp = time;
-			$file->copyFile("$self->{'bkpDir'}/$fileName.$timestamp");
+			$file->copyFile("$self->{'bkpDir'}/$basename.$timestamp");
 		}
 	}
 
@@ -371,7 +371,6 @@ sub _setupSqlUser
 	my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD');
-
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	$self->{'eventManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
@@ -505,8 +504,8 @@ sub _buildConf
 		$cfgTpl = process($data, $cfgTpl);
 		$self->{'eventManager'}->trigger('afterPoBuildConf', \$cfgTpl, $conffile);
 
-		my $filename = fileparse($cfgFiles{$conffile}->[0]);
-		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
+		my $basename = basename($cfgFiles{$conffile}->[0]);
+		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$basename" );
 
 		$file->set($cfgTpl);
 		$file->save();
@@ -578,10 +577,7 @@ sub _buildAuthdaemonrcFile
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \my $cfgTpl, { });
-
-	unless(defined $cfgTpl) {
-		$cfgTpl = iMSCP::File->new( filename => "$self->{'bkpDir'}/authdaemonrc.system" )->get();
-	}
+	$cfgTpl = iMSCP::File->new( filename => "$self->{'bkpDir'}/authdaemonrc.system" )->get() unless defined $cfgTpl;
 
 	$self->{'eventManager'}->trigger('beforePoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc');
 	$cfgTpl =~ s/authmodulelist=".*"/authmodulelist="authmysql authpam"/;
@@ -674,9 +670,9 @@ sub _migrateFromDovecot
 
 	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && !$rs;
+	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
-	error('Error while converting mails') if $rs && !$stderr;
+	error('Error while converting mails') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterPoMigrateFromDovecot');
@@ -698,7 +694,7 @@ sub _oldEngineCompatibility
 
 	if(-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb") {
 		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb" );
-		$file->set('');;
+		$file->set('');
 		$file->save();
 		$file->mode(0600);
 

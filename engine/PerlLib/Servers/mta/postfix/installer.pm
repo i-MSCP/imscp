@@ -594,11 +594,11 @@ sub _bkpConfFile
 	$self->{'eventManager'}->trigger('beforeMtaBkpConfFile', $cfgFile);
 
 	if(-f $cfgFile) {
-		my $filename = fileparse($cfgFile);
+		my $basename = basename($cfgFile);
 
 		iMSCP::File->new( filename => $cfgFile )->copyFile(
-			(-f "$self->{'bkpDir'}/$filename.system")
-				? "$self->{'bkpDir'}/$filename.system" : "$self->{'bkpDir'}/$filename." . time()
+			(-f "$self->{'bkpDir'}/$basename.system")
+				? "$self->{'bkpDir'}/$basename.system" : "$self->{'bkpDir'}/$basename." . time()
 		);
 	}
 

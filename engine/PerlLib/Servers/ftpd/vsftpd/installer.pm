@@ -86,7 +86,7 @@ sub showDialog
 		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/)
 	) {
 		do{
-			($rs, $dbUser) = $dialog->inputbox("\nPlease enter an username for the vsftpd SQL user:$msg", $dbUser);
+			($rs, $dbUser) = $dialog->inputbox("\nPlease enter an username for the VsFTPd SQL user:$msg", $dbUser);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
 				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
@@ -106,11 +106,11 @@ sub showDialog
 		if($rs != 30) {
 			$msg = '';
 
-			# Ask for the vsftpd SQL user password unless we reuses existent SQL user
+			# Ask for the VsFTPd SQL user password unless we reuses existent SQL user
 			unless($dbUser ~~ [ keys %main::sqlUsers ]) {
 				do {
 					($rs, $dbPass) = $dialog->passwordbox(
-						"\nPlease, enter a password for the vsftpd SQL user (blank for autogenerate):$msg", $dbPass
+						"\nPlease, enter a password for the VsFTPd SQL user (blank for autogenerate):$msg", $dbPass
 					);
 
 					if($dbPass ne '') {
@@ -133,7 +133,7 @@ sub showDialog
 
 			if($rs != 30) {
 				$dbPass = randomStr(16) unless $dbPass;
-				$dialog->msgbox("\nPassword for the vsftpd SQL user set to: $dbPass");
+				$dialog->msgbox("\nPassword for the VsFTPd SQL user set to: $dbPass");
 			}
 		}
 	}

@@ -52,7 +52,6 @@ sub _init
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 	$self->{'config'} = $self->{'httpd'}->{'config'};
-
 	$self;
 }
 
@@ -111,10 +110,10 @@ sub _restoreConf
 	my $self = shift;
 
 	for my $file("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
-		my $filename = fileparse($file);
+		my $basename = basename($file);
 
-		if (-f "$self->{bkpDir}/$filename.system") {
-			iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile($file)
+		if (-f "$self->{bkpDir}/$basename.system") {
+			iMSCP::File->new( filename => "$self->{bkpDir}/$basename.system" )->copyFile($file)
 		}
 	}
 

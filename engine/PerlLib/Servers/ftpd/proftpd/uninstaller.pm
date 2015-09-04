@@ -88,11 +88,11 @@ sub restoreConfFile
 {
 	my $self = shift;
 
-	my ($filename, $directories, $suffix) = fileparse($self->{'config'}->{'FTPD_CONF_FILE'});
+	my $basename = fileparse($self->{'config'}->{'FTPD_CONF_FILE'});
 
-	if(-f "$self->{bkpDir}/$filename$suffix.system") {
-		iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename$suffix.system" )->copyFile(
-			"$self->{bkpDir}/$filename$suffix.system"
+	if(-f "$self->{bkpDir}/$basename.system") {
+		iMSCP::File->new( filename => "$self->{'bkpDir'}/$basename.system" )->copyFile(
+			$self->{'config'}->{'FTPD_CONF_FILE'}
 		);
 	}
 

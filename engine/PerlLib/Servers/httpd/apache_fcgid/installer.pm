@@ -64,7 +64,7 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0 });
 	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 }
 
@@ -204,7 +204,6 @@ sub _init
 	my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
 		for my $param(keys %oldConfig) {
 			if(exists $self->{'config'}->{$param}) {
 				$self->{'config'}->{$param} = $oldConfig{$param};
@@ -232,12 +231,12 @@ sub _bkpConfFile
 
 	if(-f $cfgFile){
 		my $file = iMSCP::File->new( filename => $cfgFile );
-		my $filename = fileparse($cfgFile);
+		my $basename = basename($cfgFile);
 
-		unless(-f "$self->{'apacheBkpDir'}/$filename.system") {
-			$file->copyFile("$self->{'apacheBkpDir'}/$filename.system");
+		unless(-f "$self->{'apacheBkpDir'}/$basename.system") {
+			$file->copyFile("$self->{'apacheBkpDir'}/$basename.system");
 		} else {
-			$file->copyFile("$self->{'apacheBkpDir'}/$filename." . time());
+			$file->copyFile("$self->{'apacheBkpDir'}/$basename." . time());
 		}
 	}
 
@@ -266,7 +265,7 @@ sub _setApacheVersion
 		$self->{'config'}->{'HTTPD_VERSION'} = $1;
 		debug("Apache version set to: $1");
 	} else {
-		error('Unable to parse Apache version from Apache version string');
+		error('Unable to parse Apache version');
 		return 1;
 	}
 
@@ -710,7 +709,7 @@ sub _fixPhpErrorReportingValues
 			}
 		}
 	} else {
-		error('Unable to find PHP version');
+		error('Could not find PHP version');
 		return 1;
 	}
 

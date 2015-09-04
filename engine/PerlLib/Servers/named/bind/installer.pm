@@ -61,14 +61,11 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	$eventManager->register(
-		'beforeSetupDialog',
-		sub {
-			push @{$_[0]}, sub { $self->askDnsServerMode(@_) }, sub { $self->askIPv6Support(@_) },
-				sub { $self->askLocalDnsResolver(@_) };
-			0;
-		}
-	);
+	$eventManager->register('beforeSetupDialog', sub {
+		push @{$_[0]}, sub { $self->askDnsServerMode(@_) }, sub { $self->askIPv6Support(@_) },
+			sub { $self->askLocalDnsResolver(@_) };
+		0;
+	});
 }
 
 =item askDnsServerMode(\%dialog)
@@ -313,7 +310,6 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/bind.old.data";
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
 		for my $param(keys %oldConfig) {
 			if(exists $self->{'config'}->{$param}) {
 				$self->{'config'}->{$param} = $oldConfig{$param};
@@ -341,12 +337,12 @@ sub _bkpConfFile
 
 	if(-f $cfgFile) {
 		my $file = iMSCP::File->new( filename => $cfgFile );
-		my $filename = fileparse($cfgFile);
+		my $basename = basename($cfgFile);
 
-		unless(-f "$self->{'bkpDir'}/$filename.system") {
-			$file->copyFile("$self->{'bkpDir'}/$filename.system");
+		unless(-f "$self->{'bkpDir'}/$basename.system") {
+			$file->copyFile("$self->{'bkpDir'}/$basename.system");
 		} else {
-			$file->copyFile("$self->{'bkpDir'}/$filename." . time);
+			$file->copyFile("$self->{'bkpDir'}/$basename." . time);
 		}
 	}
 
@@ -401,15 +397,15 @@ sub _buildConf
 	for my $conffile('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
 		next if $self->{'config'}->{$conffile} eq '';
 
-		my $filename = fileparse($self->{'config'}->{$conffile});
+		my $basename = basename($self->{'config'}->{$conffile});
 
-		$self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \my $cfgTpl, { });
+		$self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $basename, \my $cfgTpl, { });
 
 		unless(defined $cfgTpl) {
-			$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$filename" )->get();
+			$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$basename" )->get();
 		}
 
-		$self->{'eventManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
+		$self->{'eventManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $basename);
 
 		if($conffile eq 'BIND_CONF_FILE' && ! -f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
 			$cfgTpl =~ s%include "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys";\n%%;
@@ -427,15 +423,15 @@ sub _buildConf
 			}
 
 			if($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ne '' && -f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
-				my $filename = fileparse($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'});
+				my $basename = basename($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'});
 
-				$self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $filename, \my $fileContent, { });
+				$self->{'eventManager'}->trigger('onLoadTemplate', 'bind', $basename, \my $fileContent, { });
 
 				unless(defined $fileContent) {
 					$fileContent = iMSCP::File->new( filename => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} )->get();
 				}
 
-				$self->{'eventManager'}->trigger('beforeNamedBuildConf', \$fileContent, $filename);
+				$self->{'eventManager'}->trigger('beforeNamedBuildConf', \$fileContent, $basename);
 
 				# Enable/disable local DNS resolver
 
@@ -459,9 +455,9 @@ sub _buildConf
 					$fileContent =~ s/OPTIONS=".*"/OPTIONS="$options"/;
 				}
 
-				$self->{'eventManager'}->trigger('afterNamedBuildConf', \$fileContent, $filename);
+				$self->{'eventManager'}->trigger('afterNamedBuildConf', \$fileContent, $basename);
 
-				my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
+				my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$basename" );
 				$file->set($fileContent);
 				$file->save();
 				$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
@@ -470,9 +466,9 @@ sub _buildConf
 			}
 		}
 
-		$self->{'eventManager'}->trigger('afterNamedBuildConf', \$cfgTpl, $filename);
+		$self->{'eventManager'}->trigger('afterNamedBuildConf', \$cfgTpl, $basename);
 
-		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
+		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$basename" );
 
 		$file->set($cfgTpl);
 		$file->save();

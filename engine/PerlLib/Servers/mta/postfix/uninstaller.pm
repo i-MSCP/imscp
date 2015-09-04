@@ -78,7 +78,7 @@ sub _buildAliasses
 {
 	my $self = shift;
 
-	my $rs = execute("newaliases", \my $stdout, \my $stderr);
+	my $rs = execute('newaliases', \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Error while executing newaliases command") if $rs && !$stderr;
@@ -90,10 +90,10 @@ sub _restoreConfFile
 	my $self = shift;
 
 	for my $file($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
-		my $filename = fileparse($file);
+		my $basename = basename($file);
 
-		if(-f "$self->{'bkpDir'}/$filename.system"){
-			iMSCP::File->new(filename => "$self->{'bkpDir'}/$filename.system")->copyFile($file);
+		if(-f "$self->{'bkpDir'}/$basename.system"){
+			iMSCP::File->new( filename => "$self->{'bkpDir'}/$basename.system" )->copyFile($file);
 		}
 	}
 

@@ -108,9 +108,9 @@ sub postinstall
 
 	$self->{'eventManager'}->trigger('beforeFtpdPostInstall', 'proftpd');
 	iMSCP::Service->getInstance()->enable($self->{'config'}->{'FTPD_SNAME'});
-	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'ProFTPD server' ]; 0; }
-	);
+	$self->{'eventManager'}->register('beforeSetupRestartServices', sub {
+		push @{$_[0]}, [ sub { $self->start(); }, 'ProFTPD server' ]; 0
+	});
 	$self->{'eventManager'}->trigger('afterFtpdPostInstall', 'proftpd');
 }
 
@@ -260,9 +260,9 @@ sub getTraffic
 
 	# Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-	$self->{'eventManager'}->register(
-		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
-	);
+	$self->{'eventManager'}->register('afterVrlTraffic', sub {
+		-f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0
+	});
 
 	\%trafficDb;
 }
@@ -294,7 +294,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'commentChar'} = '#';
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data"; \%c; };
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data"; \%c };
 	$self;
 }
 

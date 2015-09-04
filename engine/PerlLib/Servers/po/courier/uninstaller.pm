@@ -35,7 +35,6 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = $self->{'po'}->{'config'};
-
 	$self;
 }
 
@@ -140,9 +139,9 @@ sub _deleteQuotaWarning
 
 	if(-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
 		iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'})->delFile();
-	} else {
-		0;
 	}
+
+	0;
 }
 
 1;

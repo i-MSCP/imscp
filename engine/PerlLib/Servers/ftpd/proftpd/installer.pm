@@ -62,7 +62,7 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0 });
 }
 
 =item showDialog(\%dialog)
@@ -115,7 +115,7 @@ sub showDialog
 			unless($dbUser ~~ [ keys %main::sqlUsers ]) {
 				do {
 					($rs, $dbPass) = $dialog->passwordbox(
-						"\nPlease, enter a password for the proftpd SQL user (blank for autogenerate):$msg", $dbPass
+						"\nPlease, enter a password for the ProFTPD SQL user (blank for autogenerate):$msg", $dbPass
 					);
 
 					if($dbPass ne '') {
@@ -138,7 +138,7 @@ sub showDialog
 
 			if($rs != 30) {
 				$dbPass = randomStr(16) unless $dbPass;
-				$dialog->msgbox("\nPassword for the proftpd SQL user set to: $dbPass");
+				$dialog->msgbox("\nPassword for the ProFTPD SQL user set to: $dbPass");
 			}
 		}
 	}
@@ -179,10 +179,7 @@ sub install
 	$rs = $self->_createTrafficLogFile();
 	return $rs if $rs;
 
-	$rs = $self->_saveConf();
-	return $rs if $rs;
-
-	$self->_oldEngineCompatibility();
+	$self->_saveConf();
 }
 
 =back
@@ -239,12 +236,12 @@ sub _bkpConfFile
 
 	if(-f $cfgFile){
 		my $file = iMSCP::File->new( filename => $cfgFile );
-		my ($filename, $directories, $suffix) = fileparse($cfgFile);
+		my $basename = $cfgFile;
 
-		unless(-f "$self->{'bkpDir'}/$filename$suffix.system") {
-			$file->copyFile("$self->{'bkpDir'}/$filename$suffix.system");
+		unless(-f "$self->{'bkpDir'}/$basename.system") {
+			$file->copyFile("$self->{'bkpDir'}/$basename.system");
 		} else {
-			$file->copyFile("$self->{'bkpDir'}/$filename$suffix." . time);
+			$file->copyFile("$self->{'bkpDir'}/$basename." . time);
 		}
 	}
 
@@ -263,7 +260,7 @@ sub _setVersion
 {
 	my $self = shift;
 
-	my $rs = execute("proftpd -v", \my $stdout, \my $stderr);
+	my $rs = execute('proftpd -v', \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to find ProFTPD version') if $rs && ! $stderr;
@@ -273,7 +270,7 @@ sub _setVersion
 		$self->{'config'}->{'PROFTPD_VERSION'} = $1;
 		debug("ProFTPD version set to: $1");
 	} else {
-		error('Unable to parse ProFTPD version from ProFTPD version string');
+		error('Unable to parse ProFTPD version');
 		return 1;
 	}
 
@@ -420,8 +417,8 @@ sub _createTrafficLogFile
 			filename => "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}"
 		);
 		$file->save();
-		$file->mode(0644);
 		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		$file->mode(0644);
 	}
 
 	$self->{'eventManager'}->trigger('afterFtpdCreateTrafficLogFile');
@@ -440,22 +437,6 @@ sub _saveConf
 	my $self = shift;
 
 	iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.data" )->copyFile("$self->{'cfgDir'}/proftpd.old.data");
-}
-
-=item _oldEngineCompatibility()
-
- Remove old files
-
- Return int 0 on success, die on failure
-
-=cut
-
-sub _oldEngineCompatibility
-{
-	my $self = shift;
-
-	$self->{'eventManager'}->trigger('beforeNamedOldEngineCompatibility');
-	$self->{'eventManager'}->trigger('afterNameddOldEngineCompatibility');
 }
 
 =back
