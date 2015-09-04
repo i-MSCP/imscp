@@ -199,9 +199,8 @@ sub uninstallPackages
 
 	# Do not try to remove packages which are no longer available
 	if(@{$packages}) {
-		my @packages = @{$packages};
-		s%(.*)/.*%$1% for @packages;
-		my $rs = execute("LANG=C dpkg-query -W -f='\${Package}\n' @packages 2>/dev/null", \my $stdout, \my $stderr);
+		s%(.*)/.*%$1% for @{$packages}; # Remove any distribution (package/distribution)
+		my $rs = execute("LANG=C dpkg-query -W -f='\${Package}\n' @{$packages} 2>/dev/null", \my $stdout, \my $stderr);
 		error($stderr) if $stderr && $rs > 1;
 		return $rs if $rs > 1;
 
