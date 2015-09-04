@@ -236,7 +236,7 @@ sub _bkpConfFile
 
 	if(-f $cfgFile){
 		my $file = iMSCP::File->new( filename => $cfgFile );
-		my $basename = $cfgFile;
+		my $basename = basename($cfgFile);
 
 		unless(-f "$self->{'bkpDir'}/$basename.system") {
 			$file->copyFile("$self->{'bkpDir'}/$basename.system");
