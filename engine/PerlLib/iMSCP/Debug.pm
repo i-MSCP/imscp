@@ -165,7 +165,7 @@ sub endDebug
 		}
 
 		# Write logfile
-		_writeLogfile($target, "$main::imscpConfig{'LOG_DIR'}/$targetId");
+		_writeLogfile($target, "$logDir/$targetId");
 
 		# Set previous log object as target for new messages
 		$self->{'target'} = @{$self->{'targets'}}[$#{$self->{'targets'}}];
