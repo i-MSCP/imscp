@@ -23,14 +23,14 @@ use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Database;
 use iMSCP::TemplateParser;
-use Servers::po;
+use Servers::po::courier;
 use parent 'Common::SingletonClass';
 
 sub _init
 {
 	my $self = shift;
 
-	$self->{'po'} = Servers::po->factory();
+	$self->{'po'} = Servers::po::courier->getInstance();
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";

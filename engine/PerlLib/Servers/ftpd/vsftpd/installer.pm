@@ -35,7 +35,7 @@ use iMSCP::LsbRelease;
 use iMSCP::Stepper;
 use iMSCP::TemplateParser;
 use File::Basename;
-use Servers::ftpd;
+use Servers::ftpd::vsftpd;
 use parent 'Common::SingletonClass';
 
 %main::sqlUsers = () unless %main::sqlUsers;
@@ -197,8 +197,8 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'ftpd'} = Servers::ftpd->factory();
-	$self->{'eventManager'} = $self->{'ftpd'} ->{'eventManager'};
+	$self->{'ftpd'} = Servers::ftpd::vsftpd->getInstance();
+	$self->{'eventManager'} = $self->{'ftpd'}->{'eventManager'};
 	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'config'} = $self->{'ftpd'}->{'config'};

@@ -25,14 +25,14 @@ use iMSCP::File;
 use File::Basename;
 use iMSCP::Dir;
 use iMSCP::SystemUser;
-use Servers::mta;
+use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
 
 sub _init
 {
 	my $self = shift;
 
-	$self->{'mta'} = Servers::mta->factory();
+	$self->{'mta'} = Servers::mta::postfix->getInstance();
 	$self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";

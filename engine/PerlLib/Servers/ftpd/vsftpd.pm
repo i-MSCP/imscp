@@ -343,13 +343,11 @@ sub _init
 {
 	my $self = shift;
 
-	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s: %s', ref $self));
-	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
-
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'start'} = 0;
 	$self->{'restart'} = 0;
 	$self->{'reload'} = 0;
-	$self->{'cfgDir'} .= '/vsftpd';
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/vsftpd";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data"; \%c };
 	$self;

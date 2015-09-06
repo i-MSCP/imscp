@@ -34,7 +34,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::TemplateParser;
 use File::Basename;
-use Servers::ftpd;
+use Servers::ftpd::proftpd;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -200,8 +200,8 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'ftpd'} = Servers::ftpd->factory();
-	$self->{'eventManager'} = $self->{'ftpd'} ->{'eventManager'};
+	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
+	$self->{'eventManager'} = $self->{'ftpd'}->{'eventManager'};
 	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -360,7 +360,7 @@ sub _buildConfigFile
 
 	my $version = $self->{'config'}->{'PROFTPD_VERSION'};
 
-	# Escape any double-quotes and backslash in password ( see #IP-1330 )
+	# Escape any double-quotes and backslash in password (see #IP-1330)
 	(my $dbUser = $self->{'config'}->{'DATABASE_USER'}) =~ s%("|\\)%\\$1%g;
 	(my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'}) =~ s%("|\\)%\\$1%g;
 

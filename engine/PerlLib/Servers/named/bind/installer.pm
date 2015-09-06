@@ -35,7 +35,7 @@ use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
-use Servers::named;
+use Servers::named::bind;
 use File::Basename;
 use version;
 use parent 'Common::SingletonClass';
@@ -300,7 +300,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'named'} = Servers::named->factory();
+	$self->{'named'} = Servers::named::bind->getInstance();
 	$self->{'eventManager'} = $self->{'named'}->{'eventManager'};
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";

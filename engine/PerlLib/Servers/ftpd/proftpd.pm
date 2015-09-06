@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Service;
 use File::Basename;
@@ -285,15 +286,12 @@ sub _init
 {
 	my $self = shift;
 
-	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s: %s', ref $self));
-	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
-
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'start'} = 0;
 	$self->{'restart'} = 0;
-	$self->{'cfgDir'} .= '/proftpd';
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'commentChar'} = '#';
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data"; \%c };
 	$self;
 }

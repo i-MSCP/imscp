@@ -28,6 +28,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Config;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
@@ -461,14 +462,12 @@ sub _init
 {
 	my $self = shift;
 
-	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s', ref $self));
-	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
-
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'restart'} = 0;
-	$self->{'cfgDir'} .= '/courier';
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data"; \%c; };
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data"; \%c };
 	$self;
 }
 

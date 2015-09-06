@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Config;
 use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::Service;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
@@ -95,7 +96,7 @@ sub postinstall
 
 	$self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'MySQL SQL server' ]; 0 }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart() }, 'MySQL SQL server' ]; 0 }
 	);
 	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
 }
@@ -193,11 +194,9 @@ sub _init
 {
 	my $self = shift;
 
-	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s', ref $self));
-	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
-
-	$self->{'cfgDir'} .= '/mysql';
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data"; \%c; };
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data"; \%c };
 	$self;
 }
 

@@ -50,9 +50,7 @@ sub factory
 	unless(defined $instance) {
 		my $package = 'Servers::cron::cron';
 		eval "require $package" or die(sprintf('Could not load %s package: %s', $package, $@));
-		$instance = $package->getInstance(
-			cfgDir => $main::imscpConfig{'CONF_DIR'}, eventManager => iMSCP::EventManager->getInstance()
-		);
+		$instance = $package->getInstance();
 	}
 
 	$instance;

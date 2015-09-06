@@ -30,6 +30,7 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Execute;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Service;
@@ -76,11 +77,9 @@ sub preinstall
 
 	$self->{'eventManager'}->trigger('beforeMtaPreInstall', 'postfix');
 	$self->stop();
-
 	require Servers::mta::postfix::installer;
 	my $rs = Servers::mta::postfix::installer->getInstance()->preinstall();
 	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterMtaPreInstall', 'postfix');
 }
 
@@ -97,11 +96,9 @@ sub install
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaInstall', 'postfix');
-
 	require Servers::mta::postfix::installer;
 	my $rs = Servers::mta::postfix::installer->getInstance()->install();
 	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterMtaInstall', 'postfix');
 }
 
@@ -118,11 +115,9 @@ sub uninstall
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaUninstall', 'postfix');
-
 	require Servers::mta::postfix::uninstaller;
 	my $rs = Servers::mta::postfix::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
-
 	$self->restart();
 	$self->{'eventManager'}->trigger('afterMtaUninstall', 'postfix');
 }
@@ -141,9 +136,19 @@ sub postinstall
 
 	$self->{'eventManager'}->trigger('beforeMtaPostinstall', 'postfix');
 	iMSCP::Service->getInstance()->enable($self->{'config'}->{'MTA_SNAME'});
+
 	$self->{'eventManager'}->register('beforeSetupRestartServices', sub { push @{$_[0]}, [
-		sub { $self->start() }, 'Postfix mail server'
+		sub {
+			while(my($table, $type) = each(%{$self->{'postmap'}})) {
+				$self->postmap($table, $type);
+			}
+
+			$self->restart();
+		}
+		,
+		'Postfix mail server'
 	]; 0; });
+
 	$self->{'eventManager'}->trigger('afterMtaPostinstall', 'postfix');
 }
 
@@ -160,11 +165,9 @@ sub setEnginePermissions
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaSetEnginePermissions');
-
 	require Servers::mta::postfix::installer;
 	my $rs = Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
 	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
 }
 
@@ -445,12 +448,9 @@ sub disableMail
 	$self->{'eventManager'}->trigger('beforeMtaDisableMail', $data);
 	$self->deleteTableEntry(qr/\Q$data->{'MAIL_ADDR'}\E/, $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_MAP'});
 	$self->deleteAliasEntry($data);
-
 #	$self->deleteTableEntry(qr/\Qimscp-arpl.$data->{'DOMAIN_NAME'}\E/, $self->{'config'}->{'MTA_TRANSPORT_MAP'});
-
 #	$rs = $self->_deleteCatchAll($data);
 #	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterMtaDisableMail', $data);
 }
 
@@ -477,11 +477,9 @@ sub deleteMail
 	}
 
 	$self->_deleteAliasEntry($data);
-
 #	$self->deleteTableEntry(qr/\Qimscp-arpl.$data->{'DOMAIN_NAME'}\E/, $self->{'config'}->{'MTA_TRANSPORT_MAP'});
 #	$rs = $self->_deleteCatchAll($data);
 #	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterMtaDelMail', $data);
 }
 
@@ -577,7 +575,7 @@ sub getTraffic
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
 	$self->{'eventManager'}->register(
-		'afterVrlTraffic', sub { -f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
+		'afterVrlTraffic', sub { -f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0 }
 	) unless $selfCall;
 
 	\%trafficDb;
@@ -589,7 +587,7 @@ sub getTraffic
 
  Param string $filename Filename
  Param string $filetype OPTIONAL Filetype (btree, cdb, cidr, hash...)
- Return int 0 on success, other or die on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -598,18 +596,14 @@ sub postmap
 	my ($self, $filename, $filetype) = @_;
 
 	$filetype ||= 'cdb';
-
 	$self->{'eventManager'}->trigger('beforeMtaPostmap', \$filename, \$filetype);
-
 	eval { cacheout '+<', $filename } or die(sprintf('Could not open %s: %s', $filename, $!));
 	my $fh = __PACKAGE__ . "::${filename}";
-	$fh->flush() or die(sprintf("Could not flush %s filehandle: %s", $filename, $!));
-
-	my $rs = execute("postmap $filetype:$filename", \my $stdout, \my $stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
-
+	$fh->flush() or die(sprintf('Could not flush %s filehandle: %s', $filename, $!));
+	my ($stdout, $stderr);
+	!execute("postmap $filetype:$filename", \$stdout, \$stderr) or die(sprintf(
+		'Could not postmap the %s map: %s', $filename, $stderr || 'Unknown error'
+	));
 	$self->{'eventManager'}->trigger('afterMtaPostmap', $filename, $filetype);
 }
 
@@ -633,10 +627,7 @@ sub addTableEntry
 	my $fh = __PACKAGE__ . "::${table}";
 	my $content = do { $fh->seek(0, 0); local $/; <$fh> };
 
-	if (defined $content) {
-		$content =~ s/^$key\t+[^\n]*\n//gm;
-	}
-
+	$content =~ s/^$key\t+[^\n]*\n//gm if defined $content;
 	$content .= "$key\t$value\n";
 
 	$fh->seek(0, 0);
@@ -644,7 +635,6 @@ sub addTableEntry
 	$fh->truncate($fh->tell());
 
 	$self->{'postmap'}->{$table} ||= $tableType || 'cdb';
-
 	0;
 }
 
@@ -672,7 +662,6 @@ sub deleteTableEntry
 			$fh->seek(0, 0);
 			print $fh $content;
 			$fh->truncate($fh->tell());
-
 			$self->{'postmap'}->{$table} ||= $tableType || 'cdb';
 		}
 	}
@@ -698,13 +687,11 @@ sub _init
 {
 	my $self = shift;
 
-	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s', ref $self));
-	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
-
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'restart'} = 0;
-	$self->{'cfgDir'} .= '/postfix';
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data"; \%c; };
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data"; \%c };
 	$self;
 }
 
@@ -840,14 +827,12 @@ sub _deleteCatchAll
 
 END
 {
-	my $self = __PACKAGE__->getInstance();
-	my $rs = $?;
-
-	while(my($table, $type) = each(%{$self->{'postmap'}})) {
-		$rs ||= $self->postmap($table, $type);
+	unless(defined $main::execmode && $main::execmode eq 'setup') {
+		my $self = __PACKAGE__->getInstance();
+		while(my($table, $type) = each(%{$self->{'postmap'}})) {
+			$self->postmap($table, $type);
+		}
 	}
-
-	$? = $rs;
 }
 
 =back

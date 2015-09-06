@@ -38,7 +38,7 @@ use iMSCP::File;
 use iMSCP::TemplateParser;
 use iMSCP::ProgramFinder;
 use File::Basename;
-use Servers::httpd;
+use Servers::httpd::apache_fcgid;
 use version;
 use Net::LibIDN qw/idn_to_ascii/;
 use parent 'Common::SingletonClass';
@@ -194,7 +194,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'httpd'} = Servers::httpd->factory();
+	$self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance();
 	$self->{'eventManager'} = $self->{'httpd'}->{'eventManager'};
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";

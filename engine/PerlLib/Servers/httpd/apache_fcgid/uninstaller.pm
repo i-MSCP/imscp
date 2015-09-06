@@ -24,7 +24,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Database;
 use File::Basename;
-use Servers::httpd;
+use Servers::httpd::apache_fcgid;
 use parent 'Common::SingletonClass';
 
 sub uninstall
@@ -50,7 +50,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'httpd'} = Servers::httpd->factory();
+	$self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance();
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";

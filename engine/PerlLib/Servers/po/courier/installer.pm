@@ -36,7 +36,7 @@ use iMSCP::Execute;
 use iMSCP::TemplateParser;
 use iMSCP::ProgramFinder;
 use File::Basename;
-use Servers::po;
+use Servers::po::courier;
 use Servers::mta;
 use parent 'Common::SingletonClass';
 
@@ -304,7 +304,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'po'} = Servers::po->factory();
+	$self->{'po'} = Servers::po::courier->getInstance();
 	$self->{'mta'} = Servers::mta->factory();
 	$self->{'eventManager'} = $self->{'po'}->{'eventManager'};
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};

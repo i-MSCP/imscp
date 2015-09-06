@@ -28,7 +28,7 @@ use warnings;
 use iMSCP::Debug;
 use File::Basename;
 use iMSCP::File;
-use Servers::ftpd;
+use Servers::ftpd::proftpd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -117,7 +117,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'ftpd'} = Servers::ftpd->factory();
+	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
 	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";

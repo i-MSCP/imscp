@@ -37,7 +37,7 @@ use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use iMSCP::ProgramFinder;
-use Servers::httpd;
+use Servers::httpd::apache_php_fpm;
 use Net::LibIDN qw/idn_to_ascii/;
 use Cwd;
 use File::Basename;
@@ -193,7 +193,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'httpd'} = Servers::httpd->factory();
+	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
 	$self->{'eventManager'} = $self->{'httpd'}->{'eventManager'};
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";

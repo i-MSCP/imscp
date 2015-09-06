@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Execute;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser;
@@ -749,16 +750,14 @@ sub _init
 {
 	my $self = shift;
 
-	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s', ref $self));
-	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
-
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'restart'} = 0;
 	$self->{'reload'} = 0;
-	$self->{'cfgDir'} .= '/bind';
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data"; \%c; };
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data"; \%c };
 	$self;
 }
 

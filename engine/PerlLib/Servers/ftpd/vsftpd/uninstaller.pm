@@ -29,7 +29,7 @@ use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Dir:
 use iMSCP::File;
-use Servers::ftpd;
+use Servers::ftpd::vsftpd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -71,7 +71,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'ftpd'} = Servers::ftpd->factory();
+	$self->{'ftpd'} = Servers::ftpd::vsftpd->getInstance();
 	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'config'} = $self->{'ftpd'}->{'config'};

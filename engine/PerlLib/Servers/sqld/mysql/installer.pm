@@ -117,7 +117,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'sqld'} = Servers::sqld->factory();
+	$self->{'sqld'} = Servers::sqld::mysql->getInstance();
 	$self->{'eventManager'} = $self->{'sqld'}->{'eventManager'};
 	$self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
 	$self->{'config'}= $self->{'sqld'}->{'config'};

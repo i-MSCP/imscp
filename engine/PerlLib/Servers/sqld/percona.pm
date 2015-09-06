@@ -47,7 +47,7 @@ sub postinstall
 
 	$self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Percona SQL server' ]; 0 }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart() }, 'Percona SQL server' ]; 0 }
 	);
 	$self->{'eventManager'}->trigger('afterSqldPostInstall', 'mysql');
 }

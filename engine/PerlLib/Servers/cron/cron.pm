@@ -28,6 +28,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Config;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
@@ -274,13 +275,11 @@ sub _init
 {
 	my $self = shift;
 
-	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s: %s', ref $self));
-	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
-
-	$self->{'cfgDir'} .= '/cron.d';
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data"; \%c; };
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data"; \%c };
 	$self;
 }
 

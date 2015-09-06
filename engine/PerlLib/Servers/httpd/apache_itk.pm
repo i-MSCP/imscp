@@ -31,6 +31,7 @@ use iMSCP::Database;
 use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::Execute;
+use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -1315,16 +1316,14 @@ sub _init
 {
 	my $self = shift;
 
-	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s: %s', ref $self));
-	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
-
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'start'} = 0;
 	$self->{'restart'} = 0;
-	$self->{'apacheCfgDir'} = "$self->{'cfgDir'}/apache";
+	$self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 	$self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data"; \%c; };
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data"; \%c };
 	$self->{'eventManager'}->register('afterHttpdBuildConfFile', sub { $self->_cleanTemplate(@_)});
 	$self;
 }

@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Service;
@@ -337,14 +338,12 @@ sub _init
 {
 	my $self = shift;
 
-	defined $self->{'cfgDir'} or die(sprintf('cfgDir attribute is not defined in %s', ref $self));
-	defined $self->{'eventManager'} or die(sprintf('eventManager attribute is not defined in %s', ref $self));
-
+	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'restart'} = 0;
-	$self->{'cfgDir'} .= '/dovecot';
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config',fileName => "$self->{'cfgDir'}/dovecot.data"; \%c; };
+	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config',fileName => "$self->{'cfgDir'}/dovecot.data"; \%c };
 	$self;
 }
 

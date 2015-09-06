@@ -37,7 +37,7 @@ use iMSCP::Rights;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
 use File::Basename;
-use Servers::mta;
+use Servers::mta::postfix;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -228,42 +228,35 @@ sub setEnginePermissions
 	setRights(
 		$self->{'config'}->{'POSTFIX_CONF_FILE'}, { user => $rootUName, group => $rootGName, mode => '0644' }
 	);
-
 	# eg. /etc/postfix/master.cf file
 	setRights(
 		$self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}, { user => $rootUName, group => $rootGName, mode => '0644' }
 	);
-
 	# eg. /etc/postfix/imscp
 	setRights(
 		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, {
 		user => $rootUName, group => $postfixGrp, dirmode => '0750', filemode => '0640', recursive => 1
 	});
-
 	# eg. /etc/postfix/sasl
 	setRights(
 		$self->{'config'}->{'MTA_SASL_CONF_DIR'}, {
 		user => $rootUName, group => $postfixGrp, dirmode => '0750', filemode => '0640', recursive => 1
 	});
-
 	# eg. /var/www/imscp/engine/messenger
 	setRights(
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger", {
 		user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0750', recursive => 1
 	});
-
 	# eg. /var/log/imscp/imscp-arpl-msgr
 	setRights(
 		"$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr", {
 		user => $mtaUName, group => $imscpGName, dirmode => '0750', filemode => '0600', recursive => 1
 	});
-
 	# eg. /var/mail/virtual
 	setRights(
 		$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, {
 		user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 1
 	});
-
 	# eg. /usr/sbin/maillogconvert.pl
 	setRights('/usr/sbin/maillogconvert.pl', { user => $rootUName, group => $rootGName, mode => '0750' });
 }
@@ -286,7 +279,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'mta'} = Servers::mta->factory();
+	$self->{'mta'} = Servers::mta::postfix->getInstance();
 	$self->{'eventManager'} = $self->{'mta'}->{'eventManager'};
 	$self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
 	$self->{'bkpDir'} = $self->{'mta'}->{'bkpDir'};
@@ -553,13 +546,11 @@ sub _buildAliasesDb
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaBuildAliases');
-
 	my $rs = execute("newaliases -oAcdb:$self->{'config'}->{'MTA_LOCAL_ALIAS_MAP'}", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Error while executing newaliases command") if $rs && !$stderr;
 	return $rs if $rs;
-
 	$self->{'eventManager'}->trigger('afterMtaBuildAliases');
 }
 

@@ -29,7 +29,7 @@ use iMSCP::Debug;
 use File::Basename;
 use iMSCP::File;
 use iMSCP::Execute;
-use Servers::named;
+use Servers::named::bind;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -76,7 +76,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'named'} = Servers::named->factory();
+	$self->{'named'} = Servers::named::bind->getInstance();
 	$self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";

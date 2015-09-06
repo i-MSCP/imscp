@@ -25,7 +25,6 @@ package Servers::sqld;
 
 use strict;
 use warnings;
-use iMSCP::EventManager;
 
 our $instance;
 
@@ -51,9 +50,7 @@ sub factory
 		(my $sName = $main::imscpConfig{'SQL_SERVER'}) =~ s/_\d+\.\d+$//;
 		my $package = "Servers::sqld::$sName";
 		eval "require $package" or die(sprintf('Could not load %s package: %s', $package, $@));
-		$instance = $package->getInstance(
-			cfgDir => $main::imscpConfig{'CONF_DIR'}, eventManager => iMSCP::EventManager->getInstance()
-		);
+		$instance = $package->getInstance();
 	}
 
 	$instance;

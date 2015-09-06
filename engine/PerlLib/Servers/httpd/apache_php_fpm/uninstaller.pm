@@ -30,7 +30,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Database;
 use File::Basename;
-use Servers::httpd;
+use Servers::httpd::apache_php_fpm;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -81,7 +81,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'httpd'} = Servers::httpd->factory();
+	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";

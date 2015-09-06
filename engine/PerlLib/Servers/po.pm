@@ -25,7 +25,6 @@ package Servers::po;
 
 use strict;
 use warnings;
-use iMSCP::EventManager;
 
 our $instance;
 
@@ -52,9 +51,7 @@ sub factory
 		my $sName = $main::imscpConfig{'PO_SERVER'} || 'no';
 		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::po::$sName";
 		eval "require $package" or die(sprintf('Could not load %s package: %s', $package, $@));
-		$instance = $package->getInstance(
-			cfgDir => $main::imscpConfig{'CONF_DIR'}, eventManager => iMSCP::EventManager->getInstance()
-		);
+		$instance = $package->getInstance();
 	}
 
 	$instance;
