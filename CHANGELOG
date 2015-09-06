@@ -34,6 +34,7 @@ BACKEND
 	Rewritten: Servers::mta::postfix
 
 CONFIGS
+	Added: build-essential package
 	Added: cron package (Debian/Ubuntu)
 	Added: mounts.conf file - fstab-like file which holds filesystems that must be mounted in sequential order on reboot
 	Added: imscp_mountall sysvinit script an imscp_mountall upstart job - Mount i-MSCP filesystems on server reboot
@@ -43,6 +44,7 @@ CONFIGS
 	Added: vsftpd configuration files for VsFTPd support
 	Changed: Usage of cdb maps instead of hash maps (Postfix)
 	Fixed: ftp_ssl.log log file is not rotated (proftpd logrotate conffile)
+	Removed: libc6-dev, make and gcc package (they are dependencies of the build-essential package)
 	Removed: Unless lookup table templates (Postfix)
 	Removed: Unused imscp logrotate configuration file
 	Removed: Working directory (Postfix)
@@ -60,6 +62,7 @@ INSTALLER
 	Changed: Required minimum PHP version is now 5.3.7
 	Fixed: Avoid call of external commands whenever possible
 	Fixed: The update notices are always shown even when they are out-dated
+	Fixed: Enable source repositories when available
 
 PLUGINS
 	Updated: API to version 1.0.1

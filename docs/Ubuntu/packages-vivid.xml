@@ -1,6 +1,6 @@
 <packages>
     <frontend default="nginx">
-        <nginx repository_conflict="deb http://nginx.org/.*">
+        <nginx repository_conflict="http://nginx.org/.*">
             <package>nginx-light</package>
             <package>spawn-fcgi</package>
             <package>php5-cgi</package>
@@ -80,7 +80,7 @@
             <package>mysql-common</package>
         </mysql_5.6>
         <mariadb_10.0
-                repository_conflict="deb http://.*/mariadb/.*"
+                repository_conflict="http://.*/mariadb/.*"
                 pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common mysql-common libmysqlclient18"
                 pinning_pin="release o=Ubuntu,n=vivid"
                 pinning_pin_priority="1001"
@@ -95,7 +95,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                repository="deb http://repo.percona.com/apt vivid main"
+                repository="http://repo.percona.com/apt vivid main"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 >
@@ -107,7 +107,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                repository="deb http://repo.percona.com/apt vivid main"
+                repository="http://repo.percona.com/apt vivid main"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 allow_switch_to="mariadb_10.0,remote_server"
@@ -167,21 +167,19 @@
         <package>at</package>
         <package>bash</package>
         <package>bash-completion</package>
+        <package>build-essential</package>
         <package>bzip2</package>
         <package>ca-certificates</package>
         <package>curl</package>
         <package>cron</package>
         <package>dnsutils</package>
-        <package>gcc</package>
         <package>git</package>
         <package>gzip</package>
         <package>iptables</package>
         <package>iproute</package>
         <package>ispell</package>
-        <package>libc6-dev</package>
         <package>locales</package>
         <package>lzma</package>
-        <package>make</package>
         <package>openssl</package>
         <package>pbzip2</package>
         <package>pigz</package>

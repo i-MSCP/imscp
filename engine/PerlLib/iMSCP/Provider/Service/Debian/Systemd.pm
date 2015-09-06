@@ -27,15 +27,12 @@ use strict;
 use warnings;
 use iMSCP::Execute;
 use Scalar::Defer;
-use parent qw(
-	iMSCP::Provider::Service::Systemd
-	iMSCP::Provider::Service::Debian::Sysvinit
-);
+use parent qw/ iMSCP::Provider::Service::Systemd iMSCP::Provider::Service::Debian::Sysvinit /;
 
 # Commands used in that package
 my %commands = (
-	'dpkg' => '/usr/bin/dpkg',
-	'systemctl' => '/bin/systemctl'
+	dpkg => '/usr/bin/dpkg',
+	systemctl => '/bin/systemctl'
 );
 
 # Compatibility mode for systemctl
@@ -149,7 +146,7 @@ sub disable
 		}
 	} else {
 		$self->SUPER::disable($service) &&
-		($self->_isSystemd($service) || ! $self->_exec($commands{'systemctl'}, 'daemon-reload'));
+		$self->_isSystemd($service) || ! $self->_exec($commands{'systemctl'}, 'daemon-reload');
 	}
 }
 
@@ -171,12 +168,27 @@ sub remove
 	}
 
 	if($self->_isSysvinit($service)) {
-		# Remove the underlying sysvinit script if any and make systemd aware of changes
+		# Remove the underlying sysvinit script and make systemd aware of changes
 		$self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service) &&
 		! $self->_exec($commands{'systemctl'}, 'daemon-reload');
 	} else {
 		1;
 	}
+}
+
+=item hasService($service)
+
+ Does the given service exists?
+
+ Return bool TRUE if the given service exits, FALSE otherwise
+
+=cut
+
+sub hasService
+{
+	my ($self, $service) = @_;
+
+	$self->_isSystemd($service) || $self->_isSysvinit($service);
 }
 
 =back
@@ -210,23 +222,6 @@ sub _init
 
 	$self->iMSCP::Provider::Service::Debian::Sysvinit::_init();
 	$self->SUPER::_init();
-}
-
-=item _isSystemd($service)
-
- Does the given service is managed by a native systemd service unit?
-
- Param string $service Service name
- Return bool TRUE if the given service is managed by a systemd unit, FALSE otherwise
-
-=cut
-
-sub _isSystemd
-{
-	my ($self, $service) = @_;
-
-	local $@;
-	eval { $self->getUnitFilePath($service) };
 }
 
 =back

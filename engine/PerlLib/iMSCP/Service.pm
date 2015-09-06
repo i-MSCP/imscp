@@ -233,6 +233,21 @@ sub isRunning
 	eval { $self->{'provider'}->isRunning($service) };
 }
 
+=item hasService($service)
+
+ Does the given service exists?
+
+ Return bool TRUE if the given service exits, FALSE otherwise
+
+=cut
+
+sub hasService
+{
+	my ($self, $service) = @_;
+
+	$self->{'provider'}->hasService($service);
+}
+
 =item isSysvinit()
 
  Does sysvinit is used as init system?

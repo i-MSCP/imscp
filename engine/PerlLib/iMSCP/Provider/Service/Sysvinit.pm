@@ -151,7 +151,13 @@ sub stop
 {
 	my ($self, $service) = @_;
 
-	! $self->_exec($self->getInitscriptPath($service), 'stop');
+	my $sysvinitPath = eval { $self->_searchInitScript($service) };
+
+	if($sysvinitPath) {
+		! $self->_exec($sysvinitPath, 'stop');
+	} else {
+		1;
+	}
 }
 
 =item restart($service)
@@ -286,6 +292,23 @@ sub _searchInitScript
 	}
 
 	die(sprintf('Could not find sysvinit script for the %s service', $service));
+}
+
+=item _isSysvinit($service)
+
+ Does the given service is managed by a sysvinit script?
+
+ Param string $service Service name
+ Return bool TRUE if the given service is managed by a sysvinit script, FALSE otherwise
+
+=cut
+
+sub _isSysvinit
+{
+	my ($self, $service) = @_;
+
+	local $@;
+	eval { $self->getInitscriptPath($service) };
 }
 
 =item _exec($command)

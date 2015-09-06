@@ -113,7 +113,7 @@ sub postinstall
 	$serviceMngr->enable($self->{'config'}->{'HTTPD_SNAME'});
 	$serviceMngr->enable('imscp_panel');
 	$self->{'eventManager'}->register(
-		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->start(); }, 'Frontend (Nginx/PHP)' ]; 0; }
+		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart() }, 'Frontend (Nginx/PHP)' ]; 0; }
 	);
 	$self->{'eventManager'}->trigger('afterFrontEndPostInstall');
 }

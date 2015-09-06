@@ -111,7 +111,7 @@ sub postinstall
 	$self->{'eventManager'}->trigger('beforeFtpdPostInstall', 'vsftpd');
 	iMSCP::Service->getInstance()->enable($self->{'config'}->{'FTPD_SNAME'});
 	$self->{'eventManager'}->register('beforeSetupRestartServices', sub {
-		push @{$_[0]}, [ sub { $self->start(); }, 'VsFTPd server' ]; 0
+		push @{$_[0]}, [ sub { $self->restart() }, 'VsFTPd server' ]; 0
 	});
 	$self->{'eventManager'}->trigger('afterFtpdPostInstall', 'vsftpd');
 }

@@ -80,8 +80,8 @@ sub _init
 	$self->{'packagesToUninstall'} = [];
 
 	unless($main::skippackages) {
-		($self->_setupInitScriptPolicyLayer('enable') == 0) or die('Unable to setup initscript policy layer');
-		($self->_updateAptSourceList() == 0) or die('Unable to configure APT packages manager');
+		($self->_setupInitScriptPolicyLayer('enable') == 0) or die('Could not setup initscript policy layer');
+		($self->_updateAptSourceList() == 0) or die('Could not configure APT packages manager');
 	}
 
 	$self;
@@ -119,28 +119,14 @@ sub _processAptRepositories
 			my $isPPA = ($repository =~ /^ppa:/);
 
 			if($isPPA || $fileContent =~ /^$repository/m) {
-				if($isPPA && version->parse($distroRelease) > version->parse('10.04')) {
-					my @cmd = ('add-apt-repository -y -r', escapeShell($repository));
+				if($isPPA) {
+					my @cmd = ('add-apt-repository -y -r', escapeShell("deb $repository"));
 					my $rs = execute("@cmd", \my $stdout, \my $stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
-				} elsif($isPPA) {
-					if($repository =~ m%^ppa:(.*)/(.*)%) {
-						my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
-
-						if(glob $ppaFile) {
-							my $rs = execute("rm $ppaFile", \my $stdout, \my $stderr);
-							debug($stdout) if $stdout;
-							error($stderr) if $stderr && $rs;
-							return $rs if $rs;
-						}
-					} else {
-						error(sprintf('Unable to remove the %s PPA repository'), $repository);
-						return 1;
-					}
 				} else {
-					(my $regexp = $repository) =~ s/deb/(?:#\\s*)?(?:deb|deb-src)/;
+					my $regexp = qr/(?:#\s*)?(?:deb|deb-src)$repository/;
 					$fileContent =~ s/^\n?$regexp\n//gm;
 				}
 			}
@@ -154,22 +140,18 @@ sub _processAptRepositories
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
 			my $isPPA = ($repository->{'repository'} =~ /^ppa:/);
 
-			if($isPPA || $fileContent !~ /^$repository->{'repository'}/m) {
+			if($isPPA || $fileContent !~ /^deb $repository->{'repository'}/m) {
 				if($isPPA) { # PPA repository
 					my @cmd = ();
 
-					if(version->parse($distroRelease) > version->parse('10.4')) {
-						if($repository->{'repository_key_srv'}) {
-							@cmd = (
-								'add-apt-repository -y -k',
-								escapeShell($repository->{'repository_key_srv'}),
-								escapeShell($repository->{'repository'})
-							);
-						} else {
-							@cmd = ('add-apt-repository -y', escapeShell($repository->{'repository'}));
-						}
+					if($repository->{'repository_key_srv'}) {
+						@cmd = (
+							'add-apt-repository -s -y -k',
+							escapeShell($repository->{'repository_key_srv'}),
+							escapeShell("deb $repository->{'repository'}")
+						);
 					} else {
-						@cmd = ('add-apt-repository', escapeShell($repository->{'repository'}));
+						@cmd = ('add-apt-repository -s -y', escapeShell("deb $repository->{'repository'}"));
 					}
 
 					my $rs = execute("@cmd", \my $stdout, \my $stderr);
@@ -177,17 +159,9 @@ sub _processAptRepositories
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs
 				} else { # Normal repository
-					my @cmd = ();
-					my $rs = 0;
-					my ($stdout, $stderr);
+					my @cmd = ('add-apt-repository -s -y ', escapeShell("deb $repository->{'repository'}"));
+					my $rs = execute("@cmd", \my $stdout, \my $stderr);
 
-					if(version->parse($distroRelease) > version->parse('10.4')) {
-						@cmd = ('add-apt-repository -y ', escapeShell($repository->{'repository'}));
-						$rs = execute("@cmd", \$stdout, \$stderr);
-					} else {
-						@cmd = ('add-apt-repository ', escapeShell($repository->{'repository'}));
-						$rs = execute("@cmd", \$stdout, \$stderr);
-					}
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;

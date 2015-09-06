@@ -33,7 +33,7 @@ use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
 my %commands = (
-	'dpkg' => '/usr/bin/dpkg',
+	dpkg => '/usr/bin/dpkg',
 	'invoke-rc.d' => '/usr/sbin/invoke-rc.d',
 	'update-rc.d' => '/usr/sbin/update-rc.d'
 );
@@ -141,11 +141,26 @@ sub remove
 	my ($self, $service) = @_;
 
 	if($self->_isSysvinit($service)) {
-		$self->stop($service) && ! $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') &&
+		! $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') &&
 		! iMSCP::File->new( filename => $self->getInitscriptPath($service) )->delFile();
 	} else {
 		1;
 	}
+}
+
+=item hasService($service)
+
+ Does the given service exists?
+
+ Return bool TRUE if the given service exits, FALSE otherwise
+
+=cut
+
+sub hasService
+{
+	my ($self, $service) = @_;
+
+	$self->_isSysvinit($service);
 }
 
 =back
@@ -178,23 +193,6 @@ sub _init
 	}
 
 	$self->SUPER::_init();
-}
-
-=item _isSysvinit($service)
-
- Does the given service is managed by a sysvinit script?
-
- Param string $service Service name
- Return bool TRUE if the given service is managed by a sysvinit script, FALSE otherwise
-
-=cut
-
-sub _isSysvinit
-{
-	my ($self, $service) = @_;
-
-	local $@;
-	eval { $self->getInitscriptPath($service) };
 }
 
 =back

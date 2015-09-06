@@ -35,7 +35,7 @@ fieldhash my %paths;
 
 # Commands used in that package
 my %commands = (
-	'systemctl' => '/bin/systemctl'
+	systemctl => '/bin/systemctl'
 );
 
 =head1 DESCRIPTION
@@ -79,7 +79,7 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	! $self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service");
+	$self->disable($service) && ! $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service");
 }
 
 =item disable($service)
@@ -111,8 +111,7 @@ sub remove
 {
 	my ($self, $service) = @_;
 
-	$self->stop($service) && $self->disable($service) &&
-	! iMSCP::File->new->( filename => $self->getUnitFilePath($service) )->delFile();
+	$self->disable($service) && ! iMSCP::File->new->( filename => $self->getUnitFilePath($service) )->delFile();
 }
 
 =item start($service)
@@ -259,6 +258,23 @@ sub _searchUnitFile
 	}
 
 	die(sprintf('Could not find systemd system service unit file for the %s service', $service));
+}
+
+=item _isSystemd($service)
+
+ Does the given service is managed by a native systemd service unit?
+
+ Param string $service Service name
+ Return bool TRUE if the given service is managed by a systemd unit, FALSE otherwise
+
+=cut
+
+sub _isSystemd
+{
+	my ($self, $service) = @_;
+
+	local $@;
+	eval { $self->getUnitFilePath($service) };
 }
 
 =back

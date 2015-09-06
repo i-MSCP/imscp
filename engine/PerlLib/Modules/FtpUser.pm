@@ -133,12 +133,12 @@ sub _getFtpdData
 	my ($self, $action) = @_;
 
 	unless($self->{'ftpd'}) {
-		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . (
+		my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . (
 			$main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
 		);
 
 		$self->{'ftpd'} = {
-			ONWER_ID => $self->{'admin_id'},
+			OWNER_ID => $self->{'admin_id'},
 			USERNAME => $self->{'userid'},
 			PASSWORD_CRYPT => $self->{'passwd'},
 			PASSWORD_CLEAR => $self->{'rawpasswd'},

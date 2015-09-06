@@ -79,7 +79,7 @@ sub installPreRequiredPackages
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Unable to install pre-required packages') if $rs && !$stderr;
+	error('Could not install pre-required packages') if $rs && !$stderr;
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterInstallPreRequiredPackages');
@@ -133,6 +133,8 @@ sub installPackages
 
 	iMSCP::Dialog->getInstance()->endGauge();
 
+	#execute("apt-mark unhold @{$self->{'packagesToPreUninstall'}} @{$self->{'packagesToInstall'}} @{$self->{'packagesToInstallDelayed'}}")
+
 	# Remove packages which must be pre-removed
 	my $rs = $self->uninstallPackages($self->{'packagesToPreUninstall'});
 	return $rs if $rs;
@@ -165,7 +167,7 @@ sub installPackages
 			$rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
-			error('Unable to install packages') if $rs && ! $stderr;
+			error('Could not install packages') if $rs && ! $stderr;
 			return $rs if $rs;
 		}
 	}
@@ -224,7 +226,7 @@ sub uninstallPackages
 		my $rs = execute("@command", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		error('Unable to uninstall packages') if $rs && !$stderr;
+		error('Could not uninstall packages') if $rs && !$stderr;
 		return $rs if $rs;
 	}
 
@@ -313,8 +315,8 @@ sub _init
 	$self->{'packagesToUninstall'} = [];
 
 	unless($main::skippackages) {
-		($self->_setupInitScriptPolicyLayer('enable') == 0 ) or die('Unable to setup initscript policy layer');
-		($self->_updateAptSourceList() == 0) or die('Unable to configure APT packages manager');
+		($self->_setupInitScriptPolicyLayer('enable') == 0 ) or die('Could not setup initscript policy layer');
+		($self->_updateAptSourceList() == 0) or die('Could not configure APT packages manager');
 	}
 
 	$self;
@@ -532,11 +534,9 @@ sub _updateAptSourceList
 	my $self = shift;
 
 	my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
-
 	$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 
 	my $fileContent = $file->get();
-
 	my $foundSection = 0;
 	for(@{$self->{'repositorySections'}}) {
 		my $section = $_;
@@ -544,35 +544,44 @@ sub _updateAptSourceList
 
 		while($fileContent =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/gm) {
 			my %repository = %+;
-
-			if("$repository{'uri'} $repository{'distrib'}" ~~ @seen) {
-				debug("Repository '$repository{'uri'} $repository{'distrib'}' already checked for '$section' section");
-				next;
-			}
-
-			debug("Checking repository '$repository{'uri'} $repository{'distrib'}' for '$section' section");
+			next if "$repository{'uri'} $repository{'distrib'}" ~~ @seen;
 
 			unless($fileContent =~ /^deb\s+$repository{'uri'}\s+\b$repository{'distrib'}\b\s+.*\b$section\b/m) {
 				my $uri = "$repository{'uri'}/dists/$repository{'distrib'}/$section/";
 				my $rs = execute("wget --spider $uri", \my $stdout, \my $stderr);
-				debug($stdout) if $stdout;
 				debug($stderr) if $rs && $stderr;
 
 				unless ($rs) {
 					$foundSection = 1;
-					debug("Enabling section '$section' on '$repository{'uri'} $repository{'distrib'}'");
 					$fileContent =~ s/^($&)$/$1 $section/m;
 				}
 			} else {
-				debug("Section '$section' already enabled on '$repository{'uri'} $repository{'distrib'}'");
 				$foundSection = 1;
+			}
+
+			if($foundSection) {
+				unless($fileContent =~ /^deb-src\s+$repository{'uri'}\s+\b$repository{'distrib'}\b\s+.*\b$section\b/m) {
+					my $uri = "$repository{'uri'}/dists/$repository{'distrib'}/$section/source/";
+					my $rs = execute("wget --spider $uri", \my $stdout, \my $stderr);
+					debug($stderr) if $rs && $stderr;
+
+					unless ($rs) {
+						unless($fileContent =~ /^deb-src\s+$repository{'uri'}\s+$repository{'distrib'}\s.+/m) {
+							my $repository = $&;
+							(my $srcRepository = $repository) =~ s/^deb/deb-src/m;
+							$fileContent =~ s/^($repository)\n$/$1\n$srcRepository\n/m;
+						} else {
+							$fileContent =~ s/^($&)$/$1 $section/m;
+						}
+					}
+				}
 			}
 
 			push @seen, "$repository{'uri'} $repository{'distrib'}";
 		}
 
 		unless($foundSection) {
-			error("Unable to found repository supporting '$section' section");
+			error("Could not found repository supporting '$section' section");
 			return 1;
 		}
 	}
@@ -609,14 +618,15 @@ sub _processAptRepositories
 
 		for my $repository(@{$self->{'aptRepositoriesToRemove'}}) {
 			# Remove the repository from the sources.list file
-			(my $regexp = $repository) =~ s/deb/(?:#\\s*)?(?:deb|deb-src)/;
+			my $regexp = qr/(?:#\s*)?(?:deb|deb-src)$repository/;
 			$fileContent =~ s/^\n?$regexp\n//gm;
 		}
 
 		# Add needed APT repositories
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
-			if($fileContent !~ /^$repository->{'repository'}/m) {
-				$fileContent .= "\n$repository->{'repository'}\n";
+			if($fileContent !~ /^deb $repository->{'repository'}/m) {
+				$fileContent .= "\ndeb $repository->{'repository'}\n";
+				$fileContent .= "\ndeb-src $repository->{'repository'}\n";
 
 				my @cmd = ();
 
@@ -713,7 +723,7 @@ sub _updatePackagesIndex
 	my $rs = execute("$command -y update", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Unable to update package index from remote repository') if $rs && !$stderr;
+	error('Could not update package index from remote repository') if $rs && !$stderr;
 	$rs
 }
 
@@ -743,7 +753,7 @@ sub _prefillDebconfDatabase
 			}
 		}
 	} else {
-		error('Unable to retrieve SQL server name');
+		error('Could not retrieve SQL server name');
 		return 1;
 	}
 
@@ -784,7 +794,7 @@ dovecot-core dovecot-core/ssl-cert-name string localhost
 EOF
 		}
 	} else {
-		error('Unable to retrieve PO server name');
+		error('Could not retrieve PO server name');
 		return 1;
 	}
 
@@ -801,7 +811,7 @@ EOF
 	my $rs = execute("debconf-set-selections $debconfSelectionsFile", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
-	error('Unable to pre-fill debconf database') if $rs && !$stderr;
+	error('Could not pre-fill debconf database') if $rs && !$stderr;
 	$rs;
 }
 

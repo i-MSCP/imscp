@@ -250,7 +250,13 @@ sub _uninstallServers
 sub _uninstallServices
 {
 	my $serviceMngr = iMSCP::Service->getInstance();
-	$serviceMngr->remove($_) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
+
+	for my $service ('imscp_daemon', 'imscp_traffic', 'imscp_mountall') {
+		if($serviceMngr->hasService($service)) {
+			$serviceMngr->stop($service);
+			$serviceMngr->remove($service);
+		}
+	}
 
 	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override', '/etc/systemd/system/%s.service') {
 		for my $service('imscp_mountall', 'imscp_traffic', 'imscp_daemon') {

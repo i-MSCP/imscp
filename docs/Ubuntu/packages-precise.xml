@@ -1,6 +1,6 @@
 <packages>
     <frontend default="nginx">
-        <nginx repository_conflict="deb http://nginx.org/.*">
+        <nginx repository_conflict="http://nginx.org/.*">
             <package>nginx-light</package>
             <package>spawn-fcgi</package>
             <package>php5-cgi</package>
@@ -59,17 +59,9 @@
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
         </proftpd>
-        <vsftpd
-                pinning_package="*"
-                pinning_pin="release o=LP-PPA-thefrontiergroup-vsftpd,n=precise"
-                pinning_pin_priority="100"
-                repository="deb http://ppa.launchpad.net/thefrontiergroup/vsftpd/ubuntu precise main"
-                repository_key_srv="keyserver.ubuntu.com"
-                repository_key_id="0xe80b8ab9c855587c"
-                >
-            <package>vsftpd/precise</package>
+        <vsftpd>
+            <package>vsftpd</package>
             <package>libpam-mysql</package>
-            <package>libpam-ldap</package>
         </vsftpd>
     </ftpd>
     <named default="bind">
@@ -93,7 +85,7 @@
                 pinning_package="*"
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
-                repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/5.5/ubuntu precise main"
+                repository="http://mirror2.hs-esslingen.de/mariadb/repo/5.5/ubuntu precise main"
                 repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0xcbcb082a1bb943db"
                 >
@@ -106,7 +98,7 @@
                 pinning_package="*"
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
-                repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu precise main"
+                repository="http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu precise main"
                 repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0xcbcb082a1bb943db"
                 allow_switch_to="percona_5.6,remote_server"
@@ -120,7 +112,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                repository="deb http://repo.percona.com/apt precise main"
+                repository="http://repo.percona.com/apt precise main"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 >
@@ -132,7 +124,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                repository="deb http://repo.percona.com/apt precise main"
+                repository="http://repo.percona.com/apt precise main"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 allow_switch_to="mariadb_10.0,remote_server"
@@ -190,21 +182,19 @@
         <package>at</package>
         <package>bash</package>
         <package>bash-completion</package>
+        <package>build-essential</package>
         <package>bzip2</package>
         <package>ca-certificates</package>
         <package>curl</package>
         <package>cron</package>
         <package>dnsutils</package>
-        <package>gcc</package>
         <package>git</package>
         <package>gzip</package>
         <package>iptables</package>
         <package>iproute</package>
         <package>ispell</package>
-        <package>libc6-dev</package>
         <package>locales</package>
         <package>lzma</package>
-        <package>make</package>
         <package>openssl</package>
         <package>pbzip2</package>
         <package>pigz</package>

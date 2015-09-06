@@ -1,6 +1,6 @@
 <packages>
     <frontend default="nginx">
-        <nginx repository_conflict="deb http://nginx.org/.*">
+        <nginx repository_conflict="http://nginx.org/.*">
             <package>nginx-light</package>
             <package>spawn-fcgi</package>
             <package>php5-cgi</package>
@@ -139,21 +139,19 @@
         <package>at</package>
         <package>bash</package>
         <package>bash-completion</package>
+        <package>build-essential</package>
         <package>bzip2</package>
         <package>ca-certificates</package>
         <package>curl</package>
         <package>cron</package>
         <package>dnsutils</package>
-        <package>gcc</package>
         <package>git</package>
         <package>gzip</package>
         <package>iptables</package>
         <package>iproute</package>
         <package>ispell</package>
-        <package>libc6-dev</package>
         <package>locales-all</package>
         <package>lzma</package>
-        <package>make</package>
         <package>openssl</package>
         <package>pbzip2</package>
         <package>pigz</package>

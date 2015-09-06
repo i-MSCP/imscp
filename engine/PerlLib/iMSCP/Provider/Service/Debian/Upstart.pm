@@ -25,11 +25,7 @@ package iMSCP::Provider::Service::Debian::Upstart;
 
 use strict;
 use warnings;
-
-use parent qw(
-	iMSCP::Provider::Service::Upstart
-	iMSCP::Provider::Service::Debian::Sysvinit
-);
+use parent qw/ iMSCP::Provider::Service::Upstart iMSCP::Provider::Service::Debian::Sysvinit /;
 
 =head1 DESCRIPTION
 
@@ -81,7 +77,6 @@ sub enable
 		return unless $self->SUPER::enable($service);
 	}
 
-	# Also enable the underlying sysvinit script if any
 	if($self->_isSysvinit($service)) {
 		$self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service);
 	} else {
@@ -106,7 +101,6 @@ sub disable
 		return unless $self->SUPER::disable($service);
 	}
 
-	# Also disable the underlying sysvinit script if any
 	if($self->_isSysvinit($service)) {
 		$self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service);
 	} else {
@@ -131,12 +125,26 @@ sub remove
 		return unless $self->SUPER::remove($service);
 	}
 
-	# Also remove the underlying sysvinit script if any
 	if($self->_isSysvinit($service)) {
 		$self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service);
 	} else {
 		1;
 	}
+}
+
+=item hasService($service)
+
+ Does the given service exists?
+
+ Return bool TRUE if the given service exits, FALSE otherwise
+
+=cut
+
+sub hasService
+{
+	my ($self, $service) = @_;
+
+	$self->_isUpstart($service) || $self->_isSysvinit($service);
 }
 
 =back

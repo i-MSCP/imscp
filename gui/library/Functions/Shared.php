@@ -1033,6 +1033,9 @@ function deleteDomainAlias($aliasId, $aliasName)
 		iMSCP_Events::onBeforeDeleteDomainAlias, array('domainAliasId' => $aliasId, 'domainAliasName' => $aliasName)
 	);
 
+
+	$cfg = iMSCP_Registry::get('config');
+
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Database::getInstance();
 
@@ -1087,25 +1090,45 @@ function deleteDomainAlias($aliasId, $aliasName)
 			}
 		}
 
-		exec_query(
-			"
+		if($cfg['FTPD_SERVER'] == 'vsftpd') {
+			exec_query(
+				"
+					UPDATE
+						ftp_users
+					LEFT JOIN
+						domain_aliasses AS t2 ON(alias_id = ?)
+					LEFT JOIN
+						subdomain_alias USING(alias_id)
+					SET
+						status = 'todelete'
+					WHERE (
+						userid LIKE CONCAT('%@', subdomain_alias_name, '.', alias_name)
+					OR
+						userid LIKE CONCAT('%@', alias_name)
+					)
+				",
+				$aliasId
+			);
+		} else {
+			exec_query(
+				"
 				DELETE
 					ftp_users
 				FROM
 					ftp_users
 				LEFT JOIN
-					domain_aliasses AS t2 ON(alias_id = ?)
+					domain_aliasses ON(alias_id = ?)
 				LEFT JOIN
-					subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
-				WHERE
-					(
-						userid LIKE CONCAT('%@', t3.subdomain_alias_name, '.', t2.alias_name)
-					OR
-						userid LIKE CONCAT('%@', t2.alias_name)
-					)
+					subdomain_alias USING(alias_id)
+				WHERE (
+					userid LIKE CONCAT('%@', subdomain_alias_name, '.', .alias_name)
+				OR
+					userid LIKE CONCAT('%@', alias_name)
+				)
 			",
-			$aliasId
-		);
+				$aliasId
+			);
+		}
 
 		// Delete any custom DNS and external mail server record that belongs to the domain alias
 		exec_query('DELETE FROM domain_dns WHERE alias_id = ?', $aliasId);

@@ -44,12 +44,12 @@ fieldhash my %paths;
 
 # Commands used in that package
 my %commands = (
-	'start' => '/sbin/start',
-	'stop' => '/sbin/stop',
-	'restart' => '/sbin/restart',
-	'reload' => '/sbin/reload',
-	'status' => '/sbin/status',
-	'initctl' => '/sbin/initctl'
+	start => '/sbin/start',
+	stop => '/sbin/stop',
+	restart => '/sbin/restart',
+	reload => '/sbin/reload',
+	status => '/sbin/status',
+	initctl => '/sbin/initctl'
 );
 
 =head1 DESCRIPTION

@@ -26,10 +26,13 @@ package Servers::ftpd::vsftpd::installer;
 use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+use Cwd;
 use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::LsbRelease;
+use iMSCP::Stepper;
 use iMSCP::TemplateParser;
 use File::Basename;
 use Servers::ftpd;
@@ -159,6 +162,11 @@ sub install
 {
 	my $self = shift;
 
+	if(iMSCP::LsbRelease->getInstance->getId(1) eq 'Ubuntu') {
+		my $rs = $self->_rebuildUbuntuPackage();
+		return $rs if $rs;
+	}
+
 	my $rs = $self->_setVersion();
 	return $rs if $rs;
 
@@ -208,32 +216,117 @@ sub _init
 	$self;
 }
 
-=item _bkpConfFile()
+=item _rebuildUbuntuPackage()
 
- Backup file
+ Rebuild vsftpd Ubuntu package
 
  Return int 0 on success, die on failure
 
 =cut
 
-sub _bkpConfFile
+sub _rebuildUbuntuPackage
 {
-	my ($self, $cfgFile) = @_;
+	my $self = shift;
 
-	$self->{'eventManager'}->trigger('beforeFtpdBkpConfFile', $cfgFile);
+	startDetail();
 
-	if(-f $cfgFile){
-		my $file = iMSCP::File->new( filename => $cfgFile );
-		my $basename = basename($cfgFile);
+	my $oldDir = getcwd();
 
-		unless(-f "$self->{'bkpDir'}/$basename.system") {
-			$file->copyFile("$self->{'bkpDir'}/$basename.system");
-		} else {
-			$file->copyFile("$self->{'bkpDir'}/$basename." . time);
-		}
-	}
+	step(
+		sub {
+			my $buildir = iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' );
+			$buildir->remove(); # Cleanup previous build directory if any
+			$buildir->make();
+			chdir '/usr/local/src/vsftpd' or die(sprintf('Could not change directory: %s', $!));
+			0;
+		}, 'Creating build directory for vsftpd package...', 7, 1
+	);
 
-	$self->{'eventManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
+	step(
+		sub {
+			my ($stdout, $stderr);
+			execute('apt-get source vsftpd', \$stdout, \$stderr) == 0 or die(sprintf(
+				'Could not get vsftpd source package: %s', $stderr || 'Unknown error'
+			));
+			debug($stdout) if $stdout;
+			0;
+		}, 'Downloading vsftpd source package...', 7, 2
+	);
+
+	step(
+		sub {
+			my ($stdout, $stderr);
+			execute('apt-get build-dep vsftpd', \$stdout, \$stderr) == 0 or die(sprintf(
+				'Could not install Ubuntu vsftpd package build dependencies: %s', $stderr || 'Unknown error'
+			));
+			debug($stdout) if $stdout;
+			0;
+		}, 'Installing vsftpd build dependencies...', 7, 3
+	);
+
+	step(
+		sub {
+			chdir glob 'vsftpd-*' or die(sprintf('Could not change directory: %s', $!));
+
+			my $rs = execute('dpkg-query --show --showformat \'${Version}\' vsftpd', \my $stdout, \my $stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $rs && $stderr;
+			return $rs if $rs;
+
+			my $ret = execute("dpkg --compare-versions $stdout '<' 3", \$stdout, \$stderr);
+			! $stderr or die(sprintf('Could not compare version: %s'), $stderr);
+
+			unless($ret) {
+				iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_allow_writeable_root.patch")->copyFile(
+					'debian/patches/imscp_allow_writeable_root'
+				);
+			}
+
+			iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_pthread_cancel.patch")->copyFile(
+				'debian/patches/imscp_pthread_cancel'
+			);
+			my $file = iMSCP::File->new( filename => 'debian/patches/series' );
+			my $fileContent = $file->get();
+			$fileContent .= "imscp_allow_writeable_root\n" unless $ret;
+			$fileContent .= "imscp_pthread_cancel\n";
+			$file->set($fileContent);
+			$file->save();
+		}, 'Patching vsftpd source package for i-MSCP...', 7, 4
+	);
+
+	step(
+		sub {
+			my ($stdout, $stderr);
+			execute('dpkg-buildpackage -b', \$stdout, \$stderr) == 0 or die(sprintf(
+				'Could not build vsftpd package: %s', $stderr || 'Unknown error'
+			));
+			debug($stdout) if $stdout;
+			0;
+		}, 'Building new vsftpd package', 7, 5
+	);
+
+	step(
+		sub {
+			chdir '..' or die(sprintf('Could not change directory: %s', $!));
+			my ($stdout, $stderr);
+			execute('dpkg --force-confnew -i vsftpd_*.deb', \$stdout, \$stderr) == 0 or die(sprintf(
+				'Could not install patched Ubuntu vsftpd package: %s', $stderr || 'Unknown error'
+			));
+			debug($stdout) if $stdout;
+			0;
+		}, 'Installing new vsftpd package', 7, 6
+	);
+
+	step(
+		sub {
+			chdir $oldDir or die(sprintf('Could not change directory: %s', $!));
+			iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' )->remove();
+		}, 'Removing vsftpd package build directory', 7, 7
+	);
+
+	endDetail();
+
+	0;
 }
 
 =item _setVersion
@@ -399,6 +492,34 @@ sub _saveConf
 	my $self = shift;
 
 	iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.data" )->copyFile("$self->{'cfgDir'}/vsftpd.old.data");
+}
+
+=item _bkpConfFile()
+
+ Backup file
+
+ Return int 0 on success, die on failure
+
+=cut
+
+sub _bkpConfFile
+{
+	my ($self, $cfgFile) = @_;
+
+	$self->{'eventManager'}->trigger('beforeFtpdBkpConfFile', $cfgFile);
+
+	if(-f $cfgFile){
+		my $file = iMSCP::File->new( filename => $cfgFile );
+		my $basename = basename($cfgFile);
+
+		unless(-f "$self->{'bkpDir'}/$basename.system") {
+			$file->copyFile("$self->{'bkpDir'}/$basename.system");
+		} else {
+			$file->copyFile("$self->{'bkpDir'}/$basename." . time);
+		}
+	}
+
+	$self->{'eventManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
 }
 
 =back

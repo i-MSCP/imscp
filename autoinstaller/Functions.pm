@@ -36,6 +36,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::File;
+use iMSCP::ProgramFinder;
 use iMSCP::Rights;
 use iMSCP::Stepper;
 use File::Basename;
@@ -223,8 +224,14 @@ sub install
 
 	# Not really the right place to do that job but we have not really choice because this must be done before
 	# installation of new files
+
 	require iMSCP::Service;
-	iMSCP::Service->getInstance()->remove('imscp_network');
+	my $serviceMngr = iMSCP::Service->getInstance();
+
+	if($serviceMngr->hasService('imscp_network')) {
+		$serviceMngr->stop('imscp_network');
+		$serviceMngr->remove('imscp_network');
+	}
 
 	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf') {
 		my $file = sprintf($pFormat, 'imscp_network');
