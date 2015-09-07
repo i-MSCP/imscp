@@ -92,6 +92,7 @@ YOUTRACK
 	Fixed: #IP-1396 Deletion of a subdomain which has '/' as mount point deletes all web folders
 	Fixed: #IP-1399 Add Auto-Submitted Header to Autoreply Emails
 	Fixed: #IP-1401 Courier pop3/imap SSL don't work with some clients - Diffie-Hellman parameters length is too small
+	Fixed: #IP-1406 File not found - false error template
 	Fixed: #IP-1410 Feature - Possibility to change redirection type
 	Fixed: #IP-1417 When changing hostname using the panel_hostname option, SSL dialog must be triggered
 	Fixed: #IP-1428 i-MSCP services such as imscp_network should not depend on the mysql service
