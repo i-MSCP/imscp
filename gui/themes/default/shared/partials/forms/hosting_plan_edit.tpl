@@ -18,11 +18,18 @@
 			$("#php_editor_dialog").dialog("option", "position", { my: "center", at: "center", of: window });
 		});
 
-		$('form').submit(function () { $('#php_editor_dialog').parent().appendTo($(this)); });
+		$('form').submit(function () {
+			$('#php_editor_dialog').parent().appendTo($(this));
+		});
 
-		if ($('#hp_php_no').is(':checked')) { $('#php_editor_block').hide(); }
+		if ($('#hp_php_no').is(':checked')) {
+			$('#php_editor_block').hide().trigger("updateTable");
+		}
 
-		$('#hp_php_yes,#hp_php_no').change(function () { $('#php_editor_block').toggle(); });
+		$('#hp_php_yes,#hp_php_no').change(function () {
+			$('#php_editor_block').toggle();
+			$(this).trigger("updateTable");
+		});
 
 		var php_editor_dialog_open = $('#php_editor_dialog_open');
 		php_editor_dialog_open.button({ icons:{ primary:'ui-icon-gear'} }).click(function (e) {

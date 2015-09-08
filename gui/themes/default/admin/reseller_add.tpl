@@ -13,11 +13,11 @@
 	</tr>
 	<tr>
 		<td><label for="password">{TR_PASSWORD}</label></td>
-		<td><input type="password" name="password" id="password" value="" autocomplete="off"/></td>
+		<td><input type="password" name="password" id="password" value="" class="pwd_generator pwd_prefill" autocomplete="off"/></td>
 	</tr>
 	<tr>
 		<td><label for="cpassword">{TR_PASSWORD_CONFIRMATION}</label></td>
-		<td><input type="password" name="password_confirmation" id="cpassword" class="pwd_generator pwd_prefill" value="" autocomplete="off"/></td>
+		<td><input type="password" name="password_confirmation" id="cpassword" value="" autocomplete="off"/></td>
 	</tr>
 	<tr>
 		<td><label for="email">{TR_EMAIL}</label></td>
@@ -376,9 +376,13 @@
 			return false;
 		});
 
-		if ($('#php_ini_system_no').is(':checked')) { $('#php_editor_dialog_open').hide(); }
+		if ($('#php_ini_system_no').is(':checked')) {
+			$('#php_editor_dialog_open').hide();
+		}
 
-		$('input[name="php_ini_system"]').change(function () { $('#php_editor_dialog_open').fadeToggle(); });
+		$('input[name="php_ini_system"]').change(function () {
+			$('#php_editor_dialog_open').fadeToggle();
+		});
 
 		var errorMessages = $('.php_editor_error');
 

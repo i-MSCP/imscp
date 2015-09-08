@@ -140,6 +140,8 @@
 		} else if (value == 'TXT') {
 			dns_show_rows(['txt_data']);
 		}
+
+		$("tbody").trigger("updateTable");
 	}
 
 	var IPADDRESS = "[0-9.]";

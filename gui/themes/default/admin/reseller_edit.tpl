@@ -405,9 +405,14 @@
 			return false;
 		});
 
-		if ($('#php_ini_system_no').is(':checked')) { $('#php_editor_dialog_open').hide(); }
+		if ($('#php_ini_system_no').is(':checked')) {
+			$('#php_editor_dialog_open').hide();
+		}
 
-		$('input[name="php_ini_system"]').change(function (){ $('#php_editor_dialog_open').fadeToggle(); });
+		$('input[name="php_ini_system"]').change(function () {
+			$('#php_editor_dialog_open').fadeToggle();
+
+		});
 
 		var errorMessages = $('.php_editor_error');
 

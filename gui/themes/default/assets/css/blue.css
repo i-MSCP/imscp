@@ -136,11 +136,11 @@ tbody td {
     border-bottom: 1px solid #dfdfdf;
 }
 
-.odd {
+tbody tr:nth-child(odd), .odd {
     background-color: #ffffff;
 }
 
-.even {
+tbody tr:nth-child(even), .even {
     background-color: #ededed;
 }
 

@@ -35,11 +35,12 @@
 		});
 
 		if ($('#php_no').is(':checked')) {
-			$('#php_editor_block').hide();
+			$('#php_editor_block').hide().trigger("updateTable");
 		}
 
 		$('#php_yes,#php_no').change(function () {
 			$('#php_editor_block').toggle();
+			$(this).trigger("updateTable");
 		});
 
 		var php_editor_dialog_open = $('#php_editor_dialog_open');

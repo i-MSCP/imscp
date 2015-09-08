@@ -1,5 +1,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2015 by Laurent Declercq
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-var iMSCP = function ($) {
-    // Function to initialize page messages
+(function($) {
+    // Initialize page messages
     var initPageMessages = function () {
         $("body").on("message_timeout", ".success,.info,.warning,.error", function () {
             $(this).hide().slideDown('fast').delay(10000).slideUp("normal", function () {
@@ -28,37 +29,20 @@ var iMSCP = function ($) {
         $(".success,.info,.warning,.error").trigger("message_timeout");
     };
 
-    // Function to initialize tooltips
+    // Initialize tooltips
     var initTooltips = function (context) {
         if (context == "simple") {
-            $("a").tooltip(
-                {
-                    tooltipClass: "ui-tooltip-notice",
-                    track: true,
-                    content: function() {
-                        return $(this).attr("title");
-                    }
-                }
-            );
+            $("[title]").tooltip({ tooltipClass: "ui-tooltip-notice", track: true });
         } else {
-            $(".main_menu a").tooltip({ track: true });
-            $(".body a,.body span,.body input,.dataTables_paginate div").tooltip(
-                {
-                    tooltipClass: "ui-tooltip-notice",
-                    track: true,
-                    content: function() {
-                        var title = $( this ).attr( "title" ) || "";
-                        return $(this).attr("title");
-                    }
-                }
-            );
+            $(".main_menu [title]").tooltip({ track: true });
+            $(".body [title]").tooltip({ tooltipClass: "ui-tooltip-notice", track: true });
         }
     };
 
-    // Function to initialize buttons
+    // Initialize buttons
     var initButtons = function (context) {
         if (context == "simple") {
-            $(".link_as_button,button").button({ icons: { secondary: "ui-icon-triangle-1-e"} });
+            $(".link_as_button, button").button({ icons: { secondary: "ui-icon-triangle-1-e" }});
             $("input").first().focus();
         } else {
             $("input:submit, input:button, input:reset, button, .link_as_button").button();
@@ -66,90 +50,70 @@ var iMSCP = function ($) {
         }
     };
 
-    // Function to initialize tables
+    // Initialize updateTable event listener
     var initTables = function () {
-        // Override some built-in jQuery method to trigger the i-MSCP updateTable event
-        (function () {
-            var origShow = $.fn.show;
-            var origHide = $.fn.hide;
-            var origAppendTo = $.fn.appendTo;
-            var origPrependTo = $.fn.prependTo;
-            var origHtml = $.fn.html;
-            $.fn.show = function () {
-                return origShow.apply(this, arguments).trigger("updateTable");
-            };
-            $.fn.hide = function () {
-                return origHide.apply(this, arguments).trigger("updateTable");
-            };
-            $.fn.appendTo = function () {
-                return origAppendTo.apply(this, arguments).trigger("updateTable");
-            };
-            $.fn.prependTo = function () {
-                return origPrependTo.apply(this, arguments).trigger("updateTable");
-            };
-            $.fn.html = function () {
-                var ret = origHtml.apply(this, arguments);
-                $("tbody").trigger("updateTable");
-                return ret;
-            };
-        })();
-
-        $("body").on("updateTable", "tbody", function () {
-            $(this).find("tr:visible:odd").removeClass("odd").addClass("even");
-            $(this).find("tr:visible:even").removeClass("even").addClass("odd");
-            $(this).find("th").parent().removeClass("even odd");
+        $(".body").on("updateTable", "tbody", function () {
+            $(this).find("tr:visible:odd").css('background', "#ededed");
+            $(this).find("tr:visible:even").css("background", "#ffffff");
         });
-        $("tbody").trigger("updateTable");
     };
 
-    // Function to initialize password generator
-    // To enable the password generator for an password input field, just add the .pwd_generator class to it
-    // Only password input fields with the password and cpassword identifier are filled
+    // Initialize password generator
+    // To enable the password generator feature just add the 'pwd_generator' class to the first password input field
+    // To enable the pre-fill feature, add the 'pwd_prefill' class to the first password input field
+    // Note: It is assumed that a form has only one pair of password input fields
     var passwordGenerator = function() {
-        var $pwdGenerator = $(".pwd_generator");
-
-        if($pwdGenerator.length) {
-            var $pwdElements = $("#password,#cpassword");
+        $(".pwd_generator").each(function (index) {
+            var $pwdElements = $(this).parents('form').find("[type=password]");
 
             $("<span>", {
-                style: "display:inline-block;margin-left:5px",
+                style: "display:inline-block;margin-left:1em",
                 html: [
-                    $("<button>", { id: "pwd_generate", type: "button", text: imscp_i18n.core.generate }).pGenerator({
+                    $("<button>", {
+                        id: "pwd_generate_" + index,
+                        type: "button",
+                        text: imscp_i18n.core.generate
+                    }).button().pGenerator({
                         'passwordElement': $pwdElements,
                         'passwordLength': imscp_i18n.core.password_length
                     }),
-                    $("<button>", { id: "pwd_show", type: "button", text: imscp_i18n.core.show }).click(function() {
-                        var password = $pwdElements.first().val();
-                        if (password != '') {
-                            $('<div>', { html: $("<strong>", { text: password }) }).dialog({
-                                modal: true,
-                                hide: "blind",
-                                show: "blind",
-                                title: imscp_i18n.core.your_new_password,
-                                buttons: [
-                                    {
-                                        text: imscp_i18n.core.close,
-                                        click: function () { $(this).dialog("destroy").remove(); }
-                                    }
-                                ]
-                            });
-                        } else {
-                            alert(imscp_i18n.core.password_generate_alert);
-                        }
-                    })
-                ]
-            }).insertAfter($pwdGenerator);
+                    $("<button>", {
+                        id: "pwd_show_" + index,
+                        type: "button",
+                        text: imscp_i18n.core.show,
+                        click: function () {
+                            var password = $pwdElements.first().val();
 
-            // Prefill password field if needed
-            if($(".pwd_prefill").length) {
-                $("#pwd_generate").trigger("click");
-            } else {
-                $pwdElements.val("");
+                            if (password.length) {
+                                $('<div>', {html: $("<strong>", {text: password})}).dialog({
+                                    modal: true,
+                                    hide: "blind",
+                                    show: "blind",
+                                    title: imscp_i18n.core.your_new_password,
+                                    buttons: [
+                                        {
+                                            text: imscp_i18n.core.close,
+                                            click: function () {
+                                                $(this).dialog("destroy").remove();
+                                            }
+                                        }
+                                    ]
+                                });
+                            } else {
+                                alert(imscp_i18n.core.password_generate_alert);
+                            }
+                        }
+                    }).button()
+                ]
+            }).insertAfter($(this));
+
+            if ($(this).hasClass('pwd_prefill')) {
+                $("#pwd_generate_" + index).trigger("click");
             }
-        }
+        });
     };
 
-    // Initialize FTP chooser feature
+    // Initialize FTP chooser
     var initFtpChooser = function() {
         $("body").on("click", "a.ftp_choose_dir", function(e) {
             var href = $(this).attr("href");
@@ -205,7 +169,7 @@ var iMSCP = function ($) {
         });
     };
 
-    // Function to fix bad jQuery UI behaviors
+    // Fix bad jQuery UI behaviors
     var fixJqueryUI = function () {
         // Dirty fix for http://bugs.jqueryui.com/ticket/7856
         $('[type=checkbox]').on("change", function () {
@@ -219,7 +183,7 @@ var iMSCP = function ($) {
         });
     };
 
-    // Function to initialize layout
+    // Initialize layout
     var initLayout = function (context) {
         initPageMessages();
         initTooltips(context);
@@ -235,14 +199,16 @@ var iMSCP = function ($) {
         initButtons(context);
     };
 
-    return {
-        // Main function to initialize application
-        initApplication: function (context) {
-            initLayout(context);
-            fixJqueryUI();
+    $(function() {
+        var context = "ui";
+        if($('body').hasClass('simple')) {
+            context = "simple"
         }
-    };
-}(jQuery);
+
+        initLayout(context);
+        fixJqueryUI(context);
+    });
+})(jQuery);
 
 function sbmt(form, uaction) {
     form.uaction.value = uaction;
