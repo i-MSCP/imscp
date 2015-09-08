@@ -77,9 +77,11 @@ sub preinstall
 
 	$self->{'eventManager'}->trigger('beforeMtaPreInstall', 'postfix');
 	$self->stop();
+
 	require Servers::mta::postfix::installer;
 	my $rs = Servers::mta::postfix::installer->getInstance()->preinstall();
 	return $rs if $rs;
+
 	$self->{'eventManager'}->trigger('afterMtaPreInstall', 'postfix');
 }
 
@@ -96,9 +98,11 @@ sub install
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaInstall', 'postfix');
+
 	require Servers::mta::postfix::installer;
 	my $rs = Servers::mta::postfix::installer->getInstance()->install();
 	return $rs if $rs;
+
 	$self->{'eventManager'}->trigger('afterMtaInstall', 'postfix');
 }
 
@@ -115,9 +119,11 @@ sub uninstall
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaUninstall', 'postfix');
+
 	require Servers::mta::postfix::uninstaller;
 	my $rs = Servers::mta::postfix::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
+
 	$self->restart();
 	$self->{'eventManager'}->trigger('afterMtaUninstall', 'postfix');
 }
@@ -165,9 +171,11 @@ sub setEnginePermissions
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaSetEnginePermissions');
+
 	require Servers::mta::postfix::installer;
 	my $rs = Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
 	return $rs if $rs;
+
 	$self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
 }
 
@@ -380,7 +388,7 @@ sub addMail
 
 	$self->{'eventManager'}->trigger('beforeMtaAddMail', $data);
 
-	if (index($data->{'MAIL_TYPE'}, '_mail') != -1) {
+	if (index($data->{'MAIL_TYPE'}, '_mail') != -1) { # Normal mail account
 		my $mailDir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 		my $mailUidName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
 		my $mailGidName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
@@ -448,9 +456,11 @@ sub disableMail
 	$self->{'eventManager'}->trigger('beforeMtaDisableMail', $data);
 	$self->deleteTableEntry(qr/\Q$data->{'MAIL_ADDR'}\E/, $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_MAP'});
 	$self->deleteAliasEntry($data);
+
 #	$self->deleteTableEntry(qr/\Qimscp-arpl.$data->{'DOMAIN_NAME'}\E/, $self->{'config'}->{'MTA_TRANSPORT_MAP'});
 #	$rs = $self->_deleteCatchAll($data);
 #	return $rs if $rs;
+
 	$self->{'eventManager'}->trigger('afterMtaDisableMail', $data);
 }
 
@@ -477,9 +487,11 @@ sub deleteMail
 	}
 
 	$self->_deleteAliasEntry($data);
+
 #	$self->deleteTableEntry(qr/\Qimscp-arpl.$data->{'DOMAIN_NAME'}\E/, $self->{'config'}->{'MTA_TRANSPORT_MAP'});
 #	$rs = $self->_deleteCatchAll($data);
 #	return $rs if $rs;
+
 	$self->{'eventManager'}->trigger('afterMtaDelMail', $data);
 }
 
@@ -574,9 +586,9 @@ sub getTraffic
 
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-	$self->{'eventManager'}->register(
-		'afterVrlTraffic', sub { -f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0 }
-	) unless $selfCall;
+	$self->{'eventManager'}->register('afterVrlTraffic', sub {
+		-f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0
+	}) unless $selfCall;
 
 	\%trafficDb;
 }
@@ -596,14 +608,19 @@ sub postmap
 	my ($self, $filename, $filetype) = @_;
 
 	$filetype ||= 'cdb';
+
 	$self->{'eventManager'}->trigger('beforeMtaPostmap', \$filename, \$filetype);
+
 	eval { cacheout '+<', $filename } or die(sprintf('Could not open %s: %s', $filename, $!));
+
 	my $fh = __PACKAGE__ . "::${filename}";
 	$fh->flush() or die(sprintf('Could not flush %s filehandle: %s', $filename, $!));
+
 	my ($stdout, $stderr);
 	!execute("postmap $filetype:$filename", \$stdout, \$stderr) or die(sprintf(
 		'Could not postmap the %s map: %s', $filename, $stderr || 'Unknown error'
 	));
+
 	$self->{'eventManager'}->trigger('afterMtaPostmap', $filename, $filetype);
 }
 
