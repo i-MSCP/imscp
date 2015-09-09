@@ -10,12 +10,12 @@
 <!--[if (IE 7)|(IE 8)]>
 	<link href="{THEME_ASSETS_PATH}/css/ie78overrides.css?v={THEME_ASSETS_VERSION}" rel="stylesheet">
 <![endif]-->
-<script src="{THEME_ASSETS_PATH}/js/jquery/jquery.js?v={THEME_ASSETS_VERSION}"></script>
-<script src="{THEME_ASSETS_PATH}/js/jquery/jquery-ui.js?v={THEME_ASSETS_VERSION}"></script>
-<script src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
 <script>
 	imscp_i18n = {JS_TRANSLATIONS};
 </script>
+<script src="{THEME_ASSETS_PATH}/js/jquery/jquery.js?v={THEME_ASSETS_VERSION}"></script>
+<script src="{THEME_ASSETS_PATH}/js/jquery/jquery-ui.js?v={THEME_ASSETS_VERSION}"></script>
+<script src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
 </head>
 <body class="{THEME_COLOR} simple">
 <div class="wrapper">
