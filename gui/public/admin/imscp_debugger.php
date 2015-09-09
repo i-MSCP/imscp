@@ -245,7 +245,7 @@ function debugger_getAlssubErrors($tpl)
  */
 function debugger_getFtpErrors($tpl)
 {
-	$stmt = exec_query('SELECT userid, status FROM ftp_users', array(
+	$stmt = exec_query('SELECT userid, status FROM ftp_users WHERE status NOT IN (?, ?, ?, ?, ?, ?, ?, ?)', array(
 		'ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete'
 	));
 
@@ -257,7 +257,7 @@ function debugger_getFtpErrors($tpl)
 			$tpl->assign(array(
 				'FTP_MESSAGE' => '',
 				'FTP_NAME' => tohtml(decode_idna($row['userid'])),
-				'FTP_ERROR' => tohtml($row['subdomain_alias_status']),
+				'FTP_ERROR' => tohtml($row['status']),
 				'CHANGE_ID' => $row['userid'],
 				'CHANGE_TYPE' => 'ftp_user'
 			));
