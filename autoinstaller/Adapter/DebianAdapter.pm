@@ -133,8 +133,6 @@ sub installPackages
 
 	iMSCP::Dialog->getInstance()->endGauge();
 
-	#execute("apt-mark unhold @{$self->{'packagesToPreUninstall'}} @{$self->{'packagesToInstall'}} @{$self->{'packagesToInstallDelayed'}}")
-
 	# Remove packages which must be pre-removed
 	my $rs = $self->uninstallPackages($self->{'packagesToPreUninstall'});
 	return $rs if $rs;
