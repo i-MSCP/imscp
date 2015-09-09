@@ -36,8 +36,6 @@
 						</div>
 					</td>
 					<td>
-						<a href="pma_auth.php?id={USER_ID}" class="icon i_pma" target="_blank"
-						   title="{TR_LOGIN_PMA}">{TR_PHPMYADMIN}</a>
 						<a href="sql_change_password.php?id={USER_ID}" class="icon i_change_password"
 						   title="{TR_CHANGE_PASSWORD}">{TR_CHANGE_PASSWORD}</a>
 						<a href="#" class="icon i_delete"

@@ -97,8 +97,7 @@ $tpl->define_dynamic(
 		'ftp_message' => 'page',
 		'ftp_accounts' => 'page',
 		'ftp_item' => 'ftp_accounts',
-		'ftp_actions' => 'ftp_item',
-		'ftp_easy_login' => 'ftp_item'
+		'ftp_actions' => 'ftp_item'
 	)
 );
 
@@ -110,7 +109,6 @@ $tpl->assign(
 		'TR_FTP_ACCOUNT' => tr('FTP account'),
 		'TR_FTP_ACTION' => tr('Actions'),
 		'TR_FTP_ACCOUNT_STATUS' => tr('Status'),
-		'TR_LOGINAS' => tr('Login As'),
 		'TR_EDIT' => tr('Edit'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', '%s'),
