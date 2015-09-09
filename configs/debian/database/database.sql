@@ -83,7 +83,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '219'),
+('DATABASE_REVISION', '221'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -142,7 +142,6 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `domain_cgi` varchar(15) collate utf8_unicode_ci DEFAULT NULL,
   `allowbackup` varchar(12) collate utf8_unicode_ci NOT NULL DEFAULT 'dmn|sql|mail',
   `domain_dns` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
-  `domain_software_allowed` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `phpini_perm_system` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
   `phpini_perm_allow_url_fopen` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
   `phpini_perm_display_errors` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
@@ -512,9 +511,6 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `support_system` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'yes',
   `customer_id` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
   `reseller_ips` text collate utf8_unicode_ci,
-  `software_allowed` varchar(15) collate utf8_general_ci NOT NULL DEFAULT 'no',
-  `softwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL DEFAULT 'yes',
-  `websoftwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL DEFAULT 'yes',
   `php_ini_system` VARCHAR(15) NOT NULL DEFAULT 'no',
   `php_ini_al_disable_functions` VARCHAR(15) NOT NULL DEFAULT 'no',
   `php_ini_al_allow_url_fopen` VARCHAR(15) NOT NULL DEFAULT 'no',
@@ -686,100 +682,3 @@ CREATE TABLE IF NOT EXISTS `user_gui_props` (
   `show_main_menu_labels` tinyint(1) NOT NULL DEFAULT '1',
   UNIQUE `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `web_software`
---
-
-CREATE TABLE IF NOT EXISTS `web_software` (
-  `software_id` int(10) unsigned NOT NULL auto_increment,
-  `software_master_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `reseller_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `software_installtype` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_name` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_version` varchar(20) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_language` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_type` varchar(20) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_db` tinyint(1) NOT NULL,
-  `software_archive` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_installfile` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_prefix` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_link` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_desc` mediumtext character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_active` int(1) NOT NULL,
-  `software_status` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `rights_add_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `software_depot` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
-  PRIMARY KEY (`software_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `web_software_inst`
---
-
-CREATE TABLE IF NOT EXISTS `web_software_inst` (
-  `domain_id` int(10) unsigned NOT NULL,
-  `alias_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `subdomain_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `subdomain_alias_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `software_id` int(10) NOT NULL,
-  `software_master_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `software_res_del` int(1) NOT NULL DEFAULT '0',
-  `software_name` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_version` varchar(20) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_language` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `path` varchar(255) character set utf8 collate utf8_unicode_ci NOT NULL DEFAULT '0',
-  `software_prefix` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL DEFAULT '0',
-  `db` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL DEFAULT '0',
-  `database_user` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL DEFAULT '0',
-  `database_tmp_pwd` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL DEFAULT '0',
-  `install_username` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL DEFAULT '0',
-  `install_password` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL DEFAULT '0',
-  `install_email` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL DEFAULT '0',
-  `software_status` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `software_depot` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
-  KEY `software_id` (`software_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `web_software_depot`
---
-
-CREATE TABLE IF NOT EXISTS `web_software_depot` (
-  `package_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `package_install_type` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `package_title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `package_version` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `package_language` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `package_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `package_description` mediumtext character set utf8 collate utf8_unicode_ci NOT NULL,
-  `package_vendor_hp` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `package_download_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `package_signature_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`package_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `web_software_options`
---
-
-CREATE TABLE IF NOT EXISTS `web_software_options` (
-  `use_webdepot` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `webdepot_xml_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `webdepot_last_update` datetime NOT NULL,
-  UNIQUE KEY `use_webdepot` (`use_webdepot`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `web_software_options`
---
-
-INSERT IGNORE INTO `web_software_options` (`use_webdepot`, `webdepot_xml_url`, `webdepot_last_update`) VALUES (1, 'http://app-pkg.i-mscp.net/imscp_webdepot_list.xml', '0000-00-00 00:00:00');

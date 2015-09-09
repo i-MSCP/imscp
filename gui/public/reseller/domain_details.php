@@ -156,7 +156,6 @@ function reseller_generatePage($tpl, $domainId)
 			'VL_CGI_SUPP' => ($domainProperties['domain_cgi'] == 'yes') ? $trEnabled : $trDisabled,
 			'VL_DNS_SUPP' => ($domainProperties['domain_dns'] == 'yes') ? $trEnabled : $trDisabled,
 			'VL_EXT_MAIL_SUPP' => ($domainProperties['domain_external_mail'] == 'yes') ? $trEnabled : $trDisabled,
-			'VL_SOFTWARE_SUPP' => ($domainProperties['domain_software_allowed'] == 'yes') ? $trEnabled : $trDisabled,
 			'VL_BACKUP_SUP' => translate_limit_value($domainProperties['allowbackup']),
 			'VL_TRAFFIC_PERCENT' => $trafficUsagePercent,
 			'VL_TRAFFIC_USED' => bytesHuman($trafficUsageBytes),
@@ -237,7 +236,6 @@ $tpl->assign(
 		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
 		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
 		'TR_UPDATE_DATA' => tr('Submit changes'),
-		'TR_SOFTWARE_SUPP' => tr('Software installer'),
 		'TR_EDIT' => tr('Edit'),
 		'TR_BACK' => tr('Back')
 	)

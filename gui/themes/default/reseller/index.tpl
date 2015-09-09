@@ -52,10 +52,6 @@
 		<td>{TR_PHP_EDITOR}</td>
 		<td>{PHP_EDITOR_STATUS}</td>
 	</tr>
-	<tr>
-		<td>{TR_APS}</td>
-		<td>{APS_STATUS}</td>
-	</tr>
 	</tbody>
 </table>
 

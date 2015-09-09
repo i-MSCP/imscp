@@ -59,7 +59,7 @@ function get_pageone_param()
 function get_init_au2_page($tpl, $phpini)
 {
 	global $hpName, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
-		   $dns, $aps, $extMailServer, $webFolderProtection;
+		   $dns, $extMailServer, $webFolderProtection;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -89,12 +89,6 @@ function get_init_au2_page($tpl, $phpini)
 	if(resellerHasFeature('custom_dns_records')) {
 		$tplVars['VL_DNSY'] = ($dns == '_yes_') ? $htmlChecked : '';
 		$tplVars['VL_DNSN'] = ($dns == '_no_') ? $htmlChecked : '';
-	}
-
-
-	if(resellerHasFeature('aps')) {
-		$tplVars['VL_SOFTWAREY'] = ($aps == '_yes_') ? $htmlChecked : '';
-		$tplVars['VL_SOFTWAREN'] = ($aps == '_no_') ? $htmlChecked : '';
 	}
 
 	if(resellerHasFeature('backup')) {
@@ -202,7 +196,7 @@ function get_init_au2_page($tpl, $phpini)
 function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 {
 	global $hpName, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
-		   $dns, $aps, $extMailServer, $webFolderProtection;
+		   $dns, $extMailServer, $webFolderProtection;
 
 	if($hpid != 0) {
 		$query = 'SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?';
@@ -213,8 +207,8 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 			$props = $data['props'];
 
 			list(
-				$php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
-				$phpEditor, $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
+				$php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $phpEditor,
+				$phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
 				$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit,
 				$extMailServer, $webFolderProtection, $mailQuota
 			) = explode(';', $props);
@@ -243,7 +237,7 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 	} else {
 		$hpName = 'Custom';
 		$sub = $als = $mail = $mailQuota = $ftp = $sqlDb = $sqlUser = $traffic = $diskSpace = '0';
-		$php = $cgi = $dns = $aps = $extMailServer = '_no_';
+		$php = $cgi = $dns = $extMailServer = '_no_';
 		$backup = array();
 		$webFolderProtection = '_yes_';
 	}
@@ -258,7 +252,7 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 function check_user_data($phpini)
 {
 	global $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
-		$dns, $aps, $extMailServer, $webFolderProtection;
+		$dns, $extMailServer, $webFolderProtection;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -459,18 +453,6 @@ function check_user_data($phpini)
 		$backup = array();
 	}
 
-	// APS feature
-
-	if (isset($_POST['software_allowed']) && resellerHasFeature('aps')) {
-		$aps = $_POST['software_allowed'];
-	} else {
-		$aps = '_no_';
-	}
-
-	if ($php == '_no_' && $aps == '_yes_') {
-		set_page_message(tr('The software installer feature requires PHP.'), 'error');
-	}
-
 	// Web folders protection
 
 	if(isset($_POST['web_folder_protection'])) {
@@ -520,7 +502,6 @@ $tpl->define_dynamic(
 		'ext_mail_feature' => 'page',
 		'ftp_feature' => 'page',
 		'sql_feature' => 'page',
-		'aps_feature' => 'page',
 		'backup_feature' => 'page',
 		'php_editor_js' => 'page',
 		'php_editor_block' => 'page',
@@ -562,15 +543,14 @@ $tpl->assign(
 		'TR_FEATURES' => tr('Features'),
 		'TR_LIMITS' => tr('Limits'),
 		'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),
-		'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (only if supported by the file system)."),
-		'TR_SOFTWARE_SUPP' => tr('Software installer')
+		'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (only if supported by the file system).")
 	)
 );
 
 generateNavigation($tpl);
 
 global $dmnName, $dmnExpire, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace,
-	   $backup, $dns, $aps, $extMailServer, $webFolderProtection;
+	   $backup, $dns, $extMailServer, $webFolderProtection;
 
 if (!get_pageone_param()) {
 	set_page_message(tr('Domain data were been altered. Please try again.'), 'error');
@@ -582,7 +562,7 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) && (!isse
 	if (check_user_data($phpini)) {
 		$_SESSION['step_two_data'] = "$dmnName;0";
 		$_SESSION['ch_hpprops'] =
-			"$php;$cgi;$sub;$als;$mail;$ftp;$sqlDb;$sqlUser;$traffic;$diskSpace;" . implode('|', $backup) . ";$dns;$aps;" .
+			"$php;$cgi;$sub;$als;$mail;$ftp;$sqlDb;$sqlUser;$traffic;$diskSpace;" . implode('|', $backup) . ";$dns;" .
 			$phpini->getClPermVal('phpiniSystem') . ';' .
 			$phpini->getClPermVal('phpiniAllowUrlFopen') . ';' .
 			$phpini->getClPermVal('phpiniDisplayErrors') . ';' .
@@ -629,10 +609,6 @@ if (!resellerHasFeature('ftp')) {
 
 if (!resellerHasFeature('sql')) {
 	$tpl->assign('SQL_FEATURE', '');
-}
-
-if (!resellerHasFeature('aps')) {
-	$tpl->assign('APS_FEATURE', '');
 }
 
 if (!resellerHasFeature('backup')) {

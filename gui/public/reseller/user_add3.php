@@ -160,7 +160,7 @@ function reseller_addCustomer()
 	}
 
 	list(
-		$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $aps, $phpEditor,
+		$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $phpEditor,
 		$phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
 		$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer,
 		$webFolderProtection, $mailQuota
@@ -170,7 +170,6 @@ function reseller_addCustomer()
 	$cgi = str_replace('_', '', $cgi);
 	$backup = str_replace('_', '', $backup);
 	$dns = str_replace('_', '', $dns);
-	$aps = str_replace('_', '', $aps);
 	$extMailServer = str_replace('_', '', $extMailServer);
 	$webFolderProtection = str_replace('_', '', $webFolderProtection);
 	$encryptedPassword = \iMSCP\Crypt::bcrypt($password);
@@ -218,13 +217,13 @@ function reseller_addCustomer()
 					phpini_perm_allow_url_fopen, phpini_perm_display_errors, phpini_perm_disable_functions,
 					domain_external_mail, web_folder_protection, mail_quota
 				) VALUES (
-					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 				)
 			",
 			array(
 				$dmnName, $recordId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user, 'toadd', $als, $sub,
-				$domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor, $phpiniAllowUrlFopen,
-				$phpiniDisplayErrors, $phpiniDisableFunctions, $extMailServer, $webFolderProtection, $mailQuota
+				$domainIp, $disk, 0, $php, $cgi, $backup, $dns, $phpEditor, $phpiniAllowUrlFopen, $phpiniDisplayErrors,
+				$phpiniDisableFunctions, $extMailServer, $webFolderProtection, $mailQuota
 			)
 		);
 

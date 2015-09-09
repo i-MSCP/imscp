@@ -27,15 +27,6 @@ return array(
 				'label' => tr('Overview'),
 				'uri' => '/reseller/index.php',
 				'title_class' => 'general'
-			),
-			'software_upload' => array(
-				'label' => tr('Software upload'),
-				'uri' => '/reseller/software_upload.php',
-				'title_class' => 'apps_installer',
-				'privilege_callback' => array(
-					'name' => 'resellerHasFeature',
-					'param' => 'aps'
-				)
 			)
 		)
 	),

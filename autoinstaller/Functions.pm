@@ -759,13 +759,6 @@ sub _savePersistentData
 		);
 	}
 
-	# Move software to new location
-	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares") {
-		iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares" )->rcopy(
-			"$main::{'INST_PREF'}$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares"
-		);
-	}
-
 	# Save plugins
 	if(-d $main::imscpConfig{'PLUGINS_DIR'}) {
 		iMSCP::Dir->new( dirname => "$main::imscpConfig{'PLUGINS_DIR'}" )->rcopy(
@@ -851,7 +844,7 @@ sub _systemCleanup
 		iMSCP::file->new( filename => "$main::imscpConfig{'CONF_DIR'}/listeners.d/README" )->delFile();
 	}
 
-	0;
+	iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares" )->remove();
 }
 
 =item _deleteBuildDir()

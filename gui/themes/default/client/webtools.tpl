@@ -38,12 +38,6 @@
 		<td>{TR_FILEMANAGER_TXT}</td>
 	</tr>
 	<!-- EDP: ftp_feature -->
-	<!-- BDP: aps_feature -->
-	<tr>
-		<td><a href="software.php" class="icon_big icon_center i_appicon" title="{TR_APP_INSTALLER}"></a></td>
-		<td>{TR_APP_INSTALLER_TXT}</td>
-	</tr>
-	<!-- EDP: aps_feature -->
 	<!-- BDP: webstats_feature -->
 	<tr>
 		<td>

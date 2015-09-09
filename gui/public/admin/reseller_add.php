@@ -79,9 +79,6 @@ function &admin_getData()
 				'max_sql_user_cnt' => '0',
 				'max_traff_amnt' => '0',
 				'max_disk_amnt' => '0',
-				'software_allowed' => 'no',
-				'softwaredepot_allowed' => 'no',
-				'websoftwaredepot_allowed' => 'no',
 				'support_system' => 'no',
 				'customer_id' => '',
 				'php_ini_system' => 'no',
@@ -259,18 +256,6 @@ function _admin_generateFeaturesForm($tpl, &$data)
 
 			'TR_PHP_INI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', '<b>max_input_time</b>'),
 			'PHP_INI_MAX_MAX_INPUT_TIME' => tohtml($data['php_ini_max_max_input_time']),
-
-			'TR_SOFTWARES_INSTALLER' => tr('Software installer'),
-			'SOFTWARES_INSTALLER_YES' => ($data['software_allowed'] == 'yes') ? $htmlChecked : '',
-			'SOFTWARES_INSTALLER_NO' => ($data['software_allowed'] != 'yes') ? $htmlChecked : '',
-
-			'TR_SOFTWARES_REPOSITORY' => tr('Software repository'),
-			'SOFTWARES_REPOSITORY_YES' => ($data['softwaredepot_allowed'] == 'yes') ? $htmlChecked : '',
-			'SOFTWARES_REPOSITORY_NO' => ($data['softwaredepot_allowed'] != 'yes') ? $htmlChecked : '',
-
-			'TR_WEB_SOFTWARES_REPOSITORY' => tr('Web software repository'),
-			'WEB_SOFTWARES_REPOSITORY_YES' => ($data['websoftwaredepot_allowed'] == 'yes') ? $htmlChecked : '',
-			'WEB_SOFTWARES_REPOSITORY_NO' => ($data['websoftwaredepot_allowed'] != 'yes') ? $htmlChecked : '',
 
 			'TR_SUPPORT_SYSTEM' => tr('Support system'),
 			'SUPPORT_SYSTEM_YES' => ($data['support_system'] == 'yes') ? $htmlChecked : '',
@@ -575,33 +560,27 @@ function admin_checkAndCreateResellerAccount()
 					`max_sql_db_cnt`, `current_sql_db_cnt`, `max_sql_user_cnt`,
 					`current_sql_user_cnt`, `max_traff_amnt`, `current_traff_amnt`,
 					`max_disk_amnt`, `current_disk_amnt`, `support_system`, `customer_id`,
-					`software_allowed`, `softwaredepot_allowed`, `websoftwaredepot_allowed`,
 					`php_ini_system`, `php_ini_al_disable_functions`, `php_ini_al_allow_url_fopen`,
 					`php_ini_al_display_errors`, `php_ini_max_post_max_size`,
 					`php_ini_max_upload_max_filesize`, `php_ini_max_max_execution_time`,
 					`php_ini_max_max_input_time`, `php_ini_max_memory_limit`
 				) VALUES (
-					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 				)
 			";
 			exec_query($query, array(
-									$resellerId, implode(';', $resellerIps) . ';', $data['max_dmn_cnt'], '0',
-									$data['max_sub_cnt'], '0', $data['max_als_cnt'], '0', $data['max_mail_cnt'], '0',
-									$data['max_ftp_cnt'], '0', $data['max_sql_db_cnt'], '0', $data['max_sql_user_cnt'], '0',
-									$data['max_traff_amnt'], '0', $data['max_disk_amnt'], '0', $data['support_system'],
-									$data['customer_id'], $data['software_allowed'], $data['softwaredepot_allowed'],
-									$data['websoftwaredepot_allowed'], $phpEditor->getRePermVal('phpiniSystem'),
-									$phpEditor->getRePermVal('phpiniDisableFunctions'), $phpEditor->getRePermVal('phpiniAllowUrlFopen'),
-									$phpEditor->getRePermVal('phpiniDisplayErrors'), $phpEditor->getRePermVal('phpiniPostMaxSize'),
-									$phpEditor->getRePermVal('phpiniUploadMaxFileSize'), $phpEditor->getRePermVal('phpiniMaxExecutionTime'),
-									$phpEditor->getRePermVal('phpiniMaxInputTime'), $phpEditor->getRePermVal('phpiniMemoryLimit')));
+				$resellerId, implode(';', $resellerIps) . ';', $data['max_dmn_cnt'], '0',
+				$data['max_sub_cnt'], '0', $data['max_als_cnt'], '0', $data['max_mail_cnt'], '0',
+				$data['max_ftp_cnt'], '0', $data['max_sql_db_cnt'], '0', $data['max_sql_user_cnt'], '0',
+				$data['max_traff_amnt'], '0', $data['max_disk_amnt'], '0', $data['support_system'],
+				$data['customer_id'], $phpEditor->getRePermVal('phpiniSystem'),
+				$phpEditor->getRePermVal('phpiniDisableFunctions'), $phpEditor->getRePermVal('phpiniAllowUrlFopen'),
+				$phpEditor->getRePermVal('phpiniDisplayErrors'), $phpEditor->getRePermVal('phpiniPostMaxSize'),
+				$phpEditor->getRePermVal('phpiniUploadMaxFileSize'), $phpEditor->getRePermVal('phpiniMaxExecutionTime'),
+				$phpEditor->getRePermVal('phpiniMaxInputTime'), $phpEditor->getRePermVal('phpiniMemoryLimit')
+			));
 
 			$db->commit();
-
-			// Creating Software repository for reseller if needed
-			if( $data['software_allowed'] == 'yes' && !@mkdir($cfg->GUI_APS_DIR . '/' . $resellerId, 0750, true)) {
-				write_log("System was unable to create the '{$cfg->GUI_APS_DIR}/{$resellerId} directory for reseller software repository", E_USER_ERROR);
-			}
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
 

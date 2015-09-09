@@ -55,10 +55,6 @@ function client_hideDisabledFeatures($tpl)
 		$tpl->assign('FTP_FEATURE', '');
 	}
 
-	if (!customerHasFeature('aps')) {
-		$tpl->assign('APS_FEATURE', '');
-	}
-
 	if (!customerHasFeature('webstats')) {
 		$tpl->assign('WEBSTATS_FEATURE', '');
 	}
@@ -88,7 +84,6 @@ $tpl->define_dynamic(
 		'backup_feature' => 'page',
 		'mail_feature' => 'page',
 		'ftp_feature' => 'page',
-		'aps_feature' => 'page',
 		'webstats_feature' => 'page'
 	)
 );
@@ -109,9 +104,7 @@ $tpl->assign(
 		'TR_FILEMANAGER' => tr('FileManager'),
 		'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
 		'TR_WEBSTATS' => tr('Web Statistics'),
-		'TR_WEBSTATS_TXT' => tr('Access your domain statistics through the Web interface.'),
-		'TR_APP_INSTALLER' => tr('Application installer'),
-		'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')
+		'TR_WEBSTATS_TXT' => tr('Access your domain statistics through the Web interface.')
 	)
 );
 

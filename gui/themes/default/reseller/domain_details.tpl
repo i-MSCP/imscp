@@ -33,10 +33,6 @@
 		<td>{VL_EXT_MAIL_SUPP}</td>
 	</tr>
 	<tr>
-		<td>{TR_SOFTWARE_SUPP}</td>
-		<td>{VL_SOFTWARE_SUPP}</td>
-	</tr>
-	<tr>
 		<td>{TR_BACKUP_SUPP}</td>
 		<td>{VL_BACKUP_SUP}</td>
 	</tr>

@@ -128,11 +128,9 @@ function &admin_getData($resellerId, $forUpdate = false)
 					'password', 'password_confirmation', 'fname', 'lname', 'gender', 'firm', 'zip', 'city', 'state',
 					'country', 'email', 'phone', 'fax', 'street1', 'street2', 'max_dmn_cnt', 'max_sub_cnt',
 					'max_als_cnt', 'max_mail_cnt', 'max_ftp_cnt', 'max_sql_db_cnt', 'max_sql_user_cnt',
-					'max_traff_amnt', 'max_disk_amnt', 'software_allowed', 'softwaredepot_allowed',
-					'websoftwaredepot_allowed', 'support_system', 'customer_id',
-					'php_ini_system', 'php_ini_al_disable_functions', 'php_ini_al_allow_url_fopen',
-					'php_ini_al_display_errors', 'php_ini_max_post_max_size',
-					'php_ini_max_upload_max_filesize', 'php_ini_max_max_execution_time',
+					'max_traff_amnt', 'max_disk_amnt', 'support_system', 'customer_id', 'php_ini_system',
+					'php_ini_al_disable_functions', 'php_ini_al_allow_url_fopen', 'php_ini_al_display_errors',
+					'php_ini_max_post_max_size', 'php_ini_max_upload_max_filesize', 'php_ini_max_max_execution_time',
 					'php_ini_max_max_input_time', 'php_ini_max_memory_limit'
 				) as $key
 			) {
@@ -314,18 +312,6 @@ function _admin_generateFeaturesForm($tpl, &$data)
 
 			'TR_PHP_INI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', '<b>max_input_time</b>'),
 			'PHP_INI_MAX_MAX_INPUT_TIME' => tohtml($data['php_ini_max_max_input_time']),
-
-			'TR_SOFTWARES_INSTALLER' => tr('Software installer'),
-			'SOFTWARES_INSTALLER_YES' => ($data['software_allowed'] == 'yes') ? $htmlChecked : '',
-			'SOFTWARES_INSTALLER_NO' => ($data['software_allowed'] != 'yes') ? $htmlChecked : '',
-
-			'TR_SOFTWARES_REPOSITORY' => tr('Software repository'),
-			'SOFTWARES_REPOSITORY_YES' => ($data['softwaredepot_allowed'] == 'yes') ? $htmlChecked : '',
-			'SOFTWARES_REPOSITORY_NO' => ($data['softwaredepot_allowed'] != 'yes') ? $htmlChecked : '',
-
-			'TR_WEB_SOFTWARES_REPOSITORY' => tr('Web software repository'),
-			'WEB_SOFTWARES_REPOSITORY_YES' => ($data['websoftwaredepot_allowed'] == 'yes') ? $htmlChecked : '',
-			'WEB_SOFTWARES_REPOSITORY_NO' => ($data['websoftwaredepot_allowed'] != 'yes') ? $htmlChecked : '',
 
 			'TR_SUPPORT_SYSTEM' => tr('Support system'),
 			'SUPPORT_SYSTEM_YES' => ($data['support_system'] == 'yes') ? $htmlChecked : '',
@@ -697,8 +683,7 @@ function admin_checkAndUpdateData($resellerId)
 				SET
 					`max_dmn_cnt` = ?, `max_sub_cnt` = ?, `max_als_cnt` = ?, `max_mail_cnt` = ?, `max_ftp_cnt` = ?,
 					`max_sql_db_cnt` = ?, `max_sql_user_cnt` = ?, `max_traff_amnt` = ?, `max_disk_amnt` = ?,
-					`reseller_ips` = ?, `customer_id` = ?, `software_allowed` = ?, `softwaredepot_allowed` = ?,
-					`websoftwaredepot_allowed` = ?, `support_system` = ?, `php_ini_system` = ?,
+					`reseller_ips` = ?, `customer_id` = ?, `support_system` = ?, `php_ini_system` = ?,
 					`php_ini_al_disable_functions` = ?, `php_ini_al_allow_url_fopen` = ?, `php_ini_al_display_errors` = ?,
 					`php_ini_max_post_max_size` = ?, `php_ini_max_upload_max_filesize` = ?, `php_ini_max_max_execution_time` = ?,
 					`php_ini_max_max_input_time` = ?, `php_ini_max_memory_limit` = ?
@@ -711,9 +696,7 @@ function admin_checkAndUpdateData($resellerId)
 					$data['max_dmn_cnt'], $data['max_sub_cnt'], $data['max_als_cnt'],
 					$data['max_mail_cnt'], $data['max_ftp_cnt'], $data['max_sql_db_cnt'],
 					$data['max_sql_user_cnt'], $data['max_traff_amnt'], $data['max_disk_amnt'],
-					implode(';', $resellerIps) . ';', $data['customer_id'], $data['software_allowed'],
-					$data['softwaredepot_allowed'], $data['websoftwaredepot_allowed'],
-					$data['support_system'],
+					implode(';', $resellerIps) . ';', $data['customer_id'], $data['support_system'],
 					$phpEditor->getRePermVal('phpiniSystem'),
 					$phpEditor->getRePermVal('phpiniDisableFunctions'),
 					$phpEditor->getRePermVal('phpiniAllowUrlFopen'),
@@ -726,40 +709,6 @@ function admin_checkAndUpdateData($resellerId)
 					$resellerId
 				)
 			);
-
-			// Updating software installer properties
-
-			if ($data['software_allowed'] == 'no') {
-				exec_query(
-					'
-						UPDATE
-							domain
-						INNER JOIN
-							admin ON(admin_id = domain_admin_id)
-						SET
-							domain_software_allowed = ?
-						WHERE
-							created_by = ?
-					',
-					array($data['softwaredepot_allowed'], $resellerId)
-				);
-			}
-
-			if ($data['websoftwaredepot_allowed'] == 'no') {
-				$query = 'SELECT `software_id` FROM `web_software` WHERE `software_depot` = ? AND `reseller_id` = ?';
-				$stmt = exec_query($query, array('yes', $resellerId));
-
-				if ($stmt->rowCount()) {
-					while (!$stmt->EOF) {
-						$query = 'UPDATE `web_software_inst` SET `software_res_del` = ? WHERE `software_id` = ?';
-						exec_query($query, array('1', $stmt->fields['software_id']));
-						$stmt->MoveNext();
-					}
-
-					$query = 'DELETE FROM `web_software` WHERE `software_depot` = ? AND `reseller_id` = ?';
-					exec_query($query, array('yes', $resellerId));
-				}
-			}
 
 			$db->commit();
 

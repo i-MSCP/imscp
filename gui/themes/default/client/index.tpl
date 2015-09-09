@@ -86,10 +86,6 @@
 		<td>{EXTERNAL_MAIL_SERVERS_FEATURE_STATUS}</td>
 	</tr>
 	<tr>
-		<td>{TR_APP_INSTALLER_FEATURE}</td>
-		<td>{APP_INSTALLER_FEATURE_STATUS}</td>
-	</tr>
-	<tr>
 		<td>{TR_WEBSTATS_FEATURE}</td>
 		<td>{WEBSTATS_FEATURE_STATUS}</td>
 	</tr>

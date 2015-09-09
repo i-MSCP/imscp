@@ -370,19 +370,6 @@
 			</td>
 		</tr>
 		<!-- EDP: custom_dns_records_feature -->
-		<!-- BDP: aps_block -->
-		<tr>
-			<td>{TR_APS}</td>
-			<td>
-				<div class="radio">
-					<input type="radio" name="domain_software_allowed" value="yes" id="domain_software_allowed_yes" {APS_YES}>
-					<label for="domain_software_allowed_yes">{TR_YES}</label>
-					<input type="radio" name="domain_software_allowed" value="no" id="domain_software_allowed_no" {APS_NO}>
-					<label for="domain_software_allowed_no">{TR_NO}</label>
-				</div>
-			</td>
-		</tr>
-		<!-- EDP: aps_block -->
 		<!-- BDP: ext_mail_block -->
 		<tr>
 			<td>{TR_EXTMAIL}</td>

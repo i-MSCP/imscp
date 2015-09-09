@@ -320,24 +320,6 @@ return array(
 				'uri' => '/admin/settings_ports.php',
 				'title_class' => 'general'
 			),
-			'softwares_management' => array(
-				'label' => tr('Software management'),
-				'uri' => '/admin/software_manage.php',
-				'title_class' => 'apps_installer',
-				'pages' => array(
-					'softwares_permissions_link' => array(
-						'label' => tr('Software permissions'),
-						'uri' => '/admin/software_rights.php',
-						'visible' => '0',
-						'title_class' => 'apps_installer'
-					)
-				)
-			),
-			'softwares_options' => array(
-				'label' => tr('Software options'),
-				'uri' => '/admin/software_options.php',
-				'title_class' => 'apps_installer'
-			),
 			'plugins_management' => array(
 				'label' => tr('Plugin management'),
 				'uri' => '/admin/settings_plugins.php',

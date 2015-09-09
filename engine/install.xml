@@ -8,9 +8,5 @@
     <copy_dir>${SYSTEM_ENGINE_ROOT}/quota</copy_dir>
     <copy_dir>${SYSTEM_ENGINE_ROOT}/setup</copy_dir>
     <copy_dir>${SYSTEM_ENGINE_ROOT}/tools</copy_dir>
-    <copy_file>${SYSTEM_ENGINE_ROOT}/imscp-pkt-mngr</copy_file>
     <copy_file>${SYSTEM_ENGINE_ROOT}/imscp-rqst-mngr</copy_file>
-    <copy_file>${SYSTEM_ENGINE_ROOT}/imscp-sw-mngr</copy_file>
-    <copy_file>${SYSTEM_ENGINE_ROOT}/imscp_common_code.pl</copy_file>
-    <copy_file>${SYSTEM_ENGINE_ROOT}/imscp_common_methods.pl</copy_file>
 </install>

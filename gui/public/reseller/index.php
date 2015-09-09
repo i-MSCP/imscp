@@ -228,10 +228,6 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 		'TR_PHP_EDITOR' => tr('PHP Editor'),
 		'PHP_EDITOR_STATUS' => ($resellerProperties['php_ini_system'] == 'yes')
 			? '<span style="color:green;">' . tr('Enabled') . '</span>'
-			: '<span style="color:red;">' . tr('Disabled') . '</span>',
-		'TR_APS' => tr('Software installer'),
-		'APS_STATUS' => ($resellerProperties['software_allowed'] == 'yes')
-			? '<span style="color:green;">' . tr('Enabled') . '</span>'
 			: '<span style="color:red;">' . tr('Disabled') . '</span>'
 	));
 }

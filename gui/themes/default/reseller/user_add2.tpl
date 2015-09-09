@@ -332,19 +332,6 @@
 	</td>
 </tr>
 <!-- EDP: ext_mail_feature -->
-<!-- BDP: aps_feature -->
-<tr>
-	<td>{TR_SOFTWARE_SUPP}</td>
-	<td>
-		<div class="radio">
-			<input type="radio" name="software_allowed" value="_yes_" {VL_SOFTWAREY} id="software_allowed_yes"/>
-			<label for="software_allowed_yes">{TR_YES}</label>
-			<input type="radio" name="software_allowed" value="_no_" {VL_SOFTWAREN} id="software_allowed_no"/>
-			<label for="software_allowed_no">{TR_NO}</label>
-		</div>
-	</td>
-</tr>
-<!-- EDP: aps_feature -->
 <!-- BDP: backup_feature -->
 <tr>
 	<td>{TR_BACKUP}</td>

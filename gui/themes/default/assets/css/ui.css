@@ -631,10 +631,6 @@ h2 span, h3 span {
     background-image: url(../images/content/table_icon_users2.png);
 }
 
-.body .apps_installer {
-    background-image: url(../images/content/table_icon_app_installer_cd_big.png);
-}
-
 .body .custom_link {
     background-image: url(../images/content/table_icon_custom_link.png);
 }
@@ -797,16 +793,6 @@ table .icon {
 }
 
 /* Icons */
-.app_icon {
-    background-position: top left;
-    background-repeat: no-repeat;
-    padding-left: 20px;
-    height: 16px;
-    line-height: 16px;
-    display: -moz-inline-block;
-    display: inline-block;
-    margin: 0 -5px 0 5px;
-}
 
 .icon {
     background-position: left center;
@@ -1025,30 +1011,6 @@ table .icon {
 
 .i_webmailicon {
     background-image: url(../images/icons/webmailicon.png);
-}
-
-.i_app_installer {
-    background-image: url(../images/icons/app_installer_cd.png);
-}
-
-.i_app_installed {
-    background-image: url(../images/icons/help.png);
-}
-
-.i_app_download {
-    background-image: url(../images/icons/app_installer_download.png);
-}
-
-.i_app_asc {
-    background-image: url(../images/icons/app_installer_asc.gif);
-}
-
-.i_app_desc {
-    background-image: url(../images/icons/app_installer_desc.gif);
-}
-
-.i_appicon {
-    background-image: url(../images/icons/appicon.png);
 }
 
 .i_open {
@@ -1349,16 +1311,6 @@ table .graph {
 }
 
 /* Accordion */
-
-#package_details {
-    width: 550px;
-    text-align: left;
-    margin: 10px 0;
-}
-
-#package_details div {
-    padding: 0;
-}
 
 .accordion .left {
     width: 35%;

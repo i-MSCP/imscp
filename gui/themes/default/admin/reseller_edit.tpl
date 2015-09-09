@@ -227,45 +227,6 @@
 		</td>
 	</tr>
 	<tr>
-		<td>{TR_SOFTWARES_INSTALLER}</td>
-		<td>
-			<div class="radio">
-				<input type="radio" name="software_allowed" id="software_allowed_yes"
-					   value="yes" {SOFTWARES_INSTALLER_YES} />
-				<label for="software_allowed_yes">{TR_YES}</label>
-				<input type="radio" name="software_allowed" id="software_allowed_no"
-					   value="no" {SOFTWARES_INSTALLER_NO} />
-				<label for="software_allowed_no">{TR_NO}</label>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>{TR_SOFTWARES_REPOSITORY}</td>
-		<td>
-			<div class="radio">
-				<input type="radio" name="softwaredepot_allowed" id="softwaredepot_allowed_yes"
-					   value="yes" {SOFTWARES_REPOSITORY_YES} />
-				<label for="softwaredepot_allowed_yes">{TR_YES}</label>
-				<input type="radio" name="softwaredepot_allowed" id="softwaredepot_allowed_no"
-					   value="no" {SOFTWARES_REPOSITORY_NO} />
-				<label for="softwaredepot_allowed_no">{TR_NO}</label>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>{TR_WEB_SOFTWARES_REPOSITORY}</td>
-		<td>
-			<div class="radio">
-				<input type="radio" name="websoftwaredepot_allowed" id="websoftwaredepot_allowed_yes"
-					   value="yes" {WEB_SOFTWARES_REPOSITORY_YES} />
-				<label for="websoftwaredepot_allowed_yes">{TR_YES}</label>
-				<input type="radio" name="websoftwaredepot_allowed" id="websoftwaredepot_allowed_no"
-					   value="no" {WEB_SOFTWARES_REPOSITORY_NO} />
-				<label for="websoftwaredepot_allowed_no">{TR_NO}</label>
-			</div>
-		</td>
-	</tr>
-	<tr>
 		<td>{TR_SUPPORT_SYSTEM}</td>
 		<td>
 			<div class="radio">

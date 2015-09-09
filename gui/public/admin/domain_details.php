@@ -140,7 +140,6 @@ function admin_generatePage($tpl, $domainId)
 			'VL_CGI_SUPP' => translate_limit_value($domainProperties['domain_cgi']),
 			'VL_DNS_SUPP' => translate_limit_value($domainProperties['domain_dns']),
 			'VL_EXT_MAIL_SUPP' => translate_limit_value($domainProperties['domain_external_mail']),
-			'VL_SOFTWARE_SUPP' => translate_limit_value($domainProperties['domain_software_allowed']),
 			'VL_BACKUP_SUP' => translate_limit_value($domainProperties['allowbackup']),
 			'VL_TRAFFIC_PERCENT' => $trafficUsagePercent,
 			'VL_TRAFFIC_USED' => bytesHuman($trafficUsageBytes),
@@ -220,7 +219,6 @@ $tpl->assign(
 		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
 		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
 		'TR_UPDATE_DATA' => tr('Submit changes'),
-		'TR_SOFTWARE_SUPP' => tr('Software installer'),
 		'TR_BACK' => tr('Back')
 	)
 );

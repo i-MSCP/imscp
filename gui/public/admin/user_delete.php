@@ -78,10 +78,6 @@ function admin_deleteUser($userId)
 	// Note: Admin can also have they own hosting_plans bug must not be considerated
 	// as common item since first admin must be never removed
 	if ($userType == 'reseller') {
-		// Getting reseller's software packages to remove if any
-		$stmt = exec_query('SELECT software_id, software_archive FROM web_software WHERE reseller_id = ?', $userId);
-		$swPackages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 		// Getting custom reseller isp logo if set
 		$resellerLogo = $row['logo'];
 
@@ -89,8 +85,7 @@ function admin_deleteUser($userId)
 		$itemsToDelete = array_merge(
 			array(
 				'hosting_plans' => 'reseller_id = ?',
-				'reseller_props' => 'reseller_id = ?',
-				'web_software' => 'reseller_id = ?'
+				'reseller_props' => 'reseller_id = ?'
 			),
 			$itemsToDelete
 		);
@@ -116,16 +111,6 @@ function admin_deleteUser($userId)
 		// We are safe here. We don't stop the process even if files cannot be removed. That can result in garbages but
 		// the sysadmin can easily delete them through ssh.
 
-		// Deleting reseller software instaler local repository
-		if (isset($swPackages) && !empty($swPackages)) {
-			_admin_deleteResellerSwPackages($userId, $swPackages);
-		} elseif (
-			$userType == 'reseller' && is_dir($cfg['GUI_APS_DIR'] . '/' . $userId) &&
-			@rmdir($cfg['GUI_APS_DIR'] . '/' . $userId) == false
-		) {
-			write_log('Unable to remove reseller software directory: ' . $cfg['GUI_APS_DIR'] . '/' . $userId, E_USER_ERROR);
-		}
-
 		// Deleting user logo
 		if (isset($resellerLogo) && !empty($resellerLogo)) {
 			$logoPath = $cfg['GUI_ROOT_DIR'] . '/data/persistent/ispLogos/' . $resellerLogo;
@@ -146,37 +131,6 @@ function admin_deleteUser($userId)
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, array('userId' => $userId));
 
 	redirectTo('manage_users.php');
-}
-
-/**
- * Delete reseller software
- *
- * @param int $userId Reseller unique identifier
- * @param array $swPackages Array that contains software package to remove
- * @return void
- */
-function _admin_deleteResellerSwPackages($userId, array $swPackages)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	// Remove all reseller's software packages if any
-	foreach ($swPackages as $package) {
-		$packagePath = $cfg['GUI_APS_DIR'] . '/' . $userId . '/' . $package['software_archive'] . '-' .
-			$package['software_id'] . '.tar.gz';
-
-
-		if (file_exists($packagePath) && !@unlink($packagePath)) {
-			write_log('Unable to remove reseller package ' . $packagePath, E_USER_ERROR);
-		}
-	}
-
-	// Remove reseller software installer local repository directory
-	$resellerSwDirectory = $cfg['GUI_APS_DIR'] . '/' . $userId;
-
-	if (is_dir($resellerSwDirectory) && @rmdir($resellerSwDirectory) == false) {
-		write_log('Unable to remove reseller software repository: ' . $resellerSwDirectory, E_USER_ERROR);
-	}
 }
 
 /**

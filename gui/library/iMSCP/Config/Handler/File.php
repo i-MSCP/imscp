@@ -71,8 +71,6 @@
  * @property string BASE_SERVER_VHOST_PREFIX
  * @property string DATE_FORMAT Date format
  * @property string BASE_SERVER_VHOST Base server vhost
- * @property string GUI_APS_DEPOT_DIR Application software repository directory
- * @property string APS_MAX_REMOTE_FILESIZE Max size for remote application package
  * @property int DATABASE_REVISION Last database revision
  * @property int CRITICAL_UPDATE_REVISION Last critical update revision
  * @property string BASE_SERVER_IP Base server IP
@@ -90,7 +88,6 @@
  * @property string SERVER_HOSTNAME Server hostname
  * @property string Version
  * @property string CodeName
- * @property string GUI_APS_DIR Directory for software repositories
  * @property int COMPRESS_OUTPUT Tells whether or not output must be compressed
  * @property int ENABLE_SSL Tells whether or not SSL feature for customers is enabled
  * @property bool MAIN_MENU_SHOW_LABELS Tells whether or not labels must be showed for main menu links

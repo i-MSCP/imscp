@@ -82,7 +82,7 @@ function admin_getResellerProps($resellerId)
 				reseller_id, current_sub_cnt, max_sub_cnt, current_als_cnt, max_als_cnt, current_mail_cnt,
 				max_mail_cnt, current_ftp_cnt, max_ftp_cnt, current_sql_db_cnt, max_sql_db_cnt,
 				current_sql_user_cnt, max_sql_user_cnt, current_disk_amnt, max_disk_amnt, current_traff_amnt,
-				max_traff_amnt, software_allowed, php_ini_system AS reseller_php_ini_system
+				max_traff_amnt,  php_ini_system AS reseller_php_ini_system
 			FROM
 				reseller_props
 			WHERE
@@ -108,9 +108,8 @@ function admin_getDomainProps($domainId)
 				domain_id, domain_name, domain_expires, created_by, domain_status, domain_ip_id,
 				domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
 				domain_sqld_limit, domain_sqlu_limit, domain_disk_limit, domain_disk_usage, domain_traffic_limit,
-				domain_php, domain_cgi, domain_dns, domain_software_allowed, allowbackup,
-				phpini_perm_system AS customer_php_ini_system, domain_external_mail, web_folder_protection,
-				(mail_quota / 1048576) AS mail_quota
+				domain_php, domain_cgi, domain_dns, allowbackup, phpini_perm_system AS customer_php_ini_system,
+				domain_external_mail, web_folder_protection, (mail_quota / 1048576) AS mail_quota
 			FROM
 				domain
 			INNER JOIN
@@ -228,7 +227,6 @@ function &admin_getData($domainId, $forUpdate = false)
 		$data['fallback_domain_php'] = $data['domain_php'];
 		$data['fallback_domain_cgi'] = $data['domain_cgi'];
 		$data['fallback_domain_dns'] = $data['domain_dns'];
-		$data['fallback_domain_software_allowed'] = $data['domain_software_allowed'];
 		$data['fallback_allowbackup'] = $data['allowbackup'] = explode('|', $data['allowbackup']);
 		$data['fallback_domain_external_mail'] = $data['domain_external_mail'];
 		$data['fallback_web_folder_protection'] = $data['web_folder_protection'];
@@ -286,13 +284,6 @@ function &admin_getData($domainId, $forUpdate = false)
 
 			$data['domain_dns'] = isset($_POST['domain_dns'])
 				? clean_input($_POST['domain_dns']) : $data['domain_dns'];
-
-			if ($data['software_allowed'] == 'yes') {
-				$data['domain_software_allowed'] = isset($_POST['domain_software_allowed'])
-					? clean_input($_POST['domain_software_allowed']) : $data['domain_software_allowed'];
-			} else {
-				$data['domain_software_allowed'] = 'no';
-			}
 
 			if($cfg['BACKUP_DOMAINS'] == 'yes') {
 				$data['allowbackup'] = isset($_POST['allowbackup']) && is_array($_POST['allowbackup'])
@@ -552,15 +543,6 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		$tplVars['CUSTOM_DNS_RECORDS_FEATURE'] = '';
 	}
 
-	// APS support
-	if($data['software_allowed'] == 'no') {
-		$tplVars['APS_BLOCK'] =  '';
-	} else {
-		$tplVars['TR_APS'] = tr('Software installer');
-		$tplVars['APS_YES'] = ($data['domain_software_allowed'] == 'yes') ? $htmlChecked : '';
-		$tplVars['APS_NO'] = ($data['domain_software_allowed'] != 'yes') ? $htmlChecked : '';
-	}
-
 	// External mail support
 	if($data['max_mail_cnt'] == '-1') {
 		$tplVars['EXT_MAIL_BLOCK'] =  '';
@@ -796,7 +778,7 @@ function admin_checkAndUpdateData($domainId)
 
 				if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
 					if($phpEditor->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_perm_disable_functions'])) {
-						if($phpEditor->getClPerm('phpiniDisableFunctions') != $_POST['phpini_perm_disable_functions']) {
+						if($phpEditor->getClPermVal('phpiniDisableFunctions') != $_POST['phpini_perm_disable_functions']) {
 							$phpEditor->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));
 							$phpEditor->setData('phpiniDisableFunctions', $phpEditor->getDataDefaultVal('phpiniDisableFunctions'));
 						}
@@ -850,10 +832,6 @@ function admin_checkAndUpdateData($domainId)
 		// Check for custom DNS records support (we are safe here)
 		$data['domain_dns'] = (in_array($data['domain_dns'], array('no', 'yes')))
 			? $data['domain_dns'] : $data['fallback_domain_dns'];
-
-		// Check for APS support (we are safe here)
-		$data['domain_software_allowed'] = (in_array($data['domain_software_allowed'], array('no', 'yes')))
-			? $data['domain_software_allowed'] : $data['fallback_domain_software_allowed'];
 
 		// Check for External mail server support (we are safe here)
 		$data['domain_external_mail'] = (in_array($data['domain_external_mail'], array('no', 'yes')))
@@ -942,8 +920,8 @@ function admin_checkAndUpdateData($domainId)
 						domain_expires = ?, domain_last_modified = ?, domain_mailacc_limit = ?, domain_ftpacc_limit = ?,
 						domain_traffic_limit = ?, domain_sqld_limit = ?, domain_sqlu_limit = ?, domain_status = ?,
 						domain_alias_limit = ?, domain_subd_limit = ?, domain_ip_id = ?, domain_disk_limit = ?,
-						domain_php = ?, domain_cgi = ?, allowbackup = ?, domain_dns = ?, domain_software_allowed = ?,
-						phpini_perm_system = ?, phpini_perm_allow_url_fopen = ?, phpini_perm_display_errors = ?,
+						domain_php = ?, domain_cgi = ?, allowbackup = ?, domain_dns = ?, phpini_perm_system = ?,
+						phpini_perm_allow_url_fopen = ?, phpini_perm_display_errors = ?,
 						phpini_perm_disable_functions = ?, domain_external_mail = ?, web_folder_protection = ?,
 						mail_quota = ?
 					WHERE
@@ -954,10 +932,10 @@ function admin_checkAndUpdateData($domainId)
 					$data['domain_traffic_limit'], $data['domain_sqld_limit'], $data['domain_sqlu_limit'],
 					($daemonRequest) ? 'tochange' : 'ok', $data['domain_alias_limit'], $data['domain_subd_limit'],
 					$data['domain_ip_id'], $data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
-					implode('|',$data['allowbackup']), $data['domain_dns'], $data['domain_software_allowed'],
-					$phpEditor->getClPermVal('phpiniSystem'), $phpEditor->getClPermVal('phpiniAllowUrlFopen'),
-					$phpEditor->getClPermVal('phpiniDisplayErrors'), $phpEditor->getClPermVal('phpiniDisableFunctions'),
-					$data['domain_external_mail'], $data['web_folder_protection'], $data['mail_quota'] * 1048576,
+					implode('|',$data['allowbackup']), $data['domain_dns'], $phpEditor->getClPermVal('phpiniSystem'),
+					$phpEditor->getClPermVal('phpiniAllowUrlFopen'),  $phpEditor->getClPermVal('phpiniDisplayErrors'),
+					$phpEditor->getClPermVal('phpiniDisableFunctions'),  $data['domain_external_mail'],
+					$data['web_folder_protection'], $data['mail_quota'] * 1048576,
 					$domainId
 				)
 			);
@@ -1111,7 +1089,6 @@ $tpl->define_dynamic(array(
 	 'php_editor_default_values_block' => 'php_directives_editor_block',
 	 'cgi_block' => 'page',
 	 'custom_dns_records_feature' => 'page',
-	 'aps_block' => 'page',
 	 'backup_block' => 'page'
 ));
 

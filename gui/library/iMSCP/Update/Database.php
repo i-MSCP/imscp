@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 219;
+	protected $lastUpdate = 221;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -482,94 +482,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #14: Adds table for software installer
-	 *
-	 * @return array SQL statements to be executed
-	 */
-	protected function r48()
-	{
-		$sqlUpd = array(
-			"
-	 			CREATE TABLE IF NOT EXISTS web_software (
-					software_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-					software_master_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					reseller_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					software_name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_version VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_language VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_type VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_db TINYINT(1) NOT NULL,
-					software_archive VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_installfile VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_prefix VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_link VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_desc MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_active INT(1) NOT NULL,
-					software_status VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					rights_add_by INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					software_depot VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
-	  				PRIMARY KEY  (software_id)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-			",
-			"
-				CREATE TABLE IF NOT EXISTS web_software_inst (
-					domain_id INT(10) UNSIGNED NOT NULL,
-					alias_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					subdomain_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					subdomain_alias_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					software_id INT(10) NOT NULL,
-					software_master_id INT(10) UNSIGNED NOT NULL DEFAULT '0',
-					software_res_del INT(1) NOT NULL DEFAULT '0',
-					software_name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_version VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_language VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					path VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					software_prefix VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					db VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					database_user VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					database_tmp_pwd VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					install_username VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					install_password VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					install_email VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-					software_status VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					software_depot VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
-  					KEY software_id (software_id)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-			",
-			$this->addColumn(
-				'domain',
-				'domain_software_allowed',
-				"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER domain_dns"
-			),
-			$this->addColumn(
-				'reseller_props',
-				'software_allowed',
-				"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER reseller_ips"
-			),
-			$this->addColumn(
-				'reseller_props',
-				'softwaredepot_allowed',
-				"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes' AFTER software_allowed"
-			)
-		);
-
-		$stmt = exec_query('SELECT id, props FROM hosting_plans');
-
-		if ($stmt->rowCount()) {
-			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $row['props']);
-				$id = quoteValue($row['id'], PDO::PARAM_INT);
-
-				if (count($props) == 12) {
-					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props,';_no_') WHERE id = $id";
-				}
-			}
-		}
-
-		return $sqlUpd;
-	}
-
-	/**
 	 * Adds i-MSCP daemon service properties in config table
 	 *
 	 * @return null
@@ -593,59 +505,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 		return $this->addColumn(
 			'ftp_users', 'rawpasswd', "varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL AFTER passwd"
 		);
-	}
-
-	/**
-	 * Adds new options for applications installer
-	 *
-	 * @return array SQL statements to be executed
-	 */
-	protected function r52()
-	{
-		$sqlUpd = array(
-			'
-				CREATE TABLE IF NOT EXISTS web_software_depot (
-					package_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-					package_install_type VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
-					package_title VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-					package_version VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL,
-					package_language VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
-					package_type VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL,
-					package_description MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-					package_vendor_hp VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-					package_download_link VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-					package_signature_link VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-					PRIMARY KEY (package_id)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-			',
-			"
-				CREATE TABLE IF NOT EXISTS web_software_options (
-					use_webdepot TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
-					webdepot_xml_url VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
-					webdepot_last_update DATETIME NOT NULL
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-			",
-			"
-				REPLACE INTO web_software_options (
-					use_webdepot, webdepot_xml_url, webdepot_last_update
-				) VALUES (
-					'1', 'http://app-pkg.i-mscp.net/imscp_webdepot_list.xml', '0000-00-00 00:00:00'
-				)
-			",
-			$this->addColumn(
-				'web_software',
-				'software_installtype',
-				'VARCHAR(15) COLLATE utf8_unicode_ci DEFAULT NULL AFTER reseller_id'
-			),
-			"UPDATE web_software SET software_installtype = 'install'",
-			$this->addColumn(
-				'reseller_props',
-				'websoftwaredepot_allowed',
-				"VARCHAR(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes' AFTER softwaredepot_allowed"
-			)
-		);
-
-		return $sqlUpd;
 	}
 
 	/**
@@ -863,18 +722,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds unique index on the web_software_options.use_webdepot column
-	 *
-	 * @return null|string SQL statement to be executed
-	 */
-	protected function r72()
-	{
-		$this->removeDuplicateRowsOnColumns('web_software_options', 'use_webdepot');
-
-		return $this->addIndex('web_software_options', 'use_webdepot', 'UNIQUE', 'use_webdepot');
-	}
-
-	/**
 	 * Adds unique index on user_gui_props.user_id column
 	 *
 	 * @return array SQL statements to be executed
@@ -1018,7 +865,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		return array(
 			// Reseller permissions columns for PHP directives
 			$this->addColumn(
-				'reseller_props', 'php_ini_system', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER websoftwaredepot_allowed"
+				'reseller_props', 'php_ini_system', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER reseller_ips"
 			),
 			$this->addColumn(
 				'reseller_props',
@@ -1070,7 +917,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 			// Domain permissions columns for PHP directives
 			$this->addColumn(
-				'domain', 'phpini_perm_system', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER domain_software_allowed"
+				'domain', 'phpini_perm_system', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER domain_dns"
 			),
 			$this->addColumn(
 				'domain',
@@ -1121,37 +968,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 				PRIMARY KEY (ID)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
-	}
-
-	/**
-	 * Add hosting plan properties for PHP editor
-	 *
-	 * @return array SQL statements to be executed
-	 */
-	protected function r87()
-	{
-		$sqlUpd = array();
-
-		$stmt = execute_query("SELECT id, props FROM hosting_plans");
-
-		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
-
-				if (count($props) == 13) {
-					$sqlUpd[] = "
-						UPDATE
-							hosting_plans
-						SET
-							props = ';no;no;no;no;no;8;2;30;60;64'
-						WHERE
-							id = {$data['id']}
-					";
-				}
-			}
-		}
-
-		return $sqlUpd;
 	}
 
 	/**
@@ -1460,34 +1276,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r109()
 	{
-		$sqlUpd = array(
+		return array(
 			$this->addColumn('domain', 'domain_external_mail', "VARCHAR(15) NOT NULL DEFAULT 'no'"),
 			$this->addColumn('domain', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
 			$this->addColumn('domain', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL"),
 			$this->addColumn('domain_aliasses', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
 			$this->addColumn('domain_aliasses', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL")
 		);
-
-		$stmt = execute_query("SELECT id, props FROM hosting_plans");
-
-		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
-
-				if (count($props) == 23) {
-					$sqlUpd[] = "
-						UPDATE
-							hosting_plans
-						SET
-							props = CONCAT(props, ';_no_')
-						WHERE
-							id = {$data['id']}
-					";
-				}
-			}
-		}
-
-		return $sqlUpd;
 	}
 
 	/**
@@ -1538,33 +1333,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig->del('PHPINI_REGISTER_GLOBALS');
 		}
 
-		$sqlUpd = array(
+		return array(
 			$this->dropColumn('domain', 'phpini_perm_register_globals'),
 			$this->dropColumn('reseller_props', 'php_ini_al_register_globals'),
 			$this->dropColumn('php_ini', 'register_globals')
 		);
-
-		$stmt = execute_query("SELECT id, props FROM hosting_plans");
-
-		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
-
-				if (count($props) == 24) {
-					unset($props[15]); // Remove register global properties
-
-					$sqlUpd[] = "
-						UPDATE
-							hosting_plans
-						SET
-							props = '" . implode(';', $props) . "'
-						WHERE
-							id = ''
-						{$data['id']}
-					";
-				}
-			}
-		}
 	}
 
 	/**
@@ -1713,8 +1486,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			'hosting_plans' => 'reseller_id',
 			'reseller_props' => 'reseller_id',
 			'tickets' => array('ticket_to', 'ticket_from'),
-			'user_gui_props' => 'user_id',
-			'web_software' => 'reseller_id'
+			'user_gui_props' => 'user_id'
 		);
 
 		$stmt = execute_query('SELECT admin_id FROM admin');
@@ -2205,30 +1977,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Add Web folders protection option propertie to hosting plans
-	 *
-	 * @return array SQL statements to be executed
-	 */
-	protected function r143()
-	{
-		$sqlUpd = array();
-
-		$stmt = execute_query('SELECT id, props FROM hosting_plans');
-
-		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
-
-				if (count($props) == 23) {
-					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props,';_no_') WHERE id = {$data['id']}";
-				}
-			}
-		}
-
-		return $sqlUpd;
-	}
-
-	/**
 	 * Update sql_user.sqlu_name column
 	 *
 	 * @return string SQL statement to be executed
@@ -2377,121 +2125,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r155()
 	{
 		return $this->addColumn('domain', 'mail_quota', 'BIGINT(20) UNSIGNED NOT NULL');
-	}
-
-	/**
-	 * Synchronize mail quota values
-	 *
-	 * @return array SQL statements to be executed
-	 */
-	protected function r156()
-	{
-		$sqlUpd = array();
-
-		$stmt = execute_query('SELECT id, props FROM hosting_plans');
-
-		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
-
-				if (count($props) == 24) {
-					$quota = $props[9] * 1048576; // MiB to bytes
-
-					$sqlUpd[] = "
-						UPDATE
-							hosting_plans
-						SET
-							props = CONCAT(props, ';$quota')
-						WHERE
-							id = " . $data['id'] . "
-					";
-				}
-			}
-		}
-
-		return $sqlUpd;
-	}
-
-	/**
-	 * Fix possible inconsistencies in hosting plan properties
-	 *
-	 * @return array SQL statements to be executed
-	 */
-	protected function r157()
-	{
-		$sqlUpd = array();
-
-		$stmt = execute_query(
-			"
-				SELECT
-					t1.id, t1.reseller_id, t1.props,
-					IFNULL(t2.php_ini_max_post_max_size, '99999999') AS post_max_size,
-					IFNULL(t2.php_ini_max_upload_max_filesize, '99999999') AS upload_max_filesize,
-					IFNULL(t2.php_ini_max_max_execution_time, '99999999') AS max_execution_time,
-					IFNULL(t2.php_ini_max_max_input_time, '99999999') AS max_input_time,
-					IFNULL(t2.php_ini_max_memory_limit, '99999999') AS memory_limit
-				FROM
-					hosting_plans AS t1
-				LEFT JOIN
-					reseller_props AS t2 ON(t2.reseller_id = t1.reseller_id)
-			"
-		);
-
-		if ($stmt->rowCount()) {
-			/** @var $dbConfig iMSCP_Config_Handler_Db */
-			$dbConfig = iMSCP_Registry::get('dbConfig');
-
-			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$propsArr = explode(';', rtrim($row['props'], ';'));
-
-				$hpPropMap = array(
-					0 => array('_no_', array('_yes_', '_no_')), // PHP Feature
-					1 => array('_no_', array('_yes_', '_no_')), // CGI Feature
-					2 => array('-1', 'LIMIT'), // Max Subdomains
-					3 => array('-1', 'LIMIT'), // Max Domain Aliases
-					4 => array('-1', 'LIMIT'), // Max Mail Accounts
-					5 => array('-1', 'LIMIT'), // Max Ftp Accounts
-					6 => array('-1', 'LIMIT'), // Max Sql Databases
-					7 => array('-1', 'LIMIT'), // Max Sql Users
-					8 => array('0', 'NUM'), // Monthly Traffic Limit
-					9 => array('0', 'NUM'), // Diskspace limit
-					10 => array('_no_', array('_no_', '_dmn_', '_sql_', '_full_')), // Backup feature
-					11 => array('_no_', array('_yes_', '_no_')), // Custom DNS feature
-					12 => array('_no_', array('_yes_', '_no_')), // Software Installer feature
-					13 => array('no', array('yes', 'no')), // Php Editor Feature
-					14 => array('no', array('yes', 'no')), // Allow URL fopen
-					15 => array('no', array('yes', 'no')), // Display errors
-					16 => array('no', array('yes', 'no', 'exec')), // Disable funtions
-					17 => array(min($row['post_max_size'], $dbConfig['PHPINI_POST_MAX_SIZE']), 'NUM'),
-					18 => array(min($row['upload_max_filesize'], $dbConfig['PHPINI_UPLOAD_MAX_FILESIZE']), 'NUM'),
-					19 => array(min($row['max_execution_time'], $dbConfig['PHPINI_MAX_EXECUTION_TIME']), 'NUM'),
-					20 => array(min($row['max_input_time'], $dbConfig['PHPINI_MAX_INPUT_TIME']), 'NUM'),
-					21 => array(min($row['memory_limit'], $dbConfig['PHPINI_MEMORY_LIMIT']), 'NUM'),
-					22 => array('_no_', array('_yes_', '_no_')), // External Mail Server Feature
-					23 => array('_no_', array('_yes_', '_no_')), // Web folder protection
-					24 => array(is_number($propsArr[9]) ? $propsArr[9] : '0', 'NUM') // Email quota
-				);
-
-				foreach ($hpPropMap as $index => $values) {
-					if (isset($propsArr[$index])) {
-						if ($values[1] == 'LIMIT' && !imscp_limit_check($propsArr[$index])) {
-							$propsArr[$index] = $values[0];
-						} elseif ($values[1] == 'NUM' && !is_number($propsArr[$index])) {
-							$propsArr[$index] = $values[0];
-						} elseif (is_array($values[1]) && !in_array($propsArr[$index], $values[1])) {
-							$propsArr[$index] = $values[0];
-						}
-					} else {
-						$propsArr[$index] = $values[0];
-					}
-				}
-
-				$propStr = implode(';', $propsArr);
-				$sqlUpd[] = "UPDATE hosting_plans SET props = '$propStr' WHERE id = '{$row['id']}'";
-			}
-		}
-
-		return $sqlUpd;
 	}
 
 	/**
@@ -3219,43 +2852,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Updated hosting_plans.props values for backup feature
-	 *
-	 * @return array SQL statements to be executed
-	 */
-	protected function r204()
-	{
-		$sqlUpd = array();
-		$stmt = exec_query('SELECT id, props FROM hosting_plans');
-
-		if($stmt->rowCount()) {
-			while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$needUpdate = true;
-				$props = explode(';', $row['props']);
-				$id = quoteValue($row['id'], PDO::PARAM_INT);
-
-				switch ($props[10]) {
-					case '_full_':
-						$props[10] = '_dmn_|_sql_|_mail_';
-						break;
-					case '_no_':
-						$props[10] = '';
-						break;
-					default:
-						$needUpdate = false;
-				}
-
-				if($needUpdate) {
-					$props = quoteValue(implode(';', $props));
-					$sqlUpd[] = "UPDATE hosting_plans SET props = $props WHERE id = $id";
-				}
-			}
-		}
-
-		return $sqlUpd;
-	}
-
-	/**
 	 * Add plugin.plugin_lock field
 	 *
 	 * @return string SQL statement to be executed
@@ -3480,5 +3076,36 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		return null;
+	}
+
+	/**
+	 * Remove any software installer related tables and columns
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function r220()
+	{
+		return $sqlUpd;
+
+		return array(
+			$this->dropTable('web_software'),
+			$this->dropTable('web_software_depot'),
+			$this->dropTable('web_software_inst'),
+			$this->dropTable('web_software_options'),
+			$this->dropColumn('domain', 'domain_software_allowed'),
+			$this->dropColumn('reseller_props', 'software_allowed'),
+			$this->dropColumn('reseller_props', 'softwaredepot_allowed'),
+			$this->dropColumn('reseller_props', 'websoftwaredepot_allowed')
+		);
+	}
+
+	/**
+	 * Remove any hosting plan by truncating the hosting_plans table
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r221()
+	{
+		return 'TRUNCATE hosting_plans';
 	}
 }

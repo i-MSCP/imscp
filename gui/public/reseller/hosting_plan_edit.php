@@ -180,7 +180,7 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 	$status = $data['status'];
 
 	list(
-		$php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $backup, $dns, $aps, $phpEditor,
+		$php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $backup, $dns, $phpEditor,
 		$phpAllowUrlFopenPerm, $phpDisplayErrorsPerm, $phpDisableFunctionsPerm, $phpPostMaxSizeValue,
 		$phpUploadMaxFilesizeValue, $phpMaxExecutionTimeValue, $phpMaxInputTimeValue, $phpMemoryLimitValue, $hpExtMail,
 		$hpWebFolderProtection, $mailQuota
@@ -222,8 +222,6 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 			'CGI_NO' => ($cgi == '_no_') ? $checked : '',
 			'DNS_YES' => ($dns == '_yes_') ? $checked : '',
 			'DNS_NO' => ($dns == '_no_') ? $checked : '',
-			'SOFTWARE_YES' => ($aps == '_yes_') ? $checked : '',
-			'SOFTWARE_NO' => ($aps == '_no_') ? $checked : '',
 			'EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $checked : '',
 			'EXTMAIL_NO' => ($hpExtMail == '_no_') ? $checked : '',
 			'PROTECT_WEB_FOLDERS_YES' => ($hpWebFolderProtection == '_yes_') ? $checked : '',
@@ -258,7 +256,7 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 function reseller_generateErrorPage($tpl, $phpini)
 {
 	global $id, $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace,
-		   $php, $cgi, $backup, $dns, $aps, $hpExtMail, $hpWebFolderProtection, $status;
+		   $php, $cgi, $backup, $dns, $hpExtMail, $hpWebFolderProtection, $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -284,8 +282,6 @@ function reseller_generateErrorPage($tpl, $phpini)
 			'CGI_NO' => ($cgi == '_no_') ? $checked : '',
 			'DNS_YES' => ($dns == '_yes_') ? $checked : '',
 			'DNS_NO' => ($dns == '_no_') ? $checked : '',
-			'SOFTWARE_YES' => ($aps == '_yes_') ? $checked : '',
-			'SOFTWARE_NO' => ($aps == '_no_') ? $checked : '',
 			'EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $checked : '',
 			'EXTMAIL_NO' => ($hpExtMail == '_no_') ? $checked : '',
 			'PROTECT_WEB_FOLDERS_YES' => ($hpWebFolderProtection == '_yes_') ? $checked : '',
@@ -319,7 +315,7 @@ function reseller_generateErrorPage($tpl, $phpini)
 function reseller_checkData($phpini)
 {
 	global $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php,
-		   $cgi, $dns, $backup, $aps, $hpExtMail, $hpWebFolderProtection, $status;
+		   $cgi, $dns, $backup, $hpExtMail, $hpWebFolderProtection, $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -341,7 +337,6 @@ function reseller_checkData($phpini)
 	$cgi = isset($_POST['hp_cgi']) ? clean_input($_POST['hp_cgi']) : '_no_';
 	$dns = isset($_POST['hp_dns']) ? clean_input($_POST['hp_dns']) : '_no_';
 	$backup = isset($_POST['hp_backup']) && is_array($_POST['hp_backup']) ? $_POST['hp_backup'] : array();
-	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$hpExtMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
 
 	$hpWebFolderProtection = isset($_POST['hp_protected_webfolders'])
@@ -353,7 +348,6 @@ function reseller_checkData($phpini)
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
 	$backup = resellerHasFeature('backup') ? array_intersect($backup, array('_dmn_', '_sql_', '_mail_')) : array();
-	$aps = (resellerHasFeature('aps') && $aps == '_yes_') ? '_yes_' : '_no_';
 	$hpExtMail = ($hpExtMail == '_yes_') ? '_yes_' : '_no_';
 	$hpWebFolderProtection = ($hpWebFolderProtection == '_yes_') ? '_yes_' : '_no_';
 
@@ -474,10 +468,6 @@ function reseller_checkData($phpini)
 		}
 	}
 
-	if ($php == '_no_' && $aps == '_yes_') {
-		set_page_message(tr('The software installer require the PHP support.'), 'error');
-	}
-
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		return true;
 	} else {
@@ -494,7 +484,7 @@ function reseller_checkData($phpini)
 function reseller_UpdateHostingPlan($phpini)
 {
 	global $id, $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace,
-		   $php, $cgi, $dns, $backup, $aps, $hpExtMail, $hpWebFolderProtection, $status;
+		   $php, $cgi, $dns, $backup, $hpExtMail, $hpWebFolderProtection, $status;
 
 	$hpProps = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$monthlyTraffic;$diskspace;" . implode('|', $backup) . ";$dns;$aps";
 	$hpProps .= ';' . $phpini->getClPermVal('phpiniSystem') . ';' . $phpini->getClPermVal('phpiniAllowUrlFopen');
@@ -553,7 +543,6 @@ $tpl->define_dynamic(
 		'php_editor_default_values_block' => 'php_editor_feature',
 		'cgi_feature' => 'page',
 		'custom_dns_feature' => 'page',
-		'aps_feature' => 'page',
 		'backup_feature' => 'page',
 		'submit_button' => 'page'
 	)
@@ -609,7 +598,6 @@ if (isset($_GET['id'])) {
 			'TR_PHP' => tr('PHP'),
 			'TR_CGI' => tr('CGI'),
 			'TR_DNS' => tr('Custom DNS records'),
-			'TR_SOFTWARE_SUPP' => tr('Software installer'),
 			'TR_EXTMAIL' => tr('External mail server'),
 			'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),
 			'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (only if supported by the file system)."),
@@ -639,7 +627,6 @@ if (isset($_GET['id'])) {
 	if (!resellerHasFeature('php_editor')) $tpl->assign('PHP_EDITOR_FEATURE', '');
 	if (!resellerHasFeature('cgi')) $tpl->assign('CGI_FEATURE', '');
 	if (!resellerHasFeature('custom_dns_records')) $tpl->assign('CUSTOM_DNS_RECORDS_FEATURE', '');
-	if (!resellerHasFeature('aps')) $tpl->assign('APS_FEATURE', '');
 	if (!resellerHasFeature('external_mail')) $tpl->assign('EXT_MAIL_FEATURE', '');
 	if (!resellerHasFeature('backup')) $tpl->assign('BACKUP_FEATURE', '');
 
