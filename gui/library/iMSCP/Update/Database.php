@@ -3427,7 +3427,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Remove ftp_users.rawpassword column
+	 * Remove ftp_users.rawpasswd column
 	 *
 	 * @return string SQL statements to be executed
 	 */
