@@ -444,7 +444,7 @@ EOF
 			}
 
 			if($section eq 'sql') {
-				while(my $filepath = </var/lib/mysql/debian-*.flag>) {
+				while(my $filepath = glob '/var/lib/mysql/debian-*.flag') {
 					iMSCP::File->new( filename => $filepath )->delFile();
 				}
 			}
