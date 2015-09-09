@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 215;
+	protected $lastUpdate = 219;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3424,5 +3424,61 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r215()
 	{
 		return $this->addColumn('ftp_users', 'status', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok'");
+	}
+
+	/**
+	 * Remove ftp_users.rawpassword column
+	 *
+	 * @return string SQL statements to be executed
+	 */
+	protected function r216()
+	{
+		return $this->dropColumn('ftp_users', 'rawpasswd');
+	}
+
+	/**
+	 * Remove sql_user.sql_upass column
+	 *
+	 * @return string SQL statements to be executed
+	 */
+	protected function r217()
+	{
+		return $this->dropColumn('sql_user', 'sqlu_pass');
+	}
+
+	/**
+	 * Update mail_users.mail_pass columns
+	 *
+	 * @return null|string
+	 */
+	protected function r218()
+	{
+		return $this->changeColumn(
+			'mail_users',
+			'mail_pass',
+			"mail_pass varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '_no_'"
+		);
+	}
+
+	/**
+	 * Encrypt all mail user passwords using SHA512-crypt algorithm
+	 *
+	 * @return null
+	 */
+	protected function r219()
+	{
+		$stmt = exec_query(
+			"SELECT mail_id, mail_pass FROM mail_users WHERE mail_pass <> ? AND mail_pass NOT LIKE ?",
+			array('_no_', '$6$%')
+		);
+
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$row['mail_pass'] = \iMSCP\Crypt::sha512($row['mail_pass']);
+			exec_query(
+				'UPDATE mail_users SET mail_pass = ? WHERE mail_id = ?', array($row['mail_pass'], $row['mail_id'])
+			);
+		}
+
+		return null;
 	}
 }

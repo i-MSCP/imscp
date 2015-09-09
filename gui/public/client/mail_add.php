@@ -156,6 +156,8 @@ function client_addMailAccount()
 					return false;
 				}
 
+				$password = \iMSCP\Crypt::sha512($password);
+
 				// Check for quota
 				$quota = clean_input($_POST['quota']);
 
@@ -260,13 +262,10 @@ function client_addMailAccount()
 					) VALUES
 						(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 				';
-				exec_query(
-					$query,
-					array(
-						$username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType, $subId,
-						'toadd', '0', NULL, $quota, $mailAddr
-					)
-				);
+				exec_query($query, array(
+					$username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType,
+					$subId, 'toadd', '0', NULL, $quota, $mailAddr
+				));
 
 				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onAfterAddMail,

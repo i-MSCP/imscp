@@ -83,6 +83,7 @@ TESTS
 	  - iMSCP::SetRights libraries
 
 YOUTRACK
+	Fixed: #IP-0826 Any password should be encrypted
 	Fixed: #IP-1367 Support for the VsFTPd server
 	Fixed: #IP-1383 Security - Remove autologin feature to remove plaintext passwords
 	Fixed: #IP-1386 Length of password generator is hardcoded

@@ -35,9 +35,9 @@ function client_getEmailAccountData($mailId)
 	if (null === $mailData) {
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-		$stmt = exec_query(
-			'SELECT * FROM mail_users WHERE mail_id = ? AND domain_id = ?', array($mailId, $mainDmnProps['domain_id'])
-		);
+		$stmt = exec_query('SELECT * FROM mail_users WHERE mail_id = ? AND domain_id = ?', array(
+			$mailId, $mainDmnProps['domain_id']
+		));
 
 		if (!$stmt->rowCount()) {
 			showBadRequestErrorPage();
@@ -100,6 +100,8 @@ function client_editMailAccount()
 				} elseif (!checkPasswordSyntax($password)) {
 					return false;
 				}
+
+				$password = \iMSCP\Crypt::sha512($password);
 			} else {
 				$password = $mailData['mail_pass'];
 			}

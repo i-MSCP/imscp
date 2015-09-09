@@ -18,7 +18,7 @@ plugin {
 disable_plaintext_auth = no
 
 auth default {
-	mechanisms = plain login cram-md5 digest-md5
+	mechanisms = plain login
 
 	passdb sql {
 		args = {DOVECOT_CONF_DIR}/dovecot-sql.conf

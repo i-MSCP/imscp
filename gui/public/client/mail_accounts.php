@@ -186,7 +186,8 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 					$quotaMax = $row['quota'];
 
 					if ($quotaMax) {
-						if(
+						# FIXME: Since passwords are now encrypted (1.3.x), we cannot get quota in that way
+						/*if(
 							!$imapTimeoutReached &&
 							$imapStream = @imap_open("{localhost/notls}", $mailAddr, $row['mail_pass'], OP_HALFOPEN)
 						) {
@@ -206,8 +207,9 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 								: sprintf('%s / %s', bytesHuman($quotaUsage), $quotaMax);
 						} else {
 							$imapTimeoutReached = true;
+						*/
 							$txtQuota = tr('Info Unavailable');
-						}
+						/*}*/
 					} else {
 						$txtQuota = tr('unlimited');
 					}

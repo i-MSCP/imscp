@@ -220,7 +220,7 @@ function client_addSqlUser($customerId, $databaseId)
 			}
 		} else { // Using existing SQL user as specified in input data
 			$stmt = exec_query(
-				'SELECT sqlu_name, sqlu_host, sqlu_pass FROM sql_user WHERE sqlu_id = ?', intval($_POST['sqluser_id'])
+				'SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', intval($_POST['sqluser_id'])
 			);
 
 			if (!$stmt->rowCount()) {
@@ -231,7 +231,7 @@ function client_addSqlUser($customerId, $databaseId)
 
 			$sqlUser = $row['sqlu_name'];
 			$sqlUserHost = $row['sqlu_host'];
-			$sqlUserPassword = $row['sqlu_pass'];
+			$sqlUserPassword = null; // Only to make IDE happy
 		}
 
 		# Check for username length
@@ -262,39 +262,40 @@ function client_addSqlUser($customerId, $databaseId)
 		} else {
 			$dbName = $stmt->fields['sqld_name'];
 			$dbName = preg_replace('/([_%\?\*])/', '\\\$1', $dbName);
-
 			$sqlUserCreated = false;
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlUser);
 
-			// Here we cannot use transaction because the GRANT statement cause an implicit commit
-			// We execute the GRANT statements first to let the i-MSCP database in clean state if one of them fails.
-			try {
-				exec_query(
-					'GRANT ALL PRIVILEGES ON ' . quoteIdentifier($dbName) . '.* TO ?@? IDENTIFIED BY ?',
-					array($sqlUser, $sqlUserHost, $sqlUserPassword)
-				);
+			if(isset($_POST['Add_Exist'])) {
+				exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', array(
+					$databaseId, $sqlUser, $sqlUserHost
+				));
+			} else {
+				try {
+					exec_query(
+						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier($dbName) . '.* TO ?@? IDENTIFIED BY ?',
+						array($sqlUser, $sqlUserHost, $sqlUserPassword)
+					);
 
-				$sqlUserCreated = true;
+					$sqlUserCreated = true;
 
-				exec_query(
-					'INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host, sqlu_pass) VALUES (?, ?, ?,?)',
-					array($databaseId, $sqlUser, $sqlUserHost, $sqlUserPassword)
-				);
-			} catch (iMSCP_Exception_Database $e) {
-				if ($sqlUserCreated) {
-					try { // We don't care about result here - An exception is throw in case the user do not exists
-						exec_query('DROP USER ?@?', $sqlUser, $sqlUserHost);
-					} catch (iMSCP_Exception_Database $x) {
+					exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', array(
+						$databaseId, $sqlUser, $sqlUserHost
+					));
+				} catch (iMSCP_Exception_Database $e) {
+					if ($sqlUserCreated) {
+						try { // We don't care about result here - An exception is throw in case the user do not exists
+							exec_query('DROP USER ?@?', array($sqlUser, $sqlUserHost));
+						} catch (iMSCP_Exception_Database $x) {
 
+						}
 					}
-				}
 
-				throw $e;
+					throw $e;
+				}
 			}
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
-
 			set_page_message(tr('SQL user successfully added.'), 'success');
 			write_log(sprintf("%s added new SQL user: %s", $_SESSION['user_logged'], tohtml($sqlUser)), E_USER_NOTICE);
 		}
