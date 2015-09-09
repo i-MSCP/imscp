@@ -3085,8 +3085,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function r220()
 	{
-		return $sqlUpd;
-
 		return array(
 			$this->dropTable('web_software'),
 			$this->dropTable('web_software_depot'),
