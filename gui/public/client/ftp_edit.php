@@ -80,8 +80,7 @@ function updateFtpAccount($userid, $mainDomainName)
 			$ret = false;
 		}
 
-		$rawPassword = $_POST['password'];
-		$password = \iMSCP\Crypt::sha512($rawPassword);
+		$password = \iMSCP\Crypt::sha512($_POST['password']);
 	}
 
 	if (isset($_POST['home_dir'])) {
@@ -120,7 +119,7 @@ function updateFtpAccount($userid, $mainDomainName)
 		$homeDir = rtrim(str_replace('//', '/', $cfg->USER_WEB_DIR . '/' . $mainDomainName . '/' . $homeDir), '/');
 
 		if($cfg['FTPD_SERVER'] == 'vsftpd') {
-			if (isset($rawPassword) && isset($password) && isset($homeDir)) {
+			if (isset($password) && isset($homeDir)) {
 				$query = "UPDATE `ftp_users` SET `passwd` = ?, `homedir` = ?, `status` = ? WHERE `userid` = ?";
 				exec_query($query, array($password, $homeDir, 'tochange', $userid));
 			} else {
@@ -128,7 +127,7 @@ function updateFtpAccount($userid, $mainDomainName)
 				exec_query($query, array($homeDir, 'tochange', $userid));
 			}
 		} else {
-			if (isset($rawPassword) && isset($password) && isset($homeDir)) {
+			if (isset($password) && isset($homeDir)) {
 				$query = "UPDATE `ftp_users` SET `passwd` = ?, `homedir` = ? WHERE `userid` = ?";
 				exec_query($query, array($password, $homeDir, $userid));
 			} else {

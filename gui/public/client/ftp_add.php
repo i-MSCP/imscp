@@ -293,8 +293,7 @@ function ftp_addAccount($mainDmnName)
 				iMSCP_Events::onBeforeAddFtp,
 				array(
 					'ftpUserId' => $userid,
-					'ftpPassword' => $encryptedPassword,
-					'ftpRawPassword' => $passwd,
+					'ftpPassword' => $passwd,
 					'ftpUserUid' => $uid,
 					'ftpUserGid' => $gid,
 					'ftpUserShell' => $shell,
@@ -366,8 +365,7 @@ function ftp_addAccount($mainDmnName)
 					iMSCP_Events::onAfterAddFtp,
 					array(
 						'ftpUserId' => $userid,
-						'ftpPassword' => $encryptedPassword,
-						'ftpRawPassword' => $passwd,
+						'ftpPassword' => $passwd,
 						'ftpUserUid' => $uid,
 						'ftpUserGid' => $gid,
 						'ftpUserShell' => $shell,
