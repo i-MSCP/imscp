@@ -79,13 +79,13 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 			$ret = true;
 		}
 
-		// Check for Ftp accounts
+		// Check for FTP accounts
 		$query = "SELECT count(`userid`) AS `cnt` FROM `ftp_users` WHERE `userid` LIKE ?";
 		$stmt = exec_query($query, "%@$alssubName");
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Subdomain alias you are trying to remove has Ftp accounts. Please remove them first.'), 'error'
+				tr('Subdomain alias you are trying to remove has FTP accounts. Please remove them first.'), 'error'
 			);
 			$ret = true;
 		}

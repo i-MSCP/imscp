@@ -78,13 +78,13 @@ if (customerHasFeature('subdomains') && isset($_GET['id'])) {
 			$ret = true;
 		}
 
-		// Check for Ftp accounts
+		// Check for FTP accounts
 		$query = "SELECT count(`userid`) AS `cnt` FROM `ftp_users` WHERE `userid` LIKE ?";
 		$stmt = exec_query($query, "%@$subName");
 
 		if ($stmt->fields['cnt']) {
 			set_page_message(
-				tr('Subdomain you are trying to remove has Ftp accounts. Remove them first.'), 'error'
+				tr('Subdomain you are trying to remove has FTP accounts. Remove them first.'), 'error'
 			);
 			$ret = true;
 		}

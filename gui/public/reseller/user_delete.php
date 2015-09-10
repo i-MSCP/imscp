@@ -75,7 +75,7 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 			'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Delete Customer'),
 			'TR_ACCOUNT_SUMMARY' => tr('Customer account summary'),
 			'TR_EMAILS' => tr('Emails'),
-			'TR_FTP_ACCOUNTS' => tr('Ftp accounts'),
+			'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
 			'TR_DOMAINS' => tr('Domains'),
 			'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
 			'TR_SUBDOMAINS' => tr('Subdomains'),

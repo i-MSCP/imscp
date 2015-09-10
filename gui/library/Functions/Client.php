@@ -124,10 +124,10 @@ function get_domain_running_mail_acc_cnt($domainId)
 }
 
 /**
- * Returns total number of Ftp account owned by the given customer
+ * Returns total number of FTP account owned by the given customer
  *
  * @param  int $customerId Customer unique identifier
- * @return int Number of Ftp account owned by the given customer
+ * @return int Number of FTP account owned by the given customer
  */
 function get_customer_running_ftp_acc_cnt($customerId)
 {

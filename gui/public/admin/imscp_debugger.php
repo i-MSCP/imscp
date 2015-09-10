@@ -238,7 +238,7 @@ function debugger_getAlssubErrors($tpl)
 }
 
 /**
- * Get ftp users errors
+ * Get FTP users errors
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return void
@@ -745,7 +745,7 @@ $tpl->assign(
 		'TR_USER_ERRORS' => tr('User errors'),
 		'TR_DMN_ERRORS' => tr('Domain errors'),
 		'TR_ALS_ERRORS' => tr('Domain alias errors'),
-		'TR_FTP_ERRORS' => tr('Ftp user errors'),
+		'TR_FTP_ERRORS' => tr('FTP user errors'),
 		'TR_SUB_ERRORS' => tr('Subdomain errors'),
 		'TR_ALSSUB_ERRORS' => tr('Subdomain alias errors'),
 		'TR_CUSTOM_DNS_ERRORS' => tr('Custom DNS errors'),

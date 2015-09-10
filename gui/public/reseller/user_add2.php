@@ -293,7 +293,7 @@ function check_user_data($phpini)
 		set_page_message(tr('Incorrect email account limit.'), 'error');
 	}
 
-	// Ftp accounts limit
+	// FTP accounts limit
 
 	if (isset($_POST['nreseller_max_ftp_cnt']) || $ftp == -1) {
 		$ftp = clean_input($_POST['nreseller_max_ftp_cnt']);
