@@ -121,16 +121,16 @@ function updateFtpAccount($userid, $mainDomainName)
 
 		if($cfg['FTPD_SERVER'] == 'vsftpd') {
 			if (isset($rawPassword) && isset($password) && isset($homeDir)) {
-				$query = "UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ?, `status` = ? WHERE `userid` = ?";
-				exec_query($query, array($password, $rawPassword, $homeDir, 'tochange', $userid));
+				$query = "UPDATE `ftp_users` SET `passwd` = ?, `homedir` = ?, `status` = ? WHERE `userid` = ?";
+				exec_query($query, array($password, $homeDir, 'tochange', $userid));
 			} else {
 				$query = "UPDATE `ftp_users` SET `homedir` = ?, `status` = ? WHERE `userid` = ?";
 				exec_query($query, array($homeDir, 'tochange', $userid));
 			}
 		} else {
 			if (isset($rawPassword) && isset($password) && isset($homeDir)) {
-				$query = "UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ? WHERE `userid` = ?";
-				exec_query($query, array($password, $rawPassword, $homeDir, $userid));
+				$query = "UPDATE `ftp_users` SET `passwd` = ?, `homedir` = ? WHERE `userid` = ?";
+				exec_query($query, array($password, $homeDir, $userid));
 			} else {
 				$query = "UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?";
 				exec_query($query, array($homeDir, $userid));

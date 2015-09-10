@@ -313,13 +313,13 @@ function ftp_addAccount($mainDmnName)
 				// Add ftp user
 				$query = "
 					INSERT INTO ftp_users (
-						userid, admin_id, passwd, rawpasswd, uid, gid, shell, homedir, status
+						userid, admin_id, passwd, uid, gid, shell, homedir, status
 					) VALUES (
-						?, ?, ?, ?, ?, ?, ?, ?, ?
+						?, ?, ?, ?, ?, ?, ?, ?
 					)
 				";
 				exec_query($query, array(
-					$userid, $_SESSION['user_id'], $encryptedPassword, $passwd, $uid, $gid, $shell, $homeDir, $status
+					$userid, $_SESSION['user_id'], $encryptedPassword, $uid, $gid, $shell, $homeDir, $status
 				));
 
 				$query = "SELECT `members` FROM `ftp_group` WHERE `groupname` = ? LIMIT 1";
