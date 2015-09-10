@@ -25,38 +25,19 @@ use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Getopt;
+use iMSCP::Mail;
 use File::Basename;
-use Crypt::PasswdMD5;
 
-newDebug('imscp-disable-accounts.log');
-
-# Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
-
-Script which disable accounts that are expired.
-
-OPTIONS:
- -v,    --verbose       Enable verbose mode.},
- 'verbose|v' => sub { setVerbose(@_); }
-);
-
-iMSCP::Bootstrapper->getInstance()->boot({ nolock => 1, norequirements => 1, config_readonly => 1 });
-
-sub run
+sub disableExpiredAccounts
 {
 	my $db = iMSCP::Database->factory();
 
-	# Get needed configuration parameter value
-	my $rdata = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+	my $rdata = $db->doQuery('name', "SELECT name, value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
+	ref $rdata eq 'HASH' or die($rdata);
 
 	my $hardMailSuspension = $rdata->{'HARD_MAIL_SUSPENSION'}->{'value'};
 
-	# Gets ids of all expired accounts
-	my $accounts = $db->doQuery(
+	$rdata = $db->doQuery(
 		'domain_id',
 		"
 			SELECT
@@ -71,62 +52,24 @@ sub run
 				domain_status <> 'disabled'
 		"
 	);
-	unless(ref $accounts eq 'HASH') {
-		error($accounts);
-		return 1;
-	}
+	ref $rdata eq 'HASH' or die($rdata);
 
-	my $rawDb = $db->startTransaction();
-	my $rs = 0;
+	if(%{$rdata}) {
+		my $rawDb = $db->getRawDb();
 
-	if(%{$accounts}) {
-		for(keys %{$accounts}) {
-			my $dmnId = $_;
-
+		for my $dmnId(keys %{$rdata}) {
 			eval {
-				my $mails = $db->doQuery(
-		 			'mail_id', 'SELECT mail_id, mail_pass, mail_type FROM mail_users WHERE domain_id = ?', $dmnId
-				);
+				$rawDb = $db->startTransaction();
 
-				# Schedule mail accounts deactivation
-				# soft or hard way according to the HARD_MAIL_SUSPENSION configuration parameter value
-				if(%{$mails}) {
-					for(keys %{$mails}) {
-						my $mailId = $mails->{$_}->{'mail_id'};
-						my $mailPassword = $mails->{$_}->{'mail_pass'};
-						my $mailType = $mails->{$_}->{'mail_type'};
-						my $newMailStatus = 'todisable';
-
-						if (!$hardMailSuspension) {
-							if ($mailType =~ /^(?:normal_mail|alias_mail|subdom_mail|alssub_mail)/) {
-								$mailPassword = substr(unix_md5_crypt(time()), 3, 4) . $mailPassword;
-							} else {
-								next;
-							}
-
-							$newMailStatus = 'tochange';
-						}
-
-						$rawDb->do(
-							'UPDATE mail_users SET mail_pass = ?, status = ? WHERE mail_id = ?',
-							undef,
-							$mailPassword,
-							$newMailStatus,
-							$mailId
-						);
-					}
+				if($hardMailSuspension) {
+					$rawDb->do('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', undef, 'todisable', 'no', $dmnId);
+				} else {
+					$rawDb->do('UPDATE mail_users SET mail_pass = ?, status = ? WHERE mail_id = ?', undef, 'no', $dmnId);
 				}
 
-				# Schedule domain deactivation
 				$rawDb->do('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $dmnId);
-
-				# Schedule subdomains deactivation
 				$rawDb->do('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'todisable', $dmnId);
-
-				# Schedule domain aliases deactivation
 				$rawDb->do('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'todisable', $dmnId);
-
-				# Schedule domain aliases's subdomains deactivation
 				$rawDb->do(
 					'
 						UPDATE
@@ -145,24 +88,38 @@ sub run
 			if($@) {
 				$rawDb->rollback();
 				$db->endTransaction();
-				error("Unable to schedule deactivation of customer with ID $accounts->{$_}->{'domain_admin_id'}: $@");
-				$rs = 1;
+				error(sprintf(
+					'Could not schedule deactivation of customer with ID %s: %s', $rdata->{$dmnId}->{'domain_admin_id'},
+					$@
+				));
 			}
+
+			$db->endTransaction();
 		}
 
-		$db->endTransaction();
-
-		# Run request manager to process all scheduled tasks
-		if(!$rs) {
-			my ($stdout, $stderr);
-			$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
-			debug $stdout if $stdout;
-			error($stderr) if $stderr && $rs;
-			warning($stderr) if $stderr && !$rs;
-		}
+		my $stderr;
+		execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", undef, \$stderr) == 0 or die(
+			$stderr || 'Unknown error'
+		);
 	}
-
-	$rs;
 }
 
-exit run();
+newDebug('imscp-disable-accounts.log');
+
+# Parse command line options
+iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+
+Disable expired customer accounts.
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+ 'verbose|v' => sub { setVerbose(@_); }
+);
+
+iMSCP::Bootstrapper->getInstance()->boot({ nolock = 1, norequirements => 1, config_readonly => 1 });
+eval { disableExpiredAccounts() };
+if($@) {
+	my $error = $@;
+	iMSCP::Mail->new()->errmsg($error);
+	die($error);
+};
