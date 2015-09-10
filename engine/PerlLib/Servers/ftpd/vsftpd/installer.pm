@@ -245,7 +245,7 @@ sub _rebuildUbuntuPackage
 	step(
 		sub {
 			my ($stdout, $stderr);
-			execute('apt-get source vsftpd', \$stdout, \$stderr) == 0 or die(sprintf(
+			execute('apt-get -y source vsftpd', \$stdout, \$stderr) == 0 or die(sprintf(
 				'Could not get vsftpd source package: %s', $stderr || 'Unknown error'
 			));
 			debug($stdout) if $stdout;
@@ -256,7 +256,7 @@ sub _rebuildUbuntuPackage
 	step(
 		sub {
 			my ($stdout, $stderr);
-			execute('apt-get build-dep vsftpd', \$stdout, \$stderr) == 0 or die(sprintf(
+			execute('apt-get -y build-dep vsftpd', \$stdout, \$stderr) == 0 or die(sprintf(
 				'Could not install Ubuntu vsftpd package build dependencies: %s', $stderr || 'Unknown error'
 			));
 			debug($stdout) if $stdout;
