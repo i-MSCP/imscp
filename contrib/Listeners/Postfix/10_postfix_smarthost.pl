@@ -41,11 +41,10 @@ my $saslAuthPasswd = '';
 #
 
 my $eventManager = iMSCP::EventManager->getInstance();
+my $mta = Servers::mta->factory();
+my $relayPasswdTable = "$mta->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/relay_passwd";
 
-$eventManager->register('afterMtaBuildMainCfFile', sub createRelayPasswdTable {
-	my $mta = Servers::mta->factory();
-	my $relayPasswdTable = "$mta->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/relay_passwd";
-
+$eventManager->register('afterMtaBuildMainCfFile', sub {
 	iMSCP::File->new( filename => $relayPasswdTable )->save();
 	$mta->addTableEntry("$relayhost:$relayport", "$saslAuthUser:$saslAuthPasswd", $relayPasswdTable, 'cdb');
 });
@@ -58,7 +57,7 @@ $eventManager->register('afterMtaBuildMainCfFile', sub {
 # Added by Listener::Postfix::Smarthost
 relayhost=$relayhost:$relayport
 smtp_sasl_auth_enable=yes
-smtp_sasl_password_maps=cdb:$saslPwdTable
+smtp_sasl_password_maps=cdb:$relayPasswdTable.db
 smtp_sasl_security_options=noanonymous
 EOF
 
