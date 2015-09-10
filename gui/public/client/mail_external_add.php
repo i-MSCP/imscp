@@ -316,7 +316,7 @@ function client_generateView($verifiedData, $data)
 			'TR_RESET_ENTRIES' => tr('Reset entries'),
 			'TR_CANCEL' => tr('Cancel'),
 			'TR_ADD' => tr('Add'),
-			'TR_MX_TYPE_TOOLTIP' =>
+			'TR_MX_TYPE_TOOLTIP' => tohtml(
 				tr('Domain: Setup a DNS MX record to relay mail of your entire domain, including subdomains.') .
 				'<br><br>' .
 				(
@@ -327,6 +327,7 @@ function client_generateView($verifiedData, $data)
 				tr('Spam Filter: Setup a DNS MX record to relay mail of your entire domain, including subdomains, but retains our server as final mailhost.') .
 				'<br><br>' .
 				tr('Note: You cannot mix Spam filter and domain options'),
+				'htmlAttr'),
 			'ITEM' => $verifiedData['item_id'] . ';' . $verifiedData['item_type']
 		)
 	);

@@ -32,10 +32,26 @@
     // Initialize tooltips
     var initTooltips = function (context) {
         if (context == "simple") {
-            $("[title]").tooltip({ tooltipClass: "ui-tooltip-notice", track: true });
+            $("[title]").tooltip(
+                {
+                    tooltipClass: "ui-tooltip-notice",
+                    track: true,
+                    content: function() {
+                        var title = $(this).attr( "title" ) || "";
+                        return $(this).attr("title");
+                    }
+                }
+            );
         } else {
-            $(".main_menu [title]").tooltip({ track: true });
-            $(".body [title]").tooltip({ tooltipClass: "ui-tooltip-notice", track: true });
+            $(".main_menu [title]").tooltip({track: true});
+            $(".body [title]").tooltip({
+                tooltipClass: "ui-tooltip-notice",
+                track: true,
+                content: function() {
+                    var title = $(this).attr( "title" ) || "";
+                    return $(this).attr("title");
+                }
+            });
         }
     };
 
