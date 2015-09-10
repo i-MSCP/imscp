@@ -552,7 +552,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		// Decrypt all Ftp users passwords
+		// Decrypt all FTP users passwords
 
 		$stmt = exec_query('SELECT userid, passwd FROM ftp_users');
 

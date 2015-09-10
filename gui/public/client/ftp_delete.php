@@ -81,7 +81,7 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 		}
 
 		if(isset($cfg->FILEMANAGER_PACKAGE) && $cfg->FILEMANAGER_PACKAGE == 'Pydio') {
-			// Quick fix to delete Ftp preferences directory as created by Pydio
+			// Quick fix to delete FTP preferences directory as created by Pydio
 			// FIXME: Move this statement at engine level
 			$userPrefDir = $cfg->GUI_PUBLIC_DIR . '/tools/ftp/data/plugins/auth.serial/' . $ftpUserId;
 			if(is_dir($userPrefDir)) {

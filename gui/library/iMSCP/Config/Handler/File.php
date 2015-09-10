@@ -92,7 +92,7 @@
  * @property int ENABLE_SSL Tells whether or not SSL feature for customers is enabled
  * @property bool MAIN_MENU_SHOW_LABELS Tells whether or not labels must be showed for main menu links
  * @property string PHPINI_OPEN_BASEDIR paths appended to the default PHP open_basedir directive of customers
- * @property string FTP_USERNAME_SEPARATOR Ftp username separator
+ * @property string FTP_USERNAME_SEPARATOR FTP username separator
  * @property string BACKUP_DOMAINS (yes|no)
  * @property string WEBSTATS_PACKAGES (No|<webstats_package_name>)
  * @property string CONF_DIR i-MSCP configuration directory (eg. /etc/imscp)

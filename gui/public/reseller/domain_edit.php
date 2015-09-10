@@ -381,7 +381,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
 		$tplVars['TR_NO_AVAILABLE'] = tr('No available');
 	}
 
-	// Ftp accounts limit
+	// FTP accounts limit
 	if ($data['max_ftp_cnt'] == -1) { // Reseller has no permissions on this service
 		$tplVars['FTP_ACCOUNTS_LIMIT_BLOCK'] = '';
 	} else {
@@ -671,15 +671,15 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 			}
 		}
 
-		// Check for the Ftp accounts limit
+		// Check for the FTP accounts limit
 		if ($data["fallback_domain_ftpacc_limit"] != -1) {
 			if (!imscp_limit_check($data['domain_ftpacc_limit'])) {
-				set_page_message(tr('Wrong syntax for the %s limit.', tr('Ftp accounts')), 'error');
+				set_page_message(tr('Wrong syntax for the %s limit.', tr('FTP accounts')), 'error');
 				$errFieldsStack[] = 'domain_ftpacc_limit';
 			} elseif (!_reseller_isValidServiceLimit(
 				$data['domain_ftpacc_limit'], $data['nbFtpAccounts'], $data["fallback_domain_ftpacc_limit"],
 				$data['current_ftp_cnt'],  $data['max_ftp_cnt'],
-				($data['nbFtpAccounts'] > 1) ? tr('Ftp accounts') : tr('Ftp account')
+				($data['nbFtpAccounts'] > 1) ? tr('FTP accounts') : tr('FTP account')
 			)) {
 				$errFieldsStack[] = 'domain_ftpacc_limit';
 			}
@@ -969,7 +969,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 				}
 			}
 
-			// Update Ftp quota limit if needed
+			// Update FTP quota limit if needed
 			if ($data['domain_disk_limit'] != $data['fallback_domain_disk_limit']) {
 				exec_query(
 					'

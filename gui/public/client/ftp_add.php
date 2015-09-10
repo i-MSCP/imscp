@@ -199,7 +199,7 @@ function ftp_generatePageData($mainDmn, $mainDmnId, $tpl)
 }
 
 /**
- * Add Ftp account
+ * Add FTP account
  *
  * @throws iMSCP_Exception_Database
  * @param string $mainDmnName Customer main domain
@@ -325,7 +325,7 @@ function ftp_addAccount($mainDmnName)
 				$query = "SELECT `members` FROM `ftp_group` WHERE `groupname` = ? LIMIT 1";
 				$stmt = exec_query($query, $groupName);
 
-				// Ftp group
+				// FTP group
 				if (!$stmt->rowCount()) {
 					$query = "INSERT INTO `ftp_group` (`groupname`, `gid`, `members`) VALUES (?, ?, ?)";
 					exec_query($query, array($groupName, $gid, $userid));
@@ -354,7 +354,7 @@ function ftp_addAccount($mainDmnName)
 				$db->rollBack();
 
 				if($e->getCode() == 23000) {
-					set_page_message(tr('Ftp account with same username already exists.'), 'error');
+					set_page_message(tr('FTP account with same username already exists.'), 'error');
 					$ret = false;
 				} else {
 					throw $e;
@@ -379,7 +379,7 @@ function ftp_addAccount($mainDmnName)
 					send_request();
 				}
 
-				write_log(sprintf("%s added Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
+				write_log(sprintf("%s added FTP account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
 				set_page_message(tr('FTP account successfully added.'), 'success');
 			}
 		}
@@ -443,9 +443,9 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / FTP / Add FTP Account'),
-		'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
+		'TR_FTP_DIRECTORIES' => tojs(('FTP directories')),
 		'TR_CLOSE' => tojs(tr('Close')),
-		'TR_FTP_ACCOUNT_DATA' => tr('Ftp account data'),
+		'TR_FTP_ACCOUNT_DATA' => tr('FTP account data'),
 		'TR_DOMAIN_TYPE_LABEL' => tr('Domain type'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_PASSWORD' => tr('Password'),

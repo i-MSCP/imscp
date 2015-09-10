@@ -29,7 +29,7 @@ require_once 'imscp-lib.php';
  * Generate page data
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @param string $ftpUserId Ftp userid
+ * @param string $ftpUserId FTP userid
  * @param string $mainDomainName Main domain name
  * @return void
  */
@@ -60,9 +60,9 @@ function generatePageData($tpl, $ftpUserId, $mainDomainName)
 }
 
 /**
- * Update Ftp account
+ * Update FTP account
  *
- * @param string $userid Ftp userid
+ * @param string $userid FTP userid
  * @param string $mainDomainName Main domain name
  * @return bool TRUE on success, FALSE on failure
  */
@@ -143,7 +143,7 @@ function updateFtpAccount($userid, $mainDomainName)
 			send_request();
 		}
 
-		write_log(sprintf("%s updated Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
+		write_log(sprintf("%s updated FTP account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
 		set_page_message(tr('FTP account successfully updated.'), 'success');
 	}
 
@@ -187,9 +187,9 @@ if (isset($_GET['id'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / FTP / Overview / Edit FTP Account'),
-			'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
+			'TR_FTP_DIRECTORIES' => tojs(('FTP directories')),
 			'TR_CLOSE' => tojs(tr('Close')),
-			'TR_FTP_USER_DATA' => tr('Ftp account data'),
+			'TR_FTP_USER_DATA' => tr('FTP account data'),
 			'TR_USERNAME' => tr('Username'),
 			'TR_PASSWORD' => tr('Password'),
 			'TR_PASSWORD_REPEAT' => tr('Repeat password'),

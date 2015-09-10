@@ -106,7 +106,7 @@ return array(
 		)
 	),
 	'ftp' => array(
-		'label' => tr('Ftp'),
+		'label' => tr('FTP'),
 		'uri' => '/client/ftp_accounts.php',
 		'class' => 'ftp',
 		'privilege_callback' => array(
@@ -173,7 +173,7 @@ return array(
 				'title_class' => 'sql'
 			),
 			'phpmyadmin' => array(
-				'label' => tr('PhpMyAdmin'),
+				'label' => tr('phpMyAdmin'),
 				'uri' => '/pma/',
 				'target' => '_blank'
 			)

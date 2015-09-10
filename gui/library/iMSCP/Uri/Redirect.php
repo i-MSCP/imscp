@@ -19,7 +19,7 @@
  */
 
 /**
- * HTTP(S)/Ftp URI handler
+ * HTTP(S)/FTP URI handler
  */
 class iMSCP_Uri_Redirect extends Zend_Uri_Http
 {

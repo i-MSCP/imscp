@@ -106,7 +106,7 @@ function generate_reseller_users_props($resellerId)
 			}
 		}
 
-		// Compute Ftp account
+		// Compute FTP account
 		if ($ftpAssigned != -1) {
 			$rftpConsumed += $ftpConsumed;
 			$rftpAssigned += $ftpAssigned;

@@ -452,7 +452,7 @@ function admin_checkAndCreateResellerAccount()
 		// Check for max ftp accounts limit
 
 		if (!imscp_limit_check($data['max_ftp_cnt'])) {
-			set_page_message(tr('Incorrect limit for %s.', tr('Ftp accounts')), 'error');
+			set_page_message(tr('Incorrect limit for %s.', tr('FTP accounts')), 'error');
 			$errFieldsStack[] = 'max_ftp_cnt';
 		}
 
