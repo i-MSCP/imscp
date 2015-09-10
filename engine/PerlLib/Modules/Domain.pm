@@ -206,19 +206,7 @@ sub restore
 
 				my $rdata = iMSCP::Database->factory()->doQuery(
 					'sqld_name',
-					'
-						SELECT
-							*
-						FROM
-							sql_database
-						INNER JOIN
-							sql_user USING(sqld_id)
-						WHERE
-							domain_id = ?
-						AND
-							sqld_name = ?
-						LIMIT 1
-					',
+					'SELECT sqld_name FROM sql_database WHERE domain_id = ? AND sqld_name = ? LIMIT 1',
 					$self->{'domain_id'},
 					$sqldName
 				);
@@ -228,7 +216,7 @@ sub restore
 				}
 
 				unless(%{$rdata}) {
-					warning("Orphaned database ($sqldName) or missing SQL user for this database. skipping...");
+					debug(sprintf("%s database doesn't exists. Skipping...", $sqldName));
 					next;
 				}
 
@@ -249,18 +237,13 @@ sub restore
 					'nice', '-n', '15',     # Reduce the CPU priority
 					'ionice', '-c2', '-n5', # Reduce the I/O priority
 					$cmd,
-					escapeShell("$bkpDir/$_"), '|', 'mysql',
-					'-h', escapeShell($main::imscpConfig{'DATABASE_HOST'}),
-					'-P', escapeShell($main::imscpConfig{'DATABASE_PORT'}),
-					'-u', escapeShell($rdata->{$sqldName}->{'sqlu_name'}),
-					'-p' . escapeShell($rdata->{$sqldName}->{'sqlu_pass'}),
-					escapeShell($rdata->{$sqldName}->{'sqld_name'})
+					escapeShell("$bkpDir/$bkpFile"), '|', 'mysql',
+					escapeShell($sqldName)
 				);
 
-				my ($stdout, $stderr);
-				my $rs = execute("@cmd", \$stdout, \$stderr);
+				my $rs = execute("@cmd", \my $stdout, \my $stderr);
 				debug($stdout) if $stdout;
-				warning(sprintf('Could not to restore SQL database: %s', $stderr)) if $stderr && $rs;
+				warning(sprintf('Could not restore SQL database: %s', $stderr)) if $stderr && $rs;
 			} elsif($bkpFile =~ /^(?!mail-).+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) { # Restore domain files
 				my $archType = $1 || '';
 				# Since we are now using immutable bit to protect some folders, we must in order do the following
@@ -286,7 +269,7 @@ sub restore
 
 				# Update status of any sub to 'torestore'
 				my $rdata = $db->doQuery(
-					'dummy',
+					'u',
 					'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?',
 					'torestore',
 					$self->{'domain_id'}
@@ -298,7 +281,7 @@ sub restore
 
 				# Update status of any als to 'torestore'
 				$rdata = $db->doQuery(
-					'dummy',
+					'u',
 					'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?',
 					'torestore',
 					$self->{'domain_id'}
@@ -310,7 +293,7 @@ sub restore
 
 				# Update status of any alssub to 'torestore'
 				$rdata = $db->doQuery(
-					'dummy',
+					'u',
 					"
 						UPDATE
 							subdomain_alias
@@ -329,6 +312,7 @@ sub restore
 				# Un-protect folders recursively
 				clearImmutable($dmnDir, 1);
 
+				# FIXME chroot in dmn dir before restoring file
 				my $cmd;
 				if($archType ne '') {
 					$cmd = "nice -n 12 ionice -c2 -n5 tar -x -p --$archType -C " . escapeShell($dmnDir) . ' -f ' .
@@ -338,8 +322,7 @@ sub restore
 						escapeShell("$bkpDir/$bkpFile");
 				}
 
-				my ($stdout, $stderr);
-				my $rs = execute($cmd, \$stdout, \$stderr);
+				my $rs = execute($cmd, \my $stdout, \my $stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;

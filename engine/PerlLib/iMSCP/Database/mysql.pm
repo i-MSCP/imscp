@@ -28,7 +28,6 @@ use warnings;
 use DBI;
 use iMSCP::Debug;
 use iMSCP::Execute;
-use File::HomeDir;
 use POSIX ':signal_h';
 use parent 'Common::SingletonClass';
 
@@ -274,8 +273,6 @@ sub dumpdb
 
 	$dbName = escapeShell($dbName);
 	$filename = escapeShell($filename);
-
-	my $rootHomeDir = File::HomeDir->users_home($main::imscpConfig{'ROOT_USER'});
 
 	my @cmd = (
 		'nice', '-n', '15',     # Reduce the CPU priority

@@ -95,7 +95,7 @@ sub setEnginePermissions
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0644' }
 	);
 	setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
-		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0600' }
 	);
 }
 
@@ -199,8 +199,8 @@ sub _buildConf
 		my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
 		$file->set($cfgTpl);
 		$file->save();
-		$file->mode(0644);
 		$file->owner($rootUName, $rootGName);
+		$file->mode(0644);
 	}
 
 	# Make sure that the conf.d directory exists
@@ -235,8 +235,8 @@ EOF
 	my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
 	$file->set($cfgTpl);
 	$file->save();
-	$file->mode(0640);
 	$file->owner($rootUName, $rootGName);
+	$file->mode(0600);
 
 	$self->{'eventManager'}->trigger('afterSqldBuildConf');
 }

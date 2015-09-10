@@ -56,7 +56,6 @@ sub run
 	my ($ret, $rs, $stdout, $stderr) = (0, 0);
 	my $db = iMSCP::Database->factory();
 	my $mta = Servers::mta->factory();
-	my $canDumpDatabases = $db->can('dumpdb');
 
 	my $domainData = $db->doQuery(
 		'domain_id',
@@ -157,7 +156,7 @@ sub run
 				}
 
 				# Backup all customer databases
-				if ($canDumpDatabases && 'sql' ~~ @allowbackup) {
+				if ('sql' ~~ @allowbackup) {
 					my $dbData = $db->doQuery(
 						'sqld_name', 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', $mainDomainId
 					);

@@ -87,30 +87,28 @@ sub _backupDatabase
 {
 	my $db = iMSCP::Database->factory();
 
-	if($db->can('dumpdb')) {
-		my $date = strftime "%Y.%m.%d-%H-%M", localtime;
-		my $sqlFName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/$main::imscpConfig{'DATABASE_NAME'}-$date.sql";
+	my $date = strftime "%Y.%m.%d-%H-%M", localtime;
+	my $sqlFName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/$main::imscpConfig{'DATABASE_NAME'}-$date.sql";
 
-		my $rs = $db->dumpdb($main::imscpConfig{'DATABASE_NAME'}, $sqlFName);
-		error("Unable to dump the $main::imscpConfig{'DATABASE_NAME'} database") if $rs;
-		return $rs if $rs;
+	my $rs = $db->dumpdb($main::imscpConfig{'DATABASE_NAME'}, $sqlFName);
+	error("Unable to dump the $main::imscpConfig{'DATABASE_NAME'} database") if $rs;
+	return $rs if $rs;
 
-		my $algorithm = lc($main::imscpConfig{'ZIP'});
+	my $algorithm = lc($main::imscpConfig{'ZIP'});
 
-		if($algorithm ne 'no') {
-			my @cmd = (
-				'nice', '-n', '15',     # Reduce the CPU priority
-				'ionice', '-c2', '-n5', # Reduce the I/O priority
-				$command->{$algorithm}->{'command'}, '--force',
-				escapeShell($sqlFName)
-			);
+	if($algorithm ne 'no') {
+		my @cmd = (
+			'nice', '-n', '15',     # Reduce the CPU priority
+			'ionice', '-c2', '-n5', # Reduce the I/O priority
+			$command->{$algorithm}->{'command'}, '--force',
+			escapeShell($sqlFName)
+		);
 
-			$rs = execute("@cmd", \my $stdout, \my $stderr);
-			debug($stdout) if $stdout;
-			if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
-				error($stderr) if $stderr;
-				return $rs if $rs;
-			}
+		$rs = execute("@cmd", \my $stdout, \my $stderr);
+		debug($stdout) if $stdout;
+		if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+			error($stderr) if $stderr;
+			return $rs if $rs;
 		}
 	}
 
