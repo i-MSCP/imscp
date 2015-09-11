@@ -616,14 +616,14 @@ sub _processAptRepositories
 
 		for my $repository(@{$self->{'aptRepositoriesToRemove'}}) {
 			# Remove the repository from the sources.list file
-			my $regexp = qr/(?:#\s*)?(?:deb|deb-src)$repository/;
-			$fileContent =~ s/^\n?$regexp\n//gm;
+			my $regexp = qr/(?:#\s*)?(?:deb|deb-src)\s+$repository\n/;
+			$fileContent =~ s/^$regexp//gm;
 		}
 
 		# Add needed APT repositories
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
 			unless($fileContent =~ /^deb $repository->{'repository'}/m) {
-				$fileContent .= "\ndeb $repository->{'repository'}\n";
+				$fileContent .= "deb $repository->{'repository'}\n";
 				$fileContent .= "deb-src $repository->{'repository'}\n";
 
 				my @cmd = ();

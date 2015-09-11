@@ -76,7 +76,9 @@
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
         </proftpd>
-        <vsftpd>
+        <vsftpd
+                repository_conflict="http://www.tataranovich.com/.*"
+                >
             <package>vsftpd</package>
             <package>libpam-mysql</package>
         </vsftpd>

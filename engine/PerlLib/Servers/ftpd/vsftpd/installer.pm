@@ -36,6 +36,7 @@ use iMSCP::Stepper;
 use iMSCP::TemplateParser;
 use File::Basename;
 use Servers::ftpd::vsftpd;
+use version;
 use parent 'Common::SingletonClass';
 
 %main::sqlUsers = () unless %main::sqlUsers;
@@ -162,10 +163,17 @@ sub install
 {
 	my $self = shift;
 
-	if(iMSCP::LsbRelease->getInstance->getId(1) eq 'Ubuntu') {
-		my $rs = $self->_rebuildUbuntuPackage();
+	my %lsbInfo = iMSCP::LsbRelease->getInstance()->getDistroInformation();
+
+	if(
+		$lsbInfo{'ID'} eq 'Ubuntu' ||
+		($lsbInfo{'ID'} eq 'Debian' && version->parse($lsbInfo{'RELEASE'}) < version->parse('8.0'))
+	) {
+		my $rs = $self->_rebuildVsFTPdDebianPackage();
 		return $rs if $rs;
 	}
+
+	undef %lsbInfo;
 
 	my $rs = $self->_setVersion();
 	return $rs if $rs;
@@ -216,15 +224,15 @@ sub _init
 	$self;
 }
 
-=item _rebuildUbuntuPackage()
+=item _rebuildVsFTPdDebianPackage()
 
- Rebuild vsftpd Ubuntu package
+ Rebuild VsFTPd debian package
 
  Return int 0 on success, die on failure
 
 =cut
 
-sub _rebuildUbuntuPackage
+sub _rebuildVsFTPdDebianPackage
 {
 	my $self = shift;
 
@@ -257,7 +265,7 @@ sub _rebuildUbuntuPackage
 		sub {
 			my ($stdout, $stderr);
 			execute('apt-get -y build-dep vsftpd', \$stdout, \$stderr) == 0 or die(sprintf(
-				'Could not install Ubuntu vsftpd package build dependencies: %s', $stderr || 'Unknown error'
+				'Could not install vsftpd package build dependencies: %s', $stderr || 'Unknown error'
 			));
 			debug($stdout) if $stdout;
 			0;
@@ -267,6 +275,11 @@ sub _rebuildUbuntuPackage
 	step(
 		sub {
 			chdir glob 'vsftpd-*' or die(sprintf('Could not change directory: %s', $!));
+
+			my $file = iMSCP::File->new( filename => 'debian/patches/series' );
+			my $fileContent = $file->get();
+
+			# Apply the imscp_allow_writeable_root.patch patch for vsftpd version < 3.0.0 only
 
 			my $rs = execute('dpkg-query --show --showformat \'${Version}\' vsftpd', \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
@@ -280,15 +293,20 @@ sub _rebuildUbuntuPackage
 				iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_allow_writeable_root.patch")->copyFile(
 					'debian/patches/imscp_allow_writeable_root'
 				);
+
+				$fileContent .= "imscp_allow_writeable_root\n"
 			}
 
-			iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_pthread_cancel.patch")->copyFile(
-				'debian/patches/imscp_pthread_cancel'
-			);
-			my $file = iMSCP::File->new( filename => 'debian/patches/series' );
-			my $fileContent = $file->get();
-			$fileContent .= "imscp_allow_writeable_root\n" unless $ret;
-			$fileContent .= "imscp_pthread_cancel\n";
+			# apply the imscp_pthread_cancel.patch if available
+
+			if(-f "$self->{'cfgDir'}/imscp_pthread_cancel.patch") {
+				iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_pthread_cancel.patch")->copyFile(
+					'debian/patches/imscp_pthread_cancel'
+				);
+
+				$fileContent .= "imscp_pthread_cancel\n";
+			}
+
 			$file->set($fileContent);
 			$file->save();
 		}, 'Patching vsftpd source package for i-MSCP...', 7, 4

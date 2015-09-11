@@ -126,8 +126,8 @@ sub _processAptRepositories
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
 				} else {
-					my $regexp = qr/(?:#\s*)?(?:deb|deb-src)$repository/;
-					$fileContent =~ s/^\n?$regexp\n//gm;
+					my $regexp = qr/(?:#\s*)?(?:deb|deb-src)\s+$repository\n/;
+					$fileContent =~ s/^$regexp//gm;
 				}
 			}
 		}
