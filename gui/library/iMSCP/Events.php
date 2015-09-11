@@ -380,6 +380,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
 	 * - ftpUserId: A string representing Ftp account username being edited
+	 * - ftpPassword: A string representing Ftp account password, null if no password update
 	 *
 	 * @const string
 	 */
@@ -391,6 +392,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
 	 * - ftpUserId: A string representing Ftp account username that has been edited
+	 * - ftpPassword: A string representing Ftp account password, null if no password update
 	 *
 	 * @const string
 	 */

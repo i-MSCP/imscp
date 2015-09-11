@@ -80,7 +80,11 @@ function updateFtpAccount($userid, $mainDomainName)
 			$ret = false;
 		}
 
-		$password = \iMSCP\Crypt::sha512($_POST['password']);
+		$passwd = $_POST['password'];
+		$encPasswd = \iMSCP\Crypt::sha512($_POST['password']);
+	} else {
+		$passwd = null;
+		$encPasswd = null;
 	}
 
 	if (isset($_POST['home_dir'])) {
@@ -112,31 +116,37 @@ function updateFtpAccount($userid, $mainDomainName)
 	}
 
 	if($ret) {
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array('ftpUserId' => $userid));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array(
+			'ftpUserId' => $userid,
+			'ftpPassword' => $passwd
+		));
 
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 		$homeDir = rtrim(str_replace('//', '/', $cfg->USER_WEB_DIR . '/' . $mainDomainName . '/' . $homeDir), '/');
 
 		if($cfg['FTPD_SERVER'] == 'vsftpd') {
-			if (isset($password) && isset($homeDir)) {
+			if (isset($encPasswd) && isset($homeDir)) {
 				$query = "UPDATE `ftp_users` SET `passwd` = ?, `homedir` = ?, `status` = ? WHERE `userid` = ?";
-				exec_query($query, array($password, $homeDir, 'tochange', $userid));
+				exec_query($query, array($encPasswd, $homeDir, 'tochange', $userid));
 			} else {
 				$query = "UPDATE `ftp_users` SET `homedir` = ?, `status` = ? WHERE `userid` = ?";
 				exec_query($query, array($homeDir, 'tochange', $userid));
 			}
 		} else {
-			if (isset($password) && isset($homeDir)) {
+			if (isset($encPasswd) && isset($homeDir)) {
 				$query = "UPDATE `ftp_users` SET `passwd` = ?, `homedir` = ? WHERE `userid` = ?";
-				exec_query($query, array($password, $homeDir, $userid));
+				exec_query($query, array($encPasswd, $homeDir, $userid));
 			} else {
 				$query = "UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?";
 				exec_query($query, array($homeDir, $userid));
 			}
 		}
 
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array('ftpUserId' => $userid));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array(
+			'ftpUserId' => $userid,
+			'ftpPassword' => $passwd
+		));
 
 		if($cfg['FTPD_SERVER'] == 'vsftpd') {
 			send_request();
