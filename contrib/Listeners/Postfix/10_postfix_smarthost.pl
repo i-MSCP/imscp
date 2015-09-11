@@ -57,7 +57,7 @@ $eventManager->register('afterMtaBuildMainCfFile', sub {
 # Added by Listener::Postfix::Smarthost
 relayhost=$relayhost:$relayport
 smtp_sasl_auth_enable=yes
-smtp_sasl_password_maps=cdb:$relayPasswdTable.db
+smtp_sasl_password_maps=cdb:$relayPasswdTable
 smtp_sasl_security_options=noanonymous
 EOF
 
