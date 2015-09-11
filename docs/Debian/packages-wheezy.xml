@@ -47,7 +47,7 @@
         </courier>
         <dovecot
                 pinning_package="dovecot-core dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-managesieved dovecot-sieve"
-                repository="deb http://http.debian.net/debian wheezy-backports main"
+                repository="http://http.debian.net/debian wheezy-backports main"
                 pinning_pin="release a=wheezy-backports"
                 pinning_pin_priority="1001"
                 >
@@ -76,15 +76,8 @@
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
         </proftpd>
-        <vsftpd
-                pinning_package="*"
-                pinning_pin="release o=IceMan,n=wheezy"
-                pinning_pin_priority="100"
-                repository="http://www.tataranovich.com/debian wheezy backports"
-                repository_key_srv="keyserver.ubuntu.com"
-                repository_key_id="0x836cc41976fb442e"
-                >
-            <package>vsftpd/wheezy</package>
+        <vsftpd>
+            <package>vsftpd</package>
             <package>libpam-mysql</package>
         </vsftpd>
         <pureftpd>

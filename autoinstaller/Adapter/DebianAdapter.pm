@@ -566,8 +566,8 @@ sub _updateAptSourceList
 					unless ($rs) {
 						unless($fileContent =~ /^deb-src\s+$repository{'uri'}\s+$repository{'distrib'}\s.+/m) {
 							my $repository = $&;
-							(my $srcRepository = $repository) =~ s/^deb/deb-src/m;
-							$fileContent =~ s/^($repository)\n$/$1\n$srcRepository\n/m;
+							(my $srcRepository = $&) =~ s/^deb/deb-src/m;
+							$fileContent =~ s/^($repository)$/$1\n$srcRepository/m;
 						} else {
 							$fileContent =~ s/^($&)$/$1 $section/m;
 						}
@@ -622,9 +622,9 @@ sub _processAptRepositories
 
 		# Add needed APT repositories
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
-			if($fileContent !~ /^deb $repository->{'repository'}/m) {
+			unless($fileContent =~ /^deb $repository->{'repository'}/m) {
 				$fileContent .= "\ndeb $repository->{'repository'}\n";
-				$fileContent .= "\ndeb-src $repository->{'repository'}\n";
+				$fileContent .= "deb-src $repository->{'repository'}\n";
 
 				my @cmd = ();
 
