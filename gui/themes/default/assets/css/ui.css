@@ -945,6 +945,10 @@ table .icon {
     background-image: url(../images/icons/help.png);
 }
 
+.i_exclamation {
+    background-image: url(../images/icons/exclamation.png);
+}
+
 .i_hide_alias {
     background-image: url(../images/icons/hide_alias.png);
 }
@@ -1271,7 +1275,8 @@ table .graph {
     cursor: pointer;
 }
 
-.icon.i_help {
+.icon.i_help,
+.icon.i_exclamation {
     position: relative;
     width: 0;
     vertical-align: middle;

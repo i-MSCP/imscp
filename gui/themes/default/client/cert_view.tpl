@@ -43,7 +43,10 @@
 			</td>
 		</tr>
 		<tr id="tr_hsts_include_subdomains_data">
-			<td><label for="hsts_includeSubDomains">{TR_HSTS_INCLUDE_SUBDOMAINS}</label></td>
+			<td>
+				<label for="hsts_includeSubDomains">{TR_HSTS_INCLUDE_SUBDOMAINS}</label>
+				<span class="tips icon i_exclamation" id="hsts_includeSubDomains_tooltip" title="{TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP}"></span>
+			</td>
 			<td><input type="checkbox" id="hsts_includeSubDomains" name="hsts_includeSubDomains"{HSTS_INCLUDE_SUBDOMAINS_CHECKED}></td>
 		</tr>
 		<tr>
