@@ -246,8 +246,11 @@ function client_addSslCert($domainId, $domainType)
 
 	$domainName = _client_getDomainName($domainId, $domainType);
 	$allowHSTS = isset($_POST['allow_hsts']) ? 'on' : 'off';
-	$hstsMaxAge = $allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
-	$hstsIncludeSubDomains = $allowHSTS == 'on' && isset($_POST['hsts_include_subdomains']) ? 'on' : 'off';
+	$hstsMaxAge = (
+		$allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' &&
+		$_POST['hsts_max_age'] >= 0
+	) ? intval($_POST['hsts_max_age']) : 31536000;
+	$hstsIncludeSubDomains = ($allowHSTS == 'on' && isset($_POST['hsts_include_subdomains'])) ? 'on' : 'off';
 	$selfSigned = isset($_POST['selfsigned']);
 
 	if($domainName !== false) {
@@ -353,12 +356,16 @@ function client_addSslCert($domainId, $domainType)
 							exec_query(
 								'
 									INSERT INTO ssl_certs (
-										domain_id, domain_type, private_key, certificate, ca_bundle, allow_hsts, hsts_max_age, hsts_include_subdomains, status
+										domain_id, domain_type, private_key, certificate, ca_bundle, allow_hsts,
+										hsts_max_age, hsts_include_subdomains, status
 									) VALUES (
-										?, ?, ?, ?, ?, ?, ?
+										?, ?, ?, ?, ?, ?, ?, ?, ?
 									)
 								',
-								array($domainId, $domainType, $privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, $hstsMaxAge, $hstsIncludeSubDomains, 'toadd')
+								array(
+									$domainId, $domainType, $privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS,
+									$hstsMaxAge, $hstsIncludeSubDomains, 'toadd'
+								)
 							);
 						} else { // Update existing certificate
 							exec_query(
@@ -366,7 +373,8 @@ function client_addSslCert($domainId, $domainType)
 									UPDATE
 										ssl_certs
 									SET
-										private_key = ?, certificate = ?, ca_bundle = ?, allow_hsts = ?, hsts_max_age = ?, hsts_include_subdomains = ?, status = ?
+										private_key = ?, certificate = ?, ca_bundle = ?, allow_hsts = ?,
+										hsts_max_age = ?, hsts_include_subdomains = ?, status = ?
 									WHERE
 										cert_id = ?
 									AND
@@ -375,8 +383,8 @@ function client_addSslCert($domainId, $domainType)
 										domain_type = ?
 								',
 								array(
-									$privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, $hstsMaxAge, $hstsIncludeSubDomains, 'tochange', $certId, $domainId,
-									$domainType
+									$privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, $hstsMaxAge,
+									$hstsIncludeSubDomains, 'tochange', $certId, $domainId, $domainType
 								)
 							);
 						}
@@ -611,7 +619,7 @@ if(
 		'TR_HSTS_MAX_AGE' => tr('HSTS: Set the max-age'),
 		'TR_SEC' => tr('Sec.'),
 		'TR_HSTS_INCLUDE_SUBDOMAINS' => tr('HSTS: Include sub domains'),
-		'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr('Enable that feature only if all the sub domains of that domain have an SSL certificate.'),
+		'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr('Enable that feature only if all the subdomains of that domain have an SSL certificate.'),
 		'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
 		'TR_PASSWORD' => tr('Private key passphrase if any'),
 		'TR_PRIVATE_KEY' => tr('Private key'),

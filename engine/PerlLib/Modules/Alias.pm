@@ -281,7 +281,8 @@ sub _getHttpdData
 		my $haveCert = exists $certData->{$self->{'alias_id'}} && $self->isValidCertificate($self->{'alias_name'});
 		my $allowHSTS = $haveCert && $certData->{$self->{'alias_id'}}->{'allow_hsts'} eq 'on';
 		my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'alias_id'}}->{'hsts_max_age'} : '';
-		my $hstsIncludeSubDomains = $allowHSTS && $certData->{$self->{'alias_id'}}->{'hsts_include_subdomains'} eq 'on' ? '; includeSubDomains' : '';
+		my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'alias_id'}}->{'hsts_include_subdomains'} eq 'on')
+			? '; includeSubDomains' : '';
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
@@ -309,7 +310,8 @@ sub _getHttpdData
 			BWLIMIT => $self->{'domain_traffic_limit'},
 			ALIAS => $userName . 'als' . $self->{'alias_id'},
 			FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '') ? $self->{'url_forward'} : 'no',
-			FORWARD_TYPE => (defined $self->{'type_forward'} && $self->{'type_forward'} ne '') ? $self->{'type_forward'} : '',
+			FORWARD_TYPE => (defined $self->{'type_forward'} && $self->{'type_forward'} ne '')
+				? $self->{'type_forward'} : '',
 			DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
 				? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
 				: $phpiniDefaultData->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
@@ -504,7 +506,8 @@ sub _getPackagesData
 			HOME_DIR => $homeDir,
 			WEB_DIR => $webDir,
 			FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '') ? $self->{'url_forward'} : 'no',
-			FORWARD_TYPE => (defined $self->{'type_forward'} && $self->{'type_forward'} ne '') ? $self->{'type_forward'} : '',
+			FORWARD_TYPE => (defined $self->{'type_forward'} && $self->{'type_forward'} ne '')
+				? $self->{'type_forward'} : '',
 			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 		};
 	}
