@@ -25,21 +25,19 @@
 			<td><label for="selfsigned">{TR_GENERATE_SELFSIGNED_CERTIFICAT}</label></td>
 			<td><input type="checkbox" id="selfsigned" name="selfsigned"></td>
 		</tr>
-		</tbody>
-		<tbody id="input_fields">
-		<tr>
+		<tr class="input_fields">
 			<td><label for="passphrase">{TR_PASSWORD}</label></td>
 			<td><input id="passphrase" type="password" name="passphrase" value="" autocomplete="off"/></td>
 		</tr>
-		<tr>
+		<tr class="input_fields">
 			<td><label for="private_key">{TR_PRIVATE_KEY}</label></td>
 			<td><textarea name="private_key" id="private_key">{KEY_CERT}</textarea></td>
 		</tr>
-		<tr>
+		<tr class="input_fields">
 			<td><label for="certificate">{TR_CERTIFICATE}</label></td>
 			<td><textarea name="certificate" id="certificate">{CERTIFICATE}</textarea></td>
 		</tr>
-		<tr>
+		<tr class="input_fields">
 			<td><label for="ca_bundle">{TR_CA_BUNDLE}</label></td>
 			<td><textarea name="ca_bundle" id="ca_bundle">{CA_BUNDLE}</textarea></td>
 		</tr>
@@ -62,10 +60,9 @@
 
 		$("#selfsigned").change(function() {
 			if($(this).is(':checked')) {
-				$("#input_fields input,textarea");
-				$("#input_fields").hide();
+				$(".input_fields").hide();
 			} else {
-				$("#input_fields").show();
+				$(".input_fields").show();
 			}
 		});
 	});
