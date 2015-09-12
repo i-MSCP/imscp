@@ -25,6 +25,6 @@
     SSLCertificateChainFile {CERTIFICATE}
 
     # SECTION hsts_enabled BEGIN.
-    Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}"{HSTS_INCLUDE_SUBDOMAINS}
+    Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
     # SECTION hsts_enabled END.
 </VirtualHost>
