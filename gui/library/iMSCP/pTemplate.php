@@ -80,7 +80,7 @@ class iMSCP_pTemplate
 	 *
 	 * @var string
 	 */
-	protected static $_root_dir = '.';
+	protected $root_dir = '.';
 
 	/**
 	 * @var string
@@ -143,6 +143,7 @@ class iMSCP_pTemplate
 	public function __construct()
 	{
 		$this->eventManager = iMSCP_Events_Aggregator::getInstance();
+		$this->setRootDir(iMSCP_Registry::get('config')->ROOT_TEMPLATE_PATH);
 
 		$this->tpl_start_rexpr = '/';
 		$this->tpl_start_rexpr .= $this->tpl_start_tag;
@@ -166,10 +167,10 @@ class iMSCP_pTemplate
 	 * @param string $rootDir
 	 * @return void
 	 */
-	public static function setRootDir($rootDir)
+	public function setRootDir($rootDir)
 	{
 		if(is_dir($rootDir)) {
-			self::$_root_dir = $rootDir;
+			$this->root_dir = $rootDir;
 		} else {
 			throw new iMSCP_Exception('iMSCP_pTemplate::setRootDir expects a valid directory.');
 		}
@@ -463,7 +464,7 @@ class iMSCP_pTemplate
 	 */
 	private function is_safe($fname)
 	{
-		return (file_exists(self::$_root_dir . '/' . $fname)) ? true : false;
+		return (file_exists($this->root_dir . '/' . $fname)) ? true : false;
 	}
 
 	/**
@@ -492,7 +493,7 @@ class iMSCP_pTemplate
 		if (!is_array($fname)) {
 			$this->eventManager->dispatch(
 				iMSCP_Events::onBeforeAssembleTemplateFiles,
-				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
+				array('context' => $this, 'templatePath' => $this->root_dir . '/'. $fname)
 			);
 		} else { // INCLUDED file
 			$fname = ($parentTplDir !== null) ? $parentTplDir . '/' . $fname[1] : $fname[1];
@@ -504,10 +505,10 @@ class iMSCP_pTemplate
 
 			$this->eventManager->dispatch(
 				iMSCP_Events::onBeforeLoadTemplateFile,
-				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
+				array('context' => $this, 'templatePath' => $this->root_dir . '/'. $fname)
 			);
 
-			$fileContent = file_get_contents(self::$_root_dir . '/' . $fname);
+			$fileContent = file_get_contents($this->root_dir . '/' . $fname);
 
 			$this->eventManager->dispatch(
 				iMSCP_Events::onAfterLoadTemplateFile, array('context' => $this, 'templateContent' => $fileContent)
@@ -516,7 +517,7 @@ class iMSCP_pTemplate
 			$fileContent = preg_replace_callback($this->tpl_include, array($this, 'get_file'), $fileContent);
 			$parentTplDir = $prevParentTplDir;
 		} else {
-			throw new iMSCP_Exception(sprintf('Unable to find the %s template file', self::$_root_dir . $fname));
+			throw new iMSCP_Exception(sprintf('Unable to find the %s template file', $this->root_dir . '/' . $fname));
 		}
 
 		$this->eventManager->dispatch(

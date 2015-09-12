@@ -211,7 +211,7 @@ function client_generateSelfSignedCert($domainName)
 		}
 
 		# Export certificate
-		if (@openssl_x509_export($cert, $certStr, false) !== true) {
+		if (@openssl_x509_export($cert, $certStr, true) !== true) {
 			write_log(sprintf('Unable to export certificate: %s', openssl_error_string()), E_USER_ERROR);
 			return false;
 		}

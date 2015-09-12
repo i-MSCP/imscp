@@ -151,9 +151,6 @@ if (!customerHasFeature('ftp') && !customerHasFeature('protected_areas')) {
 	showBadRequestErrorPage();
 }
 
-$cfg = iMSCP_Registry::get('config');
-iMSCP_pTemplate::setRootDir($cfg['ROOT_TEMPLATE_PATH']);
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
 	'partial' => 'client/ftp_choose_dir.tpl',

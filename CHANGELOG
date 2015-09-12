@@ -100,6 +100,7 @@ YOUTRACK
 	Fixed: #IP-1417 When changing hostname using the panel_hostname option, SSL dialog must be triggered
 	Fixed: #IP-1428 i-MSCP services such as imscp_network should not depend on the mysql service
 	Fixed: #IP-1450 Software installer which is not maintained should be removed
+	Fixed: #IP-1452 pTemplate - reset static variable $_root_dir in /client/cert_view.php
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
