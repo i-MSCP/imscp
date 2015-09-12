@@ -92,7 +92,7 @@ class Zend_Locale_Data
      * Case 1: _readFile('ar','/ldml/delimiter')             -> returns [] = test
      * Case 1: _readFile('ar','/ldml/second[@type=myone]')   -> returns [] = content
      * Case 2: _readFile('ar','/ldml/second','type')         -> returns [myone] = content; [mysecond] = content2
-     * Case 3: _readFile('ar','/ldml/delimiter','right')     -> returns [right] = test
+     * Case 3: _readFile('ar','/ldml/delimiter',,'right')    -> returns [right] = test
      * Case 4: _readFile('ar','/ldml/third','type','myone')  -> returns [myone] = mythird
      *
      * @param  string $locale

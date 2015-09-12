@@ -720,7 +720,7 @@ sub _buildMasterCfFile
 	$file->save();
 }
 
-=item _buildSaslConfFile()
+=item _buildSaslConfFiles()
 
  Build SASL configuration files
 

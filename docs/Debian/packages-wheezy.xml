@@ -77,15 +77,10 @@
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
         </proftpd>
-        <vsftpd
-                repository_conflict="http://www.tataranovich.com/.*"
-                >
-            <package>vsftpd</package>
+        <vsftpd>
             <package>libpam-mysql</package>
+            <package>vsftpd</package>
         </vsftpd>
-        <pureftpd>
-            <package>pure-ftpd-mysql</package>
-        </pureftpd>
     </ftpd>
     <named default="bind">
         <bind>
