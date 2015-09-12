@@ -246,6 +246,8 @@ function client_addSslCert($domainId, $domainType)
 
 	$domainName = _client_getDomainName($domainId, $domainType);
 	$allowHSTS = isset($_POST['allow_hsts']) ? 'on' : 'off';
+	$hstsMaxAge = $allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
+	$hstsIncludeSubDomains = $allowHSTS == 'on' && isset($_POST['hsts_include_subdomains']) ? 'on' : 'off';
 	$selfSigned = isset($_POST['selfsigned']);
 
 	if($domainName !== false) {
@@ -351,12 +353,12 @@ function client_addSslCert($domainId, $domainType)
 							exec_query(
 								'
 									INSERT INTO ssl_certs (
-										domain_id, domain_type, private_key, certificate, ca_bundle, allow_hsts, status
+										domain_id, domain_type, private_key, certificate, ca_bundle, allow_hsts, hsts_max_age, hsts_include_subdomains, status
 									) VALUES (
 										?, ?, ?, ?, ?, ?, ?
 									)
 								',
-								array($domainId, $domainType, $privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, 'toadd')
+								array($domainId, $domainType, $privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, $hstsMaxAge, $hstsIncludeSubDomains, 'toadd')
 							);
 						} else { // Update existing certificate
 							exec_query(
@@ -364,7 +366,7 @@ function client_addSslCert($domainId, $domainType)
 									UPDATE
 										ssl_certs
 									SET
-										private_key = ?, certificate = ?, ca_bundle = ?, allow_hsts = ?, status = ?
+										private_key = ?, certificate = ?, ca_bundle = ?, allow_hsts = ?, hsts_max_age = ?, hsts_include_subdomains = ?, status = ?
 									WHERE
 										cert_id = ?
 									AND
@@ -373,7 +375,7 @@ function client_addSslCert($domainId, $domainType)
 										domain_type = ?
 								',
 								array(
-									$privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, 'tochange', $certId, $domainId,
+									$privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, $hstsMaxAge, $hstsIncludeSubDomains, 'tochange', $certId, $domainId,
 									$domainType
 								)
 							);
@@ -495,6 +497,8 @@ function client_generatePage($tpl, $domainId, $domainType)
 			$certificate = $row['certificate'];
 			$caBundle = $row['ca_bundle'];
 			$allowHSTS = ($row['allow_hsts'] == 'on') ? true : false;
+			$hstsMaxAge = $row['hsts_max_age'];
+			$hstsIncludeSubDomains = ($row['hsts_include_subdomains'] == 'on') ? true : false;
 			$trAction = tr('Update');
 			$status = $row['status'];
 			$tpl->assign('STATUS', translate_dmn_status($status));
@@ -507,6 +511,8 @@ function client_generatePage($tpl, $domainId, $domainType)
 				$certificate = '';
 				$caBundle = '';
 				$allowHSTS = false;
+				$hstsMaxAge = '31536000';
+				$hstsIncludeSubDomains = false;
 				$tpl->assign('SSL_CERTIFICATE_STATUS', '');
 			} else {
 				set_page_message('SSL feature is currently disabled.', 'static_warning');
@@ -524,6 +530,8 @@ function client_generatePage($tpl, $domainId, $domainType)
 			$certificate = $_POST['certificate'];
 			$caBundle = $_POST['ca_bundle'];
 			$allowHSTS = isset($_POST['allow_hsts']);
+			$hstsMaxAge = $allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
+			$hstsIncludeSubDomains = $allowHSTS && isset($_POST['hsts_include_subdomains']);
 		}
 
 		/** @var iMSCP_Config_Handler_File $cfg */
@@ -535,6 +543,8 @@ function client_generatePage($tpl, $domainId, $domainType)
 			'TR_DYNAMIC_TITLE' => $dynTitle,
 			'DOMAIN_NAME' => tohtml(encode_idna($domainName)),
 			'HSTS_CHECKED' => $allowHSTS ? $checked : '',
+			'HSTS_MAX_AGE' => tohtml(trim($hstsMaxAge)),
+			'HSTS_INCLUDE_SUBDOMAINS_CHECKED' => $hstsIncludeSubDomains ? $checked : '',
 			'KEY_CERT' => tohtml(trim($privateKey)),
 			'CERTIFICATE' => tohtml(trim($certificate)),
 			'CA_BUNDLE' => tohtml(trim($caBundle)),
@@ -598,6 +608,10 @@ if(
 		'TR_CERT_FOR' => tr('Common name'),
 		'TR_STATUS' => tr('Status'),
 		'TR_ALLOW_HSTS' => tr('Allow HTTP Strict Transport Security'),
+		'TR_HSTS_MAX_AGE' => tr('HSTS: Set the max-age'),
+		'TR_SEC' => tr('Sec.'),
+		'TR_HSTS_INCLUDE_SUBDOMAINS' => tr('HSTS: Include sub domains'),
+		'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr('Enable that feature only if all the sub domains of that domain have an SSL certificate.'),
 		'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
 		'TR_PASSWORD' => tr('Private key passphrase if any'),
 		'TR_PRIVATE_KEY' => tr('Private key'),

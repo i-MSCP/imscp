@@ -301,6 +301,13 @@ sub disableDmn
 	if($data->{'SSL_SUPPORT'}) {
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 		$configTpls{'_ssl'} =  'domain_disabled_ssl.tpl';
+
+		if($data->{'HSTS_SUPPORT'}) {
+			$self->setData({
+				FORWARD => "https://$data->{'DOMAIN_NAME'}/",
+				FORWARD_TYPE => "307"
+			});
+		}
 	}
 
 	for my $configTplType(keys %configTpls) {
@@ -1372,6 +1379,13 @@ sub _addCfg
 		};
 
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
+
+		if($data->{'HSTS_SUPPORT'}) {
+			$self->setData({
+				FORWARD => "https://$data->{'DOMAIN_NAME'}/",
+				FORWARD_TYPE => "307"
+			});
+		}
 	}
 
 	my $iniLevel = $self->{'config'}->{'INI_LEVEL'};
@@ -1747,9 +1761,7 @@ sub _cleanTemplate
 		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
 	}
 
-	if($data->{'HSTS_SUPPORT'}) {
-		$$cfgTpl = replaceBloc("# SECTION hsts_disabled BEGIN.\n", "# SECTION hsts_disabled END.\n", '', $$cfgTpl);
-	} else {
+	if($filename =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
 		$$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
 	}
 
