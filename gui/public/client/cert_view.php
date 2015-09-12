@@ -611,7 +611,7 @@ if(
 		'TR_HSTS_MAX_AGE' => tr('HSTS: Set the max-age'),
 		'TR_SEC' => tr('Sec.'),
 		'TR_HSTS_INCLUDE_SUBDOMAINS' => tr('HSTS: Include sub domains'),
-		'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr('Enable that feature only if all the sub domains of that domain have a SSL certificate.'),
+		'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr('Enable that feature only if all the sub domains of that domain have an SSL certificate.'),
 		'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
 		'TR_PASSWORD' => tr('Private key passphrase if any'),
 		'TR_PRIVATE_KEY' => tr('Private key'),
