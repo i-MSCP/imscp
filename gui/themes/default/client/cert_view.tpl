@@ -1,18 +1,4 @@
 
-<script>
-	$(function () {
-		$("input[name='allow_hsts']").change(
-				function () {
-					if ($("#allow_hsts").is(':checked')) {
-						$("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").show();
-					} else {
-						$("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").hide();
-					}
-				}
-		).trigger('change');
-	});
-</script>
-
 <form name="ssl_cert_frm" method="post" action="cert_view.php?domain_id={DOMAIN_ID}&domain_type={DOMAIN_TYPE}">
 	<table class="firstColFixed">
 		<thead>
@@ -87,6 +73,16 @@
 		if(!$("#add_update").length) {
 			$("input,textarea").prop('disabled', true);
 		}
+
+		$("input[name='allow_hsts']").change(
+				function () {
+					if ($("#allow_hsts").is(':checked')) {
+						$("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").show();
+					} else {
+						$("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").hide();
+					}
+				}
+		).trigger('change');
 
 		$("#selfsigned").change(function() {
 			if($(this).is(':checked')) {

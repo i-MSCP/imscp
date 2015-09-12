@@ -1847,7 +1847,7 @@ sub _cleanTemplate
 		}
 	}
 
-	if(!$data->{'HSTS_SUPPORT'}) {
+	if($filename =~ /^domain(?:_(?:disabled|redirect))_ssl\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
 		$$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
 	}
 
