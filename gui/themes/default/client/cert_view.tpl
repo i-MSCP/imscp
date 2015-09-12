@@ -1,4 +1,18 @@
 
+<script>
+	$(function () {
+		$("input[name='allow_hsts']").change(
+				function () {
+					if ($("#allow_hsts").is(':checked')) {
+						$("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").show();
+					} else {
+						$("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").hide();
+					}
+				}
+		).trigger('change');
+	});
+</script>
+
 <form name="ssl_cert_frm" method="post" action="cert_view.php?domain_id={DOMAIN_ID}&domain_type={DOMAIN_TYPE}">
 	<table class="firstColFixed">
 		<thead>
@@ -20,6 +34,17 @@
 		<tr>
 			<td><label for="allow_hsts">{TR_ALLOW_HSTS}</label></td>
 			<td><input type="checkbox" id="allow_hsts" name="allow_hsts"{HSTS_CHECKED}></td>
+		</tr>
+		<tr id="tr_hsts_max_age_data">
+			<td><label for="hsts_max_age">{TR_HSTS_MAX_AGE}</label></td>
+			<td>
+				<input name="hsts_max_age" id="hsts_max_age" type="text" value="{HSTS_MAX_AGE}">
+				<span>{TR_SEC}</span>
+			</td>
+		</tr>
+		<tr id="tr_hsts_include_subdomains_data">
+			<td><label for="hsts_includeSubDomains">{TR_HSTS_INCLUDE_SUBDOMAINS}</label></td>
+			<td><input type="checkbox" id="hsts_includeSubDomains" name="hsts_includeSubDomains"{HSTS_INCLUDE_SUBDOMAINS_CHECKED}></td>
 		</tr>
 		<tr>
 			<td><label for="selfsigned">{TR_GENERATE_SELFSIGNED_CERTIFICAT}</label></td>
