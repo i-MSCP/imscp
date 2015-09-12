@@ -307,7 +307,7 @@ sub disableDmn
 			FORWARD => "https://$data->{'DOMAIN_NAME'}/",
 			FORWARD_TYPE => "307"
 		});
-    }
+	}
 
 	if($data->{'SSL_SUPPORT'}) {
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
