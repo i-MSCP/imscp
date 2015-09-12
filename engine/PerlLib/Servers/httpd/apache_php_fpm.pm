@@ -302,16 +302,16 @@ sub disableDmn
 
 	my %configTpls = ( '' => (!$data->{'HSTS_SUPPORT'}) ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
 
+	if($data->{'SSL_SUPPORT'}) {
+		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
+		$configTpls{'_ssl'} =  'domain_disabled_ssl.tpl';
+	}
+
 	if($data->{'HSTS_SUPPORT'}) {
 		$self->setData({
 			FORWARD => "https://$data->{'DOMAIN_NAME'}/",
 			FORWARD_TYPE => "307"
 		});
-	}
-
-	if($data->{'SSL_SUPPORT'}) {
-		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
-		$configTpls{'_ssl'} =  'domain_disabled_ssl.tpl';
 	}
 
 	for my $configTplType(keys %configTpls) {
@@ -1486,7 +1486,9 @@ sub _addCfg
 		};
 
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
-	} elsif($data->{'HSTS_SUPPORT'}) {
+	}
+
+	if($data->{'HSTS_SUPPORT'}) {
 		$self->setData({
 			FORWARD => "https://$data->{'DOMAIN_NAME'}/",
 			FORWARD_TYPE => "307"
