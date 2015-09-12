@@ -438,8 +438,8 @@ sub _getHttpdData
 
 		my $haveCert = exists $certData->{$self->{'domain_id'}} && $self->isValidCertificate($self->{'domain_name'});
 		my $allowHSTS = $haveCert && $certData->{$self->{'domain_id'}}->{'allow_hsts'} eq 'on';
-		my $hstsMaxAge = $certData->{$self->{'domain_id'}}->{'hsts_max_age'};
-		my $hstsIncludeSubDomains = $certData->{$self->{'domain_id'}}->{'hsts_includeSubDomains'} eq 'on' ? '; includeSubDomains' : '';
+		my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'domain_id'}}->{'hsts_max_age'} : '';
+		my $hstsIncludeSubDomains = $allowHSTS && $certData->{$self->{'domain_id'}}->{'hsts_includeSubDomains'} eq 'on' ? '; includeSubDomains' : '';
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
