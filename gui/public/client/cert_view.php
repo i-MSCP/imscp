@@ -246,7 +246,7 @@ function client_addSslCert($domainId, $domainType)
 
 	$domainName = _client_getDomainName($domainId, $domainType);
 	$allowHSTS = isset($_POST['allow_hsts']) ? 'on' : 'off';
-	$hstsMaxAge = $allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
+	$hstsMaxAge = $allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
 	$hstsIncludeSubDomains = $allowHSTS == 'on' && isset($_POST['hsts_include_subdomains']) ? 'on' : 'off';
 	$selfSigned = isset($_POST['selfsigned']);
 
@@ -530,7 +530,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 			$certificate = $_POST['certificate'];
 			$caBundle = $_POST['ca_bundle'];
 			$allowHSTS = isset($_POST['allow_hsts']);
-			$hstsMaxAge = $allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
+			$hstsMaxAge = $allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
 			$hstsIncludeSubDomains = $allowHSTS && isset($_POST['hsts_include_subdomains']);
 		}
 
