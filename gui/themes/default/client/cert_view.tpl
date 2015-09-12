@@ -21,7 +21,7 @@
 			<td><label for="allow_hsts">{TR_ALLOW_HSTS}</label></td>
 			<td><input type="checkbox" id="allow_hsts" name="allow_hsts"{HSTS_CHECKED}></td>
 		</tr>
-		<tr id="tr_hsts_max_age_data">
+		<tr id="tr_hsts_max_age_data" class="input_fields">
 			<td><label for="hsts_max_age">{TR_HSTS_MAX_AGE}</label></td>
 			<td>
 				<input name="hsts_max_age" id="hsts_max_age" type="text" value="{HSTS_MAX_AGE}">
