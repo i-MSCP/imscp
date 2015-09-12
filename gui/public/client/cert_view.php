@@ -247,7 +247,7 @@ function client_addSslCert($domainId, $domainType)
 	$domainName = _client_getDomainName($domainId, $domainType);
 	$allowHSTS = isset($_POST['allow_hsts']) ? 'on' : 'off';
 	$hstsMaxAge = $allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
-	$hstsIncludeSubDomains = $allowHSTS == 'on' && isset($_POST['hsts_includeSubDomains']) ? 'on' : 'off';
+	$hstsIncludeSubDomains = $allowHSTS == 'on' && isset($_POST['hsts_include_subdomains']) ? 'on' : 'off';
 	$selfSigned = isset($_POST['selfsigned']);
 
 	if($domainName !== false) {
@@ -353,7 +353,7 @@ function client_addSslCert($domainId, $domainType)
 							exec_query(
 								'
 									INSERT INTO ssl_certs (
-										domain_id, domain_type, private_key, certificate, ca_bundle, allow_hsts, hsts_max_age, hsts_includeSubDomains, status
+										domain_id, domain_type, private_key, certificate, ca_bundle, allow_hsts, hsts_max_age, hsts_include_subdomains, status
 									) VALUES (
 										?, ?, ?, ?, ?, ?, ?
 									)
@@ -366,7 +366,7 @@ function client_addSslCert($domainId, $domainType)
 									UPDATE
 										ssl_certs
 									SET
-										private_key = ?, certificate = ?, ca_bundle = ?, allow_hsts = ?, hsts_max_age = ?, hsts_includeSubDomains = ?, status = ?
+										private_key = ?, certificate = ?, ca_bundle = ?, allow_hsts = ?, hsts_max_age = ?, hsts_include_subdomains = ?, status = ?
 									WHERE
 										cert_id = ?
 									AND
@@ -498,7 +498,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 			$caBundle = $row['ca_bundle'];
 			$allowHSTS = ($row['allow_hsts'] == 'on') ? true : false;
 			$hstsMaxAge = $row['hsts_max_age'];
-			$hstsIncludeSubDomains = ($row['hsts_includeSubDomains'] == 'on') ? true : false;
+			$hstsIncludeSubDomains = ($row['hsts_include_subdomains'] == 'on') ? true : false;
 			$trAction = tr('Update');
 			$status = $row['status'];
 			$tpl->assign('STATUS', translate_dmn_status($status));
@@ -531,7 +531,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 			$caBundle = $_POST['ca_bundle'];
 			$allowHSTS = isset($_POST['allow_hsts']);
 			$hstsMaxAge = $allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
-			$hstsIncludeSubDomains = $allowHSTS && isset($_POST['hsts_includeSubDomains']);
+			$hstsIncludeSubDomains = $allowHSTS && isset($_POST['hsts_include_subdomains']);
 		}
 
 		/** @var iMSCP_Config_Handler_File $cfg */

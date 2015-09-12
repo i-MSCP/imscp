@@ -607,7 +607,7 @@ CREATE TABLE IF NOT EXISTS `ssl_certs` (
   `ca_bundle` text COLLATE utf8_unicode_ci,
   `allow_hsts` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
   `hsts_max_age` int(11) NOT NULL DEFAULT '31536000',
-  `hsts_includeSubDomains` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+  `hsts_include_subdomains` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
   `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`cert_id`),
   UNIQUE `domain_id_domain_type` (`domain_id`, `domain_type`)

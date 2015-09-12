@@ -30,10 +30,10 @@
 		</tr>
 		<tr id="tr_hsts_include_subdomains_data">
 			<td>
-				<label for="hsts_includeSubDomains">{TR_HSTS_INCLUDE_SUBDOMAINS}</label>
-				<span class="tips icon i_exclamation" id="hsts_includeSubDomains_tooltip" title="{TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP}"></span>
+				<label for="hsts_include_subdomains">{TR_HSTS_INCLUDE_SUBDOMAINS}</label>
+				<span class="tips icon i_exclamation" id="hsts_include_subdomains_tooltip" title="{TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP}"></span>
 			</td>
-			<td><input type="checkbox" id="hsts_includeSubDomains" name="hsts_includeSubDomains"{HSTS_INCLUDE_SUBDOMAINS_CHECKED}></td>
+			<td><input type="checkbox" id="hsts_include_subdomains" name="hsts_include_subdomains"{HSTS_INCLUDE_SUBDOMAINS_CHECKED}></td>
 		</tr>
 		<tr>
 			<td><label for="selfsigned">{TR_GENERATE_SELFSIGNED_CERTIFICAT}</label></td>

@@ -3122,7 +3122,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			),
 			$this->addColumn(
 				'ssl_certs',
-				'hsts_includeSubDomains',
+				'hsts_include_subdomains',
 				"VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off' AFTER hsts_max_age"
 			)
 		);
