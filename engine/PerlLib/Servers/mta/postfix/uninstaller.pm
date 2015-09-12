@@ -71,7 +71,7 @@ sub _removeUsers
 {
 	my $self = shift;
 
-	iMSCP::SystemUser->new( force => 'yes')->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
+	iMSCP::SystemUser->new( force => 'yes' )->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 }
 
 sub _buildAliasses
@@ -89,7 +89,11 @@ sub _restoreConfFile
 {
 	my $self = shift;
 
-	for my $file($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
+	for my $file(
+		$self->{'config'}->{'SASLAUTHD_CONF_FILE'},
+		$self->{'config'}->{'POSTFIX_CONF_FILE'},
+		$self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}
+	) {
 		my $basename = basename($file);
 
 		if(-f "$self->{'bkpDir'}/$basename.system"){
@@ -97,8 +101,10 @@ sub _restoreConfFile
 		}
 	}
 
-	if(-f "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf") {
-		iMSCP::File->new( filename => "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf" )->delFile();
+	for my $file($self->{'config'}->{'SASL_SMTPD_CONF_FILE'}, $self->{'config'}->{'PAM_SMTP_CONF_FILE'}) {
+		if (-f $file) {
+			iMSCP::File->new( filename => $file )->delFile();
+		}
 	}
 
 	0;

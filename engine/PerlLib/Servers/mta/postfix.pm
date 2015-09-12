@@ -141,7 +141,10 @@ sub postinstall
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaPostinstall', 'postfix');
-	iMSCP::Service->getInstance()->enable($self->{'config'}->{'MTA_SNAME'});
+
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->enable($self->{'config'}->{'SASLAUTHD_SNAME'});
+	$serviceMngr->enable($self->{'config'}->{'MTA_SNAME'});
 
 	$self->{'eventManager'}->register('beforeSetupRestartServices', sub { push @{$_[0]}, [
 		sub {
@@ -192,7 +195,9 @@ sub start
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaStart');
-	iMSCP::Service->getInstance()->start($self->{'config'}->{'MTA_SNAME'});
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->start($self->{'config'}->{'SASLAUTHD_SNAME'});
+	$serviceMngr->start($self->{'config'}->{'MTA_SNAME'});
 	$self->{'eventManager'}->trigger('afterMtaStart');
 }
 
@@ -209,7 +214,9 @@ sub restart
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaRestart');
-	iMSCP::Service->getInstance()->restart($self->{'config'}->{'MTA_SNAME'});
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->restart($self->{'config'}->{'SASLAUTHD_SNAME'});
+	$serviceMngr->restart($self->{'config'}->{'MTA_SNAME'});
 	$self->{'eventManager'}->trigger('afterMtaRestart');
 }
 
@@ -226,7 +233,9 @@ sub stop
 	my $self = shift;
 
 	$self->{'eventManager'}->trigger('beforeMtaStop');
-	iMSCP::Service->getInstance()->stop($self->{'config'}->{'MTA_SNAME'});
+	my $serviceMngr = iMSCP::Service->getInstance();
+	$serviceMngr->stop($self->{'config'}->{'SASLAUTHD_SNAME'});
+	$serviceMngr->stop($self->{'config'}->{'MTA_SNAME'});
 	$self->{'eventManager'}->trigger('afterMtaStop');
 }
 
