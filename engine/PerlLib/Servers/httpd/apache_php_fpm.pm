@@ -1474,6 +1474,13 @@ sub _addCfg
 		}
 	}
 
+	if(!$data->{'SSL_SUPPORT'} && $data->{'HSTS_SUPPORT'}) {
+		$self->setData({
+			FORWARD => "https://$data->{'DOMAIN_NAME'}/",
+			FORWARD_TYPE => "307"
+		});
+	}
+
 	my @templates = ({
 		tplFile => ($data->{'FORWARD'} eq 'no') ? 'domain.tpl' : 'domain_redirect.tpl',
 		siteFile => "$data->{'DOMAIN_NAME'}.conf"
@@ -1486,11 +1493,6 @@ sub _addCfg
 		};
 
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
-	} elsif($data->{'HSTS_SUPPORT'}) {
-		$self->setData({
-			FORWARD => "https://$data->{'DOMAIN_NAME'}/",
-			FORWARD_TYPE => "307"
-		});
 	}
 
 	my $poolLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
