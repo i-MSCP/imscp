@@ -55,7 +55,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 		} else {
 			$query = '
 				SELECT
-					`t1`.`subdomain_alias_name` AS `subdomain_name`, `t1`.`subdomain_alias_url_forward` AS `forward_url`,, `t1`.`subdomain_alias_type_forward` AS `forward_type`,
+					`t1`.`subdomain_alias_name` AS `subdomain_name`, `t1`.`subdomain_alias_url_forward` AS `forward_url`, `t1`.`subdomain_alias_type_forward` AS `forward_type`,
 					`t2`.`alias_name` `aliasName`
 				FROM
 					`subdomain_alias` AS `t1`
