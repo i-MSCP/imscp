@@ -61,6 +61,7 @@ virtual_uid_maps = static:{MTA_MAILBOX_UID}
 virtual_gid_maps = static:{MTA_MAILBOX_GID}
 
 # SASL parameters
+smtpd_sasl_local_domain =
 smtpd_sasl_type = cyrus
 smtpd_sasl_path = smtpd
 smtpd_sasl_auth_enable = yes

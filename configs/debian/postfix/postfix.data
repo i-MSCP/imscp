@@ -17,7 +17,16 @@ MTA_TRANSPORT_MAP = /etc/postfix/imscp/transport
 MTA_RELAY_MAP = /etc/postfix/imscp/relay_domains
 MTA_MAILBOX_UID_NAME = vmail
 MTA_MAILBOX_GID_NAME = mail
-MTA_SASL_CONF_DIR = /etc/postfix/sasl
+
+SASL_CONF_DIR = /etc/postfix/sasl
+SASLAUTHD_SNAME = saslauthd
+SASLAUTHD_CONF_FILE = /etc/default/saslauthd
+SASLAUTHD_THREADS= 5
+SASL_SMTPD_CONF_FILE = /etc/postfix/sasl/smtpd.conf
+SASL_SMTPD_LOG_LEVEL = 2
+SASL_GROUP = sasl
+
+PAM_SMTP_CONF_FILE = /etc/pam.d/smtp
 
 # Possible value: yes or no
 # (Not implemented yet)

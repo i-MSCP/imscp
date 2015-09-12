@@ -102,7 +102,7 @@ sub showDialog
 				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			} elsif($dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign) are allowed.\\Zn\n\nPlease try again:";
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign and backslash) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
@@ -122,7 +122,7 @@ sub showDialog
 							$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
 							$dbPass = '';
 						} elsif($dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/) {
-							$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign) are allowed.\\Zn\n\nPlease try again:";
+							$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign and backslash) are allowed.\\Zn\n\nPlease try again:";
 							$dbPass = '';
 						} else {
 							$msg = '';
@@ -320,7 +320,7 @@ sub _rebuildVsFTPdDebianPackage
 			));
 			debug($stdout) if $stdout;
 			0;
-		}, 'Building new vsftpd package', 7, 5
+		}, 'Building new vsftpd package...', 7, 5
 	);
 
 	step(
@@ -332,7 +332,7 @@ sub _rebuildVsFTPdDebianPackage
 			));
 			debug($stdout) if $stdout;
 			0;
-		}, 'Installing new vsftpd package', 7, 6
+		}, 'Installing new vsftpd package...', 7, 6
 	);
 
 	step(
