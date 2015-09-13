@@ -13,5 +13,4 @@
     <copy_conffile>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_conffile>
     <copy_conffile>${SYSTEM_CONF}/apache/vlogger.conf.tpl</copy_conffile>
     <copy_conffile>${SYSTEM_CONF}/apache/vlogger.sql</copy_conffile>
-
 </install>
