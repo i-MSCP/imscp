@@ -21,10 +21,11 @@
 
 package Listener::phpFPM::MaxChildren;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 
-sub changeMaxChildren
-{
+iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
 	my ($cfgTpl, $tplName, $data) = @_;
 
 	if($tplName == 'pool.conf') {
@@ -35,9 +36,7 @@ sub changeMaxChildren
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', \&changeMaxChildren);
+});
 
 1;
 __END__
