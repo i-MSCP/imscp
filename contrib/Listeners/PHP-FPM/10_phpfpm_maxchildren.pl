@@ -28,7 +28,7 @@ use iMSCP::EventManager;
 iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
 	my ($cfgTpl, $tplName, $data) = @_;
 
-	if($tplName == 'pool.conf') {
+	if($tplName eq 'pool.conf') {
 		my $search = "pm.max_children = 6\n";
 		my $replace = "pm.max_children = 100\n";
 
