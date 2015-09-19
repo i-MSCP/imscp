@@ -779,8 +779,13 @@ sub addIps
 
 		$file->set($fileContent);
 		$file->save();
-		$self->installConfFile('00_nameserver.conf');
-		$self->enableSites('00_nameserver.conf');
+
+		my $rs = $self->installConfFile('00_nameserver.conf');
+		return $rs if $rs;
+
+		$rs = $self->enableSites('00_nameserver.conf');
+		return $rs if $rs;
+
 		$self->{'restart'} = 1;
 	}
 

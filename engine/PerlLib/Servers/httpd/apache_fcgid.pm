@@ -767,7 +767,6 @@ sub addIps
 
 		$fileContent .= $confSnippet;
 
-
 		$self->{'eventManager'}->trigger('afterHttpdAddIps', \$fileContent, $data);
 
 		$file->set($fileContent);
