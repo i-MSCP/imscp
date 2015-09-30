@@ -1013,7 +1013,7 @@ function deleteDomainAlias($aliasId, $aliasName)
 				LEFT JOIN
 					subdomain_alias USING(alias_id)
 				WHERE (
-					userid LIKE CONCAT('%@', subdomain_alias_name, '.', .alias_name)
+					userid LIKE CONCAT('%@', subdomain_alias_name, '.', alias_name)
 				OR
 					userid LIKE CONCAT('%@', alias_name)
 				)
