@@ -101,6 +101,7 @@ YOUTRACK
 	Fixed: #IP-1428 i-MSCP services such as imscp_network should not depend on the mysql service
 	Fixed: #IP-1450 Software installer which is not maintained should be removed
 	Fixed: #IP-1452 pTemplate - reset static variable $_root_dir in /client/cert_view.php
+	Fixed: #IP-1457 SQL error on domain alias deletion
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
