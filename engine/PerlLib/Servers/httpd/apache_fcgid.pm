@@ -1619,7 +1619,7 @@ sub _addFiles
 
 		# FrontEnd user (which is added in user group) must be able to write in errors directory
 		if($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/errors") {
-			setRights("$webDir/errors", {,
+			setRights("$webDir/errors", {
 				dirmode => '0770',
 				filemode => '0660',
 				recursive => 1
