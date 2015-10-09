@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 222;
+	protected $lastUpdate = 223;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3126,5 +3126,20 @@ class iMSCP_Update_Database extends iMSCP_Update
 				"VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off' AFTER hsts_max_age"
 			)
 		);
+	}
+
+	/**
+	 * Remove escaping of underscore in mysql.db
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function r223()
+	{
+		return "
+			UPDATE mysql.db AS dst
+			INNER JOIN sql_database AS src
+			ON dst.Db = REPLACE(src.sqld_name, '_', '\_')
+			SET dst.Db = REPLACE(src.sqld_name, '\_', '_')
+		";
 	}
 }

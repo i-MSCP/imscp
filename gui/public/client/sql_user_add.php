@@ -269,12 +269,12 @@ function client_addSqlUser($customerId, $databaseId)
 			try {
 				if (isset($_POST['Add_Exist'])) {
 					exec_query(
-						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier($dbName) . '.* TO ?@?',
+						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier(stripslashes($dbName)) . '.* TO ?@?',
 						array($sqlUser, $sqlUserHost)
 					);
 				} else {
 					exec_query(
-						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier($dbName) . '.* TO ?@? IDENTIFIED BY ?',
+						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier(stripslashes($dbName)) . '.* TO ?@? IDENTIFIED BY ?',
 						array($sqlUser, $sqlUserHost, $sqlUserPassword)
 					);
 				}

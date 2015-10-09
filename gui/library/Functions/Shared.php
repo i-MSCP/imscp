@@ -577,7 +577,7 @@ function sql_delete_user($domainId, $sqlUserId, $flushPrivileges = true)
 
 		$sqlUserName = $row['sqlu_name'];
 		$sqlUserHost = $row['sqlu_host'];
-		$sqlDbName = str_replace('_','\_',$row['sqld_name']);
+		$sqlDbName = $row['sqld_name'];
 
 		$stmt = exec_query(
 			'SELECT COUNT(sqlu_id) AS cnt FROM sql_user WHERE sqlu_name = ? AND sqlu_host = ?',
