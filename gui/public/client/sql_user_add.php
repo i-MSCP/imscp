@@ -266,33 +266,35 @@ function client_addSqlUser($customerId, $databaseId)
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlUser);
 
-			if(isset($_POST['Add_Exist'])) {
-				exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', array(
-					$databaseId, $sqlUser, $sqlUserHost
-				));
-			} else {
-				try {
+			try {
+				if (isset($_POST['Add_Exist'])) {
 					exec_query(
-						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier($dbName) . '.* TO ?@? IDENTIFIED BY ?',
+						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier(stripslashes($dbName)) . '.* TO ?@?',
+						array($sqlUser, $sqlUserHost)
+					);
+				} else {
+					exec_query(
+						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier(stripslashes($dbName)) . '.* TO ?@? IDENTIFIED BY ?',
 						array($sqlUser, $sqlUserHost, $sqlUserPassword)
 					);
-
-					$sqlUserCreated = true;
-
-					exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', array(
-						$databaseId, $sqlUser, $sqlUserHost
-					));
-				} catch (iMSCP_Exception_Database $e) {
-					if ($sqlUserCreated) {
-						try { // We don't care about result here - An exception is throw in case the user do not exists
-							exec_query('DROP USER ?@?', array($sqlUser, $sqlUserHost));
-						} catch (iMSCP_Exception_Database $x) {
-
-						}
-					}
-
-					throw $e;
 				}
+
+				$sqlUserCreated = true;
+
+				exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', array(
+					$databaseId, $sqlUser, $sqlUserHost,
+				));
+			} catch (iMSCP_Exception_Database $e) {
+				if ($sqlUserCreated) {
+					try {
+						// We don't care about result here - An exception is throw in case the user do not exists
+						exec_query('DROP USER ?@?', array($sqlUser, $sqlUserHost));
+					} catch (iMSCP_Exception_Database $x) {
+
+					}
+				}
+
+				throw $e;
 			}
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
