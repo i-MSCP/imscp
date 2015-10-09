@@ -261,7 +261,7 @@ function client_addSqlUser($customerId, $databaseId)
 			showBadRequestErrorPage();
 		} else {
 			$dbName = $stmt->fields['sqld_name'];
-			$dbName = preg_replace('/([_%\?\*])/', '\\\$1', $dbName);
+			$dbName = preg_replace('/([%\?\*])/', '\\\$1', $dbName);
 			$sqlUserCreated = false;
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlUser);
@@ -269,12 +269,12 @@ function client_addSqlUser($customerId, $databaseId)
 			try {
 				if (isset($_POST['Add_Exist'])) {
 					exec_query(
-						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier(stripslashes($dbName)) . '.* TO ?@?',
+						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier($dbName) . '.* TO ?@?',
 						array($sqlUser, $sqlUserHost)
 					);
 				} else {
 					exec_query(
-						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier(stripslashes($dbName)) . '.* TO ?@? IDENTIFIED BY ?',
+						'GRANT ALL PRIVILEGES ON ' . quoteIdentifier($dbName) . '.* TO ?@? IDENTIFIED BY ?',
 						array($sqlUser, $sqlUserHost, $sqlUserPassword)
 					);
 				}
