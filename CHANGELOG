@@ -17,6 +17,7 @@ YOUTRACK
 	Fixed: #IP-1401 Courier pop3-ssl and imap-ssl don't work with Windows 10
 	Fixed: #IP-1406 File not found - false error template
 	Fixed: #IP-1417 Bug - When changing hostname using the panel_hostname reconfiguration option, The SSL dialog should be triggered
+	Fixed: #IP-1452 pTemplate - reset static variable $_root_dir in /client/cert_view.php
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.9

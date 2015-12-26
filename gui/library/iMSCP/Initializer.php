@@ -200,9 +200,6 @@ class iMSCP_Initializer
 	 */
 	protected function initializeLayout()
 	{
-		// Set template root directory
-		iMSCP_pTemplate::setRootDir($this->config->ROOT_TEMPLATE_PATH);
-
 		// Set layout color for the current environment (Must be donne at end)
 		$this->eventManager->registerListener(
 			array(
