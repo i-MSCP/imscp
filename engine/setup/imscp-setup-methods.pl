@@ -186,8 +186,8 @@ sub setupTasks
 		[\&setupInstallPackages,            'Packages installation'],
 		[\&setupPostInstallServers,         'Servers post-installation'],
 		[\&setupPostInstallPackages,        'Packages post-installation'],
-		[\&setupRebuildCustomerFiles,       'Rebuilding customers files'],
 		[\&setupSetPermissions,             'Setting permissions'],
+		[\&setupRebuildCustomerFiles,       'Rebuilding customers files'],
 		[\&setupRestartServices,            'Restarting services']
 	);
 
