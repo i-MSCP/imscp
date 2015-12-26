@@ -5,6 +5,7 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 YOUTRACK
+	Fixed: #IP-1386 Length of password generator is hardcoded
 	Fixed: #IP-1396 Deletion of a subdomain which has '/' as mount point deletes all web folders
 
 ------------------------------------------------------------------------------------------------------------------------
