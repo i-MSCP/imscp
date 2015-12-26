@@ -240,7 +240,7 @@ sub restore
 					'nice', '-n', '15',     # Reduce the CPU priority
 					'ionice', '-c2', '-n5', # Reduce the I/O priority
 					$cmd,
-					escapeShell("$bkpDir/$_"), '|', 'mysql',
+					escapeShell("$bkpDir/$bkpFile"), '|', 'mysql',
 					'-h', escapeShell($main::imscpConfig{'DATABASE_HOST'}),
 					'-P', escapeShell($main::imscpConfig{'DATABASE_PORT'}),
 					'-u', escapeShell($rdata->{$sqldName}->{'sqlu_name'}),

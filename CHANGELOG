@@ -7,6 +7,9 @@ Git 1.2.x
 FRONTEND
 	Fixed: Wrong issue tracker links in admin/database_update.php
 
+BACKEND
+	Fixed: Could not restore domain (undefined variable)
+
 YOUTRACK
 	Fixed: #IP-1386 Length of password generator is hardcoded
 	Fixed: #IP-1388 phptmp removed on client update
