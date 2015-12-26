@@ -34,6 +34,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::TemplateParser;
+use iMSCP::ProgramFinder;
 use File::Basename;
 use Servers::po::courier;
 use Servers::mta::postfix;
@@ -230,11 +231,18 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	setRights(
+	my $rs = setRights(
 		$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}, {
 		user => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
 		group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
 		mode => '0750'
+	});
+	return $rs if $rs;
+
+	setRights("$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem", {
+		user => $self->{'config'}->{'AUTHDAEMON_USER'},
+		group => $main::imscpConfig{'ROOT_GROUP'},
+		mode => '0600'
 	});
 }
 
@@ -489,7 +497,10 @@ sub _buildConf
 {
 	my $self = shift;
 
-	my $rs = $self->_buildAuthdaemonrcFile();
+	my $rs = $self->_buildDHparametersFile();
+	return $rs if $rs;
+
+	$rs = $self->_buildAuthdaemonrcFile();
 	return $rs if $rs;
 
 	$rs = $self->_buildSslConfFiles();
@@ -593,6 +604,34 @@ sub _buildConf
 		return $rs if $rs;
 
 		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
+	}
+
+	0;
+}
+
+=item _buildDHparametersFile()
+
+ Build a DH parameters file with a stronger size (2048 instead of 768)
+
+ Fix: #IP-1401
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildDHparametersFile
+{
+	my $self = shift;
+
+	if(iMSCP::ProgramFinder::find('mkdhparams')) {
+		# We must delete old file to force re-generation
+		if(-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
+			my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem" )->delFile();
+			return $rs if $rs;
+		}
+
+		my $rs = execute('DH_BITS=2048 mkdhparams', \my $stdout, \my $stderr);
+		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 	}
 

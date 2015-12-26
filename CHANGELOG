@@ -4,6 +4,9 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+FRONTEND
+	Fixed: Wrong issue tracker links in admin/database_update.php
+
 YOUTRACK
 	Fixed: #IP-1386 Length of password generator is hardcoded
 	Fixed: #IP-1388 phptmp removed on client update
@@ -11,6 +14,7 @@ YOUTRACK
 	Fixed: #IP-1393: Unable to disable backup feature for existing domains
 	Fixed: #IP-1394 httpd-logs-mngr starts before mysql.server started
 	Fixed: #IP-1396 Deletion of a subdomain which has '/' as mount point deletes all web folders
+	Fixed: #IP-1401 Courier pop3-ssl and imap-ssl don't work with Windows 10
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.9
