@@ -15,6 +15,7 @@ YOUTRACK
 	Fixed: #IP-1394 httpd-logs-mngr starts before mysql.server started
 	Fixed: #IP-1396 Deletion of a subdomain which has '/' as mount point deletes all web folders
 	Fixed: #IP-1401 Courier pop3-ssl and imap-ssl don't work with Windows 10
+	Fixed: #IP-1406 File not found - false error template
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.9
