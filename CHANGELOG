@@ -16,6 +16,7 @@ YOUTRACK
 	Fixed: #IP-1396 Deletion of a subdomain which has '/' as mount point deletes all web folders
 	Fixed: #IP-1401 Courier pop3-ssl and imap-ssl don't work with Windows 10
 	Fixed: #IP-1406 File not found - false error template
+	Fixed: #IP-1417 Bug - When changing hostname using the panel_hostname reconfiguration option, The SSL dialog should be triggered
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.9

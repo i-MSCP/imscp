@@ -138,7 +138,10 @@ sub askSsl
 
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['panel_ssl', 'ssl', 'all', 'forced'] || not $sslEnabled ~~ ['yes', 'no']) {
+	if(
+		$main::reconfigure ~~ [ 'panel_ssl', 'ssl', 'all', 'forced' ] || not $sslEnabled ~~ [ 'yes', 'no' ] ||
+		($sslEnabled eq 'yes' && $main::reconfigure ~~ [ 'panel_hostname', 'hostnames' ])
+	) {
 		SSL_DIALOG:
 
 		($rs, $sslEnabled) = $dialog->radiolist(

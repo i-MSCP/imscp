@@ -874,7 +874,10 @@ sub setupAskServicesSsl
 
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['services_ssl', 'ssl', 'all', 'forced'] || not $sslEnabled ~~ ['yes', 'no']) {
+	if(
+		$main::reconfigure ~~ [ 'services_ssl', 'ssl', 'all', 'forced' ] || not $sslEnabled ~~ [ 'yes', 'no' ] ||
+		($sslEnabled eq 'yes' &&  $main::reconfigure ~~ [ 'system_hostname', 'hostnames' ])
+	) {
 		SSL_DIALOG:
 
 		# Ask for SSL
