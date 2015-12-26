@@ -9,6 +9,7 @@ YOUTRACK
 	Fixed: #IP-1388 phptmp removed on client update
 	Fixed: #IP-1391 imscp_panel service can fail to start/restart when the APCU PHP extension is installed
 	Fixed: #IP-1393: Unable to disable backup feature for existing domains
+	Fixed: #IP-1394 httpd-logs-mngr starts before mysql.server started
 	Fixed: #IP-1396 Deletion of a subdomain which has '/' as mount point deletes all web folders
 
 ------------------------------------------------------------------------------------------------------------------------
