@@ -30,7 +30,7 @@ GUI_DIR=$(readlink -f ../../gui)
 # PHP files
 find ${GUI_DIR} -type f -name '*.php' -print > php.lst
 /usr/bin/xgettext --copyright-holder='i-MSCP Team - All rights reserved' --package-name='i-MSCP' \
---package-version="<version>" --msgid-bugs-address='i18n@i-mscp.net' --language=PHP --keyword='tr' --keyword='ntr:1,2' \
+--package-version="1.2.x" --msgid-bugs-address='i18n@i-mscp.net' --language=PHP --keyword='tr' --keyword='ntr:1,2' \
 --from-code=utf-8 --files-from=php.lst --no-location --sort-output --output=${i18N_DIR}/iMSCP.pot
 rm -f php.lst
 
