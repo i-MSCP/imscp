@@ -82,9 +82,7 @@
 			<!-- EDP: edit_option -->
 			<a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}"
 			   title="{CHANGE_INTERFACE}">{CHANGE_INTERFACE}</a>
-			<a class="icon i_stats"
-			   href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}"
-			   title="{TR_STAT}">{TR_STAT}</a>
+			<a class="icon i_stats" href="user_statistics_details.php?user_id={USER_ID}" title="{TR_STAT}">{TR_STAT}</a>
 			<a class="icon i_delete" href="user_delete.php?id={USER_ID}" title="{ACTION}">{ACTION}</a>
 		</td>
 	</tr>

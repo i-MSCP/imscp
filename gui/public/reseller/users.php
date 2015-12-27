@@ -335,8 +335,6 @@ $tpl->assign(
 		'TR_ACTION' => tr('Actions'),
 		'TR_CREATION_DATE' => tr('Creation date'),
 		'TR_STAT' => tr('Stats'),
-		'VL_MONTH' => date('m'),
-		'VL_YEAR' => date('Y'),
 		'TR_EDIT_DOMAIN' => tr('Edit domain'),
 		'TR_EDIT_USER' => tr('Edit user'),
 		'TR_DISK_USAGE' => tr('Disk usage'),
