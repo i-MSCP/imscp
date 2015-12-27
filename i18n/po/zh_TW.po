@@ -11,10 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-07-03 03:07+0200\n"
-"PO-Revision-Date: 2015-06-16 09:23+0000\n"
+"POT-Creation-Date: 2015-12-27 19:50+0100\n"
+"PO-Revision-Date: 2015-07-03 02:11+0000\n"
 "Last-Translator: Akong Wu <ak6783@gmail.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/i-MSCP/language/zh_TW/)\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -762,12 +762,12 @@ msgid "Admin / Statistics / Reseller Statistics"
 msgstr "管理 / 狀態 / 經銷商狀態"
 
 msgid "Admin / Statistics / Reseller Statistics / User Statistics"
-msgstr ""
+msgstr "管理 / 狀態 / 經銷商狀態 / 使用者狀態"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
 " statistics"
-msgstr ""
+msgstr "管理 / 狀態 / 經銷商狀態 / 使用者狀態 / {USERNAME} 使用者狀態"
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "管理 / 狀態 / 伺服器狀態"
@@ -969,13 +969,13 @@ msgid "An email addresse is not valid in mail forward list."
 msgstr "在郵件轉址列表中有電子郵件位址是不正確的。"
 
 msgid "An entry is defined twice."
-msgstr ""
+msgstr "一個設定被定義兩次。"
 
 msgid "An error occurred during authentication."
 msgstr "在驗證過程中發生錯誤。"
 
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "發生無法預期的錯誤。"
 
 msgid "An unexpected error occurred."
 msgstr "發生無法預期的錯誤。"
@@ -3257,34 +3257,34 @@ msgid "No resellers found."
 msgstr "代理商不存在。"
 
 msgid "No software available"
-msgstr ""
+msgstr "沒有可用的軟體"
 
 msgid "No software in Web repository found!"
-msgstr ""
+msgstr "在網站軟體庫中沒有軟體!"
 
 msgid "No software in software depot available!"
-msgstr ""
+msgstr "在軟體庫中沒有軟體!"
 
 msgid "No software is waiting for activation"
-msgstr ""
+msgstr "沒有軟體正等待啟用"
 
 msgid "No statistics found for the given period. Try another period."
-msgstr ""
+msgstr "特定期間中沒有找到狀態。試其他的期間。"
 
 msgid "No unassigned users were found in the database."
-msgstr ""
+msgstr "資料庫中沒找到未分配的使用者。"
 
 msgid "No update available"
 msgstr "沒有可用的更新"
 
 msgid "No used yet"
-msgstr ""
+msgstr "未使用"
 
 msgid "No user found."
-msgstr ""
+msgstr "沒找到使用者"
 
 msgid "No users found for this reseller."
-msgstr ""
+msgstr "這個經銷商底下沒找到使用者"
 
 msgid "No."
 msgstr "編號"
@@ -3293,52 +3293,52 @@ msgid "None"
 msgstr "空"
 
 msgid "Normal"
-msgstr ""
+msgstr "一般"
 
 msgid "Normal + Forward"
-msgstr ""
+msgstr "一般 + 轉寄"
 
 msgid "Normal connection"
-msgstr ""
+msgstr "一般連線"
 
 msgid "Normal users"
 msgstr "普通使用者"
 
 msgid "Not Found"
-msgstr ""
+msgstr "找不到"
 
 msgid "Not Set"
-msgstr ""
+msgstr "未設定"
 
 msgid "Not found."
-msgstr ""
+msgstr "找不到"
 
 msgid "Not provided"
-msgstr ""
+msgstr "未提供"
 
 msgid "Not used"
-msgstr ""
+msgstr "未使用"
 
 msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr ""
+msgstr "注意: 您不可以混合 '垃圾信過濾' 和 '網域' 選項"
 
 msgid "Note: You cannot mix Spam filter and domain options"
-msgstr ""
+msgstr "注意: 您不可以混合垃圾信過濾和網域選項"
 
 msgid "Nothing found - sorry"
-msgstr ""
+msgstr "沒有找到 - 抱歉"
 
 msgid "Nothing has been changed."
-msgstr ""
+msgstr "沒有變更任何東西。"
 
 msgid "Nothing has been deleted."
-msgstr ""
+msgstr "沒有刪除任何東西。"
 
 msgid "Nothing has been scheduled for deactivation."
-msgstr ""
+msgstr "沒有任何排程將被停用。"
 
 msgid "Nothing to do. Daemon request has been canceled."
-msgstr ""
+msgstr "沒有做任何動作。背景需求已被取消。"
 
 msgid "Notices, Warnings and Errors"
 msgstr "通知，警告和錯誤"
@@ -3362,21 +3362,21 @@ msgid "Only exec"
 msgstr "只有 exec"
 
 msgid "Only gettext Machine Object files (MO files) are accepted."
-msgstr ""
+msgstr "只允許 gettext Machine Object 檔 (MO 檔)。"
 
 msgid "Only numbers in range from 0 to 65535 are allowed."
-msgstr ""
+msgstr "只允許從0到65535範圍的數字。"
 
 msgid "Only positive numbers are allowed."
-msgstr ""
+msgstr "只允許正數。"
 
 msgid ""
 "Only printable characters from the ASCII table (not extended), excepted the "
 "space, are allowed."
-msgstr ""
+msgstr "只允許從 ASCII 表裡的可視字元 (沒有延伸的)，除了空白。"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "只允許 tar.gz，tar.bz2 和 zip 壓縮檔。"
 
 msgid "Open ticket"
 msgstr "待解答服務單"
@@ -3453,7 +3453,7 @@ msgid "PHP settings"
 msgstr "PHP 設定"
 
 msgid "POP3/IMAP"
-msgstr ""
+msgstr "POP3/IMAP"
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP 接收"
@@ -3773,7 +3773,7 @@ msgstr "外掛管理: 無法變更 %s 外掛: %s"
 msgid ""
 "Plugin Manager: Unable to delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
-msgstr ""
+msgstr "外掛管理: 無法刪除 %s 外掛檔。您應該要執行 set-gui-permissions.pl 的程式然後再試一次。"
 
 #, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
@@ -3783,7 +3783,7 @@ msgstr "外掛管理: 無法讀取外掛 %s"
 msgid ""
 "Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "外掛管理: 無法反安裝 %s 外掛。外掛被其他外掛鎖住了。"
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
@@ -3805,7 +3805,7 @@ msgid "Plugin errors"
 msgstr "外掛錯誤"
 
 msgid "Plugin has been successfully uploaded."
-msgstr ""
+msgstr "外掛已經成功上傳。"
 
 msgid "Plugin item errors"
 msgstr "外掛項目錯誤"
@@ -3831,7 +3831,7 @@ msgstr "外掛安裝到 i-MSCP 可增加它的功能及客戶的功能。外掛�
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) reconfigured, and %s plugin(s) deleted."
-msgstr ""
+msgstr "外掛列表已經更新: %s 新的外掛已找到，%s 外掛已更新，%s 外掛已變更，及 %s 外掛已刪除。"
 
 msgid "Port"
 msgstr "連接埠"
@@ -3936,7 +3936,7 @@ msgid "Rebuild languages index"
 msgstr "重建語言索引"
 
 msgid "Reconfiguration in progress..."
-msgstr ""
+msgstr "重新配置中..."
 
 msgid "Record data"
 msgstr "值"
@@ -4080,7 +4080,7 @@ msgid "Reseller / Statistics / Overview"
 msgstr "經銷商 / 狀態 / 概要"
 
 msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
-msgstr ""
+msgstr "經銷商 / 狀態 / 概要 / {USERNAME} 使用者狀態"
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr "經銷商 / 支援 / 已關閉服務單"
@@ -4116,7 +4116,7 @@ msgid "Reseller assignment"
 msgstr "經銷商分配"
 
 msgid "Reseller assignments"
-msgstr ""
+msgstr "經銷商分配"
 
 msgid "Reseller consumption"
 msgstr "經銷商購買"
@@ -4444,7 +4444,7 @@ msgid "Show detailed statistics for this reseller"
 msgstr "顯示這個經銷商的詳細狀態"
 
 msgid "Show detailed statistics for this user"
-msgstr ""
+msgstr "顯示這個使用者的詳細狀態"
 
 msgid "Show in"
 msgstr "顯示在"
@@ -4563,7 +4563,7 @@ msgstr "垃圾信過濾: 在您的網域中設定 DNS MX 紀錄來轉發郵件�
 msgid ""
 "Spam Filter: Setup an external MX host to relay mail of your entire domain "
 "but retains our server as final mailhost."
-msgstr ""
+msgstr "垃圾信過濾: 在您的網域中設定 DNS MX 紀錄來轉發郵件但是保留我們的主機為最後的郵件主機。"
 
 msgid "Sql user successfully deleted."
 msgstr "Sql 使用者已成功刪除。"
@@ -4789,7 +4789,7 @@ msgstr "因為您這個服務已被限制，所以這個客戶的 %s 限制不�
 
 #, php-format
 msgid "The %s plugin version %s is not compatible with your i-MSCP version."
-msgstr ""
+msgstr "此 %s 外掛版本 %s 不相容您的 i-MSCP 版本。"
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
@@ -6148,7 +6148,7 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 已上傳新的軟體套件"
 
 msgid "{USERNAME} user statistics"
-msgstr ""
+msgstr "{USERNAME} 使用者狀態"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

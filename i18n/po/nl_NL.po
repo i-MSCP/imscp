@@ -20,10 +20,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-07-03 03:07+0200\n"
-"PO-Revision-Date: 2015-06-30 18:49+0000\n"
+"POT-Creation-Date: 2015-12-27 19:50+0100\n"
+"PO-Revision-Date: 2015-12-22 09:43+0000\n"
 "Last-Translator: Thom Heemstra <thom@heemstra.us>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -199,7 +199,7 @@ msgstr "%1$s van <b>ongelimiteerd</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s u bent nu ingelogd als %2$s"
+msgstr "%1$s, u bent nu ingelogd als %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -259,7 +259,7 @@ msgstr "IPadres %s is voor %s minuten wachtende."
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr "%s account succesvol verwijderd."
+msgstr "%s account is verwijderd."
 
 #, php-format
 msgid "%s doesn't exist"
@@ -323,16 +323,16 @@ msgstr "%s: Het aantal items (%s) dat al is toegewezen aan de wederverkoper is g
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr "%s: Deze wederverkoper heeft klanten met onbeperkte items."
+msgstr "%s: Deze wederverkoper heeft klanten met ongelimiteerde items."
 
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers"
-msgstr "%s: U kunt een service die reeds door de klanten van de wederverkoper gebruikt worden niet uitschakelen."
+msgstr "%s: U kunt een dienst of onderdeel die door de klanten van de wederverkoper gebruikt worden niet uitschakelen."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
-msgstr "%s: U kunt een service die reeds aan klanten van de wederverkoper worden verkocht niet uitschakelen."
+msgstr "%s: U kunt een dienst of onderdeel welke reeds aan klanten van de wederverkoper worden verkocht niet uitschakelen."
 
 #, php-format
 msgid ""
@@ -344,11 +344,11 @@ msgstr "%s::getInfo() niet geïmplementeerd en %s niet gevonden. Dit is een bug 
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr "'%%hostname%%' blijkt geen geldige MX-record te hebben voor het e-mailadres '%%value%%'"
+msgstr "'%%hostname%%' blijkt geen geldig MX-record te hebben voor het e-mailadres '%%value%%'"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr "'%%hostname%%' is geen gelige hostname voor het e-mailadres  '%%value%%'"
+msgstr "'%%hostname%%' is geen geldige hostname voor het e-mailadres  '%%value%%'"
 
 #, php-format
 msgid ""
@@ -366,7 +366,7 @@ msgstr "'%%localPart%%' komt niet overeen met het quoted-stringformaat"
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr "'%%localPart%%' is geen geldige local part voor het e-mailadres '%%value%%'"
+msgstr "'%%localPart%%' is geen geldige lokaal deel (voor het apenstaartje) voor het e-mailadres '%%value%%'"
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
@@ -376,29 +376,29 @@ msgstr "'%%value%%' schijnt een DNS-hostname te zijn, maar het TLD-gedeelte kan 
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr "'%%value%%' schijnt een DNS-hostname te zijn, maar het TLD komt niet voor op de bekende lijst"
+msgstr "'%%value%%' lijkt een DNS-hostname te zijn, maar het TLD wordt niet door ons ondersteund"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%%tld%%'"
-msgstr "'%%value%%' schijnt een DNS-hostname te zijn, maar komt niet overeen met het hostname-schema voor het TLD '%%tld%%'"
+msgstr "'%%value%%' lijkt een DNS-hostname te zijn, maar komt niet overeen met het hostname-schema voor het TLD '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr "'%%value%%' schijnt een DNS-hostname te zijn, maar bevat een koppelteken op een ongeldige positie"
+msgstr "'%%value%%' lijkt een DNS-hostname te zijn, maar bevat een koppelteken op een ongeldige positie"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr "'%%value%%' schijnt een DNS-hostname te zijn, maar de opgegeven punycode-notatie kan niet worden gedecodeerd"
+msgstr "'%%value%%' lijkt een DNS-hostname te zijn, maar de opgegeven punycode-notatie kan niet worden gedecodeerd"
 
 #, php-format
 msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr "'%%value%%' schijnt een domeinnaam te zijn, maar het TLD-gedeelte kan niet worden bepaald"
+msgstr "'%%value%%' lijkt een domeinnaam te zijn, maar het TLD-gedeelte kan niet worden bepaald"
 
 #, php-format
 msgid ""
@@ -428,7 +428,7 @@ msgstr "'%%value%%' lijkt een domeinnaam te zijn, maar het opgegeven punycode-no
 msgid ""
 "'%%value%%' appears to be a local network name but local network names are "
 "not allowed"
-msgstr "'%%value%%' schijnt een naam van een lokaal netwerk te zijn, maar namen van lokale netwerken zijn niet toegestaan"
+msgstr "'%%value%%' lijkt een naam van een lokaal netwerk te zijn, maar namen van lokale netwerken zijn niet toegestaan"
 
 #, php-format
 msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
@@ -500,7 +500,7 @@ msgid "(filtered from %s total records)"
 msgstr "(uit %s gevonden eenheden)"
 
 msgid "(usually named"
-msgstr "(normaal benaamd"
+msgstr "(de backups hebben de volgende naam"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
@@ -528,7 +528,7 @@ msgid "A hosting plan with same name already exists."
 msgstr "Er bestaat al een hostingpakket met dezelfde naam."
 
 msgid "A new i-MSCP version is available"
-msgstr "Er is een nieuwe versie van i-MSCP beschikbaar"
+msgstr "Er is een update voor i-MSCP beschikbaar"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Verkrijg toegang tot uw domeinstatistieken via de webinterface."
@@ -639,7 +639,7 @@ msgid "Add domain alias"
 msgstr "Domeinalias toevoegen"
 
 msgid "Add email account"
-msgstr "Voeg E-mailaccount toe"
+msgstr "Voeg e-mailaccount toe"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Voeg externe mailserver toe voor domein {DOMAIN_UTF8}"
@@ -666,7 +666,7 @@ msgid "Add new service port"
 msgstr "Nieuwe poort toevoegen"
 
 msgid "Add permissions"
-msgstr "Rechten toevoegen"
+msgstr "Voeg rechten toe"
 
 msgid "Add permissions for reseller to software:"
 msgstr "Rechten voor wederverkoper toevoegen voor de software:"
@@ -895,10 +895,10 @@ msgid ""
 msgstr "Nadat je het pakket hebt geüpload, wordt deze geïnstalleerd op uw systemen. <br />Herlaad uw website om de nieuwe status te bekijken."
 
 msgid "Alias forward"
-msgstr "Doorstuuralias"
+msgstr "Doorstuuradres van aliasdomein"
 
 msgid "Alias mail"
-msgstr "Mailalias"
+msgstr "E-mailbox van aliasdomein"
 
 msgid "Alias subdomain forward"
 msgstr "Alias voor doorsturen subdomein"
@@ -1014,7 +1014,7 @@ msgid "Any"
 msgstr "Alle"
 
 msgid "Application installer"
-msgstr "Applicatie-installer"
+msgstr "Applicatie-installatie"
 
 msgid "Apply"
 msgstr "Toepassen"
@@ -1033,7 +1033,7 @@ msgstr "Weet u zeker dat u deze rechten wilt verwijderen ?"
 
 #, php-format
 msgid "Are you sure you want delete the %s SQL user?"
-msgstr "Weet u zeker dat u de %s SQL-gebruiker wilt verwijderen?"
+msgstr "Weet u zeker dat u de SQL-gebruiker %s wilt verwijderen?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Weet u zeker dat u dit pakket wilt activeren?"
@@ -1392,7 +1392,7 @@ msgid "Client / Domains / SSL Certificate"
 msgstr "Klant / Domeinen / SSL-Certificaat"
 
 msgid "Client / Email / Add Email Account"
-msgstr "Klant / E-mail / Voeg E-mailaccount toe"
+msgstr "Klant / E-mail / Voeg e-mailaccount toe"
 
 msgid "Client / Email / Catchall"
 msgstr "Klant / E-mail / Catch-all"
@@ -2017,7 +2017,7 @@ msgid "Domain limit"
 msgstr "Domeinlimiet"
 
 msgid "Domain mail"
-msgstr "Domeinmail"
+msgstr "E-mailbox"
 
 msgid "Domain name"
 msgstr "Domeinnaam"
@@ -2096,7 +2096,7 @@ msgid "Download links"
 msgstr "Downloadlinks"
 
 msgid "Download the archives stored in this directory"
-msgstr "Download de archieven in deze map"
+msgstr "In deze map vindt u uw backup"
 
 msgid "EB"
 msgstr "EB"
@@ -2204,7 +2204,7 @@ msgid "Email address with comma(s) are not accepted."
 msgstr "E-mailadressen met komma('s) worden niet geaccepteerd."
 
 msgid "Email forward"
-msgstr "Doorstuuralias"
+msgstr "Doorstuuradres"
 
 msgid "Email quota"
 msgstr "E-mailquota"
@@ -3834,7 +3834,7 @@ msgid ""
 "Plugins are developed independently from the core i-MSCP application by "
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
-msgstr "Invoegtoepassingen haken in i-MSCP om de functionaliteit uit te breiden met eigen functies. Invoegtoepassingen worden los van de i-MSCP-core gebouwd bij vele ontwikkelaars over de wereld. Vind deze invoegtoepassingen door te surfen naar %s."
+msgstr "Invoegtoepassingen haken in op i-MSCP functionaliteit om deze uit te breiden met eigen functies. Invoegtoepassingen worden los van de i-MSCP-core gebouwd door vele ontwikkelaars over de wereld. Vind deze invoegtoepassingen door te surfen naar %s."
 
 #, php-format
 msgid ""
@@ -3929,7 +3929,7 @@ msgid "Quota"
 msgstr "Quota"
 
 msgid "Quota in MiB (0 for unlimited)"
-msgstr "Quota in MB (0 voor ongelimiteerd)"
+msgstr "Quota in MB (vul 0 in voor ongelimiteerd)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
@@ -3999,7 +3999,7 @@ msgid "Reopen ticket"
 msgstr "Ticket heropenen"
 
 msgid "Repeat password"
-msgstr "Herhaal wachtwoord"
+msgstr "Wachtwoord herhalen ter controle"
 
 msgid "Reply"
 msgstr "Antwoorde"
@@ -4167,7 +4167,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr "Lay-outkleur van wederverkoper succesvol bijgewerkt."
 
 msgid "Reseller/IP usage statistics"
-msgstr "Wederverkoper/Statistieken IP-gebruik"
+msgstr "Wederverkoper / Statistieken IP-gebruik"
 
 msgid "Resellers"
 msgstr "Wederverkopers"
@@ -4697,7 +4697,7 @@ msgid "Switch"
 msgstr "Omschakelen"
 
 msgid "Switch to the backups directory"
-msgstr "Wissel naar de 'backups'-map"
+msgstr "Ga naar de 'backups'-map"
 
 msgid "Switch to user interface"
 msgstr "Verander van gebruiker"
@@ -4712,7 +4712,7 @@ msgid "System data"
 msgstr "Systeemgegevens"
 
 msgid "System error - custom error page was not updated."
-msgstr "Systeemfout - eigen foutpagina is niet bijgewerkt."
+msgstr "Systeemfout - de foutpagina is niet bijgewerkt."
 
 msgid "System information"
 msgstr "Systeeminformatie"
