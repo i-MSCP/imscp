@@ -6,6 +6,7 @@ Git 1.2.x
 
 FRONTEND
 	Fixed: 404 error on user statistics page (reseller level)
+	Fixed: Wrong issue tracker links in admin/database_update.php
 
 BACKEND
 	Fixed: Could not restore domain (undefined variable)
