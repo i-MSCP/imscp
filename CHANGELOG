@@ -9,6 +9,7 @@ FRONTEND
 
 BACKEND
 	Fixed: Could not restore domain (undefined variable)
+	Fixed: Missing parameter for onLoadTemplate event (imscp.cnf)
 
 YOUTRACK
 	Fixed: #IP-1386 Length of password generator is hardcoded

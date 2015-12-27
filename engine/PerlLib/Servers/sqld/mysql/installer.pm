@@ -201,8 +201,7 @@ sub _buildConf
 
 	# Create the /etc/mysql/my.cnf file if missing
 	unless(-f "$confDir/my.cnf") {
-		my $cfgTpl;
-		$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'my.cnf', \$cfgTpl, { });
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'my.cnf', \my $cfgTpl, { });
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -230,8 +229,7 @@ sub _buildConf
 	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
 	return $rs if $rs;
 
-	my $cfgTpl;
-	$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', { });
+	$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', \my $cfgTpl, { });
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -305,8 +303,7 @@ sub _saveConf
 sub _isMysqldInsideCt
 {
 	if(-f '/proc/user_beancounters') {
-		my ($stdout, $stderr);
-		my $rs = execute('cat /proc/1/status | grep --color=never envID', \$stdout, \$stderr);
+		my $rs = execute('cat /proc/1/status | grep --color=never envID', \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		warning($stderr) if $rs && $stderr;
 		return $rs if $rs;
