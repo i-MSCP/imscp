@@ -21,7 +21,7 @@ YOUTRACK
 	#IP-1396 Deletion of a subdomain which has '/' as mount point deletes all web folders
 	#IP-1401 Courier pop3-ssl and imap-ssl don't work with Windows 10
 	#IP-1406 File not found - false error template
-	#IP-1417 Bug - When changing hostname using the panel_hostname reconfiguration option, The SSL dialog should be triggered
+	#IP-1417 When changing hostname using the panel_hostname reconfiguration option, The SSL dialog should be triggered
 	#IP-1452 pTemplate - reset static variable $_root_dir in /client/cert_view.php
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ BACKEND
 	Fixed: Set timezone according TIMEZONE configuration parameter (iMSCP::Bootstrapper::boot())
 	Rewritten: iMSCP::Dir library
 
-CONFIGS
+CONFIG
 	Added: ADM_GROUP configuration parameter
 	Added: courier-authdaemon init script - Status command from init script provided by Debian/Ubuntu do not work
 	Added: mysql.data configuration file
@@ -68,13 +68,13 @@ INSTALLER
 	Fixed: Invalid version format (non-numeric data) when updating from an RC release
 
 YOUTRACK
-	#IP-0792: Allow customers to see real-time http access and error logs
-	#IP-1362: Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.
-	#IP-1363: Unable to suspend customer account
-	#IP-1364: Custom DNS records are lost when editing domain properties
-	#IP-1371: Bug - When removing domain alias, the vhost link in /etc/apache2/sites-enabled is not removed
-	#IP-1373: Compliance with RFC 2142 - Add a hostmaster address by default
-	#IP-1374: Allows reuse of same SQL username for i-MSCP managed services such as phpmyadmin, proftpd...
+	#IP-0792 Allow customers to see real-time http access and error logs
+	#IP-1362 Incorrect PHP temporary directory path in subdomain's vhost files - Apache2 ITK server impl.
+	#IP-1363 Unable to suspend customer account
+	#IP-1364 Custom DNS records are lost when editing domain properties
+	#IP-1371 Bug - When removing domain alias, the vhost link in /etc/apache2/sites-enabled is not removed
+	#IP-1373 Compliance with RFC 2142 - Add a hostmaster address by default
+	#IP-1374 Allows reuse of same SQL username for i-MSCP managed services such as phpmyadmin, proftpd...
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.8
@@ -126,7 +126,7 @@ FRONTEND
 	Changed: Increased number of items to display by default in data tables (previous value was 5, it is now 10)
 
 YOUTRACK
-	#IP-1358: Admin's tickets can't be deleted due to an additional quotation-mark in the template
+	#IP-1358 Admin's tickets can't be deleted due to an additional quotation-mark in the template
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.5
@@ -156,7 +156,7 @@ i18N
 		Icelandic (is_IS), Spanish (es), and Serbian (sr)
 
 YOUTRACK
-	#IP-1357: Built in Support Ticket shows wrong URL (missing Control Panel Port)
+	#IP-1357 Built in Support Ticket shows wrong URL (missing Control Panel Port)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.4
@@ -174,7 +174,7 @@ BACKEND
 	Fixed: Warnings must not be turned into errors (backup script)
 	Fixed: Wrong return value on failure (request manager)
 
-CONFIGS
+CONFIG
 	Added: courier-authdaemon init script - Init script provided by Ubuntu do not work (Ubuntu only)
 	Added: ProxyTimeout setting into 00_nameserver.conf Apache2 configuration file
 	Added: types_hash_max_size setting in nginx.conf configuration file
@@ -187,7 +187,7 @@ PACKAGES
 	Fixed: users.mail_host field must be set to 'localhost' (Package::Webmail::Roundcube::Installer)
 
 YOUTRACK
-	#IP-1353: i18n issue - Admin / System information not translatable
+	#IP-1353 i18n issue - Admin / System information not translatable
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.3
@@ -216,7 +216,7 @@ BACKEND
 	Fixed: Some errors are not trapped
 	Fixed: When the backend is invoked by the i-MSCP daemon, some paths are missing (iMSCP::ProgramFinder)
 
-CONFIGS
+CONFIG
 	Added: bind9.service and bind9-resolve.service systemd unit files (Allows to fix #IP-1333 and #IP-1334)
 	Added: imscp_daemon, imscp_network and imscp_panel upstart jobs
 	Added: libbit-vector-perl package in list of pre-required packages (Debian / Ubuntu)
@@ -296,23 +296,23 @@ SERVICES
 	Fixed: Disable warnings about missing SPF DNS record (As per RFC 7208, SPF DNS record is deprecated - Bind9)
 
 YOUTRACK
-	#IP-0321: When a customer deletes a domain alias, all related entities must be automatically deleted
-	#IP-1082: net2ftp SSL Bug - http scheme badly detected - Missing HTTPS server variable
-	#IP-1257: Self-signed SSL certificate - SHA256 should be used in place of SHA1
-	#IP-1275: Apache access logs are created in /<domain.tld>
-	#IP-1279: Autoresponder - Unable to get message body
-	#IP-1286: IP attachment fails on reboot (Ubuntu)
-	#IP-1292: Files from a previous plugin version must be kept if the new plugin version is not compatible
-	#IP-1314: Custom DNS SRV record - Missing TLS protocol
-	#IP-1315: Defect - Statistics overview with special characters breaks view
-	#IP-1323: Invalid query result column used in change_domain_status() function
-	#IP-1327: Unable to add subdomain (subals) - An error occurred while reading flags on ...
-	#IP-1330: Proftpd - Unable to connect to i-MSCP database
-	#IP-1332: nginx / nginx-light package configuration fail which result to i-MSCP installation failure
-	#IP-1333: Local resolver not added into resolv.conf file
-	#IP-1334: Jessie - Bind9 options from /etc/default/bind9 file are ignored
-	#IP-1340: The public/tools/filemanager folder is not removed
-	#IP-1345: MySQL - Do not touch the local /root/.my.cnf file
+	#IP-0321 When a customer deletes a domain alias, all related entities must be automatically deleted
+	#IP-1082 net2ftp SSL Bug - http scheme badly detected - Missing HTTPS server variable
+	#IP-1257 Self-signed SSL certificate - SHA256 should be used in place of SHA1
+	#IP-1275 Apache access logs are created in /<domain.tld>
+	#IP-1279 Autoresponder - Unable to get message body
+	#IP-1286 IP attachment fails on reboot (Ubuntu)
+	#IP-1292 Files from a previous plugin version must be kept if the new plugin version is not compatible
+	#IP-1314 Custom DNS SRV record - Missing TLS protocol
+	#IP-1315 Defect - Statistics overview with special characters breaks view
+	#IP-1323 Invalid query result column used in change_domain_status() function
+	#IP-1327 Unable to add subdomain (subals) - An error occurred while reading flags on ...
+	#IP-1330 Proftpd - Unable to connect to i-MSCP database
+	#IP-1332 nginx / nginx-light package configuration fail which result to i-MSCP installation failure
+	#IP-1333 Local resolver not added into resolv.conf file
+	#IP-1334 Jessie - Bind9 options from /etc/default/bind9 file are ignored
+	#IP-1340 The public/tools/filemanager folder is not removed
+	#IP-1345 MySQL - Do not touch the local /root/.my.cnf file
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.2
@@ -343,9 +343,9 @@ PLUGINS
 	Updated: API to version 0.2.17
 
 YOUTRACK
-	#IP-1259: Layout - Text goes out of statistic bar
-	#IP-1263: Access to statistics (Awstats) is broken - 404 error
-	#IP-1267: Double-quotes in the Dovecot SQL user's password must be escaped
+	#IP-1259 Layout - Text goes out of statistic bar
+	#IP-1263 Access to statistics (Awstats) is broken - 404 error
+	#IP-1267 Double-quotes in the Dovecot SQL user's password must be escaped
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.1
@@ -368,7 +368,7 @@ BACKEND
 	Removed: imscp-local-dns-resolver script (The bind9 initscript invokes resolvconf itself)
 	Removed: policyd-weight and postgrey (Postfix SMTP access policy delegation)
 
-CONFIGS
+CONFIG
 	Added php5-json package (Debian Jessie)
 	Moved: Local DNS resolver parameters from the imscp.conf file to the bind.data configuration file
 
@@ -413,31 +413,31 @@ PLUGINS
 	Updated: API to version 0.2.16
 
 YOUTRACK
-	#IP-1205: Good practices - Use "-h" as abbrev for "--help" (instead of "-?")
-	#IP-1206: Good practices - Install resolvconf only when bind9 is also installed
-	#IP-1207: Defect - DataTable - Sorting not functional for data strings containing numeric values
-	#IP-1208: Task - Untranslatable string
-	#IP-1209: Cosmetics - Data usage bar glitches on 4k screens
-	#IP-1217: Defect - Faulty cron for removing old backend logs
-	#IP-1223: Bug - Admin log shows server IP instead of user IP
-	#IP-1225: iMSCP::Service - Dovecot take more than 5 seconds to start in some contexts
-	#IP-1226: Panel maintenance mode: text message error
-	#IP-1227: Page reseller statistics shows the same max/curr traffic/disk for all resellers
-	#IP-1228: Adding SSL-certificate causes undefined index warning
-	#IP-1229: Courier - CRAM-MD5 authentication not enabled by default
-	#IP-1230: RFC 7208 states that DNS SPF shoudln't be used anymore
-	#IP-1233: Autoresponder script (imscp-arpl-msgr) cannot write in /var/log/imscp/imscp-arpl-msgr
-	#IP-1234: IPv6 addresses causes exception
-	#IP-1235: Cosmetics - Reseller overview - Exception in domain status breaks the layout
-	#IP-1238: Question mark information box not functioning when switching page
-	#IP-1239: SSL Certificate - Usage of CA certificates as provided by OS for validation
-	#IP-1240: Statistics wrong (too high) - only admin values
-	#IP-1241: Allow customers to generate self-signed SSL certificate for their domains through the frontEnd
-	#IP-1246: PHP modules - Priority order - Priority is not honored in some contexts
-	#IP-1247: Apache2 - vlogger - failed unexpectedly
-	#IP-1251: Bug - per_user/per_domain settings - wrong domains/paths in php.ini
-	#IP-1252: Unable to add SSL certificate in some contexts
-	Fixed #IP-1256: Backup script - The SQL root password is shown in processes table
+	#IP-1205 Good practices - Use "-h" as abbrev for "--help" (instead of "-?")
+	#IP-1206 Good practices - Install resolvconf only when bind9 is also installed
+	#IP-1207 Defect - DataTable - Sorting not functional for data strings containing numeric values
+	#IP-1208 Task - Untranslatable string
+	#IP-1209 Cosmetics - Data usage bar glitches on 4k screens
+	#IP-1217 Defect - Faulty cron for removing old backend logs
+	#IP-1223 Bug - Admin log shows server IP instead of user IP
+	#IP-1225 iMSCP::Service - Dovecot take more than 5 seconds to start in some contexts
+	#IP-1226 Panel maintenance mode: text message error
+	#IP-1227 Page reseller statistics shows the same max/curr traffic/disk for all resellers
+	#IP-1228 Adding SSL-certificate causes undefined index warning
+	#IP-1229 Courier - CRAM-MD5 authentication not enabled by default
+	#IP-1230 RFC 7208 states that DNS SPF shoudln't be used anymore
+	#IP-1233 Autoresponder script (imscp-arpl-msgr) cannot write in /var/log/imscp/imscp-arpl-msgr
+	#IP-1234 IPv6 addresses causes exception
+	#IP-1235 Cosmetics - Reseller overview - Exception in domain status breaks the layout
+	#IP-1238 Question mark information box not functioning when switching page
+	#IP-1239 SSL Certificate - Usage of CA certificates as provided by OS for validation
+	#IP-1240 Statistics wrong (too high) - only admin values
+	#IP-1241 Allow customers to generate self-signed SSL certificate for their domains through the frontEnd
+	#IP-1246 PHP modules - Priority order - Priority is not honored in some contexts
+	#IP-1247 Apache2 - vlogger - failed unexpectedly
+	#IP-1251 Bug - per_user/per_domain settings - wrong domains/paths in php.ini
+	#IP-1252 Unable to add SSL certificate in some contexts
+	#IP-1256 Backup script - The SQL root password is shown in processes table
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.0
@@ -459,7 +459,7 @@ BACKEND
 	Changed: The quota accounting script is now run every 30 minutes
 	Fixed: Backend logs which are older than 7 days are never removed
 
-CONFIGS
+CONFIG
 	Fixed: The time at which the backup script must be run is no configurable
 	Renamed: /etc/imscp/hooks.d directory to /etc/imscp/listeners.d
 	Removed: Roundcube configuration directory (now shipped with the roundcube package)
@@ -492,9 +492,9 @@ UNINSTALLER
 	Added: Backend exec mode (uninstall)
 
 YOUTRACK
-	#IP-1123: Review - PHP session handling
-	#IP-1122: Defect - Network traffic passing through the loopback interface shouldn't be monitored
-	#IP-1146: Bug - Server statistics script is broken
+	#IP-1123 Review - PHP session handling
+	#IP-1122 Defect - Network traffic passing through the loopback interface shouldn't be monitored
+	#IP-1146 Bug - Server statistics script is broken
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
