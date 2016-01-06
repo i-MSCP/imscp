@@ -6,6 +6,7 @@ Git 1.2.x
 
 BACKEND
 	Fixed: Could not remove service (wrong return value)
+	Fixed: iMSCP::Rights::_set: cmod: cannot access '/etc/courier/dhparams.pem' : No such file or directory
 	Fixed: Missing variable in sprintf statement (iMSCP::Dir)
 	Fixed: Optionnal options must be passed-in to onLoadTemplate listeners (httpd server impls.)
 
