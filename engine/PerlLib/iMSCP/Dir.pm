@@ -276,7 +276,7 @@ sub remove
 				$errorStr .= ($file eq '') ? "general error: $message\n" : "problem unlinking $file: $message\n";
 			}
 
-			die(sprintf('Could not delete %s: %s', $errorStr));
+			die(sprintf('Could not delete %s: %s', $dirname, $errorStr));
 		}
 	}
 
