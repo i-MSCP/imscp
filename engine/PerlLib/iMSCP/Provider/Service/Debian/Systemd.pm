@@ -25,7 +25,6 @@ package iMSCP::Provider::Service::Debian::Systemd;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
 use Scalar::Defer;

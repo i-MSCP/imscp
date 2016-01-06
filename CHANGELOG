@@ -8,7 +8,7 @@ BACKEND
 	Fixed: Could not remove service (wrong return value)
 
 CONFIG
-	Removed ProxyErrorOverride parameter which was introduced in version 1.2.10 (Unexpected 503 errors +++)
+	Removed: ProxyErrorOverride parameter which was introduced in version 1.2.10 (Unexpected 503 errors +++)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.10
