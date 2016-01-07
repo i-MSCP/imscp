@@ -155,7 +155,7 @@ sub disable
 	} else {
 		(
 			$self->SUPER::disable($service) &&
-			( $self->_isSystemd($service) || $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0)
+			($self->_isSystemd($service) || $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0)
 		);
 	}
 }
@@ -181,7 +181,7 @@ sub remove
 		# Remove the underlying sysvinit script if any and make systemd aware of changes
 		(
 			$self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service) &&
-			$self->_exec($commands{'systemctl'}, 'daemon-reload')
+			$self->_exec($commands{'systemctl'}, 'daemon-reload') == 0
 		);
 	} else {
 		1;

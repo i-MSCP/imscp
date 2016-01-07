@@ -140,7 +140,7 @@ sub remove
 		(
 			$self->{'eventManager'}->trigger('onBeforeRemoveService', $service) == 0 &&
 			$self->{'provider'}->remove($service) &&
-			$self->{'eventManager'}->trigger('onAfterRemoveService', $service)
+			$self->{'eventManager'}->trigger('onAfterRemoveService', $service) == 0
 		);
 	};
 

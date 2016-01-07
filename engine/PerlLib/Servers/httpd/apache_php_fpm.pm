@@ -963,7 +963,7 @@ sub buildConfFile
 	my ($filename, $path) = fileparse($file);
 
 	my $cfgTpl;
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_php_fpm', $filename, \$cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_php_fpm', $filename, \$cfgTpl, $data, $options);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -1380,7 +1380,8 @@ sub start
 
 	local $@;
 	eval {
-		# In case no pool file is available we must no try to reload the PHP-FPM service because it will fail
+		# In case no pool file is available we must no try to reload the
+		# PHP-FPM service because it will fail. In such case, we stop it instead
 		my $isEmptyPoolDir = iMSCP::Dir->new( dirname => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'})->isEmpty();
 		my $serviceMngr = iMSCP::Service->getInstance();
 

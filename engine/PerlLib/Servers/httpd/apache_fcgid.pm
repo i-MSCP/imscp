@@ -962,7 +962,7 @@ sub buildConfFile
 	my ($filename, $path) = fileparse($file);
 
 	my $cfgTpl;
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_fcgid', $filename, \$cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_fcgid', $filename, \$cfgTpl, $data, $options);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {

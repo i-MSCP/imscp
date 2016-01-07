@@ -239,11 +239,16 @@ sub setEnginePermissions
 	});
 	return $rs if $rs;
 
-	setRights("$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem", {
-		user => $self->{'config'}->{'AUTHDAEMON_USER'},
-		group => $main::imscpConfig{'ROOT_GROUP'},
-		mode => '0600'
-	});
+	if(-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
+		$rs = setRights("$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem", {
+			user => $self->{'config'}->{'AUTHDAEMON_USER'},
+			group => $main::imscpConfig{'ROOT_GROUP'},
+			mode => '0600'
+		});
+		return $rs if $rs;
+	}
+
+	0;
 }
 
 =head1 EVENT LISTENERS
