@@ -1744,25 +1744,17 @@ sub _addCfg
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
-	my $poolLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
-	my $poolName;
-
-	if($data->{'FORWARD'} eq 'no') {
-		if($poolLevel eq 'per_user') { # One pool configuration file for all domains
-			$poolName = $data->{'ROOT_DOMAIN_NAME'};
-		} elsif($poolLevel eq 'per_domain') { # One pool configuration file for each domains (including subdomains)
-			$poolName = $data->{'PARENT_DOMAIN_NAME'};
-		} elsif($poolLevel eq 'per_site') { # One pool conifguration file for each domain
-			$poolName = $data->{'DOMAIN_NAME'};
-		} else {
-			error("Unknown php-fpm pool level: $poolLevel");
-			return 1;
-		}
+	my $confLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+	if($confLevel eq 'per_user') { # One pool configuration file for all domains
+		$confLevel = $data->{'ROOT_DOMAIN_NAME'};
+	} elsif($confLevel eq 'per_domain') { # One pool configuration file for each domains (including subdomains)
+		$confLevel = $data->{'PARENT_DOMAIN_NAME'};
+	} else { # One pool conifguration file for each domain
+		$confLevel = $data->{'DOMAIN_NAME'};
 	}
 
 	my $version = $self->{'config'}->{'HTTPD_VERSION'};
 	my $apache24 = (version->parse($version) >= version->parse('2.4.0'));
-
 	my $ipMngr = iMSCP::Net->getInstance();
 
 	$self->setData({
@@ -1773,7 +1765,7 @@ sub _addCfg
 		AUTHZ_DENY_ALL => ($apache24) ? 'Require all denied' : 'Deny from all',
 		DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
 			? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
-		POOL_NAME => $poolName
+		POOL_NAME => $confLevel
 	});
 
 	for my $template(@templates) {
@@ -2025,22 +2017,19 @@ sub _buildPHPConfig
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildPhpConf', $data);
 	return $rs if $rs;
 
-	my $poolLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+	my $confLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 	my $domainType = $data->{'DOMAIN_TYPE'};
 
 	my ($poolName, $emailDomain);
-	if($poolLevel eq 'per_user') { # One pool configuration file for all domains
+	if($confLevel eq 'per_user') { # One pool configuration file for all domains
 		$poolName = $data->{'ROOT_DOMAIN_NAME'};
 		$emailDomain = $data->{'ROOT_DOMAIN_NAME'};
-	} elsif ($poolLevel eq 'per_domain') { # One pool configuration file for each domains (including subdomains)
+	} elsif ($confLevel eq 'per_domain') { # One pool configuration file for each domains (including subdomains)
 		$poolName = $data->{'PARENT_DOMAIN_NAME'};
 		$emailDomain = $data->{'DOMAIN_NAME'};
-	} elsif($poolLevel eq 'per_site') { # One pool conifguration file for each domain
+	} else { # One pool configuration file for each domain
 		$poolName = $data->{'DOMAIN_NAME'};
 		$emailDomain = $data->{'DOMAIN_NAME'};
-	} else {
-		error("Unknown PHP-FPM pool level: $poolLevel");
-		return 1;
 	}
 
 	if($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
@@ -2061,12 +2050,10 @@ sub _buildPHPConfig
 			}
 		);
 		return $rs if $rs;
-	} elsif(
-		$data->{'PHP_SUPPORT'} ne 'yes' || (
-			($poolLevel eq 'per_user' && $domainType ne 'dmn') ||
-			($poolLevel eq 'per_domain' && not $domainType ~~ [ 'dmn', 'als' ]) ||
-			$poolLevel eq 'per_site'
-		)
+	} elsif($data->{'PHP_SUPPORT'} ne 'yes'
+		|| $confLevel eq 'per_user' && $domainType ne 'dmn'
+		|| $confLevel eq 'per_domain' && not $domainType ~~ [ 'dmn', 'als' ]
+		|| $confLevel eq 'per_site'
 	) {
 		if(-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf") {
 			$rs = iMSCP::File->new(
