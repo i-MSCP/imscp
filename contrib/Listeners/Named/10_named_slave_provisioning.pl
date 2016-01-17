@@ -28,7 +28,6 @@ package Listener::Named::Slave::Provisioning;
 
 use strict;
 use warnings;
-use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
