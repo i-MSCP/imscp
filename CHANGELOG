@@ -10,6 +10,9 @@ BACKEND
 CONFIG
 	Fixed: Possible segfault with OPcache when fast shutdown feature is enabled (panel side)
 
+CONTRIB
+	Rewritten: 10_named_zonetransfer.pl listener file (now named 10_named_slave_provisioning.pl)
+
 INSTALLER
     Fixed: Could not type new password when reconfiguring SQL server
 
