@@ -78,6 +78,9 @@ sub showDialog
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/) ||
 		(length $dbPass < 6 || $dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/)
 	) {
+		# Ensure no special chars are present in password If we don't, dialog will not let user set new password
+		$dbPass = '';
+
 		do{
 			($rs, $dbUser) = $dialog->inputbox(
 				"\nPlease enter an username for the rainloop SQL user:$msg", $dbUser

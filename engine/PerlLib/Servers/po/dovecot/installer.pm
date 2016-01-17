@@ -102,6 +102,9 @@ sub showDialog
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser =~ /[^\x21-\x7e]+/) ||
 		(length $dbPass < 6 || $dbPass =~ /[^\x21-\x7e]+/)
 	) {
+		# Ensure no special chars are present in password If we don't, dialog will not let user set new password
+		$dbPass = '';
+
 		# Ask for the dovecot restricted SQL username
 		do{
 			($rs, $dbUser) = $dialog->inputbox(
