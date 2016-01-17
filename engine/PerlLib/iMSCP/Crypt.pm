@@ -449,7 +449,7 @@ sub _toAlphabet64($)
  APR1 MD5 algorithm (see http://svn.apache.org/viewvc/apr/apr/trunk/crypto/apr_md5.c?view=markup)
 
  Param string $password The password to be hashed
- Param null $salt Salt An optional salt string to base the hashing on
+ Param string $salt Salt An optional salt string to base the hashing on
  Return string
 
 =cut
