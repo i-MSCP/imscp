@@ -33,7 +33,7 @@ use iMSCP::Net;
 use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
-use iMSCP::Crypt;
+use iMSCP::Crypt qw/md5 encryptBlowfishCBC decryptBlowfishCBC/;
 use iMSCP::Database;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -460,7 +460,7 @@ sub setupAskSqlDsn
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD');
 	} else {
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD');
-		$dbPass = ($dbPass) ? iMSCP::Crypt->getInstance()->decrypt_db_password($dbPass) : '';
+		$dbPass = ($dbPass) ? decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $dbPass) : '';
 	}
 
 	my $rs = 0;
@@ -471,6 +471,9 @@ sub setupAskSqlDsn
 		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
 		($dbPass eq '' || setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))
 	) {
+		# Following a decrypt_db_password() failure,  ensure no special chars are present in password string
+		# If we don't, dialog will not let user set new password
+		$dbPass = '';
 		my $msg = my $dbError = '';
 
 		do {
@@ -557,7 +560,7 @@ Please, try again.
 		setupSetQuestion('DATABASE_HOST', $dbHost);
 		setupSetQuestion('DATABASE_PORT', $dbPort);
 		setupSetQuestion('DATABASE_USER', $dbUser);
-		setupSetQuestion('DATABASE_PASSWORD', iMSCP::Crypt->getInstance()->encrypt_db_password($dbPass));
+		setupSetQuestion('DATABASE_PASSWORD', encryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $dbPass));
 	}
 
 	$rs;
@@ -1495,6 +1498,10 @@ sub setupSecureSqlInstallation
 
 	# Remove user without password set
 	my $rdata = $database->doQuery('User', "SELECT User, Host FROM mysql.user WHERE Password = ''");
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	for (keys %{$rdata}) {
 		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
@@ -1554,7 +1561,7 @@ sub setupDefaultAdmin
 	return $rs if $rs;
 
 	if($adminLoginName && $adminPassword) {
-		$adminPassword = iMSCP::Crypt->getInstance()->crypt_md5_data($adminPassword);
+		$adminPassword = md5($adminPassword);
 
 		my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 		unless($database) {
@@ -2177,7 +2184,7 @@ sub setupGetSqlConnect
 	$db->set(
 		'DATABASE_PASSWORD',
 		setupGetQuestion('DATABASE_PASSWORD')
-			? iMSCP::Crypt->getInstance()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD')) : ''
+			? decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, setupGetQuestion('DATABASE_PASSWORD')) : ''
 	);
 
 	my $rs = $db->connect();

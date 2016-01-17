@@ -25,7 +25,7 @@ package Servers::sqld::mysql::installer;
 
 use strict;
 use warnings;
-use iMSCP::Crypt;
+use iMSCP::Crypt qw/decryptBlowfishCBC/;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -243,9 +243,9 @@ sub _buildConf
 	my $variables = {
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
-		DATABASE_PASSWORD => escapeShell(
-			iMSCP::Crypt->getInstance()->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'})
-		),
+		DATABASE_PASSWORD => escapeShell(decryptBlowfishCBC(
+		    $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
+		)),
 		DATABASE_USER => $main::imscpConfig{'DATABASE_USER'}
 	};
 
