@@ -43,11 +43,11 @@ use iMSCP::TemplateParser;
 
 # Authentication username
 # Leave empty to disable authentication
-my $authUsername = 'nuxwin';
+my $authUsername = '';
 
 # Authentication password
 # Either an encrypted or plain password
-my $authPassword = 'skittles2305';
+my $authPassword = '';
 
 # Tells whether or not the provided authentication password is encrypted
 my $isAuthPasswordEncrypted = 0;
