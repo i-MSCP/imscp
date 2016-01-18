@@ -1473,7 +1473,6 @@ sub setupUpdateDatabase
 # Secure any SQL account by removing those without password
 # Basically, this method do same job as the mysql_secure_installation script
 # - Remove anonymous users
-# - Remove users without password set
 # - Remove remote sql root user (only for local server)
 # - Remove test database if any
 # - Reload privileges tables
@@ -1494,21 +1493,6 @@ sub setupSecureSqlInstallation
 	unless(ref $errStr eq 'HASH') {
 		error("Unable to delete anonymous users: $errStr");
 		return 1;
-	}
-
-	# Remove user without password set
-	my $rdata = $database->doQuery('User', "SELECT User, Host FROM mysql.user WHERE Password = ''");
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	for (keys %{$rdata}) {
-		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
-		unless(ref $errStr eq 'HASH') {
-			error("Unable to remove SQL user $_\\@$rdata->{$_}->{'Host'}: $errStr");
-			return 1;
-		}
 	}
 
 	# Remove test database if any

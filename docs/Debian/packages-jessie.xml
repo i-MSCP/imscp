@@ -68,11 +68,38 @@
                 pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
+                allow_switch_to="mysql_5.6,mysql_5.7,mariadb_10.0,percona_5.5,percona_5.6,remote_server"
                 >
             <package>mysql-server-5.5</package>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
         </mysql_5.5>
+        <mysql_5.6
+                repository="deb http://repo.mysql.com/apt/debian/ jessie mysql-5.6"
+                repository_key_srv="pgp.mit.edu"
+                repository_key_id="0x8c718d3b5072e1f5"
+                pinning_package="*"
+                pinning_pin="origin repo.mysql.com"
+                pinning_pin_priority="1001"
+                allow_switch_to="mysql_5.7,mariadb_10.0,percona_5.6,remote_server"
+                >
+            <package>mysql-server-5.6</package>
+            <package>mysql-client-5.6</package>
+            <package>mysql-common</package>
+        </mysql_5.6>
+        <mysql_5.7
+                repository="deb http://repo.mysql.com/apt/debian/ jessie mysql-5.7"
+                repository_key_srv="pgp.mit.edu"
+                repository_key_id="0x8c718d3b5072e1f5"
+                pinning_package="*"
+                pinning_pin="origin repo.mysql.com"
+                pinning_pin_priority="1001"
+                allow_switch_to="remote_server"
+                >
+            <package>mysql-server-5.7</package>
+            <package>mysql-client-5.7</package>
+            <package>mysql-common</package>
+        </mysql_5.7>
         <mariadb_10.0
                 repository_conflict="deb http://.*/mariadb/.*"
                 pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common mysql-common libmysqlclient18"
@@ -92,6 +119,7 @@
                 repository="deb http://repo.percona.com/apt jessie main"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
+                allow_switch_to="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,percona_5.6,remote_server"
                 >
             <package>percona-server-client-5.5</package>
             <package>percona-server-server-5.5</package>
@@ -104,7 +132,7 @@
                 repository="deb http://repo.percona.com/apt jessie main"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
-                allow_switch_to="mariadb_10.0,remote_server"
+                allow_switch_to="mysql_5.6,mysql_5.7,mariadb_10.0,remote_server"
                 >
             <package>percona-server-client-5.6</package>
             <package>percona-server-server-5.6</package>

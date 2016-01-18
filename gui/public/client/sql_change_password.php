@@ -60,11 +60,15 @@ function client_generatePage($tpl, $sqlUserId)
 /**
  * Update SQL user password
  *
+ *
+ * @throws Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  * @param int $sqlUserId Sql user id
  * @param string $sqlUserName Sql user name
- * @poaram string Sql user host
+ * @param $sqlUserHost
  * @param string $oldSqlPassword Sql user old password
- * @return
+ * @poaram string Sql user host
  */
 function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $oldSqlPassword)
 {
@@ -100,6 +104,9 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 		return;
 	}
 
+	$config = iMSCP_Registry::get('config');
+	$mysqlConfig = new iMSCP_Config_Handler_File($config['CONF_DIR'] . '/mysql.data');
+
 	$passwordUpdated = false;
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $sqlUserId));
@@ -107,7 +114,11 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 	try {
 		// Update SQL user password in the mysql system tables;
 
-		exec_query("SET PASSWORD FOR ?@? = PASSWORD(?)", array($sqlUserName, $sqlUserHost, $password));
+		if(version_compare($mysqlConfig['SQLD_VERSION '], '5.6.7', '<')) {
+			exec_query("SET PASSWORD FOR ?@? = PASSWORD(?)", array($sqlUserName, $sqlUserHost, $password));
+		} else {
+			exec_query("ALTER USER ?@? IDENTIFIED BY ?", array($sqlUserName, $sqlUserHost, $password));
+		}
 
 		$passwordUpdated = true;
 
@@ -126,7 +137,11 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 	} catch (iMSCP_Exception_Database $e) {
 		if($passwordUpdated) {
 			try {
-				exec_query("SET PASSWORD FOR ?@? = PASSWORD(?)", array($sqlUserName, $sqlUserHost, $oldSqlPassword));
+				if(version_compare($mysqlConfig['SQLD_VERSION '], '5.6.7', '<')) {
+					exec_query("SET PASSWORD FOR ?@? = PASSWORD(?)", array($sqlUserName, $sqlUserHost, $oldSqlPassword));
+				} else {
+					exec_query("ALTER USER ?@? IDENTIFIED BY ?", array($sqlUserName, $sqlUserHost, $oldSqlPassword));
+				}
 			} catch(iMSCP_Exception_Database $f) { }
 		}
 

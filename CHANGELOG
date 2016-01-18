@@ -8,13 +8,21 @@ BACKEND
 	Backported: iMSCP::Crypt library from 1.3.x branch
 
 CONFIG
-	Fixed: Possible segfault with OPcache when fast shutdown feature is enabled (panel side)
+	Added: Support for MySQL 5.6.x, 5.7.x
+	Added: SQLD_SOCK_DIR, SQLD_USER and SQLD_GROUP parameters mysql/mysql.data configuration file
+	Added: sql_mode parameter in mysql/imscp.cnf template file to reset server SQL modes (backward compatibility issue)
+	Fixed: Possible segfault with OPcache when fast shutdown feature is enabled
 
 CONTRIB
 	Rewritten: 10_named_zonetransfer.pl listener file (now named 10_named_slave_provisioning.pl)
 
 INSTALLER
-    Fixed: Could not type new password when reconfiguring service SQL users
+	Added: Routine to upgrade MySQL server system tables when necessary
+	Fixed: Could not type new password when reconfiguring service SQL users
+
+YOUTRACK
+	#IP-1397 MySQL "SET PASSWORD" deprecated in version 5.7.6
+	#IP-1482 Add support for both MySQL 5.6.x and MySQL 5.7.x using MySQL Team repositories
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.11

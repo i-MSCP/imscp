@@ -32,6 +32,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::ProgramFinder;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use Servers::sqld::mysql;
@@ -73,7 +74,10 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->_buildConf();
+	my $rs ||= $self->_buildConf();
+	return $rs if $rs;
+
+	$rs = $self->_upgradeSystemTablesIfNecessary();
 	return $rs if $rs;
 
 	$self->_saveConf();
@@ -97,7 +101,7 @@ sub setEnginePermissions
 	return $rs if $rs;
 
 	setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
-		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
+		user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'SQLD_GROUP'}, mode => '0640' }
 	);
 }
 
@@ -197,6 +201,7 @@ sub _buildConf
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+	my $mysqlGName = $self->{'config'}->{'SQLD_GROUP'};
 	my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
 	# Create the /etc/mysql/my.cnf file if missing
@@ -211,17 +216,10 @@ sub _buildConf
 		}
 
 		my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
-
 		$rs = $file->set($cfgTpl);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-
-		$rs = $file->owner($rootUName, $rootGName);
+		$rs ||= $file->save();
+		$rs ||= $file->owner($rootUName, $rootGName);
+		$rs ||= $file->mode(0644);
 		return $rs if $rs;
 	}
 
@@ -235,7 +233,7 @@ sub _buildConf
 	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
 		unless(defined $cfgTpl) {
-			error("Unable to read $self->{'cfgDir'}/imscp.cnf");
+			error(sprintf('Could not read %s', "$self->{'cfgDir'}/imscp.cnf"));
 			return 1;
 		}
 	}
@@ -246,12 +244,12 @@ sub _buildConf
 		DATABASE_PASSWORD => escapeShell(decryptBlowfishCBC(
 		    $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
 		)),
-		DATABASE_USER => $main::imscpConfig{'DATABASE_USER'}
+		DATABASE_USER => $main::imscpConfig{'DATABASE_USER'},
+		SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'}
 	};
 
 	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.5.0')) {
 		$cfgTpl .= <<EOF;
-[mysqld]
 innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}
 EOF
 
@@ -261,20 +259,48 @@ EOF
 	$cfgTpl = process($variables, $cfgTpl);
 
 	my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
-
-	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$rs = $file->owner($rootUName, $rootGName);
+	$rs ||= $file->set($cfgTpl);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($rootUName, $mysqlGName);
+	$rs ||= $file->mode(0640);
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterSqldBuildConf');
+}
+
+=item _upgradeSystemTablesIfNecessary()
+
+ Upgrade MySQL system tables if necessary
+
+ This is needed for MySQL community servers as provided by MySQL team because upgrade is not done automatically.
+ See #IP-1482 for further details.
+
+ Return 0
+
+=cut
+
+sub _upgradeSystemTablesIfNecessary
+{
+	my $self = shift;
+
+	unless(iMSCP::ProgramFinder::find('dpkg') && iMSCP::ProgramFinder::find('mysql_upgrade')) {
+		return 0;
+	}
+
+	execute("dpkg -s mysql-community-server | grep Status: | cut -d' ' -f4", \my $stdout, \my $stderr);
+
+	if($stdout && $stdout eq 'installed') {
+		# Filter all "duplicate column", "duplicate key" and "unknown column"
+		# errors as the command is designed to be idempotent.
+		execute(
+			"mysql_upgrade --defaults-extra-file=$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf 2>&1"
+				. " | egrep -v '^(1|@had|ERROR (1054|1060|1061))'",
+			\my $stdout
+		);
+		debug($stdout) if $stdout;
+	}
+
+	0;
 }
 
 =item _saveConf()

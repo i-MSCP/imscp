@@ -284,7 +284,7 @@ function client_addSqlUser($customerId, $databaseId)
 			} catch (iMSCP_Exception_Database $e) {
 				if ($sqlUserCreated) {
 					try { // We don't care about result here - An exception is throw in case the user do not exists
-						exec_query('DROP USER ?@?', $sqlUser, $sqlUserHost);
+						exec_query('DROP USER ?@?', array($sqlUser, $sqlUserHost));
 					} catch (iMSCP_Exception_Database $x) {
 
 					}

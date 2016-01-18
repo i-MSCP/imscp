@@ -410,135 +410,115 @@ sub _buildPackageList
 
 	my $xml = XML::Simple->new(NoEscape => 1);
 	my $pkgList = eval { $xml->XMLin($pkgFile, ForceArray => [ 'package', 'package_delayed', 'package_conflict' ]) };
-
-	unless($@) {
-		# For each package section found in package list
-		for my $section(sort keys %{$pkgList}) {
-			if(exists $pkgList->{$section}->{'package'} || exists $pkgList->{$section}->{'package_delayed'}) {
-				# Simple list of packages to install
-
-				if(exists $pkgList->{$section}->{'package'}) {
-					push @{$self->{'packagesToInstall'}}, @{$pkgList->{$section}->{'package'}};
-				}
-
-				if(exists $pkgList->{$section}->{'package_delayed'}) {
-					push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$section}->{'package_delayed'}};
-				}
-			} else {
-				# List of alternative services
-
-				my $dAlt = delete $pkgList->{$section}->{'default'};
-				my $sAlt = $main::questions{ uc($section) . '_SERVER' } || $main::imscpConfig{ uc($section) . '_SERVER' };
-				my $forceDialog = ($sAlt) ? 0 : 1;
-				$sAlt = $dAlt if $forceDialog;
-
-				my @alts = keys %{$pkgList->{$section}};
-
-				if(not $sAlt ~~ @alts) { # Handle wrong or deprecated entry case
-					$sAlt = $dAlt;
-					$forceDialog = 1;
-				}
-
-				if(exists $pkgList->{$section}->{$sAlt}->{'allow_switch_to'}) {
-					if($pkgList->{$section}->{$sAlt}->{'allow_switch_to'} ne '') {
-						my @allowedAlts = (split(',', $pkgList->{$section}->{$sAlt}->{'allow_switch_to'}), $sAlt);
-						@alts = grep { $section ~~ @allowedAlts } @alts;
-					} else {
-						@alts = ($sAlt);
-					}
-				}
-
-				@alts = sort @alts;
-
-				# Ask user service to install if needed
-				if(@alts > 1 && ($forceDialog || $main::reconfigure ~~ [ $section, 'servers', 'all' ])) {
-					iMSCP::Dialog->getInstance()->set('no-cancel', '');
-					(my $ret, $sAlt) = iMSCP::Dialog->getInstance()->radiolist(<<EOF, [@alts], $sAlt);
-
-Please, choose the i-MSCP server implementation you want use for the $section service:
-EOF
-					return $ret if $ret; # Handle ESC case
-
-					iMSCP::Dialog->getInstance()->set('no-cancel');
-				}
-
-				if($section eq 'sql') {
-					my ($stdout, $stderr);
-					my $rs = execute('rm -f /var/lib/mysql/debian-*.flag', \$stdout, \$stderr);
-					debug($stdout) if $stdout;
-					error($stderr) if $rs && $stderr;
-					return $rs if $rs;
-				}
-
-				for my $alt(@alts) {
-					if($alt ne $sAlt) {
-						# APT repository to remove
-						if(exists $pkgList->{$section}->{$alt}->{'repository'}) {
-							push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$alt}->{'repository'};
-						}
-
-						if(exists $pkgList->{$section}->{$alt}->{'repository_conflict'}) {
-							push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$alt}->{'repository_conflict'};
-						}
-
-						# Packages to uninstall
-
-						if(exists $pkgList->{$section}->{$alt}->{'package'}) {
-							push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$section}->{$alt}->{'package'}};
-						}
-
-						if(exists $pkgList->{$section}->{$alt}->{'package_delayed'}) {
-							push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$section}->{$alt}->{'package_delayed'}};
-						}
-					}
-				}
-
-				# APT preferences to add
-				if(exists $pkgList->{$section}->{$sAlt}->{'pinning_package'}) {
-					push @{$self->{'aptPreferences'}}, {
-						'pinning_package' => $pkgList->{$section}->{$sAlt}->{'pinning_package'},
-						'pinning_pin' => $pkgList->{$section}->{$sAlt}->{'pinning_pin'} || undef,
-						'pinning_pin_priority' => $pkgList->{$section}->{$sAlt}->{'pinning_pin_priority'} || undef,
-					};
-				}
-
-				# Conflicting repository which must be removed
-				if(exists $pkgList->{$section}->{$sAlt}->{'repository_conflict'}) {
-					push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$sAlt}->{'repository_conflict'};
-				}
-
-				# APT repository to add
-				if(exists $pkgList->{$section}->{$sAlt}->{'repository'}) {
-					push @{$self->{'aptRepositoriesToAdd'}}, {
-						'repository' => $pkgList->{$section}->{$sAlt}->{'repository'},
-						'repository_key_uri' => $pkgList->{$section}->{$sAlt}->{'repository_key_uri'} || undef,
-						'repository_key_id' => $pkgList->{$section}->{$sAlt}->{'repository_key_id'} || undef,
-						'repository_key_srv' => $pkgList->{$section}->{$sAlt}->{'repository_key_srv'} || undef
-					};
-				}
-
-				# Conflicting packages which must be pre-removed
-				if(exists $pkgList->{$section}->{$sAlt}->{'package_conflict'}) {
-					push @{$self->{'packagesToPreUninstall'}}, @{$pkgList->{$section}->{$sAlt}->{'package_conflict'}};
-				}
-
-				# Packages to install
-
-				if(exists $pkgList->{$section}->{$sAlt}->{'package'}) {
-					push @{$self->{'packagesToInstall'}}, @{$pkgList->{$section}->{$sAlt}->{'package'}};
-				}
-
-				if(exists $pkgList->{$section}->{$sAlt}->{'package_delayed'}) {
-					push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$section}->{$sAlt}->{'package_delayed'}};
-				}
-
-				# Set server implementation to use
-				$main::questions{ uc($section) . '_SERVER' } = $sAlt;
-			}
-		}
-	} else {
+	if($@) {
 		error($@);
 		return 1;
+	}
+
+	for my $section(sort keys %{$pkgList}) { # Simple list of packages to install
+		if($pkgList->{$section}->{'package'} || $pkgList->{$section}->{'package_delayed'}) {
+			if($pkgList->{$section}->{'package'}) {
+				push @{$self->{'packagesToInstall'}}, @{$pkgList->{$section}->{'package'}};
+			}
+
+			if($pkgList->{$section}->{'package_delayed'}) {
+				push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$section}->{'package_delayed'}};
+			}
+
+			next;
+		}
+
+		# List of alternative services
+		my $dAlt = delete $pkgList->{$section}->{'default'};
+		my $sAlt = $main::questions{ uc($section) . '_SERVER' } || $main::imscpConfig{ uc($section) . '_SERVER' };
+		my $forceDialog = $sAlt ? 0 : 1;
+		$sAlt = $dAlt if $forceDialog;
+
+		my @alts = keys %{$pkgList->{$section}};
+
+		if(not $sAlt ~~ @alts) { # Handle wrong or deprecated entry case
+			$sAlt = $dAlt;
+			$forceDialog = 1;
+		}
+
+		if($pkgList->{$section}->{$sAlt}->{'allow_switch_to'}) {
+			@alts = grep { $_ ~~ @alts } split(',', $pkgList->{$section}->{$sAlt}->{'allow_switch_to'}), $sAlt;
+		}
+
+		@alts = sort @alts;
+
+		# Ask user service to install if needed
+		if(@alts > 1 && ($forceDialog || $main::reconfigure ~~ [ $section, 'servers', 'all' ])) {
+			iMSCP::Dialog->getInstance()->set('no-cancel', '');
+			(my $ret, $sAlt) = iMSCP::Dialog->getInstance()->radiolist(<<EOF, [ @alts ], $sAlt);
+
+Please, choose the server you want use for the $section service:
+EOF
+			return $ret if $ret; # Handle ESC case
+			iMSCP::Dialog->getInstance()->set('no-cancel');
+		}
+
+		if($section eq 'sql') {
+			my $rs = execute('rm -f /var/lib/mysql/debian-*.flag', \my $stdout, \my $stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $rs && $stderr;
+			return $rs if $rs;
+		}
+
+		for my $alt(@alts) {
+			if($alt ne $sAlt) {
+				if($pkgList->{$section}->{$alt}->{'repository'}) { # APT repository to remove
+					push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$alt}->{'repository'};
+				}
+
+				if($pkgList->{$section}->{$alt}->{'repository_conflict'}) {
+					push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$alt}->{'repository_conflict'};
+				}
+
+				# Packages to uninstall
+				if($pkgList->{$section}->{$alt}->{'package'}) {
+					push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$section}->{$alt}->{'package'}};
+				}
+				if($pkgList->{$section}->{$alt}->{'package_delayed'}) {
+					push @{$self->{'packagesToUninstall'}}, @{$pkgList->{$section}->{$alt}->{'package_delayed'}};
+				}
+			}
+		}
+
+		if($pkgList->{$section}->{$sAlt}->{'pinning_package'}) { # APT preferences to add
+			push @{$self->{'aptPreferences'}}, {
+				'pinning_package' => $pkgList->{$section}->{$sAlt}->{'pinning_package'},
+				'pinning_pin' => $pkgList->{$section}->{$sAlt}->{'pinning_pin'} || undef,
+				'pinning_pin_priority' => $pkgList->{$section}->{$sAlt}->{'pinning_pin_priority'} || undef,
+			};
+		}
+
+		if($pkgList->{$section}->{$sAlt}->{'repository_conflict'}) { # Conflicting repository which must be removed
+			push @{$self->{'aptRepositoriesToRemove'}}, $pkgList->{$section}->{$sAlt}->{'repository_conflict'};
+		}
+
+		if($pkgList->{$section}->{$sAlt}->{'repository'}) { # APT repository to add
+			push @{$self->{'aptRepositoriesToAdd'}}, {
+				'repository' => $pkgList->{$section}->{$sAlt}->{'repository'},
+				'repository_key_uri' => $pkgList->{$section}->{$sAlt}->{'repository_key_uri'} || undef,
+				'repository_key_id' => $pkgList->{$section}->{$sAlt}->{'repository_key_id'} || undef,
+				'repository_key_srv' => $pkgList->{$section}->{$sAlt}->{'repository_key_srv'} || undef
+			};
+		}
+
+		if($pkgList->{$section}->{$sAlt}->{'package_conflict'}) { # Conflicting packages which must be pre-removed
+			push @{$self->{'packagesToPreUninstall'}}, @{$pkgList->{$section}->{$sAlt}->{'package_conflict'}};
+		}
+
+		# Packages to install
+		if($pkgList->{$section}->{$sAlt}->{'package'}) {
+			push @{$self->{'packagesToInstall'}}, @{$pkgList->{$section}->{$sAlt}->{'package'}};
+		}
+		if($pkgList->{$section}->{$sAlt}->{'package_delayed'}) {
+			push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$section}->{$sAlt}->{'package_delayed'}};
+		}
+
+		$main::questions{ uc($section) . '_SERVER' } = $sAlt; # Set server to use
 	}
 
 	0;
@@ -837,14 +817,15 @@ EOF
 		$selectionsFileContent .= <<EOF;
 $sqlServerPackageName mysql-server/root_password password $main::questions{'DATABASE_PASSWORD'}
 $sqlServerPackageName mysql-server/root_password_again password $main::questions{'DATABASE_PASSWORD'}
+mysql-community-server mysql-community-server/root-pass password $main::questions{'DATABASE_PASSWORD'}
+mysql-community-server mysql-community-server/re-root-pass password $main::questions{'DATABASE_PASSWORD'}
 EOF
 	}
 
 	my $debconfSelectionsFile = File::Temp->new();
 	print $debconfSelectionsFile $selectionsFileContent;
 
-	my ($stdout, $stderr);
-	my $rs = execute("debconf-set-selections $debconfSelectionsFile", \$stdout, \$stderr);
+	my $rs = execute("debconf-set-selections $debconfSelectionsFile", my \$stdout, my \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	error('Unable to pre-fill debconf database') if $rs && ! $stderr;
