@@ -825,7 +825,7 @@ EOF
 	my $debconfSelectionsFile = File::Temp->new();
 	print $debconfSelectionsFile $selectionsFileContent;
 
-	my $rs = execute("debconf-set-selections $debconfSelectionsFile", my \$stdout, my \$stderr);
+	my $rs = execute("debconf-set-selections $debconfSelectionsFile", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	error('Unable to pre-fill debconf database') if $rs && ! $stderr;
