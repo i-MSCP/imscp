@@ -8,6 +8,5 @@ host     = {DATABASE_HOST}
 user     = {DATABASE_USER}
 password = {DATABASE_PASSWORD}
 socket   = {SQLD_SOCK_DIR}/mysqld.sock
-basedir  = /usr
 [mysqld]
 sql_mode =
