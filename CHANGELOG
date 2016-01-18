@@ -21,7 +21,7 @@ FRONTEND
 
 INSTALLER
 	Added: Routine to upgrade MySQL server system tables when necessary
-	Fixed: Could not type new password when reconfiguring service SQL users
+	Fixed: Could not type new password when reconfiguring service SQL users due to non-printable characters
 
 YOUTRACK
 	#IP-1397 MySQL "SET PASSWORD" deprecated in version 5.7.6
