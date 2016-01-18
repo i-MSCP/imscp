@@ -24,7 +24,7 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 
-var iMSCP = function () {
+(function($) {
     // Function to initialize page messages
     var initPageMessages = function () {
         $("body").on("message_timeout", ".success,.info,.warning,.error", function () {
@@ -77,30 +77,14 @@ var iMSCP = function () {
     // Function to initialize tables
     var initTables = function () {
         // Override some built-in jQuery method to trigger the i-MSCP updateTable event
-        (function ($) {
-            var origShow = $.fn.show;
-            var origHide = $.fn.hide;
-            var origAppendTo = $.fn.appendTo;
-            var origPrependTo = $.fn.prependTo;
-            var origHtml = $.fn.html;
-            $.fn.show = function () {
-                return origShow.apply(this, arguments).trigger("updateTable");
-            };
-            $.fn.hide = function () {
-                return origHide.apply(this, arguments).trigger("updateTable");
-            };
-            $.fn.appendTo = function () {
-                return origAppendTo.apply(this, arguments).trigger("updateTable");
-            };
-            $.fn.prependTo = function () {
-                return origPrependTo.apply(this, arguments).trigger("updateTable");
-            };
-            $.fn.html = function () {
-                var ret = origHtml.apply(this, arguments);
-                $("tbody").trigger("updateTable");
-                return ret;
-            };
-        })(jQuery);
+        var origShow = $.fn.show;
+        var origHide = $.fn.hide;
+        $.fn.show = function () {
+            return origShow.apply(this, arguments).trigger("updateTable");
+        };
+        $.fn.hide = function () {
+            return origHide.apply(this, arguments).trigger("updateTable");
+        };
 
         $("body").on("updateTable", "tbody", function () {
             $(this).find("tr:visible:odd").removeClass("odd").addClass("even");
@@ -179,21 +163,19 @@ var iMSCP = function () {
         if (context == "simple") {
             $(".no_header #header").hide();
         } else {
-            initTables();
-            passwordGenerator();
+           passwordGenerator();
+           initTables();
         }
 
         initButtons(context);
     };
 
-    return {
-        // Main function to initialize application
-        initApplication: function (context) {
-            initLayout(context);
-            fixJqueryUI();
-        }
-    };
-}();
+    // Main function to initialize application
+    $(function() {
+        initLayout($('body').hasClass('simple') ? 'simple' : 'ui');
+        fixJqueryUI();
+    });
+})(jQuery);
 
 function sbmt(form, uaction) {
     form.uaction.value = uaction;

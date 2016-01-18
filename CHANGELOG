@@ -16,6 +16,9 @@ CONFIG
 CONTRIB
 	Rewritten: 10_named_zonetransfer.pl listener file (now named 10_named_slave_provisioning.pl)
 
+FRONTEND
+	Fixed: Slow DOM content loading due to some built-in functions override
+
 INSTALLER
 	Added: Routine to upgrade MySQL server system tables when necessary
 	Fixed: Could not type new password when reconfiguring service SQL users

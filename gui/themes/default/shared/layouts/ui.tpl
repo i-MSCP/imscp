@@ -17,9 +17,6 @@ imscp_i18n = {JS_TRANSLATIONS};
 <script src="{THEME_ASSETS_PATH}/js/jquery/plugins/dataTables_naturalSorting.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/jquery/plugins/pGenerator.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
-<script>
-	$(function () { iMSCP.initApplication('ui'); });
-</script>
 </head>
 <body>
 <div id="wrapper">

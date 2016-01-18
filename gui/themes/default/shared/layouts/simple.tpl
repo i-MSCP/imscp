@@ -16,11 +16,8 @@ imscp_i18n = {JS_TRANSLATIONS};
 <script src="{THEME_ASSETS_PATH}/js/jquery/jquery.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/jquery/jquery-ui.js?v={THEME_ASSETS_VERSION}"></script>
 <script src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
-<script>
-	$(function () {iMSCP.initApplication('simple'); });
-</script>
 </head>
-<body class="{THEME_COLOR}">
+<body class="{THEME_COLOR} simple">
 <div class="wrapper">
 	<!-- BDP: header_block -->
 	<div id="header">
