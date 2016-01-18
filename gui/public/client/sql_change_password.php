@@ -105,7 +105,7 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 	}
 
 	$config = iMSCP_Registry::get('config');
-	$mysqlConfig = new iMSCP_Config_Handler_File($config['CONF_DIR'] . '/mysql.data');
+	$mysqlConfig = new iMSCP_Config_Handler_File($config['CONF_DIR'] . '/mysql/mysql.data');
 
 	$passwordUpdated = false;
 
@@ -114,10 +114,12 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 	try {
 		// Update SQL user password in the mysql system tables;
 
-		if(version_compare($mysqlConfig['SQLD_VERSION '], '5.6.7', '<')) {
-			exec_query("SET PASSWORD FOR ?@? = PASSWORD(?)", array($sqlUserName, $sqlUserHost, $password));
+		if(strpos('mariadb', $config['SQL_SERVER']) !== false ||
+			version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')
+		) {
+			exec_query('SET PASSWORD FOR ?@? = PASSWORD(?)', array($sqlUserName, $sqlUserHost, $password));
 		} else {
-			exec_query("ALTER USER ?@? IDENTIFIED BY ?", array($sqlUserName, $sqlUserHost, $password));
+			exec_query('ALTER USER ?@? IDENTIFIED BY ?', array($sqlUserName, $sqlUserHost, $password));
 		}
 
 		$passwordUpdated = true;
@@ -137,10 +139,12 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 	} catch (iMSCP_Exception_Database $e) {
 		if($passwordUpdated) {
 			try {
-				if(version_compare($mysqlConfig['SQLD_VERSION '], '5.6.7', '<')) {
-					exec_query("SET PASSWORD FOR ?@? = PASSWORD(?)", array($sqlUserName, $sqlUserHost, $oldSqlPassword));
+				if(strpos('mariadb', $config['SQL_SERVER']) !== false
+					|| version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')
+				) {
+					exec_query('SET PASSWORD FOR ?@? = PASSWORD(?)', array($sqlUserName, $sqlUserHost, $oldSqlPassword));
 				} else {
-					exec_query("ALTER USER ?@? IDENTIFIED BY ?", array($sqlUserName, $sqlUserHost, $oldSqlPassword));
+					exec_query('ALTER USER ?@? IDENTIFIED BY ?', array($sqlUserName, $sqlUserHost, $oldSqlPassword));
 				}
 			} catch(iMSCP_Exception_Database $f) { }
 		}

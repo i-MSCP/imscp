@@ -294,7 +294,7 @@ sub _upgradeSystemTablesIfNecessary
 		# errors as the command is designed to be idempotent.
 		execute(
 			"mysql_upgrade --defaults-extra-file=$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf 2>&1"
-				. " | egrep -v '^(1|@had|ERROR (1054|1060|1061))'",
+				. ' | egrep -v \'^(1|@had|ERROR (1054|1060|1061))\'',
 			\my $stdout
 		);
 		debug($stdout) if $stdout;
