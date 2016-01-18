@@ -100,8 +100,8 @@
                 repository="deb http://repo.mysql.com/apt/debian/ wheezy mysql-5.6"
                 repository_key_srv="pgp.mit.edu"
                 repository_key_id="0x8c718d3b5072e1f5"
-                pinning_package="*"
-                pinning_pin="origin repo.mysql.com"
+                pinning_package="libmysqlclient18"
+                pinning_pin="release o=Debian,n=wheezy"
                 pinning_pin_priority="1001"
                 allow_switch_to="mysql_5.7,mariadb_10.0,percona_5.6,remote_server"
             >
