@@ -265,8 +265,7 @@ sub postBuild
 			'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd', 'mysqli', 'mysql', 'opcache', 'pdo',
 			'pdo_mysql'
 		) {
-			my($stdout, $stderr);
-			my $rs = execute("php5dismod $_", \$stdout, \$stderr);
+			my $rs = execute("php5dismod $_", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
 			unless($rs ~~ [ 0, 2 ]) {
 				error($stderr) if $stderr;
@@ -275,14 +274,13 @@ sub postBuild
 		}
 	}
 
-	# Enable needed PHP modules ( only if they are available )
+	# Enable needed PHP modules (only if they are available)
 	if(iMSCP::ProgramFinder::find('php5enmod')) {
 		for (
 			'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
 			'pdo_mysql'
 		) {
-			my($stdout, $stderr);
-			my $rs = execute("php5enmod $_", \$stdout, \$stderr);
+			my $rs = execute("php5enmod $_", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
 			unless($rs ~~ [ 0, 2 ]) {
 				error($stderr) if $stderr;
@@ -538,7 +536,7 @@ sub _updateAptSourceList
 
 	my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
 
-	my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+	my $rs = $file->copyFile('/etc/apt/sources.list.bkp');
 	return $rs if $rs;
 
 	my $fileContent = $file->get();
@@ -610,8 +608,7 @@ sub _processAptRepositories
 		my @cmd = ();
 
 		my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
-
-		my $rs = $file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+		my $rs = $file->copyFile('/etc/apt/sources.list.bkp');
 		return $rs if $rs;
 
 		my $fileContent = $file->get();
@@ -629,15 +626,15 @@ sub _processAptRepositories
 
 		for my $repository(@{$self->{'aptRepositoriesToRemove'}}) {
 			# Remove the repository from the sources.list file
-			(my $regexp = $repository) =~ s/deb/(?:#\\s*)?(?:deb|deb-src)/;
-			$fileContent =~ s/^\n?$regexp\n//gm;
+			my $regexp = qr/\n?(?:#\s*)?(?:deb|deb-src)\s+/ . quotemeta($repository) . "\n";
+			$fileContent =~ s/^$regexp//gm;
 		}
 
 		# Add needed APT repositories
 		for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
-			if($fileContent !~ /^$repository->{'repository'}/m) {
-				$fileContent .= "\n$repository->{'repository'}\n";
-
+			if($fileContent !~ /^deb\s+$repository->{'repository'}/m) {
+				$fileContent .= "\ndeb $repository->{'repository'}\n";
+				$fileContent .= "deb-src $repository->{'repository'}\n";
 				@cmd = ();
 
 				if($repository->{'repository_key_srv'}) { # Add the repository key from the given server, using key id
@@ -687,15 +684,15 @@ sub _processAptPreferences
 
 	my $fileContent = '';
 
-	for(@{$self->{'aptPreferences'}}) {
-		unless(exists $_->{'pinning_pin'} || exists $_->{'pinning_pin_priority'}) {
+	for my $pref (@{$self->{'aptPreferences'}}) {
+		unless($pref->{'pinning_pin'} || $pref->{'pinning_pin_priority'}) {
 			error('One of these attributes is missing: pinning_pin or pinning_pin_priority');
 			return 1;
 		}
 
-		$fileContent .= "Package: $_->{'pinning_package'}\n";
-		$fileContent .= "Pin: $_->{'pinning_pin'}\n";
-		$fileContent .= "Pin-Priority: $_->{'pinning_pin_priority'}\n\n";
+		$fileContent .= "Package: $pref->{'pinning_package'}\n";
+		$fileContent .= "Pin: $pref->{'pinning_pin'}\n";
+		$fileContent .= "Pin-Priority: $pref->{'pinning_pin_priority'}\n\n";
 	}
 
 	my $file = iMSCP::File->new( filename => '/etc/apt/preferences.d/imscp' );
@@ -813,6 +810,23 @@ EOF
 		return 1;
 	}
 
+$selectionsFileContent.= <<EOF;
+$sqlServerPackageName $sqlServerPackageName/postrm_remove_databases boolean false
+$sqlServerPackageName $sqlServerPackageName/postrm_remove_databases seen true
+EOF
+
+	if(-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
+		# Don't show SQL root password dialog from package maintainer script
+		# when switching to another vendor or a newest version
+		$selectionsFileContent.= <<EOF;
+$sqlServerPackageName mysql-server/root_password seen true
+$sqlServerPackageName mysql-server/root_password_again password seen true
+mysql-community-server mysql-community-server/root-pass password seen true
+mysql-community-server mysql-community-server/re-root-pass password seen true
+EOF
+	}
+
+
 	if(iMSCP::Getopt->preseed && $sqlServer ne 'remote_server') {
 		$selectionsFileContent .= <<EOF;
 $sqlServerPackageName mysql-server/root_password password $main::questions{'DATABASE_PASSWORD'}
@@ -829,7 +843,6 @@ EOF
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	error('Unable to pre-fill debconf database') if $rs && ! $stderr;
-
 	$rs;
 }
 
