@@ -249,10 +249,7 @@ sub _buildConf
 	};
 
 	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.5.0')) {
-		$cfgTpl .= <<EOF;
-innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}
-EOF
-
+		$cfgTpl =~ s/(\[mysqld\]\n)/$1innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}\n/i;
 		$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
 	}
 

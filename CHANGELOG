@@ -8,7 +8,8 @@ BACKEND
 	Backported: iMSCP::Crypt library from 1.3.x branch
 
 CONFIG
-	Added: SQLD_SOCK_DIR, SQLD_USER and SQLD_GROUP parameters mysql/mysql.data configuration file
+	Added: SQLD_SOCK_DIR, SQLD_USER and SQLD_GROUP parameters in mysql/mysql.data configuration file
+	Added: performance_schema parameter in mysql/imscp.cnf to disable performance schema (performance reasons)
 	Added: sql_mode parameter in mysql/imscp.cnf template file to reset server SQL modes (backward compatibility issue)
 	Fixed: Possible segfault with OPcache when fast shutdown feature is enabled
 
