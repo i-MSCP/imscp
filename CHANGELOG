@@ -28,6 +28,7 @@ INSTALLER
 YOUTRACK
 	#IP-1397 MySQL "SET PASSWORD" deprecated in version 5.7.6
 	#IP-1482 Add support for both MySQL 5.6.x and MySQL 5.7.x using MySQL Team repositories
+	#IP-1483 Perl 5.22 - Unescaped left brace in regex is deprecated
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.11
