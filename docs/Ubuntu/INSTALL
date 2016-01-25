@@ -34,7 +34,7 @@ All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
 
 1. Make sure that your system is up-to-date
 
-	# apt-get update && apt-get install perl
+	# apt-get update && apt-get install perl whiptail
 
 2. Install the pre-required packages
 
