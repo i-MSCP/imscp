@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -463,17 +463,16 @@ sub setupAskSqlDsn
 		$dbPass = ($dbPass) ? decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $dbPass) : '';
 	}
 
-	my $rs = 0;
-
-	my %options = (domain_private_tld => qr /.*/);
-
-	if(
-		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
-		($dbPass eq '' || setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))
-	) {
-		# Following a decrypt_db_password() failure,  ensure no special chars are present in password string
+	if($dbPass ne '' && setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
+		# Following a decryptBlowfishCBC() failure,  ensure no special chars are present in password string
 		# If we don't, dialog will not let user set new password
 		$dbPass = '';
+	}
+
+	my $rs = 0;
+	my %options = (domain_private_tld => qr /.*/);
+
+	if($main::reconfigure ~~ [ 'sql', 'servers', 'all', 'forced' ] || $dbPass eq '') {
 		my $msg = my $dbError = '';
 
 		do {
@@ -1453,7 +1452,7 @@ sub setupUpdateDatabase
 		return 1;
 	}
 
-	if($content =~ s/{GUI_ROOT_DIR}/$main::imscpConfig{'GUI_ROOT_DIR'}/) {
+	if($content =~ s/\{GUI_ROOT_DIR\}/$main::imscpConfig{'GUI_ROOT_DIR'}/) {
 		$rs = $file->set($content);
 		return $rs if $rs;
 
@@ -1471,6 +1470,7 @@ sub setupUpdateDatabase
 }
 
 # Secure any SQL account by removing those without password
+#
 # Basically, this method do same job as the mysql_secure_installation script
 # - Remove anonymous users
 # - Remove remote sql root user (only for local server)
@@ -1512,8 +1512,7 @@ sub setupSecureSqlInstallation
 	# Disallow remote root login
 	if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
 		$errStr = $database->doQuery(
-			'dummy',
-			"DELETE FROM mysql.user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+			'dummy', "DELETE FROM mysql.user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 		);
 		unless(ref $errStr eq 'HASH'){
 			error("Unable to remove remote root users: $errStr");
