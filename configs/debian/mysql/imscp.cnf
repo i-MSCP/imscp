@@ -1,13 +1,5 @@
-[mysqld]
-performance_schema = 0
-sql_mode =
 [mysqldump]
 host     = {DATABASE_HOST}
 port     = {DATABASE_PORT}
 user     = {DATABASE_USER}
 password = {DATABASE_PASSWORD}
-[mysql_upgrade]
-host     = {DATABASE_HOST}
-user     = {DATABASE_USER}
-password = {DATABASE_PASSWORD}
-socket   = {SQLD_SOCK_DIR}/mysqld.sock

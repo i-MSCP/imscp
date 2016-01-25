@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,6 +38,8 @@ use iMSCP::ProgramFinder;
 use File::Basename;
 use Servers::po::courier;
 use Servers::mta::postfix;
+use Servers::sqld;
+use version;
 use parent 'Common::SingletonClass';
 
 %main::sqlUsers = () unless %main::sqlUsers;
@@ -64,39 +66,31 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
-		my $rs = $eventManager->register(
-			'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; }
-		);
-		return $rs if $rs;
-
-		$rs = $eventManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
-		return $rs if $rs;
-
-		$eventManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
-	} else {
-		$main::imscpConfig{'PO_SERVER'} = 'no';
-		warning('i-MSCP Courier PO server require the Postfix MTA. Installation skipped...');
-
-		0;
-	}
+	my $rs = $eventManager->register('beforeSetupDialog', sub {
+		push @{$_[0]}, sub { $self->authdaemonSqlUserDialog(@_) }; 0; }
+	);
+	$rs ||= $eventManager->register('beforeSetupDialog', sub {
+		push @{$_[0]}, sub { $self->cyrusSaslSqlUserDialog(@_) }; 0; }
+	);
+	$rs ||= $eventManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
+	$rs ||= $eventManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
 }
 
-=item showDialog(\%dialog)
+=item authdaemonSqlUserDialog(\%dialog)
 
- Show dialog
+ Authdaemon SQL user dialog
 
  Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
 
 =cut
 
-sub showDialog
+sub authdaemonSqlUserDialog
 {
 	my ($self, $dialog) = @_;
 
-	my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'authdaemon_user';
-	my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
+	my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER') || $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user';
+	my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD') || $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'};
 
 	my ($rs, $msg) = (0, '');
 
@@ -179,6 +173,103 @@ sub showDialog
 	$rs;
 }
 
+=item cyrusSaslSqlUserDialog(\%dialog)
+
+ Cyrus SASL SQL user dialog
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 on success, other on failure
+
+=cut
+
+sub cyrusSaslSqlUserDialog
+{
+	my ($self, $dialog) = @_;
+
+	my $dbUser = main::setupGetQuestion('SASL_SQL_USER') || $self->{'config'}->{'SASL_DATABASE_USER'} || 'sasl_user';
+	my $dbPass = main::setupGetQuestion('SASL_SQL_PASSWORD') || $self->{'config'}->{'SASL_DATABASE_PASSWORD'} || '';
+
+	my ($rs, $msg) = (0, '');
+
+	if(
+		$main::reconfigure ~~ [ 'po', 'servers', 'all', 'forced' ] ||
+		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
+		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
+	) {
+		# Ensure no special chars are present in password. If we don't, dialog will not let user set new password
+		$dbPass = '';
+
+		# Ask for the SASL restricted SQL username
+		do{
+			($rs, $dbUser) = $dialog->inputbox(
+				"\nPlease enter an username for the Postfix SASL SQL user:$msg", $dbUser
+			);
+
+			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
+				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
+				$dbUser = '';
+			} elsif(length $dbUser > 16) {
+				$msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
+				$dbUser = '';
+			} elsif(length $dbUser < 6) {
+				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
+				$dbUser = '';
+			} elsif($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+				$dbUser = '';
+			}
+		} while ($rs != 30 && ! $dbUser);
+
+		if($rs != 30) {
+			$msg = '';
+
+			# Ask for the SASL SQL user password unless we reuses existent SQL user
+			unless($dbUser ~~ [ keys %main::sqlUsers ]) {
+				do {
+					# Ask for the SASL restricted SQL user password
+					($rs, $dbPass) = $dialog->passwordbox(
+						"\nPlease, enter a password for the sasl SQL user (blank for autogenerate):$msg", $dbPass
+					);
+
+					if($dbPass ne '') {
+						if(length $dbPass < 6) {
+							$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
+							$dbPass = '';
+						} elsif($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
+							$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
+							$dbPass = '';
+						} else {
+							$msg = '';
+						}
+					} else {
+						$msg = '';
+					}
+				} while($rs != 30 && $msg);
+			} else {
+				$dbPass = $main::sqlUsers{$dbUser};
+			}
+
+			if($rs != 30) {
+				unless($dbPass) {
+					my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
+					$dbPass = '';
+					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
+				}
+
+				$dialog->msgbox("\nPassword for the SASL SQL user set to: $dbPass");
+			}
+		}
+	}
+
+	if($rs != 30) {
+		main::setupSetQuestion('SASL_SQL_USER', $dbUser);
+		main::setupSetQuestion('SASL_SQL_PASSWORD', $dbPass);
+		$main::sqlUsers{$dbUser} = $dbPass;
+	}
+
+	$rs;
+}
+
 =item install()
 
  Process install tasks
@@ -202,16 +293,12 @@ sub install
 		return $rs if $rs;
 	}
 
-	my $rs = $self->_setupSqlUser();
-	return $rs if $rs;
-
-	$rs = $self->_overrideAuthdaemonInitScript();
-	return $rs if $rs;
-
-	$rs = $self->_buildConf();
-	return $rs if $rs;
-
-	$rs = $self->_saveConf();
+	my $rs = $self->_setupAuthdaemonSqlUser();
+	$rs ||= $self->_setupCyrusSaslSqlUser();
+	$rs ||= $self->_overrideAuthdaemonInitScript();
+	$rs ||= $self->_buildConf();
+	$rs ||= $self->_buildCyrusSaslConfFile();
+	$rs ||= $self->_saveConf();
 	return $rs if $rs;
 
 	if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot') {
@@ -260,13 +347,11 @@ sub setEnginePermissions
 
 =item buildPostfixConf(\$fileContent, $fileName)
 
- Add maildrop MDA in Postfix configuration files.
+ Injects configuration for both, maildrop LDA and Cyrus SASL in Postfix configuration files.
 
- Listener which listen on the following events:
+ Listener that listen on the following events:
   - beforeMtaBuildMainCfFile
   - beforeMtaBuildMasterCfFile
-
- This listener is reponsible to add the maildrop deliver in Postfix configuration files.
 
  Param string \$fileContent Configuration file content
  Param string $fileName Configuration filename
@@ -279,19 +364,27 @@ sub buildPostfixConf
 	my ($self, $fileContent, $fileName) = @_;
 
 	if($fileName eq 'main.cf') {
-		$$fileContent .= <<EOF
+		$$fileContent .= <<'EOF';
 
+# Maildrop MDA parameters
 virtual_transport = maildrop
-maildrop_destination_concurrency_limit = 2
+maildrop_destination_concurrency_limit = 1
 maildrop_destination_recipient_limit = 1
+
+# Cyrus SASL parameters
+smtpd_sasl_type = cyrus
+smtpd_sasl_path = smtpd
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
+smtpd_sasl_authenticated_header = yes
 EOF
 
 	} elsif($fileName eq 'master.cf') {
-		my $configSnippet = <<EOF;
+		my $configSnippet = <<'EOF';
 
 maildrop  unix  -       n       n       -       -       pipe
- flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv=maildrop -w 90 -d \${user}@\${nexthop} \${extension} \${recipient}
- \${user} \${nexthop} \${sender}
+ flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv=maildrop -w 90 -d ${user}@${nexthop} ${extension} ${recipient} ${user} ${nexthop} ${sender}
 EOF
 
 		$$fileContent .= iMSCP::TemplateParser::process(
@@ -328,9 +421,9 @@ sub _init
 	$self->{'po'} = Servers::po::courier->getInstance();
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
 
-	$self->{'eventManager'}->trigger(
-		'beforePodInitInstaller', $self, 'courier'
-	) and fatal('courier - beforePoInitInstaller has failed');
+	$self->{'eventManager'}->trigger('beforePodInitInstaller', $self, 'courier') and fatal(
+		'courier - beforePoInitInstaller has failed'
+	);
 
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -348,10 +441,9 @@ sub _init
 		}
 	}
 
-	$self->{'eventManager'}->trigger(
-		'afterPodInitInstaller', $self, 'courier'
-	) and fatal('courier - afterPoInitInstaller has failed');
-
+	$self->{'eventManager'}->trigger('afterPodInitInstaller', $self, 'courier') and fatal(
+		'courier - afterPoInitInstaller has failed'
+	);
 	$self;
 }
 
@@ -379,8 +471,7 @@ sub _bkpConfFile
 			$rs = $file->copyFile("$self->{'bkpDir'}/$fileName.system");
 			return $rs if $rs;
 		} else {
-			my $timestamp = time;
-			$rs = $file->copyFile("$self->{'bkpDir'}/$fileName.$timestamp");
+			$rs = $file->copyFile("$self->{'bkpDir'}/$fileName" . time());
 			return $rs if $rs;
 		}
 	}
@@ -388,15 +479,15 @@ sub _bkpConfFile
 	$self->{'eventManager'}->trigger('afterPoBkpConfFile', $filePath);
 }
 
-=item _setupSqlUser()
+=item _setupAuthdaemonSqlUser()
 
- Setup SQL user
+ Setup authdaemon SQL user
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _setupSqlUser
+sub _setupAuthdaemonSqlUser
 {
 	my $self = shift;
 
@@ -404,35 +495,43 @@ sub _setupSqlUser
 	my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD');
+	my $dbOldUser = $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'};
 
-	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
-
-	my $rs = $self->{'eventManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
+	my $rs = $self->{'eventManager'}->trigger('beforePoSetupAuthdaemonSqlUser', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
+		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
 			next unless $host;
 
 			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error(sprintf('Unable to remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
+				error(sprintf('Could not remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
 				return 1;
 			}
 		}
 	}
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL server: $errStr") unless $db;
+	fatal("Could not connect to SQL server: $errStr") unless $db;
 
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 
-		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
+			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
+
+		$rs = $db->doQuery(
+			'c',
+			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
+			$dbUser,
+			$dbUserHost,
+			$dbPass
+		);
 		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
+			error(sprintf('Could not create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 			return 1;
 		}
 
@@ -440,20 +539,94 @@ sub _setupSqlUser
 	}
 
 	# Give needed privileges to this SQL user
+	my $quotedDbName = $db->quoteIdentifier($dbName);
+	$rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
+	unless(ref $rs eq 'HASH') {
+		error(sprintf('Could not add SQL privileges: %s', $rs));
+		return 1;
+	}
+
+	$self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} = $dbUser;
+	$self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'} = $dbPass;
+	$self->{'eventManager'}->trigger('afterPoSetupAuthdaemonSqlUser');
+}
+
+=item _setupCyrusSaslSqlUser()
+
+ Setup Cyrus SASL SQL user
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setupCyrusSaslSqlUser
+{
+	my $self = shift;
+
+	my $dbName = main::setupGetQuestion('DATABASE_NAME');
+	my $dbUser = main::setupGetQuestion('SASL_SQL_USER');
+	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
+	$dbUserHost = '127.0.0.1' if $dbUserHost eq 'localhost';
+	my $dbPass = main::setupGetQuestion('SASL_SQL_PASSWORD');
+	my $dbOldUser = $self->{'config'}->{'SASL_DATABASE_USER'};
+
+	my $rs = $self->{'eventManager'}->trigger('beforePoSetupCyrusSaslSqlUser', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
+	return $rs if $rs;
+
+	for my $sqlUser ($dbOldUser, $dbUser) {
+		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
+
+		for my $host(
+			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
+			$main::imscpOldConfig{'BASE_SERVER_IP'}
+		) {
+			next unless $host;
+
+			if(main::setupDeleteSqlUser($sqlUser, $host)) {
+				error(sprintf('Could not remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
+				return 1;
+			}
+		}
+	}
+
+	my ($db, $errStr) = main::setupGetSqlConnect();
+	fatal(sprintf('Could not connect to SQL server: %s', $errStr)) unless $db;
+
+	# Create SQL user if not already created by another server/package installer
+	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
+		debug(sprintf('Creating %s@%s SQL user with password: %s', $dbUser, $dbUserHost, $dbPass));
+
+		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
+			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
+
+		$rs = $db->doQuery(
+			'c',
+			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
+			$dbUser,
+			$dbUserHost,
+			$dbPass
+		);
+		unless(ref $rs eq 'HASH') {
+			error(sprintf('Could not create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
+			return 1;
+		}
+
+		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
+	}
 
 	my $quotedDbName = $db->quoteIdentifier($dbName);
 
 	$rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add SQL privileges: %s', $rs));
+		error(sprintf('Could not add SQL privileges: %s', $rs));
 		return 1;
 	}
 
-	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
-	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-
-	$self->{'eventManager'}->trigger('afterPoSetupDb');
+	$self->{'config'}->{'SASL_DATABASE_USER'} = $dbUser;
+	$self->{'config'}->{'SASL_DATABASE_PASSWORD'} = $dbPass;
+	$self->{'eventManager'}->trigger('afterPoSetupCyrusSaslSqlUser');
 }
+
 
 =item _overrideAuthdaemonInitScript()
 
@@ -467,11 +640,10 @@ sub _overrideAuthdaemonInitScript
 {
 	my $self = shift;
 
-	my $file = iMSCP::File->new( filename => "/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}");
-
+	my $file = iMSCP::File->new( filename => "/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}" );
 	my $fileContent = $file->get();
 	unless(defined $fileContent) {
-		error("Unable to read the $file->{'filename'} file");
+		error(sprintf('Could not read the %s file', $file->{'filename'}));
 		return 1;
 	}
 
@@ -482,15 +654,9 @@ sub _overrideAuthdaemonInitScript
 	$fileContent =~ s/$authdaemonUser:$authdaemonGroup\s+\$rundir$/$mailUser:$authdaemonGroup \$rundir/m;
 
 	my $rs = $file->set($fileContent);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0755);
-	return $rs if $rs;
-
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0755);
 }
 
 =item _buildConf()
@@ -506,19 +672,15 @@ sub _buildConf
 	my $self = shift;
 
 	my $rs = $self->_buildDHparametersFile();
-	return $rs if $rs;
-
-	$rs = $self->_buildAuthdaemonrcFile();
-	return $rs if $rs;
-
-	$rs = $self->_buildSslConfFiles();
+	$rs ||= $self->_buildAuthdaemonrcFile();
+	$rs ||= $self->_buildSslConfFiles();
 	return $rs if $rs;
 
 	my $data = {
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
-		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
-		DATABASE_PASSWORD => $self->{'config'}->{'DATABASE_PASSWORD'},
+		DATABASE_USER => $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'},
+		DATABASE_PASSWORD => $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'},
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
 		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 		MTA_MAILBOX_UID => scalar getpwnam($self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'}),
@@ -542,14 +704,13 @@ sub _buildConf
 	);
 
 	for my $conffile(keys %cfgFiles) {
-		my $cfgTpl;
-		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', $conffile, \$cfgTpl, $data);
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', $conffile, \my $cfgTpl, $data);
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
 			$cfgTpl= iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
 			unless(defined $cfgTpl) {
-				error("Unable to read $self->{'cfgDir'}/$conffile");
+				error("Could not read $self->{'cfgDir'}/$conffile");
 				return 1;
 			}
 		}
@@ -565,20 +726,11 @@ sub _buildConf
 		my $filename = fileparse($cfgFiles{$conffile}->[0]);
 
 		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-
 		$rs = $file->set($cfgTpl);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode($cfgFiles{$conffile}->[3]);
-		return $rs if $rs;
-
-		$rs = $file->owner($cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2]);
-		return $rs if $rs;
-
-		$rs = $file->copyFile($cfgFiles{$conffile}->[0]);
+		$rs ||= $file->save();
+		$rs ||= $file->owner($cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2]);
+		$rs ||= $file->mode($cfgFiles{$conffile}->[3]);
+		$rs ||= $file->copyFile($cfgFiles{$conffile}->[0]);
 		return $rs if $rs;
 	}
 
@@ -586,7 +738,7 @@ sub _buildConf
 		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
 		my $fileContent = $file->get();
 		unless(defined $fileContent) {
-			error("Unable to read $self->{'filename'}");
+			error("Could not read $self->{'filename'}");
 			return 1;
 		}
 
@@ -603,19 +755,65 @@ sub _buildConf
 			"# Servers::po::courier::installer - ENDING\n";
 
 		$rs = $file->set($fileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		$rs ||= $file->save();
+		$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		$rs ||= $file->mode(0644);
 		return $rs if $rs;
 	}
 
 	0;
+}
+
+=item _buildCyrusSaslConfFile()
+
+ Build Cyrus SASL configuration file
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildCyrusSaslConfFile
+{
+	my $self = shift;
+
+	my $rs = $self->_bkpConfFile("self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf");
+	return $rs if $rs;
+
+	my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
+
+	my $data = {
+		DATABASE_HOST => ($dbHost eq 'localhost') ? '127.0.0.1' : $dbHost, # Force TCP connection
+		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
+		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
+		DATABASE_USER => $self->{'config'}->{'SASL_DATABASE_USER'},
+		DATABASE_PASSWORD => $self->{'config'}->{'SASL_DATABASE_PASSWORD'}
+	};
+
+	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', 'smtpd.conf', \my $cfgTpl, $data);
+	return $rs if $rs;
+
+	unless(defined $cfgTpl) {
+		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/sasl/smtpd.conf")->get();
+		unless(defined $cfgTpl) {
+			error("Could not read $self->{'cfgDir'}/sasl/smtpd.conf");
+			return 1;
+		}
+	}
+
+	$rs = $self->{'eventManager'}->trigger('beforePoBuildSaslConfFile', \$cfgTpl, 'smtpd.conf');
+	return $rs if $rs;
+
+	$cfgTpl = process($data, $cfgTpl);
+
+	$rs = $self->{'eventManager'}->trigger('afterPoBuildSaslConfFil', \$cfgTpl, 'smtpd.conf');
+	return $rs if $rs;
+
+	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/smtpd.conf");
+	$rs = $file->set($cfgTpl);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0640);
+	$rs ||= $file->copyFile("$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf");
 }
 
 =item _buildDHparametersFile()
@@ -658,14 +856,13 @@ sub _buildAuthdaemonrcFile
 {
 	my $self = shift;
 
-	my $cfgTpl;
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, { });
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \my $cfgTpl, { });
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new( filename => "$self->{'bkpDir'}/authdaemonrc.system" )->get();
 		unless (defined $cfgTpl) {
-			error("Unable to read $self->{'bkpDir'}/authdaemonrc.system file");
+			error("Could not read $self->{'bkpDir'}/authdaemonrc.system file");
 			return 1;
 		}
 	}
@@ -679,20 +876,11 @@ sub _buildAuthdaemonrcFile
 	return $rs if $rs;
 
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/authdaemonrc" );
-
 	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0660);
-	return $rs if $rs;
-
-	$rs = $file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
-	return $rs if $rs;
-
-	$file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
+	$rs ||= $file->save();
+	$rs ||= $file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
+	$rs ||= $file->mode(0660);
+	$rs ||= $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
 }
 
 =item _buildSslConfFiles()
@@ -709,14 +897,13 @@ sub _buildSslConfFiles
 
 	if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
 		for my $conffile($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
-			my $cfgTpl;
-			my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', $conffile, \$cfgTpl, { });
+			my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'courier', $conffile, \my $cfgTpl, { });
 			return $rs if $rs;
 
 			unless(defined $cfgTpl) {
 				$cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" )->get();
 				unless (defined $cfgTpl) {
-					error("Unable to read $self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile file");
+					error("Could not read $self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile file");
 					return 1;
 				}
 			}
@@ -734,20 +921,11 @@ sub _buildSslConfFiles
 			return $rs if $rs;
 
 			my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$conffile" );
-
 			$rs = $file->set($cfgTpl);
-			return $rs if $rs;
-
-			$rs = $file->save();
-			return $rs if $rs;
-
-			$rs = $file->mode(0644);
-			return $rs if $rs;
-
-			$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-			return $rs if $rs;
-
-			$rs = $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
+			$rs ||= $file->save();
+			$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+			$rs ||= $file->mode(0644);
+			$rs ||= $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
 			return $rs if $rs;
 		}
 	}
@@ -792,10 +970,9 @@ sub _migrateFromDovecot
 		'--convert', '--overwrite', '--recursive', $mailPath
 	);
 
-	my ($stdout, $stderr);
-	$rs = execute("@cmd", \$stdout, \$stderr);
+	$rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
+	debug($stderr) if $stderr && !$rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while converting mails') if ! $stderr && $rs;
 	return $rs if $rs;
@@ -820,18 +997,12 @@ sub _oldEngineCompatibility
 
 	if(-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb") {
 		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb" );
-
 		$rs = $file->set('');
+		$rs ||= $file->save();
+		$rs ||= $file->mode(0600);
 		return $rs if $rs;
 
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0600);
-		return $rs if $rs;
-
-		my ($stdout, $stderr);
-		$rs = execute("makeuserdb -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb", \$stdout, \$stderr);
+		$rs = execute("makeuserdb -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -842,9 +1013,8 @@ sub _oldEngineCompatibility
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

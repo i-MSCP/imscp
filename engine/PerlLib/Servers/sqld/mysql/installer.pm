@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -59,28 +59,10 @@ sub preinstall
 {
 	my $self = shift;
 
-	$self->_setVersion();
-}
-
-=item install()
-
- Process install tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub install
-{
-	my $self = shift;
-
-	my $rs ||= $self->_buildConf();
-	return $rs if $rs;
-
-	$rs = $self->_upgradeSystemTablesIfNecessary();
-	return $rs if $rs;
-
-	$self->_saveConf();
+	my $rs = $self->_setVersion();
+	$rs ||= $self->_buildConf();
+	$rs ||= $self->_upgradeSystemTablesIfNecessary();
+	$rs ||= $self->_saveConf();
 }
 
 =item setEnginePermissions()
@@ -98,9 +80,8 @@ sub setEnginePermissions
 	my $rs = setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0644' }
 	);
-	return $rs if $rs;
 
-	setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
+	$rs ||= setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'SQLD_GROUP'}, mode => '0640' }
 	);
 }
@@ -125,11 +106,9 @@ sub _init
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'sqld'} = Servers::sqld::mysql->getInstance();
-
 	$self->{'eventManager'}->trigger('beforeSqldInitInstaller', $self, 'mysql') and fatal(
 		'mysql - beforeSqldInitInstaller has failed'
 	);
-
 	$self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
 	$self->{'config'}= $self->{'sqld'}->{'config'};
 
@@ -147,7 +126,6 @@ sub _init
 	$self->{'eventManager'}->trigger('afterSqldInitInstaller', $self, 'mysql') and fatal(
 		'mysql - afterSqldInitInstaller has failed'
 	);
-
 	$self;
 }
 
@@ -163,8 +141,6 @@ sub _setVersion
 {
 	my $self = shift;
 
-	$self->{'eventManager'}->trigger('beforeSqldSetVersion');
-
 	my $version = iMSCP::Database->factory()->doQuery(1, 'SELECT VERSION()');
 	unless(ref $version eq 'HASH') {
 		error($version);
@@ -172,17 +148,101 @@ sub _setVersion
 	}
 
 	($version) = ((keys %{$version})[0]) =~ /^([0-9]+(?:\.[0-9]+){1,2})/;
-
 	unless(defined $version) {
-		error('Unable to set SQL server version');
+		error('Could not set SQL server version');
 		return 1;
 	}
 
-	debug("SQL server version set to: $version");
+	debug(sprintf('SQL server version set to: %s', $version));
 	$self->{'config'}->{'SQLD_VERSION'} = $version;
-
-	$self->{'eventManager'}->trigger('afterSqldSetVersion');
+	0;
 }
+
+=item _upgradeSystemTablesIfNecessary()
+
+ Upgrade MySQL system tables if necessary (and adjust configuration aspects when needed)
+
+ Return 0
+
+=cut
+
+sub _upgradeSystemTablesIfNecessary
+{
+	my $self = shift;
+
+	my $db = iMSCP::Database->factory();
+
+	if(iMSCP::ProgramFinder::find('dpkg') && iMSCP::ProgramFinder::find('mysql_upgrade')) {
+		execute("dpkg -s mysql-community-server | grep Status: | cut -d' ' -f4", \my $stdout, \my $stderr);
+
+		# Upgrade MySQL community server system tables
+		# This is needed for MySQL community servers as provided by MySQL team because upgrade is not done automatically.
+		# See #IP-1482 for further details.
+		if($stdout && $stdout eq 'installed') {
+			# Filter all "duplicate column", "duplicate key" and "unknown column"
+			# errors as the command is designed to be idempotent.
+			execute(
+				"mysql_upgrade --defaults-extra-file=$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf 2>&1"
+					. ' | egrep -v \'^(1|@had|ERROR (1054|1060|1061))\'',
+				\my $stdout
+			);
+			debug($stdout) if $stdout;
+		}
+	}
+
+	# Set SQL mode (bc reasons)
+	my $qrs = $db->doQuery('s', "SET GLOBAL sql_mode = ''");
+	unless(ref $qrs eq 'HASH') {
+		error($qrs);
+		return 1;
+	}
+
+	# Disable password validation plugins if any (bc reasons)
+	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.6.6')
+		&& $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
+		|| version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('10.1.2')
+		&& $main::imscpConfig{'SQL_SERVER'} =~ /^mariadb/
+	) {
+		for my $plugin(qw/cracklib_password_check simple_password_check validate_password/) {
+			$qrs = $db->doQuery('name', "SELECT name FROM mysql.plugin WHERE name = '$plugin'");
+			unless(ref $qrs eq 'HASH') {
+				error($qrs);
+				return 1;
+			}
+
+			if(%{$qrs}) {
+				$qrs = $db->doQuery('u', "UNINSTALL PLUGIN $plugin");
+				unless(ref $qrs eq 'HASH') {
+					error($qrs);
+					return 1;
+				}
+			}
+		}
+	}
+
+#	# Ensure that no password is expired (bc reasons)
+#	# TODO handle mariadb case when ready. See https://mariadb.atlassian.net/browse/MDEV-7597
+#	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.7.4')
+#		&& $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
+#	) {
+#		$qrs = $db->doQuery(
+#			'u', "UPDATE mysql.user SET password_expired = 'N', password_last_changed = NULL, password_lifetime = NULL"
+#		);
+#		unless(ref $qrs eq 'HASH') {
+#			error($qrs);
+#			return 1;
+#		}
+#
+#		$qrs = $db->doQuery('u', 'flush privileges');
+#		unless(ref $qrs eq 'HASH') {
+#			error($qrs);
+#			return 1;
+#		}
+#	}
+
+	0;
+}
+
 
 =item _buildConf()
 
@@ -225,9 +285,8 @@ sub _buildConf
 
 	# Make sure that the conf.d directory exists
 	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
-	return $rs if $rs;
 
-	$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', \my $cfgTpl, { });
+	$rs ||= $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', \my $cfgTpl, { });
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -238,11 +297,23 @@ sub _buildConf
 		}
 	}
 
+	$cfgTpl .= <<'EOF';
+[mysqld]
+performance_schema = OFF
+sql_mode = "NO_AUTO_CREATE_USER"
+[mysql_upgrade]
+host     = {DATABASE_HOST}
+port     = {DATABASE_PORT}
+user     = {DATABASE_USER}
+password = {DATABASE_PASSWORD}
+socket   = {SQLD_SOCK_DIR}/mysqld.sock
+EOF
+
 	my $variables = {
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
 		DATABASE_PASSWORD => escapeShell(decryptBlowfishCBC(
-		    $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
+			$main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
 		)),
 		DATABASE_USER => $main::imscpConfig{'DATABASE_USER'},
 		SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'}
@@ -250,8 +321,18 @@ sub _buildConf
 
 	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.5.0')) {
 		$cfgTpl =~ s/(\[mysqld\]\n)/$1innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}\n/i;
-		$variables->{'INNODB_USE_NATIVE_AIO'} = ($self->_isMysqldInsideCt()) ? 0 : 1;
+		$variables->{'INNODB_USE_NATIVE_AIO'} = $self->_isMysqldInsideCt() ? 'OFF' : 'ON';
 	}
+
+	# For backward compatibility - We will review this in later version
+	# TODO Handle mariadb case when ready. See https://mariadb.atlassian.net/browse/MDEV-7597
+	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.7.4')
+		&& $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
+	) {
+		$cfgTpl =~ s/(\[mysqld\]\n)/$1default_password_lifetime = 0\n/i;
+	}
+
+	$cfgTpl =~ s/(\[mysqld\]\n)/$1event_scheduler = DISABLED\n/i;
 
 	$cfgTpl = process($variables, $cfgTpl);
 
@@ -263,41 +344,6 @@ sub _buildConf
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterSqldBuildConf');
-}
-
-=item _upgradeSystemTablesIfNecessary()
-
- Upgrade MySQL system tables if necessary
-
- This is needed for MySQL community servers as provided by MySQL team because upgrade is not done automatically.
- See #IP-1482 for further details.
-
- Return 0
-
-=cut
-
-sub _upgradeSystemTablesIfNecessary
-{
-	my $self = shift;
-
-	unless(iMSCP::ProgramFinder::find('dpkg') && iMSCP::ProgramFinder::find('mysql_upgrade')) {
-		return 0;
-	}
-
-	execute("dpkg -s mysql-community-server | grep Status: | cut -d' ' -f4", \my $stdout, \my $stderr);
-
-	if($stdout && $stdout eq 'installed') {
-		# Filter all "duplicate column", "duplicate key" and "unknown column"
-		# errors as the command is designed to be idempotent.
-		execute(
-			"mysql_upgrade --defaults-extra-file=$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf 2>&1"
-				. ' | egrep -v \'^(1|@had|ERROR (1054|1060|1061))\'',
-			\my $stdout
-		);
-		debug($stdout) if $stdout;
-	}
-
-	0;
 }
 
 =item _saveConf()

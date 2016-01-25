@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -300,8 +300,7 @@ sub _exec
 {
 	my ($self, @command) = @_;
 
-	my ($stdout, $stderr);
-	my $ret = execute("@command", \$stdout, \$stderr);
+	my $ret = execute("@command", \my $stdout, \my $stderr);
 	error($stderr) if $ret && $stderr;
 	$ret;
 }

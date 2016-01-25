@@ -6,30 +6,44 @@ Git 1.2.x
 
 BACKEND
 	Backported: iMSCP::Crypt library from 1.3.x branch
+	Fixed: Don't use Cyrus SASL for SMTP authentication when using Dovecot Po server; Use Dovecot SASL impl. instead
 
 CONFIG
+	Added: DOVECOT_SASL_AUTH_SOCKET_PATH parameter in dovecot/dovecot.data file
+	Added: event_scheduler parameter in mysql/imscp.cnf file to disable event scheduler
+	Added: performance_schema parameter in mysql/imscp.cnf file to disable performance schema
 	Added: SQLD_SOCK_DIR, SQLD_USER and SQLD_GROUP parameters in mysql/mysql.data configuration file
-	Added: performance_schema parameter in mysql/imscp.cnf to disable performance schema (performance reasons)
 	Added: sql_mode parameter in mysql/imscp.cnf template file to reset server SQL modes (backward compatibility issue)
 	Fixed: Possible segfault with OPcache when fast shutdown feature is enabled
+	Removed: Dovecot 1.x configuration files
+	Removed: procmail mailbox command in Postfix main.cf file
 
 CONTRIB
-	Rewritten: 10_named_zonetransfer.pl listener file (now named 10_named_slave_provisioning.pl)
+	Rewritten: 10_named_zonetransfer.pl listener (now named 10_named_slave_provisioning.pl)
+	Updated: 10_postfix_smarthost listener (We need Cyrus SASL; Dovecot SASL impl. not supported by Postfix for smtp)
 
 FRONTEND
-	Fixed: Slow DOM content loading due to some built-in functions override
+	Fixed: Slow DOM content loading due to some built-in functions override (imscp.js)
 
 INSTALLER
-	Added: Routine to upgrade MySQL server system tables when necessary
+	Added: Allow to specify package version to install in distribution package files
+	Added: Conflict for procmail package to force its removal when running i-MSCP installer
+	Added: Conflict for sasl2-bin package to force its removal when running i-MSCP installer (we don't need saslauthd)
+	Added: Default administrator email in aliases(5) table for root account (e.g. root: <default_admin_email>)
+	Added: Routine for upgrading SQL server system tables when necessary (e.g. MySQL Community Server)
+	Added: Support for MySQL 5.6.x/5.7.x, Percona 5.7 and MariaDB 10.1 (when available)
 	Added: Support for Ubuntu 16.04 (Xenial Xerus)
 	Fixed: Could not type new password when reconfiguring service SQL users due to non-printable characters
-	Fixed: Missing source repositories (external repositories)
-	Fixed: Don't show the SQL root password dialog when not needed (package maintainer script)
+	Fixed: Dependencies problems when switching to another SQL server vendor
+	Fixed: Don't ask admin for SQL root password when not needed (package maintainer script)
+	Fixed: Don't ask admin for data directory (/var/lib/mysql) removal (package maintainer script)
+	Fixed: Do not try to receive/download repository gpg key if already present
+	Fixed: Missing source repositories in APT sources.list
 	Removed: Support for Ubuntu 15.04 (Vivid Vervet)
 
 YOUTRACK
 	#IP-1397 MySQL "SET PASSWORD" deprecated in version 5.7.6
-	#IP-1482 Add support for both MySQL 5.6.x and MySQL 5.7.x using MySQL Team repositories
+	#IP-1482 Add support for MySQL 5.6.x/5.7.x using MySQL Team repositories
 	#IP-1483 Perl 5.22 - Unescaped left brace in regex is deprecated
 
 ------------------------------------------------------------------------------------------------------------------------

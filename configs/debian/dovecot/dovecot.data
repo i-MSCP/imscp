@@ -1,7 +1,8 @@
 DOVECOT_SNAME = dovecot
 DOVECOT_CONF_DIR = /etc/dovecot
-DOVECOT_AUTH_SOCKET_PATH = /var/run/dovecot/auth-master
+DOVECOT_LDA_AUTH_SOCKET_PATH = /var/run/dovecot/auth-master
 DOVECOT_DELIVER_PATH = /usr/lib/dovecot/deliver
+DOVECOT_SASL_AUTH_SOCKET_PATH = /var/spool/postfix/private/auth
 
 DATABASE_USER =
 DATABASE_PASSWORD =

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@ package Servers::sqld::mysql;
 use strict;
 use warnings;
 use iMSCP::Config;
+use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -61,28 +62,6 @@ sub preinstall
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterSqldPreinstall');
-}
-
-=item install()
-
- Process install tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub install
-{
-	my $self = shift;
-
-	my $rs = $self->{'eventManager'}->trigger('beforeSqldInstall', 'mysql');
-	return $rs if $rs;
-
-	require Servers::sqld::mysql::installer;
-	$rs = Servers::sqld::mysql::installer->getInstance()->install();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterSqldInstall', 'mysql');
 }
 
 =item postinstall()
@@ -123,14 +102,9 @@ sub uninstall
 	return $rs if $rs;
 
 	require Servers::sqld::mysql::uninstaller;
-
-	$rs = Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
-	return $rs if $rs;
-
-	$rs = $self->restart();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterSqldUninstall', 'mysql');
+	$rs ||= Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
+	$rs ||= $self->restart();
+	$rs ||= $self->{'eventManager'}->trigger('afterSqldUninstall', 'mysql');
 }
 
 =item setEnginePermissions()
@@ -150,9 +124,7 @@ sub setEnginePermissions
 
 	require Servers::sqld::mysql::installer;
 	$rs = Servers::sqld::mysql::installer->getInstance()->setEnginePermissions();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterSqldSetEnginePermissions');
+	$rs ||= $self->{'eventManager'}->trigger('afterSqldSetEnginePermissions');
 }
 
 =item restart()
@@ -214,7 +186,6 @@ sub _init
 	$self->{'config'}= $self->{'mysql'}->{'config'};
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data"; \%c; };
 	$self->{'eventManager'}->trigger('afterSqldInit', $self, 'mysql') and fatal('mysql - afterSqldInit has failed');
-
 	$self;
 }
 

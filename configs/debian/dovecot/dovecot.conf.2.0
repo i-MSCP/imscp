@@ -39,6 +39,13 @@ service auth {
 		mode = 0600
 		user = {MTA_MAILBOX_UID_NAME}
 	}
+
+	# SASL authentication
+	unix_listener {DOVECOT_SASL_AUTH_SOCKET_PATH} {
+		mode = 0660
+		user = {POSTFIX_USER}
+		group = {POSTFIX_GROUP}
+	}
 }
 
 service quota-warning {
@@ -61,7 +68,7 @@ protocol pop3 {
 }
 
 protocol lda {
-	auth_socket_path = {DOVECOT_AUTH_SOCKET_PATH}
+	auth_socket_path = {DOVECOT_LDA_AUTH_SOCKET_PATH}
 	mail_plugins = $mail_plugins
 	postmaster_address = postmaster@{HOSTNAME}
 }

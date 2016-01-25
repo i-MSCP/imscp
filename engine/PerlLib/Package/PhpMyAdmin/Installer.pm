@@ -5,7 +5,7 @@ Package::PhpMyAdmin::Installer - i-MSCP PhpMyAdmin package installer
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -183,7 +183,7 @@ sub preinstall
 	my $self = $_[0];
 
 	my $sqldVersion = Servers::sqld->factory()->getVersion();
-	my $version = (version->parse($sqldVersion) >= version->parse('5.5.0')) ? '0.4.0.*@dev' : '0.2.0.*@dev';
+	my $version = version->parse($sqldVersion) >= version->parse('5.5.0') ? '0.4.0.*@dev' : '0.2.0.*@dev';
 
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', $version);
 	return $rs if $rs;
@@ -454,7 +454,16 @@ sub _setupSqlUser
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 
-		my $rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
+			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
+
+		my $rs = $db->doQuery(
+			'c',
+			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
+			$dbUser,
+			$dbUserHost,
+			$dbPass
+		);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 			return 1;
