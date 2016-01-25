@@ -21,9 +21,11 @@ FRONTEND
 
 INSTALLER
 	Added: Routine to upgrade MySQL server system tables when necessary
+	Added: Support for Ubuntu 16.04 (Xenial Xerus)
 	Fixed: Could not type new password when reconfiguring service SQL users due to non-printable characters
 	Fixed: Missing source repositories (external repositories)
 	Fixed: Don't show the SQL root password dialog when not needed (package maintainer script)
+	Removed: Support for Ubuntu 15.04 (Vivid Vervet)
 
 YOUTRACK
 	#IP-1397 MySQL "SET PASSWORD" deprecated in version 5.7.6

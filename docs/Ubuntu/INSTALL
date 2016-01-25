@@ -14,7 +14,7 @@ Table of Content
 ---------------
 
 i-MSCP Version:  <version>
-Distros:         Any LTS version >= Precise Pangolin (12.04)
+Distros:         Any LTS version >= Precise Pangolin (12.04) - Trusty Tahr recommended
 
 2) Requirements
 ---------------
@@ -34,12 +34,11 @@ All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
 
 1. Make sure that your system is up-to-date
 
-	# apt-get update && apt-get dist-upgrade
+	# apt-get update && apt-get install perl
 
 2. Install the pre-required packages
 
-	# apt-get update && apt-get install whiptail tasksel
-	# tasksel install standard
+	# apt-get update && apt-get install whiptail perl-modules
 
 3. Download and untar the distribution files to a secure directory
 

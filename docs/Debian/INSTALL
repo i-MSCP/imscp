@@ -38,8 +38,7 @@ All packages are listed in ./docs/Debian/packages-<codename>.xml
 
 2. Install the pre-required packages
 
-	# apt-get update && apt-get install whiptail tasksel
-	# tasksel install standard
+	# apt-get update && apt-get install whiptail perl
 
 3. Download and untar or unzip the distribution files to a secure directory
 
