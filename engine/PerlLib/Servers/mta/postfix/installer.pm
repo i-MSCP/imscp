@@ -109,31 +109,27 @@ sub setEnginePermissions
 		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, {
 		user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 1
 	});
-	return $rs if $rs;
 
 	# eg. /var/www/imscp/engine/messenger
-	$rs = setRights(
+	$rs ||= setRights(
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger", {
 		user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0750', recursive => 1
 	});
-	return $rs if $rs;
 
 	# eg. /var/log/imscp/imscp-arpl-msgr
-	$rs = setRights(
+	$rs ||= setRights(
 		"$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr", {
 		user => $mtaUName, group => $imscpGName, dirmode => '0750', filemode => '0600', recursive => 1
 	});
-	return $rs if $rs;
 
 	# eg. /var/mail/virtual
-	$rs = setRights(
+	$rs ||= setRights(
 		$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, {
 		user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 1
 	});
-	return $rs if $rs;
 
 	# eg. /usr/sbin/maillogconvert.pl
-	setRights('/usr/sbin/maillogconvert.pl', { user => $rootUName, group => $rootGName, mode => '0750' });
+	$rs ||= setRights('/usr/sbin/maillogconvert.pl', { user => $rootUName, group => $rootGName, mode => '0750' });
 }
 
 =back
@@ -156,11 +152,9 @@ sub _init
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
-
 	$self->{'eventManager'}->trigger('beforeMtaInitInstaller', $self, 'postfix') and fatal(
 		'postfix - beforeMtaInitInstaller has failed'
 	);
-
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -182,7 +176,6 @@ sub _init
 	$self->{'eventManager'}->trigger('afterMtaInitInstaller', $self, 'postfix') and fatal(
 		'postfix - afterMtaInitInstaller has failed'
 	);
-
 	$self;
 }
 
@@ -428,13 +421,12 @@ sub _bkpConfFile
 	if(-f $cfgFile) {
 		my $file = iMSCP::File->new( filename => $cfgFile );
 		my $filename = fileparse($cfgFile);
-		my $timestamp = time;
 
 		unless(-f "$self->{'bkpDir'}/$filename.system") {
 			$rs = $file->copyFile("$self->{'bkpDir'}/$filename.system");
 			return $rs if $rs;
 		} else {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename.$timestamp");
+			$rs = $file->copyFile("$self->{'bkpDir'}/$filename." . time());
 			return $rs if $rs;
 		}
 	}
@@ -500,7 +492,7 @@ sub _buildMainCfFile
 
 	# Add TLS parameters if required
 	if($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
-		$cfgTpl .= <<EOF;
+		$cfgTpl .= <<'EOF';
 
 # TLS parameters
 smtpd_tls_security_level = may
