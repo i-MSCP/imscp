@@ -23,6 +23,33 @@ Listener file that allows to override Apache2 ServerAlias directive value.
 
 Listener file that allows to change the domain redirect type in customer's vhost files from 302 to 301.
 
+## Dovecot listeners
+
+### 10_dovecot_compress.pl
+
+Listener file for activating the dovecot compress plugin, to reduce the bandwidth usage of IMAP and to also compress
+the stored mails. For more information please check: 
+http://wiki2.dovecot.org/Plugins/Compress
+http://wiki2.dovecot.org/Plugins/Zlib
+
+### 20_dovecot_connections.pl
+
+Listener file to increase the mail_max_userip_connections
+
+### 30_dovecot_namespace.pl
+
+Listener file that creates the INBOX. as a compatibility name, so old clients can continue using it while new clients 
+will use the empty prefix namespace.
+
+### 40_dovecot_pfs.pl
+
+Listener file to activate the Perfect Forward Secrecy logging
+
+### 50_dovecot_plaintext.pl
+
+Listener file to disable plaintext logins and force tls.
+Also remove the authentication mechanisms cram-md5 and digest-md5 which won't be supported anymore in i-MSCP 1.3
+
 ## Named listeners
 
 ### 10_bind9_localnets.pl
