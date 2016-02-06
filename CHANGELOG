@@ -42,6 +42,7 @@ INSTALLER
 	Removed: Support for Ubuntu 15.04 (Vivid Vervet)
 
 YOUTRACK
+	#IP-1289 ProFTPD with TLS behind NAT - Local IP masquerading and passive port range
 	#IP-1397 MySQL "SET PASSWORD" deprecated in version 5.7.6
 	#IP-1482 Add support for MySQL 5.6.x/5.7.x using MySQL Team repositories
 	#IP-1483 Perl 5.22 - Unescaped left brace in regex is deprecated

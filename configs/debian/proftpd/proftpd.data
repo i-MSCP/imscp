@@ -4,6 +4,8 @@ FTPD_SNAME = proftpd
 FTPD_CONF_FILE = /etc/proftpd/proftpd.conf
 FTP_TRAFF_LOG_PATH = proftpd/ftp_traff.log
 
+FTPD_PASSIVE_PORT_RANGE =
+
 MIN_UID = 1001
 MIN_GID = 1001
 

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -53,9 +53,7 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->restoreConfFile();
-	return $rs if $rs;
-
-	$self->removeDB();
+	$rs ||= $self->removeDB();
 }
 
 =item removeDB()
@@ -71,10 +69,8 @@ sub removeDB
 	my $self = shift;
 
 	my $db = iMSCP::Database->factory();
-
 	$db->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
 	$db->doQuery('f', 'FLUSH PRIVILEGES');
-
 	0;
 }
 
@@ -125,13 +121,12 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = $self->{'ftpd'}->{'config'};
-
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 
