@@ -198,14 +198,14 @@ EOF
 				$passivePortRange
 			);
 
-			if($passivePortRange !~ /^(\d+)\s(\d+)$/ || $1 < 32768 || $1 >= 60999 || $1 >= $2) {
+			if($passivePortRange !~ /^(\d+)\s+(\d+)$/ || $1 < 32768 || $1 >= 60999 || $1 >= $2) {
 				$passivePortRange = '32768 60999';
 				$msg = "\n\n\\Z1Invalid port range.\\Zn\n\nPlease try again:"
 			} else {
 				$passivePortRange = "$1 $2";
 				$msg = '';
 			}
-		} while($rs != 30 && $msg)
+		} while($rs != 30 && $msg);
 	}
 
 	$self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange unless $rs == 30;
