@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,7 +22,6 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Debug;
-use iMSCP::Crypt qw/md5/;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Getopt;
@@ -33,7 +32,7 @@ newDebug('imscp-disable-accounts.log');
 # Parse command line options
 iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
-Script which disable accounts that are expired.
+Script that deactivates expired client accounts
 
 OPTIONS:
  -v,    --verbose       Enable verbose mode.},
@@ -46,120 +45,66 @@ sub run
 {
 	my $db = iMSCP::Database->factory();
 
-	# Get needed configuration parameter value
-	my $rdata = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
+	my $qrs = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
+	unless(ref $qrs eq 'HASH') {
+		error($qrs);
 		return 1;
 	}
+	my $hardMailSuspension = $qrs->{'HARD_MAIL_SUSPENSION'}->{'value'};
 
-	my $hardMailSuspension = $rdata->{'HARD_MAIL_SUSPENSION'}->{'value'};
-
-	# Gets ids of all expired accounts
-	my $accounts = $db->doQuery(
+	$qrs = $db->doQuery(
 		'domain_id',
 		"
-			SELECT
-				domain_id, domain_admin_id
-			FROM
-				domain
-			WHERE
-				domain_expires <> '0'
-			AND
-				domain_expires <  UNIX_TIMESTAMP()
-			AND
-				domain_status <> 'disabled'
+			SELECT domain_id, domain_admin_id FROM domain
+			WHERE domain_expires <> '0' AND domain_expires < UNIX_TIMESTAMP() AND domain_status <> 'disabled'
 		"
 	);
-	unless(ref $accounts eq 'HASH') {
-		error($accounts);
+	unless(ref $qrs eq 'HASH') {
+		error($qrs);
 		return 1;
 	}
 
-	my $rawDb = $db->startTransaction();
 	my $rs = 0;
+	for my $domainId(keys %{$qrs}) {
+		my $dbi = $db->startTransaction();
 
-	if(%{$accounts}) {
-		for(keys %{$accounts}) {
-			my $dmnId = $_;
-
-			eval {
-				my $mails = $db->doQuery(
-		 			'mail_id', 'SELECT mail_id, mail_pass, mail_type FROM mail_users WHERE domain_id = ?', $dmnId
-				);
-
-				# Schedule mail accounts deactivation
-				# soft or hard way according to the HARD_MAIL_SUSPENSION configuration parameter value
-				if(%{$mails}) {
-					for(keys %{$mails}) {
-						my $mailId = $mails->{$_}->{'mail_id'};
-						my $mailPassword = $mails->{$_}->{'mail_pass'};
-						my $mailType = $mails->{$_}->{'mail_type'};
-						my $newMailStatus = 'todisable';
-
-						if (!$hardMailSuspension) {
-							if ($mailType =~ /^(?:normal_mail|alias_mail|subdom_mail|alssub_mail)/) {
-								$mailPassword = substr(md5(time()), 3, 4) . $mailPassword;
-							} else {
-								next;
-							}
-
-							$newMailStatus = 'tochange';
-						}
-
-						$rawDb->do(
-							'UPDATE mail_users SET mail_pass = ?, status = ? WHERE mail_id = ?',
-							undef,
-							$mailPassword,
-							$newMailStatus,
-							$mailId
-						);
-					}
-				}
-
-				# Schedule domain deactivation
-				$rawDb->do('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $dmnId);
-
-				# Schedule subdomains deactivation
-				$rawDb->do('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'todisable', $dmnId);
-
-				# Schedule domain aliases deactivation
-				$rawDb->do('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'todisable', $dmnId);
-
-				# Schedule domain aliases's subdomains deactivation
-				$rawDb->do(
-					'
-						UPDATE
-							subdomain_alias
-						SET
-							subdomain_alias_status = ?
-						WHERE
-							alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-					',
-					undef, 'todisable', $dmnId
-				);
-
-				$rawDb->commit();
-			};
-
-			if($@) {
-				$rawDb->rollback();
-				$db->endTransaction();
-				error("Unable to schedule deactivation of customer with ID $accounts->{$_}->{'domain_admin_id'}: $@");
-				$rs = 1;
+		eval {
+			if ($hardMailSuspension) { # SMTP/IMAP/POP disabled
+				$dbi->do('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', undef, 'todisable', 'no', $domainId);
+			} else { # IMAP/POP disabled
+				$dbi->do('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef,  'no', $domainId);
 			}
+
+			$dbi->do('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
+			$dbi->do('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
+			$dbi->do('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
+			$dbi->do(
+				'
+					UPDATE subdomain_alias SET subdomain_alias_status = ?
+					WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+				',
+				undef, 'todisable', $domainId
+			);
+
+			$dbi->commit();
+		};
+
+		if($@) {
+			$dbi->rollback();
+			$db->endTransaction();
+			error("Could not deactive client account with ID $qrs->{$domainId}->{'domain_admin_id'}: $@");
+			$rs = 1;
 		}
 
 		$db->endTransaction();
+	}
 
-		# Run request manager to process all scheduled tasks
-		if(!$rs) {
-			my ($stdout, $stderr);
-			$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
-			debug $stdout if $stdout;
-			error($stderr) if $stderr && $rs;
-			warning($stderr) if $stderr && !$rs;
-		}
+	# Run request manager to process all scheduled tasks
+	unless($rs) {
+		$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \my $stdout, \my $stderr);
+		debug $stdout if $stdout;
+		error($stderr) if $stderr && $rs;
+		warning($stderr) if $stderr && !$rs;
 	}
 
 	$rs;
