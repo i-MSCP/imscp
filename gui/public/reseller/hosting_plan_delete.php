@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -29,27 +29,22 @@
  * Main
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+if (!isset($_GET['id'])) {
+    showBadRequestErrorPage();
+}
 
-if (isset($_GET['id']) && $cfg->HOSTING_PLANS_LEVEL == 'reseller') {
+$stmt = exec_query('DELETE FROM hosting_plans WHERE i` = ? AND reseller_id = ?', array(
+    intval($_GET['id']), $_SESSION['user_id']
+));
 
-	$hostingPlanId = clean_input($_GET['id']);
-
-	$query = "DELETE FROM `hosting_plans` WHERE `id` = ? AND `reseller_id` = ?";
-	$stmt = exec_query($query, array($hostingPlanId, $_SESSION['user_id']));
-
-	if($stmt->rowCount()) {
-		set_page_message(tr('Hosting plan has been successfully deleted.'), 'success');
-		redirectTo('hosting_plan.php');
-	}
+if ($stmt->rowCount()) {
+    set_page_message(tr('Hosting plan has been successfully deleted.'), 'success');
+    redirectTo('hosting_plan.php');
 }
 
 showBadRequestErrorPage();

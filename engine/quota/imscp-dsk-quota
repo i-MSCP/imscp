@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -48,19 +48,14 @@ $bootstrapper->boot({ norequirements => 'yes', nolock => 'yes', config_readonly 
 sub quotaFiles
 {
 	my $rs = 0;
-
 	my $db = iMSCP::Database->factory();
-
-	my $mainDomains = $db->doQuery(
-		'domain_id', "SELECT domain_id, domain_name FROM domain WHERE domain_status = 'ok'"
-	);
+	my $mainDomains = $db->doQuery('domain_id', "SELECT domain_id, domain_name FROM domain WHERE domain_status = 'ok'");
 
 	unless (ref $mainDomains eq 'HASH'){
 		error($mainDomains);
 		iMSCP::Mail->new()->errmsg($mainDomains);
 		$rs = 1;
 	} else {
-		my $bsdSystem = $^O =~ /bsd$/;
 		my $mta = Servers::mta->factory();
 		my $virtualMailDir = $mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
@@ -68,48 +63,28 @@ sub quotaFiles
 			my $domainId = $_;
 			my $domainName = $mainDomains->{$domainId}->{'domain_name'};
 			my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
-			my @cmd = ();
 
-			if ($bsdSystem) { # BSD specific
-				push @cmd, {
-					'webdir' => [
-						'du',
-						'-I backups/*',
-						'-I domain_disable_page/*',
-						'-I logs/*.log',
-						'-I statistics/*',
-						'-d 0',
-						escapeShell("$main::imscpConfig{'USER_WEB_DIR'}/$domainName")
-					]
-				};
-				
-				if(-d "$virtualMailDir/$domainName") {
-					push @cmd, {
-						'maildir' => [
-							'du', '-d 0', escapeShell("$virtualMailDir/$domainName")
-						]
-					};
-				}
-			} else {
-				push @cmd, {
-					'webdir' => [
-						'du',
-						'--exclude=backups/*',
-						'--exclude=domain_disable_page/*',
-						'--exclude=logs/*.log',
-						'--exclude=statistics/*',
-						'-s -B1',
-						escapeShell("$main::imscpConfig{'USER_WEB_DIR'}/$domainName")
-					]
-				};
+			my @cmd = ( {
+				'webdir' => [
+					'nice -n 15 ionice -c2 -n5',
+					'du',
+					'--exclude=backups/*',
+					'--exclude=domain_disable_page/*',
+					'--exclude=logs/*.log',
+					'--exclude=statistics/*',
+					'-s -B1',
+					escapeShell("$main::imscpConfig{'USER_WEB_DIR'}/$domainName")
+				]
+			});
 
-				if(-d "$virtualMailDir/$domainName") {
-					push @cmd, {
-						'maildir' => [
-							'du', '-s', '-B1', escapeShell("$virtualMailDir/$domainName")
-						]
-					};
-				}
+			if(-d "$virtualMailDir/$domainName") {
+				push @cmd, { 'maildir' => [
+					'nice -n 15 ionice -c2 -n5',
+					'du',
+					'-s',
+					'-B1',
+					escapeShell("$virtualMailDir/$domainName")
+				]};
 			}
 
 			# Getting list of all child domains (sub|als|alssub)
@@ -158,24 +133,16 @@ sub quotaFiles
 					my $domainMailDir = "$virtualMailDir/$_";
 
 					if (-d $domainMailDir) {
-						if ($bsdSystem) { # BSD specific
-							push @cmd, {
-								'maildir' => [ 'du',  '-d 0 ', escapeShell($domainMailDir) ]
-							};
-						} else {
-							push @cmd, {
-								'maildir' => [ 'du', '-s', '-B1', escapeShell($domainMailDir) ]
-							};
-						}
+						push @cmd, { 'maildir' => [
+							'du', '-s', '-B1', escapeShell($domainMailDir)
+						]};
 					}
 				}
 			}
 
 			for(@cmd) {
 				my ($dirType, $quotaCmd) = %{$_};
-
-				my ($stdout, $stderr);
-				$rs = execute("@{$quotaCmd}", \$stdout, \$stderr);
+				$rs = execute("@{$quotaCmd}", \my $stdout, \my $stderr);
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
 
@@ -183,15 +150,9 @@ sub quotaFiles
 					debug($stdout);
 
 					if($dirType eq 'webdir') {
-						$stdout =~ /^(\d+)/;
-						$webDiskUsage = ($bsdSystem)
-							? $1 * 1024 # BSD specific
-							: $1 if $1;
+						($webDiskUsage) = $stdout =~ /^(\d+)/;
 					} else {
-						$stdout =~ /^(\d+)/;
-						$mailDiskUsage += ($bsdSystem)
-							? $1 * 1024 # BSD specific
-							: $1 if $1;
+						($mailDiskUsage) += $stdout =~ /^(\d+)/;
 					}
 				}
 			}
@@ -207,9 +168,7 @@ sub quotaFiles
 					WHERE
 						domain_id = ?
 				';
-				my $rdata = $db->doQuery(
-					'update', $sql, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $domainId
-				);
+				my $rdata = $db->doQuery('update', $sql, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $domainId);
 				unless (ref $rdata eq 'HASH') {
 					error($rdata);
 					iMSCP::Mail->new()->errmsg($rdata);
@@ -251,15 +210,13 @@ sub quotaSql
 		iMSCP::Mail->new()->errmsg($rdata);
 		$rs = 1;
 	} elsif(%{$rdata}) {
-		for (keys %{$rdata}) {
-			my $domainId = $_;
+		for my $domainId (keys %{$rdata}) {
 			my $domainName = $rdata->{$domainId}->{'domain_name'};
 			my $diskUsage = $rdata->{$domainId}->{'domain_disk_usage'};
-			my $size = 0;
-			my $sqlSize = 0;
+			my $size = my $sqlSize = 0;
 
 			my $customerDatabases = $db->doQuery(
-			    'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $domainId
+				'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $domainId
 			);
 
 			unless (ref $customerDatabases eq 'HASH') {
@@ -268,9 +225,7 @@ sub quotaSql
 				$rs = 1;
 			}
 
-			for (keys %{$customerDatabases}) {
-				my $sqlDbName = $_;
-
+			for my $sqlDbName (keys %{$customerDatabases}) {
 				if(grep{$_ eq $sqlDbName} keys %{$databases}) { # Does the database exists?
 					my $quotedDbName = $db->quoteIdentifier($sqlDbName);
 
@@ -280,10 +235,10 @@ sub quotaSql
 						iMSCP::Mail->new()->errmsg($sqlDbTables);
 						$rs = 1;
 					} elsif(%{$sqlDbTables}) {
-						for(keys %{$sqlDbTables}) {
+						for my $sqlDbTable(keys %{$sqlDbTables}) {
 							$size +=
-								(($sqlDbTables->{$_}->{'Data_length'}) ? $sqlDbTables->{$_}->{'Data_length'} : 0) +
-								(($sqlDbTables->{$_}->{'Index_length'}) ? $sqlDbTables->{$_}->{'Index_length'} : 0);
+								(($sqlDbTables->{$sqlDbTable}->{'Data_length'}) ? $sqlDbTables->{$sqlDbTable}->{'Data_length'} : 0) +
+								(($sqlDbTables->{$sqlDbTable}->{'Index_length'}) ? $sqlDbTables->{$sqlDbTable}->{'Index_length'} : 0);
 						}
 					}
 				} else {

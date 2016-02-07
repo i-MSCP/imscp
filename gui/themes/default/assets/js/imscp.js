@@ -49,7 +49,7 @@
                 }
             );
         } else {
-            $(".main_menu a").tooltip({ track: true });
+            //$(".main_menu a").tooltip({ track: true });
             $(".body a,.body span,.body input,.dataTables_paginate div").tooltip(
                 {
                     tooltipClass: "ui-tooltip-notice",
@@ -76,22 +76,21 @@
 
     // Function to initialize tables
     var initTables = function () {
-        // Override some built-in jQuery method to trigger the i-MSCP updateTable event
+        $("body").on("updateTable", "table", function () {
+            $(this).find("tbody:first > tr:visible:odd").removeClass("odd").addClass("even");
+            $(this).find("tbody:first > tr:visible:even").removeClass("even").addClass("odd");
+        });
+        $("tbody").trigger("updateTable");
+
+        // Override some built-in jQuery method to automatically trigger the i-MSCP updateTable event
         var origShow = $.fn.show;
-        var origHide = $.fn.hide;
         $.fn.show = function () {
             return origShow.apply(this, arguments).trigger("updateTable");
         };
+        var origHide = $.fn.hide;
         $.fn.hide = function () {
             return origHide.apply(this, arguments).trigger("updateTable");
         };
-
-        $("body").on("updateTable", "tbody", function () {
-            $(this).find("tr:visible:odd").removeClass("odd").addClass("even");
-            $(this).find("tr:visible:even").removeClass("even").addClass("odd");
-            $(this).find("th").parent().removeClass("even odd");
-        });
-        $("tbody").trigger("updateTable");
     };
 
     // Function to initialize password generator
@@ -141,7 +140,7 @@
         }
     };
 
-    // Function to fix bad jQuery UI behaviors
+    // Function to fix/improve jQuery UI behaviors
     var fixJqueryUI = function () {
         // Dirty fix for http://bugs.jqueryui.com/ticket/7856
         $('[type=checkbox]').on("change", function () {
@@ -151,8 +150,10 @@
         });
 
         $(document).on("click", "button,input", function () {
-            $(this).removeClass("ui-state-focus ui-state-hover");
+            $("button,input").removeClass("ui-state-focus ui-state-hover");
         });
+
+        $.ui.dialog.prototype._focusTabbable = $.noop;
     };
 
     // Function to initialize layout
@@ -175,6 +176,121 @@
         initLayout($('body').hasClass('simple') ? 'simple' : 'ui');
         fixJqueryUI();
     });
+})(jQuery);
+
+// PHP editor (dialog and validation routines)
+(function ($) {
+    $(function () {
+        var $php_editor_dialog = $("#php_editor_dialog");
+
+        if (!$php_editor_dialog.length) return;
+
+        $php_editor_dialog.dialog({
+            hide: "blind",
+            show: "slide",
+            focus: false,
+            autoOpen: false,
+            width: 650,
+            modal: true,
+            buttons: [
+                {
+                    text: imscp_i18n.core.close,
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+        $(window).scroll(function () {
+            $php_editor_dialog.dialog("option", "position", { my: "center", at: "center", of: window });
+        });
+
+        // Prevent form submission in case an INI value is not valid
+        $("form").submit(function (e) {
+            if ($("#php_editor_msg_default").length) {
+                $php_editor_dialog.parent().appendTo($("#dialogContainer"));
+                return true;
+            }
+
+            e.preventDefault();
+            $php_editor_dialog.dialog("open");
+            return false;
+        });
+
+        var $php_editor_block = $("#php_editor_block");
+
+        if ($("#php_no").is(":checked")) {
+            $php_editor_block.hide();
+        }
+
+        $("#php_yes,#php_no").change(function () {
+            $php_editor_block.toggle();
+        });
+
+        var $php_editor_dialog_open = $("#php_editor_dialog_open");
+
+        $php_editor_dialog_open.button("option", "icons", { primary: "ui-icon-gear" }).click(function () {
+            $php_editor_dialog.dialog("open");
+        });
+
+        if ($("#php_ini_system_no").is(":checked")) {
+            $php_editor_dialog_open.hide();
+        }
+
+        $("#php_ini_system_yes, #php_ini_system_no").change(function () {
+            $php_editor_dialog_open.fadeToggle();
+        });
+
+        var $errorMessages = $(".php_editor_error");
+
+        function _updateErrorMesssages(k, t) {
+            if (typeof(t) != "undefined") {
+                if (!$("#err_" + k).length) {
+                    $("#php_editor_msg_default").remove();
+                    $errorMessages.append('<span style="display:block" id="err_' + k + '">' + t + "</span>").
+                        removeClass("static_success").addClass("static_error");
+                }
+            } else if ($("#err_" + k).length) {
+                $("#err_" + k).remove();
+            }
+
+            if ($.trim($errorMessages.text()) == "") {
+                $errorMessages.empty().append('<span id="php_editor_msg_default">' + imscp_i18n.core.fields_ok + '</span>').
+                    removeClass("static_error").addClass("static_success");
+            }
+        }
+
+        var timerId;
+        var $iniFields = $("#php_ini_values").find("input");
+        var validationRegexp = /^([1-9]\d*)$/;
+
+        $iniFields.on('keyup', function () {
+            clearTimeout(timerId);
+            timerId = setTimeout(function () {
+                $iniFields.each(function () { // We revalidate all fields because some are dependent of others
+                    var id = $(this).attr("id");
+                    var value = $.trim($(this).val());
+                    var limit = parseInt($(this).data('limit'));
+
+                    if (!validationRegexp.test(value) || parseInt(value) < 1 || parseInt(value) > limit) {
+                        $(this).addClass("ui-state-error");
+                        _updateErrorMesssages(id, sprintf(imscp_i18n.core.out_of_range_value_error, '<strong>' + id + '</strong>', 1, limit));
+                    } else if (id == 'post_max_size' && parseInt($("#memory_limit").val()) <= parseInt(value)) {
+                        $(this).addClass("ui-state-error");
+                        _updateErrorMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>memory_limit</strong>'));
+                    } else if (id == 'upload_max_filesize' && parseInt($("#post_max_size").val()) <= parseInt(value)) {
+                        $(this).addClass("ui-state-error");
+                        _updateErrorMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>post_max_size</strong>'));
+                    } else {
+                        $(this).removeClass("ui-state-error");
+                        _updateErrorMesssages(id);
+                        $(this).val(value);
+                    }
+                });
+            }, 300);
+        }).trigger('keyup'); // We trigger the keyup event on page load to catch any inconsistency with ini values
+    })
 })(jQuery);
 
 function sbmt(form, uaction) {

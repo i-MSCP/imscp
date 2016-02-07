@@ -22,7 +22,6 @@
         <apache_php_fpm>
             <package>apache2</package>
             <package>apache2-suexec-custom</package>
-            <package>libapache2-mod-fastcgi</package>
             <package>php5-fpm</package>
         </apache_php_fpm>
     </httpd>

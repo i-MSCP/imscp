@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,6 +31,8 @@ use iMSCP::Database;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::OpenSSL;
+use Servers::httpd;
+use File::Spec;
 use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Abstract';
 
@@ -224,7 +226,7 @@ sub _loadData
 		return 1;
 	}
 
-	unless(exists $rdata->{$aliasId}) {
+	unless($rdata->{$aliasId}) {
 		error("Domain with ID $aliasId has not been found or is in an inconsistent state");
 		return 1;
 	}
@@ -239,7 +241,7 @@ sub _loadData
  Data provider method for Httpd servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hash Hash containing module data, die on failure
 
 =cut
 
@@ -250,26 +252,20 @@ sub _getHttpdData
 	unless($self->{'httpd'}) {
 		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-		my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}";
-		$homeDir =~ s~/+~/~g;
-		$homeDir =~ s~/$~~g;
-
-		my $webDir = "$homeDir/$self->{'alias_mount'}";
-		$webDir =~ s~/+~/~g;
-		$webDir =~ s~/$~~g;
-
+		my $homeDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}");
+		my $webDir = File::Spec->canonpath("$homeDir/$self->{'alias_mount'}");
 		my $db = iMSCP::Database->factory();
 
-		my $rdata = $db->doQuery('name', 'SELECT * FROM config WHERE name LIKE ?', 'PHPINI%');
-		unless (ref $rdata eq 'HASH') {
-			fatal($rdata);
-		}
+		my $confLevel = $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm'
+			? Servers::httpd->factory()->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'}
+			: Servers::httpd->factory()->{'config'}->{'INI_LEVEL'};
+		$confLevel = $confLevel eq 'per_user' ? 'dmn' : 'als';
 
-		my $phpiniData = $db->doQuery('domain_id', 'SELECT * FROM php_ini WHERE domain_id = ?', $self->{'domain_id'});
-		unless (ref $phpiniData eq 'HASH') {
-			fatal($phpiniData);
-		}
+		my $phpiniMatchId = $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'alias_id'};
+		my $phpini = $db->doQuery(
+			'domain_id', 'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', $phpiniMatchId, $confLevel
+		);
+		ref $phpini eq 'HASH' or die($phpini);
 
 		my $certData = $db->doQuery(
 			'domain_id',
@@ -278,11 +274,9 @@ sub _getHttpdData
 			'als',
 			'ok'
 		);
-		unless (ref $certData eq 'HASH') {
-			fatal($certData);
-		}
+		ref $certData eq 'HASH' or die($certData);
 
-		my $haveCert = exists $certData->{$self->{'alias_id'}} && $self->isValidCertificate($self->{'alias_name'});
+		my $haveCert = $certData->{$self->{'alias_id'}} && $self->isValidCertificate($self->{'alias_name'});
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
@@ -306,36 +300,19 @@ sub _getHttpdData
 			SSL_SUPPORT => $haveCert,
 			BWLIMIT => $self->{'domain_traffic_limit'},
 			ALIAS => $userName . 'als' . $self->{'alias_id'},
-			FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '') ? $self->{'url_forward'} : 'no',
-			DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
-				: $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
-			MAX_EXECUTION_TIME => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'max_execution_time'}
-				: $rdata->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
-			MAX_INPUT_TIME => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'max_input_time'}
-				: $rdata->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
-			MEMORY_LIMIT => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'memory_limit'}
-				: $rdata->{'PHPINI_MEMORY_LIMIT'}->{'value'},
-			ERROR_REPORTING => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'error_reporting'}
-				: $rdata->{'PHPINI_ERROR_REPORTING'}->{'value'},
-			DISPLAY_ERRORS => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'display_errors'}
-				: $rdata->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
-			POST_MAX_SIZE => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'post_max_size'}
-				: $rdata->{'PHPINI_POST_MAX_SIZE'}->{'value'},
-			UPLOAD_MAX_FILESIZE => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'upload_max_filesize'}
-				: $rdata->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
-			ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
-				: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{'value'},
-			PHPINI_OPEN_BASEDIR => ($rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'})
-				? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
+			FORWARD => $self->{'url_forward'} || 'no',
+			DISABLE_FUNCTIONS => $phpini->{$phpiniMatchId}->{'disable_functions'} ||
+				'exec,passthru,phpinfo,popen,proc_open,show_source,system,shell,shell_exec,symlink',
+			MAX_EXECUTION_TIME => $phpini->{$phpiniMatchId}->{'max_execution_time'} // 30,
+			MAX_INPUT_TIME => $phpini->{$phpiniMatchId}->{'max_input_time'} // 60,
+			MEMORY_LIMIT =>  $phpini->{$phpiniMatchId}->{'memory_limit'} // 128,
+			ERROR_REPORTING => $phpini->{$phpiniMatchId}->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
+			DISPLAY_ERRORS => $phpini->{$phpiniMatchId}->{'display_errors'} || 'off',
+			POST_MAX_SIZE => $phpini->{$phpiniMatchId}->{'post_max_size'} // 8,
+			UPLOAD_MAX_FILESIZE => $phpini->{$phpiniMatchId}->{'upload_max_filesize'} // 2,
+			ALLOW_URL_FOPEN => $phpini->{$phpiniMatchId}->{'allow_url_fopen'} || 'off',
+			PHPINI_OPEN_BASEDIR => '',
+			PHP_FPM_LISTEN_PORT => ($phpini->{$phpiniMatchId}->{'id'} // 0) - 1
 		};
 	}
 
@@ -374,7 +351,7 @@ sub _getMtaData
  Data provider method for named servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hash Hash containing module data, die on failure
 
 =cut
 
@@ -421,9 +398,7 @@ sub _getNamedData
 				'ext_mail_feature',
 				'todelete'
 			);
-			unless(ref $rdata eq 'HASH') {
-				fatal($rdata);
-			}
+			ref $rdata eq 'HASH' or die($rdata);
 
 			if(%{$rdata}) {
 				my (@domainHosts, @wildcardHosts);
@@ -432,7 +407,7 @@ sub _getNamedData
 				for(keys %{$rdata}) {
 					(my $host = $rdata->{$_}->{'domain_text'}) =~ s/\d+\s+(.*)\.$/$1/;
 
-					if((index($rdata->{$_}->{'domain_dns'}, '*') != 0)) {
+					if(index($rdata->{$_}->{'domain_dns'}, '*') != 0) {
 						push @domainHosts, "a:$host";
 					} else {
 						push @wildcardHosts, "a:$host";
@@ -465,9 +440,7 @@ sub _getNamedData
 				'todelete',
 				$self->{'alias_id'}
 			);
-			unless(ref $rdata eq 'HASH') {
-				fatal($rdata);
-			}
+			ref $rdata eq 'HASH' or die($rdata);
 		}
 	}
 
@@ -490,14 +463,8 @@ sub _getPackagesData
 	unless($self->{'packages'}) {
 		my $userName = my $groupName =  $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-		my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}";
-		$homeDir =~ s~/+~/~g;
-		$homeDir =~ s~/$~~g;
-
-		my $webDir = "$homeDir/$self->{'user_home'}/$self->{'alias_mount'}";
-		$webDir =~ s~/+~/~g;
-		$webDir =~ s~/$~~g;
+		my $homeDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}");
+		my $webDir = File::Spec->canonpath("$homeDir/$self->{'user_home'}/$self->{'alias_mount'}");
 
 		$self->{'packages'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
@@ -507,7 +474,7 @@ sub _getPackagesData
 			GROUP => $groupName,
 			HOME_DIR => $homeDir,
 			WEB_DIR => $webDir,
-			FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '') ? $self->{'url_forward'} : 'no',
+			FORWARD => $self->{'url_forward'} || 'no',
 			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 		};
 	}
@@ -519,7 +486,7 @@ sub _getPackagesData
 
  Does this domain alias share mount point with another domain?
 
- Return bool
+ Return bool, die on failure
 
 =cut
 
@@ -528,9 +495,7 @@ sub _sharedMountPoint
 	my $self = shift;
 
 	my $regexp = "^$self->{'alias_mount'}(/.*|\$)";
-
 	my $db = iMSCP::Database->factory()->getRawDb();
-
 	my ($nbSharedMountPoints) = $db->selectrow_array(
 		"
 			SELECT
@@ -582,7 +547,7 @@ sub _sharedMountPoint
 		$regexp
 	);
 
-	fatal($db->errstr) if $db->err;
+	die($db->errstr) if $db->err;
 
 	($nbSharedMountPoints || $self->{'alias_mount'} eq '/');
 }
@@ -601,14 +566,13 @@ sub isValidCertificate
 	my ($self, $domainAliasName) = @_;
 
 	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainAliasName.pem";
-
 	my $openSSL = iMSCP::OpenSSL->new(
 		'private_key_container_path' => $certFile,
 		'certificate_container_path' => $certFile,
 		'ca_bundle_container_path' => $certFile
 	);
 
-	! $openSSL->validateCertificateChain();
+	!$openSSL->validateCertificateChain();
 }
 
 =back

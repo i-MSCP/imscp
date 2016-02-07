@@ -92,7 +92,7 @@ sub _loadData
 		'ip_number',
 		"
 			SELECT
-				domain_ip_id AS ip_id, ip_number
+				ip_number
 			FROM
 				domain
 			INNER JOIN
@@ -101,7 +101,7 @@ sub _loadData
 				domain_status != 'todelete'
 			UNION
 			SELECT
-				alias_ip_id AS ip_id, ip_number
+				ip_number
 			FROM
 				domain_aliasses
 			INNER JOIN
@@ -115,7 +115,7 @@ sub _loadData
 		return 1;
 	}
 
-	$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
+	#$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
 
 	@{$self->{'ipaddrs'}} = keys %{$rdata};
 
@@ -182,11 +182,15 @@ sub _loadData
 		return 1;
 	}
 
-	if($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
-		$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
-	}
+	#if($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
+	#	$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
+	#}
 
 	@{$self->{'ssl_ipaddrs'}} = keys %{$rdata};
+
+		use Data::Dumper;
+    	print Dumper($self);
+    	exit;
 
 	0;
 }

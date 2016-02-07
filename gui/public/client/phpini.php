@@ -17,211 +17,412 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include core library
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Tells whether or not the status of the given domain
+ *
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
+ * @param int $domainId Domain unique identifier
+ * @param string $domainType Domain type (dmn|als|sub|subals)
+ * @return bool TRUE if domain status is 'ok', FALSE otherwise
+ */
+function client_isDomainStatusOk($domainId, $domainType)
+{
+    switch ($domainType) {
+        case 'dmn':
+            $query = 'SELECT domain_status AS status FROM domain WHERE domain_id = ?';
+            break;
+        case 'als':
+            $query = 'SELECT alias_status AS status FROM domain_aliasses WHERE alias_id = ?';
+            break;
+        case 'sub':
+            $query = 'SELECT subdomain_status AS status FROM subdomain WHERE subdomain_id = ?';
+            break;
+        case 'subals':
+            $query = 'SELECT subdomain_alias_status AS status FROM subdomain_alias WHERE subdomain_alias_id = ?';
+            break;
+        default:
+            throw new iMSCP_Exception('Unknown domain type');
+    }
+
+    $stmt = exec_query($query, $domainId);
+
+    if ($stmt->rowCount()) {
+        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+        if ($row['status'] == 'ok') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Get domain data
+ *
+ * @throws iMSCP_Exception_Database
+ * @param string $configLevel PHP configuration level
+ * @return array
+ */
+function client_getDomainData($configLevel)
+{
+    // Per user means only main domain
+    $query = "
+        SELECT
+            domain_name, domain_status, domain_id, 'dmn' AS domain_type
+        FROM
+            domain AS t1
+        WHERE
+            domain_admin_id = :admin_id
+        AND
+            domain_status <> :domain_status
+    ";
+
+    # Per domain or per site means also domain aliases
+    if ($configLevel == 'per_domain' || $configLevel == 'per_site') {
+        $query .= "
+            UNION ALL
+            SELECT
+                t1.alias_name, t1.alias_status, alias_id, 'als'
+            FROM
+                domain_aliasses AS t1
+            INNER JOIN
+                domain AS t2 USING(domain_id)
+            WHERE
+                t2.domain_admin_id = :admin_id
+            AND
+                t1.url_forward = 'no'
+            AND
+                t1.alias_status <> :domain_status
+        ";
+    }
+
+    # Per site also means also subdomains
+    if ($configLevel == 'per_site') {
+        $query .= "
+            UNION ALL
+            SELECT
+                CONCAT(t1.subdomain_name, '.', t2.domain_name), t1.subdomain_status, subdomain_id, 'sub'
+            FROM
+                subdomain AS t1
+            INNER JOIN
+                domain AS t2 USING(domain_id)
+            WHERE
+                t2.domain_admin_id  = :admin_id
+            AND
+                t1.subdomain_status <> :domain_status
+            UNION ALL
+            SELECT
+                CONCAT(t1.subdomain_alias_name, '.', t2.alias_name), t1.subdomain_alias_status,
+                subdomain_alias_id, 'subals'
+            FROM
+                subdomain_alias AS t1
+            INNER JOIN
+                domain_aliasses t2 USING(alias_id)
+            INNER JOIN
+                domain AS t3 USING(domain_id)
+            WHERE
+                domain_admin_id = :admin_id
+            AND
+                subdomain_alias_status <> :domain_status
+        ";
+    }
+
+    $stmt = exec_query($query, array('admin_id' => intval($_SESSION['user_id']), 'domain_status' => 'todelete'));
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Update PHP configuration options
+ *
+ * @throws iMSCP_Exception
+ * @param iMSCP_PHPini $phpini PHP editor instance
+ * @param string $configLevel PHP configuration level
+ * @çeturn void
+ */
+function client_updatePhpConfig($phpini, $configLevel)
+{
+    global $phpini, $configLevel;
+
+    if (!isset($_POST['domain_id']) || !isset($_POST['domain_type'])) {
+        showBadRequestErrorPage();
+    }
+
+    $dmnId = intval($_POST['domain_id']);
+    $dmnType = clean_input($_POST['domain_type']);
+
+    if ($configLevel == 'per_user' && $dmnType != 'dmn'
+        || $configLevel == 'per_domain' && !in_array($dmnType, array('dmn', 'als'))
+    ) {
+        showBadRequestErrorPage();
+    }
+
+    if (!client_isDomainStatusOk($dmnId, $dmnType)) {
+        set_page_message(tr('Domain status is not ok.'), 'error');
+        return;
+    }
+
+    $phpini->loadDomainIni($_SESSION['user_id'], $dmnId, $dmnType);
+    $oldData = $phpini->getDomainIni();
+
+    if (isset($_POST['allow_url_fopen'])) {
+        $phpini->setDomainIni('phpiniAllowUrlFopen', clean_input($_POST['allow_url_fopen']));
+    }
+
+    if (isset($_POST['display_errors'])) {
+        $phpini->setDomainIni('phpiniDisplayErrors', clean_input($_POST['display_errors']));
+    }
+
+    if (isset($_POST['error_reporting'])) {
+        $phpini->setDomainIni('phpiniErrorReporting', clean_input($_POST['error_reporting']));
+    }
+
+    if ($phpini->getClientPermission('phpiniDisableFunctions') === 'yes') {
+        $disabledFunctions = array();
+
+        foreach (
+            array(
+                'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec', 'phpinfo', 'shell',
+                'symlink', 'proc_open', 'popen'
+            ) as $function
+        ) {
+            if (isset($_POST[$function])) {
+                $disabledFunctions[] = $function;
+            }
+        }
+
+        if ((isset($_POST['mail']) && $phpini->clientHasPermission('phpiniMailFunction'))
+            || !$phpini->clientHasPermission('phpiniMailFunction')
+        ) {
+            $disabledFunctions[] = 'mail';
+        }
+
+        $phpini->setDomainIni('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
+    } elseif ($phpini->getClientPermission('phpiniDisableFunctions') === 'exec') {
+        $disabledFunctions = explode(',', $phpini->getDomainIni('phpiniDisableFunctions'));
+
+        if (isset($_POST['exec']) && $_POST['exec'] == 'yes') {
+            $disabledFunctions = array_diff($disabledFunctions, array('exec'));
+        } else {
+            $disabledFunctions = in_array('exec', $disabledFunctions, true)
+                ? $disabledFunctions : $disabledFunctions + array('exec');
+        }
+
+        $phpini->setDomainIni('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
+    }
+
+    if ($phpini->getDomainIni() == $oldData) {
+        set_page_message(tr('Nothing has been changed.'), 'info');
+        redirectTo('domains_manage.php');
+    }
+
+    $phpini->saveDomainIni($_SESSION['user_id'], $dmnId, $dmnType);
+    $phpini->updateDomainStatuses($configLevel, $_SESSION['user_id'], $dmnId, $dmnType);
+
+    send_request();
+    set_page_message(tr('PHP configuration scheduled for update.'), 'success');
+    redirectTo('domains_manage.php');
+}
+
+/**
+ * Generate page
+ *
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @param iMSCP_PHPini $phpini PHP editor instance
+ * @param iMSCP_Config_Handler_File $config Configuration handler
+ * @param string $configLevel PHP configuration level
+ * @return void
+ */
+function client_generatePage($tpl, $phpini, $config, $configLevel)
+{
+    $mainDmnId = get_user_domain_id($_SESSION['user_id']);
+
+    if (isset($_GET['domain_id']) && isset($_GET['domain_type'])) {
+        $dmnId = intval($_GET['domain_id']);
+        $dmnType = clean_input($_GET['domain_type']);
+    } else {
+        $dmnId = $mainDmnId;
+        $dmnType = 'dmn';
+    }
+
+    if ($configLevel == 'per_user' && $dmnType != 'dmn'
+        || $configLevel == 'per_domain' && !in_array($dmnType, array('dmn', 'als'))
+    ) {
+        showBadRequestErrorPage();
+    }
+
+    $dmnsData = client_getDomainData($configLevel);
+
+    $knowDomain = false;
+    foreach ($dmnsData as $dmnData) {
+        if ($dmnData['domain_id'] == $dmnId && $dmnData['domain_type'] == $dmnType) {
+            $knowDomain = true;
+        }
+    }
+
+    if (!$knowDomain) {
+        showBadRequestErrorPage();
+    }
+
+    $phpini->loadDomainIni($_SESSION['user_id'], $dmnId, $dmnType);
+
+    if ($configLevel != 'per_user') {
+        foreach ($dmnsData as $dmnData) {
+            $tpl->assign(array(
+                'DOMAIN_ID' => tohtml($dmnData['domain_id'], 'htmlAttr'),
+                'DOMAIN_TYPE' => tohtml($dmnData['domain_type'], 'htmlAttr'),
+                'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($dmnData['domain_name'])),
+                'SELECTED' => ($dmnData['domain_id'] == $dmnId && $dmnData['domain_type'] == $dmnType) ? ' selected' : ''
+            ));
+
+            $tpl->parse('DOMAIN_NAME_BLOCK', '.domain_name_block');
+        }
+
+        $tpl->assign('DOMAIN_TYPE', $dmnType);
+    } else {
+        $tpl->assign('DOMAIN_LIST_BLOCK', '');
+    }
+
+    if (!$phpini->clientHasPermission('phpiniAllowUrlFopen')) {
+        $tpl->assign('ALLOW_URL_FOPEN_BLOCK', '');
+    } else {
+        $tpl->assign(array(
+            'TR_ALLOW_URL_FOPEN' => tr('Allow URL fopen'),
+            'ALLOW_URL_FOPEN_ON' => $phpini->getDomainIni('phpiniAllowUrlFopen') == 'on' ? ' checked' : '',
+            'ALLOW_URL_FOPEN_OFF' => $phpini->getDomainIni('phpiniAllowUrlFopen') == 'off' ? ' checked' : ''
+        ));
+    }
+
+    if (!$phpini->clientHasPermission('phpiniDisplayErrors')) {
+        $tpl->assign('DISPLAY_ERRORS_BLOCK', '');
+    } else {
+        $tpl->assign(array(
+            'TR_DISPLAY_ERRORS' => tr('Display errors'),
+            'DISPLAY_ERRORS_ON' => $phpini->getDomainIni('phpiniDisplayErrors') == 'on' ? ' checked' : '',
+            'DISPLAY_ERRORS_OFF' => $phpini->getDomainIni('phpiniDisplayErrors') == 'off' ? ' checked' : ''
+        ));
+    }
+
+    if (!$phpini->clientHasPermission('phpiniDisplayErrors')) {
+        $tpl->assign('ERROR_REPORTING_BLOCK', '');
+    } else {
+        $errorReporting = $phpini->getDomainIni('phpiniErrorReporting');
+        $tpl->assign(array(
+            'TR_ERROR_REPORTING' => tohtml(tr('Error reporting')),
+            'TR_ERROR_REPORTING_DEFAULT' => tohtml(tr('All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)'), 'htmlAttr'),
+            'TR_ERROR_REPORTING_DEVELOPEMENT' => tohtml(tr('All errors (Development)'), 'htmlAttr'),
+            'TR_ERROR_REPORTING_PRODUCTION' => tohtml(tr('All errors, except E_DEPRECATED and E_STRICT (Production)'), 'htmlAttr'),
+            'ERROR_REPORTING_0' => $errorReporting == 'E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED' ? ' selected' : '',
+            'ERROR_REPORTING_1' => $errorReporting == 'E_ALL & ~E_DEPRECATED & ~E_STRICT' ? ' selected' : '',
+            'ERROR_REPORTING_2' => $errorReporting == '-1' ? ' selected' : ''
+        ));
+    }
+
+    if ($config['HTTPD_SERVER'] == 'apache_itk' || !$phpini->clientHasPermission('phpiniDisableFunctions')) {
+        $tpl->assign(array(
+            'DISABLE_FUNCTIONS_BLOCK' => '',
+            'DISABLE_EXEC_BLOCK' => ''
+        ));
+    } elseif ($phpini->getClientPermission('phpiniDisableFunctions') == 'exec') {
+        $disableFunctions = explode(',', $phpini->getDomainIni('phpiniDisableFunctions'));
+        $execYes = in_array('exec', $disableFunctions) ? false : true;
+        $tpl->assign(array(
+            'TR_DISABLE_FUNCTIONS_EXEC' => tohtml(tr('PHP exec() function')),
+            'TR_EXEC_HELP' => tohtml(tr("When set to 'yes', your PHP scripts can call the PHP exec() function."), 'htmlAttr'),
+            'EXEC_YES' => $execYes ? ' checked' : '',
+            'EXEC_NO' => $execYes ? '' : ' checked',
+            'DISABLE_FUNCTIONS_BLOCK' => ''
+        ));
+    } else {
+        $disableableFunctions = array(
+            'EXEC', 'PASSTHRU', 'PHPINFO', 'POPEN', 'PROC_OPEN', 'SHOW_SOURCE', 'SYSTEM', 'SHELL', 'SHELL_EXEC', 'SYMLINK'
+        );
+
+        if ($phpini->clientHasPermission('phpiniMailFunction')) {
+            $disableableFunctions[] = 'MAIL';
+        } else {
+            $tpl->assign('MAIL_FUNCTION_BLOCK', '');
+        }
+
+        $disabledFunctions = explode(',', $phpini->getDomainIni('phpiniDisableFunctions'));
+        foreach ($disableableFunctions as $function) {
+            $tpl->assign($function, in_array(strtolower($function), $disabledFunctions, true) ? ' checked' : '');
+        }
+
+        $tpl->assign(array(
+            'TR_DISABLE_FUNCTIONS' => tohtml(tr('Disabled functions')),
+            'DISABLE_EXEC_BLOCK' => ''
+        ));
+    }
+
+    $tpl->assign(array(
+        'TR_PHP_SETTINGS' => tohtml(tr('PHP Settings')),
+        'TR_YES' => tohtml(tr('Yes')),
+        'TR_NO' => tohtml(tr('No'))
+    ));
+}
+
+/***********************************************************************************************************************
+ * Main
+ */
+
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
-
 customerHasFeature('php_editor') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-/* @var $phpini iMSCP_PHPini */
 $phpini = iMSCP_PHPini::getInstance();
+$phpini->loadResellerPermissions($_SESSION['user_created_by']);
+$phpini->loadClientPermissions($_SESSION['user_id']);
 
-// Getting customer's domain id
-$domainId = $phpini->getDomId($_SESSION['user_id']);
+$config = iMSCP_Registry::get('config');
+$confDir = $config['CONF_DIR'];
 
-// load custom php.ini
-$phpini->loadCustomPHPini($domainId);
+if ($config['HTTPD_SERVER'] == 'apache_fcgid' || $config['HTTPD_SERVER'] == 'apache_itk') {
+    $srvConfig = new iMSCP_Config_Handler_File("$confDir/apache/apache.data");
+    $configLevel = $srvConfig['INI_LEVEL'];
+} else {
+    $srvConfig = new iMSCP_Config_Handler_File("$confDir/php-fpm/phpfpm.data");
+    $configLevel = $srvConfig['PHP_FPM_POOLS_LEVEL'];
+}
 
-// load phpini client permissions
-$phpini->loadClPerm($domainId);
-
-if (!empty($_POST)) { // Post request
-	if ($phpini->getDomStatus($domainId)) {
-		$oldData = $phpini->getData();
-		$phpini->setData('phpiniSystem', 'yes');
-
-		if (isset($_POST['allow_url_fopen']) && $phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') {
-			$phpini->setData('phpiniAllowUrlFopen', clean_input($_POST['allow_url_fopen']));
-		}
-
-		if (isset($_POST['display_errors']) && $phpini->getClPermVal('phpiniDisplayErrors') == 'yes') {
-			$phpini->setData('phpiniDisplayErrors', clean_input($_POST['display_errors']));
-		}
-
-		if (isset($_POST['error_reporting']) && $phpini->getClPermVal('phpiniDisplayErrors') == 'yes') {
-			$phpini->setData('phpiniErrorReporting', clean_input($_POST['error_reporting']));
-		}
-
-		if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
-			// Customer can disable/enable all functions
-			if ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') {
-				$disabledFunctions = array();
-
-				foreach (
-					array(
-						'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec', 'phpinfo', 'shell',
-						'symlink', 'proc_open', 'popen'
-					) as $function
-				) {
-					if (isset($_POST[$function])) { // we are safe here
-						array_push($disabledFunctions, $function);
-					}
-				}
-
-				// Builds the PHP disable_function directive with a pre-check on functions that can be disabled
-				$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
-			} elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
-				$disabledFunctions = explode(',', $phpini->getDataDefaultVal('phpiniDisableFunctions'));
-
-				if (isset($_POST['exec']) && $_POST['exec'] == 'allows') { // exec function is explicitely allowed by customer
-					$disabledFunctions = array_diff($disabledFunctions, array('exec'));
-				} else { // exec function is explicitely diallowed by customer (we are safe here)
-					$disabledFunctions = in_array('exec', $disabledFunctions)
-						? $disabledFunctions : $disabledFunctions + array('exec');
-				}
-
-				$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
-			}
-		}
-
-		if($phpini->getData() == $oldData) {
-			set_page_message(tr("Nothing has been changed."), 'info');
-			redirectTo('domains_manage.php');
-		}
-
-		$phpini->saveCustomPHPiniIntoDb($domainId);
-		$phpini->sendToEngine($domainId);
-
-		set_page_message(tr('PHP configuration scheduled for update.'), 'success');
-
-		$userLogged = isset($_SESSION['logged_from']) ? $_SESSION['logged_from'] : $_SESSION['user_logged'];
-		write_log("PHP settings for domain ID <strong>$domainId</strong> were updated by {$_SESSION['user_logged']}", E_USER_NOTICE);
-	} else {
-		set_page_message(tr('Domain status is not ok.'), 'error');
-	}
-
-	redirectTo('domains_manage.php');
+if (!empty($_POST)) {
+    client_updatePhpConfig($phpini, $configLevel);
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		 'layout' => 'shared/layouts/ui.tpl',
-		 'page' => 'client/phpini.tpl',
-		 'page_message' => 'layout',
-		 'php_editor_first_block' =>  'page',
-		 'allow_url_fopen_block' => 'php_editor_first_block',
-		 'display_errors_block' => 'php_editor_first_block',
-		 'error_reporting_block' => 'php_editor_first_block',
-		 'disable_functions_block' => 'php_editor_first_block',
-		 'php_editor_second_block' => 'page'
-	)
-);
+$tpl->define_dynamic(array(
+    'layout' => 'shared/layouts/ui.tpl',
+    'page' => 'client/phpini.tpl',
+    'page_message' => 'layout',
+    'domain_list_block' => 'page',
+    'domain_name_block' => 'domain_list_block',
+    'allow_url_fopen_block' => 'page',
+    'display_errors_block' => 'page',
+    'disable_functions_block' => 'page',
+    'mail_function_block' => 'disable_functions_block',
+    'disable_exec_block' => 'page',
+    'error_reporting_block' => 'page'
+));
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Client / Domains / PHP Settings'),
-		 'TR_MENU_PHPINI' => tr('PHP Editor'),
-		 'TR_PAGE_TEXT' => tr("In this page, you can configure some of the aspects of PHP's behavior. You must note that for now, the directives defined here apply to your entire domain account (including subdomains and domain aliases). Of course some values can be modified through the PHP ini_set() function."),
-		 'TR_UPDATE_DATA' => tr('Update'),
-		 'TR_CANCEL' => tr('Cancel')
-	)
-);
+$tpl->assign(array(
+    'TR_PAGE_TITLE' => tohtml(tr('Client / Domains / PHP Settings'), 'htmlAttr'),
+    'TR_MENU_PHPINI' => tohtml(tr('PHP Editor')),
+    'TR_DOMAIN' => tohtml(tr('Domain')),
+    'TR_DOMAIN_TOOLTIP' => tohtml(tr('Domain for which PHP Editor must act.'), 'htmlAttr'),
+    'TR_UPDATE_DATA' => tohtml(tr('Update'), 'htmlAttr'),
+    'TR_CANCEL' => tohtml(tr('Cancel'))
+));
 
 generateNavigation($tpl);
-
-$htmlSelected = $cfg->HTML_SELECTED;
-$htmlChecked = $cfg->HTML_CHECKED;
-
-$firstBlock = false;
-$tplVars = array();
-
-// allows_url_fopen directive
-if ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') {
-	$tplVars['ALLOW_URL_FOPEN_BLOCK'] = '';
-} else {
-	$tplVars['TR_ALLOW_URL_FOPEN'] = tr('Allow URL fopen');
-	$tplVars['ALLOW_URL_FOPEN_ON'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on') ? $htmlChecked : '';
-	$tplVars['ALLOW_URL_FOPEN_OFF'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'off') ? $htmlChecked : '';
-	$firstBlock = true;
-}
-
-// display_errors directive
-if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
-	$tplVars['DISPLAY_ERRORS_BLOCK'] = '';
-} else {
-	$tplVars['TR_DISPLAY_ERRORS'] = tr('Display errors');
-	$tplVars['DISPLAY_ERRORS_ON'] = ($phpini->getDataVal('phpiniDisplayErrors') == 'on') ? $htmlChecked : '';
-	$tplVars['DISPLAY_ERRORS_OFF'] = ($phpini->getDataVal('phpiniDisplayErrors') == 'off') ? $htmlChecked : '';
-	$firstBlock = true;
-}
-
-// error_reporting directive
-if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
-	$tplVars['ERROR_REPORTING_BLOCK'] = '';
-} else {
-	$errorReportingValue = $phpini->errorReportingToLitteral($phpini->getDataVal('phpiniErrorReporting'));
-
-	$tplVars['TR_ERROR_REPORTING'] = tr('Error reporting');
-	$tplVars['TR_ERROR_REPORTING_DEFAULT'] = tr('Show all errors, except for notices and coding standards warnings (Default)');
-	$tplVars['TR_ERROR_REPORTING_DEVELOPEMENT'] = tr('Show all errors, warnings and notices including coding standards (Development)');
-	$tplVars['TR_ERROR_REPORTING_PRODUCTION'] = tr(' Show all errors, except for warnings about deprecated code (Production)');
-	$tplVars['TR_ERROR_REPORTING_NONE'] = tr('Do not show any error');
-	$tplVars['ERROR_REPORTING_0'] = ($errorReportingValue == 'E_ALL & ~E_NOTICE') ? $htmlSelected : '';
-	$tplVars['ERROR_REPORTING_1'] = ($errorReportingValue == 'E_ALL | E_STRICT') ? $htmlSelected : '';
-	$tplVars['ERROR_REPORTING_2'] = ($errorReportingValue == 'E_ALL & ~E_DEPRECATED') ? $htmlSelected : '';
-	$tplVars['ERROR_REPORTING_3'] = ($errorReportingValue == '0') ? $htmlSelected : '';
-	$firstBlock = true;
-}
-
-// disable_functions directive
-if ($cfg['HTTPD_SERVER'] == 'apache_itk' || $phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
-	$tplVars['DISABLE_FUNCTIONS_BLOCK'] = '';
-	$tplVars['PHP_EDITOR_SECOND_BLOCK'] = '';
-} elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
-	$disableFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
-	$allowed = in_array('exec', $disableFunctions) ? false : true;
-
-	$tplVars['TR_DISABLE_FUNCTIONS_EXEC'] = tr('PHP exec() function');
-	$tplVars['TR_EXEC_HELP'] = tr("When allowed, scripts can call the PHP exec() function. This function is needed by many applications but can cause some security issues");
-	$tplVars['EXEC_ALLOWED'] = ($allowed) ? $htmlChecked : '';
-	$tplVars['EXEC_DISALLOWED'] = ($allowed) ? '' : $htmlChecked;
-	$tplVars['DISABLE_FUNCTIONS_BLOCK'] = '';
-} else {
-	$disableFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
-	$disableFunctionsAll = array(
-		'SHOW_SOURCE', 'SYSTEM', 'SHELL_EXEC', 'PASSTHRU', 'EXEC', 'PHPINFO', 'SHELL', 'SYMLINK', 'PROC_OPEN', 'POPEN'
-	);
-
-	foreach ($disableFunctionsAll as $function) {
-		$tplVars[$function] = in_array(strtolower($function), $disableFunctions) ? $htmlChecked : '';
-	}
-
-	$tplVars['TR_DISABLE_FUNCTIONS'] = tr('Disabled functions');
-	$tplVars['PHP_EDITOR_SECOND_BLOCK'] = '';
-	$firstBlock = true;
-}
-
-if (!$firstBlock) {
-	$tplVars['PHP_EDITOR_FIRST_BLOCK'] = '';
-} else {
-	$tplVars['TR_PHP_SETTINGS'] = tr('PHP Settings');
-	$tplVars['TR_YES'] = tr('Yes');
-	$tplVars['TR_NO'] = tr('No');
-}
-
-$tpl->assign($tplVars);
-
+client_generatePage($tpl, $phpini, $config, $configLevel);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();

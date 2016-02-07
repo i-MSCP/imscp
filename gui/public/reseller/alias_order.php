@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -29,104 +29,93 @@
  * Main
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
-
 resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_id'])) {
+    $id = intval($_GET['del_id']);
+    $db = iMSCP_Database::getInstance();
 
-if (isset($_GET['action']) && $_GET['action'] == "delete") {
+    try {
+        $db->beginTransaction();
 
-	if (isset($_GET['del_id'])) {
-		$alsId = clean_input($_GET['del_id']);
+        exec_query('DELETE FROM php_ini WHERE domain_id = ? AND domain_type = ?', array($id, 'als'));
+        exec_query('DELETE FROM domain_aliasses WHERE alias_id = ? AND alias_status = ?', array($id, 'ordered'));
 
-		$query = "DELETE FROM `domain_aliasses` WHERE `alias_id` = ? AND `alias_status` = ?";
-		$stmt = exec_query($query, array($alsId, 'ordered'));
+        $db->commit();
 
-		if($stmt->rowCount()) {
-			set_page_message('Order successfully deleted.', 'success');
-			redirectTo('alias.php');
-		}
-	}
-} elseif (isset($_GET['action']) && $_GET['action'] == "activate") {
-	if (isset($_GET['act_id'])) {
-		$alsId = clean_input($_GET['act_id']);
+        write_log(sprintf('An alias order has been deleted by %s.', $_SESSION['user_logged']), E_USER_NOTICE);
+        set_page_message('Alias order successfully deleted.', 'success');
+    } catch (iMSCP_Exception_Database $e) {
+        $db->rollBack();
+        write_log(sprintf('System was unable to remove alias order: %s', $e->getMessage()), E_USER_ERROR);
+        set_page_message('Could not remove alias order. An unexpected error occurred.');
+    }
 
-		$query = "SELECT `alias_name`, `domain_id` FROM `domain_aliasses` WHERE `alias_id` = ? AND `alias_status` = ?";
-		$stmt = exec_query($query, array($alsId, 'ordered'));
+    redirectTo('alias.php');
+}
 
-		if ($stmt->rowCount()) {
-			$alsName = $stmt->fields['alias_name'];
-			$mainDmnId = $stmt->fields['domain_id'];
+if (isset($_GET['action']) && $_GET['action'] == "activate" && isset($_GET['act_id'])) {
+    $id = intval($_GET['act_id']);
+    $stmt = exec_query('SELECT alias_name, domain_id FROM domain_aliasses WHERE alias_id = ? AND alias_status = ?',
+        array($id, 'ordered')
+    );
 
-			/** @var $db iMSCP_Database */
-			$db = iMSCP_Database::getInstance();
+    if (!$stmt->rowCount()) {
+        showBadRequestErrorPage();
+    }
 
-			try {
-				iMSCP_Events_Aggregator::getInstance()->dispatch(
-					iMSCP_Events::onBeforeAddDomainAlias,
-					array(
-						'domainId' => $mainDmnId,
-						'domainAliasName' => $alsName
-					)
-				);
+    $row = $stmt->fetchRow();
+    $alsName = $row['alias_name'];
+    $mainDmnId = $row['domain_id'];
 
-				$db->beginTransaction();
+    $db = iMSCP_Database::getInstance();
 
-				$stmt = exec_query(
-					'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ? AND alias_status = ?',
-					array('toadd', $alsId, 'ordered')
-				);
+    try {
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, array(
+            'domainId' => $mainDmnId,
+            'domainAliasName' => $alsName
+        ));
 
-				if($stmt->rowCount()) {
-					// Create default email addresses if needed
-					if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-						$query = '
-							SELECT
-								email
-							FROM
-								admin
-							LEFT JOIN
-								domain ON(admin.admin_id = domain.domain_admin_id)
-							WHERE
-								domain.domain_id = ?
-						';
-						$stmt = exec_query($query, $mainDmnId);
+        $db->beginTransaction();
 
-						if ($stmt->rowCount()) {
-							client_mail_add_default_accounts(
-								$mainDmnId, $stmt->fields['email'], $alsName, 'alias', $alsId
-							);
-						}
-					}
-				}
+        exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', array('toadd', $id));
 
-				$db->commit();
+        $cfg = iMSCP_Registry::get('config');
 
-				iMSCP_Events_Aggregator::getInstance()->dispatch(
-					iMSCP_Events::onAfterAddDomainAlias,
-					array(
-						'domainId' => $mainDmnId,
-						'domainAliasName' => $alsName,
-						'domainAliasId' => $alsId
-					)
-				);
-			
-				send_request();
-				set_page_message(tr('Order successfully processed.'), 'success');
-				redirectTo('alias.php');
-			} catch(iMSCP_Exception_Database $e) {
-				$db->rollBack();
-				throw $e;
-			}
-		}
-	}
+        if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+            $stmt = exec_query(
+                'SELECT email FROM admin INNER JOIN domain ON(admin_id = domain_admin_id) WHERE domain_id = ?',
+                $mainDmnId
+            );
+
+            if ($stmt->rowCount() && $row['email'] !== '') {
+                $row = $stmt->fetchRow();
+                client_mail_add_default_accounts($mainDmnId, $row['email'], $alsName, 'alias', $id);
+            }
+        }
+
+        $db->commit();
+
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array(
+            'domainId' => $mainDmnId,
+            'domainAliasName' => $alsName,
+            'domainAliasId' => $id
+        ));
+
+        send_request();
+        write_log(sprintf('An alias order has been processed by %s.', $_SESSION['user_logged']), E_USER_NOTICE);
+        set_page_message(tr('Order successfully processed.'), 'success');
+    } catch (iMSCP_Exception_Database $e) {
+        $db->rollBack();
+        write_log(sprintf('System was unable to process alias order: %s', $e->getMessage()), E_USER_ERROR);
+        set_page_message('Could not process alias order. An unexpected error occurred.', 'error');
+    }
+
+    redirectTo('alias.php');
 }
 
 showBadRequestErrorPage();
