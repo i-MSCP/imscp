@@ -92,7 +92,7 @@ sub run
 		if($@) {
 			$dbi->rollback();
 			$db->endTransaction();
-			error("Could not deactive client account with ID $qrs->{$domainId}->{'domain_admin_id'}: $@");
+			error("Could not deactivate client account with ID $qrs->{$domainId}->{'domain_admin_id'}: $@");
 			$rs = 1;
 		}
 
