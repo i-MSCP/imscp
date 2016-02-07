@@ -56,6 +56,7 @@ YOUTRACK
 	#IP-0582 PHP editor - PHP configuration levels (per_user, per_domain and per_site) are ignored
 	#IP-1289 ProFTPD with TLS behind NAT - Local IP masquerading and passive port range
 	#IP-1397 MySQL "SET PASSWORD" deprecated in version 5.7.6
+	#IP-1453 The before/after HttpdAddIps events are not always triggered
 	#IP-1482 Add support for MySQL 5.6.x/5.7.x using MySQL Team repositories
 	#IP-1483 Perl 5.22 - Unescaped left brace in regex is deprecated
 	#IP-1486 Do not place order when a domain alias is created by a mutated user
