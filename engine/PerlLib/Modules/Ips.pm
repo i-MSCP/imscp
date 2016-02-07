@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -60,12 +60,10 @@ sub getType
 
 sub process
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_loadData();
-	return $rs if $rs;
-
-	$self->add();
+	$rs ||= $self->add();
 }
 
 =back
@@ -84,7 +82,7 @@ sub process
 
 sub _loadData
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $db = iMSCP::Database->factory();
 
@@ -115,8 +113,7 @@ sub _loadData
 		return 1;
 	}
 
-	#$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
-
+	$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
 	@{$self->{'ipaddrs'}} = keys %{$rdata};
 
 	$rdata = $db->doQuery(
@@ -182,16 +179,11 @@ sub _loadData
 		return 1;
 	}
 
-	#if($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
-	#	$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
-	#}
+	if($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
+		$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
+	}
 
 	@{$self->{'ssl_ipaddrs'}} = keys %{$rdata};
-
-		use Data::Dumper;
-    	print Dumper($self);
-    	exit;
-
 	0;
 }
 
