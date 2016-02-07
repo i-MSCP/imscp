@@ -469,7 +469,7 @@ sub _getHttpdData
 			BWLIMIT => $self->{'domain_traffic_limit'},
 			ALIAS => $userName,
 			FORWARD => 'no',
-			DISABLE_FUNCTIONS => $phpini->{$self->{'domain_id'}}->{'disable_functions'} ||
+			DISABLE_FUNCTIONS => $phpini->{$self->{'domain_id'}}->{'disable_functions'} //
 				'exec,passthru,phpinfo,popen,proc_open,show_source,system,shell,shell_exec,symlink',
 			MAX_EXECUTION_TIME => $phpini->{$self->{'domain_id'}}->{'max_execution_time'} // 30,
 			MAX_INPUT_TIME => $phpini->{$self->{'domain_id'}}->{'max_input_time'} // 60,
