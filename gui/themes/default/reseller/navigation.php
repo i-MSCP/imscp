@@ -159,7 +159,7 @@ return array(
 				'title_class' => 'hosting_plans',
 				'pages' => array(
 					'hosting_plan_edit_link' => array(
-						'dynamic_title' => '{TR_DYNAMIC_TITLE}',
+						'label' => tr('Edit hosting plan'),
 						'uri' => '/reseller/hosting_plan_edit.php',
 						'title_class' => 'hosting_plans',
 						'visible' => '0'

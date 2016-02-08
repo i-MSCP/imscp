@@ -1,11 +1,5 @@
 
 <!-- BDP: hosting_plans -->
-<script>
-    function action_delete(subject) {
-        return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
-    }
-</script>
-
 <table>
     <thead>
     <tr>
@@ -23,12 +17,16 @@
         <td>{STATUS}</td>
         <td>
             <a href="hosting_plan_edit.php?id={ID}" class="icon i_edit">{TR_EDIT}</a>
-            <!-- BDP: hosting_plan_delete -->
             <a href="hosting_plan_delete.php?id={ID}" onclick="return action_delete('{NAME}')" class="icon i_delete">{TR_DELETE}</a>
-            <!-- EDP: hosting_plan_delete -->
         </td>
     </tr>
     <!-- EDP: hosting_plan -->
     </tbody>
 </table>
+
+<script>
+    function action_delete(subject) {
+        return confirm(sprintf(imscp_i18n.core.hp_delete_confirmation, subject));
+    }
+</script>
 <!-- EDP: hosting_plans -->
