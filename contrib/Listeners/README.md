@@ -86,12 +86,6 @@ Listener file that modifies the zone files, removes default nameservers and adds
 
 Listener file for HTTP Strict Transport Security (HSTS) with Nginx
 
-## PHP-FPM listeners
-
-### 10_phpfpm_maxchildren.pl
-
-Listener file to change the phpFPM max_children value
-
 ## Postfix listeners
 
 ### 10_postfix_smarthost.pl
