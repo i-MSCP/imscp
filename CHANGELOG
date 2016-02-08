@@ -23,8 +23,18 @@ CONFIG
 	Removed: procmail mailbox command in Postfix main.cf file
 
 CONTRIB
-	Rewritten: 10_named_zonetransfer.pl listener (now named 10_named_slave_provisioning.pl)
-	Updated: 10_postfix_smarthost listener (We need Cyrus SASL; Dovecot SASL impl. not supported by Postfix for smtp)
+	Added: 40_apache2_tools_proxy.pl listener file (redirect/proxy the i-MSCP tools in customers vhost files)
+	Added: 10_dovecot_compress.pl listener file (activate dovecot compress plugin)
+	Added: 20_dovecot_connections.pl listener file (allow to increase the mail_max_userip_connections)
+	Added: 30_dovecot_namespace.pl listener file (creates the INBOX. as a compatibility name)
+	Added: 40_dovecot_pfs.pl listener file (activate the Perfect Forward Secrecy logging)
+	Added: 50_dovecot_plaintext.pl listener file (disable plaintext logins and force TLS)
+	Added: 10_nginx_hsts.pl listener file (enable HTTP Strict Transport Security (HSTS))
+	Added: 60_postfix_pfs.pl listener file (add the self generated EDH parameter files for Perfect Forward Secrecy (PFS))
+	Added: 70_postfix_submission_tls.pl listener file (force TLS connection on postfix submission)
+	Added: 10_proftpd_tuning.pl listener file (removes the ServerIdent information, and forces TLS)
+	Rewritten: 10_named_zonetransfer.pl listener file (now named 10_named_slave_provisioning.pl)
+	Updated: 10_postfix_smarthost listener file (We need Cyrus SASL; Dovecot SASL impl. not supported by Postfix for smtp)
 
 FRONTEND
 	Changed: error_reporting configuration parameter no longer editable when using Apache2 ITK httpd server impl.
