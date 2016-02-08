@@ -16,8 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file that removes the ServerIdent information, allows to change the 
-## passive ports and forces a TLS connection for non local networks.
+## Listener file that removes the ServerIdent information, and forces a TLS 
+## connection for non local networks.
 #
 
 package Listener::ProFTP::Tuning;
@@ -25,9 +25,6 @@ package Listener::ProFTP::Tuning;
 use strict;
 use warnings;
 use iMSCP::EventManager;
-
-# Specify the passive ports for proftpd
-my $passivePorts = "60000 65535";
 
 # Configure the list of local networks to allow non TLS connection 
 # my @localNetworks = ( '127.0.0.1', '192.168.1.1', '172.16.12.0/24' );
@@ -59,9 +56,6 @@ EOF
 	if ($tplName eq 'proftpd.conf') {
 		# disable the message displayed on connect
 		$$tplContent =~ s/^(ServerType.*)/$1\nServerIdent                off/m;
-
-		# insert passive ports
-		$$tplContent =~ s/^#(PassivePorts).*$/$1               $passivePorts/m;
 
 		# remove TLSRequired
 		$$tplContent =~ s/^\s+TLSRequired.*\n//m;
