@@ -191,7 +191,7 @@
             show: "slide",
             focus: false,
             autoOpen: false,
-            width: '650',
+            width: 650,
             modal: true,
             appendTo: "form",
             buttons: [
