@@ -25,18 +25,29 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
+#
+## Configuration parameters
+#
+
+# Max connection per IP
+my $maxConnections = 50;
+
+#
+## Please, don't edit anything below this line
+#
 
 iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
 	my ($cfgTpl, $tplName) = @_;
 
-        my $cfgSnippet = <<EOF;
+	return 0 unless index($tplName, 'dovecot.conf') != -1;
+
+	my $$cfgTpl .= <<EOF;
+
 # BEGIN Listener::Dovecot::Connections
-mail_max_userip_connections = 50
+mail_max_userip_connections = $maxConnections
 # END Listener::Dovecot::Connections
 EOF
 
-	$$cfgTpl .= "\n$cfgSnippet" if index($tplName, 'dovecot.conf') != -1;
-	
 	0;
 });
 

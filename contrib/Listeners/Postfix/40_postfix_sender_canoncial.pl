@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2014 by Sascha Bay
+# Copyright (C) 2013-2016 by Sascha Bay
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,24 +38,19 @@ my $addSenderCanoncial = "sender_canonical_maps = hash:/etc/postfix/imscp/sender
 ## Please, don't edit anything below this line
 #
 
-sub onAfterMtaBuildPostfixSenderCanoncial
-{
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
 	my $tplContent = shift;
 
-	if (-f $postfixSenderCanoncial) {
-		my ($stdout, $stderr);
-		my $rs = execute("postmap $postfixSenderCanoncial", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+	return 0 unless -f $postfixSenderCanoncial;
 
-		$$tplContent .= "$addSenderCanoncial";
-	}
+	my $rs = execute("postmap $postfixSenderCanoncial", \ my $stdout, \ my $stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
+	$$tplContent .= "$addSenderCanoncial";
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixSenderCanoncial);
+});
 
 1;
 __END__

@@ -43,7 +43,6 @@ smtpd_tls_dh512_param_file = /etc/postfix/dh512.pem
 EOF
 
 	$$content =~ s/^(# TLS parameters\n)/$1$cfgSnippet/m;
-
 	0;
 });
 

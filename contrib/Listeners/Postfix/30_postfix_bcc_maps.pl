@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2014 by Sascha Bay
+# Copyright (C) 2013-2016 by Sascha Bay
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,30 +40,27 @@ my $addSenderBccMap = "sender_bcc_maps = hash:/etc/postfix/imscp/sender_bcc_map\
 ## Please, don't edit anything below this line
 #
 
-sub onAfterMtaBuildPostfixBccMap($)
-{
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
 	my $tplContent = shift;
 
-	if (-f $postfixRecipientBccMap && -f $postfixSenderBccMap) {
-		my ($stdout, $stderr);
-		my $rs = execute("postmap $postfixRecipientBccMap", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+	return 0 unless -f $postfixRecipientBccMap && -f $postfixSenderBccMap;
 
-		$rs = execute("postmap $postfixSenderBccMap", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+	my ($stdout, $stderr);
+	my $rs = execute("postmap $postfixRecipientBccMap", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
-		$$tplContent .= "$addRecipientBccMap";
-		$$tplContent .= "$addSenderBccMap";
-	}
+	$rs = execute("postmap $postfixSenderBccMap", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
+	$$tplContent .= "$addRecipientBccMap";
+	$$tplContent .= "$addSenderBccMap";
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixBccMap);
+});
 
 1;
 __END__

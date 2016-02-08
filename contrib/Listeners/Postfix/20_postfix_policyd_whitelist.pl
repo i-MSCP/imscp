@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2014 by Sascha Bay
+# Copyright (C) 2013-2016 by Sascha Bay
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,35 +40,32 @@ my $checkRecipientAccess = "\n check_recipient_access hash:/etc/postfix/imscp/po
 ## Please, don't edit anything below this line
 #
 
-sub onAfterMtaBuildPolicydWhitelist
-{
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
 	my $tplContent = shift;
 
-	if (-f $policydWeightClientWhitelist && -f $policydWeightRecipientWhitelist) {
-		my ($stdout, $stderr);
-		my $rs = execute("postmap $policydWeightClientWhitelist", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+	return 0 unless -f $policydWeightClientWhitelist && -f $policydWeightRecipientWhitelist;
 
-		$rs = execute("postmap $policydWeightRecipientWhitelist", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+	my ($stdout, $stderr);
+	my $rs = execute("postmap $policydWeightClientWhitelist", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
-		if ($$tplContent !~ /check_client_access/m) {
-			$$tplContent =~ s/(reject_non_fqdn_recipient,)/$1$checkClientAccess/;
-		}
+	$rs = execute("postmap $policydWeightRecipientWhitelist", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
-		if ($$tplContent !~ /check_recipient_access/m) {
-			$$tplContent =~ s/(reject_non_fqdn_recipient,)/$1$checkRecipientAccess/;
-		}
+	if ($$tplContent !~ /check_client_access/m) {
+		$$tplContent =~ s/(reject_non_fqdn_recipient,)/$1$checkClientAccess/;
+	}
+
+	if ($$tplContent !~ /check_recipient_access/m) {
+		$$tplContent =~ s/(reject_non_fqdn_recipient,)/$1$checkRecipientAccess/;
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPolicydWhitelist);
+});
 
 1;
 __END__

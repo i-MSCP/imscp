@@ -28,7 +28,9 @@ use iMSCP::EventManager;
 iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
 	my ($cfgTpl, $tplName, $data) = @_;
 
-	if($tplName =~ /^domain\.tpl$/) {
+	return 0 unless =~ /^domain(?:_ssl)?\.tpl$/;
+
+	if($tplName eq 'domain.tpl') {
 		my $redirect = "    RedirectMatch permanent ^/((?:ftp|pma|webmail)[\/]?)\$ ";
 
 		if($data->{'SSL_SUPPORT'}) {
@@ -38,9 +40,11 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
 		}
 
 		$$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/\n    # BEGIN Listener::Apache2::Tools::Proxy\n$redirect\n    # END Listener::Apache2::Tools::Proxy\n$1/sm;
+		return 0;
 	}
 
 	my $cfgProxy = <<EOF;
+
     # BEGIN Listener::Apache2::Tools::Proxy
     SSLProxyEngine On
     ProxyPass /ftp/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/ftp/ retry=0 timeout=30
@@ -59,9 +63,7 @@ EOF
 		$cfgProxy
 	);
 
-	if($tplName =~ /^domain_ssl\.tpl$/) {
-		$$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/\n$cfgProxy$1/sm;
-	}
+	$$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/$cfgProxy$1/sm;
 
 	0;
 });

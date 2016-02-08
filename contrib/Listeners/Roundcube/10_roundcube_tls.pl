@@ -26,22 +26,17 @@ use warnings;
 use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register('afterSetupTasks', sub {
-	my $file = iMSCP::File->new('filename' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php");
+	my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
 	my $fileContent = $file->get();
 	unless (defined $fileContent) {
-		error("Unable to read $file");
+		error(sprintf('Could not read %s file', "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php"));
 		return 1;
 	}
 
 	$fileContent =~ s/(\$config\['(?:default_host|smtp_server)?'\]\s+=\s+').*(';)/$1tls:\/\/$main::imscpConfig{'BASE_SERVER_VHOST'}$2/g;
 
 	my $rs = $file->set($fileContent);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	0;
+	$rs ||= $file->save();
 });
 
 1;

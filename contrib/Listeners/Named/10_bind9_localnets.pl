@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2014 by Laurent Declercq
+# Copyright (C) 2013-2016 by Laurent Declercq
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,20 +21,19 @@
 
 package Listener::Bind9::Localnets;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 
-sub onBeforeNamedBuildConf
-{
+iMSCP::EventManager->getInstance()->register('beforeNamedBuildConf', sub {
 	my ($tplContent, $tplName) = @_;
 
-	if($tplName eq 'named.conf.options') {
-		$$tplContent =~ s/^(\s*allow-(?:recursion|query-cache|transfer)).*$/$1 { localnets; };/gm;
-	}
+	return 0 unless $tplName eq 'named.conf.options';
+
+	$$tplContent =~ s/^(\s*allow-(?:recursion|query-cache|transfer)).*$/$1 { localnets; };/gm;
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('beforeNamedBuildConf', \&onBeforeNamedBuildConf);
+});
 
 1;
 __END__

@@ -32,9 +32,10 @@ Listener file for redirect/proxy in customers vhost files for the i-MSCP tools
 ### 10_dovecot_compress.pl
 
 Listener file for activating the dovecot compress plugin, to reduce the bandwidth usage of IMAP and to also compress
-the stored mails. For more information please check: 
-http://wiki2.dovecot.org/Plugins/Compress
-http://wiki2.dovecot.org/Plugins/Zlib
+the stored mails. For more information please check:
+
+    http://wiki2.dovecot.org/Plugins/Compress
+    http://wiki2.dovecot.org/Plugins/Zlib
 
 ### 20_dovecot_connections.pl
 

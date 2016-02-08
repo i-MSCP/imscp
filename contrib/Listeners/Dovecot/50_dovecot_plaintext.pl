@@ -30,11 +30,11 @@ use iMSCP::EventManager;
 iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
 	my ($cfgTpl, $tplName) = @_;
 
-	if (index($tplName, 'dovecot.conf') != -1) {
-		$$cfgTpl =~ s/\s+cram-md5\s+digest-md5//;
-		$$cfgTpl =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/m;
-	}
-	
+	return 0 unless index($tplName, 'dovecot.conf') != -1;
+
+	$$cfgTpl =~ s/\s+cram-md5\s+digest-md5//;
+	$$cfgTpl =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/m;
+
 	0;
 });
 

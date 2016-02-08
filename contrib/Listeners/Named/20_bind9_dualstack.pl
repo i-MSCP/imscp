@@ -1,5 +1,5 @@
 # i-MSCP Listener::Bind9::DualStack listener file
-# Copyright (C) 2015 Ninos Ego <me@ninosego.de>
+# Copyright (C) 2015-2016 Ninos Ego <me@ninosego.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,8 @@
 
 package Listener::Bind9::DualStack;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use List::MoreUtils qw(uniq);

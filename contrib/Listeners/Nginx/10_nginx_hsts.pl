@@ -27,27 +27,23 @@ use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register('afterFrontEndBuildHttpdVhosts', sub {
 	my $cfgSnippet = <<EOF;
+
     # BEGIN Listener::Nginx::HSTS
     add_header Strict-Transport-Security max-age=31536000;
     # END Listener::Nginx::HSTS
 EOF
 
-	my $file = iMSCP::File->new('filename' => "/etc/nginx/sites-available/00_master_ssl.conf");
+	my $file = iMSCP::File->new( filename => "/etc/nginx/sites-available/00_master_ssl.conf" );
 	my $fileContent = $file->get();
 	unless (defined $fileContent) {
-		error("Unable to read $file");
-	return 1;
+		error(sprintf("Could not read %s file", "/etc/nginx/sites-available/00_master_ssl.conf"));
+		return 1;
 	}
 
 	$fileContent =~ s/(ssl_prefer_server_ciphers.*\n)/$1\n$cfgSnippet/g;
 
 	my $rs = $file->set($fileContent);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	0;
+	$rs ||= $file->save();
 });
 
 1;

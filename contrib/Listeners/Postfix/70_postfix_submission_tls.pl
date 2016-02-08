@@ -29,7 +29,6 @@ iMSCP::EventManager->getInstance()->register('afterMtaBuildMasterCfFile', sub {
 	my $content = shift;
 
 	$$content =~ s/^#(\s+-o\s+smtpd_tls_security_level=encrypt)/$1/m;
-
 	0;
 });
 

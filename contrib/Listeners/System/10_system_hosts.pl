@@ -44,26 +44,19 @@ my @hostsFileEntries = (
 #
 
 # Listener responsible to add host entries in the system hosts file, once it was built by i-MSCP
-sub addHostEntries
-{
-	if(-f $hostsFilePath) {
-		my $file = iMSCP::File->new( filename => $hostsFilePath );
+iMSCP::EventManager->getInstance()->register('afterSetupServerHostname', sub {
+	return 0 unless -f $hostsFilePath;
 
-		my $fileContent = $file->get();
-		unless(defined $fileContent) {
-			error("Unable to read $hostsFilePath");
-			return 1;
-		}
-
-		my $rs = $file->set( $fileContent . ( join "\n", @hostsFileEntries ) . "\n" );
-		$rs ||= $file->save();
-		return $rs if $rs;
+	my $file = iMSCP::File->new( filename => $hostsFilePath );
+	my $fileContent = $file->get();
+	unless(defined $fileContent) {
+		error(sprintf('Could not read %s file', $hostsFilePath));
+		return 1;
 	}
 
-	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterSetupServerHostname', \&addHostEntries);
+	my $rs = $file->set( $fileContent . ( join "\n", @hostsFileEntries ) . "\n" );
+	$rs ||= $file->save();
+});
 
 1;
 __END__

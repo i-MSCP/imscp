@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2014 by Sascha Bay
+# Copyright (C) 2013-2016 by Sascha Bay
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ sub overrideServerAlias
 {
 	my ($tplFileContent, $tplFileName, $data) = @_;
 
-	my $domainName = (defined $data->{'DOMAIN_NAME'}) ? $data->{'DOMAIN_NAME'} : undef;
+	my $domainName = $data->{'DOMAIN_NAME'} || undef;
 
 	if(
 		$domainName && $domainName eq $searchDomain &&

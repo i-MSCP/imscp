@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2014 by Laurent Declercq
+# Copyright (C) 2013-2016 by Laurent Declercq
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -48,12 +48,11 @@ sub fillPackages
 {
 	my $packages = shift;
 
-	if($main::imscpConfig{'PO_SERVER'} eq 'dovecot') {
-		# Dovecot SASL implementation doesn't provides client authentication
-		# for Postfix. Thus, we need also install Cyrus SASL implementation
-		push @{$packages}, 'libsasl2-modules';
-	}
+	return 0 unless $main::imscpConfig{'PO_SERVER'} eq 'dovecot';
 
+	# Dovecot SASL implementation doesn't provides client authentication
+	# for Postfix. Thus, we need also install Cyrus SASL implementation
+	push @{$packages}, 'libsasl2-modules';
 	0;
 }
 
@@ -67,7 +66,6 @@ sub createSaslPasswdMaps
 	return $rs if $rs;
 
 	Servers::mta->factory()->{'postmap'}->{$saslPasswdMapsPath} = 1;
-
 	0;
 }
 
