@@ -52,7 +52,7 @@ function client_isDomainStatusOk($domainId, $domainType)
     $stmt = exec_query($query, $domainId);
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+        $row = $stmt->fetchRow();
         if ($row['status'] == 'ok') {
             return true;
         }
@@ -133,7 +133,7 @@ function client_getDomainData($configLevel)
     }
 
     $stmt = exec_query($query, array('admin_id' => intval($_SESSION['user_id']), 'domain_status' => 'todelete'));
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $stmt->fetchAll();
 }
 
 /**
@@ -155,8 +155,8 @@ function client_updatePhpConfig($phpini, $configLevel)
     $dmnId = intval($_POST['domain_id']);
     $dmnType = clean_input($_POST['domain_type']);
 
-    if ($configLevel == 'per_user' && $dmnType != 'dmn'
-        || $configLevel == 'per_domain' && !in_array($dmnType, array('dmn', 'als'))
+    if ($configLevel == 'per_user' && $dmnType != 'dmn' || $configLevel == 'per_domain' &&
+        !in_array($dmnType, array('dmn', 'als'))
     ) {
         showBadRequestErrorPage();
     }
@@ -181,7 +181,7 @@ function client_updatePhpConfig($phpini, $configLevel)
         $phpini->setDomainIni('phpiniErrorReporting', clean_input($_POST['error_reporting']));
     }
 
-    if ($phpini->getClientPermission('phpiniDisableFunctions') === 'yes') {
+    if ($phpini->getClientPermission('phpiniDisableFunctions') == 'yes') {
         $disabledFunctions = array();
 
         foreach (
@@ -202,14 +202,13 @@ function client_updatePhpConfig($phpini, $configLevel)
         }
 
         $phpini->setDomainIni('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
-    } elseif ($phpini->getClientPermission('phpiniDisableFunctions') === 'exec') {
+    } elseif ($phpini->getClientPermission('phpiniDisableFunctions') == 'exec') {
         $disabledFunctions = explode(',', $phpini->getDomainIni('phpiniDisableFunctions'));
 
         if (isset($_POST['exec']) && $_POST['exec'] == 'yes') {
             $disabledFunctions = array_diff($disabledFunctions, array('exec'));
-        } else {
-            $disabledFunctions = in_array('exec', $disabledFunctions, true)
-                ? $disabledFunctions : $disabledFunctions + array('exec');
+        } elseif (!in_array('exec', $disabledFunctions, true)) {
+            $disabledFunctions[] = 'exec';
         }
 
         $phpini->setDomainIni('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
@@ -307,7 +306,7 @@ function client_generatePage($tpl, $phpini, $config, $configLevel)
         ));
     }
 
-    if (!$phpini->clientHasPermission('phpiniDisplayErrors')) {
+    if (!$phpini->clientHasPermission('phpiniDisplayErrors') || $config['HTTPD_SERVER'] == 'apache_itk') {
         $tpl->assign('ERROR_REPORTING_BLOCK', '');
     } else {
         $errorReporting = $phpini->getDomainIni('phpiniErrorReporting');
