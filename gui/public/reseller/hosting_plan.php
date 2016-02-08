@@ -31,7 +31,7 @@
 function generatePage($tpl)
 {
     $stmt = exec_query(
-        'SELECT id, name, props, status FROM hosting_plans WHERE reseller_id = ? ORDER BY id', $_SESSION['user_id']
+        'SELECT id, name, status FROM hosting_plans WHERE reseller_id = ? ORDER BY id', $_SESSION['user_id']
     );
 
     if (!$stmt->rowCount()) {
@@ -41,7 +41,7 @@ function generatePage($tpl)
     }
 
     $tpl->assign(array(
-        'TR_NUMBER' => tr('Id'),
+        'TR_ID' => tr('Id'),
         'TR_NAME' => tr('Name'),
         'TR_STATUS' => tr('Status'),
         'TR_EDIT' => tr('Edit'),
@@ -52,15 +52,14 @@ function generatePage($tpl)
     iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
         /** @var iMSCP_Events_Event $e */
         $translations = $e->getParam('translations');
-        $translations['core']['hp_delete_confirmation'] = tr('Are you sure you want to delete the `%%s` hosting plan?');
+        $translations['core']['hp_delete_confirmation'] = tr('Are you sure you want to delete this hosting plan?');
     });
 
-    while ($data = $stmt->fetchRow()) {
+    while ($row = $stmt->fetchRow()) {
         $tpl->assign(array(
-            'NUMBER' => $data['id'],
-            'NAME' => tohtml($data['name']),
-            'STATUS' => ($data['status']) ? tr('Available') : tr('Unavailable'),
-            'ID' => $data['id']
+            'ID' => $row['id'],
+            'NAME' => tohtml($row['name']),
+            'STATUS' => $row['status'] ? tr('Available') : tr('Unavailable'),
         ));
         $tpl->parse('HOSTING_PLAN', '.hosting_plan');
     }
