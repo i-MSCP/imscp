@@ -82,12 +82,6 @@ Listener file that modifies the zone files, removes default nameservers and adds
 
 Listener file for HTTP Strict Transport Security (HSTS) with Nginx
 
-## PHP-FPM listeners
-
-### 10_phpfpm_maxchildren.pl
-
-Listener file to change the phpFPM max_children value
-
 ## Postfix listeners
 
 ### 10_postfix_smarthost.pl
@@ -135,8 +129,8 @@ Listener file to force TLS connection on postfix submission.
 
 ### 10_proftpd_tuning.pl
 
-Listener file that removes the ServerIdent information, allows to change the 
-passive ports and forces a TLS connection for non local networks.
+Listener file that removes the ServerIdent information, and forces a TLS 
+connection for non local networks.
 
 ## Roundcube listeners
 
