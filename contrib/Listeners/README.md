@@ -23,6 +23,14 @@ Listener file that allows to override Apache2 ServerAlias directive value.
 
 Listener file that allows to change the domain redirect type in customer's vhost files from 302 to 301.
 
+### 40_apache2_tools_proxy.pl
+
+Listener file for redirect/proxy in customers vhost files for the i-MSCP tools
+
+### 50_apache2_hsts.pl
+
+Listener file for HTTP Strict Transport Security (HSTS) with Apache2
+
 ## Dovecot listeners
 
 ### 10_dovecot_compress.pl
@@ -72,6 +80,18 @@ Listener file that provides zone output for zone transfer to secondary nameserve
 
 Listener file that modifies the zone files, removes default nameservers and adds custom out-of-zone nameservers.
 
+## Nginx listeners
+
+### 10_nginx_hsts.pl
+
+Listener file for HTTP Strict Transport Security (HSTS) with Nginx
+
+## PHP-FPM listeners
+
+### 10_phpfpm_maxchildren.pl
+
+Listener file to change the phpFPM max_children value
+
 ## Postfix listeners
 
 ### 10_postfix_smarthost.pl
@@ -97,6 +117,36 @@ Listener file that allows to setup sender canonical maps.
 ### 50_postfix_sender_generic.pl
 
 Listener file that allows to setup sender generic map.
+
+### 60_postfix_pfs.pl
+
+Listener file to add the self generated EDH parameter files for Perfect 
+Forward Secrecy (PFS). First create the files before activating this listener:
+
+```
+cd /etc/postfix
+umask 022
+openssl dhparam -out dh512.tmp 512 && mv dh512.tmp dh512.pem
+openssl dhparam -out dh2048.tmp 2048 && mv dh2048.tmp dh2048.pem
+chmod 644 dh512.pem dh2048.pem
+```
+
+### 70_postfix_submission_tls.pl
+
+Listener file to force TLS connection on postfix submission.
+
+## Proftpd listeners
+
+### 10_proftpd_tuning.pl
+
+Listener file that removes the ServerIdent information, allows to change the 
+passive ports and forces a TLS connection for non local networks.
+
+## Roundcube listeners
+
+### 10_roundcube_tls.pl
+
+Listener file to change the Roundcube config to connect via TLS.
 
 ## System listeners
 
