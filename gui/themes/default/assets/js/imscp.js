@@ -181,17 +181,19 @@
 // PHP editor (dialog and validation routines)
 (function ($) {
     $(function () {
-        var $php_editor_dialog = $("#php_editor_dialog");
+        var $phpEditorDialog = $("#php_editor_dialog");
+        if (!$phpEditorDialog.length) {
+            return;
+        }
 
-        if (!$php_editor_dialog.length) return;
-
-        $php_editor_dialog.dialog({
+        $phpEditorDialog.dialog({
             hide: "blind",
             show: "slide",
             focus: false,
             autoOpen: false,
-            width: 650,
+            width: '650',
             modal: true,
+            appendTo: "form",
             buttons: [
                 {
                     text: imscp_i18n.core.close,
@@ -203,48 +205,48 @@
         });
 
         $(window).scroll(function () {
-            $php_editor_dialog.dialog("option", "position", { my: "center", at: "center", of: window });
+            $phpEditorDialog.dialog("option", "position", { my: "center", at: "center", of: window });
         });
 
         // Prevent form submission in case an INI value is not valid
         $("form").submit(function (e) {
-            if ($("#php_editor_msg_default").length) {
-                $php_editor_dialog.parent().appendTo($("#dialogContainer"));
-                return true;
+            if (!$("#php_editor_msg_default").length) {
+                e.preventDefault();
+                $phpEditorDialog.dialog("open");
+                return false;
             }
 
-            e.preventDefault();
-            $php_editor_dialog.dialog("open");
-            return false;
+            return true;
         });
 
-        var $php_editor_block = $("#php_editor_block");
+        var $phpEditorBlock = $("#php_editor_block");
+        if($phpEditorBlock.length) {
+            if ($("#php_no").is(":checked")) {
+                $phpEditorBlock.hide();
+            }
 
-        if ($("#php_no").is(":checked")) {
-            $php_editor_block.hide();
+            $("#php_yes,#php_no").change(function () {
+                $phpEditorBlock.toggle();
+            });
         }
 
-        $("#php_yes,#php_no").change(function () {
-            $php_editor_block.toggle();
-        });
+        var $phpEditorDialogOpen = $("#php_editor_dialog_open");
 
-        var $php_editor_dialog_open = $("#php_editor_dialog_open");
-
-        $php_editor_dialog_open.button("option", "icons", { primary: "ui-icon-gear" }).click(function () {
-            $php_editor_dialog.dialog("open");
+        $phpEditorDialogOpen.button("option", "icons", { primary: "ui-icon-gear" }).click(function () {
+            $phpEditorDialog.dialog("open");
         });
 
         if ($("#php_ini_system_no").is(":checked")) {
-            $php_editor_dialog_open.hide();
+            $phpEditorDialogOpen.hide();
         }
 
         $("#php_ini_system_yes, #php_ini_system_no").change(function () {
-            $php_editor_dialog_open.fadeToggle();
+            $phpEditorDialogOpen.fadeToggle();
         });
 
         var $errorMessages = $(".php_editor_error");
 
-        function _updateErrorMesssages(k, t) {
+        function _updateMesssages(k, t) {
             if (typeof(t) != "undefined") {
                 if (!$("#err_" + k).length) {
                     $("#php_editor_msg_default").remove();
@@ -275,16 +277,16 @@
 
                     if (!validationRegexp.test(value) || parseInt(value) < 1 || parseInt(value) > limit) {
                         $(this).addClass("ui-state-error");
-                        _updateErrorMesssages(id, sprintf(imscp_i18n.core.out_of_range_value_error, '<strong>' + id + '</strong>', 1, limit));
+                        _updateMesssages(id, sprintf(imscp_i18n.core.out_of_range_value_error, '<strong>' + id + '</strong>', 1, limit));
                     } else if (id == 'post_max_size' && parseInt($("#memory_limit").val()) <= parseInt(value)) {
                         $(this).addClass("ui-state-error");
-                        _updateErrorMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>memory_limit</strong>'));
+                        _updateMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>memory_limit</strong>'));
                     } else if (id == 'upload_max_filesize' && parseInt($("#post_max_size").val()) <= parseInt(value)) {
                         $(this).addClass("ui-state-error");
-                        _updateErrorMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>post_max_size</strong>'));
+                        _updateMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>post_max_size</strong>'));
                     } else {
                         $(this).removeClass("ui-state-error");
-                        _updateErrorMesssages(id);
+                        _updateMesssages(id);
                         $(this).val(value);
                     }
                 });
