@@ -38,12 +38,6 @@ Listener file to edit the Symlinks options in domain config files
 
 Listener file to edit the prefix in dovecot.conf
 
-## PHP-FPM
-
-### 10_phpfpm_maxchildren.pl
-
-Listener file which changes the max-children value
-
 ## Dovecot listeners
 
 ### 10_dovecot_prefix.pl
