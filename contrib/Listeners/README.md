@@ -23,6 +23,37 @@ Listener file that allows to override Apache2 ServerAlias directive value.
 
 Listener file that allows to change the domain redirect type in customer's vhost files from 302 to 301.
 
+### 40_apache2_tools_proxy.pl
+
+Listener file for redirect/proxy in customers vhost files for the i-MSCP tools
+
+## Dovecot listeners
+
+### 10_dovecot_compress.pl
+
+Listener file for activating the dovecot compress plugin, to reduce the bandwidth usage of IMAP and to also compress
+the stored mails. For more information please check: 
+http://wiki2.dovecot.org/Plugins/Compress
+http://wiki2.dovecot.org/Plugins/Zlib
+
+### 20_dovecot_connections.pl
+
+Listener file to increase the mail_max_userip_connections
+
+### 30_dovecot_namespace.pl
+
+Listener file that creates the INBOX. as a compatibility name, so old clients can continue using it while new clients 
+will use the empty prefix namespace.
+
+### 40_dovecot_pfs.pl
+
+Listener file to activate the Perfect Forward Secrecy logging
+
+### 50_dovecot_plaintext.pl
+
+Listener file to disable plaintext logins and force tls.
+Also remove the authentication mechanisms cram-md5 and digest-md5 which won't be supported anymore in i-MSCP 1.3
+
 ## Named listeners
 
 ### 10_bind9_localnets.pl
@@ -44,6 +75,12 @@ Listener file that provides slave DNS server(s) provisioning service
 ### 10_named_tuning2.pl
 
 Listener file that modifies the zone files, removes default nameservers and adds custom out-of-zone nameservers.
+
+## Nginx listeners
+
+### 10_nginx_hsts.pl
+
+Listener file for HTTP Strict Transport Security (HSTS) with Nginx
 
 ## Postfix listeners
 
@@ -70,6 +107,36 @@ Listener file that allows to setup sender canonical maps.
 ### 50_postfix_sender_generic.pl
 
 Listener file that allows to setup sender generic map.
+
+### 60_postfix_pfs.pl
+
+Listener file to add the self generated EDH parameter files for Perfect 
+Forward Secrecy (PFS). First create the files before activating this listener:
+
+```
+cd /etc/postfix
+umask 022
+openssl dhparam -out dh512.tmp 512 && mv dh512.tmp dh512.pem
+openssl dhparam -out dh2048.tmp 2048 && mv dh2048.tmp dh2048.pem
+chmod 644 dh512.pem dh2048.pem
+```
+
+### 70_postfix_submission_tls.pl
+
+Listener file to force TLS connection on postfix submission.
+
+## Proftpd listeners
+
+### 10_proftpd_tuning.pl
+
+Listener file that removes the ServerIdent information, and forces a TLS 
+connection for non local networks.
+
+## Roundcube listeners
+
+### 10_roundcube_tls.pl
+
+Listener file to change the Roundcube config to connect via TLS.
 
 ## System listeners
 
