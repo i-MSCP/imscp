@@ -133,8 +133,8 @@ Listener file to force TLS connection on postfix submission.
 
 ### 10_proftpd_tuning.pl
 
-Listener file that removes the ServerIdent information, allows to change the 
-passive ports and forces a TLS connection for non local networks.
+Listener file that removes the ServerIdent information, and forces a TLS 
+connection for non local networks.
 
 ## Roundcube listeners
 
