@@ -42,9 +42,9 @@ function generatePhpBlock($tpl)
         'PHP_EDITOR_YES' => $phpini->clientHasPermission('phpiniSystem') ? ' checked' : '',
         'PHP_EDITOR_NO' => $phpini->clientHasPermission('phpiniSystem') ? '' : ' checked',
         'TR_PHP_EDITOR' => tr('PHP Editor'),
-        'TR_PHP_EDITOR_SETTINGS' => tr('PHP Editor Settings'),
-        'TR_SETTINGS' => tr('Settings'),
-        'TR_DIRECTIVES_VALUES' => tr('Directive values'),
+        'TR_PHP_EDITOR_SETTINGS' => tr('PHP Settings'),
+        'TR_SETTINGS' => tr('PHP Settings'),
+        'TR_DIRECTIVES_VALUES' => tr('PHP Configuration options'),
         'TR_FIELDS_OK' => tr('All fields are valid.'),
         'TR_MIB' => tr('MiB'),
         'TR_SEC' => tr('Sec.')
@@ -65,7 +65,7 @@ function generatePhpBlock($tpl)
         $tpl->assign('PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK', '');
     } else {
         $tpl->assign(array(
-            'TR_CAN_EDIT_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', '<b>allow_url_fopen</b>'),
+            'TR_CAN_EDIT_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s configuration option', '<b>allow_url_fopen</b>'),
             'ALLOW_URL_FOPEN_YES' => $phpini->clientHasPermission('phpiniAllowUrlFopen') ? ' checked' : '',
             'ALLOW_URL_FOPEN_NO' => $phpini->clientHasPermission('phpiniAllowUrlFopen') ? '' : ' checked'
         ));
@@ -76,7 +76,7 @@ function generatePhpBlock($tpl)
         $tpl->assign('PHP_EDITOR_DISPLAY_ERRORS_BLOCK', '');
     } else {
         $tpl->assign(array(
-            'TR_CAN_EDIT_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', '<b>display_errors</b>'),
+            'TR_CAN_EDIT_DISPLAY_ERRORS' => tr('Can edit the PHP %s configuration option', '<b>display_errors</b>'),
             'DISPLAY_ERRORS_YES' => $phpini->clientHasPermission('phpiniDisplayErrors') ? ' checked' : '',
             'DISPLAY_ERRORS_NO' => $phpini->clientHasPermission('phpiniDisplayErrors') ? '' : ' checked'
         ));
@@ -91,7 +91,7 @@ function generatePhpBlock($tpl)
     } else {
         if ($phpini->resellerHasPermission('phpiniDisableFunctions')) {
             $tpl->assign(array(
-                'TR_CAN_EDIT_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', '<b>disable_functions</b>'),
+                'TR_CAN_EDIT_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
                 'DISABLE_FUNCTIONS_YES' => $phpini->getClientPermission('phpiniDisableFunctions') == 'yes' ? ' checked' : '',
                 'DISABLE_FUNCTIONS_NO' => $phpini->getClientPermission('phpiniDisableFunctions') == 'no' ? ' checked' : '',
                 'TR_ONLY_EXEC' => tr('Only exec'),
@@ -118,21 +118,21 @@ function generatePhpBlock($tpl)
         $tpl->assign('PHP_EDITOR_PERMISSIONS_BLOCK', '');
     } else {
         $tpl->assign(array(
-            'TR_PERMISSIONS' => tr('Permissions'),
+            'TR_PERMISSIONS' => tr('PHP Permissions'),
             'TR_ONLY_EXEC' => tr('Only exec')
         ));
     }
 
     $tpl->assign(array(
-        'TR_POST_MAX_SIZE' => tr('PHP %s directive', '<b>post_max_size</b>'),
+        'TR_POST_MAX_SIZE' => tr('PHP %s configuration option', '<b>post_max_size</b>'),
         'POST_MAX_SIZE' => tohtml($phpini->getDomainIni('phpiniPostMaxSize'), 'htmlAttr'),
-        'TR_UPLOAD_MAX_FILEZISE' => tr('PHP %s directive', '<b>upload_max_filesize</b>'),
+        'TR_UPLOAD_MAX_FILEZISE' => tr('PHP %s configuration option', '<b>upload_max_filesize</b>'),
         'UPLOAD_MAX_FILESIZE' => tohtml($phpini->getDomainIni('phpiniUploadMaxFileSize'), 'htmlAttr'),
-        'TR_MAX_EXECUTION_TIME' => tr('PHP %s directive', '<b>max_execution_time</b>'),
+        'TR_MAX_EXECUTION_TIME' => tr('PHP %s configuration option', '<b>max_execution_time</b>'),
         'MAX_EXECUTION_TIME' => tohtml($phpini->getDomainIni('phpiniMaxExecutionTime'), 'htmlAttr'),
-        'TR_MAX_INPUT_TIME' => tr('PHP %s directive', '<b>max_input_time</b>'),
+        'TR_MAX_INPUT_TIME' => tr('PHP %s configuration option', '<b>max_input_time</b>'),
         'MAX_INPUT_TIME' => tohtml($phpini->getDomainIni('phpiniMaxInputTime'), 'htmlAttr'),
-        'TR_MEMORY_LIMIT' => tr('PHP %s directive', '<b>memory_limit</b>'),
+        'TR_MEMORY_LIMIT' => tr('PHP %s configuration option', '<b>memory_limit</b>'),
         'MEMORY_LIMIT' => tohtml($phpini->getDomainIni('phpiniMemoryLimit'), 'htmlAttr'),
         'POST_MAX_SIZE_LIMIT' => tohtml($phpini->getResellerPermission('phpiniPostMaxSize'), 'htmlAttr'),
         'UPLOAD_MAX_FILESIZE_LIMIT' => tohtml($phpini->getResellerPermission('phpiniUploadMaxFileSize'), 'htmlAttr'),

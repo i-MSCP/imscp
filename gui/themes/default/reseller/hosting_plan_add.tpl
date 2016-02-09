@@ -7,7 +7,7 @@
 
         // Ensure that PHP is enabled when software installer is enabled
         $("#softwares_installer_yes").change(function() {
-            if($(this).is(':checked')) {
+            if($(this).is(":checked")) {
                 var $el = $("#php_yes");
                 if(!$el.is(":checked")) {
                     $el.prop("checked", true).button("refresh").trigger("change");
@@ -135,7 +135,7 @@
                         <span id="php_editor_msg_default">{TR_FIELDS_OK}</span>
                     </div>
                     <!-- BDP: php_editor_permissions_block -->
-                    <table class="firstColFixed">
+                    <table>
                         <thead>
                         <tr>
                             <th colspan="2">{TR_PERMISSIONS}</th>
@@ -200,7 +200,7 @@
                     </table>
                     <!-- EDP: php_editor_permissions_block -->
                     <!-- BDP: php_editor_default_values_block -->
-                    <table class="firstColFixed">
+                    <table>
                         <thead>
                         <tr>
                             <th colspan="2">{TR_DIRECTIVES_VALUES}</th>
@@ -342,5 +342,3 @@
         <a class="link_as_button" href="hosting_plan.php">{TR_CANCEL}</a>
     </div>
 </form>
-
-
