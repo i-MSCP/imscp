@@ -1,6 +1,30 @@
 
-<!-- BDP: add_user -->
-<form id="addFrm2" name="addFrm2" method="post" action="user_add2.php">
+<script>
+    $(function() {
+        $.each(imscp_i18n.core.error_field_stack, function (i, k) {
+            $("#" + k).css("border-color", "#ca1d11");
+        });
+
+        // Ensure that PHP is enabled when software installer is enabled
+        $("#software_allowed_yes").change(function() {
+            if($(this).is(':checked')) {
+                var $el = $("#php_yes");
+                if(!$el.is(":checked")) {
+                    $el.prop("checked", true).button("refresh").trigger("change");
+                }
+            }
+        });
+
+        // Ensure that software installer is disabled when PHP is disabled
+        $("#php_no").change(function() {
+            if($(this).is(":checked")) {
+                $("#software_allowed_no").prop("checked", true).button("refresh");
+            }
+        });
+    });
+</script>
+
+<form method="post" action="user_add2.php">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -10,7 +34,7 @@
         <tbody>
         <tr>
             <td>{TR_NAME}</td>
-            <td><input name="template" type="hidden" id="template" value="{VL_TEMPLATE_NAME}">{VL_TEMPLATE_NAME}</td>
+            <td><input type="hidden" name="template" id="template" value="{VL_TEMPLATE_NAME}">{VL_TEMPLATE_NAME}</td>
         </tr>
         </tbody>
     </table>
@@ -25,48 +49,48 @@
         <!-- BDP: subdomain_feature -->
         <tr>
             <td><label for="nreseller_max_subdomain_cnt">{TR_MAX_SUBDOMAIN}</label></td>
-            <td><input id="nreseller_max_subdomain_cnt" type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDMN_CNT}"></td>
+            <td><input type="text" name="nreseller_max_subdomain_cnt" id="nreseller_max_subdomain_cnt"  value="{MAX_SUBDMN_CNT}"></td>
         </tr>
         <!-- EDP: subdomain_feature -->
         <!-- BDP: alias_feature -->
         <tr>
             <td><label for="nreseller_max_alias_cnt">{TR_MAX_DOMAIN_ALIAS}</label></td>
-            <td><input id="nreseller_max_alias_cnt" type="text" name="nreseller_max_alias_cnt" value="{MAX_DMN_ALIAS_CNT}"></td>
+            <td><input type="text" name="nreseller_max_alias_cnt" id="nreseller_max_alias_cnt" value="{MAX_DMN_ALIAS_CNT}"></td>
         </tr>
         <!-- EDP: alias_feature -->
         <!-- BDP: mail_feature -->
         <tr>
             <td><label for="nreseller_max_mail_cnt">{TR_MAX_MAIL_COUNT}</label></td>
-            <td><input id="nreseller_max_mail_cnt" type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_CNT}"></td>
+            <td><input type="text" name="nreseller_max_mail_cnt" id="nreseller_max_mail_cnt" value="{MAX_MAIL_CNT}"></td>
         </tr>
         <tr>
             <td><label for="nreseller_mail_quota">{TR_MAIL_QUOTA}</label></td>
-            <td><input id="nreseller_mail_quota" type="text" name="nreseller_mail_quota" value="{MAIL_QUOTA}"></td>
+            <td><input type="text" name="nreseller_mail_quota" id="nreseller_mail_quota" value="{MAIL_QUOTA}"></td>
         </tr>
         <!-- EDP: mail_feature -->
         <!-- BDP: ftp_feature -->
         <tr>
             <td><label for="nreseller_max_ftp_cnt">{TR_MAX_FTP}</label></td>
-            <td><input id="nreseller_max_ftp_cnt" type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_CNT}"></td>
+            <td><input type="text" name="nreseller_max_ftp_cnt" id="nreseller_max_ftp_cnt" value="{MAX_FTP_CNT}"></td>
         </tr>
         <!-- EDP: ftp_feature -->
         <!-- BDP: sql_feature -->
         <tr>
             <td><label for="nreseller_max_sql_db_cnt">{TR_MAX_SQL_DB}</label></td>
-            <td><input id="nreseller_max_sql_db_cnt" type="text" name="nreseller_max_sql_db_cnt" value="{MAX_SQL_CNT}"></td>
+            <td><input type="text" name="nreseller_max_sql_db_cnt" id="nreseller_max_sql_db_cnt" value="{MAX_SQL_CNT}"></td>
         </tr>
         <tr>
             <td><label for="nreseller_max_sql_user_cnt">{TR_MAX_SQL_USERS}</label></td>
-            <td><input id="nreseller_max_sql_user_cnt" type="text" name="nreseller_max_sql_user_cnt" value="{VL_MAX_SQL_USERS}"></td>
+            <td><input type="text" name="nreseller_max_sql_user_cnt" id="nreseller_max_sql_user_cnt" value="{VL_MAX_SQL_USERS}"></td>
         </tr>
         <!-- EDP: sql_feature -->
         <tr>
             <td><label for="nreseller_max_traffic">{TR_MAX_TRAFFIC}</label></td>
-            <td><input id="nreseller_max_traffic" type="text" name="nreseller_max_traffic" value="{VL_MAX_TRAFFIC}"></td>
+            <td><input type="text" name="nreseller_max_traffic" id="nreseller_max_traffic" value="{VL_MAX_TRAFFIC}"></td>
         </tr>
         <tr>
             <td><label for="nreseller_max_disk">{TR_MAX_DISK_USAGE}</label></td>
-            <td><input id="nreseller_max_disk" type="text" name="nreseller_max_disk" value="{VL_MAX_DISK_USAGE}"></td>
+            <td><input type="text" name="nreseller_max_disk" id="nreseller_max_disk" value="{VL_MAX_DISK_USAGE}"></td>
         </tr>
         </tbody>
     </table>
@@ -82,9 +106,9 @@
             <td>{TR_PHP}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" id="php_yes" name="php" value="_yes_"{VL_PHPY}>
+                    <input type="radio" name="php" id="php_yes" value="_yes_"{VL_PHPY}>
                     <label for="php_yes">{TR_YES}</label>
-                    <input type="radio" id="php_no" name="php" value="_no_"{VL_PHPN}>
+                    <input type="radio" name="php" id="php_no" value="_no_"{VL_PHPN}>
                     <label for="php_no">{TR_NO}</label>
                 </div>
             </td>
@@ -92,7 +116,7 @@
         <!-- BDP: php_editor_block -->
         <tr id="php_editor_block">
             <td><label>{TR_PHP_EDITOR}</label></td>
-            <td colspan="2">
+            <td>
                 <div class="radio">
                     <input type="radio" name="php_ini_system" id="php_ini_system_yes" value="yes"{PHP_EDITOR_YES}>
                     <label for="php_ini_system_yes">{TR_YES}</label>
@@ -100,12 +124,12 @@
                     <label for="php_ini_system_no">{TR_NO}</label>
                 </div>
                 <button type="button" id="php_editor_dialog_open">{TR_SETTINGS}</button>
-                <div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
+                <div id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
                     <div class="php_editor_error static_success">
                         <span id="php_editor_msg_default">{TR_FIELDS_OK}</span>
                     </div>
                     <!-- BDP: php_editor_permissions_block -->
-                    <table class="firstColFixed">
+                    <table>
                         <thead>
                         <tr>
                             <th colspan="2">{TR_PERMISSIONS}</th>
@@ -170,22 +194,13 @@
                     </table>
                     <!-- EDP: php_editor_permissions_block -->
                     <!-- BDP: php_editor_default_values_block -->
-                    <table class="firstColFixed">
+                    <table>
                         <thead>
                         <tr>
                             <th colspan="2">{TR_DIRECTIVES_VALUES}</th>
                         </tr>
                         </thead>
                         <tbody id="php_ini_values">
-                        <tr>
-                            <td><label for="post_max_size">{TR_POST_MAX_SIZE}</label></td>
-                            <td><input type="text" name="post_max_size" id="post_max_size" data-limit="{POST_MAX_SIZE_LIMIT}" value="{POST_MAX_SIZE}"> <span>{TR_MIB}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="upload_max_filesize">{TR_UPLOAD_MAX_FILEZISE}</label></td>
-                            <td><input type="text" name="upload_max_filezize" id="upload_max_filesize" data-limit="{UPLOAD_MAX_FILESIZE_LIMIT}" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
-                        </tr>
                         <tr>
                             <td><label for="max_execution_time">{TR_MAX_EXECUTION_TIME}</label></td>
                             <td><input type="text" name="max_execution_time" id="max_execution_time" data-limit="{MAX_EXECUTION_TIME_LIMIT}" value="{MAX_EXECUTION_TIME}"> <span>{TR_SEC}</span></td>
@@ -197,6 +212,14 @@
                         <tr>
                             <td><label for="memory_limit">{TR_MEMORY_LIMIT}</label></td>
                             <td><input type="text" name="memory_limit" id="memory_limit" data-limit="{MEMORY_LIMIT_LIMIT}" value="{MEMORY_LIMIT}"> <span>{TR_MIB}</span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="post_max_size">{TR_POST_MAX_SIZE}</label></td>
+                            <td><input type="text" name="post_max_size" id="post_max_size" data-limit="{POST_MAX_SIZE_LIMIT}" value="{POST_MAX_SIZE}"> <span>{TR_MIB}</span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="upload_max_filesize">{TR_UPLOAD_MAX_FILEZISE}</label></td>
+                            <td><input type="text" name="upload_max_filezize" id="upload_max_filesize" data-limit="{UPLOAD_MAX_FILESIZE_LIMIT}" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -273,7 +296,7 @@
         <tr>
             <td>
                 <label for="web_folder_protection">{TR_WEB_FOLDER_PROTECTION}</label>
-                <span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}"></span>
+                <span class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}"></span>
             </td>
             <td>
                 <div class="radio">
@@ -291,4 +314,3 @@
         <input name="Submit" type="submit" value="{TR_NEXT_STEP}">
     </div>
 </form>
-<!-- EDP: add_user -->

@@ -202,35 +202,35 @@ function generatePage($tpl)
            $backup, $dns, $aps, $extMail, $webFolderProtection, $status;
 
     $tpl->assign(array(
-        'ID' => tohtml($id),
-        'NAME' => tohtml($name),
+        'ID' => tohtml($id, 'htmlAttr'),
+        'NAME' => tohtml($name, 'htmlAttr'),
         'DESCRIPTION' => tohtml($description),
-        'MAX_SUB' => tohtml($sub),
-        'MAX_ALS' => tohtml($als),
-        'MAX_MAIL' => tohtml($mail),
-        'MAIL_QUOTA' => tohtml($mailQuota),
-        'MAX_FTP' => tohtml($ftp),
-        'MAX_SQLD' => tohtml($sqld),
-        'MAX_SQLU' => tohtml($sqlu),
-        'MONTHLY_TRAFFIC' => tohtml($traffic),
-        'MAX_DISKSPACE' => tohtml($diskSpace),
+        'MAX_SUB' => tohtml($sub, 'htmlAttr'),
+        'MAX_ALS' => tohtml($als, 'htmlAttr'),
+        'MAX_MAIL' => tohtml($mail, 'htmlAttr'),
+        'MAIL_QUOTA' => tohtml($mailQuota, 'htmlAttr'),
+        'MAX_FTP' => tohtml($ftp, 'htmlAttr'),
+        'MAX_SQLD' => tohtml($sqld, 'htmlAttr'),
+        'MAX_SQLU' => tohtml($sqlu, 'htmlAttr'),
+        'MONTHLY_TRAFFIC' => tohtml($traffic, 'htmlAttr'),
+        'MAX_DISKSPACE' => tohtml($diskSpace, 'htmlAttr'),
         'PHP_YES' => $php == '_yes_' ? ' checked' : '',
-        'PHP_NO' => $php == '_no_' ? ' checked' : '',
+        'PHP_NO' => $php == '_yes_' ? '' : ' checked',
         'CGI_YES' => $cgi == '_yes_' ? ' checked' : '',
-        'CGI_NO' => $cgi == '_no_' ? ' checked' : '',
+        'CGI_NO' => $cgi == '_yes_' ? '' : ' checked',
         'DNS_YES' => $dns == '_yes_' ? ' checked' : '',
-        'DNS_NO' => $dns == '_no_' ? ' checked' : '',
+        'DNS_NO' => $dns == '_yes_' ? '' : ' checked',
         'TR_SOFTWARE_YES' => $aps == '_yes_' ? ' checked' : '',
         'TR_SOFTWARE_NO' => $aps == '_yes_' ? '' : ' checked',
         'SOFTWARE_YES' => $aps == '_yes_' ? ' checked' : '',
-        'SOFTWARE_NO' => $aps == '_no_' ? ' checked' : '',
+        'SOFTWARE_NO' => $aps == '_yes_' ? '' : ' checked',
         'EXTMAIL_YES' => $extMail == '_yes_' ? ' checked' : '',
-        'EXTMAIL_NO' => $extMail == '_no_' ? ' checked' : '',
+        'EXTMAIL_NO' => $extMail == '_yes_' ? '' : ' checked',
         'BACKUPD' => in_array('_dmn_', $backup) ? ' checked' : '',
         'BACKUPS' => in_array('_sql_', $backup) ? ' checked' : '',
         'BACKUPM' => in_array('_mail_', $backup) ? ' checked' : '',
         'PROTECT_WEB_FOLDERS_YES' => $webFolderProtection == '_yes_' ? ' checked' : '',
-        'PROTECT_WEB_FOLDERS_NO' => $webFolderProtection == '_no_' ? ' checked' : '',
+        'PROTECT_WEB_FOLDERS_NO' => $webFolderProtection == '_yes_' ? '' : ' checked',
         'STATUS_YES' => $status ? ' checked' : '',
         'STATUS_NO' => !$status ? ' checked' : ''
     ));
@@ -329,7 +329,7 @@ function checkInputData()
 
     $php = $php === '_yes_' ? '_yes_' : '_no_';
     $cgi = $cgi === '_yes_' ? '_yes_' : '_no_';
-    $dns = $dns === '_yes_' ? '_yes_' : '_no_';
+    $dns = resellerHasFeature('custom_dns_records') && $dns === '_yes_' ? '_yes_' : '_no_';
     $backup = resellerHasFeature('backup') ? array_intersect($backup, array('_dmn_', '_sql_', '_mail_')) : array();
     $aps = resellerHasFeature('aps') && $aps === '_yes_' ? '_yes_' : '_no_';
     $extMail = $extMail === '_yes_' ? '_yes_' : '_no_';
@@ -411,17 +411,15 @@ function checkInputData()
         $errFieldsStack[] = 'disk';
     }
 
-    if (isset($_POST['mail_quota'])) {
-        if (!imscp_limit_check($mailQuota, null)) {
-            set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
-            $errFieldsStack[] = 'mail_quota';
-        } elseif ($diskSpace != 0 && $mailQuota > $diskSpace) {
-            set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
-            $errFieldsStack[] = 'mail_quota';
-        } elseif ($diskSpace != 0 && $mailQuota == 0) {
-            set_page_message(tr('Email quota cannot be unlimited. Max value is %d MiB.', $diskSpace), 'error');
-            $errFieldsStack[] = 'mail_quota';
-        }
+    if (!imscp_limit_check($mailQuota, null)) {
+        set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
+        $errFieldsStack[] = 'mail_quota';
+    } elseif ($diskSpace != 0 && $mailQuota > $diskSpace) {
+        set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
+        $errFieldsStack[] = 'mail_quota';
+    } elseif ($diskSpace != 0 && $mailQuota == 0) {
+        set_page_message(tr('Email quota cannot be unlimited. Max value is %d MiB.', $diskSpace), 'error');
+        $errFieldsStack[] = 'mail_quota';
     }
 
     $phpini = iMSCP_PHPini::getInstance();
@@ -466,11 +464,11 @@ function checkInputData()
                 $phpini->setDomainIni('phpiniMaxInputTime', clean_input($_POST['max_input_time']));
             }
         } else {
-            $phpini->loadClientPermissions(); // Reset client permissions to default values
+            $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
             $phpini->loadDomainIni(); // Reset domain PHP configuration options to default values
         }
     } else {
-        $phpini->loadClientPermissions(); // Reset client permissions to default values
+        $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
         $phpini->loadDomainIni(); // Reset domain PHP configuration options to default values
     }
 
