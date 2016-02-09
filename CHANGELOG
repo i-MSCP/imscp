@@ -72,6 +72,7 @@ YOUTRACK
 	#IP-1482 Add support for MySQL 5.6.x/5.7.x using MySQL Team repositories
 	#IP-1483 Perl 5.22 - Unescaped left brace in regex is deprecated
 	#IP-1486 Do not place order when a domain alias is created by a mutated user
+	#IP-1487 A parent domain owner must not be able to create a subdomain if already used as main domain or domain alias
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.11

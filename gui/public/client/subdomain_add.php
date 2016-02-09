@@ -173,6 +173,18 @@ function client_addSubdomain()
         return false;
     }
 
+    // Ensure that this subdomain doesn't already exists as domain or domain alias
+    $stmt = exec_query('
+        SELECT domain_id FROM domain WHERE domain_name = :subdomain_name
+        UNION ALL
+        SELECT alias_id FROM domain_aliasses WHERE alias_name = :subdomain_name',
+        array('subdomain_name' => $subdomainName)
+    );
+    if($stmt->rowCount()) {
+        set_page_message(tr('Subdomain %s is unavailable.', "<strong>$subdomainName</strong>"), 'error');
+        return false;
+    }
+
     $subLabelAscii = clean_input(encode_idna(strtolower($_POST['subdomain_name'])));
     $subdomainNameAscii = encode_idna($subdomainName);
 
@@ -247,6 +259,9 @@ function client_addSubdomain()
             showBadRequestErrorPage();
         }
     }
+
+    print "OUCH";
+    exit;
 
     $db = iMSCP_Database::getInstance();
 
