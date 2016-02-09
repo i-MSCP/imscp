@@ -1,9 +1,8 @@
-
 <script>
     $(function () {
         var $extMailTable = $("#ext_mail_table");
         var $entries = $extMailTable.find('.entry');
-        var initialEntries = $entries.clone();
+        var $initialEntries = $entries.clone();
         var type = '';
 
         $extMailTable.on("change", "select[name=type\\[\\]]", function () {
@@ -25,17 +24,17 @@
         }).trigger("change");
 
         $('.add').click(function () {
-            var entry = $entries.first().clone();
-            entry.find("input[type=text]").val('');
-            entry.find("select option[value='" + type + "']").prop('selected', true);
-            entry.appendTo("#ext_mail_table tbody").trigger("updateTable");
+            var $entry = $entries.first().clone();
+            $entry.find("input[type=text]").val('');
+            $entry.find("select option[value='" + type + "']").prop('selected', true);
+            $entry.appendTo("#ext_mail_table tbody").trigger("updateTable");
         });
 
         $(".remove").click(function () {
             var $entries = $(".entry");
 
             if ($entries.length < 2) {
-                alert("{TR_TRIGGER_REMOVE_ALERT}");
+                alert(imscp_i18n.core.remove_alert);
                 return;
             }
 
@@ -44,7 +43,7 @@
 
         $(".reset").click(function () {
             $(".entry").remove();
-            initialEntries.clone().appendTo("#ext_mail_table tbody");
+            $initialEntries.clone().appendTo("#ext_mail_table tbody");
         });
     });
 </script>
@@ -92,7 +91,7 @@
                 </label>
             </td>
             <td>
-                <label><input type="text" name="host[]" value="{HOST}"/></label>
+                <label><input type="text" name="host[]" value="{HOST}"></label>
             </td>
         </tr>
         <!-- EDP: item_entries -->
@@ -104,7 +103,7 @@
         <span class="reset clickable" title="{TR_RESET_ENTRIES}">{TR_RESET_ENTRIES}</span>
     </div>
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_ADD}"/>
+        <input name="submit" type="submit" value="{TR_ADD}">
         <a class="link_as_button" href="mail_external.php">{TR_CANCEL}</a>
     </div>
 </form>
