@@ -253,7 +253,7 @@ sub _getHttpdData
 			ALIAS => $userName . 'sub' . $self->{'subdomain_id'},
 			FORWARD => $self->{'subdomain_url_forward'} || 'no',
 			DISABLE_FUNCTIONS => $phpini->{$phpiniMatchId}->{'disable_functions'} //
-				'exec,passthru,phpinfo,popen,proc_open,show_source,system,shell,shell_exec,symlink',
+				'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
 			MAX_EXECUTION_TIME => $phpini->{$phpiniMatchId}->{'max_execution_time'} // 30,
 			MAX_INPUT_TIME => $phpini->{$phpiniMatchId}->{'max_input_time'} // 60,
 			MEMORY_LIMIT =>  $phpini->{$phpiniMatchId}->{'memory_limit'} // 128,

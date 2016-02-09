@@ -470,7 +470,7 @@ sub _getHttpdData
 			ALIAS => $userName,
 			FORWARD => 'no',
 			DISABLE_FUNCTIONS => $phpini->{$self->{'domain_id'}}->{'disable_functions'} //
-				'exec,passthru,phpinfo,popen,proc_open,show_source,system,shell,shell_exec,symlink',
+				'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
 			MAX_EXECUTION_TIME => $phpini->{$self->{'domain_id'}}->{'max_execution_time'} // 30,
 			MAX_INPUT_TIME => $phpini->{$self->{'domain_id'}}->{'max_input_time'} // 60,
 			MEMORY_LIMIT =>  $phpini->{$self->{'domain_id'}}->{'memory_limit'} // 128,

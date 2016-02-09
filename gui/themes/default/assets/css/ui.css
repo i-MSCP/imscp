@@ -1321,8 +1321,9 @@ table .graph {
     position: relative;
     width: 0;
     vertical-align: middle;
-    margin-left: 0.5em;
+    /*margin-left: 0.5em;*/
     overflow: hidden;
+    cursor: pointer;
 }
 
 /* Pagination (for backward compatibility) - Will be removed ASAP */

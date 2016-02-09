@@ -46,24 +46,14 @@ function &admin_getData($resellerId, $forUpdate = false)
 
     $stmt = exec_query(
         '
-            SELECT
-                t1.*, t2.max_dmn_cnt, t2.max_sub_cnt, t2.max_als_cnt, t2.max_mail_cnt, t2.max_ftp_cnt,
-                t2.max_sql_db_cnt, t2.max_sql_user_cnt, t2.max_traff_amnt, t2.max_disk_amnt, t2.customer_id,
-                t2.reseller_ips, t2.software_allowed, t2.softwaredepot_allowed, t2.websoftwaredepot_allowed,
-                t2.support_system
-            FROM
-                admin AS t1
-            INNER JOIN
-                reseller_props AS t2 ON(t2.reseller_id = t1.admin_id)
-            WHERE
-                t1.admin_id = ?
+            SELECT t1.*, t2.* FROM admin AS t1 INNER JOIN reseller_props AS t2 ON(t2.reseller_id = t1.admin_id)
+            WHERE t1.admin_id = ?
         ',
         $resellerId
     );
 
     if (!$stmt->rowCount()) {
-        set_page_message(tr("The reseller account that you are trying to edit has not been found."), 'error');
-        redirectTo('manage_users.php');
+        showBadRequestErrorPage();
     }
 
     $data = $stmt->fetchRow();
@@ -119,7 +109,6 @@ function &admin_getData($resellerId, $forUpdate = false)
     $data = array_merge($data, $fallbackData);
 
     $phpini = iMSCP_PHPini::getInstance();
-    $phpini->loadResellerPermissions($resellerId);
 
     $data['php_ini_system'] = $phpini->getResellerPermission('phpiniSystem');
     $data['php_ini_al_disable_functions'] = $phpini->getResellerPermission('phpiniDisableFunctions');
@@ -132,7 +121,7 @@ function &admin_getData($resellerId, $forUpdate = false)
     $data['max_input_time'] = $phpini->getResellerPermission('phpiniMaxInputTime');
     $data['memory_limit'] = $phpini->getResellerPermission('phpiniMemoryLimit');
 
-    if (!$forUpdate) { // Override
+    if (!$forUpdate) {
         return $data;
     }
 
@@ -164,42 +153,40 @@ function &admin_getData($resellerId, $forUpdate = false)
         $data['php_ini_system'] = clean_input($_POST['php_ini_system']);
     }
 
-    if ($phpini->clientHasPermission('phpiniSystem')) {
-        if (isset($_POST['php_ini_al_disable_functions'])) {
-            $data['php_ini_al_disable_functions'] = clean_input($_POST['php_ini_al_disable_functions']);
-        }
+    if (isset($_POST['php_ini_al_disable_functions'])) {
+        $data['php_ini_al_disable_functions'] = clean_input($_POST['php_ini_al_disable_functions']);
+    }
 
-        if (isset($_POST['php_ini_al_mail_function'])) {
-            $data['php_ini_al_mail_function'] = clean_input($_POST['php_ini_al_mail_function']);
-        }
+    if (isset($_POST['php_ini_al_mail_function'])) {
+        $data['php_ini_al_mail_function'] = clean_input($_POST['php_ini_al_mail_function']);
+    }
 
-        if (isset($_POST['php_ini_al_allow_url_fopen'])) {
-            $data['php_ini_al_allow_url_fopen'] = clean_input($_POST['php_ini_al_allow_url_fopen']);
-        }
+    if (isset($_POST['php_ini_al_allow_url_fopen'])) {
+        $data['php_ini_al_allow_url_fopen'] = clean_input($_POST['php_ini_al_allow_url_fopen']);
+    }
 
-        if (isset($_POST['php_ini_al_display_errors'])) {
-            $data['php_ini_al_display_errors'] = clean_input($_POST['php_ini_al_display_errors']);
-        }
+    if (isset($_POST['php_ini_al_display_errors'])) {
+        $data['php_ini_al_display_errors'] = clean_input($_POST['php_ini_al_display_errors']);
+    }
 
-        if (isset($_POST['post_max_size'])) {
-            $data['post_max_size'] = clean_input($_POST['post_max_size']);
-        }
+    if (isset($_POST['post_max_size'])) {
+        $data['post_max_size'] = clean_input($_POST['post_max_size']);
+    }
 
-        if (isset($_POST['upload_max_filesize'])) {
-            $data['upload_max_filesize'] = clean_input($_POST['upload_max_filesize']);
-        }
+    if (isset($_POST['upload_max_filesize'])) {
+        $data['upload_max_filesize'] = clean_input($_POST['upload_max_filesize']);
+    }
 
-        if (isset($_POST['max_execution_time'])) {
-            $data['max_execution_time'] = clean_input($_POST['max_execution_time']);
-        }
+    if (isset($_POST['max_execution_time'])) {
+        $data['max_execution_time'] = clean_input($_POST['max_execution_time']);
+    }
 
-        if (isset($_POST['max_input_time'])) {
-            $data['max_input_time'] = clean_input($_POST['max_input_time']);
-        }
+    if (isset($_POST['max_input_time'])) {
+        $data['max_input_time'] = clean_input($_POST['max_input_time']);
+    }
 
-        if (isset($_POST['memory_limit'])) {
-            $data['memory_limit'] = clean_input($_POST['memory_limit']);
-        }
+    if (isset($_POST['memory_limit'])) {
+        $data['memory_limit'] = clean_input($_POST['memory_limit']);
     }
 
     return $data;
@@ -308,32 +295,32 @@ function _admin_generateFeaturesForm($tpl, &$data)
     $cfg = iMSCP_Registry::get('config');
     $tpl->assign(array(
         'TR_FEATURES' => tr('Features'),
-        'TR_SETTINGS' => tr('Settings'),
+        'TR_SETTINGS' => tr('PHP Settings'),
         'TR_PHP_EDITOR' => tr('PHP Editor'),
-        'TR_PHP_EDITOR_SETTINGS' => tr('PHP Editor Settings'),
-        'TR_PERMISSIONS' => tr('Permissions'),
+        'TR_PHP_EDITOR_SETTINGS' => tr('PHP Settings'),
+        'TR_PERMISSIONS' => tr('PHP Permissions'),
         'TR_DIRECTIVES_VALUES' => tr('PHP directives values'),
         'TR_FIELDS_OK' => tr('All fields are valid.'),
         'PHP_INI_SYSTEM_YES' => $data['php_ini_system'] == 'yes' ? ' checked' : '',
         'PHP_INI_SYSTEM_NO' => $data['php_ini_system'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', '<b>allow_url_fopen</b>'),
+        'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s configuration option', '<b>allow_url_fopen</b>'),
         'PHP_INI_AL_ALLOW_URL_FOPEN_YES' => $data['php_ini_al_allow_url_fopen'] == 'yes' ? ' checked' : '',
         'PHP_INI_AL_ALLOW_URL_FOPEN_NO' => $data['php_ini_al_allow_url_fopen'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', '<b>display_errors</b>'),
+        'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s configuration option', '<b>display_errors</b>'),
         'PHP_INI_AL_DISPLAY_ERRORS_YES' => $data['php_ini_al_display_errors'] == 'yes' ? ' checked' : '',
         'PHP_INI_AL_DISPLAY_ERRORS_NO' => $data['php_ini_al_display_errors'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', '<b>disable_functions</b>'),
+        'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
         'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',
         'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => $data['php_ini_al_disable_functions'] != 'yes' ? ' checked' : '',
-        'TR_MEMORY_LIMIT' => tr('Max value for the %s PHP directive', '<b>memory_limit</b>'),
+        'TR_MEMORY_LIMIT' => tr('PHP %s configuration option', '<b>memory_limit</b>'),
         'MEMORY_LIMIT' => tohtml($data['memory_limit']),
-        'TR_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive', '<b>upload_max_filesize</b>'),
+        'TR_UPLOAD_MAX_FILESIZE' => tr('PHP %s configuration option', '<b>upload_max_filesize</b>'),
         'UPLOAD_MAX_FILESIZE' => tohtml($data['upload_max_filesize']),
-        'TR_POST_MAX_SIZE' => tr('Max value for the %s PHP directive', '<b>post_max_size</b>'),
+        'TR_POST_MAX_SIZE' => tr('PHP %s configuration option', '<b>post_max_size</b>'),
         'POST_MAX_SIZE' => tohtml($data['post_max_size']),
-        'TR_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive', '<b>max_execution_time</b>'),
+        'TR_MAX_EXECUTION_TIME' => tr('PHP %s configuration option', '<b>max_execution_time</b>'),
         'MAX_EXECUTION_TIME' => tohtml($data['max_execution_time']),
-        'TR_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', '<b>max_input_time</b>'),
+        'TR_MAX_INPUT_TIME' => tr('PHP %s configuration option', '<b>max_input_time</b>'),
         'MAX_INPUT_TIME' => tohtml($data['max_input_time']),
         'TR_SOFTWARES_INSTALLER' => tr('Software installer'),
         'SOFTWARES_INSTALLER_YES' => $data['software_allowed'] == 'yes' ? ' checked' : '',
@@ -347,8 +334,8 @@ function _admin_generateFeaturesForm($tpl, &$data)
         'TR_SUPPORT_SYSTEM' => tr('Support system'),
         'SUPPORT_SYSTEM_YES' => $data['support_system'] == 'yes' ? ' checked' : '',
         'SUPPORT_SYSTEM_NO' => $data['support_system'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_PERMISSION_HELP' => tohtml(tr('If yes, the reseller can allow his customers to edit this directive.'), 'htmlAttr'),
-        'TR_PHP_INI_AL_MAIL_FUNCTION_HELP' => tohtml(tr('If yes, the reseller can enable/disable the PHP mail function for his customers, else, the PHP mail function is unavailable.'), 'htmlAttr'),
+        'TR_PHP_INI_PERMISSION_HELP' => tohtml(tr('If set to `yes`, the reseller can allows his customers to edit this PHP configuration option.'), 'htmlAttr'),
+        'TR_PHP_INI_AL_MAIL_FUNCTION_HELP' => tohtml(tr('If set to `yes`, the reseller can enable/disable the PHP mail function for his customers, else, the PHP mail function is disabled.'), 'htmlAttr'),
         'TR_YES' => tr('Yes'),
         'TR_NO' => tr('No'),
         'TR_MIB' => tr('MiB'),
@@ -368,7 +355,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 
     if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
         $tpl->assign(array(
-            'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', '<b>disable_functions</b>'),
+            'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
             'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',
             'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => $data['php_ini_al_disable_functions'] != 'yes' ? ' checked' : '',
 
@@ -461,8 +448,8 @@ function admin_checkAndUpdateData($resellerId)
     try {
         $db->beginTransaction();
 
-        // check for password
-        if ($data['password'] !== '' || $data['pasword_confirmation'] !== '') {
+        // check for password (if needed)
+        if ($data['password'] !== '' && $data['pasword_confirmation'] !== '') {
             if ($data['password'] !== $data['password_confirmation']) {
                 set_page_message(tr('Passwords do not match.'), 'error');
             }
@@ -493,7 +480,7 @@ function admin_checkAndUpdateData($resellerId)
         sort($resellerIps);
 
         if (empty($resellerIps)) {
-            set_page_message(tr('You must assign at least one IP per reseller.'), 'error');
+            set_page_message(tr('You must assign at least one IP to this reseller.'), 'error');
         }
 
         // Check for max domains limit
@@ -604,13 +591,12 @@ function admin_checkAndUpdateData($resellerId)
 
         // Check for PHP settings
         $phpini = iMSCP_PHPini::getInstance();
-        $resellerPhpPermissions = $phpini->getResellerPermission($resellerId);
+        $resellerPhpPermissions = $phpini->getResellerPermission();
 
         $phpini->setResellerPermission('phpiniSystem', $data['php_ini_system']);
 
         if ($phpini->resellerHasPermission('phpiniSystem')) {
             // We are safe here; If a value is not valid, previous value is used
-            $phpini->setResellerPermission('phpiniSystem', 'yes');
             $phpini->setResellerPermission('phpiniDisableFunctions', $data['php_ini_al_disable_functions']);
             $phpini->setResellerPermission('phpiniMailFunction', $data['php_ini_al_mail_function']);
             $phpini->setResellerPermission('phpiniAllowUrlFopen', $data['php_ini_al_allow_url_fopen']);
@@ -626,7 +612,7 @@ function admin_checkAndUpdateData($resellerId)
         }
 
         if (array_diff_assoc($resellerPhpPermissions, $phpini->getResellerPermission())) {
-            // A least one reseller permission has changed. We must update its customers permissions
+            // A least one reseller permission has changed. We must synchronize customers permissions
             $phpini->syncClientPermissionsWithResellerPermissions($resellerId);
         }
         unset($resellerPhpPermissions);
@@ -662,57 +648,52 @@ function admin_checkAndUpdateData($resellerId)
                 $setPassword = '';
             }
 
-            $query = "
-                UPDATE
-                    `admin`
-                SET
-                    {$setPassword} `fname` = ?, `lname` = ?, `gender` = ?, `firm` = ?, `zip` = ?, `city` = ?,
-                    `state` = ?, `country` = ?, `email` = ?, `phone` = ?, `fax` = ?, `street1` = ?, `street2` = ?
-                WHERE
-                    `admin_id` = ?
-            ";
-            exec_query($query, $bindParams);
+            exec_query(
+                "
+                    UPDATE admin SET {$setPassword} fname = ?, lname = ?, gender = ?, firm = ?, zip = ?, city = ?,
+                        state = ?, country = ?, email = ?, phone = ?, fax = ?, street1 = ?, street2 = ?
+                    WHERE admin_id = ?
+            ", $bindParams);
 
             // Update reseller properties
-            $query = '
-                UPDATE
-                    `reseller_props`
-                SET
-                    `max_dmn_cnt` = ?, `max_sub_cnt` = ?, `max_als_cnt` = ?, `max_mail_cnt` = ?, `max_ftp_cnt` = ?,
-                    `max_sql_db_cnt` = ?, `max_sql_user_cnt` = ?, `max_traff_amnt` = ?, `max_disk_amnt` = ?,
-                    `reseller_ips` = ?, `customer_id` = ?, `software_allowed` = ?, `softwaredepot_allowed` = ?,
-                    `websoftwaredepot_allowed` = ?, `support_system` = ?, `php_ini_system` = ?,
-                    `php_ini_al_disable_functions` = ?, `php_ini_al_mail_function` = ?, ,
-                    `php_ini_al_allow_url_fopen` = ?, `php_ini_al_display_errors` = ?, `php_ini_max_post_max_size` = ?,
-                    `php_ini_max_upload_max_filesize` = ?, `php_ini_max_max_execution_time` = ?,
-                    `php_ini_max_max_input_time` = ?, `php_ini_max_memory_limit` = ?
-                WHERE
-                    `reseller_id` = ?
-            ';
-            exec_query($query, array(
-                $data['max_dmn_cnt'], $data['max_sub_cnt'], $data['max_als_cnt'], $data['max_mail_cnt'],
-                $data['max_ftp_cnt'], $data['max_sql_db_cnt'], $data['max_sql_user_cnt'], $data['max_traff_amnt'],
-                $data['max_disk_amnt'], implode(';', $resellerIps) . ';', $data['customer_id'], $data['software_allowed'],
-                $data['softwaredepot_allowed'], $data['websoftwaredepot_allowed'], $data['support_system'],
-                $phpini->getResellerPermission('phpiniSystem'),
-                $phpini->getResellerPermission('phpiniDisableFunctions'),
-                $phpini->getResellerPermission('phpiniMailFunction'),
-                $phpini->getResellerPermission('phpiniAllowUrlFopen'),
-                $phpini->getResellerPermission('phpiniDisplayErrors'),
-                $phpini->getResellerPermission('phpiniPostMaxSize'),
-                $phpini->getResellerPermission('phpiniUploadMaxFileSize'),
-                $phpini->getResellerPermission('phpiniMaxExecutionTime'),
-                $phpini->getResellerPermission('phpiniMaxInputTime'),
-                $phpini->getResellerPermission('phpiniMemoryLimit'),
-                $resellerId
-            ));
+            exec_query(
+                '
+                    UPDATE
+                        reseller_props
+                    SET
+                        max_dmn_cnt = ?, max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?,
+                        max_sql_db_cnt = ?, max_sql_user_cnt = ?, max_traff_amnt = ?, max_disk_amnt = ?,
+                        reseller_ips = ?, customer_id = ?, software_allowed = ?, softwaredepot_allowed = ?,
+                        websoftwaredepot_allowed = ?, support_system = ?, php_ini_system = ?, php_ini_al_disable_functions = ?, php_ini_al_mail_function = ?,
+                        php_ini_al_allow_url_fopen = ?, php_ini_al_display_errors = ?, php_ini_max_post_max_size = ?,
+                        php_ini_max_upload_max_filesize = ?, php_ini_max_max_execution_time = ?,
+                        php_ini_max_max_input_time = ?, php_ini_max_memory_limit = ?
+                    WHERE
+                        reseller_id = ?
+                ',
+                array(
+                    $data['max_dmn_cnt'], $data['max_sub_cnt'], $data['max_als_cnt'], $data['max_mail_cnt'],
+                    $data['max_ftp_cnt'], $data['max_sql_db_cnt'], $data['max_sql_user_cnt'], $data['max_traff_amnt'],
+                    $data['max_disk_amnt'], implode(';', $resellerIps) . ';', $data['customer_id'], $data['software_allowed'],
+                    $data['softwaredepot_allowed'], $data['websoftwaredepot_allowed'], $data['support_system'],
+                    $phpini->getResellerPermission('phpiniSystem'),
+                    $phpini->getResellerPermission('phpiniDisableFunctions'),
+                    $phpini->getResellerPermission('phpiniMailFunction'),
+                    $phpini->getResellerPermission('phpiniAllowUrlFopen'),
+                    $phpini->getResellerPermission('phpiniDisplayErrors'),
+                    $phpini->getResellerPermission('phpiniPostMaxSize'),
+                    $phpini->getResellerPermission('phpiniUploadMaxFileSize'),
+                    $phpini->getResellerPermission('phpiniMaxExecutionTime'),
+                    $phpini->getResellerPermission('phpiniMaxInputTime'),
+                    $phpini->getResellerPermission('phpiniMemoryLimit'),
+                    $resellerId
+                ));
 
             // Updating software installer properties
             if ($data['software_allowed'] == 'no') {
                 exec_query(
                     '
-                        UPDATE domain INNER JOIN admin ON(admin_id = domain_admin_id)
-                        SET domain_software_allowed = ?
+                        UPDATE domain INNER JOIN admin ON(admin_id = domain_admin_id) SET domain_software_allowed = ?
                         WHERE created_by = ?
                     ',
                     array($data['softwaredepot_allowed'], $resellerId)
@@ -720,23 +701,27 @@ function admin_checkAndUpdateData($resellerId)
             }
 
             if ($data['websoftwaredepot_allowed'] == 'no') {
-                $query = 'SELECT `software_id` FROM `web_software` WHERE `software_depot` = ? AND `reseller_id` = ?';
+                $query = 'SELECT software_id FROM web_software WHERE software_depot = ? AND reseller_id = ?';
                 $stmt = exec_query($query, array('yes', $resellerId));
 
                 if ($stmt->rowCount()) {
                     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-                        $query = 'UPDATE `web_software_inst` SET `software_res_del` = ? WHERE `software_id` = ?';
-                        exec_query($query, array('1', $row['software_id']));
+                        exec_query('UPDATE web_software_inst SET software_res_del = ? WHERE software_id = ?', array(
+                            '1', $row['software_id']
+                        ));
                     }
 
-                    $query = 'DELETE FROM `web_software` WHERE `software_depot` = ? AND `reseller_id` = ?';
-                    exec_query($query, array('yes', $resellerId));
+                    exec_query('DELETE FROM web_software WHERE software_depot = ? AND reseller_id = ?', array(
+                        'yes', $resellerId
+                    ));
                 }
             }
 
             $db->commit();
 
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $resellerId));
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array(
+                'userId' => $resellerId
+            ));
 
             // Send mail to reseller for new password
             if ($data['password'] != '') {
@@ -746,7 +731,7 @@ function admin_checkAndUpdateData($resellerId)
                 );
             }
 
-            write_log("The reseller account (<b>{$data['admin_name']}</b>) has been updated by {$_SESSION['user_logged']}", E_USER_NOTICE);
+            write_log(sprintf('The %s reseller account has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
             set_page_message(tr('Reseller account successfully updated.'), 'success');
             return true;
         }
@@ -790,7 +775,7 @@ function admin_checkResellerLimit($newLimit, $assignedByReseller, $consumedByCus
                 $retVal = false;
                 // If the new limit is -1 (disabled) and assigned items are already consumed by customer
             } elseif ($newLimit == -1 && $consumedByCustomers > 0) {
-                set_page_message(tr("%s: You cannot disable a service already consumed by reseller's customers", '<b>' . ucfirst($serviceName) . '</b>'), 'error');
+                set_page_message(tr("%s: You cannot disable a service already consumed by reseller's customers.", '<b>' . ucfirst($serviceName) . '</b>'), 'error');
                 $retVal = false;
                 // If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
             } elseif ($newLimit == -1 && $assignedByReseller > 0) {
@@ -822,6 +807,9 @@ if (!isset($_GET['edit_id'])) {
 }
 
 $resellerId = intval($_GET['edit_id']);
+
+$phpini = iMSCP_PHPini::getInstance();
+$phpini->loadResellerPermissions($resellerId); // Load reseller PHP permissions
 
 if (!empty($_POST) && admin_checkAndUpdateData($resellerId)) {
     redirectTo('manage_users.php');

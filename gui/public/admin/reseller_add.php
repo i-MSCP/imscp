@@ -49,7 +49,6 @@ function &admin_getData()
         }
 
         $phpini = iMSCP_PHPini::getInstance();
-        $phpini->loadResellerPermissions(); // Load reseller default PHP permissions
 
         foreach (
             array(
@@ -212,29 +211,29 @@ function _admin_generateFeaturesForm($tpl, &$data)
     $cfg = iMSCP_Registry::get('config');
     $tpl->assign(array(
         'TR_FEATURES' => tr('Features'),
-        'TR_SETTINGS' => tr('Settings'),
+        'TR_SETTINGS' => tr('PHP Settings'),
         'TR_PHP_EDITOR' => tr('PHP Editor'),
-        'TR_PHP_EDITOR_SETTINGS' => tr('PHP Editor Settings'),
-        'TR_PERMISSIONS' => tr('Permissions'),
-        'TR_DIRECTIVES_VALUES' => tr('PHP directives values'),
+        'TR_PHP_EDITOR_SETTINGS' => tr('PHP Settings'),
+        'TR_PERMISSIONS' => tr('PHP Permissions'),
+        'TR_DIRECTIVES_VALUES' => tr('PHP Configuration options'),
         'TR_FIELDS_OK' => tr('All fields are valid.'),
         'PHP_INI_SYSTEM_YES' => $data['php_ini_system'] == 'yes' ? ' checked' : '',
         'PHP_INI_SYSTEM_NO' => $data['php_ini_system'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', '<b>allow_url_fopen</b>'),
+        'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s configuration option', '<b>allow_url_fopen</b>'),
         'PHP_INI_AL_ALLOW_URL_FOPEN_YES' => $data['php_ini_al_allow_url_fopen'] == 'yes' ? ' checked' : '',
         'PHP_INI_AL_ALLOW_URL_FOPEN_NO' => $data['php_ini_al_allow_url_fopen'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', '<b>display_errors</b>'),
+        'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s configuration option', '<b>display_errors</b>'),
         'PHP_INI_AL_DISPLAY_ERRORS_YES' => $data['php_ini_al_display_errors'] == 'yes' ? ' checked' : '',
         'PHP_INI_AL_DISPLAY_ERRORS_NO' => $data['php_ini_al_display_errors'] != 'yes' ? ' checked' : '',
-        'TR_MEMORY_LIMIT' => tr('Max value for the %s PHP directive', '<b>memory_limit</b>'),
+        'TR_MEMORY_LIMIT' => tr('PHP %s configuration option', '<b>memory_limit</b>'),
         'MEMORY_LIMIT' => tohtml($data['memory_limit']),
-        'TR_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive', '<b>upload_max_filesize</b>'),
+        'TR_UPLOAD_MAX_FILESIZE' => tr('PHP %s configuration option', '<b>upload_max_filesize</b>'),
         'UPLOAD_MAX_FILESIZE' => tohtml($data['upload_max_filesize']),
-        'TR_POST_MAX_SIZE' => tr('Max value for the %s PHP directive', '<b>post_max_size</b>'),
+        'TR_POST_MAX_SIZE' => tr('PHP %s configuration option', '<b>post_max_size</b>'),
         'POST_MAX_SIZE' => tohtml($data['post_max_size']),
-        'TR_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive', '<b>max_execution_time</b>'),
+        'TR_MAX_EXECUTION_TIME' => tr('PHP %s configuration option', '<b>max_execution_time</b>'),
         'MAX_EXECUTION_TIME' => tohtml($data['max_execution_time']),
-        'TR_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', '<b>max_input_time</b>'),
+        'TR_MAX_INPUT_TIME' => tr('PHP %s configuration option', '<b>max_input_time</b>'),
         'MAX_INPUT_TIME' => tohtml($data['max_input_time']),
         'TR_SOFTWARES_INSTALLER' => tr('Software installer'),
         'SOFTWARES_INSTALLER_YES' => $data['software_allowed'] == 'yes' ? ' checked' : '',
@@ -248,8 +247,8 @@ function _admin_generateFeaturesForm($tpl, &$data)
         'TR_SUPPORT_SYSTEM' => tr('Support system'),
         'SUPPORT_SYSTEM_YES' => $data['support_system'] == 'yes' ? ' checked' : '',
         'SUPPORT_SYSTEM_NO' => $data['support_system'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_PERMISSION_HELP' => tohtml(tr('If yes, the reseller can allows his customers to edit this directive.'), 'htmlAttr'),
-        'TR_PHP_INI_AL_MAIL_FUNCTION_HELP' => tohtml(tr('If yes, the reseller can enable/disable the PHP mail function for his customers, else, the PHP mail function is unavailable.'), 'htmlAttr'),
+        'TR_PHP_INI_PERMISSION_HELP' => tohtml(tr('If set to `yes`, the reseller can allows his customers to edit this PHP configuration option.'), 'htmlAttr'),
+        'TR_PHP_INI_AL_MAIL_FUNCTION_HELP' => tohtml(tr('If set to `yes`, the reseller can enable/disable the PHP mail function for his customers, else, the PHP mail function is disabled.'), 'htmlAttr'),
         'TR_YES' => tr('Yes'),
         'TR_NO' => tr('No'),
         'TR_MIB' => tr('MiB'),
@@ -269,7 +268,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 
     if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
         $tpl->assign(array(
-            'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', '<b>disable_functions</b>'),
+            'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
             'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',
             'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => $data['php_ini_al_disable_functions'] != 'yes' ? ' checked' : '',
             'TR_PHP_INI_AL_MAIL_FUNCTION' => tr('Can use the PHP %s function', '<b>mail</b>'),
@@ -409,7 +408,7 @@ function admin_checkAndCreateResellerAccount()
         sort($resellerIps);
 
         if (empty($resellerIps)) {
-            set_page_message(tr('You must assign at least one IP per reseller.'), 'error');
+            set_page_message(tr('You must assign at least one IP to this reseller.'), 'error');
         }
 
         // Check for max domains limit
@@ -475,8 +474,9 @@ function admin_checkAndCreateResellerAccount()
         // Check for PHP settings
         $phpini = iMSCP_PHPini::getInstance();
 
-        if ($data['php_ini_system'] == 'yes') {
-            $phpini->setResellerPermission('phpiniSystem', 'yes');
+        $phpini->setResellerPermission('phpiniSystem', $data['php_ini_system']);
+
+        if ($phpini->resellerHasPermission('phpiniSystem')) {
             $phpini->setResellerPermission('phpiniAllowUrlFopen', $data['php_ini_al_allow_url_fopen']);
             $phpini->setResellerPermission('phpiniDisplayErrors', $data['php_ini_al_display_errors']);
             $phpini->setResellerPermission('phpiniDisableFunctions', $data['php_ini_al_disable_functions']);
@@ -529,7 +529,8 @@ function admin_checkAndCreateResellerAccount()
                         php_ini_al_display_errors, php_ini_max_post_max_size, php_ini_max_upload_max_filesize,
                         php_ini_max_max_execution_time, php_ini_max_max_input_time, php_ini_max_memory_limit
                     ) VALUES (
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                        ?, ?, ?
                     )
                 ',
                 array(
@@ -565,7 +566,7 @@ function admin_checkAndCreateResellerAccount()
                 $data['lname'], tr('Reseller')
             );
 
-            write_log(sprintf("A new reseller account (%s) has been created by %s", $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
+            write_log(sprintf('A new reseller account (%s) has been created by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
             set_page_message(tr('Reseller account successfully created.'), 'success');
             return true;
         }
@@ -589,6 +590,9 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
+
+$phpini = iMSCP_PHPini::getInstance();
+$phpini->loadResellerPermissions(); // Load reseller default PHP permissions
 
 if (!empty($_POST) && admin_checkAndCreateResellerAccount()) {
     redirectTo('manage_users.php');

@@ -13,7 +13,7 @@
     });
 </script>
 
-<form name="createFrm" method="post" action="reseller_add.php">
+<form method="post" action="reseller_add.php">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -39,7 +39,6 @@
         </tr>
         </tbody>
     </table>
-
     <!-- BDP: ips_block -->
     <table class="firstColFixed datatable">
         <thead>
@@ -113,7 +112,7 @@
         <tbody>
         <tr>
             <td><label>{TR_PHP_EDITOR}</label></td>
-            <td colspan="3" id="dialogContainer" style="height: 30px;">
+            <td>
                 <div class="radio">
                     <input type="radio" name="php_ini_system" id="php_ini_system_yes" value="yes"{PHP_INI_SYSTEM_YES}>
                     <label for="php_ini_system_yes">{TR_YES}</label>
@@ -121,11 +120,11 @@
                     <label for="php_ini_system_no">{TR_NO}</label>
                 </div>
                 <button type="button" id="php_editor_dialog_open">{TR_SETTINGS}</button>
-                <div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
+                <div id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
                     <div class="php_editor_error static_success">
                         <span id="php_editor_msg_default">{TR_FIELDS_OK}</span>
                     </div>
-                    <table class="firstColFixed">
+                    <table>
                         <thead>
                         <tr>
                             <th colspan="2">{TR_PERMISSIONS}</th>
@@ -135,7 +134,7 @@
                         <tr>
                             <td>
                                 {TR_PHP_INI_AL_ALLOW_URL_FOPEN}
-                                <span class="tips icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
+                                <span class="icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
                             </td>
                             <td>
                                 <div class="radio">
@@ -149,7 +148,7 @@
                         <tr>
                             <td>
                                 {TR_PHP_INI_AL_DISPLAY_ERRORS}
-                                <span class="tips icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
+                                <span class="icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
                             </td>
                             <td>
                                 <div class="radio">
@@ -164,7 +163,7 @@
                         <tr>
                             <td>
                                 {TR_PHP_INI_AL_DISABLE_FUNCTIONS}
-                                <span class="tips icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
+                                <span class="icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
                             </td>
                             <td>
                                 <div class="radio">
@@ -179,8 +178,7 @@
                         <!-- BDP: php_editor_mail_function_block -->
                         <tr>
                             <td>
-                                {TR_PHP_INI_AL_MAIL_FUNCTION}
-                                <span class="tips icon i_help" title="{TR_PHP_INI_AL_MAIL_FUNCTION_HELP}"></span>
+                                {TR_PHP_INI_AL_MAIL_FUNCTION} <span class="icon i_help" title="{TR_PHP_INI_AL_MAIL_FUNCTION_HELP}"></span>
                             </td>
                             <td>
                                 <div class="radio">
@@ -194,21 +192,13 @@
                         <!-- EDP: php_editor_mail_function_block -->
                         </tbody>
                     </table>
-                    <table class="firstColFixed">
+                    <table>
                         <thead>
                         <tr>
                             <th colspan="2">{TR_DIRECTIVES_VALUES}</th>
                         </tr>
                         </thead>
                         <tbody id="php_ini_values">
-                        <tr>
-                            <td><label for="post_max_size">{TR_POST_MAX_SIZE}</label></td>
-                            <td><input type="text" name="post_max_size" id="post_max_size" data-limit="10000" value="{POST_MAX_SIZE}"> <span>{TR_MIB}</span></td>
-                        </tr>
-                        <tr>
-                            <td><label for="upload_max_filesize">{TR_UPLOAD_MAX_FILESIZE}</label></td>
-                            <td><input type="text" name="upload_max_filesize" id="upload_max_filesize" data-limit="10000" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
-                        </tr>
                         <tr>
                             <td><label for="max_execution_time">{TR_MAX_EXECUTION_TIME}</label></td>
                             <td><input type="text" name="max_execution_time" id="max_execution_time" data-limit="10000" value="{MAX_EXECUTION_TIME}"> <span>{TR_SEC}</span></td>
@@ -220,6 +210,14 @@
                         <tr>
                             <td><label for="memory_limit">{TR_MEMORY_LIMIT}</label></td>
                             <td><input type="text" name="memory_limit" id="memory_limit" data-limit="10000" value="{MEMORY_LIMIT}"> <span>{TR_MIB}</span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="post_max_size">{TR_POST_MAX_SIZE}</label></td>
+                            <td><input type="text" name="post_max_size" id="post_max_size" data-limit="10000" value="{POST_MAX_SIZE}"> <span>{TR_MIB}</span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="upload_max_filesize">{TR_UPLOAD_MAX_FILESIZE}</label></td>
+                            <td><input type="text" name="upload_max_filesize" id="upload_max_filesize" data-limit="10000" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
                         </tr>
                         </tbody>
                     </table>
