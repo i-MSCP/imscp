@@ -39,8 +39,8 @@ CONTRIB
 FRONTEND
 	Changed: error_reporting configuration parameter no longer editable when using Apache2 ITK httpd server impl.
 	Fixed: admin/settings.php menu state is not saved
-	Fixed: Slow DOM content loading due to some built-in functions override (imscp.js)
 	Fixed: Customer's PHP settings must be synchronized when updating PHP permissions of their resellers
+	Fixed: Slow DOM content loading due to some built-in functions override (imscp.js)
 	Removed: Default PHP configuration options - admin level (see errata file)
 	Removed: Hosting plan feature - admin level (see errata file)
 

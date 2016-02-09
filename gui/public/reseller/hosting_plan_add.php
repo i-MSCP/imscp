@@ -395,11 +395,11 @@ function checkInputData()
                 $phpini->setClientPermission('phpiniMailFunction', clean_input($_POST['phpini_perm_mail_function']));
             }
 
-            if (isset($_POST['memory_limit'])) {
+            if (isset($_POST['memory_limit'])) { // Must be set before phpiniPostMaxSize
                 $phpini->setDomainIni('phpiniMemoryLimit', clean_input($_POST['memory_limit']));
             }
 
-            if (isset($_POST['post_max_size'])) {
+            if (isset($_POST['post_max_size'])) { // Must be set before phpiniUploadMaxFileSize
                 $phpini->setDomainIni('phpiniPostMaxSize', clean_input($_POST['post_max_size']));
             }
 

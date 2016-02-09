@@ -482,11 +482,13 @@ function admin_checkAndCreateResellerAccount()
             $phpini->setResellerPermission('phpiniDisableFunctions', $data['php_ini_al_disable_functions']);
             $phpini->setResellerPermission('phpiniMailFunction', $data['php_ini_al_mail_function']);
 
-            $phpini->setResellerPermission('phpiniPostMaxSize', $data['post_max_size']);
+
+            $phpini->setResellerPermission('phpiniMemoryLimit', $data['memory_limit']); // Must be set before phpiniPostMaxSize
+            $phpini->setResellerPermission('phpiniPostMaxSize', $data['post_max_size']); // Must be set before phpiniUploadMaxFileSize
             $phpini->setResellerPermission('phpiniUploadMaxFileSize', $data['upload_max_filesize']);
             $phpini->setResellerPermission('phpiniMaxExecutionTime', $data['max_execution_time']);
             $phpini->setResellerPermission('phpiniMaxInputTime', $data['max_input_time']);
-            $phpini->setResellerPermission('phpiniMemoryLimit', $data['memory_limit']);
+
         }
 
         if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here

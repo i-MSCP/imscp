@@ -602,11 +602,11 @@ function admin_checkAndUpdateData($resellerId)
             $phpini->setResellerPermission('phpiniAllowUrlFopen', $data['php_ini_al_allow_url_fopen']);
             $phpini->setResellerPermission('phpiniDisplayErrors', $data['php_ini_al_display_errors']);
 
-            $phpini->setResellerPermission('phpiniPostMaxSize', $data['post_max_size']);
+            $phpini->setResellerPermission('phpiniMemoryLimit', $data['memory_limit']); // Must be set before phpiniPostMaxSize
+            $phpini->setResellerPermission('phpiniPostMaxSize', $data['post_max_size']); // Must be set before phpiniUploadMaxFileSize
             $phpini->setResellerPermission('phpiniUploadMaxFileSize', $data['upload_max_filesize']);
             $phpini->setResellerPermission('phpiniMaxExecutionTime', $data['max_execution_time']);
             $phpini->setResellerPermission('phpiniMaxInputTime', $data['max_input_time']);
-            $phpini->setResellerPermission('phpiniMemoryLimit', $data['memory_limit']);
         } else {
             $phpini->loadResellerPermissions(); // Reset reseller PHP permissions to default values
         }
