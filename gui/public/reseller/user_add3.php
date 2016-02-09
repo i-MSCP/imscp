@@ -252,16 +252,16 @@ $email = $customerId = $firstName = $lastName = $firm = $zip = $city = $state = 
 $phone = $mail = $fax = $domainIp = '';
 $gender = 'U';
 
+if (!getPreviousStepData()) {
+    set_page_message(tr('Data were altered. Please try again.'), 'error');
+    unsetMessages();
+    redirectTo('user_add1.php');
+}
+
 $phpini = iMSCP_PHPini::getInstance();
 $phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller PHP permissions
 $phpini->loadClientPermissions(); // Load client default PHP permissions
 $phpini->loadDomainIni(); // Load domain default PHP configuration options
-
-if (!getPreviousStepData()) {
-    set_page_message(tr('Data were been altered. Please try again.'), 'error');
-    unsetMessages();
-    redirectTo('user_add1.php');
-}
 
 if (isset($_POST['uaction']) && 'user_add3_nxt' == $_POST['uaction'] && !isset($_SESSION['step_two_data'])) {
     if (check_ruser_data()) {
