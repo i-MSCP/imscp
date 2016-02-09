@@ -209,7 +209,7 @@ function client_addDomainAlias()
 
     $isSuUser = isset($_SESSION['logged_from_type']); # See http://youtrack.i-mscp.net/issue/IP-1486
     $userEmail = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '';
-    $mainDmnProps = get_user_domain_id($_SESSION['user_id']);
+    $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $db = iMSCP_Database::getInstance();
 
     try {

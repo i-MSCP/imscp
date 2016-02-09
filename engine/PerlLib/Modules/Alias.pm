@@ -227,7 +227,7 @@ sub _loadData
 	}
 
 	unless($rdata->{$aliasId}) {
-		error("Domain with ID $aliasId has not been found or is in an inconsistent state");
+		error("Domain alias with ID $aliasId has not been found or is in an inconsistent state");
 		return 1;
 	}
 
