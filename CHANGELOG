@@ -41,6 +41,7 @@ FRONTEND
 	Fixed: admin/settings.php menu state is not saved
 	Fixed: Customer's PHP settings must be synchronized when updating PHP permissions of their resellers
 	Fixed: Slow DOM content loading due to some built-in functions override (imscp.js)
+	Fixed: Wrong edit link for domain alias DNS record (external mail DNS record)
 	Removed: Default PHP configuration options - admin level (see errata file)
 	Removed: Hosting plan feature - admin level (see errata file)
 

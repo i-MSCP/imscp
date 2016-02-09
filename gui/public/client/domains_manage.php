@@ -493,7 +493,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
         while ($row = $stmt->fetchRow()) {
             list($actionEdit, $actionScriptEdit) = _client_generateCustomDnsRecordAction(
                 'edit',
-                $row['owned_by'] === 'custom_dns_feature' ? $row['domain_dns_id'] : ($row['owned_by'] === 'ext_mail_feature' ? $row['domain_id'] . ';' . ($row['alias_id'] ? 'alias' : 'normal') : null),
+                $row['owned_by'] === 'custom_dns_feature' ? $row['domain_dns_id'] : ($row['owned_by'] === 'ext_mail_feature' ? ($row['alias_id'] ? $row['alias_id'] . ';alias' : $row['domain_id'] . ';normal' ) : null),
                 $row['domain_dns_status'],
                 $row['owned_by']
             );
