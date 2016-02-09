@@ -260,9 +260,6 @@ function client_addSubdomain()
         }
     }
 
-    print "OUCH";
-    exit;
-
     $db = iMSCP_Database::getInstance();
 
     try {
