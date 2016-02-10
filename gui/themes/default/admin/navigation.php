@@ -75,12 +75,6 @@ return array(
                         'uri' => '/admin/user_delete.php',
                         'title_class' => 'user_blue',
                         'visible' => '0'
-                    ),
-                    'domain_edit_link' => array(
-                        'label' => tr('Edit domain'),
-                        'uri' => '/admin/domain_edit.php',
-                        'title_class' => 'domains',
-                        'visible' => '0'
                     )
                 )
             ),

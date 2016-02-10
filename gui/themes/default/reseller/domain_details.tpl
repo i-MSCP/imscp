@@ -1,5 +1,11 @@
 
 <table class="firstColFixed">
+    <thead>
+    <tr>
+        <th colspan="2">{TR_DOMAIN_DETAILS}</th>
+    </tr>
+    </thead>
+    <tbody>
     <tr>
         <td>{TR_DOMAIN_NAME}</td>
         <td>{VL_DOMAIN_NAME}</td>
@@ -54,6 +60,7 @@
             {VL_DISK_USED} / {VL_DISK_LIMIT}
         </td>
     </tr>
+    </tbody>
 </table>
 <table class="firstColFixed">
     <thead>
