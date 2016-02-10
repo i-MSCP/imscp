@@ -36,7 +36,6 @@ iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
 login_log_format_elements = user=<%u> method=%m rip=%r lip=%l mpid=%e %c %k session=<%{session}>
 # END Listener::Dovecot::PFS
 EOF
-
 	0;
 });
 

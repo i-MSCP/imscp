@@ -82,7 +82,6 @@ smtp_sasl_auth_enable=yes
 smtp_sasl_password_maps=hash:$saslPasswdMapsPath
 smtp_sasl_security_options=noanonymous
 EOF
-
 	0;
 }
 

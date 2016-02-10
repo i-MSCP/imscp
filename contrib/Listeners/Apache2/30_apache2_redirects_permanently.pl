@@ -31,7 +31,6 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
 	return 0 unless $tplName =~ /^domain_redirect(?:_ssl)?\.tpl$/;
 
 	$$cfgTpl =~ s/Redirect / {FORWARD}\n/Redirect 301 / {FORWARD}\n/;
-
 	0;
 });
 

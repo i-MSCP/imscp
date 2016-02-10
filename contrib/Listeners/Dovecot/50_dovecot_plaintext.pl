@@ -34,7 +34,6 @@ iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
 
 	$$cfgTpl =~ s/\s+cram-md5\s+digest-md5//;
 	$$cfgTpl =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/m;
-
 	0;
 });
 

@@ -49,7 +49,6 @@ EOF
 	$$cfgTpl =~ s/(separator\s+=\s+)\./$1\//;
 	$$cfgTpl =~ s/(prefix\s+=\s+)INBOX\./$1/;
 	$$cfgTpl =~ s/^(namespace\s+inbox\s+\{.*?^\}\n)/$1$cfgSnippet/sm;
-
 	0;
 });
 

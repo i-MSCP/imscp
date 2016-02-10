@@ -71,7 +71,6 @@ EOF
 
 	# insert class local
 	$$tplContent .= "\n<Class local>$cfgNetworks\n</Class>";
-
 	0;
 });
 

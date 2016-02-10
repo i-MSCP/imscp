@@ -47,7 +47,6 @@ iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
 mail_max_userip_connections = $maxConnections
 # END Listener::Dovecot::Connections
 EOF
-
 	0;
 });
 

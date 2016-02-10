@@ -31,7 +31,6 @@ iMSCP::EventManager->getInstance()->register('beforeNamedBuildConf', sub {
 	return 0 unless $tplName eq 'named.conf.options';
 
 	$$tplContent =~ s/^(\s*allow-(?:recursion|query-cache|transfer)).*$/$1 { localnets; };/gm;
-
 	0;
 });
 

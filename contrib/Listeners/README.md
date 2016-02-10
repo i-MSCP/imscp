@@ -55,6 +55,11 @@ Listener file to activate the Perfect Forward Secrecy logging
 Listener file to disable plaintext logins and force tls.
 Also remove the authentication mechanisms cram-md5 and digest-md5 which won't be supported anymore in i-MSCP 1.3
 
+### 60_dovecot_service_login.pl
+
+Listener that allows to modify default Dovecot service-login configuration.
+This listener file requires dovecot version 2.1.0 or newer
+
 ## Named listeners
 
 ### 10_bind9_localnets.pl

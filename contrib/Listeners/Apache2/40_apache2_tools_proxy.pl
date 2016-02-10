@@ -64,7 +64,6 @@ EOF
 	);
 
 	$$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/$cfgProxy$1/sm;
-
 	0;
 });
 

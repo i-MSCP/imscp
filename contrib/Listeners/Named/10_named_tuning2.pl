@@ -55,7 +55,6 @@ iMSCP::EventManager->getInstance()->register('afterNamedAddDmnDb', sub {
 
     # Fix SOA record according new nameservers
     $$wrkFile =~ s/IN\tSOA\tns1\.$data->{'DOMAIN_NAME'}\. hostmaster\.$data->{'DOMAIN_NAME'}\./IN\tSOA\t$nameservers[0]\. hostmaster\.$data->{'DOMAIN_NAME'}\./g;
-
     0;
 });
 

@@ -73,9 +73,7 @@ sub addIPs
 		@ipList = uniq( @ipList, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
 	}
 
-	unless(@ipList) {
-		return 0;
-	}
+	return 0 unless @ipList;
 
 	# Format IPs ( normalize and surround any IPv6 with square-brackets )
 	my $ipMngr = iMSCP::Net->getInstance();
@@ -107,7 +105,6 @@ sub addIPList
 
 	@{$data->{'IPS'}} = uniq( @{$data->{'IPS'}}, @IPS );
 	@{$data->{'SSL_IPS'}} = uniq( @{$data->{'SSL_IPS'}}, @SSL_IPS );
-
 	0;
 }
 

@@ -37,8 +37,7 @@ my $addServerAlias = 'example'; # Add more than one alias (example example-2 exa
 ## Please, don't edit anything below this line
 #
 
-sub overrideServerAlias
-{
+iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', sub {
 	my ($tplFileContent, $tplFileName, $data) = @_;
 
 	my $domainName = $data->{'DOMAIN_NAME'} || undef;
@@ -51,9 +50,7 @@ sub overrideServerAlias
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', \&overrideServerAlias);
+});
 
 1;
 __END__

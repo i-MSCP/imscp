@@ -58,7 +58,6 @@ iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
 
 	$$tplContent .= "$addRecipientBccMap";
 	$$tplContent .= "$addSenderBccMap";
-
 	0;
 });
 

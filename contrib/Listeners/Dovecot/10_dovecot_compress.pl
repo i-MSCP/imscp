@@ -59,7 +59,6 @@ EOF
 
 	# Enable these only if you want compression while saving
 	$$cfgTpl =~ s/^(plugin\s+\{.*?)(\})/$1$cfgSnippet$2/sm;
-
 	0;
 });
 

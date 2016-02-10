@@ -68,7 +68,7 @@ sub setupMainCf
 
 	push @cmd, ($_ . '=' . escapeShell($mainCfParameters{$_})) for keys %mainCfParameters;
 
-	my $rs = execute("@cmd", \my $stdout, \my $stderr);
+	my $rs = execute("@cmd", \ my $stdout, \ my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	$rs;
