@@ -31,9 +31,9 @@ Allows to redirect/proxy i-MSCP tools (pma,webmail...) in customers Apache2 vhos
 
 ### 10_dovecot_compress.pl
 
-Activates the dovecot compress plugin to reduce the bandwidth usage of IMAP, and that also compresses the stored mails.
+Activates the Dovecot compress plugin to reduce the bandwidth usage of IMAP, and also compresses the stored mails.
 
-For more information please check:
+For more information please consult:
 
     http://wiki2.dovecot.org/Plugins/Compress
     http://wiki2.dovecot.org/Plugins/Zlib
@@ -92,7 +92,7 @@ Activates HTTP Strict Transport Security (HSTS).
 
 ### 10_postfix_smarthost.pl
 
-Allows to configure the Postfix as smarthost with SASL authentication.
+Allows to configure Postfix as smarthost with SASL authentication.
 
 ### 10_postfix_tuning.pl
 
@@ -116,7 +116,7 @@ Allows to setup sender generic map.
 
 ### 60_postfix_pfs.pl
 
-Adds a self-generated EDH parameter files for Perfect Forward Secrecy (PFS).
+Adds self-generated EDH parameter files for Perfect Forward Secrecy (PFS).
 
 First, you must create the files before activating this listener:
 

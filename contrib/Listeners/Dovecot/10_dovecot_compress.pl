@@ -16,9 +16,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Activates the dovecot compress plugin to reduce the bandwidth usage of IMAP, and that also compresses the stored mails.
+## Activates the Dovecot compress plugin to reduce the bandwidth usage of IMAP, and also compresses the stored mails.
 ##
-## For more information please check:
+## For more information please consult:
 ##   http://wiki2.dovecot.org/Plugins/Compress
 ##   http://wiki2.dovecot.org/Plugins/Zlib
 #
