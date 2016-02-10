@@ -18,7 +18,7 @@
 
 #
 ## Provides slave DNS server(s) provisioning service.
-## Compatible with i-MSCP >= 1.2.12
+## This listener file requires i-MSCP 1.2.12 or newest.
 ## Slave provisioning service will be available at:
 ##   - http://<panel.domain.tld>:8080/provisioning/slave_provisioning.php
 ##   - https://<panel.domain.tld>:4443/provisioning/slave_provisioning.php (if you use ssl)
@@ -37,7 +37,7 @@ use iMSCP::TemplateParser;
 #
 ## HTTP (Basic) authentication parameters
 ## Those parameters are used to protect access to the provisioning script which
-## is available through HTTP
+## is available through HTTP(s)
 #
 
 # Authentication username
@@ -46,6 +46,7 @@ my $authUsername = '';
 
 # Authentication password
 # Either an encrypted or plain password
+# If an encrypted password, don't forget to set the $isAuthPasswordEncrypted parameter value to 1
 my $authPassword = '';
 
 # Tells whether or not the provided authentication password is encrypted
@@ -62,7 +63,7 @@ my $realm = 'i-MSCP provisioning service for slave DNS servers';
 my $nginxConfDir = '/etc/nginx';
 
 #
-## Subroutines
+## Please, don't edit anything below this line
 #
 
 sub createHtpasswdFile
@@ -170,19 +171,20 @@ EOF
 $eventManager->register('afterFrontEndBuildConfFile', sub {
     my ($tplContent, $tplName) = @_;
 
-    if($tplName eq '00_master.conf' || $tplName eq '00_master_ssl.conf') {
-        unless(-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning") {
-            my $rs = iMSCP::Dir->new(dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning")->make({
-                user => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-                group => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-                mode => 0550
-            });
+    return 0 unless $tplName eq '00_master.conf' || $tplName eq '00_master_ssl.conf';
 
-            $rs = createHtpasswdFile();
-            return $rs if $rs;
-        }
+    unless(-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning") {
+        my $rs = iMSCP::Dir->new(dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning")->make({
+            user => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+            group => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+            mode => 0550
+        });
 
-        my $locationSnippet = <<EOF;
+        $rs = createHtpasswdFile();
+        return $rs if $rs;
+    }
+
+    my $locationSnippet = <<EOF;
     location /provisioning {
         root /var/www/imscp/gui/public;
 
@@ -195,21 +197,20 @@ $eventManager->register('afterFrontEndBuildConfFile', sub {
         }
     }
 EOF
-        $$tplContent = replaceBloc(
+
+    $$tplContent = replaceBloc(
+        "# SECTION custom BEGIN.\n",
+        "# SECTION custom END.\n",
+        "    # SECTION custom BEGIN.\n" .
+        getBloc(
             "# SECTION custom BEGIN.\n",
             "# SECTION custom END.\n",
-            "    # SECTION custom BEGIN.\n" .
-            getBloc(
-                "# SECTION custom BEGIN.\n",
-                "# SECTION custom END.\n",
-                $$tplContent
-            ) .
-            "$locationSnippet\n" .
-            "    # SECTION custom END.\n",
             $$tplContent
-        );
-    }
-
+        ) .
+        "$locationSnippet\n" .
+        "    # SECTION custom END.\n",
+        $$tplContent
+    );
     0;
 }) if $authUsername;
 

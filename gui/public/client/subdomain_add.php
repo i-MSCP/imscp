@@ -131,6 +131,8 @@ function client_generatePage($tpl)
  */
 function client_addSubdomain()
 {
+    global $mainDmnProps;
+
     // Basic check
     if (empty($_POST['subdomain_name'])) {
         set_page_message(tr('You must enter a subdomain name.'), 'error');
@@ -299,9 +301,9 @@ function client_addSubdomain()
 
         // Create the phpini entry for that subdomain
         $phpini = iMSCP_PHPini::getInstance();
-        $phpini->loadResellerPermissions($_SESSION['user_created_by']);
-        $phpini->loadClientPermissions($_SESSION['user_id']);
-        $phpini->loadDomainIni();
+        $phpini->loadResellerPermissions($_SESSION['user_created_by']); // Load reseller PHP permissions
+        $phpini->loadClientPermissions($_SESSION['user_id']); // Load client PHP permissions
+        $phpini->loadDomainIni($_SESSION['user_id'], $mainDmnProps['domain_id'], 'dmn'); // Load main domain PHP configuration options
         $phpini->saveDomainIni($_SESSION['user_id'], $subdomainId, $domainType == 'dmn' ? 'sub' : 'subals');
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSubdomain, array(

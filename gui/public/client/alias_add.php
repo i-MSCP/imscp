@@ -27,62 +27,44 @@
  *
  * @return array Domains list
  */
-function _client_getDomainsList()
+function getDomainsList()
 {
     static $domainsList = null;
 
-    if (null === $domainsList) {
-        $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+    if (null !== $domainsList) {
+        return $domainsList;
+    }
 
-        $domainsList = array(array(
-            'name' => $mainDmnProps['domain_name'],
-            'id' => $mainDmnProps['domain_id'],
-            'type' => 'dmn',
-            'mount_point' => '/'
-        ));
+    $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+    $domainsList = array(array(
+        'name' => $mainDmnProps['domain_name'],
+        'id' => $mainDmnProps['domain_id'],
+        'type' => 'dmn',
+        'mount_point' => '/'
+    ));
 
-        $query = "
-            SELECT
-                CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name,
-                t1.subdomain_mount AS mount_point
-            FROM
-                subdomain AS t1
-            INNER JOIN
-                domain AS t2 USING(domain_id)
-            WHERE
-                t1.domain_id = :domain_id
-            AND
-                t1.subdomain_status = :status_ok
-            UNION
-            SELECT
-                alias_name AS name, alias_mount AS mount_point
-            FROM
-                domain_aliasses
-            WHERE
-                domain_id = :domain_id
-            AND
-                alias_status = :status_ok
-            UNION
-            SELECT
-                CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name,
-                t1.subdomain_alias_mount AS mount_point
-            FROM
-                subdomain_alias AS t1
-            INNER JOIN
-                domain_aliasses AS t2 USING(alias_id)
-            WHERE
-                t2.domain_id = :domain_id
-            AND
-                subdomain_alias_status = :status_ok
-        ";
-        $stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok'));
+    $stmt = exec_query(
+        "
+            SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name, t1.subdomain_mount AS mount_point
+            FROM subdomain AS t1 INNER JOIN domain AS t2 USING(domain_id)
+            WHERE t1.domain_id = :domain_id AND t1.subdomain_status = :status_ok
+            UNION ALL
+            SELECT alias_name AS name, alias_mount AS mount_point
+            FROM domain_aliasses
+            WHERE domain_id = :domain_id AND alias_status = :status_ok
+            UNION ALL
+            SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name, t1.subdomain_alias_mount AS mount_point
+            FROM subdomain_alias AS t1 INNER JOIN domain_aliasses AS t2 USING(alias_id)
+            WHERE t2.domain_id = :domain_id AND subdomain_alias_status = :status_ok
+        ",
+        array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok')
+    );
 
-        if ($stmt->rowCount()) {
-            $domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
-            usort($domainsList, function ($a, $b) {
-                return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
-            });
-        }
+    if ($stmt->rowCount()) {
+        $domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
+        usort($domainsList, function ($a, $b) {
+            return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
+        });
     }
 
     return $domainsList;
@@ -94,7 +76,7 @@ function _client_getDomainsList()
  * @param $tpl iMSCP_pTemplate
  * @return void
  */
-function client_generatePage($tpl)
+function generatePage($tpl)
 {
     $tpl->assign(array(
         'DOMAIN_ALIAS_NAME' => isset($_POST['domain_alias_name']) ? tohtml($_POST['domain_alias_name']) : '',
@@ -108,7 +90,7 @@ function client_generatePage($tpl)
         'FORWARD_URL' => isset($_POST['forward_url']) ? tohtml(decode_idna($_POST['forward_url'])) : ''
     ));
 
-    foreach (_client_getDomainsList() as $domain) {
+    foreach (getDomainsList() as $domain) {
         $tpl->assign(array(
             'DOMAIN_NAME' => tohtml($domain['name']),
             'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domain['name'])),
@@ -123,8 +105,10 @@ function client_generatePage($tpl)
  *
  * @return bool TRUE on success, FALSE on failure
  */
-function client_addDomainAlias()
+function addDomainAlias()
 {
+    global $mainDmnProps;
+
     // Basic check
     if (empty($_POST['domain_alias_name'])) {
         set_page_message(tr('You must enter a domain alias name.'), 'error');
@@ -135,7 +119,6 @@ function client_addDomainAlias()
 
     // Check for domain alias name syntax
     global $dmnNameValidationErrMsg;
-
     if (!isValidDomainName($domainAliasName)) {
         set_page_message($dmnNameValidationErrMsg, 'error');
         return false;
@@ -159,57 +142,56 @@ function client_addDomainAlias()
 
     // Check for shared mount point option
     if (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') { // We are safe here
-        if (isset($_POST['shared_mount_point_domain'])) {
-            $sharedMountPointDomain = clean_input($_POST['shared_mount_point_domain']);
-            $domainList = _client_getDomainsList();
-
-            // Get shared mount point
-            foreach ($domainList as $domain) {
-                if ($domain['name'] == $sharedMountPointDomain) {
-                    $mountPoint = $domain['mount_point'];
-                }
-            }
-        } else {
+        if (!isset($_POST['shared_mount_point_domain'])) {
             showBadRequestErrorPage();
+        }
+
+        $sharedMountPointDomain = clean_input($_POST['shared_mount_point_domain']);
+        $domainList = _client_getDomainsList();
+
+        // Get shared mount point
+        foreach ($domainList as $domain) {
+            if ($domain['name'] == $sharedMountPointDomain) {
+                $mountPoint = $domain['mount_point'];
+            }
         }
     }
 
     // Check for URL forwarding option
     $forwardUrl = 'no';
 
-    if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') { // We are safe here
-        if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {
-            $forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
-
-            try {
-                try {
-                    $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-                } catch (Zend_Uri_Exception $e) {
-                    throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
-                }
-
-                $uri->setHost(encode_idna($uri->getHost()));
-
-                if ($uri->getHost() == $domainAliasNameAscii && $uri->getPath() == '/') {
-                    throw new iMSCP_Exception(
-                        tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
-                        tr('Domain alias %s cannot be forwarded on itself.', "<strong>$domainAliasName</strong>")
-                    );
-                }
-
-                $forwardUrl = $uri->getUri();
-            } catch (Exception $e) {
-                set_page_message($e->getMessage(), 'error');
-                return false;
-            }
-        } else {
+    if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') {
+        if (!isset($_POST['forward_url_scheme']) || isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
+        }
+
+        $forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
+
+        try {
+            try {
+                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
+            } catch (Zend_Uri_Exception $e) {
+                throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
+            }
+
+            $uri->setHost(encode_idna($uri->getHost()));
+
+            if ($uri->getHost() == $domainAliasNameAscii && $uri->getPath() == '/') {
+                throw new iMSCP_Exception(
+                    tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
+                    tr('Domain alias %s cannot be forwarded on itself.', "<strong>$domainAliasName</strong>")
+                );
+            }
+
+            $forwardUrl = $uri->getUri();
+        } catch (Exception $e) {
+            set_page_message($e->getMessage(), 'error');
+            return false;
         }
     }
 
     $isSuUser = isset($_SESSION['logged_from_type']); # See http://youtrack.i-mscp.net/issue/IP-1486
     $userEmail = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '';
-    $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $db = iMSCP_Database::getInstance();
 
     try {
@@ -238,12 +220,12 @@ function client_addDomainAlias()
 
         // Create the phpini entry for that domain alias
         $phpini = iMSCP_PHPini::getInstance();
-        $phpini->loadResellerPermissions($_SESSION['user_created_by']);
-        $phpini->loadClientPermissions($_SESSION['user_id']);
-        $phpini->loadDomainIni();
+        $phpini->loadResellerPermissions($_SESSION['user_created_by']); // Load reseller PHP permissions
+        $phpini->loadClientPermissions($_SESSION['user_id']); // Load client PHP permissions
+        $phpini->loadDomainIni($_SESSION['user_id'], $mainDmnProps['domain_id'], 'dmn'); // Load main domain PHP configuration options
         $phpini->saveDomainIni($_SESSION['user_id'], $id, 'als');
 
-        if($isSuUser) {
+        if ($isSuUser) {
             $cfg = iMSCP_Registry::get('config');
             if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES'] && $userEmail !== '') {
                 client_mail_add_default_accounts($mainDmnProps['domain_id'], $userEmail, $domainAliasNameAscii, 'alias', $id);
@@ -258,13 +240,13 @@ function client_addDomainAlias()
             'domainAliasId' => $id
         ));
 
-        if($isSuUser) {
+        if ($isSuUser) {
             send_request();
             write_log(sprintf('A new `%s` domain alias has been created by: %s', $domainAliasName, $_SESSION['user_logged']), E_USER_NOTICE);
             set_page_message(tr('Domain alias successfully created.'), 'success');
         } else {
             send_alias_order_email($domainAliasName);
-            write_log(sprintf('An new `%s` domain alias has been ordered by: %s', $domainAliasName, decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+            write_log(sprintf('A new `%s` domain alias has been ordered by: %s', $domainAliasName, decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
             set_page_message(tr('Domain alias successfully ordered.'), 'success');
         }
     } catch (iMSCP_Exception_Database $e) {
@@ -295,7 +277,7 @@ if ($mainDmnProps['domain_alias_limit'] != 0 && $domainAliasesCount >= $mainDmnP
     redirectTo('domains_manage.php');
 }
 
-if (!empty($_POST) && client_addDomainAlias()) {
+if (!empty($_POST) && addDomainAlias()) {
     redirectTo('domains_manage.php');
 }
 
@@ -327,7 +309,7 @@ $tpl->assign(array(
 ));
 
 generateNavigation($tpl);
-client_generatePage($tpl);
+generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

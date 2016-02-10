@@ -69,6 +69,7 @@ Allows to setup Bind9 for local network.
 ### 10_named_slave_provisioning.pl
 
 Provides slave DNS server(s) provisioning service.
+This listener file requires i-MSCP 1.2.12 or newest.
 
 ### 10_named_tuning.pl
 
