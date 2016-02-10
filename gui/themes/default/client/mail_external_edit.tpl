@@ -91,7 +91,10 @@
             <th style="width:21px;">
                 <a href="#" title="{TR_SELECT_ALL_ENTRIES_MESSAGE}"><label><input type="checkbox"></label></a>
             </th>
-            <th>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}"></a></th>
+            <th>
+                {TR_MX_TYPE}
+                <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}"></a>
+            </th>
             <th>{TR_PRIORITY}</th>
             <th>{TR_HOST}</th>
         </tr>
@@ -101,7 +104,10 @@
             <td style="width:21px;">
                 <a href="#" title="{TR_SELECT_ALL_ENTRIES_MESSAGE}"><label><input type="checkbox"/></label></a>
             </td>
-            <td>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}"></a></td>
+            <td>
+                {TR_MX_TYPE}
+                <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}"></a>
+            </td>
             <td>{TR_PRIORITY}</td>
             <td>{TR_HOST}</td>
         </tr>

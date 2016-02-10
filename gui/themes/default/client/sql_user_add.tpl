@@ -38,7 +38,7 @@
 			<td><input type="text" id="user_name" name="user_name" value="{USER_NAME}"/></td>
 		</tr>
 		<tr>
-			<td><label for="user_host">{TR_USER_HOST}<span class="tips icon i_help" title="{TR_USER_HOST_TIP}"></span></label></td>
+			<td><label for="user_host">{TR_USER_HOST} <span class="icon i_help" title="{TR_USER_HOST_TIP}"></span></label></td>
 			<td><input type="text" id="user_host" name="user_host" value="{USER_HOST}"/></td>
 		</tr>
 		<tr>

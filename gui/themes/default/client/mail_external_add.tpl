@@ -57,14 +57,20 @@
     <table class="firstColFixed" id="ext_mail_table">
         <thead>
         <tr>
-            <th>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}"></a></th>
+            <th>
+                {TR_MX_TYPE}
+                <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}"></a>
+            </th>
             <th>{TR_PRIORITY}</th>
             <th>{TR_HOST}</th>
         </tr>
         </thead>
         <tfoot>
         <tr>
-            <td>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}"></a></td>
+            <td>
+                {TR_MX_TYPE}
+                <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}"></a>
+            </td>
             <td>{TR_PRIORITY}</td>
             <td>{TR_HOST}</td>
         </tr>

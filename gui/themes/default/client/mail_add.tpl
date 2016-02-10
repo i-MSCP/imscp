@@ -50,7 +50,7 @@
 		<tr id="tr_forward_list">
 			<td>
 				<label for="forward_list">{TR_FORWARD_TO}</label>
-				<span class="tips icon i_help" id="fwd_help" title="{TR_FWD_HELP}"></span>
+				<span class="icon i_help" id="fwd_help" title="{TR_FWD_HELP}"></span>
 			</td>
 			<td><textarea name="forward_list" id="forward_list">{FORWARD_LIST}</textarea></td>
 		</tr>

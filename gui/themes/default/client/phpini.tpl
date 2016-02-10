@@ -20,7 +20,9 @@
         <tbody>
         <!-- BDP: domain_list_block -->
         <tr>
-            <td><label for="domain_id">{TR_DOMAIN} <span class="icon i_help" title="{TR_DOMAIN_TOOLTIP}"></span></label></td>
+            <td>
+                <label for="domain_id">{TR_DOMAIN} <span class="icon i_help" title="{TR_DOMAIN_TOOLTIP}"></span></label>
+            </td>
             <td>
                 <select name="domain_id" id="domain_id">
                     <!-- BDP: domain_name_block -->

@@ -43,7 +43,7 @@
 		<td><a href="{IMPORT_LINK}" class="icon i_app_download" onclick="return action_import()">{TR_IMPORT}</a></td>
 		<td><a href="{DELETE_LINK}" class="icon i_delete" onclick="return action_delete()">{TR_DELETE}</a></td>
 		<!-- EDP: software_is_not_in_softwaredepot -->
-		<td><span class="tips icon i_help" id="tld_help" title="{SW_INSTALLED}"></span></td>
+		<td><span class="icon i_help" id="tld_help" title="{SW_INSTALLED}"></span></td>
 		<td>{TR_VERSION}</td>
 		<td>{TR_LANGUAGE}</td>
 		<td>{TR_TYPE}</td>

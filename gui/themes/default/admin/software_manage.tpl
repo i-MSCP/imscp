@@ -138,7 +138,7 @@
 			<td><a href="#" onClick="return action_install('{PACKAGE_HTTP_URL}')">{TR_PACKAGE_INSTALL}</a></td>
 			<!-- EDP: package_install_link -->
 			<!-- BDP: package_info_link -->
-			<td><span class="icon i_help">Help</span>{TR_PACKAGE_INSTALL}</td>
+			<td>{TR_PACKAGE_INSTALL}</td>
 			<!-- EDP: package_info_link -->
 		</tr>
 		<!-- EDP: list_webdepotsoftware -->
