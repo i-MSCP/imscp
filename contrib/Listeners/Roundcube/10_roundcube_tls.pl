@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file to change the Roundcube config to connect via TLS.
+## Changes the Roundcube Webmail configuration to connect through TLS.
 #
 
 package Listener::Roundcube::TLS;

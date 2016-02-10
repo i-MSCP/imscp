@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file which allow to add host entries in the system hosts file
+## Allows to add host entries in the system hosts file (eg. /etc/hosts).
 #
 
 package Listener::System::Hosts;

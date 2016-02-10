@@ -16,10 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Listener file that allows to configure the Postfix as smarthost with SASL authentication.
-#
-# To install this listener, copy it into the /etc/imscp/listeners.d directory and fill the configuration below.
-# Once done, run the i-MSCP installer as follow: imscp-autoinstall -da
+## Allows to configure the Postfix as smarthost with SASL authentication.
 #
 
 package Listener::Postfix::Smarthost;

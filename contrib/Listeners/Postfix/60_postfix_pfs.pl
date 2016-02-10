@@ -16,8 +16,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file to add the self generated EDH parameter files for Perfect 
-## Forward Secrecy (PFS). First create the files before activating this listener:
+## Adds a self-generated EDH parameter files for Perfect Forward Secrecy (PFS).
+##
+## First, you must create the files before activating this listener:
 ##
 ##   cd /etc/postfix
 ##   umask 022

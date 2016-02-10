@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Listener file that allows to setup sender generic map.
+## Allows to setup sender generic map.
 #
 
 package Listener::Postfix::Sender::Generic::Map;

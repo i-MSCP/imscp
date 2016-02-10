@@ -29,6 +29,7 @@ CONTRIB
 	Added: 30_dovecot_namespace.pl listener file (creates the INBOX. as a compatibility name)
 	Added: 40_dovecot_pfs.pl listener file (activate the Perfect Forward Secrecy logging)
 	Added: 50_dovecot_plaintext.pl listener file (disable plaintext logins and force TLS)
+	Added: 60_dovecot_service_login.pl listener file (Allows to modify default service-login configuration options)
 	Added: 10_nginx_hsts.pl listener file (enable HTTP Strict Transport Security (HSTS))
 	Added: 60_postfix_pfs.pl listener file (add the self generated EDH parameter files for Perfect Forward Secrecy (PFS))
 	Added: 70_postfix_submission_tls.pl listener file (force TLS connection on postfix submission)

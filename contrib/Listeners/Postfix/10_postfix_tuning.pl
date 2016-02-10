@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file that allows to tune Postfix configuration.
+## Allows to tune Postfix configuration files (main.cf and master.cf).
 #
 
 package Listener::Postfix::Tuning;

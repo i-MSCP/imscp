@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file that provides dual stack support for Apache2.
+## Provides dual stack support for Apache2.
 #
 
 package Listener::Apache2::DualStack;

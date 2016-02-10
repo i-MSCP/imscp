@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file which provides dual stack support for bind9.
+## Provides dual stack support for bind9.
 #
 
 package Listener::Bind9::DualStack;

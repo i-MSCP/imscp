@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file modifies the zone files, removes default nameservers and adds custom out-of-zone nameservers
+## Overwrites the default nameservers with out-of-zone nameservers.
 #
 
 package Listener::Named::Tuning2;

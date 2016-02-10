@@ -16,8 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file for activating the dovecot compress plugin, to reduce
-## the bandwidth usage of IMAP and to also compress the stored mails
+## Activates the dovecot compress plugin to reduce the bandwidth usage of IMAP, and that also compresses the stored mails.
+##
 ## For more information please check:
 ##   http://wiki2.dovecot.org/Plugins/Compress
 ##   http://wiki2.dovecot.org/Plugins/Zlib

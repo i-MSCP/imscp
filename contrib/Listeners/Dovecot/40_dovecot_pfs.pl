@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file to activate the Perfect Forward Secrecy logging
+## Activates the Perfect Forward Secrecy logging.
 #
 
 package Listener::Dovecot::PFS;

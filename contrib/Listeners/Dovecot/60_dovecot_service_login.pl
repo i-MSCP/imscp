@@ -16,8 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener that allows to modify default Dovecot service-login configuration.
-## This listener file requires dovecot version 2.1.0 or newer
+## Allows to modify default service-login configuration options.
+## This listener file requires dovecot version 2.1.0 or newer.
 #
 
 package Listener::Dovecot::Service::Login;

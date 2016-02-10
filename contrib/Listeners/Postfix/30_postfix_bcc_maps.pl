@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Listener file that allows to setup recipient and sender bbc maps.
+## Allows to setup recipient and sender bbc map.
 #
 
 package Listener::Postfix::BCC::Map;

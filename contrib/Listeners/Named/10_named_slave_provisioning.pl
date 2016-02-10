@@ -17,7 +17,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file that provides slave DNS server(s) provisioning service
+## Provides slave DNS server(s) provisioning service.
 ## Compatible with i-MSCP >= 1.2.12
 ## Slave provisioning service will be available at:
 ##   - http://<panel.domain.tld>:8080/provisioning/slave_provisioning.php

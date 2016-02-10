@@ -16,9 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file to disable plaintext logins and force tls.
-## Also remove the authentication mechanisms cram-md5 and digest-md5
-## which won't be supported anymore in i-MSCP 1.3
+## Disables plaintext logins and enforce TLS. Also remove the cram-md5 and digest-md5 authentication mechanisms that are
+## no longer supported in i-MSCP 1.3.x
 #
 
 package Listener::Dovecot::Plaintext;

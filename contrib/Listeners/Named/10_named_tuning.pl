@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file that allows to remove default @ IN A IP DNS record ( when a custom DNS is set as replacement ).
+## Allows to replace defaults **@ IN <IP>** DNS record with a custom DNS record (when a custom DNS is set as replacement).
 #
 
 package Listener::Named::Tuning;

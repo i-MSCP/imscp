@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file to increase the mail_max_userip_connections
+## Allows to increase the mail_max_userip_connections parameter value.
 #
 
 package Listener::Dovecot::Connections;

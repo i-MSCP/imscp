@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file for redirect/proxy the i-MSCP tools in customers vhost files
+## Allows to redirect/proxy i-MSCP tools (pma,webmail...) in customers Apache2 vhost files.
 #
 
 package Listener::Apache2::Tools::Proxy;

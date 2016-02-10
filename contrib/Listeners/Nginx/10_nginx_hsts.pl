@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file for HTTP Strict Transport Security (HSTS) with Nginx
+## Activates HTTP Strict Transport Security (HSTS).
 #
 
 package Listener::Nginx::HSTS;

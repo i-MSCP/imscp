@@ -16,8 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file that removes the ServerIdent information, and forces a TLS 
-## connection for non local networks.
+## Removes the ServerIdent information, and enforces TLS connections for non-local networks.
 #
 
 package Listener::ProFTP::Tuning;
@@ -30,8 +29,8 @@ use iMSCP::EventManager;
 ## Configuration parameters
 #
 
-# Configure the list of local networks to allow non TLS connection 
-# my @localNetworks = ( '127.0.0.1', '192.168.1.1', '172.16.12.0/24' );
+# Configure the list of local networks to allow for non TLS connection
+# For instance: my @localNetworks = ('127.0.0.1', '192.168.1.1', '172.16.12.0/24');
 my @localNetworks = ('127.0.0.1');
 
 #
@@ -56,20 +55,20 @@ iMSCP::EventManager->getInstance()->register('afterFtpdBuildConf', sub {
 EOF
 
 	my $cfgNetworks;
-	for my $networks(@localNetworks) {
-		$cfgNetworks .= "\n  From $networks";
+	for my $network(@localNetworks) {
+		$cfgNetworks .= "\n  From $network";
 	}
 
-	# disable the message displayed on connect
+	# Disable the message displayed on connect
 	$$tplContent =~ s/^(ServerType.*)/$1\nServerIdent                off/m;
 
-	# remove TLSRequired
+	# Remove TLSRequired
 	$$tplContent =~ s/^\s+TLSRequired.*\n//m;
 
-	# insert $cfgSnippet
+	# Insert $cfgSnippet
 	$$tplContent =~ s/^(<IfModule mod_tls\.c>$)/$1\n$cfgSnippet/m;
 
-	# insert class local
+	# Insert class local
 	$$tplContent .= "\n<Class local>$cfgNetworks\n</Class>";
 	0;
 });

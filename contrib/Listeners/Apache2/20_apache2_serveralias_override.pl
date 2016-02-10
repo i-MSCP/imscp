@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 #
-## Listener file that allows to override Apache 2 ServerAlias directive value.
+## Allows to overwrite Apache2 ServerAlias directive.
 #
 
 package Listener::Apache2::ServerAlias::Override;

@@ -16,8 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file that creates the INBOX. as a compatibility name, 
-## so old clients can continue using it while new clients will use the 
+## Creates the INBOX. as a compatibility name, so old clients can continue using it while new clients will use the
 ## empty prefix namespace.
 #
 
