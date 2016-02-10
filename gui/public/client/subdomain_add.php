@@ -31,57 +31,45 @@ function _client_getDomainsList()
 {
     static $domainsList = null;
 
-    if (null === $domainsList) {
-        $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-        $domainsList = array(array(
-            'name' => $mainDmnProps['domain_name'],
-            'id' => $mainDmnProps['domain_id'],
-            'type' => 'dmn',
-            'mount_point' => '/'
-        ));
+    if (null !== $domainsList) {
+        return $domainsList;
+    }
 
-        $query = "
-            SELECT
-                CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `name`, `t1`.`subdomain_id` AS `id`,
-                'sub' AS `type`, `t1`.`subdomain_mount` AS `mount_point`
-            FROM
-                `subdomain` AS `t1`
-            INNER JOIN
-                `domain` AS `t2` USING(`domain_id`)
-            WHERE
-                `t1`.`domain_id` = :domain_id
-            AND
-                `t1`.`subdomain_status` = :status_ok
-            UNION
-            SELECT
-                `alias_name` AS `name`, `alias_id` AS `id`, 'als' AS `type`, `alias_mount` AS `mount_point`
-            FROM
-                `domain_aliasses`
-            WHERE
-                `domain_id` = :domain_id
-            AND
-                `alias_status` = :status_ok
-            UNION
-            SELECT
-                CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `name`, `t1`.`subdomain_alias_id` AS `id`,
-                'alssub' AS `type`, `t1`.`subdomain_alias_mount` AS `mount_point`
-            FROM
-                `subdomain_alias` AS `t1`
-            INNER JOIN
-                `domain_aliasses` AS `t2` USING(`alias_id`)
-            WHERE
-                `t2`.`domain_id` = :domain_id
-            AND
-                `subdomain_alias_status` = :status_ok
-        ";
-        $stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok'));
+    $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+    $domainsList = array(array(
+        'name' => $mainDmnProps['domain_name'],
+        'id' => $mainDmnProps['domain_id'],
+        'type' => 'dmn',
+        'mount_point' => '/'
+    ));
 
-        if ($stmt->rowCount()) {
-            $domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
-            usort($domainsList, function ($a, $b) {
-                return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
-            });
-        }
+    $stmt = exec_query(
+        "
+            SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name, t1.subdomain_id AS id,
+                'sub' AS type, t1.subdomain_mount AS mount_point
+            FROM subdomain AS t1
+            INNER JOIN domain AS t2 USING(domain_id)
+            WHERE t1.domain_id = :domain_id
+            AND t1.subdomain_status = :status_ok
+            UNION ALL
+            SELECT alias_name, alias_id, 'als', alias_mount
+            FROM domain_aliasses
+            WHERE domain_id = :domain_id AND alias_status = :status_ok
+            UNION ALL
+            SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name), t1.subdomain_alias_id, 'alssub',
+                t1.subdomain_alias_mount
+            FROM subdomain_alias AS t1
+            INNER JOIN domain_aliasses AS t2 USING(alias_id)
+            WHERE t2.domain_id = :domain_id AND subdomain_alias_status = :status_ok
+        ",
+        array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok')
+    );
+
+    if ($stmt->rowCount()) {
+        $domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
+        usort($domainsList, function ($a, $b) {
+            return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
+        });
     }
 
     return $domainsList;
@@ -145,8 +133,7 @@ function client_addSubdomain()
 
     // Check for parent domain
     $domainName = clean_input($_POST['domain_name']);
-    $domainType = null;
-    $domainId = null;
+    $domainType = $domainId = null;
     $domainList = _client_getDomainsList();
 
     foreach ($domainList as $domain) {
@@ -182,7 +169,7 @@ function client_addSubdomain()
         SELECT alias_id FROM domain_aliasses WHERE alias_name = :subdomain_name',
         array('subdomain_name' => $subdomainName)
     );
-    if($stmt->rowCount()) {
+    if ($stmt->rowCount()) {
         set_page_message(tr('Subdomain %s is unavailable.', "<strong>$subdomainName</strong>"), 'error');
         return false;
     }
@@ -279,7 +266,7 @@ function client_addSubdomain()
         if ($domainType == 'als') {
             $query = "
                 INSERT INTO subdomain_alias (
-                    alias_id`, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_url_forward,
+                    alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_url_forward,
                     subdomain_alias_status
                 ) VALUES (
                     ?, ?, ?, ?, ?
