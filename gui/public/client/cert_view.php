@@ -132,12 +132,31 @@ function _client_updateDomainStatus($domainType, $domainId)
  */
 function _client_generateOpenSSLConfFile($data)
 {
+    global $domainType, $domainId;
+
     $config = iMSCP_Registry::get('config');
+
+    $altNames = <<<'EOF'
+DNS.1 = {DOMAIN_NAME}
+DNS.2 = www.{DOMAIN_NAME}
+EOF;
+
+    if($domainType == 'dmn') {
+        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}.{BASE_SERVER_VHOST}\n";
+    } elseif($domainType == 'als') {
+        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}als$domainId.{BASE_SERVER_VHOST}\n";
+    } elseif($domainType == 'sub') {
+        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}sub$domainId.{BASE_SERVER_VHOST}\n";
+    } else {
+        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}alssub$domainId.{BASE_SERVER_VHOST}\n";
+    }
+
     $sslTpl = new iMSCP_pTemplate();
     $sslTpl->setRootDir(LIBRARY_PATH . '/Resources/ssl');
     $sslTpl->define('tpl', 'openssl.cnf.tpl');
     $sslTpl->assign(array(
         'DOMAIN_NAME' => $data['domain_name'],
+        'ALT_NAMES' => $altNames,
         'ADMIN_SYS_NAME' => $data['admin_sys_name'],
         'BASE_SERVER_VHOST' => $config['BASE_SERVER_VHOST']
     ));

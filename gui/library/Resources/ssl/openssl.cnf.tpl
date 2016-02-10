@@ -19,6 +19,4 @@ subjectAltName = @alt_names
 issuerAltName = issuer:copy
 
 [alt_names]
-DNS.1 = {DOMAIN_NAME}
-DNS.2 = www.{DOMAIN_NAME}
-DNS.3 = {ADMIN_SYS_NAME}.{BASE_SERVER_VHOST}
+{ALT_NAMES}
