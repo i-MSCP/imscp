@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file for redirect/proxy in customers vhost files for the i-MSCP tools
+## Listener file for redirect/proxy the i-MSCP tools in customers vhost files
 #
 
 package Listener::Apache2::Tools::Proxy;
@@ -43,12 +43,12 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
 	my $cfgProxy = <<EOF;
     # BEGIN Listener::Apache2::Tools::Proxy
     SSLProxyEngine On
-    ProxyPass /ftp https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/ftp
-    ProxyPassReverse /ftp https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/ftp
-    ProxyPass /pma https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/pma
-    ProxyPassReverse /pma https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/pma
-    ProxyPass /webmail https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/webmail
-    ProxyPassReverse /webmail https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/webmail
+    ProxyPass /ftp/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/ftp/ retry=0 timeout=30
+    ProxyPassReverse /ftp/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/ftp/
+    ProxyPass /pma/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/pma/ retry=0 timeout=30
+    ProxyPassReverse /pma/ https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/pma/
+    ProxyPass /webmail/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/webmail/ retry=0 timeout=30
+    ProxyPassReverse /webmail/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/webmail/
     # END Listener::Apache2::Tools::Proxy
 EOF
 

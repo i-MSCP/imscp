@@ -27,10 +27,6 @@ Listener file that allows to change the domain redirect type in customer's vhost
 
 Listener file for redirect/proxy in customers vhost files for the i-MSCP tools
 
-### 50_apache2_hsts.pl
-
-Listener file for HTTP Strict Transport Security (HSTS) with Apache2
-
 ## Dovecot listeners
 
 ### 10_dovecot_compress.pl
