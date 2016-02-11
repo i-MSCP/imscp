@@ -1,28 +1,21 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /***********************************************************************************************************************
@@ -33,29 +26,20 @@
  * Generates domains list
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $userId Customer unique identifier
  * @return void
  */
-function client_generateDomainsList($tpl, $userId)
+function generateDomainsList($tpl)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
     $stmt = exec_query(
         '
-            SELECT
-                domain_id, domain_name, domain_created, domain_expires, domain_status
-            FROM
-                domain
-            WHERE
-                domain_admin_id = ?
-            ORDER BY
-                domain_name
+            SELECT domain_id, domain_name, domain_created, domain_expires, domain_status FROM domain
+            WHERE domain_admin_id = ? ORDER BY domain_name
         ',
-        $userId
+        $_SESSION['user_id']
     );
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetchRow()) {
         $domainName = decode_idna($row['domain_name']);
 
         if ($row['domain_status'] == 'ok') {
@@ -88,27 +72,20 @@ function client_generateDomainsList($tpl, $userId)
  * Generates domain aliases list
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $userId User unique identifier
  * @return void
  */
-function client_generateDomainAliasesList($tpl, $userId)
+function generateDomainAliasesList($tpl)
 {
     if (!customerHasFeature('domain_aliases')) {
         $tpl->assign('DOMAIN_ALIASES_BLOCK', '');
         return;
     }
 
-    $domainId = get_user_domain_id($userId);
+    $domainId = get_user_domain_id($_SESSION['user_id']);
     $stmt = exec_query(
         '
-            SELECT
-                alias_id, alias_name, alias_status, alias_mount, alias_ip_id, url_forward
-            FROM
-                domain_aliasses
-            WHERE
-                domain_id = ?
-            ORDER BY
-                alias_mount, alias_name
+            SELECT alias_id, alias_name, alias_status, alias_mount, alias_ip_id, url_forward FROM domain_aliasses
+            WHERE domain_id = ? ORDER BY alias_mount, alias_name
         ',
         $domainId
     );
@@ -128,8 +105,8 @@ function client_generateDomainAliasesList($tpl, $userId)
         $alsForwardUrl = $row['url_forward'];
         $alsMountPoint = $row['alias_mount'];
 
-        list($action, $actionScript, $isStatusOk, $certText, $certScript) = _client_generateDomainAliasAction($alsId, $alsStatus);
-        list($redirectUrl, $editLink, $edit) = _client_generateDomainAliasRedirect($alsId, $alsStatus, $alsForwardUrl);
+        list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateDomainAliasAction($alsId, $alsStatus);
+        list($redirectUrl, $editLink, $edit) = generateDomainAliasRedirect($alsId, $alsStatus, $alsForwardUrl);
 
         $alsName = decode_idna($alsName);
         $redirectUrl = decode_idna($redirectUrl);
@@ -175,7 +152,7 @@ function client_generateDomainAliasesList($tpl, $userId)
  * @param string $status Alias status
  * @return array
  */
-function _client_generateDomainAliasAction($id, $status)
+function generateDomainAliasAction($id, $status)
 {
     if ($status == 'ok') {
         return array(
@@ -203,7 +180,7 @@ function _client_generateDomainAliasAction($id, $status)
  * @param string $redirectUrl Target URL for redirect request
  * @return array
  */
-function _client_generateDomainAliasRedirect($id, $status, $redirectUrl)
+function generateDomainAliasRedirect($id, $status, $redirectUrl)
 {
     if ($redirectUrl == 'no') {
         if ($status == 'ok') {
@@ -232,31 +209,23 @@ function _client_generateDomainAliasRedirect($id, $status, $redirectUrl)
  * Generates subdomains list
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $userId User unique identifier
  * @return void
  */
-function client_generateSubdomainsList($tpl, $userId)
+function generateSubdomainsList($tpl)
 {
     if (!customerHasFeature('subdomains')) {
         $tpl->assign('SUBDOMAINS_BLOCK', '');
         return;
     }
 
-    $domainId = get_user_domain_id($userId);
+    $domainId = get_user_domain_id($_SESSION['user_id']);
 
     // Subdomains
     $stmt1 = exec_query(
         '
-            SELECT
-                subdomain_id, subdomain_name, subdomain_mount, subdomain_status, subdomain_url_forward, domain_name
-            FROM
-                subdomain
-            JOIN
-                domain ON (subdomain.domain_id = domain.domain_id)
-            WHERE
-                subdomain.domain_id = ?
-            ORDER BY
-                subdomain_name
+            SELECT subdomain_id, subdomain_name, subdomain_mount, subdomain_status, subdomain_url_forward, domain_name
+            FROM subdomain JOIN domain ON (subdomain.domain_id = domain.domain_id)
+            WHERE subdomain.domain_id = ? ORDER BY subdomain_name
         ',
         $domainId
     );
@@ -264,17 +233,11 @@ function client_generateSubdomainsList($tpl, $userId)
     // Domain aliases subdomains
     $stmt2 = exec_query(
         '
-            SELECT
-                subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_url_forward,
+            SELECT subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_url_forward,
                 subdomain_alias_status, alias_name
-            FROM
-                subdomain_alias
-            JOIN
-                domain_aliasses ON subdomain_alias.alias_id = domain_aliasses.alias_id
-            WHERE
-                domain_id = ?
-            ORDER BY
-                subdomain_alias_name
+            FROM subdomain_alias JOIN domain_aliasses ON subdomain_alias.alias_id = domain_aliasses.alias_id
+            WHERE domain_id = ?
+            ORDER BY subdomain_alias_name
         ',
         $domainId
     );
@@ -295,8 +258,8 @@ function client_generateSubdomainsList($tpl, $userId)
         $subUrlForward = $row['subdomain_url_forward'];
         $subMountPoint = $row['subdomain_mount'];
 
-        list($action, $actionScript, $isStatusOk, $certText, $certScript) = _client_generateSubdomainAction($subId, $subStatus);
-        list($redirectUrl, $editLink, $edit) = _client_generateSubdomainRedirect($subId, $subStatus, $subUrlForward, 'dmn');
+        list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateSubdomainAction($subId, $subStatus);
+        list($redirectUrl, $editLink, $edit) = generateSubdomainRedirect($subId, $subStatus, $subUrlForward, 'dmn');
 
         $domainName = decode_idna($domainName);
         $subName = decode_idna($subName);
@@ -340,8 +303,8 @@ function client_generateSubdomainsList($tpl, $userId)
         $alssubMountPoint = $row['subdomain_alias_mount'];
         $alssubUrlForward = $row['subdomain_alias_url_forward'];
 
-        list($action, $actionScript, $isStatusOk, $certText, $certScript) = _client_generateSubdomainAliasAction($alssubId, $alssubStatus);
-        list($redirectUrl, $editLink, $edit) = _client_generateSubdomainRedirect($alssubId, $alssubStatus, $alssubUrlForward, 'als');
+        list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateSubdomainAliasAction($alssubId, $alssubStatus);
+        list($redirectUrl, $editLink, $edit) = generateSubdomainRedirect($alssubId, $alssubStatus, $alssubUrlForward, 'als');
 
         $alsName = decode_idna($alsName);
         $name = decode_idna($alssubName);
@@ -380,7 +343,6 @@ function client_generateSubdomainsList($tpl, $userId)
     }
 
     $tpl->assign('SUB_MESSAGE', '');
-
 }
 
 /**
@@ -393,7 +355,7 @@ function client_generateSubdomainsList($tpl, $userId)
  * @param string $entityType Subdomain type (dmn|als)
  * @return array
  */
-function _client_generateSubdomainRedirect($id, $status, $redirectUrl, $entityType)
+function generateSubdomainRedirect($id, $status, $redirectUrl, $entityType)
 {
     if ($status == 'ok') {
         return array(
@@ -418,7 +380,7 @@ function _client_generateSubdomainRedirect($id, $status, $redirectUrl, $entityTy
  * @param string $status Subdomain status
  * @return array
  */
-function _client_generateSubdomainAction($id, $status)
+function generateSubdomainAction($id, $status)
 {
     if ($status == 'ok') {
         return array(
@@ -440,7 +402,7 @@ function _client_generateSubdomainAction($id, $status)
  * @param string $status Subdomain alias Status
  * @return array
  */
-function _client_generateSubdomainAliasAction($id, $status)
+function generateSubdomainAliasAction($id, $status)
 {
     if ($status == 'ok') {
         return array(
@@ -459,39 +421,27 @@ function _client_generateSubdomainAliasAction($id, $status)
  * Generates custom DNS records list
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $userId User unique identifier
  * @return void
  */
-function client_generateCustomDnsRecordsList($tpl, $userId)
+function generateCustomDnsRecordsList($tpl)
 {
     $filterCond = '';
-
     if (!customerHasFeature('custom_dns_records')) {
         $filterCond = "AND owned_by <> 'custom_dns_feature'";
     }
 
     $stmt = exec_query(
         "
-            SELECT
-                t1.*, IFNULL(t3.alias_name, t2.domain_name) zone_name
-            FROM
-                domain_dns AS t1
-            LEFT JOIN
-                domain AS t2 USING (domain_id)
-            LEFT JOIN
-                domain_aliasses AS t3 USING (alias_id)
-            WHERE
-                t1.domain_id = ?
-            $filterCond
-            ORDER BY
-                t1.domain_id, t1.alias_id, t1.domain_dns, t1.domain_type
+            SELECT t1.*, IFNULL(t3.alias_name, t2.domain_name) zone_name
+            FROM domain_dns AS t1 LEFT JOIN domain AS t2 USING (domain_id) LEFT JOIN domain_aliasses AS t3 USING (alias_id)
+            WHERE  t1.domain_id = ? $filterCond ORDER BY t1.domain_id, t1.alias_id, t1.domain_dns, t1.domain_type
         ",
-        get_user_domain_id($userId)
+        get_user_domain_id($_SESSION['user_id'])
     );
 
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow()) {
-            list($actionEdit, $actionScriptEdit) = _client_generateCustomDnsRecordAction(
+            list($actionEdit, $actionScriptEdit) = generateCustomDnsRecordAction(
                 'edit',
                 $row['owned_by'] === 'custom_dns_feature' ? $row['domain_dns_id'] : ($row['owned_by'] === 'ext_mail_feature' ? ($row['alias_id'] ? $row['alias_id'] . ';alias' : $row['domain_id'] . ';normal' ) : null),
                 $row['domain_dns_status'],
@@ -501,7 +451,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
             if ($row['owned_by'] !== 'custom_dns_feature') {
                 $tpl->assign('DNS_DELETE_LINK', '');
             } else {
-                list($actionDelete, $actionScriptDelete) = _client_generateCustomDnsRecordAction('Delete', $row['domain_dns_id'], $row['domain_dns_status']);
+                list($actionDelete, $actionScriptDelete) = generateCustomDnsRecordAction('Delete', $row['domain_dns_id'], $row['domain_dns_status']);
                 $tpl->assign(array(
                     'DNS_ACTION_SCRIPT_DELETE' => $actionScriptDelete,
                     'DNS_ACTION_DELETE' => $actionDelete,
@@ -558,7 +508,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
  * @param string $ownedBy Owner of the DNS record
  * @return array
  */
-function _client_generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
+function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
 {
     if ($status == 'ok') {
         if ($action == 'edit') {
@@ -628,7 +578,6 @@ $tpl->assign(array(
     'TR_STATUS' => tr('Status'),
     'TR_CERT' => tr('SSL certificate'),
     'TR_ACTIONS' => tr('Actions'),
-    'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s domain?', '%s'),
     'TR_DNS' => tr('DNS resource records'),
     'TR_DNS_NAME' => tr('Name'),
     'TR_DNS_CLASS' => tr('Class'),
@@ -638,11 +587,19 @@ $tpl->assign(array(
     'TR_DOMAIN_NAME' => tr('Domain')
 ));
 
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+    /** @var $e \iMSCP_Events_Event */
+    $translations = $e->getParam('translations');
+    $translations['core']['als_delete_alert'] = tr('Are you sure you want to delete this domain alias?');
+    $translations['core']['sub_delete_alert'] = tr('Are you sure you want to delete this subdomain?');
+    $translations['core']['dns_delete_alert'] = tr('Are you sure you want to delete this DNS record?');
+});
+
 generateNavigation($tpl);
-client_generateDomainsList($tpl, $_SESSION['user_id']);
-client_generateSubdomainsList($tpl, $_SESSION['user_id']);
-client_generateDomainAliasesList($tpl, $_SESSION['user_id']);
-client_generateCustomDnsRecordsList($tpl, $_SESSION['user_id']);
+generateDomainsList($tpl);
+generateSubdomainsList($tpl);
+generateDomainAliasesList($tpl);
+generateCustomDnsRecordsList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
