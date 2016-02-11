@@ -1103,12 +1103,11 @@ sub getTraffic
 		$sth->execute($ldate);
 
 		while (my $row = $sth->fetchrow_hashref()) {
-			$trafficDb{$row->{'vhost'}} += $row->{'bytes'}
+			$trafficDb{$row->{'vhost'}} += $row->{'bytes'};
 		}
 
 		# Delete traffic data source
 		$dbh->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
-
 		$dbh->commit();
 	};
 
