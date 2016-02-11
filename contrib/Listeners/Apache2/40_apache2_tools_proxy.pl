@@ -31,12 +31,12 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
 	return 0 unless =~ /^domain(?:_ssl)?\.tpl$/;
 
 	if($tplName eq 'domain.tpl') {
-		my $redirect = "    RedirectMatch permanent ^/((?:ftp|pma|webmail)[\/]?)\$ ";
+		my $redirect = "    RedirectMatch permanent ^(/(?:ftp|pma|webmail)[\/]?)\$ ";
 
 		if($data->{'SSL_SUPPORT'}) {
-			$redirect .= "https://$data->{'DOMAIN_NAME'}/\$1";
+			$redirect .= "https://$data->{'DOMAIN_NAME'}\$1";
 		} else {
-			$redirect .= "https://$main::imscpConfig{'BASE_SERVER_VHOST'}:$main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}/\$1";
+			$redirect .= "https://$main::imscpConfig{'BASE_SERVER_VHOST'}:$main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}\$1";
 		}
 
 		$$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/\n    # BEGIN Listener::Apache2::Tools::Proxy\n$redirect\n    # END Listener::Apache2::Tools::Proxy\n$1/sm;
@@ -50,7 +50,7 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
     ProxyPass /ftp/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/ftp/ retry=0 timeout=30
     ProxyPassReverse /ftp/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/ftp/
     ProxyPass /pma/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/pma/ retry=0 timeout=30
-    ProxyPassReverse /pma/ https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/pma/
+    ProxyPassReverse /pma/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/pma/
     ProxyPass /webmail/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/webmail/ retry=0 timeout=30
     ProxyPassReverse /webmail/ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}/webmail/
     # END Listener::Apache2::Tools::Proxy
