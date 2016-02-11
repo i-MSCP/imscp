@@ -29,12 +29,12 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
 	my ($cfgTpl, $tplName, $data) = @_;
 
 	if($tplName =~ /^domain\.tpl$/) {
-		my $redirect = "    RedirectMatch permanent ^/((?:ftp|pma|webmail)[\/]?)\$ ";
+		my $redirect = "    RedirectMatch permanent ^(/(?:ftp|pma|webmail)[\/]?)\$ ";
 
 		if($data->{'SSL_SUPPORT'}) {
-			$redirect .= "https://$data->{'DOMAIN_NAME'}/\$1";
+			$redirect .= "https://$data->{'DOMAIN_NAME'}\$1";
 		} else {
-			$redirect .= "https://$main::imscpConfig{'BASE_SERVER_VHOST'}:$main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}/\$1";
+			$redirect .= "https://$main::imscpConfig{'BASE_SERVER_VHOST'}:$main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}\$1";
 		}
 
 		$$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/\n    # BEGIN Listener::Apache2::Tools::Proxy\n$redirect\n    # END Listener::Apache2::Tools::Proxy\n$1/sm;
