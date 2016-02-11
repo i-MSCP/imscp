@@ -1748,15 +1748,7 @@ sub _addCfg
 	my $net = iMSCP::Net->getInstance();
 
 	unless($self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds') {
-		eval {
-			$data->{'PHP_FPM_LISTEN_PORT'} = $self->_getFreePort(
-				$self->{'phpfpmConfig'}->{'LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}
-			);
-		};
-		if($@) {
-			error($@);
-			return 1;
-		}
+		$data->{'PHP_FPM_LISTEN_PORT'} = $self->{'phpfpmConfig'}->{'LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'};
 	}
 
 	$self->setData({
@@ -2127,42 +2119,6 @@ sub _cleanTemplate
 	$$cfgTpl =~ s/\n{3}/\n\n/g;
 
 	0;
-}
-
-=item getFreePort([ $port = 32768 ])
-
- Get a free port, starting at the the given port range
-
- Param int $port OPTIONAL Starting port
- Return int A free port on success, die on failure
-
-=cut
-
-sub _getFreePort
-{
-	my ($self, $port) = @_;
-
-	$port = 32768 unless defined $port && $port =~ /^\d+$/;
-
-	while ($port < 60999) {
-		my $sock = IO::Socket::INET->new(
-			Listen => 5,
-			LocalAddr => '127.0.0.1',
-			LocalPort => $port,
-			Proto => 'tcp',
-			ReuseAddr => 1
-		);
-
-		if($sock) {
-			$sock->shutdown(2);
-			$sock->close();
-			return $port;
-		}
-
-		$port++;
-	}
-
-	die('Could not find any free port.');
 }
 
 =back
