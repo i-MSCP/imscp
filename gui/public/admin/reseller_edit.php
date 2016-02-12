@@ -582,6 +582,8 @@ function admin_checkAndUpdateData($resellerId)
             $errFieldsStack[] = 'max_disk_amnt';
         }
 
+        $needBackendRequest = false;
+
         // Check for PHP settings
         $phpini = iMSCP_PHPini::getInstance();
         $resellerPhpPermissions = $phpini->getResellerPermission();
@@ -607,6 +609,7 @@ function admin_checkAndUpdateData($resellerId)
         if (array_diff_assoc($resellerPhpPermissions, $phpini->getResellerPermission())) {
             // A least one reseller permission has changed. We must synchronize customers permissions
             $phpini->syncClientPermissionsWithResellerPermissions($resellerId);
+            $needBackendRequest = true;
         }
         unset($resellerPhpPermissions);
 
@@ -722,6 +725,10 @@ function admin_checkAndUpdateData($resellerId)
                     $_SESSION['user_id'], $data['admin_name'], $data['password'], $data['email'], $data['fname'],
                     $data['lname'], tr('Reseller')
                 );
+            }
+
+            if($needBackendRequest) {
+                send_request();
             }
 
             write_log(sprintf('The %s reseller account has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
