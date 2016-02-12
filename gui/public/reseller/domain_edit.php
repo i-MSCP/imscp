@@ -898,7 +898,8 @@ function reseller_checkAndUpdateData($domainId)
                         domain_alias_limit = ?, domain_subd_limit = ?, domain_ip_id = ?, domain_disk_limit = ?,
                         domain_php = ?, domain_cgi = ?, allowbackup = ?, domain_dns = ?,  domain_software_allowed = ?,
                         phpini_perm_system = ?, phpini_perm_allow_url_fopen = ?, phpini_perm_display_errors = ?,
-                        phpini_perm_disable_functions = ?, domain_external_mail = ?, web_folder_protection = ?,
+                        phpini_perm_disable_functions = ?, phpini_perm_mail_function = ?, domain_external_mail = ?,
+                        web_folder_protection = ?,
                         mail_quota = ?
                     WHERE
                         domain_id = ?
@@ -913,6 +914,7 @@ function reseller_checkAndUpdateData($domainId)
                     $phpini->getClientPermission('phpiniAllowUrlFopen'),
                     $phpini->getClientPermission('phpiniDisplayErrors'),
                     $phpini->getClientPermission('phpiniDisableFunctions'),
+                    $phpini->getClientPermission('phpiniMailFunction'),
                     $data['domain_external_mail'], $data['web_folder_protection'], $data['mail_quota'] * 1048576,
                     $domainId
                 )
