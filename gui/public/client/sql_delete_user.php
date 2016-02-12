@@ -21,30 +21,32 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
 /***********************************************************************************************************************
- * Main script
+ * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
-if (customerHasFeature('sql') && isset($_GET['id'])) {
-	$sqlUserId = intval($_GET['id']);
-
-	if (sql_delete_user(get_user_domain_id($_SESSION['user_id']), $sqlUserId)) {
-		set_page_message(tr('Sql user successfully deleted.'), 'success');
-		write_log(sprintf("{$_SESSION['user_logged']} deleted SQL user with ID %d", $sqlUserId), E_USER_NOTICE);
-
-		redirectTo('sql_manage.php');
-	}
+if (!customerHasFeature('sql') || !isset($_GET['id'])) {
+    showBadRequestErrorPage();
 }
 
-showBadRequestErrorPage();
+$userId = intval($_GET['id']);
+
+if (!sql_delete_user(get_user_domain_id($_SESSION['user_id']), $userId)) {
+    write_log(sprintf('Could not delete SQL user with ID %d. An unexpected error occurred.', $userId), E_USER_ERROR);
+    set_page_message(tr('Could not delete SQL user. An unexpected error occurred.'), 'error');
+    redirectTo('sql_manage.php');
+}
+
+set_page_message(tr('SQL user successfully deleted.'), 'success');
+write_log(sprintf('%s deleted SQL user with ID %d', decode_idna($_SESSION['user_logged']), $userId), E_USER_NOTICE);
+redirectTo('sql_manage.php');

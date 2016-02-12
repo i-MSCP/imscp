@@ -41,6 +41,7 @@ use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use File::Temp;
 use File::Basename;
+use IO::Socket::INET;
 use Scalar::Defer;
 use version;
 use parent 'Common::SingletonClass';
@@ -852,7 +853,7 @@ sub deleteHtaccess
 
  Process addIps tasks
 
- Param hash \%data Ips data
+ Param hash \%data IPs data as provided by the Modules::Ips module
  Return int 0 on success, other on failure
 
 =cut
@@ -861,24 +862,22 @@ sub addIps
 {
 	my ($self, $data) = @_;
 
-	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+	my $file = iMSCP::File->new( filename => "$self->{'apacheWrkDir'}/00_nameserver.conf" );
+	my $fileContent = $file->get();
+	unless(defined $fileContent) {
+		error(sprintf('Could not read %s file', "$self->{'apacheWrkDir'}/00_nameserver.conf"));
+		return 1;
+	}
 
-	unless(version->parse($version) >= version->parse('2.4.0')) {
-		my $file = iMSCP::File->new( filename => "$self->{'apacheWrkDir'}/00_nameserver.conf" );
-		my $fileContent = $file->get();
-		unless(defined $fileContent) {
-			error("Unable to read $file->{'filename'} file");
-			return 1;
-		}
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddIps', \$fileContent, $data);
+	return $rs if $rs;
 
-		my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddIps', \$fileContent, $data);
-		return $rs if $rs;
-
-		my $ipMngr = iMSCP::Net->getInstance();
+	unless(version->parse("$self->{'config'}->{'HTTPD_VERSION'}") >= version->parse('2.4.0')) {
+		my $net = iMSCP::Net->getInstance();
 		my $confSnippet = "\n";
 
 		for my $ipAddr(@{$data->{'SSL_IPS'}}) {
-			if($ipMngr->getAddrVersion($ipAddr) eq 'ipv4') {
+			if($net->getAddrVersion($ipAddr) eq 'ipv4') {
 				$confSnippet .= "NameVirtualHost $ipAddr:443\n";
 			} else {
 				$confSnippet .= "NameVirtualHost [$ipAddr]:443\n";
@@ -886,7 +885,7 @@ sub addIps
 		}
 
 		for my $ipAddr(@{$data->{'IPS'}}) {
-			if($ipMngr->getAddrVersion($ipAddr) eq 'ipv4') {
+			if($net->getAddrVersion($ipAddr) eq 'ipv4') {
 				$confSnippet .= "NameVirtualHost $ipAddr:80\n";
 			} else {
 				$confSnippet .= "NameVirtualHost [$ipAddr]:80\n";
@@ -894,24 +893,16 @@ sub addIps
 		}
 
 		$fileContent .= $confSnippet;
-
-		$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$fileContent, $data);
-		return $rs if $rs;
-
-		$rs = $file->set($fileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $self->installConfFile('00_nameserver.conf');
-		return $rs if $rs;
-
-		$rs = $self->enableSites('00_nameserver.conf');
-		return $rs if $rs;
-
-		$self->{'restart'} = 1;
 	}
+
+	$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$fileContent, $data);
+	$rs ||= $file->set($fileContent);
+	$rs ||= $file->save();
+	$rs ||= $self->installConfFile('00_nameserver.conf');
+	$rs ||= $self->enableSites('00_nameserver.conf');
+	return $rs if $rs;
+
+	$self->{'restart'} = 1;
 
 	0;
 }
@@ -1112,12 +1103,11 @@ sub getTraffic
 		$sth->execute($ldate);
 
 		while (my $row = $sth->fetchrow_hashref()) {
-			$trafficDb{$row->{'vhost'}} += $row->{'bytes'}
+			$trafficDb{$row->{'vhost'}} += $row->{'bytes'};
 		}
 
 		# Delete traffic data source
 		$dbh->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
-
 		$dbh->commit();
 	};
 
@@ -1744,36 +1734,41 @@ sub _addCfg
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
-	my $poolLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
-	my $poolName;
-
-	if($data->{'FORWARD'} eq 'no') {
-		if($poolLevel eq 'per_user') { # One pool configuration file for all domains
-			$poolName = $data->{'ROOT_DOMAIN_NAME'};
-		} elsif($poolLevel eq 'per_domain') { # One pool configuration file for each domains (including subdomains)
-			$poolName = $data->{'PARENT_DOMAIN_NAME'};
-		} elsif($poolLevel eq 'per_site') { # One pool conifguration file for each domain
-			$poolName = $data->{'DOMAIN_NAME'};
-		} else {
-			error("Unknown php-fpm pool level: $poolLevel");
-			return 1;
-		}
+	my $confLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+	if($confLevel eq 'per_user') { # One pool configuration file for all domains
+		$confLevel = $data->{'ROOT_DOMAIN_NAME'};
+	} elsif($confLevel eq 'per_domain') { # One pool configuration file for each domains (including subdomains)
+		$confLevel = $data->{'PARENT_DOMAIN_NAME'};
+	} else { # One pool conifguration file for each domain
+		$confLevel = $data->{'DOMAIN_NAME'};
 	}
 
 	my $version = $self->{'config'}->{'HTTPD_VERSION'};
 	my $apache24 = (version->parse($version) >= version->parse('2.4.0'));
+	my $net = iMSCP::Net->getInstance();
 
-	my $ipMngr = iMSCP::Net->getInstance();
+	unless($self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds') {
+		$data->{'PHP_FPM_LISTEN_PORT'} = $self->{'phpfpmConfig'}->{'LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'};
+	}
 
 	$self->setData({
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
 		HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
-		AUTHZ_ALLOW_ALL => ($apache24) ? 'Require all granted' : 'Allow from all',
-		AUTHZ_DENY_ALL => ($apache24) ? 'Require all denied' : 'Deny from all',
-		DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
-			? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
-		POOL_NAME => $poolName
+		AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
+		AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
+		DOMAIN_IP => $net->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4'? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
+		POOL_NAME => $confLevel,
+
+		# fastcgi module case (Apache2 < 2.4.10)
+		FASTCGI_LISTEN_MODE => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds' ? 'socket' : 'host',
+		FASTCGI_LISTEN_ENDPOINT => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds'
+			? "/var/run/php5-fpm-$confLevel.sock" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+
+		# proxy_fcgi module case (Apache2 >= 2.4.10)
+		PROXY_LISTEN_MODE => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds' ? 'unix' : 'fcgi',
+		PROXY_LISTEN_ENDPOINT => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds'
+			? "/var/run/php5-fpm-$confLevel.sock|fcgi//$confLevel" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
 	});
 
 	for my $template(@templates) {
@@ -2025,29 +2020,35 @@ sub _buildPHPConfig
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildPhpConf', $data);
 	return $rs if $rs;
 
-	my $poolLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+	my $confLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 	my $domainType = $data->{'DOMAIN_TYPE'};
 
 	my ($poolName, $emailDomain);
-	if($poolLevel eq 'per_user') { # One pool configuration file for all domains
+	if($confLevel eq 'per_user') { # One pool configuration file per user
 		$poolName = $data->{'ROOT_DOMAIN_NAME'};
 		$emailDomain = $data->{'ROOT_DOMAIN_NAME'};
-	} elsif ($poolLevel eq 'per_domain') { # One pool configuration file for each domains (including subdomains)
+	} elsif ($confLevel eq 'per_domain') { # One pool configuration file perl domains (including subdomains)
 		$poolName = $data->{'PARENT_DOMAIN_NAME'};
 		$emailDomain = $data->{'DOMAIN_NAME'};
-	} elsif($poolLevel eq 'per_site') { # One pool conifguration file for each domain
+	} else { # One pool configuration file per domain
 		$poolName = $data->{'DOMAIN_NAME'};
 		$emailDomain = $data->{'DOMAIN_NAME'};
-	} else {
-		error("Unknown PHP-FPM pool level: $poolLevel");
-		return 1;
 	}
 
 	if($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
 		$self->setData({
 			POOL_NAME => $poolName,
 			TMPDIR => $data->{'HOME_DIR'} . '/phptmp',
-			EMAIL_DOMAIN => $emailDomain
+			EMAIL_DOMAIN => $emailDomain,
+			LISTEN_ENDPOINT => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds'
+				? "/var/run/php5-fpm-$poolName.sock" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+			PROCESS_MANAGER_MODE => $self->{'phpfpmConfig'}->{'PROCESS_MANAGER_MODE'} || 'ondemand',
+			MAX_CHILDREN => $self->{'phpfpmConfig'}->{'MAX_CHILDREN'} || 6,
+			START_SERVERS => $self->{'phpfpmConfig'}->{'START_SERVERS'} || 1,
+			MIN_SPARE_SERVERS => $self->{'phpfpmConfig'}->{'MIN_SPARE_SERVERS'} || 1,
+			MAX_SPARE_SERVERS => $self->{'phpfpmConfig'}->{'MAX_SPARE_SERVERS'} || 2,
+			PROCESS_IDLE_TIMEOUT => $self->{'phpfpmConfig'}->{'PROCESS_IDLE_TIMEOUT'} || '60s',
+			MAX_REQUESTS => $self->{'phpfpmConfig'}->{'MAX_REQUESTS'} || 500
 		});
 
 		$rs = $self->buildConfFile(
@@ -2061,12 +2062,10 @@ sub _buildPHPConfig
 			}
 		);
 		return $rs if $rs;
-	} elsif(
-		$data->{'PHP_SUPPORT'} ne 'yes' || (
-			($poolLevel eq 'per_user' && $domainType ne 'dmn') ||
-			($poolLevel eq 'per_domain' && not $domainType ~~ [ 'dmn', 'als' ]) ||
-			$poolLevel eq 'per_site'
-		)
+	} elsif($data->{'PHP_SUPPORT'} ne 'yes'
+		|| $confLevel eq 'per_user' && $domainType ne 'dmn'
+		|| $confLevel eq 'per_domain' && not $domainType ~~ [ 'dmn', 'als' ]
+		|| $confLevel eq 'per_site'
 	) {
 		if(-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf") {
 			$rs = iMSCP::File->new(

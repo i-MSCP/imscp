@@ -32,7 +32,6 @@ mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
 # => 0 for unlimited
 # => 104857600 for 100 MB
 mailbox_size_limit = 0
-mailbox_command = procmail -a "$EXTENSION"
 
 # Message size limit
 # => 0 for unlimited
@@ -61,14 +60,6 @@ virtual_minimum_uid = {MTA_MAILBOX_MIN_UID}
 virtual_uid_maps = static:{MTA_MAILBOX_UID}
 virtual_gid_maps = static:{MTA_MAILBOX_GID}
 
-# SASL parameters
-smtpd_sasl_type = cyrus
-smtpd_sasl_path = smtpd
-smtpd_sasl_auth_enable = yes
-smtpd_sasl_security_options = noanonymous
-broken_sasl_auth_clients = yes
-smtpd_sasl_authenticated_header = yes
-
 smtpd_helo_required = yes
 
 smtpd_helo_restrictions = permit_mynetworks,
@@ -91,19 +82,3 @@ smtpd_recipient_restrictions = reject_non_fqdn_recipient,
 
 smtpd_data_restrictions = reject_multi_recipient_bounce,
                           reject_unauth_pipelining
-
-# TLS parameters
-{SSL}smtpd_tls_security_level = may
-{SSL}smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
-{SSL}smtpd_tls_protocols = !SSLv2, !SSLv3
-{SSL}smtpd_tls_loglevel = 1
-{SSL}smtpd_tls_cert_file = {CONF_DIR}/{CERTIFICATE}.pem
-{SSL}smtpd_tls_key_file = {CONF_DIR}/{CERTIFICATE}.pem
-{SSL}smtpd_tls_auth_only = no
-{SSL}smtpd_tls_received_header = yes
-
-{SSL}smtp_tls_security_level = may
-{SSL}smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
-{SSL}smtp_tls_protocols = !SSLv2, !SSLv3
-{SSL}smtp_tls_loglevel = 1
-{SSL}smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@ use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
+use iMSCP::Database;
 use iMSCP::Config;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -42,6 +43,7 @@ use Net::LibIDN qw/idn_to_ascii/;
 use Cwd;
 use File::Basename;
 use File::Temp;
+use Servers::sqld;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -66,53 +68,89 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
-	return $rs if $rs;
-
-	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
+	$eventManager->register('beforeSetupDialog', sub {
+		push @{$_[0]}, sub { $self->showPhpConfigLevelDialog(@_) }, sub { $self->showListenModeDialog(@_) };
+		0;
+	});
 }
 
-=item showDialog(\%dialog)
+=item showPhpConfigLevelDialog(\%dialog)
 
- Show dialog
+ Ask for PHP configuration level to use
 
  Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
+ Return int 0 to go on next question, 30 to go back to the previous question
 
 =cut
 
-sub showDialog
+sub showPhpConfigLevelDialog
 {
 	my ($self, $dialog) = @_;
 
 	my $rs = 0;
-	my $poolsLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') || $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+	my $confLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') || $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 
 	if(
 		$main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ] ||
-		not $poolsLevel ~~ [ 'per_user', 'per_domain', 'per_site' ]
+		not $confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ]
 	) {
-		$poolsLevel =~ s/_/ /;
+		$confLevel =~ s/_/ /;
 
-		($rs, $poolsLevel) = $dialog->radiolist(
+		($rs, $confLevel) = $dialog->radiolist(
 "
-\\Z4\\Zb\\ZuFPM Pool Of Processes Level\\Zn
+\\Z4\\Zb\\ZuPHP configuration level\\Zn
 
-Please, choose the level you want use for the pools of processes. Available levels are:
+Please, choose the PHP configuration level you want use. Available levels are:
 
-\\Z4Per user:\\Zn Each customer will have only one pool of processes
-\\Z4Per domain:\\Zn Each domain / domain alias will have its own pool of processes
-\\Z4Per site:\\Zn Each site will have its own pool pool of processes
+\\Z4Per user:\\Zn One pool configuration file per user
+\\Z4Per domain:\\Zn One pool configuration file per domain (including subdomains)
+\\Z4Per site:\\Zn One pool configuration per domain
 
-Note: FPM use a global php.ini configuration file but you can override any settings in pool files.
 ",
-			[ 'per user', 'per domain', 'per site' ],
-			$poolsLevel ne 'per site' && $poolsLevel ne 'per domain' ? 'per user' : $poolsLevel
+			[ 'per_site', 'per_domain', 'per_user' ],
+			$confLevel ~~ [ 'per user', 'per domain' ] ? $confLevel : 'per site'
 		);
 	}
 
-	($self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} = $poolsLevel) =~ s/ /_/ unless $rs == 30;
+	($self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} = $confLevel) =~ s/ /_/ unless $rs == 30;
+	$rs;
+}
 
+=item showListenModeDialog()
+
+ Ask for FPM listen mode
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 to go on next question, 30 to go back to the previous question
+
+=cut
+
+sub showListenModeDialog
+{
+	my ($self, $dialog) = @_;
+
+	my $rs = 0;
+	my $listenMode = main::setupGetQuestion('PHP_FPM_LISTEN_MODE') || $self->{'phpfpmConfig'}->{'LISTEN_MODE'};
+
+	if($main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ] || not $listenMode ~~ [ 'uds', 'tcp' ]) {
+		($rs, $listenMode) = $dialog->radiolist(
+"
+\\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
+
+Please, choose the FastCGI address type that you want use. Available types are:
+
+\\Z4uds:\\Zn Unix domain socket (e.g. /var/run/php5-fpm-domain.tld.sock)
+\\Z4tcp:\\Zn TCP/IP (e.g. 127.0.0.1:9000)
+
+Be aware that for high traffic sites, TCP/IP can require a tweaking of your kernel parameters (sysctl).
+
+",
+			[ 'uds', 'tcp'],
+			$listenMode ~~ [ 'tcp', 'uds' ] ? $listenMode : 'uds'
+		);
+	}
+
+	$self->{'phpfpmConfig'}->{'LISTEN_MODE'} = $listenMode unless $rs == 30;
 	$rs;
 }
 
@@ -170,6 +208,7 @@ sub setEnginePermissions
 	my $rs = setRights('/usr/local/sbin/vlogger', {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
 	);
+	return $rs if $rs;
 
 	setRights($self->{'config'}->{'HTTPD_LOG_DIR'}, {
 		user => $main::imscpConfig{'ROOT_USER'},
@@ -256,21 +295,18 @@ sub _setApacheVersion
 {
 	my $self = shift;
 
-	my ($stdout, $stderr);
-	my $rs = execute('apache2ctl -v', \$stdout, \$stderr);
+	my $rs = execute('apache2ctl -v', \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Unable to find Apache version') if $rs && ! $stderr;
 	return $rs if $rs;
 
-	if($stdout =~ m%Apache/([\d.]+)%) {
-		$self->{'config'}->{'HTTPD_VERSION'} = $1;
-		debug("Apache version set to: $1");
-	} else {
-		error('Unable to parse Apache version from Apache version string');
+	if($stdout !~ m%Apache/([\d.]+)%) {
+		error('Could not find Apache version from `apache2ctl -v` command output.');
 		return 1;
 	}
 
+	$self->{'config'}->{'HTTPD_VERSION'} = $1;
+	debug("Apache version set to: $1");
 	0;
 }
 
@@ -300,8 +336,7 @@ sub _makeDirs
 	}
 
 	# Cleanup pools directory (prevent possible orphaned pool file when switching to other pool level)
-	my ($stdout, $stderr);
-	$rs = execute("rm -f $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/*", \$stdout, \$stderr);
+	unlink glob "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/*.conf";
 
 	$self->{'eventManager'}->trigger('afterHttpdMakeDirs');
 }
@@ -323,12 +358,10 @@ sub _buildFastCgiConfFiles
 
 	my $version = $self->{'config'}->{'HTTPD_VERSION'};
 
-	$self->{'httpd'}->setData(
-		{
-			AUTHZ_ALLOW_ALL => (version->parse($version) >= version->parse('2.4.0'))
-				? 'Require env REDIRECT_STATUS' : "Order allow,deny\n        Allow from env=REDIRECT_STATUS"
-		}
-	);
+	$self->{'httpd'}->setData({
+		AUTHZ_ALLOW_ALL => (version->parse($version) >= version->parse('2.4.0'))
+			? 'Require env REDIRECT_STATUS' : "Order allow,deny\n        Allow from env=REDIRECT_STATUS"
+	});
 
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/php_fpm_imscp.conf",
@@ -442,9 +475,17 @@ sub _buildPhpConfFiles
 	);
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->buildConfFile(
-		"$self->{'phpfpmCfgDir'}/php-fpm.conf", { }, { destination => "$self->{'phpfpmWrkDir'}/php-fpm.conf" }
-	);
+	$self->{'httpd'}->setData({
+		LOG_LEVEL => $self->{'phpfpmConfig'}->{'LOG_LEVEL'} || 'error',
+		EMERGENCY_RESTART_THRESHOLD => $self->{'phpfpmConfig'}->{'EMERGENCY_RESTART_THRESHOLD'} || 10,
+		EMERGENCY_RESTART_INTERVAL => $self->{'phpfpmConfig'}->{'EMERGENCY_RESTART_INTERVAL'} || '1m',
+		PROCESS_CONTROL_TIMEOUT => $self->{'phpfpmConfig'}->{'PROCESS_CONTROL_TIMEOUT'} || '10s',
+		PROCESS_MAX => $self->{'phpfpmConfig'}->{'PROCESS_MAX'} // 0
+	});
+
+	$rs = $self->{'httpd'}->buildConfFile("$self->{'phpfpmCfgDir'}/php-fpm.conf", { }, {
+		destination => "$self->{'phpfpmWrkDir'}/php-fpm.conf"
+	});
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile(
@@ -658,8 +699,8 @@ sub _setupVlogger
 	$dbUserHost = ($dbUserHost eq '127.0.0.1') ? 'localhost' : $dbUserHost;
 
 	my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
-	my $dbPassword = '';
-	$dbPassword .= $allowedChr[rand @allowedChr] for 1..16;
+	my $dbPass = '';
+	$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 
 	my ($db, $errStr) = main::setupGetSqlConnect($dbName);
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
@@ -690,13 +731,22 @@ sub _setupVlogger
 	my $quotedDbName = $db->quoteIdentifier($dbName);
 
 	for my $host(@dbUserHosts) {
+		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
+			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
+
 		my $rs = $db->doQuery(
-			'g',
-			"GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@? IDENTIFIED BY ?",
+			'c',
+			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
 			$dbUser,
 			$host,
-			$dbPassword
+			$dbPass
 		);
+		unless(ref $rs eq 'HASH') {
+			error(sprintf('Unable to create the %s@%s SQL user: %s', $dbUser, $host, $rs));
+			return 1;
+		}
+
+		$rs = $db->doQuery('g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@?", $dbUser, $host);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to add SQL privileges: %s', $rs));
 			return 1;
@@ -708,7 +758,7 @@ sub _setupVlogger
 		DATABASE_HOST => $dbHost,
 		DATABASE_PORT => $dbPort,
 		DATABASE_USER => $dbUser,
-		DATABASE_PASSWORD => $dbPassword
+		DATABASE_PASSWORD => $dbPass
 	});
 
 	$self->{'httpd'}->buildConfFile(
@@ -787,85 +837,6 @@ sub _oldEngineCompatibility
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterHttpdOldEngineCompatibility');
-}
-
-=item _fixPhpErrorReportingValues()
-
- Fix PHP error_reporting value according PHP version
-
- This rustine fix the error_reporting integer values in the iMSCP databse according the PHP version installed on the
-system.
-
- Listener which listen on the 'afterSetupCreateDatabase' event.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _fixPhpErrorReportingValues
-{
-	my $self = shift;
-
-	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
-	unless($database) {
-		error("Unable to connect to SQL server: $errStr");
-		return 1;
-	}
-
-	my ($stdout, $stderr);
-	my $rs = execute('php -v', \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
-
-	my $phpVersion = $1 if $stdout =~ /^PHP\s([\d.]{3})/;
-
-	if(defined $phpVersion) {
-		my %errorReportingValues;
-
-		if($phpVersion == 5.3) {
-			%errorReportingValues = (
-				32759 => 30711, # E_ALL & ~E_NOTICE
-				32767 => 32767, # E_ALL | E_STRICT
-				24575 => 22527  # E_ALL & ~E_DEPRECATED
-			)
-		} elsif($phpVersion >= 5.4) {
-			%errorReportingValues = (
-				30711 => 32759, # E_ALL & ~E_NOTICE
-				32767 => 32767, # E_ALL | E_STRICT
-				22527 => 24575  # E_ALL & ~E_DEPRECATED
-			);
-		} else {
-			error("Unsupported PHP version: $phpVersion");
-			return 1;
-		}
-
-		while(my ($from, $to) = each(%errorReportingValues)) {
-			$rs = $database->doQuery(
-				'u',
-				"UPDATE `config` SET `value` = ? WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` = ?",
-				$to, $from
-			);
-			unless(ref $rs eq 'HASH') {
-				error($rs);
-				return 1;
-			}
-
-			$rs = $database->doQuery(
-				'u', 'UPDATE `php_ini` SET `error_reporting` = ? WHERE `error_reporting` = ?', $to, $from
-			);
-			unless(ref $rs eq 'HASH') {
-				error($rs);
-				return 1;
-			}
-		}
-	} else {
-		error('Unable to find PHP version');
-		return 1;
-	}
-
-	0;
 }
 
 =back

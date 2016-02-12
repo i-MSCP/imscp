@@ -4,10 +4,8 @@
     <folders>${SYSTEM_CONF}/dovecot/backup</folders>
     <folders>${SYSTEM_CONF}/dovecot/working</folders>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.data</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.1.x</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.2.0</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.2.1</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/quota-warning.1</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/quota-warning.2</copy_config>
+    <copy_config>${SYSTEM_CONF}/dovecot/quota-warning</copy_config>
 </install>

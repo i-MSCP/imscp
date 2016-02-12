@@ -11,7 +11,7 @@ If something goes wrong with a plugin, you can post in the plugins support secti
 
 i-MSCP 1.2.0 introduces support for the Nginx Web server which is currently used only by the i-MSCP frontEnd. From now, the i-MSCP frontEnd is run through a dedicated httpd instance and is reachable through the following http(s) ports:
 
-        \Zb8080 ( http )
-        4443 ( https )\ZB
+        \Zb8080 (http)
+        4443 (https)\ZB
 
-If you want keep access to the panel though common ports ( 80 , 443 ), you can install the \ZbPanelRedirect\ZB plugin which will act as a proxy.
+If you want keep access to the panel though common ports (80 , 443), you can install the \ZbPanelRedirect\ZB plugin which will act as a proxy.

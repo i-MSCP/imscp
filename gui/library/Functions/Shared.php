@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -60,7 +60,7 @@ function get_user_name($user_id)
  *
  * - It is found either in the domain table or in the domain_aliasses table
  * - It is a subzone of another domain which doesn't belong to the given reseller
- * - It already exist as subdomain (whatever the subdomain type (sub,alssub)
+ * - It already exist as subdomain, whatever the subdomain type (sub,alssub)
  *
  * @param string $domainName Domain name to match
  * @param int $resellerId Reseller unique identifier
@@ -71,21 +71,21 @@ function imscp_domain_exists($domainName, $resellerId)
 	// Be sure to work with ASCII domain name
 	$domainName = encode_idna($domainName);
 
-	// Does the domain already exist in the domain table?
+	// $domainName already exist in the domain table?
 	$stmt = exec_query('SELECT COUNT(domain_id) AS cnt FROM domain WHERE domain_name = ?', $domainName);
-	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-	if($row['cnt']) return true;
+	$row = $stmt->fetchRow();
+	if($row['cnt']) {
+		return true;
+	}
 
-	// Does the domain already exists in the domain_aliasses table?
-	$stmt = exec_query(
-		'SELECT COUNT(alias_id) AS cnt FROM domain_aliasses INNER JOIN domain USING(domain_id) WHERE alias_name = ?',
-		$domainName
-	);
-	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-	if($row['cnt']) return true;
+	// $domainName already exists in the domain_aliasses table?
+	$stmt = exec_query('SELECT COUNT(alias_id) AS cnt FROM domain_aliasses WHERE alias_name = ?', $domainName);
+	$row = $stmt->fetchRow();
+	if($row['cnt']) {
+		return true;
+	}
 
-	# Does the domain is a subzone of another domain which doesn't belong to the given reseller?
-
+	# $domainName is a subzone of another domain which doesn't belong to the given reseller?
 	$queryDomain = '
 		SELECT
 			COUNT(domain_id) AS cnt
@@ -98,7 +98,6 @@ function imscp_domain_exists($domainName, $resellerId)
 		AND
 			created_by <> ?
 	';
-
 	$queryAliases = '
 		SELECT
 			COUNT(alias_id) AS cnt
@@ -123,45 +122,42 @@ function imscp_domain_exists($domainName, $resellerId)
 
 		// Execute query the redefined queries for domains/accounts and aliases tables
 		$stmt = exec_query($queryDomain, array($parentDomain, $resellerId));
-		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-		if($row['cnt']) return true;
+		$row = $stmt->fetchRow();
+		if($row['cnt']) {
+			return true;
+		}
 
 		$stmt = exec_query($queryAliases, array($parentDomain, $resellerId));
-		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-		if($row['cnt']) return true;
+		$row = $stmt->fetchRow();
+		if($row['cnt']) {
+			return true;
+		}
 	}
 
-	// Does the domain already exists as subdomain?
-
+	// $domainName already exists as subdomain?
 	$stmt = exec_query(
 		"
-			SELECT
-				'found'
-			FROM
-				subdomain
-			INNER JOIN
-				domain USING(domain_id)
-			WHERE
-				CONCAT(subdomain_name, '.', domain_name) = ?
+			SELECT COUNT('subdomain_id') AS  cnt FROM subdomain INNER JOIN domain USING(domain_id)
+			WHERE CONCAT(subdomain_name, '.', domain_name) = ?
 		",
 		 $domainName
 	);
-	if($stmt->rowCount()) return true;
+	$row = $stmt->fetchRow();
+	if($row['cnt']) {
+		return true;
+	}
 
 	$stmt = exec_query(
 		"
-			SELECT
-				'found'
-			FROM
-				subdomain_alias
-			INNER JOIN
-				domain_aliasses USING(alias_id)
-			WHERE
-				CONCAT(subdomain_alias_name, '.', alias_name) = ?
+			SELECT COUNT(subdomain_alias_id) AS cnt FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+			WHERE CONCAT(subdomain_alias_name, '.', alias_name) = ?
 		",
 		$domainName
 	);
-	if($stmt->rowCount()) return true;
+	$row = $stmt->fetchRow();
+	if($row['cnt']) {
+		return true;
+	}
 
 	return false;
 }
@@ -645,84 +641,57 @@ function change_domain_status($customerId, $action)
  * Deletes an SQL user
  *
  * @throws iMSCP_Exception_Database
- * @param  int $domainId Domain unique identifier
- * @param  int $sqlUserId Sql user unique identifier
- * @param bool $flushPrivileges Whether or not privilege must be flushed
- * @return bool TRUE if $sqlUserId has been found and successfully removed, FALSE otherwise
+ * @param int $dmnId Domain unique identifier
+ * @param int $userId Sql user unique identifier
+ * @return bool TRUE on success, FALSE otherwise
  */
-function sql_delete_user($domainId, $sqlUserId, $flushPrivileges = true)
+function sql_delete_user($dmnId, $userId)
 {
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeleteSqlUser, array('sqlUserId' => $sqlUserId)
+	$stmt = exec_query(
+		'
+			SELECT sqlu_name, sqlu_host, sqld_name FROM sql_user INNER JOIN sql_database USING(sqld_id)
+			WHERE sqlu_id = ? AND domain_id = ?
+		',
+		array($userId, $dmnId)
 	);
 
-	$db = iMSCP_Database::getInstance();
-
-	try {
-		$db->beginTransaction();
-
-		$stmt = exec_query(
-			'
-				SELECT
-					sqlu_name, sqlu_host, sqld_name
-				FROM
-					sql_user
-				INNER JOIN
-					sql_database USING(sqld_id)
-				WHERE
-					sqlu_id = ?
-				AND
-					domain_id = ?
-			',
-			array($sqlUserId, $domainId)
-		);
-
-		if (!$stmt->rowCount()) {
-			return false;
-		}
-
-		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-
-		$sqlUserName = $row['sqlu_name'];
-		$sqlUserHost = $row['sqlu_host'];
-		$sqlDbName = $row['sqld_name'];
-
-		$stmt = exec_query(
-			'SELECT COUNT(sqlu_id) AS cnt FROM sql_user WHERE sqlu_name = ? AND sqlu_host = ?',
-			array($sqlUserName, $sqlUserHost)
-		);
-
-		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-
-		if ($row['cnt'] == '1') {
-			// SQL user is assigned to one database only. We can remove it completely
-			exec_query('DELETE FROM mysql.user WHERE User = ? AND Host = ?', array($sqlUserName, $sqlUserHost));
-			exec_query('DELETE FROM mysql.db WHERE Host = ? AND User = ?', array($sqlUserHost, $sqlUserName));
-		} else {
-			// SQL user is assigned to many databases. We remove its privileges for the involved database only
-			exec_query(
-				'DELETE FROM mysql.db WHERE Host = ? AND Db = ? AND User = ?',
-				array($sqlUserHost, $sqlDbName, $sqlUserName)
-			);
-		}
-
-		// Delete SQL user from i-MSCP database
-		exec_query('DELETE FROM sql_user WHERE sqlu_id = ?', $sqlUserId);
-
-		$db->commit();
-
-		// Flush SQL privileges
-		if($flushPrivileges) {
-			execute_query('FLUSH PRIVILEGES');
-		}
-
-		iMSCP_Events_Aggregator::getInstance()->dispatch(
-			iMSCP_Events::onAfterDeleteSqlUser, array('sqlUserId' => $sqlUserId)
-		);
-	} catch(iMSCP_Exception_Database $e) {
-		$db->rollBack();
-		throw $e;
+	if (!$stmt->rowCount()) {
+		return false;
 	}
+
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+	$user = $row['sqlu_name'];
+	$host = $row['sqlu_host'];
+	$dbName = $row['sqld_name'];
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlUser, array(
+		'sqlUserId' => $userId,
+		'sqlUsername' => $user,
+		'sqlUserhost' => $host
+	));
+
+	$stmt = exec_query('SELECT COUNT(sqlu_id) AS cnt FROM sql_user WHERE sqlu_name = ? AND sqlu_host = ?', array(
+		$user, $host
+	));
+
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+	if ($row['cnt'] < 2) {
+		exec_query('DROP USER ?@?', array($user, $host));
+	} else {
+		// SQL user has privileges on many databases. We remove its privileges for the involved database only
+		exec_query(sprintf('REVOKE ALL PRIVILEGES ON %s.* FROM %s@%s',
+			quoteIdentifier($dbName), quoteValue($user), quoteValue($host)
+		));
+	}
+
+	exec_query('DELETE FROM sql_user WHERE sqlu_id = ?', $userId);
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, array(
+		'sqlUserId' => $userId,
+		'sqlUsername' => $user,
+		'sqlUserhost' => $host
+	));
 
 	return true;
 }
@@ -730,73 +699,48 @@ function sql_delete_user($domainId, $sqlUserId, $flushPrivileges = true)
 /**
  * Deletes the given SQL database
  *
- * @throws iMSCP_Exception in case an SQL user which belong to the given database cannot be removed
- * @param  int $domainId Domain unique identifier
- * @param  int $databaseId Databse unique identifier
- * @return bool TRUE when $databaseId has been found and successfully deleted, FALSE otherwise
+ * @param int $dmnId Domain unique identifier
+ * @param int $dbId Databse unique identifier
+ * @return bool TRUE on success, false otherwise
  */
-function delete_sql_database($domainId, $databaseId)
+function delete_sql_database($dmnId, $dbId)
 {
-	$db = iMSCP_Database::getInstance();
+	$stmt = exec_query('SELECT sqld_name FROM sql_database WHERE domain_id = ? AND sqld_id = ?', array(
+		$dmnId, $dbId
+	));
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, array('sqlDbId' => $databaseId));
-
-	try {
-		$db->beginTransaction();
-
-		// Get name of database
-		$stmt = exec_query(
-			'SELECT sqld_name FROM sql_database WHERE domain_id = ? AND sqld_id = ?', array($domainId, $databaseId)
-		);
-
-		if ($stmt->rowCount()) {
-			$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-			$databaseName = quoteIdentifier($row['sqld_name']);
-
-			// Get list of SQL users assigned to the database being removed
-
-			$stmt = exec_query(
-				'
-					SELECT
-						sqlu_id
-					FROM
-						sql_user
-					INNER JOIN
-						sql_database USING(sqld_id)
-					WHERE
-						sqld_id = ?
-					AND
-						domain_id = ?
-				',
-				array($databaseId, $domainId)
-			);
-
-			if ($stmt->rowCount()) {
-				while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-					if (!sql_delete_user($domainId, $row['sqlu_id'], false)) {
-						return false;
-					}
-				}
-			}
-
-			exec_query('DELETE FROM sql_database WHERE domain_id = ? AND sqld_id = ?', array($domainId, $databaseId));
-
-			// Must be done last due to the implicit commit
-			execute_query("DROP DATABASE IF EXISTS $databaseName");
-			execute_query('FLUSH PRIVILEGES');
-
-			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterDeleteSqlDb, array('sqlDbId' => $databaseId)
-			);
-
-			return true;
-		}
-	} catch(iMSCP_Exception_Database $e) {
-		$db->rollBack();
-		throw $e;
+	if (!$stmt->rowCount()) {
+		return false;
 	}
 
-	return false;
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+	$dbName = $row['sqld_name'];
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, array(
+		'sqlDbId' => $dbId,
+		'sqlDatabaseName' => $dbName
+	));
+
+	$stmt = exec_query(
+		'SELECT sqlu_id FROM sql_user INNER JOIN sql_database USING(sqld_id) WHERE sqld_id = ? AND domain_id = ?',
+		array($dbId, $dmnId)
+	);
+
+	while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		if (!sql_delete_user($dmnId, $row['sqlu_id'])) {
+			return false;
+		}
+	}
+
+	exec_query(sprintf('DROP DATABASE IF EXISTS %s', quoteIdentifier($dbName)));
+	exec_query('DELETE FROM sql_database WHERE domain_id = ? AND sqld_id = ?', array($dmnId, $dbId));
+
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb, array(
+		'sqlDbId' => $dbId,
+		'sqlDatabaseName' => $dbName
+	));
+
+	return true;
 }
 
 /**
@@ -809,11 +753,9 @@ function delete_sql_database($domainId, $databaseId)
  */
 function deleteCustomer($customerId, $checkCreatedBy = false)
 {
-	$customerId = (int)$customerId;
-
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeleteCustomer, array('customerId' => $customerId)
-	);
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomer, array(
+		'customerId' => $customerId
+	));
 
 	// Get username, uid and gid of domain user
 	$query = '
@@ -846,7 +788,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 	$db = iMSCP_Database::getInstance();
 
 	try {
-		// First, remove customer sessions to prevent any problems
+		// First, we remove customer sessions to prevent any problems
 		exec_query('DELETE FROM login WHERE user_name = ?', $customerName);
 
 		// Remove customer's databases and Sql users
@@ -898,16 +840,17 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		// Deletes user gui properties
 		exec_query('DELETE FROM user_gui_props WHERE user_id = ?', $customerId);
 
-		// Deletes own php.ini entry
-		exec_query('DELETE FROM php_ini WHERE domain_id = ?', $mainDomainId);
+		// Deletes php.ini entries
+		exec_query('DELETE FROM php_ini WHERE admin_id = ?', $customerId);
 
+		//
 		// Delegated tasks - begin
+		//
 
 		// Schedule mail accounts deletion
 		exec_query('UPDATE mail_users SET status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
 
 		// Schedule subdomain's aliasses deletion
-
 		exec_query(
 			'
 				UPDATE
@@ -922,7 +865,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 			array($mainDomainId, $deleteStatus)
 		);
 
-		// Schedule Domain aliases deletion
+		// Schedule domain aliases deletion
 		exec_query(
 			'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId)
 		);
@@ -939,10 +882,9 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($deleteStatus, $customerId));
 
 		// Schedule SSL certificates deletion
-		exec_query(
-			"UPDATE ssl_certs SET status = ? WHERE domain_type = 'dmn' AND domain_id = ?",
-			array($deleteStatus, $mainDomainId)
-		);
+		exec_query("UPDATE ssl_certs SET status = ? WHERE domain_type = 'dmn' AND domain_id = ?", array(
+			$deleteStatus, $mainDomainId
+		));
 		exec_query(
 			"
 				UPDATE
@@ -986,7 +928,9 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 			array($deleteStatus, $mainDomainId, 'alssub')
 		);
 
+		//
 		// Delegated tasks - end
+		//
 
 		// Updates resellers properties
 		update_reseller_c_props($resellerId);
@@ -994,9 +938,9 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		// Commit all changes to database server
 		$db->commit();
 
-		iMSCP_Events_Aggregator::getInstance()->dispatch(
-			iMSCP_Events::onAfterDeleteCustomer, array('customerId' => $customerId)
-		);
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomer, array(
+			'customerId' => $customerId
+		));
 	} catch (iMSCP_Exception $e) {
 		$db->rollBack();
 		throw new iMSCP_Exception($e->getMessage(), $e->getCode(), $e);
@@ -1101,6 +1045,9 @@ function deleteDomainAlias($aliasId, $aliasName)
 
 		// Delete any custom DNS and external mail server record that belongs to the domain alias
 		exec_query('DELETE FROM domain_dns WHERE alias_id = ?', $aliasId);
+
+		// Delete any phpini entry that belong to the domain alias
+		exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'als'", $aliasId);
 
 		// Schedule deletion of any mail account that belongs to the domain alias
 		exec_query(
@@ -1603,7 +1550,6 @@ function encode_idna($string)
  */
 function decode_idna($string)
 {
-
 	$idn = new idna_convert(array('idn_version' => '2008'));
 
 	return $idn->decode($string);
@@ -2089,45 +2035,46 @@ function calc_bar_value($value, $value_max, $bar_width)
  */
 
 /**
- * Writes a log message in the database and sends it to the administrator by email according log level
+ * Writes a log message in the database and notify administrator if needed
  *
- * @param string $msg Message to log
- * @param int $logLevel Log level Loggin level from which log is sent via mail
+ * @param string $msg Message
+ * @param int $logLevel Log level
  * @return void
  */
 function write_log($msg, $logLevel = E_USER_WARNING)
 {
-	if(!defined('IMSCP_SETUP')) {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
+	if (defined('IMSCP_SETUP')) {
+		return;
+	}
 
-		$clientIp = getIpAddr() ? getIpAddr() : 'unknown';
+	$cfg = iMSCP_Registry::get('config');
+	$clientIp = getIpAddr() ? getIpAddr() : 'unknown';
+	$msg = replace_html($msg . '<br><small>User IP: ' . $clientIp . '</small>');
 
-		$msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>', ENT_COMPAT, 'UTF-8');
+	exec_query('INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)', $msg);
 
-		exec_query("INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)", $msg);
+	if(!isset($cfg['DEFAULT_ADMIN_ADDRESS']) || $cfg['DEFAULT_ADMIN_ADDRESS'] == '' || $logLevel > $cfg['LOG_LEVEL']) {
+		return;
+	}
 
-		$msg = strip_tags(str_replace('<br />', "\n", $msg));
-		$to = isset($cfg->DEFAULT_ADMIN_ADDRESS) ? $cfg->DEFAULT_ADMIN_ADDRESS : '';
+	$msg = strip_tags(preg_replace('/<br\s*\/?>/', "\n", $msg));
+	$hostname = isset($cfg['SERVER_HOSTNAME']) ? $cfg['SERVER_HOSTNAME'] : 'unknown';
+	$baseServerIp = isset($cfg['BASE_SERVER_PUBLIC_IP']) ? $cfg['BASE_SERVER_PUBLIC_IP'] : 'unknown';
+	$version = isset($cfg['Version']) ? $cfg['Version'] : 'unknown';
+	$buildDate = !empty($cfg['BuildDate']) ? $cfg['BuildDate'] : 'unavailable';
+	$subject = "i-MSCP $version on $hostname ($baseServerIp)";
 
-		if($to != '' && $logLevel <= $cfg->LOG_LEVEL) {
-			$hostname = isset($cfg->SERVER_HOSTNAME) ? $cfg->SERVER_HOSTNAME : 'unknown';
-			$baseServerIp = isset($cfg->BASE_SERVER_IP) ? $cfg->BASE_SERVER_IP : 'unknown';
-			$version = isset($cfg->Version) ? $cfg->Version : 'unknown';
-			$buildDate = !empty($cfg->BuildDate) ? $cfg->BuildDate : 'unavailable';
-			$subject = "i-MSCP $version on $hostname ($baseServerIp)";
+	if ($logLevel == E_USER_NOTICE) {
+		$severity = 'Notice (You can ignore this message)';
+	} elseif ($logLevel == E_USER_WARNING) {
+		$severity = 'Warning';
+	} elseif ($logLevel == E_USER_ERROR) {
+		$severity = 'Error';
+	} else {
+		$severity = 'Unknown';
+	}
 
-			if($logLevel == E_USER_NOTICE) {
-				$severity = 'Notice (You can ignore this message)';
-			} elseif($logLevel == E_USER_WARNING) {
-				$severity = 'Warning';
-			} elseif($logLevel == E_USER_ERROR) {
-				$severity = 'Error';
-			} else {
-				$severity = 'Unknown';
-			}
-
-			$message = <<<AUTO_LOG_MSG
+	$message = <<<AUTO_LOG_MSG
 
 i-MSCP Log
 
@@ -2150,17 +2097,11 @@ level, you can change it via the settings page.
 
 AUTO_LOG_MSG;
 
-			$headers = "From: \"i-MSCP Logging Mailer\" <" . $to . ">\n";
-			$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
-			$headers .= "Content-Transfer-Encoding: 7bit\n";
-			$headers .= "X-Mailer: i-MSCP Mailer";
-
-			if(!mail($to, $subject, $message, $headers)) {
-				$log_message = "Logging Mailer Mail To: |$to|, From: |$to|, Status: |NOT OK|!";
-				exec_query("INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)", $log_message, false);
-			}
-		}
-	}
+	$headers = "From: \"i-MSCP Logging Mailer\" <" . $cfg['DEFAULT_ADMIN_ADDRESS'] . ">\n";
+	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
+	$headers .= "Content-Transfer-Encoding: 7bit\n";
+	$headers .= "X-Mailer: i-MSCP Mailer";
+	mail($cfg['DEFAULT_ADMIN_ADDRESS'], $subject, $message, $headers);
 }
 
 /**

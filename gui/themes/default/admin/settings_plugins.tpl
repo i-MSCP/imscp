@@ -36,7 +36,7 @@
 			<td>
 				{PLUGIN_STATUS}
 				<!-- BDP: plugin_status_details_block -->
-				<span id="{PLUGIN_NAME}" style="vertical-align: middle;" class="plugin_error icon i_help" title="{TR_CLICK_FOR_MORE_DETAILS}">{PLUGIN_STATUS_DETAILS}</span>
+				<span id="{PLUGIN_NAME}" class="plugin_error icon i_help" title="{TR_CLICK_FOR_MORE_DETAILS}">{PLUGIN_STATUS_DETAILS}</span>
 				<!-- EDP: plugin_status_details_block -->
 			</td>
 			<td>
@@ -88,7 +88,7 @@
 		<tr>
 			<td>
 				{TR_PLUGIN_ARCHIVE}
-				<span class="tips icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}"></span>
+				<span class="icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}"></span>
 			</td>
 			<td>
 				<input type="file" name="plugin_archive">

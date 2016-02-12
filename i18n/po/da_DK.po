@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-12-27 19:50+0100\n"
-"PO-Revision-Date: 2015-08-30 20:38+0000\n"
-"Last-Translator: Michael R. Christensen <mrc@micco.dk>\n"
+"POT-Creation-Date: 2016-02-12 12:42+0100\n"
+"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -119,15 +119,15 @@ msgstr "Admin / Support / Åbne Tickets"
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 msgstr "Kunde / Webværktøjer / brugerdefinerede fejlsider / Edit Brugerdefineret Fejlside"
 
-msgid ""
-" Show all errors, except for warnings about deprecated code (Production)"
-msgstr "Vis alle fejl, undtagen for advarsler omkring forældet kode (Production)"
-
 msgid " Wrong IP address."
 msgstr "Forkert IP adresse."
 
 msgid " was deleted by {ADMIN}!"
 msgstr " blev slettet af {ADMIN}!"
+
+#, php-format
+msgid "%%s must be lower than %%s."
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -319,8 +319,8 @@ msgstr "%s: Denne forhandler har kunde(r) med ubegrænsede elementer."
 
 #, php-format
 msgid ""
-"%s: You cannot disable a service already consumed by reseller's customers"
-msgstr "%s: Du kan ikke deaktivere en service allerede forbrugt af forhandler's kunder"
+"%s: You cannot disable a service already consumed by reseller's customers."
+msgstr ""
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
@@ -516,9 +516,6 @@ msgstr "En PHP extension stoppede fil upload."
 msgid "A database update is available"
 msgstr "En database opdatering er tilgængelig"
 
-msgid "A hosting plan with same name already exists."
-msgstr "En hosting plan med samme navn findes allerede."
-
 msgid "A new i-MSCP version is available"
 msgstr "En ny I-MSCP version er tilgængelig"
 
@@ -696,15 +693,6 @@ msgstr "Admin / General / Overblik"
 msgid "Admin / General / Services Status"
 msgstr "Admin / General / Services Status"
 
-msgid "Admin / Hosting Plans / Add Hosting Plan"
-msgstr "Admin / Hosting Planer / Tilføj hosting plan"
-
-msgid "Admin / Hosting Plans / Overview"
-msgstr "Admin / Hosting Planer / Oversigt"
-
-msgid "Admin / Hosting Plans / Overview / Edit Hosting Plan"
-msgstr "Admin / Hosting Planer / Oversigt / Rediger hosting plan"
-
 msgid "Admin / Profile / Account Summary"
 msgstr "Admin / Profil / Samlet Konto Oversigt"
 
@@ -799,9 +787,6 @@ msgstr "Admin / Systemværktøjer / System Information"
 
 msgid "Admin / System Tools / i-MSCP Updates"
 msgstr "Admin / Systemværktøjer / i-MSCP Opdateringer"
-
-msgid "Admin / User / Overview / Domain Edit"
-msgstr "Admin / Bruger / Oversigt / Domæne Redigering"
 
 msgid "Admin / Users / Add Admin"
 msgstr "Admin / Bruger / Tilføj Admin"
@@ -907,11 +892,20 @@ msgstr "Alle"
 msgid "All closed tickets were successfully deleted."
 msgstr "Alle lukkede sager blev slettet."
 
+msgid "All errors (Development)"
+msgstr ""
+
+msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
+msgstr ""
+
+msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
+msgstr ""
+
 msgid "All fields are required."
 msgstr "Alle felter er påkrævet"
 
-msgid "All fields seem to be valid."
-msgstr "Alle felter synes at være gyldige."
+msgid "All fields are valid."
+msgstr ""
 
 msgid "All in"
 msgstr "Alle ind"
@@ -974,6 +968,9 @@ msgstr "En oplysning er defineret to gange."
 
 msgid "An error occurred during authentication."
 msgstr "Der opstod en fejl i forbindelse med godkendelse."
+
+msgid "An hosting plan with same name already exists."
+msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "En uventet fejl opstod"
@@ -1070,16 +1067,6 @@ msgid "Are you sure you want to delete the %s domain alias?"
 msgstr "Er du sikker på du vil slette %s domain alias?"
 
 #, php-format
-msgid ""
-"Are you sure you want to delete the %s domain alias? Be aware that any "
-"related entity will be also removed."
-msgstr "Er du sikker på at du ønsker at slette %s domæne alias? Vær opmærksom på at enhver beslægtet enhed også vil blive fjernet."
-
-#, php-format
-msgid "Are you sure you want to delete the %s hosting plan?"
-msgstr "Er du sikker på at du vil slette %s hosting plan?"
-
-#, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Er du sikker på at du vil slette %s menuen?"
 
@@ -1087,12 +1074,24 @@ msgstr "Er du sikker på at du vil slette %s menuen?"
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Er du sikker på du vil slette '%s' fejlrapporten?"
 
+msgid "Are you sure you want to delete this DNS record?"
+msgstr ""
+
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Er du sikker på at du vil slette denne IP: %s?"
 
+msgid "Are you sure you want to delete this domain alias?"
+msgstr ""
+
+msgid "Are you sure you want to delete this hosting plan?"
+msgstr ""
+
 msgid "Are you sure you want to delete this package?"
 msgstr "Er du sikker på du vil slette denne pakke?"
+
+msgid "Are you sure you want to delete this subdomain?"
+msgstr ""
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1229,8 +1228,12 @@ msgid "Cache"
 msgstr "Cache"
 
 #, php-format
-msgid "Can edit the PHP %s directive"
-msgstr "Kan redigere PHP %s direktiv"
+msgid "Can edit the PHP %s configuration option"
+msgstr ""
+
+#, php-format
+msgid "Can use the PHP %s function"
+msgstr ""
 
 msgid "Cancel"
 msgstr "Anullér"
@@ -1532,6 +1535,24 @@ msgstr "Hoved Data"
 msgid "Cores"
 msgstr "Cores"
 
+msgid "Could not add/update SSL certificate. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not create domain alias. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not delete SQL database. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not delete SQL user. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not delete SSL certificate. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not generate SSL certificate. An unexpected error occurred."
+msgstr ""
+
 msgid "Could not upload file."
 msgstr "Kunne ikke uploade filen."
 
@@ -1690,8 +1711,8 @@ msgstr "Daemon anmodning succesfuld."
 msgid "Daily backup"
 msgstr "Daglig backup"
 
-msgid "Data were been altered. Please try again."
-msgstr "Data blev ændret. Prøv igen."
+msgid "Data were altered. Please try again."
+msgstr ""
 
 msgid "Database"
 msgstr "Database"
@@ -1879,9 +1900,6 @@ msgstr "Beskrivelse kan ikke være tom."
 msgid "Details"
 msgstr "Detaljer"
 
-msgid "Directive values"
-msgstr "Direktiv værdier"
-
 msgid "Directories"
 msgstr "Mapper"
 
@@ -1921,9 +1939,6 @@ msgstr "Diskforbrug detaljer"
 
 msgid "Display errors"
 msgstr "Vis fejl"
-
-msgid "Do not show any error"
-msgstr "Vis ikke nogen fejl"
 
 #, php-format
 msgid ""
@@ -1972,6 +1987,9 @@ msgstr "Domæne alias grænse"
 msgid "Domain alias name"
 msgstr "Domænealias navn"
 
+msgid "Domain alias successfully created."
+msgstr ""
+
 msgid "Domain alias successfully ordered."
 msgstr "Domæne alias ordre oprettet med succes."
 
@@ -1990,8 +2008,11 @@ msgstr "Domæne aliaser"
 msgid "Domain and SQL databases"
 msgstr "Domæne og SQL databaser"
 
-msgid "Domain data were been altered. Please try again."
-msgstr "Domæne data blev ændret. Prøv igen."
+msgid "Domain data"
+msgstr ""
+
+msgid "Domain data were altered. Please try again."
+msgstr ""
 
 msgid "Domain details"
 msgstr "Domæne detaljer"
@@ -2004,6 +2025,9 @@ msgstr "Domæne udløbsdato"
 
 msgid "Domain expiration date must be filled."
 msgstr "Domain udløbsdato skal udfyldes."
+
+msgid "Domain for which PHP Editor must act."
+msgstr ""
 
 msgid "Domain limit"
 msgstr "Domæne grænse"
@@ -2265,9 +2289,6 @@ msgstr "Fejl"
 
 msgid "Error details"
 msgstr "Fejl detaljer"
-
-msgid "Error in php.ini values."
-msgstr "Fejl i php.ini værdier."
 
 msgid "Error pages"
 msgstr "Fejlsider"
@@ -2536,32 +2557,23 @@ msgstr "Hosting Plan"
 msgid "Hosting plan availability"
 msgstr "Hosting plan tilgængelig"
 
-msgid "Hosting plan has been successfully deleted."
-msgstr "Hosting plan succesfuldt slettet."
-
 msgid "Hosting plan limits exceed reseller limits."
 msgstr "Hosting plan grænser overskrider forhandler grænser."
 
-msgid "Hosting plan successfully added."
-msgstr "Hosting plan succesfuldt oprettet."
+msgid "Hosting plan limits exceed your limits."
+msgstr ""
 
 msgid "Hosting plan successfully created."
 msgstr "Hosting plan oprettet."
 
+msgid "Hosting plan successfully deleted."
+msgstr ""
+
 msgid "Hosting plan successfully updated."
 msgstr "Hosting plan er blevet opdateret."
 
-msgid "Hosting plan values exceed reseller maximum values."
-msgstr "Hosting plan værdier overskrider forhandler maksimale værdier."
-
-msgid "Hosting plan values exceed your own limits."
-msgstr "Hosting plan værdier overskrider dine egne grænser."
-
 msgid "Hosting plans"
 msgstr "Hosting Planer"
-
-msgid "Hosting plans available for"
-msgstr "Hosting planer til rådighed for"
 
 msgid "Hour"
 msgstr "Time"
@@ -2637,11 +2649,21 @@ msgstr "IPv6 adresse"
 msgid "IPv6 address field is empty or invalid."
 msgstr "IPv6 adresse felt er tomt eller ugyldigt."
 
+msgid "Id"
+msgstr ""
+
+msgid "If set to `yes`, Web folders will be protected against deletion."
+msgstr ""
+
 msgid ""
-"If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
-"against deletion using the immutable flag (only if supported by the file "
-"system)."
-msgstr "Hvis den sættes til »ja«, vil web-mapper, som klargjorte af i-MSCP være beskyttet mod sletnings ved brug af ej ændre flaget (kun hvis det understøttes af filsystem)."
+"If set to `yes`, the reseller can allows his customers to edit this PHP "
+"configuration option."
+msgstr ""
+
+msgid ""
+"If set to `yes`, the reseller can enable/disable the PHP mail function for "
+"his customers, else, the PHP mail function is disabled."
+msgstr ""
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Hvis du ønsker at begrænse forhandleren, skal du først begrænse forhandlerens kunder."
@@ -2668,13 +2690,6 @@ msgstr "Foran"
 
 msgid "In maintenance mode, only administrators can login."
 msgstr "Under vedligeholdelse tilstand, kan kun administratorer logge ind."
-
-msgid ""
-"In this page, you can configure some of the aspects of PHP's behavior. You "
-"must note that for now, the directives defined here apply to your entire "
-"domain account (including subdomains and domain aliases). Of course some "
-"values can be modified through the PHP ini_set() function."
-msgstr "På denne side kan du konfigurere nogle af aspekterne af PHP adfærd. Du skal bemærke, at fra nu af, er de direktiver, der er defineret her, gældende for hele domæne kontoen (inklusive underdomæner og domænealiasser). Selvfølgelig kan nogle værdier ændres via PHP ini_set () funktion."
 
 msgid "Incl. default mails"
 msgstr "Inkl. standard mails"
@@ -2804,14 +2819,14 @@ msgstr "Ugyldig NAVN."
 msgid "Invalid SQL user host: %s"
 msgstr "Ugyldig SQL bruger host: %s"
 
+msgid "Invalid SSL certificate."
+msgstr ""
+
 msgid "Invalid TXT data"
 msgstr "Ugyldig TXT data"
 
 msgid "Invalid URL."
 msgstr "Ugyldig URL."
-
-msgid "Invalid certificate."
-msgstr "Ugyldig certifikat"
 
 msgid "Invalid domain name."
 msgstr "Ugyldig domæne navn."
@@ -2821,9 +2836,6 @@ msgstr "Ugyldig e-mail adresse."
 
 msgid "Invalid email username."
 msgstr "Ugyldig e-mail brugernavn."
-
-msgid "Invalid expiration date."
-msgstr "Ugyldig udløbsdato."
 
 msgid "Invalid group name!"
 msgstr "Ugyldigt gruppe navn!"
@@ -3067,10 +3079,6 @@ msgid "Max traffic"
 msgstr "Max trafik"
 
 #, php-format
-msgid "Max value for the %s PHP directive"
-msgstr "Max værdi for %s PHP direktiv"
-
-#, php-format
 msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
 msgstr "Max. ekstern filstørrelse (%s) er blevet nået. Din eksterne fil er %s"
 
@@ -3232,9 +3240,6 @@ msgstr "Ingen gruppe fundet."
 
 msgid "No hosting plan available."
 msgstr "Ingen hosting plan til rådighed."
-
-msgid "No hosting plan available. Please contact your administrator."
-msgstr "Ingen hosting plan til rådighed. Kontakt venligst din systemadministrator."
 
 msgid "No languages found."
 msgstr "Ingen sprog fundet."
@@ -3423,23 +3428,23 @@ msgid "PHP"
 msgstr "PHP"
 
 #, php-format
-msgid "PHP %s directive"
-msgstr "PHP %s direktiv"
+msgid "PHP %s configuration option"
+msgstr ""
+
+msgid "PHP Configuration options"
+msgstr ""
 
 msgid "PHP Editor"
 msgstr "PHP Editor"
 
-msgid "PHP Editor Settings"
-msgstr "PHP Editor indstillinger"
-
 msgid "PHP GD extension not loaded."
 msgstr "PHP GD udvidelse ikke indlæst."
 
+msgid "PHP Permissions"
+msgstr ""
+
 msgid "PHP Settings"
 msgstr "PHP Indstillinger"
-
-msgid "PHP Settings (system default)"
-msgstr "PHP Indstillinger (system standardindstilling)"
 
 msgid "PHP configuration scheduled for update."
 msgstr "PHP konfigurationen planlagt til opdatering."
@@ -3547,8 +3552,8 @@ msgstr "Password er kortere end %s tegn."
 msgid "Password is too long."
 msgstr "Password er for langt."
 
-msgid "Password length"
-msgstr "Adgangskode længde"
+msgid "Password minimum length"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -3573,12 +3578,6 @@ msgstr "Passwords matcher ikke."
 
 msgid "Path"
 msgstr "Sti"
-
-msgid ""
-"Paths are appended to the default PHP open_basedir directive of customers. "
-"Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
-"for more information."
-msgstr "Stier er føjet til standard PHP open_basedir direktiv for kunder. Hver af dem skal være adskilt af PATH_SEPARATOR. Se PHP dokumentationen for mere information."
 
 msgid "Percent"
 msgstr "Procent"
@@ -3606,9 +3605,6 @@ msgstr "PiB"
 
 msgid "Please activate your new i-MSCP password"
 msgstr "Aktiver venligst dit nye i-MSCP password"
-
-msgid "Please check the PHP editor settings."
-msgstr "Venligst, tjek PHP Editor indstillinger."
 
 msgid "Please choose htaccess user or htaccess group."
 msgstr "Vælg venligst htaccess bruger eller htaccess gruppe."
@@ -4095,8 +4091,8 @@ msgstr "Forhandler / Support / Åbne Tickets"
 msgid "Reseller / Support / View Ticket"
 msgstr "Forhandler / Support / Vis Ticket"
 
-msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
-msgstr "Forhandler / Hosting Planer / {TR_DYNAMIC_TITLE}"
+msgid "Reseller /Hosting Plans / Edit Hosting Plan"
+msgstr ""
 
 msgid "Reseller Name"
 msgstr "Forhandler Navn"
@@ -4221,8 +4217,8 @@ msgstr "SQL database grænse er ikke <i>deaktiveret</i> "
 msgid "SQL database limit reached."
 msgstr "SQL database grænse nået."
 
-msgid "SQL database successfully added."
-msgstr "SQL database tilføjet."
+msgid "SQL database successfully created."
+msgstr ""
 
 msgid "SQL database successfully deleted."
 msgstr "SQL database slettet."
@@ -4266,6 +4262,9 @@ msgstr "SQL bruger præfiks/suffiks"
 
 msgid "SQL user successfully added."
 msgstr "SQL bruger tilføjet."
+
+msgid "SQL user successfully deleted."
+msgstr ""
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "SQL bruger med komma(r) i navn accepteres ikke."
@@ -4432,15 +4431,6 @@ msgstr "Vis HTML output komprimeringsstørrelse kommentar"
 msgid "Show SSL certificate"
 msgstr "Vis SSL certifikat"
 
-msgid ""
-"Show all errors, except for notices and coding standards warnings (Default)"
-msgstr "Vis alle fejl, undtagen for bekendtgørelser og kodestandard advarslerne (Standard)"
-
-msgid ""
-"Show all errors, warnings and notices including coding standards "
-"(Development)"
-msgstr "Vis alle fejl, advarsler og meddelelser, herunder kodestandarder (Udvikling)"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "Vis detaljerede statistik for denne forhandler"
 
@@ -4501,9 +4491,6 @@ msgstr "Software Installer valgmuligheder"
 
 msgid "Software installer options successfully updated."
 msgstr "Software Installer valgmuligheder blevet opdateret."
-
-msgid "Software installer requires PHP support."
-msgstr "Software installer kræver PHP support."
 
 msgid "Software instance has been scheduled for installation"
 msgstr "Software instans er planlagt til installation"
@@ -4566,9 +4553,6 @@ msgid ""
 "but retains our server as final mailhost."
 msgstr "Spam Filter: Opsæt en ekstern MX vært til relay post for hele dit domæne men bevarer vores server som endelig postvært."
 
-msgid "Sql user successfully deleted."
-msgstr "SQL bruger blev slettet med succes."
-
 msgid "Start installation"
 msgstr "Start installation"
 
@@ -4596,6 +4580,9 @@ msgstr "Adresse 1"
 msgid "Street 2"
 msgstr "Adresse 2"
 
+msgid "Strong passwords"
+msgstr ""
+
 msgid "Subdomain"
 msgstr "Subdomæne"
 
@@ -4607,14 +4594,18 @@ msgstr "Subdomæne %s eksisterer allerede."
 msgid "Subdomain %s cannot be forwarded on itself."
 msgstr "Subdomæne %s kan ikke viderestilles til sig selv."
 
+#, php-format
+msgid "Subdomain %s is unavailable."
+msgstr ""
+
 msgid "Subdomain alias"
 msgstr "Subdomæne alias"
 
 msgid "Subdomain alias errors"
 msgstr "Subdomæne alias fejl"
 
-msgid "Subdomain alias successfully scheduled for deletion."
-msgstr "Subdomæne alias succesfuldt planlagt til sletning."
+msgid "Subdomain alias scheduled for deletion."
+msgstr ""
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4639,11 +4630,11 @@ msgstr "Subdomæne navn"
 msgid "Subdomain name is not valid."
 msgstr "Subdomæne navn er ikke gyldigt."
 
+msgid "Subdomain scheduled for deletion."
+msgstr ""
+
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Subdomæne succesfuldt planlagt til tilføjelse."
-
-msgid "Subdomain successfully scheduled for deletion."
-msgstr "Subdomæne succesfuldt planlagt til sletning."
 
 msgid "Subdomain successfully scheduled for update"
 msgstr "Subdomæne succesfuldt planlagt til opdatering."
@@ -4754,33 +4745,21 @@ msgstr "Midlertidig mappe ikke fundet."
 
 #, php-format
 msgid ""
-"The %s limit for this customer cannot be greater than <strong>%d</strong>, "
-"the calculated limit for his reseller."
-msgstr "Grænsen %s for denne kunde kan ikke være større end <strong>%d</ strong>, den beregnede grænse for hans forhandler."
+"The %s limit for this customer cannot be greater than %d, your calculated "
+"limit."
+msgstr ""
 
 #, php-format
 msgid ""
-"The %s limit for this customer cannot be greater than <strong>%d</strong>, "
-"your calculated limit."
-msgstr "Grænsen %s for denne kunde kan ikke være større end <strong>%d</ strong>, din beregnede grænse."
-
-#, php-format
-msgid ""
-"The %s limit for this customer cannot be lower than <strong>%d</strong>, the"
-" total of %s already used by him."
-msgstr "Grænsen %s for denne kunde kan ikke være lavere end <strong>%d</ strong>, den samlede %s bliver allerede anvendt af ham."
+"The %s limit for this customer cannot be lower than %d, the total of %s "
+"already used by him."
+msgstr ""
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
-"already <strong>%d</strong> %s."
-msgstr "Grænsen %s for denne kunde kan ikke sættes til 'slået fra', fordi han allerede har <strong>%d</ strong>%s."
-
-#, php-format
-msgid ""
-"The %s limit for this customer cannot be unlimited because his reseller is "
-"limited for this service."
-msgstr "Grænsen %s for denne kunde kan ikke være ubegrænset, fordi hans forhandler er begrænset i denne service."
+"already %d %s."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4799,9 +4778,6 @@ msgstr "Den %s oversættelses fil er blevet ignoreret: Oversættelses tabellen e
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "Den IP-adresse, du forsøger at fjerne er tildelt en forhandler."
 
-msgid "The `Enter` key is disabled for performance reasons."
-msgstr "`Enter` tasten er deaktiveret på grund af ydeevnen."
-
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
@@ -4811,11 +4787,6 @@ msgstr "Mappen %s eksisterer ikke. Opret venligst denne mappe ved hjælp af din 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
 "properties will result by a complete or partial reactivation of it."
-msgstr "Domænet er i øjeblikket deaktiveret. En ændring af nogle af dens egenskaber vil resultere i en fuldstændig eller delvis reaktivering af det."
-
-msgid ""
-"The domain is currently deactivated. The modification of some of its "
-"properties will result in a complete or partial reactivation of it."
 msgstr "Domænet er i øjeblikket deaktiveret. En ændring af nogle af dens egenskaber vil resultere i en fuldstændig eller delvis reaktivering af det."
 
 msgid ""
@@ -4839,26 +4810,17 @@ msgstr "Pakken vil blive installeret automatisk til dit system efter upload.<br 
 msgid "The password field is empty."
 msgstr "Password feltet er tomt."
 
-msgid "The private key doesn't belong to the provided certificate."
-msgstr "Den private nøgle hører ikke til det angivne certifikat."
+msgid "The private key doesn't belong to the provided SSL certificate."
+msgstr ""
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
 msgstr "Den eksterne filstørrelse (%s) er lavere end 1 byte. Kontroller URL."
 
-msgid "The reseller account that you are trying to edit has not been found."
-msgstr "Den forhandler konto, som du forsøger at redigere er ikke blevet fundet."
-
 msgid ""
-"The reseller you want to remove has one or more customers "
-"accounts.<br>Remove them first."
-msgstr "Den forhandler, du ønsker at fjerne har en eller flere kunders konti.<br>Fjern dem først."
-
-msgid "The software installer feature requires PHP."
-msgstr "Software installer kræver PHP."
-
-msgid "The software installer require the PHP support."
-msgstr "Installationsprogrammet kræver PHP support."
+"The reseller you want to remove has one or more customers accounts. Please "
+"remove them first."
+msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Den uploadede fil blev kun delvist uploadet."
@@ -5318,9 +5280,6 @@ msgstr "Brug normal tilslutning (Ingen SSL)"
 msgid "Use secure connection (SSL)"
 msgstr "Brug sikker forbindelse (SSL)"
 
-msgid "Use strong Passwords"
-msgstr "Brug stærk adgangskode"
-
 msgid "Used"
 msgstr "Brugt"
 
@@ -5407,18 +5366,8 @@ msgid "Users and groups"
 msgstr "Brugere og grupper"
 
 #, php-format
-msgid "Value for the %s directive"
-msgstr "Værdi for %s direktiv"
-
-#, php-format
-msgid "Value for the PHP %s directive is out of range."
-msgstr "Value for PHP %s direktiv er uden for afgrænsning."
-
-#, php-format
-msgid ""
-"Value for the PHP <strong>%%s</strong> directive must be between %%d and "
-"%%d."
-msgstr "Værdi for PHP <strong>%%s</strong> direktiv skal være mellem %%d og %%d."
+msgid "Value for the PHP %%s directive must be in range %%d to %%d."
+msgstr ""
 
 msgid "Values"
 msgstr "Værdier"
@@ -5443,9 +5392,6 @@ msgstr "Se Support Ticket"
 
 msgid "View aliases"
 msgstr "Vis aliaser"
-
-msgid "View hosting plan"
-msgstr "Vis hosting plan"
 
 msgid "View ticket"
 msgstr "Se ticket"
@@ -5509,10 +5455,8 @@ msgstr "Velkomst e-mail"
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Velkommen {USERNAME} til i-MSCP"
 
-msgid ""
-"When allowed, scripts can call the PHP exec() function. This function is "
-"needed by many applications but can cause some security issues"
-msgstr "Når tilladt, kan scripts kalde PHP exec() funktion. Denne funktion er nødvendig for mange programmer, men kan medføre nogle sikkerhedsproblemer"
+msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
+msgstr ""
 
 msgid "Wildcard"
 msgstr "Jokertegn"
@@ -5566,9 +5510,6 @@ msgstr "Forkert brugerniveau opgivet."
 msgid "Wrong username."
 msgstr "Forkert brugernavn."
 
-msgid "Wrong value for the PHP open_basedir directive."
-msgstr "Forkert værdi for PHP open_basedir direktivet."
-
 msgid "XML file URL for the Web software repository"
 msgstr "XML fil URL til Web softwarearkiv"
 
@@ -5580,10 +5521,6 @@ msgstr "År"
 
 msgid "Yes"
 msgstr "Ja"
-
-msgid ""
-"Yes means that the reseller can allow his customers to edit this directive"
-msgstr "Ja betyder, at forhandleren kan give sine kunder ret til at redigere dette direktiv"
 
 msgid "Yes, delete this account."
 msgstr "Ja, slet denne konto."
@@ -5710,52 +5647,50 @@ msgid "You have %d new domain alias %s."
 msgstr "Du har %d nye domæne alias %s."
 
 msgid ""
-"You have a FTP account limit!<br />You cannot add a user with unlimited FTP "
+"You have a FTP account limit. You cannot add a user with unlimited FTP "
 "accounts."
-msgstr "Du har en FTP-konti grænse!<br />Du kan ikke tilføje en bruger med ubegrænset FTP konti."
+msgstr ""
 
 msgid ""
-"You have a SQL database limit.<br />You cannot add a user with unlimited SQL"
-" databases."
-msgstr "Du har en SQL databaser grænse.<br />Du kan ikke tilføje en bruger med ubegrænset SQL databaser."
+"You have a SQL database limit. You cannot add a user with unlimited SQL "
+"databases."
+msgstr ""
 
 msgid ""
-"You have a SQL user limit.<br />You cannot add a user with unlimited SQL "
-"users."
-msgstr "Du har en SQL bruger grænse.<br />Du kan ikke tilføje en bruger med ubegrænset SQL brugere."
+"You have a SQL user limit. You cannot add a user with unlimited SQL users."
+msgstr ""
 
 msgid ""
-"You have a disk space limit.<br />You cannot add a user with unlimited disk "
+"You have a disk space limit. You cannot add a user with unlimited disk "
 "space."
-msgstr "Du har en diskplads grænse.<br />Du kan ikke tilføje en bruger med ubegrænset diskplads."
+msgstr ""
 
 msgid ""
-"You have a domain alias limit.<br />You cannot add a user with unlimited "
-"domain aliases."
-msgstr "Du har en domæne alias grænse.<br />Du kan ikke tilføje en bruger med ubegrænset domæne aliaser."
+"You have a domain alias limit. You cannot add a user with unlimited domain "
+"aliases."
+msgstr ""
 
 msgid ""
-"You have a monthly traffic limit.<br />You cannot add a user with unlimited "
+"You have a mail account limit. You cannot add a user with unlimited email "
+"accounts."
+msgstr ""
+
+msgid ""
+"You have a monthly traffic limit. You cannot add a user with unlimited "
 "monthly traffic."
-msgstr "Du har en månedlig trafik grænse.<br />Du kan ikke tilføje en bruger med ubegrænset månedlige trafik."
+msgstr ""
 
 msgid ""
-"You have a subdomain limit.<br />You cannot add a user with unlimited "
-"subdomains."
-msgstr "Du har en subdomæne grænse.<br />Du kan ikke tilføje en bruger med ubegrænset subdomæne."
-
-msgid ""
-"You have an email account limit.<br />You cannot add a user with unlimited "
-"email accounts."
-msgstr "Du har en e-mail konti grænse.<br />Du kan ikke tilføje en bruger med ubegrænset e-mail konti."
+"You have a subdomain limit. You cannot add a user with unlimited subdomains."
+msgstr ""
 
 msgid "You have been successfully logged out."
 msgstr "Du er blevet logget ud."
 
 msgid ""
-"You have disabled SQL databases for this user.<br />You cannot have SQL "
-"users here."
-msgstr "Du har deaktiveret SQL databaser for denne bruger.<br />Du kan ikke have SQL brugere her."
+"You have disabled SQL databases for this user. You cannot have SQL users "
+"here."
+msgstr ""
 
 msgid "You have no closed tickets."
 msgstr "Du har ingen lukkede tickets."
@@ -5784,8 +5719,8 @@ msgid ""
 "subscription."
 msgstr "Du har nået det maksimale antal subdomæner tilladt af dit abonnement."
 
-msgid "You have reached your domain limit.<br />You cannot add more domains."
-msgstr "Du har nået din domæne grænse.<br />Du kan ikke tilføje flere domæner."
+msgid "You have reached your domain limit. You cannot add more domains."
+msgstr ""
 
 #, php-format
 msgid "You have received %s new support ticket(s)."
@@ -5794,8 +5729,8 @@ msgstr "Du har modtaget %s nye support ticket(s)."
 msgid "You have to choose between file-upload and wget-function."
 msgstr "Du er nødt til at vælge mellem fil-upload og wget-funktion."
 
-msgid "You must assign at least one IP per reseller."
-msgstr "Du skal tildele mindst én IP per forhandler."
+msgid "You must assign at least one IP to this reseller."
+msgstr ""
 
 msgid "You must choose between local and remote upload."
 msgstr "Du skal vælge mellem lokal og remote upload."
@@ -6017,9 +5952,6 @@ msgstr "i-MSCP / Software Installer / Administration"
 
 msgid "i-MSCP Daemon tools"
 msgstr "i-MSCP Daemon tools"
-
-msgid "i-MSCP Notice"
-msgstr "I-MSCP Meddelelse"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr "I-MSCP Software installer / Web softwarearkiv"

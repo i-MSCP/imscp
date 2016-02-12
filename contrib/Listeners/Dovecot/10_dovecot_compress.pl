@@ -16,9 +16,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file for activating the dovecot compress plugin, to reduce
-## the bandwidth usage of IMAP and to also compress the stored mails
-## For more information please check:
+## Activates the Dovecot compress plugin to reduce the bandwidth usage of IMAP, and also compresses the stored mails.
+##
+## For more information please consult:
 ##   http://wiki2.dovecot.org/Plugins/Compress
 ##   http://wiki2.dovecot.org/Plugins/Zlib
 #
@@ -29,24 +29,36 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
+#
+## Configuration parameters
+#
+
+# Compression level
+my $compressionLevel = 6;
+
+#
+## Please, don't edit anything below this line
+#
+
 iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
 	my ($cfgTpl, $tplName) = @_;
 
-        my $cfgSnippet = <<EOF;
+	return 0 unless index($tplName, 'dovecot.conf') != -1;
+
+	my $cfgSnippet = <<EOF;
+
 	# BEGIN Listener::Dovecot::Compress
 	zlib_save = gz
-	zlib_save_level = 6
+	zlib_save_level = $compressionLevel
 	# END Listener::Dovecot::Compress
 EOF
 
-	if (index($tplName, 'dovecot.conf') != -1) {
-		# Enable zlib plugin globally for reading/writing
-		$$cfgTpl =~ s/^(mail_plugins\s+=.*)/$1 zlib/m;
-		$$cfgTpl =~ s/^(protocol\simap\s+\{.*?mail_plugins.*?$)/$1 imap_zlib/sm;
-		# Enable these only if you want compression while saving
-		$$cfgTpl =~ s/^(plugin\s+\{.*?)(\})/$1$cfgSnippet$2/sm;
-	}
-	
+	# Enable zlib plugin globally for reading/writing
+	$$cfgTpl =~ s/^(mail_plugins\s+=.*)/$1 zlib/m;
+	$$cfgTpl =~ s/^(protocol\simap\s+\{.*?mail_plugins.*?$)/$1 imap_zlib/sm;
+
+	# Enable these only if you want compression while saving
+	$$cfgTpl =~ s/^(plugin\s+\{.*?)(\})/$1$cfgSnippet$2/sm;
 	0;
 });
 

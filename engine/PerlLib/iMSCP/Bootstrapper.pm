@@ -88,15 +88,16 @@ sub boot
 	$self->_genKeys() unless($options->{'nokeys'} && $options->{'nokeys'} eq 'yes');
 
 	unless ($options->{'nodatabase'} && $options->{'nodatabase'} eq 'yes') {
-		require iMSCP::Crypt;
-		my $crypt = iMSCP::Crypt->getInstance();
 		my $database = iMSCP::Database->factory();
+		require iMSCP::Crypt;
 
 		$database->set('DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'});
 		$database->set('DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'});
 		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
 		$database->set('DATABASE_USER', $main::imscpConfig{'DATABASE_USER'});
-		$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}));
+		$database->set('DATABASE_PASSWORD', iMSCP::Crypt::decryptBlowfishCBC(
+			$main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
+		));
 		my $rs = $database->connect();
 
 		fatal("Unable to connect to the SQL server: $rs")
@@ -179,13 +180,13 @@ sub _genKeys
 	our $db_pass_key = '{KEY}';
 	our $db_pass_iv = '{IV}';
 
-	require  iMSCP::Crypt;
 	require "$keyFile" if -f $keyFile;
 
 	if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
 		debug('Generating database keys...');
 
 		if(-d $main::imscpConfig{'CONF_DIR'}) {
+			require iMSCP::Crypt;
 			require Data::Dumper;
 			Data::Dumper->import();
 
@@ -193,7 +194,7 @@ sub _genKeys
 				or fatal("Error: Unable to open file '$main::imscpConfig{'CONF_DIR'}/imscp-db-keys' for writing: $!");
 
 			print KEYFILE Data::Dumper->Dump(
-				[iMSCP::Crypt::randomString(32), iMSCP::Crypt::randomString(8)], [qw(db_pass_key db_pass_iv)]
+				[iMSCP::Crypt::randomStr(32), iMSCP::Crypt::randomStr(8)], [qw(db_pass_key db_pass_iv)]
 			);
 
 			close KEYFILE;
@@ -206,10 +207,6 @@ sub _genKeys
 
 	$main::imscpDBKey = $db_pass_key;
 	$main::imscpDBiv = $db_pass_iv;
-
-	iMSCP::Crypt->getInstance()->set('key', $main::imscpDBKey);
-	iMSCP::Crypt->getInstance()->set('iv', $main::imscpDBiv);
-
 	undef;
 }
 

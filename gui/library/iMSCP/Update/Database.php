@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP team
+ * Copyright (C) 2010-2016 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 210;
+	protected $lastUpdate = 216;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -257,7 +257,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$columns = quoteIdentifier($columns);
 		}
 
-		$stmt = exec_query(
+		exec_query(
 			"
 				CREATE TABLE $tmpTable AS SELECT * FROM $table GROUP BY $columns;
 				DELETE FROM $table;
@@ -271,7 +271,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * Rename table
 	 *
 	 * @param string $table Table name
+	 * @param string $newTableName New table name
 	 * @return null|string SQL statement to be executed
+	 * @throws iMSCP_Exception_Database
 	 */
 	protected function renameTable($table, $newTableName)
 	{
@@ -289,6 +291,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * Drop table
 	 *
 	 * @param string $table Table name
+	 * @return string
 	 */
 	public function dropTable($table)
 	{
@@ -557,8 +560,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if ($stmt->rowCount()) {
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $row['props']);
 				$id = quoteValue($row['id'], PDO::PARAM_INT);
+				$props = explode(';', $row['props']);
 
 				if (count($props) == 12) {
 					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props,';_no_') WHERE id = $id";
@@ -1133,18 +1136,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = execute_query("SELECT id, props FROM hosting_plans");
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$id = quoteValue($row['id'], PDO::PARAM_INT);
+				$props = explode(';', $row['props']);
 
 				if (count($props) == 13) {
-					$sqlUpd[] = "
-						UPDATE
-							hosting_plans
-						SET
-							props = ';no;no;no;no;no;8;2;30;60;64'
-						WHERE
-							id = {$data['id']}
-					";
+					$sqlUpd[] = "UPDATE hosting_plans SET props = ';no;no;no;no;no;8;2;30;60;64' WHERE id = $id";
 				}
 			}
 		}
@@ -1469,18 +1466,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = execute_query("SELECT id, props FROM hosting_plans");
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$id = quoteValue($row['id'], PDO::PARAM_INT);
+				$props = explode(';', $row['props']);
 
 				if (count($props) == 23) {
-					$sqlUpd[] = "
-						UPDATE
-							hosting_plans
-						SET
-							props = CONCAT(props, ';_no_')
-						WHERE
-							id = {$data['id']}
-					";
+					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props, ';_no_') WHERE id = $id";
 				}
 			}
 		}
@@ -1545,21 +1536,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = execute_query("SELECT id, props FROM hosting_plans");
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$id = quoteValue($row['id'], PDO::PARAM_INT);
+				$props = explode(';', $row['props']);
 
 				if (count($props) == 24) {
-					unset($props[15]); // Remove register global properties
-
-					$sqlUpd[] = "
-						UPDATE
-							hosting_plans
-						SET
-							props = '" . implode(';', $props) . "'
-						WHERE
-							id = ''
-						{$data['id']}
-					";
+					unset($props[15]); // Remove register_globals properties
+					$sqlUpd[] = 'UPDATE hosting_plans SET props = ' . quoteValue(implode(';', $props)) . "WHERE id = $id";
 				}
 			}
 		}
@@ -2210,15 +2193,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r143()
 	{
 		$sqlUpd = array();
-
 		$stmt = execute_query('SELECT id, props FROM hosting_plans');
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$id = quoteValue($row['id'], PDO::PARAM_INT);
+				$props = explode(';', $row['props']);
 
 				if (count($props) == 23) {
-					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props,';_no_') WHERE id = {$data['id']}";
+					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props,';_no_') WHERE id = $id";
 				}
 			}
 		}
@@ -2389,20 +2372,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$stmt = execute_query('SELECT id, props FROM hosting_plans');
 
 		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				$props = explode(';', $data['props']);
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$id = quoteValue($row['id'], PDO::PARAM_INT);
+				$props = explode(';', $row['props']);
 
 				if (count($props) == 24) {
+					$props[9] = (int) $props[9];
 					$quota = $props[9] * 1048576; // MiB to bytes
-
-					$sqlUpd[] = "
-						UPDATE
-							hosting_plans
-						SET
-							props = CONCAT(props, ';$quota')
-						WHERE
-							id = " . $data['id'] . "
-					";
+					$sqlUpd[] = "UPDATE hosting_plans SET props = CONCAT(props, ';$quota') WHERE id = $id";
 				}
 			}
 		}
@@ -2440,8 +2417,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig = iMSCP_Registry::get('dbConfig');
 
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$id = quoteValue($row['id'], PDO::PARAM_INT);
 				$propsArr = explode(';', rtrim($row['props'], ';'));
-
 				$hpPropMap = array(
 					0 => array('_no_', array('_yes_', '_no_')), // PHP Feature
 					1 => array('_no_', array('_yes_', '_no_')), // CGI Feature
@@ -2485,7 +2462,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				}
 
 				$propStr = implode(';', $propsArr);
-				$sqlUpd[] = "UPDATE hosting_plans SET props = '$propStr' WHERE id = '{$row['id']}'";
+				$sqlUpd[] = 'UPDATE hosting_plans SET props = ' . quoteValue($propStr) . " WHERE id = $id";
 			}
 		}
 
@@ -2682,6 +2659,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add admin.admin_sys_name and admin.admin_sys_gname columns and populate them
 	 *
+	 * @throws iMSCP_Exception_Database
+	 * @throws iMSCP_Update_Exception
 	 * @return array SQL statements to be executed
 	 */
 	protected function  r172()
@@ -3229,8 +3208,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if($stmt->rowCount()) {
 			while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$needUpdate = true;
-				$props = explode(';', $row['props']);
 				$id = quoteValue($row['id'], PDO::PARAM_INT);
+				$props = explode(';', $row['props']);
 
 				switch ($props[10]) {
 					case '_full_':
@@ -3283,5 +3262,197 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$this->removeDuplicateRowsOnColumns('server_traffic', 'traff_time');
 
 		return $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time');
+	}
+
+	/**
+	 * #IP-582 PHP editor - PHP configuration levels (per_user, per_domain and per_site) are ignored
+	 * - Adds php_ini.admin_id and php_ini.domain_type columns
+	 * - Adds admin_id, domain_id and domain_type indexes
+	 * - Populates the php_ini.admin_id column for existent records
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function r211()
+	{
+		return array(
+			$this->addColumn('php_ini', 'admin_id', 'INT(10) NOT NULL AFTER `id`'),
+			$this->addColumn(
+				'php_ini',
+				'domain_type',
+				"VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn' AFTER `domain_id`"
+			),
+			$this->addIndex('php_ini', 'admin_id', 'KEY'),
+			$this->addIndex('php_ini', 'domain_id', 'KEY'),
+			$this->addIndex('php_ini', 'domain_type', 'KEY'),
+			"UPDATE php_ini JOIN domain USING(domain_id) SET admin_id = domain_admin_id WHERE domain_type = 'dmn'"
+		);
+	}
+
+	/**
+	 * Makes the PHP mail function disableable
+	 * - Adds reseller_props.php_ini_al_mail_function permission column
+	 * - Adds domain.phpini_perm_mail_function permission column
+	 * - Adds PHP mail permission property in hosting plans if any
+	 *
+	 * @throws iMSCP_Exception
+	 */
+	protected function r212()
+	{
+		$sqlUpd = array();
+
+		// Add permission column for resellers
+		$sqlUpd[] = $this->addColumn(
+			'reseller_props',
+			'php_ini_al_mail_function',
+			"VARCHAR(15) NOT NULL DEFAULT 'yes' AFTER `php_ini_al_disable_functions`"
+		);
+
+		# Add permission column for clients
+		$sqlUpd[] = $this->addColumn(
+			'domain',
+			'phpini_perm_mail_function',
+			"VARCHAR(20) NOT NULL DEFAULT 'yes' AFTER `phpini_perm_disable_functions`"
+		);
+
+		// Add PHP mail permission property in hosting plans if any
+		$stmt = exec_query('SELECT id, props FROM hosting_plans');
+		while ($row = $stmt->fetchRow()) {
+			$id = quoteValue($row['id'], PDO::PARAM_INT);
+			$props = explode(';', $row['props']);
+
+			if (sizeof($props) < 26) {
+				array_splice($props, 18, 0, 'yes'); // Insert new property at position 18
+				$sqlUpd[] = 'UPDATE hosting_plans SET props = ' . quoteValue(implode(';', $props)) . 'WHERE id = ' . $id;
+			}
+		}
+
+		return $sqlUpd;
+	}
+
+	/**
+	 * Deletes obsolete PHP editor configuration options
+	 * PHP configuration options defined at administrator level are no longer supported
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r213()
+	{
+		return "DELETE FROM config WHERE name LIKE 'PHPINI_%'";
+	}
+
+	/**
+	 * Update default value for the php_ini.error_reporting column
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r214()
+	{
+		return $this->changeColumn(
+			'php_ini',
+			'error_reporting',
+			"error_reporting VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_DEPRECATED & ~E_STRICT'"
+		);
+	}
+
+	/**
+	 * Creates missing entries in the php_ini table (one for each domain)
+	 *
+	 * @throws iMSCP_Exception
+	 * @throws iMSCP_Exception_Database
+	 */
+	protected function r215()
+	{
+		$phpini = iMSCP_PHPini::getInstance();
+
+		// For each reseller
+		$resellers = exec_query("SELECT admin_id FROM admin WHERE admin_type = 'reseller'");
+		while ($reseller = $resellers->fetchRow()) {
+			$phpini->loadResellerPermissions($reseller['admin_id']);
+
+			// For each client of the reseller
+			$clients = exec_query("SELECT admin_id FROM admin WHERE created_by = {$reseller['admin_id']}");
+			while ($client = $clients->fetchRow()) {
+				$phpini->loadClientPermissions($client['admin_id']);
+
+				// For the client's main domain
+				$domain = exec_query(
+					"
+						SELECT domain_id FROM domain
+						WHERE domain_admin_id = {$client['admin_id']} AND domain_status <> 'todelete'
+					"
+				);
+
+				if (!$domain->rowCount()) {
+					continue;
+				}
+
+				$domain = $domain->fetchRow();
+				$phpini->loadDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
+
+				// If no entry found, create one with default values
+				if ($phpini->isDefaultDomainIni()) {
+					$phpini->saveDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
+				}
+
+				// For each subdomain
+				$subdomains = exec_query(
+					"
+						SELECT subdomain_id FROM subdomain
+						WHERE domain_id = {$domain['domain_id']} AND subdomain_status <> 'todelete'
+					"
+				);
+				while ($subdomain = $subdomains->fetchRow()) {
+					$phpini->loadDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
+
+					// If no entry found, create one with default values
+					if ($phpini->isDefaultDomainIni()) {
+						$phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
+					}
+				}
+
+				// For each domain aliases
+				$domainAliases = exec_query(
+					"
+						SELECT alias_id FROM domain_aliasses
+						WHERE domain_id = {$domain['domain_id']} AND alias_status <> 'todelete'
+					"
+				);
+				while ($domainAlias = $domainAliases->fetchRow()) {
+					$phpini->loadDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
+
+					// If no entry found, create one with default values
+					if ($phpini->isDefaultDomainIni()) {
+						$phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
+					}
+				}
+
+				// For each subdomain of domain aliases
+				$subdomainAliases = exec_query(
+					"
+						SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+						WHERE domain_id = {$domain['domain_id']} AND subdomain_alias_status <> 'todelete'
+					"
+				);
+				while ($subdomainAlias = $subdomainAliases->fetchRow()) {
+					$phpini->loadDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
+
+					// If no entry found, create one with default values
+					if ($phpini->isDefaultDomainIni()) {
+						$phpini->saveDomainIni($client['admin_id'], $subdomainAlias['alias_id'], 'subals');
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Deletes obsolete hosting plans
+	 * Hosting plans defined at administrator level are no longer supported
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function r216()
+	{
+		return "DELETE FROM hosting_plans WHERE reseller_id NOT IN(SELECT admin_id FROM admin WHERE admin_type = 'reseller')";
 	}
 }

@@ -16,10 +16,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file that creates the INBOX. as a compatibility name, 
-## so old clients can continue using it while new clients will use the 
+## Creates the INBOX. as a compatibility name, so old clients can continue using it while new clients will use the
 ## empty prefix namespace.
-#	
+#
 
 package Listener::Dovecot::Namespace;
 
@@ -30,7 +29,10 @@ use iMSCP::EventManager;
 iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
 	my ($cfgTpl, $tplName) = @_;
 
+	return 0 unless index($tplName, 'dovecot.conf') != -1;
+
 	my $cfgSnippet = <<EOF;
+
 # BEGIN Listener::Dovecot::Namespace
 namespace compat {
 	separator = .
@@ -43,12 +45,9 @@ namespace compat {
 # END Listener::Dovecot::Namespace
 EOF
 
-	if(index($tplName, 'dovecot.conf') != -1) {
-		$$cfgTpl =~ s/(separator\s+=\s+)\./$1\//;
-		$$cfgTpl =~ s/(prefix\s+=\s+)INBOX\./$1/;
-		$$cfgTpl =~ s/^(namespace\s+inbox\s+\{.*?^\}\n)/$1\n$cfgSnippet/sm;
-	}
-
+	$$cfgTpl =~ s/(separator\s+=\s+)\./$1\//;
+	$$cfgTpl =~ s/(prefix\s+=\s+)INBOX\./$1/;
+	$$cfgTpl =~ s/^(namespace\s+inbox\s+\{.*?^\}\n)/$1$cfgSnippet/sm;
 	0;
 });
 

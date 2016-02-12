@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2015 by Sascha Bay
+# Copyright (C) 2013-2016 by Sascha Bay
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Listener file that allows to setup sender generic map.
+## Allows to setup sender generic map.
 #
 
 package Listener::Postfix::Sender::Generic::Map;
@@ -38,24 +38,19 @@ my $addSmtpGenericMap = "smtp_generic_maps = hash:/etc/postfix/imscp/smtp_outgoi
 ## Please, don't edit anything below this line
 #
 
-sub onAfterMtaBuildPostfixSmtpGenericMap($)
-{
+iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
 	my $tplContent = shift;
 
-	if (-f $postfixSmtpGenericMap) {
-		my ($stdout, $stderr);
-		my $rs = execute("postmap $postfixSmtpGenericMap", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+	return 0 unless -f $postfixSmtpGenericMap;
 
-		$$tplContent .= "$addSmtpGenericMap";
-	}
+	my $rs = execute("postmap $postfixSmtpGenericMap", \ my $stdout, \ my $stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
+	$$tplContent .= "$addSmtpGenericMap";
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', \&onAfterMtaBuildPostfixSmtpGenericMap);
+});
 
 1;
 __END__

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -73,12 +73,8 @@ sub preinstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdPreinstall');
-	return $rs if $rs;
-
-	$rs = $self->stop();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterFtpdPreinstall');
+	$rs ||= $self->stop();
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdPreinstall');
 }
 
 =item install()
@@ -94,13 +90,10 @@ sub install
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdInstall', 'proftpd');
-	return $rs if $rs;
 
 	require Servers::ftpd::proftpd::installer;
-	$rs = Servers::ftpd::proftpd::installer->getInstance()->install();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterFtpdInstall', 'proftpd');
+	$rs ||= Servers::ftpd::proftpd::installer->getInstance()->install();
+	$rs ||=$self->{'eventManager'}->trigger('afterFtpdInstall', 'proftpd');
 }
 
 =item postinstall()
@@ -145,15 +138,11 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdUninstall', 'proftpd');
-	return $rs if $rs;
 
 	require Servers::ftpd::proftpd::uninstaller;
-	$rs = Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
-	return $rs if $rs;
-
-	$self->{'restart'} = 1;
-
-	$self->{'eventManager'}->trigger('afterFtpdUninstall', 'proftpd');
+	$rs ||= Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
+	$self->{'restart'} = 1 unless $rs;
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdUninstall', 'proftpd');
 }
 
 =item addUser(\%data)
@@ -187,10 +176,7 @@ sub addUser
 	}
 
 	$rdata = $db->doQuery(
-		'u',
-		'UPDATE ftp_group SET gid = ? WHERE groupname = ?',
-		$data->{'USER_SYS_GID'},
-		$data->{'USERNAME'}
+		'u', 'UPDATE ftp_group SET gid = ? WHERE groupname = ?', $data->{'USER_SYS_GID'}, $data->{'USERNAME'}
 	);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
@@ -270,7 +256,7 @@ sub restart
 		my $serviceMngr = iMSCP::Service->getInstance();
 
 		# Mitigate restart problems by waiting a bit before start
-		# For instance on Ubuntu Trusty, ProftPD stay is not running state when using restart command
+		# For instance on Ubuntu Trusty, ProFTPD stay in not running state when using restart command
 		$serviceMngr->stop($self->{'config'}->{'FTPD_SNAME'});
 
 		# Give ProFTPD sufficient time for stopping
@@ -349,27 +335,19 @@ sub _init
 	$self->{'start'} = 0;
 	$self->{'restart'} = 0;
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
-	$self->{'eventManager'}->trigger(
-		'beforeFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - beforeFtpdInit has failed');
-
+	$self->{'eventManager'}->trigger('beforeFtpdInit', $self, 'proftpd') and fatal('proftpd - beforeFtpdInit has failed');
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'commentChar'} = '#';
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data"; \%c; };
-
-	$self->{'eventManager'}->trigger(
-		'afterFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - afterFtpdInit has failed');
-
+	$self->{'eventManager'}->trigger('afterFtpdInit', $self, 'proftpd') and fatal('proftpd - afterFtpdInit has failed');
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 
