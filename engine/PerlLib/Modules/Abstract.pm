@@ -164,15 +164,17 @@ sub _runAction
 			next if $item eq 'noserver';
 
 			my $dataProvider = '_get' . ucfirst($item) . 'Data';
-			my %moduleData = $self->$dataProvider($action);
+			my %moduleData = eval { $self->$dataProvider($action); };
+			if($@) {
+				error($@);
+				return 1;
+			}
 
 			if(%moduleData) {
 				my $package = "Servers::$item";
 				eval "require $package";
-
 				unless($@) {
 					$package = $package->factory();
-
 					if ($package->can($action)) {
 						debug("Calling action $action on Servers::$item");
 						my $rs = $package->$action(\%moduleData);
@@ -187,15 +189,17 @@ sub _runAction
 	} elsif($itemType eq 'package') {
 		for my $item (@{$items}) {
 			my $dataProvider = '_getPackagesData';
-			my %moduleData = $self->$dataProvider($action);
+			my %moduleData = eval { $self->$dataProvider($action); };
+			if($@) {
+				error($@);
+				return 1;
+			}
 
 			if(%moduleData) {
 				my $package = "Package::$item";
 				eval "require $package";
-
 				unless($@) {
 					$package = $package->getInstance();
-
 					if ($package->can($action)) {
 						debug("Calling action $action on Package::$item");
 						my $rs = $package->$action(\%moduleData);

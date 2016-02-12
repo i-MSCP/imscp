@@ -41,7 +41,6 @@
  * @property bool SHOW_COMPRESSION_SIZE If TRUE, show page compression info
  * @property int SESSION_TIMEOUT Session timeout
  * @property int DOMAIN_ROWS_PER_PAGE Number for domain displayed per page
- * @property string HOSTING_PLANS_LEVEL Hosting plan level (admin|reseller)
  * @property bool IMSCP_SUPPORT_SYSTEM If TRUE, support system is available
  * @property bool LOSTPASSWORD If TRUE lost password is available
  * @property int LOSTPASSWORD_TIMEOUT Timeout for lost password

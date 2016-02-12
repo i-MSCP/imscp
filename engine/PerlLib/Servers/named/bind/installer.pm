@@ -439,7 +439,7 @@ sub _buildConf
 		if($conffile eq 'BIND_CONF_FILE' && ! -f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
 			$cfgTpl =~ s%include "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys";\n%%;
 		} elsif($conffile eq 'BIND_OPTIONS_CONF_FILE') {
-			$cfgTpl =~ s/listen-on-v6 { any; };/listen-on-v6 { none; };/ if $self->{'config'}->{'BIND_IPV6'} eq 'no';
+			$cfgTpl =~ s/listen-on-v6\s+\{\s+any;\s+\};/listen-on-v6 { none; };/ if $self->{'config'}->{'BIND_IPV6'} eq 'no';
 
 			my $namedVersion = $self->_getVersion();
 			unless(defined $namedVersion) {

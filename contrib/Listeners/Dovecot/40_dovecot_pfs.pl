@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## i-MSCP listener file to activate the Perfect Forward Secrecy logging
+## Activates the Perfect Forward Secrecy logging.
 #
 
 package Listener::Dovecot::PFS;
@@ -26,17 +26,17 @@ use warnings;
 use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
-        my ($cfgTpl, $tplName) = @_;
+	my ($cfgTpl, $tplName) = @_;
 
-        my $cfgSnippet = <<EOF;
+	return 0 unless index($tplName, 'dovecot.conf') != -1;
+
+	my $$cfgTpl .= <<EOF;
+
 # BEGIN Listener::Dovecot::PFS
 login_log_format_elements = user=<%u> method=%m rip=%r lip=%l mpid=%e %c %k session=<%{session}>
 # END Listener::Dovecot::PFS
 EOF
-
-        $$cfgTpl .= "\n$cfgSnippet" if index($tplName, 'dovecot.conf') != -1;
-
-        0;
+	0;
 });
 
 1;

@@ -12,7 +12,7 @@
 # Laurent Declercq <l.declercq@nuxwin.com>, 2015
 # Steve Kuijpers <s.kuijpers@freakez.eu>, 2012
 # Thom Heemstra <thom@heemstra.us>, 2014
-# Thom Heemstra <thom@heemstra.us>, 2014-2015
+# Thom Heemstra <thom@heemstra.us>, 2014-2016
 # Thom Heemstra <thom@heemstra.us>, 2014
 # Thom Heemstra <thom@heemstra.us>, 2014
 # yves claeys <claeysy@gmail.com>, 2013
@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2015-12-27 19:50+0100\n"
-"PO-Revision-Date: 2015-12-22 09:43+0000\n"
-"Last-Translator: Thom Heemstra <thom@heemstra.us>\n"
+"POT-Creation-Date: 2016-02-12 12:42+0100\n"
+"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -127,15 +127,15 @@ msgstr "Beheerder / Ondersteuning / Open tickets"
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 msgstr "Klant / Webtools / Aangepaste foutpagina's / Foutpagina's aanpassen"
 
-msgid ""
-" Show all errors, except for warnings about deprecated code (Production)"
-msgstr "Laat alle fouten zien, behalve fouten voor verouderde code (Productiegebruik)"
-
 msgid " Wrong IP address."
 msgstr "IP-adres incorrect."
 
 msgid " was deleted by {ADMIN}!"
 msgstr "is verwijderd door {ADMIN}!"
+
+#, php-format
+msgid "%%s must be lower than %%s."
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -199,7 +199,7 @@ msgstr "%1$s van <b>ongelimiteerd</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s, u bent nu ingelogd als %2$s"
+msgstr "%1$s is ingelogd als %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -327,8 +327,8 @@ msgstr "%s: Deze wederverkoper heeft klanten met ongelimiteerde items."
 
 #, php-format
 msgid ""
-"%s: You cannot disable a service already consumed by reseller's customers"
-msgstr "%s: U kunt een dienst of onderdeel die door de klanten van de wederverkoper gebruikt worden niet uitschakelen."
+"%s: You cannot disable a service already consumed by reseller's customers."
+msgstr ""
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
@@ -524,9 +524,6 @@ msgstr "Een PHP-extensie heeft de bestandsupload gestopt."
 msgid "A database update is available"
 msgstr "Er is een databank-update beschikbaar"
 
-msgid "A hosting plan with same name already exists."
-msgstr "Er bestaat al een hostingpakket met dezelfde naam."
-
 msgid "A new i-MSCP version is available"
 msgstr "Er is een update voor i-MSCP beschikbaar"
 
@@ -597,7 +594,7 @@ msgid "Add / Edit SSL certificate"
 msgstr "Toevoegen / Aanpassen SSL-certificaat"
 
 msgid "Add FTP account"
-msgstr "Voeg FTP-account toe"
+msgstr "FTP-account toevoegen"
 
 msgid "Add Htaccess group"
 msgstr "Voeg htaccess-groep toe"
@@ -624,10 +621,10 @@ msgid "Add catchall"
 msgstr "Voeg catch-all aan domein toe"
 
 msgid "Add custom DNS record"
-msgstr "Voeg eigen DNS-record toe"
+msgstr "DNS-record toevoegen"
 
 msgid "Add custom menu"
-msgstr "Voeg eigen menu toe"
+msgstr "Voeg eigen menuitem toe"
 
 msgid "Add customer"
 msgstr "Voeg klant toe"
@@ -639,7 +636,7 @@ msgid "Add domain alias"
 msgstr "Domeinalias toevoegen"
 
 msgid "Add email account"
-msgstr "Voeg e-mailaccount toe"
+msgstr "E-mailaccount toevoegen"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Voeg externe mailserver toe voor domein {DOMAIN_UTF8}"
@@ -648,7 +645,7 @@ msgid "Add group"
 msgstr "Groep toevoegen"
 
 msgid "Add hosting plan"
-msgstr "Voeg hostingpakket toe"
+msgstr "Hostingpakket toevoegen"
 
 msgid "Add new IP address"
 msgstr "Voeg nieuw IP-adres toe"
@@ -678,7 +675,7 @@ msgid "Add reseller"
 msgstr "Wederverkoper toevoegen"
 
 msgid "Add subdomain"
-msgstr "Voeg subdomein toe"
+msgstr "Subdomein toevoegen"
 
 msgid "Add user"
 msgstr "Gebruiker toevoegen"
@@ -704,29 +701,20 @@ msgstr "Beheerder / Algemeen / Overzicht"
 msgid "Admin / General / Services Status"
 msgstr "Beheerder / Algemeen / Serverstatus"
 
-msgid "Admin / Hosting Plans / Add Hosting Plan"
-msgstr "Beheerder / Hostingpakketten / Hostingpakket toevoegen"
-
-msgid "Admin / Hosting Plans / Overview"
-msgstr "Beheerder / Hostingpakketten / Overzicht"
-
-msgid "Admin / Hosting Plans / Overview / Edit Hosting Plan"
-msgstr "Beheerder / Hostingpakketten / Overzicht / Hostingpakket aanpassen"
-
 msgid "Admin / Profile / Account Summary"
-msgstr "Beheerder / Profiel / Accountsamenvatting"
+msgstr "Beheerder / Account / Accountsamenvatting"
 
 msgid "Admin / Profile / Language"
-msgstr "Beheerder / Profiel / Taal"
+msgstr "Beheerder / Account / Taal"
 
 msgid "Admin / Profile / Layout"
-msgstr "Beheerder / Profiel / Lay-out"
+msgstr "Beheerder / Account / Lay-out"
 
 msgid "Admin / Profile / Password"
-msgstr "Beheerder / Profiel / Wachtwoord"
+msgstr "Beheerder / Account / Wachtwoord"
 
 msgid "Admin / Profile / Personal Data"
-msgstr "Beheerder / Profiel / Persoonlijke informatie"
+msgstr "Beheerder / Account  / Persoonlijke informatie"
 
 msgid "Admin / Settings"
 msgstr "Beheerder / Instellingen"
@@ -807,9 +795,6 @@ msgstr "Beheerder / Systeem / Systeeminformatie"
 
 msgid "Admin / System Tools / i-MSCP Updates"
 msgstr "Beheerder / Systeem / i-MSCP Updates"
-
-msgid "Admin / User / Overview / Domain Edit"
-msgstr "Beheerder / Gebruiker / Overzicht / Domein aanpassen"
 
 msgid "Admin / Users / Add Admin"
 msgstr "Beheerder / Gebruikers / Voeg beheerder toe"
@@ -915,11 +900,20 @@ msgstr "Alle"
 msgid "All closed tickets were successfully deleted."
 msgstr "Alle gesloten tickets succesvol verwijderd."
 
+msgid "All errors (Development)"
+msgstr ""
+
+msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
+msgstr ""
+
+msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
+msgstr ""
+
 msgid "All fields are required."
 msgstr "Alle velden zijn verplicht."
 
-msgid "All fields seem to be valid."
-msgstr "Alle velden lijken geldig."
+msgid "All fields are valid."
+msgstr ""
 
 msgid "All in"
 msgstr "Alles inkomend"
@@ -972,7 +966,7 @@ msgid "Already in use"
 msgstr "Reeds in gebruik"
 
 msgid "Alternative URL to reach your website"
-msgstr "Alternatieve URL om uw website te bereiken"
+msgstr "Alternatieve URL"
 
 msgid "An email addresse is not valid in mail forward list."
 msgstr "Een e-mailadres is niet geldig in de maildoorstuurlijst."
@@ -982,6 +976,9 @@ msgstr "Een invoer is tweemaal ingegeven."
 
 msgid "An error occurred during authentication."
 msgstr "Er is een aanmeldfout opgetreden"
+
+msgid "An hosting plan with same name already exists."
+msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "Er is een onbekende fout opgetreden"
@@ -1078,16 +1075,6 @@ msgid "Are you sure you want to delete the %s domain alias?"
 msgstr "Weet u zeker dat u de domein-alias voor adres %s wilt verwijderen?"
 
 #, php-format
-msgid ""
-"Are you sure you want to delete the %s domain alias? Be aware that any "
-"related entity will be also removed."
-msgstr "Weet u zeker dat u het domeinalias %s wilt verwijderen? Let op dat alle bijbehorende accounts en gegevens tevens worden verwijderd."
-
-#, php-format
-msgid "Are you sure you want to delete the %s hosting plan?"
-msgstr "Weet u zeker dat u het hostingpakket %s wilt verwijderen?"
-
-#, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Weet u zeker dat u het %s menu wilt verwijderen?"
 
@@ -1095,12 +1082,24 @@ msgstr "Weet u zeker dat u het %s menu wilt verwijderen?"
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Weet u zeker dat u het %s ticket wilt verwijderen?"
 
+msgid "Are you sure you want to delete this DNS record?"
+msgstr ""
+
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Weet u zeker dat u het IP-adres: %s wilt verwijderen?"
 
+msgid "Are you sure you want to delete this domain alias?"
+msgstr ""
+
+msgid "Are you sure you want to delete this hosting plan?"
+msgstr ""
+
 msgid "Are you sure you want to delete this package?"
 msgstr "Weet u zeker dat u dit pakket wilt verwijderen?"
+
+msgid "Are you sure you want to delete this subdomain?"
+msgstr ""
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1237,8 +1236,12 @@ msgid "Cache"
 msgstr "Cache"
 
 #, php-format
-msgid "Can edit the PHP %s directive"
-msgstr "Kan de PHP-optie %s aanpassen"
+msgid "Can edit the PHP %s configuration option"
+msgstr ""
+
+#, php-format
+msgid "Can use the PHP %s function"
+msgstr ""
 
 msgid "Cancel"
 msgstr "Annuleren"
@@ -1377,7 +1380,7 @@ msgid "Client / Domains / Add Domain Alias"
 msgstr "Klant / Domain / Voeg domeinalias toe"
 
 msgid "Client / Domains / Add Subdomain"
-msgstr "Klant / Domain / Voeg subdomein toe"
+msgstr "Klant / Domain / Subdomein toevoegen"
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Klant / Domain / Pas domeinalias aan"
@@ -1392,7 +1395,7 @@ msgid "Client / Domains / SSL Certificate"
 msgstr "Klant / Domeinen / SSL-Certificaat"
 
 msgid "Client / Email / Add Email Account"
-msgstr "Klant / E-mail / Voeg e-mailaccount toe"
+msgstr "Klant / E-mail / E-mailaccount toevoegen"
 
 msgid "Client / Email / Catchall"
 msgstr "Klant / E-mail / Catch-all"
@@ -1438,19 +1441,19 @@ msgid "Client / General / Overview"
 msgstr "Klant / Algemeen / Overzicht"
 
 msgid "Client / Profile / Account Summary"
-msgstr "Klant / Profiel / Accountsamenvatting"
+msgstr "Klant / Account / Accountsamenvatting"
 
 msgid "Client / Profile / Language"
-msgstr "Klant / Profiel / Taal"
+msgstr "Klant / Account / Taal"
 
 msgid "Client / Profile / Layout"
-msgstr "Klant / Profiel / Lay-out"
+msgstr "Klant / Account / Lay-out"
 
 msgid "Client / Profile / Password"
-msgstr "Klant / Profiel / Wachtwoord"
+msgstr "Klant / Account / Wachtwoord"
 
 msgid "Client / Profile / Personal Data"
-msgstr "Klant / Profiel / Persoonlijke informatie"
+msgstr "Klant / Account / Persoonlijke informatie"
 
 msgid "Client / Statistics"
 msgstr "Klant / Statistieken"
@@ -1540,6 +1543,24 @@ msgstr "Kerngegevens"
 msgid "Cores"
 msgstr "Kernen"
 
+msgid "Could not add/update SSL certificate. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not create domain alias. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not delete SQL database. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not delete SQL user. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not delete SSL certificate. An unexpected error occurred."
+msgstr ""
+
+msgid "Could not generate SSL certificate. An unexpected error occurred."
+msgstr ""
+
 msgid "Could not upload file."
 msgstr "Kon bestand niet uploaden."
 
@@ -1585,7 +1606,7 @@ msgid "Custom DNS record"
 msgstr "Eigen DNS-instellingen"
 
 msgid "Custom DNS record successfully scheduled for addition."
-msgstr "Eigen DNS-record wordt toegevoegd."
+msgstr "DNS-record succesvol toegevoegd."
 
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "Eigen DNS-record wordt verwijderd."
@@ -1609,7 +1630,7 @@ msgid "Custom menu properties"
 msgstr "Eigen menuinstellingen"
 
 msgid "Custom menu successfully added."
-msgstr "Eigen menu succesvol toegevoegd."
+msgstr "Eigen menuitem succesvol toegevoegd."
 
 msgid "Custom menu successfully deleted."
 msgstr "Eigen menu succesvol verwijderd."
@@ -1698,8 +1719,8 @@ msgstr "Deamon-verzoek succesvol."
 msgid "Daily backup"
 msgstr "Dagelijkse back-up"
 
-msgid "Data were been altered. Please try again."
-msgstr "Gegevens zijn ondertussen aangepast. Probeer opnieuw."
+msgid "Data were altered. Please try again."
+msgstr ""
 
 msgid "Database"
 msgstr "Databank"
@@ -1887,9 +1908,6 @@ msgstr "Beschrijving kan niet leeg zijn."
 msgid "Details"
 msgstr "Bekijk details"
 
-msgid "Directive values"
-msgstr "Optiewaarde"
-
 msgid "Directories"
 msgstr "Mappen"
 
@@ -1929,9 +1947,6 @@ msgstr "Schijfgebruik"
 
 msgid "Display errors"
 msgstr "Laat fouten zien"
-
-msgid "Do not show any error"
-msgstr "Laat geen enkele fout zien"
 
 #, php-format
 msgid ""
@@ -1980,6 +1995,9 @@ msgstr "Limiet domeinalias"
 msgid "Domain alias name"
 msgstr "Naam domeinalias"
 
+msgid "Domain alias successfully created."
+msgstr ""
+
 msgid "Domain alias successfully ordered."
 msgstr "Domeinalias succesvol besteld."
 
@@ -1998,8 +2016,11 @@ msgstr "Domeinaliassen"
 msgid "Domain and SQL databases"
 msgstr "Domein en SQL-databanken"
 
-msgid "Domain data were been altered. Please try again."
-msgstr "Domeingegevens zijn ondertussen veranderd. Probeer opnieuw."
+msgid "Domain data"
+msgstr ""
+
+msgid "Domain data were altered. Please try again."
+msgstr ""
 
 msgid "Domain details"
 msgstr "Domeindetails"
@@ -2012,6 +2033,9 @@ msgstr "Vervaldatum domein"
 
 msgid "Domain expiration date must be filled."
 msgstr "Vervaldatum domein dient te worden ingevuld."
+
+msgid "Domain for which PHP Editor must act."
+msgstr ""
 
 msgid "Domain limit"
 msgstr "Domeinlimiet"
@@ -2274,9 +2298,6 @@ msgstr "Fout"
 msgid "Error details"
 msgstr "Foutdetails"
 
-msgid "Error in php.ini values."
-msgstr "Fout in de php.ini-waarden"
-
 msgid "Error pages"
 msgstr "Errorpaginas"
 
@@ -2411,7 +2432,7 @@ msgid "Filemanager"
 msgstr "Bestandbeheerder"
 
 msgid "Filesystem system Info"
-msgstr "Bestandssysteemsinformatie"
+msgstr "Bestandsysteeminformatie"
 
 msgid "Fill out a message text."
 msgstr "Vul een bericht in."
@@ -2544,32 +2565,23 @@ msgstr "Hostingpakket"
 msgid "Hosting plan availability"
 msgstr "Beschikbaarheid hostingpakket"
 
-msgid "Hosting plan has been successfully deleted."
-msgstr "Hostingpakket is succesvol verwijderd"
-
 msgid "Hosting plan limits exceed reseller limits."
 msgstr "Hostingpakket overschrijdt limiet van wederverkoper."
 
-msgid "Hosting plan successfully added."
-msgstr "Hostingpakket is succesvol toegevoegd."
+msgid "Hosting plan limits exceed your limits."
+msgstr ""
 
 msgid "Hosting plan successfully created."
 msgstr "Hostingpakket is succesvol aangemaakt."
 
+msgid "Hosting plan successfully deleted."
+msgstr ""
+
 msgid "Hosting plan successfully updated."
 msgstr "Hostingpakket is succesvol bijgewerkt."
 
-msgid "Hosting plan values exceed reseller maximum values."
-msgstr "Hostingpakket overschrijdt limieten van wederverkoper."
-
-msgid "Hosting plan values exceed your own limits."
-msgstr "Hostingpakket overschrijdt jouw limieten."
-
 msgid "Hosting plans"
 msgstr "Hostingpakketten"
-
-msgid "Hosting plans available for"
-msgstr "Hosting pakketten  beschikbaar voor"
 
 msgid "Hour"
 msgstr "Uur"
@@ -2645,11 +2657,21 @@ msgstr "IPv6-adres"
 msgid "IPv6 address field is empty or invalid."
 msgstr "IPv6-adres veld is leeg of ongeldig."
 
+msgid "Id"
+msgstr ""
+
+msgid "If set to `yes`, Web folders will be protected against deletion."
+msgstr ""
+
 msgid ""
-"If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
-"against deletion using the immutable flag (only if supported by the file "
-"system)."
-msgstr "Als 'ja' is geselecteerd worden mappen die in beheer zijn van i-MSCP beschermd tegen verwijderen (alleen als het bestandssysteem dit ondersteunt)."
+"If set to `yes`, the reseller can allows his customers to edit this PHP "
+"configuration option."
+msgstr ""
+
+msgid ""
+"If set to `yes`, the reseller can enable/disable the PHP mail function for "
+"his customers, else, the PHP mail function is disabled."
+msgstr ""
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Als u een wederverkoper wilt limiteren, dienen de klanten eerst een limiet te krijgen."
@@ -2675,14 +2697,7 @@ msgid "In front"
 msgstr "Voor"
 
 msgid "In maintenance mode, only administrators can login."
-msgstr "In onderhoudsmodus kunnen alleen beheerders inloggen"
-
-msgid ""
-"In this page, you can configure some of the aspects of PHP's behavior. You "
-"must note that for now, the directives defined here apply to your entire "
-"domain account (including subdomains and domain aliases). Of course some "
-"values can be modified through the PHP ini_set() function."
-msgstr "Op deze pagina kunt u instellen hoe PHP zich gedraagt. Let op, de instellingen die u hier wijzigt gelden voor het gehele domein (inclusief aliassen en subdomeinen). U kunt altijd zaken aanpassen via de PHP ini_set()-functie."
+msgstr "In onderhoudsmodus kunnen enkel beheerders inloggen"
 
 msgid "Incl. default mails"
 msgstr "Incl. standaardmails"
@@ -2812,14 +2827,14 @@ msgstr "Ongeldige NAME"
 msgid "Invalid SQL user host: %s"
 msgstr "Ongeldige SQL-gebruikershost: %s"
 
+msgid "Invalid SSL certificate."
+msgstr ""
+
 msgid "Invalid TXT data"
 msgstr "Ongeldige TXT-invoer"
 
 msgid "Invalid URL."
 msgstr "Ongeldige URL."
-
-msgid "Invalid certificate."
-msgstr "Foutieve certificaten"
 
 msgid "Invalid domain name."
 msgstr "Ongeldige domeinnaam."
@@ -2829,9 +2844,6 @@ msgstr "Ongeldig e-mailadres."
 
 msgid "Invalid email username."
 msgstr "Foutieve emailgebruikersnaam"
-
-msgid "Invalid expiration date."
-msgstr "Ongeldige verloopdatum."
 
 msgid "Invalid group name!"
 msgstr "Ongeldige groepsnaam!"
@@ -3075,10 +3087,6 @@ msgid "Max traffic"
 msgstr "Maximaal verkeer"
 
 #, php-format
-msgid "Max value for the %s PHP directive"
-msgstr "Maximale waarde voor de %s PHP-optie"
-
-#, php-format
 msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
 msgstr "Maximale externe bestandsgrootte (%s) is bereikt. Uw externe bestand is %s"
 
@@ -3241,9 +3249,6 @@ msgstr "Geen groep gevonden."
 msgid "No hosting plan available."
 msgstr "Geen hostingpakket beschikbaar."
 
-msgid "No hosting plan available. Please contact your administrator."
-msgstr "Geen hostingpakket beschikbaar. Neem contact op met uw beheerder."
-
 msgid "No languages found."
 msgstr "Geen talen gevonden"
 
@@ -3365,7 +3370,7 @@ msgid "Only 'tar.gz' archives are accepted."
 msgstr "Enkel 'tar.gz'-archieven worden geaccepteerd."
 
 msgid "Only administrators can login when maintenance mode is activated."
-msgstr "Alleen beheerders kunnen inloggen als onderhoudsmodus aan staat."
+msgstr "Enkel beheerders kunnen inloggen als onderhoudsmodus aan staat."
 
 msgid "Only exec"
 msgstr "Enkel exec"
@@ -3431,23 +3436,23 @@ msgid "PHP"
 msgstr "PHP"
 
 #, php-format
-msgid "PHP %s directive"
-msgstr "PHP %s-optie"
+msgid "PHP %s configuration option"
+msgstr ""
+
+msgid "PHP Configuration options"
+msgstr ""
 
 msgid "PHP Editor"
 msgstr "PHP-bewerker"
 
-msgid "PHP Editor Settings"
-msgstr "Instellingen voor PHP-bewerker"
-
 msgid "PHP GD extension not loaded."
 msgstr "PHP-GD-extentie niet geladen"
 
+msgid "PHP Permissions"
+msgstr ""
+
 msgid "PHP Settings"
 msgstr "PHP-instellingen"
-
-msgid "PHP Settings (system default)"
-msgstr "PHP-instellingen (systeemstandaard)"
 
 msgid "PHP configuration scheduled for update."
 msgstr "PHP-configuratie wordt bijgewerkt."
@@ -3555,8 +3560,8 @@ msgstr "Wachtwoord is korter dan %s tekens."
 msgid "Password is too long."
 msgstr "Wachtwoord is te lang."
 
-msgid "Password length"
-msgstr "Wachtwoordlengte"
+msgid "Password minimum length"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -3581,12 +3586,6 @@ msgstr "Wachtwoorden komen niet overeen"
 
 msgid "Path"
 msgstr "Pad"
-
-msgid ""
-"Paths are appended to the default PHP open_basedir directive of customers. "
-"Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
-"for more information."
-msgstr "Paden zijn bij de standaard 'PHP open_basedir'-map van klanten toegevoegd. Ze dienen elk te worden onderscheiden door PATH_SEPARATOR. Zie de PHP-documentatie voor meer informatie."
 
 msgid "Percent"
 msgstr "Procent"
@@ -3614,9 +3613,6 @@ msgstr "PiB"
 
 msgid "Please activate your new i-MSCP password"
 msgstr "Activeer uw nieuwe i-MSCP-wachtwoord"
-
-msgid "Please check the PHP editor settings."
-msgstr "Controleert u alstublieft uw PHP-bewerkerinstellingen"
 
 msgid "Please choose htaccess user or htaccess group."
 msgstr "Kies een htaccess-gebruiker of htaccess-groep"
@@ -3886,7 +3882,7 @@ msgid "Processor data"
 msgstr "Verwerkingsinformatie"
 
 msgid "Profile"
-msgstr "Profiel"
+msgstr "Account"
 
 msgid "Properties"
 msgstr "Eigenschappen"
@@ -4068,19 +4064,19 @@ msgid "Reseller / Hosting Plans / Overview"
 msgstr "Wederverkoper / Hostingpakketten / Overzicht"
 
 msgid "Reseller / Profile / Account Summary"
-msgstr "Wederverkoper / Profiel / Accountsamenvatting"
+msgstr "Wederverkoper / Account / Accountsamenvatting"
 
 msgid "Reseller / Profile / Language"
-msgstr "Wederverkoper / Profiel / Taal"
+msgstr "Wederverkoper / Account / Taal"
 
 msgid "Reseller / Profile / Layout"
-msgstr "Wederverkoper / Profiel / Lay-out"
+msgstr "Wederverkoper / Account / Lay-out"
 
 msgid "Reseller / Profile / Password"
-msgstr "Wederverkoper / Profiel / Wachtwoord"
+msgstr "Wederverkoper / Account / Wachtwoord"
 
 msgid "Reseller / Profile / Personal Data"
-msgstr "Wederverkoper / Profiel / Persoonlijke informatie"
+msgstr "Wederverkoper / Account / Persoonlijke informatie"
 
 msgid "Reseller / Statistics / IP Usage"
 msgstr "Wederverkoper / Statistieken / IP-gebruik"
@@ -4103,8 +4099,8 @@ msgstr "Wederverkoper / Ondersteuning / Open tickets"
 msgid "Reseller / Support / View Ticket"
 msgstr "Wederverkoper / Ondersteuning / Bekijk ticket"
 
-msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
-msgstr "Wederverkoper / Hostingpakketten / {TR_DYNAMIC_TITLE}"
+msgid "Reseller /Hosting Plans / Edit Hosting Plan"
+msgstr ""
 
 msgid "Reseller Name"
 msgstr "Naam wederverkoper"
@@ -4229,8 +4225,8 @@ msgstr "SQL-databanklimiet is niet <i>uitgeschakeld</i>."
 msgid "SQL database limit reached."
 msgstr "SQL-databanklimiet bereikt"
 
-msgid "SQL database successfully added."
-msgstr "SQL-databank succesvol toegevoegd."
+msgid "SQL database successfully created."
+msgstr ""
 
 msgid "SQL database successfully deleted."
 msgstr "SQL-databank succesvol verwijderd."
@@ -4274,6 +4270,9 @@ msgstr "Prefix/suffix van SQL-gebruiker"
 
 msgid "SQL user successfully added."
 msgstr "SQL-gebruiker succesvol toegevoegd."
+
+msgid "SQL user successfully deleted."
+msgstr ""
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "SQL-gebruikersnamen met komma('s) worden niet geaccepteerd."
@@ -4440,15 +4439,6 @@ msgstr "Toon opmerking over grootte van HTML-outputcompressie"
 msgid "Show SSL certificate"
 msgstr "Toon SSL-certificaat"
 
-msgid ""
-"Show all errors, except for notices and coding standards warnings (Default)"
-msgstr "Laat alle foutmeldingen zien, behalve opmerkingen en standaard codefouten (standaard)"
-
-msgid ""
-"Show all errors, warnings and notices including coding standards "
-"(Development)"
-msgstr "Laat alle fouten, waarschuwingen en opmerkingen zien, inclusief codestandaarden (Ontwikkeling)"
-
 msgid "Show detailed statistics for this reseller"
 msgstr "Gedetailleerde statistieken voor deze wederverkoper tonen"
 
@@ -4509,9 +4499,6 @@ msgstr "Opties van software-installer"
 
 msgid "Software installer options successfully updated."
 msgstr "Opties van software-installer succesvol bijgewerkt."
-
-msgid "Software installer requires PHP support."
-msgstr "Software-installatie heeft PHP nodig"
 
 msgid "Software instance has been scheduled for installation"
 msgstr "Software wordt geïnstalleerd."
@@ -4574,9 +4561,6 @@ msgid ""
 "but retains our server as final mailhost."
 msgstr "Spamfilter: Stel een externe MX-host in om de e-mail voor het gehele domein te relayen, maar houd deze server als uiteindelijke mailhost."
 
-msgid "Sql user successfully deleted."
-msgstr "SQL-gebruiker succesvol verwijderd."
-
 msgid "Start installation"
 msgstr "Begin met installatie"
 
@@ -4604,6 +4588,9 @@ msgstr "Straat 1"
 msgid "Street 2"
 msgstr "Straat 2"
 
+msgid "Strong passwords"
+msgstr ""
+
 msgid "Subdomain"
 msgstr "Subdomein"
 
@@ -4615,14 +4602,18 @@ msgstr "Subdomein %s bestaat al."
 msgid "Subdomain %s cannot be forwarded on itself."
 msgstr "Subdomein %s kan niet naar zichzelf verwijzen."
 
+#, php-format
+msgid "Subdomain %s is unavailable."
+msgstr ""
+
 msgid "Subdomain alias"
 msgstr "Subdomeinalias"
 
 msgid "Subdomain alias errors"
 msgstr "Fouten bij subdomeinalias"
 
-msgid "Subdomain alias successfully scheduled for deletion."
-msgstr "Subdomeinalias wordt verwijderd."
+msgid "Subdomain alias scheduled for deletion."
+msgstr ""
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4647,11 +4638,11 @@ msgstr "Subdomeinnaam"
 msgid "Subdomain name is not valid."
 msgstr "Subdomeinnaam is geen geldige naam"
 
+msgid "Subdomain scheduled for deletion."
+msgstr ""
+
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Subdomein wordt toegevoegd."
-
-msgid "Subdomain successfully scheduled for deletion."
-msgstr "Subdomein wordt verwijderd."
 
 msgid "Subdomain successfully scheduled for update"
 msgstr "Subdomein wordt bijgewerkt"
@@ -4762,33 +4753,21 @@ msgstr "TMP folder niet gevonden"
 
 #, php-format
 msgid ""
-"The %s limit for this customer cannot be greater than <strong>%d</strong>, "
-"the calculated limit for his reseller."
-msgstr "Het limiet %s voor deze klant kan niet groter zijn dan <strong>%d</strong>, het ingestelde limiet voor deze wederverkoper."
+"The %s limit for this customer cannot be greater than %d, your calculated "
+"limit."
+msgstr ""
 
 #, php-format
 msgid ""
-"The %s limit for this customer cannot be greater than <strong>%d</strong>, "
-"your calculated limit."
-msgstr "Het limiet %s voor deze klant kan niet groter zijn dan <strong>%d</strong>, uw ingestelde limiet."
-
-#, php-format
-msgid ""
-"The %s limit for this customer cannot be lower than <strong>%d</strong>, the"
-" total of %s already used by him."
-msgstr "Het limiet %s voor deze klant kan niet lager zijn dan <strong>%d</strong>, het totaal aantal %s wordt al door hem gebruikt."
+"The %s limit for this customer cannot be lower than %d, the total of %s "
+"already used by him."
+msgstr ""
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
-"already <strong>%d</strong> %s."
-msgstr "Het limiet %s kan niet worden uitgeschakeld, omdat hij heeft: <strong>%d</strong> %s."
-
-#, php-format
-msgid ""
-"The %s limit for this customer cannot be unlimited because his reseller is "
-"limited for this service."
-msgstr "Het limiet %s voor deze klant kan niet ongelimiteerd zijn, omdat de wederverkoper gelimiteerd is."
+"already %d %s."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4807,9 +4786,6 @@ msgstr "Het vertaalbestand %s wordt overgeslagen: Vertaaltabel is leeg."
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "Het IP-adres dat u probeert te verwijderen is toegewezen aan een wederverkoper."
 
-msgid "The `Enter` key is disabled for performance reasons."
-msgstr "De enter-toets is voor prestatiedoeleinden uitgeschakeld."
-
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
@@ -4820,11 +4796,6 @@ msgid ""
 "The domain is currently deactivated. The modification of some of its "
 "properties will result by a complete or partial reactivation of it."
 msgstr "Het domein is momenteel gedeactiveerd. Het wijzigen van sommige instellingen ervan zal resulteren in een complete of gedeeltelijke heractivering."
-
-msgid ""
-"The domain is currently deactivated. The modification of some of its "
-"properties will result in a complete or partial reactivation of it."
-msgstr "Het domein is momenteel gedeactiveerd. Het wijzigen van sommige instellingen ervan resulteert in een complete of gedeeltelijke heractivering."
 
 msgid ""
 "The domain or at least one of its entities has a different status than 'ok'."
@@ -4847,26 +4818,17 @@ msgstr "Het pakket zal automatisch op uw systeem worden geïnstalleerd na het up
 msgid "The password field is empty."
 msgstr "Het wachtwoordveld is leeg."
 
-msgid "The private key doesn't belong to the provided certificate."
-msgstr "De ingegeven private key komt niet overeen met het ingegeven certificaat."
+msgid "The private key doesn't belong to the provided SSL certificate."
+msgstr ""
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
 msgstr "De externe bestandsgrootte (%s) is kleiner dan 1 byte. Controleer de URL."
 
-msgid "The reseller account that you are trying to edit has not been found."
-msgstr "Het account van de wederverkoper dat u probeert te bewerken is niet gevonden."
-
 msgid ""
-"The reseller you want to remove has one or more customers "
-"accounts.<br>Remove them first."
-msgstr "De wederverkoper die u wilt verwijderen heeft nog een of meerdere gebruikers<br>Verwijder deze eerst."
-
-msgid "The software installer feature requires PHP."
-msgstr "Deze functie van de software-installer vereist PHP."
-
-msgid "The software installer require the PHP support."
-msgstr "De software-installatie heeft PHP nodig."
+"The reseller you want to remove has one or more customers accounts. Please "
+"remove them first."
+msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Het geüploade bestand is maar voor een deel geüpload."
@@ -5326,9 +5288,6 @@ msgstr "Gebruik normale verbinding (Geen SSL)"
 msgid "Use secure connection (SSL)"
 msgstr "Gebruik beveiligde verbinding (SSL)"
 
-msgid "Use strong Passwords"
-msgstr "Gebruik sterkere wachtwoorden"
-
 msgid "Used"
 msgstr "Gebruikt"
 
@@ -5415,18 +5374,8 @@ msgid "Users and groups"
 msgstr "Gebruikers en groepen"
 
 #, php-format
-msgid "Value for the %s directive"
-msgstr "Waarde voor de configuratievariabele %s"
-
-#, php-format
-msgid "Value for the PHP %s directive is out of range."
-msgstr "Waarde voor de PHP-configuratievariabele %s bevindt zich buiten bereik."
-
-#, php-format
-msgid ""
-"Value for the PHP <strong>%%s</strong> directive must be between %%d and "
-"%%d."
-msgstr "Waarde voor de PHP-configuratievariabele <strong>%%s</strong> dient zich tussen %%d en %%d te bevinden."
+msgid "Value for the PHP %%s directive must be in range %%d to %%d."
+msgstr ""
 
 msgid "Values"
 msgstr "Waarden"
@@ -5451,9 +5400,6 @@ msgstr "Bekijk supportticket"
 
 msgid "View aliases"
 msgstr "Aliassen bekijken"
-
-msgid "View hosting plan"
-msgstr "Bekijk het hosting plan"
 
 msgid "View ticket"
 msgstr "Bekijk het ticket"
@@ -5517,10 +5463,8 @@ msgstr "Welkomste-mail"
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Welkom bij i-MSCP, {USERNAME}"
 
-msgid ""
-"When allowed, scripts can call the PHP exec() function. This function is "
-"needed by many applications but can cause some security issues"
-msgstr "Wanneer toegestaan kunnen scrips de 'PHP exec()'-functie oproepen. Deze functie is nodig voor veel toepassingen, maar kan enkele beveiligingsissues veroorzaken."
+msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
+msgstr ""
 
 msgid "Wildcard"
 msgstr "Wildcard"
@@ -5574,9 +5518,6 @@ msgstr "Verkeerd gebruikersniveau verleend."
 msgid "Wrong username."
 msgstr "Verkeerde gebruikersnaam."
 
-msgid "Wrong value for the PHP open_basedir directive."
-msgstr "Verkeerde waarde voor de PHP 'open_basedir'-configuratievariabele."
-
 msgid "XML file URL for the Web software repository"
 msgstr "URL van XML-bestand voor het softwareberging"
 
@@ -5588,10 +5529,6 @@ msgstr "Jaar"
 
 msgid "Yes"
 msgstr "Ja"
-
-msgid ""
-"Yes means that the reseller can allow his customers to edit this directive"
-msgstr "Je betekent dat de wederverkoper klanten het toe kan staan om deze richtlijn te bewerken."
 
 msgid "Yes, delete this account."
 msgstr "Ja, verwijder dit account."
@@ -5718,52 +5655,50 @@ msgid "You have %d new domain alias %s."
 msgstr "U heeft %d nieuwe domeinalias %s."
 
 msgid ""
-"You have a FTP account limit!<br />You cannot add a user with unlimited FTP "
+"You have a FTP account limit. You cannot add a user with unlimited FTP "
 "accounts."
-msgstr "U heeft een limiet op FTP-accounts.<br />U kunt geen gebruiker met onbeperkte FTP-accounts toevoegen."
+msgstr ""
 
 msgid ""
-"You have a SQL database limit.<br />You cannot add a user with unlimited SQL"
-" databases."
-msgstr "U heeft een limiet op SQL-databanken.<br />U kunt geen gebruiker met onbeperkte SQL-databanken toevoegen."
+"You have a SQL database limit. You cannot add a user with unlimited SQL "
+"databases."
+msgstr ""
 
 msgid ""
-"You have a SQL user limit.<br />You cannot add a user with unlimited SQL "
-"users."
-msgstr "U heeft een limiet op SQL-gebruikers.<br />U kunt geen gebruiker met onbeperkte SQL-gebruikers toevoegen."
+"You have a SQL user limit. You cannot add a user with unlimited SQL users."
+msgstr ""
 
 msgid ""
-"You have a disk space limit.<br />You cannot add a user with unlimited disk "
+"You have a disk space limit. You cannot add a user with unlimited disk "
 "space."
-msgstr "U heeft een limiet op schijfruimte.<br />U kunt geen gebruiker met onbeperkte schijfruimte toevoegen."
+msgstr ""
 
 msgid ""
-"You have a domain alias limit.<br />You cannot add a user with unlimited "
-"domain aliases."
-msgstr "U heeft een limiet op domeinaliassen.<br />U kunt geen gebruiker met onbeperkte domeinaliassen toevoegen."
+"You have a domain alias limit. You cannot add a user with unlimited domain "
+"aliases."
+msgstr ""
 
 msgid ""
-"You have a monthly traffic limit.<br />You cannot add a user with unlimited "
+"You have a mail account limit. You cannot add a user with unlimited email "
+"accounts."
+msgstr ""
+
+msgid ""
+"You have a monthly traffic limit. You cannot add a user with unlimited "
 "monthly traffic."
-msgstr "U heeft een maandelijks-verkeerslimiet.</ br>U kunt geen gebruiker met onbeperkt maandelijks verkeer toevoegen."
+msgstr ""
 
 msgid ""
-"You have a subdomain limit.<br />You cannot add a user with unlimited "
-"subdomains."
-msgstr "U heeft een limiet op subdomeinen.<br />U kunt geen gebruiker met onbeperkte subdomeinen toevoegen."
-
-msgid ""
-"You have an email account limit.<br />You cannot add a user with unlimited "
-"email accounts."
-msgstr "U heeft een limiet op e-mailaccounts.<br />U kunt geen gebruiker met onbeperkte e-mailaccounts toevoegen."
+"You have a subdomain limit. You cannot add a user with unlimited subdomains."
+msgstr ""
 
 msgid "You have been successfully logged out."
 msgstr "U bent succesvol uitgelogd."
 
 msgid ""
-"You have disabled SQL databases for this user.<br />You cannot have SQL "
-"users here."
-msgstr "U heeft SQL-databanken voor deze gebruiker uitgeschakeld.<br />U kunt hier geen SQL-gebruikers hebben."
+"You have disabled SQL databases for this user. You cannot have SQL users "
+"here."
+msgstr ""
 
 msgid "You have no closed tickets."
 msgstr "U heeft geen gesloten tickets."
@@ -5792,8 +5727,8 @@ msgid ""
 "subscription."
 msgstr "U heeft het maximale aantal subdomeinen bereikt conform uw abonnement."
 
-msgid "You have reached your domain limit.<br />You cannot add more domains."
-msgstr "U heeft uw domeinlimiet bereikt.<br /> U kunt geen domeinen meer toevoegen."
+msgid "You have reached your domain limit. You cannot add more domains."
+msgstr ""
 
 #, php-format
 msgid "You have received %s new support ticket(s)."
@@ -5802,8 +5737,8 @@ msgstr "U heeft een %s nieuw supportticket ontvangen"
 msgid "You have to choose between file-upload and wget-function."
 msgstr "U dient te kiezen tussen bestandsupload en wget-functie."
 
-msgid "You must assign at least one IP per reseller."
-msgstr "U dient tenminste één IP per wederverkoper toe te wijzen."
+msgid "You must assign at least one IP to this reseller."
+msgstr ""
 
 msgid "You must choose between local and remote upload."
 msgstr "U dient te kiezen tussen een local of remote upload."
@@ -6025,9 +5960,6 @@ msgstr "i-MSCP / Software-installer / Beheer"
 
 msgid "i-MSCP Daemon tools"
 msgstr "i-MSCP - Daemon tools"
-
-msgid "i-MSCP Notice"
-msgstr "i-MSCP Mededeling"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr "i-MSCP Software-installer / Softwareberging"

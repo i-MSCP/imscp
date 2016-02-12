@@ -449,7 +449,6 @@ function client_generateView($verifiedData, $data)
 			'TR_HOST' => tr('External Mail Host'),
 			'TR_SELECT_ENTRY_MESSAGE' => tr('Select this entry for deletion.'),
 			'TR_SELECT_ALL_ENTRIES_MESSAGE' => tr('Select all entries for deletion.'),
-			'TR_SELECT_ALL_ENTRIES_ALERT' => tr('Selecting all entries for deletion will cause deactivation of external mail server.'),
 			'TR_ADD_NEW_ENTRY' => tr('Add new entry'),
 			'TR_REMOVE_LAST_ENTRY' => tr('Remove last entry'),
 			'TR_RESET_ENTRIES' => tr('Reset entries'),
@@ -470,6 +469,12 @@ function client_generateView($verifiedData, $data)
 			'ITEM' => $verifiedData['item_id'] . ';' . $verifiedData['item_type']
 		)
 	);
+
+	iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+		/** @var iMSCP_Events_Event $e */
+		$translations = $e->getParam('translations');
+		$translations['core']['all_entries_alert'] = tr('Selecting all entries for deletion will cause deactivation of external mail server.');
+	});
 
 	for ($index = 0; $index < $entriesCount; $index++) {
 		// Generates html option elements for the name

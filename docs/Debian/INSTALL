@@ -14,7 +14,7 @@ Table of Content
 ---------------
 
 i-MSCP Version:  <version>
-Distros:         Debian Wheezy, Jessie ( recommended ), Stretch ( Experimental )
+Distros:         Debian Wheezy, Jessie (recommended), Stretch (Experimental)
 
 2) Requirements
 ---------------
@@ -38,8 +38,7 @@ All packages are listed in ./docs/Debian/packages-<codename>.xml
 
 2. Install the pre-required packages
 
-	# apt-get update && apt-get install whiptail tasksel
-	# tasksel install standard
+	# apt-get update && apt-get install perl whiptail
 
 3. Download and untar or unzip the distribution files to a secure directory
 

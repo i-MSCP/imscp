@@ -278,7 +278,6 @@ function customerHasFeature($featureNames, $forceReload = false)
 	static $debug = false;
 
 	if (null === $availableFeatures || $forceReload) {
-		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 		$debug = (bool)$cfg['DEBUG'];
 		$dmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -292,30 +291,27 @@ function customerHasFeature($featureNames, $forceReload = false)
 			*/
 			'external_mail' => ($dmnProps['domain_external_mail'] == 'yes') ? true : false,
 			'php' => ($dmnProps['domain_php'] == 'yes') ? true : false,
-			'php_editor' => ($dmnProps['phpini_perm_system'] == 'yes' &&
-				($dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
-					|| $dmnProps['phpini_perm_display_errors'] == 'yes'
-					|| in_array($dmnProps['phpini_perm_disable_functions'], array('yes', 'exec')))) ? true : false,
-			'cgi' => ($dmnProps['domain_cgi'] == 'yes') ? true : false,
-			'ftp' => ($dmnProps['domain_ftpacc_limit'] != '-1') ? true : false,
-			'sql' => ($dmnProps['domain_sqld_limit'] != '-1') ? true : false,
-			'mail' => ($dmnProps['domain_mailacc_limit'] != '-1') ? true : false,
-			'subdomains' => ($dmnProps['domain_subd_limit'] != '-1') ? true : false,
-			'domain_aliases' => ($dmnProps['domain_alias_limit'] != '-1') ? true : false,
-			'custom_dns_records' =>
-				($dmnProps['domain_dns'] != 'no' && $cfg['NAMED_SERVER'] != 'external_server') ? true : false,
-			'webstats' => ($cfg['WEBSTATS_PACKAGES'] != 'No') ? true : false,
-			'backup' => ($cfg['BACKUP_DOMAINS'] != 'no' && $dmnProps['allowbackup'] != '') ? true : false,
+			'php_editor' => $dmnProps['phpini_perm_system'] == 'yes'
+				&& $dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
+				|| $dmnProps['phpini_perm_display_errors'] == 'yes'
+				|| in_array($dmnProps['phpini_perm_disable_functions'], array('yes', 'exec')) ? true : false,
+			'cgi' => $dmnProps['domain_cgi'] == 'yes' ? true : false,
+			'ftp' => $dmnProps['domain_ftpacc_limit'] != '-1' ? true : false,
+			'sql' => $dmnProps['domain_sqld_limit'] != '-1' ? true : false,
+			'mail' => $dmnProps['domain_mailacc_limit'] != '-1' ? true : false,
+			'subdomains' => $dmnProps['domain_subd_limit'] != '-1' ? true : false,
+			'domain_aliases' => $dmnProps['domain_alias_limit'] != '-1' ? true : false,
+			'custom_dns_records' => $dmnProps['domain_dns'] != 'no' && $cfg['NAMED_SERVER'] != 'external_server' ? true : false,
+			'webstats' => $cfg['WEBSTATS_PACKAGES'] != 'No' ? true : false,
+			'backup' => $cfg['BACKUP_DOMAINS'] != 'no' && $dmnProps['allowbackup'] != '' ? true : false,
 			'protected_areas' => true,
 			'custom_error_pages' => true,
-			'aps' => ($dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1') ? true : false,
-			'ssl' => ($cfg['ENABLE_SSL']) ? true : false
+			'aps' => $dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1' ? true : false,
+			'ssl' => $cfg['ENABLE_SSL'] ? true : false
 		);
 
-		if (($cfg['IMSCP_SUPPORT_SYSTEM'])) {
-			$stmt = exec_query(
-				'SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']
-			);
+		if ($cfg['IMSCP_SUPPORT_SYSTEM']) {
+			$stmt = exec_query('SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']);
 			$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 			$availableFeatures['support'] = ($row['support_system'] == 'yes') ? true : false;
 		} else {
@@ -328,9 +324,7 @@ function customerHasFeature($featureNames, $forceReload = false)
 		$featureName = strtolower($featureName);
 
 		if ($debug && !array_key_exists($featureName, $availableFeatures)) {
-			throw new iMSCP_Exception(
-				sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName)
-			);
+			throw new iMSCP_Exception(sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName));
 		}
 
 		if (!$availableFeatures[$featureName]) {

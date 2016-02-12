@@ -2,14 +2,62 @@ PHP_FPM_CONF_DIR = /etc/php5/fpm
 PHP_FPM_POOLS_CONF_DIR = /etc/php5/fpm/pool.d
 PHP_FPM_SNAME = php5-fpm
 
-###### LEVEL FOR PHP FPM POOLS
-# Accepted values are: per_user, per_domain or per_site
-#
-# per_user: each customer will have only one pool
-# per_domain: each domain / domain alias will have its own pool
-# per_site: each site will have its own pool
-#
-# PHP FPM has a global php.ini file but you can override settings
-# in pool files.
-#
+## PHP configuration level
+# Possible values:
+# - per_user   : One pool configuration file per user
+# - per_domain : One pool configuration file per domain (including subdomains)
+# - per_site   : One pool configuration file per site
 PHP_FPM_POOLS_LEVEL =
+
+#
+## FPM global parameters
+#
+
+LOG_LEVEL = error
+EMERGENCY_RESTART_THRESHOLD = 10
+EMERGENCY_RESTART_INTERVAL = 1m
+PROCESS_CONTROL_TIMEOUT = 10s
+PROCESS_MAX = 0
+
+#
+## PHP-FPM pool parameters
+#
+
+# Listen mode (FPM FastCGI addresse type):
+# Available modes:
+#  - 'tcp' (e.g. 192.168.1.136:9001)
+#  - 'uds' (e.g. /var/run/php5-fpm-domain.tld.sock)
+LISTEN_MODE =
+
+# Starting port for TCP/IP FastCGI address type
+LISTEN_PORT_START = 9000
+
+# Process manager mode
+# Either: 'static', 'dynamic' or 'ondemand'
+PROCESS_MANAGER_MODE = ondemand
+
+# Depending on the process manager mode:
+# - Number of child processes to be created (static mode)
+# - Maximum of child processes to be created (dynamic or ondemand modes)
+MAX_CHILDREN = 6
+
+# The number of child processes created on startup.
+# Note: Used only when process manager mode is set to 'dynamic'
+START_SERVERS = 1
+
+# The desired minimum number of idle server processes.
+# Note: Used only when pm is set to 'dynamic'
+# Note: Mandatory when pm is set to 'dynamic'
+MIN_SPARE_SERVERS = 1
+
+# The desired maximum number of idle server processes.
+# Note: Used only when pm is set to 'dynamic'
+# Note: Mandatory when pm is set to 'dynamic'
+MAX_SPARE_SERVERS = 2
+
+#  The number of seconds after which an idle process will be killed.
+# Note: Used only when process manager mode is set to 'ondemand'
+PROCESS_IDLE_TIMEOUT = 60s
+
+# The number of request each child process should execute before respawning.
+MAX_REQUESTS = 500

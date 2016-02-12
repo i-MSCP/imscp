@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,7 +36,6 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = $self->{'po'}->{'config'};
-
 	$self;
 }
 
@@ -45,15 +44,9 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->_removeSqlUser();
-	return $rs if $rs;
-
-	$rs = $self->_restoreConfFile();
-	return $rs if $rs;
-
-	$rs = $self->_authDaemon();
-	return $rs if $rs;
-
-	$self->_deleteQuotaWarning();
+	$rs ||= $self->_restoreConfFile();
+	$rs ||= $self->_authDaemon();
+	$rs ||= $self->_deleteQuotaWarning();
 }
 
 =item _removeSqlUser()
@@ -75,7 +68,8 @@ sub _removeSqlUser
 		$main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
 	) {
 		next unless $host;
-		$database->doQuery('d', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $host);
+		$database->doQuery('d', "DROP USER ?@?", $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $host);
+		$database->doQuery('d', "DROP USER ?@?", $self->{'config'}->{'SALS_DATABASE_USER'}, $host);
 	}
 
 	$database->doQuery('f', 'FLUSH PRIVILEGES');
@@ -89,16 +83,12 @@ sub _restoreConfFile
 
 	if(-f "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system") {
 		my $file = iMSCP::File->new( filename => "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system" );
-
 		my $rs = $file->copyFile("/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}");
 		return $rs if $rs;
 
 		$file->{'filename'} = "/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}";
-
-		$rs = $file->mode(0755);
-		return $rs if $rs;
-
 		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		$rs ||= $file->mode(0755);
 		return $rs if $rs;
 	}
 
@@ -117,7 +107,7 @@ sub _restoreConfFile
 		my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
 		my $fileContent = $file->get();
 		unless(defined $fileContent) {
-			error("Unable to read $self->{'filename'}");
+			error("Could not read $self->{'filename'}");
 			return 1;
 		}
 
@@ -129,15 +119,14 @@ sub _restoreConfFile
 		);
 
 		my $rs = $file->set($fileContent);
+		$rs ||= $file->save();
+		$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		$rs ||= $file->mode(0644);
 		return $rs if $rs;
+	}
 
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	if(-f "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf") {
+		my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" )->delFile();
 		return $rs if $rs;
 	}
 
@@ -149,11 +138,8 @@ sub _authDaemon
 	my $self= shift;
 
 	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authdaemonrc" );
-
-	my $rs = $file->mode(0660);
-	return $rs if $rs;
-
-	$file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
+	my $rs = $file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
+	$rs ||= $file->mode(0660);
 }
 
 sub _deleteQuotaWarning
@@ -161,10 +147,10 @@ sub _deleteQuotaWarning
 	my $self = shift;
 
 	if(-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
-		iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'})->delFile();
-	} else {
-		0;
+		return iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} )->delFile();
 	}
+
+	0;
 }
 
 1;

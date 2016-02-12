@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2014 by Sascha Bay
+# Copyright (C) 2013-2016 by Sascha Bay
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 #
-## Listener file that allows to override Apache 2 ServerAlias directive value.
+## Allows to overwrite Apache2 ServerAlias directive.
 #
 
 package Listener::Apache2::ServerAlias::Override;
@@ -37,11 +37,10 @@ my $addServerAlias = 'example'; # Add more than one alias (example example-2 exa
 ## Please, don't edit anything below this line
 #
 
-sub overrideServerAlias
-{
+iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', sub {
 	my ($tplFileContent, $tplFileName, $data) = @_;
 
-	my $domainName = (defined $data->{'DOMAIN_NAME'}) ? $data->{'DOMAIN_NAME'} : undef;
+	my $domainName = $data->{'DOMAIN_NAME'} || undef;
 
 	if(
 		$domainName && $domainName eq $searchDomain &&
@@ -51,9 +50,7 @@ sub overrideServerAlias
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', \&overrideServerAlias);
+});
 
 1;
 __END__

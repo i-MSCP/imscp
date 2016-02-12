@@ -5,7 +5,7 @@ Package::Webmail::Roundcube::Installer - i-MSCP Roundcube package installer
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,6 +38,8 @@ use iMSCP::Dir;
 use File::Basename;
 use JSON;
 use Package::FrontEnd;
+use Servers::sqld;
+use version;
 use parent 'Common::SingletonClass';
 
 our $VERSION = '0.6.0.*@dev';
@@ -78,6 +80,9 @@ sub showDialog
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
 		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
 	) {
+		# Ensure no special chars are present in password. If we don't, dialog will not let user set new password
+		$dbPass = '';
+
 		do{
 			($rs, $dbUser) = $dialog->inputbox(
 				"\nPlease enter an username for the Roundcube SQL user:$msg", $dbUser
@@ -475,7 +480,16 @@ sub _setupDatabase
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 
-		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
+			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
+
+		$rs = $db->doQuery(
+			'c',
+			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
+			$dbUser,
+			$dbUserHost,
+			$dbPass
+		);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 			return 1;

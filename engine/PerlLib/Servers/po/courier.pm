@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -76,9 +76,7 @@ sub preinstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoPreinstall', 'courier');
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoPreinstall', 'courier');
+	$rs ||= $self->{'eventManager'}->trigger('afterPoPreinstall', 'courier');
 }
 
 =item install()
@@ -98,9 +96,7 @@ sub install
 
 	require Servers::po::courier::installer;
 	$rs = Servers::po::courier::installer->getInstance()->install();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoInstall', 'courier');
+	$rs ||= $self->{'eventManager'}->trigger('afterPoInstall', 'courier');
 }
 
 =item postinstall()
@@ -165,14 +161,9 @@ sub uninstall
 	return $rs if $rs;
 
 	require Servers::po::courier::uninstaller;
-
 	$rs = Servers::po::courier::uninstaller->getInstance()->uninstall();
-	return $rs if $rs;
-
-	$rs = $self->restart();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoUninstall', 'courier');
+	$rs ||= $self->restart();
+	$rs ||= $self->{'eventManager'}->trigger('afterPoUninstall', 'courier');
 }
 
 =item setEnginePermissions()
@@ -192,9 +183,7 @@ sub setEnginePermissions
 
 	require Servers::po::courier::installer;
 	$rs = Servers::po::courier::installer->getInstance()->setEnginePermissions();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoSetEnginePermissions');
+	$rs ||= $self->{'eventManager'}->trigger('afterPoSetEnginePermissions');
 }
 
 =item postaddMail(\%data)
@@ -250,32 +239,21 @@ sub postaddMail
 		}
 
 		my $rs = $courierimapsubscribedFile->set((join "\n", @subscribedFolders) . "\n");
-		return $rs if $rs;
-
 		$rs = $courierimapsubscribedFile->save();
-		return $rs if $rs;
-
-		$rs = $courierimapsubscribedFile->mode(0640);
-		return $rs if $rs;
-
-		$rs = $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
+		$rs ||= $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
+		$rs ||= $courierimapsubscribedFile->mode(0640);
 		return $rs if $rs;
 
 		if(defined($data->{'MAIL_QUOTA'}) && $data->{'MAIL_QUOTA'} != 0) {
 			my @maildirmakeCmdArgs = (escapeShell("$data->{'MAIL_QUOTA'}S"), escapeShell("$mailDir"));
-
-			my($stdout, $stderr);
-			$rs = execute("maildirmake -q @maildirmakeCmdArgs", \$stdout, \$stderr);
+			$rs = execute("maildirmake -q @maildirmakeCmdArgs", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 
 			if(-f "$mailDir/maildirsize") {
 				my $file = iMSCP::File->new( filename => "$mailDir/maildirsize" );
-
-				$rs = $file->owner($mailUidName, $mailGidName);
-				return $rs if $rs;
-
+				$rs ||= $file->owner($mailUidName, $mailGidName);
 				$rs = $file->mode(0640);
 				return $rs if $rs;
 			}
@@ -530,15 +508,13 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data"; \%c; };
 	$self->{'eventManager'}->trigger('afterPoInit', $self, 'courier') and fatal('courier - afterPoInit has failed');
-
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
