@@ -3427,18 +3427,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 				}
 
 				// For each subdomain of domain aliases
-				$domainAliases = exec_query(
+				$subdomainAliases = exec_query(
 					"
 						SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
 						WHERE domain_id = {$domain['domain_id']} AND subdomain_alias_status <> 'todelete'
 					"
 				);
-				while ($domainAlias = $domainAliases->fetchRow()) {
-					$phpini->loadDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
+				while ($subdomainAlias = $subdomainAliases->fetchRow()) {
+					$phpini->loadDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
 
 					// If no entry found, create one with default values
 					if ($phpini->isDefaultDomainIni()) {
-						$phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
+						$phpini->saveDomainIni($client['admin_id'], $subdomainAlias['alias_id'], 'subals');
 					}
 				}
 			}
