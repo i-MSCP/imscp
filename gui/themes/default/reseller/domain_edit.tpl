@@ -1,3 +1,4 @@
+
 <script>
     $(function() {
         $.each(imscp_i18n.core.error_field_stack, function (i, k) {
@@ -15,21 +16,21 @@
     });
 </script>
 
-<form name="editFrm" id="editFrm" method="post" action="domain_edit.php?edit_id={EDIT_ID}" autocomplete="off">
+<form method="post" action="domain_edit.php?edit_id={EDIT_ID}" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>
-            <th colspan="3">{TR_DOMAIN_OVERVIEW}</th>
+            <th colspan="2">{TR_DOMAIN_OVERVIEW}</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>{TR_DOMAIN_NAME}</td>
-            <td colspan="2">{DOMAIN_NAME}</td>
+            <td>{DOMAIN_NAME}</td>
         </tr>
         <tr>
             <td>{TR_DOMAIN_EXPIRE_DATE}</td>
-            <td colspan="2">{DOMAIN_EXPIRE_DATE}</td>
+            <td>{DOMAIN_EXPIRE_DATE}</td>
         </tr>
         <tr>
             <td><label for="domain_expires">{TR_DOMAIN_NEW_EXPIRE_DATE}</label></td>
@@ -41,7 +42,7 @@
         </tr>
         <tr>
             <td><label for="domain_ip_id">{TR_DOMAIN_IP}</label></td>
-            <td colspan="2">
+            <td>
                 <select id="domain_ip_id" name="domain_ip_id">
                     <!-- BDP: ip_entry -->
                     <option value="{IP_VALUE}"{IP_SELECTED}>{IP_NUM}</option>
@@ -65,69 +66,68 @@
         <tr>
             <td><label for="domain_subd_limit">{TR_SUBDOMAINS_LIMIT}</label></td>
             <td><input type="text" name="domain_subd_limit" id="domain_subd_limit" value="{SUBDOMAIN_LIMIT}"></td>
-            <td><span style="font-size: smaller;">{TR_CUSTOMER_SUBDOMAINS_COMSUPTION}</span></td>
-            <td><span style="font-size: smaller;">{TR_RESELLER_SUBDOMAINS_COMSUPTION}</span></td>
+            <td>{TR_CUSTOMER_SUBDOMAINS_COMSUPTION}</td>
+            <td>{TR_RESELLER_SUBDOMAINS_COMSUPTION}</td>
         </tr>
         <!-- EDP: subdomain_limit_block -->
         <!-- BDP: domain_aliases_limit_block -->
         <tr>
             <td><label for="domain_alias_limit">{TR_ALIASSES_LIMIT}</label></td>
             <td><input type="text" name="domain_alias_limit" id="domain_alias_limit" value="{DOMAIN_ALIASSES_LIMIT}"></td>
-            <td><span style="font-size: smaller;">{TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION}</span></td>
-            <td><span style="font-size: smaller;">{TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION}</span></td>
+            <td>{TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION}</td>
+            <td>{TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION}</td>
         </tr>
         <!-- EDP: domain_aliases_limit_block -->
         <!-- BDP: mail_accounts_limit_block -->
         <tr>
             <td><label for="domain_mailacc_limit">{TR_MAIL_ACCOUNTS_LIMIT}</label></td>
             <td><input type="text" name="domain_mailacc_limit" id="domain_mailacc_limit" value="{MAIL_ACCOUNTS_LIMIT}"></td>
-            <td><span style="font-size: smaller;">{TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION}</span></td>
-            <td><span style="font-size: smaller;">{TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION}</span></td>
+            <td>{TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION}</td>
+            <td>{TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION}</td>
         </tr>
         <tr>
             <td><label for="mail_quota">{TR_MAIL_QUOTA}</label></td>
             <td><input type="text" name="mail_quota" id="mail_quota" value="{MAIL_QUOTA}"></td>
-            <td><span style="font-size: smaller;">{TR_CUSTOMER_MAIL_QUOTA_COMSUPTION}</span></td>
-            <td><span style="font-size: smaller;">{TR_NO_AVAILABLE}</span></td>
+            <td>{TR_CUSTOMER_MAIL_QUOTA_COMSUPTION}</td>
+            <td>{TR_NO_AVAILABLE}</td>
         </tr>
         <!-- EDP: mail_accounts_limit_block -->
         <!-- BDP: ftp_accounts_limit_block -->
         <tr>
             <td><label for="domain_ftpacc_limit">{TR_FTP_ACCOUNTS_LIMIT}</label></td>
             <td><input type="text" name="domain_ftpacc_limit" id="domain_ftpacc_limit" value="{FTP_ACCOUNTS_LIMIT}"></td>
-            <td><span style="font-size: smaller;">{TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION}</span></td>
-            <td><span style="font-size: smaller;">{TR_RESELLER_FTP_ACCOUNTS_COMSUPTION}</span></td>
+            <td>{TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION}</td>
+            <td>{TR_RESELLER_FTP_ACCOUNTS_COMSUPTION}</td>
         </tr>
         <!-- EDP: ftp_accounts_limit_block -->
         <!-- BDP: sql_db_and_users_limit_block -->
         <tr>
             <td><label for="domain_sqld_limit">{TR_SQL_DATABASES_LIMIT}</label></td>
             <td><input type="text" name="domain_sqld_limit" id="domain_sqld_limit" value="{SQL_DATABASES_LIMIT}"></td>
-            <td><span style="font-size: smaller;">{TR_CUSTOMER_SQL_DATABASES_COMSUPTION}</span></td>
-            <td><span style="font-size: smaller;">{TR_RESELLER_SQL_DATABASES_COMSUPTION}</span></td>
+            <td>{TR_CUSTOMER_SQL_DATABASES_COMSUPTION}</td>
+            <td>{TR_RESELLER_SQL_DATABASES_COMSUPTION}</td>
         </tr>
         <tr>
             <td><label for="domain_sqlu_limit">{TR_SQL_USERS_LIMIT}</label></td>
             <td><input type="text" name="domain_sqlu_limit" id="domain_sqlu_limit" value="{SQL_USERS_LIMIT}"></td>
-            <td><span style="font-size: smaller;">{TR_CUSTOMER_SQL_USERS_COMSUPTION}</span></td>
-            <td><span style="font-size: smaller;">{TR_RESELLER_SQL_USERS_COMSUPTION}</span></td>
+            <td>{TR_CUSTOMER_SQL_USERS_COMSUPTION}</td>
+            <td>{TR_RESELLER_SQL_USERS_COMSUPTION}</td>
         </tr>
         <!-- EDP: sql_db_and_users_limit_block -->
         <tr>
             <td><label for="domain_traffic_limit">{TR_TRAFFIC_LIMIT}</label></td>
             <td><input type="text" name="domain_traffic_limit" id="domain_traffic_limit" value="{TRAFFIC_LIMIT}"></td>
-            <td><span style="font-size: smaller;">{TR_CUSTOMER_TRAFFIC_COMSUPTION}</span></td>
-            <td><span style="font-size: smaller;">{TR_RESELLER_TRAFFIC_COMSUPTION}</span></td>
+            <td>{TR_CUSTOMER_TRAFFIC_COMSUPTION}</td>
+            <td>{TR_RESELLER_TRAFFIC_COMSUPTION}</td>
         </tr>
         <tr>
             <td><label for="domain_disk_limit">{TR_DISK_LIMIT}</label></td>
             <td><input type="text" name="domain_disk_limit" id="domain_disk_limit" value="{DISK_LIMIT}"></td>
-            <td><span style="font-size: smaller;">{TR_CUSTOMER_DISKPACE_COMSUPTION}</span></td>
-            <td><span style="font-size: smaller;">{TR_RESELLER_DISKPACE_COMSUPTION}</span></td>
+            <td>{TR_CUSTOMER_DISKPACE_COMSUPTION}</td>
+            <td>{TR_RESELLER_DISKPACE_COMSUPTION}</td>
         </tr>
         </tbody>
     </table>
-
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -150,7 +150,7 @@
         <!-- BDP: php_editor_block -->
         <tr id="php_editor_block">
             <td><label for="phpiniSystem">{TR_PHP_EDITOR}</label></td>
-            <td id="dialogContainer" style="height: 30px;">
+            <td>
                 <div class="radio">
                     <input type="radio" name="php_ini_system" id="php_ini_system_yes" value="yes"{PHP_EDITOR_YES}>
                     <label for="php_ini_system_yes">{TR_YES}</label>
@@ -158,14 +158,14 @@
                     <label for="php_ini_system_no">{TR_NO}</label>
                 </div>
                 <button type="button" id="php_editor_dialog_open">{TR_SETTINGS}</button>
-                <div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
+                <div id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
                     <div class="php_editor_error static_success">
                         <span id="php_editor_msg_default">{TR_FIELDS_OK}</span>
                     </div>
                     <!-- BDP: php_editor_permissions_block -->
                     <table>
                         <thead>
-                        <tr class="description">
+                        <tr>
                             <th colspan="2">{TR_PERMISSIONS}</th>
                         </tr>
                         </thead>
@@ -230,19 +230,11 @@
                     <!-- BDP: php_editor_default_values_block -->
                     <table>
                         <thead>
-                        <tr class="description">
+                        <tr>
                             <th colspan="2">{TR_DIRECTIVES_VALUES}</th>
                         </tr>
                         </thead>
                         <tbody id="php_ini_values">
-                        <tr>
-                            <td><label for="post_max_size">{TR_POST_MAX_SIZE}</label></td>
-                            <td><input type="text" name="post_max_size" id="post_max_size" data-limit="{POST_MAX_SIZE_LIMIT}" value="{POST_MAX_SIZE}"> <span>{TR_MIB}</span></td>
-                        </tr>
-                        <tr>
-                            <td><label for="upload_max_filezize">{TR_UPLOAD_MAX_FILEZISE}</label></td>
-                            <td><input type="text" name="upload_max_filezize" id="upload_max_filezize" data-limit="{UPLOAD_MAX_FILESIZE_LIMIT}" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
-                        </tr>
                         <tr>
                             <td><label for="max_execution_time">{TR_MAX_EXECUTION_TIME}</label></td>
                             <td><input type="text" name="max_execution_time" id="max_execution_time" data-limit="{MAX_EXECUTION_TIME_LIMIT}" value="{MAX_EXECUTION_TIME}"> <span>{TR_SEC}</span></td>
@@ -254,6 +246,14 @@
                         <tr>
                             <td><label for="memory_limit">{TR_MEMORY_LIMIT}</label></td>
                             <td><input type="text" name="memory_limit" id="memory_limit" data-limit="{MEMORY_LIMIT_LIMIT}" value="{MEMORY_LIMIT}"> <span>{TR_MIB}</span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="post_max_size">{TR_POST_MAX_SIZE}</label></td>
+                            <td><input type="text" name="post_max_size" id="post_max_size" data-limit="{POST_MAX_SIZE_LIMIT}" value="{POST_MAX_SIZE}"> <span>{TR_MIB}</span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="upload_max_filezize">{TR_UPLOAD_MAX_FILEZISE}</label></td>
+                            <td><input type="text" name="upload_max_filezize" id="upload_max_filezize" data-limit="{UPLOAD_MAX_FILESIZE_LIMIT}" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -333,7 +333,7 @@
         <tr>
             <td>
                 <label for="web_folder_protection">{TR_WEB_FOLDER_PROTECTION}</label>
-                <span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}"></span>
+                <span class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}"></span>
             </td>
             <td>
                 <div class="radio">
@@ -348,6 +348,6 @@
     </table>
     <div class="buttons">
         <input name="submit" type="submit" value="{TR_UPDATE}">
-        <a class="link_as_button" href="{CANCEL_LINK}">{TR_CANCEL}</a>
+        <a class="link_as_button" href="users.php">{TR_CANCEL}</a>
     </div>
 </form>

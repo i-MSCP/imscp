@@ -582,7 +582,7 @@ function admin_checkAndUpdateData($resellerId)
             $errFieldsStack[] = 'max_disk_amnt';
         }
 
-        $needBackendRequest = false;
+        $needDaemonRequest = false;
 
         // Check for PHP settings
         $phpini = iMSCP_PHPini::getInstance();
@@ -609,7 +609,7 @@ function admin_checkAndUpdateData($resellerId)
         if (array_diff_assoc($resellerPhpPermissions, $phpini->getResellerPermission())) {
             // A least one reseller permission has changed. We must synchronize customers permissions
             $phpini->syncClientPermissionsWithResellerPermissions($resellerId);
-            $needBackendRequest = true;
+            $needDaemonRequest = true;
         }
         unset($resellerPhpPermissions);
 
@@ -697,8 +697,10 @@ function admin_checkAndUpdateData($resellerId)
             }
 
             if ($data['websoftwaredepot_allowed'] == 'no') {
-                $query = 'SELECT software_id FROM web_software WHERE software_depot = ? AND reseller_id = ?';
-                $stmt = exec_query($query, array('yes', $resellerId));
+                $stmt = exec_query(
+                    'SELECT software_id FROM web_software WHERE software_depot = ? AND reseller_id = ?',
+                    array('yes', $resellerId)
+                );
 
                 if ($stmt->rowCount()) {
                     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -727,7 +729,7 @@ function admin_checkAndUpdateData($resellerId)
                 );
             }
 
-            if($needBackendRequest) {
+            if($needDaemonRequest) {
                 send_request();
             }
 
