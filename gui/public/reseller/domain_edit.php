@@ -960,7 +960,7 @@ function reseller_checkAndUpdateData($domainId)
                 'domainId' => $domainId
             ));
 
-            if ($daemonRequest) {
+            if ($needDaemonRequest) {
                 send_request();
                 set_page_message(tr('Domain scheduled for update.'), 'success');
             } else {
