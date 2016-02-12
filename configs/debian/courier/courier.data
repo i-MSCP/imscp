@@ -1,15 +1,13 @@
-## Authdaemon
+# Courier authdaemon
 AUTHDAEMON_USER = daemon
 AUTHDAEMON_GROUP = daemon
 AUTHLIB_CONF_DIR = /etc/courier
 AUTHLIB_SOCKET_DIR = /var/run/courier/authdaemon
 AUTHDAEMON_SNAME = courier-authdaemon
+AUTHDAEMON_DATABASE_USER =
+AUTHDAEMON_DATABASE_PASSWORD =
 
-DATABASE_USER =
-DATABASE_PASSWORD =
-
-## Courier IMAP/POP3
-
+# Courier IMAP/POP3
 COURIER_CONF_DIR = /etc/courier
 COURIER_IMAP_SSL = imapd-ssl
 COURIER_POP_SSL = pop3d-ssl
@@ -18,6 +16,12 @@ IMAPD_SSL_SNAME = courier-imap-ssl
 POPD_SNAME = courier-pop
 POPD_SSL_SNAME = courier-pop-ssl
 
-# Maildrop
+# Cyrus SASL
+SASL_CONF_DIR = /etc/postfix/sasl
+SASL_DATABASE_USER =
+SASL_DATABASE_PASSWORD =
 
+# Maildrop
 QUOTA_WARN_MSG_PATH = /etc/quotawarnmsg
+
+

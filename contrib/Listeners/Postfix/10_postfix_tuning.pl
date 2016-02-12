@@ -1,5 +1,5 @@
 # i-MSCP Listener::Postfix::Tuning listener file
-# Copyright (C) 2015 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2015-2016 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file that allows to tune Postfix configuration.
+## Allows to tune Postfix configuration files (main.cf and master.cf).
 #
 
 package Listener::Postfix::Tuning;
@@ -58,23 +58,20 @@ my @masterCfParameters = (
 # Listener responsible to tune Postfix main.cf file, once it was built by i-MSCP
 sub setupMainCf
 {
-	if(%mainCfParameters && iMSCP::ProgramFinder::find('postconf')) {
-		my @cmd = (
-			'postconf',
-			'-e', # Needed for Postfix < 2.8
-			'-c', escapeShell($postfixConfigDir)
-		);
+	return 0 unless %mainCfParameters && iMSCP::ProgramFinder::find('postconf');
 
-		push @cmd, ($_ . '=' . escapeShell($mainCfParameters{$_})) for keys %mainCfParameters;
+	my @cmd = (
+		'postconf',
+		'-e', # Needed for Postfix < 2.8
+		'-c', escapeShell($postfixConfigDir)
+	);
 
-		my ($stdout, $stderr);
-		my $rs = execute("@cmd", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
+	push @cmd, ($_ . '=' . escapeShell($mainCfParameters{$_})) for keys %mainCfParameters;
 
-	0;
+	my $rs = execute("@cmd", \ my $stdout, \ my $stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	$rs;
 }
 
 # Listener responsible to add entries at bottom of Postfix master.cf file, once it was built by i-MSCP
@@ -82,10 +79,9 @@ sub setupMasterCf
 {
 	my $cfgTpl = $_[0];
 
-	if(@masterCfParameters) {
-		$$cfgTpl .= join("\n", @masterCfParameters) . "\n";
-	}
+	return 0 unless @masterCfParameters;
 
+	$$cfgTpl .= join("\n", @masterCfParameters) . "\n";
 	0;
 }
 

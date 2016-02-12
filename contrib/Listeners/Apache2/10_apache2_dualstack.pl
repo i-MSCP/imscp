@@ -1,5 +1,5 @@
 # i-MSCP Listener::Apache2::DualStack listener file
-# Copyright (C) 2015 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2015-2016 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,11 +16,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file that provides dual stack support for Apache2.
+## Provides dual stack support for Apache2.
 #
 
 package Listener::Apache2::DualStack;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 use iMSCP::Net;
 use List::MoreUtils qw(uniq);
@@ -58,44 +60,39 @@ sub addIPs
 {
 	my ($cfgTpl, $tplName, $data) = @_;
 
-	if(exists $data->{'DOMAIN_NAME'} && $tplName =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/) {
-		my $sslVhost = 0;
-		my $port = $httpPort;
+	return 0 unless exists $data->{'DOMAIN_NAME'} && $tplName =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/;
 
-		if(defined $1) {
-			$sslVhost = 1;
-			$port = $httpsPort;
+	my $sslVhost = defined $1;
+	my $port = defined $1 ? $httpPort : $httpsPort;
+
+	# All vhost IPs
+	my @ipList = @additionalIPs;
+
+	# Per domain IPs
+	if(exists $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}) {
+		@ipList = uniq( @ipList, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
+	}
+
+	return 0 unless @ipList;
+
+	# Format IPs ( normalize and surround any IPv6 with square-brackets )
+	my $ipMngr = iMSCP::Net->getInstance();
+	my @formattedIPs = ();
+	for my $ip(@ipList) {
+		if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
+			push @formattedIPs, '[' . $ipMngr->normalizeAddr($ip) . ']' . ":$port";
+		} else {
+			push @formattedIPs, "$ip:$port";
 		}
+	}
 
-		# All vhost IPs
-		my @ipList = @additionalIPs;
+	$$cfgTpl =~ s/(<VirtualHost.*?)>/$1 @formattedIPs>/;
+	undef @formattedIPs;
 
-		# Per domain IPs
-		if(exists $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}) {
-			@ipList = uniq( @ipList, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
-		}
-
-		if(@ipList) {
-			# Format IPs ( normalize and surround any IPv6 with square-brackets )
-			my $ipMngr = iMSCP::Net->getInstance();
-			my @formattedIPs = ();
-			for my $ip(@ipList) {
-				if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
-					push @formattedIPs, '[' . $ipMngr->normalizeAddr($ip) . ']' . ":$port";
-				} else {
-					push @formattedIPs, "$ip:$port";
-				}
-			}
-
-			$$cfgTpl =~ s/(<VirtualHost.*?)>/$1 @formattedIPs>/;
-			undef @formattedIPs;
-
-			unless($sslVhost) {
-				@IPS = uniq( @IPS, @ipList );
-			} else {
-				@SSL_IPS = uniq( @SSL_IPS, @ipList );
-			}
-		}
+	unless($sslVhost) {
+		@IPS = uniq( @IPS, @ipList );
+	} else {
+		@SSL_IPS = uniq( @SSL_IPS, @ipList );
 	}
 
 	0;
@@ -108,11 +105,9 @@ sub addIPList
 
 	@{$data->{'IPS'}} = uniq( @{$data->{'IPS'}}, @IPS );
 	@{$data->{'SSL_IPS'}} = uniq( @{$data->{'SSL_IPS'}}, @SSL_IPS );
-
 	0;
 }
 
-# Register event listeners on the event manager
 my $eventManager = iMSCP::EventManager->getInstance();
 $eventManager->register('afterHttpdBuildConfFile', \&addIPs);
 $eventManager->register('beforeHttpdAddIps', \&addIPList);

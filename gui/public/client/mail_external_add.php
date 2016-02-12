@@ -312,7 +312,6 @@ function client_generateView($verifiedData, $data)
 			'TR_HOST' => tr('External Mail Host'),
 			'TR_ADD_NEW_ENTRY' => tr('Add a new entry'),
 			'TR_REMOVE_LAST_ENTRY' => tr('Remove last entry'),
-			'TR_TRIGGER_REMOVE_ALERT' => tr('You cannot remove this entry.'),
 			'TR_RESET_ENTRIES' => tr('Reset entries'),
 			'TR_CANCEL' => tr('Cancel'),
 			'TR_ADD' => tr('Add'),
@@ -330,6 +329,12 @@ function client_generateView($verifiedData, $data)
 			'ITEM' => $verifiedData['item_id'] . ';' . $verifiedData['item_type']
 		)
 	);
+
+	iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+		/** @var iMSCP_Events_Event $e */
+		$translations = $e->getParam('translations');
+		$translations['core']['remove_alert'] = tr('You cannot remove this entry.');
+	});
 
 	for ($index = 0; $index < $entriesCount; $index++) {
 		// Generates html option elements for the names

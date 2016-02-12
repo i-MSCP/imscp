@@ -1,28 +1,21 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /***********************************************************************************************************************
@@ -30,114 +23,72 @@
  */
 
 /**
- * Generate page.
+ * Generate page
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
  */
-function client_generatePage($tpl)
+function generatePage($tpl)
 {
-	$cfg = iMSCP_Registry::get('config');
+    $stmt = exec_query(
+        'SELECT id, name, status FROM hosting_plans WHERE reseller_id = ? ORDER BY id', $_SESSION['user_id']
+    );
 
-	$hostingPlanLevel = $cfg->HOSTING_PLANS_LEVEL;
+    if (!$stmt->rowCount()) {
+        $tpl->assign('HOSTING_PLANS', '');
+        set_page_message(tr('No hosting plan available.'), 'static_info');
+        return;
+    }
 
-	if ($hostingPlanLevel != 'reseller') {
-		$query = "
-			SELECT
-				`t1`.`id`, `t1`.`name`, `t1`.`props`, `t1`.`status`
-			FROM
-				`hosting_plans` AS `t1`
-			LEFT JOIN
-				`admin` AS `t2` ON(`t2`.`admin_id` = `t1`.`reseller_id`)
-			WHERE
-				`t2`.`admin_type` = ?
-			ORDER BY
-				`t1`.`id`
-		";
-		$stmt = exec_query($query, 'admin');
+    $tpl->assign(array(
+        'TR_ID' => tr('Id'),
+        'TR_NAME' => tr('Name'),
+        'TR_STATUS' => tr('Status'),
+        'TR_EDIT' => tr('Edit'),
+        'TR_ACTION' => tr('Actions'),
+        'TR_DELETE' => tr('Delete')
+    ));
 
-		$trEdit = tr('View');
-	} else {
-		$query = "SELECT `id`, `name`, `props`, `status` FROM `hosting_plans` WHERE `reseller_id` = ? ORDER BY `id`";
-		$stmt = exec_query($query, $_SESSION['user_id']);
+    iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+        /** @var iMSCP_Events_Event $e */
+        $translations = $e->getParam('translations');
+        $translations['core']['hp_delete_confirmation'] = tr('Are you sure you want to delete this hosting plan?');
+    });
 
-		$trEdit = tr('Edit');
-	}
-
-	if (!$stmt->rowCount()) {
-		$tpl->assign(array(
-			'HOSTING_PLANS_JS' => '',
-			'HOSTING_PLANS' => ''
-		));
-
-		set_page_message(tr('No hosting plan available.'), 'static_info');
-	} else {
-		$tpl->assign(array(
-			'TR_NUMBER' => tr('No.'),
-			'TR_NAME' => tr('Name'),
-			'TR_STATUS' => tr('Status'),
-			'TR_EDIT' => $trEdit,
-			'TR_ACTION' => tr('Actions'),
-			'TR_DELETE' => tr('Delete'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s')
-		));
-
-		$i = 1;
-
-		while ($data = $stmt->fetchRow()) {
-			$tpl->assign(array(
-				'NUMBER' => $i++,
-				'NAME' => tohtml($data['name']),
-				'STATUS' => ($data['status']) ? tr('Available') : tr('Unavailable'),
-				'ID' => $data['id']
-			));
-
-			if ($hostingPlanLevel != 'reseller') {
-				$tpl->assign('HOSTING_PLAN_DELETE', '');
-			}
-
-			$tpl->parse('HOSTING_PLAN', '.hosting_plan');
-		}
-	}
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign(array(
+            'ID' => $row['id'],
+            'NAME' => tohtml($row['name']),
+            'STATUS' => $row['status'] ? tr('Available') : tr('Unavailable'),
+        ));
+        $tpl->parse('HOSTING_PLAN', '.hosting_plan');
+    }
 }
 
 /***********************************************************************************************************************
  * Main
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/hosting_plan.tpl',
-		'page_message' => 'layout',
-		'hosting_plans_js' => 'page',
-		'hosting_plans' => 'page',
-		'hosting_plan' => 'hosting_plans',
-		'hosting_plan_delete' => 'hosting_plan'
-	)
-);
+$tpl->define_dynamic(array(
+    'layout' => 'shared/layouts/ui.tpl',
+    'page' => 'reseller/hosting_plan.tpl',
+    'page_message' => 'layout',
+    'hosting_plans' => 'page',
+    'hosting_plan' => 'hosting_plans'
+));
 
 $tpl->assign('TR_PAGE_TITLE', tr('Reseller / Hosting Plans / Overview'));
 
 generateNavigation($tpl);
-client_generatePage($tpl);
+generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
-unsetMessages();

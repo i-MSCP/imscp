@@ -5,7 +5,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 0,30 * * * * root perl {TRAFF_ROOT_DIR}/imscp-vrl-traff > {LOG_DIR}/imscp-vrl-traff.log 2>&1
 
 # Quota accounting
-@hourly root perl {QUOTA_ROOT_DIR}/imscp-dsk-quota > {LOG_DIR}/imscp-dsk-quota.log 2>&1
+@daily root perl {QUOTA_ROOT_DIR}/imscp-dsk-quota > {LOG_DIR}/imscp-dsk-quota.log 2>&1
 
 # Disable expired accounts
 @daily root perl {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1

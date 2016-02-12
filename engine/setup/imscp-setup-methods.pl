@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ use iMSCP::Net;
 use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
-use iMSCP::Crypt;
+use iMSCP::Crypt qw/md5 encryptBlowfishCBC decryptBlowfishCBC/;
 use iMSCP::Database;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -460,17 +460,19 @@ sub setupAskSqlDsn
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD');
 	} else {
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD');
-		$dbPass = ($dbPass) ? iMSCP::Crypt->getInstance()->decrypt_db_password($dbPass) : '';
+		$dbPass = ($dbPass) ? decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $dbPass) : '';
+	}
+
+	if($dbPass ne '' && setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
+		# Following a decryptBlowfishCBC() failure,  ensure no special chars are present in password string
+		# If we don't, dialog will not let user set new password
+		$dbPass = '';
 	}
 
 	my $rs = 0;
-
 	my %options = (domain_private_tld => qr /.*/);
 
-	if(
-		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
-		($dbPass eq '' || setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))
-	) {
+	if($main::reconfigure ~~ [ 'sql', 'servers', 'all', 'forced' ] || $dbPass eq '') {
 		my $msg = my $dbError = '';
 
 		do {
@@ -557,7 +559,7 @@ Please, try again.
 		setupSetQuestion('DATABASE_HOST', $dbHost);
 		setupSetQuestion('DATABASE_PORT', $dbPort);
 		setupSetQuestion('DATABASE_USER', $dbUser);
-		setupSetQuestion('DATABASE_PASSWORD', iMSCP::Crypt->getInstance()->encrypt_db_password($dbPass));
+		setupSetQuestion('DATABASE_PASSWORD', encryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $dbPass));
 	}
 
 	$rs;
@@ -1450,7 +1452,7 @@ sub setupUpdateDatabase
 		return 1;
 	}
 
-	if($content =~ s/{GUI_ROOT_DIR}/$main::imscpConfig{'GUI_ROOT_DIR'}/) {
+	if($content =~ s/\{GUI_ROOT_DIR\}/$main::imscpConfig{'GUI_ROOT_DIR'}/) {
 		$rs = $file->set($content);
 		return $rs if $rs;
 
@@ -1468,9 +1470,9 @@ sub setupUpdateDatabase
 }
 
 # Secure any SQL account by removing those without password
+#
 # Basically, this method do same job as the mysql_secure_installation script
 # - Remove anonymous users
-# - Remove users without password set
 # - Remove remote sql root user (only for local server)
 # - Remove test database if any
 # - Reload privileges tables
@@ -1493,17 +1495,6 @@ sub setupSecureSqlInstallation
 		return 1;
 	}
 
-	# Remove user without password set
-	my $rdata = $database->doQuery('User', "SELECT User, Host FROM mysql.user WHERE Password = ''");
-
-	for (keys %{$rdata}) {
-		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
-		unless(ref $errStr eq 'HASH') {
-			error("Unable to remove SQL user $_\\@$rdata->{$_}->{'Host'}: $errStr");
-			return 1;
-		}
-	}
-
 	# Remove test database if any
 	$errStr = $database->doQuery('dummy', 'DROP DATABASE IF EXISTS `test`');
 	unless(ref $errStr eq 'HASH') {
@@ -1521,8 +1512,7 @@ sub setupSecureSqlInstallation
 	# Disallow remote root login
 	if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
 		$errStr = $database->doQuery(
-			'dummy',
-			"DELETE FROM mysql.user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+			'dummy', "DELETE FROM mysql.user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 		);
 		unless(ref $errStr eq 'HASH'){
 			error("Unable to remove remote root users: $errStr");
@@ -1554,7 +1544,7 @@ sub setupDefaultAdmin
 	return $rs if $rs;
 
 	if($adminLoginName && $adminPassword) {
-		$adminPassword = iMSCP::Crypt->getInstance()->crypt_md5_data($adminPassword);
+		$adminPassword = md5($adminPassword);
 
 		my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 		unless($database) {
@@ -2177,7 +2167,7 @@ sub setupGetSqlConnect
 	$db->set(
 		'DATABASE_PASSWORD',
 		setupGetQuestion('DATABASE_PASSWORD')
-			? iMSCP::Crypt->getInstance()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD')) : ''
+			? decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, setupGetQuestion('DATABASE_PASSWORD')) : ''
 	);
 
 	my $rs = $db->connect();

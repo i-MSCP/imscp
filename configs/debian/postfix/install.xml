@@ -8,5 +8,4 @@
     <copy_config>${SYSTEM_CONF}/postfix/postfix.data</copy_config>
     <copy_config>${SYSTEM_CONF}/postfix/master.cf</copy_config>
     <copy_config>${SYSTEM_CONF}/postfix/imscp</copy_config>
-    <copy_config>${SYSTEM_CONF}/postfix/sasl</copy_config>
 </install>

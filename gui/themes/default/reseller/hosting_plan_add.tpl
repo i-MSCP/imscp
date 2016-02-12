@@ -6,8 +6,8 @@
         });
 
         // Ensure that PHP is enabled when software installer is enabled
-        $("#software_allowed_yes").change(function() {
-            if($(this).is(':checked')) {
+        $("#softwares_installer_yes").change(function() {
+            if($(this).is(":checked")) {
                 var $el = $("#php_yes");
                 if(!$el.is(":checked")) {
                     $el.prop("checked", true).button("refresh").trigger("change");
@@ -18,13 +18,13 @@
         // Ensure that software installer is disabled when PHP is disabled
         $("#php_no").change(function() {
             if($(this).is(":checked")) {
-                $("#software_allowed_no").prop("checked", true).button("refresh");
+                $("#softwares_installer_no").prop("checked", true).button("refresh");
             }
         });
     });
 </script>
 
-<form method="post" action="user_add2.php">
+<form method="post" action="hosting_plan_add.php">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -33,87 +33,93 @@
         </thead>
         <tbody>
         <tr>
-            <td>{TR_NAME}</td>
-            <td><input type="hidden" name="template" id="template" value="{VL_TEMPLATE_NAME}">{VL_TEMPLATE_NAME}</td>
+            <td><label for="name">{TR_NAME}</label></td>
+            <td><input type="text" name="name" id="name" value="{NAME_VALUE}" class="inputTitle"></td>
+        </tr>
+        <tr>
+            <td><label for="description">{TR_DESCRIPTON}</label></td>
+            <td><textarea name="description" id="description">{DESCRIPTION_VALUE}</textarea></td>
         </tr>
         </tbody>
     </table>
-
     <table class="firstColFixed">
         <thead>
         <tr>
-            <th colspan="2">{TR_LIMITS}</th>
+            <th colspan="2">{TR_HOSTING_PLAN_LIMITS}</th>
         </tr>
         </thead>
         <tbody>
-        <!-- BDP: subdomain_feature -->
+        <!-- BDP: nb_subdomains -->
         <tr>
-            <td><label for="nreseller_max_subdomain_cnt">{TR_MAX_SUBDOMAIN}</label></td>
-            <td><input type="text" name="nreseller_max_subdomain_cnt" id="nreseller_max_subdomain_cnt"  value="{MAX_SUBDMN_CNT}"></td>
+            <td><label for="sub">{TR_MAX_SUBDOMAINS}</label></td>
+            <td><input type="text" name="sub" id="sub" value="{MAX_SUB_LIMITS}"></td>
         </tr>
-        <!-- EDP: subdomain_feature -->
-        <!-- BDP: alias_feature -->
+        <!-- EDP: nb_subdomains -->
+        <!-- BDP: nb_domain_aliases -->
         <tr>
-            <td><label for="nreseller_max_alias_cnt">{TR_MAX_DOMAIN_ALIAS}</label></td>
-            <td><input type="text" name="nreseller_max_alias_cnt" id="nreseller_max_alias_cnt" value="{MAX_DMN_ALIAS_CNT}"></td>
+            <td><label for="als">{TR_MAX_ALIASES}</label></td>
+            <td><input type="text" name="als" id="als" value="{MAX_ALS_VALUES}"></td>
         </tr>
-        <!-- EDP: alias_feature -->
-        <!-- BDP: mail_feature -->
+        <!-- EDP: nb_domain_aliases -->
+        <!-- BDP: nb_mail -->
         <tr>
-            <td><label for="nreseller_max_mail_cnt">{TR_MAX_MAIL_COUNT}</label></td>
-            <td><input type="text" name="nreseller_max_mail_cnt" id="nreseller_max_mail_cnt" value="{MAX_MAIL_CNT}"></td>
-        </tr>
-        <tr>
-            <td><label for="nreseller_mail_quota">{TR_MAIL_QUOTA}</label></td>
-            <td><input type="text" name="nreseller_mail_quota" id="nreseller_mail_quota" value="{MAIL_QUOTA}"></td>
-        </tr>
-        <!-- EDP: mail_feature -->
-        <!-- BDP: ftp_feature -->
-        <tr>
-            <td><label for="nreseller_max_ftp_cnt">{TR_MAX_FTP}</label></td>
-            <td><input type="text" name="nreseller_max_ftp_cnt" id="nreseller_max_ftp_cnt" value="{MAX_FTP_CNT}"></td>
-        </tr>
-        <!-- EDP: ftp_feature -->
-        <!-- BDP: sql_feature -->
-        <tr>
-            <td><label for="nreseller_max_sql_db_cnt">{TR_MAX_SQL_DB}</label></td>
-            <td><input type="text" name="nreseller_max_sql_db_cnt" id="nreseller_max_sql_db_cnt" value="{MAX_SQL_CNT}"></td>
+            <td><label for="mail">{TR_MAX_MAILACCOUNTS}</label></td>
+            <td><input type="text" name="mail" id="mail" value="{MAIL_VALUE}"></td>
         </tr>
         <tr>
-            <td><label for="nreseller_max_sql_user_cnt">{TR_MAX_SQL_USERS}</label></td>
-            <td><input type="text" name="nreseller_max_sql_user_cnt" id="nreseller_max_sql_user_cnt" value="{VL_MAX_SQL_USERS}"></td>
+            <td><label for="mail_quota">{TR_MAIL_QUOTA}</label></td>
+            <td><input type="text" name="mail_quota" id="mail_quota" value="{MAIL_QUOTA_VALUE}"></td>
         </tr>
-        <!-- EDP: sql_feature -->
+        <!-- EDP: nb_mail -->
+        <!-- BDP: nb_ftp -->
         <tr>
-            <td><label for="nreseller_max_traffic">{TR_MAX_TRAFFIC}</label></td>
-            <td><input type="text" name="nreseller_max_traffic" id="nreseller_max_traffic" value="{VL_MAX_TRAFFIC}"></td>
+            <td><label for="ftp">{TR_MAX_FTP}</label></td>
+            <td><input type="text" name="ftp" id="ftp" value="{FTP_VALUE}"></td>
+        </tr>
+        <!-- EDP: nb_ftp -->
+        <!-- BDP: nb_sqld -->
+        <tr>
+            <td><label for="sql_db">{TR_MAX_SQL}</label></td>
+            <td><input type="text" name="sql_db" id="sql_db" value="{SQL_DB_VALUE}"></td>
+        </tr>
+        <!-- EDP: nb_sqld -->
+        <!-- BDP: nb_sqlu -->
+        <tr>
+            <td><label for="sql_user">{TR_MAX_SQL_USERS}</label></td>
+            <td><input type="text" name="sql_user" id="sql_user" value="{SQL_USER_VALUE}"></td>
+        </tr>
+        <!-- EDP: nb_sqlu -->
+        <tr>
+            <td><label for="traff">{TR_MAX_TRAFFIC}</label></td>
+            <td><input type="text" name="traff" id="traff" value="{TRAFF_VALUE}"></td>
         </tr>
         <tr>
-            <td><label for="nreseller_max_disk">{TR_MAX_DISK_USAGE}</label></td>
-            <td><input type="text" name="nreseller_max_disk" id="nreseller_max_disk" value="{VL_MAX_DISK_USAGE}"></td>
+            <td><label for="disk">{TR_DISK_LIMIT}</label></td>
+            <td><input type="text" name="disk" id="disk" value="{DISK_VALUE}"></td>
         </tr>
         </tbody>
     </table>
-
     <table class="firstColFixed">
         <thead>
         <tr>
-            <th colspan="2">{TR_FEATURES}</th>
+            <th colspan="2">{TR_HOSTING_PLAN_FEATURES}</th>
         </tr>
         </thead>
         <tbody>
+        <!-- BDP: php_feature -->
         <tr>
             <td>{TR_PHP}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="php" id="php_yes" value="_yes_"{VL_PHPY}>
+                    <input type="radio" name="php" id="php_yes" value="_yes_"{TR_PHP_YES} >
                     <label for="php_yes">{TR_YES}</label>
-                    <input type="radio" name="php" id="php_no" value="_no_"{VL_PHPN}>
+                    <input type="radio" name="php" id="php_no" value="_no_"{TR_PHP_NO} >
                     <label for="php_no">{TR_NO}</label>
                 </div>
             </td>
         </tr>
-        <!-- BDP: php_editor_block -->
+        <!-- EDP: php_feature -->
+        <!-- BDP: php_editor_feature -->
         <tr id="php_editor_block">
             <td><label>{TR_PHP_EDITOR}</label></td>
             <td>
@@ -219,7 +225,7 @@
                         </tr>
                         <tr>
                             <td><label for="upload_max_filesize">{TR_UPLOAD_MAX_FILEZISE}</label></td>
-                            <td><input type="text" name="upload_max_filezize" id="upload_max_filesize" data-limit="{UPLOAD_MAX_FILESIZE_LIMIT}" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
+                            <td><input type="text" name="upload_max_filesize" id="upload_max_filesize" data-limit="{UPLOAD_MAX_FILESIZE_LIMIT}" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -227,67 +233,69 @@
                 </div>
             </td>
         </tr>
-        <!-- EDP: php_editor_block -->
+        <!-- EDP: php_editor_feature -->
+        <!-- BDP: cgi_feature -->
         <tr>
             <td>{TR_CGI}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" id="cgi_yes" name="cgi" value="_yes_"{VL_CGIY}>
+                    <input type="radio" name="cgi" value="_yes_" id="cgi_yes"{TR_CGI_YES}>
                     <label for="cgi_yes">{TR_YES}</label>
-                    <input type="radio" id="cgi_no" name="cgi" value="_no_" {VL_CGIN}>
+                    <input type="radio" name="cgi" value="_no_" id="cgi_no"{TR_CGI_NO}>
                     <label for="cgi_no">{TR_NO}</label>
                 </div>
             </td>
         </tr>
+        <!-- EDP: cgi_feature -->
         <!-- BDP: custom_dns_records_feature -->
         <tr>
             <td>{TR_DNS}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" id="dns_yes" name="dns" value="_yes_"{VL_DNSY}>
+                    <input type="radio" name="dns" value="_yes_" id="dns_yes"{TR_DNS_YES}>
                     <label for="dns_yes">{TR_YES}</label>
-                    <input type="radio" id="dns_no" name="dns" value="_no_"{VL_DNSN}>
+                    <input type="radio" name="dns" value="_no_" id="dns_no"{TR_DNS_NO}>
                     <label for="dns_no">{TR_NO}</label>
                 </div>
             </td>
         </tr>
         <!-- EDP: custom_dns_records_feature -->
-        <!-- BDP: ext_mail_feature -->
-        <tr>
-            <td>{TR_EXTMAIL}</td>
-            <td>
-                <div class="radio">
-                    <input type="radio" id="extmail_yes" name="external_mail" value="_yes_"{VL_EXTMAILY}>
-                    <label for="extmail_yes">{TR_YES}</label>
-                    <input type="radio" id="extmail_no" name="external_mail" value="_no_"{VL_EXTMAILN}>
-                    <label for="extmail_no">{TR_NO}</label>
-                </div>
-            </td>
-        </tr>
-        <!-- EDP: ext_mail_feature -->
         <!-- BDP: aps_feature -->
         <tr>
             <td>{TR_SOFTWARE_SUPP}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="software_allowed" value="_yes_" id="software_allowed_yes"{VL_SOFTWAREY}>
-                    <label for="software_allowed_yes">{TR_YES}</label>
-                    <input type="radio" name="software_allowed" value="_no_" id="software_allowed_no"{VL_SOFTWAREN}>
-                    <label for="software_allowed_no">{TR_NO}</label>
+                    <input type="radio" name="softwares_installer" value="_yes_" id="softwares_installer_yes"{TR_SOFTWARE_YES}>
+                    <label for="softwares_installer_yes">{TR_YES}</label>
+                    <input type="radio" name="softwares_installer" value="_no_" id="softwares_installer_no"{TR_SOFTWARE_NO}>
+                    <label for="softwares_installer_no">{TR_NO}</label>
                 </div>
             </td>
         </tr>
         <!-- EDP: aps_feature -->
+        <!-- BDP: ext_mail_feature -->
+        <tr>
+            <td>{TR_EXTMAIL}</td>
+            <td>
+                <div class="radio">
+                    <input type="radio" name="external_mail" value="_yes_" id="extmail_yes"{TR_EXTMAIL_YES}>
+                    <label for="extmail_yes">{TR_YES}</label>
+                    <input type="radio" name="external_mail" value="_no_" id="extmail_no"{TR_EXTMAIL_NO}>
+                    <label for="extmail_no">{TR_NO}</label>
+                </div>
+            </td>
+        </tr>
+        <!-- EDP: ext_mail_feature -->
         <!-- BDP: backup_feature -->
         <tr>
             <td>{TR_BACKUP}</td>
             <td>
                 <div class="checkbox">
-                    <input type="checkbox" id="backup_dmn" name="backup[]" value="_dmn_"{VL_BACKUPD}>
+                    <input type="checkbox" name="backup[]" value="_dmn_" id="backup_dmn"{VL_BACKUPD}>
                     <label for="backup_dmn">{TR_BACKUP_DOMAIN}</label>
-                    <input type="checkbox" id="backup_sql" name="backup[]" value="_sql_"{VL_BACKUPS}>
+                    <input type="checkbox" name="backup[]" value="_sql_" id="backup_sql"{VL_BACKUPS}>
                     <label for="backup_sql">{TR_BACKUP_SQL}</label>
-                    <input type="checkbox" id="backup_mail" name="backup[]" value="_mail_"{VL_BACKUPM}>
+                    <input type="checkbox" name="backup[]" value="_mail_" id="backup_mail"{VL_BACKUPM}>
                     <label for="backup_mail">{TR_BACKUP_MAIL}</label>
                 </div>
             </td>
@@ -295,22 +303,42 @@
         <!-- EDP: backup_feature -->
         <tr>
             <td>
-                <label for="web_folder_protection">{TR_WEB_FOLDER_PROTECTION}</label>
+                <label>{TR_WEB_FOLDER_PROTECTION}</label>
                 <span class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}"></span>
             </td>
             <td>
                 <div class="radio">
-                    <input type="radio" id="web_folder_protection_yes" name="web_folder_protection" value="_yes_"{VL_WEB_FOLDER_PROTECTION_YES}>
-                    <label for="web_folder_protection_yes">{TR_YES}</label>
-                    <input type="radio" id="web_folder_protection_no" name="web_folder_protection" value="_no_"{VL_WEB_FOLDER_PROTECTION_NO}>
-                    <label for="web_folder_protection_no">{TR_NO}</label>
+                    <input type="radio" name="protected_webfolders" value="_yes_" id="protected_webfolders_yes"{TR_PROTECT_WEB_FOLDERS_YES}>
+                    <label for="protected_webfolders_yes">{TR_YES}</label>
+                    <input type="radio" name="protected_webfolders" value="_no_" id="protected_webfolders_no"{TR_PROTECT_WEB_FOLDERS_NO}>
+                    <label for="protected_webfolders_no">{TR_NO}</label>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="firstColFixed">
+        <thead>
+        <tr>
+            <th colspan="2">{TR_HP_AVAILABILITY}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{TR_STATUS}</td>
+            <td>
+                <div class="radio">
+                    <input type="radio" name="status" value="1" id="status_yes"{TR_STATUS_YES}>
+                    <label for="status_yes">{TR_YES}</label>
+                    <input type="radio" name="status" value="0" id="status_no"{TR_STATUS_NO}>
+                    <label for="status_no">{TR_NO}</label>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
     <div class="buttons">
-        <input type="hidden" name="uaction" value="user_add2_nxt">
-        <input name="Submit" type="submit" value="{TR_NEXT_STEP}">
+        <input name="submit" type="submit" value="{TR_ADD}">
+        <a class="link_as_button" href="hosting_plan.php">{TR_CANCEL}</a>
     </div>
 </form>

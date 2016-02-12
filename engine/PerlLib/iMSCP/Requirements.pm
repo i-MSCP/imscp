@@ -118,7 +118,6 @@ sub _init
 		'Bit::Vector' => undef,
 		'Crypt::Blowfish' => undef,
 		'Crypt::CBC' => undef,
-		'Crypt::PasswdMD5' => undef,
 		'DBI' => undef,
 		'DBD::mysql' => undef,
 		'DateTime' => undef,

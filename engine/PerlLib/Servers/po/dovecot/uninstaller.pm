@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,9 +32,7 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->_restoreConfFile();
-	return $rs if $rs;
-
-	$self->_dropSqlUser();
+	$rs ||= $self->_dropSqlUser();
 }
 
 sub _init
@@ -47,7 +45,6 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = $self->{'po'}->{'config'};
-
 	$self;
 }
 
@@ -65,11 +62,8 @@ sub _restoreConfFile
 	}
 
 	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
-
-	my $rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'MTA_MAILBOX_GID_NAME'});
+	my $rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'MTA_MAILBOX_GID_NAME'});
+	$rs ||= $file->mode(0644);
 }
 
 sub _dropSqlUser
@@ -78,14 +72,12 @@ sub _dropSqlUser
 
 	if($self->{'config'}->{'DATABASE_USER'}) {
 		my $database = iMSCP::Database->factory();
-
 		$database->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, 'localhost');
 		$database->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, '%');
 		$database->doQuery(
 			'd', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
 		);
 		$database->doQuery('f', 'FLUSH PRIVILEGES');
-
 	}
 
 	0;

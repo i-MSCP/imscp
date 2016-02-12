@@ -224,7 +224,7 @@ function generateNavigation($tpl)
 	$navigation = iMSCP_Registry::get('navigation');
 
 	// Dynamic links (only at customer level)
-	if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'user') {
+	if ($_SESSION['user_type'] == 'user') {
 		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 		$tpl->assign('WEBSTATS_PATH', 'http://' . decode_idna($domainProperties['domain_name']) . '/stats');
@@ -246,14 +246,6 @@ function generateNavigation($tpl)
 					$page1->addPage($page);
 					$page2->addPage($page);
 				}
-			}
-		}
-	} else {
-		if ($cfg['HOSTING_PLANS_LEVEL'] != $_SESSION['user_type']) {
-			if ($_SESSION['user_type'] === 'admin') {
-				$navigation->findOneBy('class', 'hosting_plans')->setVisible(false);
-			} else {
-				$navigation->findOneBy('class', 'hosting_plan_add')->setVisible(false);
 			}
 		}
 	}
@@ -1001,41 +993,26 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
 /**
  * Returns reseller Ip list
  *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @param  int $resellerId Reseller unique identifier
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @param int $resellerId Reseller unique identifier
+ * @param int $domainIp Identifier of the selected domain IP
  * @return void
  */
-function reseller_generate_ip_list($tpl, $resellerId)
+function reseller_generate_ip_list($tpl, $resellerId, $domainIp)
 {
-	global $domainIp;
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$htmlSelected = $cfg['HTML_SELECTED'];
 
 	$stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $resellerId);
-
 	$row = $stmt->fetchRow();
-
-	$resellerIps = $row['reseller_ips'];
+	$resellerIps = explode(';', rtrim($row['reseller_ips'], ';'));
 
 	$stmt = execute_query('SELECT * FROM server_ips');
-
 	while($row = $stmt->fetchRow()) {
-		$ipId = $row['ip_id'];
-
-		if(preg_match("/$ipId;/", $resellerIps) == 1) {
-			$selected = ($domainIp === $ipId) ? $htmlSelected : '';
-
-			$tpl->assign(
-				array(
-					'IP_NUM' => $row['ip_number'],
-					'IP_VALUE' => $ipId,
-					'IP_SELECTED' => $selected
-				)
-			);
-
+		if(in_array($row['ip_id'], $resellerIps)) {
+			$tpl->assign(array(
+				'IP_NUM' => $row['ip_number'],
+				'IP_VALUE' => $row['ip_id'],
+				'IP_SELECTED' => $domainIp === $row['ip_id'] ? ' selected' : ''
+			));
 			$tpl->parse('IP_ENTRY', '.ip_entry');
 		}
 	}

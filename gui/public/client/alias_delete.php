@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2016 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,34 +22,25 @@
  * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
 
-if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
-	$alsId = intval($_GET['id']);
+if (!customerHasFeature('domain_aliases') || !isset($_GET['id'])) {
+    showBadRequestErrorPage();
+}
 
-	$stmt = exec_query(
-		'
-			SELECT alias_name FROM
-				domain_aliasses
-			INNER JOIN
-				domain USING(domain_id)
-			WHERE
-				alias_id = ?
-			AND
-				domain_admin_id = ?
-		', array($alsId, intval($_SESSION['user_id']))
-	);
+$id = intval($_GET['id']);
+$stmt = exec_query(
+    'SELECT alias_name FROM domain_aliasses INNER JOIN domain USING(domain_id) WHERE alias_id = ? AND domain_admin_id = ?',
+    array($id, intval($_SESSION['user_id']))
+);
 
-	if ($stmt->rowCount()) {
-		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-		deleteDomainAlias($alsId, $row['alias_name']);
-		redirectTo('domains_manage.php');
-	}
+if ($stmt->rowCount()) {
+    $row = $stmt->fetchRow();
+    deleteDomainAlias($id, $row['alias_name']);
+    redirectTo('domains_manage.php');
 }
 
 showBadRequestErrorPage();

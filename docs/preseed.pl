@@ -5,17 +5,23 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2015.06.25
+# Last update: 2016.02.07
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
 $main::questions{'HTTPD_SERVER'} = 'apache_php_fpm';
 
 # apache_fcgid - Only relevant if the server for the http service is set to 'apache_fgcid'
-$main::questions{'INI_LEVEL'} = 'per_user'; # 'per_user', 'per_domain' or 'per_site'
+# PHP configuration level to use
+$main::questions{'INI_LEVEL'} = 'per_site'; # 'per_user', 'per_domain' or 'per_site'
 
 # apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'
+# PHP configuration level to use
 $main::questions{'PHP_FPM_POOLS_LEVEL'} = 'per_user'; # 'per_user', 'per_domain' or 'per_site'
+
+# apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'
+# FastCGI addresse type to use (Unix domain socket or TCP/IP)
+$main::questions{'PHP_FPM_LISTEN_MODE'} = 'uds'; # 'uds', 'tcp'
 
 # Server to use for the Pop/Imap services
 # (courier|dovecot)
@@ -34,12 +40,15 @@ $main::questions{'DOVECOT_SQL_USER'} = 'dovecot_user';
 $main::questions{'DOVECOT_SQL_PASSWORD'} = 'password'; # Password must not be empty  at least 6 characters long
 
 # Server to use for the Ftp service
-# (proftpd)
+# (ProFTPD)
 $main::questions{'FTPD_SERVER'} = 'proftpd';
 
-# Proftpd SQL user
+# ProFTPD SQL user
 $main::questions{'FTPD_SQL_USER'} = 'vftp_user';
 $main::questions{'FTPD_SQL_PASSWORD'} = 'password'; # Password must not empty
+
+# ProFTPD passive port range
+$main::questions{'FTPD_PASSIVE_PORT_RANGE'} = '32768 60999';
 
 # Server to use for the Mail service
 # (postfix)

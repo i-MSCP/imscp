@@ -1,5 +1,5 @@
 # i-MSCP Listener::Dovecot::Service::Login listener file
-# Copyright (C) 2015-2016 Sven Jantzen <info@svenjantzen.de>
+# Copyright (C) 2016 Sven Jantzen <info@svenjantzen.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,8 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Set dovecot service login optins for imap, imaps, pop3 and pop3s.
-## Listener require dovecot version 2.1.0 or newer
+## Allows to modify default service-login configuration options.
+## This listener file requires dovecot version 2.1.0 or newer.
 #
 
 package Listener::Dovecot::Service::Login;
@@ -29,86 +29,85 @@ use iMSCP::Execute;
 use version;
 use iMSCP::EventManager;
 
+#
+## Configuration parameters
+#
 
-#Set Options
-#########################
-#Port
-#set port to 0 means port is close
+# Service ports
+# Note: Setting a port to 0 will close it
+my $pop3Port = 110;
+my $pop3sPort = 995;
+my $imapPort = 143;
+my $imapsPort = 993;
 
-#Host
-#Space separated list of IP addresses / host names to listen on. "*" means all IPv4 addresses, "::" means all IPv6 addresses.
-#eg "* ::" activate service-login for localhost all IPv4 ans all IPv6 address
-#eg "localhost" activate service-login only localhost
+# Space separated list of IP addresses/hostnames to listen on.
+# For instance:
+#	- with 'localhost' as value the service-login will listen on localhost only
+#	- with '*' as value, the service-login will listen on all IPv4 addresses
+#	- with '::' as value, the servicel-login will listen on all IPv6 addresses
+#	- with '*, ::' as value, the service-login will listen on all IPv4/IPv6 addresses
+my $imapListenAddr = '* ::';
+my $imapsListenAddr = '* ::';
+my $pop3ListenAddr = '* ::';
+my $pop3sListenAddr = '* ::';
 
-##########pop3###########
-my $pop3_port = 110;
-my $pop3_host = "localhost";
-##########pop3s##########
-my $pop3s_port = 995;
-my $pop3s_host = "* ::";
-##########imap###########
-my $imap_port = 143;
-my $imap_host = "localhost";
-##########imaps##########
-my $imaps_port = 993;
-my $imaps_host = "* ::";
-my $service_count = 1;
-#########################
-
+# Number of connections to handle before starting a new process. Typically
+# the only useful values are 0 (unlimited) or 1. 1 is more secure, but 0
+# is faster.
+my $imapServiceCount = 0;
+my $popServiceCount = 0;
 
 #
 ## Please, don't edit anything below this line
 #
 
 iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
+	my ($cfgTpl, $tplName) = @_;
 
-	execute("dovecot --version", \my $stdout, \my $stderr);
-	
-	if( version->new($stdout) < version->new('2.1.0') ) {
-		error("This Listener require dovecot version 2.1.x or newer. - Your version is: $stdout");
-		return 1;
+	return 0 unless index($tplName, 'dovecot.conf') != -1;
+
+	execute("dovecot --version", \ my $stdout, \ my $stderr);
+
+	if(version->new($stdout) < version->new('2.1.0')) {
+		warning("The 60_dovecot_service_login.pl Listener file requires Dovecot version 2.1.x or newer. Your version is: $stdout");
+		return 0;
 	}
-	else {
 
-		my ($cfgTpl, $tplName) = @_;
-
-		return 0 unless index($tplName, 'dovecot.conf') != -1;
-
-		$$cfgTpl .= <<EOF;
+	$$cfgTpl .= <<EOF;
 
 # Begin Listener::Dovecot::Service::Login
 service imap-login {
 	inet_listener imap {
-		port = $imap_port
-		address = $imap_host
+		port = $imapPort
+		address = $imapListenAddr
 	}
-	
+
 	inet_listener imaps {
-		port = $imaps_port
-		address = $imaps_host
+		port = $imapsPort
+		address = $imapsListenAddr
 		ssl = yes
 	}
-	
-	service_count = $service_count
+
+	service_count = $imapServiceCount
 }
-	
+
 service pop3-login {
 	inet_listener pop3 {
-		port = $pop3_port
-		address = $pop3_host
+		port = $pop3Port
+		address = $pop3ListenAddr
 	}
-		
+
 	inet_listener pop3s {
-		port = $pop3s_port
-		address = $pop3s_host
+		port = $pop3sPort
+		address = $pop3sListenAddr
 		ssl = yes
 	}
+
+	service_count = $popServiceCount
 }
 # Ending Listener::Dovecot::Service::Login
 EOF
-
-		0;
-	}
+	0;
 });
 
 1;

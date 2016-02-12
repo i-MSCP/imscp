@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,9 +34,10 @@ use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::TemplateParser;
 use File::Basename;
-use version;
+use Servers::sqld;
 use Servers::po::dovecot;
 use Servers::mta::postfix;
+use version;
 use parent 'Common::SingletonClass';
 
 %main::sqlUsers = () unless %main::sqlUsers;
@@ -102,6 +103,9 @@ sub showDialog
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser =~ /[^\x21-\x7e]+/) ||
 		(length $dbPass < 6 || $dbPass =~ /[^\x21-\x7e]+/)
 	) {
+		# Ensure no special chars are present in password. If we don't, dialog will not let user set new password
+		$dbPass = '';
+
 		# Ask for the dovecot restricted SQL username
 		do{
 			($rs, $dbUser) = $dialog->inputbox(
@@ -190,12 +194,8 @@ sub install
 	}
 
 	my $rs = $self->_setupSqlUser();
-	return $rs if $rs;
-
 	$rs = $self->_buildConf();
-	return $rs if $rs;
-
-	$rs = $self->_saveConf();
+	$rs ||= $self->_saveConf();
 	return $rs if $rs;
 
 	if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'courier') {
@@ -203,7 +203,7 @@ sub install
 		return $rs if $rs;
 	}
 
-	$self->_oldEngineCompatibility();
+	0;
 }
 
 =back
@@ -214,13 +214,11 @@ sub install
 
 =item buildPostfixConf($fileContent, $fileName)
 
- Add Dovecot SASL and LDA parameters for Postfix
+ Injects configuration for both, Dovecot LDA and Dovecot SASL in Postfix configuration files.
 
- Listener which listen on the following events:
+ Listener that listen on the following events:
   - beforeMtaBuildMainCfFile
   - beforeMtaBuildMasterCfFile
-
- This listener is reponsible to add Dovecot SASL and LDA parameters in Postfix configuration files.
 
  Param string \$fileContent Configuration file content
  Param string $fileName Configuration file name
@@ -233,17 +231,26 @@ sub buildPostfixConf
 	my ($self, $fileContent, $fileName) = @_;
 
 	if($fileName eq 'main.cf') {
-		$$fileContent .= <<EOF
+		$$fileContent .= <<'EOF';
 
+# Dovecot LDA parameters
 virtual_transport = dovecot
+dovecot_destination_concurrency_limit = 2
 dovecot_destination_recipient_limit = 1
-EOF
 
+# Dovecot SASL parameters
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_authenticated_header = yes
+broken_sasl_auth_clients = yes
+EOF
 	} elsif($fileName eq 'master.cf') {
-		my $configSnippet = <<EOF;
+		my $configSnippet = <<'EOF';
 
 dovecot   unix  -       n       n       -       -       pipe
-  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f \${sender} -d \${recipient} {SFLAG}
+  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f ${sender} -d ${recipient} {SFLAG}
 EOF
 
 		$$fileContent .= iMSCP::TemplateParser::process(
@@ -283,9 +290,9 @@ sub _init
 	$self->{'po'} = Servers::po::dovecot->getInstance();
 	$self->{'mta'} = Servers::mta::postfix->getInstance();
 
-	$self->{'eventManager'}->trigger(
-		'beforePodInitInstaller', $self, 'dovecot'
-	) and fatal('dovecot - beforePoInitInstaller has failed');
+	$self->{'eventManager'}->trigger('beforePodInitInstaller', $self, 'dovecot') and fatal(
+		'dovecot - beforePoInitInstaller has failed'
+	);
 
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -303,11 +310,11 @@ sub _init
 		}
 	}
 
-	$self->_getVersion() and fatal('Unable to get Dovecot version');
+	$self->_getVersion() and fatal('Could not get Dovecot version');
 
-	$self->{'eventManager'}->trigger(
-		'afterPodInitInstaller', $self, 'dovecot'
-	) and fatal('dovecot - afterPoInitInstaller has failed');
+	$self->{'eventManager'}->trigger('afterPodInitInstaller', $self, 'dovecot') and fatal(
+		'dovecot - afterPoInitInstaller has failed'
+	);
 
 	$self;
 }
@@ -327,11 +334,10 @@ sub _getVersion
 	my $rs = $self->{'eventManager'}->trigger('beforePoGetVersion');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute('/usr/sbin/dovecot --version', \$stdout, \$stderr);
+	$rs = execute('/usr/sbin/dovecot --version', \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
-	error('Unable to get dovecot version') if $rs && ! $stderr;
+	error('Could not get dovecot version') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	chomp($stdout);
@@ -340,7 +346,7 @@ sub _getVersion
 	if($1) {
 		$self->{'version'} = $1;
 	} else {
-		error("Unable to find Dovecot version");
+		error("Could not find Dovecot version");
 		return 1;
 	}
 
@@ -370,8 +376,7 @@ sub _bkpConfFile
 			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.system");
 			return $rs if $rs;
 		} else {
-			my $timestamp = time;
-			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.$timestamp");
+			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile." . time);
 			return $rs if $rs;
 		}
 	}
@@ -401,28 +406,37 @@ sub _setupSqlUser
 	return $rs if $rs;
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
+		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
 			next unless $host;
 
 			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error(sprintf('Unable to remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
+				error(sprintf('Could not remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
 				return 1;
 			}
 		}
 	}
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal(sprintf('Unable to connect to SQL server: %s', $errStr)) unless $db;
+	fatal(sprintf('Could not connect to SQL server: %s', $errStr)) unless $db;
 
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 
-		$rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
+			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
+
+		$rs = $db->doQuery(
+			'c',
+			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
+			$dbUser,
+			$dbUserHost,
+			$dbPass
+		);
 		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
+			error(sprintf('Could not create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 			return 1;
 		}
 
@@ -430,18 +444,15 @@ sub _setupSqlUser
 	}
 
 	# Give needed privileges to this SQL user
-
 	my $quotedDbName = $db->quoteIdentifier($dbName);
-
 	$rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add SQL privilege: %s', $rs));
+		error(sprintf('Could not add SQL privilege: %s', $rs));
 		return 1;
 	}
 
 	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
 	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-
 	$self->{'eventManager'}->trigger('afterPoSetupDb');
 }
 
@@ -482,8 +493,11 @@ sub _buildConf
 		POSTFIX_SENDMAIL_PATH => $self->{'mta'}->{'config'}->{'POSTFIX_SENDMAIL_PATH'},
 		DOVECOT_CONF_DIR => $self->{'config'}->{'DOVECOT_CONF_DIR'},
 		DOVECOT_DELIVER_PATH => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
-		DOVECOT_AUTH_SOCKET_PATH => $self->{'config'}->{'DOVECOT_AUTH_SOCKET_PATH'},
-		ENGINE_ROOT_DIR => $main::imscpConfig{'ENGINE_ROOT_DIR'}
+		DOVECOT_LDA_AUTH_SOCKET_PATH => $self->{'config'}->{'DOVECOT_LDA_AUTH_SOCKET_PATH'},
+		DOVECOT_SASL_AUTH_SOCKET_PATH => $self->{'config'}->{'DOVECOT_SASL_AUTH_SOCKET_PATH'},
+		ENGINE_ROOT_DIR => $main::imscpConfig{'ENGINE_ROOT_DIR'},
+		POSTFIX_USER => $self->{'mta'}->{'config'}->{'POSTFIX_USER'},
+		POSTFIX_GROUP => $self->{'mta'}->{'config'}->{'POSTFIX_GROUP'},
 	};
 
 	# Transitional code (should be removed in later version
@@ -492,12 +506,7 @@ sub _buildConf
 	}
 
 	my %cfgFiles = (
-		(
-			(version->parse($self->{'version'}) < version->parse('2.0.0'))
-				? 'dovecot.conf.1.x'
-				: (version->parse($self->{'version'}) < version->parse('2.1.0'))
-					? 'dovecot.conf.2.0' : 'dovecot.conf.2.1'
-		) => [
+		(version->parse($self->{'version'}) < version->parse('2.1.0') ? 'dovecot.conf.2.0' : 'dovecot.conf.2.1') => [
 			"$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf", # Destpath
 			$main::imscpConfig{'ROOT_USER'}, # Owner
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
@@ -509,7 +518,7 @@ sub _buildConf
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
 			0640 # Permissions
 		],
-		((version->parse($self->{'version'}) < version->parse('2.0.0')) ? 'quota-warning.1' : 'quota-warning.2') => [
+		'quota-warning' => [
 			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh", # Destpath
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # Owner
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
@@ -518,14 +527,13 @@ sub _buildConf
 	);
 
 	for my $conffile(keys %cfgFiles) {
-		my $cfgTpl;
-		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'dovecot', $conffile, \$cfgTpl, $data);
+		my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'dovecot', $conffile, \my $cfgTpl, $data);
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
 			$cfgTpl= iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
 			unless(defined $cfgTpl) {
-				error("Unable to read $self->{'cfgDir'}/$conffile");
+				error("Could not read $self->{'cfgDir'}/$conffile");
 				return 1;
 			}
 		}
@@ -541,20 +549,11 @@ sub _buildConf
 		my $filename = fileparse($cfgFiles{$conffile}->[0]);
 
 		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-
 		$rs = $file->set($cfgTpl);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->owner($cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2]);
-		return $rs if $rs;
-
-		$rs = $file->mode($cfgFiles{$conffile}->[3]);
-		return $rs if $rs;
-
-		$rs = $file->copyFile($cfgFiles{$conffile}->[0]);
+		$rs ||= $file->save();
+		$rs ||= $file->owner($cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2]);
+		$rs ||= $file->mode($cfgFiles{$conffile}->[3]);
+		$rs ||= $file->copyFile($cfgFiles{$conffile}->[0]);
 		return $rs if $rs;
 	}
 
@@ -598,10 +597,9 @@ sub _migrateFromCourier
 		'--convert', '--overwrite', '--recursive', $mailPath
 	);
 
-	my ($stdout, $stderr);
-	$rs = execute("@cmd", \$stdout, \$stderr);
+	$rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
+	debug($stderr) if $stderr && !$rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while converting mailboxes to devecot format') if ! $stderr && $rs;
 	return $rs if $rs;
@@ -609,29 +607,10 @@ sub _migrateFromCourier
 	$self->{'eventManager'}->trigger('afterPoMigrateFromCourier');
 }
 
-=item _oldEngineCompatibility()
-
- Remove old files
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _oldEngineCompatibility
-{
-	my $self = shift;
-
-	my $rs = $self->{'eventManager'}->trigger('beforePoOldEngineCompatibility');
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPodOldEngineCompatibility');
-}
-
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -60,12 +60,10 @@ sub getType
 
 sub process
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_loadData();
-	return $rs if $rs;
-
-	$self->add();
+	$rs ||= $self->add();
 }
 
 =back
@@ -84,7 +82,7 @@ sub process
 
 sub _loadData
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $db = iMSCP::Database->factory();
 
@@ -92,7 +90,7 @@ sub _loadData
 		'ip_number',
 		"
 			SELECT
-				domain_ip_id AS ip_id, ip_number
+				ip_number
 			FROM
 				domain
 			INNER JOIN
@@ -101,7 +99,7 @@ sub _loadData
 				domain_status != 'todelete'
 			UNION
 			SELECT
-				alias_ip_id AS ip_id, ip_number
+				ip_number
 			FROM
 				domain_aliasses
 			INNER JOIN
@@ -116,7 +114,6 @@ sub _loadData
 	}
 
 	$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
-
 	@{$self->{'ipaddrs'}} = keys %{$rdata};
 
 	$rdata = $db->doQuery(
@@ -187,7 +184,6 @@ sub _loadData
 	}
 
 	@{$self->{'ssl_ipaddrs'}} = keys %{$rdata};
-
 	0;
 }
 

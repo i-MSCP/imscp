@@ -43,20 +43,18 @@ set_include_path(implode(PATH_SEPARATOR, array_unique(
 // Setup autoloader
 require_once LIBRARY_PATH . '/vendor/Zend/Loader/AutoloaderFactory.php';
 
-Zend_Loader_AutoloaderFactory::factory(
-	array(
-		'Zend_Loader_StandardAutoloader' => array(
-			'autoregister_zf' => true,
-			'prefixes' => array(
-				'iMSCP_' => LIBRARY_PATH . '/iMSCP',
-				'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
-				'File_' => LIBRARY_PATH . '/vendor/phpseclib/File',
-				'Math_' => LIBRARY_PATH . '/vendor/phpseclib/Math',
-				'Net_' => LIBRARY_PATH . '/vendor/Net'
-			)
+Zend_Loader_AutoloaderFactory::factory(array(
+	'Zend_Loader_StandardAutoloader' => array(
+		'autoregister_zf' => true,
+		'prefixes' => array(
+			'iMSCP_' => LIBRARY_PATH . '/iMSCP',
+			'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
+			'File_' => LIBRARY_PATH . '/vendor/phpseclib/File',
+			'Math_' => LIBRARY_PATH . '/vendor/phpseclib/Math',
+			'Net_' => LIBRARY_PATH . '/vendor/Net'
 		)
 	)
-);
+));
 
 // Set handler for uncaught exceptions
 iMSCP_Registry::set('exceptionHandler', new iMSCP_Exception_Handler());
@@ -99,10 +97,10 @@ if(is_readable(CONFIG_CACHE_FILE_PATH)) {
 	// Set the isp logos path
 	$config['ISP_LOGO_PATH'] = '/ispLogos';
 
-	$config['HTML_CHECKED'] = ' checked="checked"';
-	$config['HTML_DISABLED'] = ' disabled="disabled"';
-	$config['HTML_READONLY'] = ' readonly="readonly"';
-	$config['HTML_SELECTED'] = ' selected="selected"';
+	$config['HTML_CHECKED'] = ' checked';
+	$config['HTML_DISABLED'] = ' disabled';
+	$config['HTML_READONLY'] = ' readonly';
+	$config['HTML_SELECTED'] = ' selected';
 
 	// Default Language (if not overriden by admin)
 	$config['USER_INITIAL_LANG'] = 'auto';
@@ -121,37 +119,17 @@ if(is_readable(CONFIG_CACHE_FILE_PATH)) {
 	$config['MAX_SQL_USER_LENGTH'] = 16;
 	$config['MAX_SQL_PASS_LENGTH'] = 32;
 
-	/**
-	 * The following settings can be overridden via the control panel - (admin/settings.php)
-	 */
+	// Captcha background color
+	$config['LOSTPASSWORD_CAPTCHA_BGCOLOR'] = array(176, 222, 245);
 
-	// Domain rows pagination
-	$config['DOMAIN_ROWS_PER_PAGE'] = 10;
-
-	// admin    : hosting plans are available only in admin level, the reseller cannot make custom changes
-	// reseller : hosting plans are available only in reseller level
-	$config['HOSTING_PLANS_LEVEL'] = 'reseller';
-
-	// Enable or disable support system
-	$config['IMSCP_SUPPORT_SYSTEM'] = 1;
-
-	// Enable or disable lost password support
-	$config['LOSTPASSWORD'] = 1;
-
-	// Uniqkeytimeout in minutes
-	$config['LOSTPASSWORD_TIMEOUT'] = 30;
+	// Captcha text color
+	$config['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'] = array(1, 53, 920);
 
 	// Captcha imagewidth
 	$config['LOSTPASSWORD_CAPTCHA_WIDTH'] = 276;
 
 	// Captcha imagehigh
 	$config['LOSTPASSWORD_CAPTCHA_HEIGHT'] = 30;
-
-	// Captcha background color
-	$config['LOSTPASSWORD_CAPTCHA_BGCOLOR'] = array(176, 222, 245);
-
-	// Captcha text color
-	$config['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'] = array(1, 53, 920);
 
 	/**
 	 * Captcha ttf fontfiles (have to be under compatible open source license)
@@ -161,6 +139,22 @@ if(is_readable(CONFIG_CACHE_FILE_PATH)) {
 		'FreeSansBold.ttf', 'FreeSansBoldOblique.ttf', 'FreeSansOblique.ttf', 'FreeSerif.ttf', 'FreeSerifBold.ttf',
 		'FreeSerifBoldItalic.ttf', 'FreeSerifItalic.ttf'
 	);
+
+	/**
+	 * The following settings can be overridden via the control panel - (admin/settings.php)
+	 */
+
+	// Domain rows pagination
+	$config['DOMAIN_ROWS_PER_PAGE'] = 10;
+
+	// Enable or disable support system
+	$config['IMSCP_SUPPORT_SYSTEM'] = 1;
+
+	// Enable or disable lost password support
+	$config['LOSTPASSWORD'] = 1;
+
+	// Uniqkeytimeout in minutes
+	$config['LOSTPASSWORD_TIMEOUT'] = 30;
 
 	// Enable or disable bruteforcedetection
 	$config['BRUTEFORCE'] = 1;
@@ -230,8 +224,8 @@ if(is_readable(CONFIG_CACHE_FILE_PATH)) {
 	$config['PREVENT_EXTERNAL_LOGIN_CLIENT'] = 1;
 
 	// Automatic search for new version
-	$config['CHECK_FOR_UPDATES'] = false;
-	$config['ENABLE_SSL'] = false;
+	$config['CHECK_FOR_UPDATES'] = 0;
+	$config['ENABLE_SSL'] = 1;
 
 	// Converting some possible IDN to ACE
 	$config['DEFAULT_ADMIN_ADDRESS'] = encode_idna($config->get('DEFAULT_ADMIN_ADDRESS'));
