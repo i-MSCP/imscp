@@ -875,14 +875,12 @@ class iMSCP_PHPini
         } else {
             switch ($domainType) {
                 case 'dmn':
-                    set_page_message("Updated dmn status: $configLevel, $adminId, $domainId, $domainType", 'success');
                     $query = "
                         UPDATE domain SET domain_status = 'tochange'
                         WHERE domain_admin_id = ? AND domain_id = ? AND domain_status NOT IN ('disabled', 'todelete')
                     ";
                     break;
                 case 'sub':
-                    set_page_message("Updated sub status: $configLevel, $adminId, $domainId, $domainType", 'success');
                     $query = "
                         UPDATE subdomain INNER JOIN domain USING(domain_id) SET subdomain_status = 'tochange'
                         WHERE domain_admin_id = ? AND subdomain_id = ?
@@ -890,14 +888,12 @@ class iMSCP_PHPini
                     ";
                     break;
                 case 'als';
-                    set_page_message("Updated als status: $configLevel, $adminId, $domainId, $domainType", 'success');
                     $query = "
                         UPDATE domain_aliasses INNER JOIN domain USING(domain_id) SET alias_status = 'tochange'
                         WHERE domain_admin_id = ? AND alias_id = ? AND alias_status NOT IN ('disabled','todelete')
                     ";
                     break;
                 case 'subals':
-                    set_page_message("Updated subals status: $configLevel, $adminId, $domainId, $domainType", 'success');
                     $query = "
                         UPDATE subdomain_alias INNER JOIN domain_aliasses USING(alias_id) INNER JOIN domain USING(domain_id)
                         SET subdomain_alias_status = 'tochange'
