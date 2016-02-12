@@ -40,8 +40,7 @@
                 <div class="radio">
                     <input type="radio" name="allow_url_fopen" id="allow_url_fopen_on" value="on"{ALLOW_URL_FOPEN_ON}>
                     <label for="allow_url_fopen_on">{TR_YES}</label>
-                    <input type="radio" name="allow_url_fopen" id="allow_url_fopen_off"
-                           value="off"{ALLOW_URL_FOPEN_OFF}>
+                    <input type="radio" name="allow_url_fopen" id="allow_url_fopen_off" value="off"{ALLOW_URL_FOPEN_OFF}>
                     <label for="allow_url_fopen_off">{TR_NO}</label>
                 </div>
             </td>
@@ -77,28 +76,28 @@
             <td><label>{TR_DISABLE_FUNCTIONS}</label></td>
             <td>
                 <div class="checkbox">
-                    <input name="show_source" id="show_source" type="checkbox" {SHOW_SOURCE} value="show_source">
+                    <input type="checkbox" name="show_source" id="show_source" value="show_source"{SHOW_SOURCE}>
                     <label for="show_source">show_source</label>
-                    <input name="system" id="system" type="checkbox"{SYSTEM} value="system">
+                    <input type="checkbox" name="system" id="system" value="system"{SYSTEM}>
                     <label for="system">system</label>
-                    <input name="shell_exec" id="shell_exec" type="checkbox"{SHELL_EXEC} value="shell_exec">
+                    <input type="checkbox" name="shell_exec" id="shell_exec" value="shell_exec"{SHELL_EXEC}>
                     <label for="shell_exec">shell_exec</label>
-                    <input name="passthru" id="passthru" type="checkbox"{PASSTHRU} value="passthru">
+                    <input type="checkbox" name="passthru" id="passthru" value="passthru"{PASSTHRU}>
                     <label for="passthru">passthru</label>
-                    <input name="exec" id="exec" type="checkbox"{EXEC} value="exec">
+                    <input name="exec" id="exec" type="checkbox"value="exec"{EXEC}>
                     <label for="exec">exec</label>
-                    <input name="phpinfo" id="phpinfo" type="checkbox"{PHPINFO} value="phpinfo">
+                    <input type="checkbox" name="phpinfo" id="phpinfo" value="phpinfo"{PHPINFO}>
                     <label for="phpinfo">phpinfo</label>
-                    <input name="shell" id="shell" type="checkbox"{SHELL} value="shell">
+                    <input type="checkbox" name="shell" id="shell" value="shell"{SHELL}>
                     <label for="shell">shell</label>
-                    <input name="symlink" id="symlink" type="checkbox"{SYMLINK} value="symlink">
+                    <input type="checkbox" name="symlink" id="symlink" value="symlink"{SYMLINK}>
                     <label for="symlink">symlink</label>
-                    <input name="proc_open" id="proc_open" type="checkbox"{PROC_OPEN} value="proc_open">
+                    <input type="checkbox" name="proc_open" id="proc_open" value="proc_open"{PROC_OPEN}>
                     <label for="proc_open">proc_open</label>
-                    <input name="popen" id="popen" type="checkbox"{POPEN} value="popen">
+                    <input type="checkbox" name="popen" id="popen" value="popen"{POPEN}>
                     <label for="popen">popen</label>
                     <!-- BDP: mail_function_block -->
-                    <input name="mail" id="mail" type="checkbox"{MAIL} value="mail">
+                    <input type="checkbox" name="mail" id="mail" value="mail"{MAIL}>
                     <label for="mail">mail</label>
                     <!-- EDP: mail_function_block -->
                 </div>
@@ -124,7 +123,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="Submit" type="submit" value="{TR_UPDATE_DATA}">
+        <input name="submit" type="submit" value="{TR_UPDATE}">
         <a class="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
     </div>
 </form>

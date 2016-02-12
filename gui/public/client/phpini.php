@@ -30,7 +30,7 @@
  * @param string $domainType Domain type (dmn|als|sub|subals)
  * @return bool TRUE if domain status is 'ok', FALSE otherwise
  */
-function client_isDomainStatusOk($domainId, $domainType)
+function isDomainStatusOk($domainId, $domainType)
 {
     switch ($domainType) {
         case 'dmn':
@@ -68,36 +68,21 @@ function client_isDomainStatusOk($domainId, $domainType)
  * @param string $configLevel PHP configuration level
  * @return array
  */
-function client_getDomainData($configLevel)
+function getDomainData($configLevel)
 {
     // Per user means only main domain
     $query = "
-        SELECT
-            domain_name, domain_status, domain_id, 'dmn' AS domain_type
-        FROM
-            domain AS t1
-        WHERE
-            domain_admin_id = :admin_id
-        AND
-            domain_status <> :domain_status
+        SELECT domain_name, domain_status, domain_id, 'dmn' AS domain_type FROM domain AS t1
+        WHERE domain_admin_id = :admin_id AND domain_status <> :domain_status
     ";
 
     # Per domain or per site means also domain aliases
     if ($configLevel == 'per_domain' || $configLevel == 'per_site') {
         $query .= "
             UNION ALL
-            SELECT
-                t1.alias_name, t1.alias_status, alias_id, 'als'
-            FROM
-                domain_aliasses AS t1
-            INNER JOIN
-                domain AS t2 USING(domain_id)
-            WHERE
-                t2.domain_admin_id = :admin_id
-            AND
-                t1.url_forward = 'no'
-            AND
-                t1.alias_status <> :domain_status
+            SELECT t1.alias_name, t1.alias_status, alias_id, 'als' FROM domain_aliasses AS t1
+            INNER JOIN domain AS t2 USING(domain_id)
+            WHERE t2.domain_admin_id = :admin_id AND t1.url_forward = 'no' AND t1.alias_status <> :domain_status
         ";
     }
 
@@ -105,34 +90,19 @@ function client_getDomainData($configLevel)
     if ($configLevel == 'per_site') {
         $query .= "
             UNION ALL
-            SELECT
-                CONCAT(t1.subdomain_name, '.', t2.domain_name), t1.subdomain_status, subdomain_id, 'sub'
-            FROM
-                subdomain AS t1
-            INNER JOIN
-                domain AS t2 USING(domain_id)
-            WHERE
-                t2.domain_admin_id  = :admin_id
-            AND
-                t1.subdomain_status <> :domain_status
+            SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name), t1.subdomain_status, subdomain_id, 'sub'
+            FROM subdomain AS t1 INNER JOIN domain AS t2 USING(domain_id)
+            WHERE t2.domain_admin_id  = :admin_id AND t1.subdomain_status <> :domain_status
             UNION ALL
-            SELECT
-                CONCAT(t1.subdomain_alias_name, '.', t2.alias_name), t1.subdomain_alias_status,
+            SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name), t1.subdomain_alias_status,
                 subdomain_alias_id, 'subals'
-            FROM
-                subdomain_alias AS t1
-            INNER JOIN
-                domain_aliasses t2 USING(alias_id)
-            INNER JOIN
-                domain AS t3 USING(domain_id)
-            WHERE
-                domain_admin_id = :admin_id
-            AND
-                subdomain_alias_status <> :domain_status
+            FROM subdomain_alias AS t1 INNER JOIN domain_aliasses t2 USING(alias_id)
+            INNER JOIN domain AS t3 USING(domain_id)
+            WHERE domain_admin_id = :admin_id AND subdomain_alias_status <> :domain_status
         ";
     }
 
-    $stmt = exec_query($query, array('admin_id' => intval($_SESSION['user_id']), 'domain_status' => 'todelete'));
+    $stmt = exec_query($query, array('admin_id' => $_SESSION['user_id'], 'domain_status' => 'todelete'));
     return $stmt->fetchAll();
 }
 
@@ -144,7 +114,7 @@ function client_getDomainData($configLevel)
  * @param string $configLevel PHP configuration level
  * @çeturn void
  */
-function client_updatePhpConfig($phpini, $configLevel)
+function updatePhpConfig($phpini, $configLevel)
 {
     global $phpini, $configLevel;
 
@@ -161,7 +131,7 @@ function client_updatePhpConfig($phpini, $configLevel)
         showBadRequestErrorPage();
     }
 
-    if (!client_isDomainStatusOk($dmnId, $dmnType)) {
+    if (!isDomainStatusOk($dmnId, $dmnType)) {
         set_page_message(tr('Domain status is not ok.'), 'error');
         return;
     }
@@ -236,7 +206,7 @@ function client_updatePhpConfig($phpini, $configLevel)
  * @param string $configLevel PHP configuration level
  * @return void
  */
-function client_generatePage($tpl, $phpini, $config, $configLevel)
+function generatePage($tpl, $phpini, $config, $configLevel)
 {
     $mainDmnId = get_user_domain_id($_SESSION['user_id']);
 
@@ -254,7 +224,7 @@ function client_generatePage($tpl, $phpini, $config, $configLevel)
         showBadRequestErrorPage();
     }
 
-    $dmnsData = client_getDomainData($configLevel);
+    $dmnsData = getDomainData($configLevel);
 
     $knowDomain = false;
     foreach ($dmnsData as $dmnData) {
@@ -376,8 +346,8 @@ check_login('user');
 customerHasFeature('php_editor') or showBadRequestErrorPage();
 
 $phpini = iMSCP_PHPini::getInstance();
-$phpini->loadResellerPermissions($_SESSION['user_created_by']);
-$phpini->loadClientPermissions($_SESSION['user_id']);
+$phpini->loadResellerPermissions($_SESSION['user_created_by']); // Load reseller PHP permissions
+$phpini->loadClientPermissions($_SESSION['user_id']); // Load client PHP permissions
 
 $config = iMSCP_Registry::get('config');
 $confDir = $config['CONF_DIR'];
@@ -391,7 +361,7 @@ if ($config['HTTPD_SERVER'] == 'apache_fcgid' || $config['HTTPD_SERVER'] == 'apa
 }
 
 if (!empty($_POST)) {
-    client_updatePhpConfig($phpini, $configLevel);
+    updatePhpConfig($phpini, $configLevel);
 }
 
 $tpl = new iMSCP_pTemplate();
@@ -414,12 +384,12 @@ $tpl->assign(array(
     'TR_MENU_PHPINI' => tohtml(tr('PHP Editor')),
     'TR_DOMAIN' => tohtml(tr('Domain')),
     'TR_DOMAIN_TOOLTIP' => tohtml(tr('Domain for which PHP Editor must act.'), 'htmlAttr'),
-    'TR_UPDATE_DATA' => tohtml(tr('Update'), 'htmlAttr'),
+    'TR_UPDATE' => tohtml(tr('Update'), 'htmlAttr'),
     'TR_CANCEL' => tohtml(tr('Cancel'))
 ));
 
 generateNavigation($tpl);
-client_generatePage($tpl, $phpini, $config, $configLevel);
+generatePage($tpl, $phpini, $config, $configLevel);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

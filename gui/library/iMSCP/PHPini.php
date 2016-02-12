@@ -599,6 +599,8 @@ class iMSCP_PHPini
                     return;
                 }
                 break;
+            case 'phpiniErrorReporting':
+                break;
             default:
                 if (!$this->clientHasPermission($varname)) {
                     return;
