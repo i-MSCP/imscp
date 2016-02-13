@@ -37,6 +37,7 @@ use iMSCP::EventManager;
 # Add or overrides the PHP configuration options globally or per domain.
 # - The per domain PHP configuration options take precedence over global PHP configuration options.
 # - The PHP configuration options take precedence over those which are defined through the i-MSCP PHP editor.
+# Note that domain name must be in ASCII format.
 my %configOptions = (
     '<domain_name>' => { # Any PHP configuration added here will apply to test.tld only
         '<option_name>' => '<option_value>'
