@@ -452,11 +452,6 @@ function checkInputData()
             if (isset($_POST['max_input_time'])) {
                 $phpini->setDomainIni('phpiniMaxInputTime', clean_input($_POST['max_input_time']));
             }
-
-            echo '<pre>';
-            print_r($_POST);
-            print_r($phpini);
-            exit;
         } else {
             $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
             $phpini->loadDomainIni(); // Reset domain PHP configuration options to default values
