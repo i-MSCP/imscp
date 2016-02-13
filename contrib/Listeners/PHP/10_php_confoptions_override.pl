@@ -38,11 +38,11 @@ use iMSCP::EventManager;
 # - The per domain PHP configuration options take precedence over global PHP configuration options.
 # - The PHP configuration options take precedence over those which are defined through the i-MSCP PHP editor.
 my %configOptions = (
-    'test.tld' => { # Any PHP configuration added here will apply to test.tld only
-        'default_charset' => 'ISO-8859-1'
+    '<domain_name>' => { # Any PHP configuration added here will apply to test.tld only
+        '<option_name>' => '<option_value>'
     },
     '*' => { # Any PHP configuration option added here will apply globally.
-        'open_basedir' => '/usr/share/php/:/etc'
+        '<option_name>' => '<option_value>'
     }
 );
 
