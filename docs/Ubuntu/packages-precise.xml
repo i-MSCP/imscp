@@ -255,6 +255,7 @@
         <package>bash-completion</package>
         <package>bzip2</package>
         <package>ca-certificates</package>
+        <package>cron</package>
         <package>curl</package>
         <package>dnsutils</package>
         <package>gcc</package>
