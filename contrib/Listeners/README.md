@@ -89,6 +89,22 @@ Provides dual stack support for bind9.
 
 Activates HTTP Strict Transport Security (HSTS).
 
+## PHP listener files
+
+### 10_php_confoptions_override.pl
+
+Allows to add or override PHP configuration options globally or per domain.
+
+Be aware that only Fcgid and PHP-FPM Apache2 httpd server implementations are supported.
+
+Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'. You
+can do this by running:
+
+```
+# cd <your_imscp_archive>
+# perl imscp-autoinstall -dar httpd
+```
+
 ## Postfix listener files
 
 ### 10_postfix_smarthost.pl
