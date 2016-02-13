@@ -789,8 +789,8 @@ function reseller_checkAndUpdateData($domainId)
                     $phpini->setDomainIni('phpiniPostMaxSize', clean_input($_POST['post_max_size']));
                 }
 
-                if (isset($_POST['upload_max_filezize'])) {
-                    $phpini->setDomainIni('phpiniUploadMaxFileSize', clean_input($_POST['upload_max_filezize']));
+                if (isset($_POST['upload_max_filesize'])) {
+                    $phpini->setDomainIni('phpiniUploadMaxFileSize', clean_input($_POST['upload_max_filesize']));
                 }
 
                 if (isset($_POST['max_execution_time'])) {
