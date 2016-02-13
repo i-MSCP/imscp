@@ -282,9 +282,9 @@ function generatePage($tpl, $phpini, $config, $configLevel)
         $errorReporting = $phpini->getDomainIni('phpiniErrorReporting');
         $tpl->assign(array(
             'TR_ERROR_REPORTING' => tohtml(tr('Error reporting')),
-            'TR_ERROR_REPORTING_DEFAULT' => tohtml(tr('All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)'), 'htmlAttr'),
-            'TR_ERROR_REPORTING_DEVELOPEMENT' => tohtml(tr('All errors (Development)'), 'htmlAttr'),
-            'TR_ERROR_REPORTING_PRODUCTION' => tohtml(tr('All errors, except E_DEPRECATED and E_STRICT (Production)'), 'htmlAttr'),
+            'TR_ERROR_REPORTING_DEFAULT' => tohtml(tr('All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)')),
+            'TR_ERROR_REPORTING_DEVELOPEMENT' => tohtml(tr('All errors (Development)')),
+            'TR_ERROR_REPORTING_PRODUCTION' => tohtml(tr('All errors, except E_DEPRECATED and E_STRICT (Production)')),
             'ERROR_REPORTING_0' => $errorReporting == 'E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED' ? ' selected' : '',
             'ERROR_REPORTING_1' => $errorReporting == 'E_ALL & ~E_DEPRECATED & ~E_STRICT' ? ' selected' : '',
             'ERROR_REPORTING_2' => $errorReporting == '-1' ? ' selected' : ''
