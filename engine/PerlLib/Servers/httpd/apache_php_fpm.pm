@@ -2048,7 +2048,7 @@ sub _buildPHPConfig
 			MIN_SPARE_SERVERS => $self->{'phpfpmConfig'}->{'MIN_SPARE_SERVERS'} || 1,
 			MAX_SPARE_SERVERS => $self->{'phpfpmConfig'}->{'MAX_SPARE_SERVERS'} || 2,
 			PROCESS_IDLE_TIMEOUT => $self->{'phpfpmConfig'}->{'PROCESS_IDLE_TIMEOUT'} || '60s',
-			MAX_REQUESTS => $self->{'phpfpmConfig'}->{'MAX_REQUESTS'} || 500
+			MAX_REQUESTS => $self->{'phpfpmConfig'}->{'MAX_REQUESTS'} || 1000
 		});
 
 		$rs = $self->buildConfFile(
