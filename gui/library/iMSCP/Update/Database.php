@@ -3438,7 +3438,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 					// If no entry found, create one with default values
 					if ($phpini->isDefaultDomainIni()) {
-						$phpini->saveDomainIni($client['admin_id'], $subdomainAlias['alias_id'], 'subals');
+						$phpini->saveDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
 					}
 				}
 			}
