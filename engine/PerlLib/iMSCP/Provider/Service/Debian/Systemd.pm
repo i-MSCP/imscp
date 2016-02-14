@@ -174,7 +174,7 @@ sub remove
 	my ($self, $service) = @_;
 
 	if($self->_isSystemd($service)) {
-		return unless $self->SUPER::remove($service);
+		return unless $self->SUPER::remove($service) && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
 	}
 
 	if($self->_isSysvinit($service)) {

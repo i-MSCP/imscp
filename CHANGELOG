@@ -8,6 +8,7 @@ BACKEND
 	Added: Support for TCP/IP (PHP-FPM)
 	Backported: iMSCP::Crypt library from 1.3.x branch
 	Fixed: Could not remove service: Not a CODE reference at PerlLib/iMSCP/Provider/Service/Systemd.pm line 115
+	Fixed: Could not remove service: Unit not loaded
 	Fixed: Don't use Cyrus SASL for SMTP authentication when the Dovecot SASL implementation is available
 	Fixed: Mail passwords are no longer valid after client account re-activation
 
