@@ -114,7 +114,7 @@ sub remove
 	(
 		$self->stop($service) &&
 		$self->disable($service) &&
-		iMSCP::File->new->( filename => $self->getUnitFilePath($service) )->delFile() == 0
+		iMSCP::File->new( filename => $self->getUnitFilePath($service) )->delFile() == 0
 	);
 }
 
