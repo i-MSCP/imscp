@@ -1768,7 +1768,7 @@ sub _addCfg
 		# proxy_fcgi module case (Apache2 >= 2.4.10)
 		PROXY_LISTEN_MODE => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds' ? 'unix' : 'fcgi',
 		PROXY_LISTEN_ENDPOINT => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds'
-			? "/var/run/php5-fpm-$confLevel.sock|fcgi//$confLevel" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+			? "/var/run/php5-fpm-$confLevel.sock|fcgi://$confLevel/" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
 	});
 
 	for my $template(@templates) {
