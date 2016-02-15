@@ -3394,7 +3394,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					$phpini->saveDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
 				}
 
-				// For each subdomain
+				// Create entries for subdomains (based on domain entry)
 				$subdomains = exec_query(
 					"
 						SELECT subdomain_id FROM subdomain
@@ -3402,16 +3402,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 					"
 				);
 				while ($subdomain = $subdomains->fetchRow()) {
-					$phpini->loadDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
-
-					// If no entry found, create one with default values
-					if ($phpini->isDefaultDomainIni()) {
-						$phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
-					}
+					$phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
 				}
 				unset($subdomains);
 
-				// For each domain aliases
+				// Create entries for domain aliases (based on domain entry)
 				$domainAliases = exec_query(
 					"
 						SELECT alias_id FROM domain_aliasses
@@ -3419,16 +3414,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 					"
 				);
 				while ($domainAlias = $domainAliases->fetchRow()) {
-					$phpini->loadDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
-
-					// If no entry found, create one with default values
-					if ($phpini->isDefaultDomainIni()) {
-						$phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
-					}
+					$phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
 				}
 				unset($domainAliases);
 
-				// For each subdomain of domain aliases
+				// Create entries for subdomain of domain aliases (based on domain entry)
 				$subdomainAliases = exec_query(
 					"
 						SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
@@ -3436,12 +3426,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					"
 				);
 				while ($subdomainAlias = $subdomainAliases->fetchRow()) {
-					$phpini->loadDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
-
-					// If no entry found, create one with default values
-					if ($phpini->isDefaultDomainIni()) {
-						$phpini->saveDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
-					}
+					$phpini->saveDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
 				}
 				unset($subdomainAliases);
 			}
