@@ -43,6 +43,7 @@ CONTRIB
 DAEMON
 	Added: imscp_daemon.service systemd unit file
 	Fixed: PID file /var/run/imscp_daemon.pid not readable (yet?) after start (systemd)
+	Updated: Upstart init script according new daemon version - only one fork() call
 	Updated: Version to 1.2.4
 
 FRONTEND
