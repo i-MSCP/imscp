@@ -1,0 +1,12 @@
+[Unit]
+Description=i-MSCP communication daemon
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/imscp_daemon.pid
+ExecStart=/var/www/imscp/daemon/imscp_daemon -p /var/run/imscp_daemon.pid
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

@@ -40,6 +40,11 @@ CONTRIB
 	Rewritten: 10_named_zonetransfer.pl listener file (now named 10_named_slave_provisioning.pl)
 	Updated: 10_postfix_smarthost listener file (We need Cyrus SASL; Dovecot SASL impl. not supported by Postfix for smtp)
 
+DAEMON
+	Added: imscp_daemon.service systemd unit file
+	Fixed: PID file /var/run/imscp_daemon.pid not readable (yet?) after start (systemd)
+	Updated: Version to 1.2.4
+
 FRONTEND
 	Changed: error_reporting configuration parameter no longer editable when using Apache2 ITK httpd server impl.
 	Fixed: admin/settings.php menu state is not saved

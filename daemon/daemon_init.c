@@ -2,38 +2,37 @@
 
 void daemonInit(const char *pname, int facility)
 {
-	pid_t pid;
-	int i;
+	pid_t pid = 0;
 
+	/* create child process */
 	pid = fork();
-
-	if(pid < 0)
+	if(pid < 0) {
 		exit(EXIT_FAILURE);
-
-	if(pid > 0)
-		exit(EXIT_SUCCESS);
-
-	if (setsid() < 0)
-		exit(EXIT_FAILURE);
-
-	signal(SIGHUP, SIG_IGN);
-
-	pid = fork();
-
-	if (pid < 0)
-		exit(EXIT_FAILURE);
-
-	if (pid > 0)
-		exit(EXIT_SUCCESS);
-
-	umask(0);
-
-	if(chdir("/") < 0)
-		exit(EXIT_FAILURE);
-
-	for (i = sysconf(_SC_OPEN_MAX); i > 0; i--) {
-		close (i);
 	}
 
+	/* terminate parent process */
+	if(pid > 0) {
+		exit(EXIT_SUCCESS);
+	}
+
+	/* umask the file mode */
+	umask(0);
+
+	/* set new session */
+	if(setsid() < 0) {
+		exit(EXIT_FAILURE);
+	}
+
+	/* change the current wokring directory to root */
+	if(chdir("/") < 0) {
+		exit(EXIT_FAILURE);
+	}
+
+	/* close stdin, stdout and stderr */
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+
+	/* open log */
 	openlog(pname, LOG_PID, facility);
 }

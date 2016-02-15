@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-	int listenfd, connfd, c, given_pid;
+	int listenfd, connfd, c, need_pidfile;
 	char *pidfile_path;
 	struct sockaddr_in servaddr, cliaddr;
 	struct timeval timeout_rcv, timeout_snd;
@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 	pid_t childpid;
 	socklen_t clilen;
 
-	given_pid = 0;
+	need_pidfile = 0;
 	pidfile_path = (char)'\0';
 
 	/* Parse command line options */
@@ -18,13 +18,22 @@ int main(int argc, char *argv[])
 		switch(c) {
 			case 'p':
 				pidfile_path = optarg;
-				given_pid = 1;
+				need_pidfile = 1;
 				break;
 		}
 	}
 
 	/* Daemonize */
 	daemonInit(message(MSG_DAEMON_NAME), SYSLOG_FACILITY);
+
+	/* Create pidfile if needed */
+	if(need_pidfile) {
+		FILE *file = fopen(pidfile_path, "w");
+		fprintf(file, "%ld", (long)getpid());
+		fclose(file);
+	}
+
+	say("%s", message(MSG_DAEMON_STARTED));
 
 	/* Creates an endpoint for communication */
 	if((listenfd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0) {
@@ -60,14 +69,6 @@ int main(int argc, char *argv[])
 
 	signal(SIGCHLD, sigChild);
 	signal(SIGPIPE, sigPipe);
-
-	if(given_pid) {
-		FILE *file = fopen(pidfile_path, "w");
-		fprintf(file, "%ld", (long)getpid());
-		fclose(file);
-	}
-
-	say("%s", message(MSG_DAEMON_STARTED));
 
 	while (1) {
 		memset((void *) &cliaddr, '\0', sizeof(cliaddr));
