@@ -3418,7 +3418,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				}
 				unset($domainAliases);
 
-				// Create entries for subdomain of domain aliases (based on domain entry)
+				// Create entries for subdomains of domain aliases (based on domain entry)
 				$subdomainAliases = exec_query(
 					"
 						SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
