@@ -3409,6 +3409,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 						$phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
 					}
 				}
+				unset($subdomains);
 
 				// For each domain aliases
 				$domainAliases = exec_query(
@@ -3425,6 +3426,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 						$phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
 					}
 				}
+				unset($domainAliases);
 
 				// For each subdomain of domain aliases
 				$subdomainAliases = exec_query(
@@ -3441,6 +3443,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 						$phpini->saveDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
 					}
 				}
+				unset($subdomainAliases);
 			}
 		}
 	}
