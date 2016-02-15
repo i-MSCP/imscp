@@ -3315,7 +3315,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 
 		// Add PHP mail permission property in hosting plans if any
-		$stmt = exec_query('SELECT id, props FROM hosting_plans');
+		$stmt = execute_query('SELECT id, props FROM hosting_plans');
 		while ($row = $stmt->fetchRow()) {
 			$id = quoteValue($row['id'], PDO::PARAM_INT);
 			$props = explode(';', $row['props']);
@@ -3365,17 +3365,17 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$phpini = iMSCP_PHPini::getInstance();
 
 		// For each reseller
-		$resellers = exec_query("SELECT admin_id FROM admin WHERE admin_type = 'reseller'");
+		$resellers = execute_query("SELECT admin_id FROM admin WHERE admin_type = 'reseller'");
 		while ($reseller = $resellers->fetchRow()) {
 			$phpini->loadResellerPermissions($reseller['admin_id']);
 
 			// For each client of the reseller
-			$clients = exec_query("SELECT admin_id FROM admin WHERE created_by = {$reseller['admin_id']}");
+			$clients = execute_query("SELECT admin_id FROM admin WHERE created_by = {$reseller['admin_id']}");
 			while ($client = $clients->fetchRow()) {
 				$phpini->loadClientPermissions($client['admin_id']);
 
 				// For the client's main domain
-				$domain = exec_query(
+				$domain = execute_query(
 					"
 						SELECT domain_id FROM domain
 						WHERE domain_admin_id = {$client['admin_id']} AND domain_status <> 'todelete'
@@ -3395,7 +3395,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				}
 
 				// Create entries for subdomains (based on domain entry)
-				$subdomains = exec_query(
+				$subdomains = execute_query(
 					"
 						SELECT subdomain_id FROM subdomain
 						WHERE domain_id = {$domain['domain_id']} AND subdomain_status <> 'todelete'
@@ -3407,7 +3407,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				unset($subdomains);
 
 				// Create entries for domain aliases (based on domain entry)
-				$domainAliases = exec_query(
+				$domainAliases = execute_query(
 					"
 						SELECT alias_id FROM domain_aliasses
 						WHERE domain_id = {$domain['domain_id']} AND alias_status <> 'todelete'
@@ -3419,7 +3419,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				unset($domainAliases);
 
 				// Create entries for subdomains of domain aliases (based on domain entry)
-				$subdomainAliases = exec_query(
+				$subdomainAliases = execute_query(
 					"
 						SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
 						WHERE domain_id = {$domain['domain_id']} AND subdomain_alias_status <> 'todelete'
