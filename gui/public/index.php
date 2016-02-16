@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team <team@i-mscp.net>
+ * Copyright (C) 2010-2016 by i-MSCP Team <team@i-mscp.net>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -62,7 +62,7 @@ $tpl->define_dynamic(array(
 $tpl->assign(array(
 	'productLongName' => tr('internet Multi Server Control Panel'),
 	'productLink' => 'http://www.i-mscp.net',
-	'productCopyright' => tr('© 2010-2015 i-MSCP Team<br/>All Rights Reserved')
+	'productCopyright' => tr('© 2010-2016 i-MSCP Team<br/>All Rights Reserved')
 ));
 
 /** @var $cfg iMSCP_Config_Handler_File */

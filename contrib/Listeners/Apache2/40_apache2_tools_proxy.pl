@@ -1,5 +1,5 @@
 # i-MSCP Listener::Apache2::Tools::Proxy listener file
-# Copyright (C) 2015-2016 Rene Schuster <mail@reneschuster.de>
+# Copyright (C) 2016-2016 Rene Schuster <mail@reneschuster.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
