@@ -966,7 +966,7 @@ msgstr "En post definierades två gånger."
 msgid "An error occurred during authentication."
 msgstr "Ett fel uppstod vid autentisering."
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

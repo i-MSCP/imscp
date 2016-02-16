@@ -977,7 +977,7 @@ msgstr "Une entrée est définie deux fois."
 msgid "An error occurred during authentication."
 msgstr "Une erreur est survenue durant l'authentification."
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

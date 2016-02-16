@@ -968,7 +968,7 @@ msgstr "一個設定被定義兩次。"
 msgid "An error occurred during authentication."
 msgstr "在驗證過程中發生錯誤。"
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

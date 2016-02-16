@@ -969,7 +969,7 @@ msgstr "En oplysning er defineret to gange."
 msgid "An error occurred during authentication."
 msgstr "Der opstod en fejl i forbindelse med godkendelse."
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

@@ -972,7 +972,7 @@ msgstr "Una voce è stata definita due volte"
 msgid "An error occurred during authentication."
 msgstr "Un errore è occorso durante l'autenticazione."
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

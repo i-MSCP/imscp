@@ -970,7 +970,7 @@ msgstr "Ilyen már létezik egyszer."
 msgid "An error occurred during authentication."
 msgstr "Hiba történt a hitelesítés közben."
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

@@ -977,7 +977,7 @@ msgstr "Een invoer is tweemaal ingegeven."
 msgid "An error occurred during authentication."
 msgstr "Er is een aanmeldfout opgetreden"
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

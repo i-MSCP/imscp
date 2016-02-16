@@ -968,7 +968,7 @@ msgstr "エントリが二重に定義されています。"
 msgid "An error occurred during authentication."
 msgstr "認証中にエラーが発生した。"
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

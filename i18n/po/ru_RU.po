@@ -970,7 +970,7 @@ msgstr "Вхождение указано дважды."
 msgid "An error occurred during authentication."
 msgstr "При попытке аутентификации обнаружена ошибка."
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

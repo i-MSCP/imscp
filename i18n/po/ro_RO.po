@@ -968,7 +968,7 @@ msgstr ""
 msgid "An error occurred during authentication."
 msgstr ""
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

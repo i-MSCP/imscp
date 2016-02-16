@@ -970,7 +970,7 @@ msgstr "Bir giriş iki kere tanımlanmış."
 msgid "An error occurred during authentication."
 msgstr "Doğrulama sırasında hata oluştu."
 
-msgid "An hosting plan with same name already exists."
+msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"
