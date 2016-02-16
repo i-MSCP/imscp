@@ -1,8 +1,8 @@
 #include "daemon_init.h"
 
-void daemonInit(const char *pname, int facility)
+void daemonInit(char *pidfile)
 {
-	pid_t pid = 0;
+	pid_t pid;
 
 	/* create child process */
 	pid = fork();
@@ -34,5 +34,14 @@ void daemonInit(const char *pname, int facility)
 	close(STDERR_FILENO);
 
 	/* open log */
-	openlog(pname, LOG_PID, facility);
+	openlog(message(MSG_DAEMON_NAME), LOG_PID, SYSLOG_FACILITY);
+
+	/* Create pidfile if needed */
+	if(pidfile != NULL) {
+		FILE *file = fopen(pidfile, "w");
+		fprintf(file, "%ld", (long)getpid());
+		fclose(file);
+	}
+
+	say("%s", message(MSG_DAEMON_STARTED));
 }

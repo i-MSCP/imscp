@@ -18,27 +18,28 @@ void takeConnection(int sockfd)
 			if (receiveLine(sockfd, buffer, MAX_MSG_SIZE - 1) <= 0) {
 				free(buffer);
 				break;
-			} else {
-				status = lrCommand(sockfd, buffer);
+			}
 
-				/* if something went wrong break */
-				if (status <= -1) {
-					break;
-				/* if it went ok continue */
-				} else if (status == 0) {
-					continue;
-				/* else: nothing happened, this command wasn't requested */
-				} else {
-					status = byeCommand(sockfd, buffer);
+			status = lrCommand(sockfd, buffer);
 
-					if (status <= 0 || sendLine(sockfd, message(MSG_BAD_SYNTAX), strlen(message(MSG_BAD_SYNTAX))) < 0) {
-						break;
-					}
-				}
+			/* if something went wrong break */
+			if (status <= -1) {
+				break;
+
+			}
+
+			/* if it went ok continue */
+			if (status == 0) {
+				continue;
+			}
+
+			/* nothing happened, this command wasn't requested */
+			status = byeCommand(sockfd, buffer);
+
+			if (status <= 0 || sendLine(sockfd, message(MSG_BAD_SYNTAX), strlen(message(MSG_BAD_SYNTAX))) < 0) {
+				break;
 			}
 		}
-
-		/*sleep(1);*/
 	}
 
 	free(welcome_msg);

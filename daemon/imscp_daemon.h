@@ -21,7 +21,7 @@
 struct timeval *tv_rcv;
 struct timeval *tv_snd;
 
-extern void daemonInit(const char *pname, int facility);
+extern void daemonInit(char *pidfile);
 extern char *message(int message_number);
 extern void say(char *format, char *message);
 extern void sigChild (int signo);

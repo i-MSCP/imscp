@@ -2,38 +2,25 @@
 
 int main(int argc, char *argv[])
 {
-	int listenfd, connfd, c, need_pidfile;
-	char *pidfile_path;
+	int listenfd, connfd, option;
+	char *pidfile = NULL;
 	struct sockaddr_in servaddr, cliaddr;
 	struct timeval timeout_rcv, timeout_snd;
 
 	pid_t childpid;
 	socklen_t clilen;
 
-	need_pidfile = 0;
-	pidfile_path = (char)'\0';
-
 	/* Parse command line options */
-	while ((c = getopt(argc, argv, "p:")) != EOF) {
-		switch(c) {
+	while ((option = getopt(argc, argv, "p:")) != EOF) {
+		switch(option) {
 			case 'p':
-				pidfile_path = optarg;
-				need_pidfile = 1;
+				pidfile = optarg;
 				break;
 		}
 	}
 
 	/* Daemonize */
-	daemonInit(message(MSG_DAEMON_NAME), SYSLOG_FACILITY);
-
-	/* Create pidfile if needed */
-	if(need_pidfile) {
-		FILE *file = fopen(pidfile_path, "w");
-		fprintf(file, "%ld", (long)getpid());
-		fclose(file);
-	}
-
-	say("%s", message(MSG_DAEMON_STARTED));
+	daemonInit(pidfile);
 
 	/* Creates an endpoint for communication */
 	if((listenfd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0) {
@@ -78,32 +65,25 @@ int main(int argc, char *argv[])
 		if ((connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen)) < 0) {
 			if (errno == EINTR) {
 				continue;
-			} else {
-				say(message(MSG_ERROR_ACCEPT), strerror(errno));
-				exit(errno);
 			}
+
+			say(message(MSG_ERROR_ACCEPT), strerror(errno));
+			exit(errno);
 		}
 
 		setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout_rcv, sizeof(timeout_rcv));
 		setsockopt(connfd, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout_snd, sizeof(timeout_snd));
 
-		if ( ( childpid = fork() ) == 0) {
+		if ((childpid = fork()) == 0) {
 			char *nmb = calloc(50, sizeof(char));
 
 			close(listenfd);
-
 			childpid = getpid();
-
 			sprintf(nmb, "%d", childpid);
-
 			say(message(MSG_START_CHILD), nmb);
-
 			takeConnection(connfd);
-
 			say(message(MSG_END_CHILD), nmb);
-
 			free(nmb);
-
 			exit(0);
 		}
 
@@ -111,6 +91,5 @@ int main(int argc, char *argv[])
 	}
 
 	closelog();
-
 	return 0;
 }
