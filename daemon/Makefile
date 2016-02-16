@@ -2,7 +2,7 @@
 
 # i-MSCP - internet Multi Server Control Panel
 #
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel - http://i-mscp.net
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel - http://i-mscp.net
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 # internet Multi Server Control Panel. All Rights Reserved.
 #
 # @category		i-MSCP
-# @copyright	2010-2015 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2016 by i-MSCP | http://i-mscp.net
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 

@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -372,15 +372,15 @@ function calculate_reseller_dvals(&$to, $toMax, &$from, $fromMax, $uMax, &$error
 			$errorsStack = '';
 		}
 
-		$errorsStack .= tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />', $uName, $obj);
-		$errorsStack .= tr('You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits for the <b>%2$s</b> service.', $uName, $obj);
+		$errorsStack .= tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>', $uName, $obj);
+		$errorsStack .= tr('You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service.', $uName, $obj);
 		return;
 	} else if ($toMax > 0 && $fromMax == 0 && $uMax > 0) {
 		if ($to + $uMax > $toMax) {
 			if ($errorsStack == '_off_') {
 				$errorsStack = '';
 			}
-			$errorsStack .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in destination reseller.<br />', $uName, $obj);
+			$errorsStack .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller.<br>', $uName, $obj);
 
 			$errorsStack .= tr('Moving aborted.');
 		} else {
@@ -401,7 +401,7 @@ function calculate_reseller_dvals(&$to, $toMax, &$from, $fromMax, $uMax, &$error
 				$errorsStack = '';
 			}
 
-			$errorsStack .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in destination reseller.<br />', $uName, $obj);
+			$errorsStack .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller.<br>', $uName, $obj);
 			$errorsStack .= tr('Moving aborted.');
 		} else {
 			$from -= $uMax;
@@ -434,7 +434,7 @@ function check_ip_sets($to, $customersList, &$errorsStack)
 				$errorsStack = '';
 			}
 
-			$errorsStack .= tr('<b>%s</b> has IP address that cannot be managed from the destination reseller!<br />This user cannot be moved!', $domainName);
+			$errorsStack .= tr('<b>%s</b> has IP address that cannot be managed from the destination reseller!<br>This user cannot be moved!', $domainName);
 			return false;
 		}
 	}

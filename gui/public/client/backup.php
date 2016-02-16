@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -89,7 +89,7 @@ $tpl->assign(
 		'TR_FTP_LOG_ON' => tr('Login with your FTP account'),
 		'TR_SWITCH_TO_BACKUP' => tr('Switch to the backups directory'),
 		'TR_DOWNLOAD_FILE' => tr('Download the archives stored in this directory'),
-		'TR_USUALY_NAMED' => tr('(usually named') . ' ' . tohtml($name) . ')',
+		'TR_USUALY_NAMED' => tr('(usually named)') . ' ' . tohtml($name) . ')',
 		'TR_RESTORE_BACKUP' => tr('Restore backup'),
 		'TR_RESTORE_DIRECTIONS' => tr('Click the Restore button and the system will restore the last daily backup'),
 		'TR_RESTORE' => tr('Restore'),

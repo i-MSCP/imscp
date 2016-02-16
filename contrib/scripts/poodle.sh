@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#  Copyright (C) 2014 by Red Hat
+#  Copyright (C) 2016 by Red Hat
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by

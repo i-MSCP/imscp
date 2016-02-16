@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2016 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -178,7 +178,7 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 					$isMailbox = 1;
 				}
 
-				$mailType .= '<br />';
+				$mailType .= '<br>';
 			}
 
 			if ($isMailbox && $row['status'] == 'ok') {

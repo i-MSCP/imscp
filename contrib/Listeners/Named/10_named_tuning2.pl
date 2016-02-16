@@ -1,5 +1,5 @@
 # i-MSCP Listener::Named::Tuning2 listener file
-# Copyright (C) 2015-2016 Arthur Mayer <mayer.arthur@gmail.com>
+# Copyright (C) 2016-2016 Arthur Mayer <mayer.arthur@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public

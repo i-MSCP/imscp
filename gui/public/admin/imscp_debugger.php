@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -599,7 +599,7 @@ if (isset($_GET['action'])) {
 				set_page_message(tr('Daemon request failed.'), 'error');
 			}
 		} else {
-			set_page_message(tr('Nothing to do. Daemon request has been canceled.'), 'warning');
+			set_page_message(tr('Nothing to do. Daemon request has been cancelled.'), 'warning');
 		}
 		redirectTo('imscp_debugger.php');
 	} elseif ($_GET['action'] == 'change' && (isset($_GET['id']) && isset($_GET['type']))) {
@@ -657,7 +657,7 @@ if (isset($_GET['action'])) {
 		} else {
 			/** @var $db iMSCP_Database */
 			$db = iMSCP_Registry::get('db');
-			set_page_message(tr('Unknown Error') . '<br />' . $db->errorMsg(), 'error');
+			set_page_message(tr('Unknown Error') . '<br>' . $db->errorMsg(), 'error');
 		}
 
 		redirectTo('imscp_debugger.php');

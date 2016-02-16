@@ -5,7 +5,7 @@ autoinstaller::Adapter::AbstractAdapter - Abstract class for autoinstaller distr
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2015 by internet Multi Server Control Panel
+# Copyright 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@ autoinstaller::Adapter::AbstractAdapter - Abstract class for autoinstaller distr
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category    i-MSCP
-# @copyright   2010-2015 by i-MSCP | http://i-mscp.net
+# @copyright   2010-2016 by i-MSCP | http://i-mscp.net
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2

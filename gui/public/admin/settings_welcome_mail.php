@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -52,7 +52,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 	$message = '';
 
 	if (empty($data['subject'])) {
-		$message .= tr('Please specify a message subject.') . '<br />';
+		$message .= tr('Please specify a message subject.') . '<br>';
 	}
 
 	if (empty($data['message'])) {

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP team
+ * Copyright (C) 2010-2016 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -183,7 +183,7 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
 
 	$subject = tr('{ADMIN} activated your software package');
 	$message = tr('Dear {RESELLER},
-	Your uploaded a software package was succesful activated by {ADMIN}.
+	Your uploaded a software package was successful activated by {ADMIN}.
 
 	Details:
 	Package Name: {SOFTWARE}
@@ -401,7 +401,7 @@ function get_avail_softwaredepot($tpl)
 							'LINK_COLOR' => '#FF0000',
 							'TR_VERSION' => '',
 							'TR_LANGUAGE' => '',
-							'TR_TOOLTIP' => tr('The package will be installed automaticly to your system after upload.<br />Refresh your site to see the new status!'),
+							'TR_TOOLTIP' => tr('The package will be installed automatically to your system after upload.<br>Refresh your site to see the new status!'),
 							'TR_DOWNLOAD' => '',
 							'DOWNLOAD_LINK' => '',
 							'DELETE_LINK' => $del_url,
@@ -422,7 +422,7 @@ function get_avail_softwaredepot($tpl)
 										  'TR_VERSION' => '',
 										  'TR_LANGUAGE' => '',
 										  'TR_TOOLTIP' => tr(
-											  'There is an Error inside your package. Please check it!<br />Refresh your site to see the new status!'
+											  'There is an Error inside your package. Please check it!<br>Refresh your site to see the new status!'
 										  ),
 										  'TR_DOWNLOAD' => '',
 										  'DOWNLOAD_LINK' => '',
@@ -443,7 +443,7 @@ function get_avail_softwaredepot($tpl)
 										  'TR_VERSION' => '',
 										  'TR_LANGUAGE' => '',
 										  'TR_TOOLTIP' => tr(
-											  'Check your software depot uploads!<br />It is not allowed to upload this package two times.<br />Refresh your site to see the new status!'
+											  'Check your software depot uploads!<br>It is not allowed to upload this package two times.<br>Refresh your site to see the new status!'
 										  ),
 										  'TR_DOWNLOAD' => '',
 										  'DOWNLOAD_LINK' => '',
@@ -464,7 +464,7 @@ function get_avail_softwaredepot($tpl)
 										  'TR_VERSION' => '',
 										  'TR_LANGUAGE' => '',
 										  'TR_TOOLTIP' => tr(
-											  'Check the reseller uploads!<br />It is not allowed to upload this package two times.<br />Refresh your site to see the new status!'
+											  'Check the reseller uploads!<br>It is not allowed to upload this package two times.<br>Refresh your site to see the new status!'
 										  ),
 										  'TR_DOWNLOAD' => '',
 										  'DOWNLOAD_LINK' => '',
@@ -1147,7 +1147,7 @@ function get_avail_software_reseller($tpl, $user_id)
 										  'LINK_COLOR' => '#FF0000',
 										  'SW_VERSION' => '',
 										  'SW_LANGUAGE' => '',
-										  'SW_DESCRIPTION' => tr('After your upload the package it will be installed on your systems.<br />Refresh your site to see the new status!'),
+										  'SW_DESCRIPTION' => tr('After your upload the package it will be installed on your systems.<br>Refresh your site to see the new status!'),
 										  'SW_TYPE' => '',
 										  'DELETE' => $url,
 										  'TR_DELETE' => tr('Delete'),
@@ -1160,7 +1160,7 @@ function get_avail_software_reseller($tpl, $user_id)
 											  'LINK_COLOR' => '#FF0000',
 											  'SW_VERSION' => '',
 											  'SW_LANGUAGE' => '',
-											  'SW_DESCRIPTION' => tr('Check your package. There is an error inside!<br />Refresh your site to see the new status!'),
+											  'SW_DESCRIPTION' => tr('Check your package. There is an error inside!<br>Refresh your site to see the new status!'),
 											  'SW_TYPE' => '',
 											  'DELETE' => '',
 											  'TR_DELETE' => '',
@@ -1174,7 +1174,7 @@ function get_avail_software_reseller($tpl, $user_id)
 											  'LINK_COLOR' => '#FF0000',
 											  'SW_VERSION' => '',
 											  'SW_LANGUAGE' => '',
-											  'SW_DESCRIPTION' => tr('Please contact the administrator!<br />Ask him for the permissions to use this package.<br />It is not allowed to upload this packet two times.<br />Refresh your site to see the new status!'),
+											  'SW_DESCRIPTION' => tr('Please contact the administrator!<br>Ask him for the permissions to use this package.<br>It is not allowed to upload this packet two times.<br>Refresh your site to see the new status!'),
 											  'SW_TYPE' => '',
 											  'DELETE' => '',
 											  'TR_DELETE' => '',
@@ -1187,7 +1187,7 @@ function get_avail_software_reseller($tpl, $user_id)
 											  'LINK_COLOR' => '#FF0000',
 											  'SW_VERSION' => '',
 											  'SW_LANGUAGE' => '',
-											  'SW_DESCRIPTION' => tr('Check your own uploads!<br />Ask the administrator if you don\'t find the package.<br />It is not allowed to upload this packages two times.<br />Refresh your site to see the new status!'),
+											  'SW_DESCRIPTION' => tr('Check your own uploads!<br>Ask the administrator if you don\'t find the package.<br>It is not allowed to upload this packages two times.<br>Refresh your site to see the new status!'),
 											  'SW_TYPE' => '',
 											  'DELETE' => '',
 											  'TR_DELETE' => '',
@@ -1369,7 +1369,7 @@ function gen_software_list($tpl, $domainId, $resellerId)
 
 			$tpl->assign(
 				array(
-					'SOFTWARE_DEL_RES_MESSAGE' => tr('This Package (%s, V%s) was deleted by your reseller. You can only uninstall this package!<br />Please delete the files and database for this package manually!', $software_name, $software_version),
+					'SOFTWARE_DEL_RES_MESSAGE' => tr('This Package (%s, V%s) was deleted by your reseller. You can only uninstall this package!<br>Please delete the files and database for this package manually!', $software_name, $software_version),
 					'DEL_SOFTWARE_STATUS' => $delsoftware_status,
 					'DEL_SOFTWARE_ACTION_SCRIPT' => $del_software_action_script
 				)

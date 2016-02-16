@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -199,7 +199,7 @@ function admin_addUpdateServices($mode = 'add')
 	if(!empty($errorFieldsIds)) {
 		toSession($mode);
 	} elseif($mode == 'add') {
-		set_page_message(tr('Service port successfully addeds'), 'success');
+		set_page_message(tr('Service port successfully added'), 'success');
 	} else {
 		$updateCount = $dbConfig->countQueries('update');
 

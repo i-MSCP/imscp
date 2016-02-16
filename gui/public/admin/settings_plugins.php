@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -111,7 +111,7 @@ function uploadPlugin($pluginManager)
 										);
 									}
 								} else {
-									throw new iMSCPException(tr('Unable to get stats for file %s.', "$pluginName.php"));
+									throw new iMSCPException(tr('Unable to get statistics for file %s.', "$pluginName.php"));
 								}
 							} else {
 								throw new iMSCPException(tr('File %s is missing in plugin archive.', "$pluginName.php"));

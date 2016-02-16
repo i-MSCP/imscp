@@ -15,7 +15,7 @@
  * The Original Code is "i-MSCP - Multi Server Control panel".
  *
  * The Initial Developer of the Original Code is i-MSCP Team.
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * internet Multi Server Control Panel. All Rights Reserved.
  */
 

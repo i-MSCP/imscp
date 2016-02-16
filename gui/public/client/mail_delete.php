@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2016 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -123,7 +123,7 @@ if (customerHasFeature('mail') && isset($_REQUEST['id'])) {
 			);
 
 			if ($code == 403) {
-				set_page_message(tr('Operation canceled: %s', $errorMessage), 'warning');
+				set_page_message(tr('Operation cancelled: %s', $errorMessage), 'warning');
 			} elseif ($e->getCode() == 400) {
 				showBadRequestErrorPage();
 			} else {
