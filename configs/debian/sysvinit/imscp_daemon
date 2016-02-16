@@ -13,7 +13,7 @@ DESC="i-MSCP communication daemon"
 NAME=imscp_daemon
 DAEMON=/var/www/imscp/daemon/$NAME
 PIDFILE=/var/run/$NAME.pid
-DAEMON_ARGS="-p /var/run/$NAME.pid"
+DAEMON_ARGS="-b /var/www/imscp/engine/imscp-rqst-mngr -p /var/run/$NAME.pid"
 SCRIPTNAME=/etc/init.d/$NAME
 
 # Exit if the package is not installed

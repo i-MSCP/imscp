@@ -1,6 +1,6 @@
 #include "imscp_daemon.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
 	int listenfd, connfd, option;
 	char *pidfile = NULL;
@@ -11,12 +11,20 @@ int main(int argc, char *argv[])
 	socklen_t clilen;
 
 	/* Parse command line options */
-	while ((option = getopt(argc, argv, "p:")) != EOF) {
+	while ((option = getopt(argc, argv, "b:p:")) != -1) {
 		switch(option) {
+			case 'b':
+				backendscriptpath = optarg;
+			break;
 			case 'p':
 				pidfile = optarg;
-				break;
+			break;
 		}
+	}
+
+	if(backendscriptpath == NULL) {
+		fprintf(stderr, "Missing i-MSCP backend script path option\n");
+		return 1;
 	}
 
 	/* Daemonize */

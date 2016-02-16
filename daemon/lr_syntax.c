@@ -2,6 +2,8 @@
 
 int lrSyntax(int fd, char *buffer)
 {
+	char *backendscriptbasename;
+	char *backendscriptpathdup;
 	char *ptr = strstr(buffer, message(MSG_EQ_CMD));
 	char *lr_answer;
 
@@ -11,13 +13,10 @@ int lrSyntax(int fd, char *buffer)
 
 	if (fork() == 0) {
 		close(fd);
-
-		#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
-		execl("/var/www/imscp/engine/imscp-rqst-mngr", "imscp-rqst-mngr", (char*)NULL);
-		#else
-		execl("/usr/local/www/imscp/engine/imscp-rqst-mngr", "imscp-rqst-mngr", (char*)NULL);
-		#endif
-
+		backendscriptpathdup = strdup(backendscriptpath);
+		backendscriptbasename = basename(backendscriptpathdup);
+		execl(backendscriptpath, backendscriptbasename, (char*)NULL);
+		free(backendscriptpathdup);
 		exit(0);
 	}
 

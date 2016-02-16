@@ -18,6 +18,8 @@
 
 #include "defs.h"
 
+char *backendscriptpath = NULL;
+
 struct timeval *tv_rcv;
 struct timeval *tv_snd;
 
