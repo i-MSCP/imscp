@@ -599,7 +599,7 @@ if (isset($_GET['action'])) {
 				set_page_message(tr('Daemon request failed.'), 'error');
 			}
 		} else {
-			set_page_message(tr('Nothing to do. Daemon request has been canceled.'), 'warning');
+			set_page_message(tr('Nothing to do. Daemon request has been cancelled.'), 'warning');
 		}
 		redirectTo('imscp_debugger.php');
 	} elseif ($_GET['action'] == 'change' && (isset($_GET['id']) && isset($_GET['type']))) {

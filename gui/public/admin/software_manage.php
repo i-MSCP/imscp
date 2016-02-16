@@ -208,7 +208,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					$show_max_remote_filesize = bytesHuman($cfg->APS_MAX_REMOTE_FILESIZE);
 					set_page_message(
 						tr(
-							'The remote filesize (%s) is lower than 1 Byte. Please check the URL.',
+							'The remote filesize (%s) is lower than 1 byte. Please check the URL.',
 							$show_remote_file_size
 						),
 						'error'

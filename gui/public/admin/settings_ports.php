@@ -199,7 +199,7 @@ function admin_addUpdateServices($mode = 'add')
 	if(!empty($errorFieldsIds)) {
 		toSession($mode);
 	} elseif($mode == 'add') {
-		set_page_message(tr('Service port successfully addeds'), 'success');
+		set_page_message(tr('Service port successfully added'), 'success');
 	} else {
 		$updateCount = $dbConfig->countQueries('update');
 

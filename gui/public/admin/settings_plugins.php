@@ -111,7 +111,7 @@ function uploadPlugin($pluginManager)
 										);
 									}
 								} else {
-									throw new iMSCPException(tr('Unable to get stats for file %s.', "$pluginName.php"));
+									throw new iMSCPException(tr('Unable to get statistics for file %s.', "$pluginName.php"));
 								}
 							} else {
 								throw new iMSCPException(tr('File %s is missing in plugin archive.', "$pluginName.php"));
