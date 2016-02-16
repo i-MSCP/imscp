@@ -301,7 +301,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
         $tpl->assign('SUBDOMAIN_LIMIT_BLOCK', '');
     } else {
         $tpl->assign(array(
-            'TR_SUBDOMAINS_LIMIT' => tr('Subdomain limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+            'TR_SUBDOMAINS_LIMIT' => tr('Subdomain limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
             'SUBDOMAIN_LIMIT' => tohtml($data['domain_subd_limit']),
             'TR_CUSTOMER_SUBDOMAINS_COMSUPTION' => $data['fallback_domain_subd_limit'] != -1 ? tohtml($data['nbSubdomains']) . ' / ' . ($data['fallback_domain_subd_limit'] != 0 ? tohtml($data['fallback_domain_subd_limit']) : tr('Unlimited')) : tr('Disabled'),
             'TR_RESELLER_SUBDOMAINS_COMSUPTION' => tohtml($data['current_sub_cnt']) . ' / ' . ($data['max_sub_cnt'] != 0 ? tohtml($data['max_sub_cnt']) : tr('Unlimited'))
@@ -343,7 +343,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
         $tpl->assign('FTP_ACCOUNTS_LIMIT_BLOCK', '');
     } else {
         $tpl->assign(array(
-            'TR_FTP_ACCOUNTS_LIMIT' => tr('FTP account limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+            'TR_FTP_ACCOUNTS_LIMIT' => tr('FTP account limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
             'FTP_ACCOUNTS_LIMIT' => tohtml($data['domain_ftpacc_limit']),
             'TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION' => $data['fallback_domain_ftpacc_limit'] != -1 ? tohtml($data['nbFtpAccounts']) . ' / ' . ($data['fallback_domain_ftpacc_limit'] != 0 ? tohtml($data['fallback_domain_ftpacc_limit']) : tr('Unlimited')) : tr('Disabled'),
             'TR_RESELLER_FTP_ACCOUNTS_COMSUPTION' => tohtml($data['current_ftp_cnt']) . ' / ' . ($data['max_ftp_cnt'] != 0 ? tohtml($data['max_ftp_cnt']) : tr('Unlimited'))
@@ -355,11 +355,11 @@ function _reseller_generateLimitsForm($tpl, &$data)
         $tpl->assign('SQL_DB_AND_USERS_LIMIT_BLOCK', '');
     } else {
         $tpl->assign(array(
-            'TR_SQL_DATABASES_LIMIT' => tr('SQL database limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+            'TR_SQL_DATABASES_LIMIT' => tr('SQL database limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
             'SQL_DATABASES_LIMIT' => tohtml($data['domain_sqld_limit']),
             'TR_CUSTOMER_SQL_DATABASES_COMSUPTION' => $data['fallback_domain_sqld_limit'] != -1 ? tohtml($data['nbSqlDatabases']) . ' / ' . ($data['fallback_domain_sqld_limit'] != 0 ? tohtml($data['fallback_domain_sqld_limit']) : tr('Unlimited')) : tr('Disabled'),
             'TR_RESELLER_SQL_DATABASES_COMSUPTION' => tohtml($data['current_sql_db_cnt']) . ' / ' . ($data['max_sql_db_cnt'] != 0 ? tohtml($data['max_sql_db_cnt']) : tr('Unlimited')),
-            'TR_SQL_USERS_LIMIT' => tr('SQL user limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+            'TR_SQL_USERS_LIMIT' => tr('SQL user limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
             'SQL_USERS_LIMIT' => tohtml($data['domain_sqlu_limit']),
             'TR_CUSTOMER_SQL_USERS_COMSUPTION' => $data['fallback_domain_sqlu_limit'] != -1 ? tohtml($data['nbSqlUsers']) . ' / ' . ($data['fallback_domain_sqlu_limit'] != 0 ? tohtml($data['fallback_domain_sqlu_limit']) : tr('Unlimited')) : tr('Disabled'),
             'TR_RESELLER_SQL_USERS_COMSUPTION' => tohtml($data['current_sql_user_cnt']) . ' / ' . ($data['max_sql_user_cnt'] != 0 ? tohtml($data['max_sql_user_cnt']) : tr('Unlimited'))

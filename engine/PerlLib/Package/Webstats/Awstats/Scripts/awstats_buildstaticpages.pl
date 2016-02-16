@@ -98,7 +98,7 @@ sub warning {
 #	if ($WarningMessages) {
 #    	if ($HTMLOutput) {
 #    		$messagestring =~ s/\n/\<br \/\>/g;
-#    		print "$messagestring<br />\n";
+#    		print "$messagestring<br>\n";
 #    	}
 #    	else {
 	    	print STDERR "$messagestring\n";
@@ -117,7 +117,7 @@ sub debug {
 	my $level = $_[1] || 1;
 	if ($Debug >= $level) {
 		my $debugstring = $_[0];
-		if ($ENV{"GATEWAY_INTERFACE"}) { $debugstring =~ s/^ /&nbsp&nbsp /; $debugstring .= "<br />"; }
+		if ($ENV{"GATEWAY_INTERFACE"}) { $debugstring =~ s/^ /&nbsp&nbsp /; $debugstring .= "<br>"; }
 		print localtime(time)." - DEBUG $level - $debugstring\n";
 	}
 }

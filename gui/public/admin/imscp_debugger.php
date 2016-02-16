@@ -657,7 +657,7 @@ if (isset($_GET['action'])) {
 		} else {
 			/** @var $db iMSCP_Database */
 			$db = iMSCP_Registry::get('db');
-			set_page_message(tr('Unknown Error') . '<br />' . $db->errorMsg(), 'error');
+			set_page_message(tr('Unknown Error') . '<br>' . $db->errorMsg(), 'error');
 		}
 
 		redirectTo('imscp_debugger.php');
