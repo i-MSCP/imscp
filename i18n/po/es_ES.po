@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-02-16 23:32+0100\n"
+"PO-Revision-Date: 2016-02-16 22:33+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -519,6 +519,9 @@ msgstr "Una extensión de PHP detuvo la carga de archivos."
 msgid "A database update is available"
 msgstr "Una actualización de la base de datos está disponible"
 
+msgid "A hosting plan with same name already exists."
+msgstr "Ya existe un plan de hosting con el mismo nombre."
+
 msgid "A new i-MSCP version is available"
 msgstr "Una nueva versión de i-MSCP está disponible"
 
@@ -971,9 +974,6 @@ msgstr "Una entrada esta definida dos veces."
 
 msgid "An error occurred during authentication."
 msgstr "Se produjo un error durante la autenticación."
-
-msgid "A hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "Ha ocurrido un error inesperado"
@@ -2570,7 +2570,7 @@ msgid "Hosting plan successfully created."
 msgstr "Plan de hosting creado correctamente."
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "El plan de alojamiento ha sido eliminado."
 
 msgid "Hosting plan successfully updated."
 msgstr "Plan de hosting actualizado correctamente."
@@ -4267,7 +4267,7 @@ msgid "SQL user successfully added."
 msgstr "El usuario SQL ha sido añadido correctamente."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "El usuario SQL ha sido eliminado correctamente."
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "No se aceptan los Usuarios SQL con coma(s) en el nombre."
@@ -4608,7 +4608,7 @@ msgid "Subdomain alias errors"
 msgstr "Errores de los alias del subdominio"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Alias de subdominio programado para su eliminación."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4634,7 +4634,7 @@ msgid "Subdomain name is not valid."
 msgstr "El nombre del Subdominio no es válido."
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Subdominio programado para su eliminación."
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Subdominio programado correctamente para ser añadido."

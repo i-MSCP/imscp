@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-02-16 23:32+0100\n"
+"PO-Revision-Date: 2016-02-16 22:33+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/i-mscp/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -517,6 +517,9 @@ msgstr "Расширение PHP остановило загрузку файл�
 msgid "A database update is available"
 msgstr ""
 
+msgid "A hosting plan with same name already exists."
+msgstr ""
+
 msgid "A new i-MSCP version is available"
 msgstr ""
 
@@ -968,9 +971,6 @@ msgid "An entry is defined twice."
 msgstr ""
 
 msgid "An error occurred during authentication."
-msgstr ""
-
-msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"
@@ -2568,7 +2568,7 @@ msgid "Hosting plan successfully created."
 msgstr ""
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Хостинг-план успешно удален."
 
 msgid "Hosting plan successfully updated."
 msgstr ""
@@ -4265,7 +4265,7 @@ msgid "SQL user successfully added."
 msgstr "Пользователь SQL успешно добавлен."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "Пользователь SQL успешно удален."
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr ""
@@ -4606,7 +4606,7 @@ msgid "Subdomain alias errors"
 msgstr ""
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Алиас поддомена помечен для удаления."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4632,7 +4632,7 @@ msgid "Subdomain name is not valid."
 msgstr ""
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Поддомен помечен для удаления."
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Поддомен успешно помечен для добавления."

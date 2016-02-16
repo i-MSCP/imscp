@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ádám Radovits <adamradovits12@hotmail.com>, 2014-2015
+# Ádám Radovits <adamradovits12@hotmail.com>, 2014-2016
 # i-MSCP <team@i-mscp.net>, 2015
 # knorbi555 <k.norbi555@gmail.com>, 2012
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-02-16 23:32+0100\n"
+"PO-Revision-Date: 2016-02-16 22:33+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,7 @@ msgstr "{ADMIN} törölte!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s alacsonyabbnak kell lennie, mint %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -517,6 +517,9 @@ msgstr "PHP kiterjesztés megállította a fájlfeltöltést"
 msgid "A database update is available"
 msgstr "Adatbázis frissítés érhető el"
 
+msgid "A hosting plan with same name already exists."
+msgstr "Hasonló nevű tárhelycsomag már létezik."
+
 msgid "A new i-MSCP version is available"
 msgstr "Új i-MSCP verzió érhető el"
 
@@ -894,7 +897,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr "Minden lezárt hibajegy sikeresen törölve"
 
 msgid "All errors (Development)"
-msgstr ""
+msgstr "Minden hiba (fejlesztés)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
 msgstr ""
@@ -969,9 +972,6 @@ msgstr "Ilyen már létezik egyszer."
 
 msgid "An error occurred during authentication."
 msgstr "Hiba történt a hitelesítés közben."
-
-msgid "A hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "Váratlan hiba történt"
@@ -2568,7 +2568,7 @@ msgid "Hosting plan successfully created."
 msgstr "Tárhely csomag sikeresen létrejött"
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Tárhely csomag sikeresen törölve"
 
 msgid "Hosting plan successfully updated."
 msgstr "Tárhely csomag sikeresen frissítve"
@@ -2821,7 +2821,7 @@ msgid "Invalid SQL user host: %s"
 msgstr "Érvénytelen SQL felhasználói kiszolgáló: %s"
 
 msgid "Invalid SSL certificate."
-msgstr ""
+msgstr "Érvénytelen SSL tanúsítvány"
 
 msgid "Invalid TXT data"
 msgstr "Érvénytelen TXT adat"
@@ -4265,7 +4265,7 @@ msgid "SQL user successfully added."
 msgstr "SQL felhasználó sikeresen hozzáadva"
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "SQL felhasználó sikeresen törölve"
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "A vesszővel jelölt SQL felhasználó neve nem elfogadható."
@@ -4582,7 +4582,7 @@ msgid "Street 2"
 msgstr "Utca 2"
 
 msgid "Strong passwords"
-msgstr ""
+msgstr "Erős jelszavak"
 
 msgid "Subdomain"
 msgstr "Aldomain"
@@ -4597,7 +4597,7 @@ msgstr "%s aldomain nem irányítható magára."
 
 #, php-format
 msgid "Subdomain %s is unavailable."
-msgstr ""
+msgstr "%s aldomain elérhetetlen."
 
 msgid "Subdomain alias"
 msgstr "Aldomain álnevek"
@@ -4606,7 +4606,7 @@ msgid "Subdomain alias errors"
 msgstr "Aldomain álnév hibák"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Domain álnév törlése beütemezve"
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4632,7 +4632,7 @@ msgid "Subdomain name is not valid."
 msgstr "Aldomain neve hibás."
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Aldomain törlésre beütemezve"
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Aldomain létrehozása beütemezve."

@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-02-16 23:32+0100\n"
+"PO-Revision-Date: 2016-02-16 22:33+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -518,6 +518,9 @@ msgstr "Una extensió de PHP ha detingut la càrrega d'arxius."
 msgid "A database update is available"
 msgstr ""
 
+msgid "A hosting plan with same name already exists."
+msgstr "Ja existeix un pla de hosting amb aquest nom."
+
 msgid "A new i-MSCP version is available"
 msgstr ""
 
@@ -970,9 +973,6 @@ msgstr ""
 
 msgid "An error occurred during authentication."
 msgstr "Hi ha hagut un error durant l'autenticació"
-
-msgid "A hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr ""
@@ -2569,7 +2569,7 @@ msgid "Hosting plan successfully created."
 msgstr "Pla d'allotjament creat amb èxit."
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Plà d'hostatge eliminat correctament."
 
 msgid "Hosting plan successfully updated."
 msgstr "El pla d'allotjament s'ha actualitzat correctament."
@@ -4266,7 +4266,7 @@ msgid "SQL user successfully added."
 msgstr "Usuari SQL afegit correctament."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "Usuari SQL esborrat correctament."
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr ""
@@ -4607,7 +4607,7 @@ msgid "Subdomain alias errors"
 msgstr ""
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Àlies de subodmini programat per ésser eliminat."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4633,7 +4633,7 @@ msgid "Subdomain name is not valid."
 msgstr ""
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Subodmini programar per ser eliminat."
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "El subdomini ha estat programat per a ésser afegit."

@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-02-16 23:32+0100\n"
+"PO-Revision-Date: 2016-02-16 22:33+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -519,6 +519,9 @@ msgstr "Una estensione di PHP blocca il caricamento del file."
 msgid "A database update is available"
 msgstr "Un aggiornamento database è disponibile"
 
+msgid "A hosting plan with same name already exists."
+msgstr "Un piano hosting con lo stesso nome già esiste."
+
 msgid "A new i-MSCP version is available"
 msgstr "Una nuova versione di i-MSCP è disponibile "
 
@@ -971,9 +974,6 @@ msgstr "Una voce è stata definita due volte"
 
 msgid "An error occurred during authentication."
 msgstr "Un errore è occorso durante l'autenticazione."
-
-msgid "A hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "Si è verificato un errore inaspettato."
@@ -4267,7 +4267,7 @@ msgid "SQL user successfully added."
 msgstr "Utente SQL aggiunto con successo."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "Utente SQL eliminato con successo."
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "Nomi utenti SQL con la virgola(e) non sono accettati"

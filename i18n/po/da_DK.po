@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-02-16 23:32+0100\n"
+"PO-Revision-Date: 2016-02-16 22:33+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -516,6 +516,9 @@ msgstr "En PHP extension stoppede fil upload."
 msgid "A database update is available"
 msgstr "En database opdatering er tilgængelig"
 
+msgid "A hosting plan with same name already exists."
+msgstr "En hosting plan med samme navn findes allerede."
+
 msgid "A new i-MSCP version is available"
 msgstr "En ny I-MSCP version er tilgængelig"
 
@@ -968,9 +971,6 @@ msgstr "En oplysning er defineret to gange."
 
 msgid "An error occurred during authentication."
 msgstr "Der opstod en fejl i forbindelse med godkendelse."
-
-msgid "A hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "En uventet fejl opstod"
@@ -2567,7 +2567,7 @@ msgid "Hosting plan successfully created."
 msgstr "Hosting plan oprettet."
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Hosting plan slettet."
 
 msgid "Hosting plan successfully updated."
 msgstr "Hosting plan er blevet opdateret."
@@ -4264,7 +4264,7 @@ msgid "SQL user successfully added."
 msgstr "SQL bruger tilføjet."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "SQL bruger blev slettet."
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "SQL bruger med komma(r) i navn accepteres ikke."
@@ -4605,7 +4605,7 @@ msgid "Subdomain alias errors"
 msgstr "Subdomæne alias fejl"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Subdomæne alias planlagt til sletning."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4631,7 +4631,7 @@ msgid "Subdomain name is not valid."
 msgstr "Subdomæne navn er ikke gyldigt."
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Subdomæne planlagt til sletning."
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Subdomæne succesfuldt planlagt til tilføjelse."

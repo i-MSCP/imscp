@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-02-16 23:32+0100\n"
+"PO-Revision-Date: 2016-02-16 22:33+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/i-mscp/i-MSCP/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -512,6 +512,9 @@ msgstr ""
 msgid "A database update is available"
 msgstr ""
 
+msgid "A hosting plan with same name already exists."
+msgstr ""
+
 msgid "A new i-MSCP version is available"
 msgstr ""
 
@@ -963,9 +966,6 @@ msgid "An entry is defined twice."
 msgstr ""
 
 msgid "An error occurred during authentication."
-msgstr ""
-
-msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"

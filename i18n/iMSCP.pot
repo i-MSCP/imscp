@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.2.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
+"POT-Creation-Date: 2016-02-16 23:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -517,6 +517,9 @@ msgstr ""
 msgid "A database update is available"
 msgstr ""
 
+msgid "A hosting plan with same name already exists."
+msgstr ""
+
 msgid "A new i-MSCP version is available"
 msgstr ""
 
@@ -967,9 +970,6 @@ msgid "An entry is defined twice."
 msgstr ""
 
 msgid "An error occurred during authentication."
-msgstr ""
-
-msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "An unexpected error occurred"
