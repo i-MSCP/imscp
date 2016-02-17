@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -78,12 +78,18 @@ sub isEnabled
 	my $jobFileContent = $self->_readJobFile($service);
 
 	if($self->_versionIsPre067()) {
-		$self->_isEnabledPre067($jobFileContent);
-	} elsif($self->_versionIsPre090()) {
-		$self->_isEnabledPre090($jobFileContent);
-	} elsif($self->_versionIsPost090()) {
-		$self->_isEnabledPost090($jobFileContent, $self->_readJobOverrideFile($service));
+		return $self->_isEnabledPre067($jobFileContent);
 	}
+
+	if($self->_versionIsPre090()) {
+		return $self->_isEnabledPre090($jobFileContent);
+	}
+
+	if($self->_versionIsPost090()) {
+		return $self->_isEnabledPost090($jobFileContent, $self->_readJobOverrideFile($service));
+	}
+
+	0;
 }
 
 =item enable($service)
@@ -102,10 +108,10 @@ sub enable
 	my $jobFileContent = $self->_readJobFile($service);
 
 	if($self->_versionIsPre090()) {
-		$self->_enablePre090($service, $jobFileContent);
-	} else {
-		$self->_enablePost090($service, $jobFileContent, $self->_readJobOverrideFile($service));
+		return $self->_enablePre090($service, $jobFileContent);
 	}
+
+	$self->_enablePost090($service, $jobFileContent, $self->_readJobOverrideFile($service));
 }
 
 =item disable($service)
@@ -122,12 +128,18 @@ sub disable
 	my ($self, $service) = @_;
 
 	if($self->_versionIsPre067()) {
-		$self->_disablePre067($service, $self->_readJobFile($service));
-	} elsif($self->_versionIsPre090()) {
-		$self->_disablePre090($service, $self->_readJobFile($service));
-	} elsif($self->_versionIsPost090()) {
-		$self->_disablePost090($service, $self->_readJobOverrideFile($service));
+		return $self->_disablePre067($service, $self->_readJobFile($service));
 	}
+
+	if($self->_versionIsPre090()) {
+		return $self->_disablePre090($service, $self->_readJobFile($service));
+	}
+
+	if($self->_versionIsPost090()) {
+		return $self->_disablePost090($service, $self->_readJobOverrideFile($service));
+	}
+
+	0;
 }
 
 =item remove($service)
@@ -171,13 +183,13 @@ sub start
 
 	if($self->_isUpstart($service)) {
 		unless($self->isRunning($service)) {
-			($self->_exec($commands{'start'}, $service) == 0);
-		} else {
-			1;
+			return $self->_exec($commands{'start'}, $service) == 0;
 		}
-	} else {
-	 	$self->SUPER::start($service);
+
+		return 1;
 	}
+
+	$self->SUPER::start($service);
 }
 
 =item stop($service)
@@ -195,13 +207,13 @@ sub stop
 
 	if($self->_isUpstart($service)) {
 		if($self->isRunning($service)) {
-			($self->_exec($commands{'stop'}, $service) == 0);
-		} else {
-			1;
+			return $self->_exec($commands{'stop'}, $service) == 0;
 		}
-	} else {
-		$self->SUPER::stop($service);
+
+		return 1;
 	}
+
+	$self->SUPER::stop($service);
 }
 
 =item restart($service)
@@ -219,13 +231,13 @@ sub restart
 
 	if($self->_isUpstart($service)) {
 		if($self->isRunning($service)) {
-			($self->_exec($commands{'restart'}, $service) == 0);
-		} else {
-			$self->start($service);
+			return $self->_exec($commands{'restart'}, $service) == 0;
 		}
-	} else {
-		$self->SUPER::restart($service);
+
+		return $self->start($service);
 	}
+
+	$self->SUPER::restart($service);
 }
 
 =item reload($service)
@@ -243,13 +255,14 @@ sub reload
 
 	if($self->_isUpstart($service)) {
 		if($self->isRunning($service)) {
-			($self->_exec($commands{'reload'}, $service) == 0);
-		} else {
-			$self->start($service);
+			return $self->_exec($commands{'reload'}, $service) == 0;
 		}
-	} else {
-		$self->SUPER::reload($service);
+
+		return $self->start($service);
 	}
+
+	$self->SUPER::reload($service);
+
 }
 
 =item isRunning($service)
@@ -257,7 +270,7 @@ sub reload
  Does the given service is running?
 
  Param string $service Service name
- Return bool TRUE on success, FALSE on failure
+ Return bool TRUE if the given service is running, FALSE on failure
 
 =cut
 
@@ -266,12 +279,11 @@ sub isRunning
 	my ($self, $service) = @_;
 
 	if($self->_isUpstart($service)) {
-		my ($stdout, $stderr);
-		execute("$commands{'status'} $service", \$stdout, \$stderr);
-		($stdout =~ m%start/%);
-	} else {
-		$self->SUPER::isRunning($service);
+		execute("$commands{'status'} $service", \ my $stdout, \ my $stderr);
+		return $stdout =~ m%start/%;
 	}
+
+	$self->SUPER::isRunning($service);
 }
 
 =item getJobFilePath($service [ , $jobFileType = 'conf' ])
@@ -289,7 +301,6 @@ sub getJobFilePath
 	my ($self, $service, $jobFileType) = @_;
 
 	$jobFileType ||= 'conf';
-
 	$self->_searchJobFile($service, $jobFileType);
 }
 
@@ -312,7 +323,6 @@ sub _init
 	my $self = shift;
 
 	$paths{$self} = [ '/etc/init' ];
-
 	$self->SUPER::_init();
 }
 
@@ -362,7 +372,7 @@ sub _versionIsPre067
 {
 	my $self = shift;
 
-	(version->parse($self->_getVersion()) < version->parse('0.6.7'));
+	version->parse($self->_getVersion()) < version->parse('0.6.7');
 }
 
 =item _versionIsPre090()
@@ -377,7 +387,7 @@ sub _versionIsPre090
 {
 	my $self = shift;
 
-	(version->parse($self->_getVersion()) < version->parse('0.9.0'));
+	version->parse($self->_getVersion()) < version->parse('0.9.0');
 }
 
 =item _versionIsPost090()
@@ -392,7 +402,7 @@ sub _versionIsPost090
 {
 	my $self = shift;
 
-	(version->parse($self->_getVersion()) >= version->parse('0.9.0'));
+	version->parse($self->_getVersion()) >= version->parse('0.9.0');
 }
 
 =item _isEnabledPre067($jobFileContent)
@@ -409,7 +419,7 @@ sub _isEnabledPre067
 	my ($self, $jobFileContent) = @_;
 
 	# Upstart version < 0.6.7 means no manual stanza.
-	($jobFileContent =~ /$START_ON/);
+	$jobFileContent =~ /$START_ON/;
 }
 
 =item _isEnabledPre090($jobFileContent)
@@ -545,7 +555,6 @@ sub _disablePre067
 	my ($self, $service, $jobFileContent) = @_;
 
 	$jobFileContent = $self->_commentStartOnStanza($jobFileContent);
-
 	$self->_writeFile("$service.conf", $jobFileContent);
 }
 
@@ -798,8 +807,7 @@ sub _readJobFile
 	my ($self, $service) = @_;
 
 	my $filepath = $self->getJobFilePath($service);
-
-	iMSCP::File->new( filename => $filepath )->get() or die(sprintf('Unable to read %s file', $filepath));
+	iMSCP::File->new( filename => $filepath )->get() or die(sprintf('Could not read %s file', $filepath));
 }
 
 =item _readJobOverrideFile($service)
@@ -816,15 +824,15 @@ sub _readJobOverrideFile
 	my ($self, $service) = @_;
 
 	if((my $filepath = eval { $self->getJobFilePath($service, 'override'); })) {
-		iMSCP::File->new( filename => $filepath )->get() or die(sprintf('Unable to read %s file', $filepath));
-	} else {
-		'';
+		return iMSCP::File->new( filename => $filepath )->get() or die(sprintf('Could not read %s file', $filepath));
 	}
+
+	'';
 }
 
 =item _writeFile($filename, $fileContent)
 
- Write the given job file ( job configuration file or job override file )
+ Write the given job file (job configuration file or job override file)
 
  Param string $filename file name
  Param string $fileContent file content
@@ -840,9 +848,9 @@ sub _writeFile
 	my $filepath = File::Spec->join($jobDir, $filename);
 	my $file = iMSCP::File->new( filename => $filepath );
 
-	($file->set($fileContent) == 0 && $file->save() == 0 && $file->mode(0644) == 0) or die(
-		die("Unable to write $filepath file")
-	);
+	$file->set($fileContent) == 0 && $file->save() == 0 && $file->mode(0644) == 0 or die(sprintf(
+		'Could not write %s file', $filepath
+	));
 }
 
 =back

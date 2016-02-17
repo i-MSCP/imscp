@@ -135,7 +135,7 @@ sub start
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($self->getInitscriptPath($service), 'start') == 0);
+	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
 }
 
 =item stop($service)
@@ -151,7 +151,7 @@ sub stop
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($self->getInitscriptPath($service), 'stop') == 0);
+	$self->_exec($self->getInitscriptPath($service), 'stop') == 0;
 }
 
 =item restart($service)
@@ -168,10 +168,10 @@ sub restart
 	my ($self, $service) = @_;
 
 	if($self->isRunning($service)) {
-		($self->_exec($self->getInitscriptPath($service), 'restart') == 0);
-	} else {
-		($self->_exec($self->getInitscriptPath($service), 'start') == 0);
+		return $self->_exec($self->getInitscriptPath($service), 'restart') == 0;
 	}
+
+	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
 }
 
 =item reload($service)
@@ -188,10 +188,10 @@ sub reload
 	my ($self, $service) = @_;
 
 	if($self->isRunning($service)) {
-		($self->_exec($self->getInitscriptPath($service), 'reload') == 0);
-	} else {
-		($self->_exec($self->getInitscriptPath($service), 'start') == 0);
+		return $self->_exec($self->getInitscriptPath($service), 'reload') == 0;
 	}
+
+	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
 }
 
 =item isRunning($service)
@@ -209,7 +209,7 @@ sub isRunning
 
 	# FIXME: Assumption is made that any init script is providing status command which is bad...
 	# TODO: Fallback using processes table output should be implemented
-	($self->_exec($self->getInitscriptPath($service), 'status') == 0);
+	$self->_exec($self->getInitscriptPath($service), 'status') == 0;
 }
 
 =item getInitscriptPath($service)
@@ -300,7 +300,7 @@ sub _exec
 {
 	my ($self, @command) = @_;
 
-	my $ret = execute("@command", \my $stdout, \my $stderr);
+	my $ret = execute("@command", \ my $stdout, \ my $stderr);
 	error($stderr) if $ret && $stderr;
 	$ret;
 }

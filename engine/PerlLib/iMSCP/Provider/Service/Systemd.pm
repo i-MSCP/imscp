@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@ sub isEnabled
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service") == 0);
+	$self->_exec($commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service") == 0;
 }
 
 =item enable($service)
@@ -79,7 +79,7 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	($self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0);
+	$self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0;
 }
 
 =item disable($service)
@@ -95,7 +95,7 @@ sub disable
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0);
+	$self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0;
 }
 
 =item remove($service)
@@ -111,11 +111,8 @@ sub remove
 {
 	my ($self, $service) = @_;
 
-	(
-		$self->stop($service) &&
-		$self->disable($service) &&
-		iMSCP::File->new( filename => $self->getUnitFilePath($service) )->delFile() == 0
-	);
+	$self->stop($service) && $self->disable($service)
+		&& iMSCP::File->new( filename => $self->getUnitFilePath($service) )->delFile() == 0;
 }
 
 =item start($service)
@@ -131,7 +128,7 @@ sub start
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0);
+	$self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
 }
 
 =item stop($service)
@@ -147,7 +144,7 @@ sub stop
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, 'stop', "$service.service") == 0);
+	$self->_exec($commands{'systemctl'}, 'stop', "$service.service") == 0;
 }
 
 =item restart($service)
@@ -163,7 +160,7 @@ sub restart
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, 'restart', "$service.service") == 0);
+	$self->_exec($commands{'systemctl'}, 'restart', "$service.service") == 0;
 }
 
 =item reload($service)
@@ -180,10 +177,10 @@ sub reload
 	my ($self, $service) = @_;
 
 	if($self->isRunning($service)) {
-		($self->_exec($commands{'systemctl'}, 'reload', "$service.service") == 0);
-	} else {
-		$self->start($service);
+		return $self->_exec($commands{'systemctl'}, 'reload', "$service.service") == 0;
 	}
+
+	$self->start($service);
 }
 
 =item isRunning($service)
@@ -199,7 +196,7 @@ sub isRunning
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($commands{'systemctl'}, 'is-active', "$service.service") == 0);
+	$self->_exec($commands{'systemctl'}, 'is-active', "$service.service") == 0;
 }
 
 =item getUnitFilePath($service)
@@ -264,7 +261,7 @@ sub _searchUnitFile
 		return $filepath if -f $filepath;
 	}
 
-	die(sprintf('Could not find systemd system service unit file for the %s service', $service));
+	die(sprintf('Could not find systemd service unit file for the %s service', $service));
 }
 
 =back

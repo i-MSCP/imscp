@@ -922,12 +922,8 @@ sub _savePersistentData
 
 sub _installFiles
 {
-	my $serviceMngr = iMSCP::Service->getInstance();
-
 	# i-MSCP daemon must be stopped before changing any file on the files system
-	if($serviceMngr->isRunning('imscp_daemon')) {
-		$serviceMngr->stop('imscp_daemon');
-	}
+	iMSCP::Service->getInstance()->stop('imscp_daemon');
 
 	# Process cleanup to avoid any security risks and conflicts
 	for(qw/daemon engine gui/) {

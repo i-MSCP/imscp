@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -58,10 +58,10 @@ sub isEnabled
 	my ($self, $service) = @_;
 
 	if($self->_isUpstart($service)) {
-		$self->SUPER::isEnabled($service);
-	} else {
-		$self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled($service);
+		return $self->SUPER::isEnabled($service);
 	}
+
+	$self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled($service);
 }
 
 =item enable($service)
@@ -83,10 +83,10 @@ sub enable
 
 	# Also enable the underlying sysvinit script if any
 	if($self->_isSysvinit($service)) {
-		$self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service);
-	} else {
-		1;
+		return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service);
 	}
+
+	1;
 }
 
 =item disable($service)
@@ -108,10 +108,10 @@ sub disable
 
 	# Also disable the underlying sysvinit script if any
 	if($self->_isSysvinit($service)) {
-		$self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service);
-	} else {
-		1;
+		return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service);
 	}
+
+	1;
 }
 
 =item remove($service)
@@ -133,10 +133,10 @@ sub remove
 
 	# Also remove the underlying sysvinit script if any
 	if($self->_isSysvinit($service)) {
-		$self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service);
-	} else {
-		1;
+		return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service);
 	}
+
+	1;
 }
 
 =back
