@@ -18,7 +18,7 @@
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Layout
- * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2016 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      iMSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
@@ -49,13 +49,13 @@
                 }
             );
         } else {
-            //$(".main_menu a").tooltip({ track: true });
-            $(".body a,.body span,.body input,.dataTables_paginate div").tooltip(
+            $(".main_menu a").tooltip({ track: true });
+            $(".body a, .body span, .body input, .dataTables_paginate div").tooltip(
                 {
                     tooltipClass: "ui-tooltip-notice",
                     track: true,
                     content: function() {
-                        var title = $( this ).attr( "title" ) || "";
+                        var title = $( this ).attr("title") || "";
                         return $(this).attr('title');
                     }
                 }
