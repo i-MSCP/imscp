@@ -75,8 +75,6 @@ sub isEnabled
 {
 	my ($self, $service) = @_;
 
-	return 0 unless $self->_isUpstart($service);
-
 	my $jobFileContent = $self->_readJobFile($service);
 
 	if($self->_versionIsPre067()) {
@@ -107,8 +105,6 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	return 1 unless $self->_isUpstart($service);
-
 	my $jobFileContent = $self->_readJobFile($service);
 
 	if($self->_versionIsPre090()) {
@@ -130,8 +126,6 @@ sub enable
 sub disable
 {
 	my ($self, $service) = @_;
-
-	return 1 unless $self->_isUpstart($service);
 
 	if($self->_versionIsPre067()) {
 		return $self->_disablePre067($service, $self->_readJobFile($service));

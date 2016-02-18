@@ -93,8 +93,6 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	# compat mode is forced here due to https://bugs.launchpad.net/ubuntu/wily/+source/systemd/+bug/1447807
-	# Edit on 20160217: Bug should be fixed.
 	if($SYSTEMCTL_COMPAT_MODE) {
 		if($self->_isSystemd($service)) {
 			return 0 unless $self->SUPER::enable($service);
@@ -102,7 +100,7 @@ sub enable
 
 		# Backward compatibility operations
 		# We must manually enable the underlying sysvinit script if any. This is needed because `systemctl` as provided
-		# in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> disable`. Thus,
+		# in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> enable`. Thus,
 		# the sysvinit script is not enabled. We must also make call of `systemctl daemon-reload` to make systemd aware
 		# of changes.
 		if($self->_isSysvinit($service)) {

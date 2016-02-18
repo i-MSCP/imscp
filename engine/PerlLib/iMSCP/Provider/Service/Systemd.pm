@@ -63,8 +63,6 @@ sub isEnabled
 {
 	my ($self, $service) = @_;
 
-	return 0 unless $self->_isSystemd($service);
-
 	$self->_exec($commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service") == 0;
 }
 
@@ -99,8 +97,6 @@ sub disable
 {
 	my ($self, $service) = @_;
 
-	return 1 unless $self->_isSystemd($service);
-
 	$self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0;
 }
 
@@ -116,8 +112,6 @@ sub disable
 sub remove
 {
 	my ($self, $service) = @_;
-
-	return 1 unless $self->_isSystemd($service);
 
 	$self->stop($service) && $self->disable($service)
 		&& iMSCP::File->new( filename => $self->getUnitFilePath($service) )->delFile() == 0;
@@ -136,8 +130,6 @@ sub start
 {
 	my ($self, $service) = @_;
 
-	return 1 unless $self->_isSystemd($service);
-
 	$self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
 }
 
@@ -154,7 +146,7 @@ sub stop
 {
 	my ($self, $service) = @_;
 
-	return 1 unless $self->_isSystemd($service);
+	return 1 unless $self->isRunning($service);
 
 	$self->_exec($commands{'systemctl'}, 'stop', "$service.service") == 0;
 }
@@ -171,8 +163,6 @@ sub stop
 sub restart
 {
 	my ($self, $service) = @_;
-
-	return 1 unless $self->_isSystemd($service);
 
 	if($self->isRunning($service)) {
 		return $self->_exec($commands{'systemctl'}, 'restart', "$service.service") == 0;
@@ -194,8 +184,6 @@ sub reload
 {
 	my ($self, $service) = @_;
 
-	return 1 unless $self->_isSystemd($service);
-
 	if($self->isRunning($service)) {
 		return $self->_exec($commands{'systemctl'}, 'reload', "$service.service") == 0;
 	}
@@ -215,8 +203,6 @@ sub reload
 sub isRunning
 {
 	my ($self, $service) = @_;
-
-	return 0 unless $self->_isSystemd($service);
 
 	$self->_exec($commands{'systemctl'}, 'is-active', "$service.service") == 0;
 }
