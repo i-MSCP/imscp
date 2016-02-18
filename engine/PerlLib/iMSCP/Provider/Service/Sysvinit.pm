@@ -135,6 +135,8 @@ sub start
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSysvinit($service);
+
 	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
 }
 
@@ -151,6 +153,8 @@ sub stop
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSysvinit($service);
+
 	$self->_exec($self->getInitscriptPath($service), 'stop') == 0;
 }
 
@@ -166,6 +170,8 @@ sub stop
 sub restart
 {
 	my ($self, $service) = @_;
+
+	return 1 unless $self->_isSysvinit($service);
 
 	if($self->isRunning($service)) {
 		return $self->_exec($self->getInitscriptPath($service), 'restart') == 0;
@@ -187,6 +193,8 @@ sub reload
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSysvinit($service);
+
 	if($self->isRunning($service)) {
 		return $self->_exec($self->getInitscriptPath($service), 'reload') == 0;
 	}
@@ -206,6 +214,8 @@ sub reload
 sub isRunning
 {
 	my ($self, $service) = @_;
+
+	return 0 unless $self->_isSysvinit($service);
 
 	# FIXME: Assumption is made that any init script is providing status command which is bad...
 	# TODO: Fallback using processes table output should be implemented
@@ -262,6 +272,23 @@ sub _init
 	}
 
 	$self;
+}
+
+=item _isSysvinit($service)
+
+ Does the given service is managed by a sysvinit script?
+
+ Param string $service Service name
+ Return bool TRUE if the given service is managed by a sysvinit script, FALSE otherwise
+
+=cut
+
+sub _isSysvinit
+{
+	my ($self, $service) = @_;
+
+	local $@;
+	eval { $self->getInitscriptPath($service); };
 }
 
 =item searchInitScript($service)

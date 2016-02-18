@@ -176,23 +176,6 @@ sub _init
 	$self->SUPER::_init();
 }
 
-=item _isSysvinit($service)
-
- Does the given service is managed by a sysvinit script?
-
- Param string $service Service name
- Return bool TRUE if the given service is managed by a sysvinit script, FALSE otherwise
-
-=cut
-
-sub _isSysvinit
-{
-	my ($self, $service) = @_;
-
-	local $@;
-	eval { $self->getInitscriptPath($service); };
-}
-
 =back
 
 =head1 AUTHOR

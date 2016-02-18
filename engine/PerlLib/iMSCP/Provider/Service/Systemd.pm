@@ -243,6 +243,23 @@ sub _init
 	$self->SUPER::_init();
 }
 
+=item _isSystemd($service)
+
+ Does the given service is managed by a native systemd service unit?
+
+ Param string $service Service name
+ Return bool TRUE if the given service is managed by a systemd unit, FALSE otherwise
+
+=cut
+
+sub _isSystemd
+{
+	my ($self, $service) = @_;
+
+	local $@;
+	eval { $self->getUnitFilePath($service); };
+}
+
 =item _searchUnitFile($service)
 
  Search the unit file which belongs to the given service in all available paths
