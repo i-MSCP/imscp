@@ -355,24 +355,29 @@ sub _buildAliasesDb
 {
 	my $self = shift;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeMtaBuildAliases');
+	my $rs = $self->{'eventManager'}->trigger('beforeMtaBuildAliasesDb');
+	return $rs if $rs;
+
+	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'postfix', 'aliases', \my $cfgTpl, {});
+	return $rs if $rs;
+
+	unless(defined $cfgTpl) {
+		$cfgTpl = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} )->get();
+		$cfgTpl = '' unless defined $cfgTpl;
+	}
+
+	$rs = $self->{'eventManager'}->trigger('beforeMtaBuildAliasesDbFile', \$cfgTpl, 'aliases');
+	return $rs if $rs;
+
+	# Add alias for local root user
+	$cfgTpl =~ s/^root:.*\n//gim;
+	$cfgTpl .= "root: $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}\n";
+
+	$rs = $self->{'eventManager'}->trigger('afterMtaBuildAliasesDbFile', \$cfgTpl, 'aliases');
 	return $rs if $rs;
 
 	my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} );
-
-	my $fileContent;
-	if(-f $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'}) {
-		$fileContent = $file->get();
-		unless(defined $fileContent) {
-			error(sprintf('Could not read: %s', $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'}));
-			return 1;
-		}
-
-		$fileContent =~ s/^root:.*\n//gim;
-	}
-
-	$fileContent .= "root: $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}\n";
-	$rs = $file->set($fileContent);
+	$rs = $file->set($cfgTpl);
 	$rs ||= $file->save();
 	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$rs ||= $file->mode(0644);
@@ -384,7 +389,7 @@ sub _buildAliasesDb
 	error("Error while executing newaliases command") if !$stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'eventManager'}->trigger('afterMtaBuildAliases');
+	$self->{'eventManager'}->trigger('afterMtaBuildAliasesDb');
 }
 
 =item _saveConf()
