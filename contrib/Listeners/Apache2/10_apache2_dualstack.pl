@@ -63,7 +63,7 @@ sub addIPs
 	return 0 unless exists $data->{'DOMAIN_NAME'} && $tplName =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/;
 
 	my $sslVhost = defined $1;
-	my $port = defined $1 ? $httpPort : $httpsPort;
+	my $port = defined $1 ? $httpsPort : $httpPort;
 
 	# All vhost IPs
 	my @ipList = @additionalIPs;
