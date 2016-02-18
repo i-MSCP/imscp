@@ -78,7 +78,7 @@ sub enable
 	my ($self, $service) = @_;
 
 	if($self->_isUpstart($service)) {
-		return unless $self->SUPER::enable($service);
+		return 0 unless $self->SUPER::enable($service);
 	}
 
 	# Also enable the underlying sysvinit script if any
@@ -103,7 +103,7 @@ sub disable
 	my ($self, $service) = @_;
 
 	if($self->_isUpstart($service)) {
-		return unless $self->SUPER::disable($service);
+		return 0 unless $self->SUPER::disable($service);
 	}
 
 	# Also disable the underlying sysvinit script if any
@@ -128,7 +128,7 @@ sub remove
 	my ($self, $service) = @_;
 
 	if($self->_isUpstart($service)) {
-		return unless $self->SUPER::remove($service);
+		return 0 unless $self->SUPER::remove($service);
 	}
 
 	# Also remove the underlying sysvinit script if any

@@ -97,7 +97,7 @@ sub enable
 	# Edit on 20160217: Bug should be fixed.
 	if($SYSTEMCTL_COMPAT_MODE) {
 		if($self->_isSystemd($service)) {
-			return unless $self->SUPER::enable($service);
+			return 0 unless $self->SUPER::enable($service);
 		}
 
 		# Backward compatibility operations
@@ -132,7 +132,7 @@ sub disable
 
 	if($SYSTEMCTL_COMPAT_MODE) {
 		if($self->_isSystemd($service)) {
-			return unless $self->SUPER::disable($service);
+			return 0 unless $self->SUPER::disable($service);
 		}
 
 		# Backward compatibility operations
@@ -166,7 +166,7 @@ sub remove
 	my ($self, $service) = @_;
 
 	if($self->_isSystemd($service)) {
-		return unless $self->SUPER::remove($service) && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+		return 0 unless $self->SUPER::remove($service) && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
 	}
 
 	if($self->_isSysvinit($service)) {

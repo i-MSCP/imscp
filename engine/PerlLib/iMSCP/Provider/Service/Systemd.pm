@@ -63,6 +63,8 @@ sub isEnabled
 {
 	my ($self, $service) = @_;
 
+	return 0 unless $self->_isSystemd($service);
+
 	$self->_exec($commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service") == 0;
 }
 
@@ -78,6 +80,8 @@ sub isEnabled
 sub enable
 {
 	my ($self, $service) = @_;
+
+	return 0 unless $self->_isSystemd($service);
 
 	$self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0;
 }
@@ -95,6 +99,8 @@ sub disable
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSystemd($service);
+
 	$self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0;
 }
 
@@ -110,6 +116,8 @@ sub disable
 sub remove
 {
 	my ($self, $service) = @_;
+
+	return 1 unless $self->_isSystemd($service);
 
 	$self->stop($service) && $self->disable($service)
 		&& iMSCP::File->new( filename => $self->getUnitFilePath($service) )->delFile() == 0;
@@ -128,6 +136,8 @@ sub start
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSystemd($service);
+
 	$self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
 }
 
@@ -143,6 +153,8 @@ sub start
 sub stop
 {
 	my ($self, $service) = @_;
+
+	return 1 unless $self->_isSystemd($service);
 
 	$self->_exec($commands{'systemctl'}, 'stop', "$service.service") == 0;
 }
@@ -160,7 +172,13 @@ sub restart
 {
 	my ($self, $service) = @_;
 
-	$self->_exec($commands{'systemctl'}, 'restart', "$service.service") == 0;
+	return 1 unless $self->_isSystemd($service);
+
+	if($self->isRunning($service)) {
+		return $self->_exec($commands{'systemctl'}, 'restart', "$service.service") == 0;
+	}
+
+	$self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
 }
 
 =item reload($service)
@@ -175,6 +193,8 @@ sub restart
 sub reload
 {
 	my ($self, $service) = @_;
+
+	return 1 unless $self->_isSystemd($service);
 
 	if($self->isRunning($service)) {
 		return $self->_exec($commands{'systemctl'}, 'reload', "$service.service") == 0;
@@ -195,6 +215,8 @@ sub reload
 sub isRunning
 {
 	my ($self, $service) = @_;
+
+	return 0 unless $self->_isSystemd($service);
 
 	$self->_exec($commands{'systemctl'}, 'is-active', "$service.service") == 0;
 }
@@ -245,10 +267,10 @@ sub _init
 
 =item _isSystemd($service)
 
- Does the given service is managed by a native systemd service unit?
+ Does the given service is managed by a native systemd service unit file?
 
  Param string $service Service name
- Return bool TRUE if the given service is managed by a systemd unit, FALSE otherwise
+ Return bool TRUE if the given service is managed by a systemd service unit file, FALSE otherwise
 
 =cut
 

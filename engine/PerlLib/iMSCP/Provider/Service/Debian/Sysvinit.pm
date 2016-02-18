@@ -65,6 +65,8 @@ sub isEnabled
 {
 	my ($self, $service) = @_;
 
+	return 0 unless $self->_isSysvinit($service);
+
 	my $ret = $self->_exec($commands{'invoke-rc.d'}, '--quiet', '--query', $service, 'start');
 
 	# 104 is the exit status when you query start an enabled service.
@@ -98,6 +100,8 @@ sub enable
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSysvinit($service);
+
 	if($SYSVRC_COMPAT_MODE) {
 		return $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
 			&& $self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0;
@@ -119,6 +123,8 @@ sub enable
 sub disable
 {
 	my ($self, $service) = @_;
+
+	return 1 unless $self->_isSysvinit($service);
 
 	if($SYSVRC_COMPAT_MODE) {
 		return $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
@@ -142,12 +148,11 @@ sub remove
 {
 	my ($self, $service) = @_;
 
-	if($self->_isSysvinit($service)) {
-		return $self->stop($service) && $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
-			&& iMSCP::File->new( filename => $self->getInitscriptPath($service) )->delFile() == 0;
-	}
+	return 1 unless $self->_isSysvinit($service);
 
-	1;
+	$self->stop($service) && $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
+		&& iMSCP::File->new( filename => $self->getInitscriptPath($service) )->delFile() == 0;
+
 }
 
 =back
