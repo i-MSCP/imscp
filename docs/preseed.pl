@@ -21,6 +21,7 @@ $main::questions{'PHP_FPM_POOLS_LEVEL'} = 'per_site'; # 'per_user', 'per_domain'
 
 # apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'
 # FastCGI addresse type to use (Unix domain socket or TCP/IP)
+# Be aware that TCP/IP can require modification of your kernel parameters (sysctl)
 $main::questions{'PHP_FPM_LISTEN_MODE'} = 'uds'; # 'uds', 'tcp'
 
 # Server to use for the POP/IMAP services
