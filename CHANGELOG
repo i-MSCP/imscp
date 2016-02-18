@@ -13,6 +13,7 @@ BACKEND
 	Fixed: Mail passwords are no longer valid after client account re-activation
 
 CONFIG
+	Added: BACKUP_COMPRESS_LEVEL configuration parameter
 	Added: docs/imscp_net_sysctl.conf configuration file example
 	Added: DOVECOT_SASL_AUTH_SOCKET_PATH parameter in dovecot/dovecot.data file
 	Added: event_scheduler parameter in mysql/imscp.cnf file to disable event scheduler (see errata file)
@@ -21,6 +22,7 @@ CONFIG
 	Added: SQLD_SOCK_DIR, SQLD_USER and SQLD_GROUP parameters in mysql/mysql.data configuration file
 	Added: sql_mode parameter in mysql/imscp.cnf template file to reset server SQL modes (backward compatibility issue)
 	Fixed: Possible segfault with OPcache when fast shutdown feature is enabled
+	Renamed: ZIP configration parameter to BACKUP_COMPRESS_ALGORITHM
 	Removed: Dovecot 1.x configuration files
 	Removed: procmail mailbox command in Postfix main.cf file
 
