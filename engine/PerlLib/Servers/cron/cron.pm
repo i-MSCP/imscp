@@ -25,7 +25,6 @@ package Servers::cron::cron;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::EventManager;
@@ -57,9 +56,7 @@ sub preinstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeCronPreinstall', 'cron');
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterCronPreinstall', 'cron');
+	$rs||= $self->{'eventManager'}->trigger('afterCronPreinstall', 'cron');
 }
 
 =item install()
@@ -75,16 +72,13 @@ sub install
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeCronInstall', 'cron');
-	return $rs if $rs;
-
-	my $cfgTpl;
-	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'cron', 'imscp', \$cfgTpl, { });
+	$rs ||= $self->{'eventManager'}->trigger('onLoadTemplate', 'cron', 'imscp', \ my $cfgTpl, { });
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp" )->get();
 		unless(defined $cfgTpl) {
-			error(sprintf('Unable to read %s', "$self->{'cfgDir'}/imscp"));
+			error(sprintf('Could not read %s', "$self->{'cfgDir'}/imscp"));
 			return 1;
 		}
 	}
@@ -105,23 +99,13 @@ sub install
 	);
 
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp" );
-
 	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile("$self->{'config'}->{'CRON_D_DIR'}/imscp");
 
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->copyFile("$self->{'config'}->{'CRON_D_DIR'}/imscp");
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterCronInstall', 'cron');
+	$rs ||= $self->{'eventManager'}->trigger('afterCronInstall', 'cron');
 }
 
 =item postinstall()
@@ -140,13 +124,18 @@ sub postinstall
 	return $rs if $rs;
 
 	my $srvMngr = iMSCP::Service->getInstance();
-	$srvMngr->enable($self->{'config'}->{'CRON_SNAME'});
 
-	unless($srvMngr->isRunning($self->{'config'}->{'CRON_SNAME'})) {
-		$srvMngr->start($self->{'config'}->{'CRON_SNAME'});
+	local $@;
+	eval { $srvMngr->enable($self->{'config'}->{'CRON_SNAME'}); };
+	if($@) {
+		error($@);
+		return 1;
 	}
 
-	$self->{'eventManager'}->trigger('afterCronPostInstall', 'cron');
+	$rs ||= $self->{'eventManager'}->register('beforeSetupRestartServices', sub {
+		push @{$_[0]}, [ sub { $srvMngr->start($self->{'config'}->{'CRON_SNAME'}); 0; }, 'Cron' ]; 0;
+	});
+	$rs ||= $self->{'eventManager'}->trigger('afterCronPostInstall', 'cron');
 }
 
 =item addTask(\%data, $filepath)
@@ -180,70 +169,62 @@ sub addTask
 
 	$filepath ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
-	if(-f $filepath) {
-		$data->{'MINUTE'} = '@daily' unless exists $data->{'MINUTE'};
-		$data->{'HOUR'} = '*' unless exists $data->{'HOUR'};
-		$data->{'DAY'} = '*' unless exists $data->{'DAY'};
-		$data->{'MONTH'} = '*' unless exists $data->{'MONTH'};
-		$data->{'DWEEK'} = '*' unless exists $data->{'DWEEK'};
-		$data->{'USER'} = $main::imscpConfig{'ROOT_USER'} unless exists $data->{'USER'};
-
-		eval { $self->_validateCronTask($data); };
-		if($@) {
-			error(sprintf('Invalid cron tasks: %s', $@));
-			return 1;
-		}
-
-		my $filename = fileparse($filepath);
-		my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get();
-		unless(defined $wrkFileContent) {
-			error("Unable to read $filepath");
-			return 1;
-		}
-
-		my $rs = $self->{'eventManager'}->trigger('beforeCronAddTask', \$wrkFileContent, $data);
-		return $rs if $rs;
-
-		my $cronEntryBegin = "# imscp [$data->{'TASKID'}] entry BEGIN\n";
-		my $cronEntryEnding = "# imscp [$data->{'TASKID'}] entry ENDING\n";
-
-		my $cronEntry = sprintf(
-			"%s %s %s %s %s %s %s\n",
-			$data->{'MINUTE'}, $data->{'HOUR'}, $data->{'DAY'}, $data->{'MONTH'}, $data->{'DWEEK'}, $data->{'USER'},
-			$data->{'COMMAND'}
-		);
-
-		$cronEntry =~ s/ +/ /;
-		$wrkFileContent = replaceBloc($cronEntryBegin, $cronEntryEnding, '', $wrkFileContent);
-		$wrkFileContent = replaceBloc(
-			"# imscp [{ENTRY_ID}] entry BEGIN\n",
-			"# imscp [{ENTRY_ID}] entry ENDING\n",
-			"$cronEntryBegin$cronEntry$cronEntryEnding",
-			$wrkFileContent,
-			'preserve'
-		);
-
-		$self->{'eventManager'}->trigger('afterCronAddTask', \$wrkFileContent, $data);
-
-		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-
-		$rs = $file->set($wrkFileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0640);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		$file->copyFile($filepath);
-	} else {
-		error("Unable to add cron task: File $filepath not found.");
-		1;
+	unless(-f $filepath) {
+		error(sprintf('Could not add cron task: File %s not found.', $filepath));
+		return 1;
 	}
+
+	$data->{'MINUTE'} = '@daily' unless exists $data->{'MINUTE'};
+	$data->{'HOUR'} = '*' unless exists $data->{'HOUR'};
+	$data->{'DAY'} = '*' unless exists $data->{'DAY'};
+	$data->{'MONTH'} = '*' unless exists $data->{'MONTH'};
+	$data->{'DWEEK'} = '*' unless exists $data->{'DWEEK'};
+	$data->{'USER'} = $main::imscpConfig{'ROOT_USER'} unless exists $data->{'USER'};
+
+	eval { $self->_validateCronTask($data); };
+	if($@) {
+		error(sprintf('Invalid cron tasks: %s', $@));
+		return 1;
+	}
+
+	my $filename = fileparse($filepath);
+	my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get();
+	unless(defined $wrkFileContent) {
+		error(sprintf('Could not read %s file', $filepath));
+		return 1;
+	}
+
+	my $rs = $self->{'eventManager'}->trigger('beforeCronAddTask', \$wrkFileContent, $data);
+	return $rs if $rs;
+
+	my $cronEntryBegin = "# imscp [$data->{'TASKID'}] entry BEGIN\n";
+	my $cronEntryEnding = "# imscp [$data->{'TASKID'}] entry ENDING\n";
+
+	my $cronEntry = sprintf(
+		"%s %s %s %s %s %s %s\n",
+		$data->{'MINUTE'}, $data->{'HOUR'}, $data->{'DAY'}, $data->{'MONTH'}, $data->{'DWEEK'}, $data->{'USER'},
+		$data->{'COMMAND'}
+	);
+
+	$cronEntry =~ s/ +/ /;
+	$wrkFileContent = replaceBloc($cronEntryBegin, $cronEntryEnding, '', $wrkFileContent);
+	$wrkFileContent = replaceBloc(
+		"# imscp [{ENTRY_ID}] entry BEGIN\n",
+		"# imscp [{ENTRY_ID}] entry ENDING\n",
+		"$cronEntryBegin$cronEntry$cronEntryEnding",
+		$wrkFileContent,
+		'preserve'
+	);
+
+	$rs = $self->{'eventManager'}->trigger('afterCronAddTask', \$wrkFileContent, $data);
+	return $rs if $rs;
+
+	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
+	$rs = $file->set($wrkFileContent);
+	$rs ||= $file->save();
+	$rs ||= $file->mode(0640);
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->copyFile($filepath);
 }
 
 =item deleteTask(\%data, $filepath)
@@ -270,46 +251,34 @@ sub deleteTask
 
 	$filepath ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
-	if(-f $filepath) {
-		my $filename = fileparse($filepath);
-		my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get;
-		unless(defined $wrkFileContent) {
-			error("Unable to read $filepath");
-			return 1;
-		}
-
-		my $rs = $self->{'eventManager'}->trigger('beforeCronDelTask', \$wrkFileContent, $data);
-		return $rs if $rs;
-
-		$wrkFileContent = replaceBloc(
-			"# imscp [$data->{'TASKID'}] entry BEGIN\n",
-			"# imscp [$data->{'TASKID'}] entry ENDING\n",
-			'',
-			$wrkFileContent
-		);
-
-		$rs = $self->{'eventManager'}->trigger('afterCronDelTask', \$wrkFileContent, $data);
-		return $rs if $rs;
-
-		my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-
-		$rs = $file->set($wrkFileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0640);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		$file->copyFile($filepath);
-	} else {
-		error("Unable to remove cron task: File $filepath not found.");
-		1;
+	unless(-f $filepath) {
+		error(sprintf('Could not remove cron task: File %s not found.', $filepath));
+		return 1;
 	}
+
+	my $filename = fileparse($filepath);
+	my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get;
+	unless(defined $wrkFileContent) {
+		error(sprintf('Could not read %s file', $filepath));
+		return 1;
+	}
+
+	my $rs = $self->{'eventManager'}->trigger('beforeCronDelTask', \$wrkFileContent, $data);
+	return $rs if $rs;
+
+	$wrkFileContent = replaceBloc(
+		"# imscp [$data->{'TASKID'}] entry BEGIN\n", "# imscp [$data->{'TASKID'}] entry ENDING\n", '', $wrkFileContent
+	);
+
+	$rs = $self->{'eventManager'}->trigger('afterCronDelTask', \$wrkFileContent, $data);
+	return $rs if $rs;
+
+	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
+	$rs ||= $file->set($wrkFileContent);
+	$rs ||= $file->save();
+	$rs ||= $file->mode(0640);
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->copyFile($filepath);
 }
 
 =item setEnginePermissions()
@@ -324,18 +293,14 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	if(-f "$self->{'config'}->{'CRON_D_DIR'}/imscp") {
-		require iMSCP::Rights;
-		iMSCP::Rights->import();
+	return 0 unless -f "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
-		setRights("$self->{'config'}->{'CRON_D_DIR'}/imscp", {
-			user => $main::imscpConfig{'ROOT_USER'},
-			group => $main::imscpConfig{'ROOT_GROUP'},
-			mode => '0640'
-		});
-	} else {
-		0;
-	}
+	require iMSCP::Rights;
+	iMSCP::Rights->import();
+
+	setRights("$self->{'config'}->{'CRON_D_DIR'}/imscp", {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640'
+	});
 }
 
 =back
@@ -363,7 +328,6 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data"; \%c; };
 	$self->{'eventManager'}->trigger('afterCronInit', $self, 'cron') and fatal('cron - afterCronInit has failed');
-
 	$self;
 }
 
@@ -379,14 +343,13 @@ sub _validateCronTask
 {
 	my ($self, $data) = @_;
 
-	if(
-		$data->{'MINUTE'} ~~ [ '@reboot', '@yearly', '@annually', '@monthly', '@weekly', '@daily', '@midnight', '@hourly' ]
-	) {
+	if($data->{'MINUTE'} =~ /^@(reboot|yearly|annually|monthly|weekly|daily|midnight|hourly)$/) {
 		$data->{'HOUR'} = $data->{'DAY'} = $data->{'MONTH'} = $data->{'DWEEK'} = '';
-	} else {
-		for my $attribute('minute', 'hour', 'day', 'month', 'dweek') {
-			$self->_validateAttribute($attribute, $data->{ uc($attribute) });
-		}
+		return undef;
+	}
+
+	for my $attribute(qw/minute hour day month dweek/) {
+		$self->_validateAttribute($attribute, $data->{ uc($attribute) });
 	}
 
 	undef;
@@ -406,59 +369,58 @@ sub _validateAttribute
 {
 	my ($self, $name, $value) = @_;
 
-	$name ||= 'undefined';
+	defined $name or die('$name is undefined');
+	defined $value or die('$value is undefined');
+	$value ne '' or die(sprintf("Value for the '%s' cron task attribute cannot be empty", $name));
+	return undef unless $value ne '*';
 
-	die(sprintf("Value for the '%s' cron task attribute cannot be empty", $name)) if $value eq '';
+	my $step = '[1-9]?[0-9]';
+	my $months = 'jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec';
+	my $days = 'mon|tue|wed|thu|fri|sat|sun';
+	my @namesArr = ();
+	my $pattern;
 
-	if($value ne '*') {
-		my $pattern = '';
-		my $step = '[1-9]?[0-9]';
-		my $months = 'jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec';
-		my $days = 'mon|tue|wed|thu|fri|sat|sun';
-		my @namesArr = ();
+	if($name eq 'minute') {
+		$pattern = '[ ]*(\b[0-5]?[0-9]\b)[ ]*';
+	} elsif($name eq 'hour') {
+		$pattern = '[ ]*(\b[01]?[0-9]\b|\b2[0-3]\b)[ ]*';
+	} elsif ($name eq 'day') {
+		$pattern = '[ ]*(\b[01]?[1-9]\b|\b2[0-9]\b|\b3[01]\b)[ ]*';
+	} elsif ($name eq 'month') {
+		@namesArr = split '|', $months;
+		$pattern = "([ ]*(\b[0-1]?[0-9]\b)[ ]*)|([ ]*($months)[ ]*)";
+	} elsif ($name eq 'dweek') {
+		@namesArr = split '|', $days;
+		$pattern = "([ ]*(\b[0]?[0-7]\b)[ ]*)|([ ]*($days)[ ]*)";
+	}
 
-		if($name eq 'minute') {
-			$pattern = '[ ]*(\b[0-5]?[0-9]\b)[ ]*';
-		} elsif($name eq 'hour') {
-			$pattern = '[ ]*(\b[01]?[0-9]\b|\b2[0-3]\b)[ ]*';
-		} elsif ($name eq 'day') {
-			$pattern = '[ ]*(\b[01]?[1-9]\b|\b2[0-9]\b|\b3[01]\b)[ ]*';
-		} elsif ($name eq 'month') {
-			@namesArr = split '|', $months;
-			$pattern = "([ ]*(\b[0-1]?[0-9]\b)[ ]*)|([ ]*($months)[ ]*)";
-		} elsif ($name eq 'dweek') {
-			@namesArr = split '|', $days;
-			$pattern = "([ ]*(\b[0]?[0-7]\b)[ ]*)|([ ]*($days)[ ]*)";
-		} else {
-			die(sprintf("Unknown '%s' cron task attribute", $name));
+	defined $pattern or die(sprintf("Unknown '%s' cron task attribute", $name));
+
+	my $range = "((($pattern)|(\\*\\/$step)?)|((($pattern)-($pattern))(\\/$step)?))";
+	my $longPattern = "$range(,$range)*";
+
+	$value =~ /^$longPattern$/i or die(sprintf(
+		"Invalid value '%s' given for the '%s' cron task attribute", $value, $name
+	));
+
+	for my $testField (split ',', $value) {
+		unless ($testField =~ /^((($pattern)-($pattern))(\/$step)?)+$/) {
+			next;
 		}
 
-		my $range = "((($pattern)|(\\*\\/$step)?)|((($pattern)-($pattern))(\\/$step)?))";
-		my $longPattern = "$range(,$range)*";
+		my @compare = split '-', $testField;
+		my @compareSlash = split '/', $compare['1'];
 
-		if ($value !~ /^$longPattern$/i) {
+		$compare[1] = $compareSlash[0] if scalar @compareSlash == 2;
+
+		my ($left) = grep { $namesArr[$_] eq lc($compare[0]) } 0..$#namesArr;
+		my ($right) = grep { $namesArr[$_] eq lc($compare[1]) } 0..$#namesArr;
+
+		$left = $compare[0] unless $left;
+		$right = $compare[1] unless $right;
+
+		if (int($left) > int($right)) {
 			die(sprintf("Invalid value '%s' given for the '%s' cron task attribute", $value, $name));
-		} else {
-			my @testArr = split ',', $value;
-
-			for my $testField (@testArr) {
-				if ($pattern && $testField =~ /^((($pattern)-($pattern))(\/$step)?)+$/) {
-					my @compare = split '-', $testField;
-					my @compareSlash = split '/', $compare['1'];
-
-					$compare[1] = $compareSlash[0] if scalar @compareSlash == 2;
-
-					my ($left) = grep { $namesArr[$_] eq lc($compare[0]) } 0..$#namesArr;
-					my ($right) = grep { $namesArr[$_] eq lc($compare[1]) } 0..$#namesArr;
-
-					$left = $compare[0] unless $left;
-					$right = $compare[1] unless $right;
-
-					if (int($left) > int($right)) {
-						die(sprintf("Invalid value '%s' given for the '%s' cron task attribute", $value, $name));
-					}
-				}
-			}
 		}
 	}
 
@@ -467,7 +429,7 @@ sub _validateAttribute
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 
