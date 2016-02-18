@@ -371,7 +371,7 @@ sub _buildAliasesDb
 		$fileContent =~ s/^root:.*\n//gim;
 	}
 
-	$fileContent .= "root: $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}";
+	$fileContent .= "root: $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}\n";
 	$rs = $file->set($fileContent);
 	$rs ||= $file->save();
 	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
