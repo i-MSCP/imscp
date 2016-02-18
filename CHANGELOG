@@ -63,7 +63,7 @@ INSTALLER
 	Added: Allow to specify package version to install in distribution package files
 	Added: Conflict for procmail package to force its removal when running i-MSCP installer
 	Added: Conflict for sasl2-bin package to force its removal when running i-MSCP installer (we don't need saslauthd)
-	Added: Default administrator email in aliases(5) table for root account (e.g. root: <default_admin_email>)
+	Added: Default administrator email in aliases(5) table for local root user (e.g. root: <default_admin_email>)
 	Added: Routine for upgrading SQL server system tables when necessary (e.g. MySQL Community Server)
 	Added: Support for MySQL 5.6.x/5.7.x, Percona 5.7 and MariaDB 10.1 when available (see errata file)
 	Added: Support for Ubuntu 16.04 (Xenial Xerus)

@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.02.07
+# Last update: 2016.02.18
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -17,13 +17,13 @@ $main::questions{'INI_LEVEL'} = 'per_site'; # 'per_user', 'per_domain' or 'per_s
 
 # apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'
 # PHP configuration level to use
-$main::questions{'PHP_FPM_POOLS_LEVEL'} = 'per_user'; # 'per_user', 'per_domain' or 'per_site'
+$main::questions{'PHP_FPM_POOLS_LEVEL'} = 'per_site'; # 'per_user', 'per_domain' or 'per_site'
 
 # apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'
 # FastCGI addresse type to use (Unix domain socket or TCP/IP)
 $main::questions{'PHP_FPM_LISTEN_MODE'} = 'uds'; # 'uds', 'tcp'
 
-# Server to use for the Pop/Imap services
+# Server to use for the POP/IMAP services
 # (courier|dovecot)
 $main::questions{'PO_SERVER'} = 'dovecot';
 
@@ -37,7 +37,7 @@ $main::questions{'SASL_SQL_PASSWORD'} = 'password'; # Password must not be empty
 
 # Dovecot restricted SQL user - only relevant if you set PO_SERVER to 'dovecot'
 $main::questions{'DOVECOT_SQL_USER'} = 'dovecot_user';
-$main::questions{'DOVECOT_SQL_PASSWORD'} = 'password'; # Password must not be empty  at least 6 characters long
+$main::questions{'DOVECOT_SQL_PASSWORD'} = 'password'; # Password must not be empty at least 6 characters long
 
 # Server to use for the Ftp service
 # (ProFTPD)
@@ -62,7 +62,7 @@ $main::questions{'NAMED_SERVER'} = 'bind';
 # Only relevant if you set NAMED_SERVER to 'bind'
 $main::questions{'BIND_MODE'} = 'master'; # 'master' or 'slave'
 
-# Allow to indicate IP addresses of your primary DNS servers
+# Allow to specify IP addresses of your primary DNS servers
 # Only relevant if you set BIND_MODE to 'slave'
 $main::questions{'PRIMARY_DNS'} = 'no'; # 'no' or list of IP addresses, each separated by semicolon or space
 
@@ -79,11 +79,7 @@ $main::questions{'BIND_IPV6'} = 'no'; # 'yes' or 'no'
 $main::questions{'LOCAL_DNS_RESOLVER'} = 'yes'; # 'yes' or 'no'
 
 # Server to use for the SQL service
-# Depending of your distro:
-#  - mysql_5.1 or mysql_5.5
-#  - mariadb_5.3 or mariadb_5.5 or mariadb_10.0
-#  - percona_5.5 or percona_5.6
-#  - remote_server
+# Please consult your distro package file for available options.
 $main::questions{'SQL_SERVER'} = 'mysql_5.5';
 
 # Server hostname
@@ -92,11 +88,11 @@ $main::questions{'SERVER_HOSTNAME'} = 'host.domain.tld'; # Fully qualified hostn
 # Domain name from which the i-MSCP control panel must be reachable
 $main::questions{'BASE_SERVER_VHOST'} = 'panel.domain.tld'; # Fully qualified domain name
 
-# Http port from which the control panel must be reachable
+# HTTP port from which the control panel must be reachable
 # Must be a valid port greater than 1023
 $main::questions{'BASE_SERVER_VHOST_HTTP_PORT'} = '8080';
 
-# Https port from which the control panel must be reachable
+# HTTPs port from which the control panel must be reachable
 # Must be a valid port greater than 1023
 # Only relevant if PANEL_SSL_ENABLED is set to 'yes' (see below)
 $main::questions{'BASE_SERVER_VHOST_HTTPS_PORT'} = '4443';
@@ -130,7 +126,8 @@ $main::questions{'DATABASE_USER_HOST'} = 'localhost';
 $main::questions{'MYSQL_PREFIX'} = 'no'; # 'yes' or 'no'
 $main::questions{'MYSQL_PREFIX_TYPE'} = 'none'; # 'none' if MYSQL_PREFIX question is set to 'no' or 'infront' or 'behind'
 
-# Default admin
+# Default administrator data
+# Be aware that email address is added as alias for the local root user into the /etc/aliases file
 $main::questions{'ADMIN_LOGIN_NAME'} = 'admin'; # Default admin name
 $main::questions{'ADMIN_PASSWORD'} = 'password'; # Default admin password
 $main::questions{'DEFAULT_ADMIN_ADDRESS'} = 'user@domain.tld'; # Default admin email address (must be a valid email)
