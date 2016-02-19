@@ -82,6 +82,7 @@ if(iMSCP::Getopt->preseed) {
 	# The preseed option supersede the reconfigure option
 	iMSCP::Getopt->reconfigure('none');
 	$main::reconfigure = 'none';
+	iMSCP::Getopt->noprompt(1);
 }
 
 # Handle the listener option
