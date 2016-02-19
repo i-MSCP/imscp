@@ -71,7 +71,6 @@ iMSCP::Getopt->parse(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
 # Set debug and verbose mode
 setDebug(iMSCP::Getopt->debug);
-setVerbose(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose);
 
 # Getting reconfigure option value
 $main::reconfigure = iMSCP::Getopt->reconfigure;
@@ -87,6 +86,9 @@ if(iMSCP::Getopt->preseed) {
 
 # Handle the listener option
 require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
+
+# Must be set after preseed option
+setVerbose(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose);
 
 # Handle noprompt option
 $main::noprompt = iMSCP::Getopt->noprompt;
