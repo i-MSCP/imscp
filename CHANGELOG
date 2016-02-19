@@ -77,6 +77,7 @@ INSTALLER
 	Removed: Support for Ubuntu 15.04 (Vivid Vervet)
 
 PLUGINS
+	Added: registerSetupListeners() function call to allow the plugins to listen on the installation events
 	Updated: API version to 1.0.2
 
 YOUTRACK

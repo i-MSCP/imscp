@@ -47,6 +47,7 @@ use iMSCP::OpenSSL;
 use Email::Valid;
 use iMSCP::Servers;
 use iMSCP::Packages;
+use iMSCP::Plugins;
 use iMSCP::Getopt;
 use iMSCP::Service;
 
@@ -66,43 +67,51 @@ sub setupBoot
 	0;
 }
 
-# Allow any server/package to register its setup event listeners before any other task
+# Allow any server/package/plugin to register its setup event listeners before any other task
 sub setupRegisterListeners
 {
 	my ($eventManager, $rs) = (iMSCP::EventManager->getInstance(), 0);
 
 	for(iMSCP::Servers->getInstance()->get()) {
 		next if $_ eq 'noserver';
-
-		my $package = "Servers::$_";
-
-		eval "require $package";
-
+		my $server = "Servers::$_";
+		eval "require $server";
 		unless($@) {
-			my $instance = $package->factory();
+			my $instance = $server->factory();
 			$rs = $instance->registerSetupListeners($eventManager) if $instance->can('registerSetupListeners');
-		} else {
-			error($@);
-        	$rs = 1;
+			return $rs if $rs;
+			next;
 		}
 
-		return $rs if $rs;
+		error($@);
+		return 1;
 	}
 
 	for(iMSCP::Packages->getInstance()->get()) {
 		my $package = "Package::$_";
-
 		eval "require $package";
-
 		unless($@) {
 			my $instance = $package->getInstance();
 			$rs = $instance->registerSetupListeners($eventManager) if $instance->can('registerSetupListeners');
-		} else {
-			error($@);
-        	$rs = 1;
+			return $rs if $rs;
+			next;
 		}
 
-		return $rs if $rs;
+		error($@);
+		return 1;
+	}
+
+	for my $pluginPath(iMSCP::Plugins->getInstance()->get()) {
+		eval { require $pluginPath; };
+		unless($@) {
+			my $plugin = 'Plugin::' . basename($pluginPath, '.pm');
+			$rs = $plugin->registerSetupListeners($eventManager) if $plugin->can('registerSetupListeners');
+			return $rs if $rs;
+			next;
+		}
+
+		error($@);
+		return 1
 	}
 
 	$rs;
