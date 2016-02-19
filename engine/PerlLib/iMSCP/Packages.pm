@@ -25,7 +25,7 @@ package iMSCP::Packages;
 
 use strict;
 use warnings;
-use iMSCP::Dir;
+use File::Basename;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -67,9 +67,9 @@ sub _init
 {
 	my $self = shift;
 
-	$_ = substr($_, 0, -3) for @{$self->{'packages'}} = iMSCP::Dir->new(
-		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package"
-	)->getFiles();
+	$_ = basename($_, '.pm')  for @{$self->{'packages'}} = glob (
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm"
+	);
 
 	$self;
 }

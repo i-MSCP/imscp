@@ -28,7 +28,7 @@ CONFIG
 
 CONTRIB
 	Added: 40_apache2_tools_proxy.pl listener file (redirect/proxy the i-MSCP tools in customers vhost files)
-	Added: 10_dovecot_compress.pl listener file (activate dovecot compress plugin)
+	Added: 10_dovecot_compress.pl listener file (activate Dovecot compress plugin)
 	Added: 20_dovecot_connections.pl listener file (allow to increase the mail_max_userip_connections)
 	Added: 30_dovecot_namespace.pl listener file (creates the INBOX. as a compatibility name)
 	Added: 40_dovecot_pfs.pl listener file (activate the Perfect Forward Secrecy logging)
@@ -36,7 +36,7 @@ CONTRIB
 	Added: 60_dovecot_service_login.pl listener file (Allows to modify default service-login configuration options)
 	Added: 10_nginx_hsts.pl listener file (enable HTTP Strict Transport Security (HSTS))
 	Added: 10_php_confoptions_overide.pl listener file (Allows to add or override PHP configuration options)
-	Added: 60_postfix_pfs.pl listener file (add the self generated EDH parameter files for Perfect Forward Secrecy (PFS))
+	Added: 60_postfix_pfs.pl listener file (add the self-generated EDH parameter files for Perfect Forward Secrecy (PFS))
 	Added: 70_postfix_submission_tls.pl listener file (force TLS connection on postfix submission)
 	Added: 10_proftpd_tuning.pl listener file (removes the ServerIdent information, and forces TLS)
 	Rewritten: 10_named_zonetransfer.pl listener file (now named 10_named_slave_provisioning.pl)
@@ -74,10 +74,10 @@ INSTALLER
 	Fixed: Don't ask admin for data directory (/var/lib/mysql) removal (package maintainer script)
 	Fixed: Do not try to receive/download repository gpg key if already present
 	Fixed: Missing source repositories in APT sources.list
-	Removed: Support for Ubuntu 15.04 (Vivid Vervet)
+	Removed: Support for Ubuntu 15.04 (Vivid Vervet) - Not an LTS version
 
 PLUGINS
-	Added: registerSetupListeners() function call to allow the plugins to listen on the installation events
+	Added: registerSetupListeners() function call to allow the plugins to listen on servers/packages installation events
 	Updated: API version to 1.0.2
 
 YOUTRACK
