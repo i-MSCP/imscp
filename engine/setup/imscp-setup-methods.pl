@@ -1798,7 +1798,7 @@ sub setupRegisterPluginListeners
 {
 	my ($db, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 	unless($db) {
-		error(sprintf('Could not to connect to SQL server: %s', $errStr));
+		error(sprintf('Could not connect to SQL server: %s', $errStr));
 		return 1;
 	}
 
