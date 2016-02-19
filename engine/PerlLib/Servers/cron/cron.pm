@@ -197,24 +197,17 @@ sub addTask
 	my $rs = $self->{'eventManager'}->trigger('beforeCronAddTask', \$wrkFileContent, $data);
 	return $rs if $rs;
 
-	my $cronEntryBegin = "# imscp [$data->{'TASKID'}] entry BEGIN\n";
-	my $cronEntryEnding = "# imscp [$data->{'TASKID'}] entry ENDING\n";
-
-	my $cronEntry = sprintf(
-		"%s %s %s %s %s %s %s\n",
-		$data->{'MINUTE'}, $data->{'HOUR'}, $data->{'DAY'}, $data->{'MONTH'}, $data->{'DWEEK'}, $data->{'USER'},
-		$data->{'COMMAND'}
-	);
-
-	$cronEntry =~ s/ +/ /;
-	$wrkFileContent = replaceBloc($cronEntryBegin, $cronEntryEnding, '', $wrkFileContent);
+	# Remove entry with same ID if any
 	$wrkFileContent = replaceBloc(
-		"# imscp [{ENTRY_ID}] entry BEGIN\n",
-		"# imscp [{ENTRY_ID}] entry ENDING\n",
-		"$cronEntryBegin$cronEntry$cronEntryEnding",
-		$wrkFileContent,
-		'preserve'
+		"# imscp [$data->{'TASKID'}] entry BEGIN\n", "# imscp [$data->{'TASKID'}] entry ENDING\n", '', $wrkFileContent
 	);
+
+	($wrkFileContent .= <<EOF) =~ s/ +/ /g;
+
+# imscp [$data->{'TASKID'}] entry BEGIN
+$data->{'MINUTE'} $data->{'HOUR'} $data->{'DAY'} $data->{'MONTH'} $data->{'DWEEK'} $data->{'USER'} $data->{'COMMAND'}
+# imscp [$data->{'TASKID'}] entry ENDING
+EOF
 
 	$rs = $self->{'eventManager'}->trigger('afterCronAddTask', \$wrkFileContent, $data);
 	return $rs if $rs;

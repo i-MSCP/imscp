@@ -24,6 +24,3 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Backup customers' data depending of the domain properties
 {BACKUP_MINUTE} {BACKUP_HOUR} * * * root nice -n 15 ionice -c2 -n5 perl {BACKUP_ROOT_DIR}/imscp-backup-all > {LOG_DIR}/imscp-backup-all-mngr.log 2>&1
-
-# imscp [{ENTRY_ID}] entry BEGIN
-# imscp [{ENTRY_ID}] entry ENDING
