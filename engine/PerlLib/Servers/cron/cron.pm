@@ -202,7 +202,7 @@ sub addTask
 		"# imscp [$data->{'TASKID'}] entry BEGIN\n", "# imscp [$data->{'TASKID'}] entry ENDING\n", '', $wrkFileContent
 	);
 
-	($wrkFileContent .= <<EOF) =~ s/ +/ /g;
+	($wrkFileContent .= <<EOF) =~ s/^(@[^\s]+)\s+/$1 /gm;
 
 # imscp [$data->{'TASKID'}] entry BEGIN
 $data->{'MINUTE'} $data->{'HOUR'} $data->{'DAY'} $data->{'MONTH'} $data->{'DWEEK'} $data->{'USER'} $data->{'COMMAND'}
