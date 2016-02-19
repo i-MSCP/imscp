@@ -65,7 +65,7 @@ sub parse
 
 	$showUsage = sub {
 		my $exitCode = shift || 0;
-		print STDERR wrap("\n", '', <<EOF, "\n");
+		print STDERR wrap("\n", '', <<EOF);
 $usage
  -r,    --reconfigure [item]    Type --reconfigure help.
  -n,    --noprompt              Switch to non-interactive mode.
@@ -89,7 +89,7 @@ EOF
 	local $SIG{__WARN__} = sub {
 		my $error = shift;
 		$error =~ s/(.*?) at.*/$1/;
-		print STDERR wrap('', '', $error) if $error ne "Died\n";
+		print STDERR wrap("\n", '', $error) if $error ne "Died\n";
 	};
 
 	require Getopt::Long;
@@ -128,7 +128,7 @@ sub parseNoDefault
 
 	$showUsage = sub {
 		my $exitCode = shift || 0;
-		print STDERR wrap('', '', <<EOF);
+		print STDERR wrap("\n", '', <<EOF);
 $usage
  -?,-h  --help          Show this help.
 
@@ -143,7 +143,7 @@ EOF
 	local $SIG{__WARN__} = sub {
 		my $error = shift;
 		$error =~ s/(.*?) at.*/$1/;
-		print STDERR wrap('', '', $error) if $error ne "Died\n";
+		print STDERR wrap("\n", '', $error) if $error ne "Died\n";
 	};
 
 	require Getopt::Long;
