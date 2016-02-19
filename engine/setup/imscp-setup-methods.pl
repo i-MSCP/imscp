@@ -1810,6 +1810,8 @@ sub setupRegisterPluginListeners
 		return 1;
 	}
 
+	$db->set('FETCH_MODE', 'hashref');
+
 	my $eventManager = iMSCP::EventManager->getInstance();
 
 	for my $pluginPath(iMSCP::Plugins->getInstance()->get()) {
