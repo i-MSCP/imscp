@@ -30,7 +30,7 @@ use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
 use fields qw /reconfigure noprompt preseed listener cleanPackageCache skipPackageUpdate debug verbose/;
 
-$Text::Wrap::columns = 75;
+$Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
 
 my $options = fields::new('iMSCP::Getopt');
@@ -65,7 +65,7 @@ sub parse
 
 	$showUsage = sub {
 		my $exitCode = shift || 0;
-		print STDERR wrap("\n", '', <<EOF);
+		print STDERR wrap('', '', <<EOF);
 $usage
  -r,    --reconfigure [item]    Type --reconfigure help.
  -n,    --noprompt              Switch to non-interactive mode.
@@ -75,7 +75,7 @@ $usage
  -a     --skip-package-update   Skip i-MSCP composer packages update.
  -d,    --debug                 Force debug mode.
  -v     --verbose               Enable verbose mode
- -?,-h  --help                  Show this help.
+ -?, -h  --help                  Show this help.
 
 $optionHelp
 EOF
@@ -89,7 +89,7 @@ EOF
 	local $SIG{__WARN__} = sub {
 		my $error = shift;
 		$error =~ s/(.*?) at.*/$1/;
-		print STDERR wrap("\n", '', $error) if $error ne "Died\n";
+		print STDERR wrap('', '', $error) if $error ne "Died\n";
 	};
 
 	require Getopt::Long;
@@ -128,9 +128,9 @@ sub parseNoDefault
 
 	$showUsage = sub {
 		my $exitCode = shift || 0;
-		print STDERR wrap("\n", '', <<EOF);
+		print STDERR wrap('', '', <<EOF);
 $usage
- -?,-h  --help          Show this help.
+ -?, -h  --help          Show this help.
 
 EOF
 		debugRegisterCallBack(sub { exit $exitCode; });
@@ -143,12 +143,12 @@ EOF
 	local $SIG{__WARN__} = sub {
 		my $error = shift;
 		$error =~ s/(.*?) at.*/$1/;
-		print STDERR wrap("\n", '', $error) if $error ne "Died\n";
+		print STDERR wrap('', '', $error) if $error ne "Died\n";
 	};
 
 	require Getopt::Long;
 	Getopt::Long::Configure('bundling');
-	eval { Getopt::Long::GetOptions('help|?|h', sub { $showUsage->() }, @_, ) || $showUsage->(1); };
+	eval { Getopt::Long::GetOptions('help|?|h', sub { $showUsage->() }, @options) || $showUsage->(1); };
 	undef;
 }
 
