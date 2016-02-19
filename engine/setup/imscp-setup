@@ -42,46 +42,41 @@ newDebug('imscp-setup.log');
 # Parse command line options
 iMSCP::Getopt->parse(sprintf('Usage: perl %s [OPTION]...', basename($0)));
 
+# Set debug and verbose mode
+setDebug(iMSCP::Getopt->debug);
+setVerbose(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose);
+
 # Get reconfigure option
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
 # Handle preseed option
-my $preseedFile = iMSCP::Getopt->preseed;
-if($preseedFile) {
-	require $preseedFile;
+if(iMSCP::Getopt->preseed) {
+	require iMSCP::Getopt->preseed;
 	# The preseed option supersede the reconfigure option
 	iMSCP::Getopt->reconfigure('none');
 	$main::reconfigure = 'none';
-	undef $preseedFile;
 }
 
 # Handle the listener option
-my $listenerFile = iMSCP::Getopt->listener;
-if($listenerFile) {
-	require $listenerFile;
-	undef $listenerFile;
-}
+require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
 
 # handle noprompt option
 $main::noprompt = iMSCP::Getopt->noprompt;
 if($main::noprompt) {
-	debugRegisterCallBack(
-		sub {
-			if($?) { # We exit with status 5 from iMSCP::Dialog in noninteractive mode
-				if($? == 5) {
-					if(iMSCP::Getopt->preseed) {
-						print STDERR output('Missing or bad entry found in your preseed file.', 'fatal');
-					} else {
-						print STDERR output('Missing or bad entry found in configuration file.', 'fatal');
-					}
-				}
+	debugRegisterCallBack(sub {
+		print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok') unless $?;
+
+		# We exit with status 5 from iMSCP::Dialog in noninteractive mode
+		if($? == 5) {
+			if(iMSCP::Getopt->preseed) {
+				print STDERR output('Missing or bad entry found in your preseed file.', 'fatal');
 			} else {
-				print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok');
+				print STDERR output('Missing or bad entry found in configuration file.', 'fatal');
 			}
 		}
-	);
+	});
 
-	print STDOUT output("Installation in progress... Please wait.", 'info');
+	print STDOUT output('Installation in progress... Please wait.', 'info');
 }
 
 # Run setup

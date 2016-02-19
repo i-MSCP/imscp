@@ -7,7 +7,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -71,55 +71,47 @@ iMSCP::Getopt->parse(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
 # Set debug and verbose mode
 setDebug(iMSCP::Getopt->debug);
-setVerbose(iMSCP::Getopt->noprompt && iMSCP::Getopt->debug);
+setVerbose(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose);
 
 # Getting reconfigure option value
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
 # Handle preseed option
-my $preseedFile = iMSCP::Getopt->preseed;
-if($preseedFile) {
-	require $preseedFile;
+if(iMSCP::Getopt->preseed) {
+	require iMSCP::Getopt->preseed;
 	# The preseed option supersede the reconfigure option
 	iMSCP::Getopt->reconfigure('none');
 	$main::reconfigure = 'none';
-	undef $preseedFile;
 }
 
 # Handle the listener option
-my $listenerFile = iMSCP::Getopt->listener;
-if($listenerFile) {
-	require $listenerFile;
-	undef $listenerFile;
-}
+require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
 
 # Handle noprompt option
 $main::noprompt = iMSCP::Getopt->noprompt;
 if($main::noprompt) {
-	debugRegisterCallBack(
-		sub {
-			if($?) { # We exit with status 5 from iMSCP::Dialog in noninteractive mode
-				if($? == 5) {
-					if(iMSCP::Getopt->preseed) {
-						print STDERR output('Missing or bad entry found in your preseed file.', 'fatal');
-					} else {
-						print STDERR output('Missing or bad entry found in configuration file.', 'fatal');
-					}
-				}
-			} else {
-				unless($main::buildonly) {
-					print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok');
+	debugRegisterCallBack(sub {
+		if($?) { # We exit with status 5 from iMSCP::Dialog in noninteractive mode
+			if($? == 5) {
+				if(iMSCP::Getopt->preseed) {
+					print STDERR output('Missing or bad entry found in your preseed file.', 'fatal');
 				} else {
-					print STDOUT output('i-MSCP has been successfully built.', 'ok');
+					print STDERR output('Missing or bad entry found in configuration file.', 'fatal');
 				}
 			}
+		} else {
+			unless($main::buildonly) {
+				print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok');
+			} else {
+				print STDOUT output('i-MSCP has been successfully built.', 'ok');
+			}
 		}
-	);
+	});
 
 	unless($main::buildonly) {
-		print STDOUT output("Installation in progress... Please wait.", 'info');
+		print STDOUT output('Installation in progress... Please wait.', 'info');
 	} else {
-		print STDOUT output("Build steps in progress... Please wait.", 'info')
+		print STDOUT output('Build steps in progress... Please wait.', 'info')
 	}
 } elsif(!iMSCP::Getopt->preseed) {
 	system('clear');

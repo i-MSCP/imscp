@@ -67,6 +67,7 @@ INSTALLER
 	Added: Routine for upgrading SQL server system tables when necessary (e.g. MySQL Community Server)
 	Added: Support for MySQL 5.6.x/5.7.x, Percona 5.7 and MariaDB 10.1 when available (see errata file)
 	Added: Support for Ubuntu 16.04 (Xenial Xerus)
+	Added: verbose command line option
 	Fixed: Could not type new password when reconfiguring service SQL users due to non-printable characters
 	Fixed: Dependencies problems when switching to another SQL server vendor
 	Fixed: Don't ask admin for SQL root password when not needed (package maintainer script)
