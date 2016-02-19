@@ -67,7 +67,7 @@ sub setupBoot
 	0;
 }
 
-# Allow any server/package/plugin to register its setup event listeners before any other task
+# Allow any server/package to register its setup event listeners before any other task
 sub setupRegisterListeners
 {
 	my ($eventManager, $rs) = (iMSCP::EventManager->getInstance(), 0);
@@ -99,19 +99,6 @@ sub setupRegisterListeners
 
 		error($@);
 		return 1;
-	}
-
-	for my $pluginPath(iMSCP::Plugins->getInstance()->get()) {
-		eval { require $pluginPath; };
-		unless($@) {
-			my $plugin = 'Plugin::' . basename($pluginPath, '.pm');
-			$rs = $plugin->registerSetupListeners($eventManager) if $plugin->can('registerSetupListeners');
-			return $rs if $rs;
-			next;
-		}
-
-		error($@);
-		return 1
 	}
 
 	$rs;
@@ -189,6 +176,7 @@ sub setupTasks
 		[\&setupDefaultAdmin,               'Creating/updating default admin account'],
 		[\&setupServices,                   'Setup i-MSCP services'],
 		[\&setupServiceSsl,                 'Setup SSL for i-MSCP services'],
+		[\&setupRegisterPluginListeners,    'Register plugin setup listeners'],
 		[\&setupPreInstallServers,          'Servers pre-installation'],
 		[\&setupPreInstallPackages,         'Packages pre-installation'],
 		[\&setupInstallServers,             'Servers installation'],
@@ -1803,6 +1791,43 @@ sub setupRebuildCustomerFiles
 	return $rs if $rs;
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
+}
+
+# Register plugin setup listeners
+sub setupRegisterPluginListeners
+{
+	my ($db, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+	unless($db) {
+		error(sprintf('Could not to connect to SQL server: %s', $errStr));
+		return 1;
+	}
+
+	$db->set('FETCH_MODE', 'arrayref');
+
+	my $pluginNames = $db->doQuery(undef, "SELECT plugin_name FROM plugin WHERE plugin_status = 'enabled'");
+	unless (ref $pluginNames eq 'ARRAY') {
+		error($pluginNames);
+		return 1;
+	}
+
+	my $eventManager = iMSCP::EventManager->getInstance();
+
+	for my $pluginPath(iMSCP::Plugins->getInstance()->get()) {
+		my $pluginName = basename($pluginPath, '.pm');
+		next unless $pluginName ~~ $pluginNames;
+		eval { require $pluginPath; };
+		unless($@) {
+			my $plugin = 'Plugin::' . $pluginName;
+			my $rs = $plugin->registerSetupListeners($eventManager) if $plugin->can('registerSetupListeners');
+			return $rs if $rs;
+			next;
+		}
+
+		error($@);
+		return 1
+	}
+
+	0;
 }
 
 # Call preinstall method on all i-MSCP server packages
