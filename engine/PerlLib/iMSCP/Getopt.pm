@@ -148,7 +148,12 @@ EOF
 
 	require Getopt::Long;
 	Getopt::Long::Configure('bundling');
-	eval { Getopt::Long::GetOptions('help|?|h', sub { $showUsage->() }, @options) || $showUsage->(1); };
+	eval {
+		Getopt::Long::GetOptions(
+			'help|?|h', sub { $showUsage->() },
+			@options
+		) || $showUsage->(1);
+	};
 	undef;
 }
 

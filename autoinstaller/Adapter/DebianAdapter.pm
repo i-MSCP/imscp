@@ -785,7 +785,7 @@ dovecot-core dovecot-core/ssl-cert-name string localhost
 EOF
 	}
 
-# Set default answer to yes foor purge of sasldb2 database
+# Set default answer to yes for purge of sasldb2 database
 $selectionsFileContent .= <<EOF;
 sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
 EOF
