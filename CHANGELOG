@@ -54,6 +54,7 @@ FRONTEND
 	Changed: error_reporting configuration parameter no longer editable when using Apache2 ITK httpd server impl.
 	Fixed: admin/settings.php menu state is not saved
 	Fixed: Customer's PHP settings must be synchronized when updating PHP permissions of their resellers
+	Fixed: Don't thrown an exception on parse_url error, send a 404 response instead (plugins.php)
 	Fixed: Slow DOM content loading due to some built-in functions override (imscp.js)
 	Fixed: Wrong alternative names in self-signed SSL certificates
 	Fixed: Wrong edit link for domain alias DNS record (external mail DNS record)
