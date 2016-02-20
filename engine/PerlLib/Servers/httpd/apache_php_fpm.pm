@@ -1370,17 +1370,8 @@ sub start
 
 	local $@;
 	eval {
-		# In case no pool file is available we must no try to reload the
-		# PHP-FPM service because it will fail. In such case, we stop it instead
-		my $isEmptyPoolDir = iMSCP::Dir->new( dirname => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'})->isEmpty();
 		my $serviceMngr = iMSCP::Service->getInstance();
-
-		unless($isEmptyPoolDir) {
-			$serviceMngr->start($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-		} else {
-			$serviceMngr->stop($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-		}
-
+		$serviceMngr->start($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
 		$serviceMngr->start($self->{'config'}->{'HTTPD_SNAME'});
 	};
 	if($@) {
@@ -1454,25 +1445,13 @@ sub restart
 
 	local $@;
 	eval {
-		# In case no pool file is available we must no try to reload the PHP-FPM service because it will fail
-		my $isEmptyPoolDir = iMSCP::Dir->new( dirname => $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'})->isEmpty();
 		my $serviceMngr = iMSCP::Service->getInstance();
 
 		if($self->{'forceRestart'}) {
-			unless($isEmptyPoolDir) {
-				$serviceMngr->restart($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-			} else {
-				$serviceMngr->stop($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-			}
-
+			$serviceMngr->restart($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
 			$serviceMngr->restart($self->{'config'}->{'HTTPD_SNAME'});
 		} else {
-			unless($isEmptyPoolDir) {
-				$serviceMngr->reload($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-			} else {
-				$serviceMngr->stop($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
-			}
-
+			$serviceMngr->reload($self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'});
 			$serviceMngr->reload($self->{'config'}->{'HTTPD_SNAME'});
 		}
 	};

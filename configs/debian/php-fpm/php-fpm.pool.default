@@ -1,0 +1,13 @@
+; Default pool configuration file
+; This file is only present to meet PHP-FPM requirements
+[www]
+user = {HTTPD_USER}
+group = {HTTPD_GROUP}
+listen = /var/run/php5-fpm-www.socket
+listen.owner = {HTTPD_USER}
+listen.group = {HTTPD_GROUP}
+listen.mode = 0660
+pm = ondemand
+pm.max_children = 1
+pm.process_idle_timeout = 10s;
+pm.max_requests = 1000

@@ -14,6 +14,7 @@ BACKEND
 
 CONFIG
 	Added: BACKUP_COMPRESS_LEVEL configuration parameter
+	Added: Default www.conf pool configuration file (PHP-FPM)
 	Added: docs/imscp_net_sysctl.conf configuration file example
 	Added: DOVECOT_SASL_AUTH_SOCKET_PATH parameter in dovecot/dovecot.data file
 	Added: event_scheduler parameter in mysql/imscp.cnf file to disable event scheduler (see errata file)

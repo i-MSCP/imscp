@@ -463,16 +463,13 @@ sub _buildPhpConfFiles
 		TIMEZONE => $main::imscpConfig{'TIMEZONE'}
 	});
 
-	$rs = $self->{'httpd'}->buildConfFile(
-		"$self->{'phpfpmCfgDir'}/parts/php5.ini",
-		{ },
-		{ destination => "$self->{'phpfpmWrkDir'}/php.ini", mode => 0644, user => $rootUName, group => $rootGName }
-	);
-	return $rs if $rs;
-
-	$rs = $self->{'httpd'}->installConfFile(
-		"$self->{'phpfpmWrkDir'}/php.ini", { destination => "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini" }
-	);
+	# FPM master php.ini file
+	$rs = $self->{'httpd'}->buildConfFile("$self->{'phpfpmCfgDir'}/parts/php5.ini", { }, {
+		destination => "$self->{'phpfpmWrkDir'}/php.ini", mode => 0644, user => $rootUName, group => $rootGName
+	});
+	$rs ||= $self->{'httpd'}->installConfFile("$self->{'phpfpmWrkDir'}/php.ini", {
+		destination => "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini"
+	});
 	return $rs if $rs;
 
 	$self->{'httpd'}->setData({
@@ -483,18 +480,29 @@ sub _buildPhpConfFiles
 		PROCESS_MAX => $self->{'phpfpmConfig'}->{'PROCESS_MAX'} // 0
 	});
 
+	# FPM master configuration file
 	$rs = $self->{'httpd'}->buildConfFile("$self->{'phpfpmCfgDir'}/php-fpm.conf", { }, {
 		destination => "$self->{'phpfpmWrkDir'}/php-fpm.conf"
 	});
+	$rs ||= $self->{'httpd'}->installConfFile("$self->{'phpfpmWrkDir'}/php-fpm.conf", {
+		destination => "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php-fpm.conf"
+	});
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->installConfFile(
-		"$self->{'phpfpmWrkDir'}/php-fpm.conf",
-		{ destination => "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php-fpm.conf" }
-	);
-	return $rs if $rs;
+	$self->{'httpd'}->setData({
+		HTTPD_USER => $self->{'httpd'}->getRunningUser(),
+		HTTPD_GROUP => $self->{'httpd'}->getRunningGroup()
+	});
 
-	$self->{'eventManager'}->trigger('afterHttpdBuildPhpConfFiles');
+	# Default pool configuration file (only to met PHP5-FPM requirements)
+	$rs = $self->{'httpd'}->buildConfFile("$self->{'phpfpmCfgDir'}/php-fpm.pool.default", { }, {
+		destination => "$self->{'phpfpmWrkDir'}/www.conf"
+	});
+	$rs ||= $self->{'httpd'}->installConfFile("$self->{'phpfpmWrkDir'}/www.conf", {
+		destination => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
+	});
+
+	$rs ||= $self->{'eventManager'}->trigger('afterHttpdBuildPhpConfFiles');
 }
 
 =item _buildApacheConfFiles
