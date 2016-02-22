@@ -7,8 +7,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <syslog.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <errno.h>
 #include "defs.h"
 
