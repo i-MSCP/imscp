@@ -1,10 +1,8 @@
 #ifndef _HELO_SYNTAX_H
-
 #define _HELO_SYNTAX_H
 
 #include <stdlib.h>
 #include <string.h>
-
 #include "defs.h"
 
 extern char *message(int message_number);

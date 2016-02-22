@@ -1,5 +1,4 @@
 #ifndef _DEFS_H
-
 #define _DEFS_H
 
 /* Syslog daemon options */
@@ -58,5 +57,4 @@
 #define MSG_ERROR_SOCKET_CREATE_TXT "socket() error: %s"
 #define MSG_GOOD_BYE            120
 #define MSG_GOOD_BYE_TXT            "Good bye\n"
-
 #endif

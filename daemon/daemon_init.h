@@ -1,6 +1,7 @@
 #ifndef _DEAMON_INIT_H
-
 #define _DAEMON_INIT_H
+
+#define _XOPEN_SOURCE
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -8,7 +9,7 @@
 #include <syslog.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-
+#include <errno.h>
 #include "defs.h"
 
 extern char *message(int message_number);

@@ -1,6 +1,7 @@
 #ifndef _IMSCP_DAEMON_H
-
 #define _IMSCP_DAEMON_H
+
+#define _POSIX_C_SOURCE 200809L
 
 #include <stdlib.h>
 #include <syslog.h>
@@ -15,11 +16,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <arpa/inet.h>
-
 #include "defs.h"
 
 char *backendscriptpath = NULL;
-
 struct timeval *tv_rcv;
 struct timeval *tv_snd;
 
@@ -29,10 +28,5 @@ extern void say(char *format, char *message);
 extern void sigChild (int signo);
 extern void sigPipe(int signo);
 extern void takeConnection(int sockfd);
-
-/* TOO review  (see feature_test_macros(7) */
-int getopt(int argc, char * const argv[], const char *optstring);
-extern char *optarg;
-extern int optind, opterr, optopt;
 
 #endif
