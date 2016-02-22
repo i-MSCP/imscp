@@ -76,6 +76,7 @@ INSTALLER
 	Fixed: Don't ask admin for data directory (/var/lib/mysql) removal (package maintainer script)
 	Fixed: Do not try to receive/download repository gpg key if already present
 	Fixed: Missing source repositories in APT sources.list
+	Fixed: Output from imscp-rqst-mngr must be shown on stdout when verbose mode is enabled (only with noprompt)
 	Removed: Support for Ubuntu 15.04 (Vivid Vervet) - Not an LTS version
 
 PLUGINS

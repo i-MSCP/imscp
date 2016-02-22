@@ -1775,9 +1775,13 @@ sub setupRebuildCustomerFiles
 
 	my $stderr;
 	$rs = executeNoWait(
-		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup",
-		sub { my $str = shift; while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//) { step(undef, $1, $2, $3); } },
-		sub { my $str = shift; while ($$str =~ s/^(.*\n)//) { $stderr .= $1; } }
+		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup" . (
+			iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? ' --verbose' : ''
+		),
+		(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose)
+			? sub { my $str = $_[0]; print $1 while ($$str =~ s/^(.*\n)//); }
+			: sub { my $str = $_[0]; step(undef, $1, $2, $3) while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//); },
+		sub { my $str = $_[0]; $stderr .= $1 while ($$str =~ s/^(.*\n)//); }
 	);
 
 	endDetail();
