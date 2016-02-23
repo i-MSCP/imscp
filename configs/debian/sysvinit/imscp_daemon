@@ -86,7 +86,7 @@ case "$1" in
         2) log_end_msg 1 ;;
     esac
     ;;
-  restart|reload|force-reload)
+  restart|force-reload)
     log_daemon_msg "Restarting $DESC" "$NAME"
     do_stop
     case "$?" in
@@ -108,7 +108,7 @@ case "$1" in
     status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
     ;;
   *)
-    echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload|status}" >&2
+    echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload|status}" >&2
     exit 3
   ;;
 esac
