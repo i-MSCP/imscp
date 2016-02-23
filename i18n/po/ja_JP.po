@@ -4,16 +4,16 @@
 # 
 # Translators:
 # i-MSCP <team@i-mscp.net>, 2015
-# kazuo <kazu.nito@gmail.com>, 2014-2015
+# kazuo <kazu.nito@gmail.com>, 2014-2016
 # kazuo <kazu.nito@gmail.com>, 2013
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-18 17:13+0100\n"
-"PO-Revision-Date: 2016-02-16 22:33+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-02-23 10:33+0100\n"
+"PO-Revision-Date: 2016-02-23 05:58+0000\n"
+"Last-Translator: kazuo <kazu.nito@gmail.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -5689,7 +5689,7 @@ msgstr "ログアウトしました。"
 msgid ""
 "You have disabled SQL databases for this user. You cannot have SQL users "
 "here."
-msgstr ""
+msgstr "このユーザーは無効なSQLデータベースを持っています。ここでSQLユーザーを持つことができません。"
 
 msgid "You have no closed tickets."
 msgstr "閉じたチケットを持っていません。"
@@ -5719,7 +5719,7 @@ msgid ""
 msgstr "サブスクリプションで許可されているサブドメインの最大数に達しました。"
 
 msgid "You have reached your domain limit. You cannot add more domains."
-msgstr ""
+msgstr "ドメインの上限に達しました。それ以上のドメインを追加することはできません。"
 
 #, php-format
 msgid "You have received %s new support ticket(s)."
@@ -5729,7 +5729,7 @@ msgid "You have to choose between file-upload and wget-function."
 msgstr "ファイルアップロードとwget-機能を選ばなければなりません。"
 
 msgid "You must assign at least one IP to this reseller."
-msgstr ""
+msgstr "代理店に少なくとも１つのIPを割り当てる必要があります。"
 
 msgid "You must choose between local and remote upload."
 msgstr "ローカル又はリモートのアップロードのどちらかを選択する必要があります。"
