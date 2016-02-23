@@ -5,7 +5,10 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIG
-	Fixed: /php-fpm/php-fpm.pool.default declaration in configs/ubuntu/php-fpm/install.xml
+	Fixed: Missing /php-fpm/php-fpm.pool.default declaration in configs/ubuntu/php-fpm/install.xml
+
+CONTRIB
+	Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (20_dovecot_connections.pl)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.12

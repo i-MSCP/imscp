@@ -41,7 +41,7 @@ iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
 
 	return 0 unless index($tplName, 'dovecot.conf') != -1;
 
-	my $$cfgTpl .= <<EOF;
+	$$cfgTpl .= <<EOF;
 
 # BEGIN Listener::Dovecot::Connections
 mail_max_userip_connections = $maxConnections
