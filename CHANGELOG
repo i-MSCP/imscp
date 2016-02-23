@@ -27,6 +27,7 @@ CONFIG
 	Renamed: ZIP configration parameter to BACKUP_COMPRESS_ALGORITHM
 	Removed: Dovecot 1.x configuration files
 	Removed: procmail mailbox command in Postfix main.cf file
+	Updated: Matching rule for PHP files (.php .php3 .php4 .php5 .php7 .pht .phtml)
 
 CONTRIB
 	Added: 40_apache2_tools_proxy.pl listener file (redirect/proxy the i-MSCP tools in customers vhost files)
