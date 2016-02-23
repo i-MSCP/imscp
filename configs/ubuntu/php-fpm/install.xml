@@ -8,6 +8,7 @@
     <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init/php5-fpm.override</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/logrotate.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/php-fpm.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/php-fpm/php-fpm.pool.default</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/php_fpm_imscp.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/php_fpm_imscp.load</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/phpfpm.data</copy_config>
