@@ -181,7 +181,7 @@ function &reseller_getData($domainId, $forUpdate = false)
 
     $domainProps = reseller_getDomainProps($domainId);
     $resellerProps = reseller_getResellerProps($_SESSION['user_id']);
-    $resellerProps['reseller_ips'] = explode(';', rtrim($row['reseller_ips'], ';'));
+    $resellerProps['reseller_ips'] = explode(';', rtrim($resellerProps['reseller_ips'], ';'));
 
     list($subCount, $alsCount, $mailCount, $ftpCount, $sqlDbCount, $sqlUsersCount) = get_domain_running_props_cnt($domainId);
 
