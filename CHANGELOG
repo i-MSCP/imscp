@@ -9,6 +9,7 @@ CONFIG
 
 CONTRIB
 	Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (20_dovecot_connections.pl)
+	Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (40_dovecot_pfs.pl)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.12
