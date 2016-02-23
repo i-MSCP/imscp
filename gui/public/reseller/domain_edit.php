@@ -924,7 +924,7 @@ function reseller_checkAndUpdateData($domainId)
                     array($data['domain_ip_id'], 'tochange', $domainId, 'ordered')
                 );
                 exec_query(
-                    'UPDATE domain_aliasses SET alias_ip_id = ?WHERE domain_id = ? AND alias_status = ?',
+                    'UPDATE domain_aliasses SET alias_ip_id = ? WHERE domain_id = ? AND alias_status = ?',
                     array($data['domain_ip_id'], $domainId, 'ordered')
                 );
             }
