@@ -13,7 +13,7 @@ Table of Content
 1) Version Info
 ---------------
 
-i-MSCP Version:  1.2.12
+i-MSCP Version:  <version>
 Distros:         Any LTS version >= Precise Pangolin (12.04) - Trusty Tahr recommended
 
 2) Requirements
@@ -43,12 +43,12 @@ All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
 3. Download and untar the distribution files to a secure directory
 
 	# cd /usr/local/src
-	# wget https://github.com/i-MSCP/imscp/archive/1.2.12.tar.gz
-	# tar xzf imscp-1.2.12.tar.gz
+	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+	# tar xzf imscp-<version>.tar.gz
 
 4. Change to the newly created directory
 
-	# cd imscp-1.2.12
+	# cd imscp-<version>
 
 5. Install by running the imscp-autoinstall script
 
@@ -70,12 +70,12 @@ All packages are listed in ./docs/Ubuntu/packages-<codename>.xml
 3. Download and untar the distribution files to a secure directory
 
 	# cd /usr/local/src
-	# wget https://github.com/i-MSCP/imscp/archive/1.2.12.tar.gz
-	# tar xzf imscp-1.2.12.tar.gz
+	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+	# tar xzf imscp-<version>.tar.gz
 
 4. Change to the newly created directory
 
-	# cd ./imscp-1.2.12
+	# cd ./imscp-<version>
 
 5. Update by running the imscp-autoinstall script
 
