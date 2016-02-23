@@ -22,6 +22,7 @@ CONFIG
 	Added: PHP-FPM parameters (global and per pool configuration parameters) in php-fpm/phpfpm.data file
 	Added: SQLD_SOCK_DIR, SQLD_USER and SQLD_GROUP parameters in mysql/mysql.data configuration file
 	Added: sql_mode parameter in mysql/imscp.cnf template file to reset server SQL modes (backward compatibility issue)
+	Fixed: Missing http authorization headers (PHP-FPM with apache2 mod_proxy_fcgi)
 	Fixed: Possible segfault with OPcache when fast shutdown feature is enabled
 	Renamed: ZIP configration parameter to BACKUP_COMPRESS_ALGORITHM
 	Removed: Dovecot 1.x configuration files

@@ -29,6 +29,8 @@
     # SECTION mod_fastcgi END.
 
     # SECTION mod_proxy_fcgi BEGIN.
+    SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+
     <FilesMatch "\.php5?$">
         SetHandler "proxy:{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}"
     </FilesMatch>
