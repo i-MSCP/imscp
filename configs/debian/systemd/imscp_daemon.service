@@ -6,7 +6,7 @@ After=network.target
 Type=forking
 PIDFile=/var/run/imscp_daemon.pid
 ExecStart=/var/www/imscp/daemon/imscp_daemon -b /var/www/imscp/engine/imscp-rqst-mngr -p /var/run/imscp_daemon.pid
-Restart=on-abort
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
