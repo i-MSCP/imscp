@@ -204,8 +204,8 @@ sub _upgradeSystemTablesIfNecessary
 		my $dbUser = $main::imscpConfig{'DATABASE_USER'};
 		my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
 		my $dbPass = escapeShell(decryptBlowfishCBC(
-				$main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
-			));
+			$main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
+		));
 
 		$qrs = $db->doQuery(
 			'u', "ALTER USER ?@? IDENTIFIED WITH 'mysql_native_password' BY ?", $dbUser, $dbHost, $dbPass
