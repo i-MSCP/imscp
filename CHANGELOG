@@ -12,6 +12,10 @@ CONTRIB
 	Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (20_dovecot_connections.pl)
 	Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (40_dovecot_pfs.pl)
 
+INSTALLER:
+	Fixed: Perl DBI (mysql) package removed when using MariaDB server leading to installation/update failure
+	Fixed: Switch policy is ignored (SQL servers)
+
 FRONTEND
 	Fixed: Unable to handle uncaught exception thrown... Data `translator` is not registered
 	Fixed: Exception browser writer doesn't display the expected exception in some contexts

@@ -69,7 +69,7 @@
                 pinning_package="libmysqlclient18 mysql-client-5.6 mysql-common mysql-server-5.6"
                 pinning_pin="release o=Ubuntu,n=xenial"
                 pinning_pin_priority="1001"
-                allow_switch_to="remote_server"
+                allow_switch="remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.6</package>
@@ -80,7 +80,7 @@
                 pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
                 pinning_pin="release o=Ubuntu,n=xenial"
                 pinning_pin_priority="1001"
-                allow_switch_to="remote_server"
+                allow_switch="remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>

@@ -69,7 +69,7 @@
                 pinning_package="libmysqlclient18 mysql-client-5.6 mysql-commom mysql-server-5.6"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
-                allow_switch_to="remote_server"
+                allow_switch="remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>mysql-community-client</package>
@@ -77,16 +77,17 @@
             <package>mysql-community-server</package>
         </mysql_5.6>
         <mariadb_10.0
-                pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0"
+                pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
-                allow_switch_to="remote_server"
+                allow_switch="remote_server"
                 >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
             <package>mariadb-common</package>
             <package>mariadb-server-10.0</package>
+            <package>mysql-common</package>
         </mariadb_10.0>
         <remote_server
                 pinning_package="libmysqlclient18 mysql-client-5.6 mysql-common"
