@@ -586,7 +586,6 @@ class iMSCP_PHPini
         }
 
         if (!$this->validateDomainIni($varname, $value)) {
-            print "ouch, not valid $varname<br>";
             return;
         }
 
