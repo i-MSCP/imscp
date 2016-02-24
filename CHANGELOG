@@ -6,6 +6,7 @@ Git 1.2.x
 
 INSTALLER
 	Fixed: Password must not be escaped (MySQL installer)
+	Fixed: Unckeking all disabled functions has no effect (PHP Editor)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.13

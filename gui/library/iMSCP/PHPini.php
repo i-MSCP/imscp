@@ -586,6 +586,7 @@ class iMSCP_PHPini
         }
 
         if (!$this->validateDomainIni($varname, $value)) {
+            print "ouch, not valid $varname<br>";
             return;
         }
 
@@ -689,7 +690,7 @@ class iMSCP_PHPini
             case 'phpiniDisableFunctions':
                 $allowedFunctionNames = array(
                     'exec', 'mail', 'passthru', 'phpinfo', 'popen', 'proc_open', 'show_source', 'shell', 'shell_exec',
-                    'symlink', 'system'
+                    'symlink', 'system', ''
                 );
 
                 return array_diff(explode(',', $value), $allowedFunctionNames) ? false : true;
