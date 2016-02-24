@@ -15,6 +15,7 @@ CONTRIB
 INSTALLER
 	Fixed: Perl DBI (mysql) package removed when using MariaDB server leading to installation/update failure
 	Fixed: Switch policy is ignored (SQL servers)
+	Fixed: Wrong package names in Debian Strech package file (MySQL 5.6)
 
 FRONTEND
 	Fixed: Unable to handle uncaught exception thrown... Data `translator` is not registered

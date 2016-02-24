@@ -72,9 +72,9 @@
                 allow_switch="remote_server"
                 >
             <package>libmysqlclient18</package>
-            <package>mysql-community-client</package>
+            <package>mysql-client-5.6</package>
             <package>mysql-common</package>
-            <package>mysql-community-server</package>
+            <package>mysql-server-5.6</package>
         </mysql_5.6>
         <mariadb_10.0
                 pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
