@@ -197,13 +197,32 @@ sub _upgradeSystemTablesIfNecessary
 		return 1;
 	}
 
-	# Disable password validation plugins if any (bc reasons)
+	# Ensure that SQL root user uses mysql_native_password authentication plugin
+	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.7.6')
+		&& $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
+	) {
+		my $dbUser = $main::imscpConfig{'DATABASE_USER'};
+		my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
+		my $dbPass = escapeShell(decryptBlowfishCBC(
+				$main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
+			));
+
+		$qrs = $db->doQuery(
+			'u', "ALTER USER ?@? IDENTIFIED WITH 'mysql_native_password' BY ?", $dbUser, $dbHost, $dbPass
+		);
+		unless(ref $qrs eq 'HASH') {
+			error($qrs);
+			return 1;
+		}
+	}
+
+	# Disable unwanted validation/authentication plugins if any (bc reasons)
 	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.6.6')
 		&& $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
 		|| version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('10.1.2')
 		&& $main::imscpConfig{'SQL_SERVER'} =~ /^mariadb/
 	) {
-		for my $plugin(qw/cracklib_password_check simple_password_check validate_password/) {
+		for my $plugin(qw/cracklib_password_check simple_password_check validate_password auth_socket/) {
 			$qrs = $db->doQuery('name', "SELECT name FROM mysql.plugin WHERE name = '$plugin'");
 			unless(ref $qrs eq 'HASH') {
 				error($qrs);
