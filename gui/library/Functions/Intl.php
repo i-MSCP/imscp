@@ -37,8 +37,20 @@ function tr($messageId, $substitution = null)
 	static $translator = null;
 
 	if(null == $translator) {
-		/** @var Zend_Translate_Adapter $translator */
-		$translator = iMSCP_Registry::get('translator');
+		if(iMSCP_Registry::isRegistered('translator')) {
+			/** @var Zend_Translate_Adapter $translator */
+			$translator = iMSCP_Registry::get('translator');
+		} else {
+			$message = $messageId;
+
+			if ($substitution !== null) {
+				$argv = func_get_args();
+				unset($argv[0]);
+				$message = vsprintf($message, $argv);
+			}
+
+			return $message;
+		}
 	}
 
 	$message = $translator->translate($messageId);

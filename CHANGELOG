@@ -11,6 +11,11 @@ CONTRIB
 	Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (20_dovecot_connections.pl)
 	Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (40_dovecot_pfs.pl)
 
+FRONTEND
+	Fixed: Unable to handle uncaught exception thrown... Data `translator` is not registered
+	Fixed: Exception browser writer doesn't display the expected exception in some contexts
+	Fixed: Exception mail writer cache do not work
+
 ------------------------------------------------------------------------------------------------------------------------
 1.2.12
 ------------------------------------------------------------------------------------------------------------------------
