@@ -625,7 +625,7 @@ function admin_checkAndUpdateData($resellerId)
             }
 
             // Nothing has been changed ?
-            if ($newValues == $oldValues) {
+            if ($newValues == $oldValues && !$needDaemonRequest) {
                 set_page_message(tr('Nothing has been changed.'), 'info');
                 return true;
             }

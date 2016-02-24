@@ -5,6 +5,7 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 INSTALLER
+	Fixed: Could not edit reseller PHP permissions (PHP Editor)
 	Fixed: Password must not be escaped (MySQL installer)
 	Fixed: Unckeking all disabled functions has no effect (PHP Editor)
 
