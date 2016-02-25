@@ -11,10 +11,12 @@ Git 1.2.x
 2016-02-25: Laurent Declercq
 	RELEASE i-MSCP 1.2.14
 
-INSTALLER
+FRONTEND
 	Fixed: Could not edit reseller PHP permissions (PHP Editor)
-	Fixed: Password must not be escaped (MySQL installer)
 	Fixed: Unchecking all disabled functions has no effect (PHP Editor)
+
+INSTALLER
+	Fixed: Password must not be escaped (MySQL installer)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.13
