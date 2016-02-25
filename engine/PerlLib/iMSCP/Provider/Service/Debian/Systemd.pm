@@ -194,8 +194,7 @@ sub _init
 {
 	my $self = shift;
 
-	# Sets compatibility mode according systemctl version in use
-
+	# Enable compatibility mode if systemd package version is lower than version 204-3
 	$SYSTEMCTL_COMPAT_MODE = lazy { $self->_exec(
 		$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' systemd)', 'ge', '204-3'
 	); } unless defined $SYSTEMCTL_COMPAT_MODE;

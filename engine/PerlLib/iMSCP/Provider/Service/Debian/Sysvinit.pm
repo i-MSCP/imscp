@@ -173,7 +173,7 @@ sub _init
 {
 	my $self = shift;
 
-	# Sets compatibility mode according sysv-rc package version in use
+	# Enable compatibility mode if sysv-rc package version is lower than version 2.88
 	$SYSVRC_COMPAT_MODE = lazy { $self->_exec(
 		$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)', 'ge', '2.88'
 	); } unless defined $SYSVRC_COMPAT_MODE;

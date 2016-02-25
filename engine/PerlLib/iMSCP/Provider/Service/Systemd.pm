@@ -79,8 +79,7 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	return 0 unless $self->_isSystemd($service);
-
+	# Note: Will automatically call update-rc.d in case of a sysvinit script
 	$self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0;
 }
 
@@ -97,6 +96,7 @@ sub disable
 {
 	my ($self, $service) = @_;
 
+	# Note: Will automatically call update-rc.d in case of a sysvinit script
 	$self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0;
 }
 
