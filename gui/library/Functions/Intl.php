@@ -106,7 +106,7 @@ function replace_html($string)
 		'#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i');
 
 	$replacement = array(
-		'<b>', '</b>', '<strong>', '</strong>', '<em>', '</em>', '<i>', '</i>', '<small>', '</small>', '<br />'
+		'<b>', '</b>', '<strong>', '</strong>', '<em>', '</em>', '<i>', '</i>', '<small>', '</small>', '<br>'
 	);
 
 	$string = preg_replace($pattern, $replacement, $string);

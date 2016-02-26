@@ -52,7 +52,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 	$message = '';
 
 	if (empty($data['subject'])) {
-		$message .= tr('Please specify a message subject.') . '<br />';
+		$message .= tr('Please specify a message subject.') . '<br>';
 	}
 
 	if (empty($data['message'])) {

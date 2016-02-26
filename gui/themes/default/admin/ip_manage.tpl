@@ -31,7 +31,7 @@
 </script>
 
 <p class="hint" style="font-variant: small-caps;font-size: small;">{TR_TIP}</p>
-<br />
+<br>
 
 <!-- BDP: ip_addresses_block -->
 <h3 class="ip"><span>{TR_CONFIGURED_IPS}</span></h3>

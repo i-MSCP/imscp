@@ -170,7 +170,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 						if (empty($normalizedDetails)) {
 							$normalizedDetails = $matches[1];
 						} else {
-							$normalizedDetails .= '<br />' . $matches[1];
+							$normalizedDetails .= '<br>' . $matches[1];
 						}
 					} else {
 						break;
