@@ -49,7 +49,7 @@ use iMSCP::EventManager;
 # Listener which simply cancel installation
 sub sample
 {
-    warning("Installation has been canceled by an event listener.");
+    warning("Installation has been cancelled by an event listener.");
     exit 0;
 }
 

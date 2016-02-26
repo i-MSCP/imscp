@@ -183,7 +183,7 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
 
 	$subject = tr('{ADMIN} activated your software package');
 	$message = tr('Dear {RESELLER},
-	Your uploaded a software package was succesful activated by {ADMIN}.
+	Your uploaded a software package was successful activated by {ADMIN}.
 
 	Details:
 	Package Name: {SOFTWARE}
@@ -401,7 +401,7 @@ function get_avail_softwaredepot($tpl)
 							'LINK_COLOR' => '#FF0000',
 							'TR_VERSION' => '',
 							'TR_LANGUAGE' => '',
-							'TR_TOOLTIP' => tr('The package will be installed automaticly to your system after upload.<br>Refresh your site to see the new status!'),
+							'TR_TOOLTIP' => tr('The package will be installed automatically to your system after upload.<br>Refresh your site to see the new status!'),
 							'TR_DOWNLOAD' => '',
 							'DOWNLOAD_LINK' => '',
 							'DELETE_LINK' => $del_url,
