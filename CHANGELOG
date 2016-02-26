@@ -8,6 +8,7 @@ CONFIG
 	Added: imscp_panel.service systemd unit file
 
 INSTALLER
+	Fixed: Ensure that mysql service is enabled
 	Fixed: sysvinit scripts are not enabled when using systemd (regression fix)
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -22,7 +23,6 @@ FRONTEND
 	Fixed: Unchecking all disabled functions has no effect (PHP Editor)
 
 INSTALLER
-	Fixed: Ensure that mysql service is enabled
 	Fixed: Password must not be escaped (MySQL installer)
 
 ------------------------------------------------------------------------------------------------------------------------
