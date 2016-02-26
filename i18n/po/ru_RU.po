@@ -6,7 +6,7 @@
 # 9 Beliy <9beliy@gmail.com>, 2012
 # Arthur Mayer <mayer.arthur@gmail.com>, 2016
 # hosterdev <rwer353453534@mail.ru>, 2011
-# i-MSCP <team@i-mscp.net>, 2015
+# i-MSCP <team@i-mscp.net>, 2015-2016
 # Laurent Declercq <l.declercq@nuxwin.com>, 2015
 # Oleg Olegov <>, 2012
 # Vitaliy Zhukov <DragonZX@yandex.ru>, 2014-2015
@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-26 20:50+0100\n"
-"PO-Revision-Date: 2016-02-26 19:51+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-02-26 21:33+0100\n"
+"PO-Revision-Date: 2016-02-26 20:08+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -498,19 +498,19 @@ msgstr "(Обычное имя архива: "
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> имеет неограниченные права на <b>%2$s</b> службу.<br>"
 
 #, php-format
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
 "reseller.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> превышает ограниченя для <b>%2$s</b><br>службы целевого реселлера.<br>"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br>This user cannot be moved!"
-msgstr ""
+msgstr "<b>%s</b> имеет IP адрес, который не может управляться целевым реселлером!<br>Этот пользователь не может быть перемещен!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "Расширение PHP остановило загрузку файла."
@@ -874,7 +874,7 @@ msgstr "Администраторы и реселлеры"
 msgid ""
 "After your upload the package it will be installed on your "
 "systems.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "После загрузки пакета, он будет установлен в вашу систему.<br>Обновите Ваш сайт, чтобы увидеть новый статус!"
 
 msgid "Alias forward"
 msgstr "Перенаправление алиаса"
@@ -1281,23 +1281,23 @@ msgstr "Проверка обновлений"
 msgid ""
 "Check the reseller uploads!<br>It is not allowed to upload this package two "
 "times.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "Проверьте загрузки реселлера!<br>Не разрешается загружать один и тот же пакет дважды.<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid ""
 "Check your own uploads!<br>Ask the administrator if you don't find the "
 "package.<br>It is not allowed to upload this packages two times.<br>Refresh "
 "your site to see the new status!"
-msgstr ""
+msgstr "Проверьте Ваши загрузки!<br>Сообщите администратору, если Вы не можете найти пакет.<br>Не разрешается загружать один и тот же пакет дважды.<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid ""
 "Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
-msgstr ""
+msgstr "Проверьте Ваш пакет. Он содержит ошибку!<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid ""
 "Check your software depot uploads!<br>It is not allowed to upload this "
 "package two times.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "Проверьте загрузки репозитория!<br>Не разрешается загружать один и тот же пакет дважды.<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid "Choose"
 msgstr "Выбрать"
@@ -1835,7 +1835,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
+msgstr "Уважаемый {RESELLER},\n\nЗагруженное Вами ПО было успешно подтверждено администратором {ADMIN}.\n\nПодробности:\nНазвание пакета: {SOFTWARE}\nID Пакета: {SOFTWARE_ID}\n\nПожалуйста, войдите в вашу панель управления i-MSCP для получения подробностей."
 
 msgid "Debugger"
 msgstr "Отладчик"
@@ -3346,7 +3346,7 @@ msgid "Nothing has been scheduled for deactivation."
 msgstr "Ничего не было помечено для деактивации."
 
 msgid "Nothing to do. Daemon request has been cancelled."
-msgstr ""
+msgstr "Задача отсутствует. Запрос демона был отклонен."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Уведомления, предупреждения и ошибки"
@@ -3394,7 +3394,7 @@ msgstr "Открытые тикеты"
 
 #, php-format
 msgid "Operation cancelled: %s"
-msgstr ""
+msgstr "Операция отменена: %s"
 
 msgid "Optional"
 msgstr "Опционально"
@@ -3618,7 +3618,7 @@ msgid ""
 "Please contact the administrator!<br>Ask him for the permissions to use this"
 " package.<br>It is not allowed to upload this packet two times.<br>Refresh "
 "your site to see the new status!"
-msgstr ""
+msgstr "Пожалуйста, свяжитесь с администратором!<br>Обратитесь к нему за разрешениями на пакет.<br>Не разрешается загружать один и тот же пакет дважды.<br>Обновите страницу, чтобы увидеть новый статус!"
 
 msgid "Please enter a name for the protected area."
 msgstr "Пожалуйста, введите имя для защищенной зоны."
@@ -4391,7 +4391,7 @@ msgid "Service name already exists."
 msgstr "Имя службы уже существует."
 
 msgid "Service port successfully added"
-msgstr ""
+msgstr "Порт служб был успешно добавлен"
 
 msgid "Service port successfully removed."
 msgstr "Порт служб был успешно удален"
@@ -4807,7 +4807,7 @@ msgstr "Пакет поврежден. Пожалуйста, исправьте 
 msgid ""
 "The package will be installed automatically to your system after "
 "upload.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "Пакет будет автоматически установлен в вашу систему после загрузки.<br>Обновите страницу, чтобы увидеть новый статус!"
 
 msgid "The password field is empty."
 msgstr "Поле пароля пусто."
@@ -4817,7 +4817,7 @@ msgstr "Приватный ключ не принадлежит предоста
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
-msgstr ""
+msgstr "Размер удаленного файла (%s) меньше 1 байта. Пожалуйста, проверьте URL."
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
@@ -4846,7 +4846,7 @@ msgstr "Значения не должны быть равны"
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
-msgstr ""
+msgstr "Ошибка Вашего пакета. Пожалуйста, проверьте его!<br>Обновите Ваш сайт, чтобы увидеть новый статус!"
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4857,7 +4857,7 @@ msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
 "this package!<br>Please delete the files and database for this package "
 "manually!"
-msgstr ""
+msgstr "Пакет (%s, V%s) был удален вашим реселлером. Вы можете только удалить этот пакет!<br>Пожалуйста, удалите файлы и базы данных этого пакета вручную!"
 
 #, php-format
 msgid ""
@@ -5590,7 +5590,7 @@ msgstr "Вы не можете перенаправить %s на самого �
 msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
-msgstr ""
+msgstr "Вы не можете переместить <b>%1$s</b> для целевого реселлера,<br>у которого есть ограничения на службу <b>%2$s</b>."
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr "Вы не можете защитить зону без выбора групп htaccess."
@@ -5831,7 +5831,7 @@ msgstr "Ваш пакет поврежден. Пожалуйста, исправ
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
-msgstr ""
+msgstr "Размер удаленного файла (%s) меньше 1 байта. Пожалуйста, проверьте Ваш URL."
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"

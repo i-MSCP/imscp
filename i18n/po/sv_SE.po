@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Cool <barni@telia.com>, 2014-2016
-# i-MSCP <team@i-mscp.net>, 2015
+# i-MSCP <team@i-mscp.net>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-26 20:50+0100\n"
-"PO-Revision-Date: 2016-02-26 19:51+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-02-26 21:33+0100\n"
+"PO-Revision-Date: 2016-02-26 20:32+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -493,19 +493,19 @@ msgstr "(vanligtvis kallad"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
 
 #, php-format
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
 "reseller.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller.<br>"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br>This user cannot be moved!"
-msgstr ""
+msgstr "<b>%s</b> has IP address that cannot be managed from the destination reseller!<br>This user cannot be moved!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "A PHP extension stopped the file upload."
@@ -869,7 +869,7 @@ msgstr "Administratör och återförsäljare"
 msgid ""
 "After your upload the package it will be installed on your "
 "systems.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "After your upload the package it will be installed on your systems.<br>Refresh your site to see the new status!"
 
 msgid "Alias forward"
 msgstr "Alias forward"
@@ -1276,23 +1276,23 @@ msgstr "Leta efter uppdatering"
 msgid ""
 "Check the reseller uploads!<br>It is not allowed to upload this package two "
 "times.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "Check the reseller uploads!<br>It is not allowed to upload this package two times.<br>Refresh your site to see the new status!"
 
 msgid ""
 "Check your own uploads!<br>Ask the administrator if you don't find the "
 "package.<br>It is not allowed to upload this packages two times.<br>Refresh "
 "your site to see the new status!"
-msgstr ""
+msgstr "Check your own uploads!<br>Ask the administrator if you don't find the package.<br>t is not allowed to upload this packages two times.<br>Refresh your site to see the new status!"
 
 msgid ""
 "Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
-msgstr ""
+msgstr "Check your package. There is an error inside!<br>Refresh your site to see the new status!"
 
 msgid ""
 "Check your software depot uploads!<br>It is not allowed to upload this "
 "package two times.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "Check your software depot uploads!<br>It is not allowed to upload this package two times.<br>Refresh your site to see the new status!"
 
 msgid "Choose"
 msgstr "Välj"
@@ -1830,7 +1830,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
+msgstr "Dear {RESELLER},\n\nYour uploaded a software package was succesful activated by {ADMIN}.\n\nDetails:\nPackage Name: {SOFTWARE}\nPackage ID: {SOFTWARE_ID}\n\nPlease login into your i-MSCP control panel for more details."
 
 msgid "Debugger"
 msgstr "Debugger"
@@ -3341,7 +3341,7 @@ msgid "Nothing has been scheduled for deactivation."
 msgstr "Inget har planerats för avaktivering."
 
 msgid "Nothing to do. Daemon request has been cancelled."
-msgstr ""
+msgstr "Inget att göra. Daemon begäran har avbrutits."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notiser, varningar och fel"
@@ -3389,7 +3389,7 @@ msgstr "Öppna supportärenden"
 
 #, php-format
 msgid "Operation cancelled: %s"
-msgstr ""
+msgstr "Åtgärden avbruten: %s"
 
 msgid "Optional"
 msgstr "Valfri"
@@ -3613,7 +3613,7 @@ msgid ""
 "Please contact the administrator!<br>Ask him for the permissions to use this"
 " package.<br>It is not allowed to upload this packet two times.<br>Refresh "
 "your site to see the new status!"
-msgstr ""
+msgstr "Please contact the administrator!<br>Ask him for the permissions to use this package.<br>It is not allowed to upload this packet two times.<br>Refresh your site to see the new status!"
 
 msgid "Please enter a name for the protected area."
 msgstr "Please enter a name for the protected area."
@@ -4386,7 +4386,7 @@ msgid "Service name already exists."
 msgstr "Tjänstenamnet finns redan."
 
 msgid "Service port successfully added"
-msgstr ""
+msgstr "Service port lagts till framgångsrikt"
 
 msgid "Service port successfully removed."
 msgstr "Service port tagits bort."
@@ -4802,7 +4802,7 @@ msgstr "The package is corrupt. Please correct it."
 msgid ""
 "The package will be installed automatically to your system after "
 "upload.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "The package will be installed automaticly to your system after upload.<br>Refresh your site to see the new status!"
 
 msgid "The password field is empty."
 msgstr "Fältet för lösenord är tomt."
@@ -4812,7 +4812,7 @@ msgstr "Den privata nyckeln tillhör inte den medföljande SSL-certifikat."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
-msgstr ""
+msgstr "fjärr filstorlek (%s) är lägre än 1 byte. Kontrollera webbadressen."
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
@@ -4841,7 +4841,7 @@ msgstr "Värdena får inte vara lika"
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
-msgstr ""
+msgstr "There is an Error inside your package. Please check it!<br>Refresh your site to see the new status!"
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4852,7 +4852,7 @@ msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
 "this package!<br>Please delete the files and database for this package "
 "manually!"
-msgstr ""
+msgstr "This Package (%s, V%s) was deleted by your reseller. You can only uninstall this package!<br>Please delete the files and database for this package manually!"
 
 #, php-format
 msgid ""
@@ -5585,7 +5585,7 @@ msgstr "Du kan inte vidarebefordra %s på sig."
 msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
-msgstr ""
+msgstr "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service."
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr "You cannot protect an area without selected htaccess group(s)."
@@ -5826,7 +5826,7 @@ msgstr "Ditt paket är skadat. Korrigera det!"
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
-msgstr ""
+msgstr "Fjärr filstorlek (%s) är lägre än 1 byte. Kontrollera din webbadress."
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
