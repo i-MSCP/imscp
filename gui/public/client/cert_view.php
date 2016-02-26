@@ -322,7 +322,7 @@ function client_addSslCert($domainId, $domainType)
             }
 
             // Note: Here we also add the CA bundle in the trusted chain to support self-signed certificates
-            if (@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname), $tmpfname)) {
+            if (!@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname), $tmpfname)) {
                 set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
                 return;
             }
