@@ -3,11 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# i-MSCP <team@i-mscp.net>, 2015
-# Jari <info@jkwebdesign.fi>, 2013
-# Laurent Declercq <l.declercq@nuxwin.com>, 2013
-# Toni Rissanen <toni.rissanen@arkku.net>, 2015
-# Toni Rissanen <toni.rissanen@arkku.net>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
@@ -15,11 +10,11 @@ msgstr ""
 "POT-Creation-Date: 2016-02-26 20:50+0100\n"
 "PO-Revision-Date: 2016-02-26 19:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
-"Language-Team: Finnish (Finland) (http://www.transifex.com/i-mscp/i-MSCP/language/fi_FI/)\n"
+"Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi_FI\n"
+"Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid ""
@@ -36,7 +31,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -114,16 +109,16 @@ msgid ""
 msgstr ""
 
 msgid " Admin / Support / Open Tickets"
-msgstr "Ylläpito / Tukijärjestelmä / Avoimet tukipyynnöt"
+msgstr ""
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
-msgstr "Asiakas / Web-työkalut / Muokkaa kustomoituja virhesivut"
+msgstr ""
 
 msgid " Wrong IP address."
-msgstr "Väärä IP-osoite"
+msgstr ""
 
 msgid " was deleted by {ADMIN}!"
-msgstr "poistettiin ylläpitäjän {ADMIN} toimesta!"
+msgstr ""
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -131,115 +126,115 @@ msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d"
-msgstr "%1$d / %2$d"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
-msgstr "%1$d / %2$d of %3$d"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of %3$d</b>"
-msgstr "%1$d / %2$d of %3$d</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr "%1$d / %2$d / rajoittamaton"
+msgstr ""
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr "%1$d of %2$d"
+msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$d%% [%2$s / %3$s]"
+msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s rajoittamattomasta]"
+msgstr ""
 
 #, php-format
 msgid "%1$s (%2$s)"
-msgstr "%1$s (%2$s)"
+msgstr ""
 
 #, php-format
 msgid "%1$s - (Softwaredepot)"
-msgstr "%1$s - (Ohjelmistovarasto)"
+msgstr ""
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
-msgstr "%1$s - (Versio: %2$s, Kieli: %3$s)"
+msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr "%1$s / %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
-msgstr "%1$s / %2$s (%3$s)"
+msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr "%1$s / %2$s / rajoittamaton"
+msgstr ""
 
 #, php-format
 msgid "%1$s of %2$s"
-msgstr "%1$s / %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr "%1$s / <b>rajoittamaton</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s olet kirjautunut nyt käyttäjänä %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
-msgstr "%1$s%% [%2$s / %3$s]"
+msgstr ""
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s / rajoittamaton]"
+msgstr ""
 
 #, php-format
 msgid "%1$s`s - Software"
-msgstr "%1$s`s - Ohjelmisto"
+msgstr ""
 
 #, php-format
 msgid "%d %s remaining until account expiration"
-msgstr "%d %s jäljellä ennen tilauksen päättymistä"
+msgstr ""
 
 #, php-format
 msgid "%d / unlimited"
-msgstr "%d / rajoittamaton"
+msgstr ""
 
 #, php-format
 msgid "%d Service(s) port successfully updateds"
-msgstr "%d Palvelu(n) portit päivitetty onnistuneesti."
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
-msgstr "%d asetusparametri(t) on/ovat luotu."
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
-msgstr "%d asetusparametri(t) on/ovat päivitetty."
+msgstr ""
 
 #, php-format
 msgid "%d of %s"
-msgstr "%d / %s"
+msgstr ""
 
 #, php-format
 msgid "%d strings translated"
-msgstr "%d riviä käännetty"
+msgstr ""
 
 #, php-format
 msgid "%s / %s of %s"
-msgstr "%s - %s / %s"
+msgstr ""
 
 #, php-format
 msgid "%s / unlimited"
-msgstr "%s / rajoittamaton"
+msgstr ""
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
@@ -251,27 +246,27 @@ msgstr ""
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr "%s tili on poistettu onnistuneesti."
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist"
-msgstr "%s ei ole olemassa"
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr "%s ei ole olemassa tai on tyhjä."
+msgstr ""
 
 #, php-format
 msgid "%s field is empty or invalid."
-msgstr "%s kenttä on tyhjä tai arvo virheellinen."
+msgstr ""
 
 #, php-format
 msgid "%s host field is empty or invalid."
-msgstr "%s palvelin -kenttä on tyhjä tai arvo virheellinen."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
-msgstr "%s ei ole kelvollinen i-MSCP -kielitiedosto."
+msgstr ""
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
@@ -279,33 +274,33 @@ msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
-msgstr "%s ei ole osa domainia %s."
+msgstr ""
 
 #, php-format
 msgid "%s of %s"
-msgstr "%s / %s"
+msgstr ""
 
 #, php-format
 msgid "%s of unlimited"
-msgstr "%s / rajoittamaton"
+msgstr ""
 
 #, php-format
 msgid "%s page"
-msgstr "%s sivu"
+msgstr ""
 
 #, php-format
 msgid "%s record"
-msgstr "%s tietue"
+msgstr ""
 
 #, php-format
 msgid "%s webmail"
-msgstr "%s webmail"
+msgstr ""
 
 #, php-format
 msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
-msgstr "%s: Asiakkaiden käyttö (%s) on suurempi kuin jälleenmyyjän uusi raja."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -315,7 +310,7 @@ msgstr ""
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr "%s: Jälleenmyyjällä on asiakkaita rajoittamattomilla ominaisuuksilla"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -481,7 +476,7 @@ msgstr ""
 
 #, php-format
 msgid "'%%value%%' exceeds the allowed length"
-msgstr "'%%value%%' ylittää sallitun pituuden"
+msgstr ""
 
 msgid ""
 "'%%value%' is no valid email address in the basic format local-part@hostname"
@@ -492,7 +487,7 @@ msgid "(filtered from %s total records)"
 msgstr ""
 
 msgid "(usually named"
-msgstr "(nimetty yleensä "
+msgstr ""
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
@@ -511,247 +506,247 @@ msgid ""
 msgstr ""
 
 msgid "A PHP extension stopped the file upload."
-msgstr "PHP:n laajennus pysäytti tiedoston lähetyksen."
+msgstr ""
 
 msgid "A database update is available"
-msgstr "Tietokantapäivitys saatavilla"
+msgstr ""
 
 msgid "A hosting plan with same name already exists."
-msgstr "Järjestelmässä on jo samalla nimellä palvelupaketti."
+msgstr ""
 
 msgid "A new i-MSCP version is available"
-msgstr "Uusi i-MSCP versio on saatavilla"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
-msgstr "Pääsy domainisi tilastoihin hallintapaneelin kautta."
+msgstr ""
 
 msgid "Access your files through the web interface."
-msgstr "Siirry tiedostonhallintaan"
+msgstr ""
 
 msgid "Access your mail through the web interface."
-msgstr "Siirry Webmailiin"
+msgstr ""
 
 msgid "Account data"
-msgstr "Tilin tiedot"
+msgstr ""
 
 msgid "Account limits"
-msgstr "Tilin rajoitukset"
+msgstr ""
 
 msgid "Account name"
-msgstr "Tilin nimi"
+msgstr ""
 
 msgid "Account overview"
-msgstr "Tilin yhteenveto"
+msgstr ""
 
 msgid "Account summary"
-msgstr "Yhteenveto"
+msgstr ""
 
 msgid "Account type"
-msgstr "Tilin tyyppi"
+msgstr ""
 
 msgid "Action"
-msgstr "Toiminto"
+msgstr ""
 
 msgid "Action has been stopped."
-msgstr "Toiminto on pysäytetty"
+msgstr ""
 
 msgid "Action has failed."
-msgstr "Toiminto epäonnistui."
+msgstr ""
 
 msgid "Actions"
-msgstr "Toimenpiteet"
+msgstr ""
 
 msgid "Activate"
-msgstr "Aktivoi"
+msgstr ""
 
 msgid "Activate this plugin"
-msgstr "Aktivoi liitännäinen"
+msgstr ""
 
 msgid "Activated"
-msgstr "Aktivoitu"
+msgstr ""
 
 msgid "Activated software"
-msgstr "Ohjelmisto aktivoitu"
+msgstr ""
 
 msgid "Activation email"
-msgstr "Aktivointi sähköposti"
+msgstr ""
 
 msgid "Activation in progress..."
-msgstr "Aktivointi käynnissä..."
+msgstr ""
 
 msgid "Activation link expire time <small>(In minutes)</small>"
-msgstr "Aktivointilinkin voimassaoloaika <small>(min)</small>"
+msgstr ""
 
 msgid "Add"
-msgstr "Lisää"
+msgstr ""
 
 msgid "Add / Edit SSL certificate"
-msgstr "Lisää / Muokkaa SSL-sertifikaattia"
+msgstr ""
 
 msgid "Add FTP account"
-msgstr "Lisää FTP tili"
+msgstr ""
 
 msgid "Add Htaccess group"
-msgstr "Lisää htaccess -ryhmä"
+msgstr ""
 
 msgid "Add Htaccess user"
-msgstr "Lisää htaccess -käyttäjä"
+msgstr ""
 
 msgid "Add SQL database"
-msgstr "Lisää SQL-tietokanta"
+msgstr ""
 
 msgid "Add SQL user"
-msgstr "Lisää SQL-käyttäjä"
+msgstr ""
 
 msgid "Add SSL certificate"
-msgstr "Lisää SSL-sertifikaatti"
+msgstr ""
 
 msgid "Add a new entry"
-msgstr "Lisää uusi merkintä"
+msgstr ""
 
 msgid "Add admin"
-msgstr "Lisää ylläpitäjä"
+msgstr ""
 
 msgid "Add catchall"
-msgstr "Lisää 'Nappaa kaikki'"
+msgstr ""
 
 msgid "Add custom DNS record"
-msgstr "Lisää DNS tietue"
+msgstr ""
 
 msgid "Add custom menu"
-msgstr "Lisää kustomoitu valikko"
+msgstr ""
 
 msgid "Add customer"
-msgstr "Lisää asiakas"
+msgstr ""
 
 msgid "Add customer - Next step"
-msgstr "Lisää asiakas - Seuraava askel"
+msgstr ""
 
 msgid "Add domain alias"
-msgstr "Lisää domain-alias"
+msgstr ""
 
 msgid "Add email account"
-msgstr "Lisää sähköpostitili"
+msgstr ""
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Lisää ulkoinen sähköpostipalvelin domainille {DOMAIN_UTF8}"
+msgstr ""
 
 msgid "Add group"
-msgstr "Lisää ryhmä"
+msgstr ""
 
 msgid "Add hosting plan"
-msgstr "Lisää hosting-paketti"
+msgstr ""
 
 msgid "Add new IP address"
-msgstr "Lisää uusi IP osoite"
+msgstr ""
 
 msgid "Add new database"
-msgstr "Lisää uusi tietokanta"
+msgstr ""
 
 msgid "Add new entry"
-msgstr "Lisää uusi"
+msgstr ""
 
 msgid "Add new protected area"
-msgstr "Lisää uusi suojattu alue"
+msgstr ""
 
 msgid "Add new service port"
-msgstr "Lisää uusi palveluportti"
+msgstr ""
 
 msgid "Add permissions"
-msgstr "Lisää oikeudet"
+msgstr ""
 
 msgid "Add permissions for reseller to software:"
-msgstr "Lisää jälleenmyyjälle oikeudet ohjelmistoon:"
+msgstr ""
 
 msgid "Add protected area"
-msgstr "Lisää suojattu alue"
+msgstr ""
 
 msgid "Add reseller"
-msgstr "Lisää jälleenmyyjä"
+msgstr ""
 
 msgid "Add subdomain"
-msgstr "Lisää alidomain"
+msgstr ""
 
 msgid "Add user"
-msgstr "Lisää käyttäjä"
+msgstr ""
 
 msgid "Added by"
-msgstr "Lisännyt"
+msgstr ""
 
 msgid "Addition in progress..."
-msgstr "Lisäys käynnissä..."
+msgstr ""
 
 msgid "Additional data"
-msgstr "Lisätiedot"
+msgstr ""
 
 msgid "Admin"
-msgstr "Ylläpitäjä"
+msgstr ""
 
 msgid "Admin / General / Admin Log"
-msgstr "Ylläpito / Yleiset / Ylläpidon loki"
+msgstr ""
 
 msgid "Admin / General / Overview"
-msgstr "Ylläpito / Yleiset / Yleiskatsaus"
+msgstr ""
 
 msgid "Admin / General / Services Status"
-msgstr "Ylläpito / Yleiset  / Palveluiden tila"
+msgstr ""
 
 msgid "Admin / Profile / Account Summary"
-msgstr "Ylläpito / Profiili / Yhteenveto"
+msgstr ""
 
 msgid "Admin / Profile / Language"
-msgstr "Ylläpito / Profiili / Kieli"
+msgstr ""
 
 msgid "Admin / Profile / Layout"
-msgstr "Ylläpito / Profiili / Ulkoasu"
+msgstr ""
 
 msgid "Admin / Profile / Password"
-msgstr "Ylläpito / Profiili / Vaihda salasana"
+msgstr ""
 
 msgid "Admin / Profile / Personal Data"
-msgstr "Ylläpito / Profiili / Henkilökohtaiset tiedot"
+msgstr ""
 
 msgid "Admin / Settings"
-msgstr "Ylläpito / Asetukset"
+msgstr ""
 
 msgid "Admin / Settings / IP Addresses Management"
-msgstr "Ylläpito / Asetukset / Hallitse IP-osoitteita"
+msgstr ""
 
 msgid "Admin / Settings / Languages"
-msgstr "Ylläpito / Asetukset / Kieli"
+msgstr ""
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr "Ylläpito / Asetukset / Salasanan palautuksen sähköposti"
+msgstr ""
 
 msgid "Admin / Settings / Plugin Management"
-msgstr "Ylläpito / Asetukset / Liitännäisten hallinta"
+msgstr ""
 
 msgid "Admin / Settings / Server Traffic"
-msgstr "Ylläpito / Asetukset / Palvelimen liikenne"
+msgstr ""
 
 msgid "Admin / Settings / Service Ports"
-msgstr "Ylläpito / Asetukset / Palveluiden portit"
+msgstr ""
 
 msgid "Admin / Settings / Software Management"
-msgstr "Ylläpitäjä / Asetukset / Ohjelmistohallinta"
+msgstr ""
 
 msgid "Admin / Settings / Software Options"
-msgstr "Ylläpito / Asetukset / Sovelluksien asetukset"
+msgstr ""
 
 msgid "Admin / Settings / Welcome Email"
-msgstr "Ylläpito / Asetukset / Tervetuloa sähköposti"
+msgstr ""
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr "Ylläpito / Asetukset / {TR_DYNAMIC_TITLE}"
+msgstr ""
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr "Ylläpitäjä / Ohjelmistohallinta / Jälleenmyyjien ohjelmistot"
+msgstr ""
 
 msgid "Admin / Statistics / IP Usage"
-msgstr "Ylläpito / Tilastot / IP-osoitteiden käyttö"
+msgstr ""
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr "Ylläpito / Tilastot / Jälleenmyyjätilastot"
+msgstr ""
 
 msgid "Admin / Statistics / Reseller Statistics / User Statistics"
 msgstr ""
@@ -762,112 +757,112 @@ msgid ""
 msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
-msgstr "Ylläpito / Tilastot / Palvelin"
+msgstr ""
 
 msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr "Ylläpito / Tilastot / Palvelin / Päiväkohtainen"
+msgstr ""
 
 msgid "Admin / Support / Closed Tickets"
-msgstr "Ylläpito / Tukijärjestelmä / Suljetut tukipyynnöt"
+msgstr ""
 
 msgid "Admin / Support / View Ticket"
-msgstr "Ylläpito / Tukijärjestelmä / Katso tukipyyntöä"
+msgstr ""
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
-msgstr "Ylläpito / Järjestelmätyökalut / Anti-Rootkit -lokit"
+msgstr ""
 
 msgid "Admin / System Tools / Database Update"
-msgstr "Ylläpito / Järjestelmätyökalut / Tietokannan päivitys"
+msgstr ""
 
 msgid "Admin / System Tools / Debugger"
-msgstr "Ylläpito / Järjestelmätyökalut / Debuggeri"
+msgstr ""
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr "Ylläpito / Järjestelmätyökalut / Huoltoasetukset"
+msgstr ""
 
 msgid "Admin / System Tools / System Information"
-msgstr "Ylläpito / Järjestelmätyökalut / Järjestelmän tiedot"
+msgstr ""
 
 msgid "Admin / System Tools / i-MSCP Updates"
-msgstr "Ylläpito / Järjestelmätyökalut / i-MSCP Päivitykset"
+msgstr ""
 
 msgid "Admin / Users / Add Admin"
-msgstr "Ylläpitäjä / Käyttäjät / Lisää ylläpitäjä"
+msgstr ""
 
 msgid "Admin / Users / Add Reseller"
-msgstr "Ylläpito / Käyttäjät / Lisää jälleenmyyjä"
+msgstr ""
 
 msgid "Admin / Users / Circular"
-msgstr "Ylläpitäjä / Käyttäjät / Joukkokirje"
+msgstr ""
 
 msgid "Admin / Users / Customers Assignment"
-msgstr "Ylläpitäjä / Käyttäjät / Asiakasmääritys"
+msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
-msgstr "Ylläpito / Käyttäjät / Muokkaa jälleenmyyjää"
+msgstr ""
 
 msgid "Admin / Users / Overview"
-msgstr "Ylläpitäjä / Käyttäjät / Yhteenveto"
+msgstr ""
 
 msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Ylläpitäjä / Käyttäjät / Yhteenveto / Poista asiakas"
+msgstr ""
 
 msgid "Admin / Users / Overview / Domain Details"
-msgstr "Ylläpitäjä / Käyttäjät / Yhteenveto / Domainin tiedot"
+msgstr ""
 
 msgid "Admin / Users / Overview / Edit Admin"
-msgstr "Ylläpito / Käyttäjät / Yhteenveto / Muokkaa ylläpitäjää"
+msgstr ""
 
 msgid "Admin / Users / Resellers Assignment"
-msgstr "Ylläpito / Käyttäjät / Määritä jälleenmyyjä"
+msgstr ""
 
 msgid "Admin / Users / Sessions"
-msgstr "Ylläpito / Käyttäjät / Istunnot"
+msgstr ""
 
 msgid "Admin account successfully created."
-msgstr "Ylläpitäjän -tunnus luotu onnistuneesti."
+msgstr ""
 
 msgid "Admin log"
-msgstr "Ylläpitologi"
+msgstr ""
 
 msgid "Admin not available"
-msgstr "Admin ei tavoitettavissa"
+msgstr ""
 
 msgid "Admin users"
-msgstr "Ylläpitäjät"
+msgstr ""
 
 msgid "Admin/IP usage statistics"
-msgstr "Ylläpito / IP-osoitteiden käyttötilasto"
+msgstr ""
 
 msgid "Administrator"
-msgstr "Ylläpitäjä"
+msgstr ""
 
 msgid "Administrator and Reseller levels"
-msgstr "Ylläpitäjän ja jälleenmyyjän tasot"
+msgstr ""
 
 msgid "Administrator and customer"
-msgstr "Ylläpitäjä ja asiakas"
+msgstr ""
 
 msgid "Administrator and customer levels"
-msgstr "Ylläpitäjän ja asiakkaan tasot"
+msgstr ""
 
 msgid "Administrator and reseller"
-msgstr "Ylläpitäjä ja jälleenmyyjä"
+msgstr ""
 
 msgid "Administrator level"
-msgstr "Ylläpitäjän taso"
+msgstr ""
 
 msgid "Administrator login"
-msgstr "Pääkäyttäjän kirjautuminen"
+msgstr ""
 
 msgid "Administrators"
-msgstr "Ylläpitäjät"
+msgstr ""
 
 msgid "Administrators and customers"
-msgstr "Ylläpitäjät ja asiakkaat"
+msgstr ""
 
 msgid "Administrators and resellers"
-msgstr "Ylläpitäjät ja jälleenmyyjät"
+msgstr ""
 
 msgid ""
 "After your upload the package it will be installed on your "
@@ -875,25 +870,25 @@ msgid ""
 msgstr ""
 
 msgid "Alias forward"
-msgstr "Aliaksen uudelleenohjaus"
+msgstr ""
 
 msgid "Alias mail"
-msgstr "Sähköpostin alias"
+msgstr ""
 
 msgid "Alias subdomain forward"
-msgstr "Alidomainin uudelleenohjaus"
+msgstr ""
 
 msgid "Alias subdomain mail"
-msgstr "Aliaksen sähköpostitunnus"
+msgstr ""
 
 msgid "Aliases"
-msgstr "Aliakset"
+msgstr ""
 
 msgid "All"
-msgstr "Kaikki"
+msgstr ""
 
 msgid "All closed tickets were successfully deleted."
-msgstr "Kaikki suljetut tukipyynnöt on poistettu onnistuneesti."
+msgstr ""
 
 msgid "All errors (Development)"
 msgstr ""
@@ -905,181 +900,181 @@ msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
 msgstr ""
 
 msgid "All fields are required."
-msgstr "Kaikki kentät on pakollisia."
+msgstr ""
 
 msgid "All fields are valid."
 msgstr ""
 
 msgid "All in"
-msgstr "Kaikki sisään"
+msgstr ""
 
 msgid "All levels"
-msgstr "Kaikki tasot"
+msgstr ""
 
 msgid "All open tickets were successfully deleted."
-msgstr "Kaikki avoimet tukipyynnöt on poistettu onnistuneesti."
+msgstr ""
 
 msgid "All out"
-msgstr "Kaikki ulos"
+msgstr ""
 
 msgid "All reseller"
-msgstr "Kaikki jälleenmyyjät"
+msgstr ""
 
 msgid "All traffic"
-msgstr "Yhteensä"
+msgstr ""
 
 msgid "All users"
-msgstr "Kaikki käyttäjät"
+msgstr ""
 
 msgid "Allow URL fopen"
-msgstr "Salli URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this domain alias to a specific URL."
-msgstr "Uudelleenohjaa domain-aliakseen saapuvat pyynnöt toiseen osoitteeseen."
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this domain alias to a specific URL. "
 "Be aware that when this option is in use, no Web folder is created for the "
 "domain alias."
-msgstr "Mahdollistaa tähän domain-aliakseen kohdistuvien pyyntöjen ohjaamisen määritettyyn osoitteeseen. Huomioithan, mikäli tämä ominaisuus aktivoidaan, oletuskansioita ei luoda tälle domain-aliakselle."
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
-msgstr "Uudelleenohjaa alidomainiin saapuvat pyynnöt toiseen osoitteeseen."
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL. Be "
 "aware that when this option is in use, no Web folder is created for the "
 "subdomain."
-msgstr "Mahdollistaa tähän alidomainiin kohdistuvien pyyntöjen ohjaamisen määritettyyn osoitteeseen. Huomioithan, mikäli tämä ominaisuus aktivoidaan, oletuskansioita ei luoda tälle alidomainille."
+msgstr ""
 
 msgid "Allows to share the mount point of another domain."
-msgstr "Sallii liittämisen toiseen verkkotunnukseen"
+msgstr ""
 
 msgid "Already in use"
-msgstr "Käytössä"
+msgstr ""
 
 msgid "Alternative URL to reach your website"
-msgstr "Vaihtoehtoinen osoite"
+msgstr ""
 
 msgid "An email addresse is not valid in mail forward list."
-msgstr "Sähköpostin uudelleenohjauksessa oleva sähköpostiosoite on virheellinen."
+msgstr ""
 
 msgid "An entry is defined twice."
 msgstr ""
 
 msgid "An error occurred during authentication."
-msgstr "Todentamisessa tapahtui virhe."
+msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr ""
 
 msgid "An unexpected error occurred."
-msgstr "Tapahtui odottamaton virhe"
+msgstr ""
 
 msgid ""
 "An unexpected error occurred. Go to the debugger interface for more details."
 msgstr ""
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr "Tapahtui odottamaton virhe. Ota yhteyttä ylläpitäjään."
+msgstr ""
 
 msgid "An unexpected error occurred. Please contact your reseller."
 msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
-msgstr "Tapahtui odottamaton virhe: %s"
+msgstr ""
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
-msgstr "Tiedoston latauksessa tapahtui odottamaton virhe: %s"
+msgstr ""
 
 msgid "Anti-Rootkits Logs"
-msgstr "Anti-Rootkit -lokit"
+msgstr ""
 
 msgid "Any"
 msgstr ""
 
 msgid "Application installer"
-msgstr "Sovelluksien asentaja"
+msgstr ""
 
 msgid "Apply"
-msgstr "OK"
+msgstr ""
 
 msgid "Apply changes"
-msgstr "Hyväksy muutokset"
+msgstr ""
 
 msgid "Are you sure to install this package from the webdepot?"
-msgstr "Oletko varma, että haluat asentaa tämän paketin ohjelmavarastosta?"
+msgstr ""
 
 msgid "Are you sure to install this package?"
-msgstr "Oletko varma, että haluat asentaa tämän paketin?"
+msgstr ""
 
 msgid "Are you sure to remove the permissions ?"
-msgstr "Oletko varma, että haluat poistaa oikeudet?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want delete the %s SQL user?"
-msgstr "Oletko varma, että haluat poistaa %s SQL-käyttäjän?"
+msgstr ""
 
 msgid "Are you sure you want to activate this package?"
-msgstr "Oletko varma, että haluat aktivoida tämän paketin?"
+msgstr ""
 
 #, php-format
 msgid ""
 "Are you sure you want to deactivate the external mail server(s) for the '%s'"
 " domain?"
-msgstr "Haluatko varmasti poistaa ulkoiset sähköpostipalvelimet verkkotunnukselta '%s' ?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr "Oletko varma, että haluat poistaa palveluportin %s ?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr "Oletko varma että haluat poistaa %s?"
+msgstr ""
 
 msgid "Are you sure you want to delete all closed tickets?"
-msgstr "Oletko varma, että haluat poistaa kaikki suljetut tukipyynnöt?"
+msgstr ""
 
 msgid "Are you sure you want to delete all selected items?"
-msgstr "Oletko varma, että haluat poistaa valitut kohteet?"
+msgstr ""
 
 msgid "Are you sure you want to delete all tickets?"
-msgstr "Oletko varma, että haluat poistaa kaikki tukipyynnöt?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
-msgstr "Oletko varma, että haluat poistaa FTP käyttäjän %s"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
-msgstr "Oletko varma, että haluat poistaa \"Kerää kaikki\" osoitteen %s"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
-msgstr "Oletko varma, että haluat poistaa domainin %s alias-tilauksen?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias?"
-msgstr "Oletko varma, että haluat poistaa %s domainin aliaksen?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
-msgstr "Oletko varma, että haluat poistaa %s valikon?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
-msgstr "Oletko varma, että haluat poistaa '%s' tukipyynnön?"
+msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
-msgstr "Haluatko varmasti poistaa tämän IP-osoitteen: %s?"
+msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr ""
@@ -1088,7 +1083,7 @@ msgid "Are you sure you want to delete this hosting plan?"
 msgstr ""
 
 msgid "Are you sure you want to delete this package?"
-msgstr "Oletko varma, että haluat poistaa tämän paketin?"
+msgstr ""
 
 msgid "Are you sure you want to delete this subdomain?"
 msgstr ""
@@ -1096,136 +1091,136 @@ msgstr ""
 msgid ""
 "Are you sure you want to import this package into the local software "
 "repository?"
-msgstr "Haluatko varmasti tuodatämän paketin paikalliseen ohjelmavarastoon?"
+msgstr ""
 
 msgid "Are you sure you want to import this package into the software depot?"
-msgstr "Haluatko varmasti tuoda tämän paketin ohjelmakirjastoon?"
+msgstr ""
 
 msgid ""
 "Are you sure you want to install this package from the Web software "
 "repository?"
-msgstr "Haluatko varmasti asentaa tämän paketin verkko-ohjelmavarastosta?"
+msgstr ""
 
 msgid "Are you sure you want to restore the backup?"
-msgstr "Oletko varma että haluat palautaa varmuuskopion?"
+msgstr ""
 
 msgid "Area name"
-msgstr "Aluenimi"
+msgstr ""
 
 msgid "Assign"
-msgstr "Myönnetty"
+msgstr ""
 
 msgid "Assign existing SQL user"
-msgstr "Valitse olemassaoleva SQL-käyttäjä"
+msgstr ""
 
 msgid "Assign group"
-msgstr "Aseta ryhmä"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
-msgstr "Sinun täytyy luoda ensin tietokanta, jossa on vähintää yksi tietokantakäyttäjä."
+msgstr ""
 
 msgid "At least one intermediate certificate is invalid or missing."
-msgstr "Ainakin yksi sertifikaateista on virheellinen tai puuttuu."
+msgstr ""
 
 msgid "Auto (Browser language)"
-msgstr "Auto (selaimen kieli)"
+msgstr ""
 
 msgid "Auto email template data updated!"
-msgstr "Automaattisen sähköpostin tiedot päivitetty!"
+msgstr ""
 
 msgid "Auto responder"
-msgstr "Automaattivastaaja"
+msgstr ""
 
 msgid "Auto-responder message cannot be empty."
-msgstr "Automaattivastaajan viesti ei voi olla tyhjä."
+msgstr ""
 
 msgid "Auto-responder successfully scheduled for activation."
-msgstr "Automaattivastaaja ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "Auto-responder successfully scheduled for deactivation."
-msgstr "Automaattivastaaja ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Auto-responder successfully scheduled for update."
-msgstr "Automaattivastaaja ajastettu päivitettäväksi onnistuneesti."
+msgstr ""
 
 msgid "Available"
-msgstr "Saatavilla"
+msgstr ""
 
 msgid "Available software"
-msgstr "Saatavilla olevat ohjelmistot"
+msgstr ""
 
 msgid "Awaiting activation"
-msgstr "Odottaa aktivointia"
+msgstr ""
 
 msgid "Awaiting for approval"
-msgstr "Odottaa hyväksymistä"
+msgstr ""
 
 msgid "B"
-msgstr "B"
+msgstr ""
 
 msgid "Back"
-msgstr "Takaisin"
+msgstr ""
 
 msgid "Backup"
-msgstr "Varmuuskopio"
+msgstr ""
 
 msgid "Backup and restore settings."
-msgstr "Varmuuskopio- ja palautusasetukset"
+msgstr ""
 
 msgid "Backup has been successfully scheduled for restoration."
-msgstr "Varmuuskopiot on ajastettu palautettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Bad password."
-msgstr "Väärä salasana."
+msgstr ""
 
 msgid "Bad request."
-msgstr "Virheellinen pyyntö."
+msgstr ""
 
 msgid "Behind"
-msgstr "Lopussa"
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
-msgstr "Estoaika kirjautumisyrityksien välillä <small>(sekunneissa)</small>"
+msgstr ""
 
 msgid "Blocking time between logins and captcha attempts"
-msgstr "Estoaika kirjautumisyritysten välissä"
+msgstr ""
 
 msgid "Blocktime <small>(in minutes)</small>"
-msgstr "Estoaika <small>(minuuteissa)</small>"
+msgstr ""
 
 msgid "Body"
-msgstr "Sisältö"
+msgstr ""
 
 msgid "Body is missing."
-msgstr "Sisältö puuttuu."
+msgstr ""
 
 msgid "Bogomips"
-msgstr "Bogomipsit"
+msgstr ""
 
 msgid "Both source and destination are identical."
-msgstr "Sekä lähde että kohde ovat identtiset."
+msgstr ""
 
 msgid "Bruteforce detection"
-msgstr "Bruteforce-tunnistus"
+msgstr ""
 
 msgid "Bulk Actions"
-msgstr "Massatoiminnot"
+msgstr ""
 
 msgid "By"
-msgstr "Toimesta"
+msgstr ""
 
 msgid "CGI"
-msgstr "CGI"
+msgstr ""
 
 msgid "CNAME field is empty or invalid."
-msgstr "CNAME -kenttä on tyhjä tai virheellinen."
+msgstr ""
 
 msgid "CPU Information"
-msgstr "Prosessorin tiedot"
+msgstr ""
 
 msgid "Cache"
-msgstr "Välimuisti"
+msgstr ""
 
 #, php-format
 msgid "Can edit the PHP %s configuration option"
@@ -1236,45 +1231,45 @@ msgid "Can use the PHP %s function"
 msgstr ""
 
 msgid "Cancel"
-msgstr "Peruuta"
+msgstr ""
 
 #, php-format
 msgid "Cannot validate %s record: %s"
-msgstr "Ei voida vahvistaa %s tietuetta: %s"
+msgstr ""
 
 #, php-format
 msgid "Cannot validate record: %s"
-msgstr "Ei voida vahvistaa tietuetta: %s"
+msgstr ""
 
 msgid "Canonical name"
-msgstr "Kanoninen nimi"
+msgstr ""
 
 msgid "Catch all"
-msgstr "Nappaa kaikki"
+msgstr ""
 
 msgid "Catch all successfully scheduled for addition."
-msgstr "'Nappaa kaikki' ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "Catch all successfully scheduled for deletion."
-msgstr "'Nappaa kaikki' ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Catchall"
-msgstr "Kerää kaikki"
+msgstr ""
 
 msgid "Certificate"
-msgstr "Sertifikaatti"
+msgstr ""
 
 msgid "Certificate data"
-msgstr "Sertifikaatin tiedot"
+msgstr ""
 
 msgid "Change"
-msgstr "Muuta"
+msgstr ""
 
 msgid "Change personal data"
-msgstr "Muuta henkikäkohtaisia tietoja"
+msgstr ""
 
 msgid "Check for update"
-msgstr "Tarkista päivitykset"
+msgstr ""
 
 msgid ""
 "Check the reseller uploads!<br>It is not allowed to upload this package two "
@@ -1298,242 +1293,242 @@ msgid ""
 msgstr ""
 
 msgid "Choose"
-msgstr "Valitse"
+msgstr ""
 
 msgid "Choose dir"
-msgstr "Valitse hakemisto"
+msgstr ""
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
-msgstr "Valitse tiedosto (max. %1$d MiB)"
+msgstr ""
 
 msgid "Choose hosting plan"
-msgstr "Valitse palvelupaketti"
+msgstr ""
 
 msgid "Choose layout color"
-msgstr "Valitse käyttöliittymän väri"
+msgstr ""
 
 msgid "Choose your language"
-msgstr "Valitse kieli"
+msgstr ""
 
 msgid "Circular"
-msgstr "Sähköpostimarkkinointi"
+msgstr ""
 
 msgid "Circular successfully sent."
-msgstr "Joukkokirje lähetetty onnistuneesti."
+msgstr ""
 
 msgid "City"
-msgstr "Kaupunki"
+msgstr ""
 
 msgid "Class"
-msgstr "Luokka"
+msgstr ""
 
 msgid "Clear log"
-msgstr "Tyhjennä loki"
+msgstr ""
 
 msgid "Click here for more details"
-msgstr "Paina tästä nähdäksesi lisätietoja"
+msgstr ""
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
-msgstr "Paina Palautus nappia ja järjestelmä palauttaa edellisen varmuuskopion"
+msgstr ""
 
 msgid "Click to activate"
-msgstr "Paina tästä aktivoidaksesi"
+msgstr ""
 
 msgid "Click to deactivate"
-msgstr "Paina tästä poistaaksesi käytöstä"
+msgstr ""
 
 msgid "Client / Choose Directory"
-msgstr "Asiakas / Valitse kansio"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
-msgstr "Asiakas / Tietokannat / Lisää SQL-tietokanta"
+msgstr ""
 
 msgid "Client / Databases / Overview"
-msgstr "Asiakas / Tietokannat / Yleiskatsaus"
+msgstr ""
 
 msgid "Client / Databases / Overview / Add SQL User"
-msgstr "Asiakas / Tietokannat / Yleiskatsaus / Lisää SQL-käyttäjä"
+msgstr ""
 
 msgid "Client / Databases / Overview / Update SQL User Password"
-msgstr "Asiakas / Tietokannat / Yleiskatsaus / Päivitä SQL-käyttäjän salasana"
+msgstr ""
 
 msgid "Client / Domain / Edit Custom DNS record"
-msgstr "Asiakas / Domain / Muokkaa DNS-tietueita"
+msgstr ""
 
 msgid "Client / Domains"
-msgstr "Asiakas / Domainit"
+msgstr ""
 
 msgid "Client / Domains / Add Custom DNS record"
-msgstr "Asiakas / Domainit / Lisää DNS-tietue"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
-msgstr "Asiakas / Domainit / Lisää domain-alias"
+msgstr ""
 
 msgid "Client / Domains / Add Subdomain"
-msgstr "Asiakas / Domainit / Lisää alidomain"
+msgstr ""
 
 msgid "Client / Domains / Edit Domain Alias"
-msgstr "Asiakas / Domainit / Muokkaa domain-aliasta"
+msgstr ""
 
 msgid "Client / Domains / Edit Subdomain"
-msgstr "Asiakas / Domainit / Muokkaa alidomainia"
+msgstr ""
 
 msgid "Client / Domains / PHP Settings"
-msgstr "Asiakas / Domainit / PHP-asetukset"
+msgstr ""
 
 msgid "Client / Domains / SSL Certificate"
-msgstr "Asiakas / Domainit / SSL-sertifikaatti"
+msgstr ""
 
 msgid "Client / Email / Add Email Account"
-msgstr "Asiakas / Sähköposti / Lisää sähköpostitili"
+msgstr ""
 
 msgid "Client / Email / Catchall"
-msgstr "Asiakas / Email / Ohjaa kaikki"
+msgstr ""
 
 msgid "Client / Email / Catchall / Add Catchall"
-msgstr "Asiakas / Sähköposti / Ohjaa kaikki / Lisää"
+msgstr ""
 
 msgid "Client / Email / Edit Email Account"
-msgstr "Asiakas / Sähköposti / Muokkaa sähköpostitiliä"
+msgstr ""
 
 msgid "Client / Email / External Mail Server"
-msgstr "Asiakas / Sähköposti / Ulkoiset sähköpostipalvelimet"
+msgstr ""
 
 msgid ""
 "Client / Email / External Mail Server / Add External Mail Server for "
 "{DOMAIN_UTF8}"
-msgstr "Asiakas / Sähköposti / Ulkoiset sähköpostipalvelimet / Lisää"
+msgstr ""
 
 msgid ""
 "Client / Email / External Mail Server / Edit External Mail Server for "
 "{DOMAIN_UTF8}"
-msgstr "Asiakas / Sähköposti / Ulkoiset sähköpostipalvelimet / Muokkaa palvelinta"
+msgstr ""
 
 msgid "Client / Email / Overview"
-msgstr "Asiakas / Sähköposti / Yleiskatsaus"
+msgstr ""
 
 msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr "Asiakas / Sähköposti / Yleiskatsaus / Muokkaa automaattivastausta"
+msgstr ""
 
 msgid "Client / Email / Overview / Enable Auto Responder"
-msgstr "Asiakas / Sähköposti / Yleiskatsaus / Aktivoi automaattivastaus"
+msgstr ""
 
 msgid "Client / FTP / Add FTP Account"
-msgstr "Asiakas / FTP / Lisää FTP-tili"
+msgstr ""
 
 msgid "Client / FTP / Overview"
-msgstr "Asiakas / FTP / Yleiskatsaus"
+msgstr ""
 
 msgid "Client / FTP / Overview / Edit FTP Account"
-msgstr "Asiakas / FTP / Yleiskatsaus / Muokkaa FTP-tiliä"
+msgstr ""
 
 msgid "Client / General / Overview"
-msgstr "Asiakas / Yleiset / Yleiskatsaus"
+msgstr ""
 
 msgid "Client / Profile / Account Summary"
-msgstr "Asiakas / Profiili / Yhteenveto"
+msgstr ""
 
 msgid "Client / Profile / Language"
-msgstr "Asiakas / Profiili / Kieli"
+msgstr ""
 
 msgid "Client / Profile / Layout"
-msgstr "Asiakas / Profiili / Ulkoasu"
+msgstr ""
 
 msgid "Client / Profile / Password"
-msgstr "Asiakas / Profiili / Salasana"
+msgstr ""
 
 msgid "Client / Profile / Personal Data"
-msgstr "Asiakas / Profiili / Henkilökohtaiset tiedot"
+msgstr ""
 
 msgid "Client / Statistics"
-msgstr "Asiakas / Tilastot"
+msgstr ""
 
 msgid "Client / Support / Closed Tickets"
-msgstr "Asiakas / Tukijärjestelmä/ Suljetut tukipyynnöt"
+msgstr ""
 
 msgid "Client / Support / New Ticket"
-msgstr "Asiakas / Tukijärjestelmä / Uusi tukipyyntö"
+msgstr ""
 
 msgid "Client / Support / Open Tickets"
-msgstr "Asiakas / Tukijärjestelmä / Avoimet tukipyynnöt"
+msgstr ""
 
 msgid "Client / Support / View Ticket"
-msgstr "Asiakas / Tukijärjestelmä / Tarkastele tukipyyntöä"
+msgstr ""
 
 msgid "Client / Webtools / Custom Error Pages"
-msgstr "Asiakas / Web-työkalut / Muokatut virhesivut"
+msgstr ""
 
 msgid "Client / Webtools / Daily Backup"
-msgstr "Asiakas / Web-työkalut / Päivittäinen varmuuskopio"
+msgstr ""
 
 msgid "Client / Webtools / Overview"
-msgstr "Asiakas / Web-työkalut / Yhteenveto"
+msgstr ""
 
 msgid "Client / Webtools / Protected Areas"
-msgstr "Asiakas / Web-työkalut / Suojatut-alueet"
+msgstr ""
 
 msgid "Client / Webtools / Protected Areas / Manage Users and Groups"
-msgstr "Asiakas / Web-työkalut / Suojatut-alueet / Muokkaa käyttäjiä ja ryhmiä"
+msgstr ""
 
 msgid ""
 "Client / Webtools / Protected Areas / Manage Users and Groups / Add Group"
-msgstr "Asiakas / Web-työkalut / Suojatut-alueet / Muokkaa käyttäjiä ja ryhmiä / Lisää ryhmä"
+msgstr ""
 
 msgid ""
 "Client / Webtools / Protected Areas / Manage Users and Groups / Add User"
-msgstr "Asiakas / Web-työkalut / Suojatut-alueet / Muokkaa käyttäjiä ja ryhmiä / Lisää käyttäjä"
+msgstr ""
 
 msgid ""
 "Client / Webtools / Protected Areas / Manage Users and Groups / Edit User"
-msgstr "Asiakas / Web-työkalut / Suojatut-alueet / Muokkaa käyttäjiä ja ryhmiä / Muokkaa käyttäjää"
+msgstr ""
 
 msgid "Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
-msgstr "Asiakas / Web-työkalut / Suojatut-alueet / {TR_DYNAMIC_TITLE}"
+msgstr ""
 
 msgid "Client / Webtools / Software"
-msgstr "Asiakas / Web-työkalut / Ohjelmisto"
+msgstr ""
 
 msgid "Client / Webtools / Software / Software Installation"
-msgstr "Asiakas / Web-työkalut / Ohjelmisto / Ohjelmiston asennus"
+msgstr ""
 
 msgid "Client / Webtools / Software / View"
-msgstr "Asiakas / Web-työkalut / Ohjelmisto / Katso"
+msgstr ""
 
 msgid "Clock speed (MHz)"
-msgstr "CPU MHz"
+msgstr ""
 
 msgid "Close"
-msgstr "Sulje"
+msgstr ""
 
 msgid "Close the ticket"
-msgstr "Sulje tukipyyntö"
+msgstr ""
 
 msgid "Close ticket"
-msgstr "Sulje tukipyyntö"
+msgstr ""
 
 msgid "Closed tickets"
-msgstr "Suljetut kysymykset"
+msgstr ""
 
 msgid "Common name"
 msgstr ""
 
 msgid "Company"
-msgstr "Yritys"
+msgstr ""
 
 msgid "Compress HTML output"
-msgstr "Pakkaa HTML"
+msgstr ""
 
 #, php-format
 msgid "Conflict with an existent %s record."
-msgstr "Ristiriita olemassa olevan tietueen %s kanssa."
+msgstr ""
 
 msgid "Core data"
-msgstr "Päätiedot"
+msgstr ""
 
 msgid "Cores"
-msgstr "Ytimet"
+msgstr ""
 
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
@@ -1554,237 +1549,237 @@ msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr ""
 
 msgid "Could not upload file."
-msgstr "Tiedostoa ei voitu lähettää."
+msgstr ""
 
 msgid "Could not upload file. File not found."
-msgstr "Tiedostoa ei voitu lähettää. Tiedostoa ei löydy."
+msgstr ""
 
 #, php-format
 msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
-msgstr "Tiedostoa ei voitu lähettää. Tiedoston maksimikoko (%1$d MB) on ylitetty."
+msgstr ""
 
 msgid "Count default email addresses"
-msgstr "Laske oletussähköpostitilien määrä"
+msgstr ""
 
 msgid "Country"
-msgstr "Maa"
+msgstr ""
 
 msgid "Create"
-msgstr "Luo"
+msgstr ""
 
 msgid "Create catch all"
-msgstr "Luo Nappaa kaikki"
+msgstr ""
 
 msgid "Create default email addresses"
-msgstr "Luo oletussähköpostitilit"
+msgstr ""
 
 msgid "Created by"
-msgstr "Luonut"
+msgstr ""
 
 msgid "Creation date"
-msgstr "Luontiaika"
+msgstr ""
 
 msgid "Current password"
-msgstr "Nykyinen salasana"
+msgstr ""
 
 msgid "Current password is invalid."
-msgstr "Nykyinen salasana on virheellinen."
+msgstr ""
 
 msgid "Custom DNS errors"
 msgstr ""
 
 msgid "Custom DNS record"
-msgstr "Itse määritelty DNS merkintä"
+msgstr ""
 
 msgid "Custom DNS record successfully scheduled for addition."
-msgstr "DNS-tietue ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "Custom DNS record successfully scheduled for deletion."
-msgstr "DNS-tietue ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Custom DNS record successfully scheduled for update."
-msgstr "DNS-tietue ajastettu päivitettäväksi onnistuneesti."
+msgstr ""
 
 msgid "Custom DNS records"
-msgstr "Kustomoidut DNS-merkinnät"
+msgstr ""
 
 msgid "Custom error page updated."
-msgstr "Itse määritelty virhesivu on päivitetty."
+msgstr ""
 
 msgid "Custom error pages"
-msgstr "Vaihtoehtoiset virhesivut"
+msgstr ""
 
 msgid "Custom menu name and link"
-msgstr "Valinnaisen valikon nimi ja osoite"
+msgstr ""
 
 msgid "Custom menu properties"
-msgstr "Valinnaisen valikon ominaisuudet"
+msgstr ""
 
 msgid "Custom menu successfully added."
-msgstr "Mukautettu valikko lisätty onnistuneesti."
+msgstr ""
 
 msgid "Custom menu successfully deleted."
-msgstr "Valinnainen valikko poistettu onnistuneesti."
+msgstr ""
 
 msgid "Custom menu successfully updated."
-msgstr "Valinnainen valikko päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Custom menus"
-msgstr "Vaihtoehtoiset valikot"
+msgstr ""
 
 msgid "Customer"
-msgstr "Asiakas"
+msgstr ""
 
 msgid "Customer ID"
-msgstr "Asiakastunnus"
+msgstr ""
 
 msgid "Customer ID cannot have more than 200 characters"
-msgstr "Asiakkaan ID ei voi olla yli 200 merkkiä"
+msgstr ""
 
 msgid "Customer account"
-msgstr "Asiakkaan tili"
+msgstr ""
 
 msgid "Customer account successfully scheduled for activation."
-msgstr "Asiakkaan tili ajastettu aktivoitavaksi onnistuneesti."
+msgstr ""
 
 msgid "Customer account successfully scheduled for creation."
-msgstr "Asiakkaan tili ajastettu luotavaksi onnistuneesti."
+msgstr ""
 
 msgid "Customer account successfully scheduled for deactivation."
-msgstr "Asiakkaan tili ajastettu poistettavaksi käytöstä onnistuneesti."
+msgstr ""
 
 msgid "Customer account successfully scheduled for deletion."
-msgstr "Asiakkaan tili ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Customer account successfully updated."
-msgstr "Asiakkaan tili päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Customer account summary"
-msgstr "Asiakastilin yhteenveto"
+msgstr ""
 
 msgid "Customer assignments"
 msgstr ""
 
 msgid "Customer consumption"
-msgstr "Asiakkaan käyttö"
+msgstr ""
 
 msgid "Customer level"
-msgstr "Asiakkaan taso"
+msgstr ""
 
 msgid "Customer successfully scheduled for addition."
-msgstr "Asiakas ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "Customer successfully scheduled for deletion."
-msgstr "Asiakas ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Customer's layout color successfully updated."
-msgstr "Käyttäjien käyttöliittymän väri vaihdettu."
+msgstr ""
 
 msgid "Customer(s) successfully moved."
-msgstr "Siirto suoritettu onnistuneesti."
+msgstr ""
 
 msgid "Customers"
-msgstr "Asiakkaat"
+msgstr ""
 
 msgid "Customize error pages for your domain."
-msgstr "Muokkaa domainisi virhesivuja"
+msgstr ""
 
 msgid "DNS record already exist."
-msgstr "DNS merkintä on jo olemassa."
+msgstr ""
 
 msgid "DNS resource records"
-msgstr "DNS-tietueet"
+msgstr ""
 
 msgid "DNS server unavailable. Please contact your reseller."
-msgstr "DNS-palvelimeen ei saada yhteyttä. Ota yhteyttä jälleenmyyjään."
+msgstr ""
 
 msgid "DOWN"
-msgstr "Pois päältä"
+msgstr ""
 
 msgid "Daemon request failed."
-msgstr "Taustaprosessin pyyntö epäonnistui."
+msgstr ""
 
 msgid "Daemon request successful."
-msgstr "Taustaprosessin pyyntö onnistui."
+msgstr ""
 
 msgid "Daily backup"
-msgstr "Päivittäinen varmuuskopio"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr ""
 
 msgid "Database"
-msgstr "Tietokanta"
+msgstr ""
 
 msgid "Database Name and Users"
-msgstr "Tietokannan nimi ja käyttäjät"
+msgstr ""
 
 msgid "Database Update Revision"
-msgstr "Tietokannan päivityksen tarkistaminen"
+msgstr ""
 
 msgid "Database Update details"
-msgstr "Tietokantapäivityksen tiedot"
+msgstr ""
 
 msgid "Database name"
-msgstr "Tietokannan nimi"
+msgstr ""
 
 msgid "Database name is too long."
-msgstr "Tietokannan nimi on liian pitkä."
+msgstr ""
 
 msgid "Database name is unavailable."
-msgstr "Tietokannan nimi ei ole käytettävissä."
+msgstr ""
 
 msgid "Database prefix"
-msgstr "Tietokannan etuliite"
+msgstr ""
 
 msgid "Database prefix/suffix"
-msgstr "Tietokannan prefix"
+msgstr ""
 
 msgid "Database required"
-msgstr "Tietokanta vaaditaan"
+msgstr ""
 
 msgid "Database update"
-msgstr "Tietokantapäivitys"
+msgstr ""
 
 msgid "Database usage"
-msgstr "Tietokannat"
+msgstr ""
 
 msgid "Database users"
-msgstr "Tietokantakäyttäjät"
+msgstr ""
 
 msgid "Database with comma(s) in name is not accepted."
-msgstr "Tietokannan nimessä ei voi esiintyä pilkku(j)a."
+msgstr ""
 
 msgid "Databases"
-msgstr "Tietokannat"
+msgstr ""
 
 msgid "Date"
-msgstr "Päivämäärä"
+msgstr ""
 
 msgid "Day"
-msgstr "Päivä"
+msgstr ""
 
 msgid "Day statistics"
-msgstr "Päivätilastot"
+msgstr ""
 
 msgid "Days"
-msgstr "Päivää"
+msgstr ""
 
 msgid "Deactivate"
-msgstr "Poista käytöstä"
+msgstr ""
 
 msgid "Deactivate selected items"
-msgstr "Poista valitut käytöstä"
+msgstr ""
 
 msgid "Deactivate this plugin"
-msgstr "Poista liitännäinen käytöstä"
+msgstr ""
 
 msgid "Deactivated"
-msgstr "Poistettu käytöstä"
+msgstr ""
 
 msgid "Deactivation in progress..."
-msgstr "Suoritetaan..."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -1836,13 +1831,13 @@ msgid ""
 msgstr ""
 
 msgid "Debugger"
-msgstr "Debugger"
+msgstr ""
 
 msgid "Default language"
-msgstr "Oletuskieli"
+msgstr ""
 
 msgid "Default language successfully updated."
-msgstr "Oletus kieli päivitetty onnistuneesti."
+msgstr ""
 
 msgid ""
 "Defines whether or not customers can add/change SSL certificates for their "
@@ -1850,163 +1845,163 @@ msgid ""
 msgstr ""
 
 msgid "Delete"
-msgstr "Poista"
+msgstr ""
 
 msgid "Delete CatchAll"
-msgstr "Poista Nappaa kaikki"
+msgstr ""
 
 msgid "Delete all tickets"
-msgstr "Poista kaikki tukipyynnöt"
+msgstr ""
 
 msgid "Delete customer"
-msgstr "Poista asiakas"
+msgstr ""
 
 msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Poista asiakas - {DOMAIN_NAME}"
+msgstr ""
 
 msgid "Delete from log:"
-msgstr "Poista lokitiedoista:"
+msgstr ""
 
 msgid "Delete order"
-msgstr "Poista tilaus"
+msgstr ""
 
 msgid "Delete reseller software"
-msgstr "Poista jälleenmyyjän ohjelmisto"
+msgstr ""
 
 msgid "Delete selected items"
-msgstr "Poista valitut kohteet"
+msgstr ""
 
 msgid "Delete this plugin"
-msgstr "Poista liitännäinen"
+msgstr ""
 
 msgid "Delete ticket"
-msgstr "Poista tukipyyntö"
+msgstr ""
 
 msgid "Deletion in progress"
-msgstr "Poisto käynnissä"
+msgstr ""
 
 msgid "Deletion in progress..."
-msgstr "Poisto käynnissä..."
+msgstr ""
 
 msgid "Depot import"
-msgstr "Varaston tuonti"
+msgstr ""
 
 msgid "Description"
-msgstr "Kuvaus"
+msgstr ""
 
 msgid "Description cannot be empty."
-msgstr "Kuvaus ei voi olla tyhjä"
+msgstr ""
 
 msgid "Details"
-msgstr "Tiedot"
+msgstr ""
 
 msgid "Directories"
-msgstr "Hakemistot"
+msgstr ""
 
 #, php-format
 msgid "Directory %s doesn't exists."
-msgstr "Kansiota %s ei ole olemassa."
+msgstr ""
 
 msgid "Directory tree"
-msgstr "Hakemistopuu"
+msgstr ""
 
 msgid "Disable"
-msgstr "Poista käytöstä"
+msgstr ""
 
 msgid "Disabled"
-msgstr "Ei käytössä"
+msgstr ""
 
 msgid "Disabled functions"
-msgstr "Poispäältä olevat toiminnot"
+msgstr ""
 
 msgid "Disconnect"
-msgstr "Katkaise"
+msgstr ""
 
 msgid "Disk"
-msgstr "Levytila"
+msgstr ""
 
 msgid "Disk space"
-msgstr "Levytila"
+msgstr ""
 
 msgid "Disk space limit [MiB]"
-msgstr "Levytilarajoitus [MiB]"
+msgstr ""
 
 msgid "Disk usage"
-msgstr "Levytilankäyttö"
+msgstr ""
 
 msgid "Disk usage detail"
-msgstr "Erittely"
+msgstr ""
 
 msgid "Display errors"
-msgstr "Näytä virheet"
+msgstr ""
 
 #, php-format
 msgid ""
 "Do you really want to delete the entire %s customer account? This operation "
 "cannot be undone."
-msgstr "Oletko varma, että haluat poista %s -tilin kokonaan? Toimintoa ei voi peruuttaa."
+msgstr ""
 
 msgid "Domain"
-msgstr "Domain"
+msgstr ""
 
 #, php-format
 msgid "Domain %s is unavailable."
-msgstr "Domain %s ei ole käytettävissä."
+msgstr ""
 
 msgid "Domain IP"
-msgstr "Domain IP"
+msgstr ""
 
 msgid "Domain Limit"
-msgstr "Domainin resurssit"
+msgstr ""
 
 msgid "Domain Name"
-msgstr "Osoitteen nimi"
+msgstr ""
 
 msgid "Domain account"
-msgstr "Domaintunnus"
+msgstr ""
 
 msgid "Domain account expired."
-msgstr "Tilaus on vanhentunut."
+msgstr ""
 
 msgid "Domain accounts"
-msgstr "Domaineja"
+msgstr ""
 
 msgid "Domain alias"
-msgstr "Domain-alias"
+msgstr ""
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
-msgstr "Domain-aliaksen %s kohde ei voi olla sama kuin domain-alias."
+msgstr ""
 
 msgid "Domain alias errors"
-msgstr "Domain-aliaksien virheet"
+msgstr ""
 
 msgid "Domain alias limit"
-msgstr "Domain-aliakset"
+msgstr ""
 
 msgid "Domain alias name"
-msgstr "Domainin aliaksen nimi"
+msgstr ""
 
 msgid "Domain alias successfully created."
 msgstr ""
 
 msgid "Domain alias successfully ordered."
-msgstr "Domain-alias tilattu onnistuneesti."
+msgstr ""
 
 msgid "Domain alias successfully scheduled for addition."
-msgstr "Domain-alias ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
-msgstr "Domain-alias ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Domain alias successfully scheduled for update."
-msgstr "Domain-alias ajastettu päivitettäväksi onnistuneesti."
+msgstr ""
 
 msgid "Domain aliases"
-msgstr "Domain-aliakset"
+msgstr ""
 
 msgid "Domain and SQL databases"
-msgstr "Domain ja SQL-tietokannat"
+msgstr ""
 
 msgid "Domain data"
 msgstr ""
@@ -2015,265 +2010,265 @@ msgid "Domain data were altered. Please try again."
 msgstr ""
 
 msgid "Domain details"
-msgstr "Domainin tiedot"
+msgstr ""
 
 msgid "Domain errors"
-msgstr "Domainien virheet"
+msgstr ""
 
 msgid "Domain expiration date"
-msgstr "Vanhentumispäivä"
+msgstr ""
 
 msgid "Domain expiration date must be filled."
-msgstr "Domainin vanhentumis päivämäärä on täytettävä."
+msgstr ""
 
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
 msgid "Domain limit"
-msgstr "Domainit"
+msgstr ""
 
 msgid "Domain mail"
-msgstr "Domainin sähköposti"
+msgstr ""
 
 msgid "Domain name"
-msgstr "Domain-nimi"
+msgstr ""
 
 msgid "Domain name (ASCII form) cannot be greater than 255 characters."
-msgstr "Domainin nimi (ASCII-muodossa) ei voi olla pidempi kuin 255 merkkiä."
+msgstr ""
 
 msgid "Domain name cannot be empty."
-msgstr "Domainin nimi ei voi olla tyhjä."
+msgstr ""
 
 msgid "Domain name cannot start nor end with dot."
-msgstr "Domainin nimi ei voi alkaa eikä päättyä pisteellä."
+msgstr ""
 
 #, php-format
 msgid "Domain name contains an invalid character: %s"
-msgstr "Domainnimi sisältää virheellisiä merkkejä: %s"
+msgstr ""
 
 #, php-format
 msgid "Domain name label '%s' contain an invalid character: %s"
-msgstr "Domainnimen kuvaus '%s' sisältää virheellisiä merkkejä %s"
+msgstr ""
 
 msgid "Domain name labels cannot be greater than 63 characters."
-msgstr "Domainnimen kuvaus ei voi olla pidempi kuin 63 merkkiä."
+msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
-msgstr "Domainnimen kuvaus ei voi alkaa eikä loppua tavuviivalla."
+msgstr ""
 
 msgid "Domain new expiration date"
-msgstr "Domainin uusi vanhentumispäivä"
+msgstr ""
 
 msgid "Domain overview"
-msgstr "Domainin yleiskatsaus"
+msgstr ""
 
 msgid "Domain scheduled for update."
-msgstr "Domainin päivitys aloitettu."
+msgstr ""
 
 msgid "Domain statistics"
-msgstr "Domain-tilastot"
+msgstr ""
 
 msgid "Domain status is not ok."
-msgstr "Domainin tila ei ole ok."
+msgstr ""
 
 msgid "Domain successfully updated."
-msgstr "Domain päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Domain type"
-msgstr "Domain-tyyppi"
+msgstr ""
 
 msgid ""
 "Domain: Setup a DNS MX record to relay mail of your entire domain, including"
 " subdomains."
-msgstr "Domain: DNS MX-tietueen asettaminen lähettää edelleen koko domainin sähköpostit, mukaanlukien alidomainit."
+msgstr ""
 
 msgid "Domain: Setup an external MX host to relay mail of your entire domain."
 msgstr ""
 
 msgid "Domains"
-msgstr "Domainit"
+msgstr ""
 
 msgid "Domains per page"
-msgstr "Domaineja sivulla"
+msgstr ""
 
 msgid "Done"
-msgstr "Valmis"
+msgstr ""
 
 msgid "Download"
-msgstr "Lataa"
+msgstr ""
 
 msgid "Download TAR"
-msgstr "Lataa TAR"
+msgstr ""
 
 msgid "Download ZIP"
-msgstr "Lataa ZIP"
+msgstr ""
 
 msgid "Download links"
-msgstr "Latauslinkit"
+msgstr ""
 
 msgid "Download the archives stored in this directory"
-msgstr "Lataa tässä kansiossa olevat arkistot"
+msgstr ""
 
 msgid "EB"
-msgstr "EB"
+msgstr ""
 
 msgid "Edit"
-msgstr "Muokkaa"
+msgstr ""
 
 msgid "Edit FTP account"
-msgstr "Muokkaa FTP-tiliä"
+msgstr ""
 
 msgid "Edit SSL certificate"
-msgstr "Muokkaa SSL-sertifikaattia"
+msgstr ""
 
 msgid "Edit admin"
-msgstr "Muokkaa ylläpitäjää"
+msgstr ""
 
 msgid "Edit auto responder"
-msgstr "Muokkaa automaattista vastaajaa"
+msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr "Muokkaa itse määriteltyä DNS merkintää"
+msgstr ""
 
 msgid "Edit custom error page"
-msgstr "Muokkaa kustomoituja virhesivuja"
+msgstr ""
 
 msgid "Edit custom menu"
-msgstr "Muokkaa kustomoituja valikoita"
+msgstr ""
 
 msgid "Edit customer"
-msgstr "Muokkaa asiakasta"
+msgstr ""
 
 msgid "Edit domain"
-msgstr "Muokkaa Domainia"
+msgstr ""
 
 msgid "Edit domain alias"
-msgstr "Muokkaa domain-aliasta"
+msgstr ""
 
 msgid "Edit error page"
-msgstr "Muokkaa virhesivua"
+msgstr ""
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Edit hosting plan"
-msgstr "Muokkaa palvelupakettia"
+msgstr ""
 
 msgid "Edit htaccess user"
-msgstr "Muokkaa htaccess käyttäjää"
+msgstr ""
 
 msgid "Edit mail account"
-msgstr "Muokkaa sähköpostitunnusta"
+msgstr ""
 
 msgid "Edit mail quota"
-msgstr "Muokkaa sähköpostin levytilaa"
+msgstr ""
 
 msgid "Edit protected area"
-msgstr "Muokkaa suojattua aluetta"
+msgstr ""
 
 msgid "Edit reseller"
-msgstr "Muokkaa jälleenmyyjää"
+msgstr ""
 
 msgid "Edit subdomain"
-msgstr "Muokkaa alidomainia"
+msgstr ""
 
 msgid "Edit user"
-msgstr "Muokkaa käyttäjää"
+msgstr ""
 
 msgid "EiB"
-msgstr "EiB"
+msgstr ""
 
 msgid "Email"
-msgstr "Sähköposti"
+msgstr ""
 
 msgid "Email account already exists."
-msgstr "Sähköpostitunnus on jo olemassa."
+msgstr ""
 
 msgid "Email account data"
-msgstr "Sähköpostitilin tiedot"
+msgstr ""
 
 msgid "Email account errors"
-msgstr "Sähköpostitilien virheet"
+msgstr ""
 
 msgid "Email account limit"
-msgstr "Sähköpostitilit"
+msgstr ""
 
 msgid "Email account list"
-msgstr "Sähköpostitilit"
+msgstr ""
 
 msgid "Email account successfully scheduled for addition."
-msgstr "Sähköpostitilin lisäys on ajastettu onnistuneesti."
+msgstr ""
 
 msgid "Email account successfully scheduled for update."
-msgstr "Sähköpostitilin päivittäminen on ajastettu onnistuneesti."
+msgstr ""
 
 msgid "Email accounts"
-msgstr "Sähköpostitilit"
+msgstr ""
 
 msgid "Email accounts are hard suspended"
-msgstr "Sähköpostitilit on poistettu käytöstä"
+msgstr ""
 
 msgid "Email address"
-msgstr "Sähköpostiosoitteet"
+msgstr ""
 
 msgid "Email address with comma(s) are not accepted."
-msgstr "Pilkkuja sisältävät sähköpostiosoitteet eivät ole sallittuja"
+msgstr ""
 
 msgid "Email forward"
-msgstr "Sähköpostin uudelleenohjaus"
+msgstr ""
 
 msgid "Email quota"
-msgstr "Sähköpostin levytila"
+msgstr ""
 
 msgid "Email quota [MiB]"
-msgstr "Sähköpostin levytila [MiB]"
+msgstr ""
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
-msgstr "Sähköpostin levytila ei voi olla suurempi kuin %s"
+msgstr ""
 
 msgid "Email quota cannot be bigger than disk space limit."
-msgstr "Sähköpostin levytila ei voi olla suurempi kuin käytettävissä oleva levytila."
+msgstr ""
 
 #, php-format
 msgid ""
 "Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
 "quota."
-msgstr "Sähköpostin levytila ei voi olla alempi kuin %d. Levytilan tulee olla vähintään 1 MiB."
+msgstr ""
 
 #, php-format
 msgid "Email quota cannot be unlimited. Max value is %d MiB."
-msgstr "Sähköpostin levytila ei voi olla rajoittamaton. Suurin arvo on %d MiB."
+msgstr ""
 
 msgid "Email quota must be a number."
-msgstr "Levytilan määrän tulee olla numero."
+msgstr ""
 
 msgid "Email settings"
-msgstr "Sähköpostin asetukset"
+msgstr ""
 
 msgid "Email setup"
-msgstr "Email-asetukset"
+msgstr ""
 
 msgid "Email successfully updated."
-msgstr "Sähköposti päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Emails"
-msgstr "Sähköpostit"
+msgstr ""
 
 msgid "Empty data or wrong field."
-msgstr "Tyhjä tieto tai väärä kenttä."
+msgstr ""
 
 msgid "Enable"
-msgstr "Aktivoi"
+msgstr ""
 
 msgid "Enable SSL"
-msgstr "Aktivoi SSL"
+msgstr ""
 
 msgid "Enable auto responder"
-msgstr "Aktivoi automaattivastaaja"
+msgstr ""
 
 msgid "Enabled"
-msgstr "Käytössä"
+msgstr ""
 
 #, php-format
 msgid "Enabled for: %s"
@@ -2282,354 +2277,354 @@ msgstr ""
 msgid ""
 "Entries associated to your external mail servers were not found. A "
 "Resynchronization has been scheduled."
-msgstr "Ulkoisille sähköpostipalvelimille asetettuja tietueita ei löydy. Uudelleen synkronointi on ajastettu."
+msgstr ""
 
 msgid "Error"
-msgstr "Virhe"
+msgstr ""
 
 msgid "Error details"
-msgstr "Virheen tiedot"
+msgstr ""
 
 msgid "Error pages"
-msgstr "Virhesivut"
+msgstr ""
 
 msgid "Error reporting"
-msgstr "Virheraportointi"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
-msgstr "Virhe luotaessa listaa verkkokorteista."
+msgstr ""
 
 msgid "Error: Remote File not found!"
-msgstr "Virhe: tiedostoa ei löytynyt!"
+msgstr ""
 
 msgid "Errors"
-msgstr "Virheet"
+msgstr ""
 
 msgid "Excl. default mails"
-msgstr "Poislukien oletussähköpostit"
+msgstr ""
 
 msgid "Execute requests"
-msgstr "Suorita kyselyt"
+msgstr ""
 
 msgid "Expire date"
-msgstr "Vanhenemispäivä"
+msgstr ""
 
 msgid "Ext. mail server"
-msgstr "Ulkoinen sähköpostipalvelin"
+msgstr ""
 
 msgid "External Mail Host"
-msgstr "Ulkoinen isäntä"
+msgstr ""
 
 msgid "External mail server"
-msgstr "Ulkoinen sähköpostipalvelin"
+msgstr ""
 
 msgid "External mail server successfully scheduled for addition."
-msgstr "Ulkoinen sähköpostipalvelin on ajatettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "External mail server successfully scheduled for deactivation."
-msgstr "Ulkoinen sähköpostipalvelin on ajatettu käytöstä poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "External mail server successfully scheduled for update."
-msgstr "Ulkoinen sähköpostipalvelin on ajatettu päivitettäväksi onnistuneesti."
+msgstr ""
 
 msgid "External mail servers"
-msgstr "Ulkoiset sähköpostipalvelimet"
+msgstr ""
 
 msgid "FTP Users"
-msgstr "FTP käyttäjät"
+msgstr ""
 
 msgid "FTP account"
-msgstr "FTP-tunnus"
+msgstr ""
 
 msgid "FTP account limit"
-msgstr "FTP-tilit"
+msgstr ""
 
 msgid "FTP account limit reached."
-msgstr "FTP-tilien enimmäismäärä täynnä."
+msgstr ""
 
 msgid "FTP account successfully added."
-msgstr "FTP-tunnus lisätty onnistuneesti."
+msgstr ""
 
 msgid "FTP account successfully deleted."
-msgstr "FTP-tili on poistettu onnistuneesti."
+msgstr ""
 
 msgid "FTP account successfully updated."
-msgstr "FTP-tili on päivitetty onnistuneesti."
+msgstr ""
 
 msgid "FTP accounts"
-msgstr "FTP-tunnukset"
+msgstr ""
 
 msgid "FTP traffic"
-msgstr "FTP-liikenne"
+msgstr ""
 
 msgid "FTPs total"
-msgstr "FTP:tä yhteensä"
+msgstr ""
 
 msgid "Failed to write file to disk."
-msgstr "Kirjoittaminen levylle epäonnistui."
+msgstr ""
 
 msgid "Failure in the package. Deleting!"
-msgstr "Paketissa havaittu virhe. Poistetaan!"
+msgstr ""
 
 msgid "Fax"
-msgstr "Faksi"
+msgstr ""
 
 msgid "Feature"
-msgstr "Ominaisuus"
+msgstr ""
 
 msgid "Features"
-msgstr "Ominaisuudet"
+msgstr ""
 
 msgid "Female"
-msgstr "Nainen"
+msgstr ""
 
 #, php-format
 msgid "File %s doesn't exist or cannot be reached!"
-msgstr "Tiedostoa %s ei ole olemassa tai sitä ei voida ladata!"
+msgstr ""
 
 #, php-format
 msgid "File %s doesn't look like a migration file."
-msgstr "Tiedosto %s ei näytä migraatio-tiedostolta."
+msgstr ""
 
 #, php-format
 msgid "File %s is missing in plugin archive."
-msgstr "Tiedosto %s puuttuu liitännäisten arkistosta."
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr "Tiedostoa ei löydy. %1$s.tar.gz"
+msgstr ""
 
 msgid "File exceeds the size limit."
-msgstr "Tiedosto ylittää kokorajoituksen."
+msgstr ""
 
 msgid "File has been successfully uploaded."
-msgstr "Tiedosto on lähetetty onnistuneesti."
+msgstr ""
 
 msgid "File is not readable."
-msgstr "Tiedosto ei ole luettava"
+msgstr ""
 
 msgid "File needs to be a 'tar.gz' archive."
-msgstr "Tiedoston pitää olla 'tar.gz' paketti."
+msgstr ""
 
 msgid "File successfully uploaded."
-msgstr "Tiedosto lähetetty onnistuneesti."
+msgstr ""
 
 msgid "File usage"
-msgstr "Tiedostot"
+msgstr ""
 
 msgid "FileManager"
-msgstr "Tiedostonhallinta"
+msgstr ""
 
 msgid "Filemanager"
-msgstr "Tiedostonhallinta"
+msgstr ""
 
 msgid "Filesystem system Info"
-msgstr "Tiedostojärjestelmän tiedot"
+msgstr ""
 
 msgid "Fill out a message text."
-msgstr "Täytä viesti."
+msgstr ""
 
 msgid "First name"
-msgstr "Etunimi"
+msgstr ""
 
 msgid "First name cannot have more than 200 characters."
-msgstr "Etunimi ei voi olla enemmän kuin 200 merkkiä"
+msgstr ""
 
 msgid "Forbidden"
-msgstr "Kielletty"
+msgstr ""
 
 msgid "Force retry"
-msgstr "Pakota uudelleen"
+msgstr ""
 
 msgid "Forward"
-msgstr "Ohjaus"
+msgstr ""
 
 msgid "Forward URL"
-msgstr "Uudelleenohjaus osoitteeseen (URL)"
+msgstr ""
 
 #, php-format
 msgid "Forward URL %s is not valid."
-msgstr "Uudelleenohjaus osoitteeseen '%s' ei ole mahdollista."
+msgstr ""
 
 msgid "Forward list is empty."
-msgstr "Edelleenlähetys lista on tyhjä"
+msgstr ""
 
 msgid "Forward mail"
-msgstr "Ohjaa sähköpostiin"
+msgstr ""
 
 msgid "Forward to"
-msgstr "Ohjaa:"
+msgstr ""
 
 msgid "Forward to URL"
-msgstr "Ohjaa osoitteeseen"
+msgstr ""
 
 msgid "Free"
-msgstr "Vapaana"
+msgstr ""
 
 msgid "From"
-msgstr "Keneltä"
+msgstr ""
 
 msgid "From reseller"
-msgstr "Jälleenmyyjältä"
+msgstr ""
 
 msgid "Ftp"
-msgstr "FTP"
+msgstr ""
 
 msgid "Ftp account"
-msgstr "FTP-tili"
+msgstr ""
 
 msgid "Ftp account data"
-msgstr "FTP-tilin tiedot"
+msgstr ""
 
 msgid "Ftp account with same username already exists."
-msgstr "Järjestelmässä on jo FTP-tili samalla nimellä."
+msgstr ""
 
 msgid "Ftp accounts"
-msgstr "FTP- tilit"
+msgstr ""
 
 msgid "GB"
-msgstr "GB"
+msgstr ""
 
 msgid "Gender"
-msgstr "Sukupuoli"
+msgstr ""
 
 msgid "General"
-msgstr "Yhteenveto"
+msgstr ""
 
 msgid "General information"
-msgstr "Yleistiedot"
+msgstr ""
 
 msgid "General settings"
-msgstr "Yleiset asetukset"
+msgstr ""
 
 msgid "Generate"
-msgstr "Generoi"
+msgstr ""
 
 msgid "Generate a self-signed certificate"
-msgstr "Generoi itse allekirjoitettu sertifikaatti"
+msgstr ""
 
 msgid "Get a new image"
-msgstr "Generoi uusi kuva painamalla tästä"
+msgstr ""
 
 msgid "GiB"
-msgstr "GiB"
+msgstr ""
 
 msgid "Group"
-msgstr "Ryhmä"
+msgstr ""
 
 msgid "Group auth"
-msgstr "Ryhmäauthaus"
+msgstr ""
 
 msgid "Group members"
-msgstr "Ryhmän jäsenet"
+msgstr ""
 
 msgid "Group name"
-msgstr "Ryhmän nimi"
+msgstr ""
 
 msgid "Groups"
-msgstr "Ryhmät"
+msgstr ""
 
 msgid "HTTP traffic"
-msgstr "HTTP-liikenne"
+msgstr ""
 
 msgid "Hide aliases"
-msgstr "Piilota aliakset"
+msgstr ""
 
 msgid "High"
-msgstr "Suuri"
+msgstr ""
 
 msgid "Home directory"
-msgstr "Kotikansio"
+msgstr ""
 
 #, php-format
 msgid "Home directory '%s' doesn't exist"
-msgstr "Kotikansiota '%s' ei ole olemassa"
+msgstr ""
 
 msgid "Homepage"
-msgstr "Kotisivu"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
-msgstr "Palvelin, josta SQL-käyttäjän on sallittua yhdistää SQL-palvelimeen"
+msgstr ""
 
 msgid "Hosting plan"
-msgstr "Palvelupaketti"
+msgstr ""
 
 msgid "Hosting plan availability"
-msgstr "Palvelupaketin saatavuus"
+msgstr ""
 
 msgid "Hosting plan limits exceed reseller limits."
-msgstr "Palvelupaketin rajat ylittävät jälleenmyyjän käytössä olevat rajat."
+msgstr ""
 
 msgid "Hosting plan limits exceed your limits."
 msgstr ""
 
 msgid "Hosting plan successfully created."
-msgstr "Palvelupaketti lisätty onnistuneesti."
+msgstr ""
 
 msgid "Hosting plan successfully deleted."
 msgstr ""
 
 msgid "Hosting plan successfully updated."
-msgstr "Palvelupaketti päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Hosting plans"
-msgstr "Hosting-paketit"
+msgstr ""
 
 msgid "Hour"
-msgstr "Tunti"
+msgstr ""
 
 msgid "Hours"
-msgstr "Tuntia"
+msgstr ""
 
 msgid "Htaccess errors"
-msgstr "htaccess -virheet"
+msgstr ""
 
 msgid "Htaccess group"
-msgstr "htaccess -ryhmä"
+msgstr ""
 
 msgid "Htaccess group successfully scheduled for addition."
-msgstr "htaccess -ryhmä ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "Htaccess group successfully scheduled for deletion."
-msgstr "htaccess -ryhmä ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Htaccess user"
-msgstr "htaccess -käyttäjä"
+msgstr ""
 
 #, php-format
 msgid "Htaccess user successfully assigned to the %s htaccess group"
-msgstr "htaccess -käyttäjä lisätty onnistuneesti htaccess -ryhmään %s"
+msgstr ""
 
 #, php-format
 msgid "Htaccess user successfully deleted from the %s htaccess group "
-msgstr "htaccess -käyttäjä poistettu onnistuneesti htaccess -ryhmään %s"
+msgstr ""
 
 msgid "Htaccess user successfully scheduled for addition."
-msgstr "htaccess -käyttäjä ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "Http traffic"
-msgstr "http-liikenne"
+msgstr ""
 
 msgid "IP Address"
-msgstr "IP-osoite"
+msgstr ""
 
 msgid "IP address"
-msgstr "IP-osoite"
+msgstr ""
 
 msgid "IP address already under the control of i-MSCP."
-msgstr "IP-osoite on jo lisätty i-MSCP: hallittavaksi"
+msgstr ""
 
 msgid "IP address data"
-msgstr "IP-osoitteen tiedot"
+msgstr ""
 
 msgid "IP address field is empty or invalid."
-msgstr "IP-osoitekenttä on tyhjä tai virheellinen."
+msgstr ""
 
 msgid "IP address successfully scheduled for addition."
-msgstr "IP-osoite ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "IP address successfully scheduled for deletion."
-msgstr "IP-osoite ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "IP addresses under control of i-MSCP"
 msgstr ""
@@ -2638,16 +2633,16 @@ msgid "IP assignments"
 msgstr ""
 
 msgid "IP management"
-msgstr "IP-hallinta"
+msgstr ""
 
 msgid "IP usage"
-msgstr "IP käyttö"
+msgstr ""
 
 msgid "IPv6 address"
-msgstr "IPv6 osoite"
+msgstr ""
 
 msgid "IPv6 address field is empty or invalid."
-msgstr "IPv6 -osoitekenttä on tyhjä tai viheellinen."
+msgstr ""
 
 msgid "Id"
 msgstr ""
@@ -2666,16 +2661,16 @@ msgid ""
 msgstr ""
 
 msgid "If you want to limit the reseller, you must first limit its customers."
-msgstr "Jos haluat rajoittaa jälleenmyyjää, sinun täytyy ensiksi rajoitta hänen asikkaitaan."
+msgstr ""
 
 msgid "Images have to be smaller than 500 x 90 pixels."
-msgstr "Kuvien täytyy olla pienempiä kuin 500 x 90 pikseliä."
+msgstr ""
 
 msgid "Import"
-msgstr "Tuonti"
+msgstr ""
 
 msgid "Import in local repository"
-msgstr "Tuo paikallinen varasto"
+msgstr ""
 
 msgid "Import new language file"
 msgstr ""
@@ -2683,92 +2678,92 @@ msgstr ""
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
 "from today."
-msgstr "Mikäli domainin vanhentumispäivää ei ole asetettu', vanhentumispäiväksi asetetaan tämä päivä."
+msgstr ""
 
 msgid "In front"
-msgstr "Edessä"
+msgstr ""
 
 msgid "In maintenance mode, only administrators can login."
-msgstr "Huoltotilassa vain ylläpitäjät voivat kirjautua."
+msgstr ""
 
 msgid "Incl. default mails"
-msgstr "Sisältäen oletussähköpostit"
+msgstr ""
 
 msgid "Incorrect Email quota"
-msgstr "Virheellinen sähköpostin levytilan määrä"
+msgstr ""
 
 msgid "Incorrect Email quota."
-msgstr "Virheellinen sähköpostin levytilan määrä"
+msgstr ""
 
 msgid "Incorrect FTP account limit."
-msgstr "Virheellinen arvo FTP-tilien rajoitukselle."
+msgstr ""
 
 msgid "Incorrect SQL database limit."
-msgstr "Virheellinen arvo SQL-tietokantojen rajoitukselle."
+msgstr ""
 
 msgid "Incorrect SQL user limit."
-msgstr "Virheellinen arvo SQL-käyttäjien rajoitukselle."
+msgstr ""
 
 msgid "Incorrect alias limit."
-msgstr "Virheellinen arvo domain-aliaksien rajoitukselle."
+msgstr ""
 
 msgid "Incorrect disk space limit."
-msgstr "Virheellinen arvo levytilanrajoitukselle."
+msgstr ""
 
 msgid "Incorrect domain alias limit."
-msgstr "Virheellinen arvo domain-alias rajoitukselle."
+msgstr ""
 
 msgid "Incorrect email account limit."
-msgstr "Virheellinen arvo sähköpostitilien rajoitukselle."
+msgstr ""
 
 msgid "Incorrect email length or syntax."
-msgstr "Väärä sähköpostin pituustai muoto."
+msgstr ""
 
 msgid "Incorrect email quota."
-msgstr "Virheellinen sähköpostin levytilan määrä"
+msgstr ""
 
 #, php-format
 msgid "Incorrect limit for %s."
-msgstr "Virheellinen raja-arvo arvolle %s."
+msgstr ""
 
 msgid "Incorrect monthly traffic limit."
-msgstr "Virheellinen arvo kuukausittaiselle liikenteen enimmäismäärälle."
+msgstr ""
 
 msgid "Incorrect post code length or syntax!"
-msgstr "Virheellinen postinumeron pituus tai muoto!"
+msgstr ""
 
 msgid "Incorrect subdomain limit."
-msgstr "Virheellinen arvo alidomainien enimmäismäärälle."
+msgstr ""
 
 msgid "Incorrect syntax for email address."
-msgstr "Virheellinen muoto sähköpostille."
+msgstr ""
 
 msgid "Incorrect username length or syntax."
-msgstr "Väärä käyttäjänimen pituus tai muoto."
+msgstr ""
 
 msgid "Info Unavailable"
-msgstr "Tietoa ei ole saatavilla"
+msgstr ""
 
 msgid "Install"
-msgstr "Asenna"
+msgstr ""
 
 msgid "Install in progress"
-msgstr "Asennus käynnissä"
+msgstr ""
 
 msgid "Install this plugin"
-msgstr "Asenna liitännäinen"
+msgstr ""
 
 msgid "Install various Web applications with a few clicks."
 msgstr ""
 
 msgid "Installation details"
-msgstr "Asennuksen tiedot"
+msgstr ""
 
 msgid "Installation in progress..."
-msgstr "Asennus käynnissä..."
+msgstr ""
 
 msgid "Installation path"
-msgstr "Asennuspolku"
+msgstr ""
 
 msgid "Installed Package which was deleted by your reseller."
 msgstr ""
@@ -2780,254 +2775,254 @@ msgid "Installed in software repository"
 msgstr ""
 
 msgid "Installed on"
-msgstr "Asennettu "
+msgstr ""
 
 msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
 
 msgid "Instructions to download today's backup"
-msgstr "Ohjeet tämän päivän varmuuskopion lataukseen"
+msgstr ""
 
 msgid "Intermediate certificate(s)"
 msgstr ""
 
 msgid "Internal Server Error"
-msgstr "Palvelimen sisäinen virhe"
+msgstr ""
 
 msgid "Internationalization"
-msgstr "Kansainvälistäminen"
+msgstr ""
 
 msgid "Invalid CNAME"
-msgstr "Virheellinen CNAME"
+msgstr ""
 
 msgid "Invalid IPv4 address."
-msgstr "Virheellinen IPv4-osoite"
+msgstr ""
 
 msgid "Invalid IPv6 address."
-msgstr "Virheellinen IPv6-osoite"
+msgstr ""
 
 msgid "Invalid MX priority."
-msgstr "Virheellinen MX-prioriteetti"
+msgstr ""
 
 msgid "Invalid MX type."
-msgstr "Virheellinen MX-tyyppi"
+msgstr ""
 
 msgid "Invalid NAME."
-msgstr "Virheellinen NAME"
+msgstr ""
 
 #, php-format
 msgid "Invalid SQL user host: %s"
-msgstr "Virheellinen SQL-käyttäjän palvelin: %s"
+msgstr ""
 
 msgid "Invalid SSL certificate."
 msgstr ""
 
 msgid "Invalid TXT data"
-msgstr "Virheellinen TXT-tieto"
+msgstr ""
 
 msgid "Invalid URL."
-msgstr "Virheellinen osoite."
+msgstr ""
 
 msgid "Invalid domain name."
-msgstr "Virheellinen domain-tunnus."
+msgstr ""
 
 msgid "Invalid email address."
-msgstr "Virheellinen sähköposti-tunnus"
+msgstr ""
 
 msgid "Invalid email username."
-msgstr "Virheellinen käyttäjänimi sähköpostille."
+msgstr ""
 
 msgid "Invalid group name!"
-msgstr "Väärä ryhmännimi!"
+msgstr ""
 
 msgid "Invalid home directory."
-msgstr "Virheellinen kotikansio."
+msgstr ""
 
 msgid "Invalid htaccess group name."
-msgstr "Virheellinen htaccess-ryhmän nimi."
+msgstr ""
 
 msgid "Invalid menu order."
-msgstr "Virheellinen navigaatiojärjestys"
+msgstr ""
 
 msgid "Invalid name."
-msgstr "Virheellinen nimi."
+msgstr ""
 
 msgid "Invalid payload received from GitHub"
 msgstr ""
 
 msgid "Invalid private key or passphrase."
-msgstr "Virheellinen yksityinen avain tai salasana."
+msgstr ""
 
 msgid "Invalid target."
-msgstr "Virheellinen kohde."
+msgstr ""
 
 msgid "Invalid type given. String expected"
-msgstr "Virheellinen tyyppi. String-oletettu."
+msgstr ""
 
 msgid "Invalid username."
-msgstr "Virheellinen käyttäjänimi."
+msgstr ""
 
 msgid "Kernel Version"
-msgstr "Kernelin versio"
+msgstr ""
 
 msgid "Kill session"
-msgstr "Tapa sessio"
+msgstr ""
 
 msgid "Label"
-msgstr "Nimi"
+msgstr ""
 
 msgid "Language"
-msgstr "Kieli"
+msgstr ""
 
 msgid "Language file"
-msgstr "Kielitiedosto"
+msgstr ""
 
 msgid "Language file successfully installed."
-msgstr "Kielitiedosto on asennettu onnistuneesti."
+msgstr ""
 
 msgid "Language successfully updated."
-msgstr "Kielitiedosto on päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Languages"
 msgstr ""
 
 msgid "Languages index was successfully re-built."
-msgstr "Käännökset rakennettiiin uudestaan onnistuneesti"
+msgstr ""
 
 msgid "Last Web software repository update"
-msgstr "Viimeisin verkko-ohjelmavaraston päivitys"
+msgstr ""
 
 msgid "Last access"
-msgstr "Viimeisin käynti"
+msgstr ""
 
 msgid "Last name"
-msgstr "Sukunimi"
+msgstr ""
 
 msgid "Last name cannot have more than 200 characters."
-msgstr "Sukunimi ei voi sisältää enemmän kuin 200 merkkiä."
+msgstr ""
 
 msgid "Last reply date"
-msgstr "Viimeisin vastaus päivämäärä"
+msgstr ""
 
 msgid "Layout"
-msgstr "Teema"
+msgstr ""
 
 msgid "Layout color"
-msgstr "Käyttöliittymän väri"
+msgstr ""
 
 msgid "Layout color successfully updated."
-msgstr "Käyttöliittymän väri on päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Level"
-msgstr "Taso"
+msgstr ""
 
 msgid "Limit"
-msgstr "Rajoita"
+msgstr ""
 
 msgid "Limit value"
-msgstr "Raja"
+msgstr ""
 
 msgid "Limits"
-msgstr "Rajoitukset"
+msgstr ""
 
 msgid "Link"
-msgstr "Linkki"
+msgstr ""
 
 msgid "Link to authors homepage"
-msgstr "Linkki tekijän kotisivulle"
+msgstr ""
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr "Kuorma (1 Min, 5 Min, 15 Min)"
+msgstr ""
 
 msgid "Loading data..."
-msgstr "Ladataan tietoja..."
+msgstr ""
 
 msgid "Log entries successfully deleted."
-msgstr "Lokitiedot poistettu onnistuneesti."
+msgstr ""
 
 msgid "Log in to answer"
-msgstr "Kirjaudu sisään vastataksesi"
+msgstr ""
 
 msgid "Login"
-msgstr "Kirjaudu"
+msgstr ""
 
 msgid "Login As"
-msgstr "Kirjaudu käyttäjänä"
+msgstr ""
 
 #, php-format
 msgid "Login data successfully sent to %s."
-msgstr "Kirjautumistiedot lähetetty onnistuneesti %s."
+msgstr ""
 
 msgid "Login into phpMyAdmin"
-msgstr "Kirjaudu phpMyAdminiin"
+msgstr ""
 
 msgid "Login password"
-msgstr "Salasana"
+msgstr ""
 
 msgid "Login username"
-msgstr "Käyttäjätunnus"
+msgstr ""
 
 msgid "Login with your FTP account"
-msgstr "Kirjaudu FTP-tunnuksellasi"
+msgstr ""
 
 msgid "Logo file"
-msgstr "Logotiedosto"
+msgstr ""
 
 msgid "Logo successfully removed."
-msgstr "Logo poistettu onnistuneesti."
+msgstr ""
 
 msgid "Logo successfully updated."
-msgstr "Logo päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Logout"
-msgstr "Kirjaudu ulos"
+msgstr ""
 
 msgid "Lost password"
-msgstr "Salasanan palautus"
+msgstr ""
 
 msgid "Lost password email"
-msgstr "Salasana kadonnut -sähköposti"
+msgstr ""
 
 msgid "Lost password link"
-msgstr "Salasana kadonnut linkki"
+msgstr ""
 
 msgid "Lostpw link"
-msgstr "Salasanamuistuttajan linkki"
+msgstr ""
 
 msgid "Low"
-msgstr "Pieni"
+msgstr ""
 
 msgid "MB"
-msgstr "MB"
+msgstr ""
 
 msgid "Mail"
-msgstr "Sähköposti"
+msgstr ""
 
 msgid "Mail Log Level"
-msgstr "Sähköposti-ilmoitukset"
+msgstr ""
 
 #, php-format
 msgid "Mail account %s successfully scheduled for deletion."
-msgstr "Sähköpostitili %s ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Mail account type"
-msgstr "Sähköpostitilin -tyyppi"
+msgstr ""
 
 msgid "Mail accounts list is empty."
-msgstr "Sähköpostikäyttäjien lista on tyhjä!"
+msgstr ""
 
 msgid "Mail feature is disabled."
-msgstr "Sähköposti-ominaisuus on poistettu käytöstä."
+msgstr ""
 
 msgid "Mail usage"
-msgstr "Sähköpostit"
+msgstr ""
 
 #, php-format
 msgid "Mailhost %s is not valid."
-msgstr "Sähköposti-isäntä %s on virheellinen."
+msgstr ""
 
 msgid "Mailhost cannot be empty."
-msgstr "Sähköposti-isäntä ei voi olla tyhjä."
+msgstr ""
 
 msgid "Mailhost must not be equal to the domain name for which you add it."
 msgstr ""
@@ -3036,47 +3031,47 @@ msgid "Main menu labels visibility successfully updated."
 msgstr ""
 
 msgid "Maintenance message"
-msgstr "Huoltotilan viesti"
+msgstr ""
 
 msgid "Maintenance mode"
-msgstr "Huoltotila"
+msgstr ""
 
 msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
-msgstr "Huoltotila aktivoitu. Vain ylläpitäjät voivat kirjautua sisään."
+msgstr ""
 
 msgid "Maintenance settings"
-msgstr "Huoltotilan asetukset"
+msgstr ""
 
 msgid "Male"
-msgstr "Mies"
+msgstr ""
 
 msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage SQL"
-msgstr "Hallitse tietokantoja"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
-msgstr "Hallitse htaccess käyttäjiä ja ryhmiä"
+msgstr ""
 
 msgid "Manage users"
-msgstr "Hallitse käyttäjiä"
+msgstr ""
 
 msgid "Manage users and groups"
-msgstr "Hallitse käyttäjiä ja ryhmiä"
+msgstr ""
 
 msgid "Manage your protected areas, users and groups."
-msgstr "Hallitse suojattuja alueita, käyttäjiä ja ryhmiä."
+msgstr ""
 
 msgid "Mark"
-msgstr "Valitse"
+msgstr ""
 
 msgid "Max number of login attempts"
-msgstr "Max kirjautumisyritystä"
+msgstr ""
 
 msgid "Max traffic"
-msgstr "Maksimiliikenne"
+msgstr ""
 
 #, php-format
 msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
@@ -3094,236 +3089,236 @@ msgid ""
 msgstr ""
 
 msgid "Medium"
-msgstr "Normaali"
+msgstr ""
 
 msgid "Member of group"
 msgstr ""
 
 msgid "Memory information"
-msgstr "Muistin tiedot"
+msgstr ""
 
 msgid "Message"
-msgstr "Viesti"
+msgstr ""
 
 msgid "Message template"
-msgstr "Viestipohja"
+msgstr ""
 
 msgid "Message template info"
-msgstr "Viestipohjan tiedot"
+msgstr ""
 
 msgid "Message to reseller before deleting the software"
-msgstr "Lähetä viesti jälleenmyyjälle ennekuin poistat ohjelmiston"
+msgstr ""
 
 msgid "Messages"
-msgstr "Viestit"
+msgstr ""
 
 msgid "MiB"
-msgstr "MB"
+msgstr ""
 
 #, php-format
 msgid "Migration file %s is not readable."
 msgstr ""
 
 msgid "Minute"
-msgstr "Minuttia"
+msgstr ""
 
 msgid "Minutes"
-msgstr "Minuttia"
+msgstr ""
 
 msgid "Missing domain"
-msgstr "Puuttuva domain"
+msgstr ""
 
 msgid "Model"
-msgstr "Malli"
+msgstr ""
 
 msgid "Modification in progress..."
-msgstr "Muutos käynnissä.."
+msgstr ""
 
 msgid "Month"
-msgstr "Kuukausi"
+msgstr ""
 
 msgid "Monthly traffic limit [MiB]"
-msgstr "Kuukausittainen liikennerajoitus [MiB]"
+msgstr ""
 
 msgid "Monthly traffic limit must be a number."
-msgstr "Kuukausittaisen liikennemäärän raja-arvon on oltava numero."
+msgstr ""
 
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
-msgstr "Liikennemäärän varoituksen arvo ei voi olla suurempi kuin sallittu kuukausittainen liikennemäärä."
+msgstr ""
 
 msgid "Monthly traffic warning must be a number."
 msgstr ""
 
 msgid "More Details"
-msgstr "Lisätietoja"
+msgstr ""
 
 msgid "Mount"
-msgstr "Liitos"
+msgstr ""
 
 msgid "Mount point"
-msgstr "Liitospiste"
+msgstr ""
 
 msgid "Move"
-msgstr "Siirrä"
+msgstr ""
 
 msgid "Moving aborted."
-msgstr "Siirto keskeytetty."
+msgstr ""
 
 msgid "N/A"
-msgstr "Ei asetettu"
+msgstr ""
 
 msgid "NAME field is empty or invalid."
-msgstr "NAME -kenttä on tyhjä tai virheellinen."
+msgstr ""
 
 msgid "Name"
-msgstr "Nimi"
+msgstr ""
 
 msgid "Name cannot be empty."
-msgstr "Nimi ei voi olla tyhjä."
+msgstr ""
 
 msgid "Network interface"
-msgstr "Verkkosovitin"
+msgstr ""
 
 msgid "Never"
-msgstr "Ei asetettu"
+msgstr ""
 
 msgid "New SQL user data"
-msgstr "Uuden SQL-käyttäjän tiedot"
+msgstr ""
 
 msgid "New alias order for {CUSTOMER}"
-msgstr "Uusi alias-tilaus asiakkaalta {CUSTOMER}"
+msgstr ""
 
 msgid "New password has not been sent. Ask your administrator."
-msgstr "Uutta salasanaa ei ole lähetetty. Kysy ylläpitäjältäsi."
+msgstr ""
 
 msgid "New ticket"
-msgstr "Uusi kysymys"
+msgstr ""
 
 msgid "Next"
-msgstr "Seuraava"
+msgstr ""
 
 msgid "Next step"
-msgstr "Seuraava vaihe"
+msgstr ""
 
 msgid "No"
-msgstr "Ei"
+msgstr ""
 
 msgid "No IP address found."
-msgstr "IP-osoitteita ei löytynyt."
+msgstr ""
 
 msgid "No administrator accounts found."
-msgstr "Ylläpitäjän tiliä ei löytynyt."
+msgstr ""
 
 msgid "No anti-rootkits logs"
-msgstr "Ei merkintöjä"
+msgstr ""
 
 msgid "No available"
-msgstr "Ei saatavilla"
+msgstr ""
 
 msgid "No custom menu found."
-msgstr "Ei valinnaisia valikoita"
+msgstr ""
 
 msgid "No customer accounts found."
-msgstr "Asiakkaiden tilejä ei löytynyt."
+msgstr ""
 
 msgid "No database update available."
-msgstr "Tietokantapäivityksiä ei saatavilla."
+msgstr ""
 
 msgid "No errors"
-msgstr "Ei virheitä"
+msgstr ""
 
 msgid "No file was uploaded."
-msgstr "Tiedostoa ei ladattu."
+msgstr ""
 
 msgid "No group found."
-msgstr "Ei ryhmiä"
+msgstr ""
 
 msgid "No hosting plan available."
-msgstr "Ei palvelupaketteja saatavilla"
+msgstr ""
 
 msgid "No languages found."
-msgstr "Kieliä ei löytynyt."
+msgstr ""
 
 msgid "No records found matching the search criteria."
-msgstr "Hakuehtoihin vastaavia tietueita ei löytynyt."
+msgstr ""
 
 msgid "No reseller accounts found."
-msgstr "Jälleenmyyjän tilejä ei löytynyt."
+msgstr ""
 
 msgid "No reseller available to add the permissions."
 msgstr ""
 
 msgid "No reseller with activated software installer found!"
-msgstr "Ei jälleenmyyjiä, joilla ohjelmistoasentaja aktivoituna!"
+msgstr ""
 
 msgid "No reseller with permissions for this software found."
 msgstr ""
 
 msgid "No resellers found."
-msgstr "Ei jälleenmyyjiä."
+msgstr ""
 
 msgid "No software available"
-msgstr "Ohjelmistoja ei ole saatavilla."
+msgstr ""
 
 msgid "No software in Web repository found!"
-msgstr "Ohjelmaa ei löydetty verkko-ohjelmavarastosta!"
+msgstr ""
 
 msgid "No software in software depot available!"
-msgstr "Ohjelmia ei ole saatavilla ohjelmavarastossa!"
+msgstr ""
 
 msgid "No software is waiting for activation"
 msgstr ""
 
 msgid "No statistics found for the given period. Try another period."
-msgstr "Tilastoja ei löydy annetulle ajanjaksolle. Kokeile toista ajanjaksoa."
+msgstr ""
 
 msgid "No unassigned users were found in the database."
 msgstr ""
 
 msgid "No update available"
-msgstr "Päivityksiä ei ole saatavilla"
+msgstr ""
 
 msgid "No used yet"
 msgstr ""
 
 msgid "No user found."
-msgstr "Käyttäjää ei löydy."
+msgstr ""
 
 msgid "No users found for this reseller."
 msgstr ""
 
 msgid "No."
-msgstr "Nro."
+msgstr ""
 
 msgid "None"
-msgstr "Ei asetettu"
+msgstr ""
 
 msgid "Normal"
-msgstr "Normaali"
+msgstr ""
 
 msgid "Normal + Forward"
-msgstr "Normaali + Uudelleenohjaus"
+msgstr ""
 
 msgid "Normal connection"
-msgstr "Normaali yhteys"
+msgstr ""
 
 msgid "Normal users"
-msgstr "Tavalliset käyttäjät"
+msgstr ""
 
 msgid "Not Found"
-msgstr "Ei löydy"
+msgstr ""
 
 msgid "Not Set"
-msgstr "Ei asetettu"
+msgstr ""
 
 msgid "Not found."
-msgstr "Ei löydy."
+msgstr ""
 
 msgid "Not provided"
-msgstr "Ei toimitettu"
+msgstr ""
 
 msgid "Not used"
-msgstr "Ei käytössä"
+msgstr ""
 
 msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
 msgstr ""
@@ -3332,13 +3327,13 @@ msgid "Note: You cannot mix Spam filter and domain options"
 msgstr ""
 
 msgid "Nothing found - sorry"
-msgstr "Mitään ei löytynyt - pahoittelut"
+msgstr ""
 
 msgid "Nothing has been changed."
-msgstr "Mitään ei muutettu."
+msgstr ""
 
 msgid "Nothing has been deleted."
-msgstr "Mitään ei poistettu."
+msgstr ""
 
 msgid "Nothing has been scheduled for deactivation."
 msgstr ""
@@ -3347,19 +3342,19 @@ msgid "Nothing to do. Daemon request has been cancelled."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
-msgstr "Huomiot, varoitukset ja virheet"
+msgstr ""
 
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 msgid "One or more database updates are now available. See the details below."
-msgstr "Yksi tai useampi tietokantapäivitys on saatavilla. Katso lisätiedot alta."
+msgstr ""
 
 msgid "Only 'tar.gz' archives are accepted."
-msgstr "Vain 'tar.gz' -paketit ovat sallittuja."
+msgstr ""
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr ""
@@ -3368,13 +3363,13 @@ msgid "Only exec"
 msgstr ""
 
 msgid "Only gettext Machine Object files (MO files) are accepted."
-msgstr "Vain gettext Machine Object tiedostot (MO files) hyväksytään."
+msgstr ""
 
 msgid "Only numbers in range from 0 to 65535 are allowed."
 msgstr ""
 
 msgid "Only positive numbers are allowed."
-msgstr "Vain positiiviset numerot ovat sallittuja"
+msgstr ""
 
 msgid ""
 "Only printable characters from the ASCII table (not extended), excepted the "
@@ -3385,47 +3380,47 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Open ticket"
-msgstr "Avaa tukipyyntö"
+msgstr ""
 
 msgid "Open tickets"
-msgstr "Avoimet kysymykset"
+msgstr ""
 
 #, php-format
 msgid "Operation cancelled: %s"
 msgstr ""
 
 msgid "Optional"
-msgstr "Valinnainen"
+msgstr ""
 
 msgid "Order"
-msgstr "Tilaus"
+msgstr ""
 
 msgid "Order successfully deleted."
-msgstr "Tilaus poistettu onnistuneesti."
+msgstr ""
 
 msgid "Order successfully processed."
-msgstr "Tilaus käsitelty onnistuneesti."
+msgstr ""
 
 msgid "Other in"
-msgstr "Muut sisään"
+msgstr ""
 
 msgid "Other out"
-msgstr "Muut ulos"
+msgstr ""
 
 msgid "Other settings"
-msgstr "Muut asetukset"
+msgstr ""
 
 msgid "Overview"
-msgstr "Etusivu"
+msgstr ""
 
 msgid "Owner"
-msgstr "Omistaja"
+msgstr ""
 
 msgid "PB"
-msgstr "PB"
+msgstr ""
 
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
 #, php-format
 msgid "PHP %s configuration option"
@@ -3435,16 +3430,16 @@ msgid "PHP Configuration options"
 msgstr ""
 
 msgid "PHP Editor"
-msgstr "PHP-muokkain"
+msgstr ""
 
 msgid "PHP GD extension not loaded."
-msgstr "PHP GB laajennusta ei ole ladattu."
+msgstr ""
 
 msgid "PHP Permissions"
 msgstr ""
 
 msgid "PHP Settings"
-msgstr "PHP Asetukset"
+msgstr ""
 
 msgid "PHP configuration scheduled for update."
 msgstr ""
@@ -3456,22 +3451,22 @@ msgid "PHP exec() function"
 msgstr ""
 
 msgid "PHP settings"
-msgstr "PHP asetukset"
+msgstr ""
 
 msgid "POP3/IMAP"
 msgstr ""
 
 msgid "POP3/IMAP in"
-msgstr "POP3/IMAP sisään"
+msgstr ""
 
 msgid "POP3/IMAP out"
-msgstr "POP3/IMAP ulos"
+msgstr ""
 
 msgid "POP3/IMAP traffic"
-msgstr "POP3/IMAP-liikenne"
+msgstr ""
 
 msgid "Package actions"
-msgstr "Paketin toiminnot"
+msgstr ""
 
 msgid "Package already exists in the reseller depot!"
 msgstr ""
@@ -3486,7 +3481,7 @@ msgid "Package already exists in your software repository!"
 msgstr ""
 
 msgid "Package install type"
-msgstr "Paketin asennuksen tyyppi"
+msgstr ""
 
 msgid "Package installed successfully!"
 msgstr ""
@@ -3495,62 +3490,62 @@ msgid "Package installed successfully... Awaiting release from admin!"
 msgstr ""
 
 msgid "Package language"
-msgstr "Paketin kieli"
+msgstr ""
 
 msgid "Package name"
-msgstr "Paketin nimi"
+msgstr ""
 
 msgid "Package title"
-msgstr "Paketin otsikko"
+msgstr ""
 
 msgid "Package type"
-msgstr "Paketin tyyppi"
+msgstr ""
 
 msgid "Package vendor HP"
-msgstr "Paketin tekijän URL"
+msgstr ""
 
 msgid "Package version"
-msgstr "Paketin versio"
+msgstr ""
 
 msgid "Panel default language"
-msgstr "Paneelin oletuskieli"
+msgstr ""
 
 msgid "Parent directory"
-msgstr "Edellinen kansio"
+msgstr ""
 
 msgid "Partition"
-msgstr "Osio"
+msgstr ""
 
 msgid "Password"
-msgstr "Salasana"
+msgstr ""
 
 msgid "Password cannot be empty."
-msgstr "Salasana ei voi olla tyhjä."
+msgstr ""
 
 msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
 msgid "Password confirmation"
-msgstr "Toista salasana"
+msgstr ""
 
 msgid "Password contains unallowed characters."
-msgstr "Salasana sisältää kiellettyjä merkkejä."
+msgstr ""
 
 msgid "Password data"
-msgstr "Salasanatiedot"
+msgstr ""
 
 msgid "Password email"
 msgstr ""
 
 msgid "Password is missing."
-msgstr "Salasana puuttuu."
+msgstr ""
 
 #, php-format
 msgid "Password is shorter than %s characters."
-msgstr "Salasana on lyhyempi kuin %s merkkiä."
+msgstr ""
 
 msgid "Password is too long."
-msgstr "Salasana on liian pitkä."
+msgstr ""
 
 msgid "Password minimum length"
 msgstr ""
@@ -3559,58 +3554,58 @@ msgstr ""
 msgid ""
 "Password must be at least %s characters long and contain letters and numbers"
 " to be valid."
-msgstr "Salasanan täytyy olla vähintään %s merkkiä pitkä ja sen täytyy sisältää kirjaimia ja numeroita."
+msgstr ""
 
 msgid "Password settings"
-msgstr "Salasana-asetukset"
+msgstr ""
 
 msgid "Password successfully updated."
-msgstr "Salasana vaihdettu onnistuneesti."
+msgstr ""
 
 msgid "Password with comma(s) are not accepted."
-msgstr "Salasanassa ei voi esiintyä pilkkua."
+msgstr ""
 
 msgid "Passwords do not match"
-msgstr "Salasanat eivät täsmää"
+msgstr ""
 
 msgid "Passwords do not match."
-msgstr "Salasanat eivät täsmää."
+msgstr ""
 
 msgid "Path"
-msgstr "Polku"
+msgstr ""
 
 msgid "Percent"
-msgstr "Prosentti"
+msgstr ""
 
 msgid "Permissions"
-msgstr "Käyttöoikeudet"
+msgstr ""
 
 msgid "Personal data"
-msgstr "Yhteystiedot"
+msgstr ""
 
 msgid "Personal data successfully updated."
-msgstr "Henkilökohtaiset tiedot päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Personalise template"
-msgstr "Personoi pakettia"
+msgstr ""
 
 msgid "Phone"
-msgstr "Puhelin"
+msgstr ""
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "PiB"
-msgstr "PiB"
+msgstr ""
 
 msgid "Please activate your new i-MSCP password"
-msgstr "Aktivoi uusi i-MSCP salasanasi"
+msgstr ""
 
 msgid "Please choose htaccess user or htaccess group."
-msgstr "Ole hyvä ja valitse htaccess -käyttäjä tai htaccess -ryhmä."
+msgstr ""
 
 msgid "Please confirm the password."
-msgstr "Ole hyvä ja toista salasana."
+msgstr ""
 
 msgid ""
 "Please contact the administrator!<br>Ask him for the permissions to use this"
@@ -3619,32 +3614,32 @@ msgid ""
 msgstr ""
 
 msgid "Please enter a name for the protected area."
-msgstr "Syötä suojatun alueen nimi"
+msgstr ""
 
 msgid "Please enter a password."
-msgstr "Syötä salasana"
+msgstr ""
 
 msgid "Please enter an SQL user host."
-msgstr "Ole hyvä ja anna SQL-käyttäjän palvelin"
+msgstr ""
 
 msgid "Please enter an username."
-msgstr "Syötä käyttäjätunnus"
+msgstr ""
 
 msgid "Please enter protected area path"
-msgstr "Ole hyvä ja syötä suojatun alueen polku"
+msgstr ""
 
 msgid "Please enter your auto-responder message below"
-msgstr "Syötä automaattivastaajasi viesti alle"
+msgstr ""
 
 msgid "Please fill up both data fields for password."
-msgstr "Ole hyvä ja täytä molemmat salasana kentät"
+msgstr ""
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
-msgstr "Valitse toinen kansio. %s (%s) on jo asennettu tänne."
+msgstr ""
 
 msgid "Please select at least one user."
-msgstr "Valitse vähintään yksi käyttäjä."
+msgstr ""
 
 msgid ""
 "Please set now the username and password for the later login in the "
@@ -3652,43 +3647,43 @@ msgid ""
 msgstr ""
 
 msgid "Please specify a message content."
-msgstr "Ole hyvä ja määritä viestin sisältö."
+msgstr ""
 
 msgid "Please specify a message subject."
-msgstr "Ole hyvä ja määritä viestin otsikko."
+msgstr ""
 
 msgid "Please type database name."
-msgstr "Ole hyvä ja anna tietokannan nimi."
+msgstr ""
 
 msgid "Please type your message."
-msgstr "Ole hyvä ja kirjoita viesti."
+msgstr ""
 
 msgid "Plugin"
-msgstr "Liitännäinen"
+msgstr ""
 
 #, php-format
 msgid "Plugin %s activated."
-msgstr "Liitännäinen '%s' aktivoitu."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be activated."
-msgstr "Liitännäistä '%s' ei voi aktivoida."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be deactivated."
-msgstr "Liitännäistä '%s' ei voi poistaa käytöstä."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr "Liitännäistä '%s' ei voi poistaa."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be installed."
-msgstr "Liitännäistä '%s' ei voi asentaa."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be protected."
-msgstr "Liitännäistä '%s' ei voi suojata."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be reconfigured."
@@ -3696,31 +3691,31 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
-msgstr "Liitännäisen '%s' asennusta ei voi poistaa."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be updated."
-msgstr "Liitännäistä '%s' ei voi päivittää."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s deactivated."
-msgstr "Liitännäinen '%s' poistettu käytöstä."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s deleted."
-msgstr "Liitännäinen '%s' poistettu."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s installed."
-msgstr "Liitännäinen '%s' asennettu."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s is protected."
-msgstr "Liitännäinen '%s' on suojattu."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s protected."
-msgstr "Liitännäinen '%s' suojattu."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s reconfigured."
@@ -3728,35 +3723,35 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
-msgstr "Liitännäinen '%s' aktivoidaan."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s scheduled for change."
-msgstr "Muutos ajastettu liitännäiselle '%s'."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s scheduled for deactivation."
-msgstr "Käytöstä poisto ajastettu liitännäiselle '%s'."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s scheduled for installation."
-msgstr "Asennus ajastettu liitännäiselle '%s'."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s scheduled for uninstallation."
-msgstr "Asennuksen poisto ajastettu liitännäiselle '%s'."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s scheduled for update."
-msgstr "Päivitys ajastettu liitännäiselle '%s'."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s uninstalled."
-msgstr "Liitännäinen '%s' poistettu."
+msgstr ""
 
 #, php-format
 msgid "Plugin %s updated."
-msgstr "Liitännäinen '%s' päivitetty."
+msgstr ""
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
@@ -3791,7 +3786,7 @@ msgid "Plugin Manager: Unable to write the %s file for protected plugins."
 msgstr ""
 
 msgid "Plugin archive"
-msgstr "Liitännäiskirjasto"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -3799,22 +3794,22 @@ msgid ""
 msgstr ""
 
 msgid "Plugin errors"
-msgstr "Liitännäisten virheet"
+msgstr ""
 
 msgid "Plugin has been successfully uploaded."
 msgstr ""
 
 msgid "Plugin item errors"
-msgstr "Liitännäisten virheet"
+msgstr ""
 
 msgid "Plugin list is empty."
-msgstr "Liitännäisten lista on tyhjä."
+msgstr ""
 
 msgid "Plugin management"
 msgstr ""
 
 msgid "Plugins Upload"
-msgstr "Liitännäisten lataus palvelimelle"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -3831,35 +3826,35 @@ msgid ""
 msgstr ""
 
 msgid "Port"
-msgstr "Portti"
+msgstr ""
 
 msgid "Port must be a number."
-msgstr "Portti täytyy olla numero"
+msgstr ""
 
 msgid "Prevent external login for admins"
-msgstr "Estä ulkopuoliset kirjautumiset pääkäyttäjiltä"
+msgstr ""
 
 msgid "Prevent external login for clients"
-msgstr "Estä ulkopuoliset kirjautumiset asiakkailta"
+msgstr ""
 
 msgid "Prevent external login for resellers"
-msgstr "Estä ulkopuoliset kirjautumiset jälleenmyyjiltä"
+msgstr ""
 
 msgid "Previous"
-msgstr "Edellinen"
+msgstr ""
 
 msgid "Priority"
-msgstr "Tärkeys"
+msgstr ""
 
 msgid "Priority must be a number."
-msgstr "Tärkeysaste täytyy olla numero."
+msgstr ""
 
 #, php-format
 msgid "Priority: %s\n"
 msgstr ""
 
 msgid "Private key"
-msgstr "Yksityinen avain"
+msgstr ""
 
 msgid "Private key passphrase if any"
 msgstr ""
@@ -3868,84 +3863,84 @@ msgid "Process update"
 msgstr ""
 
 msgid "Processing..."
-msgstr "Käsittelee..."
+msgstr ""
 
 msgid "Processor data"
-msgstr "Prosessorin tiedot"
+msgstr ""
 
 msgid "Profile"
-msgstr "Profiili"
+msgstr ""
 
 msgid "Properties"
-msgstr "Ominaisuudet"
+msgstr ""
 
 #, php-format
 msgid "Properties for reseller with ID %d were not found in database."
 msgstr ""
 
 msgid "Protect"
-msgstr "Suojaa"
+msgstr ""
 
 msgid "Protect it"
-msgstr "Suojaa"
+msgstr ""
 
 msgid "Protect this plugin"
-msgstr "Suojaa liitännäinen"
+msgstr ""
 
 msgid "Protected"
-msgstr "Suojattu"
+msgstr ""
 
 msgid "Protected area status should be 'OK' if you want to delete it."
-msgstr "Suojatun alueen tila pitää olla 'OK' jos haluat poistaa sen.."
+msgstr ""
 
 msgid "Protected area successfully scheduled for addition."
-msgstr "Suojattu alue ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "Protected area successfully scheduled for deletion."
-msgstr "Suojattu alue ajastettu poistettavaksi onnistuneesti."
+msgstr ""
 
 msgid "Protected area successfully scheduled for update."
-msgstr "Suojattu alue ajastettu päivitettäväksi onnistuneesti."
+msgstr ""
 
 msgid "Protected areas"
-msgstr "Suojatut alueet"
+msgstr ""
 
 msgid "Protocol"
-msgstr "Protokolla"
+msgstr ""
 
 msgid "Quota"
-msgstr "Levytilakiintiö"
+msgstr ""
 
 msgid "Quota in MiB (0 for unlimited)"
-msgstr "Levytilakiintiö, MiB (0 = rajoittamaton)"
+msgstr ""
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
-msgstr "Levytilakiintiö, MiB (Max. %s)"
+msgstr ""
 
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
 msgid "Read ticket"
-msgstr "Lue tukipyyntö"
+msgstr ""
 
 msgid "Rebuild languages index"
-msgstr "Uudelleen rakenna käännökset"
+msgstr ""
 
 msgid "Reconfiguration in progress..."
 msgstr ""
 
 msgid "Record data"
-msgstr "Tietueen tiedot"
+msgstr ""
 
 msgid "Redirect"
-msgstr "Uudelleenohjaus"
+msgstr ""
 
 msgid "Redistribute unused quota across existing mailboxes"
-msgstr "Jaa käyttämätön levytila olemassaolevien sähköpostitilien kesken"
+msgstr ""
 
 msgid "Registration date"
-msgstr "Rekisteröitymispäivä"
+msgstr ""
 
 msgid "Relative weight"
 msgstr ""
@@ -3954,359 +3949,359 @@ msgid "Relative weight must be a number."
 msgstr ""
 
 msgid "Release date"
-msgstr "Julkaisupäivä"
+msgstr ""
 
 msgid "Release description"
-msgstr "Julkaisun kuvaus"
+msgstr ""
 
 msgid "Release version"
-msgstr "Julkaisun versio"
+msgstr ""
 
 msgid "Remote Web software repository"
-msgstr "Verkko-ohjelmavarasto"
+msgstr ""
 
 msgid "Remote file not found."
 msgstr ""
 
 msgid "Remove"
-msgstr "Poista"
+msgstr ""
 
 msgid "Remove IP"
-msgstr "Poista IP"
+msgstr ""
 
 msgid "Remove last entry"
-msgstr "Poista viimeisin lisäys"
+msgstr ""
 
 msgid "Remove permissions"
-msgstr "Poista oikeudet"
+msgstr ""
 
 msgid "Reopen"
-msgstr "Avaa uudelleen"
+msgstr ""
 
 msgid "Reopen ticket"
-msgstr "Avaa tukipyyntö uudelleen"
+msgstr ""
 
 msgid "Repeat password"
-msgstr "Toista salasana"
+msgstr ""
 
 msgid "Reply"
-msgstr "Vastaa"
+msgstr ""
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr "Pyyntö keskeytyi: Palvelimelta meni liian kauan tiedon lähettämisessä."
+msgstr ""
 
 msgid "Request from foreign host was blocked."
 msgstr ""
 
 msgid "Requires Database?"
-msgstr "Vaatii tietokannan?"
+msgstr ""
 
 msgid "Reseller"
-msgstr "Jälleenmyyjä"
+msgstr ""
 
 msgid "Reseller / Customers / Add Customer"
-msgstr "Jälleenmyyjä / Asiakkaat / Lisää asiakas"
+msgstr ""
 
 msgid "Reseller / Customers / Add Customer - Next Step"
-msgstr "Jälleenmyyjä / Asiakkaat / Lisää asiakas - Seuraava"
+msgstr ""
 
 msgid "Reseller / Customers / Circular"
-msgstr "Jälleenmyyjä / Asiakkaat / Joukkokirje"
+msgstr ""
 
 msgid "Reseller / Customers / Domain Aliases"
-msgstr "Jälleenmyyjä / Asiakkaat / Domain-aliakset"
+msgstr ""
 
 msgid "Reseller / Customers / Lost Password Email"
-msgstr "Jälleenmyyjä / Asiakkaat / Salasana kadonnut -sähköposti"
+msgstr ""
 
 msgid "Reseller / Customers / Overview"
-msgstr "Jälleenmyyjä / Asiakkaat / Yhteenveto"
+msgstr ""
 
 msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "Jälleenmyyjä / Asiakkaat / Yhteenveto / Poista asiakas"
+msgstr ""
 
 msgid "Reseller / Customers / Overview / Domain Details"
-msgstr "Jälleenmyyjä / Asiakkaat / Yhteenveto / Domainin tiedot"
+msgstr ""
 
 msgid "Reseller / Customers / Overview / Edit Customer"
-msgstr "Jälleenmyyjä / Asiakkaat / Yhteenveto / Muokkaa asiakasta"
+msgstr ""
 
 msgid "Reseller / Customers / Overview / Edit Domain"
-msgstr "Jälleenmyyjä / Asiakkaat / Yhteenveto / Muokkaa domainia"
+msgstr ""
 
 msgid "Reseller / Customers / Welcome Email"
-msgstr "Jälleenmyyjä / Asiakkaat / Tervetuloa-viesti"
+msgstr ""
 
 msgid "Reseller / Domains / Add Domain Alias"
-msgstr "Jälleenmyyjä / Domainit / Lisää domain-alias"
+msgstr ""
 
 msgid "Reseller / Domains / Edit Domain Alias"
-msgstr "Jälleenmyyjä / Domainit / Muokkaa domain-aliasta"
+msgstr ""
 
 msgid "Reseller / General / Overview"
-msgstr "Jälleenmyyjä / Yleiset / Yleiskatsaus"
+msgstr ""
 
 msgid "Reseller / General / Software Upload"
-msgstr "Jälleenmyyjä / Yleiset / Ohjelmiston lataus"
+msgstr ""
 
 msgid "Reseller / Hosting Plans / Add Hosting Plan"
-msgstr "Jälleenmyyjä / Palvelupaketit / Lisää"
+msgstr ""
 
 msgid "Reseller / Hosting Plans / Overview"
-msgstr "Jälleenmyyjä / Palvelupaketit / Yhteenveto"
+msgstr ""
 
 msgid "Reseller / Profile / Account Summary"
-msgstr "Jälleenmyyjä / Profiili / Yhteenveto"
+msgstr ""
 
 msgid "Reseller / Profile / Language"
-msgstr "Jälleenmyyjä / Profiili / Kieli"
+msgstr ""
 
 msgid "Reseller / Profile / Layout"
-msgstr "Jälleenmyyjä / Profiili / Ulkoasu"
+msgstr ""
 
 msgid "Reseller / Profile / Password"
-msgstr "Jälleenmyyjä / Profiili / Salasana"
+msgstr ""
 
 msgid "Reseller / Profile / Personal Data"
-msgstr "Jälleenmyyjä / Profiili / Henkilökohtaiset tiedot"
+msgstr ""
 
 msgid "Reseller / Statistics / IP Usage"
-msgstr "Jälleenmyyjä / Tilastot / IP-osoitteiden käyttö"
+msgstr ""
 
 msgid "Reseller / Statistics / Overview"
-msgstr "Jälleenmyyjä / Tilastot / Yhteenveto"
+msgstr ""
 
 msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
 msgstr ""
 
 msgid "Reseller / Support / Closed Tickets"
-msgstr "Jälleenmyyjä / Tukipyynnöt /  Suljetut"
+msgstr ""
 
 msgid "Reseller / Support / New Ticket"
-msgstr "Jälleenmyyjä / Tukipyynnöt / Uusi tukipyyntö"
+msgstr ""
 
 msgid "Reseller / Support / Open Tickets"
-msgstr "Jälleenmyyjä / Tukipyynnöt / Avoimet"
+msgstr ""
 
 msgid "Reseller / Support / View Ticket"
-msgstr "Jälleenmyyjä / Tukipyynnöt / Katso tukipyyntöä"
+msgstr ""
 
 msgid "Reseller /Hosting Plans / Edit Hosting Plan"
 msgstr ""
 
 msgid "Reseller Name"
-msgstr "Jälleenmyyjä"
+msgstr ""
 
 msgid "Reseller account successfully created."
-msgstr "Jälleenmyyjän-tunnus on luotu onnistuneesti."
+msgstr ""
 
 msgid "Reseller account successfully updated."
-msgstr "Jälleenmyyjän tili päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Reseller and customer"
-msgstr "Jälleenmyyjä ja asiakas"
+msgstr ""
 
 msgid "Reseller and customer levels"
-msgstr "Jälleenmyyjän ja asiakkaan taso"
+msgstr ""
 
 msgid "Reseller assignment"
-msgstr "Jälleenmyyjämääritys"
+msgstr ""
 
 msgid "Reseller assignments"
 msgstr ""
 
 msgid "Reseller consumption"
-msgstr "Jälleenmyyjän käyttö"
+msgstr ""
 
 msgid "Reseller data"
-msgstr "Jälleenmyyjän tiedot"
+msgstr ""
 
 msgid "Reseller level"
-msgstr "Jälleenmyyjätaso"
+msgstr ""
 
 msgid "Reseller list"
-msgstr "Jällenmyyjälista"
+msgstr ""
 
 msgid "Reseller list is empty."
-msgstr "Jälleenmyyjien lista on tyhjä."
+msgstr ""
 
 msgid "Reseller name"
-msgstr "Jälleenmyyjä"
+msgstr ""
 
 msgid "Reseller software list"
-msgstr "Jälleenmyyjien ohjelmistolista"
+msgstr ""
 
 msgid "Reseller statistics"
-msgstr "Jälleenmyyjätilastot"
+msgstr ""
 
 msgid "Reseller successfully added."
-msgstr "Jälleenmyyjä lisätty onnistuneesti"
+msgstr ""
 
 msgid "Reseller total"
-msgstr "Jälleenmyyjällä ohjelmistoja yhteensä"
+msgstr ""
 
 msgid "Reseller users"
-msgstr "Jälleenmyyjät"
+msgstr ""
 
 msgid "Reseller with permissions total"
-msgstr "Jälleenmyyjiä oikeuksilla yhteensä"
+msgstr ""
 
 msgid "Reseller's layout color successfully updated."
-msgstr "Jälleenmyyjien käyttöliittymän väri vaihdettu."
+msgstr ""
 
 msgid "Reseller/IP usage statistics"
-msgstr "Jälleenmyyjä / IP-osoitteiden käyttötilasto"
+msgstr ""
 
 msgid "Resellers"
-msgstr "Jälleenmyyjät"
+msgstr ""
 
 msgid "Resellers and customers"
-msgstr "Jälleenmyyjät ja asiakkaat"
+msgstr ""
 
 msgid "Reset"
-msgstr "Tyhjennä"
+msgstr ""
 
 msgid "Reset entries"
 msgstr ""
 
 msgid "Restore"
-msgstr "Palauta"
+msgstr ""
 
 msgid "Restore backup"
-msgstr "Palauta varmuuskopio"
+msgstr ""
 
 msgid "Revision date"
-msgstr "Version päivämäärä"
+msgstr ""
 
 msgid "Rights"
-msgstr "Käyttöoikeudet"
+msgstr ""
 
 msgid "Rights successfully added."
-msgstr "Oikeudet lisätty onnistuneesti."
+msgstr ""
 
 msgid "Rights successfully removed."
-msgstr "Oikeudet poistettu onnistuneesti."
+msgstr ""
 
 msgid "SMTP in"
-msgstr "SMTP sisään"
+msgstr ""
 
 msgid "SMTP out"
-msgstr "SMTP ulos"
+msgstr ""
 
 msgid "SMTP traffic"
-msgstr "SMTP-liikenne"
+msgstr ""
 
 msgid "SQL"
-msgstr "SQL"
+msgstr ""
 
 msgid "SQL database"
-msgstr "SQL-tietokanta"
+msgstr ""
 
 msgid "SQL database limit"
-msgstr "SQL-tietokannat"
+msgstr ""
 
 msgid "SQL database limit is disabled but SQL user limit is not."
-msgstr "Tietokantojen määrä on rajoittamaton, mutta tietokantakäyttäjien määrä on rajoitettu."
+msgstr ""
 
 msgid "SQL database limit is disabled."
-msgstr "SQL-tietokantojen määrää ei ole rajoitettu."
+msgstr ""
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr ""
 
 msgid "SQL database limit reached."
-msgstr "SQL-tietokantojen enimmäismäärä on saavutettu."
+msgstr ""
 
 msgid "SQL database successfully created."
 msgstr ""
 
 msgid "SQL database successfully deleted."
-msgstr "SQL-tietokanta poistettu onnistuneesti."
+msgstr ""
 
 msgid "SQL databases"
-msgstr "SQL-tietokannat"
+msgstr ""
 
 msgid "SQL databases only"
 msgstr ""
 
 msgid "SQL user"
-msgstr "SQL-käyttäjä"
+msgstr ""
 
 #, php-format
 msgid "SQL user %s already exits."
-msgstr "SQL-käyttäjä %s on jo olemassa."
+msgstr ""
 
 msgid "SQL user host"
-msgstr "SQL-käyttäjän palvelin"
+msgstr ""
 
 msgid "SQL user limit"
-msgstr "SQL-käyttäjät"
+msgstr ""
 
 msgid "SQL user limit is <i>disabled</i>."
-msgstr "SQL-käyttäjien enimmäismäärä on poistettu käytöstä."
+msgstr ""
 
 msgid "SQL user limit is disabled but SQL database limit is not."
-msgstr "SQL-käyttäjien enimmäismäärä on rajoittamaton, mutta SQL-tietokantojen määrä on rajattu."
+msgstr ""
 
 msgid "SQL user limit is disabled."
-msgstr "SQL-käyttäjien rajoitus on poistettu."
+msgstr ""
 
 msgid "SQL user name"
-msgstr "SQL-käyttäjänimi"
+msgstr ""
 
 msgid "SQL user password successfully updated."
-msgstr "SQL-käyttäjän salasana päivitetty onnistuneesti."
+msgstr ""
 
 msgid "SQL user prefix/suffix"
-msgstr "Tietokantakäyttäjän prefix"
+msgstr ""
 
 msgid "SQL user successfully added."
-msgstr "SQL-käyttäjä lisätty onnistuneesti."
+msgstr ""
 
 msgid "SQL user successfully deleted."
 msgstr ""
 
 msgid "SQL user with comma(s) in name is not accepted."
-msgstr "SQL-käyttäjän nimessä ei ole sallittua käyttää pilkkua."
+msgstr ""
 
 msgid "SQL users"
-msgstr "SQL-käyttäjät"
+msgstr ""
 
 msgid "SSL certificate"
-msgstr "SSL-sertifikaatti"
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr "SSL-sertifikaatin lisäys ajastettu onnistuneesti."
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr "SSL-sertifikaatin poisto ajastettu onnistuneesti."
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr "SSL-sertifikaatin päivitys ajastettu onnistuneesti."
+msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
-msgstr "SSL-ominaisuus ei ole käytettävissä. Voit ainoastaan tarkastella sertifikaattiasi."
+msgstr ""
 
 msgid "Save"
-msgstr "Tallenna"
+msgstr ""
 
 msgid "Search"
-msgstr "Etsi"
+msgstr ""
 
 msgid "Sec."
-msgstr "Sec."
+msgstr ""
 
 msgid "Secure connection"
 msgstr ""
 
 msgid "Security code"
-msgstr "Tarkistuskoodi"
+msgstr ""
 
 msgid "Select all entries for deletion."
 msgstr ""
 
 msgid "Select group"
-msgstr "Valitse ryhmä"
+msgstr ""
 
 msgid "Select this entry for deletion."
 msgstr ""
@@ -4317,225 +4312,225 @@ msgid ""
 msgstr ""
 
 msgid "Send"
-msgstr "Lähetä"
+msgstr ""
 
 msgid "Send circular"
-msgstr "Lähetä joukkokirje"
+msgstr ""
 
 msgid "Send message"
-msgstr "Lähetä viesti"
+msgstr ""
 
 msgid "Send message to"
-msgstr "Vastaanottaja"
+msgstr ""
 
 msgid "Send new login data"
-msgstr "lähetä uudet kirjautumistiedot"
+msgstr ""
 
 msgid "Send new reply"
-msgstr "Lähetä uusi vastaus"
+msgstr ""
 
 msgid "Send reply"
-msgstr "Lähetä vastaus"
+msgstr ""
 
 msgid "Send to"
-msgstr "Vastaanottaja"
+msgstr ""
 
 msgid "Sender email"
-msgstr "Lähettäjän sähköposti"
+msgstr ""
 
 msgid "Sender email is missing."
-msgstr "Lähettäjän sähköposti puuttuu."
+msgstr ""
 
 msgid "Sender name"
-msgstr "Lähettäjän nimi"
+msgstr ""
 
 msgid "Sender name is missing."
-msgstr "Lähettäjän nimi puuttuu."
+msgstr ""
 
 msgid "Separate multiple email addresses by comma or a line-break."
-msgstr "Erota useat sähköpostiosoitteet pilkulla tai rivinvaihdolla."
+msgstr ""
 
 msgid "Separate multiple email addresses with a line-break."
-msgstr "Erota useat sähköpostiosoitteet rivinvaihdolla."
+msgstr ""
 
 msgid "Server ports"
-msgstr "Palvelinportit"
+msgstr ""
 
 msgid "Server statistics"
-msgstr "Palvelintilastot"
+msgstr ""
 
 msgid "Server status"
-msgstr "Palvelimen tila"
+msgstr ""
 
 msgid "Server traffic"
-msgstr "Palvelimen liikenne"
+msgstr ""
 
 msgid "Server traffic settings"
-msgstr "Palvelimen liikenneasetukset"
+msgstr ""
 
 msgid "Server traffic settings successfully updated."
-msgstr "Palvelimen liikenneasetukset päivitetty onnistuneesti"
+msgstr ""
 
 msgid "Service Name"
-msgstr "Palvelu"
+msgstr ""
 
 msgid "Service Unavailable"
-msgstr "Palvelu ei ole saatavilla"
+msgstr ""
 
 msgid "Service name"
-msgstr "Palvelu"
+msgstr ""
 
 msgid "Service name already exists."
-msgstr "Palvelun nimi on jo käytössä"
+msgstr ""
 
 msgid "Service port successfully added"
 msgstr ""
 
 msgid "Service port successfully removed."
-msgstr "Palveluportti poistettu onnistuneesti."
+msgstr ""
 
 msgid "Service ports"
-msgstr "Palveluportit"
+msgstr ""
 
 msgid "Service protocol"
-msgstr "Palvelun protolla"
+msgstr ""
 
 msgid "Services status"
-msgstr "Palvelun tila"
+msgstr ""
 
 msgid "Sessions"
-msgstr "Istunnot"
+msgstr ""
 
 msgid "Set status to 'tochange'"
-msgstr "Vaihda domainin tila 'tochange'"
+msgstr ""
 
 msgid "Settings"
-msgstr "Asetukset"
+msgstr ""
 
 msgid "Settings saved."
-msgstr "Asetukset tallennettu."
+msgstr ""
 
 msgid "Shared mount point"
-msgstr "Jaettu liitospiste"
+msgstr ""
 
 msgid "Show"
-msgstr "Näytä"
+msgstr ""
 
 #, php-format
 msgid "Show %s records per page"
-msgstr "Näytä %s hakutulosta / sivu"
+msgstr ""
 
 msgid "Show HTML output compression size comment"
-msgstr "Näytä pakatun HTML:n koko kommentissa"
+msgstr ""
 
 msgid "Show SSL certificate"
-msgstr "Näytä SSL-sertifikaatti"
+msgstr ""
 
 msgid "Show detailed statistics for this reseller"
-msgstr "Näytä yksityiskohtaiset tiedot tälle jälleenmyyjälle"
+msgstr ""
 
 msgid "Show detailed statistics for this user"
 msgstr ""
 
 msgid "Show in"
-msgstr "Näytä"
+msgstr ""
 
 msgid "Show labels for main menu links"
-msgstr "Näytä selite päävalikon kohteissa"
+msgstr ""
 
 #, php-format
 msgid "Showing %s to %s of %s records"
-msgstr "Näytetään %s - %s / %s tietuetta"
+msgstr ""
 
 msgid "Showing 0 to 0 of 0 records"
-msgstr "Näytetään 0 - 0 / 0 tietuetta"
+msgstr ""
 
 msgid "Size"
-msgstr "Koko"
+msgstr ""
 
 msgid "Software"
-msgstr "Ohjelmisto"
+msgstr ""
 
 msgid "Software Description"
-msgstr "Ohjelmiston kuvaus"
+msgstr ""
 
 msgid "Software available"
-msgstr "Saatavilla olevat sovellukset"
+msgstr ""
 
 msgid "Software deleted."
-msgstr "Ohjelmisto poistettu."
+msgstr ""
 
 msgid "Software depot upload"
 msgstr ""
 
 msgid "Software details"
-msgstr "Ohjelmiston tiedot"
+msgstr ""
 
 msgid "Software has been deleted."
-msgstr "Ohjelmisto on poistettu."
+msgstr ""
 
 msgid "Software has been successfully imported."
-msgstr "Ohjelmiston tuonti onnistui."
+msgstr ""
 
 msgid "Software in repository"
 msgstr ""
 
 msgid "Software installation"
-msgstr "Ohjelmiston asennus"
+msgstr ""
 
 msgid "Software installer"
-msgstr "Ohjelmistoasentaja"
+msgstr ""
 
 msgid "Software installer options"
-msgstr "Ohjelmistoasentajan asetukset"
+msgstr ""
 
 msgid "Software installer options successfully updated."
-msgstr "Ohjelmistoasentajan asetukset on päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Software instance has been scheduled for installation"
 msgstr ""
 
 msgid "Software management"
-msgstr "Ohjelmistojen hallinta"
+msgstr ""
 
 msgid "Software name"
-msgstr "Sovelluksen nimi"
+msgstr ""
 
 msgid "Software not found!"
-msgstr "Ohjelmistoa ei löydy!"
+msgstr ""
 
 msgid "Software options"
-msgstr "Ohjelmiston asetukset"
+msgstr ""
 
 msgid "Software permissions"
-msgstr "Ohjelmiston oikeudet"
+msgstr ""
 
 msgid "Software repository"
-msgstr "Ohjelmavarasto"
+msgstr ""
 
 msgid "Software status"
-msgstr "Sovelluksen tila"
+msgstr ""
 
 msgid "Software successfully scheduled for deletion."
 msgstr ""
 
 msgid "Software total"
-msgstr "Ohjelmistoja yhteensä"
+msgstr ""
 
 msgid "Software upload"
-msgstr "Sovelluksen lataaminen palvelimelle"
+msgstr ""
 
 msgid "Software was activated."
-msgstr "Ohjelmisto aktivoitiin."
+msgstr ""
 
 msgid "Software was deleted."
-msgstr "Ohjelmisto poistettiin"
+msgstr ""
 
 msgid "Software-Synonym"
-msgstr "Sovellukset-Synonyymi"
+msgstr ""
 
 msgid "Software-Version"
-msgstr "Sovelluksen versio"
+msgstr ""
 
 msgid "Softwaredepot"
 msgstr ""
@@ -4554,41 +4549,41 @@ msgid ""
 msgstr ""
 
 msgid "Start installation"
-msgstr "Aloita asennus"
+msgstr ""
 
 msgid "State"
-msgstr "Lääni"
+msgstr ""
 
 msgid "State/Province"
-msgstr "Osavaltio/lääni"
+msgstr ""
 
 msgid "Statistics"
-msgstr "Tilastot"
+msgstr ""
 
 msgid "Stats"
-msgstr "Tilastot"
+msgstr ""
 
 msgid "Status"
-msgstr "Tila"
+msgstr ""
 
 msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr "Suojatun-alueen tila täytyy olla 'OK', jotta voit tehdä muutoksia"
+msgstr ""
 
 msgid "Street 1"
-msgstr "Katuosoite 1"
+msgstr ""
 
 msgid "Street 2"
-msgstr "Katuosoite 2"
+msgstr ""
 
 msgid "Strong passwords"
 msgstr ""
 
 msgid "Subdomain"
-msgstr "Alidomain"
+msgstr ""
 
 #, php-format
 msgid "Subdomain %s already exist."
-msgstr "Alidomain %s on jo olemassa."
+msgstr ""
 
 #, php-format
 msgid "Subdomain %s cannot be forwarded on itself."
@@ -4599,149 +4594,149 @@ msgid "Subdomain %s is unavailable."
 msgstr ""
 
 msgid "Subdomain alias"
-msgstr "Alidomainin alias"
+msgstr ""
 
 msgid "Subdomain alias errors"
-msgstr "Alidomain-aliaksien virheet"
+msgstr ""
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr "Alidomainin alias odottaa poistoa."
+msgstr ""
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
 "them first."
-msgstr "Alidomain alias, jota yrität poistaa, sisältää FTP-tunnuksia. Poista ne ensin."
+msgstr ""
 
 msgid "Subdomain errors"
-msgstr "Alidomainien virheet"
+msgstr ""
 
 msgid "Subdomain forward"
-msgstr "Alidomainin uudelleenohjaus"
+msgstr ""
 
 msgid "Subdomain limit"
-msgstr "Alidomainit"
+msgstr ""
 
 msgid "Subdomain mail"
-msgstr "Alidomainin sähköposti"
+msgstr ""
 
 msgid "Subdomain name"
-msgstr "Alidomainin nimi"
+msgstr ""
 
 msgid "Subdomain name is not valid."
-msgstr "Alidomainin nimi on virheellinen."
+msgstr ""
 
 msgid "Subdomain scheduled for deletion."
 msgstr ""
 
 msgid "Subdomain successfully scheduled for addition."
-msgstr "Alidomain ajastettu lisättäväksi onnistuneesti."
+msgstr ""
 
 msgid "Subdomain successfully scheduled for update"
-msgstr "Alidomain ajastettu päivitettäväksi onnistuneesti."
+msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
-msgstr "Alidomain, jota yrität poistaa, sisältää FTP-tunnuksia. Poista ne ensin."
+msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has email accounts. Please remove them "
 "first."
-msgstr "Alidomain, jota yrität poistaa, sisältää sähköpostitunnuksia. Ole hyvä ja poista ne ensin."
+msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has email accounts. Remove them first."
-msgstr "Alidomain, jota yrität poistaa, sisältää sähköpostitunnuksia. Ole hyvä ja poista ne ensin."
+msgstr ""
 
 msgid "Subdomains"
-msgstr "Alidomainit"
+msgstr ""
 
 msgid "Subject"
-msgstr "Aihe"
+msgstr ""
 
 msgid "Subject is missing."
-msgstr "Otsikko puuttuu."
+msgstr ""
 
 msgid "Submit changes"
-msgstr "Hyväksy muutokset"
+msgstr ""
 
 msgid "Support"
-msgstr "Tuki"
+msgstr ""
 
 msgid "Support system"
-msgstr "Tukijärjestelmä"
+msgstr ""
 
 msgid "Suspended"
-msgstr "Pysäytetty"
+msgstr ""
 
 msgid "Swap"
-msgstr "SWAP"
+msgstr ""
 
 msgid "Switch"
-msgstr "Vaihda"
+msgstr ""
 
 msgid "Switch to the backups directory"
 msgstr ""
 
 msgid "Switch to user interface"
-msgstr "Vaihda käyttäjän käyttöliittymään"
+msgstr ""
 
 msgid "Syntax error found in mail forward list."
 msgstr ""
 
 msgid "System"
-msgstr "Järjestelmä"
+msgstr ""
 
 msgid "System data"
-msgstr "Järjestelmäntiedot"
+msgstr ""
 
 msgid "System error - custom error page was not updated."
-msgstr "Järjestelmävirhe - Itse määriteltyä virhesivua ei ole päivitetty."
+msgstr ""
 
 msgid "System information"
-msgstr "Järjestelmäntiedot"
+msgstr ""
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr "Järjestelmätyökalut"
+msgstr ""
 
 msgid "System under maintenance"
-msgstr "Järjestelmä on huoltotilassa"
+msgstr ""
 
 msgid "TB"
-msgstr "TB"
+msgstr ""
 
 msgid "TTL"
-msgstr "TTL"
+msgstr ""
 
 msgid "TTL must be a number."
-msgstr "TTL arvon täytyy olla numero"
+msgstr ""
 
 msgid "TXT data"
-msgstr "TXT tiedot"
+msgstr ""
 
 msgid "TXT field is empty or invalid."
-msgstr "TXT-kenttä on tyhjä tai virheellinen."
+msgstr ""
 
 msgid "Target"
-msgstr "Kohde"
+msgstr ""
 
 msgid "Target domain"
-msgstr "Kohde domain"
+msgstr ""
 
 msgid "Target host"
-msgstr "Kohdeisäntä"
+msgstr ""
 
 msgid "Target port"
-msgstr "Kohdeportti"
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
-msgstr "Automaattisen viestin pohja on päivitetty onnistuneesti."
+msgstr ""
 
 msgid "Temporary folder not found."
-msgstr "Väliaikaista kansiota ei löydy."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4782,7 +4777,7 @@ msgstr ""
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
 "file manager."
-msgstr "Kansiota '%s' ei ole olemassa. Ole hyvä ja käy luomassa kansio käyttämällä tiedostonhallintaa."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -4794,10 +4789,10 @@ msgid ""
 msgstr ""
 
 msgid "The domain you are trying to edit doesn't exist."
-msgstr "Domainia ei löydy järjestelmästä"
+msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
-msgstr "Valikkoa ei löydy"
+msgstr ""
 
 msgid "The package is corrupt. Please correct it."
 msgstr ""
@@ -4808,7 +4803,7 @@ msgid ""
 msgstr ""
 
 msgid "The password field is empty."
-msgstr "Virheellinen käyttäjätunnus tai salasana."
+msgstr ""
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr ""
@@ -4827,10 +4822,10 @@ msgstr ""
 
 #, php-format
 msgid "The username %s is not available."
-msgstr "Käyttäjänimi %s ei ole saatavilla"
+msgstr ""
 
 msgid "The username field is empty."
-msgstr "Virheellinen käyttäjätunnus tai salasana."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr ""
@@ -4848,7 +4843,7 @@ msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
-msgstr "Tämä IP (%s) ei ole liitetty mihinkää verkkokorttiin!"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4877,14 +4872,14 @@ msgid ""
 " and will be available for assignment to one or many of your resellers. If "
 "an IP address is not already configured on the system, it will be attached "
 "to the selected network interface."
-msgstr "Tämä käyttöliittymä mahdollistaan IP-osoitteiden lisäämisen tai poistaminen. Listassa jo olevat ip-osoitteet ovat jo i-MSCP:n hallinnassa. Tämän käyttöliittymän kautta lisättävät ip-osoitteet lisätään automaattisesti i-MSCP:n tietokantaan ja ne ovat sen jälkeen lisättävissä jälleenmyyjille. Mikäli ip-osoitetta ei ole valmiiksi lisätty järjestelmään, se lisätään automaattisesti valittuun sovittimeen."
+msgstr ""
 
 #, php-format
 msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
-msgstr "Tämä on palvelin, josta SQL-käyttäjän on sallittua yhdistää SQL-palvelimelle. Syötä %s jokerimerkki salliaksesi yhdistämisen mistä tahansa osoitteesta."
+msgstr ""
 
 msgid "This package already exists in the administrator software repository."
 msgstr ""
@@ -4916,100 +4911,100 @@ msgid ""
 msgstr ""
 
 msgid "This user name already exist."
-msgstr "Tämä käyttäjänimi on jo käytössä."
+msgstr ""
 
 msgid "TiB"
-msgstr "TiB"
+msgstr ""
 
 msgid "Ticket Information"
-msgstr "Tukipyynnön tiedot"
+msgstr ""
 
 msgid "Ticket information"
-msgstr "Tukipyynnön tiedot"
+msgstr ""
 
 msgid "Ticket not found."
-msgstr "Tukipyyntöä ei löytynyt."
+msgstr ""
 
 msgid "Ticket successfully closed."
-msgstr "Tukipyyntö suljettu onnistuneesti"
+msgstr ""
 
 msgid "Ticket successfully deleted."
-msgstr "Tukipyyntö poistettu onnistuneesti."
+msgstr ""
 
 msgid "Ticket successfully reopened."
-msgstr "Tukipyyntö uudelleenavattu onnistuneesti."
+msgstr ""
 
 #, php-format
 msgid "Ticket with Id '%d' was not found."
-msgstr "Tukipyyntöä ID:llä '%d' ei löydy."
+msgstr ""
 
 msgid "To Admin"
-msgstr "Ylläpitäjälle"
+msgstr ""
 
 msgid "To reseller"
-msgstr "Jälleenmyyjälle"
+msgstr ""
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
-msgstr "Poistaaksesi tämän liitännäisen suojauksen, muokkaa tiedostoa %s"
+msgstr ""
 
 msgid "Total"
-msgstr "Yhteensä"
+msgstr ""
 
 msgid "Total Domains"
-msgstr "Domaineja yhteensä"
+msgstr ""
 
 msgid "Total Software"
-msgstr "Ohjelmistoja yhteensä"
+msgstr ""
 
 msgid "Total Web software repositories"
-msgstr "Verkko-ohjelmavarastojen määrä"
+msgstr ""
 
 msgid "Total installations"
-msgstr "Asennuksia yhteensä"
+msgstr ""
 
 #, php-format
 msgid "Total mails: %s / %s %s"
-msgstr "Sähköpostitilejä yhteensä: %s / %s / %s"
+msgstr ""
 
 msgid "Total packages in Web software repository"
-msgstr "Pakettien määrä verkko-ohjelmavarastossa"
+msgstr ""
 
 msgid "Total reseller"
-msgstr "Jälleenmyyjiä yhteensä"
+msgstr ""
 
 msgid "Total software"
-msgstr "Ohjelmistoja yhteensä"
+msgstr ""
 
 msgid "Traffic"
-msgstr "Liikenne"
+msgstr ""
 
 msgid "Traffic statistics"
 msgstr ""
 
 msgid "Traffic usage"
-msgstr "Liikennemäärä / kuluva kuukausi"
+msgstr ""
 
 msgid "Translated strings"
-msgstr "Käännettyjä rivejä"
+msgstr ""
 
 msgid "Type"
-msgstr "Tyyppi"
+msgstr ""
 
 msgid "UP"
-msgstr "Päällä"
+msgstr ""
 
 msgid "URL forwarding"
-msgstr "Uudelleenohjaus"
+msgstr ""
 
 msgid "URL port"
-msgstr "URL Portti"
+msgstr ""
 
 msgid "URL protocol"
-msgstr "URL Protokolla"
+msgstr ""
 
 msgid "URL to this admin panel"
-msgstr "URL ylläpitopaneeliin"
+msgstr ""
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5113,7 +5108,7 @@ msgstr ""
 msgid ""
 "Unable to retrieve directories list for your domain. Please contact your "
 "reseller."
-msgstr "Hakemistojen listaaminen epäonnistui domainillesi. Ota yhteyttä jälleenmyyjään."
+msgstr ""
 
 msgid "Unable to retrieve your password from the database."
 msgstr ""
@@ -5147,103 +5142,103 @@ msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
 msgid "Unauthorized"
-msgstr "Ei sallittu"
+msgstr ""
 
 msgid "Unavailable"
-msgstr "Ei saatavilla"
+msgstr ""
 
 msgid "Unexpected error"
-msgstr "Odottamaton virhe"
+msgstr ""
 
 msgid "Uninstall"
-msgstr "Poista asennus"
+msgstr ""
 
 msgid "Uninstall this plugin"
-msgstr "Poista tämä liitännäinen"
+msgstr ""
 
 msgid "Uninstallation in progress..."
-msgstr "Asennuksen poisto meneillään..."
+msgstr ""
 
 msgid "Uninstalled"
-msgstr "Asennus poistettu"
+msgstr ""
 
 msgid "Unknown"
-msgstr "Tuntematon"
+msgstr ""
 
 msgid "Unknown Error"
-msgstr "Määrittämätön virhe"
+msgstr ""
 
 msgid "Unknown FTP user."
-msgstr "Tuntematon FTP-käyttäjä"
+msgstr ""
 
 msgid "Unknown SQL user"
-msgstr "Tuntematon SQL-käyttäjä"
+msgstr ""
 
 msgid "Unknown action requested."
-msgstr "Tuntematon toiminto pyydetty."
+msgstr ""
 
 #, php-format
 msgid "Unknown action: %s"
-msgstr "Tunnistamaton toiminto: %s"
+msgstr ""
 
 #, php-format
 msgid "Unknown bruteforce detection type: %s"
 msgstr ""
 
 msgid "Unknown language name."
-msgstr "Tuntematon kielitiedosto"
+msgstr ""
 
 msgid "Unknown layout color."
-msgstr "Tuntematon käyttöliittymän väri."
+msgstr ""
 
 msgid "Unknown reason."
-msgstr "Tuntematon syy."
+msgstr ""
 
 #, php-format
 msgid "Unknown service name '%s'."
-msgstr "Tuntematon palvelu: '%s'."
+msgstr ""
 
 msgid "Unknown status"
-msgstr "Tuntematon tila"
+msgstr ""
 
 msgid "Unknown type."
-msgstr "Tuntematon tyyppi"
+msgstr ""
 
 msgid "Unknown user type"
-msgstr "Tuntematon käyttäjätyyppi"
+msgstr ""
 
 msgid "Unknown username."
-msgstr "Tuntematon käyttäjätunnus"
+msgstr ""
 
 msgid "Unlimited"
-msgstr "Rajoittamaton"
+msgstr ""
 
 msgid "Unprotect it"
-msgstr "Poista suojelu"
+msgstr ""
 
 msgid "Update"
-msgstr "Päivitä"
+msgstr ""
 
 msgid "Update Plugins"
-msgstr "Päivitä liitännäiset"
+msgstr ""
 
 msgid "Update SQL user password"
-msgstr "Vaihda SQL-käyttäjän salasana"
+msgstr ""
 
 msgid "Update data"
-msgstr "Päivitä tiedot"
+msgstr ""
 
 msgid "Update from Web software repository"
 msgstr ""
 
 msgid "Update from web depot"
-msgstr "Päivitä internetlähteestä"
+msgstr ""
 
 msgid "Update in progress..."
-msgstr "Päivitys käynnissä..."
+msgstr ""
 
 msgid "Update info"
-msgstr "Päivityksen tiedot"
+msgstr ""
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5251,19 +5246,19 @@ msgid ""
 msgstr ""
 
 msgid "Update password"
-msgstr "Päivitä salasana"
+msgstr ""
 
 msgid "Updates"
-msgstr "Päivitykset"
+msgstr ""
 
 msgid "Upload"
-msgstr "Lähetä"
+msgstr ""
 
 msgid "Upload logo"
-msgstr "Lähetä logo"
+msgstr ""
 
 msgid "Upload now"
-msgstr "Lataa nyt"
+msgstr ""
 
 msgid "Uptime"
 msgstr ""
@@ -5272,161 +5267,161 @@ msgid "Usage of dot in domain name labels is prohibited."
 msgstr ""
 
 msgid "Usage status"
-msgstr "Käytössä?"
+msgstr ""
 
 msgid "Use normal connection (No SSL)"
-msgstr "Käytä normaalia yhteyttä (Ei SSL)"
+msgstr ""
 
 msgid "Use secure connection (SSL)"
 msgstr ""
 
 msgid "Used"
-msgstr "Käytetty"
+msgstr ""
 
 msgid "Used database"
 msgstr ""
 
 msgid "User"
-msgstr "Käyttäjä"
+msgstr ""
 
 msgid "User (first and last) name"
-msgstr "Käyttäjän (etu ja suku) nimi"
+msgstr ""
 
 msgid "User assignment"
-msgstr "Käyttäjämääritys"
+msgstr ""
 
 msgid "User auth"
-msgstr "Käyttäjätunnistus"
+msgstr ""
 
 msgid "User data successfully updated"
-msgstr "Käyttäjän tiedot päivitetty onnistuneesti"
+msgstr ""
 
 msgid "User data successfully updated."
-msgstr "Käyttäjän tiedot päivitetty onnistuneesti."
+msgstr ""
 
 msgid "User data were not updated."
-msgstr "Käyttäjän tietoja ei päivitetty."
+msgstr ""
 
 msgid "User data were successfully updated."
-msgstr "Käyttäjätiedot on päivitetty onnistuneesti."
+msgstr ""
 
 msgid ""
 "User do not exist or you do not have permission to access this interface"
-msgstr "Käyttäjä ei ole olemassa tai sinulla ei ole oikeutta tarkastella käyttäjän tietoja"
+msgstr ""
 
 msgid "User errors"
-msgstr "Käyttäjävirheet"
+msgstr ""
 
 msgid "User has not been deleted."
-msgstr "Käyttäjää ei ole poistettu."
+msgstr ""
 
 msgid "User login (system) name"
-msgstr "Käyttäjän kirjautumisnimi"
+msgstr ""
 
 msgid "User password"
-msgstr "Käyttäjän salasana"
+msgstr ""
 
 msgid "User real (first and last) name"
-msgstr "Käyttäjän oikea (etu ja suku) nimi"
+msgstr ""
 
 msgid "User scheduled for deletion."
-msgstr "Käyttäjän poisto ajastettu."
+msgstr ""
 
 msgid "User session successfully destroyed."
-msgstr "Käyttäjäsessio on katkaistu onnistuneesti."
+msgstr ""
 
 msgid "User session successfully killed for password change."
-msgstr "Käyttäjäsessio on katkaistu onnistuneesti salasanan vaihtoa varten."
+msgstr ""
 
 msgid "User statistics"
 msgstr ""
 
 msgid "User successfully disconnected."
-msgstr "Käyttäjän yhteys on katkaistu onnistuneesti."
+msgstr ""
 
 msgid "User type"
-msgstr "Käyttäjätyyppi"
+msgstr ""
 
 msgid "User type (admin, reseller, user)"
-msgstr "Käyttäjätyyppi (ylläpitäjä, jälleenmyyjä, käyttäjä)"
+msgstr ""
 
 msgid "Username"
-msgstr "Käyttäjänimi"
+msgstr ""
 
 msgid "Username and password for application login"
 msgstr ""
 
 msgid "Username is too long."
-msgstr "Käyttäjänimi on liian pitkä."
+msgstr ""
 
 msgid "Users"
-msgstr "Käyttäjät"
+msgstr ""
 
 msgid "Users and groups"
-msgstr "Käyttäjät ja ryhmät"
+msgstr ""
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
 msgstr ""
 
 msgid "Values"
-msgstr "Arvot"
+msgstr ""
 
 msgid "Vendor hompage"
-msgstr "Toimittajan kotisivu"
+msgstr ""
 
 msgid "Version"
-msgstr "Versio"
+msgstr ""
 
 msgid "Very high"
-msgstr "Todella suuri"
+msgstr ""
 
 msgid "View"
-msgstr "Katsele"
+msgstr ""
 
 msgid "View SSL certificate"
-msgstr "Katso SSL-sertifikaattia"
+msgstr ""
 
 msgid "View Support Ticket"
-msgstr "Katso tukipyyntö"
+msgstr ""
 
 msgid "View aliases"
-msgstr "Näytä aliakset"
+msgstr ""
 
 msgid "View ticket"
-msgstr "Katso tukipyyntö"
+msgstr ""
 
 msgid "Visit plugin site"
-msgstr "Vieraile lisäosan kotisivuilla"
+msgstr ""
 
 msgid "Warning traffic"
 msgstr ""
 
 msgid "Warnings and Errors"
-msgstr "Varoitukset ja virheet"
+msgstr ""
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
-msgstr "Pahoittelut, mutta järjestelmää huolletaan tällä hetkellä. Yritä hetken kuluttua uudelleen."
+msgstr ""
 
 msgid "Web Statistics"
-msgstr "Web-tilastot"
+msgstr ""
 
 msgid "Web files only"
 msgstr ""
 
 msgid "Web folder protection"
-msgstr "Suojatut kansiot"
+msgstr ""
 
 msgid "Web in"
-msgstr "Web sisään"
+msgstr ""
 
 msgid "Web out"
-msgstr "Web ulos"
+msgstr ""
 
 msgid "Web software depot packages total"
-msgstr "Kernelin versio"
+msgstr ""
 
 msgid "Web software repository"
 msgstr ""
@@ -5438,22 +5433,22 @@ msgid "Web software repository index is already up to date."
 msgstr ""
 
 msgid "Web statistics"
-msgstr "Web-tilastot"
+msgstr ""
 
 msgid "Web traffic"
-msgstr "Web-liikenne"
+msgstr ""
 
 msgid "Webmail"
-msgstr "Webmail"
+msgstr ""
 
 msgid "Webtools"
-msgstr "Web-työkalut"
+msgstr ""
 
 msgid "Welcome email"
-msgstr "Tervetuloviesti"
+msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
-msgstr "{USERNAME}, Tervetuloa käyttämään i-MSCP:tä."
+msgstr ""
 
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
@@ -5477,25 +5472,25 @@ msgid "Wildcards such as 's%' and 's%' are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."
-msgstr "Väärä IP-osoite"
+msgstr ""
 
 msgid "Wrong mail syntax in forward list."
 msgstr ""
 
 msgid "Wrong request."
-msgstr "Väärä pyyntö"
+msgstr ""
 
 msgid "Wrong reseller id."
-msgstr "Väärä jälleenmyyjän id"
+msgstr ""
 
 msgid "Wrong security code"
-msgstr "Väärä varmistuskoodi"
+msgstr ""
 
 msgid "Wrong software id."
-msgstr "Väärä ohjelmiston id."
+msgstr ""
 
 msgid "Wrong syntax for new expire date."
-msgstr "Virheellinen syöte vanhentumispäivälle."
+msgstr ""
 
 #, php-format
 msgid "Wrong syntax for the %s limit."
@@ -5508,61 +5503,61 @@ msgid "Wrong user level provided."
 msgstr ""
 
 msgid "Wrong username."
-msgstr "Väärä käyttäjänimi."
+msgstr ""
 
 msgid "XML file URL for the Web software repository"
 msgstr ""
 
 msgid "YB"
-msgstr "YB"
+msgstr ""
 
 msgid "Year"
-msgstr "Vuosi"
+msgstr ""
 
 msgid "Yes"
-msgstr "Kyllä"
+msgstr ""
 
 msgid "Yes, delete this account."
-msgstr "Kyllä, poista käyttäjätunnus."
+msgstr ""
 
 msgid "YiB"
-msgstr "YiB"
+msgstr ""
 
 msgid "You are exceeding the monthly server traffic limit."
-msgstr "Olet ylittänyt kuukausittaisen liikennemäärärajan."
+msgstr ""
 
 msgid "You are exceeding you domain alias limit."
-msgstr "Olet ylittänyt domain-aliaksesi määrän."
+msgstr ""
 
 msgid "You are exceeding your FTP account limit."
-msgstr "Olet ylittänyt FTP-käyttäjiesi määrän."
+msgstr ""
 
 msgid "You are exceeding your SQL database limit."
-msgstr "Olet ylittänyt SQL-käyttäjiesi määrän."
+msgstr ""
 
 msgid "You are exceeding your SQL user limit."
-msgstr "Olet ylittänyt SQL-käyttäjiesi määrän."
+msgstr ""
 
 msgid "You are exceeding your disk space limit."
-msgstr "Olet ylittänyt levytilasi määrän."
+msgstr ""
 
 msgid "You are exceeding your email account limit."
-msgstr "Olet ylittänyt sähköpostitiliesi määrän."
+msgstr ""
 
 msgid "You are exceeding your monthly traffic limit."
-msgstr "Olet ylittänyt kuukausittaisen liikennemäärän."
+msgstr ""
 
 msgid "You are exceeding your subdomain limit."
-msgstr "Olet ylittänyt alidomainiesi määrän."
+msgstr ""
 
 msgid "You are not allowed to act on your own session."
 msgstr ""
 
 msgid "You are not allowed to update a protected plugin."
-msgstr "Sinulla ei ole oikeutta päivittää suojattua lisäosaa."
+msgstr ""
 
 msgid "You can only upload images."
-msgstr "Voit lähettää ainoastaan kuvia."
+msgstr ""
 
 msgid ""
 "You can't install the software outside the htdocs directory of the selected "
@@ -5572,13 +5567,13 @@ msgstr ""
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
-msgstr "Et voi lisätä uutta sähköpostitiliä. Olet käyttänyt kaiken levytilan olemassa oleviin sähköpostitileihin. Vapauta levytilaa käyttöön muokkaamalla olemassaolevia sähköpostitilejä."
+msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
-msgstr "Et voi poistaa jälleenmyyjää, jolla on asiakkaita."
+msgstr ""
 
 msgid "You cannot delete the last active IP address."
-msgstr "Et voi poistaa viimeistä aktiivista IP-osoitetta."
+msgstr ""
 
 #, php-format
 msgid "You cannot forward %s on itself."
@@ -5594,57 +5589,57 @@ msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr ""
 
 msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "Et voi suojata aluetta valitsematta .htaccess käyttäjää/käyttäjiä."
+msgstr ""
 
 #, php-format
 msgid "You cannot remove the %s IP address."
-msgstr "Et voi poistaa IP-osoitetta %s"
+msgstr ""
 
 msgid "You cannot remove this entry."
-msgstr "Et voi poistaa tätä."
+msgstr ""
 
 msgid "You cannot set expire date in past."
-msgstr "Et voi asettaa vanhentumispäivää menneisyyteen."
+msgstr ""
 
 msgid "You cannot unassign an IP address already in use."
-msgstr "Et voi poistaa IP-osoitetta, joka on jo käytössä."
+msgstr ""
 
 msgid "You do not have DNS resource records."
-msgstr "Sinulla ei ole DNS-tietueita tallennettuna."
+msgstr ""
 
 msgid "You do not have FTP accounts."
-msgstr "Sinulla ei ole FTP-tilejä"
+msgstr ""
 
 msgid "You do not have any software uploaded yet"
-msgstr "Sinulla ei ole vielä yhtään ohjelmistoa."
+msgstr ""
 
 msgid "You do not have customers."
-msgstr "Sinulla ei ole asiakkaita."
+msgstr ""
 
 msgid "You do not have databases."
-msgstr "Sinulla ei ole tietokantoja"
+msgstr ""
 
 msgid "You do not have domain aliases."
-msgstr "Sinulla ei ole domain-aliaksia"
+msgstr ""
 
 msgid "You do not have permission to install software yet"
-msgstr "Sinulla ei ole vielä oikeuksia asentaa ohjelmistoja."
+msgstr ""
 
 msgid "You do not have permissions to upload software"
-msgstr "Sinulla ei ole oikeuksia lähettää ohjelmistoja palvelimelle."
+msgstr ""
 
 msgid "You do not have protected areas."
-msgstr "Sinulla ei ole suojattuja alueita."
+msgstr ""
 
 msgid "You do not have subdomains."
-msgstr "Sinulla ei ole alidomaineja."
+msgstr ""
 
 msgid "You do not have sufficient permissions to perform this operation."
-msgstr "Sinulla ei ole oikeuksia tämän toiminnon suorittamiseen."
+msgstr ""
 
 #, php-format
 msgid "You have %d new domain alias %s."
-msgstr "You have %d new domain alias %s."
+msgstr ""
 
 msgid ""
 "You have a FTP account limit. You cannot add a user with unlimited FTP "
@@ -5685,7 +5680,7 @@ msgid ""
 msgstr ""
 
 msgid "You have been successfully logged out."
-msgstr "Olet kirjautunut onnistuneesti ulos."
+msgstr ""
 
 msgid ""
 "You have disabled SQL databases for this user. You cannot have SQL users "
@@ -5693,38 +5688,38 @@ msgid ""
 msgstr ""
 
 msgid "You have no closed tickets."
-msgstr "Sinulla ei ole suljettuja tukipyyntöjä."
+msgstr ""
 
 msgid "You have no groups."
-msgstr "Sinulla ei ole ryhmiä."
+msgstr ""
 
 msgid "You have no open tickets."
-msgstr "Sinulla ei ole avoimia tukipyyntöjä."
+msgstr ""
 
 msgid "You have not service ports defined."
-msgstr "Sinulla ei ole palveluportteja määritettynä."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of domain aliasses allowed by your "
 "subscription."
-msgstr "Tilisi kaikki käytettävissä olevat domain-aliakset on käytetty."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
 "subscription."
-msgstr "Tilisi kaikki käytettävissä olevat sähköpostitilit on käytetty."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
 "subscription."
-msgstr "Tilisi kaikki käytettävissä olevat alidomainit on käytetty."
+msgstr ""
 
 msgid "You have reached your domain limit. You cannot add more domains."
 msgstr ""
 
 #, php-format
 msgid "You have received %s new support ticket(s)."
-msgstr "Sinulla on uusi tukipyyntöjä (%s kpl)."
+msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr ""
@@ -5736,96 +5731,96 @@ msgid "You must choose between local and remote upload."
 msgstr ""
 
 msgid "You must confirm customer account deletion."
-msgstr "Vahvista käyttäjätilin poisto"
+msgstr ""
 
 msgid "You must confirm your password."
-msgstr "Syötä salasanasi uudelleen."
+msgstr ""
 
 msgid "You must enter a domain alias name."
-msgstr "Aliaksen nimi täytyy antaa."
+msgstr ""
 
 msgid "You must enter a subdomain name."
-msgstr "Alidomainin nimi täytyy antaa."
+msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
-msgstr "Generoi salasana painamalla 'Generoi' -nappia."
+msgstr ""
 
 msgid "You must omit 'www'. It will be added automatically."
-msgstr "Syötä tunnus ilman 'www' -etuliitettä. Se lisätään automaattisesti."
+msgstr ""
 
 msgid "You must provide a password."
-msgstr "Salasana vaadittu."
+msgstr ""
 
 msgid "You must select a file to upload."
-msgstr "Valitse palvelimelle lähetettävä tiedosto."
+msgstr ""
 
 msgid "You must select a file to upload/download."
-msgstr "Sinun täytyy valita tiedosto ladattavaksi."
+msgstr ""
 
 msgid "You must select a least one item to deactivate."
-msgstr "Valitse vähintään yksi käytöstä poistettava kohde."
+msgstr ""
 
 msgid "You must select a least one item to delete"
-msgstr "Valitse vähintään yksi poistettava kohde."
+msgstr ""
 
 msgid "You must select a least one mail account to delete."
-msgstr "Valitse vähintään yksi poistettava sähköpostitili."
+msgstr ""
 
 msgid "You must select a network interface."
 msgstr ""
 
 msgid "You must select at least one plugin."
-msgstr "Valitse vähintään yksi lisäosa."
+msgstr ""
 
 msgid "You must specify a message."
-msgstr "Viesti ei voi olla tyhjä"
+msgstr ""
 
 msgid "You must specify a subject."
-msgstr "Otsikko ei voi olla tyhjä"
+msgstr ""
 
 msgid "You need a Database for this software"
-msgstr "Tarvitset tietokannan tätä sovellusta varten."
+msgstr ""
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
-msgstr "Sinulla on %d uutta vastaus(ta) tukipyynnöissäsi."
+msgstr ""
 
 msgid "Your account has expired."
-msgstr "Käyttäjätunnuksesi on vanhentunut."
+msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
-msgstr "Käyttäjätunnuksesi on vanhentunut. Ole hyvä ja uudista tilauksesi."
+msgstr ""
 
 msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
-msgstr "Käyttäjätunnuksesi on tällä hetkellä huollossa tai pois käytöstä. Ota yhteyttä jälleenmyyjääsi."
+msgstr ""
 
 msgid "Your consumption"
-msgstr "Käyttösi"
+msgstr ""
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
-msgstr "Käyttämäsi i-MSCP -versio ei ole yhteensopiva lisäosan kanssa. Yritä uudemman version kanssa."
+msgstr ""
 
 msgid "Your message"
-msgstr "Viestisi"
+msgstr ""
 
 msgid "Your message has been successfully sent."
-msgstr "Viestisi on lähetetty onnistuneesti."
+msgstr ""
 
 msgid "Your new i-MSCP login"
-msgstr "Uudet kirjautumistietosi i-MSCP hallintapaneeliin"
+msgstr ""
 
 msgid "Your new password"
-msgstr "Uusi salasanasi"
+msgstr ""
 
 msgid "Your new password has been sent. Check your email."
-msgstr "Uusi salasanasi on lähetetty sähköpostitse."
+msgstr ""
 
 msgid "Your package is corrupt. Please correct it!"
-msgstr "Pakettisi on korruptoitunut. Korjaa paketti!"
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
@@ -5834,254 +5829,254 @@ msgstr ""
 msgid ""
 "Your request for new password has been registered. You will receive an email"
 " with instructions to complete the process."
-msgstr "Salasanan vaihtopyyntö on vastaanotettu. Tarkista sähköpostisi ja toimi ohjeiden mukaan."
+msgstr ""
 
 msgid "ZB"
-msgstr "ZB"
+msgstr ""
 
 msgid "ZiB"
-msgstr "ZiB"
+msgstr ""
 
 msgid "Zip"
-msgstr "Postitoimipaikka"
+msgstr ""
 
 msgid "Zip code"
-msgstr "Postinumero"
+msgstr ""
 
 msgid "Zip/Postal code"
-msgstr "Postinumero"
+msgstr ""
 
 msgid "[New]"
-msgstr "[Uusi]"
+msgstr ""
 
 msgid "[Re]"
-msgstr "[Vastaus]"
+msgstr ""
 
 msgid "[Ticket]"
-msgstr "[Tiketti]"
+msgstr ""
 
 msgid "_: Localised language"
-msgstr "Finnish (Suomi) - Finnish (Finland)"
+msgstr ""
 
 msgid "activated"
-msgstr "aktivoitu"
+msgstr ""
 
 msgid "activated (Softwaredepot)"
-msgstr "aktivoitu (ohjelmavarasto)"
+msgstr ""
 
 msgid "addition"
 msgstr ""
 
 msgid "and"
-msgstr "ja"
+msgstr ""
 
 msgid "day"
-msgstr "päivä"
+msgstr ""
 
 msgid "days"
-msgstr "päivää"
+msgstr ""
 
 msgid "deleting"
-msgstr "poistetaan"
+msgstr ""
 
 msgid "disabled"
-msgstr "pois käytöstä"
+msgstr ""
 
 msgid "disk space"
-msgstr "levytila"
+msgstr ""
 
 msgid "domain"
-msgstr "domain"
+msgstr ""
 
 msgid "domain alias"
-msgstr "domain-alias"
+msgstr ""
 
 msgid "domain aliases"
-msgstr "domainien aliakset"
+msgstr ""
 
 msgid "domain data"
 msgstr ""
 
 msgid "domains"
-msgstr "domainit"
+msgstr ""
 
 msgid "email account"
-msgstr "sähköpostitili"
+msgstr ""
 
 msgid "email accounts"
-msgstr "Sähköpostitilit"
+msgstr ""
 
 msgid "enabled"
-msgstr "päällä"
+msgstr ""
 
 msgid "everything"
-msgstr "kaikki"
+msgstr ""
 
 msgid "from other browser"
-msgstr "Muut selaimesta"
+msgstr ""
 
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr "i-MSCP - Ohjelmistojen hallinta (Oikeudet)"
+msgstr ""
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr "i-MSCP - Asiakas / Lisää Nappaa kaikki -sähköposti"
+msgstr ""
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr "i-MSCP - Multi Server Hallintapaneeli / Kirjautuminen"
+msgstr ""
 
 msgid "i-MSCP - Multi Server Control Panel / Lost Password"
-msgstr "i-MSCP - Multi Server Control Panel / Kadonnut salasana"
+msgstr ""
 
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
-msgstr "i-MSCP - Multi Server Control Panel / Ylläpito"
+msgstr ""
 
 msgid "i-MSCP - Software Installer / Management"
-msgstr "i-MSCP - Ohjelmistoasentaja / Hallinta"
+msgstr ""
 
 msgid "i-MSCP - Software Management"
-msgstr "i-MSCP - Ohjelmistojen ylläpito"
+msgstr ""
 
 msgid "i-MSCP - Software Management (Permissions)"
-msgstr "i-MSCP - Ohjelmistojen ylläpito (oikeudet)"
+msgstr ""
 
 msgid "i-MSCP - Sofware Management"
-msgstr "i-MSCP - Ohjelmistojen ylläpito"
+msgstr ""
 
 msgid "i-MSCP / Software Installer / Management"
-msgstr "i-MSCP / Ohjelmistoasentaja / Hallinta"
+msgstr ""
 
 msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP taustaprosessin työkalut"
+msgstr ""
 
 msgid "i-MSCP Software installer / Web software repository"
-msgstr "i-MSCP Ohjelmistoasentaja / Ohjelmavarasto"
+msgstr ""
 
 msgid "i-MSCP Web software repository"
-msgstr "i-MSCP ohjelmistovarasto"
+msgstr ""
 
 msgid "i-MSCP plugin store"
-msgstr "i-MSCP liitännäiset"
+msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "i-MSCP-päivitykset"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
-msgstr "Uusien i-MSCP päivityksien hakeminen on pois käytöstä."
+msgstr ""
 
 msgid "installed"
-msgstr "asennettu"
+msgstr ""
 
 msgid "installing"
-msgstr "asentaa"
+msgstr ""
 
 msgid "internet Multi Server Control Panel"
-msgstr "internet Multi Server Hallintapaneeli"
+msgstr ""
 
 msgid "kB"
-msgstr "kB"
+msgstr ""
 
 msgid "kiB"
-msgstr "kiB"
+msgstr ""
 
 msgid "mail"
-msgstr "sähköposti"
+msgstr ""
 
 msgid "mail accounts"
-msgstr "Sähköpostitilit"
+msgstr ""
 
 msgid "missing alias"
-msgstr "puuttuva alias"
+msgstr ""
 
 msgid "missing domain"
-msgstr "puuttuva domain"
+msgstr ""
 
 msgid "n\\a"
-msgstr "N/A"
+msgstr ""
 
 msgid "no"
-msgstr "ei"
+msgstr ""
 
 msgid "not available"
-msgstr "Ei saatavilla"
+msgstr ""
 
 msgid "not required"
-msgstr "ei vaadittu"
+msgstr ""
 
 msgid "older than 1 month"
-msgstr "yli 1 kk:tta vanha"
+msgstr ""
 
 msgid "older than 12 months"
-msgstr "yli 12 kk:tta vanha"
+msgstr ""
 
 msgid "older than 2 weeks"
-msgstr "yli 2 viikkoa vanha"
+msgstr ""
 
 msgid "older than 3 months"
-msgstr "yli 3 kk:tta vanha"
+msgstr ""
 
 msgid "older than 6 months"
-msgstr "yli 6 kk:tta vanha"
+msgstr ""
 
 #, php-format
 msgid "or remote file (Max: %s)"
-msgstr "tai etätiedosto (Max: %s)"
+msgstr ""
 
 msgid "order"
-msgstr "tilaus"
+msgstr ""
 
 msgid "orders"
-msgstr "tilaukset"
+msgstr ""
 
 msgid "orphan entry"
-msgstr "puuttuva merkintä"
+msgstr ""
 
 msgid "phpMyAdmin"
-msgstr "phpMyAdmin"
+msgstr ""
 
 msgid "required"
-msgstr "pakollinen"
+msgstr ""
 
 msgid "subdomain"
-msgstr "Alidomain"
+msgstr ""
 
 msgid "subdomains"
-msgstr "alidomainit"
+msgstr ""
 
 msgid "tcp"
-msgstr "tcp"
+msgstr ""
 
 msgid "traffic"
-msgstr "Liikenne"
+msgstr ""
 
 msgid "udp"
-msgstr "udp"
+msgstr ""
 
 msgid "unlimited"
-msgstr "rajoittamaton"
+msgstr ""
 
 msgid "update"
 msgstr ""
 
 msgid "view aliases"
-msgstr "näytä aliakset"
+msgstr ""
 
 msgid "waiting for activation"
-msgstr "odottaa aktivointia"
+msgstr ""
 
 msgid "wildcard"
-msgstr "jokerimerkki"
+msgstr ""
 
 msgid "yes"
-msgstr "kyllä"
+msgstr ""
 
 msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} aktivoi ohjelmistopakettisi"
+msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
-msgstr "{RESELLER} lähetti palvelimelle uuden ohjelmistopaketin"
+msgstr ""
 
 msgid "{USERNAME} user statistics"
 msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
