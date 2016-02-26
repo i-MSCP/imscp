@@ -401,7 +401,7 @@ function get_avail_softwaredepot($tpl)
 							'LINK_COLOR' => '#FF0000',
 							'TR_VERSION' => '',
 							'TR_LANGUAGE' => '',
-							'TR_TOOLTIP' => tr('The package will be installed automaticly to your system after upload.<br>Refresh your site to see the new status!'),
+							'TR_TOOLTIP' => tr('The package will be installed automatically to your system after upload.<br>Refresh your site to see the new status!'),
 							'TR_DOWNLOAD' => '',
 							'DOWNLOAD_LINK' => '',
 							'DELETE_LINK' => $del_url,
