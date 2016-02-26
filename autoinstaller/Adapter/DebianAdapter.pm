@@ -731,24 +731,29 @@ sub _prefillDebconfDatabase
 		return $rs if $rs;
 	}
 
-	my ($sqlServer, $sqlServerVersion) = $main::questions{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/;
 	my $poServer = $main::questions{'PO_SERVER'};
 
+	my ($sqlServer, $sqlServerVersion) = ('remote_server', undef);
 	my ($sqlServerQuestionOwner, $sqlServerQuestionPrefix);
-	if($sqlServer eq 'mysql') {
-		if('mysql-community-server' ~~ @{$self->{'packagesToInstall'}}) {
-			$sqlServerQuestionOwner = 'mysql-community-server';
-			$sqlServerQuestionPrefix = 'mysql-community-server';
-		} else {
-			$sqlServerQuestionOwner = 'mysql-server-' . $sqlServerVersion;
+
+	if($main::questions{'SQL_SERVER'} ne 'remote_server') {
+		($sqlServer, $sqlServerVersion) = $main::questions{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/;
+
+		if ($sqlServer eq 'mysql') {
+			if ('mysql-community-server' ~~ @{$self->{'packagesToInstall'}}) {
+				$sqlServerQuestionOwner = 'mysql-community-server';
+				$sqlServerQuestionPrefix = 'mysql-community-server';
+			} else {
+				$sqlServerQuestionOwner = 'mysql-server-'.$sqlServerVersion;
+				$sqlServerQuestionPrefix = 'mysql-server';
+			}
+		} elsif ($sqlServer eq 'mariadb') {
+			$sqlServerQuestionOwner = 'mariadb-server-'.$sqlServerVersion;
 			$sqlServerQuestionPrefix = 'mysql-server';
+		} else {
+			$sqlServerQuestionOwner = 'percona-server-server-'.$sqlServerVersion;
+			$sqlServerQuestionPrefix = 'percona-server-server';
 		}
-	} elsif($sqlServer eq 'mariadb') {
-		$sqlServerQuestionOwner = 'mariadb-server-' . $sqlServerVersion;
-		$sqlServerQuestionPrefix = 'mysql-server';
-	} else {
-		$sqlServerQuestionOwner = 'percona-server-server-' . $sqlServerVersion;
-		$sqlServerQuestionPrefix = 'percona-server-server';
 	}
 
 	# Most values below are not really important because i-MSCP will override them after package installation
@@ -801,13 +806,13 @@ EOF
 	$selectionsFileContent .= <<EOF;
 $sqlServerQuestionOwner $sqlServerQuestionOwner/remove-data-dir boolean false
 EOF
-} else {
+} elsif($sqlServer ne 'remote_server') {
 	$selectionsFileContent .= <<EOF;
 $sqlServerQuestionOwner $sqlServerQuestionOwner/postrm_remove_databases boolean false
 EOF
 }
 
-	if(iMSCP::Getopt->preseed && $sqlServerQuestionOwner) {
+	if($sqlServer ne 'remote_server' && iMSCP::Getopt->preseed && $sqlServerQuestionOwner) {
 		$selectionsFileContent .= <<EOF;
 $sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password password $main::questions{'DATABASE_PASSWORD'}
 $sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password_again password $main::questions{'DATABASE_PASSWORD'}
