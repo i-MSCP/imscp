@@ -152,9 +152,11 @@ EOF;
     }
 
     $sslTpl = new iMSCP_pTemplate();
-    $sslTpl->setRootDir(LIBRARY_PATH . '/Resources/ssl');
+    $sslTpl->setRootDir($config['CONF_DIR'] . '/openssl');
     $sslTpl->define('tpl', 'openssl.cnf.tpl');
     $sslTpl->assign(array(
+        'COMMON_NAME' => $data['domain_name'],
+        'EMAIL_ADDRESS' => $data['email'],
         'DOMAIN_NAME' => $data['domain_name'],
         'ALT_NAMES' => $altNames,
         'ADMIN_SYS_NAME' => $data['admin_sys_name'],

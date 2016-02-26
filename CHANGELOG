@@ -4,8 +4,13 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+	Changed: Usage of custom OpenSSL configuration file for self-signed SSL certificates (iMSCP::OpenSSL)
+	Fixed: Obsolete SSL connexion encryption method (nginx)
+
 CONFIG
 	Added: imscp_panel.service systemd unit file
+	Added: OpenSSL configuration template file for self-signed SSL certificate
 
 INSTALLER
 	Fixed: Can't locate object method "setVersion" via package Servers::sqld::remote_server
@@ -15,6 +20,9 @@ INSTALLER
 	Fixed: Missing 'use iMSCP::TemplateParser' statement in Servers::sqld::remote_server
 	Fixed: Possible use of uninitialized value $sqlServer in autoinstaller/Adapter/DebianAdapter.pm
 	Fixed: sysvinit scripts are not enabled when using systemd (regression fix)
+
+FRONTEND
+	Removed: OpenSSL configuration template file (replaced by /etc/imscp/openssl/openssl.cnf.tpl)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.14
