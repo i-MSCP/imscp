@@ -8,13 +8,13 @@ CONFIG
 	Added: imscp_panel.service systemd unit file
 
 INSTALLER
-	Fixed: Ensure that mysql service is enabled
-	Fixed: sysvinit scripts are not enabled when using systemd (regression fix)
 	Fixed: Can't locate object method "setVersion" via package Servers::sqld::remote_server
-	Fixed: Missing 'use iMSCP::Execute qw/escapeShell/' statement in Servers::sqld::remote_server
+	Fixed: Ensure that mysql service is enabled
 	Fixed: Missing 'use iMSCP::Crypt qw/decryptBlowfishCBC/' statement in Servers::sqld::remote_server
+	Fixed: Missing 'use iMSCP::Execute qw/escapeShell/' statement in Servers::sqld::remote_server
 	Fixed: Missing 'use iMSCP::TemplateParser' statement in Servers::sqld::remote_server
 	Fixed: Possible use of uninitialized value $sqlServer in autoinstaller/Adapter/DebianAdapter.pm
+	Fixed: sysvinit scripts are not enabled when using systemd (regression fix)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.14
