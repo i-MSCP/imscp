@@ -110,7 +110,7 @@ sub enable
 	}
 
 	# Note: Will automatically call update-rc.d in case of a sysvinit script
-	$self->SUPER::enable($service) && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+	$self->SUPER::enable($service);
 }
 
 =item disable($service)
@@ -145,7 +145,7 @@ sub disable
 	}
 
 	# Note: Will automatically call update-rc.d in case of a sysvinit script
-	$self->SUPER::disable($service) && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+	$self->SUPER::disable($service);
 }
 
 =item remove($service)

@@ -79,7 +79,7 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	$self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0;
+	$self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0;
 }
 
 =item disable($service)

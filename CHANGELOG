@@ -22,6 +22,7 @@ FRONTEND
 	Fixed: Unchecking all disabled functions has no effect (PHP Editor)
 
 INSTALLER
+	Fixed: Ensure that mysql service is enabled
 	Fixed: Password must not be escaped (MySQL installer)
 
 ------------------------------------------------------------------------------------------------------------------------

@@ -79,6 +79,13 @@ sub postinstall
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldPostInstall', 'mysql');
 	return $rs if $rs;
 
+	local $@;
+	eval { iMSCP::Service->getInstance()->enable('mysql'); };
+	if($@) {
+		error($@);
+		return 1;
+	}
+
 	$self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ]; 0; }
 	);
@@ -142,7 +149,12 @@ sub restart
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldRestart');
 	return $rs if $rs;
 
-	iMSCP::Service->getInstance()->restart('mysql');
+	local $@;
+	eval { iMSCP::Service->getInstance()->restart('mysql'); };
+	if($@) {
+		error($@);
+		return 1;
+	}
 
 	$self->{'eventManager'}->trigger('afterSqldRestart');
 }
