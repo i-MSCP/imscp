@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
     <folders>${ROOT_CONF}/systemd/system</folders>
-    <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/imscp_daemon.service</copy_config>
     <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/bind9.service</copy_config>
     <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/bind9-resolvconf.service</copy_config>
+    <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/imscp_daemon.service</copy_config>
+    <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/imscp_panel.service</copy_config>
 </install>

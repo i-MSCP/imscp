@@ -135,9 +135,7 @@ sub start
 {
 	my ($self, $service) = @_;
 
-	return 1 unless $self->_isSysvinit($service);
-
-	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
+	$self->_exec($self->getInitScriptPath($service), 'start') == 0;
 }
 
 =item stop($service)
@@ -153,9 +151,7 @@ sub stop
 {
 	my ($self, $service) = @_;
 
-	return 1 unless $self->_isSysvinit($service);
-
-	$self->_exec($self->getInitscriptPath($service), 'stop') == 0;
+	$self->_exec($self->getInitScriptPath($service), 'stop') == 0;
 }
 
 =item restart($service)
@@ -171,13 +167,11 @@ sub restart
 {
 	my ($self, $service) = @_;
 
-	return 1 unless $self->_isSysvinit($service);
-
 	if($self->isRunning($service)) {
-		return $self->_exec($self->getInitscriptPath($service), 'restart') == 0;
+		return $self->_exec($self->getInitScriptPath($service), 'restart') == 0;
 	}
 
-	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
+	$self->_exec($self->getInitScriptPath($service), 'start') == 0;
 }
 
 =item reload($service)
@@ -193,13 +187,11 @@ sub reload
 {
 	my ($self, $service) = @_;
 
-	return 1 unless $self->_isSysvinit($service);
-
 	if($self->isRunning($service)) {
-		return $self->_exec($self->getInitscriptPath($service), 'reload') == 0;
+		return $self->_exec($self->getInitScriptPath($service), 'reload') == 0;
 	}
 
-	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
+	$self->_exec($self->getInitScriptPath($service), 'start') == 0;
 }
 
 =item isRunning($service)
@@ -215,14 +207,12 @@ sub isRunning
 {
 	my ($self, $service) = @_;
 
-	return 0 unless $self->_isSysvinit($service);
-
 	# FIXME: Assumption is made that any init script is providing status command which is bad...
 	# TODO: Fallback using processes table output should be implemented
-	$self->_exec($self->getInitscriptPath($service), 'status') == 0;
+	$self->_exec($self->getInitScriptPath($service), 'status') == 0;
 }
 
-=item getInitscriptPath($service)
+=item getInitScriptPath($service)
 
  Get full path of init script which belongs to the given service
 
@@ -231,7 +221,7 @@ sub isRunning
 
 =cut
 
-sub getInitscriptPath
+sub getInitScriptPath
 {
 	my ($self, $service) = @_;
 
@@ -288,7 +278,7 @@ sub _isSysvinit
 	my ($self, $service) = @_;
 
 	local $@;
-	eval { $self->getInitscriptPath($service); };
+	eval { $self->getInitScriptPath($service); };
 }
 
 =item searchInitScript($service)

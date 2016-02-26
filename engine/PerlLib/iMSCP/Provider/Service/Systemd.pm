@@ -79,7 +79,6 @@ sub enable
 {
 	my ($self, $service) = @_;
 
-	# Note: Will automatically call update-rc.d in case of a sysvinit script
 	$self->disable($service) && $self->_exec($commands{'systemctl'}, '--quiet', 'enable', "$service.service") == 0;
 }
 
@@ -96,7 +95,6 @@ sub disable
 {
 	my ($self, $service) = @_;
 
-	# Note: Will automatically call update-rc.d in case of a sysvinit script
 	$self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0;
 }
 
@@ -114,7 +112,8 @@ sub remove
 	my ($self, $service) = @_;
 
 	$self->stop($service) && $self->disable($service)
-		&& iMSCP::File->new( filename => $self->getUnitFilePath($service) )->delFile() == 0;
+		&& iMSCP::File->new( filename => $self->getUnitFilePath($service) )->delFile() == 0
+		&& $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
 }
 
 =item start($service)

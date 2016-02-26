@@ -71,12 +71,10 @@ sub isEnabled
 {
 	my ($self, $service) = @_;
 
-	if($self->_isSystemd($service)) {
-		return $self->SUPER::isEnabled($service);
-	}
+	return $self->SUPER::isEnabled($service) if $self->_isSystemd($service);
 
-	# is-enabled API call is not available for sysvinit scripts. Thus, we must use the Debian sysvinit provider to
-	# known whether or not the sysvinit script is enabled.
+	# is-enabled API call is not available for sysvinit scripts. We must invoke the Debian sysvinit provider
+	# to known whether or not the sysvinit script is enabled.
 	$self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled($service);
 }
 
@@ -111,8 +109,8 @@ sub enable
 		return 1;
 	}
 
-	$self->SUPER::enable($service)
-		&& $self->_isSystemd($service) || $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+	# Note: Will automatically call update-rc.d in case of a sysvinit script
+	$self->SUPER::enable($service) && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
 }
 
 =item disable($service)
@@ -146,8 +144,8 @@ sub disable
 		return 1;
 	}
 
-	$self->SUPER::disable($service)
-		&& $self->_isSystemd($service) || $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+	# Note: Will automatically call update-rc.d in case of a sysvinit script
+	$self->SUPER::disable($service) && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
 }
 
 =item remove($service)
@@ -164,11 +162,11 @@ sub remove
 	my ($self, $service) = @_;
 
 	if($self->_isSystemd($service)) {
-		return 0 unless $self->SUPER::remove($service) && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+		return 0 unless $self->SUPER::remove($service);
 	}
 
+	# Remove the underlying sysvinit script if any and make systemd aware of changes
 	if($self->_isSysvinit($service)) {
-		# Remove the underlying sysvinit script if any and make systemd aware of changes
 		return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service)
 			&& $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
 	}

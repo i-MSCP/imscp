@@ -192,7 +192,7 @@ sub _removeInitScript
 
 	iMSCP::Service->getInstance()->remove('imscp_panel');
 
-	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override') {
+	for my $pFormat('/etc/init.d/%s', '/etc/systemd/system/%s.service', '/etc/init/%s.conf', '/etc/init/%s.override') {
 		my $file = sprintf($pFormat, 'imscp_panel');
 
 		if(-f $file) {
