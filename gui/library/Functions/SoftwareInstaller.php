@@ -183,7 +183,7 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
 
 	$subject = tr('{ADMIN} activated your software package');
 	$message = tr('Dear {RESELLER},
-	Your uploaded a software package was succesful activated by {ADMIN}.
+	Your uploaded a software package was successful activated by {ADMIN}.
 
 	Details:
 	Package Name: {SOFTWARE}

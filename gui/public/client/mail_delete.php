@@ -123,7 +123,7 @@ if (customerHasFeature('mail') && isset($_REQUEST['id'])) {
 			);
 
 			if ($code == 403) {
-				set_page_message(tr('Operation canceled: %s', $errorMessage), 'warning');
+				set_page_message(tr('Operation cancelled: %s', $errorMessage), 'warning');
 			} elseif ($e->getCode() == 400) {
 				showBadRequestErrorPage();
 			} else {
