@@ -32,15 +32,9 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->_removeVloggerSqlUser();
-	return $rs if $rs;
-
-	$rs = $self->_removeDirs();
-	return $rs if $rs;
-
-	$rs = $self->_vHostConf();
-	return $rs if $rs;
-
-	$self->_restoreConf();
+	$rs ||= $self->_removeDirs();
+	$rs ||= $self->_vHostConf();
+	$rs ||= $self->_restoreConf();
 }
 
 sub _init
@@ -52,7 +46,6 @@ sub _init
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 	$self->{'config'} = $self->{'httpd'}->{'config'};
-
 	$self;
 }
 
@@ -64,7 +57,6 @@ sub _removeVloggerSqlUser
 
 	$db->doQuery('d', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
 	$db->doQuery('f', 'FLUSH PRIVILEGES');
-
 	0;
 }
 
@@ -72,7 +64,7 @@ sub _removeDirs
 {
 	my $self = shift;
 
-	iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
+	iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
 }
 
 sub _vHostConf
@@ -102,7 +94,7 @@ sub _vHostConf
 
 	for my $site('000-default', 'default') {
 		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site") {
-			my $rs = $self->{'httpd'}->enableSites($site)
+			my $rs = $self->{'httpd'}->enableSites($site);
 			return $rs if $rs;
 		}
 	}
@@ -118,7 +110,7 @@ sub _restoreConf
 		my $filename = fileparse($file);
 
 		if (-f "$self->{bkpDir}/$filename.system") {
-			my $rs	= iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile($file)
+			my $rs	= iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile($file);
 			return $rs if $rs;
 		}
 	}
