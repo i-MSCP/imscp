@@ -22,7 +22,7 @@ INSTALLER
 	Fixed: sysvinit scripts are not enabled when using systemd (regression fix)
 
 FRONTEND
-	Fixed: Bad request error when editing PHP settings with per_site INI level (PHP Editor)
+	Fixed: Bad request error when editing PHP settings with per_user INI level (PHP Editor)
 	Fixed: Could not add SSL certificate due to 'At least one intermediate certificate is invalid or missing' error
 	Removed: OpenSSL configuration template file (replaced by /etc/imscp/openssl/openssl.cnf.tpl)
 
