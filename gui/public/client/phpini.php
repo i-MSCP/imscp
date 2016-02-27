@@ -118,12 +118,19 @@ function updatePhpConfig($phpini, $configLevel)
 {
     global $phpini, $configLevel;
 
-    if (!isset($_POST['domain_id']) || !isset($_POST['domain_type'])) {
-        showBadRequestErrorPage();
+    if (isset($_GET['domain_id']) && isset($_GET['domain_type'])) {
+        $dmnId = intval($_GET['domain_id']);
+        $dmnType = clean_input($_GET['domain_type']);
+    } else {
+        $dmnId = get_user_domain_id($_SESSION['user_id']);
+        $dmnType = 'dmn';
     }
 
-    $dmnId = intval($_POST['domain_id']);
-    $dmnType = clean_input($_POST['domain_type']);
+    if ($configLevel == 'per_user' && $dmnType != 'dmn'
+        || $configLevel == 'per_domain' && !in_array($dmnType, array('dmn', 'als'))
+    ) {
+        showBadRequestErrorPage();
+    }
 
     if ($configLevel == 'per_user' && $dmnType != 'dmn' || $configLevel == 'per_domain' &&
         !in_array($dmnType, array('dmn', 'als'))
@@ -208,13 +215,11 @@ function updatePhpConfig($phpini, $configLevel)
  */
 function generatePage($tpl, $phpini, $config, $configLevel)
 {
-    $mainDmnId = get_user_domain_id($_SESSION['user_id']);
-
     if (isset($_GET['domain_id']) && isset($_GET['domain_type'])) {
         $dmnId = intval($_GET['domain_id']);
         $dmnType = clean_input($_GET['domain_type']);
     } else {
-        $dmnId = $mainDmnId;
+        $dmnId = get_user_domain_id($_SESSION['user_id']);
         $dmnType = 'dmn';
     }
 
