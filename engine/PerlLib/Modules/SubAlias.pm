@@ -276,7 +276,7 @@ sub _getHttpdData
 			DISPLAY_ERRORS => $phpini->{$phpiniMatchId}->{'display_errors'} || 'off',
 			POST_MAX_SIZE => $phpini->{$phpiniMatchId}->{'post_max_size'} // 8,
 			UPLOAD_MAX_FILESIZE => $phpini->{$phpiniMatchId}->{'upload_max_filesize'} // 2,
-			ALLOW_URL_FOPEN => $phpini->{$phpiniMatchId}->{'allow_url_fopen'},
+			ALLOW_URL_FOPEN => $phpini->{$phpiniMatchId}->{'allow_url_fopen'} || 'off',
 			PHPINI_OPEN_BASEDIR => '',
 			PHP_FPM_LISTEN_PORT => ($phpini->{$phpiniMatchId}->{'id'} // 0) - 1
 		};

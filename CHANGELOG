@@ -6,6 +6,7 @@ Git 1.2.x
 
 BACKEND
 	Changed: Usage of custom OpenSSL configuration file for self-signed SSL certificates (iMSCP::OpenSSL)
+	Fixed: Missing fallback value for allow_url_fopen in Modules::SubAlias
 	Fixed: Obsolete SSL connection encryption method (nginx)
 
 CONFIG
