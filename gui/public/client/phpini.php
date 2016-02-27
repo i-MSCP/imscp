@@ -118,9 +118,9 @@ function updatePhpConfig($phpini, $configLevel)
 {
     global $phpini, $configLevel;
 
-    if (isset($_GET['domain_id']) && isset($_GET['domain_type'])) {
-        $dmnId = intval($_GET['domain_id']);
-        $dmnType = clean_input($_GET['domain_type']);
+    if (isset($_POST['domain_id']) && isset($_POST['domain_type'])) {
+        $dmnId = intval($_POST['domain_id']);
+        $dmnType = clean_input($_POST['domain_type']);
     } else {
         $dmnId = get_user_domain_id($_SESSION['user_id']);
         $dmnType = 'dmn';
