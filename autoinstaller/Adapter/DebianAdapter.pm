@@ -502,6 +502,8 @@ EOF
 
  Add required sections to repositories that support them
 
+ Note: Also enable source repositories for the sections when available.
+
  Return int 0 on success, other on failure
 
 =cut
@@ -511,57 +513,55 @@ sub _updateAptSourceList
 	my $self = shift;
 
 	my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
-	my $rs = $file->copyFile('/etc/apt/sources.list.bkp');
-	return $rs if $rs;
+	$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 
 	my $fileContent = $file->get();
-	unless (defined $fileContent) {
-		error('Could not read /etc/apt/sources.list file');
-		return 1;
-	}
+	my $fsec = 0;
 
-	my ($foundSection, $stdout, $stderr);
-
-	for my $section(@{$self->{'repositorySections'}}) {
+	for my $sec(@{$self->{'repositorySections'}}) {
 		my @seen = ();
 
 		while($fileContent =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/gm) {
-			my %repository = %+;
+			my $rf = $&;
+			my %rc = %+;
+			next if "$rc{'uri'} $rc{'distrib'}" ~~ @seen;
 
-			if("$repository{'uri'} $repository{'distrib'}" ~~ @seen) {
-				debug("Repository '$repository{'uri'} $repository{'distrib'}' already checked for '$section' section");
-				next;
-			}
-
-			debug("Checking repository '$repository{'uri'} $repository{'distrib'}' for '$section' section");
-
-			if($fileContent !~ /^deb\s+$repository{'uri'}\s+\b$repository{'distrib'}\b\s+.*\b$section\b/m) {
-				my $uri = "$repository{'uri'}/dists/$repository{'distrib'}/$section/";
-				$rs = execute("wget --spider $uri", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
+			if($fileContent !~ /^deb\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
+				my $rs = execute("wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/", \my $stdout, \my $stderr);
 				debug($stderr) if $rs && $stderr;
-
 				unless($rs) {
-					$foundSection = 1;
-					debug("Enabling section '$section' on '$repository{'uri'} $repository{'distrib'}'");
-					$fileContent =~ s/^($&)$/$1 $section/m;
+					$fsec = 1;
+					$fileContent =~ s/^($rf)$/$1 $sec/m;
+					$rf .= " $sec";
 				}
 			} else {
-				debug("Section '$section' already enabled on '$repository{'uri'} $repository{'distrib'}'");
-				$foundSection = 1;
+				$fsec = 1;
 			}
 
-			push @seen, "$repository{'uri'} $repository{'distrib'}";
+			if($fsec && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
+				my $rs = execute("wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/source/", \my $stdout, \my $stderr);
+				debug($stderr) if $rs && $stderr;
+
+				unless ($rs) {
+					if($fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'distrib'}\s.*/m) {
+						$fileContent =~ s/^($rf)/$1\ndeb-src $rc{'uri'} $rc{'distrib'} $sec/m;
+					} else {
+						$fileContent =~ s/^($&)$/$1 $sec/m;
+					}
+				}
+			}
+
+			push @seen, "$rc{'uri'} $rc{'distrib'}";
 		}
 
-		unless($foundSection) {
-			error("Could not find repository supporting '$section' section");
+		unless($fsec) {
+			error(sprintf('Could not find repository supporting %s section', $sec));
 			return 1;
 		}
 	}
 
-	$rs = $file->set($fileContent);
-	$rs ||= $file->save();
+	$file->set($fileContent);
+	$file->save();
 }
 
 =item _processAptRepositories()

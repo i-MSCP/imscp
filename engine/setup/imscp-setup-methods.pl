@@ -1701,6 +1701,7 @@ sub setupRebuildCustomerFiles
 		#subdomain => 'subdomain_status', # This is now automatically done by the domain module
 		#subdomain_alias => 'subdomain_alias_status', # This is now automatically done by the alias module
 		#domain_dns => 'domain_dns_status', # This is now automatically done by the domain and alias modules
+		ftp_users => 'status',
 		mail_users => 'status',
 		htaccess => 'status',
 		htaccess_groups => 'status',

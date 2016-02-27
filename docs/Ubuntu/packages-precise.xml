@@ -59,6 +59,11 @@
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
         </proftpd>
+        <vsftpd>
+            <package>devscripts</package>
+            <package>libpam-mysql</package>
+            <package>vsftpd</package>
+        </vsftpd>
     </ftpd>
     <named default="bind">
         <bind>

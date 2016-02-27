@@ -753,6 +753,8 @@ function delete_sql_database($dmnId, $dbId)
  */
 function deleteCustomer($customerId, $checkCreatedBy = false)
 {
+	$cfg = iMSCP_Registry::get('config');
+
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomer, array(
 		'customerId' => $customerId
 	));
@@ -826,8 +828,14 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		// Deletes custom DNS records
 		exec_query('DELETE FROM domain_dns WHERE domain_id = ?', $mainDomainId);
 
-		// Deletes FTP accounts (users and groups)
-		exec_query('DELETE FROM ftp_users WHERE admin_id = ?', $customerId);
+		// Deletes FTP accounts users
+		if ($cfg['FTPD_SERVER'] == 'vsftpd') {
+			exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array('todelete', $customerId));
+		} else {
+			exec_query('DELETE FROM ftp_users WHERE admin_id = ?', $customerId);
+		}
+
+		// Deletes FTP accounts groups
 		exec_query('DELETE FROM ftp_group WHERE groupname = ?', $customerName);
 
 		// Deletes quota entries

@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.02.20
+# Last update: 2016.02.27
 
 %main::questions = (
     # Server to use for the HTTP service (apache_itk|apache_fcgid|apache_php_fpm)
@@ -37,14 +37,14 @@
     DOVECOT_SQL_USER => 'dovecot_user',
     DOVECOT_SQL_PASSWORD => '<password>', # Password must be at least 6 characters long
 
-    # Server to use for the Ftp service (ProFTPD)
+    # Server to use for the Ftp service (proftpd|vsftpd)
     FTPD_SERVER => 'proftpd',
 
     # ProFTPD SQL user
     FTPD_SQL_USER => 'vftp_user',
     FTPD_SQL_PASSWORD => '<password>', # Password must not empty
 
-    # ProFTPD passive port range
+    # ProFTPD/VsFTPd passive port range
     FTPD_PASSIVE_PORT_RANGE => '32768 60999',
 
     # Server to use for the Mail service (postfix)

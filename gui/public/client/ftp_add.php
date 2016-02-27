@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP team
+ * Copyright (C) 2010-2016 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -307,19 +307,19 @@ function ftp_addAccount($mainDmnName)
 
 			try {
 				$db->beginTransaction();
+				$status = $cfg['FTPD_SERVER'] == 'vsftpd' ? 'toadd' : 'ok';
 
 				// Add ftp user
 				$query = "
 					INSERT INTO `ftp_users` (
-						`userid`, `admin_id`, `passwd`, `rawpasswd`, `uid`, `gid`, `shell`, `homedir`
+						`userid`, `admin_id`, `passwd`, `rawpasswd`, `uid`, `gid`, `shell`, `homedir`, `status`
 					) VALUES (
-						?, ?, ?, ?, ?, ?, ?, ?
+						?, ?, ?, ?, ?, ?, ?, ?, ?
 					)
 				";
-				exec_query(
-					$query,
-					array($userid, $_SESSION['user_id'], $encryptedPassword, $passwd, $uid, $gid, $shell, $homeDir)
-				);
+				exec_query($query, array(
+					$userid, $_SESSION['user_id'], $encryptedPassword, $passwd, $uid, $gid, $shell, $homeDir, $status
+				));
 
 				$query = "SELECT `members` FROM `ftp_group` WHERE `groupname` = ? LIMIT 1";
 				$stmt = exec_query($query, $groupName);
@@ -373,6 +373,10 @@ function ftp_addAccount($mainDmnName)
 						'ftpUserHome' => $homeDir
 					)
 				);
+
+				if ($cfg['FTPD_SERVER'] == 'vsftpd') {
+					send_request();
+				}
 
 				write_log(sprintf("%s added Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
 				set_page_message(tr('FTP account successfully added.'), 'success');

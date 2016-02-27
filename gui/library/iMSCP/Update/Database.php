@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 216;
+	protected $lastUpdate = 217;
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3442,5 +3442,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r216()
 	{
 		return "DELETE FROM hosting_plans WHERE reseller_id NOT IN(SELECT admin_id FROM admin WHERE admin_type = 'reseller')";
+	}
+
+	/**
+	 * Add status column in ftp_users table
+	 *
+	 * @return string SQL statements to be executed
+	 */
+	protected function r217()
+	{
+		return $this->addColumn('ftp_users', 'status', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok'");
 	}
 }

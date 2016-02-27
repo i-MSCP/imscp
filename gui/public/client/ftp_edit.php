@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP team
+ * Copyright (C) 2010-2016 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,9 +40,10 @@ function generatePageData($tpl, $ftpUserId, $mainDomainName)
 
 	$query = "SELECT `homedir` FROM `ftp_users` WHERE `userid` = ?";
 	$stmt = exec_query($query, $ftpUserId);
+	$row = $stmt->fetchRow();
 
-	$ftpHomeDir = $stmt->fields['homedir'];
-	$customerHomeDir = $cfg->USER_WEB_DIR . '/' . $mainDomainName;
+	$ftpHomeDir = $row['homedir'];
+	$customerHomeDir = $cfg['USER_WEB_DIR'] . '/' . $mainDomainName;
 
 	if ($ftpHomeDir == $customerHomeDir) {
 		$customFtpHomeDir = '/';
@@ -53,7 +54,7 @@ function generatePageData($tpl, $ftpUserId, $mainDomainName)
 	$tpl->assign(
 		array(
 			'USERNAME' => tohtml($ftpUserId),
-			'HOME_DIR' => (isset($_POST['home_dir'])) ? tohtml($_POST['home_dir']) : tohtml($customFtpHomeDir),
+			'HOME_DIR' => isset($_POST['home_dir']) ? tohtml($_POST['home_dir']) : tohtml($customFtpHomeDir),
 			'ID' => tohtml($ftpUserId),
 		)
 	);
@@ -117,17 +118,35 @@ function updateFtpAccount($userid, $mainDomainName)
 
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
-		$homeDir = rtrim(str_replace('//', '/', $cfg->USER_WEB_DIR . '/' . $mainDomainName . '/' . $homeDir), '/');
+		$homeDir = rtrim(str_replace('//', '/', $cfg['USER_WEB_DIR'] . '/' . $mainDomainName . '/' . $homeDir), '/');
 
-		if (isset($rawPassword) && isset($password) && isset($homeDir)) {
-			$query = "UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ? WHERE `userid` = ?";
-			exec_query($query, array($password, $rawPassword, $homeDir, $userid));
+		if ($cfg['FTPD_SERVER'] == 'vsftpd') {
+			if (isset($rawPassword) && isset($password) && isset($homeDir)) {
+				exec_query(
+					'UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ?, `status` = ? WHERE `userid` = ?',
+					array($password, $rawPassword, $homeDir, 'tochange', $userid)
+				);
+			} else {
+				exec_query('UPDATE `ftp_users` SET `homedir` = ?, `status` = ? WHERE `userid` = ?', array(
+					$homeDir, 'tochange', $userid
+				));
+			}
 		} else {
-			$query = "UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?";
-			exec_query($query, array($homeDir, $userid));
+			if (isset($rawPassword) && isset($password) && isset($homeDir)) {
+				exec_query(
+					'UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ? WHERE `userid` = ?',
+					array($password, $rawPassword, $homeDir, $userid)
+				);
+			} else {
+				exec_query('UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?', array($homeDir, $userid));
+			}
 		}
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array('ftpUserId' => $userid));
+
+		if ($cfg['FTPD_SERVER'] == 'vsftpd') {
+			send_request();
+		}
 
 		write_log(sprintf("%s updated Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
 		set_page_message(tr('FTP account successfully updated.'), 'success');

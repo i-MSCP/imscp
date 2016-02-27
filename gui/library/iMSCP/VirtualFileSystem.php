@@ -325,54 +325,50 @@ class iMSCP_VirtualFileSystem
 	/**
 	 * Create a temporary FTP user
 	 *
-	 * @return boolean TRUE on success, FALSE on failure
+	 * @throws iMSCP_Exception
+	 * @throws iMSCP_Exception_Database
+	 * @return bool TRUE on success, FALSE on failure
 	 */
 	protected function _createTmpUser()
 	{
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
+		$stmt = exec_query(
+			'
+				SELECT
+					admin_sys_uid, admin_sys_gid
+				FROM
+					admin
+				INNER JOIN
+					domain ON (domain_admin_id = admin_id)
+				WHERE
+					domain_name = ?
+			',
+			$this->_domain
+		);
 
-		// Get user uid/gid
-		$query = "
-			SELECT
-				`admin_sys_uid`, `admin_sys_gid`
-			FROM
-				`admin`
-			INNER JOIN
-				`domain` ON (`domain_admin_id` = `admin_id`)
-			WHERE
-				`domain_name` = ?
-        ";
-		$stmt = exec_query($query, $this->_domain);
-
-		if (!$stmt) {
+		if (!$stmt->rowCount()) {
 			return false;
 		}
 
-		// Generate a random userid and password
-		$user = uniqid('tmp_') . '@' . $this->_domain;
+		$row = $stmt->fetchRow();
+
+		if ($cfg['FTPD_SERVER'] == 'vsftpd') {
+			# For vsftpd, we use the domain name as userid.
+			# This matches default local_root (e.g: /var/www/virtual/$USER)
+			$this->_user = $this->_domain;
+		} else {
+			$this->_user = uniqid('tmp_') . '@' . $this->_domain;
+		}
+
 		$this->_passwd = uniqid('tmp_', true);
 		$password = cryptPasswordWithSalt($this->_passwd);
 
-		// Create the temporary user
-		$query = "
-			INSERT INTO
-				`ftp_users` (
-					`userid`, `passwd`, `uid`, `gid`, `shell`, `homedir`
-				) VALUES (
-					?, ?, ?, ?, ?, ?
-				)
-		";
-
-		$stmt = exec_query($query, array(
-			$user, $password, $stmt->fields['admin_sys_uid'], $stmt->fields['admin_sys_gid'], '/bin/sh',
-			"{$cfg->USER_WEB_DIR}/{$this->_domain}"));
-
-		if (!$stmt) {
-			return false;
-		}
-
-		$this->_user = $user;
+		exec_query(
+			'INSERT INTO ftp_users (userid, passwd, uid, gid, shell, homedir, status) VALUES (?, ?, ?, ?, ?, ?, ?)', array(
+			$this->_user, $password, $row['admin_sys_uid'], $row['admin_sys_gid'], '/bin/sh',
+			$cfg['USER_WEB_DIR'] . '/' . $this->_domain, 'ok'
+		));
 
 		return true;
 	}
@@ -380,13 +376,10 @@ class iMSCP_VirtualFileSystem
 	/**
 	 * Removes the temporary FTP user
 	 *
-	 * @return boolean TRUE on success, FALSE on failure.
+	 * @return void
 	 */
 	protected function _removeTmpUser()
 	{
-		$query = "DELETE FROM `ftp_users` WHERE `userid` = ?";
-		$stmt = exec_query($query, $this->_user);
-
-		return $stmt ? true : false;
+		exec_query('DELETE FROM `ftp_users` WHERE `userid` = ?', $this->_user);
 	}
 }

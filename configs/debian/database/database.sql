@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '216');
+  ('DATABASE_REVISION', '217');
 
 -- --------------------------------------------------------
 
@@ -265,6 +265,7 @@ CREATE TABLE IF NOT EXISTS `ftp_users` (
   `gid` int(10) unsigned NOT NULL DEFAULT '0',
   `shell` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   `homedir` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
+  `status` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok',
   UNIQUE KEY (`userid`),
   KEY `admin_id` (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

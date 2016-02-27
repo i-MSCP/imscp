@@ -179,6 +179,14 @@ sub add
 		return $rs if $rs;
 	}
 
+	# Add i-MSCP frontEnd user (e.g vu2000) to user group. Needed for some server such as vsftpd (since 1.2.15)
+	my $rs = iMSCP::SystemUser->new(
+		username => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+	)->addToGroup(
+		$groupName
+	);
+	return $rs if $rs;
+
 	# Updating admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
 	my @sql = (
 		'
