@@ -28,6 +28,7 @@ INSTALLER
 	Fixed: Missing 'use iMSCP::Crypt qw/decryptBlowfishCBC/' statement in Servers::sqld::remote_server
 	Fixed: Missing 'use iMSCP::Execute qw/escapeShell/' statement in Servers::sqld::remote_server
 	Fixed: Missing 'use iMSCP::TemplateParser' statement in Servers::sqld::remote_server
+	Fixed: Overwrite any existing conflicting symlinks when enabling service (systemd)
 	Fixed: Possible use of uninitialized value $sqlServer in autoinstaller/Adapter/DebianAdapter.pm
 	Fixed: sysvinit scripts are not enabled when using systemd (regression fix)
 	Fixed: Missing APT source repositories for i-MSCP required sections
