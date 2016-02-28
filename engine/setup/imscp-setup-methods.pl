@@ -222,10 +222,10 @@ sub setupAskServerHostname
 			my $err = undef;
 
 			if (execute('hostname -f', \$hostname, \$err)) {
-				error("Unable to find server hostname (server misconfigured?): $err");
-			} else {
-				chomp($hostname);
+				die(sprintf('Could not find server hostname (server misconfigured?): %s', $err ? $err : 'Unknown error'));
 			}
+
+			chomp($hostname);
 		}
 
 		my $msg = '';
