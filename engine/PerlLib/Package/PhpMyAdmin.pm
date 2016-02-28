@@ -5,7 +5,7 @@ Package::PhpMyAdmin - i-MSCP PhpMyAdmin package
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,8 +25,6 @@ package Package::PhpMyAdmin;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::Config;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
@@ -78,7 +76,6 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	require Package::PhpMyAdmin::Installer;
-
 	Package::PhpMyAdmin::Installer->getInstance()->registerSetupListeners($eventManager);
 }
 
@@ -93,7 +90,6 @@ sub registerSetupListeners
 sub uninstall
 {
 	require Package::PhpMyAdmin::Uninstaller;
-
 	Package::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
 }
 
@@ -108,7 +104,6 @@ sub uninstall
 sub setPermissionsListener
 {
 	require Package::PhpMyAdmin::Installer;
-
 	Package::PhpMyAdmin::Installer->getInstance()->setGuiPermissions();
 }
 
@@ -128,18 +123,15 @@ sub setPermissionsListener
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data"; \%c; };
-
 	iMSCP::EventManager->getInstance()->register(
 		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(); }
 	);
-
 	$self;
 }
 

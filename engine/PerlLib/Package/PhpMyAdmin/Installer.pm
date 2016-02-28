@@ -27,7 +27,6 @@ use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
-use iMSCP::Config;
 use Package::PhpMyAdmin;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
@@ -67,12 +66,8 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	my $rs = $eventManager->register( 'beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; } );
-	return $rs if $rs;
-
-	$rs = $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstall(); } );
-	return $rs if $rs;
-
-	$eventManager->register( 'afterFrontEndInstall', sub { $self->install(); } );
+	$rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstall(); } );
+	$rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->install(); } );
 }
 
 =item showDialog(\%dialog)
@@ -90,11 +85,10 @@ sub showDialog
 
 	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'pma_user';
 	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
-
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['sqlmanager', 'all', 'forced'] ||
+		$main::reconfigure ~~ [ 'sqlmanager', 'all', 'forced' ] ||
 		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
 		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
 	) {
@@ -119,7 +113,7 @@ sub showDialog
 				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
-		} while ($rs != 30 && ! $dbUser);
+		} while ($rs != 30 && !$dbUser);
 
 		if($rs != 30) {
 			$msg = '';
@@ -187,9 +181,7 @@ sub preinstall
 	) : '0.2.0.*@dev';
 
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', $version);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
+	$rs ||= $self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
 }
 
 =item install()
@@ -227,19 +219,14 @@ sub install
 
 sub setGuiPermissions
 {
-	if(-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma") {
-		my $panelUName =
-		my $panelGName =
-			$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	return 0 unless -d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 
-		my $rs = setRights(
-			"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
-			{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
-		);
-		return $rs if $rs;
-	}
+	my $panelUName = my $panelGName =
+		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	0;
+	setRights("$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", {
+		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
+	});
 }
 
 =back
@@ -262,22 +249,21 @@ sub afterFrontEndBuildConfFile
 {
 	my ($tplContent, $tplName) = @_;
 
-	if($tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ]) {
-		$$tplContent = replaceBloc(
+	return 0 unless $tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ];
+
+	$$tplContent = replaceBloc(
+		"# SECTION custom BEGIN.\n",
+		"# SECTION custom END.\n",
+		"    # SECTION custom BEGIN.\n" .
+		getBloc(
 			"# SECTION custom BEGIN.\n",
 			"# SECTION custom END.\n",
-			"    # SECTION custom BEGIN.\n" .
-			getBloc(
-				"# SECTION custom BEGIN.\n",
-				"# SECTION custom END.\n",
-				$$tplContent
-			) .
-				"    include imscp_pma.conf;\n" .
-				"    # SECTION custom END.\n",
 			$$tplContent
-		);
-	}
-
+		) .
+			"    include imscp_pma.conf;\n" .
+			"    # SECTION custom END.\n",
+		$$tplContent
+	);
 	0;
 }
 
@@ -297,7 +283,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance();
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
@@ -310,9 +296,9 @@ sub _init
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
 
-		for(keys %oldConfig) {
-			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $oldConfig{$_};
+		for my $oldConf(keys %oldConfig) {
+			if(exists $self->{'config'}->{$oldConf}) {
+				$self->{'config'}->{$oldConf} = $oldConfig{$oldConf};
 			}
 		}
 	}
@@ -337,10 +323,7 @@ sub _getPhpVersion
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	if($stdout !~ m%PHP\s+([\d.]+)%) {
-		die('Could not find PHP version from `php -v` command output.');
-	}
-
+	$stdout =~ /PHP\s+([\d.]+)/ or die(sprintf('Could not find PHP version from `php -v` command output: %s', $stdout));
 	$1;
 }
 
@@ -356,15 +339,9 @@ sub _backupConfigFile
 {
 	my ($self, $cfgFile) = @_;
 
-	if(-f $cfgFile && -d $self->{'bkpDir'}) {
-		my $filename = fileparse($cfgFile);
-		my $file = iMSCP::File->new( filename => $cfgFile );
-		my $rs = $file->copyFile("$self->{'bkpDir'}/$filename." . time);
+	return 0 unless -f $cfgFile && -d $self->{'bkpDir'};
 
-		return $rs if $rs;
-	}
-
-	0;
+	iMSCP::File->new( filename => $cfgFile )->copyFile( $self->{'bkpDir'} . '/' . fileparse($cfgFile) . '.' . time );
 }
 
 =item _installFiles()
@@ -379,24 +356,20 @@ sub _installFiles
 {
 	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/phpmyadmin";
 
-	if(-d $packageDir) {
-		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
-
-		my $rs = execute("rm -fR $destDir", \my $stdout, \my $stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
-
-		$rs = execute("cp -fR $packageDir $destDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
-	} else {
+	unless(-d $packageDir) {
 		error("Couldn't find the imscp/phpmyadmin package into the packages cache directory");
 		return 1;
 	}
 
-	0;
+	my $rs = execute("rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", \my $stdout, \my $stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $rs && $stderr;
+	return $rs if $rs;
+
+	$rs = execute("cp -fR $packageDir $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $rs && $stderr;
+	$rs;
 }
 
 =item _saveConfig()
@@ -437,8 +410,7 @@ sub _setupSqlUser
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
 
-		for my $host(
-			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
+		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
 			$main::imscpOldConfig{'BASE_SERVER_IP'}
 		) {
 			next unless $host;
@@ -451,7 +423,10 @@ sub _setupSqlUser
 	}
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal(sprintf('Could not connect to SQL server: %s', $errStr)) unless $db;
+	unless($db) {
+		error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
+		return 1;
+	}
 
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
@@ -461,8 +436,7 @@ sub _setupSqlUser
 			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
 
 		my $rs = $db->doQuery(
-			'c',
-			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
+			'c', 'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
 			$dbUser, $dbUserHost, $dbPass
 		);
 		unless(ref $rs eq 'HASH') {
@@ -509,7 +483,9 @@ sub _setupSqlUser
 	unless(ref $rs eq 'HASH') {
 		error($rs);
 		return 1;
-	} elsif(%{$rs}) {
+	}
+
+	if(%{$rs}) {
 		$rs = $db->doQuery('g', 'GRANT SELECT ON mysql.user TO ?@?', $dbUser, $dbUserHost);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Could not add SQL privileges: %s', $rs));
@@ -517,10 +493,8 @@ sub _setupSqlUser
 		}
 
 		$rs = $db->doQuery(
-			'g',
-			'GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO?@?',
-			$dbUser,
-			$dbUserHost
+			'g', 'GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO?@?',
+			$dbUser, $dbUserHost
 		);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Could not add SQL privileges: %s', $rs));
@@ -529,7 +503,6 @@ sub _setupSqlUser
 	}
 
 	my $quotedDbName = $db->quoteIdentifier($phpmyadminDbName);
-
 	$rs = $db->doQuery('g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?",  $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
 		error(sprintf('Could not add SQL privileges: %s', $rs));
@@ -557,15 +530,19 @@ sub _setupDatabase
 	my $phpmyadminDbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal(sprintf('Could not connect to SQL server: %s', $errStr)) unless $db;
+	unless($db) {
+		error(sprintf('Could not connect to SQL server: %s', $errStr));
+		return 1;
+	}
 
 	my $quotedDbName = $db->quoteIdentifier($phpmyadminDbName);
-
 	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $phpmyadminDbName);
 	unless(ref $rs eq 'HASH') {
 		error($rs);
 		return 1;
-	} elsif(%{$rs}) {
+	}
+
+	if(%{$rs}) {
 		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedDbName");
 		unless(ref $rs eq 'HASH') {
 			error($rs);
@@ -587,7 +564,10 @@ sub _setupDatabase
 	# create the missing tables
 
 	($db, $errStr) = main::setupGetSqlConnect($phpmyadminDbName);
-	fatal("Unable to connect to SQL server: $errStr") if ! $db;
+	unless($db) {
+		error(sprintf('Could not connect to SQL server: %s', $errStr));
+		return 1;
+	}
 
 	my $schemaFile = "$phpmyadminDir/sql/create_tables.sql";
 	$schemaFile = "$phpmyadminDir/examples/create_tables.sql" unless -f $schemaFile;
@@ -600,11 +580,11 @@ sub _setupDatabase
 
 	$schemaFile =~ s/^(--[^\n]{0,})?\n//gm;
 
-	for ((split /;\n/, $schemaFile)) {
+	for my $sqlStmt(split /;\n/, $schemaFile) {
 		# The PhpMyAdmin script contains the creation of the database as well
 		# We ignore this part as the database has already been created
-		if ($_ !~ /^CREATE DATABASE/ and $_ !~ /^USE/) {
-			$rs = $db->doQuery('dummy', $_);
+		if ($sqlStmt !~ /^CREATE DATABASE/ and $sqlStmt !~ /^USE/) {
+			$rs = $db->doQuery('dummy', $sqlStmt);
 
 			unless(ref $rs eq 'HASH') {
 				error(sprintf('Could not execute SQL query: %s', $rs));
@@ -647,11 +627,9 @@ sub _setVersion
 {
 	my $self = shift;
 
-	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-
-	my $json = iMSCP::File->new( filename => "$guiPublicDir/tools/pma/composer.json" )->get();
+	my $json = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/composer.json" )->get();
 	unless(defined $json) {
-		error(sprintf('Could not read %s', "$guiPublicDir/tools/pma/composer.json"));
+		error(sprintf('Could not read %s', "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/composer.json"));
 		return 1;
 	}
 
@@ -692,7 +670,6 @@ sub _buildConfig
 	my $panelUName = my $panelGName =
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}";
-
 	my $dbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
 	(my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER')) =~ s%('|\\)%\\$1%g;
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
@@ -711,8 +688,7 @@ sub _buildConfig
 		BLOWFISH => $blowfishSecret
 	};
 
-	my $cfgTpl;
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \$cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \my $cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
