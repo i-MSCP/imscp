@@ -37,6 +37,10 @@ SERVERS
 	Added: SQLUserWhereClause directive to disallow FTP connection when FTP user status is not 'ok' (ProFTPD)
 	Backported: VsFTPd server implementation from 1.3.x branch
 
+YOUTRACK
+ 	IP-1367 Support for the VsFTPd server
+	IP-1444 Ubuntu - Vsftpd package broken - libgcc_s.so.1 must be installed for pthread_cancel to work
+
 ------------------------------------------------------------------------------------------------------------------------
 1.2.14
 ------------------------------------------------------------------------------------------------------------------------

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2016 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2015-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -145,7 +145,7 @@ sub uninstall
 
  Process addUser tasks
 
- Param hash \%data user data
+ Param hash \%data user data as provided by Modules::FtpUser module
  Return int 0 on success, other on failure
 
 =cut
@@ -179,7 +179,9 @@ sub addUser
 
 =item addFtpUser(\%data)
 
- Param hash \%data Ftp user data
+ Add FTP user
+
+ Param hash \%data Ftp user as provided by Modules::FtpUser module
  Return int 0 on success, other on failure
 
 =cut
@@ -189,35 +191,35 @@ sub addFtpUser
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdAddFtpUser', $data);
-	$rs ||= $self->{'eventManager'}->trigger('onLoadTemplate', 'vsftpd', 'vsftpd_user.conf', \my $cfgTpl, $data);
-	return $rs if $rs;
-
-	unless(defined $cfgTpl) {
-		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd_user.conf" )->get();
-		unless(defined $cfgTpl) {
-			error(sprintf('Could not read %s file', "$self->{'cfgDir'}/vsftpd_user.conf"));
-			return 1;
-		}
-	}
-
-	$rs = $self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'vsftpd_user.conf');
-	return $rs if $rs;
-
-	$cfgTpl = process($data, $cfgTpl);
-
-	$rs = $self->{'eventManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'vsftpd_user.conf');
-	return $rs if $rs;
-
-	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}" );
-	$rs = $file->set($cfgTpl);
-	$rs ||= $file->save();
+	$rs ||= $self->_createFtpUserConffile($data);
 	$rs || ($self->{'reload'} = 1);
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdAddFtpUser', $data);
 }
 
 =item deleteFtpUser(\%data)
 
- Param hash \%data Ftp user data
+ Disable FTP user
+
+ Param hash \%data Ftp user data as provided by Modules::FtpUser module
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disableFtpUser
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDisableFtpUser', $data);
+	$rs ||= $self->_deleteFtpUserConffile($data);
+	$rs || ($self->{'reload'} = 1);
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDisableFtpUser', $data);
+}
+
+=item deleteFtpUser(\%data)
+
+ Delete FTP user
+
+ Param hash \%data Ftp user data as provided by Modules::FtpUser module
  Return int 0 on success, other on failure
 
 =cut
@@ -226,16 +228,10 @@ sub deleteFtpUser
 {
 	my ($self, $data) = @_;
 
-	$self->{'eventManager'}->trigger('beforeFtpdDelFtpUser', $data);
-
-	if(-f "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}") {
-		my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}" )->delFile();
-		return $rs if $rs;
-
-		$self->{'reload'} = 1;
-	}
-
-	$self->{'eventManager'}->trigger('afterFtpdDelFtpUser', $data);
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDeleteFtpUser', $data);
+	$rs ||= $self->_deleteFtpUserConffile($data);
+	$rs || ($self->{'reload'} = 1);
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDeleteFtpUser', $data);
 }
 
 =item start()
@@ -405,6 +401,61 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data"; \%c };
 	$self;
+}
+
+=item _createFtpUserConffile(\%data)
+
+ Create user vsftpd configuration file
+
+ Param hash \%data Ftp user data as provided by Modules::FtpUser module
+ Return int 0, other on failure
+
+=cut
+
+sub _createFtpUserConffile
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'vsftpd', 'vsftpd_user.conf', \my $cfgTpl, $data);
+	return $rs if $rs;
+
+	unless(defined $cfgTpl) {
+		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd_user.conf" )->get();
+		unless(defined $cfgTpl) {
+			error(sprintf('Could not read %s file', "$self->{'cfgDir'}/vsftpd_user.conf"));
+			return 1;
+		}
+	}
+
+	$rs = $self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'vsftpd_user.conf');
+	return $rs if $rs;
+
+	$cfgTpl = process($data, $cfgTpl);
+
+	$rs = $self->{'eventManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'vsftpd_user.conf');
+	return $rs if $rs;
+
+	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}" );
+	$rs = $file->set($cfgTpl);
+	$rs ||= $file->save();
+}
+
+=item _deleteFtpUserConffile(\%data)
+
+ Delete user vsftpd configuration file
+
+ Param hash \%data Ftp user data as provided by Modules::FtpUser module
+ Return int 0, other on failure
+
+=cut
+
+sub _deleteFtpUserConffile
+{
+	my ($self, $data) = @_;
+
+	return 0 unless-f "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}";
+
+	iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}" )->delFile();
 }
 
 =back
