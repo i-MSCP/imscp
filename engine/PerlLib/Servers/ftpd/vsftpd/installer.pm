@@ -156,7 +156,7 @@ sub sqlUserDialog
 
 =item passivePortRangeDialog(\%dialog)
 
- Ask for ProtFTPD port range to use for passive data transfers
+ Ask for VsFTPd port range to use for passive data transfers
 
  Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
