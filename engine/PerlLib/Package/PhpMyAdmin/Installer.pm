@@ -180,10 +180,11 @@ sub showDialog
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $sqldVersion = Servers::sqld->factory()->getVersion();
-	my $version = version->parse($sqldVersion) >= version->parse('5.5.0') ? '0.4.0.*@dev' : '0.2.0.*@dev';
+	my $version = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.5.0') ? (
+		version->parse($self->_getPhpVersion()) >= version->parse('5.5.0') ? '0.4.5.*@dev' : '0.4.0.*@dev'
+	) : '0.2.0.*@dev';
 
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/phpmyadmin', $version);
 	return $rs if $rs;
@@ -201,35 +202,19 @@ sub preinstall
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_backupConfigFile(
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
 	);
-	return $rs if $rs;
-
-	$rs = $self->_installFiles();
-	return $rs if $rs;
-
-	$rs = $self->_setupDatabase();
-	return $rs if $rs;
-
-	$rs = $self->_setupSqlUser();
-	return $rs if $rs;
-
-	$rs = $self->_generateBlowfishSecret();
-	return $rs if $rs;
-
-	$rs = $self->_buildConfig();
-	return $rs if $rs;
-
-	$rs = $self->_buildHttpdConfig();
-	return $rs if $rs;
-
-	$rs = $self->_setVersion();
-	return $rs if $rs;
-
-	$self->_saveConfig();
+	$rs ||= $self->_installFiles();
+	$rs ||= $self->_setupDatabase();
+	$rs ||= $self->_setupSqlUser();
+	$rs ||= $self->_generateBlowfishSecret();
+	$rs ||= $self->_buildConfig();
+	$rs ||= $self->_buildHttpdConfig();
+	$rs ||= $self->_setVersion();
+	$rs ||= $self->_saveConfig();
 }
 
 =item setGuiPermissions()
@@ -316,7 +301,6 @@ sub _init
 
 	$self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance();
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
 	$self->{'cfgDir'} = $self->{'phpmyadmin'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -336,6 +320,30 @@ sub _init
 	$self;
 }
 
+=item _getPhpVersion()
+
+ Get PHP version
+
+ Return int PHP version on sucess, die on failure
+
+=cut
+
+sub _getPhpVersion
+{
+	my $self = shift;
+
+	my $rs = execute('php -v', \my $stdout, \my $stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
+	if($stdout !~ m%PHP\s+([\d.]+)%) {
+		die('Could not find PHP version from `php -v` command output.');
+	}
+
+	$1;
+}
+
 =item _backupConfigFile()
 
  Backup the given configuration file
@@ -350,7 +358,6 @@ sub _backupConfigFile
 
 	if(-f $cfgFile && -d $self->{'bkpDir'}) {
 		my $filename = fileparse($cfgFile);
-
 		my $file = iMSCP::File->new( filename => $cfgFile );
 		my $rs = $file->copyFile("$self->{'bkpDir'}/$filename." . time);
 
@@ -375,8 +382,7 @@ sub _installFiles
 	if(-d $packageDir) {
 		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 
-		my ($stdout, $stderr);
-		my $rs = execute("rm -fR $destDir", \$stdout, \$stderr);
+		my $rs = execute("rm -fR $destDir", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
@@ -403,11 +409,9 @@ sub _installFiles
 
 sub _saveConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	iMSCP::File->new(
-		filename => "$self->{'cfgDir'}/phpmyadmin.data"
-	)->copyFile(
+	iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.data" )->copyFile(
 		"$self->{'cfgDir'}/phpmyadmin.old.data"
 	);
 }
@@ -422,17 +426,16 @@ sub _saveConfig
 
 sub _setupSqlUser
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $phpmyadminDbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
 	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD');
-
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if ! $sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
+		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
 
 		for my $host(
 			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
@@ -448,7 +451,7 @@ sub _setupSqlUser
 	}
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal(sprintf('Unable to connect to SQL server: %s', $errStr)) unless $db;
+	fatal(sprintf('Could not connect to SQL server: %s', $errStr)) unless $db;
 
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
@@ -460,12 +463,10 @@ sub _setupSqlUser
 		my $rs = $db->doQuery(
 			'c',
 			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
-			$dbUser,
-			$dbUserHost,
-			$dbPass
+			$dbUser, $dbUserHost, $dbPass
 		);
 		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
+			error(sprintf('Could not create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
 			return 1;
 		}
 
@@ -476,13 +477,13 @@ sub _setupSqlUser
 
 	my $rs = $db->doQuery('g', 'GRANT USAGE ON mysql.* TO ?@?', $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add SQL privileges: %s', $rs));
+		error(sprintf('Could not add SQL privileges: %s', $rs));
 		return 1;
 	}
 
 	$rs = $db->doQuery('g', 'GRANT SELECT ON mysql.db TO ?@?', $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add SQL privileges: %s', $rs));
+		error(sprintf('Could not add SQL privileges: %s', $rs));
 		return 1;
 	}
 
@@ -499,7 +500,7 @@ sub _setupSqlUser
 		$dbUser, $dbUserHost
 	);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add SQL privileges: %s', $rs));
+		error(sprintf('Could not add SQL privileges: %s', $rs));
 		return 1;
 	}
 
@@ -511,7 +512,7 @@ sub _setupSqlUser
 	} elsif(%{$rs}) {
 		$rs = $db->doQuery('g', 'GRANT SELECT ON mysql.user TO ?@?', $dbUser, $dbUserHost);
 		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to add SQL privileges: %s', $rs));
+			error(sprintf('Could not add SQL privileges: %s', $rs));
 			return 1;
 		}
 
@@ -522,7 +523,7 @@ sub _setupSqlUser
 			$dbUserHost
 		);
 		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to add SQL privileges: %s', $rs));
+			error(sprintf('Could not add SQL privileges: %s', $rs));
 			return 1;
 		}
 	}
@@ -531,13 +532,12 @@ sub _setupSqlUser
 
 	$rs = $db->doQuery('g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?",  $dbUser, $dbUserHost);
 	unless(ref $rs eq 'HASH') {
-		error(sprintf('Unable to add SQL privileges: %s', $rs));
+		error(sprintf('Could not add SQL privileges: %s', $rs));
 		return 1;
 	}
 
 	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
 	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-
 	0;
 }
 
@@ -551,13 +551,13 @@ sub _setupSqlUser
 
 sub _setupDatabase
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 	my $phpmyadminDbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL server: $errStr") if ! $db;
+	fatal(sprintf('Could not connect to SQL server: %s', $errStr)) unless $db;
 
 	my $quotedDbName = $db->quoteIdentifier($phpmyadminDbName);
 
@@ -578,7 +578,7 @@ sub _setupDatabase
 			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 		);
 		unless(ref $rs eq 'HASH') {
-			error("Unable to create the PhpMyAdmin '$phpmyadminDbName' SQL database: $rs");
+			error(sprintf("Could not create the PhpMyAdmin '%s' SQL database: %s", $phpmyadminDbName, $rs));
 			return 1;
 		}
 	}
@@ -590,13 +590,11 @@ sub _setupDatabase
 	fatal("Unable to connect to SQL server: $errStr") if ! $db;
 
 	my $schemaFile = "$phpmyadminDir/sql/create_tables.sql";
-	unless(-f $schemaFile) {
-		$schemaFile = "$phpmyadminDir/examples/create_tables.sql";
-	}
+	$schemaFile = "$phpmyadminDir/examples/create_tables.sql" unless -f $schemaFile;
 
 	$schemaFile = iMSCP::File->new( filename => $schemaFile )->get();
 	unless(defined $schemaFile) {
-		error("Unable to read $phpmyadminDir/examples/create_tables.sql");
+		error(sprintf('Could not read %s', "$phpmyadminDir/examples/create_tables.sql"));
 		return 1;
 	}
 
@@ -609,7 +607,7 @@ sub _setupDatabase
 			$rs = $db->doQuery('dummy', $_);
 
 			unless(ref $rs eq 'HASH') {
-				error("Unable to execute SQL query: $rs");
+				error(sprintf('Could not execute SQL query: %s', $rs));
 				return 1;
 			}
 		}
@@ -647,20 +645,19 @@ sub _buildHttpdConfig
 
 sub _setVersion
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
 	my $json = iMSCP::File->new( filename => "$guiPublicDir/tools/pma/composer.json" )->get();
 	unless(defined $json) {
-		error("Unable to read $guiPublicDir/tools/pma/composer.json");
+		error(sprintf('Could not read %s', "$guiPublicDir/tools/pma/composer.json"));
 		return 1;
 	}
 
 	$json = decode_json($json);
-	debug("Set new phpMyAdmin version to $json->{'version'}");
+	debug(sprintf('Set new phpMyAdmin version to %s', $json->{'version'}));
 	$self->{'config'}->{'PHPMYADMIN_VERSION'} = $json->{'version'};
-
 	0;
 }
 
@@ -677,7 +674,6 @@ sub _generateBlowfishSecret
 	my $blowfishSecret;
 	$blowfishSecret .= (map { chr } (0x21..0x7e))[rand(70)] for 1..56;
 	$_[0]->{'config'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
-
 	0;
 }
 
@@ -691,7 +687,7 @@ sub _generateBlowfishSecret
 
 sub _buildConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $panelUName = my $panelGName =
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -722,7 +718,7 @@ sub _buildConfig
 	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new( filename => "$confDir/imscp.config.inc.php" )->get();
 		unless(defined $cfgTpl) {
-			error("Unable to read file $confDir/imscp.config.inc.php");
+			error(sprintf('Could not read %s file', "$confDir/imscp.config.inc.php"));
 			return 1;
 		}
 	}
@@ -731,18 +727,10 @@ sub _buildConfig
 
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$_" );
 	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$rs = $file->owner($panelUName, $panelGName);
-	return $rs if $rs;
-
-	$file->copyFile("$confDir/config.inc.php");
+	$rs ||= $file->save();
+	$rs ||= $file->mode(0640);
+	$rs ||= $file->owner($panelUName, $panelGName);
+	$rs ||= $file->copyFile("$confDir/config.inc.php");
 }
 
 =back

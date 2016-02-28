@@ -32,6 +32,7 @@ INSTALLER
 	Fixed: Possible use of uninitialized value $sqlServer in autoinstaller/Adapter/DebianAdapter.pm
 	Fixed: sysvinit scripts are not enabled when using systemd (regression fix)
 	Fixed: Missing APT source repositories for i-MSCP required sections
+	Updated: PhpMyAdmin addon installer to support PhpMyAdmin 4.5.x serie (require MySQL >= 5.5 and PHP >= 5.5)
 
 SERVERS
 	Added: SQLNegativeCache directive to cache negative responses from SQL lookups (ProFTPD)
