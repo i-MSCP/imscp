@@ -575,6 +575,8 @@ function change_domain_status($customerId, $action)
 						'UPDATE mail_users SET po_active = ? WHERE domain_id = ?', array( 'no', $domainId)
 					);
 				}
+
+				exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array('disabled', $customerId));
 			} else {
 				exec_query(
 					'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ? AND status = ?',
@@ -584,6 +586,8 @@ function change_domain_status($customerId, $action)
 					'UPDATE mail_users SET po_active = ? WHERE domain_id = ? AND status <> ?',
 					array('yes', $domainId, 'disabled')
 				);
+
+				exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array('ok', $customerId));
 			}
 
 			# TODO implements customer deactivation

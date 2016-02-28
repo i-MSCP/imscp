@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2016 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2015-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -63,14 +63,21 @@ sub process
 {
 	my ($self, $userId) = @_;
 
-	$self->_loadData($userId);
+	my $rs = $self->_loadData($userId);
+	return $rs if $rs;
 
-	my ($rs, @sql);
-	if($self->{'status'} ~~ [ 'toadd', 'tochange' ]) {
+	my @sql;
+	if($self->{'status'} ~~ [ 'toadd', 'tochange', 'toenable' ]) {
 		$rs = $self->add();
 		@sql = (
 			'UPDATE ftp_users SET status = ? WHERE userid = ?',
 			$rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok', $userId
+		);
+	} elsif($self->{'status'} eq 'todisable') {
+		$rs = $self->disable();
+		@sql = (
+			'UPDATE ftp_users SET status = ? WHERE userid = ?',
+			$rs ? scalar getMessageByType('error') || 'Unknown error' : 'disabled', $userId
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
@@ -85,12 +92,10 @@ sub process
 		}
 	}
 
-	if(@sql) {
-		my $ret = iMSCP::Database->factory()->doQuery('dummy', @sql);
-		unless(ref $ret eq 'HASH') {
-			error($ret);
-			return 1;
-		}
+	my $ret = iMSCP::Database->factory()->doQuery('dummy', @sql);
+	unless(ref $ret eq 'HASH') {
+		error($ret);
+		return 1;
 	}
 
 	$rs;

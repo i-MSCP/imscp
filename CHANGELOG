@@ -13,9 +13,13 @@ CONFIG
 	Added: imscp_panel.service systemd unit file
 	Added: OpenSSL configuration template file for self-signed SSL certificate
 
+DATABASE
+	Added: 'status' field to the ftp_users table
+
 FRONTEND
 	Fixed: Bad request error when editing PHP settings with per_user INI level (PHP Editor)
 	Fixed: Could not add SSL certificate due to 'At least one intermediate certificate is invalid or missing' error
+	Fixed: When customer account is being disabled, FTP users must be also disabled
 	Removed: OpenSSL configuration template file (replaced by /etc/imscp/openssl/openssl.cnf.tpl)
 
 INSTALLER
@@ -29,6 +33,8 @@ INSTALLER
 	Fixed: Missing APT source repositories for i-MSCP required sections
 
 SERVERS
+	Added: SQLNegativeCache directive to cache negative responses from SQL lookups (ProFTPD)
+	Added: SQLUserWhereClause directive to disallow FTP connection when FTP user status is not 'ok' (ProFTPD)
 	Backported: VsFTPd server implementation from 1.3.x branch
 
 ------------------------------------------------------------------------------------------------------------------------
