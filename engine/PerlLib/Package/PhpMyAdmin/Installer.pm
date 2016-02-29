@@ -87,18 +87,15 @@ sub showDialog
 	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
 	my ($rs, $msg) = (0, '');
 
-	if(
-		$main::reconfigure ~~ [ 'sqlmanager', 'all', 'forced' ] ||
-		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) ||
-		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/)
+	if($main::reconfigure ~~ [ 'sqlmanager', 'all', 'forced' ] ||
+		length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ ||
+		length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
 	) {
 		# Ensure no special chars are present in password. If we don't, dialog will not let user set new password
 		$dbPass = '';
 
 		do{
-			($rs, $dbUser) = $dialog->inputbox(
-				"\nPlease enter an username for the PhpMyAdmin SQL user:$msg", $dbUser
-			);
+			($rs, $dbUser) = $dialog->inputbox("\nPlease enter an username for the PhpMyAdmin SQL user:$msg", $dbUser);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
 				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
@@ -221,8 +218,7 @@ sub setGuiPermissions
 {
 	return 0 unless -d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 
-	my $panelUName = my $panelGName =
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
 	setRights("$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", {
 		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
@@ -318,7 +314,7 @@ sub _getPhpVersion
 {
 	my $self = shift;
 
-	my $rs = execute('php -v', \my $stdout, \my $stderr);
+	my $rs = execute('php -v', \ my $stdout, \ my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -361,7 +357,7 @@ sub _installFiles
 		return 1;
 	}
 
-	my $rs = execute("rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", \my $stdout, \my $stderr);
+	my $rs = execute("rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", \ my $stdout, \ my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	return $rs if $rs;
@@ -424,7 +420,7 @@ sub _setupSqlUser
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	unless($db) {
-		error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
+		error(sprintf('Could not connect to SQL server: %s', $errStr));
 		return 1;
 	}
 
@@ -607,7 +603,6 @@ sub _setupDatabase
 sub _buildHttpdConfig
 {
 	my $frontEnd = Package::FrontEnd->getInstance();
-
 	$frontEnd->buildConfFile(
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/PhpMyAdmin/config/nginx/imscp_pma.conf",
 		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
@@ -667,8 +662,7 @@ sub _buildConfig
 {
 	my $self = shift;
 
-	my $panelUName = my $panelGName =
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}";
 	my $dbName = main::setupGetQuestion('DATABASE_NAME') . '_pma';
 	(my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER')) =~ s%('|\\)%\\$1%g;
@@ -688,7 +682,7 @@ sub _buildConfig
 		BLOWFISH => $blowfishSecret
 	};
 
-	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \my $cfgTpl, $data);
+	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \ my $cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
@@ -701,7 +695,7 @@ sub _buildConfig
 
 	$cfgTpl = process($data, $cfgTpl);
 
-	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$_" );
+	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/config.inc.php" );
 	$rs = $file->set($cfgTpl);
 	$rs ||= $file->save();
 	$rs ||= $file->mode(0640);

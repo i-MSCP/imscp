@@ -99,7 +99,9 @@ sub _removeSqlUser
 {
 	my $self = shift;
 
-	$self->{'db'}->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
+	$self->{'db'}->doQuery(
+		'dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
+	);
 	$self->{'db'}->doQuery('dummy', 'FLUSH PRIVILEGES');
 	0;
 }
@@ -134,23 +136,23 @@ sub _unregisterConfig
 	my $self = shift;
 
 	for my $vhostFile('00_master.conf', '00_master_ssl.conf') {
-		if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile") {
-			my $file = iMSCP::File->new(
-				filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile"
-			);
+		next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile";
 
-			my $fileContent = $file->get();
-			unless(defined $fileContent) {
-				error(sprintf('Could not read %s file', $file->{'filename'}));
-				return 1;
-			}
+		my $file = iMSCP::File->new(
+			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile"
+		);
 
-			$fileContent =~ s/[\t ]*include imscp_pma.conf;\n//;
-
-			my $rs = $file->set($fileContent);
-			$rs ||= $file->save();
-			return $rs if $rs;
+		my $fileContent = $file->get();
+		unless(defined $fileContent) {
+			error(sprintf('Could not read %s file', $file->{'filename'}));
+			return 1;
 		}
+
+		$fileContent =~ s/[\t ]*include imscp_pma.conf;\n//;
+
+		my $rs = $file->set($fileContent);
+		$rs ||= $file->save();
+		return $rs if $rs;
 	}
 
 	$self->{'frontend'}->{'reload'} = 1;
@@ -173,14 +175,9 @@ sub _removeFiles
 	$rs ||= iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
 	return $rs if $rs;
 
-	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf"
-		)->delFile();
-		return $rs if $rs;
-	}
+	return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf";
 
-	0;
+	iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf" )->delFile();
 }
 
 =back

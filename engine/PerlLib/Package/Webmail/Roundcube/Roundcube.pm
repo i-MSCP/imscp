@@ -5,7 +5,7 @@ Package::Webmail::Roundcube::Roundcube - i-MSCP Roundcube package
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,7 +26,6 @@ package Package::Webmail::Roundcube::Roundcube;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::Config;
 use iMSCP::Database;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
@@ -61,7 +60,6 @@ sub showDialog
 	my ($self, $dialog) = @_;
 
 	require Package::Webmail::Roundcube::Installer;
-
 	Package::Webmail::Roundcube::Installer->getInstance()->showDialog($dialog);
 }
 
@@ -76,7 +74,6 @@ sub showDialog
 sub preinstall
 {
 	require Package::Webmail::Roundcube::Installer;
-
 	Package::Webmail::Roundcube::Installer->getInstance()->preinstall();
 }
 
@@ -91,7 +88,6 @@ sub preinstall
 sub install
 {
 	require Package::Webmail::Roundcube::Installer;
-
 	Package::Webmail::Roundcube::Installer->getInstance()->install();
 }
 
@@ -106,7 +102,6 @@ sub install
 sub uninstall
 {
 	require Package::Webmail::Roundcube::Uninstaller;
-
 	Package::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
 }
 
@@ -121,7 +116,6 @@ sub uninstall
 sub setGuiPermissions
 {
 	require Package::Webmail::Roundcube::Installer;
-
 	Package::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
 }
 
@@ -139,30 +133,32 @@ sub deleteMail
 	my ($self, $data) = @_;
 
 	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
-	my $rs = 0;
 
-	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-		my $database = iMSCP::Database->factory();
-		$database->set('DATABASE_NAME', $roundcubeDbName);
-		$rs = $database->connect();
+	return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-		unless($rs) {
-			my $rdata = $database->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
-			unless(ref $rdata eq 'HASH') {
-				error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from roundcube database: $rdata");
-				$rs = 1;
-			}
-		} else {
-			error($rs);
-			$rs = 1;
-		}
+	my $db = iMSCP::Database->factory();
+	$db->set('DATABASE_NAME', $roundcubeDbName);
+	my $rs = $db->connect();
 
-		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
-
-		fatal("Unable to restore connection to i-MSCP database: $rs") if $database->connect();
+	if($rs) {
+		error($rs);
+		return 1;
 	}
 
-	$rs;
+	my $rdata = $db->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
+	unless(ref $rdata eq 'HASH') {
+		error(sprintf("Could not remove mail user '%s' from roundcube database: %s", $data->{'MAIL_ADDR'}, $rdata));
+		return 1;
+	}
+
+	$db->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
+
+	if($db->connect()) {
+		error(sprintf('Could not restore connection to i-MSCP database: %s', $rs));
+		return 1;
+	}
+
+	0
 }
 
 =back
@@ -181,7 +177,7 @@ sub deleteMail
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";

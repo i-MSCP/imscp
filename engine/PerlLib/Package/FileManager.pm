@@ -5,7 +5,7 @@ Package::FileManager - i-MSCP FileManager package
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -54,12 +54,8 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
-	return $rs if $rs;
-
-	$rs = $eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
-	return $rs if $rs;
-
-	$eventManager->register('afterFrontEndInstall', sub { $self->installListener(); });
+	$rs ||= $eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
+	$rs ||= $eventManager->register('afterFrontEndInstall', sub { $self->installListener(); });
 }
 
 =item showDialog(\%dialog)
@@ -78,9 +74,7 @@ sub showDialog
 	my $package = main::setupGetQuestion('FILEMANAGER_PACKAGE');
 	my $rs = 0;
 
-	if(
-		$main::reconfigure ~~ [ 'filemanager', 'all', 'forced' ] || ! $package || not $package ~~ @{$self->{'PACKAGES'}}
-	) {
+	if($main::reconfigure ~~ [ 'filemanager', 'all', 'forced' ] || ! $package || not $package ~~ @{$self->{'PACKAGES'}}) {
 		($rs, $package) = $dialog->radiolist(
 			"\nPlease select the Ftp Web file manager package you want to install:",
 			[ @{$self->{'PACKAGES'}} ],
@@ -88,24 +82,24 @@ sub showDialog
 		);
 	}
 
-	if($rs != 30) {
-		main::setupSetQuestion('FILEMANAGER_PACKAGE', $package);
+	return $rs unless $rs != 30;
 
-		$package = "Package::FileManager::${package}::${package}";
-		eval "require $package";
+	main::setupSetQuestion('FILEMANAGER_PACKAGE', $package);
 
-		unless($@) {
-			$package = $package->getInstance();
+	$package = "Package::FileManager::${package}::${package}";
+	eval "require $package";
 
-			if($package->can('showDialog')) {
-				debug(sprintf('Calling action showDialog on %s', ref $package));
-				$rs = $package->showDialog($dialog);
-				return $rs if $rs;
-			}
-		} else {
-			error($@);
-			return 1;
+	unless($@) {
+		$package = $package->getInstance();
+
+		if($package->can('showDialog')) {
+			debug(sprintf('Calling action showDialog on %s', ref $package));
+			$rs = $package->showDialog($dialog);
+			return $rs if $rs;
 		}
+	} else {
+		error($@);
+		return 1;
 	}
 
 	$rs;
@@ -123,7 +117,7 @@ sub showDialog
 
 sub preinstallListener
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $oldPackage = $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
 
@@ -168,7 +162,7 @@ sub preinstallListener
 
 sub installListener
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $package = main::setupGetQuestion('FILEMANAGER_PACKAGE');
 
@@ -206,27 +200,27 @@ sub uninstall
 
 	$package ||= $main::imscpConfig{'FILEMANAGER_PACKAGE'};
 
-	if($package) {
-		# Ensure backward compatibility ( See #IP-1249 )
-		if($package eq 'AjaXplorer') {
-			$package = 'Pydio';
+	return 0 unless $package;
+
+	# Ensure backward compatibility ( See #IP-1249 )
+	if($package eq 'AjaXplorer') {
+		$package = 'Pydio';
+	}
+
+	$package = "Package::FileManager::${package}::${package}";
+	eval "require $package";
+
+	unless($@) {
+		$package = $package->getInstance();
+
+		if($package->can('uninstall')) {
+			debug(sprintf('Calling action uninstall on %s', ref $package));
+			my $rs = $package->uninstall();
+			return $rs if $rs;
 		}
-
-		$package = "Package::FileManager::${package}::${package}";
-		eval "require $package";
-
-		unless($@) {
-			$package = $package->getInstance();
-
-			if($package->can('uninstall')) {
-				debug(sprintf('Calling action uninstall on %s', ref $package));
-				my $rs = $package->uninstall();
-				return $rs if $rs;
-			}
-		} else {
-			error($@);
-			return 1;
-		}
+	} else {
+		error( $@ );
+		return 1;
 	}
 
 	0;
@@ -242,26 +236,26 @@ sub uninstall
 
 sub setPermissionsListener
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
 
-	if($package ~~ @{$self->{'PACKAGES'}}) {
-		my $package = "Package::FileManager::${package}::${package}";
-		eval "require $package";
+	return 0 unless $package ~~ @{$self->{'PACKAGES'}};
 
-		unless($@) {
-			$package = $package->getInstance();
+	$package = "Package::FileManager::${package}::${package}";
+	eval "require $package";
 
-			if($package->can('setGuiPermissions')) {
-				debug(sprintf('Calling action setGuiPermissions on %s', ref $package));
-				my $rs = $package->setGuiPermissions();
-				return $rs if $rs;
-			}
-		} else {
-			error($@);
-			return 1;
+	unless($@) {
+		$package = $package->getInstance();
+
+		if($package->can('setGuiPermissions')) {
+			debug(sprintf('Calling action setGuiPermissions on %s', ref $package));
+			my $rs = $package->setGuiPermissions();
+			return $rs if $rs;
 		}
+	} else {
+		error($@);
+		return 1;
 	}
 
 	0;
@@ -283,7 +277,7 @@ sub setPermissionsListener
 
 sub _init()
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
 		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager"
