@@ -181,8 +181,7 @@ sub _loadData
 	my $rdata = iMSCP::Database->factory()->doQuery(
 		'alias_id',
 		"
-			SELECT
-				alias.*, domain_name AS user_home, domain_admin_id, domain_php, domain_cgi, domain_traffic_limit,
+			SELECT alias.*, domain_name AS user_home, domain_admin_id, domain_php, domain_cgi, domain_traffic_limit,
 				domain_mailacc_limit, domain_dns, web_folder_protection, ips.ip_number, mail_count.mail_on_domain
 			FROM domain_aliasses AS alias
 			INNER JOIN domain ON (alias.domain_id = domain.domain_id)

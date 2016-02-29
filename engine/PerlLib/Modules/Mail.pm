@@ -124,8 +124,7 @@ sub _loadData
 		'mail_id',
 		'
 			SELECT if(ISNULL(t2.mail_addr), "no", "yes") AS hasCatchAll,
-				if(COUNT(t3.mail_addr) <> 0, "yes", "no") AS hasAutoResponder,
-				t1.*
+				if(COUNT(t3.mail_addr) <> 0, "yes", "no") AS hasAutoResponder, t1.*
 			FROM mail_users AS t1
 			LEFT JOIN (SELECT mail_addr FROM mail_users WHERE mail_addr LIKE "@%") AS t2
 			ON substr(t1.mail_addr, locate("@", t1.mail_addr)) = t2.mail_addr

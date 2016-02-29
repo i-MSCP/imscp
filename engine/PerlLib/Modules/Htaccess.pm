@@ -120,8 +120,7 @@ sub _loadData
 	my $rdata = $db->doQuery(
 		'id',
 		"
-			SELECT
-				t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups, t4.domain_name,
+			SELECT t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups, t4.domain_name,
 				t4.domain_admin_id
 			FROM (SELECT * FROM htaccess, (SELECT IFNULL(
 				(

@@ -8,6 +8,7 @@ BACKEND
 	Changed: Usage of custom OpenSSL configuration file for self-signed SSL certificates (iMSCP::OpenSSL)
 	Fixed: Missing fallback value for allow_url_fopen in Modules::SubAlias
 	Fixed: Obsolete SSL connection encryption method (nginx)
+	Fixed: ALLOW_URL_FOPEN placeholder not replaced in pool configuration file with per_domain INI level (PHP-FPM)
 
 CONFIG
 	Added: imscp_panel.service systemd unit file

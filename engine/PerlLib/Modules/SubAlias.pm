@@ -135,10 +135,10 @@ sub _loadData
 	my $rdata = iMSCP::Database->factory()->doQuery(
 		'subdomain_alias_id',
 		"
-			SELECTsub.*, domain_name AS user_home, alias_name, alias.external_mail, domain_admin_id, domain_php, domain_cgi,
+			SELECT sub.*, domain_name AS user_home, alias_name, alias.external_mail, domain_admin_id, domain_php, domain_cgi,
 				domain_traffic_limit, domain_mailacc_limit, domain_dns, domain.domain_id, web_folder_protection,
 				ips.ip_number, mail_count.mail_on_domain
-			FROMsubdomain_alias AS sub
+			FROM subdomain_alias AS sub
 			INNER JOIN domain_aliasses AS alias ON (sub.alias_id = alias.alias_id)
 			INNER JOIN domain ON (alias.domain_id = domain.domain_id)
 			INNER JOIN server_ips AS ips ON (alias.alias_ip_id = ips.ip_id)
@@ -192,7 +192,7 @@ sub _getHttpdData
 	if($confLevel eq 'per_user') {
 		$confLevel = 'dmn';
 	} elsif($confLevel eq 'per_domain') {
-		$confLevel eq 'als';
+		$confLevel = 'als';
 	} else {
 		$confLevel = 'subals';
 	}
