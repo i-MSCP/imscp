@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -50,8 +50,9 @@ sub process
 {
 	$ENV{'IMSCP_BACKEND'} = 1; # Tells to the imscp-net-interfaces-mngr script that we are running from the backend
 
-	my ($stdour, $stderr);
-	my $rs = execute("perl $main::imscpConfig{'TOOLS_ROOT_DIR'}/imscp-net-interfaces-mngr restart", \$stdour, \$stderr);
+	my $rs = execute(
+		"perl $main::imscpConfig{'TOOLS_ROOT_DIR'}/imscp-net-interfaces-mngr restart", \ my $stdour, \ my $stderr
+	);
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;

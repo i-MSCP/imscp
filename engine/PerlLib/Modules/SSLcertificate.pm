@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -71,21 +71,16 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-
 	if($self->{'status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
-
 		@sql = (
 			'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
 			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $certificateId
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
-
 		if($rs) {
-			@sql = (
-				'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', scalar getMessageByType('error'), $certificateId
-			);
+			@sql = ('UPDATE ssl_certs SET status = ? WHERE cert_id = ?', scalar getMessageByType('error'), $certificateId);
 		} else {
 			@sql = ('DELETE FROM ssl_certs WHERE cert_id = ?', $certificateId);
 		}
@@ -110,7 +105,7 @@ sub process
 
 sub add
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	# Private key
 	my $privateKeyContainer = File::Temp->new();
@@ -138,10 +133,8 @@ sub add
 
 	# Check certificate chain
 	my $rs = $openSSL->validateCertificateChain();
-	return $rs if $rs;
-
 	# Create certificate chain (private key, certificate and CA bundle)
-	$openSSL->createCertificateChain();
+	$rs ||= $openSSL->createCertificateChain();
 }
 
 =item delete()
@@ -154,15 +147,11 @@ sub add
 
 sub delete
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $certFile = "$self->{'certsDir'}/$self->{'domain_name'}.pem";
+	return 0 unless -f "$self->{'certsDir'}/$self->{'domain_name'}.pem";
 
-	if(-f $certFile) {
-		iMSCP::File->new('filename' => $certFile)->delFile();
-	} else {
-		0;
-	}
+	iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem")->delFile();
 }
 
 =item _init()
@@ -175,15 +164,14 @@ sub delete
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
 
-	my $rs = iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make(
-		{ 'mode' => 0750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'} }
-	);
-	fatal('Unable to create SSL certificate directory') if $rs;
-
+	my $rs = iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make({
+		mode => 0750, user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}
+	});
+	fatal(sprintf('Could not create %s SSL certificate directory', $self->{'certsDir'})) if $rs;
 	$self;
 }
 
@@ -216,32 +204,20 @@ sub _loadData
 	%{$self} = (%{$self}, %{$certData->{$certificateId}});
 
 	my $sql;
-
 	if($self->{'domain_type'} eq 'dmn') {
 		$sql = 'SELECT domain_name, domain_id FROM domain WHERE domain_id = ?';
 	} elsif($self->{'domain_type'} eq 'als') {
 		$sql = 'SELECT alias_name AS domain_name, alias_id AS domain_id FROM domain_aliasses WHERE alias_id = ?';
 	} elsif($self->{'domain_type'} eq 'sub') {
 		$sql = "
-			SELECT
-				CONCAT(subdomain_name, '.', domain_name) AS domain_name, subdomain_id AS domain_id
-			FROM
-				subdomain
-			INNER JOIN
-				domain USING(domain_id)
-			WHERE
-				subdomain_id = ?
+			SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name, subdomain_id AS domain_id
+			FROM subdomain INNER JOIN domain USING(domain_id) WHERE subdomain_id = ?
 		";
 	} else {
 		$sql = "
-			SELECT
-				CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name, subdomain_alias_id AS domain_id
-			FROM
-				subdomain_alias
-			INNER JOIN
-				domain_aliasses USING(alias_id)
-			WHERE
-				subdomain_alias_id = ?
+			SELECT CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name, subdomain_alias_id AS domain_id
+			FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+			WHERE subdomain_alias_id = ?
 		";
 	}
 
@@ -257,7 +233,6 @@ sub _loadData
 	}
 
 	$self->{'domain_name'} = $rdata->{$self->{'domain_id'}}->{'domain_name'};
-
 	0;
 }
 

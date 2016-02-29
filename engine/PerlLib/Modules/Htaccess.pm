@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,6 +28,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
+use File::Spec;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -68,20 +69,16 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-
-	if($self->{'status'} ~~ ['toadd', 'tochange']) {
+	if($self->{'status'} ~~ [ 'toadd', 'tochange' ]) {
 		$rs = $self->add();
-
 		@sql = (
 			'UPDATE htaccess SET status = ? WHERE id = ?', ($rs ? scalar getMessageByType('error') : 'ok'), $htaccessId
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
-
 		if($rs) {
 			@sql = (
-				'UPDATE htaccess SET status = ? WHERE id = ?',
-				scalar getMessageByType('error') || 'Unknown error',
+				'UPDATE htaccess SET status = ? WHERE id = ?', scalar getMessageByType('error') || 'Unknown error',
 				$htaccessId
 			);
 		} else {
@@ -90,7 +87,6 @@ sub process
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -119,7 +115,6 @@ sub _loadData
 	my ($self, $htaccessId) = @_;
 
 	my $db = iMSCP::Database->factory();
-
 	$db->doQuery('dummy', 'SET SESSION group_concat_max_len = 8192');
 
 	my $rdata = $db->doQuery(
@@ -128,52 +123,26 @@ sub _loadData
 			SELECT
 				t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups, t4.domain_name,
 				t4.domain_admin_id
-			FROM
+			FROM (SELECT * FROM htaccess, (SELECT IFNULL(
 				(
-					SELECT * FROM htaccess,
+					SELECT group_concat(uname SEPARATOR ' ') FROM htaccess_users
+					WHERE id regexp (
+						CONCAT('^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$')
+					)
+					GROUP BY dmn_id
+				), '') AS users) AS t1, (SELECT IFNULL(
 					(
-						SELECT IFNULL(
-						(
-							SELECT
-								group_concat(uname SEPARATOR ' ')
-							FROM
-								htaccess_users
-							WHERE
-								id regexp (
-									CONCAT(
-										'^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$'
-									)
-								)
-							GROUP BY
-								dmn_id
-						), '') AS users
-					) AS t1,
-					(
-						SELECT IFNULL(
-						(
-							SELECT
-								group_concat(ugroup SEPARATOR ' ')
-							FROM
-								htaccess_groups
-							WHERE
-								id regexp (
-									CONCAT(
-										'^(', (SELECT REPLACE((SELECT group_id FROM htaccess WHERE id = ?), ',', '|')), ')\$'
-									)
-								)
-							GROUP BY
-								dmn_id
-						), '') AS groups
-					) AS t2
+						SELECT group_concat(ugroup SEPARATOR ' ') FROM htaccess_groups
+						WHERE id regexp (
+							CONCAT('^(', (SELECT REPLACE((SELECT group_id FROM htaccess WHERE id = ?), ',', '|')), ')\$')
+						)
+						GROUP BY dmn_id
+					), '') AS groups) AS t2
 				) AS t3
-			INNER JOIN
-				domain AS t4 ON (t3.dmn_id = t4.domain_id)
-			WHERE
-				t3.id = ?
+			INNER JOIN domain AS t4 ON (t3.dmn_id = t4.domain_id)
+			WHERE t3.id = ?
 		",
-		$htaccessId,
-		$htaccessId,
-		$htaccessId
+		$htaccessId, $htaccessId, $htaccessId
 	);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
@@ -199,7 +168,6 @@ sub _loadData
 	}
 
 	%{$self} = (%{$self}, %{$rdata->{$htaccessId}});
-
 	0;
 }
 
@@ -216,29 +184,25 @@ sub _getHttpdData
 {
 	my ($self, $action) = @_;
 
-	unless($self->{'httpd'}) {
-		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+	return %{$self->{'httpd'}} if $self->{'httpd'};
 
-		my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-		my $pathDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}";
-		$pathDir =~ s~/+~/~g;
-		$hDir =~ s~/+~/~g;
+	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+	my $homeDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}");
+	my $pathDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}");
 
-		$self->{'httpd'} = {
-			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-			USER => $userName,
- 			GROUP => $groupName,
-			AUTH_TYPE => $self->{'auth_type'},
-			AUTH_NAME => $self->{'auth_name'},
-			AUTH_PATH => $pathDir,
-			HOME_PATH => $hDir,
-			DOMAIN_NAME => $self->{'domain_name'},
-			HTUSERS => $self->{'users'},
-			HTGROUPS => $self->{'groups'}
-		};
-	}
-
+	$self->{'httpd'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+		USER => $userName,
+		GROUP => $groupName,
+		AUTH_TYPE => $self->{'auth_type'},
+		AUTH_NAME => $self->{'auth_name'},
+		AUTH_PATH => $pathDir,
+		HOME_PATH => $homeDir,
+		DOMAIN_NAME => $self->{'domain_name'},
+		HTUSERS => $self->{'users'},
+		HTGROUPS => $self->{'groups'}
+	};
 	%{$self->{'httpd'}};
 }
 

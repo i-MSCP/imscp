@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -235,17 +235,13 @@ sub _runAllActions
 	if($action ~~ [ 'add', 'restore' ]) {
 		for('pre', '', 'post') {
 			my $rs = $self->_runAction("$_$action$moduleType", \@servers, 'server');
-			return $rs if $rs;
-
-			$rs = $self->_runAction("$_$action$moduleType", \@packages, 'package');
+			$rs ||= $self->_runAction("$_$action$moduleType", \@packages, 'package');
 			return $rs if $rs;
 		}
 	} else {
 		for('pre', '', 'post') {
 			my $rs = $self->_runAction("$_$action$moduleType", \@packages, 'package');
-			return $rs if $rs;
-
-			$rs = $self->_runAction("$_$action$moduleType", \@servers, 'server');
+			$rs ||= $self->_runAction("$_$action$moduleType", \@servers, 'server');
 			return $rs if $rs;
 		}
 	}

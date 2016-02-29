@@ -89,23 +89,12 @@ sub _loadData
 	my $rdata = $db->doQuery(
 		'ip_number',
 		"
-			SELECT
-				ip_number
-			FROM
-				domain
-			INNER JOIN
-				server_ips ON (domain.domain_ip_id = server_ips.ip_id)
-			WHERE
-				domain_status != 'todelete'
+			SELECT ip_number FROM domain INNER JOIN server_ips ON (domain.domain_ip_id = server_ips.ip_id)
+			WHERE domain_status <> 'todelete'
 			UNION
-			SELECT
-				ip_number
-			FROM
-				domain_aliasses
-			INNER JOIN
-				server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
-			WHERE
-				alias_status NOT IN ('todelete', 'ordered')
+			SELECT ip_number FROM domain_aliasses
+			INNER JOIN server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
+			WHERE alias_status NOT IN ('todelete', 'ordered')
 		"
 	);
 	unless(ref $rdata eq 'HASH') {
@@ -119,59 +108,26 @@ sub _loadData
 	$rdata = $db->doQuery(
 		'ip_number',
 		"
-			SELECT
-				ip_number
-			FROM
-				ssl_certs
-			INNER JOIN
-				domain ON (ssl_certs.domain_id = domain.domain_id)
-			INNER JOIN
-				server_ips ON (domain.domain_ip_id = server_ips.ip_id)
-			WHERE
-				ssl_certs.domain_type = 'dmn'
-
+			SELECT ip_number FROM ssl_certs
+			INNER JOIN domain ON (ssl_certs.domain_id = domain.domain_id)
+			INNER JOIN server_ips ON (domain.domain_ip_id = server_ips.ip_id)
+			WHERE ssl_certs.domain_type = 'dmn'
 			UNION
-
-			SELECT
-				ip_number
-			FROM
-				ssl_certs
-			INNER JOIN
-				domain_aliasses ON (ssl_certs.domain_id = domain_aliasses.alias_id)
-			INNER JOIN
-				server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
-			WHERE
-				ssl_certs.domain_type = 'als'
-
+			SELECT ip_number FROM ssl_certs
+			INNER JOIN domain_aliasses ON (ssl_certs.domain_id = domain_aliasses.alias_id)
+			INNER JOIN server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
+			WHERE ssl_certs.domain_type = 'als'
 			UNION
-
-			SELECT
-				ip_number
-			FROM
-				ssl_certs
-			INNER JOIN
-				subdomain_alias ON (ssl_certs.domain_id = subdomain_alias.subdomain_alias_id)
-			INNER JOIN
-				domain_aliasses ON (subdomain_alias.alias_id = domain_aliasses.alias_id)
-			INNER JOIN
-				server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
-			WHERE
-				ssl_certs.domain_type = 'alssub'
-
+			SELECT ip_number FROM ssl_certs
+			INNER JOIN subdomain_alias ON (ssl_certs.domain_id = subdomain_alias.subdomain_alias_id)
+			INNER JOIN domain_aliasses ON (subdomain_alias.alias_id = domain_aliasses.alias_id)
+			INNER JOIN server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
+			WHERE ssl_certs.domain_type = 'alssub'
 			UNION
-
-			SELECT
-				ip_number
-			FROM
-				ssl_certs
-			INNER JOIN
-				subdomain ON (ssl_certs.domain_id = subdomain.subdomain_id)
-			INNER JOIN
-				domain ON (subdomain.domain_id = domain.domain_id)
-			INNER JOIN
-				server_ips ON (domain.domain_ip_id = server_ips.ip_id)
-			WHERE
-				ssl_certs.domain_type = 'sub'
+			SELECT ip_number FROM ssl_certs
+			INNER JOIN subdomain ON (ssl_certs.domain_id = subdomain.subdomain_id)
+			INNER JOIN domain ON (subdomain.domain_id = domain.domain_id)
+			INNER JOIN server_ips ON (domain.domain_ip_id = server_ips.ip_id) WHERE ssl_certs.domain_type = 'sub'
 		"
 	);
 	unless(ref $rdata eq 'HASH') {
@@ -200,13 +156,12 @@ sub _getHttpdData
 {
 	my ($self, $action) = @_;
 
-	unless($self->{'httpd'}) {
-		$self->{'httpd'} = {
-			IPS => $self->{'ipaddrs'},
-			SSL_IPS => $self->{'ssl_ipaddrs'}
-		};
-	}
+	return %{$self->{'httpd'}} if $self->{'httpd'};
 
+	$self->{'httpd'} = {
+		IPS => $self->{'ipaddrs'},
+		SSL_IPS => $self->{'ssl_ipaddrs'}
+	};
 	%{$self->{'httpd'}};
 }
 

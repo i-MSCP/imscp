@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -68,22 +68,16 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-
-	if($self->{'status'} ~~ ['toadd', 'tochange']) {
+	if($self->{'status'} ~~ [ 'toadd', 'tochange' ]) {
 		$rs = $self->add();
-
 		@sql = (
 			'UPDATE htaccess_users SET status = ? WHERE id = ?',
-			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'),
-			$htuserId
+			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $htuserId
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
-
 		if($rs) {
-			@sql = (
-				'UPDATE htaccess_users SET status = ? WHERE id = ?', scalar getMessageByType('error'), $htuserId
-			);
+			@sql = ('UPDATE htaccess_users SET status = ? WHERE id = ?', scalar getMessageByType('error'), $htuserId);
 		} else {
 			@sql = ('DELETE FROM htaccess_users WHERE id = ?', $htuserId);
 		}
@@ -120,14 +114,9 @@ sub _loadData
 	my $rdata = iMSCP::Database->factory()->doQuery(
 		'id',
 		'
-			SELECT
-				t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id, t2.web_folder_protection
-			FROM
-				htaccess_users AS t1
-			INNER JOIN
-				domain AS t2 ON (t1.dmn_id = t2.domain_id)
-			WHERE
-				t1.id = ?
+			SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id, t2.web_folder_protection
+			FROM htaccess_users AS t1 INNER JOIN domain AS t2 ON (t1.dmn_id = t2.domain_id)
+			WHERE t1.id = ?
 		',
 		$htuserId
 	);
@@ -137,7 +126,7 @@ sub _loadData
 	}
 
 	unless(exists $rdata->{$htuserId}) {
-		error("Htuser record with ID $htuserId has not been found in database");
+		error(sprintf('Htuser record with ID %s has not been found in database', $htuserId));
 		return 1;
 	}
 
@@ -149,17 +138,14 @@ sub _loadData
 		error('Orphan entry: ' . Dumper($rdata->{$htuserId}));
 
 		my @sql = (
-			'UPDATE htaccess_users SET status = ? WHERE id = ?',
-			'Orphan entry: ' . Dumper($rdata->{$htuserId}),
+			'UPDATE htaccess_users SET status = ? WHERE id = ?', 'Orphan entry: ' . Dumper($rdata->{$htuserId}),
 			$htuserId
 		);
 		my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-
 		return 1;
 	}
 
 	%{$self} = (%{$self}, %{$rdata->{$htuserId}});
-
 	0;
 }
 
@@ -176,22 +162,21 @@ sub _getHttpdData
 {
 	my ($self, $action) = @_;
 
-	unless($self->{'httpd'}) {
-		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+	return %{$self->{'httpd'}} if $self->{'httpd'};
 
-		$self->{'httpd'} = {
-			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-			USER => $userName,
-			GROUP => $groupName,
-			WEB_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
-			HTUSER_NAME => $self->{'uname'},
-			HTUSER_PASS => $self->{'upass'},
-			HTUSER_DMN => $self->{'domain_name'},
-			WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
-		};
-	}
+	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
+	$self->{'httpd'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+		USER => $userName,
+		GROUP => $groupName,
+		WEB_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
+		HTUSER_NAME => $self->{'uname'},
+		HTUSER_PASS => $self->{'upass'},
+		HTUSER_DMN => $self->{'domain_name'},
+		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
+	};
 	%{$self->{'httpd'}};
 }
 

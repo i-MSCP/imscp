@@ -148,25 +148,24 @@ sub _getFtpdData
 {
 	my ($self, $action) = @_;
 
-	unless($self->{'ftpd'}) {
-		my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . (
-			$main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
-		);
+	return %{$self->{'ftpd'}} if $self->{'ftpd'};
 
-		$self->{'ftpd'} = {
-			OWNER_ID => $self->{'admin_id'},
-			USERNAME => $self->{'userid'},
-			PASSWORD_CRYPT => $self->{'passwd'},
-			PASSWORD_CLEAR => $self->{'rawpasswd'},
-			SHELL => $self->{'shell'},
-			HOMEDIR => $self->{'homedir'},
-			USER_SYS_GID => $self->{'uid'},
-			USER_SYS_GID => $self->{'gid'},
-			USER_SYS_NAME => $userName,
-			USER_SYS_GNAME => $groupName
-		};
-	}
+	my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . (
+		$main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
+	);
 
+	$self->{'ftpd'} = {
+		OWNER_ID => $self->{'admin_id'},
+		USERNAME => $self->{'userid'},
+		PASSWORD_CRYPT => $self->{'passwd'},
+		PASSWORD_CLEAR => $self->{'rawpasswd'},
+		SHELL => $self->{'shell'},
+		HOMEDIR => $self->{'homedir'},
+		USER_SYS_GID => $self->{'uid'},
+		USER_SYS_GID => $self->{'gid'},
+		USER_SYS_NAME => $userName,
+		USER_SYS_GNAME => $groupName
+	};
 	%{$self->{'ftpd'}};
 }
 
