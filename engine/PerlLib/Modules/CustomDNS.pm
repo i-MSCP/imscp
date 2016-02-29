@@ -186,7 +186,7 @@ sub _loadData
 	}
 
 	unless(@{$rows} && defined($rows->[0]->[5])) {
-		error(sprintf('Custom DNS records for %s with ID $s were not found or are orphaned', $domainType, domainId));
+		error(sprintf('Custom DNS records for %s with ID $s were not found or are orphaned', $domainType, $domainId));
 		return 1;
 	}
 

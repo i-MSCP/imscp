@@ -12,7 +12,7 @@ BACKEND
 
 CONFIG
 	Added: imscp_panel.service systemd unit file
-	Added: OpenSSL configuration template file for self-signed SSL certificate
+	Added: OpenSSL configuration template file for self-signed SSL certificates
 
 DATABASE
 	Added: 'status' field to the ftp_users table
