@@ -197,7 +197,7 @@ sub _loadData
 	}
 
 	unless(exists $certData->{$certificateId}) {
-		error("SSL certificate record with ID $certificateId has not been found in database");
+		error(sprintf('SSL certificate record with ID %s has not been found in database', $certificateId));
 		return 1;
 	}
 
@@ -228,7 +228,7 @@ sub _loadData
 	}
 
 	unless(exists $rdata->{$self->{'domain_id'}}) {
-		error("SSL certificate with ID $certificateId has not been found or is in an inconsistent state");
+		error(sprintf('SSL certificate with ID %s has not been found or is in an inconsistent state', $certificateId));
     	return 1;
 	}
 

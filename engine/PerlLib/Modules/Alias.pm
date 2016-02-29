@@ -455,8 +455,7 @@ sub _sharedMountPoint
 				AND subdomain_alias_mount RLIKE ?
 			) AS tmp
 		",
-		undef,
-		$self->{'alias_id'}, $self->{'domain_id'}, $regexp, $self->{'domain_id'}, $regexp, $self->{'domain_id'},
+		undef, $self->{'alias_id'}, $self->{'domain_id'}, $regexp, $self->{'domain_id'}, $regexp, $self->{'domain_id'},
 		$regexp
 	);
 
