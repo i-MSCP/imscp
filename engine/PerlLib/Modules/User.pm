@@ -180,7 +180,7 @@ sub add
 	}
 
 	# Add i-MSCP frontEnd user (e.g vu2000) to user group. Needed for some server such as vsftpd (since 1.2.15)
-	my $rs = iMSCP::SystemUser->new(
+	$rs = iMSCP::SystemUser->new(
 		username => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	)->addToGroup(
 		$groupName
