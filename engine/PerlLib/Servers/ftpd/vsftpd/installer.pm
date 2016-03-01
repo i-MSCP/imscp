@@ -284,7 +284,7 @@ sub _rebuildVsFTPdDebianPackage
 
 	my $oldDir = getcwd();
 
-	step(
+	my $rs = step(
 		sub {
 			my $buildir = iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' );
 			my $rs = $buildir->remove(); # Cleanup previous build directory if any
@@ -299,10 +299,9 @@ sub _rebuildVsFTPdDebianPackage
 		}, 'Creating build directory for i-MSCP vsftpd package...', 7, 1
 	);
 
-	step(
+	$rs ||= step(
 		sub {
-			my ($stdout, $stderr);
-			my $rs = execute('apt-mark unhold vsftpd', \$stdout, \$stderr);
+			my $rs = execute('apt-mark unhold vsftpd', \my $stdout, \my $stderr);
 			error(sprintf("Could not unset 'hold' state on the vsftpd package: %s", $stderr || 'Unknown error')) if $rs;
 			return $rs if $rs;
 			debug($stdout) if $stdout;
@@ -315,10 +314,9 @@ sub _rebuildVsFTPdDebianPackage
 		}, 'Downloading vsftpd source package...', 7, 2
 	);
 
-	step(
+	$rs ||= step(
 		sub {
-			my ($stdout, $stderr);
-			my $rs = execute('apt-get -y build-dep vsftpd', \$stdout, \$stderr);
+			my $rs = execute('apt-get -y build-dep vsftpd', \my $stdout, \my $stderr);
 			error(sprintf('Could not install vsftpd package build dependencies: %s', $stderr || 'Unknown error')) if $rs;
 			return $rs if $rs;
 			debug($stdout) if $stdout;
@@ -326,7 +324,7 @@ sub _rebuildVsFTPdDebianPackage
 		}, 'Installing vsftpd build dependencies...', 7, 3
 	);
 
-	step(
+	$rs ||= step(
 		sub {
 			unless(chdir glob 'vsftpd-*') {
 				error(sprintf('Could not change directory: %s', $!));
@@ -371,13 +369,12 @@ sub _rebuildVsFTPdDebianPackage
 
 			$rs = $file->set($fileContent);
 			$rs ||= $file->save();
-		}, 'Patching VsFTPd source package for i-MSCP...', 7, 4
+		}, 'Patching vsftpd source package for i-MSCP...', 7, 4
 	);
 
-	step(
+	$rs ||= step(
 		sub {
-			my ($stdout, $stderr);
-			my $rs = execute("dch --local imscp 'i-MSCP patched version.'", \$stdout, \$stderr);
+			my $rs = execute("dch --local imscp 'i-MSCP patched version.'", \my $stdout, \my $stderr);
 			error(sprintf("Could not add 'imscp' local suffix to vsftpd package: %s", $stderr || 'Unknown error')) if $rs;
 			return $rs if $rs;
 
@@ -386,30 +383,29 @@ sub _rebuildVsFTPdDebianPackage
 			return $rs if $rs;
 			debug($stdout) if $stdout;
 			0;
-		}, 'Building i-MSCP VsFTPd package...', 7, 5
+		}, 'Building i-MSCP vsftpd package...', 7, 5
 	);
 
-	step(
+	$rs ||= step(
 		sub {
 			unless(chdir '..') {
 				error(sprintf('Could not change directory: %s', $!));
 				return 1;
 			}
 
-			my ($stdout, $stderr);
-			my $rs = execute('dpkg --force-confnew -i vsftpd_*.deb', \$stdout, \$stderr);
+			my $rs = execute('dpkg --force-confnew -i vsftpd_*.deb', \my $stdout, \my $stderr);
 			error(sprintf('Could not install i-MSCP patched vsftpd package: %s', $stderr || 'Unknown error')) if $rs;
 			debug($stdout) if $stdout;
 
-			$rs = execute('apt-mark hold VsFTPd', \$stdout, \$stderr);
-			error(sprintf("Could not set 'hold' state on the i-MSCP VsFTPd package: %s", $stderr || 'Unknown error')) if $rs;
+			$rs = execute('apt-mark hold vsftpd', \$stdout, \$stderr);
+			error(sprintf("Could not set 'hold' state on the i-MSCP vsftpd package: %s", $stderr || 'Unknown error')) if $rs;
 			return $rs if $rs;
 			debug($stdout) if $stdout;
 			0;
 		}, 'Installing i-MSCP VsFTPd package...', 7, 6
 	);
 
-	step(
+	$rs ||= step(
 		sub {
 			unless(chdir $oldDir) {
 				error(sprintf('Could not change directory: %s', $!));
@@ -417,12 +413,11 @@ sub _rebuildVsFTPdDebianPackage
 			}
 
 			iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' )->remove();
-		}, 'Removing i-MSCP VsFTPd package build directory', 7, 7
+		}, 'Removing i-MSCP vsftpd package build directory', 7, 7
 	);
 
 	endDetail();
-
-	0;
+	$rs;
 }
 
 =item _setVersion
