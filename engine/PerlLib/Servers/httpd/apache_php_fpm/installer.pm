@@ -28,7 +28,6 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
-use iMSCP::Config;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Rights;
@@ -90,9 +89,8 @@ sub showPhpConfigLevelDialog
 	my $rs = 0;
 	my $confLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') || $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 
-	if(
-		$main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ] ||
-		not $confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ]
+	if($main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ]
+		|| not $confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ]
 	) {
 		$confLevel =~ s/_/ /;
 
@@ -221,9 +219,9 @@ sub _init
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
-	$self->{'eventManager'}->trigger(
-		'beforeHttpdInitInstaller', $self, 'apache_php_fpm'
-	) and fatal('apache_php_fpm - beforeHttpdInitInstaller has failed');
+	$self->{'eventManager'}->trigger('beforeHttpdInitInstaller', $self, 'apache_php_fpm') and fatal(
+		'apache_php_fpm - beforeHttpdInitInstaller has failed'
+	);
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
@@ -256,9 +254,9 @@ sub _init
 		}
 	}
 
-	$self->{'eventManager'}->trigger(
-		'afterHttpdInitInstaller', $self, 'apache_php_fpm'
-	) and fatal('apache_php_fpm - afterHttpdInitInstaller has failed');
+	$self->{'eventManager'}->trigger('afterHttpdInitInstaller', $self, 'apache_php_fpm') and fatal(
+		'apache_php_fpm - afterHttpdInitInstaller has failed'
+	);
 	$self;
 }
 
@@ -355,37 +353,25 @@ sub _buildFastCgiConfFiles
 	return $rs if $rs;
 
 	# Transitional: fastcgi_imscp
-	my @toDisableModules = (
-		'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter'
-	);
-	my @toEnableModules = ('actions', 'suexec', 'version');
+	my @modulesOff = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter');
+	my @modulesOn = ('actions', 'suexec', 'version');
 
 	if(version->parse($version) >= version->parse('2.4.0')) {
-		push @toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork');
-		push @toEnableModules, ('mpm_worker', 'authz_groupfile');
+		push @modulesOff, 'mpm_event', 'mpm_itk', 'mpm_prefork';
+		push @modulesOn, 'mpm_worker', 'authz_groupfile';
 	}
 
 	if(version->parse($version) >= version->parse('2.4.10')) {
-		push @toDisableModules, ('php_fpm_imscp');
-		push @toEnableModules, ('setenvif', 'proxy_fcgi', 'proxy_handler');
+		push @modulesOff, 'php_fpm_imscp';
+		push @modulesOn, 'setenvif', 'proxy_fcgi', 'proxy_handler';
 	} else {
-		push @toDisableModules, ('proxy_fcgi', 'proxy_handler');
-		push @toEnableModules, 'php_fpm_imscp';
+		push @modulesOff, 'proxy_fcgi', 'proxy_handler';
+		push @modulesOn, 'php_fpm_imscp';
 	}
 
-	for my $module(@toDisableModules) {
-		if (-l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/$module.load") {
-			$rs = $self->{'httpd'}->disableModules($module);
-			return $rs if $rs;
-		}
-	}
-
-	for my $module(@toEnableModules) {
-		if (-f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$module.load") {
-			$rs = $self->{'httpd'}->enableModules($module);
-			return $rs if $rs;
-		}
-	}
+	$rs = $self->{'httpd'}->disableModules(@modulesOff);
+	$rs ||= $self->{'httpd'}->enableModules(@modulesOn);
+	return $rs if $rs;
 
 	if(iMSCP::ProgramFinder::find('php5enmod')) {
 		for my $extension (
@@ -479,8 +465,7 @@ sub _buildApacheConfFiles
 	return $rs if $rs;
 
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
-		my $cfgTpl;
-		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_php_fpm', 'ports.conf', \$cfgTpl, { });
+		$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'apache_php_fpm', 'ports.conf', \my $cfgTpl, { });
 		return $rs if $rs;
 
 		unless(defined $cfgTpl) {
@@ -519,29 +504,18 @@ sub _buildApacheConfFiles
 
 	# Remove default access log file provided by Debian package
 	if(-f "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log"
-		)->delFile();
+		$rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log" )->delFile();
 		return $rs if $rs;
 	}
 
-	my $version = $self->{'config'}->{'HTTPD_VERSION'};
-
-	# Using alternative syntax for piped logs scripts when possible
-	# The alternative syntax does not involve the shell (from Apache 2.2.12)
-	my $pipeSyntax = '|';
-	if(version->parse($version) >= version->parse('2.2.12')) {
-		$pipeSyntax .= '|';
-	}
-
-	my $apache24 = version->parse($version) >= version->parse('2.4.0');
+	my $apache24 = version->parse("$self->{'config'}->{'HTTPD_VERSION'}") >= version->parse('2.4.0');
 
 	$rs = $self->{'httpd'}->setData({
 		HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
 		HTTPD_ROOT_DIR => $self->{'config'}->{'HTTPD_ROOT_DIR'},
 		AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
 		AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
-		PIPE => $pipeSyntax,
+		PIPE => version->parse("$self->{'config'}->{'HTTPD_VERSION'}") >= version->parse('2.2.12') ? '||' : '|',
 		VLOGGER_CONF => "$self->{'apacheWrkDir'}/vlogger.conf"
 	});
 
@@ -550,26 +524,14 @@ sub _buildApacheConfFiles
 	$rs ||= $self->{'httpd'}->setData({ HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} });
 	$rs ||= $self->{'httpd'}->buildConfFile('00_imscp.conf');
 	$rs ||= $self->{'httpd'}->installConfFile('00_imscp.conf', {
-		destination => (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
-			? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
-			: "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d"
+		destination => -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
+			? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d"
 	});
-	$rs ||= $self->{'httpd'}->enableModules('cgid rewrite proxy proxy_http ssl');
+	$rs ||= $self->{'httpd'}->enableModules('cgid', 'rewrite', 'proxy', 'proxy_http', 'ssl');
 	$rs ||= $self->{'httpd'}->enableSites('00_nameserver.conf');
 	$rs ||= $self->{'httpd'}->enableConfs('00_imscp.conf');
-	return $rs if $rs;
-
-	# Disable defaults sites if any
-	# default, default-ssl (Debian < Jessie)
-	# 000-default.conf, default-ssl.conf' : (Debian >= Jessie)
-	for my $site('default', 'default-ssl', '000-default.conf', 'default-ssl.conf') {
-		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site") {
-			$rs = $self->{'httpd'}->disableSites($site);
-			return $rs if $rs;
-		}
-	}
-
-	$self->{'eventManager'}->trigger('afterHttpdBuildApacheConfFiles');
+	$rs ||= $self->{'httpd'}->disableSites('default', 'default-ssl', '000-default.conf', 'default-ssl.conf');
+	$rs ||= $self->{'eventManager'}->trigger('afterHttpdBuildApacheConfFiles');
 }
 
 =item _installLogrotate()
@@ -706,7 +668,7 @@ sub _saveConf
 {
 	my $self = shift;
 
-	my %filesToDir = ( 'apache' => $self->{'apacheCfgDir'}, 'phpfpm' => $self->{'phpfpmCfgDir'} );
+	my %filesToDir = ('apache' => $self->{'apacheCfgDir'}, 'phpfpm' => $self->{'phpfpmCfgDir'});
 	my $rs = 0;
 
 	for my $entry(keys %filesToDir) {
@@ -731,18 +693,16 @@ sub _oldEngineCompatibility
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdOldEngineCompatibility');
+	$rs ||= $self->{'httpd'}->disableSites('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf');
 	return $rs if $rs;
 
 	for my $site('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf') {
-		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site") {
-			$rs = $self->{'httpd'}->disableSites($site);
-			$rs ||= iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site" )->delFile();
-			return $rs if $rs;
-		}
+		next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
+		$rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site" )->delFile();
+		return $rs if $rs;
 	}
 
-	for my $dir(
-		$self->{'config'}->{'APACHE_BACKUP_LOG_DIR'}, $self->{'config'}->{'HTTPD_USERS_LOG_DIR'},
+	for my $dir($self->{'config'}->{'APACHE_BACKUP_LOG_DIR'}, $self->{'config'}->{'HTTPD_USERS_LOG_DIR'},
 		$self->{'config'}->{'APACHE_SCOREBOARDS_DIR'}
 	) {
 		$rs = iMSCP::Dir->new( dirname => $dir )->remove();
@@ -750,9 +710,7 @@ sub _oldEngineCompatibility
 	}
 
 	if(-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/master.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/master.conf"
-		)->delFile();
+		$rs = iMSCP::File->new(filename => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/master.conf")->delFile();
 		return $rs if $rs;
 	}
 

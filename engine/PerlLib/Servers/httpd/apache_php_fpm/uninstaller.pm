@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -132,54 +132,46 @@ sub _restoreApacheConfig
 {
 	my $self = shift;
 
-	if (-l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/php_fpm_imscp.load") {
-		my $rs = $self->{'httpd'}->disableModules('php_fpm_imscp');
-		return $rs if $rs;
-	}
+	my $rs = $self->{'httpd'}->disableModules('php_fpm_imscp');
+	return $rs if $rs;
 
 	for my $filename('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
 		next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$filename";
-
-		my $rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$filename" )->delFile();
+		$rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$filename" )->delFile();
 		return $rs if $rs;
 	}
 
 	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
-		my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
-		return $rs if $rs;
-
-		$rs = iMSCP::File->new(
+		$rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
+		$rs ||= iMSCP::File->new(
 			filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
 		)->delFile();
 		return $rs if $rs;
 	}
 
 	my $confDir = (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
-		? $self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
+		? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
 
-    if(-f "$confDir/00_imscp.conf") {
-		my $rs = $self->{'httpd'}->disableConfs('00_imscp.conf');
+	if(-f "$confDir/00_imscp.conf") {
+		$rs = $self->{'httpd'}->disableConfs('00_imscp.conf');
 		$rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
 		return $rs if $rs;
 	}
 
 	for my $file("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
 		my $filename = fileparse($file);
-
-		if (-f "$self->{'apacheBkpDir'}/$filename.system") {
-			my $rs = iMSCP::File->new( filename => "$self->{'apacheBkpDir'}/$filename.system" )->copyFile($file);
-			return $rs if $rs;
-		}
+		next unless -f "$self->{'apacheBkpDir'}/$filename.system";
+		$rs = iMSCP::File->new( filename => "$self->{'apacheBkpDir'}/$filename.system" )->copyFile($file);
+		return $rs if $rs;
 	}
 
-	my $rs = iMSCP::Dir->new(dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
+	$rs = iMSCP::Dir->new(dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
 	return $rs if $rs;
 
 	for my $site('000-default', 'default') {
-		if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site") {
-			$rs = $self->{'httpd'}->enableSites($site);
-			return $rs if $rs;
-		}
+		next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
+		$rs = $self->{'httpd'}->enableSites($site);
+		return $rs if $rs;
 	}
 
 	0;
@@ -206,16 +198,13 @@ sub _restorePhpfpmConfig
 		return $rs if $rs;
 	}
 
-	for my $file(
-		"$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php-fpm.conf",
+	for my $file("$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php-fpm.conf",
 		"$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini"
 	) {
 		$filename = fileparse($file);
-
-		if (-f "$self->{'phpfpmBkpDir'}/$filename.system") {
-			my $rs = iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/$filename.system" )->copyFile($_);
-			return $rs if $rs;
-		}
+		next unless -f "$self->{'phpfpmBkpDir'}/$filename.system";
+		my $rs = iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/$filename.system" )->copyFile($file);
+		return $rs if $rs;
 	}
 
 	if (-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled") {

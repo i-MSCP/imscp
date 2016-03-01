@@ -78,11 +78,9 @@ sub _restoreConf
 
 	for my $file("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
 		my $filename = fileparse($file);
-
-		if(-f "$self->{bkpDir}/$filename.system") {
-			my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system")->copyFile($file) ;
-			return $rs if $rs;
-		}
+		next unless -f "$self->{bkpDir}/$filename.system";
+		my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system")->copyFile($file);
+		return $rs if $rs;
 	}
 
 	0;
@@ -92,18 +90,13 @@ sub _fastcgiConf
 {
 	my $self = shift;
 
-	if (-l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/fcgid_imscp.load") {
-		my $rs = $self->{'httpd'}->disableModules('fcgid_imscp');
-		return $rs if $rs;
-	}
+	my $rs = $self->{'httpd'}->disableModules('fcgid_imscp');
+	return $rs if $rs;
 
 	for my $conffile('fcgid_imscp.conf', 'fcgid_imscp.load') {
-		if(-f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$conffile") {
-			my $rs = iMSCP::File->new(
-				filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$conffile"
-			)->delFile();
-			return $rs if $rs;
-		}
+		next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$conffile";
+		$rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$conffile")->delFile();
+		return $rs if $rs;
 	}
 
 	0;
@@ -115,30 +108,25 @@ sub _vHostConf
 
 	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
 		my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
-		return $rs if $rs;
-
-		$rs = iMSCP::File->new(
+		$rs ||= iMSCP::File->new(
 			filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
 		)->delFile();
 		return $rs if $rs;
 	}
 
-	my $confDir = (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
+	my $confDir = -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
 		? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
 
-    if(-f "$confDir/00_imscp.conf") {
+	if(-f "$confDir/00_imscp.conf") {
 		my $rs = $self->{'httpd'}->disableConfs('00_imscp.conf');
-		return $rs if $rs;
-
-		$rs = iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
+		$rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
 		return $rs if $rs;
 	}
 
 	for my $site('000-default', 'default') {
-		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
-			my $rs = $self->{'httpd'}->enableSites($site);
-			return $rs if $rs;
-		}
+		next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
+		my $rs = $self->{'httpd'}->enableSites($site);
+		return $rs if $rs;
 	}
 
 	0;
