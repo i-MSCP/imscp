@@ -3295,6 +3295,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * - Adds PHP mail permission property in hosting plans if any
 	 *
 	 * @throws iMSCP_Exception
+	 * @return array SQL statements to be executed
 	 */
 	protected function r212()
 	{
@@ -3457,6 +3458,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add default value for the domain.external_mail_dns_ids field
 	 * Add default value for the domain_aliasses.external_mail_dns_ids field
+	 *
+	 * @return array SQL statements to be executed
 	 */
 	protected function r218()
 	{
