@@ -147,7 +147,7 @@ function addDomainAlias()
         }
 
         $sharedMountPointDomain = clean_input($_POST['shared_mount_point_domain']);
-        $domainList = _client_getDomainsList();
+        $domainList = getDomainsList();
 
         // Get shared mount point
         foreach ($domainList as $domain) {
