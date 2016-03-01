@@ -209,6 +209,12 @@ sub uninstallPackages
 	return $rs if $rs;
 
 	if(@{$packages}) {
+		# Ensure that packages are not frozen
+		my $rs = execute("apt-mark unhold @{$packages}", \my $stdout, \my $stderr);
+		debug($stdout) if $stdout;
+		error(sprintf("Could not unset 'hold' state on packages: %s", $stderr || 'Unknown error')) if $rs && !$stderr;
+		return $rs if $rs;
+
 		my @command = ();
 
 		if(!iMSCP::Getopt->preseed && !iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find('debconf-apt-progress')) {
@@ -218,8 +224,7 @@ sub uninstallPackages
 
 		push @command, "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packages}";
 
-		my $stdout;
-		my $rs = execute("@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \my $stderr);
+		$rs = execute("@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error('Could not uninstall packages') if $rs && ! $stderr;
@@ -480,6 +485,8 @@ EOF
 		}
 
 		# Conflicting packages that must be pre-removed
+		# This can be obsolete packages which would prevent installation of new packages, or packages which were
+		# frozen with the 'apt-mark hold <package>' command.
 		if($pkgList->{$section}->{$sAlt}->{'package_conflict'}) {
 			push @{$self->{'packagesToPreUninstall'}}, @{$pkgList->{$section}->{$sAlt}->{'package_conflict'}};
 		}

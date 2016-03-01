@@ -56,6 +56,7 @@
         <proftpd>
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
+            <package_conflict>vsftpd</package_conflict>
         </proftpd>
         <vsftpd>
             <package>devscripts</package>
