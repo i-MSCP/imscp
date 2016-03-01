@@ -26,6 +26,7 @@ package Servers::httpd::apache_php_fpm::installer;
 use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::EventManager;
