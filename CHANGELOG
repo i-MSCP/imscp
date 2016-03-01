@@ -44,6 +44,7 @@ SERVERS
 YOUTRACK
  	IP-1367 Support for the VsFTPd server
 	IP-1444 Ubuntu - Vsftpd package broken - libgcc_s.so.1 must be installed for pthread_cancel to work
+	IP-1495 Domain alias with shared moint point fails
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.14
