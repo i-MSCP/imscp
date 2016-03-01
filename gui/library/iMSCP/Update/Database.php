@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 217;
+	protected $lastUpdate = '218';
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3452,5 +3452,25 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r217()
 	{
 		return $this->addColumn('ftp_users', 'status', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok'");
+	}
+
+	/**
+	 * Add default value for the domain.external_mail_dns_ids field
+	 * Add default value for the domain_aliasses.external_mail_dns_ids field
+	 */
+	protected function r218()
+	{
+		return array(
+			$this->changeColumn(
+				'domain',
+				'external_mail_dns_ids',
+				"external_mail_dns_ids VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
+			),
+			$this->changeColumn(
+				'domain_aliasses',
+				'external_mail_dns_ids',
+				"external_mail_dns_ids VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
+			)
+		);
 	}
 }
