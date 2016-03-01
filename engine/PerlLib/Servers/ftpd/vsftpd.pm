@@ -336,7 +336,7 @@ sub reload
 
 =item getTraffic()
 
- Get ftpd traffic data
+ Get VsFTPd traffic data
 
  Return hash Traffic data, die on failure
 

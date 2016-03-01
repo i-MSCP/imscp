@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::ftpd::proftpd - i-MSCP Proftpd Server implementation
+ Servers::ftpd::proftpd - i-MSCP ProFTPD Server implementation
 
 =cut
 
@@ -242,7 +242,7 @@ sub deleteFtpUser
 
 =item start()
 
- Start Proftpd
+ Start ProFTPD
 
  Return int 0, other on failure
 
@@ -267,7 +267,7 @@ sub start
 
 =item stop()
 
- Stop Proftpd
+ Stop ProFTPD
 
  Return int 0, other on failure
 
@@ -292,7 +292,7 @@ sub stop
 
 =item restart()
 
- Restart Proftpd
+ Restart ProFTPD
 
  Return int 0, other on failure
 
@@ -328,7 +328,7 @@ sub restart
 
 =item reload()
 
- Reload vsftpd
+ Reload ProFTPD
 
  Return int 0, other on failure
 
@@ -353,7 +353,7 @@ sub reload
 
 =item getTraffic()
 
- Get ftpd traffic data
+ Get ProFTPD traffic data
 
  Return hash Traffic data or die on failure
 
