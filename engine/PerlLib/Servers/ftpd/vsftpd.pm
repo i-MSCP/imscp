@@ -453,7 +453,7 @@ sub _deleteFtpUserConffile
 {
 	my ($self, $data) = @_;
 
-	return 0 unless-f "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}";
+	return 0 unless -f "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}";
 
 	iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}" )->delFile();
 }
