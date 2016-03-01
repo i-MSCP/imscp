@@ -326,6 +326,31 @@ sub restart
 	$self->{'eventManager'}->trigger('afterFtpdRestart');
 }
 
+=item reload()
+
+ Reload vsftpd
+
+ Return int 0, other on failure
+
+=cut
+
+sub reload
+{
+	my $self = shift;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdReload');
+	return $rs if $rs;
+
+	local $@;
+	eval { iMSCP::Service->getInstance()->reload($self->{'config'}->{'FTPD_SNAME'}); };
+	if($@) {
+		error($@);
+		return 1;
+	}
+
+	$self->{'eventManager'}->trigger('afterFtpdReload');
+}
+
 =item getTraffic()
 
  Get ftpd traffic data
