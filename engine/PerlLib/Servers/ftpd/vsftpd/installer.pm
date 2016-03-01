@@ -64,8 +64,7 @@ sub registerSetupListeners
 	my ($self, $eventManager) = @_;
 
 	$eventManager->register('beforeSetupDialog', sub {
-		push @{$_[0]}, sub { $self->sqlUserDialog(@_) }, sub { $self->passivePortRangeDialog(@_) };
-		0;
+		push @{$_[0]}, sub { $self->sqlUserDialog(@_) }, sub { $self->passivePortRangeDialog(@_) }; 0;
 	});
 }
 
@@ -87,10 +86,9 @@ sub sqlUserDialog
 
 	my ($rs, $msg) = (0, '');
 
-	if(
-		$main::reconfigure ~~ [ 'ftpd', 'servers', 'all', 'forced' ] ||
-		(length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/) ||
-		(length $dbPass < 6 || $dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/)
+	if($main::reconfigure ~~ [ 'ftpd', 'servers', 'all', 'forced' ]
+		|| (length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/)
+		|| (length $dbPass < 6 || $dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/)
 	) {
 		do{
 			($rs, $dbUser) = $dialog->inputbox("\nPlease enter an username for the VsFTPd SQL user:$msg", $dbUser);
@@ -217,7 +215,7 @@ sub install
 	my %lsbInfo = iMSCP::LsbRelease->getInstance()->getDistroInformation();
 
 	if($lsbInfo{'ID'} eq 'Ubuntu'
-		|| ($lsbInfo{'ID'} eq 'Debian' && version->parse($lsbInfo{'RELEASE'}) < version->parse('8.0'))
+		|| $lsbInfo{'ID'} eq 'Debian' && version->parse($lsbInfo{'RELEASE'}) < version->parse('8.0')
 	) {
 		my $rs = $self->_rebuildVsFTPdDebianPackage();
 		return $rs if $rs;
@@ -256,13 +254,12 @@ sub _init
 	$self->{'config'} = $self->{'ftpd'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/vsftpd.old.data";
-	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-		for my $param(keys %oldConfig) {
-			if(exists $self->{'config'}->{$param}) {
-				$self->{'config'}->{$param} = $oldConfig{$param};
-			}
-		}
+	return $self unless -f $oldConf;
+
+	tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
+	for my $param(keys %oldConfig) {
+		next unless exists $self->{'config'}->{$param};
+		$self->{'config'}->{$param} = $oldConfig{$param};
 	}
 
 	$self;
@@ -394,7 +391,7 @@ sub _rebuildVsFTPdDebianPackage
 			}
 
 			my $rs = execute('dpkg --force-confnew -i vsftpd_*.deb', \my $stdout, \my $stderr);
-			error(sprintf('Could not install i-MSCP patched vsftpd package: %s', $stderr || 'Unknown error')) if $rs;
+			error(sprintf('Could not install i-MSCP vsftpd package: %s', $stderr || 'Unknown error')) if $rs;
 			debug($stdout) if $stdout;
 
 			$rs = execute('apt-mark hold vsftpd', \$stdout, \$stderr);
@@ -402,7 +399,7 @@ sub _rebuildVsFTPdDebianPackage
 			return $rs if $rs;
 			debug($stdout) if $stdout;
 			0;
-		}, 'Installing i-MSCP VsFTPd package...', 7, 6
+		}, 'Installing i-MSCP vsftpd package...', 7, 6
 	);
 
 	$rs ||= step(
@@ -432,7 +429,7 @@ sub _setVersion
 {
 	my $self = shift;
 
-	# Crazy thing, version is printed through STDIN... (see: strace vsftpd -v)
+	# Version is print through STDIN (see: strace vsftpd -v)
 	my $rs = execute('vsftpd -v 0>&1', \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -471,8 +468,7 @@ sub _setupDatabase
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
 
-		for my $host(
-			$dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
+		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
 			$main::imscpOldConfig{'BASE_SERVER_IP'}
 		) {
 			next unless $host;
@@ -607,10 +603,7 @@ EOF
 	undef $cfgTpl;
 
 	$rs = $self->_bkpConfFile($self->{'config'}->{'FTPD_PAM_CONF_FILE'});
-	return $rs if $rs;
-
-
-	$rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'vsftpd', 'vsftpd.pam', \$cfgTpl, $data);
+	$rs ||= $self->{'eventManager'}->trigger('onLoadTemplate', 'vsftpd', 'vsftpd.pam', \$cfgTpl, $data);
 	return $rs if $rs;
 
 	unless(defined $cfgTpl) {
