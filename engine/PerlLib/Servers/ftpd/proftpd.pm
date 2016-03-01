@@ -186,6 +186,60 @@ sub addUser
 	$self->{'eventManager'}->trigger('AfterFtpdAddUser', $data);
 }
 
+=item addFtpUser(\%data)
+
+ Add FTP user
+
+ Param hash \%data Ftp user as provided by Modules::FtpUser module
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addFtpUser
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdAddFtpUser', $data);
+	$rs || ($self->{'reload'} = 1);
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdAddFtpUser', $data);
+}
+
+=item disableFtpUser(\%data)
+
+ Disable FTP user
+
+ Param hash \%data Ftp user data as provided by Modules::FtpUser module
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disableFtpUser
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDisableFtpUser', $data);
+	$rs || ($self->{'reload'} = 1);
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDisableFtpUser', $data);
+}
+
+=item deleteFtpUser(\%data)
+
+ Delete FTP user
+
+ Param hash \%data Ftp user data as provided by Modules::FtpUser module
+ Return int 0 on success, other on failure
+
+=cut
+
+sub deleteFtpUser
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDeleteFtpUser', $data);
+	$rs || ($self->{'reload'} = 1);
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDeleteFtpUser', $data);
+}
+
 =item start()
 
  Start Proftpd

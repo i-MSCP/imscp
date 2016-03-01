@@ -196,7 +196,7 @@ sub addFtpUser
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdAddFtpUser', $data);
 }
 
-=item deleteFtpUser(\%data)
+=item disableFtpUser(\%data)
 
  Disable FTP user
 

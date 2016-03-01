@@ -75,11 +75,7 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
-		if ($cfg['FTPD_SERVER'] == 'vsftpd') {
-			exec_query('UPDATE `ftp_users` SET `status` = ? WHERE `userid` = ?', array('todelete', $ftpUserId));
-		} else {
-			exec_query('DELETE FROM `ftp_users` WHERE `userid` = ?', $ftpUserId);
-		}
+		exec_query('UPDATE `ftp_users` SET `status` = ? WHERE `userid` = ?', array('todelete', $ftpUserId));
 
 		if(isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'Pydio') {
 			// Quick fix to delete Ftp preferences directory as created by Pydio
@@ -94,10 +90,7 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpUserId' => $ftpUserId));
 
-		if ($cfg['FTPD_SERVER'] == 'vsftpd') {
-			send_request();
-		}
-
+		send_request();
 		write_log(sprintf("%s: deleted FTP account: %s", $_SESSION['user_logged'], $ftpUserId), E_USER_NOTICE);
 		set_page_message(tr('FTP account successfully deleted.'), 'success');
 	} catch (iMSCP_Exception_Database $e) {

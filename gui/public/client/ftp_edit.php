@@ -120,34 +120,20 @@ function updateFtpAccount($userid, $mainDomainName)
 		$cfg = iMSCP_Registry::get('config');
 		$homeDir = rtrim(str_replace('//', '/', $cfg['USER_WEB_DIR'] . '/' . $mainDomainName . '/' . $homeDir), '/');
 
-		if ($cfg['FTPD_SERVER'] == 'vsftpd') {
-			if (isset($rawPassword) && isset($password) && isset($homeDir)) {
-				exec_query(
-					'UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ?, `status` = ? WHERE `userid` = ?',
-					array($password, $rawPassword, $homeDir, 'tochange', $userid)
-				);
-			} else {
-				exec_query('UPDATE `ftp_users` SET `homedir` = ?, `status` = ? WHERE `userid` = ?', array(
-					$homeDir, 'tochange', $userid
-				));
-			}
+		if (isset($rawPassword) && isset($password) && isset($homeDir)) {
+			exec_query(
+				'UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ?, `status` = ? WHERE `userid` = ?',
+				array($password, $rawPassword, $homeDir, 'tochange', $userid)
+			);
 		} else {
-			if (isset($rawPassword) && isset($password) && isset($homeDir)) {
-				exec_query(
-					'UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ? WHERE `userid` = ?',
-					array($password, $rawPassword, $homeDir, $userid)
-				);
-			} else {
-				exec_query('UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?', array($homeDir, $userid));
-			}
+			exec_query('UPDATE `ftp_users` SET `homedir` = ?, `status` = ? WHERE `userid` = ?', array(
+				$homeDir, 'tochange', $userid
+			));
 		}
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array('ftpUserId' => $userid));
 
-		if ($cfg['FTPD_SERVER'] == 'vsftpd') {
-			send_request();
-		}
-
+		send_request();
 		write_log(sprintf("%s updated Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
 		set_page_message(tr('FTP account successfully updated.'), 'success');
 	}

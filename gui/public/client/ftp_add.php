@@ -307,7 +307,6 @@ function ftp_addAccount($mainDmnName)
 
 			try {
 				$db->beginTransaction();
-				$status = $cfg['FTPD_SERVER'] == 'vsftpd' ? 'toadd' : 'ok';
 
 				// Add ftp user
 				$query = "
@@ -318,7 +317,7 @@ function ftp_addAccount($mainDmnName)
 					)
 				";
 				exec_query($query, array(
-					$userid, $_SESSION['user_id'], $encryptedPassword, $passwd, $uid, $gid, $shell, $homeDir, $status
+					$userid, $_SESSION['user_id'], $encryptedPassword, $passwd, $uid, $gid, $shell, $homeDir, 'toadd'
 				));
 
 				$query = "SELECT `members` FROM `ftp_group` WHERE `groupname` = ? LIMIT 1";
@@ -374,10 +373,7 @@ function ftp_addAccount($mainDmnName)
 					)
 				);
 
-				if ($cfg['FTPD_SERVER'] == 'vsftpd') {
-					send_request();
-				}
-
+				send_request();
 				write_log(sprintf("%s added Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
 				set_page_message(tr('FTP account successfully added.'), 'success');
 			}
