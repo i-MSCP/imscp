@@ -151,6 +151,8 @@ sub stop
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSysvinit($service) && $self->isRunning($service);
+
 	$self->_exec($self->getInitScriptPath($service), 'stop') == 0;
 }
 
