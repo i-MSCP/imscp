@@ -281,11 +281,19 @@ sub _makeDirs
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdMakeDirs');
 	return $rs if $rs;
 
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-
-	for my $dir([ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ],
-		[ "$self->{'config'}->{'HTTPD_LOG_DIR'}/$main::imscpConfig{'BASE_SERVER_VHOST'}", $rootUName, $rootUName, 0750 ],
+	for my $dir(
+		[
+			$self->{'config'}->{'HTTPD_LOG_DIR'},
+			$main::imscpConfig{'ROOT_USER'},
+			$$main::imscpConfig{'ROOT_GROUP'},
+			0755
+		],
+		[
+			"$self->{'config'}->{'HTTPD_LOG_DIR'}/$main::imscpConfig{'BASE_SERVER_VHOST'}",
+			$$main::imscpConfig{'ROOT_USER'},
+			$$main::imscpConfig{'ROOT_GROUP'},
+			0750
+		]
 	) {
 		$rs = iMSCP::Dir->new( dirname => $dir->[0] )->make({ user => $dir->[1], group => $dir->[2], mode => $dir->[3]});
 		return $rs if $rs;
@@ -314,16 +322,16 @@ sub _buildPhpConfFiles
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildPhpConfFiles');
 	return $rs if $rs;
 
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-
 	$self->{'httpd'}->setData({
 		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 		TIMEZONE => $main::imscpConfig{'TIMEZONE'}
 	});
 
 	$rs = $self->{'httpd'}->buildConfFile($self->{'apacheCfgDir'} . '/parts/php5.itk.ini', { }, {
-		destination => "$self->{'apacheWrkDir'}/php.ini", mode => 0644, user => $rootUName, group => $rootGName
+		destination => "$self->{'apacheWrkDir'}/php.ini",
+		mode => 0644,
+		user => $main::imscpConfig{'ROOT_USER'},
+		group => $main::imscpConfig{'ROOT_GROUP'}
 	} );
 	return $rs if $rs;
 

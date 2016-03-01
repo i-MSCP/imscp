@@ -302,10 +302,14 @@ sub _makeDirs
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdMakeDirs');
 	return $rs if $rs;
 
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-
-	for my $dir([ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ]) {
+	for my $dir(
+		[
+			$self->{'config'}->{'HTTPD_LOG_DIR'},
+			$main::imscpConfig{'ROOT_USER'},
+			$main::imscpConfig{'ROOT_GROUP'},
+			0755
+		]
+	) {
 		$rs = iMSCP::Dir->new( dirname => $dir->[0])->make({
 			user => $dir->[1], group => $dir->[2], mode => $dir->[3] }
 		);
@@ -406,9 +410,6 @@ sub _buildPhpConfFiles
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdBuildPhpConfFiles');
 	return $rs if $rs;
 
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-
 	$self->{'httpd'}->setData({
 		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 		TIMEZONE => $main::imscpConfig{'TIMEZONE'}
@@ -416,7 +417,10 @@ sub _buildPhpConfFiles
 
 	# FPM master php.ini file
 	$rs = $self->{'httpd'}->buildConfFile("$self->{'phpfpmCfgDir'}/parts/php5.ini", { }, {
-		destination => "$self->{'phpfpmWrkDir'}/php.ini", mode => 0644, user => $rootUName, group => $rootGName
+		destination => "$self->{'phpfpmWrkDir'}/php.ini",
+		mode => 0644,
+		user => $main::imscpConfig{'ROOT_USER'},
+		group => $main::imscpConfig{'ROOT_GROUP'}
 	});
 	$rs ||= $self->{'httpd'}->installConfFile("$self->{'phpfpmWrkDir'}/php.ini", {
 		destination => "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini"

@@ -149,15 +149,15 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $fcgiDir = $self->{'config'}->{'PHP_STARTER_DIR'};
-
-	my $rs = setRights($fcgiDir, { user => $rootUName, group => $rootGName, mode => '0555' });
-	$rs ||= setRights('/usr/local/sbin/vlogger', { user => $rootUName, group => $rootGName, mode => '0750' });
+	my $rs = setRights($self->{'config'}->{'PHP_STARTER_DIR'}, {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0555'
+	});
+	$rs ||= setRights('/usr/local/sbin/vlogger', {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750'
+	});
 	$rs ||= setRights($self->{'config'}->{'HTTPD_LOG_DIR'}, {
 		user => $main::imscpConfig{'ROOT_USER'},
-		group => $main::imscpConfig{'ADM_GROUP'},
+		group => $main::imscpConfig{'ROOT_GROUP'},
 		dirmode => '0755',
 		filemode => '0644',
 		recursive => 1
@@ -285,16 +285,22 @@ sub _makeDirs
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdMakeDirs');
 	return $rs if $rs;
 
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $phpdir = $self->{'config'}->{'PHP_STARTER_DIR'};
-
 	# Remove any older fcgi directory (prevent possible orphaned file when switching to another ini level)
 	$rs = iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_STARTER_DIR'} )->remove();
 	return $rs if $rs;
 
-	for my $dir([ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ],
-		[ $phpdir, $rootUName, $rootGName, 0555 ],
+	for my $dir(
+		[
+			$self->{'config'}->{'HTTPD_LOG_DIR'},
+			$main::imscpConfig{'ROOT_USER'},
+			$main::imscpConfig{'ROOT_GROUP'}, 0755
+		],
+		[
+			$self->{'config'}->{'PHP_STARTER_DIR'},
+			$main::imscpConfig{'ROOT_USER'},
+			$main::imscpConfig{'ROOT_GROUP'},
+			0555
+		]
 	) {
 		$rs = iMSCP::Dir->new( dirname => $dir->[0] )->make({ user => $dir->[1], group => $dir->[2], mode => $dir->[3] });
 		return $rs if $rs;
