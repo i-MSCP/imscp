@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-26 21:33+0100\n"
-"PO-Revision-Date: 2016-02-26 19:54+0000\n"
-"Last-Translator: i-MSCP <team@i-mscp.net>\n"
+"POT-Creation-Date: 2016-03-01 16:49+0100\n"
+"PO-Revision-Date: 2016-03-01 15:50+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1313,7 +1313,7 @@ msgid "Choose hosting plan"
 msgstr "Choose hosting plan"
 
 msgid "Choose layout color"
-msgstr "Choose layout color"
+msgstr "Choose layout colour"
 
 msgid "Choose your language"
 msgstr "Choose your language"
@@ -1681,7 +1681,7 @@ msgid "Customer successfully scheduled for deletion."
 msgstr "Customer successfully scheduled for deletion."
 
 msgid "Customer's layout color successfully updated."
-msgstr "Customer's layout color successfully updated."
+msgstr "Customer's layout colour successfully updated."
 
 msgid "Customer(s) successfully moved."
 msgstr "Customer(s) successfully moved."
@@ -2364,6 +2364,9 @@ msgstr "FTP accounts"
 msgid "FTP traffic"
 msgstr "FTP traffic"
 
+msgid "FTP user errors"
+msgstr ""
+
 msgid "FTPs total"
 msgstr "FTPs total"
 
@@ -2915,10 +2918,10 @@ msgid "Layout"
 msgstr "Layout"
 
 msgid "Layout color"
-msgstr "Layout color"
+msgstr "Layout colour"
 
 msgid "Layout color successfully updated."
-msgstr "Layout color successfully updated."
+msgstr "Layout colour successfully updated."
 
 msgid "Level"
 msgstr "Level"
@@ -4154,7 +4157,7 @@ msgid "Reseller with permissions total"
 msgstr "Reseller with permissions total"
 
 msgid "Reseller's layout color successfully updated."
-msgstr "Reseller's layout color successfully updated."
+msgstr "Reseller's layout colour successfully updated."
 
 msgid "Reseller/IP usage statistics"
 msgstr "Reseller/IP usage statistics"
@@ -5196,7 +5199,7 @@ msgid "Unknown language name."
 msgstr "Unknown language name."
 
 msgid "Unknown layout color."
-msgstr "Unknown layout color."
+msgstr "Unknown layout colour."
 
 msgid "Unknown reason."
 msgstr "Unknown reason."
