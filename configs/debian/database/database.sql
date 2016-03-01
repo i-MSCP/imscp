@@ -757,7 +757,7 @@ CREATE TABLE IF NOT EXISTS `web_software_depot` (
   `package_download_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `package_signature_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`package_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
