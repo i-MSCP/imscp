@@ -210,10 +210,14 @@ sub uninstallPackages
 
 	if(@{$packages}) {
 		# Ensure that packages are not frozen
+		# Note: We mitigate expected apt-mark segfault (139) with Ubuntu 12.04
+		# see https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958
 		my $rs = execute("apt-mark unhold @{$packages}", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
-		error(sprintf("Could not unset 'hold' state on packages: %s", $stderr || 'Unknown error')) if $rs && !$stderr;
-		return $rs if $rs;
+		unless($rs ~~ [ 0, 139 ]) {
+			error(sprintf("Could not unset 'hold' state on packages: %s", $stderr || 'Unknown error'));
+			return $rs;
+		}
 
 		my @command = ();
 
