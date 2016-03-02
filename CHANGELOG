@@ -14,6 +14,7 @@ BACKEND
 CONFIG
 	Added: imscp_panel.service systemd unit file
 	Added: OpenSSL configuration template file for self-signed SSL certificates
+	Changed: SPF record entries from softfail to hardfail
 
 DAEMON
 	Fixed: Missing chdir() and umask() calls
