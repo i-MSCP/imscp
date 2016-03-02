@@ -299,8 +299,12 @@ sub _rebuildVsFTPdDebianPackage
 	$rs ||= step(
 		sub {
 			my $rs = execute('apt-mark unhold vsftpd', \my $stdout, \my $stderr);
-			error(sprintf("Could not unset 'hold' state on the vsftpd package: %s", $stderr || 'Unknown error')) if $rs;
-			return $rs if $rs;
+			# Note: We mitigate expected apt-mark segfault (139) with Ubuntu 12.04
+			# see https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958
+			unless($rs ~~ [ 0, 139 ]) {
+				error(sprintf("Could not unset 'hold' state on the vsftpd package: %s", $stderr || 'Unknown error'));
+				return $rs if $rs;
+			}
 			debug($stdout) if $stdout;
 
 			$rs = execute('apt-get -y source vsftpd', \$stdout, \$stderr);
