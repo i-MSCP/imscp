@@ -1445,7 +1445,7 @@ sub setupUpdateDatabase
 
 	my $content = $file->get();
 	unless(defined $content) {
-		error("Unable to read $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
+		error(sprintf('Could not read %s file', "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
 		return 1;
 	}
 
@@ -1458,7 +1458,7 @@ sub setupUpdateDatabase
 	}
 
 	my ($stdout, $stderr);
-	$rs = execute("php $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr);
+	$rs = execute("php -d date.timezone=UTC $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	return $rs if $rs;

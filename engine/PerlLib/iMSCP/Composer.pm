@@ -98,7 +98,7 @@ sub _init
 	# We discard any change made in vendor
 	$ENV{'COMPOSER_DISCARD_CHANGES'} = 'true';
 
-	$self->{'phpCmd'} = 'php -d allow_url_fopen=1 -d suhosin.executor.include.whitelist=phar';
+	$self->{'phpCmd'} = 'php -d date.timezone=UTC -d allow_url_fopen=1 -d suhosin.executor.include.whitelist=phar';
 
 	iMSCP::EventManager->getInstance()->register(
 		'afterSetupPreInstallPackages', sub {

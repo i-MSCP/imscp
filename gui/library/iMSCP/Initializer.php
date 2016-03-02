@@ -153,6 +153,8 @@ class iMSCP_Initializer
 	{
 		$this->initializeDatabase();
 		$this->loadConfig();
+		$this->setInternalEncoding();
+		$this->setTimezone();
 		$this->initializeLocalization(); // Needed for rebuilt of languages index
 
 		// Trigger the onAfterInitialize event
@@ -319,16 +321,10 @@ class iMSCP_Initializer
 	protected function setTimezone()
 	{
 		// Timezone is not set in the php.ini file?
-		if(ini_get('date.timezone') == '') {
-			$timezone = (isset($this->config['TIMEZONE']) && $this->config['TIMEZONE'] != '')
-				? $this->config['TIMEZONE'] : 'UTC';
+		$timezone = $this->config['TIMEZONE'] != '' ? $this->config['TIMEZONE'] : 'UTC';
 
-			if(!date_default_timezone_set($timezone)) {
-				throw new iMSCP_Exception(
-					'Invalid timezone identifier set in your imscp.conf file. Please fix this error and re-run the ' .
-					'imscp-setup script.'
-				);
-			}
+		if(!@date_default_timezone_set($timezone)) {
+			@date_default_timezone_set('UTC');
 		}
 	}
 

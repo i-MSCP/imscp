@@ -134,7 +134,7 @@ sub _init
 	# Required programs
 	$self->{'programs'} = {
 		'PHP' => {
-			'version_command' => 'php -v',
+			'version_command' => 'php -d date.timezone=UTC -v',
 			'version_regexp' => qr/PHP\s([\d.]+)/,
 			'min_version' => '5.3.2'
 		},

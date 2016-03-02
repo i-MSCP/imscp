@@ -314,7 +314,7 @@ sub _getPhpVersion
 {
 	my $self = shift;
 
-	my $rs = execute('php -v', \ my $stdout, \ my $stderr);
+	my $rs = execute('php -d date.timezone=UTC -v', \ my $stdout, \ my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
