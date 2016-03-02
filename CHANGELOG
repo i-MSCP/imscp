@@ -14,6 +14,11 @@ CONFIG
 	Added: imscp_panel.service systemd unit file
 	Added: OpenSSL configuration template file for self-signed SSL certificates
 
+DAEMON
+	Fixed: Missing chdir() and umask() calls
+	Fixed: STDIN, STDOUT and STDERR must be redirected to /dev/null
+	Updated: Version to 1.2.5
+
 DATABASE
 	Added: Default value for the domain.external_mail_dns_ids field
 	Added: Default value for the domain_aliasses.external_mail_dns_ids field

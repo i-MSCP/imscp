@@ -3,9 +3,11 @@
 void daemonInit(char *pidfile)
 {
 	/* daemonize */
-	if(daemon(1, 1) > 1) {
+	if(daemon(0, 0) > 1) {
 		exit(errno);
 	}
+
+	umask(0);
 
 	/* open log */
 	openlog(message(MSG_DAEMON_NAME), LOG_PID, SYSLOG_FACILITY);
