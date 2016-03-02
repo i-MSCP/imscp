@@ -98,7 +98,7 @@ sub _deleteFiles
 
 	return 0 unless -d $main::imscpConfig{'AWSTATS_CONFIG_DIR'};
 
-	$rs = execute("rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \my $stdout, \my $stderr);
+	my $rs = execute("rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	$rs;
