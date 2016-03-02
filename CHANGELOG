@@ -8,7 +8,7 @@ PACKAGES
 	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
 
 INSTALLER
-	Mitigate possible PHP timezone warning when (CLI SAPI)
+	Mitigate possible PHP timezone warning with CLI SAPI
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.15
