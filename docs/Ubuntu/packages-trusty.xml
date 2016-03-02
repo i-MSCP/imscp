@@ -85,7 +85,7 @@
         </mysql_5.5>
         <mysql_5.6
                 repository="http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.6"
-                repository_key_srv="pgp.mit.edu"
+                repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0x8c718d3b5072e1f5"
                 pinning_package="*"
                 pinning_pin="origin repo.mysql.com"
@@ -99,7 +99,7 @@
         </mysql_5.6>
         <mysql_5.7
                 repository="http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7"
-                repository_key_srv="pgp.mit.edu"
+                repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0x8c718d3b5072e1f5"
                 pinning_package="*"
                 pinning_pin="origin repo.mysql.com"

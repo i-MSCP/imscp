@@ -34,6 +34,7 @@ FRONTEND
 
 INSTALLER
 	Fixed: Can't locate object method "setVersion" via package Servers::sqld::remote_server
+	Fixed: Connection timeout with pgp.mit.edu PGP key server (replaced by keyserver.ubuntu.com)
 	Fixed: Ensure that mysql service is enabled
 	Fixed: Installer must die when server hostname is missconfigured
 	Fixed: Missing 'use iMSCP::Crypt qw/decryptBlowfishCBC/' statement in Servers::sqld::remote_server
