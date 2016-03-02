@@ -9,6 +9,7 @@ BACKEND
 	Fixed: Missing fallback value for allow_url_fopen in Modules::SubAlias
 	Fixed: Obsolete SSL connection encryption method (nginx)
 	Fixed: ALLOW_URL_FOPEN placeholder not replaced in pool configuration files when using per_domain INI level (PHP-FPM)
+	Fixed: Exit code not returned to caller on segfault (signal 11)
 
 CONFIG
 	Added: imscp_panel.service systemd unit file
