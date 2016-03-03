@@ -72,12 +72,20 @@ $tpl->define_dynamic(
 	)
 );
 
-if ($cfg->ZIP == 'gzip') {
-	$name = '.*-backup-%Y.%m.%d-%H-%M.tar..tar.gz';
-} else if ($cfg->ZIP == 'bzip2' || $cfg->ZIP == 'pbzip2') {
-	$name = '.*-backup-%Y.%m.%d-%H-%M.tar.tar.bz2';
-} else {
+$algo = strtolower($cfg['BACKUP_COMPRESS_ALGORITHM']);
+
+if ($algo == 'no') {
+	$name = '.*-backup-%Y.%m.%d-%H-%M.tar';
+} elseif ($algo == 'gzip') {
+	$name = '.*-backup-%Y.%m.%d-%H-%M.tar.gz';
+} elseif ($algo == 'bzip2' || $cfg['BACKUP_COMPRESS_ALGORITHM'] == 'pbzip2') {
+	$name = '.*-backup-%Y.%m.%d-%H-%M.tar.bz2';
+} elseif($algo == 'lzma') {
 	$name = '.*-backup-%Y.%m.%d-%H-%M.tar.lzma';
+} elseif($algo == 'xz') {
+	$name = '.*-backup-%Y.%m.%d-%H-%M.tar.xz';
+} else {
+	$name = null;
 }
 
 $tpl->assign(
@@ -89,7 +97,7 @@ $tpl->assign(
 		'TR_FTP_LOG_ON' => tr('Login with your FTP account'),
 		'TR_SWITCH_TO_BACKUP' => tr('Switch to the backups directory'),
 		'TR_DOWNLOAD_FILE' => tr('Download the archives stored in this directory'),
-		'TR_USUALY_NAMED' => tr('(usually named') . ' ' . tohtml($name) . ')',
+		'TR_USUALY_NAMED' => is_null($name)? '' : tr('(usually named') . ' ' . tohtml($name) . ')',
 		'TR_RESTORE_BACKUP' => tr('Restore backup'),
 		'TR_RESTORE_DIRECTIONS' => tr('Click the Restore button and the system will restore the last daily backup'),
 		'TR_RESTORE' => tr('Restore'),

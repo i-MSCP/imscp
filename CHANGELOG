@@ -7,6 +7,9 @@ Git 1.2.x
 CONFIG
 	Added: /dev/random and /dev/urandom to open_basedir (PHP)
 
+FRONTEND
+	Fixed: Exception raised due to missing `ZIP` configuration variable
+
 PACKAGES
 	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
 
