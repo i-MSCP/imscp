@@ -1645,12 +1645,6 @@ sub setupServices
 	#}
 
 	my $serviceMngr = iMSCP::Service->getInstance();
-
-	if($serviceMngr->isUpstart()) {
-		# Work around https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=780641
-		$serviceMngr->getProvider('sysvinit')->remove('imscp_network');
-	}
-
 	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_network';
 
 	0;

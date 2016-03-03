@@ -7,8 +7,12 @@ Git 1.2.x
 PACKAGES
 	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
 
+SETUP
+	Fixed: Could not reconfigure due to 'Could not find sysvinit script...' error
+
 INSTALLER
-	Mitigate possible PHP timezone warning with CLI SAPI
+	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
+	Fixed: Ensure that underlying sysvinit scripts are disabled when upstart job is provided (Upstart)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.15
