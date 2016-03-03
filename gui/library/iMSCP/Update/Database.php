@@ -1396,23 +1396,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Added parameter to allow the admin to append some paths to the default PHP open_basedir directive of customers
-	 *
-	 * @return null
-	 */
-	protected function r105()
-	{
-		/** @var $dbConfig iMSCP_Config_Handler_Db */
-		$dbConfig = iMSCP_Registry::get('dbConfig');
-
-		if (!isset($dbConfig['PHPINI_OPEN_BASEDIR'])) {
-			$dbConfig['PHPINI_OPEN_BASEDIR'] = '';
-		}
-
-		return null;
-	}
-
-	/**
 	 * Database schema update (KEY for some fields)
 	 *
 	 * @return array SQL statements to be executed
