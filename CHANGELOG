@@ -10,6 +10,9 @@ PACKAGES
 SETUP
 	Fixed: Could not reconfigure due to 'Could not find sysvinit script...' error
 
+SERVERS
+	Fixed: MySQL server socket is missing after reboot due to underlying init script
+
 INSTALLER
 	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
 	Fixed: Ensure that underlying sysvinit scripts are disabled when upstart job is provided (Upstart)
