@@ -215,8 +215,7 @@ sub uninstallPackages
 
 	if(@{$packages}) {
 		# Ensure that packages are not frozen
-		# Note: Ignore exit code du to bug in Ubuntu 12.04
-		# see https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958
+		# # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
 		execute("LANG=C apt-mark unhold @{$packages}", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
 		debug($stderr) if $stderr;

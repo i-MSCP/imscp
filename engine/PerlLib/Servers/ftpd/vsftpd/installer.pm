@@ -298,16 +298,12 @@ sub _rebuildVsFTPdDebianPackage
 
 	$rs ||= step(
 		sub {
-			my $rs = execute('apt-mark unhold vsftpd', \my $stdout, \my $stderr);
-			# Note: We mitigate expected apt-mark segfault (139) with Ubuntu 12.04
-			# see https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958
-			unless($rs ~~ [ 0, 139 ]) {
-				error(sprintf("Could not unset 'hold' state on the vsftpd package: %s", $stderr || 'Unknown error'));
-				return $rs if $rs;
-			}
+			# Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+			execute('LANG=C apt-mark unhold vsftpd', \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
+			debug($stderr) if $stderr;
 
-			$rs = execute('apt-get -y source vsftpd', \$stdout, \$stderr);
+			my $rs = execute('apt-get -y source vsftpd', \$stdout, \$stderr);
 			error(sprintf( 'Could not get vsftpd source package: %s', $stderr || 'Unknown error')) if $rs;
 			return $rs if $rs;
 			debug($stdout) if $stdout;
@@ -397,11 +393,12 @@ sub _rebuildVsFTPdDebianPackage
 			my $rs = execute('dpkg --force-confnew -i vsftpd_*.deb', \my $stdout, \my $stderr);
 			error(sprintf('Could not install i-MSCP vsftpd package: %s', $stderr || 'Unknown error')) if $rs;
 			debug($stdout) if $stdout;
-
-			$rs = execute('apt-mark hold vsftpd', \$stdout, \$stderr);
-			error(sprintf("Could not set 'hold' state on the i-MSCP vsftpd package: %s", $stderr || 'Unknown error')) if $rs;
 			return $rs if $rs;
+
+			# Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+			execute('LANG=C apt-mark hold vsftpd', \$stdout, \$stderr);
 			debug($stdout) if $stdout;
+			debug($stderr) if $stderr;
 			0;
 		}, 'Installing i-MSCP vsftpd package...', 7, 6
 	);
