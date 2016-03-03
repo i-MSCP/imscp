@@ -197,8 +197,13 @@ sub uninstallPackages
 	@{$packages} = grep { not $_ ~~ @packagesToIgnore } uniq(@{$packages});
 
 	if(@{$packages}) {
-		# Do not try to remove packages which are no longer available
-		my $rs = execute("LANG=C dpkg-query -W -f='\${Package}\n' @{$packages} 2>/dev/null", \my $stdout, \my $stderr);
+		# Do not try to remove packages which are no installed or not available
+		my $rs = execute(
+			"dpkg-query -W -f='\${Package} \${Version}\n' @{$packages} 2>/dev/null " .
+				"| grep '[[:blank:]][[:alnum:]]' | cut -d ' ' -f 1",
+			\my $stdout,
+			\my $stderr
+		);
 		error($stderr) if $stderr && $rs > 1;
 		return $rs if $rs > 1;
 
@@ -210,14 +215,11 @@ sub uninstallPackages
 
 	if(@{$packages}) {
 		# Ensure that packages are not frozen
-		# Note: We mitigate expected apt-mark segfault (139) with Ubuntu 12.04
+		# Note: Ignore exit code du to bug in Ubuntu 12.04
 		# see https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958
-		my $rs = execute("apt-mark unhold @{$packages}", \my $stdout, \my $stderr);
+		execute("LANG=C apt-mark unhold @{$packages}", \my $stdout, \my $stderr);
 		debug($stdout) if $stdout;
-		unless($rs ~~ [ 0, 139 ]) {
-			error(sprintf("Could not unset 'hold' state on packages: %s", $stderr || 'Unknown error'));
-			return $rs;
-		}
+		debug($stderr) if $stderr;
 
 		my @command = ();
 
@@ -228,7 +230,7 @@ sub uninstallPackages
 
 		push @command, "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packages}";
 
-		$rs = execute("@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \$stderr);
+		my $rs = execute("@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error('Could not uninstall packages') if $rs && ! $stderr;

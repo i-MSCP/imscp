@@ -101,7 +101,7 @@
                 pinning_pin_priority="1001"
                 >
             <package>libmysqlclient18</package>
-            <package>mysql-client-5.5</package>
+            <package>mysql-client-5.6</package>
             <package>mysql-common</package>
         </remote_server>
     </sql>
