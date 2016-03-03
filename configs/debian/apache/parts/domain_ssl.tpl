@@ -54,7 +54,7 @@
         FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php-fcgi-starter
         # SECTION fcgid END.
         # SECTION itk BEGIN.
-        php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/:/dev/random:/dev/urandom{PHPINI_OPEN_BASEDIR}"
+        php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/:/dev/random:/dev/urandom"
         php_admin_value upload_tmp_dir {TMPDIR}
         php_admin_value session.save_path {TMPDIR}
         php_admin_value soap.wsdl_cache_dir {TMPDIR}

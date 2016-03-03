@@ -426,7 +426,6 @@ sub _getHttpdData
 		POST_MAX_SIZE => $phpini->{$self->{'domain_id'}}->{'post_max_size'} // 8,
 		UPLOAD_MAX_FILESIZE => $phpini->{$self->{'domain_id'}}->{'upload_max_filesize'} // 2,
 		ALLOW_URL_FOPEN => $phpini->{$self->{'domain_id'}}->{'allow_url_fopen'} || 'off',
-		PHPINI_OPEN_BASEDIR => '',
 		PHP_FPM_LISTEN_PORT => ($phpini->{$self->{'domain_id'}}->{'id'} // 0) - 1
 	};
 	%{$self->{'httpd'}};
