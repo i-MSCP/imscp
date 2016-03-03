@@ -57,11 +57,6 @@
             <package>proftpd-mod-mysql</package>
             <package_conflict>vsftpd</package_conflict>
         </proftpd>
-        <vsftpd>
-            <package>devscripts</package>
-            <package>libpam-mysql</package>
-            <package>vsftpd</package>
-        </vsftpd>
     </ftpd>
     <named default="bind">
         <bind>
