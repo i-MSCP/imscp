@@ -20,8 +20,10 @@ SERVERS
 	Fixed: MySQL server socket is missing after reboot due to underlying init script
 
 INSTALLER
-	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
+	Fixed: Could not unset 'hold' state on packages in some contexts
 	Fixed: Ensure that underlying sysvinit scripts are disabled when upstart job is provided (Upstart)
+	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
+	Fixed: Wrong package name (mysql-client-5.5 instead of mysql-client-5.6) in Debian Stretch packages file
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.15
