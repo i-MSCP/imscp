@@ -99,7 +99,7 @@ sub validateCertificate
 	if ($self->{'certificate_container_path'} eq '') {
 		error('Path to SSL certificate container file is not set');
 		return 1;
-	} elsif(! -f $self->{'certificate_container_path'}) {
+	} elsif(!-f $self->{'certificate_container_path'}) {
 		error(sprintf("SSL certificate container %s doesn't exists", $self->{'certificate_container_path'}));
 		return 1;
 	}
@@ -118,6 +118,7 @@ sub validateCertificate
 	my @cmd = (
 		'openssl verify',
 		$caBundle ? ('-CAfile', escapeShell($self->{'ca_bundle_container_path'})) : '',
+		'-purpose sslserver',
 		escapeShell($self->{'certificate_container_path'})
 	);
 
@@ -199,7 +200,7 @@ sub importCertificate
 
 	my $certificate = $file->get();
 	unless(defined $certificate) {
-		error(sprintf('Could not read %s', $self->{'certificate_container_path'}));
+		error(sprintf('Could not read %s file', $self->{'certificate_container_path'}));
 		return 1;
 	}
 
@@ -217,7 +218,7 @@ sub importCertificate
 
 	$rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
+	warning($stderr) if $stderr && !$rs;
 	error('Could not import SSL certificate' . ($stderr ? ": $stderr" : '')) if $rs;
 	$rs;
 }
@@ -242,7 +243,7 @@ sub ImportCaBundle
 
 	my $caBundle = $file->get();
 	unless(defined $caBundle) {
-		error(sprintf('Could not read %s', $self->{'ca_bundle_container_path'}));
+		error(sprintf('Could not read %s file', $self->{'ca_bundle_container_path'}));
 		return 1;
 	}
 
@@ -259,7 +260,7 @@ sub ImportCaBundle
 
 	$rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
+	warning($stderr) if $stderr && !$rs;
 	error('Could not import CA Bundle' . ($stderr ? ": $stderr" : '')) if $rs;
 	$rs;
 }
@@ -304,7 +305,7 @@ sub createSelfSignedCertificate
 
 	my $rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
+	debug($stderr) if $stderr && !$rs;
 	error('Could not to generate self-signed certificate' . ($stderr ? ": $stderr" : '')) if $rs;
 	$rs
 }

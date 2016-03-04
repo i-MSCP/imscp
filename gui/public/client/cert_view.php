@@ -40,46 +40,22 @@ function _client_getDomainName($domainId, $domainType)
                 break;
             case 'als':
                 $query = '
-                    SELECT
-                        alias_name AS domain_name
-                    FROM
-                        domain_aliasses
-                    INNER JOIN
-                        domain USING(domain_id)
-                    WHERE
-                        alias_id = ?
-                    AND
-                        domain_admin_id = ?
+                    SELECT alias_name AS domain_name FROM domain_aliasses INNER JOIN domain USING(domain_id)
+                    WHERE alias_id = ?
+                    AND domain_admin_id = ?
             ';
                 break;
             case 'sub':
                 $query = "
-                    SELECT
-                        CONCAT(subdomain_name, '.', domain_name) AS domain_name
-                    FROM
-                        subdomain
-                    INNER JOIN
-                        domain USING(domain_id)
-                    WHERE
-                        subdomain_id = ?
-                    AND
-                        domain_admin_id = ?
+                    SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name FROM subdomain
+                    INNER JOIN domain USING(domain_id) WHERE subdomain_id = ? AND domain_admin_id = ?
                 ";
                 break;
             default:
                 $query = "
-                    SELECT
-                        CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name
-                    FROM
-                        subdomain_alias
-                    INNER JOIN
-                        domain_aliasses USING(alias_id)
-                    INNER JOIN domain
-                        USING(domain_id)
-                    WHERE
-                        subdomain_alias_id = ?
-                    AND
-                        domain_admin_id = ?
+                    SELECT CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name FROM subdomain_alias
+                    INNER JOIN domain_aliasses USING(alias_id) INNER JOIN domain USING(domain_id)
+                    WHERE subdomain_alias_id = ? AND domain_admin_id = ?
                 ";
         }
 
@@ -214,24 +190,24 @@ function client_generateSelfSignedCert($domainName)
     );
 
     $sslConfig = array('config' => $sslConfigFilePath);
-    $csr = openssl_csr_new($distinguishedName, $pkey, $sslConfig);
+    $csr = @openssl_csr_new($distinguishedName, $pkey, $sslConfig);
     if (!is_resource($csr)) {
         write_log(sprintf('Could not generate SSL certificate signing request: %s', openssl_error_string()), E_USER_ERROR);
         return false;
     }
 
-    if (!@openssl_pkey_export($pkey, $pkeyStr, null, $sslConfig)) {
+    if (@openssl_pkey_export($pkey, $pkeyStr, null, $sslConfig) !== true) {
         write_log(sprintf('Could not export private key: %s', openssl_error_string()), E_USER_ERROR);
         return false;
     }
 
-    $cert = openssl_csr_sign($csr, null, $pkeyStr, 365, $sslConfig, $_SESSION['user_id'] . time());
+    $cert = @openssl_csr_sign($csr, null, $pkeyStr, 365, $sslConfig, $_SESSION['user_id'] . time());
     if (!is_resource($cert)) {
         write_log(sprintf('Could not generate SSL certificate: %s', openssl_error_string()));
         return false;
     }
 
-    if (!@openssl_x509_export($cert, $certStr)) {
+    if (@openssl_x509_export($cert, $certStr) !== true) {
         write_log(sprintf('Could not export SSL certificate: %s', openssl_error_string()), E_USER_ERROR);
         return false;
     }
@@ -299,13 +275,13 @@ function client_addSslCert($domainId, $domainType)
             return;
         }
 
-        if (!@openssl_x509_check_private_key($certificate, $privateKey)) {
+        if (@openssl_x509_check_private_key($certificate, $privateKey) !== true) {
             set_page_message(tr("The private key doesn't belong to the provided SSL certificate."), 'error');
             return;
         }
 
-        if (!($tmpfname = @tempnam(sys_get_temp_dir(), (intval($_SESSION['user_id']) . 'ssl-ca')))) {
-            write_log('Could not create temporary file for CA bundle..', E_USER_ERROR);
+        if (($tmpfname = @tempnam(sys_get_temp_dir(), (intval($_SESSION['user_id']) . 'ssl-ca'))) === false) {
+            write_log('Could not create temporary file for CA bundle.', E_USER_ERROR);
             set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
             return;
         }
@@ -315,22 +291,25 @@ function client_addSslCert($domainId, $domainType)
         }, $tmpfname);
 
         if ($caBundle !== '') {
-            if (!@file_put_contents($tmpfname, $caBundle)) {
-                write_log('Could not export customer CA bundle in temporary file.', E_USER_ERROR);
+            if (@file_put_contents($tmpfname, $caBundle) === false) {
+                write_log('Could not write CA bundle in temporary file.', E_USER_ERROR);
                 set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
                 return;
             }
 
-            // Note: Here we also add the CA bundle in the trusted chain to support self-signed certificates
-            if (!@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname), $tmpfname)) {
+            if (@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE']), $tmpfname) !== true) {
                 set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
                 return;
             }
         } else {
-            @file_put_contents($tmpfname, $certificateStr);
+            if (@file_put_contents($tmpfname, $certificateStr) === false) {
+                write_log('Could not write SSL certificate in temporary file.', E_USER_ERROR);
+                set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
+                return;
+            }
 
             // Note: Here we also add the certificate in the trusted chain to support self-signed certificates
-            if (!@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname))) {
+            if(@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname)) !== true) {
                 set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
                 return;
             }
@@ -339,14 +318,14 @@ function client_addSslCert($domainId, $domainType)
 
     // Preparing data for insertion in database
     if (!$selfSigned) {
-        if (!@openssl_pkey_export($privateKey, $privateKeyStr)) {
+        if (@openssl_pkey_export($privateKey, $privateKeyStr) === false) {
             write_log('Could not export private key.', E_USER_ERROR);
             set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
             return;
         }
 
         @openssl_pkey_free($privateKey);
-        if (!@openssl_x509_export($certificate, $certificateStr)) {
+        if (@openssl_x509_export($certificate, $certificateStr) === false) {
             write_log('Could not export SSL certificate.', E_USER_ERROR);
             set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
             return;
@@ -483,7 +462,9 @@ function client_generatePage($tpl, $domainId, $domainType)
         $caBundle = tohtml($row['ca_bundle']);
         $trAction = tr('Update');
         $status = $row['status'];
-        $tpl->assign('STATUS', translate_dmn_status($status));
+        $tpl->assign('STATUS', in_array($status, array('toadd', 'tochange', 'todelete', 'ok'))
+            ? translate_dmn_status($status)
+            : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>");
     } else {
         if (customerHasFeature('ssl')) {
             $dynTitle = tr('Add SSL certificate');
@@ -500,8 +481,7 @@ function client_generatePage($tpl, $domainId, $domainType)
         }
     }
 
-    if (
-        customerHasFeature('ssl') && isset($_POST['cert_id']) && isset($_POST['private_key']) &&
+    if (customerHasFeature('ssl') && isset($_POST['cert_id']) && isset($_POST['private_key']) &&
         isset($_POST['certificate']) && isset($_POST['ca_bundle'])
     ) {
         $certId = $_POST['cert_id'];
@@ -520,7 +500,7 @@ function client_generatePage($tpl, $domainId, $domainType)
         'TR_ACTION' => $trAction
     ));
 
-    if (!customerHasFeature('ssl') || (isset($status) && in_array($status, array('toadd', 'tochange', 'todelete')))) {
+    if (!customerHasFeature('ssl') || isset($status) && in_array($status, array('toadd', 'tochange', 'todelete'))) {
         $tpl->assign('SSL_CERTIFICATE_ACTIONS', '');
         if (!customerHasFeature('ssl')) {
             set_page_message(tr('SSL feature is not available. You can only view your certificate.'), 'static_warning');
