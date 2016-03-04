@@ -7,14 +7,14 @@
 # i-MSCP <team@i-mscp.net>, 2015
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
 # Michael Jensen-Maar <maar@maargrafisk.dk>, 2013,2015
-# Michael R. Christensen <mrc@micco.dk>, 2015
+# Michael R. Christensen <mrc@micco.dk>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-02 14:23+0100\n"
-"PO-Revision-Date: 2016-03-01 15:50+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-03-04 01:32+0100\n"
+"PO-Revision-Date: 2016-03-03 11:48+0000\n"
+"Last-Translator: Michael R. Christensen <mrc@micco.dk>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -127,7 +127,7 @@ msgstr " blev slettet af {ADMIN}!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s skal være mindre end %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -896,7 +896,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr "Alle lukkede sager blev slettet."
 
 msgid "All errors (Development)"
-msgstr ""
+msgstr "Alle fejl (Udvikling)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
 msgstr ""
@@ -908,7 +908,7 @@ msgid "All fields are required."
 msgstr "Alle felter er påkrævet"
 
 msgid "All fields are valid."
-msgstr ""
+msgstr "Alle felter er gyldige."
 
 msgid "All in"
 msgstr "Alle ind"
@@ -1712,7 +1712,7 @@ msgid "Daily backup"
 msgstr "Daglig backup"
 
 msgid "Data were altered. Please try again."
-msgstr ""
+msgstr "Data blev ændret. Prøv igen."
 
 msgid "Database"
 msgstr "Database"
@@ -1988,7 +1988,7 @@ msgid "Domain alias name"
 msgstr "Domænealias navn"
 
 msgid "Domain alias successfully created."
-msgstr ""
+msgstr "Domæne alias oprettet med succes."
 
 msgid "Domain alias successfully ordered."
 msgstr "Domæne alias ordre oprettet med succes."
@@ -2009,10 +2009,10 @@ msgid "Domain and SQL databases"
 msgstr "Domæne og SQL databaser"
 
 msgid "Domain data"
-msgstr ""
+msgstr "Domæne data"
 
 msgid "Domain data were altered. Please try again."
-msgstr ""
+msgstr "Domæne data blev ændret. Prøv igen."
 
 msgid "Domain details"
 msgstr "Domæne detaljer"
@@ -2363,7 +2363,7 @@ msgid "FTP traffic"
 msgstr "FTP trafik"
 
 msgid "FTP user errors"
-msgstr ""
+msgstr "FTP bruger fejl"
 
 msgid "FTPs total"
 msgstr "FTP'er total"
@@ -2564,7 +2564,7 @@ msgid "Hosting plan limits exceed reseller limits."
 msgstr "Hosting plan grænser overskrider forhandler grænser."
 
 msgid "Hosting plan limits exceed your limits."
-msgstr ""
+msgstr "Hosting plan grænser overskrider dine grænser."
 
 msgid "Hosting plan successfully created."
 msgstr "Hosting plan oprettet."
@@ -2653,7 +2653,7 @@ msgid "IPv6 address field is empty or invalid."
 msgstr "IPv6 adresse felt er tomt eller ugyldigt."
 
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 msgid "If set to `yes`, Web folders will be protected against deletion."
 msgstr ""
@@ -2823,7 +2823,7 @@ msgid "Invalid SQL user host: %s"
 msgstr "Ugyldig SQL bruger host: %s"
 
 msgid "Invalid SSL certificate."
-msgstr ""
+msgstr "Ugyldig SSL certifikat"
 
 msgid "Invalid TXT data"
 msgstr "Ugyldig TXT data"
@@ -3347,7 +3347,7 @@ msgid "Nothing has been scheduled for deactivation."
 msgstr "Intet er blevet planlagt til deaktivering."
 
 msgid "Nothing to do. Daemon request has been cancelled."
-msgstr ""
+msgstr "Intet at gøre. Daemon anmodning er blevet annulleret."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Meddelelser, advarsler og fejl"
@@ -3395,7 +3395,7 @@ msgstr "Åbne support tickets"
 
 #, php-format
 msgid "Operation cancelled: %s"
-msgstr ""
+msgstr "Operation annulleret: %s"
 
 msgid "Optional"
 msgstr "Valgfri"
@@ -3432,10 +3432,10 @@ msgstr "PHP"
 
 #, php-format
 msgid "PHP %s configuration option"
-msgstr ""
+msgstr "PHP %s konfigurations mulighed"
 
 msgid "PHP Configuration options"
-msgstr ""
+msgstr "PHP Konfigurations muligheder"
 
 msgid "PHP Editor"
 msgstr "PHP Editor"
@@ -3444,7 +3444,7 @@ msgid "PHP GD extension not loaded."
 msgstr "PHP GD udvidelse ikke indlæst."
 
 msgid "PHP Permissions"
-msgstr ""
+msgstr "PHP Tilladelser"
 
 msgid "PHP Settings"
 msgstr "PHP Indstillinger"
@@ -3556,7 +3556,7 @@ msgid "Password is too long."
 msgstr "Password er for langt."
 
 msgid "Password minimum length"
-msgstr ""
+msgstr "Adgangskode minimum længde"
 
 #, php-format
 msgid ""
@@ -4095,7 +4095,7 @@ msgid "Reseller / Support / View Ticket"
 msgstr "Forhandler / Support / Vis Ticket"
 
 msgid "Reseller /Hosting Plans / Edit Hosting Plan"
-msgstr ""
+msgstr "Forhandler / Hosting Planer / Rediger Hosting Planer"
 
 msgid "Reseller Name"
 msgstr "Forhandler Navn"
@@ -4221,7 +4221,7 @@ msgid "SQL database limit reached."
 msgstr "SQL database grænse nået."
 
 msgid "SQL database successfully created."
-msgstr ""
+msgstr "SQL database oprettet med succes."
 
 msgid "SQL database successfully deleted."
 msgstr "SQL database slettet."
@@ -4392,7 +4392,7 @@ msgid "Service name already exists."
 msgstr "Service navn eksisterer allerede."
 
 msgid "Service port successfully added"
-msgstr ""
+msgstr "Service port blev succesfuldt tilføjet"
 
 msgid "Service port successfully removed."
 msgstr "Service port blev succesfuldt fjernet."
@@ -4584,7 +4584,7 @@ msgid "Street 2"
 msgstr "Adresse 2"
 
 msgid "Strong passwords"
-msgstr ""
+msgstr "Stærk adgangskode"
 
 msgid "Subdomain"
 msgstr "Subdomæne"
@@ -4599,7 +4599,7 @@ msgstr "Subdomæne %s kan ikke viderestilles til sig selv."
 
 #, php-format
 msgid "Subdomain %s is unavailable."
-msgstr ""
+msgstr "Subdomæne %s er ikke tilgængligt."
 
 msgid "Subdomain alias"
 msgstr "Subdomæne alias"
@@ -5733,7 +5733,7 @@ msgid "You have to choose between file-upload and wget-function."
 msgstr "Du er nødt til at vælge mellem fil-upload og wget-funktion."
 
 msgid "You must assign at least one IP to this reseller."
-msgstr ""
+msgstr "Du skal tildele mindst én IP til denne forhandler."
 
 msgid "You must choose between local and remote upload."
 msgstr "Du skal vælge mellem lokal og remote upload."
@@ -6084,7 +6084,7 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{FORHANDLER} uploadede en ny softwarepakke"
 
 msgid "{USERNAME} user statistics"
-msgstr "{USERNAME} bruger statistik"
+msgstr "{USERNAME} bruger statistiker"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
