@@ -8,26 +8,27 @@ CONFIG
 	Added: /dev/random and /dev/urandom to open_basedir (PHP)
 
 FRONTEND
-	Added: SSL status filed on domain management page (Client interface)
+	Added: SSL status field on domain management page (Client interface)
 	Fixed: Exception raised due to missing `ZIP` configuration variable
 	Fixed: Wrong error handling in cert_view.php (openssl_x509_checkpurpose function also returns -1 which is not FALSE)
-
-PACKAGES
-	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
-
-SETUP
-	Fixed: Could not reconfigure due to 'Could not find sysvinit script...' error
-
-SERVERS
-	Fixed: MySQL server socket is missing after reboot due to underlying init script
 
 INSTALLER
 	Fixed: Could not unset 'hold' state on packages in some contexts
 	Fixed: Ensure that underlying sysvinit scripts are disabled when upstart job is provided (Upstart)
 	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
+	Fixed: Use MySQL 5.6 from official Trusty repository in place of MySQL Team repository
 	Fixed: Wrong package name (mysql-client-5.5 instead of mysql-client-5.6) in Debian Stretch packages file
 	Pending: Courier support for Debian Stretch - packages not available at this moment
 	Pending: VsFTPd support for Debian Stretch - libpam-mysql package not available at this moment
+
+PACKAGES
+	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
+
+SERVERS
+	Fixed: MySQL server socket is missing after reboot due to underlying init script
+
+SETUP
+	Fixed: Could not reconfigure due to 'Could not find sysvinit script...' error
 
 YOUTRACK
 	IP-1488 Show SSL-status on domain page
