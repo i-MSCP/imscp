@@ -10,7 +10,7 @@ CONFIG
 FRONTEND
 	Added: SSL status filed on domain management page (Client interface)
 	Fixed: Exception raised due to missing `ZIP` configuration variable
-	Fixed: Wrong error handling in cert_view.php (openssl_x509_checkpurpose function aslo returns -1 which is not FALSE)
+	Fixed: Wrong error handling in cert_view.php (openssl_x509_checkpurpose function also returns -1 which is not FALSE)
 
 PACKAGES
 	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
