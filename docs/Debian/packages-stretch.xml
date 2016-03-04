@@ -26,18 +26,6 @@
         </apache_php_fpm>
     </httpd>
     <po default="dovecot">
-        <courier>
-            <package>courier-authlib-mysql</package>
-            <package>courier-imap</package>
-            <package>courier-imap-ssl</package>
-            <package>courier-pop</package>
-            <package>courier-pop-ssl</package>
-            <package>libgamin0</package>
-            <package>libsasl2-modules</package>
-            <package>libsasl2-modules-sql</package>
-            <package>maildrop</package>
-            <package_conflict>sasl2-bin</package_conflict>
-        </courier>
         <dovecot>
             <package>dovecot-core</package>
             <package>dovecot-imapd</package>

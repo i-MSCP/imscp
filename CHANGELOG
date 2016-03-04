@@ -26,6 +26,7 @@ INSTALLER
 	Fixed: Ensure that underlying sysvinit scripts are disabled when upstart job is provided (Upstart)
 	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
 	Fixed: Wrong package name (mysql-client-5.5 instead of mysql-client-5.6) in Debian Stretch packages file
+	Pending: Courier support for Debian Stretch - packages not available at this moment
 	Pending: VsFTPd support for Debian Stretch - libpam-mysql package not available at this moment
 
 YOUTRACK
