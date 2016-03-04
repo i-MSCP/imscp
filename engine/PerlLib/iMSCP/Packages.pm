@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ package iMSCP::Packages;
 
 use strict;
 use warnings;
-use iMSCP::Dir;
+use File::Basename;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -67,9 +67,9 @@ sub _init
 {
 	my $self = shift;
 
-	$_ = substr($_, 0, -3) for @{$self->{'packages'}} = iMSCP::Dir->new(
-		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package"
-	)->getFiles();
+	$_ = basename($_, '.pm')  for @{$self->{'packages'}} = glob (
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm"
+	);
 
 	$self;
 }

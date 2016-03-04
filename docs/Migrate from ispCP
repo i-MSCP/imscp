@@ -41,7 +41,7 @@ it's important to find them during the test phase.
 If all the steps are fine, you should be able to enter in the control panel
 Some considerations
 
-The logs for either a failed or succesful setup will be at /var/log/imscp/imscp-setup.log
+The logs for either a failed or successful setup will be at /var/log/imscp/imscp-setup.log
 
     # less /var/log/imscp/imscp-setup.log
 

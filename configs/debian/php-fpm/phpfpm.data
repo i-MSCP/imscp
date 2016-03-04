@@ -60,4 +60,4 @@ MAX_SPARE_SERVERS = 2
 PROCESS_IDLE_TIMEOUT = 60s
 
 # The number of request each child process should execute before respawning.
-MAX_REQUESTS = 500
+MAX_REQUESTS = 1000

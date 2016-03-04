@@ -5,7 +5,7 @@ Package::FrontEnd::Uninstaller - i-MSCP FrontEnd package Uninstaller
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -49,18 +49,12 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_removeMasterWebUser();
-	return $rs if $rs;
-
-	$rs = $self->_removeHttpdConfig();
-	return $rs if $rs;
-
-	$rs = $self->_removePhpConfig();
-	return $rs if $rs;
-
-	$self->_removeInitScript();
+	$rs ||= $self->_removeHttpdConfig();
+	$rs ||= $self->_removePhpConfig();
+	$rs ||= $self->_removeInitScript();
 }
 
 =back
@@ -79,12 +73,10 @@ sub uninstall
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
-
 	$self->{'config'} = $self->{'frontend'}->{'config'};
-
 	$self;
 }
 
@@ -98,14 +90,12 @@ sub _init
 
 sub _removeMasterWebUser
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $rs = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
+	my $rs = iMSCP::SystemUser->new( force => 'yes' )->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
-	return $rs if $rs;
-
-	iMSCP::SystemGroup->getInstance()->delSystemGroup(
+	$rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 }
@@ -120,43 +110,37 @@ sub _removeMasterWebUser
 
 sub _removeHttpdConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
-	my $rs = 0;
-
-	for('00_master_ssl.conf', '00_master.conf') {
-		$rs = $self->{'frontend'}->disableSites($_);
+	for my $vhost('00_master_ssl.conf', '00_master.conf') {
+		my $rs = $self->{'frontend'}->disableSites($vhost);
 		return $rs if $rs;
 
-		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_") {
-			$rs = iMSCP::File->new(
-				filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_"
-			)->delFile();
+		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhost") {
+			$rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhost")->delFile();
 			return $rs if $rs;
 		}
 	}
 
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf"
-		)->delFile();
+		my $rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf")->delFile();
 		return $rs if $rs;
 	}
 
 	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf"
-		)->delFile();
+		my $rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf")->delFile();
 		return $rs if $rs;
 	}
 
 	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/default") { # Nginx as provided by Debian
-		$rs = $self->{'frontend'}->enableSites('default');
+		my $rs = $self->{'frontend'}->enableSites('default');
 		return $rs if $rs;
 	} elsif("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled") { # Nginx package as provided by Nginx
-		$rs = iMSCP::File->new(
+		my $rs = iMSCP::File->new(
 			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled"
-		)->moveFile("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf");
+		)->moveFile(
+			"$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf"
+		);
 		return $rs if $rs;
 	}
 
@@ -173,7 +157,7 @@ sub _removeHttpdConfig
 
 sub _removePhpConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_STARTER_DIR'}/master" )->remove();
 }
@@ -188,11 +172,11 @@ sub _removePhpConfig
 
 sub _removeInitScript
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	iMSCP::Service->getInstance()->remove('imscp_panel');
 
-	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override') {
+	for my $pFormat('/etc/init.d/%s', '/etc/systemd/system/%s.service', '/etc/init/%s.conf', '/etc/init/%s.override') {
 		my $file = sprintf($pFormat, 'imscp_panel');
 
 		if(-f $file) {
@@ -206,9 +190,9 @@ sub _removeInitScript
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

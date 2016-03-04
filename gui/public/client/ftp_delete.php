@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP team
+ * Copyright (C) 2010-2016 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -72,15 +72,15 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 			}
 		}
 
-		exec_query('DELETE FROM `ftp_users` WHERE `userid` = ?', $ftpUserId);
-
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
-		if(isset($cfg->FILEMANAGER_PACKAGE) && $cfg->FILEMANAGER_PACKAGE == 'Pydio') {
+		exec_query('UPDATE `ftp_users` SET `status` = ? WHERE `userid` = ?', array('todelete', $ftpUserId));
+
+		if(isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'Pydio') {
 			// Quick fix to delete Ftp preferences directory as created by Pydio
 			// FIXME: Move this statement at engine level
-			$userPrefDir = $cfg->GUI_PUBLIC_DIR . '/tools/ftp/data/plugins/auth.serial/' . $ftpUserId;
+			$userPrefDir = $cfg['GUI_PUBLIC_DIR'] . '/tools/ftp/data/plugins/auth.serial/' . $ftpUserId;
 			if(is_dir($userPrefDir)) {
 				utils_removeDir($userPrefDir);
 			}
@@ -90,6 +90,7 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpUserId' => $ftpUserId));
 
+		send_request();
 		write_log(sprintf("%s: deleted FTP account: %s", $_SESSION['user_logged'], $ftpUserId), E_USER_NOTICE);
 		set_page_message(tr('FTP account successfully deleted.'), 'success');
 	} catch (iMSCP_Exception_Database $e) {

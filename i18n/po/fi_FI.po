@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/i-mscp/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -495,19 +495,19 @@ msgid "(usually named"
 msgstr "(nimetty yleensä "
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
 msgstr ""
 
 #, php-format
 msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
-"destination reseller.<br />"
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller.<br>"
 msgstr ""
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br />This user cannot be moved!"
+"reseller!<br>This user cannot be moved!"
 msgstr ""
 
 msgid "A PHP extension stopped the file upload."
@@ -515,6 +515,9 @@ msgstr "PHP:n laajennus pysäytti tiedoston lähetyksen."
 
 msgid "A database update is available"
 msgstr "Tietokantapäivitys saatavilla"
+
+msgid "A hosting plan with same name already exists."
+msgstr "Järjestelmässä on jo samalla nimellä palvelupaketti."
 
 msgid "A new i-MSCP version is available"
 msgstr "Uusi i-MSCP versio on saatavilla"
@@ -581,9 +584,6 @@ msgstr "Aktivointilinkin voimassaoloaika <small>(min)</small>"
 
 msgid "Add"
 msgstr "Lisää"
-
-msgid "Add / Edit SSL certificate"
-msgstr "Lisää / Muokkaa SSL-sertifikaattia"
 
 msgid "Add FTP account"
 msgstr "Lisää FTP tili"
@@ -867,9 +867,9 @@ msgid "Administrators and resellers"
 msgstr "Ylläpitäjät ja jälleenmyyjät"
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Paketti asennetaan heti kun se on lähetetty palvelimelle. <br /> Päivitä sivu nähdäksesi tämänhetkisen tilanteen!"
+"After your upload the package it will be installed on your "
+"systems.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Alias forward"
 msgstr "Aliaksen uudelleenohjaus"
@@ -968,9 +968,6 @@ msgstr ""
 
 msgid "An error occurred during authentication."
 msgstr "Todentamisessa tapahtui virhe."
-
-msgid "An hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr ""
@@ -1277,25 +1274,25 @@ msgid "Check for update"
 msgstr "Tarkista päivitykset"
 
 msgid ""
-"Check the reseller uploads!<br />It is not allowed to upload this package "
-"two times.<br />Refresh your site to see the new status!"
-msgstr "Tarkista jälleenmyyjän tiedostosiirrot.<br />Ei ole sallittua lähettää tiedostoa kahteen kertaan.<br />Päivitä sivu nähdäksesi tämänhetkisen tilanteen."
+"Check the reseller uploads!<br>It is not allowed to upload this package two "
+"times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Tarkista omat tiedostojen lähetykset. Pyydä ylläpitäjältä apua, jos et löydä pakettia. Ei ole sallittua lähettää samaa pakettia kahteen kertaan. Päivitä sivu nähdäksesi nykyisen tilanteen."
+"Check your own uploads!<br>Ask the administrator if you don't find the "
+"package.<br>It is not allowed to upload this packages two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your package. There is an error inside!<br />Refresh your site to see "
+"Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
-msgstr "Tarkista pakettisi. Paketissa on virhe!<br />Päivitä sivu nähdäksesi tämän hetkisen tilanteen."
+msgstr ""
 
 msgid ""
-"Check your software depot uploads!<br />It is not allowed to upload this "
-"package two times.<br />Refresh your site to see the new status!"
-msgstr "Tarkista ohjelmavarastosi tiedostot.<br />Päivitä sivu nähdäksesi tämän hetkisen tilanteen."
+"Check your software depot uploads!<br>It is not allowed to upload this "
+"package two times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Choose"
 msgstr "Valitse"
@@ -1826,7 +1823,7 @@ msgstr ""
 
 msgid ""
 "Dear {RESELLER},\n"
-"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
 "\n"
 "\tDetails:\n"
 "\tPackage Name: {SOFTWARE}\n"
@@ -2362,6 +2359,9 @@ msgstr "FTP-tunnukset"
 msgid "FTP traffic"
 msgstr "FTP-liikenne"
 
+msgid "FTP user errors"
+msgstr ""
+
 msgid "FTPs total"
 msgstr "FTP:tä yhteensä"
 
@@ -2819,6 +2819,9 @@ msgstr "Virheellinen NAME"
 msgid "Invalid SQL user host: %s"
 msgstr "Virheellinen SQL-käyttäjän palvelin: %s"
 
+msgid "Invalid SSL certificate"
+msgstr ""
+
 msgid "Invalid SSL certificate."
 msgstr ""
 
@@ -3056,6 +3059,9 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "Hallitse tietokantoja"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Hallitse htaccess käyttäjiä ja ryhmiä"
@@ -3343,7 +3349,7 @@ msgstr "Mitään ei poistettu."
 msgid "Nothing has been scheduled for deactivation."
 msgstr ""
 
-msgid "Nothing to do. Daemon request has been canceled."
+msgid "Nothing to do. Daemon request has been cancelled."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
@@ -3391,8 +3397,8 @@ msgid "Open tickets"
 msgstr "Avoimet kysymykset"
 
 #, php-format
-msgid "Operation canceled: %s"
-msgstr "Operaatio peruutettu: %s"
+msgid "Operation cancelled: %s"
+msgstr ""
 
 msgid "Optional"
 msgstr "Valinnainen"
@@ -3613,10 +3619,10 @@ msgid "Please confirm the password."
 msgstr "Ole hyvä ja toista salasana."
 
 msgid ""
-"Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Ota yhteyttä ylläpitäjään!<br /> Pyydä häneltä käyttöoikeus tähän pakettiin."
+"Please contact the administrator!<br>Ask him for the permissions to use this"
+" package.<br>It is not allowed to upload this packet two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Syötä suojatun alueen nimi"
@@ -4272,9 +4278,6 @@ msgstr "SQL-käyttäjän nimessä ei ole sallittua käyttää pilkkua."
 msgid "SQL users"
 msgstr "SQL-käyttäjät"
 
-msgid "SSL certificate"
-msgstr "SSL-sertifikaatti"
-
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL-sertifikaatin lisäys ajastettu onnistuneesti."
 
@@ -4286,6 +4289,9 @@ msgstr "SSL-sertifikaatin päivitys ajastettu onnistuneesti."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-ominaisuus ei ole käytettävissä. Voit ainoastaan tarkastella sertifikaattiasi."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Tallenna"
@@ -4388,8 +4394,8 @@ msgstr "Palvelu"
 msgid "Service name already exists."
 msgstr "Palvelun nimi on jo käytössä"
 
-msgid "Service port successfully addeds"
-msgstr "Palveluportti lisätty onnistuneesti."
+msgid "Service port successfully added"
+msgstr ""
 
 msgid "Service port successfully removed."
 msgstr "Palveluportti poistettu onnistuneesti."
@@ -4605,7 +4611,7 @@ msgid "Subdomain alias errors"
 msgstr "Alidomain-aliaksien virheet"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Alidomainin alias odottaa poistoa."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4803,8 +4809,8 @@ msgid "The package is corrupt. Please correct it."
 msgstr ""
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br "
-"/>Refresh your site to see the new status!"
+"The package will be installed automatically to your system after "
+"upload.<br>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "The password field is empty."
@@ -4814,7 +4820,7 @@ msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr ""
 
 #, php-format
-msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
 msgstr ""
 
 msgid ""
@@ -4842,8 +4848,8 @@ msgid "The values must not be equal"
 msgstr ""
 
 msgid ""
-"There is an Error inside your package. Please check it!<br />Refresh your "
-"site to see the new status!"
+"There is an Error inside your package. Please check it!<br>Refresh your site"
+" to see the new status!"
 msgstr ""
 
 #, php-format
@@ -4853,7 +4859,7 @@ msgstr "Tämä IP (%s) ei ole liitetty mihinkää verkkokorttiin!"
 #, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
-"this package!<br />Please delete the files and database for this package "
+"this package!<br>Please delete the files and database for this package "
 "manually!"
 msgstr ""
 
@@ -5586,8 +5592,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
-" for the <b>%2$s</b> service."
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service."
 msgstr ""
 
 msgid "You cannot protect an area without selected htaccess group(s)."
@@ -5828,7 +5834,7 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Pakettisi on korruptoitunut. Korjaa paketti!"
 
 #, php-format
-msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr ""
 
 msgid ""

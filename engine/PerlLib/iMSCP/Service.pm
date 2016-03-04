@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -75,19 +75,13 @@ sub enable
 	my ($self, $service) = @_;
 
 	local $@;
-
 	my $ret = eval {
-		(
-			$self->{'eventManager'}->trigger('onBeforeEnableService', $service) == 0 &&
-			$self->{'provider'}->enable($service) &&
-			$self->{'eventManager'}->trigger('onAfterEnableService', $service) == 0
-		);
+		$self->{'eventManager'}->trigger('onBeforeEnableService', $service) == 0
+			&& $self->{'provider'}->enable($service)
+			&& $self->{'eventManager'}->trigger('onAfterEnableService', $service) == 0;
 	};
 
-	die(
-		sprintf('Could not enable the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
-	) unless $ret && !$@;
-
+	$ret && !$@ or die(sprintf('Could not enable the %s service: %s', $service, $@ || $self->_getLastError()));
 	$ret;
 }
 
@@ -105,19 +99,13 @@ sub disable
 	my ($self, $service) = @_;
 
 	local $@;
-
 	my $ret = eval {
-		(
-			$self->{'eventManager'}->trigger('onBeforeDisableService', $service) == 0 &&
-			$self->{'provider'}->disable($service) &&
-			$self->{'eventManager'}->trigger('onAfterDisableService', $service) == 0
-		);
+		$self->{'eventManager'}->trigger('onBeforeDisableService', $service) == 0
+			&& $self->{'provider'}->disable($service)
+			&& $self->{'eventManager'}->trigger('onAfterDisableService', $service) == 0;
 	};
 
-	die(
-		sprintf('Could not disable the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
-	) unless $ret && !$@;
-
+	$ret && !$@ or die(sprintf('Could not disable the %s service: %s', $service, $@ || $self->_getLastError()));
 	$ret;
 }
 
@@ -135,19 +123,13 @@ sub remove
 	my ($self, $service) = @_;
 
 	local $@;
-
 	my $ret = eval {
-		(
-			$self->{'eventManager'}->trigger('onBeforeRemoveService', $service) == 0 &&
-			$self->{'provider'}->remove($service) &&
-			$self->{'eventManager'}->trigger('onAfterRemoveService', $service) == 0
-		);
+		$self->{'eventManager'}->trigger('onBeforeRemoveService', $service) == 0
+			&& $self->{'provider'}->remove($service)
+			&& $self->{'eventManager'}->trigger('onAfterRemoveService', $service) == 0;
 	};
 
-	die(
-		sprintf('Could not remove the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
-	) unless $ret && !$@;
-
+	$ret && !$@ or die(sprintf('Could not remove the %s service: %s', $service, $@ || $self->_getLastError()));
 	$ret;
 }
 
@@ -167,17 +149,12 @@ sub start
 	local $@;
 
 	my $ret = eval {
-		(
-			$self->{'eventManager'}->trigger('onBeforeStartService', $service) == 0 &&
-			$self->{'provider'}->start($service) &&
-			$self->{'eventManager'}->trigger('onAfterStartService', $service) == 0
-		);
+		$self->{'eventManager'}->trigger('onBeforeStartService', $service) == 0
+			&& $self->{'provider'}->start($service)
+			&& $self->{'eventManager'}->trigger('onAfterStartService', $service) == 0;
 	};
 
-	die(
-		sprintf('Could not start the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
-	) unless $ret && !$@;
-
+	$ret && !$@ or die(sprintf('Could not start the %s service: %s', $service, $@ || $self->_getLastError()));
 	$ret;
 }
 
@@ -197,17 +174,12 @@ sub stop
 	local $@;
 
 	my $ret = eval {
-		(
-			$self->{'eventManager'}->trigger('onBeforeStopService', $service) == 0 &&
-			$self->{'provider'}->stop($service) &&
-			$self->{'eventManager'}->trigger('onAfterStopService', $service) == 0
-		);
+		$self->{'eventManager'}->trigger('onBeforeStopService', $service) == 0
+			&& $self->{'provider'}->stop($service)
+			&& $self->{'eventManager'}->trigger('onAfterStopService', $service) == 0
 	};
 
-	die(
-		sprintf('Could not stop the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
-	) if !$ret || $@;
-
+	$ret && !$@ or die(sprintf('Could not stop the %s service: %s', $service, $@ || $self->_getLastError()));
 	$ret;
 }
 
@@ -227,17 +199,12 @@ sub restart
 	local $@;
 
 	my $ret = eval {
-		(
-			$self->{'eventManager'}->trigger('onBeforeRestartService', $service) == 0 &&
-			$self->{'provider'}->restart($service) &&
-			$self->{'eventManager'}->trigger('onAfterRestartService', $service) == 0
-		);
+		$self->{'eventManager'}->trigger('onBeforeRestartService', $service) == 0
+			&& $self->{'provider'}->restart($service)
+			&& $self->{'eventManager'}->trigger('onAfterRestartService', $service) == 0;
 	};
 
-	die(
-		sprintf('Could not restart the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
-	) unless $ret && !$@;
-
+	$ret && !$@ or die(sprintf('Could not restart the %s service: %s', $service, $@ || $self->_getLastError()));
 	$ret;
 }
 
@@ -257,17 +224,12 @@ sub reload
 	local $@;
 
 	my $ret = eval {
-		(
-			$self->{'eventManager'}->trigger('onBeforeReloadService', $service) == 0 &&
-			$self->{'provider'}->reload($service) &&
-			$self->{'eventManager'}->trigger('onAfterReloadService', $service) == 0
-		);
+		$self->{'eventManager'}->trigger('onBeforeReloadService', $service) == 0
+			&& $self->{'provider'}->reload($service)
+			&& $self->{'eventManager'}->trigger('onAfterReloadService', $service) == 0;
 	};
 
-	die(
-		sprintf('Could not reload the %s service: %s', $service, ($@) ? $@ : $self->_getLastError())
-	) unless $ret && !$@;
-
+	$ret && !$@ or die(sprintf('Could not reload the %s service: %s', $service, $@ || $self->_getLastError()));
 	$ret;
 }
 
@@ -285,8 +247,7 @@ sub isRunning
 	my ($self, $service) = @_;
 
 	local $@;
-
-	(eval { $self->{'provider'}->isRunning($service); });
+	eval { $self->{'provider'}->isRunning($service); };
 }
 
 =item isSysvinit()
@@ -299,7 +260,7 @@ sub isRunning
 
 sub isSysvinit
 {
-	($initSystem eq 'Sysvinit');
+	$initSystem eq 'Sysvinit';
 }
 
 =item isUpstart()
@@ -312,7 +273,7 @@ sub isSysvinit
 
 sub isUpstart
 {
-	($initSystem eq 'Upstart');
+	$initSystem eq 'Upstart';
 }
 
 =item isSystemd()
@@ -325,7 +286,7 @@ sub isUpstart
 
 sub isSystemd
 {
-	($initSystem eq 'Systemd');
+	$initSystem eq 'Systemd';
 }
 
 =item getProvider($providerName)
@@ -352,8 +313,8 @@ sub getProvider
 		$provider = "iMSCP::Provider::Service::${providerName}"; # Fallback to the base provider
 	}
 
-	can_load(modules => { $provider => undef}) or die(
-		sprintf("Unable to load the %s service provider: %s", $provider, $Module::Load::Conditional::ERROR)
+	can_load(modules => { $provider => undef }) or die(
+		sprintf('Could not load the %s service provider: %s', $provider, $Module::Load::Conditional::ERROR)
 	);
 
 	$provider->getInstance();
@@ -375,11 +336,10 @@ sub getProvider
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'provider'} = $self->getProvider($initSystem);
-
 	$self;
 }
 
@@ -414,9 +374,7 @@ sub _detectInitSystem
 	for(keys %initSystems) {
 		eval {
 			if(defined $initSystems{$_}->{'command'}) {
-				my ($stdout, $stderr);
-				execute($initSystems{$_}->{'command'}, \$stdout, \$stderr);
-
+				execute($initSystems{$_}->{'command'}, \my $stdout, \my $stderr);
 				$initSystem = $_ if $stdout =~ /$initSystems{$_}->{'regexp'}/;
 			}
 		};
@@ -425,7 +383,6 @@ sub _detectInitSystem
 	}
 
 	debug(sprintf('%s init system has been detected', $initSystem));
-
 	$initSystem;
 }
 

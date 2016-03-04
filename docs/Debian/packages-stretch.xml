@@ -26,18 +26,6 @@
         </apache_php_fpm>
     </httpd>
     <po default="dovecot">
-        <courier>
-            <package>courier-authlib-mysql</package>
-            <package>courier-imap</package>
-            <package>courier-imap-ssl</package>
-            <package>courier-pop</package>
-            <package>courier-pop-ssl</package>
-            <package>libgamin0</package>
-            <package>libsasl2-modules</package>
-            <package>libsasl2-modules-sql</package>
-            <package>maildrop</package>
-            <package_conflict>sasl2-bin</package_conflict>
-        </courier>
         <dovecot>
             <package>dovecot-core</package>
             <package>dovecot-imapd</package>
@@ -55,6 +43,7 @@
         <proftpd>
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
+            <package_conflict>vsftpd</package_conflict>
         </proftpd>
     </ftpd>
     <named default="bind">
@@ -69,24 +58,25 @@
                 pinning_package="libmysqlclient18 mysql-client-5.6 mysql-commom mysql-server-5.6"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
-                allow_switch_to="remote_server"
+                allow_switch="remote_server"
                 >
             <package>libmysqlclient18</package>
-            <package>mysql-community-client</package>
+            <package>mysql-client-5.6</package>
             <package>mysql-common</package>
-            <package>mysql-community-server</package>
+            <package>mysql-server-5.6</package>
         </mysql_5.6>
         <mariadb_10.0
-                pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0"
+                pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
-                allow_switch_to="remote_server"
+                allow_switch="remote_server"
                 >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
             <package>mariadb-common</package>
             <package>mariadb-server-10.0</package>
+            <package>mysql-common</package>
         </mariadb_10.0>
         <remote_server
                 pinning_package="libmysqlclient18 mysql-client-5.6 mysql-common"
@@ -94,7 +84,7 @@
                 pinning_pin_priority="1001"
                 >
             <package>libmysqlclient18</package>
-            <package>mysql-client-5.5</package>
+            <package>mysql-client-5.6</package>
             <package>mysql-common</package>
         </remote_server>
     </sql>

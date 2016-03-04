@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ádám Radovits <adamradovits12@hotmail.com>, 2014-2015
+# Ádám Radovits <adamradovits12@hotmail.com>, 2014-2016
 # i-MSCP <team@i-mscp.net>, 2015
 # knorbi555 <k.norbi555@gmail.com>, 2012
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,7 @@ msgstr "{ADMIN} törölte!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s alacsonyabbnak kell lennie, mint %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -496,26 +496,29 @@ msgid "(usually named"
 msgstr "(általában a mentés neve: "
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
-msgstr "<strong>%1$s</strong> korlátlan jogokkal rendelkezik a(z) <strong>%2$s</strong> szolgáltatáshoz<br />"
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
+msgstr ""
 
 #, php-format
 msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
-"destination reseller.<br />"
-msgstr "<b>%1$s</b> korlátja meghaladja a cél viszonteladó <b>%2$s</b><br /> szolgáltatásra vonatkozó korlátját.<br />"
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller.<br>"
+msgstr ""
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br />This user cannot be moved!"
-msgstr "<strong>%s</strong> olyan IP-címmel rendelkezik, amit a cél viszonteladó nem kezelhet!<br />Ez a felhasználó nem mozgatható át!"
+"reseller!<br>This user cannot be moved!"
+msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr "PHP kiterjesztés megállította a fájlfeltöltést"
 
 msgid "A database update is available"
 msgstr "Adatbázis frissítés érhető el"
+
+msgid "A hosting plan with same name already exists."
+msgstr "Hasonló nevű tárhelycsomag már létezik."
 
 msgid "A new i-MSCP version is available"
 msgstr "Új i-MSCP verzió érhető el"
@@ -582,9 +585,6 @@ msgstr "Aktiválási hivatkozás elévülési ideje <small>(percben)</small>"
 
 msgid "Add"
 msgstr "Létrehozás"
-
-msgid "Add / Edit SSL certificate"
-msgstr "SSL tanúsítvány hozzáadása / szerkesztése"
 
 msgid "Add FTP account"
 msgstr "FTP-felhasználó hozzáadása"
@@ -868,9 +868,9 @@ msgid "Administrators and resellers"
 msgstr "Adminisztrátorok és viszonteladók"
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br "
-"/>Refresh your site to see the new status!"
-msgstr "A feltöltés után a rendszer telepíti a programcsomagot. <br /> Frissítse a weboldalt az új állapot megtekintéséhez!"
+"After your upload the package it will be installed on your "
+"systems.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Alias forward"
 msgstr "Továbbított alternatív email cím"
@@ -894,7 +894,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr "Minden lezárt hibajegy sikeresen törölve"
 
 msgid "All errors (Development)"
-msgstr ""
+msgstr "Minden hiba (fejlesztés)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
 msgstr ""
@@ -969,9 +969,6 @@ msgstr "Ilyen már létezik egyszer."
 
 msgid "An error occurred during authentication."
 msgstr "Hiba történt a hitelesítés közben."
-
-msgid "An hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "Váratlan hiba történt"
@@ -1278,25 +1275,25 @@ msgid "Check for update"
 msgstr "Frissítések keresése"
 
 msgid ""
-"Check the reseller uploads!<br />It is not allowed to upload this package "
-"two times.<br />Refresh your site to see the new status!"
-msgstr "Viszonteladói feltöltések ellenőrzése! <br /> Nem töltheti fel ezt a programcsomagot két alkalommal. <br /> Frissítse a weboldalt az új állapot megtekintéséhez!"
+"Check the reseller uploads!<br>It is not allowed to upload this package two "
+"times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Feltöltéseinek ellenőrzése! <br /> Nem töltheti fel ezt a programcsomagot két alkalommal. <br /> Frissítse a weboldalt az új állapot megtekintéséhez!"
+"Check your own uploads!<br>Ask the administrator if you don't find the "
+"package.<br>It is not allowed to upload this packages two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your package. There is an error inside!<br />Refresh your site to see "
+"Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
-msgstr "Programcsomagjainak ellenőrzése! Van benne egy hiba!<br /> Frissítse a weboldalt az új állapot megtekintéséhez!"
+msgstr ""
 
 msgid ""
-"Check your software depot uploads!<br />It is not allowed to upload this "
-"package two times.<br />Refresh your site to see the new status!"
-msgstr "Programraktár feltöltéseinek ellenőrzése! <br /> Nem töltheti fel ezt a programcsomagot két alkalommal. <br /> Frissítse a weboldalt az új állapot megtekintéséhez!"
+"Check your software depot uploads!<br>It is not allowed to upload this "
+"package two times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Choose"
 msgstr "Kiválasztás"
@@ -1827,14 +1824,14 @@ msgstr "Kedves {RESELLER}!\n\nA feltöltött programcsomagját a(z) {ADMIN} tör
 
 msgid ""
 "Dear {RESELLER},\n"
-"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
 "\n"
 "\tDetails:\n"
 "\tPackage Name: {SOFTWARE}\n"
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "Kedves {RESELLER}!\n\nFeltöltött programcsomagját a(z) {ADMIN} sikeresen aktiválta.\n\nRészletek:\nProgamcsomag neve: {SOFTWARE}\nProgramcsomag azonosítója: {SOFTWARE_ID}\n\nKérjük, a részletekért lépjen be az i-MSCP kezelőfelületére!"
+msgstr ""
 
 msgid "Debugger"
 msgstr "Hibakereső"
@@ -2363,6 +2360,9 @@ msgstr "FTP-felhasználók"
 msgid "FTP traffic"
 msgstr "FTP"
 
+msgid "FTP user errors"
+msgstr ""
+
 msgid "FTPs total"
 msgstr "FTP összesen:"
 
@@ -2568,7 +2568,7 @@ msgid "Hosting plan successfully created."
 msgstr "Tárhely csomag sikeresen létrejött"
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Tárhely csomag sikeresen törölve"
 
 msgid "Hosting plan successfully updated."
 msgstr "Tárhely csomag sikeresen frissítve"
@@ -2820,8 +2820,11 @@ msgstr "Hibás NAME."
 msgid "Invalid SQL user host: %s"
 msgstr "Érvénytelen SQL felhasználói kiszolgáló: %s"
 
-msgid "Invalid SSL certificate."
+msgid "Invalid SSL certificate"
 msgstr ""
+
+msgid "Invalid SSL certificate."
+msgstr "Érvénytelen SSL tanúsítvány"
 
 msgid "Invalid TXT data"
 msgstr "Érvénytelen TXT adat"
@@ -3057,6 +3060,9 @@ msgstr "Hibás SQL lekérdezés megjavítása"
 
 msgid "Manage SQL"
 msgstr "Adatbázisok kezelése"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Védett területek, felhasználók és csoportok kezelése"
@@ -3344,8 +3350,8 @@ msgstr "Semmi sem változott."
 msgid "Nothing has been scheduled for deactivation."
 msgstr "Semmi nem lett beütemezve deaktiválásra."
 
-msgid "Nothing to do. Daemon request has been canceled."
-msgstr "Nem történt semmi. Daemon kérés meg lett szakítva."
+msgid "Nothing to do. Daemon request has been cancelled."
+msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "Értesítések, Figyelmeztetések és Hibák"
@@ -3392,8 +3398,8 @@ msgid "Open tickets"
 msgstr "Nyitott hibajegyek"
 
 #, php-format
-msgid "Operation canceled: %s"
-msgstr "Művelet megszakítva: %s"
+msgid "Operation cancelled: %s"
+msgstr ""
 
 msgid "Optional"
 msgstr "Opcionális"
@@ -3614,10 +3620,10 @@ msgid "Please confirm the password."
 msgstr "Kérjük, erősítsd meg a jelszót!"
 
 msgid ""
-"Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Kérjük, forduljon az adminisztrátorhoz! <br /> Kérdezze meg ennek a programcsomag a jogosultságait. <br /> Nem töltheti fel ezt a programcsomagot mégegyszer. <br /> Frissítse a weboldalt az új állapot megtekintéséhez!"
+"Please contact the administrator!<br>Ask him for the permissions to use this"
+" package.<br>It is not allowed to upload this packet two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Kérem a védett terület nevét"
@@ -4265,16 +4271,13 @@ msgid "SQL user successfully added."
 msgstr "SQL felhasználó sikeresen hozzáadva"
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "SQL felhasználó sikeresen törölve"
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "A vesszővel jelölt SQL felhasználó neve nem elfogadható."
 
 msgid "SQL users"
 msgstr "SQL felhasználók"
-
-msgid "SSL certificate"
-msgstr "SSL tanúsítvány"
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL tanúsítvány sikeresen beütemezve hozzáadásra."
@@ -4287,6 +4290,9 @@ msgstr "SSL tanúsítvány sikeresen beütemezve frissítésre."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL funkció nem elérhető. Csak megnézni tudod a tanúsítványaidat."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Mentés"
@@ -4389,8 +4395,8 @@ msgstr "Szolgáltatás (például: http, imap)"
 msgid "Service name already exists."
 msgstr "Szolgáltatás név már létezik."
 
-msgid "Service port successfully addeds"
-msgstr "Szolgáltatás port sikeresen hozzáadva!"
+msgid "Service port successfully added"
+msgstr ""
 
 msgid "Service port successfully removed."
 msgstr "Szolgáltatás port sikeresen törölve!"
@@ -4582,7 +4588,7 @@ msgid "Street 2"
 msgstr "Utca 2"
 
 msgid "Strong passwords"
-msgstr ""
+msgstr "Erős jelszavak"
 
 msgid "Subdomain"
 msgstr "Aldomain"
@@ -4597,7 +4603,7 @@ msgstr "%s aldomain nem irányítható magára."
 
 #, php-format
 msgid "Subdomain %s is unavailable."
-msgstr ""
+msgstr "%s aldomain elérhetetlen."
 
 msgid "Subdomain alias"
 msgstr "Aldomain álnevek"
@@ -4606,7 +4612,7 @@ msgid "Subdomain alias errors"
 msgstr "Aldomain álnév hibák"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Domain álnév törlése beütemezve"
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4632,7 +4638,7 @@ msgid "Subdomain name is not valid."
 msgstr "Aldomain neve hibás."
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Aldomain törlésre beütemezve"
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Aldomain létrehozása beütemezve."
@@ -4804,9 +4810,9 @@ msgid "The package is corrupt. Please correct it."
 msgstr "A csomag nem megfelelő, kérjük javítsd ki!"
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Programcsomag automatikusan telepítésre kerütl a feltöltés után. <br /> Kérjük frissítse a weboldalt az új állapot megtekintéséhez!"
+"The package will be installed automatically to your system after "
+"upload.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "The password field is empty."
 msgstr "A jelszó mező nem maradhat üresen. "
@@ -4815,8 +4821,8 @@ msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr ""
 
 #, php-format
-msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
-msgstr "A távoli fájlméret (%s) kevesebb, mint 1 bájt. Kérjük ellenőrizze a webcímet!"
+msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
+msgstr ""
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
@@ -4843,9 +4849,9 @@ msgid "The values must not be equal"
 msgstr "Az értékek nem lehetnek egyenlőek"
 
 msgid ""
-"There is an Error inside your package. Please check it!<br />Refresh your "
-"site to see the new status!"
-msgstr "Van egy hiba a csomagban. Kérjük ellenőrizze! <br /> Frissítise a weboldalt az új állapot megtekintéséhez!"
+"There is an Error inside your package. Please check it!<br>Refresh your site"
+" to see the new status!"
+msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4854,9 +4860,9 @@ msgstr "Ez a IP-cím (%s) egyik hálózati csatolóhoz sincs hozzárendelve!"
 #, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
-"this package!<br />Please delete the files and database for this package "
+"this package!<br>Please delete the files and database for this package "
 "manually!"
-msgstr "Ezt a (%s, V%s) csomagot a viszonteladója törölte. Csak eltávolítani tudod ezt a csomagot! <br /> Kérjük, töröld a fájlokat és az adatbázisokat kézzel!"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5587,9 +5593,9 @@ msgstr "%s magára nem irányítható."
 
 #, php-format
 msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
-" for the <b>%2$s</b> service."
-msgstr "Nem lehet átadni a(z) <strong>%1$s</strong> felhasználót a cél viszonteladónak,<br />mert számára korlátozott a <strong>%2$s</strong> szolgáltatás!"
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service."
+msgstr ""
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr "Nem tudja megvédeni a kijelölt területet védett csoport(ok) kiválasztása nélkül"
@@ -5829,8 +5835,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Az Ön csomagja nem megfelelő, kérjük javítsa!"
 
 #, php-format
-msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
-msgstr "A távoli fájlméret (%s) kevesebb, mint 1 bájt. Kérjük, ellenőrizze a webcímet!"
+msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"

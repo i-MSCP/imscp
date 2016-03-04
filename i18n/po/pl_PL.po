@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/i-mscp/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -497,26 +497,29 @@ msgid "(usually named"
 msgstr "(zazwyczaj nazwany "
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
-msgstr "<b>%1$s</b> ma nieograniczone uprawnienia usługi <b>%2$s</b> .<br />"
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
+msgstr ""
 
 #, php-format
 msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
-"destination reseller.<br />"
-msgstr "<b>%1$s</b> przewyższa limity usługi <b>%2$s</b><br /> u docelowego resellera.<br />"
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller.<br>"
+msgstr ""
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br />This user cannot be moved!"
-msgstr "<b>%s</b> ma adres IP, który nie może być zarządzany przez docelowego resellera !<br />Ten użytkownik nie może być przeniesiony!"
+"reseller!<br>This user cannot be moved!"
+msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr "Rozszerzenie PHP zatrzymało przesyłanie pliku."
 
 msgid "A database update is available"
 msgstr "Jest dostępna aktualizacja bazy danych."
+
+msgid "A hosting plan with same name already exists."
+msgstr "Plan hostingowy o podanej nazwie już istnieje."
 
 msgid "A new i-MSCP version is available"
 msgstr "Jest dostępna nowa wersja i-MSCP"
@@ -583,9 +586,6 @@ msgstr "Ważność linku aktywacyjnego <small>(w minutach)</small>"
 
 msgid "Add"
 msgstr "Dodaj"
-
-msgid "Add / Edit SSL certificate"
-msgstr "Dodaj / Edytuj certyfikat SSL"
 
 msgid "Add FTP account"
 msgstr "Dodaj konto FTP"
@@ -869,9 +869,9 @@ msgid "Administrators and resellers"
 msgstr "Administratorzy i sprzedawcy"
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Pakiet po przesłaniu będzie zainstalowany w twoim systemie.<br /> Odśwież strony, aby zobaczyć nowy status!"
+"After your upload the package it will be installed on your "
+"systems.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Alias forward"
 msgstr "Alias przekierowania"
@@ -970,9 +970,6 @@ msgstr "Wpis jest podwójnie zdefiniowany."
 
 msgid "An error occurred during authentication."
 msgstr "Wystąpił błąd podczas uwierzytelniania."
-
-msgid "An hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "Wystąpił nieoczekiwany błąd"
@@ -1279,25 +1276,25 @@ msgid "Check for update"
 msgstr "Sprawdź aktualizacje"
 
 msgid ""
-"Check the reseller uploads!<br />It is not allowed to upload this package "
-"two times.<br />Refresh your site to see the new status!"
-msgstr "Sprawdź pakiety resellera!<br />Nie można ładować tego samego pakietu po raz drugi.<br />Odśwież stronę, aby zobaczyć nowy status!"
+"Check the reseller uploads!<br>It is not allowed to upload this package two "
+"times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Sprawdź swoje własne pakiety!<br />Zapytaj administratora, jeśli nie możesz znaleźć pakietu.<br />Nie jest dopuszczalne, aby przesyłać dwa pakiety w tym samym czasie.<br />Odśwież stronę, aby zobaczyć nowy stan!"
+"Check your own uploads!<br>Ask the administrator if you don't find the "
+"package.<br>It is not allowed to upload this packages two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your package. There is an error inside!<br />Refresh your site to see "
+"Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
-msgstr "Sprawdź swój pakiet. W pakiecie jest błąd! Odśwież stronę aby zobaczyć nowy status!"
+msgstr ""
 
 msgid ""
-"Check your software depot uploads!<br />It is not allowed to upload this "
-"package two times.<br />Refresh your site to see the new status!"
-msgstr "Sprawdź swoje repozytorium pakietów!<br />Nie jest dopuszczalne, aby przesyłać dwa pakiety w tym samym czasie.<br />Odśwież stronę, aby zobaczyć nowy stan!"
+"Check your software depot uploads!<br>It is not allowed to upload this "
+"package two times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Choose"
 msgstr "Wybierz"
@@ -1828,14 +1825,14 @@ msgstr "Witaj {RESELLER},\n⇥⇥Pakiet który wgrałeś na serwer został usuni
 
 msgid ""
 "Dear {RESELLER},\n"
-"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
 "\n"
 "\tDetails:\n"
 "\tPackage Name: {SOFTWARE}\n"
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "Witaj {RESELLER},\nTwój przesłany pakiet oprogramowania został poprawnie aktywowany przez {ADMIN}.\n\nDetale:\nNazwa pakietu: {SOFTWARE}\nID pakietu: {SOFTWARE_ID}\n\nZaloguj się do panelu i-MSCP, aby uzyskać więcej informacji."
+msgstr ""
 
 msgid "Debugger"
 msgstr "Debugger"
@@ -2364,6 +2361,9 @@ msgstr "Konta FTP"
 msgid "FTP traffic"
 msgstr "Transfer FTP"
 
+msgid "FTP user errors"
+msgstr ""
+
 msgid "FTPs total"
 msgstr "Ogółem kont FTP"
 
@@ -2569,7 +2569,7 @@ msgid "Hosting plan successfully created."
 msgstr "Pomyślnie utworzono plan hostingowy."
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Usunięto plan hostingowy."
 
 msgid "Hosting plan successfully updated."
 msgstr "Pomyślnie zaktualizowano plan hostingowy."
@@ -2821,6 +2821,9 @@ msgstr "Nieprawidłowa NAZWA"
 msgid "Invalid SQL user host: %s"
 msgstr "Nieprawidłowy host użytkownika SQL: %s"
 
+msgid "Invalid SSL certificate"
+msgstr ""
+
 msgid "Invalid SSL certificate."
 msgstr ""
 
@@ -3058,6 +3061,9 @@ msgstr "Nieprawidłowe zapytanie SQL"
 
 msgid "Manage SQL"
 msgstr "Zarządzaj bazami SQL"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Zarządzaj użytkownikami i grupami htaccess"
@@ -3345,8 +3351,8 @@ msgstr "Nic nie zostało usunięte."
 msgid "Nothing has been scheduled for deactivation."
 msgstr "Nic nie zostało zaplanowane na dezaktywacji."
 
-msgid "Nothing to do. Daemon request has been canceled."
-msgstr "Nie ma nic do zrobienia. Żądanie demona zostało anulowane. "
+msgid "Nothing to do. Daemon request has been cancelled."
+msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "Uwagi, Ostrzeżenia i Błędy"
@@ -3393,8 +3399,8 @@ msgid "Open tickets"
 msgstr "Otwarte zgłoszenia"
 
 #, php-format
-msgid "Operation canceled: %s"
-msgstr "Operacja anulowana: %s"
+msgid "Operation cancelled: %s"
+msgstr ""
 
 msgid "Optional"
 msgstr "Opcjonalne"
@@ -3615,10 +3621,10 @@ msgid "Please confirm the password."
 msgstr "Proszę potwierdzić hasło."
 
 msgid ""
-"Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Proszę skontaktować się z administratorem!<br />Zapytaj go o uprawnienia do użycia tego pakietu.<br />Nie jest dozwolone załadowanie tego samgo pakietu ponownie.<br />Odśwież swoją stronę, aby zobaczyć nowy status!"
+"Please contact the administrator!<br>Ask him for the permissions to use this"
+" package.<br>It is not allowed to upload this packet two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Wprowadź nazwę obszaru chronionego"
@@ -4266,16 +4272,13 @@ msgid "SQL user successfully added."
 msgstr "Użytkownik SQL został pomyślnie dodany."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "Użytkownik SQL poprawnie usunięty."
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "Nazwa użytkownika SQL z myślnikiem(ami) nie jest akceptowana."
 
 msgid "SQL users"
 msgstr "Użytkownicy SQL"
-
-msgid "SSL certificate"
-msgstr "Certyfikat SSL"
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "Certyfikat SSL został pomyślnie zaplanowany do dodania."
@@ -4288,6 +4291,9 @@ msgstr "Certyfikat SSL został pomyślnie zaplanowany do aktualizacji."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "Funkcja SSL nie dostępna. Możesz zobaczyć swój certyfikat."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Zapisz"
@@ -4390,8 +4396,8 @@ msgstr "Nazwa usługi"
 msgid "Service name already exists."
 msgstr "Nazwa usługi już istnieje."
 
-msgid "Service port successfully addeds"
-msgstr "Port usługi został pomyślnie dodany."
+msgid "Service port successfully added"
+msgstr ""
 
 msgid "Service port successfully removed."
 msgstr "Port usługi został pomyślnie usunięty."
@@ -4607,7 +4613,7 @@ msgid "Subdomain alias errors"
 msgstr "Błędy aliasu subdomeny"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Alias domeny zakolejkowany do usunięcia."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4633,7 +4639,7 @@ msgid "Subdomain name is not valid."
 msgstr "Nazwa subdomeny jest nie prawidłowa."
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Subdomena zakolejkowana do usunięcia."
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Subdomena została pomyślnie zaplanowana do dodania."
@@ -4805,9 +4811,9 @@ msgid "The package is corrupt. Please correct it."
 msgstr "Pakiet jest uszkodzony. Proszę to poprawić."
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Pakiet zostanie automatycznie zainstalowany w systemie po przesłaniu.<br />Odśwież swoją stronę, aby zobaczyć nowy status!"
+"The package will be installed automatically to your system after "
+"upload.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "The password field is empty."
 msgstr "Pole hasła jest puste."
@@ -4816,8 +4822,8 @@ msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr ""
 
 #, php-format
-msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
-msgstr "Plik zdalny (%s) jest mniejszy niż 1 Bajt. Sprawdź wprowadzony URL."
+msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
+msgstr ""
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
@@ -4844,9 +4850,9 @@ msgid "The values must not be equal"
 msgstr "Te wartości nie muszą być równe"
 
 msgid ""
-"There is an Error inside your package. Please check it!<br />Refresh your "
-"site to see the new status!"
-msgstr "Występuje błąd w twojej paczce. Proszę to poprawić!<br />Odśwież swoją stronę, aby zobaczyć nowy status!"
+"There is an Error inside your package. Please check it!<br>Refresh your site"
+" to see the new status!"
+msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4855,7 +4861,7 @@ msgstr "To IP (%s) nie zostało przypisane do żadnej karty sieciowej!"
 #, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
-"this package!<br />Please delete the files and database for this package "
+"this package!<br>Please delete the files and database for this package "
 "manually!"
 msgstr ""
 
@@ -5588,9 +5594,9 @@ msgstr "Nie możesz przekierować %s na siebie samego."
 
 #, php-format
 msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
-" for the <b>%2$s</b> service."
-msgstr "Nie można przenieść <b>%1$s</b> do resellera,<br />który ma limity na usługi <b>%2$s</b> ."
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service."
+msgstr ""
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr "Nie można zabezpieczyć obszaru bez wybrania grup(y) htaccess."
@@ -5830,8 +5836,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Pakiet jest uszkodzony. Proszę to poprawić!"
 
 #, php-format
-msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
-msgstr "Twój plik (%s) jest mniejszy niż 1 Bajt. Sprawdź wprowadzony URL."
+msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"

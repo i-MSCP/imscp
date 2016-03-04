@@ -1,39 +1,23 @@
 #include "daemon_init.h"
 
-void daemonInit(const char *pname, int facility)
+void daemonInit(char *pidfile)
 {
-	pid_t pid;
-	int i;
-
-	pid = fork();
-
-	if(pid < 0)
-		exit(EXIT_FAILURE);
-
-	if(pid > 0)
-		exit(EXIT_SUCCESS);
-
-	if (setsid() < 0)
-		exit(EXIT_FAILURE);
-
-	signal(SIGHUP, SIG_IGN);
-
-	pid = fork();
-
-	if (pid < 0)
-		exit(EXIT_FAILURE);
-
-	if (pid > 0)
-		exit(EXIT_SUCCESS);
+	/* daemonize */
+	if(daemon(0, 0) > 1) {
+		exit(errno);
+	}
 
 	umask(0);
 
-	if(chdir("/") < 0)
-		exit(EXIT_FAILURE);
+	/* open log */
+	openlog(message(MSG_DAEMON_NAME), LOG_PID, SYSLOG_FACILITY);
 
-	for (i = sysconf(_SC_OPEN_MAX); i > 0; i--) {
-		close (i);
+	/* Create pidfile if needed */
+	if(pidfile != NULL) {
+		FILE *file = fopen(pidfile, "w");
+		fprintf(file, "%ld", (long)getpid());
+		fclose(file);
 	}
 
-	openlog(pname, LOG_PID, facility);
+	say("%s", message(MSG_DAEMON_STARTED));
 }

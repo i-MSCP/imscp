@@ -5,7 +5,7 @@ Package::AntiRootkits::Chkrootkit::Installer - i-MSCP Chkrootkit package install
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -63,12 +63,10 @@ sub preinstall
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_addCronTask();
-	return $rs if $rs;
-
-	$self->_scheduleCheck();
+	$rs ||= $self->_scheduleCheck();
 }
 
 =item setEnginePermissions
@@ -81,10 +79,9 @@ sub install
 
 sub setEnginePermissions()
 {
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
-
-	setRights($main::imscpConfig{'CHKROOTKIT_LOG'}, { 'user' => $rootUName, 'group' => $imscpGName, mode => '0640' });
+	setRights($main::imscpConfig{'CHKROOTKIT_LOG'}, {
+		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => '0640'
+	});
 }
 
 =back
@@ -103,11 +100,9 @@ sub setEnginePermissions()
 
 sub _disableDebianConfig
 {
-	if(-f '/etc/cron.daily/chkrootkit') {
-		iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit' )->moveFile( '/etc/cron.daily/chkrootkit.disabled' );
-	} else {
-		0;
-	}
+	return 0 unless -f '/etc/cron.daily/chkrootkit';
+
+	iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit' )->moveFile( '/etc/cron.daily/chkrootkit.disabled' );
 }
 
 =item _addCronTask()
@@ -120,18 +115,16 @@ sub _disableDebianConfig
 
 sub _addCronTask
 {
-	Servers::cron->factory()->addTask(
-		{
-			TASKID => 'Package::AntiRootkits::Chkrootkit',
-			MINUTE => '@weekly',
-			HOUR => '',
-			DAY => '',
-			MONTH => '',
-			DWEEK => '',
-			USER => $main::imscpConfig{'ROOT_USER'},
-			COMMAND => "nice -n 15 ionice -c2 -n5 bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
-		}
-	);
+	Servers::cron->factory()->addTask( {
+		TASKID => 'Package::AntiRootkits::Chkrootkit',
+		MINUTE => '@weekly',
+		HOUR => '',
+		DAY => '',
+		MONTH => '',
+		DWEEK => '',
+		USER => $main::imscpConfig{'ROOT_USER'},
+		COMMAND => "nice -n 15 ionice -c2 -n5 bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
+	});
 }
 
 =item _scheduleCheck()
@@ -144,25 +137,21 @@ sub _addCronTask
 
 sub _scheduleCheck
 {
-	unless(-f -s $main::imscpConfig{'CHKROOTKIT_LOG'}) {
-		# Create an emtpy file to avoid planning multiple check if installer is run many time
-		my $file = iMSCP::File->new( filename => $main::imscpConfig{'CHKROOTKIT_LOG'} );
+	return 0 if -f -s $main::imscpConfig{'CHKROOTKIT_LOG'};
 
-		my $rs = $file->set('Check scheduled...');
-		return $rs if $rs;
+	# Create an emtpy file to avoid planning multiple check if installer is run many time
+	my $file = iMSCP::File->new( filename => $main::imscpConfig{'CHKROOTKIT_LOG'} );
+	my $rs = $file->set('Check scheduled...');
+	$rs ||= $file->save();
+	return $rs if $rs;
 
-		$rs = $file->save();
-		return $rs if $rs;
-
-		my ($stdout, $stderr);
-		$rs = execute("echo 'bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | batch", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		error("Unable to schedule Chkrootkit check") if $rs && ! $stderr;
-		return $rs if $rs;
-	}
-
-	0;
+	$rs = execute(
+		"echo 'bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | batch", \ my $stdout, \ my $stderr
+	);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Could not schedule Chkrootkit check') if $rs && !$stderr;
+	$rs;
 }
 
 =back

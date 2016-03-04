@@ -794,8 +794,8 @@ function resellerHasCustomers($minNbCustomers = 1)
  */
 function check_ruser_data($noPass = false)
 {
-	global $password, $passwordRepeat, $email, $customerId, $firstName, $lastName, $gender, $firm, $street1,
-		$street2, $zip, $city, $state, $country, $phone, $fax, $domainIp;
+	global $password, $passwordRepeat, $email, $customerId, $firstName, $lastName, $gender, $firm, $street1, $street2,
+		   $zip, $city, $state, $country, $phone, $fax;
 
 	// Get data for fields from previous page
 	if (isset($_POST['userpassword'])) {
@@ -892,12 +892,6 @@ function check_ruser_data($noPass = false)
 		$fax = clean_input($_POST['userfax']);
 	} else {
 		$fax = '';
-	}
-
-	if (isset($_POST['domain_ip'])) {
-		$domainIp = clean_input($_POST['domain_ip']);
-	} else {
-		$domainIp = '';
 	}
 
 	if (!$noPass) {

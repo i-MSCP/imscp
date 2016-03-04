@@ -18,7 +18,7 @@ www		IN	CNAME	@
 ftp 	IN	{IP_TYPE}	{DOMAIN_IP}
 ; dmn MAIL entry BEGIN
 @		IN 	MX	10	mail
-@		IN	TXT	"v=spf1 a mx ~all"
+@		IN	TXT	"v=spf1 a mx -all"
 mail	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
 imap	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
 pop		IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}

@@ -5,7 +5,7 @@ Package::Webstats::Awstats::Awstats - i-MSCP AWStats package
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -64,7 +64,6 @@ sub showDialog
 	my ($self, $dialog) = @_;
 
 	require Package::Webstats::Awstats::Installer;
-
 	Package::Webstats::Awstats::Installer->getInstance()->showDialog($dialog);
 }
 
@@ -79,7 +78,6 @@ sub showDialog
 sub install
 {
 	require Package::Webstats::Awstats::Installer;
-
 	Package::Webstats::Awstats::Installer->getInstance()->install();
 }
 
@@ -94,7 +92,6 @@ sub install
 sub uninstall
 {
 	require Package::Webstats::Awstats::Uninstaller;
-
 	Package::Webstats::Awstats::Uninstaller->getInstance()->uninstall();
 }
 
@@ -109,7 +106,6 @@ sub uninstall
 sub setEnginePermissions
 {
 	require Package::Webstats::Awstats::Installer;
-
 	Package::Webstats::Awstats::Installer->getInstance()->setEnginePermissions();
 }
 
@@ -149,25 +145,17 @@ sub addDmn
 
 	if($main::imscpConfig{'AWSTATS_MODE'} eq '1') { # Static mode
 		unless(-d $userStatisticsDir) {
-			$rs = iMSCP::Dir->new(
-				dirname => $userStatisticsDir
-			)->make(
-				{ 'mode' => 02750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $data->{'GROUP'} }
-			);
+			$rs = iMSCP::Dir->new( dirname => $userStatisticsDir )->make({
+				mode => 02750, user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}
+			});
 			return $rs if $rs;
 		} else {
 			require iMSCP::Rights;
 			iMSCP::Rights->import();
 
-			$rs = setRights(
-				$userStatisticsDir,
-				{
-					'filemode' => '0640',
-					'user' => $main::imscpConfig{'ROOT_USER'},
-					'group' => $data->{'GROUP'},
-					'recursive' => 1
-				}
-			);
+			$rs = setRights( $userStatisticsDir, {
+				filemode => '0640', user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, recursive => 1
+			});
 			return $rs if $rs;
 		}
 
@@ -175,7 +163,6 @@ sub addDmn
 		return $rs if $rs;
 
 		unless(-f "$userStatisticsDir/awstats.$data->{'DOMAIN_NAME'}.html") {
-			my ($stdout, $stderr);
 			$rs = execute(
 				"echo " .
 				"'perl " .
@@ -183,21 +170,20 @@ sub addDmn
 				"-config=$data->{'DOMAIN_NAME'} " .
 				"-update -awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl -dir=$userStatisticsDir' " .
 				"| batch",
-				\$stdout,
-				\$stderr
+				\my $stdout,
+				\my $stderr
 			);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
-			error("Unable to schedule generation of AWStats static pages") if $rs && ! $stderr;
+			error("Could not schedule generation of AWStats static pages") if $rs && !$stderr;
 			return $rs if $rs;
 		}
 	} else {
 		$rs = iMSCP::Dir->new( dirname => $userStatisticsDir )->remove();
+		return $rs if $rs;
 	}
 
 	$rs = setImmutable($data->{'HOME_DIR'}) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
-	return $rs if $rs;
-
 	$rs;
 }
 
@@ -218,7 +204,6 @@ sub deleteDmn
 	my $wrkFileName = "$self->{'wrkDir'}/awstats.$data->{'DOMAIN_NAME'}.conf";
 
 	my $rs = 0;
-
 	$rs = iMSCP::File->new( filename => $cfgFileName )->delFile() if -f $cfgFileName;
 	return $rs if $rs;
 
@@ -229,8 +214,7 @@ sub deleteDmn
 		my $userStatisticsDir = "$data->{'HOME_DIR'}/statistics";
 
 		if(-d $userStatisticsDir) {
-			my @awstatsStaticFiles = iMSCP::Dir->new(
-				dirname => $userStatisticsDir,
+			my @awstatsStaticFiles = iMSCP::Dir->new(dirname => $userStatisticsDir,
 				fileType => '^' . quotemeta("awstats.$data->{'DOMAIN_NAME'}") . '.*?\\.html'
 			)->getFiles();
 
@@ -249,8 +233,7 @@ sub deleteDmn
 	my $awstatsCacheDir = $main::imscpConfig{'AWSTATS_CACHE_DIR'};
 
 	if(-d $awstatsCacheDir) {
-		my @awstatsCacheFiles = iMSCP::Dir->new(
-			dirname => $awstatsCacheDir,
+		my @awstatsCacheFiles = iMSCP::Dir->new( dirname => $awstatsCacheDir,
 			fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta(".$data->{'DOMAIN_NAME'}.txt")
 		)->getFiles();
 
@@ -316,7 +299,7 @@ sub deleteSub
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/awstats";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -324,7 +307,6 @@ sub _init
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
 	iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', sub { $self->_addAwstatsSection(@_); });
-
 	$self;
 }
 
@@ -346,40 +328,36 @@ sub _addAwstatsSection
 {
 	my ($self, $cfgTpl, $tplName, $data) = @_;
 
-	if($tplName =~ /^domain(?:_ssl)?\.tpl$/ && $data->{'FORWARD'} eq 'no') {
-		require Servers::httpd;
-		my $httpd = Servers::httpd->factory();
+	return 0 unless $tplName =~ /^domain(?:_ssl)?\.tpl$/ && $data->{'FORWARD'} eq 'no';
 
-		my $version = $httpd->{'config'}->{'HTTPD_VERSION'};
+	require Servers::httpd;
+	my $httpd = Servers::httpd->factory();
+	my $version = $httpd->{'config'}->{'HTTPD_VERSION'};
 
-		$$cfgTpl = replaceBloc(
+	$$cfgTpl = replaceBloc(
+		"# SECTION addons BEGIN.\n",
+		"# SECTION addons END.\n",
+		"    # SECTION addons BEGIN.\n" .
+		getBloc(
 			"# SECTION addons BEGIN.\n",
 			"# SECTION addons END.\n",
-
-			"    # SECTION addons BEGIN.\n" .
-			getBloc(
-				"# SECTION addons BEGIN.\n",
-				"# SECTION addons END.\n",
-				$$cfgTpl
-			) .
-			process(
-				{
-					AUTHZ_ALLOW_ALL => (version->parse($version) >= version->parse('2.4.0'))
-						? 'Require all granted' : 'Allow from all',
-					AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-					DOMAIN_NAME => $data->{'DOMAIN_NAME'},
-					HOME_DIR => $data->{'HOME_DIR'},
-					HTACCESS_USERS_FILENAME => $httpd->{'config'}->{'HTACCESS_USERS_FILENAME'},
-					HTACCESS_GROUPS_FILENAME => $httpd->{'config'}->{'HTACCESS_GROUPS_FILENAME'}
-				},
-				$self->_getApacheConfSnippet()
-			) .
-			"    # SECTION addons END.\n",
-
 			$$cfgTpl
-		);
-	}
-
+		) .
+		process(
+			{
+				AUTHZ_ALLOW_ALL => version->parse($version) >= version->parse('2.4.0')
+					? 'Require all granted' : 'Allow from all',
+				AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
+				DOMAIN_NAME => $data->{'DOMAIN_NAME'},
+				HOME_DIR => $data->{'HOME_DIR'},
+				HTACCESS_USERS_FILENAME => $httpd->{'config'}->{'HTACCESS_USERS_FILENAME'},
+				HTACCESS_GROUPS_FILENAME => $httpd->{'config'}->{'HTACCESS_GROUPS_FILENAME'}
+			},
+			$self->_getApacheConfSnippet()
+		) .
+		"    # SECTION addons END.\n",
+		$$cfgTpl
+	);
 	0;
 }
 
@@ -448,13 +426,12 @@ sub _addAwstatsConfig
 
 	my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get();
 	unless(defined $tplFileContent) {
-		error("Unable to read $tplFileContent->{'filename'}");
+		error(sprintf('Could not read read %s file', $tplFileContent->{'filename'}));
 		return 1;
 	}
 
 	require Servers::httpd;
 	my $httpd = Servers::httpd->factory();
-
 	my $tags = {
 		ALIAS => $data->{'ALIAS'},
 		AWSTATS_CACHE_DIR => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
@@ -475,17 +452,10 @@ sub _addAwstatsConfig
 	my $file = iMSCP::File->new(
 		filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf"
 	);
-
 	my $rs = $file->set($tplFileContent);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->save();
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 }
 
 =item _addAwstatsCronTask(\%data)
@@ -501,23 +471,21 @@ sub _addAwstatsCronTask
 {
 	my ($self, $data) = @_;
 
-	Servers::cron->factory()->addTask(
-		{
-			TASKID => "Package::Webstats::Awstats ($data->{'DOMAIN_NAME'})",
-			MINUTE => int(rand(60)), # random number between 0..59
-			HOUR => int(rand(6)), # random number between 0..5
-			DAY => '*',
-			MONTH => '*',
-			DWEEK => '*',
-			USER => $main::imscpConfig{'ROOT_USER'},
-			COMMAND =>
-				'nice -n 15 ionice -c2 -n5 perl ' .
-				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl " .
-				"-config=$data->{'DOMAIN_NAME'} -update " .
-				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl " .
-				"-dir=$data->{'HOME_DIR'}/statistics > /dev/null 2>&1"
-		}
-	);
+	Servers::cron->factory()->addTask( {
+		TASKID => "Package::Webstats::Awstats ($data->{'DOMAIN_NAME'})",
+		MINUTE => int(rand(60)), # random number between 0..59
+		HOUR => int(rand(6)), # random number between 0..5
+		DAY => '*',
+		MONTH => '*',
+		DWEEK => '*',
+		USER => $main::imscpConfig{'ROOT_USER'},
+		COMMAND =>
+			'nice -n 15 ionice -c2 -n5 perl ' .
+			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl " .
+			"-config=$data->{'DOMAIN_NAME'} -update " .
+			"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl " .
+			"-dir=$data->{'HOME_DIR'}/statistics > /dev/null 2>&1"
+	});
 }
 
 =item _deleteAwstatsCronTask(\%data)
@@ -533,7 +501,7 @@ sub _deleteAwstatsCronTask
 {
 	my ($self, $data) = @_;
 
-	Servers::cron->factory()->deleteTask({ 'TASKID' => "Addons::Webstats::Awstats ($data->{'DOMAIN_NAME'})" });
+	Servers::cron->factory()->deleteTask({ TASKID => "Addons::Webstats::Awstats ($data->{'DOMAIN_NAME'})" });
 }
 
 =back

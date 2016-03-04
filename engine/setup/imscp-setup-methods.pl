@@ -47,6 +47,7 @@ use iMSCP::OpenSSL;
 use Email::Valid;
 use iMSCP::Servers;
 use iMSCP::Packages;
+use iMSCP::Plugins;
 use iMSCP::Getopt;
 use iMSCP::Service;
 
@@ -73,36 +74,31 @@ sub setupRegisterListeners
 
 	for(iMSCP::Servers->getInstance()->get()) {
 		next if $_ eq 'noserver';
-
-		my $package = "Servers::$_";
-
-		eval "require $package";
-
+		my $server = "Servers::$_";
+		eval "require $server";
 		unless($@) {
-			my $instance = $package->factory();
+			my $instance = $server->factory();
 			$rs = $instance->registerSetupListeners($eventManager) if $instance->can('registerSetupListeners');
-		} else {
-			error($@);
-        	$rs = 1;
+			return $rs if $rs;
+			next;
 		}
 
-		return $rs if $rs;
+		error($@);
+		return 1;
 	}
 
 	for(iMSCP::Packages->getInstance()->get()) {
 		my $package = "Package::$_";
-
 		eval "require $package";
-
 		unless($@) {
 			my $instance = $package->getInstance();
 			$rs = $instance->registerSetupListeners($eventManager) if $instance->can('registerSetupListeners');
-		} else {
-			error($@);
-        	$rs = 1;
+			return $rs if $rs;
+			next;
 		}
 
-		return $rs if $rs;
+		error($@);
+		return 1;
 	}
 
 	$rs;
@@ -180,6 +176,7 @@ sub setupTasks
 		[\&setupDefaultAdmin,               'Creating/updating default admin account'],
 		[\&setupServices,                   'Setup i-MSCP services'],
 		[\&setupServiceSsl,                 'Setup SSL for i-MSCP services'],
+		[\&setupRegisterPluginListeners,    'Register plugin setup listeners'],
 		[\&setupPreInstallServers,          'Servers pre-installation'],
 		[\&setupPreInstallPackages,         'Packages pre-installation'],
 		[\&setupInstallServers,             'Servers installation'],
@@ -225,10 +222,10 @@ sub setupAskServerHostname
 			my $err = undef;
 
 			if (execute('hostname -f', \$hostname, \$err)) {
-				error("Unable to find server hostname (server misconfigured?): $err");
-			} else {
-				chomp($hostname);
+				die(sprintf('Could not find server hostname (server misconfigured?): %s', $err ? $err : 'Unknown error'));
 			}
+
+			chomp($hostname);
 		}
 
 		my $msg = '';
@@ -576,7 +573,7 @@ sub setupAskSqlUserHost
 	my $rs = 0;
 
 	if(setupGetQuestion('DATABASE_HOST') ne 'localhost') { # Remote MySQL server
-		if($main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] || ! $host) {
+		if($main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] || !$host) {
 			do {
 				($rs, $host) = $dialog->inputbox(
 "
@@ -1448,7 +1445,7 @@ sub setupUpdateDatabase
 
 	my $content = $file->get();
 	unless(defined $content) {
-		error("Unable to read $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
+		error(sprintf('Could not read %s file', "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php"));
 		return 1;
 	}
 
@@ -1461,7 +1458,7 @@ sub setupUpdateDatabase
 	}
 
 	my ($stdout, $stderr);
-	$rs = execute("php $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr);
+	$rs = execute("php -d date.timezone=UTC $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	return $rs if $rs;
@@ -1648,12 +1645,6 @@ sub setupServices
 	#}
 
 	my $serviceMngr = iMSCP::Service->getInstance();
-
-	if($serviceMngr->isUpstart()) {
-		# Work around https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=780641
-		$serviceMngr->getProvider('sysvinit')->remove('imscp_network');
-	}
-
 	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_network';
 
 	0;
@@ -1704,6 +1695,7 @@ sub setupRebuildCustomerFiles
 		#subdomain => 'subdomain_status', # This is now automatically done by the domain module
 		#subdomain_alias => 'subdomain_alias_status', # This is now automatically done by the alias module
 		#domain_dns => 'domain_dns_status', # This is now automatically done by the domain and alias modules
+		ftp_users => 'status',
 		mail_users => 'status',
 		htaccess => 'status',
 		htaccess_groups => 'status',
@@ -1778,9 +1770,13 @@ sub setupRebuildCustomerFiles
 
 	my $stderr;
 	$rs = executeNoWait(
-		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup",
-		sub { my $str = shift; while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//) { step(undef, $1, $2, $3); } },
-		sub { my $str = shift; while ($$str =~ s/^(.*\n)//) { $stderr .= $1; } }
+		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup" . (
+			iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? ' --verbose' : ''
+		),
+		(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose)
+			? sub { my $str = $_[0]; print $1 while ($$str =~ s/^(.*\n)//); }
+			: sub { my $str = $_[0]; step(undef, $1, $2, $3) while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//); },
+		sub { my $str = $_[0]; $stderr .= $1 while ($$str =~ s/^(.*\n)//); }
 	);
 
 	endDetail();
@@ -1794,6 +1790,45 @@ sub setupRebuildCustomerFiles
 	return $rs if $rs;
 
 	iMSCP::EventManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
+}
+
+# Register plugin setup listeners
+sub setupRegisterPluginListeners
+{
+	my ($db, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+	unless($db) {
+		error(sprintf('Could not connect to SQL server: %s', $errStr));
+		return 1;
+	}
+
+	$db->set('FETCH_MODE', 'arrayref');
+
+	my $pluginNames = $db->doQuery(undef, "SELECT plugin_name FROM plugin WHERE plugin_status = 'enabled'");
+	unless (ref $pluginNames eq 'ARRAY') {
+		error($pluginNames);
+		return 1;
+	}
+
+	$db->set('FETCH_MODE', 'hashref');
+
+	my $eventManager = iMSCP::EventManager->getInstance();
+
+	for my $pluginPath(iMSCP::Plugins->getInstance()->get()) {
+		my $pluginName = basename($pluginPath, '.pm');
+		next unless $pluginName ~~ $pluginNames;
+		eval { require $pluginPath; };
+		unless($@) {
+			my $plugin = 'Plugin::' . $pluginName;
+			my $rs = $plugin->registerSetupListeners($eventManager) if $plugin->can('registerSetupListeners');
+			return $rs if $rs;
+			next;
+		}
+
+		error($@);
+		return 1
+	}
+
+	0;
 }
 
 # Call preinstall method on all i-MSCP server packages

@@ -28,7 +28,9 @@
     # SECTION mod_fastcgi END.
 
     # SECTION mod_proxy_fcgi BEGIN.
-    <FilesMatch "\.php5?$">
+    SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+
+    <FilesMatch ".+\.ph(p[3457]?|t|tml)$">
         SetHandler "proxy:{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}"
     </FilesMatch>
     # SECTION mod_proxy_fcgi END.
@@ -52,7 +54,7 @@
         FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php-fcgi-starter
         # SECTION fcgid END.
         # SECTION itk BEGIN.
-        php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
+        php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/:/dev/random:/dev/urandom"
         php_admin_value upload_tmp_dir {TMPDIR}
         php_admin_value session.save_path {TMPDIR}
         php_admin_value soap.wsdl_cache_dir {TMPDIR}

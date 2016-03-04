@@ -56,7 +56,13 @@
         <proftpd>
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
+            <package_conflict>vsftpd</package_conflict>
         </proftpd>
+        <vsftpd>
+            <package>devscripts</package>
+            <package>libpam-mysql</package>
+            <package>vsftpd</package>
+        </vsftpd>
     </ftpd>
     <named default="bind">
         <bind>
@@ -70,7 +76,7 @@
                 pinning_package="libmysqlclient18 mysql-common mysql-client-5.5 mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
@@ -78,27 +84,24 @@
             <package>mysql-server-5.5</package>
         </mysql_5.5>
         <mysql_5.6
-                repository="http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.6"
-                repository_key_srv="pgp.mit.edu"
-                repository_key_id="0x8c718d3b5072e1f5"
-                pinning_package="*"
-                pinning_pin="origin repo.mysql.com"
+                pinning_package="libmysqlclient18 mysql-common mysql-client-5.6 mysql-server-5.6"
+                pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.7,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.7,percona_5.6,percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
-            <package>mysql-community-client</package>
+            <package>mysql-client-5.6</package>
             <package>mysql-common</package>
-            <package>mysql-community-server</package>
+            <package>mysql-server-5.6</package>
         </mysql_5.6>
         <mysql_5.7
                 repository="http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7"
-                repository_key_srv="pgp.mit.edu"
+                repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0x8c718d3b5072e1f5"
                 pinning_package="*"
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
-                allow_switch_to="percona_5.7,remote_server"
+                allow_switch="percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>libmysqlclient20</package>
@@ -111,7 +114,7 @@
                 pinning_package="libmysqlclient18 mariadb-client-5.5 mariadb-common mariadb-server-5.5 mysql-common"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
                 >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
@@ -127,13 +130,14 @@
                 pinning_package="*"
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
-                allow_switch_to="mariadb_10.1,remote_server"
+                allow_switch="mariadb_10.1,remote_server"
                 >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
             <package>mariadb-common</package>
             <package>mariadb-server-10.0</package>
+            <package>mysql-common</package>
         </mariadb_10.0>
         <mariadb_10.1
                 repository="http://mirror.netcologne.de/mariadb/repo/10.1/ubuntu trusty main"
@@ -149,6 +153,7 @@
             <package>mariadb-client-10.1</package>
             <package>mariadb-common</package>
             <package>mariadb-server-10.1</package>
+            <package>mysql-common</package>
         </mariadb_10.1>
         <percona_5.5
                 repository="http://repo.percona.com/apt trusty main"
@@ -157,7 +162,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.6,percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>
@@ -173,7 +178,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.7,percona_5.7,remote_server"
+                allow_switch="mysql_5.7,percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18.1</package>

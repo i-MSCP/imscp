@@ -32,10 +32,13 @@ function generateDomainsList($tpl)
 {
     $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query(
-        '
-            SELECT domain_id, domain_name, domain_created, domain_expires, domain_status FROM domain
+        "
+            SELECT t1.domain_id, t1.domain_name, t1.domain_created, t1.domain_expires, t1.domain_status,
+                t2.status as ssl_status
+            FROM domain AS t1
+            LEFT JOIN ssl_certs AS t2 ON(t2.domain_id = t1.domain_id AND t2.domain_type = 'dmn')
             WHERE domain_admin_id = ? ORDER BY domain_name
-        ',
+        ",
         $_SESSION['user_id']
     );
 
@@ -61,8 +64,15 @@ function generateDomainsList($tpl)
             'DOMAIN_CREATE_DATE' => tohtml(date($cfg['DATE_FORMAT'], $row['domain_created'])),
             'DOMAIN_EXPIRE_DATE' => $row['domain_expires'] != 0 ? tohtml(date($cfg['DATE_FORMAT'], $row['domain_expires'])) : tr('Never'),
             'DOMAIN_STATUS' => translate_dmn_status($row['domain_status']),
+            'DOMAIN_SSL_STATUS' => is_null($row['ssl_status'])
+                ? tr('Disabled')
+                : (
+                    in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
+                        ? translate_dmn_status($row['ssl_status'])
+                        : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
+                ),
             'CERT_SCRIPT' => tohtml('cert_view.php?domain_id=' . $row['domain_id'] . '&domain_type=dmn', 'htmlAttr'),
-            'VIEW_CERT' => customerHasFeature('ssl') ? tr('Add / Edit SSL certificate') : tr('View SSL certificate'),
+            'VIEW_CERT' => customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
         ));
         $tpl->parse('DOMAIN_ITEM', '.domain_item');
     }
@@ -83,10 +93,13 @@ function generateDomainAliasesList($tpl)
 
     $domainId = get_user_domain_id($_SESSION['user_id']);
     $stmt = exec_query(
-        '
-            SELECT alias_id, alias_name, alias_status, alias_mount, alias_ip_id, url_forward FROM domain_aliasses
-            WHERE domain_id = ? ORDER BY alias_mount, alias_name
-        ',
+        "
+            SELECT t1.alias_id, t1.alias_name, t1.alias_status, t1.alias_mount, t1.alias_ip_id, t1.url_forward,
+                t2.status AS ssl_status
+            FROM domain_aliasses AS t1
+            LEFT JOIN ssl_certs AS t2 ON(t1.alias_id = t2.domain_id AND t2.domain_type = 'als')
+            WHERE t1.domain_id = ? ORDER BY t1.alias_mount, t1.alias_name
+        ",
         $domainId
     );
 
@@ -129,6 +142,13 @@ function generateDomainAliasesList($tpl)
             'ALS_NAME' => tohtml($alsName),
             'ALS_MOUNT' => tohtml($alsMountPoint),
             'ALS_STATUS' => translate_dmn_status($alsStatus),
+            'ALS_SSL_STATUS' => is_null($row['ssl_status'])
+                ? tr('Disabled')
+                : (
+                    in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
+                        ? translate_dmn_status($row['ssl_status'])
+                        : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
+                ),
             'ALS_REDIRECT' => tohtml($redirectUrl),
             'ALS_EDIT_LINK' => $editLink,
             'ALS_EDIT' => $edit,
@@ -159,7 +179,7 @@ function generateDomainAliasAction($id, $status)
             tr('Delete'),
             tohtml("alias_delete.php?id=$id", 'htmlAttr'),
             true,
-            customerHasFeature('ssl') ? tr('Add / Edit SSL certificate') : tr('View SSL certificate'),
+            customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
             tohtml("cert_view.php?domain_id=$id&domain_type=als", 'htmlAttr')
         );
     }
@@ -222,23 +242,26 @@ function generateSubdomainsList($tpl)
 
     // Subdomains
     $stmt1 = exec_query(
-        '
-            SELECT subdomain_id, subdomain_name, subdomain_mount, subdomain_status, subdomain_url_forward, domain_name
-            FROM subdomain JOIN domain ON (subdomain.domain_id = domain.domain_id)
-            WHERE subdomain.domain_id = ? ORDER BY subdomain_name
-        ',
+        "
+            SELECT t1.subdomain_id, t1.subdomain_name, t1.subdomain_mount, t1.subdomain_status, t1.subdomain_url_forward,
+                t2.domain_name, t3.status AS ssl_status
+            FROM subdomain AS t1 JOIN domain AS t2 USING(domain_id)
+            LEFT JOIN ssl_certs AS t3 ON(t1.subdomain_id = t3.domain_id AND t3.domain_type = 'sub')
+            WHERE t1.domain_id = ? ORDER BY t1.subdomain_name
+        ",
         $domainId
     );
 
     // Domain aliases subdomains
     $stmt2 = exec_query(
-        '
-            SELECT subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_url_forward,
-                subdomain_alias_status, alias_name
-            FROM subdomain_alias JOIN domain_aliasses ON subdomain_alias.alias_id = domain_aliasses.alias_id
-            WHERE domain_id = ?
-            ORDER BY subdomain_alias_name
-        ',
+        "
+            SELECT t1.subdomain_alias_id, t1.subdomain_alias_name, t1.subdomain_alias_mount,
+                t1.subdomain_alias_url_forward, t1.subdomain_alias_status, t2.alias_name, t3.status AS ssl_status
+            FROM subdomain_alias AS t1 JOIN domain_aliasses AS t2 USING(alias_id)
+            LEFT JOIN ssl_certs AS t3 ON(t1.subdomain_alias_id = t3.domain_id AND t3.domain_type = 'alssub')
+            WHERE t2.domain_id = ?
+            ORDER BY t1.subdomain_alias_name
+        ",
         $domainId
     );
 
@@ -285,6 +308,13 @@ function generateSubdomainsList($tpl)
             'SUB_MOUNT' => tohtml($subMountPoint),
             'SUB_REDIRECT' => $redirectUrl,
             'SUB_STATUS' => translate_dmn_status($subStatus),
+            'SUB_SSL_STATUS' => is_null($row['ssl_status'])
+                ? tr('Disabled')
+                : (
+                    in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
+                        ? translate_dmn_status($row['ssl_status'])
+                        : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
+                ),
             'SUB_EDIT_LINK' => $editLink,
             'SUB_EDIT' => $edit,
             'CERT_SCRIPT' => $certScript,
@@ -331,6 +361,13 @@ function generateSubdomainsList($tpl)
             'SUB_MOUNT' => tohtml($alssubMountPoint),
             'SUB_REDIRECT' => $redirectUrl,
             'SUB_STATUS' => translate_dmn_status($alssubStatus),
+            'SUB_SSL_STATUS' => is_null($row['ssl_status'])
+                ? tr('Disabled')
+                : (
+                    in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
+                        ? translate_dmn_status($row['ssl_status'])
+                        : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
+                ),
             'SUB_EDIT_LINK' => $editLink,
             'SUB_EDIT' => $edit,
             'CERT_SCRIPT' => $certScript,
@@ -386,7 +423,7 @@ function generateSubdomainAction($id, $status)
         return array(
             tr('Delete'), tohtml("subdomain_delete.php?id=$id", 'htmlAttr'),
             true,
-            customerHasFeature('ssl') ? tr('Add / Edit SSL certificate') : tr('View SSL certificate'),
+            customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
             tohtml("cert_view.php?domain_id=$id&domain_type=sub", 'htmlAttr'),
         );
     }
@@ -409,7 +446,7 @@ function generateSubdomainAliasAction($id, $status)
             tr('Delete'),
             tohtml("alssub_delete.php?id=$id", 'htmlAttr'),
             true,
-            customerHasFeature('ssl') ? tr('Add / Edit SSL certificate') : tr('View SSL certificate'),
+            customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
             tohtml("cert_view.php?domain_id=$id&domain_type=alssub", 'htmlAttr'),
         );
     }
@@ -433,8 +470,9 @@ function generateCustomDnsRecordsList($tpl)
     $stmt = exec_query(
         "
             SELECT t1.*, IFNULL(t3.alias_name, t2.domain_name) zone_name
-            FROM domain_dns AS t1 LEFT JOIN domain AS t2 USING (domain_id) LEFT JOIN domain_aliasses AS t3 USING (alias_id)
-            WHERE  t1.domain_id = ? $filterCond ORDER BY t1.domain_id, t1.alias_id, t1.domain_dns, t1.domain_type
+            FROM domain_dns AS t1 LEFT JOIN domain AS t2 USING (domain_id)
+            LEFT JOIN domain_aliasses AS t3 USING (alias_id)
+            WHERE t1.domain_id = ? $filterCond ORDER BY t1.domain_id, t1.alias_id, t1.domain_dns, t1.domain_type
         ",
         get_user_domain_id($_SESSION['user_id'])
     );
@@ -576,7 +614,7 @@ $tpl->assign(array(
     'TR_MOUNT' => tr('Mount point'),
     'TR_REDIRECT' => tr('Redirect'),
     'TR_STATUS' => tr('Status'),
-    'TR_CERT' => tr('SSL certificate'),
+    'TR_SSL_STATUS' => tr('SSL status'),
     'TR_ACTIONS' => tr('Actions'),
     'TR_DNS' => tr('DNS resource records'),
     'TR_DNS_NAME' => tr('Name'),

@@ -197,13 +197,32 @@ sub _upgradeSystemTablesIfNecessary
 		return 1;
 	}
 
-	# Disable password validation plugins if any (bc reasons)
+	# Ensure that SQL root user uses mysql_native_password authentication plugin
+	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.7.6')
+		&& $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
+	) {
+		my $dbUser = $main::imscpConfig{'DATABASE_USER'};
+		my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
+		my $dbPass = decryptBlowfishCBC(
+			$main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
+		);
+
+		$qrs = $db->doQuery(
+			'u', "ALTER USER ?@? IDENTIFIED WITH 'mysql_native_password' BY ?", $dbUser, $dbHost, $dbPass
+		);
+		unless(ref $qrs eq 'HASH') {
+			error($qrs);
+			return 1;
+		}
+	}
+
+	# Disable unwanted validation/authentication plugins if any (bc reasons)
 	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.6.6')
 		&& $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
 		|| version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('10.1.2')
 		&& $main::imscpConfig{'SQL_SERVER'} =~ /^mariadb/
 	) {
-		for my $plugin(qw/cracklib_password_check simple_password_check validate_password/) {
+		for my $plugin(qw/cracklib_password_check simple_password_check validate_password auth_socket/) {
 			$qrs = $db->doQuery('name', "SELECT name FROM mysql.plugin WHERE name = '$plugin'");
 			unless(ref $qrs eq 'HASH') {
 				error($qrs);
@@ -264,6 +283,10 @@ sub _buildConf
 	my $mysqlGName = $self->{'config'}->{'SQLD_GROUP'};
 	my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
+	# Make sure that the conf.d directory exists
+	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
+	return $rs if $rs;
+
 	# Create the /etc/mysql/my.cnf file if missing
 	unless(-f "$confDir/my.cnf") {
 		$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'my.cnf', \my $cfgTpl, { });
@@ -282,9 +305,6 @@ sub _buildConf
 		$rs ||= $file->mode(0644);
 		return $rs if $rs;
 	}
-
-	# Make sure that the conf.d directory exists
-	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
 
 	$rs ||= $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', \my $cfgTpl, { });
 	return $rs if $rs;

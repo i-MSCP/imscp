@@ -46,7 +46,7 @@ Script which process i-MSCP backend requests.
 OPTIONS:
  -s,    --setup         Setup mode.
  -v,    --verbose       Enable verbose mode.},
- 'setup|s' => sub { $main::execmode =  'setup'; },
+ 'setup|s' => sub { $main::execmode = 'setup'; },
  'verbose|v' => sub { setVerbose(@_); }
 );
 
@@ -56,7 +56,7 @@ my $dbh = iMSCP::Database->factory()->getRawDb();
 
 sub _process
 {
-	my ($moduleName, $sql, $ipModule) = @_;
+	my ($moduleName, $sql, $ipsModule) = @_;
 
 	debug("Processing $moduleName module items");
 
@@ -71,7 +71,7 @@ sub _process
 	}
 
 	if(@{$rows}) {
-		$$ipModule++ if defined $ipModule;
+		$ipsModule = 1 if defined $ipsModule;
 
 		my $i = 1;
 		my $totalItems = scalar @{$rows};
@@ -171,7 +171,7 @@ sub run
 		"
 	);
 
-	my $ipsModule = 0;
+	my $ipsModule;
 
 	# Process toadd|tochange|torestore|toenable|todisable domain tasks
 	# For each entitty, process only if the parent entity is in a consistent state
@@ -299,6 +299,26 @@ sub run
 				alias_status IN('ok', 'disabled')
 			GROUP BY
 				alias_id
+		"
+	);
+
+	# Process toadd|tochange|toenable|todisable|todelete ftp users tasks
+	# For each entitty, process only if the parent entity is in a consistent state
+	$rs ||= _process(
+		'FtpUser',
+		"
+			SELECT
+				userid AS id, userid AS name, status AS status
+			FROM
+				ftp_users
+			INNER JOIN
+				domain ON(domain_admin_id = admin_id)
+			WHERE
+				status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+			AND
+				domain_status IN('ok', 'todelete', 'disabled')
+			ORDER BY
+				userid ASC
 		"
 	);
 
@@ -503,7 +523,7 @@ sub run
 	);
 
 	# Process IP addresses tasks
-	unless($rs || (! $ipsModule && $main::execmode ne 'setup')) {
+	unless($rs || (!$ipsModule && $main::execmode ne 'setup')) {
 		newDebug("Ips_module.log");
 
 		eval { require Modules::Ips };

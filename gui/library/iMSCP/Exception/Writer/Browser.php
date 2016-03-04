@@ -95,6 +95,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
 
 		# Fallback to inline template in case something goes wrong with template engine
 		if(!($tpl = $this->templateEngine)) {
+
 			echo <<<HTML
 <!DOCTYPE html>
 <html>

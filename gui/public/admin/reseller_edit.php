@@ -257,7 +257,7 @@ function _admin_generateLimitsForm($tpl, &$data)
         'TR_ACCOUNT_LIMITS' => tr('Account limits'),
         'TR_MAX_DMN_CNT' => tr('Domain limit') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
         'MAX_DMN_CNT' => tohtml($data['max_dmn_cnt']),
-        'TR_MAX_SUB_CNT' => tr('Subdomain limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+        'TR_MAX_SUB_CNT' => tr('Subdomain limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
         'MAX_SUB_CNT' => tohtml($data['max_sub_cnt']),
         'TR_MAX_ALS_CNT' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
         'MAX_ALS_CNT' => tohtml($data['max_als_cnt']),
@@ -625,7 +625,7 @@ function admin_checkAndUpdateData($resellerId)
             }
 
             // Nothing has been changed ?
-            if ($newValues == $oldValues) {
+            if ($newValues == $oldValues && !$needDaemonRequest) {
                 set_page_message(tr('Nothing has been changed.'), 'info');
                 return true;
             }

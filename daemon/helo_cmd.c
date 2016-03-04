@@ -18,14 +18,15 @@ int heloCommand(int fd)
 		if (rs == -1) {
 			free(buffer);
 			return -1;
-		} else if (rs == 1) {
-			continue;
-		} else {
-			break;
 		}
+
+		if (rs == 1) {
+			continue;
+		}
+
+		break;
 	}
 
 	free(buffer);
-
 	return 0;
 }

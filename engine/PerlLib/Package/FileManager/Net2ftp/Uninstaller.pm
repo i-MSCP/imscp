@@ -5,7 +5,7 @@ Package::FileManager::Net2ftp::Uninstaller - i-MSCP Net2ftp package uninstaller
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -49,12 +49,10 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_unregisterConfig();
-	return $rs if $rs;
-
-	$self->_removeFiles();
+	$rs ||= $self->_removeFiles();
 }
 
 =back
@@ -73,10 +71,9 @@ sub uninstall
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'frontend'} = Package::FrontEnd->getInstance();
-
 	$self;
 }
 
@@ -90,32 +87,29 @@ sub _init
 
 sub _unregisterConfig
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	for my $vhostFile('00_master.conf', '00_master_ssl.conf') {
-		if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile") {
-			my $file = iMSCP::File->new(
-				filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile"
-			);
+		next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile";
 
-			my $fileContent = $file->get();
-			unless(defined $fileContent) {
-				error("Unable to read file $file->{'filename'}");
-				return 1;
-			}
+		my $file = iMSCP::File->new(
+			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile"
+		);
 
-			$fileContent =~ s/[\t ]*include imscp_net2ftp.conf;\n//;
-
-			my $rs = $file->set($fileContent);
-			return $rs if $rs;
-
-			$rs = $file->save();
-			return $rs if $rs;
+		my $fileContent = $file->get();
+		unless(defined $fileContent) {
+			error(sprintf('Could not read %s file', $file->{'filename'}));
+			return 1;
 		}
+
+		$fileContent =~ s/[\t ]*include imscp_net2ftp.conf;\n//;
+
+		my $rs = $file->set($fileContent);
+		$rs ||= $file->save();
+		return $rs if $rs;
 	}
 
 	$self->{'frontend'}->{'reload'} = 1;
-
 	0;
 }
 
@@ -129,19 +123,14 @@ sub _unregisterConfig
 
 sub _removeFiles
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = iMSCP::Dir->new( dirname =>  "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
 	return $rs if $rs;
 
-	if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf") {
-		$rs = iMSCP::File->new(
-			filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf"
-		)->delFile();
-		return $rs if $rs;
-	}
+	return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf";
 
-	0;
+	iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf" )->delFile();
 }
 
 =back

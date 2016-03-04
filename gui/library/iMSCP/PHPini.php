@@ -689,7 +689,7 @@ class iMSCP_PHPini
             case 'phpiniDisableFunctions':
                 $allowedFunctionNames = array(
                     'exec', 'mail', 'passthru', 'phpinfo', 'popen', 'proc_open', 'show_source', 'shell', 'shell_exec',
-                    'symlink', 'system'
+                    'symlink', 'system', ''
                 );
 
                 return array_diff(explode(',', $value), $allowedFunctionNames) ? false : true;

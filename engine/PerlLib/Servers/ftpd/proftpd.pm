@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::ftpd::proftpd - i-MSCP Proftpd Server implementation
+ Servers::ftpd::proftpd - i-MSCP ProFTPD Server implementation
 
 =cut
 
@@ -186,9 +186,63 @@ sub addUser
 	$self->{'eventManager'}->trigger('AfterFtpdAddUser', $data);
 }
 
+=item addFtpUser(\%data)
+
+ Add FTP user
+
+ Param hash \%data Ftp user as provided by Modules::FtpUser module
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addFtpUser
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdAddFtpUser', $data);
+	$rs || ($self->{'reload'} = 1);
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdAddFtpUser', $data);
+}
+
+=item disableFtpUser(\%data)
+
+ Disable FTP user
+
+ Param hash \%data Ftp user data as provided by Modules::FtpUser module
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disableFtpUser
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDisableFtpUser', $data);
+	$rs || ($self->{'reload'} = 1);
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDisableFtpUser', $data);
+}
+
+=item deleteFtpUser(\%data)
+
+ Delete FTP user
+
+ Param hash \%data Ftp user data as provided by Modules::FtpUser module
+ Return int 0 on success, other on failure
+
+=cut
+
+sub deleteFtpUser
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDeleteFtpUser', $data);
+	$rs || ($self->{'reload'} = 1);
+	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDeleteFtpUser', $data);
+}
+
 =item start()
 
- Start Proftpd
+ Start ProFTPD
 
  Return int 0, other on failure
 
@@ -213,7 +267,7 @@ sub start
 
 =item stop()
 
- Stop Proftpd
+ Stop ProFTPD
 
  Return int 0, other on failure
 
@@ -238,7 +292,7 @@ sub stop
 
 =item restart()
 
- Restart Proftpd
+ Restart ProFTPD
 
  Return int 0, other on failure
 
@@ -272,9 +326,34 @@ sub restart
 	$self->{'eventManager'}->trigger('afterFtpdRestart');
 }
 
+=item reload()
+
+ Reload ProFTPD
+
+ Return int 0, other on failure
+
+=cut
+
+sub reload
+{
+	my $self = shift;
+
+	my $rs = $self->{'eventManager'}->trigger('beforeFtpdReload');
+	return $rs if $rs;
+
+	local $@;
+	eval { iMSCP::Service->getInstance()->reload($self->{'config'}->{'FTPD_SNAME'}); };
+	if($@) {
+		error($@);
+		return 1;
+	}
+
+	$self->{'eventManager'}->trigger('afterFtpdReload');
+}
+
 =item getTraffic()
 
- Get ftpd traffic data
+ Get ProFTPD traffic data
 
  Return hash Traffic data or die on failure
 

@@ -25,6 +25,9 @@ package Servers::sqld::remote_server;
 
 use strict;
 use warnings;
+use iMSCP::Execute qw/escapeShell/;
+use iMSCP::Crypt qw/decryptBlowfishCBC/;
+use iMSCP::TemplateParser;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
@@ -47,9 +50,16 @@ sub preinstall
 {
 	my $self = shift;
 
-	my $rs = $self->_setVersion();
+	my $rs = $self->{'eventManager'}->trigger('beforeSqldPreinstall');
+	return $rs if $rs;
+
+	require Servers::sqld::mysql::installer;
+
+	my $installer = Servers::sqld::mysql::installer->getInstance();
+	$rs = $installer->_setVersion();
 	$rs ||= $self->_buildConf();
-	$rs ||= $self->_saveConf();
+	$rs ||= $installer->_saveConf();
+	$rs ||= $self->{'eventManager'}->trigger('afterSqldPreinstall')
 }
 
 =item postinstall()
@@ -104,6 +114,10 @@ sub _buildConf
 	my $mysqlGName = $self->{'config'}->{'SQLD_GROUP'};
 	my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
+	# Make sure that the conf.d directory exists
+	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
+	return $rs if $rs;
+
 	# Create the /etc/mysql/my.cnf file if missing
 	unless(-f "$confDir/my.cnf") {
 		$rs = $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'my.cnf', \my $cfgTpl, { });
@@ -122,9 +136,6 @@ sub _buildConf
 		$rs ||= $file->mode(0644);
 		return $rs if $rs;
 	}
-
-	# Make sure that the conf.d directory exists
-	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
 
 	$rs ||= $self->{'eventManager'}->trigger('onLoadTemplate',  'mysql', 'imscp.cnf', \my $cfgTpl, { });
 	return $rs if $rs;

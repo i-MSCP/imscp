@@ -5,7 +5,7 @@ Package::AntiRootkits::Rkhunter::Uninstaller - i-MSCP Rkhunter Anti-Rootkits pac
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -67,10 +67,9 @@ sub _restoreDebianConfig
 {
 	if(-f '/etc/default/rkhunter') {
 		my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
-
 		my $fileContent = $file->get();
 		unless(defined $fileContent) {
-			error("Unable to read /etc/default/rkhunter file");
+			error("Could not read /etc/default/rkhunter file");
 			return 1;
 		}
 
@@ -78,34 +77,26 @@ sub _restoreDebianConfig
 		$fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE=""/i;
 
 		my $rs = $file->set($fileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
+		$rs ||= $file->save();
 		return $rs if $rs;
 	}
 
 	if(-f '/etc/cron.daily/rkhunter.disabled') {
-		my $rs = iMSCP::File->new(
-			filename => '/etc/cron.daily/rkhunter.disabled'
-		)->moveFile(
+		my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter.disabled' )->moveFile(
 			'/etc/cron.daily/rkhunter'
 		);
 		return $rs if $rs;
 	}
 
 	if(-f '/etc/cron.weekly/rkhunter.disabled') {
-		my $rs = iMSCP::File->new(
-			filename => '/etc/cron.weekly/rkhunter.disabled'
-		)->moveFile(
+		my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter.disabled' )->moveFile(
 			'/etc/cron.weekly/rkhunter'
 		);
 		return $rs if $rs;
 	}
 
 	if(-f '/etc/logrotate.d/rkhunter.disabled') {
-		my $rs = iMSCP::File->new(
-			filename => '/etc/logrotate.d/rkhunter.disabled'
-		)->moveFile(
+		my $rs = iMSCP::File->new( filename => '/etc/logrotate.d/rkhunter.disabled' )->moveFile(
 			'/etc/logrotate.d/rkhunter'
 		);
 		return $rs if $rs;

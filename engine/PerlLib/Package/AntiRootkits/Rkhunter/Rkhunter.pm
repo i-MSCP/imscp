@@ -5,7 +5,7 @@ Package::AntiRootkits::Rkhunter::Rkhunter - i-MSCP Rkhunter package
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -46,7 +46,6 @@ use parent 'Common::SingletonClass';
 sub preinstall
 {
 	require Package::AntiRootkits::Rkhunter::Installer;
-
 	Package::AntiRootkits::Rkhunter::Installer->getInstance()->preinstall();
 }
 
@@ -61,7 +60,6 @@ sub preinstall
 sub install
 {
 	require Package::AntiRootkits::Rkhunter::Installer;
-
 	Package::AntiRootkits::Rkhunter::Installer->getInstance()->install();
 }
 
@@ -76,7 +74,6 @@ sub install
 sub uninstall
 {
 	require Package::AntiRootkits::Rkhunter::Uninstaller;
-
 	Package::AntiRootkits::Rkhunter::Uninstaller->getInstance()->uninstall();
 }
 
@@ -91,7 +88,6 @@ sub uninstall
 sub setEnginePermissions
 {
 	require Package::AntiRootkits::Rkhunter::Installer;
-
 	Package::AntiRootkits::Rkhunter::Installer->getInstance()->setEnginePermissions();
 }
 

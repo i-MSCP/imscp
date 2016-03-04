@@ -121,7 +121,7 @@ function set_page_message($message, $level = 'info')
 	}
 
 	if (isset($namespace->{$level})) {
-		$namespace->{$level} .= "\n<br />$message";
+		$namespace->{$level} .= "\n<br>$message";
 	} else {
 		$namespace->{$level} = $message;
 	}
@@ -140,7 +140,7 @@ function format_message($messages)
 
 	if (is_array($messages)) {
 		foreach ($messages as $message) {
-			$string .= $message . "<br />\n";
+			$string .= $message . "<br>\n";
 		}
 	} elseif (is_string($messages)) {
 		$string = $messages;

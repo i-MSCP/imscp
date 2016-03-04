@@ -197,8 +197,13 @@ sub uninstallPackages
 	@{$packages} = grep { not $_ ~~ @packagesToIgnore } uniq(@{$packages});
 
 	if(@{$packages}) {
-		# Do not try to remove packages which are no longer available
-		my $rs = execute("LANG=C dpkg-query -W -f='\${Package}\n' @{$packages} 2>/dev/null", \my $stdout, \my $stderr);
+		# Do not try to remove packages which are no installed or not available
+		my $rs = execute(
+			"dpkg-query -W -f='\${Package} \${Version}\n' @{$packages} 2>/dev/null " .
+				"| grep '[[:blank:]][[:alnum:]]' | cut -d ' ' -f 1",
+			\my $stdout,
+			\my $stderr
+		);
 		error($stderr) if $stderr && $rs > 1;
 		return $rs if $rs > 1;
 
@@ -209,6 +214,12 @@ sub uninstallPackages
 	return $rs if $rs;
 
 	if(@{$packages}) {
+		# Ensure that packages are not frozen
+		# # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+		execute("LANG=C apt-mark unhold @{$packages}", \my $stdout, \my $stderr);
+		debug($stdout) if $stdout;
+		debug($stderr) if $stderr;
+
 		my @command = ();
 
 		if(!iMSCP::Getopt->preseed && !iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find('debconf-apt-progress')) {
@@ -218,8 +229,7 @@ sub uninstallPackages
 
 		push @command, "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packages}";
 
-		my $stdout;
-		my $rs = execute("@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \my $stderr);
+		my $rs = execute("@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error('Could not uninstall packages') if $rs && ! $stderr;
@@ -480,6 +490,8 @@ EOF
 		}
 
 		# Conflicting packages that must be pre-removed
+		# This can be obsolete packages which would prevent installation of new packages, or packages which were
+		# frozen with the 'apt-mark hold <package>' command.
 		if($pkgList->{$section}->{$sAlt}->{'package_conflict'}) {
 			push @{$self->{'packagesToPreUninstall'}}, @{$pkgList->{$section}->{$sAlt}->{'package_conflict'}};
 		}
@@ -502,6 +514,8 @@ EOF
 
  Add required sections to repositories that support them
 
+ Note: Also enable source repositories for the sections when available.
+
  Return int 0 on success, other on failure
 
 =cut
@@ -511,57 +525,59 @@ sub _updateAptSourceList
 	my $self = shift;
 
 	my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
-	my $rs = $file->copyFile('/etc/apt/sources.list.bkp');
-	return $rs if $rs;
 
-	my $fileContent = $file->get();
-	unless (defined $fileContent) {
-		error('Could not read /etc/apt/sources.list file');
-		return 1;
+	unless(-f '/etc/apt/sources.list.bkp') {
+		my $rs = $file->copyFile('/etc/apt/sources.list.bkp');
+		return $rs;
 	}
 
-	my ($foundSection, $stdout, $stderr);
+	my $fileContent = $file->get();
+	my $fsec = 0;
 
-	for my $section(@{$self->{'repositorySections'}}) {
+	for my $sec(@{$self->{'repositorySections'}}) {
 		my @seen = ();
 
 		while($fileContent =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/gm) {
-			my %repository = %+;
+			my $rf = $&;
+			my %rc = %+;
+			next if "$rc{'uri'} $rc{'distrib'}" ~~ @seen;
 
-			if("$repository{'uri'} $repository{'distrib'}" ~~ @seen) {
-				debug("Repository '$repository{'uri'} $repository{'distrib'}' already checked for '$section' section");
-				next;
-			}
-
-			debug("Checking repository '$repository{'uri'} $repository{'distrib'}' for '$section' section");
-
-			if($fileContent !~ /^deb\s+$repository{'uri'}\s+\b$repository{'distrib'}\b\s+.*\b$section\b/m) {
-				my $uri = "$repository{'uri'}/dists/$repository{'distrib'}/$section/";
-				$rs = execute("wget --spider $uri", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
+			if($fileContent !~ /^deb\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
+				my $rs = execute("wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/", \my $stdout, \my $stderr);
 				debug($stderr) if $rs && $stderr;
-
 				unless($rs) {
-					$foundSection = 1;
-					debug("Enabling section '$section' on '$repository{'uri'} $repository{'distrib'}'");
-					$fileContent =~ s/^($&)$/$1 $section/m;
+					$fsec = 1;
+					$fileContent =~ s/^($rf)$/$1 $sec/m;
+					$rf .= " $sec";
 				}
 			} else {
-				debug("Section '$section' already enabled on '$repository{'uri'} $repository{'distrib'}'");
-				$foundSection = 1;
+				$fsec = 1;
 			}
 
-			push @seen, "$repository{'uri'} $repository{'distrib'}";
+			if($fsec && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
+				my $rs = execute("wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/source/", \my $stdout, \my $stderr);
+				debug($stderr) if $rs && $stderr;
+
+				unless ($rs) {
+					if($fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'distrib'}\s.*/m) {
+						$fileContent =~ s/^($rf)/$1\ndeb-src $rc{'uri'} $rc{'distrib'} $sec/m;
+					} else {
+						$fileContent =~ s/^($&)$/$1 $sec/m;
+					}
+				}
+			}
+
+			push @seen, "$rc{'uri'} $rc{'distrib'}";
 		}
 
-		unless($foundSection) {
-			error("Could not find repository supporting '$section' section");
+		unless($fsec) {
+			error(sprintf('Could not find repository supporting %s section', $sec));
 			return 1;
 		}
 	}
 
-	$rs = $file->set($fileContent);
-	$rs ||= $file->save();
+	$file->set($fileContent);
+	$file->save();
 }
 
 =item _processAptRepositories()
@@ -731,24 +747,29 @@ sub _prefillDebconfDatabase
 		return $rs if $rs;
 	}
 
-	my ($sqlServer, $sqlServerVersion) = $main::questions{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/;
 	my $poServer = $main::questions{'PO_SERVER'};
 
+	my ($sqlServer, $sqlServerVersion) = ('remote_server', undef);
 	my ($sqlServerQuestionOwner, $sqlServerQuestionPrefix);
-	if($sqlServer eq 'mysql') {
-		if('mysql-community-server' ~~ @{$self->{'packagesToInstall'}}) {
-			$sqlServerQuestionOwner = 'mysql-community-server';
-			$sqlServerQuestionPrefix = 'mysql-community-server';
-		} else {
-			$sqlServerQuestionOwner = 'mysql-server-' . $sqlServerVersion;
+
+	if($main::questions{'SQL_SERVER'} ne 'remote_server') {
+		($sqlServer, $sqlServerVersion) = $main::questions{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/;
+
+		if ($sqlServer eq 'mysql') {
+			if ('mysql-community-server' ~~ @{$self->{'packagesToInstall'}}) {
+				$sqlServerQuestionOwner = 'mysql-community-server';
+				$sqlServerQuestionPrefix = 'mysql-community-server';
+			} else {
+				$sqlServerQuestionOwner = 'mysql-server-'.$sqlServerVersion;
+				$sqlServerQuestionPrefix = 'mysql-server';
+			}
+		} elsif ($sqlServer eq 'mariadb') {
+			$sqlServerQuestionOwner = 'mariadb-server-'.$sqlServerVersion;
 			$sqlServerQuestionPrefix = 'mysql-server';
+		} else {
+			$sqlServerQuestionOwner = 'percona-server-server-'.$sqlServerVersion;
+			$sqlServerQuestionPrefix = 'percona-server-server';
 		}
-	} elsif($sqlServer eq 'mariadb') {
-		$sqlServerQuestionOwner = 'mariadb-server-' . $sqlServerVersion;
-		$sqlServerQuestionPrefix = 'mysql-server';
-	} else {
-		$sqlServerQuestionOwner = 'percona-server-server-' . $sqlServerVersion;
-		$sqlServerQuestionPrefix = 'percona-server-server';
 	}
 
 	# Most values below are not really important because i-MSCP will override them after package installation
@@ -785,7 +806,7 @@ dovecot-core dovecot-core/ssl-cert-name string localhost
 EOF
 	}
 
-# Set default answer to yes foor purge of sasldb2 database
+# Set default answer to yes for purge of sasldb2 database
 $selectionsFileContent .= <<EOF;
 sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
 EOF
@@ -801,13 +822,13 @@ EOF
 	$selectionsFileContent .= <<EOF;
 $sqlServerQuestionOwner $sqlServerQuestionOwner/remove-data-dir boolean false
 EOF
-} else {
+} elsif($sqlServer ne 'remote_server') {
 	$selectionsFileContent .= <<EOF;
 $sqlServerQuestionOwner $sqlServerQuestionOwner/postrm_remove_databases boolean false
 EOF
 }
 
-	if(iMSCP::Getopt->preseed && $sqlServerQuestionOwner) {
+	if($sqlServer ne 'remote_server' && iMSCP::Getopt->preseed && $sqlServerQuestionOwner) {
 		$selectionsFileContent .= <<EOF;
 $sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password password $main::questions{'DATABASE_PASSWORD'}
 $sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password_again password $main::questions{'DATABASE_PASSWORD'}

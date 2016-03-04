@@ -44,10 +44,10 @@ sub run
 {
 	return 0 unless $main::imscpConfig{'BACKUP_IMSCP'} eq 'yes';
 
-	my $algorithm = lc($main::imscpConfig{'ZIP'});
+	my $algo = lc($main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'});
 
-	unless(exists $command->{$algorithm} || $algorithm eq 'no') {
-		error("Backup algorithm not supported: $algorithm");
+	unless(exists $command->{$algo} || $algo eq 'no') {
+		error(sprintf('Backup algorithm not supported: %s', $algo));
 		return 1;
 	}
 
@@ -66,18 +66,16 @@ sub run
 	return $rs if $rs;
 
 	# Remove any backup older than 7 days
-	my ($stdout, $stderr);
 	$rs = execute(
 		"find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r rm",
-		\$stdout,
-		\$stderr
+		\ my $stdout,
+		\ my $stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
 	my @errorMessages = (getMessageByType('warn'), getMessageByType('error'));
-
 	if(@errorMessages) {
 		require iMSCP::Mail;
 		iMSCP::Mail->new()->errmsg("@errorMessages");
@@ -90,31 +88,27 @@ sub _backupDatabase
 {
 	my $db = iMSCP::Database->factory();
 
-	if($db->can('dumpdb')) {
-		my $date = strftime "%Y.%m.%d-%H-%M", localtime;
-		my $sqlFName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/$main::imscpConfig{'DATABASE_NAME'}-$date.sql";
+	return 0 unless $db->can('dumpdb');
 
-		my $rs = $db->dumpdb($main::imscpConfig{'DATABASE_NAME'}, $sqlFName);
-		error("Unable to dump the $main::imscpConfig{'DATABASE_NAME'} database") if $rs;
-		return $rs if $rs;
+	my $date = strftime "%Y.%m.%d-%H-%M", localtime;
+	my $sqlFName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/$main::imscpConfig{'DATABASE_NAME'}-$date.sql";
 
-		my $algorithm = lc($main::imscpConfig{'ZIP'});
+	my $rs = $db->dumpdb($main::imscpConfig{'DATABASE_NAME'}, $sqlFName);
+	error(sprintf('Could not dump the %s database', $main::imscpConfig{'DATABASE_NAME'})) if $rs;
+	return $rs if $rs;
 
-		if($algorithm ne 'no') {
-			my @cmd = (
-				'nice', '-n', '15',     # Reduce the CPU priority
-				'ionice', '-c2', '-n5', # Reduce the I/O priority
-				$command->{$algorithm}->{'command'}, '--force',
-				escapeShell($sqlFName)
-			);
+	my $algo = lc($main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'});
+	my $level = $main::imscpConfig{'BACKUP_COMPRESS_LEVEL'};
+	$level = 1 unless $level =~ /^[1-9]$/;
 
-			my ($stdout, $stderr);
-			$rs = execute("@cmd", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
-				error($stderr) if $stderr;
-				return $rs if $rs;
-			}
+	if($algo ne 'no') {
+		my @cmd = ($command->{$algo}->{'command'}, "-$level", '--force', escapeShell($sqlFName));
+		$rs = execute("@cmd", \ my $stdout, \ my $stderr);
+		debug($stdout) if $stdout;
+
+		if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+			error($stderr) if $stderr;
+			return $rs if $rs;
 		}
 	}
 
@@ -124,34 +118,27 @@ sub _backupDatabase
 sub _backupConfig
 {
 	my $date = strftime "%Y.%m.%d-%H-%M", localtime;
-	my $archiveName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/config-backup-$date.tar";
+	my $archivePath = "$main::imscpConfig{'BACKUP_FILE_DIR'}/config-backup-$date.tar";
+	my $algo = lc($main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'});
+	my $level = $main::imscpConfig{'BACKUP_COMPRESS_LEVEL'};
+	$level = 1 unless $level =~ /^[1-9]$/;
 
-	my $algorithm = lc($main::imscpConfig{'ZIP'});
-
-	if($algorithm ne 'no') {
-		$archiveName .= '.' . $command->{$main::imscpConfig{'ZIP'}}->{'extension'};
+	if($algo ne 'no') {
+		$archivePath .= '.' . $command->{$main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'}}->{'extension'};
 	}
 
 	my @backupCommand = (
-		'nice', '-n', '15',                                                # Reduce the CPU priority
-		'ionice', '-c2', '-n5',                                            # Reduce the I/O priority
-		'tar',
-		'--create',                                                        # Create new archive
-		"--directory=$main::imscpConfig{'CONF_DIR'}",                      # Change to directory
-		($algorithm ne 'no')
-			? "--use-compress-program=$algorithm"                          # Compress archive with given program
-			: '',                                                          # No compression
-		'--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]',  # Exclude backup files
-		'--preserve-permissions',                                          # Preserve permissions
-		"--file=$archiveName",                                             # use archive file
-		'.'                                                                # pathname
+		"tar -c -C $main::imscpConfig{'CONF_DIR'}",
+		 '--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]',
+		 '--preserve-permissions',
+		 '.',
+		$algo eq 'no' ? "-f $archivePath" : "| $command->{$algo}->{'command'} -$level > $archivePath"
 	);
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute("@backupCommand", \$stdout, \$stderr);
+	my $rs = execute("@backupCommand", \ my $stdout, \ my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Unable to create i-MSCP configuration backup") if $rs && ! $stderr;
+	error('Could not create i-MSCP configuration backup') if $rs && !$stderr;
 	return $rs if $rs;
 
 	0;

@@ -83,6 +83,8 @@ END
 			$rs ||= $Servers::ftpd::instance->start();
 		} elsif($Servers::ftpd::instance->{'restart'}) {
 			$rs ||= $Servers::ftpd::instance->restart();
+		} elsif($Servers::ftpd::instance->{'reload'}) {
+			$rs ||= $Servers::ftpd::instance->reload();
 		}
 
 		$? = $rs;

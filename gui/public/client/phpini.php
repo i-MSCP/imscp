@@ -118,12 +118,19 @@ function updatePhpConfig($phpini, $configLevel)
 {
     global $phpini, $configLevel;
 
-    if (!isset($_POST['domain_id']) || !isset($_POST['domain_type'])) {
-        showBadRequestErrorPage();
+    if (isset($_POST['domain_id']) && isset($_POST['domain_type'])) {
+        $dmnId = intval($_POST['domain_id']);
+        $dmnType = clean_input($_POST['domain_type']);
+    } else {
+        $dmnId = get_user_domain_id($_SESSION['user_id']);
+        $dmnType = 'dmn';
     }
 
-    $dmnId = intval($_POST['domain_id']);
-    $dmnType = clean_input($_POST['domain_type']);
+    if ($configLevel == 'per_user' && $dmnType != 'dmn'
+        || $configLevel == 'per_domain' && !in_array($dmnType, array('dmn', 'als'))
+    ) {
+        showBadRequestErrorPage();
+    }
 
     if ($configLevel == 'per_user' && $dmnType != 'dmn' || $configLevel == 'per_domain' &&
         !in_array($dmnType, array('dmn', 'als'))
@@ -208,13 +215,11 @@ function updatePhpConfig($phpini, $configLevel)
  */
 function generatePage($tpl, $phpini, $config, $configLevel)
 {
-    $mainDmnId = get_user_domain_id($_SESSION['user_id']);
-
     if (isset($_GET['domain_id']) && isset($_GET['domain_type'])) {
         $dmnId = intval($_GET['domain_id']);
         $dmnType = clean_input($_GET['domain_type']);
     } else {
-        $dmnId = $mainDmnId;
+        $dmnId = get_user_domain_id($_SESSION['user_id']);
         $dmnType = 'dmn';
     }
 
@@ -282,9 +287,9 @@ function generatePage($tpl, $phpini, $config, $configLevel)
         $errorReporting = $phpini->getDomainIni('phpiniErrorReporting');
         $tpl->assign(array(
             'TR_ERROR_REPORTING' => tohtml(tr('Error reporting')),
-            'TR_ERROR_REPORTING_DEFAULT' => tohtml(tr('All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)'), 'htmlAttr'),
-            'TR_ERROR_REPORTING_DEVELOPEMENT' => tohtml(tr('All errors (Development)'), 'htmlAttr'),
-            'TR_ERROR_REPORTING_PRODUCTION' => tohtml(tr('All errors, except E_DEPRECATED and E_STRICT (Production)'), 'htmlAttr'),
+            'TR_ERROR_REPORTING_DEFAULT' => tohtml(tr('All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)')),
+            'TR_ERROR_REPORTING_DEVELOPEMENT' => tohtml(tr('All errors (Development)')),
+            'TR_ERROR_REPORTING_PRODUCTION' => tohtml(tr('All errors, except E_DEPRECATED and E_STRICT (Production)')),
             'ERROR_REPORTING_0' => $errorReporting == 'E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED' ? ' selected' : '',
             'ERROR_REPORTING_1' => $errorReporting == 'E_ALL & ~E_DEPRECATED & ~E_STRICT' ? ' selected' : '',
             'ERROR_REPORTING_2' => $errorReporting == '-1' ? ' selected' : ''

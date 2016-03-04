@@ -4,17 +4,19 @@
 # 
 # Translators:
 # 9 Beliy <9beliy@gmail.com>, 2012
+# Arthur Mayer <mayer.arthur@gmail.com>, 2016
 # hosterdev <rwer353453534@mail.ru>, 2011
-# i-MSCP <team@i-mscp.net>, 2015
+# i-MSCP <team@i-mscp.net>, 2015-2016
 # Laurent Declercq <l.declercq@nuxwin.com>, 2015
 # Oleg Olegov <>, 2012
+# Thom Heemstra <thom@heemstra.us>, 2016
 # Vitaliy Zhukov <DragonZX@yandex.ru>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +130,7 @@ msgstr "было удалено {ADMIN}!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s должно быть ниже, чем %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -321,7 +323,7 @@ msgstr "%s: у реселлера есть клиент(ы) с неограни�
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
-msgstr ""
+msgstr "%s: Вы не можете отключить службу, уже проданную клиенту."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
@@ -496,26 +498,29 @@ msgid "(usually named"
 msgstr "(Обычное имя архива: "
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
-msgstr "<b>%1$s</b> имеет неограниченные права на <b>%2$s</b> службу.<br />"
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
+msgstr "<b>%1$s</b> имеет неограниченные права на <b>%2$s</b> службу.<br>"
 
 #, php-format
 msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
-"destination reseller.<br />"
-msgstr "<b>%1$s</b> превышает ограниченя для <b>%2$s</b><br />службы целевого реселлера.<br />"
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller.<br>"
+msgstr "<b>%1$s</b> превышает ограниченя для <b>%2$s</b><br>службы целевого реселлера.<br>"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br />This user cannot be moved!"
-msgstr "<b>%s</b> имеет IP адрес, который не может управляться целевым реселлером!<br />Этот пользователь не может быть перемещен!"
+"reseller!<br>This user cannot be moved!"
+msgstr "<b>%s</b> имеет IP адрес, который не может управляться целевым реселлером!<br>Этот пользователь не может быть перемещен!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "Расширение PHP остановило загрузку файла."
 
 msgid "A database update is available"
 msgstr "Доступно обновление базы данных."
+
+msgid "A hosting plan with same name already exists."
+msgstr "Хостинг-план с таким именем уже существует."
 
 msgid "A new i-MSCP version is available"
 msgstr "Доступна новая версия i-MSCP"
@@ -582,9 +587,6 @@ msgstr "Время истечения ссылки активации <small>(В
 
 msgid "Add"
 msgstr "Добавить"
-
-msgid "Add / Edit SSL certificate"
-msgstr "Добавить/Изменить SSL сертификат"
 
 msgid "Add FTP account"
 msgstr "Добавить учётную запись FTP"
@@ -868,9 +870,9 @@ msgid "Administrators and resellers"
 msgstr "Администраторы и реселлеры"
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br "
-"/>Refresh your site to see the new status!"
-msgstr "После загрузки пакета, он будет установлен в вашу систему.<br />Обновите Ваш сайт, чтобы увидеть новый статус!"
+"After your upload the package it will be installed on your "
+"systems.<br>Refresh your site to see the new status!"
+msgstr "После загрузки пакета, он будет установлен в вашу систему.<br>Обновите Ваш сайт, чтобы увидеть новый статус!"
 
 msgid "Alias forward"
 msgstr "Перенаправление алиаса"
@@ -894,19 +896,19 @@ msgid "All closed tickets were successfully deleted."
 msgstr "Все закрытые тикеты были успешно удалены."
 
 msgid "All errors (Development)"
-msgstr ""
+msgstr "Все ошибки (разработка)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
-msgstr ""
+msgstr "Все ошибки, кроме E_DEPRECATED и E_STRICT (продуктивно)"
 
 msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
-msgstr ""
+msgstr "Все ошибки, кроме E_NOTICE, E_STRICT и E_DEPRECATED (стандарт)"
 
 msgid "All fields are required."
 msgstr "Необходимо заполнить все поля."
 
 msgid "All fields are valid."
-msgstr ""
+msgstr "Все поля заполнены верно."
 
 msgid "All in"
 msgstr "Все вх"
@@ -969,9 +971,6 @@ msgstr "Вхождение указано дважды."
 
 msgid "An error occurred during authentication."
 msgstr "При попытке аутентификации обнаружена ошибка."
-
-msgid "An hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "Произошла неожиданная ошибка."
@@ -1076,23 +1075,23 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Вы уверены, что хотите удалить тикет %s ?"
 
 msgid "Are you sure you want to delete this DNS record?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить эту DNS запись?"
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Вы уверены что хотите удалить этот IP: %s?"
 
 msgid "Are you sure you want to delete this domain alias?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить этот алиас домена?"
 
 msgid "Are you sure you want to delete this hosting plan?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить этот хостинг-план?"
 
 msgid "Are you sure you want to delete this package?"
 msgstr "Вы уверены, что хотите удалить пакет?"
 
 msgid "Are you sure you want to delete this subdomain?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить этот поддомен?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1230,11 +1229,11 @@ msgstr "Кэш"
 
 #, php-format
 msgid "Can edit the PHP %s configuration option"
-msgstr ""
+msgstr "Может изменить PHP %s запись"
 
 #, php-format
 msgid "Can use the PHP %s function"
-msgstr ""
+msgstr "Может пользовать PHP %s функцию"
 
 msgid "Cancel"
 msgstr "Отмена"
@@ -1278,25 +1277,25 @@ msgid "Check for update"
 msgstr "Проверка обновлений"
 
 msgid ""
-"Check the reseller uploads!<br />It is not allowed to upload this package "
-"two times.<br />Refresh your site to see the new status!"
-msgstr "Проверьте загрузки реселлера!<br />Не разрешается загружать один и тот же пакет дважды.<br />Обновите страницу, чтобы увидет новый статус!"
+"Check the reseller uploads!<br>It is not allowed to upload this package two "
+"times.<br>Refresh your site to see the new status!"
+msgstr "Проверьте загрузки реселлера!<br>Не разрешается загружать один и тот же пакет дважды.<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid ""
-"Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Проверьте Ваши загрузки!<br />Сообщите администратору, если Вы не можете найти пакет.<br />Не разрешается загружать один и тот же пакет дважды.<br />Обновите страницу, чтобы увидет новый статус!"
+"Check your own uploads!<br>Ask the administrator if you don't find the "
+"package.<br>It is not allowed to upload this packages two times.<br>Refresh "
+"your site to see the new status!"
+msgstr "Проверьте Ваши загрузки!<br>Сообщите администратору, если Вы не можете найти пакет.<br>Не разрешается загружать один и тот же пакет дважды.<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid ""
-"Check your package. There is an error inside!<br />Refresh your site to see "
+"Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
-msgstr "Проверьте Ваш пакет. Он содержит ошибку!<br />Обновите страницу, чтобы увидет новый статус!"
+msgstr "Проверьте Ваш пакет. Он содержит ошибку!<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid ""
-"Check your software depot uploads!<br />It is not allowed to upload this "
-"package two times.<br />Refresh your site to see the new status!"
-msgstr "Проверьте загрузки репозитория!<br />Не разрешается загружать один и тот же пакет дважды.<br />Обновите страницу, чтобы увидет новый статус!"
+"Check your software depot uploads!<br>It is not allowed to upload this "
+"package two times.<br>Refresh your site to see the new status!"
+msgstr "Проверьте загрузки репозитория!<br>Не разрешается загружать один и тот же пакет дважды.<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid "Choose"
 msgstr "Выбрать"
@@ -1537,22 +1536,22 @@ msgid "Cores"
 msgstr "Ядра"
 
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось добавить/обновить SSL сертификат. Произошла неожиданная ошибка."
 
 msgid "Could not create domain alias. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось создать алиас домена. Произошла неожиданная ошибка."
 
 msgid "Could not delete SQL database. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось удалить базу данных SQL. Произошла неожиданная ошибка."
 
 msgid "Could not delete SQL user. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось удалить пользователя SQL. Произошла неожиданная ошибка."
 
 msgid "Could not delete SSL certificate. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось удалить SSL сертификат. Произошла неожиданная ошибка."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось сгенерировать SSL сертификат. Произошла неожиданная ошибка."
 
 msgid "Could not upload file."
 msgstr "Не могу загрузить файл."
@@ -1713,7 +1712,7 @@ msgid "Daily backup"
 msgstr "Ежедневная резервная копия"
 
 msgid "Data were altered. Please try again."
-msgstr ""
+msgstr "Данные были изменены. Пожалуйста попробуйте снова."
 
 msgid "Database"
 msgstr "База данных"
@@ -1827,14 +1826,14 @@ msgstr "Уважаемый {RESELLER},\n\t\tЗагруженное Вами ПО
 
 msgid ""
 "Dear {RESELLER},\n"
-"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
 "\n"
 "\tDetails:\n"
 "\tPackage Name: {SOFTWARE}\n"
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "Уважаемый {RESELLER},\n\tЗагруженное Вами ПО было успешно подтверждено администратором {ADMIN}.\n\n\tПодробности:\n\tНазвание пакета: {SOFTWARE}\n\tID Пакета: {SOFTWARE_ID}\n\n\tПожалуйста, войдите в вашу панель управления i-MSCP для получения подробностей."
+msgstr "Уважаемый {RESELLER},\n\nЗагруженное Вами ПО было успешно подтверждено администратором {ADMIN}.\n\nПодробности:\nНазвание пакета: {SOFTWARE}\nID Пакета: {SOFTWARE_ID}\n\nПожалуйста, войдите в вашу панель управления i-MSCP для получения подробностей."
 
 msgid "Debugger"
 msgstr "Отладчик"
@@ -1989,7 +1988,7 @@ msgid "Domain alias name"
 msgstr "Имя адиаса домена"
 
 msgid "Domain alias successfully created."
-msgstr ""
+msgstr "Алиас домена успешно добавлен."
 
 msgid "Domain alias successfully ordered."
 msgstr "Алиас домена успешно заказан."
@@ -2010,10 +2009,10 @@ msgid "Domain and SQL databases"
 msgstr "Домен и базы данных SQL"
 
 msgid "Domain data"
-msgstr ""
+msgstr "данные домена"
 
 msgid "Domain data were altered. Please try again."
-msgstr ""
+msgstr "Данные домена уже были изменены. Пожалуйста попробуйте снова."
 
 msgid "Domain details"
 msgstr "Информация о домене"
@@ -2028,7 +2027,7 @@ msgid "Domain expiration date must be filled."
 msgstr "Должна быть заполнена дата истечения домена."
 
 msgid "Domain for which PHP Editor must act."
-msgstr ""
+msgstr "Домен, для которого вы включаете редактор PHP"
 
 msgid "Domain limit"
 msgstr "Лимит доменов"
@@ -2363,6 +2362,9 @@ msgstr "Учётные записи FTP"
 msgid "FTP traffic"
 msgstr "FTP трафик"
 
+msgid "FTP user errors"
+msgstr "FTP Пользователи Ошибки"
+
 msgid "FTPs total"
 msgstr "FTP всего"
 
@@ -2562,13 +2564,13 @@ msgid "Hosting plan limits exceed reseller limits."
 msgstr "Хостинг-план превышает ограничения реселлера."
 
 msgid "Hosting plan limits exceed your limits."
-msgstr ""
+msgstr "Хостинг-план превышает Ваши ограничения."
 
 msgid "Hosting plan successfully created."
 msgstr "Хостинг-план успешно создан."
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Хостинг-план успешно удален."
 
 msgid "Hosting plan successfully updated."
 msgstr "Хостинг-план успешно обновлен."
@@ -2651,20 +2653,20 @@ msgid "IPv6 address field is empty or invalid."
 msgstr "Поле адреса IPv6 пустует или неверно."
 
 msgid "Id"
-msgstr ""
+msgstr "ID"
 
 msgid "If set to `yes`, Web folders will be protected against deletion."
-msgstr ""
+msgstr "Если да, Web-каталоги по инициативе i-MSCP будут защищены от удаления использованием неизменного флага (Расширенные атрибуты)."
 
 msgid ""
 "If set to `yes`, the reseller can allows his customers to edit this PHP "
 "configuration option."
-msgstr ""
+msgstr "Если да, то реселлер сможет позволить пользователю изменить эту опцию"
 
 msgid ""
 "If set to `yes`, the reseller can enable/disable the PHP mail function for "
 "his customers, else, the PHP mail function is disabled."
-msgstr ""
+msgstr "Если да, то реселлер может включать и выключать PHP mail() функцию. Иначе PHP mail() выключено."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Если Вы хотите ограничить реселлера, Вы сначала должны ограничить его клиентов."
@@ -2820,8 +2822,11 @@ msgstr "Неверное имя"
 msgid "Invalid SQL user host: %s"
 msgstr "Неверный хост SQL: %s"
 
-msgid "Invalid SSL certificate."
+msgid "Invalid SSL certificate"
 msgstr ""
+
+msgid "Invalid SSL certificate."
+msgstr "Негодный SSL сертификат."
 
 msgid "Invalid TXT data"
 msgstr "Неверные TXT данные"
@@ -3057,6 +3062,9 @@ msgstr "Искаженный запрос SQL"
 
 msgid "Manage SQL"
 msgstr "Управление SQL"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Управление htaccess пользователями и группами"
@@ -3344,7 +3352,7 @@ msgstr "Ничего не было удалено"
 msgid "Nothing has been scheduled for deactivation."
 msgstr "Ничего не было помечено для деактивации."
 
-msgid "Nothing to do. Daemon request has been canceled."
+msgid "Nothing to do. Daemon request has been cancelled."
 msgstr "Задача отсутствует. Запрос демона был отклонен."
 
 msgid "Notices, Warnings and Errors"
@@ -3392,7 +3400,7 @@ msgid "Open tickets"
 msgstr "Открытые тикеты"
 
 #, php-format
-msgid "Operation canceled: %s"
+msgid "Operation cancelled: %s"
 msgstr "Операция отменена: %s"
 
 msgid "Optional"
@@ -3430,10 +3438,10 @@ msgstr "PHP"
 
 #, php-format
 msgid "PHP %s configuration option"
-msgstr ""
+msgstr "Опция конфигурации PHP %s"
 
 msgid "PHP Configuration options"
-msgstr ""
+msgstr "Опции конфигурации PHP"
 
 msgid "PHP Editor"
 msgstr "Редактор PHP"
@@ -3442,7 +3450,7 @@ msgid "PHP GD extension not loaded."
 msgstr "PHP GD расширение не загружено."
 
 msgid "PHP Permissions"
-msgstr ""
+msgstr "Разрешения PHP"
 
 msgid "PHP Settings"
 msgstr "Настройки PHP"
@@ -3554,7 +3562,7 @@ msgid "Password is too long."
 msgstr "Пароль слишком длинный."
 
 msgid "Password minimum length"
-msgstr ""
+msgstr "Минимальная длина пароля"
 
 #, php-format
 msgid ""
@@ -3614,10 +3622,10 @@ msgid "Please confirm the password."
 msgstr "Пожалуйста, подтвердите пароль."
 
 msgid ""
-"Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Пожалуйста, свяжитесь с администратором!<br />Обратитесь к нему за разрешениями на пакет.<br />Не разрешается загружать один и тот же пакет дважды.<br />Обновите страницу, чтобы увидеть новый статус!"
+"Please contact the administrator!<br>Ask him for the permissions to use this"
+" package.<br>It is not allowed to upload this packet two times.<br>Refresh "
+"your site to see the new status!"
+msgstr "Пожалуйста, свяжитесь с администратором!<br>Обратитесь к нему за разрешениями на пакет.<br>Не разрешается загружать один и тот же пакет дважды.<br>Обновите страницу, чтобы увидеть новый статус!"
 
 msgid "Please enter a name for the protected area."
 msgstr "Пожалуйста, введите имя для защищенной зоны."
@@ -4093,7 +4101,7 @@ msgid "Reseller / Support / View Ticket"
 msgstr "Реселлер / Служба поддержки / Просмотреть тикет"
 
 msgid "Reseller /Hosting Plans / Edit Hosting Plan"
-msgstr ""
+msgstr "i-MSCP - Реселлер / Управление хостинг-планами / Редактировать хостинг-план"
 
 msgid "Reseller Name"
 msgstr "Имя Реселлера"
@@ -4219,7 +4227,7 @@ msgid "SQL database limit reached."
 msgstr "Лимит баз данных SQL достигнут."
 
 msgid "SQL database successfully created."
-msgstr ""
+msgstr "База данных успешно добавлена."
 
 msgid "SQL database successfully deleted."
 msgstr "База данных успешно удалена."
@@ -4265,16 +4273,13 @@ msgid "SQL user successfully added."
 msgstr "Пользователь SQL успешно добавлен."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "Пользователь SQL успешно удален."
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "Пользователь SQL не должен содержать запятые"
 
 msgid "SQL users"
 msgstr "Пользователи SQL"
-
-msgid "SSL certificate"
-msgstr "SSL сертификат"
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL cертификат успешно отмечен для добавления."
@@ -4287,6 +4292,9 @@ msgstr "SSL cертификат успешно отмечен для обнов�
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "Функция SSL недоступна. Вы можете только просмотреть Ваш сертификат."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Сохранить"
@@ -4389,7 +4397,7 @@ msgstr "Служба"
 msgid "Service name already exists."
 msgstr "Имя службы уже существует."
 
-msgid "Service port successfully addeds"
+msgid "Service port successfully added"
 msgstr "Порт служб был успешно добавлен"
 
 msgid "Service port successfully removed."
@@ -4582,7 +4590,7 @@ msgid "Street 2"
 msgstr "Дополнительный адрес"
 
 msgid "Strong passwords"
-msgstr ""
+msgstr "Использовать сильные пароли"
 
 msgid "Subdomain"
 msgstr "Поддомен"
@@ -4597,7 +4605,7 @@ msgstr "Поддомен %s не может быть перенаправлен 
 
 #, php-format
 msgid "Subdomain %s is unavailable."
-msgstr ""
+msgstr "Поддомен %s недоступен."
 
 msgid "Subdomain alias"
 msgstr "Алиас поддомена"
@@ -4606,7 +4614,7 @@ msgid "Subdomain alias errors"
 msgstr "Ошибки алиаса поддомена"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Алиас поддомена помечен для удаления."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4632,7 +4640,7 @@ msgid "Subdomain name is not valid."
 msgstr "Имя поддомена неверно"
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Поддомен помечен для удаления."
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Поддомен успешно помечен для добавления."
@@ -4748,19 +4756,19 @@ msgstr "Временная папка не найдена."
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
-msgstr ""
+msgstr "Лимит %s для этого клиента не может быть выше чем  <strong>%d</strong>, Ваш расчетный лимит."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be lower than %d, the total of %s "
 "already used by him."
-msgstr ""
+msgstr "Лимит %s для этого клиента не может быть ниже чем  <strong>%d</strong>, %s из которых он уже использует."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already %d %s."
-msgstr ""
+msgstr "Лимит %s для этого клиента не может быть отключен, потому что у него уже <strong>%d</strong> %s."
 
 #, php-format
 msgid ""
@@ -4804,24 +4812,24 @@ msgid "The package is corrupt. Please correct it."
 msgstr "Пакет поврежден. Пожалуйста, исправьте его."
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Пакет будет автоматически установлен в вашу систему после загрузки.<br />Обновите страницу, чтобы увидеть новый статус!"
+"The package will be installed automatically to your system after "
+"upload.<br>Refresh your site to see the new status!"
+msgstr "Пакет будет автоматически установлен в вашу систему после загрузки.<br>Обновите страницу, чтобы увидеть новый статус!"
 
 msgid "The password field is empty."
 msgstr "Поле пароля пусто."
 
 msgid "The private key doesn't belong to the provided SSL certificate."
-msgstr ""
+msgstr "Приватный ключ не принадлежит предоставленному сертификату."
 
 #, php-format
-msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
 msgstr "Размер удаленного файла (%s) меньше 1 байта. Пожалуйста, проверьте URL."
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
 "remove them first."
-msgstr ""
+msgstr "Реселлер, которго вы хотите удалить, имеет одного или более клиентов.<br /> Сначала удалите их."
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Загружаемый файл был загружен частично."
@@ -4843,9 +4851,9 @@ msgid "The values must not be equal"
 msgstr "Значения не должны быть равны"
 
 msgid ""
-"There is an Error inside your package. Please check it!<br />Refresh your "
-"site to see the new status!"
-msgstr "Ошибка Вашего пакета. Пожалуйста, проверьте его!<br />Обновите Ваш сайт, чтобы увидеть новый статус!"
+"There is an Error inside your package. Please check it!<br>Refresh your site"
+" to see the new status!"
+msgstr "Ошибка Вашего пакета. Пожалуйста, проверьте его!<br>Обновите Ваш сайт, чтобы увидеть новый статус!"
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4854,9 +4862,9 @@ msgstr "Этот IP (%s) не установлен ни на какую сете
 #, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
-"this package!<br />Please delete the files and database for this package "
+"this package!<br>Please delete the files and database for this package "
 "manually!"
-msgstr "Пакет (%s, V%s) был удален вашим реселлером. Вы можете только удалить этот пакет!<br />Пожалуйста, удалите файлы и базы данных этого пакета вручную!"
+msgstr "Пакет (%s, V%s) был удален вашим реселлером. Вы можете только удалить этот пакет!<br>Пожалуйста, удалите файлы и базы данных этого пакета вручную!"
 
 #, php-format
 msgid ""
@@ -5368,7 +5376,7 @@ msgstr "Пользователи и группы"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
-msgstr ""
+msgstr "Значение PHP <strong>%%s</strong> должно быть между %%d и %%d."
 
 msgid "Values"
 msgstr "Значения"
@@ -5457,7 +5465,7 @@ msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "{USERNAME}, добро пожаловать в i-MSCP"
 
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
-msgstr ""
+msgstr "Если да, то функция PHP exec() может использоваться в ваших скриптах."
 
 msgid "Wildcard"
 msgstr "Групповой символ"
@@ -5587,9 +5595,9 @@ msgstr "Вы не можете перенаправить %s на самого �
 
 #, php-format
 msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
-" for the <b>%2$s</b> service."
-msgstr "Вы не можете переместить <b>%1$s</b> для целевого реселлера,<br />у которого есть ограничения на службу <b>%2$s</b>."
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service."
+msgstr "Вы не можете переместить <b>%1$s</b> для целевого реселлера,<br>у которого есть ограничения на службу <b>%2$s</b>."
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr "Вы не можете защитить зону без выбора групп htaccess."
@@ -5650,40 +5658,40 @@ msgstr "У вас %d новый доменный алиас %s."
 msgid ""
 "You have a FTP account limit. You cannot add a user with unlimited FTP "
 "accounts."
-msgstr ""
+msgstr "У вас есть лимит учетных записей FTP!<br />Вы не можете добавлять пользователей с неограниченным числом учетных записей FTP."
 
 msgid ""
 "You have a SQL database limit. You cannot add a user with unlimited SQL "
 "databases."
-msgstr ""
+msgstr "У вас есть лимит баз данных.<br />Вы не можете добавлять пользователей с неограниченным числом баз данных."
 
 msgid ""
 "You have a SQL user limit. You cannot add a user with unlimited SQL users."
-msgstr ""
+msgstr "У вас есть лимит пользователей БД.<br />Вы не можете добавлять пользователей с неограниченным числом пользователей БД."
 
 msgid ""
 "You have a disk space limit. You cannot add a user with unlimited disk "
 "space."
-msgstr ""
+msgstr "У вас ограничено дисковое пространство.<br />Вы не можете добавлять пользователей с неограниченным дисковым пространством."
 
 msgid ""
 "You have a domain alias limit. You cannot add a user with unlimited domain "
 "aliases."
-msgstr ""
+msgstr "У вас ограничены алиасы доменов.<br />Вы не можете добавлять пользователей с неограниченными алиасами доменов."
 
 msgid ""
 "You have a mail account limit. You cannot add a user with unlimited email "
 "accounts."
-msgstr ""
+msgstr "У вас есть лимит почтовых ящиков.<br />Вы не можете добавлять пользователей с неограниченным числом почтовых ящиков."
 
 msgid ""
 "You have a monthly traffic limit. You cannot add a user with unlimited "
 "monthly traffic."
-msgstr ""
+msgstr "У вас есть порог трафика.<br />Вы не можете добавлять пользователей с неограниченным порогом трафика."
 
 msgid ""
 "You have a subdomain limit. You cannot add a user with unlimited subdomains."
-msgstr ""
+msgstr "У вас есть лимит поддоменов.<br />Вы не можете добавлять пользователей с неограниченным числом поддоменов."
 
 msgid "You have been successfully logged out."
 msgstr "Вы успешно вышли из системы."
@@ -5691,7 +5699,7 @@ msgstr "Вы успешно вышли из системы."
 msgid ""
 "You have disabled SQL databases for this user. You cannot have SQL users "
 "here."
-msgstr ""
+msgstr "Вы отключили базы данных SQL для этого пользователя.<br />Вы не можете иметь SQL пользователей."
 
 msgid "You have no closed tickets."
 msgstr "У вас нет закрытых тикетов."
@@ -5721,7 +5729,7 @@ msgid ""
 msgstr "Вы достигли максимального числа алиасов домена, доступного Вашей подписке. "
 
 msgid "You have reached your domain limit. You cannot add more domains."
-msgstr ""
+msgstr "Вы достигли Вашего лимита доменов.<br />Вы не можете добавить больше доменов."
 
 #, php-format
 msgid "You have received %s new support ticket(s)."
@@ -5731,7 +5739,7 @@ msgid "You have to choose between file-upload and wget-function."
 msgstr "Вы должны выбрать между загрузкой файлов и функцией wget."
 
 msgid "You must assign at least one IP to this reseller."
-msgstr ""
+msgstr "Вы должны закрепить за реселлером как минимум один IP адрес."
 
 msgid "You must choose between local and remote upload."
 msgstr "Вы должны выбрать между локальной и удаленной загрузкой."
@@ -5829,7 +5837,7 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Ваш пакет поврежден. Пожалуйста, исправьте его!"
 
 #, php-format
-msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr "Размер удаленного файла (%s) меньше 1 байта. Пожалуйста, проверьте Ваш URL."
 
 msgid ""

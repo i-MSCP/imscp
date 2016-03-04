@@ -74,7 +74,7 @@ function reseller_getResellerProps($resellerId)
             SELECT
                 reseller_id, current_sub_cnt, max_sub_cnt, current_als_cnt, max_als_cnt, current_mail_cnt, max_mail_cnt,
                 current_ftp_cnt, max_ftp_cnt, current_sql_db_cnt, max_sql_db_cnt, current_sql_user_cnt, max_sql_user_cnt,
-                current_disk_amnt, max_disk_amnt, current_traff_amnt, max_traff_amnt, software_allowed
+                current_disk_amnt, max_disk_amnt, current_traff_amnt, max_traff_amnt, reseller_ips, software_allowed
             FROM
                 reseller_props
             WHERE
@@ -181,6 +181,7 @@ function &reseller_getData($domainId, $forUpdate = false)
 
     $domainProps = reseller_getDomainProps($domainId);
     $resellerProps = reseller_getResellerProps($_SESSION['user_id']);
+    $resellerProps['reseller_ips'] = explode(';', rtrim($resellerProps['reseller_ips'], ';'));
 
     list($subCount, $alsCount, $mailCount, $ftpCount, $sqlDbCount, $sqlUsersCount) = get_domain_running_props_cnt($domainId);
 
@@ -245,13 +246,13 @@ function &reseller_getData($domainId, $forUpdate = false)
         $data['domain_cgi'] = isset($_POST['domain_cgi']) ? clean_input($_POST['domain_cgi']) : $data['domain_cgi'];
         $data['domain_dns'] = isset($_POST['domain_dns']) ? clean_input($_POST['domain_dns']) : $data['domain_dns'];
 
-        if ($data['software_allowed'] === 'yes') {
+        if ($data['software_allowed'] == 'yes') {
             $data['domain_software_allowed'] = isset($_POST['domain_software_allowed']) ? clean_input($_POST['domain_software_allowed']) : $data['domain_software_allowed'];
         } else {
             $data['domain_software_allowed'] = 'no';
         }
 
-        if ($cfg['BACKUP_DOMAINS'] === 'yes') {
+        if ($cfg['BACKUP_DOMAINS'] == 'yes') {
             $data['allowbackup'] = isset($_POST['allowbackup']) && is_array($_POST['allowbackup']) ? array_intersect($_POST['allowbackup'], array('dmn', 'sql', 'mail')) : array();
         } else {
             $data['allowbackup'] = array();
@@ -301,7 +302,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
         $tpl->assign('SUBDOMAIN_LIMIT_BLOCK', '');
     } else {
         $tpl->assign(array(
-            'TR_SUBDOMAINS_LIMIT' => tr('Subdomain limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+            'TR_SUBDOMAINS_LIMIT' => tr('Subdomain limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
             'SUBDOMAIN_LIMIT' => tohtml($data['domain_subd_limit']),
             'TR_CUSTOMER_SUBDOMAINS_COMSUPTION' => $data['fallback_domain_subd_limit'] != -1 ? tohtml($data['nbSubdomains']) . ' / ' . ($data['fallback_domain_subd_limit'] != 0 ? tohtml($data['fallback_domain_subd_limit']) : tr('Unlimited')) : tr('Disabled'),
             'TR_RESELLER_SUBDOMAINS_COMSUPTION' => tohtml($data['current_sub_cnt']) . ' / ' . ($data['max_sub_cnt'] != 0 ? tohtml($data['max_sub_cnt']) : tr('Unlimited'))
@@ -343,7 +344,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
         $tpl->assign('FTP_ACCOUNTS_LIMIT_BLOCK', '');
     } else {
         $tpl->assign(array(
-            'TR_FTP_ACCOUNTS_LIMIT' => tr('FTP account limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+            'TR_FTP_ACCOUNTS_LIMIT' => tr('FTP account limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
             'FTP_ACCOUNTS_LIMIT' => tohtml($data['domain_ftpacc_limit']),
             'TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION' => $data['fallback_domain_ftpacc_limit'] != -1 ? tohtml($data['nbFtpAccounts']) . ' / ' . ($data['fallback_domain_ftpacc_limit'] != 0 ? tohtml($data['fallback_domain_ftpacc_limit']) : tr('Unlimited')) : tr('Disabled'),
             'TR_RESELLER_FTP_ACCOUNTS_COMSUPTION' => tohtml($data['current_ftp_cnt']) . ' / ' . ($data['max_ftp_cnt'] != 0 ? tohtml($data['max_ftp_cnt']) : tr('Unlimited'))
@@ -355,11 +356,11 @@ function _reseller_generateLimitsForm($tpl, &$data)
         $tpl->assign('SQL_DB_AND_USERS_LIMIT_BLOCK', '');
     } else {
         $tpl->assign(array(
-            'TR_SQL_DATABASES_LIMIT' => tr('SQL database limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+            'TR_SQL_DATABASES_LIMIT' => tr('SQL database limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
             'SQL_DATABASES_LIMIT' => tohtml($data['domain_sqld_limit']),
             'TR_CUSTOMER_SQL_DATABASES_COMSUPTION' => $data['fallback_domain_sqld_limit'] != -1 ? tohtml($data['nbSqlDatabases']) . ' / ' . ($data['fallback_domain_sqld_limit'] != 0 ? tohtml($data['fallback_domain_sqld_limit']) : tr('Unlimited')) : tr('Disabled'),
             'TR_RESELLER_SQL_DATABASES_COMSUPTION' => tohtml($data['current_sql_db_cnt']) . ' / ' . ($data['max_sql_db_cnt'] != 0 ? tohtml($data['max_sql_db_cnt']) : tr('Unlimited')),
-            'TR_SQL_USERS_LIMIT' => tr('SQL user limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+            'TR_SQL_USERS_LIMIT' => tr('SQL user limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
             'SQL_USERS_LIMIT' => tohtml($data['domain_sqlu_limit']),
             'TR_CUSTOMER_SQL_USERS_COMSUPTION' => $data['fallback_domain_sqlu_limit'] != -1 ? tohtml($data['nbSqlUsers']) . ' / ' . ($data['fallback_domain_sqlu_limit'] != 0 ? tohtml($data['fallback_domain_sqlu_limit']) : tr('Unlimited')) : tr('Disabled'),
             'TR_RESELLER_SQL_USERS_COMSUPTION' => tohtml($data['current_sql_user_cnt']) . ' / ' . ($data['max_sql_user_cnt'] != 0 ? tohtml($data['max_sql_user_cnt']) : tr('Unlimited'))
@@ -614,6 +615,11 @@ function reseller_checkAndUpdateData($domainId)
             $data['domain_expires'] = 0;
         }
 
+        // Check for domain IP id
+        if(!in_array($data['domain_ip_id'], $data['reseller_ips'])) {
+            $data['domain_ip_id'] = $data['fallback_domain_ip_id'];
+        }
+
         // Check for the subdomains limit
         if ($data['fallback_domain_subd_limit'] != -1) {
             if (!imscp_limit_check($data['domain_subd_limit'])) {
@@ -789,8 +795,8 @@ function reseller_checkAndUpdateData($domainId)
                     $phpini->setDomainIni('phpiniPostMaxSize', clean_input($_POST['post_max_size']));
                 }
 
-                if (isset($_POST['upload_max_filezize'])) {
-                    $phpini->setDomainIni('phpiniUploadMaxFileSize', clean_input($_POST['upload_max_filezize']));
+                if (isset($_POST['upload_max_filesize'])) {
+                    $phpini->setDomainIni('phpiniUploadMaxFileSize', clean_input($_POST['upload_max_filesize']));
                 }
 
                 if (isset($_POST['max_execution_time'])) {
@@ -860,21 +866,13 @@ function reseller_checkAndUpdateData($domainId)
                 $needDaemonRequest = true;
             }
 
-            // PHP or CGI was either enabled or disabled or PHP Settings were changed, web folder protection
-            // properties have been updated, or domain IP was changed, so we must update the vhosts files
-            // of all domain entities (dmn, sub, als, alssub)
-            if ($needDaemonRequest || $data['domain_php'] != $data['fallback_domain_php'] ||
-                $data['domain_cgi'] != $data['fallback_domain_cgi'] ||
-                $data['web_folder_protection'] != $data['fallback_web_folder_protection'] ||
-                $data['domain_ip_id'] != $data['fallback_domain_ip_id']
+            // PHP or CGI was either enabled or disabled or PHP settings were changed, web folder protection
+            // properties have been updated, or domain IP was changed, so we must schedule daemon request.
+            if ($data['domain_php'] != $data['fallback_domain_php']
+                || $data['domain_cgi'] != $data['fallback_domain_cgi']
+                || $data['web_folder_protection'] != $data['fallback_web_folder_protection']
+                || $data['domain_ip_id'] != $data['fallback_domain_ip_id']
             ) {
-                if ($data['domain_alias_limit'] != '-1') {
-                    exec_query(
-                        'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ? AND alias_status <> ?',
-                        array('tochange', $domainId, 'ordered')
-                    );
-                }
-
                 $needDaemonRequest = true;
             }
 
@@ -919,20 +917,21 @@ function reseller_checkAndUpdateData($domainId)
                     $domainId
                 )
             );
-            //print 'ouch'; exit;
+
+            if ($needDaemonRequest) {
+                exec_query(
+                    'UPDATE domain_aliasses SET alias_ip_id = ?, alias_status = ? WHERE domain_id = ? AND alias_status <> ?',
+                    array($data['domain_ip_id'], 'tochange', $domainId, 'ordered')
+                );
+                exec_query(
+                    'UPDATE domain_aliasses SET alias_ip_id = ? WHERE domain_id = ? AND alias_status = ?',
+                    array($data['domain_ip_id'], $domainId, 'ordered')
+                );
+            }
 
             // Sync mailboxes quota if needed
             if ($data['fallback_mail_quota'] != ($data['mail_quota'] * 1048576)) {
                 sync_mailboxes_quota($domainId, $data['mail_quota'] * 1048576);
-            }
-
-            // Update domain alias IP if needed
-            if ($data['domain_ip_id'] != $data['fallback_domain_ip_id']) {
-                if ($data['domain_alias_limit'] != '-1') {
-                    exec_query('UPDATE domain_aliasses SET alias_ip_id = ? WHERE domain_id = ?', array(
-                        $data['domain_ip_id'], $domainId
-                    ));
-                }
             }
 
             // Update Ftp quota limit if needed
@@ -970,7 +969,7 @@ function reseller_checkAndUpdateData($domainId)
             }
 
             $userLogged = isset($_SESSION['logged_from']) ? $_SESSION['logged_from'] : $_SESSION['user_logged'];
-            write_log("Domain " . decode_idna($data['domain_name']) . " has been updated by $userLogged", E_USER_NOTICE);
+            write_log(sprintf('Domain %s has been updated by %s', decode_idna($data['domain_name']),  $userLogged), E_USER_NOTICE);
             return true;
         }
     } catch (iMSCP_Exception_Database $e) {

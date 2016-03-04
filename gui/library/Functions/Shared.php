@@ -588,6 +588,7 @@ function change_domain_status($customerId, $action)
 
 			# TODO implements customer deactivation
 			# exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($newStatus, $customerId));
+			exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array($newStatus, $customerId));
 			exec_query("UPDATE domain SET domain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
 			exec_query("UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
 			exec_query("UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
@@ -753,6 +754,8 @@ function delete_sql_database($dmnId, $dbId)
  */
 function deleteCustomer($customerId, $checkCreatedBy = false)
 {
+	$cfg = iMSCP_Registry::get('config');
+
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomer, array(
 		'customerId' => $customerId
 	));
@@ -826,8 +829,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		// Deletes custom DNS records
 		exec_query('DELETE FROM domain_dns WHERE domain_id = ?', $mainDomainId);
 
-		// Deletes FTP accounts (users and groups)
-		exec_query('DELETE FROM ftp_users WHERE admin_id = ?', $customerId);
+		// Deletes FTP groups
 		exec_query('DELETE FROM ftp_group WHERE groupname = ?', $customerName);
 
 		// Deletes quota entries
@@ -846,6 +848,9 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		//
 		// Delegated tasks - begin
 		//
+
+		// Delete FTP users
+		exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array('todelete', $customerId));
 
 		// Schedule mail accounts deletion
 		exec_query('UPDATE mail_users SET status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));

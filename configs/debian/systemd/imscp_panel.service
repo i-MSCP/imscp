@@ -1,0 +1,12 @@
+[Unit]
+Description=i-MSCP frontEnd PHP processes
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/imscp_panel.pid
+ExecStart=/var/www/fcgi/master/php-fcgi-starter
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

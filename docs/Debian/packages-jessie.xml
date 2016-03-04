@@ -55,7 +55,13 @@
         <proftpd>
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
+            <package_conflict>vsftpd</package_conflict>
         </proftpd>
+        <vsftpd>
+            <package>devscripts</package>
+            <package>libpam-mysql</package>
+            <package>vsftpd</package>
+        </vsftpd>
     </ftpd>
     <named default="bind">
         <bind>
@@ -69,7 +75,7 @@
                 pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common mysql-server-5.5"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.6,mysql_5.7,percona_5.5,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.6,mysql_5.7,percona_5.5,percona_5.6,percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
@@ -79,11 +85,11 @@
         <mysql_5.6
                 repository="http://repo.mysql.com/apt/debian/ jessie mysql-5.6"
                 repository_key_id="0x8c718d3b5072e1f5"
-                repository_key_srv="pgp.mit.edu"
+                repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.7,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.7,percona_5.6,percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>mysql-community-client</package>
@@ -93,11 +99,11 @@
         <mysql_5.7
                 repository="http://repo.mysql.com/apt/debian/ jessie mysql-5.7"
                 repository_key_id="0x8c718d3b5072e1f5"
-                repository_key_srv="pgp.mit.edu"
+                repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
-                allow_switch_to="remote_server"
+                allow_switch="remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>libmysqlclient20</package>
@@ -111,7 +117,7 @@
                 pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
-                allow_switch_to="mariadb_10.1,remote_server"
+                allow_switch="mariadb_10.1,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
@@ -126,13 +132,14 @@
                 pinning_package="*"
                 pinning_pin="origin mirror.netcologne.de"
                 pinning_pin_priority="1001"
-                allow_switch_to="remote_server"
+                allow_switch="remote_server"
                 >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.1</package>
             <package>mariadb-common</package>
             <package>mariadb-server-10.1</package>
+            <package>mysql-common</package>
         </mariadb_10.1>
         <percona_5.5
                 repository="http://repo.percona.com/apt jessie main"
@@ -141,7 +148,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.5,mysql_5.6,mysql_5.7,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,percona_5.6,percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>
@@ -157,7 +164,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.6,mysql_5.7,percona_5.7,remote_server"
+                allow_switch="mysql_5.6,mysql_5.7,percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18.1</package>
@@ -173,7 +180,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                allow_switch_to="mysql_5.7,remote_server"
+                allow_switch="mysql_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient20</package>

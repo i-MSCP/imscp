@@ -441,7 +441,7 @@ function addHostingPlan()
     ));
 
     if ($stmt->rowCount()) {
-        set_page_message(tr('An hosting plan with same name already exists.'), 'error');
+        set_page_message(tr('A hosting plan with same name already exists.'), 'error');
         return false;
     }
 

@@ -178,7 +178,7 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 					$isMailbox = 1;
 				}
 
-				$mailType .= '<br />';
+				$mailType .= '<br>';
 			}
 
 			if ($isMailbox && $row['status'] == 'ok') {

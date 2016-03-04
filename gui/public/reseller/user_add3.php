@@ -102,13 +102,29 @@ function generatePage($tpl)
 /**
  * Add customer
  *
- * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Exception
  * @return void
  */
 function addCustomer()
 {
     global $hpId, $dmnName, $dmnExpire, $domainIp, $adminName, $email, $password, $customerId, $firstName, $lastName,
            $gender, $firm, $zip, $city, $state, $country, $phone, $fax, $street1, $street2;
+
+    if (!isset($_POST['domain_ip'])) {
+        showBadRequestErrorPage();
+    }
+
+    $domainIp = intval($_POST['domain_ip']);
+    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_id']);
+    if (!$stmt->rowCount()) {
+        throw new iMSCP_Exception(sprintf('Could not find IPs for reseller with ID %s', $_SESSION['user_id']));
+    }
+
+    $resellerIps = $stmt->fetchRow();
+    $resellerIps = explode(';', rtrim($resellerIps['reseller_ips'], ';'));
+    if (!in_array($domainIp, $resellerIps)) {
+        showBadRequestErrorPage();
+    }
 
     $cfg = iMSCP_Registry::get('config');
 

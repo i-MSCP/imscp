@@ -5,7 +5,7 @@ Package::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit package unins
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -65,11 +65,9 @@ sub uninstall
 
 sub _restoreDebianConfig
 {
-	if(-f '/etc/cron.daily/chkrootkit.disabled') {
-		iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit.disabled' )->moveFile( '/etc/cron.daily/chkrootkit' );
-	} else {
-		0;
-	}
+	return 0 unless -f '/etc/cron.daily/chkrootkit.disabled';
+
+	iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit.disabled' )->moveFile( '/etc/cron.daily/chkrootkit' );
 }
 
 =back

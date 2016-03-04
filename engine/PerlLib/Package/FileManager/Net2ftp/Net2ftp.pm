@@ -5,7 +5,7 @@ Package::FileManager::Net2ftp::Net2ftp - i-MSCP package
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ package Package::FileManager::Net2ftp::Net2ftp;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -51,7 +50,6 @@ use parent 'Common::SingletonClass';
 sub preinstall
 {
 	require Package::FileManager::Net2ftp::Installer;
-
 	Package::FileManager::Net2ftp::Installer->getInstance()->preinstall();
 }
 
@@ -66,7 +64,6 @@ sub preinstall
 sub install
 {
 	require Package::FileManager::Net2ftp::Installer;
-
 	Package::FileManager::Net2ftp::Installer->getInstance()->install();
 }
 
@@ -81,7 +78,6 @@ sub install
 sub uninstall
 {
 	require Package::FileManager::Net2ftp::Uninstaller;
-
 	Package::FileManager::Net2ftp::Uninstaller->getInstance()->uninstall();
 }
 
@@ -96,7 +92,6 @@ sub uninstall
 sub setGuiPermissions
 {
 	require Package::FileManager::Net2ftp::Installer;
-
 	Package::FileManager::Net2ftp::Installer->getInstance()->setGuiPermissions();
 }
 

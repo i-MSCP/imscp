@@ -173,13 +173,15 @@ sub getExitCode(;$)
 
 	if ($ret == -1) {
 		die(sprintf('Could not execute command: %s', $!));
-	} elsif ($ret & 127) {
-		die(sprintf('Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without'));
-	} else {
-		$ret = $ret >> 8;
-		debug(sprintf('Command exited with value: %s', $ret)) if $ret != 0;
 	}
 
+	if ($ret & 127) {
+		debug(sprintf('Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without'));
+		return $ret;
+	}
+
+	$ret = $ret >> 8;
+	debug(sprintf('Command exited with value: %s', $ret)) if $ret != 0;
 	$ret;
 }
 

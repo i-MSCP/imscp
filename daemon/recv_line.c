@@ -7,7 +7,9 @@ int receiveLine(int fd, char *dest, size_t n)
 	if ((rs = receiveData(fd, dest, n)) < 0) {
 		say(message(MSG_ERROR_SOCKET_RD), strerror(errno));
 		return -1;
-	} else if (rs == 0) {
+	}
+
+	if (rs == 0) {
 		say("%s", message(MSG_ERROR_SOCKET_EOF));
 	}
 

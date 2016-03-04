@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,54 +18,54 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include core library
 require_once 'imscp-lib.php';
+
+if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) === false) {
+    showBadRequestErrorPage();
+}
 
 /** @var iMSCP_Plugin_Manager $pluginManager */
 $pluginManager = iMSCP_Registry::get('pluginManager');
 $plugins = $pluginManager->pluginGetLoaded('Action');
-$scriptPath = null;
 
-if (!empty($plugins)) {
-	$eventsManager = iMSCP_Events_Aggregator::getInstance();
-
-	if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) !== false) {
-		$responses = $eventsManager->dispatch(
-			iMSCP_Events::onBeforePluginsRoute, array('pluginManager' => $pluginManager)
-		);
-
-		if (!$responses->isStopped()) {
-			foreach ($plugins as $plugin) {
-				if (($scriptPath = $plugin->route($urlComponents))) {
-					break;
-				}
-
-				foreach ($plugin->getRoutes() as $pluginRoute => $pluginControllerPath) {
-					if ($pluginRoute == $urlComponents['path']) {
-						$scriptPath = $pluginControllerPath;
-						$_SERVER['SCRIPT_NAME'] = $pluginRoute;
-						break;
-					}
-				}
-
-				if ($scriptPath) {
-					break;
-				}
-			}
-
-			$eventsManager->dispatch(
-				iMSCP_Events::onAfterPluginsRoute,
-				array('pluginManager' => $pluginManager, 'scriptPath' => $scriptPath)
-			);
-
-			if ($scriptPath) {
-				include_once $scriptPath;
-				exit;
-			}
-		}
-	} else {
-		throw new iMSCP_Exception(sprintf('Unable to parse URL: %s', $_SERVER['REQUEST_URI']));
-	}
+if (empty($plugins)) {
+    showNotFoundErrorPage();
 }
 
-showNotFoundErrorPage();
+$eventsManager = iMSCP_Events_Aggregator::getInstance();
+$responses = $eventsManager->dispatch(iMSCP_Events::onBeforePluginsRoute, array(
+    'pluginManager' => $pluginManager
+));
+
+if ($responses->isStopped()) {
+    showNotFoundErrorPage();
+}
+
+$pluginActionScriptPath = null;
+foreach ($plugins as $plugin) {
+    if ($pluginActionScriptPath = $plugin->route($urlComponents)) {
+        break;
+    }
+
+    foreach ($plugin->getRoutes() as $pluginRoute => $scriptPath) {
+        if ($pluginRoute == $urlComponents['path']) {
+            $pluginActionScriptPath = $scriptPath;
+            $_SERVER['SCRIPT_NAME'] = $pluginRoute;
+            break;
+        }
+    }
+
+    if ($pluginActionScriptPath) {
+        break;
+    }
+}
+
+if (null === $pluginActionScriptPath) {
+    showBadRequestErrorPage();
+}
+
+$eventsManager->dispatch(iMSCP_Events::onAfterPluginsRoute, array(
+    'pluginManager' => $pluginManager, 'scriptPath' => $pluginActionScriptPath
+));
+
+require $pluginActionScriptPath;

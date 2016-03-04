@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,19 +28,18 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
-use fields qw / reconfigure noprompt preseed listener cleanPackageCache skipPackageUpdate debug /;
+use fields qw /reconfigure noprompt preseed listener cleanPackageCache skipPackageUpdate debug verbose/;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
 
-our $options = fields::new('iMSCP::Getopt');
-our $optionHelp = '';
-
+my $options = fields::new('iMSCP::Getopt');
+my $optionHelp = '';
 my $showUsage;
 
 =head1 DESCRIPTION
 
- This class provide command line options for both imscp-autoinstall and imscp-setup scripts.
+ This class provide command line options parser for i-MSCP.
 
 =head1 CLASS METHODS
 
@@ -48,13 +47,13 @@ my $showUsage;
 
 =item parse($usage)
 
- This class method parses command line options in @ARGV with GetOptions from Getopt::Long.
+ Parses command line options in @ARGV with GetOptions from Getopt::Long
 
- The first parameter should be basic usage text for the program in question. Usage text for the globally supported
-options will be prepended to this if usage help must be printed.
+ The first parameter should be basic usage text for the program. Usage text for the globally supported options will be
+ prepended to this if usage help must be printed.
 
  If any additonal parameters are passed to this function, they are also passed to GetOptions. This can be used to handle
-additional options.
+ additional options.
 
  Return undef
 
@@ -62,7 +61,7 @@ additional options.
 
 sub parse
 {
-	my ($class, $usage) = (shift, shift);
+	my ($class, $usage, @options) = @_;
 
 	$showUsage = sub {
 		my $exitCode = shift || 0;
@@ -75,9 +74,10 @@ $usage
  -c     --clean-package-cache   Cleanup i-MSCP composer package cache.
  -a     --skip-package-update   Skip i-MSCP composer packages update.
  -d,    --debug                 Force debug mode.
- -?,-h  --help                  Show this help.
+ -v     --verbose               Enable verbose mode
+ -?, -h  --help                  Show this help.
 
- $optionHelp
+$optionHelp
 EOF
 		debugRegisterCallBack(sub { exit $exitCode; });
 		exit $exitCode;
@@ -93,9 +93,7 @@ EOF
 	};
 
 	require Getopt::Long;
-
 	Getopt::Long::Configure('bundling');
-
 	eval {
 		Getopt::Long::GetOptions(
 			'reconfigure|r:s', sub { $class->reconfigure($_[1]) },
@@ -105,8 +103,9 @@ EOF
 			'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
 			'skip-package-update|a', sub { $options->{'skipPackageUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
+			'verbose|v', sub { $options->{'verbose'} = 1 },
 			'help|?|h', sub { $showUsage->() },
-			@_,
+			@options,
 		) || $showUsage->(1);
 	};
 
@@ -115,10 +114,9 @@ EOF
 
 =item parseNoDefault($usage)
 
- This class method parses command line options in @ARGV with GetOptions from Getopt::Long. Default options are excluded.
+ Parses command line options in @ARGV with GetOptions from Getopt::Long. Default options are excluded
 
- The first parameter should be basic usage text for the program in question. Any following parameters are passed to
-to GetOptions.
+ The first parameter should be basic usage text for the program. Any following parameters are passed to to GetOptions.
 
  Return undef
 
@@ -126,13 +124,13 @@ to GetOptions.
 
 sub parseNoDefault
 {
-	my ($class, $usage) = (shift, shift);
+	my ($class, $usage, @options) = @_;
 
 	$showUsage = sub {
 		my $exitCode = shift || 0;
 		print STDERR wrap('', '', <<EOF);
 $usage
- -?,-h  --help          Show this help.
+ -?, -h  --help          Show this help.
 
 EOF
 		debugRegisterCallBack(sub { exit $exitCode; });
@@ -149,16 +147,13 @@ EOF
 	};
 
 	require Getopt::Long;
-
 	Getopt::Long::Configure('bundling');
-
 	eval {
 		Getopt::Long::GetOptions(
 			'help|?|h', sub { $showUsage->() },
-			@_,
+			@options
 		) || $showUsage->(1);
 	};
-
 	undef;
 }
 
@@ -176,14 +171,8 @@ sub showUsage
 	my ($class, $exitCode) = @_;
 
 	$exitCode //= 1;
-
-	if(ref $showUsage eq 'CODE') {
-		$showUsage->($exitCode);
-	} else {
-		die('ShowUsage() is not defined');
-	}
-
-	undef;
+	ref $showUsage eq 'CODE' or die('ShowUsage() is not defined.');
+	$showUsage->($exitCode);
 }
 
 our @reconfigurationItems = sort(
@@ -192,123 +181,98 @@ our @reconfigurationItems = sort(
 	'webstats', 'sqlmanager', 'webmails', 'filemanager', 'antirootkits'
 );
 
-=item reconfigure($value = 'none')
+=item reconfigure([ $item = 'none' ])
 
- reconfigure option
+ Reconfiguration item
 
- Param string $value OPTIONAL Option value
+ Param string $item OPTIONAL Reconfiguration item
  Return string Name of item to reconfigure or none
 
 =cut
 
 sub reconfigure
 {
-	my ($class, $value) = @_;
+	my ($class, $item) = @_;
 
-	if(defined $value) {
-		if($value eq 'help') {
-			$optionHelp .= "Without any argument, the --reconfigure option allows to reconfigure all items.";
-			$optionHelp .= " You can reconfigure a specific item by passing it name as argument.\n\n";
-			$optionHelp .= " Available items are:\n\n";
+	return $options->{'reconfigure'} ||= 'none' unless defined $item;
+
+	if($item eq 'help') {
+		$optionHelp = <<EOF;
+Reconfigure option usage:
+
+Without any argument, this option allows to reconfigure all items. You can reconfigure a specific item by passing it name as argument.
+
+Available items are:
+
+EOF
 			$optionHelp .=  ' ' . (join '|', @reconfigurationItems);
 			die();
-		} elsif($value eq '') {
-			$value = 'all';
-		}
-
-		$value eq 'none' || $value ~~ @reconfigurationItems or die(
-			"Error: '$value' is not a valid argument for the --reconfigure option."
-		);
-
-		$options->{'reconfigure'} = $value;
+	} elsif($item eq '') {
+		$item = 'all';
 	}
 
-	$options->{'reconfigure'} ||= 'none';
+	$item eq 'none' || $item ~~ @reconfigurationItems or die(sprintf(
+		"Error: '%s' is not a valid argument for the --reconfigure option.", $item
+	));
+
+	$options->{'reconfigure'} = $item;
 }
 
-=item noprompt($value = 0)
+=item preseed([ $file = undef ])
 
- noprompt option
+ Accessor/Mutator for the preseed command line option
 
- Param string $value OPTIONAL Option value
- Return int 0 or 1
-
-=cut
-
-sub noprompt
-{
-	my ($class, $value) = @_;
-
-	$options->{'noprompt'} = $value if defined $value;
-	$options->{'noprompt'} // 0;
-}
-
-=item preseed($value = '')
-
- preseed option
-
- Param string $value OPTIONAL Option value
+ Param string $file OPTIONAL Preseed file path
  Return string Path to preseed file or empty string
 
 =cut
 
 sub preseed
 {
-	my ($class, $value) = @_;
+	my ($class, $file) = @_;
 
-	if(defined $value) {
-		if( -f $value) {
-			$options->{'preseed'} = $value;
-		} else {
-			die("Preseed file not found: $value");
-		}
-	}
+	return $options->{'preseed'} unless defined $file;
 
-	$options->{'preseed'} // '';
+	-f $file or die(sprintf('Preseed file not found: %s', $file));
+	$options->{'preseed'} = $file;
 }
 
-=item listener($value = '')
+=item listener([$file = undef])
 
- listener option
+ Accessor/Mutator for the listener command line option
 
- Param string $value OPTIONAL Option value
- Return string Path to listener file or empty string
+ Param string $file OPTIONAL Listener file path
+ Return string Path to listener file or undef
 
 =cut
 
 sub listener
 {
-	my ($class, $value) = @_;
+	my ($class, $file) = @_;
 
-	if(defined $value) {
-		if( -f $value) {
-			$options->{'listener'} = $value;
-		} else {
-			die("Listener file not found: $value")
-		}
-	}
+	return $options->{'listener'} unless defined $file;
 
-	$options->{'listener'} // '';
+	-f $file or die(sprintf('Listener file not found: %s', $file));
+	$options->{'listener'} = $file;
 }
 
 =back
 
-=head1 FIELDS
+=head1 OPTIONS
 
- Mutator/Accessor for all other fields (which have not their own mutator/accessor methods)
+ Default accessor/mutator for command line options
 
- Return mixed Field value if defined or empty string;
+ Return mixed Option value if defined or undef;
 
 =cut
 
 sub AUTOLOAD
 {
-	(my $field = our $AUTOLOAD) =~ s/.*://;
-	my $class = shift;
+	(my $option = our $AUTOLOAD) =~ s/.*://;
+	my($class, $value) = @_;
 
-	$options->{$field} = shift if @_;
-
-	$options->{$field} // '';
+	$options->{$option} = $value if $value;
+	$options->{$option};
 }
 
 =back

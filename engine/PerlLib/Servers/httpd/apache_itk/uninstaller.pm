@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,15 +32,9 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->_removeVloggerSqlUser();
-	return $rs if $rs;
-
-	$rs = $self->_removeDirs();
-	return $rs if $rs;
-
-	$rs = $self->_vHostConf();
-	return $rs if $rs;
-
-	$self->_restoreConf();
+	$rs ||= $self->_removeDirs();
+	$rs ||= $self->_vHostConf();
+	$rs ||= $self->_restoreConf();
 }
 
 sub _init
@@ -52,7 +46,6 @@ sub _init
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 	$self->{'config'} = $self->{'httpd'}->{'config'};
-
 	$self;
 }
 
@@ -61,10 +54,8 @@ sub _removeVloggerSqlUser
 	my $self = shift;
 
 	my $db = iMSCP::Database->factory();
-
 	$db->doQuery('d', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
 	$db->doQuery('f', 'FLUSH PRIVILEGES');
-
 	0;
 }
 
@@ -72,7 +63,7 @@ sub _removeDirs
 {
 	my $self = shift;
 
-	iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'})->remove();
+	iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
 }
 
 sub _vHostConf
@@ -81,30 +72,25 @@ sub _vHostConf
 
 	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
 		my $rs = $self->{'httpd'}->disableSites('00_nameserver.conf');
-    	return $rs if $rs;
-
-		$rs = iMSCP::File->new(
+		$rs ||= iMSCP::File->new(
 			filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
 		)->delFile();
 		return $rs if $rs;
 	}
 
 	my $confDir = (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
-		? $self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
+		? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
 
     if(-f "$confDir/00_imscp.conf") {
 		my $rs = $self->{'httpd'}->disableConfs('00_imscp.conf');
-		return $rs if $rs;
-
-		$rs = iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
+		$rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
 		return $rs if $rs;
 	}
 
 	for my $site('000-default', 'default') {
-		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site") {
-			my $rs = $self->{'httpd'}->enableSites($site)
-			return $rs if $rs;
-		}
+		next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
+		my $rs = $self->{'httpd'}->enableSites($site);
+		return $rs if $rs;
 	}
 
 	0;
@@ -116,11 +102,9 @@ sub _restoreConf
 
 	for my $file("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
 		my $filename = fileparse($file);
-
-		if (-f "$self->{bkpDir}/$filename.system") {
-			my $rs	= iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile($file)
-			return $rs if $rs;
-		}
+		next unless -f "$self->{bkpDir}/$filename.system";
+		my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile($file);
+		return $rs if $rs;
 	}
 
 	0;

@@ -7,13 +7,13 @@
 # i-MSCP <team@i-mscp.net>, 2015
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
 # Michael Jensen-Maar <maar@maargrafisk.dk>, 2013,2015
-# Michael R. Christensen <mrc@micco.dk>, 2015
+# Michael R. Christensen <mrc@micco.dk>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,7 @@ msgstr " blev slettet af {ADMIN}!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s skal være mindre end %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -495,26 +495,29 @@ msgid "(usually named"
 msgstr "(normalt kaldet"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
-msgstr "<b>%1$s</b> har ubegrænsede rettigheder til en <b>%2$s</b> Service.<br />"
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
+msgstr ""
 
 #, php-format
 msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
-"destination reseller.<br />"
-msgstr "<b>%1$s</b> overskrider grænserne for en <b>%2$s</b><br />service for destinations forhandler.<br />"
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller.<br>"
+msgstr ""
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br />This user cannot be moved!"
-msgstr "<b>%s</b> har IP-adresse, der ikke kan styres fra destinations forhandler!<br />Denne bruger kan ikke flyttes!"
+"reseller!<br>This user cannot be moved!"
+msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr "En PHP extension stoppede fil upload."
 
 msgid "A database update is available"
 msgstr "En database opdatering er tilgængelig"
+
+msgid "A hosting plan with same name already exists."
+msgstr "En hosting plan med samme navn findes allerede."
 
 msgid "A new i-MSCP version is available"
 msgstr "En ny I-MSCP version er tilgængelig"
@@ -581,9 +584,6 @@ msgstr "Aktiverings link udløbs tid <small>(I minutter)</small>"
 
 msgid "Add"
 msgstr "Tilføj"
-
-msgid "Add / Edit SSL certificate"
-msgstr "Rediger SSL certifikat"
 
 msgid "Add FTP account"
 msgstr "Tilføj FTP-konto"
@@ -867,9 +867,9 @@ msgid "Administrators and resellers"
 msgstr "Administratorer og forhandlere"
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Efter din pakke er uploade vil den blive installeret på dine systemer.<br />Opdater dit websted for at se den nye status!"
+"After your upload the package it will be installed on your "
+"systems.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Alias forward"
 msgstr "Alias forward"
@@ -893,7 +893,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr "Alle lukkede sager blev slettet."
 
 msgid "All errors (Development)"
-msgstr ""
+msgstr "Alle fejl (Udvikling)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
 msgstr ""
@@ -905,7 +905,7 @@ msgid "All fields are required."
 msgstr "Alle felter er påkrævet"
 
 msgid "All fields are valid."
-msgstr ""
+msgstr "Alle felter er gyldige."
 
 msgid "All in"
 msgstr "Alle ind"
@@ -968,9 +968,6 @@ msgstr "En oplysning er defineret to gange."
 
 msgid "An error occurred during authentication."
 msgstr "Der opstod en fejl i forbindelse med godkendelse."
-
-msgid "An hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr "En uventet fejl opstod"
@@ -1277,25 +1274,25 @@ msgid "Check for update"
 msgstr "Check for opdatering"
 
 msgid ""
-"Check the reseller uploads!<br />It is not allowed to upload this package "
-"two times.<br />Refresh your site to see the new status!"
-msgstr "Kontroller forhandler uploads!<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
+"Check the reseller uploads!<br>It is not allowed to upload this package two "
+"times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Tjek dine egne uploads!<br />Spørg administratoren, hvis du ikke kan finde pakken.<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
+"Check your own uploads!<br>Ask the administrator if you don't find the "
+"package.<br>It is not allowed to upload this packages two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your package. There is an error inside!<br />Refresh your site to see "
+"Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
-msgstr "Tjek din pakke. Der er en fejl i den!<br />Opdater dit websted for at se den nye status!"
+msgstr ""
 
 msgid ""
-"Check your software depot uploads!<br />It is not allowed to upload this "
-"package two times.<br />Refresh your site to see the new status!"
-msgstr "Tjek dit software depot uploads!<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
+"Check your software depot uploads!<br>It is not allowed to upload this "
+"package two times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Choose"
 msgstr "Vælg"
@@ -1712,7 +1709,7 @@ msgid "Daily backup"
 msgstr "Daglig backup"
 
 msgid "Data were altered. Please try again."
-msgstr ""
+msgstr "Data blev ændret. Prøv igen."
 
 msgid "Database"
 msgstr "Database"
@@ -1826,14 +1823,14 @@ msgstr "Kære {RESELLER},\n\t\tDit uploadede software blev slettet af {ADMIN}.\n
 
 msgid ""
 "Dear {RESELLER},\n"
-"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
 "\n"
 "\tDetails:\n"
 "\tPackage Name: {SOFTWARE}\n"
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "Kære {RESELLER},\n\tDin uploadede softwarepakke blev succesfuld aktiveret af {ADMIN}.\n\n\tDetaljer:\n\tPakkenavn: {SOFTWARE}\n\tPakke ID: {SOFTWARE_ID}\n\n\tVenligst log ind i dit I-MSCP kontrolpanel for flere detaljer."
+msgstr ""
 
 msgid "Debugger"
 msgstr "Debugger"
@@ -1988,7 +1985,7 @@ msgid "Domain alias name"
 msgstr "Domænealias navn"
 
 msgid "Domain alias successfully created."
-msgstr ""
+msgstr "Domæne alias oprettet med succes."
 
 msgid "Domain alias successfully ordered."
 msgstr "Domæne alias ordre oprettet med succes."
@@ -2009,10 +2006,10 @@ msgid "Domain and SQL databases"
 msgstr "Domæne og SQL databaser"
 
 msgid "Domain data"
-msgstr ""
+msgstr "Domæne data"
 
 msgid "Domain data were altered. Please try again."
-msgstr ""
+msgstr "Domæne data blev ændret. Prøv igen."
 
 msgid "Domain details"
 msgstr "Domæne detaljer"
@@ -2362,6 +2359,9 @@ msgstr "FTP konti"
 msgid "FTP traffic"
 msgstr "FTP trafik"
 
+msgid "FTP user errors"
+msgstr "FTP bruger fejl"
+
 msgid "FTPs total"
 msgstr "FTP'er total"
 
@@ -2561,13 +2561,13 @@ msgid "Hosting plan limits exceed reseller limits."
 msgstr "Hosting plan grænser overskrider forhandler grænser."
 
 msgid "Hosting plan limits exceed your limits."
-msgstr ""
+msgstr "Hosting plan grænser overskrider dine grænser."
 
 msgid "Hosting plan successfully created."
 msgstr "Hosting plan oprettet."
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Hosting plan slettet."
 
 msgid "Hosting plan successfully updated."
 msgstr "Hosting plan er blevet opdateret."
@@ -2650,7 +2650,7 @@ msgid "IPv6 address field is empty or invalid."
 msgstr "IPv6 adresse felt er tomt eller ugyldigt."
 
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 msgid "If set to `yes`, Web folders will be protected against deletion."
 msgstr ""
@@ -2819,8 +2819,11 @@ msgstr "Ugyldig NAVN."
 msgid "Invalid SQL user host: %s"
 msgstr "Ugyldig SQL bruger host: %s"
 
-msgid "Invalid SSL certificate."
+msgid "Invalid SSL certificate"
 msgstr ""
+
+msgid "Invalid SSL certificate."
+msgstr "Ugyldig SSL certifikat"
 
 msgid "Invalid TXT data"
 msgstr "Ugyldig TXT data"
@@ -3056,6 +3059,9 @@ msgstr "Forkert udformet resolver SQL query"
 
 msgid "Manage SQL"
 msgstr "Håndtér SQL"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Administrer htaccess brugere og grupper"
@@ -3343,7 +3349,7 @@ msgstr "Intet er blevet slettet."
 msgid "Nothing has been scheduled for deactivation."
 msgstr "Intet er blevet planlagt til deaktivering."
 
-msgid "Nothing to do. Daemon request has been canceled."
+msgid "Nothing to do. Daemon request has been cancelled."
 msgstr "Intet at gøre. Daemon anmodning er blevet annulleret."
 
 msgid "Notices, Warnings and Errors"
@@ -3391,7 +3397,7 @@ msgid "Open tickets"
 msgstr "Åbne support tickets"
 
 #, php-format
-msgid "Operation canceled: %s"
+msgid "Operation cancelled: %s"
 msgstr "Operation annulleret: %s"
 
 msgid "Optional"
@@ -3429,10 +3435,10 @@ msgstr "PHP"
 
 #, php-format
 msgid "PHP %s configuration option"
-msgstr ""
+msgstr "PHP %s konfigurations mulighed"
 
 msgid "PHP Configuration options"
-msgstr ""
+msgstr "PHP Konfigurations muligheder"
 
 msgid "PHP Editor"
 msgstr "PHP Editor"
@@ -3441,7 +3447,7 @@ msgid "PHP GD extension not loaded."
 msgstr "PHP GD udvidelse ikke indlæst."
 
 msgid "PHP Permissions"
-msgstr ""
+msgstr "PHP Tilladelser"
 
 msgid "PHP Settings"
 msgstr "PHP Indstillinger"
@@ -3553,7 +3559,7 @@ msgid "Password is too long."
 msgstr "Password er for langt."
 
 msgid "Password minimum length"
-msgstr ""
+msgstr "Adgangskode minimum længde"
 
 #, php-format
 msgid ""
@@ -3613,10 +3619,10 @@ msgid "Please confirm the password."
 msgstr "Du skal bekræfte dit password."
 
 msgid ""
-"Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Kontakt venligst administratoren!<br />Spørg ham om tilladelser til at bruge denne pakke.<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
+"Please contact the administrator!<br>Ask him for the permissions to use this"
+" package.<br>It is not allowed to upload this packet two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Indtast et navn for det beskyttede område."
@@ -4092,7 +4098,7 @@ msgid "Reseller / Support / View Ticket"
 msgstr "Forhandler / Support / Vis Ticket"
 
 msgid "Reseller /Hosting Plans / Edit Hosting Plan"
-msgstr ""
+msgstr "Forhandler / Hosting Planer / Rediger Hosting Planer"
 
 msgid "Reseller Name"
 msgstr "Forhandler Navn"
@@ -4218,7 +4224,7 @@ msgid "SQL database limit reached."
 msgstr "SQL database grænse nået."
 
 msgid "SQL database successfully created."
-msgstr ""
+msgstr "SQL database oprettet med succes."
 
 msgid "SQL database successfully deleted."
 msgstr "SQL database slettet."
@@ -4264,16 +4270,13 @@ msgid "SQL user successfully added."
 msgstr "SQL bruger tilføjet."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "SQL bruger blev slettet."
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "SQL bruger med komma(r) i navn accepteres ikke."
 
 msgid "SQL users"
 msgstr "SQL brugere"
-
-msgid "SSL certificate"
-msgstr "SSL certifikat"
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL-certifikat er med succes planlagt til tilføjelse."
@@ -4286,6 +4289,9 @@ msgstr "SSL-certifikat er med succes planlagt til opdatering."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-funktionen er ikke tilgængelig. Du kan kun se dit certifikat."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Gem"
@@ -4388,7 +4394,7 @@ msgstr "Service navn"
 msgid "Service name already exists."
 msgstr "Service navn eksisterer allerede."
 
-msgid "Service port successfully addeds"
+msgid "Service port successfully added"
 msgstr "Service port blev succesfuldt tilføjet"
 
 msgid "Service port successfully removed."
@@ -4581,7 +4587,7 @@ msgid "Street 2"
 msgstr "Adresse 2"
 
 msgid "Strong passwords"
-msgstr ""
+msgstr "Stærk adgangskode"
 
 msgid "Subdomain"
 msgstr "Subdomæne"
@@ -4596,7 +4602,7 @@ msgstr "Subdomæne %s kan ikke viderestilles til sig selv."
 
 #, php-format
 msgid "Subdomain %s is unavailable."
-msgstr ""
+msgstr "Subdomæne %s er ikke tilgængligt."
 
 msgid "Subdomain alias"
 msgstr "Subdomæne alias"
@@ -4605,7 +4611,7 @@ msgid "Subdomain alias errors"
 msgstr "Subdomæne alias fejl"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Subdomæne alias planlagt til sletning."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4631,7 +4637,7 @@ msgid "Subdomain name is not valid."
 msgstr "Subdomæne navn er ikke gyldigt."
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Subdomæne planlagt til sletning."
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "Subdomæne succesfuldt planlagt til tilføjelse."
@@ -4803,9 +4809,9 @@ msgid "The package is corrupt. Please correct it."
 msgstr "Pakken er beskadiget. Ret det venligst."
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Pakken vil blive installeret automatisk til dit system efter upload.<br />Opdater dit websted for at se den nye status!"
+"The package will be installed automatically to your system after "
+"upload.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "The password field is empty."
 msgstr "Password feltet er tomt."
@@ -4814,8 +4820,8 @@ msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr ""
 
 #, php-format
-msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
-msgstr "Den eksterne filstørrelse (%s) er lavere end 1 byte. Kontroller URL."
+msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
+msgstr ""
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
@@ -4842,9 +4848,9 @@ msgid "The values must not be equal"
 msgstr "Værdierne skal ikke være ens"
 
 msgid ""
-"There is an Error inside your package. Please check it!<br />Refresh your "
-"site to see the new status!"
-msgstr "Der er en fejl i din pakke. Venligst tjek det!<br />Opdater dit websted for at se den nye status!"
+"There is an Error inside your package. Please check it!<br>Refresh your site"
+" to see the new status!"
+msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4853,9 +4859,9 @@ msgstr "Denne IP (%s) er ikke tildelt noget netværkskort!"
 #, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
-"this package!<br />Please delete the files and database for this package "
+"this package!<br>Please delete the files and database for this package "
 "manually!"
-msgstr "Denne pakke (%s, V%s) blev slettet af din forhandler. Du kan kun afinstallere denne pakke!<br />Venligst slette filer og database til denne pakke manuelt!"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5586,9 +5592,9 @@ msgstr "Du kan ikke viderestille %s til sig selv."
 
 #, php-format
 msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
-" for the <b>%2$s</b> service."
-msgstr "Du kan ikke flytte <b>%1$s</b> i en destinations forhandler,<br />som har grænser for <b>%2$s</b> service."
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service."
+msgstr ""
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr "Du kan ikke beskytte et område uden udvalgte htaccess gruppe (r)."
@@ -5730,7 +5736,7 @@ msgid "You have to choose between file-upload and wget-function."
 msgstr "Du er nødt til at vælge mellem fil-upload og wget-funktion."
 
 msgid "You must assign at least one IP to this reseller."
-msgstr ""
+msgstr "Du skal tildele mindst én IP til denne forhandler."
 
 msgid "You must choose between local and remote upload."
 msgstr "Du skal vælge mellem lokal og remote upload."
@@ -5828,8 +5834,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Din pakke er beskadiget. Ret venligst dette!"
 
 #, php-format
-msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
-msgstr "Din eksterne filstørrelse (%s) er lavere end 1 byte. Kontroller URL."
+msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -6081,7 +6087,7 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{FORHANDLER} uploadede en ny softwarepakke"
 
 msgid "{USERNAME} user statistics"
-msgstr "{USERNAME} bruger statistik"
+msgstr "{USERNAME} bruger statistiker"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"

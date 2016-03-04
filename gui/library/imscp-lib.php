@@ -237,9 +237,6 @@ if(is_readable(CONFIG_CACHE_FILE_PATH)) {
 	$config['SERVER_TRAFFIC_LIMIT'] = 0;
 	$config['SERVER_TRAFFIC_WARN'] = 0;
 
-	// Paths appended to the default PHP open_basedir directive of customers
-	$config['PHPINI_OPEN_BASEDIR'] = '';
-
 	// Store file last modification time to force reloading of configuration file if needed
 	$config['__filemtime__'] = filemtime(CONFIG_FILE_PATH);
 

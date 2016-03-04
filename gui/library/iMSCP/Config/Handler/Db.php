@@ -28,7 +28,6 @@
  * @property int FAILED_UPDATE Failed database update
  * @property string PORT_IMSCP_DAEMON i-MSCP daemon service properties
  * @property string USER_INITIAL_LANG User initial language
- * @property string PHPINI_OPEN_BASEDIR PHP open_basedir
  * @property int DATABASE_REVISION Database revision
  * @property  int EMAIL_QUOTA_SYNC_MODE Email quota sync mode
  */

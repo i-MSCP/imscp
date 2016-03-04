@@ -717,14 +717,14 @@ sub _buildFrontendFiles
 sub _compileDaemon
 {
 	unless(chdir "$FindBin::Bin/daemon") {
-		error(sprintf('Unable to change dir to %s', "$FindBin::Bin/daemon"));
+		error(sprintf('Could not change dir to %s', "$FindBin::Bin/daemon"));
 		return 1;
 	}
 
 	my $rs = execute('make clean imscp_daemon', \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Unable to build i-MSCP daemon') if $rs;
+	error('Could not build i-MSCP daemon') if $rs;
 	return $rs if $rs;
 
 	$rs = iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" )->make();
@@ -922,12 +922,8 @@ sub _savePersistentData
 
 sub _installFiles
 {
-	my $serviceMngr = iMSCP::Service->getInstance();
-
 	# i-MSCP daemon must be stopped before changing any file on the files system
-	if($serviceMngr->isRunning('imscp_daemon')) {
-		$serviceMngr->stop('imscp_daemon');
-	}
+	iMSCP::Service->getInstance()->stop('imscp_daemon');
 
 	# Process cleanup to avoid any security risks and conflicts
 	for(qw/daemon engine gui/) {

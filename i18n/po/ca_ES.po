@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-02-12 12:42+0100\n"
-"PO-Revision-Date: 2016-02-12 11:43+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -497,26 +497,29 @@ msgid "(usually named"
 msgstr "(normalment anomenat"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
-msgstr "<b>%1$s</b> te drets il.limitats per al Servei <b>%2$s</b> .<br />"
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
+msgstr ""
 
 #, php-format
 msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
-"destination reseller.<br />"
-msgstr "<b>%1$s</b> està excedint els limits per al servei <b>%2$s</b><br />en el distribuidor de destí.<br />"
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller.<br>"
+msgstr ""
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br />This user cannot be moved!"
-msgstr "<b>%s</b> té una adreça IP que no es pot administrar des del distribuidor de destí!<br />Aquest usuari no es pot moure!"
+"reseller!<br>This user cannot be moved!"
+msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr "Una extensió de PHP ha detingut la càrrega d'arxius."
 
 msgid "A database update is available"
 msgstr ""
+
+msgid "A hosting plan with same name already exists."
+msgstr "Ja existeix un pla de hosting amb aquest nom."
 
 msgid "A new i-MSCP version is available"
 msgstr ""
@@ -583,9 +586,6 @@ msgstr "Temps d'expiració de l'enllaç d'activació <small>(In minutes)</small>
 
 msgid "Add"
 msgstr "Afegir"
-
-msgid "Add / Edit SSL certificate"
-msgstr ""
 
 msgid "Add FTP account"
 msgstr ""
@@ -869,9 +869,9 @@ msgid "Administrators and resellers"
 msgstr ""
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Després de la càrrega, el paquet s'instal.larà als teus sistemes,<br/>Refresca el teu lloc per veure el nou estat!"
+"After your upload the package it will be installed on your "
+"systems.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Alias forward"
 msgstr "Reenviament d'àlies"
@@ -970,9 +970,6 @@ msgstr ""
 
 msgid "An error occurred during authentication."
 msgstr "Hi ha hagut un error durant l'autenticació"
-
-msgid "An hosting plan with same name already exists."
-msgstr ""
 
 msgid "An unexpected error occurred"
 msgstr ""
@@ -1279,25 +1276,25 @@ msgid "Check for update"
 msgstr "Buscar actualització"
 
 msgid ""
-"Check the reseller uploads!<br />It is not allowed to upload this package "
-"two times.<br />Refresh your site to see the new status!"
-msgstr "Comprova les càrregues de distribuidor!<br/>No està permés de carregar aquest paquet dues vegades.<br/>Refresca el teu lloc per veure el nou estat!"
+"Check the reseller uploads!<br>It is not allowed to upload this package two "
+"times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Comprova les teves pròpies càrregues!<br/>Pregunta a l'administrador si no trobes el paquet.<br/>No està permés de carregar aquest paquet dues vegades.<br/>Refresca el teu lloc per veure el nou estat!"
+"Check your own uploads!<br>Ask the administrator if you don't find the "
+"package.<br>It is not allowed to upload this packages two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid ""
-"Check your package. There is an error inside!<br />Refresh your site to see "
+"Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
-msgstr "Comprova el teu paquet. Hi ha un error dins!<br/>Refresca el teu lloc per veure el nou estat!"
+msgstr ""
 
 msgid ""
-"Check your software depot uploads!<br />It is not allowed to upload this "
-"package two times.<br />Refresh your site to see the new status!"
-msgstr "Comprova els teus arxius càrregats al magatzem de programari!<br/>No està permés de carregar aquest paquet dues vegades.<br/>Refresca el teu lloc per veure el nou estat!"
+"Check your software depot uploads!<br>It is not allowed to upload this "
+"package two times.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "Choose"
 msgstr "Escollir"
@@ -1828,14 +1825,14 @@ msgstr "Benvolgut {RESELLER},\n\t\tEl programari que has carregat ha estat elimi
 
 msgid ""
 "Dear {RESELLER},\n"
-"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
 "\n"
 "\tDetails:\n"
 "\tPackage Name: {SOFTWARE}\n"
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "Benvolgut {RESELLER},\n\tEl paquet de prohramari que heu carregat ha estat activat per  {ADMIN}.\n\n\tDetalls:\n\tNom del Paquet: {SOFTWARE}\n\tPaquet ID: {SOFTWARE_ID}\n\n\tSiusplau inicia sessió al teu panell de control i-MSCP per a més detalls."
+msgstr ""
 
 msgid "Debugger"
 msgstr ""
@@ -2364,6 +2361,9 @@ msgstr "Comptes de FTP"
 msgid "FTP traffic"
 msgstr "Trànsit FTP"
 
+msgid "FTP user errors"
+msgstr ""
+
 msgid "FTPs total"
 msgstr "Total FTPs"
 
@@ -2569,7 +2569,7 @@ msgid "Hosting plan successfully created."
 msgstr "Pla d'allotjament creat amb èxit."
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Plà d'hostatge eliminat correctament."
 
 msgid "Hosting plan successfully updated."
 msgstr "El pla d'allotjament s'ha actualitzat correctament."
@@ -2821,6 +2821,9 @@ msgstr ""
 msgid "Invalid SQL user host: %s"
 msgstr ""
 
+msgid "Invalid SSL certificate"
+msgstr ""
+
 msgid "Invalid SSL certificate."
 msgstr ""
 
@@ -3058,6 +3061,9 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "Administrar SQL"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr ""
@@ -3345,7 +3351,7 @@ msgstr ""
 msgid "Nothing has been scheduled for deactivation."
 msgstr ""
 
-msgid "Nothing to do. Daemon request has been canceled."
+msgid "Nothing to do. Daemon request has been cancelled."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
@@ -3393,7 +3399,7 @@ msgid "Open tickets"
 msgstr "Tiquets oberts"
 
 #, php-format
-msgid "Operation canceled: %s"
+msgid "Operation cancelled: %s"
 msgstr ""
 
 msgid "Optional"
@@ -3615,10 +3621,10 @@ msgid "Please confirm the password."
 msgstr ""
 
 msgid ""
-"Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr "Siusplau contacta amb l'administrador!<br />Pregunta-li pels permisos per usar aquest paquet.<br />no està permés carregar aquest paquet dues vegades.<br />Refresca el teu lloc per a veure el nou estat!"
+"Please contact the administrator!<br>Ask him for the permissions to use this"
+" package.<br>It is not allowed to upload this packet two times.<br>Refresh "
+"your site to see the new status!"
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Siusplau introdueix un nom per l'àrea protegida."
@@ -4266,16 +4272,13 @@ msgid "SQL user successfully added."
 msgstr "Usuari SQL afegit correctament."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "Usuari SQL esborrat correctament."
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr ""
 
 msgid "SQL users"
 msgstr "Usuaris SQL"
-
-msgid "SSL certificate"
-msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr ""
@@ -4287,6 +4290,9 @@ msgid "SSL certificate successfully scheduled for update."
 msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
+msgstr ""
+
+msgid "SSL status"
 msgstr ""
 
 msgid "Save"
@@ -4390,7 +4396,7 @@ msgstr "Nom del servei"
 msgid "Service name already exists."
 msgstr ""
 
-msgid "Service port successfully addeds"
+msgid "Service port successfully added"
 msgstr ""
 
 msgid "Service port successfully removed."
@@ -4607,7 +4613,7 @@ msgid "Subdomain alias errors"
 msgstr ""
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Àlies de subodmini programat per ésser eliminat."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4633,7 +4639,7 @@ msgid "Subdomain name is not valid."
 msgstr ""
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Subodmini programar per ser eliminat."
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "El subdomini ha estat programat per a ésser afegit."
@@ -4805,9 +4811,9 @@ msgid "The package is corrupt. Please correct it."
 msgstr "El paquet està corrupte. Si us plau corretgeix-el."
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br "
-"/>Refresh your site to see the new status!"
-msgstr "El paquet s'instal.larà automàticament en el teu sistema després de carregar-el.<br/>Refresca el teu lloc per veure el nou estat!"
+"The package will be installed automatically to your system after "
+"upload.<br>Refresh your site to see the new status!"
+msgstr ""
 
 msgid "The password field is empty."
 msgstr ""
@@ -4816,7 +4822,7 @@ msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr ""
 
 #, php-format
-msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
 msgstr ""
 
 msgid ""
@@ -4844,9 +4850,9 @@ msgid "The values must not be equal"
 msgstr ""
 
 msgid ""
-"There is an Error inside your package. Please check it!<br />Refresh your "
-"site to see the new status!"
-msgstr "Hi ha un Error dins el teu paquet. Si us plau verifica'l!<br/>Refresca el teu lloc per veure el nou estat!"
+"There is an Error inside your package. Please check it!<br>Refresh your site"
+" to see the new status!"
+msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4855,9 +4861,9 @@ msgstr "La IP (%s) no està assignada a cap tarja de xarxa!"
 #, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
-"this package!<br />Please delete the files and database for this package "
+"this package!<br>Please delete the files and database for this package "
 "manually!"
-msgstr "Aquest Paquet (%s, V%s) ha estat esborrat per el teu distribuidor. Només pots desinstal.lar aquest paquet!<br />Si us plau esborra manualment els arxius i la Base de Dades per aquest paquet!"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5588,9 +5594,9 @@ msgstr ""
 
 #, php-format
 msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
-" for the <b>%2$s</b> service."
-msgstr "No pots moure <b>%1$s</b> cap al distribuidor de destí,<br /> el qual té limits per al servei <b>%2$s</b> ."
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service."
+msgstr ""
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr "No pots protegir una àrea sense seleccionar grup(s) htaccess."
@@ -5830,7 +5836,7 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "El teu paquet està corrupte. Si us plau corregeix-lo!"
 
 #, php-format
-msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr ""
 
 msgid ""

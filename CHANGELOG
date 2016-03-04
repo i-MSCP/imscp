@@ -4,13 +4,155 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIG
+	Added: /dev/random and /dev/urandom to open_basedir (PHP)
+
+FRONTEND
+	Added: SSL status field on domain management page (Client interface)
+	Fixed: Exception raised due to missing `ZIP` configuration variable
+	Fixed: Wrong error handling in cert_view.php (openssl_x509_checkpurpose function also returns -1 which is not FALSE)
+
+INSTALLER
+	Fixed: Could not unset 'hold' state on packages in some contexts
+	Fixed: Ensure that underlying sysvinit scripts are disabled when upstart job is provided (Upstart)
+	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
+	Fixed: Use MySQL 5.6 from official Trusty repository in place of MySQL Team repository
+	Fixed: Wrong package name (mysql-client-5.5 instead of mysql-client-5.6) in Debian Stretch packages file
+	Pending: Courier support for Debian Stretch - packages not available at this moment
+	Pending: VsFTPd support for Debian Stretch - libpam-mysql package not available at this moment
+
+PACKAGES
+	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
+
+SERVERS
+	Fixed: MySQL server socket is missing after reboot due to underlying init script
+
+SETUP
+	Fixed: Could not reconfigure due to 'Could not find sysvinit script...' error
+
+YOUTRACK
+	IP-1488 Show SSL-status on domain page
+	IP-1500 Update fails when a customer's SSL certificate is invalid or expired
+
+------------------------------------------------------------------------------------------------------------------------
+1.2.15
+------------------------------------------------------------------------------------------------------------------------
+
+2016-03-02: Laurent Declercq
+	RELEASE i-MSCP 1.2.15
+
+BACKEND
+	Changed: Usage of custom OpenSSL configuration file for self-signed SSL certificates (iMSCP::OpenSSL)
+	Fixed: ALLOW_URL_FOPEN placeholder not replaced in pool configuration files when using per_domain INI level (PHP-FPM)
+	Fixed: Exit code not returned to caller on segfault (signal 11)
+	Fixed: Missing fallback value for allow_url_fopen in Modules::SubAlias
+	Fixed: Obsolete SSL connection encryption method (nginx)
+
+CONFIG
+	Added: imscp_panel.service systemd unit file
+	Added: OpenSSL configuration template file for self-signed SSL certificates
+	Changed: SPF record entries from softfail to hardfail
+
+DAEMON
+	Fixed: Missing chdir() and umask() calls
+	Fixed: STDIN, STDOUT and STDERR must be redirected to /dev/null
+	Updated: Version to 1.2.5
+
+DATABASE
+	Added: Default value for the domain.external_mail_dns_ids field
+	Added: Default value for the domain_aliasses.external_mail_dns_ids field
+	Added: 'status' field to the ftp_users table
+
+FRONTEND
+	Fixed: Bad request error when editing PHP settings with per_user INI level (PHP Editor)
+	Fixed: Could not add SSL certificate due to 'At least one intermediate certificate is invalid or missing' error
+	Fixed: Exception raised due to missing default value for domain.external_mail_dns_ids
+	Fixed: When customer account is being disabled, FTP users must be also disabled
+	Removed: OpenSSL configuration template file (replaced by /etc/imscp/openssl/openssl.cnf.tpl)
+
+INSTALLER
+	Fixed: Can't locate object method "setVersion" via package Servers::sqld::remote_server
+	Fixed: Connection timeout with pgp.mit.edu PGP key server (replaced by keyserver.ubuntu.com)
+	Fixed: Ensure that mysql service is enabled
+	Fixed: Installer must die when server hostname is missconfigured
+	Fixed: Missing 'use iMSCP::Crypt qw/decryptBlowfishCBC/' statement in Servers::sqld::remote_server
+	Fixed: Missing 'use iMSCP::Execute qw/escapeShell/' statement in Servers::sqld::remote_server
+	Fixed: Missing 'use iMSCP::TemplateParser' statement in Servers::sqld::remote_server
+	Fixed: Overwrite any existing conflicting symlinks when enabling service (systemd)
+	Fixed: Possible use of uninitialized value $sqlServer in autoinstaller/Adapter/DebianAdapter.pm
+	Fixed: sysvinit scripts are not enabled when using systemd (regression fix)
+	Fixed: Missing APT source repositories for i-MSCP required sections
+	Updated: PhpMyAdmin addon installer to support PhpMyAdmin 4.5.x serie (require MySQL >= 5.5 and PHP >= 5.5)
+
+SERVERS
+	Added: SQLNegativeCache directive to cache negative responses from SQL lookups (ProFTPD)
+	Added: SQLUserWhereClause directive to disallow FTP connection when FTP user status is not 'ok' (ProFTPD)
+	Backported: VsFTPd server implementation from 1.3.x branch
+
+YOUTRACK
+ 	IP-1367 Support for the VsFTPd server
+	IP-1444 Ubuntu - Vsftpd package broken - libgcc_s.so.1 must be installed for pthread_cancel to work
+	IP-1495 Domain alias with shared moint point fails
+
+------------------------------------------------------------------------------------------------------------------------
+1.2.14
+------------------------------------------------------------------------------------------------------------------------
+
+2016-02-25: Laurent Declercq
+	RELEASE i-MSCP 1.2.14
+
+FRONTEND
+	Fixed: Could not edit reseller PHP permissions (PHP Editor)
+	Fixed: Unchecking all disabled functions has no effect (PHP Editor)
+
+INSTALLER
+	Fixed: Password must not be escaped (MySQL installer)
+
+------------------------------------------------------------------------------------------------------------------------
+1.2.13
+------------------------------------------------------------------------------------------------------------------------
+
+2016-02-24: Laurent Declercq
+	RELEASE i-MSCP 1.2.13
+
+CONFIG
+	Fixed: Missing /php-fpm/php-fpm.pool.default declaration in configs/ubuntu/php-fpm/install.xml
+	Updated: Licence header in skeletons
+
+CONTRIB
+	Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (20_dovecot_connections.pl)
+	Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (40_dovecot_pfs.pl)
+
+INSTALLER
+	Fixed: Ensure that authentication plugin is set to 'mysql_native_password' for SQL root user (MySQL >= 5.7)
+	Fixed: Perl DBI (mysql) package removed when using MariaDB server, leading to installation/update failure
+	Fixed: Switch policy is ignored (SQL servers)
+	Fixed: Wrong package names in Debian Strech package file (MySQL 5.6)
+
+FRONTEND
+	Fixed: Unable to handle uncaught exception thrown... Data `translator` is not registered
+	Fixed: Exception browser writer doesn't display the expected exception in some contexts
+	Fixed: Exception mail writer cache do not work
+	Fixed: Unable to establish the connection to the database when using MySQL >= 5.7
+
+------------------------------------------------------------------------------------------------------------------------
+1.2.12
+------------------------------------------------------------------------------------------------------------------------
+
+2016-02-23: Laurent Declercq
+	RELEASE i-MSCP 1.2.12
+
 BACKEND
 	Added: Support for TCP/IP (PHP-FPM)
 	Backported: iMSCP::Crypt library from 1.3.x branch
-	Fixed: Don't use Cyrus SASL for SMTP authentication when the dovecot SASL implementation is available
+	Fixed: Could not remove service: Not a CODE reference at PerlLib/iMSCP/Provider/Service/Systemd.pm line 115
+	Fixed: Could not remove service: Unit not loaded (systemd provider)
+	Fixed: Don't use Cyrus SASL for SMTP authentication when the Dovecot SASL implementation is available
 	Fixed: Mail passwords are no longer valid after client account re-activation
 
 CONFIG
+	Added: BACKUP_COMPRESS_LEVEL configuration parameter
+	Added: Default www.conf pool configuration file (PHP-FPM)
 	Added: docs/imscp_net_sysctl.conf configuration file example
 	Added: DOVECOT_SASL_AUTH_SOCKET_PATH parameter in dovecot/dovecot.data file
 	Added: event_scheduler parameter in mysql/imscp.cnf file to disable event scheduler (see errata file)
@@ -18,13 +160,16 @@ CONFIG
 	Added: PHP-FPM parameters (global and per pool configuration parameters) in php-fpm/phpfpm.data file
 	Added: SQLD_SOCK_DIR, SQLD_USER and SQLD_GROUP parameters in mysql/mysql.data configuration file
 	Added: sql_mode parameter in mysql/imscp.cnf template file to reset server SQL modes (backward compatibility issue)
+	Fixed: Missing http authorization headers (PHP-FPM with apache2 mod_proxy_fcgi)
 	Fixed: Possible segfault with OPcache when fast shutdown feature is enabled
+	Renamed: ZIP configration parameter to BACKUP_COMPRESS_ALGORITHM
 	Removed: Dovecot 1.x configuration files
 	Removed: procmail mailbox command in Postfix main.cf file
+	Updated: Matching rule for PHP files (.php .php3 .php4 .php5 .php7 .pht .phtml)
 
 CONTRIB
 	Added: 40_apache2_tools_proxy.pl listener file (redirect/proxy the i-MSCP tools in customers vhost files)
-	Added: 10_dovecot_compress.pl listener file (activate dovecot compress plugin)
+	Added: 10_dovecot_compress.pl listener file (activate Dovecot compress plugin)
 	Added: 20_dovecot_connections.pl listener file (allow to increase the mail_max_userip_connections)
 	Added: 30_dovecot_namespace.pl listener file (creates the INBOX. as a compatibility name)
 	Added: 40_dovecot_pfs.pl listener file (activate the Perfect Forward Secrecy logging)
@@ -32,17 +177,26 @@ CONTRIB
 	Added: 60_dovecot_service_login.pl listener file (Allows to modify default service-login configuration options)
 	Added: 10_nginx_hsts.pl listener file (enable HTTP Strict Transport Security (HSTS))
 	Added: 10_php_confoptions_overide.pl listener file (Allows to add or override PHP configuration options)
-	Added: 60_postfix_pfs.pl listener file (add the self generated EDH parameter files for Perfect Forward Secrecy (PFS))
+	Added: 60_postfix_pfs.pl listener file (add the self-generated EDH parameter files for Perfect Forward Secrecy (PFS))
 	Added: 70_postfix_submission_tls.pl listener file (force TLS connection on postfix submission)
 	Added: 10_proftpd_tuning.pl listener file (removes the ServerIdent information, and forces TLS)
 	Rewritten: 10_named_zonetransfer.pl listener file (now named 10_named_slave_provisioning.pl)
 	Updated: 10_postfix_smarthost listener file (We need Cyrus SASL; Dovecot SASL impl. not supported by Postfix for smtp)
 
+DAEMON
+	Added: imscp_daemon.service systemd unit file
+	Fixed: imscp-rqst-mngr backend script path must not be hardcoded in daemon
+	Fixed: PID file /var/run/imscp_daemon.pid not readable (yet?) after start (systemd)
+	Updated: Upstart init script according new daemon version - only one fork() call
+	Updated: Version to 1.2.4
+
 FRONTEND
 	Changed: error_reporting configuration parameter no longer editable when using Apache2 ITK httpd server impl.
 	Fixed: admin/settings.php menu state is not saved
 	Fixed: Customer's PHP settings must be synchronized when updating PHP permissions of their resellers
+	Fixed: Don't thrown an exception on parse_url error, send a 404 response instead (plugins.php)
 	Fixed: Slow DOM content loading due to some built-in functions override (imscp.js)
+	Fixed: Missing or bad IP check when adding or editing client account (reseller)
 	Fixed: Wrong alternative names in self-signed SSL certificates
 	Fixed: Wrong edit link for domain alias DNS record (external mail DNS record)
 	Removed: Default PHP configuration options - admin level (see errata file)
@@ -52,19 +206,22 @@ INSTALLER
 	Added: Allow to specify package version to install in distribution package files
 	Added: Conflict for procmail package to force its removal when running i-MSCP installer
 	Added: Conflict for sasl2-bin package to force its removal when running i-MSCP installer (we don't need saslauthd)
-	Added: Default administrator email in aliases(5) table for root account (e.g. root: <default_admin_email>)
+	Added: Default administrator email in aliases(5) table for local root user (e.g. root: <default_admin_email>)
 	Added: Routine for upgrading SQL server system tables when necessary (e.g. MySQL Community Server)
 	Added: Support for MySQL 5.6.x/5.7.x, Percona 5.7 and MariaDB 10.1 when available (see errata file)
 	Added: Support for Ubuntu 16.04 (Xenial Xerus)
+	Added: verbose command line option
 	Fixed: Could not type new password when reconfiguring service SQL users due to non-printable characters
 	Fixed: Dependencies problems when switching to another SQL server vendor
 	Fixed: Don't ask admin for SQL root password when not needed (package maintainer script)
 	Fixed: Don't ask admin for data directory (/var/lib/mysql) removal (package maintainer script)
 	Fixed: Do not try to receive/download repository gpg key if already present
 	Fixed: Missing source repositories in APT sources.list
-	Removed: Support for Ubuntu 15.04 (Vivid Vervet)
+	Fixed: Output from imscp-rqst-mngr must be shown on stdout when verbose mode is enabled (only with noprompt)
+	Removed: Support for Ubuntu 15.04 (Vivid Vervet) - Not an LTS version
 
 PLUGINS
+	Added: registerSetupListeners() function call to allow the plugins to listen on servers/packages installation events
 	Updated: API version to 1.0.2
 
 YOUTRACK
@@ -72,6 +229,7 @@ YOUTRACK
 	#IP-1289 ProFTPD with TLS behind NAT - Local IP masquerading and passive port range
 	#IP-1397 MySQL "SET PASSWORD" deprecated in version 5.7.6
 	#IP-1453 The before/after HttpdAddIps events are not always triggered
+	#IP-1466 IP change causes SSL error
 	#IP-1482 Add support for MySQL 5.6.x/5.7.x using MySQL Team repositories
 	#IP-1483 Perl 5.22 - Unescaped left brace in regex is deprecated
 	#IP-1486 Do not place order when a domain alias is created by a mutated user

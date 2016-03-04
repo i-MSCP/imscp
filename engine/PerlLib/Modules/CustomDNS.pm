@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2015-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -66,75 +66,59 @@ sub process
 
 	(my $domainType, $domainId) = split '_', $domainId;
 
-	if($domainType && $domainId) {
-		my $condition = ($domainType eq 'domain') ? "domain_id = $domainId AND alias_id = 0" : "alias_id = $domainId";
-
-		my $rs = $self->_loadData($domainType, $domainId);
-		return $rs if $rs;
-
-		$rs = $self->add();
-
-		if($rs) {
-			my $errorStr = getMessageByType('error');
-			my $qrs = $self->{'db'}->doQuery(
-				'u',
-				"UPDATE domain_dns SET domain_dns_status = ? WHERE $condition",
-				(($errorStr) ? $errorStr : 'Unknown error')
-			);
-			unless(ref $qrs eq 'HASH') {
-				error($qrs);
-				return 1;
-			}
-		} else {
-			my $dbh = $self->{'db'}->getRawDb();
-
-			$self->{'db'}->startTransaction();
-
-			eval {
-				$dbh->do(
-					"
-						UPDATE
-							domain_dns
-						SET
-							domain_dns_status = 'ok'
-						WHERE
-							$condition
-						AND
-							domain_dns_status NOT IN('todisable', 'todelete')
-					"
-				);
-
-				$dbh->do(
-					"
-						UPDATE
-							domain_dns
-						SET
-							domain_dns_status = 'disabled'
-						WHERE
-							$condition
-						AND
-							domain_dns_status = 'todisable'
-					",
-				);
-
-				$dbh->do("DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'");
-
-				$dbh->commit();
-			};
-
-			if($@) {
-				$dbh->rollback();
-				$self->{'db'}->endTransaction();
-
-				error($@);
-				return 1;
-			}
-
-			$self->{'db'}->endTransaction();
-		}
-	} else {
+	unless ($domainType && $domainId) {
 		error('Bad input data...');
 		return 1;
+	}
+
+	my $condition = ($domainType eq 'domain') ? "domain_id = $domainId AND alias_id = 0" : "alias_id = $domainId";
+
+	my $rs = $self->_loadData($domainType, $domainId);
+	return $rs if $rs;
+
+	$rs = $self->add();
+
+	if($rs) {
+		my $errorStr = getMessageByType('error');
+		my $qrs = $self->{'db'}->doQuery(
+			'u', "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition", ($errorStr ? $errorStr : 'Unknown error')
+		);
+		unless(ref $qrs eq 'HASH') {
+			error($qrs);
+			return 1;
+		}
+	} else {
+		my $dbh = $self->{'db'}->getRawDb();
+
+		$self->{'db'}->startTransaction();
+
+		eval {
+			$dbh->do(
+				"
+					UPDATE domain_dns SET domain_dns_status = 'ok'
+					WHERE $condition AND domain_dns_status NOT IN('todisable', 'todelete')
+				"
+			);
+
+			$dbh->do(
+				"
+					UPDATE domain_dns SET domain_dns_status = 'disabled'
+					WHERE $condition AND domain_dns_status = 'todisable'
+				",
+			);
+
+			$dbh->do("DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'");
+			$dbh->commit();
+		};
+
+		if($@) {
+			$dbh->rollback();
+			$self->{'db'}->endTransaction();
+			error($@);
+			return 1;
+		}
+
+		$self->{'db'}->endTransaction();
 	}
 
 	0;
@@ -156,12 +140,11 @@ item init()
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'db'} = iMSCP::Database->factory();
 	$self->{'domain_name'} = undef;
 	$self->{'dns_records'} = [];
-
 	$self;
 }
 
@@ -187,19 +170,13 @@ sub _loadData
 	my $rows = $self->{'db'}->doQuery(
 		undef,
 		"
-			SELECT
-				t1.domain_dns, t1.domain_class, t1.domain_type, t1.domain_text, t1.domain_dns_status,
+			SELECT t1.domain_dns, t1.domain_class, t1.domain_type, t1.domain_text, t1.domain_dns_status,
 				IFNULL(t3.alias_name, t2.domain_name) AS domain_name, t4.ip_number
-			FROM
-				domain_dns AS t1
-			LEFT JOIN
-				domain AS t2 USING(domain_id)
-			LEFT JOIN
-				domain_aliasses AS t3 USING(alias_id)
-			LEFT JOIN
-				server_ips AS t4 ON (IFNULL(t3.alias_ip_id, t2.domain_ip_id) = t4.ip_id)
-			WHERE
-				$condition
+			FROM domain_dns AS t1
+			LEFT JOIN domain AS t2 USING(domain_id)
+			LEFT JOIN domain_aliasses AS t3 USING(alias_id)
+			LEFT JOIN server_ips AS t4 ON (IFNULL(t3.alias_ip_id, t2.domain_ip_id) = t4.ip_id)
+			WHERE $condition
 		"
 	);
 
@@ -209,7 +186,7 @@ sub _loadData
 	}
 
 	unless(@{$rows} && defined($rows->[0]->[5])) {
-		error("Custom DNS records for $domainType with ID $domainId were not found or are orphaned");
+		error(sprintf('Custom DNS records for %s with ID $s were not found or are orphaned', $domainType, $domainId));
 		return 1;
 	}
 
@@ -217,8 +194,8 @@ sub _loadData
 	$self->{'domain_ip'} = $rows->[0]->[6];
 
 	# Filter DNS records which must be disabled or deleted
-	for(@{$rows}) {
-		push @{$self->{'dns_records'}}, $_ if not $_->[4] ~~ [ 'todisable', 'todelete' ];
+	for my $record(@{$rows}) {
+		push @{$self->{'dns_records'}}, $record if not $record->[4] ~~ [ 'todisable', 'todelete' ];
 	}
 
 	0;
@@ -237,14 +214,13 @@ sub _getNamedData
 {
 	my ($self, $action) = @_;
 
-	unless($self->{'named'}) {
-		$self->{'named'} = {
-			DOMAIN_NAME => $self->{'domain_name'},
-			DOMAIN_IP => $self->{'domain_ip'},
-			DNS_RECORDS => [ @{$self->{'dns_records'}} ]
-		};
-	}
+	return %{$self->{'named'}} if $self->{'named'};
 
+	$self->{'named'} = {
+		DOMAIN_NAME => $self->{'domain_name'},
+		DOMAIN_IP => $self->{'domain_ip'},
+		DNS_RECORDS => [ @{$self->{'dns_records'}} ]
+	};
 	%{$self->{'named'}};
 }
 

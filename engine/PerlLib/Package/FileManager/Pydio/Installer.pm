@@ -5,7 +5,7 @@ Package::FileManager::Pydio::Installer - i-MSCP Pydio package installer
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -55,12 +55,10 @@ our $VERSION = '0.2.0.*@dev';
 
 sub preinstall
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/ajaxplorer', $VERSION);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
+	$rs ||= $self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
 }
 
 =item install()
@@ -73,12 +71,10 @@ sub preinstall
 
 sub install
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $rs = $self->_installFiles();
-	return $rs if $rs;
-
-	$self->_buildHttpdConfig();
+	$rs ||= $self->_buildHttpdConfig();
 }
 
 =item setGuiPermissions()
@@ -91,20 +87,14 @@ sub install
 
 sub setGuiPermissions
 {
-	my $panelUName =
-	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+	my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	my $rs = setRights(
-		"$guiPublicDir/tools/ftp",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
-	);
-	return $rs if $rs;
-
-	setRights(
-		"$guiPublicDir/tools/ftp/data",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 1 }
-	);
+	my $rs = setRights( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", {
+		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
+	} );
+	$rs ||= setRights( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/data", {
+		user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
+	});
 }
 
 =back
@@ -127,22 +117,21 @@ sub afterFrontEndBuildConfFile
 {
 	my ($tplContent, $tplName) = @_;
 
-	if($tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ]) {
-		$$tplContent = replaceBloc(
+	return 0 unless $tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ];
+
+	$$tplContent = replaceBloc(
+		"# SECTION custom BEGIN.\n",
+		"# SECTION custom END.\n",
+		"    # SECTION custom BEGIN.\n" .
+		getBloc(
 			"# SECTION custom BEGIN.\n",
 			"# SECTION custom END.\n",
-			"    # SECTION custom BEGIN.\n" .
-			getBloc(
-				"# SECTION custom BEGIN.\n",
-				"# SECTION custom END.\n",
-				$$tplContent
-			) .
-				"    include imscp_pydio.conf;\n" .
-				"    # SECTION custom END.\n",
 			$$tplContent
-		);
-	}
-
+		) .
+			"    include imscp_pydio.conf;\n" .
+			"    # SECTION custom END.\n",
+		$$tplContent
+	);
 	0;
 }
 
@@ -162,10 +151,9 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
 	$self;
 }
 
@@ -179,34 +167,29 @@ sub _init
 
 sub _installFiles
 {
-	my $self = $_[0];
+	my $self = shift;
 
 	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer";
 
-	if(-d $packageDir) {
-		my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp";
-
-		my ($stdout, $stderr);
-		my $rs = execute("rm -fR $destDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
-
-		$rs = execute("cp -fR $packageDir/src $destDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
-
-		$rs = execute("cp -fRT $packageDir/iMSCP/src $destDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
-	} else {
-		error("Couldn't find the imscp/ajaxplorer ( Pydio ) package into the packages cache directory");
+	unless(-d $packageDir) {
+		error('Could not find the imscp/ajaxplorer (Pydio) package into the packages cache directory');
 		return 1;
 	}
 
-	0;
+	my $rs = execute("rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \my $stdout, \my $stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $rs && $stderr;
+	return $rs if $rs;
+
+	$rs = execute("cp -fR $packageDir/src $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $rs && $stderr;
+	return $rs if $rs;
+
+	$rs = execute("cp -fRT $packageDir/iMSCP/src $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $rs && $stderr;
+	$rs;
 }
 
 =item _buildHttpdConfig()
@@ -220,7 +203,6 @@ sub _installFiles
 sub _buildHttpdConfig
 {
 	my $frontEnd = Package::FrontEnd->getInstance();
-
 	$frontEnd->buildConfFile(
 		"$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
 		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },

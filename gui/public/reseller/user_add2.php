@@ -281,11 +281,13 @@ function getHostingPlanData()
     $phpini->setClientPermission('phpiniDisplayErrors', $phpiniDisplayErrors);
     $phpini->setClientPermission('phpiniDisableFunctions', $phpiniDisableFunctions);
     $phpini->setClientPermission('phpiniMailFunction', $phpiniMailFunction);
-    $phpini->setDomainIni('phpiniPostMaxSize', $phpiniPostMaxSize);
+
+    $phpini->setDomainIni('phpiniMemoryLimit', $phpiniMemoryLimit); // Must be set before phpiniPostMaxSize
+    $phpini->setDomainIni('phpiniPostMaxSize', $phpiniPostMaxSize); // Must be set before phpiniUploadMaxFileSize
     $phpini->setDomainIni('phpiniUploadMaxFileSize', $phpiniUploadMaxFileSize);
     $phpini->setDomainIni('phpiniMaxExecutionTime', $phpiniMaxExecutionTime);
     $phpini->setDomainIni('phpiniMaxInputTime', $phpiniMaxInputTime);
-    $phpini->setDomainIni('phpiniMemoryLimit', $phpiniMemoryLimit);
+
 }
 
 /**
@@ -435,7 +437,7 @@ function checkInputData()
                 $phpini->setDomainIni('phpiniMemoryLimit', clean_input($_POST['memory_limit']));
             }
 
-            if (!isset($_POST['post_max_size'])) { // Must be set before phpiniUploadMaxFileSize
+            if (isset($_POST['post_max_size'])) { // Must be set before phpiniUploadMaxFileSize
                 $phpini->setDomainIni('phpiniPostMaxSize', clean_input($_POST['post_max_size']));
             }
 

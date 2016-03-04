@@ -1386,7 +1386,7 @@ class iMSCP_Plugin_Manager
 			iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
 
 			if (!@unlink($file)) {
-				write_log(sprintf('Plugin Manager: Unable to remove the %s file'), $file, E_USER_WARNING);
+				write_log(sprintf('Plugin Manager: Unable to remove the %s file', $file), E_USER_WARNING);
 				return false;
 			}
 		}

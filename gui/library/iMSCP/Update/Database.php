@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = 216;
+	protected $lastUpdate = '218';
 
 	/**
 	 * Singleton - Make new unavailable
@@ -170,7 +170,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 						if (empty($normalizedDetails)) {
 							$normalizedDetails = $matches[1];
 						} else {
-							$normalizedDetails .= '<br />' . $matches[1];
+							$normalizedDetails .= '<br>' . $matches[1];
 						}
 					} else {
 						break;
@@ -1393,23 +1393,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'mail_addr VARCHAR(254) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
 			)
 		);
-	}
-
-	/**
-	 * Added parameter to allow the admin to append some paths to the default PHP open_basedir directive of customers
-	 *
-	 * @return null
-	 */
-	protected function r105()
-	{
-		/** @var $dbConfig iMSCP_Config_Handler_Db */
-		$dbConfig = iMSCP_Registry::get('dbConfig');
-
-		if (!isset($dbConfig['PHPINI_OPEN_BASEDIR'])) {
-			$dbConfig['PHPINI_OPEN_BASEDIR'] = '';
-		}
-
-		return null;
 	}
 
 	/**
@@ -3295,6 +3278,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * - Adds PHP mail permission property in hosting plans if any
 	 *
 	 * @throws iMSCP_Exception
+	 * @return array SQL statements to be executed
 	 */
 	protected function r212()
 	{
@@ -3315,7 +3299,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 
 		// Add PHP mail permission property in hosting plans if any
-		$stmt = exec_query('SELECT id, props FROM hosting_plans');
+		$stmt = execute_query('SELECT id, props FROM hosting_plans');
 		while ($row = $stmt->fetchRow()) {
 			$id = quoteValue($row['id'], PDO::PARAM_INT);
 			$props = explode(';', $row['props']);
@@ -3365,17 +3349,17 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$phpini = iMSCP_PHPini::getInstance();
 
 		// For each reseller
-		$resellers = exec_query("SELECT admin_id FROM admin WHERE admin_type = 'reseller'");
+		$resellers = execute_query("SELECT admin_id FROM admin WHERE admin_type = 'reseller'");
 		while ($reseller = $resellers->fetchRow()) {
 			$phpini->loadResellerPermissions($reseller['admin_id']);
 
 			// For each client of the reseller
-			$clients = exec_query("SELECT admin_id FROM admin WHERE created_by = {$reseller['admin_id']}");
+			$clients = execute_query("SELECT admin_id FROM admin WHERE created_by = {$reseller['admin_id']}");
 			while ($client = $clients->fetchRow()) {
 				$phpini->loadClientPermissions($client['admin_id']);
 
 				// For the client's main domain
-				$domain = exec_query(
+				$domain = execute_query(
 					"
 						SELECT domain_id FROM domain
 						WHERE domain_admin_id = {$client['admin_id']} AND domain_status <> 'todelete'
@@ -3394,53 +3378,41 @@ class iMSCP_Update_Database extends iMSCP_Update
 					$phpini->saveDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
 				}
 
-				// For each subdomain
-				$subdomains = exec_query(
+				// Create entries for subdomains (based on domain entry)
+				$subdomains = execute_query(
 					"
 						SELECT subdomain_id FROM subdomain
 						WHERE domain_id = {$domain['domain_id']} AND subdomain_status <> 'todelete'
 					"
 				);
 				while ($subdomain = $subdomains->fetchRow()) {
-					$phpini->loadDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
-
-					// If no entry found, create one with default values
-					if ($phpini->isDefaultDomainIni()) {
-						$phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
-					}
+					$phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
 				}
+				unset($subdomains);
 
-				// For each domain aliases
-				$domainAliases = exec_query(
+				// Create entries for domain aliases (based on domain entry)
+				$domainAliases = execute_query(
 					"
 						SELECT alias_id FROM domain_aliasses
 						WHERE domain_id = {$domain['domain_id']} AND alias_status <> 'todelete'
 					"
 				);
 				while ($domainAlias = $domainAliases->fetchRow()) {
-					$phpini->loadDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
-
-					// If no entry found, create one with default values
-					if ($phpini->isDefaultDomainIni()) {
-						$phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
-					}
+					$phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
 				}
+				unset($domainAliases);
 
-				// For each subdomain of domain aliases
-				$subdomainAliases = exec_query(
+				// Create entries for subdomains of domain aliases (based on domain entry)
+				$subdomainAliases = execute_query(
 					"
 						SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
 						WHERE domain_id = {$domain['domain_id']} AND subdomain_alias_status <> 'todelete'
 					"
 				);
 				while ($subdomainAlias = $subdomainAliases->fetchRow()) {
-					$phpini->loadDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
-
-					// If no entry found, create one with default values
-					if ($phpini->isDefaultDomainIni()) {
-						$phpini->saveDomainIni($client['admin_id'], $subdomainAlias['alias_id'], 'subals');
-					}
+					$phpini->saveDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
 				}
+				unset($subdomainAliases);
 			}
 		}
 	}
@@ -3454,5 +3426,37 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function r216()
 	{
 		return "DELETE FROM hosting_plans WHERE reseller_id NOT IN(SELECT admin_id FROM admin WHERE admin_type = 'reseller')";
+	}
+
+	/**
+	 * Add status column in ftp_users table
+	 *
+	 * @return string SQL statements to be executed
+	 */
+	protected function r217()
+	{
+		return $this->addColumn('ftp_users', 'status', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok'");
+	}
+
+	/**
+	 * Add default value for the domain.external_mail_dns_ids field
+	 * Add default value for the domain_aliasses.external_mail_dns_ids field
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function r218()
+	{
+		return array(
+			$this->changeColumn(
+				'domain',
+				'external_mail_dns_ids',
+				"external_mail_dns_ids VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
+			),
+			$this->changeColumn(
+				'domain_aliasses',
+				'external_mail_dns_ids',
+				"external_mail_dns_ids VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
+			)
+		);
 	}
 }
