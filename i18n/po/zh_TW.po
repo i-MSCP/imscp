@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Akong Wu <ak6783@gmail.com>, 2015
+# Akong Wu <ak6783@gmail.com>, 2015-2016
 # Cloudeasy <a9100a9957@gmail.com>, 2014-2015
 # i-MSCP <team@i-mscp.net>, 2015
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014
@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-04 01:40+0100\n"
-"PO-Revision-Date: 2016-03-01 15:50+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -126,7 +126,7 @@ msgstr "已被 {ADMIN} 刪除了!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s 必須小於這個 %%s 值。"
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -310,7 +310,7 @@ msgstr "%s: 此客戶訂購 (%s) 這個經銷商已超過新的限制。"
 msgid ""
 "%s: The total of items (%s) already assigned by the reseller is greater than"
 " the new limit."
-msgstr ""
+msgstr "%s: 此全部的項目 (%s) 已經設定給經銷商並大於新的限制了。"
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
@@ -319,23 +319,23 @@ msgstr "%s: 這個經銷商有無限制的客戶。"
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
-msgstr ""
+msgstr "%s: 您不可以停用經銷商客戶已購買的服務。"
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
-msgstr ""
+msgstr "%s: 您不可以停用已經賣給經銷商客戶的服務。"
 
 #, php-format
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
-msgstr ""
+msgstr "%s::getInfo() 沒在運作也 %s 沒找到。這是一個 %s 外掛的錯誤且必須回報給作者。"
 
 #, php-format
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' 不可以出現給電子郵件用的 MX 紀錄 '%%value%%'"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
@@ -452,7 +452,7 @@ msgstr ""
 #, php-format
 msgid ""
 "'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr ""
+msgstr "'%%value%%' 出現這個 IP 位址，但是此 IP 位址不允許"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid IP address"
@@ -495,7 +495,7 @@ msgstr "（通常名稱"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> 已有無限制的權限給 <b>%2$s</b> 這個服務。<br>"
 
 #, php-format
 msgid ""
@@ -583,9 +583,6 @@ msgstr "驗證連結到期時間 <small>(分鐘)</small>"
 
 msgid "Add"
 msgstr "增加"
-
-msgid "Add / Edit SSL certificate"
-msgstr "新增 / 編輯 SSL 證書"
 
 msgid "Add FTP account"
 msgstr "新增 FTP 帳號"
@@ -871,7 +868,7 @@ msgstr "管理員與經銷商"
 msgid ""
 "After your upload the package it will be installed on your "
 "systems.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "在您上傳套件將會自動安裝在您的系統上。<br>重整您的網站來確認新的狀態!"
 
 msgid "Alias forward"
 msgstr "別名轉址"
@@ -895,19 +892,19 @@ msgid "All closed tickets were successfully deleted."
 msgstr "所有已結案的服務單成功刪除。"
 
 msgid "All errors (Development)"
-msgstr ""
+msgstr "所有錯誤 (開發用)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
-msgstr ""
+msgstr "所有錯誤，除了 E_DEPRECATED 和 E_STRICT (正式用)"
 
 msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
-msgstr ""
+msgstr "所有錯誤，除了 E_NOTICES, E_STRICT 和 E_DEPRECATED (預設)"
 
 msgid "All fields are required."
 msgstr "所有欄位皆必填．"
 
 msgid "All fields are valid."
-msgstr ""
+msgstr "所有欄位都正確。"
 
 msgid "All in"
 msgstr "全部接收"
@@ -1074,23 +1071,23 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "您確定要刪除 '%s' 服務單?"
 
 msgid "Are you sure you want to delete this DNS record?"
-msgstr ""
+msgstr "您確定要刪除這個 DNS 紀錄?"
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "你確定想刪除此 IP？: %s"
 
 msgid "Are you sure you want to delete this domain alias?"
-msgstr ""
+msgstr "您確定要刪除這個網域別名?"
 
 msgid "Are you sure you want to delete this hosting plan?"
-msgstr ""
+msgstr "您確定要要刪除這個主機方案?"
 
 msgid "Are you sure you want to delete this package?"
 msgstr "您確定要刪除這個 Package ?"
 
 msgid "Are you sure you want to delete this subdomain?"
-msgstr ""
+msgstr "您確定要刪除這個子網域?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1228,11 +1225,11 @@ msgstr "快取記憶體"
 
 #, php-format
 msgid "Can edit the PHP %s configuration option"
-msgstr ""
+msgstr "可以編輯 PHP %s 設置選項"
 
 #, php-format
 msgid "Can use the PHP %s function"
-msgstr ""
+msgstr "可以使用 PHP %s 功能"
 
 msgid "Cancel"
 msgstr "取消"
@@ -1278,23 +1275,23 @@ msgstr "檢查更新"
 msgid ""
 "Check the reseller uploads!<br>It is not allowed to upload this package two "
 "times.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "確認經銷商的上傳!<br>這裡不允許上傳這個套件兩次。<br>重整您的站台來檢視新的狀態!"
 
 msgid ""
 "Check your own uploads!<br>Ask the administrator if you don't find the "
 "package.<br>It is not allowed to upload this packages two times.<br>Refresh "
 "your site to see the new status!"
-msgstr ""
+msgstr "確認您的上傳!<br>假如您找不到套件請詢問管理員。<br>這裡不允許上傳這個套件兩次。<br>重整您的站台來檢視新的狀態!"
 
 msgid ""
 "Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
-msgstr ""
+msgstr "確認您的套件。有一個錯誤在裡面!<br>重整您的網站來確認新的狀態!"
 
 msgid ""
 "Check your software depot uploads!<br>It is not allowed to upload this "
 "package two times.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "確認您軟體庫的上傳!<br>這裡不允許上傳這個套件兩次。<br>重整您的站台來檢視新的狀態!"
 
 msgid "Choose"
 msgstr "選擇"
@@ -1535,22 +1532,22 @@ msgid "Cores"
 msgstr "核心數量"
 
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
-msgstr ""
+msgstr "無法新增/更新 SSL 憑證。已產生無法預期的錯誤。"
 
 msgid "Could not create domain alias. An unexpected error occurred."
-msgstr ""
+msgstr "無法建立網域別名。已產生無法預期的錯誤。"
 
 msgid "Could not delete SQL database. An unexpected error occurred."
-msgstr ""
+msgstr "無法刪除 SQL 資料庫。已產生無法預期的錯誤。"
 
 msgid "Could not delete SQL user. An unexpected error occurred."
-msgstr ""
+msgstr "無法刪除 SQL 使用者。已產生無法預期的錯誤。"
 
 msgid "Could not delete SSL certificate. An unexpected error occurred."
-msgstr ""
+msgstr "無法刪除 SSL 憑證。已產生無法預期的錯誤。"
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
-msgstr ""
+msgstr "無法產生 SSL 憑證。已產生無法預期的錯誤。"
 
 msgid "Could not upload file."
 msgstr "無法上傳檔案"
@@ -1711,7 +1708,7 @@ msgid "Daily backup"
 msgstr "每日備份"
 
 msgid "Data were altered. Please try again."
-msgstr ""
+msgstr "資料已經改變。請再試一次。"
 
 msgid "Database"
 msgstr "資料庫"
@@ -1832,7 +1829,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
+msgstr "親愛的 {RESELLER},\n\t您上傳的軟體套件已成功的由 {ADMIN} 啟動了。\n\n\t詳細資料:\n\t套件名稱: {SOFTWARE}\n\t套件 ID: {SOFTWARE_ID}\n\n\t請登入到您的 i-MSCP 控制台來了解更多資訊。"
 
 msgid "Debugger"
 msgstr "除錯"
@@ -1987,7 +1984,7 @@ msgid "Domain alias name"
 msgstr "網域別名"
 
 msgid "Domain alias successfully created."
-msgstr ""
+msgstr "網域別名已成功建立。"
 
 msgid "Domain alias successfully ordered."
 msgstr "網域別名已成功訂購。"
@@ -2008,10 +2005,10 @@ msgid "Domain and SQL databases"
 msgstr "網域 及 SQL資料庫"
 
 msgid "Domain data"
-msgstr ""
+msgstr "網域資料"
 
 msgid "Domain data were altered. Please try again."
-msgstr ""
+msgstr "網域資料已改變，請再試一次。"
 
 msgid "Domain details"
 msgstr "網域詳細資料"
@@ -2026,7 +2023,7 @@ msgid "Domain expiration date must be filled."
 msgstr "網域到期日必須填寫"
 
 msgid "Domain for which PHP Editor must act."
-msgstr ""
+msgstr "網域的 PHP 編輯器必須啟動。"
 
 msgid "Domain limit"
 msgstr "網域限制"
@@ -2362,7 +2359,7 @@ msgid "FTP traffic"
 msgstr "FTP 流量"
 
 msgid "FTP user errors"
-msgstr ""
+msgstr "FTP 使用者錯誤"
 
 msgid "FTPs total"
 msgstr "FTPs 總數"
@@ -2563,13 +2560,13 @@ msgid "Hosting plan limits exceed reseller limits."
 msgstr "主機方案超過經銷商的限制。"
 
 msgid "Hosting plan limits exceed your limits."
-msgstr ""
+msgstr "主機方案的限制已超過您的限制。"
 
 msgid "Hosting plan successfully created."
 msgstr "主機方案已成功建立。"
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "主機方案成功刪除。"
 
 msgid "Hosting plan successfully updated."
 msgstr "主機方案已成功更新。"
@@ -2652,20 +2649,20 @@ msgid "IPv6 address field is empty or invalid."
 msgstr "IPv6 位址的欄位是空白或無效。"
 
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 msgid "If set to `yes`, Web folders will be protected against deletion."
-msgstr ""
+msgstr "假如設定 `是`，網頁資料夾將被保護以防止刪除。"
 
 msgid ""
 "If set to `yes`, the reseller can allows his customers to edit this PHP "
 "configuration option."
-msgstr ""
+msgstr "假如設定 `是`，此經銷商可以允許他的客戶編輯這個 PHP 設置選項。"
 
 msgid ""
 "If set to `yes`, the reseller can enable/disable the PHP mail function for "
 "his customers, else, the PHP mail function is disabled."
-msgstr ""
+msgstr "假如設定 `是`，此經銷商可以啟用/停用此 PHP 郵件功能給這個客戶，不然，此 PHP 郵件功能是停用的。"
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "假如您要限制經銷商，您必須先限制這個客戶。"
@@ -2821,8 +2818,11 @@ msgstr "無效的 NAME。"
 msgid "Invalid SQL user host: %s"
 msgstr "無效資料庫使用者主機: %s"
 
-msgid "Invalid SSL certificate."
+msgid "Invalid SSL certificate"
 msgstr ""
+
+msgid "Invalid SSL certificate."
+msgstr "無效的 SSL 憑證"
 
 msgid "Invalid TXT data"
 msgstr "無效的 TXT 資料"
@@ -3059,6 +3059,9 @@ msgstr "解析 SQL 佇列異常"
 msgid "Manage SQL"
 msgstr "管理 SQL"
 
+msgid "Manage SSL certificate"
+msgstr ""
+
 msgid "Manage htaccess users and groups"
 msgstr "管理 htaccess 使用者及群組"
 
@@ -3256,10 +3259,10 @@ msgid "No reseller available to add the permissions."
 msgstr "沒有經銷商可以新增權限。"
 
 msgid "No reseller with activated software installer found!"
-msgstr ""
+msgstr "沒有經銷商能找到已啟用的軟體安裝器!"
 
 msgid "No reseller with permissions for this software found."
-msgstr ""
+msgstr "沒有經銷商有權限找到這個軟體。"
 
 msgid "No resellers found."
 msgstr "代理商不存在。"
@@ -3346,7 +3349,7 @@ msgid "Nothing has been scheduled for deactivation."
 msgstr "沒有任何排程將被停用。"
 
 msgid "Nothing to do. Daemon request has been cancelled."
-msgstr ""
+msgstr "沒有做任何動作。背景需求已被取消。"
 
 msgid "Notices, Warnings and Errors"
 msgstr "通知，警告和錯誤"
@@ -3394,7 +3397,7 @@ msgstr "待解答服務單"
 
 #, php-format
 msgid "Operation cancelled: %s"
-msgstr ""
+msgstr "操作已取消: %s"
 
 msgid "Optional"
 msgstr "選擇性"
@@ -3431,10 +3434,10 @@ msgstr "PHP"
 
 #, php-format
 msgid "PHP %s configuration option"
-msgstr ""
+msgstr "PHP %s 設置選項"
 
 msgid "PHP Configuration options"
-msgstr ""
+msgstr "PHP 設置選項"
 
 msgid "PHP Editor"
 msgstr "PHP 編輯器"
@@ -3443,7 +3446,7 @@ msgid "PHP GD extension not loaded."
 msgstr "PHP GD Extension 並未載入."
 
 msgid "PHP Permissions"
-msgstr ""
+msgstr "PHP 權限"
 
 msgid "PHP Settings"
 msgstr "PHP 設定"
@@ -3555,7 +3558,7 @@ msgid "Password is too long."
 msgstr "密碼長度過長"
 
 msgid "Password minimum length"
-msgstr ""
+msgstr "密碼最小長度"
 
 #, php-format
 msgid ""
@@ -3618,7 +3621,7 @@ msgid ""
 "Please contact the administrator!<br>Ask him for the permissions to use this"
 " package.<br>It is not allowed to upload this packet two times.<br>Refresh "
 "your site to see the new status!"
-msgstr ""
+msgstr "請聯絡管理員!<br />詢問他們使用這個套件的權限。<br>這裡不允許上傳這個套件兩次。<br>重整您的站台來檢視新的狀態!"
 
 msgid "Please enter a name for the protected area."
 msgstr "請輸入保護區域的名稱。"
@@ -4094,7 +4097,7 @@ msgid "Reseller / Support / View Ticket"
 msgstr "經銷商 / 支援 / 檢視服務單"
 
 msgid "Reseller /Hosting Plans / Edit Hosting Plan"
-msgstr ""
+msgstr "經銷商 / 主機方案 / 編輯主機方案"
 
 msgid "Reseller Name"
 msgstr "經銷商名稱"
@@ -4220,7 +4223,7 @@ msgid "SQL database limit reached."
 msgstr "SQL 資料庫已經達到限制。"
 
 msgid "SQL database successfully created."
-msgstr ""
+msgstr "SQL 資料庫已經成功建立。"
 
 msgid "SQL database successfully deleted."
 msgstr "SQL 資料庫已經成功刪除"
@@ -4266,16 +4269,13 @@ msgid "SQL user successfully added."
 msgstr "SQL 使用者已經成功新增"
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "SQL 使用者已成功刪除。"
 
 msgid "SQL user with comma(s) in name is not accepted."
 msgstr "SQL 使用者名稱是不允許裡面有逗號。"
 
 msgid "SQL users"
 msgstr "SQL 使用者"
-
-msgid "SSL certificate"
-msgstr "SSL 憑證"
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "新增 SSL 憑證的排程已成功"
@@ -4288,6 +4288,9 @@ msgstr "更新 SSL 憑證的排程已成功。"
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL 功能是無效的。您只能檢視您的憑證。"
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "儲存"
@@ -4391,7 +4394,7 @@ msgid "Service name already exists."
 msgstr "服務名稱已經存在"
 
 msgid "Service port successfully added"
-msgstr ""
+msgstr "服務連接埠已成功新增"
 
 msgid "Service port successfully removed."
 msgstr "服務連接埠已經成功移除"
@@ -4583,7 +4586,7 @@ msgid "Street 2"
 msgstr "街道 2"
 
 msgid "Strong passwords"
-msgstr ""
+msgstr "較強密碼"
 
 msgid "Subdomain"
 msgstr "子網域"
@@ -4598,7 +4601,7 @@ msgstr "子網域 %s 不能自己轉址。"
 
 #, php-format
 msgid "Subdomain %s is unavailable."
-msgstr ""
+msgstr "子網域 %s 是無效的。"
 
 msgid "Subdomain alias"
 msgstr "子網域別名"
@@ -4607,7 +4610,7 @@ msgid "Subdomain alias errors"
 msgstr "子網域別名錯誤"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "子網域別名已排程刪除。"
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
@@ -4633,7 +4636,7 @@ msgid "Subdomain name is not valid."
 msgstr "子網域名稱是無效的。"
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "子網域已排程刪除。"
 
 msgid "Subdomain successfully scheduled for addition."
 msgstr "新增子網域的排程已成功"
@@ -4749,19 +4752,19 @@ msgstr "暫存資料夾找不到。"
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
-msgstr ""
+msgstr "這個客戶此 %s 限制不可以高於 %d，您要計算一下限制。"
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be lower than %d, the total of %s "
 "already used by him."
-msgstr ""
+msgstr "這個客戶此 %s 限制不可以低於 %d，他總計已經使用了 %s。"
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already %d %s."
-msgstr ""
+msgstr "此 %s 限制針對這個客戶不可以設定為 '停用' 因為他已經有 %d %s。"
 
 #, php-format
 msgid ""
@@ -4807,22 +4810,22 @@ msgstr "此套件是損壞的。請用正常的。"
 msgid ""
 "The package will be installed automatically to your system after "
 "upload.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "此套件在上傳之後就會自動安裝到您的系統。<br>重整您的網站來檢視新的狀態!"
 
 msgid "The password field is empty."
 msgstr "密碼欄位是空白的。"
 
 msgid "The private key doesn't belong to the provided SSL certificate."
-msgstr ""
+msgstr "此私鑰不屬於此提供的 SSL 憑證。"
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
-msgstr ""
+msgstr "遠端檔案大小 (%s) 小於 1 Byte。請檢查網址。"
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
 "remove them first."
-msgstr ""
+msgstr "此經銷商想要移除一個或多個客戶帳號。請先移除這些。"
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "已上傳的檔案只有部份上傳而已。"
@@ -4846,7 +4849,7 @@ msgstr "此值必須相等"
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
-msgstr ""
+msgstr "有一個錯誤在您的套件裡面。請檢查!<br>重整您的網站來確認新的狀態!"
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4857,7 +4860,7 @@ msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
 "this package!<br>Please delete the files and database for this package "
 "manually!"
-msgstr ""
+msgstr "這個套件 (%s, V%s) 已被您的經銷商刪除了。您只能反安裝這個套件!<br>請手動刪除這個套件的檔案和資料庫!"
 
 #, php-format
 msgid ""
@@ -5369,7 +5372,7 @@ msgstr "使用者與群組"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
-msgstr ""
+msgstr "這個 PHP 的數值 %%s 指令必須介於 %%d 和 %%d 之間。"
 
 msgid "Values"
 msgstr "值"
@@ -5458,7 +5461,7 @@ msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "歡迎 {USERNAME} 來到 i-MSCP"
 
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
-msgstr ""
+msgstr "當設定為 '是'，您的 PHP scripts 可以呼叫 PHP exec() 功能。"
 
 msgid "Wildcard"
 msgstr "萬用字元"
@@ -5590,7 +5593,7 @@ msgstr "您不可以轉送 %s 到自己。"
 msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
-msgstr ""
+msgstr "您不可以移動 <b>%1$s</b> 到目標經銷商，<br>這已經有限制在 <b>%2$s</b> 服務中。"
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr "您不可以保護一個沒有選擇 htaccess 群組的區域。"
@@ -5651,40 +5654,40 @@ msgstr "您有 %d 新的網域別名 %s."
 msgid ""
 "You have a FTP account limit. You cannot add a user with unlimited FTP "
 "accounts."
-msgstr ""
+msgstr "您有 FTP 帳號數量限制。您不可以新增無限制 FTP 帳號的使用者。"
 
 msgid ""
 "You have a SQL database limit. You cannot add a user with unlimited SQL "
 "databases."
-msgstr ""
+msgstr "您有資料庫數量限制。您不可以新增無限制資料庫的使用者。"
 
 msgid ""
 "You have a SQL user limit. You cannot add a user with unlimited SQL users."
-msgstr ""
+msgstr "您有資料庫使用者數量限制。您不可以新增無限制資料庫數量的使用者。"
 
 msgid ""
 "You have a disk space limit. You cannot add a user with unlimited disk "
 "space."
-msgstr ""
+msgstr "您有磁碟空間限制。您不可以新增無磁碟空間限制的使用者。"
 
 msgid ""
 "You have a domain alias limit. You cannot add a user with unlimited domain "
 "aliases."
-msgstr ""
+msgstr "您有網域別名數量限制。您不可以新增無限制網域別名數量的使用者。"
 
 msgid ""
 "You have a mail account limit. You cannot add a user with unlimited email "
 "accounts."
-msgstr ""
+msgstr "您有電子郵件帳號數量限制。您不可以新增無電子郵件帳號限制的使用者。"
 
 msgid ""
 "You have a monthly traffic limit. You cannot add a user with unlimited "
 "monthly traffic."
-msgstr ""
+msgstr "您有月流量限制。您不可以新增無月流量限制的使用者。"
 
 msgid ""
 "You have a subdomain limit. You cannot add a user with unlimited subdomains."
-msgstr ""
+msgstr "您有子網域數量限制。您不可以新增無限制子網域數量的使用者。"
 
 msgid "You have been successfully logged out."
 msgstr "您已經成功登出系統"
@@ -5692,7 +5695,7 @@ msgstr "您已經成功登出系統"
 msgid ""
 "You have disabled SQL databases for this user. You cannot have SQL users "
 "here."
-msgstr ""
+msgstr "您有停用這個使用者的資料庫。這裡不能有資料庫的使用者。"
 
 msgid "You have no closed tickets."
 msgstr "您沒有任何已結案的服務單。"
@@ -5722,7 +5725,7 @@ msgid ""
 msgstr "您已經達到您所訂購中子網域允許最大數量了。"
 
 msgid "You have reached your domain limit. You cannot add more domains."
-msgstr ""
+msgstr "您已經達到您的網域限制了。您不可以再新增更多網域了。"
 
 #, php-format
 msgid "You have received %s new support ticket(s)."
@@ -5732,7 +5735,7 @@ msgid "You have to choose between file-upload and wget-function."
 msgstr "您有選擇檔案上傳和下載這兩個功能。"
 
 msgid "You must assign at least one IP to this reseller."
-msgstr ""
+msgstr "您必須分配至少一個 IP 給這個經銷商。"
 
 msgid "You must choose between local and remote upload."
 msgstr "您必須在本機和遠端之中選擇上傳。"
@@ -5831,7 +5834,7 @@ msgstr "您的套件是損壞的。請用正常的!"
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
-msgstr ""
+msgstr "您的遠端檔案大小 (%s) 低於 1 位元。請檢查您的網址。"
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -6035,7 +6038,7 @@ msgid "orders"
 msgstr "訂購"
 
 msgid "orphan entry"
-msgstr ""
+msgstr "單一輸入"
 
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"

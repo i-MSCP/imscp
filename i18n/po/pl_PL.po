@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-04 01:40+0100\n"
-"PO-Revision-Date: 2016-03-01 15:50+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/i-mscp/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -586,9 +586,6 @@ msgstr "Ważność linku aktywacyjnego <small>(w minutach)</small>"
 
 msgid "Add"
 msgstr "Dodaj"
-
-msgid "Add / Edit SSL certificate"
-msgstr "Dodaj / Edytuj certyfikat SSL"
 
 msgid "Add FTP account"
 msgstr "Dodaj konto FTP"
@@ -2824,6 +2821,9 @@ msgstr "Nieprawidłowa NAZWA"
 msgid "Invalid SQL user host: %s"
 msgstr "Nieprawidłowy host użytkownika SQL: %s"
 
+msgid "Invalid SSL certificate"
+msgstr ""
+
 msgid "Invalid SSL certificate."
 msgstr ""
 
@@ -3061,6 +3061,9 @@ msgstr "Nieprawidłowe zapytanie SQL"
 
 msgid "Manage SQL"
 msgstr "Zarządzaj bazami SQL"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Zarządzaj użytkownikami i grupami htaccess"
@@ -4277,9 +4280,6 @@ msgstr "Nazwa użytkownika SQL z myślnikiem(ami) nie jest akceptowana."
 msgid "SQL users"
 msgstr "Użytkownicy SQL"
 
-msgid "SSL certificate"
-msgstr "Certyfikat SSL"
-
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "Certyfikat SSL został pomyślnie zaplanowany do dodania."
 
@@ -4291,6 +4291,9 @@ msgstr "Certyfikat SSL został pomyślnie zaplanowany do aktualizacji."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "Funkcja SSL nie dostępna. Możesz zobaczyć swój certyfikat."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Zapisz"

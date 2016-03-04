@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-04 01:40+0100\n"
-"PO-Revision-Date: 2016-03-01 15:50+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/i-mscp/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -584,9 +584,6 @@ msgstr "Aktivointilinkin voimassaoloaika <small>(min)</small>"
 
 msgid "Add"
 msgstr "Lisää"
-
-msgid "Add / Edit SSL certificate"
-msgstr "Lisää / Muokkaa SSL-sertifikaattia"
 
 msgid "Add FTP account"
 msgstr "Lisää FTP tili"
@@ -2822,6 +2819,9 @@ msgstr "Virheellinen NAME"
 msgid "Invalid SQL user host: %s"
 msgstr "Virheellinen SQL-käyttäjän palvelin: %s"
 
+msgid "Invalid SSL certificate"
+msgstr ""
+
 msgid "Invalid SSL certificate."
 msgstr ""
 
@@ -3059,6 +3059,9 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "Hallitse tietokantoja"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Hallitse htaccess käyttäjiä ja ryhmiä"
@@ -4275,9 +4278,6 @@ msgstr "SQL-käyttäjän nimessä ei ole sallittua käyttää pilkkua."
 msgid "SQL users"
 msgstr "SQL-käyttäjät"
 
-msgid "SSL certificate"
-msgstr "SSL-sertifikaatti"
-
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL-sertifikaatin lisäys ajastettu onnistuneesti."
 
@@ -4289,6 +4289,9 @@ msgstr "SSL-sertifikaatin päivitys ajastettu onnistuneesti."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL-ominaisuus ei ole käytettävissä. Voit ainoastaan tarkastella sertifikaattiasi."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Tallenna"

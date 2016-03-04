@@ -21,9 +21,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-04 01:40+0100\n"
-"PO-Revision-Date: 2016-03-04 00:40+0000\n"
-"Last-Translator: i-MSCP <team@i-mscp.net>\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -593,9 +593,6 @@ msgstr "Durée de validité du lien d'activation (en minutes)"
 
 msgid "Add"
 msgstr "Ajouter"
-
-msgid "Add / Edit SSL certificate"
-msgstr "Certificat SSL"
 
 msgid "Add FTP account"
 msgstr "Ajouter un compte FTP"
@@ -1601,7 +1598,7 @@ msgid "Current password is invalid."
 msgstr "Mot de passe actuel invalide."
 
 msgid "Custom DNS errors"
-msgstr "Errors liées au enregistrements DNS"
+msgstr "Errors liées aux enregistrements DNS"
 
 msgid "Custom DNS record"
 msgstr "Enregistrement DNS personnalisé"
@@ -2831,6 +2828,9 @@ msgstr "NAME invalide."
 msgid "Invalid SQL user host: %s"
 msgstr "Le nom d'hôte %s n'est pas valide."
 
+msgid "Invalid SSL certificate"
+msgstr ""
+
 msgid "Invalid SSL certificate."
 msgstr "Le certificate SSL n'est pas valide."
 
@@ -3068,6 +3068,9 @@ msgstr "Requête SQL mal formée"
 
 msgid "Manage SQL"
 msgstr "Databases"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Gestion des groupe et utilisateurs htaccess"
@@ -4284,9 +4287,6 @@ msgstr "Les virgules ne sont pas acceptées dans les noms des utilisateurs SQL."
 msgid "SQL users"
 msgstr "Utilisateurs SQL"
 
-msgid "SSL certificate"
-msgstr "Certificat SSL"
-
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "Le certificat SSL va être ajouté."
 
@@ -4298,6 +4298,9 @@ msgstr "Le certificat SSL va être mis à jour."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL n'est pas disponible. Vous pouvez seulement voir vos certificats."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Sauvegarder"
@@ -5897,7 +5900,7 @@ msgid "deleting"
 msgstr "suppression"
 
 msgid "disabled"
-msgstr "déactiver"
+msgstr "désactivé"
 
 msgid "disk space"
 msgstr "espace disque"

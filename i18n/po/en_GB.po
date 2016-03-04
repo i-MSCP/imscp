@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-04 01:40+0100\n"
-"PO-Revision-Date: 2016-03-01 19:47+0000\n"
-"Last-Translator: Thom Heemstra <thom@heemstra.us>\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -586,9 +586,6 @@ msgstr "Activation link expire time <small>(In minutes)</small>"
 
 msgid "Add"
 msgstr "Add"
-
-msgid "Add / Edit SSL certificate"
-msgstr "Add / Edit SSL certificate"
 
 msgid "Add FTP account"
 msgstr "Add FTP account"
@@ -2824,6 +2821,9 @@ msgstr "Invalid NAME."
 msgid "Invalid SQL user host: %s"
 msgstr "Invalid SQL user host: %s"
 
+msgid "Invalid SSL certificate"
+msgstr ""
+
 msgid "Invalid SSL certificate."
 msgstr "Invalid SSL certificate."
 
@@ -3061,6 +3061,9 @@ msgstr "Malformed resolver SQL query"
 
 msgid "Manage SQL"
 msgstr "Manage SQL"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Manage htaccess users and groups"
@@ -4277,9 +4280,6 @@ msgstr "SQL user with comma(s) in name is not accepted."
 msgid "SQL users"
 msgstr "SQL users"
 
-msgid "SSL certificate"
-msgstr "SSL certificate"
-
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL certificate successfully scheduled for addition."
 
@@ -4291,6 +4291,9 @@ msgstr "SSL certificate successfully scheduled for update."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL feature is not available. You can only view your certificate."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Save"

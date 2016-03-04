@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-04 01:40+0100\n"
-"PO-Revision-Date: 2016-03-01 15:50+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/i-mscp/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -583,9 +583,6 @@ msgstr "Tiempo de expiración del enlace de activación <small>(en minutos)</sma
 
 msgid "Add"
 msgstr "Añadir"
-
-msgid "Add / Edit SSL certificate"
-msgstr "Añadir I Editar certificado SSL"
 
 msgid "Add FTP account"
 msgstr "Añadir Cuenta FTP"
@@ -2821,6 +2818,9 @@ msgstr "NAME inválido."
 msgid "Invalid SQL user host: %s"
 msgstr "Host de usario SQL inválido: %s"
 
+msgid "Invalid SSL certificate"
+msgstr ""
+
 msgid "Invalid SSL certificate."
 msgstr ""
 
@@ -3058,6 +3058,9 @@ msgstr "Consulta de resolutor SQL mal efectuada"
 
 msgid "Manage SQL"
 msgstr "Administrar SQL"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr "Administrar usuarios y grupos htaccess"
@@ -4274,9 +4277,6 @@ msgstr "No se aceptan coma(s) en el nombre del usuario SQL."
 msgid "SQL users"
 msgstr "Usuarios SQL"
 
-msgid "SSL certificate"
-msgstr "Certificado SSL"
-
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "Certificado SSL programado para ser añadido."
 
@@ -4288,6 +4288,9 @@ msgstr "Certificado SSL programado para ser actualizado."
 
 msgid "SSL feature is not available. You can only view your certificate."
 msgstr "La característica SLL no está disponible. Solo puede ver su cerficado."
+
+msgid "SSL status"
+msgstr ""
 
 msgid "Save"
 msgstr "Guardar"

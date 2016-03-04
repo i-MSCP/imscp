@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-04 01:40+0100\n"
-"PO-Revision-Date: 2016-03-01 15:50+0000\n"
+"POT-Creation-Date: 2016-03-04 04:50+0100\n"
+"PO-Revision-Date: 2016-03-04 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -581,9 +581,6 @@ msgstr ""
 
 msgid "Add"
 msgstr "添加"
-
-msgid "Add / Edit SSL certificate"
-msgstr ""
 
 msgid "Add FTP account"
 msgstr ""
@@ -2819,6 +2816,9 @@ msgstr ""
 msgid "Invalid SQL user host: %s"
 msgstr ""
 
+msgid "Invalid SSL certificate"
+msgstr ""
+
 msgid "Invalid SSL certificate."
 msgstr ""
 
@@ -3056,6 +3056,9 @@ msgstr ""
 
 msgid "Manage SQL"
 msgstr "管理 SQL"
+
+msgid "Manage SSL certificate"
+msgstr ""
 
 msgid "Manage htaccess users and groups"
 msgstr ""
@@ -4272,9 +4275,6 @@ msgstr ""
 msgid "SQL users"
 msgstr "SQL 用户"
 
-msgid "SSL certificate"
-msgstr ""
-
 msgid "SSL certificate successfully scheduled for addition."
 msgstr ""
 
@@ -4285,6 +4285,9 @@ msgid "SSL certificate successfully scheduled for update."
 msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
+msgstr ""
+
+msgid "SSL status"
 msgstr ""
 
 msgid "Save"
