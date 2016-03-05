@@ -103,7 +103,7 @@ function client_updateSqlUserPassword($id, $user, $host)
     // See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html for more details
 
     // Update SQL user password in the mysql system tables;
-    if (strpos('mariadb', $config['SQL_SERVER']) !== false ||
+    if (strpos($config['SQL_SERVER'], 'mariadb') !== false ||
         version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')
     ) {
         exec_query('SET PASSWORD FOR ?@? = PASSWORD(?)', array($user, $host, $password));
