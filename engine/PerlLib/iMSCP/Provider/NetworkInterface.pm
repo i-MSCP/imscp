@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::NetworkInterface - Network interface provider
+ iMSCP::Provider::NetworkInterface - Facade to network interface providers
 
 =cut
 
@@ -28,7 +28,7 @@ use warnings;
 use Carp;
 use iMSCP::EventManager;
 use iMSCP::LsbRelease;
-use Module::Load::Conditional qw/check_install can_load/;
+use Module::Load::Conditional qw/ check_install can_load /;
 use Scalar::Util 'blessed';
 use parent qw/ Common::SingletonClass iMSCP::Provider::NetworkInterface::Interface /;
 
@@ -36,7 +36,7 @@ $Module::Load::Conditional::FIND_VERSION = 0;
 
 =head1 DESCRIPTION
 
- Network interface provider
+ Facade to network interface providers
 
 =head1 PUBLIC METHODS
 
@@ -62,7 +62,7 @@ sub addIpAddr
     my ($self, $data) = @_;
 
     $self->{'eventManager'}->trigger('beforeAddIpAddr', $data);
-    $self->getAdapter()->addIpAddr($data);
+    $self->getProvider()->addIpAddr($data);
     $self->{'eventManager'}->trigger('afterAddIpAddr', $data);
     $self;
 }
@@ -84,53 +84,52 @@ sub removeIpAddr
     my ($self, $data) = @_;
 
     $self->{'eventManager'}->trigger('beforeRemoveIpAddr', $data);
-    $self->getAdapter()->removeIpAddr($data);
+    $self->getProvider()->removeIpAddr($data);
     $self->{'eventManager'}->trigger('afterRemoveIpAddr', $data);
     $self;
 }
 
-=item getAdapter
+=item getProvider
 
- Get network setting adapter
+ Get network interface provider
 
- Return iMSCP::Provider::NetworkInterface::Adapter::Abstract, croak on failure
+ Return iMSCP::Provider::NetworkInterface::Interface, croak on failure
 
 =cut
 
-sub getAdapter
+sub getProvider
 {
     my $self = shift;
 
-    return $self->{'_adapter'} if $self->{'_adapter'};
+    return $self->{'_provider'} if $self->{'_provider'};
 
-    my $adapter = 'iMSCP::Provider::NetworkInterface::Adapter::'.iMSCP::LsbRelease->getInstance->getId('short');
+    my $provider = 'iMSCP::Provider::NetworkInterface::'.iMSCP::LsbRelease->getInstance->getId('short');
 
-    can_load(modules => { $adapter => undef }) or croak(sprintf(
-        'Could not load %s network interface adapter: %s', $adapter, $Module::Load::Conditional::ERROR
+    can_load(modules => { $provider => undef }) or croak(sprintf(
+        'Could not load %s network interface provider: %s', $provider, $Module::Load::Conditional::ERROR
     ));
 
-    $self->{'_adapter'} = $adapter->new();
+    $self->setProvider($provider->new());
 }
 
-=item setAdapter($adapter)
+=item setProvider($provider)
 
- Set network interface provider adapter
+ Set network interface provider
 
- Param iMSCP::Provider::NetworkInterface::Adapter::Abstract $adapter
- Return iMSCP::Provider::NetworkInterface, croak on failure
+ Param iMSCP::Provider::NetworkInterface::Interface $provider
+ Return iMSCP::Provider::NetworkInterface::Interface, croak on failure
 
 =cut
 
-sub setAdapter
+sub setProvider
 {
-    my ($self, $adapter) = @_;
+    my ($self, $provider) = @_;
 
-    blessed($adapter) && $adapter->isa('iMSCP::Provider::NetworkInterface::Adapter::Abstract') or croak(
-        '$adapter parameter is either not defined or not an iMSCP::Provider::NetworkInterface::Adapter::Abstract object'
+    blessed($provider) && $provider->isa('iMSCP::Provider::NetworkInterface::Interface') or croak(
+        '$provider parameter is either not defined or not an iMSCP::Provider::NetworkInterface::Interface object'
     );
 
-    $self->{'_adapter'} = $adapter;
-    $self;
+    $self->{'_provider'} = $provider;
 }
 
 =back

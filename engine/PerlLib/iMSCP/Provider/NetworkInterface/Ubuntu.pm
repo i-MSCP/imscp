@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::NetworkInterface::Adapter::Ubuntu - Ubuntu network interface provider adapter
+ iMSCP::Provider::NetworkInterface::Ubuntu - Ubuntu network interface provider
 
 =cut
 
@@ -21,15 +21,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package iMSCP::Provider::NetworkInterface::Adapter::Ubuntu;
+package iMSCP::Provider::NetworkInterface::Ubuntu;
 
 use strict;
 use warnings;
-use parent 'iMSCP::Provider::NetworkInterface::Adapter::Debian';
+use parent 'iMSCP::Provider::NetworkInterface::Debian';
 
 =head1 DESCRIPTION
 
- Debian network interface provider adapter.
+ Ubuntu network interface provider.
 
 =head1 PUBLIC METHODS
 

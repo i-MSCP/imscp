@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::NetworkInterface::Adapter::Debian - Debian network interface provider adapter
+ iMSCP::Provider::NetworkInterface::Debian - Debian network interface provider
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package iMSCP::Provider::NetworkInterface::Adapter::Debian;
+package iMSCP::Provider::NetworkInterface::Debian;
 
 use strict;
 use warnings;
@@ -30,7 +30,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Net;
 use iMSCP::TemplateParser;
-use parent 'iMSCP::Provider::NetworkInterface::Adapter::Abstract';
+use parent 'iMSCP::Provider::NetworkInterface::Interface';
 
 # Commands used in that package
 my %commands = (
@@ -44,7 +44,7 @@ my $interfacesFilePath = '/etc/network/interfaces';
 
 =head1 DESCRIPTION
 
- Debian network interface provider adapter.
+ Debian network interface provider.
 
 =head1 PUBLIC METHODS
 
@@ -61,7 +61,7 @@ my $interfacesFilePath = '/etc/network/interfaces';
    netmask: OPTIONAL string Netmask (default: auto)
    broadcast: OPTIONAL string Broadcast (default: auto)
    gateway: OPTIONAL string Gateway (default: auto)
- Return iMSCP::Provider::Setting::Network::Interface, die on failure
+ Return iMSCP::Provider::NetworkInterface::Debian, die on failure
 
 =cut
 
@@ -106,7 +106,7 @@ sub addIpAddr
    id: int IP address unique identifier
    ip_card: string Network card from which the IP address must be removed
    ip_address: string Either an IPv4 or IPv6 address
- Return iMSCP::Provider::Setting::Network::Interface, die on failure
+ Return iMSCP::Provider::NetworkInterface::Debian, die on failure
 
 =cut
 
@@ -146,7 +146,7 @@ sub removeIpAddr
 
  Initialize instance
 
- Return iMSCP::Provider::NetworkInterface::Adapter::Debian
+ Return iMSCP::Provider::NetworkInterface::Debian
 
 =cut
 

@@ -29,7 +29,7 @@ use Carp;
 
 =head1 DESCRIPTION
 
- Interface for network interface providers.
+ Interface for network interface provider.
 
 =head1 PUBLIC METHODS
 
