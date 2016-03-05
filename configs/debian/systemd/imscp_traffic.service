@@ -3,7 +3,7 @@ Description=i-MSCP traffic logger
 After=network.target
 
 [Service]
-Type=oneshot
+Type=simple
 RemainAfterExit=yes
 ExecStart=/var/www/imscp/engine/tools/imscp-net-traffic-logger start
 ExecStop=/var/www/imscp/engine/tools/imscp-net-traffic-logger stop
