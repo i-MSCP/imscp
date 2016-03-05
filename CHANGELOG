@@ -9,7 +9,7 @@ CONFIG
 
 BACKEND
 	Added: iMSCP::Service::hasService() method
-	Changed: IP addresses are now persistent (they are added into /etc/network
+	Changed: IP addresses are now persistent (they are added into /etc/network/interfaces file)
 	Backported: iMSCP::Provider::NetworkInterface from 1.3.x branch - Provider for adding/removing IP addresses
 
 FRONTEND
@@ -43,7 +43,7 @@ SETUP
 	Fixed: Could not reconfigure due to 'Could not find sysvinit script...' error
 
 TOOLS
-	Removed: imscp-net-interface-mngr script (no longer needed since IP addresses are now persistent)
+	Removed: imscp-net-interface-mngr script (no longer needed because IP addresses are now persistent)
 
 YOUTRACK
 	IP-1394 httpd-logs-mngr starts before mysql server on reboot
