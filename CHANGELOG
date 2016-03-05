@@ -28,6 +28,9 @@ PACKAGES
 SERVERS
 	Fixed: MySQL server socket is missing after reboot (only with Upstart init)
 
+SERVICES
+	Fixed: Possible 'socket is already in use' error on imscp_panel service restart, leading to 502 Bad Gateway error
+
 SETUP
 	Fixed: Could not reconfigure due to 'Could not find sysvinit script...' error
 
