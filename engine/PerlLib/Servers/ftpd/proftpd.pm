@@ -200,7 +200,6 @@ sub addFtpUser
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdAddFtpUser', $data);
-	$rs || ($self->{'reload'} = 1);
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdAddFtpUser', $data);
 }
 
@@ -218,7 +217,6 @@ sub disableFtpUser
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDisableFtpUser', $data);
-	$rs || ($self->{'reload'} = 1);
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDisableFtpUser', $data);
 }
 
@@ -236,7 +234,6 @@ sub deleteFtpUser
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDeleteFtpUser', $data);
-	$rs || ($self->{'reload'} = 1);
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDeleteFtpUser', $data);
 }
 
