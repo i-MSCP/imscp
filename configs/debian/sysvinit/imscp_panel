@@ -36,12 +36,19 @@ MASTER_WEB_USER=vu2000
 # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
 . /lib/lsb/init-functions
 
-# Don't run if we are running upstart
+# If the currently running init daemon is upstart, return zero; if the
+# calling init script belongs to a package which also provides a native
+# upstart job, it should generally exit non-zero in this case.
+#
 # We don't use init_is_upstart() from /lib/lsb/init-functions because
 # that function is not provided in all supported Distro version
-if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | /bin/grep -q upstart; then
-    exit 1;
-fi
+init_check_is_upstart()
+{
+   if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | /bin/grep -q upstart; then
+       return 0
+   fi
+   return 1
+}
 
 #
 # Function that starts the daemon/service
@@ -90,8 +97,11 @@ do_stop()
 
 case "$1" in
   start)
+    if init_check_is_upstart; then
+        exit 1
+    fi
     log_daemon_msg "Starting $DESC" "$NAME"
-    ExecPreStart rm -f /var/run/imscp_panel.sock
+    rm -f /var/run/imscp_panel.sock
     do_start
     case "$?" in
         0|1) log_end_msg 0 ;;
@@ -99,6 +109,9 @@ case "$1" in
     esac
     ;;
   stop)
+    if init_check_is_upstart; then
+        exit 0
+    fi
     log_daemon_msg "Stopping $DESC" "$NAME"
     do_stop
     case "$?" in
@@ -107,6 +120,9 @@ case "$1" in
     esac
     ;;
   restart|force-reload)
+    if init_check_is_upstart; then
+        exit 1
+    fi
     log_daemon_msg "Restarting $DESC" "$NAME"
     do_stop
     case "$?" in
