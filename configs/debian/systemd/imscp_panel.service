@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=forking
 PIDFile=/var/run/imscp_panel.pid
+ExecPreStart rm -f /var/run/imscp_panel.sock
 ExecStart=/var/www/fcgi/master/php-fcgi-starter
 Restart=on-failure
 

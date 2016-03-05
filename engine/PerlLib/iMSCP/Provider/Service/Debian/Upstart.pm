@@ -79,8 +79,8 @@ sub enable
 
 	if($self->_isUpstart($service)) {
 		# Ensure that sysvinit script if any is not enabled
-		my $ret = $self->_isSysvinit($service) ? $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service) : 0;
-		return $ret ||= $self->SUPER::enable($service);
+		my $ret = $self->_isSysvinit($service) ? $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service) : 1;
+		return $ret && $self->SUPER::enable($service);
 	}
 
 	# Enable sysvinit script if any

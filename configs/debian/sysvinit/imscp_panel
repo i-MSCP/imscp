@@ -37,8 +37,10 @@ MASTER_WEB_USER=vu2000
 . /lib/lsb/init-functions
 
 # Don't run if we are running upstart
-if init_is_upstart 2>/dev/null; then
-    exit 1
+# We don't use init_is_upstart() from /lib/lsb/init-functions because
+# that function is not provided in all supported Distro version
+if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | /bin/grep -q upstart; then
+    exit 1;
 fi
 
 #
@@ -89,6 +91,7 @@ do_stop()
 case "$1" in
   start)
     log_daemon_msg "Starting $DESC" "$NAME"
+    ExecPreStart rm -f /var/run/imscp_panel.sock
     do_start
     case "$?" in
         0|1) log_end_msg 0 ;;

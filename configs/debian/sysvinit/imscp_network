@@ -20,14 +20,23 @@ TOOLSDIR="/var/www/imscp/engine/tools"
 
 . /lib/lsb/init-functions
 
+# If the currently running init daemon is upstart, return zero; if the
+# calling init script belongs to a package which also provides a native
+# upstart job, it should generally exit non-zero in this case.
+#
+# We don't use init_is_upstart() from /lib/lsb/init-functions because
+# that function is not provided in all supported Distro version
+init_check_is_upstart()
+{
+   if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | /bin/grep -q upstart; then
+       return 0
+   fi
+   return 1
+}
+
 # Read config file if present.
 if [ -r /etc/default/$NAME ]; then
     . /etc/default/$NAME
-fi
-
-# Don't run if we are running upstart
-if init_is_upstart 2>/dev/null; then
-    exit 1
 fi
 
 do_start()
@@ -51,6 +60,9 @@ do_stop()
 
 case "$1" in
   start)
+    if init_check_is_upstart; then
+        exit 1
+    fi
     log_daemon_msg "Starting $DESC" "$NAME"
     if [ -e "$LFILE" ]; then
         log_progress_msg "already started"
@@ -61,6 +73,9 @@ case "$1" in
     fi
     ;;
   stop)
+    if init_check_is_upstart; then
+        exit 0
+    fi
     log_daemon_msg "Stopping $DESC" "$NAME"
     if [ ! -e "$LFILE" ]; then
         log_progress_msg "already stopped"
@@ -71,6 +86,9 @@ case "$1" in
     fi
     ;;
   restart|reload|force-reload)
+    if init_check_is_upstart; then
+        exit 1
+    fi
     log_daemon_msg "Stopping $DESC" "$NAME"
     if [ ! -e "$LFILE" ]; then
         log_progress_msg "already stopped"
