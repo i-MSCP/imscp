@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -82,21 +82,13 @@ if($main::noprompt) {
 	print STDOUT output('Installation in progress... Please wait.', 'info');
 }
 
-# Run setup
 sub run
 {
-	# Include needed library
 	require "$FindBin::Bin/imscp-setup-methods.pl";
 
-	# Bootstrap setup
 	my $rs = setupBoot();
-	return $rs if $rs;
-
-	$rs = iMSCP::EventManager->getInstance()->trigger('beforeSetup');
-	return $rs if $rs;
-
-	# Allow any server/addon to register their setup hook functions
-	$rs = setupRegisterListeners();
+	$rs ||= iMSCP::EventManager->getInstance()->trigger('beforeSetup');
+	$rs ||= setupRegisterListeners();
 	return $rs if $rs;
 
 	unless($main::noprompt) {
@@ -127,21 +119,16 @@ EOF
 		}
 	}
 
-	# Process setup dialog
-	$rs = setupDialog();
-	return $rs if $rs;
-
-	# Process setup tasks
+	$rs ||= setupDialog();
 	$rs = setupTasks();
+	$rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetup');
 	return $rs if $rs;
 
-	$rs = iMSCP::EventManager->getInstance()->trigger('afterSetup');
-	return $rs if $rs;
+	return 0 if $main::noprompt;
 
-	unless($main::noprompt) {
-		my $port = ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://')
-			? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
-			: $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+	my $port = ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://')
+		? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
+		: $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
 		iMSCP::Dialog->getInstance()->infobox(<<EOF);
 
@@ -153,7 +140,6 @@ Please connect to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConf
 
 Thank you for choosing i-MSCP.
 EOF
-	}
 
 	0;
 }
