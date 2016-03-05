@@ -124,7 +124,7 @@ class iMSCP_VirtualFileSystem
 
 		// 'localhost' for testing purposes. I have to study if a better
 		// $this->_domain would work on all situations
-		$this->_handle = @ftp_connect('localhost');
+		$this->_handle = @ftp_connect('127.0.0.1');
 
 		if (!is_resource($this->_handle)) {
 			$this->close();
