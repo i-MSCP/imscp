@@ -13,7 +13,7 @@
 # design <schlanki_26@web.de>, 2011
 # FlorianJ <flo_jung@web.de>, 2012
 # Florian Jung <>, 2012
-# i-MSCP <team@i-mscp.net>, 2015
+# i-MSCP <team@i-mscp.net>, 2015-2016
 # Christoph Keßler, 2015
 # kreilinger <strauss3@gmx.at>, 2011
 # Laurent Declercq <l.declercq@nuxwin.com>, 2014-2015
@@ -42,9 +42,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-05 07:25+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-03-05 16:14+0100\n"
+"PO-Revision-Date: 2016-03-05 15:13+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2518,7 +2518,7 @@ msgid "Ftp accounts"
 msgstr "FTP Konten"
 
 msgid "Ftp directories"
-msgstr ""
+msgstr "FTP-Verzeichnisse"
 
 msgid "GB"
 msgstr "GB"
@@ -6123,4 +6123,4 @@ msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} User-Statistik"
 
 msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2016 i-MSCP Team<br>Alle Rechte vorbehalten"
