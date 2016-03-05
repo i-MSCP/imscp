@@ -385,6 +385,22 @@ sub isDeviceDown
 	($self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/) ? 0 : 1;
 }
 
+=item resetInstance
+
+ Reset instance
+
+ Return int 0 on success, die on failure
+
+=cut
+
+sub resetInstance
+{
+	my $self = shift;
+
+	$self->_init();
+	0;
+}
+
 =back
 
 =head1 PRIVATE METHODS

@@ -5,4 +5,5 @@
     <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/bind9-resolvconf.service</copy_config>
     <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/imscp_daemon.service</copy_config>
     <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/imscp_panel.service</copy_config>
+    <copy_config mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/systemd/system/imscp_traffic.service</copy_config>
 </install>
