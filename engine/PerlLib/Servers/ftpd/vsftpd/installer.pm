@@ -563,7 +563,7 @@ sub _buildConfigFile
 	$rs = $self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'vsftpd.conf');
 	return $rs if $rs;
 
-	if($self->_isMysqldInsideCt()) {
+	if($self->_isVsFTPdInsideCt()) {
 		$cfgTpl .= <<EOF;
 
 # VsFTPd run inside unprivileged VE
@@ -685,7 +685,7 @@ sub _bkpConfFile
 	$self->{'eventManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
 }
 
-=item _isMysqldInsideCt()
+=item _isVsFTPdInsideCt()
 
  Does the VsFTPd server is run inside an unprivileged VE (OpenVZ container)
 
@@ -693,7 +693,7 @@ sub _bkpConfFile
 
 =cut
 
-sub _isMysqldInsideCt
+sub _isVsFTPdInsideCt
 {
 	if(-f '/proc/user_beancounters') {
 		my $rs = execute('cat /proc/1/status | grep --color=never envID', \my $stdout, \my $stderr);
