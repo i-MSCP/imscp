@@ -1252,7 +1252,7 @@ sub setupServerIps
 		}
 	}
 
-	# Process IP deletion
+	# Schedule IP deletion
 	if(@{$serverIpsToDelete}) {
 		my $serverIpsToDelete = join q{,}, map $database->quote($_), @{$serverIpsToDelete};
 		my $rs = $database->doQuery(
@@ -1591,7 +1591,8 @@ sub setupRebuildCustomerFiles
 		mail_users => 'status',
 		htaccess => 'status',
 		htaccess_groups => 'status',
-		htaccess_users => 'status'
+		htaccess_users => 'status',
+		server_ips => 'ip_status'
 	};
 
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));

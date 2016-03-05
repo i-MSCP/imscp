@@ -30,7 +30,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Net;
 use iMSCP::TemplateParser;
-use parent 'iMSCP::Provider::NetworkInterface::Interface';
+use parent 'iMSCP::Provider::NetworkInterface::Abstract';
 
 # Commands used in that package
 my %commands = (

@@ -36,7 +36,7 @@ $Module::Load::Conditional::FIND_VERSION = 0;
 
 =head1 DESCRIPTION
 
- Facade to network interface providers
+ Facade to network interface providers.
 
 =head1 PUBLIC METHODS
 
