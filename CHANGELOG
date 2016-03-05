@@ -51,6 +51,7 @@ YOUTRACK
 	IP-1488 Show SSL-status on domain page
 	IP-1500 Update fails when a customer's SSL certificate is invalid or expired
 	IP-1501 i18n - "Ftp directories" string is not translatable
+	IP-1503 vsftpd - 500 OOPS: prctl PR_SET_SECCOMP failed
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.15
