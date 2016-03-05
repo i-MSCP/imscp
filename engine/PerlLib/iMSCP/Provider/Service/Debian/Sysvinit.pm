@@ -147,6 +147,21 @@ sub remove
 
 }
 
+=item hasService($service)
+
+ Does the given service exists?
+
+ Return bool TRUE if the given service exits, FALSE otherwise
+
+=cut
+
+sub hasService
+{
+	my ($self, $service) = @_;
+
+	$self->_isSysvinit($service);
+}
+
 =back
 
 =head1 PRIVATE METHODS

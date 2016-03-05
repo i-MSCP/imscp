@@ -250,6 +250,7 @@
         <package>gcc</package>
         <package>git</package>
         <package>gzip</package>
+        <package>ifupdown</package>
         <package>iptables</package>
         <package>iproute</package>
         <package>ispell</package>

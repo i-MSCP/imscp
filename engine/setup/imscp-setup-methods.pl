@@ -1539,7 +1539,7 @@ sub setupServiceSsl
 sub setupServices
 {
 	my $serviceMngr = iMSCP::Service->getInstance();
-	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_network';
+	$serviceMngr->enable($_) for 'imscp_daemon', 'imscp_traffic';
 	0;
 }
 
@@ -1961,7 +1961,7 @@ sub setupRestartServices
 
 	my $serviceMngr = iMSCP::Service->getInstance();
 	unshift @services, (
-		[ sub { $serviceMngr->restart('imscp_network'); 0; }, 'i-MSCP Network' ],
+		[ sub { $serviceMngr->restart('imscp_traffic'); 0 }, 'i-MSCP Traffic Logger' ],
 		[ sub { $serviceMngr->restart('imscp_daemon'); 0; }, 'i-MSCP Daemon' ]
 	);
 
