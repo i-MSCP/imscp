@@ -57,6 +57,9 @@ do_stop()
 
 case "$1" in
   start)
+    if init_check_is_upstart; then
+        exit 1
+    fi
     log_daemon_msg "Starting $DESC" "$NAME"
     if [ -e "$LFILE" ]; then
         log_progress_msg "already started"
@@ -67,6 +70,9 @@ case "$1" in
     fi
     ;;
   stop)
+    if init_check_is_upstart; then
+        exit 0
+    fi
     log_daemon_msg "Stopping $DESC" "$NAME"
     if [ ! -e "$LFILE" ]; then
         log_progress_msg "already stopped"
@@ -77,6 +83,9 @@ case "$1" in
     fi
     ;;
   restart|reload|force-reload)
+    if init_check_is_upstart; then
+        exit 1
+    fi
     log_daemon_msg "Stopping $DESC" "$NAME"
     if [ ! -e "$LFILE" ]; then
         log_progress_msg "already stopped"
