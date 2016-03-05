@@ -14,7 +14,8 @@ FRONTEND
 
 INSTALLER
 	Fixed: Could not unset 'hold' state on packages in some contexts
-	Fixed: Ensure that underlying sysvinit scripts are disabled when upstart job is provided (Upstart)
+	Fixed: Ensure that sysvinit scripts are disabled when upstart job are provided and when init is Upstart
+	Fixed: init_is_upstart() function not available in lsb-base < 4.1+Debian3 (sysvinit scripts)
 	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
 	Fixed: Use MySQL 5.6 from official Trusty repository in place of MySQL Team repository
 	Fixed: Wrong package name (mysql-client-5.5 instead of mysql-client-5.6) in Debian Stretch packages file
@@ -25,7 +26,7 @@ PACKAGES
 	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
 
 SERVERS
-	Fixed: MySQL server socket is missing after reboot due to underlying init script
+	Fixed: MySQL server socket is missing after reboot (only with Upstart init)
 
 SETUP
 	Fixed: Could not reconfigure due to 'Could not find sysvinit script...' error
@@ -33,6 +34,7 @@ SETUP
 YOUTRACK
 	IP-1488 Show SSL-status on domain page
 	IP-1500 Update fails when a customer's SSL certificate is invalid or expired
+	IP-1501 i18n - "Ftp directories" string is not translatable
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.15
@@ -90,7 +92,7 @@ SERVERS
 	Backported: VsFTPd server implementation from 1.3.x branch
 
 YOUTRACK
- 	IP-1367 Support for the VsFTPd server
+	IP-1367 Support for the VsFTPd server
 	IP-1444 Ubuntu - Vsftpd package broken - libgcc_s.so.1 must be installed for pthread_cancel to work
 	IP-1495 Domain alias with shared moint point fails
 

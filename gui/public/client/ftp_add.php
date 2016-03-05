@@ -438,8 +438,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / FTP / Add FTP Account'),
-		'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
-		'TR_CLOSE' => tojs(tr('Close')),
 		'TR_FTP_ACCOUNT_DATA' => tr('Ftp account data'),
 		'TR_DOMAIN_TYPE_LABEL' => tr('Domain type'),
 		'TR_USERNAME' => tr('Username'),
@@ -451,6 +449,13 @@ $tpl->assign(
 		'TR_CANCEL' => tr('Cancel')
 	)
 );
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e iMSCP_Events_Event */
+	$translations = $e->getParam('translations');
+	$translations['core']['close']= tr('Close');
+	$translations['core']['ftp_directories']= tr('Ftp directories');
+});
 
 ftp_generatePageData($mainDmnName, $mainDmnId, $tpl);
 generateNavigation($tpl);

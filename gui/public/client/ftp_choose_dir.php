@@ -182,7 +182,7 @@ $tpl->assign(
 		'CONTEXT_CLASS' => ' no_header',
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
-		'productCopyright' => tr('© 2010-2015 i-MSCP Team<br/>All Rights Reserved'),
+		'productCopyright' => tr('© 2010-2016 i-MSCP Team<br>All Rights Reserved'),
 		'TR_DIRECTORY_TREE' => tr('Directory tree'),
 		'TR_DIRECTORIES' => tr('Directories'),
 		'CHOOSE' => tr('Choose')

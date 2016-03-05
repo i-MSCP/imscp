@@ -374,7 +374,7 @@ function l10n_addTranslations($dirpath, $type = 'Array', $tag = 'iMSCP', $scan =
  *    $e->getParam('translations')->my_namespace = array(
  *        'first_translation_string_identifier' => tr('my first translation string'),
  *        'second_translation_string_identifier' => tr('my second translation string')
- *    )
+ *    );
  * });
  *
  * Then, in your JS script, you can access your translation strings as follow:

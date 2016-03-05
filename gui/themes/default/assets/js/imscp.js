@@ -417,9 +417,9 @@ function chooseFtpDir() {
             height: 650,
             autoOpen: false,
             modal: true,
-            title: js_i18n_tr_ftp_directories,
+            title: imscp_i18n.core.ftp_directories,
             buttons: [{
-                text: js_i18n_tr_close, click: function () {
+                text: imscp_i18n.core.close, click: function () {
                     $(this).dialog('close');
                 }
             }],

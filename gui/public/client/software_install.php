@@ -388,8 +388,6 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 			'TR_CANCEL' => tr('Cancel'),
 			'TR_INSTALL' => tr('Install'),
 			'TR_PATH' => tr('Installation path'),
-			'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
-			'TR_CLOSE' => tojs(tr('Close')),
 			'TR_CHOOSE_DIR' => tr('Choose dir'),
 			'TR_SELECT_DB' => tr('Database'),
 			'TR_SQL_USER' => tr('SQL user'),
@@ -405,6 +403,13 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 			'VAL_INSTALL_EMAIL' => tohtml($appEmail)
 		)
 	);
+
+	iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+		/** @var $e iMSCP_Events_Event */
+		$translations = $e->getParam('translations');
+		$translations['core']['close']= tr('Close');
+		$translations['core']['ftp_directories']= tr('Ftp directories');
+	});
 
 	client_generatePage($tpl, $softwareId);
 	generateNavigation($tpl);

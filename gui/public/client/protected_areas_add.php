@@ -364,8 +364,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}'),
-		'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
-		'TR_CLOSE' => tojs(tr('Close')),
 		'TR_DYNAMIC_TITLE' => isset($_GET['id']) ? tr('Edit protected area') : tr('Add protected area'),
 		'TR_PROTECTED_AREA' => tr('Protected areas'),
 		'TR_AREA_NAME' => tr('Area name'),
@@ -379,6 +377,13 @@ $tpl->assign(
 		'TR_UNPROTECT_IT' => tr('Unprotect it'),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_MANAGE_USERS_AND_GROUPS' => tr('Users and groups')));
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+	/** @var $e iMSCP_Events_Event */
+	$translations = $e->getParam('translations');
+	$translations['core']['close']= tr('Close');
+	$translations['core']['ftp_directories']= tr('Ftp directories');
+});
 
 generateNavigation($tpl);
 $domainId = get_user_domain_id($_SESSION['user_id']);

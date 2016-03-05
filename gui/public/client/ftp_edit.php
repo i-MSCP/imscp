@@ -178,8 +178,6 @@ if (isset($_GET['id'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / FTP / Overview / Edit FTP Account'),
-			'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
-			'TR_CLOSE' => tojs(tr('Close')),
 			'TR_FTP_USER_DATA' => tr('Ftp account data'),
 			'TR_USERNAME' => tr('Username'),
 			'TR_PASSWORD' => tr('Password'),
@@ -190,6 +188,13 @@ if (isset($_GET['id'])) {
 			'TR_CANCEL' => tr('Cancel')
 		)
 	);
+
+	iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+		/** @var $e iMSCP_Events_Event */
+		$translations = $e->getParam('translations');
+		$translations['core']['close']= tr('Close');
+		$translations['core']['ftp_directories']= tr('Ftp directories');
+	});
 
 	generatePageData($tpl, $userid, $mainDomainName);
 	generateNavigation($tpl);

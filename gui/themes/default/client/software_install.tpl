@@ -107,9 +107,6 @@
 </form>
 
 <script>
-	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
-	var js_i18n_tr_close = '{TR_CLOSE}';
-
 	function setInstallPath() {
 		var inputvars = document.forms[0].elements['selected_domain'].value;
 		inputvars = inputvars.toLowerCase();
