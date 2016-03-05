@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-04 04:50+0100\n"
-"PO-Revision-Date: 2016-03-04 03:52+0000\n"
+"POT-Creation-Date: 2016-03-05 01:17+0100\n"
+"PO-Revision-Date: 2016-03-05 00:18+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -2496,6 +2496,9 @@ msgstr "Un compte FTP avec le même nom existe déjà."
 msgid "Ftp accounts"
 msgstr "comptes FTP"
 
+msgid "Ftp directories"
+msgstr ""
+
 msgid "GB"
 msgstr "Go"
 
@@ -2829,7 +2832,7 @@ msgid "Invalid SQL user host: %s"
 msgstr "Le nom d'hôte %s n'est pas valide."
 
 msgid "Invalid SSL certificate"
-msgstr ""
+msgstr "Certificat SSL invalide"
 
 msgid "Invalid SSL certificate."
 msgstr "Le certificate SSL n'est pas valide."
@@ -3070,7 +3073,7 @@ msgid "Manage SQL"
 msgstr "Databases"
 
 msgid "Manage SSL certificate"
-msgstr ""
+msgstr "Gestion SSL"
 
 msgid "Manage htaccess users and groups"
 msgstr "Gestion des groupe et utilisateurs htaccess"
@@ -4300,7 +4303,7 @@ msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL n'est pas disponible. Vous pouvez seulement voir vos certificats."
 
 msgid "SSL status"
-msgstr ""
+msgstr "Statut SSL"
 
 msgid "Save"
 msgstr "Sauvegarder"
@@ -6100,3 +6103,6 @@ msgstr "Statistiques de l'utilsateur {USERNAME}"
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2015 Équipe i-MSCP<br/>Tous droits réservés"
+
+msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
+msgstr ""

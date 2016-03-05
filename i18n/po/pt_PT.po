@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-04 04:50+0100\n"
-"PO-Revision-Date: 2016-03-04 03:52+0000\n"
+"POT-Creation-Date: 2016-03-05 01:17+0100\n"
+"PO-Revision-Date: 2016-03-05 00:18+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/i-mscp/i-MSCP/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -2481,6 +2481,9 @@ msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
+msgstr ""
+
+msgid "Ftp directories"
 msgstr ""
 
 msgid "GB"
@@ -6086,4 +6089,7 @@ msgid "{USERNAME} user statistics"
 msgstr ""
 
 msgid "© 2010-2015 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
 msgstr ""
