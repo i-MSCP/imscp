@@ -563,6 +563,15 @@ sub _buildConfigFile
 	$rs = $self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'vsftpd.conf');
 	return $rs if $rs;
 
+	if($self->_isMysqldInsideCt()) {
+		$cfgTpl .= <<EOF;
+
+# VsFTPd run inside unprivileged VE
+# See http://youtrack.i-mscp.net/issue/IP-1503
+seccomp_sandbox=NO
+EOF
+	}
+
 	if($main::imscpConfig{'BASE_SERVER_IP'} ne $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}) {
 		$cfgTpl .= <<EOF;
 
@@ -674,6 +683,30 @@ sub _bkpConfFile
 	}
 
 	$self->{'eventManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
+}
+
+=item _isMysqldInsideCt()
+
+ Does the VsFTPd server is run inside an unprivileged VE (OpenVZ container)
+
+ Return bool TRUE if the VsFTPd server is run inside an OpenVZ container, FALSE otherwise
+
+=cut
+
+sub _isMysqldInsideCt
+{
+	if(-f '/proc/user_beancounters') {
+		my $rs = execute('cat /proc/1/status | grep --color=never envID', \my $stdout, \my $stderr);
+		debug($stdout) if $stdout;
+		warning($stderr) if $rs && $stderr;
+		return $rs if $rs;
+
+		if($stdout =~ /envID:\s+(\d+)/) {
+			return ($1 > 0) ? 1 : 0;
+		}
+	}
+
+	0;
 }
 
 =back
