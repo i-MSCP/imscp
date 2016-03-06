@@ -588,7 +588,7 @@ sub run
 					$sw_database_tmp_pwd, $sw_install_username, $sw_install_password, $sw_install_email,
 					$sw_software_status, $sw_software_depot, $sw_software_master_id, $sw_aliasdomain_id,
 					$sw_subdomain_id, $sw_aliassubdomain_id
-				]));
+				]), '');
 
 				$rs = execute(
 					"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " . escapeShell($imscp_sw_mngr_pushstring),
