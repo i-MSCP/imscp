@@ -586,6 +586,7 @@ sub _setupVlogger
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	$dbHost = $dbHost eq 'localhost' ? '127.0.0.1' : $dbHost;
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
@@ -611,11 +612,7 @@ sub _setupVlogger
 
 	for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
 		next unless $host;
-
-		if(main::setupDeleteSqlUser($dbUser, $host)) {
-			error('Could not remove SQL user or one of its privileges');
-			return 1;
-		}
+		$sqlServer->dropUser($dbUser, $host);
 	}
 
 	my @dbUserHosts = ($dbUserHost);
@@ -627,22 +624,8 @@ sub _setupVlogger
 	my $quotedDbName = $db->quoteIdentifier($dbName);
 
 	for my $host(@dbUserHosts) {
-		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
-			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
-
-		my $rs = $db->doQuery(
-			'c',
-			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
-			$dbUser,
-			$host,
-			$dbPass
-		);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Could not create the %s@%s SQL user: %s', $dbUser, $host, $rs));
-			return 1;
-		}
-
-		$rs = $db->doQuery('g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@?", $dbUser, $host);
+		$sqlServer->createUser($dbUser, $host, $dbPass);
+		my $rs = $db->doQuery('g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@?", $dbUser, $host);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Coould not add SQL privileges: %s', $rs));
 			return 1;

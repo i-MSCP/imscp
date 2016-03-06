@@ -258,7 +258,7 @@ EOF
 				MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_UID_NAME'},
 				MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_GID_NAME'},
 				DOVECOT_DELIVER_PATH => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
-				SFLAG => (version->parse($self->{'version'}) < version->parse('2.0.0') ? '-s' : '')
+				SFLAG => version->parse($self->{'version'}) < version->parse('2.0.0') ? '-s' : ''
 			},
 			$configSnippet
 		);
@@ -396,6 +396,7 @@ sub _setupSqlUser
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -410,11 +411,7 @@ sub _setupSqlUser
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
 			next unless $host;
-
-			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error(sprintf('Could not remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
-				return 1;
-			}
+			$sqlServer->dropUser($sqlUser, $host);
 		}
 	}
 
@@ -424,22 +421,7 @@ sub _setupSqlUser
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
-
-		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
-			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
-
-		$rs = $db->doQuery(
-			'c',
-			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
-			$dbUser,
-			$dbUserHost,
-			$dbPass
-		);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Could not create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
-			return 1;
-		}
-
+		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
 	}
 
@@ -481,8 +463,8 @@ sub _buildConf
 		DATABASE_PASSWORD => $dbPass,
 		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 		HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
-		DOVECOT_SSL => ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') ? 'yes' : 'no',
-		COMMENT_SSL => ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') ? '' : '#',
+		DOVECOT_SSL => $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ? 'yes' : 'no',
+		COMMENT_SSL => $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ? '' : '#',
 		CERTIFICATE => 'imscp_services',
 		IMSCP_GROUP => $main::imscpConfig{'IMSCP_GROUP'},
 		MTA_VIRTUAL_MAIL_DIR => $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},

@@ -59,7 +59,7 @@ sub preinstall
 {
 	my $self = shift;
 
-	my $rs = $self->_setVersion();
+	my $rs = $self->_setTypeAndVersion();
 	$rs ||= $self->_buildConf();
 	$rs ||= $self->_upgradeSystemTablesIfNecessary();
 	$rs ||= $self->_saveConf();
@@ -80,7 +80,6 @@ sub setEnginePermissions
 	my $rs = setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0644' }
 	);
-
 	$rs ||= setRights("$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
 		user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'SQLD_GROUP'}, mode => '0640' }
 	);
@@ -129,31 +128,46 @@ sub _init
 	$self;
 }
 
-=item _setVersion()
+=item _setTypeAndVersion()
 
- Set SQL server version
+ Set SQL server type and version
 
  Return 0 on success, other on failure
 
 =cut
 
-sub _setVersion
+sub _setTypeAndVersion
 {
 	my $self = shift;
 
-	my $version = iMSCP::Database->factory()->doQuery(1, 'SELECT VERSION()');
-	unless(ref $version eq 'HASH') {
-		error($version);
+	my $db = iMSCP::Database->factory();
+	$db->set('FETCH_MODE', 'arrayref');
+
+	my $rdata = $db->doQuery(undef, 'SELECT @@version, @@version_comment');
+	if(ref $rdata ne 'ARRAY') {
+		error($rdata);
+		return 1;
+	} elsif(!@{$rdata}) {
+		error('Could find SQL server type and version');
 		return 1;
 	}
 
-	($version) = ((keys %{$version})[0]) =~ /^([0-9]+(?:\.[0-9]+){1,2})/;
+	my $type = 'mysql';
+	if(index(lc(${$rdata}[0]->[0]), 'mariadb') != -1) {
+		$type = 'mariadb';
+	} elsif(index(lc(${$rdata}[0]->[1]), 'percona') != -1) {
+		$type = 'percona';
+	}
+
+	my ($version) = ${$rdata}[0]->[0] =~ /^([0-9]+(?:\.[0-9]+){1,2})/;
 	unless(defined $version) {
-		error('Could not set SQL server version');
+		error('Could not find SQL server version');
 		return 1;
 	}
 
+	debug(sprintf('SQL server type set to: %s', $type));
 	debug(sprintf('SQL server version set to: %s', $version));
+	$self->{'config'}->{'SQLD_TYPE'} = $type;
 	$self->{'config'}->{'SQLD_VERSION'} = $version;
 	0;
 }

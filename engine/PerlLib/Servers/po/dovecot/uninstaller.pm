@@ -22,9 +22,9 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
-use iMSCP::Database;
 use Servers::po::dovecot;
 use Servers::mta::postfix;
+use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 sub uninstall
@@ -70,14 +70,12 @@ sub _dropSqlUser
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
+
 	if($self->{'config'}->{'DATABASE_USER'}) {
-		my $database = iMSCP::Database->factory();
-		$database->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, 'localhost');
-		$database->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, '%');
-		$database->doQuery(
-			'd', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
-		);
-		$database->doQuery('f', 'FLUSH PRIVILEGES');
+		for my $host('localhost', '%', $main::imscpConfig{'DATABASE_USER_HOST'}) {
+			sqlServer->dropUser($self->{'config'}->{'DATABASE_USER'}, $host);
+		}
 	}
 
 	0;

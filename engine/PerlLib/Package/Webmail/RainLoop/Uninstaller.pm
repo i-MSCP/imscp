@@ -5,7 +5,7 @@ Package::Webmail::RainLoop::Uninstaller - i-MSCP RainLoop package uninstaller
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,6 +31,7 @@ use iMSCP::File;
 use iMSCP::Database;
 use Package::FrontEnd;
 use Package::Webmail::RainLoop::RainLoop;
+use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -95,14 +96,17 @@ sub _removeSqlUser
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
+
+	return 0 unless $self->{'rainloop'}->{'config'}->{'DATABASE_USER'};
+
 	for my $host(
 		$main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
 	) {
-		next unless $host;
-		$self->{'db'}->doQuery('dummy', "DROP USER ?@?", $self->{'rainloop'}->{'config'}->{'DATABASE_USER'}, $host);
+		next unless $host ne '';
+		$sqlServer->dropUser($self->{'rainloop'}->{'config'}->{'DATABASE_USER'}, $host);
 	}
 
-	$self->{'db'}->doQuery('dummy', 'FLUSH PRIVILEGES');
 	0;
 }
 

@@ -39,7 +39,6 @@ use File::Basename;
 use Servers::po::courier;
 use Servers::mta::postfix;
 use Servers::sqld;
-use version;
 use parent 'Common::SingletonClass';
 
 %main::sqlUsers = () unless %main::sqlUsers;
@@ -491,6 +490,7 @@ sub _setupAuthdaemonSqlUser
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -505,11 +505,7 @@ sub _setupAuthdaemonSqlUser
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
 			next unless $host;
-
-			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error(sprintf('Could not remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
-				return 1;
-			}
+			$sqlServer->dropUser($sqlUser, $host);
 		}
 	}
 
@@ -519,22 +515,7 @@ sub _setupAuthdaemonSqlUser
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
-
-		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
-			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
-
-		$rs = $db->doQuery(
-			'c',
-			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
-			$dbUser,
-			$dbUserHost,
-			$dbPass
-		);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Could not create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
-			return 1;
-		}
-
+		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
 	}
 
@@ -563,6 +544,7 @@ sub _setupCyrusSaslSqlUser
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $dbUser = main::setupGetQuestion('SASL_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -581,11 +563,7 @@ sub _setupCyrusSaslSqlUser
 			$main::imscpOldConfig{'BASE_SERVER_IP'}
 		) {
 			next unless $host;
-
-			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error(sprintf('Could not remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
-				return 1;
-			}
+			$sqlServer->dropUser($sqlUser, $host);
 		}
 	}
 
@@ -595,22 +573,7 @@ sub _setupCyrusSaslSqlUser
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user with password: %s', $dbUser, $dbUserHost, $dbPass));
-
-		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
-			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
-
-		$rs = $db->doQuery(
-			'c',
-			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
-			$dbUser,
-			$dbUserHost,
-			$dbPass
-		);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Could not create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
-			return 1;
-		}
-
+		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
 	}
 
@@ -626,7 +589,6 @@ sub _setupCyrusSaslSqlUser
 	$self->{'config'}->{'SASL_DATABASE_PASSWORD'} = $dbPass;
 	$self->{'eventManager'}->trigger('afterPoSetupCyrusSaslSqlUser');
 }
-
 
 =item _overrideAuthdaemonInitScript()
 

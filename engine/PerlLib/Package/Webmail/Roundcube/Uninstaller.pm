@@ -31,6 +31,7 @@ use iMSCP::File;
 use iMSCP::Database;
 use Package::FrontEnd;
 use Package::Webmail::Roundcube::Roundcube;
+use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -99,14 +100,17 @@ sub _removeSqlUser
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
+
+	return 0 unless $self->{'rainloop'}->{'config'}->{'DATABASE_USER'};
+
 	for my $host(
 		$main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
 	) {
 		next unless $host;
-		$self->{'db'}->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $host);
+		$sqlServer->dropUser($self->{'rainloop'}->{'config'}->{'DATABASE_USER'}, $host);
 	}
 
-	$self->{'db'}->doQuery('dummy', 'FLUSH PRIVILEGES');
 	0;
 }
 

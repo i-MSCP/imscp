@@ -22,9 +22,9 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
-use iMSCP::Database;
 use iMSCP::TemplateParser;
 use Servers::po::courier;
+use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -61,18 +61,21 @@ sub _removeSqlUser
 {
 	my $self = shift;
 
-	my $database = iMSCP::Database->factory();
+	my $sqlServer = Servers::sqld->factory();
 
-	# We do not catch any error here - It's expected
 	for my $host(
 		$main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
 	) {
 		next unless $host;
-		$database->doQuery('d', "DROP USER ?@?", $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $host);
-		$database->doQuery('d', "DROP USER ?@?", $self->{'config'}->{'SALS_DATABASE_USER'}, $host);
-	}
 
-	$database->doQuery('f', 'FLUSH PRIVILEGES');
+		if($self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}) {
+			$sqlServer->dropUser($self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $host);
+		}
+
+		if($self->{'config'}->{'SALS_DATABASE_USER'}) {
+			$sqlServer->dropUser($self->{'config'}->{'SALS_DATABASE_USER'}, $host);
+		}
+	}
 
 	0;
 }

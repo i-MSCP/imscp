@@ -244,9 +244,7 @@ function client_addSqlUser($customerId, $dbId)
     // See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html for more details
 
     if($needUserCreate) {
-        if (strpos($config['SQL_SERVER'], 'mariadb') !== false ||
-            version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')
-        ) {
+        if ($mysqlConfig['SQLD_TYPE'] == 'mariadb' || version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')) {
             exec_query('CREATE USER ?@? IDENTIFIED BY ?', array($user, $host, $password));
         } else {
             exec_query('CREATE USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', array($user, $host, $password));

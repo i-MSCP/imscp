@@ -348,6 +348,7 @@ sub _setupDatabase
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -365,11 +366,7 @@ sub _setupDatabase
 			$main::imscpOldConfig{'BASE_SERVER_IP'}
 		) {
 			next unless $host;
-
-			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error(sprintf('Unable to remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
-				return 1;
-			}
+			$sqlServer->dropUser($sqlUser, $host);
 		}
 	}
 
@@ -379,20 +376,7 @@ sub _setupDatabase
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
-
-		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
-			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
-
-		$rs = $db->doQuery(
-			'c',
-			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
-			$dbUser, $dbUserHost, $dbPass
-		);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Unable to create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
-			return 1;
-		}
-
+		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
 	}
 

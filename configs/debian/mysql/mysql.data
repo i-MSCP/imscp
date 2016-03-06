@@ -1,3 +1,4 @@
+SQLD_TYPE =
 SQLD_VERSION =
 SQLD_CONF_DIR = /etc/mysql
 SQLD_SOCK_DIR = /var/run/mysqld

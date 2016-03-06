@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ use iMSCP::Execute;
 use iMSCP::Servers;
 use iMSCP::Packages;
 use iMSCP::Service;
-
+use Servers::sqld;
 use File::Basename;
 
 # Set backend mode
@@ -321,6 +321,7 @@ sub _removeSysctlFile
 # FIXME: localhost is not always the correct value
 sub _removeSqlData
 {
+	my $sqlServer = Servers::sqld->factory();
 	my $database = iMSCP::Database->factory();
 
 	# Remove customer's sql users
@@ -332,14 +333,7 @@ sub _removeSqlData
 	}
 
 	for (keys %{$rdata}) {
-		# We do not catch any error and it's expected
-		$database->doQuery('delete', 'DROP USER ?@?', $rdata->{$_}->{'sqlu_name'}, $rdata->{$_}->{'sqlu_host'});
-	}
-
-	$rdata = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
+		$sqlServer->dropUser($rdata->{$_}->{'sqlu_name'}, $rdata->{$_}->{'sqlu_host'});
 	}
 
 	# Remove customer's sql datatabases

@@ -30,6 +30,7 @@ use iMSCP::Execute;
 use File::Basename;
 use iMSCP::File;
 use Servers::ftpd::proftpd;
+use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -68,10 +69,7 @@ sub removeDB
 {
 	my $self = shift;
 
-	my $db = iMSCP::Database->factory();
-	$db->doQuery('d', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
-	$db->doQuery('f', 'FLUSH PRIVILEGES');
-	0;
+	Servers::sqld->factory()->dropUser($self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
 }
 
 =item restoreConfFile()

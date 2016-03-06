@@ -22,9 +22,9 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Dir;
-use iMSCP::Database;
 use File::Basename;
 use Servers::httpd::apache_itk;
+use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 sub uninstall
@@ -51,12 +51,7 @@ sub _init
 
 sub _removeVloggerSqlUser
 {
-	my $self = shift;
-
-	my $db = iMSCP::Database->factory();
-	$db->doQuery('d', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
-	$db->doQuery('f', 'FLUSH PRIVILEGES');
-	0;
+	Servers::sqld->factory()->dropUser('vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
 }
 
 sub _removeDirs

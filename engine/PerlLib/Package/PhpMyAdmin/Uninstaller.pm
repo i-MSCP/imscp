@@ -31,6 +31,7 @@ use iMSCP::File;
 use iMSCP::Database;
 use Package::PhpMyAdmin;
 use Package::FrontEnd;
+use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -99,11 +100,8 @@ sub _removeSqlUser
 {
 	my $self = shift;
 
-	$self->{'db'}->doQuery(
-		'dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
-	);
-	$self->{'db'}->doQuery('dummy', 'FLUSH PRIVILEGES');
-	0;
+	return 0 unless $self->{'config'}->{'DATABASE_USER'} && $main::imscpConfig{'DATABASE_USER_HOST'};
+	Servers::sqld->factory()->dropUser($self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
 }
 
 =item _removeSqlDatabase()

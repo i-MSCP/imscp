@@ -38,7 +38,6 @@ use File::Basename;
 use JSON;
 use Package::FrontEnd;
 use Servers::sqld;
-use version;
 use parent 'Common::SingletonClass';
 
 our $VERSION = '0.6.0.*@dev';
@@ -372,6 +371,7 @@ sub _setupDatabase
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 	my $imscpDbName = main::setupGetQuestion('DATABASE_NAME');
 	my $roundcubeDbName = $imscpDbName . '_roundcube';
@@ -427,30 +427,14 @@ sub _setupDatabase
 			$main::imscpOldConfig{'BASE_SERVER_IP'}
 		) {
 			next unless $host;
-
-			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error(sprintf('Could not remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
-				return 1;
-			}
+			$sqlServer->dropUser($sqlUser, $host);
 		}
 	}
 
 	# Create SQL user if not already created by another server/package installer
 	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
-
-		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
-			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
-
-		$rs = $db->doQuery(
-			'c', 'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
-			$dbUser, $dbUserHost, $dbPass
-		);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Could not create %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs));
-			return 1;
-		}
-
+		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
 	}
 

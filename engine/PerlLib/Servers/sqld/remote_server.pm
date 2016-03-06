@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Execute qw/escapeShell/;
 use iMSCP::Crypt qw/decryptBlowfishCBC/;
 use iMSCP::TemplateParser;
+use version;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
@@ -56,7 +57,7 @@ sub preinstall
 	require Servers::sqld::mysql::installer;
 
 	my $installer = Servers::sqld::mysql::installer->getInstance();
-	$rs = $installer->_setVersion();
+	$rs = $installer->_setTypeAndVersion();
 	$rs ||= $self->_buildConf();
 	$rs ||= $installer->_saveConf();
 	$rs ||= $self->{'eventManager'}->trigger('afterSqldPreinstall')
@@ -88,6 +89,36 @@ sub restart
 	0; # Nothing to do there; Only here to prevent parent method to be called
 }
 
+=item createUser($user, $host, $password)
+
+ Create given SQL user
+
+ Param $string $user SQL username
+ Param string $host SQL user host
+ Param $string $password SQL user password
+ Return int 0 on success, die on failure
+
+=cut
+
+sub createUser
+{
+	my ($self, $user, $host, $password) = @_;
+
+	defined $user or die('$user parameter is not defined');
+	defined $host or die('$host parameter is not defined');
+	defined $password or die('$password parameter is not defined');
+
+	my $qrs = $db->doQuery(
+		'c', 'CREATE USER ?@? IDENTIFIED BY ?' . (
+			$self->getType() ne 'mariadb' && version->parse($self->getVersion()) >= version->parse('5.7.6')
+				? ' PASSWORD EXPIRE NEVER' : ''
+		),
+		$user, $host, $password
+	);
+	ref $qrs eq 'HASH' or die(sprintf('Could not create the %s@%s SQL user: %s', $user, $host, $qrs));
+	0;
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -115,7 +146,9 @@ sub _buildConf
 	my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
 	# Make sure that the conf.d directory exists
-	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d")->make({ user => $rootUName, group => $rootGName, mode => 0755 });
+	$rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make({
+		user => $rootUName, group => $rootGName, mode => 0755
+	});
 	return $rs if $rs;
 
 	# Create the /etc/mysql/my.cnf file if missing
