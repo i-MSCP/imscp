@@ -60,7 +60,6 @@ $Module::Load::Conditional::FIND_VERSION = 0;
 sub addIpAddr
 {
     my ($self, $data) = @_;
-
     $self->{'eventManager'}->trigger('beforeAddIpAddr', $data);
     $self->getProvider()->addIpAddr($data);
     $self->{'eventManager'}->trigger('afterAddIpAddr', $data);
@@ -82,7 +81,6 @@ sub addIpAddr
 sub removeIpAddr
 {
     my ($self, $data) = @_;
-
     $self->{'eventManager'}->trigger('beforeRemoveIpAddr', $data);
     $self->getProvider()->removeIpAddr($data);
     $self->{'eventManager'}->trigger('afterRemoveIpAddr', $data);
@@ -104,11 +102,9 @@ sub getProvider
     return $self->{'_provider'} if $self->{'_provider'};
 
     my $provider = 'iMSCP::Provider::NetworkInterface::'.iMSCP::LsbRelease->getInstance->getId('short');
-
     can_load(modules => { $provider => undef }) or croak(sprintf(
         'Could not load %s network interface provider: %s', $provider, $Module::Load::Conditional::ERROR
     ));
-
     $self->setProvider($provider->new());
 }
 
@@ -124,11 +120,9 @@ sub getProvider
 sub setProvider
 {
     my ($self, $provider) = @_;
-
     blessed($provider) && $provider->isa('iMSCP::Provider::NetworkInterface::Interface') or croak(
         '$provider parameter is either not defined or not an iMSCP::Provider::NetworkInterface::Interface object'
     );
-
     $self->{'_provider'} = $provider;
 }
 
@@ -149,7 +143,6 @@ sub setProvider
 sub _init
 {
     my $self = shift;
-
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }

@@ -68,7 +68,6 @@ my $interfacesFilePath = '/etc/network/interfaces';
 sub addIpAddr
 {
     my ($self, $data) = @_;
-
     $data = { } unless defined $data && ref $data eq 'HASH';
     defined $data->{$_} or croak(sprintf('The %s parameter is not defined', $_)) for qw/ id ip_card ip_address /;
     $data->{'id'} =~ /^\d+$/ or croak('id parameter must be an integer');
@@ -113,7 +112,6 @@ sub addIpAddr
 sub removeIpAddr
 {
     my ($self, $data) = @_;
-
     $data = { } unless defined $data && ref $data eq 'HASH';
     defined $data->{$_} or croak(sprintf('The %s parameter is not defined', $_)) for qw/ id ip_card ip_address /;
     $data->{'id'} =~ /^\d+$/ or croak('id parameter must be an integer');
@@ -123,16 +121,15 @@ sub removeIpAddr
     ));
 
     # We process only if the IP has been added by us
-    if ($self->_isDefinedInterface("$data->{'ip_card'}:$data->{'id'}")) {
-        my ($stdout, $stderr);
-        execute("$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(sprintf(
-            'Could not bring down the %s network interface', $stderr || 'Unknown error'
-        ));
+    return 0 unless $self->_isDefinedInterface("$data->{'ip_card'}:$data->{'id'}");
 
-        $self->{'net'}->resetInstance();
-        $self->_updateInterfaces('remove', $data);
-    }
+    my ($stdout, $stderr);
+    execute("$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(sprintf(
+        'Could not bring down the %s network interface', $stderr || 'Unknown error'
+    ));
 
+    $self->{'net'}->resetInstance();
+    $self->_updateInterfaces('remove', $data);
     0;
 }
 
@@ -153,7 +150,6 @@ sub removeIpAddr
 sub _init
 {
     my $self = shift;
-
     $self->{'net'} = iMSCP::Net->getInstance();
     $self;
 }
@@ -171,7 +167,6 @@ sub _init
 sub _updateInterfaces
 {
     my ($self, $action, $data) = @_;
-
     my $file = iMSCP::File->new(filename => $interfacesFilePath);
     $file->copyFile($interfacesFilePath.'.bak');
 
@@ -225,7 +220,6 @@ TPL
 sub _isDefinedInterface
 {
     my ($self, $interface) = @_;
-
     execute("$commands{'ifquery'} --list | grep -q ".escapeShell('^'.$interface.'$')) == 0;
 }
 
