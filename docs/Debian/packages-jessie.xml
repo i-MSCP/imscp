@@ -81,7 +81,6 @@
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
             <package>mysql-server-5.5</package>
-            <package_conflict>mysql-common</package_conflict>
         </mysql_5.5>
         <mysql_5.6
                 repository="http://repo.mysql.com/apt/debian/ jessie mysql-5.6"
