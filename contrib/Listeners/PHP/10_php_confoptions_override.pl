@@ -37,13 +37,26 @@ use iMSCP::EventManager;
 # Add or overrides the PHP configuration options globally or per domain.
 # - The per domain PHP configuration options take precedence over global PHP configuration options.
 # - The PHP configuration options take precedence over those which are defined through the i-MSCP PHP editor.
+#
+# Placeholders that can be used in PHP option values:
+#
+# {HOME_DIR} Will be replaced by client homedir path
+# {PEAR_DIR} Will be replaced by PHP Pear directory path
+# {TMPDIR}   Will be replaced by PHP temporary directory
+#
 # Note that domain names must be in ASCII format.
 my %configOptions = (
-    '<domain_name>' => { # Any PHP configuration added here will apply to the domain only
-        '<option_name>' => '<option_value>'
+    '*' => { # Any PHP configuration option added here will apply globally (to all domains).
+        '<option_name1>' => '<option_value1>',
+        '<option_name2>' => '<option_value2>'
     },
-    '*' => { # Any PHP configuration option added here will apply globally.
-        '<option_name>' => '<option_value>'
+    '<domain1.tld>' => { # Any PHP configuration added here will apply to domain1.tld only
+        '<option_name1>' => '<option_value1>',
+        '<option_name2>' => '<option_value2>'
+    },
+    '<domain2.tld>' => { # Any PHP configuration added here will apply to domain2.tld only
+        '<option_name1>' => '<option_value1>',
+        '<option_name2>' => '<option_value2>'
     }
 );
 
@@ -72,9 +85,7 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConfFile', sub {
         return 0;
     }
 
-    if($tplName ne 'pool.conf' || $main::imscpConfig{'HTTPD_SERVER'} ne 'apache_php_fpm') {
-        return 0;
-    }
+    return 0 unless $tplName eq 'pool.conf' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm';
 
     # Apply global PHP configuration options overriding if any
     if(exists $configOptions{'*'}) {
@@ -82,23 +93,23 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConfFile', sub {
             next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
 
             if(lc($value) ~~ [ 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ]) {
-                $$tplContent .= "php_flag[$option] = $value\n";
+                $$tplContent .= "php_admin_flag[$option] = $value\n";
             } else {
-                $$tplContent .= "php_value[$option] = $value\n";
+                $$tplContent .= "php_admin_value[$option] = $value\n";
             }
         }
     }
 
-    # Apply per domain PHP configuration options overriding if any
-    if(exists $configOptions{$data->{'DOMAIN_NAME'}}) {
-        while(my($option, $value) = each(%{$configOptions{$data->{'DOMAIN_NAME'}}})) {
-            next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
+    return 0 unless exists $configOptions{$data->{'DOMAIN_NAME'}};
 
-            if(lc($value) ~~ [ 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ]) {
-                $$tplContent .= "php_flag[$option] = $value\n";
-            } else {
-                $$tplContent .= "php_value[$option] = $value\n";
-            }
+    # Apply per domain PHP configuration options overriding if any
+    while(my($option, $value) = each(%{$configOptions{$data->{'DOMAIN_NAME'}}})) {
+        next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
+
+        if(lc($value) ~~ [ 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ]) {
+            $$tplContent .= "php_admin_flag[$option] = $value\n";
+        } else {
+            $$tplContent .= "php_admin_value[$option] = $value\n";
         }
     }
 
