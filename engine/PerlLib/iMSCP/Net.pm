@@ -131,7 +131,7 @@ sub getAddrVersion
 
  Get type of the given IP (public, private, reserved...)
 
- Param string $addr IP address
+ Param string $addr IP address (SHARED|LINK-LOCAL|RESERVED|TEST-NET|6TO4-RELAY|PUBLIC|PRIVATE|MULTICAST|BROADCAST)
  Return string IP type, croak in case the given IP is invalid
 
 =cut

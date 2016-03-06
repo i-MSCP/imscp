@@ -171,7 +171,7 @@ function client_checkIpData($ipNumber, $netcard)
 	$query = "SELECT COUNT(IF(`ip_number` = ?, 1, NULL)) `isRegisteredIp` FROM `server_ips`";
 	$stmt = exec_query($query, $ipNumber);
 
-	if (filter_var($ipNumber, FILTER_VALIDATE_IP) === false) {
+	if (filter_var($ipNumber, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE) === false) {
 		set_page_message(tr('Wrong IP address.'), 'error');
 		$errFieldsStack[] = 'ip_number';
 	} elseif($stmt->fields['isRegisteredIp']) {

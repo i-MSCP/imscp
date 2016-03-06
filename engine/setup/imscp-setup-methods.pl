@@ -256,9 +256,9 @@ sub setupAskServerIps
 	my $rs = 0;
 
 	# Retrieve list of all configured IP addresses
-	my @serverIps = $net->getAddresses();
+	my @serverIps = grep { $net->getAddrType($_) ~~ [ 'PRIVATE', 'PUBLIC' ] } $net->getAddresses();
 	unless(@serverIps) {
-		error('Could not retrieve servers IP addresses');
+		error('Could not retrieve servers IP addresses. At least one public or private IP adddress must be configured.');
 		return 1;
 	}
 
@@ -272,7 +272,6 @@ sub setupAskServerIps
 
 		if($database) {
 			$currentServerIps = $database->doQuery('ip_number', 'SELECT ip_id, ip_number FROM server_ips');
-
 			unless(ref $currentServerIps eq 'HASH') {
 				error(sprintf('Could not retrieve server IP addresses: %s', $currentServerIps));
 				return 1
@@ -284,20 +283,22 @@ sub setupAskServerIps
 
 	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @{$serverIpsToAdd} } };
 
-	if($main::reconfigure ~~ [ 'ips', 'all', 'forced' ] || !($baseServerIp ~~ @serverIps)
-		|| !($net->isValidAddr($baseServerIp) && $net->isValidAddr($baseServerPublicIp))
+	if($main::reconfigure ~~ [ 'ips', 'all', 'forced' ]
+		|| not $baseServerIp ~~ @serverIps
+		|| !$net->isValidAddr($baseServerPublicIp)
+		|| not $net->getAddrType($baseServerPublicIp) ~~ [ 'PRIVATE', 'PUBLIC' ]
 	) {
 		do {
-			# Ask user for the server base IP
+			# Ask user for the base server IP
 			($rs, $baseServerIp) = $dialog->radiolist(
-				"\nPlease, select the base server IP address for i-MSCP:", [ @serverIps ],
+				"\nPlease, select the primary IP address for i-MSCP:", [ @serverIps ],
 				$baseServerIp && $baseServerIp ~~ @serverIps ? $baseServerIp : $serverIps[0]
 			);
 		} while($rs != 30 && !$baseServerIp);
 
 		if($rs != 30) {
 			# Server inside private LAN?
-			if($net->getAddrType($baseServerIp) ne 'PUBLIC') {
+			if($net->getAddrType($baseServerIp) eq 'PRIVATE') {
 				if (!$net->isValidAddr($baseServerPublicIp) || $net->getAddrType($baseServerPublicIp) ne 'PUBLIC') {
 					$baseServerPublicIp = '';
 				}
@@ -320,7 +321,7 @@ Please enter your public IP address:$msg
 						unless($net->isValidAddr($baseServerPublicIp)) {
 							$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
 						} elsif($net->getAddrType($baseServerPublicIp) ne 'PUBLIC') {
-							$msg = "\n\n\\Z1Unallowed IP address. The IP address must be public.\\Zn\n\nPlease, try again:";
+							$msg = "\n\n\\Z1Unallowed IP address. IP address must be public.\\Zn\n\nPlease, try again:";
 						} else {
 							$msg = '';
 						}
@@ -344,13 +345,13 @@ Please enter your public IP address:$msg
 				@serverIps = grep $_ ne $baseServerIp, @serverIps; # Remove the base server IP from the list
 
 				# Retrieve IP to which the user is currently connected (SSH)
-				my $sshConnectionIp = defined ($ENV{'SSH_CONNECTION'}) ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
+				my $sshConnectionIp = defined $ENV{'SSH_CONNECTION'} ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
 
 				$msg = '';
 
 				do {
 					($rs, $serverIps) = $dialog->checkbox(
-						"\nPlease, select additional IP addresses to add into the database and deselect those to delete: $msg",
+						"\nPlease, select additional IP addresses to register into i-MSCP and deselect those to unregister: $msg",
 						[@serverIps],
 						@{$serverIpsToAdd}
 					);
