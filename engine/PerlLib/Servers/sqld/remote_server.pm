@@ -25,6 +25,7 @@ package Servers::sqld::remote_server;
 
 use strict;
 use warnings;
+use iMSCP::Database;
 use iMSCP::Execute qw/escapeShell/;
 use iMSCP::Crypt qw/decryptBlowfishCBC/;
 use iMSCP::TemplateParser;
@@ -105,6 +106,7 @@ sub createUser
 	defined $host or die('$host parameter is not defined');
 	defined $password or die('$password parameter is not defined');
 
+	my $db = iMSCP::Database->factory();
 	my $qrs = $db->doQuery(
 		'c', 'CREATE USER ?@? IDENTIFIED BY ?' . (
 			$self->getType() ne 'mariadb' && version->parse($self->getVersion()) >= version->parse('5.7.6')

@@ -103,8 +103,7 @@ sub delAddr
     my $cidr = $self->{'addresses'}->{$addr}->{'prefix_length'};
     my ($stdout, $stderr);
     execute("ip addr del $addr/$cidr dev $dev", \$stdout, \$stderr) == 0 or croak(sprintf(
-        'Could not delete the %s IP address from the %s network device: %s', $addr, $dev,
-        $stderr || 'Unknown error'
+        'Could not delete the %s IP address from the %s network device: %s', $addr, $dev, $stderr || 'Unknown error'
     ));
     delete $self->{'addresses'}->{$addr};
     0;
