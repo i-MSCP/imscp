@@ -148,7 +148,7 @@ sub _setTypeAndVersion
 		error($rdata);
 		return 1;
 	} elsif(!@{$rdata}) {
-		error('Could find SQL server type and version');
+		error('Could not find SQL server type and version');
 		return 1;
 	}
 

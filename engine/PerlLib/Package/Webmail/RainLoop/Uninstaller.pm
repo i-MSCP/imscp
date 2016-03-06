@@ -103,7 +103,7 @@ sub _removeSqlUser
 	for my $host(
 		$main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
 	) {
-		next unless $host ne '';
+		next unless $host;
 		$sqlServer->dropUser($self->{'rainloop'}->{'config'}->{'DATABASE_USER'}, $host);
 	}
 
