@@ -108,12 +108,11 @@
                 pinning_pin_priority="1001"
                 allow_switch="percona_5.7,remote_server"
                 >
-            <package>libmysqlclient18</package>
+            <package>libmysqlclient18=5.5*</package>
             <package>libmysqlclient20</package>
             <package>mysql-community-client</package>
             <package>mysql-common</package>
             <package>mysql-community-server</package>
-            <package_conflict>percona-server-common-5.7</package_conflict>
         </mysql_5.7>
         <mariadb_5.5
                 pinning_package="*"
@@ -170,12 +169,12 @@
                 repository="http://repo.percona.com/apt precise main"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
-                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.6,percona_5.7,remote_server"
                 >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>
             <package>percona-server-client-5.5</package>
-            <package>mysql-common=5.5*</package>
+            <package>mysql-common</package>
             <package>percona-server-common-5.5</package>
             <package>percona-server-server-5.5</package>
         </percona_5.5>
@@ -190,7 +189,7 @@
                 >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18.1</package>
-            <package>mysql-common=5.5*</package>
+            <package>mysql-common</package>
             <package>percona-server-client-5.6</package>
             <package>percona-server-common-5.6</package>
             <package>percona-server-server-5.6</package>
@@ -204,9 +203,9 @@
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,remote_server"
                 >
-            <package>libmysqlclient18</package>
+            <package>libmysqlclient18=5.5*</package>
             <package>libperconaserverclient20</package>
-            <package>mysql-common=5.5*</package>
+            <package>mysql-common</package>
             <package>percona-server-client-5.7</package>
             <package>percona-server-common-5.7</package>
             <package>percona-server-server-5.7</package>

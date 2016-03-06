@@ -155,11 +155,13 @@ sub installPackages
 
 		if($main::forcereinstall) {
 			push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-				"--reinstall --auto-remove --purge --no-install-recommends --force-yes install @{$packages}";
+				"-o Dpkg::Options::='--force-overwrite' --reinstall --auto-remove --purge --no-install-recommends " .
+				"--force-yes install @{$packages}";
 		} else {
 			# -o Dpkg::Options::='--force-overwrite'
 			push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' " .
-				"--auto-remove --purge --no-install-recommends --force-yes install @{$packages}";
+				"-o Dpkg::Options::='--force-overwrite' --auto-remove --purge --no-install-recommends --force-yes " .
+				"install @{$packages}";
 		}
 
 		my $stdout;

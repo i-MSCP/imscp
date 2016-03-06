@@ -103,12 +103,11 @@
                 pinning_pin_priority="1001"
                 allow_switch="percona_5.7,remote_server"
                 >
-            <package>libmysqlclient18</package>
+            <package>libmysqlclient18=5.5*</package>
             <package>libmysqlclient20</package>
             <package>mysql-community-client</package>
             <package>mysql-common</package>
             <package>mysql-community-server</package>
-            <package_conflict>percona-server-common-5.7</package_conflict>
         </mysql_5.7>
         <mariadb_5.5
                 pinning_package="libmysqlclient18 mariadb-client-5.5 mariadb-common mariadb-server-5.5 mysql-common"
@@ -196,9 +195,9 @@
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,remote_server"
                 >
-            <package>libmysqlclient18</package>
+            <package>libmysqlclient18=5.5*</package>
             <package>libperconaserverclient20</package>
-            <package>mysql-common=5.5*</package>
+            <package>mysql-common</package>
             <package>percona-server-client-5.7</package>
             <package>percona-server-common-5.7</package>
             <package>percona-server-server-5.7</package>

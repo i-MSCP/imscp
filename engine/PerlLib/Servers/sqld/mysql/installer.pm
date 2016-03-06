@@ -187,12 +187,14 @@ sub _upgradeSystemTablesIfNecessary
 	my $db = iMSCP::Database->factory();
 
 	if(iMSCP::ProgramFinder::find('dpkg') && iMSCP::ProgramFinder::find('mysql_upgrade')) {
-		execute("dpkg -s mysql-community-server | grep Status: | cut -d' ' -f4", \my $stdout, \my $stderr);
+		my $rs = execute(
+			"dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'", \my $stdout, \my $stderr
+		);
 
 		# Upgrade MySQL community server system tables
 		# This is needed for MySQL community servers as provided by MySQL team because upgrade is not done automatically.
 		# See #IP-1482 for further details.
-		if($stdout && $stdout eq 'installed') {
+		unless($rs) {
 			# Filter all "duplicate column", "duplicate key" and "unknown column"
 			# errors as the command is designed to be idempotent.
 			execute(

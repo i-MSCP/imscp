@@ -52,12 +52,9 @@ sub preinstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldPreinstall');
-	return $rs if $rs;
-
 	require Servers::sqld::mysql::installer;
-
 	my $installer = Servers::sqld::mysql::installer->getInstance();
-	$rs = $installer->_setTypeAndVersion();
+	$rs ||= $installer->_setTypeAndVersion();
 	$rs ||= $self->_buildConf();
 	$rs ||= $installer->_saveConf();
 	$rs ||= $self->{'eventManager'}->trigger('afterSqldPreinstall')
