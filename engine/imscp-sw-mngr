@@ -266,7 +266,7 @@ sub _sw_add_data
 		}
 	}
 
-	@cmd('mkdir', '-p', sys_command_excape_arg($sw_tmp_path));
+	@cmd = ('mkdir', '-p', sys_command_excape_arg($sw_tmp_path));
 	$rs = sys_command_rs("@cmd");
 
 	# Change directory to software temporary directory
@@ -284,10 +284,8 @@ sub _sw_add_data
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
-		@cmd = (
-			'tar', '-xzf', sys_command_excape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_master_id.tar.gz")
-		);
-		$rs = sys_command_rs("tar -xzf $sw_tmp_path/$sw_software_archive-$sw_software_master_id.tar.gz");
+		@cmd = ('tar', '-xzf', sys_command_excape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_master_id.tar.gz"));
+		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 	} else {
 		@cmd = (
@@ -295,15 +293,15 @@ sub _sw_add_data
 			sys_command_excape_arg("$sw_src_path-$sw_software_id.tar.gz"),
 			sys_command_excape_arg($sw_tmp_path)
 		);
-		$rs = sys_command_rs("cp -f $sw_src_path-$sw_software_id.tar.gz $sw_tmp_path");
+		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
-		@cmd = ('tar', 'xzf', sys_command_excape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz"));
+		@cmd = ('tar', '-xzf', sys_command_excape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz"));
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 	}
 
-	@cmd = ('cp', '-fpr', sys_command_excape_arg("$sw_tmp_path/web/."), sys_command_excape_arg($sw_dest_path));
+	@cmd = ('cp', '-fRT', sys_command_excape_arg("$sw_tmp_path/web"), sys_command_excape_arg($sw_dest_path));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
@@ -316,19 +314,15 @@ sub _sw_add_data
 		$XARGSVAR = 'xargs';
 	}
 
-	@cmd = (
-		'find', sys_command_excape_arg("$sw_dest_path/"), '-type', 'd', '-print0', '|', $XARGSVAR, '-0', 'chmod', '0755'
-	);
+	@cmd = ('find', sys_command_excape_arg("$sw_dest_path/"), '-type', 'd', '-print0', '|', $XARGSVAR, '-0', 'chmod', '0755');
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	@cmd = (
-		'find', sys_command_excape_arg("$sw_dest_path/"), '-type', 'f', '-print0', '|', $XARGSVAR, '-0', 'chmod', '0644'
-	);
+	@cmd = ('find', sys_command_excape_arg("$sw_dest_path/"), '-type', 'f', '-print0', '|', $XARGSVAR, '-0', 'chmod', '0644');
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	@cmd = ('chown', "$uid:$gid", '-R' sys_command_excape_arg("$sw_dest_path"));
+	@cmd = ('chown', "$uid:$gid", '-R', sys_command_excape_arg("$sw_dest_path"));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
@@ -343,17 +337,17 @@ sub _sw_add_data
 
 	@cmd = (
 		'perl',
-		sys_command_excape_arg($sw_tmp_path/$sw_software_installfile),
+		sys_command_excape_arg("$sw_tmp_path/$sw_software_installfile"),
 		sys_command_excape_arg($imscp_software_install_pushstring)
 	);
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	@cmd('chown', "$uid:$gid", '-R', sys_command_excape_arg($sw_dest_path));
+	@cmd = ('chown', "$uid:$gid", '-R', sys_command_excape_arg($sw_dest_path));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	@cmd('rm', '-fR', sys_command_excape_arg($sw_dest_path));
+	@cmd = ('rm', '-fR', sys_command_excape_arg($sw_tmp_path));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
@@ -384,8 +378,8 @@ sub _sw_del_data
 	my $rs = sys_command_rs("mkdir -p $sw_tmp_path");
 	return $rs if $rs;
 
-	unless(chdir ($sw_tmp_path)) {
-		push_el(\@main::el, '_sw_add_data()', sprintf('[ERROR] Could not change dir to %s', $sw_tmp_path);
+	unless(chdir($sw_tmp_path)) {
+		push_el(\@main::el, '_sw_add_data()', sprintf('[ERROR] Could not change dir to %s', $sw_tmp_path));
 		return 1;
 	}
 

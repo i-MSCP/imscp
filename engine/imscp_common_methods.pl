@@ -302,9 +302,9 @@ sub getCmdExitValue()
 #
 sub sys_command
 {
-	push_el(\@main::el, 'sys_command()', 'Starting...');
-
 	my ($cmd) = @_;
+
+	push_el(\@main::el, "sys_command($cmd)", 'Starting...');
 
 	system($cmd);
 
@@ -328,7 +328,7 @@ sub sys_command_rs
 {
 	my ($cmd) = @_;
 
-	push_el(\@main::el, 'sys_command_rs()', 'Starting...');
+	push_el(\@main::el, "sys_command_rs($cmd)", 'Starting...');
 
 	system($cmd);
 
