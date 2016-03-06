@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -583,23 +583,17 @@ sub run
 				);
 
 				# Encoding data to push to another script
-				my $imscp_sw_mngr_pushstring = encode_base64(
-					encode_json(
-						[
-							$sw_domain_id, $sw_software_id, $sw_path, $sw_software_prefix, $sw_database,
-							$sw_database_user, $sw_database_tmp_pwd, $sw_install_username, $sw_install_password,
-							$sw_install_email, $sw_software_status, $sw_software_depot, $sw_software_master_id,
-							$sw_aliasdomain_id, $sw_subdomain_id, $sw_aliassubdomain_id
-						]
-					)
-				);
+				my $imscp_sw_mngr_pushstring = encode_base64(encode_json([
+					$sw_domain_id, $sw_software_id, $sw_path, $sw_software_prefix, $sw_database, $sw_database_user,
+					$sw_database_tmp_pwd, $sw_install_username, $sw_install_password, $sw_install_email,
+					$sw_software_status, $sw_software_depot, $sw_software_master_id, $sw_aliasdomain_id,
+					$sw_subdomain_id, $sw_aliassubdomain_id
+				]));
 
-				my ($stdout, $stderr);
 				$rs = execute(
-					"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " .
-						"\"$imscp_sw_mngr_pushstring\"",
-					\$stdout,
-					\$stderr
+					"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " . escapeShell($imscp_sw_mngr_pushstring),
+					\my $stdout,
+					\my $stderr
 				);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
@@ -646,20 +640,15 @@ sub run
 						);
 
 						# Encoding data to push to another script
-						my $pushstring = encode_base64(
-							encode_json(
-								[
-									$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status,
-									$sw_software_depot
-								]
-							)
-						);
+						my $pushstring = encode_base64(encode_json([
+							$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status,
+							$sw_software_depot
+						]));
 
-						my ($stdout, $stderr);
 						$rs = execute(
-							"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . "\"$pushstring\"",
-							\$stdout,
-							\$stderr
+							"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . escapeShell($pushstring),
+							\my $stdout,
+							\my $stderr
 						);
 						debug($stdout) if $stdout;
 						error($stderr) if $stderr && $rs;

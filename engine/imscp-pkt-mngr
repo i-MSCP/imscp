@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -104,7 +104,8 @@ sub _pkt_add_data
 	) = @_;
 
 	my (
-		$rs, $rdata, $rdata2, $userdata, $sql, $sw_count_swdepot, $sw_count_res, $existing_swdepotid, $existing_swrestid
+		$rs, $rdata, $rdata2, $userdata, $sql, $sw_count_swdepot, $sw_count_res, $existing_swdepotid, $existing_swrestid,
+		@cmd
 	);
 
 	our @allowed_languages = qw(
@@ -113,15 +114,26 @@ sub _pkt_add_data
 	);
 
 	our ($tag, $data) = '';
-	$rs = sys_command_rs("mkdir -p $sw_tmp_path");
+	@cmd = ('mkdir', '-p', sys_command_excape_arg($sw_tmp_path));
+	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	chdir ("$sw_tmp_path");
+	unless(chdir($sw_tmp_path)) {
+		push_el(\@main::el, '_pkt_add_data()', sprintf('[ERROR] Could not change dir to %s', $sw_tmp_path));
+		return 1;
+	}
 
-	$rs = sys_command_rs("cp -f $sw_src_path-$sw_software_id.tar.gz $sw_tmp_path");
+	@cmd = (
+		'cp', '-f',
+		sys_command_excape_arg("$sw_src_path-$sw_software_id.tar.gz"),
+		sys_command_excape_arg($sw_tmp_path),
+	);
+
+	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	$rs = sys_command_rs("tar -xzf $sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz");
+	@cmd = ('tar', '-xzf', sys_command_excape_arg("$sw_src_path-$sw_software_id.tar.gz"));
+	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
 	if (-f $sw_install_xml_file && -f $sw_uninstall_xml_file && -d "$sw_tmp_path/sql" && -d "$sw_tmp_path/web") {
@@ -359,7 +371,8 @@ sub _pkt_add_data
 				$rs = doSQL($sql);
 			}
 
-			$rs = sys_command_rs("rm -fR $sw_tmp_path");
+			@cmd = ('rm', '-fR', sys_command_excape_arg($sw_tmp_path));
+			$rs = sys_command_rs("@cmd");
 			return $rs if $rs;
 		} else {
 			$sql = "
@@ -373,7 +386,8 @@ sub _pkt_add_data
 			$rs = doSQL($sql);
 			return $rs if $rs;
 
-			$rs = sys_command_rs("rm -fR $sw_tmp_path");
+			@cmd = ('rm', '-fR', sys_command_excape_arg($sw_tmp_path));
+			$rs = sys_command_rs("@cmd");
 			return $rs if $rs;
 
 			$rs = 11; # No Data found
@@ -390,7 +404,8 @@ sub _pkt_add_data
 		($rs) = doSQL($sql);
 		return $rs if $rs;
 
-		$rs = sys_command_rs("rm -fR $sw_tmp_path");
+		@cmd = ('rm', '-fR', sys_command_excape_arg($sw_tmp_path));
+		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
 		$rs = 10; # No XML-File
