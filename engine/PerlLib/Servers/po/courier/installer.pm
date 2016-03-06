@@ -33,6 +33,7 @@ use iMSCP::Rights;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
+use iMSCP::Stepper;
 use iMSCP::TemplateParser;
 use iMSCP::ProgramFinder;
 use File::Basename;
@@ -798,8 +799,15 @@ sub _buildDHparametersFile
 			return $rs if $rs;
 		}
 
-		my $rs = execute('DH_BITS=2048 mkdhparams', \my $stdout, \my $stderr);
-		error($stderr) if $stderr && $rs;
+		startDetail();
+		my $rs = step(
+			sub {
+				my $rs = execute('DH_BITS=2048 mkdhparams', \my $stdout, \my $stderr);
+				error($stderr) if $stderr && $rs;
+				$rs;
+			}, 'Generating DH parameter file. Please be patient...', 1, 1
+		);
+		endDetail();
 		return $rs if $rs;
 	}
 
