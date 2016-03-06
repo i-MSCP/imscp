@@ -524,11 +524,11 @@ sub _setupVlogger
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $dbUser = 'vlogger_user';
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	$dbUserHost = $dbUserHost eq '127.0.0.1' ? 'localhost' : $dbUserHost;
+	$dbUserHost = 'localhost' if $dbUserHost eq '127.0.0.1';
 
 	my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
 	my $dbPass = '';
-	$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
+	$dbPass .= $allowedChr[ rand @allowedChr ] for 1..16;
 
 	my ($db, $errStr) = main::setupGetSqlConnect($dbName);
 	fatal(sprintf('Could not connect to SQL server: %s', $errStr)) unless $db;
@@ -541,35 +541,28 @@ sub _setupVlogger
 		return 1;
 	}
 
-	for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
+	for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 		next unless $host;
 		$sqlServer->dropUser($dbUser, $host);
 	}
 
-	my @dbUserHosts = ($dbUserHost);
-
-	if($dbUserHost ~~ [ 'localhost', '127.0.0.1' ]) {
-		push @dbUserHosts, $dbUserHost eq '127.0.0.1' ? 'localhost' : '127.0.0.1';
-	}
-
 	my $quotedDbName = $db->quoteIdentifier($dbName);
-
-	for my $host(@dbUserHosts) {
-		$sqlServer->createUser($dbUser, $host, $dbPass);
-		my $rs = $db->doQuery('g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@?", $dbUser, $host);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Could not add SQL privileges: %s', $rs));
-			return 1;
-		}
+	$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
+	my $rs = $db->doQuery(
+		'g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@?", $dbUser, $dbUserHost
+	);
+	unless(ref $rs eq 'HASH') {
+		error(sprintf('Coould not add SQL privileges: %s', $rs));
+		return 1;
 	}
 
-	my $rs = $self->{'httpd'}->setData({
-		DATABASE_NAME => $dbName,
-		DATABASE_HOST => $dbHost,
-		DATABASE_PORT => $dbPort,
-		DATABASE_USER => $dbUser,
-		DATABASE_PASSWORD => $dbPass
-	});
+	$rs = $self->{'httpd'}->setData({
+			DATABASE_NAME => $dbName,
+			DATABASE_HOST => $dbHost,
+			DATABASE_PORT => $dbPort,
+			DATABASE_USER => $dbUser,
+			DATABASE_PASSWORD => $dbPass
+		});
 	$rs ||= $self->{'httpd'}->buildConfFile(
 		"$self->{'apacheCfgDir'}/vlogger.conf.tpl", { }, { destination => "$self->{'apacheWrkDir'}/vlogger.conf" }
 	);

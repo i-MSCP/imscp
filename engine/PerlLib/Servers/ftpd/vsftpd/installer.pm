@@ -36,6 +36,7 @@ use iMSCP::Stepper;
 use iMSCP::TemplateParser;
 use File::Basename;
 use Servers::ftpd::vsftpd;
+use Servers::sqld;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -458,6 +459,7 @@ sub _setupDatabase
 {
 	my $self = shift;
 
+	my $sqlServer = Servers::sqld->factory();
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER');
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -469,33 +471,23 @@ sub _setupDatabase
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
 
-		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
-			$main::imscpOldConfig{'BASE_SERVER_IP'}
-		) {
+		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 			next unless $host;
-
-			if(main::setupDeleteSqlUser($sqlUser, $host)) {
-				error(sprintf('Could not remove %s@%s SQL user or one of its privileges', $sqlUser, $host));
-				return 1;
-			}
+			$sqlServer->dropUser($sqlUser, $host);
 		}
+	}
+
+	# Create SQL user if not already created by another server/package installer
+	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
+		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
+		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
+		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
 	}
 
 	my ($db, $errStr) = main::setupGetSqlConnect();
 	unless($db) {
 		error(sprintf('Could not connect to SQL server: %s', $errStr)),
 		return 1;
-	}
-
-	# Create SQL user if not already created by another server/package installer
-	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
-		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
-		my $rs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Could not create the %s@%s SQL user: %s', $dbUser, $dbUserHost, $rs ));
-			return 1;
-		}
-		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
 	}
 
 	# Give needed privileges to this SQL user

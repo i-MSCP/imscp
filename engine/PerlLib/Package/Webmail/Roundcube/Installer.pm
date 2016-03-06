@@ -423,9 +423,7 @@ sub _setupDatabase
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
 
-		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, $main::imscpOldConfig{'DATABASE_HOST'},
-			$main::imscpOldConfig{'BASE_SERVER_IP'}
-		) {
+		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 			next unless $host;
 			$sqlServer->dropUser($sqlUser, $host);
 		}
