@@ -411,15 +411,19 @@ function checkInputData()
         $errFieldsStack[] = 'disk';
     }
 
-    if (!imscp_limit_check($mailQuota, null)) {
-        set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
-        $errFieldsStack[] = 'mail_quota';
-    } elseif ($diskSpace != 0 && $mailQuota > $diskSpace) {
-        set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
-        $errFieldsStack[] = 'mail_quota';
-    } elseif ($diskSpace != 0 && $mailQuota == 0) {
-        set_page_message(tr('Email quota cannot be unlimited. Max value is %d MiB.', $diskSpace), 'error');
-        $errFieldsStack[] = 'mail_quota';
+    if($mail != '-1') {
+        if (!imscp_limit_check($mailQuota, null)) {
+            set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
+            $errFieldsStack[] = 'mail_quota';
+        } elseif ($diskSpace != 0 && $mailQuota > $diskSpace) {
+            set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
+            $errFieldsStack[] = 'mail_quota';
+        } elseif ($diskSpace != 0 && $mailQuota == 0) {
+            set_page_message(tr('Email quota cannot be unlimited. Max value is %d MiB.', $diskSpace), 'error');
+            $errFieldsStack[] = 'mail_quota';
+        }
+    } else {
+        $mailQuota = $diskSpace;
     }
 
     $phpini = iMSCP_PHPini::getInstance();
