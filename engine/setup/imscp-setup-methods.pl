@@ -555,30 +555,42 @@ sub setupAskSqlUserHost
 {
 	my $dialog = shift;
 
-	my $host = setupGetQuestion('DATABASE_USER_HOST');
-	$host = $host eq '127.0.0.1' ? 'localhost' : $host;
+	my $host = setupGetQuestion('DATABASE_USER_HOST') || setupGetQuestion('BASE_SERVER_PUBLIC_IP');
+	$host = setupGetQuestion('BASE_SERVER_PUBLIC_IP') if $host ~~ [ '127.0.0.1', 'localhost' ];
+	$host = idn_to_ascii($host, 'utf-8');
 
 	my $rs = 0;
+	my %options = (domain_private_tld => qr /.*/);
+	my $net = iMSCP::Net->getInstance();
 
-	if(setupGetQuestion('DATABASE_HOST') ne 'localhost') { # Remote MySQL server
-		if($main::reconfigure ~~ [ 'sql', 'servers', 'all', 'forced' ] || !$host) {
+	if($main::imscpConfig{'SQL_SERVER'} eq 'remote_server') { # Remote MySQL server
+		if($main::reconfigure ~~ [ 'sql', 'servers', 'all', 'forced' ] || $host ne '%'
+			&& !is_domain($host, \%options) && !$net->isValidAddr($host)
+		) {
+			my $msg = '';
+
 			do {
 				($rs, $host) = $dialog->inputbox(
 "
-Please, enter the host from which SQL users created by i-MSCP must be allowed to connect to your SQL server:
+Please, enter the host from which SQL users created by i-MSCP must be allowed to connect to your SQL server:$msg
 
-Important: No check is made on the entered value. Please refer to the following document for allowed values.
+Please refer to http://dev.mysql.com/doc/refman/5.5/en/account-names.html for allowed values.
 
-	http://dev.mysql.com/doc/refman/5.5/en/account-names.html
-
-Note that 127.0.0.7 is always mapped to 'localhost'.
+Note that '127.0.0.1' and 'localhost' are not valid host entries in the context of a remote SQL server.
 ",
-					$host // setupGetQuestion('BASE_SERVER_IP')
+					idn_to_unicode($host, 'utf-8')
 				);
-			} while($rs != 30 && $host eq '');
 
-			# map 127.0.0.1 to localhost for consistency reasons
-			$host = 'localhost' if $host eq '127.0.0.1';
+				$msg = '';
+				$host = idn_to_ascii($host, 'utf-8');
+
+				if($host eq 'localhost' || $host eq '127.0.0.1' || $host ne '%' && !is_domain($host, \%options)
+					&& !$net->isValidAddr($host)
+				) {
+					$msg = sprintf("\n\n\\Z1Error: '%s' is not a valid host.\\Zn\n\nPlease, try again:", $host);
+				}
+
+			} while($rs != 30 && $msg ne '');
 		}
 
 		setupSetQuestion('DATABASE_USER_HOST', $host) if $rs != 30;
