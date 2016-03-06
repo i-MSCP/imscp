@@ -338,7 +338,7 @@ sub _sw_add_data
 	# has been disallowed in GUI (temporary fix)
 	my $imscp_software_install_pushstring = encode_base64(
 		"install,$sw_software_db,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd," .
-		"$sw_install_username,$sw_install_password,$sw_install_email,$domain_name,$sw_dest_path,$sw_path"
+		"$sw_install_username,$sw_install_password,$sw_install_email,$domain_name,$sw_dest_path,$sw_path", ''
 	);
 
 	@cmd = (
@@ -467,8 +467,7 @@ sub _sw_del_data
 		# Encoding data to send
 		my $imscp_software_uninstall_pushstring = encode_base64(
 			"uninstall,$sw_software_db,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd," .
-			"$sw_install_username,$sw_install_password,$sw_install_email,$domain_name,$sw_dest_path,$sw_path",
-			''
+			"$sw_install_username,$sw_install_password,$sw_install_email,$domain_name,$sw_dest_path,$sw_path", ''
 		);
 
 		@cmd = (

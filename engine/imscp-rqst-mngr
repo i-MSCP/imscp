@@ -643,7 +643,7 @@ sub run
 						my $pushstring = encode_base64(encode_json([
 							$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status,
 							$sw_software_depot
-						]));
+						]), '');
 
 						$rs = execute(
 							"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . escapeShell($pushstring),
