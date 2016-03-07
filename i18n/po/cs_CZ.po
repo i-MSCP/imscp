@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Jiří Vírava <appukonrad@gmail.com>, 2012
+# Martin Krkavec, 2016
 # Milan Kozák <hodza@hodza.net>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-05 16:14+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-03-07 19:48+0100\n"
+"PO-Revision-Date: 2016-03-06 11:13+0000\n"
+"Last-Translator: Martin Krkavec\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/i-mscp/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -200,11 +201,11 @@ msgstr "%1$s%% [%2$s z neomezeno]"
 
 #, php-format
 msgid "%1$s`s - Software"
-msgstr ""
+msgstr "%1$s - Software"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
-msgstr ""
+msgstr "%d %s zbývá do expirace účtu."
 
 #, php-format
 msgid "%d / unlimited"
@@ -236,15 +237,15 @@ msgstr "%s / %s z %s"
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / neomezeno"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr ""
+msgstr "%s IP adresa je blokována na %s minut."
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
-msgstr ""
+msgstr "%s IP adresa čeká %s vteřin."
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -260,35 +261,35 @@ msgstr "%s neexistuje nebo je prázdný"
 
 #, php-format
 msgid "%s field is empty or invalid."
-msgstr ""
+msgstr "%s pole je prázdné nebo neplatné."
 
 #, php-format
 msgid "%s host field is empty or invalid."
-msgstr ""
+msgstr "%s pole hostitele je prázdné nebo neplatné."
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
-msgstr ""
+msgstr "%s není platný jazykový soubor i-MSCP."
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
+msgstr "%s není povoleno jako označení subdomény."
 
 #, php-format
 msgid "%s is not part of domain %s."
-msgstr ""
+msgstr "%s není součástí domény %s."
 
 #, php-format
 msgid "%s of %s"
-msgstr ""
+msgstr "%s z %s"
 
 #, php-format
 msgid "%s of unlimited"
-msgstr ""
+msgstr "%s z neomezeno"
 
 #, php-format
 msgid "%s page"
-msgstr ""
+msgstr "%s strana"
 
 #, php-format
 msgid "%s record"
@@ -296,7 +297,7 @@ msgstr "%s záznam"
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
+msgstr "%s webmail"
 
 #, php-format
 msgid ""
@@ -511,7 +512,7 @@ msgid "A PHP extension stopped the file upload."
 msgstr "Rozšíření PHP zastavilo nahrávání souboru."
 
 msgid "A database update is available"
-msgstr ""
+msgstr "Je dostupná aktualizace databáze"
 
 msgid "A hosting plan with same name already exists."
 msgstr "Hostingový plán se stejným názvem již existuje."
@@ -520,7 +521,7 @@ msgid "A new i-MSCP version is available"
 msgstr "Je dostupná nová verze i-MSCP"
 
 msgid "Access your domain statistics through the Web interface."
-msgstr ""
+msgstr "Přístup ke statistikám domény přes webové rozhraní."
 
 msgid "Access your files through the web interface."
 msgstr "Přístup k vašim souborům přes webové rozhraní."
@@ -529,19 +530,19 @@ msgid "Access your mail through the web interface."
 msgstr "Přístup k vaší poště přes webové rozhraní."
 
 msgid "Account data"
-msgstr ""
+msgstr "Data účtu"
 
 msgid "Account limits"
-msgstr ""
+msgstr "Limity účtu"
 
 msgid "Account name"
 msgstr "Název účtu"
 
 msgid "Account overview"
-msgstr ""
+msgstr "Přehled účtu"
 
 msgid "Account summary"
-msgstr "Informace o účtu"
+msgstr "Shrnutí účtu"
 
 msgid "Account type"
 msgstr "Typ účtu"
@@ -550,10 +551,10 @@ msgid "Action"
 msgstr "Akce"
 
 msgid "Action has been stopped."
-msgstr ""
+msgstr "Akce byla zastavena."
 
 msgid "Action has failed."
-msgstr ""
+msgstr "Akce selhala."
 
 msgid "Actions"
 msgstr "Akce"
@@ -583,22 +584,22 @@ msgid "Add"
 msgstr "Přidat"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Přidat FTP účet"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Přidat Htaccess skupinu"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Přidat Htaccess uživatele"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Přidat SQL databázi"
 
 msgid "Add SQL user"
 msgstr "Přidat uživatele SQL"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "Přidat SSL certifikát"
 
 msgid "Add a new entry"
 msgstr "Přidat nový záznam"
@@ -610,31 +611,31 @@ msgid "Add catchall"
 msgstr ""
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "Přidat vlastní DNS záznam"
 
 msgid "Add custom menu"
 msgstr "Přidat vlastní menu"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Přidat zákazníka"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Přidat zákazníka - Další krok"
 
 msgid "Add domain alias"
 msgstr "Přidat alias domény"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Přidat e-mailový účet"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Přidat externí mail server pro {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Přidat skupinu"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Přidat plán hostingu"
 
 msgid "Add new IP address"
 msgstr "Přidat novou IP adresu"
@@ -664,7 +665,7 @@ msgid "Add reseller"
 msgstr "Přidat partnera"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Přidat subdoménu"
 
 msgid "Add user"
 msgstr "Přidat uživatele"
@@ -673,7 +674,7 @@ msgid "Added by"
 msgstr "Přidal"
 
 msgid "Addition in progress..."
-msgstr ""
+msgstr "Probíhá vložení..."
 
 msgid "Additional data"
 msgstr "Doplňující údaje"
@@ -682,28 +683,28 @@ msgid "Admin"
 msgstr "Administrátor"
 
 msgid "Admin / General / Admin Log"
-msgstr ""
+msgstr "Admin / Obecné / Log administrace"
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Admin / Obecné / Přehled"
 
 msgid "Admin / General / Services Status"
-msgstr ""
+msgstr "Admin / Obecné / Stav služeb"
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Admin / Profil / Shrnutí účtu"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Admin / Profil /  Jazyk"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Admin / Profil / Rozložení"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Admin / Profil /  Heslo"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Admin / Profil /  Osobní Data"
 
 msgid "Admin / Settings"
 msgstr "Admin / Nastavení"
@@ -715,31 +716,31 @@ msgid "Admin / Settings / Languages"
 msgstr "Admin / Nastavení / Jazyk"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr ""
+msgstr "Admin / Nastavení / E-mail - Zapomenuté heslo"
 
 msgid "Admin / Settings / Plugin Management"
-msgstr ""
+msgstr "Admin / Nastavení / Správa pluginů"
 
 msgid "Admin / Settings / Server Traffic"
-msgstr ""
+msgstr "Admin / Nastavení / Provoz na serveru"
 
 msgid "Admin / Settings / Service Ports"
-msgstr ""
+msgstr "Admin / Nastavení / Porty služeb"
 
 msgid "Admin / Settings / Software Management"
 msgstr "Admin / Nastavení / Správa Software"
 
 msgid "Admin / Settings / Software Options"
-msgstr ""
+msgstr "Admin / Nastavení / Nastavení softwaru"
 
 msgid "Admin / Settings / Welcome Email"
-msgstr ""
+msgstr "Admin / Nastavení / E-mail - Uvítání"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Admin / Nastavení / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr ""
+msgstr "Admin / Správa software / Reseller software"
 
 msgid "Admin / Statistics / IP Usage"
 msgstr ""
@@ -822,7 +823,7 @@ msgid "Admin account successfully created."
 msgstr "Admin účet byl úspěšně vytvořen."
 
 msgid "Admin log"
-msgstr ""
+msgstr "Log administrace"
 
 msgid "Admin not available"
 msgstr "Admin není k dispozici"
