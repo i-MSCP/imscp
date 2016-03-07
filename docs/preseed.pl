@@ -29,7 +29,7 @@
     AUTHDAEMON_SQL_USER => 'authdaemon_user',
     AUTHDAEMON_SQL_PASSWORD => '<password>', # Password must be at least 6 characters long
 
-    # SASL restricted SQL user
+    # SASL restricted SQL user - only relevant if you set PO_SERVER to 'courier'
     SASL_SQL_USER => 'sasl_user',
     SASL_SQL_PASSWORD => '<password>', # Password must not be empty
 
