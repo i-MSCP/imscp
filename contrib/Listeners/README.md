@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Set of listener files for i-MSCP. These listener files are only compatible with i-MSCP >= **1.2.0**.
+Set of listener files for i-MSCP.
 
 ## Installation
 
@@ -101,8 +101,7 @@ Note: When you want operate on a per domain basis, don't forget to set the PHP c
 can do this by running:
 
 ```
-# cd <your_imscp_archive>
-# perl imscp-autoinstall -dar httpd
+# perl /var/www/imscp/engine/setup/imscp-setup -dar php
 ```
 
 ## Postfix listener files
