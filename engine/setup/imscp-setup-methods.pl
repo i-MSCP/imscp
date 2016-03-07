@@ -284,7 +284,7 @@ sub setupAskServerIps
 	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @{$serverIpsToAdd} } };
 
 	if($main::reconfigure ~~ [ 'ips', 'all', 'forced' ]
-		|| not $baseServerIp ~~ @serverIps
+		|| !$baseServerIp ~~ @serverIps
 		|| !$net->isValidAddr($baseServerPublicIp)
 		|| not $net->getAddrType($baseServerPublicIp) ~~ [ 'PRIVATE', 'PUBLIC' ]
 	) {
