@@ -50,6 +50,7 @@ SETUP
 	Fixed: Could not reconfigure due to 'Could not find sysvinit script...' error
 
 TOOLS
+	Fixed: imscp-net-traffic-logger must not depend on the SQL service
 	Removed: imscp-net-interface-mngr script (no longer needed because IP addresses are now persistent)
 
 YOUTRACK
