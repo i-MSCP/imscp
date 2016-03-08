@@ -442,8 +442,8 @@ sub _extractAddresses
             \s+
             (?:brd\s+[^\s]+\s+)?   # brd 192.168.1.255 (optional)
             (?:scope\s+[^\s]+\s+)? # scope global (optional)
-            (?:[^\s]+\s+)          # secondary (optional)
-            ?(\1:\d+)?             # eth0:1002 (optional)
+            (?:[^\s]+\s+)?         # secondary (optional)
+            (\1:\d+)?              # eth0:1002 (optional)
         )
     /gimx);
     $addresses;
