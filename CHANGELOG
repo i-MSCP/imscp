@@ -28,6 +28,7 @@ INSTALLER
 	Fixed: Ensure that sysvinit scripts are disabled when upstart job are provided and when init is Upstart
 	Fixed: init_is_upstart() function not available in lsb-base < 4.1+Debian3 (sysvinit scripts)
 	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
+	Fixed: Update notices are not sorted correctly
 	Fixed: Use MySQL 5.6 from official Trusty repository in place of MySQL Team repository
 	Fixed: Wrong package name (mysql-client-5.5 instead of mysql-client-5.6) in Debian Stretch packages file
 	Pending: Courier support for Debian Stretch - packages not available at this moment

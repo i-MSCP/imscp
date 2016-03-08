@@ -371,6 +371,9 @@ sub _showUpdateNotices
 {
 	my $dialog = shift;
 
+	eval "use Sort::Versions; 1";
+	die($@) if $@;
+
 	my $noticesDir = "$FindBin::Bin/autoinstaller/UpdateNotices";
 	my $imscpVersion = $main::imscpOldConfig{'Version'};
 	my $notices = '';
@@ -382,15 +385,14 @@ sub _showUpdateNotices
 			my @noticeFiles = iMSCP::Dir->new( dirname => $noticesDir )->getFiles();
 
 			if(@noticeFiles) {
-				@noticeFiles = reverse sort @noticeFiles;
+				s/\.txt$// for @noticeFiles;
+				@noticeFiles = sort { versioncmp($a, $b) } @noticeFiles;
 
-				for my $noticeFile(@noticeFiles) {
-					(my $noticeVersion = $noticeFile) =~ s/\.txt$//;
-
+				for my $noticeVersion(@noticeFiles) {
 					if(version->parse($imscpVersion) < version->parse($noticeVersion)) {
-						my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeFile" )->get();
+						my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeVersion.txt" )->get();
 						unless(defined $noticeBody) {
-							error(sprintf('Could not read %s/%s file', $noticesDir,$noticeFile));
+							error(sprintf('Could not read %s file', "$noticesDir/$noticeVersion.txt"));
 							return 1;
 						}
 

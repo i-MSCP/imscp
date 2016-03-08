@@ -1,0 +1,30 @@
+\Zb\Z1Update to version 1.2.16
+========================\Zn\ZB
+
+\Zb\Z4# imscp_network service\Zn\ZB
+
+This service, which was responsible to configure IP addresses on the fly and set iptables rules for the traffic logger, has been removed.
+
+\Zb\Z4# imscp_traffic service\Zn\ZB
+
+This new service sets iptables rules for the traffic logger on server boot.
+
+\Zb\Z4# IP addresses management\Zn\ZB
+
+IP addresses that are added via the i-MSCP control panel are now added into the network interface configuration file. Doing this allow us to no longer depend on the MySQL server when the server is rebooted (the possibility of the MySQL server being unavailable for unknown reasons), and also, this provides a better integration with the system. To resume, IP addresses are now configured using interface definitions in the network interface configuration file, instead of being configured on the fly using data pulled from the i-MSCP database.
+
+IP addresses are added in the network interface file using aliased (virtual) interfaces. Those types of interfaces have names of the form interface:integer. To avoid collisions with manually configured interfaces, i-MSCP uses integers starting at 1000. Thus, any IP addresses added through the i-MSCP control panel will have an entry such as:
+
+
+        \Zb# i-MSCP [eth0:1002] entry BEGIN
+        auto eth0:1002
+            eth0:1002 inet static
+            address <IP>
+            netmask 255.255.255.255
+        # i-MSCP [eth0:1002] entry ENDING\ZB
+
+\Zb\Z4## IP addresses manually configured\Zn\ZB
+
+IP addresses that are already present in the network interface configuration file can also be added in the i-MSCP control panel for use with i-MSCP. In such case, i-MSCP simply skip the configuration step for them. In other words, i-MSCP doesn't manage those IP addresses.
+
+Be aware that IP addresses which are not present in the network interface configuration file will be added by i-MSCP, using virtual interfaces. If you want to avoid this, you must add them in your network interface configuration file, even if that is not really needed due to your environment (e.g: LXC containers).

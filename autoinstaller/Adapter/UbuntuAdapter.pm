@@ -53,7 +53,7 @@ sub _init
 	$self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
 	$self->{'preRequiredPackages'} = [
 		'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'liblist-moreutils-perl',
-		'libscalar-defer-perl', 'libxml-simple-perl', 'wget', 'rsync'
+		'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
 	];
 	$self->{'aptRepositoriesToRemove'} = [];
 	$self->{'aptRepositoriesToAdd'} = [];
