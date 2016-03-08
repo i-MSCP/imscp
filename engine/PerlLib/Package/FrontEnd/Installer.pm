@@ -87,8 +87,8 @@ sub askHostname
 
 	my ($rs, @labels) = (0, $vhost ? split(/\./, $vhost) : ());
 
-	if($main::reconfigure ~~ [ 'panel_hostname', 'hostnames', 'all', 'forced' ] ||
-		!(@labels >= 3 && is_domain($vhost, \%options))
+	if($main::reconfigure ~~ [ 'panel_hostname', 'hostnames', 'all', 'forced' ]
+		|| !(@labels >= 3 && is_domain($vhost, \%options))
 	) {
 		$vhost = 'admin.' . main::setupGetQuestion('SERVER_HOSTNAME') unless $vhost;
 		my $msg = '';
@@ -132,20 +132,19 @@ sub askSsl
 	my $openSSL = iMSCP::OpenSSL->new();
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'panel_ssl', 'ssl', 'all', 'forced' ] || not $sslEnabled ~~ [ 'yes', 'no' ] ||
-		$sslEnabled eq 'yes' && $main::reconfigure ~~ [ 'panel_hostname', 'hostnames' ]
+	if($main::reconfigure ~~ [ 'panel_ssl', 'ssl', 'all', 'forced' ] || not $sslEnabled ~~ [ 'yes', 'no' ]
+		|| $sslEnabled eq 'yes' && $main::reconfigure ~~ [ 'panel_hostname', 'hostnames' ]
 	) {
 		SSL_DIALOG:
 
 		($rs, $sslEnabled) = $dialog->radiolist(
-			"\nDo you want to activate SSL for the control panel?", ['no', 'yes'], ($sslEnabled eq 'yes') ? 'yes' : 'no'
+			"\nDo you want to activate SSL for the control panel?", [ 'no', 'yes' ], $sslEnabled eq 'yes' ? 'yes' : 'no'
 		);
 
 		if($sslEnabled eq 'yes' && $rs != 30) {
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
-				"\nDo you have an SSL certificate for the $domainName domain?",
-				['yes', 'no'],
-				($selfSignedCertificate ~~ ['yes', 'no']) ? (($selfSignedCertificate eq 'yes') ? 'no' : 'yes') : 'no'
+				"\nDo you have an SSL certificate for the $domainName domain?", [ 'yes', 'no' ],
+				$selfSignedCertificate ~~ [ 'yes', 'no' ] ? ($selfSignedCertificate eq 'yes' ? 'no' : 'yes') : 'no'
 			);
 
 			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
@@ -187,7 +186,7 @@ sub askSsl
 					unless($rs) { # backup feature still available through ESC
 						do {
 							($rs, $caBundlePath) = $dialog->fselect($caBundlePath);
-						} while($rs != 30 && ! ($caBundlePath && -f $caBundlePath));
+						} while($rs != 30 && !($caBundlePath && -f $caBundlePath));
 
 						$openSSL->{'ca_bundle_container_path'} = $caBundlePath if $rs != 30;
 					} else {
@@ -215,8 +214,7 @@ sub askSsl
 
 			if($rs != 30 && $sslEnabled eq 'yes') {
 				($rs, $baseServerVhostPrefix) = $dialog->radiolist(
-					"\nPlease, choose the default HTTP access mode for the control panel",
-					['https', 'http'],
+					"\nPlease, choose the default HTTP access mode for the control panel", [ 'https', 'http' ],
 					$baseServerVhostPrefix eq 'https://' ? 'https' : 'http'
 				);
 
@@ -268,8 +266,8 @@ sub askPorts
 	my $ssl = main::setupGetQuestion('PANEL_SSL_ENABLED', 'no');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'panel_ports', 'all', 'forced' ] ||
-		!$httpPort || $httpPort =~ /^[^\d]/ || $httpPort < 1023 || $httpPort > 65535
+	if($main::reconfigure ~~ [ 'panel_ports', 'all', 'forced' ]
+		|| !$httpPort || $httpPort =~ /^[^\d]/ || $httpPort < 1023 || $httpPort > 65535
 	) {
 		my $msg = '';
 
@@ -283,8 +281,8 @@ sub askPorts
 	}
 
 	if($rs != 30 && $ssl eq 'yes') {
-		if($main::reconfigure ~~ [ 'panel_ports', 'all', 'forced' ] || !$httpsPort ||
-			!$httpsPort || $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535 || $httpsPort == $httpPort
+		if($main::reconfigure ~~ [ 'panel_ports', 'all', 'forced' ] || !$httpsPort || !$httpsPort
+			|| $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535 || $httpsPort == $httpPort
 		) {
 			my $msg = '';
 
@@ -294,8 +292,8 @@ sub askPorts
 					$httpsPort ? $httpsPort : '4443'
 				);
 				$msg = "\n\n\\Z1The port '$httpsPort' is reserved or not valid.\\Zn\n\nPlease try again:";
-			} while($rs != 30 && !$httpsPort ||  $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535 ||
-				$httpsPort == $httpPort
+			} while($rs != 30 && !$httpsPort || $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535
+				|| $httpsPort == $httpPort
 			);
 		}
 	} else {
@@ -643,8 +641,8 @@ sub _addMasterWebUser
 		return 1;
 	}
 
-	$rs = iMSCP::SystemUser->new('username' => $userName)->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
-	$rs ||= iMSCP::SystemUser->new('username' => $self->{'config'}->{'HTTPD_USER'})->addToGroup($groupName);
+	$rs = iMSCP::SystemUser->new( username => $userName )->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
+	$rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup($groupName);
 	$rs ||= $self->{'eventManager'}->trigger('afterHttpdAddUser');
 }
 
@@ -820,9 +818,7 @@ sub _buildHttpdConfig
 	}
 
 	$rs = $self->{'frontend'}->buildConfFile("$self->{'cfgDir'}/imscp_fastcgi.conf");
-	return $rs if $rs;
-
-	iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_fastcgi.conf")->copyFile(
+	$rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_fastcgi.conf")->copyFile(
 		"$self->{'config'}->{'HTTPD_CONF_DIR'}"
 	);
 	return $rs if $rs;

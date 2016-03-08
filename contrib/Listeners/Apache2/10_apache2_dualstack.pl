@@ -23,6 +23,7 @@ package Listener::Apache2::DualStack;
 
 use strict;
 use warnings;
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::EventManager;
 use iMSCP::Net;
 use List::MoreUtils qw(uniq);
@@ -37,15 +38,17 @@ my $httpPort = 80;
 # Port to use for https
 my $httpsPort = 443;
 
-# Parameter which allow to add one or many IPs to the Apache2 vhost file of specified domains
+# Parameter that allows to add one or many IPs to the Apache2 vhost file of the specified domains
 # Please replace the entries below by your own entries
+# Be aware that invalid or unallowed IP addresses are ignored silently
 my %perDomainAdditionalIPs = (
 	'<domain1.tld>' => [ '<IP1>', '<IP2>' ],
 	'<domain2.tld>' => [ '<IP1>', '<IP2>' ]
 );
 
-# Parameter which allow to add one or many IPs to all apache2 vhosts files
+# Parameter that allows to add one or many IPs to all Apache2 vhosts files
 # Please replace the entries below by your own entries
+# Be aware that invalid or unallowed IP addresses are ignored silently
 my @additionalIPs = ( '<IP1>', '<IP2>' );
 
 #
@@ -63,24 +66,21 @@ sub addIPs
 	return 0 unless exists $data->{'DOMAIN_NAME'} && $tplName =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/;
 
 	my $sslVhost = defined $1;
-	my $port = defined $1 ? $httpsPort : $httpPort;
+	my $port = $sslVhost ? $httpsPort : $httpPort;
 
-	# All vhost IPs
-	my @ipList = @additionalIPs;
+	my $net = iMSCP::Net->getInstance();
 
-	# Per domain IPs
-	if(exists $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}) {
-		@ipList = uniq( @ipList, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
-	}
+	# All vhost IPs and per domain IPS
+	my @ipList = uniq map $net->normalizeAddr($_), grep {
+		$net->isValidAddr($_) && $net->getAddrType($_) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ]
+	} @additionalIPs, $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ();
 
 	return 0 unless @ipList;
 
-	# Format IPs ( normalize and surround any IPv6 with square-brackets )
-	my $ipMngr = iMSCP::Net->getInstance();
 	my @formattedIPs = ();
 	for my $ip(@ipList) {
-		if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
-			push @formattedIPs, '[' . $ipMngr->normalizeAddr($ip) . ']' . ":$port";
+		if($net->getAddrVersion($ip) eq 'ipv6') {
+			push @formattedIPs, "[$ip]:$port";
 		} else {
 			push @formattedIPs, "$ip:$port";
 		}
@@ -90,9 +90,9 @@ sub addIPs
 	undef @formattedIPs;
 
 	unless($sslVhost) {
-		@IPS = uniq( @IPS, @ipList );
+		@IPS = uniq(@IPS, @ipList);
 	} else {
-		@SSL_IPS = uniq( @SSL_IPS, @ipList );
+		@SSL_IPS = uniq(@SSL_IPS, @ipList);
 	}
 
 	0;
@@ -102,7 +102,6 @@ sub addIPs
 sub addIPList
 {
 	my $data = $_[1];
-
 	@{$data->{'IPS'}} = uniq( @{$data->{'IPS'}}, @IPS );
 	@{$data->{'SSL_IPS'}} = uniq( @{$data->{'SSL_IPS'}}, @SSL_IPS );
 	0;

@@ -23,23 +23,27 @@ package Listener::Bind9::DualStack;
 
 use strict;
 use warnings;
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
+use iMSCP::Net;
 use List::MoreUtils qw(uniq);
 
 #
 ## Configuration variables
 #
 
-# Parameter which allow to add one or many IPs to the bind9 db_sub file of specified domains
+# Parameter that allows to add one or many IPs to the bind9 db_sub file of the specified domains
 # Please replace the entries below by your own entries
+# Be aware that invalid or unallowed IP addresses are ignored silently
 my %perDomainAdditionalIPs = (
 	'<domain1.tld>' => [ '<IP1>', '<IP2>' ],
 	'<domain2.tld>' => [ '<IP1>', '<IP2>' ]
 );
 
-# Parameter which allow to add one or many IPs to all bind9 db files
+# Parameter that allows to add one or many IPs to all bind9 db files
 # Please replace the entries below by your own entries
+# Be aware that invalid or unallowed IP addresses are ignored silently
 my @additionalIPs = ( '<IP1>', '<IP2>' );
 
 #
@@ -50,49 +54,45 @@ sub addCustomDNSrecord
 {
 	my ($tplDbFileContent, $data) = @_;
 
-	# All dns IPs
-	my @ipList = @additionalIPs;
+	my $net = iMSCP::Net->getInstance();
 
-	# Per domain IPs
-	if(exists $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}) {
-		@ipList = uniq( @ipList, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
-	}
+	# All DNS IPs and per domain IPS
+	my @ipList = uniq map $net->normalizeAddr($_), grep {
+		$net->isValidAddr($_) && $net->getAddrType($_) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ]
+	} @additionalIPs, $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ();
 
-	if(@ipList) {
-		# Add custom entries with correct type to the db.tpl
-		my $ipMngr = iMSCP::Net->getInstance();
-		my @formattedEntries = ();
+	return 0 unless @ipList;
 
-		push @formattedEntries, '; dualstack DNS entries BEGIN';
+	# Add custom entries with correct type to the db.tpl
+	my @formattedEntries = ();
+	push @formattedEntries, '; dualstack DNS entries BEGIN';
 
-		for my $ip(@ipList) {
-			for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
-				if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
-					push @formattedEntries, $name . ' IN AAAA ' . $ipMngr->normalizeAddr($ip);
-				} else {
-					push @formattedEntries, $name . ' IN A ' . $ipMngr->normalizeAddr($ip);
-				}
+	for my $ip(@ipList) {
+		for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
+			if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
+				push @formattedEntries, "$name\tIN\tAAAA\t$ip";
+			} else {
+				push @formattedEntries, "$name\tIN\tA\t$ip";
 			}
 		}
-
-		push @formattedEntries, '; dualstack DNS entries END';
-
-		$$tplDbFileContent = replaceBloc(
-			"; custom DNS entries BEGIN\n",
-			"; custom DNS entries ENDING\n",
-			"; custom DNS entries BEGIN\n" .
-				getBloc(
-					"; custom DNS entries BEGIN\n",
-					"; custom DNS entries ENDING\n",
-					$$tplDbFileContent
-				) .
-				join("\n", @formattedEntries) . "\n" .
-			"; custom DNS entries ENDING\n",
-			$$tplDbFileContent
-		);
-		undef @formattedEntries;
 	}
 
+	push @formattedEntries, '; dualstack DNS entries END';
+
+	$$tplDbFileContent = replaceBloc(
+		"; custom DNS entries BEGIN\n",
+		"; custom DNS entries ENDING\n",
+		"; custom DNS entries BEGIN\n" .
+			getBloc(
+				"; custom DNS entries BEGIN\n",
+				"; custom DNS entries ENDING\n",
+				$$tplDbFileContent
+			) .
+			join("\n", @formattedEntries) . "\n" .
+		"; custom DNS entries ENDING\n",
+		$$tplDbFileContent
+	);
+	undef @formattedEntries;
 	0;
 }
 
@@ -100,49 +100,45 @@ sub addCustomDNSrecordSub
 {
 	my ($wrkDbFileContent, $data) = @_;
 
-	# All dns IPs
-	my @ipList = @additionalIPs;
+	my $net = iMSCP::Net->getInstance();
 
-	# Per domain IPs
-	if(exists $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}) {
-		@ipList = uniq( @ipList, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
-	}
+	# All DNS IPs and per domain IPS
+	my @ipList = uniq map $net->normalizeAddr($_), grep {
+			$net->isValidAddr($_) && $net->getAddrType($_) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ]
+	} @additionalIPs, $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ();
 
-	if(@ipList) {
-		# Add custom entries with correct type to the db_sub.tpl
-		my $ipMngr = iMSCP::Net->getInstance();
-		my @formattedEntries = ();
+	return 0 unless @ipList;
 
-		push @formattedEntries, '; dualstack DNS entries BEGIN';
+	# Add custom entries with correct type to the db_sub.tpl
+	my @formattedEntries = ();
+	push @formattedEntries, '; dualstack DNS entries BEGIN';
 
-		for my $ip(@ipList) {
-			for my $name('@', 'ftp') {
-				if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
-					push @formattedEntries, $name . ' IN AAAA ' . $ipMngr->normalizeAddr($ip);
-				} else {
-					push @formattedEntries, $name . ' IN A ' . $ipMngr->normalizeAddr($ip);
-				}
+	for my $ip(@ipList) {
+		for my $name('@', 'ftp') {
+			if($net->getAddrVersion($ip) eq 'ipv6') {
+				push @formattedEntries, "$name\tIN\tAAAA\t$ip";
+			} else {
+				push @formattedEntries, "$name\tIN\tA\t$ip";
 			}
 		}
-
-		push @formattedEntries, '; dualstack DNS entries END';
-
-		$$wrkDbFileContent = replaceBloc(
-			"; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-			"; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-			"; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n" .
-				getBloc(
-					"; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-					"; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-					$$wrkDbFileContent
-				) .
-				join("\n", @formattedEntries) . "\n" .
-			"; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-			$$wrkDbFileContent
-		);
-		undef @formattedEntries;
 	}
 
+	push @formattedEntries, '; dualstack DNS entries END';
+
+	$$wrkDbFileContent = replaceBloc(
+		"; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
+		"; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
+		"; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n" .
+			getBloc(
+				"; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
+				"; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
+				$$wrkDbFileContent
+			) .
+			join("\n", @formattedEntries) . "\n" .
+		"; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
+		$$wrkDbFileContent
+	);
+	undef @formattedEntries;
 	0;
 }
 
