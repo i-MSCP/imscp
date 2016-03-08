@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Debug;
@@ -100,9 +99,9 @@ sub _parseTrafficData
 			my ($bytes, $port) = ($1, $2 // 0);
 
 			if($port > 0) {
-				$smtp += $bytes if $port ~~ [ 587, 25, 465 ];
-				$po += $bytes if $port ~~ [ 110, 995, 143, 993 ];
-				$http += $bytes if $port ~~ [ 80, 443, $frontEndHttpPort, $frontEndHttpsPort ];
+				$smtp += $bytes if grep($_ eq $port, ( 587, 25, 465 ));
+				$po += $bytes if grep($_ eq $port, ( 110, 995, 143, 993 ));
+				$http += $bytes if grep($_ eq $port, ( 80, 443, $frontEndHttpPort, $frontEndHttpsPort ));
 			} else {
 				$all = $bytes;
 			}

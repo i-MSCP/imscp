@@ -25,7 +25,6 @@ package Servers::httpd::apache_itk;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
@@ -1595,7 +1594,7 @@ sub _addFiles
 			$rs = setRights("$webDir/$file", {
 				dirmode => '0750',
 				filemode => '0640',
-				recursive => $file ~~ [ '00_private', 'cgi-bin', 'htdocs' ] ? 0 : 1
+				recursive => grep($_ eq $file, ( '00_private', 'cgi-bin', 'htdocs' )) ? 0 : 1
 			});
 			return $rs if $rs;
 		}

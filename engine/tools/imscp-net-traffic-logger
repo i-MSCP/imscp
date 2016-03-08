@@ -19,7 +19,6 @@
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Debug;
@@ -128,5 +127,5 @@ my %dispatch = (
 );
 
 my $action = shift;
-$action && $action ~~ [ 'start', 'stop' ] or iMSCP::Getopt->showUsage();
+$action && grep($_ eq $action, ( 'start', 'stop' )) or iMSCP::Getopt->showUsage();
 exit $dispatch{ $action }->();

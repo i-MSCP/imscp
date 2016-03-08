@@ -25,7 +25,6 @@ package iMSCP::Provider::Service::Sysvinit;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use File::Spec;
 use iMSCP::Debug 'error';
 use iMSCP::Execute;
@@ -253,7 +252,7 @@ sub _init
 	# http://search.cpan.org/~dozzie/Sys-Facter-1.01/
 	my $id = iMSCP::LsbRelease->getInstance()->getId('short');
 
-	if($id ~~ [ 'FreeBSD', 'DragonFly' ]) {
+	if(grep($_ eq $id, ( 'FreeBSD', 'DragonFly' ))) {
 		$paths{$self} = [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
 	} elsif ($id eq 'HP-UX') {
 		$paths{$self} = [ '/sbin/init.d' ];

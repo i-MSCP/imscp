@@ -25,7 +25,6 @@ package Package::FileManager::Net2ftp::Installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -116,7 +115,7 @@ sub afterFrontEndBuildConfFile
 {
 	my ($tplContent, $tplName) = @_;
 
-	return 0 unless $tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ];
+	return 0 unless grep($_ eq $tplName, ( '00_master.conf', '00_master_ssl.conf' ));
 
 	$$tplContent = replaceBloc(
 		"# SECTION custom BEGIN.\n",
@@ -231,7 +230,6 @@ sub _buildConfig
 
 	my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings.inc.php";
-
 	my $data = {
 		ADMIN_EMAIL => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
 		MD5_SALT_STRING => $self->_generateMd5SaltString()

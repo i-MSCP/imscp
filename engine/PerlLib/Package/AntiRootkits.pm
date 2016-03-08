@@ -25,7 +25,6 @@ package Package::AntiRootkits;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Dir;
@@ -76,13 +75,13 @@ sub showDialog
 	my $packages = [ split ',', main::setupGetQuestion('ANTI_ROOTKITS_PACKAGES') ];
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'antirootkits', 'all', 'forced' ] || !@{$packages} ||
-		grep { !($_ ~~ [ $self->{'PACKAGES'}, 'No' ]) } @{$packages}
+	if(grep($_ eq $main::reconfigure , ( 'antirootkits', 'all', 'forced' ))
+		|| !@{$packages}
+		|| grep { my $__ = $_; !grep $_ eq $__, ( @{$self->{'PACKAGES'}}, 'No' ) } @{$packages}
 	) {
 		($rs, $packages) = $dialog->checkbox(
-			"\nPlease select the Anti-Rootkits packages you want to install:",
-			[ @{$self->{'PACKAGES'}} ],
-			(@{$packages} ~~ 'No') ? () : (@{$packages} ? @{$packages} : @{$self->{'PACKAGES'}})
+			"\nPlease select the Anti-Rootkits packages you want to install:", [ @{$self->{'PACKAGES'}} ],
+			grep($_ eq 'No', @{$packages}) ? () : @{$packages} ? @{$packages} : @{$self->{'PACKAGES'}}
 		);
 	}
 
@@ -90,14 +89,13 @@ sub showDialog
 
 	main::setupSetQuestion('ANTI_ROOTKITS_PACKAGES', @{$packages} ? join ',', @{$packages} : 'No');
 
-	return $rs if 'No' ~~ @{$packages};
+	return $rs if grep($_ eq 'No', @{$packages});
 
-	for(@{$packages}) {
-		my $package = "Package::AntiRootkits::${_}::${_}";
+	for my $package(@{$packages}) {
+		$package = "Package::AntiRootkits::${package}::${package}";
 		eval "require $package";
 		unless($@) {
 			$package = $package->getInstance();
-
 			if($package->can('showDialog')) {
 				debug(sprintf('Calling action showDialog on %s', ref $package));
 				$rs = $package->showDialog($dialog);
@@ -128,17 +126,16 @@ sub preinstall
 
 	my $rs = 0;
 	my @packages = split ',', main::setupGetQuestion('ANTI_ROOTKITS_PACKAGES');
-	my $packagesToInstall = [ grep { $_ ne 'No'} @packages ];
-	my $packagesToUninstall = [ grep { !($_ ~~  @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
+	my $packagesToInstall = [ grep { $_ ne 'No' } @packages ];
+	my $packagesToUninstall = [ grep { my $__ = $_; !grep($_ eq $__, @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
 
 	if(@{$packagesToUninstall}) {
 		my $packages = [];
-		for(@{$packagesToUninstall}) {
-			my $package = "Package::AntiRootkits::${_}::${_}";
+		for my $package(@{$packagesToUninstall}) {
+			$package = "Package::AntiRootkits::${package}::${package}";
 			eval "require $package";
 			unless($@) {
 				$package = $package->getInstance();
-
 				if($package->can('uninstall')) {
 					debug(sprintf('Calling action uninstall on %s', ref $package));
 					$rs = $package->uninstall();
@@ -164,12 +161,11 @@ sub preinstall
 	return $rs unless @{$packagesToInstall};
 
 	my $packages = [];
-	for(@{$packagesToInstall}) {
-		my $package = "Package::AntiRootkits::${_}::${_}";
+	for my $package(@{$packagesToInstall}) {
+		$package = "Package::AntiRootkits::${package}::${package}";
 		eval "require $package";
 		unless($@) {
 			$package = $package->getInstance();
-
 			if($package->can('preinstall')) {
 				debug(sprintf('Calling action preinstall on %s', ref $package));
 				$rs = $package->preinstall();
@@ -206,14 +202,13 @@ sub install
 {
 	my @packages = split ',', main::setupGetQuestion('ANTI_ROOTKITS_PACKAGES');
 
-	return 0 if 'No' ~~ @packages;
+	return 0 if grep($_ eq 'No', @packages);
 
-	for(@packages) {
-		my $package = "Package::AntiRootkits::${_}::${_}";
+	for my $package(@packages) {
+		$package = "Package::AntiRootkits::${package}::${package}";
 		eval "require $package";
 		unless($@) {
 			$package = $package->getInstance();
-
 			if($package->can('install')) {
 				debug(sprintf('Calling action install on %s', ref $package));
 				my $rs = $package->install();
@@ -245,14 +240,13 @@ sub uninstall
 	my $packages = [];
 	my $rs = 0;
 
-	for(@packages) {
-		next unless $_ ~~ @{$self->{'PACKAGES'}};
+	for my $package(@packages) {
+		next unless grep($_ eq $package , @{$self->{'PACKAGES'}});
 
-		my $package = "Package::AntiRootkits::${_}::${_}";
+		$package = "Package::AntiRootkits::${package}::${package}";
 		eval "require $package";
 		unless($@) {
 			$package = $package->getInstance();
-
 			if($package->can('uninstall')) {
 				debug(sprintf('Calling action uninstall on %s', ref $package));
 				$rs = $package->uninstall();
@@ -264,7 +258,7 @@ sub uninstall
 				@{$packages} = (@{$packages}, @{$package->getDistroPackages()});
 			}
 		} else {
-			error( $@ );
+			error($@);
 			return 1;
 		}
 	}
@@ -290,14 +284,13 @@ sub setEnginePermissions
 
 	my @packages = split ',', $main::imscpConfig{'ANTI_ROOTKITS_PACKAGES'};
 
-	for(@packages) {
-		next unless $_ ~~ @{$self->{'PACKAGES'}};
+	for my $package(@packages) {
+		next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
 
-		my $package = "Package::AntiRootkits::${_}::${_}";
+		$package = "Package::AntiRootkits::${package}::${package}";
 		eval "require $package";
 		unless($@) {
 			$package = $package->getInstance();
-
 			if($package->can('setEnginePermissions')) {
 				debug(sprintf('Calling action setEnginePermissions on %s', ref $package));
 				my $rs = $package->setEnginePermissions();
@@ -394,7 +387,7 @@ sub _removePackages
 	error($stderr) if $stderr && $rs > 1;
 	return $rs if $rs > 1;
 
-	@{$packages} = grep { m%^(.*?)/install% && ($_ =  $1) } split /\n/, $stdout;
+	@{$packages} = grep { m%^(.*?)/install% && ($_ = $1) } split /\n/, $stdout;
 
 	return 0 unless @{$packages};
 

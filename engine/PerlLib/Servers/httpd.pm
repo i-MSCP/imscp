@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -47,15 +47,13 @@ our $instance;
 
 sub factory
 {
-	unless(defined $instance) {
-		my $sName = $main::imscpConfig{'HTTPD_SERVER'} || 'no';
-		my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::httpd::$sName";
-		eval "require $package";
-		fatal($@) if $@;
-		$instance = $package->getInstance();
-	}
+    return $instance if defined $instance;
 
-	$instance;
+    my $sName = $main::imscpConfig{'HTTPD_SERVER'} || 'no';
+    my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::httpd::$sName";
+    eval "require $package";
+    fatal($@) if $@;
+    $instance = $package->getInstance();
 }
 
 =item can($method)
@@ -69,25 +67,23 @@ sub factory
 
 sub can
 {
-	my ($self, $method) = @_;
-
-	$self->factory()->can($method);
+    my ($self, $method) = @_;
+    $self->factory()->can($method);
 }
 
 END
-{
-	unless(defined $main::execmode && $main::execmode eq 'setup') {
-		my $rs = $?;
+    {
+        return if defined $main::execmode && $main::execmode eq 'setup';
+        my $rs = $?;
 
-		if($Servers::httpd::instance->{'start'}) {
-			$rs ||= $Servers::httpd::instance->start();
-		} elsif($Servers::httpd::instance->{'restart'}) {
-			$rs ||= $Servers::httpd::instance->restart();
-		}
+        if ($Servers::httpd::instance->{'start'}) {
+            $rs ||= $Servers::httpd::instance->start();
+        } elsif ($Servers::httpd::instance->{'restart'}) {
+            $rs ||= $Servers::httpd::instance->restart();
+        }
 
-		$? = $rs;
-	}
-}
+        $? = $rs;
+    }
 
 =back
 

@@ -25,7 +25,6 @@ package Package::PhpMyAdmin::Installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use Package::PhpMyAdmin;
 use iMSCP::EventManager;
@@ -87,9 +86,9 @@ sub showDialog
 	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure ~~ [ 'sqlmanager', 'all', 'forced' ] ||
-		length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ ||
-		length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+	if(grep($_ eq $main::reconfigure, ( 'sqlmanager', 'all', 'forced' ))
+		|| length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/
+		|| length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
 	) {
 		# Ensure no special chars are present in password. If we don't, dialog will not let user set new password
 		$dbPass = '';
@@ -116,7 +115,7 @@ sub showDialog
 			$msg = '';
 
 			# Ask for the phpmyadmin restricted SQL user password unless we reuses existent SQL user
-			unless($dbUser ~~ [ keys %main::sqlUsers ]) {
+			unless(grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
 				do {
 					($rs, $dbPass) = $dialog->passwordbox(
 						"\nPlease, enter a password for the phpmyadmin SQL user (blank for autogenerate):$msg", $dbPass
@@ -245,7 +244,7 @@ sub afterFrontEndBuildConfFile
 {
 	my ($tplContent, $tplName) = @_;
 
-	return 0 unless $tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ];
+	return 0 unless grep($_ eq $tplName, ( '00_master.conf', '00_master_ssl.conf' ));
 
 	$$tplContent = replaceBloc(
 		"# SECTION custom BEGIN.\n",
@@ -405,7 +404,7 @@ sub _setupSqlUser
 	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
+		next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 			next unless $host;
@@ -414,7 +413,7 @@ sub _setupSqlUser
 	}
 
 	# Create SQL user if not already created by another server/package installer
-	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
+	unless(grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";

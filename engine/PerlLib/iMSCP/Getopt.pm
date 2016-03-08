@@ -25,7 +25,6 @@ package iMSCP::Getopt;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
 use fields qw /reconfigure noprompt preseed listener cleanPackageCache skipPackageUpdate debug verbose/;
@@ -211,7 +210,7 @@ EOF
 		$item = 'all';
 	}
 
-	$item eq 'none' || $item ~~ @reconfigurationItems or die(sprintf(
+	$item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die(sprintf(
 		"Error: '%s' is not a valid argument for the --reconfigure option.", $item
 	));
 

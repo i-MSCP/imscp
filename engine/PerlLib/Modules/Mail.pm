@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ package Modules::Mail;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
 use parent 'Modules::Abstract';
@@ -68,7 +67,7 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-	if($self->{'status'} ~~ [ 'toadd', 'tochange', 'toenable' ]) {
+	if(grep($_ eq $self->{'status'}, ( 'toadd', 'tochange', 'toenable' ))) {
 		$rs = $self->add();
 		@sql = (
 			'UPDATE mail_users SET status = ? WHERE mail_id = ?',

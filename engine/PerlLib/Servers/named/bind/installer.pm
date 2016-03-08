@@ -25,7 +25,6 @@ package Servers::named::bind::installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -85,7 +84,9 @@ sub askDnsServerMode
 	my $dnsServerMode = main::setupGetQuestion('BIND_MODE') || $self->{'config'}->{'BIND_MODE'};
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || !($dnsServerMode ~~ [ 'master', 'slave' ])) {
+	if(grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
+		|| !grep($_ eq $dnsServerMode, ( 'master', 'slave' ))
+	) {
 		($rs, $dnsServerMode) = $dialog->radiolist(
 			"\nSelect bind mode", [ 'master', 'slave' ], $dnsServerMode eq 'slave' ? 'slave' : 'master'
 		);
@@ -124,11 +125,13 @@ sub askDnsServerIps
 	my ($rs, $answer, $msg) = (0, '', '');
 
 	if($dnsServerMode eq 'master') {
-		if($main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || !$slaveDnsIps
+		if(grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
+			|| !$slaveDnsIps
 			|| ($slaveDnsIps ne 'no' && !$self->_checkIps(\@slaveDnsIps))
 		) {
 			($rs, $answer) = $dialog->radiolist(
-				"\nDo you want add slave DNS servers?", [ 'no', 'yes' ], ("@slaveDnsIps" ~~ [ '', 'no' ]) ? 'no' : 'yes'
+				"\nDo you want add slave DNS servers?", [ 'no', 'yes' ],
+				grep($_ eq @slaveDnsIps,  ( '', 'no' )) ? 'no' : 'yes'
 			);
 
 			if($rs != 30 && $answer eq 'yes') {
@@ -155,8 +158,8 @@ sub askDnsServerIps
 				@slaveDnsIps = ('no');
 			}
 		}
-	} elsif(
-		$main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || $masterDnsIps ~~ [ '', 'no' ]
+	} elsif(grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
+		|| grep($_ eq $masterDnsIps, ( '', 'no' ))
 		|| !$self->_checkIps(\@masterDnsIps)
 	) {
 		@masterDnsIps = () if $masterDnsIps eq 'no';
@@ -209,7 +212,9 @@ sub askIPv6Support
 	my $ipv6 = main::setupGetQuestion('BIND_IPV6') || $self->{'config'}->{'BIND_IPV6'};
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || $ipv6 !~ /^yes|no$/) {
+	if(grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
+		|| $ipv6 !~ /^yes|no$/
+	) {
 		($rs, $ipv6) = $dialog->radiolist(
 			"\nDo you want enable IPv6 support for your DNS server?", [ 'yes', 'no' ], $ipv6 eq 'yes' ? 'yes' : 'no'
 		);
@@ -238,7 +243,9 @@ sub askLocalDnsResolver
 	my $localDnsResolver = main::setupGetQuestion('LOCAL_DNS_RESOLVER') || $self->{'config'}->{'LOCAL_DNS_RESOLVER'};
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'resolver', 'named', 'all', 'forced' ] || !($localDnsResolver ~~ [ 'yes', 'no' ])) {
+	if(grep($_ eq $main::reconfigure, ( 'resolver', 'named', 'all', 'forced' ))
+		|| !grep( $_ eq $localDnsResolver, ( 'yes', 'no' ))
+	) {
 		($rs, $localDnsResolver) = $dialog->radiolist(
 			"\nDo you want use the local DNS resolver?", [ 'yes', 'no' ], $localDnsResolver ne 'no' ? 'yes' : 'no'
 		);
@@ -525,7 +532,7 @@ sub _checkIps
 
 	for my $ipAddr(@{$ips}) {
 		return 0 unless $net->isValidAddr($ipAddr) &&
-			$net->getAddrType($ipAddr) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ];
+			grep($_ eq $net->getAddrType($ipAddr), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ));
 	}
 
 	1;

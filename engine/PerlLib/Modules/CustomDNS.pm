@@ -25,7 +25,6 @@ package Modules::CustomDNS;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
 use parent 'Modules::Abstract';
@@ -195,7 +194,7 @@ sub _loadData
 
 	# Filter DNS records which must be disabled or deleted
 	for my $record(@{$rows}) {
-		push @{$self->{'dns_records'}}, $record if !($record->[4] ~~ [ 'todisable', 'todelete' ]);
+		push @{$self->{'dns_records'}}, $record unless grep($_ eq $record->[4], ( 'todisable', 'todelete' ));
 	}
 
 	0;

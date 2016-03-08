@@ -25,7 +25,6 @@ package Modules::FtpUser;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Database;
 use parent 'Modules::Abstract';
 
@@ -67,7 +66,7 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-	if($self->{'status'} ~~ [ 'toadd', 'tochange', 'toenable' ]) {
+	if(grep($_ eq $self->{'status'}, ( 'toadd', 'tochange', 'toenable' ))) {
 		$rs = $self->add();
 		@sql = (
 			'UPDATE ftp_users SET status = ? WHERE userid = ?',

@@ -25,7 +25,6 @@ package Modules::Htaccess;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
 use File::Spec;
@@ -69,7 +68,7 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-	if($self->{'status'} ~~ [ 'toadd', 'tochange' ]) {
+	if(grep($_ eq $self->{'status'}, ( 'toadd', 'tochange' ))) {
 		$rs = $self->add();
 		@sql = (
 			'UPDATE htaccess SET status = ? WHERE id = ?', ($rs ? scalar getMessageByType('error') : 'ok'), $htaccessId

@@ -19,7 +19,6 @@
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use FindBin;
 use DateTime;
 use DateTime::TimeZone;
@@ -208,7 +207,7 @@ sub setupAskServerHostname
 	my %options = (domain_private_tld => qr /.*/);
 	my ($rs, @labels) = (0, $hostname ? split /\./, $hostname : ());
 
-	if($main::reconfigure ~~ [ 'system_hostname', 'hostnames', 'all', 'forced' ]
+	if(grep($_ eq $main::reconfigure, ('system_hostname', 'hostnames', 'all', 'forced'))
 		|| !(@labels >= 3 && is_domain($hostname, \%options))
 	) {
 		unless($hostname) {
@@ -257,7 +256,7 @@ sub setupAskServerIps
 
 	# Retrieve list of all configured IP addresses
 	my @serverIps = grep {
-		$net->getAddrType($_) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ]
+		my $__ = $_; grep($_ eq $net->getAddrType($__), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ))
 	} $net->getAddresses();
 
 	unless(@serverIps) {
@@ -286,24 +285,24 @@ sub setupAskServerIps
 
 	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @{$serverIpsToAdd} } };
 
-	if($main::reconfigure ~~ [ 'ips', 'all', 'forced' ]
-		|| !($baseServerIp ~~ @serverIps)
+	if(grep($_ eq $main::reconfigure, ( 'ips', 'all', 'forced' ))
+		|| !grep($_ eq $baseServerIp, @serverIps)
 		|| !$net->isValidAddr($baseServerPublicIp)
-		|| !($net->getAddrType($baseServerPublicIp) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ])
+		|| !grep($_ eq $net->getAddrType($baseServerPublicIp), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ))
 	) {
 		do {
 			# Ask user for the base server IP
 			($rs, $baseServerIp) = $dialog->radiolist(
 				"\nPlease, select the primary IP address for i-MSCP:", [ @serverIps ],
-				$baseServerIp && $baseServerIp ~~ @serverIps ? $baseServerIp : $serverIps[0]
+				$baseServerIp && grep($_ eq $baseServerIp, @serverIps) ? $baseServerIp : $serverIps[0]
 			);
 		} while($rs != 30 && !$baseServerIp);
 
 		if($rs != 30) {
 			# Server inside private LAN?
-			if($net->getAddrType($baseServerIp) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST' ]) {
+			if(grep($_ eq $net->getAddrType($baseServerIp), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST' ))) {
 				if (!$net->isValidAddr($baseServerPublicIp)
-					|| !($net->getAddrType($baseServerPublicIp) ~~ [ 'PUBLIC', 'GLOBAL-UNICAST' ])
+					|| !grep($_ eq $net->getAddrType($baseServerPublicIp), ( 'PUBLIC', 'GLOBAL-UNICAST' ))
 				) {
 					$baseServerPublicIp = '';
 				}
@@ -325,7 +324,7 @@ Please enter your public IP address:$msg
 					if($baseServerPublicIp) {
 						unless($net->isValidAddr($baseServerPublicIp)) {
 							$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
-						} elsif(!($net->getAddrType($baseServerPublicIp) ~~ [ 'PUBLIC', 'GLOBAL-UNICAST' ])) {
+						} elsif(!grep($_ eq $net->getAddrType($baseServerPublicIp), ( 'PUBLIC', 'GLOBAL-UNICAST' ))) {
 							$msg = "\n\n\\Z1Unallowed IP address. IP address must be public.\\Zn\n\nPlease, try again:";
 						} else {
 							$msg = '';
@@ -347,7 +346,7 @@ Please enter your public IP address:$msg
 			if(@serverIps > 1) {
 				$dialog->set('defaultno', undef);
 
-				@serverIps = grep $_ ne $baseServerIp, @serverIps; # Remove the base server IP from the list
+				@serverIps = grep($_ ne $baseServerIp, @serverIps); # Remove the base server IP from the list
 
 				# Retrieve IP to which the user is currently connected (SSH)
 				my $sshConnectionIp = defined $ENV{'SSH_CONNECTION'} ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
@@ -363,7 +362,10 @@ Please enter your public IP address:$msg
 
 					$msg = '';
 
-					if(defined $sshConnectionIp && $sshConnectionIp ~~ @serverIps && !($sshConnectionIp ~~ $serverIps)) {
+					if(defined $sshConnectionIp
+						&& grep($_ eq $sshConnectionIp, @serverIps)
+						&& !grep($_ eq $sshConnectionIp, @{$serverIps})
+					) {
 						$msg = "\n\n\\Z1You cannot remove the $sshConnectionIp IP to which you are currently connected " .
 						"through SSH.\\Zn\n\nPlease, try again:";
 					}
@@ -377,9 +379,9 @@ Please enter your public IP address:$msg
 						# Get list of IP addresses to delete
 						%serverIpsToDelete = ();
 
-						for(@serverIps) {
-							if(exists $currentServerIps->{$_} && !($_ ~~ @{$serverIpsToAdd})) {
-								$serverIpsToDelete{$currentServerIps->{$_}->{'ip_id'}} = $_;
+						for my $ip(@serverIps) {
+							if(exists $currentServerIps->{$ip} && !grep($_ eq $ip, @{$serverIpsToAdd})) {
+								$serverIpsToDelete{$currentServerIps->{$ip}->{'ip_id'}} = $ip;
 							}
 						}
 
@@ -462,7 +464,7 @@ sub setupAskSqlDsn
 	my $rs = 0;
 	my %options = (domain_private_tld => qr /.*/);
 
-	if($main::reconfigure ~~ [ 'sql', 'servers', 'all', 'forced' ] || $dbPass eq '') {
+	if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' )) || $dbPass eq '') {
 		my $msg = my $dbError = '';
 
 		do {
@@ -561,7 +563,7 @@ sub setupAskSqlUserHost
 	my $dialog = shift;
 
 	my $host = setupGetQuestion('DATABASE_USER_HOST') || setupGetQuestion('BASE_SERVER_PUBLIC_IP');
-	$host = setupGetQuestion('BASE_SERVER_PUBLIC_IP') if $host ~~ [ '127.0.0.1', 'localhost' ];
+	$host = setupGetQuestion('BASE_SERVER_PUBLIC_IP') if grep($_ eq $host, ( '127.0.0.1', 'localhost' ));
 	$host = idn_to_ascii($host, 'utf-8');
 
 	my $rs = 0;
@@ -569,7 +571,7 @@ sub setupAskSqlUserHost
 	my $net = iMSCP::Net->getInstance();
 
 	if($main::imscpConfig{'SQL_SERVER'} eq 'remote_server') { # Remote MySQL server
-		if($main::reconfigure ~~ [ 'sql', 'servers', 'all', 'forced' ] || $host ne '%'
+		if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' )) || $host ne '%'
 			&& !is_domain($host, \%options) && !$net->isValidAddr($host)
 		) {
 			my $msg = '';
@@ -614,7 +616,7 @@ sub setupAskImscpDbName
 	my $dbName = setupGetQuestion('DATABASE_NAME') || 'imscp';
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'sql', 'servers', 'all', 'forced' ]
+	if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
 		|| !iMSCP::Getopt->preseed && !setupIsImscpDb($dbName)
 	) {
 		my $msg = '';
@@ -669,7 +671,7 @@ sub setupAskDbPrefixSuffix
 	my $prefixType = setupGetQuestion('MYSQL_PREFIX_TYPE');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'sql', 'servers', 'all', 'forced' ]
+	if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
 		|| !(($prefix eq 'no' && $prefixType eq 'none') || ($prefix eq 'yes' && $prefixType =~ /^infront|behind$/))
 	) {
 		($rs, $prefix) = $dialog->radiolist(
@@ -736,7 +738,9 @@ sub setupAskDefaultAdmin
 
 	setupSetQuestion('ADMIN_OLD_LOGIN_NAME', $adminLoginName);
 
-	if($main::reconfigure ~~ [ 'admin', 'all', 'forced' ] || $adminLoginName eq '') {
+	if(grep($_ eq $main::reconfigure, ( 'admin', 'all', 'forced' ))
+		|| $adminLoginName eq ''
+	) {
 		# Ask for administrator login name
 		do {
 			($rs, $adminLoginName) = $dialog->inputbox(
@@ -804,7 +808,9 @@ sub setupAskAdminEmail
 	my $adminEmail = setupGetQuestion('DEFAULT_ADMIN_ADDRESS');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'admin', 'all', 'forced' ] || !Email::Valid->address($adminEmail)) {
+	if(grep($_ eq $main::reconfigure, ( 'admin', 'all', 'forced' ))
+		|| !Email::Valid->address($adminEmail)
+	) {
 		my $msg = '';
 
 		do {
@@ -826,7 +832,7 @@ sub setupAskTimezone
 	my $timezone = setupGetQuestion('TIMEZONE');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'timezone', 'all', 'forced' ]
+	if(grep($_ eq $main::reconfigure, ( 'timezone', 'all', 'forced' ))
 		|| !($timezone && DateTime::TimeZone->is_valid_name($timezone))
 	) {
 		$timezone = $defaultTimezone unless $timezone;
@@ -857,9 +863,10 @@ sub setupAskServicesSsl
 	my $openSSL = iMSCP::OpenSSL->new();
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'services_ssl', 'ssl', 'all', 'forced' ]
-		|| !($sslEnabled ~~ [ 'yes', 'no' ])
-		|| ($sslEnabled eq 'yes' &&  $main::reconfigure ~~ [ 'system_hostname', 'hostnames' ])
+	if(grep($_ eq $main::reconfigure, ( 'services_ssl', 'ssl', 'all', 'forced' ))
+		|| !grep($_ eq $sslEnabled, ( 'yes', 'no' ))
+		|| $sslEnabled eq 'yes'
+		&& grep($_ eq $main::reconfigure, ( 'system_hostname', 'hostnames' ))
 	) {
 		SSL_DIALOG:
 
@@ -873,7 +880,7 @@ sub setupAskServicesSsl
 			# Ask for self-signed certificate
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
 				"\nDo you have an SSL certificate for the $domainName domain?", [ 'yes', 'no' ],
-				$selfSignedCertificate ~~ ['yes', 'no'] ? ($selfSignedCertificate eq 'yes' ? 'no' : 'yes') : 'no'
+				grep($_ eq $selfSignedCertificate, ( 'yes', 'no' )) ? $selfSignedCertificate eq 'yes' ? 'no' : 'yes' : 'no'
 			);
 
 			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
@@ -978,7 +985,9 @@ sub setupAskImscpBackup
 	my $backupImscp = setupGetQuestion('BACKUP_IMSCP');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'backup', 'all', 'forced' ] || $backupImscp !~ /^yes|no$/) {
+	if(grep($_ eq $main::reconfigure, ( 'backup', 'all', 'forced' ))
+		|| $backupImscp !~ /^yes|no$/
+	) {
 		($rs, $backupImscp) = $dialog->radiolist(
 "
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
@@ -1006,7 +1015,9 @@ sub setupAskDomainBackup
 	my $backupDomains = setupGetQuestion('BACKUP_DOMAINS');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'backup', 'all', 'forced' ] || $backupDomains !~ /^yes|no$/) {
+	if(grep($_ eq $main::reconfigure, ( 'backup', 'all', 'forced' ))
+		|| $backupDomains !~ /^yes|no$/
+	) {
 		($rs, $backupDomains) = $dialog->radiolist(
 "
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
@@ -1710,7 +1721,7 @@ sub setupRegisterPluginListeners
 
 	for my $pluginPath(iMSCP::Plugins->getInstance()->get()) {
 		my $pluginName = basename($pluginPath, '.pm');
-		next unless $pluginName ~~ $pluginNames;
+		next unless grep($_ eq $pluginName, @{$pluginNames});
 		eval { require $pluginPath; };
 		unless($@) {
 			my $plugin = 'Plugin::' . $pluginName;

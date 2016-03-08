@@ -25,7 +25,6 @@ package Modules::Htusers;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
 use parent 'Modules::Abstract';
@@ -68,7 +67,7 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-	if($self->{'status'} ~~ [ 'toadd', 'tochange' ]) {
+	if(grep($_ eq $self->{'status'}, ( 'toadd', 'tochange' ))) {
 		$rs = $self->add();
 		@sql = (
 			'UPDATE htaccess_users SET status = ? WHERE id = ?',

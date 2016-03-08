@@ -25,7 +25,6 @@ package Servers::po::courier;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Config;
@@ -449,7 +448,7 @@ sub getTraffic
 				#
 				# IMAP traffic line sample
 				# Oct 15 12:56:42 imscp imapd: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], headers=0, body=0, rcvd=172, sent=310, time=205
-				if(m/^.*(?:imapd|imapd\-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\],\sheaders=\d+,\sbody=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gimo && !($2 ~~ [ 'localhost', '127.0.0.1', '::1', '::ffff:127.0.0.1' ])) {
+				if(m/^.*(?:imapd|imapd\-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\],\sheaders=\d+,\sbody=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gimo && !grep($_ eq $2, ( 'localhost', '127.0.0.1', '::1', '::ffff:127.0.0.1' ))) {
 					$trafficDb{$1} += $3 + $4;
 					next;
 				}
@@ -462,7 +461,7 @@ sub getTraffic
 				# Oct 15 14:51:12 imscp pop3d-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], port=[41254], top=0, retr=496, rcvd=32, sent=672, time=0, stls=1
 				#
 				# Note: courierpop3login is for Debian. pop3d for Fedora.
-				$trafficDb{$1} += $3 + $4 if m/^.*(?:courierpop3login|pop3d|pop3d-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\].*\stop=\d+,\sretr=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gimo && !($2 ~~ [ 'localhost', '127.0.0.1', '::1', '::ffff:127.0.0.1' ]);
+				$trafficDb{$1} += $3 + $4 if m/^.*(?:courierpop3login|pop3d|pop3d-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\].*\stop=\d+,\sretr=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gimo && !grep($_ eq $2, ( 'localhost', '127.0.0.1', '::1', '::ffff:127.0.0.1' ));
 			}
 		} else {
 			debug(sprintf('No new content found in %s - Skipping', $trafficDataSrc));

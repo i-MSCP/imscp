@@ -25,7 +25,6 @@ package Package::Webstats::Awstats::Installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::TemplateParser;
 use iMSCP::Dir;
@@ -61,9 +60,11 @@ sub showDialog
 	my $rs = 0;
 	my $awstatsMode = main::setupGetQuestion('AWSTATS_MODE');
 
-	if($main::reconfigure ~~ ['webstats', 'all', 'forced'] || !($awstatsMode ~~ [ '0', '1'])) {
+	if(grep($_ eq $main::reconfigure, ( 'webstats', 'all', 'forced' ))
+		|| !grep($_ eq $awstatsMode, ( '0', '1' ))
+	) {
 		($rs, $awstatsMode) = $dialog->radiolist(
-			"\nPlease select the AWStats mode you want use:", ['Dynamic', 'Static'], $awstatsMode ? 'Static' : 'Dynamic'
+			"\nPlease select the AWStats mode you want use:", [ 'Dynamic', 'Static' ], $awstatsMode ? 'Static' : 'Dynamic'
 		);
 
 		$awstatsMode = $awstatsMode eq 'Dynamic' ? 0 : 1 if $rs != 30;

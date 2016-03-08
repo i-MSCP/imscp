@@ -25,7 +25,6 @@ package Modules::User;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -75,7 +74,7 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-	if($self->{'admin_status'} ~~ [ 'toadd', 'tochange' ]) {
+	if(grep($_ eq $self->{'admin_status'}, ( 'toadd', 'tochange' ))) {
 		$rs = $self->add();
 		@sql = (
 			'UPDATE admin SET admin_status = ? WHERE admin_id = ?',

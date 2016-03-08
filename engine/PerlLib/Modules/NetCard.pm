@@ -25,7 +25,6 @@ package Modules::NetCard;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::Provider::NetworkInterface;
@@ -60,7 +59,7 @@ sub process
         my ($sth2, @params);
         local $@;
         eval {
-            if ($row->{'ip_status'} ~~ [ 'toadd', 'tochange' ]) {
+            if (grep($_ eq $row->{'ip_status'}, ( 'toadd', 'tochange' ))) {
                 $provider->addIpAddr({
                     id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
                 });

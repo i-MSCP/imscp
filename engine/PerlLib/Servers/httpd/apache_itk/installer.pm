@@ -25,7 +25,6 @@ package Servers::httpd::apache_itk::installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
@@ -85,8 +84,8 @@ sub showDialog
 	my $rs = 0;
 	my $confLevel = main::setupGetQuestion('INI_LEVEL') || $self->{'config'}->{'INI_LEVEL'};
 
-	if($main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ]
-		|| !($confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ])
+	if(grep($_ eq $main::reconfigure, ( 'httpd', 'php', 'servers', 'all', 'forced' ))
+		|| !grep($_ eq $confLevel, ( 'per_site', 'per_domain', 'per_user' ))
 	) {
 		$confLevel =~ s/_/ /;
 
@@ -102,7 +101,7 @@ Please, choose the PHP configuration level you want use. Available levels are:
 
 ",
 			[ 'per_site', 'per_domain', 'per_user' ],
-			$confLevel ~~ [ 'per user', 'per domain' ] ? $confLevel : 'per site'
+			grep($_ eq $confLevel, ( 'per user', 'per domain' )) ? $confLevel : 'per site'
 		);
 	}
 
@@ -363,7 +362,7 @@ sub _buildPhpConfFiles
 		) {
 			$rs = execute("php5enmod $extension", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
-			unless($rs ~~ [0, 2]) {
+			unless(grep($_ eq $rs, ( 0, 2 ))) {
 				error($stderr) if $stderr;
 				return $rs;
 			}
@@ -534,12 +533,12 @@ sub _setupVlogger
 	}
 
 	$rs = $self->{'httpd'}->setData({
-			DATABASE_NAME => $dbName,
-			DATABASE_HOST => $dbHost,
-			DATABASE_PORT => $dbPort,
-			DATABASE_USER => $dbUser,
-			DATABASE_PASSWORD => $dbPass
-		});
+		DATABASE_NAME => $dbName,
+		DATABASE_HOST => $dbHost,
+		DATABASE_PORT => $dbPort,
+		DATABASE_USER => $dbUser,
+		DATABASE_PASSWORD => $dbPass
+	});
 	$rs ||= $self->{'httpd'}->buildConfFile(
 		"$self->{'apacheCfgDir'}/vlogger.conf.tpl", { }, { destination => "$self->{'apacheWrkDir'}/vlogger.conf" }
 	);

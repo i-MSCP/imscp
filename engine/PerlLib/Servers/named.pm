@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -49,35 +49,33 @@ our $instance;
 
 sub factory
 {
-	unless(defined $instance) {
-		my $sName = $main::imscpConfig{'NAMED_SERVER'};
-		my $package = undef;
+    return $instance if defined $instance;
 
-		if($sName eq 'external_server') {
-			if(defined $main::imscpOldConfig) {
-				my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'};
+    my $sName = $main::imscpConfig{'NAMED_SERVER'};
+    my $package = undef;
 
-				if($oldSname ne 'external_server') {
-					$package = "Servers::named::$oldSname";
-					eval "require $package";
-					fatal($@) if $@;
+    if ($sName eq 'external_server') {
+        if (defined $main::imscpOldConfig) {
+            my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'};
 
-					my $rs = $package->getInstance()->uninstall();
-					fatal("Unable to uninstall $oldSname server") if $rs;
-				}
-			}
+            if ($oldSname ne 'external_server') {
+                $package = "Servers::named::$oldSname";
+                eval "require $package";
+                fatal($@) if $@;
 
-			$package = 'Servers::noserver';
-		} else {
-			$package = "Servers::named::$sName";
-		}
+                my $rs = $package->getInstance()->uninstall();
+                fatal("Unable to uninstall $oldSname server") if $rs;
+            }
+        }
 
-		eval "require $package";
-		fatal($@) if $@;
-		$instance = $package->getInstance();
-	}
+        $package = 'Servers::noserver';
+    } else {
+        $package = "Servers::named::$sName";
+    }
 
-	$instance;
+    eval "require $package";
+    fatal($@) if $@;
+    $instance = $package->getInstance();
 }
 
 =item can($method)
@@ -91,25 +89,23 @@ sub factory
 
 sub can
 {
-	my ($self, $method) = @_;
-
-	$self->factory()->can($method);
+    my ($self, $method) = @_;
+    $self->factory()->can($method);
 }
 
 END
-{
-	unless(defined $main::execmode && $main::execmode eq 'setup') {
-		my $rs = $?;
+    {
+        return if defined $main::execmode && $main::execmode eq 'setup';
+        my $rs = $?;
 
-		if($Servers::named::instance->{'restart'}) {
-			$rs ||= $Servers::named::instance->restart();
-		} elsif($Servers::named::instance->{'reload'}) {
-			$rs ||= $Servers::named::instance->reload();
-		}
+        if ($Servers::named::instance->{'restart'}) {
+            $rs ||= $Servers::named::instance->restart();
+        } elsif ($Servers::named::instance->{'reload'}) {
+            $rs ||= $Servers::named::instance->reload();
+        }
 
-		$? = $rs;
-	}
-}
+        $? = $rs;
+    }
 
 =back
 

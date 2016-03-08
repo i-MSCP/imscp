@@ -244,7 +244,7 @@ sub _pkt_add_data
 			$INSTALL_DATA{'software_version'} ne '' && $INSTALL_DATA{'software_language'} ne '' &&
 			$INSTALL_DATA{'software_type'} ne '' && $INSTALL_DATA{'software_db'} ne '' &&
 			$INSTALL_DATA{'software_prefix'} ne '' && $INSTALL_DATA{'software_link'} ne '' &&
-			$INSTALL_DATA{'software_desc'} ne '' && grep $_ eq $INSTALL_DATA{'software_language'}, @allowed_languages
+			$INSTALL_DATA{'software_desc'} ne '' && grep($_ eq $INSTALL_DATA{'software_language'}, @allowed_languages)
 		){
 			if ($INSTALL_DATA{'software_db'} ne 'true') {
 				$INSTALL_DATA{'software_db'} = '0';

@@ -25,7 +25,6 @@ package autoinstaller::Adapter::DebianAdapter;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::EventManager;
@@ -196,7 +195,7 @@ sub uninstallPackages
 	# Filter packages which must to be removed
 	my @packagesToIgnore = (@{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}});
 	s/=.*$// for @packagesToIgnore; # Remove any package version info (since 1.2.12)
-	@{$packages} = grep { not $_ ~~ @packagesToIgnore } uniq(@{$packages});
+	@{$packages} = grep { my $__ = $_; !grep($_ eq $__ , @packagesToIgnore) } uniq(@{$packages});
 
 	if(@{$packages}) {
 		# Do not try to remove packages which are no installed or not available
@@ -255,13 +254,13 @@ sub postBuild
 
 	# Needed to fix #IP-1246
 	if(iMSCP::ProgramFinder::find('php5dismod')) {
-		for (
+		for my $module(
 			'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd', 'mysqli', 'mysql', 'opcache', 'pdo',
 			'pdo_mysql'
 		) {
-			my $rs = execute("php5dismod $_", \my $stdout, \my $stderr);
+			my $rs = execute("php5dismod $module", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
-			unless($rs ~~ [ 0, 2 ]) {
+			unless(grep($_ eq $rs, ( 0, 2 ))) {
 				error($stderr) if $stderr;
 				return $rs;
 			}
@@ -270,13 +269,13 @@ sub postBuild
 
 	# Enable needed PHP modules (only if they are available)
 	if(iMSCP::ProgramFinder::find('php5enmod')) {
-		for (
+		for my $module(
 			'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
 			'pdo_mysql'
 		) {
-			my $rs = execute("php5enmod $_", \my $stdout, \my $stderr);
+			my $rs = execute("php5enmod $module", \my $stdout, \my $stderr);
 			debug($stdout) if $stdout;
-			unless($rs ~~ [ 0, 2 ]) {
+			unless(grep($_ eq $rs, ( 0, 2 ))) {
 				error($stderr) if $stderr;
 				return $rs;
 			}
@@ -423,18 +422,23 @@ sub _buildPackageList
 		$sAlt = $dAlt if $forceDialog;
 
 		my @alts = keys %{$pkgList->{$section}};
-		if(not $sAlt ~~ @alts) { # Handle wrong or deprecated entry case
+		if(!grep($_ eq $sAlt, @alts)) { # Handle wrong or deprecated entry case
 			$sAlt = $dAlt;
 			$forceDialog = 1;
 		}
 
 		if($pkgList->{$section}->{$sAlt}->{'allow_switch'}) {
 			# Filter unallowed alternatives
-			@alts = grep { $_ ~~ @alts } split(',', $pkgList->{$section}->{$sAlt}->{'allow_switch'}), $sAlt;
+			@alts = grep {
+				my $__ = $_; grep($_ eq $__, @alts)
+			} split(',', $pkgList->{$section}->{$sAlt}->{'allow_switch'}), $sAlt;
 		}
 
+		print $sAlt . "\n";
+
+
 		# Ask user for alternative list of packages to install if any
-		if(@alts > 1 && ($forceDialog || $main::reconfigure ~~ [ $section, 'servers', 'all' ])) {
+		if(@alts > 1 && $forceDialog || grep($_ eq $main::reconfigure, ( $section, 'servers', 'all' ))) {
 			iMSCP::Dialog->getInstance()->set('no-cancel', '');
 			(my $ret, $sAlt) = iMSCP::Dialog->getInstance()->radiolist(<<EOF, [ sort @alts ], $sAlt);
 
@@ -542,7 +546,7 @@ sub _updateAptSourceList
 		while($fileContent =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/gm) {
 			my $rf = $&;
 			my %rc = %+;
-			next if "$rc{'uri'} $rc{'distrib'}" ~~ @seen;
+			next if grep($_ eq "$rc{'uri'} $rc{'distrib'}", @seen);
 
 			if($fileContent !~ /^deb\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
 				my $rs = execute("wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/", \my $stdout, \my $stderr);
@@ -758,7 +762,7 @@ sub _prefillDebconfDatabase
 		($sqlServer, $sqlServerVersion) = $main::questions{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/;
 
 		if ($sqlServer eq 'mysql') {
-			if ('mysql-community-server' ~~ @{$self->{'packagesToInstall'}}) {
+			if (grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})) {
 				$sqlServerQuestionOwner = 'mysql-community-server';
 				$sqlServerQuestionPrefix = 'mysql-community-server';
 			} else {
@@ -820,7 +824,7 @@ if($sqlServer eq 'mariadb') {
 $sqlServerQuestionOwner $sqlServerQuestionPrefix-5.1/postrm_remove_databases boolean false
 $sqlServerQuestionOwner $sqlServerQuestionPrefix-5.1/really_downgrade boolean true
 EOF
-} elsif('mysql-community-server' ~~ @{$self->{'packagesToInstall'}}) {
+} elsif(grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})) {
 	$selectionsFileContent .= <<EOF;
 $sqlServerQuestionOwner $sqlServerQuestionOwner/remove-data-dir boolean false
 EOF

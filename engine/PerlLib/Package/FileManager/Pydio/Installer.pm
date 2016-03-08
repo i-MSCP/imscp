@@ -25,7 +25,6 @@ package Package::FileManager::Pydio::Installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -88,7 +87,6 @@ sub install
 sub setGuiPermissions
 {
 	my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
 	my $rs = setRights( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", {
 		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
 	} );
@@ -117,7 +115,7 @@ sub afterFrontEndBuildConfFile
 {
 	my ($tplContent, $tplName) = @_;
 
-	return 0 unless $tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ];
+	return 0 unless grep($_ eq $tplName, ( '00_master.conf', '00_master_ssl.conf' ));
 
 	$$tplContent = replaceBloc(
 		"# SECTION custom BEGIN.\n",
@@ -170,7 +168,6 @@ sub _installFiles
 	my $self = shift;
 
 	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer";
-
 	unless(-d $packageDir) {
 		error('Could not find the imscp/ajaxplorer (Pydio) package into the packages cache directory');
 		return 1;

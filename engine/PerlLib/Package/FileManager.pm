@@ -25,7 +25,6 @@ package Package::FileManager;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use parent 'Common::SingletonClass';
@@ -74,11 +73,13 @@ sub showDialog
 	my $package = main::setupGetQuestion('FILEMANAGER_PACKAGE');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'filemanager', 'all', 'forced' ] || !$package || !($package ~~ @{$self->{'PACKAGES'}})) {
+	if(grep($_ eq $main::reconfigure, ( 'filemanager', 'all', 'forced' ))
+		|| !$package
+		|| !grep($_ eq $package, @{$self->{'PACKAGES'}})
+	) {
 		($rs, $package) = $dialog->radiolist(
-			"\nPlease select the Ftp Web file manager package you want to install:",
-			[ @{$self->{'PACKAGES'}} ],
-			($package ne '' && $package ~~ $self->{'PACKAGES'} ) ? $package : @{$self->{'PACKAGES'}}[0]
+			"\nPlease select the Ftp Web file manager package you want to install:", [ @{$self->{'PACKAGES'}} ],
+			$package ne '' && grep($_ eq $package, $self->{'PACKAGES'}) ? $package : @{$self->{'PACKAGES'}}[0]
 		);
 	}
 
@@ -88,10 +89,8 @@ sub showDialog
 
 	$package = "Package::FileManager::${package}::${package}";
 	eval "require $package";
-
 	unless($@) {
 		$package = $package->getInstance();
-
 		if($package->can('showDialog')) {
 			debug(sprintf('Calling action showDialog on %s', ref $package));
 			$rs = $package->showDialog($dialog);
@@ -135,10 +134,8 @@ sub preinstallListener
 
 	$package = "Package::FileManager::${package}::${package}";
 	eval "require $package";
-
 	unless($@) {
 		$package = $package->getInstance();
-
 		if($package->can('preinstall')) {
 			debug(sprintf('Calling action preinstall on %s', ref $package));
 			my $rs = $package->preinstall();
@@ -168,10 +165,8 @@ sub installListener
 
 	$package = "Package::FileManager::${package}::${package}";
 	eval "require $package";
-
 	unless($@) {
 		$package = $package->getInstance();
-
 		if($package->can('install')) {
 			debug(sprintf('Calling action install on %s', ref $package));
 			my $rs = $package->install();
@@ -202,17 +197,13 @@ sub uninstall
 
 	return 0 unless $package;
 
-	# Ensure backward compatibility ( See #IP-1249 )
-	if($package eq 'AjaXplorer') {
-		$package = 'Pydio';
-	}
+	# Ensure backward compatibility (See #IP-1249)
+	$package = 'Pydio' if $package eq 'AjaXplorer';
 
 	$package = "Package::FileManager::${package}::${package}";
 	eval "require $package";
-
 	unless($@) {
 		$package = $package->getInstance();
-
 		if($package->can('uninstall')) {
 			debug(sprintf('Calling action uninstall on %s', ref $package));
 			my $rs = $package->uninstall();
@@ -240,14 +231,13 @@ sub setPermissionsListener
 
 	my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
 
-	return 0 unless $package ~~ @{$self->{'PACKAGES'}};
+	return 0 unless grep($_ eq $package, @{$self->{'PACKAGES'}});
 
 	$package = "Package::FileManager::${package}::${package}";
 	eval "require $package";
 
 	unless($@) {
 		$package = $package->getInstance();
-
 		if($package->can('setGuiPermissions')) {
 			debug(sprintf('Calling action setGuiPermissions on %s', ref $package));
 			my $rs = $package->setGuiPermissions();

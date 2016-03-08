@@ -25,7 +25,6 @@ package Modules::Domain;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use Modules::User;
 use iMSCP::Execute;
@@ -76,7 +75,7 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-	if($self->{'domain_status'} ~~ [ 'toadd', 'tochange', 'toenable' ]) {
+	if(grep($_ eq $self->{'domain_status'}, ( 'toadd', 'tochange', 'toenable' ))) {
 		$rs = $self->add();
 		@sql = (
 			'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
@@ -481,13 +480,13 @@ sub _getNamedData
 		DOMAIN_IP => $self->{'ip_number'},
 		USER_NAME => $userName,
 		MAIL_ENABLED => (
-			($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) &&
-			($self->{'external_mail'} ~~ [ 'wildcard', 'off' ])
+			$self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 &&
+			grep($_ eq $self->{'external_mail'}, ( 'wildcard', 'off' ))
 		) ? 1 : 0,
 		SPF_RECORDS => []
 	};
 
-	return %{$self->{'named'}} unless $action =~ /add/ && $self->{'external_mail'} ~~ [ 'domain', 'filter', 'wildcard' ];
+	return %{$self->{'named'}} unless $action =~ /add/ && grep($_ eq $self->{'external_mail'}, ( 'domain', 'filter', 'wildcard' ));
 
 	my $db = iMSCP::Database->factory();
 	my $rdata = $db->doQuery(

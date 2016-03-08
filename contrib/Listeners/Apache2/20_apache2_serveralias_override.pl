@@ -23,7 +23,6 @@ package Listener::Apache2::ServerAlias::Override;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::EventManager;
 
 #
@@ -42,9 +41,8 @@ iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', sub {
 
 	my $domainName = $data->{'DOMAIN_NAME'} || undef;
 
-	if(
-		$domainName && $domainName eq $searchDomain &&
-		$tplFileName ~~ [ 'domain_redirect.tpl', 'domain.tpl', 'domain_redirect_ssl.tpl', 'domain_ssl.tpl' ]
+	if($domainName && $domainName eq $searchDomain &&
+		grep($_ eq $tplFileName, ( 'domain_redirect.tpl', 'domain.tpl', 'domain_redirect_ssl.tpl', 'domain_ssl.tpl' ))
 	) {
 		$$tplFileContent =~ s/^(\s+ServerAlias.*)/$1 $addServerAlias/m;
 	}

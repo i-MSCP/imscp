@@ -25,7 +25,6 @@ package Package::FrontEnd::Installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Dir;
@@ -87,7 +86,7 @@ sub askHostname
 
 	my ($rs, @labels) = (0, $vhost ? split(/\./, $vhost) : ());
 
-	if($main::reconfigure ~~ [ 'panel_hostname', 'hostnames', 'all', 'forced' ]
+	if(grep($_ eq $main::reconfigure, ( 'panel_hostname', 'hostnames', 'all', 'forced' ))
 		|| !(@labels >= 3 && is_domain($vhost, \%options))
 	) {
 		$vhost = 'admin.' . main::setupGetQuestion('SERVER_HOSTNAME') unless $vhost;
@@ -132,8 +131,10 @@ sub askSsl
 	my $openSSL = iMSCP::OpenSSL->new();
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'panel_ssl', 'ssl', 'all', 'forced' ] || !($sslEnabled ~~ [ 'yes', 'no' ])
-		|| $sslEnabled eq 'yes' && $main::reconfigure ~~ [ 'panel_hostname', 'hostnames' ]
+	if(grep($_ eq $main::reconfigure, ( 'panel_ssl', 'ssl', 'all', 'forced' ))
+		|| !grep($_ eq $sslEnabled, ( 'yes', 'no' ))
+		|| $sslEnabled eq 'yes'
+		&& grep($_ eq $main::reconfigure, ( 'panel_hostname', 'hostnames' ))
 	) {
 		SSL_DIALOG:
 
@@ -144,10 +145,10 @@ sub askSsl
 		if($sslEnabled eq 'yes' && $rs != 30) {
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
 				"\nDo you have an SSL certificate for the $domainName domain?", [ 'yes', 'no' ],
-				$selfSignedCertificate ~~ [ 'yes', 'no' ] ? ($selfSignedCertificate eq 'yes' ? 'no' : 'yes') : 'no'
+				grep($_ eq $selfSignedCertificate, ( 'yes', 'no' )) ? $selfSignedCertificate eq 'yes' ? 'no' : 'yes' : 'no'
 			);
 
-			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
+			$selfSignedCertificate = $selfSignedCertificate eq 'no' ? 'yes' : 'no';
 
 			if($selfSignedCertificate eq 'no' && $rs != 30) {
 				my $msg = '';
@@ -266,7 +267,7 @@ sub askPorts
 	my $ssl = main::setupGetQuestion('PANEL_SSL_ENABLED', 'no');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'panel_ports', 'all', 'forced' ]
+	if(grep($_ eq $main::reconfigure, ( 'panel_ports', 'all', 'forced' ))
 		|| !$httpPort || $httpPort =~ /^[^\d]/ || $httpPort < 1023 || $httpPort > 65535
 	) {
 		my $msg = '';
@@ -281,8 +282,9 @@ sub askPorts
 	}
 
 	if($rs != 30 && $ssl eq 'yes') {
-		if($main::reconfigure ~~ [ 'panel_ports', 'all', 'forced' ] || !$httpsPort || !$httpsPort
-			|| $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535 || $httpsPort == $httpPort
+		if(grep($_ eq $main::reconfigure, ( 'panel_ports', 'all', 'forced' ))
+			|| !$httpsPort || !$httpsPort || $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535
+			|| $httpsPort == $httpPort
 		) {
 			my $msg = '';
 
@@ -981,7 +983,6 @@ sub _saveConfig
 
 	my $rootUname = $main::imscpConfig{'ROOT_USER'};
 	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
-
 	my $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/nginx.data" );
 	my $rs = $file->owner($rootUname, $rootGname);
 	$rs ||= $file->mode(0640);

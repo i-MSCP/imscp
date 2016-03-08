@@ -226,7 +226,7 @@ sub quotaSql
 			}
 
 			for my $sqlDbName (keys %{$customerDatabases}) {
-				if(grep{$_ eq $sqlDbName} keys %{$databases}) { # Does the database exists?
+				if(grep($_ eq $sqlDbName, keys %{$databases})) { # Does the database exists?
 					my $quotedDbName = $db->quoteIdentifier($sqlDbName);
 
 					my $sqlDbTables = $db->doQuery('1', "SHOW TABLE STATUS FROM $quotedDbName");

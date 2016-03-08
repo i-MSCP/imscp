@@ -25,7 +25,6 @@ package iMSCP::Crypt;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use Carp;
 use Crypt::CBC;
 use Crypt::Eksblowfish::Bcrypt ();

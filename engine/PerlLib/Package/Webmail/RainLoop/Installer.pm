@@ -25,7 +25,6 @@ package Package::Webmail::RainLoop::Installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
@@ -72,9 +71,9 @@ sub showDialog
 	my $dbPass = main::setupGetQuestion('RAINLOOP_SQL_PASSWORD') || $self->{'rainloop'}->{'config'}->{'DATABASE_PASSWORD'} || '';
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure ~~ [ 'webmails', 'all', 'forced' ] ||
-		length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/ ||
-		length $dbPass < 6 || $dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/
+	if(grep($_ eq $main::reconfigure, ( 'webmails', 'all', 'forced' ))
+		|| length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/
+		|| length $dbPass < 6 || $dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/
 	) {
 		# Ensure no special chars are present in password. If we don't, dialog will not let user set new password
 		$dbPass = '';
@@ -103,7 +102,7 @@ sub showDialog
 			$msg = '';
 
 			# Ask for the rainloop SQL user password unless we reuses existent SQL user
-			unless($dbUser ~~ [ keys %main::sqlUsers ]) {
+			unless(grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
 				do {
 					($rs, $dbPass) = $dialog->passwordbox(
 						"\nPlease, enter a password for the rainloop SQL user (blank for autogenerate):$msg", $dbPass
@@ -229,7 +228,7 @@ sub afterFrontEndBuildConfFile
 {
 	my ($tplContent, $tplName) = @_;
 
-	return 0 unless  $tplName ~~ [ '00_master.conf', '00_master_ssl.conf' ];
+	return 0 unless grep($_ eq $tplName, ('00_master.conf', '00_master_ssl.conf' ));
 
 	$$tplContent = replaceBloc(
 		"# SECTION custom BEGIN.\n",
@@ -409,7 +408,7 @@ sub _setupDatabase
 	}
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
+		next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 			next unless $host;
@@ -418,7 +417,7 @@ sub _setupDatabase
 	}
 
 	# Create SQL user if not already created by another server/package installer
-	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
+	unless(grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";

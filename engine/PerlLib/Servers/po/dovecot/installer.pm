@@ -25,7 +25,6 @@ package Servers::po::dovecot::installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Config;
@@ -98,10 +97,9 @@ sub showDialog
 
 	my ($rs, $msg) = (0, '');
 
-	if(
-		$main::reconfigure ~~ [ 'po', 'servers', 'all', 'forced' ] ||
-		(length $dbUser < 6 || length $dbUser > 16 || $dbUser =~ /[^\x21-\x7e]+/) ||
-		(length $dbPass < 6 || $dbPass =~ /[^\x21-\x7e]+/)
+	if(grep($_ eq $main::reconfigure, ( 'po', 'servers', 'all', 'forced' ))
+		|| length $dbUser < 6 || length $dbUser > 16 || $dbUser =~ /[^\x21-\x7e]+/
+		|| length $dbPass < 6 || $dbPass =~ /[^\x21-\x7e]+/
 	) {
 		# Ensure no special chars are present in password. If we don't, dialog will not let user set new password
 		$dbPass = '';
@@ -131,7 +129,7 @@ sub showDialog
 			$msg = '';
 
 			# Ask for the dovecot SQL user password unless we reuses existent SQL user
-			unless($dbUser ~~ [ keys %main::sqlUsers ]) {
+			unless(grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
 				do {
 					($rs, $dbPass) = $dialog->passwordbox(
 						"\nPlease, enter a password for the dovecot SQL user (blank for autogenerate):$msg", $dbPass
@@ -407,7 +405,7 @@ sub _setupSqlUser
 	return $rs if $rs;
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
+		next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 			next unless $host;
@@ -419,7 +417,7 @@ sub _setupSqlUser
 	fatal(sprintf('Could not connect to SQL server: %s', $errStr)) unless $db;
 
 	# Create SQL user if not already created by another server/package installer
-	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
+	unless(grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";

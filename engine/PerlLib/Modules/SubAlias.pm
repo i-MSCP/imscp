@@ -25,7 +25,6 @@ package Modules::SubAlias;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::Execute;
@@ -74,7 +73,7 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-	if($self->{'subdomain_alias_status'} ~~ [ 'toadd', 'tochange', 'toenable' ]) {
+	if(grep($_ eq $self->{'subdomain_alias_status'}, ( 'toadd', 'tochange', 'toenable' ))) {
 		$rs = $self->add();
 		@sql = (
 			'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?',
@@ -305,7 +304,7 @@ sub _getNamedData
 	};
 
 	# Only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
-	if($self->{'external_mail'} ~~ [ 'domain', 'filter' ]) {
+	if(grep($_ eq $self->{'external_mail'}, ( 'domain', 'filter' ))) {
 		$self->{'named'}->{'MAIL_ENABLED'} = 1;
 
 		my $rdata = iMSCP::Database->factory()->doQuery(

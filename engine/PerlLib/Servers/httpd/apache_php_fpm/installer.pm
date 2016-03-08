@@ -25,7 +25,6 @@ package Servers::httpd::apache_php_fpm::installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
@@ -90,8 +89,8 @@ sub showPhpConfigLevelDialog
 	my $rs = 0;
 	my $confLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') || $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 
-	if($main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ]
-		|| !($confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ])
+	if(grep($_ eq $main::reconfigure, ( 'httpd', 'php', 'servers', 'all', 'forced' ))
+		|| !grep($_ eq $confLevel, ( 'per_site', 'per_domain', 'per_user' ))
 	) {
 		$confLevel =~ s/_/ /;
 
@@ -107,7 +106,7 @@ Please, choose the PHP configuration level you want use. Available levels are:
 
 ",
 			[ 'per_site', 'per_domain', 'per_user' ],
-			$confLevel ~~ [ 'per user', 'per domain' ] ? $confLevel : 'per site'
+			grep($_ eq $confLevel, ( 'per user', 'per domain' )) ? $confLevel : 'per site'
 		);
 	}
 
@@ -131,7 +130,9 @@ sub showListenModeDialog
 	my $rs = 0;
 	my $listenMode = main::setupGetQuestion('PHP_FPM_LISTEN_MODE') || $self->{'phpfpmConfig'}->{'LISTEN_MODE'};
 
-	if($main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ] || !$listenMode ~~ [ 'uds', 'tcp' ]) {
+	if(grep($_ eq $main::reconfigure, ( 'httpd', 'php', 'servers', 'all', 'forced' ))
+		|| !grep($_ eq $listenMode, ( 'uds', 'tcp' ))
+	) {
 		($rs, $listenMode) = $dialog->radiolist(
 "
 \\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
@@ -144,8 +145,7 @@ Please, choose the FastCGI address type that you want use. Available types are:
 Be aware that for high traffic sites, TCP/IP can require a tweaking of your kernel parameters (sysctl).
 
 ",
-			[ 'uds', 'tcp'],
-			$listenMode ~~ [ 'tcp', 'uds' ] ? $listenMode : 'uds'
+			[ 'uds', 'tcp'], grep($_ eq $listenMode, ( 'tcp', 'uds' )) ? $listenMode : 'uds'
 		);
 	}
 
@@ -386,7 +386,7 @@ sub _buildFastCgiConfFiles
 			my($stdout, $stderr);
 			$rs = execute("php5enmod $extension", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
-			unless($rs ~~ [0, 2]) {
+			unless(grep($_ eq $rs, ( 0, 2 ))) {
 				error($stderr) if $stderr;
 				return $rs;
 			}

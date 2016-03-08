@@ -23,7 +23,6 @@ package Listener::Bind9::DualStack;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Net;
@@ -58,7 +57,8 @@ sub addCustomDNSrecord
 
 	# All DNS IPs and per domain IPS
 	my @ipList = uniq map $net->normalizeAddr($_), grep {
-		$net->isValidAddr($_) && $net->getAddrType($_) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ]
+		my $__ = $_;
+		$net->isValidAddr($__) && grep($_ eq $net->getAddrType($__), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ))
 	} @additionalIPs, $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ();
 
 	return 0 unless @ipList;
@@ -104,7 +104,8 @@ sub addCustomDNSrecordSub
 
 	# All DNS IPs and per domain IPS
 	my @ipList = uniq map $net->normalizeAddr($_), grep {
-			$net->isValidAddr($_) && $net->getAddrType($_) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ]
+		my $__ eq $__;
+		$net->isValidAddr($__) && grep($_ eq $net->getAddrType($__), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ))
 	} @additionalIPs, $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ();
 
 	return 0 unless @ipList;

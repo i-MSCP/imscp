@@ -216,7 +216,7 @@ sub retrieve
 		}
 	}
 
-	@{$self->{'stack'}} = grep defined, @{$self->{'stack'}} if $args->{'remove'};
+	@{$self->{'stack'}} = grep(defined, @{$self->{'stack'}}) if $args->{'remove'};
 
 	my $amount = $args->{'amount'} || scalar @list;
 	@list = ($amount >= @list) ? @list : @list[0..$amount-1] if @list;

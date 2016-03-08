@@ -25,7 +25,6 @@ package Servers::httpd::apache_fcgid;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
@@ -1602,7 +1601,7 @@ sub _addFiles
 			$rs = setRights("$webDir/$file", {
 				dirmode => '0750',
 				filemode => '0640',
-				recursive => $file ~~ [ '00_private', 'cgi-bin', 'htdocs' ] ? 0 : 1
+				recursive => grep($_ eq $file, ( '00_private', 'cgi-bin', 'htdocs' )) ? 0 : 1
 			});
 			return $rs if $rs;
 		}
@@ -1713,7 +1712,7 @@ sub _buildPHPConfig
 		return $rs if $rs;
 	} elsif($data->{'PHP_SUPPORT'} ne 'yes'
 		|| $confLevel eq 'per_user' && $domainType ne 'dmn'
-		|| $confLevel eq 'per_domain' && !($domainType ~~ [ 'dmn', 'als' ])
+		|| $confLevel eq 'per_domain' && !grep($_ eq $domainType, ( 'dmn', 'als' ))
 		|| $confLevel eq 'per_site'
 	) {
 		$rs = iMSCP::Dir->new( dirname => "$phpStarterDir/$data->{'DOMAIN_NAME'}" )->remove();

@@ -25,7 +25,6 @@ package autoinstaller::Functions;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Bootstrapper;
@@ -87,7 +86,8 @@ sub loadConfig
 		# Merge old config with the new but do not write anything yet.
 		for my $oldConf(keys %main::imscpOldConfig) {
 			if(exists $main::imscpConfig{$oldConf}
-				&& not $oldConf ~~  [ 'BuildDate', 'Version', 'CodeName', 'THEME_ASSETS_VERSION' ]) {
+				&& !grep($_ eq $oldConf, ( 'BuildDate', 'Version', 'CodeName', 'THEME_ASSETS_VERSION' ))
+			) {
 				$main::imscpConfig{$oldConf} = $main::imscpOldConfig{$oldConf};
 			}
 		}

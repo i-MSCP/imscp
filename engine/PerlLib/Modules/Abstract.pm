@@ -25,7 +25,6 @@ package Modules::Abstract;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::Servers;
 use iMSCP::Packages;
@@ -232,7 +231,7 @@ sub _runAllActions
 	my @packages = iMSCP::Packages->getInstance()->get();
 	my $moduleType = $self->getType();
 
-	if($action ~~ [ 'add', 'restore' ]) {
+	if(grep($_ eq $action, ( 'add', 'restore' ))) {
 		for('pre', '', 'post') {
 			my $rs = $self->_runAction("$_$action$moduleType", \@servers, 'server');
 			$rs ||= $self->_runAction("$_$action$moduleType", \@packages, 'package');

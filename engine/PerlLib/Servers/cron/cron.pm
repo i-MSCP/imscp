@@ -104,7 +104,6 @@ sub install
 	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$rs ||= $file->mode(0644);
 	$rs ||= $file->copyFile("$self->{'config'}->{'CRON_D_DIR'}/imscp");
-
 	$rs ||= $self->{'eventManager'}->trigger('afterCronInstall', 'cron');
 }
 
@@ -161,14 +160,12 @@ sub addTask
 	my ($self, $data, $filepath) = @_;
 
 	$data = { } unless ref $data eq 'HASH';
-
 	unless(exists $data->{'COMMAND'} && exists $data->{'TASKID'}) {
 		error('Missing command or task ID');
 		return 1;
 	}
 
 	$filepath ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
-
 	unless(-f $filepath) {
 		error(sprintf('Could not add cron task: File %s not found.', $filepath));
 		return 1;
@@ -236,14 +233,12 @@ sub deleteTask
 	my ($self, $data, $filepath) = @_;
 
 	$data = { } unless ref $data eq 'HASH';
-
 	unless(exists $data->{'TASKID'}) {
 		error('Missing task ID');
 		return 1;
 	}
 
 	$filepath ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
-
 	unless(-f $filepath) {
 		error(sprintf('Could not remove cron task: File %s not found.', $filepath));
 		return 1;

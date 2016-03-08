@@ -25,7 +25,6 @@ package Modules::SSLcertificate;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -71,7 +70,7 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-	if($self->{'status'} ~~ [ 'toadd', 'tochange' ]) {
+	if(grep($_ eq $self->{'status'}, ( 'toadd', 'tochange' ))) {
 		$rs = $self->add();
 		@sql = (
 			'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',

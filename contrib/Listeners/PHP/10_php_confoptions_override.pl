@@ -27,7 +27,6 @@ package Listener::Php::ConfOptions::Override;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::EventManager;
 
 #
@@ -92,7 +91,7 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConfFile', sub {
         while(my($option, $value) = each(%{$configOptions{'*'}})) {
             next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
 
-            if(lc($value) ~~ [ 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ]) {
+            if(grep($_ eq lc($value), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ))) {
                 $$tplContent .= "php_admin_flag[$option] = $value\n";
             } else {
                 $$tplContent .= "php_admin_value[$option] = $value\n";
@@ -106,7 +105,7 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConfFile', sub {
     while(my($option, $value) = each(%{$configOptions{$data->{'DOMAIN_NAME'}}})) {
         next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
 
-        if(lc($value) ~~ [ 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ]) {
+        if(grep($_ eq lc($value), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ))) {
             $$tplContent .= "php_admin_flag[$option] = $value\n";
         } else {
             $$tplContent .= "php_admin_value[$option] = $value\n";

@@ -25,7 +25,6 @@ package iMSCP::Provider::Service::Debian::Sysvinit;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Execute;
 use iMSCP::File;
 use Scalar::Defer;
@@ -69,11 +68,11 @@ sub isEnabled
 
 	# 104 is the exit status when you query start an enabled service.
 	# 106 is the exit status when the policy layer supplies a fallback action
-	if($ret ~~ [ 104, 106 ]) {
+	if(grep($_ eq $ret, ( 104, 106 ))) {
 		return 1;
 	}
 
-	if($ret ~~ [ 101, 105 ]) {
+	if(grep($_ eq $ret, ( 101, 105 ))) {
 		# 101 is action not allowed, which means we have to do the check manually.
 		# 105 is unknown, which generally means the iniscript does not support query
 		# The debian policy states that the initscript should support methods of query

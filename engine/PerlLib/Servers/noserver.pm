@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -48,14 +48,13 @@ our $instance;
 
 sub factory
 {
-	unless(defined $instance) {
-		$instance = __PACKAGE__->getInstance();
-		$instance->{'start'} = 0;
-		$instance->{'restart'} = 0;
-		$instance->{'reload'} = 0;
-	}
+    return $instance if defined $instance;
 
-	$instance;
+    $instance = __PACKAGE__->getInstance();
+    $instance->{'start'} = 0;
+    $instance->{'restart'} = 0;
+    $instance->{'reload'} = 0;
+    $instance;
 }
 
 =item can($method)
@@ -69,7 +68,7 @@ sub factory
 
 sub can
 {
-	undef;
+    undef;
 }
 
 =item AUTOLOAD()
@@ -82,7 +81,7 @@ sub can
 
 sub AUTOLOAD
 {
-	0;
+    0;
 }
 
 =back

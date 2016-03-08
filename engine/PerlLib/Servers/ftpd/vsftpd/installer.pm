@@ -25,7 +25,6 @@ package Servers::ftpd::vsftpd::installer;
 
 use strict;
 use warnings;
-no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use Cwd;
 use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;
@@ -87,9 +86,9 @@ sub sqlUserDialog
 
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure ~~ [ 'ftpd', 'servers', 'all', 'forced' ]
-		|| (length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/)
-		|| (length $dbPass < 6 || $dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/)
+	if(grep($_ eq $main::reconfigure, ( 'ftpd', 'servers', 'all', 'forced' ))
+		|| length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/
+		|| length $dbPass < 6 || $dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/
 	) {
 		do{
 			($rs, $dbUser) = $dialog->inputbox("\nPlease enter an username for the VsFTPd SQL user:$msg", $dbUser);
@@ -113,7 +112,7 @@ sub sqlUserDialog
 			$msg = '';
 
 			# Ask for the VsFTPd SQL user password unless we reuses existent SQL user
-			unless($dbUser ~~ [ keys %main::sqlUsers ]) {
+			unless(grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
 				do {
 					($rs, $dbPass) = $dialog->passwordbox(
 						"\nPlease, enter a password for the VsFTPd SQL user (blank for autogenerate):$msg", $dbPass
@@ -169,7 +168,8 @@ sub passivePortRangeDialog
 	my ($rs, $msg) = (0, '');
 	my $passivePortRange = main::setupGetQuestion('FTPD_PASSIVE_PORT_RANGE') || $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'};
 
-	if($main::reconfigure ~~ [ 'ftpd', 'servers', 'all', 'forced' ] || $passivePortRange !~ /^(\d+)\s+(\d+)$/
+	if(grep($_ eq $main::reconfigure, ( 'ftpd', 'servers', 'all', 'forced' ))
+		|| $passivePortRange !~ /^(\d+)\s+(\d+)$/
 		|| $1 < 32768 || $1 >= 60999 || $1 >= $2
 	) {
 		$passivePortRange = '32768 60999' unless $1 && $2;
@@ -469,7 +469,7 @@ sub _setupDatabase
 	$self->{'eventManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
 
 	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if !$sqlUser || "$sqlUser\@$dbUserHost" ~~ @main::createdSqlUsers;
+		next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
 
 		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 			next unless $host;
@@ -478,7 +478,7 @@ sub _setupDatabase
 	}
 
 	# Create SQL user if not already created by another server/package installer
-	unless("$dbUser\@$dbUserHost" ~~ @main::createdSqlUsers) {
+	unless(grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
 		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
 		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
 		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";

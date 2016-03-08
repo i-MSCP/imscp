@@ -636,7 +636,7 @@ sub _restoreDefaults
 	my $self = $_[0];
 
 	for my $prop (keys %{$self->{'_opts'}}) {
-		$self->{'_opts'}->{$prop} = undef unless grep $_ eq $prop, qw/title backtitle colors begin/;
+		$self->{'_opts'}->{$prop} = undef unless grep($_ eq $prop, qw/title backtitle colors begin/);
 	}
 
 	$self->{'_opts'}->{'begin'} = [1, 0];

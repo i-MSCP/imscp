@@ -5,7 +5,7 @@ Servers::cron - i-MSCP Cron server implementation
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -47,14 +47,12 @@ our $instance;
 
 sub factory
 {
-	unless(defined $instance) {
-		my $package = 'Servers::cron::cron';
-		eval "require $package";
-		fatal($@) if $@;
-		$instance = $package->getInstance();
-	}
+    return $instance if defined $instance;
 
-	$instance;
+    my $package = 'Servers::cron::cron';
+    eval "require $package";
+    fatal($@) if $@;
+    $instance = $package->getInstance();
 }
 
 =item can($method)
@@ -68,9 +66,8 @@ sub factory
 
 sub can
 {
-	my ($self, $method) = @_;
-
-	$self->factory()->can($method);
+    my ($self, $method) = @_;
+    $self->factory()->can($method);
 }
 
 =back
