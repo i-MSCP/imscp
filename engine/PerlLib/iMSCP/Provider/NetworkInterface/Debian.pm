@@ -182,12 +182,12 @@ sub _updateInterfaces
         my $normalizedAddr = $self->{'net'}->normalizeAddr($data->{'ip_address'});
 
         # Add IP addresse only if not already present (e.g: manually configured IP addresses)
-        if ($fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$data->{'ip_address'}|$normalizedAddr)/gm) {
+        if ($fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$data->{'ip_address'}|$normalizedAddr)(?:\s+|\n)/gm) {
             $fileContent .= iMSCP::TemplateParser::process(
                 {
                     id          => $data->{'id'},
                     ip_card     => $data->{'ip_card'},
-                    addr_family => $self->{'net'}->getAddrVersion($normalizedAddr) eq 'ipv4' ? 'inet' : 'inet6',
+                    addr_family => $self->{'net'}->getAddrVersion($data->{'ip_address'}) eq 'ipv4' ? 'inet' : 'inet6',
                     address     => $normalizedAddr,
                     netmask     => $data->{'netmask'},
                 },

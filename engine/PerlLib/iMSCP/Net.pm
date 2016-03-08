@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
 sub getAddresses
 {
     my $self = shift;
-    wantarray ? keys %{$self->{'addresses'}} : join(' ', keys %{$self->{'addresses'}});
+    wantarray ? keys %{$self->{'addresses'}} : join ' ', keys %{$self->{'addresses'}};
 }
 
 =item addAddr($addr, $dev)
@@ -67,7 +67,6 @@ sub addAddr
     my ($self, $addr, $dev) = @_;
     $self->isValidAddr($addr) or croak(sprintf('Invalid IP address: %s', $addr));
     $self->isKnownDevice($dev) or croak(sprintf('Unknown network device: %s', $dev));
-    $addr = $self->normalizeAddr($addr);
     my $cidr = ip_is_ipv4($addr) ? 32 : 64; # TODO should be configurable
     my ($stdout, $stderr);
     execute("ip addr add $addr/$cidr dev $dev", \$stdout, \$stderr) == 0 or croak(sprintf(
@@ -78,7 +77,6 @@ sub addAddr
         version       => $self->getAddrVersion($addr),
         device        => $dev
     };
-
     0;
 }
 
@@ -98,7 +96,6 @@ sub delAddr
 
     return 0 unless $self->isKnownAddr($addr);
 
-    $addr = $self->normalizeAddr($addr);
     my $dev = $self->{'addresses'}->{$addr}->{'device'};
     my $cidr = $self->{'addresses'}->{$addr}->{'prefix_length'};
     my ($stdout, $stderr);
@@ -128,9 +125,9 @@ sub getAddrVersion
 
 =item getAddrType($addr)
 
- Get type of the given IP (public, private, reserved...)
+ Get type of the given IP (PUBLIC, PRIVATE, RESERVED...)
 
- Param string $addr IP address (SHARED|LINK-LOCAL|RESERVED|TEST-NET|6TO4-RELAY|PUBLIC|PRIVATE|MULTICAST|BROADCAST)
+ Param string $addr IP address
  Return string IP type, croak in case the given IP is invalid
 
 =cut
@@ -138,9 +135,10 @@ sub getAddrVersion
 sub getAddrType
 {
     my ($self, $addr) = @_;
-    my $version = ip_get_version($addr);
+
+    my $version = ip_get_version($addr, 6);
     $version or croak(sprintf('Invalid IP address: %s', $addr));
-    ip_iptype(ip_iptobin($addr, $version), $version);
+    ip_iptype(ip_iptobin(ip_expand_address($addr, $version), $version), $version);
 }
 
 =item getAddrDevice($addr)
@@ -162,7 +160,7 @@ sub getAddrDevice
 
 =item getAddrDeviceLabel($addr)
 
- Return the network device label to which the given IP belong to
+ Return the network device label (if any) to which the given IP belong to
 
  Param string $addr IP address
  Return string Network device label, croak if the given IP is either invalid or not known by this module
@@ -189,7 +187,7 @@ sub getAddrDeviceLabel
 sub isKnownAddr
 {
     my ($self, $addr) = @_;
-    exists($self->{'addresses'}->{$self->normalizeAddr($addr)}) ? 1 : 0;
+    exists($self->{'addresses'}->{$addr});
 }
 
 =item isValidAddr($addr)
@@ -223,6 +221,22 @@ sub normalizeAddr
     ip_compress_address($addr, 6) or croak(sprint('Could not normalize the %s IP address', $addr));
 }
 
+=item normalizeAddr($addr)
+
+  Expand the given IP
+
+ Param string $addr IP address
+ Return string Expanded IP on success, croak on failure
+
+=cut
+
+sub expandAddr
+{
+    my ($self, $addr) = @_;
+    return $addr unless $self->getAddrVersion($addr) eq 'ipv6';
+    ip_expand_address($addr, 6) or croak(sprint('Could not expand the %s IP address', $addr));
+}
+
 =item getDevices()
 
  Get network devices list
@@ -234,7 +248,7 @@ sub normalizeAddr
 sub getDevices
 {
     my $self = shift;
-    wantarray ? keys %{$self->{'devices'}} : join(' ', keys %{$self->{'devices'}});
+    wantarray ? keys %{$self->{'devices'}} : join ' ', keys %{$self->{'devices'}};
 }
 
 =item isKnownDevice($dev)
@@ -264,7 +278,7 @@ sub isKnownDevice
 sub upDevice
 {
     my ($self, $dev) = @_;
-    $self->isKnownDevice($dev) or croak (sprintf('Unknown network device: %s', $dev));
+    $self->isKnownDevice($dev) or croak(sprintf('Unknown network device: %s', $dev));
     my ($stdout, $stderr);
     execute("ip link set dev $dev up", \$stdout, \$stderr) == 0 or die(sprintf(
         'Could not bring the %s network device up: %s', $dev, $stderr || 'Unknown error'
@@ -284,7 +298,7 @@ sub upDevice
 sub downDevice
 {
     my ($self, $dev) = @_;
-    $self->isKnownDevice($dev) or croak (sprintf('Unknown network device: %s', $dev));
+    $self->isKnownDevice($dev) or croak(sprintf('Unknown network device: %s', $dev));
     my ($stdout, $stderr);
     execute("ip link set dev $dev down", \$stdout, \$stderr) == 0 or die(sprintf(
         'Could not bring the %s network device down: %s', $dev, $stderr || 'Unknown error'
@@ -374,19 +388,27 @@ sub _extractDevices
     execute('ip -o link show', \$stdout, \$stderr) == 0 or die(sprintf(
         'Could not extract network devices data: %s', $stderr || 'Unknown error'
     ));
-    my $devices = { };
+    my $devices;
     # Note: The (?:\@[^\s]+)? sub-pattern matches suffixes of interface names (@xxx) as they are displayed in the LXC
     # containers when using macvlan interfaces (and maybe some other interface types).
     # ATM, we discard those suffixes to be consistent with the frontEnd which use ifconfig to get interface names
     # FIXME: Does we should show full interface names in control panel instead?
-    my $regexp = qr/[^\s]+\s+(.*?)(?:@[^\s]+)?:\s+<(.*)>/;
-    $devices->{$1}->{'flags'} = $2 while $stdout =~ /^$regexp/gmo;
+    $devices->{$1}->{'flags'} = $2 while $stdout =~ /
+        ^
+            [^\s]+       # 2:
+            \s+
+            (.*?)        # eth0
+            (?:@[^\s]+)? # @xxx (optional)
+            :
+            \s+
+            <(.*)>       # flags (e.g. BROADCAST,MULTICAST,UP,LOWER_UP ...)
+    /gmx;
     $devices;
 }
 
 =item _extractAddresses()
 
- Extract addresses data (scope global only)
+ Extract addresses data
 
  Return hash A hash describing each IP found, die on failure
 
@@ -396,20 +418,34 @@ sub _extractAddresses
 {
     my $self = shift;
     my ($stdout, $stderr);
-    execute("ip -o addr show scope global", \$stdout, \$stderr) == 0 or die(sprintf(
+    execute('ip -o addr show', \$stdout, \$stderr) == 0 or die(sprintf(
         'Could not extract network devices data: %s', $stderr || 'Unknown error'
     ));
-    my $regexp = qr/[\d]+\:\s+([^\s:]+)\s+([^\s]+).*?([^\s]+)\/([\d]+).*?(\1(?:\:[^\s]+)?|)/;
-    my $addresses = { };
-    while($stdout =~ /^$regexp$/gmo) {
-        $addresses->{$self->normalizeAddr($3)} = {
-            device        => $1,
-            version       => $2 eq 'inet' ? 'ipv4' : 'ipv6',
-            prefix_length => $4,
-            device_label  => $5 // $1
-        };
-    }
 
+    my $addresses;
+    $addresses->{$3} = {
+        device        => $1,
+        version       => $2 eq 'inet' ? 'ipv4' : 'ipv6',
+        prefix_length => $4,
+        device_label  => $5 // ''
+    } while($stdout =~ /^
+        [\d]+\:                    # 2:
+        \s+
+        ([^\s:]+)                  # eth0
+        \s+
+        ([^\s]+)                   # inet
+        \s+
+        ([^\s]+)                   # 192.168.1.133
+        \/
+        ([\d]+)                    # 24
+        (?:
+            \s+
+            (?:brd\s+[^\s]+\s+)?   # 192.168.1.255 (optional)
+            (?:scope\s+[^\s]+\s+)? # scope global (optional)
+            (?:[^\s]+\s+)          # secondary (optional)
+            ?(\1:\d+)?             # eth0:1002 (optional)
+        )
+    /gimx);
     $addresses;
 }
 

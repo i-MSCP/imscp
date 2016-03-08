@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Database;
+use iMSCP::Net;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -84,6 +85,7 @@ sub _loadData
 {
 	my $self = shift;
 
+	my $net = iMSCP::Net->getInstance();
 	my $db = iMSCP::Database->factory();
 
 	my $rdata = $db->doQuery(
@@ -103,7 +105,7 @@ sub _loadData
 	}
 
 	$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
-	@{$self->{'ipaddrs'}} = keys %{$rdata};
+	@{$self->{'ipaddrs'}} = map $net->normalizeAddr($_), keys %{$rdata};
 
 	$rdata = $db->doQuery(
 		'ip_number',
@@ -139,7 +141,7 @@ sub _loadData
 		$rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
 	}
 
-	@{$self->{'ssl_ipaddrs'}} = keys %{$rdata};
+	@{$self->{'ssl_ipaddrs'}} = map $net->normalizeAddr($_), keys %{$rdata};
 	0;
 }
 
@@ -167,9 +169,8 @@ sub _getHttpdData
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

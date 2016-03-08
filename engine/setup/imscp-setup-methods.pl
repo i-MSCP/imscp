@@ -256,7 +256,10 @@ sub setupAskServerIps
 	my $rs = 0;
 
 	# Retrieve list of all configured IP addresses
-	my @serverIps = grep { $net->getAddrType($_) ~~ [ 'PRIVATE', 'PUBLIC' ] } $net->getAddresses();
+	my @serverIps = grep {
+		$net->getAddrType($_) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ]
+	} $net->getAddresses();
+
 	unless(@serverIps) {
 		error('Could not retrieve servers IP addresses. At least one public or private IP adddress must be configured.');
 		return 1;
@@ -286,7 +289,7 @@ sub setupAskServerIps
 	if($main::reconfigure ~~ [ 'ips', 'all', 'forced' ]
 		|| !$baseServerIp ~~ @serverIps
 		|| !$net->isValidAddr($baseServerPublicIp)
-		|| not $net->getAddrType($baseServerPublicIp) ~~ [ 'PRIVATE', 'PUBLIC' ]
+		|| not $net->getAddrType($baseServerPublicIp) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ]
 	) {
 		do {
 			# Ask user for the base server IP
@@ -298,8 +301,8 @@ sub setupAskServerIps
 
 		if($rs != 30) {
 			# Server inside private LAN?
-			if($net->getAddrType($baseServerIp) eq 'PRIVATE') {
-				if (!$net->isValidAddr($baseServerPublicIp) || $net->getAddrType($baseServerPublicIp) ne 'PUBLIC') {
+			if($net->getAddrType($baseServerIp) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST' ]) {
+				if (!$net->isValidAddr($baseServerPublicIp) || !$net->getAddrType($baseServerPublicIp) ~~ [ 'PUBLIC', 'GLOBAL-UNICAST' ]) {
 					$baseServerPublicIp = '';
 				}
 
@@ -320,7 +323,7 @@ Please enter your public IP address:$msg
 					if($baseServerPublicIp) {
 						unless($net->isValidAddr($baseServerPublicIp)) {
 							$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
-						} elsif($net->getAddrType($baseServerPublicIp) ne 'PUBLIC') {
+						} elsif(! $net->getAddrType($baseServerPublicIp) ~~ [ 'PUBLIC', 'GLOBAL-UNICAST' ]) {
 							$msg = "\n\n\\Z1Unallowed IP address. IP address must be public.\\Zn\n\nPlease, try again:";
 						} else {
 							$msg = '';
