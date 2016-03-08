@@ -221,9 +221,9 @@ sub normalizeAddr
     ip_compress_address($addr, 6) or croak(sprint('Could not normalize the %s IP address', $addr));
 }
 
-=item normalizeAddr($addr)
+=item expandAddr($addr)
 
-  Expand the given IP
+ Expand the given IP
 
  Param string $addr IP address
  Return string Expanded IP on success, croak on failure
