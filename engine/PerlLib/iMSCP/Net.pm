@@ -388,7 +388,7 @@ sub _extractDevices
     execute('ip -o link show', \$stdout, \$stderr) == 0 or die(sprintf(
         'Could not extract network devices data: %s', $stderr || 'Unknown error'
     ));
-    my $devices;
+    my $devices = {};
     # Note: The (?:\@[^\s]+)? sub-pattern matches suffixes of interface names (@xxx) as they are displayed in the LXC
     # containers when using macvlan interfaces (and maybe some other interface types).
     # ATM, we discard those suffixes to be consistent with the frontEnd which use ifconfig to get interface names
@@ -422,7 +422,7 @@ sub _extractAddresses
         'Could not extract network devices data: %s', $stderr || 'Unknown error'
     ));
 
-    my $addresses;
+    my $addresses = {};
     $addresses->{$3} = {
         device        => $1,
         version       => $2 eq 'inet' ? 'ipv4' : 'ipv6',
