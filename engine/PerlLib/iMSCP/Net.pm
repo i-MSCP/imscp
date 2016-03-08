@@ -440,7 +440,7 @@ sub _extractAddresses
         ([\d]+)                    # 24
         (?:
             \s+
-            (?:brd\s+[^\s]+\s+)?   # 192.168.1.255 (optional)
+            (?:brd\s+[^\s]+\s+)?   # brd 192.168.1.255 (optional)
             (?:scope\s+[^\s]+\s+)? # scope global (optional)
             (?:[^\s]+\s+)          # secondary (optional)
             ?(\1:\d+)?             # eth0:1002 (optional)
