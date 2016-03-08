@@ -287,9 +287,9 @@ sub setupAskServerIps
 	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @{$serverIpsToAdd} } };
 
 	if($main::reconfigure ~~ [ 'ips', 'all', 'forced' ]
-		|| !$baseServerIp ~~ @serverIps
+		|| !($baseServerIp ~~ @serverIps)
 		|| !$net->isValidAddr($baseServerPublicIp)
-		|| not $net->getAddrType($baseServerPublicIp) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ]
+		|| !($net->getAddrType($baseServerPublicIp) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ])
 	) {
 		do {
 			# Ask user for the base server IP
@@ -302,7 +302,9 @@ sub setupAskServerIps
 		if($rs != 30) {
 			# Server inside private LAN?
 			if($net->getAddrType($baseServerIp) ~~ [ 'PRIVATE', 'UNIQUE-LOCAL-UNICAST' ]) {
-				if (!$net->isValidAddr($baseServerPublicIp) || !$net->getAddrType($baseServerPublicIp) ~~ [ 'PUBLIC', 'GLOBAL-UNICAST' ]) {
+				if (!$net->isValidAddr($baseServerPublicIp)
+					|| !($net->getAddrType($baseServerPublicIp) ~~ [ 'PUBLIC', 'GLOBAL-UNICAST' ])
+				) {
 					$baseServerPublicIp = '';
 				}
 
@@ -323,7 +325,7 @@ Please enter your public IP address:$msg
 					if($baseServerPublicIp) {
 						unless($net->isValidAddr($baseServerPublicIp)) {
 							$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
-						} elsif(! $net->getAddrType($baseServerPublicIp) ~~ [ 'PUBLIC', 'GLOBAL-UNICAST' ]) {
+						} elsif(!($net->getAddrType($baseServerPublicIp) ~~ [ 'PUBLIC', 'GLOBAL-UNICAST' ])) {
 							$msg = "\n\n\\Z1Unallowed IP address. IP address must be public.\\Zn\n\nPlease, try again:";
 						} else {
 							$msg = '';
@@ -361,7 +363,7 @@ Please enter your public IP address:$msg
 
 					$msg = '';
 
-					if(defined $sshConnectionIp && $sshConnectionIp ~~ @serverIps && not $sshConnectionIp ~~ $serverIps) {
+					if(defined $sshConnectionIp && $sshConnectionIp ~~ @serverIps && !($sshConnectionIp ~~ $serverIps)) {
 						$msg = "\n\n\\Z1You cannot remove the $sshConnectionIp IP to which you are currently connected " .
 						"through SSH.\\Zn\n\nPlease, try again:";
 					}
@@ -376,7 +378,7 @@ Please enter your public IP address:$msg
 						%serverIpsToDelete = ();
 
 						for(@serverIps) {
-							if(exists $currentServerIps->{$_} && not $_ ~~ @{$serverIpsToAdd}) {
+							if(exists $currentServerIps->{$_} && !($_ ~~ @{$serverIpsToAdd})) {
 								$serverIpsToDelete{$currentServerIps->{$_}->{'ip_id'}} = $_;
 							}
 						}
@@ -856,7 +858,7 @@ sub setupAskServicesSsl
 	my $rs = 0;
 
 	if($main::reconfigure ~~ [ 'services_ssl', 'ssl', 'all', 'forced' ]
-		|| not $sslEnabled ~~ [ 'yes', 'no' ]
+		|| !($sslEnabled ~~ [ 'yes', 'no' ])
 		|| ($sslEnabled eq 'yes' &&  $main::reconfigure ~~ [ 'system_hostname', 'hostnames' ])
 	) {
 		SSL_DIALOG:

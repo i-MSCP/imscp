@@ -85,7 +85,7 @@ sub askDnsServerMode
 	my $dnsServerMode = main::setupGetQuestion('BIND_MODE') || $self->{'config'}->{'BIND_MODE'};
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || not $dnsServerMode ~~ [ 'master', 'slave' ]) {
+	if($main::reconfigure ~~ [ 'named', 'servers', 'all', 'forced' ] || !($dnsServerMode ~~ [ 'master', 'slave' ])) {
 		($rs, $dnsServerMode) = $dialog->radiolist(
 			"\nSelect bind mode", [ 'master', 'slave' ], $dnsServerMode eq 'slave' ? 'slave' : 'master'
 		);
@@ -238,7 +238,7 @@ sub askLocalDnsResolver
 	my $localDnsResolver = main::setupGetQuestion('LOCAL_DNS_RESOLVER') || $self->{'config'}->{'LOCAL_DNS_RESOLVER'};
 	my $rs = 0;
 
-	if($main::reconfigure ~~ [ 'resolver', 'named', 'all', 'forced' ] || not $localDnsResolver ~~ [ 'yes', 'no' ]) {
+	if($main::reconfigure ~~ [ 'resolver', 'named', 'all', 'forced' ] || !($localDnsResolver ~~ [ 'yes', 'no' ])) {
 		($rs, $localDnsResolver) = $dialog->radiolist(
 			"\nDo you want use the local DNS resolver?", [ 'yes', 'no' ], $localDnsResolver ne 'no' ? 'yes' : 'no'
 		);

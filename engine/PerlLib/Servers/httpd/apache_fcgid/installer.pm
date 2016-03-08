@@ -86,7 +86,7 @@ sub showDialog
 	my $confLevel = main::setupGetQuestion('INI_LEVEL') || $self->{'config'}->{'INI_LEVEL'};
 
 	if($main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ]
-		|| not $confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ]
+		|| !($confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ])
 	) {
 		$confLevel =~ s/_/ /;
 

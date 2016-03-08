@@ -1713,7 +1713,7 @@ sub _buildPHPConfig
 		return $rs if $rs;
 	} elsif($data->{'PHP_SUPPORT'} ne 'yes'
 		|| $confLevel eq 'per_user' && $domainType ne 'dmn'
-		|| $confLevel eq 'per_domain' && not $domainType ~~ [ 'dmn', 'als' ]
+		|| $confLevel eq 'per_domain' && !($domainType ~~ [ 'dmn', 'als' ])
 		|| $confLevel eq 'per_site'
 	) {
 		$rs = iMSCP::Dir->new( dirname => "$phpStarterDir/$data->{'DOMAIN_NAME'}" )->remove();

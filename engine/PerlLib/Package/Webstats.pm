@@ -79,7 +79,7 @@ sub showDialog
 	my $rs = 0;
 
 	if($main::reconfigure ~~ [ 'webstats', 'all', 'forced' ] || !@{$packages} ||
-		grep { not $_ ~~ [ $self->{'PACKAGES'}, 'No' ] } @{$packages}
+		grep { !($_ ~~ [ $self->{'PACKAGES'}, 'No' ]) } @{$packages}
 	) {
 		($rs, $packages) = $dialog->checkbox(
 			"\nPlease select the Webstats packages you want to install:",
@@ -132,7 +132,7 @@ sub preinstall
 	my $rs = 0;
 	my @packages = split ',', main::setupGetQuestion('WEBSTATS_PACKAGES');
 	my $packagesToInstall = [ grep { $_ ne 'No'} @packages ];
-	my $packagesToUninstall = [ grep { not $_ ~~  @{$packagesToInstall}} @{$self->{'PACKAGES'}} ];
+	my $packagesToUninstall = [ grep { !($_ ~~  @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
 
 	if(@{$packagesToUninstall}) {
 		my $packages = [];

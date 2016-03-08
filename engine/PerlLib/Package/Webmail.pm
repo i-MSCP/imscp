@@ -75,7 +75,7 @@ sub showDialog
 	my $rs = 0;
 
 	if($main::reconfigure ~~ [ 'webmails', 'all', 'forced' ] || !@{$packages} ||
-		grep { not $_ ~~ [ $self->{'PACKAGES'}, 'No' ] } @{$packages}
+		grep { !($_ ~~ [ $self->{'PACKAGES'}, 'No' ]) } @{$packages}
 	) {
 		($rs, $packages) = $dialog->checkbox(
 			"\nPlease select the webmail packages you want to install:",
@@ -126,7 +126,7 @@ sub preinstallListener
 
 	my @packages = split ',', main::setupGetQuestion('WEBMAIL_PACKAGES');
 	my $packagesToInstall = [ grep { $_ ne 'No'} @packages ];
-	my $packagesToUninstall = [ grep { not $_ ~~  @{$packagesToInstall} } @{$self->{'PACKAGES'}} ];
+	my $packagesToUninstall = [ grep { !($_ ~~  @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
 
 	if(@{$packagesToUninstall}) {
 		my $rs = $self->uninstall(@{$packagesToUninstall});

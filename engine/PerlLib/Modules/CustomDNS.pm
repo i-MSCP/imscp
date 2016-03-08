@@ -195,7 +195,7 @@ sub _loadData
 
 	# Filter DNS records which must be disabled or deleted
 	for my $record(@{$rows}) {
-		push @{$self->{'dns_records'}}, $record if not $record->[4] ~~ [ 'todisable', 'todelete' ];
+		push @{$self->{'dns_records'}}, $record if !($record->[4] ~~ [ 'todisable', 'todelete' ]);
 	}
 
 	0;

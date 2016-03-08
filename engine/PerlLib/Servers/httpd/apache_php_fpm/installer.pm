@@ -91,7 +91,7 @@ sub showPhpConfigLevelDialog
 	my $confLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') || $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
 
 	if($main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ]
-		|| not $confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ]
+		|| !($confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ])
 	) {
 		$confLevel =~ s/_/ /;
 
@@ -131,7 +131,7 @@ sub showListenModeDialog
 	my $rs = 0;
 	my $listenMode = main::setupGetQuestion('PHP_FPM_LISTEN_MODE') || $self->{'phpfpmConfig'}->{'LISTEN_MODE'};
 
-	if($main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ] || not $listenMode ~~ [ 'uds', 'tcp' ]) {
+	if($main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ] || !$listenMode ~~ [ 'uds', 'tcp' ]) {
 		($rs, $listenMode) = $dialog->radiolist(
 "
 \\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
