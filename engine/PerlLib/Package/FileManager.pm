@@ -79,7 +79,7 @@ sub showDialog
 	) {
 		($rs, $package) = $dialog->radiolist(
 			"\nPlease select the Ftp Web file manager package you want to install:", [ @{$self->{'PACKAGES'}} ],
-			$package ne '' && grep($_ eq $package, $self->{'PACKAGES'}) ? $package : @{$self->{'PACKAGES'}}[0]
+			$package ne '' && grep($_ eq $package, @{$self->{'PACKAGES'}}) ? $package : @{$self->{'PACKAGES'}}[0]
 		);
 	}
 

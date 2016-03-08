@@ -93,9 +93,9 @@ sub authdaemonSqlUserDialog
 
 	my ($rs, $msg) = (0, '');
 
-	if(grep($_ eq $main::reconfigure, ( 'po', 'servers', 'all', 'forced' )) ||
-		length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/ ||
-		length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+	if(grep($_ eq $main::reconfigure, ( 'po', 'servers', 'all', 'forced' ))
+		|| length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/
+		|| length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
 	) {
 		# Ensure no special chars are present in password. If we don't, dialog will not let user set new password
 		$dbPass = '';

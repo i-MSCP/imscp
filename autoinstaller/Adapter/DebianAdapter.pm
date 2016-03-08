@@ -434,9 +434,6 @@ sub _buildPackageList
 			} split(',', $pkgList->{$section}->{$sAlt}->{'allow_switch'}), $sAlt;
 		}
 
-		print $sAlt . "\n";
-
-
 		# Ask user for alternative list of packages to install if any
 		if(@alts > 1 && $forceDialog || grep($_ eq $main::reconfigure, ( $section, 'servers', 'all' ))) {
 			iMSCP::Dialog->getInstance()->set('no-cancel', '');
