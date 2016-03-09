@@ -85,7 +85,7 @@ sub showDialog
 		);
 	}
 
-	return $rs unless $rs != 30;
+	return $rs unless $rs < 30;
 
 	main::setupSetQuestion('ANTI_ROOTKITS_PACKAGES', @{$packages} ? join ',', @{$packages} : 'No');
 

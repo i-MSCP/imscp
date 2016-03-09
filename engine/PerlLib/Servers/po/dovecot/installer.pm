@@ -123,9 +123,9 @@ sub showDialog
 				$msg = "\n\n\\Z1Only printable ASCII characters (excluding space) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
-		} while ($rs != 30 && ! $dbUser);
+		} while ($rs < 30 && !$dbUser);
 
-		if($rs != 30) {
+		if($rs < 30) {
 			$msg = '';
 
 			# Ask for the dovecot SQL user password unless we reuses existent SQL user
@@ -148,12 +148,12 @@ sub showDialog
 					} else {
 						$msg = '';
 					}
-				} while($rs != 30 && $msg);
+				} while($rs < 30 && $msg);
 			} else {
 				$dbPass = $main::sqlUsers{$dbUser};
 			}
 
-			if($rs != 30) {
+			if($rs < 30) {
 				unless($dbPass) {
 					my @allowedChr = map { chr } 0x21..0x7e;
 					$dbPass = '';
@@ -165,7 +165,7 @@ sub showDialog
 		}
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		main::setupSetQuestion('DOVECOT_SQL_USER', $dbUser);
 		main::setupSetQuestion('DOVECOT_SQL_PASSWORD', $dbPass);
 		$main::sqlUsers{$dbUser} = $dbPass;

@@ -134,15 +134,23 @@ sub setupDialog
 
 	# Implements a simple state machine (backup capability)
 	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
+	# In case of yesno dialog box, there is no back button. Instead, user can back up using the ESC keystroke
+	# In any other context, the ESC keystroke allows user to abort.
 	my ($state, $nbDialog) = (0, scalar @{$dialogStack});
 
 	while($state != $nbDialog) {
 		$rs = $$dialogStack[$state]->($dialog);
-		return $rs if $rs && $rs != 30;
+		exit($rs) if $rs > 30;
+		return $rs if $rs && $rs < 30;
 
 		# User asked for step back?
 		if($rs == 30) {
-			$state != 0 ? $state-- : 0; # We don't allow to step back before first question
+			if($state > 0) {
+				$state = $state - 1;
+			} else {
+				$state = 0; # We don't allow to step back before first question
+			}
+
 			$main::reconfigure = 'forced' if $main::reconfigure eq 'none';
 		} else {
 			$main::reconfigure = 'none' if $main::reconfigure eq 'forced';
@@ -231,12 +239,12 @@ sub setupAskServerHostname
 			$hostname = idn_to_ascii($hostname, 'utf-8');
 			@labels = split(/\./, $hostname);
 
-		} while($rs != 30 && @labels < 3 || !is_domain($hostname, \%options));
+		} while($rs < 30 && (@labels < 3 || !is_domain($hostname, \%options)));
 
 		$dialog->set('no-cancel', undef);
 	}
 
-	setupSetQuestion('SERVER_HOSTNAME', $hostname) if $rs != 30;
+	setupSetQuestion('SERVER_HOSTNAME', $hostname) if $rs < 30;
 	$rs;
 }
 
@@ -296,9 +304,9 @@ sub setupAskServerIps
 				"\nPlease, select the primary IP address for i-MSCP:", [ @serverIps ],
 				$baseServerIp && grep($_ eq $baseServerIp, @serverIps) ? $baseServerIp : $serverIps[0]
 			);
-		} while($rs != 30 && !$baseServerIp);
+		} while($rs < 30 && !$baseServerIp);
 
-		if($rs != 30) {
+		if($rs < 30) {
 			# Server inside private LAN?
 			if(grep($_ eq $net->getAddrType($baseServerIp), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST' ))) {
 				if (!$net->isValidAddr($baseServerPublicIp)
@@ -333,14 +341,14 @@ Please enter your public IP address:$msg
 						$baseServerPublicIp = $baseServerIp;
 						$msg = ''
 					}
-				} while($rs != 30 && $msg);
+				} while($rs < 30 && $msg);
 			} else {
 				$baseServerPublicIp = $baseServerIp
 			}
 		}
 
 		# Handle additional IP addition / deletion
-		if($rs != 30) {
+		if($rs < 30) {
 			$dialog->set('defaultno', '');
 
 			if(@serverIps > 1) {
@@ -369,9 +377,9 @@ Please enter your public IP address:$msg
 						$msg = "\n\n\\Z1You cannot remove the $sshConnectionIp IP to which you are currently connected " .
 						"through SSH.\\Zn\n\nPlease, try again:";
 					}
-				} while ($rs != 30 && $msg);
+				} while ($rs < 30 && $msg);
 
-				if($rs != 30) {
+				if($rs < 30) {
 					@{$serverIpsToAdd} = @{$serverIps}; # Retrieve list of IP to add into database
 					push @{$serverIpsToAdd}, $baseServerIp; # Re-add base ip
 
@@ -408,7 +416,7 @@ The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP 
 											$serverIpsToAdd,
 											$baseServerIp
 										);
-									} while($rs != 30 && !$ret);
+									} while($rs < 30 && !$ret);
 
 									$serverIpsReplMap{$serverIpsToDelete{$_}} = $ret;
 								}
@@ -426,7 +434,7 @@ The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP 
 		}
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		setupSetQuestion('BASE_SERVER_IP', $baseServerIp);
 		setupSetQuestion('BASE_SERVER_PUBLIC_IP', $baseServerPublicIp);
 		setupSetQuestion('SERVER_IPS', $serverIpsToAdd);
@@ -479,14 +487,14 @@ sub setupAskSqlDsn
 				$msg = "\n\n\\Z1'$dbHost' is not a valid hostname nor a valid IP address.\\Zn\n\nPlease, try again:";
 				$dbHost = idn_to_ascii($dbHost, 'utf-8');
 			} while (
-				$rs != 30 &&
+				$rs < 30 &&
 				!(
 					$dbHost eq 'localhost' || is_domain($dbHost, \%options) ||
 					iMSCP::Net->getInstance()->isValidAddr($dbHost)
 				)
 			);
 
-			if($rs != 30) {
+			if($rs < 30) {
 				$msg = '';
 
 				# Ask for SQL server port only if needed (socket vs tcp)
@@ -494,14 +502,14 @@ sub setupAskSqlDsn
 					do {
 						($rs, $dbPort) = $dialog->inputbox("\nPlease enter a port for the SQL server: $msg", $dbPort);
 						$msg  = "\n\n\\Z1'$dbPort' is not a valid port number or is out of allowed range.\\Zn\n\nPlease, try again:";
-					} while($rs != 30 && !($dbPort =~ /^[\d]+$/ && int($dbPort) > 1024 && int($dbPort) < 65536));
+					} while($rs < 30 && !($dbPort =~ /^[\d]+$/ && int($dbPort) > 1024 && int($dbPort) < 65536));
 				} else { # Simply put the default port even if not used
 					$dbPort = '3306';
 				}
 			}
 
 			# Ask for SQL username
-			if($rs != 30) {
+			if($rs < 30) {
 				$msg = '';
 
 				do {
@@ -509,18 +517,18 @@ sub setupAskSqlDsn
 						"\nPlease, enter an SQL username. This user must exists and have full privileges on SQL server:$msg",
 						$dbUser
 					);
-				} while($rs != 30 && !$dbUser);
+				} while($rs < 30 && !$dbUser);
 			}
 
 			# Ask for SQL user password
-			if($rs != 30) {
+			if($rs < 30) {
 				do {
 					($rs, $dbPass) = $dialog->passwordbox(
 						"\nPlease, enter a password for the '$dbUser' SQL user:$msg", $dbPass
 					);
 
 					$msg = "\n\n\\Z1Password cannot be empty.\\Zn\n\nPlease, try again:"
-				} while($rs != 30 && $dbPass eq '');
+				} while($rs < 30 && $dbPass eq '');
 				$msg = '';
 
 				if(($dbError = setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))) {
@@ -543,10 +551,10 @@ Please, try again.
 				}
 			}
 
-		} while($rs != 30 && $msg);
+		} while($rs < 30 && $msg);
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		setupSetQuestion('DATABASE_TYPE', $dbType);
 		setupSetQuestion('DATABASE_HOST', $dbHost);
 		setupSetQuestion('DATABASE_PORT', $dbPort);
@@ -598,10 +606,10 @@ Please refer to http://dev.mysql.com/doc/refman/5.5/en/account-names.html for al
 					$msg = sprintf("\n\n\\Z1Error: '%s' is not valid or not allowedt.\\Zn\n\nPlease, try again:", $host);
 				}
 
-			} while($rs != 30 && $msg ne '');
+			} while($rs < 30 && $msg ne '');
 		}
 
-		setupSetQuestion('DATABASE_USER_HOST', $host) if $rs != 30;
+		setupSetQuestion('DATABASE_USER_HOST', $host) if $rs < 30;
 	} else {
 		setupSetQuestion('DATABASE_USER_HOST', 'localhost');
 	}
@@ -633,9 +641,9 @@ sub setupAskImscpDbName
 			} elsif(setupGetSqlConnect($dbName) && !setupIsImscpDb($dbName)) {
 				$msg = "\n\n\\Z1Database '$dbName' exists but do not look like an i-MSCP database.\\Zn\n\nPlease, try again:";
 			}
-		} while ($rs != 30 && $msg);
+		} while ($rs < 30 && $msg);
 
-		if($rs != 30) {
+		if($rs < 30) {
 			my $oldDbName = setupGetQuestion('DATABASE_NAME');
 
 			if($oldDbName && $dbName ne $oldDbName && setupIsImscpDb($oldDbName)) {
@@ -659,7 +667,7 @@ Keep in mind that the new database will be free of any reseller and customer dat
 		}
 	}
 
-	setupSetQuestion('DATABASE_NAME', $dbName) if $rs != 30;
+	setupSetQuestion('DATABASE_NAME', $dbName) if $rs < 30;
 	$rs;
 }
 
@@ -700,7 +708,7 @@ Do you want use a prefix or suffix for customer's SQL databases?
 		}
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		setupSetQuestion('MYSQL_PREFIX', $prefix);
 		setupSetQuestion('MYSQL_PREFIX_TYPE', $prefixType);
 	}
@@ -768,9 +776,9 @@ sub setupAskDefaultAdmin
 					$msg = '\n\n\\Z1This login name already exists.\\Zn\n\nPlease, try again:'
 				}
 			}
-		} while($rs != 30 &&  $msg);
+		} while($rs < 30 && $msg);
 
-		if($rs != 30) {
+		if($rs < 30) {
 			$msg = '';
 
 			do {
@@ -778,22 +786,22 @@ sub setupAskDefaultAdmin
 				do {
 					($rs, $password) = $dialog->passwordbox("\nPlease, enter admin password: $msg", $password);
 					$msg = '\n\n\\Z1The password must be at least 6 characters long.\\Zn\n\nPlease, try again:';
-				} while($rs != 30 && length $password < 6);
+				} while($rs < 30 && length $password < 6);
 
 				# Ask for administrator password confirmation
-				if($rs != 30) {
+				if($rs < 30) {
 					$msg = '';
 
 					do {
 						($rs, $rpassword) = $dialog->passwordbox("\nPlease, confirm admin password: $msg", '');
 						$msg = "\n\n\\Z1Passwords do not match.\\Zn\n\nPlease try again:";
-					} while($rs != 30 &&  $rpassword ne $password);
+					} while($rs < 30 &&  $rpassword ne $password);
 				}
-			} while($rs != 30 && $password ne $rpassword);
+			} while($rs < 30 && $password ne $rpassword);
 		}
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		setupSetQuestion('ADMIN_LOGIN_NAME', $adminLoginName);
 		setupSetQuestion('ADMIN_PASSWORD', $password);
 	}
@@ -817,10 +825,10 @@ sub setupAskAdminEmail
 		do {
 			($rs, $adminEmail) = $dialog->inputbox("\nPlease, enter admin email address: $msg", $adminEmail);
 			$msg = "\n\n\\Z1'$adminEmail' is not a valid email address.\\Zn\n\nPlease, try again:";
-		} while($rs != 30 && !Email::Valid->address($adminEmail));
+		} while($rs < 30 && !Email::Valid->address($adminEmail));
 	}
 
-	setupSetQuestion('DEFAULT_ADMIN_ADDRESS', $adminEmail) if $rs != 30;
+	setupSetQuestion('DEFAULT_ADMIN_ADDRESS', $adminEmail) if $rs < 30;
 	$rs;
 }
 
@@ -842,10 +850,10 @@ sub setupAskTimezone
 		do {
 			($rs, $timezone) = $dialog->inputbox("\nPlease enter your timezone: $msg", $timezone);
 			$msg = "\n\n\\Z1'$timezone' is not a valid timezone.\\Zn\n\nPlease, try again:";
-		} while($rs != 30 && !DateTime::TimeZone->is_valid_name($timezone));
+		} while($rs < 30 && !DateTime::TimeZone->is_valid_name($timezone));
 	}
 
-	setupSetQuestion('TIMEZONE', $timezone) if $rs != 30;
+	setupSetQuestion('TIMEZONE', $timezone) if $rs < 30;
 	$rs;
 }
 
@@ -877,7 +885,7 @@ sub setupAskServicesSsl
 			[ 'no', 'yes' ], $sslEnabled eq 'yes' ? 'yes' : 'no'
 		);
 
-		if($sslEnabled eq 'yes' && $rs != 30) {
+		if($sslEnabled eq 'yes' && $rs < 30) {
 			# Ask for self-signed certificate
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
 				"\nDo you have an SSL certificate for the $domainName domain?", [ 'yes', 'no' ],
@@ -886,7 +894,7 @@ sub setupAskServicesSsl
 
 			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
 
-			if($selfSignedCertificate eq 'no' && $rs != 30) {
+			if($selfSignedCertificate eq 'no' && $rs < 30) {
 				# Ask for private key
 				my $msg = '';
 
@@ -896,15 +904,15 @@ sub setupAskServicesSsl
 					# Ask for private key container path
 					do {
 						($rs, $privateKeyPath) = $dialog->fselect($privateKeyPath);
-					} while($rs != 30 && !($privateKeyPath && -f $privateKeyPath));
+					} while($rs < 30 && !($privateKeyPath && -f $privateKeyPath));
 
-					if($rs != 30) {
+					if($rs < 30) {
 						($rs, $passphrase) = $dialog->passwordbox(
 							"\nPlease enter the passphrase for your private key if any:", $passphrase
 						);
 					}
 
-					if($rs != 30) {
+					if($rs < 30) {
 						$openSSL->{'private_key_container_path'} = $privateKeyPath;
 						$openSSL->{'private_key_passphrase'} = $passphrase;
 
@@ -914,29 +922,24 @@ sub setupAskServicesSsl
 							$msg = '';
 						}
 					}
-				} while($rs != 30 && $msg);
+				} while($rs < 30 && $msg);
 
 				# Ask for the CA bundle
-				if($rs != 30) {
-					# The codes used for "Yes" and "No" match those used for "OK" and "Cancel", internally no
-					# distinction is made... Therefore, we override the Cancel value temporarly
-					$ENV{'DIALOG_CANCEL'} = 1;
+				if($rs < 30) {
 					$rs = $dialog->yesno("\nDo you have any SSL intermediate certificate(s) (CA Bundle)?");
 
-					unless($rs) { # backup feature still available through ESC
+					unless($rs < 30) {
 						do {
 							($rs, $caBundlePath) = $dialog->fselect($caBundlePath);
-						} while($rs != 30 && !($caBundlePath && -f $caBundlePath));
+						} while($rs < 30 && !($caBundlePath && -f $caBundlePath));
 
-						$openSSL->{'ca_bundle_container_path'} = $caBundlePath if $rs != 30;
+						$openSSL->{'ca_bundle_container_path'} = $caBundlePath if $rs < 30;
 					}else {
 						$openSSL->{'ca_bundle_container_path'} = '';
 					}
-
-					$ENV{'DIALOG_CANCEL'} = 30;
 				}
 
-				if($rs != 30) {
+				if($rs < 30) {
 					$dialog->msgbox("\nPlease select your SSL certificate in next dialog.");
 					$rs = 1;
 
@@ -945,10 +948,10 @@ sub setupAskServicesSsl
 
 						do {
 							($rs, $certificatPath) = $dialog->fselect($certificatPath);
-						} while($rs != 30 && !($certificatPath && -f $certificatPath));
+						} while($rs < 30 && !($certificatPath && -f $certificatPath));
 
-						$openSSL->{'certificate_container_path'} = $certificatPath if $rs != 30;
-					} while($rs != 30 && $openSSL->validateCertificate());
+						$openSSL->{'certificate_container_path'} = $certificatPath if $rs < 30;
+					} while($rs < 30 && $openSSL->validateCertificate());
 				}
 			}
 		}
@@ -966,7 +969,7 @@ sub setupAskServicesSsl
 		setupSetQuestion('SERVICES_SSL_SETUP', 'no');
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		setupSetQuestion('SERVICES_SSL_ENABLED', $sslEnabled);
 		setupSetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate);
 		setupSetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', $privateKeyPath);
@@ -1004,7 +1007,7 @@ activate this feature.
 		);
 	}
 
-	setupSetQuestion('BACKUP_IMSCP', $backupImscp) if $rs != 30;
+	setupSetQuestion('BACKUP_IMSCP', $backupImscp) if $rs < 30;
 	$rs;
 }
 
@@ -1037,7 +1040,7 @@ This feature allows resellers to enable backup for their customers such as:
 		);
 	}
 
-	setupSetQuestion('BACKUP_DOMAINS', $backupDomains) if $rs != 30;
+	setupSetQuestion('BACKUP_DOMAINS', $backupDomains) if $rs < 30;
 	$rs;
 }
 

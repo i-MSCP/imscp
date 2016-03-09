@@ -86,8 +86,8 @@ sub askHostname
 
 	my ($rs, @labels) = (0, $vhost ? split(/\./, $vhost) : ());
 
-	if(grep($_ eq $main::reconfigure, ( 'panel_hostname', 'hostnames', 'all', 'forced' ))
-		|| !(@labels >= 3 && is_domain($vhost, \%options))
+	if(grep($_ eq $main::reconfigure, ( 'panel', 'panel_hostname', 'hostnames', 'all', 'forced' ))
+		|| @labels < 3 || !is_domain($vhost, \%options)
 	) {
 		$vhost = 'admin.' . main::setupGetQuestion('SERVER_HOSTNAME') unless $vhost;
 		my $msg = '';
@@ -100,10 +100,10 @@ sub askHostname
 			$msg = "\n\n\\Z1'$vhost' is not a fully-qualified domain name (FQDN).\\Zn\n\nPlease try again:";
 			$vhost = idn_to_ascii($vhost, 'utf-8');
 			@labels = split(/\./, $vhost);
-		} while($rs != 30 && !(@labels >= 3 && is_domain($vhost, \%options)));
+		} while($rs < 30 && (@labels < 3 || !is_domain($vhost, \%options)));
 	}
 
-	main::setupSetQuestion('BASE_SERVER_VHOST', $vhost) if $rs != 30;
+	main::setupSetQuestion('BASE_SERVER_VHOST', $vhost) if $rs < 30;
 	$rs;
 }
 
@@ -131,7 +131,7 @@ sub askSsl
 	my $openSSL = iMSCP::OpenSSL->new();
 	my $rs = 0;
 
-	if(grep($_ eq $main::reconfigure, ( 'panel_ssl', 'ssl', 'all', 'forced' ))
+	if(grep($_ eq $main::reconfigure, ( 'panel', 'panel_ssl', 'ssl', 'all', 'forced' ))
 		|| !grep($_ eq $sslEnabled, ( 'yes', 'no' ))
 		|| $sslEnabled eq 'yes'
 		&& grep($_ eq $main::reconfigure, ( 'panel_hostname', 'hostnames' ))
@@ -142,7 +142,7 @@ sub askSsl
 			"\nDo you want to activate SSL for the control panel?", [ 'no', 'yes' ], $sslEnabled eq 'yes' ? 'yes' : 'no'
 		);
 
-		if($sslEnabled eq 'yes' && $rs != 30) {
+		if($sslEnabled eq 'yes' && $rs < 30) {
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
 				"\nDo you have an SSL certificate for the $domainName domain?", [ 'yes', 'no' ],
 				grep($_ eq $selfSignedCertificate, ( 'yes', 'no' )) ? $selfSignedCertificate eq 'yes' ? 'no' : 'yes' : 'no'
@@ -150,7 +150,7 @@ sub askSsl
 
 			$selfSignedCertificate = $selfSignedCertificate eq 'no' ? 'yes' : 'no';
 
-			if($selfSignedCertificate eq 'no' && $rs != 30) {
+			if($selfSignedCertificate eq 'no' && $rs < 30) {
 				my $msg = '';
 
 				do {
@@ -158,15 +158,15 @@ sub askSsl
 
 					do {
 						($rs, $privateKeyPath) = $dialog->fselect($privateKeyPath);
-					} while($rs != 30 && ! ($privateKeyPath && -f $privateKeyPath));
+					} while($rs < 30 && ! ($privateKeyPath && -f $privateKeyPath));
 
-					if($rs != 30) {
+					if($rs < 30) {
 						($rs, $passphrase) = $dialog->passwordbox(
 							"\nPlease enter the passphrase for your private key if any:", $passphrase
 						);
 					}
 
-					if($rs != 30) {
+					if($rs < 30) {
 						$openSSL->{'private_key_container_path'} = $privateKeyPath;
 						$openSSL->{'private_key_passphrase'} = $passphrase;
 
@@ -176,28 +176,23 @@ sub askSsl
 							$msg = '';
 						}
 					}
-				} while($rs != 30 && $msg);
+				} while($rs < 30 && $msg);
 
-				if($rs != 30) {
-					# The codes used for "Yes" and "No" match those used for "OK" and "Cancel", internally no
-					# distinction is made... Therefore, we override the Cancel value temporarly
-					$ENV{'DIALOG_CANCEL'} = 1;
+				if($rs < 30) {
 					$rs = $dialog->yesno("\nDo you have any SSL intermediate certificate(s) (CA Bundle)?");
 
-					unless($rs) { # backup feature still available through ESC
+					unless($rs < 30) {
 						do {
 							($rs, $caBundlePath) = $dialog->fselect($caBundlePath);
-						} while($rs != 30 && !($caBundlePath && -f $caBundlePath));
+						} while($rs < 30 && !($caBundlePath && -f $caBundlePath));
 
-						$openSSL->{'ca_bundle_container_path'} = $caBundlePath if $rs != 30;
+						$openSSL->{'ca_bundle_container_path'} = $caBundlePath if $rs < 30;
 					} else {
 						$openSSL->{'ca_bundle_container_path'} = '';
 					}
-
-					$ENV{'DIALOG_CANCEL'} = 30;
 				}
 
-				if($rs != 30) {
+				if($rs < 30) {
 					$dialog->msgbox("\nPlease select your SSL certificate in next dialog.");
 					$rs = 1;
 
@@ -206,14 +201,14 @@ sub askSsl
 
 						do {
 							($rs, $certificatPath) = $dialog->fselect($certificatPath);
-						} while($rs != 30 && !($certificatPath && -f $certificatPath));
+						} while($rs < 30 && !($certificatPath && -f $certificatPath));
 
-						$openSSL->{'certificate_container_path'} = $certificatPath if $rs != 30;
-					} while($rs != 30 && $openSSL->validateCertificate());
+						$openSSL->{'certificate_container_path'} = $certificatPath if $rs < 30;
+					} while($rs < 30 && $openSSL->validateCertificate());
 				}
 			}
 
-			if($rs != 30 && $sslEnabled eq 'yes') {
+			if($rs < 30 && $sslEnabled eq 'yes') {
 				($rs, $baseServerVhostPrefix) = $dialog->radiolist(
 					"\nPlease, choose the default HTTP access mode for the control panel", [ 'https', 'http' ],
 					$baseServerVhostPrefix eq 'https://' ? 'https' : 'http'
@@ -236,7 +231,7 @@ sub askSsl
 		main::setupSetQuestion('PANEL_SSL_SETUP', 'no');
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		main::setupSetQuestion('PANEL_SSL_ENABLED', $sslEnabled);
 		main::setupSetQuestion('PANEL_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate);
 		main::setupSetQuestion('PANEL_SSL_PRIVATE_KEY_PATH', $privateKeyPath);
@@ -267,42 +262,40 @@ sub askPorts
 	my $ssl = main::setupGetQuestion('PANEL_SSL_ENABLED', 'no');
 	my $rs = 0;
 
-	if(grep($_ eq $main::reconfigure, ( 'panel_ports', 'all', 'forced' ))
-		|| !$httpPort || $httpPort =~ /^[^\d]/ || $httpPort < 1023 || $httpPort > 65535
+	if(grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
+		|| $httpPort =~ /^[^\d]/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort
 	) {
 		my $msg = '';
 
 		do {
 			($rs, $httpPort) = $dialog->inputbox(
 				"\nPlease enter the http port from which the control panel must be reachable:$msg",
-				$httpPort ? $httpPort : '8080'
+				$httpPort ? $httpPort : 8080
 			);
 			$msg = "\n\n\\Z1The port '$httpPort' is reserved or not valid.\\Zn\n\nPlease try again:";
-		} while($rs != 30 && !$httpPort || $httpPort =~ /[^\d]/ || $httpPort < 1023 || $httpPort > 65535);
+		} while($rs < 30 && ($httpPort =~ /[^\d]/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort));
 	}
 
-	if($rs != 30 && $ssl eq 'yes') {
-		if(grep($_ eq $main::reconfigure, ( 'panel_ports', 'all', 'forced' ))
-			|| !$httpsPort || !$httpsPort || $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535
-			|| $httpsPort == $httpPort
+	if($rs < 30 && $ssl eq 'yes') {
+		if(grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
+			|| $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535
+			|| $httpsPort eq $httpPort
 		) {
 			my $msg = '';
 
 			do {
 				($rs, $httpsPort) = $dialog->inputbox(
 					"\nPlease enter the https port from which the control panel must be reachable:$msg",
-					$httpsPort ? $httpsPort : '4443'
+					$httpsPort ? $httpsPort : 4443
 				);
 				$msg = "\n\n\\Z1The port '$httpsPort' is reserved or not valid.\\Zn\n\nPlease try again:";
-			} while($rs != 30 && !$httpsPort || $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535
-				|| $httpsPort == $httpPort
-			);
+			} while($rs < 30 && ($httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535 || $httpsPort eq $httpPort));
 		}
 	} else {
-		$httpsPort = '';
+		$httpsPort = 4443;
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		main::setupSetQuestion('BASE_SERVER_VHOST_HTTP_PORT', $httpPort);
 		main::setupSetQuestion('BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort);
 	}

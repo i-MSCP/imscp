@@ -67,10 +67,10 @@ sub showDialog
 			"\nPlease select the AWStats mode you want use:", [ 'Dynamic', 'Static' ], $awstatsMode ? 'Static' : 'Dynamic'
 		);
 
-		$awstatsMode = $awstatsMode eq 'Dynamic' ? 0 : 1 if $rs != 30;
+		$awstatsMode = $awstatsMode eq 'Dynamic' ? 0 : 1 if $rs < 30;
 	}
 
-	main::setupSetQuestion('AWSTATS_MODE', $awstatsMode) if $rs != 30;
+	main::setupSetQuestion('AWSTATS_MODE', $awstatsMode) if $rs < 30;
 	$rs;
 }
 

@@ -134,25 +134,13 @@ unless($ret) {
 \\Z4\\ZuBuild Steps Successful\\Zn
 
 Please run the following commands from your console:
-EOF
-
-		if (-f '/etc/ispcp/ispcp.conf' || -f '/usr/local/etc/ispcp/ispcp.conf') {
-			$msg .= <<EOF
-
-	# cp -fR $main::{'INST_PREF'}/* /
-	# cd $main::imscpConfig{'ROOT_DIR'}/engine/setup
-	# perl imscp-migrate-from-ispcp
-	# perl imscp-setup
-EOF
-		} else {
-			$msg .= <<EOF;
 
 	# rm -fR $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
 	# cp -fR $main::{'INST_PREF'}/* /
 	# rm -fR $main::{'INST_PREF'}
 	# perl $main::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-setup -d
 EOF
-		}
+
 
 		$msg .= <<EOF;
 

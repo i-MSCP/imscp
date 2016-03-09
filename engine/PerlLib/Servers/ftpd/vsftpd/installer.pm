@@ -106,9 +106,9 @@ sub sqlUserDialog
 				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign and backslash) are allowed.\\Zn\n\nPlease try again:";
 				$dbUser = '';
 			}
-		} while ($rs != 30 && !$dbUser);
+		} while ($rs < 30 && !$dbUser);
 
-		if($rs != 30) {
+		if($rs < 30) {
 			$msg = '';
 
 			# Ask for the VsFTPd SQL user password unless we reuses existent SQL user
@@ -131,19 +131,19 @@ sub sqlUserDialog
 					} else {
 						$msg = '';
 					}
-				} while($rs != 30 && $msg);
+				} while($rs < 30 && $msg);
 			} else {
 				$dbPass = $main::sqlUsers{$dbUser};
 			}
 
-			if($rs != 30) {
+			if($rs < 30) {
 				$dbPass = randomStr(16) unless $dbPass;
 				$dialog->msgbox("\nPassword for the VsFTPd SQL user set to: $dbPass");
 			}
 		}
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		main::setupSetQuestion('FTPD_SQL_USER', $dbUser);
 		main::setupSetQuestion('FTPD_SQL_PASSWORD', $dbPass);
 		$main::sqlUsers{$dbUser} = $dbPass;
@@ -194,10 +194,10 @@ EOF
 				$passivePortRange = "$1 $2";
 				$msg = '';
 			}
-		} while($rs != 30 && $msg);
+		} while($rs < 30 && $msg);
 	}
 
-	$self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange unless $rs == 30;
+	$self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange if $rs < 30;
 	$rs;
 }
 

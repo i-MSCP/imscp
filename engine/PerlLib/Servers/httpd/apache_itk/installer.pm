@@ -105,7 +105,7 @@ Please, choose the PHP configuration level you want use. Available levels are:
 		);
 	}
 
-	($self->{'config'}->{'INI_LEVEL'} = $confLevel) =~ s/ /_/ unless $rs == 30;
+	($self->{'config'}->{'INI_LEVEL'} = $confLevel) =~ s/ /_/ if $rs < 30;
 	$rs;
 }
 

@@ -110,7 +110,7 @@ Please, choose the PHP configuration level you want use. Available levels are:
 		);
 	}
 
-	($self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} = $confLevel) =~ s/ /_/ unless $rs == 30;
+	($self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} = $confLevel) =~ s/ /_/ if $rs < 30;
 	$rs;
 }
 
@@ -149,7 +149,7 @@ Be aware that for high traffic sites, TCP/IP can require a tweaking of your kern
 		);
 	}
 
-	$self->{'phpfpmConfig'}->{'LISTEN_MODE'} = $listenMode unless $rs == 30;
+	$self->{'phpfpmConfig'}->{'LISTEN_MODE'} = $listenMode if $rs < 30;
 	$rs;
 }
 

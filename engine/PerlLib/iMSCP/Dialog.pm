@@ -31,6 +31,9 @@ use iMSCP::ProgramFinder;
 use FileHandle;
 use parent 'Common::SingletonClass';
 
+# Unbuffered output is required.
+$|=1;
+
 =head1 DESCRIPTION
 
  Class that wrap dialog and cdialog programs.
@@ -690,6 +693,16 @@ sub _execute
 	$self->{'_opts'}->{'separate-output'} = undef;
 
 	$self->_init() if $self->{'autoreset'};
+
+	# The exit status returned when pressing the "No"  button match the exit status used for the "Cancel" button.
+	# Internally, no distinction is made... Therefore, for the "yesno" dialog box, we disable backup feature on "Cancel"
+	# button and we make it available temporarely through the ESC keystroke. This necessarely mean that user cannot
+	# abort through a "yesno" dialog box
+	if($ret == 50 && $type eq 'yesno') {
+		$ret = 30;
+	} elsif($ret == 30 && $type eq 'yesno') {
+		$ret = 1;
+	}
 
 	wantarray ? ($ret, $output) : $output;
 }

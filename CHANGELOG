@@ -20,12 +20,14 @@ BACKEND
 FRONTEND
 	Added: SSL status field on domain management page (Client interface)
 	Fixed: Could not add/edit SQL user when using MariaDB server - wrong syntax 'PASSWORD EXPIRE NEVER' ...
-	Fixed: Could not create SQL user when using MariaDB SQL remote server
+	Fixed: Could not create SQL user when using MariaDB SQL server
 	Fixed: Exception raised due to missing `ZIP` configuration variable
 	Fixed: Wrong error handling in cert_view.php (openssl_x509_checkpurpose function also returns -1 which is not FALSE)
 
 INSTALLER
+	Added: 'panel' reconfiguration item
 	Fixed: Could not unset 'hold' state on packages in some contexts
+	Fixed: Dialog backup (back up) featue is broken
 	Fixed: Ensure that sysvinit scripts are disabled when upstart job are provided and when init is Upstart
 	Fixed: init_is_upstart() function not available in lsb-base < 4.1+Debian3 (sysvinit scripts)
 	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
@@ -34,6 +36,7 @@ INSTALLER
 	Fixed: Wrong package name (mysql-client-5.5 instead of mysql-client-5.6) in Debian Stretch packages file
 	Pending: Courier support for Debian Stretch - packages not available at this moment
 	Pending: VsFTPd support for Debian Stretch - libpam-mysql package not available at this moment
+	Removed: ispCP migration script (Migration from ispCP is no longer supported
 
 PACKAGES
 	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
@@ -71,6 +74,7 @@ YOUTRACK
 	IP-1500 Update fails when a customer's SSL certificate is invalid or expired
 	IP-1501 i18n - "Ftp directories" string is not translatable
 	IP-1503 vsftpd - 500 OOPS: prctl PR_SET_SECCOMP failed
+	IP-1505 Installer - cannot go back from the panel http port screen
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.15

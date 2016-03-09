@@ -83,7 +83,7 @@ sub showDialog
 		);
 	}
 
-	return $rs unless $rs != 30;
+	return $rs unless $rs < 30;
 
 	main::setupSetQuestion('FILEMANAGER_PACKAGE', $package);
 

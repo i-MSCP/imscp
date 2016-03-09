@@ -94,7 +94,7 @@ sub askDnsServerMode
 		);
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		$self->{'config'}->{'BIND_MODE'} = $dnsServerMode;
 		$rs = $self->askDnsServerIps($dialog);
 	}
@@ -133,7 +133,7 @@ sub askDnsServerIps
 				grep($_ eq "@slaveDnsIps", ('', 'no')) ? 'no' : 'yes'
 			);
 
-			if($rs != 30 && $answer eq 'yes') {
+			if($rs < 30 && $answer eq 'yes') {
 				@slaveDnsIps = () if "@slaveDnsIps" eq 'no';
 
 				do {
@@ -143,7 +143,7 @@ sub askDnsServerIps
 
 					$msg = '';
 
-					if($rs != 30) {
+					if($rs < 30) {
 						@slaveDnsIps = split ' ', $answer;
 
 						if("@slaveDnsIps" eq '') {
@@ -152,7 +152,7 @@ sub askDnsServerIps
 							$msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease, try again:";
 						}
 					}
-				} while($rs != 30 && $msg);
+				} while($rs < 30 && $msg);
 			} else {
 				@slaveDnsIps = ('no');
 			}
@@ -170,7 +170,7 @@ sub askDnsServerIps
 
 			$msg = '';
 
-			if($rs != 30) {
+			if($rs < 30) {
 				@masterDnsIps = split ' ', $answer;
 
 				if("@masterDnsIps" eq '') {
@@ -179,10 +179,10 @@ sub askDnsServerIps
 					$msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease, try again:";
 				}
 			}
-		} while($rs != 30 && $msg);
+		} while($rs < 30 && $msg);
 	}
 
-	if($rs != 30) {
+	if($rs < 30) {
 		if($dnsServerMode eq 'master') {
 			$self->{'config'}->{'PRIMARY_DNS'} = 'no';
 			$self->{'config'}->{'SECONDARY_DNS'} = "@slaveDnsIps" ne 'no' ? join ';', @slaveDnsIps : 'no';
@@ -219,10 +219,7 @@ sub askIPv6Support
 		);
 	}
 
-	if($rs != 30) {
-		$self->{'config'}->{'BIND_IPV6'} = $ipv6;
-	}
-
+	$self->{'config'}->{'BIND_IPV6'} = $ipv6 if $rs < 30;
 	$rs;
 }
 
@@ -250,7 +247,7 @@ sub askLocalDnsResolver
 		);
 	}
 
-	$self->{'config'}->{'LOCAL_DNS_RESOLVER'} = $localDnsResolver if $rs != 30;
+	$self->{'config'}->{'LOCAL_DNS_RESOLVER'} = $localDnsResolver if $rs < 30;
 	$rs;
 }
 

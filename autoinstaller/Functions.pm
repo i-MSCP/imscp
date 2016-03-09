@@ -528,8 +528,7 @@ sub _askInstallMode
 Please, choose an option:
 
 \\Z4Install:\\Zn Choose this option if you want install or update i-MSCP.
-  \\Z4Build:\\Zn Choose this option if you want install i-MSCP manually or if you
-         want migrate from ispCP (>= 1.0.7).
+  \\Z4Build:\\Zn Choose this option if you want install i-MSCP manually.
 EOF
 
 	$main::buildonly = ($mode eq 'Build') ? 1 : 0;
