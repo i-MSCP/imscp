@@ -2,7 +2,4 @@
 <install>
     <folders>${SYSTEM_CONF}/listeners.d</folders>
     <copy_config>${SYSTEM_CONF}/listeners.d/README.md</copy_config>
-    <copy_config>${SYSTEM_CONF}/listeners.d/10_bind9_localnets.pl</copy_config>
-    <copy_config>${SYSTEM_CONF}/listeners.d/10_postfix_smarthost.pl</copy_config>
-    <copy_config>${SYSTEM_CONF}/listeners.d/10_php_confoptions_override.pl</copy_config>
 </install>
