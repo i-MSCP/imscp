@@ -395,13 +395,14 @@ sub _extractDevices
     # FIXME: Does we should show full interface names in control panel instead?
     $devices->{$1}->{'flags'} = $2 while $stdout =~ /
         ^
-            [^\s]+       # 2:
-            \s+
-            (.*?)        # eth0
-            (?:@[^\s]+)? # @xxx (optional)
+            [^\s]+       # identifier
             :
             \s+
-            <(.*)>       # flags (e.g. BROADCAST,MULTICAST,UP,LOWER_UP ...)
+            (.*?)        # device name
+            (?:@[^\s]+)? # device name prefix
+            :
+            \s+
+            <(.*)>       # flags
     /gmx;
     $devices;
 }
@@ -429,23 +430,22 @@ sub _extractAddresses
         prefix_length => $4,
         device_label  => $5 // ''
     } while($stdout =~ /^
-        [\d]+\:                    # 2:
+        [^\s]+            # identifier
+        :
         \s+
-        ([^\s:]+)                  # eth0
+        ([^\s]+)          # device name
         \s+
-        ([^\s]+)                   # inet
+        ([^\s]+)          # protocol family identifier
         \s+
-        ([^\s]+)                   # 192.168.1.133
+        ([^\s]+)          # IP address
         \/
-        ([\d]+)                    # 24
+        ([\d]+)           # netmask in CIDR notation
         (?:
-            \s+
-            (?:brd\s+[^\s]+\s+)?   # brd 192.168.1.255 (optional)
-            (?:scope\s+[^\s]+\s+)? # scope global (optional)
-            (?:[^\s]+\s+)?         # secondary (optional)
-            (\1:\d+)?              # eth0:1002 (optional)
-        )
-    /gimx);
+            .*?           # optional broadcast address, scope information
+            (\1(?::\d+)?) # optional label
+            \\
+        )?
+    /gmx);
     $addresses;
 }
 

@@ -91,7 +91,7 @@ sub addIpAddr
 
     my ($stdout, $stderr);
     execute("$commands{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(sprintf(
-        'Could not bring up the %s network interface', $stderr || 'Unknown error'
+        'Could not bring up the %s network interface %s', "$data->{'ip_card'}:$data->{'id'}", $stderr || 'Unknown error'
     ));
 
     $self->{'net'}->resetInstance();
@@ -116,16 +116,13 @@ sub removeIpAddr
     defined $data->{$_} or croak(sprintf('The %s parameter is not defined', $_)) for qw/ id ip_card ip_address /;
     $data->{'id'} =~ /^\d+$/ or croak('id parameter must be an integer');
     $data->{'id'} += 1000;
-    $self->{'net'}->isKnownDevice($data->{'ip_card'}) or croak(sprintf(
-        'The %s network interface is unknown', $data->{'ip_card'}
-    ));
 
     # We process only if the IP has been added by us
     return 0 unless $self->_isDefinedInterface("$data->{'ip_card'}:$data->{'id'}");
 
     my ($stdout, $stderr);
     execute("$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr) == 0 or die(sprintf(
-        'Could not bring down the %s network interface', $stderr || 'Unknown error'
+        'Could not bring down the %s network interface: %s', "$data->{'ip_card'}:$data->{'id'}", $stderr || 'Unknown error'
     ));
 
     $self->{'net'}->resetInstance();
