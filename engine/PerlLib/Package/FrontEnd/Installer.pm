@@ -263,7 +263,7 @@ sub askPorts
 	my $rs = 0;
 
 	if(grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
-		|| $httpPort =~ /^[^\d]/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort
+		|| $httpPort =~ /^\d+$/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort
 	) {
 		my $msg = '';
 
@@ -273,13 +273,13 @@ sub askPorts
 				$httpPort ? $httpPort : 8080
 			);
 			$msg = "\n\n\\Z1The port '$httpPort' is reserved or not valid.\\Zn\n\nPlease try again:";
-		} while($rs < 30 && ($httpPort =~ /[^\d]/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort));
+		} while($rs < 30 && ($httpPort !~ /^\d+$/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort == $httpPort));
 	}
 
 	if($rs < 30 && $ssl eq 'yes') {
 		if(grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
-			|| $httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535
-			|| $httpsPort eq $httpPort
+			|| $httpsPort =~ /^\d+$/ || $httpsPort < 1023 || $httpsPort > 65535
+			|| $httpsPort == $httpPort
 		) {
 			my $msg = '';
 
@@ -289,7 +289,10 @@ sub askPorts
 					$httpsPort ? $httpsPort : 4443
 				);
 				$msg = "\n\n\\Z1The port '$httpsPort' is reserved or not valid.\\Zn\n\nPlease try again:";
-			} while($rs < 30 && ($httpsPort =~ /[^\d]/ || $httpsPort < 1023 || $httpsPort > 65535 || $httpsPort eq $httpPort));
+			} while(
+				$rs < 30
+				&& ($httpsPort !~ /^\d+$/ || $httpsPort < 1023 || $httpsPort > 65535 || $httpsPort == $httpPort)
+			);
 		}
 	} else {
 		$httpsPort = 4443;
