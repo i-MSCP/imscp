@@ -263,7 +263,7 @@ sub askPorts
 	my $rs = 0;
 
 	if(grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
-		|| $httpPort =~ /^\d+$/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort
+		|| $httpPort !~ /^\d+$/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort
 	) {
 		my $msg = '';
 
@@ -276,9 +276,11 @@ sub askPorts
 		} while($rs < 30 && ($httpPort !~ /^\d+$/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort == $httpPort));
 	}
 
+	main::setupSetQuestion('BASE_SERVER_VHOST_HTTP_PORT', $httpPort) if $rs < 30;
+
 	if($rs < 30 && $ssl eq 'yes') {
 		if(grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
-			|| $httpsPort =~ /^\d+$/ || $httpsPort < 1023 || $httpsPort > 65535
+			|| $httpsPort !~ /^\d+$/ || $httpsPort < 1023 || $httpsPort > 65535
 			|| $httpsPort == $httpPort
 		) {
 			my $msg = '';
@@ -298,11 +300,7 @@ sub askPorts
 		$httpsPort = 4443;
 	}
 
-	if($rs < 30) {
-		main::setupSetQuestion('BASE_SERVER_VHOST_HTTP_PORT', $httpPort);
-		main::setupSetQuestion('BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort);
-	}
-
+	main::setupSetQuestion('BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort) if $rs < 30;
 	$rs;
 }
 
