@@ -158,7 +158,7 @@ sub askSsl
 
 					do {
 						($rs, $privateKeyPath) = $dialog->fselect($privateKeyPath);
-					} while($rs < 30 && ! ($privateKeyPath && -f $privateKeyPath));
+					} while($rs < 30 && !($privateKeyPath && -f $privateKeyPath));
 
 					if($rs < 30) {
 						($rs, $passphrase) = $dialog->passwordbox(
