@@ -1080,7 +1080,7 @@ sub _addDmnDb
 		? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
 
 	my @nsIPs = (
-		$domainIp, ($self->{'config'}->{'SECONDARY_DNS'} eq 'no') ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'}
+		$domainIp, $self->{'config'}->{'SECONDARY_DNS'} eq 'no' ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'}
 	);
 
 	my $ipMngr = iMSCP::Net->getInstance();

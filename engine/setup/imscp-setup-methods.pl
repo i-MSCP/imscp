@@ -208,7 +208,7 @@ sub setupAskServerHostname
 	my ($rs, @labels) = (0, $hostname ? split /\./, $hostname : ());
 
 	if(grep($_ eq $main::reconfigure, ('system_hostname', 'hostnames', 'all', 'forced'))
-		|| !(@labels >= 3 && is_domain($hostname, \%options))
+		|| @labels < 3 || !is_domain($hostname, \%options)
 	) {
 		unless($hostname) {
 			my $err = undef;
@@ -231,7 +231,7 @@ sub setupAskServerHostname
 			$hostname = idn_to_ascii($hostname, 'utf-8');
 			@labels = split(/\./, $hostname);
 
-		} while($rs != 30 && !(@labels >= 3 && is_domain($hostname, \%options)));
+		} while($rs != 30 && @labels < 3 || !is_domain($hostname, \%options));
 
 		$dialog->set('no-cancel', undef);
 	}
@@ -571,7 +571,8 @@ sub setupAskSqlUserHost
 	my $net = iMSCP::Net->getInstance();
 
 	if($main::imscpConfig{'SQL_SERVER'} eq 'remote_server') { # Remote MySQL server
-		if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' )) || $host ne '%'
+		if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
+			|| $host ne '%'
 			&& !is_domain($host, \%options) && !$net->isValidAddr($host)
 		) {
 			my $msg = '';
@@ -582,8 +583,6 @@ sub setupAskSqlUserHost
 Please, enter the host from which SQL users created by i-MSCP must be allowed to connect to your SQL server:$msg
 
 Please refer to http://dev.mysql.com/doc/refman/5.5/en/account-names.html for allowed values.
-
-Note that '127.0.0.1' and 'localhost' are not valid host entries in the context of a remote SQL server.
 ",
 					idn_to_unicode($host, 'utf-8')
 				);
@@ -591,10 +590,12 @@ Note that '127.0.0.1' and 'localhost' are not valid host entries in the context 
 				$msg = '';
 				$host = idn_to_ascii($host, 'utf-8');
 
-				if($host eq 'localhost' || $host eq '127.0.0.1' || $host ne '%' && !is_domain($host, \%options)
+				if($host ne '%'
+					&& !is_domain($host, \%options)
 					&& !$net->isValidAddr($host)
+					|| grep($_ eq $net->getAddrType($host), ('LOOPBACK', 'LINK-LOCAL-UNICAST'))
 				) {
-					$msg = sprintf("\n\n\\Z1Error: '%s' is not a valid host.\\Zn\n\nPlease, try again:", $host);
+					$msg = sprintf("\n\n\\Z1Error: '%s' is not valid or not allowedt.\\Zn\n\nPlease, try again:", $host);
 				}
 
 			} while($rs != 30 && $msg ne '');

@@ -124,6 +124,7 @@ sub askDnsServerIps
 
 	if($dnsServerMode eq 'master') {
 		if(grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
+			|| "@slaveDnsIps" eq ''
 			|| "@slaveDnsIps" ne 'no' && !$self->_checkIps(@slaveDnsIps)
 		) {
 			($rs, $answer) = $dialog->radiolist(
@@ -586,7 +587,7 @@ sub _oldEngineCompatibility
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 
