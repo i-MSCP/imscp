@@ -172,7 +172,7 @@ sub getExitCode(;$)
 	my $ret = shift // $?;
 
 	if ($ret == -1) {
-		die(sprintf('Could not execute command: %s', $!));
+		die('Could not execute command.');
 	}
 
 	if ($ret & 127) {

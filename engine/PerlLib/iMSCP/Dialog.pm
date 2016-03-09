@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -58,7 +58,6 @@ sub resetLabels
 	);
 
 	$_[0]->{'_opts'}->{"$_-label"} = $defaultLabels{$_} for keys %defaultLabels;
-
 	0;
 }
 
@@ -111,9 +110,7 @@ sub radiolist
 	push @init, (escapeShell($_), "''", $default eq $_ ? 'on' : 'off') for @{$choices};
 
 	my ($ret, $choice) = $self->_textbox($text, 'radiolist', @{$choices} . " @init");
-
 	$choice =~ s/ /_/g; # Normalize
-
 	wantarray ? ($ret, $choice) : $choice;
 }
 
@@ -142,9 +139,7 @@ sub checkbox
 	my ($ret, $output) = $self->_textbox($text, 'checklist', @{$choices} . " @init");
 
 	@{$choices} = split /\n/, $output;
-
 	s/ /_/g for (@{$choices}, @defaults); # Normalize
-
 	wantarray ? ($ret, $choices) : $choices;
 }
 
@@ -189,11 +184,8 @@ sub dselect
 	my $self = $_[0];
 
 	$self->{'lines'} = $self->{'lines'} - 8;
-
 	my ($ret, $output) = $self->_execute($_[1], undef, 'dselect');
-
 	$self->{'lines'} = $self->{'lines'} + 8;
-
 	wantarray ? ($ret, $output) : $output;
 }
 
@@ -240,7 +232,6 @@ sub inputbox
 	my ($self, $text, $init) = @_;
 
 	$init ||= '';
-
 	$self->_textbox($text, 'inputbox', escapeShell($init));
 }
 
@@ -259,9 +250,7 @@ sub passwordbox
 	my ($self, $text, $init) = @_;
 
 	$init ||= '';
-
 	$self->{'_opts'}->{'insecure'} = '';
-
 	$self->_textbox($text, 'passwordbox', escapeShell($init));
 }
 
@@ -284,7 +273,6 @@ sub infobox
 	my ($ret) = $self->_textbox($_[1], 'infobox');
 
 	$self->{'_opts'}->{'clear'} = $clear;
-
 	$ret;
 }
 
@@ -308,29 +296,24 @@ sub startGauge
 
 	$text = escapeShell($text);
 	$percent ||= 0;
-
 	$percent = $percent ? " $percent" : 0;
 
 	my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
 	my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
-
 	my $begin = $self->{'_opts'}->{'begin'};
 	$self->{'_opts'}->{'begin'} = undef;
 
 	my $command = $self->_buildCommandOptions();
-
 	$command = "$self->{'bin'} $command --gauge $text $height $width $percent";
 
 	$self->{'_opts'}->{'begin'} = $begin;
-
 	$self->{'gauge'} = new FileHandle;
 	$self->{'gauge'}->autoflush(1);
-	$self->{'gauge'}->open("| $command") || fatal("Unable to start gauge");
+	$self->{'gauge'}->open("| $command") || fatal('Could not start gauge');
 
 	debugRegisterCallBack(sub { $self->endGauge(); });
 
 	$SIG{'PIPE'} = sub { $self->endGauge(); };
-
 	getExitCode($?);
 }
 
@@ -351,11 +334,9 @@ sub setGauge
 	return 0 if $main::noprompt || ! $self->{'gauge'};
 
 	my ($percent, $text) = @_;
-
 	$text ||= '';
 
-	print {$self->{'gauge'}} (defined $text)
-		? sprintf("XXX\n%d\n%s\nXXX\n", $percent, $text) : sprintf("%d\n", $percent);
+	print {$self->{'gauge'}} (defined $text) ? sprintf("XXX\n%d\n%s\nXXX\n", $percent, $text) : sprintf("%d\n", $percent);
 
 	($self->{'gauge'}) ? 1 : 0;
 }
@@ -375,9 +356,7 @@ sub endGauge
 	return 0 if $main::noprompt || ! $self->{'gauge'};
 
 	$self->{'gauge'}->close();
-
 	undef $self->{'gauge'};
-
 	0;
 }
 
@@ -410,13 +389,10 @@ sub set
 {
 	my($self, $option, $value) = @_;
 
-	my $return = undef;
+	return undef unless $option && exists $self->{'_opts'}->{$option};
 
-	if($option && exists $self->{'_opts'}->{$option}) {
-		$return = $self->{'_opts'}->{$option};
-		$self->{'_opts'}->{$option} = $value;
-	}
-
+	my $return = $self->{'_opts'}->{$option};
+	$self->{'_opts'}->{$option} = $value;
 	$return;
 }
 
@@ -542,15 +518,13 @@ sub _determineConsoleSize
 {
 	my $self = $_[0];
 
-	my ($output, $error);
-	execute($self->{'bin'} . ' --print-maxsize', \$output, \$error);
+	execute($self->{'bin'} . ' --print-maxsize', \my $output, \my $error);
 	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
 	$self->{'lines'} = (defined($1) && $1 != 0) ? $1 - 3 : 23;
 	$self->{'columns'} = (defined($2) && $2 != 0) ? $2 - 2 : 79;
 	error($error) unless ! $?;
 	debug("Lines->$self->{'lines'}");
 	debug("Columns->$self->{'columns'}");
-
 	$self;
 }
 
@@ -567,11 +541,8 @@ sub _findBin
 	my ($self, $variant) = @_;
 
 	my $bindPath = iMSCP::ProgramFinder::find($variant);
-
-	fatal("Unable to find dialog program: $variant") unless $bindPath;
-
+	fatal(sprintf('Could not find dialog program: %s', $variant)) unless $bindPath;
 	$self->{'bin'} = $bindPath;
-
 	$self;
 }
 
@@ -589,7 +560,6 @@ sub _stripFormats
 	my ($self, $string) = @_;
 
 	$string =~ s/\\Z[0-9bBuUrRn]//gmi;
-
 	$string;
 }
 
@@ -608,18 +578,18 @@ sub _buildCommandOptions
 	my @options = ();
 
 	for my $option(keys %{$self->{'_opts'}}) {
-		if(defined $self->{'_opts'}->{$option}) {
-			# Add option
-			push @options, '--' . $option;
+		next unless defined $self->{'_opts'}->{$option};
 
-			# Add option arguments if any
-			if($self->{'_opts'}->{$option}) {
-				if(ref $self->{'_opts'}->{$option} ne 'array') { # Only one argument
-					push @options, escapeShell($self->{'_opts'}->{$option});
-				} else { # Many arguments
-					push @options, escapeShell($_) for @{$self->{'_opts'}->{$option}};
-				}
-			}
+		# Add option
+		push @options, '--' . $option;
+
+		next unless $self->{'_opts'}->{$option};
+
+		# Add option arguments
+		if(ref $self->{'_opts'}->{$option} ne 'array') { # Only one argument
+			push @options, escapeShell($self->{'_opts'}->{$option});
+		} else { # Many arguments
+			push @options, escapeShell($_) for @{$self->{'_opts'}->{$option}};
 		}
 	}
 
@@ -643,7 +613,6 @@ sub _restoreDefaults
 	}
 
 	$self->{'_opts'}->{'begin'} = [1, 0];
-
 	$self;
 }
 
@@ -675,7 +644,6 @@ sub _execute
 	}
 
 	$text = $self->_stripFormats($text) unless defined $self->{'_opts'}->{'colors'};
-
 	$self->{'_opts'}->{'separate-output'} = '' if $type eq 'checklist';
 
 	my $command = $self->_buildCommandOptions();
@@ -686,18 +654,15 @@ sub _execute
 	my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
 	my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
 
-	my ($ret, $output);
-
-	$ret = execute("$self->{'bin'} $command --$type $text $height $width $init", undef, \$output);
+	my $ret = execute("$self->{'bin'} $command --$type $text $height $width $init", undef, \my $output);
 
 	$self->{'_opts'}->{'separate-output'} = undef;
-
 	$self->_init() if $self->{'autoreset'};
 
-	# The exit status returned when pressing the "No"  button match the exit status used for the "Cancel" button.
-	# Internally, no distinction is made... Therefore, for the "yesno" dialog box, we disable backup feature on "Cancel"
-	# button and we make it available temporarely through the ESC keystroke. This necessarely mean that user cannot
-	# abort through a "yesno" dialog box
+	# The exit status returned when pressing the "No" button matches the exit status returned for the "Cancel" button.
+	# Internally, no distinction is made... Therefore, for the "yesno" dialog box, we map exit status 30 to 1
+	# and we make the backup feature available through the ESC keystroke. This necessarely mean that user cannot abort
+	# through a "yesno" dialog box
 	if($ret == 50 && $type eq 'yesno') {
 		$ret = 30;
 	} elsif($ret == 30 && $type eq 'yesno') {
@@ -723,18 +688,13 @@ sub _textbox
 	my($self, $text, $type, $init) = @_;
 
 	$init ||= 0;
-
 	my $autosize = $self->{'autosize'};
-
 	$self->{'autosize'} = undef;
 	my $begin = $self->{'_opts'}->{'begin'};
 	$self->{'_opts'}->{'begin'} = undef;
-
 	my ($ret, $output) = $self->_execute($text, $init, $type);
-
 	$self->{'_opts'}->{'begin'} = $begin;
 	$self->{'autosize'} = $autosize;
-
 	wantarray ? ($ret, $output) : $output;
 }
 
