@@ -3,7 +3,7 @@ use strict;
 use warnings;
 package Capture::Tiny;
 # ABSTRACT: Capture STDOUT and STDERR from Perl, XS or external programs
-our $VERSION = '0.24'; # VERSION
+our $VERSION = '0.36';
 use Carp ();
 use Exporter ();
 use IO::Handle ();
@@ -14,7 +14,7 @@ use Scalar::Util qw/reftype blessed/;
 BEGIN {
   local $@;
   eval { require PerlIO; PerlIO->can('get_layers') }
-    or *PerlIO::get_layers = sub { return () };
+      or *PerlIO::get_layers = sub { return () };
 }
 
 #--------------------------------------------------------------------------#
@@ -23,14 +23,14 @@ BEGIN {
 #--------------------------------------------------------------------------#
 
 my %api = (
-  capture         => [1,1,0,0],
-  capture_stdout  => [1,0,0,0],
-  capture_stderr  => [0,1,0,0],
-  capture_merged  => [1,1,1,0],
-  tee             => [1,1,0,1],
-  tee_stdout      => [1,0,0,1],
-  tee_stderr      => [0,1,0,1],
-  tee_merged      => [1,1,1,1],
+    capture         => [1,1,0,0],
+    capture_stdout  => [1,0,0,0],
+    capture_stderr  => [0,1,0,0],
+    capture_merged  => [1,1,1,0],
+    tee             => [1,1,0,1],
+    tee_stdout      => [1,0,0,1],
+    tee_stderr      => [0,1,0,1],
+    tee_merged      => [1,1,1,1],
 );
 
 for my $sub ( keys %api ) {
@@ -83,10 +83,18 @@ HERE
 sub _relayer {
   my ($fh, $layers) = @_;
   # _debug("# requested layers (@{$layers}) for @{[fileno $fh]}\n");
-  my %seen = ( unix => 1, perlio => 1 ); # filter these out
-  my @unique = grep { !$seen{$_}++ } @$layers;
-  # _debug("# applying unique layers (@unique) to @{[fileno $fh]}\n");
-  binmode($fh, join(":", ":raw", @unique));
+
+  # eliminate pseudo-layers
+  binmode( $fh, ":raw" );
+  # strip off real layers until only :unix is left
+  while ( 1 < ( my $layers =()= PerlIO::get_layers( $fh, output => 1 ) ) ) {
+    binmode( $fh, ":pop" );
+  }
+  # apply other layers
+  my @to_apply = @$layers;
+  shift @to_apply; # eliminate initial :unix
+  # _debug("# applying layers  (unix @to_apply) to @{[fileno $fh]}\n");
+  binmode($fh, ":" . join(":",@to_apply));
 }
 
 sub _name {
@@ -131,7 +139,7 @@ sub _proxy_std {
     }
     else {
       _open \*STDOUT, ">" . File::Spec->devnull;
-       # _debug( "# proxied STDOUT as " . (defined fileno STDOUT ? fileno STDOUT : 'undef' ) . "\n" );
+      # _debug( "# proxied STDOUT as " . (defined fileno STDOUT ? fileno STDOUT : 'undef' ) . "\n" );
       _open $dup{stdout} = IO::Handle->new, ">&=STDOUT";
     }
     $proxies{stdout} = \*STDOUT;
@@ -141,11 +149,11 @@ sub _proxy_std {
     $proxy_count{stderr}++;
     if (defined $dup{stderr}) {
       _open \*STDERR, ">&=" . fileno($dup{stderr});
-       # _debug( "# restored proxy STDERR as " . (defined fileno STDERR ? fileno STDERR : 'undef' ) . "\n" );
+      # _debug( "# restored proxy STDERR as " . (defined fileno STDERR ? fileno STDERR : 'undef' ) . "\n" );
     }
     else {
       _open \*STDERR, ">" . File::Spec->devnull;
-       # _debug( "# proxied STDERR as " . (defined fileno STDERR ? fileno STDERR : 'undef' ) . "\n" );
+      # _debug( "# proxied STDERR as " . (defined fileno STDERR ? fileno STDERR : 'undef' ) . "\n" );
       _open $dup{stderr} = IO::Handle->new, ">&=STDERR";
     }
     $proxies{stderr} = \*STDERR;
@@ -201,16 +209,18 @@ sub _start_tee {
   # setup desired redirection for parent and child
   $stash->{new}{$which} = $stash->{tee}{$which};
   $stash->{child}{$which} = {
-    stdin   => $stash->{reader}{$which},
-    stdout  => $stash->{old}{$which},
-    stderr  => $stash->{capture}{$which},
+      stdin   => $stash->{reader}{$which},
+      stdout  => $stash->{old}{$which},
+      stderr  => $stash->{capture}{$which},
   };
   # flag file is used to signal the child is ready
   $stash->{flag_files}{$which} = scalar tmpnam();
   # execute @cmd as a separate process
   if ( $IS_WIN32 ) {
-    local $@;
-    eval "use Win32API::File qw/CloseHandle GetOsFHandle SetHandleInformation fileLastError HANDLE_FLAG_INHERIT INVALID_HANDLE_VALUE/ ";
+    my $old_eval_err=$@;
+    undef $@;
+
+    eval "use Win32API::File qw/GetOsFHandle SetHandleInformation fileLastError HANDLE_FLAG_INHERIT INVALID_HANDLE_VALUE/ ";
     # _debug( "# Win32API::File loaded\n") unless $@;
     my $os_fhandle = GetOsFHandle( $stash->{tee}{$which} );
     # _debug( "# Couldn't get OS handle: " . fileLastError() . "\n") if ! defined $os_fhandle || $os_fhandle == INVALID_HANDLE_VALUE();
@@ -219,6 +229,7 @@ sub _start_tee {
     _open_std( $stash->{child}{$which} );
     $stash->{pid}{$which} = system(1, @cmd, $stash->{flag_files}{$which});
     # not restoring std here as it all gets redirected again shortly anyway
+    $@=$old_eval_err;
   }
   else { # use fork
     _fork_exec( $which, $stash );
@@ -255,7 +266,7 @@ sub _wait_for_tees {
   my $start = time;
   my @files = values %{$stash->{flag_files}};
   my $timeout = defined $ENV{PERL_CAPTURE_TINY_TIMEOUT}
-              ? $ENV{PERL_CAPTURE_TINY_TIMEOUT} : $TIMEOUT;
+      ? $ENV{PERL_CAPTURE_TINY_TIMEOUT} : $TIMEOUT;
   1 until _files_exist(@files) || ($timeout && (time - $start > $timeout));
   Carp::confess "Timed out waiting for subprocesses to start" if ! _files_exist(@files);
   unlink $_ for @files;
@@ -264,8 +275,8 @@ sub _wait_for_tees {
 sub _kill_tees {
   my ($stash) = @_;
   if ( $IS_WIN32 ) {
-    # _debug( "# closing handles with CloseHandle\n");
-    CloseHandle( GetOsFHandle($_) ) for values %{ $stash->{tee} };
+    # _debug( "# closing handles\n");
+    close($_) for values %{ $stash->{tee} };
     # _debug( "# waiting for subprocesses to finish\n");
     my $start = time;
     1 until wait == -1 || (time - $start > 30);
@@ -294,12 +305,12 @@ sub _capture_tee {
   my ($do_stdout, $do_stderr, $do_merge, $do_tee, $code, @opts) = @_;
   my %do = ($do_stdout ? (stdout => 1) : (),  $do_stderr ? (stderr => 1) : ());
   Carp::confess("Custom capture options must be given as key/value pairs\n")
-    unless @opts % 2 == 0;
+      unless @opts % 2 == 0;
   my $stash = { capture => { @opts } };
   for ( keys %{$stash->{capture}} ) {
     my $fh = $stash->{capture}{$_};
     Carp::confess "Custom handle for $_ must be seekable\n"
-      unless ref($fh) eq 'GLOB' || (blessed($fh) && $fh->isa("IO::Seekable"));
+        unless ref($fh) eq 'GLOB' || (blessed($fh) && $fh->isa("IO::Seekable"));
   }
   # save existing filehandles and setup captures
   local *CT_ORIG_STDIN  = *STDIN ;
@@ -307,33 +318,33 @@ sub _capture_tee {
   local *CT_ORIG_STDERR = *STDERR;
   # find initial layers
   my %layers = (
-    stdin   => [PerlIO::get_layers(\*STDIN) ],
-    stdout  => [PerlIO::get_layers(\*STDOUT, output => 1)],
-    stderr  => [PerlIO::get_layers(\*STDERR, output => 1)],
+      stdin   => [PerlIO::get_layers(\*STDIN) ],
+      stdout  => [PerlIO::get_layers(\*STDOUT, output => 1)],
+      stderr  => [PerlIO::get_layers(\*STDERR, output => 1)],
   );
   # _debug( "# existing layers for $_\: @{$layers{$_}}\n" ) for qw/stdin stdout stderr/;
   # get layers from underlying glob of tied filehandles if we can
   # (this only works for things that work like Tie::StdHandle)
   $layers{stdout} = [PerlIO::get_layers(tied *STDOUT)]
-    if tied(*STDOUT) && (reftype tied *STDOUT eq 'GLOB');
+      if tied(*STDOUT) && (reftype tied *STDOUT eq 'GLOB');
   $layers{stderr} = [PerlIO::get_layers(tied *STDERR)]
-    if tied(*STDERR) && (reftype tied *STDERR eq 'GLOB');
+      if tied(*STDERR) && (reftype tied *STDERR eq 'GLOB');
   # _debug( "# tied object corrected layers for $_\: @{$layers{$_}}\n" ) for qw/stdin stdout stderr/;
   # bypass scalar filehandles and tied handles
   # localize scalar STDIN to get a proxy to pick up FD0, then restore later to CT_ORIG_STDIN
   my %localize;
   $localize{stdin}++,  local(*STDIN)
-    if grep { $_ eq 'scalar' } @{$layers{stdin}};
+      if grep { $_ eq 'scalar' } @{$layers{stdin}};
   $localize{stdout}++, local(*STDOUT)
-    if $do_stdout && grep { $_ eq 'scalar' } @{$layers{stdout}};
+      if $do_stdout && grep { $_ eq 'scalar' } @{$layers{stdout}};
   $localize{stderr}++, local(*STDERR)
-    if ($do_stderr || $do_merge) && grep { $_ eq 'scalar' } @{$layers{stderr}};
+      if ($do_stderr || $do_merge) && grep { $_ eq 'scalar' } @{$layers{stderr}};
   $localize{stdin}++, local(*STDIN), _open( \*STDIN, "<&=0")
-    if tied *STDIN && $] >= 5.008;
+      if tied *STDIN && $] >= 5.008;
   $localize{stdout}++, local(*STDOUT), _open( \*STDOUT, ">&=1")
-    if $do_stdout && tied *STDOUT && $] >= 5.008;
+      if $do_stdout && tied *STDOUT && $] >= 5.008;
   $localize{stderr}++, local(*STDERR), _open( \*STDERR, ">&=2")
-    if ($do_stderr || $do_merge) && tied *STDERR && $] >= 5.008;
+      if ($do_stderr || $do_merge) && tied *STDERR && $] >= 5.008;
   # _debug( "# localized $_\n" ) for keys %localize;
   # proxy any closed/localized handles so we don't use fds 0, 1 or 2
   my %proxy_std = _proxy_std();
@@ -358,17 +369,22 @@ sub _capture_tee {
   # _debug( "# redirecting in parent ...\n" );
   _open_std( $stash->{new} );
   # execute user provided code
-  my ($exit_code, $inner_error, $outer_error, @result);
+  my ($exit_code, $inner_error, $outer_error, $orig_pid, @result);
   {
+    $orig_pid = $$;
     local *STDIN = *CT_ORIG_STDIN if $localize{stdin}; # get original, not proxy STDIN
     # _debug( "# finalizing layers ...\n" );
     _relayer(\*STDOUT, $layers{stdout}) if $do_stdout;
     _relayer(\*STDERR, $layers{stderr}) if $do_stderr;
     # _debug( "# running code $code ...\n" );
-    local $@;
+    my $old_eval_err=$@;
+    undef $@;
     eval { @result = $code->(); $inner_error = $@ };
     $exit_code = $?; # save this for later
     $outer_error = $@; # save this for later
+    STDOUT->flush if $do_stdout;
+    STDERR->flush if $do_stderr;
+    $@ = $old_eval_err;
   }
   # restore prior filehandles and shut down tees
   # _debug( "# restoring filehandles ...\n" );
@@ -383,16 +399,16 @@ sub _capture_tee {
   # return captured output, but shortcut in void context
   # unless we have to echo output to tied/scalar handles;
   my %got;
-  if ( defined wantarray or ($do_tee && keys %localize) ) {
+  if ( $orig_pid == $$ and ( defined wantarray or ($do_tee && keys %localize) ) ) {
     for ( keys %do ) {
       _relayer($stash->{capture}{$_}, $layers{$_});
       $got{$_} = _slurp($_, $stash);
       # _debug("# slurped " . length($got{$_}) . " bytes from $_\n");
     }
     print CT_ORIG_STDOUT $got{stdout}
-      if $do_stdout && $do_tee && $localize{stdout};
+        if $do_stdout && $do_tee && $localize{stdout};
     print CT_ORIG_STDERR $got{stderr}
-      if $do_stderr && $do_tee && $localize{stderr};
+        if $do_stderr && $do_tee && $localize{stderr};
   }
   $? = $exit_code;
   $@ = $inner_error if $inner_error;
@@ -420,39 +436,39 @@ Capture::Tiny - Capture STDOUT and STDERR from Perl, XS or external programs
 
 =head1 VERSION
 
-version 0.24
+version 0.36
 
 =head1 SYNOPSIS
 
-   use Capture::Tiny ':all';
+  use Capture::Tiny ':all';
 
-   # capture from external command
+  # capture from external command
 
-   ($stdout, $stderr, $exit) = capture {
-     system( $cmd, @args );
-   };
+  ($stdout, $stderr, $exit) = capture {
+    system( $cmd, @args );
+  };
 
-   # capture from arbitrary code (Perl or external)
+  # capture from arbitrary code (Perl or external)
 
-   ($stdout, $stderr, @result) = capture {
-     # your code here
-   };
+  ($stdout, $stderr, @result) = capture {
+    # your code here
+  };
 
-   # capture partial or merged output
+  # capture partial or merged output
 
-   $stdout = capture_stdout { ... };
-   $stderr = capture_stderr { ... };
-   $merged = capture_merged { ... };
+  $stdout = capture_stdout { ... };
+  $stderr = capture_stderr { ... };
+  $merged = capture_merged { ... };
 
-   # tee output
+  # tee output
 
-   ($stdout, $stderr) = tee {
-     # your code here
-   };
+  ($stdout, $stderr) = tee {
+    # your code here
+  };
 
-   $stdout = tee_stdout { ... };
-   $stderr = tee_stderr { ... };
-   $merged = tee_merged { ... };
+  $stdout = tee_stdout { ... };
+  $stderr = tee_stderr { ... };
+  $merged = tee_merged { ... };
 
 =head1 DESCRIPTION
 
@@ -469,10 +485,10 @@ The following functions are available.  None are exported by default.
 
 =head2 capture
 
-   ($stdout, $stderr, @result) = capture \&code;
-   $stdout = capture \&code;
+  ($stdout, $stderr, @result) = capture \&code;
+  $stdout = capture \&code;
 
-The C<<< capture >>> function takes a code reference and returns what is sent to
+The C<capture> function takes a code reference and returns what is sent to
 STDOUT and STDERR as well as any return values from the code reference.  In
 scalar context, it returns only STDOUT.  If no output was received for a
 filehandle, it returns an empty string for that filehandle.  Regardless of calling
@@ -481,70 +497,70 @@ context, all output is captured -- nothing is passed to the existing filehandles
 It is prototyped to take a subroutine reference as an argument. Thus, it
 can be called in block form:
 
-   ($stdout, $stderr) = capture {
-     # your code here ...
-   };
+  ($stdout, $stderr) = capture {
+    # your code here ...
+  };
 
 Note that the coderef is evaluated in list context.  If you wish to force
-scalar context on the return value, you must use the C<<< scalar >>> keyword.
+scalar context on the return value, you must use the C<scalar> keyword.
 
-   ($stdout, $stderr, $count) = capture {
-     my @list = qw/one two three/;
-     return scalar @list; # $count will be 3
-   };
+  ($stdout, $stderr, $count) = capture {
+    my @list = qw/one two three/;
+    return scalar @list; # $count will be 3
+  };
 
-Also note that within the coderef, the C<<< @_ >>> variable will be empty.  So don't
+Also note that within the coderef, the C<@_> variable will be empty.  So don't
 use arguments from a surrounding subroutine without copying them to an array
 first:
 
-   sub wont_work {
-     my ($stdout, $stderr) = capture { do_stuff( @_ ) };    # WRONG
-     ...
-   }
+  sub wont_work {
+    my ($stdout, $stderr) = capture { do_stuff( @_ ) };    # WRONG
+    ...
+  }
 
-   sub will_work {
-     my @args = @_;
-     my ($stdout, $stderr) = capture { do_stuff( @args ) }; # RIGHT
-     ...
-   }
+  sub will_work {
+    my @args = @_;
+    my ($stdout, $stderr) = capture { do_stuff( @args ) }; # RIGHT
+    ...
+  }
 
 Captures are normally done to an anonymous temporary filehandle.  To
 capture via a named file (e.g. to externally monitor a long-running capture),
 provide custom filehandles as a trailing list of option pairs:
 
-   my $out_fh = IO::File->new("out.txt", "w+");
-   my $err_fh = IO::File->new("out.txt", "w+");
-   capture { ... } stdout => $out_fh, stderr => $err_fh;
+  my $out_fh = IO::File->new("out.txt", "w+");
+  my $err_fh = IO::File->new("out.txt", "w+");
+  capture { ... } stdout => $out_fh, stderr => $err_fh;
 
-The filehandles must be readE<sol>write and seekable.  Modifying the files or
+The filehandles must be read/write and seekable.  Modifying the files or
 filehandles during a capture operation will give unpredictable results.
 Existing IO layers on them may be changed by the capture.
 
-When called in void context, C<<< capture >>> saves memory and time by
+When called in void context, C<capture> saves memory and time by
 not reading back from the capture handles.
 
 =head2 capture_stdout
 
-   ($stdout, @result) = capture_stdout \&code;
-   $stdout = capture_stdout \&code;
+  ($stdout, @result) = capture_stdout \&code;
+  $stdout = capture_stdout \&code;
 
-The C<<< capture_stdout >>> function works just like C<<< capture >>> except only
+The C<capture_stdout> function works just like C<capture> except only
 STDOUT is captured.  STDERR is not captured.
 
 =head2 capture_stderr
 
-   ($stderr, @result) = capture_stderr \&code;
-   $stderr = capture_stderr \&code;
+  ($stderr, @result) = capture_stderr \&code;
+  $stderr = capture_stderr \&code;
 
-The C<<< capture_stderr >>> function works just like C<<< capture >>> except only
+The C<capture_stderr> function works just like C<capture> except only
 STDERR is captured.  STDOUT is not captured.
 
 =head2 capture_merged
 
-   ($merged, @result) = capture_merged \&code;
-   $merged = capture_merged \&code;
+  ($merged, @result) = capture_merged \&code;
+  $merged = capture_merged \&code;
 
-The C<<< capture_merged >>> function works just like C<<< capture >>> except STDOUT and
+The C<capture_merged> function works just like C<capture> except STDOUT and
 STDERR are merged. (Technically, STDERR is redirected to the same capturing
 handle as STDOUT before executing the function.)
 
@@ -553,39 +569,39 @@ properly ordered due to buffering.
 
 =head2 tee
 
-   ($stdout, $stderr, @result) = tee \&code;
-   $stdout = tee \&code;
+  ($stdout, $stderr, @result) = tee \&code;
+  $stdout = tee \&code;
 
-The C<<< tee >>> function works just like C<<< capture >>>, except that output is captured
+The C<tee> function works just like C<capture>, except that output is captured
 as well as passed on to the original STDOUT and STDERR.
 
-When called in void context, C<<< tee >>> saves memory and time by
+When called in void context, C<tee> saves memory and time by
 not reading back from the capture handles, except when the
 original STDOUT OR STDERR were tied or opened to a scalar
 handle.
 
 =head2 tee_stdout
 
-   ($stdout, @result) = tee_stdout \&code;
-   $stdout = tee_stdout \&code;
+  ($stdout, @result) = tee_stdout \&code;
+  $stdout = tee_stdout \&code;
 
-The C<<< tee_stdout >>> function works just like C<<< tee >>> except only
+The C<tee_stdout> function works just like C<tee> except only
 STDOUT is teed.  STDERR is not teed (output goes to STDERR as usual).
 
 =head2 tee_stderr
 
-   ($stderr, @result) = tee_stderr \&code;
-   $stderr = tee_stderr \&code;
+  ($stderr, @result) = tee_stderr \&code;
+  $stderr = tee_stderr \&code;
 
-The C<<< tee_stderr >>> function works just like C<<< tee >>> except only
+The C<tee_stderr> function works just like C<tee> except only
 STDERR is teed.  STDOUT is not teed (output goes to STDOUT as usual).
 
 =head2 tee_merged
 
-   ($merged, @result) = tee_merged \&code;
-   $merged = tee_merged \&code;
+  ($merged, @result) = tee_merged \&code;
+  $merged = tee_merged \&code;
 
-The C<<< tee_merged >>> function works just like C<<< capture_merged >>> except that output
+The C<tee_merged> function works just like C<capture_merged> except that output
 is captured as well as passed on to STDOUT.
 
 Caution: STDOUT and STDERR output in the merged result are not guaranteed to be
@@ -595,17 +611,17 @@ properly ordered due to buffering.
 
 =head2 Portability
 
-Portability is a goal, not a guarantee.  C<<< tee >>> requires fork, except on
-Windows where C<<< system(1, @cmd) >>> is used instead.  Not tested on any
+Portability is a goal, not a guarantee.  C<tee> requires fork, except on
+Windows where C<system(1, @cmd)> is used instead.  Not tested on any
 particularly esoteric platforms yet.  See the
 L<CPAN Testers Matrix|http://matrix.cpantesters.org/?dist=Capture-Tiny>
 for test result by platform.
 
 =head2 PerlIO layers
 
-Capture::Tiny does it's best to preserve PerlIO layers such as ':utf8' or
+Capture::Tiny does its best to preserve PerlIO layers such as ':utf8' or
 ':crlf' when capturing (only for Perl 5.8.1+) .  Layers should be applied to
-STDOUT or STDERR I<before> the call to C<<< capture >>> or C<<< tee >>>.  This may not work
+STDOUT or STDERR I<before> the call to C<capture> or C<tee>.  This may not work
 for tied filehandles (see below).
 
 =head2 Modifying filehandles before capturing
@@ -613,11 +629,11 @@ for tied filehandles (see below).
 Generally speaking, you should do little or no manipulation of the standard IO
 filehandles prior to using Capture::Tiny.  In particular, closing, reopening,
 localizing or tying standard filehandles prior to capture may cause a variety of
-unexpected, undesirable andE<sol>or unreliable behaviors, as described below.
+unexpected, undesirable and/or unreliable behaviors, as described below.
 Capture::Tiny does its best to compensate for these situations, but the
 results may not be what you desire.
 
-B<Closed filehandles>
+=head3 Closed filehandles
 
 Capture::Tiny will work even if STDIN, STDOUT or STDERR have been previously
 closed.  However, since they will be reopened to capture or tee output, any
@@ -632,18 +648,18 @@ descriptor 0, as this causes problems on various platforms.
 Prior to Perl 5.12, closed STDIN combined with PERL_UNICODE=D leaks filehandles
 and also breaks tee() for undiagnosed reasons.  So don't do that.
 
-B<Localized filehandles>
+=head3 Localized filehandles
 
 If code localizes any of Perl's standard filehandles before capturing, the capture
 will affect the localized filehandles and not the original ones.  External system
 calls are not affected by localizing a filehandle in Perl and will continue
 to send output to the original filehandles (which will thus not be captured).
 
-B<Scalar filehandles>
+=head3 Scalar filehandles
 
 If STDOUT or STDERR are reopened to scalar filehandles prior to the call to
-C<<< capture >>> or C<<< tee >>>, then Capture::Tiny will override the output filehandle for
-the duration of the C<<< capture >>> or C<<< tee >>> call and then, for C<<< tee >>>, send captured
+C<capture> or C<tee>, then Capture::Tiny will override the output filehandle for
+the duration of the C<capture> or C<tee> call and then, for C<tee>, send captured
 output to the output filehandle after the capture is complete.  (Requires Perl
 5.8)
 
@@ -652,20 +668,20 @@ reference, but note that external processes will not be able to read from such
 a handle.  Capture::Tiny tries to ensure that external processes will read from
 the null device instead, but this is not guaranteed.
 
-B<Tied output filehandles>
+=head3 Tied output filehandles
 
-If STDOUT or STDERR are tied prior to the call to C<<< capture >>> or C<<< tee >>>, then
+If STDOUT or STDERR are tied prior to the call to C<capture> or C<tee>, then
 Capture::Tiny will attempt to override the tie for the duration of the
-C<<< capture >>> or C<<< tee >>> call and then send captured output to the tied filehandle after
+C<capture> or C<tee> call and then send captured output to the tied filehandle after
 the capture is complete.  (Requires Perl 5.8)
 
 Capture::Tiny may not succeed resending UTF-8 encoded data to a tied
 STDOUT or STDERR filehandle.  Characters may appear as bytes.  If the tied filehandle
 is based on L<Tie::StdHandle>, then Capture::Tiny will attempt to determine
-appropriate layers like C<<< :utf8 >>> from the underlying filehandle and do the right
+appropriate layers like C<:utf8> from the underlying filehandle and do the right
 thing.
 
-B<Tied input filehandle>
+=head3 Tied input filehandle
 
 Capture::Tiny attempts to preserve the semantics of tied STDIN, but this
 requires Perl 5.8 and is not entirely predictable.  External processes
@@ -674,12 +690,20 @@ will not be able to read from such a handle.
 Unless having STDIN tied is crucial, it may be safest to localize STDIN when
 capturing:
 
-   my ($out, $err) = do { local *STDIN; capture { ... } };
+  my ($out, $err) = do { local *STDIN; capture { ... } };
 
 =head2 Modifying filehandles during a capture
 
-Attempting to modify STDIN, STDOUT or STDERR I<during> C<<< capture >>> or C<<< tee >>> is
+Attempting to modify STDIN, STDOUT or STDERR I<during> C<capture> or C<tee> is
 almost certainly going to cause problems.  Don't do that.
+
+=head3 Forking inside a capture
+
+Forks aren't portable.  The behavior of filehandles during a fork is even
+less so.  If Capture::Tiny detects that a fork has occurred within a
+capture, it will shortcut in the child process and return empty strings for
+captures.  Other problems may occur in the child or parent, as well.
+Forking in a capture block is not recommended.
 
 =head2 No support for Perl 5.8.0
 
@@ -694,15 +718,18 @@ Perl 5.6 predates PerlIO.  UTF-8 data may not be captured correctly.
 
 =head2 PERL_CAPTURE_TINY_TIMEOUT
 
-Capture::Tiny uses subprocesses for C<<< tee >>>.  By default, Capture::Tiny will
-timeout with an error if the subprocesses are not ready to receive data within
-30 seconds (or whatever is the value of C<<< $Capture::Tiny::TIMEOUT >>>).  An
-alternate timeout may be specified by setting the C<<< PERL_CAPTURE_TINY_TIMEOUT >>>
-environment variable.  Setting it to zero will disable timeouts.
+Capture::Tiny uses subprocesses internally for C<tee>.  By default,
+Capture::Tiny will timeout with an error if such subprocesses are not ready to
+receive data within 30 seconds (or whatever is the value of
+C<$Capture::Tiny::TIMEOUT>).  An alternate timeout may be specified by setting
+the C<PERL_CAPTURE_TINY_TIMEOUT> environment variable.  Setting it to zero will
+disable timeouts.  B<NOTE>, this does not timeout the code reference being
+captured -- this only prevents Capture::Tiny itself from hanging your process
+waiting for its child processes to be ready to proceed.
 
 =head1 SEE ALSO
 
-This module was, inspired by L<IO::CaptureOutput>, which provides
+This module was inspired by L<IO::CaptureOutput>, which provides
 similar functionality without the ability to tee output and with more
 complicated code and API.  L<IO::CaptureOutput> does not handle layers
 or most of the unusual cases described in the L</Limitations> section and
@@ -713,7 +740,7 @@ albeit with various limitations that make them appropriate only in particular
 circumstances.  I'm probably missing some.  The long list is provided to show
 why I felt Capture::Tiny was necessary.
 
-=over
+=over 4
 
 =item *
 
@@ -824,9 +851,25 @@ L<https://github.com/dagolden/Capture-Tiny>
 
 David Golden <dagolden@cpan.org>
 
-=head1 CONTRIBUTOR
+=head1 CONTRIBUTORS
+
+=for stopwords Dagfinn Ilmari Mannsåker David E. Wheeler fecundf
+
+=over 4
+
+=item *
 
 Dagfinn Ilmari Mannsåker <ilmari@ilmari.org>
+
+=item *
+
+David E. Wheeler <david@justatheory.com>
+
+=item *
+
+fecundf <not.com+github@gmail.com>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 
