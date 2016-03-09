@@ -38,6 +38,9 @@ INSTALLER
 PACKAGES
 	Fixed: Global symbol "$rs" requires explicit package name at Package/Webstats/Awstats/Uninstaller.pm line 103
 
+PLUGINS
+	Updated: API version to 1.0.3
+
 SERVERS
 	Added: createUser() and dropUSer() methods (SQL server impl.)
 	Fixed: MySQL server socket is missing after reboot (only with Upstart init)
