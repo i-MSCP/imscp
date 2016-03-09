@@ -58,6 +58,9 @@ TOOLS
 	Fixed: imscp-net-traffic-logger must not depend on the SQL service
 	Removed: imscp-net-interface-mngr script (no longer needed because IP addresses are now persistent)
 
+VENDOR
+	Added: Net::IP Perl module v1.26 from CPAN (libnet-ip-perl package under wheezy/precise is too old)
+
 YOUTRACK
 	IP-1394 httpd-logs-mngr starts before mysql server on reboot
 	IP-1428 i-MSCP services such as imscp_network should not depend on the mysql service

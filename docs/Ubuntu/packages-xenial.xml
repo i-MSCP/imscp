@@ -136,7 +136,6 @@
         <package>libfile-homedir-perl</package>
         <package>libmailtools-perl</package>
         <package>libmime-tools-perl</package>
-        <package>libnet-ip-perl</package>
         <package>libnet-dns-perl</package>
         <package>libnet-libidn-perl</package>
         <package>libtimedate-perl</package>
