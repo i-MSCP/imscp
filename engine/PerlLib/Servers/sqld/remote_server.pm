@@ -89,7 +89,7 @@ sub restart
 
 =item createUser($user, $host, $password)
 
- Create given SQL user
+ Create the given SQL user
 
  Param $string $user SQL username
  Param string $host SQL user host

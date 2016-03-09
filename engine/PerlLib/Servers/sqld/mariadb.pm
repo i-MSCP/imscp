@@ -40,7 +40,7 @@ use parent 'Servers::sqld::mysql';
 
 =item createUser($user, $host, $password)
 
- Create given SQL user
+ Create the given SQL user
 
  Param $string $user SQL username
  Param string $host SQL user host
@@ -62,6 +62,8 @@ sub createUser
     ref $qrs eq 'HASH' or die(sprintf('Could not create the %s@%s SQL user: %s', $user, $host, $qrs));
     0;
 }
+
+=back
 
 =head1 AUTHOR
 

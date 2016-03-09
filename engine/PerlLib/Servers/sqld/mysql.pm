@@ -153,7 +153,7 @@ sub restart
 
 =item createUser($user, $host, $password)
 
- Create given SQL user
+ Create the given SQL user
 
  Param $string $user SQL username
  Param string $host SQL user host
@@ -181,7 +181,7 @@ sub createUser
 	0;
 }
 
-=item createUser($user, $host)
+=item dropUser($user, $host)
 
  Drop the given SQL user if exists
 
