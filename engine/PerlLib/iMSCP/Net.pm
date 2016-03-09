@@ -26,6 +26,7 @@ package iMSCP::Net;
 use strict;
 use warnings;
 use Carp;
+use Data::Validate::IP qw(is_ipv4 is_ipv6);
 use iMSCP::Execute;
 use Net::IP qw(:PROC);
 use parent 'Common::SingletonClass';
@@ -92,7 +93,6 @@ sub addAddr
 sub delAddr
 {
     my ($self, $addr) = @_;
-    $self->isValidAddr($addr) or croak(sprintf('Invalid IP address: %s', $addr));
 
     return 0 unless $self->isKnownAddr($addr);
 
@@ -118,9 +118,9 @@ sub delAddr
 sub getAddrVersion
 {
     my ($self, $addr) = @_;
-    my $version = ip_get_version($addr);
-    $version or croak(sprintf('Invalid IP address: %s', $addr));
-    $version == 4 ? 'ipv4' : 'ipv6';
+    $self->isValidAddr($addr) or croak(sprintf('Invalid IP address: %s', $addr));
+    my $version = ip_get_version($addr) or croak(sprint('Could not guess version of the %s IP address', $addr));
+    ip_get_version($addr) == 4 ? 'ipv4' : 'ipv6';
 }
 
 =item getAddrType($addr)
@@ -135,10 +135,10 @@ sub getAddrVersion
 sub getAddrType
 {
     my ($self, $addr) = @_;
-
-    my $version = ip_get_version($addr, 6);
-    $version or croak(sprintf('Invalid IP address: %s', $addr));
-    ip_iptype(ip_iptobin(ip_expand_address($addr, $version), $version), $version);
+    my $version = $self->getAddrVersion($addr) eq 'ipv4' ? 4 : 6;
+    ip_iptype(ip_iptobin(ip_expand_address($addr, $version), $version), $version) or croak(sprintf(
+        'Could not guess type of the %s IP address', $addr
+    ));
 }
 
 =item getAddrDevice($addr)
@@ -153,7 +153,6 @@ sub getAddrType
 sub getAddrDevice
 {
     my ($self, $addr) = @_;
-    $self->isValidAddr($addr) or croak(sprintf('Invalid IP address: %s', $addr));
     $self->isKnownAddr($addr) or croak(sprintf('Unknown IP address: %s', $addr));
     $self->{'addresses'}->{$addr}->{'device'};
 }
@@ -170,7 +169,6 @@ sub getAddrDevice
 sub getAddrDeviceLabel
 {
     my ($self, $addr) = @_;
-    $self->isValidAddr($addr) or croak(sprintf('Invalid IP address: %s', $addr));
     $self->isKnownAddr($addr) or croak(sprintf('Unknown IP address: %s', $addr));
     $self->{'addresses'}->{$addr}->{'device_label'};
 }
@@ -187,7 +185,7 @@ sub getAddrDeviceLabel
 sub isKnownAddr
 {
     my ($self, $addr) = @_;
-    exists($self->{'addresses'}->{$addr});
+    exists $self->{'addresses'}->{$addr};
 }
 
 =item isValidAddr($addr)
@@ -202,7 +200,7 @@ sub isKnownAddr
 sub isValidAddr
 {
     my ($self, $addr) = @_;
-    ip_get_version($addr) ? 1 : 0;
+    is_ipv4($addr) || is_ipv6($addr);
 }
 
 =item normalizeAddr($addr)
@@ -217,8 +215,9 @@ sub isValidAddr
 sub normalizeAddr
 {
     my ($self, $addr) = @_;
+    $self->isValidAddr($addr) or croak(sprintf('Invalid IP address: %s', $addr));
     return $addr unless $self->getAddrVersion($addr) eq 'ipv6';
-    ip_compress_address($addr, 6) or croak(sprint('Could not normalize the %s IP address', $addr));
+    ip_compress_address($addr, 6) or croak(sprintf('Could not normalize the %s IP address', $addr));
 }
 
 =item expandAddr($addr)
@@ -233,8 +232,9 @@ sub normalizeAddr
 sub expandAddr
 {
     my ($self, $addr) = @_;
+    $self->isValidAddr($addr) or croak(sprintf('Invalid IP address: %s', $addr));
     return $addr unless $self->getAddrVersion($addr) eq 'ipv6';
-    ip_expand_address($addr, 6) or croak(sprint('Could not expand the %s IP address', $addr));
+    ip_expand_address($addr, 6) or croak(sprintf('Could not expand the %s IP address', $addr));
 }
 
 =item getDevices()

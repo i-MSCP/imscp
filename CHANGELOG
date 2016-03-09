@@ -13,6 +13,7 @@ BACKEND
 	Backported: iMSCP::Net changes from 1.3.x branch
 	Changed: IP addresses are now persistent (they are added into /etc/network/interfaces file)
 	Fixed: Could not create SQL user when using MariaDB SQL remote server
+	Fixed: Ip addresses are not validated correctly in iMSCP::Net
 	Fixed: macvlan interfaces not properly mapped in iMSCP::Net
 	Fixed: Shell arguments must be escaped in imscp-pkt-mngr and imscp-sw-mngr
 
