@@ -70,7 +70,7 @@ sub registerSetupListeners
 
 =item askDnsServerMode(\%dialog)
 
- Ask user for DNS server mode
+ Ask user for DNS server type to configure
 
  Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
@@ -88,7 +88,9 @@ sub askDnsServerMode
 		|| !grep($_ eq $dnsServerMode, ( 'master', 'slave' ))
 	) {
 		($rs, $dnsServerMode) = $dialog->radiolist(
-			"\nSelect bind mode", [ 'master', 'slave' ], $dnsServerMode eq 'slave' ? 'slave' : 'master'
+			"\nSelect DNS server type to configure",
+			[ 'master', 'slave' ],
+			$dnsServerMode eq 'slave' ? 'slave' : 'master'
 		);
 	}
 
@@ -102,7 +104,7 @@ sub askDnsServerMode
 
 =item askDnsServerIps(\%dialog)
 
- Ask user for DNS server IPs
+ Ask user for DNS server adresses IP
 
  Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
@@ -114,32 +116,28 @@ sub askDnsServerIps
 	my ($self, $dialog) = @_;
 
 	my $dnsServerMode = $self->{'config'}->{'BIND_MODE'};
-	my $masterDnsIps = main::setupGetQuestion('PRIMARY_DNS') || $self->{'config'}->{'PRIMARY_DNS'};
-	$masterDnsIps =~ s/;/ /g;
-	my @masterDnsIps = split ' ', $masterDnsIps;
 
-	my $slaveDnsIps = main::setupGetQuestion('SECONDARY_DNS') || $self->{'config'}->{'SECONDARY_DNS'};
-	$slaveDnsIps =~ s/;/ /g;
-	my @slaveDnsIps = split ' ', $slaveDnsIps;
+	my @masterDnsIps = split ';', main::setupGetQuestion('PRIMARY_DNS') || $self->{'config'}->{'PRIMARY_DNS'};
+	my @slaveDnsIps = split ';', main::setupGetQuestion('SECONDARY_DNS') || $self->{'config'}->{'SECONDARY_DNS'};
 
 	my ($rs, $answer, $msg) = (0, '', '');
 
 	if($dnsServerMode eq 'master') {
 		if(grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
-			|| !$slaveDnsIps
-			|| ($slaveDnsIps ne 'no' && !$self->_checkIps(\@slaveDnsIps))
+			|| "@slaveDnsIps" ne 'no' && !$self->_checkIps(@slaveDnsIps)
 		) {
 			($rs, $answer) = $dialog->radiolist(
-				"\nDo you want add slave DNS servers?", [ 'no', 'yes' ],
-				grep($_ eq @slaveDnsIps,  ( '', 'no' )) ? 'no' : 'yes'
+				"\nDo you want add slave DNS servers?",
+				[ 'no', 'yes' ],
+				grep($_ eq "@slaveDnsIps", ('', 'no')) ? 'no' : 'yes'
 			);
 
 			if($rs != 30 && $answer eq 'yes') {
-				@slaveDnsIps = () if $slaveDnsIps eq 'no';
+				@slaveDnsIps = () if "@slaveDnsIps" eq 'no';
 
 				do {
 					($rs, $answer) = $dialog->inputbox(
-						"\nPlease enter slave DNS server IP addresses, each separated by space: $msg", "@slaveDnsIps"
+						"\nPlease enter IP addresses for the slave DNS servers, each separated by a space: $msg", "@slaveDnsIps"
 					);
 
 					$msg = '';
@@ -148,8 +146,8 @@ sub askDnsServerIps
 						@slaveDnsIps = split ' ', $answer;
 
 						if("@slaveDnsIps" eq '') {
-							$msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease, try again:";
-						} elsif(!$self->_checkIps(\@slaveDnsIps)) {
+							$msg = "\n\n\\Z1You must enter at least one IP address.\\Zn\n\nPlease, try again:";
+						} elsif(!$self->_checkIps(@slaveDnsIps)) {
 							$msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease, try again:";
 						}
 					}
@@ -159,10 +157,10 @@ sub askDnsServerIps
 			}
 		}
 	} elsif(grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
-		|| grep($_ eq $masterDnsIps, ( '', 'no' ))
-		|| !$self->_checkIps(\@masterDnsIps)
+		|| grep($_ eq "@masterDnsIps", ( '', 'no' ))
+		|| !$self->_checkIps(@masterDnsIps)
 	) {
-		@masterDnsIps = () if $masterDnsIps eq 'no';
+		@masterDnsIps = () if "@masterDnsIps" eq 'no';
 
 		do {
 			($rs, $answer) = $dialog->inputbox(
@@ -176,7 +174,7 @@ sub askDnsServerIps
 
 				if("@masterDnsIps" eq '') {
 					$msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease, try again:";
-				} elsif(!$self->_checkIps(\@masterDnsIps)) {
+				} elsif(!$self->_checkIps(@masterDnsIps)) {
 					$msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease, try again:";
 				}
 			}
@@ -186,7 +184,7 @@ sub askDnsServerIps
 	if($rs != 30) {
 		if($dnsServerMode eq 'master') {
 			$self->{'config'}->{'PRIMARY_DNS'} = 'no';
-			$self->{'config'}->{'SECONDARY_DNS'} = ("@slaveDnsIps" ne 'no') ? join ';', @slaveDnsIps : 'no';
+			$self->{'config'}->{'SECONDARY_DNS'} = "@slaveDnsIps" ne 'no' ? join ';', @slaveDnsIps : 'no';
 		} else {
 			$self->{'config'}->{'PRIMARY_DNS'} = join ';', @masterDnsIps;
 			$self->{'config'}->{'SECONDARY_DNS'} = 'no';
@@ -515,22 +513,22 @@ sub _saveConf
 	iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.data" )->copyFile("$self->{'cfgDir'}/bind.old.data");
 }
 
-=item _checkIps(\@ips)
+=item _checkIps(@ips)
 
  Check IP addresses
 
- Param array \@ips IP addresses to check
+ Param list @ips List of IP addresses to check
  Return bool TRUE if all IPs are valid, FALSE otherwise
 
 =cut
 
 sub _checkIps
 {
-	my ($self, $ips) = @_;
+	my ($self, @ips) = @_;
 
 	my $net = iMSCP::Net->getInstance();
 
-	for my $ipAddr(@{$ips}) {
+	for my $ipAddr(@ips) {
 		return 0 unless $net->isValidAddr($ipAddr) &&
 			grep($_ eq $net->getAddrType($ipAddr), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ));
 	}
