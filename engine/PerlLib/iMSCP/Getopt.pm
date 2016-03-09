@@ -257,21 +257,25 @@ sub listener
 
 =back
 
-=head1 OPTIONS
+=head1 AUTOLOAD
 
- Default accessor/mutator for command line options
-
- Return mixed Option value if defined or undef;
+ Handles all option fields, by creating accessor methods for them the
+ first time they are accessed.
 
 =cut
 
 sub AUTOLOAD
 {
-	(my $option = our $AUTOLOAD) =~ s/.*://;
-	my($class, $value) = @_;
+	(my $field = our $AUTOLOAD) =~ s/.*://;
 
-	$options->{$option} = $value if $value;
-	$options->{$option};
+	no strict 'refs';
+	*$AUTOLOAD = sub {
+		my $this = shift;
+
+		return $options->{$field} unless @_;
+		$options->{$field} = shift;
+	};
+	goto &$AUTOLOAD;
 }
 
 =back
