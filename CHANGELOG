@@ -59,7 +59,8 @@ TOOLS
 	Removed: imscp-net-interface-mngr script (no longer needed because IP addresses are now persistent)
 
 VENDOR
-	Added: Net::IP Perl module v1.26 from CPAN (libnet-ip-perl package under wheezy/precise is too old)
+	Added: Net::IP Perl module version 1.26 from CPAN (libnet-ip-perl package under wheezy/precise is too old)
+	Updated: Net::Domain::TLD Perl module to version 1.74
 
 YOUTRACK
 	IP-1394 httpd-logs-mngr starts before mysql server on reboot
