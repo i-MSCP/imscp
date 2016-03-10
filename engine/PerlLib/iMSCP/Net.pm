@@ -423,7 +423,6 @@ sub _extractAddresses
         'Could not extract network devices data: %s', $stderr || 'Unknown error'
     ));
 
-#2: eth0    inet 192.168.1.180 peer 192.168.1.1/32 brd 192.168.1.180 scope global eth0:7000\       valid_lft forever preferred_lft forever
     my $addresses = {};
     $addresses->{$3} = {
         device        => $1,
