@@ -339,7 +339,7 @@ sub _rebuildVsFTPdDebianPackage
 			error($stderr) if $rs && $stderr;
 			return $rs if $rs;
 
-			my $ret = execute("dpkg --compare-versions $stdout '<' 3", \$stdout, \$stderr);
+			my $ret = execute("dpkg --compare-versions $stdout lt 3", \$stdout, \$stderr);
 			if($stderr) {
 				error( sprintf( 'Could not compare vsftpd package version: %s', $stderr ) );
 				return 1;

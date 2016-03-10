@@ -28,6 +28,7 @@ INSTALLER
 	Added: 'panel' reconfiguration item
 	Fixed: Could not unset 'hold' state on packages in some contexts
 	Fixed: Dialog backup (back up) feature is broken
+	Fixed: dpkg: warning: --compare-versions used with obsolete relation operator '<'
 	Fixed: Ensure that sysvinit scripts are disabled when upstart job are provided and when init is Upstart
 	Fixed: init_is_upstart() function not available in lsb-base < 4.1+Debian3 (sysvinit scripts)
 	Fixed: Mitigate possible PHP timezone warning with CLI SAPI
