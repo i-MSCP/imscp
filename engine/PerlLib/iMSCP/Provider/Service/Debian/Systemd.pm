@@ -92,14 +92,15 @@ sub enable
 {
 	my ($self, $service) = @_;
 
+	my $fservice = $service;
 	if($self->_isSystemd($service)) {
 		my $unitFilePath = $self->getUnitFilePath($service);
-		$service = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
+		$fservice = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
 	}
 
 	if($SYSTEMCTL_COMPAT_MODE) {
-		if($self->_isSystemd($service)) {
-			return 0 unless $self->SUPER::enable($service);
+		if($self->_isSystemd($fservice)) {
+			return 0 unless $self->SUPER::enable($fservice);
 		}
 
 		# Backward compatibility operations
@@ -116,7 +117,7 @@ sub enable
 	}
 
 	# Note: Will automatically call update-rc.d in case of a sysvinit script
-	$self->SUPER::enable($service);
+	$self->SUPER::enable($fservice);
 }
 
 =item disable($service)
@@ -132,14 +133,15 @@ sub disable
 {
 	my ($self, $service) = @_;
 
+	my $fservice = $service;
 	if($self->_isSystemd($service)) {
 		my $unitFilePath = $self->getUnitFilePath($service);
-		$service = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
+		$fservice = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
 	}
 
 	if($SYSTEMCTL_COMPAT_MODE) {
-		if($self->_isSystemd($service)) {
-			return 0 unless $self->SUPER::disable($service);
+		if($self->_isSystemd($fservice)) {
+			return 0 unless $self->SUPER::disable($fservice);
 		}
 
 		# Backward compatibility operations
@@ -156,7 +158,7 @@ sub disable
 	}
 
 	# Note: Will automatically call update-rc.d in case of a sysvinit script
-	$self->SUPER::disable($service);
+	$self->SUPER::disable($fservice);
 }
 
 =item remove($service)
