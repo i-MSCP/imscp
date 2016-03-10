@@ -31,7 +31,7 @@ use iMSCP::EventManager;
 
 # Configure the list of local networks to allow for non TLS connection
 # For instance: my @localNetworks = ('127.0.0.1', '192.168.1.1', '172.16.12.0/24');
-my @localNetworks = ('127.0.0.1');
+my @localNetworks = ('127.0.0.1', '::1');
 
 #
 ## Please, don't edit anything below this line
@@ -42,18 +42,6 @@ iMSCP::EventManager->getInstance()->register('afterFtpdBuildConf', sub {
 
 	return 0 unless $tplName eq 'proftpd.conf';
 
-	my $cfgSnippet = <<EOF;
-
-  # Don't require FTPS from local clients
-  <IfClass local>
-    TLSRequired            off
-  </IfClass>
-  # Require FTPS from remote/non-local clients
-  <IfClass !local>
-    TLSRequired            on
-  </IfClass>
-EOF
-
 	my $cfgNetworks;
 	for my $network(@localNetworks) {
 		$cfgNetworks .= "\n  From $network";
@@ -62,11 +50,11 @@ EOF
 	# Disable the message displayed on connect
 	$$tplContent =~ s/^(ServerType.*)/$1\nServerIdent                off/m;
 
-	# Remove TLSRequired
-	$$tplContent =~ s/^\s+TLSRequired.*\n//m;
-
-	# Insert $cfgSnippet
-	$$tplContent =~ s/^(<IfModule mod_tls\.c>$)/$1\n$cfgSnippet/m;
+	# Enforce TLS connections for non-local networks
+	$$tplContent =~ s/^(<IfModule mod_tls\.c>$)/$1\n  <IfClass !local>/m;
+	$$tplContent =~ s/^(\s+TLSRequired.*)off$/$1on/m;
+	$$tplContent =~ s/^(\s+TLS.*$)/  $1/gm;
+	$$tplContent =~ s/^(\s+TLS.*\n)(<\/IfModule>)/$1  <\/IfClass>\n$2/gm;
 
 	# Insert class local
 	$$tplContent .= "\n<Class local>$cfgNetworks\n</Class>";
