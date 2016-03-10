@@ -4,6 +4,10 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+INSTALLER
+	Fixed: Argument "" isn't numeric in numeric eq (==) at engine/PerlLib/Package/FrontEnd/Installer.pm line 270
+	Fixed: Could not enable service when unit file is a symlink due to 'No such file or directory' error (systemd)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.2.16
 ------------------------------------------------------------------------------------------------------------------------

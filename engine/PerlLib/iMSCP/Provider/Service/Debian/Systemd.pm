@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Execute;
 use iMSCP::File;
+use File::Basename;
 use Scalar::Defer;
 use parent qw(
 	iMSCP::Provider::Service::Systemd
@@ -91,6 +92,11 @@ sub enable
 {
 	my ($self, $service) = @_;
 
+	if($self->_isSystemd($service)) {
+		my $unitFilePath = $self->getUnitFilePath($service);
+		$service = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
+	}
+
 	if($SYSTEMCTL_COMPAT_MODE) {
 		if($self->_isSystemd($service)) {
 			return 0 unless $self->SUPER::enable($service);
@@ -125,6 +131,11 @@ sub enable
 sub disable
 {
 	my ($self, $service) = @_;
+
+	if($self->_isSystemd($service)) {
+		my $unitFilePath = $self->getUnitFilePath($service);
+		$service = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
+	}
 
 	if($SYSTEMCTL_COMPAT_MODE) {
 		if($self->_isSystemd($service)) {

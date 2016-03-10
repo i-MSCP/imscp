@@ -268,7 +268,7 @@ sub setupAskServerIps
 	} $net->getAddresses();
 
 	unless(@serverIps) {
-		error('Could not retrieve servers IP addresses. At least one public or private IP adddress must be configured.');
+		error('Could not retrieve server IP addresses. At least one public or private IP adddress must be configured.');
 		return 1;
 	}
 
