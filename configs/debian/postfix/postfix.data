@@ -19,7 +19,6 @@ MTA_RELAY_HASH = /etc/postfix/imscp/relay_domains
 MTA_SENDER_ACCESS_HASH = /etc/postfix/imscp/sender-access
 MTA_MAILBOX_UID_NAME = vmail
 MTA_MAILBOX_GID_NAME = mail
-MTA_SASL_CONF_DIR = /etc/postfix/sasl
 
 # Possible value: yes or no
 # (Not implemented yet)
@@ -36,7 +35,3 @@ MTA_SASL_CONF_DIR = /etc/postfix/sasl
 # the server hostname
 # (Not implemented yet)
 #SMTP_BIND_ADDRESS6 =
-
-# SASL SQL user (since 1.1.12)
-DATABASE_USER =
-DATABASE_PASSWORD =

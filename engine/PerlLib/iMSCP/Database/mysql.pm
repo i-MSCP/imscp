@@ -288,8 +288,6 @@ sub dumpdb
 	my $rootHomeDir = File::HomeDir->users_home($main::imscpConfig{'ROOT_USER'});
 
 	my @cmd = (
-		'nice', '-n', '15',     # Reduce the CPU priority
-		'ionice', '-c2', '-n5', # Reduce the I/O priority
 		'mysqldump',
 		'--opt',
 		'--complete-insert',

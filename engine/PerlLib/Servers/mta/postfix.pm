@@ -45,23 +45,6 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%eventManager)
-
- Register setup event listeners
-
- Param iMSCP::EventManager \%eventManager
- Return int 0 on success, other on failure
-
-=cut
-
-sub registerSetupListeners
-{
-	my ($self, $eventManager) = @_;
-
-	require Servers::mta::postfix::installer;
-	Servers::mta::postfix::installer->getInstance()->registerSetupListeners($eventManager);
-}
-
 =item preinstall()
 
  Process preinstall tasks
@@ -78,10 +61,8 @@ sub preinstall
 	return $rs if $rs;
 
 	require Servers::mta::postfix::installer;
-	$rs = Servers::mta::postfix::installer->getInstance()->preinstall();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaPreInstall', 'postfix');
+	$rs = $rs = Servers::mta::postfix::installer->getInstance()->preinstall();
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaPreInstall', 'postfix');
 }
 
 =item install()
@@ -101,9 +82,7 @@ sub install
 
 	require Servers::mta::postfix::installer;
 	$rs = Servers::mta::postfix::installer->getInstance()->install();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaInstall', 'postfix');
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaInstall', 'postfix');
 }
 
 =item uninstall()
@@ -123,12 +102,8 @@ sub uninstall
 
 	require Servers::mta::postfix::uninstaller;
 	$rs = Servers::mta::postfix::uninstaller->getInstance()->uninstall();
-	return $rs if $rs;
-
-	$rs = $self->restart();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaUninstall', 'postfix');
+	$rs ||= $self->restart();
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaUninstall', 'postfix');
 }
 
 =item postinstall()
@@ -157,7 +132,6 @@ sub postinstall
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [
 			sub {
 				my $rs = 0;
-
 				for my $map(keys %{$self->{'postmap'}}) {
 					$rs ||= $self->postmap($map);
 				}
@@ -188,9 +162,7 @@ sub setEnginePermissions
 
 	require Servers::mta::postfix::installer;
 	$rs = Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
 }
 
 =item restart()
@@ -237,13 +209,11 @@ sub postmap
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaPostmap', \$filename, \$filetype);
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("postmap $filetype:$filename", \$stdout, \$stderr);
+	$rs = execute("postmap $filetype:$filename", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
 
-	$self->{'eventManager'}->trigger('afterMtaPostmap', $filename, $filetype);
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaPostmap', $filename, $filetype);
 }
 
 =item addDmn(\%data)
@@ -270,10 +240,9 @@ sub addDmn
 		if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
 			# Remove any previous entry of this domain from the Postfix relay_domains map
 			$rs = $self->_deleteFromRelayHash($data);
-			return $rs if $rs;
 
 			# Add the domain entry to the Postfix relay_domain map
-			$rs = $self->_addToRelayHash($data);
+			$rs ||= $self->_addToRelayHash($data);
 			return $rs if $rs;
 		}
 	} elsif($data->{'EXTERNAL_MAIL'} eq 'wildcard') { # Only mail for in-existent subdomains is managed by external server
@@ -286,10 +255,9 @@ sub addDmn
 		if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
 			# Remove any previous entry of this domain from the Postfix relay_domains map
 			$rs = $self->_deleteFromRelayHash($data);
-			return $rs if $rs;
 
 			# Add the wildcard entry for in-existent subdomains to the Postfix relay_domain map
-			$rs = $self->_addToRelayHash($data);
+			$rs ||= $self->_addToRelayHash($data);
 			return $rs if $rs;
 		}
 	} elsif($data->{'MAIL_ENABLED'}) { # Mail for domain and subdomains is managed by i-MSCP mail host
@@ -305,10 +273,9 @@ sub addDmn
 	} else {
 		# Remove entry from the Postfix virtual_mailbox_domains map
 		$rs = $self->disableDmn($data);
-		return $rs if $rs;
 
 		# Remove any previous entry of this domain from the Postfix relay_domains map
-		$rs = $self->_deleteFromRelayHash($data);
+		$rs ||= $self->_deleteFromRelayHash($data);
 		return $rs if $rs;
 	}
 
@@ -337,29 +304,19 @@ sub disableDmn
 
 	my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/domains" );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkDomainsHashFile");
+		error("Could not read $wrkDomainsHashFile");
 		return 1;
 	}
 
 	my $entry = "$data->{'DOMAIN_NAME'}\t\t\t$data->{'TYPE'}\n";
-
 	$content =~ s/^$entry//gim;
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodDomainsHashFile);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodDomainsHashFile);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodDomainsHashFile} = 1;
@@ -386,15 +343,9 @@ sub deleteDmn
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelDmn', $data);
-	return $rs if $rs;
-
-	$rs = $self->disableDmn($data);
-	return $rs if $rs;
-
-	$rs = iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
-	return $rs if $rs;
-
-	$rs = $self->{'eventManager'}->trigger('afterMtaDelDmn', $data);
+	$rs ||= $self->disableDmn($data);
+	$rs ||= iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaDelDmn', $data);
 }
 
 =item addSub(\%data)
@@ -411,12 +362,8 @@ sub addSub
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaAddSub', $data);
-	return $rs if $rs;
-
-	$rs = $self->addDmn($data);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaAddSub', $data);
+	$rs ||= $self->addDmn($data);
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaAddSub', $data);
 }
 
 =item disableSub(\%data)
@@ -433,12 +380,8 @@ sub disableSub
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaDisableSub', $data);
-	return $rs if $rs;
-
-	$rs = $self->disableDmn($data);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaDisableSub', $data);
+	$rs ||= $self->disableDmn($data);
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaDisableSub', $data);
 }
 
 =item deleteSub(\%data)
@@ -455,12 +398,8 @@ sub deleteSub
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelSub', $data);
-	return $rs if $rs;
-
-	$rs = $self->deleteDmn($data);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaDelSub', $data);
+	$rs ||= $self->deleteDmn($data);
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaDelSub', $data);
 }
 
 =item addMail(\%data)
@@ -528,21 +467,11 @@ sub deleteMail
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelMail', $data);
-	return $rs if $rs;
-
-	$rs = $self->_deleteMailBox($data);
-	return $rs if $rs;
-
-	$rs = $self->_deleteMailForward($data);
-	return $rs if $rs;
-
-	$rs = $self->_deleteAutoRspnd($data);
-	return $rs if $rs;
-
-	$rs = $self->_deleteCatchAll($data);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaDelMail', $data);
+	$rs ||= $self->_deleteMailBox($data);
+	$rs ||= $self->_deleteMailForward($data);
+	$rs ||= $self->_deleteAutoRspnd($data);
+	$rs ||= $self->_deleteCatchAll($data);
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaDelMail', $data);
 }
 
 =item disableMail(\%data)
@@ -559,21 +488,11 @@ sub disableMail
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaDisableMail', $data);
-	return $rs if $rs;
-
-	$rs = $self->_disableMailBox($data);
-	return $rs if $rs;
-
-	$rs = $self->_deleteMailForward($data);
-	return $rs if $rs;
-
-	$rs = $self->_deleteAutoRspnd($data);
-	return $rs if $rs;
-
-	$rs = $self->_deleteCatchAll($data);
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaDisableMail', $data);
+	$rs ||= $self->_disableMailBox($data);
+	$rs ||= $self->_deleteMailForward($data);
+	$rs ||= $self->_deleteAutoRspnd($data);
+	$rs ||= $self->_deleteCatchAll($data);
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaDisableMail', $data);
 }
 
 =item getTraffic()
@@ -618,7 +537,7 @@ sub getTraffic
 		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tpmFile1, { preserve => 'no' } );
 		die(iMSCP::Debug::getLastError()) if $rs;
 
-		tie my @content, 'Tie::File', $tpmFile1 or die("Unable to tie $tpmFile1");
+		tie my @content, 'Tie::File', $tpmFile1 or die("Could not tie $tpmFile1");
 
 		unless($selfCall) {
 			# Saving last processed line number and line content
@@ -646,7 +565,7 @@ sub getTraffic
 			my $tpmFile2 = File::Temp->new();
 			my ($stdout, $stderr);
 			$rs = execute("grep postfix $tpmFile1 | maillogconvert.pl standard 1> $tpmFile2", undef, \$stderr);
-			die("Unable to extract postfix data: $stderr") if $rs;
+			die("Could not extract postfix data: $stderr") if $rs;
 
 			# Read and parse SMTP traffic source file (line by line)
 			while(<$tpmFile2>) {
@@ -702,7 +621,6 @@ sub _init
 	$self->{'commentChar'} = '#';
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data"; \%c; };
 	$self->{'eventManager'}->trigger('afterMtaInit', $self, 'postfix') and fatal('postfix - afterMtaInit has failed');
-
 	$self;
 }
 
@@ -728,9 +646,8 @@ sub _addToRelayHash
 
 	my $file = iMSCP::File->new( filename => $wrkRelayHashFile );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkRelayHashFile");
+		error("Could not read $wrkRelayHashFile");
 		return 1;
 	}
 
@@ -743,22 +660,13 @@ sub _addToRelayHash
 	$content .= $entry unless $content =~ /^$entry/gim;
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodRelayHashFile);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodRelayHashFile);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodRelayHashFile} = 1;
-
 	$self->{'eventManager'}->trigger('afterMtaAddToRelayHash', $data);
 }
 
@@ -784,33 +692,22 @@ sub _deleteFromRelayHash
 
 	my $file= iMSCP::File->new( filename => $wrkRelayHashFile );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkRelayHashFile");
+		error("Could not read $wrkRelayHashFile");
 		return 1;
 	}
 
 	my $entry = "\\.?$data->{'DOMAIN_NAME'}\t\t\tOK\n"; # Match both "domain.tld" and ".domain.tld" entries
-
 	$content =~ s/^$entry//gim;
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodRelayHashFile);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodRelayHashFile);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodRelayHashFile} = 1;
-
 	$self->{'eventManager'}->trigger('afterMtaDelFromRelayHash', $data);
 }
 
@@ -836,29 +733,19 @@ sub _addToDomainsHash
 
 	my $file = iMSCP::File->new( filename => $wrkDomainsHashFile );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkDomainsHashFile");
+		error("Could not read $wrkDomainsHashFile");
 		return 1;
 	}
 
 	my $entry = "$data->{'DOMAIN_NAME'}\t\t\t$data->{'TYPE'}\n";
-
 	$content .= $entry unless $content =~ /^$entry/gim;
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodDomainsHashFile);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodDomainsHashFile);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodDomainsHashFile} = 1;
@@ -895,30 +782,20 @@ sub _addMailBox
 
 	my $file = iMSCP::File->new( filename => $wrkMailboxesFileHash );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkMailboxesFileHash");
+		error("Could not read $wrkMailboxesFileHash");
 		return 1;
 	}
 
 	my $mailbox = quotemeta($data->{'MAIL_ADDR'});
-
 	$content =~ s/^$mailbox\s+[^\n]*\n//gim;
 	$content .= "$data->{'MAIL_ADDR'}\t$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/\n";
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodMailboxesFileHash);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodMailboxesFileHash);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodMailboxesFileHash} = 1;
@@ -968,33 +845,22 @@ sub _disableMailBox
 
 	my $file = iMSCP::File->new( filename => $wrkMailboxesFileHash );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkMailboxesFileHash");
+		error("Could not read $wrkMailboxesFileHash");
 		return 1;
 	}
 
 	my $mailbox = quotemeta($data->{'MAIL_ADDR'});
-
 	$content =~ s/^$mailbox\s+[^\n]*\n//gim;
 
-	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodMailboxesFileHash);
+	$rs ||= $file->set($content);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodMailboxesFileHash);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodMailboxesFileHash} = 1;
-
 	$self->{'eventManager'}->trigger('afterMtaDisableMailbox', $data);
 }
 
@@ -1012,19 +878,13 @@ sub _deleteMailBox
 	my ($self, $data) = @_;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaDelMailbox', $data);
-	return $rs if $rs;
+	$rs ||= $self->_disableMailBox($data);
 
-	$rs = $self->_disableMailBox($data);
-	return $rs if $rs;
-
-	return $rs if ! $data->{'MAIL_ACC'};
+	return $rs if !$data->{'MAIL_ACC'};
 
 	my $mailDir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
-
 	$rs = iMSCP::Dir->new( dirname => $mailDir )->remove();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterMtaDelMailbox', $data);
+	$rs ||= $self->{'eventManager'}->trigger('afterMtaDelMailbox', $data);
 }
 
 =item _addMailForward(\%data)
@@ -1049,14 +909,12 @@ sub _addMailForward
 
 	my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkAliasesFileHash");
+		error("Could not read $wrkAliasesFileHash");
 		return 1;
 	}
 
 	my $forwardEntry = quotemeta($data->{'MAIL_ADDR'});
-
 	$content =~ s/^$forwardEntry\s+[^\n]*\n//gim;
 
 	my @line;
@@ -1073,22 +931,13 @@ sub _addMailForward
 	$content .= "$data->{'MAIL_ADDR'}\t" . join(',', @line) . "\n" if scalar @line;
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodAliasesFileHash);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodAliasesFileHash);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodAliasesFileHash} = 1;
-
 	$self->{'eventManager'}->trigger('afterMtaAddMailForward', $data);
 }
 
@@ -1114,14 +963,12 @@ sub _deleteMailForward
 
 	my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkAliasesFileHash");
+		error("Could not read $wrkAliasesFileHash");
 		return 1;
 	}
 
 	my $forwardEntry = quotemeta($data->{'MAIL_ADDR'});
-
 	$content =~ s/^$forwardEntry\s+[^\n]+\n//gim;
 
 	# Handle normal mail accounts entries for which auto-responder is active
@@ -1139,22 +986,13 @@ sub _deleteMailForward
 	}
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodAliasesFileHash);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodAliasesFileHash);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodAliasesFileHash} = 1;
-
 	$self->{'eventManager'}->trigger('afterMtaDelMailForward', $data);
 }
 
@@ -1180,34 +1018,23 @@ sub _addAutoRspnd
 
 	my $file = iMSCP::File->new( filename => $wrkTransportFileHash );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkTransportFileHash");
+		error("Could not read $wrkTransportFileHash");
 		return 1;
 	}
 
 	my $transportEntry = quotemeta("imscp-arpl.$data->{'DOMAIN_NAME'}");
-
 	$content =~ s/^$transportEntry\s+[^\n]*\n//gmi;
 	$content .= "imscp-arpl.$data->{'DOMAIN_NAME'}\timscp-arpl:\n";
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodTransportFileHash);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodTransportFileHash);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodTransportFileHash} = 1;
-
 	$self->{'eventManager'}->trigger('afterMtaAddAutoRspnd', $data);
 }
 
@@ -1233,9 +1060,8 @@ sub _deleteAutoRspnd
 
 	my $file = iMSCP::File->new( filename => $wrkTransportFileHash );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkTransportFileHash");
+		error("Could not read $wrkTransportFileHash");
 		return 1;
 	}
 
@@ -1244,22 +1070,13 @@ sub _deleteAutoRspnd
 	$content =~ s/^$transportEntry\s+[^\n]*\n//gmi;
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodTransportFileHash);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodTransportFileHash);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodTransportFileHash} = 1;
-
 	$self->{'eventManager'}->trigger('afterMtaDelAutoRspnd', $data);
 }
 
@@ -1285,9 +1102,8 @@ sub _addCatchAll
 
 	my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkAliasesFileHash");
+		error("Could not read $wrkAliasesFileHash");
 		return 1;
 	}
 
@@ -1304,22 +1120,13 @@ sub _addCatchAll
 	}
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodAliasesFileHash);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodAliasesFileHash);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodAliasesFileHash} = 1;
-
 	$self->{'eventManager'}->trigger('afterMtaAddCatchAll', $data);
 }
 
@@ -1345,9 +1152,8 @@ sub _deleteCatchAll
 
 	my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
 	my $content = $file->get();
-
 	unless(defined $content) {
-		error("Unable to read $wrkAliasesFileHash");
+		error("Could not read $wrkAliasesFileHash");
 		return 1;
 	}
 
@@ -1361,22 +1167,13 @@ sub _deleteCatchAll
 	$content =~ s/^$catchAll\s+[^\n]*\n//gim;
 
 	$rs = $file->set($content);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->copyFile($prodAliasesFileHash);
+	$rs ||= $file->save();
+	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs ||= $file->mode(0644);
+	$rs ||= $file->copyFile($prodAliasesFileHash);
 	return $rs if $rs;
 
 	$self->{'postmap'}->{$prodAliasesFileHash} = 1;
-
 	$self->{'eventManager'}->trigger('afterMtaDelCatchAll', $data);
 }
 
@@ -1402,9 +1199,8 @@ END
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

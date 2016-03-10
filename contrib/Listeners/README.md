@@ -6,140 +6,163 @@ Set of listener files for i-MSCP. These listener files are only compatible with 
 
 ## Installation
 
-To install a listener file, you must upload it the **/etc/imscp/listeners.d** directory, and edit the configuration
+To install a listener file, you must upload it in the **/etc/imscp/listeners.d** directory, and edit the configuration
 parameters inside it if any. Once done, you should rerun the i-MSCP installer.
 
-## Apache2 listeners
+## Apache2 listener files
 
 ### 10_apache2_dualstack.pl
 
-Listener file that provides dual stack support for Apache2.
+Provides dual stack support for Apache2.
 
 ### 20_apache2_serveralias_override.pl
 
-Listener file that allows to override Apache2 ServerAlias directive value.
+Allows to overwrite Apache2 ServerAlias directive.
 
 ### 30_apache2_redirects_permanently.pl
 
-Listener file that allows to change the domain redirect type in customer's vhost files from 302 to 301.
+Changes the domain redirect type in customer's vhost files from 302 to 301.
 
 ### 40_apache2_tools_proxy.pl
 
-Listener file for redirect/proxy in customers vhost files for the i-MSCP tools
+Allows to redirect/proxy i-MSCP tools (pma,webmail...) in customers Apache2 vhost files.
 
-## Dovecot listeners
+## Dovecot listener files
 
 ### 10_dovecot_compress.pl
 
-Listener file for activating the dovecot compress plugin, to reduce the bandwidth usage of IMAP and to also compress
-the stored mails. For more information please check: 
-http://wiki2.dovecot.org/Plugins/Compress
-http://wiki2.dovecot.org/Plugins/Zlib
+Activates the Dovecot compress plugin to reduce the bandwidth usage of IMAP, and also compresses the stored mails.
+
+For more information please consult:
+
+    http://wiki2.dovecot.org/Plugins/Compress
+    http://wiki2.dovecot.org/Plugins/Zlib
 
 ### 20_dovecot_connections.pl
 
-Listener file to increase the mail_max_userip_connections
+Allows to increase the mail_max_userip_connections parameter value.
 
 ### 30_dovecot_namespace.pl
 
-Listener file that creates the INBOX. as a compatibility name, so old clients can continue using it while new clients 
-will use the empty prefix namespace.
+Creates the INBOX. as a compatibility name, so old clients can continue using it while new clients will use the empty
+prefix namespace.
 
 ### 40_dovecot_pfs.pl
 
-Listener file to activate the Perfect Forward Secrecy logging
+Activates the Perfect Forward Secrecy logging.
 
 ### 50_dovecot_plaintext.pl
 
-Listener file to disable plaintext logins and force tls.
-Also remove the authentication mechanisms cram-md5 and digest-md5 which won't be supported anymore in i-MSCP 1.3
+Disables plaintext logins and enforce TLS. Also remove the cram-md5 and digest-md5 authentication mechanisms that are no
+longer supported in i-MSCP 1.3.x.
 
-## Named listeners
+### 60_dovecot_service_login.pl
+
+Allows to modify default service-login configuration options. This listener file requires dovecot version 2.1.0 or newer.
+
+## Named (Bind9) listener files
 
 ### 10_bind9_localnets.pl
 
-Listener file that allows to setup Bind9 for local network.
+Allows to setup Bind9 for local network.
+
+### 10_named_slave_provisioning.pl
+
+Provides slave DNS server(s) provisioning service.
+This listener file requires i-MSCP 1.2.12 or newer.
 
 ### 10_named_tuning.pl
 
-Listener file that allows to replace defaults **@ IN <IP>** DNS record with a custom DNS record.
-
-### 20_bind9_dualstack.pl
-
-Listener file that provides dual stack support for bind9.
-
-### 10_named_zonetransfer.pl
-
-Listener file that provides zone output for zone transfer to secondary nameserver (zone provisioning).
+Allows to replace defaults **@ IN <IP>** DNS record with a custom DNS record (when a custom DNS is set as replacement).
 
 ### 10_named_tuning2.pl
 
-Listener file that modifies the zone files, removes default nameservers and adds custom out-of-zone nameservers.
+Overwrites the default nameservers with out-of-zone nameservers.
 
-## Nginx listeners
+### 20_bind9_dualstack.pl
+
+Provides dual stack support for bind9.
+
+## Nginx listener files
 
 ### 10_nginx_hsts.pl
 
-Listener file for HTTP Strict Transport Security (HSTS) with Nginx
+Activates HTTP Strict Transport Security (HSTS).
 
-## Postfix listeners
+## PHP listener files
+
+### 10_php_confoptions_override.pl
+
+Allows to add or override PHP configuration options globally or per domain.
+
+Be aware that only Fcgid and PHP-FPM Apache2 httpd server implementations are supported.
+
+Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'. You
+can do this by running:
+
+```
+# cd <your_imscp_archive>
+# perl imscp-autoinstall -dar httpd
+```
+
+## Postfix listener files
 
 ### 10_postfix_smarthost.pl
 
-Listener file that allows to configure the Postfix as smarthost with SASL authentication.
+Allows to configure Postfix as smarthost with SASL authentication.
 
 ### 10_postfix_tuning.pl
 
-Listener file that allows to tune Postfix configuration files (main.cf and master.cf).
+Allows to tune Postfix configuration files (main.cf and master.cf).
 
 ### 20_postfix_policyd_whitelist.pl
 
-Listener file that allows to setup policyd-weight whilelist maps.
+Allows to setup policyd-weight whilelist maps.
 
 ### 30_postfix_bcc_maps.pl
 
-Listener file that allows to setup recipient and sender bbc map.
+Allows to setup recipient and sender bbc map.
 
 ### 40_postfix_sender_canonical.pl
 
-Listener file that allows to setup sender canonical maps.
+Allows to setup sender canonical maps.
 
 ### 50_postfix_sender_generic.pl
 
-Listener file that allows to setup sender generic map.
+Allows to setup sender generic map.
 
 ### 60_postfix_pfs.pl
 
-Listener file to add the self generated EDH parameter files for Perfect 
-Forward Secrecy (PFS). First create the files before activating this listener:
+Adds self-generated EDH parameter files for Perfect Forward Secrecy (PFS).
+
+First, you must create the files before activating this listener:
 
 ```
-cd /etc/postfix
-umask 022
-openssl dhparam -out dh512.tmp 512 && mv dh512.tmp dh512.pem
-openssl dhparam -out dh2048.tmp 2048 && mv dh2048.tmp dh2048.pem
-chmod 644 dh512.pem dh2048.pem
+# cd /etc/postfix
+# umask 022
+# openssl dhparam -out dh512.tmp 512 && mv dh512.tmp dh512.pem
+# openssl dhparam -out dh2048.tmp 2048 && mv dh2048.tmp dh2048.pem
+# chmod 644 dh512.pem dh2048.pem
 ```
 
 ### 70_postfix_submission_tls.pl
 
-Listener file to force TLS connection on postfix submission.
+Enforces TLS connection on Postfix submission.
 
-## Proftpd listeners
+## Proftpd listener files
 
 ### 10_proftpd_tuning.pl
 
-Listener file that removes the ServerIdent information, and forces a TLS 
-connection for non local networks.
+Removes the ServerIdent information, and enforces TLS connections for non-local networks.
 
-## Roundcube listeners
+## Roundcube Webmail listener files
 
 ### 10_roundcube_tls.pl
 
-Listener file to change the Roundcube config to connect via TLS.
+Changes the Roundcube Webmail configuration to connect through TLS.
 
-## System listeners
+## System listener files
 
 ## 10_system_hosts.pl
 
-Listener file that allows to add host entries in the system hosts file (eg. /etc/hosts).
+Allows to add host entries in the system hosts file (eg. /etc/hosts).

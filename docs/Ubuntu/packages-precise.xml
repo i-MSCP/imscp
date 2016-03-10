@@ -1,6 +1,6 @@
 <packages>
     <frontend default="nginx">
-        <nginx repository_conflict="deb http://nginx.org/.*">
+        <nginx repository_conflict="http://nginx.org/packages/ubuntu">
             <package>nginx-light</package>
             <package>spawn-fcgi</package>
             <package>php5-cgi</package>
@@ -36,7 +36,10 @@
             <package>courier-pop</package>
             <package>courier-pop-ssl</package>
             <package>libgamin0</package>
+            <package>libsasl2-modules</package>
+            <package>libsasl2-modules-sql</package>
             <package>maildrop</package>
+            <package_conflict>sasl2-bin</package_conflict>
         </courier>
         <dovecot>
             <package>dovecot-core</package>
@@ -48,9 +51,7 @@
     <mta default="postfix">
         <postfix>
             <package>postfix</package>
-            <package>libsasl2-modules</package>
-            <package>libsasl2-modules-sql</package>
-            <package>sasl2-bin</package>
+            <package_conflict>procmail</package_conflict>
         </postfix>
     </mta>
     <ftpd default="proftpd">
@@ -68,71 +69,145 @@
     </named>
     <sql default="mysql_5.5">
         <mysql_5.5
-                pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
+                pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=precise"
                 pinning_pin_priority="1001"
+                allow_switch_to="mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
                 >
-            <package>mysql-server-5.5</package>
+            <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
+            <package>mysql-server-5.5</package>
         </mysql_5.5>
+        <mysql_5.6
+                repository="http://repo.mysql.com/apt/ubuntu/ precise mysql-5.6"
+                repository_key_id="0x8c718d3b5072e1f5"
+                repository_key_srv="pgp.mit.edu"
+                pinning_package="*"
+                pinning_pin="origin repo.mysql.com"
+                pinning_pin_priority="1001"
+                allow_switch_to="mysql_5.7,percona_5.6,percona_5.7,remote_server"
+                >
+            <package>libmysqlclient18</package>
+            <package>mysql-community-client</package>
+            <package>mysql-common</package>
+            <package>mysql-community-server</package>
+        </mysql_5.6>
+        <mysql_5.7
+                repository="http://repo.mysql.com/apt/ubuntu/ precise mysql-5.7"
+                repository_key_id="0x8c718d3b5072e1f5"
+                repository_key_srv="pgp.mit.edu"
+                pinning_package="*"
+                pinning_pin="origin repo.mysql.com"
+                pinning_pin_priority="1001"
+                allow_switch_to="percona_5.7,remote_server"
+                >
+            <package>libmysqlclient18</package>
+            <package>libmysqlclient20</package>
+            <package>mysql-community-client</package>
+            <package>mysql-common</package>
+            <package>mysql-community-server</package>
+            <package_conflict>percona-server-common-5.7</package_conflict>
+        </mysql_5.7>
         <mariadb_5.5
                 pinning_package="*"
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
-                repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/5.5/ubuntu precise main"
+                repository="http://mirror2.hs-esslingen.de/mariadb/repo/5.5/ubuntu precise main"
                 repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0xcbcb082a1bb943db"
+                allow_switch_to="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
                 >
+            <package>libmariadbclient18</package>
+            <package>libmysqlclient18</package>
             <package>mariadb-client-5.5</package>
-            <package>mariadb-server-5.5</package>
             <package>mariadb-common</package>
-            <package>mysql-common</package>
+            <package>mariadb-server-5.5</package>
         </mariadb_5.5>
         <mariadb_10.0
                 pinning_package="*"
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
-                repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu precise main"
+                repository="http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu precise main"
                 repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0xcbcb082a1bb943db"
-                allow_switch_to="percona_5.6,remote_server"
+                allow_switch_to="mariadb_10.1,remote_server"
                 >
+            <package>libmariadbclient18</package>
+            <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
-            <package>mariadb-server-10.0</package>
             <package>mariadb-common</package>
-            <package>mysql-common</package>
+            <package>mariadb-server-10.0</package>
         </mariadb_10.0>
+        <mariadb_10.1
+                repository="http://mirror.netcologne.de/mariadb/repo/10.1/ubuntu precise main"
+                repository_key_id="0xcbcb082a1bb943db"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="origin mirror.netcologne.de"
+                pinning_pin_priority="1001"
+                allow_switch="remote_server"
+                >
+            <package>libmariadbclient18</package>
+            <package>libmysqlclient18</package>
+            <package>mariadb-client-10.1</package>
+            <package>mariadb-common</package>
+            <package>mariadb-server-10.1</package>
+        </mariadb_10.1>
         <percona_5.5
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                repository="deb http://repo.percona.com/apt precise main"
+                repository="http://repo.percona.com/apt precise main"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
+                allow_switch_to="mysql_5.5,mysql_5.6,mysql_5.7,,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.6,percona_5.7,remote_server"
                 >
+            <package>libmysqlclient18</package>
+            <package>libperconaserverclient18</package>
             <package>percona-server-client-5.5</package>
+            <package>mysql-common=5.5*</package>
+            <package>percona-server-common-5.5</package>
             <package>percona-server-server-5.5</package>
-            <package>mysql-common</package>
         </percona_5.5>
         <percona_5.6
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                repository="deb http://repo.percona.com/apt precise main"
+                repository="http://repo.percona.com/apt precise main"
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
-                allow_switch_to="mariadb_10.0,remote_server"
+                allow_switch_to="mysql_5.7,percona_5.7,remote_server"
                 >
+            <package>libmysqlclient18</package>
+            <package>libperconaserverclient18.1</package>
+            <package>mysql-common=5.5*</package>
             <package>percona-server-client-5.6</package>
+            <package>percona-server-common-5.6</package>
             <package>percona-server-server-5.6</package>
-            <package>mysql-common</package>
         </percona_5.6>
+        <percona_5.7
+                repository="http://repo.percona.com/apt precise main"
+                repository_key_id="1C4CBDCDCD2EFD2A"
+                repository_key_srv="keys.gnupg.net"
+                pinning_package="*"
+                pinning_pin="origin repo.percona.com"
+                pinning_pin_priority="1001"
+                allow_switch="mysql_5.7,remote_server"
+                >
+            <package>libmysqlclient18</package>
+            <package>libperconaserverclient20</package>
+            <package>mysql-common=5.5*</package>
+            <package>percona-server-client-5.7</package>
+            <package>percona-server-common-5.7</package>
+            <package>percona-server-server-5.7</package>
+        </percona_5.7>
         <remote_server
-                pinning_package="mysql-server-5.5 mysql-common libmysqlclient18"
+                pinning_package="libmysqlclient18 mysql-common mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=precise"
                 pinning_pin_priority="1001"
                 >
+            <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
         </remote_server>
@@ -155,7 +230,8 @@
         <package>perl</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
-        <package>libcrypt-passwdmd5-perl</package>
+        <package>libcrypt-eksblowfish-perl</package>
+        <package>libcrypt-rijndael-perl</package>
         <package>libdata-validate-domain-perl</package>
         <package>libdatetime-perl</package>
         <package>libdbd-mysql-perl</package>
@@ -179,6 +255,7 @@
         <package>bash-completion</package>
         <package>bzip2</package>
         <package>ca-certificates</package>
+        <package>cron</package>
         <package>curl</package>
         <package>dnsutils</package>
         <package>gcc</package>

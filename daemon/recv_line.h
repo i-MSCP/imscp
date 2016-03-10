@@ -1,11 +1,9 @@
 #ifndef _RECV_LINE_H
-
 #define _RECV_LINE_H
 
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-
 #include "defs.h"
 
 extern char *message(int message_number);

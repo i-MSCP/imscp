@@ -663,7 +663,11 @@ sub _execute
 	$self->endGauge(); # Ensure that no gauge is currently running...
 
 	if($main::noprompt) {
-		exit 5 if $type ne 'infobox' && $type ne 'msgbox';
+		if($type ne 'infobox' && $type ne 'msgbox') {
+			error(sprintf('Failed dialog: %s', $text));
+			exit 5
+		}
+
 		return 0;
 	}
 

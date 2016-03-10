@@ -27,7 +27,7 @@ use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
 use iMSCP::Database;
-use iMSCP::Crypt;
+use iMSCP::Crypt qw/decryptBlowfishCBC encryptBlowfishCBC/;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::SystemUser;
@@ -44,22 +44,16 @@ sub _reencryptPassword($$$$$)
 {
 	my ($tableName, $idFieldName, $pwdFieldName, $row, $errors) = @_;
 
-	my $crypt = iMSCP::Crypt->getInstance();
-
 	# Switch to ispCP database key
 
 	$crypt->set('key', $main::ispcpDBKey);
 	$crypt->set('iv', $main::ispcpDBiv);
 
 	# Decrypt password using ispCP database key
-	my $password = $crypt->decrypt_db_password($row->{$pwdFieldName});
-
-	# Switch to i-MSCP database keys
-	$crypt->set('key', $main::imscpDBKey);
-	$crypt->set('iv', $main::imscpDBiv);
+	my $password = decryptBlowfishCBC($main::ispcpDBKey, $main::ispcpDBiv, $row->{$pwdFieldName});
 
 	# Encrypt password using i-MSCP database key
-	$password = $crypt->encrypt_db_password($password);
+	$password = encryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $password);
 
 	my $database = iMSCP::Database->factory();
 
@@ -76,16 +70,14 @@ sub _reencryptPassword($$$$$)
 # Connect to the ispCP database
 sub _ispCPdbConnect
 {
-	my $crypt = iMSCP::Crypt->getInstance();
-	$crypt->set('key', $main::ispcpDBKey);
-	$crypt->set('iv', $main::ispcpDBiv);
-
 	my $database = iMSCP::Database->factory();
 
 	$database->set('DATABASE_NAME', $main::ispcpConfig{'DATABASE_NAME'});
 	$database->set('DATABASE_HOST', $main::ispcpConfig{'DATABASE_HOST'});
 	$database->set('DATABASE_USER', $main::ispcpConfig{'DATABASE_USER'});
-	$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'}));
+	$database->set('DATABASE_PASSWORD', decryptBlowfishCBC(
+		$main::ispcpDBKey, $main::ispcpDBiv, $main::ispcpConfig{'DATABASE_PASSWORD'})
+	);
 
 	$database->connect();
 }
@@ -281,12 +273,9 @@ EOF
 # Save ispCP main configuration parameters
 sub saveIspcpMainConfiguration
 {
-	my $crypt = iMSCP::Crypt->getInstance();
-	my $password = $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'});
+	my $password = decryptBlowfishCBC($main::ispcpDBKey, $main::ispcpDBiv, $main::ispcpConfig{'DATABASE_PASSWORD'});
 
-	$crypt->set('key', $main::imscpDBKey);
-	$crypt->set('iv', $main::imscpDBiv);
-	$main::imscpConfig{'DATABASE_PASSWORD'} = $crypt->encrypt_db_password($password);
+	$main::imscpConfig{'DATABASE_PASSWORD'} = encryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $password);
 
 	for(
 		qw/
@@ -600,14 +589,12 @@ sub databaseIntegrityTests
 	unless (ref $result eq 'HASH') {
 		push @errors, $result;
 	} else {
-		my $crypt = iMSCP::Crypt->getInstance();
-		$crypt->set('key', $main::ispcpDBKey);
-		$crypt->set('iv', $main::ispcpDBiv);
-
 		if (%{$result}) {
 			for (values %{$result}) {
 				$database->set('DATABASE_USER', $_->{'sqlu_name'});
-				$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($_->{'sqlu_pass'}));
+				$database->set(
+					'DATABASE_PASSWORD', decryptBlowfishCBC($main::ispcpDBKey, $main::ispcpDBiv $_->{'sqlu_pass'})
+				);
 				$database->set('DATABASE_NAME', '');
 
 				my $dbConnect = $database->connect();

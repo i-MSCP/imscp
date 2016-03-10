@@ -851,7 +851,7 @@ sub deleteHtaccess
 
  Process addIps tasks
 
- Param hash \%data Ips data
+ Param hash \%data IPs data as provided by the Modules::Ips module
  Return int 0 on success, other on failure
 
 =cut
@@ -860,24 +860,22 @@ sub addIps
 {
 	my ($self, $data) = @_;
 
-	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+	my $file = iMSCP::File->new( filename => "$self->{'apacheWrkDir'}/00_nameserver.conf" );
+	my $fileContent = $file->get();
+	unless(defined $fileContent) {
+		error(sprintf('Could not read %s file', "$self->{'apacheWrkDir'}/00_nameserver.conf"));
+		return 1;
+	}
 
-	unless(version->parse($version) >= version->parse('2.4.0')) {
-		my $file = iMSCP::File->new( filename => "$self->{'apacheWrkDir'}/00_nameserver.conf" );
-		my $fileContent = $file->get();
-		unless(defined $fileContent) {
-			error("Unable to read $file->{'filename'} file");
-			return 1;
-		}
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddIps', \$fileContent, $data);
+	return $rs if $rs;
 
-		my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddIps', \$fileContent, $data);
-		return $rs if $rs;
-
-		my $ipMngr = iMSCP::Net->getInstance();
+	unless(version->parse("$self->{'config'}->{'HTTPD_VERSION'}") >= version->parse('2.4.0')) {
+		my $net = iMSCP::Net->getInstance();
 		my $confSnippet = "\n";
 
 		for my $ipAddr(@{$data->{'SSL_IPS'}}) {
-			if($ipMngr->getAddrVersion($ipAddr) eq 'ipv4') {
+			if($net->getAddrVersion($ipAddr) eq 'ipv4') {
 				$confSnippet .= "NameVirtualHost $ipAddr:443\n";
 			} else {
 				$confSnippet .= "NameVirtualHost [$ipAddr]:443\n";
@@ -885,7 +883,7 @@ sub addIps
 		}
 
 		for my $ipAddr(@{$data->{'IPS'}}) {
-			if($ipMngr->getAddrVersion($ipAddr) eq 'ipv4') {
+			if($net->getAddrVersion($ipAddr) eq 'ipv4') {
 				$confSnippet .= "NameVirtualHost $ipAddr:80\n";
 			} else {
 				$confSnippet .= "NameVirtualHost [$ipAddr]:80\n";
@@ -893,24 +891,16 @@ sub addIps
 		}
 
 		$fileContent .= $confSnippet;
-
-		$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$fileContent, $data);
-		return $rs if $rs;
-
-		$rs = $file->set($fileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $self->installConfFile('00_nameserver.conf');
-		return $rs if $rs;
-
-		$rs = $self->enableSites('00_nameserver.conf');
-		return $rs if $rs;
-
-		$self->{'restart'} = 1;
 	}
+
+	$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$fileContent, $data);
+	$rs ||= $file->set($fileContent);
+	$rs ||= $file->save();
+	$rs ||= $self->installConfFile('00_nameserver.conf');
+	$rs ||= $self->enableSites('00_nameserver.conf');
+	return $rs if $rs;
+
+	$self->{'restart'} = 1;
 
 	0;
 }
@@ -1111,12 +1101,11 @@ sub getTraffic
 		$sth->execute($ldate);
 
 		while (my $row = $sth->fetchrow_hashref()) {
-			$trafficDb{$row->{'vhost'}} += $row->{'bytes'}
+			$trafficDb{$row->{'vhost'}} += $row->{'bytes'};
 		}
 
 		# Delete traffic data source
 		$dbh->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
-
 		$dbh->commit();
 	};
 
@@ -1631,25 +1620,17 @@ sub _addCfg
 		$self->setData({ CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
-	my $iniLevel = $self->{'config'}->{'INI_LEVEL'};
-	my $fcgidName;
-
-	if($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
-		if($iniLevel eq 'per_user') {
-			$fcgidName = $data->{'ROOT_DOMAIN_NAME'};
-		} elsif ($iniLevel eq 'per_domain') {
-			$fcgidName = $data->{'PARENT_DOMAIN_NAME'};
-		} elsif($iniLevel eq 'per_site') {
-			$fcgidName = $data->{'DOMAIN_NAME'};
-		} else {
-			error("Unknown php.ini level: $iniLevel");
-			return 1;
-		}
+	my $confLevel = $self->{'config'}->{'INI_LEVEL'};
+	if($confLevel eq 'per_user') { # One php.ini file for all domains
+		$confLevel = $data->{'ROOT_DOMAIN_NAME'};
+	} elsif ($confLevel eq 'per_domain') { # One php.ini file for each domains (including subdomains)
+		$confLevel = $data->{'PARENT_DOMAIN_NAME'};
+	} else { # One php.ini file for each domain
+		$confLevel = $data->{'DOMAIN_NAME'};
 	}
 
 	my $version = $self->{'config'}->{'HTTPD_VERSION'};
 	my $apache24 = (version->parse($version) >= version->parse('2.4.0'));
-
 	my $ipMngr = iMSCP::Net->getInstance();
 
 	$self->setData({
@@ -1661,7 +1642,7 @@ sub _addCfg
 		AUTHZ_DENY_ALL => ($apache24) ? 'Require all denied' : 'Deny from all',
 		DOMAIN_IP => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4')
 			? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
-		FCGID_NAME => $fcgidName,
+		FCGID_NAME => $confLevel
 	});
 
 	for my $template(@templates) {
@@ -1916,22 +1897,19 @@ sub _buildPHPConfig
 
 	my $phpStarterDir = $self->{'config'}->{'PHP_STARTER_DIR'};
 	my $phpVersion = $self->{'config'}->{'PHP_VERSION'};
-	my $iniLevel = $self->{'config'}->{'INI_LEVEL'};
+	my $confLevel = $self->{'config'}->{'INI_LEVEL'};
 	my $domainType = $data->{'DOMAIN_TYPE'};
 
 	my ($fcgiDir, $emailDomain);
-	if($iniLevel eq 'per_user') {
+	if($confLevel eq 'per_user') { # One php.ini file for all domains
 		$fcgiDir = "$phpStarterDir/$data->{'ROOT_DOMAIN_NAME'}";
 		$emailDomain = $data->{'ROOT_DOMAIN_NAME'};
-	} elsif ($iniLevel eq 'per_domain') {
+	} elsif ($confLevel eq 'per_domain') { # One php.ini file for each domains (including subdomains)
 		$fcgiDir = "$phpStarterDir/$data->{'PARENT_DOMAIN_NAME'}";
 		$emailDomain = $data->{'PARENT_DOMAIN_NAME'};
-	} elsif($iniLevel eq 'per_site') {
+	} else { # One php.ini file for each domain
 		$fcgiDir = "$phpStarterDir/$data->{'DOMAIN_NAME'}";
 		$emailDomain = $data->{'DOMAIN_NAME'};
-	} else {
-		error("Unknown php.ini level: $iniLevel");
-		return 1;
 	}
 
 	if($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
@@ -1961,7 +1939,7 @@ sub _buildPHPConfig
 		});
 
 		$rs = $self->buildConfFile(
-			"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php-fcgi-starter.tpl",
+		"$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php-fcgi-starter.tpl",
 			$data,
 			{
 				destination => "$fcgiDir/php-fcgi-starter",
@@ -1983,12 +1961,10 @@ sub _buildPHPConfig
 			}
 		);
 		return $rs if $rs;
-	} elsif(
-		$data->{'PHP_SUPPORT'} ne 'yes' || (
-			($iniLevel eq 'per_user' && $domainType ne 'dmn') ||
-			($iniLevel eq 'per_domain' && not $domainType ~~ [ 'dmn', 'als' ]) ||
-			$iniLevel eq 'per_site'
-		)
+	} elsif($data->{'PHP_SUPPORT'} ne 'yes'
+		|| $confLevel eq 'per_user' && $domainType ne 'dmn'
+		|| $confLevel eq 'per_domain' && not $domainType ~~ [ 'dmn', 'als' ]
+		|| $confLevel eq 'per_site'
 	) {
 		$rs = iMSCP::Dir->new( dirname => "$phpStarterDir/$data->{'DOMAIN_NAME'}" )->remove();
 		return $rs if $rs;

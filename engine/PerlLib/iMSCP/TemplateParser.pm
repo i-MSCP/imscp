@@ -26,12 +26,10 @@ package iMSCP::TemplateParser;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use parent 'Common::SingletonClass', 'Exporter';
+use parent 'Exporter';
 
 use vars qw/@EXPORT/;
 @EXPORT = qw/process getBloc replaceBloc/;
-
-my $self = __PACKAGE__->getInstance();
 
 =head1 DESCRIPTION
 
@@ -123,9 +121,8 @@ sub replaceBloc
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

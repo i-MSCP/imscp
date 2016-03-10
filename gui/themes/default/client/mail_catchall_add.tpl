@@ -42,7 +42,7 @@
 			<td>
 				<input type="radio" name="mail_type" id="forward" value="forward"{FORWARD_MAIL_CHECKED}/>
 				<label for="forward">{TR_FORWARD_MAIL}</label>
-				<span class="tips icon i_help" title="{TR_FWD_HELP}"></span>
+				<span class="icon i_help" title="{TR_FWD_HELP}"></span>
 			</td>
 			<td><label><textarea name="forward_list" id="forward_list">{FORWARD_LIST_VAL}</textarea></label></td>
 		</tr>

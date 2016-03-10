@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -135,7 +135,9 @@ sub start
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($self->getInitscriptPath($service), 'start') == 0);
+	return 1 unless $self->_isSysvinit($service);
+
+	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
 }
 
 =item stop($service)
@@ -151,7 +153,9 @@ sub stop
 {
 	my ($self, $service) = @_;
 
-	($self->_exec($self->getInitscriptPath($service), 'stop') == 0);
+	return 1 unless $self->_isSysvinit($service);
+
+	$self->_exec($self->getInitscriptPath($service), 'stop') == 0;
 }
 
 =item restart($service)
@@ -167,11 +171,13 @@ sub restart
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSysvinit($service);
+
 	if($self->isRunning($service)) {
-		($self->_exec($self->getInitscriptPath($service), 'restart') == 0);
-	} else {
-		($self->_exec($self->getInitscriptPath($service), 'start') == 0);
+		return $self->_exec($self->getInitscriptPath($service), 'restart') == 0;
 	}
+
+	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
 }
 
 =item reload($service)
@@ -187,11 +193,13 @@ sub reload
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSysvinit($service);
+
 	if($self->isRunning($service)) {
-		($self->_exec($self->getInitscriptPath($service), 'reload') == 0);
-	} else {
-		($self->_exec($self->getInitscriptPath($service), 'start') == 0);
+		return $self->_exec($self->getInitscriptPath($service), 'reload') == 0;
 	}
+
+	$self->_exec($self->getInitscriptPath($service), 'start') == 0;
 }
 
 =item isRunning($service)
@@ -207,9 +215,11 @@ sub isRunning
 {
 	my ($self, $service) = @_;
 
+	return 0 unless $self->_isSysvinit($service);
+
 	# FIXME: Assumption is made that any init script is providing status command which is bad...
 	# TODO: Fallback using processes table output should be implemented
-	($self->_exec($self->getInitscriptPath($service), 'status') == 0);
+	$self->_exec($self->getInitscriptPath($service), 'status') == 0;
 }
 
 =item getInitscriptPath($service)
@@ -264,6 +274,23 @@ sub _init
 	$self;
 }
 
+=item _isSysvinit($service)
+
+ Does the given service is managed by a sysvinit script?
+
+ Param string $service Service name
+ Return bool TRUE if the given service is managed by a sysvinit script, FALSE otherwise
+
+=cut
+
+sub _isSysvinit
+{
+	my ($self, $service) = @_;
+
+	local $@;
+	eval { $self->getInitscriptPath($service); };
+}
+
 =item searchInitScript($service)
 
  Search the init script which belongs to the given service in all available paths
@@ -300,8 +327,7 @@ sub _exec
 {
 	my ($self, @command) = @_;
 
-	my ($stdout, $stderr);
-	my $ret = execute("@command", \$stdout, \$stderr);
+	my $ret = execute("@command", \ my $stdout, \ my $stderr);
 	error($stderr) if $ret && $stderr;
 	$ret;
 }

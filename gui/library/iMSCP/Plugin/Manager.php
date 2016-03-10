@@ -26,7 +26,7 @@ class iMSCP_Plugin_Manager
 	/**
 	 * @const string Plugin API version
 	 */
-	const PLUGIN_API_VERSION = '1.0.1';
+	const PLUGIN_API_VERSION = '1.0.2';
 
 	/**
 	 * @const int Action success
@@ -1386,7 +1386,7 @@ class iMSCP_Plugin_Manager
 			iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
 
 			if (!@unlink($file)) {
-				write_log(sprintf('Plugin Manager: Unable to remove the %s file'), $file, E_USER_WARNING);
+				write_log(sprintf('Plugin Manager: Unable to remove the %s file', $file), E_USER_WARNING);
 				return false;
 			}
 		}

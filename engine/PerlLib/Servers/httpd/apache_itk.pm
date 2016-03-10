@@ -855,7 +855,7 @@ sub deleteHtaccess
 
  Process addIps tasks
 
- Param hash \%data Ips data
+ Param hash \%data IPs data as provided by the Modules::Ips module
  Return int 0 on success, other on failure
 
 =cut
@@ -864,24 +864,22 @@ sub addIps
 {
 	my ($self, $data) = @_;
 
-	my $version = $self->{'config'}->{'HTTPD_VERSION'};
+	my $file = iMSCP::File->new( filename => "$self->{'apacheWrkDir'}/00_nameserver.conf" );
+	my $fileContent = $file->get();
+	unless(defined $fileContent) {
+		error(sprintf('Could not read %s file', "$self->{'apacheWrkDir'}/00_nameserver.conf"));
+		return 1;
+	}
 
-	unless(version->parse($version) >= version->parse('2.4.0')) {
-		my $file = iMSCP::File->new( filename => "$self->{'apacheWrkDir'}/00_nameserver.conf" );
-		my $fileContent = $file->get();
-		unless(defined $fileContent) {
-			error("Unable to read $file->{'filename'} file");
-			return 1;
-		}
+	my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddIps', \$fileContent, $data);
+	return $rs if $rs;
 
-		my $rs = $self->{'eventManager'}->trigger('beforeHttpdAddIps', \$fileContent, $data);
-		return $rs if $rs;
-
-		my $ipMngr = iMSCP::Net->getInstance();
+	unless(version->parse("$self->{'config'}->{'HTTPD_VERSION'}") >= version->parse('2.4.0')) {
+		my $net = iMSCP::Net->getInstance();
 		my $confSnippet = "\n";
 
 		for my $ipAddr(@{$data->{'SSL_IPS'}}) {
-			if($ipMngr->getAddrVersion($ipAddr) eq 'ipv4') {
+			if($net->getAddrVersion($ipAddr) eq 'ipv4') {
 				$confSnippet .= "NameVirtualHost $ipAddr:443\n";
 			} else {
 				$confSnippet .= "NameVirtualHost [$ipAddr]:443\n";
@@ -889,7 +887,7 @@ sub addIps
 		}
 
 		for my $ipAddr(@{$data->{'IPS'}}) {
-			if($ipMngr->getAddrVersion($ipAddr) eq 'ipv4') {
+			if($net->getAddrVersion($ipAddr) eq 'ipv4') {
 				$confSnippet .= "NameVirtualHost $ipAddr:80\n";
 			} else {
 				$confSnippet .= "NameVirtualHost [$ipAddr]:80\n";
@@ -897,24 +895,16 @@ sub addIps
 		}
 
 		$fileContent .= $confSnippet;
-
-		$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$fileContent, $data);
-		return $rs if $rs;
-
-		$rs = $file->set($fileContent);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $self->installConfFile('00_nameserver.conf');
-		return $rs if $rs;
-
-		$rs = $self->enableSites('00_nameserver.conf');
-		return $rs if $rs;
-
-		$self->{'restart'} = 1;
 	}
+
+	$rs = $self->{'eventManager'}->trigger('afterHttpdAddIps', \$fileContent, $data);
+	$rs ||= $file->set($fileContent);
+	$rs ||= $file->save();
+	$rs ||= $self->installConfFile('00_nameserver.conf');
+	$rs ||= $self->enableSites('00_nameserver.conf');
+	return $rs if $rs;
+
+	$self->{'restart'} = 1;
 
 	0;
 }
@@ -1114,12 +1104,11 @@ sub getTraffic
 		$sth->execute($ldate);
 
 		while (my $row = $sth->fetchrow_hashref()) {
-			$trafficDb{$row->{'vhost'}} += $row->{'bytes'}
+			$trafficDb{$row->{'vhost'}} += $row->{'bytes'};
 		}
 
 		# Delete traffic data source
 		$dbh->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
-
 		$dbh->commit();
 	};
 

@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,7 +39,6 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
 	$self->{'config'} = $self->{'mta'}->{'config'};
-
 	$self;
 }
 
@@ -48,15 +47,9 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->_restoreConfFile();
-	return $rs if $rs;
-
-	$rs = $self->_buildAliasses();
-	return $rs if $rs;
-
-	$rs = $self->_removeUsers();
-	return $rs if $rs;
-
-	$self->_removeDirs();
+	$rs ||= $self->_buildAliasses();
+	$rs ||= $self->_removeUsers();
+	$rs ||= $self->_removeDirs();
 }
 
 sub _removeDirs
@@ -75,19 +68,17 @@ sub _removeUsers
 {
 	my $self = shift;
 
-	iMSCP::SystemUser->new( force => 'yes')->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
+	iMSCP::SystemUser->new( force => 'yes' )->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 }
 
 sub _buildAliasses
 {
 	my $self = shift;
 
-	my ($stdout, $stderr);
-	my $rs = execute("newaliases", \$stdout, \$stderr);
+	my $rs = execute("newaliases", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Error while executing newaliases command") if ! $stderr && $rs;
-
 	$rs;
 }
 
@@ -102,11 +93,6 @@ sub _restoreConfFile
 			my $rs = iMSCP::File->new(filename => "$self->{'bkpDir'}/$filename.system")->copyFile($file);
 			return $rs if $rs;
 		}
-	}
-
-	if(-f "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf") {
-		my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'MTA_SASL_CONF_DIR'}/smtpd.conf" )->delFile();
-		return $rs if $rs;
 	}
 
 	0;

@@ -26,7 +26,10 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td>{TR_LANGUAGE_FILE} <span class="tips icon i_help" title="{TR_UPLOAD_HELP}"></span></td>
+			<td>
+				{TR_LANGUAGE_FILE}
+				<span class="icon i_help" title="{TR_UPLOAD_HELP}"></span>
+			</td>
 			<td>
 				<input type="file" name="languageFile">
 				<input name="uploadLanguage" type="submit" value="{TR_IMPORT}">

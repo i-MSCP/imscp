@@ -1,5 +1,4 @@
 #ifndef _SIGNAL_HANDLERS_H
-
 #define _SIGNAL_HANDLERS_H
 
 #include <sys/types.h>
@@ -7,7 +6,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
 #include "defs.h"
 
 #if defined(__OpenBSD__) || defined(__FreeBSD__)

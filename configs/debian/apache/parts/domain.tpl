@@ -21,15 +21,18 @@
     # SECTION php_fpm BEGIN.
     # SECTION mod_fastcgi BEGIN.
     Alias /php5-fcgi /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME}
+
     FastCGIExternalServer /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME} \
-        -socket /var/run/php5-fpm-{POOL_NAME}.socket \
+        -{FASTCGI_LISTEN_MODE} {FASTCGI_LISTEN_ENDPOINT} \
         -idle-timeout 900 \
         -pass-header Authorization
     # SECTION mod_fastcgi END.
 
     # SECTION mod_proxy_fcgi BEGIN.
-    <FilesMatch "\.php5?$">
-        SetHandler "proxy:unix:/var/run/php5-fpm-{POOL_NAME}.socket|fcgi://{POOL_NAME}"
+    SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+
+    <FilesMatch ".+\.ph(p[3457]?|t|tml)$">
+        SetHandler "proxy:{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}"
     </FilesMatch>
     # SECTION mod_proxy_fcgi END.
     # SECTION php_fpm END.
@@ -61,7 +64,6 @@
         php_admin_value max_execution_time {MAX_EXECUTION_TIME}
         php_admin_value max_input_time {MAX_INPUT_TIME}
         php_admin_value memory_limit "{MEMORY_LIMIT}M"
-        php_value error_reporting {ERROR_REPORTING}
         php_flag display_errors {DISPLAY_ERRORS}
         php_admin_value post_max_size "{POST_MAX_SIZE}M"
         php_admin_value upload_max_filesize "{UPLOAD_MAX_FILESIZE}M"

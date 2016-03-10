@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file to force TLS connection on postfix submission.
+## Enforces TLS connection on Postfix submission.
 #
 
 package Listener::Postfix::Submission::TLS;
@@ -29,7 +29,6 @@ iMSCP::EventManager->getInstance()->register('afterMtaBuildMasterCfFile', sub {
 	my $content = shift;
 
 	$$content =~ s/^#(\s+-o\s+smtpd_tls_security_level=encrypt)/$1/m;
-
 	0;
 });
 

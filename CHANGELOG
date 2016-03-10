@@ -5,6 +5,106 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------------------
+1.2.12
+------------------------------------------------------------------------------------------------------------------------
+
+2016-02-23: Laurent Declercq
+	RELEASE i-MSCP 1.2.12
+
+BACKEND
+	Added: Support for TCP/IP (PHP-FPM)
+	Backported: iMSCP::Crypt library from 1.3.x branch
+	Fixed: Could not remove service: Not a CODE reference at PerlLib/iMSCP/Provider/Service/Systemd.pm line 115
+	Fixed: Could not remove service: Unit not loaded (systemd provider)
+	Fixed: Don't use Cyrus SASL for SMTP authentication when the Dovecot SASL implementation is available
+	Fixed: Mail passwords are no longer valid after client account re-activation
+
+CONFIG
+	Added: BACKUP_COMPRESS_LEVEL configuration parameter
+	Added: Default www.conf pool configuration file (PHP-FPM)
+	Added: docs/imscp_net_sysctl.conf configuration file example
+	Added: DOVECOT_SASL_AUTH_SOCKET_PATH parameter in dovecot/dovecot.data file
+	Added: event_scheduler parameter in mysql/imscp.cnf file to disable event scheduler (see errata file)
+	Added: performance_schema parameter in mysql/imscp.cnf file to disable performance schema (see errata file)
+	Added: PHP-FPM parameters (global and per pool configuration parameters) in php-fpm/phpfpm.data file
+	Added: SQLD_SOCK_DIR, SQLD_USER and SQLD_GROUP parameters in mysql/mysql.data configuration file
+	Added: sql_mode parameter in mysql/imscp.cnf template file to reset server SQL modes (backward compatibility issue)
+	Fixed: Missing http authorization headers (PHP-FPM with apache2 mod_proxy_fcgi)
+	Fixed: Possible segfault with OPcache when fast shutdown feature is enabled
+	Renamed: ZIP configration parameter to BACKUP_COMPRESS_ALGORITHM
+	Removed: Dovecot 1.x configuration files
+	Removed: procmail mailbox command in Postfix main.cf file
+	Updated: Matching rule for PHP files (.php .php3 .php4 .php5 .php7 .pht .phtml)
+
+CONTRIB
+	Added: 40_apache2_tools_proxy.pl listener file (redirect/proxy the i-MSCP tools in customers vhost files)
+	Added: 10_dovecot_compress.pl listener file (activate Dovecot compress plugin)
+	Added: 20_dovecot_connections.pl listener file (allow to increase the mail_max_userip_connections)
+	Added: 30_dovecot_namespace.pl listener file (creates the INBOX. as a compatibility name)
+	Added: 40_dovecot_pfs.pl listener file (activate the Perfect Forward Secrecy logging)
+	Added: 50_dovecot_plaintext.pl listener file (disable plaintext logins and force TLS)
+	Added: 60_dovecot_service_login.pl listener file (Allows to modify default service-login configuration options)
+	Added: 10_nginx_hsts.pl listener file (enable HTTP Strict Transport Security (HSTS))
+	Added: 10_php_confoptions_overide.pl listener file (Allows to add or override PHP configuration options)
+	Added: 60_postfix_pfs.pl listener file (add the self-generated EDH parameter files for Perfect Forward Secrecy (PFS))
+	Added: 70_postfix_submission_tls.pl listener file (force TLS connection on postfix submission)
+	Added: 10_proftpd_tuning.pl listener file (removes the ServerIdent information, and forces TLS)
+	Rewritten: 10_named_zonetransfer.pl listener file (now named 10_named_slave_provisioning.pl)
+	Updated: 10_postfix_smarthost listener file (We need Cyrus SASL; Dovecot SASL impl. not supported by Postfix for smtp)
+
+DAEMON
+	Added: imscp_daemon.service systemd unit file
+	Fixed: imscp-rqst-mngr backend script path must not be hardcoded in daemon
+	Fixed: PID file /var/run/imscp_daemon.pid not readable (yet?) after start (systemd)
+	Updated: Upstart init script according new daemon version - only one fork() call
+	Updated: Version to 1.2.4
+
+FRONTEND
+	Changed: error_reporting configuration parameter no longer editable when using Apache2 ITK httpd server impl.
+	Fixed: admin/settings.php menu state is not saved
+	Fixed: Customer's PHP settings must be synchronized when updating PHP permissions of their resellers
+	Fixed: Don't thrown an exception on parse_url error, send a 404 response instead (plugins.php)
+	Fixed: Slow DOM content loading due to some built-in functions override (imscp.js)
+	Fixed: Missing or bad IP check when adding or editing client account (reseller)
+	Fixed: Wrong alternative names in self-signed SSL certificates
+	Fixed: Wrong edit link for domain alias DNS record (external mail DNS record)
+	Removed: Default PHP configuration options - admin level (see errata file)
+	Removed: Hosting plan feature - admin level (see errata file)
+
+INSTALLER
+	Added: Allow to specify package version to install in distribution package files
+	Added: Conflict for procmail package to force its removal when running i-MSCP installer
+	Added: Conflict for sasl2-bin package to force its removal when running i-MSCP installer (we don't need saslauthd)
+	Added: Default administrator email in aliases(5) table for local root user (e.g. root: <default_admin_email>)
+	Added: Routine for upgrading SQL server system tables when necessary (e.g. MySQL Community Server)
+	Added: Support for MySQL 5.6.x/5.7.x, Percona 5.7 and MariaDB 10.1 when available (see errata file)
+	Added: Support for Ubuntu 16.04 (Xenial Xerus)
+	Added: verbose command line option
+	Fixed: Could not type new password when reconfiguring service SQL users due to non-printable characters
+	Fixed: Dependencies problems when switching to another SQL server vendor
+	Fixed: Don't ask admin for SQL root password when not needed (package maintainer script)
+	Fixed: Don't ask admin for data directory (/var/lib/mysql) removal (package maintainer script)
+	Fixed: Do not try to receive/download repository gpg key if already present
+	Fixed: Missing source repositories in APT sources.list
+	Fixed: Output from imscp-rqst-mngr must be shown on stdout when verbose mode is enabled (only with noprompt)
+	Removed: Support for Ubuntu 15.04 (Vivid Vervet) - Not an LTS version
+
+PLUGINS
+	Added: registerSetupListeners() function call to allow the plugins to listen on servers/packages installation events
+	Updated: API version to 1.0.2
+
+YOUTRACK
+	#IP-0582 PHP editor - PHP configuration levels (per_user, per_domain and per_site) are ignored
+	#IP-1289 ProFTPD with TLS behind NAT - Local IP masquerading and passive port range
+	#IP-1397 MySQL "SET PASSWORD" deprecated in version 5.7.6
+	#IP-1453 The before/after HttpdAddIps events are not always triggered
+	#IP-1466 IP change causes SSL error
+	#IP-1482 Add support for MySQL 5.6.x/5.7.x using MySQL Team repositories
+	#IP-1483 Perl 5.22 - Unescaped left brace in regex is deprecated
+	#IP-1486 Do not place order when a domain alias is created by a mutated user
+	#IP-1487 A parent domain owner must not be able to create a subdomain if already used as main domain or domain alias
+
+------------------------------------------------------------------------------------------------------------------------
 1.2.11
 ------------------------------------------------------------------------------------------------------------------------
 

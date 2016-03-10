@@ -5,13 +5,13 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 0,30 * * * * root perl {TRAFF_ROOT_DIR}/imscp-vrl-traff > {LOG_DIR}/imscp-vrl-traff.log 2>&1
 
 # Quota accounting
-@hourly root perl {QUOTA_ROOT_DIR}/imscp-dsk-quota > {LOG_DIR}/imscp-dsk-quota.log 2>&1
+@daily root nice -n 15 ionice -c2 -n5 perl {QUOTA_ROOT_DIR}/imscp-dsk-quota > {LOG_DIR}/imscp-dsk-quota.log 2>&1
 
 # Disable expired accounts
-@daily root perl {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
+@daily root nice -n 15 ionice -c2 -n5 perl {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
 
 # Backup i-MSCP configuration files and database
-@daily root perl {BACKUP_ROOT_DIR}/imscp-backup-imscp > {LOG_DIR}/imscp-backup-imscp-mngr.log 2>&1
+@daily root nice -n 15 ionice -c2 -n5 perl {BACKUP_ROOT_DIR}/imscp-backup-imscp > {LOG_DIR}/imscp-backup-imscp-mngr.log 2>&1
 
 # Remove configuration backups older than 7 days
 @weekly root find {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec rm -- {} +
@@ -23,7 +23,4 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 @weekly root find {LOG_DIR} -type f -mtime +7 -exec rm -- {} +
 
 # Backup customers' data depending of the domain properties
-{BACKUP_MINUTE} {BACKUP_HOUR} * * * root perl {BACKUP_ROOT_DIR}/imscp-backup-all > {LOG_DIR}/imscp-backup-all-mngr.log 2>&1
-
-# imscp [{ENTRY_ID}] entry BEGIN
-# imscp [{ENTRY_ID}] entry ENDING
+{BACKUP_MINUTE} {BACKUP_HOUR} * * * root nice -n 15 ionice -c2 -n5 perl {BACKUP_ROOT_DIR}/imscp-backup-all > {LOG_DIR}/imscp-backup-all-mngr.log 2>&1

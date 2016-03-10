@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -65,22 +65,26 @@ sub isEnabled
 {
 	my ($self, $service) = @_;
 
+	return 0 unless $self->_isSysvinit($service);
+
 	my $ret = $self->_exec($commands{'invoke-rc.d'}, '--quiet', '--query', $service, 'start');
 
 	# 104 is the exit status when you query start an enabled service.
 	# 106 is the exit status when the policy layer supplies a fallback action
 	if($ret ~~ [ 104, 106 ]) {
-		1;
-	} elsif($ret ~~ [ 101, 105 ]) {
+		return 1;
+	}
+
+	if($ret ~~ [ 101, 105 ]) {
 		# 101 is action not allowed, which means we have to do the check manually.
 		# 105 is unknown, which generally means the iniscript does not support query
 		# The debian policy states that the initscript should support methods of query
 		# For those that do not, peform the checks manually
 		# http://www.debian.org/doc/debian-policy/ch-opersys.html
-		((my @count = glob("/etc/rc*.d/S??$service")) >= 4);
-	} else {
-		0;
+		return (my @count = glob("/etc/rc*.d/S??$service")) >= 4;
 	}
+
+	0;
 }
 
 =item enable($service)
@@ -96,17 +100,15 @@ sub enable
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSysvinit($service);
+
 	if($SYSVRC_COMPAT_MODE) {
-		(
-			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
-			$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
-		);
-	} else {
-		(
-			$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0 &&
-			$self->_exec($commands{'update-rc.d'}, $service, 'enable') == 0
-		);
+		return $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
+			&& $self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0;
 	}
+
+	$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
+		&& $self->_exec($commands{'update-rc.d'}, $service, 'enable') == 0;
 }
 
 =item disable($service)
@@ -122,17 +124,15 @@ sub disable
 {
 	my ($self, $service) = @_;
 
+	return 1 unless $self->_isSysvinit($service);
+
 	if($SYSVRC_COMPAT_MODE) {
-		(
-			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
-			$self->_exec($commands{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.') == 0
-		);
-	} else {
-		(
-			$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0 &&
-			$self->_exec($commands{'update-rc.d'}, $service, 'disable') == 0
-		);
+		return $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
+			&& $self->_exec($commands{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.') == 0;
 	}
+
+	$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
+		&& $self->_exec($commands{'update-rc.d'}, $service, 'disable') == 0;
 }
 
 =item remove($service)
@@ -148,15 +148,11 @@ sub remove
 {
 	my ($self, $service) = @_;
 
-	if($self->_isSysvinit($service)) {
-		(
-			$self->stop($service) &&
-			$self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0 &&
-			iMSCP::File->new( filename => $self->getInitscriptPath($service) )->delFile() == 0
-		);
-	} else {
-		1;
-	}
+	return 1 unless $self->_isSysvinit($service);
+
+	$self->stop($service) && $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
+		&& iMSCP::File->new( filename => $self->getInitscriptPath($service) )->delFile() == 0;
+
 }
 
 =back
@@ -177,35 +173,12 @@ sub _init
 {
 	my $self = shift;
 
-	# Sets compatibility mode according systemd version in use
-	unless(defined $SYSVRC_COMPAT_MODE) {
-		$SYSVRC_COMPAT_MODE = lazy {
-			$self->_exec(
-				$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)',
-				'ge',
-				'2.88'
-			);
-		};
-	}
+	# Sets compatibility mode according sysv-rc package version in use
+	$SYSVRC_COMPAT_MODE = lazy { $self->_exec(
+		$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)', 'ge', '2.88'
+	); } unless defined $SYSVRC_COMPAT_MODE;
 
 	$self->SUPER::_init();
-}
-
-=item _isSysvinit($service)
-
- Does the given service is managed by a sysvinit script?
-
- Param string $service Service name
- Return bool TRUE if the given service is managed by a sysvinit script, FALSE otherwise
-
-=cut
-
-sub _isSysvinit
-{
-	my ($self, $service) = @_;
-
-	local $@;
-	eval { $self->getInitscriptPath($service); };
 }
 
 =back

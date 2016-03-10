@@ -1,5 +1,4 @@
 #ifndef _MESSAGE_H
-
 #define _MESSAGE_H
 
 #include "defs.h"

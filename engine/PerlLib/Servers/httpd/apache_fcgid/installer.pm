@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@ use strict;
 use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
+use iMSCP::Database;
 use iMSCP::EventManager;
 use iMSCP::Config;
 use iMSCP::Execute;
@@ -39,6 +40,7 @@ use iMSCP::TemplateParser;
 use iMSCP::ProgramFinder;
 use File::Basename;
 use Servers::httpd::apache_fcgid;
+use Servers::sqld;
 use version;
 use Net::LibIDN qw/idn_to_ascii/;
 use parent 'Common::SingletonClass';
@@ -64,10 +66,7 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
-	return $rs if $rs;
-
-	$eventManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
+	$eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
 }
 
 =item showDialog(\%dialog)
@@ -84,32 +83,31 @@ sub showDialog
 	my ($self, $dialog) = @_;
 
 	my $rs = 0;
-	my $phpiniLevel = main::setupGetQuestion('INI_LEVEL') || $self->{'config'}->{'INI_LEVEL'};
+	my $confLevel = main::setupGetQuestion('INI_LEVEL') || $self->{'config'}->{'INI_LEVEL'};
 
 	if(
 		$main::reconfigure ~~ [ 'httpd', 'php', 'servers', 'all', 'forced' ] ||
-		not $phpiniLevel ~~ [ 'per_user', 'per_domain', 'per_site' ]
+		not $confLevel ~~ [ 'per_site', 'per_domain', 'per_user' ]
 	) {
-		$phpiniLevel =~ s/_/ /;
+		$confLevel =~ s/_/ /;
 
-		($rs, $phpiniLevel) = $dialog->radiolist(
+		($rs, $confLevel) = $dialog->radiolist(
 "
-\\Z4\\Zb\\ZuPHP INI Level\\Zn
+\\Z4\\Zb\\ZuPHP configuration level\\Zn
 
-Please, choose the PHP INI level you want use for PHP. Available levels are:
+Please, choose the PHP configuration level you want use. Available levels are:
 
-\\Z4Per user:\\Zn Each customer will have only one php.ini file
-\\Z4Per domain:\\Zn Each domain / domain alias will have its own php.ini file
-\\Z4Per site:\\Zn Each site will have its own php.ini file
+\\Z4Per user:\\Zn One php.ini file per user
+\\Z4Per domain:\\Zn One php.ini file per domain (including subdomains)
+\\Z4Per site:\\Zn One php.ini file per domain
 
 ",
-			[ 'per user', 'per domain', 'per site' ],
-			$phpiniLevel ne 'per site' && $phpiniLevel ne 'per domain' ? 'per user' : $phpiniLevel
+			[ 'per_site', 'per_domain', 'per_user' ],
+			$confLevel ~~ [ 'per user', 'per domain' ] ? $confLevel : 'per site'
 		);
 	}
 
-	($self->{'config'}->{'INI_LEVEL'} = $phpiniLevel) =~ s/ /_/ unless $rs == 30;
-
+	($self->{'config'}->{'INI_LEVEL'} = $confLevel) =~ s/ /_/ unless $rs == 30;
 	$rs;
 }
 
@@ -282,21 +280,18 @@ sub _setApacheVersion
 {
 	my $self = shift;
 
-	my ($stdout, $stderr);
-	my $rs = execute('apache2ctl -v', \$stdout, \$stderr);
+	my $rs = execute('apache2ctl -v', \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Unable to find Apache version') if $rs && ! $stderr;
 	return $rs if $rs;
 
-	if($stdout =~ m%Apache/([\d.]+)%) {
-		$self->{'config'}->{'HTTPD_VERSION'} = $1;
-		debug("Apache version set to: $1");
-	} else {
-		error('Unable to parse Apache version from Apache version string');
+	if($stdout !~ m%Apache/([\d.]+)%) {
+		error('Could not find Apache version from `apache2ctl -v` command output.');
 		return 1;
 	}
 
+	$self->{'config'}->{'HTTPD_VERSION'} = $1;
+	debug("Apache version set to: $1");
 	0;
 }
 
@@ -623,8 +618,8 @@ sub _setupVlogger
 	$dbUserHost = ($dbUserHost eq '127.0.0.1') ? 'localhost' : $dbUserHost;
 
 	my @allowedChr = map { chr } (0x21..0x5b, 0x5d..0x7e);
-	my $dbPassword = '';
-	$dbPassword .= $allowedChr[rand @allowedChr] for 1..16;
+	my $dbPass = '';
+	$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
 
 	my ($db, $errStr) = main::setupGetSqlConnect($dbName);
 	fatal("Unable to connect to SQL server: $errStr") unless $db;
@@ -655,13 +650,22 @@ sub _setupVlogger
 	my $quotedDbName = $db->quoteIdentifier($dbName);
 
 	for my $host(@dbUserHosts) {
+		my $hasExpireApi = version->parse(Servers::sqld->factory()->getVersion()) >= version->parse('5.7.6')
+			&& $main::imscpConfig{'SQL_SERVER'} !~ /mariadb/;
+
 		my $rs = $db->doQuery(
-			'g',
-			"GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@? IDENTIFIED BY ?",
+			'c',
+			'CREATE USER ?@? IDENTIFIED BY ?' . ($hasExpireApi ? ' PASSWORD EXPIRE NEVER' : ''),
 			$dbUser,
 			$host,
-			$dbPassword
+			$dbPass
 		);
+		unless(ref $rs eq 'HASH') {
+			error(sprintf('Unable to create the %s@%s SQL user: %s', $dbUser, $host, $rs));
+			return 1;
+		}
+
+		$rs = $db->doQuery('g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@?", $dbUser, $host);
 		unless(ref $rs eq 'HASH') {
 			error(sprintf('Unable to add SQL privileges: %s', $rs));
 			return 1;
@@ -673,7 +677,7 @@ sub _setupVlogger
 		DATABASE_HOST => $dbHost,
 		DATABASE_PORT => $dbPort,
 		DATABASE_USER => $dbUser,
-		DATABASE_PASSWORD => $dbPassword
+		DATABASE_PASSWORD => $dbPass
 	});
 
 	$self->{'httpd'}->buildConfFile(
@@ -744,80 +748,6 @@ sub _oldEngineCompatibility
 	return $rs if $rs;
 
 	$self->{'eventManager'}->trigger('afterHttpdOldEngineCompatibility');
-}
-
-=item _fixPhpErrorReportingValues()
-
- Fix PHP error reporting values according current PHP version
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _fixPhpErrorReportingValues
-{
-	my $self = shift;
-
-	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
-	unless($database) {
-		error("Unable to connect to SQL server: $errStr");
-		return 1;
-	}
-
-	my ($stdout, $stderr);
-	my $rs = execute('php -v', \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
-
-	my $phpVersion = $1 if $stdout =~ /^PHP\s([\d.]{3})/;
-
-	if(defined $phpVersion) {
-		my %errorReportingValues;
-
-		if($phpVersion == 5.3) {
-			%errorReportingValues = (
-				32759 => 30711, # E_ALL & ~E_NOTICE
-				32767 => 32767, # E_ALL | E_STRICT
-				24575 => 22527  # E_ALL & ~E_DEPRECATED
-			)
-		} elsif($phpVersion >= 5.4) {
-			%errorReportingValues = (
-				30711 => 32759, # E_ALL & ~E_NOTICE
-				32767 => 32767, # E_ALL | E_STRICT
-				22527 => 24575  # E_ALL & ~E_DEPRECATED
-			);
-		} else {
-			error("Unsupported PHP version: $phpVersion");
-			return 1;
-		}
-
-		while(my ($from, $to) = each(%errorReportingValues)) {
-			$rs = $database->doQuery(
-				'u',
-				"UPDATE `config` SET `value` = ? WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` = ?",
-				$to, $from
-			);
-			unless(ref $rs eq 'HASH') {
-				error($rs);
-				return 1;
-			}
-
-			$rs = $database->doQuery(
-				'u', 'UPDATE `php_ini` SET `error_reporting` = ? WHERE `error_reporting` = ?', $to, $from
-			);
-			unless(ref $rs eq 'HASH') {
-				error($rs);
-				return 1;
-			}
-		}
-	} else {
-		error('Unable to find PHP version');
-		return 1;
-	}
-
-	0;
 }
 
 =back

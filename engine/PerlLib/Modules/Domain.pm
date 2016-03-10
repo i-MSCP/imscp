@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,6 +34,7 @@ use iMSCP::Database;
 use iMSCP::Rights;
 use iMSCP::OpenSSL;
 use iMSCP::Ext2Attributes qw(clearImmutable);
+use File::Spec;
 use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Abstract';
 
@@ -400,7 +401,7 @@ sub _loadData
 		return 1;
 	}
 
-	unless(exists $rdata->{$domainId}) {
+	unless($rdata->{$domainId}) {
 		error("Domain with ID $domainId has not been found or is in an inconsistent state");
 		return 1;
 	}
@@ -415,7 +416,7 @@ sub _loadData
  Data provider method for Httpd servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hash Hash containing module data, die on failure
 
 =cut
 
@@ -426,22 +427,13 @@ sub _getHttpdData
 	unless($self->{'httpd'}) {
 		my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-		my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-		$homeDir =~ s~/+~/~g;
-		$homeDir =~ s~/$~~g;
-
+		my $homeDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}");
 		my $db = iMSCP::Database->factory();
 
-		my $rdata = $db->doQuery('name', 'SELECT * FROM config WHERE name LIKE ?', 'PHPINI%');
-		unless(ref $rdata eq 'HASH') {
-			fatal($rdata);
-		}
-
-		my $phpiniData = $db->doQuery('domain_id', "SELECT * FROM php_ini WHERE domain_id = ?", $self->{'domain_id'});
-		unless(ref $phpiniData eq 'HASH') {
-			fatal($phpiniData);
-		}
+		my $phpini = $db->doQuery(
+			'domain_id', "SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = 'dmn'", $self->{'domain_id'}
+		);
+		ref $phpini eq 'HASH' or die($phpini);
 
 		my $certData = $db->doQuery(
 			'domain_id',
@@ -450,11 +442,9 @@ sub _getHttpdData
 			'dmn',
 			'ok'
 		);
-		unless(ref $certData eq 'HASH') {
-			fatal($certData);
-		}
+		ref $certData eq 'HASH' or die($certData);
 
-		my $haveCert = exists $certData->{$self->{'domain_id'}} && $self->isValidCertificate($self->{'domain_name'});
+		my $haveCert = $certData->{$self->{'domain_id'}} && $self->isValidCertificate($self->{'domain_name'});
 
 		$self->{'httpd'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
@@ -479,35 +469,18 @@ sub _getHttpdData
 			BWLIMIT => $self->{'domain_traffic_limit'},
 			ALIAS => $userName,
 			FORWARD => 'no',
-			DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
-			 	? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
-			 	: $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
-			MAX_EXECUTION_TIME => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'max_execution_time'}
-				: $rdata->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
-			MAX_INPUT_TIME => (exists $phpiniData->{$self->{'domain_id'}})
-			 	? $phpiniData->{$self->{'domain_id'}}->{'max_input_time'}
-			 	: $rdata->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
-			MEMORY_LIMIT => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'memory_limit'}
-				: $rdata->{'PHPINI_MEMORY_LIMIT'}->{'value'},
-			ERROR_REPORTING => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'error_reporting'}
-				: $rdata->{'PHPINI_ERROR_REPORTING'}->{'value'},
-			DISPLAY_ERRORS => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'display_errors'}
-				: $rdata->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
-			POST_MAX_SIZE => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'post_max_size'}
-				: $rdata->{'PHPINI_POST_MAX_SIZE'}->{'value'},
-			UPLOAD_MAX_FILESIZE => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'upload_max_filesize'}
-				: $rdata->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
-			ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
-				? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
-				: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{value},
-			PHPINI_OPEN_BASEDIR => ($rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'})
-				? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
+			DISABLE_FUNCTIONS => $phpini->{$self->{'domain_id'}}->{'disable_functions'} //
+				'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
+			MAX_EXECUTION_TIME => $phpini->{$self->{'domain_id'}}->{'max_execution_time'} // 30,
+			MAX_INPUT_TIME => $phpini->{$self->{'domain_id'}}->{'max_input_time'} // 60,
+			MEMORY_LIMIT =>  $phpini->{$self->{'domain_id'}}->{'memory_limit'} // 128,
+			ERROR_REPORTING => $phpini->{$self->{'domain_id'}}->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
+			DISPLAY_ERRORS => $phpini->{$self->{'domain_id'}}->{'display_errors'} || 'off',
+			POST_MAX_SIZE => $phpini->{$self->{'domain_id'}}->{'post_max_size'} // 8,
+			UPLOAD_MAX_FILESIZE => $phpini->{$self->{'domain_id'}}->{'upload_max_filesize'} // 2,
+			ALLOW_URL_FOPEN => $phpini->{$self->{'domain_id'}}->{'allow_url_fopen'} || 'off',
+			PHPINI_OPEN_BASEDIR => '',
+			PHP_FPM_LISTEN_PORT => ($phpini->{$self->{'domain_id'}}->{'id'} // 0) - 1
 		};
 	}
 
@@ -546,7 +519,7 @@ sub _getMtaData
  Data provider method for named servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hash Hash containing module data, die on failure
 
 =cut
 
@@ -593,9 +566,7 @@ sub _getNamedData
 				'ext_mail_feature',
 				'todelete'
 			);
-			unless(ref $rdata eq 'HASH') {
-				fatal($rdata);
-			}
+			ref $rdata eq 'HASH' or die($rdata);
 
 			if(%{$rdata}) {
 				my (@domainHosts, @wildcardHosts);
@@ -604,7 +575,7 @@ sub _getNamedData
 				for(keys %{$rdata}) {
 					(my $host = $rdata->{$_}->{'domain_text'}) =~ s/\d+\s+(.*)\.$/$1/;
 
-					if((index($rdata->{$_}->{'domain_dns'}, '*') != 0)) {
+					if(index($rdata->{$_}->{'domain_dns'}, '*') != 0) {
 						push @domainHosts, "a:$host";
 					} else {
 						push @wildcardHosts, "a:$host";
@@ -628,9 +599,7 @@ sub _getNamedData
 				'todelete',
 				$self->{'domain_id'}
 			);
-			unless(ref $rdata eq 'HASH') {
-				fatal($rdata);
-			}
+			ref $rdata eq 'HASH' or die($rdata);
 		}
 	}
 
@@ -653,10 +622,7 @@ sub _getPackagesData
 	unless($self->{'packages'}) {
 		my $userName = my $groupName  = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-		my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-		$homeDir =~ s~/+~/~g;
-		$homeDir =~ s~/$~~g;
+		my $homeDir = File::Spec->canonpath("$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}");
 
 		$self->{'packages'} = {
 			DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
@@ -688,14 +654,13 @@ sub isValidCertificate
 	my ($self, $domainName) = @_;
 
 	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainName.pem";
-
 	my $openSSL = iMSCP::OpenSSL->new(
 		'private_key_container_path' => $certFile,
 		'certificate_container_path' => $certFile,
 		'ca_bundle_container_path' => $certFile
 	);
 
-	! $openSSL->validateCertificateChain();
+	!$openSSL->validateCertificateChain();
 }
 
 =back

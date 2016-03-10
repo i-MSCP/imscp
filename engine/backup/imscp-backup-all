@@ -46,10 +46,12 @@ sub run
 		xz => { extension => 'xz', command => 'xz' }
 	};
 
-	my $algorithm = lc($main::imscpConfig{'ZIP'});
+	my $algo = lc($main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'});
+	my $level = $main::imscpConfig{'BACKUP_COMPRESS_LEVEL'};
+	$level = 1 unless $level =~ /^[1-9]$/;
 
-	unless(exists $command->{$algorithm} || $algorithm eq 'no') {
-		error("Backup algorithm is not supported: $algorithm");
+	unless(exists $command->{$algo} || $algo eq 'no') {
+		error(sprintf('Backup algorithm is not supported: %s', $algo));
 		return 1;
 	}
 
@@ -61,16 +63,9 @@ sub run
 	my $domainData = $db->doQuery(
 		'domain_id',
 		"
-			SELECT
-				domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
-			FROM
-				domain
-			INNNER JOIN
-				admin ON (admin_id = domain_admin_id)
-			WHERE
-				domain_status = 'ok'
-			AND
-				allowbackup <> ''
+			SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
+			FROM domain NNNER JOIN admin ON (admin_id = domain_admin_id)
+			WHERE domain_status = 'ok' AND allowbackup <> ''
 		"
 	);
 
@@ -91,7 +86,9 @@ sub run
 				unless(-d $homeDir) { # Skip backup if home directory doesn't exist
 					warning(sprintf("The %s home directory doesn't exist. Skipping backup...", $homeDir));
 					next;
-				} elsif(! -d $bkpDir) { # Create backups directory if doesn't already exists
+				}
+
+				if(! -d $bkpDir) { # Create backups directory if doesn't already exists
 					my $isProtectedHomedir = 0;
 
 					# Unprotect parent directory if needed
@@ -122,26 +119,16 @@ sub run
 					next;
 				}
 
-				my $ext = ($algorithm ne 'no') ? ('.' . $command->{$algorithm}->{'extension'}) : '';
+				my $ext = $algo ne 'no' ? ('.' . $command->{$algo}->{'extension'}) : '';
 				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
 				# Backup customers webspace
 				if ('dmn' ~~ @allowbackup) {
 					my @cmd = (
-						'nice', '-n', '15',                                    # Reduce the CPU priority
-						'ionice', '-c2', '-n5',                                # Reduce the I/O priority
-						'tar',
-						"--create",                                            # Create new archive
-						"--directory=$homeDir",                                # Change to directory
-						($algorithm ne 'no')
-							? "--use-compress-program=$algorithm"              # Compress archive with given program
-							: '',                                              # No compression
-						"--file=$bkpDir/$mainDomainName-backup-$date.tar$ext", # use archive file
-						'--exclude=logs',                                      # exclude logs directory from archive
-						'--exclude=phptmp',                                    # exclude phptmp directory from archive
-						'--exclude=backups',                                   # exclude backup from archive
-						'--exclude=domain_disable_page',                       # exclude domain_disable_page from archive
-						'.'                                                    # pathname
+						"tar -c -C $homeDir --exclude=logs --exclude=phptmp --exclude=backups --exclude=domain_disable_page .",
+						$algo eq 'no'
+							? "-f $bkpDir/$mainDomainName-backup-$date.tar"
+							: "| $command->{$algo}->{'command'} -$level > $bkpDir/$mainDomainName-backup-$date.tar$ext"
 					);
 
 					$rs = execute("@cmd", \$stdout, \$stderr);
@@ -150,7 +137,7 @@ sub run
 					# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
 					if($rs > 1) {
 						error($stderr) if $stderr;
-						error("Unable to backup $homeDir") if ! $stderr;
+						error(sprintf('Could not backup %s', $homeDir)) if !$stderr;
 						$ret |= $rs;
 					}
 
@@ -189,17 +176,14 @@ sub run
 						$rs = $file->owner($userName, $groupName);
 						$ret ||= $rs;
 
-						if($algorithm ne 'no') {
+						if($algo ne 'no') {
 							my @cmd = (
-								'nice', '-n', '15',                             # Reduce the CPU priority
-								'ionice', '-c2', '-n5',                         # Reduce the I/O priority
-								$command->{$algorithm}->{'command'}, '--force',
-								escapeShell("$bkpDir/$dbName.sql")
+								$command->{$algo}->{'command'}, "-$level", '--force', escapeShell("$bkpDir/$dbName.sql")
 							);
 							$rs = execute("@cmd", \$stdout, \$stderr);
 							debug($stdout) if $stdout;
 							error($stderr) if $stderr && $rs;
-							error(sprintf('Unable to compress the %s database dump file', "$dbName.sql")) if $rs && ! $stderr;
+							error(sprintf('Could not compress the %s database dump file', "$dbName.sql")) if $rs && !$stderr;
 							$ret ||= $rs;
 						}
 					}
@@ -210,50 +194,24 @@ sub run
 					my $mailData = $db->doQuery(
 						'mail_dir',
 						"
-							SELECT
-								domain_name AS mail_dir, domain_id
-							FROM
-								domain
-							WHERE
-								domain_id = ?
-							AND
-								domain_status = 'ok'
+							SELECT domain_name AS mail_dir, domain_id FROM domain
+							WHERE domain_id = ?
+							AND domain_status = 'ok'
 							UNION
-							SELECT
-								CONCAT(subdomain_name, '.', domain_name), subdomain_id
-							FROM
-								subdomain
-							INNER JOIN
-								domain USING(domain_id)
-							WHERE
-								domain_id = ?
-							AND
-								subdomain_status = 'ok'
+							SELECT CONCAT(subdomain_name, '.', domain_name), subdomain_id FROM subdomain
+							INNER JOIN domain USING(domain_id)
+							WHERE domain_id = ?
+							AND subdomain_status = 'ok'
 							UNION
-							SELECT
-								alias_name, alias_id
-							FROM
-								domain_aliasses
-							WHERE
-								domain_id = ?
-							AND
-								alias_status = 'ok'
+							SELECT alias_name, alias_id FROM domain_aliasses
+							WHERE domain_id = ? AND alias_status = 'ok'
 							UNION
-							SELECT
-								CONCAT(subdomain_alias_name, '.', alias_name), subdomain_alias_id
-							FROM
-								subdomain_alias
-							INNER JOIN
-								domain_aliasses USING(alias_id)
-							WHERE
-								domain_id = ?
-							AND
-								subdomain_alias_status = 'ok'
+							SELECT CONCAT(subdomain_alias_name, '.', alias_name), subdomain_alias_id
+							FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+							WHERE domain_id = ?
+							AND subdomain_alias_status = 'ok'
 						",
-						$mainDomainId,
-						$mainDomainId,
-						$mainDomainId,
-						$mainDomainId
+						$mainDomainId, $mainDomainId, $mainDomainId, $mainDomainId
 					);
 					unless (ref $mailData eq 'HASH') {
 						error($mailData);
@@ -266,16 +224,10 @@ sub run
 
 						if(-d $mailDirPath) {
 							my @cmd = (
-								'nice', '-n', '15',                                   # Reduce the CPU priority
-								'ionice', '-c2', '-n5',                               # Reduce the I/O priority
-								'tar',
-								"--create",                                           # Create new archive
-								"--directory=$mailDirPath",                           # Change to directory
-								($algorithm ne 'no')
-									? "--use-compress-program=$algorithm"             # Compress archive with given program
-									: '',                                             # No compression
-								"--file=$bkpDir/mail-$mailDir-backup-$date.tar$ext",  # use archive file
-								'.'                                                   # pathname
+								"tar -c -C $mailDirPath .",
+								$algo eq 'no'
+									? "-f $bkpDir/mail-$mailDir-backup-$date.tar"
+									: "| $command->{$algo}->{'command'} -$level > $bkpDir/mail-$mailDir-backup-$date.tar$ext"
 							);
 
 							$rs = execute("@cmd", \$stdout, \$stderr);
@@ -284,7 +236,7 @@ sub run
 							# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
 							if($rs > 1) {
 								error($stderr) if $stderr;
-								error("Unable to backup $mailDir") unless $stderr;
+								error(sprintf('Could not backup %s', $mailDir)) unless $stderr;
 								$ret |= $rs;
 							}
 

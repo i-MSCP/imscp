@@ -7,4 +7,5 @@
     <copy_config>${SYSTEM_CONF}/courier/courier.data</copy_config>
     <copy_config>${SYSTEM_CONF}/courier/imapd.local</copy_config>
     <copy_config>${SYSTEM_CONF}/courier/quota-warning</copy_config>
+    <copy_config>${SYSTEM_CONF}/courier/sasl</copy_config>
 </install>

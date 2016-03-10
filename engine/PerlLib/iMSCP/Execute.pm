@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -173,19 +173,20 @@ sub getExitCode(;$)
 
 	if ($ret == -1) {
 		die(sprintf('Could not execute command: %s', $!));
-	} elsif ($ret & 127) {
-		die(sprintf('Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without'));
-	} else {
-		$ret = $ret >> 8;
-		debug(sprintf('Command exited with value: %s', $ret));
 	}
 
+	if ($ret & 127) {
+		die(sprintf('Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without'));
+	}
+
+	$ret = $ret >> 8;
+	debug(sprintf('Command exited with value: %s', $ret)) if $ret != 0;
 	$ret;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

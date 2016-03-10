@@ -1,5 +1,5 @@
 # i-MSCP Listener::Named::Tuning listener file
-# Copyright (C) 2015 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2015-2016 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,35 +16,34 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file that allows to remove default @ IN A IP DNS record ( when a custom DNS is set as replacement ).
+## Allows to replace defaults **@ IN <IP>** DNS record with a custom DNS record (when a custom DNS is set as replacement).
 #
 
 package Listener::Named::Tuning;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 
-sub beforeNamedAddCustomDNS
-{
+iMSCP::EventManager->getInstance()->register('beforeNamedAddCustomDNS', sub {
 	my ($wrkDbFileContent, $data) = @_;
 
-	if (@{$data->{'DNS_RECORDS'}}) {
-		for(@{$data->{'DNS_RECORDS'}}) {
-			my ($name, $class, $type, $rdata) = @{$_};
+	return 0 unless @{$data->{'DNS_RECORDS'}};
 
-			if(
-				($name eq "$data->{'DOMAIN_NAME'}." || $name eq '') &&
-				$class eq 'IN' && $type eq 'A' && $rdata ne $data->{'DOMAIN_IP'}
-			) {
-				my $match = quotemeta("\@\t\tIN\tA\t$data->{'DOMAIN_IP'}\n");
-				$$wrkDbFileContent =~ s/$match//;
-			}
+	for(@{$data->{'DNS_RECORDS'}}) {
+		my ($name, $class, $type, $rdata) = @{$_};
+
+		if(
+			($name eq "$data->{'DOMAIN_NAME'}." || $name eq '') &&
+			$class eq 'IN' && $type eq 'A' && $rdata ne $data->{'DOMAIN_IP'}
+		) {
+			my $match = quotemeta("\@\t\tIN\tA\t$data->{'DOMAIN_IP'}\n");
+			$$wrkDbFileContent =~ s/$match//;
 		}
 	}
 
 	0;
-}
-
-iMSCP::EventManager->getInstance()->register('beforeNamedAddCustomDNS', \&beforeNamedAddCustomDNS);
+});
 
 1;
 __END__

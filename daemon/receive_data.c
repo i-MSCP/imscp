@@ -31,6 +31,5 @@ int receiveData(int fd, char *dest, size_t n)
 	}
 
 	*p = 0;
-
 	return i;
 }

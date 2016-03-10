@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -75,9 +75,7 @@ sub preinstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoPreinstall', 'dovecot');
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoPreinstall', 'dovecot');
+	$rs ||= $self->{'eventManager'}->trigger('afterPoPreinstall', 'dovecot');
 }
 
 =item install()
@@ -96,10 +94,8 @@ sub install
 	return $rs if $rs;
 
 	require Servers::po::dovecot::installer;
-	$rs = Servers::po::dovecot::installer->getInstance()->install();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoInstall', 'dovecot');
+	$rs = Servers::po::dovecot::installer->getInstance()->install();;
+	$rs ||= $self->{'eventManager'}->trigger('afterPoInstall', 'dovecot');
 }
 
 =item postinstall()
@@ -144,8 +140,6 @@ sub postaddMail
 {
 	my ($self, $data) = @_;
 
-	my $rs = 0;
-
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 		my $mta = Servers::mta->factory();
 		my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
@@ -184,15 +178,9 @@ sub postaddMail
 		}
 
 		my $rs = $subscriptionsFile->set((join "\n", @subscribedFolders) . "\n");
-		return $rs if $rs;
-
-		$rs = $subscriptionsFile->save();
-		return $rs if $rs;
-
-		$rs = $subscriptionsFile->mode(0640);
-		return $rs if $rs;
-
-		$rs = $subscriptionsFile->owner($mailUidName, $mailGidName);
+		$rs ||= $subscriptionsFile->save();
+		$rs ||= $subscriptionsFile->mode(0640);
+		$rs ||= $subscriptionsFile->owner($mailUidName, $mailGidName);
 		return $rs if $rs;
 
 		if(-f "$mailDir/maildirsize") {
@@ -220,14 +208,9 @@ sub uninstall
 	return $rs if $rs;
 
 	require Servers::po::dovecot::uninstaller;
-
 	$rs = Servers::po::dovecot::uninstaller->getInstance()->uninstall();
-	return $rs if $rs;
-
-	$rs = $self->restart();
-	return $rs if $rs;
-
-	$self->{'eventManager'}->trigger('afterPoUninstall', 'dovecot');
+	$rs ||= $self->restart();
+	$rs ||= $self->{'eventManager'}->trigger('afterPoUninstall', 'dovecot');
 }
 
 =item restart()
@@ -376,15 +359,13 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config',fileName => "$self->{'cfgDir'}/dovecot.data"; \%c; };
 	$self->{'eventManager'}->trigger('afterPoInit', $self, 'dovecot') and fatal('dovecot - afterPoInit has failed');
-
 	$self;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

@@ -16,8 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Listener file that removes the ServerIdent information, and forces a TLS 
-## connection for non local networks.
+## Removes the ServerIdent information, and enforces TLS connections for non-local networks.
 #
 
 package Listener::ProFTP::Tuning;
@@ -26,8 +25,12 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-# Configure the list of local networks to allow non TLS connection 
-# my @localNetworks = ( '127.0.0.1', '192.168.1.1', '172.16.12.0/24' );
+#
+## Configuration parameters
+#
+
+# Configure the list of local networks to allow for non TLS connection
+# For instance: my @localNetworks = ('127.0.0.1', '192.168.1.1', '172.16.12.0/24');
 my @localNetworks = ('127.0.0.1');
 
 #
@@ -37,7 +40,10 @@ my @localNetworks = ('127.0.0.1');
 iMSCP::EventManager->getInstance()->register('afterFtpdBuildConf', sub {
 	my ($tplContent, $tplName) = @_;
 
+	return 0 unless $tplName eq 'proftpd.conf';
+
 	my $cfgSnippet = <<EOF;
+
   # Don't require FTPS from local clients
   <IfClass local>
     TLSRequired            off
@@ -49,24 +55,21 @@ iMSCP::EventManager->getInstance()->register('afterFtpdBuildConf', sub {
 EOF
 
 	my $cfgNetworks;
-	for my $networks(@localNetworks) {
-		$cfgNetworks .= "\n  From $networks";
+	for my $network(@localNetworks) {
+		$cfgNetworks .= "\n  From $network";
 	}
 
-	if ($tplName eq 'proftpd.conf') {
-		# disable the message displayed on connect
-		$$tplContent =~ s/^(ServerType.*)/$1\nServerIdent                off/m;
+	# Disable the message displayed on connect
+	$$tplContent =~ s/^(ServerType.*)/$1\nServerIdent                off/m;
 
-		# remove TLSRequired
-		$$tplContent =~ s/^\s+TLSRequired.*\n//m;
+	# Remove TLSRequired
+	$$tplContent =~ s/^\s+TLSRequired.*\n//m;
 
-		# insert $cfgSnippet
-		$$tplContent =~ s/^(<IfModule mod_tls\.c>$)/$1\n$cfgSnippet/m;
+	# Insert $cfgSnippet
+	$$tplContent =~ s/^(<IfModule mod_tls\.c>$)/$1\n$cfgSnippet/m;
 
-		# insert class local
-		$$tplContent .= "\n<Class local>$cfgNetworks\n</Class>";
-	}
-
+	# Insert class local
+	$$tplContent .= "\n<Class local>$cfgNetworks\n</Class>";
 	0;
 });
 

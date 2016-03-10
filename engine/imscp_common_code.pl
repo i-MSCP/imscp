@@ -25,12 +25,11 @@
 # internet Multi Server Control Panel. All Rights Reserved.
 
 BEGIN {
-	my %needed 	= (
+	my %needed = (
 		'DBI'=> '',
 		DBD::mysql => '',
 		MIME::Entity => '',
 		Crypt::CBC => '',
-		Crypt::PasswdMD5 => '',
 		MIME::Base64 => '',
 		File::Basename => '',
 		File::Path => '',
