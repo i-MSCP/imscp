@@ -423,6 +423,7 @@ sub _extractAddresses
         'Could not extract network devices data: %s', $stderr || 'Unknown error'
     ));
 
+#2: eth0    inet 192.168.1.180 peer 192.168.1.1/32 brd 192.168.1.180 scope global eth0:7000\       valid_lft forever preferred_lft forever
     my $addresses = {};
     $addresses->{$3} = {
         device        => $1,
@@ -430,19 +431,23 @@ sub _extractAddresses
         prefix_length => $4,
         device_label  => $5 // ''
     } while($stdout =~ /^
-        [^\s]+            # identifier
+        [^\s]+                    # identifier
         :
         \s+
-        ([^\s]+)          # device name
+        ([^\s]+)                  # device name
         \s+
-        ([^\s]+)          # protocol family identifier
+        ([^\s]+)                  # protocol family identifier
         \s+
-        ([^\s]+)          # IP address
-        \/
-        ([\d]+)           # netmask in CIDR notation
         (?:
-            .*?           # optional broadcast address, scope information
-            (\1(?::\d+)?) # optional label
+            ([^\s]+)              # IP address
+            (?:\s+peer\s+[^\s]+)? # peer address (pointopoint interfaces)
+            \/
+            ([\d]+)               # netmask in CIDR notation
+        )
+        \s+
+        (?:
+            .*?                   # optional broadcast address, scope information
+            (\1(?::\d+)?)         # optional label
             \\
         )?
     /gmx);
