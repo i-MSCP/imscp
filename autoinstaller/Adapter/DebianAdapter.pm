@@ -418,7 +418,7 @@ sub _buildPackageList
 		# Alternative list of package to install
 		my $dAlt = delete $pkgList->{$section}->{'default'};
 		my $sAlt = $main::questions{ uc($section) . '_SERVER' } || $main::imscpConfig{ uc($section) . '_SERVER' };
-		my $forceDialog = $sAlt ? 0 : 1;
+		my $forceDialog = $sAlt eq '' ? 1 : 0;
 		$sAlt = $dAlt if $forceDialog;
 
 		my @alts = keys %{$pkgList->{$section}};
@@ -427,7 +427,7 @@ sub _buildPackageList
 			$forceDialog = 1;
 		}
 
-		if($pkgList->{$section}->{$sAlt}->{'allow_switch'}) {
+		if(!$forceDialog && $pkgList->{$section}->{$sAlt}->{'allow_switch'}) {
 			# Filter unallowed alternatives
 			@alts = grep {
 				my $__ = $_; grep($_ eq $__, @alts)
@@ -435,7 +435,7 @@ sub _buildPackageList
 		}
 
 		# Ask user for alternative list of packages to install if any
-		if(@alts > 1 && $forceDialog || grep($_ eq $main::reconfigure, ( $section, 'servers', 'all' ))) {
+		if(@alts > 1 && ($forceDialog || grep($_ eq $main::reconfigure, ( $section, 'servers', 'all' )))) {
 			iMSCP::Dialog->getInstance()->set('no-cancel', '');
 			(my $ret, $sAlt) = iMSCP::Dialog->getInstance()->radiolist(<<EOF, [ sort @alts ], $sAlt);
 
