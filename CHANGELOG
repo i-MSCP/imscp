@@ -8,7 +8,7 @@ INSTALLER
 	Fixed: Argument "" isn't numeric in numeric eq (==) at engine/PerlLib/Package/FrontEnd/Installer.pm line 270
 	Fixed: Could not enable service when unit file is a symlink due to 'No such file or directory' error (systemd)
 	Fixed: Mariadb SQL server not selectable on fresh install
-	Fixed: Missing mysql-common package in MariaDB package sections
+	Fixed: Missing mysql-common package in MariaDB package sections (Debian Jessie)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.16
