@@ -50,11 +50,11 @@ iMSCP::EventManager->getInstance()->register('afterFtpdBuildConf', sub {
 	# Disable the message displayed on connect
 	$$tplContent =~ s/^(ServerType.*)/$1\nServerIdent                off/m;
 
-    # Enforce TLS connections for non-local networks
-    $$tplContent =~ s/^(<IfModule mod_tls\.c>$)/$1\n  <IfClass !local>/m;
-    $$tplContent =~ s/^(\s+TLSRequired.*)off$/$1on/m;
-    $$tplContent =~ s/^(\s+TLS.*$)/  $1/gm;
-    $$tplContent =~ s/^(\s+TLS.*\n)(<\/IfModule>)/$1  <\/IfClass>\n$2/gm;
+	# Enforce TLS connections for non-local networks
+	$$tplContent =~ s/^(<IfModule mod_tls\.c>$)/$1\n  <IfClass !local>/m;
+	$$tplContent =~ s/^(\s+TLSRequired.*)off$/$1on/m;
+	$$tplContent =~ s/^(\s+TLS.*$)/  $1/gm;
+	$$tplContent =~ s/^(\s+TLS.*\n)(<\/IfModule>)/$1  <\/IfClass>\n$2/gm;
 
 	# Insert class local
 	$$tplContent .= "\n<Class local>$cfgNetworks\n</Class>";
