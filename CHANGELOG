@@ -4,13 +4,14 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
-Backend
-	Fixed: peer address not recognized in the case of a POINTOPOINT interface (iMSCP::Net)
+BACKEND
+	Fixed: Can't locate Data/Validate/IP.pm (now lazy-loaded to prevent failure on update) (iMSCP::Net)
+	Fixed: peer address not recognized in the case of a POINTOPOINT interface
 
 INSTALLER
 	Fixed: Argument "" isn't numeric in numeric eq (==) at engine/PerlLib/Package/FrontEnd/Installer.pm line 270
 	Fixed: Could not enable service when unit file is a symlink due to 'No such file or directory' error (systemd)
-	Fixed: Mariadb SQL server not selectable on fresh install
+	Fixed: MariaDB SQL server not selectable on fresh install
 	Fixed: Missing mysql-common package in MariaDB package sections (Debian Jessie)
 
 ------------------------------------------------------------------------------------------------------------------------
