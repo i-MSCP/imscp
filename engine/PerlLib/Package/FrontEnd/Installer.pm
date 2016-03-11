@@ -240,7 +240,7 @@ sub askSsl
 		main::setupSetQuestion('PANEL_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase);
 		main::setupSetQuestion('PANEL_SSL_CERTIFICATE_PATH', $certificatPath);
 		main::setupSetQuestion('PANEL_SSL_CA_BUNDLE_PATH', $caBundlePath);
-		main::setupSetQuestion('BASE_SERVER_VHOST_PREFIX', ($sslEnabled eq 'yes') ? $baseServerVhostPrefix : 'http://');
+		main::setupSetQuestion('BASE_SERVER_VHOST_PREFIX', $sslEnabled eq 'yes' ? $baseServerVhostPrefix : 'http://');
 	}
 
 	$rs;
@@ -489,18 +489,23 @@ sub _init
 
 sub _setupSsl
 {
-	my $domainName = main::setupGetQuestion('BASE_SERVER_VHOST');
-	my $selfSignedCertificate = (main::setupGetQuestion('PANEL_SSL_SELFSIGNED_CERTIFICATE') eq 'yes') ? 1 : 0;
-	my $privateKeyPath = main::setupGetQuestion('PANEL_SSL_PRIVATE_KEY_PATH');
-	my $passphrase = main::setupGetQuestion('PANEL_SSL_PRIVATE_KEY_PASSPHRASE');
-	my $certificatePath = main::setupGetQuestion('PANEL_SSL_CERTIFICATE_PATH');
-	my $caBundlePath = main::setupGetQuestion('PANEL_SSL_CA_BUNDLE_PATH');
-	my $baseServerVhostPrefix = main::setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
 	my $sslEnabled = main::setupGetQuestion('PANEL_SSL_ENABLED');
+	my $panelSSLsetup = main::setupGetQuestion('PANEL_SSL_SETUP', 'yes');
+	my $oldCertificatePath = $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne ''
+		? "$main::imscpConfig{'CONF_DIR'}/$main::imscpOldConfig{'BASE_SERVER_VHOST'}.pem"
+		: '';
 
-	return 0 unless $sslEnabled eq 'yes' && main::setupGetQuestion('PANEL_SSL_SETUP', 'yes') eq 'yes';
+	# Remove old certificate if needed
+	if(($sslEnabled eq 'no' || $panelSSLsetup eq 'yes') && $oldCertificatePath ne '' && -f $oldCertificatePath) {
+		my $rs = iMSCP::File->new( filename => $oldCertificatePath )->delFile();
+		return $rs if $rs;
+	}
 
-	if($selfSignedCertificate) {
+	return 0 unless $sslEnabled eq 'yes' && $panelSSLsetup eq 'yes';
+
+	my $domainName = main::setupGetQuestion('BASE_SERVER_VHOST');
+
+	if(main::setupGetQuestion('PANEL_SSL_SELFSIGNED_CERTIFICATE') eq 'yes') {
 		return iMSCP::OpenSSL->new(
 			'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 			'certificate_chain_name' => $domainName
@@ -510,12 +515,12 @@ sub _setupSsl
 	}
 
 	iMSCP::OpenSSL->new(
-		'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
+		'certificate_chains_storage_dir' => $main::imscpConfig{'CONF_DIR'},
 		'certificate_chain_name' => $domainName,
-		'private_key_container_path' => $privateKeyPath,
-		'private_key_passphrase' => $passphrase,
-		'certificate_container_path' => $certificatePath,
-		'ca_bundle_container_path' => $caBundlePath
+		'private_key_container_path' => main::setupGetQuestion('PANEL_SSL_PRIVATE_KEY_PATH'),
+		'private_key_passphrase' => main::setupGetQuestion('PANEL_SSL_PRIVATE_KEY_PASSPHRASE'),
+		'certificate_container_path' => main::setupGetQuestion('PANEL_SSL_CERTIFICATE_PATH'),
+		'ca_bundle_container_path' => main::setupGetQuestion('PANEL_SSL_CA_BUNDLE_PATH')
 	)->createCertificateChain();
 }
 

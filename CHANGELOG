@@ -17,6 +17,7 @@ INSTALLER
 	Fixed: Could not add intermediate SSL certificates; dialog is always skipped (regression fix)
 	Fixed: MariaDB SQL server not selectable on fresh install (regression fix)
 	Fixed: Missing mysql-common package in MariaDB package sections (Debian Jessie)
+	Fixed: Panel SSL certificate chain not removed when disabling SSL or changing hostname
 	Fixed: When changing panel hostname, DNS zone file is not removed
 
 SERVERS
