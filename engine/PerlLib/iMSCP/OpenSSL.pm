@@ -63,7 +63,6 @@ sub validatePrivateKey
 	}
 
 	my $passphraseFile;
-
 	if($self->{'private_key_passphrase'} ne '') {
 		# Create temporary file for private key passphrase
 		$passphraseFile = File::Temp->new();
@@ -99,13 +98,14 @@ sub validateCertificate
 	if ($self->{'certificate_container_path'} eq '') {
 		error('Path to SSL certificate container file is not set');
 		return 1;
-	} elsif(!-f $self->{'certificate_container_path'}) {
+	}
+
+	unless(-f $self->{'certificate_container_path'}) {
 		error(sprintf("SSL certificate container %s doesn't exists", $self->{'certificate_container_path'}));
 		return 1;
 	}
 
 	my $caBundle = 0;
-
 	if ($self->{'ca_bundle_container_path'} ne '' ) {
 		if (-f $self->{'ca_bundle_container_path'}) {
 			$caBundle = 1;
@@ -116,10 +116,8 @@ sub validateCertificate
 	}
 
 	my @cmd = (
-		'openssl verify',
-		$caBundle ? ('-CAfile', escapeShell($self->{'ca_bundle_container_path'})) : '',
-		'-purpose sslserver',
-		escapeShell($self->{'certificate_container_path'})
+		'openssl verify', $caBundle ? ('-CAfile', escapeShell($self->{'ca_bundle_container_path'})) : '',
+		'-purpose sslserver', escapeShell($self->{'certificate_container_path'})
 	);
 
 	my $rs = execute("@cmd", \my $stdout, \my $stderr);
@@ -164,7 +162,6 @@ sub importPrivateKey
 	my $self = shift;
 
 	my $passphraseFile;
-
 	if($self->{'private_key_passphrase'} ne '') {
 		# Create temporary file for private key passphrase
 		$passphraseFile = File::Temp->new();
@@ -196,8 +193,7 @@ sub importCertificate
 {
 	my $self = shift;
 
-	my $file = iMSCP::File->new( 'filename' => $self->{'certificate_container_path'} );
-
+	my $file = iMSCP::File->new( filename => $self->{'certificate_container_path'} );
 	my $certificate = $file->get();
 	unless(defined $certificate) {
 		error(sprintf('Could not read %s file', $self->{'certificate_container_path'}));
@@ -211,21 +207,20 @@ sub importCertificate
 	return $rs if $rs;
 
 	my @cmd = (
-		'cat',
-		escapeShell($self->{'certificate_container_path'}),
+		'cat', escapeShell($self->{'certificate_container_path'}),
 		'>>', escapeShell("$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem")
 	);
 
 	$rs = execute("@cmd", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && !$rs;
+	debug($stderr) if $stderr && !$rs;
 	error('Could not import SSL certificate' . ($stderr ? ": $stderr" : '')) if $rs;
 	$rs;
 }
 
 =item importCaBundle()
 
- Import the CA Bundle in certificate chain container
+ Import the CA Bundle in certificate chain container if any
 
  Return int 0 on success, other on failure
 
@@ -235,12 +230,9 @@ sub ImportCaBundle
 {
 	my $self = shift;
 
-	if($self->{'ca_bundle_container_path'} eq '') {
-		return 0;
-	}
+	return 0 unless $self->{'ca_bundle_container_path'} eq '';
 
-	my $file = iMSCP::File->new('filename' => $self->{'ca_bundle_container_path'});
-
+	my $file = iMSCP::File->new( filename => $self->{'ca_bundle_container_path'} );
 	my $caBundle = $file->get();
 	unless(defined $caBundle) {
 		error(sprintf('Could not read %s file', $self->{'ca_bundle_container_path'}));
@@ -265,11 +257,11 @@ sub ImportCaBundle
 	$rs;
 }
 
-=items createSelfSignedCertificate($commonName, [$wildcardSSL = false])
+=items createSelfSignedCertificate(\%data)
 
  Generate a self-signed SSL certificate
 
- Param string $commonName Common Name
+ Param hash \%data Certificate data (common_name, email, wildcard = false)
  Param bool $wildcardSSL OPTIONAL Does a wildcard SSL certificate must be generated (default FALSE)
  Return int 0 on success, other on failure
 
@@ -277,10 +269,14 @@ sub ImportCaBundle
 
 sub createSelfSignedCertificate
 {
-	my ($self, $commonName, $wildcardSSL) = @_;
+	my ($self, $data) = @_;
+
+	ref $data eq 'HASH' or die('Wrong $data parameter. Hash expected');
+	$data->{'common_name'} or die('Missing common_name parameter');
+	$data->{'email'} or die('Missing email parameter');
 
 	my $openSSLConffileTpl = "$main::imscpConfig{'CONF_DIR'}/openssl/openssl.cnf.tpl";
-	$commonName = $wildcardSSL ? '*.' . $commonName : $commonName;
+	my $commonName = $data->{'wildcard'} ? '*.' . $$data->{'common_name'} : $$data->{'common_name'};
 
 	# Load openssl configuration template file for self-signed SSL certificates
 	my $openSSLConffileTplContent = iMSCP::File->new( filename => $openSSLConffileTpl )->get();
@@ -293,8 +289,8 @@ sub createSelfSignedCertificate
 	# Write openssl configuration file into temporary file
 	print $openSSLConffile process({
 		'COMMON_NAME' => $commonName,
-		'EMAIL_ADDRESS' => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'},
-		'ALT_NAMES' => $wildcardSSL ? "DNS.1 = $commonName\n" : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n"
+		'EMAIL_ADDRESS' => $data->{'email'},
+		'ALT_NAMES' => $data->{'wildcard'} ? "DNS.1 = $commonName\n" : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n"
 	}, $openSSLConffileTplContent);
 
 	my @cmd = (
@@ -354,9 +350,9 @@ sub _init
 	# Private key passphrase if any
 	$self->{'private_key_passphrase'} = '' unless $self->{'private_key_passphrase'};
 	# Full path to the SSL certificate container
-	$self->{'certificate_container_path'} = '' unless $self->{'certificate_container_path'};;
+	$self->{'certificate_container_path'} = '' unless $self->{'certificate_container_path'};
 	# Full path to the CA Bundle container (Container which contain one or many intermediate certificates)
-	$self->{'ca_bundle_container_path'} = '' unless $self->{'ca_bundle_container_path'};;
+	$self->{'ca_bundle_container_path'} = '' unless $self->{'ca_bundle_container_path'};
 	$self;
 }
 

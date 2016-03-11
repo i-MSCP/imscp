@@ -892,7 +892,7 @@ sub setupAskServicesSsl
 				grep($_ eq $selfSignedCertificate, ( 'yes', 'no' )) ? $selfSignedCertificate eq 'yes' ? 'no' : 'yes' : 'no'
 			);
 
-			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
+			$selfSignedCertificate = $selfSignedCertificate eq 'no' ? 'yes' : 'no';
 
 			if($selfSignedCertificate eq 'no' && $rs < 30) {
 				# Ask for private key
@@ -928,7 +928,7 @@ sub setupAskServicesSsl
 				if($rs < 30) {
 					$rs = $dialog->yesno("\nDo you have any SSL intermediate certificate(s) (CA Bundle)?");
 
-					unless($rs < 30) {
+					if($rs < 30) {
 						do {
 							($rs, $caBundlePath) = $dialog->fselect($caBundlePath);
 						} while($rs < 30 && !($caBundlePath && -f $caBundlePath));
@@ -961,6 +961,8 @@ sub setupAskServicesSsl
 		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
 
 		if($openSSL->validateCertificateChain()) {
+			# Avoid to show error at end of process (useless in installer context)
+			getMessageByType('error', { amount => 1, remove => 1 });
 			iMSCP::Dialog->getInstance()->msgbox("\nYour SSL certificate for the services is missing or invalid.");
 			goto SSL_DIALOG;
 		}
@@ -1550,7 +1552,9 @@ sub setupServiceSsl
 			my $rs = iMSCP::OpenSSL->new(
 				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 				'certificate_chain_name' => 'imscp_services'
-			)->createSelfSignedCertificate($domainName);
+			)->createSelfSignedCertificate({
+				common_name => $domainName, email => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}
+			});
 			return $rs if $rs;
 		} else {
 			my $rs = iMSCP::OpenSSL->new(

@@ -181,7 +181,7 @@ sub askSsl
 				if($rs < 30) {
 					$rs = $dialog->yesno("\nDo you have any SSL intermediate certificate(s) (CA Bundle)?");
 
-					unless($rs < 30) {
+					if($rs < 30) {
 						do {
 							($rs, $caBundlePath) = $dialog->fselect($caBundlePath);
 						} while($rs < 30 && !($caBundlePath && -f $caBundlePath));
@@ -223,6 +223,8 @@ sub askSsl
 		$openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
 
 		if($openSSL->validateCertificateChain()) {
+			# Avoid to show error at end of process (useless in installer context)
+			getMessageByType('error', { amount => 1, remove => 1 });
 			$dialog->msgbox("\nYour SSL certificate for the control panel is missing or invalid.");
 			goto SSL_DIALOG;
 		}
@@ -501,7 +503,9 @@ sub _setupSsl
 		return iMSCP::OpenSSL->new(
 			'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
 			'certificate_chain_name' => $domainName
-		)->createSelfSignedCertificate($domainName);
+		)->createSelfSignedCertificate({
+			common_name => $domainName, email => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}
+		});
 	}
 
 	iMSCP::OpenSSL->new(
