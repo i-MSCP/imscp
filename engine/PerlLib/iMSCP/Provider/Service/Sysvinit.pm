@@ -25,6 +25,7 @@ package iMSCP::Provider::Service::Sysvinit;
 
 use strict;
 use warnings;
+use Carp;
 use File::Spec;
 use iMSCP::Debug 'error';
 use iMSCP::Execute;
@@ -76,7 +77,7 @@ sub getInstance
 
 sub isEnabled
 {
-	1; # Not implemented
+	confess 'not implemented';
 }
 
 =item enable($service)
@@ -84,13 +85,13 @@ sub isEnabled
  Enable the given service
 
  Param string $service Service name
- Return bool TRUE
+ Return bool TRUE if the given service is enabled, FALSE otherwise
 
 =cut
 
 sub enable
 {
-	1; # Not implemented
+	confess 'not implemented';
 }
 
 =item disable($service)
@@ -98,13 +99,13 @@ sub enable
  Disable the given service
 
  Param string $service Service name
- Return bool TRUE
+ Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub disable
 {
-	1; # Not implemented
+	confess 'not implemented';
 }
 
 =item remove($service)
@@ -112,13 +113,13 @@ sub disable
  Remove the given service
 
  Param string $service Service name
- Return bool TRUE
+ Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub remove
 {
-	1; # Not implemented
+	confess 'not implemented';
 }
 
 =item start($service)
@@ -279,7 +280,7 @@ sub _isSysvinit
 	my ($self, $service) = @_;
 
 	local $@;
-	eval { $self->getInitScriptPath($service); };
+	eval { $self->_searchInitScript($service); };
 }
 
 =item searchInitScript($service)

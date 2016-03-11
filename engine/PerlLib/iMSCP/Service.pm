@@ -375,11 +375,11 @@ sub _detectInitSystem
 
 	my %initSystems = (
 		Upstart => {
-			command => (defined $initCmd) ? "$initCmd --version" : undef,
+			command => defined $initCmd ? "$initCmd --version" : undef,
 			regexp => qr/upstart/
 		},
 		Systemd => {
-			command => (defined $systemctlCmd) ? "$systemctlCmd list-units --full --no-legend" : undef,
+			command => defined $systemctlCmd ? "$systemctlCmd list-units --full --no-legend" : undef,
 			regexp => qr/-\.mount/
 		}
 	);

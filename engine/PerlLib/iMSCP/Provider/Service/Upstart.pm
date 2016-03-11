@@ -357,7 +357,7 @@ sub _isUpstart
 	my ($self, $service) = @_;
 
 	local $@;
-	eval { $self->getJobFilePath($service); };
+	eval { $self->_searchJobFile($service); };
 }
 
 =item _versionIsPre067()
@@ -783,14 +783,14 @@ sub _searchJobFile
 {
 	my ($self, $service, $jobFileType) = @_;
 
-	$jobFileType ||= 'conf';
+	my $jobFile = "$service." . ($jobFileType || 'conf');
 
 	for my $path(@{$paths{$self}}) {
-		my $filepath = File::Spec->join($path, $service . '.' . $jobFileType);
+		my $filepath = File::Spec->join($path, $jobFile);
 		return $filepath if -f $filepath;
 	}
 
-	die(sprintf('Could not find the upstart job %s file for the %s service', $jobFileType, $service));
+	die(sprintf('Could not find the upstart %s job file', $jobFile));
 }
 
 =item _readJobFile($service)

@@ -264,7 +264,7 @@ sub _isSystemd
 	my ($self, $service) = @_;
 
 	local $@;
-	eval { $self->getUnitFilePath($service); };
+	eval { $self->_searchUnitFile($service); };
 }
 
 =item _searchUnitFile($service)
