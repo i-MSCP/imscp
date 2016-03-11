@@ -567,7 +567,7 @@ EOF
 	if($main::imscpConfig{'BASE_SERVER_IP'} ne $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}) {
 		$cfgTpl .= <<EOF;
 
-# VsFTPd behing NAT - Use public IP address
+# VsFTPd behind NAT - Use public IP address
 pasv_address=$main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
 pasv_promiscuous=YES
 EOF

@@ -456,7 +456,7 @@ sub _buildConfigFile
 	if($main::imscpConfig{'BASE_SERVER_IP'} ne $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}) {
 		$cfgTpl .= <<EOF;
 
-# ProFTPD behing NAT - Use public IP address
+# ProFTPD behind NAT - Use public IP address
 MasqueradeAddress $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
 EOF
 	}
