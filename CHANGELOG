@@ -8,6 +8,9 @@ BACKEND
 	Fixed: Can't locate Data/Validate/IP.pm (now lazy-loaded to prevent failure on update) (iMSCP::Net)
 	Fixed: peer address not recognized in the case of a POINTOPOINT interface (regression fix)
 
+CONTRIB:
+	Fixed: Create the provisioning script even with the imscp-setup script (10_named_slave_provisioning.pl)
+
 INSTALLER
 	Fixed: Argument "" isn't numeric in numeric eq (==) at engine/PerlLib/Package/FrontEnd/Installer.pm line 270
 	Fixed: Could not enable service when unit file is a symlink due to 'No such file or directory' error (systemd)
