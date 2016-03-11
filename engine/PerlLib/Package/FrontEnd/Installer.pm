@@ -325,6 +325,7 @@ sub install
 	$rs ||= $self->_buildPhpConfig();
 	$rs ||= $self->_buildHttpdConfig();
 	$rs ||= $self->_buildInitDefaultFile();
+	$rs ||= $self->_deleteDnsZone();
 	$rs ||= $self->_addDnsZone();
 	$rs ||= $self->_saveConfig();
 }
@@ -965,6 +966,27 @@ sub _addDnsZone
 		MAIL_ENABLED => 1
 	});
 	$rs ||= $self->{'eventManager'}->trigger('afterNamedAddMasterZone');
+}
+
+=item _deleteDnsZone()
+
+ Delete DNS zone
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _deleteDnsZone
+{
+	my $self = shift;
+
+	return 0 unless $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne '';
+
+	my $rs = $self->{'eventManager'}->trigger('beforeNamedDeleteMasterZone');
+	$rs ||= Servers::named->factory()->deleteDmn( {
+		DOMAIN_NAME => $main::imscpOldConfig{'BASE_SERVER_VHOST'},
+	});
+	$rs ||= $self->{'eventManager'}->trigger('afterNamedDeleteMasterZone');
 }
 
 =item _saveConfig()
