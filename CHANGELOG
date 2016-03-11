@@ -6,7 +6,7 @@ Git 1.2.x
 
 BACKEND
 	Fixed: Can't locate Data/Validate/IP.pm (now lazy-loaded to prevent failure on update) (iMSCP::Net)
-	Fixed: peer address not recognized in the case of a POINTOPOINT interface (regression fix)
+	Fixed: peer address not recognized in the case of a POINTOPOINT interface (regression fix
 
 INSTALLER
 	Fixed: Argument "" isn't numeric in numeric eq (==) at engine/PerlLib/Package/FrontEnd/Installer.pm line 270
@@ -14,6 +14,9 @@ INSTALLER
 	Fixed: Could not add intermediate SSL certificates; dialog is always skipped (regression fix)
 	Fixed: MariaDB SQL server not selectable on fresh install (regression fix)
 	Fixed: Missing mysql-common package in MariaDB package sections (Debian Jessie)
+
+SERVERS
+	Fixed: Cannot connect to VsFTPD when behind NAT (WAN <-> LAN)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.16

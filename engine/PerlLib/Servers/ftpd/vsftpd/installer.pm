@@ -569,6 +569,7 @@ EOF
 
 # VsFTPd behing NAT - Use public IP address
 pasv_address=$main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
+pasv_promiscuous=YES
 EOF
 	}
 
