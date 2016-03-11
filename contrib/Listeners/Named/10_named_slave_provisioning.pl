@@ -131,7 +131,7 @@ EOF
 
 # Listener that is responsible to create provisioning script
 $eventManager->register('afterFrontEndInstall', sub {
-        my $fileContent = <<'EOF';
+    my $fileContent = <<'EOF';
 <?php
 
 require '../../library/imscp-lib.php';

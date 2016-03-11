@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.02.27
+# Last update: 2016.03.11
 
 %main::questions = (
     # Server to use for the HTTP service (apache_itk|apache_fcgid|apache_php_fpm)
@@ -40,7 +40,7 @@
     # Server to use for the Ftp service (proftpd|vsftpd)
     FTPD_SERVER => 'proftpd',
 
-    # ProFTPD SQL user
+    # ProFTPD/VsFTPd SQL user
     FTPD_SQL_USER => 'vftp_user',
     FTPD_SQL_PASSWORD => '<password>', # Password must not empty
 
