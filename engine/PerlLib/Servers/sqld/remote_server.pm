@@ -30,6 +30,7 @@ use iMSCP::Execute qw/escapeShell/;
 use iMSCP::Crypt qw/decryptBlowfishCBC/;
 use iMSCP::TemplateParser;
 use version;
+use Class::Autouse qw/Servers::sqld::mysql::installer/;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
@@ -53,7 +54,6 @@ sub preinstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldPreinstall');
-	require Servers::sqld::mysql::installer;
 	my $installer = Servers::sqld::mysql::installer->getInstance();
 	$rs ||= $installer->_setTypeAndVersion();
 	$rs ||= $self->_buildConf();

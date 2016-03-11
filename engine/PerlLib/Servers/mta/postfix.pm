@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@ use iMSCP::Service;
 use File::Basename;
 use Tie::File;
 use Scalar::Defer;
+use Class::Autouse qw/Servers::mta::postfix::installer Servers::mta::postfix::uninstaller/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -58,10 +59,7 @@ sub preinstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaPreInstall', 'postfix');
-	return $rs if $rs;
-
-	require Servers::mta::postfix::installer;
-	$rs = $rs = Servers::mta::postfix::installer->getInstance()->preinstall();
+	$rs ||= $rs = Servers::mta::postfix::installer->getInstance()->preinstall();
 	$rs ||= $self->{'eventManager'}->trigger('afterMtaPreInstall', 'postfix');
 }
 
@@ -78,10 +76,7 @@ sub install
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaInstall', 'postfix');
-	return $rs if $rs;
-
-	require Servers::mta::postfix::installer;
-	$rs = Servers::mta::postfix::installer->getInstance()->install();
+	$rs ||= Servers::mta::postfix::installer->getInstance()->install();
 	$rs ||= $self->{'eventManager'}->trigger('afterMtaInstall', 'postfix');
 }
 
@@ -98,10 +93,7 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaUninstall', 'postfix');
-	return $rs if $rs;
-
-	require Servers::mta::postfix::uninstaller;
-	$rs = Servers::mta::postfix::uninstaller->getInstance()->uninstall();
+	$rs ||= Servers::mta::postfix::uninstaller->getInstance()->uninstall();
 	$rs ||= $self->restart();
 	$rs ||= $self->{'eventManager'}->trigger('afterMtaUninstall', 'postfix');
 }
@@ -158,10 +150,7 @@ sub setEnginePermissions
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeMtaSetEnginePermissions');
-	return $rs if $rs;
-
-	require Servers::mta::postfix::installer;
-	$rs = Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
+	$rs ||= Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
 	$rs ||= $self->{'eventManager'}->trigger('afterMtaSetEnginePermissions');
 }
 
@@ -212,7 +201,6 @@ sub postmap
 	$rs = execute("postmap $filetype:$filename", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-
 	$rs ||= $self->{'eventManager'}->trigger('afterMtaPostmap', $filename, $filetype);
 }
 

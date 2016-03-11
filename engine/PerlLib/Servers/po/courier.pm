@@ -35,6 +35,7 @@ use iMSCP::Service;
 use Servers::mta;
 use Tie::File;
 use Scalar::Defer;
+use Class::Autouse qw/Servers::po::courier::installer Servers::po::courier::uninstaller/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -58,7 +59,6 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	require Servers::po::courier::installer;
 	Servers::po::courier::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
@@ -91,10 +91,7 @@ sub install
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoInstall', 'courier');
-	return $rs if $rs;
-
-	require Servers::po::courier::installer;
-	$rs = Servers::po::courier::installer->getInstance()->install();
+	$rs ||= Servers::po::courier::installer->getInstance()->install();
 	$rs ||= $self->{'eventManager'}->trigger('afterPoInstall', 'courier');
 }
 
@@ -137,11 +134,10 @@ sub postinstall
 		return 1;
 	}
 
-	$self->{'eventManager'}->register(
+	$rs = $self->{'eventManager'}->register(
 		'beforeSetupRestartServices', sub { push @{$_[0]}, [ sub { $self->restart(); }, 'Courier' ]; 0; }
 	);
-
-	$self->{'eventManager'}->trigger('afterPoPostinstall', 'courier');
+	$rs ||= $self->{'eventManager'}->trigger('afterPoPostinstall', 'courier');
 }
 
 =item uninstall()
@@ -157,10 +153,7 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoUninstall', 'courier');
-	return $rs if $rs;
-
-	require Servers::po::courier::uninstaller;
-	$rs = Servers::po::courier::uninstaller->getInstance()->uninstall();
+	$rs ||= Servers::po::courier::uninstaller->getInstance()->uninstall();
 	$rs ||= $self->restart();
 	$rs ||= $self->{'eventManager'}->trigger('afterPoUninstall', 'courier');
 }
@@ -178,10 +171,7 @@ sub setEnginePermissions
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforePoSetEnginePermissions');
-	return $rs if $rs;
-
-	require Servers::po::courier::installer;
-	$rs = Servers::po::courier::installer->getInstance()->setEnginePermissions();
+	$rs ||= Servers::po::courier::installer->getInstance()->setEnginePermissions();
 	$rs ||= $self->{'eventManager'}->trigger('afterPoSetEnginePermissions');
 }
 
@@ -198,68 +188,67 @@ sub postaddMail
 {
 	my ($self, $data) = @_;
 
-	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-		my $mta = Servers::mta->factory();
+	return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-		my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
-		my $mailUidName =  $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'};
-		my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
+	my $mta = Servers::mta->factory();
+	my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
+	my $mailUidName =  $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'};
+	my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-		for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-			my $rs = iMSCP::Dir->new( dirname => $dir )->make({
-				user => $mailUidName, group => $mailGidName , mode => 0750
-			});
-			return $rs if $rs;
-
-			for my $subdir ('cur', 'new', 'tmp') {
-				my $rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make({
-					user => $mailUidName, group => $mailGidName, mode => 0750
-				});
-				return $rs if $rs;
-			}
-		}
-
-		my @subscribedFolders = ('INBOX.Drafts', 'INBOX.Junk', 'INBOX.Sent', 'INBOX.Trash');
-		my $courierimapsubscribedFile = iMSCP::File->new( filename => "$mailDir/courierimapsubscribed" );
-
-		if(-f "$mailDir/courierimapsubscribed") {
-			my $courierimapsubscribedFileContent = $courierimapsubscribedFile->get();
-
-			unless(defined $courierimapsubscribedFileContent) {
-				error('Unable to read courier courierimapsubscribed file');
-				return 1;
-			}
-
-			if($courierimapsubscribedFileContent ne '') {
-				@subscribedFolders = (@subscribedFolders, split("\n", $courierimapsubscribedFileContent));
-				require List::MoreUtils;
-				@subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
-			}
-		}
-
-		my $rs = $courierimapsubscribedFile->set((join "\n", @subscribedFolders) . "\n");
-		$rs = $courierimapsubscribedFile->save();
-		$rs ||= $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
-		$rs ||= $courierimapsubscribedFile->mode(0640);
+	for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
+		my $rs = iMSCP::Dir->new( dirname => $dir )->make({
+			user => $mailUidName, group => $mailGidName , mode => 0750
+		});
 		return $rs if $rs;
 
-		if(defined($data->{'MAIL_QUOTA'}) && $data->{'MAIL_QUOTA'} != 0) {
-			my @maildirmakeCmdArgs = (escapeShell("$data->{'MAIL_QUOTA'}S"), escapeShell("$mailDir"));
-			$rs = execute("maildirmake -q @maildirmakeCmdArgs", \my $stdout, \my $stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-
-			if(-f "$mailDir/maildirsize") {
-				my $file = iMSCP::File->new( filename => "$mailDir/maildirsize" );
-				$rs ||= $file->owner($mailUidName, $mailGidName);
-				$rs = $file->mode(0640);
-				return $rs if $rs;
-			}
-		} elsif(-f "$mailDir/maildirsize") {
-			$rs = iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile();
+		for my $subdir ('cur', 'new', 'tmp') {
+			my $rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make({
+				user => $mailUidName, group => $mailGidName, mode => 0750
+			});
 			return $rs if $rs;
 		}
+	}
+
+	my @subscribedFolders = ('INBOX.Drafts', 'INBOX.Junk', 'INBOX.Sent', 'INBOX.Trash');
+	my $courierimapsubscribedFile = iMSCP::File->new( filename => "$mailDir/courierimapsubscribed" );
+
+	if(-f "$mailDir/courierimapsubscribed") {
+		my $courierimapsubscribedFileContent = $courierimapsubscribedFile->get();
+
+		unless(defined $courierimapsubscribedFileContent) {
+			error('Unable to read courier courierimapsubscribed file');
+			return 1;
+		}
+
+		if($courierimapsubscribedFileContent ne '') {
+			@subscribedFolders = (@subscribedFolders, split("\n", $courierimapsubscribedFileContent));
+			require List::MoreUtils;
+			@subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
+		}
+	}
+
+	my $rs = $courierimapsubscribedFile->set((join "\n", @subscribedFolders) . "\n");
+	$rs = $courierimapsubscribedFile->save();
+	$rs ||= $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
+	$rs ||= $courierimapsubscribedFile->mode(0640);
+	return $rs if $rs;
+
+	if(defined($data->{'MAIL_QUOTA'}) && $data->{'MAIL_QUOTA'} != 0) {
+		my @maildirmakeCmdArgs = (escapeShell("$data->{'MAIL_QUOTA'}S"), escapeShell("$mailDir"));
+		$rs = execute("maildirmake -q @maildirmakeCmdArgs", \my $stdout, \my $stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+
+		if(-f "$mailDir/maildirsize") {
+			my $file = iMSCP::File->new( filename => "$mailDir/maildirsize" );
+			$rs ||= $file->owner($mailUidName, $mailGidName);
+			$rs = $file->mode(0640);
+			return $rs if $rs;
+		}
+	} elsif(-f "$mailDir/maildirsize") {
+		$rs = iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile();
+		return $rs if $rs;
 	}
 
 	0;

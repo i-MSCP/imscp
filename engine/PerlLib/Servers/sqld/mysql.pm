@@ -33,6 +33,7 @@ use iMSCP::Execute;
 use iMSCP::Service;
 use Scalar::Defer;
 use version;
+use Class::Autouse qw/Servers::sqld::mysql::installer Servers::sqld::mysql::uninstaller/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -56,7 +57,6 @@ sub preinstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldPreinstall');
-	require Servers::sqld::mysql::installer;
 	$rs ||= Servers::sqld::mysql::installer->getInstance()->preinstall();
 	$rs ||= $self->{'eventManager'}->trigger('afterSqldPreinstall');
 }
@@ -102,7 +102,6 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldUninstall', 'mysql');
-	require Servers::sqld::mysql::uninstaller;
 	$rs ||= Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
 	$rs ||= $self->restart();
 	$rs ||= $self->{'eventManager'}->trigger('afterSqldUninstall', 'mysql');
@@ -121,7 +120,6 @@ sub setEnginePermissions
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeSqldSetEnginePermissions');
-	require Servers::sqld::mysql::installer;
 	$rs ||= Servers::sqld::mysql::installer->getInstance()->setEnginePermissions();
 	$rs ||= $self->{'eventManager'}->trigger('afterSqldSetEnginePermissions');
 }

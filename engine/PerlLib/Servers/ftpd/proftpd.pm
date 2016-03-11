@@ -33,6 +33,7 @@ use iMSCP::File;
 use iMSCP::Service;
 use File::Basename;
 use Scalar::Defer;
+use Class::Autouse qw/Servers::ftpd::proftpd::installer Servers::ftpd::proftpd::uninstaller/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -56,7 +57,6 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	require Servers::ftpd::proftpd::installer;
 	Servers::ftpd::proftpd::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
@@ -90,8 +90,6 @@ sub install
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdInstall', 'proftpd');
-
-	require Servers::ftpd::proftpd::installer;
 	$rs ||= Servers::ftpd::proftpd::installer->getInstance()->install();
 	$rs ||=$self->{'eventManager'}->trigger('afterFtpdInstall', 'proftpd');
 }
@@ -138,8 +136,6 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdUninstall', 'proftpd');
-
-	require Servers::ftpd::proftpd::uninstaller;
 	$rs ||= Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
 	$self->{'restart'} = 1 unless $rs;
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdUninstall', 'proftpd');

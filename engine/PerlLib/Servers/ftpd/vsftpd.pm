@@ -33,6 +33,7 @@ use iMSCP::Service;
 use iMSCP::TemplateParser;
 use File::Basename;
 use Scalar::Defer;
+use Class::Autouse qw/Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -56,7 +57,6 @@ sub registerSetupListeners
 {
 	my ($self, $eventManager) = @_;
 
-	require Servers::ftpd::vsftpd::installer;
 	Servers::ftpd::vsftpd::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
@@ -90,7 +90,6 @@ sub install
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdInstall', 'vsftpd');
-	require Servers::ftpd::vsftpd::installer;
 	$rs ||= Servers::ftpd::vsftpd::installer->getInstance()->install();
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdInstall', 'vsftpd');
 }
@@ -135,7 +134,6 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdUninstall', 'vsftpd');
-	require Servers::ftpd::vsftpd::uninstaller;
 	$rs ||= Servers::ftpd::vsftpd::uninstaller->getInstance()->uninstall();
 	$rs || ($self->{'restart'} = 1);
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdUninstall', 'vsftpd');

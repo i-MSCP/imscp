@@ -42,6 +42,7 @@ use File::Temp;
 use File::Basename;
 use Scalar::Defer;
 use version;
+use Class::Autouse qw/Servers::httpd::apache_itk::installer Servers::httpd::apache_itk::uninstaller/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -65,7 +66,6 @@ sub registerSetupListeners
 {
 	my (undef, $eventManager) = @_;
 
-	require Servers::httpd::apache_itk::installer;
 	Servers::httpd::apache_itk::installer->getInstance()->registerSetupListeners($eventManager);
 }
 
@@ -99,7 +99,6 @@ sub install
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdInstall', 'apache_itk');
-	require Servers::httpd::apache_itk::installer;
 	$rs ||= $rs = Servers::httpd::apache_itk::installer->getInstance()->install();
 	$rs ||= $self->{'eventManager'}->trigger('afterHttpdInstall', 'apache_itk');
 }
@@ -145,7 +144,6 @@ sub uninstall
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdUninstall', 'apache_itk');
-	require Servers::httpd::apache_itk::uninstaller;
 	$rs ||= Servers::httpd::apache_itk::uninstaller->getInstance()->uninstall();
 	$rs ||= $rs = $self->{'eventManager'}->trigger('afterHttpdUninstall', 'apache_itk');
 	$rs ||= $self->restart();
@@ -164,7 +162,6 @@ sub setEnginePermissions
 	my $self = shift;
 
 	my $rs = $self->{'eventManager'}->trigger('beforeHttpdSetEnginePermissions');
-	require Servers::httpd::apache_itk::installer;
 	$rs ||= $rs = Servers::httpd::apache_itk::installer->getInstance()->setEnginePermissions();
 	$rs ||= $self->{'eventManager'}->trigger('afterHttpdSetEnginePermissions');
 }
@@ -269,7 +266,7 @@ sub disableDmn
 
 	$self->setData($data);
 
-	my $ipMngr = iMSCP::Net->getInstance();
+	my $net = iMSCP::Net->getInstance();
 	my $version = $self->{'config'}->{'HTTPD_VERSION'};
 
 	$self->setData({
@@ -277,7 +274,7 @@ sub disableDmn
 		AUTHZ_ALLOW_ALL => version->parse($version) >= version->parse('2.4.0')
 			? 'Require all granted' : 'Allow from all',
 		HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
-		DOMAIN_IP => $ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4'
+		DOMAIN_IP => $net->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4'
 			? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
 	});
 
@@ -1417,7 +1414,7 @@ sub _addCfg
 
 	my $version = $self->{'config'}->{'HTTPD_VERSION'};
 	my $apache24 = version->parse($version) >= version->parse('2.4.0');
-	my $ipMngr = iMSCP::Net->getInstance();
+	my $net = iMSCP::Net->getInstance();
 
 	$self->setData({
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
@@ -1425,7 +1422,7 @@ sub _addCfg
 		HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
 		AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
 		AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
-		DOMAIN_IP => $ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4'
+		DOMAIN_IP => $net->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4'
 			? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
 	});
 
