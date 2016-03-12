@@ -230,7 +230,7 @@ sub ImportCaBundle
 {
 	my $self = shift;
 
-	return 0 unless $self->{'ca_bundle_container_path'} eq '';
+	return 0 if $self->{'ca_bundle_container_path'} eq '';
 
 	my $file = iMSCP::File->new( filename => $self->{'ca_bundle_container_path'} );
 	my $caBundle = $file->get();
