@@ -29,80 +29,91 @@ use File::Basename;
 
 sub start
 {
-	for my $chain(
-		'-N IMSCP_INPUT',
-		'-N IMSCP_OUTPUT',
-		'-I INPUT ! -i lo -j IMSCP_INPUT',
-		'-I OUTPUT ! -o lo -j IMSCP_OUTPUT'
-	) {
-		my $rs = execute("iptables $chain", \my $stdout, \my $stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
+    for my $chain(
+        '-N IMSCP_INPUT',
+        '-N IMSCP_OUTPUT',
+        '-I INPUT ! -i lo -j IMSCP_INPUT',
+        '-I OUTPUT ! -o lo -j IMSCP_OUTPUT'
+    ) {
+        my $rs = execute("iptables $chain", \my $stdout, \my $stderr);
+        debug($stdout) if $stdout;
+        error($stderr) if $stderr && $rs;
+        return $rs if $rs;
+    }
 
-	my $httpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
-	my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+    my $httpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
+    my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
-	for my $port($httpPort, $httpsPort, 80, 443, 110, 143, 25, 465, 587, 995, 993, 20, 21) {
-		next unless $port;
+    for my $port($httpPort, $httpsPort, 80, 443, 110, 143, 25, 465, 587, 995, 993, 20, 21) {
+        next unless $port;
 
-		my $rs = execute("iptables -I IMSCP_INPUT -p tcp --dport $port", \my $stdout, \my $stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+        my $rs = execute("iptables -I IMSCP_INPUT -p tcp --dport $port", \my $stdout, \my $stderr);
+        debug($stdout) if $stdout;
+        error($stderr) if $stderr && $rs;
+        return $rs if $rs;
 
-		$rs = execute("iptables -I IMSCP_OUTPUT -p tcp --sport $port", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
+        $rs = execute("iptables -I IMSCP_OUTPUT -p tcp --sport $port", \$stdout, \$stderr);
+        debug($stdout) if $stdout;
+        error($stderr) if $stderr && $rs;
+        return $rs if $rs;
+    }
 
-	for my $port(qw(25 465 587)) {
-		my $rs = execute("iptables -I IMSCP_INPUT -p tcp --sport $port", \my $stdout, \my $stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+    for my $port(qw(25 465 587)) {
+        my $rs = execute("iptables -I IMSCP_INPUT -p tcp --sport $port", \my $stdout, \my $stderr);
+        debug($stdout) if $stdout;
+        error($stderr) if $stderr && $rs;
+        return $rs if $rs;
 
-		$rs = execute("iptables -I IMSCP_OUTPUT -p tcp --dport $port", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
+        $rs = execute("iptables -I IMSCP_OUTPUT -p tcp --dport $port", \$stdout, \$stderr);
+        debug($stdout) if $stdout;
+        error($stderr) if $stderr && $rs;
+        return $rs if $rs;
+    }
 
-	for my $chain('IMSCP_INPUT', 'IMSCP_OUTPUT') {
-		my $rs = execute("iptables -A $chain -j RETURN", \my $stdout, \my $stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
+    for my $chain('IMSCP_INPUT', 'IMSCP_OUTPUT') {
+        my $rs = execute("iptables -A $chain -j RETURN", \my $stdout, \my $stderr);
+        debug($stdout) if $stdout;
+        error($stderr) if $stderr && $rs;
+        return $rs if $rs;
+    }
 
-	0;
+    0;
 }
 
 sub stop
 {
-	my $rs = execute('iptables -S', \my $stdout, \my $stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+    my $rs = execute('iptables -S', \my $stdout, \my $stderr);
+    debug($stdout) if $stdout;
+    error($stderr) if $stderr && $rs;
+    return $rs if $rs;
 
-	my %chains = ();
-	$chains{$2} = $1 while($stdout =~ /.*?((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))/g);
+    my %data;
+    $data{$2} = $1 while($stdout =~ /^-A\s+((?:INPUT|OUTPUT).*?(IMSCP_INPUT|IMSCP_OUTPUT))/gm);
 
-	return 0 unless %chains;
+    unless(%data) {
+        # Handle case were rules on INPUT/OUTPUT chains were already removed
+        while($stdout =~ /^-N\s+(IMSCP_INPUT|IMSCP_OUTPUT)/gm) {
+            for my $op('-F', '-X') {
+                $rs = execute("iptables $op $1", \my $stdout, \my $stderr);
+                debug($stdout) if $stdout;
+                error($stderr) if $stderr && $rs;
+                return $rs if $rs;
+            }
+        }
 
-	for my $chain(keys %chains) {
-		# Remove any rule from the chain and remove the chain
-		for my $op('-D', '-F', '-X') {
-			$rs = execute($op ne '-D' ? "iptables $op $chain" : "iptables $op $chains{$chain}", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
-	}
+        return 0;
+    }
 
-	0;
+    while(my($chain, $rule) = each(%data)) {
+        for my $op('-D', '-F', '-X') {
+            $rs = execute($op eq '-D' ? "iptables $op $rule" : "iptables $op $chain", \$stdout, \$stderr);
+            debug($stdout) if $stdout;
+            error($stderr) if $stderr && $rs;
+            return $rs if $rs;
+        }
+    }
+
+    0;
 }
 
 newDebug('imscp-net-traffic-logger.log');
@@ -118,11 +129,11 @@ OPTIONS:
 );
 
 iMSCP::Bootstrapper->getInstance()->boot({
-	norequirements => 'yes', nodatabase => 'yes', nolock => 'yes', config_readonly => 'yes'
+    norequirements => 'yes', nodatabase => 'yes', nolock => 'yes', config_readonly => 'yes'
 });
 
 my %dispatch = (
-   'start' => sub { stop || start },
+   'start' => sub { stop() || start() },
    'stop' => \&stop
 );
 

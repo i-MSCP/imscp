@@ -25,6 +25,7 @@ use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Database;
 use iMSCP::Getopt;
+use iMSCP::Service;
 use File::Basename;
 
 sub run
@@ -76,14 +77,7 @@ sub run
 	}
 
 	# Reset both input and output i-MSCP chains
-	for my $chain(keys %chains) {
-		my $rs = execute("iptables -Z $chain", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
-
-	0;
+	iMSCP::Service->getInstance->restart('imscp_traffic');
 }
 
 sub _parseTrafficData

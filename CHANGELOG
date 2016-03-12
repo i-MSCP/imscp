@@ -6,7 +6,7 @@ Git 1.2.x
 
 BACKEND
 	Fixed: Can't locate Data/Validate/IP.pm (now lazy-loaded to prevent failure on update) (iMSCP::Net)
-	Fixed: peer address not recognized in the case of a POINTOPOINT interface (regression fix)
+	Fixed: peer address not recognized in the case of a pointopoint interface (regression fix)
 
 CONTRIB
 	Fixed: Create the provisioning script even with the imscp-setup script (10_named_slave_provisioning.pl)
@@ -22,6 +22,9 @@ INSTALLER
 
 SERVERS
 	Fixed: Cannot connect to VsFTPD when behind NAT (WAN <-> LAN)
+
+TOOLS
+	Fixed: imscp-net-traffic-logger must not fail if part of rules were already removed
 
 VENDOR
 	Added: Class::Autouse Perl module version 2.01 from CPAN
