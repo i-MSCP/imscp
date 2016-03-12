@@ -306,8 +306,8 @@ sub _init
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
 	$self->{'repositorySections'} = [ 'main', 'non-free' ];
 	$self->{'preRequiredPackages'} = [
-		'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'liblist-moreutils-perl',
-		'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
+		'debconf-utils', 'binutils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl',
+		'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
 	];
 	$self->{'aptRepositoriesToRemove'} = [];
 	$self->{'aptRepositoriesToAdd'} = [];

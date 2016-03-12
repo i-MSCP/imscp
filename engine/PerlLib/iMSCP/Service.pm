@@ -35,8 +35,9 @@ use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 $Module::Load::Conditional::FIND_VERSION = 0;
+$Module::Load::Conditional::VERBOSE = 0;
 
-my $initSystem = lazy { _detectInitSystem() };
+my $init = lazy { _detectInit() };
 
 =head1 DESCRIPTION
 
@@ -267,7 +268,7 @@ sub hasService
 
 =item isSysvinit()
 
- Does sysvinit is used as init system?
+ Is sysvinit used as init system?
 
  Return bool TRUE if sysvinit is used as init system, FALSE otherwise
 
@@ -275,12 +276,12 @@ sub hasService
 
 sub isSysvinit
 {
-	$initSystem eq 'Sysvinit';
+	$init eq 'sysvinit';
 }
 
 =item isUpstart()
 
- Does upstart is used as init system?
+ Is upstart used as init system?
 
  Return bool TRUE if upstart is used as init system, FALSE otherwise
 
@@ -288,12 +289,12 @@ sub isSysvinit
 
 sub isUpstart
 {
-	$initSystem eq 'Upstart';
+	$init eq 'upstart';
 }
 
 =item isSystemd()
 
- Does systemd is used as init system?
+ Is systemd used as init system?
 
  Return bool TRUE if systemd is used as init system, FALSE otherwise
 
@@ -301,7 +302,7 @@ sub isUpstart
 
 sub isSystemd
 {
-	$initSystem eq 'Systemd';
+	$init eq 'systemd';
 }
 
 =item getProvider($providerName)
@@ -323,12 +324,11 @@ sub getProvider
 	$id = 'Debian' if $id eq 'Ubuntu';
 
 	my $provider = "iMSCP::Provider::Service::${id}::${providerName}";
-
-	unless(check_install(module => $provider)) {
+	unless(check_install( module => $provider )) {
 		$provider = "iMSCP::Provider::Service::${providerName}"; # Fallback to the base provider
 	}
 
-	can_load(modules => { $provider => undef }) or die(
+	can_load( modules => { $provider => undef } ) or die(
 		sprintf('Could not load the %s service provider: %s', $provider, $Module::Load::Conditional::ERROR)
 	);
 
@@ -354,51 +354,34 @@ sub _init
 	my $self = shift;
 
 	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self->{'provider'} = $self->getProvider($initSystem);
+	$self->{'provider'} = $self->getProvider($init);
 	$self;
 }
 
-=item _detectInitSystem()
+=item _detectInit()
 
- Detect init system in use
+ Detect init used on the system
 
  Return string init system in use
 
 =cut
 
-sub _detectInitSystem
+sub _detectInit
 {
-	my $initSystem = 'Sysvinit';
+	my $exec = iMSCP::ProgramFinder::find('strings') or die(sprintf(
+		'%s: Could not find `%s` executable in %s', __PACKAGE__, 'string', $ENV{PATH}
+	));
 
-	my $initCmd = iMSCP::ProgramFinder::find('init');
-	my $systemctlCmd = iMSCP::ProgramFinder::find('systemctl');
-
-	my %initSystems = (
-		Upstart => {
-			command => defined $initCmd ? "$initCmd --version" : undef,
-			regexp => qr/upstart/
-		},
-		Systemd => {
-			command => defined $systemctlCmd ? "$systemctlCmd list-units --full --no-legend" : undef,
-			regexp => qr/-\.mount/
-		}
-	);
-
-	local $@;
-
-	for(keys %initSystems) {
-		eval {
-			if(defined $initSystems{$_}->{'command'}) {
-				execute($initSystems{$_}->{'command'}, \my $stdout, \my $stderr);
-				$initSystem = $_ if $stdout =~ /$initSystems{$_}->{'regexp'}/;
-			}
-		};
-
-		last if $initSystem ne 'Sysvinit';
+	my $init;
+	for my $initCandidate(qw/systemd upstart sysvinit/) {
+		next if execute("$exec /proc/1/exe | grep -q $initCandidate", \my $stdout, \my $stderr);
+		$init = $initCandidate;
+		last;
 	}
 
-	debug(sprintf('%s init system has been detected', $initSystem));
-	$initSystem;
+	$init or die('Could not guess init system used on your system');
+	debug(sprintf('%s init system has been detected', $init));
+	$init;
 }
 
 =item _getLastError()
