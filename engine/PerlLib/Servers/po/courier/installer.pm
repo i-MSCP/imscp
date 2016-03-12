@@ -298,7 +298,7 @@ sub install
 	$rs ||= $self->_saveConf();
 	return $rs if $rs;
 
-	if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot') {
+	if($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot') {
 		$rs = $self->_migrateFromDovecot();
 		return $rs if $rs;
 	}

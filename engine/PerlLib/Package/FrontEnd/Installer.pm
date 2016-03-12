@@ -491,7 +491,8 @@ sub _setupSsl
 {
 	my $sslEnabled = main::setupGetQuestion('PANEL_SSL_ENABLED');
 	my $panelSSLsetup = main::setupGetQuestion('PANEL_SSL_SETUP', 'yes');
-	my $oldCertificatePath = $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne ''
+	my $oldCertificatePath = $main::imscpOldConfig{'BASE_SERVER_VHOST'}
+			&& $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne ''
 		? "$main::imscpConfig{'CONF_DIR'}/$main::imscpOldConfig{'BASE_SERVER_VHOST'}.pem"
 		: '';
 
@@ -985,7 +986,7 @@ sub _deleteDnsZone
 {
 	my $self = shift;
 
-	return 0 unless $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne '';
+	return 0 unless $main::imscpOldConfig{'BASE_SERVER_VHOST'} && $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne '';
 
 	my $rs = $self->{'eventManager'}->trigger('beforeNamedDeleteMasterZone');
 	$rs ||= Servers::named->factory()->deleteDmn( {

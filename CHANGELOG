@@ -5,8 +5,8 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 YOUTRACK
-	IP-1509 Could not generate self-signed SSL certificate through the frontEnd - Invalide SSL certificate
-
+	IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate (regression fix)
+	IP-1511 Use of uninitialized value $imscpOldConfig{"BASE_SERVER_VHOST"} on fresh install
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.17
@@ -24,8 +24,8 @@ CONTRIB
 
 INSTALLER
 	Fixed: Argument "" isn't numeric in numeric eq (==) at engine/PerlLib/Package/FrontEnd/Installer.pm line 270
-	Fixed: Could not enable service when unit file is a symlink due to 'No such file or directory' error (systemd)
 	Fixed: Could not add intermediate SSL certificates; dialog is always skipped (regression fix)
+	Fixed: Could not enable service when unit file is a symlink due to 'No such file or directory' error (systemd)
 	Fixed: MariaDB SQL server not selectable on fresh install (regression fix)
 	Fixed: Missing mysql-common package in MariaDB package sections (Debian Jessie)
 	Fixed: Panel SSL certificate chain not removed when disabling SSL or changing hostname
