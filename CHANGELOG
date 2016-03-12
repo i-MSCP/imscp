@@ -4,6 +4,9 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+PLUGINS
+	Updated: API version to 1.0.4
+
 YOUTRACK
 	IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate (regression fix)
 	IP-1511 Use of uninitialized value $imscpOldConfig{"BASE_SERVER_VHOST"} on fresh install
