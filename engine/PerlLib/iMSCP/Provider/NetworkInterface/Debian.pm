@@ -186,7 +186,7 @@ sub _updateInterfaces
                     ip_card     => $data->{'ip_card'},
                     addr_family => $self->{'net'}->getAddrVersion($data->{'ip_address'}) eq 'ipv4' ? 'inet' : 'inet6',
                     address     => $normalizedAddr,
-                    netmask     => $data->{'netmask'},
+                    netmask     => $data->{'netmask'}
                 },
                 <<TPL
 
