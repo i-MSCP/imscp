@@ -73,7 +73,7 @@ sub loadConfig
 	my $defaultConffile = "$FindBin::Bin/configs/debian/imscp.conf";
 
 	# Load new imscp.conf conffile from i-MSCP upstream source
-	tie my %imscpNewConfig, 'iMSCP::Config', fileName => (-f $distroConffile) ? $distroConffile : $defaultConffile;
+	tie my %imscpNewConfig, 'iMSCP::Config', fileName => -f $distroConffile ? $distroConffile : $defaultConffile;
 
 	%main::imscpConfig = %imscpNewConfig;
 	%main::imscpOldConfig = ();
@@ -111,7 +111,7 @@ sub build
 
 	if($main::skippackages && !iMSCP::Getopt->preseed && !$main::imscpConfig{'HTTPD_SERVER'}
 		|| !$main::imscpConfig{'PO_SERVER'} || !$main::imscpConfig{'MTA_SERVER'} || !$main::imscpConfig{'FTPD_SERVER'}
-		||! $main::imscpConfig{'NAMED_SERVER'} || !$main::imscpConfig{'SQL_SERVER'}
+		|| !$main::imscpConfig{'NAMED_SERVER'} || !$main::imscpConfig{'SQL_SERVER'}
 	) {
 		$main::noprompt = 0;
 		$main::skippackages = 0;
@@ -277,7 +277,7 @@ EOF
 	$rs = iMSCP::EventManager->getInstance()->trigger('afterInstall');
 	return $rs if $rs;
 
-	my $port = ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://')
+	my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
 		? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
 	iMSCP::Dialog->getInstance()->infobox(<<EOF);
@@ -589,7 +589,7 @@ sub _buildLayout
 	my $distroLayout = "$FindBin::Bin/autoinstaller/Layout/" . iMSCP::LsbRelease->getInstance()->getId(1) . '.xml';
 	my $defaultLayout = "$FindBin::Bin/autoinstaller/Layout/Debian.xml";
 
-	_processXmlFile((-f $distroLayout) ? $distroLayout : $defaultLayout);
+	_processXmlFile(-f $distroLayout ? $distroLayout : $defaultLayout);
 }
 
 =item _buildConfigFiles()
@@ -615,7 +615,7 @@ sub _buildConfigFiles
 	}
 
 	# Determine install.xml file to process
-	my $file = (-f "$distroConfigDir/install.xml") ? "$distroConfigDir/install.xml" : "$defaultConfigDir/install.xml";
+	my $file = -f "$distroConfigDir/install.xml" ? "$distroConfigDir/install.xml" : "$defaultConfigDir/install.xml";
 
 	my $rs = _processXmlFile($file);
 	return $rs if $rs;
@@ -1086,9 +1086,7 @@ sub _copyConfig
 	my $data = shift;
 
 	if($data->{'if'}) {
-		my $ifStatement = _expandVars($data->{if});
-		debug("if statement expanded to: $ifStatement");
-		return 0 unless eval "$ifStatement";
+		return 0 unless eval _expandVars($data->{if});
 	}
 
 	my @parts = split '/', $data->{'content'};
@@ -1149,7 +1147,7 @@ sub _copy
 
 	return 0 unless $data->{'user'} || $data->{'group'} || $data->{'mode'};
 
-	my $file = iMSCP::File->new( filename => (-e "$path/$name") ? "$path/$name" : $path );
+	my $file = iMSCP::File->new( filename => -e "$path/$name" ? "$path/$name" : $path );
 	$rs = $file->mode(oct($data->{'mode'})) if $data->{'mode'};
 	return $rs if $rs;
 
