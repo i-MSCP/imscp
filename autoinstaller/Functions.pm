@@ -1092,6 +1092,12 @@ sub _copyConfig
 {
 	my $data = shift;
 
+	if($data->{'if'}) {
+		my $ifStatement = _expandVars($data->{if});
+		debug("if statement expanded to: $ifStatement");
+		return 0 unless eval "$ifStatement";
+	}
+
 	my @parts = split '/', $data->{'content'};
 	my $name = pop(@parts);
 	my $path = join '/', @parts;

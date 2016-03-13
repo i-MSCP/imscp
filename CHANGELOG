@@ -4,6 +4,9 @@
 Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
+INSTALLER
+	Added: Conditional statement feature for install.xml files (copy_config items only)
+
 PLUGINS
 	Updated: API version to 1.0.4
 
