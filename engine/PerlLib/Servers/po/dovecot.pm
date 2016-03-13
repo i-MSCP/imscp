@@ -261,7 +261,7 @@ sub getTraffic
 	# Data source file
 	$trafficDataSrc ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-	if(-f $trafficDataSrc) {
+	if(-f -s $trafficDataSrc) {
 		# We are using a small file to memorize the number of the last line that has been read and his content
 		tie my %indexDb, 'iMSCP::Config', fileName => "$variableDataDir/traffic_index.db", nowarn => 1;
 
@@ -269,14 +269,15 @@ sub getTraffic
 		my $lastParsedLineContent = $indexDb{'po_lineContent'} || '';
 
 		# Create a snapshot of log file to process
-		my $tpmFile1 = File::Temp->new();
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tpmFile1, { preserve => 'no' } );
-		die(iMSCP::Debug::getLastError()) if $rs;
+		my $tmpFile = File::Temp->new( UNLINK => 1 );
+		iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tmpFile, { preserve => 'no' } ) == 0 or die(
+			iMSCP::Debug::getLastError()
+		);
 
-		tie my @content, 'Tie::File', $tpmFile1 or die("Unable to tie $tpmFile1");
+		tie my @content, 'Tie::File', $tmpFile or die(sprintf('Could not tie %s file', $tmpFile));
 
 		unless($selfCall) {
-			# Saving last processed line number and line content
+			# Save last processed line number and line content
 			$indexDb{'po_lineNo'} = $#content;
 			$indexDb{'po_lineContent'} = $content[$#content];
 		}
@@ -298,23 +299,23 @@ sub getTraffic
 			untie @content;
 
 			# Read and parse IMAP/POP traffic source file (line by line)
-			while(<$tpmFile1>) {
+			while(<$tmpFile>) {
 				# IMAP traffic (< Dovecot 1.2.1)
 				# Sep 13 20:11:27 imscp dovecot: IMAP(user@domain.tld): Disconnected: Logged out bytes=244/850
 				#
 				# IMAP traffic (>= Dovecot 1.2.1)
 				# Sep 13 22:06:09 imscp dovecot: imap(user@domain.tld): Disconnected: Logged out in=244 out=858
-				if(/^.*imap\([^\@]+\@([^\)]+)\):\sDisconnected:.*(?:bytes|in)=(\d+)(?:\/|\sout=)(\d+)$/gimo) {
+				if(/^.*imap\([^\@]+\@([^\)]+)\):\sDisconnected:.*(?:bytes|in)=(\d+)(?:\/|\sout=)(\d+)$/gim) {
 					$trafficDb{$1} += $2 + $3;
 					next;
 				}
 
 				# POP traffic
 				# Sep 13 20:14:16 imscp dovecot: POP3(user@domain.tld): Disconnected: Logged out top=1/3214, retr=0/0, del=0/1, size=27510
-				$trafficDb{$1} += $2 + $3 if /^.*pop3\([^\@]+\@([^\)]+)\):\sDisconnected:.*retr=(\d+)\/(\d+).*$/gimo;
+				$trafficDb{$1} += $2 + $3 if /^.*pop3\([^\@]+\@([^\)]+)\):\sDisconnected:.*retr=(\d+)\/(\d+).*$/gim;
 			}
 		} else {
-			debug(sprintf('No new content found in %s - Skipping', $trafficDataSrc));
+			debug(sprintf('No traffic data found in %s - Skipping', $trafficDataSrc));
 			untie @content;
 		}
 	} elsif(!$selfCall) {
@@ -324,9 +325,9 @@ sub getTraffic
 
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-	$self->{'eventManager'}->register(
-		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
-	) unless $selfCall;;
+	$self->{'eventManager'}->register( 'afterVrlTraffic', sub {
+		-f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0;
+	}) unless $selfCall;
 
 	\%trafficDb;
 }

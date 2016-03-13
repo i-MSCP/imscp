@@ -388,7 +388,7 @@ sub getTraffic
 	# Data source file
 	$trafficDataSrc ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-	if(-f $trafficDataSrc) {
+	if(-f -s $trafficDataSrc) {
 		# We are using a small file to memorize the number of the last line that has been read and his content
 		tie my %indexDb, 'iMSCP::Config', fileName => "$variableDataDir/traffic_index.db", nowarn => 1;
 
@@ -396,14 +396,15 @@ sub getTraffic
 		my $lastParsedLineContent = $indexDb{'po_lineContent'} || '';
 
 		# Create a snapshot of log file to process
-		my $tpmFile1 = File::Temp->new();
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tpmFile1, { preserve => 'no' } );
-		die(iMSCP::Debug::getLastError()) if $rs;
+		my $tmpFile = File::Temp->new( UNLINK => 1 );
+		iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tmpFile, { preserve => 'no' } ) == 0 or die(
+			iMSCP::Debug::getLastError()
+		);
 
-		tie my @content, 'Tie::File', $tpmFile1 or die("Unable to tie $tpmFile1");
+		tie my @content, 'Tie::File', $tmpFile or die(sprintf('Could not tie %s file', $tmpFile));
 
 		unless($selfCall) {
-			# Saving last processed line number and line content
+			# Save last processed line number and line content
 			$indexDb{'po_lineNo'} = $#content;
 			$indexDb{'po_lineContent'} = $content[$#content];
 		}
@@ -425,7 +426,8 @@ sub getTraffic
 			untie @content;
 
 			# Read and parse IMAP/POP traffic source file (line by line)
-			while(<$tpmFile1>) {
+			open my $fh, '<', $tmpFile or die(sprintf('Could not open file: %s', $!));
+			while(<$fh>) {
 				# Extract traffic data ( IMAP )
 				#
 				# Important consideration for both IMAP and POP traffic accounting with courier
@@ -437,7 +439,9 @@ sub getTraffic
 				#
 				# IMAP traffic line sample
 				# Oct 15 12:56:42 imscp imapd: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], headers=0, body=0, rcvd=172, sent=310, time=205
-				if(m/^.*(?:imapd|imapd\-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\],\sheaders=\d+,\sbody=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gimo && !grep($_ eq $2, ( 'localhost', '127.0.0.1', '::1', '::ffff:127.0.0.1' ))) {
+				if(m/^.*(?:imapd|imapd\-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\],\sheaders=\d+,\sbody=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gim
+					&& !grep($_ eq $2, ( 'localhost', '127.0.0.1', '::1', '::ffff:127.0.0.1' ))
+				) {
 					$trafficDb{$1} += $3 + $4;
 					next;
 				}
@@ -450,10 +454,12 @@ sub getTraffic
 				# Oct 15 14:51:12 imscp pop3d-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], port=[41254], top=0, retr=496, rcvd=32, sent=672, time=0, stls=1
 				#
 				# Note: courierpop3login is for Debian. pop3d for Fedora.
-				$trafficDb{$1} += $3 + $4 if m/^.*(?:courierpop3login|pop3d|pop3d-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\].*\stop=\d+,\sretr=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gimo && !grep($_ eq $2, ( 'localhost', '127.0.0.1', '::1', '::ffff:127.0.0.1' ));
+				$trafficDb{$1} += $3 + $4 if m/^.*(?:courierpop3login|pop3d|pop3d-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\].*\stop=\d+,\sretr=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gim
+					&& !grep($_ eq $2, ( 'localhost', '127.0.0.1', '::1', '::ffff:127.0.0.1' ));
 			}
+			close($fh);
 		} else {
-			debug(sprintf('No new content found in %s - Skipping', $trafficDataSrc));
+			debug(sprintf('No traffic data found in %s - Skipping', $trafficDataSrc));
 			untie @content;
 		}
 	} elsif(!$selfCall) {
@@ -463,9 +469,9 @@ sub getTraffic
 
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-	$self->{'eventManager'}->register(
-		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
-	) unless $selfCall;
+	$self->{'eventManager'}->register( 'afterVrlTraffic', sub {
+		-f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0;
+	}) unless $selfCall;
 
 	\%trafficDb;
 }

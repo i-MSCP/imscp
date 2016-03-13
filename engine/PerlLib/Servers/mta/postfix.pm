@@ -513,7 +513,7 @@ sub getTraffic
 	# Data source file
 	$trafficDataSrc ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-	if(-f $trafficDataSrc) {
+	if(-f -s $trafficDataSrc) {
 		# We are using a small file to memorize the number of the last line that has been read and his content
 		tie my %indexDb, 'iMSCP::Config', fileName => "$variableDataDir/traffic_index.db", nowarn => 1;
 
@@ -521,11 +521,11 @@ sub getTraffic
 		my $lastParsedLineContent = $indexDb{'smtp_lineContent'} || '';
 
 		# Create a snapshot of log file to process
-		my $tpmFile1 = File::Temp->new();
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tpmFile1, { preserve => 'no' } );
+		my $tmpFile1 = File::Temp->new( UNLINK => 1 );
+		my $rs = iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tmpFile1, { preserve => 'no' } );
 		die(iMSCP::Debug::getLastError()) if $rs;
 
-		tie my @content, 'Tie::File', $tpmFile1 or die("Could not tie $tpmFile1");
+		tie my @content, 'Tie::File', $tmpFile1 or die(sprintf('Could not tie %s file', $tmpFile1));
 
 		unless($selfCall) {
 			# Saving last processed line number and line content
@@ -550,22 +550,25 @@ sub getTraffic
 			untie @content;
 
 			# Extract postfix data
-			my $tpmFile2 = File::Temp->new();
+			my $tmpFile2 = File::Temp->new( UNLINK => 1 );
 			my ($stdout, $stderr);
-			$rs = execute("grep postfix $tpmFile1 | maillogconvert.pl standard 1> $tpmFile2", undef, \$stderr);
-			die("Could not extract postfix data: $stderr") if $rs;
+			execute("grep postfix $tmpFile1 | maillogconvert.pl standard 1> $tmpFile2", undef, \$stderr) == 0 or die(
+				sprintf('Could not extract postfix data: %s', $stderr || 'Unknown error')
+			);
 
 			# Read and parse SMTP traffic source file (line by line)
-			while(<$tpmFile2>) {
-				if(/^[^\s]+\s[^\s]+\s[^\s\@]+\@([^\s]+)\s[^\s\@]+\@([^\s]+)\s([^\s]+)\s([^\s]+)\s[^\s]+\s[^\s]+\s[^\s]+\s(\d+)$/gimo) {
+			open my $fh, '<', $tmpFile2 or die(sprintf('Could not open file: %s', $!));
+			while(<$fh>) {
+				if(/^[^\s]+\s[^\s]+\s[^\s\@]+\@([^\s]+)\s[^\s\@]+\@([^\s]+)\s([^\s]+)\s([^\s]+)\s[^\s]+\s[^\s]+\s[^\s]+\s(\d+)$/gim) {
 					if($4 !~ /virtual/ && !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)) {
 						$trafficDb{$1} += $5;
 						$trafficDb{$2} += $5;
 					}
 				}
 			}
+			close($fh);
 		} else {
-			debug(sprintf('No new content found in %s - Skipping', $trafficDataSrc));
+			debug(sprintf('No traffic data found in %s - Skipping', $trafficDataSrc));
 			untie @content;
 		}
 	} elsif(!$selfCall) {
@@ -575,9 +578,9 @@ sub getTraffic
 
 	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-	$self->{'eventManager'}->register(
-		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
-	) unless $selfCall;
+	$self->{'eventManager'}->register( 'afterVrlTraffic', sub {
+		-f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0;
+	}) unless $selfCall;
 
 	\%trafficDb;
 }

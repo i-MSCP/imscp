@@ -10,8 +10,16 @@ INSTALLER
 PLUGINS
 	Updated: API version to 1.0.4
 
+SERVERS
+	Added: Own i-MSCP logorate configuration file for ProFTPD (xferlog file don't need to be rotated)
+	Fixed: Bad regexp in getTraffic() method leading to unmatching of traffic data (VsFTPd)
+	Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead.
+	Fixed: VsFTPd doesn't reopen xferlog file automatically when the file has been removed, leading to traffic data loss
+	Removed: /var/log/proftpd/ftp_traff.log custom log. Traffic data are now pulled from /var/log/proftpd/xferlog
+
 YOUTRACK
-	IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate (regression fix)
+	IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate
+	IP-1510 VsFTPd - Use of uninitialized value $tmpFile
 	IP-1511 Use of uninitialized value $imscpOldConfig{"BASE_SERVER_VHOST"} on fresh install
 
 ------------------------------------------------------------------------------------------------------------------------

@@ -227,7 +227,6 @@ sub install
 	$rs ||= $self->_setVersion();
 	$rs ||= $self->_setupDatabase();
 	$rs ||= $self->_buildConfigFile();
-	$rs ||= $self->_createTrafficLogFile();
 	$rs ||= $self->_saveConf();
 	$rs ||= $self->_oldEngineCompatibility();
 }
@@ -489,42 +488,6 @@ EOF
 	$rs ||= $file->mode(0640);
 	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$rs ||= $file->copyFile($self->{'config'}->{'FTPD_CONF_FILE'});
-}
-
-=item _createTrafficLogFile()
-
- Create traffic log file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _createTrafficLogFile
-{
-	my $self = shift;
-
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdCreateTrafficLogFile');
-	return $rs if $rs;
-
-	unless (-d "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
-		$rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd" )->make(
-			{ user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0755 }
-		);
-		return $rs if $rs;
-	}
-
-	unless(-f "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}") {
-		my $file = iMSCP::File->new(
-			filename => "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}"
-		);
-
-		$rs = $file->save();
-		$rs ||= $file->mode(0644);
-		$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-	}
-
-	$self->{'eventManager'}->trigger('afterFtpdCreateTrafficLogFile');
 }
 
 =item _saveConf()

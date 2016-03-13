@@ -840,6 +840,7 @@ EOF
 
 	my $debconfSelectionsFile = File::Temp->new();
 	print $debconfSelectionsFile $selectionsFileContent;
+	$debconfSelectionsFile->flush();
 
 	my $rs = execute("debconf-set-selections $debconfSelectionsFile", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;

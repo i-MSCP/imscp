@@ -348,7 +348,7 @@ sub reload
 
  Get ProFTPD traffic data
 
- Return hash Traffic data or die on failure
+ Return hash Traffic database or die on failure
 
 =cut
 
@@ -356,32 +356,39 @@ sub getTraffic
 {
 	my $self = shift;
 
-	require File::Temp;
-
 	my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/ftp_traffic.db";
 
-	# Load traffic database
+	# Load traffic database (create it if needed)
 	tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nowarn => 1;
 
-	# Data source file
-	my $trafficDataSrc = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}";
+	# Traffic data source file
+	my $trafficDataSrc = $self->{'config'}->{'FTPD_TRAFF_LOG_PATH'};
 
-	if(-f $trafficDataSrc && -s _) {
-		my $tpmFile = File::Temp->new();
+	if(-f -s $trafficDataSrc) { # Process only if the file exists and is not empty
+		require File::Temp;
 
-		# Create a snapshot of log file to process
-		my $rs = iMSCP::File->new( filename => $trafficDataSrc)->moveFile($tpmFile);
-		die(iMSCP::Debug::getLastError()) if $rs;
+		# Create snapshot of traffic data source file
+		my $tmpFile = File::Temp->new( UNLINK => 1 );
+		iMSCP::File->new( filename => $trafficDataSrc )->copyFile($tmpFile) == 0 or die(iMSCP::Debug::getLastError());
 
-		# Read and parse file (line by line)
-		$trafficDb{$2} += $1 while(<$tpmFile> =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
+		# Reset traffic data source file
+		truncate($trafficDataSrc, 0) or die(sprintf('Could not truncate %s file: %s', $trafficDataSrc, $!));
+
+		# Extract traffic data from snapshot and add them in traffic database
+		open my $fh, '<', $tmpFile or die(sprintf('Could not open file: %s', $!));
+		while(<$fh>) {
+			$trafficDb{$2} += $1 if /^(?:[^\s]+\s){7}(\d+)\s(?:[^\s]+\s){5}[^\s]+\@([^\s]+)/gm;
+		}
+		close($fh);
+	} else {
+		debug(sprintf('No traffic data found in %s - Skipping', $trafficDataSrc));
 	}
 
 	# Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
 	# in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-	$self->{'eventManager'}->register(
-		'afterVrlTraffic', sub { (-f $trafficDbPath) ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0; }
-	);
+	$self->{'eventManager'}->register( 'afterVrlTraffic', sub {
+		-f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0;
+	});
 
 	\%trafficDb;
 }
