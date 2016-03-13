@@ -172,13 +172,6 @@ sub build
 	$rs ||= _getDistroAdapter()->postBuild();
 	return $rs if $rs;
 
-	unless($main::skippackages) {
-		# Add/update servers selection in imscp.conf file
-		for('HTTPD', 'PO', 'MTA', 'FTPD', 'NAMED', 'SQL') {
-			$main::imscpConfig{ $_ . '_SERVER' } = $main::questions{ $_ . '_SERVER' };
-		}
-	}
-
 	# Backup current configuration file if any
 	if(-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
 		$rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
@@ -1122,7 +1115,7 @@ sub _copyConfig
 
 	return 0 unless $data->{'user'} || $data->{'group'} || $data->{'mode'};
 
-	my $file = iMSCP::File->new( filename =>  (-e "$path/$name") ? "$path/$name" : $path );
+	my $file = iMSCP::File->new( filename =>  -e "$path/$name" ? "$path/$name" : $path );
 	my $rs = $file->mode(oct($data->{'mode'})) if $data->{'mode'};
 	return $rs if $rs;
 

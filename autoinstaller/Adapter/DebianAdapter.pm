@@ -507,7 +507,8 @@ EOF
 			push @{$self->{'packagesToInstallDelayed'}}, @{$pkgList->{$section}->{$sAlt}->{'package_delayed'}};
 		}
 
-		$main::questions{ uc($section) . '_SERVER' } = $sAlt; # Set server implementation to use
+		# Set server implementation to use
+		$main::imscpConfig{uc($section) . '_SERVER'} = $sAlt;
 	}
 
 	0;
@@ -750,13 +751,13 @@ sub _prefillDebconfDatabase
 		return $rs if $rs;
 	}
 
-	my $poServer = $main::questions{'PO_SERVER'};
+	my $poServer = $main::imscpConfig{'PO_SERVER'};
 
 	my ($sqlServer, $sqlServerVersion) = ('remote_server', undef);
 	my ($sqlServerQuestionOwner, $sqlServerQuestionPrefix);
 
-	if($main::questions{'SQL_SERVER'} ne 'remote_server') {
-		($sqlServer, $sqlServerVersion) = $main::questions{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/;
+	if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
+		($sqlServer, $sqlServerVersion) = $main::imscpConfig{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/;
 
 		if ($sqlServer eq 'mysql') {
 			if (grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})) {
