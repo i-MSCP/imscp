@@ -137,7 +137,7 @@
 			dns_show_rows(['srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio', 'srv_weight', 'srv_host', 'srv_port']);
 		} else if (value == 'CNAME') {
 			dns_show_rows(['name', 'cname']);
-		} else if (value == 'TXT') {
+		} else if (value == 'SPF' || value == 'TXT') {
 			dns_show_rows(['txt_data']);
 		}
 	}

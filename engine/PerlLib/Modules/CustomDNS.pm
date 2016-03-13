@@ -70,7 +70,7 @@ sub process
 		return 1;
 	}
 
-	my $condition = ($domainType eq 'domain') ? "domain_id = $domainId AND alias_id = 0" : "alias_id = $domainId";
+	my $condition = $domainType eq 'domain' ? "domain_id = $domainId AND alias_id = 0" : "alias_id = $domainId";
 
 	my $rs = $self->_loadData($domainType, $domainId);
 	return $rs if $rs;
@@ -80,7 +80,7 @@ sub process
 	if($rs) {
 		my $errorStr = getMessageByType('error');
 		my $qrs = $self->{'db'}->doQuery(
-			'u', "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition", ($errorStr ? $errorStr : 'Unknown error')
+			'u', "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition", $errorStr ? $errorStr : 'Unknown error'
 		);
 		unless(ref $qrs eq 'HASH') {
 			error($qrs);
@@ -161,8 +161,7 @@ sub _loadData
 {
 	my ($self, $domainType, $domainId) = @_;
 
-	my $condition = ($domainType eq 'domain')
-		? "t1.domain_id = $domainId AND t1.alias_id = 0" : "t1.alias_id = $domainId";
+	my $condition = $domainType eq 'domain' ? "t1.domain_id = $domainId AND t1.alias_id = 0" : "t1.alias_id = $domainId";
 
 	$self->{'db'}->set('FETCH_MODE', 'arrayref');
 

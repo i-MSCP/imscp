@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '218');
+  ('DATABASE_REVISION', '219');
 
 -- --------------------------------------------------------
 
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `domain_dns` (
   `alias_id` int(11) NOT NULL,
   `domain_dns` varchar(255) collate utf8_unicode_ci NOT NULL,
   `domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL DEFAULT 'IN',
-  `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL DEFAULT 'A',
+  `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS','NXT','PTR','PX','SIG','SRV','TXT','SPF') collate utf8_unicode_ci NOT NULL DEFAULT 'A',
   `domain_text` varchar(255) collate utf8_unicode_ci NOT NULL,
   `owned_by` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'custom_dns_feature',
   `domain_dns_status` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok',

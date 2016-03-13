@@ -652,16 +652,21 @@ sub addCustomDNS
 	my $rs = $self->{'eventManager'}->trigger('beforeNamedAddCustomDNS', \$wrkDbFileContent, $data);
 	return $rs if $rs;
 
-	my $customDnsEntries = '';
+	my @customDnsEntries = ();
 	for my $record(@{$data->{'DNS_RECORDS'}}) {
 		my ($name, $class, $type, $rdata) = @{$record};
-		$customDnsEntries .= "$name\t$class\t$type\t$rdata\n";
+		push @customDnsEntries , "$name\t$class\t$type\t$rdata";
+	}
+
+	# Remove default SPF/TXT record if needed
+	if(grep($_ =~ /^[^\s]+\s+IN\s+(?:SPF|TXT)\s+.*?v=spf1\s.*/gm, @customDnsEntries)) {
+		$wrkDbFileContent =~ s/^[^\s]+\s+IN\s+TXT\s+.*?v=spf1\s.*\n//gm;
 	}
 
 	$wrkDbFileContent = replaceBloc(
 		"; custom DNS entries BEGIN\n",
 		"; custom DNS entries ENDING\n",
-		"; custom DNS entries BEGIN\n" . $customDnsEntries . "; custom DNS entries ENDING\n",
+		"; custom DNS entries BEGIN\n" . ( join "\n", @customDnsEntries, '' ) . "; custom DNS entries ENDING\n",
 		$wrkDbFileContent
 	);
 

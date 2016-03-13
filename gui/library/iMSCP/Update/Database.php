@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = '218';
+	protected $lastUpdate = '219';
 
 	/**
 	 * Singleton - Make new unavailable
@@ -3457,6 +3457,20 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'external_mail_dns_ids',
 				"external_mail_dns_ids VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
 			)
+		);
+	}
+
+	/**
+	 * Add SPF custom DNS record type
+	 *
+	 * @return string SQL statements to be executed
+	 */
+	protected function r219()
+	{
+		return $this->changeColumn(
+			'domain_dns',
+			'domain_type',
+			"`domain_type` ENUM('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS','NXT','PTR','PX','SIG','SRV','TXT','SPF') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A'"
 		);
 	}
 }
