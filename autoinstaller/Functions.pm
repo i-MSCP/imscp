@@ -1031,13 +1031,13 @@ sub _expandVars
 {
 	my $string = shift || '';
 
-	for($string =~ /\$\{([^\}]+)\}/g) {
-		if(exists $main::{$_}) {
-			$string =~ s/\$\{$_\}/$main::{$_}/g;
-		} elsif(exists $main::imscpConfig{$_}) {
-			$string =~ s/\$\{$_\}/$main::imscpConfig{$_}/g;
+	while (my ($var) = $string =~ /\$\{([^\}]+)\}/g) {
+		if(exists $main::{$var}) {
+			$string =~ s/\$\{$var\}/$main::{$var}/g;
+		} elsif(exists $main::imscpConfig{$var}) {
+			$string =~ s/\$\{$var\}/$main::imscpConfig{$var}/g;
 		} else {
-			fatal("Could not expand variable \${$_}. Variable not found.");
+			fatal("Could not expand variable \${$var}. Variable not found.");
 		}
 	}
 
