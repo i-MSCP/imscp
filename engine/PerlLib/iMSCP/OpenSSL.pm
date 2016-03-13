@@ -65,9 +65,10 @@ sub validatePrivateKey
 	my $passphraseFile;
 	if($self->{'private_key_passphrase'} ne '') {
 		# Create temporary file for private key passphrase
-		$passphraseFile = File::Temp->new();
+		$passphraseFile = File::Temp->new( UNLINK => 1 );
 		# Write SSL private key passphrase into temporary file, which is only readable by root
 		print $passphraseFile $self->{'private_key_passphrase'};
+		$passphraseFile->flush();
 	}
 
 	my @cmd = (
@@ -164,9 +165,10 @@ sub importPrivateKey
 	my $passphraseFile;
 	if($self->{'private_key_passphrase'} ne '') {
 		# Create temporary file for private key passphrase
-		$passphraseFile = File::Temp->new();
+		$passphraseFile = File::Temp->new( UNLINK => 1 );
 		# Write SSL private key passphrase into temporary file, which is only readable by root
 		print $passphraseFile $self->{'private_key_passphrase'};
+		$passphraseFile->flush();
 	}
 
 	my @cmd = (
@@ -285,13 +287,14 @@ sub createSelfSignedCertificate
 		return 1;
 	}
 
-	my $openSSLConffile = File::Temp->new();
+	my $openSSLConffile = File::Temp->new( UNLINK => 1 );
 	# Write openssl configuration file into temporary file
 	print $openSSLConffile process({
 		'COMMON_NAME' => $commonName,
 		'EMAIL_ADDRESS' => $data->{'email'},
 		'ALT_NAMES' => $data->{'wildcard'} ? "DNS.1 = $commonName\n" : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n"
 	}, $openSSLConffileTplContent);
+	$openSSLConffile->flush();
 
 	my @cmd = (
 		'openssl req -x509 -nodes -days 365', '-config', escapeShell($openSSLConffile), '-newkey rsa',

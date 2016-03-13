@@ -110,18 +110,21 @@ sub add
 	my $self = shift;
 
 	# Private key
-	my $privateKeyContainer = File::Temp->new();
+	my $privateKeyContainer = File::Temp->new( UNLINK => 1 );
 	print $privateKeyContainer $self->{'private_key'};
+	$privateKeyContainer->flush();
 
 	# Certificate
-	my $certificateContainer = File::Temp->new();
+	my $certificateContainer = File::Temp->new( UNLINK => 1 );
 	print $certificateContainer $self->{'certificate'};
+	$certificateContainer->flush();
 
 	# CA Bundle (intermediate certificate(s))
 	my $caBundleContainer;
 	if($self->{'ca_bundle'}) {
-		$caBundleContainer = File::Temp->new();
+		$caBundleContainer = File::Temp->new( UNLINK => 1 );
 		print $caBundleContainer $self->{'ca_bundle'};
+		$caBundleContainer->flush();
 	}
 
 	# Create OpenSSL object
