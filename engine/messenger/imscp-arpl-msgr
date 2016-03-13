@@ -46,13 +46,14 @@ eval {
 	$parser->output_to_core(1);
 	$parser->tmp_to_core(1);
 
-	my $oEnt = $parser->parse_data($message) or die('Unable to parse message');
-	my $oHead = $oEnt->head() or die('Unable to get message header');
+	my $oEnt = $parser->parse_data($message) or die('Could not parse message');
+	my $oHead = $oEnt->head() or die('Could not get message header');
 
-	my ($to) = Mail::Address->parse($oHead->get('From')) or die("Unable to parse From field from message header");
+	my ($to) = Mail::Address->parse($oHead->get('From')) or die('Could not parse From field from message header');
 	$to = $to->address();
 
 	unless(
+		$oHead->get('X-Spam-Flag') && $oHead->get('X-Spam-Flag') =~ /yes/i ||
 		$oHead->get('X-Mailer') && $oHead->get('X-Mailer') =~ /Auto-Reply/i ||
 		$oHead->get('Auto-Submitted') && $oHead->get('Auto-Submitted') =~ /auto-replied/i ||
 		$oHead->get('Sender') && $oHead->get('Sender') =~ /autoresponder/i ||

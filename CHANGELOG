@@ -21,6 +21,7 @@ YOUTRACK
 	IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate
 	IP-1510 VsFTPd - Use of uninitialized value $tmpFile
 	IP-1511 Use of uninitialized value $imscpOldConfig{"BASE_SERVER_VHOST"} on fresh install
+	IP-1513 Autoreply - Do not autoreply to messages marked as SPAM
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.17
