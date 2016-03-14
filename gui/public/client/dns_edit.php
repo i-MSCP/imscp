@@ -263,7 +263,7 @@ function client_decodeDnsRecordData($data)
 
     $srvPrio = 0; // Default priority for SRV record
     $srvWeight = 0; // Default weight for SRV record
-    $ttl = 60; // Default TTL
+    $ttl = 300; // Default TTL
 
     if (is_array($data)) {
         # Extract name and ttl field
