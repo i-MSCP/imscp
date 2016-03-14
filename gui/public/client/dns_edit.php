@@ -46,15 +46,14 @@ function client_getPost($id, $defaultValue = '')
 }
 
 /**
- * Validate NAME field of DNS resource record
+ * Validate name field of a DNS resource record
  *
  * @param string $name Name
  * @param string $type DNS record type
- * @param string $domainName Domain name
  * @param string &$errorString Error string
  * @return bool TRUE if name is valid, FALSE otherwise
  */
-function client_validate_NAME($name, $type, $domainName, &$errorString)
+function client_validate_NAME($name, $type, &$errorString)
 {
     if ($name === '') {
         $errorString .= tr('`%s` field cannot be empty.', tr('Name'));
@@ -74,7 +73,7 @@ function client_validate_NAME($name, $type, $domainName, &$errorString)
 }
 
 /**
- * Validate CNAME filed of DNS resource record
+ * Validate rdata field for a CNAME DNS resource record
  *
  * @param string $cname Cname
  * @param string &$errorString Error string
@@ -96,7 +95,7 @@ function client_validate_CNAME($cname, &$errorString)
 }
 
 /**
- * Validate A field of DNS resource record
+ * Validate rdata field for a A DNS resource record
  *
  * @param string $ip IPv4 address
  * @param string &$errorString Error string
@@ -118,7 +117,7 @@ function client_validate_A($ip, &$errorString)
 }
 
 /**
- * Validate AAAA field of DNS resource record
+ * Validate rdata field for a AAAA DNS resource record
  *
  * @param array $ip IPv6 address
  * @param string &$errorString Reference to variable, which contain error string
@@ -163,6 +162,7 @@ function client_validate_TXT($data, &$errorString)
 
 /**
  * Validate SRV DNS record
+ *
  * @param string $srvName Service name
  * @param string $proto Protocol
  * @param string $priority Priority
@@ -215,7 +215,7 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
 }
 
 /**
- * Validate DNS resource record TTL field
+ * Validate TTL field for a DNS resource record
  *
  * @param int $ttl TTL value
  * @return int TTL
@@ -383,7 +383,7 @@ function client_saveDnsRecord($dnsRecordId)
         $dnsRecordName .= ".$domainName";
     }
 
-    if (!client_validate_NAME($dnsRecordName, $dnsRecordType, $domainName, $nameValidationError)) {
+    if (!client_validate_NAME($dnsRecordName, $dnsRecordType, $nameValidationError)) {
         set_page_message(tr('Could not validate DNS resource record: %s', $nameValidationError), 'error');
     }
 
