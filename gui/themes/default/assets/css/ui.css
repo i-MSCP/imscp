@@ -1191,6 +1191,7 @@ table.display {
 
 /* Form elements */
 table input[type="text"],
+table input[type="number"],
 table input[type="search"],
 table input[type="password"] {
     min-width: 200px;
@@ -1206,6 +1207,7 @@ input, select, textarea {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="search"],
 input[type="password"],
 select,

@@ -54,7 +54,7 @@ return array(
 						'visible' => '0'
 					),
 					'custom_dns_record_edit_link' => array(
-						'label' => tr('Edit custom DNS record'),
+						'label' => tr('Edit DNS resource record'),
 						'uri' => '/client/dns_edit.php',
 						'title_class' => 'domains',
 						'visible' => '0'
@@ -86,7 +86,7 @@ return array(
 				)
 			),
 			'add_custom_dns_record' => array(
-				'label' => tr('Add custom DNS record'),
+				'label' => tr('Add DNS resource record'),
 				'uri' => '/client/dns_add.php',
 				'title_class' => 'domains',
 				'privilege_callback' => array(

@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -216,7 +216,7 @@ function client_generateFeatureStatus($tpl)
 		if (count($bkTranslation) > 0) {
 			$tpl->assign(
 				'BACKUP_FEATURE_STATUS',
-				'<span style="color: green;">' . sprintf(tr('Enabled for: %s'), implode(', ', $bkTranslation)) . '</span>'
+				'<span style="color: green;">' . tr('Enabled for: %s', implode(', ', $bkTranslation)) . '</span>'
 			);
 		} else {
 			$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);

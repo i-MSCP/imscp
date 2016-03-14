@@ -327,7 +327,7 @@ function shared_getCustomerProps($userId)
  * @param string $status Item status to translate
  * @return string Translated status
  */
-function translate_dmn_status($status)
+function translate_dmn_status($status, $showError = false)
 {
 	switch ($status) {
 		case 'ok':
@@ -347,7 +347,7 @@ function translate_dmn_status($status)
 		case 'ordered':
 			return tr('Awaiting for approval');
 		default:
-			return tr('Unexpected error');
+			return $showError ?  $status : tr('Unexpected error');
 	}
 }
 

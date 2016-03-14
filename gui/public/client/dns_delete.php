@@ -38,7 +38,7 @@ if (isset($_GET['id'])) {
 	$dnsRecordId = intval($_GET['id']);
 
 	$stmt = exec_query(
-		'
+		"
 			UPDATE
 				domain_dns
 			INNER JOIN
@@ -49,7 +49,11 @@ if (isset($_GET['id'])) {
 				domain_dns_id = ?
 			AND
 				domain_admin_id = ?
-		',
+			AND
+				owned_by = 'custom_dns_feature'
+			AND
+				domain_dns_status NOT IN('toadd', 'tochange', 'todelete')
+		",
 		array('todelete', $dnsRecordId, $_SESSION['user_id'])
 	);
 

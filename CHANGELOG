@@ -8,7 +8,11 @@ INSTALLER
 	Added: Conditional statement feature for install.xml files (copy_config items only)
 
 FRONTEND
-	Added: SPF custom DNS record type (validated as a TXT record)
+	Added: SPF DNS resource record type (validated as a TXT record)
+	Changed: The type field cannot longer be changed when editing a DNS resource record
+	Fixed: Cannot add DKIM/DMARC DNS resource record
+	Fixed: Customer must be allowed to specify custom TTL value for any DNS resource record
+	Fixed: Customer must be allowed to specify name field of any DNS resource record
 
 PLUGINS
 	Updated: API version to 1.0.4
@@ -21,6 +25,7 @@ SERVERS
 	Removed: /var/log/proftpd/ftp_traff.log custom log. Traffic data are now pulled from /var/log/proftpd/xferlog
 
 YOUTRACK
+	IP-1231 Default SPF DNS resource records should be overrideable
 	IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate
 	IP-1510 VsFTPd - Use of uninitialized value $tmpFile
 	IP-1511 Use of uninitialized value $imscpOldConfig{"BASE_SERVER_VHOST"} on fresh install

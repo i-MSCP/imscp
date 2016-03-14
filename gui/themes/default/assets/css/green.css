@@ -148,6 +148,7 @@ tbody td {
 /* Form elements */
 
 input[type="text"],
+input[type="number"],
 input[type="password"],
 input[type="search"],
 select,
@@ -157,6 +158,7 @@ textarea {
 }
 
 input[type="text"]:focus,
+input[type="number"]:focus,
 input[type="password"]:focus,
 input[type="search"]:focus,
 textarea:focus,
@@ -170,6 +172,7 @@ select:focus {
 input[readonly="readonly"],
 input[readonly],
 input[type="text"]:disabled,
+input[type="number"]:disabled,
 input[type="password"]:disabled,
 select:disabled,
 textarea[readonly],
@@ -182,6 +185,7 @@ textarea:disabled,
 input[readonly="readonly"]:focus,
 input[readonly]:focus,
 input[type="text"]:disabled:focus,
+input[type="number"]:disabled:focus,
 input[type="password"]:disabled:focus,
 select:disabled:focus,
 textarea[readonly]:focus,

@@ -136,11 +136,13 @@
 <table class="firstColFixed">
     <thead>
     <tr>
-        <th>{TR_DOMAIN_NAME}</th>
+        <th>{TR_ZONE}</th>
         <th>{TR_DNS_NAME}</th>
+        <th>{TR_TTL}</th>
         <th>{TR_DNS_CLASS}</th>
         <th>{TR_DNS_TYPE}</th>
         <th>{TR_DNS_DATA}</th>
+        <th>{TR_DNS_STATUS}</th>
         <th>{TR_DNS_ACTION}</th>
     </tr>
     </thead>
@@ -149,9 +151,11 @@
     <tr>
         <td><span class="icon i_domain_icon">{DNS_DOMAIN}</span></td>
         <td>{DNS_NAME}</td>
+        <td>{DNS_TTL}</td>
         <td>{DNS_CLASS}</td>
         <td>{DNS_TYPE}</td>
         <td><span class="tips" title="{LONG_DNS_DATA}">{SHORT_DNS_DATA}</span></td>
+        <td>{DNS_STATUS}</td>
         <td>
             <!-- BDP: dns_edit_link -->
             <a class="icon i_edit" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a>

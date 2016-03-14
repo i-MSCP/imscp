@@ -498,22 +498,22 @@ function generateCustomDnsRecordsList($tpl)
                 $tpl->parse('DNS_DELETE_LINK', '.dns_delete_link');
             }
 
-            // Remove TTL part if any
-            # FIXME TTL must be in dedicated column
-            if (strpos($row['domain_dns'], ' ') !== false) {
-                $dnsName = explode(' ', $row['domain_dns']);
-                $dnsName = $dnsName[0];
-            } else {
-                $dnsName = $row['domain_dns'];
+            $dnsName = $row['domain_dns'];
+            $ttl = tr('Default');
+            if(preg_match('/^(?P<name>([^\s]+))(?:\s+(?P<ttl>\d+))/', $dnsName, $matches)) {
+                $dnsName = $matches['name'];
+                $ttl = $matches['ttl'] . ' ' . tr('Sec.');
             }
 
             $tpl->assign(array(
                 'DNS_DOMAIN' => tohtml(decode_idna($row['zone_name'])),
                 'DNS_NAME' => tohtml(decode_idna($dnsName)),
+                'DNS_TTL' => tohtml($ttl),
                 'DNS_CLASS' => tohtml($row['domain_class']),
                 'DNS_TYPE' => tohtml($row['domain_type']),
                 'LONG_DNS_DATA' => tohtml(wordwrap(decode_idna($row['domain_text']), 80, "\n", true)),
                 'SHORT_DNS_DATA' => decode_idna((strlen($row['domain_text']) > 20) ? substr($row['domain_text'], 0, 17) . '...' : $row['domain_text']),
+                'DNS_STATUS' => tohtml(translate_dmn_status($row['domain_dns_status'], true)),
                 'DNS_ACTION_SCRIPT_EDIT' => $actionScriptEdit,
                 'DNS_ACTION_EDIT' => $actionEdit
             ));
@@ -548,7 +548,7 @@ function generateCustomDnsRecordsList($tpl)
  */
 function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
 {
-    if ($status == 'ok') {
+    if (!in_array($status, array('toadd', 'tochange', 'todelete'))) {
         if ($action == 'edit') {
             if ($ownedBy === 'custom_dns_feature') {
                 return array(tr('Edit'), tohtml("dns_edit.php?id=$id", 'htmlAttr'));
@@ -606,6 +606,8 @@ $tpl->define_dynamic(array(
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Client / Domains'),
     'TR_DOMAINS' => tr('Domains'),
+    'TR_ZONE' => tr('Zone'),
+    'TR_TTL' => tr('TTL'),
     'TR_CREATE_DATE' => tr('Creation date'),
     'TR_EXPIRE_DATE' => tr('Expire date'),
     'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
@@ -620,6 +622,7 @@ $tpl->assign(array(
     'TR_DNS_NAME' => tr('Name'),
     'TR_DNS_CLASS' => tr('Class'),
     'TR_DNS_TYPE' => tr('Type'),
+    'TR_DNS_STATUS' => tr('Status'),
     'TR_DNS_ACTION' => tr('Actions'),
     'TR_DNS_DATA' => tr('Record data'),
     'TR_DOMAIN_NAME' => tr('Domain')

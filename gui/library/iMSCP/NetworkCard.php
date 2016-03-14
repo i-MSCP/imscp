@@ -18,7 +18,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -88,7 +88,7 @@ class iMSCP_NetworkCard
 	public function read($filename)
 	{
 		if(($result = @file_get_contents($filename)) === false) {
-			$this->_errors .= sprintf(tr("File %s doesn't exist or cannot be reached!"), $filename);
+			$this->_errors .= tr("File %s doesn't exist or cannot be reached!", $filename);
 
 			return '';
 		}
@@ -239,7 +239,7 @@ class iMSCP_NetworkCard
 		$key = array_search($ip, $this->_interfacesInfo[2]);
 
 		if($key === false) {
-			$this->_errors .= sprintf(tr("This IP (%s) is not assigned to any network card!"), $ip);
+			$this->_errors .= tr("This IP (%s) is not assigned to any network card!", $ip);
 		} else {
 			return $this->_interfacesInfo[1][$key];
 		}

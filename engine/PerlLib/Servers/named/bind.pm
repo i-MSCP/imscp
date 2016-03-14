@@ -423,10 +423,12 @@ sub addSub
 	return $rs if $rs;
 
 	$rs = execute(
-		'named-compilezone -i none -s relative ' .
-			"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db " .
-			"$data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}",
-		\my $stdout, \my $stderr
+		'named-compilezone -i none -s relative' .
+			" -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}" .
+			" > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
+		,
+		\my $stdout,
+		\my $stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -567,9 +569,9 @@ sub deleteSub
 	return $rs if $rs;
 
 	$rs = execute(
-		'named-compilezone -i none -s relative ' .
-			"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db " .
-			"$data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}",
+		'named-compilezone -i none -s relative' .
+			" -o -$data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}" .
+			" > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
 		\my $stdout,
 		\my $stderr
 	);
@@ -654,11 +656,10 @@ sub addCustomDNS
 
 	my @customDnsEntries = ();
 	for my $record(@{$data->{'DNS_RECORDS'}}) {
-		my ($name, $class, $type, $rdata) = @{$record};
-		push @customDnsEntries , "$name\t$class\t$type\t$rdata";
+		push @customDnsEntries , join "\t", @{$record};
 	}
 
-	# Remove default SPF/TXT record if needed
+	# Remove default SPF records if needed
 	if(grep($_ =~ /^[^\s]+\s+IN\s+(?:SPF|TXT)\s+.*?v=spf1\s.*/gm, @customDnsEntries)) {
 		$wrkDbFileContent =~ s/^[^\s]+\s+IN\s+TXT\s+.*?v=spf1\s.*\n//gm;
 	}
@@ -676,15 +677,14 @@ sub addCustomDNS
 	return $rs if $rs;
 
 	$rs = execute(
-		'named-compilezone -i none -s relative ' .
-			"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db " .
-			"$data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}",
+		'named-compilezone -i full -s relative' .
+			" -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}" .
+			" > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
 		\my $stdout,
 		\my $stderr
 	);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error(sprintf('Could not install %s file', "$data->{'DOMAIN_NAME'}.db")) if $rs && !$stderr;
+	error($stderr) if $rs;
 	return $rs if $rs;
 
 	my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
@@ -1071,15 +1071,15 @@ sub _addDmnDb
 	return $rs if $rs;
 
 	$rs = execute(
-		'named-compilezone -i none -s relative ' .
-			"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db $data->{'DOMAIN_NAME'} " .
-			$wrkDbFile->{'filename'},
+		'named-compilezone -i none -s relative' .
+			" -o - $wrkDbFile->{'filename'}" .
+			" > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db $data->{'DOMAIN_NAME'}",
 		\my $stdout,
 		\my $stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Unable to install $data->{'DOMAIN_NAME'}.db") if $rs && ! $stderr;
+	error(sprintf('Could not install %s', "$data->{'DOMAIN_NAME'}.db")) if $rs && !$stderr;
 	return $rs if $rs;
 
 	my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
