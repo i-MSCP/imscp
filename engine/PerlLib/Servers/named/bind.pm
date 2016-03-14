@@ -425,8 +425,7 @@ sub addSub
 	$rs = execute(
 		'named-compilezone -i none -s relative' .
 			" -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}" .
-			" > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
-		,
+			" > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
 		\my $stdout,
 		\my $stderr
 	);
