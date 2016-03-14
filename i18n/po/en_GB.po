@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-14 20:11+0100\n"
-"PO-Revision-Date: 2016-03-14 19:13+0000\n"
+"POT-Creation-Date: 2016-03-14 20:16+0100\n"
+"PO-Revision-Date: 2016-03-14 19:18+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -262,10 +262,6 @@ msgstr "%s doesn't exist"
 #, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s doesn't exist or is empty."
-
-#, php-format
-msgid "%s field cannot be empty."
-msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -580,7 +576,7 @@ msgid "Add"
 msgstr "Add"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "Add DNS resource record"
 
 msgid "Add FTP account"
 msgstr "Add FTP account"
@@ -1340,13 +1336,13 @@ msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Client / Databases / Overview / Update SQL User Password"
 
 msgid "Client / Domain / Edit DNS resource record"
-msgstr ""
+msgstr "Client / Domain / Edit DNS resource record"
 
 msgid "Client / Domains"
 msgstr "Client / Domains"
 
 msgid "Client / Domains / Add DNS resource record"
-msgstr ""
+msgstr "Client / Domains / Add DNS resource record"
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Client / Domains / Add Domain Alias"
@@ -1542,7 +1538,7 @@ msgstr "Could not upload the file. Max. upload filesize (%1$d MB) has been reach
 
 #, php-format
 msgid "Could not validate DNS resource record: %s"
-msgstr ""
+msgstr "Could not validate DNS resource record: %s"
 
 msgid "Count default email addresses"
 msgstr "Count default email addresses"
@@ -1665,13 +1661,13 @@ msgid "DNS record already exist."
 msgstr "DNS record already exist."
 
 msgid "DNS resource record"
-msgstr ""
+msgstr "DNS resource record"
 
 msgid "DNS resource record scheduled for addition."
-msgstr ""
+msgstr "DNS resource record scheduled for addition."
 
 msgid "DNS resource record scheduled for update."
-msgstr ""
+msgstr "DNS resource record scheduled for update."
 
 msgid "DNS resource records"
 msgstr "DNS resource records"
@@ -1689,7 +1685,7 @@ msgid "Daily backup"
 msgstr "Daily backup"
 
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 msgid "Data were altered. Please try again."
 msgstr "Data were altered. Please try again."
@@ -1819,7 +1815,7 @@ msgid "Debugger"
 msgstr "Debugger"
 
 msgid "Default"
-msgstr ""
+msgstr "Default"
 
 msgid "Default language"
 msgstr "Default language"
@@ -2013,7 +2009,7 @@ msgid "Domain for which PHP Editor must act."
 msgstr "Domain for which PHP Editor must act."
 
 msgid "Domain for which you want add this DNS resource record."
-msgstr ""
+msgstr "Domain for which you want add this DNS resource record."
 
 msgid "Domain limit"
 msgstr "Domain limit"
@@ -2107,7 +2103,7 @@ msgid "Edit"
 msgstr "Edit"
 
 msgid "Edit DNS resource record"
-msgstr ""
+msgstr "Edit DNS resource record"
 
 msgid "Edit FTP account"
 msgstr "Edit FTP account"
@@ -2804,7 +2800,7 @@ msgstr "Invalid URL."
 
 #, php-format
 msgid "Invalid `%s` field."
-msgstr ""
+msgstr "Invalid `%s` field."
 
 msgid "Invalid domain name."
 msgstr "Invalid domain name."
@@ -4698,7 +4694,7 @@ msgid "Target port"
 msgstr "Target port"
 
 msgid "Target port must be a number."
-msgstr ""
+msgstr "Target port must be a number."
 
 msgid "Template for Auto email successfully updated."
 msgstr "Template for Auto email successfully updated."
@@ -5815,7 +5811,7 @@ msgid "Zip/Postal code"
 msgstr "Zip/Postal code"
 
 msgid "Zone"
-msgstr ""
+msgstr "Zone"
 
 msgid "[New]"
 msgstr "[New]"
@@ -5831,7 +5827,7 @@ msgstr "English (United Kingdom)"
 
 #, php-format
 msgid "`%s` field cannot be empty."
-msgstr ""
+msgstr "`%s` field cannot be empty."
 
 msgid "activated"
 msgstr "activated"
