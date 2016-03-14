@@ -179,8 +179,8 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
         return false;
     }
 
-    if(!preg_match('^_[a-z0-9]+', $srvName)) {
-        $errorString .= tr('Invalid `%s` field.',tr('Service name'));
+    if(!preg_match('/^_[a-z0-9]+/i', $srvName)) {
+        $errorString .= tr('Invalid `%s` field.', tr('Service name'));
         return false;
     }
 
@@ -208,6 +208,11 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
 
     if ($host === '') {
         $errorString .= tr('%s field cannot be empty.', tr('Target host'));
+        return false;
+    }
+
+    if(!isValidDomainName($host)) {
+        $errorString .= tr('Invalid `%s` field.', tr('Target host'));
         return false;
     }
 
@@ -266,8 +271,8 @@ function client_decodeDnsRecordData($data)
     $ttl = 300; // Default TTL
 
     if (is_array($data)) {
-        # Extract name and ttl field
-        if(preg_match('/^(?P<name>([^\s]+))(?:\s+(?P<ttl>\d+))?/', $data['domain_dns'], $matches)) {
+        # Extract name and ttl field for any record type excepted SRV record
+        if($data['domain_type'] != 'SRV' && preg_match('/^(?P<name>([^\s]+))(?:\s+(?P<ttl>\d+))?/', $data['domain_dns'], $matches)) {
             $name = $matches['name'];
             $ttl = isset($matches['ttl']) ? $matches['ttl'] : $ttl;
         }
@@ -285,11 +290,12 @@ function client_decodeDnsRecordData($data)
                 $cname = $data['domain_text'];
                 break;
             case 'SRV':
-                # Extract service name, protocol name and owner name fields
-                if(preg_match('/^(?P<srvname>_[^.]+)\.(<?P<proto>_[^\s]+)\./(?P<name>[^\s]+)', $name, $matches)) {
+                # Extract service name, protocol name, owner name and ttl fields
+                if(preg_match('/^(?P<srvname>_[^\s.]+)\.(?P<proto>_[^\s.]+)\.(?P<name>[^\s]+)\s+(?P<ttl>\d+)/', $data['domain_dns'], $matches)) {
                     $srvName = $matches['srvname'];
                     $srvProto = $matches['proto'];
                     $name = $matches['name'];
+                    $ttl =  $matches['ttl'];
                 }
 
                 # Extract priority, weight, port and target fields
@@ -375,13 +381,17 @@ function client_saveDnsRecord($dnsRecordId)
 
     $nameValidationError = '';
 
-    $dnsRecordName = rtrim(client_getPost('dns_name'), '.');
+    $dnsRecordName = client_getPost('dns_name');
 
     if($dnsRecordName === '@') {
         $dnsRecordName = $domainName;
-    } elseif ($dnsRecordName !== '' && strripos(encode_idna($dnsRecordName), ".$domainName") === false) {
+    } elseif ($dnsRecordName !== '' && !preg_match("/(?:.*?\\.)?$domainName\\.$/", encode_idna($dnsRecordName))) {
+        $dnsRecordName = rtrim($dnsRecordName, '.');
         $dnsRecordName .= ".$domainName";
     }
+
+    // Remove trailing dot for validation process (will be readded after)
+    $dnsRecordName = rtrim($dnsRecordName, '.');
 
     if (!client_validate_NAME($dnsRecordName, $dnsRecordType, $nameValidationError)) {
         set_page_message(tr('Could not validate DNS resource record: %s', $nameValidationError), 'error');
@@ -391,20 +401,6 @@ function client_saveDnsRecord($dnsRecordId)
 
     if (!Zend_Session::namespaceIsset('pageMessages')) {
         switch ($dnsRecordType) {
-            case 'CNAME':
-                $cname = rtrim(client_getPost('dns_cname'), '.');
-
-                if (!client_validate_CNAME($cname, $errorString)) {
-                    set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
-                }
-
-                if ($cname != '@') {
-                    $dnsRecordData = encode_idna($cname) . '.';
-                } else {
-                    $dnsRecordData = $cname;
-                }
-
-                break;
             case 'A':
                 $ip = client_getPost('dns_A_address');
 
@@ -423,20 +419,34 @@ function client_saveDnsRecord($dnsRecordId)
 
                 $dnsRecordData = $ip;
                 break;
+            case 'CNAME':
+                $cname = rtrim(client_getPost('dns_cname'), '.');
+
+                if (!client_validate_CNAME($cname, $errorString)) {
+                    set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                }
+
+                if ($cname != '@') {
+                    $dnsRecordData = encode_idna($cname) . '.';
+                } else {
+                    $dnsRecordData = encode_idna($domainName) . '.';
+                }
+
+                break;
             case 'SRV':
                $srvName = client_getPost('dns_srv_name');
                $srvProto = client_getPost('srv_proto');
                $srvPrio = client_getPost('dns_srv_prio');
                $srvWeight = client_getPost('dns_srv_weight');
                $srvPort = client_getPost('dns_srv_port');
-               $srvTarget = client_getPost('dns_srv_host');
+               $srvTarget = rtrim(client_getPost('dns_srv_host'), '.');
 
                 if (!client_validate_SRV($srvName, $srvProto, $srvPrio, $srvWeight, $srvPort, $srvTarget, $errorString)) {
                     set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
                 }
 
-                $dnsRecordName = sprintf('%s._%s.%s', $srvName, $srvProto, $dnsRecordName);
-                $dnsRecordData = sprintf('%d\t%d\t%d\t%s', $srvPrio, $srvWeight, $srvPort, $srvTarget);
+                $dnsRecordName = sprintf('%s._%s.%s', $srvName, $srvProto, encode_idna($dnsRecordName));
+                $dnsRecordData = sprintf("%d %d %d %s.", $srvPrio, $srvWeight, $srvPort, encode_idna($srvTarget));
                 break;
             case 'SPF':
             case 'TXT':
@@ -581,7 +591,7 @@ function client_generatePage($tpl, $dnsRecordId)
 
         'DNS_SRV_NAME' => tohtml(client_getPost('dns_srv_name', decode_idna($srvName))),
         'SELECT_DNS_SRV_PROTOCOL' => client_create_options(array('tcp', 'udp', 'tls'), client_getPost('srv_proto', $srvProto)),
-        'DNS_NAME' => tohtml(client_getPost('dns_name', decode_idna(rtrim($name, '.')))),
+        'DNS_NAME' => tohtml(client_getPost('dns_name', decode_idna(rtrim($name, '.')). ($name != '' ? '.' : ''))),
 
         'DNS_TTL' => tohtml(client_getPost('dns_ttl', $srvTTL)),
 
@@ -596,8 +606,8 @@ function client_generatePage($tpl, $dnsRecordId)
         'DNS_SRV_WEIGHT' => tohtml(client_getPost('dns_srv_weight', $srvWeight)),
         'DNS_SRV_PORT' => tohtml(client_getPost('dns_srv_port', $srvTargetPort)),
 
-        'DNS_SRV_HOST' => tohtml(client_getPost('dns_srv_host', $srvTargetHost)),
-        'DNS_CNAME' => tohtml(client_getPost('dns_cname', decode_idna($cname))),
+        'DNS_SRV_HOST' => tohtml(client_getPost('dns_srv_host', decode_idna(rtrim($srvTargetHost, '.')) . ($srvTargetHost != '' ? '.' : ''))),
+        'DNS_CNAME' => tohtml(client_getPost('dns_cname', decode_idna(rtrim($cname, '.')) . ($cname != '' ? '.' : ''))),
         'DNS_TXT_DATA' => tohtml(client_getPost('dns_txt_data', $txt))
     ));
 }

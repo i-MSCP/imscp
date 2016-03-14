@@ -505,6 +505,7 @@ function generateCustomDnsRecordsList($tpl)
                 $ttl = $matches['ttl'] . ' ' . tr('Sec.');
             }
 
+            $row['domain_text'] = decode_idna($row['domain_text']);
             $tpl->assign(array(
                 'DNS_DOMAIN' => tohtml(decode_idna($row['zone_name'])),
                 'DNS_NAME' => tohtml(decode_idna($dnsName)),
@@ -512,7 +513,7 @@ function generateCustomDnsRecordsList($tpl)
                 'DNS_CLASS' => tohtml($row['domain_class']),
                 'DNS_TYPE' => tohtml($row['domain_type']),
                 'LONG_DNS_DATA' => tohtml(wordwrap(decode_idna($row['domain_text']), 80, "\n", true)),
-                'SHORT_DNS_DATA' => decode_idna((strlen($row['domain_text']) > 20) ? substr($row['domain_text'], 0, 17) . '...' : $row['domain_text']),
+                'SHORT_DNS_DATA' => strlen($row['domain_text']) > 20 ? substr($row['domain_text'], 0, 17) . '...' : $row['domain_text'],
                 'DNS_STATUS' => tohtml(translate_dmn_status($row['domain_dns_status'], true)),
                 'DNS_ACTION_SCRIPT_EDIT' => $actionScriptEdit,
                 'DNS_ACTION_EDIT' => $actionEdit
