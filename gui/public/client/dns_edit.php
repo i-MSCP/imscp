@@ -197,7 +197,7 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
     }
 
     if ($port === '') {
-        $errorString .= tr('%s field cannot be empty.', tr('Target port'));
+        $errorString .= tr('`%s` field cannot be empty.', tr('Target port'));
         return false;
     }
 
@@ -207,7 +207,7 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
     }
 
     if ($host === '') {
-        $errorString .= tr('%s field cannot be empty.', tr('Target host'));
+        $errorString .= tr('`%s` field cannot be empty.', tr('Target host'));
         return false;
     }
 
