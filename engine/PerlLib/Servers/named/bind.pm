@@ -431,7 +431,7 @@ sub addSub
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error(sprintf('Could not install %s file', "$data->{'PARENT_DOMAIN_NAME'}.db")) if $rs && !$stderr;
+	error(sprintf('Could not dump %s zone file', $wrkDbFile->{'filename'})) if $rs && !$stderr;
 	return $rs if $rs;
 
 	my $prodFile = iMSCP::File->new(filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db");
@@ -576,7 +576,7 @@ sub deleteSub
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error(sprintf('Could not install %s', "$data->{'PARENT_DOMAIN_NAME'}.db")) if $rs && !$stderr;
+	error(sprintf('Could not dump %s zone file', $wrkDbFile->{'filename'})) if $rs && !$stderr;
 	return $rs if $rs;
 
 	my $prodFile = iMSCP::File->new(
@@ -1078,7 +1078,7 @@ sub _addDmnDb
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error(sprintf('Could not install %s', "$data->{'DOMAIN_NAME'}.db")) if $rs && !$stderr;
+	error(sprintf('Could not dump %s zone file', $wrkDbFile->{'filename'})) if $rs && !$stderr;
 	return $rs if $rs;
 
 	my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
