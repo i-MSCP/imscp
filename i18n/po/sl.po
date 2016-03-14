@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovenian (http://www.transifex.com/i-mscp/i-MSCP/language/sl/)\n"
 "MIME-Version: 1.0\n"
@@ -260,11 +260,7 @@ msgid "%s doesn't exist or is empty."
 msgstr ""
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr ""
-
-#, php-format
-msgid "%s host field is empty or invalid."
+msgid "%s field cannot be empty."
 msgstr ""
 
 #, php-format
@@ -273,10 +269,6 @@ msgstr ""
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
-
-#, php-format
-msgid "%s is not part of domain %s."
 msgstr ""
 
 #, php-format
@@ -583,6 +575,9 @@ msgstr ""
 msgid "Add"
 msgstr "Dodaj"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr ""
 
@@ -608,9 +603,6 @@ msgid "Add admin"
 msgstr "Dodaj Administratorja"
 
 msgid "Add catchall"
-msgstr ""
-
-msgid "Add custom DNS record"
 msgstr ""
 
 msgid "Add custom menu"
@@ -1213,9 +1205,6 @@ msgstr ""
 msgid "CGI"
 msgstr ""
 
-msgid "CNAME field is empty or invalid."
-msgstr ""
-
 msgid "CPU Information"
 msgstr ""
 
@@ -1232,14 +1221,6 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "prekliči"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr ""
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr ""
 
 msgid "Canonical name"
 msgstr ""
@@ -1354,13 +1335,13 @@ msgstr ""
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr ""
 
-msgid "Client / Domain / Edit Custom DNS record"
+msgid "Client / Domain / Edit DNS resource record"
 msgstr ""
 
 msgid "Client / Domains"
 msgstr ""
 
-msgid "Client / Domains / Add Custom DNS record"
+msgid "Client / Domains / Add DNS resource record"
 msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
@@ -1520,10 +1501,6 @@ msgstr "Podjetje"
 msgid "Compress HTML output"
 msgstr ""
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr ""
-
 msgid "Core data"
 msgstr ""
 
@@ -1559,6 +1536,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr ""
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr ""
 
@@ -1589,16 +1570,7 @@ msgstr ""
 msgid "Custom DNS errors"
 msgstr ""
 
-msgid "Custom DNS record"
-msgstr ""
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr ""
-
 msgid "Custom DNS record successfully scheduled for deletion."
-msgstr ""
-
-msgid "Custom DNS record successfully scheduled for update."
 msgstr ""
 
 msgid "Custom DNS records"
@@ -1688,10 +1660,16 @@ msgstr ""
 msgid "DNS record already exist."
 msgstr ""
 
-msgid "DNS resource records"
+msgid "DNS resource record"
 msgstr ""
 
-msgid "DNS server unavailable. Please contact your reseller."
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
+msgid "DNS resource records"
 msgstr ""
 
 msgid "DOWN"
@@ -1705,6 +1683,9 @@ msgstr ""
 
 msgid "Daily backup"
 msgstr "Dnevna var. kopija"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr ""
@@ -1831,6 +1812,9 @@ msgid ""
 msgstr ""
 
 msgid "Debugger"
+msgstr ""
+
+msgid "Default"
 msgstr ""
 
 msgid "Default language"
@@ -2024,6 +2008,9 @@ msgstr ""
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr ""
 
@@ -2115,6 +2102,9 @@ msgstr ""
 msgid "Edit"
 msgstr "Uredi"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr ""
 
@@ -2125,9 +2115,6 @@ msgid "Edit admin"
 msgstr ""
 
 msgid "Edit auto responder"
-msgstr ""
-
-msgid "Edit custom DNS record"
 msgstr ""
 
 msgid "Edit custom error page"
@@ -2623,9 +2610,6 @@ msgstr ""
 msgid "IP address data"
 msgstr ""
 
-msgid "IP address field is empty or invalid."
-msgstr ""
-
 msgid "IP address successfully scheduled for addition."
 msgstr ""
 
@@ -2646,9 +2630,6 @@ msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6 naslov"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr ""
 
 msgid "Id"
 msgstr ""
@@ -2798,22 +2779,10 @@ msgstr ""
 msgid "Internationalization"
 msgstr ""
 
-msgid "Invalid CNAME"
-msgstr ""
-
-msgid "Invalid IPv4 address."
-msgstr ""
-
-msgid "Invalid IPv6 address."
-msgstr ""
-
 msgid "Invalid MX priority."
 msgstr ""
 
 msgid "Invalid MX type."
-msgstr ""
-
-msgid "Invalid NAME."
 msgstr ""
 
 #, php-format
@@ -2826,10 +2795,11 @@ msgstr ""
 msgid "Invalid SSL certificate."
 msgstr ""
 
-msgid "Invalid TXT data"
+msgid "Invalid URL."
 msgstr ""
 
-msgid "Invalid URL."
+#, php-format
+msgid "Invalid `%s` field."
 msgstr ""
 
 msgid "Invalid domain name."
@@ -3177,9 +3147,6 @@ msgid "Moving aborted."
 msgstr ""
 
 msgid "N/A"
-msgstr ""
-
-msgid "NAME field is empty or invalid."
 msgstr ""
 
 msgid "Name"
@@ -3840,9 +3807,6 @@ msgstr ""
 msgid "Port"
 msgstr "Vrata"
 
-msgid "Port must be a number."
-msgstr ""
-
 msgid "Prevent external login for admins"
 msgstr ""
 
@@ -3857,9 +3821,6 @@ msgstr ""
 
 msgid "Priority"
 msgstr "Prioriteta"
-
-msgid "Priority must be a number."
-msgstr ""
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3955,9 +3916,6 @@ msgid "Registration date"
 msgstr ""
 
 msgid "Relative weight"
-msgstr ""
-
-msgid "Relative weight must be a number."
 msgstr ""
 
 msgid "Release date"
@@ -4723,15 +4681,6 @@ msgstr ""
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr ""
-
-msgid "TXT data"
-msgstr ""
-
-msgid "TXT field is empty or invalid."
-msgstr ""
-
 msgid "Target"
 msgstr ""
 
@@ -4743,6 +4692,9 @@ msgstr ""
 
 msgid "Target port"
 msgstr "Vrata"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr ""
@@ -5858,6 +5810,9 @@ msgstr ""
 msgid "Zip/Postal code"
 msgstr "Poštna številka"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr ""
 
@@ -5869,6 +5824,10 @@ msgstr ""
 
 msgid "_: Localised language"
 msgstr "Slovenian"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr ""

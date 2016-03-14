@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-06 11:13+0000\n"
-"Last-Translator: Martin Krkavec\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/i-mscp/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -260,12 +260,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s neexistuje nebo je prázdný"
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "%s pole je prázdné nebo neplatné."
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "%s pole hostitele je prázdné nebo neplatné."
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -274,10 +270,6 @@ msgstr "%s není platný jazykový soubor i-MSCP."
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr "%s není povoleno jako označení subdomény."
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%s není součástí domény %s."
 
 #, php-format
 msgid "%s of %s"
@@ -583,6 +575,9 @@ msgstr "Aktivační link vyprší za <small>(minuty)</small>"
 msgid "Add"
 msgstr "Přidat"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Přidat FTP účet"
 
@@ -609,9 +604,6 @@ msgstr "Přidat administrátora"
 
 msgid "Add catchall"
 msgstr ""
-
-msgid "Add custom DNS record"
-msgstr "Přidat vlastní DNS záznam"
 
 msgid "Add custom menu"
 msgstr "Přidat vlastní menu"
@@ -1213,9 +1205,6 @@ msgstr ""
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CNAME field is empty or invalid."
-msgstr ""
-
 msgid "CPU Information"
 msgstr ""
 
@@ -1232,14 +1221,6 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "Zrušit"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr ""
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr ""
 
 msgid "Canonical name"
 msgstr "Kanonické jméno"
@@ -1354,13 +1335,13 @@ msgstr ""
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr ""
 
-msgid "Client / Domain / Edit Custom DNS record"
+msgid "Client / Domain / Edit DNS resource record"
 msgstr ""
 
 msgid "Client / Domains"
 msgstr ""
 
-msgid "Client / Domains / Add Custom DNS record"
+msgid "Client / Domains / Add DNS resource record"
 msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
@@ -1520,10 +1501,6 @@ msgstr "Společnost"
 msgid "Compress HTML output"
 msgstr "Komprimovat HTML výstup"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr ""
-
 msgid "Core data"
 msgstr "Základní údaje"
 
@@ -1559,6 +1536,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr ""
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "Započítat standardní E-mailové adresy"
 
@@ -1589,16 +1570,7 @@ msgstr ""
 msgid "Custom DNS errors"
 msgstr ""
 
-msgid "Custom DNS record"
-msgstr "Vlastní DNS záznam"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr ""
-
 msgid "Custom DNS record successfully scheduled for deletion."
-msgstr ""
-
-msgid "Custom DNS record successfully scheduled for update."
 msgstr ""
 
 msgid "Custom DNS records"
@@ -1688,10 +1660,16 @@ msgstr "Vlastní chybové stránky pro vaši doménu."
 msgid "DNS record already exist."
 msgstr "DNS záznam již existuje."
 
-msgid "DNS resource records"
+msgid "DNS resource record"
 msgstr ""
 
-msgid "DNS server unavailable. Please contact your reseller."
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
+msgid "DNS resource records"
 msgstr ""
 
 msgid "DOWN"
@@ -1705,6 +1683,9 @@ msgstr ""
 
 msgid "Daily backup"
 msgstr "Denní záloha"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr ""
@@ -1831,6 +1812,9 @@ msgid ""
 msgstr ""
 
 msgid "Debugger"
+msgstr ""
+
+msgid "Default"
 msgstr ""
 
 msgid "Default language"
@@ -2024,6 +2008,9 @@ msgstr "Datum konce platnosti domény musí být vyplněno."
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr ""
 
@@ -2115,6 +2102,9 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Editovat"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr ""
 
@@ -2125,9 +2115,6 @@ msgid "Edit admin"
 msgstr ""
 
 msgid "Edit auto responder"
-msgstr ""
-
-msgid "Edit custom DNS record"
 msgstr ""
 
 msgid "Edit custom error page"
@@ -2623,9 +2610,6 @@ msgstr ""
 msgid "IP address data"
 msgstr "Informace o IP adrese"
 
-msgid "IP address field is empty or invalid."
-msgstr "Položka IP adresa je prázdná nebo neplatná."
-
 msgid "IP address successfully scheduled for addition."
 msgstr "Přidání IP adresy bylo úspěšně naplánováno."
 
@@ -2646,9 +2630,6 @@ msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6 adresa"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr ""
 
 msgid "Id"
 msgstr ""
@@ -2798,22 +2779,10 @@ msgstr ""
 msgid "Internationalization"
 msgstr ""
 
-msgid "Invalid CNAME"
-msgstr ""
-
-msgid "Invalid IPv4 address."
-msgstr ""
-
-msgid "Invalid IPv6 address."
-msgstr ""
-
 msgid "Invalid MX priority."
 msgstr ""
 
 msgid "Invalid MX type."
-msgstr ""
-
-msgid "Invalid NAME."
 msgstr ""
 
 #, php-format
@@ -2826,10 +2795,11 @@ msgstr ""
 msgid "Invalid SSL certificate."
 msgstr ""
 
-msgid "Invalid TXT data"
+msgid "Invalid URL."
 msgstr ""
 
-msgid "Invalid URL."
+#, php-format
+msgid "Invalid `%s` field."
 msgstr ""
 
 msgid "Invalid domain name."
@@ -3178,9 +3148,6 @@ msgstr "Přesun zrušen."
 
 msgid "N/A"
 msgstr "N/A"
-
-msgid "NAME field is empty or invalid."
-msgstr ""
 
 msgid "Name"
 msgstr "Jméno"
@@ -3840,9 +3807,6 @@ msgstr ""
 msgid "Port"
 msgstr "Port"
 
-msgid "Port must be a number."
-msgstr "Port musí být číslo!"
-
 msgid "Prevent external login for admins"
 msgstr "Zabránit externímu přihlašování adminů"
 
@@ -3857,9 +3821,6 @@ msgstr "Předchozí"
 
 msgid "Priority"
 msgstr "Priorita"
-
-msgid "Priority must be a number."
-msgstr ""
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3956,9 +3917,6 @@ msgstr "Datum registrace"
 
 msgid "Relative weight"
 msgstr "Relativní váha"
-
-msgid "Relative weight must be a number."
-msgstr ""
 
 msgid "Release date"
 msgstr ""
@@ -4723,15 +4681,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr "TTL musí být číslo!"
-
-msgid "TXT data"
-msgstr "TXT data"
-
-msgid "TXT field is empty or invalid."
-msgstr "Položka TXT je prázdná nebo neplatná."
-
 msgid "Target"
 msgstr "Cíl"
 
@@ -4743,6 +4692,9 @@ msgstr "Cílový host"
 
 msgid "Target port"
 msgstr "Cílový port"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "Šablona pro automatický e-mail úspěšně aktualizována."
@@ -5858,6 +5810,9 @@ msgstr "Kód PSČ"
 msgid "Zip/Postal code"
 msgstr "Směrovací číslo"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[Nový]"
 
@@ -5869,6 +5824,10 @@ msgstr "[Tiket]"
 
 msgid "_: Localised language"
 msgstr "Česky - Czech"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "aktivovaný"

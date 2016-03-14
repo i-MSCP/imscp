@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -259,12 +259,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s finns inte eller är tom"
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "%s är tomt eller ogiltig."
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "%s värddatorfältet är tom eller ogiltig."
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -273,10 +269,6 @@ msgstr "%s är inte ett giltigt i-MSCP språkfil."
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr "%s Är inte tillåtna som subdomain etikett."
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%s är inte en del av domänen %s."
 
 #, php-format
 msgid "%s of %s"
@@ -582,6 +574,9 @@ msgstr "Aktiveringslänken löper ut <small>(i minuter)</small>"
 msgid "Add"
 msgstr "Lägg till"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Lägg till ett ftp konto"
 
@@ -608,9 +603,6 @@ msgstr "Lägg till administratör"
 
 msgid "Add catchall"
 msgstr "Lägg till catchall"
-
-msgid "Add custom DNS record"
-msgstr "Lägg till anpassade DNS-post"
 
 msgid "Add custom menu"
 msgstr "Lägg till ett eget meny"
@@ -1212,9 +1204,6 @@ msgstr "By"
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CNAME field is empty or invalid."
-msgstr "CNAME fältet är tomt eller ogiltig."
-
 msgid "CPU Information"
 msgstr "CPU Information"
 
@@ -1231,14 +1220,6 @@ msgstr "Kan använda PHP %s funktion"
 
 msgid "Cancel"
 msgstr "Avbryt"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr "Cannot validate %s record: %s"
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr "Kan inte validera post: %s"
 
 msgid "Canonical name"
 msgstr "Kanoniskt namn"
@@ -1353,14 +1334,14 @@ msgstr "Kund / Databaser / Översikt / Lägg till SQL användare"
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Kund / Databas / Översikt / Uppdaterar SQL Användarens lösenord"
 
-msgid "Client / Domain / Edit Custom DNS record"
-msgstr "Kund / Domain / Redigerar Custom DNS record"
+msgid "Client / Domain / Edit DNS resource record"
+msgstr ""
 
 msgid "Client / Domains"
 msgstr "Kund / Domainer"
 
-msgid "Client / Domains / Add Custom DNS record"
-msgstr "Kund / Domainer / Lägg till Custom DNS record"
+msgid "Client / Domains / Add DNS resource record"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Beställare / domäner / Lägg till domän Alias"
@@ -1519,10 +1500,6 @@ msgstr "Företag"
 msgid "Compress HTML output"
 msgstr "Komprimera HTML-utdata"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr "Konflikten med den existerande %s post."
-
 msgid "Core data"
 msgstr "Kärndata"
 
@@ -1558,6 +1535,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "Kunde inte ladda upp filen. Max upload filesize (%1$d MB) har nåtts."
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "Räkna standard e-postadresser"
 
@@ -1588,17 +1569,8 @@ msgstr "Det nuvarande lösenordet är felaktigt!"
 msgid "Custom DNS errors"
 msgstr "Anpassad DNS fel"
 
-msgid "Custom DNS record"
-msgstr "Anpassad DNS-post"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "Custom DNS-posten planerad till tillägg."
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "Anpassad DNS-post framgångsrikt planerad till radering."
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "Custom DNS-posten planerad till uppdatering."
 
 msgid "Custom DNS records"
 msgstr "Custom DNS-poster"
@@ -1687,11 +1659,17 @@ msgstr "Anpassa fel sidor för din domän."
 msgid "DNS record already exist."
 msgstr "DNS-posten finns redan."
 
+msgid "DNS resource record"
+msgstr ""
+
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
 msgid "DNS resource records"
 msgstr "DNS-urkunder för resursen"
-
-msgid "DNS server unavailable. Please contact your reseller."
-msgstr "Fel på DNS-server, vänligen kontakta din återförsäljare."
 
 msgid "DOWN"
 msgstr "NER"
@@ -1704,6 +1682,9 @@ msgstr "Daemon request successfull."
 
 msgid "Daily backup"
 msgstr "Daglig backup"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr "Data ändras. Var god försök igen."
@@ -1831,6 +1812,9 @@ msgstr "Dear {RESELLER},\n\nYour uploaded a software package was succesful activ
 
 msgid "Debugger"
 msgstr "Debugger"
+
+msgid "Default"
+msgstr ""
 
 msgid "Default language"
 msgstr "Standardspråk"
@@ -2023,6 +2007,9 @@ msgstr "Domain utgångsdatum måste fyllas i."
 msgid "Domain for which PHP Editor must act."
 msgstr "Domain for which PHP Editor must act."
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "Domain Limit"
 
@@ -2114,6 +2101,9 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Redigera"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr "Ändra Ftp konto"
 
@@ -2125,9 +2115,6 @@ msgstr "Edit admin"
 
 msgid "Edit auto responder"
 msgstr "Ändra auto. svar"
-
-msgid "Edit custom DNS record"
-msgstr "Redigera anpassade DNS-post"
 
 msgid "Edit custom error page"
 msgstr "Ändra eget fel sida"
@@ -2622,9 +2609,6 @@ msgstr "IP-adressen redan under kontroll av i-MSCP."
 msgid "IP address data"
 msgstr "IP adr. data"
 
-msgid "IP address field is empty or invalid."
-msgstr "IP-adressen är tom eller ogiltig."
-
 msgid "IP address successfully scheduled for addition."
 msgstr "IP-adressen har planerats för tillägg."
 
@@ -2645,9 +2629,6 @@ msgstr "IP-användning"
 
 msgid "IPv6 address"
 msgstr "IPv6-adress"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr "IPv6 address fältet är tomt eller ogiltig."
 
 msgid "Id"
 msgstr "Id"
@@ -2797,23 +2778,11 @@ msgstr "Internal Server Error"
 msgid "Internationalization"
 msgstr "Internationalisering"
 
-msgid "Invalid CNAME"
-msgstr "Ogiltig CNAME"
-
-msgid "Invalid IPv4 address."
-msgstr "Ogiltigt IPv4-adress."
-
-msgid "Invalid IPv6 address."
-msgstr "Ogiltigt IPv6 adress."
-
 msgid "Invalid MX priority."
 msgstr "Ogiltig MX prioritet."
 
 msgid "Invalid MX type."
 msgstr "Ogiltig MX type."
-
-msgid "Invalid NAME."
-msgstr "Ogiltigt namn."
 
 #, php-format
 msgid "Invalid SQL user host: %s"
@@ -2825,11 +2794,12 @@ msgstr "Ogiltig SSL-certifikat."
 msgid "Invalid SSL certificate."
 msgstr "Ogiltig SSL-certifikat."
 
-msgid "Invalid TXT data"
-msgstr "TXT ogiltiga data"
-
 msgid "Invalid URL."
 msgstr "Invalid URL."
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "Ogiltigt domännamn."
@@ -3177,9 +3147,6 @@ msgstr "Flytta avbröts."
 
 msgid "N/A"
 msgstr "Inte tillgänglig"
-
-msgid "NAME field is empty or invalid."
-msgstr "Namnfältet är tomt eller ogiltig."
 
 msgid "Name"
 msgstr "Namn"
@@ -3839,9 +3806,6 @@ msgstr "Plugins listan har uppdaterats: %s nya plugin (s) hittades, %s plugin (s
 msgid "Port"
 msgstr "Port"
 
-msgid "Port must be a number."
-msgstr "Port måste vara ett nummer!"
-
 msgid "Prevent external login for admins"
 msgstr "Förhindra extern inloggning för administratörer"
 
@@ -3856,9 +3820,6 @@ msgstr "Föregående"
 
 msgid "Priority"
 msgstr "Prioritet"
-
-msgid "Priority must be a number."
-msgstr "Prioritet måste vara ett nummer!"
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3955,9 +3916,6 @@ msgstr "Registrations datum"
 
 msgid "Relative weight"
 msgstr "Relativ vikt"
-
-msgid "Relative weight must be a number."
-msgstr "Relativ vikt måste vara ett nummer!"
 
 msgid "Release date"
 msgstr "Release date"
@@ -4722,15 +4680,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr "TTL måste vara ett nummer!"
-
-msgid "TXT data"
-msgstr "TXT data"
-
-msgid "TXT field is empty or invalid."
-msgstr "TXT-fältet är tomt eller ogiltig."
-
 msgid "Target"
 msgstr "Target"
 
@@ -4742,6 +4691,9 @@ msgstr "Målvärd"
 
 msgid "Target port"
 msgstr "Målport"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "Mall för automatisk e-post uppdaterats."
@@ -5857,6 +5809,9 @@ msgstr "Zip code"
 msgid "Zip/Postal code"
 msgstr "Postnr"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[New]"
 
@@ -5868,6 +5823,10 @@ msgstr "[Ticket]"
 
 msgid "_: Localised language"
 msgstr "Svenska - Swedish"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "aktiverad"

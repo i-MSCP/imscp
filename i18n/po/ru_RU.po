@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 15:15+0000\n"
-"Last-Translator: i-MSCP <team@i-mscp.net>\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -265,12 +265,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s не существует или пуст"
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "Поле %s пустует или неверно."
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "%s поле хоста пустует или неверно."
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -279,10 +275,6 @@ msgstr "%s неверный языковой файл i-MSCP."
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr "%s не разрешено использовать в качестве ярлыка поддомена"
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%s не является частью домена %s."
 
 #, php-format
 msgid "%s of %s"
@@ -588,6 +580,9 @@ msgstr "Время истечения ссылки активации <small>(В
 msgid "Add"
 msgstr "Добавить"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Добавить учётную запись FTP"
 
@@ -614,9 +609,6 @@ msgstr "Добавить администратора"
 
 msgid "Add catchall"
 msgstr "Добавить перенаправление"
-
-msgid "Add custom DNS record"
-msgstr "Пользовательские DNS"
 
 msgid "Add custom menu"
 msgstr "Добавить пользовательское меню"
@@ -1218,9 +1210,6 @@ msgstr " "
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CNAME field is empty or invalid."
-msgstr "Поле CNAME пустует или неверно."
-
 msgid "CPU Information"
 msgstr "Информация о процессоре"
 
@@ -1237,14 +1226,6 @@ msgstr "Может пользовать PHP %s функцию"
 
 msgid "Cancel"
 msgstr "Отмена"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr "Невозможно проверить %s запись: %s"
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr "Невозможно проверить запись: %s"
 
 msgid "Canonical name"
 msgstr "Каноническое имя"
@@ -1359,14 +1340,14 @@ msgstr "Клиент / Базы данных / Обзор / Добавить п�
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Клиент / Базы данных / Обзор / Обновить пароль пользователя БД"
 
-msgid "Client / Domain / Edit Custom DNS record"
-msgstr "Клиент / Домены / Изменить запись DNS"
+msgid "Client / Domain / Edit DNS resource record"
+msgstr ""
 
 msgid "Client / Domains"
 msgstr "Клиент / Домены"
 
-msgid "Client / Domains / Add Custom DNS record"
-msgstr "Клиент / Домены / Добавить запись DNS"
+msgid "Client / Domains / Add DNS resource record"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Клиент / Домены / Добавить алиас"
@@ -1525,10 +1506,6 @@ msgstr "Компания"
 msgid "Compress HTML output"
 msgstr "Сжать вывод HTML"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr "конфликт с записью %s"
-
 msgid "Core data"
 msgstr "Основные данные"
 
@@ -1564,6 +1541,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "Невозможно загрузить файл. Максимальный размер файла (%1$d MB) превышен."
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "Учитывать email адреса по умолчанию"
 
@@ -1594,17 +1575,8 @@ msgstr "Текущий пароль неверен."
 msgid "Custom DNS errors"
 msgstr "Ошибки внешних DNS"
 
-msgid "Custom DNS record"
-msgstr "Пользовательские DNS"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "Пользовательская DNS запись успешно помечена для добавления."
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "Пользовательская DNS запись успешно помечена для удаления."
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "Пользовательская DNS запись успешно помечена для обновления."
 
 msgid "Custom DNS records"
 msgstr "Пользовательские DNS"
@@ -1693,11 +1665,17 @@ msgstr "Выберите страницы ошибок для Вашего до�
 msgid "DNS record already exist."
 msgstr "DNS запись уже существует."
 
+msgid "DNS resource record"
+msgstr ""
+
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
 msgid "DNS resource records"
 msgstr "Записи ресурсов DNS"
-
-msgid "DNS server unavailable. Please contact your reseller."
-msgstr "DNS-сервер недоступен, пожалуйста, свяжитесь с Вашим реселлером."
 
 msgid "DOWN"
 msgstr "НЕ РАБОТАЕТ"
@@ -1710,6 +1688,9 @@ msgstr "Запрос демона удался."
 
 msgid "Daily backup"
 msgstr "Ежедневная резервная копия"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr "Данные были изменены. Пожалуйста попробуйте снова."
@@ -1837,6 +1818,9 @@ msgstr "Уважаемый {RESELLER},\n\nЗагруженное Вами ПО �
 
 msgid "Debugger"
 msgstr "Отладчик"
+
+msgid "Default"
+msgstr ""
 
 msgid "Default language"
 msgstr "Язык по умолчанию"
@@ -2029,6 +2013,9 @@ msgstr "Должна быть заполнена дата истечения д�
 msgid "Domain for which PHP Editor must act."
 msgstr "Домен, для которого вы включаете редактор PHP"
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "Лимит доменов"
 
@@ -2120,6 +2107,9 @@ msgstr "ЭБ"
 msgid "Edit"
 msgstr "Изменить"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr "Изменить учетную запись FTP"
 
@@ -2131,9 +2121,6 @@ msgstr "Изменить администратора"
 
 msgid "Edit auto responder"
 msgstr "Изменить автоответчик"
-
-msgid "Edit custom DNS record"
-msgstr "Изменить пользовательскую DNS запись"
 
 msgid "Edit custom error page"
 msgstr "Изменить пользовательскую страницу ошибок"
@@ -2628,9 +2615,6 @@ msgstr "IP адрес уже под контролем i-MSCP."
 msgid "IP address data"
 msgstr "Данные IP адресов"
 
-msgid "IP address field is empty or invalid."
-msgstr "Поле адреса IP пустует или неверно."
-
 msgid "IP address successfully scheduled for addition."
 msgstr "IP адрес успешно помечен для добавления."
 
@@ -2651,9 +2635,6 @@ msgstr "Использование IP"
 
 msgid "IPv6 address"
 msgstr "IPv6 адрес"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr "Поле адреса IPv6 пустует или неверно."
 
 msgid "Id"
 msgstr "ID"
@@ -2803,23 +2784,11 @@ msgstr "Внутренняя ошибка сервера"
 msgid "Internationalization"
 msgstr "Языки"
 
-msgid "Invalid CNAME"
-msgstr "Неверный CNAME"
-
-msgid "Invalid IPv4 address."
-msgstr "Неверный адрес IPv4."
-
-msgid "Invalid IPv6 address."
-msgstr "Неверный адрес IPv6."
-
 msgid "Invalid MX priority."
 msgstr "Неверный MX приоритет."
 
 msgid "Invalid MX type."
 msgstr "Неверный MX тип."
-
-msgid "Invalid NAME."
-msgstr "Неверное имя"
 
 #, php-format
 msgid "Invalid SQL user host: %s"
@@ -2831,11 +2800,12 @@ msgstr "Неверный сертификат SSL"
 msgid "Invalid SSL certificate."
 msgstr "Негодный SSL сертификат."
 
-msgid "Invalid TXT data"
-msgstr "Неверные TXT данные"
-
 msgid "Invalid URL."
 msgstr "Неверный URL"
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "Неправильное имя домена."
@@ -3183,9 +3153,6 @@ msgstr "Перемещение отменено."
 
 msgid "N/A"
 msgstr "Недоступно"
-
-msgid "NAME field is empty or invalid."
-msgstr "Поле имени пустует или неверно."
 
 msgid "Name"
 msgstr "Имя"
@@ -3845,9 +3812,6 @@ msgstr "Список плагинов обновлен: %s новый(ых) пл
 msgid "Port"
 msgstr "Порт"
 
-msgid "Port must be a number."
-msgstr "Порт должен быть числом."
-
 msgid "Prevent external login for admins"
 msgstr "Запрет внешних логинов для администраторов"
 
@@ -3862,9 +3826,6 @@ msgstr "Назад"
 
 msgid "Priority"
 msgstr "Приоритет"
-
-msgid "Priority must be a number."
-msgstr "Приоритет должен быть числом"
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3961,9 +3922,6 @@ msgstr "Дата регистрации"
 
 msgid "Relative weight"
 msgstr "Относительный вес"
-
-msgid "Relative weight must be a number."
-msgstr "Относительный вес должен быть числом."
 
 msgid "Release date"
 msgstr "Дата выпуска"
@@ -4728,15 +4686,6 @@ msgstr "ТБ"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr "TTL должен быть числом"
-
-msgid "TXT data"
-msgstr "TXT данные"
-
-msgid "TXT field is empty or invalid."
-msgstr "Поле TXT пустует или неверно."
-
 msgid "Target"
 msgstr "Цель"
 
@@ -4748,6 +4697,9 @@ msgstr "Хост назначения"
 
 msgid "Target port"
 msgstr "Порт назначения"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "Шаблон автосообщения успешно обновлен."
@@ -5863,6 +5815,9 @@ msgstr "Индекс / ZIP-code"
 msgid "Zip/Postal code"
 msgstr "Почтовый индекс"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[New]"
 
@@ -5874,6 +5829,10 @@ msgstr "[Ticket]"
 
 msgid "_: Localised language"
 msgstr "Русский язык - Russian"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "активировано"

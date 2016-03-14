@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 17:32+0000\n"
-"Last-Translator: Thom Heemstra <thom@heemstra.us>\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -270,12 +270,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s bestaat niet of is leeg."
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "%s veld is leeg of niet correct ingevuld."
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "%s hostveld is leeg of niet correct ingevuld."
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -284,10 +280,6 @@ msgstr "%s is geen geldig i-MSCP taalbestand."
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr "%s is niet toegestaan als subdomein label."
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%s is geen onderdeel van domein %s."
 
 #, php-format
 msgid "%s of %s"
@@ -593,6 +585,9 @@ msgstr "Activeringslink verloopt in <small>(Minuten)</small>"
 msgid "Add"
 msgstr "Toevoegen"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "FTP-account toevoegen"
 
@@ -619,9 +614,6 @@ msgstr "Beheerder toevoegen"
 
 msgid "Add catchall"
 msgstr "Voeg catch-all aan domein toe"
-
-msgid "Add custom DNS record"
-msgstr "DNS-record toevoegen"
 
 msgid "Add custom menu"
 msgstr "Voeg eigen menuitem toe"
@@ -1223,9 +1215,6 @@ msgstr "Door"
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CNAME field is empty or invalid."
-msgstr "CNAME-veld is leeg of ongeldig."
-
 msgid "CPU Information"
 msgstr "CPU-informatie"
 
@@ -1242,14 +1231,6 @@ msgstr "Kan de PHP %s functie gebruiken"
 
 msgid "Cancel"
 msgstr "Annuleren"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr "Kan de %s-record niet valideren: %s"
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr "Kon record niet valideren: %s"
 
 msgid "Canonical name"
 msgstr "Canonieke naam"
@@ -1364,14 +1345,14 @@ msgstr "Klant / Databanken / Overzicht / Voeg SQL-gebruiker toe"
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Klant / Databanken / Overzicht / Pas wachtwoord SQL-gebruiker aan"
 
-msgid "Client / Domain / Edit Custom DNS record"
-msgstr "Klant / Domain / Pas eigen DNS-record aan"
+msgid "Client / Domain / Edit DNS resource record"
+msgstr ""
 
 msgid "Client / Domains"
 msgstr "Klant / Domeinen"
 
-msgid "Client / Domains / Add Custom DNS record"
-msgstr "Klant / Domain / Voeg eigen DNS-record toe"
+msgid "Client / Domains / Add DNS resource record"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Klant / Domain / Voeg domeinalias toe"
@@ -1530,10 +1511,6 @@ msgstr "Bedrijf"
 msgid "Compress HTML output"
 msgstr "Compressie toepassen op HTML-output"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr "Conflict met reeds bestaande %s-record"
-
 msgid "Core data"
 msgstr "Kerngegevens"
 
@@ -1569,6 +1546,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "Kon bestand niet uploaden. Maximale grootte (%1$d MB) is bereikt."
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "Laat standaarde-mailadres meestellen."
 
@@ -1599,17 +1580,8 @@ msgstr "Huidig wachtwoord niet correct."
 msgid "Custom DNS errors"
 msgstr "Eigen DNS-fouten"
 
-msgid "Custom DNS record"
-msgstr "Eigen DNS-instellingen"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "DNS-record succesvol toegevoegd."
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "Eigen DNS-record wordt verwijderd."
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "Eigen DNS-record wordt bijgewerkt."
 
 msgid "Custom DNS records"
 msgstr "Eigen DNS-instellingen"
@@ -1698,11 +1670,17 @@ msgstr "Pas foutpagina's aan voor uw domeinen"
 msgid "DNS record already exist."
 msgstr "DNS-record bestaat al."
 
+msgid "DNS resource record"
+msgstr ""
+
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
 msgid "DNS resource records"
 msgstr "DNS-records"
-
-msgid "DNS server unavailable. Please contact your reseller."
-msgstr "DNS-server onbereikbaar, neem contact op met uw wederverkoper"
 
 msgid "DOWN"
 msgstr "Dicht"
@@ -1715,6 +1693,9 @@ msgstr "Deamon-verzoek succesvol."
 
 msgid "Daily backup"
 msgstr "Dagelijkse back-up"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr "Data is tussentijds aangepast, probeer opnieuw."
@@ -1842,6 +1823,9 @@ msgstr "Beste {RESELLER},\n\tUw softwarepakket is succesvol geactiveerd door {AD
 
 msgid "Debugger"
 msgstr "Debugger"
+
+msgid "Default"
+msgstr ""
 
 msgid "Default language"
 msgstr "Standaardtaal"
@@ -2034,6 +2018,9 @@ msgstr "Vervaldatum domein dient te worden ingevuld."
 msgid "Domain for which PHP Editor must act."
 msgstr "Domein waarvoor PHP-editor moet werken."
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "Domeinlimiet"
 
@@ -2125,6 +2112,9 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Bewerken"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr "FTP-account aanpassen"
 
@@ -2136,9 +2126,6 @@ msgstr "Bewerk beheerder"
 
 msgid "Edit auto responder"
 msgstr "Auto-beantwoorder aanpassen"
-
-msgid "Edit custom DNS record"
-msgstr "Pas eigen DNS-instellingen aan"
 
 msgid "Edit custom error page"
 msgstr "Pas eigen foutpagina's aan"
@@ -2633,9 +2620,6 @@ msgstr "IP-adres valt al onder controle van i-MSCP."
 msgid "IP address data"
 msgstr "IP-adresgegevens"
 
-msgid "IP address field is empty or invalid."
-msgstr "IP-adresveld is leeg of ongeldig."
-
 msgid "IP address successfully scheduled for addition."
 msgstr "IP-adres wordt toegevoegd."
 
@@ -2656,9 +2640,6 @@ msgstr "IP-gebruik"
 
 msgid "IPv6 address"
 msgstr "IPv6-adres"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr "IPv6-adres veld is leeg of ongeldig."
 
 msgid "Id"
 msgstr "ID"
@@ -2808,23 +2789,11 @@ msgstr "Interne serverfout"
 msgid "Internationalization"
 msgstr "Internationalisering"
 
-msgid "Invalid CNAME"
-msgstr "Ongeldige CNAME"
-
-msgid "Invalid IPv4 address."
-msgstr "Ongeldig IPv4-adres"
-
-msgid "Invalid IPv6 address."
-msgstr "Ongeldig IPv6-adres"
-
 msgid "Invalid MX priority."
 msgstr "Ongeldige MX-prioriteit"
 
 msgid "Invalid MX type."
 msgstr "Ongeldig MX-type"
-
-msgid "Invalid NAME."
-msgstr "Ongeldige NAME"
 
 #, php-format
 msgid "Invalid SQL user host: %s"
@@ -2836,11 +2805,12 @@ msgstr "Ongeldig SSL-certificaat"
 msgid "Invalid SSL certificate."
 msgstr "Ongeldig SSL-certificaat."
 
-msgid "Invalid TXT data"
-msgstr "Ongeldige TXT-invoer"
-
 msgid "Invalid URL."
 msgstr "Ongeldige URL."
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "Ongeldige domeinnaam."
@@ -3188,9 +3158,6 @@ msgstr "Verplaatsen geannuleerd."
 
 msgid "N/A"
 msgstr "N/B"
-
-msgid "NAME field is empty or invalid."
-msgstr "NAME-veld is leeg of niet geldig."
 
 msgid "Name"
 msgstr "Naam"
@@ -3850,9 +3817,6 @@ msgstr "Invoegtoepassingslijst is bijgewerkt: %s nieuwe invoegtoepassing(en) gev
 msgid "Port"
 msgstr "Poort"
 
-msgid "Port must be a number."
-msgstr "Poort dient een nummer te zijn."
-
 msgid "Prevent external login for admins"
 msgstr "Voorkom externe login voor beheerder"
 
@@ -3867,9 +3831,6 @@ msgstr "Vorige"
 
 msgid "Priority"
 msgstr "Prioriteit"
-
-msgid "Priority must be a number."
-msgstr "Prioriteit dient een nummer te zijn."
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3966,9 +3927,6 @@ msgstr "Registratiedatum"
 
 msgid "Relative weight"
 msgstr "Relatief gewicht"
-
-msgid "Relative weight must be a number."
-msgstr "Relatief gewicht dient een nummer te zijn."
 
 msgid "Release date"
 msgstr "Uitgavedatum"
@@ -4733,15 +4691,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr "TTL dient een nummer te zijn."
-
-msgid "TXT data"
-msgstr "TXT-invoer"
-
-msgid "TXT field is empty or invalid."
-msgstr "TXT-veld is leeg of ongeldig."
-
 msgid "Target"
 msgstr "Doel"
 
@@ -4753,6 +4702,9 @@ msgstr "Doelhost"
 
 msgid "Target port"
 msgstr "Doelpoort"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "Sjabloon voor auto-e-mail succesvol bijgewerkt."
@@ -5868,6 +5820,9 @@ msgstr "Postcode"
 msgid "Zip/Postal code"
 msgstr "Postcode"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[Nieuw]"
 
@@ -5879,6 +5834,10 @@ msgstr "[Ticket]"
 
 msgid "_: Localised language"
 msgstr "Nederlands - Dutch"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "geactiveerd"

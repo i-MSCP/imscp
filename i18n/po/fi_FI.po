@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/i-mscp/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -262,12 +262,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s ei ole olemassa tai on tyhjä."
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "%s kenttä on tyhjä tai arvo virheellinen."
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "%s palvelin -kenttä on tyhjä tai arvo virheellinen."
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -276,10 +272,6 @@ msgstr "%s ei ole kelvollinen i-MSCP -kielitiedosto."
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr ""
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%s ei ole osa domainia %s."
 
 #, php-format
 msgid "%s of %s"
@@ -585,6 +577,9 @@ msgstr "Aktivointilinkin voimassaoloaika <small>(min)</small>"
 msgid "Add"
 msgstr "Lisää"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Lisää FTP tili"
 
@@ -611,9 +606,6 @@ msgstr "Lisää ylläpitäjä"
 
 msgid "Add catchall"
 msgstr "Lisää 'Nappaa kaikki'"
-
-msgid "Add custom DNS record"
-msgstr "Lisää DNS tietue"
 
 msgid "Add custom menu"
 msgstr "Lisää kustomoitu valikko"
@@ -1215,9 +1207,6 @@ msgstr "Toimesta"
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CNAME field is empty or invalid."
-msgstr "CNAME -kenttä on tyhjä tai virheellinen."
-
 msgid "CPU Information"
 msgstr "Prosessorin tiedot"
 
@@ -1234,14 +1223,6 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "Peruuta"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr "Ei voida vahvistaa %s tietuetta: %s"
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr "Ei voida vahvistaa tietuetta: %s"
 
 msgid "Canonical name"
 msgstr "Kanoninen nimi"
@@ -1356,14 +1337,14 @@ msgstr "Asiakas / Tietokannat / Yleiskatsaus / Lisää SQL-käyttäjä"
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Asiakas / Tietokannat / Yleiskatsaus / Päivitä SQL-käyttäjän salasana"
 
-msgid "Client / Domain / Edit Custom DNS record"
-msgstr "Asiakas / Domain / Muokkaa DNS-tietueita"
+msgid "Client / Domain / Edit DNS resource record"
+msgstr ""
 
 msgid "Client / Domains"
 msgstr "Asiakas / Domainit"
 
-msgid "Client / Domains / Add Custom DNS record"
-msgstr "Asiakas / Domainit / Lisää DNS-tietue"
+msgid "Client / Domains / Add DNS resource record"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Asiakas / Domainit / Lisää domain-alias"
@@ -1522,10 +1503,6 @@ msgstr "Yritys"
 msgid "Compress HTML output"
 msgstr "Pakkaa HTML"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr "Ristiriita olemassa olevan tietueen %s kanssa."
-
 msgid "Core data"
 msgstr "Päätiedot"
 
@@ -1561,6 +1538,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "Tiedostoa ei voitu lähettää. Tiedoston maksimikoko (%1$d MB) on ylitetty."
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "Laske oletussähköpostitilien määrä"
 
@@ -1591,17 +1572,8 @@ msgstr "Nykyinen salasana on virheellinen."
 msgid "Custom DNS errors"
 msgstr ""
 
-msgid "Custom DNS record"
-msgstr "Itse määritelty DNS merkintä"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "DNS-tietue ajastettu lisättäväksi onnistuneesti."
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "DNS-tietue ajastettu poistettavaksi onnistuneesti."
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "DNS-tietue ajastettu päivitettäväksi onnistuneesti."
 
 msgid "Custom DNS records"
 msgstr "Kustomoidut DNS-merkinnät"
@@ -1690,11 +1662,17 @@ msgstr "Muokkaa domainisi virhesivuja"
 msgid "DNS record already exist."
 msgstr "DNS merkintä on jo olemassa."
 
+msgid "DNS resource record"
+msgstr ""
+
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
 msgid "DNS resource records"
 msgstr "DNS-tietueet"
-
-msgid "DNS server unavailable. Please contact your reseller."
-msgstr "DNS-palvelimeen ei saada yhteyttä. Ota yhteyttä jälleenmyyjään."
 
 msgid "DOWN"
 msgstr "Pois päältä"
@@ -1707,6 +1685,9 @@ msgstr "Taustaprosessin pyyntö onnistui."
 
 msgid "Daily backup"
 msgstr "Päivittäinen varmuuskopio"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr ""
@@ -1834,6 +1815,9 @@ msgstr ""
 
 msgid "Debugger"
 msgstr "Debugger"
+
+msgid "Default"
+msgstr ""
 
 msgid "Default language"
 msgstr "Oletuskieli"
@@ -2026,6 +2010,9 @@ msgstr "Domainin vanhentumis päivämäärä on täytettävä."
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "Domainit"
 
@@ -2117,6 +2104,9 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Muokkaa"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr "Muokkaa FTP-tiliä"
 
@@ -2128,9 +2118,6 @@ msgstr "Muokkaa ylläpitäjää"
 
 msgid "Edit auto responder"
 msgstr "Muokkaa automaattista vastaajaa"
-
-msgid "Edit custom DNS record"
-msgstr "Muokkaa itse määriteltyä DNS merkintää"
 
 msgid "Edit custom error page"
 msgstr "Muokkaa kustomoituja virhesivuja"
@@ -2625,9 +2612,6 @@ msgstr "IP-osoite on jo lisätty i-MSCP: hallittavaksi"
 msgid "IP address data"
 msgstr "IP-osoitteen tiedot"
 
-msgid "IP address field is empty or invalid."
-msgstr "IP-osoitekenttä on tyhjä tai virheellinen."
-
 msgid "IP address successfully scheduled for addition."
 msgstr "IP-osoite ajastettu lisättäväksi onnistuneesti."
 
@@ -2648,9 +2632,6 @@ msgstr "IP käyttö"
 
 msgid "IPv6 address"
 msgstr "IPv6 osoite"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr "IPv6 -osoitekenttä on tyhjä tai viheellinen."
 
 msgid "Id"
 msgstr ""
@@ -2800,23 +2781,11 @@ msgstr "Palvelimen sisäinen virhe"
 msgid "Internationalization"
 msgstr "Kansainvälistäminen"
 
-msgid "Invalid CNAME"
-msgstr "Virheellinen CNAME"
-
-msgid "Invalid IPv4 address."
-msgstr "Virheellinen IPv4-osoite"
-
-msgid "Invalid IPv6 address."
-msgstr "Virheellinen IPv6-osoite"
-
 msgid "Invalid MX priority."
 msgstr "Virheellinen MX-prioriteetti"
 
 msgid "Invalid MX type."
 msgstr "Virheellinen MX-tyyppi"
-
-msgid "Invalid NAME."
-msgstr "Virheellinen NAME"
 
 #, php-format
 msgid "Invalid SQL user host: %s"
@@ -2828,11 +2797,12 @@ msgstr ""
 msgid "Invalid SSL certificate."
 msgstr ""
 
-msgid "Invalid TXT data"
-msgstr "Virheellinen TXT-tieto"
-
 msgid "Invalid URL."
 msgstr "Virheellinen osoite."
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "Virheellinen domain-tunnus."
@@ -3180,9 +3150,6 @@ msgstr "Siirto keskeytetty."
 
 msgid "N/A"
 msgstr "Ei asetettu"
-
-msgid "NAME field is empty or invalid."
-msgstr "NAME -kenttä on tyhjä tai virheellinen."
 
 msgid "Name"
 msgstr "Nimi"
@@ -3842,9 +3809,6 @@ msgstr ""
 msgid "Port"
 msgstr "Portti"
 
-msgid "Port must be a number."
-msgstr "Portti täytyy olla numero"
-
 msgid "Prevent external login for admins"
 msgstr "Estä ulkopuoliset kirjautumiset pääkäyttäjiltä"
 
@@ -3859,9 +3823,6 @@ msgstr "Edellinen"
 
 msgid "Priority"
 msgstr "Tärkeys"
-
-msgid "Priority must be a number."
-msgstr "Tärkeysaste täytyy olla numero."
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3957,9 +3918,6 @@ msgid "Registration date"
 msgstr "Rekisteröitymispäivä"
 
 msgid "Relative weight"
-msgstr ""
-
-msgid "Relative weight must be a number."
 msgstr ""
 
 msgid "Release date"
@@ -4725,15 +4683,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr "TTL arvon täytyy olla numero"
-
-msgid "TXT data"
-msgstr "TXT tiedot"
-
-msgid "TXT field is empty or invalid."
-msgstr "TXT-kenttä on tyhjä tai virheellinen."
-
 msgid "Target"
 msgstr "Kohde"
 
@@ -4745,6 +4694,9 @@ msgstr "Kohdeisäntä"
 
 msgid "Target port"
 msgstr "Kohdeportti"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "Automaattisen viestin pohja on päivitetty onnistuneesti."
@@ -5860,6 +5812,9 @@ msgstr "Postinumero"
 msgid "Zip/Postal code"
 msgstr "Postinumero"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[Uusi]"
 
@@ -5871,6 +5826,10 @@ msgstr "[Tiketti]"
 
 msgid "_: Localised language"
 msgstr "Finnish (Suomi) - Finnish (Finland)"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "aktivoitu"

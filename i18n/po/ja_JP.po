@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -261,12 +261,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s は存在しないか、空です。"
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "%s フィールドが空又は無効です。"
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "%s ホストフィールドが空又は無効です。"
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -275,10 +271,6 @@ msgstr "%sは、有効なi-MSCP言語ファイルでありません。"
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr "%sは、サブドメインラベルとして許可されていません。"
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%sは、ドメイン%sの一部ではありません。"
 
 #, php-format
 msgid "%s of %s"
@@ -584,6 +576,9 @@ msgstr "アクティベーションリンクは有効期限 <small>(分)</small>
 msgid "Add"
 msgstr "追加"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "FTPアカウント追加"
 
@@ -610,9 +605,6 @@ msgstr "管理者追加"
 
 msgid "Add catchall"
 msgstr "ごみ箱の追加"
-
-msgid "Add custom DNS record"
-msgstr "カスタムDNSレコードを追加"
 
 msgid "Add custom menu"
 msgstr "カスタムメニュー追加"
@@ -1214,9 +1206,6 @@ msgstr "から"
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CNAME field is empty or invalid."
-msgstr "CNAMEフィールドが空または無効です。"
-
 msgid "CPU Information"
 msgstr "CPU情報"
 
@@ -1233,14 +1222,6 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "取り消し"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr "%s レコードは検証できません: %s"
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr "レコードを検証することはできません：%s"
 
 msgid "Canonical name"
 msgstr "正式な名前"
@@ -1355,14 +1336,14 @@ msgstr "クライアント / データベース / 概要 / SQLユーザー追加
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "クライアント / データベース / 概要 / SQLユーザーパスワード更新"
 
-msgid "Client / Domain / Edit Custom DNS record"
-msgstr "クライアント / ドメイン / カスタムDNSレコード追加"
+msgid "Client / Domain / Edit DNS resource record"
+msgstr ""
 
 msgid "Client / Domains"
 msgstr "クライアント / ドメイン"
 
-msgid "Client / Domains / Add Custom DNS record"
-msgstr "クライアント / ドメイン / カスタムDNSレコード追加"
+msgid "Client / Domains / Add DNS resource record"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "クライアント / ドメイン / ドメインエイリアス追加"
@@ -1521,10 +1502,6 @@ msgstr "会社"
 msgid "Compress HTML output"
 msgstr "圧縮HTML出力"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr "既存の%sレコードと競合。"
-
 msgid "Core data"
 msgstr "基本情報"
 
@@ -1560,6 +1537,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "ファイルをアップロードできませんでした。最大アップロードファイルサイズ (%1$d MB)に達しています。"
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "デフォルトEメールアドレスをカウント"
 
@@ -1590,17 +1571,8 @@ msgstr "現在のパスワードは無効です。"
 msgid "Custom DNS errors"
 msgstr "カスタムDNSエラー"
 
-msgid "Custom DNS record"
-msgstr "カスタムDNSレコード"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "カスタムDNSレコードの追加が予定されました。"
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "カスタムDNSレコードの削除が予定されました。"
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "カスタムDNSレコードのアップデートが予定されました。"
 
 msgid "Custom DNS records"
 msgstr "カスタムDNSレコード"
@@ -1689,11 +1661,17 @@ msgstr "ドメインのエラーページをカスタマイズする。"
 msgid "DNS record already exist."
 msgstr "DNSレコードは既に存在しています。"
 
+msgid "DNS resource record"
+msgstr ""
+
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
 msgid "DNS resource records"
 msgstr "DNSリソースレコード"
-
-msgid "DNS server unavailable. Please contact your reseller."
-msgstr "DNSサーバーが使用できません。代理店にお問い合わせください。"
 
 msgid "DOWN"
 msgstr "DOWN"
@@ -1706,6 +1684,9 @@ msgstr "デーモン要求成功。"
 
 msgid "Daily backup"
 msgstr "日次バックアップ"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr ""
@@ -1833,6 +1814,9 @@ msgstr ""
 
 msgid "Debugger"
 msgstr "デバッガー"
+
+msgid "Default"
+msgstr ""
 
 msgid "Default language"
 msgstr "既定の言語"
@@ -2025,6 +2009,9 @@ msgstr "ドメイン有効期限を入力する必要があります。"
 msgid "Domain for which PHP Editor must act."
 msgstr "PHPエディタが作用しなければならないドメイン。"
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "ドメイン制限"
 
@@ -2116,6 +2103,9 @@ msgstr "EB"
 msgid "Edit"
 msgstr "編集"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr "FTPアカウント編集"
 
@@ -2127,9 +2117,6 @@ msgstr "管理者編集"
 
 msgid "Edit auto responder"
 msgstr "自動応答を編集"
-
-msgid "Edit custom DNS record"
-msgstr "カスタムDNSレコード編集"
 
 msgid "Edit custom error page"
 msgstr "顧客エラーページの編集"
@@ -2624,9 +2611,6 @@ msgstr "既にi-MSCPの制御下にあるIPアドレスです。"
 msgid "IP address data"
 msgstr "IPアドレスデータ"
 
-msgid "IP address field is empty or invalid."
-msgstr "IPアドレスフィールドが空または無効です。"
-
 msgid "IP address successfully scheduled for addition."
 msgstr "IPアドレスの追加が予定されました。"
 
@@ -2647,9 +2631,6 @@ msgstr "IPの使用状況"
 
 msgid "IPv6 address"
 msgstr "IPv6アドレス"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr "IPv6アドレスフィールドが空または無効です。"
 
 msgid "Id"
 msgstr ""
@@ -2799,23 +2780,11 @@ msgstr "内部サーバエラー"
 msgid "Internationalization"
 msgstr "国際化"
 
-msgid "Invalid CNAME"
-msgstr "無効なCNAMEです"
-
-msgid "Invalid IPv4 address."
-msgstr "無効なIPv4アドレスです。"
-
-msgid "Invalid IPv6 address."
-msgstr "無効なIPv6アドレスです。"
-
 msgid "Invalid MX priority."
 msgstr "無効なMXの優先度。"
 
 msgid "Invalid MX type."
 msgstr "無効なMX種別。"
-
-msgid "Invalid NAME."
-msgstr "無効なNAMEです。"
 
 #, php-format
 msgid "Invalid SQL user host: %s"
@@ -2827,11 +2796,12 @@ msgstr ""
 msgid "Invalid SSL certificate."
 msgstr ""
 
-msgid "Invalid TXT data"
-msgstr "無効なTXTデータです"
-
 msgid "Invalid URL."
 msgstr "無効なURL。"
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "無効なドメイン名。"
@@ -3179,9 +3149,6 @@ msgstr "移動を中止しました。"
 
 msgid "N/A"
 msgstr "利用不可"
-
-msgid "NAME field is empty or invalid."
-msgstr "NAMEフィールドが空または無効です。"
 
 msgid "Name"
 msgstr "ネーム"
@@ -3841,9 +3808,6 @@ msgstr "プラグインのリストが更新されました：%s プラグイン
 msgid "Port"
 msgstr "ポート番号"
 
-msgid "Port must be a number."
-msgstr "ポートは数値でなければなりません。"
-
 msgid "Prevent external login for admins"
 msgstr "管理者の外部ログインを禁止"
 
@@ -3858,9 +3822,6 @@ msgstr "前へ"
 
 msgid "Priority"
 msgstr "優先度"
-
-msgid "Priority must be a number."
-msgstr "優先度は数値でなければなりません。"
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3957,9 +3918,6 @@ msgstr "登録日"
 
 msgid "Relative weight"
 msgstr "相対的な重み"
-
-msgid "Relative weight must be a number."
-msgstr "相対的な重みは、数値でなければなりません。"
 
 msgid "Release date"
 msgstr "公開日"
@@ -4724,15 +4682,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr "TTLは数値でなければなりません。"
-
-msgid "TXT data"
-msgstr "TXT データ"
-
-msgid "TXT field is empty or invalid."
-msgstr "TXTフィールドが空または無効です。"
-
 msgid "Target"
 msgstr "ターゲット"
 
@@ -4744,6 +4693,9 @@ msgstr "ターゲットホスト"
 
 msgid "Target port"
 msgstr "ターゲットポート"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "自動Eメールのテンプレートは更新されました。"
@@ -5859,6 +5811,9 @@ msgstr "郵便番号"
 msgid "Zip/Postal code"
 msgstr "郵便番号"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[新規]"
 
@@ -5870,6 +5825,10 @@ msgstr "[チケット]"
 
 msgid "_: Localised language"
 msgstr "日本語 - Japanese"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "有効化されました"

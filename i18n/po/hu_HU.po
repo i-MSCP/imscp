@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -263,12 +263,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s nem létezik vagy üres."
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "%s mező üres vagy hibás."
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "%s kiszolgáló mező üres vagy hibás."
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -277,10 +273,6 @@ msgstr "%s nem érvényes i-MSCP nyelvi fájl"
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr "%s nem egy engedélyezett aldomain címke."
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%s nem része a(z) %s domainnak."
 
 #, php-format
 msgid "%s of %s"
@@ -586,6 +578,9 @@ msgstr "Aktiválási hivatkozás elévülési ideje <small>(percben)</small>"
 msgid "Add"
 msgstr "Létrehozás"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "FTP-felhasználó hozzáadása"
 
@@ -612,9 +607,6 @@ msgstr "Adminisztrátor hozzáadása"
 
 msgid "Add catchall"
 msgstr "Gyüjtő email cím hozzáadása"
-
-msgid "Add custom DNS record"
-msgstr "Egyéni DNS zóna rekord hozzáadása"
 
 msgid "Add custom menu"
 msgstr "Egyéni menü hozzáadása"
@@ -1216,9 +1208,6 @@ msgstr "Készítő:"
 msgid "CGI"
 msgstr "CGI használata"
 
-msgid "CNAME field is empty or invalid."
-msgstr "CNAME mező üres vagy hibás."
-
 msgid "CPU Information"
 msgstr "CPU információk"
 
@@ -1235,14 +1224,6 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "Mégsem"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr "Nem lehetett érvényesíteni a %s rekordot: %s"
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr "Nem lehet ezt a rekordot érvényesíteni: %s"
 
 msgid "Canonical name"
 msgstr "Kanonikus név (CNAME)"
@@ -1357,14 +1338,14 @@ msgstr "Ügyfél / Adatbázisok / Áttekintés / SQL adatbázis létrehozása"
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Ügyfél / Adatbázisok / Áttekintés / SQL felhasználó jelszavának frissitése"
 
-msgid "Client / Domain / Edit Custom DNS record"
-msgstr "Ügyfél / Domainek / Egyéni DNS rekord szerkesztése"
+msgid "Client / Domain / Edit DNS resource record"
+msgstr ""
 
 msgid "Client / Domains"
 msgstr "Ügyfél / Domainek"
 
-msgid "Client / Domains / Add Custom DNS record"
-msgstr "Ügyfél / Domainek / Egyéni DNS rekord hozzáadása"
+msgid "Client / Domains / Add DNS resource record"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Ügyfél / Domainek / Domain álnév hozzáadása"
@@ -1523,10 +1504,6 @@ msgstr "Cég"
 msgid "Compress HTML output"
 msgstr "Tömöritett HTML kimenet"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr "Összeütközik a(z) %s létező rekorddal."
-
 msgid "Core data"
 msgstr "Alapadatok (szükséges)"
 
@@ -1562,6 +1539,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "Nem lehet feltölteni a fájlt, mert a feltölthető fájl maximális mérete (%1$d MB)"
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "Alapértelmezett postafiókok beleszámítása"
 
@@ -1592,17 +1573,8 @@ msgstr "Jelenlegi jelszó érvénytelen"
 msgid "Custom DNS errors"
 msgstr "Egyedi DNS hibák"
 
-msgid "Custom DNS record"
-msgstr "Egyéni DNS rekord"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "Egyéni DNS rekord hozzáadása beütemezve."
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "Egyéni DNS rekord törlésre beütemezve."
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "Egyéni DNS rekord módosítása beütemezve."
 
 msgid "Custom DNS records"
 msgstr "Egyéni DNS rekordok"
@@ -1691,11 +1663,17 @@ msgstr "Egyéni hibaoldalak testreszabása"
 msgid "DNS record already exist."
 msgstr "DNS rekord már létezik"
 
+msgid "DNS resource record"
+msgstr ""
+
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
 msgid "DNS resource records"
 msgstr "DNS forrás rekordok"
-
-msgid "DNS server unavailable. Please contact your reseller."
-msgstr "DNS szerver nem elérhető. Kérjük, lépj kapcsolatba viszonteladóddal!"
 
 msgid "DOWN"
 msgstr "ÁLL"
@@ -1708,6 +1686,9 @@ msgstr "Démon lekérése sikeres!"
 
 msgid "Daily backup"
 msgstr "Napi mentés"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr ""
@@ -1835,6 +1816,9 @@ msgstr ""
 
 msgid "Debugger"
 msgstr "Hibakereső"
+
+msgid "Default"
+msgstr ""
 
 msgid "Default language"
 msgstr "Alapértelmezett nyelv"
@@ -2027,6 +2011,9 @@ msgstr "Domain lejáratának dátuma nincs megadva"
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "Domain nevek száma"
 
@@ -2118,6 +2105,9 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Módosítás"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr "FTP-felhasználó módosítása"
 
@@ -2129,9 +2119,6 @@ msgstr "Adminisztrátor módosítása"
 
 msgid "Edit auto responder"
 msgstr "'Automatikus válasz' email módosítása"
-
-msgid "Edit custom DNS record"
-msgstr "Egyéni DNS rekord szerkesztése"
 
 msgid "Edit custom error page"
 msgstr "Egyéni hiba oldal módosítása"
@@ -2626,9 +2613,6 @@ msgstr "Ezt az IP-címet már kezeli az i-MSCP."
 msgid "IP address data"
 msgstr "IP-cím adatok"
 
-msgid "IP address field is empty or invalid."
-msgstr "IP cím mező üres vagy hibás."
-
 msgid "IP address successfully scheduled for addition."
 msgstr "IP-cím hozzáadása sikeresen beütemezve."
 
@@ -2649,9 +2633,6 @@ msgstr "IP-cím használata"
 
 msgid "IPv6 address"
 msgstr "IPv6-cím"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr "IPv6-cím mező üres vagy hibás."
 
 msgid "Id"
 msgstr ""
@@ -2801,23 +2782,11 @@ msgstr "Belső szerver hiba"
 msgid "Internationalization"
 msgstr "Nyelvi beállítások"
 
-msgid "Invalid CNAME"
-msgstr "Érvénytelen CNAME"
-
-msgid "Invalid IPv4 address."
-msgstr "Érvénytelen IPv4-cím."
-
-msgid "Invalid IPv6 address."
-msgstr "Érvénytelen IPv6-cím."
-
 msgid "Invalid MX priority."
 msgstr "Érvénytelen MX prioritás"
 
 msgid "Invalid MX type."
 msgstr "Érvénytelen MX típus."
-
-msgid "Invalid NAME."
-msgstr "Hibás NAME."
 
 #, php-format
 msgid "Invalid SQL user host: %s"
@@ -2829,11 +2798,12 @@ msgstr ""
 msgid "Invalid SSL certificate."
 msgstr "Érvénytelen SSL tanúsítvány"
 
-msgid "Invalid TXT data"
-msgstr "Érvénytelen TXT adat"
-
 msgid "Invalid URL."
 msgstr "Érvénytelen webcím"
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "Hibás domain név."
@@ -3181,9 +3151,6 @@ msgstr "Átadás megszakítva"
 
 msgid "N/A"
 msgstr "N/A"
-
-msgid "NAME field is empty or invalid."
-msgstr "NAME mező üres vagy hibás."
 
 msgid "Name"
 msgstr "Név"
@@ -3843,9 +3810,6 @@ msgstr "Bővítmény lista frissítve: %s új bővítmény található, %s bőv�
 msgid "Port"
 msgstr "Port"
 
-msgid "Port must be a number."
-msgstr "\"Port\" csak egész szám lehet."
-
 msgid "Prevent external login for admins"
 msgstr "Adminisztrátor belépésének megakadályozása külföldről"
 
@@ -3860,9 +3824,6 @@ msgstr "Előző"
 
 msgid "Priority"
 msgstr "Prioritás"
-
-msgid "Priority must be a number."
-msgstr "\"Prioritás\" csak egész szám lehet."
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3959,9 +3920,6 @@ msgstr "Regisztráció dátuma"
 
 msgid "Relative weight"
 msgstr "\"Relatív súlyozás\""
-
-msgid "Relative weight must be a number."
-msgstr "\"Relatív súlyozás\" csak egész szám lehet."
 
 msgid "Release date"
 msgstr "Kiadás dátuma"
@@ -4726,15 +4684,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr "\"TTL\" csak egész szám lehet!"
-
-msgid "TXT data"
-msgstr "TXT adat"
-
-msgid "TXT field is empty or invalid."
-msgstr "TXT mező üres vagy hibás."
-
 msgid "Target"
 msgstr "Cél (target)"
 
@@ -4746,6 +4695,9 @@ msgstr "Kiszolgáló (host)"
 
 msgid "Target port"
 msgstr "Port"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "Auto e-mail sablon sikeresen frissítve"
@@ -5861,6 +5813,9 @@ msgstr "Irányítószám"
 msgid "Zip/Postal code"
 msgstr "Irányítószám"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[Új]"
 
@@ -5872,6 +5827,10 @@ msgstr "[Hibajegy]"
 
 msgid "_: Localised language"
 msgstr "Magyar - Hungarian"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "aktivált"

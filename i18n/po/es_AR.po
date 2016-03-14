@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/i-mscp/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -261,12 +261,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s no existe o está vacío."
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "campo %s está vacío o es inválido."
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "campo host %s está vacío o es inválido."
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -275,10 +271,6 @@ msgstr "%s no es un archivo i-MSCP de idioma válido."
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr "%s no está permitido como etiqueta de subdominio."
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%s no es parte del dominio %s."
 
 #, php-format
 msgid "%s of %s"
@@ -584,6 +576,9 @@ msgstr "Tiempo de expiración del enlace de activación <small>(en minutos)</sma
 msgid "Add"
 msgstr "Añadir"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "Añadir Cuenta FTP"
 
@@ -610,9 +605,6 @@ msgstr "Añadir administrador"
 
 msgid "Add catchall"
 msgstr "Añadir catchall"
-
-msgid "Add custom DNS record"
-msgstr "Agregar registro DNS personalizado"
 
 msgid "Add custom menu"
 msgstr "Añadir Menú Personalizado"
@@ -1214,9 +1206,6 @@ msgstr "Por"
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CNAME field is empty or invalid."
-msgstr "El campo CNAME está vacío o es inválido."
-
 msgid "CPU Information"
 msgstr "Información de CPU"
 
@@ -1233,14 +1222,6 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "Cancelar"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr "No se pueden validar %s registros: %s"
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr "No se pueden validar registros: %s"
 
 msgid "Canonical name"
 msgstr "Nombre Canónico"
@@ -1355,14 +1336,14 @@ msgstr "Cliente / Bases de Datos / Resumen / Añadir Usuario SQL"
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Cliente / Base de Datos / Resumen / Actualizar contraseña de Usuario SQL"
 
-msgid "Client / Domain / Edit Custom DNS record"
-msgstr "Cliente / Dominio / Editar registro DNS personalizado"
+msgid "Client / Domain / Edit DNS resource record"
+msgstr ""
 
 msgid "Client / Domains"
 msgstr "Cliente / Dominios"
 
-msgid "Client / Domains / Add Custom DNS record"
-msgstr "Cliente / Dominios / Añadir registro DNS personalizado"
+msgid "Client / Domains / Add DNS resource record"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Cliente / Dominios / Añadir Alias de Dominio"
@@ -1521,10 +1502,6 @@ msgstr "Compañia"
 msgid "Compress HTML output"
 msgstr "Comprimir la salida HTML"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr "Conflicto con un regisro %s existente."
-
 msgid "Core data"
 msgstr "Datos importantes"
 
@@ -1560,6 +1537,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "No se puede subir el archivo. El tamaño máximo de archivo (%1$d MB) ha sido alcanzado."
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "Contabilizar direcciones de correo predeterminadas"
 
@@ -1590,17 +1571,8 @@ msgstr "La contraseña actual no es correcta."
 msgid "Custom DNS errors"
 msgstr "Errores en DNS personalizados"
 
-msgid "Custom DNS record"
-msgstr "Registro DS personalizado"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "Registro DNS personalizado programado para ser añadido."
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "Registro DNS personalizado prorgramado para ser eliminado."
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "Registro DNS personalizado prorgramado para ser actualizado."
 
 msgid "Custom DNS records"
 msgstr "Registros DNS personalizados"
@@ -1689,11 +1661,17 @@ msgstr "Personalizar páginas de error para tu dominio."
 msgid "DNS record already exist."
 msgstr "El registro DNS ya existe."
 
+msgid "DNS resource record"
+msgstr ""
+
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
 msgid "DNS resource records"
 msgstr "Recursos registros DNS"
-
-msgid "DNS server unavailable. Please contact your reseller."
-msgstr "Servidor DNS no disponible. Por favor, contactá con tu revendedor."
 
 msgid "DOWN"
 msgstr "ABAJO"
@@ -1706,6 +1684,9 @@ msgstr "Solicitud de demonio satisfactoria."
 
 msgid "Daily backup"
 msgstr "Backup diario"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr ""
@@ -1833,6 +1814,9 @@ msgstr ""
 
 msgid "Debugger"
 msgstr "Depurador"
+
+msgid "Default"
+msgstr ""
 
 msgid "Default language"
 msgstr "Idioma por defecto"
@@ -2025,6 +2009,9 @@ msgstr "Se debe completar la fecha de expiración del Dominio"
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "Límite del dominio"
 
@@ -2116,6 +2103,9 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Editar"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr "Editar cuenta FTP"
 
@@ -2127,9 +2117,6 @@ msgstr "Editar Administrador"
 
 msgid "Edit auto responder"
 msgstr "Editar Respuesta automática"
-
-msgid "Edit custom DNS record"
-msgstr "Editar registro DNS personalizado"
 
 msgid "Edit custom error page"
 msgstr "Editar página de error personalizada"
@@ -2624,9 +2611,6 @@ msgstr "La dirección IP está actualmente bajo el control de i-MSCP."
 msgid "IP address data"
 msgstr "Datos Dirección IP"
 
-msgid "IP address field is empty or invalid."
-msgstr "El campo Dirección IP está vacío o es inválido."
-
 msgid "IP address successfully scheduled for addition."
 msgstr "Dirección IP programada para ser añadida."
 
@@ -2647,9 +2631,6 @@ msgstr "Uso de IP"
 
 msgid "IPv6 address"
 msgstr "Dirección IPv6"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr "El campo Dirección IPv5 está vacío o es inválido."
 
 msgid "Id"
 msgstr ""
@@ -2799,23 +2780,11 @@ msgstr "Error interno del Servidor"
 msgid "Internationalization"
 msgstr "Internacionalización"
 
-msgid "Invalid CNAME"
-msgstr "CNAME inválido"
-
-msgid "Invalid IPv4 address."
-msgstr "Dirección IPv4 inválida."
-
-msgid "Invalid IPv6 address."
-msgstr "Dirección IPv6 inválida."
-
 msgid "Invalid MX priority."
 msgstr "Prioridad MX inválida."
 
 msgid "Invalid MX type."
 msgstr "Tipo MX inválido."
-
-msgid "Invalid NAME."
-msgstr "NAME inválido."
 
 #, php-format
 msgid "Invalid SQL user host: %s"
@@ -2827,11 +2796,12 @@ msgstr ""
 msgid "Invalid SSL certificate."
 msgstr ""
 
-msgid "Invalid TXT data"
-msgstr "datos TXT inválidos"
-
 msgid "Invalid URL."
 msgstr "URL inválida"
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "Nombre de dominio inválido."
@@ -3179,9 +3149,6 @@ msgstr "Traslado cancelado."
 
 msgid "N/A"
 msgstr "N/D"
-
-msgid "NAME field is empty or invalid."
-msgstr "El campo NAME está vacío o es inválido."
 
 msgid "Name"
 msgstr "Nombre"
@@ -3841,9 +3808,6 @@ msgstr "El listado de Plugins ha sido actualizado: se han encontrado %s plugin(s
 msgid "Port"
 msgstr "Puerto"
 
-msgid "Port must be a number."
-msgstr "El Puerto debe ser numérico."
-
 msgid "Prevent external login for admins"
 msgstr "Impedir acceso externo para los administradores"
 
@@ -3858,9 +3822,6 @@ msgstr "Previo"
 
 msgid "Priority"
 msgstr "Prioridad"
-
-msgid "Priority must be a number."
-msgstr "La Prioridad debe ser numérica."
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3957,9 +3918,6 @@ msgstr "Fecha de registro"
 
 msgid "Relative weight"
 msgstr "Peso relativo"
-
-msgid "Relative weight must be a number."
-msgstr "El peso relativo tiene que ser numérico."
 
 msgid "Release date"
 msgstr "Fecha de lanzamiento"
@@ -4724,15 +4682,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr "TTL debe ser numérico."
-
-msgid "TXT data"
-msgstr "Datos TXT"
-
-msgid "TXT field is empty or invalid."
-msgstr "El campo TXT está vacío o es inválido."
-
 msgid "Target"
 msgstr "Destino"
 
@@ -4744,6 +4693,9 @@ msgstr "Anfitrión Destino"
 
 msgid "Target port"
 msgstr "Puerto del Anfitrión"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "La plantilla de correo automático ha sido actualizada satisfactoriamente."
@@ -5859,6 +5811,9 @@ msgstr "Código Postal"
 msgid "Zip/Postal code"
 msgstr "Código postal"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[Nuevo]"
 
@@ -5870,6 +5825,10 @@ msgstr "[Ticket]"
 
 msgid "_: Localised language"
 msgstr "Español (Argentina) - Spanish (Argentina)"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "Activado"

@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -264,11 +264,7 @@ msgid "%s doesn't exist or is empty."
 msgstr ""
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr ""
-
-#, php-format
-msgid "%s host field is empty or invalid."
+msgid "%s field cannot be empty."
 msgstr ""
 
 #, php-format
@@ -277,10 +273,6 @@ msgstr "%s no és un fitxer d'idioma vàlid per i-MSCP."
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
-
-#, php-format
-msgid "%s is not part of domain %s."
 msgstr ""
 
 #, php-format
@@ -587,6 +579,9 @@ msgstr "Temps d'expiració de l'enllaç d'activació <small>(In minutes)</small>
 msgid "Add"
 msgstr "Afegir"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr ""
 
@@ -612,9 +607,6 @@ msgid "Add admin"
 msgstr "Afegir administrador"
 
 msgid "Add catchall"
-msgstr ""
-
-msgid "Add custom DNS record"
 msgstr ""
 
 msgid "Add custom menu"
@@ -1217,9 +1209,6 @@ msgstr "Per"
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CNAME field is empty or invalid."
-msgstr ""
-
 msgid "CPU Information"
 msgstr ""
 
@@ -1236,14 +1225,6 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "Cancel·lar"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr "No podem validar %s registre: %s"
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr ""
 
 msgid "Canonical name"
 msgstr "Nom canonic"
@@ -1358,14 +1339,14 @@ msgstr "Client / Bases de dades / Vista General / Afegir usuari SQL"
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Client / Bases de dades / Vista General / Actualitzar contrasenya d'usuari SQL"
 
-msgid "Client / Domain / Edit Custom DNS record"
-msgstr "Client / Domini / Editar entrades personalitzades de DNS"
+msgid "Client / Domain / Edit DNS resource record"
+msgstr ""
 
 msgid "Client / Domains"
 msgstr "Client / Dominis"
 
-msgid "Client / Domains / Add Custom DNS record"
-msgstr "Client / Dominis / Afegir entrada dns personalitzada"
+msgid "Client / Domains / Add DNS resource record"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr ""
@@ -1524,10 +1505,6 @@ msgstr "Empresa"
 msgid "Compress HTML output"
 msgstr "Comprimir la sortida HTML"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr ""
-
 msgid "Core data"
 msgstr "Dades principals"
 
@@ -1563,6 +1540,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "No s'ha pogut pujar el fitxer. Heu arribat a la mida màxima de pujada  (%1$d MB)."
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "Comptar les adreces per defecte"
 
@@ -1593,17 +1574,8 @@ msgstr "La contrasenya actual no és vàlida."
 msgid "Custom DNS errors"
 msgstr ""
 
-msgid "Custom DNS record"
-msgstr "Registre DNS personalitzat"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "S'ha programat la creació de l'entrada DNS personalitzada"
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr ""
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "S'ha programat l'actualització de l'entrada DNS personalitzada"
 
 msgid "Custom DNS records"
 msgstr "Registres DNS personalitzats"
@@ -1692,10 +1664,16 @@ msgstr "Personalitzar les pàgines d'error del seu domini."
 msgid "DNS record already exist."
 msgstr "Aquest registre ja existeix."
 
-msgid "DNS resource records"
+msgid "DNS resource record"
 msgstr ""
 
-msgid "DNS server unavailable. Please contact your reseller."
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
+msgid "DNS resource records"
 msgstr ""
 
 msgid "DOWN"
@@ -1709,6 +1687,9 @@ msgstr ""
 
 msgid "Daily backup"
 msgstr "Backup Diari"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr ""
@@ -1835,6 +1816,9 @@ msgid ""
 msgstr ""
 
 msgid "Debugger"
+msgstr ""
+
+msgid "Default"
 msgstr ""
 
 msgid "Default language"
@@ -2028,6 +2012,9 @@ msgstr "Has d'introduïr la data d'expiració del domini."
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "Límit de dominis"
 
@@ -2119,6 +2106,9 @@ msgstr "EB"
 msgid "Edit"
 msgstr "Editar"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr ""
 
@@ -2129,9 +2119,6 @@ msgid "Edit admin"
 msgstr ""
 
 msgid "Edit auto responder"
-msgstr ""
-
-msgid "Edit custom DNS record"
 msgstr ""
 
 msgid "Edit custom error page"
@@ -2627,9 +2614,6 @@ msgstr ""
 msgid "IP address data"
 msgstr ""
 
-msgid "IP address field is empty or invalid."
-msgstr ""
-
 msgid "IP address successfully scheduled for addition."
 msgstr ""
 
@@ -2650,9 +2634,6 @@ msgstr ""
 
 msgid "IPv6 address"
 msgstr "Adreça IPv6"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr ""
 
 msgid "Id"
 msgstr ""
@@ -2802,22 +2783,10 @@ msgstr ""
 msgid "Internationalization"
 msgstr "Internacionalització"
 
-msgid "Invalid CNAME"
-msgstr ""
-
-msgid "Invalid IPv4 address."
-msgstr ""
-
-msgid "Invalid IPv6 address."
-msgstr ""
-
 msgid "Invalid MX priority."
 msgstr ""
 
 msgid "Invalid MX type."
-msgstr ""
-
-msgid "Invalid NAME."
 msgstr ""
 
 #, php-format
@@ -2830,11 +2799,12 @@ msgstr ""
 msgid "Invalid SSL certificate."
 msgstr ""
 
-msgid "Invalid TXT data"
-msgstr ""
-
 msgid "Invalid URL."
 msgstr "Adreça URL incorrecte."
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr ""
@@ -3182,9 +3152,6 @@ msgstr "Acció de moure cancel.lada."
 
 msgid "N/A"
 msgstr "N/A"
-
-msgid "NAME field is empty or invalid."
-msgstr ""
 
 msgid "Name"
 msgstr "Nom"
@@ -3844,9 +3811,6 @@ msgstr ""
 msgid "Port"
 msgstr "Port"
 
-msgid "Port must be a number."
-msgstr ""
-
 msgid "Prevent external login for admins"
 msgstr "Prohibir l'accés extern dels admins"
 
@@ -3861,9 +3825,6 @@ msgstr "Anterior"
 
 msgid "Priority"
 msgstr "Prioritat"
-
-msgid "Priority must be a number."
-msgstr ""
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3959,9 +3920,6 @@ msgid "Registration date"
 msgstr "Data de registre"
 
 msgid "Relative weight"
-msgstr ""
-
-msgid "Relative weight must be a number."
 msgstr ""
 
 msgid "Release date"
@@ -4727,15 +4685,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr ""
-
-msgid "TXT data"
-msgstr "Dades TXT"
-
-msgid "TXT field is empty or invalid."
-msgstr ""
-
 msgid "Target"
 msgstr "Destí"
 
@@ -4747,6 +4696,9 @@ msgstr "Servidor destí"
 
 msgid "Target port"
 msgstr "Port de desí"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "Plantilla del correu actualitzada correctament."
@@ -5862,6 +5814,9 @@ msgstr "Codi postal"
 msgid "Zip/Postal code"
 msgstr "Codi postal"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[Nou]"
 
@@ -5873,6 +5828,10 @@ msgstr "[Tiquet]"
 
 msgid "_: Localised language"
 msgstr "Català - Catalan"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "activat"

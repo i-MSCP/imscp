@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -261,12 +261,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s 不存在或是空的"
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "%s 欄位是空的或是無效的。"
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "%s 主機欄位是空的或是無效的。"
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -275,10 +271,6 @@ msgstr "%s 不是正確的 i-MSCP 語言檔"
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr "%s 不允許的子網域標籤。"
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%s 不是網域的一部份 %s."
 
 #, php-format
 msgid "%s of %s"
@@ -584,6 +576,9 @@ msgstr "驗證連結到期時間 <small>(分鐘)</small>"
 msgid "Add"
 msgstr "增加"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr "新增 FTP 帳號"
 
@@ -610,9 +605,6 @@ msgstr "增加管理員"
 
 msgid "Add catchall"
 msgstr "新增外部信箱抓取"
-
-msgid "Add custom DNS record"
-msgstr "新增自訂DNS紀錄"
 
 msgid "Add custom menu"
 msgstr "新增自訂選單"
@@ -1214,9 +1206,6 @@ msgstr "由"
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CNAME field is empty or invalid."
-msgstr "CNAME 欄位是空白或無效的。"
-
 msgid "CPU Information"
 msgstr "CPU 資訊"
 
@@ -1233,14 +1222,6 @@ msgstr "可以使用 PHP %s 功能"
 
 msgid "Cancel"
 msgstr "取消"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr "無法驗證 %s 紀錄: %s"
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr "無法驗證紀錄: %s"
 
 msgid "Canonical name"
 msgstr "別名(CNAME)"
@@ -1355,14 +1336,14 @@ msgstr "客戶 / 資料庫 / 概要 / 新增 SQL 使用者"
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "客戶 / 資料庫 / 概要 / 更新 SQL 使用者密碼"
 
-msgid "Client / Domain / Edit Custom DNS record"
-msgstr "客戶 / 網域 / 編輯自訂 DNS 紀錄"
+msgid "Client / Domain / Edit DNS resource record"
+msgstr ""
 
 msgid "Client / Domains"
 msgstr "客戶 / 網域"
 
-msgid "Client / Domains / Add Custom DNS record"
-msgstr "客戶 / 網域 / 新增自訂 DNS 紀錄"
+msgid "Client / Domains / Add DNS resource record"
+msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "客戶 / 網域 / 新增網域別名"
@@ -1521,10 +1502,6 @@ msgstr "公司名稱"
 msgid "Compress HTML output"
 msgstr "HTML 壓縮輸出"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr "與已存在的 %s 紀錄衝突。"
-
 msgid "Core data"
 msgstr "核心資料"
 
@@ -1560,6 +1537,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr "無法上傳檔案。最大上傳檔案大小 (%1$d MB) 已經達到了。"
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr "計算預設郵件地址"
 
@@ -1590,17 +1571,8 @@ msgstr "目前密碼無效。"
 msgid "Custom DNS errors"
 msgstr "自訂 DNS 錯誤"
 
-msgid "Custom DNS record"
-msgstr "自訂 DNS 紀錄"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "新增自訂 DNS 紀錄的排程已成功"
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "刪除自訂 DNS 紀錄的排程已成功"
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "更新自訂 DNS 紀錄的排程已成功"
 
 msgid "Custom DNS records"
 msgstr "自訂 DNS 紀錄"
@@ -1689,11 +1661,17 @@ msgstr "為您的網域自訂錯誤訊息頁面"
 msgid "DNS record already exist."
 msgstr "DNS 紀錄已經存在．"
 
+msgid "DNS resource record"
+msgstr ""
+
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
 msgid "DNS resource records"
 msgstr "DNS 紀錄"
-
-msgid "DNS server unavailable. Please contact your reseller."
-msgstr "DNS 伺服器無效。請聯絡您的經銷商。"
 
 msgid "DOWN"
 msgstr "未運行"
@@ -1706,6 +1684,9 @@ msgstr "背景執行成功"
 
 msgid "Daily backup"
 msgstr "每日備份"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr "資料已經改變。請再試一次。"
@@ -1833,6 +1814,9 @@ msgstr "親愛的 {RESELLER},\n\t您上傳的軟體套件已成功的由 {ADMIN}
 
 msgid "Debugger"
 msgstr "除錯"
+
+msgid "Default"
+msgstr ""
 
 msgid "Default language"
 msgstr "預設語系"
@@ -2025,6 +2009,9 @@ msgstr "網域到期日必須填寫"
 msgid "Domain for which PHP Editor must act."
 msgstr "網域的 PHP 編輯器必須啟動。"
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "網域限制"
 
@@ -2116,6 +2103,9 @@ msgstr "EB"
 msgid "Edit"
 msgstr "編輯"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr "編輯 FTP 帳號"
 
@@ -2127,9 +2117,6 @@ msgstr "編輯管理員"
 
 msgid "Edit auto responder"
 msgstr "編輯自動回覆"
-
-msgid "Edit custom DNS record"
-msgstr "編輯自訂DNS紀錄"
 
 msgid "Edit custom error page"
 msgstr "編輯自訂錯誤頁面"
@@ -2624,9 +2611,6 @@ msgstr "IP 位址已經在 i-MSCP 管理之下。"
 msgid "IP address data"
 msgstr "IP 位址資料"
 
-msgid "IP address field is empty or invalid."
-msgstr "IP 位址的欄位是空白或無效。"
-
 msgid "IP address successfully scheduled for addition."
 msgstr "新增 IP 位址的排程已成功"
 
@@ -2647,9 +2631,6 @@ msgstr "IP 使用清單"
 
 msgid "IPv6 address"
 msgstr "IPv6 位址"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr "IPv6 位址的欄位是空白或無效。"
 
 msgid "Id"
 msgstr "Id"
@@ -2799,23 +2780,11 @@ msgstr "內部伺服器錯誤"
 msgid "Internationalization"
 msgstr "國際化"
 
-msgid "Invalid CNAME"
-msgstr "無效的 CNAME"
-
-msgid "Invalid IPv4 address."
-msgstr "無效的 IPv4 位址。"
-
-msgid "Invalid IPv6 address."
-msgstr "無效的 IPv6 位址。"
-
 msgid "Invalid MX priority."
 msgstr "無效的 MX 優先權。"
 
 msgid "Invalid MX type."
 msgstr "無效的 MX 類型。"
-
-msgid "Invalid NAME."
-msgstr "無效的 NAME。"
 
 #, php-format
 msgid "Invalid SQL user host: %s"
@@ -2827,11 +2796,12 @@ msgstr ""
 msgid "Invalid SSL certificate."
 msgstr "無效的 SSL 憑證"
 
-msgid "Invalid TXT data"
-msgstr "無效的 TXT 資料"
-
 msgid "Invalid URL."
 msgstr "無效的網址"
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "無效的網域名稱。"
@@ -3179,9 +3149,6 @@ msgstr "放棄移動。"
 
 msgid "N/A"
 msgstr "空"
-
-msgid "NAME field is empty or invalid."
-msgstr "NAME 欄位是空白或無效的。"
 
 msgid "Name"
 msgstr "名稱"
@@ -3841,9 +3808,6 @@ msgstr "外掛列表已經更新: %s 新的外掛已找到，%s 外掛已更新�
 msgid "Port"
 msgstr "連接埠"
 
-msgid "Port must be a number."
-msgstr "連接埠必須是一個數字。"
-
 msgid "Prevent external login for admins"
 msgstr "防止從外部登入管理帳號"
 
@@ -3858,9 +3822,6 @@ msgstr "上一個"
 
 msgid "Priority"
 msgstr "優先權"
-
-msgid "Priority must be a number."
-msgstr "優先權必須是個數字。"
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3957,9 +3918,6 @@ msgstr "註冊日期"
 
 msgid "Relative weight"
 msgstr "優先權"
-
-msgid "Relative weight must be a number."
-msgstr "優先權必須是個數字。"
 
 msgid "Release date"
 msgstr "發布日期"
@@ -4724,15 +4682,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr "TTL 必須是一個數字"
-
-msgid "TXT data"
-msgstr "TXT 資料"
-
-msgid "TXT field is empty or invalid."
-msgstr "TXT 欄位是空白或無效的。"
-
 msgid "Target"
 msgstr "目標"
 
@@ -4744,6 +4693,9 @@ msgstr "目標主機"
 
 msgid "Target port"
 msgstr "目標連接埠"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr "自動郵件範本已成功的更新了。"
@@ -5859,6 +5811,9 @@ msgstr "郵遞區號"
 msgid "Zip/Postal code"
 msgstr "郵遞區號"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[New]"
 
@@ -5870,6 +5825,10 @@ msgstr "[Ticket]"
 
 msgid "_: Localised language"
 msgstr "正體中文 - Traditional Chinese"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "已啟用"

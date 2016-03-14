@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-12 13:17+0100\n"
-"PO-Revision-Date: 2016-03-05 06:26+0000\n"
+"POT-Creation-Date: 2016-03-14 20:11+0100\n"
+"PO-Revision-Date: 2016-03-14 19:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/i-mscp/i-MSCP/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -263,12 +263,8 @@ msgid "%s doesn't exist or is empty."
 msgstr "%s yok veya boş!"
 
 #, php-format
-msgid "%s field is empty or invalid."
-msgstr "%s alanı boş veya geçersiz."
-
-#, php-format
-msgid "%s host field is empty or invalid."
-msgstr "%s sunucu alanı boş veya geçersiz."
+msgid "%s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -277,10 +273,6 @@ msgstr "%s geçersiz bir i-MSCP dil dosyası."
 #, php-format
 msgid "%s is not allowed as subdomain label."
 msgstr "%s subdomain olarak kullanılamaz."
-
-#, php-format
-msgid "%s is not part of domain %s."
-msgstr "%s %s domaininin bir parçası değil."
 
 #, php-format
 msgid "%s of %s"
@@ -586,6 +578,9 @@ msgstr "Etkinleştirme bağlantısı geçerlilik süresi <small>(dakika)</small>
 msgid "Add"
 msgstr "Ekle"
 
+msgid "Add DNS resource record"
+msgstr ""
+
 msgid "Add FTP account"
 msgstr ""
 
@@ -611,9 +606,6 @@ msgid "Add admin"
 msgstr "Yönetici ekle"
 
 msgid "Add catchall"
-msgstr ""
-
-msgid "Add custom DNS record"
 msgstr ""
 
 msgid "Add custom menu"
@@ -1216,9 +1208,6 @@ msgstr ""
 msgid "CGI"
 msgstr ""
 
-msgid "CNAME field is empty or invalid."
-msgstr "CNAME alanı boş veya geçersiz."
-
 msgid "CPU Information"
 msgstr "CPU Bilgisi"
 
@@ -1235,14 +1224,6 @@ msgstr ""
 
 msgid "Cancel"
 msgstr "İptal"
-
-#, php-format
-msgid "Cannot validate %s record: %s"
-msgstr ""
-
-#, php-format
-msgid "Cannot validate record: %s"
-msgstr ""
 
 msgid "Canonical name"
 msgstr "Kanonik isim"
@@ -1357,13 +1338,13 @@ msgstr ""
 msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr ""
 
-msgid "Client / Domain / Edit Custom DNS record"
+msgid "Client / Domain / Edit DNS resource record"
 msgstr ""
 
 msgid "Client / Domains"
 msgstr ""
 
-msgid "Client / Domains / Add Custom DNS record"
+msgid "Client / Domains / Add DNS resource record"
 msgstr ""
 
 msgid "Client / Domains / Add Domain Alias"
@@ -1523,10 +1504,6 @@ msgstr "Şirket"
 msgid "Compress HTML output"
 msgstr "HTML çıktısını sıkıştır"
 
-#, php-format
-msgid "Conflict with an existent %s record."
-msgstr ""
-
 msgid "Core data"
 msgstr "Çekirdek verisi"
 
@@ -1562,6 +1539,10 @@ msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr ""
 
+#, php-format
+msgid "Could not validate DNS resource record: %s"
+msgstr ""
+
 msgid "Count default email addresses"
 msgstr ""
 
@@ -1592,17 +1573,8 @@ msgstr "Mevcut şifre hatalı."
 msgid "Custom DNS errors"
 msgstr "Özel DNS hataları"
 
-msgid "Custom DNS record"
-msgstr "Özel DNS kaydı"
-
-msgid "Custom DNS record successfully scheduled for addition."
-msgstr "Özel DNS kaydı eklenmek için işleme alındı."
-
 msgid "Custom DNS record successfully scheduled for deletion."
 msgstr "Özel DNS kaydı silinmek için işleme alındı."
-
-msgid "Custom DNS record successfully scheduled for update."
-msgstr "Özel DNS kaydı güncellenmek için işleme alındı."
 
 msgid "Custom DNS records"
 msgstr "Özel DNS kayıtları"
@@ -1691,10 +1663,16 @@ msgstr "Domaininizin hata sayfalarını özelleştirin."
 msgid "DNS record already exist."
 msgstr ""
 
-msgid "DNS resource records"
+msgid "DNS resource record"
 msgstr ""
 
-msgid "DNS server unavailable. Please contact your reseller."
+msgid "DNS resource record scheduled for addition."
+msgstr ""
+
+msgid "DNS resource record scheduled for update."
+msgstr ""
+
+msgid "DNS resource records"
 msgstr ""
 
 msgid "DOWN"
@@ -1708,6 +1686,9 @@ msgstr ""
 
 msgid "Daily backup"
 msgstr "Günlük yedek"
+
+msgid "Data"
+msgstr ""
 
 msgid "Data were altered. Please try again."
 msgstr ""
@@ -1834,6 +1815,9 @@ msgid ""
 msgstr ""
 
 msgid "Debugger"
+msgstr ""
+
+msgid "Default"
 msgstr ""
 
 msgid "Default language"
@@ -2027,6 +2011,9 @@ msgstr ""
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
+msgid "Domain for which you want add this DNS resource record."
+msgstr ""
+
 msgid "Domain limit"
 msgstr "Domain limiti"
 
@@ -2118,6 +2105,9 @@ msgstr ""
 msgid "Edit"
 msgstr "Düzenle"
 
+msgid "Edit DNS resource record"
+msgstr ""
+
 msgid "Edit FTP account"
 msgstr ""
 
@@ -2128,9 +2118,6 @@ msgid "Edit admin"
 msgstr ""
 
 msgid "Edit auto responder"
-msgstr ""
-
-msgid "Edit custom DNS record"
 msgstr ""
 
 msgid "Edit custom error page"
@@ -2626,9 +2613,6 @@ msgstr ""
 msgid "IP address data"
 msgstr ""
 
-msgid "IP address field is empty or invalid."
-msgstr "IP adresi alanı boş veya geçersiz."
-
 msgid "IP address successfully scheduled for addition."
 msgstr "IP adresi eklenmek için işleme alındı."
 
@@ -2649,9 +2633,6 @@ msgstr ""
 
 msgid "IPv6 address"
 msgstr "IPv6 adresi"
-
-msgid "IPv6 address field is empty or invalid."
-msgstr "IPv6 alanı boş veya geçersiz."
 
 msgid "Id"
 msgstr ""
@@ -2801,23 +2782,11 @@ msgstr "İç Sunucu Hatası"
 msgid "Internationalization"
 msgstr "Yerelleştirme"
 
-msgid "Invalid CNAME"
-msgstr "Geçersiz CNAME"
-
-msgid "Invalid IPv4 address."
-msgstr "Geçersiz IPv4 adresi."
-
-msgid "Invalid IPv6 address."
-msgstr "Geçersiz IPv6 adresi."
-
 msgid "Invalid MX priority."
 msgstr "Geçersiz MX önceliği."
 
 msgid "Invalid MX type."
 msgstr "Geçersiz MX tipi."
-
-msgid "Invalid NAME."
-msgstr "Geçersiz NAME."
 
 #, php-format
 msgid "Invalid SQL user host: %s"
@@ -2829,11 +2798,12 @@ msgstr ""
 msgid "Invalid SSL certificate."
 msgstr ""
 
-msgid "Invalid TXT data"
-msgstr "Geçersiz TXT verisi"
-
 msgid "Invalid URL."
 msgstr "Geçersiz URL."
+
+#, php-format
+msgid "Invalid `%s` field."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "Geçersiz domain."
@@ -3181,9 +3151,6 @@ msgstr ""
 
 msgid "N/A"
 msgstr "Devre Dışı"
-
-msgid "NAME field is empty or invalid."
-msgstr "NAME alanı boş veya geçersiz."
 
 msgid "Name"
 msgstr "İsim"
@@ -3843,9 +3810,6 @@ msgstr ""
 msgid "Port"
 msgstr "Port"
 
-msgid "Port must be a number."
-msgstr ""
-
 msgid "Prevent external login for admins"
 msgstr "Yöneticiler için dışardan girişi engelle"
 
@@ -3860,9 +3824,6 @@ msgstr ""
 
 msgid "Priority"
 msgstr "Öncelik"
-
-msgid "Priority must be a number."
-msgstr ""
 
 #, php-format
 msgid "Priority: %s\n"
@@ -3958,9 +3919,6 @@ msgid "Registration date"
 msgstr "Kayıt tarihi"
 
 msgid "Relative weight"
-msgstr ""
-
-msgid "Relative weight must be a number."
 msgstr ""
 
 msgid "Release date"
@@ -4726,15 +4684,6 @@ msgstr "TB"
 msgid "TTL"
 msgstr "TTL"
 
-msgid "TTL must be a number."
-msgstr ""
-
-msgid "TXT data"
-msgstr ""
-
-msgid "TXT field is empty or invalid."
-msgstr "TXT alanı boş veya geçersiz."
-
 msgid "Target"
 msgstr ""
 
@@ -4746,6 +4695,9 @@ msgstr "Hedef sunucu"
 
 msgid "Target port"
 msgstr "Hedef port"
+
+msgid "Target port must be a number."
+msgstr ""
 
 msgid "Template for Auto email successfully updated."
 msgstr ""
@@ -5861,6 +5813,9 @@ msgstr "Posta kodu"
 msgid "Zip/Postal code"
 msgstr "Posta kodu"
 
+msgid "Zone"
+msgstr ""
+
 msgid "[New]"
 msgstr "[Yeni]"
 
@@ -5872,6 +5827,10 @@ msgstr "[Talep]"
 
 msgid "_: Localised language"
 msgstr "Türkçe - Turkish"
+
+#, php-format
+msgid "`%s` field cannot be empty."
+msgstr ""
 
 msgid "activated"
 msgstr "aktif"
