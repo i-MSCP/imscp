@@ -1071,8 +1071,8 @@ sub _addDmnDb
 
 	$rs = execute(
 		'named-compilezone -i none -s relative' .
-			" -o - $wrkDbFile->{'filename'}" .
-			" > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db $data->{'DOMAIN_NAME'}",
+			" -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}" .
+			" > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
 		\my $stdout,
 		\my $stderr
 	);
