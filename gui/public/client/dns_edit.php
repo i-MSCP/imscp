@@ -268,7 +268,7 @@ function client_decodeDnsRecordData($data)
 
     $srvPrio = 0; // Default priority for SRV record
     $srvWeight = 0; // Default weight for SRV record
-    $ttl = 300; // Default TTL
+    $ttl = 3600; // Default TTL (1 hour)
 
     if (is_array($data)) {
         # Extract name and ttl field for any record type excepted SRV record
@@ -446,7 +446,7 @@ function client_saveDnsRecord($dnsRecordId)
                 }
 
                 $dnsRecordName = sprintf('%s._%s.%s', $srvName, $srvProto, encode_idna($dnsRecordName));
-                $dnsRecordData = sprintf("%d %d %d %s.", $srvPrio, $srvWeight, $srvPort, encode_idna($srvTarget));
+                $dnsRecordData = sprintf('%d %d %d %s.', $srvPrio, $srvWeight, $srvPort, encode_idna($srvTarget));
                 break;
             case 'SPF':
             case 'TXT':
