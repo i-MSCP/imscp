@@ -557,7 +557,10 @@ function client_generatePage($tpl, $dnsRecordId)
             $selectOptions .= '<option value="' . $data['domain_id'] . '"' . ($data['domain_id'] == $domainId ? $selected : '') . '>' . decode_idna($data['domain_name']) . '</option>';
         }
 
-        $tpl->assign('SELECT_DOMAINS', $selectOptions);
+        $tpl->assign(array(
+            'SELECT_DOMAINS' => $selectOptions,
+            'DNS_TYPE_DISABLED' => ''
+        ));
     } else { // Edit DNS record
         $stmt = exec_query('SELECT * FROM `domain_dns` WHERE `domain_dns_id` = ? AND `domain_id` = ?', array($dnsRecordId, $mainDomainId));
 
@@ -568,7 +571,7 @@ function client_generatePage($tpl, $dnsRecordId)
         $data = $stmt->fetchRow();
         $tpl->assign(array(
             'ADD_RECORD' => '',
-            'DNS_TYPE_DISABLED' => 'disabled'
+            'DNS_TYPE_DISABLED' => ' disabled'
         ));
     }
 

@@ -110,7 +110,7 @@
 		<tr>
 			<td><label for="dns_type">{TR_DNS_TYPE}</label></td>
 			<td>
-				<select id="dns_type" onchange="change_dns_type(this.value)" name="type" {DNS_TYPE_DISABLED}>
+				<select id="dns_type" onchange="change_dns_type(this.value)" name="type"{DNS_TYPE_DISABLED}>
 					{SELECT_DNS_TYPE}
 				</select>
 			</td>

@@ -492,7 +492,7 @@ function client_generatePage($tpl, $domainId, $domainType)
 
     $tpl->assign(array(
         'TR_DYNAMIC_TITLE' => $dynTitle,
-        'DOMAIN_NAME' => tohtml(encode_idna($domainName)),
+        'DOMAIN_NAME' => tohtml(decode_idna($domainName)),
         'KEY_CERT' => tohtml(trim($privateKey)),
         'CERTIFICATE' => tohtml(trim($certificate)),
         'CA_BUNDLE' => tohtml(trim($caBundle)),

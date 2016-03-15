@@ -42,7 +42,7 @@ function admin_generateDatabaseUpdateDetail($tpl)
 	foreach ($dbUpdatesDetail as $revision => $detail) {
 		$tpl->assign(
 			array(
-				'DB_UPDATE_REVISION' => (int)$revision,
+				'DB_UPDATE_REVISION' => 'r' . $revision,
 				'DB_UPDATE_DETAIL' => _admin_generateIssueTrackerLink($detail)
 			)
 		);
