@@ -3496,7 +3496,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 	/**
 	 * Change domain_dns.domain_dns and domain_dns.domain_text column types from varchar to text
-	 * Created domain_id index on domain_dns table (with expected index length)
+	 * Create domain_id index on domain_dns table (with expected index length)
 	 *
 	 * @return array SQL statements to be executed
 	 */
