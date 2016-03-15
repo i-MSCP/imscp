@@ -35,7 +35,7 @@ fieldhash my %paths;
 
 # Commands used in that package
 my %commands = (
-	'systemctl' => '/bin/systemctl'
+	'systemctl' => '/bin/systemctl --system'
 );
 
 =head1 DESCRIPTION
