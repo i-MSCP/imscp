@@ -37,6 +37,7 @@ YOUTRACK
 	IP-1510 VsFTPd - Use of uninitialized value $tmpFile
 	IP-1511 Use of uninitialized value $imscpOldConfig{"BASE_SERVER_VHOST"} on fresh install
 	IP-1513 Autoreply - Do not autoreply to messages marked as SPAM
+	IP-1514 Could not install i-MSCP on Ubuntu Trusty Thar in some contexts
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.17

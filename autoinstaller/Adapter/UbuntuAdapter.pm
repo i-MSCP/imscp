@@ -66,6 +66,8 @@ sub _init
 	delete $ENV{'DEBCONF_FORCE_DIALOG'};
 	$ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt;
 
+	delete $ENV{'UPSTART_SESSION'}; # See IP-1514
+
 	unless($main::skippackages) {
 		$self->_setupInitScriptPolicyLayer('enable') == 0 or die('Could not setup initscript policy layer');
 		$self->_updateAptSourceList() == 0 or die('Could not configure APT packages manager');
