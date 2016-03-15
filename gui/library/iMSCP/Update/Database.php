@@ -381,11 +381,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$columns = array();
 
 		// Parse column definitions
-		foreach($columnsTmp as $columnsDef) {
-			if(preg_match('/^(?P<name>[^(]+)(?P<length>\(\d+\))$/', $columnsDef, $matches)) {
+		foreach($columnsTmp as $columnDef) {
+			if(preg_match('/^(?P<name>[^(]+)(?P<length>\(\d+\))$/', $columnDef, $matches)) {
 				$columns[$matches['name']] = $matches['length'];
 			} else {
-				$columns[$columnsDef] = '';
+				$columns[$columnDef] = '';
 			}
 		}
 		unset($columnsTmp);
