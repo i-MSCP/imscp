@@ -1057,15 +1057,14 @@ sub setupSaveOldConfig
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSaveOldConfig');
 	return $rs if $rs;
 
-	my $cfg = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->get();
-	unless(defined $cfg) {
-		error(sprintf('Could not read %s file', "$main::imscpConfig{'CONF_DIR'}/imscp.conf"));
+	unless(-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
+		error(sprintf('File %s not found', "$main::imscpConfig{'CONF_DIR'}/imscp.conf"));
 		return 1;
 	}
 
-	my $file = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf" );
-	$rs = $file->set($cfg);
-	$rs ||= $file->save();
+	$rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
+		"$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
+	);
 	$rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSaveOldConfig');
 }
 
