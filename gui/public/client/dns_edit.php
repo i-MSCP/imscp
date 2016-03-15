@@ -381,11 +381,11 @@ function client_saveDnsRecord($dnsRecordId)
 
     $nameValidationError = '';
 
-    $dnsRecordName = client_getPost('dns_name');
+    $dnsRecordName = encode_idna(client_getPost('dns_name'));
 
     if($dnsRecordName === '@') {
         $dnsRecordName = $domainName;
-    } elseif ($dnsRecordName !== '' && !preg_match("/(?:.*?\\.)?$domainName\\.$/", encode_idna($dnsRecordName))) {
+    } elseif ($dnsRecordName !== '' && !preg_match("/(?:.*?\\.)?$domainName\\.$/", $dnsRecordName)) {
         $dnsRecordName = rtrim($dnsRecordName, '.');
         $dnsRecordName .= ".$domainName";
     }
