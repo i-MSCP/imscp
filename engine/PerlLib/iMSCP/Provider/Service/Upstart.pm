@@ -44,12 +44,12 @@ fieldhash my %paths;
 
 # Commands used in that package
 my %commands = (
-	'start' => '/sbin/start --system',
-	'stop' => '/sbin/stop --system',
-	'restart' => '/sbin/restart --system',
-	'reload' => '/sbin/reload --system',
-	'status' => '/sbin/status --system',
-	'initctl' => '/sbin/initctl --system'
+	'start' => '/sbin/start',
+	'stop' => '/sbin/stop',
+	'restart' => '/sbin/restart',
+	'reload' => '/sbin/reload',
+	'status' => '/sbin/status',
+	'initctl' => '/sbin/initctl'
 );
 
 =head1 DESCRIPTION
@@ -323,7 +323,6 @@ sub _init
 	my $self = shift;
 
 	delete $ENV{'UPSTART_SESSION'}; # See IP-1514
-
 	$paths{$self} = [ '/etc/init' ];
 	$self->SUPER::_init();
 }
