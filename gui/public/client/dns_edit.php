@@ -381,26 +381,30 @@ function client_saveDnsRecord($dnsRecordId)
 
     $nameValidationError = '';
     $dnsRecordName = client_getPost('dns_name');
-
-    if($dnsRecordName != '@') {
-        $dnsRecordName = encode_idna($dnsRecordName);
-    }
+    $ttl = client_validate_TTL(client_getPost('dns_ttl')); // Will show a bad request error page on invalid TTL
 
     if($dnsRecordName == '@') {
-        $dnsRecordName = $domainName;
-    } elseif ($dnsRecordName !== '' && !preg_match("/(?:.*?\\.)?$domainName\\.$/", $dnsRecordName)) {
+        // Substitute @ with domain name
+        $dnsRecordName = $domainName . '.';
+    } elseif($dnsRecordName != '' && substr($dnsRecordName, -1) !== '.') {
+        // No fully-qualified name, complete it
+        $dnsRecordName .= '.' . $domainName . '.';
+    }
+
+    $dnsRecordName = encode_idna($dnsRecordName);
+
+    # Disallow out-of-zone record
+    if ($dnsRecordName !== '' && !preg_match("/(?:.*?\\.)?$domainName\\.$/", $dnsRecordName)) {
+        set_page_message(tr('Could not validate DNS resource record: %s', 'out-of-zone data'), 'error');
+    } else {
+
+        // Remove trailing dot for validation process (will be readded after)
         $dnsRecordName = rtrim($dnsRecordName, '.');
-        $dnsRecordName .= ".$domainName";
+
+        if (!client_validate_NAME($dnsRecordName, $dnsRecordType, $nameValidationError)) {
+            set_page_message(tr('Could not validate DNS resource record: %s', $nameValidationError), 'error');
+        }
     }
-
-    // Remove trailing dot for validation process (will be readded after)
-    $dnsRecordName = rtrim($dnsRecordName, '.');
-
-    if (!client_validate_NAME($dnsRecordName, $dnsRecordType, $nameValidationError)) {
-        set_page_message(tr('Could not validate DNS resource record: %s', $nameValidationError), 'error');
-    }
-
-    $ttl = client_validate_TTL(client_getPost('dns_ttl')); // Will show a bad request error page on invalid TTL
 
     if (!Zend_Session::namespaceIsset('pageMessages')) {
         switch ($dnsRecordType) {
@@ -423,18 +427,26 @@ function client_saveDnsRecord($dnsRecordId)
                 $dnsRecordData = $ip;
                 break;
             case 'CNAME':
-                $cname = rtrim(client_getPost('dns_cname'), '.');
+                $dnsRecordData = client_getPost('dns_cname');
 
-                if (!client_validate_CNAME($cname, $errorString)) {
+                if ($dnsRecordData == '@') {
+                    // Substitute @ with domain name
+                    $dnsRecordData = $domainName . '.';
+                } elseif ($dnsRecordData != '' && substr($dnsRecordData, -1) !== '.') {
+                    // No fully-qualified canonical name, complete it
+                    $dnsRecordData .= '.' . $domainName . '.';
+                }
+
+                $dnsRecordData = encode_idna($dnsRecordData);
+
+                // Remove trailing dot for validation process (will be readded after)
+                $dnsRecordData = rtrim($dnsRecordData, '.');
+
+                if (!client_validate_CNAME($dnsRecordData, $errorString)) {
                     set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
                 }
 
-                if ($cname != '@') {
-                    $dnsRecordData = encode_idna($cname) . '.';
-                } else {
-                    $dnsRecordData = encode_idna($domainName) . '.';
-                }
-
+                $dnsRecordData .= '.';
                 break;
             case 'SRV':
                $srvName = client_getPost('dns_srv_name');
@@ -442,14 +454,27 @@ function client_saveDnsRecord($dnsRecordId)
                $srvPrio = client_getPost('dns_srv_prio');
                $srvWeight = client_getPost('dns_srv_weight');
                $srvPort = client_getPost('dns_srv_port');
-               $srvTarget = rtrim(client_getPost('dns_srv_host'), '.');
+               $srvTarget = client_getPost('dns_srv_host');
+
+                if ($srvTarget == '@') {
+                    // Substitute @ with domain name
+                    $srvTarget = $domainName . '.';
+                } elseif ($srvTarget != '' && substr($srvTarget, -1) !== '.') {
+                    // No fully-qualified target host, complete it
+                    $srvTarget .= '.' . $domainName . '.';
+                }
+
+                $srvTarget = encode_idna($srvTarget);
+
+                // Remove trailing dot for validation process (will be readded after)
+                $srvTarget = rtrim($srvTarget, '.');
 
                 if (!client_validate_SRV($srvName, $srvProto, $srvPrio, $srvWeight, $srvPort, $srvTarget, $errorString)) {
                     set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
                 }
 
                 $dnsRecordName = sprintf('%s._%s.%s', $srvName, $srvProto, $dnsRecordName);
-                $dnsRecordData = sprintf('%d %d %d %s.', $srvPrio, $srvWeight, $srvPort, encode_idna($srvTarget));
+                $dnsRecordData = sprintf('%d %d %d %s.', $srvPrio, $srvWeight, $srvPort, $srvTarget);
                 break;
             case 'SPF':
             case 'TXT':
