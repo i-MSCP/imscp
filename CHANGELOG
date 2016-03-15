@@ -8,9 +8,6 @@ DATABASE
 	Changed: domain_dns.domain_dns and domain_dns.domain_text column types from varchar to text
 	Updated: domain_id index on domain_dns table; added index length for domain_dns and domain_text columns
 
-INSTALLER
-	Added: Conditional statement feature for install.xml files (copy_config items only)
-
 FRONTEND
 	Added: SPF DNS resource record type (validated as a TXT record)
 	Changed: The type field cannot longer be changed when editing a DNS resource record
@@ -20,6 +17,8 @@ FRONTEND
 	Fixed: IDNs are shown in ASCII in SSL certificate management interface
 	Fixed: iMSCP_Update_Database::addIndex() doesn't allow to specify index length
 
+INSTALLER
+	Added: Conditional statement feature for install.xml files (copy_config items only)
 
 PLUGINS
 	Updated: API version to 1.0.4
