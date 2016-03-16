@@ -37,22 +37,16 @@ use autoinstaller::Functions qw/loadConfig build install/;
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
+# Ensure that this script is run by root user
+iMSCP::Requirements->new()->user();
+
 newDebug('imscp-autoinstall.log');
 
 # Set backend mode
+$main::execmode = 'setup' unless $main::execmode;
+
 # Init variable that holds questions
-  %main::questions = () unless %main::questions;
-{
-	no warnings qw/once/;
-	$main::execmode = 'setup';
-	%main::questions = ();
-}
-
-# Load config
-loadConfig();
-
-# Ensure that this script is run by root user
-iMSCP::Requirements->new()->user();
+%main::questions = () unless %main::questions;
 
 # Initialize command line options
 $main::buildonly = 0;
@@ -71,6 +65,7 @@ iMSCP::Getopt->parse(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
 
 # Set debug and verbose mode
 setDebug(iMSCP::Getopt->debug);
+setVerbose(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose);
 
 # Getting reconfigure option value
 $main::reconfigure = iMSCP::Getopt->reconfigure;
@@ -84,11 +79,11 @@ if(iMSCP::Getopt->preseed) {
 	iMSCP::Getopt->noprompt(1);
 }
 
+# Load config
+loadConfig();
+
 # Handle the listener option
 require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
-
-# Must be set after preseed option
-setVerbose(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose);
 
 # Handle noprompt option
 $main::noprompt = iMSCP::Getopt->noprompt;

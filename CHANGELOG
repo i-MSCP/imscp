@@ -25,6 +25,7 @@ FRONTEND
 
 INSTALLER
 	Added: Conditional statement feature for install.xml files (copy_config items only)
+	Fixed: Debug and Verbose modes must be set early
 	Fixed: Plugin setup listeners are no longer registered (regression fix)
 
 PLUGINS
