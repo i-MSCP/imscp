@@ -60,11 +60,12 @@ my $showUsage;
 
 sub parse
 {
-	my ($class, $usage, @options) = @_;
+    my ($class, $usage, @options) = @_;
 
-	$showUsage = sub {
-		my $exitCode = shift || 0;
-		print STDERR wrap('', '', <<EOF);
+    $showUsage = sub {
+        my $exitCode = shift || 0;
+        print STDERR wrap('', '', <<EOF);
+
 $usage
  -r,    --reconfigure [item]    Type --reconfigure help.
  -n,    --noprompt              Switch to non-interactive mode.
@@ -74,41 +75,39 @@ $usage
  -a     --skip-package-update   Skip i-MSCP composer packages update.
  -d,    --debug                 Force debug mode.
  -v     --verbose               Enable verbose mode
- -?, -h  --help                  Show this help.
+ -?,-h  --help                  Show this help.
 
 $optionHelp
 EOF
-		debugRegisterCallBack(sub { exit $exitCode; });
-		exit $exitCode;
-	};
+        debugRegisterCallBack(sub { exit $exitCode; });
+        exit $exitCode;
+    };
 
-	# Do not load Getopt::Long if not needed
-	return unless grep { $_ =~ /^-/ } @ARGV;
+    # Do not load Getopt::Long if not needed
+    return unless grep { $_ =~ /^-/ } @ARGV;
 
-	local $SIG{__WARN__} = sub {
-		my $error = shift;
-		$error =~ s/(.*?) at.*/$1/;
-		print STDERR wrap('', '', $error) if $error ne "Died\n";
-	};
+    local $SIG{'__WARN__'} = sub {
+        my $error = shift;
+        $error =~ s/(.*?) at.*/$1/;
+        print STDERR wrap('', '', $error) if $error ne "Died\n";
+    };
 
-	require Getopt::Long;
-	Getopt::Long::Configure('bundling');
-	eval {
-		Getopt::Long::GetOptions(
-			'reconfigure|r:s', sub { $class->reconfigure($_[1]) },
-			'noprompt|n', sub { $options->{'noprompt'} = 1 },
-			'preseed|p=s', sub { $class->preseed($_[1]) },
-			'listener|l=s', sub { $class->listenerFile($_[1]) },
-			'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
-			'skip-package-update|a', sub { $options->{'skipPackageUpdate'} = 1 },
-			'debug|d', sub { $options->{'debug'} = 1 },
-			'verbose|v', sub { $options->{'verbose'} = 1 },
-			'help|?|h', sub { $showUsage->() },
-			@options,
-		) || $showUsage->(1);
-	};
+    require Getopt::Long;
+    Getopt::Long::Configure('bundling');
+    Getopt::Long::GetOptions(
+        'reconfigure|r:s', sub { $class->reconfigure($_[1]) },
+        'noprompt|n', sub { $options->{'noprompt'} = 1 },
+        'preseed|p=s', sub { $class->preseed($_[1]) },
+        'listener|l=s', sub { $class->listener($_[1]) },
+        'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
+        'skip-package-update|a', sub { $options->{'skipPackageUpdate'} = 1 },
+        'debug|d', sub { $options->{'debug'} = 1 },
+        'verbose|v', sub { $options->{'verbose'} = 1 },
+        'help|?|h', sub { $class->showUsage() },
+        @options,
+    ) or $class->showUsage(1);
 
-	undef;
+    undef;
 }
 
 =item parseNoDefault($usage)
@@ -123,37 +122,33 @@ EOF
 
 sub parseNoDefault
 {
-	my ($class, $usage, @options) = @_;
+    my ($class, $usage, @options) = @_;
 
-	$showUsage = sub {
-		my $exitCode = shift || 0;
-		print STDERR wrap('', '', <<EOF);
+    $showUsage = sub {
+        my $exitCode = shift || 0;
+        print STDERR wrap('', '', <<EOF);
+
 $usage
- -?, -h  --help          Show this help.
+ -?,-h  --help          Show this help.
 
 EOF
-		debugRegisterCallBack(sub { exit $exitCode; });
-		exit $exitCode;
-	};
+        debugRegisterCallBack(sub { exit $exitCode; });
+        exit $exitCode;
+    };
 
-	# Do not load Getopt::Long if not needed
-	return unless grep { $_ =~ /^-/ } @ARGV;
+    # Do not load Getopt::Long if not needed
+    return unless grep { $_ =~ /^-/ } @ARGV;
 
-	local $SIG{__WARN__} = sub {
-		my $error = shift;
-		$error =~ s/(.*?) at.*/$1/;
-		print STDERR wrap('', '', $error) if $error ne "Died\n";
-	};
+    local $SIG{'__WARN__'} = sub {
+        my $error = shift;
+        $error =~ s/(.*?) at.*/$1/;
+        print STDERR wrap('', '', $error) if $error ne "Died\n";
+    };
 
-	require Getopt::Long;
-	Getopt::Long::Configure('bundling');
-	eval {
-		Getopt::Long::GetOptions(
-			'help|?|h', sub { $showUsage->() },
-			@options
-		) || $showUsage->(1);
-	};
-	undef;
+    require Getopt::Long;
+    Getopt::Long::Configure('bundling');
+    Getopt::Long::GetOptions('help|?|h', sub { $class->showUsage() }, @options) or $class->showUsage(1);
+    undef;
 }
 
 =item showUsage($exitCode)
@@ -167,17 +162,17 @@ EOF
 
 sub showUsage
 {
-	my ($class, $exitCode) = @_;
+    my ($class, $exitCode) = @_;
 
-	$exitCode //= 1;
-	ref $showUsage eq 'CODE' or die('ShowUsage() is not defined.');
-	$showUsage->($exitCode);
+    $exitCode //= 1;
+    ref $showUsage eq 'CODE' or die('ShowUsage() is not defined.');
+    $showUsage->($exitCode);
 }
 
 our @reconfigurationItems = sort(
-	'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostnames', 'system_hostname',
-	'panel_hostname', 'panel_ports', 'ips', 'admin', 'php', 'timezone', 'panel', 'panel_ssl', 'services_ssl', 'ssl',
-	'backup', 'webstats', 'sqlmanager', 'webmails', 'filemanager', 'antirootkits'
+    'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostnames', 'system_hostname',
+    'panel_hostname', 'panel_ports', 'ips', 'admin', 'php', 'timezone', 'panel', 'panel_ssl', 'services_ssl', 'ssl',
+    'backup', 'webstats', 'sqlmanager', 'webmails', 'filemanager', 'antirootkits'
 );
 
 =item reconfigure([ $item = 'none' ])
@@ -191,12 +186,12 @@ our @reconfigurationItems = sort(
 
 sub reconfigure
 {
-	my ($class, $item) = @_;
+    my ($class, $item) = @_;
 
-	return $options->{'reconfigure'} ||= 'none' unless defined $item;
+    return $options->{'reconfigure'} ||= 'none' unless defined $item;
 
-	if($item eq 'help') {
-		$optionHelp = <<EOF;
+    if ($item eq 'help') {
+        $optionHelp = <<EOF;
 Reconfigure option usage:
 
 Without any argument, this option allows to reconfigure all items. You can reconfigure a specific item by passing it name as argument.
@@ -204,17 +199,16 @@ Without any argument, this option allows to reconfigure all items. You can recon
 Available items are:
 
 EOF
-			$optionHelp .=  ' ' . (join '|', @reconfigurationItems);
-			die();
-	} elsif($item eq '') {
-		$item = 'all';
-	}
+        $optionHelp .= ' '.(join '|', @reconfigurationItems);
+        die();
+    } elsif ($item eq '') {
+        $item = 'all';
+    }
 
-	$item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die(sprintf(
-		"Error: '%s' is not a valid argument for the --reconfigure option.", $item
-	));
-
-	$options->{'reconfigure'} = $item;
+    $item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die(sprintf(
+        "Error: '%s' is not a valid argument for the --reconfigure option.", $item
+    ));
+    $options->{'reconfigure'} = $item;
 }
 
 =item preseed([ $file = undef ])
@@ -228,12 +222,12 @@ EOF
 
 sub preseed
 {
-	my ($class, $file) = @_;
+    my ($class, $file) = @_;
 
-	return $options->{'preseed'} unless defined $file;
+    return $options->{'preseed'} unless defined $file;
 
-	-f $file or die(sprintf('Preseed file not found: %s', $file));
-	$options->{'preseed'} = $file;
+    -f $file or die(sprintf('Preseed file not found: %s', $file));
+    $options->{'preseed'} = $file;
 }
 
 =item listener([$file = undef])
@@ -247,12 +241,12 @@ sub preseed
 
 sub listener
 {
-	my ($class, $file) = @_;
+    my ($class, $file) = @_;
 
-	return $options->{'listener'} unless defined $file;
+    return $options->{'listener'} unless defined $file;
 
-	-f $file or die(sprintf('Listener file not found: %s', $file));
-	$options->{'listener'} = $file;
+    -f $file or die(sprintf('Listener file not found: %s', $file));
+    $options->{'listener'} = $file;
 }
 
 =back
@@ -266,16 +260,16 @@ sub listener
 
 sub AUTOLOAD
 {
-	(my $field = our $AUTOLOAD) =~ s/.*://;
+    (my $field = our $AUTOLOAD) =~ s/.*://;
 
-	no strict 'refs';
-	*$AUTOLOAD = sub {
-		my $this = shift;
+    no strict 'refs';
+    *{$AUTOLOAD} = sub {
+        my $this = shift;
 
-		return $options->{$field} unless @_;
-		$options->{$field} = shift;
-	};
-	goto &$AUTOLOAD;
+        return $options->{$field} unless @_;
+        $options->{$field} = shift;
+    };
+    goto &{$AUTOLOAD};
 }
 
 =back
