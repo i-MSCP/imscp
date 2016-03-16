@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ newDebug('imscp-set-gui-permissions.log');
 $main::execmode = '';
 
 # Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)).qq {
 
 PURPOSE
 	Script which set i-MSCP frontEnd permissions.
@@ -42,64 +42,64 @@ PURPOSE
 OPTIONS
  -s,    --setup         Setup mode.
  -v,    --verbose       Enable verbose mode},
- 'setup|s' => sub { $main::execmode = 'setup' },
+ 'setup|s'   => sub { $main::execmode = 'setup' },
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot(
-	{ norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes' }
-);
+iMSCP::Bootstrapper->getInstance()->boot({
+    norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes'
+});
 
 my $rs = 0;
 my @toProcess = ();
 
 for(iMSCP::Servers->getInstance()->get()) {
-	my $package = "Servers::$_";
-	eval "require $package";
+    my $package = "Servers::$_";
+    eval "require $package";
 
-	unless($@) {
-		my $package = $package->factory();
-		push @toProcess, [ $_, $package ] if $package->can('setGuiPermissions');;
-	} else {
-		error($@);
-		$rs = 1;
-	}
+    unless ($@) {
+        my $package = $package->factory();
+        push @toProcess, [ $_, $package ] if $package->can('setGuiPermissions');;
+    } else {
+        error($@);
+        $rs = 1;
+    }
 }
 
 for(iMSCP::Packages->getInstance()->get()) {
-	my $package = "Package::$_";
-	eval "require $package";
+    my $package = "Package::$_";
+    eval "require $package";
 
-	unless($@) {
-		my $package = $package->getInstance();
-		push @toProcess, [ $_, $package ] if $package->can('setGuiPermissions');
-	} else {
-		error($@);
-		$rs = 1;
-	}
+    unless ($@) {
+        my $package = $package->getInstance();
+        push @toProcess, [ $_, $package ] if $package->can('setGuiPermissions');
+    } else {
+        error($@);
+        $rs = 1;
+    }
 }
 
 my $totalItems = @toProcess;
 my $counter = 1;
 
 for(@toProcess) {
-	my ($package, $instance) = @{$_};
-	debug("Setting $package (frontEnd) permissions");
-	print "Setting $package (frontEnd) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
-	$rs |= $instance->setGuiPermissions();
-	$counter++;
+    my ($package, $instance) = @{$_};
+    debug("Setting $package (frontEnd) permissions");
+    print "Setting $package (frontEnd) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
+    $rs |= $instance->setGuiPermissions();
+    $counter++;
 }
 
-unless($main::execmode eq 'setup') {
-	my @warnings = getMessageByType('warn');
-	my @errors = getMessageByType('error');
-	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
-	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
+unless ($main::execmode eq 'setup') {
+    my @warnings = getMessageByType('warn');
+    my @errors = getMessageByType('error');
+    my $msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
+    $msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
 
-	if($msg) {
-		require iMSCP::Mail;
-		$rs |= iMSCP::Mail->new()->errmsg($msg);
-	}
+    if ($msg) {
+        require iMSCP::Mail;
+        $rs |= iMSCP::Mail->new()->errmsg($msg);
+    }
 }
 
 exit $rs;

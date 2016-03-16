@@ -26,6 +26,7 @@ FRONTEND
 INSTALLER
 	Added: Conditional statement feature for install.xml files (copy_config items only)
 	Fixed: Debug and Verbose modes must be set early
+	Fixed: Don't die on misconfigured server hostname. Just ask for a valid hostname instead
 	Fixed: Plugin setup listeners are no longer registered (regression fix)
 
 PLUGINS

@@ -28,14 +28,18 @@ use warnings;
 use File::Spec;
 use iMSCP::File;
 use parent 'iMSCP::Provider::Service::Sysvinit';
-use Hash::Util::FieldHash 'fieldhash';
-
-# Paths where system service unit files must be searched
-fieldhash my %paths;
 
 # Commands used in that package
 my %commands = (
-	'systemctl' => '/bin/systemctl --system'
+    systemctl => '/bin/systemctl --system'
+);
+
+# Paths in which service units must be searched
+my @paths = (
+    '/etc/systemd/system',
+    '/lib/systemd/system',
+    '/usr/local/lib/systemd/system',
+    '/usr/lib/systemd/system'
 );
 
 =head1 DESCRIPTION
@@ -61,9 +65,9 @@ my %commands = (
 
 sub isEnabled
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_exec($commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service") == 0;
+    $self->_exec($commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service") == 0;
 }
 
 =item enable($service)
@@ -77,9 +81,9 @@ sub isEnabled
 
 sub enable
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_exec($commands{'systemctl'}, '--force', '--quiet', 'enable', "$service.service") == 0;
+    $self->_exec($commands{'systemctl'}, '--force', '--quiet', 'enable', "$service.service") == 0;
 }
 
 =item disable($service)
@@ -93,9 +97,9 @@ sub enable
 
 sub disable
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0;
+    $self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0;
 }
 
 =item remove($service)
@@ -109,11 +113,11 @@ sub disable
 
 sub remove
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->stop($service) && $self->disable($service)
-		&& iMSCP::File->new( filename => $self->getUnitFilePath($service) )->delFile() == 0
-		&& $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+    $self->stop($service) && $self->disable($service)
+        && iMSCP::File->new(filename => $self->getUnitFilePath($service))->delFile() == 0
+        && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
 }
 
 =item start($service)
@@ -127,9 +131,9 @@ sub remove
 
 sub start
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
+    $self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
 }
 
 =item stop($service)
@@ -143,11 +147,11 @@ sub start
 
 sub stop
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	return 1 unless $self->isRunning($service);
+    return 1 unless $self->isRunning($service);
 
-	$self->_exec($commands{'systemctl'}, 'stop', "$service.service") == 0;
+    $self->_exec($commands{'systemctl'}, 'stop', "$service.service") == 0;
 }
 
 =item restart($service)
@@ -161,13 +165,13 @@ sub stop
 
 sub restart
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($self->isRunning($service)) {
-		return $self->_exec($commands{'systemctl'}, 'restart', "$service.service") == 0;
-	}
+    if ($self->isRunning($service)) {
+        return $self->_exec($commands{'systemctl'}, 'restart', "$service.service") == 0;
+    }
 
-	$self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
+    $self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
 }
 
 =item reload($service)
@@ -181,13 +185,13 @@ sub restart
 
 sub reload
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($self->isRunning($service)) {
-		return $self->_exec($commands{'systemctl'}, 'reload', "$service.service") == 0;
-	}
+    if ($self->isRunning($service)) {
+        return $self->_exec($commands{'systemctl'}, 'reload', "$service.service") == 0;
+    }
 
-	$self->start($service);
+    $self->start($service);
 }
 
 =item isRunning($service)
@@ -201,9 +205,9 @@ sub reload
 
 sub isRunning
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_exec($commands{'systemctl'}, 'is-active', "$service.service") == 0;
+    $self->_exec($commands{'systemctl'}, 'is-active', "$service.service") == 0;
 }
 
 =item getUnitFilePath($service)
@@ -217,9 +221,9 @@ sub isRunning
 
 sub getUnitFilePath
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_searchUnitFile($service);
+    $self->_searchUnitFile($service);
 }
 
 =back
@@ -227,28 +231,6 @@ sub getUnitFilePath
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item
-
- Initialize instance
-
- Return iMSCP::Provider::Service::Systemd
-
-=cut
-
-sub _init
-{
-	my $self = shift;
-
-	$paths{$self} = [
-		'/etc/systemd/system',
-		'/lib/systemd/system',
-		'/usr/local/lib/systemd/system',
-		'/usr/lib/systemd/system'
-	];
-
-	$self->SUPER::_init();
-}
 
 =item _isSystemd($service)
 
@@ -261,10 +243,10 @@ sub _init
 
 sub _isSystemd
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	local $@;
-	eval { $self->_searchUnitFile($service); };
+    local $@;
+    eval { $self->_searchUnitFile($service); };
 }
 
 =item _searchUnitFile($service)
@@ -278,14 +260,14 @@ sub _isSystemd
 
 sub _searchUnitFile
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	for my $path(@{$paths{$self}}) {
-		my $filepath = File::Spec->join($path, $service . '.service');
-		return $filepath if -f $filepath;
-	}
+    for my $path(@paths) {
+        my $filepath = File::Spec->join($path, $service.'.service');
+        return $filepath if -f $filepath;
+    }
 
-	die(sprintf('Could not find systemd service unit file for the %s service', $service));
+    die(sprintf('Could not find systemd service unit file for the %s service', $service));
 }
 
 =back

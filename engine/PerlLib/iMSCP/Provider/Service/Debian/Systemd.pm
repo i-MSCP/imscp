@@ -25,23 +25,26 @@ package iMSCP::Provider::Service::Debian::Systemd;
 
 use strict;
 use warnings;
-use iMSCP::Execute;
 use iMSCP::File;
 use File::Basename;
 use Scalar::Defer;
 use parent qw(
-	iMSCP::Provider::Service::Systemd
-	iMSCP::Provider::Service::Debian::Sysvinit
+    iMSCP::Provider::Service::Systemd
+    iMSCP::Provider::Service::Debian::Sysvinit
 );
 
 # Commands used in that package
 my %commands = (
-	'dpkg' => '/usr/bin/dpkg',
-	'systemctl' => '/bin/systemctl'
+    dpkg      => '/usr/bin/dpkg',
+    systemctl => '/bin/systemctl'
 );
 
-# Compatibility mode for systemctl
-my $SYSTEMCTL_COMPAT_MODE;
+# Enable compatibility mode if systemd version is lower than version 204-3
+my $SYSTEMCTL_COMPAT_MODE = lazy {
+    __PACKAGE__->_exec(
+        $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' systemd)', 'lt', '204-3'
+    ) == 0;
+};
 
 =head1 DESCRIPTION
 
@@ -70,13 +73,13 @@ my $SYSTEMCTL_COMPAT_MODE;
 
 sub isEnabled
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	return $self->SUPER::isEnabled($service) if $self->_isSystemd($service);
+    return $self->SUPER::isEnabled($service) if $self->_isSystemd($service);
 
-	# is-enabled API call is not available for sysvinit scripts. We must invoke the Debian sysvinit provider
-	# to known whether or not the sysvinit script is enabled.
-	$self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled($service);
+    # is-enabled API call is not available for sysvinit scripts. We must invoke the Debian sysvinit provider
+    # to known whether or not the sysvinit script is enabled.
+    $self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled($service);
 }
 
 =item enable($service)
@@ -90,34 +93,34 @@ sub isEnabled
 
 sub enable
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	my $fservice = $service;
-	if($self->_isSystemd($service)) {
-		my $unitFilePath = $self->getUnitFilePath($service);
-		$fservice = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
-	}
+    my $fservice = $service;
+    if ($self->_isSystemd($service)) {
+        my $unitFilePath = $self->getUnitFilePath($service);
+        $fservice = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
+    }
 
-	if($SYSTEMCTL_COMPAT_MODE) {
-		if($self->_isSystemd($fservice)) {
-			return 0 unless $self->SUPER::enable($fservice);
-		}
+    if ($SYSTEMCTL_COMPAT_MODE) {
+        if ($self->_isSystemd($fservice)) {
+            return 0 unless $self->SUPER::enable($fservice);
+        }
 
-		# Backward compatibility operations
-		# We must manually enable the underlying sysvinit script if any. This is needed because `systemctl` as provided
-		# in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> enable`. Thus,
-		# the sysvinit script is not enabled. We must also make call of `systemctl daemon-reload` to make systemd aware
-		# of changes.
-		if($self->_isSysvinit($service)) {
-			return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service)
-				&& $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0
-		}
+        # Backward compatibility operations
+        # We must manually enable the underlying sysvinit script if any. This is needed because `systemctl` as provided
+        # in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> enable`. Thus,
+        # the sysvinit script is not enabled. We must also make call of `systemctl daemon-reload` to make systemd aware
+        # of changes.
+        if ($self->_isSysvinit($service)) {
+            return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service)
+                && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0
+        }
 
-		return 1;
-	}
+        return 1;
+    }
 
-	# Note: Will automatically call update-rc.d in case of a sysvinit script
-	$self->SUPER::enable($fservice);
+    # Note: Will automatically call update-rc.d in case of a sysvinit script
+    $self->SUPER::enable($fservice);
 }
 
 =item disable($service)
@@ -131,34 +134,34 @@ sub enable
 
 sub disable
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	my $fservice = $service;
-	if($self->_isSystemd($service)) {
-		my $unitFilePath = $self->getUnitFilePath($service);
-		$fservice = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
-	}
+    my $fservice = $service;
+    if ($self->_isSystemd($service)) {
+        my $unitFilePath = $self->getUnitFilePath($service);
+        $fservice = basename(readlink($unitFilePath), '.service') if -l $unitFilePath;
+    }
 
-	if($SYSTEMCTL_COMPAT_MODE) {
-		if($self->_isSystemd($fservice)) {
-			return 0 unless $self->SUPER::disable($fservice);
-		}
+    if ($SYSTEMCTL_COMPAT_MODE) {
+        if ($self->_isSystemd($fservice)) {
+            return 0 unless $self->SUPER::disable($fservice);
+        }
 
-		# Backward compatibility operations
-		# We must manually disable the underlying sysvinit script if any. This is needed because `systemctl` as provided
-		# in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> disable`. Thus,
-		# the sysvinit script is not disabled. We must also make call of `systemctl daemon-reload` to make systemd aware
-		# of changes.
-		if($self->_isSysvinit($service)) {
-			return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service)
-				&& $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
-		}
+        # Backward compatibility operations
+        # We must manually disable the underlying sysvinit script if any. This is needed because `systemctl` as provided
+        # in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> disable`. Thus,
+        # the sysvinit script is not disabled. We must also make call of `systemctl daemon-reload` to make systemd aware
+        # of changes.
+        if ($self->_isSysvinit($service)) {
+            return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service)
+                && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+        }
 
-		return 1;
-	}
+        return 1;
+    }
 
-	# Note: Will automatically call update-rc.d in case of a sysvinit script
-	$self->SUPER::disable($fservice);
+    # Note: Will automatically call update-rc.d in case of a sysvinit script
+    $self->SUPER::disable($fservice);
 }
 
 =item remove($service)
@@ -172,19 +175,19 @@ sub disable
 
 sub remove
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($self->_isSystemd($service)) {
-		return 0 unless $self->SUPER::remove($service);
-	}
+    if ($self->_isSystemd($service)) {
+        return 0 unless $self->SUPER::remove($service);
+    }
 
-	# Remove the underlying sysvinit script if any and make systemd aware of changes
-	if($self->_isSysvinit($service)) {
-		return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service)
-			&& $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
-	}
+    # Remove the underlying sysvinit script if any and make systemd aware of changes
+    if ($self->_isSysvinit($service)) {
+        return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service)
+            && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+    }
 
-	1;
+    1;
 }
 
 =item hasService($service)
@@ -197,36 +200,9 @@ sub remove
 
 sub hasService
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_isSystemd($service) || $self->_isSysvinit($service);
-}
-
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item _init()
-
- Initialize instance
-
- Return iMSCP::Provider::Service::Debian::Systemd
-
-=cut
-
-sub _init
-{
-	my $self = shift;
-
-	# Enable compatibility mode if systemd package version is lower than version 204-3
-	$SYSTEMCTL_COMPAT_MODE = lazy { $self->_exec(
-		$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' systemd)', 'ge', '204-3'
-	); } unless defined $SYSTEMCTL_COMPAT_MODE;
-
-	$self->iMSCP::Provider::Service::Debian::Sysvinit::_init();
-	$self->SUPER::_init();
+    $self->_isSystemd($service) || $self->_isSysvinit($service);
 }
 
 =back

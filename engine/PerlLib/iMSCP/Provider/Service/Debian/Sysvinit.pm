@@ -25,20 +25,23 @@ package iMSCP::Provider::Service::Debian::Sysvinit;
 
 use strict;
 use warnings;
-use iMSCP::Execute;
 use iMSCP::File;
 use Scalar::Defer;
 use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
 my %commands = (
-	'dpkg' => '/usr/bin/dpkg',
-	'invoke-rc.d' => '/usr/sbin/invoke-rc.d',
-	'update-rc.d' => '/usr/sbin/update-rc.d'
+    dpkg          => '/usr/bin/dpkg',
+    'invoke-rc.d' => '/usr/sbin/invoke-rc.d',
+    'update-rc.d' => '/usr/sbin/update-rc.d'
 );
 
-# Compatibility mode for sysv-rc
-my $SYSVRC_COMPAT_MODE;
+# Enable compatibility mode if sysv-rc package version is lower than version 2.88
+my $SYSVRC_COMPAT_MODE = lazy {
+    __PACKAGE__->_exec(
+        $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)', 'lt', '2.88'
+    ) == 0;
+};
 
 =head1 DESCRIPTION
 
@@ -62,26 +65,26 @@ my $SYSVRC_COMPAT_MODE;
 
 sub isEnabled
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	my $ret = $self->_exec($commands{'invoke-rc.d'}, '--quiet', '--query', $service, 'start');
+    my $ret = $self->_exec($commands{'invoke-rc.d'}, '--quiet', '--query', $service, 'start');
 
-	# 104 is the exit status when you query start an enabled service.
-	# 106 is the exit status when the policy layer supplies a fallback action
-	if(grep($_ eq $ret, ( 104, 106 ))) {
-		return 1;
-	}
+    # 104 is the exit status when you query start an enabled service.
+    # 106 is the exit status when the policy layer supplies a fallback action
+    if (grep($_ eq $ret, ( 104, 106 ))) {
+        return 1;
+    }
 
-	if(grep($_ eq $ret, ( 101, 105 ))) {
-		# 101 is action not allowed, which means we have to do the check manually.
-		# 105 is unknown, which generally means the iniscript does not support query
-		# The debian policy states that the initscript should support methods of query
-		# For those that do not, peform the checks manually
-		# http://www.debian.org/doc/debian-policy/ch-opersys.html
-		return (my @count = glob("/etc/rc*.d/S??$service")) >= 4;
-	}
+    if (grep($_ eq $ret, ( 101, 105 ))) {
+        # 101 is action not allowed, which means we have to do the check manually.
+        # 105 is unknown, which generally means the iniscript does not support query
+        # The debian policy states that the initscript should support methods of query
+        # For those that do not, peform the checks manually
+        # http://www.debian.org/doc/debian-policy/ch-opersys.html
+        return (my @count = glob("/etc/rc*.d/S??$service")) >= 4;
+    }
 
-	0;
+    0;
 }
 
 =item enable($service)
@@ -95,15 +98,15 @@ sub isEnabled
 
 sub enable
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($SYSVRC_COMPAT_MODE) {
-		return $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
-			&& $self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0;
-	}
+    if ($SYSVRC_COMPAT_MODE) {
+        return $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
+            && $self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0;
+    }
 
-	$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
-		&& $self->_exec($commands{'update-rc.d'}, $service, 'enable') == 0;
+    $self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
+        && $self->_exec($commands{'update-rc.d'}, $service, 'enable') == 0;
 }
 
 =item disable($service)
@@ -117,15 +120,15 @@ sub enable
 
 sub disable
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($SYSVRC_COMPAT_MODE) {
-		return $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
-			&& $self->_exec($commands{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.') == 0;
-	}
+    if ($SYSVRC_COMPAT_MODE) {
+        return $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
+            && $self->_exec($commands{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.') == 0;
+    }
 
-	$self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
-		&& $self->_exec($commands{'update-rc.d'}, $service, 'disable') == 0;
+    $self->_exec($commands{'update-rc.d'}, $service, 'defaults') == 0
+        && $self->_exec($commands{'update-rc.d'}, $service, 'disable') == 0;
 }
 
 =item remove($service)
@@ -139,10 +142,13 @@ sub disable
 
 sub remove
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->stop($service) && $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
-		&& iMSCP::File->new( filename => $self->getInitScriptPath($service) )->delFile() == 0;
+    use iMSCP::Debug;
+    debug(ref $self);
+
+    $self->stop($service) && $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
+        && iMSCP::File->new(filename => $self->getInitScriptPath($service))->delFile() == 0;
 
 }
 
@@ -156,35 +162,9 @@ sub remove
 
 sub hasService
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_isSysvinit($service);
-}
-
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item _init()
-
- Initialize instance
-
- Return iMSCP::Provider::Service::Debian::Sysvinit
-
-=cut
-
-sub _init
-{
-	my $self = shift;
-
-	# Enable compatibility mode if sysv-rc package version is lower than version 2.88
-	$SYSVRC_COMPAT_MODE = lazy { $self->_exec(
-		$commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)', 'ge', '2.88'
-	); } unless defined $SYSVRC_COMPAT_MODE;
-
-	$self->SUPER::_init();
+    $self->_isSysvinit($service);
 }
 
 =back

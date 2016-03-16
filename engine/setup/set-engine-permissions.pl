@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,46 +37,46 @@ newDebug('imscp-set-engine-permissions.log');
 $main::execmode = '';
 
 # Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)).qq {
 
 Script which set i-MSCP backend permissions.
 
 OPTIONS:
  -s,    --setup         Setup mode.
  -v,    --verbose       Enable verbose mode.},
- 'setup|s' => sub { $main::execmode =  'setup'; },
+ 'setup|s'   => sub { $main::execmode = 'setup'; },
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot(
-	{ norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes' }
-);
+iMSCP::Bootstrapper->getInstance()->boot({
+    norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes'
+});
 
 my $rs = 0;
 my @toProcess = ();
 
 for(iMSCP::Servers->getInstance()->get()) {
-	my $package = "Servers::$_";
-	eval "require $package";
-	unless($@) {
-		my $instance = $package->factory();
-		push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
-	} else {
-		error($@);
-		$rs = 1;
-	}
+    my $package = "Servers::$_";
+    eval "require $package";
+    unless ($@) {
+        my $instance = $package->factory();
+        push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
+    } else {
+        error($@);
+        $rs = 1;
+    }
 }
 
 for(iMSCP::Packages->getInstance()->get()) {
-	my $package = "Package::$_";
-	eval "require $package";
-	unless($@) {
-		my $instance = $package->getInstance();
-		push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
-	} else {
-		error($@);
-		$rs = 1;
-	}
+    my $package = "Package::$_";
+    eval "require $package";
+    unless ($@) {
+        my $instance = $package->getInstance();
+        push @toProcess, [ $_, $instance ] if $instance->can('setEnginePermissions');
+    } else {
+        error($@);
+        $rs = 1;
+    }
 }
 
 my $totalItems = @toProcess + 1;
@@ -93,35 +93,35 @@ my $confDir = $main::imscpConfig{'CONF_DIR'};
 my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 
 $rs = setRights($main::imscpConfig{'CONF_DIR'}, {
-	user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0640', recursive => 1
+    user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0640', recursive => 1
 });
 $rs |= setRights($rootDir, { user => $rootUName, group => $rootGName, mode => '0755' });
 $rs |= setRights("$rootDir/engine", { user => $rootUName, group => $imscpGName, mode => '0750', recursive => 1 });
 $rs |= setRights($main::imscpConfig{'USER_WEB_DIR'}, { user => $rootUName, group => $rootGName, mode => '0755' });
-$rs |= setRights($main::imscpConfig{'LOG_DIR'}, { user => $rootUName, group => $imscpGName, mode => '0750'} );
+$rs |= setRights($main::imscpConfig{'LOG_DIR'}, { user => $rootUName, group => $imscpGName, mode => '0750' });
 $rs |= setRights($main::imscpConfig{'CACHE_DATA_DIR'}, { user => $rootUName, group => $rootGName, mode => '0750' });
 $rs |= setRights($main::imscpConfig{'VARIABLE_DATA_DIR'}, { user => $rootUName, group => $rootGName, mode => '0750' });
 
 $counter++;
 
 for(@toProcess) {
-	my ($package, $instance) = @{$_};
-	debug("Setting $package (backend) permissions");
-	print "Setting $package (backend) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
-	$rs |= $instance->setEnginePermissions();
-	$counter++;
+    my ($package, $instance) = @{$_};
+    debug("Setting $package (backend) permissions");
+    print "Setting $package (backend) permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
+    $rs |= $instance->setEnginePermissions();
+    $counter++;
 }
 
-unless($main::execmode eq 'setup') {
-	my @warnings = getMessageByType('warn');
-	my @errors = getMessageByType('error');
-	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
-	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
+unless ($main::execmode eq 'setup') {
+    my @warnings = getMessageByType('warn');
+    my @errors = getMessageByType('error');
+    my $msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
+    $msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
 
-	if($msg) {
-		require iMSCP::Mail;
-		$rs |= iMSCP::Mail->new()->errmsg($msg);
-	}
+    if ($msg) {
+        require iMSCP::Mail;
+        $rs |= iMSCP::Mail->new()->errmsg($msg);
+    }
 }
 
 exit $rs;

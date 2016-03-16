@@ -56,12 +56,11 @@ sub setupBoot
 	# We do not try to establish connection to the database since needed data can be unavailable
 	iMSCP::Bootstrapper->getInstance()->boot({ mode => 'setup', nodatabase => 'yes' });
 
-	unless(%main::imscpOldConfig) {
-		%main::imscpOldConfig = ();
-		my $oldConfig = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
-		tie %main::imscpOldConfig, 'iMSCP::Config', fileName => $oldConfig, readonly => 1 if -f $oldConfig;
-	}
+	return 0 if %main::imscpOldConfig;
 
+	%main::imscpOldConfig = ();
+	my $oldConfig = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
+	tie %main::imscpOldConfig, 'iMSCP::Config', fileName => $oldConfig, readonly => 1 if -f $oldConfig;
 	0;
 }
 
@@ -110,7 +109,7 @@ sub setupDialog
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupDialog', $dialogStack);
 	return $rs if $rs;
 
-	unshift(@$dialogStack, (
+	unshift(@{$dialogStack}, (
 		\&setupAskServerHostname,
 		\&setupAskServerIps,
 		\&setupAskSqlDsn,
@@ -126,7 +125,6 @@ sub setupDialog
 	));
 
 	my $dialog = iMSCP::Dialog->getInstance();
-
 	$dialog->set('ok-label', 'Ok');
 	$dialog->set('yes-label', 'Yes');
 	$dialog->set('no-label', 'No');
@@ -139,7 +137,7 @@ sub setupDialog
 	my ($state, $nbDialog) = (0, scalar @{$dialogStack});
 
 	while($state != $nbDialog) {
-		$rs = $$dialogStack[$state]->($dialog);
+		$rs = $dialogStack->[$state]->($dialog);
 		exit($rs) if $rs > 30;
 		return $rs if $rs && $rs < 30;
 
@@ -164,7 +162,7 @@ sub setupDialog
 # Process setup tasks
 sub setupTasks
 {
-	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupTasks') and return 1;
+	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupTasks');
 	return $rs if $rs;
 
 	my @steps = (
@@ -211,20 +209,14 @@ sub setupAskServerHostname
 {
 	my $dialog = shift;
 
-	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
+	my $hostname = setupGetQuestion('SERVER_HOSTNAME') || '';
 	my %options = (domain_private_tld => qr /.*/);
 	my ($rs, @labels) = (0, $hostname ? split /\./, $hostname : ());
 
-	if(grep($_ eq $main::reconfigure, ('system_hostname', 'hostnames', 'all', 'forced'))
+	if(grep($_ eq $main::reconfigure, ( 'system_hostname', 'hostnames', 'all', 'forced' ))
 		|| @labels < 3 || !is_domain($hostname, \%options)
 	) {
-		unless($hostname) {
-			my $err = undef;
-
-			if (execute('hostname -f', \$hostname, \$err)) {
-				die(sprintf('Could not find server hostname (server misconfigured?): %s', $err ? $err : 'Unknown error'));
-			}
-
+		unless($hostname || execute('hostname -f', \$hostname, \my $stderr)) {
 			chomp($hostname);
 		}
 
@@ -237,7 +229,7 @@ sub setupAskServerHostname
 			);
 			$msg = "\n\n\\Z1'$hostname' is not a valid fully-qualified host name.\\Zn\n\nPlease, try again:";
 			$hostname = idn_to_ascii($hostname, 'utf-8');
-			@labels = split(/\./, $hostname);
+			@labels = split /\./, $hostname;
 
 		} while($rs < 30 && (@labels < 3 || !is_domain($hostname, \%options)));
 
@@ -364,7 +356,7 @@ Please enter your public IP address:$msg
 				do {
 					($rs, $serverIps) = $dialog->checkbox(
 						"\nPlease, select additional IP addresses to register into i-MSCP and deselect those to unregister: $msg",
-						[@serverIps],
+						[ @serverIps ],
 						@{$serverIpsToAdd}
 					);
 
@@ -601,7 +593,7 @@ Please refer to http://dev.mysql.com/doc/refman/5.5/en/account-names.html for al
 				if($host ne '%'
 					&& !is_domain($host, \%options)
 					&& !$net->isValidAddr($host)
-					|| grep($_ eq $net->getAddrType($host), ('LOOPBACK', 'LINK-LOCAL-UNICAST'))
+					|| grep($_ eq $net->getAddrType($host), ( 'LOOPBACK', 'LINK-LOCAL-UNICAST' ))
 				) {
 					$msg = sprintf("\n\n\\Z1Error: '%s' is not valid or not allowedt.\\Zn\n\nPlease, try again:", $host);
 				}
@@ -1171,7 +1163,7 @@ sub setupServerHostname
 sub setupServerIps
 {
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
-	my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE') || { };
+	my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE') || {};
 	my $serverIpsToDelete = setupGetQuestion('SERVER_IPS_TO_DELETE') || [];
 	my $serverHostname = setupGetQuestion('SERVER_HOSTNAME');
 	my $oldIptoIdMap = { };
@@ -1184,11 +1176,11 @@ sub setupServerIps
 
 	# Ensure promoting of secondary IP addresses in case a PRIMARY addresse is being deleted
 	# Note we are ignoring return value here (eg for vps)
-	execute("sysctl -q -w net.ipv4.conf.all.promote_secondaries=1", \my $stdout, \my $stderr);
+	execute('sysctl -q -w net.ipv4.conf.all.promote_secondaries=1', \my $stdout, \my $stderr);
 
 	my ($database, $errstr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 	unless($database) {
-		error(sprintf('Could not connect to the SQL database: %s', $errstr));
+		error(sprintf('Could not connect to the SQL server: %s', $errstr));
 		return 1;
 	}
 
@@ -1539,7 +1531,7 @@ sub setupDefaultAdmin
 sub setupServiceSsl
 {
 	my $domainName = setupGetQuestion('SERVER_HOSTNAME');
-	my $selfSignedCertificate = (setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE') eq 'yes') ? 1 : 0;
+	my $selfSignedCertificate = setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE') eq 'yes' ? 1 : 0;
 	my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH');
 	my $passphrase = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE');
 	my $certificatePath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH');
@@ -1549,20 +1541,20 @@ sub setupServiceSsl
 	if($sslEnabled eq 'yes' && setupGetQuestion('SERVICES_SSL_SETUP', 'yes') eq 'yes') {
 		if($selfSignedCertificate) {
 			my $rs = iMSCP::OpenSSL->new(
-				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
-				'certificate_chain_name' => 'imscp_services'
+				certificate_chains_storage_dir => $main::imscpConfig{'CONF_DIR'},
+				certificate_chain_name => 'imscp_services'
 			)->createSelfSignedCertificate({
 				common_name => $domainName, email => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}
 			});
 			return $rs if $rs;
 		} else {
 			my $rs = iMSCP::OpenSSL->new(
-				'certificate_chains_storage_dir' =>  $main::imscpConfig{'CONF_DIR'},
-				'certificate_chain_name' => 'imscp_services',
-				'private_key_container_path' => $privateKeyPath,
-				'private_key_passphrase' => $passphrase,
-				'certificate_container_path' => $certificatePath,
-				'ca_bundle_container_path' => $caBundlePath
+				certificate_chains_storage_dir => $main::imscpConfig{'CONF_DIR'},
+				certificate_chain_name => 'imscp_services',
+				private_key_container_path => $privateKeyPath,
+				private_key_passphrase => $passphrase,
+				certificate_container_path => $certificatePath,
+				ca_bundle_container_path => $caBundlePath
 			)->createCertificateChain();
 			return $rs if $rs;
 		}
@@ -1586,7 +1578,7 @@ sub setupSetPermissions
 	return $rs if $rs;
 
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
-	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
+	$main::imscpConfig{'DEBUG'} = iMSCP::Getopt->debug ? 1 : 0;
 
 	for my $script ('set-engine-permissions.pl', 'set-gui-permissions.pl') {
 		startDetail();
@@ -1617,7 +1609,7 @@ sub setupRebuildCustomerFiles
 
 	my $tables = {
 		ssl_certs => 'status',
-		admin => ['admin_status', "AND `admin_type` = 'user'"],
+		admin => [ 'admin_status', "AND `admin_type` = 'user'" ],
 		domain => 'domain_status',
 		domain_aliasses => 'alias_status',
 		#subdomain => 'subdomain_status', # This is now automatically done by the domain module
@@ -1682,7 +1674,7 @@ sub setupRebuildCustomerFiles
 	iMSCP::Bootstrapper->getInstance()->unlock();
 
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
-	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
+	$main::imscpConfig{'DEBUG'} = iMSCP::Getopt->debug ? 1 : 0;
 
 	startDetail();
 
@@ -1701,7 +1693,7 @@ sub setupRebuildCustomerFiles
 
 	iMSCP::Bootstrapper->getInstance()->lock();
 	$main::imscpConfig{'DEBUG'} = $debug;
-	error("\nError while rebuilding customers files: $stderr") if $stderr && $rs;
+	error(sprintf("\nError while rebuilding customers files: %s", $stderr)) if $stderr && $rs;
 	error('Error while rebuilding customers files: Unknown error') if $rs && !$stderr;
 	$rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
 }
@@ -1769,7 +1761,7 @@ sub setupPreInstallServers
 			if($server->can('preinstall')) {
 				$rs = step(
 					sub { $server->preinstall() },
-					sprintf("Running %s preinstall tasks...", ref $server),
+					sprintf('Running %s preinstall tasks...', ref $server),
 					$nbServers,
 					$step
 				);
@@ -1809,7 +1801,7 @@ sub setupPreInstallPackages
 			if($package->can('preinstall')) {
 				$rs = step(
 					sub { $package->preinstall() },
-					sprintf("Running %s preinstall tasks...", ref $package),
+					sprintf('Running %s preinstall tasks...', ref $package),
 					$nbPackages,
 					$step
 				);
@@ -1851,7 +1843,7 @@ sub setupInstallServers
 			if($server->can('install')) {
 				$rs = step(
 					sub { $server->install() },
-					sprintf("Running %s install tasks...", ref $server),
+					sprintf('Running %s install tasks...', ref $server),
 					$nbServers,
 					$step
 				);
@@ -1891,7 +1883,7 @@ sub setupInstallPackages
 			if($package->can('install')) {
 				$rs = step(
 					sub { $package->install() },
-					sprintf("Running %s install tasks...", ref $package),
+					sprintf('Running %s install tasks...', ref $package),
 					$nbPackages,
 					$step
 				);
@@ -1932,7 +1924,7 @@ sub setupPostInstallServers
 			if($server->can('postinstall')) {
 				$rs = step(
 					sub { $server->postinstall() },
-					sprintf("Running %s postinstall tasks...", ref $server),
+					sprintf('Running %s postinstall tasks...', ref $server),
 					$nbServers,
 					$step
 				);
@@ -1972,7 +1964,7 @@ sub setupPostInstallPackages
 			if($package->can('postinstall')) {
 				$rs = step(
 					sub { $package->postinstall() },
-					sprintf("Running %s postinstall tasks...", ref $package),
+					sprintf('Running %s postinstall tasks...', ref $package),
 					$nbPackages,
 					$step
 				);
@@ -2011,7 +2003,7 @@ sub setupRestartServices
 	my $nbSteps = @services;
 	my $step = 1;
 	for (@services) {
-		$rs = step($_->[0], "Restarting $_->[1] service...", $nbSteps, $step);
+		$rs = step($_->[0], sprintf('Restarting %s service...', $_->[1]), $nbSteps, $step);
 		return $rs if $rs;
 		$step++;
 	}
@@ -2086,17 +2078,17 @@ sub setupIsImscpDb
 	fatal(sprintf('Could not connect to SQL server: %s', $errstr)) unless $db;
 
 	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
-	fatal("SQL query failed: $rs") if ref $rs ne 'HASH';
-	return 0 if !%{$rs};
+	ref $rs eq 'HASH' or fatal(sprintf('SQL query failed: %s', $rs));
+	return 0 unless %{$rs};
 
 	($db, $errstr) = setupGetSqlConnect($dbName);
-	fatal(sprintf('Could not connect to SQL database: %s', $errstr)) unless $db;
+	$db or fatal(sprintf('Could not connect to SQL server: %s', $errstr));
 
 	$rs = $db->doQuery('1', 'SHOW TABLES');
-	fatal(sprintf('SQL query failed: %s', $rs)) if ref $rs ne 'HASH';
+	ref $rs eq 'HASH' or fatal(sprintf('SQL query failed: %s', $rs));
 
 	for (qw/server_ips user_gui_props reseller_props/) {
-		return 0 if !exists $$rs{$_};
+		return 0 unless exists $rs->{$_};
 	}
 
 	1;
@@ -2108,10 +2100,10 @@ sub setupIsSqlUser($)
 	my $sqlUser = shift;
 
 	my ($db, $errstr) = setupGetSqlConnect('mysql');
-	fatal(sprintf('Could not connect to the SQL Server: %s', $errstr)) unless $db;
+	$db or fatal(sprintf('Could not connect to the SQL server: %s', $errstr));
 
 	my $rs = $db->doQuery('1', 'SELECT EXISTS(SELECT 1 FROM `user` WHERE `user` = ?)', $sqlUser);
-	fatal($rs) if ref $rs ne 'HASH';
+	ref $rs eq 'HASH' or fatal($rs);
 	$rs->{1} ? 1 : 0;
 }
 
@@ -2124,7 +2116,7 @@ sub setupDeleteSqlUser
 	$host ||= '%';
 
 	my ($db, $errstr) = setupGetSqlConnect('mysql');
-	fatal(sprintf('Could not connect to the mysql database: %s', $errstr)) unless $db;
+	$db or fatal(sprintf('Could not connect to the SQL server: %s', $errstr));
 
 	# Remove any columns privileges for the given user
 	$errstr = $db->doQuery('dummy', "DELETE FROM `columns_priv` WHERE `Host` = ? AND `User` = ?", $host, $user);

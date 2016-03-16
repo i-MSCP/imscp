@@ -30,10 +30,22 @@ use File::Spec;
 use iMSCP::Debug 'error';
 use iMSCP::Execute;
 use iMSCP::LsbRelease;
-use Hash::Util::FieldHash 'fieldhash';
+use Scalar::Defer;
 
-# Paths where sysvinit script must be searched
-fieldhash my %paths;
+# Paths in which sysvinit script must be searched
+my $paths = lazy {
+    my $id = iMSCP::LsbRelease->getInstance()->getId('short');
+
+    if (grep($_ eq $id, ( 'FreeBSD', 'DragonFly' ))) {
+       [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
+    } elsif ($id eq 'HP-UX') {
+         [ '/sbin/init.d' ];
+    } elsif ($id eq 'Archlinux') {
+        [ '/etc/rc.d' ];
+    } else {
+        [ '/etc/init.d' ];
+    }
+};
 
 =head1 DESCRIPTION
 
@@ -53,17 +65,16 @@ fieldhash my %paths;
 
 sub getInstance
 {
-	my $self = shift;
+    my $self = shift;
 
-	no strict 'refs';
-	my $instance = \${"${self}::_instance"};
+    no strict 'refs';
+    my $instance = \${"${self}::_instance"};
 
-	unless(defined $$instance) {
-		$$instance = bless (\ my $this, $self);
-		$$instance->_init();
-	}
+    unless (defined ${$instance}) {
+        ${$instance} = bless (\my $this, $self);
+    }
 
-	$$instance;
+    ${$instance};
 }
 
 =item isEnabled($service)
@@ -77,7 +88,7 @@ sub getInstance
 
 sub isEnabled
 {
-	confess 'not implemented';
+    confess 'not implemented';
 }
 
 =item enable($service)
@@ -91,7 +102,7 @@ sub isEnabled
 
 sub enable
 {
-	confess 'not implemented';
+    confess 'not implemented';
 }
 
 =item disable($service)
@@ -105,7 +116,7 @@ sub enable
 
 sub disable
 {
-	confess 'not implemented';
+    confess 'not implemented';
 }
 
 =item remove($service)
@@ -119,7 +130,7 @@ sub disable
 
 sub remove
 {
-	confess 'not implemented';
+    confess 'not implemented';
 }
 
 =item start($service)
@@ -133,9 +144,9 @@ sub remove
 
 sub start
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_exec($self->getInitScriptPath($service), 'start') == 0;
+    $self->_exec($self->getInitScriptPath($service), 'start') == 0;
 }
 
 =item stop($service)
@@ -149,11 +160,11 @@ sub start
 
 sub stop
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	return 1 unless $self->_isSysvinit($service) && $self->isRunning($service);
+    return 1 unless $self->_isSysvinit($service) && $self->isRunning($service);
 
-	$self->_exec($self->getInitScriptPath($service), 'stop') == 0;
+    $self->_exec($self->getInitScriptPath($service), 'stop') == 0;
 }
 
 =item restart($service)
@@ -167,13 +178,13 @@ sub stop
 
 sub restart
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($self->isRunning($service)) {
-		return $self->_exec($self->getInitScriptPath($service), 'restart') == 0;
-	}
+    if ($self->isRunning($service)) {
+        return $self->_exec($self->getInitScriptPath($service), 'restart') == 0;
+    }
 
-	$self->_exec($self->getInitScriptPath($service), 'start') == 0;
+    $self->_exec($self->getInitScriptPath($service), 'start') == 0;
 }
 
 =item reload($service)
@@ -187,13 +198,13 @@ sub restart
 
 sub reload
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($self->isRunning($service)) {
-		return $self->_exec($self->getInitScriptPath($service), 'reload') == 0;
-	}
+    if ($self->isRunning($service)) {
+        return $self->_exec($self->getInitScriptPath($service), 'reload') == 0;
+    }
 
-	$self->_exec($self->getInitScriptPath($service), 'start') == 0;
+    $self->_exec($self->getInitScriptPath($service), 'start') == 0;
 }
 
 =item isRunning($service)
@@ -207,11 +218,11 @@ sub reload
 
 sub isRunning
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	# FIXME: Assumption is made that any init script is providing status command which is bad...
-	# TODO: Fallback using processes table output should be implemented
-	$self->_exec($self->getInitScriptPath($service), 'status') == 0;
+    # FIXME: Assumption is made that any init script is providing status command which is bad...
+    # TODO: Fallback using processes table output should be implemented
+    $self->_exec($self->getInitScriptPath($service), 'status') == 0;
 }
 
 =item getInitScriptPath($service)
@@ -225,9 +236,9 @@ sub isRunning
 
 sub getInitScriptPath
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_searchInitScript($service);
+    $self->_searchInitScript($service);
 }
 
 =back
@@ -235,36 +246,6 @@ sub getInitScriptPath
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item
-
- Initialize instance
-
- Return iMSCP::Provider::Service::Sysvinit
-
-=cut
-
-sub _init
-{
-	my $self = shift;
-
-	# TODO (v2.0.0) Replace LsbRelease call by pfacter since LSB is something Linux specific
-	# http://search.cpan.org/dist/pfacter/
-	# http://search.cpan.org/~dozzie/Sys-Facter-1.01/
-	my $id = iMSCP::LsbRelease->getInstance()->getId('short');
-
-	if(grep($_ eq $id, ( 'FreeBSD', 'DragonFly' ))) {
-		$paths{$self} = [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
-	} elsif ($id eq 'HP-UX') {
-		$paths{$self} = [ '/sbin/init.d' ];
-	} elsif($id eq 'Archlinux') {
-		$paths{$self} = [ '/etc/rc.d' ];
-	} else {
-		$paths{$self} =  [ '/etc/init.d' ];
-	}
-
-	$self;
-}
 
 =item _isSysvinit($service)
 
@@ -277,10 +258,10 @@ sub _init
 
 sub _isSysvinit
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	local $@;
-	eval { $self->_searchInitScript($service); };
+    local $@;
+    eval { $self->_searchInitScript($service); };
 }
 
 =item searchInitScript($service)
@@ -294,17 +275,17 @@ sub _isSysvinit
 
 sub _searchInitScript
 {
-	my ($self, $service, $flush) = @_;
+    my ($self, $service, $flush) = @_;
 
-	for my $path(@{$paths{$self}}) {
-		my $filepath = File::Spec->join($path, $service);
-		return $filepath if -f $filepath;
+    for my $path(@{$paths}) {
+        my $filepath = File::Spec->join($path, $service);
+        return $filepath if -f $filepath;
 
-		$filepath .= '.sh';
-		return $filepath if -f $filepath;
-	}
+        $filepath .= '.sh';
+        return $filepath if -f $filepath;
+    }
 
-	die(sprintf('Could not find sysvinit script for the %s service', $service));
+    die(sprintf('Could not find sysvinit script for the %s service', $service));
 }
 
 =item _exec($command)
@@ -317,11 +298,11 @@ sub _searchInitScript
 
 sub _exec
 {
-	my ($self, @command) = @_;
+    my ($self, @command) = @_;
 
-	my $ret = execute("@command", \ my $stdout, \ my $stderr);
-	error($stderr) if $ret && $stderr;
-	$ret;
+    my $ret = execute("@command", \my $stdout, \my $stderr);
+    error($stderr) if $ret && $stderr;
+    $ret;
 }
 
 =back

@@ -51,7 +51,6 @@ sub startUp
 {
 	iMSCP::Getopt->debug(1); # Enforce debug mode (logs)
 	iMSCP::Bootstrapper->getInstance()->boot();
-
 	0;
 }
 
@@ -60,16 +59,16 @@ sub process
 	_userDialog();
 
 	my @steps = (
-		[\&_removeCustomers, 'Removing i-MSCP customers'],
-		[\&_uninstallPackages, 'Uninstalling i-MSCP packages'],
-		[\&_uninstallServers, 'Uninstalling i-MSCP servers'],
-		[\&_uninstallServices, 'Uninstalling i-MSCP services'],
-		[\&_removeCrontabFile, 'Removing i-MSCP crontab file'],
-		[\&_removeLogrotateFile, 'Removing i-MSCP logrotate file'],
-		[\&_removeSysctlFile, 'Removing i-MSCP sysctl file'],
-		[\&_removeSqlData, 'Removing i-MSCP SQL data'],
-		[\&_removeiMSCPSystemGroup, 'Removing i-MSCP system group'],
-		[\&_removeFiles, 'Removing i-MSCP files'],
+		[ \&_removeCustomers, 'Removing i-MSCP customers' ],
+		[ \&_uninstallPackages, 'Uninstalling i-MSCP packages' ],
+		[ \&_uninstallServers, 'Uninstalling i-MSCP servers' ],
+		[ \&_uninstallServices, 'Uninstalling i-MSCP services' ],
+		[ \&_removeCrontabFile, 'Removing i-MSCP crontab file' ],
+		[ \&_removeLogrotateFile, 'Removing i-MSCP logrotate file' ],
+		[ \&_removeSysctlFile, 'Removing i-MSCP sysctl file' ],
+		[ \&_removeSqlData, 'Removing i-MSCP SQL data' ],
+		[ \&_removeiMSCPSystemGroup, 'Removing i-MSCP system group' ],
+		[ \&_removeFiles, 'Removing i-MSCP files' ],
 	);
 
 	my $step = 1;
@@ -101,7 +100,6 @@ EOF
 sub _userDialog
 {
 	my $dialog = iMSCP::Dialog->getInstance();
-
 	$dialog->set('title', 'i-MSCP Uninstaller Dialog');
 	$dialog->set('defaultno', '');
 
@@ -129,7 +127,7 @@ EOF
 sub _removeCustomers
 {
 	my $tables = {
-		admin => ['admin_status', "AND `admin_type` = 'user'"],
+		admin => [ 'admin_status', "AND `admin_type` = 'user'" ],
 		domain => 'domain_status',
 		domain_aliasses => 'alias_status',
 		subdomain => 'subdomain_status',
@@ -142,7 +140,6 @@ sub _removeCustomers
 	};
 
 	my $database = iMSCP::Database->factory();
-
 	my $aditionalCondition;
 
 	while (my ($table, $field) = each %$tables) {
@@ -162,15 +159,13 @@ sub _removeCustomers
 
 	iMSCP::Bootstrapper->getInstance()->unlock();
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
+	my $rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \my $stdout, \my $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Error while deleting customers") if $rs && ! $stderr;
+	error('Error while deleting customers') if $rs && !$stderr;
 	return $rs if $rs;
 
 	iMSCP::Bootstrapper->getInstance()->lock();
-
 	0;
 }
 
@@ -186,18 +181,16 @@ sub _uninstallPackages
 
 	for(@packages) {
 		my $package = "Package::$_";
-
 		eval "require $package";
-
 		unless($@) {
 			my $package = $package->getInstance();
 
 			if($package->can('uninstall')) {
 				$rs = step(
-					sub { $package->uninstall }, sprintf("Running %s uninstall tasks...", ref $package),
+					sub { $package->uninstall }, sprintf('Running %s uninstall tasks...', ref $package),
 					$nbPackages,
 					$step
-            	);
+			);
 
 				last if $rs;
 			}
@@ -227,18 +220,15 @@ sub _uninstallServers
 
 	for(@servers) {
 		next if $_ eq 'noserver';
-
 		my $package = "Servers::$_";
-
 		eval "require $package";
-
 		unless($@) {
 			my $server = $package->factory();
 
 			if($server->can('uninstall')) {
 				$rs = step(
 					sub { $server->uninstall },
-					sprintf("Running %s uninstall tasks...", ref $server),
+					sprintf('Running %s uninstall tasks...', ref $server),
 					$nbServers,
 					$step
 				);
@@ -255,7 +245,6 @@ sub _uninstallServers
 	}
 
 	endDetail();
-
 	$rs;
 }
 
@@ -267,7 +256,6 @@ sub _uninstallServices
 	for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override', '/etc/systemd/system/%s.service') {
 		for my $service('imscp_network', 'imscp_daemon') {
 			my $file = sprintf($pFormat, $service);
-
 			if(-f $file) {
 				my $rs = iMSCP::File->new( filename => $file )->delFile();
 				return $rs if $rs;
@@ -293,29 +281,20 @@ sub _uninstallServices
 
 sub _removeCrontabFile
 {
-	if(-f '/etc/cron.d/imscp') {
-		return iMSCP::File->new( filename => '/etc/cron.d/imscp' )->delFile();
-	}
-
-	0;
+	return 0 unless -f '/etc/cron.d/imscp';
+	iMSCP::File->new( filename => '/etc/cron.d/imscp' )->delFile();
 }
 
 sub _removeLogrotateFile
 {
-	if(-f '/etc/logrotate.d/imscp') {
-		return iMSCP::File->new( filename => '/etc/logrotate.d/imscp' )->delFile();
-	}
-
-	0;
+	return 0 unless -f '/etc/logrotate.d/imscp';
+	iMSCP::File->new( filename => '/etc/logrotate.d/imscp' )->delFile();
 }
 
 sub _removeSysctlFile
 {
-	if(-f '/etc/sysctl.d/imscp.conf') {
-		return iMSCP::File->new( filename => '/etc/sysctl.d/imscp.conf' )->delFile();
-	}
-
-	0;
+	return 0 unless -f '/etc/sysctl.d/imscp.conf';
+	iMSCP::File->new( filename => '/etc/sysctl.d/imscp.conf' )->delFile();
 }
 
 # FIXME: localhost is not always the correct value
@@ -337,17 +316,14 @@ sub _removeSqlData
 	}
 
 	# Remove customer's sql datatabases
-
 	$rdata = $database->doQuery('sqld_name', 'SELECT sqld_name FROM sql_database');
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
-
 	$database->doQuery('delete', "DROP DATABASE IF EXISTS `$rdata->{$_}->{'sqld_name'}`") for keys %{$rdata};
 
 	# Remove i-MSCP sql database
-
 	$database->doQuery('delete', "DROP DATABASE IF EXISTS `$main::imscpConfig{'DATABASE_NAME'}`");
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
@@ -383,5 +359,4 @@ my $rs = 0;
 $rs ||= startUp();
 $rs ||= process();
 $rs ||= shutDown();
-
 exit $rs;

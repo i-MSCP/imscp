@@ -25,10 +25,9 @@ package iMSCP::Provider::Service::Debian::Upstart;
 
 use strict;
 use warnings;
-
 use parent qw(
-	iMSCP::Provider::Service::Upstart
-	iMSCP::Provider::Service::Debian::Sysvinit
+    iMSCP::Provider::Service::Upstart
+    iMSCP::Provider::Service::Debian::Sysvinit
 );
 
 =head1 DESCRIPTION
@@ -55,13 +54,13 @@ use parent qw(
 
 sub isEnabled
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($self->_isUpstart($service)) {
-		return $self->SUPER::isEnabled($service);
-	}
+    if ($self->_isUpstart($service)) {
+        return $self->SUPER::isEnabled($service);
+    }
 
-	$self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled($service);
+    $self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled($service);
 }
 
 =item enable($service)
@@ -75,20 +74,20 @@ sub isEnabled
 
 sub enable
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($self->_isUpstart($service)) {
-		# Ensure that sysvinit script if any is not enabled
-		my $ret = $self->_isSysvinit($service) ? $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service) : 1;
-		return $ret && $self->SUPER::enable($service);
-	}
+    if ($self->_isUpstart($service)) {
+        # Ensure that sysvinit script if any is not enabled
+        my $ret = $self->_isSysvinit($service) ? $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service) : 1;
+        return $ret && $self->SUPER::enable($service);
+    }
 
-	# Enable sysvinit script if any
-	if($self->_isSysvinit($service)) {
-		return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service);
-	}
+    # Enable sysvinit script if any
+    if ($self->_isSysvinit($service)) {
+        return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service);
+    }
 
-	1;
+    1;
 }
 
 =item disable($service)
@@ -102,18 +101,18 @@ sub enable
 
 sub disable
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($self->_isUpstart($service)) {
-		return 0 unless $self->SUPER::disable($service);
-	}
+    if ($self->_isUpstart($service)) {
+        return 0 unless $self->SUPER::disable($service);
+    }
 
-	# Disable the sysvinit script if any
-	if($self->_isSysvinit($service)) {
-		return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service);
-	}
+    # Disable the sysvinit script if any
+    if ($self->_isSysvinit($service)) {
+        return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service);
+    }
 
-	1;
+    1;
 }
 
 =item remove($service)
@@ -127,18 +126,18 @@ sub disable
 
 sub remove
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	if($self->_isUpstart($service)) {
-		return 0 unless $self->SUPER::remove($service);
-	}
+    if ($self->_isUpstart($service)) {
+        return 0 unless $self->SUPER::remove($service);
+    }
 
-	# Remove the sysvinit script if any
-	if($self->_isSysvinit($service)) {
-		return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service);
-	}
+    # Remove the sysvinit script if any
+    if ($self->_isSysvinit($service)) {
+        return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service);
+    }
 
-	1;
+    1;
 }
 
 =item hasService($service)
@@ -151,31 +150,9 @@ sub remove
 
 sub hasService
 {
-	my ($self, $service) = @_;
+    my ($self, $service) = @_;
 
-	$self->_isUpstart($service) || $self->_isSysvinit($service);
-}
-
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item _init()
-
- Initialize instance
-
- Return iMSCP::Provider::Service::Debian::Systemd
-
-=cut
-
-sub _init
-{
-	my $self = shift;
-
-	$self->iMSCP::Provider::Service::Debian::Sysvinit::_init();
-	$self->SUPER::_init();
+    $self->_isUpstart($service) || $self->_isSysvinit($service);
 }
 
 =back
