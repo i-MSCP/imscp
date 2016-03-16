@@ -176,7 +176,10 @@ sub _init
 	}
 
 	if($listenersDir) {
-		require $_ for glob "$listenersDir/*.pl";
+		for my $listenerFile(glob "$listenersDir/*.pl") {
+			debug(sprintf('Loading %s listener file', $listenerFile));
+			require $listenerFile;
+		}
 	}
 
 	$self;
