@@ -1715,15 +1715,19 @@ sub setupRegisterPluginListeners
 		return 1;
 	}
 
-	$db->set('FETCH_MODE', 'arrayref');
+	$db = $db->getRawDb();
+	$db->{'RaiseError'} = 1;
 
-	my $pluginNames = $db->doQuery(undef, "SELECT plugin_name FROM plugin WHERE plugin_status = 'enabled'");
-	unless (ref $pluginNames eq 'ARRAY') {
-		error($pluginNames);
+	my $pluginNames = eval {
+		$db->selectcol_arrayref("SELECT plugin_name FROM plugin WHERE plugin_status = 'enabled'");
+	};
+	if ($@) {
+		error($@);
 		return 1;
 	}
 
-	$db->set('FETCH_MODE', 'hashref');
+	$db->{'RaiseError'} = 0;
+
 	my $eventManager = iMSCP::EventManager->getInstance();
 
 	for my $pluginPath(iMSCP::Plugins->getInstance()->get()) {
