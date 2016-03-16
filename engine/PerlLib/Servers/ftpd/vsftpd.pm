@@ -190,7 +190,6 @@ sub addFtpUser
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdAddFtpUser', $data);
 	$rs ||= $self->_createFtpUserConffile($data);
-	$rs || ($self->{'reload'} = 1);
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdAddFtpUser', $data);
 }
 
@@ -209,7 +208,6 @@ sub disableFtpUser
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDisableFtpUser', $data);
 	$rs ||= $self->_deleteFtpUserConffile($data);
-	$rs || ($self->{'reload'} = 1);
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDisableFtpUser', $data);
 }
 
@@ -228,7 +226,6 @@ sub deleteFtpUser
 
 	my $rs = $self->{'eventManager'}->trigger('beforeFtpdDeleteFtpUser', $data);
 	$rs ||= $self->_deleteFtpUserConffile($data);
-	$rs || ($self->{'reload'} = 1);
 	$rs ||= $self->{'eventManager'}->trigger('afterFtpdDeleteFtpUser', $data);
 }
 

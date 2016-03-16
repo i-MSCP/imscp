@@ -516,7 +516,7 @@ sub _buildConfigFile
 {
 	my $self = shift;
 
-	# Make sure to start with clean user configuration direcetory
+	# Make sure to start with clean user configuration directory
 	unlink glob "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/*";
 
 	my($passvMinPort, $passvMaxPort) = split(/\s+/, $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'});
