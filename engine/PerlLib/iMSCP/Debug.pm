@@ -36,10 +36,14 @@ our @EXPORT = qw/
 BEGIN
 {
 	# Handler which trap uncaught exceptions
-	$SIG{__DIE__} = sub { fatal(@_) if defined $^S && ! $^S };
+	$SIG{__DIE__} = sub {
+		fatal(@_, (caller(1))[3] || 'main') if defined $^S && ! $^S
+	};
 
 	# Handler which trap warns
-	$SIG{__WARN__} = sub { warning(@_); };
+	$SIG{__WARN__} = sub {
+		warning(@_, (caller(1))[3] || 'main');
+	};
 }
 
 my $self = {
@@ -199,11 +203,12 @@ sub debug
 	undef;
 }
 
-=item warning($message)
+=item warning($message [, $caller ])
 
  Log an error message and print it on STDERR if not in silent mode
 
  Param string $message Warning message
+ Param string $caller OPTIONAL Caller
  Return int undef
 
 =cut
@@ -211,7 +216,7 @@ sub debug
 sub warning
 {
 	my $message = shift;
-	my $caller = (caller(1))[3] || 'main';
+	my $caller = shift || (caller(1))[3] || 'main';
 
 	$self->{'target'}->store( message => "$caller: $message", tag => 'warn' );
 
@@ -237,11 +242,12 @@ sub error
 	0;
 }
 
-=item fatal($message)
+=item fatal($message [, $caller ])
 
  Log a fatal error message and print it on STDERR if not in silent mode and exit
 
  Param string $message Fatal message
+ Param string $caller OPTIONAL Caller
  Return void
 
 =cut
@@ -249,7 +255,7 @@ sub error
 sub fatal
 {
 	my $message = shift;
-	my $caller = (caller(1))[3] || 'main';
+	my $caller = shift ||  (caller(1))[3] || 'main';
 
 	$self->{'target'}->store( message => "$caller: $message", tag => 'fatal' );
 
