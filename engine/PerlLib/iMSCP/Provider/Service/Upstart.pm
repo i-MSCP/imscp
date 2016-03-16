@@ -770,7 +770,7 @@ sub _searchJobFile
 
     my $jobFile = "$service.".($jobFileType || 'conf');
 
-    for my $path(@{$paths{$self}}) {
+    for my $path(@paths) {
         my $filepath = File::Spec->join($path, $jobFile);
         return $filepath if -f $filepath;
     }
