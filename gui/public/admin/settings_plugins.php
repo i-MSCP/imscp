@@ -86,7 +86,7 @@ function uploadPlugin($pluginManager)
         redirectTo('settings_plugins.php');
     }
 
-    $zipArch = (strtolower(pathinfo($tmpArchPath, PATHINFO_EXTENSION)) == 'zip');
+    $zipArch = strtolower(pathinfo($tmpArchPath, PATHINFO_EXTENSION)) == 'zip';
 
     try {
         if (!$zipArch) {
@@ -244,8 +244,8 @@ function generatePage($tpl, $pluginManager)
         $tpl->assign(array(
             'PLUGIN_NAME' => tohtml($pluginName),
             'PLUGIN_DESCRIPTION' => tr($pluginInfo['desc']),
-            'PLUGIN_STATUS' => ($pluginManager->pluginHasError($pluginName)) ? tr('Unexpected error') : translateStatus($pluginStatus),
-            'PLUGIN_VERSION' => (isset($pluginInfo['__nversion__'])) ? tohtml($pluginInfo['__nversion__']) : tr('Unknown'),
+            'PLUGIN_STATUS' => $pluginManager->pluginHasError($pluginName) ? tr('Unexpected error') : translateStatus($pluginStatus),
+            'PLUGIN_VERSION' => isset($pluginInfo['__nversion__']) ? tohtml($pluginInfo['__nversion__']) : tr('Unknown'),
             'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
             'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
             'PLUGIN_SITE' => tohtml($pluginInfo['url'])
@@ -434,8 +434,7 @@ function doAction($pluginManager, $pluginName, $action)
         }
 
         if ($ret == PluginManager::ACTION_FAILURE || $ret == PluginManager::ACTION_STOPPED) {
-            $msg = ($ret == PluginManager::ACTION_FAILURE)
-                ? tr('Action has failed.') : tr('Action has been stopped.');
+            $msg = $ret == PluginManager::ACTION_FAILURE ? tr('Action has failed.') : tr('Action has been stopped.');
 
             switch ($action) {
                 case 'install':
@@ -560,7 +559,6 @@ function updatePluginList($pluginManager)
 
     /** @var EventCollection $responses */
     $responses = $eventManager->dispatch(Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager));
-
     if ($responses->isStopped()) {
         return;
     }
