@@ -136,21 +136,6 @@ sub removeIpAddr
 
 =over 4
 
-=item _init()
-
- Initialize instance
-
- Return iMSCP::Provider::NetworkInterface::Debian
-
-=cut
-
-sub _init
-{
-    my $self = shift;
-    $self->{'net'} = iMSCP::Net->getInstance();
-    $self;
-}
-
 =item _updateInterfaces($action, \%data)
 
  Add or remove IP address in the network interfaces file

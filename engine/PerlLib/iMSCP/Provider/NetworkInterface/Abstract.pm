@@ -31,7 +31,24 @@ use parent qw/ Common::Object iMSCP::Provider::NetworkInterface::Interface /;
 
  Abstract class for network interface providers.
 
-=back
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize instance
+
+ Return iMSCP::Provider::NetworkInterface::Debian
+
+=cut
+
+sub _init
+{
+    my $self = shift;
+    $self->{'net'} = iMSCP::Net->getInstance();
+    $self;
+}
 
 =head1 AUTHOR
 
