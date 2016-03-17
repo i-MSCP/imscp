@@ -1230,18 +1230,17 @@ class iMSCP_Plugin_Manager
             $info['__uninstallable__'] = 'iMSCP_Plugin' !== $r->getDeclaringClass()->getName();
 
             if (!$this->pluginIsKnown($name)) {
-                $status = ($info['__installable__']) ? 'uninstalled' : 'disabled';
+                $status = $info['__installable__'] ? 'uninstalled' : 'disabled';
                 $needUpdate = false;
                 $needChange = false;
                 $returnInfo['new']++;
             } else {
                 $status = $this->pluginGetStatus($name);
                 $needUpdate = version_compare($info['version'], $info['__nversion__'], '<');
-                $needChange = $infoPrev['__need_change__'];
+                $needChange = false;
 
-                if (!$needChange
-                    && !in_array($status, array('uninstalled', 'toinstall', 'touninstall', 'tochange', 'todelete'))
-                    && $config != $configPrev
+                if(!in_array($status, array('uninstalled', 'toinstall', 'touninstall', 'todelete'))
+                    && $config != $configPrev || $infoPrev['__need_change__']
                 ) {
                     $needChange = true;
                 }
@@ -1261,7 +1260,7 @@ class iMSCP_Plugin_Manager
                     'backend' => file_exists($file->getPathname() . "/backend/$name.pm") ? 'yes' : 'no'
                 ));
 
-                if ($status == 'enabled') {
+                if ($status == 'enabled' || $status == 'tochange' || $status == 'toupdate') {
                     if ($needUpdate) {
                         $toUpdatePlugins[] = $name;
                         $returnInfo['updated']++;

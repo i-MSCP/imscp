@@ -30,6 +30,8 @@ INSTALLER
 	Fixed: Plugin setup listeners are no longer registered (regression fix)
 
 PLUGINS
+	Fixed: Plugin configuration not synced when triggering plugin list update (when a plugin in error state)
+	Fixed: The 'change' action must be automatically triggered on plugin list update, even for plugins with error state
 	Fixed: Wrong events triggered when a plugin is being locked/unlocked
 	Updated: API version to 1.0.4
 
