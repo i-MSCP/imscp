@@ -30,7 +30,7 @@ INSTALLER
 	Fixed: Plugin setup listeners are no longer registered (regression fix)
 
 PLUGINS
-	Fixed: Wrong events triggered when plugin is being locked/unlocked
+	Fixed: Wrong events triggered when a plugin is being locked/unlocked
 	Updated: API version to 1.0.4
 
 SERVERS
