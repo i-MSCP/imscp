@@ -535,7 +535,7 @@ sub deleteSub
 
 	my $wrkDbFile = "$self->{'wrkDir'}/$data->{'PARENT_DOMAIN_NAME'}.db";
 	unless(-f $wrkDbFile) {
-		error(sprintf('File %s  not found. Please run the i-MSCP setup script.', $wrkDbFile));
+		error(sprintf('File %s not found. Please run the i-MSCP setup script.', $wrkDbFile));
 		return 1;
 	}
 
@@ -569,7 +569,7 @@ sub deleteSub
 
 	$rs = execute(
 		'named-compilezone -i none -s relative' .
-			" -o -$data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}" .
+			" -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}" .
 			" > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
 		\my $stdout,
 		\my $stderr
