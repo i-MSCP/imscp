@@ -35,6 +35,7 @@ PLUGINS
 SERVERS
 	Added: Own i-MSCP logrorate configuration file for ProFTPD (xferlog file don't need to be rotated)
 	Fixed: Bad regexp in getTraffic() method leading to unmatching of traffic data (VsFTPd)
+	Fixed: ON|OFF string not recognized as boolean value in mysql conffile (MySQL)
 	Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead.
 	Fixed: Useless reload of VsFTPd when adding/removing an FTP user (privileges are given by session)
 	Fixed: VsFTPd doesn't reopen xferlog file automatically when the file has been removed, leading to traffic data loss

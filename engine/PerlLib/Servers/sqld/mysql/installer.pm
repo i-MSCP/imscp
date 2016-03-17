@@ -335,7 +335,7 @@ sub _buildConf
 
 	$cfgTpl .= <<'EOF';
 [mysqld]
-performance_schema = OFF
+performance_schema = 0
 sql_mode = "NO_AUTO_CREATE_USER"
 [mysql_upgrade]
 host     = {DATABASE_HOST}
@@ -357,7 +357,7 @@ EOF
 
 	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.5.0')) {
 		$cfgTpl =~ s/(\[mysqld\]\n)/$1innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}\n/i;
-		$variables->{'INNODB_USE_NATIVE_AIO'} = $self->_isMysqldInsideCt() ? 'OFF' : 'ON';
+		$variables->{'INNODB_USE_NATIVE_AIO'} = $self->_isMysqldInsideCt() ? '0' : '1';
 	}
 
 	# For backward compatibility - We will review this in later version
