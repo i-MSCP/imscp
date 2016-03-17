@@ -1,6 +1,55 @@
 
-<p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PLUGIN_HINT}</p>
-<br>
+<script>
+	$(function () {
+		var $dataTable = $(".datatable").dataTable({
+			language: imscp_i18n.core.dataTable,
+			displayLength: 10,
+			stateSave: true,
+			pagingType: "simple"
+		});
+
+		$('#bulkActionsTop, #bulkActionsBottom').change(function () {
+			$("select[name=\"bulkActions\"] option[value=" + $(this).val() + "]").attr("selected", "selected");
+		});
+
+		$("thead :checkbox, tfoot :checkbox").change(function () {
+			$("table :checkbox").prop('checked', $(this).is(':checked'));
+		});
+
+		$dataTable.on("click", ".plugin_error", function () {
+			var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');
+			var pluginName = $(this).attr('id');
+
+			errDialog.dialog({
+				modal: true,
+				title: pluginName + " " + imscp_i18n.core.error_details,
+				show: "clip",
+				hide: "clip",
+				minHeight: 200,
+				minWidth: 500,
+				buttons: [
+					{
+						text: imscp_i18n.core.force_retry,
+						click: function () {
+							window.location.replace("?retry=" + pluginName)
+						}
+					},
+					{
+						text: imscp_i18n.core.close,
+						click: function () {
+							$(this).dialog("close").dialog("destroy")
+						}
+					}
+				]
+			});
+
+			return false;
+		});
+	});
+</script>
+
+<p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PLUGIN_HINT}</p><br>
+
 <!-- BDP: plugins_block -->
 <form name="plugin_frm" action="settings_plugins.php" method="post">
 	<table class="datatable">
@@ -29,9 +78,7 @@
 			<td><p><strong>{PLUGIN_NAME}</strong></p></td>
 			<td>
 				<p>{PLUGIN_DESCRIPTION}</p>
-				<span class="bold italic">
-					<small>{TR_VERSION} {PLUGIN_VERSION} | <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> | <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a></small>
-				</span>
+				<span class="bold italic"><small>{TR_VERSION} {PLUGIN_VERSION} | <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a>| <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a></small></span>
 			</td>
 			<td>
 				{PLUGIN_STATUS}
@@ -44,12 +91,10 @@
 				<a style="vertical-align: middle;" class="icon i_open" href="settings_plugins.php?{ACTIVATE_ACTION}={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}"></a>
 				<a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?{UNINSTALL_ACTION}={PLUGIN_NAME}" title="{TR_UNINSTALL_TOOLTIP}"></a>
 				<!-- EDP: plugin_activate_link -->
-
 				<!-- BDP: plugin_deactivate_link -->
 				<a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?disable={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>
 				<a style="vertical-align: middle;" class="icon i_lock" href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}"></a>
 				<!-- EDP: plugin_deactivate_link -->
-
 				<!-- BDP: plugin_protected_link -->
 				<span style="vertical-align: middle;" class="icon i_unlock" title="{TR_UNPROTECT_TOOLTIP}">&nbsp;</span>
 				<!-- EDP: plugin_protected_link -->
@@ -60,7 +105,7 @@
 	</table>
 	<div style="float:left;">
 		<select name="bulk_actions" id="bulk_actions">
-			<option value="dummy" disabled="disabled"  selected="selected">{TR_BULK_ACTIONS}</option>
+			<option value="dummy" disabled="disabled" selected="selected">{TR_BULK_ACTIONS}</option>
 			<option value="install">{TR_INSTALL}</option>
 			<option value="enable">{TR_ACTIVATE}</option>
 			<option value="disable">{TR_DEACTIVATE}</option>
@@ -98,57 +143,3 @@
 		</tbody>
 	</table>
 </form>
-<script>
-	$(function() {
-		var $dataTable;
-
-		$dataTable = $(".datatable").dataTable(
-			{
-				language: imscp_i18n.core.dataTable,
-				displayLength: 10,
-				stateSave: true,
-				pagingType: "simple"
-			}
-		);
-
-		$('#bulkActionsTop, #bulkActionsBottom').change(function () {
-			$("select[name=\"bulkActions\"] option[value=" + $(this).val() + "]").attr("selected", "selected");
-		});
-
-		$("thead :checkbox, tfoot :checkbox").change(
-			function () { $("table :checkbox").prop('checked', $(this).is(':checked')); }
-		);
-
-		$dataTable.on("click", ".plugin_error", function() {
-			var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');
-			var pluginName = $(this).attr('id');
-
-			errDialog.dialog(
-				{
-					modal: true,
-					title: pluginName + " " + imscp_i18n.core.error_details,
-					show: "clip",
-					hide: "clip",
-					minHeight: 200,
-					minWidth: 500,
-					buttons: [
-						{
-							text: imscp_i18n.core.force_retry,
-							click: function () {
-								window.location.replace("?retry=" + pluginName)
-							}
-						},
-						{
-							text: imscp_i18n.core.close,
-							click: function () {
-								$(this).dialog("close").dialog("destroy")
-							}
-						}
-					]
-				}
-			);
-
-			return false;
-		});
-	});
-</script>
