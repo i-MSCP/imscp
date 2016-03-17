@@ -185,13 +185,12 @@ class iMSCP_Plugin_Manager
      */
     public function pluginSetDirectory($pluginDir)
     {
-        if (@is_writable($pluginDir)) {
-            $this->pluginsDirectory = $pluginDir;
-            return;
+        if (!@is_writable($pluginDir)) {
+            write_log(sprintf("Plugin Manager: Directory %s doesn't exist or is not writable", $pluginDir), E_USER_ERROR);
+            throw new iMSCP_Plugin_Exception(sprintf("Plugin Manager: Directory %s doesn't exist or is not writable", $pluginDir));
         }
 
-        write_log(sprintf("Plugin Manager: Directory %s doesn't exist or is not writable", $pluginDir), E_USER_ERROR);
-        throw new iMSCP_Plugin_Exception(sprintf("Plugin Manager: Directory %s doesn't exist or is not writable", $pluginDir));
+        $this->pluginsDirectory = $pluginDir;
     }
 
     /**
@@ -462,15 +461,20 @@ class iMSCP_Plugin_Manager
             throw new iMSCP_Plugin_Exception(sprintf('Plugin Manager: Unknown plugin %s', $name));
         }
 
-        if (!$this->pluginIsLocked($name)) {
-            $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeInstallPlugin, array(
+        if ($this->pluginIsLocked($name)) {
+            return;
+        }
+
+        $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeLockPlugin, array(
+            'pluginName' => $name
+        ));
+
+        if (!$responses->isStopped()) {
+            exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(1, $name));
+            $this->pluginData[$name]['locked'] = 1;
+            $this->eventsManager->dispatch(iMSCP_Events::onAfterLockPlugin, array(
                 'pluginName' => $name
             ));
-
-            if (!$responses->isStopped()) {
-                exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(1, $name));
-                $this->pluginData[$name]['locked'] = 1;
-            }
         }
     }
 
@@ -488,15 +492,19 @@ class iMSCP_Plugin_Manager
             throw new iMSCP_Plugin_Exception(sprintf('Plugin Manager: Unknown plugin %s', $name));
         }
 
-        if ($this->pluginIsLocked($name)) {
-            $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeInstallPlugin, array(
+        if (!$this->pluginIsLocked($name)) {
+            return;
+        }
+        $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeUnlockPlugin, array(
+            'pluginName' => $name
+        ));
+
+        if (!$responses->isStopped()) {
+            exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(0, $name));
+            $this->pluginData[$name]['locked'] = 0;
+            $this->eventsManager->dispatch(iMSCP_Events::onAfterUnlockPlugin, array(
                 'pluginName' => $name
             ));
-
-            if (!$responses->isStopped()) {
-                exec_query('UPDATE plugin SET plugin_locked = ? WHERE plugin_name = ?', array(0, $name));
-                $this->pluginData[$name]['locked'] = 0;
-            }
         }
     }
 
