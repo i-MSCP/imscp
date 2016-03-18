@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-14 20:16+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-03-18 11:49+0100\n"
+"PO-Revision-Date: 2016-03-17 09:56+0000\n"
+"Last-Translator: Thom Heemstra <thom@heemstra.us>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -582,7 +582,7 @@ msgid "Add"
 msgstr "Toevoegen"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "DNS-record toevoegen"
 
 msgid "Add FTP account"
 msgstr "FTP-account toevoegen"
@@ -1342,13 +1342,13 @@ msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Klant / Databanken / Overzicht / Pas wachtwoord SQL-gebruiker aan"
 
 msgid "Client / Domain / Edit DNS resource record"
-msgstr ""
+msgstr "Klant / Domein / DNS-record bewerken"
 
 msgid "Client / Domains"
 msgstr "Klant / Domeinen"
 
 msgid "Client / Domains / Add DNS resource record"
-msgstr ""
+msgstr "Klant / Domein / DNS-record aanmaken"
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Klant / Domain / Voeg domeinalias toe"
@@ -1544,7 +1544,7 @@ msgstr "Kon bestand niet uploaden. Maximale grootte (%1$d MB) is bereikt."
 
 #, php-format
 msgid "Could not validate DNS resource record: %s"
-msgstr ""
+msgstr "Kon de DNS-record niet valideren: %s"
 
 msgid "Count default email addresses"
 msgstr "Laat standaarde-mailadres meestellen."
@@ -1667,13 +1667,13 @@ msgid "DNS record already exist."
 msgstr "DNS-record bestaat al."
 
 msgid "DNS resource record"
-msgstr ""
+msgstr "DNS-record"
 
 msgid "DNS resource record scheduled for addition."
-msgstr ""
+msgstr "DNS-record wordt toegevoegd."
 
 msgid "DNS resource record scheduled for update."
-msgstr ""
+msgstr "DNS-record wordt bijgewerkt"
 
 msgid "DNS resource records"
 msgstr "DNS-records"
@@ -1691,7 +1691,7 @@ msgid "Daily backup"
 msgstr "Dagelijkse back-up"
 
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 msgid "Data were altered. Please try again."
 msgstr "Data is tussentijds aangepast, probeer opnieuw."
@@ -1821,7 +1821,7 @@ msgid "Debugger"
 msgstr "Debugger"
 
 msgid "Default"
-msgstr ""
+msgstr "Standaard"
 
 msgid "Default language"
 msgstr "Standaardtaal"
@@ -2015,7 +2015,7 @@ msgid "Domain for which PHP Editor must act."
 msgstr "Domein waarvoor PHP-editor moet werken."
 
 msgid "Domain for which you want add this DNS resource record."
-msgstr ""
+msgstr "Domeinnaam waarvoor u deze DNS-record wilt toevoegen"
 
 msgid "Domain limit"
 msgstr "Domeinlimiet"
@@ -2109,7 +2109,7 @@ msgid "Edit"
 msgstr "Bewerken"
 
 msgid "Edit DNS resource record"
-msgstr ""
+msgstr "DNS-record bewerken"
 
 msgid "Edit FTP account"
 msgstr "FTP-account aanpassen"
@@ -2806,7 +2806,7 @@ msgstr "Ongeldige URL."
 
 #, php-format
 msgid "Invalid `%s` field."
-msgstr ""
+msgstr "Ongeldig `%s`-veld"
 
 msgid "Invalid domain name."
 msgstr "Ongeldige domeinnaam."
@@ -4700,7 +4700,7 @@ msgid "Target port"
 msgstr "Doelpoort"
 
 msgid "Target port must be a number."
-msgstr ""
+msgstr "Doelpoort moet een getal zijn."
 
 msgid "Template for Auto email successfully updated."
 msgstr "Sjabloon voor auto-e-mail succesvol bijgewerkt."
@@ -5817,7 +5817,7 @@ msgid "Zip/Postal code"
 msgstr "Postcode"
 
 msgid "Zone"
-msgstr ""
+msgstr "Zone"
 
 msgid "[New]"
 msgstr "[Nieuw]"
@@ -5833,7 +5833,7 @@ msgstr "Nederlands - Dutch"
 
 #, php-format
 msgid "`%s` field cannot be empty."
-msgstr ""
+msgstr "`%s`-veld kan niet leeg zijn."
 
 msgid "activated"
 msgstr "geactiveerd"

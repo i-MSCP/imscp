@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-14 20:16+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-03-18 11:49+0100\n"
+"PO-Revision-Date: 2016-03-14 22:31+0000\n"
+"Last-Translator: Cool <barni@telia.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -571,7 +571,7 @@ msgid "Add"
 msgstr "Lägg till"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "Lägg DNS-resurspost"
 
 msgid "Add FTP account"
 msgstr "Lägg till ett ftp konto"
@@ -1331,13 +1331,13 @@ msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Kund / Databas / Översikt / Uppdaterar SQL Användarens lösenord"
 
 msgid "Client / Domain / Edit DNS resource record"
-msgstr ""
+msgstr "Klient / domän / Edit DNS-resurspost"
 
 msgid "Client / Domains"
 msgstr "Kund / Domainer"
 
 msgid "Client / Domains / Add DNS resource record"
-msgstr ""
+msgstr "Klient / domäner / Lägg till DNS-resurspost"
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Beställare / domäner / Lägg till domän Alias"
@@ -1533,7 +1533,7 @@ msgstr "Kunde inte ladda upp filen. Max upload filesize (%1$d MB) har nåtts."
 
 #, php-format
 msgid "Could not validate DNS resource record: %s"
-msgstr ""
+msgstr "Det gick inte att validera DNS-resursposter: %s"
 
 msgid "Count default email addresses"
 msgstr "Räkna standard e-postadresser"
@@ -1656,13 +1656,13 @@ msgid "DNS record already exist."
 msgstr "DNS-posten finns redan."
 
 msgid "DNS resource record"
-msgstr ""
+msgstr "DNS-resurspost"
 
 msgid "DNS resource record scheduled for addition."
-msgstr ""
+msgstr "DNS resurspost planerad till tillägg."
 
 msgid "DNS resource record scheduled for update."
-msgstr ""
+msgstr "DNS resurspost planerad för uppdatering."
 
 msgid "DNS resource records"
 msgstr "DNS-urkunder för resursen"
@@ -1680,7 +1680,7 @@ msgid "Daily backup"
 msgstr "Daglig backup"
 
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 msgid "Data were altered. Please try again."
 msgstr "Data ändras. Var god försök igen."
@@ -1810,7 +1810,7 @@ msgid "Debugger"
 msgstr "Debugger"
 
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 msgid "Default language"
 msgstr "Standardspråk"
@@ -2004,7 +2004,7 @@ msgid "Domain for which PHP Editor must act."
 msgstr "Domain for which PHP Editor must act."
 
 msgid "Domain for which you want add this DNS resource record."
-msgstr ""
+msgstr "Domän som du inte kan lägga till DNS-resursposten."
 
 msgid "Domain limit"
 msgstr "Domain Limit"
@@ -2098,7 +2098,7 @@ msgid "Edit"
 msgstr "Redigera"
 
 msgid "Edit DNS resource record"
-msgstr ""
+msgstr "Redigera DNS-resurspost"
 
 msgid "Edit FTP account"
 msgstr "Ändra Ftp konto"
@@ -2795,7 +2795,7 @@ msgstr "Invalid URL."
 
 #, php-format
 msgid "Invalid `%s` field."
-msgstr ""
+msgstr "Ogiltig `%s` fält."
 
 msgid "Invalid domain name."
 msgstr "Ogiltigt domännamn."
@@ -4689,7 +4689,7 @@ msgid "Target port"
 msgstr "Målport"
 
 msgid "Target port must be a number."
-msgstr ""
+msgstr "Target port måste vara ett tal."
 
 msgid "Template for Auto email successfully updated."
 msgstr "Mall för automatisk e-post uppdaterats."
@@ -5806,7 +5806,7 @@ msgid "Zip/Postal code"
 msgstr "Postnr"
 
 msgid "Zone"
-msgstr ""
+msgstr "Zon"
 
 msgid "[New]"
 msgstr "[New]"
@@ -5822,7 +5822,7 @@ msgstr "Svenska - Swedish"
 
 #, php-format
 msgid "`%s` field cannot be empty."
-msgstr ""
+msgstr "`%s` fält inte kan vara tom."
 
 msgid "activated"
 msgstr "aktiverad"

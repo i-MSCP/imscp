@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-14 20:16+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-18 11:49+0100\n"
+"PO-Revision-Date: 2016-03-14 19:23+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -583,7 +583,7 @@ msgid "Add"
 msgstr "Ajouter"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "Ajouter un enregistrement DNS personnalisé"
 
 msgid "Add FTP account"
 msgstr "Ajouter un compte FTP"
@@ -1343,13 +1343,13 @@ msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Client / Bases de données / Mise à jour du mot de passe d'un utilisateur SQL"
 
 msgid "Client / Domain / Edit DNS resource record"
-msgstr ""
+msgstr "Client / Domaines / Éditer un enregistrement DNS personnalisé"
 
 msgid "Client / Domains"
 msgstr "Client / Domaines"
 
 msgid "Client / Domains / Add DNS resource record"
-msgstr ""
+msgstr "Client / Domaines / Éditer un enregistrement DNS personnalisé"
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Client / Domaines / Ajouter un alias de domaine"
@@ -1545,7 +1545,7 @@ msgstr "Impossible de téléverser le fichier. La taille maximale de fichier (%1
 
 #, php-format
 msgid "Could not validate DNS resource record: %s"
-msgstr ""
+msgstr "L'enregistrement DNS n'est pas valide: %s"
 
 msgid "Count default email addresses"
 msgstr "Inclure les adresses e-mail par défaut dans les limites d'e-mail"
@@ -1668,13 +1668,13 @@ msgid "DNS record already exist."
 msgstr "L'enrengistrement DNS existe déja."
 
 msgid "DNS resource record"
-msgstr ""
+msgstr "Enregistrements de resource DNS"
 
 msgid "DNS resource record scheduled for addition."
-msgstr ""
+msgstr "L'enregistrement DNS va être ajouté."
 
 msgid "DNS resource record scheduled for update."
-msgstr ""
+msgstr "L'enregistrement DNS va être mis à jour."
 
 msgid "DNS resource records"
 msgstr "Enregistrements de resource DNS"
@@ -1692,7 +1692,7 @@ msgid "Daily backup"
 msgstr "Sauvegardes journalières"
 
 msgid "Data"
-msgstr ""
+msgstr "Données"
 
 msgid "Data were altered. Please try again."
 msgstr "Les données ont été altérées. Veuillez ré-essayer."
@@ -1822,7 +1822,7 @@ msgid "Debugger"
 msgstr "Debogueur"
 
 msgid "Default"
-msgstr ""
+msgstr "Défaut"
 
 msgid "Default language"
 msgstr "Langue par défaut"
@@ -2016,7 +2016,7 @@ msgid "Domain for which PHP Editor must act."
 msgstr "Domaine pour lequel l'éditeur PHP doit agir."
 
 msgid "Domain for which you want add this DNS resource record."
-msgstr ""
+msgstr "Domain pour lequel vous voulez ajouter cet enregistrement DNS."
 
 msgid "Domain limit"
 msgstr "Limite du domaine"
@@ -2110,7 +2110,7 @@ msgid "Edit"
 msgstr "Editer"
 
 msgid "Edit DNS resource record"
-msgstr ""
+msgstr "Editer l'enregistrement DNS personalisé"
 
 msgid "Edit FTP account"
 msgstr "Éditer le compte FTP"
@@ -2807,7 +2807,7 @@ msgstr "URL invalide."
 
 #, php-format
 msgid "Invalid `%s` field."
-msgstr ""
+msgstr "Le champ `%s` n'est pas valide."
 
 msgid "Invalid domain name."
 msgstr "Nom de domaine invalide."
@@ -4701,7 +4701,7 @@ msgid "Target port"
 msgstr "Port cible"
 
 msgid "Target port must be a number."
-msgstr ""
+msgstr "Le port doit être un nombre."
 
 msgid "Template for Auto email successfully updated."
 msgstr "le modèle a été mis à jour."
@@ -5818,7 +5818,7 @@ msgid "Zip/Postal code"
 msgstr "Code postal"
 
 msgid "Zone"
-msgstr ""
+msgstr "Zone DNS"
 
 msgid "[New]"
 msgstr "[Nouveau]"
@@ -5834,7 +5834,7 @@ msgstr "Français (France) - French (France)"
 
 #, php-format
 msgid "`%s` field cannot be empty."
-msgstr ""
+msgstr "Le champ `%s` ne peut pas être vide."
 
 msgid "activated"
 msgstr "activé"
