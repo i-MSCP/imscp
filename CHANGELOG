@@ -11,7 +11,7 @@ BACKEND
 	Fixed: Many inconsistencies in iMSCP::Getopt
 
 CONFIG
-	Added: MAX_INSTANCES parameter in proftpd/proftpd.data file
+	Added: MAX_INSTANCES and MAX_CLIENT_PER_HOST parameters in proftpd/proftpd.data file
 	Changed: Increased default limits for ProFTPD/VsFTPd
 
 DATABASE

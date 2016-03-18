@@ -12,8 +12,10 @@ VSFTPD_VERSION =
 DATABASE_USER =
 DATABASE_PASSWORD =
 
-# You can edit the parameters bellow
-# See vsftpd.conf(5)
+#
+## You can edit the parameters bellow (See vsftpd.conf(5))
+#
+
 FTPD_BANNER = Welcome to i-MSCP Ftp server
 PASSV_ENABLE = YES
 FTP_MAX_CLIENTS = 100

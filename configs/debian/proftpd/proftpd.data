@@ -12,5 +12,12 @@ MIN_GID = 1001
 DATABASE_USER =
 DATABASE_PASSWORD =
 
-# You can edit the parameters bellow
+#
+## You can edit the parameters bellow
+#
+
+# See http://www.proftpd.org/docs/directives/linked/config_ref_MaxInstances.html
 MAX_INSTANCES = 100
+
+# See http://www.proftpd.org/docs/directives/linked/config_ref_MaxClientsPerHost.html
+MAX_CLIENT_PER_HOST = none
