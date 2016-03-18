@@ -10,6 +10,10 @@ BACKEND
 	Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached
 	Fixed: Many inconsistencies in iMSCP::Getopt
 
+CONFIG
+	Added: MAX_INSTANCES parameter in proftpd/proftpd.data file
+	Changed: Increased default limits for ProFTPD/VsFTPd
+
 DATABASE
 	Added: SPF type to the list of allowed DNS resource records
 	Changed: domain_dns.domain_dns and domain_dns.domain_text column types from varchar to text

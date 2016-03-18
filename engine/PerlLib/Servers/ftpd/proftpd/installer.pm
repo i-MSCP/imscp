@@ -435,7 +435,8 @@ sub _buildConfigFile
 		CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 		CERTIFICATE => 'imscp_services',
 		TLSOPTIONS => version->parse("$self->{'config'}->{'PROFTPD_VERSION'}") >= version->parse('1.3.3')
-			? 'NoCertRequest NoSessionReuseRequired' : 'NoCertRequest'
+			? 'NoCertRequest NoSessionReuseRequired' : 'NoCertRequest',
+		MAX_INSTANCES => $self->{'config'}->{'MAX_INSTANCES'}
 	};
 
 	my $rs = $self->{'eventManager'}->trigger('onLoadTemplate', 'proftpd', 'proftpd.conf', \ my $cfgTpl, $data);

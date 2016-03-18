@@ -11,3 +11,6 @@ MIN_GID = 1001
 
 DATABASE_USER =
 DATABASE_PASSWORD =
+
+# You can edit the parameters bellow
+MAX_INSTANCES = 100
