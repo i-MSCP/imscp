@@ -35,12 +35,15 @@ my %commands = (
 );
 
 # Paths in which service units must be searched
-my @paths = (
+my @unitFilePaths = (
     '/etc/systemd/system',
     '/lib/systemd/system',
     '/usr/local/lib/systemd/system',
     '/usr/lib/systemd/system'
 );
+
+# Cache for unit file paths
+my %unitFilePathsCache = ();
 
 =head1 DESCRIPTION
 
@@ -115,9 +118,16 @@ sub remove
 {
     my ($self, $service) = @_;
 
-    $self->stop($service) && $self->disable($service)
-        && iMSCP::File->new(filename => $self->getUnitFilePath($service))->delFile() == 0
-        && $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+    return 0 unless $self->stop($service) && $self->disable($service);
+
+    local $@;
+
+    if (my $unitFilePath = eval { $self->getUnitFilePath($service); }) {
+        delete $unitFilePathsCache{$service};
+        return 0 if iMSCP::File->new(filename => $unitFilePath)->delFile();
+    }
+
+    $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
 }
 
 =item start($service)
@@ -262,9 +272,11 @@ sub _searchUnitFile
 {
     my ($self, $service) = @_;
 
-    for my $path(@paths) {
+    return $unitFilePathsCache{$service} if $unitFilePathsCache{$service};
+
+    for my $path(@unitFilePaths) {
         my $filepath = File::Spec->join($path, $service.'.service');
-        return $filepath if -f $filepath;
+        return $unitFilePathsCache{$service} = $filepath if -f $filepath;
     }
 
     die(sprintf('Could not find systemd service unit file for the %s service', $service));

@@ -145,7 +145,7 @@ sub remove
     my ($self, $service) = @_;
 
     $self->stop($service) && $self->_exec($commands{'update-rc.d'}, '-f', $service, 'remove') == 0
-        && iMSCP::File->new(filename => $self->getInitScriptPath($service))->delFile() == 0;
+        && $self->SUPER::remove($service);
 }
 
 =item hasService($service)

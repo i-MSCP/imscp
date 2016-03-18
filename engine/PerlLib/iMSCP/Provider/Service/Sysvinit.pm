@@ -29,11 +29,12 @@ use Carp;
 use File::Spec;
 use iMSCP::Debug 'error';
 use iMSCP::Execute;
+use iMSCP::File;
 use iMSCP::LsbRelease;
 use Scalar::Defer;
 
 # Paths in which sysvinit script must be searched
-my $paths = lazy {
+my $initScriptPaths = lazy {
     my $id = iMSCP::LsbRelease->getInstance()->getId('short');
 
     if (grep($_ eq $id, ( 'FreeBSD', 'DragonFly' ))) {
@@ -46,6 +47,9 @@ my $paths = lazy {
         [ '/etc/init.d' ];
     }
 };
+
+# Cache for init script paths
+my %initScriptPathsCache = ();
 
 =head1 DESCRIPTION
 
@@ -130,7 +134,16 @@ sub disable
 
 sub remove
 {
-    confess 'not implemented';
+    my ($self, $service) = @_;
+
+    local $@;
+
+    if (my $initScriptPath = eval { $self->getInitScriptPath($service); }) {
+        delete $initScriptPathsCache{$service};
+        return 0 if iMSCP::File->new(filename => $initScriptPath)->delFile();
+    }
+
+    1;
 }
 
 =item start($service)
@@ -220,8 +233,6 @@ sub isRunning
 {
     my ($self, $service) = @_;
 
-    # FIXME: Assumption is made that any init script is providing status command which is bad...
-    # TODO: Fallback using processes table output should be implemented
     $self->_exec($self->getInitScriptPath($service), 'status') == 0;
 }
 
@@ -275,14 +286,20 @@ sub _isSysvinit
 
 sub _searchInitScript
 {
-    my ($self, $service, $flush) = @_;
+    my ($self, $service) = @_;
 
-    for my $path(@{$paths}) {
+    return $initScriptPathsCache{$service} if $initScriptPathsCache{$service};
+
+    for my $path(@{$initScriptPaths}) {
         my $filepath = File::Spec->join($path, $service);
-        return $filepath if -f $filepath;
+        $initScriptPathsCache{$service} = $filepath if -f $filepath;
 
-        $filepath .= '.sh';
-        return $filepath if -f $filepath;
+        unless ($initScriptPathsCache{$service}) {
+            $filepath .= '.sh';
+            $initScriptPathsCache{$service} = $filepath if -f $filepath;
+        }
+
+        return $initScriptPathsCache{$service} if $initScriptPathsCache{$service};
     }
 
     die(sprintf('Could not find sysvinit script for the %s service', $service));

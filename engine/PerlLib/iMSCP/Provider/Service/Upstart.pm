@@ -35,7 +35,7 @@ use parent 'iMSCP::Provider::Service::Sysvinit';
 delete $ENV{'UPSTART_SESSION'}; # See IP-1514
 
 # Private variables
-my $VERSION;
+my $upstartVersion;
 my $START_ON = qr/^\s*start\s+on/;
 my $COMMENTED_START_ON = qr/^\s*#+\s*start\s+on/;
 my $MANUAL = qr/^\s*manual\s*$/;
@@ -51,7 +51,10 @@ my %commands = (
 );
 
 # Paths where job files must be searched
-my @paths = ( '/etc/init' );
+my @jobFilePaths = ( '/etc/init' );
+
+# Cache for job file paths
+my %jobFilesCache = ();
 
 =head1 DESCRIPTION
 
@@ -161,8 +164,9 @@ sub remove
     local $@;
 
     for my $jobFileType('conf', 'override') {
-        if ((my $filepath = eval { $self->getJobFilePath($service, $jobFileType); })) {
-            return if iMSCP::File->new(filename => $filepath)->delFile();
+        if (my $filepath = eval { $self->getJobFilePath($service, $jobFileType); }) {
+            delete $jobFilesCache{$service.'.'.$jobFileType};
+            return 0 if iMSCP::File->new(filename => $filepath)->delFile();
         }
     }
 
@@ -280,7 +284,7 @@ sub isRunning
     my ($self, $service) = @_;
 
     if ($self->_isUpstart($service)) {
-        execute("$commands{'status'} $service", \ my $stdout, \ my $stderr);
+        execute("$commands{'status'} $service", \my $stdout, \my $stderr);
         return $stdout =~ m%start/%;
     }
 
@@ -321,11 +325,8 @@ sub getJobFilePath
 
 sub _getVersion
 {
-    unless ($VERSION) {
-        ($VERSION) = `initctl --version` =~ /initctl \(upstart\s+([^\)]*)\)/;
-    }
-
-    $VERSION;
+    ($upstartVersion) = `initctl --version` =~ /initctl \(upstart\s+([^\)]*)\)/ unless $upstartVersion;
+    $upstartVersion;
 }
 
 =item _isUpstart($service)
@@ -665,13 +666,13 @@ sub _commentStartOnStanza
     my $parentheses = 0;
 
     join '', map {
-            if (/$START_ON/ || $parentheses > 0) {
-                $parentheses += $self->_countUnbalancedParentheses($self->_removeTrailingComments($_));
-                '#'.$_;
-            } else {
-                $_;
-            }
-        } split /^/, $text;
+        if (/$START_ON/ || $parentheses > 0) {
+            $parentheses += $self->_countUnbalancedParentheses($self->_removeTrailingComments($_));
+            '#'.$_;
+        } else {
+            $_;
+        }
+    } split /^/, $text;
 }
 
 =item _uncommentStartOnStanza($text)
@@ -690,15 +691,15 @@ sub _uncommentStartOnStanza
     my $parentheses = 0;
 
     join '', map {
-            if (/$COMMENTED_START_ON/ || $parentheses > 0) {
-                # If there are more opening parentheses than closing parentheses, we need to comment out a multiline
+        if (/$COMMENTED_START_ON/ || $parentheses > 0) {
+            # If there are more opening parentheses than closing parentheses, we need to comment out a multiline
                 # 'start on' stanza
-                $parentheses += $self->_countUnbalancedParentheses($self->_removeTrailingCommentsFromCommentedLine($_));
-                $self->_uncomment($_);
-            } else {
-                $_;
-            }
-        } split /^/, $text;
+            $parentheses += $self->_countUnbalancedParentheses($self->_removeTrailingCommentsFromCommentedLine($_));
+            $self->_uncomment($_);
+        } else {
+            $_;
+        }
+    } split /^/, $text;
 }
 
 =item _extractStartOnStanza($text)
@@ -717,11 +718,11 @@ sub _extractStartOnStanza
     my $parentheses = 0;
 
     join '', map {
-            if (/$START_ON/ || $parentheses > 0) {
-                $parentheses += $self->_countUnbalancedParentheses($self->_removeTrailingComments($_));
-                $_;
-            }
-        } split /^/, $text;
+        if (/$START_ON/ || $parentheses > 0) {
+            $parentheses += $self->_countUnbalancedParentheses($self->_removeTrailingComments($_));
+            $_;
+        }
+    } split /^/, $text;
 }
 
 =item _addDefaultStartOnStanza($text)
@@ -768,11 +769,13 @@ sub _searchJobFile
 {
     my ($self, $service, $jobFileType) = @_;
 
-    my $jobFile = "$service.".($jobFileType || 'conf');
+    my $jobFile = $service.'.'.($jobFileType || 'conf');
 
-    for my $path(@paths) {
+    return $jobFilesCache{$jobFile} if $jobFilesCache{$jobFile};
+
+    for my $path(@jobFilePaths) {
         my $filepath = File::Spec->join($path, $jobFile);
-        return $filepath if -f $filepath;
+        return $jobFilesCache{$jobFile} = $filepath if -f $filepath;
     }
 
     die(sprintf('Could not find the upstart %s job file', $jobFile));
@@ -834,8 +837,8 @@ sub _writeFile
     my $file = iMSCP::File->new(filename => $filepath);
 
     $file->set($fileContent) == 0 && $file->save() == 0 && $file->mode(0644) == 0 or die(sprintf(
-            'Could not write %s file', $filepath
-        ));
+        'Could not write %s file', $filepath
+    ));
 }
 
 =back

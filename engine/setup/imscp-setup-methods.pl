@@ -1995,7 +1995,7 @@ sub setupRestartServices
 	my $serviceMngr = iMSCP::Service->getInstance();
 	unshift @services, (
 		[ sub { $serviceMngr->restart('imscp_traffic'); 0; }, 'i-MSCP Traffic Logger' ],
-		[ sub { $serviceMngr->restart('imscp_daemon'); 0; }, 'i-MSCP Daemon' ]
+		[ sub { $serviceMngr->start('imscp_daemon'); 0; }, 'i-MSCP Daemon' ]
 	);
 
 	startDetail();
@@ -2003,7 +2003,7 @@ sub setupRestartServices
 	my $nbSteps = @services;
 	my $step = 1;
 	for (@services) {
-		$rs = step($_->[0], sprintf('Restarting %s service...', $_->[1]), $nbSteps, $step);
+		$rs = step($_->[0], sprintf('Restarting/Starting %s service...', $_->[1]), $nbSteps, $step);
 		return $rs if $rs;
 		$step++;
 	}

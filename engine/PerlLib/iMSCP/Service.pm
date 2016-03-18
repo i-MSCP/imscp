@@ -369,19 +369,16 @@ sub _init
 sub _detectInit
 {
 	my $exec = iMSCP::ProgramFinder::find('strings') or die(sprintf(
-		'%s: Could not find `%s` executable in %s', __PACKAGE__, 'string', $ENV{PATH}
+		'%s: Could not find `%s` executable in %s', __PACKAGE__, 'string', $ENV{'PATH'}
 	));
 
-	my $init;
-	for my $initCandidate(qw/systemd upstart sysvinit/) {
-		next if execute("$exec /proc/1/exe | grep -q $initCandidate", \my $stdout, \my $stderr);
-		$init = $initCandidate;
-		last;
+	execute("$exec /proc/1/exe | egrep ".escapeShell('systemd|sysvinit|upstart'), \my $stdout, \my $stderr);
+	if ($stdout && $stdout =~ /(systemd|upstart|sysvinit)/) {
+		debug(sprintf('%s init system has been detected', $1));
+		return $1
 	}
 
-	$init or die('Could not guess init system used on your system');
-	debug(sprintf('%s init system has been detected', $init));
-	$init;
+	die('Could not guess init system used on your system');
 }
 
 =item _getLastError()
