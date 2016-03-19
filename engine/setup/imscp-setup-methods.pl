@@ -1678,25 +1678,6 @@ sub setupRebuildCustomerFiles
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = iMSCP::Getopt->debug ? 1 : 0;
 
-#	startDetail();
-#
-#	my $stderr;
-#	$rs = executeNoWait(
-#		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup" . (
-#			iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? ' --verbose' : ''
-#		),
-#		(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose)
-#			? sub { my $str = $_[0]; print $1 while ($$str =~ s/^(.*\n)//); }
-#			: sub { my $str = $_[0]; step(undef, $1, $2, $3) while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//); },
-#		sub { my $str = $_[0]; $stderr .= $1 while ($$str =~ s/^(.*\n)//); }
-#	);
-#
-#	endDetail();
-#
-#	iMSCP::Bootstrapper->getInstance()->lock();
-#	$main::imscpConfig{'DEBUG'} = $debug;
-#	error(sprintf("\nError while rebuilding customers files: %s", $stderr)) if $stderr && $rs;
-#	error('Error while rebuilding customers files: Unknown error') if $rs && !$stderr;
 	startDetail();
 	iMSCP::DbTasksProcessor->getInstance( mode => 'setup' )->process();
 	endDetail();
