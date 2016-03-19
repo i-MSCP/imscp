@@ -303,18 +303,6 @@ sub process
         newDebug('imscp_sw_mngr_engine');
 
         for (values %{$rdata}) {
-            my (
-                $swDomainId, $swAliasDomainId, $swSubdomainId, $swAliasSubdomainId, $swSoftwareId, $swPath,
-                $swSoftwarePrefix, $swDatabase, $swDatabaseUser, $swDatabaseTmpPwd, $swInstallUsername,
-                $swInstallPassword, $swInstallEmail, $swSoftwareStatus, $swSoftwareDepot, $swSoftwareMasterId
-            ) = (
-                $_->{'domain_id'}, $_->{'alias_id'}, $_->{'subdomain_id'}, $_->{'subdomain_alias_id'},
-                $_->{'software_id'}, $_->{'path'}, $_->{'software_prefix'}, $_->{'db'}, $_->{'database_user'},
-                $_->{'database_tmp_pwd'}, $_->{'install_username'}, $_->{'install_password'}, $_->{'install_email'},
-                $_->{'software_status'}, $_->{'software_depot'}, $_->{'software_master_id'}
-            );
-
-            # Encoding data to push to another script
             my $pushString = encode_base64(
                 encode_json(
                     [
@@ -333,8 +321,7 @@ sub process
                 "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr ".escapeShell($pushString), \$stdout, \$stderr
             ) == 0 or die($stderr || 'Unknown error');
             debug($stdout) if $stdout;
-
-            execute("rm -fR /tmp/sw-$_->{'domain_id'}-$swSoftwareId", \$stdout, \$stderr) == 0 or die(
+            execute("rm -fR /tmp/sw-$_->{'domain_id'}-$_->{'software_id'}", \$stdout, \$stderr) == 0 or die(
                 $stderr || 'Unknown error'
             );
             debug($stdout) if $stdout;
@@ -372,7 +359,6 @@ sub process
                 \$stderr
             ) == 0 or die( $stderr || 'Unknown error' );
             debug($stdout) if $stdout;
-
             execute("rm -fR /tmp/sw-$_->{'software_archive'}-$_->{'software_id'}", \$stdout, \$stderr) == 0 or die(
                 $stderr || 'Unknown error'
             );
