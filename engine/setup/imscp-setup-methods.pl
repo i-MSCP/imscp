@@ -34,6 +34,7 @@ use iMSCP::Dialog;
 use iMSCP::Stepper;
 use iMSCP::Crypt qw/md5 encryptBlowfishCBC decryptBlowfishCBC/;
 use iMSCP::Database;
+use iMSCP::DbTasksProcessor;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Execute;
@@ -393,7 +394,7 @@ Please enter your public IP address:$msg
 							return 1;
 						}
 
-						for(keys %$resellerIps){
+						for(keys %$resellerIps) {
 							my @resellerIps = split ';';
 
 							for(@resellerIps) {
@@ -1336,7 +1337,7 @@ sub setupCreateDatabase
 # Convenience method allowing to create or update a database schema
 sub setupImportSqlSchema
 {
-	my ($database, $file) = @_;
+	my ($db, $file) = @_;
 
 	my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupImportSqlSchema', \$file);
 
@@ -1353,15 +1354,16 @@ sub setupImportSqlSchema
 	startDetail();
 
 	my $step = 1;
-	for (@queries) {
-		my $rs = $database->doQuery('dummy', $_);
-		unless(ref $rs eq 'HASH') {
-			error(sprintf('Could not execute SQL query: %s', $rs));
-			return 1;
-		}
-
-		my $msg = $queries[$step] ? "$title\n$queries[$step]" : $title;
-		step('', $msg, scalar @queries, $step);
+	for my $query(@queries) {
+		step(
+			sub {
+				my $qrs = $db->doQuery('dummy', $query);
+				unless(ref $qrs eq 'HASH') {
+					error(sprintf('Could not execute SQL query: %s', $qrs));
+					return 1;
+				}
+				0;
+		}, $queries[$step] ? "$title\n$queries[$step]" : $title, scalar @queries, $step);
 		$step++;
 	}
 
@@ -1676,25 +1678,29 @@ sub setupRebuildCustomerFiles
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = iMSCP::Getopt->debug ? 1 : 0;
 
+#	startDetail();
+#
+#	my $stderr;
+#	$rs = executeNoWait(
+#		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup" . (
+#			iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? ' --verbose' : ''
+#		),
+#		(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose)
+#			? sub { my $str = $_[0]; print $1 while ($$str =~ s/^(.*\n)//); }
+#			: sub { my $str = $_[0]; step(undef, $1, $2, $3) while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//); },
+#		sub { my $str = $_[0]; $stderr .= $1 while ($$str =~ s/^(.*\n)//); }
+#	);
+#
+#	endDetail();
+#
+#	iMSCP::Bootstrapper->getInstance()->lock();
+#	$main::imscpConfig{'DEBUG'} = $debug;
+#	error(sprintf("\nError while rebuilding customers files: %s", $stderr)) if $stderr && $rs;
+#	error('Error while rebuilding customers files: Unknown error') if $rs && !$stderr;
 	startDetail();
-
-	my $stderr;
-	$rs = executeNoWait(
-		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr --setup" . (
-			iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? ' --verbose' : ''
-		),
-		(iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose)
-			? sub { my $str = $_[0]; print $1 while ($$str =~ s/^(.*\n)//); }
-			: sub { my $str = $_[0]; step(undef, $1, $2, $3) while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//); },
-		sub { my $str = $_[0]; $stderr .= $1 while ($$str =~ s/^(.*\n)//); }
-	);
-
+	iMSCP::DbTasksProcessor->getInstance( mode => 'setup' )->process();
 	endDetail();
 
-	iMSCP::Bootstrapper->getInstance()->lock();
-	$main::imscpConfig{'DEBUG'} = $debug;
-	error(sprintf("\nError while rebuilding customers files: %s", $stderr)) if $stderr && $rs;
-	error('Error while rebuilding customers files: Unknown error') if $rs && !$stderr;
 	$rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
 }
 

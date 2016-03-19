@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
-use fields qw /reconfigure noprompt preseed listener cleanPackageCache skipPackageUpdate debug verbose/;
+use fields qw /cleanPackageCache debug listener noprompt preseed reconfigure skipPackageUpdate verbose/;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -67,15 +67,15 @@ sub parse
         print STDERR wrap('', '', <<EOF);
 
 $usage
- -r,    --reconfigure [item]    Type --reconfigure help.
+ -a     --skip-package-update   Skip i-MSCP packages update.
+ -c     --clean-package-cache   Cleanup i-MSCP package cache.
+ -d,    --debug                 Force debug mode.
+ -h,-?  --help                  Show this help.
+ -l,    --listener <file>       Path to listener file.
  -n,    --noprompt              Switch to non-interactive mode.
  -p,    --preseed <file>        Path to preseed file.
- -l,    --listener <file>       Path to listener file.
- -c     --clean-package-cache   Cleanup i-MSCP composer package cache.
- -a     --skip-package-update   Skip i-MSCP composer packages update.
- -d,    --debug                 Force debug mode.
+ -r,    --reconfigure [item]    Type `help` for list of allowed items.
  -v     --verbose               Enable verbose mode
- -?,-h  --help                  Show this help.
 
 $optionHelp
 EOF
@@ -95,15 +95,15 @@ EOF
     require Getopt::Long;
     Getopt::Long::Configure('bundling');
     Getopt::Long::GetOptions(
-        'reconfigure|r:s', sub { $class->reconfigure($_[1]) },
+        'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
+        'debug|d', sub { $options->{'debug'} = 1 },
+        'help|?|h', sub { $class->showUsage() },
+        'listener|l=s', sub { $class->listener($_[1]) },
         'noprompt|n', sub { $options->{'noprompt'} = 1 },
         'preseed|p=s', sub { $class->preseed($_[1]) },
-        'listener|l=s', sub { $class->listener($_[1]) },
-        'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
+        'reconfigure|r:s', sub { $class->reconfigure($_[1]) },
         'skip-package-update|a', sub { $options->{'skipPackageUpdate'} = 1 },
-        'debug|d', sub { $options->{'debug'} = 1 },
         'verbose|v', sub { $options->{'verbose'} = 1 },
-        'help|?|h', sub { $class->showUsage() },
         @options,
     ) or $class->showUsage(1);
 
