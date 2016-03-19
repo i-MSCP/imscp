@@ -27,14 +27,12 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Dialog;
-use Scalar::Defer;
 use iMSCP::Getopt;
 use parent 'Exporter';
 
 our @EXPORT = qw/startDetail endDetail step/;
 
 # Package variables
-my $dialog = lazy { iMSCP::Dialog->getInstance() };
 my @all = ();
 my $last = '';
 
@@ -58,7 +56,7 @@ sub startDetail
 {
     return 0 unless iMSCP::Getopt->noprompt;
 
-    $dialog->endGauge(); # Needed to ensure refresh (first item)
+    iMSCP::Dialog->getInstance()->endGauge(); # Needed to ensure refresh (first item)
     push @all, $last;
     0;
 }
@@ -97,9 +95,9 @@ sub step
     unless(iMSCP::Getopt->noprompt) {
         $last = sprintf( "\n\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
         my $msg = @all ? join( "\n", @all )."\n".$last : $last;
-        $dialog->hasGauge()
-            ? $dialog->setGauge( int( $nStep * 100 / $nSteps ), $msg )
-            : $dialog->startGauge( $msg, int( $nStep * 100 / $nSteps ) );
+        iMSCP::Dialog->getInstance()->hasGauge()
+            ? iMSCP::Dialog->getInstance()->setGauge(int($nStep * 100 / $nSteps), $msg )
+            : iMSCP::Dialog->getInstance()->startGauge($msg, int($nStep * 100 / $nSteps));
     }
 
     return 0 unless defined $code;
@@ -118,8 +116,8 @@ sub step
     $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
 
     unless(iMSCP::Getopt->noprompt) {
-        $dialog->endGauge();
-        $dialog->msgbox( <<EOF );
+        iMSCP::Dialog->getInstance()->endGauge();
+        iMSCP::Dialog->getInstance()->msgbox(<<EOF);
 
 \\Z1[ERROR]\\Zn
 
