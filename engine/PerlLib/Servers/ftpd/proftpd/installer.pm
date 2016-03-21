@@ -491,6 +491,22 @@ EOF
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->copyFile( $self->{'config'}->{'FTPD_CONF_FILE'} );
+    return $rs if $rs;
+
+    if (-f "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf") {
+        $file = iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" );
+        $cfgTpl = $file->get();
+        unless (defined $cfgTpl) {
+            error( sprintf( 'Could not read %s file', "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" ) );
+            return 1;
+        }
+
+        $cfgTpl =~ s/^(LoadModule\s+mod_tls_memcache.c)/#$1/m;
+        $rs = $file->set( $cfgTpl );
+        $rs ||= $file->save();
+    }
+
+    $rs;
 }
 
 =item _saveConf()

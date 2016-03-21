@@ -5,22 +5,21 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Added: beforeMountHomedir and afterMountHomedir events
     Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
-    Added: Debug info for loading of listener file (Event::Manager)
+    Added: Debug info for loading of listener files (Event::Manager)
     Backported: iMSCP::DbTasksProcessor from 1.3.x branch - Allows to process db tasks without spawning new process
-    Backported: imscp-mountall-mngr (as imscp-mountall) from 1.3.x branch - Mount i-MSCP filesystems on server reboot
+    Backported: imscp-mountall-mngr (as imscp-mountall) from 1.3.x branch - Mount i-MSCP file systems on server reboot
     Backported:: iMSCP::Mount library from 1.3.x branch - Library for mounting/unmounting file systems
-    Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached
+    Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached (init providers)
     Fixed: Many inconsistencies in iMSCP::Getopt
     Removed: beforeDispatchRequest and afterDispatchRequest events
-    Removed: imscp-httpd-logs-mngr script
+    Removed: imscp-httpd-logs-mngr script (Apache2 logs dirctories are now mounted with imscp_mountall service)
     Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid external commands)
 
 CONFIG
     Added: DISTRO_ID, DISTRO_CODENAME and DISTRO_RELEASE parameters in imscp.conf file
-    Added: MAX_INSTANCES and MAX_CLIENT_PER_HOST parameters in proftpd/proftpd.data file
+    Added: MAX_INSTANCES, MAX_CLIENT_PER_HOST and FTPD_CONF_DIR parameters in proftpd/proftpd.data file
     Added: MOUNT_CUSTOMER_LOGS parameter in apache/apache.data file (allows to disable logs bind mounts)
     Changed: Increased default limits for ProFTPD/VsFTPd
 
@@ -33,10 +32,10 @@ FRONTEND
     Added: SPF DNS resource record type (validated as a TXT record)
     Changed: The `type` field cannot longer be changed when editing a DNS resource record
     Fixed: Cannot add DKIM/DMARC DNS resource records
-    Fixed: Customer must be allowed to specify custom TTL value for any DNS resource record
-    Fixed: Customer must be allowed to specify `name` field of any DNS resource record
+    Fixed: Customer must be allowed to set custom TTL value for any DNS resource record
+    Fixed: Customer must be allowed to set `name` field of any DNS resource record
     Fixed: IDNs are shown in ASCII in SSL certificate management interface
-    Fixed: iMSCP_Update_Database::addIndex() doesn't allow to specify index length
+    Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length
     Rewritten: FTP chooser interface to avoid usage of iframe
 
 INSTALLER
@@ -54,7 +53,9 @@ PLUGINS
 
 SERVERS
     Added: Own i-MSCP logrorate configuration file for ProFTPD (xferlog file don't need to be rotated)
+    Added: Own i-MSCP ProFTPD sysvinit script to solve #IP-1402 - (Wheezy, Precise, Trusty)
     Fixed: Bad regexp in getTraffic() method leading to unmatching of traffic data (VsFTPd)
+    Fixed: Disabled mod_tls_memcache.c module to avoid weird notice on restart (ProFTPD)
     Fixed: ON|OFF string not recognized as boolean value in mysql conffile (MySQL)
     Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead.
     Fixed: Useless reload of VsFTPd when adding/removing an FTP user (privileges are given by session)
@@ -63,6 +64,7 @@ SERVERS
 
 YOUTRACK
     IP-1231 Default SPF DNS resource records should be overrideable
+    IP-1402 ProFTPD doesn't restart properly - killed (signal 15) - Wheezy/Precise/Trusty
     IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate
     IP-1510 VsFTPd - Use of uninitialized value $tmpFile
     IP-1511 Use of uninitialized value $imscpOldConfig{"BASE_SERVER_VHOST"} on fresh install

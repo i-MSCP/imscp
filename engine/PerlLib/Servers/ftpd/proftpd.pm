@@ -302,18 +302,7 @@ sub restart
     return $rs if $rs;
 
     local $@;
-    eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-
-        # Mitigate restart problems by waiting a bit before start
-        # For instance on Ubuntu Trusty, ProFTPD stay in not running state when using restart command
-        $serviceMngr->stop( $self->{'config'}->{'FTPD_SNAME'} );
-
-        # Give ProFTPD sufficient time for stopping
-        sleep 2;
-
-        $serviceMngr->start( $self->{'config'}->{'FTPD_SNAME'} );
-    };
+    eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'FTPD_SNAME'} ); };
     if ($@) {
         error( $@ );
         return 1;

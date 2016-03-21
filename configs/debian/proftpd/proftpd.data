@@ -1,6 +1,7 @@
 PROFTPD_VERSION =
 
 FTPD_SNAME = proftpd
+FTPD_CONF_DIR = /etc/proftpd
 FTPD_CONF_FILE = /etc/proftpd/proftpd.conf
 FTPD_TRAFF_LOG_PATH = /var/log/proftpd/xferlog
 
