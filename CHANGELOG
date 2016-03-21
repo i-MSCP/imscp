@@ -19,7 +19,7 @@ BACKEND
     Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid external commands)
 
 CONFIG
-    Added: DISTRO_ID, DISTRO_CODENAME and DISTRO_RELEASE parameter in imscp.conf file
+    Added: DISTRO_ID, DISTRO_CODENAME and DISTRO_RELEASE parameters in imscp.conf file
     Added: MAX_INSTANCES and MAX_CLIENT_PER_HOST parameters in proftpd/proftpd.data file
     Added: MOUNT_CUSTOMER_LOGS parameter in apache/apache.data file (allows to disable logs bind mounts)
     Changed: Increased default limits for ProFTPD/VsFTPd
