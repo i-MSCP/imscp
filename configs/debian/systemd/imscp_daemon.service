@@ -1,6 +1,6 @@
 [Unit]
 Description=i-MSCP communication daemon
-After=network.target
+After=local-fs.target network.target syslog.target
 
 [Service]
 Type=forking

@@ -1,8 +1,8 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          imscp_traffic
-# Required-Start:    $remote_fs $network
-# Required-Stop:     $remote_fs $network
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
 # Should-Start:
 # Should-Stop:
 # Default-Start:     2 3 4 5

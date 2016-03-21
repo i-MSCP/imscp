@@ -1,9 +1,9 @@
 [Unit]
 Description=i-MSCP traffic logger
-After=network.target
+After=local-fs.target
 
 [Service]
-Type=simple
+Type=oneshot
 RemainAfterExit=yes
 ExecStart=/usr/bin/perl /var/www/imscp/engine/tools/imscp-net-traffic-logger start
 ExecStop=/usr/bin/perl /var/www/imscp/engine/tools/imscp-net-traffic-logger stop

@@ -1,6 +1,6 @@
 [Unit]
 Description=i-MSCP frontEnd PHP processes
-After=network.target
+After=local-fs.target network.target
 
 [Service]
 Type=forking
