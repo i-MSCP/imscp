@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 RemainAfterExit=yes
-ExecStart=/var/www/imscp/engine/tools/imscp-net-traffic-logger start
-ExecStop=/var/www/imscp/engine/tools/imscp-net-traffic-logger stop
+ExecStart=/usr/bin/perl /var/www/imscp/engine/tools/imscp-net-traffic-logger start
+ExecStop=/usr/bin/perl /var/www/imscp/engine/tools/imscp-net-traffic-logger stop
 
 [Install]
 WantedBy=multi-user.target
