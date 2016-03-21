@@ -50,7 +50,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	(shift)->_restoreDefaultConf();
+    (shift)->_restoreDefaultConf();
 }
 
 =back
@@ -69,13 +69,13 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'ftpd'} = Servers::ftpd::vsftpd->getInstance();
-	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'config'} = $self->{'ftpd'}->{'config'};
-	$self;
+    $self->{'ftpd'} = Servers::ftpd::vsftpd->getInstance();
+    $self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
+    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+    $self->{'config'} = $self->{'ftpd'}->{'config'};
+    $self;
 }
 
 =item _restoreDefaultConf()
@@ -88,18 +88,18 @@ sub _init
 
 sub _restoreDefaultConf
 {
-	my $self = shift;
+    my $self = shift;
 
-	for my $conffile($self->{'config'}->{'FTPD_CONF_FILE'}, $self->{'config'}->{'FTPD_PAM_CONF_FILE'}) {
-		my $basename = basename($conffile);
+    for my $conffile($self->{'config'}->{'FTPD_CONF_FILE'}, $self->{'config'}->{'FTPD_PAM_CONF_FILE'}) {
+        my $basename = basename( $conffile );
 
-		if(-f "$self->{'bkpDir'}/$basename.system") {
-			my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$basename.system" )->copyFile($conffile);
-			return $rs if $rs;
-		}
-	}
+        if (-f "$self->{'bkpDir'}/$basename.system") {
+            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$basename.system" )->copyFile( $conffile );
+            return $rs if $rs;
+        }
+    }
 
-	iMSCP::Dir->new( dirname => $self->{'config'}->{'FTPD_USER_CONF_DIR'} );
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'FTPD_USER_CONF_DIR'} );
 }
 
 =back

@@ -61,11 +61,12 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupListeners
 {
-	my ($self, $eventManager) = @_;
+    my ($self, $eventManager) = @_;
 
-	$eventManager->register('beforeSetupDialog', sub {
-		push @{$_[0]}, sub { $self->sqlUserDialog(@_) }, sub { $self->passivePortRangeDialog(@_) }; 0;
-	});
+    $eventManager->register( 'beforeSetupDialog', sub {
+            push @{$_[0]}, sub { $self->sqlUserDialog( @_ ) }, sub { $self->passivePortRangeDialog( @_ ) };
+            0;
+        } );
 }
 
 =item sqlUserDialog(\%dialog)
@@ -79,77 +80,77 @@ sub registerSetupListeners
 
 sub sqlUserDialog
 {
-	my ($self, $dialog) = @_;
+    my ($self, $dialog) = @_;
 
-	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'vftp_user';
-	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'};
+    my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER' ) || $self->{'config'}->{'DATABASE_USER'} || 'vftp_user';
+    my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD' ) || $self->{'config'}->{'DATABASE_PASSWORD'};
 
-	my ($rs, $msg) = (0, '');
+    my ($rs, $msg) = (0, '');
 
-	if(grep($_ eq $main::reconfigure, ( 'ftpd', 'servers', 'all', 'forced' ))
-		|| length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/
-		|| length $dbPass < 6 || $dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/
-	) {
-		do{
-			($rs, $dbUser) = $dialog->inputbox("\nPlease enter an username for the VsFTPd SQL user:$msg", $dbUser);
+    if (grep($_ eq $main::reconfigure, ( 'ftpd', 'servers', 'all', 'forced' ))
+        || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/
+        || length $dbPass < 6 || $dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/
+    ) {
+        do {
+            ($rs, $dbUser) = $dialog->inputbox( "\nPlease enter an username for the VsFTPd SQL user:$msg", $dbUser );
 
-			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
-				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
-				$dbUser = '';
-			} elsif(length $dbUser > 16) {
-				$msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
-				$dbUser = '';
-			} elsif(length $dbUser < 6) {
-				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
-				$dbUser = '';
-			} elsif($dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign and backslash) are allowed.\\Zn\n\nPlease try again:";
-				$dbUser = '';
-			}
-		} while ($rs < 30 && !$dbUser);
+            if ($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
+                $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
+                $dbUser = '';
+            } elsif (length $dbUser > 16) {
+                $msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
+                $dbUser = '';
+            } elsif (length $dbUser < 6) {
+                $msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
+                $dbUser = '';
+            } elsif ($dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/) {
+                $msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign and backslash) are allowed.\\Zn\n\nPlease try again:";
+                $dbUser = '';
+            }
+        } while ($rs < 30 && !$dbUser);
 
-		if($rs < 30) {
-			$msg = '';
+        if ($rs < 30) {
+            $msg = '';
 
-			# Ask for the VsFTPd SQL user password unless we reuses existent SQL user
-			unless(grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
-				do {
-					($rs, $dbPass) = $dialog->passwordbox(
-						"\nPlease, enter a password for the VsFTPd SQL user (blank for autogenerate):$msg", $dbPass
-					);
+            # Ask for the VsFTPd SQL user password unless we reuses existent SQL user
+            unless (grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
+                do {
+                    ($rs, $dbPass) = $dialog->passwordbox(
+                        "\nPlease, enter a password for the VsFTPd SQL user (blank for autogenerate):$msg", $dbPass
+                    );
 
-					if($dbPass ne '') {
-						if(length $dbPass < 6) {
-							$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
-							$dbPass = '';
-						} elsif($dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/) {
-							$msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign and backslash) are allowed.\\Zn\n\nPlease try again:";
-							$dbPass = '';
-						} else {
-							$msg = '';
-						}
-					} else {
-						$msg = '';
-					}
-				} while($rs < 30 && $msg);
-			} else {
-				$dbPass = $main::sqlUsers{$dbUser};
-			}
+                    if ($dbPass ne '') {
+                        if (length $dbPass < 6) {
+                            $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
+                            $dbPass = '';
+                        } elsif ($dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/) {
+                            $msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign and backslash) are allowed.\\Zn\n\nPlease try again:";
+                            $dbPass = '';
+                        } else {
+                            $msg = '';
+                        }
+                    } else {
+                        $msg = '';
+                    }
+                } while ($rs < 30 && $msg);
+            } else {
+                $dbPass = $main::sqlUsers{$dbUser};
+            }
 
-			if($rs < 30) {
-				$dbPass = randomStr(16) unless $dbPass;
-				$dialog->msgbox("\nPassword for the VsFTPd SQL user set to: $dbPass");
-			}
-		}
-	}
+            if ($rs < 30) {
+                $dbPass = randomStr( 16 ) unless $dbPass;
+                $dialog->msgbox( "\nPassword for the VsFTPd SQL user set to: $dbPass" );
+            }
+        }
+    }
 
-	if($rs < 30) {
-		main::setupSetQuestion('FTPD_SQL_USER', $dbUser);
-		main::setupSetQuestion('FTPD_SQL_PASSWORD', $dbPass);
-		$main::sqlUsers{$dbUser} = $dbPass;
-	}
+    if ($rs < 30) {
+        main::setupSetQuestion( 'FTPD_SQL_USER', $dbUser );
+        main::setupSetQuestion( 'FTPD_SQL_PASSWORD', $dbPass );
+        $main::sqlUsers{$dbUser} = $dbPass;
+    }
 
-	$rs;
+    $rs;
 }
 
 =item passivePortRangeDialog(\%dialog)
@@ -163,19 +164,19 @@ sub sqlUserDialog
 
 sub passivePortRangeDialog
 {
-	my ($self, $dialog) = @_;
+    my ($self, $dialog) = @_;
 
-	my ($rs, $msg) = (0, '');
-	my $passivePortRange = main::setupGetQuestion('FTPD_PASSIVE_PORT_RANGE') || $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'};
+    my ($rs, $msg) = (0, '');
+    my $passivePortRange = main::setupGetQuestion( 'FTPD_PASSIVE_PORT_RANGE' ) || $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'};
 
-	if(grep($_ eq $main::reconfigure, ( 'ftpd', 'servers', 'all', 'forced' ))
-		|| $passivePortRange !~ /^(\d+)\s+(\d+)$/
-		|| $1 < 32768 || $1 >= 60999 || $1 >= $2
-	) {
-		$passivePortRange = '32768 60999' unless $1 && $2;
+    if (grep($_ eq $main::reconfigure, ( 'ftpd', 'servers', 'all', 'forced' ))
+        || $passivePortRange !~ /^(\d+)\s+(\d+)$/
+        || $1 < 32768 || $1 >= 60999 || $1 >= $2
+    ) {
+        $passivePortRange = '32768 60999' unless $1 && $2;
 
-		do{
-			($rs, $passivePortRange) = $dialog->inputbox(<<EOF
+        do {
+            ($rs, $passivePortRange) = $dialog->inputbox( <<EOF
 
 \\Z4\\Zb\\ZuVsFTPd passive port range\\Zn
 
@@ -183,22 +184,22 @@ Please, choose the passive port range for VsFTPd.
 
 Be aware that if you're behind a NAT, you must forward those ports to this server.$msg
 EOF
-				,
-				$passivePortRange
-			);
+                ,
+                $passivePortRange
+            );
 
-			if($passivePortRange !~ /^(\d+)\s+(\d+)$/ || $1 < 32768 || $1 >= 60999 || $1 >= $2) {
-				$passivePortRange = '32768 60999';
-				$msg = "\n\n\\Z1Invalid port range.\\Zn\n\nPlease try again:"
-			} else {
-				$passivePortRange = "$1 $2";
-				$msg = '';
-			}
-		} while($rs < 30 && $msg);
-	}
+            if ($passivePortRange !~ /^(\d+)\s+(\d+)$/ || $1 < 32768 || $1 >= 60999 || $1 >= $2) {
+                $passivePortRange = '32768 60999';
+                $msg = "\n\n\\Z1Invalid port range.\\Zn\n\nPlease try again:"
+            } else {
+                $passivePortRange = "$1 $2";
+                $msg = '';
+            }
+        } while ($rs < 30 && $msg);
+    }
 
-	$self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange if $rs < 30;
-	$rs;
+    $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange if $rs < 30;
+    $rs;
 }
 
 =item install()
@@ -211,23 +212,23 @@ EOF
 
 sub install
 {
-	my $self = shift;
+    my $self = shift;
 
-	my %lsbInfo = iMSCP::LsbRelease->getInstance()->getDistroInformation();
+    my %lsbInfo = iMSCP::LsbRelease->getInstance()->getDistroInformation();
 
-	if($lsbInfo{'ID'} eq 'Ubuntu'
-		|| $lsbInfo{'ID'} eq 'Debian' && version->parse($lsbInfo{'RELEASE'}) < version->parse('8.0')
-	) {
-		my $rs = $self->_rebuildVsFTPdDebianPackage();
-		return $rs if $rs;
-	}
+    if ($lsbInfo{'ID'} eq 'Ubuntu'
+        || $lsbInfo{'ID'} eq 'Debian' && version->parse( $lsbInfo{'RELEASE'} ) < version->parse( '8.0' )
+    ) {
+        my $rs = $self->_rebuildVsFTPdDebianPackage();
+        return $rs if $rs;
+    }
 
-	undef %lsbInfo;
+    undef %lsbInfo;
 
-	my $rs = $self->_setVersion();
-	$rs ||= $self->_setupDatabase();
-	$rs ||= $self->_buildConfigFile();
-	$rs ||= $self->_saveConf();
+    my $rs = $self->_setVersion();
+    $rs ||= $self->_setupDatabase();
+    $rs ||= $self->_buildConfigFile();
+    $rs ||= $self->_saveConf();
 }
 
 =back
@@ -246,24 +247,24 @@ sub install
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'ftpd'} = Servers::ftpd::vsftpd->getInstance();
-	$self->{'eventManager'} = $self->{'ftpd'}->{'eventManager'};
-	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'config'} = $self->{'ftpd'}->{'config'};
+    $self->{'ftpd'} = Servers::ftpd::vsftpd->getInstance();
+    $self->{'eventManager'} = $self->{'ftpd'}->{'eventManager'};
+    $self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
+    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+    $self->{'config'} = $self->{'ftpd'}->{'config'};
 
-	my $oldConf = "$self->{'cfgDir'}/vsftpd.old.data";
-	return $self unless -f $oldConf;
+    my $oldConf = "$self->{'cfgDir'}/vsftpd.old.data";
+    return $self unless -f $oldConf;
 
-	tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-	for my $param(keys %oldConfig) {
-		next unless exists $self->{'config'}->{$param};
-		$self->{'config'}->{$param} = $oldConfig{$param};
-	}
+    tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
+    for my $param(keys %oldConfig) {
+        next unless exists $self->{'config'}->{$param};
+        $self->{'config'}->{$param} = $oldConfig{$param};
+    }
 
-	$self;
+    $self;
 }
 
 =item _rebuildVsFTPdDebianPackage()
@@ -276,147 +277,149 @@ sub _init
 
 sub _rebuildVsFTPdDebianPackage
 {
-	my $self = shift;
+    my $self = shift;
 
-	startDetail();
+    startDetail();
 
-	my $oldDir = getcwd();
+    my $oldDir = getcwd();
 
-	my $rs = step(
-		sub {
-			my $buildir = iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' );
-			my $rs = $buildir->remove(); # Cleanup previous build directory if any
-			$rs ||= $buildir->make();
-			return $rs if $rs;
+    my $rs = step(
+        sub {
+            my $buildir = iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' );
+            my $rs = $buildir->remove(); # Cleanup previous build directory if any
+            $rs ||= $buildir->make();
+            return $rs if $rs;
 
-			unless(chdir '/usr/local/src/vsftpd') {
-				error(sprintf('Could not change directory: %s', $!));
-				return 1;
-			}
-			0;
-		}, 'Creating build directory for i-MSCP vsftpd package...', 7, 1
-	);
+            unless (chdir '/usr/local/src/vsftpd') {
+                error( sprintf( 'Could not change directory: %s', $! ) );
+                return 1;
+            }
+            0;
+        }, 'Creating build directory for i-MSCP vsftpd package...', 7, 1
+    );
 
-	$rs ||= step(
-		sub {
-			# Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-			execute('LANG=C apt-mark unhold vsftpd', \my $stdout, \my $stderr);
-			debug($stdout) if $stdout;
-			debug($stderr) if $stderr;
+    $rs ||= step(
+        sub {
+            # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+            execute( 'LANG=C apt-mark unhold vsftpd', \my $stdout, \my $stderr );
+            debug( $stdout ) if $stdout;
+            debug( $stderr ) if $stderr;
 
-			my $rs = execute('apt-get -y source vsftpd', \$stdout, \$stderr);
-			error(sprintf( 'Could not get vsftpd source package: %s', $stderr || 'Unknown error')) if $rs;
-			return $rs if $rs;
-			debug($stdout) if $stdout;
-			0;
-		}, 'Downloading vsftpd source package...', 7, 2
-	);
+            my $rs = execute( 'apt-get -y source vsftpd', \$stdout, \$stderr );
+            error( sprintf( 'Could not get vsftpd source package: %s', $stderr || 'Unknown error' ) ) if $rs;
+            return $rs if $rs;
+            debug( $stdout ) if $stdout;
+            0;
+        }, 'Downloading vsftpd source package...', 7, 2
+    );
 
-	$rs ||= step(
-		sub {
-			my $rs = execute('apt-get -y build-dep vsftpd', \my $stdout, \my $stderr);
-			error(sprintf('Could not install vsftpd package build dependencies: %s', $stderr || 'Unknown error')) if $rs;
-			return $rs if $rs;
-			debug($stdout) if $stdout;
-			0;
-		}, 'Installing vsftpd build dependencies...', 7, 3
-	);
+    $rs ||= step(
+        sub {
+            my $rs = execute( 'apt-get -y build-dep vsftpd', \my $stdout, \my $stderr );
+            error( sprintf( 'Could not install vsftpd package build dependencies: %s',
+                    $stderr || 'Unknown error' ) ) if $rs;
+            return $rs if $rs;
+            debug( $stdout ) if $stdout;
+            0;
+        }, 'Installing vsftpd build dependencies...', 7, 3
+    );
 
-	$rs ||= step(
-		sub {
-			unless(chdir glob 'vsftpd-*') {
-				error(sprintf('Could not change directory: %s', $!));
-				return 1;
-			}
+    $rs ||= step(
+        sub {
+            unless (chdir glob 'vsftpd-*') {
+                error( sprintf( 'Could not change directory: %s', $! ) );
+                return 1;
+            }
 
-			my $file = iMSCP::File->new( filename => 'debian/patches/series' );
-			my $fileContent = $file->get();
+            my $file = iMSCP::File->new( filename => 'debian/patches/series' );
+            my $fileContent = $file->get();
 
-			# Apply the imscp_allow_writeable_root.patch patch for vsftpd version < 3.0.0 only
+            # Apply the imscp_allow_writeable_root.patch patch for vsftpd version < 3.0.0 only
 
-			my $rs = execute('dpkg-query --show --showformat \'${Version}\' vsftpd', \my $stdout, \my $stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $rs && $stderr;
-			return $rs if $rs;
+            my $rs = execute( 'dpkg-query --show --showformat \'${Version}\' vsftpd', \my $stdout, \my $stderr );
+            debug( $stdout ) if $stdout;
+            error( $stderr ) if $rs && $stderr;
+            return $rs if $rs;
 
-			my $ret = execute("dpkg --compare-versions $stdout lt 3", \$stdout, \$stderr);
-			if($stderr) {
-				error( sprintf( 'Could not compare vsftpd package version: %s', $stderr ) );
-				return 1;
-			}
+            my $ret = execute( "dpkg --compare-versions $stdout lt 3", \$stdout, \$stderr );
+            if ($stderr) {
+                error( sprintf( 'Could not compare vsftpd package version: %s', $stderr ) );
+                return 1;
+            }
 
-			unless($ret) {
-				$rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_allow_writeable_root.patch")->copyFile(
-					'debian/patches/imscp_allow_writeable_root'
-				);
-				return $rs if $rs;
+            unless ($ret) {
+                $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_allow_writeable_root.patch" )->copyFile(
+                    'debian/patches/imscp_allow_writeable_root'
+                );
+                return $rs if $rs;
 
-				$fileContent .= "imscp_allow_writeable_root\n"
-			}
+                $fileContent .= "imscp_allow_writeable_root\n"
+            }
 
-			# apply the imscp_pthread_cancel.patch if available
+            # apply the imscp_pthread_cancel.patch if available
 
-			if(-f "$self->{'cfgDir'}/imscp_pthread_cancel.patch") {
-				$rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_pthread_cancel.patch")->copyFile(
-					'debian/patches/imscp_pthread_cancel'
-				);
-				return $rs if $rs;
+            if (-f "$self->{'cfgDir'}/imscp_pthread_cancel.patch") {
+                $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_pthread_cancel.patch" )->copyFile(
+                    'debian/patches/imscp_pthread_cancel'
+                );
+                return $rs if $rs;
 
-				$fileContent .= "imscp_pthread_cancel\n";
-			}
+                $fileContent .= "imscp_pthread_cancel\n";
+            }
 
-			$rs = $file->set($fileContent);
-			$rs ||= $file->save();
-		}, 'Patching vsftpd source package for i-MSCP...', 7, 4
-	);
+            $rs = $file->set( $fileContent );
+            $rs ||= $file->save();
+        }, 'Patching vsftpd source package for i-MSCP...', 7, 4
+    );
 
-	$rs ||= step(
-		sub {
-			my $rs = execute("dch --local imscp 'i-MSCP patched version.'", \my $stdout, \my $stderr);
-			error(sprintf("Could not add 'imscp' local suffix to vsftpd package: %s", $stderr || 'Unknown error')) if $rs;
-			return $rs if $rs;
+    $rs ||= step(
+        sub {
+            my $rs = execute( "dch --local imscp 'i-MSCP patched version.'", \my $stdout, \my $stderr );
+            error( sprintf( "Could not add 'imscp' local suffix to vsftpd package: %s",
+                    $stderr || 'Unknown error' ) ) if $rs;
+            return $rs if $rs;
 
-			$rs = execute('dpkg-buildpackage -b', \$stdout, \$stderr);
-			error(sprintf('Could not build i-MSCP vsftpd package: %s', $stderr || 'Unknown error')) if $rs;
-			return $rs if $rs;
-			debug($stdout) if $stdout;
-			0;
-		}, 'Building i-MSCP vsftpd package...', 7, 5
-	);
+            $rs = execute( 'dpkg-buildpackage -b', \$stdout, \$stderr );
+            error( sprintf( 'Could not build i-MSCP vsftpd package: %s', $stderr || 'Unknown error' ) ) if $rs;
+            return $rs if $rs;
+            debug( $stdout ) if $stdout;
+            0;
+        }, 'Building i-MSCP vsftpd package...', 7, 5
+    );
 
-	$rs ||= step(
-		sub {
-			unless(chdir '..') {
-				error(sprintf('Could not change directory: %s', $!));
-				return 1;
-			}
+    $rs ||= step(
+        sub {
+            unless (chdir '..') {
+                error( sprintf( 'Could not change directory: %s', $! ) );
+                return 1;
+            }
 
-			my $rs = execute('dpkg --force-confnew -i vsftpd_*.deb', \my $stdout, \my $stderr);
-			error(sprintf('Could not install i-MSCP vsftpd package: %s', $stderr || 'Unknown error')) if $rs;
-			debug($stdout) if $stdout;
-			return $rs if $rs;
+            my $rs = execute( 'dpkg --force-confnew -i vsftpd_*.deb', \my $stdout, \my $stderr );
+            error( sprintf( 'Could not install i-MSCP vsftpd package: %s', $stderr || 'Unknown error' ) ) if $rs;
+            debug( $stdout ) if $stdout;
+            return $rs if $rs;
 
-			# Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-			execute('LANG=C apt-mark hold vsftpd', \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			debug($stderr) if $stderr;
-			0;
-		}, 'Installing i-MSCP vsftpd package...', 7, 6
-	);
+            # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+            execute( 'LANG=C apt-mark hold vsftpd', \$stdout, \$stderr );
+            debug( $stdout ) if $stdout;
+            debug( $stderr ) if $stderr;
+            0;
+        }, 'Installing i-MSCP vsftpd package...', 7, 6
+    );
 
-	$rs ||= step(
-		sub {
-			unless(chdir $oldDir) {
-				error(sprintf('Could not change directory: %s', $!));
-				return 1;
-			}
+    $rs ||= step(
+        sub {
+            unless (chdir $oldDir) {
+                error( sprintf( 'Could not change directory: %s', $! ) );
+                return 1;
+            }
 
-			iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' )->remove();
-		}, 'Removing i-MSCP vsftpd package build directory', 7, 7
-	);
+            iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' )->remove();
+        }, 'Removing i-MSCP vsftpd package build directory', 7, 7
+    );
 
-	endDetail();
-	$rs;
+    endDetail();
+    $rs;
 }
 
 =item _setVersion
@@ -429,22 +432,22 @@ sub _rebuildVsFTPdDebianPackage
 
 sub _setVersion
 {
-	my $self = shift;
+    my $self = shift;
 
-	# Version is print through STDIN (see: strace vsftpd -v)
-	my $rs = execute('vsftpd -v 0>&1', \my $stdout, \my $stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+    # Version is print through STDIN (see: strace vsftpd -v)
+    my $rs = execute( 'vsftpd -v 0>&1', \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    return $rs if $rs;
 
-	if($stdout !~ m%([\d.]+)%) {
-		error('Could not find VsFTPd version from `vsftpd -v 0>&1` command output.');
-		return 1;
-	}
+    if ($stdout !~ m%([\d.]+)%) {
+        error( 'Could not find VsFTPd version from `vsftpd -v 0>&1` command output.' );
+        return 1;
+    }
 
-	$self->{'config'}->{'VSFTPD_VERSION'} = $1;
-	debug(sprintf('VsFTPd version set to: %s', $1));
-	0;
+    $self->{'config'}->{'VSFTPD_VERSION'} = $1;
+    debug( sprintf( 'VsFTPd version set to: %s', $1 ) );
+    0;
 }
 
 =item _setupDatabase()
@@ -457,51 +460,51 @@ sub _setVersion
 
 sub _setupDatabase
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $sqlServer = Servers::sqld->factory();
-	my $dbName = main::setupGetQuestion('DATABASE_NAME');
-	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER');
-	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD');
-	my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
+    my $sqlServer = Servers::sqld->factory();
+    my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
+    my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER' );
+    my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
+    my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD' );
+    my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-	$self->{'eventManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
+    $self->{'eventManager'}->trigger( 'beforeFtpdSetupDb', $dbUser, $dbPass );
 
-	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
+    for my $sqlUser ($dbOldUser, $dbUser) {
+        next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
 
-		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
-			next unless $host;
-			$sqlServer->dropUser($sqlUser, $host);
-		}
-	}
+        for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
+            next unless $host;
+            $sqlServer->dropUser( $sqlUser, $host );
+        }
+    }
 
-	# Create SQL user if not already created by another server/package installer
-	unless(grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
-		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
-		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
-		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
-	}
+    # Create SQL user if not already created by another server/package installer
+    unless (grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
+        debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
+        $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
+        push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
+    }
 
-	my ($db, $errStr) = main::setupGetSqlConnect();
-	unless($db) {
-		error(sprintf('Could not connect to SQL server: %s', $errStr)),
-		return 1;
-	}
+    my ($db, $errStr) = main::setupGetSqlConnect();
+    unless ($db) {
+        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) ),
+            return 1;
+    }
 
-	# Give needed privileges to this SQL user
-	my $quotedDbName = $db->quoteIdentifier($dbName);
-	my $quotedTableName = $db->quoteIdentifier('ftp_users');
-	my $rs = $db->doQuery('g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost);
-	unless(ref $rs eq 'HASH') {
-		error(sprintf('Could not add SQL privileges: %s', $rs));
-		return 1;
-	}
+    # Give needed privileges to this SQL user
+    my $quotedDbName = $db->quoteIdentifier( $dbName );
+    my $quotedTableName = $db->quoteIdentifier( 'ftp_users' );
+    my $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost );
+    unless (ref $rs eq 'HASH') {
+        error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
+        return 1;
+    }
 
-	$self->{'config'}->{'DATABASE_USER'} = $dbUser;
-	$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-	$self->{'eventManager'}->trigger('afterFtpSetupDb', $dbUser, $dbPass);
+    $self->{'config'}->{'DATABASE_USER'} = $dbUser;
+    $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+    $self->{'eventManager'}->trigger( 'afterFtpSetupDb', $dbUser, $dbPass );
 }
 
 =item _buildConfigFile()
@@ -514,67 +517,67 @@ sub _setupDatabase
 
 sub _buildConfigFile
 {
-	my $self = shift;
+    my $self = shift;
 
-	# Make sure to start with clean user configuration directory
-	unlink glob "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/*";
+    # Make sure to start with clean user configuration directory
+    unlink glob "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/*";
 
-	my($passvMinPort, $passvMaxPort) = split(/\s+/, $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'});
-	my $data = {
-		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
-		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
-		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
-		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
-		DATABASE_PASS => $self->{'config'}->{'DATABASE_PASSWORD'},
-		FTPD_BANNER => $self->{'config'}->{'FTPD_BANNER'},
-		FRONTEND_USER_SYS_NAME => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
-		PASSV_ENABLE => $self->{'config'}->{'PASSV_ENABLE'},
-		PASSV_MIN_PORT => $passvMinPort,
-		PASSV_MAX_PORT => $passvMaxPort,
-		FTP_MAX_CLIENTS => $self->{'config'}->{'FTP_MAX_CLIENTS'},
-		MAX_PER_IP => $self->{'config'}->{'MAX_PER_IP'},
-		LOCAL_MAX_RATE => $self->{'config'}->{'LOCAL_MAX_RATE'},
-		USER_WEB_DIR => $main::imscpConfig{'USER_WEB_DIR'},
-		FTPD_USER_CONF_DIR => $self->{'config'}->{'FTPD_USER_CONF_DIR'}
-	};
+    my ($passvMinPort, $passvMaxPort) = split( /\s+/, $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} );
+    my $data = {
+        DATABASE_NAME          => $main::imscpConfig{'DATABASE_NAME'},
+        DATABASE_HOST          => $main::imscpConfig{'DATABASE_HOST'},
+        DATABASE_PORT          => $main::imscpConfig{'DATABASE_PORT'},
+        DATABASE_USER          => $self->{'config'}->{'DATABASE_USER'},
+        DATABASE_PASS          => $self->{'config'}->{'DATABASE_PASSWORD'},
+        FTPD_BANNER            => $self->{'config'}->{'FTPD_BANNER'},
+        FRONTEND_USER_SYS_NAME => $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'},
+        PASSV_ENABLE           => $self->{'config'}->{'PASSV_ENABLE'},
+        PASSV_MIN_PORT         => $passvMinPort,
+        PASSV_MAX_PORT         => $passvMaxPort,
+        FTP_MAX_CLIENTS        => $self->{'config'}->{'FTP_MAX_CLIENTS'},
+        MAX_PER_IP             => $self->{'config'}->{'MAX_PER_IP'},
+        LOCAL_MAX_RATE         => $self->{'config'}->{'LOCAL_MAX_RATE'},
+        USER_WEB_DIR           => $main::imscpConfig{'USER_WEB_DIR'},
+        FTPD_USER_CONF_DIR     => $self->{'config'}->{'FTPD_USER_CONF_DIR'}
+    };
 
-	# vsftpd main configuration file
+    # vsftpd main configuration file
 
-	my $rs = $self->_bkpConfFile($self->{'config'}->{'FTPD_CONF_FILE'});
-	$rs ||= $self->{'eventManager'}->trigger('onLoadTemplate', 'vsftpd', 'vsftpd.conf', \my $cfgTpl, $data);
-	return $rs if $rs;
+    my $rs = $self->_bkpConfFile( $self->{'config'}->{'FTPD_CONF_FILE'} );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'vsftpd', 'vsftpd.conf', \my $cfgTpl, $data );
+    return $rs if $rs;
 
-	unless(defined $cfgTpl) {
-		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.conf" )->get();
-		unless(defined $cfgTpl) {
-			error(sprintf('Could not read %s file', "$self->{'cfgDir'}/vsftpd.conf"));
-			return 1;
-		}
-	}
+    unless (defined $cfgTpl) {
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.conf" )->get();
+        unless (defined $cfgTpl) {
+            error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/vsftpd.conf" ) );
+            return 1;
+        }
+    }
 
-	$rs = $self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'vsftpd.conf');
-	return $rs if $rs;
+    $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBuildConf', \$cfgTpl, 'vsftpd.conf' );
+    return $rs if $rs;
 
-	if($self->_isVsFTPdInsideCt()) {
-		$cfgTpl .= <<EOF;
+    if ($self->_isVsFTPdInsideCt()) {
+        $cfgTpl .= <<EOF;
 
 # VsFTPd run inside unprivileged VE
 # See http://youtrack.i-mscp.net/issue/IP-1503
 seccomp_sandbox=NO
 EOF
-	}
+    }
 
-	if($main::imscpConfig{'BASE_SERVER_IP'} ne $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}) {
-		$cfgTpl .= <<EOF;
+    if ($main::imscpConfig{'BASE_SERVER_IP'} ne $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}) {
+        $cfgTpl .= <<EOF;
 
 # VsFTPd behind NAT - Use public IP address
 pasv_address=$main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
 pasv_promiscuous=YES
 EOF
-	}
+    }
 
-	if(main::setupGetQuestion('SERVICES_SSL_ENABLED') eq 'yes') {
-		$cfgTpl .= <<EOF;
+    if (main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes') {
+        $cfgTpl .= <<EOF;
 
 # SSL support
 ssl_enable=YES
@@ -588,48 +591,48 @@ ssl_ciphers=HIGH
 rsa_cert_file=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
 rsa_private_key_file=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
 EOF
-	}
+    }
 
-	$cfgTpl = iMSCP::TemplateParser::process($data, $cfgTpl);
+    $cfgTpl = iMSCP::TemplateParser::process( $data, $cfgTpl );
 
-	$rs = $self->{'eventManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'vsftpd.conf');
-	return $rs if $rs;
+    $rs = $self->{'eventManager'}->trigger( 'afterFtpdBuildConf', \$cfgTpl, 'vsftpd.conf' );
+    return $rs if $rs;
 
-	my $file = iMSCP::File->new( filename => $self->{'config'}->{'FTPD_CONF_FILE'} );
-	$rs = $file->set($cfgTpl);
-	$rs ||= $file->save();
-	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	$rs ||= $file->mode(0640);
-	return $rs if $rs;
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'FTPD_CONF_FILE'} );
+    $rs = $file->set( $cfgTpl );
+    $rs ||= $file->save();
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->mode( 0640 );
+    return $rs if $rs;
 
-	# VsFTPd pam-mysql configuration file
-	undef $cfgTpl;
+    # VsFTPd pam-mysql configuration file
+    undef $cfgTpl;
 
-	$rs = $self->_bkpConfFile($self->{'config'}->{'FTPD_PAM_CONF_FILE'});
-	$rs ||= $self->{'eventManager'}->trigger('onLoadTemplate', 'vsftpd', 'vsftpd.pam', \$cfgTpl, $data);
-	return $rs if $rs;
+    $rs = $self->_bkpConfFile( $self->{'config'}->{'FTPD_PAM_CONF_FILE'} );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'vsftpd', 'vsftpd.pam', \$cfgTpl, $data );
+    return $rs if $rs;
 
-	unless(defined $cfgTpl) {
-		$cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.pam" )->get();
-		unless(defined $cfgTpl) {
-			error(sprintf('Could not read %s file', "$self->{'cfgDir'}/vsftpd.pam"));
-			return 1;
-		}
-	}
+    unless (defined $cfgTpl) {
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.pam" )->get();
+        unless (defined $cfgTpl) {
+            error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/vsftpd.pam" ) );
+            return 1;
+        }
+    }
 
-	$rs = $self->{'eventManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'vsftpd.pam');
-	return $rs if $rs;
+    $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBuildConf', \$cfgTpl, 'vsftpd.pam' );
+    return $rs if $rs;
 
-	$cfgTpl = iMSCP::TemplateParser::process($data, $cfgTpl);
+    $cfgTpl = iMSCP::TemplateParser::process( $data, $cfgTpl );
 
-	$rs = $self->{'eventManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'vsftpd.pam');
-	return $rs if $rs;
+    $rs = $self->{'eventManager'}->trigger( 'afterFtpdBuildConf', \$cfgTpl, 'vsftpd.pam' );
+    return $rs if $rs;
 
-	$file = iMSCP::File->new( filename => $self->{'config'}->{'FTPD_PAM_CONF_FILE'} );
-	$rs ||= $file->set($cfgTpl);
-	$rs ||= $file->save();
-	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	$rs ||= $file->mode(0640);
+    $file = iMSCP::File->new( filename => $self->{'config'}->{'FTPD_PAM_CONF_FILE'} );
+    $rs ||= $file->set( $cfgTpl );
+    $rs ||= $file->save();
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->mode( 0640 );
 }
 
 =item _saveConf()
@@ -642,9 +645,9 @@ EOF
 
 sub _saveConf
 {
-	my $self = shift;
+    my $self = shift;
 
-	iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.data" )->copyFile("$self->{'cfgDir'}/vsftpd.old.data");
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.data" )->copyFile( "$self->{'cfgDir'}/vsftpd.old.data" );
 }
 
 =item _bkpConfFile()
@@ -657,25 +660,25 @@ sub _saveConf
 
 sub _bkpConfFile
 {
-	my ($self, $cfgFile) = @_;
+    my ($self, $cfgFile) = @_;
 
-	my $rs = $self->{'eventManager'}->trigger('beforeFtpdBkpConfFile', $cfgFile);
-	return $rs if $rs;
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBkpConfFile', $cfgFile );
+    return $rs if $rs;
 
-	if(-f $cfgFile){
-		my $file = iMSCP::File->new( filename => $cfgFile );
-		my $basename = basename($cfgFile);
+    if (-f $cfgFile) {
+        my $file = iMSCP::File->new( filename => $cfgFile );
+        my $basename = basename( $cfgFile );
 
-		unless(-f "$self->{'bkpDir'}/$basename.system") {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$basename.system");
-			return $rs if $rs;
-		} else {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$basename." . time);
-			return $rs if $rs;
-		}
-	}
+        unless (-f "$self->{'bkpDir'}/$basename.system") {
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$basename.system" );
+            return $rs if $rs;
+        } else {
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$basename.".time );
+            return $rs if $rs;
+        }
+    }
 
-	$self->{'eventManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
+    $self->{'eventManager'}->trigger( 'afterFtpdBkpConfFile', $cfgFile );
 }
 
 =item _isVsFTPdInsideCt()
@@ -688,18 +691,18 @@ sub _bkpConfFile
 
 sub _isVsFTPdInsideCt
 {
-	if(-f '/proc/user_beancounters') {
-		my $rs = execute('cat /proc/1/status | grep --color=never envID', \my $stdout, \my $stderr);
-		debug($stdout) if $stdout;
-		warning($stderr) if $rs && $stderr;
-		return $rs if $rs;
+    return 0 unless -f '/proc/user_beancounters';
 
-		if($stdout =~ /envID:\s+(\d+)/) {
-			return ($1 > 0) ? 1 : 0;
-		}
-	}
+    my $rs = execute( 'cat /proc/1/status | grep --color=never envID', \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    debug( $stderr ) if $rs && $stderr;
+    return $rs if $rs;
 
-	0;
+    if ($stdout =~ /envID:\s+(\d+)/) {
+        return ($1 > 0) ? 1 : 0;
+    }
+
+    0;
 }
 
 =back
