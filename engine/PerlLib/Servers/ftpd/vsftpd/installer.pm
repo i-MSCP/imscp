@@ -295,7 +295,7 @@ sub _rebuildVsFTPdDebianPackage
                 return 1;
             }
             0;
-        }, 'Creating build directory for i-MSCP vsftpd package...', 7, 1
+        }, 'Creating build directory for local vsftpd package...', 7, 1
     );
 
     $rs ||= step(
@@ -369,7 +369,7 @@ sub _rebuildVsFTPdDebianPackage
 
             $rs = $file->set( $fileContent );
             $rs ||= $file->save();
-        }, 'Patching vsftpd source package for i-MSCP...', 7, 4
+        }, 'Patching vsftpd source package...', 7, 4
     );
 
     $rs ||= step(
@@ -379,12 +379,12 @@ sub _rebuildVsFTPdDebianPackage
                     $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
 
-            $rs = execute( 'dpkg-buildpackage -b', \$stdout, \$stderr );
-            error( sprintf( 'Could not build i-MSCP vsftpd package: %s', $stderr || 'Unknown error' ) ) if $rs;
+            $rs = execute( 'dpkg-buildpackage -b -uc', \$stdout, \$stderr );
+            error( sprintf( 'Could not build local vsftpd package: %s', $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
             debug( $stdout ) if $stdout;
             0;
-        }, 'Building i-MSCP vsftpd package...', 7, 5
+        }, 'Building local vsftpd package...', 7, 5
     );
 
     $rs ||= step(
@@ -395,7 +395,7 @@ sub _rebuildVsFTPdDebianPackage
             }
 
             my $rs = execute( 'dpkg --force-confnew -i vsftpd_*.deb', \my $stdout, \my $stderr );
-            error( sprintf( 'Could not install i-MSCP vsftpd package: %s', $stderr || 'Unknown error' ) ) if $rs;
+            error( sprintf( 'Could not install local vsftpd package: %s', $stderr || 'Unknown error' ) ) if $rs;
             debug( $stdout ) if $stdout;
             return $rs if $rs;
 
@@ -404,7 +404,7 @@ sub _rebuildVsFTPdDebianPackage
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
             0;
-        }, 'Installing i-MSCP vsftpd package...', 7, 6
+        }, 'Installing local vsftpd package...', 7, 6
     );
 
     $rs ||= step(
@@ -415,7 +415,7 @@ sub _rebuildVsFTPdDebianPackage
             }
 
             iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' )->remove();
-        }, 'Removing i-MSCP vsftpd package build directory', 7, 7
+        }, 'Removing local vsftpd package build directory', 7, 7
     );
 
     endDetail();
