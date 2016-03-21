@@ -11,6 +11,7 @@ BACKEND
 	Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached
 	Fixed: Many inconsistencies in iMSCP::Getopt
 	Removed: afterDispatchRequest event
+	Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid external commands)
 
 CONFIG
 	Added: MAX_INSTANCES and MAX_CLIENT_PER_HOST parameters in proftpd/proftpd.data file
