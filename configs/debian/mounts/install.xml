@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install>
+    <folders>${SYSTEM_CONF}/mounts</folders>
+    <copy_config>${SYSTEM_CONF}/mounts/mounts.conf</copy_config>
+</install>

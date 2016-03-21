@@ -1,0 +1,95 @@
+#!/usr/bin/perl
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+=head1 NAME
+
+imscp-mountall - Mount or umount filesystems by reading entries from /etc/imscp/mounts/mounts.conf fstab-like file
+
+=head1 SYNOPSIS
+
+ imscp-mountall [options]...
+
+=cut
+
+use strict;
+use warnings;
+use FindBin;
+use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Bootstrapper;
+use iMSCP::Debug;
+use iMSCP::Getopt;
+use iMSCP::Mail;
+use iMSCP::Mount qw/ mount umount /;
+use File::Basename;
+use Scalar::Defer;
+use POSIX qw(locale_h);
+use locale;
+
+setlocale(LC_ALL, 'C.UTF-8');
+$ENV{'LANG'} = 'C.UTF-8';
+
+my $fstabEntries = lazy {
+    my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
+    my @fstabEntries;
+
+    return \@fstabEntries unless -f $fstab;
+
+    open my $fh, '<', $fstab or die(sprintf('Could not open %s: %s', $fstab, $!));
+
+    while(<$fh>) {
+        next if /^\s*#/;
+        chomp;
+        my $entryFields;
+        @{$entryFields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops / } = split /\s+/;
+        push @fstabEntries, $entryFields;
+    }
+
+    \@fstabEntries;
+};
+
+newDebug('imscp-mountall-mngr.log');
+
+iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
+
+Mount or umount filesystems by reading entries from an fstab-like file.
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+ 'verbose|v' => sub { setVerbose(@_); }
+);
+
+iMSCP::Bootstrapper->getInstance()->boot({
+    norequirements => 'yes', nokeys => 'yes', nodatabase => 'yes', nolock => 'no', config_readonly => 'yes',
+    mode => 'backend'
+});
+
+my %dispatch = (
+   'start' => sub { mount($_) for @{$fstabEntries}; },
+   'stop' => sub { umount($_->{'fs_file'}) for @{$fstabEntries}; }
+);
+
+my $action = shift;
+$action && grep($_ eq $action, ( 'start', 'stop' )) or iMSCP::Getopt->showUsage();
+$dispatch{ $action }->();
+
+=head1 AUTHOR
+
+Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut

@@ -1,0 +1,117 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          imscp_mountall
+# Required-Start:    $remote_fs $network
+# Required-Stop:     $remote_fs $network
+# Should-Start:
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Description: Mounts i-MSCP filesystems
+# Short-Description:
+### END INIT INFO
+
+# Note: do not modify any of these vars here, use /etc/default/$NAME instead
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+NAME=imscp_traffic
+LFILE=/var/run/$NAME
+TOOLSDIR="/var/www/imscp/engine/tools"
+
+
+. /lib/lsb/init-functions
+
+# Read config file if present.
+if [ -r /etc/default/$NAME ]; then
+    . /etc/default/$NAME
+fi
+
+# If the currently running init daemon is upstart, return zero; if the
+# calling init script belongs to a package which also provides a native
+# upstart job, it should generally exit non-zero in this case.
+#
+# We don't use init_is_upstart() from /lib/lsb/init-functions because
+# that function is not provided in all supported Distro version
+init_check_is_upstart()
+{
+   if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | /bin/grep -q upstart; then
+       return 0
+   fi
+   return 1
+}
+
+do_start()
+{
+    perl ${TOOLSDIR}/imscp-mountall start 2>/dev/null
+
+    # Touch lock file
+    touch $LFILE
+}
+
+do_stop()
+{
+    perl ${TOOLSDIR}/imscp-mountall stop 2>/dev/null
+
+    # Remove lock file
+    rm -f $LFILE
+}
+
+
+case "$1" in
+  start)
+    if init_check_is_upstart; then
+        exit 1
+    fi
+    log_daemon_msg "Starting $DESC" "$NAME"
+    if [ -e "$LFILE" ]; then
+        log_progress_msg "already started"
+        log_end_msg 0
+    else
+      do_start
+      log_end_msg $?
+    fi
+    ;;
+  stop)
+    if init_check_is_upstart; then
+        exit 0
+    fi
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    if [ ! -e "$LFILE" ]; then
+        log_progress_msg "already stopped"
+        log_end_msg 0
+    else
+        do_stop
+        log_end_msg $?
+    fi
+    ;;
+  restart|force-reload)
+    if init_check_is_upstart; then
+        exit 1
+    fi
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    if [ ! -e "$LFILE" ]; then
+        log_progress_msg "already stopped"
+        log_end_msg 0
+    else
+        do_stop
+        log_end_msg $?
+    fi
+    log_daemon_msg "Starting $DESC" "$NAME"
+    do_start
+    log_end_msg $?
+    ;;
+  status)
+    if [ -e "$LFILE" ]; then
+        log_success_msg "$NAME is running"
+    else
+        log_failure_msg "$NAME is not running"
+        exit 3
+    fi
+    ;;
+  *)
+    log_action_msg "Usage: /etc/init.d/$NAME {start|stop|restart|force-reload|status}" >&2
+    exit 3
+    ;;
+esac
+
+:

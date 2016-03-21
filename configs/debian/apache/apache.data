@@ -31,6 +31,10 @@ HTACCESS_GROUPS_FILENAME = .htgroup
 # Possible values: per_user, per_domain or per_site
 INI_LEVEL =
 
+# Whether or not bind mount logs in customer logs directory
+# Allowed value: yes|no
+MOUNT_CUSTOMER_LOGS = yes
+
 # Dreprecated
 HTTPD_USERS_LOG_DIR = /var/log/apache2/users
 APACHE_SCOREBOARDS_DIR = /var/www/scoreboards
