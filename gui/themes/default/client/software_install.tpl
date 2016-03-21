@@ -35,7 +35,7 @@
 			<td><label for="path">{TR_PATH}</label></td>
 			<td>
 				<label><input type="text" id="ftp_directory" name="other_dir" value="{VAL_OTHER_DIR}"/></label>
-				<a style="vertical-align: middle" href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{TR_CHOOSE_DIR}</a>
+				<a style="vertical-align: middle" href="ftp_choose_dir.php" class="icon i_bc_folder ftp_choose_dir">{TR_CHOOSE_DIR}</a>
 			</td>
 		</tr>
 		<!-- BDP: require_installdb -->

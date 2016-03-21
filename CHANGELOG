@@ -37,6 +37,7 @@ FRONTEND
 	Fixed: Customer must be allowed to specify `name` field of any DNS resource record
 	Fixed: IDNs are shown in ASCII in SSL certificate management interface
 	Fixed: iMSCP_Update_Database::addIndex() doesn't allow to specify index length
+	Rewritten: FTP chooser interface to avoid usage of iframe
 
 INSTALLER
 	Added: Conditional statement feature for install.xml files (copy_config items only)

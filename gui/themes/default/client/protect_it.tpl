@@ -31,7 +31,7 @@
 			<td><label for="ftp_directory">{TR_PATH}</label></td>
 			<td>
 				<input name="other_dir" type="text" class="textinput" id="ftp_directory" value="{PATH}"/>
-				<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
+				<a href="ftp_choose_dir.php" class="icon i_bc_folder ftp_choose_dir">{CHOOSE_DIR}</a>
 			</td>
 		</tr>
 		</tbody>

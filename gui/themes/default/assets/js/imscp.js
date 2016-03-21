@@ -295,6 +295,63 @@
     })
 })(jQuery);
 
+
+// Initialize FTP chooser
+(function($) {
+    $(function() {
+        $("body").on("click", "a.ftp_choose_dir", function (e) {
+            var $dialog = $("#ftp_choose_dir_dialog");
+            var href = $(this).attr("href");
+
+            if($dialog.length) {
+                if(href == "#") { // # href means that we want set directory.
+                    $("#ftp_directory").val($(this).data("directory"));
+                    $dialog.dialog("close");
+                } else { // We already have a dialog. We just update it content
+                    $.get(href, function(data) {
+                        $dialog.html(data).dialog("open").find('table').trigger('updateTable');
+                    }).fail(function() {
+                        alert("Request failed");
+                    });
+                }
+            } else { // No dialog yet. We create one
+                $.get(href, function(data) {
+                    $dialog = $('<div id="ftp_choose_dir_dialog"/>').html(data).dialog({
+                        hide: "blind",
+                        show: "slide",
+                        focus: false,
+                        width: 450,
+                        height: 500,
+                        autoOpen: false,
+                        appendTo: "body",
+                        modal: true,
+                        title: imscp_i18n.core.ftp_directories,
+                        buttons: [{
+                            text: imscp_i18n.core.close, click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                    });
+
+                    $(window).resize(function () {
+                        $dialog.dialog("option", "position", { my: "center", at: "center", of: window });
+                    });
+
+                    $(window).scroll(function () {
+                        $dialog.dialog("option", "position", { my: "center", at: "center", of: window });
+                    });
+
+                    $dialog.dialog("open").find('table').trigger('updateTable');
+                }).fail(function() {
+                    alert("Request failed")
+                });
+            }
+
+            e.preventDefault(); // Cancel default action (navigation) on the click
+        });
+    });
+})(jQuery);
+
 function sbmt(form, uaction) {
     form.uaction.value = uaction;
     form.submit();
@@ -399,47 +456,6 @@ function sprintf() {
     }
 
     return str;
-}
-
-/**
- * Display dialog box allowing to choose ftp directory
- *
- * @return false
- */
-function chooseFtpDir() {
-    var dialog1 = $('<div id="dial_ftp_dir" style="overflow: hidden;"/>').append($('<iframe scrolling="auto" height="100%"/>').
-        attr("src", "ftp_choose_dir.php")).dialog(
-        {
-            hide: 'blind',
-            show: 'slide',
-            focus: false,
-            width: 650,
-            height: 650,
-            autoOpen: false,
-            modal: true,
-            title: imscp_i18n.core.ftp_directories,
-            buttons: [{
-                text: imscp_i18n.core.close, click: function () {
-                    $(this).dialog('close');
-                }
-            }],
-            close: function (e, ui) {
-                $(this).remove();
-            }
-        }
-    );
-
-    $(window).resize(function () {
-        dialog1.dialog("option", "position", { my: "center", at: "center", of: window });
-    });
-
-    $(window).scroll(function () {
-        dialog1.dialog("option", "position", { my: "center", at: "center", of: window });
-    });
-
-    dialog1.dialog('open');
-
-    return false;
 }
 
 /*******************************************************************************

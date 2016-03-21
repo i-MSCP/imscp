@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,21 +31,16 @@
  */
 function _client_pydioGetLoginCredentials($userId)
 {
-	$query = "
-		SELECT
-			t1.userid, t1.rawpasswd
-		FROM
-			ftp_users AS t1
-		INNER JOIN
-			admin AS t2 ON(t2.admin_sys_uid = t1.uid AND t2.admin_sys_gid = t1.gid)
-		WHERE
-			t1.userid = ?
-		AND
-			t2.admin_id = ?
-	";
-	$stmt = exec_query($query, array($userId, $_SESSION['user_id']));
+    $stmt = exec_query(
+        "
+            SELECT t1.userid, t1.rawpasswd FROM ftp_users AS t1
+            INNER JOIN admin AS t2 ON(t2.admin_sys_uid = t1.uid AND t2.admin_sys_gid = t1.gid)
+            WHERE t1.userid = ? AND t2.admin_id = ?
+        ",
+        array($userId, $_SESSION['user_id'])
+    );
 
-	return $stmt->fetchRow(PDO::FETCH_NUM);
+    return $stmt->fetchRow(PDO::FETCH_NUM);
 }
 
 /**
@@ -57,9 +52,9 @@ function _client_pydioGetLoginCredentials($userId)
  */
 function _client_pydioCreateCookies($cookies)
 {
-	foreach ((array)$cookies as $cookie) {
-		header("Set-Cookie: $cookie", false);
-	}
+    foreach ((array)$cookies as $cookie) {
+        header("Set-Cookie: $cookie", false);
+    }
 }
 
 /**
@@ -70,112 +65,97 @@ function _client_pydioCreateCookies($cookies)
  */
 function client_pydioAuth($userId)
 {
-	if (file_exists(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log')) {
-		@unlink(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log');
-	}
+    if (file_exists(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log')) {
+        @unlink(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log');
+    }
 
-	$credentials = _client_pydioGetLoginCredentials($userId);
+    $credentials = _client_pydioGetLoginCredentials($userId);
 
-	if (!$credentials) {
-		set_page_message(tr('Unknown FTP user.'), 'error');
-		return false;
-	}
+    if (!$credentials) {
+        set_page_message(tr('Unknown FTP user.'), 'error');
+        return false;
+    }
 
-	$contextOptions = array();
+    $contextOptions = array();
 
-	// Prepares Pydio absolute Uri to use
-	if (isSecureRequest()) {
-		$contextOptions = array(
-			'ssl' => array(
-				'verify_peer' => false,
-				'allow_self_signed' => true
-			)
-		);
-	}
+    // Prepares Pydio absolute Uri to use
+    if (isSecureRequest()) {
+        $contextOptions = array('ssl' => array(
+            'verify_peer' => false,
+            'allow_self_signed' => true
+        ));
+    }
 
-	$pydioBaseUrl = getBaseUrl() . '/ftp/';
-	$port = getUriPort();
+    $pydioBaseUrl = getBaseUrl() . '/ftp/';
+    $port = getUriPort();
 
-	// Pydio authentication
+    // Pydio authentication
 
-	$context = stream_context_create(
-		array_merge($contextOptions, array(
-			'http' => array(
-				'method' => 'GET',
-				'protocol_version' => '1.1',
-				'header' => array(
-					'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
-					'User-Agent: i-MSCP',
-					'Connection: close'
-				)
-			)
-		))
-	);
+    $context = stream_context_create(array_merge($contextOptions, array(
+        'http' => array(
+            'method' => 'GET',
+            'protocol_version' => '1.1',
+            'header' => array(
+                'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
+                'User-Agent: i-MSCP',
+                'Connection: close'
+            )
+        )
+    )));
 
-	# Getting secure token
-	$secureToken = file_get_contents("$pydioBaseUrl/index.php?action=get_secure_token", false, $context);
+    # Getting secure token
+    $secureToken = file_get_contents("$pydioBaseUrl/index.php?action=get_secure_token", false, $context);
+    $postData = http_build_query(array(
+        'get_action' => 'login',
+        'userid' => $credentials[0],
+        'login_seed' => '-1',
+        "remember_me" => 'false',
+        'password' => stripcslashes($credentials[1]),
+        '_method' => 'put'
+    ));
+    $contextOptions = array_merge($contextOptions, array(
+        'http' => array(
+            'method' => 'POST',
+            'protocol_version' => '1.1',
+            'header' => array(
+                'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
+                'Content-Type: application/x-www-form-urlencoded',
+                'X-Requested-With: XMLHttpRequest',
+                'Content-Length: ' . strlen($postData),
+                'User-Agent: i-MSCP',
+                'Connection: close'
+            ),
+            'content' => $postData
+        )
+    ));
 
-	$postData = http_build_query(
-		array(
-			'get_action' => 'login',
-			'userid' => $credentials[0],
-			'login_seed' => '-1',
-			"remember_me" => 'false',
-			'password' => stripcslashes($credentials[1]),
-			'_method' => 'put'
-		)
-	);
-
-	$contextOptions = array_merge($contextOptions, array(
-		'http' => array(
-			'method' => 'POST',
-			'protocol_version' => '1.1',
-			'header' => array(
-				'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
-				'Content-Type: application/x-www-form-urlencoded',
-				'X-Requested-With: XMLHttpRequest',
-				'Content-Length: ' . strlen($postData),
-				'User-Agent: i-MSCP',
-				'Connection: close'
-			),
-			'content' => $postData
-		)
-	));
-
-	stream_context_set_default($contextOptions);
-
-	# TODO Parse the full response and display error message on authentication failure
-	$headers = get_headers("{$pydioBaseUrl}?secure_token={$secureToken}", true);
-
-	_client_pydioCreateCookies($headers['Set-Cookie']);
-
-	redirectTo($pydioBaseUrl);
-
-	exit;
+    stream_context_set_default($contextOptions);
+    # TODO Parse the full response and display error message on authentication failure
+    $headers = get_headers("{$pydioBaseUrl}?secure_token={$secureToken}", true);
+    _client_pydioCreateCookies($headers['Set-Cookie']);
+    redirectTo($pydioBaseUrl);
+    exit;
 }
 
 /***********************************************************************************************************************
  * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
 
-/** @var $cg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 if (!customerHasFeature('ftp') || !(isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'Pydio')) {
-	showBadRequestErrorPage();
+    showBadRequestErrorPage();
 }
 
 if (isset($_GET['id'])) {
-	if (!client_pydioAuth(clean_input($_GET['id']))) {
-		redirectTo('ftp_accounts.php');
-	}
+    if (!client_pydioAuth(clean_input($_GET['id']))) {
+        redirectTo('ftp_accounts.php');
+    }
 } else {
-	redirectTo('/index.php');
+    redirectTo('/index.php');
 }
