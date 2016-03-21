@@ -69,13 +69,17 @@ and set as readonly.
 
 sub loadConfig
 {
-	my $distroConffile = "$FindBin::Bin/configs/" . lc(iMSCP::LsbRelease->getInstance()->getId(1)) . '/imscp.conf';
+	my $lsbRelease = iMSCP::LsbRelease->getInstance();
+	my $distroConffile = "$FindBin::Bin/configs/" . lc($lsbRelease->getId(1)) . '/imscp.conf';
 	my $defaultConffile = "$FindBin::Bin/configs/debian/imscp.conf";
 
 	# Load new imscp.conf conffile from i-MSCP upstream source
 	tie my %imscpNewConfig, 'iMSCP::Config', fileName => -f $distroConffile ? $distroConffile : $defaultConffile;
 
 	%main::imscpConfig = %imscpNewConfig;
+	$main::imscpConfig{'DISTRO_ID'} = lc(iMSCP::LsbRelease->getInstance()->getId(1));
+	$main::imscpConfig{'DISTRO_CODENAME'} = lc(iMSCP::LsbRelease->getInstance()->getCodename(1));
+	$main::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease(1);
 	%main::imscpOldConfig = ();
 
 	# Load old i-MSCP conffile as readonly if it exists
