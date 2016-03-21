@@ -42,16 +42,12 @@ init_check_is_upstart()
 do_start()
 {
     perl ${TOOLSDIR}/imscp-net-traffic-logger start 2>/dev/null
-
-    # Touch lock file
     touch $LFILE
 }
 
 do_stop()
 {
     perl ${TOOLSDIR}/imscp-net-traffic-logger stop 2>/dev/null
-
-    # Remove lock file
     rm -f $LFILE
 }
 

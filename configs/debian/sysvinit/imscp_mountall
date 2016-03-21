@@ -1,20 +1,19 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          imscp_mountall
-# Required-Start:    $remote_fs $network
-# Required-Stop:     $remote_fs $network
+# Required-Start:    $remote_fs
+# Required-Stop:     $remote_fs
 # Should-Start:
 # Should-Stop:
 # Default-Start:     2 3 4 5
-# Default-Stop:
-# Description: Mounts i-MSCP filesystems
-# Short-Description:
+# Default-Stop:      0 1 6
+# Short-Description: Mounts i-MSCP filesystems
 ### END INIT INFO
 
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-NAME=imscp_traffic
+NAME=imscp_mountall
 LFILE=/var/run/$NAME
 TOOLSDIR="/var/www/imscp/engine/tools"
 
@@ -43,16 +42,12 @@ init_check_is_upstart()
 do_start()
 {
     perl ${TOOLSDIR}/imscp-mountall start 2>/dev/null
-
-    # Touch lock file
     touch $LFILE
 }
 
 do_stop()
 {
     perl ${TOOLSDIR}/imscp-mountall stop 2>/dev/null
-
-    # Remove lock file
     rm -f $LFILE
 }
 
